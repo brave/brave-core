@@ -64,6 +64,7 @@
 <translation id="1644574205037202324">历史记录</translation>
 <translation id="1652197001188145583">开启此设置后，网站可以请求使用 NFC 设备。关闭此设置后，网站无法使用 NFC 设备。</translation>
 <translation id="1660204651932907780">允许网站播放声音（推荐）</translation>
+<translation id="1676590040242013349">“一律使用安全连接”已开启。</translation>
 <translation id="1677097821151855053">网站会使用 Cookie 和其他数据来记住您，以便帮您登录或向您展示个性化广告等。如需管理所有网站的 Cookie，请前往<ph name="BEGIN_LINK"/>设置<ph name="END_LINK"/>。</translation>
 <translation id="1679305402657584804">网站可以请求使用 NFC 设备</translation>
 <translation id="1686785653877010442">网站通常会发送通知，告知您重大新闻或聊天消息。</translation>
@@ -125,7 +126,6 @@
 <translation id="2228071138934252756">若要允许 <ph name="APP_NAME"/> 使用您的摄像头，您还需在 <ph name="BEGIN_LINK"/>Android 设置<ph name="END_LINK"/>中开启摄像头。</translation>
 <translation id="2231160360698766265">网站可以播放受保护内容</translation>
 <translation id="2235344399760031203">已阻止第三方 Cookie</translation>
-<translation id="2238944249568001759">根据您上次浏览的标签页建议的搜索</translation>
 <translation id="2241587408274973373">“新标签页”页面卡片</translation>
 <translation id="2241634353105152135">仅一次</translation>
 <translation id="2253414712144136228">移除“<ph name="NAME_OF_LIST_ITEM"/>”</translation>
@@ -166,11 +166,6 @@
 <translation id="2588271083332682494">使用标签页分组整理标签页</translation>
 <translation id="2597457036804169544">不对网站应用深色主题</translation>
 <translation id="2606760465469169465">自动验证</translation>
-<translation id="7615153661410655750">在 <ph name="BEGIN_LINK1"/>Android 设置<ph name="END_LINK1"/>中管理
-
-高级保护功能会控制以下 Brave 设置：
-•“一律使用安全连接”已开启。
-•“JavaScript 优化工具”已关闭。<ph name="BEGIN_LINK2"/>管理网站例外情况<ph name="END_LINK2"/></translation>
 <translation id="2621115761605608342">允许特定网站运行 JavaScript。</translation>
 <translation id="2626708220538466178">默认浏览器底部动作条已关闭</translation>
 <translation id="2653659639078652383">提交</translation>
@@ -214,7 +209,6 @@
 <translation id="3069226013421428034">允许使用第三方账号登录特定网站。</translation>
 <translation id="310297983047869047">上一张幻灯片</translation>
 <translation id="3108122610701115301">设为默认</translation>
-<translation id="3109724472072898302">已收起</translation>
 <translation id="310979712355504754">全部删除</translation>
 <translation id="311394601889664316">不允许网站修改您设备上的文件或文件夹</translation>
 <translation id="3114012059975132928">视频播放器</translation>
@@ -260,7 +254,6 @@
 <translation id="3602290021589620013">预览</translation>
 <translation id="3611658447322220736">最近关闭的网站可以完成数据收发操作</translation>
 <translation id="3619294456800709762">网站可以自动进入画中画模式</translation>
-<translation id="3628308229821498208">建议的搜索</translation>
 <translation id="3632460243282703117">订阅</translation>
 <translation id="363748948745453283">正在使用大致位置信息</translation>
 <translation id="3641456520301071208">网站可以请求获取您的位置信息</translation>
@@ -441,7 +434,6 @@
 <translation id="5515432237048785579">探索信息流底部动作条已按最大高度显示</translation>
 <translation id="5516455585884385570">打开通知设置</translation>
 <translation id="5527111080432883924">需先询问，得到许可后才允许网站读取剪贴板中的文字和图片（推荐）</translation>
-<translation id="5553374991681107062">最新</translation>
 <translation id="674221630984410403">不使用 Brave 的 V8 引擎加速网站，但 Brave 的防攻击能力会略微增强</translation>
 <translation id="5556459405103347317">重新加载</translation>
 <translation id="5591840828808741583">已为 <ph name="SITE_NAME"/> 禁用此权限</translation>
@@ -521,7 +513,6 @@
 <translation id="6231752747840485235">卸载“<ph name="APP_NAME"/>”？</translation>
 <translation id="4789073065838177382">依次点按“浏览器应用”&gt;“Brave”</translation>
 <translation id="6260830281887654268">“新标签页”页面外观主题集合底部动作条已按一半高度显示</translation>
-<translation id="6262191102408817757">基于您的上一个标签页</translation>
 <translation id="6262279340360821358">已禁用“<ph name="PERMISSION_1"/>”权限和“<ph name="PERMISSION_2"/>”权限</translation>
 <translation id="6270391203985052864">网站可以询问能否向您发送通知</translation>
 <translation id="6295158916970320988">所有网站</translation>
@@ -579,6 +570,7 @@
 <translation id="6912998170423641340">禁止网站读取剪贴板中的文字和图片</translation>
 <translation id="6945221475159498467">选择</translation>
 <translation id="6950072572526089586">您访问的网站可以保存与您正在进行的浏览活动有关的信息，以便网站能按预期运行 - 例如，以便保持您在网站上的登录状态或者保存您的购物车内的商品。网站通常会将这类信息暂时保存在您的设备上。</translation>
+<translation id="6964291282260073066">“WebGPU”已停用。</translation>
 <translation id="6965382102122355670">确定</translation>
 <translation id="6980507581230208647">玫瑰色主题</translation>
 <translation id="6980861169612950611">要删除网站数据吗？<ph name="SITE_NAME"/></translation>
@@ -601,7 +593,6 @@
 <translation id="7180611975245234373">刷新</translation>
 <translation id="7188508872042490670">设备端网站数据</translation>
 <translation id="7201549776650881587">此操作会删除 <ph name="ORIGIN"/> 下属所有网站或其在主屏幕中安装的应用存储的全部数据和 Cookie</translation>
-<translation id="7203150201908454328">已展开</translation>
 <translation id="7213166370492037743">不允许网站连接到本地网络上的任何设备</translation>
 <translation id="7219254577985949841">删除网站数据？</translation>
 <translation id="723171743924126238">选择图片</translation>
@@ -612,6 +603,9 @@
 <translation id="7276071417425470385">开启此设置后，网站可以请求使用虚拟现实设备。关闭此设置后，网站无法使用虚拟现实设备。</translation>
 <translation id="7282197670900591579">香橼黄色主题</translation>
 <translation id="728412880473384942">网站速度更快，但安全性更低</translation>
+<translation id="5843014938239239453">在 <ph name="BEGIN_LINK1"/>Android 设置<ph name="END_LINK1"/>中管理
+
+高级保护功能会控制以下 Brave 设置：</translation>
 <translation id="7366415735885268578">添加网站</translation>
 <translation id="7368695150573390554">所有离线数据都将被删除</translation>
 <translation id="7369678931043226462">自定义“新标签页”页面的底部动作条已按一半高度显示</translation>
@@ -675,7 +669,6 @@
 <translation id="8007176423574883786">已对此设备停用</translation>
 <translation id="802154636333426148">下载失败</translation>
 <translation id="8033047164036749181">订阅来自此网站的通知</translation>
-<translation id="8042586301629853791">排序方式：</translation>
 <translation id="8051193500142930381">所有需要使用摄像头的功能都将无法正常运行</translation>
 <translation id="2495032782748793764">Brave 默认选项</translation>
 <translation id="8067883171444229417">播放视频</translation>
@@ -723,6 +716,7 @@
 <translation id="8471525937465764768">网站通常会连接到 USB 设备以实现某些功能（例如打印文档或保存到存储设备）</translation>
 <translation id="8473055640493819707">“<ph name="APP_NAME"/>”版本过旧。请重新安装该应用。</translation>
 <translation id="847433688444405067">跨设备浏览</translation>
+<translation id="8484556725636319115">“JavaScript 优化工具”已关闭。<ph name="BEGIN_LINK2"/>管理网站例外情况<ph name="END_LINK2"/></translation>
 <translation id="8487700953926739672">可离线使用</translation>
 <translation id="848952951823693243">始终请求访问移动网站</translation>
 <translation id="8492822722330266509">网站可以发送弹出式窗口并使用重定向</translation>

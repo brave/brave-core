@@ -49,6 +49,14 @@
 <translation id="2998960761270772157">youtube.com-ൽ സൈൻ ഇൻ, മെനു, കമന്റുകൾ, വീഡിയോ ഇൻഫോ മൂലകങ്ങൾ ബ്ലോക്ക് ചെയ്യുന്നു.</translation>
 <translation id="8531835121131500698">YouTube Shorts ബ്ലോക്ക് ചെയ്യുക</translation>
 <translation id="2167271714269158912">youtube.com-ൽ ഹോം പേജ്, ട്രെൻഡിങ് പേജ്, തിരയൽ ഫലങ്ങളിൽ നിന്ന് ഷോർടുകൾ ബ്ലോക്ക് ചെയ്യുന്നു.</translation>
+<translation id="2564435705466025309">YouTube ഓട്ടോ-ഡബ്ബ് ചെയ്ത വിഡിയോകൾ ബ്ലോക്ക് ചെയ്യുക</translation>
+<translation id="3603500459037204525">youtube.com ഹോം പേജ് &amp; സെർച്ച് ഫലങ്ങളിൽ ഓട്ടോ-ഡബ്ബ് ചെയ്ത വിഡിയോകൾ പ്രത്യക്ഷപ്പെടുന്നത് ബ്ലോക്ക് ചെയ്യുന്നു.</translation>
+<translation id="4067265130987656010">YouTube തിരിപ്പുകൾ ബ്ലോക്ക് ചെയ്യുക</translation>
+<translation id="3034711349887440574">youtube.com ഹോം പേജ് &amp; സെർച്ച് ഫലങ്ങളിൽ തിരിപ്പുകൾ പ്രത്യക്ഷപ്പെടുന്നത് ബ്ലോക്ക് ചെയ്യുന്നു.</translation>
+<translation id="8741919213635379855">YouTube കളിക്കാനുള്ള ബ്ലോക്ക് ചെയ്യുക</translation>
+<translation id="2216551241986578034">youtube.com ഹോം പേജ് &amp; സെർച്ച് ഫലങ്ങളിൽ പ്ലേബിലിറ്റിസ് പ്രത്യക്ഷപ്പെടുന്നത് ബ്ലോക്ക് ചെയ്യുന്നു.</translation>
+<translation id="9038505474874975130">YouTube അംഗങ്ങൾ മാത്രമുള്ള വിഡിയോകൾ ബ്ലോക്ക് ചെയ്യുക</translation>
+<translation id="3084239516382196983">youtube.com ഹോം പേജ് &amp; സെർച്ച് ഫലങ്ങളിൽ അംഗങ്ങൾ മാത്രമുള്ള വിഡിയോകൾ പ്രത്യക്ഷപ്പെടുന്നത് ബ്ലോക്ക് ചെയ്യുന്നു.</translation>
 <translation id="6052725679982758334">സോഷ്യല്‍ മീഡിയ ബ്ലോക്കിംഗ്</translation>
 <translation id="7498695072878479744">മെത്രിതായാണ്സ് സൈറ്റുകളിലെ Google കയറി വരവ് buttons അനുവദിക്കുക</translation>
 <translation id="863171915776379000">ഫേസ്ബുക്ക് ലോഗിൻകളും എംബെഡഡ് പോസ്റ്റുകളും അനുവദിക്കുക</translation>
@@ -980,9 +988,9 @@ Brave ഉപയോഗിക്കുന്നതിലൂടെ, ഉപയോഗ
 <translation id="5494920125229734069">എല്ലാം തിരഞ്ഞെടുക്കുക</translation>
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="944736176598169208">Rewards</translation>
-<translation id="4272190451231642425">താനീകമായി ക്രാഷ് റിപ്പോര്‍ട്ടുകള്‍ അയയ്ക്കുക</translation>
 <translation id="1199170151481311646">സ്വകാര്യത സംരക്ഷിക്കുന്ന വിശകലനങ്ങൾ</translation>
 <translation id="1706715315466634757">ഇമെയിൽ അലയാസുകൾ</translation>
+<translation id="738840791756723657">AI</translation>
 <translation id="6709133671862442373">വാർത്ത</translation>
 <translation id="5990642573624858459">Click സംഖ്യ റിപ്പോർട്ടിംഗ്</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -994,8 +1002,11 @@ Brave ഉപയോഗിക്കുന്നതിലൂടെ, ഉപയോഗ
 <translation id="2573819149217596923">Brave ഫീച്ചറുകൾ മാറ്റുന്നത്</translation>
 <translation id="7415416427817229128">Brave ഫീച്ചർ സജ്ജീകരിക്കുന്നതോ പ്രതിബന്ധിക്കുന്നതോ ഭേദങ്ങൾ പ്രയോഗിക്കാൻ ബ്രൗസർ പുനരാരംഭ ആവശ്യമാണ്. ഇപ്പോൾ പുനരാരംഭിക്കാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്നോ?</translation>
 <translation id="2256115617011615191">ഇപ്പോൾ പുനരാരംഭിക്കുക</translation>
+<translation id="2160089182263405907">ഫീച്ചറുകൾ പ്രവർത്തന രഹിതമാക്കുന്നു</translation>
+<translation id="3362364767724670721">Brave ഫീച്ചർ പ്രവർത്തനക്ഷമമാക്കാനോ പ്രവർത്തന രഹിതമാക്കാനോ ബ്രൗസർ പുനരാരംഭം ആവശ്യമാണ്. ദയവായി <ph name="BEGIN_BOLD"/>ഇപ്പോൾ പുനരാരംഭിക്കുക<ph name="END_BOLD"/> Origin അപ്ഡേറ്റ് പൂർത്തിയായ ശേഷം.</translation>
+<translation id="1028940738207645746">എല്ലാ സെറ്റിംഗുകളും ഡിഫോൾട്ടിലേക്ക് പുനഃസജ്ജമാക്കണോ എന്നും ഉറപ്പാണോ?</translation>
+<translation id="5939518447894949180">റീസെറ്റ് ചെയ്യുക</translation>
 <translation id="8554205386170195281">വാങ്ങുക</translation>
-<translation id="7071521146534760487">അക്കൗണ്ട് മാനേജ് ചെയ്യുക</translation>
 <translation id="8613144770663526433">Brave Wallet ഉപയോഗിച്ച് സൈൻ ഇൻ ചെയ്യുക</translation>
 <translation id="3696514931437952995">നിങ്ങളുടെടുള്ള ഉണ്ടാക്കുന്ന ഉറവ് <ph name="ORIGIN"/> എന്ന് Brave റിവാർഡ് അറിയിക്കുന്നു നിങ്ങളു. ഫെസ്റ്റിവിയുടെ ക്രിഷ്നാവിദ്ധിയോണ്ടുള്ള പങ്കാളിയായി Brave Wallet ഉണ്ടായിരിക്കും.</translation>
 <translation id="1028781062521375153">വിശദാംശങ്ങൾ കാണുക</translation>
@@ -1030,7 +1041,6 @@ Brave ഉപയോഗിക്കുന്നതിലൂടെ, ഉപയോഗ
 <translation id="1309636029062006520">നിങ്ങളുടെ ഇഷ്ടപ്പെട്ട ഓഡിയോയും വീഡിയോകളും മുൻപേ നിന്പെട്ട രാഷ്ട്രീ സമ്മാനങ്ങള് プレイ recomiendo en el mismo por ejemplo&gt;</translation>
 <translation id="7899390017499980820">പ്ലേ ലിസ്റ്റ് ബട്ടൻ</translation>
 <translation id="6901152954398668317">'Add to Playlist' ബട്ടൺ വഴമായീനല്ല വളരെപ്പെട്ടന്നുമനുവമായിച്ചേർക്കറോ ഇളക്കി</translation>
-<translation id="5939518447894949180">റീസെറ്റ് ചെയ്യുക</translation>
 <translation id="8199028711686989861">പ്ലേലിസ്റ്റ്, മറ്റ് ഓഫ്ലൈൻ മോഡ് സ്റ്റോറേജിലുള്ള എല്ലാ വീഡിയോകളും നീക്കം ചെയ്യുക.</translation>
 <translation id="4590997608186539865">Playlist</translation>
 <translation id="7525067979554623046">സൃഷ്‌ടിക്കുക</translation>
@@ -1177,4 +1187,20 @@ Brave ഉപയോഗിക്കുന്നതിലൂടെ, ഉപയോഗ
 <translation id="1724977129262658800">നിങ്ങളുടെ പാസ്‍വേഡ് എഡിറ്റ് ചെയ്യാൻ അൺലോക്ക് ചെയ്യുക</translation>
 <translation id="5780792035410621042">പാസ്‌വേഡുകൾ പകർത്താൻ, ആദ്യം നിങ്ങളുടെ ഉപകരണത്തിൽ സ്‌ക്രീൻ ലോക്ക് സജ്ജീകരിക്കുക</translation>
 <translation id="7986497153528221272">പാസ്‌വേഡുകൾ കാണാൻ, ആദ്യം നിങ്ങളുടെ ഉപകരണത്തിൽ സ്‌ക്രീൻ ലോക്ക് സജ്ജീകരിക്കുക</translation>
+<translation id="4882237634123415792">കസ്റ്റം സെർച്ച് എഞ്ചിനുകൾ</translation>
+<translation id="8364431224461158026">കസ്റ്റം സെർച്ച് എഞ്ചിൻ ചേർക്കുക</translation>
+<translation id="7307935603426295341">കസ്റ്റം സെർച്ച് എഞ്ചിൻ എഡിറ്റ് ചെയ്യുക</translation>
+<translation id="4002066346123236978">ശീർഷകം</translation>
+<translation id="3653110185270660915">സെർച്ച് എഞ്ചിനിന്റെ പേര് നൽകുക</translation>
+<translation id="7400418766976504921">URL</translation>
+<translation id="6410668567036790476">സെർച്ച് എഞ്ചിൻ ചേർക്കുക</translation>
+<translation id="6289878295410648689">സെർച്ച് ഉള്ള url എഴുതുക <ph name="SPECIAL_SYMBOL"/> ഉപയോഗിച്ച് പ്രതിസ്ഥാപിക്കുക.</translation>
+<translation id="8943582268084103903">ഉദാഹരണത്തിന്: https://youtube.com/search?q=<ph name="SPECIAL_SYMBOL"/>. സൈറ്റ് OpenSearch പിന്തുണയ്ക്കുന്നുണ്ടെങ്കിൽ ഈ ഫീൽഡ് എഡിറ്റ് ചെയ്യുമ്പോൾ സ്വയമേവ ചേർക്കാനുള്ള ഓപ്ഷൻ നൽകും.</translation>
+<translation id="8706939021136180678">URL അസാധുവാണ്.</translation>
+<translation id="6528099556282059181">സെർച്ച് എഞ്ചിൻ ഇതിനകം ചേർത്തിരിക്കുന്നു.</translation>
+<translation id="463451857046640291">സെർച്ച് എഞ്ചിൻ ചേർക്കാൻ പരാജയപ്പെട്ടു.</translation>
+<translation id="1229671956956864948">സെർച്ച് എഞ്ചിൻ അപ്ഡേറ്റ് ചെയ്യാൻ പരാജയപ്പെട്ടു.</translation>
+<translation id="1462771969120037152">സെർച്ച് എഞ്ചിൻ ഡിലീറ്റ് ചെയ്യാൻ പരാജയപ്പെട്ടു. നിങ്ങൾ നീക്കംചെയ്യാൻ ശ്രമിക്കുന്ന സെർച്ച് എഞ്ചിൻ ഡിഫോൾട്ടായി സെറ്റ് ചെയ്തിരിക്കാം.</translation>
+<translation id="1079140196216383600">കസ്റ്റം സെർച്ച് എഞ്ചിൻ നീക്കംചെയ്യുക</translation>
+<translation id="525276572490219787">"<ph name="SEARCH_ENGINE_NAME"/>" നീക്കംചെയ്യണോ എന്നും ഉറപ്പാണോ? ഈ നടപടിയെ പുനഃസ്ഥാപിക്കാൻ കഴിയില്ല.</translation>
 </translationbundle>

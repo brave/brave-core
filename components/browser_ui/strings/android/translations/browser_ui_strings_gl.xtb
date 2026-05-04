@@ -64,6 +64,7 @@
 <translation id="1644574205037202324">Historial</translation>
 <translation id="1652197001188145583">Cando esta opción está activada, os sitios poden pedirche permiso para utilizar dispositivos NFC. Cando esta opción está desactivada, os sitios non poden utilizar dispositivos NFC.</translation>
 <translation id="1660204651932907780">Permite que os sitios reproduzan son (recomendado)</translation>
+<translation id="1676590040242013349">A opción Usar sempre conexións seguras está activada.</translation>
 <translation id="1677097821151855053">As cookies e outros datos do sitio utilízanse para lembrarte (por exemplo, á hora de iniciar de sesión ou de personalizar anuncios). Se queres xestionar as cookies para todos os sitios, vai a <ph name="BEGIN_LINK"/>Configuración<ph name="END_LINK"/>.</translation>
 <translation id="1679305402657584804">Os sitios poden pedir permiso para usar dispositivos NFC</translation>
 <translation id="1686785653877010442">Os sitios adoitan enviar notificacións con noticias de última hora ou mensaxes de chat.</translation>
@@ -125,7 +126,6 @@
 <translation id="2228071138934252756">Para permitir que <ph name="APP_NAME"/> acceda á cámara, actívaa tamén en <ph name="BEGIN_LINK"/>Configuración de Android<ph name="END_LINK"/>.</translation>
 <translation id="2231160360698766265">Permitir que os sitios reproduzan contido protexido</translation>
 <translation id="2235344399760031203">Bloqueáronse as cookies de terceiros</translation>
-<translation id="2238944249568001759">Buscas suxeridas baseadas na última pestana</translation>
 <translation id="2241587408274973373">Tarxetas da páxina Nova pestana</translation>
 <translation id="2241634353105152135">Só unha vez</translation>
 <translation id="2253414712144136228">Eliminar <ph name="NAME_OF_LIST_ITEM"/></translation>
@@ -166,11 +166,6 @@
 <translation id="2588271083332682494">Ten todo ordenado cos grupos de pestanas</translation>
 <translation id="2597457036804169544">Non se lles aplica o tema escuro aos sitios</translation>
 <translation id="2606760465469169465">Verificación automática</translation>
-<translation id="7615153661410655750">Xestionar en <ph name="BEGIN_LINK1"/>configuración de Android<ph name="END_LINK1"/>
-
-Protección avanzada controla estas opcións de configuración de Brave:
-• A opción Usar sempre conexións seguras está activada.
-• O Especialista en optimización de JavaScript está desactivado. <ph name="BEGIN_LINK2"/>Xestionar excepcións do sitio<ph name="END_LINK2"/></translation>
 <translation id="2621115761605608342">Permite a execución de JavaScript para un sitio específico.</translation>
 <translation id="2626708220538466178">Panel inferior do navegador predeterminado pechado</translation>
 <translation id="2653659639078652383">Enviar</translation>
@@ -214,7 +209,6 @@ Protección avanzada controla estas opcións de configuración de Brave:
 <translation id="3069226013421428034">Permite o inicio de sesión de terceiros para un sitio específico.</translation>
 <translation id="310297983047869047">Diapositiva anterior</translation>
 <translation id="3108122610701115301">Definir como predeterminado</translation>
-<translation id="3109724472072898302">Contraído</translation>
 <translation id="310979712355504754">Eliminar todo</translation>
 <translation id="311394601889664316">Non permitir que os sitios editen ficheiros nin cartafoles do teu dispositivo</translation>
 <translation id="3114012059975132928">Reprodutor de vídeo</translation>
@@ -260,7 +254,6 @@ Protección avanzada controla estas opcións de configuración de Brave:
 <translation id="3602290021589620013">Previsualizar</translation>
 <translation id="3611658447322220736">Os sitios pechados recentemente poden rematar de enviar e recibir datos</translation>
 <translation id="3619294456800709762">Os sitios poden acceder ao modo de pantalla superposta automaticamente</translation>
-<translation id="3628308229821498208">Buscas suxeridas</translation>
 <translation id="3632460243282703117">Subscribirse</translation>
 <translation id="363748948745453283">Estase usando a localización aproximada</translation>
 <translation id="3641456520301071208">Os sitios poden pedirche permiso para acceder á localización</translation>
@@ -441,7 +434,6 @@ Protección avanzada controla estas opcións de configuración de Brave:
 <translation id="5515432237048785579">Panel inferior do feed de Discover aberto a altura completa</translation>
 <translation id="5516455585884385570">Abrir a configuración de notificacións</translation>
 <translation id="5527111080432883924">Preguntar antes de permitir que os sitios lean texto e imaxes do portapapeis (recomendado)</translation>
-<translation id="5553374991681107062">Máis recentes</translation>
 <translation id="674221630984410403">Sen o motor V8 de Brave, os sitios serán máis lentos, pero conseguirás que Brave sexa un chisco máis resistente aos ataques</translation>
 <translation id="5556459405103347317">Volver cargar</translation>
 <translation id="5591840828808741583"><ph name="SITE_NAME"/> bloqueado</translation>
@@ -521,7 +513,6 @@ Protección avanzada controla estas opcións de configuración de Brave:
 <translation id="6231752747840485235">Queres desinstalar <ph name="APP_NAME"/>?</translation>
 <translation id="4789073065838177382">Toca a opción de aplicación de navegación &gt; Brave</translation>
 <translation id="6260830281887654268">Panel inferior de coleccións de temas de aparencia da páxina Nova pestana aberto a altura media</translation>
-<translation id="6262191102408817757">Segundo a túa última pestana</translation>
 <translation id="6262279340360821358"><ph name="PERMISSION_1"/> e <ph name="PERMISSION_2"/> (bloqueados)</translation>
 <translation id="6270391203985052864">Os sitios poden pedir permiso para enviar notificacións</translation>
 <translation id="6295158916970320988">Todos os sitios</translation>
@@ -579,6 +570,7 @@ Protección avanzada controla estas opcións de configuración de Brave:
 <translation id="6912998170423641340">Impedir que os sitios lean texto e imaxes do portapapeis</translation>
 <translation id="6945221475159498467">Seleccionar</translation>
 <translation id="6950072572526089586">Os sitios que visitas poden gardar información sobre o que fas para poder funcionar segundo o esperado (por exemplo, para manter a túa sesión iniciada ou gardar artigos que teñas no carro da compra). Os sitios adoitan almacenar esta información no teu dispositivo de forma temporal.</translation>
+<translation id="6964291282260073066">WebGPU está desactivado.</translation>
 <translation id="6965382102122355670">Aceptar</translation>
 <translation id="6980507581230208647">Tema rosa</translation>
 <translation id="6980861169612950611">Queres eliminar datos do sitio? <ph name="SITE_NAME"/></translation>
@@ -601,7 +593,6 @@ Protección avanzada controla estas opcións de configuración de Brave:
 <translation id="7180611975245234373">Actualizar</translation>
 <translation id="7188508872042490670">Datos dos sitios no dispositivo</translation>
 <translation id="7201549776650881587">Ao realizar esta acción, eliminaranse todos os datos e as cookies que almacenasen os subsitios de <ph name="ORIGIN"/> ou a súa aplicación na túa pantalla de inicio</translation>
-<translation id="7203150201908454328">Ampliado</translation>
 <translation id="7213166370492037743">Non permitir que os sitios se conecten a calquera dispositivo da túa rede local</translation>
 <translation id="7219254577985949841">Eliminar datos do sitio?</translation>
 <translation id="723171743924126238">Selecciona imaxes</translation>
@@ -612,6 +603,9 @@ Protección avanzada controla estas opcións de configuración de Brave:
 <translation id="7276071417425470385">Cando esta opción está activada, os sitios poden pedirche permiso para utilizar dispositivos de realidade virtual. Cando esta opción está desactivada, os sitios non poden utilizar dispositivos de realidade virtual.</translation>
 <translation id="7282197670900591579">Tema cidra</translation>
 <translation id="728412880473384942">Os sitios son máis rápidos, pero menos seguros</translation>
+<translation id="5843014938239239453">Xestiónaa na <ph name="BEGIN_LINK1"/>configuración de Android<ph name="END_LINK1"/>
+
+A Protección avanzada controla estas opcións de Brave:</translation>
 <translation id="7366415735885268578">Engade un sitio</translation>
 <translation id="7368695150573390554">Eliminaranse todos os datos sen conexión</translation>
 <translation id="7369678931043226462">Panel inferior de Personaliza a páxina Nova pestana aberto a altura media</translation>
@@ -675,7 +669,6 @@ Protección avanzada controla estas opcións de configuración de Brave:
 <translation id="8007176423574883786">Desactivada para este dispositivo</translation>
 <translation id="802154636333426148">Produciuse un erro na descarga</translation>
 <translation id="8033047164036749181">Subscribirse ás notificacións deste sitio</translation>
-<translation id="8042586301629853791">Ordenar por:</translation>
 <translation id="8051193500142930381">As funcións que requiran unha cámara non estarán dispoñibles</translation>
 <translation id="2495032782748793764">Brave predeterminado</translation>
 <translation id="8067883171444229417">Reproducir vídeo</translation>
@@ -723,6 +716,7 @@ Protección avanzada controla estas opcións de configuración de Brave:
 <translation id="8471525937465764768">Os sitios adoitan conectarse aos dispositivos USB para ofrecerche determinadas funcións (por exemplo, imprimir documentos ou gardar información nun dispositivo de almacenamento)</translation>
 <translation id="8473055640493819707">A aplicación <ph name="APP_NAME"/> está desactualizada. Volve instalala.</translation>
 <translation id="847433688444405067">Navega en varios dispositivos</translation>
+<translation id="8484556725636319115">O optimizador de JavaScript está desactivado. <ph name="BEGIN_LINK2"/>Xestionar excepcións do sitio<ph name="END_LINK2"/></translation>
 <translation id="8487700953926739672">Dispoñible sen conexión</translation>
 <translation id="848952951823693243">Solicitar sempre o sitio para móbiles</translation>
 <translation id="8492822722330266509">Os sitios poden mostrar ventás emerxentes e usar redireccións</translation>

@@ -64,6 +64,7 @@
 <translation id="1644574205037202324">Istorija</translation>
 <translation id="1652197001188145583">Įjungus svetainėse gali būti prašoma naudoti NFC įrenginius. Išjungus svetainėse negalima naudoti NFC įrenginių.</translation>
 <translation id="1660204651932907780">Leisti svetainėms leisti garsą (rekomenduojama)</translation>
+<translation id="1676590040242013349">Įjungta parinktis „Visada naudoti saugų ryšį“.</translation>
 <translation id="1677097821151855053">Slapukai ir kiti svetainės duomenys naudojami siekiant jus prisiminti, pvz., prisijungiant ar suasmeninant skelbimus. Norėdami tvarkyti visų svetainių slapukus, žr. skiltį <ph name="BEGIN_LINK"/>„Nustatymai“<ph name="END_LINK"/>.</translation>
 <translation id="1679305402657584804">Svetainės gali prašyti leidimo naudoti NFC įrenginius</translation>
 <translation id="1686785653877010442">Svetainės paprastai siunčia pranešimus informuodamos apie karščiausias naujienas ar pokalbių pranešimus.</translation>
@@ -125,7 +126,6 @@
 <translation id="2228071138934252756">Norėdami leisti „<ph name="APP_NAME"/>“ pasiekti jūsų kamerą, taip pat įjunkite ją <ph name="BEGIN_LINK"/>„Android“ nustatymuose<ph name="END_LINK"/>.</translation>
 <translation id="2231160360698766265">Svetainėse gali būti leidžiamas apsaugotas turinys</translation>
 <translation id="2235344399760031203">Trečiųjų šalių slapukai užblokuoti</translation>
-<translation id="2238944249568001759">Siūlomos paieškos atsižvelgiant į paskutinį skirtuką</translation>
 <translation id="2241587408274973373">Naujų skirtukų puslapių kortelės</translation>
 <translation id="2241634353105152135">Tik vieną kartą</translation>
 <translation id="2253414712144136228">Pašalinti „<ph name="NAME_OF_LIST_ITEM"/>“</translation>
@@ -166,11 +166,6 @@
 <translation id="2588271083332682494">Tvarkykite naudodami skirtukų grupes</translation>
 <translation id="2597457036804169544">Netaikyti tamsiosios temos svetainėms</translation>
 <translation id="2606760465469169465">Automatinis patvirtinimas</translation>
-<translation id="7615153661410655750">Tvarkykite <ph name="BEGIN_LINK1"/>„Android“ nustatymuose<ph name="END_LINK1"/>
-
-Naudojant Papildomą apsaugą valdomi toliau nurodyti „Brave“ nustatymai.
-• Įjungta parinktis „Visada naudoti saugų ryšį“.
-• Parinktis „JavaScript“ optimizavimo priemonė“ išjungta. <ph name="BEGIN_LINK2"/>Tvarkyti svetainės išimtis<ph name="END_LINK2"/></translation>
 <translation id="2621115761605608342">Leisti „JavaScript“ konkrečioje svetainėje.</translation>
 <translation id="2626708220538466178">Numatytosios naršyklės apatinis lapas uždarytas</translation>
 <translation id="2653659639078652383">Pateikti</translation>
@@ -214,7 +209,6 @@ Naudojant Papildomą apsaugą valdomi toliau nurodyti „Brave“ nustatymai.
 <translation id="3069226013421428034">Leisti trečiajai šaliai prisijungti prie konkrečios svetainės.</translation>
 <translation id="310297983047869047">Ankstesnė skaidrė</translation>
 <translation id="3108122610701115301">Nustatyti numatytuosius nustatymus</translation>
-<translation id="3109724472072898302">Suskleista</translation>
 <translation id="310979712355504754">Ištrinti viską</translation>
 <translation id="311394601889664316">Neleisti svetainėms redaguoti failų ar aplankų jūsų įrenginyje</translation>
 <translation id="3114012059975132928">Vaizdo įrašų leistuvė</translation>
@@ -260,7 +254,6 @@ Naudojant Papildomą apsaugą valdomi toliau nurodyti „Brave“ nustatymai.
 <translation id="3602290021589620013">Peržiūra</translation>
 <translation id="3611658447322220736">Neseniai uždarytose svetainėse galima baigti siųsti ir gauti duomenis</translation>
 <translation id="3619294456800709762">Svetainėse galima automatiškai įjungti vaizdo vaizde režimą</translation>
-<translation id="3628308229821498208">Siūlomos paieškos</translation>
 <translation id="3632460243282703117">Prenumeruoti</translation>
 <translation id="363748948745453283">Naudojama apytikslė vietovė</translation>
 <translation id="3641456520301071208">Svetainės gali klausti jūsų vietovės</translation>
@@ -441,7 +434,6 @@ Naudojant Papildomą apsaugą valdomi toliau nurodyti „Brave“ nustatymai.
 <translation id="5515432237048785579">„Discover“ sklaidos kanalo apatinis lapas atidarytas per visą aukštį</translation>
 <translation id="5516455585884385570">Atidaryti pranešimų nustatymus</translation>
 <translation id="5527111080432883924">Klausti, prieš leidžiant svetainėms skaityti tekstą ir vaizdus iš iškarpinės (rekomenduojama)</translation>
-<translation id="5553374991681107062">Naujausi</translation>
 <translation id="674221630984410403">Nespartinti svetainių naudojant „Brave“ V8 variklį, bet padaryti „Brave“ šiek tiek atsparesnę atakoms</translation>
 <translation id="5556459405103347317">Įkelti iš naujo</translation>
 <translation id="5591840828808741583">Užblokuota: <ph name="SITE_NAME"/></translation>
@@ -521,7 +513,6 @@ Naudojant Papildomą apsaugą valdomi toliau nurodyti „Brave“ nustatymai.
 <translation id="6231752747840485235">Pašalinti „<ph name="APP_NAME"/>“?</translation>
 <translation id="4789073065838177382">Palieskite „Naršyklės programa“ &gt; „Brave“</translation>
 <translation id="6260830281887654268">Naujo skirtuko puslapio išvaizdos temų rinkinių apatinis lapas atidarytas iki pusės ekrano aukščio</translation>
-<translation id="6262191102408817757">Pagal paskutinį skirtuką</translation>
 <translation id="6262279340360821358">Užblokuota: <ph name="PERMISSION_1"/> ir <ph name="PERMISSION_2"/></translation>
 <translation id="6270391203985052864">Svetainės gali prašyti siųsti pranešimus</translation>
 <translation id="6295158916970320988">Visos svetainės</translation>
@@ -579,6 +570,7 @@ Naudojant Papildomą apsaugą valdomi toliau nurodyti „Brave“ nustatymai.
 <translation id="6912998170423641340">Neleisti svetainėms skaityti teksto ir vaizdų iš iškarpinės</translation>
 <translation id="6945221475159498467">Pasirinkti</translation>
 <translation id="6950072572526089586">Svetainė, kurioje lankotės, gali išsaugoti informaciją apie jūsų atliktus veiksmus, kad galėtų veikti taip, kaip numatyta, pvz., kad liktumėte prisijungę prie svetainės arba galėtumėte išsaugoti prekes pirkinių krepšelyje. Dažnai svetainės laikinai išsaugo šią informaciją įrenginyje.</translation>
+<translation id="6964291282260073066">„WebGPU“ išjungta.</translation>
 <translation id="6965382102122355670">Gerai</translation>
 <translation id="6980507581230208647">Rožinė tema</translation>
 <translation id="6980861169612950611">Ištrinti svetainės duomenis? <ph name="SITE_NAME"/></translation>
@@ -601,7 +593,6 @@ Naudojant Papildomą apsaugą valdomi toliau nurodyti „Brave“ nustatymai.
 <translation id="7180611975245234373">Atnaujinti</translation>
 <translation id="7188508872042490670">Įrenginyje esantys svetainių duomenys</translation>
 <translation id="7201549776650881587">Atlikus šį veiksmą bus ištrinti visi duomenys ir slapukai, kuriuos visos domeno <ph name="ORIGIN"/> svetainės arba jo programa saugo jūsų pagrindiniame ekrane</translation>
-<translation id="7203150201908454328">Išskleista</translation>
 <translation id="7213166370492037743">Neleisti svetainėms prisijungti prie bet kurio įrenginio vietiniame tinkle</translation>
 <translation id="7219254577985949841">Ištrinti svetainės duomenis?</translation>
 <translation id="723171743924126238">Pasirinkti vaizdus</translation>
@@ -612,6 +603,9 @@ Naudojant Papildomą apsaugą valdomi toliau nurodyti „Brave“ nustatymai.
 <translation id="7276071417425470385">Įjungus svetainėse gali būti prašoma naudoti virtualiosios realybės įrenginius. Išjungus svetainėse negalima naudoti virtualiosios realybės įrenginių.</translation>
 <translation id="7282197670900591579">Citrinų spalvos tema</translation>
 <translation id="728412880473384942">Svetainės bus spartesnės, bet mažiau saugios</translation>
+<translation id="5843014938239239453">Tvarkykite <ph name="BEGIN_LINK1"/>„Android“ nustatymuose<ph name="END_LINK1"/>
+
+Naudojant Papildomą apsaugą valdomi toliau nurodyti „Brave“ nustatymai.</translation>
 <translation id="7366415735885268578">Svetainės pridėjimas</translation>
 <translation id="7368695150573390554">Visi duomenys ne iš interneto bus ištrinti</translation>
 <translation id="7369678931043226462">Naujo skirtuko puslapio tinkinimo apatinis lapas atidarytas iki pusės ekrano aukščio</translation>
@@ -675,7 +669,6 @@ Naudojant Papildomą apsaugą valdomi toliau nurodyti „Brave“ nustatymai.
 <translation id="8007176423574883786">Išjungta šiame įrenginyje</translation>
 <translation id="802154636333426148">Įvyko atsisiuntimo klaida</translation>
 <translation id="8033047164036749181">Prenumeruoti šios svetainės pranešimus</translation>
-<translation id="8042586301629853791">Rūšiuoti pagal:</translation>
 <translation id="8051193500142930381">Funkcijos, kurioms reikalingas fotoaparatas, neveiks</translation>
 <translation id="2495032782748793764">Numatytoji „Brave“ parinktis</translation>
 <translation id="8067883171444229417">Leisti vaizdo įrašą</translation>
@@ -723,6 +716,7 @@ Naudojant Papildomą apsaugą valdomi toliau nurodyti „Brave“ nustatymai.
 <translation id="8471525937465764768">Paprastai svetainėse prisijungiama prie USB įrenginių vykdant tam tikras funkcijas, pvz., spausdinant dokumentą ar saugant saugyklos įrenginyje</translation>
 <translation id="8473055640493819707">„<ph name="APP_NAME"/>“ pasenusi. Iš naujo įdiekite programą.</translation>
 <translation id="847433688444405067">Naršymas įrenginiuose</translation>
+<translation id="8484556725636319115">Parinktis „JavaScript“ optimizavimo priemonė“ išjungta. <ph name="BEGIN_LINK2"/>Tvarkyti svetainės išimtis<ph name="END_LINK2"/></translation>
 <translation id="8487700953926739672">Pasiekiama neprisijungus</translation>
 <translation id="848952951823693243">Visada galite pateikti užklausą dėl svetainės mobiliesiems</translation>
 <translation id="8492822722330266509">Svetainėse galima siųsti iššokančiuosius langus ir naudoti peradresavimus</translation>

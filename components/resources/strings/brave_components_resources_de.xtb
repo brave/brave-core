@@ -483,6 +483,10 @@
 <translation id="1518915449477235311">Erlaubst du <ph name="URL"/>das Öffnen von Leo AI-Chats in Brave?</translation>
 <translation id="4355784577209159847">Verwendung von Drittanbieter-Cookies für die alte Google-Anmeldung zulassen</translation>
 <translation id="5770656036486891920"><ph name="URL"/> möchte Drittanbieter-Cookies für alte Google-Anmeldung nutzen</translation>
+<translation id="5582087890067572966">🎉 Sie verdienen jetzt!</translation>
+<translation id="4364336119478610380">Immer wenn eine solche Benachrichtigung auf Ihrem Bildschirm erscheint, erhalten Sie eine Belohnung. Sie müssen dazu nicht auf die Benachrichtigung klicken.</translation>
+<translation id="5893017172751072752">Sie erhalten Belohnungen, wenn eine Brave Ads-Benachrichtigung erscheint</translation>
+<translation id="3447730462826640312">Sie müssen nicht auf die Benachrichtigungen klicken, um Belohnungen zu erhalten. Doch wenn Sie Interesse haben, nur zu!</translation>
 <translation id="2104347391516032700">Bat-Belohnungen-Service</translation>
 <translation id="5939518447894949180">Zurücksetzen</translation>
 <translation id="3349204812119681938">Brave Rewards zurücksetzen</translation>
@@ -868,7 +872,7 @@
 <translation id="6264944956989873014">Bridge bestätigen</translation>
 <translation id="7067917728851842589">Senden bestätigen</translation>
 <translation id="2841837950101800123">Anbieter</translation>
-<translation id="1114725160772317155">Anbieter-Status</translation>
+<translation id="1114725160772317155">Anbieterstatus</translation>
 <translation id="2351357639951873714">Shield bestätigen</translation>
 <translation id="7480044382160806610">Aufhebung der Abschirmung bestätigen</translation>
 <translation id="8332923694292360653">Ausgabe</translation>
@@ -996,6 +1000,7 @@
 <translation id="2795015351889043417">JSON-Datei</translation>
 <translation id="5468881191994555667">Datei auswählen</translation>
 <translation id="795667975304826397">Keine Datei ausgewählt</translation>
+<translation id="6720675936326555106">Ausgewählte Datei</translation>
 <translation id="5891811606602061966">Fehler beim Importieren des Kontos. Bitte versuchen Sie es erneut.</translation>
 <translation id="6566535583781706170">Konto importieren</translation>
 <translation id="5051929972046200722">Wählen Sie Ihr Hardware Wallet-Gerät aus</translation>
@@ -1042,10 +1047,12 @@
 <translation id="2416098547200943834">HINWEIS: Der private Schlüssel wird als JSON-Datei mit Hexadezimalcodierung bereitgestellt, die den privaten Schlüssel und Protokolldaten enthält. <ph name="LINK_START"/>Mehr erfahren<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">HINWEIS: Der private Schlüssel muss als JSON-Datei mit Hexadezimalcodierung bereitgestellt werden, die den privaten Schlüssel und Protokolldaten enthält.<ph name="LINK_START"/>Mehr erfahren<ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">HINWEIS: Es werden nur <ph name="FORMAT"/> erweiterte Tasten unterstützt.</translation>
+<translation id="6457746820359933716">Importieren Sie die Daten mithilfe einer aus Polkadot.js oder kompatiblen Wallets exportierten JSON-Datei. Geben Sie das Passwort ein, mit dem der Export verschlüsselt wurde.</translation>
 <translation id="9133762451347918196">Testnet-Konten</translation>
 <translation id="42126664696688958">Exportieren</translation>
 <translation id="1366855498335432549">Einzahlen</translation>
 <translation id="790104325876206743">Kontoeinstellungen</translation>
+<translation id="8856844353253421399">Letzte Aktualisierung vor <ph name="TIME_AGO"/></translation>
 <translation id="6322030314101903925">Keine Vermögenswerte verfügbar</translation>
 <translation id="836614343069504000">Zahlen Sie Token ein oder kaufen Sie Token, um loszulegen. Wenn Sie keine Token von einem importierten Konto sehen, überprüfen Sie die Filter und Anzeigeeinstellungen. Unbekannte Token müssen möglicherweise als benutzerdefinierte Vermögenswerte hinzugefügt werden.</translation>
 <translation id="2902856457593699108">Schlüssel anzeigen</translation>
@@ -1054,7 +1061,7 @@
 <translation id="4505811804838254812">Geben Sie ein Passwort ein, um Ihre Kontoexportdatei zu verschlüsseln.</translation>
 <translation id="4664684820522660564">Verschlüsselungspasswort eingeben</translation>
 <translation id="6873030689896652259">Verschlüsselungspasswort bestätigen</translation>
-<translation id="5148285448107770349">Das Passwort muss mindestens 8 Zeichen haben</translation>
+<translation id="5148285448107770349">Das Passwort muss aus mindestens 8 Zeichen bestehen.</translation>
 <translation id="2702143907607790516">Fehler beim Aktualisieren des Kontonamens. Bitte versuchen Sie es erneut.</translation>
 <translation id="3318280255740629162">25 %</translation>
 <translation id="2636487255623744079">50 %</translation>
@@ -1164,10 +1171,10 @@
 <translation id="4324239559624557455">Für 24 Stunden</translation>
 <translation id="9139452553033760558">Für eine Woche</translation>
 <translation id="1658834457013045127">Für immer</translation>
-<translation id="6344138931392227467"><ph name="DEVICE_NAME"/> verbunden</translation>
-<translation id="7051244143160304048"><ph name="DEVICE_NAME"/> getrennt</translation>
-<translation id="5317781812114905957">Anleitungen</translation>
-<translation id="1178198982208000092">Verbinden Sie Ihren <ph name="DEVICE_NAME"/></translation>
+<translation id="5571630233760536706"><ph name="DEVICE_NAME"/> ist verbunden.</translation>
+<translation id="7058480232601314508"><ph name="DEVICE_NAME"/> ist getrennt</translation>
+<translation id="434328838837168401">Anleitung anzeigen</translation>
+<translation id="6739517232898494646">Verbinden Sie Ihr <ph name="DEVICE_NAME"/> um fortzufahren</translation>
 <translation id="6941881257520473899">Hardware Wallet erfordert eine Bestätigung auf dem Gerät.</translation>
 <translation id="2288190100157580461">Hardware Wallet erfordert das Öffnen der <ph name="NETWORK"/>-App in <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">gesendet</translation>
@@ -1229,9 +1236,9 @@
 <translation id="4932382283590063268">Die Empfangsadresse ist Ihre eigene Adresse.</translation>
 <translation id="3124753063207986114">Die Empfangsadresse ist die Vertragsadresse eines Tokens.</translation>
 <translation id="7029817408221097939">Ungültige einheitliche Adresse</translation>
-<translation id="5749543778008369411">Adresse fehlt die Checksumme</translation>
-<translation id="8225310967627152630">Die Gültigkeit dieser Adresse kann nicht überprüft werden. Um einen möglichen Geldverlust zu vermeiden, überprüfen Sie die Adresse sorgfältig vor dem Versand.</translation>
-<translation id="5139218857087774333">Adresse sieht nicht korrekt aus (ungültige Checksumme)</translation>
+<translation id="5749543778008369411">Fehlende Prüfsumme für Adresse</translation>
+<translation id="8225310967627152630">Die Gültigkeit dieser Adresse kann nicht überprüft werden. Um einen möglichen Geldverlust zu vermeiden, überprüfen Sie die Adresse sorgfältig vor der Übermittlung.</translation>
+<translation id="5139218857087774333">Adresse möglicherweise nicht korrekt (ungültige Prüfsumme)</translation>
 <translation id="6551446819927864899">Diese Adresse scheint einen Tippfehler zu enthalten. Bitte überprüfen Sie die Adresse und geben Sie sie erneut ein.</translation>
 <translation id="2585599787090762065">Wie kann ich das lösen?</translation>
 <translation id="5517732667776806421">Fehlende Prüfsummeninformationen</translation>
@@ -1419,7 +1426,7 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="5601436886921227795">DApp-Interaktion</translation>
 <translation id="9104177294757104789"><ph name="VALUE"/> senden</translation>
 <translation id="4048336522751528394"><ph name="MAKER"/> in <ph name="TAKER"/> tauschen</translation>
-<translation id="5140590056890937774">Bridging <ph name="SOURCE"/> to <ph name="DESTINATION"/></translation>
+<translation id="5140590056890937774">Bridge von <ph name="SOURCE"/> nach <ph name="DESTINATION"/></translation>
 <translation id="1748114617341025015">Erstelle zugehöriges Token-Konto</translation>
 <translation id="4418115887224983240">Erstellung des zugehörigen Token-Kontos fehlgeschlagen</translation>
 <translation id="7165697599360786670">Zugehöriges Token-Konto erstellt</translation>
@@ -1655,7 +1662,7 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="6584782231358487640">Betrag eingeben</translation>
 <translation id="477281933640372562">Angebot wird abgerufen</translation>
 <translation id="5450317966495183014">Erhalten Sie (geschätzt)</translation>
-<translation id="387870937508841726">Mindestens erhalten</translation>
+<translation id="387870937508841726">Mindestbetrag für Erhalt</translation>
 <translation id="8747614139273050577">Von Token</translation>
 <translation id="1726158192333401896">Bis Token</translation>
 <translation id="1817370679212109974">Neue Kursnotierung in <ph name="COUNTDOWN"/></translation>
@@ -1837,7 +1844,7 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="8897189056319316783">Shielding ZEC</translation>
 <translation id="508249542337194541">ZEC-Abschirmung aufheben</translation>
 <translation id="3382275793825152362">Gelder schützen</translation>
-<translation id="617149752238892649">Gelder freigeben</translation>
+<translation id="617149752238892649">Abschirmung von Mitteln aufheben</translation>
 <translation id="8631765320256788981">Du sendest Gelder von deinem transparenten Konto auf dein geschütztes Konto.</translation>
 <translation id="3860364671495430495">Sie senden Geld von Ihrem geschützten Konto an Ihr transparentes Konto.</translation>
 <translation id="7144878232160441200">Erneut versuchen</translation>
@@ -1888,6 +1895,7 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="4150336849480030462">SPL-Tokentransfer mit verbunderer Tokenkontoerstellung</translation>
 <translation id="2244921323472112851">Die von dir gesuchte Seite können wir gerade nicht finden.</translation>
 <translation id="6277237872689140644">Sie wurde möglicherweise verschoben oder die URL enthält einen Tippfehler.</translation>
+<translation id="1788572014530152502">Bei der Verarbeitung Ihrer Transaktion ist ein Fehler aufgetreten. In vielen Fällen bedeutet dies, dass nicht genug <ph name="SYMBOL"/> vorhanden sind, um die Netzwerkgebühr zu decken. Versuchen Sie es stattdessen mit einem kleineren Betrag.</translation>
 <translation id="2737084171727561244">Zum Portfolio</translation>
 <translation id="3499452861061048987">Token hinzufügen</translation>
 <translation id="5046066249040287308">Brave Wallet-Utility-Dienst</translation>
@@ -2218,10 +2226,10 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="5414593137581221307">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich basiere auf GPT OSS 120B, einem Modell, das von OpenAI entwickelt wurde, um möglichst leistungsstark und für viele Anwendungsbereiche geeignet zu sein. GPT OSS 120B wird von Brave über unsere eigene sichere Infrastruktur gehostet.<ph name="LINK_BEFORE"/>Weitere Informationen<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich basiere auf Mistral Large, einem Modell, das von Mistral entwickelt wurde, um möglichst leistungsstark und für viele Anwendungsbereiche geeignet zu sein. Mistral Large wird von Brave über unsere eigene sichere Infrastruktur gehostet.<ph name="LINK_BEFORE"/>Weitere Informationen<ph name="LINK_AFTER"/></translation>
 <translation id="4026902371301997261">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich basiere auf Qwen 3 235B, einem Modell, das von Alibaba Cloud entwickelt wurde, um möglichst leistungsstark und für viele Anwendungsbereiche geeignet zu sein. Qwen 3 235B wird von Brave über unsere eigene sichere Infrastruktur gehostet.<ph name="LINK_BEFORE"/>Weitere Informationen<ph name="LINK_AFTER"/></translation>
-<translation id="8720758690351028307">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich basiere auf DeepSeek V3.2, einem Modell, das von DeepSeek entwickelt wurde, um möglichst leistungsstark und für viele Anwendungsbereiche geeignet zu sein. Deepseek V3.2 wird von Brave über unsere eigene sichere Infrastruktur gehostet.<ph name="LINK_BEFORE"/>Weitere Informationen<ph name="LINK_AFTER"/></translation>
+<translation id="8720758690351028307">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich basiere auf DeepSeek V3.2, einem Modell, das von DeepSeek entwickelt wurde, um möglichst leistungsstark und für viele Anwendungsbereiche geeignet zu sein. DeepSeek V3.2 wird von Brave über unsere eigene sichere Infrastruktur gehostet.<ph name="LINK_BEFORE"/>Weitere Informationen<ph name="LINK_AFTER"/></translation>
 <translation id="3767678495358551728">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich basiere auf Qwen 3 Coder 480B angetrieben, einem Modell, das von Alibaba Cloud entwickelt wurde, um möglichst leistungsstark und für viele Anwendungsbereiche geeignet zu sein. Qwen 3 Coder 480B wird von Brave über unsere eigene sichere Infrastruktur gehostet.<ph name="LINK_BEFORE"/>Weitere Informationen<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich basiere auf Claude Opus, einem Modell, das von Anthropic entwickelt wurde, um Gesprächs- und Textverarbeitungsaufgaben zu ermöglichen. Claude Opus wird von Brave über unsere eigene sichere Infrastruktur gehostet.<ph name="LINK_BEFORE"/>Weitere Informationen<ph name="LINK_AFTER"/></translation>
-<translation id="7238858567393403597">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich basiere auf GLM-4-7-Flash, einem Modell, das von Zhipu AI entwickelt wurde, um möglichst leistungsstark und für viele Anwendungsbereiche geeignet zu sein. GLM-4-7-Flash wird von Brave über unsere eigene sichere Infrastruktur gehostet.<ph name="LINK_BEFORE"/>Weitere Informationen<ph name="LINK_AFTER"/></translation>
+<translation id="7238858567393403597">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich basiere auf GLM-4.7-Flash, einem Modell, das von Zhipu AI entwickelt wurde, um möglichst leistungsstark und für viele Anwendungsbereiche geeignet zu sein. GLM-4.7-Flash wird von Brave über unsere eigene sichere Infrastruktur gehostet.<ph name="LINK_BEFORE"/>Weitere Informationen<ph name="LINK_AFTER"/></translation>
 <translation id="6983410749026920122">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich basiere auf Kimi K2.5, einem Modell, das von Moonshot AI entwickelt wurde, um möglichst leistungsstark und für viele Anwendungsbereiche geeignet zu sein. Kimi K2.5 wird von Brave über unsere eigene sichere Infrastruktur gehostet.<ph name="LINK_BEFORE"/>Weitere Informationen<ph name="LINK_AFTER"/></translation>
 <translation id="2965634373697869601">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich basiere auf Brave Ocelot, einem Modell, das von Brave entwickelt wurde, um Webseiten zusammenzufassen. Brave Ocelot wird von Brave über unsere eigene sichere Infrastruktur gehostet.<ph name="LINK_BEFORE"/>Weitere Informationen<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
@@ -2353,7 +2361,7 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="2793458212460902934">Schnell • Suche • Tools</translation>
 <translation id="8506027496671575183">Suche • Vision • Tools</translation>
 <translation id="3184606955650139158">Schnell • Suche • Vision</translation>
-<translation id="7465032796278724624">Nachweislich privat mit NEAR AI TEE</translation>
+<translation id="7465032796278724624">Nachweislich privat – mit dem TEE-Gateway von NEAR AI</translation>
 <translation id="8782867266498869301">Das Modell passt sich dynamisch an, um für die jeweilige Aufgabe das beste zu verwenden</translation>
 <translation id="3213834013136637671">Suche • Vision</translation>
 <translation id="5276681919620506371">Suche • Tools</translation>
@@ -2414,7 +2422,7 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="345901077335355561">Zurück zur aktiven Konversation</translation>
 <translation id="6287023598025162715">Neue Unterhaltung</translation>
 <translation id="7230502562132448519">Unterhaltungen filtern</translation>
-<translation id="821070843380699990">Bitte versuche eine andere Suche</translation>
+<translation id="821070843380699990">Bitte versuchen Sie es mit einer anderen Anfrage</translation>
 <translation id="7097822247923237815">Temporärer Chat</translation>
 <translation id="7481750859362986254">Dieser Chat wird nicht in deinem Verlauf gespeichert und nutzt keine von Leos Anpassungen oder Erinnerungen.</translation>
 <translation id="4238305333951712482">Speicher aktualisiert: <ph name="MEMORY_CONTENT"/></translation>
@@ -2449,22 +2457,22 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="4773299976671772492">Angehalten</translation>
 <translation id="6946722113367118030">Denkt nach</translation>
 <translation id="2113810663179257944">Codeausführung</translation>
-<translation id="6338250692384725496">Code in Sandbox ausgeführt, um Ihnen bei Ihrer Abfrage zu helfen</translation>
+<translation id="6338250692384725496">Zur Unterstützung der Anfrage wurde Code in Sandbox ausgeführt</translation>
 <translation id="4379566111233326721">Code:</translation>
 <translation id="3542130965673205258">Ausgabe:</translation>
-<translation id="5382076391290708074">Verwaltung deiner Tabs</translation>
-<translation id="3862123464576147769">Wenn du dies zulässt, werden die <ph name="URL_FORMAT_START"/>URL<ph name="URL_FORMAT_END"/> und der <ph name="TITLE_FORMAT_START"/>Titel<ph name="TITLE_FORMAT_END"/> aller deiner Tabs und Tab-Gruppen an Brave AI gesendet, und Brave AI kann sie verschieben. Diese Berechtigung gilt nur für diesen Chat.</translation>
-<translation id="396165714586708444">Tiefere Recherche</translation>
-<translation id="577747221882855891">Suchen nach: "<ph name="QUERY"/>"</translation>
-<translation id="5061713007774798338">Analysiere <ph name="COUNT"/> Quellen für "<ph name="QUERY"/>"</translation>
-<translation id="1202264349398113062">Verarbeite <ph name="COUNT"/> neue URLs für "<ph name="QUERY"/>"</translation>
-<translation id="6189479600023022289">Gefunden <ph name="COUNT"/> URLs für "<ph name="QUERY"/>"</translation>
-<translation id="5150674341374247355">Abrufen <ph name="FETCHED"/>/<ph name="TOTAL"/> URLs</translation>
-<translation id="1075606740174445363">Analysierte <ph name="COUNT"/> URLs für "<ph name="QUERY"/>"</translation>
-<translation id="6220878652174655112">Suchen <ph name="COUNT"/> Anfragen</translation>
-<translation id="3571450204565012512">Analysierte <ph name="URL_COUNT"/> URLs aus <ph name="QUERY_COUNT"/> Suchen</translation>
+<translation id="5382076391290708074">Tabs werden verschoben.</translation>
+<translation id="3862123464576147769">Wenn Sie dies zulassen, werden die <ph name="URL_FORMAT_START"/>URL<ph name="URL_FORMAT_END"/> und <ph name="TITLE_FORMAT_START"/>Titel<ph name="TITLE_FORMAT_END"/> aller Ihrer Tabs und Tab-Gruppen an Brave AI gesendet und Brave AI kann diese verschieben. Diese Berechtigung gilt nur für diese Unterhaltung.</translation>
+<translation id="396165714586708444">Umfassende Recherche</translation>
+<translation id="577747221882855891">Es wird nach „<ph name="QUERY"/>“ gesucht.</translation>
+<translation id="5061713007774798338"><ph name="COUNT"/> Quellen für „<ph name="QUERY"/>“ werden analysiert.</translation>
+<translation id="1202264349398113062"><ph name="COUNT"/> neue URLs für „<ph name="QUERY"/>“ werden verarbeitet.</translation>
+<translation id="6189479600023022289">Es wurden <ph name="COUNT"/> URLs für „<ph name="QUERY"/>“ gefunden.</translation>
+<translation id="5150674341374247355">Es werden <ph name="FETCHED"/>/<ph name="TOTAL"/> URLs abgerufen.</translation>
+<translation id="1075606740174445363">Es wurden <ph name="COUNT"/> URLs für „<ph name="QUERY"/>“ analysiert.</translation>
+<translation id="6220878652174655112">Es werden <ph name="COUNT"/> Anfragen durchgeführt.</translation>
+<translation id="3571450204565012512">Es wurden <ph name="URL_COUNT"/> URLs für <ph name="QUERY_COUNT"/> Anfragen analysiert.</translation>
 <translation id="5733200563889491347">Recherche abgeschlossen</translation>
-<translation id="9164915383881032549"><ph name="MINUTES"/>m <ph name="SECONDS"/>s</translation>
+<translation id="9164915383881032549"><ph name="MINUTES"/>min <ph name="SECONDS"/>s</translation>
 <translation id="6219719719991016422"><ph name="SECONDS"/>s</translation>
 <translation id="5067194014665306881">Recherchefehler: <ph name="ERROR"/></translation>
 <translation id="3428245742224818842">KI-Browsing</translation>
@@ -2501,8 +2509,8 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="8133100642915054515">Fehler beim Löschen des Alias. Überprüfe deine Internetverbindung und versuche es erneut.</translation>
 <translation id="8465742443901727718">Diese Aktion ist unwiderruflich. Bist du sicher, dass du fortfahren möchtest?</translation>
 <translation id="9162685486229945876">Melden Sie sich an oder erstellen Sie ein Brave-Konto</translation>
-<translation id="1335007417599138852">Mit einem Brave-Konto können Sie auf bestimmte Brave-Produkte zugreifen und Ihre Informationen mühelos über alle Ihre Geräte hinweg synchronisieren.</translation>
-<translation id="2133391407495495735">Anmeldelink erhalten</translation>
+<translation id="1335007417599138852">Mit einem Brave-Konto können Sie auf bestimmte Brave-Produkte zugreifen und Ihre Informationen einfach über alle Ihre Geräte hinweg synchronisieren.</translation>
+<translation id="2133391407495495735">Anmeldelink abrufen</translation>
 <translation id="2650906829817220223">Fehler bei der Authentifizierungsanfrage. Überprüfe deine Internetverbindung und versuche es erneut.</translation>
 <translation id="3699624789011381381">E-Mail-Adresse</translation>
 <translation id="8124939971041602970">Eine Login-E-Mail ist auf dem Weg zu <ph name="MAIN_EMAIL"/></translation>
@@ -2567,13 +2575,14 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="8458987127502506209">Brave Schutz aktivieren</translation>
 <translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>Shields sind AKTIV<ph name="STATUS_AFTER"/> für diese Seite</translation>
 <translation id="2458631245058451506"><ph name="STATUS_BEFORE"/>Shields sind NICHT AKTIV<ph name="STATUS_AFTER"/> für diese Seite</translation>
-<translation id="8426214145426269584">Shields <ph name="UP_BEFORE"/>oben<ph name="UP_AFTER"/> für diese Website</translation>
-<translation id="3325367578778625743">Shields <ph name="DOWN_BEFORE"/>unten<ph name="DOWN_AFTER"/> für diese Website</translation>
+<translation id="8426214145426269584">Für diese Website ist Shields <ph name="UP_BEFORE"/>aktiviert<ph name="UP_AFTER"/>.</translation>
+<translation id="3325367578778625743">Für diese Website ist Shields <ph name="DOWN_BEFORE"/>deaktiviert<ph name="DOWN_AFTER"/>.</translation>
 <translation id="4724752924364329714">Falls diese Site nicht zu funktionieren scheint, versuche es, wenn Shields aus ist.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Hinweis: Dadurch werden möglicherweise Brave's Datenschutzfunktionen reduziert.<ph name="NOTE_AFTER"/></translation>
 <translation id="4329860807937715445">Dies kann Braves Datenschutz reduzieren. <ph name="LINK_BEFORE"/>Weitere Informationen<ph name="LINK_AFTER"/></translation>
-<translation id="1574700443447059851">Tracker, Werbung und mehr blockiert.</translation>
-<translation id="4968268657895673116">Funktioniert diese Website nicht korrekt mit Shields oben?</translation>
+<translation id="3889333301730272023"><ph name="BLOCK_COUNT"/> Tracker, Anzeigen und mehr blockiert</translation>
+<translation id="2275121279487164685">Tracker und Anzeigen</translation>
+<translation id="4968268657895673116">Funktioniert diese Website nicht korrekt, wenn Shields aktiviert ist?</translation>
 <translation id="5412004902081180614">Melden</translation>
 <translation id="3620004479054499575">Hast du Probleme mit dieser Site?</translation>
 <translation id="9176447766421988172">Wir testen ein Experiment zur Verbesserung der Website-Kompatibilität, bei dem nur noch Werbeblocker aktiviert bleiben. Warnung: Entfernt alle Datenschutzfunktionen. Möchtest du es ausprobieren? <ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/>.</translation>
@@ -2584,7 +2593,7 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="4677356505199464553">Sieht gut aus</translation>
 <translation id="1992750560347846445">Website melden</translation>
 <translation id="2863270180245144869">Nur-Ad-Block-Modus aktiviert</translation>
-<translation id="3773808439655997805">Sie verwenden derzeit den Nur-Ad-Block-Modus. Dieser Modus bietet nur Schutz vor Werbung (wenn Shields AKTIVIERT sind). Wenn Sie zum Modus mit umfassender Shields-Funktion zurückkehren möchten, deaktivieren Sie diesen Modus in den Einstellungen.</translation>
+<translation id="3773808439655997805">Sie verwenden derzeit den Nur-Ad-Block-Modus. Dieser Modus bietet nur Schutz vor Werbung (wenn Shields aktiviert ist). Wenn Sie zum Modus mit umfassender Shields-Funktion zurückkehren möchten, deaktivieren Sie diesen Modus in den Einstellungen.</translation>
 <translation id="4820891023903368625">Ads blockiert <ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">Tracker, Werbung und mehr blockiert <ph name="LINK_BEFORE"/>Weitere Informationen<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Nicht geschützt durch Brave Schutz <ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/></translation>
@@ -2634,9 +2643,11 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="3795015906457257780">Sie betrachten diese Website ohne den Datenschutz von Brave.</translation>
 <translation id="7194012750329511146">Brave Schutz
 hat <ph name="NUMBER"/> Tracker, Anzeigen und mehr blockiert</translation>
+<translation id="2900068182947574679">Skripte</translation>
 <translation id="4292121526390005808">Blockierte Skripte</translation>
 <translation id="5046271170844958713">Erlaubte Skripte</translation>
 <translation id="199862531047218413">Fingerabdruckschutz angewendet</translation>
+<translation id="896105002981074545">Schutzfunktionen gegen Fingerprinting</translation>
 <translation id="5032505924781383272">Wenn der Schutz angewendet wird, sagt das nichts darüber aus, ob die Seite versucht, Ihren Fingerabdruck abzugreifen.</translation>
 <translation id="1905384713982899903">Blockierte Fingerabdrücke</translation>
 <translation id="314364527871618241">Erlaubte Fingerabdrücke</translation>
@@ -2647,8 +2658,9 @@ hat <ph name="NUMBER"/> Tracker, Anzeigen und mehr blockiert</translation>
     }</translation>
 <translation id="2540598191934725677">Klicken Sie auf das Brave-Symbol, um den Brave-Schutz anzuzeigen.</translation>
 <translation id="542789539047208469">Website-Informationen</translation>
-<translation id="7586067492365979844">Brave Shields hat ein neues Zuhause und Design. Es integriert sich jetzt mit Seiteninformationen für ein einheitliches Erlebnis.</translation>
-<translation id="9114542678887529043">Brave Shields hat ein neues Zuhause und Design. Greifen Sie darauf zu, indem Sie das Websymbol in der Adressleiste anklicken.</translation>
+<translation id="7586067492365979844">Wir haben Brave Shields überarbeitet und umgestaltet. Es ist nun in die Website-Informationen eingebunden, sodass Sie alle wichtigen Funktionen an einer Stelle finden.</translation>
+<translation id="9114542678887529043">Wir haben Brave Shields überarbeitet und umgestaltet. Sie können darauf zugreifen, indem Sie auf das Website-Symbol in der Adressleiste klicken.</translation>
+<translation id="4242533952199664413">Einstellungen öffnen</translation>
 <translation id="6294662480095808915">Datenschutz. Standardmäßig.</translation>
 <translation id="4366423156486478559">Seien Sie bei jedem Link, den Sie anklicken, geschützt. Legen Sie einfach Brave als Standard fest und surfen Sie – privat.</translation>
 <translation id="3830912418080848377">Einstellungen importieren</translation>
@@ -2660,7 +2672,7 @@ hat <ph name="NUMBER"/> Tracker, Anzeigen und mehr blockiert</translation>
 <translation id="2273851479262317744">Brave als Standardbrowser festlegen</translation>
 <translation id="5037676449506322593">Alle auswählen</translation>
 <translation id="5148943178722443958">Brave mit Ihrer Hilfe verbessern.</translation>
-<translation id="479535542793009168">Stabilität &amp; Diagnose</translation>
+<translation id="479535542793009168">Stabilität und Diagnose</translation>
 <translation id="1097073572755862978">Senden Sie einen Diagnosebericht, wenn Brave abstürzt  oder hängen bleibt. <ph name="LINK_BEFORE"/>Mehr erfahren.<ph name="LINK_AFTER"/></translation>
 <translation id="6629244688368006959">Teilen Sie private und anonyme Produkteinsichten darüber, welche Funktionen von Brave-Nutzern verwendet werden. <ph name="LINK_BEFORE"/>Mehr erfahren.<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">Einrichtung abgeschlossen</translation>
@@ -2789,4 +2801,19 @@ Lassen Sie uns gemeinsam eine Verbindung herstellen!</translation>
 <translation id="1602850501393095406">Drücke ↑, um hervorzuheben</translation>
 <translation id="8367705492654390392">Beliebige Frage stellen</translation>
 <translation id="8525248723479742219">Später abspielen</translation>
+<translation id="2935698011275148880">Brave Origin</translation>
+<translation id="3983844925615091103">Willkommen bei Brave Origin. Um fortzufahren, kaufen Sie bitte Brave Origin oder stellen Sie Ihre bereits erworbene Brave Origin-Version wieder her.</translation>
+<translation id="4801175670604644729">Sie benötigen eine aktivierte erworbene Brave Origin-Version, um diesen Browser nutzen zu können.</translation>
+<translation id="4144294274624829008">Erworbene Origin-Version wiederherstellen</translation>
+<translation id="6080178356113101120">Brave Origin kaufen</translation>
+<translation id="1009496146858538651">Erworbene Version wiederherstellen</translation>
+<translation id="3461564061600681423">Geben Sie Ihre Kauf-ID ein, um Ihre erworbene Brave Origin-Version zu aktivieren.</translation>
+<translation id="2036379724374431790">Kauf-ID</translation>
+<translation id="4348430971280118761">Geben Sie hier Ihre Kauf-ID ein.</translation>
+<translation id="7451866456310404779">Kauf-ID überprüfen</translation>
+<translation id="8853195592604941919">Die Überprüfung wird durchgeführt. Dies kann eine Minute dauern.</translation>
+<translation id="4633706444004110760">Vielen Dank für die Installation von Brave Origin. Dies ist eine Version unseres Browsers für Benutzende, die nicht alle Funktionen benötigen, die Brave als Unternehmen unterstützen, aber dennoch Wert auf die Datenschutzfunktionen legen, die nur Brave bietet. Benutzende von Brave Origin profitieren weiterhin von unseren branchenführenden Datenschutz- und Werbeblockerfunktionen, hoher Geschwindigkeit (über Brave Shields) sowie von regelmäßigen Softwareupdates, Chromium-Patches und Verbesserungen in den Bereichen Sicherheit und Datenschutz. Die meisten anderen Funktionen werden aus dem Browser entfernt.</translation>
+<translation id="5816720995022674532">Auf Linux-Geräten ist die Verwendung von Brave Origin kostenlos. Sie können die Browser-Version allerdings trotzdem <ph name="BEGIN_LINK"/>käuflich erwerben<ph name="END_LINK"/>, wenn Sie Brave als Unternehmen unterstützen möchten. Mit dem Kauf erhalten Sie zudem die Möglichkeit, Brave Origin auch auf Geräten mit Android, iOS, macOS und Windows zu nutzen.</translation>
+<translation id="3065220545261045367">Brave durch den Kauf von Brave Origin unterstützen</translation>
+<translation id="2069499076031488636">Brave Origin weiterhin kostenlos unter Linux nutzen</translation>
 </translationbundle>

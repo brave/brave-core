@@ -483,6 +483,10 @@
 <translation id="1518915449477235311">ნება მისცეთ <ph name="URL"/> გახსნას Leo AI საუბარი Brave-ში?</translation>
 <translation id="4355784577209159847">ნებადართულია მესამე მხარის cookies-ების საშუალებით Google-ში შესვლა</translation>
 <translation id="5770656036486891920"><ph name="URL"/> სურს გამოიყენოს მესამე მხარის cookies-ები Google-ში შესვლისთვის</translation>
+<translation id="5582087890067572966">🎉 ახლა შოულობთ!</translation>
+<translation id="4364336119478610380">თქვენ გამოიმუშავებთ ყოველ ჯერზე, როდესაც ეს ნოტიფიკაცია ეკრანზე გამოჩნდება. თქვენ არ გჭირდებათ დაკლიკვა გამოსაშრობად.</translation>
+<translation id="5893017172751072752">თქვენ გამოიმუშავებთ, როდესაც Brave რეკლამის ნოტიფიკაცია ჩნდება</translation>
+<translation id="3447730462826640312">თქვენ არ გჭირდებათ დაკლიკვა გამოსაშრობად, მაგრამ დააკლიკეთ, თუ დაინტერესებული ხართ!</translation>
 <translation id="2104347391516032700">საჭიროების პროცესი</translation>
 <translation id="5939518447894949180">განახლება</translation>
 <translation id="3349204812119681938">Brave Rewards-ის განულება</translation>
@@ -988,6 +992,7 @@
 <translation id="2795015351889043417">JSON ფაილი</translation>
 <translation id="5468881191994555667">აირჩიეთ ფაილი</translation>
 <translation id="795667975304826397">ფაილი არ არის არჩეული</translation>
+<translation id="6720675936326555106">არჩეული ფაილი</translation>
 <translation id="5891811606602061966">ანგარიშის იმპორტირება ვერ მოხერხდა, სცადეთ ხელახლა.</translation>
 <translation id="6566535583781706170">ანგარიშის იმპორტი</translation>
 <translation id="5051929972046200722">აირჩიეთ თქვენი ტექნიკური საფულე</translation>
@@ -1034,10 +1039,12 @@
 <translation id="2416098547200943834">შენიშვნა: პირადი გასაღები მოწოდებულია hex კოდირებული JSON ფორმატით, რომელიც შეიცავს პირად გასაღებს და პროტოკოლის ინფორმაციას. <ph name="LINK_START"/>გაეცანით მეტს<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">შენიშვნა: პირადი გასაღები უნდა იყოს უზრუნველყოფილი hex კოდირებული JSON ფორმატით, რომელიც შეიცავს პირად გასაღებს და პროტოკოლის ინფორმაციას. <ph name="LINK_START"/>გაეცანით მეტს<ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">შენიშვნა: მხოლოდ <ph name="FORMAT"/> გაფართოებული გასაღებები გვაქვს მხარდაჭერილი.</translation>
+<translation id="6457746820359933716">იმპორტი დაამტკიცეთ Polkadot.js-ის ან თავსებადი საფულიდან. შეიყვანეთ პაროლი, რომელიც ზეკიდან დაცეკვის შემთხვევაში გამოიყენება.</translation>
 <translation id="9133762451347918196">ტესტნეტის ანგარიშები</translation>
 <translation id="42126664696688958">ექსპორტირება</translation>
 <translation id="1366855498335432549">დეპოზიტი</translation>
 <translation id="790104325876206743">აქტივის პარამეტრები</translation>
+<translation id="8856844353253421399">ბოლო განახლების თარიღი <ph name="TIME_AGO"/> წინ</translation>
 <translation id="6322030314101903925">ხელმისაწვდომი აქტივები არ არის</translation>
 <translation id="836614343069504000">დაპატიჟეთ ტოკენები დასაწყებად. თუ არ ნახავთ ტოკენებს იმპორტირებულ ანგარიშიდან, შეამოწმეთ ფილტრები და ჩვენების პარამეტრები. უცნობი ტოკენები შესაძლოა საჭირო იყოს როგორც მომხმარებლების აქტივები.</translation>
 <translation id="2902856457593699108">გასაღების ჩვენება</translation>
@@ -1156,10 +1163,10 @@
 <translation id="4324239559624557455">24 საათის განმავლობაში</translation>
 <translation id="9139452553033760558">1 კვირის განმავლობაში</translation>
 <translation id="1658834457013045127">სამუდამოდ</translation>
-<translation id="6344138931392227467"><ph name="DEVICE_NAME"/> დაკავშირებულია</translation>
-<translation id="7051244143160304048"><ph name="DEVICE_NAME"/> გათიშულია</translation>
-<translation id="5317781812114905957">ინსტრუქციები</translation>
-<translation id="1178198982208000092">დააკავშირეთ თქვენი <ph name="DEVICE_NAME"/></translation>
+<translation id="5571630233760536706"><ph name="DEVICE_NAME"/> დაკავშირებულია</translation>
+<translation id="7058480232601314508"><ph name="DEVICE_NAME"/> გათიშულია</translation>
+<translation id="434328838837168401">ინსტრუქციების ხილვა</translation>
+<translation id="6739517232898494646">თქვენი <ph name="DEVICE_NAME"/> დაკავშირება დასაწყებად</translation>
 <translation id="6941881257520473899">Hardware საფულეს მოწყობილობაზე დადასტურება სჭირდება.</translation>
 <translation id="2288190100157580461">Hardware საფულეს <ph name="NETWORK"/> აპლიკაციის გახსნა სჭირდება <ph name="DEVICE_NAME"/>-ზე</translation>
 <translation id="8687869982094542529">გაგზავნილი</translation>
@@ -1877,6 +1884,7 @@
 <translation id="4150336849480030462">SPL ტოკენის ტრანსფერი ასოცირებული ტოკენის ანგარიშის შექმნით</translation>
 <translation id="2244921323472112851">ამჟამად ვერ ვიპოვეთ გვერდი, რომელსაც ეძებთ.</translation>
 <translation id="6277237872689140644">ვინაიდან, შესაძლებელია გვერდი გადავიდა სხვა მისამართზე ან ფიქსირდება შეცდომა.</translation>
+<translation id="1788572014530152502">თქვენი ტრანზაქცია დამუშავებისას შეცდომა მოხდა. ხშირ შემთხვევაში, ეს ნიშნავს, რომ საკმარის <ph name="SYMBOL"/> აკლია ქსელის ფასის დასაფარად. სამაგიეროდ სცადეთ უფრო მცირე თანხა.</translation>
 <translation id="2737084171727561244">გადადით პორტფელში</translation>
 <translation id="3499452861061048987">ტოკენის დამატება</translation>
 <translation id="5046066249040287308">Brave Wallet-ის გამოსაყენებელი სერვისი</translation>
@@ -2558,7 +2566,8 @@
 <translation id="4724752924364329714">თუ ეს საიტი გატეხილია, სცადეთ Shields-ის გათიშვა.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>შენიშვნა: შესაძლოა ამან Brave-ის კონფიდენციალურობის დაცვის ხარისხი შეამციროს.<ph name="NOTE_AFTER"/></translation>
 <translation id="4329860807937715445">ეს შეიძლება შეამციროს Brave-ის კონფიდენციალურობის დაცვა. <ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
-<translation id="1574700443447059851">ტრეკერები, რეკლამები და სხვა დაბლოკილია.</translation>
+<translation id="3889333301730272023"><ph name="BLOCK_COUNT"/> ტრეკერები, რეკლამები და სხვა დაბლოკილია</translation>
+<translation id="2275121279487164685">ტრეკერები და რეკლამები</translation>
 <translation id="4968268657895673116">ამ საიტი სწორად არ მუშაობს Shields-ით?</translation>
 <translation id="5412004902081180614">დაკანიკება</translation>
 <translation id="3620004479054499575">გაქვთ პრობლემები ამ საიტთან?</translation>
@@ -2620,9 +2629,11 @@
 <translation id="3795015906457257780">თქვენ უყურებთ ამ საიტს Brave-ის კონფიდენციალურობის დაცვით</translation>
 <translation id="7194012750329511146">Brave Shields 
 <ph name="NUMBER"/> დაბლოკილია ტრეკერები, რეკლამები და სხვა</translation>
+<translation id="2900068182947574679">სკრიპტები</translation>
 <translation id="4292121526390005808">დაბლოკილი სკრიპტები</translation>
 <translation id="5046271170844958713">ნებადართული სკრიპტები</translation>
 <translation id="199862531047218413">გამოყენებული ფინგერპრინტინგის დაცვის საშუალებები</translation>
+<translation id="896105002981074545">ფინგერპრინტის დაცვის ზომები</translation>
 <translation id="5032505924781383272">გამოყენებული დაცვები არ მიუთითებს აუცილებლად იმაზე, რომ ეს ვებ-გვერდი ცდილობს თქვენი ბრაუზერის ფინგერპრინტინგს.</translation>
 <translation id="1905384713982899903">დაბლოკილი ფინგერპრინტები</translation>
 <translation id="314364527871618241">დაშვებული ფინგერპრინტები</translation>
@@ -2635,6 +2646,7 @@
 <translation id="542789539047208469">საიტის ინფორმაცია</translation>
 <translation id="7586067492365979844">Brave Shields-ს აქვს ახალი სახლი და დიზაინი. ის ახლა ინტეგრირდება საიტის ინფორმაციასთან ერთი გაჩერების გამოცდილებისთვის.</translation>
 <translation id="9114542678887529043">Brave Shields-ს აქვს ახალი სახლი და დიზაინი. მიიღებთ მას ისეთი, რომ დააჭირეთ საიტის ხატულას მისამართის ხაზში.</translation>
+<translation id="4242533952199664413">გახსენით პარამეტრები</translation>
 <translation id="6294662480095808915">კონფიდენციალურობა. ნაგულისხმევად.</translation>
 <translation id="4366423156486478559">მიიღეთ Brave დაცვა თქვენს ყველა ბმულზე. დააყენეთ Brave ნაგულისხმევ ბრაუზერად და დაათვალიერეთ. კონფიდენციალურად.</translation>
 <translation id="3830912418080848377">პარამეტრების იმპორტი</translation>
@@ -2774,4 +2786,19 @@ Brave-ს აქვს დამხმარე სერვისი, რომ
 <translation id="1602850501393095406">↑ დაჭირება</translation>
 <translation id="8367705492654390392">დასვით ნებისმიერი კითხვა</translation>
 <translation id="8525248723479742219">მოგვიანებით დაკვრა</translation>
+<translation id="2935698011275148880">Brave Origin</translation>
+<translation id="3983844925615091103">კეთილი იყოს თქვენი მობრძანება Brave Origin-ში. გასაგრძელებლად, გთხოვთ ყიდეთ ან აღადგინეთ თქვენი Brave Origin ყიდვა.</translation>
+<translation id="4801175670604644729">თქვენ გჭირდებათ Brave Origin-ის აქტიური ყიდვა ამ ბრაუზერის გამოსაყენებლად.</translation>
+<translation id="4144294274624829008">აღადგინეთ Brave Origin ყიდვა</translation>
+<translation id="6080178356113101120">ყიდეთ Brave Origin</translation>
+<translation id="1009496146858538651">აღადგინეთ ყიდვა</translation>
+<translation id="3461564061600681423">შეიყვანეთ თქვენი ყიდვის ID თქვენი Brave Origin ყიდვის აქტივაციის მიზნით.</translation>
+<translation id="2036379724374431790">ყიდვის ID</translation>
+<translation id="4348430971280118761">შეიყვანეთ თქვენი ყიდვის ID</translation>
+<translation id="7451866456310404779">გადაამოწმეთ ყიდვის ID</translation>
+<translation id="8853195592604941919">ზუსტდება... ეს შეიძლება წუთი დაიკავოს.</translation>
+<translation id="4633706444004110760">მადლობა Brave Origin-ის ინსტალაციისთვის, ბრაუზერის ვერსია იმ მომხმარებლებისთვის, რომლებიც არ გჭირდებათ ყველა ის ფუნქცია, რომელიც Brave-ს ბიზნესად აყალიბებს, მაგრამ მაინც სურთ მხოლოდ Brave-ის მიერ შეთავაზებული კონფიდენციალურობა. Origin მომხმარებლები გაგრძელებენ სარგებლობას Brave-ის ინდუსტრიის წამყვან კონფიდენციალურობის, adblock-ის და სიჩქარის (Shields-ის მეშვეობით), ასევე რეგულარული პროგრამული განახლებების, Chromium-ის აღდგენებისა და უსაფრთხოების და კონფიდენციალურობის გაუმჯობესებებისგან. Origin მოაშორებს ბრაუზერში უმეტესი სხვა ფუნქციებს.</translation>
+<translation id="5816720995022674532">Origin უფასოა Linux-ის მოწყობილობებზე გამოსაყენებლად, მაგრამ მაინც <ph name="BEGIN_LINK"/>შეიძლება ყიდვა<ph name="END_LINK"/> თუ გსურთ Brave-ის ბიზნესის მხარდასჭერა. ყიდვა ასევე გახსნიდა Origin-ის გამოყენების შესაძლებლობას Android, iOS, macOS და Windows მოწყობილობებზე.</translation>
+<translation id="3065220545261045367">მხარი დაუჭირეთ Brave-ს Origin-ის ყიდვით</translation>
+<translation id="2069499076031488636">გაიაროთ Origin-ი უფასოდ Linux-ზე</translation>
 </translationbundle>

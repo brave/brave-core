@@ -483,6 +483,10 @@
 <translation id="1518915449477235311">Povoliť webu <ph name="URL"/> otváranie konverzácií Leo AI v prehliadači Brave?</translation>
 <translation id="4355784577209159847">Povoliť používanie súborov cookie tretích strán pre staršie služby prihlásenia do služby Google</translation>
 <translation id="5770656036486891920"><ph name="URL"/> chce použiť súbory cookie tretích strán pre staršie služby prihlásenia Google</translation>
+<translation id="5582087890067572966">🎉 Teraz získavate odmeny!</translation>
+<translation id="4364336119478610380">Vždy, keď sa na obrazovke zobrazí takéto upozornenie, získate odmenu. Nemusíte kliknúť, aby ste získali odmeny.</translation>
+<translation id="5893017172751072752">Získate odmenu vždy, keď sa zobrazí oznámenie reklám Brave</translation>
+<translation id="3447730462826640312">Nemusíte kliknúť, aby ste získali odmenu, ale kliknite, ak máte záujem!</translation>
 <translation id="2104347391516032700">Služba odmien Bat</translation>
 <translation id="5939518447894949180">Resetovať</translation>
 <translation id="3349204812119681938">Obnovte Brave odmeny</translation>
@@ -996,6 +1000,7 @@
 <translation id="2795015351889043417">Súbor JSON</translation>
 <translation id="5468881191994555667">Vybrať súbor</translation>
 <translation id="795667975304826397">Nie je zvolený žiadny súbor</translation>
+<translation id="6720675936326555106">Vybraný súbor</translation>
 <translation id="5891811606602061966">Importovanie účtu zlyhalo, skúste to znova.</translation>
 <translation id="6566535583781706170">Importovať účet</translation>
 <translation id="5051929972046200722">Vyberte si zariadenie peňaženky hardvéru</translation>
@@ -1042,10 +1047,12 @@
 <translation id="2416098547200943834">POZNÁMKA: Súkromný kľúč sa poskytuje ako hex-kódovaný JSON, ktorý obsahuje súkromný kľúč a informácie o protokole. <ph name="LINK_START"/>Viac informácií nájdete na <ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">POZNÁMKA: Súkromný kľúč musí byť poskytnutý ako hex-kódovaný JSON, ktorý obsahuje súkromný kľúč a informácie o protokole. <ph name="LINK_START"/>Viac informácií nájdete na<ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">POZNÁMKA: Podporované sú len rozšírené kľúče <ph name="FORMAT"/>.</translation>
+<translation id="6457746820359933716">Importujte pomocou súboru JSON exportovaného z Polkadot.js alebo kompatibilných peňaženiek. Zadajte heslo použité na šifrovanie exportu.</translation>
 <translation id="9133762451347918196">Testnet účty</translation>
 <translation id="42126664696688958">Exportovať</translation>
 <translation id="1366855498335432549">Záloha</translation>
 <translation id="790104325876206743">Nastavenia účtu</translation>
+<translation id="8856844353253421399">Posledná aktualizácia <ph name="TIME_AGO"/> ago</translation>
 <translation id="6322030314101903925">Žiadne dostupné aktíva</translation>
 <translation id="836614343069504000">Začnite vkladom alebo nákupom tokenov. Ak nevidíte tokeny z importovaného účtu, skontrolujte filtre a nastavenia zobrazenia. Neznáme tokeny môže byť potrebné pridať ako vlastné aktíva.</translation>
 <translation id="2902856457593699108">Zobraziť kľúč</translation>
@@ -1164,10 +1171,10 @@
 <translation id="4324239559624557455">Na 24 hodín</translation>
 <translation id="9139452553033760558">Na 1 týždeň</translation>
 <translation id="1658834457013045127">Navždy</translation>
-<translation id="6344138931392227467"><ph name="DEVICE_NAME"/> pripojené</translation>
-<translation id="7051244143160304048"><ph name="DEVICE_NAME"/> odpojené</translation>
-<translation id="5317781812114905957">Pokyny</translation>
-<translation id="1178198982208000092">Pripojte si <ph name="DEVICE_NAME"/></translation>
+<translation id="5571630233760536706"><ph name="DEVICE_NAME"/> pripojené</translation>
+<translation id="7058480232601314508"><ph name="DEVICE_NAME"/> odpojené</translation>
+<translation id="434328838837168401">Zobraziť pokyny</translation>
+<translation id="6739517232898494646">Pripojte <ph name="DEVICE_NAME"/> aby ste mohli pokračovať</translation>
 <translation id="6941881257520473899">Hardvérová peňaženka vyžaduje potvrdenie cez zariadenie.</translation>
 <translation id="2288190100157580461">Hardvérová peňaženka vyžaduje <ph name="NETWORK"/> aplikáciu otvorenú na <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">odoslané</translation>
@@ -1888,6 +1895,7 @@
 <translation id="4150336849480030462">Prenos tokenov SPL so súvisiacim vytvorením účtu tokenov</translation>
 <translation id="2244921323472112851">Nemôžeme nájsť stránku, ktorú práve hľadáte.</translation>
 <translation id="6277237872689140644">Mohla byť presunutá na iné miesto alebo adresa URL môže obsahovať preklep.</translation>
+<translation id="1788572014530152502">Došlo k chybe pri spracovaní transakcie. V mnohých prípadoch to znamená, že nemáte dosť <ph name="SYMBOL"/> na zaplatenie poplatku za sieť. Skúste namiesto toho menšiu sumu.</translation>
 <translation id="2737084171727561244">Prejsť na portfólio</translation>
 <translation id="3499452861061048987">Pridať token</translation>
 <translation id="5046066249040287308">Pomocné služby pre Brave Wallet</translation>
@@ -2573,7 +2581,8 @@
 <translation id="4724752924364329714">Ak sa vám zdá táto stránka nefunkčná, skúste vypnúť štít.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Poznámka: toto môže znížiť ochranu súkromia v službe Brave.<ph name="NOTE_AFTER"/></translation>
 <translation id="4329860807937715445">Toto môže znížiť ochranu súkromia Brave. <ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
-<translation id="1574700443447059851">Sledovače, reklamy a iné sú zablokované.</translation>
+<translation id="3889333301730272023"><ph name="BLOCK_COUNT"/> sledovače, reklamy a iné sú zablokované</translation>
+<translation id="2275121279487164685">Sledovače a reklamy</translation>
 <translation id="4968268657895673116">Nefunguje táto stránka správne so zapnutými štítmi?</translation>
 <translation id="5412004902081180614">Nahlásiť</translation>
 <translation id="3620004479054499575">Máte problémy s touto stránkou?</translation>
@@ -2635,9 +2644,11 @@
 <translation id="3795015906457257780">Túto stránku si prehliadate bez ochrany osobných údajov Brave.</translation>
 <translation id="7194012750329511146">Brave Shields
 <ph name="NUMBER"/> Trackery, reklamy a ďalšie blokované položky</translation>
+<translation id="2900068182947574679">Skripty</translation>
 <translation id="4292121526390005808">Blokované skripty</translation>
 <translation id="5046271170844958713">Povolené skrypty</translation>
 <translation id="199862531047218413">Použili sa ochranné prvky proti odtlačkom prstov</translation>
+<translation id="896105002981074545">Ochrana pred odtlačkami prstov</translation>
 <translation id="5032505924781383272">Použité ochranné prvky nemusia nevyhnutne znamenať, že sa táto webová stránka pokúša o odtlačky prstov vášho prehliadača.</translation>
 <translation id="1905384713982899903">Odtlačky prstov sú zablokované</translation>
 <translation id="314364527871618241">Odtlačky prstov sú povolené</translation>
@@ -2650,6 +2661,7 @@ other {Štíty Brave zablokovali {BLOCKED_COUNT} sledovacie zadiatenia na <ph na
 <translation id="542789539047208469">Informácie o stránke</translation>
 <translation id="7586067492365979844">Štíty Brave majú nový domov a dizajn. Teraz sa integrujú s informáciami o lokalite pre jednotné riešenie.</translation>
 <translation id="9114542678887529043">Štíty Brave majú nový domov a dizajn. Pristupujte k nim kliknutím na ikonu lokality na adresnom riadku.</translation>
+<translation id="4242533952199664413">Otvoriť Nastavenia</translation>
 <translation id="6294662480095808915">Ochrana súkromia ako štandard.</translation>
 <translation id="4366423156486478559">Získajte ochranu Brave na každom prepojení, na ktoré kliknete. Stačí nastaviť prehliadač Brave ako predvolený a môžete prehľadávať webové lokality. Súkromne.</translation>
 <translation id="3830912418080848377">Importovať nastavenia</translation>
@@ -2790,4 +2802,19 @@ Pripojíme vás!</translation>
 <translation id="1602850501393095406">Stlačením tlačidla ↑ zvýraznite</translation>
 <translation id="8367705492654390392">Spýtaj sa čokoľvek</translation>
 <translation id="8525248723479742219">Prehrať neskôr</translation>
+<translation id="2935698011275148880">Odvážny pôvod</translation>
+<translation id="3983844925615091103">Vitajte v Brave Origin. Ak chcete pokračovať, prosím kúpte si alebo obnovte nákup Brave Origin.</translation>
+<translation id="4801175670604644729">Na používanie tohto prehliadača potrebujete aktívny nákup Brave Origin.</translation>
+<translation id="4144294274624829008">Obnoviť nákup Brave Origin</translation>
+<translation id="6080178356113101120">Kúpiť Brave Origin</translation>
+<translation id="1009496146858538651">Obnoviť nákup</translation>
+<translation id="3461564061600681423">Zadajte svoj ID nákupu na aktiváciu vášho nákupu Brave Origin.</translation>
+<translation id="2036379724374431790">ID nákupu</translation>
+<translation id="4348430971280118761">Zadajte svoju ID nákupu</translation>
+<translation id="7451866456310404779">Overiť ID nákupu</translation>
+<translation id="8853195592604941919">Overovanie... Môže to chvíľu trvať.</translation>
+<translation id="4633706444004110760">Ďakujeme za inštaláciu Brave Origin, verzie prehliadača pre používateľov, ktorí nepotrebujú všetky funkcie, ktoré podporujú Brave ako podnikanie, ale stále chcú súkromie, ktoré ponúka iba Brave. Používatelia Origin budú naďalej profitovať z našej špecializovanej ochrany súkromia, blokávania reklám a rýchlosti (prostredníctvom Štítov), ako aj z pravidelných aktualizácií softvéru, opráv Chromium a zlepšení bezpečnosti a súkromia. Origin odstráni väčšinu ďalších funkcií z prehliadača.</translation>
+<translation id="5816720995022674532">Origin je zdarma na používanie na Linux zariadeniach, ale stále <ph name="BEGIN_LINK"/>dostupný na nákup<ph name="END_LINK"/> ak chcete podporiť Brave ako podnikanie. Nákupom by ste tiež odomkli možnosť používať Origin na zariadeniach Android, iOS, macOS a Windows.</translation>
+<translation id="3065220545261045367">Podporiť Brave nákupom Origin</translation>
+<translation id="2069499076031488636">Pokračujte s Origin zadarmo na Linux</translation>
 </translationbundle>

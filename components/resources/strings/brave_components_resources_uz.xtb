@@ -483,6 +483,10 @@
 <translation id="1518915449477235311"><ph name="URL"/> URL manzilini Brave'da Leo AI suhbatlarini ochishga ruxsat berasizmi?</translation>
 <translation id="4355784577209159847">Eski Google kirish uchun uchinchi tomon cookie fayllaridan foydalanishga ruxsat bering</translation>
 <translation id="5770656036486891920"><ph name="URL"/> eski Google kirish uchun uchinchi tomon cookie fayllaridan foydalanishni xohlaydi</translation>
+<translation id="5582087890067572966">🎉 Siz hozirda daromad qilmoqdasiz!</translation>
+<translation id="4364336119478610380">Bu kabi bildirishnoma ekraningizda paydo bo'lganda siz daromad qilasiz. Daromad qilish uchun bosishingiz shart emas.</translation>
+<translation id="5893017172751072752">Siz Brave Ads bildirishnomasi paydo bo'lganda daromad qilasiz</translation>
+<translation id="3447730462826640312">Daromad qilish uchun bosishingiz shart emas, lekin agar qiziqsangiz bosing!</translation>
 <translation id="2104347391516032700">BAT Mukofotlar Xizmati</translation>
 <translation id="5939518447894949180">Tiklash</translation>
 <translation id="3349204812119681938">Brave Mukofotlarini tiklash</translation>
@@ -993,6 +997,7 @@
 <translation id="2795015351889043417">JSON fayl</translation>
 <translation id="5468881191994555667">Faylni tanlang</translation>
 <translation id="795667975304826397">Hech qanday fayl tanlanmagan</translation>
+<translation id="6720675936326555106">Tanlangan fayl</translation>
 <translation id="5891811606602061966">Hisob import qilinmadi, qayta urining.</translation>
 <translation id="6566535583781706170">Hisob import qilish</translation>
 <translation id="5051929972046200722">Sizning apparat hamyoningiz qurilmasini tanlang</translation>
@@ -1039,10 +1044,12 @@
 <translation id="2416098547200943834">Izoh: Shaxsiy kalit hex kodlangan JSON sifatida taqdim etiladi, u shaxsiy kalit va protokol ma'lumotlarini o'z ichiga oladi. <ph name="LINK_START"/>Batafsil ma'lumot<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">Izoh: Shaxsiy kalit hex kodlangan JSON sifatida taqdim etilishi kerak, u shaxsiy kalit va protokol ma'lumotlarini o'z ichiga oladi. <ph name="LINK_START"/>Batafsil ma'lumot<ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">Izoh: Faqat <ph name="FORMAT"/> kengaytirilgan kalitlar qo'llab-quvvatlanadi.</translation>
+<translation id="6457746820359933716">Polkadot.js yoki mos keladigan hamyonlardan eksport qilingan JSON faylidan foydalanib import qiling. Eksportni shifrlash uchun ishlatiladigan parolni kiriting.</translation>
 <translation id="9133762451347918196">Testnet hisoblari</translation>
 <translation id="42126664696688958">Export</translation>
 <translation id="1366855498335432549">Depozit</translation>
 <translation id="790104325876206743">Hisob sozlamalari</translation>
+<translation id="8856844353253421399">Oxirgi yangilanish <ph name="TIME_AGO"/> oldin</translation>
 <translation id="6322030314101903925">Mavjud aktivlar yo'q</translation>
 <translation id="836614343069504000">Boshlash uchun tokenlarni depozit qiling yoki sotib oling. Import qilingan hisobingizdan tokenlarni ko'rmasangiz, filtrlovchi va ko'rsatish sozlamalarini tekshiring. Noma'lum tokenlarni 'maxsus aktivlar' sifatida qo'shish kerak bo'lishi mumkin.</translation>
 <translation id="2902856457593699108">Kalitni ko'rsatish</translation>
@@ -1161,10 +1168,10 @@
 <translation id="4324239559624557455">24 soat davomida</translation>
 <translation id="9139452553033760558">1 hafta uchun</translation>
 <translation id="1658834457013045127">Doimiy</translation>
-<translation id="6344138931392227467"><ph name="DEVICE_NAME"/> ulandi</translation>
-<translation id="7051244143160304048"><ph name="DEVICE_NAME"/> uzildi</translation>
-<translation id="5317781812114905957">Koʻrsatmalar</translation>
-<translation id="1178198982208000092"><ph name="DEVICE_NAME"/>ngizni ulang</translation>
+<translation id="5571630233760536706"><ph name="DEVICE_NAME"/> ulandi</translation>
+<translation id="7058480232601314508"><ph name="DEVICE_NAME"/> uzildi</translation>
+<translation id="434328838837168401">Koʻrsatmalarni koʻrish</translation>
+<translation id="6739517232898494646">Davom ettirish uchun <ph name="DEVICE_NAME"/>ni ulangsiz</translation>
 <translation id="6941881257520473899">Aynan uning qurilmadagi tasdiqlashini talab qiladi.</translation>
 <translation id="2288190100157580461">Uskuna hamyoni <ph name="DEVICE_NAME"/> <ph name="NETWORK"/> ilovasini ochishni talab qiladi</translation>
 <translation id="8687869982094542529">jo'natildi</translation>
@@ -1885,6 +1892,7 @@
 <translation id="4150336849480030462">Assotsiativ Token Hisob Yaralish bilan SPL Token Oʻtkazmasi</translation>
 <translation id="2244921323472112851">Ayni paytda siz qidirayotgan sahifani topa olmadik.</translation>
 <translation id="6277237872689140644">U boshqa joyga koʻchgan yoki URL manzilida xato yozilgan boʻlishi mumkin.</translation>
+<translation id="1788572014530152502">Tranzaksiyani qayta ishlashda xatolik yuz berdi. Koʻp hollarda bu <ph name="SYMBOL"/> ni tarmoq to'lovini qoplash uchun yetarli emasligini anglatadi. Buning oʻrniga kichikroq summani sinab koʻring.</translation>
 <translation id="2737084171727561244">Portfelingizga kiring</translation>
 <translation id="3499452861061048987">Token qo'shish</translation>
 <translation id="5046066249040287308">Brave Hamyon Kommunal Xizmati</translation>
@@ -2569,7 +2577,8 @@
 <translation id="4724752924364329714">Agar ushbu sayt kutilganidek ishlamayotgan boʻlsa, Qalqon funksiyalarini faolsizlantirishingiz mumkin.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Eslatma: bu Brave'ning maxfiylik himoyasini kamaytirishi mumkin.<ph name="NOTE_AFTER"/></translation>
 <translation id="4329860807937715445">Bu Brave ning maxfiylik himoyasini kamaytirishi mumkin. <ph name="LINK_BEFORE"/>Ko'proq bilib oling<ph name="LINK_AFTER"/></translation>
-<translation id="1574700443447059851">Bloklangan trekerlar, reklamalar va boshqa narsalar.</translation>
+<translation id="3889333301730272023"><ph name="BLOCK_COUNT"/> bloklangan trekerlar, reklamalar va boshqa narsalar</translation>
+<translation id="2275121279487164685">Trekerlar va reklamalar</translation>
 <translation id="4968268657895673116">Agar sayt Shields bilan to'g'ri ishlamagan bo'lsa bizga ayting?</translation>
 <translation id="5412004902081180614">Xabar berish</translation>
 <translation id="3620004479054499575">Ushbu sayt bilan bog‘liq muammolar bormi?</translation>
@@ -2631,9 +2640,11 @@
 <translation id="3795015906457257780">Siz ushbu saytni Brave'ning maxfiylik himoyasisiz koʻrayapsiz.</translation>
 <translation id="7194012750329511146">Brave Shields
 <ph name="NUMBER"/> Kuzatuvchilar, Ads va boshqa narsalar bloklandi</translation>
+<translation id="2900068182947574679">Skriptlar</translation>
 <translation id="4292121526390005808">Bloklangan skriptlar</translation>
 <translation id="5046271170844958713">Ruxsat berilgan skriptlar</translation>
 <translation id="199862531047218413">Barmoq iziga qarshi himoyalar qo'llandi</translation>
+<translation id="896105002981074545">Raqamli barmoq izini olish himoyasi</translation>
 <translation id="5032505924781383272">Qo'llanilayotgan himoyalar bu veb-sahifa sizning brauzeringizni barmoq izi qilishga harakat qilayotganini ko'rsatmaydi.</translation>
 <translation id="1905384713982899903">Bloklangan barmoq izlari</translation>
 <translation id="314364527871618241">Ruxsat berilgan barmoq izlari</translation>
@@ -2646,6 +2657,7 @@
 <translation id="542789539047208469">Sayt haqida maʼlumot</translation>
 <translation id="7586067492365979844">Brave Qalqonlar yangi bosh va dizayniga ega. U sayt ma'lumotlari bilan birlashtirilgan bo'lib, bir masofani o'z ichiga oladi.</translation>
 <translation id="9114542678887529043">Brave Qalqonlar yangi bosh va dizayniga ega. Manzil satrida sayt belgisini bosish orqali unga kirish.</translation>
+<translation id="4242533952199664413">Sozlamalarni ochish</translation>
 <translation id="6294662480095808915">Maxfiylik. Standart orqali.</translation>
 <translation id="4366423156486478559">Har bir bosgan havolangizda Brave himoyasini oling. Faqat Brave'ni standart sifatida o'rnating va brauzer qiling. Xavfsiz.</translation>
 <translation id="3830912418080848377">Sozlamalarni import qilish</translation>
@@ -2785,4 +2797,19 @@ Sizni ulanishga tayyorlaylik!</translation>
 <translation id="1602850501393095406">Tanlang ↑ to'ldirish</translation>
 <translation id="8367705492654390392">Istalgan narsani so‘rang</translation>
 <translation id="8525248723479742219">Keyinroq ijro etish</translation>
+<translation id="2935698011275148880">Brave Origin</translation>
+<translation id="3983844925615091103">Brave Origin-ga xush kelibsiz. Davom ettirish uchun iltimos, Brave Origin sotib oling yoki qayta tiklang.</translation>
+<translation id="4801175670604644729">Ushbu brauzerdan foydalanish uchun sizga faol Brave Origin sotib olish kerak.</translation>
+<translation id="4144294274624829008">Brave Origin sotib olishni qayta tiklash</translation>
+<translation id="6080178356113101120">Brave Origin sotib olish</translation>
+<translation id="1009496146858538651">Sotib olishni qayta tiklash</translation>
+<translation id="3461564061600681423">Brave Origin sotib olishni faollashtirish uchun sotib olish IDsi kiriting.</translation>
+<translation id="2036379724374431790">Sotib olish IDsi</translation>
+<translation id="4348430971280118761">Sotib olish IDsini kiriting</translation>
+<translation id="7451866456310404779">Sotib olish IDsini tekshirish</translation>
+<translation id="8853195592604941919">Tekshirilmoqda... Bu bir necha daqiqa vaqt olishi mumkin.</translation>
+<translation id="4633706444004110760">Brave Origin ni o'rnatganingiz uchun rahmat. Bu brauzer Brave-ni biznes sifatida qo'llab-quvvatlash uchun zarur bo'lgan barcha xususiyatlarga ehtiyoj sezmaydigan, lekin faqat Brave taklif qiladigan maxfiylikni xohlaydiganlar uchun. Origin foydalanuvchilari bizning sanoat etakchi maxfiylik, bloklovchi va tezlik (Qalqonlar orqali), shuningdek muntazam dasturiy ta'minotning yangilanishlari, Chromium yamojalari va xavfsizlik hamda maxfiylik yaxshilanishlaridan foydalanishda davom etadilar. Origin brauzerdan ko'pchilik boshqa xususiyatlarni olib tashlaydi.</translation>
+<translation id="5816720995022674532">Origin Linux qurilmalarida bepul foydalanish uchun mavjud, lekin Brave-ni biznes sifatida qo'llab-quvvatlashni xohlasangiz <ph name="BEGIN_LINK"/>sotib olishga mumkin<ph name="END_LINK"/>. Sotib olish Android, iOS, macOS va Windows qurilmalarida Origin-dan foydalanish imkonini ham beradi.</translation>
+<translation id="3065220545261045367">Brave-ni Origin-ni sotib olish orqali qo'llab-quvvatlang</translation>
+<translation id="2069499076031488636">Linux-da Brave Origin bilan bepul davom etish</translation>
 </translationbundle>

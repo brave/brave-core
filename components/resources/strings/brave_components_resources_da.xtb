@@ -483,6 +483,10 @@
 <translation id="1518915449477235311">Tillad <ph name="URL"/>, at der åbnes Leo AI-samtaler i Brave?</translation>
 <translation id="4355784577209159847">Tillad brug af cookies fra tredjeparter til Google-login</translation>
 <translation id="5770656036486891920"><ph name="URL"/> vil bruge cookies fra tredjeparter til Google-login</translation>
+<translation id="5582087890067572966">🎉 Du tjener nu penge!</translation>
+<translation id="4364336119478610380">Du tjener penge, hver gang en meddelelse som denne dukker op på din skærm. Du behøver ikke klikke for at tjene penge.</translation>
+<translation id="5893017172751072752">Du tjener penge, når en Brave-annoncemeddelelse dukker op</translation>
+<translation id="3447730462826640312">Du behøver ikke klikke for at tjene penge, men klik endeligt, hvis du er interesseret!</translation>
 <translation id="2104347391516032700">Bat Rewards-service</translation>
 <translation id="5939518447894949180">Nulstil</translation>
 <translation id="3349204812119681938">Nulstil Brave Rewards</translation>
@@ -999,6 +1003,7 @@
 <translation id="2795015351889043417">JSON-fil</translation>
 <translation id="5468881191994555667">Vælg fil</translation>
 <translation id="795667975304826397">Ingen fil valgt</translation>
+<translation id="6720675936326555106">Valgt fil</translation>
 <translation id="5891811606602061966">Kunne ikke importere konto. Prøv igen.</translation>
 <translation id="6566535583781706170">Importér konto</translation>
 <translation id="5051929972046200722">Vælg din hardware-walletenhed</translation>
@@ -1045,10 +1050,12 @@
 <translation id="2416098547200943834">BEMÆRK: Privat nøgle tildeles som en hex-kodet JSON, som indeholder privat nøgle- og protokoloplysninger. <ph name="LINK_START"/>Læs mere<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">BEMÆRK: Privat nøgle tildeles som en hex-kodet JSON, som indeholder privat nøgle- og protokoloplysninger. <ph name="LINK_START"/>Læs mere <ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">BEMÆRK: Kun <ph name="FORMAT"/> udvidede nøgler understøttes.</translation>
+<translation id="6457746820359933716">Importér ved hjælp af en JSON-fil, der er eksporteret fra Polkadot.js eller kompatible tegnebøger. Angiv den adgangskode, der blev brugt til at kryptere eksporten.</translation>
 <translation id="9133762451347918196">Testnet-konti</translation>
 <translation id="42126664696688958">Eksportér</translation>
 <translation id="1366855498335432549">Indsæt</translation>
 <translation id="790104325876206743">Kontoindstillinger</translation>
+<translation id="8856844353253421399">Senest opdateret for <ph name="TIME_AGO"/> siden</translation>
 <translation id="6322030314101903925">Ingen tilgængelige aktiver</translation>
 <translation id="836614343069504000">Indbetal eller køb tokens for at komme i gang. Hvis du ikke ser tokens fra en importeret konto, skal du tjekke filtrene og visningsindstillingerne. Ukendte tokens skal muligvis tilføjes som skræddersyede aktiver.</translation>
 <translation id="2902856457593699108">Vis nøgle</translation>
@@ -1167,10 +1174,10 @@
 <translation id="4324239559624557455">I 24 timer</translation>
 <translation id="9139452553033760558">I 1 uge</translation>
 <translation id="1658834457013045127">For altid</translation>
-<translation id="6344138931392227467"><ph name="DEVICE_NAME"/> forbundet</translation>
-<translation id="7051244143160304048"><ph name="DEVICE_NAME"/> afbrudt</translation>
-<translation id="5317781812114905957">Instruktioner</translation>
-<translation id="1178198982208000092">Opret forbindelse til <ph name="DEVICE_NAME"/></translation>
+<translation id="5571630233760536706"><ph name="DEVICE_NAME"/> er forbundet</translation>
+<translation id="7058480232601314508"><ph name="DEVICE_NAME"/> er afbrudt</translation>
+<translation id="434328838837168401">Vis instruktioner</translation>
+<translation id="6739517232898494646">Forbind din <ph name="DEVICE_NAME"/> for at fortsætte</translation>
 <translation id="6941881257520473899">Hardware wallet kræver bekræftelse på enheden.</translation>
 <translation id="2288190100157580461">Hardware wallet kræver <ph name="NETWORK"/>-app åbnet på <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">sendt</translation>
@@ -1891,6 +1898,7 @@
 <translation id="4150336849480030462">Overførsel af SPL-token med tilhørende oprettelse af token-konto</translation>
 <translation id="2244921323472112851">Vi kan ikke finde den side, du leder efter lige nu.</translation>
 <translation id="6277237872689140644">Den kan være blevet flyttet til et andet sted eller URL'en kan indeholde en stavefejl.</translation>
+<translation id="1788572014530152502">Der opstod en fejl under behandling af din transaktion. I mange tilfælde betyder det, at der ikke er nok <ph name="SYMBOL"/> til at dække netværksgebyret. Prøv med et mindre beløb i stedet.</translation>
 <translation id="2737084171727561244">Gå til portefølje</translation>
 <translation id="3499452861061048987">Tilføj token</translation>
 <translation id="5046066249040287308">Værktøjstjeneste til Brave Wallet</translation>
@@ -2575,7 +2583,8 @@
 <translation id="4724752924364329714">Hvis denne side virker ødelagt, kan du prøve at lukke skærmen ned.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Bemærk: dette kan reducere Braves beskyttelse af privatlivets fred.<ph name="NOTE_AFTER"/></translation>
 <translation id="4329860807937715445">Dette kan reducere Braves privatlivsbeskyttelse. <ph name="LINK_BEFORE"/>Få mere at vide<ph name="LINK_AFTER"/></translation>
-<translation id="1574700443447059851">Trackere, reklamer og mere er blokeret.</translation>
+<translation id="3889333301730272023"><ph name="BLOCK_COUNT"/> trackere, reklamer og mere er blokeret</translation>
+<translation id="2275121279487164685">Trackere og reklamer</translation>
 <translation id="4968268657895673116">Fortæl os, hvis siden ikke virker korrekt med Shields op.</translation>
 <translation id="5412004902081180614">Rapporter</translation>
 <translation id="3620004479054499575">Oplever du problemer med denne side?</translation>
@@ -2637,9 +2646,11 @@
 <translation id="3795015906457257780">Du ser dette site uden Braves privatlivsbeskyttelse.</translation>
 <translation id="7194012750329511146">Brave Shields
 <ph name="NUMBER"/> Trackers, reklamer med mere blokeret</translation>
+<translation id="2900068182947574679">Scripts</translation>
 <translation id="4292121526390005808">Blokerede scripts</translation>
 <translation id="5046271170844958713">Tilladte scripts</translation>
 <translation id="199862531047218413">Beskyttelse mod fingeraftryk slået til</translation>
+<translation id="896105002981074545">Fingeraftryksbeskyttelse</translation>
 <translation id="5032505924781383272">Anvendt beskyttelse betyder ikke nødvendigvis, at denne hjemmeside forsøger at tage fingeraftryk af din browser.</translation>
 <translation id="1905384713982899903">Blokerede fingeraftryk</translation>
 <translation id="314364527871618241">Tilladte fingeraftryk</translation>
@@ -2652,6 +2663,7 @@
 <translation id="542789539047208469">Websiteoplysninger</translation>
 <translation id="7586067492365979844">Brave Shields har et nyt hjem og design. Det integreres nu med webstedsinformation for en kompleks oplevelse.</translation>
 <translation id="9114542678887529043">Brave Shields har et nyt hjem og design. Få adgang til det ved at klikke på webstedsikonet i adresselinjen.</translation>
+<translation id="4242533952199664413">Åbn Indstillinger</translation>
 <translation id="6294662480095808915">Privat. Som standard.</translation>
 <translation id="4366423156486478559">Få Brave-beskyttelse på hvert eneste link, du klikker på. Du ska bare indstille Brave som standardbrowserm og surfe løs. Helt privat.</translation>
 <translation id="3830912418080848377">Importér instillinger</translation>
@@ -2792,4 +2804,19 @@ Lad os få dig tilknyttet!</translation>
 <translation id="1602850501393095406">Tryk på ↑ for at fremhæve</translation>
 <translation id="8367705492654390392">Spørg om hvad som helst</translation>
 <translation id="8525248723479742219">Afspil senere</translation>
+<translation id="2935698011275148880">Modig oprindelse</translation>
+<translation id="3983844925615091103">Velkommen til Brave Origin. For at fortsætte skal du købe eller gendanne dit Brave Origin-køb.</translation>
+<translation id="4801175670604644729">Du har brug for et aktivt Brave Origin-køb for at bruge denne browser.</translation>
+<translation id="4144294274624829008">Gendan Brave Origin-køb</translation>
+<translation id="6080178356113101120">Køb Brave Origin</translation>
+<translation id="1009496146858538651">Gendan køb</translation>
+<translation id="3461564061600681423">Angiv dit købs-ID for at aktivere dit Brave Origin-køb.</translation>
+<translation id="2036379724374431790">Købs-ID</translation>
+<translation id="4348430971280118761">Angiv dit købs-ID</translation>
+<translation id="7451866456310404779">Bekræft købs-ID</translation>
+<translation id="8853195592604941919">Bekræfter… Dette kan tage et minut.</translation>
+<translation id="4633706444004110760">Tak, fordi du installerede Brave Origin, en version af browseren til brugere, som ikke har brug for alle funktionerne, der understøtter Brave som virksomhed, men stadig ønsker det privatlivsbeskyttelse, som kun Brave tilbyder. Origin-brugere får fortsat glæde af Braves brancheledendeligt privatlivsbeskyttelse, annonceblokering og hastighed (via Shields), samt regelmæssige softwareopdateringer, Chromium-patches og sikkerhed og forbedringer af privatlivsbeskyttelsen. Origin fjerner mest andre funktioner fra browseren.</translation>
+<translation id="5816720995022674532">Origin er gratis at bruge på Linux-enheder, men kan stadig <ph name="BEGIN_LINK"/>købes<ph name="END_LINK"/>, hvis du gerne vil støtte Brave som virksomhed. Køb ville også låse op for muligheden for at bruge Origin på Android, iOS, macOS og Windows-enheder.</translation>
+<translation id="3065220545261045367">Støt Brave ved at købe Origin</translation>
+<translation id="2069499076031488636">Fortsæt med Origin gratis på Linux</translation>
 </translationbundle>

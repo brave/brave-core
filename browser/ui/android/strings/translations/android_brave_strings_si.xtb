@@ -49,6 +49,14 @@
 <translation id="2998960761270772157">youtube.com හි පිවිසුම, වට්ටෝරුව, අදහස් සහ දෘශ්‍යක තොරතුරු අංග අවහිර කරයි.</translation>
 <translation id="8531835121131500698">යූටියුබ් ෂෝර්ට්ස් අවහිර කරන්න</translation>
 <translation id="2167271714269158912">youtube.com මුල් පිටුව, නැගීඑන පිටුව සහ සෙවුම් ප්‍රතිඵල වලින් කෙටි දෘශ්‍යක අවහිර කරයි.</translation>
+<translation id="2564435705466025309">YouTube ස්වයංක්‍රිය-සිංහලගත වීඩියෝ අවහිර කරන්න</translation>
+<translation id="3603500459037204525">youtube.com හි ස්වයංක්‍රිය-සිංහලගත වීඩියෝ නිවේදිතයන් සහ සෙවුම් ප්‍රතිඵල සිට දිස්ණුවන ඉතිරි කරයි.</translation>
+<translation id="4067265130987656010">YouTube සිඩු ඕනෑම අවහිර කරන්න</translation>
+<translation id="3034711349887440574">youtube.com හි සිඩු නිවේදිතයන් සහ සෙවුම් ප්‍රතිඵල සිට දිස්ණුවන ඉතිරි කරයි.</translation>
+<translation id="8741919213635379855">YouTube Playables අවහිර කරන්න</translation>
+<translation id="2216551241986578034">youtube.com හි Playables නිවේදිතයන් සහ සෙවුම් ප්‍රතිඵල සිට දිස්ණුවන ඉතිරි කරයි.</translation>
+<translation id="9038505474874975130">YouTube සාමාජිකයින්-පමණක සවිඳුවීඩියෝ අවහිර කරන්න</translation>
+<translation id="3084239516382196983">youtube.com හි සාමාජිකයින්-පමණක වීඩියෝ නිවේදිතයන් සහ සෙවුම් ප්‍රතිඵල සිට දිස්ණුවන ඉතිරි කරයි.</translation>
 <translation id="6052725679982758334">සමාජ මාධ්‍ය අවහිරය</translation>
 <translation id="7498695072878479744">තෙවන පාර්ශ්ව අඩවි වල ගූගල් පිවිසුම් බොත්තම් වලට ඉඩ දෙන්න</translation>
 <translation id="863171915776379000">ෆේස්බුක් පිවිසුම් සහ කාවැද්දූ ලිපි සඳහා ඉඩ දෙන්න</translation>
@@ -967,9 +975,9 @@
 <translation id="5494920125229734069">සියල්ල තෝරන්න</translation>
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="944736176598169208">පාරිතෝෂික</translation>
-<translation id="4272190451231642425">ස්වයංක්‍රීයව බිඳවැටීම් වාර්තා යවන්න</translation>
 <translation id="1199170151481311646">පෞද්ගලිකත්වය ආරක්ෂා කරන විශ්ලේෂණය</translation>
 <translation id="1706715315466634757">ඊමේල් කෙටි නම්</translation>
+<translation id="738840791756723657">AI</translation>
 <translation id="6709133671862442373">පුවත්</translation>
 <translation id="5990642573624858459">සංඛ්‍යාන වාර්තාවීම්</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -981,8 +989,11 @@
 <translation id="2573819149217596923">Brave විශේෂාංග වෙනස් කිරීම</translation>
 <translation id="7415416427817229128">Brave විශේෂාංගක් සක්‍රීය හෝ අකර්මණ්‍ය කිරීම ස්ථිතිවලින් එක්වීමට නැවත ඇරඹීම අවශ්‍ය වේ. දැන් නැවත ඇරඹීමට අවශ්‍යද?</translation>
 <translation id="2256115617011615191">දැන් නැවත ඇරඹින්න</translation>
+<translation id="2160089182263405907">විශේෂාංග අකිරීම</translation>
+<translation id="3362364767724670721">Brave විශේෂාංගයක් සක්‍රිය කිරීම හෝ අක්‍රිය කිරීම සඳහා බ්‍රවුසරයක් නැවත ඇරඹීම අවශ්‍ය වේ. කරුණාකර Origin යාවත්කාලීනයි අවසන් වූ පසු <ph name="BEGIN_BOLD"/>දැන් නැවත ඇරඹින්න<ph name="END_BOLD"/> තට පාඩු දෙන්න.</translation>
+<translation id="1028940738207645746">ඔබට සියලු සැකසීම් පෙරනිමි සිට නැවත සැකසීමට අවශ්‍යද?</translation>
+<translation id="5939518447894949180">යළි සකසන්න</translation>
 <translation id="8554205386170195281">ගිණුම</translation>
-<translation id="7071521146534760487">ගිණුම කළමනා කරන්න</translation>
 <translation id="8613144770663526433">Brave පසුම්බිය සමඟ පිවිසෙන්න</translation>
 <translation id="3696514931437952995">ඔබ <ph name="ORIGIN"/>වෙත පිවිසෙයි. බ්‍රේව් පසුම්බිය <ph name="ORIGIN"/>සමඟ ඔබගේ පසුම්බියේ ලිපිනය බෙදාගනියි.</translation>
 <translation id="1028781062521375153">විස්තර බලන්න</translation>
@@ -1017,7 +1028,6 @@
 <translation id="1309636029062006520">ඔබගේ ප්‍රියතම ශ්‍රව්‍ය සහ දෘශ්‍ය වාදන ලැයිස්තු සාදා ඕනෑම වේලාවක, ඕනෑම තැනක වාදනය කරන්න.</translation>
 <translation id="7899390017499980820">වාදන ලැයිස්තුවට දමන්න බොත්තම</translation>
 <translation id="6901152954398668317">මාධ්‍ය එක් හෝ ඉවත් කිරීමට ඉක්මන් ප්‍රවේශය සඳහා "වාදන ලැයිස්තුවට දමන්න" බොත්තම පෙන්වන්න හෝ සඟවන්න.</translation>
-<translation id="5939518447894949180">යළි සකසන්න</translation>
 <translation id="8199028711686989861">මාර්ගඅපගත ප්‍රකාරයේ ආචයනය ඇතුළුව සියලු දෘශ්‍යක වාදන ලැයිස්තුවෙන් ඉවත් කරන්න.</translation>
 <translation id="4590997608186539865">වාදන ලැයිස්තුව</translation>
 <translation id="7525067979554623046">සාදන්න</translation>
@@ -1164,4 +1174,20 @@
 <translation id="1724977129262658800">ඔබගේ මුරපදය සංස්කරණය කිරීමට අගුලු හරින්න</translation>
 <translation id="5780792035410621042">මුරපද පිටපත් කිරීමට, ඔබගේ උපාංගයේ තිර අගුලක් සකසන්න</translation>
 <translation id="7986497153528221272">මුරපද බැලීමට, ඔබේ උපාංගයේ තිර අගුලක් සකසන්න</translation>
+<translation id="4882237634123415792">අපරිමිත සෙවුම් යන්ත්‍ර</translation>
+<translation id="8364431224461158026">අපරිමිත සෙවුම් යන්ත්‍රයක් එක් කරන්න</translation>
+<translation id="7307935603426295341">අපරිමිත සෙවුම් යන්ත්‍රයක් සංස්කරණය කරන්න</translation>
+<translation id="4002066346123236978">සිරැසිය</translation>
+<translation id="3653110185270660915">සෙවුම් යන්ත්‍රයේ නම ඇතුළු කරන්න</translation>
+<translation id="7400418766976504921">ඒ.ස.නි.</translation>
+<translation id="6410668567036790476">සෙවුම් යන්ත්‍රයක් එක් කරන්න</translation>
+<translation id="6289878295410648689">සෙවුම් url එකතු කරන්න සහ ගැනුම්කරුවා <ph name="SPECIAL_SYMBOL"/> සමඟ ඉවුරුවන්න.</translation>
+<translation id="8943582268084103903">උදාහරණයක් ලෙස: https://youtube.com/search?q=<ph name="SPECIAL_SYMBOL"/>. ස්ථානය OpenSearch සඳහා සහාය දක්වන්නේ නම්, එই ක්ෂේත්‍රය සංස්කරණය කරන විට ස්වයංක්‍රියව එක් කිරීමේ විකල්පයක් සැපයනු ලැබේ.</translation>
+<translation id="8706939021136180678">URL අවලංගුයි.</translation>
+<translation id="6528099556282059181">සෙවුම් යන්ත්‍ර දැනටමත් එකතු කර ඇත.</translation>
+<translation id="463451857046640291">සෙවුම් යන්ත්‍රය එක් කිරීමට අසමත් විය.</translation>
+<translation id="1229671956956864948">සෙවුම් යන්ත්‍රයක් යාවත්කාලීන කිරීමට අසමත් විය.</translation>
+<translation id="1462771969120037152">සෙවුම් යන්ත්‍රය මකා දැමීමට අසමත් විය. ඔබ මකා දැමීමට උත්සාහ කරන සෙවුම් යන්ත්‍රය පෙරනිමි ලෙස සැකසිය යුතුය.</translation>
+<translation id="1079140196216383600">අපරිමිත සෙවුම් යන්ත්‍රය මකා දමන්න</translation>
+<translation id="525276572490219787">ඔබට "<ph name="SEARCH_ENGINE_NAME"/>" මකා දැමීමට අවශ්‍යද? මෙම ක්‍රියාව ආපසු හැරවිය නොහැක.</translation>
 </translationbundle>
