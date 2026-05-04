@@ -160,17 +160,20 @@ class PolkadotTransactionStatusTaskUnitTest : public testing::Test {
         *network_manager_, url_loader_factory_.GetSafeWeakWrapper());
 
     GetAccountUtils().CreateWallet(kMnemonicDivideCruise, kTestWalletPassword);
-    polkadot_testnet_account_ =
-        GetAccountUtils().EnsureAccount(mojom::KeyringId::kPolkadotTestnet, 0);
-    polkadot_mainnet_account_ =
-        GetAccountUtils().EnsureAccount(mojom::KeyringId::kPolkadotMainnet, 0);
-    ASSERT_TRUE(polkadot_testnet_account_);
   }
 
   void UnlockWallet() {
     base::test::TestFuture<bool> future;
     keyring_service_->Unlock(kTestWalletPassword, future.GetCallback());
     ASSERT_TRUE(future.Take());
+
+    polkadot_testnet_account_ =
+        GetAccountUtils().EnsureAccount(mojom::KeyringId::kPolkadotTestnet, 0);
+    ASSERT_TRUE(polkadot_testnet_account_);
+
+    polkadot_mainnet_account_ =
+        GetAccountUtils().EnsureAccount(mojom::KeyringId::kPolkadotMainnet, 0);
+    ASSERT_TRUE(polkadot_mainnet_account_);
   }
 
   AccountUtils GetAccountUtils() {
