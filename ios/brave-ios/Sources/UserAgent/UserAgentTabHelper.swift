@@ -43,22 +43,25 @@ extension TabDataValues {
 }
 
 extension UserAgentTabHelper: @MainActor TabObserver {
-  public func tabDidStartNavigation(_ tab: some TabState) {
-  }
-
   public func tabDidFinishNavigation(_ tab: some TabState) {
+    Logger.module.info(
+      "UserAgentTabHelper.tabDidFinishNavigation(_:) - resetting requestsForCurrentNavigation"
+    )
     requestsForCurrentNavigation.removeAll()
   }
 
   public func tabDidCommitNavigation(_ tab: some TabState) {
+    Logger.module.info(
+      "UserAgentTabHelper.tabDidCommitNavigation(_:) - resetting requestsForCurrentNavigation"
+    )
     requestsForCurrentNavigation.removeAll()
   }
 
   public func tab(_ tab: some TabState, didFailNavigationWithError error: any Error) {
+    Logger.module.info(
+      "UserAgentTabHelper.tab(_:didFailNavigationWithError:) - resetting requestsForCurrentNavigation"
+    )
     requestsForCurrentNavigation.removeAll()
-  }
-
-  public func tabDidRedirectNavigation(_ tab: some TabState) {
   }
 }
 
@@ -69,6 +72,9 @@ extension UserAgentTabHelper: TabPolicyDecider {
     requestInfo: WebRequestInfo
   ) async -> WebPolicyDecision {
     guard FeatureList.kShouldCancelRequestsForUserAgentChange.enabled else { return .allow }
+    Logger.module.info(
+      "UserAgentTabHelper.tab(_:shouldAllowRequest:requestInfo:) - request.mainDocumentURL=\(request.mainDocumentURL?.baseDomain ?? "", privacy: .public)"
+    )
     // we only care about main frame navigations as the user agent is
     // determined by main frame domain.
     guard requestInfo.isMainFrame else { return .allow }
@@ -98,9 +104,16 @@ extension UserAgentTabHelper: TabPolicyDecider {
         forHTTPHeaderField: kHeaderUserAgent
       )
       if let url = modifiedRequest.url {
-        Logger.module.debug(
-          "Cancelled and restarting request to `\(url.absoluteString, privacy: .private)`"
+        Logger.module.info(
+          "UserAgentTabHelper.tab(_:shouldAllowRequest:requestInfo:) - Detected incorrect UA in header. Cancelled and recreating request to `\(url.baseDomain ?? "", privacy: .public)` for user agent change from `\(headerUserAgent, privacy: .public)` to `\(expectedUserAgentForFinalRequest, privacy: .public)`."
         )
+      }
+      // Alert tester request is being cancelled and re-created
+      UIImpactFeedbackGenerator(style: .heavy).vibrate()
+      for count in 0..<10 {
+        DispatchQueue.main.asyncAfter(deadline: .now() + Double(count) * 0.1) {
+          UIImpactFeedbackGenerator(style: .heavy).vibrate()
+        }
       }
       tab.loadRequest(modifiedRequest)
       return .cancel
