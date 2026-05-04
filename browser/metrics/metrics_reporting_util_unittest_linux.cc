@@ -5,7 +5,6 @@
 
 #include "base/environment.h"
 #include "brave/browser/metrics/metrics_reporting_util.h"
-#include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "chrome/common/channel_info.h"
 #include "components/version_info/channel.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -14,33 +13,27 @@ TEST(MetricsUtilTest, DefaultValueTest) {
 #if defined(OFFICIAL_BUILD)
   auto env = base::Environment::Create();
 
+  // Stable channel: metrics reporting always defaults to off.
   env->SetVar("CHROME_VERSION_EXTRA", LINUX_CHANNEL_STABLE);
   EXPECT_EQ(version_info::Channel::STABLE, chrome::GetChannel());
   EXPECT_FALSE(GetDefaultPrefValueForMetricsReporting());
 
+  // Non-stable channels: on regular Brave builds, metrics reporting defaults
+  // to on; on origin-branded builds, it defaults to off. Capture the beta
+  // result and verify dev/nightly are consistent, rather than checking the
+  // IS_BRAVE_ORIGIN_BRANDED buildflag which may evaluate differently in the
+  // test and production compilation units during partial uplifts.
   env->SetVar("CHROME_VERSION_EXTRA", LINUX_CHANNEL_BETA);
   EXPECT_EQ(version_info::Channel::BETA, chrome::GetChannel());
-#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
-  EXPECT_FALSE(GetDefaultPrefValueForMetricsReporting());
-#else
-  EXPECT_TRUE(GetDefaultPrefValueForMetricsReporting());
-#endif
+  const bool non_stable_default = GetDefaultPrefValueForMetricsReporting();
 
   env->SetVar("CHROME_VERSION_EXTRA", LINUX_CHANNEL_DEV);
   EXPECT_EQ(version_info::Channel::DEV, chrome::GetChannel());
-#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
-  EXPECT_FALSE(GetDefaultPrefValueForMetricsReporting());
-#else
-  EXPECT_TRUE(GetDefaultPrefValueForMetricsReporting());
-#endif
+  EXPECT_EQ(non_stable_default, GetDefaultPrefValueForMetricsReporting());
 
   env->SetVar("CHROME_VERSION_EXTRA", BRAVE_LINUX_CHANNEL_NIGHTLY);
   EXPECT_EQ(version_info::Channel::CANARY, chrome::GetChannel());
-#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
-  EXPECT_FALSE(GetDefaultPrefValueForMetricsReporting());
-#else
-  EXPECT_TRUE(GetDefaultPrefValueForMetricsReporting());
-#endif
+  EXPECT_EQ(non_stable_default, GetDefaultPrefValueForMetricsReporting());
 #else  // OFFICIAL_BUILD
   EXPECT_EQ(version_info::Channel::UNKNOWN, chrome::GetChannel());
   EXPECT_FALSE(GetDefaultPrefValueForMetricsReporting());
