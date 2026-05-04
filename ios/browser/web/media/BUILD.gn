@@ -1,0 +1,31 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//ios/web/public/js_messaging/optimize_ts.gni")
+
+source_set("media") {
+  sources = [
+    "media_backgrounding_javascript_feature.h",
+    "media_backgrounding_javascript_feature.mm",
+  ]
+  deps = [
+    ":media_backgrounding_js",
+    "//brave/ios/browser/shared/prefs",
+    "//components/prefs",
+    "//ios/chrome/browser/shared/model/profile",
+    "//ios/web/public",
+    "//ios/web/web_state/ui:wk_web_view_configuration_provider_header",
+  ]
+  public_deps = [
+    "//base",
+    "//ios/web/public/js_messaging",
+  ]
+}
+
+optimize_ts("media_backgrounding_js") {
+  visibility = [ ":media" ]
+  sources = [ "resources/media_backgrounding.ts" ]
+  deps = [ "//ios/web/public/js_messaging:gcrweb" ]
+}
