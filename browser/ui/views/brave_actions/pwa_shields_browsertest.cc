@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include "base/test/run_until.h"
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
 #include "brave/browser/ui/views/brave_actions/brave_shields_toolbar_button.h"
 #include "chrome/browser/ui/browser.h"
@@ -31,8 +32,13 @@ IN_PROC_BROWSER_TEST_F(PwaShieldsBrowserTest, ShieldsButtonInWebAppTitleBar) {
 
   auto* elements = BrowserElementsViews::From(app_browser);
   ASSERT_TRUE(elements);
-  auto* shields = elements->GetViewAs<BraveShieldsToolbarButton>(
-      BraveShieldsActionView::kShieldsActionIcon, /*require_visible=*/true);
+  views::View* shields = nullptr;
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    shields = elements->GetView(BraveShieldsActionView::kShieldsActionIcon,
+                                /*require_visible=*/true);
+    return shields != nullptr;
+  }));
   ASSERT_NE(shields, nullptr);
+  EXPECT_TRUE(views::IsViewClass<BraveShieldsToolbarButton>(shields));
   EXPECT_TRUE(shields->GetVisible());
 }
