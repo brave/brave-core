@@ -231,4 +231,16 @@ if (is_android) {
       "//chrome/browser/hub/internal:java",
     ]
   }
+  
+  robolectric_library("brave_junit_tests_org.chromium.chrome.browser.media") {
+    sources = [ "src/org/chromium/chrome/browser/media/BraveYouTubePictureInPictureControllerTest.java" ]
+
+    deps = [
+      "//brave/components/browser_ui/media/android:java",
+      "//chrome/android/junit:chrome_junit_tests_helper",
+      "//chrome/browser/fullscreen/android:java",
+      "//chrome/browser/tab:java",
+      "//content/public/android:content_java",
+    ]
+  }
 }
