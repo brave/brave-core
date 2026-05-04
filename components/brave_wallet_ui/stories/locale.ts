@@ -460,6 +460,11 @@ provideStrings({
   braveWalletImportAccountUploadPlaceholder: 'No file chosen',
   braveWalletImportAccountError: 'Failed to import account, please try again.',
   braveWalletImportAccount: 'Import account',
+  braveWalletImportAccountPrivateKeyDescription:
+    'Copy private key for the account you want to import from another wallet.',
+  braveWalletImportAccountJsonFileDescription:
+    'Export private key from another wallet to a JSON file and upload here.',
+  braveWalletUploadJsonFile: 'Upload JSON file',
 
   // Connect Hardware Wallet
   braveWalletConnectHardwareTitle: 'Select your hardware wallet device',

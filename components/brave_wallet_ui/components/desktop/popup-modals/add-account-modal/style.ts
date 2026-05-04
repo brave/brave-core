@@ -6,7 +6,7 @@
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
 import LeoInput from '@brave/leo/react/input'
-import AlertReact from '@brave/leo/react/alert'
+import LeoButton from '@brave/leo/react/button'
 
 // Assets
 import InfoLogo from '../../../../assets/svg-icons/info-icon.svg'
@@ -14,14 +14,6 @@ import InfoLogo from '../../../../assets/svg-icons/info-icon.svg'
 // Shared Styles
 import { Column, Text } from '../../../shared/style'
 import { layoutPanelWidth } from '../../wallet-page-wrapper/wallet-page-wrapper.style'
-
-export const Alert = styled(AlertReact)`
-  margin-bottom: 15px;
-
-  &:first-of-type {
-    margin: 15px 0px;
-  }
-`
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -83,30 +75,8 @@ export const InfoIcon = styled.div`
   mask-image: url(${InfoLogo});
 `
 
-export const ImportRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-  margin-bottom: 15px;
-  width: 250px;
-`
-
-export const ImportButton = styled.label`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  border-radius: 4px;
-  padding: 4px 6px;
-  outline: none;
-  background-color: transparent;
-  border: ${(p) => `1px solid ${p.theme.color.interactive08}`};
-  font-size: 13px;
-  line-height: 20px;
-  letter-spacing: 0.01em;
-  margin-right: 10px;
-  color: ${(p) => p.theme.color.interactive07};
+export const ImportButton = styled(LeoButton)`
+  flex-grow: 0;
 `
 
 export const ErrorText = styled.span`
@@ -116,7 +86,7 @@ export const ErrorText = styled.span`
 
 export const CreateAccountWrapper = styled(Column)`
   gap: 32px;
-  padding: 12px 32px 32px 32px;
+  padding: 0px 32px 32px 32px;
   @media screen and (max-width: ${layoutPanelWidth}px) {
     gap: 20px;
     padding: 0px 20px 20px 20px;
@@ -145,4 +115,15 @@ export const NetworkName = styled(Text)`
 export const NetworkDescription = styled(Text)`
   font: ${leo.font.default.regular};
   letter-spacing: ${leo.typography.letterSpacing.default};
+`
+
+export const FileNameText = styled(Text)`
+  font: ${leo.font.default.regular};
+  letter-spacing: ${leo.typography.letterSpacing.default};
+  text-transform: none;
+`
+
+export const JsonFileLabel = styled(Text)`
+  font: ${leo.font.small.semibold};
+  letter-spacing: ${leo.typography.letterSpacing.small};
 `

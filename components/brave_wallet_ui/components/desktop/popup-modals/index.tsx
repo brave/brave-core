@@ -29,6 +29,7 @@ export interface Props {
   hideHeader?: boolean
   headerPaddingVertical?: string
   headerPaddingHorizontal?: string
+  headerPaddingMobile?: string
   height?: string
 }
 
@@ -41,6 +42,7 @@ export const PopupModal = React.forwardRef<HTMLDivElement, Props>(
       width,
       headerPaddingVertical,
       headerPaddingHorizontal,
+      headerPaddingMobile,
       showDivider,
       hideHeader,
       onClose,
@@ -77,6 +79,7 @@ export const PopupModal = React.forwardRef<HTMLDivElement, Props>(
             <Header
               headerPaddingHorizontal={headerPaddingHorizontal}
               headerPaddingVertical={headerPaddingVertical}
+              headerPaddingMobile={headerPaddingMobile}
             >
               <Row
                 width='unset'

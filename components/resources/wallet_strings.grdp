@@ -292,6 +292,9 @@
   <message name="IDS_BRAVE_WALLET_IMPORT_ACCOUNT_SELECTED_FILE" desc="Polkadot import file button text when a file is selected">Selected file</message>
   <message name="IDS_BRAVE_WALLET_IMPORT_ACCOUNT_ERROR" desc="Add account modal failed to import error">Failed to import account, please try again.</message>
   <message name="IDS_BRAVE_WALLET_IMPORT_ACCOUNT" desc="Import account button">Import account</message>
+  <message name="IDS_BRAVE_WALLET_IMPORT_ACCOUNT_PRIVATE_KEY_DESCRIPTION" desc="Import account private key description">Copy private key for the account you want to import from another wallet.</message>
+  <message name="IDS_BRAVE_WALLET_IMPORT_ACCOUNT_JSON_FILE_DESCRIPTION" desc="Import account JSON file description">Export private key from another wallet to a JSON file and upload here.</message>
+  <message name="IDS_BRAVE_WALLET_UPLOAD_JSON_FILE" desc="Upload JSON file label">Upload JSON file</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_TITLE" desc="Connect hardware wallet title">Select your hardware wallet device</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_INFO1" desc="Connect hardware wallet info1">Connect your <ph name="HARDWARE_DEVICE"><ex>Ledger</ex>$1</ph> wallet directly to your computer.</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_INFO2" desc="Connect hardware wallet info2">Unlock your device and select the <ph name="BLOCKCHAIN_NETWORK"><ex>Ethereum</ex>$1</ph> app.</message>

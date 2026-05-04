@@ -61,14 +61,22 @@ export const ModalContent = styled(Column)`
 export const Header = styled.div<{
   headerPaddingVertical?: string
   headerPaddingHorizontal?: string
+  headerPaddingMobile?: string
 }>`
   --vertical-padding: ${(p) => p.headerPaddingVertical ?? '20px'};
   --horizontal-padding: ${(p) => p.headerPaddingHorizontal ?? '20px'};
+  --padding: var(--vertical-padding) var(--horizontal-padding);
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    --padding: ${(p) =>
+      p.headerPaddingMobile
+        ? p.headerPaddingMobile
+        : 'var(--vertical-padding) var(--horizontal-padding)'};
+  }
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-direction: row;
-  padding: var(--vertical-padding) var(--horizontal-padding);
+  padding: var(--padding);
   width: 100%;
 `
 

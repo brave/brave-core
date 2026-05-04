@@ -223,6 +223,9 @@ export const CreateAccountModal = () => {
       title={modalTitle}
       onClose={onClickClose}
       onBack={selectedAccountType ? onClickBack : undefined}
+      headerPaddingHorizontal='32px'
+      headerPaddingVertical='32px'
+      headerPaddingMobile='20px'
     >
       {selectedAccountType && (
         <CreateAccountWrapper width='100%'>
@@ -239,7 +242,7 @@ export const CreateAccountModal = () => {
             </NetworkDescription>
             <Input
               value={accountName}
-              placeholder={getLocale('braveWalletAddAccountPlaceholder')}
+              placeholder={getLocale('braveWalletAccountName')}
               onInput={handleAccountNameChanged}
               onKeyDown={handleKeyDown}
               showErrors={isDisabled}
