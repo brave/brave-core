@@ -156,16 +156,11 @@ void BraveSyncServiceImpl::Initialize(
 
 DataTypeSet BraveSyncServiceImpl::GetPreferredDataTypes() const {
   if (!has_encryptor()) {
-    // Encryptor is not ready yet (OSCrypt async callback hasn't fired).
-    // If a seed pref exists, there's an established sync chain. Return all
-    // types so ClearMetadataWhileStoppedExceptFor() in SyncServiceImpl::
-    // Initialize() doesn't wipe DeviceInfo metadata before DeriveSigningKeys()
-    // has had a chance to establish the correct auth state.
-    const std::string& raw_seed = sync_client_->GetPrefService()->GetString(
-        brave_sync::Prefs::GetSeedPath());
-    if (!raw_seed.empty()) {
-      return DataTypeSet::All();
-    }
+    // Encryptor not ready yet. Return all types to prevent
+    // ClearMetadataWhileStoppedExceptFor() from wiping DeviceInfo metadata
+    // before DeriveSigningKeys() establishes the correct auth state.
+    // The engine cannot start without the encryptor so no sync is triggered.
+    return DataTypeSet::All();
   }
   return SyncServiceImpl::GetPreferredDataTypes();
 }
