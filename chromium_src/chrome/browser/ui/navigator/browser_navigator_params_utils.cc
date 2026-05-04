@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "chrome/browser/ui/browser_navigator_params.h"
+#include "chrome/browser/ui/navigator/browser_navigator_params.h"
 
 // Needed to prevent overriding url_typed_with_http_scheme
 #include "chrome/browser/ui/location_bar/location_bar.h"
@@ -15,6 +15,6 @@
   url_typed_with_http_scheme;      \
   force_no_https_upgrade = false
 
-#include <chrome/browser/ui/browser_navigator_params_utils.cc>
+#include <chrome/browser/ui/navigator/browser_navigator_params_utils.cc>
 
 #undef url_typed_with_http_scheme
