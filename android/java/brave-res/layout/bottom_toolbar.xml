@@ -9,7 +9,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="MergeRootFrame"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/bottom_controls_height"
+    android:layout_height="@dimen/brave_bottom_toolbar_height"
     android:visibility="gone" >
 
   <include layout="@layout/bottom_toolbar_browsing" />
