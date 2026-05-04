@@ -15,7 +15,7 @@ public class BraveFullscreenVideoPictureInPictureController {
      * variable, that will be deleted in bytecode.
      */
     protected boolean mDismissPending;
-    
+
     boolean maybeHandleDismissActivityForYouTubePictureInPicture(
             Activity activity,
             boolean isStart,
