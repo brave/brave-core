@@ -306,13 +306,19 @@ void BraveHorizontalTabStripRegionView::Layout(PassKey) {
     // constants (same family as toolbar spacing). That can overlap the combo's
     // flex slot; we paint NTB above the combo in GetChildrenInZOrder so it
     // stays clickable.
-    if (new_tab_button_ && tab_scroll_next_button_ &&
-        tab_scroll_next_button_->GetVisible()) {
-      const gfx::Size button_size = new_tab_button_->GetPreferredSize();
-      const int x = tab_scroll_next_button_->bounds().right() +
-                    GetLayoutConstant(LayoutConstant::kTabStripPadding) +
-                    GetLayoutConstant(LayoutConstant::kToolbarDividerSpacing);
-      new_tab_button_->SetBoundsRect(gfx::Rect(gfx::Point(x, 0), button_size));
+    if (new_tab_button_) {
+      if (tab_scroll_next_button_ && tab_scroll_next_button_->GetVisible()) {
+        const gfx::Size button_size = new_tab_button_->GetPreferredSize();
+        const int x = tab_scroll_next_button_->bounds().right() +
+                      GetLayoutConstant(LayoutConstant::kTabStripPadding) +
+                      GetLayoutConstant(LayoutConstant::kToolbarDividerSpacing);
+        new_tab_button_->SetBoundsRect(
+            gfx::Rect(gfx::Point(x, 0), button_size));
+      } else {
+        new_tab_button_->SetX(
+            tab_strip_->bounds().right() +
+            GetLayoutConstant(LayoutConstant::kTabStripPadding));
+      }
     }
     return;
   }
