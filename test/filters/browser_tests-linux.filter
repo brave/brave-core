@@ -104,6 +104,13 @@
 # before NetworkBecameIdle. 1% upstream flake rate over 30 days per LUCI Analysis.
 # https://github.com/brave/brave-browser/issues/54205
 -PageStabilityMetricsTest.NetworkAndMainThreadIdle
+# Same root cause as above: cosmetic filter polling prevents the
+# IdlenessDetector's 500ms quiet window. The Paint test path resolves the
+# network request after paint stability, so it also waits for
+# NetworkBecameIdle which never fires. 2.5% upstream flake rate over 30 days
+# per LUCI Analysis.
+# https://github.com/brave/brave-browser/issues/54503
+-PageStabilityMetricsTest.Paint
 
 # These tests fail on Linux because kPromptForDownload defaults to true,
 # triggering the GTK file chooser dialog which causes g_malloc leaks
