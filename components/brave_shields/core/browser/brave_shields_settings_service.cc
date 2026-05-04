@@ -303,4 +303,15 @@ bool BraveShieldsSettingsService::IsShieldsDisabledOnAnyHostMatchingDomainOf(
   return false;
 }
 
+void BraveShieldsSettingsService::SetShredBrowsingHistory(bool value) {
+  CHECK(profile_prefs_);
+  brave_shields::SetShredBrowsingHistory(profile_prefs_, value);
+}
+
+bool BraveShieldsSettingsService::IsShredBrowsingHistoryEnabled() {
+  CHECK(profile_prefs_);
+  return brave_shields::IsShredBrowsingHistoryEnabled(profile_prefs_);
+}
+
 }  // namespace brave_shields
+

@@ -28,6 +28,8 @@ class HostContentSettingsMap;
 
 namespace ephemeral_storage {
 
+class BrowsingHistoryCleaner;
+
 class BraveEphemeralStorageServiceDelegate
     : public ApplicationStateObserver::Observer,
       public EphemeralStorageServiceDelegate {
@@ -36,7 +38,8 @@ class BraveEphemeralStorageServiceDelegate
       content::BrowserContext* context,
       HostContentSettingsMap* host_content_settings_map,
       scoped_refptr<content_settings::CookieSettings> cookie_settings,
-      brave_shields::BraveShieldsSettingsService* shields_settings_service);
+      brave_shields::BraveShieldsSettingsService* shields_settings_service,
+      std::unique_ptr<BrowsingHistoryCleaner> browsing_history_cleaner);
   ~BraveEphemeralStorageServiceDelegate() override;
 
   // ApplicationStateObserver::Observer:
@@ -60,6 +63,7 @@ class BraveEphemeralStorageServiceDelegate
   void TriggerCurrentAppStateNotification() override;
 #endif
 
+  bool IsShredBrowsingHistoryEnabled() override;
  private:
   std::vector<std::string> GetEphemeralDomainsToCleanOnAppClose();
 
@@ -70,6 +74,7 @@ class BraveEphemeralStorageServiceDelegate
   std::unique_ptr<ApplicationStateObserver> application_state_observer_;
   raw_ptr<brave_shields::BraveShieldsSettingsService>
       shields_settings_service_ = nullptr;
+  std::unique_ptr<BrowsingHistoryCleaner> browsing_history_cleaner_;
 };
 
 }  // namespace ephemeral_storage

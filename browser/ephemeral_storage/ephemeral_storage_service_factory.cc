@@ -11,6 +11,7 @@
 #include "base/no_destructor.h"
 #include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/ephemeral_storage/brave_ephemeral_storage_service_delegate.h"
+#include "brave/browser/ephemeral_storage/browsing_history_cleaner.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_pref_names.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
@@ -69,13 +70,15 @@ EphemeralStorageServiceFactory::BuildServiceInstanceForBrowserContext(
   if (!host_content_settings_map) {
     return nullptr;
   }
+  LOG(INFO) << "[SHRED] EphemeralStorageServiceFactory::BuildServiceInstanceForBrowserContext()";
   Profile* profile = Profile::FromBrowserContext(context);
   return std::make_unique<ephemeral_storage::EphemeralStorageService>(
       context, host_content_settings_map,
       std::make_unique<ephemeral_storage::BraveEphemeralStorageServiceDelegate>(
           context, host_content_settings_map,
           CookieSettingsFactory::GetForProfile(profile),
-          BraveShieldsSettingsServiceFactory::GetForProfile(profile)));
+          BraveShieldsSettingsServiceFactory::GetForProfile(profile),
+          std::make_unique<ephemeral_storage::BrowsingHistoryCleaner>(context)));
 }
 
 content::BrowserContext* EphemeralStorageServiceFactory::GetBrowserContextToUse(

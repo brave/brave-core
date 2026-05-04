@@ -276,6 +276,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(
       brave_shields::prefs::kAllowElementBlockerInPrivateMode, false);
 #endif
+
 }
 
 }  // namespace brave

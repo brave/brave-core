@@ -43,6 +43,7 @@ class EphemeralStorageServiceDelegate {
   // at the beginning of the TLD ephemeral lifetime.
   virtual void TriggerCurrentAppStateNotification() = 0;
 #endif
+  virtual bool IsShredBrowsingHistoryEnabled() = 0;
 };
 
 }  // namespace ephemeral_storage

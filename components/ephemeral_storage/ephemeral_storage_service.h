@@ -138,7 +138,7 @@ class EphemeralStorageService : public KeyedService {
   // startup. It's impossible to do a cleanup on shutdown, because the process
   // is asynchronous and cannot block the browser shutdown.
   void ScheduleFirstPartyStorageAreasCleanupOnStartup();
-  void CleanupFirstPartyStorageAreasOnStartup();
+  void CleanupOnStartup();
   void CleanupFirstPartyStorageArea(const TLDEphemeralAreaKey& key);
 
   void RegisterFirstWindowOpenedCallback(base::OnceClosure callback);

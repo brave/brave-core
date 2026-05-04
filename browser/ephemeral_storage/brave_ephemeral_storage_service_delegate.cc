@@ -41,6 +41,7 @@
 #include "net/base/schemeful_site.h"
 #include "net/base/url_util.h"
 #include "url/origin.h"
+#include "brave/browser/ephemeral_storage/browsing_history_cleaner.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/brave_browser.h"
@@ -105,7 +106,8 @@ BraveEphemeralStorageServiceDelegate::BraveEphemeralStorageServiceDelegate(
     content::BrowserContext* context,
     HostContentSettingsMap* host_content_settings_map,
     scoped_refptr<content_settings::CookieSettings> cookie_settings,
-    brave_shields::BraveShieldsSettingsService* shields_settings_service)
+    brave_shields::BraveShieldsSettingsService* shields_settings_service,
+    std::unique_ptr<BrowsingHistoryCleaner> browsing_history_cleaner)
     : context_(context),
       host_content_settings_map_(host_content_settings_map),
       cookie_settings_(std::move(cookie_settings)),
@@ -114,7 +116,8 @@ BraveEphemeralStorageServiceDelegate::BraveEphemeralStorageServiceDelegate(
           context
 #endif  // !BUILDFLAG(IS_ANDROID
           )),
-      shields_settings_service_(shields_settings_service) {
+      shields_settings_service_(shields_settings_service),
+      browsing_history_cleaner_(std::move(browsing_history_cleaner)) {
   DCHECK(context_);
   DCHECK(host_content_settings_map_);
   DCHECK(cookie_settings_);
@@ -184,7 +187,7 @@ void BraveEphemeralStorageServiceDelegate::CleanupFirstPartyStorageArea(
 
   content::BrowsingDataRemover::DataType data_to_remove =
       (content::BrowsingDataRemover::DATA_TYPE_ON_STORAGE_PARTITION &
-       chrome_browsing_data_remover::FILTERABLE_DATA_TYPES & chrome_browsing_data_remover::DATA_TYPE_HISTORY);
+       chrome_browsing_data_remover::FILTERABLE_DATA_TYPES);
 
   content::BrowsingDataRemover::OriginType origin_type =
       content::BrowsingDataRemover::ORIGIN_TYPE_UNPROTECTED_WEB |
@@ -203,19 +206,7 @@ void BraveEphemeralStorageServiceDelegate::CleanupFirstPartyStorageArea(
 void BraveEphemeralStorageServiceDelegate::CleanupTLDBrowsingHistory(
     const TLDEphemeralAreaKey& key) {
   DVLOG(1) << __func__ << " " << key.first << " " << key.second;
-
-  content::BrowsingDataRemover::OriginType origin_type =
-      content::BrowsingDataRemover::ORIGIN_TYPE_UNPROTECTED_WEB |
-      content::BrowsingDataRemover::ORIGIN_TYPE_PROTECTED_WEB;
-
-  auto filter_builder = content::BrowsingDataFilterBuilder::Create(
-      content::BrowsingDataFilterBuilder::Mode::kDelete);
-  filter_builder->AddRegisterableDomain(key.first);
-  filter_builder->SetStoragePartitionConfig(key.second);
-
-  content::BrowsingDataRemover* remover = context_->GetBrowsingDataRemover();
-  remover->RemoveWithFilter(base::Time(), base::Time::Max(), chrome_browsing_data_remover::DATA_TYPE_HISTORY,
-                            origin_type, std::move(filter_builder));
+  browsing_history_cleaner_->CleanupBrowsingHistoryForDomain(key.first);
 }
 
 void BraveEphemeralStorageServiceDelegate::OnApplicationBecameActive() {
@@ -400,6 +391,11 @@ BraveEphemeralStorageServiceDelegate::GetEphemeralDomainsToCleanOnAppClose() {
   }
 #endif
   return result;
+}
+
+bool BraveEphemeralStorageServiceDelegate::IsShredBrowsingHistoryEnabled() {
+  LOG(INFO) << "[SHRED] IsShredBrowsingHistoryEnabled:" << shields_settings_service_->IsShredBrowsingHistoryEnabled();
+  return true; // TODO return it back later
 }
 
 }  // namespace ephemeral_storage

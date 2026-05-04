@@ -226,7 +226,14 @@ void EphemeralStorageService::TLDEphemeralLifetimeDestroyed(
            << storage_partition_config;
   const GURL url(GetFirstPartyStorageURL(ephemeral_domain));
   const auto auto_shred_mode = delegate_->GetAutoShredMode(url);
-  const bool cleanup_browsing_history_for_tld = true; // TODO Here we should get value from website settings to understand what to do with history
+
+  // We should clean up the browsing history only if shred for browsing history
+  // is enabled and the shred operation has been started manually or by the app
+  // exit.
+  const bool cleanup_browsing_history_for_tld =
+      (cleanup_mode == StorageCleanupMode::kOnExitShred ||
+       cleanup_mode == StorageCleanupMode::kImmediateShred) &&
+      delegate_->IsShredBrowsingHistoryEnabled();
 
   const TLDEphemeralAreaKey key(ephemeral_domain, storage_partition_config);
   const bool cleanup_tld_ephemeral_area =
@@ -451,14 +458,14 @@ void EphemeralStorageService::ScheduleFirstPartyStorageAreasCleanupOnStartup() {
       base::Seconds(
           net::features::
               kBraveForgetFirstPartyStorageStartupCleanupDelayInSeconds.Get()),
-      base::BindOnce(
-          &EphemeralStorageService::CleanupFirstPartyStorageAreasOnStartup,
-          weak_ptr_factory_.GetWeakPtr()));
+      base::BindOnce(&EphemeralStorageService::CleanupOnStartup,
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
-void EphemeralStorageService::CleanupFirstPartyStorageAreasOnStartup() {
+void EphemeralStorageService::CleanupOnStartup() {
   DCHECK(!context_->IsOffTheRecord());
   ScopedListPrefUpdate pref_update(prefs_, kFirstPartyStorageOriginsToCleanup);
+
   for (const auto& url_to_cleanup :
        first_party_storage_areas_to_cleanup_on_startup_) {
     const auto url_and_storage_partition_config =
@@ -474,8 +481,15 @@ void EphemeralStorageService::CleanupFirstPartyStorageAreasOnStartup() {
       continue;
     }
 
-    delegate_->CleanupFirstPartyStorageArea(
-        {std::string(url.host()), storage_partition_config});
+    auto key =
+        std::make_pair(std::string(url.host()), storage_partition_config);
+    delegate_->CleanupFirstPartyStorageArea(key);
+
+    if (delegate_->IsShredBrowsingHistoryEnabled()) {
+      // We should clean up the browsing history if shred for browsing
+      // history is enabled
+      delegate_->CleanupTLDBrowsingHistory(key);
+    }
   }
   first_party_storage_areas_to_cleanup_on_startup_.clear();
 }

@@ -1,0 +1,42 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_BROWSER_EPHEMERAL_STORAGE_BROWSING_HISTORY_CLEANER_H_
+#define BRAVE_BROWSER_EPHEMERAL_STORAGE_BROWSING_HISTORY_CLEANER_H_
+
+#include "base/memory/raw_ptr.h"
+#include "chrome/browser/history/profile_based_browsing_history_driver.h"
+#include "components/history/core/browser/browsing_history_service.h"
+
+namespace content {
+class BrowserContext;
+}
+
+namespace ephemeral_storage {
+
+class BrowsingHistoryCleaner : public ProfileBasedBrowsingHistoryDriver {
+ public:
+  explicit BrowsingHistoryCleaner(content::BrowserContext* context);
+  ~BrowsingHistoryCleaner() override;
+
+  void CleanupBrowsingHistoryForDomain(const std::string& domain);
+
+ private:
+  // BrowsingHistoryDriver implementation.
+  void OnQueryComplete(
+      const std::vector<history::BrowsingHistoryService::HistoryEntry>&
+          query_results,
+      const history::BrowsingHistoryService::QueryResultsInfo&
+          query_results_info,
+      base::OnceClosure continuation_closure) override;
+  Profile* GetProfile() override;
+
+  base::raw_ptr<Profile> profile_;
+  std::unique_ptr<history::BrowsingHistoryService> browsing_history_service_;
+};
+
+}  // namespace ephemeral_storage
+
+#endif  // BRAVE_BROWSER_EPHEMERAL_STORAGE_BROWSING_HISTORY_CLEANER_H_
