@@ -118,6 +118,7 @@ test("brave_unit_tests") {
     "//brave/chromium_src/chrome/browser/signin/account_consistency_disabled_unittest.cc",
     "//brave/chromium_src/components/autofill/core/browser/studies/autofill_experiments_unittest.cc",
     "//brave/chromium_src/components/variations/service/field_trial_unittest.cc",
+    "//brave/chromium_src/content/browser/renderer_host/navigation_entry_impl_unittest.cc",
     "//brave/chromium_src/net/cookies/brave_canonical_cookie_unittest.cc",
     "//brave/common/brave_content_client_unittest.cc",
     "//brave/common/profiler/thread_profile_configuration_unittest.cc",
