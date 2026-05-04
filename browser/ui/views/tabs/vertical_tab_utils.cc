@@ -8,16 +8,19 @@
 #include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/command_line.h"
+#include "base/numerics/safe_conversions.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/switches.h"
+#include "build/build_config.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/views/frame/browser_frame_view.h"
+#include "chrome/browser/ui/views/frame/browser_widget.h"
 #include "components/prefs/pref_service.h"
-
 
 namespace tabs::utils {
 
@@ -79,6 +82,26 @@ bool IsFloatingVerticalTabsEnabled(const BrowserWindowInterface* browser) {
 bool IsVerticalTabOnRight(const BrowserWindowInterface* browser) {
   return browser->GetProfile()->GetPrefs()->GetBoolean(
       brave_tabs::kVerticalTabsOnRight);
+}
+
+std::pair<int, int> GetLeadingTrailingCaptionButtonWidth(
+    const BrowserWidget* frame) {
+#if BUILDFLAG(IS_MAC)
+  // On Mac, frame_view->GetBrowserLayoutParams() gives more wider width than
+  // we want.
+  return {80, 0};
+#elif BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
+  auto* frame_view = frame->GetFrameView();
+  if (!frame_view) {
+    return {};
+  }
+  const auto params = frame_view->GetBrowserLayoutParams();
+  return {
+      base::ClampCeil(params.leading_exclusion.ContentWithPadding().width()),
+      base::ClampCeil(params.trailing_exclusion.ContentWithPadding().width())};
+#else
+#error "not handled platform"
+#endif
 }
 
 bool ShouldHideVerticalTabsCompletelyWhenCollapsed(

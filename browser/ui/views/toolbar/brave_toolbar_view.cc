@@ -12,7 +12,6 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/functional/bind.h"
-#include "base/numerics/safe_conversions.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
@@ -36,7 +35,6 @@
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/bookmarks/bookmark_bubble_view.h"
-#include "chrome/browser/ui/views/frame/browser_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_divider.h"
@@ -501,19 +499,11 @@ void BraveToolbarView::UpdateHorizontalPadding() {
     return;
   }
 
-  auto* frame_view = browser_view_->browser_widget()->GetFrameView();
-  if (!frame_view) {
-    return;
-  }
-
   const gfx::Insets current_insets =
       container_view->GetBorder() ? container_view->GetBorder()->GetInsets()
                                   : gfx::Insets();
-  const auto params = frame_view->GetBrowserLayoutParams();
-  const int leading =
-      base::ClampCeil(params.leading_exclusion.ContentWithPadding().width());
-  const int trailing =
-      base::ClampCeil(params.trailing_exclusion.ContentWithPadding().width());
+  auto [leading, trailing] = tabs::utils::GetLeadingTrailingCaptionButtonWidth(
+      browser_view_->browser_widget());
 
   // Skip the SetBorder() call if insets are already correct. Layout triggers
   // this method and SetBorder() would invalidate layout again, causing a loop.

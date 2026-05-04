@@ -8,12 +8,12 @@
 #include "base/check.h"
 #include "base/functional/callback_helpers.h"
 #include "base/memory/raw_ptr.h"
-#include "base/numerics/safe_conversions.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/tabs/brave_split_tab_menu_model.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/side_panel_button.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -41,7 +41,6 @@
 #include "chrome/browser/ui/side_panel/side_panel_entry_key.h"
 #include "chrome/browser/ui/tabs/split_tab_menu_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
-#include "chrome/browser/ui/views/frame/browser_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/custom_corners_background.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
@@ -609,15 +608,14 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
 }
 
 // Verifies that UpdateHorizontalPadding() keeps the toolbar container border
-// in sync with BrowserFrameView::GetBrowserLayoutParams() across state changes.
+// in sync with GetLeadingTrailingCaptionButtonWidth() across state changes.
 // Guards against the Qt-theme regression where a fixed estimate was used
 // instead of real button bounds, causing caption buttons to overlap the
 // toolbar.
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
                        ToolbarPaddingMatchesFrameLayoutParams) {
-  auto* frame_view = BrowserView::GetBrowserViewForBrowser(browser())
-                         ->browser_widget()
-                         ->GetFrameView();
+  auto* browser_widget =
+      BrowserView::GetBrowserViewForBrowser(browser())->browser_widget();
   auto* container_view = toolbar_view_->location_bar_view()->parent();
   auto* prefs = browser()->profile()->GetPrefs();
 
@@ -629,11 +627,8 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
   prefs->SetBoolean(brave_tabs::kVerticalTabsShowTitleOnWindow, false);
   RunScheduledLayouts();
 
-  const auto params = frame_view->GetBrowserLayoutParams();
-  const int expected_left =
-      base::ClampCeil(params.leading_exclusion.ContentWithPadding().width());
-  const int expected_right =
-      base::ClampCeil(params.trailing_exclusion.ContentWithPadding().width());
+  auto [expected_left, expected_right] =
+      tabs::utils::GetLeadingTrailingCaptionButtonWidth(browser_widget);
 
   // If both exclusions are zero (headless / no caption buttons) the early-
   // return optimisation may leave the border as null — treat null as zero.

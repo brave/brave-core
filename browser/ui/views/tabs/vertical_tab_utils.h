@@ -6,6 +6,9 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_TABS_VERTICAL_TAB_UTILS_H_
 #define BRAVE_BROWSER_UI_VIEWS_TABS_VERTICAL_TAB_UTILS_H_
 
+#include <utility>
+
+class BrowserWidget;
 class BrowserWindowInterface;
 
 namespace tabs::utils {
@@ -35,6 +38,10 @@ bool ShouldHideVerticalTabsCompletelyWhenCollapsed(
 
 // Returns true when the vertical tab toggle should be enabled.
 bool IsVerticalTabToggleEnabled(BrowserWindowInterface* browser);
+
+// Returns window caption buttons' width based on the current platform
+std::pair<int, int> GetLeadingTrailingCaptionButtonWidth(
+    const BrowserWidget* frame);
 
 }  // namespace tabs::utils
 
