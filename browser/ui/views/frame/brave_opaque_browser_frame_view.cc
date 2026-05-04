@@ -123,7 +123,8 @@ void BraveOpaqueBrowserFrameView::Layout(PassKey key) {
   // Why frame view should ask toolbar's padding update?
   // This kind of exclusion should be handled by BrowserViewLayout.
   // BraveBrowserFrameViewLinuxNative::Layout() does same thing.
-  // TODO(): Investigate what's happening.
+  // TODO(https://github.com/brave/brave-browser/issues/55209):
+  // Investigate what's happening.
   static_cast<BraveToolbarView*>(GetBrowserView()->toolbar())
       ->UpdateHorizontalPadding();
 }
