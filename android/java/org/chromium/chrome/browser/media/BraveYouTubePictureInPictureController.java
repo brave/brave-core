@@ -63,9 +63,9 @@ public class BraveYouTubePictureInPictureController {
     static final String KEY_TAB_ID = "org.chromium.chrome.browser.media.YT_PIP_TAB_ID";
 
     /**
-     * Hard ceiling on how long we wait for YouTube's DOM to drop out of fullscreen after we ask
-     * it to. The fast path is event driven: a one shot WebContentsObserver fires the cleanup as
-     * soon as the renderer reports the fullscreen exit, which is typically much sooner than this
+     * Hard ceiling on how long we wait for YouTube's DOM to drop out of fullscreen after we ask it
+     * to. The fast path is event driven: a one shot WebContentsObserver fires the cleanup as soon
+     * as the renderer reports the fullscreen exit, which is typically much sooner than this
      * timeout. The ceiling exists only as a safety net for the case where the renderer never
      * reports the exit (broken page, JS failure, etc.).
      */
@@ -90,16 +90,17 @@ public class BraveYouTubePictureInPictureController {
     /**
      * One shot observer wired up by {@link #handleSessionExited} to fire {@code
      * maybeRestoreFullscreenUi} as soon as the renderer reports DOM fullscreen has exited. Held
-     * here only so we can detach it eagerly when the session ends or the activity is destroyed,
-     * so the observer never outlives the controller.
+     * here only so we can detach it eagerly when the session ends or the activity is destroyed, so
+     * the observer never outlives the controller.
      */
     private @Nullable WebContentsObserver mPendingFullscreenExitObserver;
 
     /**
-     * Identifier of the tab whose WebContents owns the active session, or {@link Tab#INVALID_TAB_ID}
-     * when no session is bound. Tab IDs are stable across activity recreation (the TabModel outlives
-     * the Activity), so persisting this lets us recover the session's WebContents after a config
-     * change without depending on the registry's WeakReference, which can be cleared by GC.
+     * Identifier of the tab whose WebContents owns the active session, or {@link
+     * Tab#INVALID_TAB_ID} when no session is bound. Tab IDs are stable across activity recreation
+     * (the TabModel outlives the Activity), so persisting this lets us recover the session's
+     * WebContents after a config change without depending on the registry's WeakReference, which
+     * can be cleared by GC.
      */
     private int mTabId = Tab.INVALID_TAB_ID;
 
@@ -215,8 +216,7 @@ public class BraveYouTubePictureInPictureController {
         // ever changes; without it, a mismatched binding would silently retarget recovery at
         // the wrong tab.
         final TabModelSelector tabModelSelector = mActivity.getTabModelSelector();
-        final Tab currentTab =
-                tabModelSelector != null ? tabModelSelector.getCurrentTab() : null;
+        final Tab currentTab = tabModelSelector != null ? tabModelSelector.getCurrentTab() : null;
         mTabId =
                 currentTab != null && currentTab.getWebContents() == webContents
                         ? currentTab.getId()
