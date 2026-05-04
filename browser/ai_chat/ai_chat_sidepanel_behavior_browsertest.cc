@@ -166,7 +166,7 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
   // actually attached to the browser window.
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
   ASSERT_TRUE(browser_view);
-  auto* side_panel = browser_view->toolbar_height_side_panel();
+  auto* side_panel = browser_view->side_panel();
   ASSERT_TRUE(side_panel);
   auto* view = side_panel->GetContentParentView()->GetViewByID(
       SidePanelWebUIView::kSidePanelWebViewId);

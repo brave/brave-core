@@ -2028,7 +2028,7 @@ INSTANTIATE_TEST_SUITE_P(
 // Covers both the default right-side and the explicitly set left-side layouts.
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarV2PanelPositionTest) {
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
-  auto* panel = browser_view->toolbar_height_side_panel();
+  auto* panel = browser_view->side_panel();
   panel->DisableAnimationsForTesting();
   SidebarContainerView* sidebar = GetSidebarContainerView();
   auto* prefs = browser()->profile()->GetPrefs();
@@ -2136,7 +2136,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarV2ActiveItemStateSync) {
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarV2NoUpstreamHeaderTest) {
   auto* panel_ui = browser()->GetFeatures().side_panel_ui();
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
-  auto* side_panel = browser_view->toolbar_height_side_panel();
+  auto* side_panel = browser_view->side_panel();
   side_panel->DisableAnimationsForTesting();
 
   panel_ui->Toggle();
@@ -2166,7 +2166,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
                        SidebarV2ResizeAreaPositionMatchesBorderState) {
   auto* panel_ui = browser()->GetFeatures().side_panel_ui();
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
-  auto* side_panel = browser_view->toolbar_height_side_panel();
+  auto* side_panel = browser_view->side_panel();
   side_panel->DisableAnimationsForTesting();
   auto* prefs = browser()->profile()->GetPrefs();
 

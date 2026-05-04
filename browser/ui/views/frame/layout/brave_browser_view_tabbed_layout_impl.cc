@@ -504,7 +504,7 @@ void BraveBrowserViewTabbedLayoutImpl::CalculateSideBarLayout(
     panel_layout->bounds.set_y(contents_bounds.y());
     panel_layout->bounds.set_height(contents_bounds.height());
   };
-  adjust_panel(views().toolbar_height_side_panel.get());
+  adjust_panel(views().side_panel.get());
 
   // Reduce contents bounds by the sidebar width on the sidebar side.
   if (on_left) {
