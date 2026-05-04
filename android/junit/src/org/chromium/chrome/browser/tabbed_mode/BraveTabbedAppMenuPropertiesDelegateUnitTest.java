@@ -121,6 +121,7 @@ import java.util.List;
     ChromeFeatureList.ANDROID_PAGE_INFO_AS_APP_MENU_ITEM,
     ChromeFeatureList.FEED_AUDIO_OVERVIEWS,
     ChromeFeatureList.GLIC,
+    ChromeFeatureList.LENS_OVERLAY_ANDROID,
     ChromeFeatureList.SUBMENUS_IN_APP_MENU,
     DomDistillerFeatures.READER_MODE_DISTILL_IN_APP,
     DomDistillerFeatures.READER_MODE_IMPROVEMENTS,
