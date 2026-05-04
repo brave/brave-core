@@ -27,7 +27,7 @@ void BraveSyncAccountDeletedInfoBarDelegate::Create(
     content::WebContents* active_web_contents,
     Profile* profile,
     Browser* browser) {
-  brave_sync::PrefsPlain brave_sync_prefs(profile->GetPrefs());
+  brave_sync::Prefs brave_sync_prefs(profile->GetPrefs());
   const bool notification_pending =
       brave_sync_prefs.IsSyncAccountDeletedNoticePending();
   if (!notification_pending) {
@@ -83,7 +83,7 @@ bool BraveSyncAccountDeletedInfoBarDelegate::ShouldExpire(
 }
 
 void BraveSyncAccountDeletedInfoBarDelegate::InfoBarDismissed() {
-  brave_sync::PrefsPlain brave_sync_prefs(profile_->GetPrefs());
+  brave_sync::Prefs brave_sync_prefs(profile_->GetPrefs());
   brave_sync_prefs.SetSyncAccountDeletedNoticePending(false);
 }
 
@@ -119,14 +119,14 @@ GURL BraveSyncAccountDeletedInfoBarDelegate::GetLinkURL() const {
 }
 
 bool BraveSyncAccountDeletedInfoBarDelegate::Accept() {
-  brave_sync::PrefsPlain brave_sync_prefs(profile_->GetPrefs());
+  brave_sync::Prefs brave_sync_prefs(profile_->GetPrefs());
   brave_sync_prefs.SetSyncAccountDeletedNoticePending(false);
   return true;
 }
 
 bool BraveSyncAccountDeletedInfoBarDelegate::LinkClicked(
     WindowOpenDisposition disposition) {
-  brave_sync::PrefsPlain brave_sync_prefs(profile_->GetPrefs());
+  brave_sync::Prefs brave_sync_prefs(profile_->GetPrefs());
   brave_sync_prefs.SetSyncAccountDeletedNoticePending(false);
   InfoBarDelegate::LinkClicked(disposition);
   return true;

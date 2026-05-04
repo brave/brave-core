@@ -304,14 +304,14 @@ void BraveSyncWorker::SetJoinSyncChainCallback(
 void BraveSyncWorker::ClearAccountDeletedNoticePending(JNIEnv* env) {
   Profile* profile =
       ProfileManager::GetActiveUserProfile()->GetOriginalProfile();
-  brave_sync::PrefsPlain brave_sync_prefs(profile->GetPrefs());
+  brave_sync::Prefs brave_sync_prefs(profile->GetPrefs());
   brave_sync_prefs.SetSyncAccountDeletedNoticePending(false);
 }
 
 bool BraveSyncWorker::IsAccountDeletedNoticePending(JNIEnv* env) {
   Profile* profile =
       ProfileManager::GetActiveUserProfile()->GetOriginalProfile();
-  brave_sync::PrefsPlain brave_sync_prefs(profile->GetPrefs());
+  brave_sync::Prefs brave_sync_prefs(profile->GetPrefs());
   return brave_sync_prefs.IsSyncAccountDeletedNoticePending();
 }
 

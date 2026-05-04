@@ -26,13 +26,16 @@ namespace brave_sync {
 
 inline constexpr char kCustomSyncServiceUrl[] = "brave_sync.sync_service_url";
 
-// Provides access to the prefs stored unencrypted.
-class PrefsPlain {
+class Prefs {
  public:
-  explicit PrefsPlain(PrefService* pref_service);
-  PrefsPlain(const PrefsPlain&) = delete;
-  PrefsPlain& operator=(const PrefsPlain&) = delete;
-  virtual ~PrefsPlain();
+  explicit Prefs(PrefService* pref_service);
+  Prefs(const Prefs&) = delete;
+  Prefs& operator=(const Prefs&) = delete;
+  virtual ~Prefs();
+
+  static void RegisterProfilePrefs(PrefRegistrySimple* registry);
+
+  static void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry);
 
   bool IsSyncAccountDeletedNoticePending() const;
   void SetSyncAccountDeletedNoticePending(bool is_pending);
@@ -50,33 +53,13 @@ class PrefsPlain {
       AddLeaveChainDetailBehaviour add_leave_chain_detail_behaviour);
   void Clear();
 
- protected:
-  const raw_ref<PrefService> pref_service_;
-  AddLeaveChainDetailBehaviour add_leave_chain_detail_behaviour_;
-};
-
-class Prefs : public PrefsPlain {
- public:
-  explicit Prefs(PrefService* pref_service,
-                 os_crypt_async::Encryptor encryptor);
-  Prefs(const Prefs&) = delete;
-  Prefs& operator=(const Prefs&) = delete;
-  ~Prefs() override;
-
-  static void RegisterProfilePrefs(PrefRegistrySimple* registry);
-
-  static void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry);
-
   static std::string GetSeedPath();
-
-  std::optional<std::string> GetSeed(
-      os_crypt_async::Encryptor::DecryptFlags* flags = nullptr) const;
-  bool SetSeed(const std::string& seed);
-
-  bool IsEncryptionAvailable() const;
+  std::string GetEncryptedSeed() const;
+  void SetEncryptedSeed(const std::string& encrypted_seed);
 
  private:
-  os_crypt_async::Encryptor encryptor_;
+  const raw_ref<PrefService> pref_service_;
+  AddLeaveChainDetailBehaviour add_leave_chain_detail_behaviour_;
 };
 
 void MigrateBraveSyncPrefs(PrefService* prefs);

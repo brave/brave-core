@@ -30,11 +30,11 @@ base::DictValue ConstructAboutInformation(
       section_brave_sync.AddBoolStat("Passphrase is set");
   BraveSyncServiceImpl* brave_sync_service =
       static_cast<BraveSyncServiceImpl*>(service);
-  if (!brave_sync_service->has_prefs()) {
+  if (!brave_sync_service->has_encryptor()) {
     details->Append(section_brave_sync.ToValue());
     return about_info;
   }
-  std::optional<std::string> seed = brave_sync_service->prefs().GetSeed();
+  std::optional<std::string> seed = brave_sync_service->GetSeed();
   // If the passphrase has been set, either we can see it or we failed to
   // decrypt it
   bool is_passphrase_set_val = !seed || !seed->empty();
@@ -51,8 +51,7 @@ base::DictValue ConstructAboutInformation(
 
   Stat<bool>* is_os_encryption_available =
       section_brave_sync.AddBoolStat("OS encryption available");
-  is_os_encryption_available->Set(
-      brave_sync_service->prefs().IsEncryptionAvailable());
+  is_os_encryption_available->Set(brave_sync_service->IsEncryptionAvailable());
 
   Stat<std::string>* leave_chain_details =
       section_brave_sync.AddStringStat("Leave chain details");

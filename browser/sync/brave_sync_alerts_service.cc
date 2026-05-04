@@ -39,9 +39,6 @@ BraveSyncAlertsService::~BraveSyncAlertsService() {}
 
 void BraveSyncAlertsService::OnStateChanged(SyncService* service) {
   auto* brave_sync_service = static_cast<BraveSyncServiceImpl*>(service);
-  if (!brave_sync_service->has_prefs()) {
-    return;
-  }
 
   if (!brave_sync_service->prefs().IsSyncAccountDeletedNoticePending()) {
     return;

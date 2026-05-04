@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/base64.h"
 #include "base/check.h"
 #include "base/files/file_path.h"
 #include "base/logging.h"
@@ -68,19 +67,13 @@ constexpr size_t kLeaveChainDetailsMaxLen = 500;
 
 }  // namespace
 
-PrefsPlain::PrefsPlain(PrefService* pref_service)
-    : pref_service_(*pref_service) {
+Prefs::Prefs(PrefService* pref_service) : pref_service_(*pref_service) {
 #if BUILDFLAG(IS_IOS)
   add_leave_chain_detail_behaviour_ = AddLeaveChainDetailBehaviour::kAdd;
 #else
   add_leave_chain_detail_behaviour_ = AddLeaveChainDetailBehaviour::kIgnore;
 #endif
 }
-
-PrefsPlain::~PrefsPlain() = default;
-
-Prefs::Prefs(PrefService* pref_service, os_crypt_async::Encryptor encryptor)
-    : PrefsPlain(pref_service), encryptor_(std::move(encryptor)) {}
 
 Prefs::~Prefs() = default;
 
@@ -128,59 +121,31 @@ std::string Prefs::GetSeedPath() {
   return kSyncV2Seed;
 }
 
-std::optional<std::string> Prefs::GetSeed(
-    os_crypt_async::Encryptor::DecryptFlags* flags) const {
-  const auto& encoded_seed = pref_service_->GetString(kSyncV2Seed);
-  if (encoded_seed.empty()) {
-    return std::string();
-  }
-
-  std::string encrypted_seed;
-  if (!base::Base64Decode(encoded_seed, &encrypted_seed)) {
-    LOG(ERROR) << "base64 decode sync seed failure";
-    return std::nullopt;
-  }
-
-  std::string seed;
-  if (!encryptor_.DecryptString(encrypted_seed, &seed, flags)) {
-    LOG(ERROR) << "Decrypt sync seed failure";
-    return std::nullopt;
-  }
-  return seed;
+std::string Prefs::GetEncryptedSeed() const {
+  return pref_service_->GetString(kSyncV2Seed);
 }
 
-bool Prefs::SetSeed(const std::string& seed) {
-  DCHECK(!seed.empty());
-  std::string encrypted_seed;
-  if (!encryptor_.EncryptString(seed, &encrypted_seed)) {
-    LOG(ERROR) << "Encrypt sync seed failure";
-    return false;
-  }
-  // String stored in prefs has to be UTF8 string so we use base64 to encode it.
-  pref_service_->SetString(kSyncV2Seed, base::Base64Encode(encrypted_seed));
-  SetSyncAccountDeletedNoticePending(false);
-  return true;
+void Prefs::SetEncryptedSeed(const std::string& encrypted_seed) {
+  return pref_service_->SetString(kSyncV2Seed, encrypted_seed);
 }
 
-bool PrefsPlain::IsFailedDecryptSeedNoticeDismissed() const {
+bool Prefs::IsFailedDecryptSeedNoticeDismissed() const {
   return pref_service_->GetBoolean(kSyncFailedDecryptSeedNoticeDismissed);
 }
 
-void PrefsPlain::DismissFailedDecryptSeedNotice() {
+void Prefs::DismissFailedDecryptSeedNotice() {
   pref_service_->SetBoolean(kSyncFailedDecryptSeedNoticeDismissed, true);
 }
 
-bool PrefsPlain::IsSyncAccountDeletedNoticePending() const {
+bool Prefs::IsSyncAccountDeletedNoticePending() const {
   return pref_service_->GetBoolean(kSyncAccountDeletedNoticePending);
 }
 
-void PrefsPlain::SetSyncAccountDeletedNoticePending(bool is_pending) {
+void Prefs::SetSyncAccountDeletedNoticePending(bool is_pending) {
   pref_service_->SetBoolean(kSyncAccountDeletedNoticePending, is_pending);
 }
 
-void PrefsPlain::AddLeaveChainDetail(const char* file,
-                                     int line,
-                                     const char* func) {
+void Prefs::AddLeaveChainDetail(const char* file, int line, const char* func) {
   if (add_leave_chain_detail_behaviour_ ==
       AddLeaveChainDetailBehaviour::kIgnore) {
     return;
@@ -203,36 +168,32 @@ void PrefsPlain::AddLeaveChainDetail(const char* file,
   pref_service_->SetString(kSyncLeaveChainDetails, updated_details);
 }
 
-std::string PrefsPlain::GetLeaveChainDetails() const {
+std::string Prefs::GetLeaveChainDetails() const {
   return pref_service_->GetString(kSyncLeaveChainDetails);
 }
 
-void PrefsPlain::ClearLeaveChainDetails() {
+void Prefs::ClearLeaveChainDetails() {
   pref_service_->ClearPref(kSyncLeaveChainDetails);
 }
 
 // static
-size_t PrefsPlain::GetLeaveChainDetailsMaxLenForTests() {
+size_t Prefs::GetLeaveChainDetailsMaxLenForTests() {
   return kLeaveChainDetailsMaxLen;
 }
 
 // static
-std::string PrefsPlain::GetLeaveChainDetailsPathForTests() {
+std::string Prefs::GetLeaveChainDetailsPathForTests() {
   return kSyncLeaveChainDetails;
 }
 
-void PrefsPlain::SetAddLeaveChainDetailBehaviourForTests(
+void Prefs::SetAddLeaveChainDetailBehaviourForTests(
     AddLeaveChainDetailBehaviour add_leave_chain_detail_behaviour) {
   add_leave_chain_detail_behaviour_ = add_leave_chain_detail_behaviour;
 }
 
-void PrefsPlain::Clear() {
+void Prefs::Clear() {
   pref_service_->ClearPref(kSyncV2Seed);
   pref_service_->ClearPref(kSyncFailedDecryptSeedNoticeDismissed);
-}
-
-bool Prefs::IsEncryptionAvailable() const {
-  return encryptor_.IsEncryptionAvailable();
 }
 
 void MigrateBraveSyncPrefs(PrefService* prefs) {

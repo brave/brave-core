@@ -11,8 +11,6 @@
 #include "base/test/gtest_util.h"
 #include "base/test/task_environment.h"
 #include "build/build_config.h"
-#include "components/os_crypt/async/browser/test_utils.h"
-#include "components/os_crypt/async/common/test_encryptor.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -27,21 +25,11 @@ using testing::Optional;
 
 namespace brave_sync {
 
-namespace {
-
-constexpr char kValidSyncCode[] =
-    "fringe digital begin feed equal output proof cheap "
-    "exotic ill sure question trial squirrel glove celery "
-    "awkward push jelly logic broccoli almost grocery drift";
-
-}  // namespace
-
 class BraveSyncPrefsTest : public testing::Test {
  protected:
   BraveSyncPrefsTest() {
     brave_sync::Prefs::RegisterProfilePrefs(pref_service_.registry());
-    brave_sync_prefs_ = std::make_unique<brave_sync::Prefs>(
-        &pref_service_, os_crypt_async::GetTestEncryptorForTesting());
+    brave_sync_prefs_ = std::make_unique<brave_sync::Prefs>(&pref_service_);
 #if BUILDFLAG(IS_ANDROID)
     syncer::SyncPrefs::RegisterProfilePrefs(pref_service_.registry());
     sync_prefs_ = std::make_unique<syncer::SyncPrefs>(&pref_service_);
@@ -61,40 +49,6 @@ class BraveSyncPrefsTest : public testing::Test {
 #endif
 };
 
-// Simulate a locked keychain or key rotation: a Prefs instance with a
-// different encryptor cannot decrypt data written by the original one.
-TEST_F(BraveSyncPrefsTest, ValidPassphraseKeyringLocked) {
-  brave_sync_prefs()->SetSeed(kValidSyncCode);
-  brave_sync::Prefs locked_prefs(&pref_service_,
-                                 os_crypt_async::GetTestEncryptorForTesting());
-  EXPECT_THAT(locked_prefs.GetSeed(), Eq(std::nullopt));
-}
-
-TEST_F(BraveSyncPrefsTest, FailedToDecryptBraveSeedValue) {
-  // Empty seed is expected as valid when sync is not turned on
-  EXPECT_THAT(brave_sync_prefs()->GetSeed(), Optional(IsEmpty()));
-
-  // Valid code round-trips correctly
-  brave_sync_prefs()->SetSeed(kValidSyncCode);
-  EXPECT_THAT(brave_sync_prefs()->GetSeed(), Eq(kValidSyncCode));
-
-  // Wrong base64-encoded seed must fail decryption
-  const char kWrongBase64String[] = "AA%BB";
-  std::string base64_decoded;
-  EXPECT_FALSE(base::Base64Decode(kWrongBase64String, &base64_decoded));
-  pref_service()->SetString(brave_sync::Prefs::GetSeedPath(),
-                            kWrongBase64String);
-  EXPECT_THAT(brave_sync_prefs()->GetSeed(), Eq(std::nullopt));
-
-  // Valid encrypted data but for a different key (e.g. key rotation or data
-  // from another machine) must fail decryption.
-  {
-    brave_sync::Prefs other_prefs(&pref_service_,
-                                  os_crypt_async::GetTestEncryptorForTesting());
-    ASSERT_TRUE(other_prefs.SetSeed(kValidSyncCode));
-  }
-  EXPECT_THAT(brave_sync_prefs()->GetSeed(), Eq(std::nullopt));
-}
 
 using BraveSyncPrefsDeathTest = BraveSyncPrefsTest;
 

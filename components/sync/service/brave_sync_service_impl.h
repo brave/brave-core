@@ -61,9 +61,12 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
 
   void Initialize(DataTypeController::TypeVector controllers) override;
 
-  bool has_prefs() const { return (bool)brave_sync_prefs_; }
-  const brave_sync::Prefs& prefs() const { return *brave_sync_prefs_; }
-  brave_sync::Prefs& prefs() { return *brave_sync_prefs_; }
+  bool has_encryptor() const;
+  bool IsEncryptionAvailable() const;
+  std::optional<std::string> GetSeed() const;
+
+  const brave_sync::Prefs& prefs() const { return brave_sync_prefs_; }
+  brave_sync::Prefs& prefs() { return brave_sync_prefs_; }
 
   void PermanentlyDeleteAccount(
       base::OnceCallback<void(const SyncProtocolError&)> callback);
@@ -80,6 +83,10 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
   friend class BraveSyncServiceImplTest;
   FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest,
                            ForcedSetDecryptionPassphrase);
+  FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest,
+                           ValidPassphraseKeyringLocked);
+  FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest,
+                           FailedToDecryptBraveSeedValue);
   FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest, OnAccountDeleted_Success);
   FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest,
                            OnAccountDeleted_FailureAndRetry);
@@ -95,7 +102,9 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
   void OnBraveSyncPrefsChanged(const std::string& path);
 
   void OnOsCryptAsyncReady(os_crypt_async::Encryptor encryptor);
-  void OnPrefsReady();
+  void OnEncryptorReady();
+  std::unique_ptr<os_crypt_async::Encryptor> SetEncryptorForTests(
+      os_crypt_async::Encryptor encryptor_for_tests);
 
   void PermanentlyDeleteAccountImpl(
       const int current_attempt,
@@ -133,7 +142,9 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
   void OnPrimaryAccountChanged(
       const signin::PrimaryAccountChangeEvent& event_details) override;
 
-  std::unique_ptr<brave_sync::Prefs> brave_sync_prefs_;
+  bool SetSeed(const std::string& seed);
+
+  brave_sync::Prefs brave_sync_prefs_;
 
   PrefChangeRegistrar brave_sync_prefs_change_registrar_;
 
@@ -160,8 +171,9 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
   // StopAndClear, but we don't want to invoke AddLeaveChainDetail in that case
   bool is_initializing_ = false;
 
+  std::unique_ptr<os_crypt_async::Encryptor> encryptor_;
+
   std::unique_ptr<SyncServiceImplDelegate> sync_service_impl_delegate_;
-  raw_ptr<os_crypt_async::OSCryptAsync> os_crypt_async_;
   base::OnceCallback<void(bool)> join_chain_result_callback_;
   base::WeakPtrFactory<BraveSyncServiceImpl> weak_ptr_factory_;
 

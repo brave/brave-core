@@ -43,7 +43,7 @@ void SyncCannotRunInfoBarDelegate::Create(
     Profile* profile,
     Browser* browser) {
   BraveSyncServiceImpl* brave_sync_service = GetSyncService(profile);
-  if (!brave_sync_service || !brave_sync_service->has_prefs()) {
+  if (!brave_sync_service || !brave_sync_service->has_encryptor()) {
     return;
   }
 
@@ -51,7 +51,7 @@ void SyncCannotRunInfoBarDelegate::Create(
     return;
   }
 
-  if (brave_sync_service->prefs().GetSeed().has_value()) {
+  if (brave_sync_service->GetSeed().has_value()) {
     return;
   }
 

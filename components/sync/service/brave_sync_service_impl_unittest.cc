@@ -30,6 +30,7 @@
 #include "build/build_config.h"
 #include "components/network_time/network_time_tracker.h"
 #include "components/os_crypt/async/browser/test_utils.h"
+#include "components/os_crypt/async/common/test_encryptor.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/signin/public/identity_manager/accounts_in_cookie_jar_info.h"
 #include "components/sync/base/data_type.h"
@@ -237,7 +238,8 @@ TEST_F(BraveSyncServiceImplTest, ValidPassphrase) {
   bool set_code_result = brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
   EXPECT_TRUE(set_code_result);
 
-  EXPECT_THAT(brave_sync_prefs()->GetSeed(), testing::Eq(kValidSyncCode));
+  EXPECT_THAT(brave_sync_service_impl()->GetSeed(),
+              testing::Eq(kValidSyncCode));
 }
 
 TEST_F(BraveSyncServiceImplTest, InvalidPassphrase) {
@@ -248,7 +250,7 @@ TEST_F(BraveSyncServiceImplTest, InvalidPassphrase) {
       brave_sync_service_impl()->SetSyncCode("word one and then two");
   EXPECT_FALSE(set_code_result);
 
-  EXPECT_THAT(brave_sync_prefs()->GetSeed(),
+  EXPECT_THAT(brave_sync_service_impl()->GetSeed(),
               testing::Optional(::testing::IsEmpty()));
 }
 
@@ -262,7 +264,8 @@ TEST_F(BraveSyncServiceImplTest, ValidPassphraseLeadingTrailingWhitespace) {
       brave_sync_service_impl()->SetSyncCode(sync_code_extra_whitespace);
   EXPECT_TRUE(set_code_result);
 
-  EXPECT_THAT(brave_sync_prefs()->GetSeed(), testing::Eq(kValidSyncCode));
+  EXPECT_THAT(brave_sync_service_impl()->GetSeed(),
+              testing::Eq(kValidSyncCode));
 }
 
 // Google test doc strongly recommends to use `*DeathTest` naming
@@ -315,7 +318,7 @@ TEST_F(BraveSyncServiceImplTest, StopAndClearForBraveSeed) {
 
   brave_sync_service_impl()->StopAndClearWithResetLocalDataReason();
 
-  EXPECT_THAT(brave_sync_prefs()->GetSeed(), Optional(IsEmpty()));
+  EXPECT_THAT(brave_sync_service_impl()->GetSeed(), Optional(IsEmpty()));
 }
 
 TEST_F(BraveSyncServiceImplTest, ForcedSetDecryptionPassphrase) {
@@ -417,6 +420,56 @@ TEST_F(BraveSyncServiceImplTest, OnSelfDeviceInfoDeleted) {
   data_type_manager_mock_ptr.release();
   brave_sync_service_impl()->data_type_manager_ =
       std::move(bak_data_type_manager);
+}
+
+// Simulate a locked keychain or key rotation: a Prefs instance with a
+// different encryptor cannot decrypt data written by the original one.
+TEST_F(BraveSyncServiceImplTest, ValidPassphraseKeyringLocked) {
+  CreateSyncService();
+  EXPECT_FALSE(engine());
+
+  brave_sync_service_impl()->SetSeed(kValidSyncCode);
+
+  brave_sync_service_impl()->SetEncryptorForTests(
+      os_crypt_async::GetTestEncryptorForTesting());
+
+  EXPECT_THAT(brave_sync_service_impl()->GetSeed(), Eq(std::nullopt));
+}
+
+TEST_F(BraveSyncServiceImplTest, FailedToDecryptBraveSeedValue) {
+  CreateSyncService();
+  EXPECT_FALSE(engine());
+
+  // Empty seed is expected as valid when sync is not turned on
+  EXPECT_THAT(brave_sync_service_impl()->GetSeed(), Optional(IsEmpty()));
+
+  // Valid code round-trips correctly
+  brave_sync_service_impl()->SetSeed(kValidSyncCode);
+  EXPECT_THAT(brave_sync_service_impl()->GetSeed(), Eq(kValidSyncCode));
+
+  // Since this test was moved here from BraveSyncPrefsTest
+  // we don't want anymore to BraveSyncServiceImpl::OnBraveSyncPrefsChanged get
+  // invoked
+  brave_sync_service_impl()->brave_sync_prefs_change_registrar_.RemoveAll();
+
+  // Wrong base64-encoded seed must fail decryption
+  const char kWrongBase64String[] = "AA%BB";
+  std::string base64_decoded;
+  EXPECT_FALSE(base::Base64Decode(kWrongBase64String, &base64_decoded));
+  pref_service()->SetString(brave_sync::Prefs::GetSeedPath(),
+                            kWrongBase64String);
+  EXPECT_THAT(brave_sync_service_impl()->GetSeed(), Eq(std::nullopt));
+
+  // Valid encrypted data but for a different key (e.g. key rotation or data
+  // from another machine) must fail decryption.
+  std::unique_ptr<os_crypt_async::Encryptor> original_encryptor =
+      brave_sync_service_impl()->SetEncryptorForTests(
+          os_crypt_async::GetTestEncryptorForTesting());
+  ASSERT_TRUE(brave_sync_service_impl()->SetSeed(kValidSyncCode));
+  brave_sync_service_impl()->SetEncryptorForTests(
+      std::move(*original_encryptor));
+
+  EXPECT_THAT(brave_sync_service_impl()->GetSeed(), Eq(std::nullopt));
 }
 
 TEST_F(BraveSyncServiceImplTest, PermanentlyDeleteAccount) {
