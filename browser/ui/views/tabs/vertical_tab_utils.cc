@@ -95,7 +95,7 @@ std::pair<int, int> GetLeadingTrailingCaptionButtonWidth(
   if (!frame_view) {
     return {};
   }
-  const auto params = frame_view->GetBrowserLayoutParams();
+  const BrowserLayoutParams params = frame_view->GetBrowserLayoutParams();
   return {
       base::ClampCeil(params.leading_exclusion.ContentWithPadding().width()),
       base::ClampCeil(params.trailing_exclusion.ContentWithPadding().width())};
