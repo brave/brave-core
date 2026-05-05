@@ -40,6 +40,8 @@ void ContainersBookmarkMenuModelDelegate::OnNoContainerSelected() {
 
 base::flat_set<std::string>
 ContainersBookmarkMenuModelDelegate::GetCurrentContainerIds() {
+  // The bookmark menu is not associated with any tab or link, so there are no
+  // current container IDs.
   return {};
 }
 
