@@ -314,4 +314,3 @@ bool BraveShieldsSettingsService::IsShredBrowsingHistoryEnabled() {
 }
 
 }  // namespace brave_shields
-

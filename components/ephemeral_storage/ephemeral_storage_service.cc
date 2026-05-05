@@ -111,7 +111,7 @@ void EphemeralStorageService::Shutdown() {
   }
   observer_list_.Clear();
   weak_ptr_factory_.InvalidateWeakPtrs();
-  
+
   // Reset delegate early to ensure proper cleanup order.
   // This prevents the delegate from being destroyed later when dependent
   // services (like HistoryService) may have already been shut down.

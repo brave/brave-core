@@ -64,6 +64,7 @@ class BraveEphemeralStorageServiceDelegate
 #endif
 
   bool IsShredBrowsingHistoryEnabled() override;
+
  private:
   std::vector<std::string> GetEphemeralDomainsToCleanOnAppClose();
 

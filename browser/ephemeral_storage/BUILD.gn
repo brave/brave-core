@@ -61,6 +61,8 @@ source_set("unit_tests") {
     "//brave/components/ephemeral_storage",
     "//chrome/browser",
     "//chrome/browser/content_settings:content_settings_factory",
+    "//chrome/browser/prefs",
+    "//chrome/browser/sync",
     "//chrome/test:test_support",
     "//components/content_settings/core/browser",
     "//components/keyed_service/core",

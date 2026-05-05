@@ -591,7 +591,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   registry->RegisterBooleanPref(
       brave_shields::prefs::kShredBrowsingHistoryEnabled, false);
-      
+
   OverrideDefaultPrefValues(registry);
 }
 

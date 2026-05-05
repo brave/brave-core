@@ -24,6 +24,7 @@
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
+#include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
@@ -45,7 +46,6 @@
 #include "net/test/embedded_test_server/request_handler_util.h"
 #include "services/network/public/cpp/network_switches.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
-#include "chrome/browser/history/history_service_factory.h"
 
 using content::RenderFrameHost;
 using content::WebContents;
@@ -1348,6 +1348,7 @@ class FirstPartyStorageCleanupSiteDataBrowserTest
     loop.Run();
     return history_count;
   }
+
  private:
   base::test::ScopedFeatureList scoped_feature_list_;
 };

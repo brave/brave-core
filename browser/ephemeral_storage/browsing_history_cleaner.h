@@ -33,7 +33,7 @@ class BrowsingHistoryCleaner : public ProfileBasedBrowsingHistoryDriver {
       base::OnceClosure continuation_closure) override;
   Profile* GetProfile() override;
 
-  base::raw_ptr<Profile> profile_;
+  raw_ptr<Profile> profile_ = nullptr;
   std::unique_ptr<history::BrowsingHistoryService> browsing_history_service_;
 };
 

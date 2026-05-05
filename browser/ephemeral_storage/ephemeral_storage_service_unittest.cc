@@ -35,7 +35,6 @@
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/browser/storage_partition_config.h"
 #include "content/public/test/browser_task_environment.h"
-#include "gmock/gmock.h"
 #include "net/base/features.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"

@@ -19,6 +19,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
+#include "brave/browser/ephemeral_storage/browsing_history_cleaner.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/browser/ephemeral_storage/tld_ephemeral_lifetime.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
@@ -41,7 +42,6 @@
 #include "net/base/schemeful_site.h"
 #include "net/base/url_util.h"
 #include "url/origin.h"
-#include "brave/browser/ephemeral_storage/browsing_history_cleaner.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/brave_browser.h"
