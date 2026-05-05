@@ -49,6 +49,14 @@
 <translation id="2998960761270772157">YouTube पर साइन इन, मेन्यू, कमेंट और वीडियो की जानकारी ब्लॉक हो जाती है.</translation>
 <translation id="8531835121131500698">YouTube Shorts को ब्लॉक करें</translation>
 <translation id="2167271714269158912">Youtube.com पर होम पेज, ट्रेंडिंग पेज और सर्च रिज़ल्ट से Shorts को ब्लॉक करें.</translation>
+<translation id="2564435705466025309">YouTube auto-dubbed वीडियो को ब्लॉक करें</translation>
+<translation id="3603500459037204525">youtube.com होम पेज और सर्च रिजल्ट्स पर auto-dubbed वीडियो को दिखने से रोकता है।</translation>
+<translation id="4067265130987656010">YouTube थंबनेल्स को ब्लॉक करें</translation>
+<translation id="3034711349887440574">youtube.com होम पेज और सर्च रिजल्ट्स पर थंबनेल्स को दिखने से रोकता है।</translation>
+<translation id="8741919213635379855">YouTube Playables को ब्लॉक करें</translation>
+<translation id="2216551241986578034">youtube.com होम पेज और सर्च रिजल्ट्स पर Playables को दिखने से रोकता है।</translation>
+<translation id="9038505474874975130">YouTube सदस्य-केवल वीडियो को ब्लॉक करें</translation>
+<translation id="3084239516382196983">youtube.com होम पेज और सर्च रिजल्ट्स पर सदस्य-केवल वीडियो को दिखने से रोकता है।</translation>
 <translation id="6052725679982758334">सोशल मीडिया ब्लॉकिंग</translation>
 <translation id="7498695072878479744">अन्य पक्ष के साइटों पर Google लॉगिन बटन की अनुमति दें</translation>
 <translation id="863171915776379000">Facebook लॉगिन और एम्बेडेड पोस्ट की अनुमति दें</translation>
@@ -966,9 +974,9 @@
 <translation id="5494920125229734069">सभी को चुनें</translation>
 <translation id="2361906291514218784">लियो AI</translation>
 <translation id="944736176598169208">रिवॉर्ड</translation>
-<translation id="4272190451231642425">अपने आप क्रैश रिपोर्ट भेजें</translation>
 <translation id="1199170151481311646">गोपनीयता-संरक्षण एनालिटिक्स</translation>
 <translation id="1706715315466634757">ईमेल उपनाम</translation>
+<translation id="738840791756723657">AI</translation>
 <translation id="6709133671862442373">समाचार</translation>
 <translation id="5990642573624858459">सांख्यिकी रिपोर्टिंग</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -980,8 +988,11 @@
 <translation id="2573819149217596923">Brave सुविधाएँ बदलना</translation>
 <translation id="7415416427817229128">Brave सुविधा को सक्षम या अक्षम करने के लिए परिवर्तन लागू करने के लिए ब्राउज़र को पुनः शुरू करने की आवश्यकता है। क्या आप अभी पुनः शुरू करना चाहते हैं?</translation>
 <translation id="2256115617011615191">अभी पुनः शुरू करें</translation>
+<translation id="2160089182263405907">फ़ीचर्स को बंद किया जा रहा है</translation>
+<translation id="3362364767724670721">Brave फ़ीचर को सक्षम या अक्षम करने के लिए ब्राउज़र को पुनः लॉन्च करने की आवश्यकता है। Origin अपडेट पूरा कर लेने के बाद कृपया <ph name="BEGIN_BOLD"/>अभी पुनः लॉन्च करें<ph name="END_BOLD"/> पर टैप करें।</translation>
+<translation id="1028940738207645746">क्या आप वाकई सभी सेटिंग्स को डिफ़ॉल्ट में रीसेट करना चाहते हैं?</translation>
+<translation id="5939518447894949180">रीसेट करें</translation>
 <translation id="8554205386170195281">खरीदें</translation>
-<translation id="7071521146534760487">अकाउंट मैनेज करें</translation>
 <translation id="8613144770663526433">Brave वॉलेट के साथ साइन इन करें</translation>
 <translation id="3696514931437952995">आप <ph name="ORIGIN"/> में साइन इन कर रहे हैं. Brave वॉलेट आपका पता <ph name="ORIGIN"/> के साथ शेयर करेगा.</translation>
 <translation id="1028781062521375153">विवरण देखें</translation>
@@ -1016,7 +1027,6 @@
 <translation id="1309636029062006520">अपने पसंदीदा ऑडियो और वीडियो की प्लेलिस्ट बनाएँ और कभी भी, कहीं भी चलाएँ।</translation>
 <translation id="7899390017499980820">प्लेलिस्ट बटन में जोड़ें</translation>
 <translation id="6901152954398668317">मीडिया को जोड़ने या निकालने के लिए, क्विक एक्सेस के लिए "प्लेलिस्ट में जोड़ें" बटन दिखाएँ या छिपाएँ।</translation>
-<translation id="5939518447894949180">रीसेट करें</translation>
 <translation id="8199028711686989861">ऑफ़लाइन मोड स्टोरेज सहित प्लेलिस्ट से सभी वीडियो निकालें।</translation>
 <translation id="4590997608186539865">प्लेलिस्ट</translation>
 <translation id="7525067979554623046">बनाएं</translation>
@@ -1163,4 +1173,20 @@
 <translation id="1724977129262658800">अपना पासवर्ड बदलने के लिए अनलॉक करें</translation>
 <translation id="5780792035410621042">पासवर्ड कॉपी करने के लिए, पहले अपने डिवाइस पर एक स्क्रीन लॉक सेट करें</translation>
 <translation id="7986497153528221272">पासवर्ड देखने के लिए, अपने डिवाइस पर एक स्क्रीन लॉक सेट करें</translation>
+<translation id="4882237634123415792">कस्टम सर्च इंजन</translation>
+<translation id="8364431224461158026">कस्टम सर्च इंजन जोडे़ं</translation>
+<translation id="7307935603426295341">कस्टम सर्च इंजन में बदलाव करें</translation>
+<translation id="4002066346123236978">शीर्षक</translation>
+<translation id="3653110185270660915">सर्च इंजन का नाम दर्ज करें</translation>
+<translation id="7400418766976504921">URL</translation>
+<translation id="6410668567036790476">सर्च इंजन जोड़ें</translation>
+<translation id="6289878295410648689">सर्च url लिखें और क्वेरी को <ph name="SPECIAL_SYMBOL"/> से बदलें।</translation>
+<translation id="8943582268084103903">उदाहरण के लिए: https://youtube.com/search?q=<ph name="SPECIAL_SYMBOL"/>। अगर साइट OpenSearch को सपोर्ट करती है, तो इस फ़ील्ड में बदलाव करते समय जोड़ने का विकल्प अपने-आप दिया जाएगा।</translation>
+<translation id="8706939021136180678">URL गलत है।</translation>
+<translation id="6528099556282059181">सर्च इंजन पहले ही जोड़ा जा चुका है।</translation>
+<translation id="463451857046640291">सर्च इंजन जोड़ने में विफल।</translation>
+<translation id="1229671956956864948">सर्च इंजन अपडेट करने में विफल।</translation>
+<translation id="1462771969120037152">सर्च इंजन हटाने में विफल। जो सर्च इंजन आप हटाने की कोशिश कर रहे हैं वह डिफ़ॉल्ट सर्च इंजन हो सकता है।</translation>
+<translation id="1079140196216383600">कस्टम सर्च इंजन हटाएं</translation>
+<translation id="525276572490219787">क्या आप वाकई "<ph name="SEARCH_ENGINE_NAME"/>" को हटाना चाहते हैं? यह क्रिया पूर्ववत नहीं की जा सकती।</translation>
 </translationbundle>

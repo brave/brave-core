@@ -64,6 +64,7 @@
 <translation id="1644574205037202324">History</translation>
 <translation id="1652197001188145583">When on, sites can ask to use NFC devices. When off, sites can't use NFC devices.</translation>
 <translation id="1660204651932907780">Allow sites to play sound (recommended)</translation>
+<translation id="1676590040242013349">'Always use secure connections' is on.</translation>
 <translation id="1677097821151855053">Cookies and other site data are used to remember you, for example, to sign you in or to personalise ads. To manage cookies for all sites, see <ph name="BEGIN_LINK"/>Settings<ph name="END_LINK"/>.</translation>
 <translation id="1679305402657584804">Sites can ask to use NFC devices</translation>
 <translation id="1686785653877010442">Sites usually send notifications to let you know about breaking news or chat messages.</translation>
@@ -125,7 +126,6 @@
 <translation id="2228071138934252756">To let <ph name="APP_NAME"/> access your camera, also turn on camera in <ph name="BEGIN_LINK"/>Android settings<ph name="END_LINK"/>.</translation>
 <translation id="2231160360698766265">Sites can play protected content</translation>
 <translation id="2235344399760031203">Third-party cookies are blocked</translation>
-<translation id="2238944249568001759">Suggested searches based on your last tab</translation>
 <translation id="2241587408274973373">New tab page cards</translation>
 <translation id="2241634353105152135">Just once</translation>
 <translation id="2253414712144136228"><ph name="NAME_OF_LIST_ITEM"/> Remove</translation>
@@ -166,11 +166,6 @@
 <translation id="2588271083332682494">Tidy up with tab groups</translation>
 <translation id="2597457036804169544">Don’t apply Dark theme to sites</translation>
 <translation id="2606760465469169465">Auto-verify</translation>
-<translation id="7615153661410655750">Manage in <ph name="BEGIN_LINK1"/>Android settings<ph name="END_LINK1"/>
-
-Advanced Protection controls these Brave settings:
-• 'Always use secure connections' is on.
-• 'JavaScript optimiser' is off. <ph name="BEGIN_LINK2"/>Manage site exceptions<ph name="END_LINK2"/></translation>
 <translation id="2621115761605608342">Allow JavaScript for a specific site.</translation>
 <translation id="2626708220538466178">Default browser bottom sheet closed</translation>
 <translation id="2653659639078652383">Submit</translation>
@@ -214,7 +209,6 @@ Advanced Protection controls these Brave settings:
 <translation id="3069226013421428034">Allow third-party sign-in for a specific site.</translation>
 <translation id="310297983047869047">Previous slide</translation>
 <translation id="3108122610701115301">Set default</translation>
-<translation id="3109724472072898302">Collapsed</translation>
 <translation id="310979712355504754">Delete all</translation>
 <translation id="311394601889664316">Don't allow sites to edit files or folders on your device</translation>
 <translation id="3114012059975132928">Video player</translation>
@@ -260,7 +254,6 @@ Advanced Protection controls these Brave settings:
 <translation id="3602290021589620013">Preview</translation>
 <translation id="3611658447322220736">Recently closed sites can finish sending and receiving data</translation>
 <translation id="3619294456800709762">Sites can enter picture-in-picture automatically</translation>
-<translation id="3628308229821498208">Suggested searches</translation>
 <translation id="3632460243282703117">Subscribe</translation>
 <translation id="363748948745453283">Using approximate location</translation>
 <translation id="3641456520301071208">Sites can ask for your location</translation>
@@ -441,7 +434,6 @@ Advanced Protection controls these Brave settings:
 <translation id="5515432237048785579">Discover feed bottom sheet opened at full height</translation>
 <translation id="5516455585884385570">Open notification settings</translation>
 <translation id="5527111080432883924">Ask before allowing sites to read text and images from the clipboard (recommended)</translation>
-<translation id="5553374991681107062">Latest</translation>
 <translation id="674221630984410403">Do not speed up sites with Brave's V8 engine but make Brave slightly more resistant to attacks</translation>
 <translation id="5556459405103347317">Reload</translation>
 <translation id="5591840828808741583"><ph name="SITE_NAME"/> blocked</translation>
@@ -521,7 +513,6 @@ Advanced Protection controls these Brave settings:
 <translation id="6231752747840485235">Uninstall '<ph name="APP_NAME"/>'?</translation>
 <translation id="4789073065838177382">Tap Browser app &gt; Brave</translation>
 <translation id="6260830281887654268">New tab page appearance theme collections bottom sheet opened at half height</translation>
-<translation id="6262191102408817757">Based on your last tab</translation>
 <translation id="6262279340360821358"><ph name="PERMISSION_1"/> and <ph name="PERMISSION_2"/> blocked</translation>
 <translation id="6270391203985052864">Sites can ask to send notifications</translation>
 <translation id="6295158916970320988">All sites</translation>
@@ -579,6 +570,7 @@ Advanced Protection controls these Brave settings:
 <translation id="6912998170423641340">Block sites from reading text and images from the clipboard</translation>
 <translation id="6945221475159498467">Select</translation>
 <translation id="6950072572526089586">A site you visit can save info about what you’re doing so that it works as expected – for example, to keep you signed in to a site or to save items in your shopping basket. Often sites save this info temporarily on your device.</translation>
+<translation id="6964291282260073066">'WebGPU' is disabled.</translation>
 <translation id="6965382102122355670">OK</translation>
 <translation id="6980507581230208647">Rose theme</translation>
 <translation id="6980861169612950611">Delete site data? <ph name="SITE_NAME"/></translation>
@@ -601,7 +593,6 @@ Advanced Protection controls these Brave settings:
 <translation id="7180611975245234373">Refresh</translation>
 <translation id="7188508872042490670">On-device site data</translation>
 <translation id="7201549776650881587">This action will clear all data and cookies stored by all sites under <ph name="ORIGIN"/> or by its app on your Home screen</translation>
-<translation id="7203150201908454328">Expanded</translation>
 <translation id="7213166370492037743">Don't allow sites to connect to any device on your local network</translation>
 <translation id="7219254577985949841">Delete site data?</translation>
 <translation id="723171743924126238">Select images</translation>
@@ -612,6 +603,9 @@ Advanced Protection controls these Brave settings:
 <translation id="7276071417425470385">When on, sites can ask to use virtual reality devices. When off, sites can't use virtual reality devices.</translation>
 <translation id="7282197670900591579">Citron theme</translation>
 <translation id="728412880473384942">Sites are faster but less secure</translation>
+<translation id="5843014938239239453">Manage in <ph name="BEGIN_LINK1"/>Android settings<ph name="END_LINK1"/>
+
+Advanced Protection controls these Brave settings:</translation>
 <translation id="7366415735885268578">Add a site</translation>
 <translation id="7368695150573390554">Any offline data will be deleted</translation>
 <translation id="7369678931043226462">Customise your new tab page bottom sheet opened at half height</translation>
@@ -675,7 +669,6 @@ Advanced Protection controls these Brave settings:
 <translation id="8007176423574883786">Turned off for this device</translation>
 <translation id="802154636333426148">Download failed</translation>
 <translation id="8033047164036749181">Subscribe for notifications from this site</translation>
-<translation id="8042586301629853791">Sort by:</translation>
 <translation id="8051193500142930381">Features that need a camera won't work</translation>
 <translation id="2495032782748793764">Brave default</translation>
 <translation id="8067883171444229417">Play video</translation>
@@ -723,6 +716,7 @@ Advanced Protection controls these Brave settings:
 <translation id="8471525937465764768">Sites usually connect to USB devices for features such as printing a document or saving to a storage device</translation>
 <translation id="8473055640493819707">'<ph name="APP_NAME"/>' is out of date. Please re-install the app.</translation>
 <translation id="847433688444405067">Browse across devices</translation>
+<translation id="8484556725636319115">'JavaScript optimiser' is off. <ph name="BEGIN_LINK2"/>Manage Site exceptions<ph name="END_LINK2"/></translation>
 <translation id="8487700953926739672">Available offline</translation>
 <translation id="848952951823693243">Always request mobile site</translation>
 <translation id="8492822722330266509">Sites can send pop-ups and use redirects</translation>

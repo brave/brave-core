@@ -31,7 +31,6 @@
 <translation id="4291722755910963157">Wypróbuj z Gemini w Brave</translation>
 <translation id="878572309106296578">Aby można było przeglądać urządzenia Bluetooth, Brave musi mieć dostęp do Bluetootha. <ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="1330562121671411446">Wykryj język</translation>
-<translation id="6204677860546245308">Użyj zalecanych ustawień przeglądarki Brave</translation>
 <translation id="108284536240904209">Usuń też dane z Brave (<ph name="URL"/>)</translation>
 <translation id="1345251407431278948">Przypięto. Możesz ponownie uzyskać dostęp do wyszukiwania obrazów za pomocą nowego przycisku na pasku narzędzi</translation>
 <translation id="1356661055722410047">Nowość! Możesz tłumaczyć tekst i obrazy na ekranie</translation>
@@ -52,11 +51,12 @@
 <translation id="6570689355868013775">Narzędzia bezpieczeństwa Brave</translation>
 <translation id="1902837727299679178">Brave chce usunąć Twoje dane z Menedżera haseł. Aby na to zezwolić, podaj hasło do systemu Windows.</translation>
 <translation id="4449148723378534338">Zapoznaj się z najważniejszymi funkcjami prywatności i bezpieczeństwa w Brave</translation>
+<translation id="5229247933547820267">Aby zapytać w Trybie AI o daną kartę bez opuszczania strony, zaloguj się w Brave. Będziesz też mieć dostęp do haseł i innych danych na wszystkich swoich urządzeniach.</translation>
 <translation id="1640672724030957280">Pobieram...</translation>
 <translation id="1680687534629375545">Zapytaj o tę stronę w usłudze wyszukiwania obrazów</translation>
+<translation id="509363484780540563">Możesz używać Brave za każdym razem, gdy klikniesz link w wiadomościach, dokumentach i innych aplikacjach. Przeglądarka zostanie też przypięta do paska zadań.</translation>
 <translation id="1709772298389099340">Przyznaje podwyższone uprawnienia <ph name="BROWSER_NAME"/>.</translation>
 <translation id="2913217021115517297">Aby pomóc w ulepszaniu tych funkcji, Brave wysyła informacje o Twoich interakcjach z nimi do Brave. Weryfikatorzy mogą odczytywać i przetwarzać te dane oraz dodawać do nich adnotacje.</translation>
-<translation id="1722488837206509557">Umożliwi Ci to wybranie dostępnych urządzeń i wyświetlanie na nich treści.</translation>
 <translation id="8004287232784878841">Brave usunie wkrótce dane przeglądania</translation>
 <translation id="4197839351786449392">Brave spróbuje uaktualnić elementy nawigacyjne do HTTPS</translation>
 <translation id="7814200940910057384">Wyczyszczono dane Brave</translation>
@@ -191,6 +191,7 @@
 <translation id="3045032126857188731">Język tłumaczenia: <ph name="LANGUAGE"/></translation>
 <translation id="3047590466164881923">Zamknij okno opinii</translation>
 <translation id="4503085212612536713">Inne profile Brave</translation>
+<translation id="2041039306630146369">Rozszerzenia to dodatki, które umożliwiają dostosowanie Brave. Dzięki nim możesz dopasować Brave do swoich potrzeb – od utrzymania porządku po łatwiejsze wykonywanie codziennych zadań.</translation>
 <translation id="7918740962659365265">Pomóż nam ulepszyć Brave, przesyłając do Brave raporty o awariach i <ph name="UMA_LINK"/></translation>
 <translation id="2332543193474246254">{NUM_DEVICES,plural, =0{Co najmniej 1 rozszerzenie do Brave uzyskuje dostęp do 1 urządzenia USB}=1{Co najmniej 1 rozszerzenie do Brave uzyskuje dostęp do 1 urządzenia USB}few{Co najmniej 1 rozszerzenie do Brave uzyskuje dostęp do # urządzeń USB}many{Co najmniej 1 rozszerzenie do Brave uzyskuje dostęp do # urządzeń USB}other{Co najmniej 1 rozszerzenie do Brave uzyskuje dostęp do # urządzenia USB}}</translation>
 <translation id="3700405816184340252">Historia Brave</translation>
@@ -217,8 +218,6 @@
 <translation id="8926637909431618259">Kontynuuj działanie aplikacji w tle po zamknięciu Brave</translation>
 <translation id="518125528057094977">Brave będzie Cię ostrzegać przed wczytywaniem stron, które korzystają z niezabezpieczonego połączenia</translation>
 <translation id="8652321858775514885">Gdy zamkniesz wszystkie okna Brave, wylogujesz się na większości stron, ale nie z konta Brave, o ile wcześniej zalogujesz się w Brave. Aby pozwolić witrynom na zapamiętywanie Twoich danych, <ph name="SETTINGS_LINK"/>.</translation>
-<translation id="3795277300264350702">Twoja domyślna wyszukiwarka została zmieniona poza Brave. Aby Cię chronić, przeglądarka Brave zresetowała to ustawienie.</translation>
-<translation id="5033074923607633232">Zaloguj się w Brave, aby mieć dostęp do haseł, zakładek oraz innych ustawień i danych na wszystkich swoich urządzeniach</translation>
 <translation id="3352986031709923790">prawy górny róg obszaru wyszukiwania: po prawej stronie <ph name="RIGHT"/>%, u góry <ph name="TOP"/>%</translation>
 <translation id="7261356974224431851">Dane Brave na Twoim koncie</translation>
 <translation id="3369405342922656244">Wyszukaj na tej stronie za pomocą wyszukiwania obrazów</translation>
@@ -423,6 +422,7 @@
 <translation id="5895138241574237353">Uruchom ponownie</translation>
 <translation id="5903106910045431592"><ph name="PAGE_TITLE"/> – logowanie do sieci</translation>
 <translation id="5924017743176219022">Łączę z internetem…</translation>
+<translation id="1275716786566134844">Przygotujmy Brave</translation>
 <translation id="5941711191222866238">Minimalizuj</translation>
 <translation id="5768962901674164501">Aby mieć dostęp do tej zakładki i innych funkcji na wszystkich swoich urządzeniach, zaloguj się w Brave</translation>
 <translation id="5101892358689285100">Dostosuj Brave do swoich potrzeb</translation>
@@ -459,6 +459,7 @@
 <translation id="5980269616827212166">Aby pobierać pliki, Brave musi mieć dostęp do pamięci</translation>
 <translation id="7651600795135059130">Sprawdza, czy URL jest na liście niebezpiecznych stron zapisanej w Brave.</translation>
 <translation id="5019879183386042809">Ustaw Brave jako domyślną przeglądarkę</translation>
+<translation id="6248988683584659830">Ustawienia wyszukiwania</translation>
 <translation id="7445061995866044926">Wylogować z Brave?</translation>
 <translation id="4659866260728515512">Te karty wykorzystują dodatkowe zasoby. Aby zwiększyć wydajność, pozwól Brave je dezaktywować.</translation>
 <translation id="6806912298071949921">Dostosuj swój profil Brave</translation>
@@ -616,6 +617,7 @@ Brave nie może odzyskać ustawień.</translation>
 <translation id="7810005234485217901">Możesz przypiąć wyszukiwanie obrazów, aby mieć do niego łatwy dostęp</translation>
 <translation id="1652855885539187849">Na tym urządzeniu istnieje już profil Brave z tym kontem</translation>
 <translation id="7845233973568007926">Dziękujemy za instalację. Przed rozpoczęciem korzystania z programu <ph name="BUNDLE_NAME"/> musisz ponownie uruchomić komputer.</translation>
+<translation id="7397737266068428588">Twoja wyszukiwarka została zmieniona poza Brave. Aby Cię chronić, przeglądarka Brave zresetowała to ustawienie do pierwotnej wartości domyślnej. <ph name="LEARN_MORE_LINK"/></translation>
 <translation id="9148690296223500734">Spersonalizuj przeglądarkę Brave, aby zmienić jej wygląd</translation>
 <translation id="7963515534397191222">Aktualizacja Brave do najnowszej wersji nie udała się, więc nie masz dostępu do najnowszych funkcji i poprawek zabezpieczeń.</translation>
 <translation id="7872446069773932638">Pobieram… Pozostało: <ph name="SECONDS"/> s.</translation>
@@ -744,6 +746,7 @@ Brave nie może odzyskać ustawień.</translation>
 <translation id="7535429826459677826">Wersja deweloperska Google Chrome</translation>
 <translation id="6283840329609797763">Instalacja nie powiodła się z powodu nieokreślonego błędu. Pobierz Brave ponownie.</translation>
 <translation id="1743665722170667430">Rozszerzenia, aplikacje i motywy z nieznanych źródeł mogą uszkodzić Twoje urządzenie. Brave zaleca instalowanie ich wyłącznie z <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/></translation>
+<translation id="5840822070878669614">Otwórz Web Store</translation>
 <translation id="6184592406110188164">To rozszerzenie narusza politykę Web Store i może być niebezpieczne. Usuń je z Brave, aby nie mogło już widzieć i zmieniać Twoich danych na odwiedzanych przez Ciebie stronach, w tym Twoich danych osobowych.</translation>
 <translation id="1299765473362724475">Ostrzeżenie: Brave nie może zapobiec rozszerzeniom zapisywania historii przeglądania. Aby wyłączyć to rozszerzenie w trybie prywatnym, usuń zaznaczenie tej opcji.</translation>
 <translation id="1448049584457347995">Aby poprawić bezpieczeństwo Brave, wyłączyliśmy niektóre rozszerzenia niedostępne w <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>, które mogły zostać dodane bez Twojej wiedzy.</translation>
@@ -751,6 +754,7 @@ Brave nie może odzyskać ustawień.</translation>
 <translation id="4624945300945265642">Otwórz link w oknie prywatnym Brave</translation>
 <translation id="6554952862405000915">Otwórz link w oknie prywatnym Brave</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{Dostępna jest aktualizacja Brave, która zostanie zastosowana natychmiast po ponownym uruchomieniu aplikacji.}=1{Dostępna jest aktualizacja Brave, która zostanie zastosowana natychmiast po ponownym uruchomieniu aplikacji. Okno prywatne nie otworzy się ponownie.}few{Dostępna jest aktualizacja Brave, która zostanie zastosowana natychmiast po ponownym uruchomieniu aplikacji. # okna prywatne nie otworzą się ponownie.}many{Dostępna jest aktualizacja Brave, która zostanie zastosowana natychmiast po ponownym uruchomieniu aplikacji. # okien prywatnych nie otworzy się ponownie.}other{Dostępna jest aktualizacja Brave, która zostanie zastosowana natychmiast po ponownym uruchomieniu aplikacji. # okna prywatne nie otworzą się ponownie.}}</translation>
+<translation id="7347727235538318126">To pozwoli Ci na udostępnianie treści z przeglądarki Brave na urządzenia lokalne, takie jak telewizor lub głośnik.</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Administrator prosi o ponowne uruchomienie Brave, by przeglądarka mogła zainstalować tę aktualizację}=1{Administrator prosi o ponowne uruchomienie Brave, by przeglądarka mogła zainstalować tę aktualizację. Okno prywatne nie otworzy się ponownie.}few{Administrator prosi o ponowne uruchomienie Brave, by przeglądarka mogła zainstalować tę aktualizację. # okna prywatne nie otworzą się ponownie.}many{Administrator prosi o ponowne uruchomienie Brave, by przeglądarka mogła zainstalować tę aktualizację. # okien prywatnych nie otworzy się ponownie.}other{Administrator prosi o ponowne uruchomienie Brave, by przeglądarka mogła zainstalować tę aktualizację. # okna prywatne nie otworzą się ponownie.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Administrator wymaga ponownego uruchomienia Brave, by przeglądarka mogła zainstalować aktualizację}=1{Administrator wymaga ponownego uruchomienia Brave, by przeglądarka mogła zainstalować aktualizację. Okno prywatne nie otworzy się ponownie.}few{Administrator wymaga ponownego uruchomienia Brave, by przeglądarka mogła zainstalować aktualizację. # okna prywatne nie otworzą się ponownie.}many{Administrator wymaga ponownego uruchomienia Brave, by przeglądarka mogła zainstalować aktualizację. # okien prywatnych nie otworzy się ponownie.}other{Administrator wymaga ponownego uruchomienia Brave, by przeglądarka mogła zainstalować aktualizację. # okna prywatne nie otworzą się ponownie.}}</translation>
 <translation id="1400696845469684552">{COUNT, plural,

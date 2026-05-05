@@ -483,6 +483,10 @@
 <translation id="1518915449477235311">Allow <ph name="URL"/> to open Leo AI conversations in Brave?</translation>
 <translation id="4355784577209159847">Allow use of third-party cookies for legacy Google sign-in</translation>
 <translation id="5770656036486891920"><ph name="URL"/> wants to use third-party cookies for legacy Google sign-in</translation>
+<translation id="5582087890067572966">🎉 You're now earning!</translation>
+<translation id="4364336119478610380">You earn whenever a notification like this appears on your screen. You don't need to click to earn.</translation>
+<translation id="5893017172751072752">You earn when a Brave Ads notification appears</translation>
+<translation id="3447730462826640312">You don't need to click to earn, but do click if you're interested!</translation>
 <translation id="2104347391516032700">Bat Rewards Service</translation>
 <translation id="5939518447894949180">Reset</translation>
 <translation id="3349204812119681938">Reset Brave Rewards</translation>
@@ -996,6 +1000,7 @@
 <translation id="2795015351889043417">JSON file</translation>
 <translation id="5468881191994555667">Choose file</translation>
 <translation id="795667975304826397">No file chosen</translation>
+<translation id="6720675936326555106">Selected file</translation>
 <translation id="5891811606602061966">Failed to import account, please try again.</translation>
 <translation id="6566535583781706170">Import account</translation>
 <translation id="5051929972046200722">Select your hardware wallet device</translation>
@@ -1042,10 +1047,12 @@
 <translation id="2416098547200943834">NOTE: private key is provided as a hex-encoded JSON that contains private key and protocol information. <ph name="LINK_START"/>Learn more<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">NOTE: private key must be provided as a hex-encoded JSON that contains private key and protocol information. <ph name="LINK_START"/>Learn more<ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">NOTE: Only <ph name="FORMAT"/> extended keys are supported.</translation>
+<translation id="6457746820359933716">Import using a JSON file exported from Polkadot.js or compatible wallets. Enter the password used to encrypt the export.</translation>
 <translation id="9133762451347918196">Testnet accounts</translation>
 <translation id="42126664696688958">Export</translation>
 <translation id="1366855498335432549">Deposit</translation>
 <translation id="790104325876206743">Account settings</translation>
+<translation id="8856844353253421399">Last updated <ph name="TIME_AGO"/> ago</translation>
 <translation id="6322030314101903925">No available assets</translation>
 <translation id="836614343069504000">Deposit or purchase tokens to get started. If you don't see tokens from an imported account, check the filters and display settings. Unknown tokens may need to be added as custom assets.</translation>
 <translation id="2902856457593699108">Show key</translation>
@@ -1164,10 +1171,10 @@
 <translation id="4324239559624557455">For 24 hours</translation>
 <translation id="9139452553033760558">For 1 week</translation>
 <translation id="1658834457013045127">Forever</translation>
-<translation id="6344138931392227467"><ph name="DEVICE_NAME"/> connected</translation>
-<translation id="7051244143160304048"><ph name="DEVICE_NAME"/> disconnected</translation>
-<translation id="5317781812114905957">Instructions</translation>
-<translation id="1178198982208000092">Connect your <ph name="DEVICE_NAME"/></translation>
+<translation id="5571630233760536706"><ph name="DEVICE_NAME"/> is connected</translation>
+<translation id="7058480232601314508"><ph name="DEVICE_NAME"/> is disconnected</translation>
+<translation id="434328838837168401">View instructions</translation>
+<translation id="6739517232898494646">Connect your <ph name="DEVICE_NAME"/> to continue</translation>
 <translation id="6941881257520473899">Hardware wallet requires confirmation on device.</translation>
 <translation id="2288190100157580461">Hardware wallet requires <ph name="NETWORK"/> App opened on <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">sent</translation>
@@ -1888,6 +1895,7 @@
 <translation id="4150336849480030462">SPL token transfer with associated token account creation</translation>
 <translation id="2244921323472112851">We can’t find the page you’re looking for right now.</translation>
 <translation id="6277237872689140644">It may have moved to a different place or the URL may contain a typo.</translation>
+<translation id="1788572014530152502">There was an error processing your transaction. In many cases, this means there isn't enough <ph name="SYMBOL"/> to cover the network fee. Try a smaller amount instead.</translation>
 <translation id="2737084171727561244">Go to Portfolio</translation>
 <translation id="3499452861061048987">Add token</translation>
 <translation id="5046066249040287308">Brave Wallet utility service</translation>
@@ -2572,7 +2580,8 @@
 <translation id="4724752924364329714">If this site seems broken, try Shields down.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Note: this may reduce Brave's privacy protections.<ph name="NOTE_AFTER"/></translation>
 <translation id="4329860807937715445">This may reduce Brave's privacy protections. <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
-<translation id="1574700443447059851">Trackers, ads and more blocked.</translation>
+<translation id="3889333301730272023"><ph name="BLOCK_COUNT"/> trackers, ads and more blocked</translation>
+<translation id="2275121279487164685">Trackers and ads</translation>
 <translation id="4968268657895673116">Is this site not working correctly with Shields up?</translation>
 <translation id="5412004902081180614">Report</translation>
 <translation id="3620004479054499575">Are you experiencing issues with this site?</translation>
@@ -2634,9 +2643,11 @@
 <translation id="3795015906457257780">You are viewing this site without Brave's privacy protections.</translation>
 <translation id="7194012750329511146">Brave Shields
 <ph name="NUMBER"/> Trackers, ads and more blocked</translation>
+<translation id="2900068182947574679">Scripts</translation>
 <translation id="4292121526390005808">Blocked scripts</translation>
 <translation id="5046271170844958713">Allowed scripts</translation>
 <translation id="199862531047218413">anti-fingerprinting protections applied</translation>
+<translation id="896105002981074545">Fingerprinting protections</translation>
 <translation id="5032505924781383272">Applied protections do not necessarily indicate that this web page is attempting to fingerprint your browser.</translation>
 <translation id="1905384713982899903">Blocked fingerprints</translation>
 <translation id="314364527871618241">Allowed fingerprints</translation>
@@ -2649,6 +2660,7 @@
 <translation id="542789539047208469">Site Info</translation>
 <translation id="7586067492365979844">Brave Shields has a new home and design. It now integrates with site information for a one-stop experience.</translation>
 <translation id="9114542678887529043">Brave Shields has a new home and design. Access it by clicking the site icon in the address bar.</translation>
+<translation id="4242533952199664413">Open settings</translation>
 <translation id="6294662480095808915">Privacy. By default.</translation>
 <translation id="4366423156486478559">Get Brave protection on every link you click. Just set Brave as default and browse. Privately.</translation>
 <translation id="3830912418080848377">Import Settings</translation>
@@ -2789,4 +2801,19 @@ Let's get you connected!</translation>
 <translation id="1602850501393095406">Press ↑ to highlight</translation>
 <translation id="8367705492654390392">Ask anything</translation>
 <translation id="8525248723479742219">Play later</translation>
+<translation id="2935698011275148880">Brave Origin</translation>
+<translation id="3983844925615091103">Welcome to Brave Origin. To continue, please buy or restore your Brave Origin purchase.</translation>
+<translation id="4801175670604644729">You need an active Brave Origin purchase to use this browser.</translation>
+<translation id="4144294274624829008">Restore Brave Origin purchase</translation>
+<translation id="6080178356113101120">Buy Brave Origin</translation>
+<translation id="1009496146858538651">Restore Purchase</translation>
+<translation id="3461564061600681423">Enter your purchase ID to activate your Brave Origin purchase.</translation>
+<translation id="2036379724374431790">Purchase ID</translation>
+<translation id="4348430971280118761">Enter your purchase ID</translation>
+<translation id="7451866456310404779">Verify purchase ID</translation>
+<translation id="8853195592604941919">Verifying… This may take a minute.</translation>
+<translation id="4633706444004110760">Thanks for installing Brave Origin, a version of the browser for users who don't need all the features that support Brave as a business, but still want the privacy that only Brave offers. Origin users will continue to benefit from Brave's industry-leading privacy, adblock, and speed (via Shields), as well as regular software updates, Chromium patches, and security and privacy improvements. Origin will remove most other features from the browser.</translation>
+<translation id="5816720995022674532">Origin is free to use on Linux devices, but still <ph name="BEGIN_LINK"/>available for purchase<ph name="END_LINK"/> if you'd like to support Brave as a business. Purchasing would also unlock the ability to use Origin on Android, iOS, macOS, and Windows devices.</translation>
+<translation id="3065220545261045367">Support Brave by purchasing Origin</translation>
+<translation id="2069499076031488636">Proceed with Origin for free on Linux</translation>
 </translationbundle>

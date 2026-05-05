@@ -483,6 +483,10 @@
 <translation id="1518915449477235311"><ph name="URL"/> ට Brave හි Leo AI සංවාද විවෘත කිරීමට ඉඩ දෙන්නද?</translation>
 <translation id="4355784577209159847">ලෙගසි Google පුරනය වීම සඳහා තෙවන පාර්ශ්ව කුකීස් භාවිතයට ඉඩ දෙන්න</translation>
 <translation id="5770656036486891920"><ph name="URL"/> හට Google පුරාණයේ උරුමය සඳහා තෙවන පාර්ශ්ව කුකීස් භාවිතා කිරීම අවශ්‍ය වේ</translation>
+<translation id="5582087890067572966">🎉 ඔබ දැන් උපයමින් සිටියි!</translation>
+<translation id="4364336119478610380">මෙවැනි දැනුම්දීමක් ඔබගේ තිරයේ දිස්වන සැමවිට ඔබට ඉපැයීමට හැකිය. ඔබ ඉපැයීම සඳහා එබීමට වුවමනා නැත.</translation>
+<translation id="5893017172751072752">බ්‍රේව් දැන්වීමක් දිස්වන විට ඔබ උපයනු ඇත</translation>
+<translation id="3447730462826640312">ඔබ ඉපැයීමට ඔබන්න අවශ්‍ය නැහැ, නමුත් ඔබ කැමති නම් ඔබන්න!</translation>
 <translation id="2104347391516032700">බැට් පාරිතෝෂික සේවාව</translation>
 <translation id="5939518447894949180">යළි සකසන්න</translation>
 <translation id="3349204812119681938">Brave පාරිතෝෂික යළි සකසන්න</translation>
@@ -996,6 +1000,7 @@
 <translation id="2795015351889043417">JSON ගොනුව</translation>
 <translation id="5468881191994555667">ගොනුවක් තෝරන්න</translation>
 <translation id="795667975304826397">ගොනුවක් තෝරා නැත</translation>
+<translation id="6720675936326555106">තෝරා ගත් ගොනුව</translation>
 <translation id="5891811606602061966">ගිණුම ආයාතයට අසමත් විය, කරුණාකර නැවත උත්සාහ කරන්න.</translation>
 <translation id="6566535583781706170">ගිණුම ආයාත කරන්න</translation>
 <translation id="5051929972046200722">ඔබගේ දෘඪාංග පසුම්බිය තෝරන්න</translation>
@@ -1042,10 +1047,12 @@
 <translation id="2416098547200943834">සටහන: පුද්ගලික යතුර පුද්ගලික යතුර සහ ප්‍රොටෝකෝල තොරතුරු අඩංගු හෙක්ස්-කේතන ලද JSON ලෙස සපයා ඇත. <ph name="LINK_START"/>තව දැනගන්න<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">සටහන: පුද්ගලික යතුර පුද්ගලික යතුර සහ ප්‍රොටෝකෝල තොරතුරු අඩංගු හෙක්ස්-කේතන ලද JSON එකක් ලෙස සැපයිය යුතුය. <ph name="LINK_START"/>තව දැනගන්න<ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">සටහන: <ph name="FORMAT"/> විස්තෘත යතුරු සඳහා පමණක් සහාය දක්වයි.</translation>
+<translation id="6457746820359933716">Polkadot.js හෝ ගැලපෙන ගිණුමෙන් අපනයනය කරන ලද JSON ගිණුම භාවිතයෙන් ආයාත කරන්න. අපනයනය සංකේතනය කිරීමට භාවිතා කරන ලද මුරපදය ඇතුළු කරන්න।</translation>
 <translation id="9133762451347918196">Testnet ගිණුම්</translation>
 <translation id="42126664696688958">නිර්යාත කරන්න</translation>
 <translation id="1366855498335432549">තැන්පත් කරන්න</translation>
 <translation id="790104325876206743">ගිණුමේ සැකසුම්</translation>
+<translation id="8856844353253421399">අවසාන යාවත්කාලය <ph name="TIME_AGO"/> ඉස්සර</translation>
 <translation id="6322030314101903925">පවතින වත්කම් නැත</translation>
 <translation id="836614343069504000">ආරම්භ ටෝකන තැන්පත් කිරීමට හෝ මිලදී ගන්න. ඔබට ආයාත කළ ගිණුමකින් ටෝකන නොපෙනේ නම්, පෙරහන් සහ සංදර්ශක සැකසුම් පරීක්ෂා කරන්න. නොදන්නා ටෝකන අභිරුචි වත්කම් ලෙස එක් කිරීමට අවශ්‍ය විය හැක.</translation>
 <translation id="2902856457593699108">යතුර පෙන්වන්න</translation>
@@ -1164,10 +1171,10 @@
 <translation id="4324239559624557455">පැය 24 ක්</translation>
 <translation id="9139452553033760558">සති 1 ක්</translation>
 <translation id="1658834457013045127">සදහටම</translation>
-<translation id="6344138931392227467"><ph name="DEVICE_NAME"/> සම්බන්ධයි</translation>
-<translation id="7051244143160304048"><ph name="DEVICE_NAME"/> විසන්ධි විය</translation>
-<translation id="5317781812114905957">උපදෙස්</translation>
-<translation id="1178198982208000092">ඔබගේ <ph name="DEVICE_NAME"/>සම්බන්ධ කරන්න</translation>
+<translation id="5571630233760536706"><ph name="DEVICE_NAME"/> සම්බන්ධයි</translation>
+<translation id="7058480232601314508"><ph name="DEVICE_NAME"/> විසන්ධි විය</translation>
+<translation id="434328838837168401">උපදෙස් බලන්න</translation>
+<translation id="6739517232898494646">ඉදිරියට ගැයීමට <ph name="DEVICE_NAME"/> සම්බන්ධ කරන්න</translation>
 <translation id="6941881257520473899">දෘංගාංග මුදල් පසුම්බියට සහතික කිරීමට අවශ්‍ය වේ.</translation>
 <translation id="2288190100157580461">දෘඪාංග පසුම්බිය සඳහා <ph name="NETWORK"/> අවශ්‍ය වේ <ph name="DEVICE_NAME"/>මත විවෘත කරන ලද යෙදුම</translation>
 <translation id="8687869982094542529">යැවිණි</translation>
@@ -1888,6 +1895,7 @@
 <translation id="4150336849480030462">ආශ්‍රිත නිමිති ගිණුමක් සෑදීමෙන් SPL නිමිති මාරු කිරීම</translation>
 <translation id="2244921323472112851">ඔබ සෙවූ පිටුව සොයාගත නොහැක.</translation>
 <translation id="6277237872689140644">එය වෙනස් වූ විටැවට මාරු කර ඇති හෝ URL එකේ ශුද්ධියක් ඇත.</translation>
+<translation id="1788572014530152502">ඔබගේ ගනුදෙනුව සැකසීමේදී දෝෂයක් ඇති විය. බොහෝ අවස්ථාවල, මෙයින් අදහස් වන්නේ ජාල ගාස්තුව ආවරණය කිරීමට ප්‍රමාණවත් <ph name="SYMBOL"/> නැති බවයි. ඒ වෙනුවට කුඩා ප්‍රමාණයක් උත්සාහ කරන්න.</translation>
 <translation id="2737084171727561244">පිවිසුම්පත් වෙත යන්න</translation>
 <translation id="3499452861061048987">ටෝකන් එකතු කරන්න</translation>
 <translation id="5046066249040287308">Brave පසුම්බි උපයෝගිතා සේවාව</translation>
@@ -2566,7 +2574,8 @@
 <translation id="4724752924364329714">අඩවියක් කැඩී ඇත්නම්, පලිහ අක්‍රිය කර බලන්න</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>සටහනක්: මෙය Brave හි ගෝපනියතාවය ආරක්ෂාවේ අඩුවක් ඇති කළ හැක.<ph name="NOTE_AFTER"/></translation>
 <translation id="4329860807937715445">මෙමින් Brave ගේ පෞද්ගලිකත්ව ආරක්ෂණ අඩු විය හැකිය. <ph name="LINK_BEFORE"/>තව දැනගන්න<ph name="LINK_AFTER"/></translation>
-<translation id="1574700443447059851">ලුහුබැඳීම්, දැන්වීම් සහ තවත් දෑ අවහිර කර ඇත.</translation>
+<translation id="3889333301730272023"><ph name="BLOCK_COUNT"/> ලුහුබැඳීම්, දැන්වීම් සහ තවත් දෑ අවහිර කර ඇත</translation>
+<translation id="2275121279487164685">ලුහුබැඳීම් හා දැන්වීම්</translation>
 <translation id="4968268657895673116">පලිහ සමඟ අඩවිය නිසියාකාරව වැඩ නොකරේ ද?</translation>
 <translation id="5412004902081180614">වාර්තා</translation>
 <translation id="3620004479054499575">ඔබ මෙම අඩවිය සමඟ ගැටළු වලට මුහුණ දේද?</translation>
@@ -2627,9 +2636,11 @@
 <translation id="2387532482048804818">පලිහ සමඟ අඩවිය නිසියාකාරව වැඩ නොකළේ නම් අපට කියන්න.</translation>
 <translation id="3795015906457257780">ඔබ මෙම අඩවිය බ්‍රේව් පෞද්ගලිකත්‍ව රැකවරණයකින් තොරව බලයි.</translation>
 <translation id="7194012750329511146">ලුහුබැඳීම්, දැන්වීම් <ph name="NUMBER"/> ක් හා තවත් දෑ අවහිර කර ඇත</translation>
+<translation id="2900068182947574679">ස්ක්‍රිප්‍ට්</translation>
 <translation id="4292121526390005808">අවහිර කළ අත්පත්</translation>
 <translation id="5046271170844958713">ඉඩ දුන් අත්පත්</translation>
 <translation id="199862531047218413">ඇඟිලි සටහන් බාධන රැකවරණ යෙදිණි</translation>
+<translation id="896105002981074545">ඇඟිලි සටහන් ආරක්ෂණ</translation>
 <translation id="5032505924781383272">මෙම පිටුව ඔබගේ අතිරික්සුවේ ඇඟිලි සටහන් ගැනීමට තැත් කරන බව යෙදූ රැකවරණ විශේෂයෙන් නොපෙන්වයි.</translation>
 <translation id="1905384713982899903">අවහිර ඇඟිලි සටහන්</translation>
 <translation id="314364527871618241">ඉඩ දුන් ඇඟිලි සටහන්</translation>
@@ -2642,6 +2653,7 @@
 <translation id="542789539047208469">අඩවිය පිළිබඳ තොරතුරු</translation>
 <translation id="7586067492365979844">Brave Shields එක නිවැරදි නිවාසයක් සහ සැලසුමක් ලබා ගත්තේය. එය දැන් අඩවි තොරතුරු සමග සහකර ඇත එක-නවතින අත්දැකීම සඳහා.</translation>
 <translation id="9114542678887529043">Brave Shields එක නිවැරදි නිවාසයක් සහ සැලසුමක් ලබා ගත්තේය. ලිපිනය තීරුවේ අඩවි නිරූපකය ක්ලික් කිරීමෙන් එය ප්‍රවේශ වන්න.</translation>
+<translation id="4242533952199664413">සැකසීම් විවෘත කරන්න</translation>
 <translation id="6294662480095808915">පෞද්ගලිකත්‍වය. පෙරනිමියෙන්.</translation>
 <translation id="4366423156486478559">ඔබ ඔබන සෑම සබැඳියකටම බ්‍රේව් රැකවරණය ලබා ගන්න. බ්‍රේව් පෙරනිමි ලෙස සකසා පිරික්සන්න. පෞද්ගලිකව.</translation>
 <translation id="3830912418080848377">සැකසුම් ආයත කරන්න</translation>
@@ -2781,4 +2793,19 @@
 <translation id="1602850501393095406">උද්දීපනය කිරීමට ↑ ඔබන්න</translation>
 <translation id="8367705492654390392">ඕනෑම දෙයක් අසන්න</translation>
 <translation id="8525248723479742219">පසුව වාදනය</translation>
+<translation id="2935698011275148880">Brave මූලය</translation>
+<translation id="3983844925615091103">Brave Origin වෙත සාදරයෙන් පිළිගනිමු. ඉදිරියට ගැයීමට, කරුණාකර ඔබගේ Brave Origin ගිණුම මිලදී ගන්න හෝ복원 කරන්න.</translation>
+<translation id="4801175670604644729">Brave Origin ගිණුම භාවිතා කිරීම සඳහා ඔබ සක්‍රීයව ගිණුම තිබිය යුතුය.</translation>
+<translation id="4144294274624829008">Brave Origin ගිණුම復元 කරන්න</translation>
+<translation id="6080178356113101120">Brave Origin මිලදී ගන්න</translation>
+<translation id="1009496146858538651">ගිණුම復元 කරන්න</translation>
+<translation id="3461564061600681423">ඔබගේ Brave Origin ගිණුම සක්‍රිය කිරීමට ඔබගේ ගිණුම ID ඇතුළු කරන්න.</translation>
+<translation id="2036379724374431790">ගිණුම ID</translation>
+<translation id="4348430971280118761">ඔබගේ ගිණුම ID ඇතුළු කරන්න</translation>
+<translation id="7451866456310404779">ගිණුම ID තහවුරු කරන්න</translation>
+<translation id="8853195592604941919">තහවුරු කිරීම... මෙයට විනාඩි එකක් ගත විය හැක.</translation>
+<translation id="4633706444004110760">Brave Origin ස්ථාපනය කිරීම ගැන ස්තුතියි, සියලුම විශේෂාංග අවශ්‍ය නොවන නමුත් Brave ඉදිරිපත් කරන ගෝපනීයතාව අවශ්‍ය අයට එය බ්‍රව්සරයේ අනුවාදයි. Origin පරිශීලකයින්ට Brave ගේ ගිණුම-ප්‍රමුඛ ගෝපනීයතාව, adblock සහ වේගය (Shields හරහා), නිත්‍යගත මෘදුකාංග යාවත්කාල, Chromium පැච්චම් සහ ඊට ඩිජිටල් ආරක්ෂණ හා ගෝපනීයතා වැඩිදුසුම් ඉතිරි විය.</translation>
+<translation id="5816720995022674532">Linux ගරාموवnices හි Origin භාවිතයට නිදහස්ම, නමුත් <ph name="BEGIN_LINK"/>මිලදී ගිය හැක<ph name="END_LINK"/> Brave ව්‍යාපාරයක් ලෙස සහාය දිය කැමති නම්. අයදුම්පත් කිරීම ද Android, iOS, macOS සහ Windows උපාංගවල Origin භාවිතා කිරීමේ හැකියාව අගුණ කරනු ඇත.</translation>
+<translation id="3065220545261045367">Origin මිලදී ගිණ Brave සහාය දෙන්න</translation>
+<translation id="2069499076031488636">Linux හි Origin සිටින්න නිදහසින් ඉදිරියට ගෙන යන්න</translation>
 </translationbundle>

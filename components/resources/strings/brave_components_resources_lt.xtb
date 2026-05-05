@@ -484,6 +484,10 @@
 <translation id="1518915449477235311">Leisti <ph name="URL"/> atverti „Leo“ DI pokalbius naršyklėje „Brave“?</translation>
 <translation id="4355784577209159847">Suteikti leidimą trečiųjų šalių slapukams prisijungti prie Google paskyros</translation>
 <translation id="5770656036486891920"><ph name="URL"/> nori naudoti trečiosios šalies slapukus senesniam prisijungimui prie „Google“</translation>
+<translation id="5582087890067572966">🎉 Dabar jūs uždirbate!</translation>
+<translation id="4364336119478610380">Jūs uždirbate, kai ekrane pasirodo toks pranešimas. Jums nereikia spustelėti, kad uždirbtumėte.</translation>
+<translation id="5893017172751072752">Jūs uždirbate kai pasirodo „Brave“ reklamos pranešimas</translation>
+<translation id="3447730462826640312">Jums nereikia spustelėti, kad uždirbtumėte, bet spustelėkite, jei jus tai domina!</translation>
 <translation id="2104347391516032700">BAT atlygių paslauga</translation>
 <translation id="5939518447894949180">Nustatyti iš naujo</translation>
 <translation id="3349204812119681938">Iš naujo nustatyti „Brave Rewards“</translation>
@@ -998,6 +1002,7 @@
 <translation id="2795015351889043417">JSON failas</translation>
 <translation id="5468881191994555667">Pasirinkti failą</translation>
 <translation id="795667975304826397">Failai nepasirinkti</translation>
+<translation id="6720675936326555106">Pasirinktas failas</translation>
 <translation id="5891811606602061966">Importuoti sąskaitos nepavyko, bandykite dar kartą.</translation>
 <translation id="6566535583781706170">Importuoti paskyrą</translation>
 <translation id="5051929972046200722">Pasirinkite aparatinės įrangos slaptažodinės įrenginį</translation>
@@ -1044,10 +1049,12 @@
 <translation id="2416098547200943834">PASTABA. Privatus raktas pateikiamas šešioliktainiu šifru užšifruotame JSON faile, kuriame yra privatus raktas ir protokolo informacija. <ph name="LINK_START"/>Sužinokite daugiau<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">PASTABA. Privatus raktas turi būti pateiktas šešioliktainiu šifru užšifruotame JSON faile, kuriame yra privatus raktas ir protokolo informacija. <ph name="LINK_START"/>Learn more<ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">PASTABA: Palaikomi tik <ph name="FORMAT"/> išplėstiniai raktai.</translation>
+<translation id="6457746820359933716">Importuokite naudodami JSON failą, eksportuotą iš Polkadot.js arba sudernamų piniginių. Įveskite slaptažodį, naudotą eksportui šifruoti.</translation>
 <translation id="9133762451347918196">Testnet paskyros</translation>
 <translation id="42126664696688958">Eksportuoti</translation>
 <translation id="1366855498335432549">Depozitas</translation>
 <translation id="790104325876206743">Paskyros nuostatos</translation>
+<translation id="8856844353253421399">Paskutinį kartą atnaujinta <ph name="TIME_AGO"/> atgal</translation>
 <translation id="6322030314101903925">Nėra turto</translation>
 <translation id="836614343069504000">Įneškite arba įsigykite žetonų, kad pradėtumėte. Jei nematote žetonų iš importuotos paskyros, patikrinkite filtrus ir rodymo nustatymus. Nežinomus žetonus gali tekti pridėti kaip pasirinktinį turtą.</translation>
 <translation id="2902856457593699108">Rodyti raktą</translation>
@@ -1166,10 +1173,10 @@
 <translation id="4324239559624557455">24 valandas</translation>
 <translation id="9139452553033760558">1 savaitę</translation>
 <translation id="1658834457013045127">Visada</translation>
-<translation id="6344138931392227467"><ph name="DEVICE_NAME"/> prijungtas</translation>
-<translation id="7051244143160304048"><ph name="DEVICE_NAME"/> atjungtas</translation>
-<translation id="5317781812114905957">Instrukcijos</translation>
-<translation id="1178198982208000092">Prijunkite savo <ph name="DEVICE_NAME"/></translation>
+<translation id="5571630233760536706"><ph name="DEVICE_NAME"/> prijungtas</translation>
+<translation id="7058480232601314508"><ph name="DEVICE_NAME"/> atjungtas</translation>
+<translation id="434328838837168401">Peržiūrėti instrukcijas</translation>
+<translation id="6739517232898494646">Prijunkite savo <ph name="DEVICE_NAME"/>, kad tęstumėte</translation>
 <translation id="6941881257520473899">Aparatinės įrangos piniginei reikia patvirtinimo įrenginyje.</translation>
 <translation id="2288190100157580461">Aparatinei piniginei reikia, kad įrenginyje <ph name="DEVICE_NAME"/> būtų atverta programa <ph name="NETWORK"/></translation>
 <translation id="8687869982094542529">išsiųsta</translation>
@@ -1890,6 +1897,7 @@
 <translation id="4150336849480030462">SPL žetonų perdavimas ir susijusios žetonų paskyros sukūrimas</translation>
 <translation id="2244921323472112851">Negalime rasti puslapio, kurio šiuo metu ieškote.</translation>
 <translation id="6277237872689140644">Jis gali būti perkeltas į kitą vietą arba URL yra rinkimo klaida.</translation>
+<translation id="1788572014530152502">Apdorojant jūsų sandorį įvyko klaida. Daugeliu atvejų tai reiškia, kad nepakanka <ph name="SYMBOL"/>, skirtos tinklo mokesčiui. Bandykite mažesnę sumą.</translation>
 <translation id="2737084171727561244">Eiti į portfelį</translation>
 <translation id="3499452861061048987">Pridėti prieigos raktą</translation>
 <translation id="5046066249040287308">„Brave“ piniginės paslaugų programos</translation>
@@ -2571,7 +2579,8 @@
 <translation id="4724752924364329714">Jei atrodo, kad ši svetainė neveikia, pabandykite nuleisti skydus.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Pastaba: tai gali sumažinti "Brave" privatumo apsaugą.<ph name="NOTE_AFTER"/></translation>
 <translation id="4329860807937715445">Tai gali sumažinti Brave privatumo apsaugą. <ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
-<translation id="1574700443447059851">Sekikliai, reklamos ir kt. užblokuoti.</translation>
+<translation id="3889333301730272023"><ph name="BLOCK_COUNT"/> sekikliai, reklamos ir kt. užblokuoti</translation>
+<translation id="2275121279487164685">Sekikliai ir reklamos</translation>
 <translation id="4968268657895673116">Ar ši svetainė neworkiko tinkamai, kai skydai buvo įjungti?</translation>
 <translation id="5412004902081180614">Pranešti</translation>
 <translation id="3620004479054499575">Ar susiduriate su šios svetainės problemomis?</translation>
@@ -2633,9 +2642,11 @@
 <translation id="3795015906457257780">Šią svetainę peržiūrite be „Brave“ privatumo apsaugos.</translation>
 <translation id="7194012750329511146">„Brave“ skydai
 <ph name="NUMBER"/> sekikliai, reklamos ir kt. užblokuoti</translation>
+<translation id="2900068182947574679">Skriptai</translation>
 <translation id="4292121526390005808">Užblokuoti scenarijai</translation>
 <translation id="5046271170844958713">Leidžiami scenarijai</translation>
 <translation id="199862531047218413">taikomos kontrolinių kodų apsaugos priemonės</translation>
+<translation id="896105002981074545">Kontrolinio kodo apsaugos</translation>
 <translation id="5032505924781383272">Taikomos apsaugos priemonės nebūtinai reiškia, kad šis tinklalapis bando paimti jūsų naršyklės kontrolinius kodus.</translation>
 <translation id="1905384713982899903">Blokuojami kontroliniai kodai</translation>
 <translation id="314364527871618241">Leidžiami kontroliniai kodai</translation>
@@ -2648,6 +2659,7 @@
 <translation id="542789539047208469">Svetainės informacija</translation>
 <translation id="7586067492365979844">"Brave Shields" turi naujus namus ir dizainą. Dabar jis integruotas su svetainės informacija, kad būtų galima naudotis vienu langeliu.</translation>
 <translation id="9114542678887529043">"Brave Shields" turi naujus namus ir dizainą. Jį pasieksite paspaudę svetainės piktogramą adreso juostoje.</translation>
+<translation id="4242533952199664413">Atidaryti nustatymus</translation>
 <translation id="6294662480095808915">Privatumas, be jokių kalbų.</translation>
 <translation id="4366423156486478559">„Brave“ visuomet jus saugo – kad ir kurią nuorodą spustelėtumėte. Nustatykite „Brave“ numatytąja naršykle ir naršykite. Privačiai.</translation>
 <translation id="3830912418080848377">Importavimo nustatymai</translation>
@@ -2788,4 +2800,19 @@ Būkite prisijungę!</translation>
 <translation id="1602850501393095406">Paspauskite ↑, kad paryškintumėte</translation>
 <translation id="8367705492654390392">Klauskite bet ko</translation>
 <translation id="8525248723479742219">Leisti vėliau</translation>
+<translation id="2935698011275148880">Drąsi kilmė</translation>
+<translation id="3983844925615091103">Sveiki atvykę į Brave Origin. Norėdami tęsti, įsigykite arba atkurkite savo Brave Origin pirkimą.</translation>
+<translation id="4801175670604644729">Norėdami naudoti šią naršyklę, turite aktyvų Brave Origin pirkimą.</translation>
+<translation id="4144294274624829008">Atkurti Brave Origin pirkimą</translation>
+<translation id="6080178356113101120">Nusipirkti Brave Origin</translation>
+<translation id="1009496146858538651">Atkurti pirkimą</translation>
+<translation id="3461564061600681423">Įveskite savo pirkimo ID, kad suaktyvintumėte savo Brave Origin pirkimą.</translation>
+<translation id="2036379724374431790">Pirkimo ID</translation>
+<translation id="4348430971280118761">Įveskite savo pirkimo ID</translation>
+<translation id="7451866456310404779">Patvirtinti pirkimo ID</translation>
+<translation id="8853195592604941919">Tikrinimas… Tai gali užtrukti minutę.</translation>
+<translation id="4633706444004110760">Dėkojame, kad įdiegėte Brave Origin – naršyklės versiją naudotojams, kuriems nereikalingos visos funkcijos, palaikančios Brave kaip verslą, tačiau kurie vis dar nori privatumo, kurį siūlo tik Brave. Origin naudotojai toliau turės prieigą prie Brave pirmaujančio privatumo, blokavimo ir greičio (per Shields), taip pat reguliarius programinės įrangos atnaujinimus, Chromium pataisas bei saugą ir privatumą gerinančius patobulinimus. Origin pašalins daugumą kitų naršyklės funkcijų.</translation>
+<translation id="5816720995022674532">Origin naudojimas Linux įrenginiuose yra nemokamas, tačiau jis vis dar <ph name="BEGIN_LINK"/>pasiekiamas pirkimui<ph name="END_LINK"/>, jei norėtumėte palaikyti Brave kaip verslą. Pirkimas taip pat atrakintų galimybę naudoti Origin Android, iOS, macOS ir Windows įrenginiuose.</translation>
+<translation id="3065220545261045367">Palaikykite Brave pirkdami Origin</translation>
+<translation id="2069499076031488636">Tęsti naudojant Origin nemokamai Linux</translation>
 </translationbundle>

@@ -483,6 +483,10 @@
 <translation id="1518915449477235311">Wil je toestaan dat <ph name="URL"/> Leo AI-gesprekken opent in Brave?</translation>
 <translation id="4355784577209159847">Geef toestemming voor cookies van derden bij een verouderd Google-inlogproces</translation>
 <translation id="5770656036486891920"><ph name="URL"/> wil cookies van derden gebruiken voor een verouderd Google-inlogproces.</translation>
+<translation id="5582087890067572966">🎉 U bent nu beloningen aan het verdienen!</translation>
+<translation id="4364336119478610380">U verdient elke keer beloningen als er een melding zoals deze op uw scherm verschijnt. U hoeft niet op een melding te klikken om beloningen te verdienen.</translation>
+<translation id="5893017172751072752">U verdient beloningen wanneer er een melding van Brave Advertenties verschijnt</translation>
+<translation id="3447730462826640312">U hoeft niet op een melding te klikken om te verdienen, maar klik er vooral op als u er geïnteresseerd in bent!</translation>
 <translation id="2104347391516032700">Bat Beloningen-service</translation>
 <translation id="5939518447894949180">Resetten</translation>
 <translation id="3349204812119681938">Brave Rewards opnieuw instellen</translation>
@@ -996,6 +1000,7 @@
 <translation id="2795015351889043417">JSON-bestand</translation>
 <translation id="5468881191994555667">Bestand kiezen</translation>
 <translation id="795667975304826397">Geen bestand gekozen</translation>
+<translation id="6720675936326555106">Geselecteerd bestand</translation>
 <translation id="5891811606602061966">Fout bij het importeren van het account. Probeer het opnieuw.</translation>
 <translation id="6566535583781706170">Account importeren</translation>
 <translation id="5051929972046200722">Selecteer je hardwarewalletapparaat</translation>
@@ -1042,10 +1047,12 @@
 <translation id="2416098547200943834">OPMERKING: privésleutel wordt geleverd als een hexadecimaal gecodeerde JSON die informatie bevat over de privésleutel en het protocol. <ph name="LINK_START"/>Meer informatie<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">OPMERKING: privésleutel moet worden geleverd als een hexadecimaal gecodeerde JSON die informatie bevat over de privésleutel en het protocol. <ph name="LINK_START"/>Meer informatie<ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">OPMERKING: Alleen uitgebreide <ph name="FORMAT"/>-sleutels worden ondersteund.</translation>
+<translation id="6457746820359933716">Importeren met behulp van een JSON-bestand dat vanuit Polkadot.js of compatibele wallets is geëxporteerd. Voer het wachtwoord in dat is gebruikt voor het versleutelen van de export.</translation>
 <translation id="9133762451347918196">Testnet-accounts</translation>
 <translation id="42126664696688958">Exporteren</translation>
 <translation id="1366855498335432549">Storting</translation>
 <translation id="790104325876206743">Accountinstellingen</translation>
+<translation id="8856844353253421399">Laatst bijgewerkt <ph name="TIME_AGO"/> geleden</translation>
 <translation id="6322030314101903925">Geen beschikbare assets</translation>
 <translation id="836614343069504000">Stort of koop tokens om te beginnen. Indien u geen tokens van een geïmporteerd account ziet, controleer dan de filter- en weergave-instellingen. Onbekende tokens moeten mogelijk worden toegevoegd als aangepaste assets.</translation>
 <translation id="2902856457593699108">Sleutel weergeven</translation>
@@ -1164,10 +1171,10 @@
 <translation id="4324239559624557455">24 uur</translation>
 <translation id="9139452553033760558">1 week</translation>
 <translation id="1658834457013045127">Altijd</translation>
-<translation id="6344138931392227467"><ph name="DEVICE_NAME"/> verbonden</translation>
-<translation id="7051244143160304048"><ph name="DEVICE_NAME"/> losgekoppeld</translation>
-<translation id="5317781812114905957">Instructies</translation>
-<translation id="1178198982208000092">Maak verbinding met <ph name="DEVICE_NAME"/></translation>
+<translation id="5571630233760536706"><ph name="DEVICE_NAME"/> is verbonden</translation>
+<translation id="7058480232601314508"><ph name="DEVICE_NAME"/> is losgekoppeld</translation>
+<translation id="434328838837168401">Instructies weergeven</translation>
+<translation id="6739517232898494646">Verbind uw <ph name="DEVICE_NAME"/> om door te gaan</translation>
 <translation id="6941881257520473899">Er is op de hardware wallet een bevestiging vereist.</translation>
 <translation id="2288190100157580461">Hardwarewallet vereist <ph name="NETWORK"/>-app geopend op <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">verzonden</translation>
@@ -1888,6 +1895,7 @@
 <translation id="4150336849480030462">Overdracht van SPL-tokens met bijbehorende aanmaak van token-account</translation>
 <translation id="2244921323472112851">We kunnen de pagina die je zoekt nu niet vinden.</translation>
 <translation id="6277237872689140644">Misschien is die verplaatst of bevat de URL een typefout.</translation>
+<translation id="1788572014530152502">Er is een fout opgetreden bij het verwerken van uw transactie. In veel gevallen betekent dit dat er onvoldoende <ph name="SYMBOL"/> beschikbaar is om de netwerkvergoeding te dekken. Probeer in plaats daarvan een kleiner bedrag.</translation>
 <translation id="2737084171727561244">Naar portfolio</translation>
 <translation id="3499452861061048987">Token toevoegen</translation>
 <translation id="5046066249040287308">Brave Wallet-hulpprogramma</translation>
@@ -2572,7 +2580,8 @@
 <translation id="4724752924364329714">Als deze site kapot lijkt, probeer dan Shields down.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Opmerking: dit kan de privacybescherming van Brave verminderen.<ph name="NOTE_AFTER"/></translation>
 <translation id="4329860807937715445">Dit kan Brave's privacybeschermingen verminderen. <ph name="LINK_BEFORE"/>Meer informatie<ph name="LINK_AFTER"/></translation>
-<translation id="1574700443447059851">Trackers, advertenties en meer hebben  geblokkeerd.</translation>
+<translation id="3889333301730272023"><ph name="BLOCK_COUNT"/> trackers, advertenties en meer geblokkeerd</translation>
+<translation id="2275121279487164685">Trackers en advertenties</translation>
 <translation id="4968268657895673116">Laat ons weten of de website niet goed werkte terwijl Shields geactiveerd waren?</translation>
 <translation id="5412004902081180614">Meldingen</translation>
 <translation id="3620004479054499575">Ondervindt u problemen met deze site?</translation>
@@ -2634,9 +2643,11 @@
 <translation id="3795015906457257780">U bekijkt deze website zonder enige privacybescherming van Brave.</translation>
 <translation id="7194012750329511146">Brave Shields
 <ph name="NUMBER"/> Trackers, advertenties en meer geblokkeerd</translation>
+<translation id="2900068182947574679">Scripts</translation>
 <translation id="4292121526390005808">Geblokkeerde scripts</translation>
 <translation id="5046271170844958713">Toegestane scripts</translation>
 <translation id="199862531047218413">bescherming tegen fingerprinting toegepast</translation>
+<translation id="896105002981074545">Bescherming tegen fingerprinting</translation>
 <translation id="5032505924781383272">De toegepaste bescherming betekent niet noodzakelijk dat deze webpagina een vingerafdruk van je browser probeert te maken.</translation>
 <translation id="1905384713982899903">Geblokkeerde vingerafdrukken</translation>
 <translation id="314364527871618241">Toegestane vingerafdrukken</translation>
@@ -2649,6 +2660,7 @@
 <translation id="542789539047208469">Sitegegevens</translation>
 <translation id="7586067492365979844">Brave Shields heeft een nieuw thuis en ontwerp. Het integreert nu met site-informatie voor een alles-in-één ervaring.</translation>
 <translation id="9114542678887529043">Brave Shields heeft een nieuw thuis en ontwerp. U kunt het openen door op het sitepictogram in de adresbalk te klikken.</translation>
+<translation id="4242533952199664413">Instellingen openen</translation>
 <translation id="6294662480095808915">Privacy. Standaard.</translation>
 <translation id="4366423156486478559">Ontvang bescherming door Brave voor elke link waarop u klikt. Stel Brave in als uw standaardbrowser en zoek privé.</translation>
 <translation id="3830912418080848377">Instellingen importeren</translation>
@@ -2789,4 +2801,19 @@ Laten we je verbinding snel in orde brengen!</translation>
 <translation id="1602850501393095406">Druk op ↑ om te markeren</translation>
 <translation id="8367705492654390392">Stel een vraag</translation>
 <translation id="8525248723479742219">Later afspelen</translation>
+<translation id="2935698011275148880">Dappere Oorsprong</translation>
+<translation id="3983844925615091103">Welkom bij Brave Origin. Om door te gaan, kunt u uw Brave Origin-aankoop kopen of herstellen.</translation>
+<translation id="4801175670604644729">U hebt een actieve Brave Origin-aankoop nodig om deze browser te gebruiken.</translation>
+<translation id="4144294274624829008">Brave Origin-aankoop herstellen</translation>
+<translation id="6080178356113101120">Brave Origin kopen</translation>
+<translation id="1009496146858538651">Aankoop herstellen</translation>
+<translation id="3461564061600681423">Voer uw aankoopid in om uw Brave Origin-aankoop te activeren.</translation>
+<translation id="2036379724374431790">Aankoopid</translation>
+<translation id="4348430971280118761">Voer uw aankoopid in</translation>
+<translation id="7451866456310404779">Aankoopid verifiëren</translation>
+<translation id="8853195592604941919">Verifiëren... Dit kan een minuut duren.</translation>
+<translation id="4633706444004110760">Bedankt voor de installatie van Brave Origin, een browserversie voor gebruikers die niet alle functies nodig hebben die Brave als bedrijf ondersteunen, maar nog steeds de privacy willen die alleen Brave biedt. Origin-gebruikers blijven profiteren van de toonaangevende privacy, adblocking en snelheid (via Shields) van Brave, evenals regelmatige software-updates, Chromium-patches en verbeteringen op het gebied van beveiliging en privacy. Origin zal de meeste andere functies uit de browser verwijderen.</translation>
+<translation id="5816720995022674532">Origin is gratis te gebruiken op Linux-apparaten, maar kan ook <ph name="BEGIN_LINK"/>aangeschaft<ph name="END_LINK"/> worden als u Brave als bedrijf wilt ondersteunen. Als u aanschaft, ontgrendelt u ook de mogelijkheid om Origin op Android-, iOS-, macOS- en Windows-apparaten te gebruiken.</translation>
+<translation id="3065220545261045367">Ondersteun Brave door Origin aan te schaffen</translation>
+<translation id="2069499076031488636">Ga verder met Origin gratis op Linux</translation>
 </translationbundle>

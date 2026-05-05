@@ -483,6 +483,10 @@
 <translation id="1518915449477235311">ອະນຸຍາດເວັບໄຊ <ph name="URL"/> ເປີດໃຊ້ການສົນທະນາ Leo AI ໃນ Brave?</translation>
 <translation id="4355784577209159847">ການໃຊ້ງານຄຸກຄິ້ນຈາກວັດທະນະທຳອື່ນສຳລັບ Google Sign-In ເກົ່າ.</translation>
 <translation id="5770656036486891920"><ph name="URL"/> ຕ້ອງການໃຊ້ຄຸກຄິ້ນຈາກວັດທະນະທຳອື່ນສຳລັບ Google Sign-In ເກົ່າ.</translation>
+<translation id="5582087890067572966">🎉 ທ່ານກຳລັງຫາລາຍໄດ້ແລ້ວ!</translation>
+<translation id="4364336119478610380">ທ່ານຫາລາຍໄດ້ໃນແຕ່ລະເທື່ອທີ່ການແຈ້ງເຕືອນເຊັ່ນນີ້ປາກົດຂຶ້ນໃນໜ້າຈໍຂອງທ່ານ. ທ່ານບໍ່ຈໍາເປັນຕ້ອງຄລິກເພື່ອຫາລາຍໄດ້.</translation>
+<translation id="5893017172751072752">ທ່ານຫາລາຍໄດ້ເມື່ອມີການແຈ້ງເຕືອນ Brave Ads ປາກົດຂຶ້ນ</translation>
+<translation id="3447730462826640312">ທ່ານບໍ່ຈໍາເປັນຕ້ອງຄລິກເພື່ອຫາລາຍໄດ້, ແຕ່ໃຫ້ຄລິກຖ້າທ່ານສົນໃຈ!</translation>
 <translation id="2104347391516032700">Bat Rewards Service</translation>
 <translation id="5939518447894949180">ຈົ່ງໂຫມດ</translation>
 <translation id="3349204812119681938">ຈົ່ງໂຫມດ Brave Rewards</translation>
@@ -982,6 +986,7 @@
 <translation id="2795015351889043417">ແຟ້ມ JSON</translation>
 <translation id="5468881191994555667">ເລືອກແຟ້ມ</translation>
 <translation id="795667975304826397">ບໍ່ໄດ້ເລືອກແຟ້ມ</translation>
+<translation id="6720675936326555106">ເລືອກໄຟລ໌ແລ້ວ</translation>
 <translation id="5891811606602061966">ບໍ່ສໍາເລັດນຳເຂົ້າບັນຊີ, ກະລຸນາລອງອີກຄັ້ງ.</translation>
 <translation id="6566535583781706170">ປ້ອນ CISqa</translation>
 <translation id="5051929972046200722">ເລືອກກະເປົາສຕາງ</translation>
@@ -1028,10 +1033,12 @@
 <translation id="2416098547200943834">ໝາຍເຫດ: ລະຫັດສ່ວນຕົວຖືກສະໜອງໃຫ້ເປັນ JSON ທີ່ເຂົ້າລະຫັດ hex ເຊິ່ງປະກອບດ້ວຍລະຫັດສ່ວນຕົວ ແລະ ຂໍ້ມູນໂປໂຕຄອນ. <ph name="LINK_START"/>ສຶກສາເພີ່ມເຕີມ<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">ໝາຍເຫດ: ລະຫັດສ່ວນຕົວຕ້ອງໄດ້ສະໜອງໃຫ້ເປັນ JSON ທີ່ເຂົ້າລະຫັດດ້ວຍເລກຖານສິບຫົກ ເຊິ່ງປະກອບດ້ວຍລະຫັດສ່ວນຕົວ ແລະ ຂໍ້ມູນໂປຣໂຕຄອນ. <ph name="LINK_START"/>ສຶກສາເພີ່ມເຕີມ<ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">ໝາຍເຫດ: ຮອງຮັບພຽງແຕ່ປຸ່ມທີ່ຂະຫຍາຍອອກ <ph name="FORMAT"/> ເທົ່ານັ້ນ.</translation>
+<translation id="6457746820359933716">ໃຊ້ກາລສົ່ງອອກໄຟລ໌ JSON ຈາກ Polkadot.js ຫຼືກະເປົາເງິນທີ່ເຫມາະສົມ. ໃສ່ລະຫັດຜ່ານທີ່ໃຊ້ເພື່ອເຂົ້າລະຫັດການສົ່ງອອກ.</translation>
 <translation id="9133762451347918196">ບັນຊີເທັດເນັດ</translation>
 <translation id="42126664696688958">ດາວນ໌ໂຫລດ</translation>
 <translation id="1366855498335432549">ຝາກເງິນເຂົ້າ</translation>
 <translation id="790104325876206743">ຕັ້ງຄ່າບັນຊີ</translation>
+<translation id="8856844353253421399">ອັບເດດລ່າສຸດ <ph name="TIME_AGO"/> ມາແລ້ວ</translation>
 <translation id="6322030314101903925">ບໍ່ມີຊັບສິນທີ່ມີຢູ່</translation>
 <translation id="836614343069504000">ຝາກເງິນ ຫຼື ຊື້ໂທເຄັນເພື່ອເລີ່ມຕົ້ນ. ຖ້າທ່ານບໍ່ເຫັນໂທເຄັນຈາກບັນຊີທີ່ນຳເຂົ້າ, ໃຫ້ກວດສອບຕົວກອງ ແລະ ການຕັ້ງຄ່າການສະແດງຜົນ. ອາດຈະຕ້ອງເພີ່ມໂທເຄັນທີ່ບໍ່ຮູ້ຈັກເປັນຊັບສິນທີ່ກຳນົດເອງ.</translation>
 <translation id="2902856457593699108">ເຫັນກຸດ</translation>
@@ -1150,10 +1157,10 @@
 <translation id="4324239559624557455">ໃຫ້ 24 ຊົ່ວໂມງ</translation>
 <translation id="9139452553033760558">ໃຫ້ໜື່ງອທິດ</translation>
 <translation id="1658834457013045127">ຕະຫຼອດໄປ</translation>
-<translation id="6344138931392227467"><ph name="DEVICE_NAME"/> ໄດ້ເຊື່ອມແລ້ວ</translation>
-<translation id="7051244143160304048"><ph name="DEVICE_NAME"/> ບໍ່ໄດ້ເຊື່ອມ</translation>
-<translation id="5317781812114905957">ຄຳແນະນຳ</translation>
-<translation id="1178198982208000092">ເຊື່ອມຕໍ່ອຸປະກອນ <ph name="DEVICE_NAME"/> ຂອງທ່ານ</translation>
+<translation id="5571630233760536706"><ph name="DEVICE_NAME"/> ເຊື່ອມຕໍ່ແລ້ວ</translation>
+<translation id="7058480232601314508"><ph name="DEVICE_NAME"/> ບໍ່ໄດ້ເຊື່ອມ</translation>
+<translation id="434328838837168401">ເບິ່ງຄໍາແນະນຳ</translation>
+<translation id="6739517232898494646">ເຊື່ອມຕໍ່ <ph name="DEVICE_NAME"/> ຂອງທ່ານເພື່ອສືບຕໍ່</translation>
 <translation id="6941881257520473899">ກະເປົາເງິນຮັບການຢືນຢັນເທດສັງ</translation>
 <translation id="2288190100157580461">ກະເປົາເງິນຮັບການF
 <ph name="NETWORK"/>P/<ph name="DEVICE_NAME"/></translation>
@@ -1872,6 +1879,7 @@
 <translation id="4150336849480030462">ການໂອນໂທເຄັນ SPL ກັບການສ້າງບັນຊີໂທເຄັນທີ່ກ່ຽວຂ້ອງ</translation>
 <translation id="2244921323472112851">ພວກເຮົາບໍ່ສາມາດພົບໜ້າທີ່ທ່ານກໍາລັງມອງເບິ່ງຢູ່ໃນຂະນະນີ້.</translation>
 <translation id="6277237872689140644">ມັນມີສໍາລາຂອງນຫາທີ່ຕ່າງກັນ ຫຼືທີ່ URL ອາດຈະປະກອບດ້ວຍຄໍາຜິດ.</translation>
+<translation id="1788572014530152502">ມີຂໍ້ຜິດພາດໃນການປະມວນຜົນທຳນຽບຂອງທ່ານ. ໃນຫຼາຍກໍລະນີ, ນີ້ຫມາຍຄວາມວ່າບໍ່ມີ <ph name="SYMBOL"/> ພຽງພໍເພື່ອຄຸມຄ່າຜິດໄປຍັງເຄືອຂ່າຍ. ລອງຈໍານວນທີ່ນ້ອຍກວ່າແທນ.</translation>
 <translation id="2737084171727561244">ໄປທີ່ພິລະເຫດ</translation>
 <translation id="3499452861061048987">ຕື່ມໂທເກີນ</translation>
 <translation id="5046066249040287308">Brave Wallet Utility Service</translation>
@@ -2556,7 +2564,8 @@
 <translation id="4724752924364329714">ຖ້າເວັບໄຊທ໌ນີ້ສະແດງຜົນຜິດປົກກະຕິ, ລອງປິດ Shields ເບິ່ງ.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>ໝາຍເຫດ: ນີ້ອາດຈະຫຼຸດລະດັບການປົກປ້ອງຄວາມເປັນສ່ວນຕົວຂອງ Brave.<ph name="NOTE_AFTER"/></translation>
 <translation id="4329860807937715445">ນີ້ອາດຈະຫຼຸດຜ່ອນການປົກປ້ອງຄວາມເປັນສ່ວນຕົວຂອງ Brave. <ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
-<translation id="1574700443447059851">ຕົວຕິດຕາມ, ໂຄສະນາ, ແລະອື່ນໆທີ່ຖືກບລັອກ.</translation>
+<translation id="3889333301730272023"><ph name="BLOCK_COUNT"/> ຕົວຕິດຕາມ, ໂຄສະນາ, ແລະອື່ນໆທີ່ຖືກບລັອກ</translation>
+<translation id="2275121279487164685">ຕົວຕິດຕາມ ແລະ ໂຄສະນາ</translation>
 <translation id="4968268657895673116">ເວັບໄຊບໍ່ເຮັດວຽກຢ່າງຖືກຕ້ອງກັບ Shields ຂື້ນບໍ?</translation>
 <translation id="5412004902081180614">ລາຍງານ</translation>
 <translation id="3620004479054499575">ເຈົ້າກຳລັງພົບບັນຫາກັບເວັບໄຊທ໌ນີ້ບໍ?</translation>
@@ -2618,9 +2627,11 @@
 <translation id="3795015906457257780">ເຈົ້າກຳລັງເບິ່ງເວັບໄຊນີ້ບໍ່ໄດ້ຮັບການປ້ອງກັນຄວາມເປັນສ່ວນຕົວຈາກ Brave.</translation>
 <translation id="7194012750329511146">Brave Shields
 <ph name="NUMBER"/> ຕົວຕິດຕາມ, ໂຄສະນາ, ແລະອື່ນໆທີ່ຖືກບລັອກ</translation>
+<translation id="2900068182947574679">ສະຕະເຣດ</translation>
 <translation id="4292121526390005808">Scripts ທີ່ໄດ້ຖືກບລັອກ</translation>
 <translation id="5046271170844958713">Scripts ທີ່ອະນຸຍາດ</translation>
 <translation id="199862531047218413">ແອມປໍເພື່ອການປ້ອງກັນ Fingerprinting ທີ່ຖືກນຳໃຊ້</translation>
+<translation id="896105002981074545">ການປົກປ້ອງຮູບເງົາ</translation>
 <translation id="5032505924781383272">ການປ້ອງກັນທີ່ໃຊ້ບໍ່ຈຳເປັນບໍລິສຸດເຫມາະສົມວ່າ ເວັບເພງານັ້ນເລີມຈະ Fingerprinting ເວັບເພງານຂອງເຈົ້າບໍ່ໄດ້.</translation>
 <translation id="1905384713982899903">Fingerprint ທີ່ເຄື່ອນໄຫວ</translation>
 <translation id="314364527871618241">Fingerprint ທີ່ເຄື່ອທີ່ເປິດເປັນ</translation>
@@ -2633,6 +2644,7 @@
 <translation id="542789539047208469">ຂໍ້ມູນໄຊທ໌</translation>
 <translation id="7586067492365979844">Brave Shields ມີໂຮມທີ່ໃຫມ່ແລະການອອກແບບ. ມັນກ່ືພົວພັນກັບຂໍ້ມູນຂອງໄຊທ໌ສໍາລັບປະສົບການຫນຶ່ງຫຼຸມ.</translation>
 <translation id="9114542678887529043">Brave Shields ມີໂຮມທີ່ໃຫມ່ແລະການອອກແບບ. ເຂົ້າເຖິງໄດ້ໂດຍການຄລິກໄອຄອນໄຊທ໌ໃນແຖບທີ່ຢູ່.</translation>
+<translation id="4242533952199664413">ເປີດຕັ້ງຄ່າ</translation>
 <translation id="6294662480095808915">ຄວາມເປັນສ່ວນຕົວ.ເຕັມລະອຽດ.</translation>
 <translation id="4366423156486478559">ໄດ້ຮັບການປົກປ້ອງຂອງ Brave ໃນທຸກລິ້ງທີ່ເຈົ້າຄິກ.ເພີ່ມ Brave ເປັນຕ້ນຕໍ່ແລະເຂົ້າເບິ່ງ. ໂຄສົດຄົ້ນ.</translation>
 <translation id="3830912418080848377">ແປຮູບແບບການຕັ້ງຄ່າ</translation>
@@ -2762,4 +2774,19 @@
 <translation id="1602850501393095406">ເອື້ອນຕະຫວາ</translation>
 <translation id="8367705492654390392">ຖາມຫຍັງກໍໄດ້</translation>
 <translation id="8525248723479742219">Play Later</translation>
+<translation id="2935698011275148880">Brave ຕົ້ນກໍາເນີດ</translation>
+<translation id="3983844925615091103">ຍິນດີຕ້ອນຮັບສູ່ Brave Origin. ເພື່ອສືບຕໍ່, ກະລຸນາຊື້ຫຼືກູ້ຄືນການຊື້ Brave Origin ຂອງທ່ານ.</translation>
+<translation id="4801175670604644729">ທ່ານຕ້ອງການການຊື້ Brave Origin ທີ່ຍັງເປັນປະຈຸບັນເພື່ອໃຊ້ ກະວາງນີ້.</translation>
+<translation id="4144294274624829008">ກູ້ຄືນການຊື້ Brave Origin</translation>
+<translation id="6080178356113101120">ຊື້ Brave Origin</translation>
+<translation id="1009496146858538651">ກູ້ຄືນການຊື້</translation>
+<translation id="3461564061600681423">ປ້ອນລະຫັດການຊື້ຂອງທ່ານເພື່ອເປີດໃຊ້ການຊື້ Brave Origin ຂອງທ່ານ.</translation>
+<translation id="2036379724374431790">ລະຫັດການຊື້</translation>
+<translation id="4348430971280118761">ໃສ່ລະຫັດການຊື້ຂອງທ່ານ</translation>
+<translation id="7451866456310404779">ຢັ້ງຢືນລະຫັດການຊື້</translation>
+<translation id="8853195592604941919">ກຳລັງຢັ້ງຢືນ... ນີ້ອາດຈະໃຊ້ເວລາຫນຶ່ງນາທີ.</translation>
+<translation id="4633706444004110760">ຂອບໃຈທີ່ຕິດຕັ້ງ Brave Origin, ເວີຊັນຂອງ ກະວາງ ສໍາລັບຜູ້ໃຊ້ທີ່ບໍ່ຕ້ອງການຄຸນສົມບັດທັງໝົດທີ່ສະຫນັບສະຫນູນ Brave ເປັນທຸລະກິດ, ແຕ່ຍັງຕ້ອງການຄວາມເປັນສ່ວນຕົວທີ່ Brave ເທົ່ານັ້ນທີ່ສະເຫນີ. ຜູ້ໃຊ້ Origin ຈະສືບຕໍ່ໄດ້ຮັບຜົນປະໂຫຍດຈາກຄວາມເປັນສ່ວນຕົວອັນດັບ 1 ຂອງ Brave, adblock, ແລະຄວາມໄວ (ຜ່ານ Shields), ພ້ອມທັງການອັບເດດຊອບແວປະຈໍາວັນ, ແພັດຊ໌ Chromium, ແລະຄວາມປອດໄພ ແລະ ປັບປຸງຄວາມເປັນສ່ວນຕົວ. Origin ຈະລົບຄຸນສົມບັດອື່ນໆສ່ວນໃຫຍ່ຈາກ ກະວາງ.</translation>
+<translation id="5816720995022674532">Origin ຟຣີທີ່ຈະໃຊ້ໃນອຸປະກອນ Linux, ແຕ່ຍັງ <ph name="BEGIN_LINK"/>ສາມາດຊື້ໄດ້<ph name="END_LINK"/> ຖ້າທ່ານຕ້ອງການສະໜັບສະໜູນ Brave ເປັນທຸລະກິດ. ການຊື້ອາດຈະປົດລັອກຄວາມສາມາດໃນການໃຊ້ Origin ໃນອຸປະກອນ Android, iOS, macOS, ແລະ Windows.</translation>
+<translation id="3065220545261045367">ສະໜັບສະໜູນ Brave ໂດຍການຊື້ Origin</translation>
+<translation id="2069499076031488636">ດຳເນີນການກັບ Origin ຟຣີໃນ Linux</translation>
 </translationbundle>

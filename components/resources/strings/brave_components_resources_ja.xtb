@@ -486,6 +486,10 @@
 <translation id="1518915449477235311"><ph name="URL"/>にBraveでのLeo AIの会話を許可しますか？</translation>
 <translation id="4355784577209159847">レガシーのGoogleサインインにサードパーティCookieの使用を許可</translation>
 <translation id="5770656036486891920"><ph name="URL"/>から、レガシーGoogleサインインのためにサードパーティのCookieを使用することを求められています。</translation>
+<translation id="5582087890067572966">🎉 ウォレットの接続が完了しました！</translation>
+<translation id="4364336119478610380">このような通知が画面に表示されるたびに、クリックしなくても報酬を獲得できます。</translation>
+<translation id="5893017172751072752">Brave広告を見るだけで報酬を獲得できます</translation>
+<translation id="3447730462826640312">報酬獲得のためにクリックする必要はありません。もちろん、興味のある広告はクリックしてください！</translation>
 <translation id="2104347391516032700">BATリワードサービス</translation>
 <translation id="5939518447894949180">リセット</translation>
 <translation id="3349204812119681938">Brave Rewards をリセット</translation>
@@ -999,6 +1003,7 @@
 <translation id="2795015351889043417">JSON ファイル</translation>
 <translation id="5468881191994555667">ファイルを選択</translation>
 <translation id="795667975304826397">ファイルが選択されていません</translation>
+<translation id="6720675936326555106">選択されたファイル</translation>
 <translation id="5891811606602061966">アカウントのインポートに失敗しました。もう一度やり直してください。</translation>
 <translation id="6566535583781706170">アカウントをインポート</translation>
 <translation id="5051929972046200722">ハードウェアウォレットデバイスを選択</translation>
@@ -1045,10 +1050,12 @@
 <translation id="2416098547200943834">注: 秘密鍵は、秘密鍵およびプロトコル情報を含む16進エンコードされたJSONとして提供されます。<ph name="LINK_START"/>さらに詳しく<ph name="LINK_END"/></translation>
 <translation id="7657130382217527063">注: 秘密鍵は、秘密鍵とプロトコル情報を含む16進エンコードされたJSONとして提供する必要があります。<ph name="LINK_START"/>さらに詳しく<ph name="LINK_END"/></translation>
 <translation id="4482913669726886926">注: <ph name="FORMAT"/> の拡張キーのみがサポートされています。</translation>
+<translation id="6457746820359933716">Polkadot.jsまたは互換性のあるウォレットからエクスポートされたJSONファイルを使用してインポートします。エクスポートを暗号化するために使用されたパスワードを入力してください。</translation>
 <translation id="9133762451347918196">Testnet アカウント</translation>
 <translation id="42126664696688958">エクスポート</translation>
 <translation id="1366855498335432549">振込</translation>
 <translation id="790104325876206743">アカウント設定</translation>
+<translation id="8856844353253421399">最終更新: <ph name="TIME_AGO"/> 前</translation>
 <translation id="6322030314101903925">利用可能なアセットはありません</translation>
 <translation id="836614343069504000">トークンを入金または購入して開始します。インポートしたアカウントのトークンが表示されない場合は、フィルターと表示設定を確認してください。不明なトークンはカスタムアセットとしての追加が必要な場合があります。</translation>
 <translation id="2902856457593699108">キーを表示</translation>
@@ -1167,10 +1174,10 @@
 <translation id="4324239559624557455">24時間</translation>
 <translation id="9139452553033760558">1週間</translation>
 <translation id="1658834457013045127">無期限</translation>
-<translation id="6344138931392227467"><ph name="DEVICE_NAME"/>を接続しました</translation>
-<translation id="7051244143160304048"><ph name="DEVICE_NAME"/>との接続を解除しました</translation>
-<translation id="5317781812114905957">手順</translation>
-<translation id="1178198982208000092"><ph name="DEVICE_NAME"/>を接続</translation>
+<translation id="5571630233760536706"><ph name="DEVICE_NAME"/>を接続しました</translation>
+<translation id="7058480232601314508"><ph name="DEVICE_NAME"/>との接続を解除しました</translation>
+<translation id="434328838837168401">使い方を表示</translation>
+<translation id="6739517232898494646">続行するには<ph name="DEVICE_NAME"/>を接続してください</translation>
 <translation id="6941881257520473899">ハードウェアウォレットは、デバイスでの確認が必要です。</translation>
 <translation id="2288190100157580461">ハードウェアウォレットが<ph name="DEVICE_NAME"/>で<ph name="NETWORK"/>アプリを開くことを要求しています</translation>
 <translation id="8687869982094542529">送信済み</translation>
@@ -1891,6 +1898,7 @@
 <translation id="4150336849480030462">トークンアカウントの作成に伴うSPLトークンの移転</translation>
 <translation id="2244921323472112851">現在、ご指定のページが見つかりません。</translation>
 <translation id="6277237872689140644">ページが移動したか、URLにタイプミスがある可能性があります。</translation>
+<translation id="1788572014530152502">トランザクションの処理中にエラーが発生しました。多くの場合、ネットワーク手数料をカバーするのに十分な<ph name="SYMBOL"/>がないことを意味します。代わりに少ない金額を試してください。</translation>
 <translation id="2737084171727561244">ポートフォリオに移動</translation>
 <translation id="3499452861061048987">トークンの追加</translation>
 <translation id="5046066249040287308">Braveウォレットユーティリティサービス</translation>
@@ -2575,7 +2583,8 @@
 <translation id="4724752924364329714">このサイトが壊れているようであれば、シールドダウンをお試しください。</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>注意：これによりBraveのプライバシー保護が低下する可能性があります。<ph name="NOTE_AFTER"/></translation>
 <translation id="4329860807937715445">これによりBraveのプライバシー保護が低下する可能性があります。<ph name="LINK_BEFORE"/>詳細<ph name="LINK_AFTER"/></translation>
-<translation id="1574700443447059851">トラッカー、広告などがブロックされました。</translation>
+<translation id="3889333301730272023"><ph name="BLOCK_COUNT"/>トラッカー、広告などがブロックされました。</translation>
+<translation id="2275121279487164685">トラッカーと広告</translation>
 <translation id="4968268657895673116">Shieldsがオンの場合、このサイトが正しく機能していませんか?</translation>
 <translation id="5412004902081180614">報告</translation>
 <translation id="3620004479054499575">このサイトに問題がありますか？</translation>
@@ -2637,9 +2646,11 @@
 <translation id="3795015906457257780">このサイトを表示中、Braveのプライバシーとセキュリティ保護は無効です。</translation>
 <translation id="7194012750329511146">Brave Shield
 で、<ph name="NUMBER"/>件のトラッカー、広告などがブロックされました</translation>
+<translation id="2900068182947574679">スクリプト</translation>
 <translation id="4292121526390005808">ブロックされたスクリプト</translation>
 <translation id="5046271170844958713">スクリプトを許可する</translation>
 <translation id="199862531047218413">指紋保護を適用しました</translation>
+<translation id="896105002981074545">フィンガープリント保護</translation>
 <translation id="5032505924781383272">指紋保護を適用済みですが、このウェブページがお使いのブラウザのフィンガープリントを取得しようとしているとは限りません。</translation>
 <translation id="1905384713982899903">ブロックされた指紋</translation>
 <translation id="314364527871618241">許可された指紋</translation>
@@ -2652,7 +2663,8 @@
 <translation id="542789539047208469">サイト情報</translation>
 <translation id="7586067492365979844">Brave Shieldsは新しいホームとデザインを備えています。サイト情報と統合され、ワンストップの体験が実現しました。</translation>
 <translation id="9114542678887529043">Brave Shieldsは新しいホームとデザインを備えています。アドレスバーのサイトアイコンをクリックしてアクセスできます。</translation>
-<translation id="6294662480095808915">プライバシー。デフォルト時間</translation>
+<translation id="4242533952199664413">設定を開く</translation>
+<translation id="6294662480095808915">プライバシーが標準装備</translation>
 <translation id="4366423156486478559">クリックするすべてのリンクをBraveで保護しましょう。Braveブラウザをデフォルトに設定して閲覧するだけで、プライベートなブラウジングが楽しめます。</translation>
 <translation id="3830912418080848377">インポート設定</translation>
 <translation id="6378406588483694938">ブックマーク、拡張機能、保存されたパスワードまで、古いブラウザから簡単にインポート。</translation>
@@ -2792,4 +2804,19 @@ Tab + Enterキーの順に操作して開いているタブを切り替えます
 <translation id="1602850501393095406">ハイライトするには↑ を押してください</translation>
 <translation id="8367705492654390392">何でも聞いてください</translation>
 <translation id="8525248723479742219">後で再生する</translation>
+<translation id="2935698011275148880">ブレイブ・オリジン</translation>
+<translation id="3983844925615091103">Brave Originへようこそ。続行するには、Brave Originを購入または復元してください。</translation>
+<translation id="4801175670604644729">このブラウザを使用するには、アクティブなBrave Origin購入が必要です。</translation>
+<translation id="4144294274624829008">Brave Origin購入を復元</translation>
+<translation id="6080178356113101120">Brave Originを購入</translation>
+<translation id="1009496146858538651">購入を復元</translation>
+<translation id="3461564061600681423">購入IDを入力してBrave Origin購入をアクティブにしてください。</translation>
+<translation id="2036379724374431790">購入ID</translation>
+<translation id="4348430971280118761">購入IDを入力</translation>
+<translation id="7451866456310404779">購入IDを確認</translation>
+<translation id="8853195592604941919">確認中...少し時間がかかる場合があります。</translation>
+<translation id="4633706444004110760">Brave Originのインストールをありがとうございます。Brave Originは、Braveのビジネスをサポートするすべての機能が必要ないが、Braveのみが提供するプライバシーが必要なユーザー向けのブラウザのバージョンです。Originユーザーは、業界トップクラスのプライバシー、広告ブロック、速度(Shields経由)に加えて、定期的なソフトウェアアップデート、Chromiumパッチ、セキュリティおよびプライバシーの改善の恩恵を受け続けます。Originは、ブラウザからほとんどの他の機能を削除します。</translation>
+<translation id="5816720995022674532">OriginはLinuxデバイスで無料で使用できますが、Braveをビジネスとしてサポートしたい場合は、<ph name="BEGIN_LINK"/>購入可能<ph name="END_LINK"/>です。購入すると、Android、iOS、macOS、Windowsデバイスでも使用できるようになります。</translation>
+<translation id="3065220545261045367">Originを購入してBraveをサポート</translation>
+<translation id="2069499076031488636">LinuxでOriginを無料で続行</translation>
 </translationbundle>

@@ -483,6 +483,10 @@
 <translation id="1518915449477235311">Kas lubada veebisaidil <ph name="URL"/> avada Brave'is Leo AI vestlused?</translation>
 <translation id="4355784577209159847">Luba Google’i pärandsisselogimiseks kasutada kolmanda osapoole küpsiseid</translation>
 <translation id="5770656036486891920"><ph name="URL"/> soovib Google’i pärandsisselogimiseks kasutada kolmanda osapoole küpsiseid</translation>
+<translation id="5582087890067572966">🎉 Teenite nüüd raha!</translation>
+<translation id="4364336119478610380">Teenite auhindu iga kord, kui teie ekraanil kuvatakse selline märguanne. Te ei pea teenimiseks klõpsama.</translation>
+<translation id="5893017172751072752">Teenite Brave’i reklaami märguande kuvamisel auhindu</translation>
+<translation id="3447730462826640312">Te ei pea teenimiseks klõpsama, kuid klõpsake, kui olete huvitatud!</translation>
 <translation id="2104347391516032700">Bati preemiate teenus</translation>
 <translation id="5939518447894949180">Lähtesta</translation>
 <translation id="3349204812119681938">Taasta Brave'i preemiad</translation>
@@ -996,6 +1000,7 @@
 <translation id="2795015351889043417">JSON-fail</translation>
 <translation id="5468881191994555667">Valige fail</translation>
 <translation id="795667975304826397">Ühtegi faili ei ole valitud</translation>
+<translation id="6720675936326555106">Valitud fail</translation>
 <translation id="5891811606602061966">Konto importimine nurjus, proovige uuesti.</translation>
 <translation id="6566535583781706170">Impordi konto</translation>
 <translation id="5051929972046200722">Valige oma riistvararahakoti seade</translation>
@@ -1042,10 +1047,12 @@
 <translation id="2416098547200943834">MÄRKUS: privaatvõti antakse hex-kodeeritud JSON-failina, mis sisaldab privaatvõtit ja protokolli teavet. <ph name="LINK_START"/>Lisateave<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">MÄRKUS: privaatvõti tuleb anda hex-kodeeritud JSON-failina, mis sisaldab privaatvõtit ja protokolli teavet. <ph name="LINK_START"/>Lisateave<ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">MÄRKUS: Toetatakse ainult vormingus <ph name="FORMAT"/> olevaid laiendatud võtmeid.</translation>
+<translation id="6457746820359933716">Importige JSON-fail, mis on eksporditud Polkadot.js-st või ühilduvatest rahakotist. Sisestage salasõna, mida kasutati ekspordi krüpteerimiseks.</translation>
 <translation id="9133762451347918196">Testvõrgu kontod</translation>
 <translation id="42126664696688958">Ekspordi</translation>
 <translation id="1366855498335432549">Deposiit</translation>
 <translation id="790104325876206743">Konto seaded</translation>
+<translation id="8856844353253421399">Viimati värskendatud <ph name="TIME_AGO"/> aega tagasi</translation>
 <translation id="6322030314101903925">Varasid ei ole saadaval</translation>
 <translation id="836614343069504000">Alustamiseks tehke sissemakse või ostke tokeneid. Kui te ei näe oma imporditud konto tokeneid, kontrollige filtreid ja kuvaseadeid. Tundmatud tokenid tuleb võib-olla kohandatud varadena lisada.</translation>
 <translation id="2902856457593699108">Kuva võti</translation>
@@ -1164,10 +1171,10 @@
 <translation id="4324239559624557455">24 tundi</translation>
 <translation id="9139452553033760558">1 nädal</translation>
 <translation id="1658834457013045127">Igavesti</translation>
-<translation id="6344138931392227467"><ph name="DEVICE_NAME"/> on ühendatud</translation>
-<translation id="7051244143160304048">Seadme <ph name="DEVICE_NAME"/> ühendus on katkestatud</translation>
-<translation id="5317781812114905957">Juhised</translation>
-<translation id="1178198982208000092">Ühendage oma <ph name="DEVICE_NAME"/>.</translation>
+<translation id="5571630233760536706"><ph name="DEVICE_NAME"/> on ühendatud</translation>
+<translation id="7058480232601314508"><ph name="DEVICE_NAME"/> on lahti ühendatud</translation>
+<translation id="434328838837168401">Vaata juhiseid</translation>
+<translation id="6739517232898494646">Ühenda oma <ph name="DEVICE_NAME"/> jätkamiseks</translation>
 <translation id="6941881257520473899">Riistvararahakott nõuab seadmes kinnitamist.</translation>
 <translation id="2288190100157580461">Riistvararahakott nõuab, et seadmes <ph name="DEVICE_NAME"/> oleks avatud rakendus <ph name="NETWORK"/></translation>
 <translation id="8687869982094542529">saadetud</translation>
@@ -1888,6 +1895,7 @@
 <translation id="4150336849480030462">SPL tokeni ülekanne koos sellega seotud tokeni konto loomisega</translation>
 <translation id="2244921323472112851">Me ei suuda leida lehte, mida otsite.</translation>
 <translation id="6277237872689140644">See võib olla teisaldatud või URL võib sisaldada trükiviga.</translation>
+<translation id="1788572014530152502">Teie tehingu töötlemisel tekkis tõrge. Paljudel juhtudel tähendab see, et <ph name="SYMBOL"/> pole piisavalt võrguteenuse tasuga. Proovige selle asemel väiksemat summat.</translation>
 <translation id="2737084171727561244">Mine Portfelli</translation>
 <translation id="3499452861061048987">Lisa token</translation>
 <translation id="5046066249040287308">Brave Walleti liidese teenus</translation>
@@ -2572,7 +2580,8 @@
 <translation id="4724752924364329714">Kui see sait näib olevat katki, proovige Shields down.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Märkus: see võib vähendada Brave'i privaatsuskaitset.<ph name="NOTE_AFTER"/></translation>
 <translation id="4329860807937715445">See võib vähendada Brave'i privaatsusekaitse. <ph name="LINK_BEFORE"/>Lisateave<ph name="LINK_AFTER"/></translation>
-<translation id="1574700443447059851">Jälgijad, reklaamid ja veel palju blokeeritakse.</translation>
+<translation id="3889333301730272023"><ph name="BLOCK_COUNT"/> jälgijat, reklaami ja muud blokeeritud</translation>
+<translation id="2275121279487164685">Jälgijad ja reklaamid</translation>
 <translation id="4968268657895673116">Kas see sait ei tööta kaitse kasutamisel õigesti?</translation>
 <translation id="5412004902081180614">Teata</translation>
 <translation id="3620004479054499575">Kas teil on selle saidiga probleeme?</translation>
@@ -2634,9 +2643,11 @@
 <translation id="3795015906457257780">Vaatate seda saiti ilma Brave'i privaatsuskaitseteta.</translation>
 <translation id="7194012750329511146">Brave'i Kaitsed
 <ph name="NUMBER"/> blokeeritud jälgijat, reklaami ja muud</translation>
+<translation id="2900068182947574679">Skriptid</translation>
 <translation id="4292121526390005808">Blokeeritud skriptid</translation>
 <translation id="5046271170844958713">Kolmanda osalise seadme tuvastamine on blokeeritud</translation>
 <translation id="199862531047218413">rakendatud seadmetuvastuse vastased kaitsemeetmed</translation>
+<translation id="896105002981074545">Seadmetuvastuse kaitsmised</translation>
 <translation id="5032505924781383272">Kaitsemeetmete rakendamine ei tähenda tingimata, et see veebileht üritab teie brauseri kaudu seadmetuvastust kasutada.</translation>
 <translation id="1905384713982899903">Blokeeritud sõrmejäljed</translation>
 <translation id="314364527871618241">Lubatud sõrmejäljed</translation>
@@ -2649,6 +2660,7 @@
 <translation id="542789539047208469">Saidi teave</translation>
 <translation id="7586067492365979844">Brave kaitse omab uut kodu ja kujundust. Nüüd integreeritakse see saidi teabega ühekordse kogemuse jaoks.</translation>
 <translation id="9114542678887529043">Brave kaitse omab uut kodu ja kujundust. Juurdepääs on võimalik, klõpsates aadressiribas olevat saidi ikooni.</translation>
+<translation id="4242533952199664413">Ava seaded</translation>
 <translation id="6294662480095808915">Privaatsus. Vaikimisi.</translation>
 <translation id="4366423156486478559">Hankige Brave'i kaitse iga klõpsatud lingi jaoks. Lihtsalt määrake Brave vaikebrauseriks ja sirvige. Privaatselt.</translation>
 <translation id="3830912418080848377">Seadete importimine</translation>
@@ -2789,4 +2801,19 @@ olemasoleval vahelehel</translation>
 <translation id="1602850501393095406">Vajutage ↑, et esile tõsta</translation>
 <translation id="8367705492654390392">Küsi ükskõik mida</translation>
 <translation id="8525248723479742219">Esita hiljem</translation>
+<translation id="2935698011275148880">Julge päritolu</translation>
+<translation id="3983844925615091103">Tere tulemast Brave Origin'i. Jätkamiseks palun osta või taasta oma Brave Origin'i ost.</translation>
+<translation id="4801175670604644729">Sellest brauserist kasutamiseks peate olema aktiivne Brave Origin'i ost.</translation>
+<translation id="4144294274624829008">Taasta Brave Origin'i ost</translation>
+<translation id="6080178356113101120">Osta Brave Origin</translation>
+<translation id="1009496146858538651">Taasta ost</translation>
+<translation id="3461564061600681423">Sisestage oma ostu ID, et aktiveerida oma Brave Origin'i ost.</translation>
+<translation id="2036379724374431790">Ostu ID</translation>
+<translation id="4348430971280118761">Sisestage oma ostu ID</translation>
+<translation id="7451866456310404779">Kinnita ostu ID</translation>
+<translation id="8853195592604941919">Kontrollimine... See võib võtta minut.</translation>
+<translation id="4633706444004110760">Täname Brave Origin'i installimise eest, mis on brauseri versioon kasutajatele, kes ei vaja kõiki funktsioone, mis toetavad Brave'i kui äri, kuid siiski soovivad privaatsust, mida pakub ainult Brave. Origin'i kasutajad jätkavad meie tööstuslikult juhtivast privaatsusest, adblockerist ja kiirusest (kaitse kaudu) saamist, samuti regulaarsetest tarkvara värskendustest, Chromium plaastrite ning turvalisuse ja privaatsuse parandustest. Origin eemaldab brauserist enamiku muid funktsioone.</translation>
+<translation id="5816720995022674532">Origin on Linux'i seadmetes tasuta kasutada, kuid siiski <ph name="BEGIN_LINK"/>saadaval ostuks<ph name="END_LINK"/>, kui soovite toetada Brave'i kui äri. Ostmine avaks ka võimaluse kasutada Origin'i Android, iOS, macOS ja Windows seadmetes.</translation>
+<translation id="3065220545261045367">Toeta Brave'i Origin'i ostmisega</translation>
+<translation id="2069499076031488636">Jätka Origin'iga tasuta Linux'il</translation>
 </translationbundle>

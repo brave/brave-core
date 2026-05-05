@@ -64,6 +64,7 @@
 <translation id="1644574205037202324">Historia</translation>
 <translation id="1652197001188145583">Gdy ta opcja jest włączona, strony internetowe mogą prosić o zgodę na użycie urządzeń z NFC. Gdy jest wyłączona, strony nie mogą używać takich urządzeń.</translation>
 <translation id="1660204651932907780">Zezwalaj na odtwarzanie dźwięku na stronach internetowych (zalecane)</translation>
+<translation id="1676590040242013349">Opcja „Zawsze używaj bezpiecznych połączeń” jest włączona.</translation>
 <translation id="1677097821151855053">Plików cookie i innych danych stron używamy, żeby Cię zapamiętać, na przykład w celu logowania czy personalizowania reklam. Plikami cookie wszystkich stron możesz zarządzać w <ph name="BEGIN_LINK"/>Ustawieniach<ph name="END_LINK"/>.</translation>
 <translation id="1679305402657584804">Strony mogą prosić o zgodę na używanie urządzeń NFC</translation>
 <translation id="1686785653877010442">Witryny zazwyczaj wysyłają powiadomienia o aktualnościach lub wiadomościach czatu.</translation>
@@ -125,7 +126,6 @@
 <translation id="2228071138934252756">Aby zezwolić aplikacji <ph name="APP_NAME"/> na dostęp do aparatu, musisz go też włączyć w <ph name="BEGIN_LINK"/>Ustawieniach Androida<ph name="END_LINK"/>.</translation>
 <translation id="2231160360698766265">Strony mogą odtwarzać treści chronione</translation>
 <translation id="2235344399760031203">Pliki cookie innych firm są blokowane</translation>
-<translation id="2238944249568001759">Sugerowane wyszukiwania na podstawie ostatnio otwartej karty</translation>
 <translation id="2241587408274973373">Karty na stronie nowej karty</translation>
 <translation id="2241634353105152135">Tylko raz</translation>
 <translation id="2253414712144136228">Usuń <ph name="NAME_OF_LIST_ITEM"/></translation>
@@ -166,11 +166,6 @@
 <translation id="2588271083332682494">Utrzymuj porządek dzięki grupom kart</translation>
 <translation id="2597457036804169544">Nie stosuj ciemnego motywu witryn</translation>
 <translation id="2606760465469169465">Automatyczna weryfikacja</translation>
-<translation id="7615153661410655750">Zarządzaj w <ph name="BEGIN_LINK1"/>ustawieniach Androida<ph name="END_LINK1"/>
-
-Zaawansowana ochrona kontroluje te ustawienia Brave:
-• Opcja „Zawsze używaj bezpiecznych połączeń” jest włączona.
-• Opcja „Optymalizator JavaScriptu” jest wyłączona. <ph name="BEGIN_LINK2"/>Zarządzaj wyjątkami dotyczącymi witryny<ph name="END_LINK2"/></translation>
 <translation id="2621115761605608342">Zezwól na użycie JavaScriptu w określonej witrynie.</translation>
 <translation id="2626708220538466178">Plansza dolna przeglądarki domyślnej zamknięta</translation>
 <translation id="2653659639078652383">Prześlij</translation>
@@ -214,7 +209,6 @@ Zaawansowana ochrona kontroluje te ustawienia Brave:
 <translation id="3069226013421428034">Zezwalanie na logowanie przez usługę zewnętrzną w określonej witrynie.</translation>
 <translation id="310297983047869047">Poprzedni slajd</translation>
 <translation id="3108122610701115301">Ustaw jako wartość domyślną</translation>
-<translation id="3109724472072898302">Zwinięty</translation>
 <translation id="310979712355504754">Usuń wszystkie</translation>
 <translation id="311394601889664316">Nie zezwalaj witrynom na edytowanie plików ani folderów na urządzeniu</translation>
 <translation id="3114012059975132928">Odtwarzacz</translation>
@@ -260,7 +254,6 @@ Zaawansowana ochrona kontroluje te ustawienia Brave:
 <translation id="3602290021589620013">Podgląd</translation>
 <translation id="3611658447322220736">Niedawno zamknięte strony mogą dokończyć wysyłanie i odbieranie danych</translation>
 <translation id="3619294456800709762">Witryny mogą automatycznie włączać obraz w obrazie</translation>
-<translation id="3628308229821498208">Sugerowane wyszukiwania</translation>
 <translation id="3632460243282703117">Subskrybuj</translation>
 <translation id="363748948745453283">Używana jest przybliżona lokalizacja</translation>
 <translation id="3641456520301071208">Strony mogą prosić o informacje o Twojej lokalizacji</translation>
@@ -441,7 +434,6 @@ Zaawansowana ochrona kontroluje te ustawienia Brave:
 <translation id="5515432237048785579">Plansza dolna karty Discover otwarta na całą wysokość</translation>
 <translation id="5516455585884385570">Otwórz ustawienia powiadomień</translation>
 <translation id="5527111080432883924">Pytaj, czy zezwolić stronom na odczytywanie tekstu i obrazów ze schowka (zalecane)</translation>
-<translation id="5553374991681107062">Najnowsze</translation>
 <translation id="674221630984410403">Działanie witryn nie będzie przyspieszane za pomocą mechanizmu V8 w przeglądarce Brave, ale będzie ona trochę bardziej odporna na ataki</translation>
 <translation id="5556459405103347317">Odśwież</translation>
 <translation id="5591840828808741583">Zablokowano: <ph name="SITE_NAME"/></translation>
@@ -521,7 +513,6 @@ Zaawansowana ochrona kontroluje te ustawienia Brave:
 <translation id="6231752747840485235">Odinstalować aplikację „<ph name="APP_NAME"/>”?</translation>
 <translation id="4789073065838177382">Kliknij Przeglądarka &gt; Brave.</translation>
 <translation id="6260830281887654268">Plansza dolna kolekcji motywów wyglądu strony Nowa karta otwarta do połowy wysokości</translation>
-<translation id="6262191102408817757">Na podstawie ostatniej karty</translation>
 <translation id="6262279340360821358">Zablokowane: <ph name="PERMISSION_1"/> i <ph name="PERMISSION_2"/></translation>
 <translation id="6270391203985052864">Witryny mogą prosić o zgodę na wysyłanie powiadomień</translation>
 <translation id="6295158916970320988">Wszystkie witryny</translation>
@@ -579,6 +570,7 @@ Zaawansowana ochrona kontroluje te ustawienia Brave:
 <translation id="6912998170423641340">Zablokuj stronom możliwość odczytywania tekstu i obrazów ze schowka</translation>
 <translation id="6945221475159498467">Wybierz</translation>
 <translation id="6950072572526089586">Aby strona, na którą wchodzisz, działała zgodnie z oczekiwaniami – na przykład nie wylogowywała Cię lub pokazywała produkty w koszyku na zakupy – może ona zapisywać informacje o tym, co robisz. Strony często zapisują te informacje tymczasowo na Twoim urządzeniu.</translation>
+<translation id="6964291282260073066">Opcja „WebGPU” jest wyłączona.</translation>
 <translation id="6965382102122355670">OK</translation>
 <translation id="6980507581230208647">Motyw różowy</translation>
 <translation id="6980861169612950611">Usunąć dane witryny? <ph name="SITE_NAME"/></translation>
@@ -601,7 +593,6 @@ Zaawansowana ochrona kontroluje te ustawienia Brave:
 <translation id="7180611975245234373">Odśwież</translation>
 <translation id="7188508872042490670">Dane witryn na urządzeniu</translation>
 <translation id="7201549776650881587">Spowoduje to usunięcie wszystkich danych i plików cookie zapisanych przez strony internetowe w grupie <ph name="ORIGIN"/> lub jej aplikację na ekranie głównym</translation>
-<translation id="7203150201908454328">Rozwinięty</translation>
 <translation id="7213166370492037743">Nie zezwalaj witrynom na łączenie się z żadnym urządzeniem w sieci lokalnej</translation>
 <translation id="7219254577985949841">Usunąć dane witryny?</translation>
 <translation id="723171743924126238">Wybierz zdjęcia</translation>
@@ -612,6 +603,9 @@ Zaawansowana ochrona kontroluje te ustawienia Brave:
 <translation id="7276071417425470385">Gdy ta opcja jest włączona, strony internetowe mogą prosić o zgodę na korzystanie z urządzeń rzeczywistości wirtualnej. Gdy jest wyłączona, strony nie mogą używać takich urządzeń.</translation>
 <translation id="7282197670900591579">Motyw cytrynowy</translation>
 <translation id="728412880473384942">Strony są szybsze, ale mniej bezpieczne</translation>
+<translation id="5843014938239239453">Zarządzaj w <ph name="BEGIN_LINK1"/>ustawieniach Androida<ph name="END_LINK1"/>
+
+Ochrona zaawansowana kontroluje te ustawienia Brave:</translation>
 <translation id="7366415735885268578">Dodawanie strony</translation>
 <translation id="7368695150573390554">Wszystkie dane offline zostaną usunięte</translation>
 <translation id="7369678931043226462">Plansza dolna Dostosuj stronę nowej karty otwarta do połowy wysokości</translation>
@@ -675,7 +669,6 @@ Zaawansowana ochrona kontroluje te ustawienia Brave:
 <translation id="8007176423574883786">Wyłączona na tym urządzeniu</translation>
 <translation id="802154636333426148">Nie udało się pobrać</translation>
 <translation id="8033047164036749181">Zasubskrybuj powiadomienia z tej witryny</translation>
-<translation id="8042586301629853791">Sortuj według:</translation>
 <translation id="8051193500142930381">Nie będą działać funkcje, które potrzebują kamery</translation>
 <translation id="2495032782748793764">Wartość domyślna Brave</translation>
 <translation id="8067883171444229417">Odtwórz film</translation>
@@ -723,6 +716,7 @@ Zaawansowana ochrona kontroluje te ustawienia Brave:
 <translation id="8471525937465764768">Strony zwykle łączą się z urządzeniami USB na przykład w celu drukowania dokumentów lub zapisywania plików na urządzeniu pamięci masowej</translation>
 <translation id="8473055640493819707">Aplikacja „<ph name="APP_NAME"/>” jest nieaktualna. Zainstaluj ją ponownie.</translation>
 <translation id="847433688444405067">Przeglądaj na różnych urządzeniach</translation>
+<translation id="8484556725636319115">Opcja „Optymalizator JavaScriptu” jest wyłączona. <ph name="BEGIN_LINK2"/>Zarządzaj wyjątkami dotyczącymi witryny<ph name="END_LINK2"/></translation>
 <translation id="8487700953926739672">Dostępny offline</translation>
 <translation id="848952951823693243">Zawsze żądaj strony mobilnej</translation>
 <translation id="8492822722330266509">Strony mogą wysyłać wyskakujące okienka i używać przekierowań</translation>
