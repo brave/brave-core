@@ -22,7 +22,16 @@ class PwaShieldsBrowserTest : public web_app::WebAppBrowserTestBase {
   ~PwaShieldsBrowserTest() override = default;
 };
 
-IN_PROC_BROWSER_TEST_F(PwaShieldsBrowserTest, ShieldsButtonInWebAppTitleBar) {
+#if BUILDFLAG(IS_MAC)
+// Flaky on Mac CI
+#define MAYBE_ShieldsButtonInWebAppTitleBar \
+  DISABLED_ShieldsButtonInWebAppTitleBar
+#else
+#define MAYBE_ShieldsButtonInWebAppTitleBar ShieldsButtonInWebAppTitleBar
+#endif
+
+IN_PROC_BROWSER_TEST_F(PwaShieldsBrowserTest,
+                       MAYBE_ShieldsButtonInWebAppTitleBar) {
   const webapps::AppId app_id = InstallPWA(GetInstallableAppURL());
   Browser* app_browser = LaunchWebAppBrowser(app_id);
   ASSERT_TRUE(app_browser);
