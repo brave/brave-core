@@ -31,7 +31,6 @@
 <translation id="4291722755910963157">Brave ichida Gemini bilan sinang</translation>
 <translation id="878572309106296578">Qurilmalarni topish uchun Brave Bluetooth aloqadan foydalanishiga ruxsat bering. <ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="1330562121671411446">Tilni aniqlash</translation>
-<translation id="6204677860546245308">Brave tavsiya etgan brauzer sozlamalaridan foydalanish</translation>
 <translation id="108284536240904209">Brave maʼlumotlari ham oʻchirilsin (<ph name="URL"/>)</translation>
 <translation id="1345251407431278948">Mahkamlandi! Endi Rasmlar orqali qidiruvni asboblar panelidagi yangi tugma orqali ochish mumkin</translation>
 <translation id="1356661055722410047">Yangi! Ekrandagi matn va rasmlarni tarjima qilish mumkin</translation>
@@ -52,11 +51,12 @@
 <translation id="6570689355868013775">Brave xavfsizlik vositalari</translation>
 <translation id="1902837727299679178">Brave Parollar menejeri maʼlumotlarini oʻchirmoqchi. Ruxsat berish uchun Windows parolingizni kiriting.</translation>
 <translation id="4449148723378534338">Brave ichida asosiy maxfiylik va xavfsizlik boshqaruvini tekshiring</translation>
+<translation id="5229247933547820267">Sahifani tark etmasdan AI rejimida varaq haqida savol berish uchun Brave hisobiga kiring. Shuningdek, parollar va boshqa maʼlumotlardan barcha qurilmalarda foydalana olasiz.</translation>
 <translation id="1640672724030957280">Yuklab olinmoqda...</translation>
 <translation id="1680687534629375545">Rasmli qidiruv orqali bu sahifa haqida savol berish</translation>
+<translation id="509363484780540563">Xabarlar, hujjatlar va boshqa ilovalardagi havolalarni har doim Brave orqali ochishingiz mumkin. Uni vazifalar paneliga qadash ham mumkin.</translation>
 <translation id="1709772298389099340"><ph name="BROWSER_NAME"/> brauzeriga imtiyozli ruxsatlar beradi.</translation>
 <translation id="2913217021115517297">Funksiyalarni yaxshilash maqsadida Brave ulardan foydalanish axborotingizni Bravega yuboradi. Bu axborot xodimlar tomonidan oʻqilishi, qayta ishlanishi va izohlanishi mumkin.</translation>
-<translation id="1722488837206509557">Bu mavjud qurilmalardan birini tanlash va undagi kontentni chiqarish imkonini beradi.</translation>
 <translation id="8004287232784878841">Brave tez orada brauzer maʼlumotlarini oʻchirib tashlaydi</translation>
 <translation id="4197839351786449392">Brave navigatsiyalarni HTTPS protokoliga oʻzgartirishga urinadi.</translation>
 <translation id="7814200940910057384">Brave ma’lumotlari tozalandi</translation>
@@ -191,6 +191,7 @@
 <translation id="3045032126857188731">Tarjima qilingan tili: <ph name="LANGUAGE"/></translation>
 <translation id="3047590466164881923">Fikr-mulohaza yuborish oynasini yopish</translation>
 <translation id="4503085212612536713">Boshqa Brave profillari</translation>
+<translation id="2041039306630146369">Kengaytmalar – bu Brave brauzerini moslash imkonini beruvchi plaginlardir. Tartiblashdan tortib, kundalik vazifalarni oson qilishgacha, kengaytmalar Braveni oʻzingizga moslashga yordam beradi.</translation>
 <translation id="7918740962659365265">Brave‘ga ishdan chiqishlar hisoboti va <ph name="UMA_LINK"/>‘ni jo‘natib Brave yaxshilanishiga yordam berish.</translation>
 <translation id="2332543193474246254">{NUM_DEVICES,plural, =0{1 ta USB qurilma kamida bitta Brave kengaytmasi tomonidan ochilmoqda}=1{1 ta USB qurilma kamida bitta Brave kengaytmasi tomonidan ochilmoqda}other{# ta USB qurilma kamida bitta Brave kengaytmasi tomonidan ochilmoqda}}</translation>
 <translation id="3700405816184340252">Brave tarixi</translation>
@@ -217,8 +218,6 @@
 <translation id="8926637909431618259">Brave yopilishida orqa fon rejimida ishlayotgan ilovalar to‘xtatilmasin</translation>
 <translation id="518125528057094977">Xavfsiz ulanishli har qanday saytga kirganingizda Brave sizni ogohlantiradi</translation>
 <translation id="8652321858775514885">Barcha Brave oynalari yopilganda aksariyat saytlardan chiqib ketasiz, ammo Brave hisobingizga kirganingizda Brave hisobingizdan chiqmaysiz. Saytlarga sizni eslab qolishga ruxsat berish uchun <ph name="SETTINGS_LINK"/>.</translation>
-<translation id="3795277300264350702">Birlamchi qidiruv vositasi Bravedan tashqarida oʻzgartirildi. Sizni himoya qilish uchun Brave uni tikladi.</translation>
-<translation id="5033074923607633232">Barcha qurilmalarda parollar, bukmarklar va boshqalarni olish uchun Brave hisobidan kiring</translation>
 <translation id="3352986031709923790">qidiruv hududining yuqori oʻng burchagi: oʻng <ph name="RIGHT"/>%, yuqori <ph name="TOP"/>%</translation>
 <translation id="7261356974224431851">Hisobingizdagi Brave maʼlumotlari</translation>
 <translation id="3369405342922656244">Rasmli qidiruv orqali bu sahifani topish</translation>
@@ -423,6 +422,7 @@
 <translation id="5895138241574237353">Qayta ishga tushirish</translation>
 <translation id="5903106910045431592"><ph name="PAGE_TITLE"/> - Tarmoqqa kirish</translation>
 <translation id="5924017743176219022">Internetga ulanmoqda…</translation>
+<translation id="1275716786566134844">Braveni moslab olaylik</translation>
 <translation id="5941711191222866238">Yig‘ish</translation>
 <translation id="5768962901674164501">Bu bukmark va boshqalardan barcha qurilmalarda foydalanish uchun Brave hisobiga kiring</translation>
 <translation id="5101892358689285100">Braveni oʻzingizga moslang</translation>
@@ -459,6 +459,7 @@
 <translation id="5980269616827212166">Brave bu fayllarni yuklab olishi uchun xotiraga saqlash ruxsati kerak</translation>
 <translation id="7651600795135059130">URL manzillar Brave bilgan zararli saytlar roʻyxati orqali tekshiriladi</translation>
 <translation id="5019879183386042809">Brave‘ni standart brauzer etib tayinlash</translation>
+<translation id="6248988683584659830">Qidiruv sozlamalari</translation>
 <translation id="7445061995866044926">Brave’dan chiqmoqchimisiz?</translation>
 <translation id="4659866260728515512">Bu varaqlar ortiqcha resurs sarflayapti. Unumdorlikni kuchaytirish uchun Brave varaqlarni nofaol qilishiga ruxsat bering.</translation>
 <translation id="6806912298071949921">Brave profilingizni sozlang</translation>
@@ -616,6 +617,7 @@ Brave sozlamalaringizni qaytadan tiklay olmadi.</translation>
 <translation id="7810005234485217901">Tezkor ochish uchun Rasm orqali qidiruvni mahkamlash mumkin</translation>
 <translation id="1652855885539187849">Bu hisobli Brave profili ushbu qurilmada allaqachon mavjud</translation>
 <translation id="7845233973568007926">Oʻrnatganingiz uchun tashakkur! <ph name="BUNDLE_NAME"/>ni ishlatishdan oldin kompyuterni qayta ishga tushirishingiz lozim.</translation>
+<translation id="7397737266068428588">Qidiruv tizimingiz Bravedan tashqarida oʻzgartirildi. Maʼlumotlaringizni himoyalash maqsadida Brave uni birlamchi sozlamasiga qaytardi. <ph name="LEARN_MORE_LINK"/></translation>
 <translation id="9148690296223500734">Braveni moslab, unga yangi qiyofa bering</translation>
 <translation id="7963515534397191222">Brave brauzerining so‘nggi versiyasini o‘rnatib bo‘lmadi. Xavfsizlik sozlamalariga kiritilgan tuzatishlar va yangi funksiyalardan bahramand bo‘la olmaysiz.</translation>
 <translation id="7872446069773932638">Yuklab olinmoqda... <ph name="SECONDS"/> soniya qoldi.</translation>
@@ -744,6 +746,7 @@ Brave sozlamalaringizni qaytadan tiklay olmadi.</translation>
 <translation id="7535429826459677826">Google Chrome Dev</translation>
 <translation id="6283840329609797763">O‘rnatish vaqtida kutilmagan xatolik yuz berdi. Brave‘ni qaytadan yuklab oling.</translation>
 <translation id="1743665722170667430">Notanish manbalardan olingan kengaytma, ilova va mavzular qurilmangizni zararlashi mumkin. Brave ularni faqat <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> orqali oʻrnatishni tavsiya qiladi</translation>
+<translation id="5840822070878669614">Web Store'ni ochish</translation>
 <translation id="6184592406110188164">Bu kengaytma Internet doʻkon siyosatini buzadi va xavfli boʻlishi mumkin. Siz tashrif buyuradigan saytlardagi maʼlumotlaringizni, jumladan, shaxsiy axborotlaringizni oʻzgartirmasligi uchun uni Brave brauzeridan olib tashlang.</translation>
 <translation id="1299765473362724475">Ogohlantirish: Brave kengaytmalarga tashriflaringiz tarixini qayd qilishni taqiqlay olmaydi. Maxfiy rejimda ushbu kengaytmani faolsizlantirish uchun ushbu parametrni belgilamang.</translation>
 <translation id="1448049584457347995">Maʼlumotlaringiz xavfsizligini taʼminlash maqsadida, <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> roʻyxatida keltirilmagan va sizdan yashirincha qoʻshilgan ayrim Brave kengaytmalari faolsizlantirildi.</translation>
@@ -754,6 +757,7 @@ Brave sozlamalaringizni qaytadan tiklay olmadi.</translation>
           =0 {Brave uchun yangilanish mavjud va qayta ishga tushirganingizdan keyin tatbiq etiladi.}
           =1 {Brave uchun yangilanish mavjud va qayta ishga tushirganingizdan keyin tatbiq etiladi. Maxfiy oynangiz qayta ochilmaydi.}
           other {Brave uchun yangilanish mavjud va qayta ishga tushirganingizdan keyin tatbiq etiladi. # ta Maxfiy oynangiz qayta ochilmaydi.}}</translation>
+<translation id="7347727235538318126">Bu sizga Brave-dan mahalliy qurilmalarga, masalan, TV yoki spikerga kontentni ulashish imkoniyatini beradi.</translation>
 <translation id="3829358914761176693">{COUNT, plural,
               =0 {Bu yangilanish tatbiq etilishi uchun administrator Brave brauzerini qayta ishga tushirishingizni soʻramoqda}
               =1 {Bu yangilanish tatbiq etilishi uchun administrator Brave brauzerini qayta ishga tushirishingizni soʻramoqda. Maxfiy oynangiz qayta ochilmaydi.}

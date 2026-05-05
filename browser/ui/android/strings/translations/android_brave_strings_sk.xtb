@@ -49,6 +49,14 @@
 <translation id="2998960761270772157">Blokuje prvky prihlásenia, ponuky, komentárov a informácií o videu na youtube.com.</translation>
 <translation id="8531835121131500698">Blokovať krátke videá YouTube</translation>
 <translation id="2167271714269158912">Blokuje krátke videá na domovskej stránke, na populárnej stránke a vo výsledkoch vyhľadávania na youtube.com.</translation>
+<translation id="2564435705466025309">Blokovať krátke videá YouTube automaticky dabované</translation>
+<translation id="3603500459037204525">Blokuje automaticky dabované videá z domovskej stránky a výsledkov vyhľadávania YouTube.</translation>
+<translation id="4067265130987656010">Blokovať miniatúry YouTube</translation>
+<translation id="3034711349887440574">Blokuje miniatúry z domovskej stránky a výsledkov vyhľadávania YouTube.</translation>
+<translation id="8741919213635379855">Blokovať YouTube Playables</translation>
+<translation id="2216551241986578034">Blokuje Playables z domovskej stránky a výsledkov vyhľadávania YouTube.</translation>
+<translation id="9038505474874975130">Blokovať videá YouTube iba pre členov</translation>
+<translation id="3084239516382196983">Blokuje videá iba pre členov z domovskej stránky a výsledkov vyhľadávania YouTube.</translation>
 <translation id="6052725679982758334">Blokovanie sociálnych médií</translation>
 <translation id="7498695072878479744">Povoliť prihlasovacie tlačidlá Google na stránkach tretích strán</translation>
 <translation id="863171915776379000">Povoliť prihlasovanie Facebook a embedované príspevky</translation>
@@ -970,9 +978,9 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="5494920125229734069">Vybrať všetko</translation>
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="944736176598169208">Odmeny</translation>
-<translation id="4272190451231642425">Automatické odosielanie hlásení o havárii</translation>
 <translation id="1199170151481311646">Analýza zachovávajúca súkromie</translation>
 <translation id="1706715315466634757">E-mailové aliasy</translation>
+<translation id="738840791756723657">AI</translation>
 <translation id="6709133671862442373">News</translation>
 <translation id="5990642573624858459">Vykazovanie štatistík</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -984,8 +992,11 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="2573819149217596923">Zmena funkcií Brave</translation>
 <translation id="7415416427817229128">Zapnutie alebo vypnutie funkcie Brave vyžaduje reštartovanie prehliadača, aby sa zmeny uplatnili. Chcete teraz reštartovať?</translation>
 <translation id="2256115617011615191">Reštartovať teraz</translation>
+<translation id="2160089182263405907">Vypínanie funkcií</translation>
+<translation id="3362364767724670721">Zapnutie alebo vypnutie funkcie Brave vyžaduje reštart prehliadača, aby sa zmeny uplatnili. Keď Origin dokončí aktualizáciu, klepnite na tlačidlo <ph name="BEGIN_BOLD"/>Reštartovať teraz<ph name="END_BOLD"/>.</translation>
+<translation id="1028940738207645746">Naozaj chcete obnoviť všetky nastavenia na predvolené hodnoty?</translation>
+<translation id="5939518447894949180">Resetovať</translation>
 <translation id="8554205386170195281">Nákup</translation>
-<translation id="7071521146534760487">Spravovať účet</translation>
 <translation id="8613144770663526433">Prihláste sa pomocou peňaženky Brave</translation>
 <translation id="3696514931437952995">Prihlasujete sa do <ph name="ORIGIN"/>. Peňaženka Brave bude zdieľať adresu vašej peňaženky s <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Zobraziť podrobnosti</translation>
@@ -1023,7 +1034,6 @@ Leo AI. Túto akciu nie je možné vrátiť späť.</translation>
 <translation id="1309636029062006520">Vytvorte si zoznamy skladieb z obľúbených zvukových súborov a videí a prehrávajte ich kedykoľvek a kdekoľvek.</translation>
 <translation id="7899390017499980820">Tlačidlo Pridať do zoznamu skladieb</translation>
 <translation id="6901152954398668317">Zobraziť alebo skryť tlačidlo „Pridať do zoznamu skladieb“ pre rýchly prístup k pridávaniu alebo odstraňovaniu médií.</translation>
-<translation id="5939518447894949180">Resetovať</translation>
 <translation id="8199028711686989861">Odstránenie všetkých videí zo zoznamu skladieb vrátane ukladania v režime offline.</translation>
 <translation id="4590997608186539865">Zoznam</translation>
 <translation id="7525067979554623046">Vytvořit</translation>
@@ -1178,4 +1188,20 @@ Leo AI. Túto akciu nie je možné vrátiť späť.</translation>
 <translation id="1724977129262658800">Ak chcete upraviť heslo, odomknite</translation>
 <translation id="5780792035410621042">Ak chcete kopírovať heslá, najprv v zariadení nastavte zámku obrazovky</translation>
 <translation id="7986497153528221272">Ak si chcete zobraziť heslá, najprv v zariadení nastavte zámku obrazovky</translation>
+<translation id="4882237634123415792">Vlastné vyhľadávače</translation>
+<translation id="8364431224461158026">Pridať vlastný vyhľadávač</translation>
+<translation id="7307935603426295341">Upraviť vlastný vyhľadávač</translation>
+<translation id="4002066346123236978">Názov</translation>
+<translation id="3653110185270660915">Zadajte názov vyhľadávača</translation>
+<translation id="7400418766976504921">Webová adresa</translation>
+<translation id="6410668567036790476">Pridať vyhľadávač</translation>
+<translation id="6289878295410648689">Napíšte vyhľadávaciu adresu URL a nahraďte dopyt s <ph name="SPECIAL_SYMBOL"/>.</translation>
+<translation id="8943582268084103903">Napríklad: https://youtube.com/search?q=<ph name="SPECIAL_SYMBOL"/>. Ak stránka podporuje OpenSearch, pri úprave tohto poľa bude poskytnutá možnosť automatického pridania.</translation>
+<translation id="8706939021136180678">Adresa URL je neplatná.</translation>
+<translation id="6528099556282059181">Vyhľadávač je už pridaný.</translation>
+<translation id="463451857046640291">Pridanie vyhľadávača sa nepodarilo.</translation>
+<translation id="1229671956956864948">Aktualizácia vyhľadávača sa nepodarila.</translation>
+<translation id="1462771969120037152">Odstránenie vyhľadávača sa nepodarilo. Vyhľadávač, ktorý sa pokúšate odstrániť, môže byť nastavený ako predvolený.</translation>
+<translation id="1079140196216383600">Odstrániť vlastný vyhľadávač</translation>
+<translation id="525276572490219787">Ste si istí, že chcete odstrániť "<ph name="SEARCH_ENGINE_NAME"/>"? Túto akciu nemožno vrátiť späť.</translation>
 </translationbundle>

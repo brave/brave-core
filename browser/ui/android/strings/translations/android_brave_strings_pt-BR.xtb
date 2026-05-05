@@ -49,6 +49,14 @@
 <translation id="2998960761270772157">Bloqueia os elementos de login, menu, comentários e informações de vídeo em youtube.com.</translation>
 <translation id="8531835121131500698">Bloquear YouTube Shorts</translation>
 <translation id="2167271714269158912">Bloqueia Shorts da página inicial, da página de tendências e dos resultados de pesquisa no youtube.com.</translation>
+<translation id="2564435705466025309">Bloquear vídeos com dublagem automática do YouTube</translation>
+<translation id="3603500459037204525">Bloqueia vídeos com dublagem automática na página inicial e nos resultados de pesquisa do youtube.com.</translation>
+<translation id="4067265130987656010">Bloquear miniaturas do YouTube</translation>
+<translation id="3034711349887440574">Bloqueia miniaturas na página inicial e nos resultados de pesquisa do youtube.com.</translation>
+<translation id="8741919213635379855">Bloquear YouTube Playables</translation>
+<translation id="2216551241986578034">Bloqueia Playables na página inicial, página de tendências e resultados de pesquisa do youtube.com.</translation>
+<translation id="9038505474874975130">Bloquear vídeos apenas para membros do YouTube</translation>
+<translation id="3084239516382196983">Bloqueia vídeos apenas para membros na página inicial e nos resultados de pesquisa do youtube.com.</translation>
 <translation id="6052725679982758334">Bloqueio de redes sociais</translation>
 <translation id="7498695072878479744">Permitir botões de login do Google em sites de terceiros</translation>
 <translation id="863171915776379000">Permitir logins do Facebook e publicações incorporadas</translation>
@@ -967,9 +975,9 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="5494920125229734069">Selecionar tudo</translation>
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="944736176598169208">Recompensas</translation>
-<translation id="4272190451231642425">Enviar automaticamente relatórios de falhas</translation>
 <translation id="1199170151481311646">Análise de preservação da privacidade</translation>
 <translation id="1706715315466634757">Aliases de e-mail</translation>
+<translation id="738840791756723657">IA</translation>
 <translation id="6709133671862442373">Notícias</translation>
 <translation id="5990642573624858459">Relatórios de estatísticas</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -981,8 +989,11 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="2573819149217596923">Alterando recursos do Brave</translation>
 <translation id="7415416427817229128">Ativar ou desativar um recurso do Brave exige que o navegador seja reiniciado para aplicar as alterações. Deseja reiniciar agora?</translation>
 <translation id="2256115617011615191">Redefinir agora</translation>
+<translation id="2160089182263405907">Desativar recursos</translation>
+<translation id="3362364767724670721">Ativar ou desativar um recurso do Brave exige a reinicialização do navegador para aplicar as alterações. Toque em <ph name="BEGIN_BOLD"/>Reiniciar agora<ph name="END_BOLD"/> assim que o Origin terminar de atualizar.</translation>
+<translation id="1028940738207645746">Tem a certeza de que deseja redefinir todas as configurações para o padrão?</translation>
+<translation id="5939518447894949180">Redefinir</translation>
 <translation id="8554205386170195281">Comprar</translation>
-<translation id="7071521146534760487">Gerenciar conta</translation>
 <translation id="8613144770663526433">Iniciar sessão com a Carteira Brave</translation>
 <translation id="3696514931437952995">Você iniciou sessão em <ph name="ORIGIN"/>. A carteira Brave compartilhará o endereço da sua carteira com <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Ver detalhes</translation>
@@ -1017,7 +1028,6 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="1309636029062006520">Crie listas de reprodução com seus áudios e vídeos favoritos e reproduza a qualquer hora e em qualquer lugar.</translation>
 <translation id="7899390017499980820">Adicionar ao botão da lista de reprodução</translation>
 <translation id="6901152954398668317">Mostre ou oculte o botão "Adicionar à lista de reprodução" para acesso rápido para adicionar ou remover mídia.</translation>
-<translation id="5939518447894949180">Redefinir</translation>
 <translation id="8199028711686989861">Remova todos os vídeos da lista de reprodução, incluindo o armazenamento no modo off-line.</translation>
 <translation id="4590997608186539865">Playlist</translation>
 <translation id="7525067979554623046">Criar</translation>
@@ -1168,4 +1178,20 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="1724977129262658800">Desbloqueie para editar sua senha</translation>
 <translation id="5780792035410621042">Para poder copiar senhas, configure um bloqueio de tela no dispositivo</translation>
 <translation id="7986497153528221272">Para poder ver as senhas, configure um bloqueio de tela no dispositivo</translation>
+<translation id="4882237634123415792">Mecanismos de pesquisa personalizados</translation>
+<translation id="8364431224461158026">Adicionar um mecanismo de pesquisa personalizado</translation>
+<translation id="7307935603426295341">Editar mecanismo de pesquisa personalizado</translation>
+<translation id="4002066346123236978">Título</translation>
+<translation id="3653110185270660915">Digite o nome do mecanismo de pesquisa</translation>
+<translation id="7400418766976504921">URL</translation>
+<translation id="6410668567036790476">Adicionar mecanismo de pesquisa</translation>
+<translation id="6289878295410648689">Escreva o URL de pesquisa e substitua a consulta por <ph name="SPECIAL_SYMBOL"/>.</translation>
+<translation id="8943582268084103903">Por exemplo: https://youtube.com/search?q=<ph name="SPECIAL_SYMBOL"/>. Se o site for compatível com OpenSearch, a opção de adicionar automaticamente será exibida durante a edição desse campo.</translation>
+<translation id="8706939021136180678">URL é inválido.</translation>
+<translation id="6528099556282059181">O mecanismo de pesquisa já foi adicionado.</translation>
+<translation id="463451857046640291">Falha ao adicionar o mecanismo de pesquisa.</translation>
+<translation id="1229671956956864948">Falha ao atualizar o mecanismo de pesquisa.</translation>
+<translation id="1462771969120037152">Falha ao excluir o mecanismo de pesquisa. O mecanismo de pesquisa que você está tentando excluir pode estar configurado como o padrão.</translation>
+<translation id="1079140196216383600">Excluir mecanismo de pesquisa personalizado</translation>
+<translation id="525276572490219787">Tem a certeza de que deseja excluir "<ph name="SEARCH_ENGINE_NAME"/>"? Esta ação não pode ser desfeita.</translation>
 </translationbundle>

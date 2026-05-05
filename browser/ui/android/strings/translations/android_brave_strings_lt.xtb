@@ -49,6 +49,14 @@
 <translation id="2998960761270772157">Youtube.com svetainėje blokuoja prisijungimo, meniu ir vaizdo įrašų informacijos elementus.</translation>
 <translation id="8531835121131500698">Blokuoti „YouTube Shorts“</translation>
 <translation id="2167271714269158912">Blokuoja „Shorts“ pagrindiniame puslapyje, tendencijų puslapyje ir youtube.com paieškos rezultatų puslapyje.</translation>
+<translation id="2564435705466025309">Blokuoti YouTube automatiškai dubliuotus vaizdo įrašus</translation>
+<translation id="3603500459037204525">Blokuoja automatiškai dubliuotus vaizdo įrašus, kurie atsiranda „youtube.com</translation>
+<translation id="4067265130987656010">Blokuoti „YouTube</translation>
+<translation id="3034711349887440574">Blokuoja miniatiūras, kurios atsiranda „youtube.com</translation>
+<translation id="8741919213635379855">Blokuoti „YouTube</translation>
+<translation id="2216551241986578034">Blokuoja žaidimus, kurie atsiranda „youtube.com</translation>
+<translation id="9038505474874975130">Blokuoti „YouTube</translation>
+<translation id="3084239516382196983">Blokuoja tik nariams prieigalvius vaizdo įrašus, kurie atsiranda „youtube.com</translation>
 <translation id="6052725679982758334">Socialinės žiniasklaidos blokavimas</translation>
 <translation id="7498695072878479744">Trečiųjų šalių svetainėse leisti „Google“ prisijungimo mygtukus</translation>
 <translation id="863171915776379000">Leisti rodyti prisijungimo per „Facebook“ formą ir įterptuosius įrašus</translation>
@@ -974,9 +982,9 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="5494920125229734069">Pasirinkti viską</translation>
 <translation id="2361906291514218784">„Leo“ DI</translation>
 <translation id="944736176598169208">„Rewards“</translation>
-<translation id="4272190451231642425">Automatiškai siųskite avarijos ataskaitas</translation>
 <translation id="1199170151481311646">Privatumo išsaugojimo analizė</translation>
 <translation id="1706715315466634757">El. pašto slapyvardžiai</translation>
+<translation id="738840791756723657">DI</translation>
 <translation id="6709133671862442373">Naujienos</translation>
 <translation id="5990642573624858459">Statistinių duomenų teikimas</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -988,8 +996,10 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="2573819149217596923">Keičiama „Brave</translation>
 <translation id="7415416427817229128">Norint įgalinti arba išjungti „Brave</translation>
 <translation id="2256115617011615191">Paleisti iš naujo dabar</translation>
+<translation id="2160089182263405907">Išjungimas funkcijų</translation>
+<translation id="1028940738207645746">Ar tikrai norite nustatyti visas nuostatas iš naujo į numatytas?</translation>
+<translation id="5939518447894949180">Nustatyti iš naujo</translation>
 <translation id="8554205386170195281">Nusipirkti</translation>
-<translation id="7071521146534760487">Tvarkyti paskyrą</translation>
 <translation id="8613144770663526433">Prisijunkite naudodami „Brave“ piniginę</translation>
 <translation id="3696514931437952995">Jungiatės prie <ph name="ORIGIN"/>. „Brave“ piniginė pasidalins jūsų piniginės adresu su<ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Peržiūrėti išsamią informaciją</translation>
@@ -1024,7 +1034,6 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="1309636029062006520">Kurkite mėgstamų garso ir vaizdo įrašų grojaraščius ir leiskite juos bet kada ir bet kur.</translation>
 <translation id="7899390017499980820">Mygtukas „Įtraukti į grojaraštį“</translation>
 <translation id="6901152954398668317">Rodykite arba slėpkite mygtuką „Įtraukti į grojaraštį“, kad greitai pasiektumėte ir įtrauktumėte arba pašalintumėte mediją.</translation>
-<translation id="5939518447894949180">Nustatyti iš naujo</translation>
 <translation id="8199028711686989861">Pašalinkite visus vaizdo įrašus iš grojaraščio, įskaitant autonominio režimo saugyklą.</translation>
 <translation id="4590997608186539865">Grojaraštis</translation>
 <translation id="7525067979554623046">Sukurti</translation>
@@ -1171,4 +1180,20 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="1724977129262658800">Atrakinkite, kad galėtumėte redaguoti slaptažodį</translation>
 <translation id="5780792035410621042">Jei norite nukopijuoti slaptažodžius, pirmiausia nustatykite įrenginio ekrano užraktą</translation>
 <translation id="7986497153528221272">Jei norite peržiūrėti slaptažodžius, pirmiausia nustatykite įrenginio ekrano užraktą</translation>
+<translation id="4882237634123415792">Pasirinktinės paieškos sistemos</translation>
+<translation id="8364431224461158026">Pridėti pasirinktinę paieškos sistemą</translation>
+<translation id="7307935603426295341">Redaguoti pasirinktinę paieškos sistemą</translation>
+<translation id="4002066346123236978">Pavadinimas</translation>
+<translation id="3653110185270660915">Įveskite paieškos sistemos pavadinimą</translation>
+<translation id="7400418766976504921">URL adresas</translation>
+<translation id="6410668567036790476">Pridėti paieškos sistemą</translation>
+<translation id="6289878295410648689">Parašykite paieškos URL ir pakeiskite užklausą į <ph name="SPECIAL_SYMBOL"/>.</translation>
+<translation id="8943582268084103903">Pavyzdžiui: https://youtube.com/search?q=<ph name="SPECIAL_SYMBOL"/>. Jei svetainė palaiko OpenSearch, bus nurodyta galimybė pridėti automatiškai redaguojant šį lauką.</translation>
+<translation id="8706939021136180678">URL negaliojantis.</translation>
+<translation id="6528099556282059181">Paieškos sistema jau pridėta.</translation>
+<translation id="463451857046640291">Nepavyko pridėti paieškos sistemos.</translation>
+<translation id="1229671956956864948">Nepavyko atnaujinti paieškos sistemos.</translation>
+<translation id="1462771969120037152">Nepavyko ištrinti paieškos sistemos. Gali būti, kad norimą ištrinti paieškos sistemą nustatėte kaip numatytąją.</translation>
+<translation id="1079140196216383600">Ištrinti pasirinktinę paieškos sistemą</translation>
+<translation id="525276572490219787">Ar tikrai norite ištrinti „<ph name="SEARCH_ENGINE_NAME"/></translation>
 </translationbundle>

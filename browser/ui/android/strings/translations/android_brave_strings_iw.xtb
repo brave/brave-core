@@ -49,6 +49,14 @@
 <translation id="2998960761270772157">חוסם את הכניסה, התפריט, ההערות ופרטי הסרטון ב-youtube.com.</translation>
 <translation id="8531835121131500698">חסום YouTube Shorts</translation>
 <translation id="2167271714269158912">חוסם Shorts מדף הבית, דף המגמות ותוצאות החיפוש ב-youtube.com.</translation>
+<translation id="2564435705466025309">חסום סרטוני YouTube שתורגמו באופן אוטומטי</translation>
+<translation id="3603500459037204525">חוסם סרטוני וידאו שתורגמו באופן אוטומטי מלהופיע בעמוד הבית של youtube.com &amp; בתוצאות החיפוש.</translation>
+<translation id="4067265130987656010">חסום תמונות ממוזערות של YouTube</translation>
+<translation id="3034711349887440574">חוסם תמונות ממוזערות מלהופיע בעמוד הבית של youtube.com &amp; בתוצאות החיפוש.</translation>
+<translation id="8741919213635379855">חסום משחקים ניתנים לשיחק ב-YouTube</translation>
+<translation id="2216551241986578034">חוסם משחקים ניתנים לשיחק מלהופיע בעמוד הבית של youtube.com &amp; בתוצאות החיפוש.</translation>
+<translation id="9038505474874975130">חסום סרטוני YouTube שמיועדים לחברים בלבד</translation>
+<translation id="3084239516382196983">חוסם סרטוני וידאו שמיועדים לחברים בלבד מלהופיע בעמוד הבית של youtube.com &amp; בתוצאות החיפוש.</translation>
 <translation id="6052725679982758334">חסימת מדיה חברתית</translation>
 <translation id="7498695072878479744">אפשר לחצני כניסה של Google באתרי צד שלישי</translation>
 <translation id="863171915776379000">התר/י התחברויות לפייסבוק ופוסטים מוטבעים</translation>
@@ -971,9 +979,9 @@
 <translation id="5494920125229734069">בחר הכל</translation>
 <translation id="2361906291514218784">Leo המבוסס בינה מלאכותית</translation>
 <translation id="944736176598169208">פרסים</translation>
-<translation id="4272190451231642425">שלח דוחות קריסה באופן אוטומטי</translation>
 <translation id="1199170151481311646">ניתוח נתונים תוך שמירה על פרטיות</translation>
 <translation id="1706715315466634757">כינויים לדוא"ל</translation>
+<translation id="738840791756723657">AI</translation>
 <translation id="6709133671862442373">חדשות</translation>
 <translation id="5990642573624858459">דיווח סטטיסטי</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -985,8 +993,11 @@
 <translation id="2573819149217596923">שינוי תכונות Brave</translation>
 <translation id="7415416427817229128">הפעלה או השבתה של תכונה ב-Brave דורשת הפעלה מחדש של הדפדפן כדי להחיל שינויים. האם תרצה להפעיל מחדש כעת?</translation>
 <translation id="2256115617011615191">הפעל מחדש כעת</translation>
+<translation id="2160089182263405907">השבתת תכונות</translation>
+<translation id="3362364767724670721">הפעלה או השבתה של תכונת Brave דורשת הפעלה מחדש של הדפדפן כדי להחיל שינויים. אנא לחץ על <ph name="BEGIN_BOLD"/>הפעל מחדש כעת<ph name="END_BOLD"/> כאשר Origin סיים את העדכון.</translation>
+<translation id="1028940738207645746">האם אתה בטוח שברצונך לאפס את כל ההגדרות לברירת המחדל?</translation>
+<translation id="5939518447894949180">אפס</translation>
 <translation id="8554205386170195281">קנייה</translation>
-<translation id="7071521146534760487">נהל חשבון</translation>
 <translation id="8613144770663526433">היכנס עם Brave Wallet</translation>
 <translation id="3696514931437952995">אתה נכנס לחשבון<ph name="ORIGIN"/>.ארנק אמיץ ישתף את כתובת הארנק שלך<ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">ראה פרטים</translation>
@@ -1021,7 +1032,6 @@
 <translation id="1309636029062006520">צור רשימות השמעה של האודיו והסרטונים המועדפים עליך, והפעל בכל זמן ובכל מקום.</translation>
 <translation id="7899390017499980820">כפתור הוסף לרשימת השמעה</translation>
 <translation id="6901152954398668317">הצג או הסתר כפתור "הוסף לרשימת השמעה" לגישה מהירה להוספה או הסרה של מדיה.</translation>
-<translation id="5939518447894949180">אפס</translation>
 <translation id="8199028711686989861">הסר את כל הסרטונים מרשימת ההשמעה, כולל אחסון במצב לא מקוון.</translation>
 <translation id="4590997608186539865">רשימת השמעה</translation>
 <translation id="7525067979554623046">צור</translation>
@@ -1168,4 +1178,20 @@
 <translation id="1724977129262658800">יש לבטל את הנעילה כדי לערוך את הסיסמה</translation>
 <translation id="5780792035410621042">כדי להעתיק סיסמאות, תחילה יש להגדיר נעילת מסך במכשיר</translation>
 <translation id="7986497153528221272">כדי להציג סיסמאות, תחילה יש להגדיר נעילת מסך במכשיר</translation>
+<translation id="4882237634123415792">מנועי חיפוש מותאמים אישית</translation>
+<translation id="8364431224461158026">הוספת מנוע חיפוש מותאם אישית</translation>
+<translation id="7307935603426295341">ערוך מנוע חיפוש מותאם אישית</translation>
+<translation id="4002066346123236978">כותרת</translation>
+<translation id="3653110185270660915">הזן את שם מנוע החיפוש</translation>
+<translation id="7400418766976504921">כתובת אתר</translation>
+<translation id="6410668567036790476">הוספת מנוע חיפוש</translation>
+<translation id="6289878295410648689">יש לכתוב את כתובת ה-URL לחיפוש ולהחליף את השאילתה ב-<ph name="SPECIAL_SYMBOL"/>.</translation>
+<translation id="8943582268084103903">לדוגמה: https://youtube.com/search?q=<ph name="SPECIAL_SYMBOL"/>. אם האתר תומך ב-OpenSearch, תסופק אפשרות הוספה אוטומטית במהלך עריכת השדה הזה.</translation>
+<translation id="8706939021136180678">כתובת ה-URL אינה תקינה.</translation>
+<translation id="6528099556282059181">מנוע חיפוש זה כבר נוסף.</translation>
+<translation id="463451857046640291">הוספת מנוע החיפוש נכשלה.</translation>
+<translation id="1229671956956864948">עדכון מנוע החיפוש נכשל.</translation>
+<translation id="1462771969120037152">מחיקת מנוע החיפוש נכשלה. ייתכן שמנוע החיפוש שאתה מנסה למחוק מוגדר כברירת המחדל.</translation>
+<translation id="1079140196216383600">מחק מנוע חיפוש מותאם אישית</translation>
+<translation id="525276572490219787">האם אתה בטוח שברצונך למחוק את "<ph name="SEARCH_ENGINE_NAME"/>"? פעולה זו אינה ניתנת לביטול.</translation>
 </translationbundle>

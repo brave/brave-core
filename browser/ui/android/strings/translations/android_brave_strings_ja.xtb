@@ -49,6 +49,14 @@
 <translation id="2998960761270772157">youtube.comのサインイン、メニュー、コメント、動画情報などの要素をブロックします。</translation>
 <translation id="8531835121131500698">YouTubeショートをブロック</translation>
 <translation id="2167271714269158912">ホームページ、人気のページ、youtube.comの検索結果からショート動画をブロックします。</translation>
+<translation id="2564435705466025309">YouTubeの自動吹き替え動画をブロック</translation>
+<translation id="3603500459037204525">YouTubeの自動吹き替え動画がyoutube.comのホームページと検索結果に表示されないようにします。</translation>
+<translation id="4067265130987656010">YouTubeのサムネイルをブロック</translation>
+<translation id="3034711349887440574">YouTubeのサムネイルがyoutube.comのホームページと検索結果に表示されないようにします。</translation>
+<translation id="8741919213635379855">YouTubeプレイアブルをブロック</translation>
+<translation id="2216551241986578034">YouTubeプレイアブルがyoutube.comのホームページと検索結果に表示されないようにします。</translation>
+<translation id="9038505474874975130">YouTubeのメンバー限定動画をブロック</translation>
+<translation id="3084239516382196983">YouTubeのメンバー限定動画がyoutube.comのホームページと検索結果に表示されないようにします。</translation>
 <translation id="6052725679982758334">ソーシャルメディアのブロック</translation>
 <translation id="7498695072878479744">第三者サイトのGoogleログインボタンを許可する</translation>
 <translation id="863171915776379000">Facebookのログインと埋め込み投稿を許可する</translation>
@@ -192,7 +200,7 @@
 <translation id="8025937231644975408">お気に入りの機能についてご意見をお聞かせください</translation>
 <translation id="6718362830686703942">クラッシュやフリーズが発生した場合、診断レポートを送信します。</translation>
 <translation id="8616157231067364693">Braveのユーザーがどのような機能を使用しているかについて、非公開かつ匿名で製品インサイトを共有できます。</translation>
-<translation id="2888496576732880897">Braveサーチの向上にご協力ください</translation>
+<translation id="2888496576732880897">Brave Searchの成長を支えよう</translation>
 <translation id="7198716519700700181">ストリーミング中の広告をブロック</translation>
 <translation id="7044431516245362795">Web Discovery Projectに参加して、検索インデックスの拡大と検索結果の改善にご協力ください。<ph name="LEARN_MORE_START"/>詳細を見る<ph name="LEARN_MORE_END"/></translation>
 <translation id="4847979153841887006">Braveロゴ</translation>
@@ -970,9 +978,9 @@
 <translation id="5494920125229734069">すべて選択する</translation>
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="944736176598169208">リワード</translation>
-<translation id="4272190451231642425">クラッシュレポートの自動送信</translation>
 <translation id="1199170151481311646">プライバシー保護分析</translation>
 <translation id="1706715315466634757">電子メールのエイリアス</translation>
+<translation id="738840791756723657">AI</translation>
 <translation id="6709133671862442373">ニュース</translation>
 <translation id="5990642573624858459">統計報告</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -984,8 +992,11 @@
 <translation id="2573819149217596923">Brave機能の変更</translation>
 <translation id="7415416427817229128">Brave機能を有効または無効にするには、ブラウザを再起動して変更を適用する必要があります。今すぐ再起動しますか?</translation>
 <translation id="2256115617011615191">今すぐ再起動</translation>
+<translation id="2160089182263405907">機能を無効にしています</translation>
+<translation id="3362364767724670721">Brave機能を有効または無効にするには、ブラウザを再起動して変更を適用する必要があります。Originの更新が完了したら、<ph name="BEGIN_BOLD"/>今すぐ再起動<ph name="END_BOLD"/>をタップしてください。</translation>
+<translation id="1028940738207645746">すべての設定をデフォルトにリセットしてよろしいですか？</translation>
+<translation id="5939518447894949180">リセット</translation>
 <translation id="8554205386170195281">購入</translation>
-<translation id="7071521146534760487">アカウントを管理</translation>
 <translation id="8613144770663526433">Braveウォレットにサインイン</translation>
 <translation id="3696514931437952995"><ph name="ORIGIN"/>にサインインしています。Braveウォレットはあなたのウォレットのアドレスを<ph name="ORIGIN"/>に共有します。</translation>
 <translation id="1028781062521375153">詳細を表示</translation>
@@ -1021,7 +1032,6 @@
 <translation id="1309636029062006520">お気に入りのオーディオやビデオのプレイリストを作り、いつでもどこでも再生できます。</translation>
 <translation id="7899390017499980820">プレイリストに追加ボタン</translation>
 <translation id="6901152954398668317">「プレイリストに追加」ボタンの表示/非表示で、メディアの追加/削除を素早く行えます。</translation>
-<translation id="5939518447894949180">リセット</translation>
 <translation id="8199028711686989861">オフラインモードのストレージを含む、プレイリストからすべてのビデオを削除します。</translation>
 <translation id="4590997608186539865">Playlist</translation>
 <translation id="7525067979554623046">Create</translation>
@@ -1168,4 +1178,20 @@
 <translation id="1724977129262658800">パスワードを編集するにはロックを解除してください</translation>
 <translation id="5780792035410621042">パスワードをコピーするには、まずデバイスで画面ロックを設定してください</translation>
 <translation id="7986497153528221272">パスワードを表示するには、まずデバイスで画面ロックを設定してください</translation>
+<translation id="4882237634123415792">カスタム検索エンジン</translation>
+<translation id="8364431224461158026">カスタム検索エンジンを追加</translation>
+<translation id="7307935603426295341">カスタム検索エンジンを編集</translation>
+<translation id="4002066346123236978">タイトル</translation>
+<translation id="3653110185270660915">検索エンジンの名前を入力してください</translation>
+<translation id="7400418766976504921">URL</translation>
+<translation id="6410668567036790476">検索エンジンを追加する</translation>
+<translation id="6289878295410648689">検索URLを入力しクエリを<ph name="SPECIAL_SYMBOL"/>に置き換えてください。</translation>
+<translation id="8943582268084103903">例：https://youtube.com/search?q=<ph name="SPECIAL_SYMBOL"/> (サイトがOpenSearchをサポートしている場合、このフィールドを編集している際に、自動で追加する選択肢が与えられます)。</translation>
+<translation id="8706939021136180678">URLが無効です。</translation>
+<translation id="6528099556282059181">検索エンジンは既に追加されています。</translation>
+<translation id="463451857046640291">検索エンジンの追加に失敗しました。</translation>
+<translation id="1229671956956864948">検索エンジンの更新に失敗しました。</translation>
+<translation id="1462771969120037152">検索エンジンの削除に失敗しました。削除しようとしている検索エンジンがデフォルトに設定されている可能性があります。</translation>
+<translation id="1079140196216383600">カスタム検索エンジンを削除</translation>
+<translation id="525276572490219787">「<ph name="SEARCH_ENGINE_NAME"/>」を削除してよろしいですか？この操作は取り消せません。</translation>
 </translationbundle>

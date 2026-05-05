@@ -49,6 +49,14 @@
 <translation id="2998960761270772157">Blocați elementele de conectare, meniu, comentarii și informații video de pe youtube.com.</translation>
 <translation id="8531835121131500698">Blocați videoclipurile scurte Youtube</translation>
 <translation id="2167271714269158912">Blocați videoclipurile scurte de pe pagina de pornire, pagina de tendințe și rezultatele de căutare pe youtube.com.</translation>
+<translation id="2564435705466025309">Blocați videoclipurile auto-dublate YouTube</translation>
+<translation id="3603500459037204525">Blochează videoclipurile auto-dublate din pagina de start și rezultatele de căutare ale youtube.com.</translation>
+<translation id="4067265130987656010">Blocați miniaturi YouTube</translation>
+<translation id="3034711349887440574">Blochează miniaturile din pagina de start și rezultatele de căutare ale youtube.com.</translation>
+<translation id="8741919213635379855">Blocați YouTube Playables</translation>
+<translation id="2216551241986578034">Blochează Playables din pagina de start și rezultatele de căutare ale youtube.com.</translation>
+<translation id="9038505474874975130">Blocați videoclipurile numai pentru membri YouTube</translation>
+<translation id="3084239516382196983">Blochează videoclipurile numai pentru membri din pagina de start și rezultatele de căutare ale youtube.com.</translation>
 <translation id="6052725679982758334">Blocare social media</translation>
 <translation id="7498695072878479744">Permite butoane de conectare Google pe site-uri terțe</translation>
 <translation id="863171915776379000">Permite conectările Facebook și postările încorporate</translation>
@@ -970,9 +978,9 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="5494920125229734069">Selectează-le pe toate</translation>
 <translation id="2361906291514218784">Leo IA</translation>
 <translation id="944736176598169208">Recompense</translation>
-<translation id="4272190451231642425">Trimiteți automat rapoarte de accident</translation>
 <translation id="1199170151481311646">Analizele care păstrează confidențialitatea</translation>
 <translation id="1706715315466634757">Aliasuri de e-mail</translation>
+<translation id="738840791756723657">IA</translation>
 <translation id="6709133671862442373">Știri</translation>
 <translation id="5990642573624858459">Raportarea statisticilor</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -984,8 +992,11 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="2573819149217596923">Modificarea funcțiilor Brave</translation>
 <translation id="7415416427817229128">Activarea sau dezactivarea unei funcții Brave necesită redeschiderea browserului pentru a aplica modificările. Doriți să redeschideți acum?</translation>
 <translation id="2256115617011615191">Redeschideți acum</translation>
+<translation id="2160089182263405907">Dezactivarea caracteristicilor</translation>
+<translation id="3362364767724670721">Activarea sau dezactivarea unei caracteristici Brave necesită o repornire a browserului pentru a aplica modificările. Te rog să dai tap pe <ph name="BEGIN_BOLD"/>Repornire acum<ph name="END_BOLD"/> după ce Origin a terminat actualizarea.</translation>
+<translation id="1028940738207645746">Ești sigur(ă) că vrei să resetezi toate setările la implicit?</translation>
+<translation id="5939518447894949180">Resetează</translation>
 <translation id="8554205386170195281">Achiziție</translation>
-<translation id="7071521146534760487">Gestionați contul</translation>
 <translation id="8613144770663526433">Conectați-vă cu Brave Wallet</translation>
 <translation id="3696514931437952995">Vă conectați la <ph name="ORIGIN"/>. Brave Wallet va partaja adresa portofelului dvs. cu <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Vedeți detaliile</translation>
@@ -1020,7 +1031,6 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="1309636029062006520">Creați liste de redare cu înregistrările dvs. audio și video preferate și redați-le oricând și oriunde.</translation>
 <translation id="7899390017499980820">Butonul Adăugați la Lista de redare</translation>
 <translation id="6901152954398668317">Afișați sau ascundeți butonul „Adăugați la lista de redare” pentru acces rapid la adăugarea sau eliminarea conținutului media.</translation>
-<translation id="5939518447894949180">Resetează</translation>
 <translation id="8199028711686989861">Eliminați toate înregistrările video din lista de redare, inclusiv din modul de stocare offline.</translation>
 <translation id="4590997608186539865">Listă de redare</translation>
 <translation id="7525067979554623046">Creați</translation>
@@ -1167,4 +1177,20 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="1724977129262658800">Deblochează pentru a modifica parola</translation>
 <translation id="5780792035410621042">Pentru a copia parolele, mai întâi setează o blocare a ecranului pe dispozitiv</translation>
 <translation id="7986497153528221272">Pentru a vedea parolele, mai întâi setează o blocare a ecranului pe dispozitiv</translation>
+<translation id="4882237634123415792">Motoare de căutare personalizate</translation>
+<translation id="8364431224461158026">Adaugă un motor de căutare personalizat</translation>
+<translation id="7307935603426295341">Editează motor de căutare personalizat</translation>
+<translation id="4002066346123236978">Titlu</translation>
+<translation id="3653110185270660915">Introdu numele motorului de căutare</translation>
+<translation id="7400418766976504921">Adresă URL</translation>
+<translation id="6410668567036790476">Adaugă motor de căutare</translation>
+<translation id="6289878295410648689">Scrie URL-ul de căutare și înlocuiește interogarea cu <ph name="SPECIAL_SYMBOL"/>.</translation>
+<translation id="8943582268084103903">De exemplu: https://youtube.com/search?q=<ph name="SPECIAL_SYMBOL"/>. Dacă site-ul suportă OpenSearch, va fi furnizată o opțiune de adăugare automată atunci când editezi acest câmp.</translation>
+<translation id="8706939021136180678">URL-ul nu este valid.</translation>
+<translation id="6528099556282059181">Motorul de căutare este adăugat deja.</translation>
+<translation id="463451857046640291">Eroare la adăugarea motorului de căutare.</translation>
+<translation id="1229671956956864948">Eroare la actualizarea motorului de căutare.</translation>
+<translation id="1462771969120037152">Eroare la ștergerea motorului de căutare. Motorul de căutare pe care încerci să-l ștergi poate fi setat ca cel implicit.</translation>
+<translation id="1079140196216383600">Șterge motor de căutare personalizat</translation>
+<translation id="525276572490219787">Ești sigur(ă) că vrei să ștergi „<ph name="SEARCH_ENGINE_NAME"/>"? Această acțiune nu poate fi anulată.</translation>
 </translationbundle>

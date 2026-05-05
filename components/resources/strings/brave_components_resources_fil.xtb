@@ -483,6 +483,10 @@
 <translation id="1518915449477235311">Payagan ang <ph name="URL"/> na buksan sa Brave ang mga pakikipag-usap sa Leo AI?</translation>
 <translation id="4355784577209159847">Pahintulutan ang paggamit ng third-party cookies para sa legacy sa Google Sign-In</translation>
 <translation id="5770656036486891920">Gustong gumamit ng <ph name="URL"/> ng third-party na cookies para sa legacy na Pag-sign In sa Google</translation>
+<translation id="5582087890067572966">🎉 Kumikita ka na!</translation>
+<translation id="4364336119478610380">Kumikita ka kapag may notification gaya nito na lumlabas sa iyong screen. Hindi mo kailangang mag-click para kumita.</translation>
+<translation id="5893017172751072752">Kumikita ka kapag may lumalabas na notification ng Brave Ads</translation>
+<translation id="3447730462826640312">Hindi mo kailangang mag-click para kumita, pero mag-click ka kung interesado!</translation>
 <translation id="2104347391516032700">Serbisyo ng Bat Rewards</translation>
 <translation id="5939518447894949180">I-reset</translation>
 <translation id="3349204812119681938">I-reset ang Mga Reward ng Brave</translation>
@@ -996,6 +1000,7 @@
 <translation id="2795015351889043417">JSON file</translation>
 <translation id="5468881191994555667">Pumili ng file</translation>
 <translation id="795667975304826397">Walang napiling file</translation>
+<translation id="6720675936326555106">Napiling file</translation>
 <translation id="5891811606602061966">Hindi na-import ang account, pakisubukan ulit.</translation>
 <translation id="6566535583781706170">Mag-import ng account</translation>
 <translation id="5051929972046200722">Piliin ang iyong hardware wallet device</translation>
@@ -1042,10 +1047,12 @@
 <translation id="2416098547200943834">TANDAAN: Ibinbigay ang private key bilang hex-encoded JSON na naglalaman ng private key at impormasyon ng protocol. <ph name="LINK_START"/>Matuto pa<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">TANDAAN: Dapat na ibigay ang private key bilang hex-encoded JSON na naglalaman ng private key at impormasyon ng protocol. <ph name="LINK_START"/>Matuto pa<ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">TANDAAN: <ph name="FORMAT"/> lang ang sinusuportahan.</translation>
+<translation id="6457746820359933716">Mag-import gamit ang JSON file na nai-export mula sa Polkadot.js o compatible na mga wallet. Ilagay ang password na ginamit upang i-encrypt ang export.</translation>
 <translation id="9133762451347918196">Mga Account sa Testnet</translation>
 <translation id="42126664696688958">I-export</translation>
 <translation id="1366855498335432549">Deposit</translation>
 <translation id="790104325876206743">Mga setting ng account</translation>
+<translation id="8856844353253421399">Huling na-update <ph name="TIME_AGO"/> na ang nakaraang</translation>
 <translation id="6322030314101903925">Walang available na asset</translation>
 <translation id="836614343069504000">Mag-deposit o bumili ng mga token para magsimula. Kung wala kang makikitang token mula sa na-import na account, tingnan ang mga filter at setting ng display. Posibleng kailanganing idagdag ang mga hindi kilalang token bilang mga custom na asset.</translation>
 <translation id="2902856457593699108">Ipakita ang key</translation>
@@ -1164,10 +1171,10 @@
 <translation id="4324239559624557455">Sa loob ng 24 na oras</translation>
 <translation id="9139452553033760558">Sa loob ng 1 linggo</translation>
 <translation id="1658834457013045127">Hindi kahit kailan</translation>
-<translation id="6344138931392227467"><ph name="DEVICE_NAME"/> ang konektado</translation>
-<translation id="7051244143160304048"><ph name="DEVICE_NAME"/> ang nadiskonekta</translation>
-<translation id="5317781812114905957">Mga Tagubilin</translation>
-<translation id="1178198982208000092">Ikonekta ang iyong <ph name="DEVICE_NAME"/></translation>
+<translation id="5571630233760536706"><ph name="DEVICE_NAME"/> ay konektado</translation>
+<translation id="7058480232601314508"><ph name="DEVICE_NAME"/> ang nadiskonekta</translation>
+<translation id="434328838837168401">Tingnan ang mga tagubilin</translation>
+<translation id="6739517232898494646">Ikonekta ang iyong <ph name="DEVICE_NAME"/> upang magpatuloy</translation>
 <translation id="6941881257520473899">Nangangailangan ng pagkumpirma sa device ang hardware wallet.</translation>
 <translation id="2288190100157580461">Kailangan ng hardware wallet na nakabukas ang <ph name="NETWORK"/> App sa <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">naipadala</translation>
@@ -1888,6 +1895,7 @@
 <translation id="4150336849480030462">Paglilipat ng SPL Token Na May Kaugnay na Paglikha ng Account ng Token</translation>
 <translation id="2244921323472112851">Hindi namin makita ang page na hinahanap mo sa ngayon.</translation>
 <translation id="6277237872689140644">Posibleng inilipat ito sa ibang lugar o may typo ang URL.</translation>
+<translation id="1788572014530152502">May kamalian sa pagproseso ng iyong transaksyon. Sa maraming kaso, nangangahulugan ito na walang sapat na <ph name="SYMBOL"/> upang masaklaw ang bayad sa network. Subukan ang mas maliit na halaga.</translation>
 <translation id="2737084171727561244">Pumunta sa Portfolio</translation>
 <translation id="3499452861061048987">Magdagdag ng token</translation>
 <translation id="5046066249040287308">Serbisyo ng Utility ng Brave Wallet</translation>
@@ -2572,7 +2580,8 @@
 <translation id="4724752924364329714">Kung mukhang sira ang site na ito, subukan nang hindi naka-on ang Shields.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Note: maaaring mabawasan nito ang privacy protections ng Brave.<ph name="NOTE_AFTER"/></translation>
 <translation id="4329860807937715445">Ito ay maaaring bawasan ang proteksyon ng privacy ng Brave. <ph name="LINK_BEFORE"/>Alamin ang higit pa<ph name="LINK_AFTER"/></translation>
-<translation id="1574700443447059851">Na-block ang mga tracker, ad, at higit pa.</translation>
+<translation id="3889333301730272023"><ph name="BLOCK_COUNT"/> na-block ang mga tracker, ad, at higit pa</translation>
+<translation id="2275121279487164685">Mga tracker at ad</translation>
 <translation id="4968268657895673116">Hindi ba gumagana nang tama ang site na ito sa pag-on ng Shields?</translation>
 <translation id="5412004902081180614">Ulat</translation>
 <translation id="3620004479054499575">May mga isyu ka ba sa site na ito?</translation>
@@ -2634,9 +2643,11 @@
 <translation id="3795015906457257780">Tinitingnan mo ang site na ito nang walang proteksyon sa privacy ng Brave.</translation>
 <translation id="7194012750329511146">Brave Shields
 <ph name="NUMBER"/> Mga na-block na tracker, ad, at higit pa</translation>
+<translation id="2900068182947574679">Mga script</translation>
 <translation id="4292121526390005808">Mga naka-block na script</translation>
 <translation id="5046271170844958713">Mga pinapayagang script</translation>
 <translation id="199862531047218413">Nalapat ang mga proteksyon laban sa paggamit ng fingerprint</translation>
+<translation id="896105002981074545">Mga proteksyon laban sa fingerprinting</translation>
 <translation id="5032505924781383272">Hindi kinakailangang ipinapahiwatig ng nalapat na mga proteksyon na sinusubukang i-fingerprint ng web page na ito ang browser mo.</translation>
 <translation id="1905384713982899903">I-block ang mga pag-fingerprint</translation>
 <translation id="314364527871618241">Pinayagan ang mga pag-fingerprint</translation>
@@ -2649,6 +2660,7 @@
 <translation id="542789539047208469">Impormasyon ng Site</translation>
 <translation id="7586067492365979844">Ang Brave Shields ay may bagong tahanan at disenyo. Ngayon itong nag-integrate sa impormasyon ng site para sa isang one-stop experience.</translation>
 <translation id="9114542678887529043">Ang Brave Shields ay may bagong tahanan at disenyo. I-access ito sa pamamagitan ng pag-click sa site icon sa address bar.</translation>
+<translation id="4242533952199664413">Buksan ang mga setting</translation>
 <translation id="6294662480095808915">Privacy. Bilang Default.</translation>
 <translation id="4366423156486478559">Kunin ang proteksyon ng Brave sa lahat ng link na iki-click mo. Itakda lang ang Brave bilang default at mag-browse. Nang pribado.</translation>
 <translation id="3830912418080848377">I-import ang Mga Setting</translation>
@@ -2789,4 +2801,19 @@ Ikonekta ka natin!</translation>
 <translation id="1602850501393095406">Pindutin ang ↑ para i-highlight</translation>
 <translation id="8367705492654390392">Magtanong ng kahit ano</translation>
 <translation id="8525248723479742219">I-play sa Ibang Pagkakataon</translation>
+<translation id="2935698011275148880">Brave Origin</translation>
+<translation id="3983844925615091103">Maligayang pagdating sa Brave Origin. Upang magpatuloy, mangyaring bumili o ibalik ang iyong pagbili ng Brave Origin.</translation>
+<translation id="4801175670604644729">Kailangan mo ng aktibong pagbili ng Brave Origin upang gamitin ang browser na ito.</translation>
+<translation id="4144294274624829008">Ibalik ang pagbili ng Brave Origin</translation>
+<translation id="6080178356113101120">Bumili ng Brave Origin</translation>
+<translation id="1009496146858538651">Ibalik ang Pagbili</translation>
+<translation id="3461564061600681423">Ilagay ang iyong ID ng pagbili upang i-activate ang iyong pagbili ng Brave Origin.</translation>
+<translation id="2036379724374431790">ID ng pagbili</translation>
+<translation id="4348430971280118761">Ilagay ang iyong ID ng pagbili</translation>
+<translation id="7451866456310404779">Tukuyin ang ID ng pagbili</translation>
+<translation id="8853195592604941919">Nire-verify… Maaaring tumagal ng isang minuto.</translation>
+<translation id="4633706444004110760">Salamat sa pag-install ng Brave Origin, isang bersyon ng browser para sa mga gumagamit na hindi kailangan ng lahat ng features na sumusuporta sa Brave bilang isang negosyo, ngunit nais pa rin ang privacy na nag-aalok lamang ang Brave. Ang mga Origin users ay patuloy na makikinabang mula sa industry-leading privacy, adblock, at speed (sa pamamagitan ng Shields) ng Brave, pati na rin ang regular na software updates, Chromium patches, at security at privacy improvements. Ang Origin ay maglalabas ng karamihan ng ibang features mula sa browser.</translation>
+<translation id="5816720995022674532">Ang Origin ay libre upang gamitin sa mga device ng Linux, ngunit pa rin <ph name="BEGIN_LINK"/>available para sa pagbili<ph name="END_LINK"/> kung nais mong suportahan ang Brave bilang isang negosyo. Ang pagbili ay magbubukas din ng kakayahan na gamitin ang Origin sa Android, iOS, macOS, at Windows na mga device.</translation>
+<translation id="3065220545261045367">Suportahan ang Brave sa pamamagitan ng pagbili ng Origin</translation>
+<translation id="2069499076031488636">Magpatuloy sa Origin nang libre sa Linux</translation>
 </translationbundle>

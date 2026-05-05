@@ -49,6 +49,14 @@
 <translation id="2998960761270772157">Blokira prijavu, izbornik, komentare i elemente informacija o videozapisu na youtube.com.</translation>
 <translation id="8531835121131500698">Blokiraj kratke videozapise platforme YouTube</translation>
 <translation id="2167271714269158912">Blokirajte kratke videozapise na početnoj stranici, stranici s trendovima i u rezultatima pretraživanja na mrežnom mjestu youtube.com.</translation>
+<translation id="2564435705466025309">Blokiraj YouTube videozapise koji su automatski pretpostavljeni</translation>
+<translation id="3603500459037204525">Blokira automatski pretpostavljene videozapise koji se pojavljuju na početnoj stranici YouTube-a i rezultatima pretrage.</translation>
+<translation id="4067265130987656010">Blokiraj minijature YouTube-a</translation>
+<translation id="3034711349887440574">Blokira minijature koje se pojavljuju na početnoj stranici YouTube-a i rezultatima pretrage.</translation>
+<translation id="8741919213635379855">Blokiraj YouTube Playables</translation>
+<translation id="2216551241986578034">Blokira Playables koji se pojavljuju na početnoj stranici YouTube-a i rezultatima pretrage.</translation>
+<translation id="9038505474874975130">Blokiraj YouTube videozapise samo za članove</translation>
+<translation id="3084239516382196983">Blokira videozapise samo za članove koji se pojavljuju na početnoj stranici YouTube-a i rezultatima pretrage.</translation>
 <translation id="6052725679982758334">Blokiranje društvenih mreža</translation>
 <translation id="7498695072878479744">Dopusti gumbe za prijavu za uslugu Google na mrežnim mjestima trećih strana</translation>
 <translation id="863171915776379000">Dopusti prijave za društvenu mrežu Facebook i ugrađene objave</translation>
@@ -975,9 +983,9 @@ račun. Želite li ga sada napraviti?</translation>
 <translation id="5494920125229734069">Odaberi sve</translation>
 <translation id="2361906291514218784">Pomoćnik Leo potpomognut umjetnom inteligencijom (AI)</translation>
 <translation id="944736176598169208">Rewards</translation>
-<translation id="4272190451231642425">Automatski šalji izvješća o rušenju</translation>
 <translation id="1199170151481311646">Analitika koja štiti privatnost</translation>
 <translation id="1706715315466634757">E-mail aliasi</translation>
+<translation id="738840791756723657">AI</translation>
 <translation id="6709133671862442373">Vijesti</translation>
 <translation id="5990642573624858459">Izvješćivanje statistika</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -989,8 +997,11 @@ račun. Želite li ga sada napraviti?</translation>
 <translation id="2573819149217596923">Promjena značajki Bravea</translation>
 <translation id="7415416427817229128">Omogućavanje ili onemogućavanje značajke Bravea zahtijeva ponovno pokretanje preglednika da bi se promjene primjenjile. Želite li ponovno pokrenuti sada?</translation>
 <translation id="2256115617011615191">Ponovno pokreni sada</translation>
+<translation id="2160089182263405907">Isključivanje značajki</translation>
+<translation id="3362364767724670721">Omogućavanje ili isključivanje značajke Brave zahtijeva ponovno pokretanje preglednika da bi se promjene primijenile. Molimo tapnite <ph name="BEGIN_BOLD"/>Ponovno pokreni sada<ph name="END_BOLD"/> kada Origin završi s ažuriranjem.</translation>
+<translation id="1028940738207645746">Jeste li sigurni da želite ponovno postaviti sve postavke na zadanu vrijednost?</translation>
+<translation id="5939518447894949180">Ponovno postavi</translation>
 <translation id="8554205386170195281">Kupnja</translation>
-<translation id="7071521146534760487">Upravljaj računom</translation>
 <translation id="8613144770663526433">Prijava Novčanikom Brave</translation>
 <translation id="3696514931437952995">Prijavljujete se u <ph name="ORIGIN"/>. Novčanikom Brave dijeli se adresa vašeg novčanika sa sljedećim: <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Pogledaj pojedinosti</translation>
@@ -1025,7 +1036,6 @@ račun. Želite li ga sada napraviti?</translation>
 <translation id="1309636029062006520">Napravite popise za reprodukciju svojih omiljenih audiozapisa i videozapisa i reproducirajte ih bilo kada i bilo gdje.</translation>
 <translation id="7899390017499980820">Gumb Dodaj na popis za reprodukciju</translation>
 <translation id="6901152954398668317">Prikaži ili sakrij gumb „Dodaj na popis za reprodukciju” za brzi pristup radi dodavanja ili uklanjanja medija.</translation>
-<translation id="5939518447894949180">Ponovo postavi</translation>
 <translation id="8199028711686989861">Uklonite sve videozapise s popisa za reprodukciju, uključujući izvanmrežnu pohranu.</translation>
 <translation id="4590997608186539865">Popis za reprodukciju</translation>
 <translation id="7525067979554623046">Stvori</translation>
@@ -1176,4 +1186,20 @@ račun. Želite li ga sada napraviti?</translation>
 <translation id="1724977129262658800">Otključajte da biste izmijenili zaporku</translation>
 <translation id="5780792035410621042">Da biste kopirali zaporke, najprije postavite zaključavanje zaslona na uređaju</translation>
 <translation id="7986497153528221272">Za prikaz zaporki najprije postavite zaključavanje zaslona na uređaju</translation>
+<translation id="4882237634123415792">Prilagođene tražilice</translation>
+<translation id="8364431224461158026">Dodavanje prilagođene tražilice</translation>
+<translation id="7307935603426295341">Uređivanje prilagođene tražilice</translation>
+<translation id="4002066346123236978">Naslov</translation>
+<translation id="3653110185270660915">Unesite naziv tražilice</translation>
+<translation id="7400418766976504921">URL</translation>
+<translation id="6410668567036790476">Dodavanje tražilice</translation>
+<translation id="6289878295410648689">Napišite URL za pretraživanje i zamijenite upit sljedećim: <ph name="SPECIAL_SYMBOL"/>.</translation>
+<translation id="8943582268084103903">Primjerice: https://youtube.com/search?q=<ph name="SPECIAL_SYMBOL"/>. Ako se mrežnim mjestom podržava OpenSearch, tijekom uređivanja ovog polja dostupna je mogućnost za automatsko dodavanje.</translation>
+<translation id="8706939021136180678">URL je nevažeći.</translation>
+<translation id="6528099556282059181">Tražilica je već dodana.</translation>
+<translation id="463451857046640291">Nije moguće dodati tražilicu.</translation>
+<translation id="1229671956956864948">Nije moguće ažurirati tražilicu.</translation>
+<translation id="1462771969120037152">Nije moguće izbrisati tražilicu. Tražilica koju pokušavate izbrisati može biti postavljena kao zadana.</translation>
+<translation id="1079140196216383600">Brisanje prilagođene tražilice</translation>
+<translation id="525276572490219787">Sigurno želite izbrisati "<ph name="SEARCH_ENGINE_NAME"/>"? Ova se radnja ne može opozvati.</translation>
 </translationbundle>

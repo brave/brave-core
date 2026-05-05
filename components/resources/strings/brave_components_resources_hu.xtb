@@ -483,6 +483,10 @@
 <translation id="1518915449477235311">Engedélyezi a(z) <ph name="URL"/> számára a Leo AI-beszélgetések megnyitását a Brave-ben?</translation>
 <translation id="4355784577209159847">Harmadik féltől származó cookie-k használatának engedélyezése a régi Google-bejelentkezéshez</translation>
 <translation id="5770656036486891920">A(z) <ph name="URL"/> harmadik féltől származó cookie-kat szeretne használni a régi Google-bejelentkezéshez</translation>
+<translation id="5582087890067572966">🎉 Ön jelenleg pénzt keres!</translation>
+<translation id="4364336119478610380">Amikor egy ilyen értesítés megjelenik a képernyőn, Ön jutalmat szerez. A jutalom megszerzéséhez nem szükséges rákattintania.</translation>
+<translation id="5893017172751072752">Ön jutalmat szerez, amikor a Brave-hirdetések értesítése megjelenik</translation>
+<translation id="3447730462826640312">Nem szükséges az értesítésre kattintani a jutalom megszerzéséhez, de kattintson, ha érdeklik a részletek!</translation>
 <translation id="2104347391516032700">BAT jutalmak szolgáltatás</translation>
 <translation id="5939518447894949180">Visszaállítás</translation>
 <translation id="3349204812119681938">Brave Rewards újraállítása</translation>
@@ -988,6 +992,7 @@
 <translation id="2795015351889043417">JSON-fájl</translation>
 <translation id="5468881191994555667">Fájl kiválasztása</translation>
 <translation id="795667975304826397">Nincs kiválasztva fájl</translation>
+<translation id="6720675936326555106">Kiválasztott fájl</translation>
 <translation id="5891811606602061966">Sikertelen a számla importálása, próbálja újra</translation>
 <translation id="6566535583781706170">Fiók importálása</translation>
 <translation id="5051929972046200722">Válassza ki a hardver tárca eszközét</translation>
@@ -1034,10 +1039,12 @@
 <translation id="2416098547200943834">MEGJEGYZÉS: a privát kulcs hexadecimális kódolású JSON-fájlként lesz elérhető az Ön számára, amely tartalmazza a privát kulcsot és a protokollra vonatkozó adatokat. <ph name="LINK_START"/>További információk<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">MEGJEGYZÉS: a privát kulcsot hexadecimális kódolású JSON-fájlként kell megadni, amely tartalmazza a privát kulcsot és a protokollra vonatkozó adatokat. <ph name="LINK_START"/>További információk<ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">MEGJEGYZÉS: Csak a <ph name="FORMAT"/> kiterjesztett kulcsok támogatottak.</translation>
+<translation id="6457746820359933716">Importálás egy JSON-fájl használatával, amely a Polkadot.js vagy kompatibilis pénztárcákból lett exportálva. Adja meg az exportálás titkosításához használt jelszót.</translation>
 <translation id="9133762451347918196">Testnet fiókok</translation>
 <translation id="42126664696688958">Exportálás</translation>
 <translation id="1366855498335432549">Befizetés</translation>
 <translation id="790104325876206743">Fiókbeállítások</translation>
+<translation id="8856844353253421399">Utoljára frissítve: <ph name="TIME_AGO"/> ezelőtt</translation>
 <translation id="6322030314101903925">Nincsenek elérhető eszközök</translation>
 <translation id="836614343069504000">A kezdéshez vásároljon vagy helyezzen letétbe tokeneket. Ha egy importált számlán nem jelennek meg a tokenek, ellenőrizze a szűrőket és a megjelenítési beállításokat. Lehet, hogy az ismeretlen tokeneket egyéni eszközökként kell hozzáadni.</translation>
 <translation id="2902856457593699108">Kulcs mutatása</translation>
@@ -1156,10 +1163,10 @@
 <translation id="4324239559624557455">24 óra</translation>
 <translation id="9139452553033760558">1 hét</translation>
 <translation id="1658834457013045127">Korlátlan ideig</translation>
-<translation id="6344138931392227467"><ph name="DEVICE_NAME"/> csatlakoztatva</translation>
-<translation id="7051244143160304048"><ph name="DEVICE_NAME"/> csatlakozása megszakítva</translation>
-<translation id="5317781812114905957">Utasítások</translation>
-<translation id="1178198982208000092">Csatlakoztassa a következőt: <ph name="DEVICE_NAME"/></translation>
+<translation id="5571630233760536706"><ph name="DEVICE_NAME"/> csatlakoztatva</translation>
+<translation id="7058480232601314508"><ph name="DEVICE_NAME"/> csatlakozása megszakítva</translation>
+<translation id="434328838837168401">Utasítások megtekintése</translation>
+<translation id="6739517232898494646">Csatlakoztassa az <ph name="DEVICE_NAME"/> eszközt a folytatáshoz</translation>
 <translation id="6941881257520473899">A hardverpénztárca megerősítést igényel az eszközön.</translation>
 <translation id="2288190100157580461">A hardware pénztárcához meg kell nyitni a(z) <ph name="NETWORK"/> alkalmazást a következőn: <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">elküldött</translation>
@@ -1880,6 +1887,7 @@
 <translation id="4150336849480030462">SPL-token átutalása a kapcsolódó tokenszámla létrehozásával</translation>
 <translation id="2244921323472112851">Most nem találjuk a keresett oldalt.</translation>
 <translation id="6277237872689140644">Lehet, hogy az oldal áthelyezésre került, vagy az URL hibát tartalmaz.</translation>
+<translation id="1788572014530152502">Hiba történt a tranzakció feldolgozása során. Sok esetben ez azt jelenti, hogy nincs elegendő <ph name="SYMBOL"/> a hálózati díj fedezéséhez. Próbáljon meg egy kisebb összeget.</translation>
 <translation id="2737084171727561244">Lépjen a Portfólióhoz</translation>
 <translation id="3499452861061048987">Token hozzáadása</translation>
 <translation id="5046066249040287308">Brave pénztárca segédprogram-szolgáltató</translation>
@@ -2564,7 +2572,8 @@
 <translation id="4724752924364329714">Ha ez az oldal töröttnek tűnik, próbálja meg a Shields down-t.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Megjegyzés: ez csökkentheti a Brave adatvédelmi védelmét.<ph name="NOTE_AFTER"/></translation>
 <translation id="4329860807937715445">Ez csökkenthet a Brave adatvédelmi védelemét. <ph name="LINK_BEFORE"/>További információ<ph name="LINK_AFTER"/></translation>
-<translation id="1574700443447059851">Nyomkövetők, hirdetések és még több blokkolva.</translation>
+<translation id="3889333301730272023"><ph name="BLOCK_COUNT"/> nyomkövetők, hirdetések és még több blokkolva</translation>
+<translation id="2275121279487164685">Nyomkövetők és hirdetések</translation>
 <translation id="4968268657895673116">A webhely nem működik megfelelően engedélyezett pajzsokkal?</translation>
 <translation id="5412004902081180614">Bejelentés</translation>
 <translation id="3620004479054499575">Problémái vannak ezzel az oldallal?</translation>
@@ -2626,9 +2635,11 @@
 <translation id="3795015906457257780">Ezt a webhelyet a Brave adatvédelme nélkül tekinti meg.</translation>
 <translation id="7194012750329511146">Brave pajzsok
 <ph name="NUMBER"/> nyomkövető, hirdetés és egyéb blokkolva</translation>
+<translation id="2900068182947574679">Szkriptek</translation>
 <translation id="4292121526390005808">Blokkolt parancsfájlok</translation>
 <translation id="5046271170844958713">Engedélyezett parancsfájlok</translation>
 <translation id="199862531047218413">ujjlenyomatvétel elleni védelem alkalmazva</translation>
+<translation id="896105002981074545">Ujjlenyomat-vételi védelmi módszerek</translation>
 <translation id="5032505924781383272">Az alkalmazott védelmek nem feltétlenül azt jelzik, hogy a weboldal megpróbál ujjlenyomatot venni a böngészőben.</translation>
 <translation id="1905384713982899903">Letiltott ujjlenyomatok</translation>
 <translation id="314364527871618241">Engedélyezett ujjlenyomatok</translation>
@@ -2641,6 +2652,7 @@ other {A Brave Pajzsok {BLOCKED_COUNT} követőt blokkolt itt: <ph name="SITE_UR
 <translation id="542789539047208469">Webhelyinformációk</translation>
 <translation id="7586067492365979844">A Brave Shields új otthona és kialakítása van. Mostantól integrálódik a webhely információival az egységes élményért.</translation>
 <translation id="9114542678887529043">A Brave Shields új otthona és kialakítása van. Nyissa meg az oldal ikonra kattintva az címsorban.</translation>
+<translation id="4242533952199664413">Beállítások megnyitása</translation>
 <translation id="6294662480095808915">Adatvédelem. Ez az alap.</translation>
 <translation id="4366423156486478559">A Brave minden linkkel szemben védelmet nyújt, amire csak rákattint. Csak tegye meg a Brave-et az alapértelmezett böngészőjének, és böngésszen. Biztonságban.</translation>
 <translation id="3830912418080848377">Importálási beállítások</translation>
@@ -2781,4 +2793,19 @@ a meglévő lapra való váltás helyett</translation>
 <translation id="1602850501393095406">Nyomja meg a ↑ gombot a kiemeléshez</translation>
 <translation id="8367705492654390392">Kérdezz bármit</translation>
 <translation id="8525248723479742219">Lejátszás később</translation>
+<translation id="2935698011275148880">Bátor származás</translation>
+<translation id="3983844925615091103">Üdvözöljük a Brave Origin-ben. A folytatáshoz vásároljon vagy állítson vissza egy Brave Origin vásárlást.</translation>
+<translation id="4801175670604644729">Az aktív Brave Origin vásárlás szükséges ennek a böngészőnek a használatához.</translation>
+<translation id="4144294274624829008">Brave Origin vásárlás visszaállítása</translation>
+<translation id="6080178356113101120">Brave Origin megvásárlása</translation>
+<translation id="1009496146858538651">Vásárlás visszaállítása</translation>
+<translation id="3461564061600681423">Adja meg a vásárlási azonosítóját a Brave Origin vásárlás aktiválásához.</translation>
+<translation id="2036379724374431790">Vásárlási azonosító</translation>
+<translation id="4348430971280118761">Adja meg a vásárlási azonosítót</translation>
+<translation id="7451866456310404779">Vásárlási azonosító ellenőrzése</translation>
+<translation id="8853195592604941919">Ellenőrzés folyamatban… Ez egy percig eltarthat.</translation>
+<translation id="4633706444004110760">Köszönjük, hogy telepítette a Brave Origin-t, a böngésző egy verzióját azon felhasználók számára, akik nem igényelnek minden olyan funkciót, amely a Brave-t üzletként támogatja, de továbbra is a Brave által kínált adatvédelmet szeretnék. Az Origin felhasználói továbbra is élvezhetik az iparágban vezető adatvédelmet, az hirdetésblokkolást és a sebességet (Shields-en keresztül), valamint a rendszeres szoftverfrissítéseket, a Chromium javításokat, valamint a biztonsági és adatvédelmi fejlesztéseket. Az Origin eltávolítja a böngészőből a legtöbb más funkciót.</translation>
+<translation id="5816720995022674532">Az Origin ingyenesen használható Linux eszközökön, de továbbra is <ph name="BEGIN_LINK"/>megvásárolható<ph name="END_LINK"/>, ha szeretné támogatni a Brave-t üzletként. A vásárlás azt is feloldaná, hogy az Origin-t Android, iOS, macOS és Windows eszközökön használjon.</translation>
+<translation id="3065220545261045367">Támogatja a Brave-t az Origin megvásárlásával</translation>
+<translation id="2069499076031488636">Folytassa az Origin-nel ingyen a Linux-on</translation>
 </translationbundle>

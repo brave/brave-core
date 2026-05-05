@@ -131,16 +131,12 @@
 <translation id="8184318863960255706">更多資訊</translation>
 <translation id="780301667611848630">不用了，謝謝</translation>
 <translation id="1162706247109707219">按一下「確定」，即表示您瞭解在更新到 Windows 10 以上版本之前，您安裝的 Brave 不會收到重要的安全性修正。此警告不會再次顯示。</translation>
-<translation id="9164786361657554526">按一下「確定」，即表示您瞭解在更新到 macOS 10.15 以上版本之前，您安裝的 Brave 不會收到重要的安全性修正。此警告不會再次顯示。</translation>
+<translation id="2971591422768125177">按一下「確定」，即表示您瞭解在更新到 macOS 10.15 以上版本之前，您安裝的 Brave 不會收到重要的安全性修正。此警告不會再次顯示。</translation>
 <translation id="6020553119523541665">此分頁在另一個視窗中使用中</translation>
 <translation id="4987392683074136770">點擊此分頁會將其內容帶到此窗口</translation>
 <translation id="8355523213948477234">分割畫面功能表按鈕</translation>
 <translation id="6040143037577758943">關閉</translation>
 <translation id="6665472986740899785">Brave 通知廣告</translation>
-<translation id="5582087890067572966">🎉 您已開始賺取收益！</translation>
-<translation id="4364336119478610380">畫面上顯示這類通知時，就表示您已開始賺取收益。您不需要特地點選，也能開始賺取收益。</translation>
-<translation id="5893017172751072752">出現 Brave Ads 通知表示您已開始賺取收益</translation>
-<translation id="3447730462826640312">您不需要特地點選，也能開始賺取收益，但如果您想深入瞭解，記得點選入內查看！</translation>
 <translation id="5253166205743627564">感謝您點擊私人廣告來支持 Brave Search。與大型科技公司不同，我們以匿名方式衡量廣告效能，以維護您的隱私。</translation>
 <translation id="8748471354357836070">瞭解更多 / 退出選擇</translation>
 <translation id="5927196110206824867">贊助商背景圖片支援 Brave 建立一個獨立、使用者優先網路的使命。與大型科技公司不同，我們以匿名方式衡量廣告效能，以維護您的隱私。</translation>
@@ -337,6 +333,8 @@
 <translation id="7557539689487606886">訂閱 Premium</translation>
 <translation id="1035309871698658326">開啟時，這會自動將所有非無痕標籤頁的標題和來源傳送至 Leo，以便將它們分類。</translation>
 <translation id="3435896845095436175">啟用</translation>
+<translation id="9031526219709160683">Brave 可以幫助您優化此網站的隱私設定。您想要檢閱 Brave 的建議嗎?</translation>
+<translation id="5739953050957336013">檢閱建議</translation>
 <translation id="9082792303833649978">此設定由您的管理員或其他 Brave 政策所管理。</translation>
 <translation id="1940221956626514677">自訂工具列</translation>
 <translation id="6501807887341963552">主題與顏色</translation>
@@ -393,6 +391,12 @@
 <translation id="2113977810652731515">信用卡</translation>
 <translation id="4096343215397759358">顯示預覽的圖卡</translation>
 <translation id="5297085818601043899">工具提示</translation>
+<translation id="1033676453210290920">最小標籤寬度</translation>
+<translation id="562967218762447012">最小 (預設)</translation>
+<translation id="574392208103952083">中等</translation>
+<translation id="4209092469652827314">大</translation>
+<translation id="2658845370685508484">全寬</translation>
+<translation id="1215972473274650670">使用可捲動標籤列</translation>
 <translation id="5219886318310413094">在所有視窗中顯示已釘選的分頁</translation>
 <translation id="2396127686705429331">顯示書籤按鈕</translation>
 <translation id="443318149139185498">在主菜單按鈕上使用輪廓標誌</translation>
@@ -797,7 +801,7 @@
 <translation id="1529674267267221673">以滑鼠右鍵按一下網站，Leo 就會出現在內容選單中。這會將目前網頁的內容傳送給 Leo。</translation>
 <translation id="5226020406479918122">標籤頁焦點模式</translation>
 <translation id="3705539672403311123">在「標籤頁搜尋」頁啟用標籤頁組織。開啟後，這會自動將所有非無痕標籤頁的標題和來源傳送至 Leo 進行分類。 <ph name="BEGIN_LINK"/>了解更多<ph name="END_LINK"/></translation>
-<translation id="9049433973274198706">標籤焦點的預設模式</translation>
+<translation id="9049433973274198706">標籤頁焦點的預設模式</translation>
 <translation id="8172263161008556851">在對話中顯示建議的提示語</translation>
 <translation id="5781842473834867765">儲存我的對話紀錄</translation>
 <translation id="1082960401708055995">停用對話儲存功能會永久刪除所有先前儲存的對話。此動作無法復原。</translation>
@@ -821,6 +825,8 @@
 <translation id="6374563306438145841">API 金鑰</translation>
 <translation id="3295756655687327124">視覺支援</translation>
 <translation id="1415432774589088566">如果此模型以影像作為輸入，例如 llama 3.2b vision</translation>
+<translation id="5718897035062884425">工具支援</translation>
+<translation id="2120046556683363911">如果此模型支援函式呼叫/工具使用</translation>
 <translation id="8008271349880309090">模型名稱，這會顯示於選取模型選單</translation>
 <translation id="1355326130503900056">模型名稱，這應顯示於傳給服務架構 (如 phi-3) 的要求 (請注意，如果此名稱與服務架構預期的名稱不符，就無法整合)</translation>
 <translation id="3213787232304349732">您的服務架構會以此 URL 聆聽要求。如果您不確定，請查閱服務架構的說明文件。例如，對 Ollama 而言，這個 URL 永遠是 http://localhost:11434/v1/chat/completions</translation>

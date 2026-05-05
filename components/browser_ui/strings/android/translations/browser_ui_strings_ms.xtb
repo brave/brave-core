@@ -64,6 +64,7 @@
 <translation id="1644574205037202324">Sejarah</translation>
 <translation id="1652197001188145583">Apabila dihidupkan, laman dapat meminta untuk menggunakan peranti NFC. Apabila dimatikan, laman tidak dapat menggunakan peranti NFC.</translation>
 <translation id="1660204651932907780">Benarkan tapak untuk memainkan bunyi (disyorkan)</translation>
+<translation id="1676590040242013349">"Sentiasa gunakan sambungan selamat" dihidupkan.</translation>
 <translation id="1677097821151855053">Kuki dan data tapak lain digunakan untuk mengingat anda, misalnya untuk log anda masuk atau memperibadikan iklan. Untuk mengurus kuki bagi semua tapak, lihat <ph name="BEGIN_LINK"/>Tetapan<ph name="END_LINK"/>.</translation>
 <translation id="1679305402657584804">Laman boleh meminta untuk menggunakan peranti NFC</translation>
 <translation id="1686785653877010442">Biasanya laman menghantar pemberitahuan untuk memberitahu anda tentang berita mutakhir atau mesej sembang.</translation>
@@ -125,7 +126,6 @@
 <translation id="2228071138934252756">Untuk membolehkan <ph name="APP_NAME"/> mengakses kamera anda, hidupkan juga kamera dalam <ph name="BEGIN_LINK"/>Tetapan Android<ph name="END_LINK"/>.</translation>
 <translation id="2231160360698766265">Laman boleh memainkan kandungan yang dilindungi</translation>
 <translation id="2235344399760031203">Kuki pihak ketiga disekat</translation>
-<translation id="2238944249568001759">Carian cadangan berdasarkan tab terakhir anda</translation>
 <translation id="2241587408274973373">Kad halaman tab baharu</translation>
 <translation id="2241634353105152135">Hanya sekali</translation>
 <translation id="2253414712144136228">Alih keluar <ph name="NAME_OF_LIST_ITEM"/></translation>
@@ -166,11 +166,6 @@
 <translation id="2588271083332682494">Berkemas dengan kumpulan tab</translation>
 <translation id="2597457036804169544">Jangan gunakan tema gelap pada laman</translation>
 <translation id="2606760465469169465">Sahkan secara automatik</translation>
-<translation id="7615153661410655750">Urus dalam <ph name="BEGIN_LINK1"/>tetapan Android<ph name="END_LINK1"/>
-
-Perlindungan Lanjutan mengawal tetapan Brave ini:
-• "Sentiasa gunakan sambungan selamat" dihidupkan.
-• "Pengoptimum JavaScript" dimatikan. <ph name="BEGIN_LINK2"/>Urus pengecualian Laman<ph name="END_LINK2"/></translation>
 <translation id="2621115761605608342">Benarkan JavaScript untuk tapak tertentu.</translation>
 <translation id="2626708220538466178">Helaian bawah penyemak imbas lalai ditutup</translation>
 <translation id="2653659639078652383">Serah</translation>
@@ -214,7 +209,6 @@ Perlindungan Lanjutan mengawal tetapan Brave ini:
 <translation id="3069226013421428034">Benarkan log masuk pihak ketiga untuk laman tertentu.</translation>
 <translation id="310297983047869047">Slaid sebelumnya</translation>
 <translation id="3108122610701115301">Tetapkan lalai</translation>
-<translation id="3109724472072898302">Diruntuhkan</translation>
 <translation id="310979712355504754">Padamkan semua</translation>
 <translation id="311394601889664316">Jangan benarkan laman mengedit fail atau folder pada peranti anda</translation>
 <translation id="3114012059975132928">Pemain video</translation>
@@ -260,7 +254,6 @@ Perlindungan Lanjutan mengawal tetapan Brave ini:
 <translation id="3602290021589620013">Pratonton</translation>
 <translation id="3611658447322220736">Laman yang ditutup baru-baru ini boleh menyelesaikan penghantaran dan penerimaan data</translation>
 <translation id="3619294456800709762">Laman dapat memasukkan gambar dalam gambar secara automatik</translation>
-<translation id="3628308229821498208">Carian cadangan</translation>
 <translation id="3632460243282703117">Langgan</translation>
 <translation id="363748948745453283">Menggunakan lokasi anggaran</translation>
 <translation id="3641456520301071208">Laman boleh meminta lokasi anda</translation>
@@ -441,7 +434,6 @@ Perlindungan Lanjutan mengawal tetapan Brave ini:
 <translation id="5515432237048785579">Temukan helaian bawah suapan yang dibuka pada ketinggian penuh</translation>
 <translation id="5516455585884385570">Buka tetapan pemberitahuan</translation>
 <translation id="5527111080432883924">Tanya sebelum membenarkan tapak membaca teks dan imej daripada papan keratan (disyorkan)</translation>
-<translation id="5553374991681107062">Terbaharu</translation>
 <translation id="674221630984410403">Tidak mempercepat laman dengan enjin V8 Brave tetapi Brave menjadi lebih tahan sedikit terhadap serangan</translation>
 <translation id="5556459405103347317">Muat Semula</translation>
 <translation id="5591840828808741583"><ph name="SITE_NAME"/> disekat</translation>
@@ -521,7 +513,6 @@ Perlindungan Lanjutan mengawal tetapan Brave ini:
 <translation id="6231752747840485235">Nyahpasang '<ph name="APP_NAME"/>'?</translation>
 <translation id="4789073065838177382">Ketik Apl penyemak imbas &gt; Brave</translation>
 <translation id="6260830281887654268">Helaian bawah koleksi tema penampilan halaman tab baharu dibuka pada ketinggian separuh</translation>
-<translation id="6262191102408817757">Berdasarkan tab terakhir anda</translation>
 <translation id="6262279340360821358"><ph name="PERMISSION_1"/> dan <ph name="PERMISSION_2"/> disekat</translation>
 <translation id="6270391203985052864">Tapak boleh membuat permintaan untuk menghantar pemberitahuan</translation>
 <translation id="6295158916970320988">Semua tapak</translation>
@@ -579,6 +570,7 @@ Perlindungan Lanjutan mengawal tetapan Brave ini:
 <translation id="6912998170423641340">Sekat tapak daripada membaca teks dan imej daripada papan keratan</translation>
 <translation id="6945221475159498467">Pilih</translation>
 <translation id="6950072572526089586">Laman yang anda lawati boleh menyimpan maklumat tentang perkara yang anda lakukan agar laman tersebut berfungsi seperti yang dijangkakan — contohnya, untuk memastikan anda terus dilog masuk ke laman atau untuk menyimpan item dalam troli beli-belah anda. Selalunya laman menyimpan maklumat ini pada peranti anda buat sementara waktu.</translation>
+<translation id="6964291282260073066">"WebGPU" dilumpuhkan.</translation>
 <translation id="6965382102122355670">OK</translation>
 <translation id="6980507581230208647">Tema ros</translation>
 <translation id="6980861169612950611">Padamkan data laman? <ph name="SITE_NAME"/></translation>
@@ -601,7 +593,6 @@ Perlindungan Lanjutan mengawal tetapan Brave ini:
 <translation id="7180611975245234373">Muat semula</translation>
 <translation id="7188508872042490670">Data laman pada peranti</translation>
 <translation id="7201549776650881587">Tindakan ini akan memadamkan semua data dan kuki yang disimpan oleh semua laman di bawah <ph name="ORIGIN"/> atau disimpan oleh apl laman tersebut pada Skrin utama anda</translation>
-<translation id="7203150201908454328">Diperluas</translation>
 <translation id="7213166370492037743">Jangan benarkan laman menyambung kepada mana-mana peranti pada rangkaian setempat anda</translation>
 <translation id="7219254577985949841">Padamkan data laman?</translation>
 <translation id="723171743924126238">Pilih imej</translation>
@@ -612,6 +603,9 @@ Perlindungan Lanjutan mengawal tetapan Brave ini:
 <translation id="7276071417425470385">Apabila dihidupkan, laman dapat meminta untuk menggunakan peranti realiti maya. Apabila dimatikan, laman tidak dapat menggunakan peranti realiti maya.</translation>
 <translation id="7282197670900591579">Tema kuning sitron</translation>
 <translation id="728412880473384942">Laman lebih pantas tetapi kurang selamat</translation>
+<translation id="5843014938239239453">Urus dalam <ph name="BEGIN_LINK1"/>tetapan Android<ph name="END_LINK1"/>
+
+Perlindungan Lanjutan mengawal tetapan Brave ini:</translation>
 <translation id="7366415735885268578">Tambahkan tapak</translation>
 <translation id="7368695150573390554">Mana-mana data luar talian akan dipadamkan</translation>
 <translation id="7369678931043226462">Sesuaikan helaian bawah halaman tab baharu anda dibuka pada ketinggian separuh</translation>
@@ -675,7 +669,6 @@ Perlindungan Lanjutan mengawal tetapan Brave ini:
 <translation id="8007176423574883786">Dimatikan untuk peranti ini</translation>
 <translation id="802154636333426148">Muat turun gagal</translation>
 <translation id="8033047164036749181">Langgan untuk mendapatkan pemberitahuan daripada laman ini</translation>
-<translation id="8042586301629853791">Isih mengikut:</translation>
 <translation id="8051193500142930381">Ciri yang memerlukan kamera tidak akan berfungsi</translation>
 <translation id="2495032782748793764">Lalai Brave</translation>
 <translation id="8067883171444229417">Mainkan video</translation>
@@ -723,6 +716,7 @@ Perlindungan Lanjutan mengawal tetapan Brave ini:
 <translation id="8471525937465764768">Tapak biasanya menyambung kepada peranti USB untuk ciri seperti mencetak dokumen atau menyimpan pada peranti storan</translation>
 <translation id="8473055640493819707">'<ph name="APP_NAME"/>' sudah lapuk. Sila pasang semula apl.</translation>
 <translation id="847433688444405067">Semak imbas merentas peranti</translation>
+<translation id="8484556725636319115">"Pengoptimum JavaScript" dimatikan. <ph name="BEGIN_LINK2"/>Urus pengecualian Laman<ph name="END_LINK2"/></translation>
 <translation id="8487700953926739672">Tersedia di luar talian</translation>
 <translation id="848952951823693243">Sentiasa minta laman mudah alih</translation>
 <translation id="8492822722330266509">Tapak boleh menghantar tetingkap timbul dan menggunakan ubah hala</translation>

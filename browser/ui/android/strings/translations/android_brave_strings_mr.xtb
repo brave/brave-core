@@ -49,6 +49,14 @@
 <translation id="2998960761270772157">youtube.com वरील साईन इन, मेन्यू, कमेंट्स आणि व्हिडिओ माहितीचे मजकूर ब्लॉक करते.</translation>
 <translation id="8531835121131500698">YouTube Shorts ब्लॉक करा</translation>
 <translation id="2167271714269158912">youtube.com वरील होम पेजवरून, ट्रेंडिग पानावरून आणि शोध परिणामांमधून Shorts ब्लॉक करते.</translation>
+<translation id="2564435705466025309">YouTube ऑटो-डब्ड व्हिडिओ ब्लॉक करा</translation>
+<translation id="3603500459037204525">youtube.com मुख्य पृष्ठ &amp; शोध परिणामांवरून ऑटो-डब्ड व्हिडिओ दिसण्यास ब्लॉक करा.</translation>
+<translation id="4067265130987656010">YouTube थंबनेल ब्लॉक करा</translation>
+<translation id="3034711349887440574">youtube.com मुख्य पृष्ठ &amp; शोध परिणामांवरून थंबनेल दिसण्यास ब्लॉक करा.</translation>
+<translation id="8741919213635379855">YouTube Playables ब्लॉक करा</translation>
+<translation id="2216551241986578034">youtube.com मुख्य पृष्ठ &amp; शोध परिणामांवरून Playables दिसण्यास ब्लॉक करा.</translation>
+<translation id="9038505474874975130">YouTube सदस्य-केवळ व्हिडिओ ब्लॉक करा</translation>
+<translation id="3084239516382196983">youtube.com मुख्य पृष्ठ &amp; शोध परिणामांवरून सदस्य-केवळ व्हिडिओ दिसण्यास ब्लॉक करा.</translation>
 <translation id="6052725679982758334">सोशल मीडिया ब्लॉकिंग</translation>
 <translation id="7498695072878479744">तृतीय पक्ष साइटवर Google लॉगिन बटणांना अनुमती द्या</translation>
 <translation id="863171915776379000">फेसबुक लॉगिन आणि अंतःस्थापित पोस्टना अनुमती द्या</translation>
@@ -960,9 +968,9 @@ Brave News गोपनीय आणि अनामिक जाहिरात
 <translation id="5494920125229734069">सर्व निवडा</translation>
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="944736176598169208">रीवॉर्ड्स</translation>
-<translation id="4272190451231642425">आपोआप crash reports पाठवा</translation>
 <translation id="1199170151481311646">गोपनीयता जपणारे विश्लेषण</translation>
 <translation id="1706715315466634757">ईमेल अलियासेस</translation>
+<translation id="738840791756723657">AI</translation>
 <translation id="6709133671862442373">News</translation>
 <translation id="5990642573624858459">सांख्यिकी अहवाल</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -974,8 +982,11 @@ Brave News गोपनीय आणि अनामिक जाहिरात
 <translation id="2573819149217596923">Brave वैशिष्ट्ये बदलत आहे</translation>
 <translation id="7415416427817229128">Brave वैशिष्ट्य सक्षम किंवा अक्षम करणे बदल लागू करण्यासाठी ब्राउজरला पुन्हा सुरू करणे आवश्यक आहे. आपण आता पुन्हा सुरू करू इच्छिता?</translation>
 <translation id="2256115617011615191">आता रीस्टार्ट करा</translation>
+<translation id="2160089182263405907">वैशिष्ट्ये अक्षम केली जात आहेत</translation>
+<translation id="3362364767724670721">Brave वैशिष्ट्य सक्षम किंवा अक्षम करण्यासाठी ब्राउজर पुनः सुरू करणे आवश्यक आहे. कृपया Origin अपडेट पूर्ण करल्यानंतर <ph name="BEGIN_BOLD"/>आता पुनः सुरू करा<ph name="END_BOLD"/> टॅप करा.</translation>
+<translation id="1028940738207645746">तुम्हाला सर्व सेटिंग्ज डीफॉल्टला रीसेट करायचे आहे याची तुम्हाला खात्री आहे का?</translation>
+<translation id="5939518447894949180">रीसेट करा</translation>
 <translation id="8554205386170195281">खरेदी</translation>
-<translation id="7071521146534760487">खाते व्यवस्थापित करा</translation>
 <translation id="8613144770663526433">Brave वॉलेटसह साइन इन करा</translation>
 <translation id="3696514931437952995">तुम्ही <ph name="ORIGIN"/> मध्ये साइन इन करता आहात. Brave वॉलेट <ph name="ORIGIN"/> सह तुमच्या वॉलेट पत्त्याचा शेअर करेल.</translation>
 <translation id="1028781062521375153">तपशील पाहा</translation>
@@ -1010,7 +1021,6 @@ Brave News गोपनीय आणि अनामिक जाहिरात
 <translation id="1309636029062006520">तुमचे आवडते ऑडिओ आणि व्हिडिओचे प्लेलिस्ट तयार करा आणि कधीही, कुठेही प्ले करा.</translation>
 <translation id="7899390017499980820">प्लेलिस्ट बटणात जोडा</translation>
 <translation id="6901152954398668317">माध्यम जोडण्यासाठी जलद प्रवेशासाठी "प्लेलिस्टमध्ये जोडा" बटण लपवा किंवा दाखवा.</translation>
-<translation id="5939518447894949180">रीसेट करा</translation>
 <translation id="8199028711686989861">ऑफलाइन मोडमध्ये संग्रहासह प्लेलिस्टमधून सर्व व्हिडिओ काढा.</translation>
 <translation id="4590997608186539865">प्लेलिस्ट</translation>
 <translation id="7525067979554623046">तयार करा</translation>
@@ -1161,4 +1171,20 @@ Brave News गोपनीय आणि अनामिक जाहिरात
 <translation id="1724977129262658800">तुमचा पासवर्ड संपादित करण्यासाठी अनलॉक करा</translation>
 <translation id="5780792035410621042">पासवर्ड कॉपी करण्यासाठी, सर्वप्रथम तुमच्या डिव्हाइसवर स्क्रीन लॉक सेट करा</translation>
 <translation id="7986497153528221272">पासवर्ड पाहण्यासाठी, प्रथम तुमच्या डिव्हाइसवर स्क्रीन लॉक सेट करा</translation>
+<translation id="4882237634123415792">कस्टम शोध इंजिन</translation>
+<translation id="8364431224461158026">कस्टम शोध इंजिन जोडा</translation>
+<translation id="7307935603426295341">शोध इंजिन संपादित करा</translation>
+<translation id="4002066346123236978">शीर्षक</translation>
+<translation id="3653110185270660915">शोध इंजिनचे नाव प्रविष्ट करा</translation>
+<translation id="7400418766976504921">URL</translation>
+<translation id="6410668567036790476">शोध इंजिन जोडा</translation>
+<translation id="6289878295410648689">शोध URL लिहा आणि क्वेरी <ph name="SPECIAL_SYMBOL"/> सह बदला.</translation>
+<translation id="8943582268084103903">उदाहरणार्थ: https://youtube.com/search?q=<ph name="SPECIAL_SYMBOL"/>. जर साइट OpenSearch समर्थन करते तर या फील्डला संपादित करताना स्वयंचलितपणे जोडण्याचा पर्याय दिला जाईल.</translation>
+<translation id="8706939021136180678">URL अवैध आहे.</translation>
+<translation id="6528099556282059181">शोध इंजिन आधीच जोडला गेला आहे.</translation>
+<translation id="463451857046640291">शोध इंजिन जोडू शकले नाही.</translation>
+<translation id="1229671956956864948">शोध इंजिन अपडेट करू शकले नाही.</translation>
+<translation id="1462771969120037152">शोध इंजिन हटवू शकले नाही. तुम्ही हटवण्याचा प्रयत्न करत असलेला शोध इंजिन डीफॉल्ट म्हणून सेट असू शकते.</translation>
+<translation id="1079140196216383600">कस्टम शोध इंजिन हटवा</translation>
+<translation id="525276572490219787">तुम्हाला "<ph name="SEARCH_ENGINE_NAME"/>" हटवायचे आहे याची तुम्हाला खात्री आहे का? ही क्रिया उलटवता येणार नाही.</translation>
 </translationbundle>

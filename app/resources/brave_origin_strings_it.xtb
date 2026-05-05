@@ -31,7 +31,6 @@
 <translation id="4291722755910963157">Prova con Gemini in Brave</translation>
 <translation id="878572309106296578">Brave richiede l'accesso al Bluetooth per individuare i dispositivi Bluetooth. <ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="1330562121671411446">Rileva lingua</translation>
-<translation id="6204677860546245308">Utilizza le impostazioni del browser consigliate di Brave</translation>
 <translation id="108284536240904209">Elimina i dati anche da Brave (<ph name="URL"/>)</translation>
 <translation id="1345251407431278948">Riquadro fissato. Puoi accedere nuovamente alla ricerca immagini dal nuovo pulsante sulla barra degli strumenti</translation>
 <translation id="1356661055722410047">Novità. Puoi tradurre sia testo che immagini sullo schermo</translation>
@@ -52,13 +51,14 @@
 <translation id="6570689355868013775">Strumenti per la sicurezza di Brave</translation>
 <translation id="1902837727299679178">Brave vuole eliminare i tuoi dati del Gestore delle password. Digita la tua password di Windows per consentire l'operazione.</translation>
 <translation id="4449148723378534338">Esamina i controlli per la privacy e la sicurezza più importanti in Brave</translation>
+<translation id="5229247933547820267">Per chiedere in AI Mode informazioni sulla tua scheda senza uscire dalla pagina, accedi a Brave. Potrai anche usare le password e altri dati su tutti i tuoi dispositivi.</translation>
 <translation id="1640672724030957280">Download in corso...</translation>
 <translation id="1680687534629375545">Chiedi alla Ricerca immagini informazioni su questa pagina</translation>
+<translation id="509363484780540563">Puoi usare Brave ogni volta che fai clic sui link in messaggi, documenti e altre app. Verrà anche fissato sulla barra delle app.</translation>
 <translation id="1709772298389099340">Fornisce privilegi elevati per <ph name="BROWSER_NAME"/>.</translation>
 <translation id="2913217021115517297">Per contribuire a migliorare queste funzionalità, Brave invia le tue interazioni a Brave. Questi dati potrebbero essere letti, elaborati e annotati da revisori.</translation>
-<translation id="1722488837206509557">In questo modo potrai selezionare i dispositivi disponibili su cui visualizzare i contenuti.</translation>
 <translation id="8004287232784878841">A breve Brave eliminerà i dati di navigazione</translation>
-<translation id="4197839351786449392">Brave proverà a eseguire l'upgrade delle navigazioni a HTTPS</translation>
+<translation id="4197839351786449392">Brave proverà a fare l'upgrade delle navigazioni a HTTPS</translation>
 <translation id="7814200940910057384">Dati di Brave cancellati</translation>
 <translation id="9048361966237194186">Brave verrà riavviato tra <ph name="REMAINING_TIME"/></translation>
 <translation id="5524150602137990006">Quando HTTPS non è disponibile, Brave utilizza una connessione non sicura senza avvisarti</translation>
@@ -191,6 +191,7 @@
 <translation id="3045032126857188731">Lingua di destinazione: <ph name="LANGUAGE"/></translation>
 <translation id="3047590466164881923">Chiudi finestra di dialogo di feedback</translation>
 <translation id="4503085212612536713">Altri profili Brave</translation>
+<translation id="2041039306630146369">Le estensioni sono componenti aggiuntivi che ti consentono di personalizzare Brave. Le estensioni ti aiutano a personalizzare Brave, ad esempio tenendo tutto organizzato e semplificando le attività quotidiane.</translation>
 <translation id="7918740962659365265">Aiutaci a migliorare Brave inviando a Brave report sugli arresti anomali e <ph name="UMA_LINK"/></translation>
 <translation id="2332543193474246254">{NUM_DEVICES,plural, =0{Una o più estensioni di Brave stavano accedendo a 1 dispositivo USB}=1{Una o più estensioni di Brave stanno accedendo a 1 dispositivo USB}other{Una o più estensioni di Brave stanno accedendo a # dispositivi USB}}</translation>
 <translation id="3700405816184340252">Cronologia di Brave</translation>
@@ -219,8 +220,6 @@
 <translation id="8926637909431618259">Continua a eseguire applicazioni in background dopo la chiusura di Brave</translation>
 <translation id="518125528057094977">Brave ti avvisa prima di caricare qualsiasi sito che utilizza una connessione non sicura</translation>
 <translation id="8652321858775514885">Quando chiudi tutte le finestre di Brave, uscirai dalla maggior parte dei siti, ma se hai eseguito l'accesso a Brave non uscirai dal tuo Account Brave. Per consentire ai siti di memorizzare le tue informazioni, <ph name="SETTINGS_LINK"/>.</translation>
-<translation id="3795277300264350702">Il motore di ricerca predefinito è stato modificato dall'esterno di Brave. Per proteggerti, Brave l'ha reimpostato.</translation>
-<translation id="5033074923607633232">Accedi a Brave per trovare le password, i preferiti e altri dati su tutti i tuoi dispositivi</translation>
 <translation id="3352986031709923790">angolo in alto a destra dell'area di ricerca: destra <ph name="RIGHT"/>%, in alto <ph name="TOP"/>%</translation>
 <translation id="7261356974224431851">Dati di Brave nel tuo account</translation>
 <translation id="3369405342922656244">Cerca in questa pagina con la Ricerca immagini</translation>
@@ -425,6 +424,7 @@
 <translation id="5895138241574237353">Riavvia</translation>
 <translation id="5903106910045431592"><ph name="PAGE_TITLE"/> - Accesso rete</translation>
 <translation id="5924017743176219022">Connessione a Internet in corso…</translation>
+<translation id="1275716786566134844">Preparati a usare Brave</translation>
 <translation id="5941711191222866238">Riduci a icona</translation>
 <translation id="5768962901674164501">Accedi a Brave per trovare questo preferito e altro su tutti i tuoi dispositivi</translation>
 <translation id="5101892358689285100">Rendi Brave personale</translation>
@@ -461,6 +461,7 @@
 <translation id="5980269616827212166">Brave deve avere l'autorizzazione di accesso allo spazio di archiviazione per poter scaricare file</translation>
 <translation id="7651600795135059130">Controlla gli URL confrontandoli con un elenco di siti non sicuri memorizzato in Brave</translation>
 <translation id="5019879183386042809">Imposta Brave come browser predefinito</translation>
+<translation id="6248988683584659830">Cerca nelle impostazioni</translation>
 <translation id="7445061995866044926">Uscire da Brave?</translation>
 <translation id="4659866260728515512">Queste schede utilizzano risorse aggiuntive. Per migliorare le prestazioni, consenti a Brave di renderle inattive.</translation>
 <translation id="6806912298071949921">Personalizza il tuo profilo Brave</translation>
@@ -617,6 +618,7 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="7810005234485217901">Puoi bloccare la ricerca immagini per un facile accesso</translation>
 <translation id="1652855885539187849">Esiste già un profilo Brave con questo account su questo dispositivo</translation>
 <translation id="7845233973568007926">L'installazione è terminata. Dovrai riavviare il computer per poter utilizzare <ph name="BUNDLE_NAME"/>.</translation>
+<translation id="7397737266068428588">Il tuo motore di ricerca è stato modificato dall'esterno di Brave. Per proteggerti, Brave l'ha reimpostato al valore predefinito originale. <ph name="LEARN_MORE_LINK"/></translation>
 <translation id="9148690296223500734">Personalizza Brave per dargli un nuovo aspetto</translation>
 <translation id="7963515534397191222">Non è stato possibile aggiornare Brave alla versione più recente, quindi non potrai utilizzare le nuove funzioni e gli aggiornamenti di sicurezza.</translation>
 <translation id="7872446069773932638">Download in corso… Secondi rimanenti: <ph name="SECONDS"/></translation>
@@ -745,6 +747,7 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="7535429826459677826">Google Chrome Dev</translation>
 <translation id="6283840329609797763">Installazione non riuscita a causa di un errore imprecisato. Scarica di nuovo Brave.</translation>
 <translation id="1743665722170667430">Le estensioni, le app e i temi di origine ignota possono danneggiare il tuo dispositivo. Brave consiglia di installarli solo tramite il <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/></translation>
+<translation id="5840822070878669614">Apri il Web Store di Brave</translation>
 <translation id="6184592406110188164">Questa estensione viola le norme del Web Store e potrebbe essere pericolosa. Rimuovila da Brave in modo che non possa più vedere e modificare i tuoi dati sui siti che visiti, comprese le tue informazioni personali.</translation>
 <translation id="1299765473362724475">Brave non è in grado di impedire alle estensioni di registrare la tua cronologia di navigazione. Per disattivare questa estensione in Modalità privata, deseleziona questa opzione.</translation>
 <translation id="1448049584457347995">Per rendere Brave più sicuro, abbiamo disattivato alcune estensioni che non sono elencate nel <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> e potrebbero essere state aggiunte a tua insaputa.</translation>
@@ -752,6 +755,7 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="4624945300945265642">Apri link in una finestra di navigazione in inco&amp;gnito di Brave</translation>
 <translation id="6554952862405000915">Apri link in una finestra di navigazione in inco&amp;gnito di Brave</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{È disponibile un nuovo aggiornamento di Brave che verrà installato appena eseguirai il riavvio.}=1{È disponibile un nuovo aggiornamento di Brave che verrà installato appena eseguirai il riavvio. La finestra di navigazione in incognito non verrà riaperta.}other{È disponibile un nuovo aggiornamento di Brave che verrà installato appena eseguirai il riavvio. Le # finestre di navigazione in incognito non verranno riaperte.}}</translation>
+<translation id="7347727235538318126">Questo ti permetterà di condividere contenuti da Brave ai tuoi dispositivi locali, come una TV o un altoparlante.</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{L'amministratore richiede il riavvio di Brave per installare questo aggiornamento}=1{L'amministratore richiede il riavvio di Brave per installare questo aggiornamento. La finestra di navigazione in incognito non verrà riaperta.}other{L'amministratore richiede il riavvio di Brave per installare questo aggiornamento. Le # finestre di navigazione in incognito non verranno riaperte.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{L'amministratore richiede il riavvio di Brave per installare un aggiornamento}=1{L'amministratore richiede il riavvio di Brave per installare un aggiornamento. La finestra di navigazione in incognito non verrà riaperta.}other{L'amministratore richiede il riavvio di Brave per installare un aggiornamento. Le # finestre di navigazione in incognito non verranno riaperte.}}</translation>
 <translation id="1400696845469684552">{COUNT, plural,

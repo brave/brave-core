@@ -64,6 +64,7 @@
 <translation id="1644574205037202324">ประวัติการเข้าชม</translation>
 <translation id="1652197001188145583">เมื่อเปิด เว็บไซต์จะขอใช้อุปกรณ์ NFC ได้ เมื่อปิด เว็บไซต์จะใช้อุปกรณ์ NFC ไม่ได้</translation>
 <translation id="1660204651932907780">อนุญาตให้เว็บไซต์เล่นเสียง (แนะนำ)</translation>
+<translation id="1676590040242013349">"ใช้การเชื่อมต่อที่ปลอดภัยทุกครั้ง" เปิดอยู่</translation>
 <translation id="1677097821151855053">ระบบใช้คุกกี้และข้อมูลของเว็บไซต์ในการจดจำคุณ เช่น เพื่อลงชื่อเข้าใช้ให้คุณหรือปรับโฆษณาตามโปรไฟล์ของคุณ ดู<ph name="BEGIN_LINK"/>การตั้งค่า<ph name="END_LINK"/>เพื่อจัดการคุกกี้สำหรับทุกเว็บไซต์</translation>
 <translation id="1679305402657584804">เว็บไซต์ขอใช้อุปกรณ์ NFC ได้</translation>
 <translation id="1686785653877010442">เว็บไซต์มักจะส่งการแจ้งเตือนเพื่อแจ้งให้คุณทราบเกี่ยวกับข่าวด่วนหรือข้อความแชท</translation>
@@ -125,7 +126,6 @@
 <translation id="2228071138934252756">หากต้องการอนุญาตให้ <ph name="APP_NAME"/> เข้าถึงกล้องถ่ายรูป ให้เปิดใช้กล้องใน<ph name="BEGIN_LINK"/>การตั้งค่า Android<ph name="END_LINK"/> ด้วย</translation>
 <translation id="2231160360698766265">เว็บไซต์เล่นเนื้อหาที่มีการคุ้มครองได้</translation>
 <translation id="2235344399760031203">บล็อกคุกกี้ของบุคคลที่สามอยู่</translation>
-<translation id="2238944249568001759">การค้นหาที่แนะนําโดยอิงจากแท็บล่าสุด</translation>
 <translation id="2241587408274973373">การ์ดหน้าแท็บใหม่</translation>
 <translation id="2241634353105152135">เพียงครั้งเดียว</translation>
 <translation id="2253414712144136228">นำ<ph name="NAME_OF_LIST_ITEM"/>ออก</translation>
@@ -166,11 +166,6 @@
 <translation id="2588271083332682494">จัดระเบียบด้วยกลุ่มแท็บ</translation>
 <translation id="2597457036804169544">ไม่ใช้ธีมมืดกับเว็บไซต์ต่างๆ</translation>
 <translation id="2606760465469169465">การยืนยันอัตโนมัติ</translation>
-<translation id="7615153661410655750">จัดการใน<ph name="BEGIN_LINK1"/>การตั้งค่า Android<ph name="END_LINK1"/>
-
-การปกป้องขั้นสูงจะควบคุมการตั้งค่า Brave ต่อไปนี้
-• "ใช้การเชื่อมต่อที่ปลอดภัยทุกครั้ง" เปิดอยู่
-• "เครื่องมือเพิ่มประสิทธิภาพ JavaScript" ปิดอยู่ <ph name="BEGIN_LINK2"/>จัดการข้อยกเว้นของเว็บไซต์<ph name="END_LINK2"/></translation>
 <translation id="2621115761605608342">อนุญาต JavaScript สำหรับเว็บไซต์ใดเว็บไซต์หนึ่ง</translation>
 <translation id="2626708220538466178">ปิด Bottom Sheet ของเบราว์เซอร์เริ่มต้นแล้ว</translation>
 <translation id="2653659639078652383">ส่ง</translation>
@@ -214,7 +209,6 @@
 <translation id="3069226013421428034">อนุญาตการลงชื่อเข้าใช้ของบุคคลที่สามสำหรับบางเว็บไซต์</translation>
 <translation id="310297983047869047">สไลด์ก่อนหน้า</translation>
 <translation id="3108122610701115301">ตั้งเป็นค่าเริ่มต้น</translation>
-<translation id="3109724472072898302">ยุบแล้ว</translation>
 <translation id="310979712355504754">ลบทั้งหมด</translation>
 <translation id="311394601889664316">ไม่อนุญาตให้เว็บไซต์แก้ไขไฟล์หรือโฟลเดอร์ในอุปกรณ์ของคุณ</translation>
 <translation id="3114012059975132928">วิดีโอเพลเยอร์</translation>
@@ -260,7 +254,6 @@
 <translation id="3602290021589620013">ดูตัวอย่าง</translation>
 <translation id="3611658447322220736">เว็บไซต์ที่เพิ่งปิดไปจะส่งและรับข้อมูลจนเสร็จสิ้นได้</translation>
 <translation id="3619294456800709762">เว็บไซต์สามารถเข้าสู่การแสดงภาพซ้อนภาพโดยอัตโนมัติได้</translation>
-<translation id="3628308229821498208">การค้นหาที่แนะนำ</translation>
 <translation id="3632460243282703117">สมัครรับการแจ้งเตือน</translation>
 <translation id="363748948745453283">กำลังใช้ตำแหน่งโดยประมาณ</translation>
 <translation id="3641456520301071208">เว็บไซต์ขอตำแหน่งของคุณได้</translation>
@@ -441,7 +434,6 @@
 <translation id="5515432237048785579">Bottom Sheet ของฟีดสำรวจเปิดอยู่แบบเต็มความสูง</translation>
 <translation id="5516455585884385570">เปิดการตั้งค่าการแจ้งเตือน</translation>
 <translation id="5527111080432883924">ถามก่อนอนุญาตให้เว็บไซต์อ่านข้อความและดูรูปภาพจากคลิปบอร์ด (แนะนำ)</translation>
-<translation id="5553374991681107062">ล่าสุด</translation>
 <translation id="674221630984410403">ไม่เพิ่มความเร็วให้เว็บไซต์ด้วยเครื่องมือ V8 ของ Brave แต่ทำให้ Brave ต้านทานการโจมตีได้มากขึ้นเล็กน้อย</translation>
 <translation id="5556459405103347317">โหลดใหม่</translation>
 <translation id="5591840828808741583"><ph name="SITE_NAME"/> ถูกบล็อก</translation>
@@ -521,7 +513,6 @@
 <translation id="6231752747840485235">ถอนการติดตั้ง "<ph name="APP_NAME"/>" ไหม</translation>
 <translation id="4789073065838177382">แตะแอปเบราว์เซอร์ &gt; Brave</translation>
 <translation id="6260830281887654268">Bottom Sheet คอลเล็กชันธีมลักษณะที่ปรากฏของหน้าแท็บใหม่เปิดอยู่ครึ่งหน้าจอ</translation>
-<translation id="6262191102408817757">อิงจากแท็บล่าสุด</translation>
 <translation id="6262279340360821358">บล็อก<ph name="PERMISSION_1"/>และ<ph name="PERMISSION_2"/></translation>
 <translation id="6270391203985052864">เว็บไซต์ขอส่งการแจ้งเตือนได้</translation>
 <translation id="6295158916970320988">เว็บไซต์ทั้งหมด</translation>
@@ -579,6 +570,7 @@
 <translation id="6912998170423641340">บล็อกเว็บไซต์ไม่ให้อ่านข้อความและดูรูปภาพจากคลิปบอร์ด</translation>
 <translation id="6945221475159498467">เลือก</translation>
 <translation id="6950072572526089586">เว็บไซต์ที่คุณเข้าชมสามารถบันทึกข้อมูลเกี่ยวกับสิ่งที่คุณทำอยู่เพื่อให้ใช้งานได้ตามที่ต้องการ เช่น ให้คุณลงชื่อเข้าใช้เว็บไซต์ค้างไว้หรือบันทึกสินค้าไว้ในรถเข็นช็อปปิ้ง เว็บไซต์ต่างๆ มักจะบั⁠น⁠ทึ⁠กข้อมูลนี้ไว้ชั่วคราวในอุปกรณ์</translation>
+<translation id="6964291282260073066">"WebGPU" ปิดใช้อยู่</translation>
 <translation id="6965382102122355670">ตกลง</translation>
 <translation id="6980507581230208647">ธีมสีชมพูโรส</translation>
 <translation id="6980861169612950611">ลบข้อมูลเว็บไซต์ใช่ไหม <ph name="SITE_NAME"/></translation>
@@ -601,7 +593,6 @@
 <translation id="7180611975245234373">รีเฟรช</translation>
 <translation id="7188508872042490670">ข้อมูลเว็บไซต์ในอุปกรณ์</translation>
 <translation id="7201549776650881587">การดำเนินการนี้จะลบข้อมูลและคุกกี้ทั้งหมดที่ทุกเว็บไซต์จาก <ph name="ORIGIN"/> หรือแอปในหน้าจอหลักจัดเก็บไว้</translation>
-<translation id="7203150201908454328">ขยาย</translation>
 <translation id="7213166370492037743">ไม่อนุญาตให้เว็บไซต์เชื่อมต่อกับอุปกรณ์ในเครือข่ายภายในของคุณ</translation>
 <translation id="7219254577985949841">ลบข้อมูลเว็บไซต์ใช่ไหม</translation>
 <translation id="723171743924126238">เลือกภาพ</translation>
@@ -612,6 +603,9 @@
 <translation id="7276071417425470385">เมื่อเปิด เว็บไซต์จะขอใช้อุปกรณ์เทคโนโลยีความจริงเสมือน (VR) ได้ เมื่อปิด เว็บไซต์จะใช้อุปกรณ์เทคโนโลยีความจริงเสมือน (VR) ไม่ได้</translation>
 <translation id="7282197670900591579">ธีมสีเหลืองมะนาว</translation>
 <translation id="728412880473384942">เว็บไซต์เร็วขึ้นแต่ปลอดภัยน้อยลง</translation>
+<translation id="5843014938239239453">จัดการใน<ph name="BEGIN_LINK1"/>การตั้งค่า Android<ph name="END_LINK1"/>
+
+การปกป้องขั้นสูงจะควบคุมการตั้งค่า Brave ต่อไปนี้</translation>
 <translation id="7366415735885268578">เพิ่มเว็บไซต์</translation>
 <translation id="7368695150573390554">ระบบจะลบข้อมูลออฟไลน์ทั้งหมด</translation>
 <translation id="7369678931043226462">Bottom Sheet สำหรับปรับแต่งหน้าแท็บใหม่เปิดอยู่ครึ่งหน้าจอ</translation>
@@ -675,7 +669,6 @@
 <translation id="8007176423574883786">ปิดสำหรับอุปกรณ์นี้</translation>
 <translation id="802154636333426148">การดาวน์โหลดล้มเหลว</translation>
 <translation id="8033047164036749181">สมัครรับการแจ้งเตือนจากเว็บไซต์นี้</translation>
-<translation id="8042586301629853791">จัดเรียงตาม</translation>
 <translation id="8051193500142930381">ฟีเจอร์ที่ต้องใช้กล้องจะไม่ทำงาน</translation>
 <translation id="2495032782748793764">ค่าเริ่มต้นของ Brave</translation>
 <translation id="8067883171444229417">เล่นวิดีโอ</translation>
@@ -723,6 +716,7 @@
 <translation id="8471525937465764768">โดยปกติแล้วเว็บไซต์จะเชื่อมต่อกับอุปกรณ์ USB เพื่อช่วยให้ฟีเจอร์ต่างๆ ดำเนินการได้ เช่น พิมพ์เอกสารหรือบันทึกลงในอุปกรณ์จัดเก็บข้อมูล</translation>
 <translation id="8473055640493819707">"<ph name="APP_NAME"/>" เป็นเวอร์ชันเก่า โปรดติดตั้งแอปอีกครั้ง</translation>
 <translation id="847433688444405067">ท่องเว็บในอุปกรณ์ต่างๆ</translation>
+<translation id="8484556725636319115">"เครื่องมือเพิ่มประสิทธิภาพ JavaScript" ปิดอยู่ <ph name="BEGIN_LINK2"/>จัดการข้อยกเว้นของเว็บไซต์<ph name="END_LINK2"/></translation>
 <translation id="8487700953926739672">ใช้งานแบบออฟไลน์ได้</translation>
 <translation id="848952951823693243">ขอเว็บไซต์เวอร์ชันมือถือเสมอ</translation>
 <translation id="8492822722330266509">เว็บไซต์ส่งป๊อปอัปและใช้การเปลี่ยนเส้นทางได้</translation>

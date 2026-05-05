@@ -64,6 +64,7 @@
 <translation id="1644574205037202324">歷史記錄</translation>
 <translation id="1652197001188145583">如果啟用，網站就可以要求使用 NFC 裝置。如果停用，網站將無法使用 NFC 裝置。</translation>
 <translation id="1660204651932907780">允許網站播放音訊 (建議)</translation>
+<translation id="1676590040242013349">開啟「一律使用安全連線」。</translation>
 <translation id="1677097821151855053">系統會使用 Cookie 和其他網站資料來記住你，以便將你登入帳戶或是提供個人化廣告等服務。如要管理所有網站的 Cookie，請查看<ph name="BEGIN_LINK"/>設定<ph name="END_LINK"/>。</translation>
 <translation id="1679305402657584804">網站可以要求使用 NFC 裝置</translation>
 <translation id="1686785653877010442">網站通常會傳送通知，方便你掌握最新消息或留意即時通訊訊息。</translation>
@@ -125,7 +126,6 @@
 <translation id="2228071138934252756">如要允許 <ph name="APP_NAME"/> 存取裝置的相機，請一併在 <ph name="BEGIN_LINK"/>Android 設定<ph name="END_LINK"/>中開啟相機。</translation>
 <translation id="2231160360698766265">網站可以播放受保護的內容</translation>
 <translation id="2235344399760031203">已封鎖第三方 Cookie</translation>
-<translation id="2238944249568001759">根據最近開啟的分頁提供搜尋建議</translation>
 <translation id="2241587408274973373">新分頁資訊卡</translation>
 <translation id="2241634353105152135">只有這一次</translation>
 <translation id="2253414712144136228">移除<ph name="NAME_OF_LIST_ITEM"/></translation>
@@ -166,11 +166,6 @@
 <translation id="2588271083332682494">使用分頁群組，分頁有條不紊</translation>
 <translation id="2597457036804169544">不要對網站套用深色主題</translation>
 <translation id="2606760465469169465">自動驗證</translation>
-<translation id="7615153661410655750">前往 <ph name="BEGIN_LINK1"/>Android 設定<ph name="END_LINK1"/>管理
-
-進階保護功能可控管以下 Brave 設定：
-• 開啟「一律使用安全連線」。
-• 關閉「JavaScript 最佳化工具」。<ph name="BEGIN_LINK2"/>管理網站例外狀況<ph name="END_LINK2"/></translation>
 <translation id="2621115761605608342">允許特定網站執行 JavaScript。</translation>
 <translation id="2626708220538466178">預設瀏覽器底部功能表已關閉</translation>
 <translation id="2653659639078652383">提交</translation>
@@ -214,7 +209,6 @@
 <translation id="3069226013421428034">允許特定網站使用第三方登入功能。</translation>
 <translation id="310297983047869047">上一張投影片</translation>
 <translation id="3108122610701115301">設為預設值</translation>
-<translation id="3109724472072898302">已收合</translation>
 <translation id="310979712355504754">全部刪除</translation>
 <translation id="311394601889664316">禁止網站編輯裝置上的檔案或資料夾</translation>
 <translation id="3114012059975132928">影片播放器</translation>
@@ -260,7 +254,6 @@
 <translation id="3602290021589620013">預覽</translation>
 <translation id="3611658447322220736">最近關閉的網站可以完成資料收發作業</translation>
 <translation id="3619294456800709762">網站可以自動進入子母畫面</translation>
-<translation id="3628308229821498208">建議搜尋</translation>
 <translation id="3632460243282703117">訂閱</translation>
 <translation id="363748948745453283">使用大概位置</translation>
 <translation id="3641456520301071208">網站可以要求取得你的位置資訊</translation>
@@ -441,7 +434,6 @@
 <translation id="5515432237048785579">「探索」動態消息底部功能表已開啟，並顯示在整個畫面</translation>
 <translation id="5516455585884385570">開啟通知設定</translation>
 <translation id="5527111080432883924">允許網站讀取剪貼簿中的文字和圖片前，必須先詢問你 (建議)</translation>
-<translation id="5553374991681107062">最新</translation>
 <translation id="674221630984410403">不使用 Brave 的 V8 引擎加快網站速度，但稍微提高 Brave 防範攻擊的能力</translation>
 <translation id="5556459405103347317">重新載入</translation>
 <translation id="5591840828808741583">已封鎖「<ph name="SITE_NAME"/>」</translation>
@@ -521,7 +513,6 @@
 <translation id="6231752747840485235">要解除安裝「<ph name="APP_NAME"/>」嗎？</translation>
 <translation id="4789073065838177382">依序輕觸「瀏覽器應用程式」&gt;「Brave」</translation>
 <translation id="6260830281887654268">新分頁外觀主題系列底部功能表已開啟，並顯示在畫面下半部</translation>
-<translation id="6262191102408817757">依據你的最後一個分頁</translation>
 <translation id="6262279340360821358">已封鎖「<ph name="PERMISSION_1"/>」和「<ph name="PERMISSION_2"/>」</translation>
 <translation id="6270391203985052864">網站可以要求傳送通知給你</translation>
 <translation id="6295158916970320988">所有網站</translation>
@@ -579,6 +570,7 @@
 <translation id="6912998170423641340">禁止網站讀取剪貼簿中的文字和圖片</translation>
 <translation id="6945221475159498467">選取</translation>
 <translation id="6950072572526089586">你造訪的網站可儲存使用者的活動資訊，協助正常運作，例如在網站上保持登入狀態或儲存購物車內的項目。網站通常會暫時在裝置上儲存這項資訊。</translation>
+<translation id="6964291282260073066">停用「WebGPU」。</translation>
 <translation id="6965382102122355670">確定</translation>
 <translation id="6980507581230208647">玫瑰粉主題</translation>
 <translation id="6980861169612950611">要刪除網站資料嗎？<ph name="SITE_NAME"/></translation>
@@ -601,7 +593,6 @@
 <translation id="7180611975245234373">重新整理</translation>
 <translation id="7188508872042490670">網站在裝置端的資料</translation>
 <translation id="7201549776650881587">這項操作會刪除 <ph name="ORIGIN"/> 底下所有網站或該網站在主畫面上的應用程式儲存的所有資料和 Cookie</translation>
-<translation id="7203150201908454328">已展開</translation>
 <translation id="7213166370492037743">不允許網站連線到區域網路上的任何裝置</translation>
 <translation id="7219254577985949841">要刪除網站資料嗎？</translation>
 <translation id="723171743924126238">選取圖片</translation>
@@ -612,6 +603,9 @@
 <translation id="7276071417425470385">如果啟用，網站就可以要求使用虛擬實境裝置。如果停用，網站將無法使用虛擬實境裝置。</translation>
 <translation id="7282197670900591579">黃金柚主題</translation>
 <translation id="728412880473384942">網站速度較快，但安全性較低</translation>
+<translation id="5843014938239239453">前往 <ph name="BEGIN_LINK1"/>Android 設定<ph name="END_LINK1"/>管理
+
+「進階保護」可控管以下 Brave 設定：</translation>
 <translation id="7366415735885268578">新增網站</translation>
 <translation id="7368695150573390554">所有離線資料都會刪除</translation>
 <translation id="7369678931043226462">自訂新分頁底部功能表已開啟，並顯示在畫面下半部</translation>
@@ -675,7 +669,6 @@
 <translation id="8007176423574883786">已在這個裝置上關閉</translation>
 <translation id="802154636333426148">下載失敗</translation>
 <translation id="8033047164036749181">訂閱這個網站的通知</translation>
-<translation id="8042586301629853791">排序依據：</translation>
 <translation id="8051193500142930381">需要攝影機的功能將無法運作</translation>
 <translation id="2495032782748793764">Brave 預設主題</translation>
 <translation id="8067883171444229417">播放影片</translation>
@@ -723,6 +716,7 @@
 <translation id="8471525937465764768">網站通常會連線至 USB 裝置，以提供列印文件或儲存至裝置等功能</translation>
 <translation id="8473055640493819707">「<ph name="APP_NAME"/>」版本過舊，請重新安裝應用程式。</translation>
 <translation id="847433688444405067">跨裝置瀏覽</translation>
+<translation id="8484556725636319115">關閉「JavaScript 最佳化工具」。<ph name="BEGIN_LINK2"/>管理網站例外狀況<ph name="END_LINK2"/></translation>
 <translation id="8487700953926739672">可離線使用</translation>
 <translation id="848952951823693243">一律要求行動版網站</translation>
 <translation id="8492822722330266509">網頁可以傳送彈出式視窗和使用重新導向</translation>
