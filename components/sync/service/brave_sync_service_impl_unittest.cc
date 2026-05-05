@@ -428,7 +428,7 @@ TEST_F(BraveSyncServiceImplTest, ValidPassphraseKeyringLocked) {
   CreateSyncService();
   EXPECT_FALSE(engine());
 
-  brave_sync_service_impl()->SetSeed(kValidSyncCode);
+  brave_sync_service_impl()->SetSeedForTesting(kValidSyncCode);
 
   brave_sync_service_impl()->SetEncryptorForTesting(
       os_crypt_async::GetTestEncryptorForTesting());
@@ -444,7 +444,7 @@ TEST_F(BraveSyncServiceImplTest, FailedToDecryptBraveSeedValue) {
   EXPECT_THAT(brave_sync_service_impl()->GetSeed(), Optional(IsEmpty()));
 
   // Valid code round-trips correctly
-  brave_sync_service_impl()->SetSeed(kValidSyncCode);
+  brave_sync_service_impl()->SetSeedForTesting(kValidSyncCode);
   EXPECT_THAT(brave_sync_service_impl()->GetSeed(), Eq(kValidSyncCode));
 
   // Since this test was moved here from BraveSyncPrefsTest
@@ -465,7 +465,7 @@ TEST_F(BraveSyncServiceImplTest, FailedToDecryptBraveSeedValue) {
   std::unique_ptr<os_crypt_async::Encryptor> original_encryptor =
       brave_sync_service_impl()->SetEncryptorForTesting(
           os_crypt_async::GetTestEncryptorForTesting());
-  ASSERT_TRUE(brave_sync_service_impl()->SetSeed(kValidSyncCode));
+  ASSERT_TRUE(brave_sync_service_impl()->SetSeedForTesting(kValidSyncCode));
   brave_sync_service_impl()->SetEncryptorForTesting(
       std::move(*original_encryptor));
 

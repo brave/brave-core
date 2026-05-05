@@ -83,16 +83,11 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
       os_crypt_async::Encryptor encryptor_for_tests);
   void RemoveAllPrefsChangeRegistrarForTesting();
   SyncServiceCrypto* GetCryptoForTesting();
+  bool SetSeedForTesting(const std::string& seed);
 
  private:
   friend class BraveSyncServiceImplGACookiesTest;
   friend class BraveSyncServiceImplTest;
-  FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest,
-                           ForcedSetDecryptionPassphrase);
-  FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest,
-                           ValidPassphraseKeyringLocked);
-  FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest,
-                           FailedToDecryptBraveSeedValue);
   FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest, OnAccountDeleted_Success);
   FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest,
                            OnAccountDeleted_FailureAndRetry);

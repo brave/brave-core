@@ -149,6 +149,10 @@ bool BraveSyncServiceImpl::SetSeed(const std::string& seed) {
   return true;
 }
 
+bool BraveSyncServiceImpl::SetSeedForTesting(const std::string& seed) {
+  return SetSeed(seed);
+}
+
 void BraveSyncServiceImpl::Initialize(
     DataTypeController::TypeVector controllers) {
   base::AutoReset<bool> is_initializing_resetter(&is_initializing_, true);
