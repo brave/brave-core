@@ -111,6 +111,11 @@ void EphemeralStorageService::Shutdown() {
   }
   observer_list_.Clear();
   weak_ptr_factory_.InvalidateWeakPtrs();
+  
+  // Reset delegate early to ensure proper cleanup order.
+  // This prevents the delegate from being destroyed later when dependent
+  // services (like HistoryService) may have already been shut down.
+  delegate_.reset();
 }
 
 base::WeakPtr<EphemeralStorageService> EphemeralStorageService::GetWeakPtr() {
@@ -228,11 +233,13 @@ void EphemeralStorageService::TLDEphemeralLifetimeDestroyed(
   const auto auto_shred_mode = delegate_->GetAutoShredMode(url);
 
   // We should clean up the browsing history only if shred for browsing history
-  // is enabled and the shred operation has been started manually or by the app
-  // exit.
+  // is enabled and the shred operation has been started manually or by the auto
+  // shred feature.
   const bool cleanup_browsing_history_for_tld =
-      (cleanup_mode == StorageCleanupMode::kOnExitShred ||
-       cleanup_mode == StorageCleanupMode::kImmediateShred) &&
+      (cleanup_mode == StorageCleanupMode::kImmediateShred ||
+       (auto_shred_mode.has_value() &&
+        auto_shred_mode.value() !=
+            brave_shields::mojom::AutoShredMode::NEVER)) &&
       delegate_->IsShredBrowsingHistoryEnabled();
 
   const TLDEphemeralAreaKey key(ephemeral_domain, storage_partition_config);
@@ -485,7 +492,10 @@ void EphemeralStorageService::CleanupOnStartup() {
         std::make_pair(std::string(url.host()), storage_partition_config);
     delegate_->CleanupFirstPartyStorageArea(key);
 
-    if (delegate_->IsShredBrowsingHistoryEnabled()) {
+    const auto auto_shred_mode = delegate_->GetAutoShredMode(url);
+    if (auto_shred_mode.has_value() &&
+        auto_shred_mode.value() != brave_shields::mojom::AutoShredMode::NEVER &&
+        delegate_->IsShredBrowsingHistoryEnabled()) {
       // We should clean up the browsing history if shred for browsing
       // history is enabled
       delegate_->CleanupTLDBrowsingHistory(key);

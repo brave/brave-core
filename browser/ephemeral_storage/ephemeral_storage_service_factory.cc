@@ -21,6 +21,8 @@
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "net/base/features.h"
+#include "chrome/browser/history/history_service_factory.h"
+#include "chrome/browser/sync/sync_service_factory.h"
 
 // static
 EphemeralStorageServiceFactory* EphemeralStorageServiceFactory::GetInstance() {
@@ -43,6 +45,9 @@ EphemeralStorageServiceFactory::EphemeralStorageServiceFactory()
   DependsOn(HostContentSettingsMapFactory::GetInstance());
   DependsOn(CookieSettingsFactory::GetInstance());
   DependsOn(BraveShieldsSettingsServiceFactory::GetInstance());
+  DependsOn(BraveShieldsSettingsServiceFactory::GetInstance());
+  DependsOn(HistoryServiceFactory::GetInstance());
+  DependsOn(SyncServiceFactory::GetInstance());
 }
 
 EphemeralStorageServiceFactory::~EphemeralStorageServiceFactory() = default;
@@ -70,15 +75,19 @@ EphemeralStorageServiceFactory::BuildServiceInstanceForBrowserContext(
   if (!host_content_settings_map) {
     return nullptr;
   }
-  LOG(INFO) << "[SHRED] EphemeralStorageServiceFactory::BuildServiceInstanceForBrowserContext()";
   Profile* profile = Profile::FromBrowserContext(context);
+  std::unique_ptr<ephemeral_storage::BrowsingHistoryCleaner> browsing_history_cleaner;
+  if(!profile->IsOffTheRecord()) {
+    browsing_history_cleaner = std::make_unique<ephemeral_storage::BrowsingHistoryCleaner>(context);
+  }
+
   return std::make_unique<ephemeral_storage::EphemeralStorageService>(
       context, host_content_settings_map,
       std::make_unique<ephemeral_storage::BraveEphemeralStorageServiceDelegate>(
           context, host_content_settings_map,
           CookieSettingsFactory::GetForProfile(profile),
           BraveShieldsSettingsServiceFactory::GetForProfile(profile),
-          std::make_unique<ephemeral_storage::BrowsingHistoryCleaner>(context)));
+          std::move(browsing_history_cleaner)));
 }
 
 content::BrowserContext* EphemeralStorageServiceFactory::GetBrowserContextToUse(

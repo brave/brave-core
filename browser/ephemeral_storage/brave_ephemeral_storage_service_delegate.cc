@@ -206,6 +206,9 @@ void BraveEphemeralStorageServiceDelegate::CleanupFirstPartyStorageArea(
 void BraveEphemeralStorageServiceDelegate::CleanupTLDBrowsingHistory(
     const TLDEphemeralAreaKey& key) {
   DVLOG(1) << __func__ << " " << key.first << " " << key.second;
+  if (!browsing_history_cleaner_) {
+    return;
+  }
   browsing_history_cleaner_->CleanupBrowsingHistoryForDomain(key.first);
 }
 
@@ -394,8 +397,7 @@ BraveEphemeralStorageServiceDelegate::GetEphemeralDomainsToCleanOnAppClose() {
 }
 
 bool BraveEphemeralStorageServiceDelegate::IsShredBrowsingHistoryEnabled() {
-  LOG(INFO) << "[SHRED] IsShredBrowsingHistoryEnabled:" << shields_settings_service_->IsShredBrowsingHistoryEnabled();
-  return true; // TODO return it back later
+  return shields_settings_service_->IsShredBrowsingHistoryEnabled();
 }
 
 }  // namespace ephemeral_storage
