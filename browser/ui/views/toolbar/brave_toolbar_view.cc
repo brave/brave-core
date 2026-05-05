@@ -499,9 +499,7 @@ void BraveToolbarView::UpdateHorizontalPadding() {
     return;
   }
 
-  const gfx::Insets current_insets =
-      container_view->GetBorder() ? container_view->GetBorder()->GetInsets()
-                                  : gfx::Insets();
+  const gfx::Insets current_insets = container_view->GetInsets();
   auto [leading, trailing] = tabs::utils::GetLeadingTrailingCaptionButtonWidth(
       browser_view_->browser_widget());
 
