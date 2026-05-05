@@ -8,10 +8,15 @@
 #include <utility>
 
 #include "base/check_deref.h"
+#include "base/memory/raw_ref.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/tabs/features.h"
+#include "third_party/skia/include/core/SkPath.h"
+#include "third_party/skia/include/core/SkRRect.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/gfx/paint_vector_icon.h"
+#include "ui/views/controls/highlight_path_generator.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "base/containers/flat_set.h"
@@ -31,6 +36,42 @@
 #endif
 
 using tabs::HorizontalTabsUpdateEnabled;
+
+namespace {
+
+// Replaces the upstream ControlButtonHighlightPathGenerator for
+// BraveNewTabButton. The upstream generator uses GetContentsBounds() for the
+// highlight rect, but LabelButton centers the icon within GetLocalBounds()
+// (vertical border insets set by UpdateButtonBorders() are not applied to the
+// image area). This generator centers the rect on
+// GetLocalBounds().CenterPoint() so the hover shape aligns with the icon.
+class BraveNewTabButtonHighlightPathGenerator
+    : public views::HighlightPathGenerator {
+ public:
+  explicit BraveNewTabButtonHighlightPathGenerator(BraveNewTabButton& button)
+      : button_(button) {}
+
+  SkPath GetHighlightPath(const views::View* view) override {
+    gfx::Rect rect(view->GetContentsBounds());
+    rect.set_y(view->GetLocalBounds().CenterPoint().y() - rect.height() / 2);
+
+    const SkScalar left_radius = button_->GetScaledCornerRadius(
+        button_->GetLeftCornerRadius(), Edge::kLeft);
+    const SkScalar right_radius = button_->GetScaledCornerRadius(
+        button_->GetRightCornerRadius(), Edge::kRight);
+    const SkVector radii[4] = {{left_radius, left_radius},
+                               {right_radius, right_radius},
+                               {right_radius, right_radius},
+                               {left_radius, left_radius}};
+    return SkPath::RRect(
+        SkRRect::MakeRectRadii(gfx::RectToSkRect(rect), radii));
+  }
+
+ private:
+  raw_ref<BraveNewTabButton> button_;
+};
+
+}  // namespace
 
 // static
 gfx::Size BraveNewTabButton::GetButtonSize() {
@@ -111,7 +152,10 @@ BraveNewTabButton::BraveNewTabButton(
                    fixed_flat_edge,
                    animated_flat_edge,
                    browser_window_interface),
-      browser_window_interface_(CHECK_DEREF(browser_window_interface)) {}
+      browser_window_interface_(CHECK_DEREF(browser_window_interface)) {
+  views::HighlightPathGenerator::Install(
+      this, std::make_unique<BraveNewTabButtonHighlightPathGenerator>(*this));
+}
 
 BraveNewTabButton::BraveNewTabButton(
     PressedCallback callback,
