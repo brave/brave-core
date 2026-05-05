@@ -8,6 +8,7 @@ import { render, screen, waitFor, act } from '@testing-library/react'
 import { ManagePageConnected } from '../email_aliases'
 import {
   Alias,
+  AliasesUpdate,
   AuthenticationStatus,
   EmailAliasesServiceInterface,
   EmailAliasesServiceObserverInterface,
@@ -28,7 +29,14 @@ class MockEmailAliasesService extends EmailAliasesServiceInterface {
     if (this.observer === undefined) {
       throw new Error('Expected observer to be defined')
     }
-    this.observer?.onAliasesUpdated(aliases)
+    this.observer?.onAliasesUpdated({ aliases } as AliasesUpdate)
+  }
+
+  notifyObserverAliasesLoadError(message: string) {
+    if (this.observer === undefined) {
+      throw new Error('Expected observer to be defined')
+    }
+    this.observer?.onAliasesUpdated({ error: message } as AliasesUpdate)
   }
 
   notifyObserverAuthStateChanged(
@@ -388,5 +396,21 @@ describe('ManagePageConnected', () => {
 
     await authenticate(service, AuthenticationStatus.kAuthenticated)
     await expectAliasesNotVisible()
+  })
+
+  it('shows error alert instead of alias list when refresh fails', async () => {
+    const service = await setupTest()
+    await authenticate(service, AuthenticationStatus.kAuthenticated)
+
+    const errorText = 'Could not load your email aliases.'
+    await act(() => {
+      service.notifyObserverAliasesLoadError(errorText)
+    })
+
+    await waitFor(() => {
+      expect(screen.getByText(errorText)).toBeInTheDocument()
+    })
+    expect(screen.queryByText('alias1@brave.com')).not.toBeInTheDocument()
+    expect(screen.queryByText('alias2@brave.com')).not.toBeInTheDocument()
   })
 })
