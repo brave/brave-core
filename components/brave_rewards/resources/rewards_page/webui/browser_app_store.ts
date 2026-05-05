@@ -348,7 +348,6 @@ export function createAppStore(): AppStore {
     // should be wrapped with this decorator.
     const inBackground = (promise: Promise<unknown>) => null
 
-    store.update({ loading: true })
     loadTimer.start(3000, () => store.update({ loading: false }))
 
     await Promise.all([
@@ -388,7 +387,10 @@ export function createAppStore(): AppStore {
       'visibilitychange',
       debounce(() => {
         if (document.visibilityState === 'visible') {
-          store.update({ openTime: Date.now() })
+          store.update({
+            loading: true,
+            openTime: Date.now(),
+          })
           loadData()
         }
       }, 60),
