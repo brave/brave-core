@@ -90,7 +90,7 @@ void BraveSyncServiceImpl::OnEncryptorReady() {
 }
 
 bool BraveSyncServiceImpl::has_encryptor() const {
-  return (bool)encryptor_;
+  return encryptor_ != nullptr;
 }
 
 std::unique_ptr<os_crypt_async::Encryptor>
