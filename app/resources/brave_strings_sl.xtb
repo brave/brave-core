@@ -34,7 +34,6 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 <translation id="878572309106296578">Brave potrebuje dostop do Bluetootha za raziskovanje 
  naprav Bluetooth. <ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="1330562121671411446">Zaznaj jezik</translation>
-<translation id="6204677860546245308">Uporaba priporočenih nastavitev brskalnika Brave</translation>
 <translation id="108284536240904209">Iz Bravea izbriši tudi podatke (<ph name="URL"/>)</translation>
 <translation id="1345251407431278948">Pripeto. Do slikovnega iskanja lahko znova dostopate z novim gumbom v orodni vrstici.</translation>
 <translation id="1356661055722410047">Novo! Prevedete lahko besedilo in slike na zaslonu.</translation>
@@ -55,11 +54,12 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 <translation id="6570689355868013775">Varnostna orodja v Braveu</translation>
 <translation id="1902837727299679178">Brave želi izbrisati podatke upravitelja gesel. Če želite to omogočiti, vnesite geslo za Windows.</translation>
 <translation id="4449148723378534338">Oglejte si ključne kontrolnike zasebnosti in varnosti v Braveu.</translation>
+<translation id="5229247933547820267">Če želite v načinu umetne inteligence postaviti vprašanje o zavihku, ne da bi zapustili stran, se prijavite v Brave. V vseh svojih napravah boste imeli na voljo tudi gesla in drugo.</translation>
 <translation id="1640672724030957280">Prenos ...</translation>
 <translation id="1680687534629375545">Vprašajte slikovno iskanje o tej strani</translation>
+<translation id="509363484780540563">Brave lahko uporabljate ob vsakem kliku povezav v sporočilih, dokumentih in drugih aplikacijah. Pripet bo tudi v opravilno vrstico.</translation>
 <translation id="1709772298389099340">Zagotovi povečane pravice za brskalnik <ph name="BROWSER_NAME"/>.</translation>
 <translation id="2913217021115517297">Zaradi izboljšanja teh funkcij Brave vaše interakcije z njimi pošilja Googlu. Pregledovalci lahko te podatke pregledajo, obdelajo in označijo.</translation>
-<translation id="1722488837206509557">Tako boste lahko izbirali med razpoložljivimi napravami in v njih prikazali vsebino.</translation>
 <translation id="8004287232784878841">Brave bo kmalu izbrisal podatke brskanja</translation>
 <translation id="4197839351786449392">Brave bo poskusil nadgraditi pomikanje na HTTPS</translation>
 <translation id="7814200940910057384">Podatki Bravea so izbrisani</translation>
@@ -194,6 +194,7 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 <translation id="3045032126857188731">Jezik prevoda: <ph name="LANGUAGE"/></translation>
 <translation id="3047590466164881923">Zapiranje pogovornega okna za povratne informacije</translation>
 <translation id="4503085212612536713">Drugi profili v Braveu</translation>
+<translation id="2041039306630146369">Razširitve so dodatki, s katerimi lahko prilagodite Brave. Razširitve vam pomagajo, da Brave prilagodite svojim potrebam, od organiziranja do poenostavljanja vsakodnevnih opravil.</translation>
 <translation id="7918740962659365265">Pomagajte izboljšati Brave – Googlu pošiljajte poročila o zrušitvah in ta dokument: <ph name="UMA_LINK"/>.</translation>
 <translation id="2332543193474246254">{NUM_DEVICES,plural, =0{Najmanj ena razširitev za Brave je dostopala do 1 naprave USB}=1{Najmanj ena razširitev za Brave dostopa do 1 naprave USB}one{Najmanj ena razširitev za Brave dostopa do # naprave USB}two{Najmanj ena razširitev za Brave dostopa do # naprav USB}few{Najmanj ena razširitev za Brave dostopa do # naprav USB}other{Najmanj ena razširitev za Brave dostopa do # naprav USB}}</translation>
 <translation id="3700405816184340252">Zgodovina v Braveu</translation>
@@ -222,8 +223,6 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 <translation id="8926637909431618259">Nadaljuj izvajanje aplikacij v ozadju, ko je Brave zaprt</translation>
 <translation id="518125528057094977">Brave vas bo opozoril pred nalaganjem katerega koli spletnega mesta prek povezave, ki ni varna</translation>
 <translation id="8652321858775514885">Ko zaprete vsa Braveova okna, boste odjavljeni z večine spletnih mest z izjemo računa Brave, če ste prijavljeni v Brave. Če želite, da si vas spletna mesta zapomnijo, <ph name="SETTINGS_LINK"/>.</translation>
-<translation id="3795277300264350702">Privzeti iskalnik je bil spremenjen zunaj Bravea. Brave ga je ponastavil zaradi vaše zaščite.</translation>
-<translation id="5033074923607633232">Prijavite se v Brave, če želite dostopati do gesel, zaznamkov in drugega v vseh napravah</translation>
 <translation id="3352986031709923790">zgornji desni kot območja za iskanje: desno <ph name="RIGHT"/> %, zgoraj <ph name="TOP"/> %</translation>
 <translation id="7261356974224431851">Podatki v Braveu v vašem računu</translation>
 <translation id="3369405342922656244">Iščite po tej strani s slikovnim iskanjem</translation>
@@ -428,6 +427,7 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 <translation id="5895138241574237353">Znova zaženi</translation>
 <translation id="5903106910045431592"><ph name="PAGE_TITLE"/> – Prijava v omrežje</translation>
 <translation id="5924017743176219022">Vzpostavljanje povezave z internetom …</translation>
+<translation id="1275716786566134844">Pripravimo Brave</translation>
 <translation id="5941711191222866238">Minimiziraj</translation>
 <translation id="5768962901674164501">Če želite dostopati do tega zaznamka in drugega v vseh napravah, se prijavite v Brave</translation>
 <translation id="5101892358689285100">Prilagodite Brave</translation>
@@ -464,6 +464,7 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 <translation id="5980269616827212166">Brave potrebuje dovoljenje za dostop do shrambe za prenos datotek.</translation>
 <translation id="7651600795135059130">Preveri URL-je, tako da jih primerja s seznamom spletnih mest, ki niso varna, shranjenim v Braveu.</translation>
 <translation id="5019879183386042809">Nastavi Brave kot privzeti brskalnik</translation>
+<translation id="6248988683584659830">Nastavitve iskanja</translation>
 <translation id="7445061995866044926">Se želite odjaviti iz Bravea?</translation>
 <translation id="4659866260728515512">Ti zavihki porabljajo dodatna sredstva. Če želite izboljšati učinkovitost delovanja, pustite Braveu, da jih spremeni v neaktivne.</translation>
 <translation id="6806912298071949921">Prilagajanje profila v Braveu</translation>
@@ -621,6 +622,7 @@ Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="7810005234485217901">Slikovno iskanje lahko pripnete za preprost dostop</translation>
 <translation id="1652855885539187849">Profil v Braveu s tem računom že obstaja v tej napravi.</translation>
 <translation id="7845233973568007926">Hvala, ker ste se odločili za namestitev. Preden uporabite <ph name="BUNDLE_NAME"/>, morate znova zagnati računalnik.</translation>
+<translation id="7397737266068428588">Iskalnik je bil spremenjen zunaj Bravea. Brave ga je ponastavil na prvotno privzeto vrednost zaradi vaše zaščite. <ph name="LEARN_MORE_LINK"/></translation>
 <translation id="9148690296223500734">Prilagodite Brave, da bo videti drugače</translation>
 <translation id="7963515534397191222">Bravea ni bilo mogoče posodobiti na najnovejšo različico, zato nimate novih funkcij in varnostnih popravkov.</translation>
 <translation id="7872446069773932638">Prenašanje … Še <ph name="SECONDS"/> s.</translation>
@@ -749,6 +751,7 @@ Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="7535429826459677826">Google Chrome Dev</translation>
 <translation id="6283840329609797763">Namestitev ni uspela zaradi nenavedene napake. Znova prenesite Brave.</translation>
 <translation id="1743665722170667430">Razširitve, aplikacije in teme iz neznanih virov lahko škodujejo napravi. Brave priporoča, da jih namestite samo iz <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/></translation>
+<translation id="5840822070878669614">Odpiranje Spletne trgovine Brave</translation>
 <translation id="6184592406110188164">Ta razširitev krši pravilnik spletne trgovine in morda ni varna. Odstranite jo iz Brave, da ne bo mogla več videti in spreminjati vaših podatkov na spletnih mestih, ki jih obiščete, vključno z vašimi osebnimi podatki.</translation>
 <translation id="1299765473362724475">Opozorilo: brskalnik Brave ne more preprečiti, da bi vtičniki beležili zgodovino vašega brskanja. Če želite ta vtičnik v načinu brez beleženja zgodovine onemogočiti, odznačite to možnost.</translation>
 <translation id="1448049584457347995">Zaradi večje varnosti smo v Braveu onemogočili nekatere razširitve, ki niso navedene v storitvi <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> in so bile morda dodane brez vaše vednosti.</translation>
@@ -756,6 +759,7 @@ Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="4624945300945265642">Odpri povezavo v Braveovem oknu brez bele&amp;ženja zgodovine</translation>
 <translation id="6554952862405000915">Odpri povezavo v Braveovem oknu brez bele&amp;ženja zgodovine</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{Na voljo je nova posodobitev za Brave, ki bo nameščena, takoj ko ga znova zaženete.}=1{Na voljo je nova posodobitev za Brave, ki bo nameščena, takoj ko ga znova zaženete. Okno brez beleženja zgodovine se ne bo znova odprlo.}one{Na voljo je nova posodobitev za Brave, ki bo nameščena, takoj ko ga znova zaženete. # okno brez beleženja zgodovine se ne bo znova odprlo.}two{Na voljo je nova posodobitev za Brave, ki bo nameščena, takoj ko ga znova zaženete. # okni brez beleženja zgodovine se ne bosta znova odprli.}few{Na voljo je nova posodobitev za Brave, ki bo nameščena, takoj ko ga znova zaženete. # okna brez beleženja zgodovine se ne bodo znova odprla.}other{Na voljo je nova posodobitev za Brave, ki bo nameščena, takoj ko ga znova zaženete. # oken brez beleženja zgodovine se ne bo znova odprlo.}}</translation>
+<translation id="7347727235538318126">To vam bo omogočilo deljenje vsebine iz Brave v vaše lokalne naprave, kot so televizor ali zvočnik.</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Skrbnik prosi, da za uveljavitev te posodobitve znova zaženete Brave.}=1{Skrbnik prosi, da za uveljavitev te posodobitve znova zaženete Brave. Okno brez beleženja zgodovine se ne bo znova odprlo.}one{Skrbnik prosi, da za uveljavitev te posodobitve znova zaženete Brave. # okno brez beleženja zgodovine se ne bo znova odprlo.}two{Skrbnik prosi, da za uveljavitev te posodobitve znova zaženete Brave. # okni brez beleženja zgodovine se ne bosta znova odprli.}few{Skrbnik prosi, da za uveljavitev te posodobitve znova zaženete Brave. # okna brez beleženja zgodovine se ne bodo znova odprla.}other{Skrbnik prosi, da za uveljavitev te posodobitve znova zaženete Brave. # oken brez beleženja zgodovine se ne bo znova odprlo.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Skrbnik zahteva, da za uveljavitev te posodobitve znova zaženete Brave.}=1{Skrbnik zahteva, da za uveljavitev te posodobitve znova zaženete Brave. Okno brez beleženja zgodovine se ne bo znova odprlo.}one{Skrbnik zahteva, da za uveljavitev te posodobitve znova zaženete Brave. # okno brez beleženja zgodovine se ne bo znova odprlo.}two{Skrbnik zahteva, da za uveljavitev te posodobitve znova zaženete Brave. # okni brez beleženja zgodovine se ne bosta znova odprli.}few{Skrbnik zahteva, da za uveljavitev te posodobitve znova zaženete Brave. # okna brez beleženja zgodovine se ne bodo znova odprla.}other{Skrbnik zahteva, da za uveljavitev te posodobitve znova zaženete Brave. # oken brez beleženja zgodovine se ne bo znova odprlo.}}</translation>
 <translation id="1400696845469684552">{COUNT, plural,

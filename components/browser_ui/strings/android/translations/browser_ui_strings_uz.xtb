@@ -64,6 +64,7 @@
 <translation id="1644574205037202324">Tarix</translation>
 <translation id="1652197001188145583">Yoqilsa, saytlar NFC qurilmalardan foydalanishni soʻrashi mumkin. Oʻchirilsa, bunday qurilmalardan foydalana olmaydi.</translation>
 <translation id="1660204651932907780">Saytlarga ovoz ijro etish uchun ruxsat berish (tavsiya etiladi)</translation>
+<translation id="1676590040242013349">“Doim xavfsiz ulanish” yoniq.</translation>
 <translation id="1677097821151855053">Saytga kirish uchun yoki reklamani moslashtirish uchun ishlatiladigan cookie fayllari va boshqa sayt maʼlumotlari. Barcha saytlar uchun cookie fayllarni boshqarish uchun <ph name="BEGIN_LINK"/>Cookie sozlamalari<ph name="END_LINK"/> sahifasini oching.</translation>
 <translation id="1679305402657584804">Saytlar NFC qurilmalardan foydalanishga ruxsat soʻrashi mumkin</translation>
 <translation id="1686785653877010442">Odatda, saytlar muhim yangiliklar yoki chat xabarlari haqida sizga bildirish uchun bildirishnomalar yuboradi.</translation>
@@ -125,7 +126,6 @@
 <translation id="2228071138934252756"><ph name="APP_NAME"/> kameradan foydalanishiga ruxsat berish uchun <ph name="BEGIN_LINK"/>Android sozlamalari<ph name="END_LINK"/> orqali kamerani yoqing.</translation>
 <translation id="2231160360698766265">Saytlarga himoyalangan kontentni ijro etishga ruxsat berish</translation>
 <translation id="2235344399760031203">Tashqi cookie fayllar bloklandi</translation>
-<translation id="2238944249568001759">Oxirgi varaq asosida tavsiya etiladigan qidiruvlar</translation>
 <translation id="2241587408274973373">Yangi varaq sahifasi bildirgilari</translation>
 <translation id="2241634353105152135">Bir marta</translation>
 <translation id="2253414712144136228">Olib tashlash: <ph name="NAME_OF_LIST_ITEM"/></translation>
@@ -166,11 +166,6 @@
 <translation id="2588271083332682494">Varaqlar guruhlari yordamida tartibga soling</translation>
 <translation id="2597457036804169544">Saytlar uchun tungi mavzu tatbiq etilmaydi</translation>
 <translation id="2606760465469169465">Avtomatik tekshiruv</translation>
-<translation id="7615153661410655750"><ph name="BEGIN_LINK1"/>Android sozlamalari<ph name="END_LINK1"/> orqali boshqarish
-
-Quyidagi Brave sozlamalari Kuchaytirilgan himoya boshqaruvida:
-• “Doim xavfsiz ulanish ishlatilsin” parametri yoniq.
-• “JavaScript optimizer“ parametri oʻchiq. <ph name="BEGIN_LINK2"/>Istisno saytlarni boshqarish<ph name="END_LINK2"/></translation>
 <translation id="2621115761605608342">Ko‘rsatilgan saytga JavaScript ishga tushirishga ruxsat berish.</translation>
 <translation id="2626708220538466178">Birlamchi brauzer quyi ekrani yopildi</translation>
 <translation id="2653659639078652383">Yuborish</translation>
@@ -214,7 +209,6 @@ Quyidagi Brave sozlamalari Kuchaytirilgan himoya boshqaruvida:
 <translation id="3069226013421428034">Muayyan sayt uchun tashqi xizmatga kirishga ruxsat bering.</translation>
 <translation id="310297983047869047">Avvalgi slaydi</translation>
 <translation id="3108122610701115301">Birlamchi qilib belgilash</translation>
-<translation id="3109724472072898302">Yig‘ilgan</translation>
 <translation id="310979712355504754">Hammasini oʻchirish</translation>
 <translation id="311394601889664316">Saytlarga qurilmadagi fayl yoki jildlarni tahrirlashni taqiqlash</translation>
 <translation id="3114012059975132928">Video pleyer</translation>
@@ -260,7 +254,6 @@ Quyidagi Brave sozlamalari Kuchaytirilgan himoya boshqaruvida:
 <translation id="3602290021589620013">Razm solish</translation>
 <translation id="3611658447322220736">Yaqinda yopilgan saytlar axborot yuborishi va qabul qilishi mumkin</translation>
 <translation id="3619294456800709762">Saytlar tasvir ustida tasvir rejimiga avtomatik kirishi mumkin</translation>
-<translation id="3628308229821498208">Tavsiya etilgan qidiruvlar</translation>
 <translation id="3632460243282703117">Obuna</translation>
 <translation id="363748948745453283">Taxminiy joylashuv ishlatilmoqda</translation>
 <translation id="3641456520301071208">Saytlar joylashuv axborotingizni talab qilishi mumkin</translation>
@@ -441,7 +434,6 @@ Quyidagi Brave sozlamalari Kuchaytirilgan himoya boshqaruvida:
 <translation id="5515432237048785579">Tasmani varaqlash quyi ekrani toʻliq hajmda ochildi</translation>
 <translation id="5516455585884385570">Bildirishnoma sozlamalarini ochish</translation>
 <translation id="5527111080432883924">Saytlarga klipborddagi matn va rasmlarni ko‘rishga ruxsat berishdan oldin so‘ralsin (tavsiya etiladi)</translation>
-<translation id="5553374991681107062">Eng oxirgi</translation>
 <translation id="674221630984410403">Brave V8 tizimidagi saytlar ishlashini sekinlatish, Brave brauzerining hujumlardan himoyasini esa oshirish</translation>
 <translation id="5556459405103347317">Qayta yuklash</translation>
 <translation id="5591840828808741583"><ph name="SITE_NAME"/> bloklandi</translation>
@@ -521,7 +513,6 @@ Quyidagi Brave sozlamalari Kuchaytirilgan himoya boshqaruvida:
 <translation id="6231752747840485235"><ph name="APP_NAME"/> oʻchirib tashlansinmi?</translation>
 <translation id="4789073065838177382">“Brauzer ilovasi &gt; Brave” bandini tanlang</translation>
 <translation id="6260830281887654268">Yangi varaq sahifasi qiyofasi mavzu termalari quyi ekrani yarim hajmda ochildi</translation>
-<translation id="6262191102408817757">Oxirgi varaq asosida</translation>
 <translation id="6262279340360821358">Bloklandi: <ph name="PERMISSION_1"/> va <ph name="PERMISSION_2"/></translation>
 <translation id="6270391203985052864">Saytlar bildirishnoma chiqarishga ruxsat soʻray oladi</translation>
 <translation id="6295158916970320988">Barcha saytlar</translation>
@@ -579,6 +570,7 @@ Quyidagi Brave sozlamalari Kuchaytirilgan himoya boshqaruvida:
 <translation id="6912998170423641340">Saytlarga klipboarddagi matn va rasmlarni ko‘rishni taqiqlash</translation>
 <translation id="6945221475159498467">Tanlash</translation>
 <translation id="6950072572526089586">Ochilgan saytlar sizni hisobda qoldirish yoki mahsulotlarni xarid savatida saqlash uchun saytdagi harakatlaringiz haqidagi maʼlumotlarni saqlashi mumkin. Odatda bu maʼlumotlar qurilmangizda vaqtincha saqlanadi.</translation>
+<translation id="6964291282260073066">“WebGPU” faolsizlantirilgan.</translation>
 <translation id="6965382102122355670">OK</translation>
 <translation id="6980507581230208647">Atirgulrang mavzu</translation>
 <translation id="6980861169612950611">Sayt maʼlumotlari oʻchirilsinmi? <ph name="SITE_NAME"/></translation>
@@ -601,7 +593,6 @@ Quyidagi Brave sozlamalari Kuchaytirilgan himoya boshqaruvida:
 <translation id="7180611975245234373">Yangilash</translation>
 <translation id="7188508872042490670">Qurilmada saqlangan sayt maʼlumotlari</translation>
 <translation id="7201549776650881587"><ph name="ORIGIN"/> saytiga bogʻlangan saytlar yoki ularning bosh ekrandagi ilovasi saqlangan barcha maʼlumotlar va cookie fayllari oʻchirib tashlanadi.</translation>
-<translation id="7203150201908454328">Yoyilgan</translation>
 <translation id="7213166370492037743">Saytlarga mahalliy tarmoqdagi istalgan qurilmaga ulanishni taqiqlash</translation>
 <translation id="7219254577985949841">Sayt maʼlumotlari oʻchirilsinmi?</translation>
 <translation id="723171743924126238">Tasvirni tanlang</translation>
@@ -612,6 +603,9 @@ Quyidagi Brave sozlamalari Kuchaytirilgan himoya boshqaruvida:
 <translation id="7276071417425470385">Yoqilsa, saytlar virtual reallik qurilmalaridan foydalanishni soʻrashi mumkin Oʻchirilsa, bunday qurilmalardan foydalana olmaydi.</translation>
 <translation id="7282197670900591579">Toʻq limon mavzu</translation>
 <translation id="728412880473384942">Saytlar tezroq ochiladi, ammo himoyasi kamroq</translation>
+<translation id="5843014938239239453"><ph name="BEGIN_LINK1"/>Android sozlamalari<ph name="END_LINK1"/> orqali boshqarish
+
+Kuchaytirilgan himoya boshqaruvida quyidagi Brave sozlamalari mavjud:</translation>
 <translation id="7366415735885268578">Sayt qo‘shish</translation>
 <translation id="7368695150573390554">Barcha oflayn maʼlumotlar oʻchib ketadi</translation>
 <translation id="7369678931043226462">Yangi varaq sahifasini moslash quyi ekrani yarim hajmda ochildi</translation>
@@ -675,7 +669,6 @@ Quyidagi Brave sozlamalari Kuchaytirilgan himoya boshqaruvida:
 <translation id="8007176423574883786">Ushbu qurilma uchun o‘chirilgan</translation>
 <translation id="802154636333426148">Yuklab olib bo‘lmadi</translation>
 <translation id="8033047164036749181">Bu saytdan bildirishnoma olishga yoziling</translation>
-<translation id="8042586301629853791">Saralash:</translation>
 <translation id="8051193500142930381">Kamera ishlatadigan funksiyalar ishlamaydi</translation>
 <translation id="2495032782748793764">Brave (standart)</translation>
 <translation id="8067883171444229417">Videoni ijro qilish</translation>
@@ -723,6 +716,7 @@ Quyidagi Brave sozlamalari Kuchaytirilgan himoya boshqaruvida:
 <translation id="8471525937465764768">Saytlar odatda hujjatni chop etish yoki tashqi xotiraga saqlash maqsadida USB qurilmalarga ulanadi</translation>
 <translation id="8473055640493819707">“<ph name="APP_NAME"/>” eskirgan. Ilovani qayta oʻrnating.</translation>
 <translation id="847433688444405067">Barcha qurilmalarda varaqlash</translation>
+<translation id="8484556725636319115">“JavaScript optimizer“ parametri oʻchiq. <ph name="BEGIN_LINK2"/>Istisno saytlarni boshqarish<ph name="END_LINK2"/></translation>
 <translation id="8487700953926739672">Internetsiz foydalanish mumkin</translation>
 <translation id="848952951823693243">Har doim mobil versiya ochilsin</translation>
 <translation id="8492822722330266509">Saytlar oynalarni qalqib chiqarishi va sahifalarni yoʻnaltirishi mumkin</translation>

@@ -483,6 +483,10 @@
 <translation id="1518915449477235311">Разрешавате ли <ph name="URL"/> да отвори разговори с Leo AI в Brave?</translation>
 <translation id="4355784577209159847">Разрешаване използването на „бисквитки“ на трети страни за предишно влизане чрез Google</translation>
 <translation id="5770656036486891920"><ph name="URL"/> иска да използва бисквитки на трети страни за наследено влизане в Google</translation>
+<translation id="5582087890067572966">🎉 Вече печелите!</translation>
+<translation id="4364336119478610380">Печелите винаги, когато на екрана ви се появи подобно известие. Не е необходимо да кликвате, за да печелите.</translation>
+<translation id="5893017172751072752">Печелите, когато се появи известие от Brave Ads</translation>
+<translation id="3447730462826640312">Не е необходимо да кликнете, за да спечелите, но кликнете, ако се интересувате!</translation>
 <translation id="2104347391516032700">Услуга Bat Rewards</translation>
 <translation id="5939518447894949180">Нулиране</translation>
 <translation id="3349204812119681938">Нулиране на награди в Brave</translation>
@@ -996,6 +1000,7 @@
 <translation id="2795015351889043417">JSON файл</translation>
 <translation id="5468881191994555667">Избор на файл</translation>
 <translation id="795667975304826397">Няма избран файл</translation>
+<translation id="6720675936326555106">Избран файл</translation>
 <translation id="5891811606602061966">Неуспешно импортиране на акаунта, опитайте отново.</translation>
 <translation id="6566535583781706170">Импортиране на сметка</translation>
 <translation id="5051929972046200722">Избиране на устройство с хардуерен портфейл</translation>
@@ -1042,10 +1047,12 @@
 <translation id="2416098547200943834">ЗАБЕЛЕЖКА: Частният ключ се предоставя като шестнадесетично кодиран JSON, който съдържа информация за частния ключ и протокола. <ph name="LINK_START"/>Научете повече<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">ЗАБЕЛЕЖКА: Частният ключ трябва да бъде предоставен като шестнадесетично кодиран JSON, който съдържа информация за частния ключ и протокола. <ph name="LINK_START"/>Научете повече<ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">ЗАБЕЛЕЖКА: Поддържат се само <ph name="FORMAT"/> разширени ключове.</translation>
+<translation id="6457746820359933716">Импортирайте с помощта на JSON файл, експортиран от Polkadot.js или съвместими портфейли. Въведете паролата, използвана за криптиране на експорта.</translation>
 <translation id="9133762451347918196">Акаунти за тестовата мрежа</translation>
 <translation id="42126664696688958">Експортиране</translation>
 <translation id="1366855498335432549">Депозиране</translation>
 <translation id="790104325876206743">Настройки на акаунт</translation>
+<translation id="8856844353253421399">Последно актуализиране: <ph name="TIME_AGO"/> преди</translation>
 <translation id="6322030314101903925">Няма налични активи</translation>
 <translation id="836614343069504000">Депозирайте или купете токени, за да започнете. Ако не виждате токени от импортираната сметка, проверете филтрите и настройките за показване. Може да се наложи да добавите неизвестни токени като персонални активи.</translation>
 <translation id="2902856457593699108">Показване на ключ</translation>
@@ -1164,10 +1171,10 @@
 <translation id="4324239559624557455">За 24 часа</translation>
 <translation id="9139452553033760558">За 1 седмица</translation>
 <translation id="1658834457013045127">Завинаги</translation>
-<translation id="6344138931392227467"><ph name="DEVICE_NAME"/> е свързан</translation>
-<translation id="7051244143160304048">Връзката с <ph name="DEVICE_NAME"/> е прекъсната</translation>
-<translation id="5317781812114905957">Инструкции</translation>
-<translation id="1178198982208000092">Свързване на вашия <ph name="DEVICE_NAME"/></translation>
+<translation id="5571630233760536706"><ph name="DEVICE_NAME"/> е свързан</translation>
+<translation id="7058480232601314508">Връзката с <ph name="DEVICE_NAME"/> е прекъсната</translation>
+<translation id="434328838837168401">Преглед на инструкциите</translation>
+<translation id="6739517232898494646">Свържете <ph name="DEVICE_NAME"/> за да продължите</translation>
 <translation id="6941881257520473899">Хардуерният портфейл изисква потвърждение на устройството.</translation>
 <translation id="2288190100157580461">Хардуерният портфейл изисква приложението <ph name="NETWORK"/> да бъде отворено на <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">изпратено</translation>
@@ -1888,6 +1895,7 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="4150336849480030462">Прехвърляне на SPL токени със създаване на свързан акаунт за токени</translation>
 <translation id="2244921323472112851">В момента не можем да намерим страницата, която търсиш.</translation>
 <translation id="6277237872689140644">Може да е преместена или в URL адреса да има печатна грешка.</translation>
+<translation id="1788572014530152502">Възникна грешка при обработката на вашата транзакция. В много случаи това означава, че няма достатъчно <ph name="SYMBOL"/> за покриване на мрежовия сбор. Опитайте с по-малка сума вместо това.</translation>
 <translation id="2737084171727561244">Отиди в Портфолиото</translation>
 <translation id="3499452861061048987">Добавяне на токен</translation>
 <translation id="5046066249040287308">Комунална услуга чрез портфейла на Brave</translation>
@@ -2572,7 +2580,8 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="4724752924364329714">Ако сайтът изглежда повреден, опитайте да свалите щитовете.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Забележка: това може да намали защитата на личните данни на Brave.<ph name="NOTE_AFTER"/></translation>
 <translation id="4329860807937715445">Това може да намали защитата на неприкосновеността на Brave. <ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
-<translation id="1574700443447059851">Проследяващите елементи, рекламите и други елементи са блокирани.</translation>
+<translation id="3889333301730272023"><ph name="BLOCK_COUNT"/> проследяващи елементи, реклами и други елементи са блокирани</translation>
+<translation id="2275121279487164685">Проследяващи елементи и реклами</translation>
 <translation id="4968268657895673116">Кажете ни, ако сайтът не работи правилно с вдигнати защити?</translation>
 <translation id="5412004902081180614">Доклад</translation>
 <translation id="3620004479054499575">Имате проблеми с този сайт?</translation>
@@ -2634,9 +2643,11 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="3795015906457257780">Вие разглеждате този сайт без защитите за поверителност на Brave.</translation>
 <translation id="7194012750329511146">Блокирани са
 <ph name="NUMBER"/> тракера, реклами и други от щитовете на Brave</translation>
+<translation id="2900068182947574679">Скриптове</translation>
 <translation id="4292121526390005808">Блокирани скриптове</translation>
 <translation id="5046271170844958713">Разрешени скриптове</translation>
 <translation id="199862531047218413">приложени са защити срещу снемане на отпечатъци</translation>
+<translation id="896105002981074545">Защита от снемане на цифрови отпечатъци</translation>
 <translation id="5032505924781383272">Приложените защити не означават непременно, че тази уебстраница се опитва да снеме отпечатъци от вашия браузър.</translation>
 <translation id="1905384713982899903">Блокирани пръстови отпечатъци</translation>
 <translation id="314364527871618241">Позволени пръстови отпечатъци</translation>
@@ -2649,6 +2660,7 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="542789539047208469">Информация за сайта</translation>
 <translation id="7586067492365979844">Brave защити имат нов дом и дизайн. Сега се интегрира с информация за сайт за еднократен опит.</translation>
 <translation id="9114542678887529043">Brave защити имат нов дом и дизайн. Достъпете го, като щракнете на икона на сайта в адресната лента.</translation>
+<translation id="4242533952199664413">Към настройките</translation>
 <translation id="6294662480095808915">Поверителност. По подразбиране.</translation>
 <translation id="4366423156486478559">Получете защита от Brave за всяка връзка, върху която кликнете. Просто задайте Brave по подразбиране и сърфирайте. Частно.</translation>
 <translation id="3830912418080848377">Импортиране на настройки</translation>
@@ -2789,4 +2801,19 @@ Brave има помощна услуга, която Ви защитава от 
 <translation id="1602850501393095406">Натисни ↑ за маркиране</translation>
 <translation id="8367705492654390392">Попитай всичко</translation>
 <translation id="8525248723479742219">Възпроизвеждане по-късно</translation>
+<translation id="2935698011275148880">Смел произход</translation>
+<translation id="3983844925615091103">Добре дошли в Brave Origin. За да продължите, моля, закупете или възстановете своята покупка на Brave Origin.</translation>
+<translation id="4801175670604644729">Имате нужда от активна покупка на Brave Origin, за да използвате този браузър.</translation>
+<translation id="4144294274624829008">Възстановяване на покупката на Brave Origin</translation>
+<translation id="6080178356113101120">Закупуване на Brave Origin</translation>
+<translation id="1009496146858538651">Възстановяване на покупката</translation>
+<translation id="3461564061600681423">Въведете вашия идентификатор на покупката, за да активирате вашата покупка на Brave Origin.</translation>
+<translation id="2036379724374431790">Идентификатор на покупката</translation>
+<translation id="4348430971280118761">Въведете вашия идентификатор на покупката</translation>
+<translation id="7451866456310404779">Проверка на идентификатора на покупката</translation>
+<translation id="8853195592604941919">Проверка... Това може да отнеме минута.</translation>
+<translation id="4633706444004110760">Благодаря, че инсталирахте Brave Origin, версия на браузъра за потребители, които не се нуждаят от всички функции, които поддържат Brave като бизнес, но все пак искат конфиденциалността, която само Brave предлага. Origin потребителите ще продължат да се ползват от водещата в индустрията конфиденциалност на Brave, блокирането на реклами и скоростта (чрез Защити), както и от редовни актуализации на софтуера, кръпки за Chromium и подобрения в сигурността и конфиденциалността. Origin ще премахне повечето други функции от браузъра.</translation>
+<translation id="5816720995022674532">Origin е безплатен за използване на Linux устройства, но все още <ph name="BEGIN_LINK"/>е достъпен за закупуване<ph name="END_LINK"/>, ако желаете да поддържите Brave като бизнес. Закупуването би разблокирало също способността да използвате Origin на Android, iOS, macOS и Windows устройства.</translation>
+<translation id="3065220545261045367">Подкрепа на Brave чрез закупуване на Origin</translation>
+<translation id="2069499076031488636">Продължете с Origin безплатно на Linux</translation>
 </translationbundle>

@@ -64,6 +64,7 @@
 <translation id="1644574205037202324">Historial</translation>
 <translation id="1652197001188145583">Cuando esta opción está activada, los sitios pueden solicitar permiso para usar dispositivos NFC. Cuando está desactivada, los sitios no pueden usar dispositivos NFC.</translation>
 <translation id="1660204651932907780">Permitir que los sitios reproduzcan sonido (recomendado)</translation>
+<translation id="1676590040242013349">La opción "Usar siempre conexiones seguras" está activada.</translation>
 <translation id="1677097821151855053">Se utilizan cookies y otros datos del sitio para recordar tu información y actividad. De esta manera, podrás acceder a tu cuenta y ver anuncios personalizados, entre otras cosas. Para administrar las cookies de todos los sitios, visita la <ph name="BEGIN_LINK"/>Configuración<ph name="END_LINK"/>.</translation>
 <translation id="1679305402657584804">Permitir que los sitios soliciten permiso para usar dispositivos NFC</translation>
 <translation id="1686785653877010442">Por lo general, los sitios envían notificaciones sobre noticias de último momento o mensajes de chat.</translation>
@@ -125,8 +126,7 @@
 <translation id="2228071138934252756">Para permitir que <ph name="APP_NAME"/> acceda a tu cámara, actívala también en la <ph name="BEGIN_LINK"/>Configuración de Android<ph name="END_LINK"/>.</translation>
 <translation id="2231160360698766265">Permitir que los sitios reproduzcan contenido protegido</translation>
 <translation id="2235344399760031203">Se bloquearon las cookies de terceros</translation>
-<translation id="2238944249568001759">Búsquedas sugeridas en base a tu última pestaña</translation>
-<translation id="2241587408274973373">Tarjetas de pestañas nuevas</translation>
+<translation id="2241587408274973373">Tarjetas de la página Nueva pestaña</translation>
 <translation id="2241634353105152135">Solo esta vez</translation>
 <translation id="2253414712144136228">Quitar <ph name="NAME_OF_LIST_ITEM"/></translation>
 <translation id="227763434929139750">No permitir que los sitios usen sensores de movimiento o de luz</translation>
@@ -166,11 +166,6 @@
 <translation id="2588271083332682494">Organiza con grupos de pestañas</translation>
 <translation id="2597457036804169544">No aplicar el Tema oscuro para los sitios</translation>
 <translation id="2606760465469169465">Verificación automática</translation>
-<translation id="7615153661410655750">Administrar en la <ph name="BEGIN_LINK1"/>configuración de Android<ph name="END_LINK1"/>
-
-La Protección avanzada controla estos parámetros de configuración de Brave:
-• La opción "Usar siempre conexiones seguras" está activada.
-• La opción "optimizador de JavaScript" está desactivada. <ph name="BEGIN_LINK2"/>Administrar las excepciones del sitio<ph name="END_LINK2"/></translation>
 <translation id="2621115761605608342">Permitir la ejecución de JavaScript para un sitio específico</translation>
 <translation id="2626708220538466178">Se cerró la hoja inferior del navegador predeterminado</translation>
 <translation id="2653659639078652383">Enviar</translation>
@@ -214,7 +209,6 @@ La Protección avanzada controla estos parámetros de configuración de Brave:
 <translation id="3069226013421428034">Permite el acceso de terceros a un sitio específico.</translation>
 <translation id="310297983047869047">Diapositiva anterior</translation>
 <translation id="3108122610701115301">Establecer como predeterminado</translation>
-<translation id="3109724472072898302">Contraído</translation>
 <translation id="310979712355504754">Eliminar todos</translation>
 <translation id="311394601889664316">No permitir que los sitios editen archivos ni carpetas de tu dispositivo</translation>
 <translation id="3114012059975132928">Reproductor de video</translation>
@@ -260,7 +254,6 @@ La Protección avanzada controla estos parámetros de configuración de Brave:
 <translation id="3602290021589620013">Vista previa</translation>
 <translation id="3611658447322220736">Permitir que los sitios cerrados recientemente terminen de enviar y recibir datos</translation>
 <translation id="3619294456800709762">Permitir que los sitios ingresen automáticamente al modo de pantalla en pantalla</translation>
-<translation id="3628308229821498208">Búsquedas sugeridas</translation>
 <translation id="3632460243282703117">Suscribirse</translation>
 <translation id="363748948745453283">Usa la ubicación aproximada</translation>
 <translation id="3641456520301071208">Los sitios pueden solicitar tu ubicación</translation>
@@ -441,7 +434,6 @@ La Protección avanzada controla estos parámetros de configuración de Brave:
 <translation id="5515432237048785579">La hoja inferior del feed de Descubre está totalmente abierta</translation>
 <translation id="5516455585884385570">Abrir la configuración de notificaciones</translation>
 <translation id="5527111080432883924">Preguntar antes de permitir que los sitios lean el texto y las imágenes del portapapeles (recomendado)</translation>
-<translation id="5553374991681107062">Recientes</translation>
 <translation id="674221630984410403">No acelerar los sitios con el motor V8 de Brave, pero aumentar la resistencia de Brave a los ataques</translation>
 <translation id="5556459405103347317">Volver a cargar</translation>
 <translation id="5591840828808741583">Se bloqueó <ph name="SITE_NAME"/></translation>
@@ -521,7 +513,6 @@ La Protección avanzada controla estos parámetros de configuración de Brave:
 <translation id="6231752747840485235">¿Quieres desinstalar "<ph name="APP_NAME"/>"?</translation>
 <translation id="4789073065838177382">Presiona App de navegador &gt; Brave</translation>
 <translation id="6260830281887654268">La hoja inferior de las colecciones de temas de la apariencia de la página Nueva pestaña está abierta a media altura</translation>
-<translation id="6262191102408817757">Según tu última pestaña</translation>
 <translation id="6262279340360821358">Bloqueados: <ph name="PERMISSION_1"/> y <ph name="PERMISSION_2"/></translation>
 <translation id="6270391203985052864">Los sitios pueden preguntarte si quieres recibir notificaciones</translation>
 <translation id="6295158916970320988">Todos los sitios</translation>
@@ -579,6 +570,7 @@ La Protección avanzada controla estos parámetros de configuración de Brave:
 <translation id="6912998170423641340">Impedir que los sitios lean el texto y las imágenes del portapapeles</translation>
 <translation id="6945221475159498467">Seleccionar</translation>
 <translation id="6950072572526089586">Un sitio que visitas puede guardar información sobre tu actividad para que funcione como esperas (por ejemplo, para mantener el acceso a un sitio o guardar artículos en tu carrito de compras). A menudo, los sitios guardan esta información de forma temporal en tu dispositivo.</translation>
+<translation id="6964291282260073066">Se inhabilitó "WebGPU".</translation>
 <translation id="6965382102122355670">Aceptar</translation>
 <translation id="6980507581230208647">Tema rosa</translation>
 <translation id="6980861169612950611">¿Quieres borrar los datos del sitio? <ph name="SITE_NAME"/></translation>
@@ -601,7 +593,6 @@ La Protección avanzada controla estos parámetros de configuración de Brave:
 <translation id="7180611975245234373">Actualizar</translation>
 <translation id="7188508872042490670">Datos de sitios en el dispositivo</translation>
 <translation id="7201549776650881587">Esta acción borrará todos los datos y cookies que almacenaron todos los sitios secundarios de <ph name="ORIGIN"/> o su app en la pantalla principal</translation>
-<translation id="7203150201908454328">Expandido</translation>
 <translation id="7213166370492037743">No permitir que los sitios se conecten a ningún dispositivo de tu red local</translation>
 <translation id="7219254577985949841">¿Quieres borrar los datos del sitio?</translation>
 <translation id="723171743924126238">Seleccionar imágenes</translation>
@@ -612,6 +603,9 @@ La Protección avanzada controla estos parámetros de configuración de Brave:
 <translation id="7276071417425470385">Cuando esta opción está activada, los sitios pueden solicitar permiso para usar dispositivos de realidad virtual. Cuando está desactivada, los sitios no pueden usar dispositivos de realidad virtual.</translation>
 <translation id="7282197670900591579">Tema mostaza</translation>
 <translation id="728412880473384942">Los sitios son más rápidos, pero menos seguros</translation>
+<translation id="5843014938239239453">Administrar en la <ph name="BEGIN_LINK1"/>configuración de Android<ph name="END_LINK1"/>
+
+La Protección avanzada controla estos parámetros de configuración de Brave:</translation>
 <translation id="7366415735885268578">Agregar un sitio</translation>
 <translation id="7368695150573390554">Se borrarán los datos sin conexión</translation>
 <translation id="7369678931043226462">La hoja inferior de personalización de la página Nueva pestaña está abierta a media altura</translation>
@@ -675,7 +669,6 @@ La Protección avanzada controla estos parámetros de configuración de Brave:
 <translation id="8007176423574883786">Desactivado para este dispositivo</translation>
 <translation id="802154636333426148">Error en la descarga</translation>
 <translation id="8033047164036749181">Suscribirse para recibir notificaciones de este sitio</translation>
-<translation id="8042586301629853791">Ordenar por:</translation>
 <translation id="8051193500142930381">No se habilitarán las funciones que necesitan una cámara.</translation>
 <translation id="2495032782748793764">Predeterminado de Brave</translation>
 <translation id="8067883171444229417">Reproducir video</translation>
@@ -723,6 +716,7 @@ La Protección avanzada controla estos parámetros de configuración de Brave:
 <translation id="8471525937465764768">Por lo general los sitios se conectan a dispositivos USB para habilitar funciones, como imprimir un documento o guardar datos en un dispositivo de almacenamiento.</translation>
 <translation id="8473055640493819707">"<ph name="APP_NAME"/>" está desactualizada. Vuelve a instalar la app.</translation>
 <translation id="847433688444405067">Navega en distintos dispositivos</translation>
+<translation id="8484556725636319115">La opción "optimizador de JavaScript" está desactivada. <ph name="BEGIN_LINK2"/>Administrar las excepciones del sitio<ph name="END_LINK2"/></translation>
 <translation id="8487700953926739672">Disponible sin conexión</translation>
 <translation id="848952951823693243">Solicitar siempre el sitio móvil</translation>
 <translation id="8492822722330266509">Permitir que los sitios abran ventanas emergentes y usen redireccionamientos</translation>

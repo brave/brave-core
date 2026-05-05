@@ -483,6 +483,10 @@
 <translation id="1518915449477235311">هل تريد السماح لـ <ph name="URL"/> بفتح محادثات Leo AI في متصفح Brave؟</translation>
 <translation id="4355784577209159847">السماح باستخدام ملفات تعريف الارتباط للجهات الخارجية لتسجيل الدخول القديم إلى Google</translation>
 <translation id="5770656036486891920">تريد <ph name="URL"/> استخدام ملفات تعريف ارتباط الجهات الخارجية لتسجيل الدخول القديم إلى Google</translation>
+<translation id="5582087890067572966">🎉 تبدأ الآن في الربح!</translation>
+<translation id="4364336119478610380">تربح كلما ظهر إشعار مثل هذا على شاشتك. لا تحتاج إلى النقر للربح.</translation>
+<translation id="5893017172751072752">تربح عندما يظهر إشعار Brave Ads</translation>
+<translation id="3447730462826640312">لا تحتاج إلى النقر للربح، ولكن انقر إذا كنت مهتمًا!</translation>
 <translation id="2104347391516032700">خدمة Bat Rewards</translation>
 <translation id="5939518447894949180">إعادة الضبط</translation>
 <translation id="3349204812119681938">إعادة تعيين Brave Rewards</translation>
@@ -1000,6 +1004,7 @@
 <translation id="2795015351889043417">ملف JSON</translation>
 <translation id="5468881191994555667">اختيار ملف</translation>
 <translation id="795667975304826397">لم يتم اختيار أي ملفات</translation>
+<translation id="6720675936326555106">ملف محدد</translation>
 <translation id="5891811606602061966">تعذّر توريد الحساب. يُرجى المحاولة مرة أخرى.</translation>
 <translation id="6566535583781706170">حساب الاستيراد</translation>
 <translation id="5051929972046200722">تحديد جهاز المحفظة الخاص بك</translation>
@@ -1046,10 +1051,12 @@
 <translation id="2416098547200943834">ملاحظة: يتم توفير المفتاح الخاص كملف JSON مشفر سداسي يحتوي على معلومات البروتوكول والمفتاح الخاص.<ph name="LINK_START"/>تعرف على المزيد <ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">ملاحظة: يجب توفير المفتاح الخاص كملف JSON مشفر سداسي يحتوي على معلومات البروتوكول والمفتاح الخاص. <ph name="LINK_START"/>تعرف على المزيد <ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">ملاحظة: فقط <ph name="FORMAT"/> المفاتيح الموسعة مدعومة.</translation>
+<translation id="6457746820359933716">استيراد باستخدام ملف JSON يتم تصديره من Polkadot.js أو محافظ متوافقة. أدخل كلمة المرور المستخدمة لتشفير التصدير.</translation>
 <translation id="9133762451347918196">حسابات الشبكة التجريبية</translation>
 <translation id="42126664696688958">تصدير</translation>
 <translation id="1366855498335432549">إيداع</translation>
 <translation id="790104325876206743">إعدادات الحساب</translation>
+<translation id="8856844353253421399">آخر تحديث منذ <ph name="TIME_AGO"/></translation>
 <translation id="6322030314101903925">لا توجد أصول متاحة</translation>
 <translation id="836614343069504000">قم بإيداع أو شراء الرموز المميزة للبدء. إذا كنت لا ترى الرموز المميزة من إحدى الحسابات المستوردة، فتحقق من عوامل التصفية وإعدادات العرض. قد يلزم إضافة الرموز المميزة غير المعروفة كأصول مخصصة.</translation>
 <translation id="2902856457593699108">إظهار المفتاح</translation>
@@ -1168,10 +1175,10 @@
 <translation id="4324239559624557455">لمدة 24 ساعة</translation>
 <translation id="9139452553033760558">لمدة أسبوع واحد</translation>
 <translation id="1658834457013045127">للأبد</translation>
-<translation id="6344138931392227467"><ph name="DEVICE_NAME"/> متصل</translation>
-<translation id="7051244143160304048"><ph name="DEVICE_NAME"/> غير متصل</translation>
-<translation id="5317781812114905957">تعليمات</translation>
-<translation id="1178198982208000092">قم بتوصيل <ph name="DEVICE_NAME"/></translation>
+<translation id="5571630233760536706"><ph name="DEVICE_NAME"/> متصل</translation>
+<translation id="7058480232601314508"><ph name="DEVICE_NAME"/> غير متصل</translation>
+<translation id="434328838837168401">عرض التعليمات</translation>
+<translation id="6739517232898494646">قم بتوصيل <ph name="DEVICE_NAME"/> للمتابعة</translation>
 <translation id="6941881257520473899">تتطلب المحفظة الموجودة على جهاز تأكيدًا على الجهاز.</translation>
 <translation id="2288190100157580461">تتطلب حافظة الأجهزة أن يكون تطبيق <ph name="NETWORK"/> مفتوحًا على <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">تم الإرسال</translation>
@@ -1893,6 +1900,7 @@
 <translation id="4150336849480030462">تحويل رمز SPL مع إنشاء حساب رمز مميز مرتبط</translation>
 <translation id="2244921323472112851">لا يمكننا العثور على الصفحة التي تبحث عنها الآن.</translation>
 <translation id="6277237872689140644">قد تكون قد انتقلت إلى مكان مختلف أو ربما يحتوي عنوان URL على خطأ مطبعي.</translation>
+<translation id="1788572014530152502">حدث خطأ في معالجة معاملتك. في كثير من الحالات، هذا يعني عدم وجود <ph name="SYMBOL"/> كافية لتغطية رسوم الشبكة. جرب مبلغًا أصغر بدلاً من ذلك.</translation>
 <translation id="2737084171727561244">اذهب إلى المحفظة</translation>
 <translation id="3499452861061048987">إضافة رمز</translation>
 <translation id="5046066249040287308">خدمة الأداة المساعدة لمحفظة Brave</translation>
@@ -2577,7 +2585,8 @@
 <translation id="4724752924364329714">إذا كان هذا الموقع يبدو معطلاً، جرب شيلدز داونز.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>ملاحظة: قد يقلل هذا من حماية خصوصية Brave.<ph name="NOTE_AFTER"/></translation>
 <translation id="4329860807937715445">قد يؤدي هذا إلى تقليل حماية الخصوصية في Brave. <ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
-<translation id="1574700443447059851">تم حظر أدوات التتبع والإعلانات وغيرها.</translation>
+<translation id="3889333301730272023">تم حظر <ph name="BLOCK_COUNT"/> أدوات تتبع وإعلانات وغيرها</translation>
+<translation id="2275121279487164685">أدوات التتبع والإعلانات</translation>
 <translation id="4968268657895673116">هل هذا الموقع لا يعمل بشكل صحيح مع Shields مفعلة؟</translation>
 <translation id="5412004902081180614">تقرير</translation>
 <translation id="3620004479054499575">هل تواجه مشاكل في هذا الموقع؟</translation>
@@ -2639,9 +2648,11 @@
 <translation id="3795015906457257780">أنت تطلع على هذا الموقع بدون حمايات الخصوصية لـ Brave.</translation>
 <translation id="7194012750329511146">تم حظر دروع حماية Brave
 <ph name="NUMBER"/> وأدوات التتبع، والإعلانات’ وغيرها الكثير</translation>
+<translation id="2900068182947574679">النصوص البرمجية</translation>
 <translation id="4292121526390005808">نصوص محجوبة</translation>
 <translation id="5046271170844958713">النصوص المسموح بها</translation>
 <translation id="199862531047218413">تم تطبيق الحماية ضد بصمات الأصابع</translation>
+<translation id="896105002981074545">حماية البصمات</translation>
 <translation id="5032505924781383272">لا تشير الحماية المطبقة بالضرورة إلى أن صفحة الويب هذه تحاول الحصول على بصمة متصفحك.</translation>
 <translation id="1905384713982899903">البصمات المحظورة</translation>
 <translation id="314364527871618241">البصمات المسموح بها</translation>
@@ -2654,6 +2665,7 @@
 <translation id="542789539047208469">معلومات الموقع</translation>
 <translation id="7586067492365979844">Brave Shields لديها منزل وتصميم جديد. يتكامل الآن مع معلومات الموقع للحصول على تجربة موحدة.</translation>
 <translation id="9114542678887529043">Brave Shields لديها منزل وتصميم جديد. يمكنك الوصول إليها بالنقر على أيقونة الموقع في شريط العنوان.</translation>
+<translation id="4242533952199664413">فتح الإعدادات</translation>
 <translation id="6294662480095808915">الحصوصية. بشكل افتراضي.</translation>
 <translation id="4366423156486478559">احصل على حماية Brave على كل رابط تنقر عليه. ليس عليك سوى تعيين Brave كإعداد افتراضي وتصفح بخصوصية.</translation>
 <translation id="3830912418080848377">إعدادات الاستيراد</translation>
@@ -2792,4 +2804,19 @@
 <translation id="1602850501393095406">اضغط ↑ للإبراز</translation>
 <translation id="8367705492654390392">اطرح أي سؤال</translation>
 <translation id="8525248723479742219">تشغيل لاحقًا</translation>
+<translation id="2935698011275148880">الأصل الشجاع</translation>
+<translation id="3983844925615091103">مرحبا بك في Brave Origin. للمتابعة، يرجى شراء أو استعادة عملية شراء Brave Origin الخاصة بك.</translation>
+<translation id="4801175670604644729">تحتاج إلى عملية شراء Brave Origin نشطة لاستخدام متصفح الويب هذا.</translation>
+<translation id="4144294274624829008">استعادة عملية شراء Brave Origin</translation>
+<translation id="6080178356113101120">شراء Brave Origin</translation>
+<translation id="1009496146858538651">استعادة الشراء</translation>
+<translation id="3461564061600681423">أدخل معرّف الشراء الخاص بك لتفعيل عملية شراء Brave Origin الخاصة بك.</translation>
+<translation id="2036379724374431790">معرّف الشراء</translation>
+<translation id="4348430971280118761">أدخل معرّف الشراء الخاص بك</translation>
+<translation id="7451866456310404779">التحقق من معرّف الشراء</translation>
+<translation id="8853195592604941919">جارٍ التحقق... قد يستغرق دقيقة واحدة.</translation>
+<translation id="4633706444004110760">شكرًا لتثبيتك Brave Origin، وهي نسخة من المتصفح للمستخدمين الذين لا يحتاجون إلى جميع الميزات التي تدعم Brave كعمل تجاري، لكنهم لا يزالون يريدون الخصوصية التي يوفرها Brave فقط. سيستمر مستخدمو Origin في الاستفادة من خصوصية Brave الرائدة في الصناعة وحظر الإعلانات والسرعة (عبر Shields)، بالإضافة إلى تحديثات البرامج العادية وتصحيحات Chromium وتحسينات الأمان والخصوصية. سيزيل Origin معظم الميزات الأخرى من المتصفح.</translation>
+<translation id="5816720995022674532">Origin مجاني للاستخدام على أجهزة Linux، لكنه <ph name="BEGIN_LINK"/>متاح للشراء<ph name="END_LINK"/> إذا كنت ترغب في دعم Brave كعمل تجاري. قد يؤدي الشراء أيضًا إلى فتح القدرة على استخدام Origin على أجهزة Android و iOS و macOS و Windows.</translation>
+<translation id="3065220545261045367">دعم Brave عن طريق شراء Origin</translation>
+<translation id="2069499076031488636">متابعة Origin مجانًا على Linux</translation>
 </translationbundle>

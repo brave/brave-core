@@ -49,6 +49,14 @@
 <translation id="2998960761270772157">Blokuje prvky přihlášení, nabídka, komentáře a informace o videu na webu youtube.com.</translation>
 <translation id="8531835121131500698">Zablokovat na YouTube krátká videa</translation>
 <translation id="2167271714269158912">Na youtube.com blokujte krátká videa na domovské stránce, stránce s trendy a ve výsledcích vyhledávání.</translation>
+<translation id="2564435705466025309">Zablokovat videa automaticky dabovaná na YouTube</translation>
+<translation id="3603500459037204525">Zablokuje automaticky dabovaná videa, aby se nezobrazovala na domovské stránce YouTube a ve výsledcích vyhledávání.</translation>
+<translation id="4067265130987656010">Zablokovat miniatury YouTube</translation>
+<translation id="3034711349887440574">Zablokuje miniatury, aby se nezobrazovaly na domovské stránce YouTube a ve výsledcích vyhledávání.</translation>
+<translation id="8741919213635379855">Zablokovat YouTube Playables</translation>
+<translation id="2216551241986578034">Zablokuje Playables, aby se nezobrazovaly na domovské stránce YouTube a ve výsledcích vyhledávání.</translation>
+<translation id="9038505474874975130">Zablokovat videa pouze pro členy YouTube</translation>
+<translation id="3084239516382196983">Zablokuje videa pouze pro členy, aby se nezobrazovala na domovské stránce YouTube a ve výsledcích vyhledávání.</translation>
 <translation id="6052725679982758334">Blokování sociálních sítí</translation>
 <translation id="7498695072878479744">Povolit na stránkách třetích stran přihlašovací tlačítka Google</translation>
 <translation id="863171915776379000">Povolit přihlašování na Facebook a sdílení příspěvků</translation>
@@ -967,9 +975,9 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="5494920125229734069">Vybrat vše</translation>
 <translation id="2361906291514218784">Umělá inteligence Leo</translation>
 <translation id="944736176598169208">Odměny</translation>
-<translation id="4272190451231642425">Automatické odesílání hlášení o havárii</translation>
 <translation id="1199170151481311646">Analytika chránící soukromí</translation>
 <translation id="1706715315466634757">E-mailové aliasy</translation>
+<translation id="738840791756723657">AI</translation>
 <translation id="6709133671862442373">Zprávy</translation>
 <translation id="5990642573624858459">Vykazování statistik</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -981,8 +989,11 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="2573819149217596923">Změna funkcí Brave</translation>
 <translation id="7415416427817229128">Povolení nebo zakázání funkce Brave vyžaduje restart prohlížeče pro aplikaci změn. Chcete restartovat nyní?</translation>
 <translation id="2256115617011615191">Restartovat nyní</translation>
+<translation id="2160089182263405907">Zakázávání funkcí</translation>
+<translation id="3362364767724670721">Povolení nebo zakázání funkce Brave vyžaduje restartování prohlížeče, aby se změny projevily. Po dokončení aktualizace Origin prosím klepněte na <ph name="BEGIN_BOLD"/>Restartovat nyní<ph name="END_BOLD"/>.</translation>
+<translation id="1028940738207645746">Opravdu chcete resetovat všechna nastavení na výchozí hodnoty?</translation>
+<translation id="5939518447894949180">Resetovat</translation>
 <translation id="8554205386170195281">Koupit</translation>
-<translation id="7071521146534760487">Spravovat účet</translation>
 <translation id="8613144770663526433">Přihlásit se peněženkou Brave Wallet</translation>
 <translation id="3696514931437952995">Přihlašujete se do <ph name="ORIGIN"/>. Peněženka Brave Wallet bude s <ph name="ORIGIN"/> sdílet adresu vaší peněženky.</translation>
 <translation id="1028781062521375153">Zobrazit podrobné informace</translation>
@@ -1018,7 +1029,6 @@ v budoucnu a také vymaže vaši historii chatů. Vymazání historie chatů ods
 <translation id="1309636029062006520">Vytvořte si seznamy stop z oblíbených audio a video záznamů a přehrávejte si je kdykoli a kdekoli.</translation>
 <translation id="7899390017499980820">Tlačítko Přidat do seznamu stop</translation>
 <translation id="6901152954398668317">Zobrazí nebo skryje tlačítko „Přidat do seznamu stop“ pro rychlý přístup k přidání nebo odebrání médií.</translation>
-<translation id="5939518447894949180">Reset</translation>
 <translation id="8199028711686989861">Odstranit všechna videa ze seznamu stop, včetně úložiště pro přehrávání offline.</translation>
 <translation id="4590997608186539865">Seznam stop</translation>
 <translation id="7525067979554623046">Vytvořit</translation>
@@ -1173,4 +1183,20 @@ v budoucnu a také vymaže vaši historii chatů. Vymazání historie chatů ods
 <translation id="1724977129262658800">Chcete-li upravit heslo, odemkněte zařízení</translation>
 <translation id="5780792035410621042">Chcete-li zkopírovat hesla, nejdříve na zařízení nastavte zámek obrazovky</translation>
 <translation id="7986497153528221272">Chcete-li zobrazit hesla, nejdříve na zařízení nastavte zámek obrazovky</translation>
+<translation id="4882237634123415792">Vlastní vyhledávače</translation>
+<translation id="8364431224461158026">Přidat vlastní vyhledávací program</translation>
+<translation id="7307935603426295341">Upravit vlastní vyhledávač</translation>
+<translation id="4002066346123236978">Název</translation>
+<translation id="3653110185270660915">Zadejte název vyhledávacího programu</translation>
+<translation id="7400418766976504921">Adresa URL</translation>
+<translation id="6410668567036790476">Přidat vyhledávač</translation>
+<translation id="6289878295410648689">Napište vyhledávací adresu URL a nahraďte dotaz <ph name="SPECIAL_SYMBOL"/>.</translation>
+<translation id="8943582268084103903">Například: https://youtube.com/search?q=<ph name="SPECIAL_SYMBOL"/>. Pokud stránka podporuje OpenSearch, bude při úpravě tohoto pole poskytnuta možnost automatického přidání.</translation>
+<translation id="8706939021136180678">Adresa URL není platná.</translation>
+<translation id="6528099556282059181">Vyhledávací program je již přidán.</translation>
+<translation id="463451857046640291">Nepodařilo se přidat vyhledávací program.</translation>
+<translation id="1229671956956864948">Nepodařilo se aktualizovat vyhledávací program.</translation>
+<translation id="1462771969120037152">Nepodařilo se smazat vyhledávací program. Vyhledávací program, který se pokoušíte smazat, může být nastaven jako výchozí.</translation>
+<translation id="1079140196216383600">Smazat vlastní vyhledávač</translation>
+<translation id="525276572490219787">Opravdu chcete smazat "<ph name="SEARCH_ENGINE_NAME"/>"? Tuto akci nelze vzít zpět.</translation>
 </translationbundle>

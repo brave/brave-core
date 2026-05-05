@@ -21,12 +21,12 @@
 <translation id="1036348656032585052">Tắt</translation>
 <translation id="1036436692654972538">Lưu vào thiết bị của bạn</translation>
 <translation id="1036881361735705143">Phong bì C4</translation>
+<translation id="1038168778161626396">Chỉ Mã hóa</translation>
 <translation id="1038842779957582377">tên không biết</translation>
 <translation id="1041998700806130099">Thông báo tờ công việc</translation>
 <translation id="1044897699341250361">Điều này có nghĩa gì</translation>
 <translation id="1046350918013988591">Phiếu giảm giá và ưu đãi khuyến mãi</translation>
 <translation id="1050038467049342496">Đóng các ứng dụng khác</translation>
-<translation id="1053959602163383901">Bạn đã chọn xác minh bằng một thiết bị xác thực trên các trang web sử dụng <ph name="PROVIDER_ORIGIN"/>. Nhà cung cấp này có thể đã lưu trữ thông tin về phương thức thanh toán của bạn mà bạn có thể <ph name="LINK_TEXT"/>.</translation>
 <translation id="1055184225775184556">&amp;Hoàn tác thêm</translation>
 <translation id="1056898198331236512">Cảnh báo</translation>
 <translation id="1248991947169346185"><ph name="PLAY_CHROME_DINO_GAME_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Nhấn phím Tab rồi nhấn phím Enter để chơi trò chơi khủng long trên Brave</translation>
@@ -43,6 +43,7 @@
 <translation id="1068672505746868501">Không bao giờ dịch các trang viết bằng <ph name="SOURCE_LANGUAGE"/></translation>
 <translation id="1070333806075222467">Kim loại (Bóng)</translation>
 <translation id="1070901266639972381">Đêm</translation>
+<translation id="1071917609930274619">Mã hóa Dữ liệu</translation>
 <translation id="1073690811593784042">Thuỷ tinh (Có màu)</translation>
 <translation id="1074287282535157335">Thanh toán thành 4 đợt hoặc thanh toán hằng tháng (phải đủ điều kiện)</translation>
 <translation id="1074497978438210769">Không bảo mật</translation>
@@ -84,6 +85,7 @@
 <translation id="1138458427267715730">Nhận thông báo khi có chương trình giảm giá tại bất cứ trang nào trên web</translation>
 <translation id="1142713751288681188">Loại giấy</translation>
 <translation id="1142965388643537393">Thông tin du lịch</translation>
+<translation id="1143142264369994168">Người ký Chứng chỉ</translation>
 <translation id="1144136880160289237">Bạn chưa có chủ đề đang được sử dụng nào</translation>
 <translation id="1149617035358809955">xác minh danh tính của bạn để Brave có thể giúp bạn điền thông tin thanh toán</translation>
 <translation id="1150565364351027703">Kính mát</translation>
@@ -136,6 +138,7 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="449113506387905750">Sử dụng thông tin đã lưu trong Tài khoản Brave để tự động điền mật khẩu, khoá truy cập, địa chỉ, phương thức thanh toán và các thông tin khác</translation>
 <translation id="1219129156119358924">Bảo mật hệ thống</translation>
 <translation id="1219134100826635117">Quản trị viên đã chặn hành động này</translation>
+<translation id="1221024147024329929">PKCS #1 MD2 Với Mã hóa RSA</translation>
 <translation id="1222060260947439312">Khay bên phải</translation>
 <translation id="1224330468394120478">A3x6</translation>
 <translation id="1225240795350945817">Số thẻ:</translation>
@@ -231,7 +234,6 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="1357195169723583938">Người đã sử dụng thiết bị này gần đây và thời điểm sử dụng</translation>
 <translation id="1358187717814494928">Tạo trang tính</translation>
 <translation id="1359836962251219822">Nhà bếp và phòng ăn</translation>
-<translation id="4471036740481432056">Thông tin của bạn sẽ được lưu vào Brave Wallet cho <ph name="ACCOUNT"/>. Bạn có thể dùng thông tin này để điền vào biểu mẫu nhanh hơn trên các dịch vụ của Brave.</translation>
 <translation id="1361528602584216624">Giới hạn cho mỗi giao dịch với Pix là <ph name="TRANSACTION_LIMIT"/> R$</translation>
 <translation id="1363015776076529485">Các phương thức thanh toán mà bạn có thể chọn để tiến hành thanh toán đã mở toàn bộ.</translation>
 <translation id="1363028406613469049">Theo dõi</translation>
@@ -365,6 +367,7 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="1567405528131216114">Thêm <ph name="TOPIC"/></translation>
 <translation id="1569487616857761740">Nhập ngày hết hạn</translation>
 <translation id="1385693425784118652">Brave đang cố gắng bật Windows Hello để điền mật khẩu.</translation>
+<translation id="1569905000953679183">Tìm nạp chính sách cài đặt tiện ích</translation>
 <translation id="1572765991610098222"><ph name="WIDTH"/> x <ph name="HEIGHT"/> inch</translation>
 <translation id="1574714699824202614">Đang xác minh phương thức thanh toán</translation>
 <translation id="1576277203042721907">Thông tin mua sắm chi tiết</translation>
@@ -408,8 +411,10 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="1639239467298939599">Đang tải</translation>
 <translation id="1640180200866533862">Chính sách người dùng</translation>
 <translation id="1640244768702815859">Hãy thử <ph name="BEGIN_LINK"/>truy cập trang chủ của trang web<ph name="END_LINK"/>.</translation>
+<translation id="1640283014264083726">PKCS #1 MD4 Với Mã hóa RSA</translation>
 <translation id="1641962500621836664">Đang lưu tệp camera</translation>
 <translation id="1641976391427233992">Trì hoãn giấy ra cho đến</translation>
+<translation id="1643072738649235303">Chữ ký X9.62 ECDSA với SHA-1</translation>
 <translation id="8088023492467080559">Chuyển đến nút kiểm tra an toàn trên Brave, bật nút này để truy cập trang kiểm tra an toàn trên Brave trong phần cài đặt</translation>
 <translation id="1644574205037202324">Nhật ký</translation>
 <translation id="1645004815457365098">Không rõ nguồn gốc</translation>
@@ -456,7 +461,6 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="1717218214683051432">Cảm biến chuyển động</translation>
 <translation id="1717494416764505390">Hộp thư 3</translation>
 <translation id="1717688554309417925">Dịch vụ ghi nợ và séc</translation>
-<translation id="1717882880162336471">Dùng thử Chế độ AI</translation>
 <translation id="1719434663396780149">Thông báo giảm giá đang bật. Bạn có thể thay đổi chế độ này trong <ph name="BEGIN_LINK"/><ph name="NOTIFICATION_SETTINGS"/><ph name="END_LINK"/>.</translation>
 <translation id="1719838434204287058">24 x 30 inch</translation>
 <translation id="1720941539803966190">Đóng hướng dẫn</translation>
@@ -653,7 +657,6 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="2059202684901022309">22 x 34 inch</translation>
 <translation id="2064568741209980952">Tín dụng và cho vay</translation>
 <translation id="2064691555167957331">{COUNT,plural, =1{1 đề xuất}other{# đề xuất}}</translation>
-<translation id="2066915425250589881">yêu cầu xóa</translation>
 <translation id="2066969741541525119">Tổ chức của bạn đã chặn trang web bạn sắp truy cập</translation>
 <translation id="2069913043427250781">Xe cộ và an toàn giao thông</translation>
 <translation id="2071156619270205202">Thẻ này không đáp ứng điều kiện để tạo số thẻ ảo.</translation>
@@ -674,7 +677,7 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="2090451897496479509">Liên hệ với nhà cung cấp để biết thêm thông tin</translation>
 <translation id="2090686487550343086">IBAN</translation>
 <translation id="2091887806945687916">Âm thanh</translation>
-<translation id="2093184051799735948">Tìm kiếm trên <ph name="ENGINE_NAME"/> hoặc nhập URL</translation>
+<translation id="2093184051799735948">Tìm trên <ph name="ENGINE_NAME"/> hoặc nhập URL</translation>
 <translation id="4871965986998315786">Brave đang cố gắng tắt Windows Hello để điền mật khẩu.</translation>
 <translation id="2094505752054353250">Miền không khớp</translation>
 <translation id="2094704029599359040">Thông tin phiên bản</translation>
@@ -690,6 +693,7 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="2108755909498034140">Khởi động lại máy tính của bạn</translation>
 <translation id="2109845311767915560">Nhóm thẻ được chia sẻ</translation>
 <translation id="2111166930115883695">Nhấn phím cách để chơi</translation>
+<translation id="2113921862428609753">Quyền Truy cập Thông tin Tổ chức Cấp Chứng chỉ</translation>
 <translation id="2113977810652731515">Thẻ</translation>
 <translation id="2114841414352855701">Bỏ qua vì đã bị <ph name="POLICY_NAME"/> ghi đè.</translation>
 <translation id="2118132148597630479">Phong bì C5</translation>
@@ -749,8 +753,11 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="2184405333245229118">{COUNT,plural, =1{1 địa chỉ}other{# địa chỉ}}</translation>
 <translation id="2188375229972301266">Đục nhiều lỗ dưới cùng</translation>
 <translation id="218940509700321686">Giá trị được phân tách bằng dấu phẩy</translation>
+<translation id="2190094353033916816">Với chính sách này, các giá trị khác nhau sẽ được áp dụng ở cấp thiết bị và cấp người dùng. Chính sách này đang hoạt động như dự kiến.</translation>
+<translation id="219061769324072544">Tín dụng, Thẻ, Ghi nợ</translation>
 <translation id="2191980191135734720">Mở khoá màn hình ở bước tiếp theo, thường là bằng vân tay. Bạn cũng có thể <ph name="LINK_TEXT"/>.</translation>
 <translation id="2194856509914051091">Những yếu tố cần xem xét</translation>
+<translation id="2195729137168608510">Bảo vệ Email</translation>
 <translation id="2198183835992354675">Mã số hành khách đã biết</translation>
 <translation id="2198215508485017216">Đã xảy ra lỗi không mong muốn. <ph name="BEGIN_LINK"/>Tìm hiểu thêm về việc tải lên Drive<ph name="END_LINK"/></translation>
 <translation id="2200678913752027654">Nút Không thích, nhấn phím Enter để mở biểu mẫu gửi phản hồi chi tiết về lý do bạn không thích đề xuất này</translation>
@@ -896,6 +903,7 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="2400600116338235695">Trang web có thể yêu cầu kết nối với cổng nối tiếp</translation>
 <translation id="2403474027143565107">Chính xác</translation>
 <translation id="240450251994300576">Biểu trưng tiêu đề phụ</translation>
+<translation id="2404715426538856682">Thẻ tín dụng và thẻ ghi nợ · IBAN · Thẻ khách hàng thân thiết</translation>
 <translation id="2404884497378469141">Hãy thử sao chép các tệp lần nữa</translation>
 <translation id="2413155254802890957">Cũ</translation>
 <translation id="2413528052993050574">Máy chủ này không chứng minh được rằng đó là <ph name="DOMAIN"/>; chứng chỉ bảo mật của máy chủ này có thể đã bị thu hồi. Điều này có thể do định cấu hình sai hoặc có kẻ tấn công chặn kết nối của bạn.</translation>
@@ -956,7 +964,6 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="3233967599412104589">Đặt Brave làm nút trình duyệt mặc định, nhấn Enter để đặt Brave làm trình duyệt mặc định của hệ thống trong phần cài đặt iOS</translation>
 <translation id="2514548229949738417">Nhà cửa và vườn tược</translation>
 <translation id="2515629240566999685">Kiểm tra tín hiệu trong khu vực của bạn</translation>
-<translation id="2515761554693942801">Bạn đã chọn xác minh bằng Touch ID trên các trang web sử dụng <ph name="PROVIDER_ORIGIN"/>. Nhà cung cấp này có thể đã lưu trữ thông tin về phương thức thanh toán của bạn mà bạn có thể <ph name="LINK_TEXT"/>.</translation>
 <translation id="2518584823165598232">Thẻ này không dùng được. Vui lòng liên hệ với nhà cung cấp thẻ của bạn.</translation>
 <translation id="2521385132275182522">Dập ghim dưới cùng bên phải</translation>
 <translation id="2521736961081452453">Tạo biểu mẫu</translation>
@@ -1016,6 +1023,7 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="2610561535971892504">Nhấp để sao chép</translation>
 <translation id="2612676031748830579">Số thẻ</translation>
 <translation id="686139377353794280">Tất cả mã bảo mật đã lưu trên thiết bị và trong Tài khoản Brave của bạn sẽ bị xoá</translation>
+<translation id="2613758321247965174">{MINUTES,plural, =1{Hoạt động 1 phút trước}other{Hoạt động # phút trước}}</translation>
 <translation id="2614835674900828050">Không thể sử dụng cho giao dịch mua này</translation>
 <translation id="2616412942031748191">Tối ưu hoá cho công cụ tìm kiếm và tiếp thị</translation>
 <translation id="2618206371527040026">Hội nghị và ấn phẩm học thuật</translation>
@@ -1027,6 +1035,7 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="2627847595568876492">Đang trích xuất văn bản từ tệp PDF...</translation>
 <translation id="6484547507342500969">Máy chủ này không chứng minh được rằng đó là <ph name="DOMAIN"/> vì máy chủ này đang sử dụng một chứng chỉ bảo mật mà Brave hoặc cấu hình hệ thống của bạn không tin cậy để mã hoá lưu lượng truy cập web. Nguyên nhân có thể là do định cấu hình sai hoặc có kẻ tấn công chặn kết nối của bạn.</translation>
 <translation id="2628224721443278970">Đăng nhập vào Microsoft OneDrive</translation>
+<translation id="2631059741268498165">Quản trị viên của bạn đã tìm thấy thiết bị này khi thiết bị đang tắt. Thiết bị đã được bật lại và sẵn sàng cho bạn dùng.</translation>
 <translation id="2631387782019878060">Mã xác minh: <ph name="OTP"/></translation>
 <translation id="2634124572758952069">Không thể tìm thấy địa chỉ IP của máy chủ <ph name="HOST_NAME"/>.</translation>
 <translation id="2638567100095052009">Nhập @ để tìm kiếm trên <ph name="FEATURED_SEARCH_LIST"/></translation>
@@ -1052,6 +1061,7 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="2673968385134502798">Trò chơi</translation>
 <translation id="2674170444375937751">Bạn có chắc chắn muốn xóa những trang này khỏi nhật ký duyệt web của mình không?</translation>
 <translation id="2674524144218093528">Sơn và hoàn thiện nhà cửa</translation>
+<translation id="2675716371350192683">Nội dung của bạn sẽ không được dùng để cải thiện AI. Tổ chức của bạn có thể thay đổi các chế độ cài đặt này bất cứ lúc nào.</translation>
 <translation id="26774279487328902"><ph name="GROUP_COUNT"/> nhóm thẻ không còn hoạt động</translation>
 <translation id="2677748264148917807">Rời khỏi</translation>
 <translation id="2679216653373462289">Sử dụng cảm biến chuyển động và cảm biến ánh sáng</translation>
@@ -1141,6 +1151,7 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="2837891525090413132">Có thể yêu cầu khoá và sử dụng bàn phím</translation>
 <translation id="2839032553903800133">Đã chặn thông báo</translation>
 <translation id="2839501879576190149">Bạn sắp truy cập vào trang web giả mạo</translation>
+<translation id="844810198869599189">Nội dung trên trang thanh toán được chia sẻ với Brave để cung cấp những lựa chọn này. Gói thanh toán sẽ phụ thuộc vào điều kiện áp dụng. Để ẩn các lựa chọn trả sau trong tính năng tự động điền, hãy chuyển đến <ph name="IDS_AUTOFILL_CARD_BNPL_SELECT_PROVIDER_FOOTNOTE_HIDE_OPTION_PAYMENT_SETTINGS_LINK_TEXT"/>.</translation>
 <translation id="2843623755398178332">Cuộn và thu phóng thẻ được chia sẻ?</translation>
 <translation id="2851291081585704741">Bạn hiện không có kết nối mạng</translation>
 <translation id="7250620099767663516">Quản lý thông tin Brave bạn lưu trong Tài khoản Brave</translation>
@@ -1260,10 +1271,12 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="3037177537145227281">Đang theo dõi giá</translation>
 <translation id="3037605927509011580">Ôi, hỏng! </translation>
 <translation id="3039406992698062762">Du lịch gia đình</translation>
+<translation id="3565088180637574018">Thẻ và vé của bạn trong Brave Wallet</translation>
 <translation id="3041176923638368519">Xem các điều khoản về lợi ích của thẻ</translation>
 <translation id="3041584414879052436">Danh sách các tổ chức phát hành dịch vụ Mua trước trả sau đang đóng.</translation>
 <translation id="3041612393474885105">Thông tin Chứng chỉ</translation>
 <translation id="3045769629416806687">Thể thao mạo hiểm</translation>
+<translation id="9014065296419901407">Lưu thông tin của bạn vào <ph name="IDS_AUTOFILL_GOOGLE_WALLET_TITLE_1"/> để hoàn thành công việc nhanh hơn, chẳng hạn như điền vào biểu mẫu trên các sản phẩm của Brave. Bạn có thể <ph name="BEGIN_LINK"/>quản lý thông tin của mình<ph name="END_LINK"/> trong <ph name="IDS_AUTOFILL_GOOGLE_WALLET_TITLE_2"/> cho <ph name="ACCOUNT"/></translation>
 <translation id="8418829431154568330">Nhật ký Brave Remote Desktop, bao gồm cả dấu thời gian, mã phiên ứng dụng và máy chủ</translation>
 <translation id="2396578282884469363">Bạn thường kết nối an toàn với các trang web nhưng lần này Brave không thể sử dụng kết nối bảo mật. Kẻ tấn công có thể đang tìm cách nghe trộm hoặc sửa đổi kết nối mạng của bạn. <ph name="BEGIN_LEARN_MORE_LINK"/>Tìm hiểu thêm về cảnh báo này<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="3052964831964880138">Giảm giá <ph name="PRICE_DROP"/> đối với <ph name="PRODUCT_NAME"/></translation>
@@ -1324,6 +1337,7 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="3134859781443140237">Mạng cục bộ</translation>
 <translation id="3137283076021007034"><ph name="KEYWORD"/> – Tìm kiếm <ph name="KEYWORD_SHORT_NAME"/></translation>
 <translation id="3137507986424712703">{COUNT,plural, =0{Không có}=1{dữ liệu đăng nhập cho 1 tài khoản}other{dữ liệu đăng nhập cho # tài khoản}}</translation>
+<translation id="2545867218553945050">Để bật các chế độ cài đặt này và sử dụng thông tin trong Tài khoản Brave của bạn, hãy truy cập vào phần chế độ cài đặt dịch vụ tự động điền.</translation>
 <translation id="3140646734028448730">Dịch vụ kinh doanh</translation>
 <translation id="3141093262818886744">Vẫn mở</translation>
 <translation id="3141337053413339205">Chuyển sang thẻ này.</translation>
@@ -1343,6 +1357,7 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="3162070126914310576">Hiện không thể đăng ký thiết bị này vì đơn vị tổ chức của bạn đã đạt đến giới hạn đăng ký ban đầu. Hãy liên hệ với quản trị viên để được trợ giúp.</translation>
 <translation id="3162559335345991374">Wi-Fi mà bạn đang sử dụng có thể yêu cầu bạn phải truy cập trang đăng nhập của mạng đó.</translation>
 <translation id="316638481603975524">Có thể yêu cầu cài đặt ứng dụng web</translation>
+<translation id="5128545107355520364">Lần tới khi bạn dùng thông tin này, Brave sẽ hỏi bạn có muốn lưu vào <ph name="IDS_AUTOFILL_GOOGLE_WALLET_TITLE"/> hay không</translation>
 <translation id="3168744840365648658">Thiết bị vô tuyến</translation>
 <translation id="3168938241115725594">Xe cổ</translation>
 <translation id="3169472444629675720">Khám phá</translation>
@@ -1383,6 +1398,7 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="3220264767789936523">Quần áo trang trọng</translation>
 <translation id="3223287115535306850">Biểu tượng đang tải ứng dụng</translation>
 <translation id="3223425961342298674">Không cho phép truy cập thông tin vị trí</translation>
+<translation id="3225319735946384299">Ký Mã</translation>
 <translation id="3225919329040284222">Máy chủ đưa ra chứng chỉ không khớp với kỳ vọng được tích hợp sẵn. Các kỳ vọng này có trong một số trang web nhất định, có tính bảo mật cao với mục đích bảo vệ bạn.</translation>
 <translation id="3226128629678568754">Nhấn nút tải lại để gửi lại các dữ liệu cần thiết để tải trang.</translation>
 <translation id="3226387218769101247">Hình thu nhỏ</translation>
@@ -1396,8 +1412,6 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="3236212803136366317">Lợi ích của thẻ</translation>
 <translation id="2816340899490518371">Không thể lưu vào Brave Wallet</translation>
 <translation id="3240683217920639535"><ph name="MANAGE_CHROME_THEMES_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Nhấn phím Tab rồi nhấn phím Enter để tuỳ chỉnh giao diện trình duyệt của bạn</translation>
-<translation id="3240791268468473923">Đã mở thông tin xác thực thanh toán an toàn không khớp với bảng thông tin xác thực</translation>
-<translation id="324180406144491771">Đã chặn các đường liên kết đến “<ph name="HOST_NAME"/>”</translation>
 <translation id="3243650379537999343">Vẽ</translation>
 <translation id="3248329428895535435">Không hiển thị trên trang này</translation>
 <translation id="3249102948665905108">Đã hoàn tất quá trình tải tệp lên <ph name="CLOUD_PROVIDER"/> nhưng có lỗi</translation>
@@ -1422,7 +1436,6 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="3282085321714087552">Tổ chức <ph name="ENROLLMENT_DOMAIN"/> của bạn đã gửi một số thông tin (chẳng hạn như chế độ cài đặt hoặc chính sách) đến các trang web sau đây.</translation>
 <translation id="3286372614333682499">dọc</translation>
 <translation id="3287510313208355388">Tải xuống khi trực tuyến</translation>
-<translation id="3288238092761586174"><ph name="URL"/> có thể cần thực hiện các bước bổ sung để xác minh khoản thanh toán của bạn</translation>
 <translation id="3289578402369490638">Từ các cửa hàng khác trên web</translation>
 <translation id="3293642807462928945">Hãy tìm hiểu thêm về chính sách <ph name="POLICY_NAME"/></translation>
 <translation id="5894665462526421022">Xem và quản lý mật khẩu của bạn trong phần cài đặt của Brave</translation>
@@ -1471,7 +1484,6 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="3378612801784846695">Chủ đề được tổng hợp dựa trên nhật ký duyệt web gần đây và được các trang web dùng để hiện quảng cáo được cá nhân hoá cho bạn đồng thời bảo vệ danh tính của bạn</translation>
 <translation id="3380365263193509176">Lỗi không xác định</translation>
 <translation id="3380864720620200369">ID ứng dụng khách:</translation>
-<translation id="3381668585148405088">Xác minh giao dịch mua của bạn</translation>
 <translation id="3383566085871012386">Thứ tự ưu tiên hiện tại</translation>
 <translation id="3383713837163550889">Các tệp trên máy của bạn sẽ bị xoá sau 1 phút</translation>
 <translation id="3384522979010096022">Tổ chức của bạn không cho phép bạn xem trang web này</translation>
@@ -1487,12 +1499,12 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="3409896703495473338">Quản lý chế độ cài đặt bảo mật</translation>
 <translation id="4302350545547675750">Quản lý trong Trình quản lý mật khẩu của Brave</translation>
 <translation id="3411091017011773343">Tải lên sau <ph name="HOURS"/> giờ nữa</translation>
-<translation id="341134412449102894">Thông tin của bạn được lưu vào <ph name="IDS_AUTOFILL_GOOGLE_WALLET_TITLE"/> của tài khoản <ph name="ACCOUNT"/></translation>
 <translation id="3413466783792948876">Nếu đang dùng mạng công cộng, bạn nên truy cập trang web này vào lúc khác để đảm bảo an toàn. Những mạng đáng tin cậy, chẳng hạn như Wi-Fi tại nhà hoặc nơi làm việc, sẽ có ít rủi ro hơn.</translation>
 <translation id="3414275587143250384">Điện toán đám mây và hệ thống phân phối</translation>
 <translation id="3414952576877147120">Kích thước:</translation>
 <translation id="7115177860507615612">Nút Chơi Trò chơi khủng long trên Brave, hãy nhấn nút này để chơi trò chơi khủng long trên Brave</translation>
 <translation id="8251789548015352228">Nội dung bạn tìm, kết quả phù hợp nhất và nội dung trang sẽ được gửi cho Brave và có thể được nhân viên đánh giá nhằm mục đích cải thiện tính năng này. Đây là tính năng thử nghiệm và không phải lúc nào cũng chính xác.</translation>
+<translation id="3421387094817716717">Khóa công khai đường cong elip</translation>
 <translation id="3422248202833853650">Thử thoát các chương trình khác để giải phóng bộ nhớ.</translation>
 <translation id="3422472998109090673">Hiện không thể truy cập <ph name="HOST_NAME"/>.</translation>
 <translation id="3422794267539320056">Nhấn vào hình khủng long hoặc nhấn phím cách để chơi</translation>
@@ -1567,6 +1579,7 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="7554105781342217505">Tìm hiểu thêm về Brave Enterprise Connectors</translation>
 <translation id="3542628208405253498">Hình ảnh trên thẻ</translation>
 <translation id="3542768452570884558">Mở đường liên kết trong cửa sổ mới</translation>
+<translation id="3543597750097719865">Chữ ký X9.62 ECDSA với SHA-512</translation>
 <translation id="3543935938072367282">Thanh toán nhanh hơn nhờ tính năng tự động điền</translation>
 <translation id="3547442767634383572">Tổng quan về hồ sơ công việc</translation>
 <translation id="3547746132308051926">20 x 24 inch</translation>
@@ -1714,6 +1727,7 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="3744212718085287312">Tăng cường bảo mật bằng một thẻ ảo vào lần tới?</translation>
 <translation id="8500803517201014627">Văn bản bạn nhập cũng như nội dung và URL của trang mà bạn đang viết sẽ được gửi tới Brave để các nhân viên xem xét và sử dụng cho mục đích cải thiện tính năng này. Bạn cần tránh nhập thông tin cá nhân (chẳng hạn như thông tin y tế hoặc tài chính) hay sử dụng công cụ này trên các trang web chứa thông tin riêng tư hoặc nhạy cảm.</translation>
 <translation id="3748009735914587286">Kim loại (Độ bóng cao)</translation>
+<translation id="3748647055058832337">Không dành cho người bán này</translation>
 <translation id="4084353961109487742">Phương thức thanh toán tự động bạn đã lưu có thể được dùng cho khoản thanh toán này. Để tắt Ví điện tử hoặc ứng dụng thanh toán trong Brave, hãy chuyển đến phần <ph name="BEGIN_LINK1"/>cài đặt thông tin thanh toán<ph name="END_LINK1"/></translation>
 <translation id="3752181611900535304">Lưu địa chỉ trong tài khoản?</translation>
 <translation id="3752543821772132562">Bỏ qua vì bạn chưa đặt <ph name="POLICY_NAME"/>.</translation>
@@ -1759,6 +1773,7 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="3815434930383843058">8 x 12 inch</translation>
 <translation id="3816482573645936981">Giá trị (đã thay thế)</translation>
 <translation id="3817524650114746564">Mở tùy chọn cài đặt proxy trên máy tính của bạn</translation>
+<translation id="3820749202859700794">Đường cong elip SECG secp521r1 (aka NIST P-521)</translation>
 <translation id="382115839591654906">CVC của <ph name="CARD_NAME"/></translation>
 <translation id="3822492359574576064">khoá và sử dụng chuột</translation>
 <translation id="3823019343150397277">IBAN</translation>
@@ -2032,6 +2047,7 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="4265635050210404830">Các thẻ khách hàng thân thiết của bạn</translation>
 <translation id="4265872034478892965">Được quản trị viên cho phép</translation>
 <translation id="7044970527849636581">Để truy cập vào nhật ký của bạn trên những thiết bị khác, hãy đăng nhập và đồng bộ hoá nhật ký. Bạn cũng có thể truy cập mật khẩu và nhiều dữ liệu khác trên mọi thiết bị của mình. Bạn có thể dừng đồng bộ hoá bất cứ lúc nào trong phần cài đặt. Brave có thể cá nhân hoá dịch vụ Tìm kiếm và các dịch vụ khác dựa trên nhật ký của bạn.</translation>
+<translation id="4268025649754414643">Mã hóa Khóa</translation>
 <translation id="4269029136757623689">Quạt gia đình</translation>
 <translation id="4269264543938335308">Đồ bơi</translation>
 <translation id="4269599248168651462">Chứng chỉ máy chủ này được cấp cho một tên không phải là duy nhất.</translation>
@@ -2088,11 +2104,13 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="4332872603299969513">Văn học thiếu nhi</translation>
 <translation id="4333295216031073611">Danh sách mua sắm</translation>
 <translation id="4333561522337981382">Quản lý các cửa sổ trên tất cả màn hình của bạn</translation>
+<translation id="4333854382783149454">PKCS #1 SHA-1 Với Mã hóa RSA</translation>
 <translation id="4336913590841287350">Chính sách này chưa được hỗ trợ làm chính sách người dùng trên iOS.</translation>
 <translation id="5792122559159836842">Brave đã xóa quảng cáo này vì quảng cáo sử dụng quá nhiều tài nguyên của thiết bị.</translation>
 <translation id="4340810192899866471">Nhập từ JSON</translation>
 <translation id="6116812392674177288">Máy tính này không được coi là máy tính do doanh nghiệp quản lý, vì vậy, chính sách này chỉ có thể tự động cài đặt các tiện ích được lưu trữ trên Cửa hàng Brave trực tuyến. URL cập nhật Cửa hàng Brave trực tuyến là "<ph name="CWS_UPDATE_URL"/>".</translation>
 <translation id="4342742994656318294">Công viên giải trí</translation>
+<translation id="4346670990181948854">Thông tin đi lại · Phương tiện</translation>
 <translation id="4348834659292907206">Kết nối đến <ph name="SITE"/> không an toàn</translation>
 <translation id="4349365535725594680">Không thể chia sẻ nội dung bảo mật</translation>
 <translation id="4349810866125026513">Vẫn tải lên</translation>
@@ -2130,6 +2148,7 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="4414515549596849729">cookie và dữ liệu trang web</translation>
 <translation id="4415156962929755728">Nhựa (Độ bóng cao)</translation>
 <translation id="4415426530740016218">Địa chỉ nhận hàng</translation>
+<translation id="4415748029120993980">Đường cong elip SECG secp384r1 (aka NIST P-384)</translation>
 <translation id="4419287616181386201">Bạn có thể xoá mật khẩu trong phần cài đặt quản lý tương ứng</translation>
 <translation id="4425750422187370446">Trang phục điền kinh</translation>
 <translation id="443008484043213881">Công cụ</translation>
@@ -2152,6 +2171,7 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="4454620051637646665">Đóng biểu ngữ</translation>
 <translation id="4456937135469235202">Du lịch mạo hiểm</translation>
 <translation id="4458013283022578512">Nhập câu hỏi</translation>
+<translation id="4458516738555515761">Tìm nạp chính sách</translation>
 <translation id="4464826014807964867">Các trang web có thông tin của tổ chức bạn</translation>
 <translation id="4466576951214254884">Khoản vay cho sinh viên và cấp vốn học đại học</translation>
 <translation id="4467821340016922962">Để thoát khỏi chế độ toàn màn hình và xem tệp đã tải xuống, hãy nhấn |<ph name="ACCELERATOR"/>|</translation>
@@ -2217,6 +2237,7 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="4594403342090139922">&amp;Hoàn tác xóa</translation>
 <translation id="4598556348158889687">Quản lý bộ nhớ</translation>
 <translation id="459914240367517409">Thiết kế và phát triển web</translation>
+<translation id="5585910165070997524">Thanh toán nhanh hơn bằng Google Pay khi bạn lưu thẻ. Chi tiết thẻ được mã hoá trong Brave Wallet.</translation>
 <translation id="4602465984861132303">Bowling</translation>
 <translation id="4603727370377253901">Thông tin đặt trước chuyến bay</translation>
 <translation id="8338928872956435647">Xem các mẹo khi dùng Brave</translation>
@@ -2328,6 +2349,7 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="477945296921629067">{NUM_POPUPS,plural, =1{Đã chặn cửa sổ bật lên}other{Đã chặn # cửa sổ bật lên}}</translation>
 <translation id="4780320432697076749">Phần mềm ảnh</translation>
 <translation id="4780366598804516005">Hộp thư 1</translation>
+<translation id="4785273477715803444">Lọc nhật ký</translation>
 <translation id="752757955979594126">Quản lý Tài khoản Brave</translation>
 <translation id="4785689107224900852">Chuyển sang thẻ này</translation>
 <translation id="4785998536350006000">Đang tìm "<ph name="SEARCH_QUERY"/>"</translation>
@@ -2361,7 +2383,6 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="6907401036011007312">Để chia sẻ nhóm thẻ, hãy cập nhật Brave</translation>
 <translation id="483241715238664915">Bật cảnh báo</translation>
 <translation id="4832961164064927107">BBQ và đồ nướng</translation>
-<translation id="3970015471727108357">Lưu thông tin của bạn để hoàn thành công việc nhanh hơn, chẳng hạn như điền vào biểu mẫu trên các sản phẩm của Brave. Bạn có thể <ph name="BEGIN_LINK"/>quản lý thông tin của mình<ph name="END_LINK"/> trong <ph name="IDS_AUTOFILL_GOOGLE_WALLET_TITLE"/> cho <ph name="ACCOUNT"/></translation>
 <translation id="246176083348620700">Xem nhật ký duyệt web trên Brave</translation>
 <translation id="484462545196658690">Tự động</translation>
 <translation id="4844937814014739139">Cuộn và thu phóng thẻ được chia sẻ</translation>
@@ -2503,12 +2524,12 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="5051254010007014901"><ph name="TOOLBELT_PRECEDING_MATCH_TEXT"/>, Nhấn phím Tab để xem thêm các lối tắt tìm kiếm có sau cụm từ tìm kiếm được đề xuất này</translation>
 <translation id="5052488928733955073">Đã xảy ra lỗi khi điền thông tin của bạn. Hãy kiểm tra kết nối.</translation>
 <translation id="5052517576853118371">Chủ đề đang được sử dụng</translation>
+<translation id="4845759156174221500">Khi bạn thanh toán bằng thẻ này, số thẻ ảo sẽ được điền để bảo vệ thông tin thật của bạn. Quản lý trong Brave Wallet. <ph name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_LEARN_MORE_LINK_LABEL"/></translation>
 <translation id="5056425809654826431">{NUM_FILES,plural, =1{Để gửi tệp này bằng tính năng Chia sẻ lân cận, hãy giải phóng dung lượng (<ph name="DISK_SPACE_SIZE"/>) trên thiết bị của bạn}other{Để gửi các tệp này bằng tính năng Chia sẻ lân cận, hãy giải phóng dung lượng (<ph name="DISK_SPACE_SIZE"/>) trên thiết bị của bạn}}</translation>
 <translation id="5056587122125565772">Tạo hình ảnh</translation>
 <translation id="505757197798929356">Cung cấp lý do mở tệp (bắt buộc)</translation>
 <translation id="5058282932481719070">tìm hiểu thêm về tính năng tự động điền nâng cao trong phần cài đặt</translation>
 <translation id="5060419232449737386">Cài đặt phụ đề</translation>
-<translation id="5060483733937416656">Bạn đã chọn xác minh với Windows Hello trên các trang web sử dụng <ph name="PROVIDER_ORIGIN"/>. Nhà cung cấp này có thể đã lưu trữ thông tin về phương thức thanh toán của bạn mà bạn có thể <ph name="LINK_TEXT"/>.</translation>
 <translation id="5061227663725596739">Ý của bạn là <ph name="LOOKALIKE_DOMAIN"/> phải không?</translation>
 <translation id="5066056036849835175">Danh sách tài liệu đã in</translation>
 <translation id="5068524481479508725">A10</translation>
@@ -2521,6 +2542,7 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="5087286274860437796">Chứng chỉ của máy chủ không hợp lệ tại thời điểm này.</translation>
 <translation id="5087580092889165836">Thêm thẻ</translation>
 <translation id="5088142053160410913">Thông báo gửi đến trình vận hành</translation>
+<translation id="5088534251099454936">PKCS #1 SHA-512 Với Mã hóa RSA</translation>
 <translation id="5089810972385038852">Tỉnh/Bang</translation>
 <translation id="5093232627742069661">Gấp kiểu chữ Z</translation>
 <translation id="5093417502834168387">Bạn gặp sự cố khi đăng nhập? Thử cách khác</translation>
@@ -2589,6 +2611,7 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="5190072300954988691">Không cho phép truy cập máy ảnh và micrô</translation>
 <translation id="5191315092027169558">Hồ sơ của bạn do <ph name="DOMAIN"/> quản lý</translation>
 <translation id="51918995459521422"><ph name="ORIGIN"/> muốn tải nhiều tệp xuống</translation>
+<translation id="519528950056409240">Cho phép Wallet chia sẻ dữ liệu</translation>
 <translation id="5199121357983849992">Lưu thẻ căn cước?</translation>
 <translation id="5200063972779787617">Lưu địa chỉ trong tài khoản</translation>
 <translation id="5201306358585911203">Một trang được nhúng trên trang này cho biết</translation>
@@ -2634,6 +2657,7 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="5255833070095767006">350 x 460 mm</translation>
 <translation id="5257739419779698609">{0,plural, =1{Theo chính sách của quản trị viên, bạn không nên sao chép tệp này sang <ph name="DESTINATION_NAME"/>}other{Theo chính sách của quản trị viên, bạn không nên sao chép các tệp này sang <ph name="DESTINATION_NAME"/>}}</translation>
 <translation id="5258473597674772367">Nhóm thẻ "<ph name="GROUP_NAME"/>" không còn nữa</translation>
+<translation id="5262342527470539728">Thông tin của bạn được lưu vào <ph name="IDS_AUTOFILL_GOOGLE_WALLET_TITLE"/> của tài khoản <ph name="ACCOUNT"/></translation>
 <translation id="5263867360296733198">Bạn cần xem xét trước khi tải lên</translation>
 <translation id="5266128565379329178">Đóng gáy trên cùng</translation>
 <translation id="5269225904387178860">Đục 4 lỗ dưới cùng</translation>
@@ -2689,6 +2713,7 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="5348330584842140856">Không thể di chuyển tệp này vì tệp không còn tồn tại</translation>
 <translation id="5349543692327946794">Nhãn (In phun)</translation>
 <translation id="5351548097010183514">Vật liệu và dụng cụ xây dựng</translation>
+<translation id="5352033265844765294">Dấu Thời gian</translation>
 <translation id="5354143049423063163">Quỹ phòng hộ</translation>
 <translation id="5355557959165512791">Bạn không thể truy cập vào <ph name="SITE"/> ngay bây giờ vì chứng chỉ của trang này đã bị thu hồi. Lỗi mạng và các cuộc tấn công mạng thường chỉ là tạm thời nên trang này có thể sẽ hoạt động lại sau.</translation>
 <translation id="5359752295193133096">Chia sẻ các thẻ đang mở có liên quan theo mặc định để nhận được câu trả lời nhanh hơn và phù hợp hơn.</translation>
@@ -2742,6 +2767,7 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="5426179911063097041"><ph name="SITE"/> muốn gửi thông báo cho bạn</translation>
 <translation id="5431318178759467895">Màu</translation>
 <translation id="5433756542371550806">Các biến thể của dòng lệnh</translation>
+<translation id="5434065355175441495">PKCS #1 Mã hóa RSA</translation>
 <translation id="8517215617486022589">Brave <ph name="BEGIN_EMPHASIS"/>sẽ không lưu<ph name="END_EMPHASIS"/>:
         <ph name="BEGIN_LIST"/>
           <ph name="LIST_ITEM"/>Nhật ký duyệt web
@@ -2791,6 +2817,7 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="5499229993630251170">Tiếp tục chuỗi này?</translation>
 <translation id="550365051221576010">Điền mọi thông tin</translation>
 <translation id="5506286895894263601">Danh sách này không có lối tắt hợp lệ.</translation>
+<translation id="5507756662695126555">Không tuân thủ</translation>
 <translation id="5508443345185481044">Máy ảnh và máy quay phim</translation>
 <translation id="5509762909502811065">B0</translation>
 <translation id="5509780412636533143">Dấu trang được quản lý</translation>
@@ -2826,6 +2853,7 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="5543564889050342791">Sở thú, thuỷ cung và khu bảo tồn</translation>
 <translation id="5543722831081909240">180 độ</translation>
 <translation id="5544836308113951378">Du thuyền và thuê tàu</translation>
+<translation id="5546252337258681768">Đã mở khoá thiết bị</translation>
 <translation id="5547939254150808298">In ấn và xuất bản</translation>
 <translation id="554815783948612276">Nhà cung cấp dịch vụ diễn đàn và trò chuyện</translation>
 <translation id="5548606607480005320">Kiểm tra an toàn</translation>
@@ -2861,8 +2889,10 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="5596627076506792578">Tuỳ chọn khác</translation>
 <translation id="5596939519753369075">2 x 3,5 inch</translation>
 <translation id="5597254438174353289">Xanh dương 3</translation>
+<translation id="5600044805561809264">Bạn có thể dễ dàng đặt câu hỏi về các thẻ mà bạn chia sẻ khi đang duyệt qua.</translation>
 <translation id="5603469469737324249"><ph name="ISSUER_1_NAME"/> hoặc <ph name="ISSUER_2_NAME"/></translation>
 <translation id="560412284261940334">Không hỗ trợ quản lý</translation>
+<translation id="560431066250575003">{HOURS,plural, =1{Hoạt động 1 giờ trước}other{Hoạt động # giờ trước}}</translation>
 <translation id="5605249000617390290">Tìm hiểu thêm về tính năng theo dõi giá</translation>
 <translation id="5605670050355397069">Ledger</translation>
 <translation id="5610142619324316209">Kiểm tra kết nối</translation>
@@ -2870,6 +2900,7 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="5611398002774823980">Lưu vào tài khoản</translation>
 <translation id="2012723355262040739">Dịch trang này bằng Brave Dịch</translation>
 <translation id="5612720917913232150"><ph name="URL"/> muốn sử dụng thông tin vị trí máy tính của bạn</translation>
+<translation id="5614190747811328134">Thông báo Người dùng</translation>
 <translation id="5614520971155863709">Trò chơi thẻ bài</translation>
 <translation id="5617949217645503996"><ph name="HOST_NAME"/> đã chuyển hướng bạn quá nhiều lần.</translation>
 <translation id="5619721953841297650">Giá trị đặt trước</translation>
@@ -2885,6 +2916,7 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="5640474731385449758">Tiện ích "<ph name="EXTENSION_NAME"/>" muốn mở đường liên kết <ph name="PROTOCOL"/> trong <ph name="ORIGIN"/> thông qua <ph name="HANDLER_HOSTNAME"/></translation>
 <translation id="5642362243427711530"><ph name="FIRST_STRING"/>. <ph name="SECOND_STRING"/></translation>
 <translation id="5642411781689336699">Hệ thống &amp; Thiết bị âm thanh nổi</translation>
+<translation id="5642508497713047">Trình ký CRL</translation>
 <translation id="5644090287519800334">Trục X của hình ảnh mặt 1</translation>
 <translation id="5644128326840674462">Biểu ngữ quảng cáo</translation>
 <translation id="5645132789250840550">Nhựa (Bán bóng)</translation>
@@ -2915,7 +2947,6 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="5689516760719285838">Vị trí</translation>
 <translation id="569000877158168851">Giá trị DnsOverHttpsTemplates là không phù hợp và sẽ không được dùng, trừ phi bạn đặt chính sách DnsOverHttpsMode thành <ph name="SECURE_DNS_MODE_AUTOMATIC"/> hoặc <ph name="SECURE_DNS_MODE_SECURE"/>.</translation>
 <translation id="5691848789297492617">Đã mở lời nhắc Lưu thẻ trên toàn màn hình.</translation>
-<translation id="5695542892312572833">Dùng Windows Hello để xác minh và hoàn tất giao dịch mua hàng?</translation>
 <translation id="5699628521141772782">Sữa và trứng</translation>
 <translation id="5701381305118179107">Giữa</translation>
 <translation id="5707154300732650394">Tiếp tục hành trình của bạn</translation>
@@ -2953,7 +2984,9 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="5752519522101347518">Đang tải trang web xác minh của ngân hàng</translation>
 <translation id="5753570386948603678">Xoá khỏi nhật ký</translation>
 <translation id="5759751709240058861">Sử dụng và di chuyển máy ảnh</translation>
+<translation id="5762131895127128324">Giấy phép lái xe · Thẻ căn cước · Hộ chiếu</translation>
 <translation id="5763042198335101085">Nhập địa chỉ email hợp lệ</translation>
+<translation id="5763338081255973061">{DAYS,plural, =0{Hoạt động hôm nay}=1{Hoạt động 1 ngày trước}other{Hoạt động # ngày trước}}</translation>
 <translation id="5764725887548570807">Định dạng nguồn gốc không hợp lệ.</translation>
 <translation id="5764920692828389743">Gửi tới <ph name="EMAIL_ADDRESS"/></translation>
 <translation id="5765072501007116331">Để xem các yêu cầu và phương thức phân phối, hãy chọn một địa chỉ</translation>
@@ -2967,6 +3000,7 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="5783922175933467571">Đường liên kết đến <ph name="TAB_GROUP_DISPLAY_NAME"/> sẽ hết hạn sau 48 giờ nữa</translation>
 <translation id="5784606427469807560">Đã xảy ra sự cố khi xác nhận thẻ của bạn. Hãy kiểm tra kết nối Internet của bạn và thử lại.</translation>
 <translation id="5785756445106461925">Ngoài ra, trang này bao gồm các tài nguyên khác không an toàn. Những tài nguyên này có thể bị người khác xem khi đang gửi và có thể bị kẻ tấn công sửa đổi nhằm thay đổi giao diện của trang.</translation>
+<translation id="5787146423283493983">Thoả thuận về Khoá</translation>
 <translation id="5793317771769868848">Phương thức thanh toán này sẽ bị xoá khỏi thiết bị này</translation>
 <translation id="5794065675298686371">Bật thông báo theo dõi giá</translation>
 <translation id="5800727402210090597">Dịch vụ sửa chữa và bảo dưỡng điện thoại di động</translation>
@@ -3032,6 +3066,7 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="5910140988253729859">Huỷ thao tác tự động điền</translation>
 <translation id="5911020115933784199">Sự kiện và trang thông tin</translation>
 <translation id="5911110632211230665">Đã chặn việc mở tệp</translation>
+<translation id="1765144800915733093">Mở Brave Wallet</translation>
 <translation id="5914465277418006379"><ph name="MEMBER_FIRST_NAME"/> đã thêm thẻ này</translation>
 <translation id="5915189366813702112">Sắp xếp công việc linh hoạt</translation>
 <translation id="59174027418879706">Đã bật</translation>
@@ -3046,6 +3081,7 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="5924510104057992926">Bạn cần xem xét trước khi mở</translation>
 <translation id="5924782825030413055">Nguồn của lần cập nhật gần nhất về quyết định đồng ý:</translation>
 <translation id="5925040402342933574">Đĩa quang (Bán bóng)</translation>
+<translation id="5925147183566400388">Con trỏ tới Báo cáo Thực hành Chứng nhận</translation>
 <translation id="5926982310317673627">Phòng tập thể dục và câu lạc bộ sức khoẻ</translation>
 <translation id="5927279462592128805">Microsoft Word</translation>
 <translation id="5930147475897662863">Bật chế độ cài đặt này để sử dụng tính năng Giúp tôi viết</translation>
@@ -3122,6 +3158,7 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="6042308850641462728">Xem thêm</translation>
 <translation id="6043357981274314628">Xong!</translation>
 <translation id="6045164183059402045">Mẫu áp dụng</translation>
+<translation id="6046026831939367176"><ph name="URL"/> muốn sử dụng thông tin vị trí ước chừng của bạn</translation>
 <translation id="6046892054959167494">Nhập <ph name="SEARCH_AGGREGATOR_KEYWORD"/> để tìm kiếm hoặc hỏi <ph name="SEARCH_AGGREGATOR_SHORT_NAME"/></translation>
 <translation id="6047927260846328439">Nội dung này có thể tìm cách đánh lừa bạn cài đặt phần mềm hoặc tiết lộ thông tin cá nhân. <ph name="BEGIN_LINK"/>Vẫn hiển thị<ph name="END_LINK"/></translation>
 <translation id="6049056807983403918">Phong bì B4</translation>
@@ -3133,7 +3170,7 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="605237284704429106">Đang điền IBAN</translation>
 <translation id="3284406940349582552">Bạn có thể sử dụng địa chỉ đã lưu trên các sản phẩm của Brave. Địa chỉ này được lưu trong Tài khoản Brave của bạn (<ph name="ACCOUNT"/>).</translation>
 <translation id="5814871361966482530">Tìm hiểu thêm về cách Brave đảm bảo an toàn cho dữ liệu của bạn trong Chính sách quyền riêng tư của chúng tôi.</translation>
-<translation id="6055888660316801977">Thông tin xác thực thanh toán an toàn không khớp với bảng thông tin xác thực</translation>
+<translation id="6055392876709372977">PKCS #1 SHA-256 Với Mã hóa RSA</translation>
 <translation id="6055982527635883756">Phong bì (Lưu niệm)</translation>
 <translation id="6057177372083677067">Video trực tuyến</translation>
 <translation id="6058646026409894363">Kỹ thuật dân dụng</translation>
@@ -3188,6 +3225,7 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="6131824478727057281">vị trí</translation>
 <translation id="6133320744616005677">Tiếp tục cho phép</translation>
 <translation id="6133984428121856852">Đuôi tệp đang trống hoặc không hợp lệ.</translation>
+<translation id="6138680304137685902">Chữ ký X9.62 ECDSA với SHA-384</translation>
 <translation id="6139975341602920272">17 x 22 inch</translation>
 <translation id="6143097244789397208">Thực tế ảo và thực tế tăng cường</translation>
 <translation id="614327212146763975">Đã cho phép sử dụng cảm biến chuyển động và cảm biến ánh sáng</translation>
@@ -3210,7 +3248,6 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="6167577165590485365">Lần tìm nạp mới nhất:</translation>
 <translation id="6171968084616623939">"<ph name="PROXY_INVALID_SCHEME_HOST_PORT"/>" không phải là giá trị hợp lệ.</translation>
 <translation id="1057223975912338979">Brave đang cố gắng xác minh danh tính của bạn để có thể điền thông tin thanh toán cho bạn.</translation>
-<translation id="6173208311907792313">Hoàn tất giao dịch mua bằng Windows Hello</translation>
 <translation id="6175423614837252320">Đã lưu ảnh vào Google Drive</translation>
 <translation id="6176387967264100435">Đây là mức giá cao</translation>
 <translation id="6177128806592000436">Kết nối của bạn tới trang web này không an toàn</translation>
@@ -3255,9 +3292,11 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="6246316216123107851"><ph name="NUM_DAYS"/> ngày trước</translation>
 <translation id="6246382863801034910">Xe</translation>
 <translation id="6246868321321344665">Tổ chức bạn có thể xem dữ liệu duyệt web, chẳng hạn như mật khẩu và nhật ký trong cả hồ sơ công việc và hồ sơ cá nhân</translation>
+<translation id="6248988683584659830">Tìm kiếm cài đặt</translation>
 <translation id="6250932670816326647">Sản phẩm tắm gội và chăm sóc cơ thể</translation>
 <translation id="6251906504834538140">{0,plural, =1{Tệp đã bị chặn không cho di chuyển}other{<ph name="FILE_COUNT"/> tệp đã bị chặn không cho di chuyển}}</translation>
 <translation id="3917320044622606497"><ph name="MANAGE_CHROME_DOWNLOADS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Nhấn phím Tab rồi nhấn phím Enter để quản lý các tệp bạn đã tải xuống trong Brave</translation>
+<translation id="8057290549484414862">Lưu thẻ vào Brave Wallet</translation>
 <translation id="6254436959401408446">Không đủ bộ nhớ để mở trang này</translation>
 <translation id="625463612687472648">Dừng cho phép</translation>
 <translation id="6259156558325130047">&amp;Làm lại sắp xếp lại</translation>
@@ -3301,6 +3340,7 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="7962450223988560278">Đặt Brave làm trình duyệt mặc định của hệ thống trong phần cài đặt iOS</translation>
 <translation id="6327065120806001832">quyền truy cập mạng cục bộ</translation>
 <translation id="6328639280570009161">Thử tắt dự đoán mạng</translation>
+<translation id="2992154309947281535">Để tự động điền thông tin, hãy bật chế độ "Sử dụng thẻ và vé trên các sản phẩm và dịch vụ của Brave" trong phần cài đặt Wallet</translation>
 <translation id="6329815962353376655">&lt;Nhập câu hỏi&gt;</translation>
 <translation id="6331597954316706229">Để nhận được câu trả lời phù hợp nhất, hãy cho phép tất cả các chuỗi tham khảo các thẻ đang mở có liên quan.</translation>
 <translation id="633348045801643466">Hiện các lựa chọn <ph name="PAY_LATER_OPTIONS_HELP_LINK_BEGIN"/>thanh toán sau<ph name="PAY_LATER_OPTIONS_HELP_LINK_END"/> khi thanh toán</translation>
@@ -3318,6 +3358,7 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="6349101878882523185">Cài đặt <ph name="APP_NAME"/></translation>
 <translation id="6351658970066645919">Xoá dữ liệu duyệt web</translation>
 <translation id="6353505687280762741">{COUNT,plural, =0{Không có}=1{1 mật khẩu (cho <ph name="DOMAIN_LIST"/>, đã đồng bộ hóa)}=2{2 mật khẩu (cho <ph name="DOMAIN_LIST"/>, đã đồng bộ hóa)}other{# mật khẩu (cho <ph name="DOMAIN_LIST"/>, đã đồng bộ hóa)}}</translation>
+<translation id="6354918092619878358">Đường cong elip SECG secp256r1 (aka ANSI X9.62 prime256v1, NIST P-256)</translation>
 <translation id="6357546827188504216">Các nhóm thẻ "<ph name="GROUP_TITLE_1"/>" và "<ph name="GROUP_TITLE_2"/>" không còn hoạt động</translation>
 <translation id="6358088212770985041">chỉnh sửa phương thức thanh toán</translation>
 <translation id="6358450015545214790">Những phần này có ý nghĩa gì?</translation>
@@ -3348,7 +3389,6 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="6390200185239044127">Gấp đôi kiểu chữ Z</translation>
 <translation id="6390533465682072118">Khôi phục</translation>
 <translation id="639068771471208680">Biểu mẫu nhiều phần</translation>
-<translation id="6391700400718590966">Đã đóng thông tin xác thực thanh toán an toàn không khớp với bảng thông tin xác thực</translation>
 <translation id="6391911601916058725">Luôn chia sẻ các thẻ đang mở có liên quan?</translation>
 <translation id="6392799395081100092">Giấy (Da bê)</translation>
 <translation id="6393156038355142111">Đề xuất mật khẩu mạnh</translation>
@@ -3385,6 +3425,7 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="6436994298828707228">Kết nối bị chặn do được một trang công khai khởi tạo để kết nối với các thiết bị hoặc máy chủ trên mạng cục bộ của bạn.</translation>
 <translation id="4314443819377484539">Brave Bản vẽ</translation>
 <translation id="643917412048333145">Váy đầm</translation>
+<translation id="6440450906295708112">Nguồn biến thể</translation>
 <translation id="6440503408713884761">Bị bỏ qua</translation>
 <translation id="6443406338865242315">Các tiện ích và plugin bạn đã cài đặt</translation>
 <translation id="6444329331928531170">Nghỉ hưu và lương hưu</translation>
@@ -3402,6 +3443,7 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="6456955391422100996">Đã xóa quảng cáo.</translation>
 <translation id="6457206614190510200">Đóng kim lồng</translation>
 <translation id="6457455098507772300">Thông báo giảm giá xuất hiện dưới dạng thông báo bật lên trên màn hình máy tính của bạn</translation>
+<translation id="6458519747993638565">Đang hoạt động</translation>
 <translation id="6458606150257356946">Vẫn dán</translation>
 <translation id="6462438303393708881">Hủy tải lên</translation>
 <translation id="6464094930452079790">hình ảnh</translation>
@@ -3427,6 +3469,7 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="6502510275417601303">Thông báo về chế độ cài đặt thông tin thanh toán mới đã đóng</translation>
 <translation id="6502991525169604759">Không bao gồm các thay đổi của bạn</translation>
 <translation id="6505072878288254563">Đang dịch</translation>
+<translation id="6506374932220792071">Chữ ký X9.62 ECDSA với SHA-256</translation>
 <translation id="6506936645890046535">Có thể yêu cầu truy cập vào cookie</translation>
 <translation id="6506959208958864820">Phong bì</translation>
 <translation id="6507117483253822672">Viết lách tự tin hơn ở bất cứ đâu trên web</translation>
@@ -3464,7 +3507,6 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="6567832540451970450">Quản trị viên của bạn cho phép trang web này sử dụng <ph name="PERMISSION"/></translation>
 <translation id="3720758671413152948">Nút Quản lý phương thức thanh toán, hãy nhấn nút này để quản lý thông tin thanh toán và thẻ tín dụng của bạn trong phần cài đặt của Brave</translation>
 <translation id="6569060085658103619">Bạn đang xem trang tiện ích</translation>
-<translation id="6571992525120410251">Hỏi <ph name="ENGINE_NAME"/> bất cứ điều gì</translation>
 <translation id="6573200754375280815">Đục 2 lỗ bên phải</translation>
 <translation id="2679746641101586196">Brave đang cố gắng điền thông tin nhạy cảm của bạn vào <ph name="APP_NAME"/>.</translation>
 <translation id="6575408526598156416">Lưu vào tài khoản</translation>
@@ -3511,7 +3553,6 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="6655085656059574817">Nếu tiếp tục liên kết tài khoản, bạn sẽ thanh toán nhanh hơn bằng <ph name="BNPL_ISSUER_NAME"/>, tuy nhiên, bạn có thể huỷ liên kết bằng cách truy cập vào <ph name="BEGIN_LINK"/><ph name="IDS_AUTOFILL_BNPL_TOS_LINK_TEXT_WALLET_LINK_TEXT"/><ph name="END_LINK"/></translation>
 <translation id="6656935431494847393">Bao gồm thông tin như việc đặt vé máy bay và thông tin về xe</translation>
 <translation id="6657585470893396449">Mật khẩu</translation>
-<translation id="6659156657345021268">Thông tin sẽ chỉ được lưu vào thiết bị của bạn Lần tới khi điền vào biểu mẫu liên quan, bạn sẽ có thể lưu thông tin này vào Wallet.</translation>
 <translation id="6659246032834639189">Đây là mức giá thấp</translation>
 <translation id="6660413144148052430">vị trí</translation>
 <translation id="6662457027866368246">Cuộn đầu tiên</translation>
@@ -3543,7 +3584,6 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="6698097747703777657">Bạn chưa nhận được mã? <ph name="BEGIN_LINK"/>Yêu cầu mã mới<ph name="END_LINK"/></translation>
 <translation id="6698381487523150993">Tạo:</translation>
 <translation id="2705279181653063410">Để tắt Pix trong Brave, hãy chuyển đến phần <ph name="BEGIN_LINK1"/>cài đặt thông tin thanh toán<ph name="END_LINK1"/></translation>
-<translation id="6089469914764503915">Lưu thông tin của bạn để hoàn thành công việc nhanh hơn, chẳng hạn như điền vào biểu mẫu trên các sản phẩm của Brave. Bạn có thể <ph name="MANAGE_INFO_LINK"/> trong <ph name="IDS_AUTOFILL_GOOGLE_WALLET_TITLE"/> cho <ph name="ACCOUNT"/>.</translation>
 <translation id="67007264085648978">Thanh trượt thời gian</translation>
 <translation id="6702851555558236418">Phần mềm âm thanh và âm nhạc</translation>
 <translation id="6702919718839027939">Thuyết trình</translation>
@@ -3567,7 +3607,6 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="6727094998759448074">SRA4</translation>
 <translation id="6732087373923685049">camera</translation>
 <translation id="6734506549556896534">Trò chơi mô phỏng</translation>
-<translation id="3195271249864852838">Gói thanh toán sẽ phụ thuộc vào điều kiện áp dụng. <ph name="BEGIN_BOLD"/>Nội dung trên trang thanh toán sẽ được chia sẻ với Brave để cung cấp những lựa chọn này.<ph name="END_BOLD"/> Để ẩn các lựa chọn trả sau, hãy chuyển đến phần <ph name="BEGIN_LINK"/>cài đặt thông tin thanh toán<ph name="END_LINK"/></translation>
 <translation id="6737708609449480586">Bánh nướng</translation>
 <translation id="6738516213925468394">Dữ liệu của bạn đã được mã hóa bằng <ph name="BEGIN_LINK"/>cụm mật khẩu đồng bộ hóa<ph name="END_LINK"/> vào <ph name="TIME"/>. Hãy nhập cụm mật khẩu đó để bắt đầu đồng bộ hóa.</translation>
 <translation id="6740851646645036700">Số lần bạn sử dụng tính năng trợ giúp khi viết hiện đã đạt mức tối đa. Hãy thử lại sau.</translation>
@@ -3634,7 +3673,6 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="6850286078059909152">Màu văn bản</translation>
 <translation id="6852204201400771460">Tải lại ứng dụng?</translation>
 <translation id="6854691830678097752">Để thanh toán nhanh hơn, hãy lưu mã CVC này vào tài khoản <ph name="ACCOUNT_EMAIL"/> của bạn</translation>
-<translation id="6855951327659224749">Xoá biểu mẫu để sử dụng lựa chọn thanh toán sau</translation>
 <translation id="6857776781123259569">Quản lý mật khẩu...</translation>
 <translation id="6858034839887287663">A2x4</translation>
 <translation id="6860888819347870819">Có thể yêu cầu chuyển sang chế độ hình trong hình</translation>
@@ -3736,6 +3774,7 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="7003278537452757231">Thảm và thảm trải sàn</translation>
 <translation id="7003322000677139268">Phụ tùng và phụ kiện xe cộ</translation>
 <translation id="7004499039102548441">Các thẻ gần đây</translation>
+<translation id="7004562620237466965">Chỉ giải mã</translation>
 <translation id="9034916448420493087">Thông tin của bạn sẽ được lưu vào <ph name="IDS_AUTOFILL_GOOGLE_WALLET_TITLE"/> của tài khoản <ph name="ACCOUNT"/>. Bạn có thể dùng thông tin này để điền vào biểu mẫu nhanh hơn trên các sản phẩm của Brave.</translation>
 <translation id="7006930604109697472">Vẫn gửi</translation>
 <translation id="7009364359744329733">Thẻ này hiện không dùng được. Vui lòng thử lại sau.</translation>
@@ -3768,6 +3807,7 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="7057567173736333354">Mô tả hình ảnh bạn muốn tạo</translation>
 <translation id="7058163556978339998"><ph name="BROWSER"/> đã xác minh rằng trang web này có chứng chỉ do <ph name="ISSUER"/> cấp.</translation>
 <translation id="7058774143982824355">Dịch vụ phân tích cú pháp mật khẩu trong tệp CSV</translation>
+<translation id="7059913660448028407">Hiện không dùng được</translation>
 <translation id="6761410840196521760">Để lần tới thanh toán nhanh hơn, hãy lưu thông tin thẻ và địa chỉ thanh toán vào Brave Wallet</translation>
 <translation id="5320462991730735481">Thêm và quản lý các địa chỉ trong phần Cài đặt của Brave</translation>
 <translation id="7063157783216323487">Xanh lục 2</translation>
@@ -3778,6 +3818,7 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="7070144569727915108">cài đặt hệ thống</translation>
 <translation id="70705239631109039">Kết nối của bạn không đủ an toàn</translation>
 <translation id="7075452647191940183">Yêu cầu quá lớn</translation>
+<translation id="7075513071073410194">PKCS #1 MD5 Với Mã hóa RSA</translation>
 <translation id="7075896597860500885">Không nên sao chép từ trang web này</translation>
 <translation id="7078665357168027058">RA3</translation>
 <translation id="7079699498125013497">\u0020\u2022\u0020</translation>
@@ -3865,10 +3906,10 @@ Nếu bạn từ chối, chế độ cài đặt quyền riêng tư của bạn 
 <translation id="7210993021468939304">Hoạt động của Linux trong vùng chứa, đồng thời có thể cài đặt và chạy các ứng dụng Linux trong vùng chứa</translation>
 <translation id="721197778055552897"><ph name="BEGIN_LINK"/>Tìm hiểu thêm<ph name="END_LINK"/> về sự cố này.</translation>
 <translation id="7213191991901907140">Hãy cho chúng tôi biết trải nghiệm của bạn</translation>
-<translation id="7217745192097460130">Dùng Touch ID để xác minh và hoàn tất việc mua hàng?</translation>
 <translation id="7219179957768738017">Kết nối sử dụng <ph name="SSL_VERSION"/>.</translation>
 <translation id="7220786058474068424">Đang xử lý</translation>
 <translation id="7221855153210829124">Hiện thông báo</translation>
+<translation id="7225676267118764980">Thay đổi nhà cung cấp dịch vụ tự động điền và các chế độ cài đặt khác</translation>
 <translation id="7226892411756387078">Văn bản thuần túy</translation>
 <translation id="7227293336683593977">Giá theo thời gian</translation>
 <translation id="7228306718910595403">Trạng thái đủ tiêu chuẩn ở Liên minh Châu Âu</translation>
@@ -4039,6 +4080,7 @@ Thông tin chi tiết bổ sung:
 <translation id="7471007961486718967">Cung cấp lý do chuyển tệp (bắt buộc)</translation>
 <translation id="7473033553872550521">Bạn cũng có thể liên hệ với chủ sở hữu trang web và đề xuất họ nâng cấp lên HTTPS. <ph name="LEARN_MORE"/></translation>
 <translation id="7473891865547856676">Không, cảm ơn</translation>
+<translation id="7475618719385705713">Trang này đã bị chặn</translation>
 <translation id="7481312909269577407">Chuyển tiếp</translation>
 <translation id="7481603210197454575">Phong bì kiểu Ý</translation>
 <translation id="7482823403440483089">Tính năng tự động điền nâng cao</translation>
@@ -4060,6 +4102,7 @@ Thông tin chi tiết bổ sung:
 <translation id="7508255263130623398">ID thiết bị thuộc chính sách trả lại trống hoặc không khớp với ID của thiết bị hiện tại</translation>
 <translation id="7508577201115425418">Tài liệu và dịch vụ in</translation>
 <translation id="7510269639068718544">Mèo</translation>
+<translation id="7511707705708508147">Đơn vị tiền tệ không được hỗ trợ</translation>
 <translation id="7511955381719512146">Wi-Fi mà bạn đang sử dụng có thể yêu cầu bạn phải truy cập <ph name="BEGIN_BOLD"/><ph name="LOGIN_URL"/><ph name="END_BOLD"/>.</translation>
 <translation id="7512685745044087310">Chính sách này đã được chuyển thành chính sách đề xuất do đây là chính sách không bắt buộc và không thể đặt thành ''Bật''</translation>
 <translation id="7514365320538308">Tải xuống</translation>
@@ -4134,6 +4177,7 @@ Thông tin chi tiết bổ sung:
 <translation id="7615932826417658001">Thêm thẻ căn cước</translation>
 <translation id="7616390733770379387">Danh sách công cụ tìm kiếm hiển thị theo thứ tự ngẫu nhiên.</translation>
 <translation id="8565825862287624454">Quản trị viên đã bật Brave Enterprise Connectors trên trình duyệt bạn dùng. Các trình kết nối này có quyền truy cập vào một số dữ liệu của bạn.</translation>
+<translation id="6114261010694947707">Thẻ này được lưu trong Brave Wallet để bạn có thể sử dụng trên các dịch vụ của Brave</translation>
 <translation id="7617825962482469577">Phong bì C7/C6</translation>
 <translation id="7618270539713451657">Võ thuật</translation>
 <translation id="7619838219691048931">Tờ cuối</translation>
@@ -4293,6 +4337,7 @@ Thông tin chi tiết bổ sung:
 <translation id="7862306158978555061">hiện thông tin nhạy cảm</translation>
 <translation id="7865448901209910068">Tốc độ tốt nhất</translation>
 <translation id="7865482168955081228">Màn hình báo lỗi khi Mua trước trả sau đã đóng.</translation>
+<translation id="7869655448736341731">Bất kỳ</translation>
 <translation id="3178316939409145825">Nội dung trên trang thanh toán được chia sẻ với Brave để cung cấp những lựa chọn này.</translation>
 <translation id="7870281855125116701">Đã tìm thấy ưu đãi giảm giá</translation>
 <translation id="7971990257511863579">Thay đổi mật khẩu cho Tài khoản Brave của bạn</translation>
@@ -4361,6 +4406,7 @@ Thông tin chi tiết bổ sung:
 <translation id="7967636097426665267">Thiết bị liên lạc</translation>
 <translation id="79682505114836835">Giá trị "<ph name="VALUE"/>" là một màu không hợp lệ theo hệ thập lục phân.</translation>
 <translation id="7968982339740310781">Xem chi tiết</translation>
+<translation id="7972714317346275248">PKCS #1 SHA-384 Với Mã hóa RSA</translation>
 <translation id="7976053965094442846">Các tổ chức phát hành dịch vụ Mua trước trả sau hiện có cho tuỳ chọn thanh toán dần. Bàn phím đang ẩn.</translation>
 <translation id="7976214039405368314">Quá nhiều yêu cầu</translation>
 <translation id="7977538094055660992">Thiết bị đầu ra</translation>
@@ -4452,6 +4498,7 @@ Thông tin chi tiết bổ sung:
 <translation id="8120720167840853945">Chính sách này không kiểm soát hoạt động mặc định của bất kỳ chính sách nào khác.</translation>
 <translation id="8127301229239896662">"<ph name="SOFTWARE_NAME"/>" đã được cài đặt không đúng trên máy tính hoặc mạng của bạn. Hãy yêu cầu quản trị viên CNTT của bạn giải quyết vấn đề này.</translation>
 <translation id="8130113808541743942">Di chuyển tới...</translation>
+<translation id="813024282736408069">Bật thẻ ảo cho tính năng tự động điền</translation>
 <translation id="8131740175452115882">Xác nhận</translation>
 <translation id="8133495915926741232">Chọn những loại chủ đề chính mà các trang web có thể dùng để cá nhân hoá quảng cáo. Nếu bạn tắt một chủ đề chính thì các chủ đề có liên quan cũng sẽ bị chặn. <ph name="BEGIN_LINK"/>Tìm hiểu thêm<ph name="END_LINK"/></translation>
 <translation id="8134058435519644366">Tuyển dụng và bố trí cán bộ</translation>
@@ -4477,6 +4524,7 @@ Thông tin chi tiết bổ sung:
 <translation id="4351627595884993315">Brave đang đề xuất lưu thẻ của bạn vào Tài khoản Brave vì bạn đã đăng nhập. Bạn có thể thay đổi hành động này trong phần cài đặt.</translation>
 <translation id="8176440868214972690">Quản trị viên của thiết bị này đã gửi một số thông tin (chẳng hạn như chế độ cài đặt hoặc chính sách) đến các trang web sau đây.</translation>
 <translation id="817820454357658398">Sản phẩm vệ sinh dành cho phụ nữ</translation>
+<translation id="7788006888257606025"><ph name="BEGIN_BOLD"/>Nội dung trên trang thanh toán sẽ được chia sẻ với Brave để cung cấp những lựa chọn này.<ph name="END_BOLD"/> Gói thanh toán sẽ phụ thuộc vào điều kiện áp dụng. Để ẩn các lựa chọn trả sau, hãy chuyển đến phần <ph name="BEGIN_LINK"/>cài đặt thông tin thanh toán<ph name="END_LINK"/></translation>
 <translation id="818254048113802060">{0,plural, =1{<ph name="FILE_NAME"/> đã bị chặn do nội dung}other{<ph name="FILE_COUNT"/> tệp đã bị chặn do nội dung}}</translation>
 <translation id="8183800802493617952">Trò chơi và hoạt động dành cho gia đình</translation>
 <translation id="8184538546369750125">Sử dụng giá trị mặc định chung (Cho phép)</translation>
@@ -4549,6 +4597,7 @@ Thông tin chi tiết bổ sung:
 <translation id="8281886186245836920">Bỏ qua</translation>
 <translation id="8282292167096638950">Xoá giấy phép lái xe</translation>
 <translation id="8282409409360764263">Bảo trì sân</translation>
+<translation id="792704835644878748">Lưu IBAN vào Brave Wallet</translation>
 <translation id="8282947398454257691">Biết số nhận dạng thiết bị duy nhất của bạn</translation>
 <translation id="4596532552309852907">Quản lý tính năng Duyệt web an toàn và nhiều tính năng khác trong phần Cài đặt của Brave</translation>
 <translation id="828558778104922222">Ảnh bị mất do lỗi không xác định</translation>
@@ -4582,7 +4631,6 @@ Thông tin chi tiết bổ sung:
 <translation id="8332188693563227489">Quyền truy cập <ph name="HOST_NAME"/> bị từ chối</translation>
 <translation id="833262891116910667">Đánh dấu</translation>
 <translation id="8339163506404995330">Các trang viết bằng <ph name="LANGUAGE"/> sẽ không được dịch</translation>
-<translation id="8339275256517065202">Hoàn tất giao dịch mua bằng Touch ID</translation>
 <translation id="833935588477667012"><ph name="FIELD_LABEL"/>, bắt buộc</translation>
 <translation id="8339463238135163999"><ph name="DESCRIPTION"/><ph name="SEPARATOR"/><ph name="TIMESTMAP"/></translation>
 <translation id="8340095855084055290"><ph name="EXPIRATION_MONTH"/>/<ph name="EXPIRATION_YEAR"/></translation>
@@ -4635,6 +4683,7 @@ Thông tin chi tiết bổ sung:
 Thông tin chi tiết bổ sung:
 <ph name="DEBUG_INFO"/></translation>
 <translation id="8416874502399604126">Đã cho phép sử dụng micrô cho lần này</translation>
+<translation id="1409378845393760167">Lưu thông tin của bạn vào <ph name="GOOGLE_WALLET_TITLE_1"/> để hoàn thành công việc nhanh hơn, chẳng hạn như điền vào biểu mẫu trên các sản phẩm của Brave. Bạn có thể <ph name="MANAGE_INFO_LINK"/> trong <ph name="GOOGLE_WALLET_TITLE_2"/> của tài khoản <ph name="ACCOUNT"/>.</translation>
 <translation id="8424582179843326029"><ph name="FIRST_LABEL"/> <ph name="SECOND_LABEL"/> <ph name="THIRD_LABEL"/></translation>
 <translation id="8425213833346101688">Thay đổi</translation>
 <translation id="8426945547715537628">Cho phép ghi đè bàn phím?</translation>
@@ -4691,6 +4740,7 @@ Thông tin chi tiết bổ sung:
 <translation id="8521812709849134608">Mặt bàn nhà bếp</translation>
 <translation id="8522180136695974431">Báo cáo và giám sát tín dụng</translation>
 <translation id="1426902392270366682">Brave có thể giúp bạn bảo vệ Tài khoản Brave của mình và đổi mật khẩu.</translation>
+<translation id="852450791482410042">Thanh toán ngay</translation>
 <translation id="8527228059738193856">Loa</translation>
 <translation id="8527681393107582734">Nông nghiệp và lâm nghiệp</translation>
 <translation id="8528149813106025610">Quần áo trẻ em</translation>
@@ -4808,7 +4858,6 @@ Thông tin chi tiết bổ sung:
 <translation id="8726549941689275341">Kích thước trang:</translation>
 <translation id="8730621377337864115">Xong</translation>
 <translation id="8731268612289859741">Mã bảo mật</translation>
-<translation id="8731917264694569036">Hoàn tất giao dịch mua bằng thiết bị của bạn</translation>
 <translation id="8733345475331865475">Bảo hiểm ô tô</translation>
 <translation id="2184048523283917559">Bạn có thể chặn những chủ đề bạn không muốn chia sẻ với trang web. Brave cũng tự động xoá xoá khỏi danh sách những chủ đề đã hơn 4 tuần bạn không truy cập. Tìm hiểu thêm</translation>
 <translation id="8734529307927223492"><ph name="DEVICE_TYPE"/> của bạn do <ph name="MANAGER"/> quản lý</translation>
@@ -4898,6 +4947,7 @@ Thông tin chi tiết bổ sung:
 <translation id="8870700989640064057">In tệp bảo mật?</translation>
 <translation id="8871485335898060555">Đồ cổ và đồ sưu tầm</translation>
 <translation id="8871553383647848643">Tùy chỉnh giao diện trình duyệt của bạn</translation>
+<translation id="887350038812854047">Với chính sách này, giá trị giống nhau sẽ được áp dụng ở cấp thiết bị và cấp người dùng. Chính sách này đang hoạt động như dự kiến.</translation>
 <translation id="8874790741333031443">Hãy thử tạm thời cho phép cookie của bên thứ ba. Chế độ cài đặt này sẽ làm giảm khả năng bảo vệ khi duyệt web nhưng các tính năng của trang có thể sẽ hoạt động đúng như mong đợi.</translation>
 <translation id="8874824191258364635">Nhập số thẻ hợp lệ</translation>
 <translation id="8877780815363510165">Câu cá</translation>
@@ -4908,6 +4958,7 @@ Thông tin chi tiết bổ sung:
 <translation id="8891031436559779793">Bạn sẽ nhận được thông báo nếu giá giảm trên bất cứ trang web nào.</translation>
 <translation id="8891727572606052622">Chế độ proxy không hợp lệ.</translation>
 <translation id="8894794286471754040">Cạnh dài trước</translation>
+<translation id="7850375166078768069">Để sử dụng một dịch vụ tự động điền khác trong Brave, hãy bật dịch vụ đó trong phần cài đặt Android và tại đây</translation>
 <translation id="7192431032621242241">Để yêu cầu xem nội dung này, hãy tiếp tục bằng Tài khoản Brave của bạn</translation>
 <translation id="8897428486789851669">Bơi</translation>
 <translation id="8898854704577986668">Hiện nhật ký trong bảng điều khiển bên</translation>
@@ -5039,7 +5090,6 @@ Thông tin chi tiết bổ sung:
 <translation id="3582535072753734287">Không có công ty hay tổ chức nào quản lý trình duyệt này. Hoạt động trên thiết bị này có thể được quản lý ở bên ngoài Brave. <ph name="BEGIN_LINK"/>Tìm hiểu thêm<ph name="END_LINK"/></translation>
 <translation id="2628864952962474930"><ph name="HISTORY_CLUSTERS_SEARCH_FOCUSED_FRIENDLY_MATCH_TEXT"/>, nhấn phím Tab rồi nhấn Enter để tiếp tục hành trình và xem hoạt động liên quan trong nhật ký duyệt web trên Brave</translation>
 <translation id="9119042192571987207">Đã tải lên</translation>
-<translation id="9119308212838450857"><ph name="PROVIDER_ORIGIN"/> muốn xác minh danh tính của bạn</translation>
 <translation id="9119764377203471454">Không thêm được tệp đính kèm</translation>
 <translation id="9120593907434185157">Lưu địa chỉ</translation>
 <translation id="912327514020027767">Váy</translation>
@@ -5054,6 +5104,7 @@ Thông tin chi tiết bổ sung:
 <translation id="5130929741967388676">Trình duyệt Brave muốn sử dụng vân tay để tự động điền mật khẩu</translation>
 <translation id="9141013498910525015">Quản lý địa chỉ</translation>
 <translation id="9141435142213469335">Lưu địa chỉ cùng với thông tin khác</translation>
+<translation id="9141510259469546089">Chi phí mua hàng tối thiểu: <ph name="CHECKOUT_AMOUNT_MINIMUM"/></translation>
 <translation id="9141672681283222114">Cho phép sử dụng thực tế tăng cường cho lần này</translation>
 <translation id="9143898823728499852">Bạn có thể chọn tự động điền thông tin thẻ này vì tài khoản <ph name="CARD_ISSUER_NAME"/> của bạn liên kết với Google Pay</translation>
 <translation id="9144951720726881238">Ngày hết hạn:</translation>
@@ -5127,6 +5178,7 @@ Thông tin chi tiết bổ sung:
 <translation id="937885410143139026">Đã gửi dữ liệu đến bảng điều khiển dành cho quản trị viên</translation>
 <translation id="939736085109172342">Thư mục mới</translation>
 <translation id="940524522703752213">Quá trình tải tệp lên <ph name="CLOUD_PROVIDER"/> sẽ bắt đầu sau <ph name="MINUTES"/> phút</translation>
+<translation id="943185096918807504">Chi phí mua hàng tối đa: <ph name="CHECKOUT_AMOUNT_MAXIMUM"/></translation>
 <translation id="944578681290094302">Cho biết những phần thưởng và lợi ích nào áp dụng cho thẻ của bạn tại thời điểm thanh toán. <ph name="CARD_BENEFIT_HELP_LINK_BEGIN"/>Tìm hiểu về lợi ích của thẻ<ph name="CARD_BENEFIT_HELP_LINK_END"/></translation>
 <translation id="5858078029174489466">Tự động điền thông tin thẻ này cho các giao dịch mua trong Brave khi thẻ được lưu trên thiết bị này</translation>
 <translation id="1283739678317676574"><ph name="CREATE_GOOGLE_SITE_FOCUSED_FRIENDLY_MATCH_TEXT"/>, nhấn phím Tab rồi nhấn phím Enter để tạo nhanh một trang web mới trong Brave Sites</translation>

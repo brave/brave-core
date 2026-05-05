@@ -64,6 +64,7 @@
 <translation id="1644574205037202324">Tarixçə</translation>
 <translation id="1652197001188145583">Aktiv ediləndə saytlar NFC cihazlarından istifadə etmək üçün icazə istəyə bilər. Deaktiv ediləndə saytlar NFC cihazlarından istifadə edə bilməz.</translation>
 <translation id="1660204651932907780">Saytlara səs oxutmaq icazəsi verin (məsləhətli)</translation>
+<translation id="1676590040242013349">"Həmişə güvənli bağlantılardan istifadə edin" seçimi aktivdir.</translation>
 <translation id="1677097821151855053">Kukilər və digər sayt datası sizin yadda saxlamaq üçün istifadə edilir, məsələn, daxil olmanıza və ya reklamları fərdiləşdirməyə imkan yaradır. Bütün saytlar üçün kukiləri idarə etmək üçün <ph name="BEGIN_LINK"/>Ayarlara<ph name="END_LINK"/> baxın.</translation>
 <translation id="1679305402657584804">Saytlar NFC cihazlarından istifadə etmək istəyə bilər</translation>
 <translation id="1686785653877010442">Saytlar adətən təcili xəbərlər və ya söhbət mesajları barədə bildirmək üçün bildirişlər göndərir.</translation>
@@ -125,7 +126,6 @@
 <translation id="2228071138934252756"><ph name="APP_NAME"/> tətbiqinə kameranıza giriş icazəsi vermək üçün <ph name="BEGIN_LINK"/>Android Ayarlarında<ph name="END_LINK"/> kameranı da aktiv edin.</translation>
 <translation id="2231160360698766265">Saytlar qorunan məzmunu oxuda bilər</translation>
 <translation id="2235344399760031203">Üçüncü tərəf kukiləri bloklanıb</translation>
-<translation id="2238944249568001759">Son tabınıza əsasən təklif olunan axtarışlar</translation>
 <translation id="2241587408274973373">Yeni tab səhifə kartları</translation>
 <translation id="2241634353105152135">Sadəcə bir dəfə</translation>
 <translation id="2253414712144136228"><ph name="NAME_OF_LIST_ITEM"/> Silin</translation>
@@ -166,11 +166,6 @@
 <translation id="2588271083332682494">Nişan qrupları ilə nizamlayın</translation>
 <translation id="2597457036804169544">Saytlara tünd tema tətbiq etməyin</translation>
 <translation id="2606760465469169465">Avtomatik təsdiqləyin</translation>
-<translation id="7615153661410655750"><ph name="BEGIN_LINK1"/>Android ayarlarında<ph name="END_LINK1"/> idarə edin
-
-Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
-• "Həmişə güvənli bağlantılardan istifadə edin" seçimi aktivdir.
-• "JavaScript optimizatoru" sönülüdür. <ph name="BEGIN_LINK2"/>Sayt istisnalarına nəzarət edin<ph name="END_LINK2"/></translation>
 <translation id="2621115761605608342">Xüsusi sayt üçün JavaScript'ə icazə verin.</translation>
 <translation id="2626708220538466178">Defolt brauzerin aşağıdakı vərəqi bağlandı</translation>
 <translation id="2653659639078652383">Təqdim edin</translation>
@@ -214,7 +209,6 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="3069226013421428034">Müəyyən bir sayt üçün üçüncü tərəfin girişinə icazə verin.</translation>
 <translation id="310297983047869047">Əvvəlki slayd</translation>
 <translation id="3108122610701115301">Defolt olaraq ayarlayın</translation>
-<translation id="3109724472072898302">Yığcamlaşdı</translation>
 <translation id="310979712355504754">Hamısını silin</translation>
 <translation id="311394601889664316">Saytlara cihazınızdakı faylları və ya qovluqları redaktə etmək icazəsi verməyin</translation>
 <translation id="3114012059975132928">Video pleyer</translation>
@@ -260,7 +254,6 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="3602290021589620013">Önizləmə</translation>
 <translation id="3611658447322220736">Son qapadılan saytlar data göndərilməsi və qəbulunu bitirə bilər</translation>
 <translation id="3619294456800709762">Saytlar şəkildə şəkil rejiminə avtomatik daxil ola bilər</translation>
-<translation id="3628308229821498208">Təklif edilən axtarışlar</translation>
 <translation id="3632460243282703117">Abunə olun</translation>
 <translation id="363748948745453283">Təxmini məkandan istifadə edilir</translation>
 <translation id="3641456520301071208">Saytlar məkanınızı tələb edə bilər</translation>
@@ -441,7 +434,6 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="5515432237048785579">Lentin tam hündürlükdə açılmış aşağıdakı vərəqini kəşf edin</translation>
 <translation id="5516455585884385570">Bildiriş ayarlarını açın</translation>
 <translation id="5527111080432883924">Saytların buferdəki mətn və şəkillərə girişinə icazə vermədən öncə soruşun (məsləhətlidir)</translation>
-<translation id="5553374991681107062">Ən son</translation>
 <translation id="674221630984410403">Saytların sürətini Brave-un V8 mühərriki ilə artırmayın, lakin Brave-un hücumlara qarşı müqavimətini bir qədər artırın</translation>
 <translation id="5556459405103347317">Yenidən yükləyin</translation>
 <translation id="5591840828808741583"><ph name="SITE_NAME"/> - bloklanıb</translation>
@@ -521,7 +513,6 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="6231752747840485235">"<ph name="APP_NAME"/>" sistemdən silinsin?</translation>
 <translation id="4789073065838177382">Brauzer tətbiqi &gt; Brave seçiminə toxunun</translation>
 <translation id="6260830281887654268">Yeni tab səhifəsinin görünüş teması kolleksiyalarına aid aşağıdakı vərəq yarım hündürlükdə açıldı</translation>
-<translation id="6262191102408817757">Son tabınıza əsasən</translation>
 <translation id="6262279340360821358"><ph name="PERMISSION_1"/> və <ph name="PERMISSION_2"/> bloklanıb</translation>
 <translation id="6270391203985052864">Saytlar bildiriş göndərilməsini tələb edə bilər</translation>
 <translation id="6295158916970320988">Bütün saytlar</translation>
@@ -579,6 +570,7 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="6912998170423641340">Saytların buferdəki mətn və şəkillərə girişini blok edin</translation>
 <translation id="6945221475159498467">Seçin</translation>
 <translation id="6950072572526089586">Daxil olduğunuz sayt düzgün işləmək üçün gördüyünüz iş haqqında məlumatı yadda saxlaya bilər. Bu məlumat sizi sayta daxil olmuş vəziyyətdə saxlamaq və ya alış-veriş səbətindəki məhsulları yadda saxlamaq üçündür. Adətən, saytlar bu məlumatı cihazda müvəqqəti yadda saxlayır.</translation>
+<translation id="6964291282260073066">"WebGPU" deaktiv edilib.</translation>
 <translation id="6965382102122355670">OK</translation>
 <translation id="6980507581230208647">Qırmızımtıl tema</translation>
 <translation id="6980861169612950611">Sayt datası silinsin? <ph name="SITE_NAME"/></translation>
@@ -601,7 +593,6 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="7180611975245234373">Yeniləyin</translation>
 <translation id="7188508872042490670">Cihazda olan sayt məlumatları</translation>
 <translation id="7201549776650881587">Bu əməliyyat ilə Əsas ekranda <ph name="ORIGIN"/> saytları və ya tətbiqi tərəfindən saxlanan data və kukilər silinəcək</translation>
-<translation id="7203150201908454328">Genişləndirilmiş</translation>
 <translation id="7213166370492037743">Saytlara lokal şəbəkənizdəki hər hansı cihaza qoşulmaq icazəsi verməyin</translation>
 <translation id="7219254577985949841">Sayt datası silinsin?</translation>
 <translation id="723171743924126238">Şəkil seçin</translation>
@@ -612,6 +603,9 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="7276071417425470385">Aktiv ediləndə saytlar virtual reallıq cihazlarından istifadə icazəsi istəyə bilər. Deaktiv ediləndə saytlar virtual reallıq cihazlarından istifadə edə bilməz.</translation>
 <translation id="7282197670900591579">Sitron tema</translation>
 <translation id="728412880473384942">Saytlar daha sürətli, lakin daha az güvənlidir</translation>
+<translation id="5843014938239239453"><ph name="BEGIN_LINK1"/>Android ayarlarında<ph name="END_LINK1"/> idarə edin
+
+Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:</translation>
 <translation id="7366415735885268578">Sayt əlavə edin</translation>
 <translation id="7368695150573390554">Oflayn data silinəcək</translation>
 <translation id="7369678931043226462">Yeni tab səhifəsinin yarım hündürlükdə açılmış aşağıdakı vərəqini fərdiləşdirin</translation>
@@ -675,7 +669,6 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="8007176423574883786">Bu cihaz üçün söndürüldükdə</translation>
 <translation id="802154636333426148">Endirmə alınmadı</translation>
 <translation id="8033047164036749181">Bu saytdan gələn bildirişlərə abunə olun</translation>
-<translation id="8042586301629853791">Sıralama metodu:</translation>
 <translation id="8051193500142930381">Kamera tələb edən xüsusiyyətlər işləmir</translation>
 <translation id="2495032782748793764">Defolt Brave</translation>
 <translation id="8067883171444229417">Videonu oxudun</translation>
@@ -723,6 +716,7 @@ Qabaqcıl Qoruma bu Brave ayarlarına nəzarət edir:
 <translation id="8471525937465764768">Saytlar adətən sənəd çap etmək və ya yaddaş cihazında saxlamaq kimi xüsusiyyətlər üçün USB cihazlarına qoşulur</translation>
 <translation id="8473055640493819707">"<ph name="APP_NAME"/>" köhnəlib. Tətbiqi yenidən quraşdırın.</translation>
 <translation id="847433688444405067">Cihazlarda axtarın</translation>
+<translation id="8484556725636319115">"JavaScript optimizatoru" deaktivdir. <ph name="BEGIN_LINK2"/>Sayt istisnalarına nəzarət edin<ph name="END_LINK2"/></translation>
 <translation id="8487700953926739672">Oflayn olaraq əlçatan</translation>
 <translation id="848952951823693243">Həmişə mobil sayt tələb edin</translation>
 <translation id="8492822722330266509">Saytlar ani bildirişlər göndərə və yönləndirmələrdən istifadə edə bilər</translation>

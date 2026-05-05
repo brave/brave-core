@@ -49,6 +49,14 @@
 <translation id="2998960761270772157">封鎖 youtube.com 的登入、選單、留言和影片資訊等元素。</translation>
 <translation id="8531835121131500698">封鎖 YouTube Shorts</translation>
 <translation id="2167271714269158912">封鎖來自 youtube.com 首頁、發燒影片頁面與搜尋結果的 Shorts。</translation>
+<translation id="2564435705466025309">封鎖 YouTube 自動配音影片</translation>
+<translation id="3603500459037204525">防止自動配音影片出現在 youtube.com 首頁和搜尋結果中。</translation>
+<translation id="4067265130987656010">封鎖 YouTube 縮圖</translation>
+<translation id="3034711349887440574">防止縮圖出現在 youtube.com 首頁和搜尋結果中。</translation>
+<translation id="8741919213635379855">封鎖 YouTube Playables</translation>
+<translation id="2216551241986578034">防止 Playables 出現在 youtube.com 首頁和搜尋結果中。</translation>
+<translation id="9038505474874975130">封鎖 YouTube 會員專用影片</translation>
+<translation id="3084239516382196983">防止會員專用影片出現在 youtube.com 首頁和搜尋結果中。</translation>
 <translation id="6052725679982758334">阻擋社群媒體</translation>
 <translation id="7498695072878479744">在第三方網站上允許 Google 登入按鈕</translation>
 <translation id="863171915776379000">允許 Facebook 登入與嵌入貼文</translation>
@@ -203,7 +211,7 @@
 <translation id="4767173360729868049">幫助 Brave 搜尋插圖</translation>
 <translation id="8241918461631453498">防止受到中斷插圖</translation>
 <translation id="8213310572767907663">改進 Brave 插圖</translation>
-<translation id="2427917529469438577">在您最愛的串流網站阻擋惱人干擾。</translation>
+<translation id="2427917529469438577">在你最愛的串流網站阻擋惱人干擾。</translation>
 <translation id="7818938154803162778">沒問題，我願意協助</translation>
 <translation id="5298784657468199167">傳送當機報告</translation>
 <translation id="6188781052835527980">系統當機或停止回應時傳送匿名診斷報告。</translation>
@@ -970,9 +978,9 @@
 <translation id="5494920125229734069">全選</translation>
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="944736176598169208">獎勵</translation>
-<translation id="4272190451231642425">自動傳送當機報告</translation>
 <translation id="1199170151481311646">隱私權保護分析</translation>
 <translation id="1706715315466634757">電子郵件別名</translation>
+<translation id="738840791756723657">AI</translation>
 <translation id="6709133671862442373">新聞內容</translation>
 <translation id="5990642573624858459">統計報告</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -984,8 +992,11 @@
 <translation id="2573819149217596923">改變 Brave 功能</translation>
 <translation id="7415416427817229128">啟用或停用 Brave 功能需要瀏覽器重新啟動以套用變更。您想立即重新啟動嗎？</translation>
 <translation id="2256115617011615191">立即重新啟動</translation>
+<translation id="2160089182263405907">正在停用功能</translation>
+<translation id="3362364767724670721">啟用或停用 Brave 功能需要重新啟動瀏覽器才能套用變更。請在 Origin 完成更新後，點擊<ph name="BEGIN_BOLD"/>立即重新啟動<ph name="END_BOLD"/>。</translation>
+<translation id="1028940738207645746">確定要將所有設定重設為預設值嗎？</translation>
+<translation id="5939518447894949180">重設</translation>
 <translation id="8554205386170195281">購買</translation>
-<translation id="7071521146534760487">管理帳戶</translation>
 <translation id="8613144770663526433">用 Brave 錢包登入</translation>
 <translation id="3696514931437952995">您正在登入 <ph name="ORIGIN"/>。Brave 錢包將與 <ph name="ORIGIN"/> 分享您的錢包位址。</translation>
 <translation id="1028781062521375153">檢視詳細資料</translation>
@@ -1020,7 +1031,6 @@
 <translation id="1309636029062006520">為您最愛的音訊和影片建立播放清單，並隨時隨地播放。</translation>
 <translation id="7899390017499980820">「新增至播放清單」按鈕</translation>
 <translation id="6901152954398668317">顯示或隱藏「新增至播放清單」按鈕，以便快速存取並新增或移除媒體。</translation>
-<translation id="5939518447894949180">重置</translation>
 <translation id="8199028711686989861">從「播放清單」中移除所有影片，包括離線模式的儲存內容。</translation>
 <translation id="4590997608186539865">播放清單</translation>
 <translation id="7525067979554623046">建立</translation>
@@ -1167,4 +1177,20 @@
 <translation id="1724977129262658800">解鎖後即可編輯密碼</translation>
 <translation id="5780792035410621042">如要複製密碼，請先在裝置上設定螢幕鎖定功能</translation>
 <translation id="7986497153528221272">如要查看密碼，請先在裝置上設定螢幕鎖定功能</translation>
+<translation id="4882237634123415792">自訂搜尋引擎</translation>
+<translation id="8364431224461158026">新增自訂搜尋引擎</translation>
+<translation id="7307935603426295341">編輯自訂搜尋引擎</translation>
+<translation id="4002066346123236978">標題</translation>
+<translation id="3653110185270660915">輸入搜尋引擎的名稱</translation>
+<translation id="7400418766976504921">網址</translation>
+<translation id="6410668567036790476">新增搜尋引擎</translation>
+<translation id="6289878295410648689">輸入搜尋網址，並將查詢內容改成<ph name="SPECIAL_SYMBOL"/>。</translation>
+<translation id="8943582268084103903">例如：https://youtube.com/search?q=<ph name="SPECIAL_SYMBOL"/>。如果網站支援 OpenSearch，在您編輯此欄位時，畫面會顯示自動新增搜尋引擎的選項。</translation>
+<translation id="8706939021136180678">網址無效。</translation>
+<translation id="6528099556282059181">搜尋引擎已新增。</translation>
+<translation id="463451857046640291">無法新增搜尋引擎。</translation>
+<translation id="1229671956956864948">無法更新搜尋引擎。</translation>
+<translation id="1462771969120037152">無法刪除搜尋引擎。您嘗試刪除的搜尋引擎可能設為預設引擎。</translation>
+<translation id="1079140196216383600">刪除自訂搜尋引擎</translation>
+<translation id="525276572490219787">確定要刪除「<ph name="SEARCH_ENGINE_NAME"/>」嗎？此操作無法撤銷。</translation>
 </translationbundle>

@@ -484,6 +484,10 @@
 <translation id="1518915449477235311">¿Permitir que <ph name="URL"/> abra conversaciones de Leo AI en Brave?</translation>
 <translation id="4355784577209159847">Permitir el uso de cookies de terceros en el inicio de sesión con Google antiguo</translation>
 <translation id="5770656036486891920"><ph name="URL"/> quiere utilizar cookies de terceros para el inicio de sesión heredado de Google</translation>
+<translation id="5582087890067572966">🎉 ¡Has empezado a ganar!</translation>
+<translation id="4364336119478610380">Ganas recompensas cada vez que aparece una notificación como esta en tu pantalla. No necesitas hacer clic para ganar.</translation>
+<translation id="5893017172751072752">Ganas cuando aparece una notificación de Anuncios de Brave</translation>
+<translation id="3447730462826640312">No es necesario que hagas clic para ganar, ¡pero hazlo si te interesa!</translation>
 <translation id="2104347391516032700">Servicio de recompensas BAT</translation>
 <translation id="5939518447894949180">Restablecer</translation>
 <translation id="3349204812119681938">Restablecer Brave Rewards</translation>
@@ -997,6 +1001,7 @@ other {Este mes has visitado # creadores apoyados por Recompensas de Brave}
 <translation id="2795015351889043417">Archivo JSON</translation>
 <translation id="5468881191994555667">Elegir archivo</translation>
 <translation id="795667975304826397">No se ha elegido ningún archivo</translation>
+<translation id="6720675936326555106">Archivo seleccionado</translation>
 <translation id="5891811606602061966">No se ha podido importar la cuenta. Inténtalo de nuevo.</translation>
 <translation id="6566535583781706170">Importar cuenta</translation>
 <translation id="5051929972046200722">Selecciona tu dispositivo de monedero físico</translation>
@@ -1043,10 +1048,12 @@ other {Este mes has visitado # creadores apoyados por Recompensas de Brave}
 <translation id="2416098547200943834">NOTA: La clave privada se proporciona como un archivo JSON con codificación hexadecimal que contiene información de la clave privada y del protocolo. <ph name="LINK_START"/>Más información<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">NOTA: La clave privada debe proporcionarse como un archivo JSON con codificación hexadecimal que contiene información de la clave privada y del protocolo. <ph name="LINK_START"/>Más información<ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">NOTA: Sólo se admiten <ph name="FORMAT"/> teclas extendidas.</translation>
+<translation id="6457746820359933716">Importar usando un archivo JSON exportado de Polkadot.js o billeteras compatibles. Ingresa la contraseña utilizada para cifrar la exportación.</translation>
 <translation id="9133762451347918196">Cuentas de prueba</translation>
 <translation id="42126664696688958">Exportar</translation>
 <translation id="1366855498335432549">Deposit</translation>
 <translation id="790104325876206743">Ajustes de la cuenta</translation>
+<translation id="8856844353253421399">Última actualización hace <ph name="TIME_AGO"/></translation>
 <translation id="6322030314101903925">No hay activos disponibles</translation>
 <translation id="836614343069504000">Haz un depósito o compra tokens para empezar. Si no ves los tokens de una cuenta importada, revisa la configuración de filtros y pantalla. Puede que haya que añadir los tokens desconocidos como activos personalizados.</translation>
 <translation id="2902856457593699108">Mostrar clave</translation>
@@ -1165,10 +1172,10 @@ other {Este mes has visitado # creadores apoyados por Recompensas de Brave}
 <translation id="4324239559624557455">Durante 24 horas</translation>
 <translation id="9139452553033760558">Durante 1 semana</translation>
 <translation id="1658834457013045127">Para siempre</translation>
-<translation id="6344138931392227467"><ph name="DEVICE_NAME"/> conectado</translation>
-<translation id="7051244143160304048"><ph name="DEVICE_NAME"/> desconectada</translation>
-<translation id="5317781812114905957">Instrucciones</translation>
-<translation id="1178198982208000092">Conecta tu <ph name="DEVICE_NAME"/></translation>
+<translation id="5571630233760536706"><ph name="DEVICE_NAME"/> conectado</translation>
+<translation id="7058480232601314508"><ph name="DEVICE_NAME"/> desconectada</translation>
+<translation id="434328838837168401">Ver Instrucciones</translation>
+<translation id="6739517232898494646">Conecta tu <ph name="DEVICE_NAME"/> para continuar</translation>
 <translation id="6941881257520473899">La cartera de hardware requiere confirmación en el dispositivo.</translation>
 <translation id="2288190100157580461">La cartera de hardware requiere que la aplicación de <ph name="NETWORK"/> esté abierta en <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">enviada</translation>
@@ -1889,6 +1896,7 @@ other {Este mes has visitado # creadores apoyados por Recompensas de Brave}
 <translation id="4150336849480030462">Transferencia de tokens SPL con creación de cuenta de tokens asociados</translation>
 <translation id="2244921323472112851">No podemos encontrar la página que buscas en este momento.</translation>
 <translation id="6277237872689140644">Puede haberse movido a otro lugar o la URL puede contener un error tipográfico.</translation>
+<translation id="1788572014530152502">Hubo un error al procesar tu transacción. En muchos casos, esto significa que no hay suficiente <ph name="SYMBOL"/> para cubrir la tarifa de red. Intenta con una cantidad menor.</translation>
 <translation id="2737084171727561244">Ir a la cartera</translation>
 <translation id="3499452861061048987">Añadir token</translation>
 <translation id="5046066249040287308">Servicio de uso general de Cartera de Brave</translation>
@@ -2573,7 +2581,8 @@ other {Este mes has visitado # creadores apoyados por Recompensas de Brave}
 <translation id="4724752924364329714">Si este sitio parece roto, intente Escudos abajo.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Nota: esto puede reducir las protecciones de privacidad de Brave.<ph name="NOTE_AFTER"/></translation>
 <translation id="4329860807937715445">Esto puede reducir las protecciones de privacidad de Brave. <ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
-<translation id="1574700443447059851">Se han bloqueado rastreadores y anuncios, entre otras cosas.</translation>
+<translation id="3889333301730272023"><ph name="BLOCK_COUNT"/> se han bloqueado rastreadores y anuncios, entre otras cosas</translation>
+<translation id="2275121279487164685">Rastreadores y anuncios</translation>
 <translation id="4968268657895673116">¿No funciona correctamente el sitio con las protecciones activadas?</translation>
 <translation id="5412004902081180614">Reportar</translation>
 <translation id="3620004479054499575">¿Está experimentando problemas con este sitio?</translation>
@@ -2635,9 +2644,11 @@ other {Este mes has visitado # creadores apoyados por Recompensas de Brave}
 <translation id="3795015906457257780">Estás consultando este sitio sin las protecciones de privacidad de Brave.</translation>
 <translation id="7194012750329511146">Protecciones de Brave
 Se han bloqueado <ph name="NUMBER"/> rastreadores, anuncios y otros elementos</translation>
+<translation id="2900068182947574679">Guiones</translation>
 <translation id="4292121526390005808">Scripts bloqueados</translation>
 <translation id="5046271170844958713">Scripts permitidos</translation>
 <translation id="199862531047218413">protecciones contra el rastreo de huellas digitales aplicadas</translation>
+<translation id="896105002981074545">Protecciones contra rastro digital</translation>
 <translation id="5032505924781383272">La aplicación de tales protecciones no implica necesariamente que la página web esté intentando obtener la huella digital de su navegador.</translation>
 <translation id="1905384713982899903">Huellas digitales bloqueadas</translation>
 <translation id="314364527871618241">Huellas digitales permitidas</translation>
@@ -2650,6 +2661,7 @@ Se han bloqueado <ph name="NUMBER"/> rastreadores, anuncios y otros elementos</t
 <translation id="542789539047208469">Información del sitio</translation>
 <translation id="7586067492365979844">Escudos de Brave tiene un nuevo hogar y diseño. Ahora se integra con la información del sitio para una experiencia completa.</translation>
 <translation id="9114542678887529043">Escudos de Brave tiene un nuevo hogar y diseño. Accede a él haciendo clic en el icono del sitio en la barra de direcciones.</translation>
+<translation id="4242533952199664413">Abrir Configuración</translation>
 <translation id="6294662480095808915">Privacidad por defecto.</translation>
 <translation id="4366423156486478559">Benefíciate de la protección de Brave cada vez que hagas clic en algún enlace. Para navegar de forma privada, lo único que tienes que hacer es configurar Brave como navegador predeterminado.</translation>
 <translation id="3830912418080848377">Importar configuración</translation>
@@ -2790,4 +2802,19 @@ Puede revertir los cambios y volver a usar WireGuard en cualquier momento en bra
 <translation id="1602850501393095406">Pulsar la tecla ↑ para destacar</translation>
 <translation id="8367705492654390392">Pregunta lo que quieras</translation>
 <translation id="8525248723479742219">Reproducir más tarde</translation>
+<translation id="2935698011275148880">Origen valiente</translation>
+<translation id="3983844925615091103">Bienvenido a Brave Origin. Para continuar, por favor compra o restaura tu compra de Brave Origin.</translation>
+<translation id="4801175670604644729">Necesitas una compra activa de Brave Origin para usar este navegador.</translation>
+<translation id="4144294274624829008">Restaurar compra de Brave Origin</translation>
+<translation id="6080178356113101120">Comprar Brave Origin</translation>
+<translation id="1009496146858538651">Restaurar Compra</translation>
+<translation id="3461564061600681423">Ingresa tu ID de compra para activar tu compra de Brave Origin.</translation>
+<translation id="2036379724374431790">ID de Compra</translation>
+<translation id="4348430971280118761">Ingresa tu ID de compra</translation>
+<translation id="7451866456310404779">Verificar ID de compra</translation>
+<translation id="8853195592604941919">Verificando… Esto puede tomar un minuto.</translation>
+<translation id="4633706444004110760">Gracias por instalar Brave Origin, una versión del navegador para usuarios que no necesitan todas las funciones que respaldan a Brave como negocio, pero que aún desean la privacidad que solo Brave ofrece. Los usuarios de Origin seguirán beneficiándose de la privacidad líder en la industria, bloqueador de anuncios y velocidad (a través de Escudos) de Brave, así como de actualizaciones regulares de software, parches de Chromium y mejoras de seguridad y privacidad. Origin eliminará la mayoría de las otras funciones del navegador.</translation>
+<translation id="5816720995022674532">Origin es gratuito para usar en dispositivos Linux, pero aún <ph name="BEGIN_LINK"/>está disponible para compra<ph name="END_LINK"/> si deseas apoyar a Brave como negocio. La compra también desbloquearía la capacidad de usar Origin en dispositivos Android, iOS, macOS y Windows.</translation>
+<translation id="3065220545261045367">Apoya a Brave comprando Origin</translation>
+<translation id="2069499076031488636">Continuar con Origin gratis en Linux</translation>
 </translationbundle>

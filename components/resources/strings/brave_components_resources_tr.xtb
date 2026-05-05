@@ -483,6 +483,10 @@
 <translation id="1518915449477235311"><ph name="URL"/> sitesinin, Leo YZ konuşmalarını Brave'de açmasına izin verilsin mi?</translation>
 <translation id="4355784577209159847">Eski Google Oturum Açma için üçüncü taraf çerezlerin kullanımına izin ver</translation>
 <translation id="5770656036486891920"><ph name="URL"/>, eski Google Oturum Açma için üçüncü taraf çerezleri kullanmak istiyor</translation>
+<translation id="5582087890067572966">🎉 Kazanmaya başladınız!</translation>
+<translation id="4364336119478610380">Böyle bir bildirimi ekranınızda gördüğünüzde kazanırsınız. Kazanmak için tıklamanıza gerek yoktur.</translation>
+<translation id="5893017172751072752">Brave Reklamları bildirimi göründüğünde kazanırsınız</translation>
+<translation id="3447730462826640312">Kazanmak için tıklamanıza gerek yoktur, ancak ilginizi çektiyse tıklayın!</translation>
 <translation id="2104347391516032700">BAT Ödülleri Hizmeti</translation>
 <translation id="5939518447894949180">Sıfırla</translation>
 <translation id="3349204812119681938">Brave Ödüllerini Sıfırla</translation>
@@ -996,6 +1000,7 @@
 <translation id="2795015351889043417">JSON dosyası</translation>
 <translation id="5468881191994555667">Dosya seç</translation>
 <translation id="795667975304826397">Hiçbir dosya seçilmedi</translation>
+<translation id="6720675936326555106">Seçilen dosya</translation>
 <translation id="5891811606602061966">Hesabın içe aktarımı başarısız oldu, lütfen tekrar deneyin.</translation>
 <translation id="6566535583781706170">Hesabı içe aktarın</translation>
 <translation id="5051929972046200722">Donanım cüzdanı cihazınızı seçin</translation>
@@ -1042,10 +1047,12 @@
 <translation id="2416098547200943834">NOT: Özel anahtar, özel anahtar ve protokol bilgisini içeren onaltılık kodlanmış bir JSON olarak sağlanır.<ph name="LINK_START"/>Daha fazlasını öğrenin<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">NOT: Özel anahtar, özel anahtar ve protokol bilgisini içeren onaltılık kodlanmış bir JSON olarak sağlanmalıdır. <ph name="LINK_START"/>Daha fazlasını öğrenin<ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">NOT: Sadece <ph name="FORMAT"/> genişletilmiş anahtarlar desteklenmektedir.</translation>
+<translation id="6457746820359933716">Polkadot.js veya uyumlu cüzdanlardan dışa aktarılan bir JSON dosyasını kullanarak içe aktarın. Dışa aktarmayı şifrelemek için kullanılan parolayı girin.</translation>
 <translation id="9133762451347918196">Testnet hesapları</translation>
 <translation id="42126664696688958">Dışarı Aktar</translation>
 <translation id="1366855498335432549">Para Yatır</translation>
 <translation id="790104325876206743">Hesap ayarları</translation>
+<translation id="8856844353253421399">Son güncelleme: <ph name="TIME_AGO"/> önce</translation>
 <translation id="6322030314101903925">Kullanılabilir varlık yok</translation>
 <translation id="836614343069504000">Başlamak için token yatırın veya satın alın. Eğer içe aktarılmış bir hesaptaki tokenleri göremiyorsanız filtreleri ve görüntüleme ayarlarını kontrol edin. Bilinmeyen tokenlerin, özel varlıklar olarak eklenmesi gerekebilir.</translation>
 <translation id="2902856457593699108">Anahtarı göster</translation>
@@ -1164,10 +1171,10 @@
 <translation id="4324239559624557455">24 saat için</translation>
 <translation id="9139452553033760558">1 hafta için</translation>
 <translation id="1658834457013045127">Sonsuza dek</translation>
-<translation id="6344138931392227467"><ph name="DEVICE_NAME"/> bağlandı</translation>
-<translation id="7051244143160304048"><ph name="DEVICE_NAME"/> bağlantısı kesildi</translation>
-<translation id="5317781812114905957">Talimatlar</translation>
-<translation id="1178198982208000092"><ph name="DEVICE_NAME"/> cihazını bağla</translation>
+<translation id="5571630233760536706"><ph name="DEVICE_NAME"/> bağlandı</translation>
+<translation id="7058480232601314508"><ph name="DEVICE_NAME"/> bağlantısı kesildi</translation>
+<translation id="434328838837168401">Talimatları görüntüle</translation>
+<translation id="6739517232898494646">Devam etmek için <ph name="DEVICE_NAME"/> bağlayın</translation>
 <translation id="6941881257520473899">Donanım cüzdanı cihazda doğrulama gerektirir.</translation>
 <translation id="2288190100157580461">Donanım cüzdanı, <ph name="DEVICE_NAME"/> üzerinden <ph name="NETWORK"/> Uygulamasının açılmasını gerektiriyor</translation>
 <translation id="8687869982094542529">gönderildi</translation>
@@ -1888,6 +1895,7 @@
 <translation id="4150336849480030462">İlgili Token Hesabı Oluşturma ile SPL Token Transferi</translation>
 <translation id="2244921323472112851">Aradığınız sayfayı şu anda bulamıyoruz.</translation>
 <translation id="6277237872689140644">Başka bir yere taşınmış olabilir veya URL'de bir yazım hatası olabilir.</translation>
+<translation id="1788572014530152502">İşleminiz işlenirken bir hata oluştu. Çoğu durumda bu, ağ ücretini karşılamak için yeterli <ph name="SYMBOL"/> olmadığı anlamına gelir. Bunun yerine daha küçük bir miktar deneyin.</translation>
 <translation id="2737084171727561244">Portföy'e git</translation>
 <translation id="3499452861061048987">Token ekle</translation>
 <translation id="5046066249040287308">Brave Cüzdanı Yardımcı Hizmeti</translation>
@@ -2572,7 +2580,8 @@
 <translation id="4724752924364329714">Bu site bozuk görünüyorsa, Shields'i kapatmayı deneyin.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Not: Bu Brave'in gizlilik korumalarını azaltabilir.<ph name="NOTE_AFTER"/></translation>
 <translation id="4329860807937715445">Bu, Brave'in gizlilik korumalarını azaltabilir. <ph name="LINK_BEFORE"/>Daha fazla bilgi edinin<ph name="LINK_AFTER"/></translation>
-<translation id="1574700443447059851">İzleyiciler, reklamlar ve daha fazlası engellendi.</translation>
+<translation id="3889333301730272023"><ph name="BLOCK_COUNT"/> izleyici, reklam ve daha fazlası engellendi</translation>
+<translation id="2275121279487164685">İzleyiciler ve reklamlar</translation>
 <translation id="4968268657895673116">Shields açık durumdayken bu site doğru çalışmıyor mu?</translation>
 <translation id="5412004902081180614">Bildir</translation>
 <translation id="3620004479054499575">Bu siteyle ilgili sorunlar mı yaşıyorsunuz?</translation>
@@ -2634,9 +2643,11 @@
 <translation id="3795015906457257780">Bu siteyi, Brave'in gizlilik korumaları olmaksızın görüntülüyorsunuz.</translation>
 <translation id="7194012750329511146">Brave Kalkanları
 <ph name="NUMBER"/> İzleyici, reklam ve daha fazlası engellendi</translation>
+<translation id="2900068182947574679">Komut dosyaları</translation>
 <translation id="4292121526390005808">Engellenen komutlar</translation>
 <translation id="5046271170844958713">İzin verilen komutlar</translation>
 <translation id="199862531047218413">parmak izi kontrolü koruması engelleyiciler uygulandı</translation>
+<translation id="896105002981074545">Parmak İzi Koruması</translation>
 <translation id="5032505924781383272">Uygulanan korumalar, bu web sayfasının tarayıcınızda parmak izi kontrolü yapmaya çalıştığını kesin olarak göstermez.</translation>
 <translation id="1905384713982899903">Engellenen parmak izleri</translation>
 <translation id="314364527871618241">İzin verilen parmak izleri</translation>
@@ -2649,6 +2660,7 @@
 <translation id="542789539047208469">Site Bilgileri</translation>
 <translation id="7586067492365979844">Brave Kalkanlar yeni bir ana sayfa ve tasarıma sahip. Artık site bilgileriyle bütünleşerek tek noktadan bir deneyim sunuyor.</translation>
 <translation id="9114542678887529043">Brave Kalkanlar yeni bir ana sayfa ve tasarıma sahip. Adres çubuğundaki site simgesine tıklayarak erişin.</translation>
+<translation id="4242533952199664413">Ayarları aç</translation>
 <translation id="6294662480095808915">Varsayılan olarak Gizlilik.</translation>
 <translation id="4366423156486478559">Tıkladığınız her bağlantıda Brave koruması sizinle olsun. Sadece Brave'i varsayılan tarayıcınız olarak ayarlayın ve gezinmeye başlayın. Gizli olarak.</translation>
 <translation id="3830912418080848377">Ayarları İçe Aktar</translation>
@@ -2789,4 +2801,19 @@ Hadi sizi bağlayalım!</translation>
 <translation id="1602850501393095406">Vurgulamak için ↑ düğmesine basın</translation>
 <translation id="8367705492654390392">Bir şey sorun</translation>
 <translation id="8525248723479742219">Daha Sonra Oynat</translation>
+<translation id="2935698011275148880">Cesur Köken</translation>
+<translation id="3983844925615091103">Brave Origin'e hoş geldiniz. Devam etmek için lütfen Brave Origin satın alın veya geri yükleyin.</translation>
+<translation id="4801175670604644729">Bu tarayıcıyı kullanmak için etkin bir Brave Origin satın alımına ihtiyacınız var.</translation>
+<translation id="4144294274624829008">Brave Origin satın almayı geri yükle</translation>
+<translation id="6080178356113101120">Brave Origin satın al</translation>
+<translation id="1009496146858538651">Satın Almayı Geri Yükle</translation>
+<translation id="3461564061600681423">Brave Origin satın almalarınızı etkinleştirmek için satın alma kimliğinizi girin.</translation>
+<translation id="2036379724374431790">Satın Alma Kimliği</translation>
+<translation id="4348430971280118761">Satın alma kimliğinizi girin</translation>
+<translation id="7451866456310404779">Satın alma kimliğini doğrula</translation>
+<translation id="8853195592604941919">Doğrulanıyor… Bu bir dakika sürebilir.</translation>
+<translation id="4633706444004110760">Brave Origin yüklediğiniz için teşekkürler. Brave Origin, tarayıcının ücretli bir sürümüdür ve Brave'i bir işletme olarak desteklemek için gereken tüm özelliklere ihtiyaç duymayan, ancak yalnızca Brave'in sunduğu gizliliği isteyen kullanıcılara yöneliktir. Origin kullanıcıları, endüstri lideri gizlilik, reklam engelleme ve hız (Kalkanlar aracılığıyla) avantajlarından, düzenli yazılım güncellemelerinden, Chromium yamalarından ve güvenlik ile gizlilik iyileştirmelerinden yararlanmaya devam edecektir. Origin, tarayıcıdan diğer birçok özelliği kaldıracaktır.</translation>
+<translation id="5816720995022674532">Origin, Linux cihazlarda kullanımı ücretsizdir, ancak Brave'i bir işletme olarak desteklemek istiyorsanız <ph name="BEGIN_LINK"/>satın almak için mevcuttur<ph name="END_LINK"/>. Satın almak, Android, iOS, macOS ve Windows cihazlarda Origin'i kullanabilme özelliğinin kilidini açacaktır.</translation>
+<translation id="3065220545261045367">Origin satın alarak Brave'i destekleyin</translation>
+<translation id="2069499076031488636">Linux'ta Origin'i ücretsiz olarak kullanmaya devam edin</translation>
 </translationbundle>
