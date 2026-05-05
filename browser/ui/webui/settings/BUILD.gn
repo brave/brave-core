@@ -13,6 +13,7 @@ source_set("unit_tests") {
 
     sources = [
       "brave_importer_observer_unittest.cc",
+      "brave_search_engines_handler_unittest.cc",
       "brave_site_settings_handler_unittest.cc",
       "brave_sync_handler_unittest.cc",
     ]
@@ -22,10 +23,14 @@ source_set("unit_tests") {
       "//brave/components/brave_shields/core/common",
       "//brave/components/resources:strings_grit",
       "//chrome/browser",
+      "//chrome/browser/regional_capabilities",
+      "//chrome/browser/search_engines",
       "//chrome/browser/ui",
       "//chrome/browser/ui:browser_navigator_params_headers",
       "//chrome/test:test_support",
       "//components/browsing_data/content:test_support",
+      "//components/regional_capabilities",
+      "//components/search_engines",
       "//components/sync_preferences:test_support",
       "//content/test:test_support",
       "//testing/gtest",
