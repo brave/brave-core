@@ -3862,6 +3862,10 @@ TEST_F(ConversationHandlerUnitTest,
   // not invoked synchronously.
   EXPECT_CALL(*mock_tool_provider_, UpdateToolsForNewGenerationLoop)
       .WillOnce([](base::OnceClosure cb) {
+<<<<<<< HEAD
+=======
+        std::move(cb).Run();
+>>>>>>> 23c2f25246a (Add test)
         base::SequencedTaskRunner::GetCurrentDefault()->PostTask(FROM_HERE,
                                                                  std::move(cb));
       });
