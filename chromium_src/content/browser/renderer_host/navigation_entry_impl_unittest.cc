@@ -9,6 +9,7 @@
 #include "content/public/test/test_browser_context.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/gurl.h"
 
 namespace content {
 
@@ -48,6 +49,18 @@ TEST_F(BraveNavigationEntryTest, GetTitleForDisplayPreservesExplicitTitle) {
 TEST_F(BraveNavigationEntryTest,
        GetTitleForDisplayDoesNotAffectNonChromeScheme) {
   auto entry = CreateEntry(GURL("https://example.com"));
+  EXPECT_EQ(u"example.com", entry->GetTitleForDisplay());
+
+  entry = CreateEntry(GURL("brave://settings"));
+  EXPECT_EQ(u"brave://settings", entry->GetTitleForDisplay());
+
+  entry = CreateEntry(GURL("chrome-blah://settings"));
+  EXPECT_EQ(u"chrome-blah://settings", entry->GetTitleForDisplay());
+
+  entry = CreateEntry(GURL("http://chrome.com"));
+  EXPECT_EQ(u"chrome.com", entry->GetTitleForDisplay());
+
+  entry = CreateEntry(GURL("http://example.com?chrome://settings"));
   EXPECT_EQ(u"example.com", entry->GetTitleForDisplay());
 }
 
