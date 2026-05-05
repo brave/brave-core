@@ -50,24 +50,24 @@ namespace brave_shields {
 
 namespace {
 
-typedef struct ListDefaultOverrideConstants {
+struct ListDefaultOverrideFeature {
   RAW_PTR_EXCLUSION const base::Feature& feature;
   std::string_view list_uuid;
-} ListDefaultOverrideConstants;
+};
 
-constexpr ListDefaultOverrideConstants kCookieListConstants{
+constexpr ListDefaultOverrideFeature kCookieListConstants{
     .feature = kBraveAdblockCookieListDefault,
     .list_uuid = kCookieListUuid};
 
-constexpr ListDefaultOverrideConstants kMobileNotificationsListConstants{
+constexpr ListDefaultOverrideFeature kMobileNotificationsListConstants{
     .feature = kBraveAdblockMobileNotificationsListDefault,
     .list_uuid = kMobileNotificationsListUuid};
 
-constexpr ListDefaultOverrideConstants kExperimentalListConstants{
+constexpr ListDefaultOverrideFeature kExperimentalListConstants{
     .feature = kBraveAdblockExperimentalListDefault,
     .list_uuid = kExperimentalListUuid};
 
-constexpr ListDefaultOverrideConstants kOverrideConstants[] = {
+constexpr ListDefaultOverrideFeature kFeatureOverrideConstants[] = {
     kCookieListConstants, kMobileNotificationsListConstants,
     kExperimentalListConstants};
 
@@ -333,7 +333,7 @@ bool AdBlockComponentServiceManager::IsFilterListEnabled(
   const bool list_touched = user_pref_dict;
 
   // Apply feature overrides from Griffin without overriding user preference
-  for (const auto& constants : kOverrideConstants) {
+  for (const auto& constants : kFeatureOverrideConstants) {
     if (uuid == constants.list_uuid &&
         base::FeatureList::IsEnabled(constants.feature) && !list_touched) {
       return true;
