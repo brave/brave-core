@@ -11,39 +11,15 @@
 #include "net/base/apple/url_conversions.h"
 #include "url/gurl.h"
 
-@interface BraveWebFrame ()
-- (instancetype)initWithWebFrame:(web::WebFrame*)webFrame;
-@end
-
-@implementation BraveWebFrame {
-  std::string _frameID;
-  BOOL _isMainFrame;
-  URLOriginIOS* _securityOrigin;
-  NSURL* _url;
-}
-
+@implementation BraveWebFrame
 - (instancetype)initWithWebFrame:(web::WebFrame*)webFrame {
   if ((self = [super init])) {
-    _frameID = webFrame->GetFrameId();
-    _isMainFrame = webFrame->IsMainFrame();
+    _frameID = base::SysUTF8ToNSString(webFrame->GetFrameId());
+    _mainFrame = webFrame->IsMainFrame();
     _securityOrigin =
         [[URLOriginIOS alloc] initWithOrigin:webFrame->GetSecurityOrigin()];
-    GURL gurl = webFrame->GetUrl();
-    _url = net::NSURLWithGURL(gurl);
+    _url = net::NSURLWithGURL(webFrame->GetUrl());
   }
   return self;
-}
-
-- (NSString*)frameID {
-  return base::SysUTF8ToNSString(_frameID);
-}
-- (BOOL)isMainFrame {
-  return _isMainFrame;
-}
-- (URLOriginIOS*)securityOrigin {
-  return _securityOrigin;
-}
-- (NSURL*)url {
-  return _url;
 }
 @end

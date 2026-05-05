@@ -175,7 +175,13 @@ class TabCWVNavigationHandler: NSObject, BraveWebViewNavigationDelegate {
   }
 
   func webView(_ webView: CWVWebView, frameDidBecomeAvailable frame: BraveWebFrame) {
-    guard frame.isMainFrame else { return }
-    tab?.frameDidBecomeAvailable(frame: frame)
+    tab?.frameDidBecomeAvailable(
+      frame: .init(
+        frameID: frame.frameID,
+        isMainFrame: frame.isMainFrame,
+        originURL: frame.securityOrigin.url,
+        url: frame.url
+      )
+    )
   }
 }

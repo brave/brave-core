@@ -3,7 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import BraveCore
 import UIKit
 
 public protocol TabObserver: AnyObject {
@@ -31,7 +30,7 @@ public protocol TabObserver: AnyObject {
   func tabDidChangeSampledPageTopColor(_ tab: some TabState)
   func tabDidUpdateFaviconStatus(_ tab: some TabState)
   func tab(_ tab: some TabState, didUpdateFaviconURLCandidates candidates: [WebFaviconCandidate])
-  func tab(_ tab: some TabState, frameDidBecomeAvailable frame: BraveWebFrame)
+  func tab(_ tab: some TabState, frameDidBecomeAvailable frame: WebFrame)
 
   /// Called when the Tab is about to deinit, use this to remove any observers/policy deciders added
   /// to the Tab.
@@ -47,6 +46,18 @@ public struct WebFaviconCandidate {
   public var url: URL
   /// A list of sizes available for this candidate
   public var sizes: [CGSize]
+}
+
+public struct WebFrame {
+  /// The frame identifier which uniquely identifies this frame across the
+  /// application's lifetime.
+  public var frameID: String
+  /// Whether or not the receiver represents the main frame of the webpage.
+  public var isMainFrame: Bool
+  /// The URL for security origin
+  public var originURL: URL?
+  /// The URL of the frame
+  public var url: URL?
 }
 
 extension TabObserver {
@@ -75,7 +86,7 @@ extension TabObserver {
   public func tabDidUpdateFaviconStatus(_ tab: some TabState) {}
   public func tabWillBeDestroyed(_ tab: some TabState) {}
   public func tab(_ tab: some TabState, didUpdateFaviconURLCandidates: [WebFaviconCandidate]) {}
-  public func tab(_ tab: some TabState, frameDidBecomeAvailable: BraveWebFrame) {}
+  public func tab(_ tab: some TabState, frameDidBecomeAvailable: WebFrame) {}
 }
 
 class AnyTabObserver: TabObserver, Hashable, CustomDebugStringConvertible {
@@ -108,7 +119,7 @@ class AnyTabObserver: TabObserver, Hashable, CustomDebugStringConvertible {
   private let _tabDidUpdateFaviconStatus: (any TabState) -> Void
   private let _tabWillBeDestroyed: (any TabState) -> Void
   private let _tabDidLoadFaviconsURLCandidates: (any TabState, [WebFaviconCandidate]) -> Void
-  private let _tabFrameDidBecomeAvailable: (any TabState, BraveWebFrame) -> Void
+  private let _tabFrameDidBecomeAvailable: (any TabState, WebFrame) -> Void
 
   var debugDescription: String {
     #if DEBUG
@@ -236,7 +247,7 @@ class AnyTabObserver: TabObserver, Hashable, CustomDebugStringConvertible {
   func tab(_ tab: some TabState, didUpdateFaviconURLCandidates candidates: [WebFaviconCandidate]) {
     _tabDidLoadFaviconsURLCandidates(tab, candidates)
   }
-  func tab(_ tab: some TabState, frameDidBecomeAvailable frame: BraveWebFrame) {
+  func tab(_ tab: some TabState, frameDidBecomeAvailable frame: WebFrame) {
     _tabFrameDidBecomeAvailable(tab, frame)
   }
 }

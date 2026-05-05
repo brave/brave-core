@@ -163,7 +163,7 @@ extension TabStateImpl {
     }
   }
 
-  func frameDidBecomeAvailable(frame: BraveWebFrame) {
+  func frameDidBecomeAvailable(frame: WebFrame) {
     observers.forEach {
       $0.tab(self, frameDidBecomeAvailable: frame)
     }
