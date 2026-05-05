@@ -7,22 +7,23 @@
 
 // IsSetupInProgress isn't accurate in brave sync flow especially for the first
 // time setup, we rely on it to display setup dialog
-#define BRAVE_GET_SYNC_STATUS_DICTIONARY                                     \
-  sync_status.Set(                                                           \
-      "firstSetupInProgress",                                                \
-      service && !disallowed_by_policy &&                                    \
-          !service->GetUserSettings()->IsInitialSyncFeatureSetupComplete()); \
-  {                                                                          \
-    syncer::BraveSyncServiceImpl* brave_sync_service =                       \
-        static_cast<syncer::BraveSyncServiceImpl*>(service);                 \
-    if (brave_sync_service) {                                                \
-      bool encryptor_ready = brave_sync_service->has_encryptor();            \
-      sync_status.Set(                                                       \
-          "hasSyncWordsDecryptionError",                                     \
-          encryptor_ready && !brave_sync_service->GetSeed().has_value());    \
-      sync_status.Set("isOsEncryptionAvailable",                             \
-                      brave_sync_service->IsEncryptionAvailable());          \
-    }                                                                        \
+#define BRAVE_GET_SYNC_STATUS_DICTIONARY                                       \
+  sync_status.Set(                                                             \
+      "firstSetupInProgress",                                                  \
+      service && !disallowed_by_policy &&                                      \
+          !service->GetUserSettings()->IsInitialSyncFeatureSetupComplete());   \
+  {                                                                            \
+    syncer::BraveSyncServiceImpl* brave_sync_service =                         \
+        static_cast<syncer::BraveSyncServiceImpl*>(service);                   \
+    using GetSeedStatusEnum = syncer::BraveSyncServiceImpl::GetSeedStatusEnum; \
+    if (brave_sync_service) {                                                  \
+      auto seed = brave_sync_service->GetSeed();                               \
+      sync_status.Set("hasSyncWordsDecryptionError",                           \
+                      !seed.has_value() &&                                     \
+                          seed.error() == GetSeedStatusEnum::kDecryptFailed);  \
+      sync_status.Set("isOsEncryptionAvailable",                               \
+                      brave_sync_service->IsEncryptionAvailable());            \
+    }                                                                          \
   }
 
 #include <chrome/browser/ui/webui/settings/people_handler.cc>

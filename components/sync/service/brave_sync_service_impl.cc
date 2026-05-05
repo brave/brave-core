@@ -29,6 +29,8 @@
 
 namespace syncer {
 
+using GetSeedStatusEnum = BraveSyncServiceImpl::GetSeedStatusEnum;
+
 void BraveSyncServiceImpl::SyncedObjectsCountContext::Reset(
     size_t types_requested_init) {
   types_requested = types_requested_init;
@@ -75,7 +77,7 @@ void BraveSyncServiceImpl::OnOsCryptAsyncReady(
 
 void BraveSyncServiceImpl::OnEncryptorReady() {
   CHECK(has_encryptor());
-  std::optional<std::string> seed = GetSeed();
+  auto seed = GetSeed();
   if (!seed.has_value()) {
     // Seed decryption failed at startup. This can happen when the OS keychain
     // is locked (e.g. user cancelled the unlock dialog on Linux/GNOME), the key
@@ -125,8 +127,11 @@ bool BraveSyncServiceImpl::IsEncryptionAvailable() const {
   return encryptor_->IsEncryptionAvailable();
 }
 
-std::optional<std::string> BraveSyncServiceImpl::GetSeed() const {
-  CHECK(has_encryptor());
+base::expected<std::string, GetSeedStatusEnum> BraveSyncServiceImpl::GetSeed()
+    const {
+  if (!has_encryptor()) {
+    return base::unexpected(GetSeedStatusEnum::kEncryptorIsNotSet);
+  }
 
   const auto& encoded_seed = brave_sync_prefs_.GetEncryptedSeed();
   if (encoded_seed.empty()) {
@@ -136,13 +141,13 @@ std::optional<std::string> BraveSyncServiceImpl::GetSeed() const {
   std::string encrypted_seed;
   if (!base::Base64Decode(encoded_seed, &encrypted_seed)) {
     LOG(ERROR) << "base64 decode sync seed failure";
-    return std::nullopt;
+    return base::unexpected(GetSeedStatusEnum::kDecryptFailed);
   }
 
   std::string seed;
   if (!encryptor_->DecryptString(encrypted_seed, &seed)) {
     LOG(ERROR) << "Decrypt sync seed failure";
-    return std::nullopt;
+    return base::unexpected(GetSeedStatusEnum::kDecryptFailed);
   }
   return seed;
 }
@@ -212,7 +217,7 @@ void BraveSyncServiceImpl::StopAndClear(ResetEngineReason reset_engine_reason) {
 }
 
 std::string BraveSyncServiceImpl::GetOrCreateSyncCode() {
-  std::optional<std::string> sync_code = GetSeed();
+  auto sync_code = GetSeed();
   if (!sync_code.has_value()) {
     // Do not try to re-create seed when OSCrypt fails, for example on macOS
     // when the keyring is locked.
@@ -283,10 +288,10 @@ BraveSyncAuthManager* BraveSyncServiceImpl::GetBraveSyncAuthManager() {
 void BraveSyncServiceImpl::OnBraveSyncPrefsChanged(const std::string& path) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (path == brave_sync::Prefs::GetSeedPath()) {
-    std::optional<std::string> seed = GetSeed();
+    auto seed = GetSeed();
     CHECK(seed.has_value());
 
-    if (!seed->empty()) {
+    if (!seed.value().empty()) {
       GetBraveSyncAuthManager()->DeriveSigningKeys(*seed);
       // Default enabled types: Bookmarks, Passwords
 
@@ -339,7 +344,7 @@ void BraveSyncServiceImpl::OnEngineInitialized(
     return;
   }
 
-  std::optional<std::string> passphrase = GetSeed();
+  auto passphrase = GetSeed();
   CHECK(passphrase.has_value());
   if (passphrase->empty()) {
     return;

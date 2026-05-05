@@ -61,6 +61,8 @@ using testing::Return;
 
 namespace syncer {
 
+using GetSeedStatusEnum = syncer::BraveSyncServiceImpl::GetSeedStatusEnum;
+
 namespace {
 
 constexpr char kCacheGuid[] = "cache_guid";
@@ -433,7 +435,8 @@ TEST_F(BraveSyncServiceImplTest, ValidPassphraseKeyringLocked) {
   brave_sync_service_impl()->SetEncryptorForTesting(
       os_crypt_async::GetTestEncryptorForTesting());
 
-  EXPECT_THAT(brave_sync_service_impl()->GetSeed(), Eq(std::nullopt));
+  EXPECT_THAT(brave_sync_service_impl()->GetSeed().error(),
+              Eq(GetSeedStatusEnum::kDecryptFailed));
 }
 
 TEST_F(BraveSyncServiceImplTest, FailedToDecryptBraveSeedValue) {
@@ -458,7 +461,9 @@ TEST_F(BraveSyncServiceImplTest, FailedToDecryptBraveSeedValue) {
   EXPECT_FALSE(base::Base64Decode(kWrongBase64String, &base64_decoded));
   pref_service()->SetString(brave_sync::Prefs::GetSeedPath(),
                             kWrongBase64String);
-  EXPECT_THAT(brave_sync_service_impl()->GetSeed(), Eq(std::nullopt));
+  EXPECT_FALSE(brave_sync_service_impl()->GetSeed().has_value());
+  EXPECT_THAT(brave_sync_service_impl()->GetSeed().error(),
+              Eq(GetSeedStatusEnum::kDecryptFailed));
 
   // Valid encrypted data but for a different key (e.g. key rotation or data
   // from another machine) must fail decryption.
@@ -469,7 +474,9 @@ TEST_F(BraveSyncServiceImplTest, FailedToDecryptBraveSeedValue) {
   brave_sync_service_impl()->SetEncryptorForTesting(
       std::move(*original_encryptor));
 
-  EXPECT_THAT(brave_sync_service_impl()->GetSeed(), Eq(std::nullopt));
+  EXPECT_FALSE(brave_sync_service_impl()->GetSeed().has_value());
+  EXPECT_THAT(brave_sync_service_impl()->GetSeed().error(),
+              Eq(GetSeedStatusEnum::kDecryptFailed));
 }
 
 TEST_F(BraveSyncServiceImplTest,
@@ -479,7 +486,8 @@ TEST_F(BraveSyncServiceImplTest,
 
   brave_sync_service_impl()->ResetEncryptorForTesting();
 
-  ASSERT_FALSE(brave_sync_service_impl()->has_encryptor());
+  ASSERT_THAT(brave_sync_service_impl()->GetSeed().error(),
+              Eq(GetSeedStatusEnum::kEncryptorIsNotSet));
   EXPECT_EQ(brave_sync_service_impl()->GetPreferredDataTypes(),
             DataTypeSet::All());
 }

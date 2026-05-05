@@ -11,6 +11,7 @@
 
 #include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
+#include "base/types/expected.h"
 #include "brave/components/brave_sync/brave_sync_p3a.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -60,10 +61,14 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
   void ResumeDeviceObserver();
 
   void Initialize(DataTypeController::TypeVector controllers) override;
-
   bool has_encryptor() const;
   bool IsEncryptionAvailable() const;
-  std::optional<std::string> GetSeed() const;
+
+  enum class GetSeedStatusEnum {
+    kEncryptorIsNotSet = 1,
+    kDecryptFailed = 2,
+  };
+  base::expected<std::string, GetSeedStatusEnum> GetSeed() const;
 
   const brave_sync::Prefs& prefs() const { return brave_sync_prefs_; }
   brave_sync::Prefs& prefs() { return brave_sync_prefs_; }

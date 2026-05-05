@@ -70,7 +70,7 @@ IN_PROC_BROWSER_TEST_F(DeleteProfileHelperBrowserTest,
   // Set the sync code to ensure it will be cleared on profile deletion
   EXPECT_TRUE(brave_sync_service->SetSyncCode(kValidSyncCode));
 
-  std::optional<std::string> seed = brave_sync_service->GetSeed();
+  auto seed = brave_sync_service->GetSeed();
   ASSERT_TRUE(seed.has_value());
   EXPECT_THAT(seed.value(), Not(IsEmpty()));
 
