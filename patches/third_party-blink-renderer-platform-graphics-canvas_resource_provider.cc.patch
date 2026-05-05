@@ -1,0 +1,24 @@
+diff --git a/third_party/blink/renderer/platform/graphics/canvas_resource_provider.cc b/third_party/blink/renderer/platform/graphics/canvas_resource_provider.cc
+index 2db099a66275e6e5da3721d324a541600c18f17c..2a5f7eab63370e765c9ae798145958ef237d2250 100644
+--- a/third_party/blink/renderer/platform/graphics/canvas_resource_provider.cc
++++ b/third_party/blink/renderer/platform/graphics/canvas_resource_provider.cc
+@@ -194,6 +194,8 @@ BASE_FEATURE(kCanvas2DAutoFlushParams, base::FEATURE_DISABLED_BY_DEFAULT);
+ BASE_FEATURE(kCanvas2DReclaimUnusedResources,
+              base::FEATURE_DISABLED_BY_DEFAULT);
+ 
++BASE_FEATURE(kAppendCpuUsages, base::FEATURE_ENABLED_BY_DEFAULT);
++
+ // Controls whether we add SHARED_IMAGE_USAGE_WEBGPU_READ by default to shared
+ // image backed CanvasResources so that they can be imported into WebGPU without
+ // an intermediate copy. This could cause a different shared image backing type
+@@ -284,6 +286,10 @@ CanvasResourceProviderSharedImage::CanvasResourceProviderSharedImage(
+         // TODO(https://crbug.com/40280504): Add that usage flag back here once
+         // the issue is resolved.
+         buffer_usage = gfx::BufferUsage::SCANOUT_CPU_READ_WRITE;
++        if (base::FeatureList::IsEnabled(kAppendCpuUsages)) {
++          shared_image_usage_flags |= gpu::SHARED_IMAGE_USAGE_CPU_READ |
++                                      gpu::SHARED_IMAGE_USAGE_CPU_WRITE_ONLY;
++        }
+       }
+ 
+       gpu::ImageInfo image_info(size, format, shared_image_usage_flags,
