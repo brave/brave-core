@@ -2270,7 +2270,8 @@ public class BytecodeTest {
                         ActivityLifecycleDispatcher.class,
                         WindowAndroid.class,
                         java.util.function.Supplier.class,
-                        java.util.function.Supplier.class));
+                        java.util.function.Supplier.class,
+                        Runnable.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/components/minidump_uploader/util/HttpURLConnectionFactoryImpl", // presubmit: ignore-long-line

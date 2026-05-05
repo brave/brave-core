@@ -29,8 +29,10 @@ import org.robolectric.shadows.ShadowPackageManager;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.ObservableSuppliers;
 import org.chromium.base.test.BaseRobolectricTestRunner;
+import org.chromium.base.test.util.Features.DisableFeatures;
 import org.chromium.base.test.util.Restriction;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.ui.base.DeviceFormFactor;
@@ -46,6 +48,7 @@ import java.util.function.BooleanSupplier;
 
 /** Unit tests for {@link BraveToolbarLongPressMenuHandler}. */
 @RunWith(BaseRobolectricTestRunner.class)
+@DisableFeatures(ChromeFeatureList.SEND_TAB_TO_SELF_EXTRA_ENTRY_POINTS)
 public final class BraveToolbarLongPressMenuHandlerUnitTest {
     @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
 
@@ -87,7 +90,8 @@ public final class BraveToolbarLongPressMenuHandlerUnitTest {
                         mActivityLifecycleDispatcher,
                         mWindowAndroid,
                         () -> mUrl,
-                        () -> mViewRectProvider);
+                        () -> mViewRectProvider,
+                        () -> {});
 
         verify(mActivityLifecycleDispatcher).register(mToolbarLongPressMenuHandler);
     }
