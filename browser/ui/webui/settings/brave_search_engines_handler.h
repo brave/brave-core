@@ -25,6 +25,8 @@ class BraveSearchEnginesHandler : public SearchEnginesHandler {
       delete;
 
  private:
+  friend class BraveSearchEnginesHandlerTest;
+
   // SearchEnginesHandler overrides:
   void RegisterMessages() override;
   void OnTemplateURLServiceChanged() override;

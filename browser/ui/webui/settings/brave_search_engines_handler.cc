@@ -123,6 +123,9 @@ base::ListValue BraveSearchEnginesHandler::GetPrivateSearchEnginesList() {
     }
 
     base::DictValue dict = CreateDictionaryForEngine(template_url);
+    const std::string& default_private_guid = profile_->GetPrefs()->GetString(
+        prefs::kSyncedDefaultPrivateSearchProviderGUID);
+    dict.Set("default", default_private_guid == template_url->sync_guid());
     defaults.Append(std::move(dict));
   }
 
