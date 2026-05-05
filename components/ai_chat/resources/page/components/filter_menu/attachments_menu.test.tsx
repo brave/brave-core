@@ -426,15 +426,6 @@ describe('TabsMenu', () => {
       editor.textContent = '@test'
       document.body.appendChild(editor)
 
-      // Set up selection at the end of the text
-      const range = document.createRange()
-      const textNode = editor.firstChild!
-      range.setStart(textNode, 5) // after '@test'
-      range.setEnd(textNode, 5)
-      const selection = window.getSelection()
-      selection?.removeAllRanges()
-      selection?.addRange(range)
-
       const tab1 = {
         contentId: 1,
         title: 'Test Tab',
@@ -442,25 +433,35 @@ describe('TabsMenu', () => {
         id: 1,
       }
 
-      const { container } = await act(async () =>
-        render(
-          <MockContext
-            conversationOverrides={{ inputText: ['@test'] }}
-            initialState={{
-              conversationState: { conversationUuid: '1' },
-              tabs: [tab1],
-            }}
-            uiHandler={{ associateTab }}
-          >
-            <TabsMenu />
-          </MockContext>,
-        ),
-      )
+      const { container } = await renderOpenedMenu({
+        conversationOverrides: { inputText: ['@test'] },
+        initialState: {
+          conversationState: { conversationUuid: '1' },
+          tabs: [tab1],
+        },
+        uiHandler: { associateTab },
+      })
 
-      // Find and click the menu item
-      const menuItem = container.querySelector('leo-menu-item')
-      expect(menuItem).toBeTruthy()
-      menuItem?.click()
+      // Wait for the menu item to render. The title is split across nested
+      // spans by MatchedText highlighting, so query directly.
+      const menuItem = await waitFor(() => {
+        const item = container.querySelector('leo-menu-item')
+        expect(item).toBeTruthy()
+        return item!
+      })
+
+      // Place the selection at the end of '@test' immediately before clicking.
+      // selectAttachment requires the active selection to live inside the
+      // editor (EditorAPI#canEdit), and rendering the menu can perturb it.
+      const range = document.createRange()
+      const textNode = editor.firstChild!
+      range.setStart(textNode, 5)
+      range.setEnd(textNode, 5)
+      const selection = window.getSelection()!
+      selection.removeAllRanges()
+      selection.addRange(range)
+
+      menuItem.click()
 
       // Check that attachment was associated
       expect(associateTab).toHaveBeenCalledWith(tab1, '1')
@@ -488,15 +489,6 @@ describe('TabsMenu', () => {
       editor.textContent = 'Hello @my'
       document.body.appendChild(editor)
 
-      // Set up selection at the end
-      const range = document.createRange()
-      const textNode = editor.firstChild!
-      range.setStart(textNode, 9) // after 'Hello @my'
-      range.setEnd(textNode, 9)
-      const selection = window.getSelection()
-      selection?.removeAllRanges()
-      selection?.addRange(range)
-
       const tab1 = {
         contentId: 1,
         title: 'My Tab',
@@ -504,25 +496,36 @@ describe('TabsMenu', () => {
         id: 1,
       }
 
-      const { container } = await act(async () =>
-        render(
-          <MockContext
-            conversationOverrides={{ inputText: ['Hello @my'] }}
-            initialState={{
-              conversationState: { conversationUuid: '1' },
-              tabs: [tab1],
-            }}
-            uiHandler={{ associateTab }}
-          >
-            <TabsMenu />
-          </MockContext>,
-        ),
-      )
+      const { container } = await renderOpenedMenu({
+        conversationOverrides: { inputText: ['Hello @my'] },
+        initialState: {
+          conversationState: { conversationUuid: '1' },
+          tabs: [tab1],
+        },
+        uiHandler: { associateTab },
+      })
 
-      // Find and click the menu item
-      const menuItem = container.querySelector('leo-menu-item')
-      expect(menuItem).toBeTruthy()
-      menuItem?.click()
+      // Wait for the menu item to render. The title is split across nested
+      // spans by MatchedText highlighting, so query directly.
+      const menuItem = await waitFor(() => {
+        const item = container.querySelector('leo-menu-item')
+        expect(item).toBeTruthy()
+        return item!
+      })
+
+      // Place the selection at the end of 'Hello @my' immediately before
+      // clicking. selectAttachment requires the active selection to live
+      // inside the editor (EditorAPI#canEdit), and rendering the menu can
+      // perturb it.
+      const range = document.createRange()
+      const textNode = editor.firstChild!
+      range.setStart(textNode, 9)
+      range.setEnd(textNode, 9)
+      const selection = window.getSelection()!
+      selection.removeAllRanges()
+      selection.addRange(range)
+
+      menuItem.click()
 
       // Check that 'Hello ' remains and attachment was inserted
       expect(editor.textContent?.startsWith('Hello ')).toBe(true)
