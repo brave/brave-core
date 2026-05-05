@@ -11,8 +11,9 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
+import _boot  # noqa: F401
 import repository
-from git_cr_follow_renames import (
+from alias.follow_renames import (
     _collapse_renames,
     _get_chromium_renames,
     _repair_patch_files,

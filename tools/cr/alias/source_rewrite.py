@@ -4,7 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 """Shared utilities for rewriting source-file references after a rename.
 
-Used by git_cr_mv and git_cr_follow_renames.
+Used by alias.mv and alias.follow_renames.
 """
 
 from __future__ import annotations
@@ -14,6 +14,7 @@ import os
 import re
 from pathlib import Path
 
+import _boot  # noqa: F401
 import repository
 
 # File extensions that must be skipped during all search and rewrite operations.

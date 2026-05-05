@@ -1,11 +1,11 @@
-#!/usr/bin/env python3
+#!/usr/bin/env vpython3
 # Copyright (c) 2026 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""Integration tests for git_cr.py.
+"""Integration tests for cmd.py.
 
-All tests run git_cr.py as a subprocess against real git repositories created in
+All tests run cmd.py as a subprocess against real git repositories created in
 temporary directories.  No unittest.mock or monkeypatching is used for core
 logic; every test exercises the actual Python + shell + git interaction.
 """
@@ -21,13 +21,15 @@ import unittest
 from pathlib import Path
 from typing import Optional
 
-GC_SCRIPT: Path = Path(__file__).parent / 'git_cr.py'
+import _boot  # noqa: F401
+
+CMD_SCRIPT: Path = Path(__file__).parent / 'cmd.py'
 HOOK_SOURCE: Path = Path(__file__).parent / 'commit-msg.py'
 
-# These mirror the module-level constants in git_cr.py so tests can assert
+# These mirror the module-level constants in cmd.py so tests can assert
 # against the same paths the script uses.
-_REPO_ROOT: Path = GC_SCRIPT.parent.parent.parent
-_HOOK_DEST: Path = _REPO_ROOT / '.git' / 'hooks' / 'commit-msg'
+_BRAVE_CORE_ROOT: Path = Path(__file__).parent.parent.parent.parent
+_HOOK_DEST: Path = _BRAVE_CORE_ROOT / '.git' / 'hooks' / 'commit-msg'
 
 # Minimal git environment that suppresses GPG signing and user-config lookup.
 _GIT_ENV_OVERRIDES: dict[str, str] = {
@@ -69,7 +71,7 @@ def _run_gc(
     """Run git_cr.py as a subprocess and return the result."""
     full_env = {**os.environ, **_GIT_ENV_OVERRIDES, **(env or {})}
     return subprocess.run(
-        [sys.executable, str(GC_SCRIPT)] + args,
+        [sys.executable, str(CMD_SCRIPT)] + args,
         cwd=cwd,
         env=full_env,
         capture_output=True,
@@ -168,7 +170,7 @@ class TestFlagPassthrough(unittest.TestCase):
         self._sandbox.__enter__()
         self._hook_state = _HookState()
         self._hook_state.save()
-        _run_gc(['install-hook'], cwd=_REPO_ROOT)
+        _run_gc(['install-hook'], cwd=_BRAVE_CORE_ROOT)
 
     def tearDown(self) -> None:
         self._hook_state.restore()
@@ -244,7 +246,7 @@ class TestCommitIntegration(unittest.TestCase):
         self._sandbox.install_hook()
         self._hook_state = _HookState()
         self._hook_state.save()
-        _run_gc(['install-hook'], cwd=_REPO_ROOT)
+        _run_gc(['install-hook'], cwd=_BRAVE_CORE_ROOT)
 
     def tearDown(self) -> None:
         self._hook_state.restore()
@@ -371,7 +373,7 @@ def _read_alias_cr() -> str:
     or ''."""
     result = subprocess.run(
         ['git', 'config', '--local', 'alias.cr'],
-        cwd=_REPO_ROOT,
+        cwd=_BRAVE_CORE_ROOT,
         capture_output=True,
         check=False,
         text=True,
@@ -383,7 +385,7 @@ def _set_alias_cr(value: str) -> None:
     """Write alias.cr to brave-core's .git/config."""
     subprocess.run(
         ['git', 'config', '--local', 'alias.cr', value],
-        cwd=_REPO_ROOT,
+        cwd=_BRAVE_CORE_ROOT,
         check=True,
         capture_output=True,
     )
@@ -393,7 +395,7 @@ def _unset_alias_cr() -> None:
     """Remove alias.cr from brave-core's .git/config if present."""
     subprocess.run(
         ['git', 'config', '--local', '--unset', 'alias.cr'],
-        cwd=_REPO_ROOT,
+        cwd=_BRAVE_CORE_ROOT,
         capture_output=True,
         check=False,
     )
@@ -435,7 +437,7 @@ class TestCoreHooksPathGuard(unittest.TestCase):
 
     def test_install_hook_blocked(self) -> None:
         """install-hook exits non-zero and mentions core.hooksPath."""
-        result = _run_gc(['install-hook'], cwd=_REPO_ROOT, env=self._env)
+        result = _run_gc(['install-hook'], cwd=_BRAVE_CORE_ROOT, env=self._env)
         self.assertNotEqual(result.returncode, 0)
         self.assertIn('core.hooksPath', result.stderr)
 
@@ -443,7 +445,7 @@ class TestCoreHooksPathGuard(unittest.TestCase):
         """install-hook must not create the symlink when blocked."""
         if _HOOK_DEST.exists() or _HOOK_DEST.is_symlink():
             _HOOK_DEST.unlink()
-        _run_gc(['install-hook'], cwd=_REPO_ROOT, env=self._env)
+        _run_gc(['install-hook'], cwd=_BRAVE_CORE_ROOT, env=self._env)
         self.assertFalse(_HOOK_DEST.exists() or _HOOK_DEST.is_symlink())
 
     def test_commit_blocked(self) -> None:
@@ -475,7 +477,7 @@ class TestInstallHook(unittest.TestCase):
         self._state.restore()
 
     def _run(self) -> subprocess.CompletedProcess:
-        return _run_gc(['install-hook'], cwd=_REPO_ROOT)
+        return _run_gc(['install-hook'], cwd=_BRAVE_CORE_ROOT)
 
     def test_creates_symlink(self) -> None:
         """install-hook creates .git/hooks/commit-msg as a symlink on POSIX."""
@@ -523,7 +525,7 @@ class TestSetupAlias(unittest.TestCase):
         self._prior_alias = _read_alias_cr()
         self._hook_state = _HookState()
         self._hook_state.save()
-        _run_gc(['install-hook'], cwd=_REPO_ROOT)
+        _run_gc(['install-hook'], cwd=_BRAVE_CORE_ROOT)
 
     def tearDown(self) -> None:
         self._hook_state.restore()
@@ -533,7 +535,7 @@ class TestSetupAlias(unittest.TestCase):
             _unset_alias_cr()
 
     def _run(self) -> subprocess.CompletedProcess:
-        return _run_gc(['setup-alias'], cwd=_REPO_ROOT)
+        return _run_gc(['setup-alias'], cwd=_BRAVE_CORE_ROOT)
 
     def test_writes_alias_to_git_config(self) -> None:
         """setup-alias stores alias.cr in .git/config."""
@@ -542,11 +544,11 @@ class TestSetupAlias(unittest.TestCase):
         self.assertNotEqual(_read_alias_cr(), '')
 
     def test_alias_references_script_and_python3(self) -> None:
-        """The stored alias calls python3 with the git_cr.py path."""
+        """The stored alias calls python3 with the cmd.py path."""
         self._run()
         alias = _read_alias_cr()
         self.assertIn('python3', alias)
-        self.assertIn('git_cr.py', alias)
+        self.assertIn('cmd.py', alias)
 
     def test_alias_starts_with_exclamation(self) -> None:
         """The alias uses the '!' prefix so git treats it as a shell command."""
@@ -556,8 +558,9 @@ class TestSetupAlias(unittest.TestCase):
     def test_git_cr_commit_works_end_to_end(self) -> None:
         """After setup-alias, 'git cr -m msg' creates a commit in a sandbox.
 
-        setup-alias writes to _REPO_ROOT's .git/config; the alias value is read
-        back and re-applied to the sandbox repo so git cr works there too.
+        setup-alias writes to _BRAVE_CORE_ROOT's .git/config; the alias value
+        is read back and re-applied to the sandbox repo so git cr works there
+        too.
         """
         self._run()
         alias = _read_alias_cr()
@@ -620,7 +623,7 @@ class TestCommitSanityCheck(unittest.TestCase):
                      'executable bit is POSIX-only')
     def test_non_executable_hook_is_rejected(self) -> None:
         """cmd_commit exits non-zero when the hook lacks the executable bit."""
-        _run_gc(['install-hook'], cwd=_REPO_ROOT)
+        _run_gc(['install-hook'], cwd=_BRAVE_CORE_ROOT)
         # _HOOK_DEST is a symlink → _HOOK_SOURCE; stat() follows the link, so
         # stripping the bit from the source is sufficient to fail the check.
         original_mode = HOOK_SOURCE.stat().st_mode
@@ -646,7 +649,7 @@ class TestGracefulExit(unittest.TestCase):
     def setUp(self) -> None:
         self._hook_state = _HookState()
         self._hook_state.save()
-        _run_gc(['install-hook'], cwd=_REPO_ROOT)
+        _run_gc(['install-hook'], cwd=_BRAVE_CORE_ROOT)
 
     def tearDown(self) -> None:
         self._hook_state.restore()
@@ -658,7 +661,7 @@ class TestGracefulExit(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             proc = subprocess.Popen(
                 [sys.executable,
-                 str(GC_SCRIPT), 'commit', '-m', 'test'],
+                 str(CMD_SCRIPT), 'commit', '-m', 'test'],
                 cwd=tmp,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,

@@ -12,8 +12,9 @@ import tempfile
 import unittest
 from pathlib import Path
 
+import _boot  # noqa: F401
 import repository
-from git_cr_mv import cmd_mv
+from alias.mv import cmd_mv
 from test.fake_chromium_src import FakeChromiumSrc
 from user_validation_error import UserValidationError
 

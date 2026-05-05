@@ -8,11 +8,21 @@ See http://dev.chromium.org/developers/how-tos/depottools/presubmit-scripts
 for more details about the presubmit API built into depot_tools.
 """
 
+import os
+
 PRESUBMIT_VERSION = '2.0.0'
-TEST_FILE_PATTERN = [r'.+_test.py$']
 
 
 def CheckTests(input_api, output_api):
-    # input_api.logging.debug('testing this output')
-    return input_api.canned_checks.RunUnitTestsInDirectory(
-        input_api, output_api, '.', files_to_check=TEST_FILE_PATTERN)
+    script_dir = input_api.PresubmitLocalPath()
+    tests = []
+    for root, dirs, files in os.walk(script_dir):
+        dirs[:] = [d for d in dirs if d != '__pycache__']
+        if any(f.endswith('_test.py') for f in files):
+            tests.extend(
+                input_api.canned_checks.GetUnitTestsInDirectory(
+                    input_api,
+                    output_api,
+                    root,
+                    files_to_check=[r'.+_test\.py$']))
+    return input_api.RunTests(tests)

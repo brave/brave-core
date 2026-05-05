@@ -1,4 +1,3 @@
-#!/usr/bin/env vpython3
 # Copyright (c) 2026 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
@@ -17,12 +16,13 @@ import argparse
 import logging
 from pathlib import Path
 
+import _boot  # noqa: F401
 from incendiary_error_handler import IncendiaryErrorHandler
 from terminal import console
 import repository
 import plaster
 from plaster import PlasterFile
-from source_rewrite import (
+from alias.source_rewrite import (
     CPP_EXTENSIONS,
     compute_guard,
     find_guard,

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env vpython3
 # Copyright (c) 2026 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
@@ -11,7 +11,7 @@ Subcommands
   git cr mv           Move a file/directory and repair all artefacts
   git cr follow-renames
                       Repair artefacts after upstream Chromium renames
-  git cr install-hook Install commit-msg hook from tools/cr/commit-msg.py
+  git cr install-hook Install commit-msg hook from tools/cr/alias/commit-msg.py
   git cr setup-alias  Register the git cr alias in .git/config
 
 commit
@@ -49,7 +49,7 @@ follow-renames
 Installing the alias
 --------------------
   From inside the brave-core repository, run once:
-    python3 tools/cr/git_cr.py setup-alias
+    python3 tools/cr/alias/cmd.py setup-alias
   This writes a 'cr' entry to .git/config so that 'git cr' works immediately
   in the current repository without modifying any shell config files.
 
@@ -71,20 +71,20 @@ import subprocess
 import sys
 from pathlib import Path
 
+import _boot  # noqa: F401
 from user_validation_error import UserValidationError
 
-
-# Directory containing this script (brave-core/tools/cr/).
-_SCRIPT_DIR: Path = Path(__file__).resolve().parent
+# tools/cr/ directory (parent of alias/).
+_REBASE_TOOLS_DIR: Path = Path(__file__).resolve().parent.parent
 
 # brave-core repository root, two levels above tools/cr/.
-_REPO_ROOT: Path = _SCRIPT_DIR.parent.parent
+_BRAVE_CORE_ROOT: Path = _REBASE_TOOLS_DIR.parent.parent
 
 # The commit-msg hook script that install-hook symlinks into .git/hooks/.
-_HOOK_SOURCE: Path = _SCRIPT_DIR / 'commit-msg.py'
+_HOOK_SOURCE: Path = Path(__file__).resolve().parent / 'commit-msg.py'
 
 # Where the hook must live to be picked up by git.
-_HOOK_DEST: Path = _REPO_ROOT / '.git' / 'hooks' / 'commit-msg'
+_HOOK_DEST: Path = _BRAVE_CORE_ROOT / '.git' / 'hooks' / 'commit-msg'
 
 # This script's path in POSIX form, suitable for embedding in a git alias.
 # Git aliases prefixed with '!' run via git's bundled bash on all platforms,
@@ -110,13 +110,13 @@ def _check_hooks_path() -> None:
         capture_output=True,
         text=True,
         check=False,
-        cwd=_REPO_ROOT,
+        cwd=_BRAVE_CORE_ROOT,
     )
     if result.returncode != 0 or not result.stdout.strip():
         return
     configured = result.stdout.strip()
     resolved = (Path(configured) if Path(configured).is_absolute() else
-                _REPO_ROOT / configured).resolve()
+                _BRAVE_CORE_ROOT / configured).resolve()
     if resolved == _HOOK_DEST.parent.resolve():
         return  # Points at .git/hooks/ — our hook will still run.
     raise UserValidationError(
@@ -232,7 +232,7 @@ def cmd_setup_alias() -> int:
         capture_output=True,
         text=True,
         check=False,
-        cwd=_REPO_ROOT,
+        cwd=_BRAVE_CORE_ROOT,
     )
     if result.returncode != 0:
         raise UserValidationError(f'git_cr: {result.stderr.strip()}')
@@ -265,11 +265,11 @@ def main() -> int:
         if subcmd == 'setup-alias':
             return cmd_setup_alias()
         if subcmd == 'mv':
-            import git_cr_mv
-            return git_cr_mv.cmd_mv(rest)
+            import alias.mv
+            return alias.mv.cmd_mv(rest)
         if subcmd == 'follow-renames':
-            import git_cr_follow_renames
-            return git_cr_follow_renames.cmd_follow_renames(rest)
+            import alias.follow_renames
+            return alias.follow_renames.cmd_follow_renames(rest)
     except UserValidationError as e:
         print(e, file=sys.stderr)
         return 1

@@ -8,7 +8,8 @@
 import unittest
 from pathlib import Path
 
-from source_rewrite import (
+import _boot  # noqa: F401
+from alias.source_rewrite import (
     _is_path_excluded,
     _should_walk_dir,
     update_references,
