@@ -406,7 +406,8 @@ TEST_F(EmailAliasesAPITest, RefreshAliases_Notifies_OnValidResponse) {
   EXPECT_EQ(observer_.get_last_aliases()[0]->note, "note");
 }
 
-TEST_F(EmailAliasesAPITest, RefreshAliases_NotifiesWithError_OnErrorOrInvalidJson) {
+TEST_F(EmailAliasesAPITest,
+       RefreshAliases_NotifiesWithError_OnErrorOrInvalidJson) {
   auto result_out =
       CallUpdateAliasWith("alias@example.com",
                           /*put_body=*/R"({"message":"updated"})",

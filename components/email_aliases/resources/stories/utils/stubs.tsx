@@ -43,10 +43,7 @@ export class StubEmailAliasesService implements EmailAliasesServiceInterface {
     EmailAliasesServiceObserverRemote | EmailAliasesServiceObserverInterface
   >
 
-  constructor(
-    authState: AuthState,
-    listRefreshError: string | null = null,
-  ) {
+  constructor(authState: AuthState, listRefreshError: string | null = null) {
     this.authState = authState
     this.listRefreshError = listRefreshError
     this.observers = new Set<
