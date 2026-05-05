@@ -27,7 +27,8 @@ are supposed to match the path for the file being plastered.
 
 > [!WARNING]
 > At the moment, only plaster files to sources in Chromium's `src` repo are
-> supported.
+> supported. For git submodules, and managed deps, patching/`chromium_src` are
+> still required.
 
 Each plaster file will be used to apply changes into a given source, and then
 generate a patch for the effected changes.
