@@ -82,6 +82,11 @@ void BraveBrowserMainExtraParts::PreProfileInit() {
   g_brave_browser_process->brave_stats_updater();
 }
 
+void BraveBrowserMainExtraParts::PreBrowserStart() {
+  // Early initialize adblock service
+  g_brave_browser_process->ad_block_service();
+}
+
 void BraveBrowserMainExtraParts::PostBrowserStart() {
   g_brave_browser_process->StartBraveServices();
 }
