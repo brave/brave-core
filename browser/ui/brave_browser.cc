@@ -148,7 +148,7 @@ void BraveBrowser::OnTabClosing(content::WebContents* contents) {
 }
 
 void BraveBrowser::TabStripEmpty() {
-  if (unload_controller_.is_attempting_to_close_browser() ||
+  if (profile()->GetPrefs()->GetBoolean(kEnableClosingLastTab) ||
       !is_type_normal() || ignore_enable_closing_last_tab_pref_) {
     Browser::TabStripEmpty();
     return;
