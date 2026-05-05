@@ -14,6 +14,7 @@ namespace tabs {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kHorizontalTabStripComboButton, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kVerticalTabsLaunch, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 #if BUILDFLAG(IS_LINUX)
