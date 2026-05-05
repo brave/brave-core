@@ -84,6 +84,9 @@ class AdsServiceImpl : public AdsService,
   // `http_client`, `resource_component`, `history_service`, and
   // `host_content_settings` can be `nullptr` in tests. `rewards_service`
   // can be `nullptr` when Rewards is unsupported or disabled by policy.
+  // `policy_service` can be `nullptr` in tests; when null, the initial
+  // ads-eligibility gate is evaluated synchronously instead of waiting
+  // for `OnPolicyServiceInitialized`.
   explicit AdsServiceImpl(
       std::unique_ptr<Delegate> delegate,
       PrefService& prefs,

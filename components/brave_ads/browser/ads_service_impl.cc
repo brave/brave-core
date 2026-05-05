@@ -56,6 +56,7 @@
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/metrics/metrics_pref_names.h"
+#include "components/policy/core/common/policy_service.h"
 #include "components/prefs/pref_service.h"
 #include "components/variations/pref_names.h"
 #include "content/public/browser/browser_context.h"
@@ -228,14 +229,6 @@ AdsServiceImpl::~AdsServiceImpl() {
   // Defensive: in normal `KeyedService` lifecycle `Shutdown()` already removed
   // the observer. This covers tests that destruct without calling `Shutdown`.
   StopObservingPolicyService();
-}
-
-void AdsServiceImpl::StopObservingPolicyService() {
-  if (!observed_policy_service_) {
-    return;
-  }
-  observed_policy_service_->RemoveObserver(policy::POLICY_DOMAIN_CHROME, this);
-  observed_policy_service_ = nullptr;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1788,6 +1781,14 @@ void AdsServiceImpl::OnPolicyServiceInitialized(policy::PolicyDomain domain) {
   StopObservingPolicyService();
   LAZY_BLOG(1, "[AdsGate] deferred start firing now");
   MaybeStartBatAdsService();
+}
+
+void AdsServiceImpl::StopObservingPolicyService() {
+  if (!observed_policy_service_) {
+    return;
+  }
+  observed_policy_service_->RemoveObserver(policy::POLICY_DOMAIN_CHROME, this);
+  observed_policy_service_ = nullptr;
 }
 
 }  // namespace brave_ads
