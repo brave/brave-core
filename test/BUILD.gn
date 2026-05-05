@@ -298,6 +298,7 @@ test("brave_unit_tests") {
     "//components/user_prefs",
     "//components/variations/service:buildflags",
     "//components/version_info",
+    "//content/public/browser",
     "//content/public/common",
     "//content/test:test_support",
     "//google_apis/gcm",

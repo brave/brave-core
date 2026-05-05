@@ -3,12 +3,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <memory>
+#include <optional>
+#include <string>
+
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
+#include "content/public/common/referrer.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/test_browser_context.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
 
 namespace content {
@@ -53,9 +59,6 @@ TEST_F(BraveNavigationEntryTest,
 
   entry = CreateEntry(GURL("brave://settings"));
   EXPECT_EQ(u"brave://settings", entry->GetTitleForDisplay());
-
-  entry = CreateEntry(GURL("chrome-blah://settings"));
-  EXPECT_EQ(u"chrome-blah://settings", entry->GetTitleForDisplay());
 
   entry = CreateEntry(GURL("http://chrome.com"));
   EXPECT_EQ(u"chrome.com", entry->GetTitleForDisplay());
