@@ -42,7 +42,7 @@ void PasswordStoreListenerIOS::OnLoginsChanged(
   NSMutableArray<IOSPasswordForm*>* forms = [[NSMutableArray alloc] init];
 
   for (const password_manager::PasswordStoreChange& change : changes) {
-    auto& result = change.form();
+    auto& result = change.credential();
     IOSPasswordForm* passwordForm = [[IOSPasswordForm alloc]
                 initWithURL:net::NSURLWithGURL(result.url)
                 signOnRealm:base::SysUTF8ToNSString(result.signon_realm)
