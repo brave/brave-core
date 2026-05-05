@@ -1,12 +1,13 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_tablet.xml b/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_tablet.xml
-index 4e18c1dc7330c4e1dc788fa4fea5289b9899f291..9c46c82962ddf7eb9de9348c97d76f72bd021b58 100644
+index 4e18c1dc7330c4e1dc788fa4fea5289b9899f291..4f6a0f06d6d119e26184809561093de668e8977e 100644
 --- a/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_tablet.xml
 +++ b/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_tablet.xml
-@@ -85,6 +85,7 @@ found in the LICENSE file.
-           android:paddingEnd="@dimen/location_bar_end_padding"
-           android:clipToPadding="false"
+@@ -87,6 +87,8 @@ found in the LICENSE file.
            />
-+      <include layout="@layout/brave_toolbar" android:layout_height="@dimen/modern_toolbar_background_size" android:layout_width="wrap_content" android:layout_gravity="center_vertical" />
      </FrameLayout>
  
++    <include layout="@layout/brave_toolbar" android:layout_height="@dimen/modern_toolbar_background_size" android:layout_width="wrap_content" android:layout_gravity="center_vertical" />
++
      <!-- TODO(crbug.com/433976037): Reset horizontal margins when optional button expands to action chip. -->
+         <ViewStub
+             android:id="@+id/optional_button_stub"
