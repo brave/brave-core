@@ -64,6 +64,7 @@
 <translation id="1644574205037202324">History</translation>
 <translation id="1652197001188145583">Kapag naka-on, puwedeng hilingin ng mga site na gumamit ng mga NFC device. Kapag naka-off, hindi makakagamit ang mga site ng mga NFC device.</translation>
 <translation id="1660204651932907780">Payagan ang mga site na mag-play ng tunog (inirerekomenda)</translation>
+<translation id="1676590040242013349">Naka-on ang "Palaging gumamit ng mga secure na koneksyon."</translation>
 <translation id="1677097821151855053">Ginagamit ang cookies at iba pang data ng site para tandaan ka, halimbawa para i-sign in ka o i-personalize ang mga ad. Para mapamahalaan ang cookies para sa lahat ng site, tingnan ang <ph name="BEGIN_LINK"/>Mga Setting<ph name="END_LINK"/>.</translation>
 <translation id="1679305402657584804">Puwedeng hilingin ng mga site na gumamit ng mga NFC device</translation>
 <translation id="1686785653877010442">Karaniwang nagpapadala ng mga notification ang mga site para ipaalam sa iyo ang tungkol sa breaking news o mga mensahe sa chat.</translation>
@@ -125,7 +126,6 @@
 <translation id="2228071138934252756">Para payagan ang <ph name="APP_NAME"/> na i-access ang iyong camera, i-on din ang camera sa <ph name="BEGIN_LINK"/>Mga Setting ng Android<ph name="END_LINK"/>.</translation>
 <translation id="2231160360698766265">Puwedeng mag-play ang mga site ng mga pinoprotektahang content</translation>
 <translation id="2235344399760031203">Bina-block ang third-party na cookies</translation>
-<translation id="2238944249568001759">Mga iminumungkahing paghahanap batay sa iyong huling tab</translation>
 <translation id="2241587408274973373">Mga card ng page na bagong tab</translation>
 <translation id="2241634353105152135">Isang beses lang</translation>
 <translation id="2253414712144136228"><ph name="NAME_OF_LIST_ITEM"/> Alisin</translation>
@@ -166,11 +166,6 @@
 <translation id="2588271083332682494">Mag-ayos gamit ang mga grupo ng tab</translation>
 <translation id="2597457036804169544">Huwag ilapat ang madilim na tema sa mga site</translation>
 <translation id="2606760465469169465">Awtomatikong pag-verify</translation>
-<translation id="7615153661410655750">Pamahalaan sa <ph name="BEGIN_LINK1"/>mga setting ng Android<ph name="END_LINK1"/>
-
-Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:
-• Naka-on ang "Palaging gumamit ng mga secure na koneksyon."
-• Naka-off ang "JavaScript optimizer." <ph name="BEGIN_LINK2"/>Pamahalaan ang mga exception sa Site<ph name="END_LINK2"/></translation>
 <translation id="2621115761605608342">Payagan ang JavaScript para sa isang partikular na site.</translation>
 <translation id="2626708220538466178">Isinara ang bottom sheet ng default browser</translation>
 <translation id="2653659639078652383">Isumite</translation>
@@ -214,7 +209,6 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:
 <translation id="3069226013421428034">Payagan ang third-party na pag-sign in para sa partikular na site.</translation>
 <translation id="310297983047869047">Nakaraang slide</translation>
 <translation id="3108122610701115301">Itakda ang default</translation>
-<translation id="3109724472072898302">Naka-collapse</translation>
 <translation id="310979712355504754">Tanggalin lahat</translation>
 <translation id="311394601889664316">Huwag payagan ang mga site na mag-edit ng mga file o folder sa iyong device</translation>
 <translation id="3114012059975132928">Player ng video</translation>
@@ -260,7 +254,6 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:
 <translation id="3602290021589620013">I-preview</translation>
 <translation id="3611658447322220736">Puwedeng tapusin ng mga kamakailang isinarang site ang pagpapadala at pagtanggap ng data</translation>
 <translation id="3619294456800709762">Awtomatikong makakapasok sa picture-in-picture ang mga site</translation>
-<translation id="3628308229821498208">Mga iminumungkahing paghahanap</translation>
 <translation id="3632460243282703117">Mag-subscribe</translation>
 <translation id="363748948745453283">Gumagamit ng tinatayang lokasyon</translation>
 <translation id="3641456520301071208">Puwedeng hilingin ng mga site ang iyong lokasyon</translation>
@@ -441,7 +434,6 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:
 <translation id="5515432237048785579">Binuksan nang buo ang bottom sheet ng feed ng Discover</translation>
 <translation id="5516455585884385570">Buksan ang mga setting ng notification</translation>
 <translation id="5527111080432883924">Magtanong bago payagan ang mga site na i-read ang text at mga larawan mula sa clipboard (inirerekomenda)</translation>
-<translation id="5553374991681107062">Pinakabago</translation>
 <translation id="674221630984410403">Huwag pabilisin ang mga site gamit ang V8 na engine ng Brave pero gawing bahagyang mas resistant sa mga attack ang Brave</translation>
 <translation id="5556459405103347317">I-reload</translation>
 <translation id="5591840828808741583">Naka-block ang <ph name="SITE_NAME"/></translation>
@@ -521,7 +513,6 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:
 <translation id="6231752747840485235">I-uninstall ang '<ph name="APP_NAME"/>'?</translation>
 <translation id="4789073065838177382">I-tap ang Browser app &gt; Brave</translation>
 <translation id="6260830281887654268">Binuksan nang kalahati ang bottom sheet ng mga koleksyon ng tema para sa hitsura ng page ng bagong tab</translation>
-<translation id="6262191102408817757">Batay sa iyong huling tab</translation>
 <translation id="6262279340360821358">Naka-block ang <ph name="PERMISSION_1"/> at <ph name="PERMISSION_2"/></translation>
 <translation id="6270391203985052864">Puwedeng humiling ang mga site na magpadala ng mga notification</translation>
 <translation id="6295158916970320988">Lahat ng site</translation>
@@ -579,6 +570,7 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:
 <translation id="6912998170423641340">I-block ang mga site sa pag-read ng text at mga larawan mula sa clipboard</translation>
 <translation id="6945221475159498467">Pumili</translation>
 <translation id="6950072572526089586">Puwedeng mag-save ang site na binibisita mo ng impormasyon tungkol sa kung ano ang ginagawa mo para gumana ito na gaya ng inaasahan — halimbawa, para panatilihin kang naka-sign in sa isang site o para mag-save ng mga item sa iyong shopping cart. Kadalasang pansamantalang sine-save ng mga site ang impormasyong ito sa iyong device.</translation>
+<translation id="6964291282260073066">Naka-disable ang "WebGPU."</translation>
 <translation id="6965382102122355670">OK</translation>
 <translation id="6980507581230208647">Rose na tema</translation>
 <translation id="6980861169612950611">I-delete ang data ng site? <ph name="SITE_NAME"/></translation>
@@ -601,7 +593,6 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:
 <translation id="7180611975245234373">I-refresh</translation>
 <translation id="7188508872042490670">On-device na data ng site</translation>
 <translation id="7201549776650881587">Ide-delete ng pagkilos na ito ang lahat ng data at cookies na na-store ng lahat ng site sa ilalim ng <ph name="ORIGIN"/> o ng app nito sa iyong Home screen</translation>
-<translation id="7203150201908454328">Pinalawak</translation>
 <translation id="7213166370492037743">Huwag payagan ang mga site na kumonekta sa anumang device sa iyong lokal na network</translation>
 <translation id="7219254577985949841">I-delete ang data ng site?</translation>
 <translation id="723171743924126238">Pumili ng mga larawan</translation>
@@ -612,6 +603,9 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:
 <translation id="7276071417425470385">Kapag naka-on, puwedeng hilingin ng mga site na gumamit ng mga virtual reality device. Kapag naka-off, hindi makakagamit ang mga site ng mga virtual reality device.</translation>
 <translation id="7282197670900591579">Citron na tema</translation>
 <translation id="728412880473384942">Mas mabilis ang mga site pero hindi gaanong secure</translation>
+<translation id="5843014938239239453">Pamahalaan sa <ph name="BEGIN_LINK1"/>mga setting ng Android<ph name="END_LINK1"/>
+
+Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:</translation>
 <translation id="7366415735885268578">Magdagdag ng site</translation>
 <translation id="7368695150573390554">Made-delete ang anumang offline data</translation>
 <translation id="7369678931043226462">Binuksan nang kalahati ang bottom sheet ng pag-customize ng page ng bagong tab mo</translation>
@@ -675,7 +669,6 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:
 <translation id="8007176423574883786">Naka-off para sa device na ito</translation>
 <translation id="802154636333426148">Hindi na-download</translation>
 <translation id="8033047164036749181">Mag-subscribe para sa mga notification mula sa site na ito</translation>
-<translation id="8042586301629853791">Pagbukud-bukurin ayon sa:</translation>
 <translation id="8051193500142930381">Hindi gagana ang mga feature na nangangailangan ng camera</translation>
 <translation id="2495032782748793764">Default ng Brave</translation>
 <translation id="8067883171444229417">I-play ang video</translation>
@@ -723,6 +716,7 @@ Kinokontrol ng Advanced na Proteksyon ang mga setting ng Brave na ito:
 <translation id="8471525937465764768">Karaniwang kumokonekta ang mga site sa mga USB device para sa mga feature gaya ng pag-print ng dokumento o pag-save sa storage device</translation>
 <translation id="8473055640493819707">Luma na ang '<ph name="APP_NAME"/>.' Paki-install ulit ang app.</translation>
 <translation id="847433688444405067">Mag-browse sa lahat ng device</translation>
+<translation id="8484556725636319115">Naka-off ang "JavaScript optimizer." <ph name="BEGIN_LINK2"/>Pamahalaan ang mga exception sa Site<ph name="END_LINK2"/></translation>
 <translation id="8487700953926739672">Available sa offline</translation>
 <translation id="848952951823693243">Palaging hilingin ang pang-mobile na site</translation>
 <translation id="8492822722330266509">Puwedeng magpadala ng mga pop-up at gumamit ng mga pag-redirect ang mga site</translation>

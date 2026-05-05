@@ -34,7 +34,6 @@
 <translation id="878572309106296578">Brave бара пристап до Bluetooth за да открива 
  уреди со Bluetooth. <ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="1330562121671411446">Откриј јазик</translation>
-<translation id="6204677860546245308">Користете ги поставките за прелистувачот препорачани од Brave</translation>
 <translation id="108284536240904209">Избриши ги и податоците од Brave (<ph name="URL"/>)</translation>
 <translation id="1345251407431278948">Закачено! Може да пристапите до „Пребарување со слики“ повторно од новото копче на алатникот</translation>
 <translation id="1356661055722410047">Ново! Може да ги преведувате и текстот и сликите на екранот</translation>
@@ -55,11 +54,12 @@
 <translation id="6570689355868013775">Алатки за безбедност на Brave</translation>
 <translation id="1902837727299679178">Brave сака да ги избрише вашите податоци во Password Manager. За да го дозволите тоа, внесете ја вашата лозинка за Windows.</translation>
 <translation id="4449148723378534338">Прегледајте ги клучните контроли за приватноста и безбедноста во Brave</translation>
+<translation id="5229247933547820267">Најавете се на Brave за да го прашате „AI-режимот“ за вашата картичка без да ја напуштите страницата. Ќе ги добиете и вашите лозинки и друго на сите ваши уреди.</translation>
 <translation id="1640672724030957280">Се презема…</translation>
 <translation id="1680687534629375545">Прашајте ја „Пребарување слики“ за страницава</translation>
+<translation id="509363484780540563">Може да го користите Brave секогаш кога ќе кликнете линкови во пораки, документи и други апликации. Ќе се закачи и на вашата лента со задачи.</translation>
 <translation id="1709772298389099340">Обезбедува зголемени привилегии за <ph name="BROWSER_NAME"/>.</translation>
 <translation id="2913217021115517297">За да помогне да се подобрат функцииве, Brave ги испраќа вашите интеракции со нив до Brave. Можно е податоциве да ги читаат, да ги обработуваат и да додаваат прибелешки во нив човечки рецензенти.</translation>
-<translation id="1722488837206509557">Ова ќе ви овозможи да изберете некој од достапните уреди и да прикажувате содржини на нив.</translation>
 <translation id="8004287232784878841">Brave ќе ги избрише податоците од прелистување наскоро</translation>
 <translation id="4197839351786449392">Brave ќе се обиде да ги надгради навигациите на HTTPS</translation>
 <translation id="7814200940910057384">Податоците на Brave се избришани</translation>
@@ -194,6 +194,7 @@
 <translation id="3045032126857188731">Јазик на преводот: <ph name="LANGUAGE"/></translation>
 <translation id="3047590466164881923">Затвори го дијалогот за повратни информации</translation>
 <translation id="4503085212612536713">Други профили на Brave</translation>
+<translation id="2041039306630146369">Екстензиите се додатоци што ви овозможуваат да го приспособувате Brave. Од организирање до поедноставување на секојдневните задачи, екстензиите ви помагаат да го приспособувате Brave според вашите потреби.</translation>
 <translation id="7918740962659365265">Помогнете да го подобриме Brave со испраќање извештаи за падови и <ph name="UMA_LINK"/> до Brave</translation>
 <translation id="2332543193474246254">{NUM_DEVICES,plural, =0{Една или повеќе екстензии за Brave пристапуваа до 1 USB-уред}=1{Една или повеќе екстензии за Brave пристапуваат до 1 USB-уред}one{Една или повеќе екстензии за Brave пристапуваа до # USB-уред}other{Една или повеќе екстензии за Brave пристапуваа до # USB-уреди}}</translation>
 <translation id="3700405816184340252">Историја на Brave</translation>
@@ -222,8 +223,6 @@
 <translation id="8926637909431618259">Продолжи со извршување на заднинските апликации кога Brave е затворен</translation>
 <translation id="518125528057094977">Brave ќе ве предупреди пред вчитувањето сајт преку небезбедна врска</translation>
 <translation id="8652321858775514885">Ќе се одјавите од повеќето сајтови кога ќе ги затворите сите прозорци во Brave, со исклучок на вашата сметка на Brave ако сте најавени на Brave. За да овозможите да ве помнат сајтовите, <ph name="SETTINGS_LINK"/>.</translation>
-<translation id="3795277300264350702">Вашиот стандарден пребарувач го промени апликација надвор од Brave. Brave го ресетираше за да ве заштити.</translation>
-<translation id="5033074923607633232">Најавете се на Brave за да ги добиете лозинките, обележувачите и друго на сите ваши уреди</translation>
 <translation id="3352986031709923790">горен десен агол на областа за пребарување: десно <ph name="RIGHT"/> %, горе <ph name="TOP"/> %</translation>
 <translation id="7261356974224431851">Податоци од Brave во вашата сметка</translation>
 <translation id="3369405342922656244">Пребарај ја страницава со „Пребарување слики“</translation>
@@ -428,6 +427,7 @@
 <translation id="5895138241574237353">Рестартирај</translation>
 <translation id="5903106910045431592"><ph name="PAGE_TITLE"/> - Мрежно најавување</translation>
 <translation id="5924017743176219022">Се поврзува на интернет…</translation>
+<translation id="1275716786566134844">Ајде да го подготвиме вашиот Brave</translation>
 <translation id="5941711191222866238">Минимизирај</translation>
 <translation id="5768962901674164501">За да го добиете обележувачов, а и друго на сите ваши уреди, најавете се на Brave</translation>
 <translation id="5101892358689285100">Персонализирајте го Brave</translation>
@@ -464,6 +464,7 @@
 <translation id="5980269616827212166">На Brave му треба дозвола за пристап до капацитетот за да презема датотеки</translation>
 <translation id="7651600795135059130">Ги проверува URL-адресите во список со небезбедни сајтови меморирани во Brave</translation>
 <translation id="5019879183386042809">Постави го Brave за стандарден прелистувач</translation>
+<translation id="6248988683584659830">Пребарувајте низ поставките</translation>
 <translation id="7445061995866044926">Ќе се одјавите од Brave?</translation>
 <translation id="4659866260728515512">Картичкиве користат дополнителни ресурси. За да се подобри изведбата, дозволете Brave да ги деактивира.</translation>
 <translation id="6806912298071949921">Приспособете го вашиот профил на Brave</translation>
@@ -620,6 +621,7 @@ Brave не може да ги обнови вашите поставки.</trans
 <translation id="7810005234485217901">Може да ја закачите „Пребарување со слики“ за лесен пристап</translation>
 <translation id="1652855885539187849">На уредов веќе постои профил на Brave со оваа сметка</translation>
 <translation id="7845233973568007926">Фала за инсталирањето. Мора да го рестартирате компјутерот пред да користите <ph name="BUNDLE_NAME"/>.</translation>
+<translation id="7397737266068428588">Вашиот пребарувач го промени нешто надвор од Brave. Brave го ресетира на првичните стандардни поставки за да ве заштити. <ph name="LEARN_MORE_LINK"/></translation>
 <translation id="9148690296223500734">Приспособете го Brave за да му го подновите изгледот</translation>
 <translation id="7963515534397191222">Brave не може да се ажурира на најновата верзија и поради тоа ги пропуштате новите функции и безбедносни поправки.</translation>
 <translation id="7872446069773932638">Се презема… Уште <ph name="SECONDS"/> сек.</translation>
@@ -748,6 +750,7 @@ Brave не може да ги обнови вашите поставки.</trans
 <translation id="7535429826459677826">Google Chrome Dev</translation>
 <translation id="6283840329609797763">Инсталирањето не успеа поради неназначена грешка. Преземете го Brave повторно.</translation>
 <translation id="1743665722170667430">Екстензии, апликации и теми од непознати извори може да го оштетат вашиот уред. Brave препорачува да ги инсталирате само од <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/></translation>
+<translation id="5840822070878669614">Отвори веб-продавница</translation>
 <translation id="6184592406110188164">Оваа екстензија ги крши правилата на Web Store и може да е небезбедна. Отстранете ја од Brave за да не ја гледа и менува вашата податоци на сајтовите кои ги посетувате, вклучувајќи ги и вашите лични информации.</translation>
 <translation id="1299765473362724475">Предупредување: Brave не може да спречи дека екстензиите ја снимаат вашата историја на прелистување. За да ја оневозможите оваа екстензија во Приватен режим, откликнете ја оваа опција.</translation>
 <translation id="1448049584457347995">За да го направиме Brave побезбеден, ги оневозможивме некои екстензии кои не се на листата во <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> и можеби беа додадени без ваше знаење.</translation>
@@ -758,6 +761,7 @@ Brave не може да ги обнови вашите поставки.</trans
           =0 {A new update for Brave is available and will be applied as soon as you relaunch.}
           =1 {A new update for Brave is available and will be applied as soon as you relaunch. Your Private window won't reopen.}
           other {A new update for Brave is available and will be applied as soon as you relaunch. Your # Private windows won't reopen.}}</translation>
+<translation id="7347727235538318126">Ово ќе ви овозможи да делите содржина од Brave на вашите локални уреди, како што се ТВ или звучник.</translation>
 <translation id="3829358914761176693">{COUNT, plural,
               =0 {Your administrator asks that you relaunch Brave to apply this update}
               =1 {Your administrator asks that you relaunch Brave to apply this update. Your Private window won't reopen.}

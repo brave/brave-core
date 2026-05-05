@@ -49,6 +49,14 @@
 <translation id="2998960761270772157">Blocca gli elementi di accesso, menu, commenti e informazioni video su youtube.com</translation>
 <translation id="8531835121131500698">Blocca YouTube Shorts</translation>
 <translation id="2167271714269158912">Blocca i video Shorts su homepage, pagina tendenze e risultati di ricerca su youtube.com.</translation>
+<translation id="2564435705466025309">Blocca i video di YouTube con doppiaggio automatico</translation>
+<translation id="3603500459037204525">Blocca i video con doppiaggio automatico dalla home page e dai risultati di ricerca di youtube.com.</translation>
+<translation id="4067265130987656010">Blocca le miniature di YouTube</translation>
+<translation id="3034711349887440574">Blocca le miniature dalla home page e dai risultati di ricerca di youtube.com.</translation>
+<translation id="8741919213635379855">Blocca YouTube Playables</translation>
+<translation id="2216551241986578034">Blocca i Playables dalla home page e dai risultati di ricerca di youtube.com.</translation>
+<translation id="9038505474874975130">Blocca i video solo per i membri di YouTube</translation>
+<translation id="3084239516382196983">Blocca i video solo per i membri dalla home page e dai risultati di ricerca di youtube.com.</translation>
 <translation id="6052725679982758334">Blocco dei social media</translation>
 <translation id="7498695072878479744">Permetti pulsante di accesso Google su siti di terze parti</translation>
 <translation id="863171915776379000">Consenti accessi a Facebook e post incorporati</translation>
@@ -59,7 +67,7 @@
 <translation id="8685431198160039193">Le informazioni salvate possono essere riempite automaticamente nelle schede private</translation>
 <translation id="6583902294974160967">Assistenza</translation>
 <translation id="1799030480311994998">Funzioni</translation>
-<translation id="1919345977826869612">Ads</translation>
+<translation id="1919345977826869612">Annunci</translation>
 <translation id="2839742394543397416">Dati Analytics</translation>
 <translation id="2005732746077850308">Protezioni Brave e privacy</translation>
 <translation id="4692623383562244444">Motori di ricerca</translation>
@@ -144,7 +152,7 @@
 <translation id="693506469193748756">Dimenticami quando chiudo questo sito</translation>
 <translation id="6975864539539353406">Cancella i cookie e altri dati del sito quando chiudi un sito</translation>
 <translation id="7740929262043547697">Consenti il blocco di elementi nelle finestre private</translation>
-<translation id="1260864846935682371">Abilita la funzione Blocca elementi delle Protezioni nelle finestre private. Nota che gli elementi bloccati nelle finestre private saranno bloccati anche nelle finestre non private.</translation>
+<translation id="1260864846935682371">Abilita la funzione "Blocca elementi" delle Protezioni nelle finestre private. Nota: gli elementi bloccati nelle finestre private saranno bloccati anche nelle finestre non private.</translation>
 <translation id="1680858055899097121">Non rimanere nelle schede tra una sessione di navigazione e l'altra</translation>
 <translation id="7142548388914389999">Acconsenti all'analisi dei prodotti di tutela della privacy (P3A).</translation>
 <translation id="5254037869598726291">Le informazioni di analisi P3A rese anonime consentono a Brave di stimare l'utilizzo complessivo e ci aiutano a migliorare le funzioni più popolari.</translation>
@@ -450,7 +458,7 @@ Confermi di voler procedere?</translation>
 <translation id="6476216365964140603">Dettagli aggiuntivi (facoltativo)</translation>
 <translation id="6145852496180774737">Contattatemi via: (facoltativo)</translation>
 <translation id="6367576083705149078">Se fornisci i dati di contatto, questi saranno memorizzati per future segnalazioni.</translation>
-<translation id="7616645803364270729">E-mail, Twitter ecc.</translation>
+<translation id="7616645803364270729">Email, Twitter ecc.</translation>
 <translation id="5299848999918506028">Grazie!</translation>
 <translation id="76550953340008122">Grazie, hai fatto notare agli sviluppatori di Brave che qualcosa non va su questo sito. Faremo del nostro meglio per rimediare!</translation>
 <translation id="3037432377946455872">Quale problema si verifica?</translation>
@@ -967,9 +975,9 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="5494920125229734069">Seleziona tutto</translation>
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="944736176598169208">Ricompense</translation>
-<translation id="4272190451231642425">Invia automaticamente i rapporti sui crash</translation>
 <translation id="1199170151481311646">Telemetrie a tutela della privacy</translation>
 <translation id="1706715315466634757">Alias e-mail</translation>
+<translation id="738840791756723657">IA</translation>
 <translation id="6709133671862442373">Notizie</translation>
 <translation id="5990642573624858459">Rapporti statistici</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -981,8 +989,11 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="2573819149217596923">Modifica delle funzionalità Brave</translation>
 <translation id="7415416427817229128">L'abilitazione o la disabilitazione di una funzionalità Brave richiede il riavvio del browser per applicare le modifiche. Vuoi riavviare ora?</translation>
 <translation id="2256115617011615191">Riavvia ora</translation>
+<translation id="2160089182263405907">Disabilitazione delle funzioni</translation>
+<translation id="3362364767724670721">L'abilitazione o la disabilitazione di una funzione di Brave richiede il riavvio del browser per applicare le modifiche. Tocca <ph name="BEGIN_BOLD"/>Riavvia ora<ph name="END_BOLD"/> una volta che Origin ha terminato l'aggiornamento.</translation>
+<translation id="1028940738207645746">Vuoi davvero reimpostare tutte le impostazioni su quelle predefinite?</translation>
+<translation id="5939518447894949180">Reimposta</translation>
 <translation id="8554205386170195281">Acquista</translation>
-<translation id="7071521146534760487">Gestisci account</translation>
 <translation id="8613144770663526433">Accedi con il Portafoglio Brave</translation>
 <translation id="3696514931437952995">Stai eseguendo l’accesso a <ph name="ORIGIN"/>. Portafoglio Brave condividerà l’indirizzo del tuo portafoglio con <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Vedi dettagli</translation>
@@ -1017,7 +1028,6 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="1309636029062006520">Crea playlist dei tuoi audio e video preferiti e riproducili quando e dove vuoi.</translation>
 <translation id="7899390017499980820">Pulsante Aggiungi alla playlist</translation>
 <translation id="6901152954398668317">Mostra o nascondi il pulsante “Aggiungi alla playlist” per aggiungere o rimuovere file multimediali velocemente.</translation>
-<translation id="5939518447894949180">Ripristina</translation>
 <translation id="8199028711686989861">Rimuovi tutti i video dalla playlist, inclusi quelli salvati in modalità offline.</translation>
 <translation id="4590997608186539865">Playlist</translation>
 <translation id="7525067979554623046">Crea</translation>
@@ -1164,4 +1174,20 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="1724977129262658800">Sblocca per modificare la password</translation>
 <translation id="5780792035410621042">Per copiare le password, imposta prima un blocco schermo sul tuo dispositivo</translation>
 <translation id="7986497153528221272">Per visualizzare le password, imposta un blocco schermo sul tuo dispositivo</translation>
+<translation id="4882237634123415792">Motori di ricerca personalizzati</translation>
+<translation id="8364431224461158026">Aggiungi un motore di ricerca personalizzato</translation>
+<translation id="7307935603426295341">Modifica motore di ricerca personalizzato</translation>
+<translation id="4002066346123236978">Titolo</translation>
+<translation id="3653110185270660915">Immetti il nome del motore di ricerca</translation>
+<translation id="7400418766976504921">URL</translation>
+<translation id="6410668567036790476">Aggiungi motore di ricerca</translation>
+<translation id="6289878295410648689">Scrivi l'URL di ricerca e sostituisci la query con <ph name="SPECIAL_SYMBOL"/>.</translation>
+<translation id="8943582268084103903">Per esempio: https://youtube.com/search?q=<ph name="SPECIAL_SYMBOL"/>. Se il sito supporta OpenSearch, mentre si modifica questo campo si avrà a disposizione un'opzione di aggiunta automatica.</translation>
+<translation id="8706939021136180678">L'URL non è valido.</translation>
+<translation id="6528099556282059181">Il motore di ricerca è già stato aggiunto.</translation>
+<translation id="463451857046640291">Impossibile aggiungere il motore di ricerca.</translation>
+<translation id="1229671956956864948">Impossibile aggiornare il motore di ricerca.</translation>
+<translation id="1462771969120037152">Impossibile eliminare il motore di ricerca. Il motore di ricerca che stai tentando di eliminare potrebbe essere impostato come predefinito.</translation>
+<translation id="1079140196216383600">Elimina motore di ricerca personalizzato</translation>
+<translation id="525276572490219787">Sei sicuro di voler eliminare "<ph name="SEARCH_ENGINE_NAME"/>"? Questa azione non può essere annullata.</translation>
 </translationbundle>

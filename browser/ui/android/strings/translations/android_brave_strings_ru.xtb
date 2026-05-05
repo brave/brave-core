@@ -49,6 +49,14 @@
 <translation id="2998960761270772157">Блокировка входа, меню, а также информации о видео на сервисе YouTube.</translation>
 <translation id="8531835121131500698">Блокировать YouTube Shorts</translation>
 <translation id="2167271714269158912">Блокировать Shorts на главной странице, в разделе «В тренде» и в результатах поиска по сайту youtube.com.</translation>
+<translation id="2564435705466025309">Блокировать видео YouTube с автоматическим дублированием</translation>
+<translation id="3603500459037204525">Блокирует видео с автоматическим дублированием на главной странице и в результатах поиска youtube.com.</translation>
+<translation id="4067265130987656010">Блокировать миниатюры YouTube</translation>
+<translation id="3034711349887440574">Блокирует миниатюры на главной странице и в результатах поиска youtube.com.</translation>
+<translation id="8741919213635379855">Блокировать YouTube Playables</translation>
+<translation id="2216551241986578034">Блокирует Playables на главной странице и в результатах поиска youtube.com.</translation>
+<translation id="9038505474874975130">Блокировать видео YouTube только для членов</translation>
+<translation id="3084239516382196983">Блокирует видео только для членов на главной странице и в результатах поиска youtube.com.</translation>
 <translation id="6052725679982758334">Блокировка соцсетей</translation>
 <translation id="7498695072878479744">Разрешить кнопки входа через Google на сторонних сайтах</translation>
 <translation id="863171915776379000">Разрешить вход в Facebook и встроенные посты</translation>
@@ -192,8 +200,8 @@
 <translation id="8025937231644975408">Какие функции вам нравятся больше всего?</translation>
 <translation id="6718362830686703942">Отправлять отчеты для диагностики, когда происходит сбой или зависание.</translation>
 <translation id="8616157231067364693">Делитесь конфиденциальными и анонимными данными о том, какие функции популярны среди пользователей Brave.</translation>
-<translation id="2888496576732880897">Помогите Поиску Brave развиваться</translation>
-<translation id="7198716519700700181">Блокировать прерывания при вашем потоке</translation>
+<translation id="2888496576732880897">Улучшить поиск Brave</translation>
+<translation id="7198716519700700181">Смотрите видео без рекламы</translation>
 <translation id="7044431516245362795">Примите участие в проекте Web Discovery, чтобы помочь расширить индекс и улучшить результаты поиска. <ph name="LEARN_MORE_START"/>Узнайте больше.<ph name="LEARN_MORE_END"/></translation>
 <translation id="4847979153841887006">Логотип Brave</translation>
 <translation id="1389386068457132299">Фон адаптации</translation>
@@ -203,11 +211,11 @@
 <translation id="4767173360729868049">Иллюстрация Помогите Поиску Brave развиваться</translation>
 <translation id="8241918461631453498">Иллюстрация блокировки прерываний</translation>
 <translation id="8213310572767907663">Сделать иллюстрацию Brave лучше</translation>
-<translation id="2427917529469438577">Блокируйте раздражающие прерывания на Ваших любимых сайтах потокового вещания.</translation>
+<translation id="2427917529469438577">Блокируйте назойливую рекламу на любимых стриминговых сайтах.</translation>
 <translation id="7818938154803162778">Хорошо, разрешить</translation>
 <translation id="5298784657468199167">Отправить отчеты о сбоях</translation>
 <translation id="6188781052835527980">Отправлять отчеты для диагностики, когда происходит сбой или зависание.</translation>
-<translation id="4780647518983772446">Делитесь конфиденциальными и анонимными данными о том, какие функции Brave популярны среди пользователей.</translation>
+<translation id="4780647518983772446">Анонимно и полностью конфиденциально поделитесь данными об используемых функциях Brave.</translation>
 <translation id="5109496672133133896">Конфиденциальные данные о продукте</translation>
 <translation id="3545804467215833536">Коснитесь, чтобы открыть окно настройки Защиты Brave</translation>
 <translation id="1724327820822194498">Узнайте, сколько плохих вещей заблокировала Защита Brave на каждой странице.</translation>
@@ -970,9 +978,9 @@
 <translation id="5494920125229734069">Выделить все</translation>
 <translation id="2361906291514218784">ИИ-помощник Leo</translation>
 <translation id="944736176598169208">Награды</translation>
-<translation id="4272190451231642425">Автоматически отправляйте отчеты об авариях</translation>
 <translation id="1199170151481311646">Аналитика, сохраняющая конфиденциальность</translation>
 <translation id="1706715315466634757">Псевдонимы электронной почты</translation>
+<translation id="738840791756723657">ИИ</translation>
 <translation id="6709133671862442373">Новости</translation>
 <translation id="5990642573624858459">Статистическая отчетность</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -984,8 +992,11 @@
 <translation id="2573819149217596923">Изменение функций Brave</translation>
 <translation id="7415416427817229128">Включение или отключение функции Brave требует перезагрузку браузера для применения изменений. Вы хотите перезагрузиться сейчас?</translation>
 <translation id="2256115617011615191">Перезагрузить сейчас</translation>
+<translation id="2160089182263405907">Отключение функций</translation>
+<translation id="3362364767724670721">Включение или отключение функции Brave требует перезагрузки браузера для применения изменений. Нажмите <ph name="BEGIN_BOLD"/>Перезагрузить сейчас<ph name="END_BOLD"/> после завершения обновления Origin.</translation>
+<translation id="1028940738207645746">Действительно сбросить все параметры на значения по умолчанию?</translation>
+<translation id="5939518447894949180">Сбросить</translation>
 <translation id="8554205386170195281">Покупка</translation>
-<translation id="7071521146534760487">Управление аккаунтом</translation>
 <translation id="8613144770663526433">Войдите с помощью Brave Кошелька</translation>
 <translation id="3696514931437952995">Выполняется вход в аккаунт <ph name="ORIGIN"/>. Сайту <ph name="ORIGIN"/> будет предоставлен адрес вашего Brave Кошелька.</translation>
 <translation id="1028781062521375153">Подробнее</translation>
@@ -1022,7 +1033,6 @@ Leo ИИ. Это действие нельзя отменить.</translation>
 <translation id="1309636029062006520">Создавайте плейлисты со своими любимыми треками и видеороликами и воспроизводите их в любое время и в любом месте.</translation>
 <translation id="7899390017499980820">Кнопка «Добавить в плейлист»</translation>
 <translation id="6901152954398668317">Показать или скрыть кнопку «Добавить в плейлист» для быстрого доступа к добавлению или удалению медиафайлов.</translation>
-<translation id="5939518447894949180">Сбросить</translation>
 <translation id="8199028711686989861">Удалить все видео из плейлиста, включая офлайн-хранилище.</translation>
 <translation id="4590997608186539865">Плейлист</translation>
 <translation id="7525067979554623046">Создать</translation>
@@ -1175,4 +1185,20 @@ Leo ИИ. Это действие нельзя отменить.</translation>
 <translation id="1724977129262658800">Чтобы изменить пароль, разблокируйте устройство</translation>
 <translation id="5780792035410621042">Чтобы копировать пароли, включите на устройстве блокировку экрана.</translation>
 <translation id="7986497153528221272">Чтобы просматривать пароли, включите на устройстве блокировку экрана.</translation>
+<translation id="4882237634123415792">Системы пользовательского поиска</translation>
+<translation id="8364431224461158026">Добавьте пользовательскую поисковую систему</translation>
+<translation id="7307935603426295341">Редактировать пользовательскую поисковую систему</translation>
+<translation id="4002066346123236978">Название</translation>
+<translation id="3653110185270660915">Введите название поисковой системы</translation>
+<translation id="7400418766976504921">URL</translation>
+<translation id="6410668567036790476">Добавить поисковую систему</translation>
+<translation id="6289878295410648689">Введите URL поисковой системы и смените запрос на <ph name="SPECIAL_SYMBOL"/>.</translation>
+<translation id="8943582268084103903">Пример: https://youtube.com/search?q=<ph name="SPECIAL_SYMBOL"/>. Если ресурс поддерживает OpenSearch, можно воспользоваться автодобавлением.</translation>
+<translation id="8706939021136180678">URL недействителен.</translation>
+<translation id="6528099556282059181">Поисковик уже добавлен.</translation>
+<translation id="463451857046640291">Ошибка при добавлении поисковика.</translation>
+<translation id="1229671956956864948">Ошибка при обновлении поисковика.</translation>
+<translation id="1462771969120037152">Ошибка при удалении поисковика. Возможно, удаляемый поисковик установлен в качестве поискового сервиса по умолчанию.</translation>
+<translation id="1079140196216383600">Удалить пользовательскую поисковую систему</translation>
+<translation id="525276572490219787">Вы уверены, что хотите удалить «<ph name="SEARCH_ENGINE_NAME"/>»? Это действие нельзя отменить.</translation>
 </translationbundle>

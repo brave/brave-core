@@ -483,6 +483,10 @@
 <translation id="1518915449477235311">Želite li da dozvolite da <ph name="URL"/> otvori razgovor sa asistentom Leo AI u Brave-u?</translation>
 <translation id="4355784577209159847">Dozvoli korišćenje kolačića trećih strana za zastarelu prijavu na Google</translation>
 <translation id="5770656036486891920"><ph name="URL"/> želi da koristi kolačiće trećih strana za zasteralu prijavu na Google</translation>
+<translation id="5582087890067572966">🎉 Sada zarađujete!</translation>
+<translation id="4364336119478610380">Zarađujete kada god se ovakvo obaveštenje pojavi na vašem ekranu. Ne morate da kliknete da biste zaradili.</translation>
+<translation id="5893017172751072752">Zarađujete kada se pojavi Brave oglas u obaveštenju</translation>
+<translation id="3447730462826640312">Ne morate da kliknete da biste zaradili, ali kliknite ako ste zainteresovani!</translation>
 <translation id="2104347391516032700">Usluga Bat nagrađivanja</translation>
 <translation id="5939518447894949180">Resetuj</translation>
 <translation id="3349204812119681938">Resetuj Brave nagrade</translation>
@@ -996,6 +1000,7 @@ other {Zarađujete gledajući <ph name="COUNT_BEGIN"/># oglasa<ph name="COUNT_EN
 <translation id="2795015351889043417">Fajl JSON</translation>
 <translation id="5468881191994555667">Izaberite fajl</translation>
 <translation id="795667975304826397">Nije izabran fajl</translation>
+<translation id="6720675936326555106">Odabrana datoteka</translation>
 <translation id="5891811606602061966">Uvoz naloga nije uspeo. Probajte ponovo.</translation>
 <translation id="6566535583781706170">Uvezi nalog</translation>
 <translation id="5051929972046200722">Izaberite uređaj za hardverski novčanik</translation>
@@ -1042,10 +1047,12 @@ other {Zarađujete gledajući <ph name="COUNT_BEGIN"/># oglasa<ph name="COUNT_EN
 <translation id="2416098547200943834">NAPOMENA: Privatni ključ je obezbeđen kao heksadecimalno šifrovani fajl JSON koji sadrži privatni ključ i informacije o protokolu. <ph name="LINK_START"/>Saznajte više<ph name="LINK_END"/>;.</translation>
 <translation id="7657130382217527063">NAPOMENA: Privatni ključ mora biti obezbeđen kao heksadecimalno šifrovani fajl JSON koji sadrži privatni ključ i informacije o protokolu. <ph name="LINK_START"/>Saznajte više<ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">NAPOMENA: Podržani su samo prošireni ključevi tipa <ph name="FORMAT"/>.</translation>
+<translation id="6457746820359933716">Uvezite koristeći JSON datoteku izvezenu iz Polkadot.js ili kompatibilnih novčanika. Unesite lozinku koja je korišćena za šifrovanje izvoza.</translation>
 <translation id="9133762451347918196">Testnet nalozi</translation>
 <translation id="42126664696688958">Izvezi</translation>
 <translation id="1366855498335432549">Deponuj</translation>
 <translation id="790104325876206743">Podešavanja naloga</translation>
+<translation id="8856844353253421399">Poslednji put ažurirano <ph name="TIME_AGO"/> назад</translation>
 <translation id="6322030314101903925">Nema dostupnih sredstava</translation>
 <translation id="836614343069504000">Deponujte ili kupite tokene da biste započeli. Ako ne vidite tokene sa uvezenog naloga, proverite filtere i podešavanja prikaza. Nepoznati tokeni će možda morati da se dodaju kao prilagođena sredstva.</translation>
 <translation id="2902856457593699108">Prikaži ključ</translation>
@@ -1164,10 +1171,10 @@ other {Zarađujete gledajući <ph name="COUNT_BEGIN"/># oglasa<ph name="COUNT_EN
 <translation id="4324239559624557455">24 sata</translation>
 <translation id="9139452553033760558">Nedelju dana</translation>
 <translation id="1658834457013045127">Trajno</translation>
-<translation id="6344138931392227467"><ph name="DEVICE_NAME"/> je povezan</translation>
-<translation id="7051244143160304048"><ph name="DEVICE_NAME"/> nije povezan</translation>
-<translation id="5317781812114905957">Uputstva</translation>
-<translation id="1178198982208000092">Povežite <ph name="DEVICE_NAME"/></translation>
+<translation id="5571630233760536706"><ph name="DEVICE_NAME"/> je povezan</translation>
+<translation id="7058480232601314508"><ph name="DEVICE_NAME"/> nije povezan</translation>
+<translation id="434328838837168401">Pogledaj uputstva</translation>
+<translation id="6739517232898494646">Povezite vaš <ph name="DEVICE_NAME"/> da biste nastavili</translation>
 <translation id="6941881257520473899">Za hardverski novčanik je potrebna potvrda na uređaju.</translation>
 <translation id="2288190100157580461">Za hardverski novčanik je potrebno da aplikacija <ph name="NETWORK"/> bude otvorena na uređaju <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">poslato</translation>
@@ -1888,6 +1895,7 @@ other {Zarađujete gledajući <ph name="COUNT_BEGIN"/># oglasa<ph name="COUNT_EN
 <translation id="4150336849480030462">Prenos tokena SPL uz kreiranje povezanog naloga za tokene</translation>
 <translation id="2244921323472112851">Trenutno ne možemo da pronađemo stranicu koju tražite.</translation>
 <translation id="6277237872689140644">Možda je premeštena na drugu lokaciju ili URL sadrži grešku u kucanju.</translation>
+<translation id="1788572014530152502">Došlo je do greške pri obradi vaše transakcije. U mnogim slučajevima, to znači da nema dovoljno <ph name="SYMBOL"/> da pokrijete mrežnu naknadu. Umesto toga, pokušajte sa manjom sumom.</translation>
 <translation id="2737084171727561244">Idi na portfolio</translation>
 <translation id="3499452861061048987">Dodaj token</translation>
 <translation id="5046066249040287308">Pomoćna usluga Brave novačanika</translation>
@@ -2572,7 +2580,8 @@ other {Zarađujete gledajući <ph name="COUNT_BEGIN"/># oglasa<ph name="COUNT_EN
 <translation id="4724752924364329714">Ako je na ovom sajtu prikazano da ne funkcioniše, probajte da isključite štitove</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Napomena: ovo može smanjiti Brave-ove zaštite privatnosti.<ph name="NOTE_AFTER"/></translation>
 <translation id="4329860807937715445">Ovo može smanjiti Braveove zaštite privatnosti. <ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
-<translation id="1574700443447059851">Praćenja, oglasi i još toga je blokirano.</translation>
+<translation id="3889333301730272023"><ph name="BLOCK_COUNT"/> praćenja, oglasi i još toga je blokirano</translation>
+<translation id="2275121279487164685">Praćenja i oglasi</translation>
 <translation id="4968268657895673116">Sajt ne radi pravilno sa štitovima uključenim?</translation>
 <translation id="5412004902081180614">Prijavi</translation>
 <translation id="3620004479054499575">Da li imate problema na ovom sajtu?</translation>
@@ -2634,9 +2643,11 @@ other {Zarađujete gledajući <ph name="COUNT_BEGIN"/># oglasa<ph name="COUNT_EN
 <translation id="3795015906457257780">Gledate ovaj sajt bez zaštita privatnosti koje pruža Brave.</translation>
 <translation id="7194012750329511146">Brave štitovi
 <ph name="NUMBER"/> praćenja, oglasa i još toga je blokirano</translation>
+<translation id="2900068182947574679">Skriptovi</translation>
 <translation id="4292121526390005808">Blokirane skripte</translation>
 <translation id="5046271170844958713">Dozvoljene skripte</translation>
 <translation id="199862531047218413">primenjena je zaštita od otiskivanja</translation>
+<translation id="896105002981074545">Zaštita od otiskivanja</translation>
 <translation id="5032505924781383272">Primenjena zaštita ne znači nužno da ova veb-stranica pokušava da izvrši otiskivanje vašeg pregledača.</translation>
 <translation id="1905384713982899903">Blokirana otiskivanja</translation>
 <translation id="314364527871618241">Dozvoljena otiskivanja</translation>
@@ -2649,6 +2660,7 @@ other {Zarađujete gledajući <ph name="COUNT_BEGIN"/># oglasa<ph name="COUNT_EN
 <translation id="542789539047208469">Informacije o sajtu</translation>
 <translation id="7586067492365979844">Brave Shields ima novi dom i dizajn. Sada se integrira sa informacijama o sajtu za jedinstveno iskustvo.</translation>
 <translation id="9114542678887529043">Brave Shields ima novi dom i dizajn. Pristupite mu klikom na ikonu sajta u adresnoj traci.</translation>
+<translation id="4242533952199664413">Otvori podešavanja</translation>
 <translation id="6294662480095808915">Zaštita privatnosti kao standard.</translation>
 <translation id="4366423156486478559">Dobijte Brave zaštitu na svakom linku na koji kliknete. Samo podesite Brave kao podrazumevani pregledač i pregledajte veb – privatno.</translation>
 <translation id="3830912418080848377">Uvezite podešavanja</translation>
@@ -2787,4 +2799,19 @@ Hajde da vas povežemo!</translation>
 <translation id="1602850501393095406">Pritisnite ↑ da označite</translation>
 <translation id="8367705492654390392">Postavi pitanje</translation>
 <translation id="8525248723479742219">Pusti kasnije</translation>
+<translation id="2935698011275148880">Brave Poreklo</translation>
+<translation id="3983844925615091103">Dobrodošli u Brave Origin. Za nastavak, molimo kupite ili obnovite vašu Brave Origin kupovinu.</translation>
+<translation id="4801175670604644729">Trebate aktivnu Brave Origin kupovinu da koristite ovaj pregledač.</translation>
+<translation id="4144294274624829008">Obnovite Brave Origin kupovinu</translation>
+<translation id="6080178356113101120">Kupite Brave Origin</translation>
+<translation id="1009496146858538651">Obnovite kupovinu</translation>
+<translation id="3461564061600681423">Unesite svoj ID kupovine da aktivirate vašu Brave Origin kupovinu.</translation>
+<translation id="2036379724374431790">ID kupovine</translation>
+<translation id="4348430971280118761">Unesite svoj ID kupovine</translation>
+<translation id="7451866456310404779">Verifikuj ID kupovine</translation>
+<translation id="8853195592604941919">Verifikovanje… Ovo može potrajati minut.</translation>
+<translation id="4633706444004110760">Hvala što ste instalirali Brave Origin, verziju pregledača za korisnike koji ne trebaju sve funkcije koje podržavaju Brave kao poslovanje, ali i dalje žele privatnost koju samo Brave nudi. Origin korisnici će nastaviti da imaju koristi od vodeće zaštite privatnosti, blokiranja oglasa i brzine Brave (preko Shields), kao i redovnih ažuriranja softvera, Chromium zakrpa i poboljšanja bezbednosti i privatnosti. Origin će ukloniti većinu ostalih funkcija iz pregledača.</translation>
+<translation id="5816720995022674532">Origin je besplatan za upotrebu na Linux uređajima, ali i dalje <ph name="BEGIN_LINK"/>dostupan za kupovinu<ph name="END_LINK"/> ako želite da podržite Brave kao poslovanje. Kupovinom biste takođe otključali mogućnost da koristite Origin na Android, iOS, macOS i Windows uređajima.</translation>
+<translation id="3065220545261045367">Podržite Brave kupovinom Origin</translation>
+<translation id="2069499076031488636">Nastavite sa Origin-om besplatno na Linux</translation>
 </translationbundle>

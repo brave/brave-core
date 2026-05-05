@@ -483,6 +483,10 @@
 <translation id="1518915449477235311">Lejoni <ph name="URL"/> të hapë biseda Leo AI në Brave?</translation>
 <translation id="4355784577209159847">Lejo përdorimin e cookie-ve nga palët e treta për identifikimin e vjetër në Google</translation>
 <translation id="5770656036486891920"><ph name="URL"/> dëshiron të përdorë cookie-t nga palët e treta për identifikimin e vjetër në Google</translation>
+<translation id="5582087890067572966">🎉 Tani po fiton!</translation>
+<translation id="4364336119478610380">Fiton sa herë që një njoftim si ky shfaqet në ekranin tuaj. Nuk duhet të klikosh për të fituar.</translation>
+<translation id="5893017172751072752">Fiton kur shfaqet një njoftim i Reklamave Brave</translation>
+<translation id="3447730462826640312">Nuk ke nevojë të klikosh për të fituar, por kliko nëse je i interesuar!</translation>
 <translation id="2104347391516032700">Shërbimi i Shpërblimit</translation>
 <translation id="5939518447894949180">Rivendos</translation>
 <translation id="3349204812119681938">Rivendos Shpërblimet Brave</translation>
@@ -989,6 +993,7 @@
 <translation id="2795015351889043417">Skedar JSON</translation>
 <translation id="5468881191994555667">Zgjidh skedarin</translation>
 <translation id="795667975304826397">Asnjë skedar i zgjedhur</translation>
+<translation id="6720675936326555106">Skedari i zgjedhur</translation>
 <translation id="5891811606602061966">Dështoi importimi i llogarisë, ju lutemi provoni përsëri.</translation>
 <translation id="6566535583781706170">Importo llogarinë</translation>
 <translation id="5051929972046200722">Zgjidh pajisjen hardware</translation>
@@ -1035,10 +1040,12 @@
 <translation id="2416098547200943834">SHËNIM: Çelësi privat ofrohet si një JSON i koduar me hex që përmban çelësin privat dhe informacionin e protokollit. <ph name="LINK_START"/>Mëso më shumë<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">SHËNIM: Çelësi privat duhet të ofrohet si një JSON i koduar me hex që përmban çelësin privat dhe informacionin e protokollit. <ph name="LINK_START"/>Mëso më shumë<ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">SHËNIM: Vetëm çelësat e zgjeruar <ph name="FORMAT"/> janë të mbështetur.</translation>
+<translation id="6457746820359933716">Importoni duke përdorur një skedar JSON të eksportuar nga Polkadot.js ose portofole të përputhshme. Futni fjalëkalimin që u përdor për të enkriptuar eksportin.</translation>
 <translation id="9133762451347918196">Llogaritë testnet</translation>
 <translation id="42126664696688958">Eksporto</translation>
 <translation id="1366855498335432549">Depozitë</translation>
 <translation id="790104325876206743">Cilësimet e llogarisë</translation>
+<translation id="8856844353253421399">Përditësuar për herë të fundit <ph name="TIME_AGO"/> më parë</translation>
 <translation id="6322030314101903925">Nuk ka asete të disponueshme</translation>
 <translation id="836614343069504000">Depozitoni ose blini token për të filluar. Nëse nuk shihni token nga një llogari e importuar, kontrolloni filtrat dhe cilësimet e shfaqjes. Token të panjohur mund të kenë nevojë të shtohen si asete të personalizuara.</translation>
 <translation id="2902856457593699108">Shfaq çelësin</translation>
@@ -1157,10 +1164,10 @@
 <translation id="4324239559624557455">Për 24 orë</translation>
 <translation id="9139452553033760558">Për 1 javë</translation>
 <translation id="1658834457013045127">Përgjithmonë</translation>
-<translation id="6344138931392227467"><ph name="DEVICE_NAME"/> i lidhur</translation>
-<translation id="7051244143160304048"><ph name="DEVICE_NAME"/> i shkëputur</translation>
-<translation id="5317781812114905957">Udhëzime</translation>
-<translation id="1178198982208000092">Lidh pajisjen tuaj <ph name="DEVICE_NAME"/></translation>
+<translation id="5571630233760536706"><ph name="DEVICE_NAME"/> i lidhur</translation>
+<translation id="7058480232601314508"><ph name="DEVICE_NAME"/> i shkëputur</translation>
+<translation id="434328838837168401">Shiko udhëzimet</translation>
+<translation id="6739517232898494646">Lidhni <ph name="DEVICE_NAME"/> tuaj për të vazhduar</translation>
 <translation id="6941881257520473899">Kuleta për pajisje kërkon konfirmim në pajisje.</translation>
 <translation id="2288190100157580461">Kuleta për pajisje kërkon që aplikacioni <ph name="NETWORK"/> të jetë i hapur te <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">dërguar</translation>
@@ -1881,6 +1888,7 @@
 <translation id="4150336849480030462">Transferimi i Tokenit SPL me Krijimin e Llogarisë së Lidhur Tokeni</translation>
 <translation id="2244921323472112851">Nuk mund të gjejmë faqen që po kërkoni për momentin.</translation>
 <translation id="6277237872689140644">Mund të jetë zhvendosur në një vend tjetër ose URL mund të përmbajë një gabim.</translation>
+<translation id="1788572014530152502">Pati një gabim në përpunimin e transaksionit tuaj. Në shumicën e rasteve, kjo do të thotë se nuk ka mjaftueshëm <ph name="SYMBOL"/> për të mbuluar tarifën e rrjetit. Përpiquni me një shumë më të vogël në vend të kësaj.</translation>
 <translation id="2737084171727561244">Shko te Portofoli</translation>
 <translation id="3499452861061048987">Shto token</translation>
 <translation id="5046066249040287308">Shërbimi i Mjeteve të Portofolit</translation>
@@ -2565,7 +2573,8 @@
 <translation id="4724752924364329714">Nëse kjo faqe duket e prishur, provoje me Mburoja të çaktivizuara.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Shënim: kjo mund të ulë mbrojtjen e privatësisë nga Brave.<ph name="NOTE_AFTER"/></translation>
 <translation id="4329860807937715445">Kjo mund të zvogëlojë mbrojtjet e privatësisë të Brave. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
-<translation id="1574700443447059851">Gjurmues, reklama, dhe më shumë të bllokuara.</translation>
+<translation id="3889333301730272023"><ph name="BLOCK_COUNT"/> gjurmues, reklama, dhe më shumë të bllokuara</translation>
+<translation id="2275121279487164685">Gjurmues dhe reklama</translation>
 <translation id="4968268657895673116">A nuk funksionon saktë ky sajt me Shields lart?</translation>
 <translation id="5412004902081180614">Raporto</translation>
 <translation id="3620004479054499575">Po keni probleme me këtë faqe?</translation>
@@ -2627,9 +2636,11 @@
 <translation id="3795015906457257780">Po shikon këtë sajt pa mbrojtjet e privatësisë së Brave.</translation>
 <translation id="7194012750329511146">Mburojat Brave
 <ph name="NUMBER"/> Gjurmues, reklama dhe më shumë u bllokuan</translation>
+<translation id="2900068182947574679">Skriptet</translation>
 <translation id="4292121526390005808">Skripte të bllokuar</translation>
 <translation id="5046271170844958713">Skripte të lejuara</translation>
 <translation id="199862531047218413">Mbrojtjet kundra gjurmimit u aplikuan</translation>
+<translation id="896105002981074545">Mbrojtje kundër shenjave të gishtave</translation>
 <translation id="5032505924781383272">Mbrojtjet e aplikuara nuk tregojnë domosdoshmërisht se kjo faqe po përpiqet të gjurmojë shfletuesin tuaj.</translation>
 <translation id="1905384713982899903">Gjurmimet e bllokuara</translation>
 <translation id="314364527871618241">Gjurmuesit e lejuara</translation>
@@ -2642,6 +2653,7 @@
 <translation id="542789539047208469">Informacioni i faqes</translation>
 <translation id="7586067492365979844">Mburojat Brave kanë një shtëpi të re dhe dizajn. Tani integrohet me informacionin e faqes për një përvojë në një vend.</translation>
 <translation id="9114542678887529043">Mburojat Brave kanë një shtëpi të re dhe dizajn. Hyrni në të duke klikuar ikonën e faqes në shiritin e adresave.</translation>
+<translation id="4242533952199664413">Hap rregullimet</translation>
 <translation id="6294662480095808915">Privatësia. Paraprakisht.</translation>
 <translation id="4366423156486478559">Merr mbrojtjen Brave në çdo lidhje që klikon. Thjesht vendosni Brave si të parazgjedhur dhe shfleto. Privatësisht.</translation>
 <translation id="3830912418080848377">Importo Parametrat</translation>
@@ -2780,4 +2792,19 @@ Le të ju lidhim!</translation>
 <translation id="1602850501393095406">Shtyp ↑ për të theksuar</translation>
 <translation id="8367705492654390392">Pyet çdo gjë</translation>
 <translation id="8525248723479742219">Luaj Më Vonë</translation>
+<translation id="2935698011275148880">Origjina Brave</translation>
+<translation id="3983844925615091103">Mirëpresim në Brave Origin. Për të vazhduar, ju lutemi blejnë ose rivendosni blerjen tuaj të Brave Origin.</translation>
+<translation id="4801175670604644729">Ju nevojitet një blerje aktive e Brave Origin për të përdorur këtë shfletues.</translation>
+<translation id="4144294274624829008">Rivendos blerjen e Brave Origin</translation>
+<translation id="6080178356113101120">Bli Brave Origin</translation>
+<translation id="1009496146858538651">Rivendos Blerjen</translation>
+<translation id="3461564061600681423">Futni ID-në tuaj të blerjes për të aktivizuar blerjen tuaj të Brave Origin.</translation>
+<translation id="2036379724374431790">ID-ja e Blerjes</translation>
+<translation id="4348430971280118761">Futni ID-në tuaj të blerjes</translation>
+<translation id="7451866456310404779">Verifiko ID-në e blerjes</translation>
+<translation id="8853195592604941919">Po verifikohet… Kjo mund të zgjasë një minutë.</translation>
+<translation id="4633706444004110760">Faleminderit për instalimin e Brave Origin, një versioni të shfletuesit për përdoruesit që nuk kanë nevojë për të gjithë veçoritë që mbështesin Brave si një biznes, por ende dëshirojnë privatësinë që vetëm Brave ofron. Përdoruesit e Origin do të vazhdojnë të përfitojnë nga privatësia jonë e paparë në industri, adblock, dhe shpejtësia (përmes Mburojave), si dhe përditësimet e rregullta të softuerit, rregullimet e Chromium, dhe përmirësimet e sigurisë dhe privatësisë. Origin do të heqë shumicën e veçorive të tjera nga shfletuesi.</translation>
+<translation id="5816720995022674532">Origin është falas për të përdorur në pajisjet Linux, por ende <ph name="BEGIN_LINK"/>në dispozicion për blerje<ph name="END_LINK"/> nëse dëshironi të mbështesni Brave si një biznes. Blerja do të shbllokonte gjithashtu aftësinë për të përdorur Origin në pajisjet Android, iOS, macOS, dhe Windows.</translation>
+<translation id="3065220545261045367">Mbështesni Brave duke blerë Origin</translation>
+<translation id="2069499076031488636">Vazhdoni me Origin falas në Linux</translation>
 </translationbundle>

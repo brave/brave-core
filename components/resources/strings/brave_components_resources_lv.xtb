@@ -483,6 +483,10 @@
 <translation id="1518915449477235311">Vai ļaut <ph name="URL"/>Brave atvērt Leo MI sarunas?</translation>
 <translation id="4355784577209159847">Atļaut izmantot trešo personu sīkfailus, lai pierakstītos ar Google</translation>
 <translation id="5770656036486891920"><ph name="URL"/> vēlas izmantot trešo pušu sīkfailus, lai varētu pierakstīties ar Google Sign-In</translation>
+<translation id="5582087890067572966">🎉 Jūs tagad pelnāt!</translation>
+<translation id="4364336119478610380">Jūs pelnāt vienmēr, kad jūsu ekrānā parādās šāds paziņojums. Jums nav jānoklikšķina, lai pelnītu.</translation>
+<translation id="5893017172751072752">Jūs pelnāt, kad parādās Brave reklāmu paziņojums</translation>
+<translation id="3447730462826640312">Jums nav jānoklikšķina, lai pelnītu, bet noklikšķiniet, ja jūs interesē!</translation>
 <translation id="2104347391516032700">Bat atlīdzību pakalpojums</translation>
 <translation id="5939518447894949180">Atiestatīt</translation>
 <translation id="3349204812119681938">Atiestatīt Brave REWARDS</translation>
@@ -996,6 +1000,7 @@
 <translation id="2795015351889043417">JSON fails</translation>
 <translation id="5468881191994555667">Izvēlēties failu</translation>
 <translation id="795667975304826397">Nav izvēlēts neviens fails</translation>
+<translation id="6720675936326555106">Atlasīts fails</translation>
 <translation id="5891811606602061966">Neizdevās importēt kontu. Lūdzu, mēģiniet vēlreiz.</translation>
 <translation id="6566535583781706170">Importēt kontu</translation>
 <translation id="5051929972046200722">Atlasiet aparatūras maka ierīci</translation>
@@ -1042,10 +1047,12 @@
 <translation id="2416098547200943834">PIEZĪME. Privātā atslēga ir heksadecimālā kodējuma JSON un satur privāto atslēgu un protokola informāciju. <ph name="LINK_START"/>Uzzināt vairāk<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">PIEZĪME. Privātajai atslēgai ir jābūt heksadecimāla kodējuma JSON un jāsatur privātā atslēga un protokola informācija. <ph name="LINK_START"/>Uzzināt vairāk<ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">PIEZĪME: atbalstītas ir tikai <ph name="FORMAT"/> formāta paplašinātās atslēgas.</translation>
+<translation id="6457746820359933716">Importējiet, izmantojot JSON failu, kas eksportēts no Polkadot.js vai savienojamiem maki. Ievadiet paroli, ko izmantojat eksporta šifrēšanai.</translation>
 <translation id="9133762451347918196">Testnet konti</translation>
 <translation id="42126664696688958">Eksportēt</translation>
 <translation id="1366855498335432549">Iemaksa</translation>
 <translation id="790104325876206743">Konta iestatījumi</translation>
+<translation id="8856844353253421399">Pēdējoreiz atjaunināts <ph name="TIME_AGO"/> atpakaļ</translation>
 <translation id="6322030314101903925">Nav pieejamu aktīvu</translation>
 <translation id="836614343069504000">Lai sāktu, iveiciet iemaksu vai iegādājieties žetonus. Ja neredzat importētā konta žetonus , pārbaudiet filtrus un displeja iestatījumus. Nezināmi marķieri, iespējams, būs jāpievieno kā pielāgoti aktīvi.</translation>
 <translation id="2902856457593699108">Rādīt atslēgu</translation>
@@ -1164,10 +1171,10 @@
 <translation id="4324239559624557455">24 stundas</translation>
 <translation id="9139452553033760558">1 nedēļu</translation>
 <translation id="1658834457013045127">Vienmēr</translation>
-<translation id="6344138931392227467"><ph name="DEVICE_NAME"/> savienots</translation>
-<translation id="7051244143160304048"><ph name="DEVICE_NAME"/> atvienots</translation>
-<translation id="5317781812114905957">Instrukcijas</translation>
-<translation id="1178198982208000092">Savienojiet savu <ph name="DEVICE_NAME"/></translation>
+<translation id="5571630233760536706"><ph name="DEVICE_NAME"/> ir savienots</translation>
+<translation id="7058480232601314508"><ph name="DEVICE_NAME"/> ir atvienots</translation>
+<translation id="434328838837168401">Skatīt instrukcijas</translation>
+<translation id="6739517232898494646">Savienojiet <ph name="DEVICE_NAME"/>, lai turpinātu</translation>
 <translation id="6941881257520473899">Aparatūras makam nepieciešams apstiprinājums ierīcē.</translation>
 <translation id="2288190100157580461">Aparatūras maks pieprasa, lai <ph name="DEVICE_NAME"/> tiktu atvērta <ph name="NETWORK"/> lietotne</translation>
 <translation id="8687869982094542529">nosūtīts</translation>
@@ -1888,6 +1895,7 @@
 <translation id="4150336849480030462">SPL marķiera nosūtīšana ar saistītu marķiera konta izveidi</translation>
 <translation id="2244921323472112851">Pašlaik nevaram atrast lapu, kuru meklējat.</translation>
 <translation id="6277237872689140644">Iespējams, tā ir pārvietota uz citu vietu vai arī URL satur rakstības kļūdu.</translation>
+<translation id="1788572014530152502">Transakcijas apstrādes laikā radās kļūda. Daudzos gadījumos tas nozīmē, ka nav pietiekami <ph name="SYMBOL"/>, lai segtu tīkla maksu. Mēģiniet ar mazāku summu.</translation>
 <translation id="2737084171727561244">Doties uz Portfeli</translation>
 <translation id="3499452861061048987">Pievienot tokenu</translation>
 <translation id="5046066249040287308">Brave maka ērtības pakalpojums</translation>
@@ -2572,7 +2580,8 @@
 <translation id="4724752924364329714">Ja šķiet, ka šī vietne ir bojāta, mēģiniet noņemt vairogus.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Piezīme: tas var samazināt Brave konfidencialitātes aizsardzību.<ph name="NOTE_AFTER"/></translation>
 <translation id="4329860807937715445">Tas var samazināt Brave privātuma aizsargu. <ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
-<translation id="1574700443447059851">Izsekotāji, reklāmas un vairāk bloķētu.</translation>
+<translation id="3889333301730272023"><ph name="BLOCK_COUNT"/> izsekotāji, reklāmas un vairāk bloķētu</translation>
+<translation id="2275121279487164685">Izsekotāji un reklāmas</translation>
 <translation id="4968268657895673116">Vai šī vietne ar aktivizētiem aizsargiem nedarbojas pareizi?</translation>
 <translation id="5412004902081180614">Ziņot</translation>
 <translation id="3620004479054499575">Vai jums ir problēmas ar šo vietni?</translation>
@@ -2634,9 +2643,11 @@
 <translation id="3795015906457257780">Jūsu skatāt šo vietni, neizmantojot Brave privātuma aizsardzību.</translation>
 <translation id="7194012750329511146">Brave aizsargi
 Bloķēti <ph name="NUMBER"/> izsekotāji, reklāmas un cits</translation>
+<translation id="2900068182947574679">Skripti</translation>
 <translation id="4292121526390005808">Bloķētie skripti</translation>
 <translation id="5046271170844958713">Atļautie skripti</translation>
 <translation id="199862531047218413">identificēšanas novēršanas pasākumi ir piemēroti</translation>
+<translation id="896105002981074545">Identificējošās ciparvirknes veidošanas aizsardzība</translation>
 <translation id="5032505924781383272">Piemērotie aizsardzības pasākumi ne vienmēr nozīmē, ka šī tīmekļa vietne cenšas identificēt jūsu pārlūkprogrammu.</translation>
 <translation id="1905384713982899903">Bloķēti pirkstu nospiedumi</translation>
 <translation id="314364527871618241">Atļauti pirkstu nospiedumi</translation>
@@ -2649,6 +2660,7 @@ Bloķēti <ph name="NUMBER"/> izsekotāji, reklāmas un cits</translation>
 <translation id="542789539047208469">Lapas informācija</translation>
 <translation id="7586067492365979844">Brave Shields ir jauna mājas un dizains. Tas tagad ir integrēts ar vietnes informāciju vienota pieredzes nolūkā.</translation>
 <translation id="9114542678887529043">Brave Shields ir jauna mājas un dizains. Piekļūstiet tai, noklikšķinot uz vietnes ikonas adreses joslā.</translation>
+<translation id="4242533952199664413">Atvērt iestatījumus</translation>
 <translation id="6294662480095808915">Privātums. Pēc noklusējuma.</translation>
 <translation id="4366423156486478559">Brave aizsardzība katrā klikšķī. Vienkārši iestati Brave kā savu noklusējuma pārlūku un sērfo. Privāti.</translation>
 <translation id="3830912418080848377">Importē iestatījumus</translation>
@@ -2789,4 +2801,19 @@ esošo cilni.</translation>
 <translation id="1602850501393095406">Nospiediet ↑, lai iezīmētu</translation>
 <translation id="8367705492654390392">Uzdodiet jebko</translation>
 <translation id="8525248723479742219">Atskaņot vēlāk</translation>
+<translation id="2935698011275148880">Drosmīga izcelsme</translation>
+<translation id="3983844925615091103">Sveiki Brave Origin. Lai turpinātu, lūdzu, nopirktu vai atjaunojiet savu Brave Origin iegādi.</translation>
+<translation id="4801175670604644729">Jums ir nepieciešama aktīva Brave Origin iegāde, lai izmantotu šo pārlūku.</translation>
+<translation id="4144294274624829008">Atjaunot Brave Origin iegādi</translation>
+<translation id="6080178356113101120">Pirkt Brave Origin</translation>
+<translation id="1009496146858538651">Atjaunot iegādi</translation>
+<translation id="3461564061600681423">Ievadiet savu iegādes ID, lai aktivizētu savu Brave Origin iegādi.</translation>
+<translation id="2036379724374431790">Iegādes ID</translation>
+<translation id="4348430971280118761">Ievadiet savu iegādes ID</translation>
+<translation id="7451866456310404779">Pārbaudīt iegādes ID</translation>
+<translation id="8853195592604941919">Pārbaudīšana… Tas var aizņemt minūti.</translation>
+<translation id="4633706444004110760">Paldies par Brave Origin instalēšanu, pārlūka versiju lietotājiem, kuriem nav nepieciešami visi Brave biznesa modeļa atbalstošie līdzekļi, taču joprojām vēlas privātumu, ko piedāvā tikai Brave. Origin lietotāji turpinās gūt labumu no Brave nozarē vadošās privātuma aizsardzības, reklāmu bloķēšanas un ātruma (izmantojot Vairogi), kā arī regulāru programmatūras atjauninājumu, Chromium labojumu un drošības un privātuma uzlabojumu. Origin noņems lielāko daļu citu funkciju no pārlūka.</translation>
+<translation id="5816720995022674532">Origin ir pieejams bez maksas Linux ierīcēs, taču joprojām <ph name="BEGIN_LINK"/>pieejams iegādei<ph name="END_LINK"/>, ja vēlētos atbalstīt Brave kā biznesi. Iegāde arī atbloķētu iespēju izmantot Origin Android, iOS, macOS un Windows ierīcēs.</translation>
+<translation id="3065220545261045367">Atbalstīt Brave, pircot Origin</translation>
+<translation id="2069499076031488636">Turpināt ar Origin bez maksas Linux</translation>
 </translationbundle>

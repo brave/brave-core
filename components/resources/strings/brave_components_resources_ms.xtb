@@ -483,6 +483,10 @@
 <translation id="1518915449477235311">Benarkan <ph name="URL"/> membuka perbualan AI Leo dalam Brave?</translation>
 <translation id="4355784577209159847">Benarkan penggunaan kuki pihak ketiga untuk Log Masuk Google lama</translation>
 <translation id="5770656036486891920"><ph name="URL"/> mahu menggunakan kuki pihak ketiga untuk Log Masuk Google yang lama</translation>
+<translation id="5582087890067572966">🎉 Perolehan anda kini sudah bermula!</translation>
+<translation id="4364336119478610380">Anda memperoleh apabila pemberitahuan seperti ini dipaparkan pada skrin anda. Anda tidak perlu klik untuk memperoleh ganjaran.</translation>
+<translation id="5893017172751072752">Anda memperoleh apabila pemberitahuan Brave Ads dipaparkan</translation>
+<translation id="3447730462826640312">Anda tidak perlu klik untuk memperoleh, tetapi klik sahaja jika anda berminat!</translation>
 <translation id="2104347391516032700">Perkhidmatan Ganjaran Bat</translation>
 <translation id="5939518447894949180">Tetapkan semula</translation>
 <translation id="3349204812119681938">Set Semula Ganjaran Brave</translation>
@@ -996,6 +1000,7 @@
 <translation id="2795015351889043417">Fail JSON</translation>
 <translation id="5468881191994555667">Pilih fail</translation>
 <translation id="795667975304826397">Tiada fail dipilih</translation>
+<translation id="6720675936326555106">Fail yang dipilih</translation>
 <translation id="5891811606602061966">Gagal mengimport akaun, sila cuba lagi.</translation>
 <translation id="6566535583781706170">Import akaun</translation>
 <translation id="5051929972046200722">Pilih peranti dompet perkakasan anda</translation>
@@ -1042,10 +1047,12 @@
 <translation id="2416098547200943834">NOTA: Kekunci peribadi diberikan sebagai JSON terkod heks yang mengandungi kekunci peribadi dan maklumat protokol. <ph name="LINK_START"/>Ketahui lebih lanjut<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">NOTA: Kekunci peribadi mesti diberikan sebagai JSON terkod heks yang mengandungi kekunci peribadi dan maklumat protokol. <ph name="LINK_START"/>Ketahui lebih lanjut<ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">NOTA: Hanya <ph name="FORMAT"/> kunci lanjutan disokong.</translation>
+<translation id="6457746820359933716">Import menggunakan fail JSON yang dieksport dari Polkadot.js atau dompet yang serasi. Masukkan kata laluan yang digunakan untuk menyulitkan eksport.</translation>
 <translation id="9133762451347918196">Akaun Rangkaian Ujian</translation>
 <translation id="42126664696688958">Eksport</translation>
 <translation id="1366855498335432549">Deposit</translation>
 <translation id="790104325876206743">Tetapan akaun</translation>
+<translation id="8856844353253421399">Kali terakhir dikemaskinikan <ph name="TIME_AGO"/> yang lalu</translation>
 <translation id="6322030314101903925">Tiada aset yang tersedia</translation>
 <translation id="836614343069504000">Buat deposit atau beli token untuk bermula. Jika token tidak kelihatan daripada akaun yang diimport, semak penapis dan tetapan paparan. Token tidak diketahui mungkin perlu ditambah sebagai aset tersuai.</translation>
 <translation id="2902856457593699108">Tunjukkan kekunci</translation>
@@ -1164,10 +1171,10 @@
 <translation id="4324239559624557455">Selama 24 jam</translation>
 <translation id="9139452553033760558">Selama 1 minggu</translation>
 <translation id="1658834457013045127">Selama-lamanya</translation>
-<translation id="6344138931392227467"><ph name="DEVICE_NAME"/> disambungkan</translation>
-<translation id="7051244143160304048"><ph name="DEVICE_NAME"/> terputus sambungan</translation>
-<translation id="5317781812114905957">Arahan</translation>
-<translation id="1178198982208000092">Sambungkan <ph name="DEVICE_NAME"/> anda</translation>
+<translation id="5571630233760536706"><ph name="DEVICE_NAME"/> disambungkan</translation>
+<translation id="7058480232601314508"><ph name="DEVICE_NAME"/> terputus sambungan</translation>
+<translation id="434328838837168401">Lihat arahan</translation>
+<translation id="6739517232898494646">Sambungkan <ph name="DEVICE_NAME"/> anda untuk meneruskan</translation>
 <translation id="6941881257520473899">Dompet perkakasan memerlukan pengesahan pada peranti.</translation>
 <translation id="2288190100157580461">Dompet perkakasan memerlukan <ph name="NETWORK"/> Apl dibuka pada <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">dihantar</translation>
@@ -1888,6 +1895,7 @@
 <translation id="4150336849480030462">Pemindahan Token SPL Dengan Penciptaan Akaun Token Berkaitan</translation>
 <translation id="2244921323472112851">Kami tidak dapat menemui halaman yang anda cari buat masa ini.</translation>
 <translation id="6277237872689140644">Halaman tersebut mungkin telah dipindahkan ke lokasi lain atau URL mungkin mengandungi kesilapan.</translation>
+<translation id="1788572014530152502">Terdapat ralat semasa memproses transaksi anda. Dalam kebanyakan kes, ini bermakna tidak ada <ph name="SYMBOL"/> yang mencukupi untuk menampung yuran rangkaian. Cuba dengan jumlah yang lebih kecil.</translation>
 <translation id="2737084171727561244">Pergi ke Portfolio</translation>
 <translation id="3499452861061048987">Tambah token</translation>
 <translation id="5046066249040287308">Perkhidmatan Utiliti Brave Wallet</translation>
@@ -2572,7 +2580,8 @@
 <translation id="4724752924364329714">Sekiranya laman ini nampaknya rosak, cuba Perisai ditutup.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Nota: ini mungkin mengurangkan perlindungan privasi Brave.<ph name="NOTE_AFTER"/></translation>
 <translation id="4329860807937715445">Ini mungkin mengurangkan perlindungan privasi Brave. <ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
-<translation id="1574700443447059851">Penjejak, iklan dan banyak lagi disekat.</translation>
+<translation id="3889333301730272023"><ph name="BLOCK_COUNT"/> penjejak, iklan dan banyak lagi disekat</translation>
+<translation id="2275121279487164685">Penjejak dan iklan</translation>
 <translation id="4968268657895673116">Adakah laman ini tidak berfungsi dengan baik dengan Perisai ke atas?</translation>
 <translation id="5412004902081180614">Laporkan</translation>
 <translation id="3620004479054499575">Adakah anda menghadapi isu dengan tapak ini?</translation>
@@ -2634,9 +2643,11 @@
 <translation id="3795015906457257780">Anda memaparkan laman ini tanpa perlindungan privasi Brave.</translation>
 <translation id="7194012750329511146">Brave Shields
 <ph name="NUMBER"/> Penjejak, iklan, dan pelbagai lagi disekat</translation>
+<translation id="2900068182947574679">Skrip</translation>
 <translation id="4292121526390005808">Halang skrip</translation>
 <translation id="5046271170844958713">Skrip yang dibenarkan</translation>
 <translation id="199862531047218413">perlindungan anticap jari digunakan</translation>
+<translation id="896105002981074545">Perlindungan pencapjarian</translation>
 <translation id="5032505924781383272">Perlindungan yang digunakan tidak semestinya menandakan bahawa halaman web ini cuba mengecap jari pelayar anda.</translation>
 <translation id="1905384713982899903">Cap jari yang disekat</translation>
 <translation id="314364527871618241">Cap jari yang dibenarkan</translation>
@@ -2649,6 +2660,7 @@
 <translation id="542789539047208469">Maklumat Tapak</translation>
 <translation id="7586067492365979844">Perisai Brave mempunyai rumah dan reka bentuk baharu. Ia kini menyatu dengan maklumat tapak untuk pengalaman sehenti.</translation>
 <translation id="9114542678887529043">Perisai Brave mempunyai rumah dan reka bentuk baharu. Aksesnya dengan mengklik ikon tapak di bar alamat.</translation>
+<translation id="4242533952199664413">Buka tetapan</translation>
 <translation id="6294662480095808915">Privasi. Secara Lalai.</translation>
 <translation id="4366423156486478559">Dapatkan perlindungan Brave pada setiap pautan yang anda klik. Hanya tetapkan Brave sebagai lalai dan semak imbas. Secara peribadi.</translation>
 <translation id="3830912418080848377">Tetapan Import</translation>
@@ -2789,4 +2801,19 @@ Mari sambungkan anda!</translation>
 <translation id="1602850501393095406">Tekan ↑ untuk serlahkan</translation>
 <translation id="8367705492654390392">Tanya apa sahaja</translation>
 <translation id="8525248723479742219">Main Kemudian</translation>
+<translation id="2935698011275148880">Brave Origin</translation>
+<translation id="3983844925615091103">Selamat datang ke Brave Origin. Untuk meneruskan, sila beli atau pulihkan pembelian Brave Origin anda.</translation>
+<translation id="4801175670604644729">Anda memerlukan pembelian Brave Origin yang aktif untuk menggunakan pelayar ini.</translation>
+<translation id="4144294274624829008">Pulihkan pembelian Brave Origin</translation>
+<translation id="6080178356113101120">Beli Brave Origin</translation>
+<translation id="1009496146858538651">Pulihkan Pembelian</translation>
+<translation id="3461564061600681423">Masukkan ID pembelian anda untuk mengaktifkan pembelian Brave Origin anda.</translation>
+<translation id="2036379724374431790">ID Pembelian</translation>
+<translation id="4348430971280118761">Masukkan ID pembelian anda</translation>
+<translation id="7451866456310404779">Sahkan ID pembelian</translation>
+<translation id="8853195592604941919">Mengesahkan… Ini mungkin mengambil masa seminit.</translation>
+<translation id="4633706444004110760">Terima kasih telah memasang Brave Origin, versi pelayar untuk pengguna yang tidak memerlukan semua ciri yang menyokong Brave sebagai perniagaan, tetapi masih mahukan privasi yang hanya Brave tawarkan. Pengguna Origin akan terus mendapat manfaat daripada privasi peringkat industri Brave, pemblokiran iklan, dan kelajuan (melalui Perisai), serta kemas kini perisian biasa, tampalan Chromium, dan penambahbaikan keselamatan dan privasi. Origin akan mengeluarkan kebanyakan ciri lain daripada pelayar.</translation>
+<translation id="5816720995022674532">Origin adalah percuma untuk digunakan pada peranti Linux, tetapi masih <ph name="BEGIN_LINK"/>tersedia untuk pembelian<ph name="END_LINK"/> jika anda ingin menyokong Brave sebagai perniagaan. Membeli juga akan membuka keupayaan untuk menggunakan Origin pada peranti Android, iOS, macOS, dan Windows.</translation>
+<translation id="3065220545261045367">Sokong Brave dengan membeli Origin</translation>
+<translation id="2069499076031488636">Teruskan dengan Origin secara percuma pada Linux</translation>
 </translationbundle>

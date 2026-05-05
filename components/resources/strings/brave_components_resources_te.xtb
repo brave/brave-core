@@ -483,6 +483,10 @@
 <translation id="1518915449477235311"><ph name="URL"/> Braveలో Leo AI సంభాషణలు తెరవడం అనుమతించాలా?</translation>
 <translation id="4355784577209159847">లెగసీ Google సైన్-ఇన్ కోసం తృతీయ పక్ష కుకీల వినియోగాన్ని అనుమతించు</translation>
 <translation id="5770656036486891920"><ph name="URL"/> లెగసీ Google సైన్-ఇన్ కోసం తృతీయ పక్ష కుకీల వినియోగం అనుమతించేలా చేయాలనుకుంటోంది</translation>
+<translation id="5582087890067572966">🎉 మీరు ఇప్పుడు సంపాదిస్తున్నారు!</translation>
+<translation id="4364336119478610380">మీ స్క్రీన్ పై ఇలాంటి నోటిఫికేషన్ కనిపించినప్పుడు మీరు సంపాదిస్తారు. సంపాదించడానికి మీకు క్లిక్ చేయనవసరం లేదు.</translation>
+<translation id="5893017172751072752">Brave యాడ్స్ నోటిఫికేషన్ కనిపించినప్పుడు మీరు సంపాదిస్తారు</translation>
+<translation id="3447730462826640312">సంపాదించడానికి క్లిక్ చేయనవసరం లేదు, కానీ మీరు ఆసక్తి ఉంటే క్లిక్ చేయండి!</translation>
 <translation id="2104347391516032700">BAT రివార్డ్స్ సర్వీస్</translation>
 <translation id="5939518447894949180">రీసెట్ చేయి</translation>
 <translation id="3349204812119681938">Brave Rewards పునఃప్రారంభించు</translation>
@@ -983,6 +987,7 @@
 <translation id="2795015351889043417">JSON ఫైల్</translation>
 <translation id="5468881191994555667">ఫైల్ ఎంచుకోండి</translation>
 <translation id="795667975304826397">ఎలాంటి ఫైల్ ఎంచుకోలేదు</translation>
+<translation id="6720675936326555106">ఎంచుకున్న ఫైల్‌</translation>
 <translation id="5891811606602061966">ఖాతాను దిగుమతి చేయడంలో విఫలమైంది, దయచేసి మళ్ళీ ప్రయత్నించండి.</translation>
 <translation id="6566535583781706170">ఖాతా దిగుమతి</translation>
 <translation id="5051929972046200722">మీ హార్డ్‌వేర్ వాలెట్ పరికరాన్ని ఎంచుకోండి</translation>
@@ -1029,10 +1034,12 @@
 <translation id="2416098547200943834">గమనిక: ప్రైవేట్ కీ అష్టదికోడ్జన్ సాధించిన JSON రూపంలో అందిస్తుంది, ఇందులో ప్రైవేట్ కీ మరియు ప్రోటోకాల్ సమాచారం ఉంటుంది. <ph name="LINK_START"/>మరింత తెలుసుకోండి<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">గమనిక: ప్రైవేట్ కీ అష్టదికోడ్జన్ సాధించిన JSON లో అందించాలి, ఇందులో ప్రైవేట్ కీ మరియు ప్రోటోకాల్ సమాచారం ఉంటుంది. <ph name="LINK_START"/>మరింత తెలుసుకోండి<ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">గమనిక: కేవలం <ph name="FORMAT"/> పొడిగించిన కీలు మాత్రమే మద్దతునిస్తుంది.</translation>
+<translation id="6457746820359933716">Polkadot.js లేదా సారూప్య వాలెట్‌ల నుండి ఎక్స్‌పోర్ట్ చేసిన JSON ఫైల్‌ను ఉపయోగించి ఇంపోర్ట్ చేయండి. ఎక్స్‌పోర్ట్‌ను గుప్తీకరించడానికి ఉపయోగించిన పాస్‌వర్డ్‌ను నమోదు చేయండి.</translation>
 <translation id="9133762451347918196">టెస్ట్‌నెట్ ఖాతాలు</translation>
 <translation id="42126664696688958">ఎగుమతి</translation>
 <translation id="1366855498335432549">నിക്ഷేపం</translation>
 <translation id="790104325876206743">ఖాతా సమచారం</translation>
+<translation id="8856844353253421399">చివరిసారి <ph name="TIME_AGO"/> క్షణాల క్రితం నవీకరించింది</translation>
 <translation id="6322030314101903925">అందుబాటులో ఆస్తులు లేవు</translation>
 <translation id="836614343069504000">ప్రారంభించడానికి టోకెన్లను ఉంచు లేదా కొనటానికి డిపాజిట్ చేయండి. మీరు దిగుమతి చేసిన ఖాతా నుండి టోకెన్లు కనపడకపోతే, ఫిల్టర్స్ మరియు ప్రదర్శన సెట్టింస్ని తనిఖీ చేయండి. తెలీయని టోకెన్లు స్వంత ఆస్తులుగా జోడించడానికి అవసరం ఉంది.</translation>
 <translation id="2902856457593699108">కీ చూపించు</translation>
@@ -1151,10 +1158,10 @@
 <translation id="4324239559624557455">24 గంటలకు</translation>
 <translation id="9139452553033760558">1 వారం పాటు</translation>
 <translation id="1658834457013045127">శాశ్వతంగా</translation>
-<translation id="6344138931392227467"><ph name="DEVICE_NAME"/> కనెక్ట్ చేయబడింది</translation>
-<translation id="7051244143160304048"><ph name="DEVICE_NAME"/> డిస్కనెక్ట్ చేయబడింది</translation>
-<translation id="5317781812114905957">సూచనలు</translation>
-<translation id="1178198982208000092">మీ <ph name="DEVICE_NAME"/> కనెక్ట్ చేయండి</translation>
+<translation id="5571630233760536706"><ph name="DEVICE_NAME"/> కనెక్ట్ చేయబడింది</translation>
+<translation id="7058480232601314508"><ph name="DEVICE_NAME"/> డిస్కనెక్ట్ చేయబడింది</translation>
+<translation id="434328838837168401">సూచనలను చూడండి</translation>
+<translation id="6739517232898494646">కొనసాగించడానికి మీ <ph name="DEVICE_NAME"/> కనెక్ట్ చేయండి</translation>
 <translation id="6941881257520473899">హార్డ్వేర్ వాలెట్ పరికరంలో ధృవీకరణ అవసరం.</translation>
 <translation id="2288190100157580461">హార్డ్వేర్ వాలెట్ <ph name="DEVICE_NAME"/> పరికరంలో <ph name="NETWORK"/> అప్లికేషన్ తెరవాలి.</translation>
 <translation id="8687869982094542529">పంపబడింది</translation>
@@ -1872,6 +1879,7 @@
 <translation id="4150336849480030462">సంబంధిత టోకెన్ ఖాతా సృష్టితో కూడిన SPL టోకెన్ ట్రాన్స్‌ఫర్</translation>
 <translation id="2244921323472112851">మీరు వెతుకుతున్న పేజీ ని ఇప్పుడు కనుగొనలేము.</translation>
 <translation id="6277237872689140644">ఇది భిన్నమైన ప్రదేశానికి తరలించబడింది లేదా URLలో తప్పు ఉండవచ్చు.</translation>
+<translation id="1788572014530152502">మీ లావాదేవీని ప్రాసెస్ చేయడంలో ఒక లోపం ఉంది. చాలా సందర్భాలలో, నెట్‌వర్క్ ఫీ కవర్ చేయడానికి తగిన <ph name="SYMBOL"/> లేదని అర్థం. బదులుగా చిన్న మొత్తం ప్రయత్నించండి.</translation>
 <translation id="2737084171727561244">పోర్ట్ఫోలియో కి వెళ్ళండి</translation>
 <translation id="3499452861061048987">టోకెన్ జోడించండి</translation>
 <translation id="5046066249040287308">Brave Wallet యుటిలిటీ సర్వీస్</translation>
@@ -2556,7 +2564,8 @@
 <translation id="4724752924364329714">ఈ సైట్ చెడు చూపనిపిస్తే, షీల్డ్స్‌ను డౌన్‌ చేయడం ప్రయత్నించండి.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>గమనిక: ఇది బ్రేవ్ యొక్క గోప్యతా పరిరక్షణలను తగ్గిస్తుందని గమనించండి.<ph name="NOTE_AFTER"/></translation>
 <translation id="4329860807937715445">ఇది Brave యొక్క గోప్యతా రక్షణలను తగ్గించవచ్చు. <ph name="LINK_BEFORE"/>మరియు తెలుసుకోండి<ph name="LINK_AFTER"/></translation>
-<translation id="1574700443447059851">ట్రాకర్స్, యాడ్‌లు మరియు మరిన్నవి బ్లాక్ చేయబడ్డాయి.</translation>
+<translation id="3889333301730272023"><ph name="BLOCK_COUNT"/> ట్రాకర్‌లు, యాడ్‌లు మరియు మరిన్ని బ్లాక్ చేయబడ్డాయి</translation>
+<translation id="2275121279487164685">ట్రాకర్లు మరియు యాడలు</translation>
 <translation id="4968268657895673116">Shields పై ఉన్నప్పుడు ఈ సైట్ సరిగ్గా పనిచేయకపోతుందా?</translation>
 <translation id="5412004902081180614">నివేదించండి</translation>
 <translation id="3620004479054499575">మీకు ఈ సైట్‌తో సమస్యలు ఎదురవుతున్నాయా?</translation>
@@ -2618,9 +2627,11 @@
 <translation id="3795015906457257780">మీరు ఈ సైట్‌ను Brave యొక్క ప్రైవసీ పరిరక్షణలతో వీక్షిస్తున్నారు.</translation>
 <translation id="7194012750329511146">Brave Shields
 <ph name="NUMBER"/> ట్రాకర్లు, యాడ్లు, మరియు మరిన్నింటిని బ్లాక్ చేసింది</translation>
+<translation id="2900068182947574679">స్క్రిప్ట్‌లు</translation>
 <translation id="4292121526390005808">బ్లాక్ చేయబడిన స్క్రిప్ట్‌లు</translation>
 <translation id="5046271170844958713">అనుమతించబడిన స్క్రిప్ట్‌లు</translation>
 <translation id="199862531047218413">యాంటీ-ఫింగర్ప్రింటింగ్ పరిరక్షణలు అన్వయించబడ్డాయి</translation>
+<translation id="896105002981074545">ఫింగర్ ప్రింటింగ్ సంరక్షణలు</translation>
 <translation id="5032505924781383272">అన్వయించిన పరిరక్షణలు ఈ వెబ్‌పేజీ మీ బ్రౌజర్‌ను ఫింగర్‌ప్రింట్ చేయడానికి ప్రయత్నిస్తున్నదని అవర్జనకంగా సూచించవు.</translation>
 <translation id="1905384713982899903">బ్లాక్ చేయబడిన ఫింగర్ప్రింట్లు</translation>
 <translation id="314364527871618241">అనుమతించబడిన ఫింగర్ప్రింట్లు</translation>
@@ -2633,6 +2644,7 @@
 <translation id="542789539047208469">సైట్ సమాచారం</translation>
 <translation id="7586067492365979844">బ్రేవ్ షీల్డ్‌లకు కొత్త ఇల్లు మరియు డిజైన్ ఉంది. ఇది ఒక-స్టాప్ అనుభవం కోసం సైట్ సమాచారం యొక్క ఏకీకరణ ఇప్పుడు.</translation>
 <translation id="9114542678887529043">బ్రేవ్ షీల్డ్‌లకు కొత్త ఇల్లు మరియు డిజైన్ ఉంది. చిరునామా పట్టీలో సైట్ చిహ్నాన్ని క్లిక్ చేయడం ద్వారా దానిని యాక్సెస్ చేయండి.</translation>
+<translation id="4242533952199664413">సెట్టింగ్‌లను తెరువు</translation>
 <translation id="6294662480095808915">గోప్యతా. డిఫాల్ట్ ద్వారా.</translation>
 <translation id="4366423156486478559">మీరు క్లిక్ చేసే ప్రతి లింక్‌పై బ్రేవ్ పరిరక్షణ పొందండి. కేవలం బ్రేవ్‌ని డిఫాల్ట్‌గా సెట్ చేయండి మరియు బ్రౌజ్ చేయండి. గోప్యంగా.</translation>
 <translation id="3830912418080848377">సెట్టింగ్స్ దిగుమతి చేయండి</translation>
@@ -2773,4 +2785,19 @@ Brave ఒక హెల్పర్ సేవను కలిగి ఉంది 
 <translation id="1602850501393095406">హైలైట్ చేయడానికి ↑ నొక్కండి</translation>
 <translation id="8367705492654390392">ఏదైనా అడుగు</translation>
 <translation id="8525248723479742219">తర్వాత ప్లే చేయండి</translation>
+<translation id="2935698011275148880">Brave మూలం</translation>
+<translation id="3983844925615091103">Brave Origin కు స్వాగతం. కొనసాగించడానికి, దయచేసి మీ Brave Origin ఖరీదుని కొనండి లేదా పునరుద్ధరించండి.</translation>
+<translation id="4801175670604644729">ఈ బ్రౌజర్‌ని ఉపయోగించడానికి మీకు సక్రియ Brave Origin ఖరీద అవసరం.</translation>
+<translation id="4144294274624829008">Brave Origin ఖరీదును పునరుద్ధరించండి</translation>
+<translation id="6080178356113101120">Brave Origin కిని కొనండి</translation>
+<translation id="1009496146858538651">ఖరీదును పునరుద్ధరించండి</translation>
+<translation id="3461564061600681423">మీ Brave Origin ఖరీదుని సక్రియం చేయడానికి మీ ఖరీద IDని నమోదు చేయండి.</translation>
+<translation id="2036379724374431790">ఖరీద ID</translation>
+<translation id="4348430971280118761">మీ ఖరీద IDని నమోదు చేయండి</translation>
+<translation id="7451866456310404779">ఖరీద IDని ధృవీకరించండి</translation>
+<translation id="8853195592604941919">ధృవీకరిస్తోంది… ఇది ఒక నిమిషం పట్టవచ్చు.</translation>
+<translation id="4633706444004110760">Brave Origin ఇన్‌స్టాల్ చేసినందుకు ధన్యవాదాలు, ఇది Brave కు ఒక సంస్కరణ, ఇది Brave ను ఒక వ్యాపారం విధంగా సపోర్ట్ చేసే అన్ని ఫీచర్‌లు కోసం ఆవశ్యకం లేని యూజర్‌ల కోసం, కానీ Brave మాత్రమే అందించే గోప్యతను ఇప్పుడు కోరుకుంటారు. Origin యూజర్‌లు Brave యొక్క ఇండస్ట్రీ-లీడింగ్ గోప్యత, adblock, మరియు స్పీడ్ (Shields ద్వారా), అలాగే రెగులర్ సాఫ్ట్‌వేర్ అప్‌డేట్‌లు, Chromium పాచెస్, మరియు సెక్యూరిటీ మరియు గోప్యత ఇమ్‌ప్రూవ్‌మెంట్‌ల నుండి ప్రయోజనం పొందటాన్ని కొనసాగిస్తారు. Origin బ్రౌజర్ నుండి చాలా ఇతర ఫీచర్‌లను తీసివేస్తుంది.</translation>
+<translation id="5816720995022674532">Origin Linux పరికరాలలో ఉపయోగించడానికి ఉచితం, కానీ ఇప్పుడు Brave ని ఒక వ్యాపారం విధంగా సపోర్ట్ చేయాలనుకుంటే <ph name="BEGIN_LINK"/>కిని కొనడానికి అందుబాటులో ఉంది<ph name="END_LINK"/>. ఖరీదు చేయడం Android, iOS, macOS, మరియు Windows పరికరాలపై Origin ను ఉపయోగించే సామర్థ్యాన్ని అన్‌లాక్ చేస్తుంది.</translation>
+<translation id="3065220545261045367">Origin ను కొనడం ద్వారా Brave ని సపోర్ట్ చేయండి</translation>
+<translation id="2069499076031488636">Linux లో Origin తో ఉచితంగా కొనసాగండి</translation>
 </translationbundle>

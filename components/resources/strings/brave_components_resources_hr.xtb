@@ -483,6 +483,10 @@
 <translation id="1518915449477235311">Želite li dopustiti web-lokaciji <ph name="URL"/> otvaranje pomoćnika Leo potpomognutog umjetnom inteligencijom (AI)?</translation>
 <translation id="4355784577209159847">Dozvoli upotrebu kolačića treće strane za starije izdanje prijave putem platforme Google</translation>
 <translation id="5770656036486891920"><ph name="URL"/> želi upotrebljavati kolačiće treće strane za starije prijave putem platforme Google</translation>
+<translation id="5582087890067572966">🎉 Sada zarađujete!</translation>
+<translation id="4364336119478610380">Zarađujete kad god se ovakva obavijest pojavi na vašem zaslonu. Ne morate klikati kako biste zarađivali nagrade.</translation>
+<translation id="5893017172751072752">Zarađujete kada se pojavi obavijest o značajci Brave Ads</translation>
+<translation id="3447730462826640312">Ne morate kliknuti kako biste zarađivali, ali kliknite ako ste zainteresirani!</translation>
 <translation id="2104347391516032700">Usluga nagrada BAT-ova</translation>
 <translation id="5939518447894949180">Ponovno postavi</translation>
 <translation id="3349204812119681938">Ponovno postavi nagrade Brave</translation>
@@ -1000,6 +1004,7 @@
 <translation id="2795015351889043417">Datoteka JSON</translation>
 <translation id="5468881191994555667">Odaberi datoteku</translation>
 <translation id="795667975304826397">Nema odabrane datoteke</translation>
+<translation id="6720675936326555106">Odabrana datoteka</translation>
 <translation id="5891811606602061966">Neuspješni uvoz računa. Pokušajte ponovno.</translation>
 <translation id="6566535583781706170">Uvezi račun</translation>
 <translation id="5051929972046200722">Odaberi uređaj hardverskog novčanika</translation>
@@ -1046,10 +1051,12 @@
 <translation id="2416098547200943834">NAPOMENA: privatni ključ pruža se kao heksadecimalno šifrirani JSON koji sadrži podatke o privatnom ključu i protokolu. <ph name="LINK_START"/>Saznajte više<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">NAPOMENA: privatni ključ mora se pružiti kao heksadecimalno šifrirani JSON koji sadrži podatke o privatnom ključu i protokolu. <ph name="LINK_START"/>Saznajte više<ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">NAPOMENA: Podržani su samo prošireni ključevi <ph name="FORMAT"/>.</translation>
+<translation id="6457746820359933716">Uvezite koristeći JSON datoteku izvezenu iz Polkadot.js-a ili kompatibilnih novčanika. Unesite lozinku koja se koristi za enkripciju izvoza.</translation>
 <translation id="9133762451347918196">Testnet računi</translation>
 <translation id="42126664696688958">Izvezi</translation>
 <translation id="1366855498335432549">Depozit</translation>
 <translation id="790104325876206743">Postavke računa</translation>
+<translation id="8856844353253421399">Posljednje ažuriranje: <ph name="TIME_AGO"/> prije</translation>
 <translation id="6322030314101903925">Nema dostupne imovine</translation>
 <translation id="836614343069504000">Uplatite ili kupite tokene da biste započeli. Ako ne vidite tokene uvezenog računa, provjerite postavke filtara i prikaza. Možda bude trebalo dodati nepoznate tokene kao prilagođenu imovinu.</translation>
 <translation id="2902856457593699108">Prikaži ključ</translation>
@@ -1168,10 +1175,10 @@
 <translation id="4324239559624557455">24 sata</translation>
 <translation id="9139452553033760558">1 tjedan</translation>
 <translation id="1658834457013045127">Zauvijek</translation>
-<translation id="6344138931392227467"><ph name="DEVICE_NAME"/> povezan</translation>
-<translation id="7051244143160304048"><ph name="DEVICE_NAME"/> odspojen</translation>
-<translation id="5317781812114905957">Upute</translation>
-<translation id="1178198982208000092">Poveži svoj <ph name="DEVICE_NAME"/></translation>
+<translation id="5571630233760536706"><ph name="DEVICE_NAME"/> je povezan</translation>
+<translation id="7058480232601314508"><ph name="DEVICE_NAME"/> je odspojen</translation>
+<translation id="434328838837168401">Pogledajte upute</translation>
+<translation id="6739517232898494646">Povežite <ph name="DEVICE_NAME"/> da biste nastavili</translation>
 <translation id="6941881257520473899">Za hardverski novčanik treba potvrda na uređaju.</translation>
 <translation id="2288190100157580461">Novčanikom hardvera zahtijeva se otvaranje aplikacije <ph name="NETWORK"/> na <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">poslano</translation>
@@ -1892,6 +1899,7 @@
 <translation id="4150336849480030462">Prijenos tokena SPL s pridruženim stvaranjem računa tokena</translation>
 <translation id="2244921323472112851">Trenutno ne možemo pronaći stranicu koju tražite.</translation>
 <translation id="6277237872689140644">Možda se premjestila na drugo mjesto ili URL ima tipfeler.</translation>
+<translation id="1788572014530152502">Došlo je do greške pri obradi vaše transakcije. U većini slučajeva, to znači da nema dovoljno <ph name="SYMBOL"/> za pokrivanje mrežne naknade. Umjesto toga pokušajte s manjom količinom.</translation>
 <translation id="2737084171727561244">Idi na portfolio</translation>
 <translation id="3499452861061048987">Dodaj token</translation>
 <translation id="5046066249040287308">Uslužna operacija za novčanik Brave</translation>
@@ -2576,7 +2584,8 @@
 <translation id="4724752924364329714">Ako se mrežno mjesto čini neispravno, pokušajte isključiti štitove.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Napomena: ovo može smanjiti Braveovu zaštitu privatnosti.<ph name="NOTE_AFTER"/></translation>
 <translation id="4329860807937715445">To može smanjiti Braveove zaštite privatnosti. <ph name="LINK_BEFORE"/>Doznajte više<ph name="LINK_AFTER"/></translation>
-<translation id="1574700443447059851">Blokirani elementi za praćenje, oglasi i više.</translation>
+<translation id="3889333301730272023"><ph name="BLOCK_COUNT"/> blokirani elementi za praćenje, oglasi i više</translation>
+<translation id="2275121279487164685">Elementi za praćenje i oglasi</translation>
 <translation id="4968268657895673116">Radi li ova stranica ispravno s omogućenim Štitovima?</translation>
 <translation id="5412004902081180614">Prijavi</translation>
 <translation id="3620004479054499575">Imate li problema s ovim stranicom?</translation>
@@ -2638,9 +2647,11 @@
 <translation id="3795015906457257780">Pregledavate ovo mrežno mjesto bez zaštite privatnosti preglednika Brave.</translation>
 <translation id="7194012750329511146">Štitovi Brave
 Blokirano <ph name="NUMBER"/> element/a/ata za praćenje, oglas/a i više</translation>
+<translation id="2900068182947574679">Skripte</translation>
 <translation id="4292121526390005808">Blokirane skripte</translation>
 <translation id="5046271170844958713">Dozvoljene skripte</translation>
 <translation id="199862531047218413">primijenjena zaštita protiv otiska prsta</translation>
+<translation id="896105002981074545">Zaštita od posebnog označivanja</translation>
 <translation id="5032505924781383272">Primijenjene zaštite ne znače nužno da ovo mrežno mjesto pokušava uzeti otisak Vašeg preglednika.</translation>
 <translation id="1905384713982899903">Blokirani otisci prstiju</translation>
 <translation id="314364527871618241">Dopušteni otisci prstiju</translation>
@@ -2653,6 +2664,7 @@ Blokirano <ph name="NUMBER"/> element/a/ata za praćenje, oglas/a i više</trans
 <translation id="542789539047208469">Informacije o web-mjestu</translation>
 <translation id="7586067492365979844">Brave Štitovi imaju novi dom i dizajn. Sada se integriraju s informacijama o mjestu za iskustvo u jednoj točki.</translation>
 <translation id="9114542678887529043">Brave Štitovi imaju novi dom i dizajn. Pristupite mu klikom na ikonu web-mjesta u traci adrese.</translation>
+<translation id="4242533952199664413">Otvorite postavke</translation>
 <translation id="6294662480095808915">Privatnost. Zadano.</translation>
 <translation id="4366423156486478559">Dobijte zaštitu Brave na svakoj poveznici na koju kliknete. Samo postavite Brave kao zadani preglednik i pretražujte. Privatno.</translation>
 <translation id="3830912418080848377">Uvezi postavke</translation>
@@ -2793,4 +2805,19 @@ Povežimo vas!</translation>
 <translation id="1602850501393095406">Kliknite ↑ da označite</translation>
 <translation id="8367705492654390392">Postavite bilo koje pitanje</translation>
 <translation id="8525248723479742219">Reproducirajte kasnije</translation>
+<translation id="2935698011275148880">Brave Origin</translation>
+<translation id="3983844925615091103">Dobrodošli u Brave Origin. Za nastavak, molimo kupite ili obnovite vašu Brave Origin kupnju.</translation>
+<translation id="4801175670604644729">Trebate aktivnu Brave Origin kupnju da biste koristili ovaj preglednik.</translation>
+<translation id="4144294274624829008">Obnovite Brave Origin kupnju</translation>
+<translation id="6080178356113101120">Kupite Brave Origin</translation>
+<translation id="1009496146858538651">Obnovite kupnju</translation>
+<translation id="3461564061600681423">Unesite ID kupnje da biste aktivirali vašu Brave Origin kupnju.</translation>
+<translation id="2036379724374431790">ID kupnje</translation>
+<translation id="4348430971280118761">Unesite ID kupnje</translation>
+<translation id="7451866456310404779">Provjerite ID kupnje</translation>
+<translation id="8853195592604941919">Provjera u tijeku… Ovo može potrajati minutu.</translation>
+<translation id="4633706444004110760">Hvala vam što ste instalirali Brave Origin, verziju preglednika za korisnike koji ne trebaju sve funkcije koje podržavaju Brave kao posao, ali i dalje žele privatnost koju samo Brave nudi. Korisnici Origin-a nastavit će imati pristup Braveovoj vodeću privatnost, adblock-u i brzini (putem Štitova), kao i redovitim ažuriranjima softvera, zakrpama Chromium-a i poboljšanjima sigurnosti i privatnosti. Origin će ukloniti većinu ostalih funkcija iz preglednika.</translation>
+<translation id="5816720995022674532">Origin je besplatan za korištenje na Linux uređajima, ali i dalje je <ph name="BEGIN_LINK"/>dostupan za kupnju<ph name="END_LINK"/> ako želite podržati Brave kao posao. Kupnjom biste takođe otključali mogućnost korištenja Origin-a na Android, iOS, macOS i Windows uređajima.</translation>
+<translation id="3065220545261045367">Podržite Brave kupnjom Origin-a</translation>
+<translation id="2069499076031488636">Nastavite s Origin-om besplatno na Linux-u</translation>
 </translationbundle>
