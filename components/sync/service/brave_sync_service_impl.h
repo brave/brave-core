@@ -81,6 +81,7 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
   // Returns the original encryptor
   std::unique_ptr<os_crypt_async::Encryptor> SetEncryptorForTesting(
       os_crypt_async::Encryptor encryptor_for_tests);
+  void ResetEncryptorForTesting();
   void RemoveAllPrefsChangeRegistrarForTesting();
   SyncServiceCrypto* GetCryptoForTesting();
   bool SetSeedForTesting(const std::string& seed);

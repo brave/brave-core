@@ -107,6 +107,11 @@ BraveSyncServiceImpl::SetEncryptorForTesting(
   return old_encryptor;
 }
 
+void BraveSyncServiceImpl::ResetEncryptorForTesting() {
+  CHECK_IS_TEST();
+  encryptor_.reset();
+}
+
 void BraveSyncServiceImpl::RemoveAllPrefsChangeRegistrarForTesting() {
   CHECK_IS_TEST();
   brave_sync_prefs_change_registrar_.RemoveAll();

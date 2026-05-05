@@ -472,6 +472,18 @@ TEST_F(BraveSyncServiceImplTest, FailedToDecryptBraveSeedValue) {
   EXPECT_THAT(brave_sync_service_impl()->GetSeed(), Eq(std::nullopt));
 }
 
+TEST_F(BraveSyncServiceImplTest,
+       GetPreferredDataTypesGivesAllWhenHasNoEncryptor) {
+  CreateSyncService();
+  EXPECT_FALSE(engine());
+
+  brave_sync_service_impl()->ResetEncryptorForTesting();
+
+  ASSERT_FALSE(brave_sync_service_impl()->has_encryptor());
+  EXPECT_EQ(brave_sync_service_impl()->GetPreferredDataTypes(),
+            DataTypeSet::All());
+}
+
 TEST_F(BraveSyncServiceImplTest, PermanentlyDeleteAccount) {
   CreateSyncService();
   EXPECT_FALSE(engine());
