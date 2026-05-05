@@ -69,7 +69,7 @@ TEST(PolkadotUtils, DestinationAddressParsing) {
         "8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48", 0);
     EXPECT_FALSE(parsed.has_value());
     EXPECT_EQ(parsed.error(),
-              mojom::PolkadotAddressError::kInvalidAddressFormat);
+              mojom::PolkadotValidationStatus::kInvalidAddressFormat);
   }
 
   // Invalid ss58 prefix.
@@ -77,14 +77,14 @@ TEST(PolkadotUtils, DestinationAddressParsing) {
     auto parsed = ParsePolkadotAccount(
         "FoQJpPyadYccjavVdTWxpxU7rUEaYhfLCPwXgkfD6Zat9QP", 42);
     EXPECT_FALSE(parsed.has_value());
-    EXPECT_EQ(parsed.error(), mojom::PolkadotAddressError::kInvalidPrefix);
+    EXPECT_EQ(parsed.error(), mojom::PolkadotValidationStatus::kInvalidPrefix);
   }
 
   {
     auto parsed = ParsePolkadotAccount(
         "FoQJpPyadYccjavVdTWxpxU7rUEaYhfLCPwXgkfD6Zat9QP", 0);
     EXPECT_FALSE(parsed.has_value());
-    EXPECT_EQ(parsed.error(), mojom::PolkadotAddressError::kInvalidPrefix);
+    EXPECT_EQ(parsed.error(), mojom::PolkadotValidationStatus::kInvalidPrefix);
   }
 
   // Address is too long.
@@ -93,7 +93,7 @@ TEST(PolkadotUtils, DestinationAddressParsing) {
         "5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty694ty", 42);
     EXPECT_FALSE(parsed.has_value());
     EXPECT_EQ(parsed.error(),
-              mojom::PolkadotAddressError::kInvalidAddressFormat);
+              mojom::PolkadotValidationStatus::kInvalidAddressFormat);
   }
 
   {
@@ -103,7 +103,7 @@ TEST(PolkadotUtils, DestinationAddressParsing) {
         0);
     EXPECT_FALSE(parsed.has_value());
     EXPECT_EQ(parsed.error(),
-              mojom::PolkadotAddressError::kInvalidAddressFormat);
+              mojom::PolkadotValidationStatus::kInvalidAddressFormat);
   }
 
   {
@@ -112,7 +112,7 @@ TEST(PolkadotUtils, DestinationAddressParsing) {
         42);
     EXPECT_FALSE(parsed.has_value());
     EXPECT_EQ(parsed.error(),
-              mojom::PolkadotAddressError::kInvalidAddressFormat);
+              mojom::PolkadotValidationStatus::kInvalidAddressFormat);
   }
 
   // Address is too short.
@@ -121,7 +121,7 @@ TEST(PolkadotUtils, DestinationAddressParsing) {
         "5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694t", 42);
     EXPECT_FALSE(parsed.has_value());
     EXPECT_EQ(parsed.error(),
-              mojom::PolkadotAddressError::kInvalidAddressFormat);
+              mojom::PolkadotValidationStatus::kInvalidAddressFormat);
   }
 
   {
@@ -129,7 +129,7 @@ TEST(PolkadotUtils, DestinationAddressParsing) {
         "0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a4", 0);
     EXPECT_FALSE(parsed.has_value());
     EXPECT_EQ(parsed.error(),
-              mojom::PolkadotAddressError::kInvalidAddressFormat);
+              mojom::PolkadotValidationStatus::kInvalidAddressFormat);
   }
 
   {
@@ -137,14 +137,14 @@ TEST(PolkadotUtils, DestinationAddressParsing) {
         "0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a", 0);
     EXPECT_FALSE(parsed.has_value());
     EXPECT_EQ(parsed.error(),
-              mojom::PolkadotAddressError::kInvalidAddressFormat);
+              mojom::PolkadotValidationStatus::kInvalidAddressFormat);
   }
 
   {
     auto parsed = ParsePolkadotAccount("", 0);
     EXPECT_FALSE(parsed.has_value());
     EXPECT_EQ(parsed.error(),
-              mojom::PolkadotAddressError::kInvalidAddressFormat);
+              mojom::PolkadotValidationStatus::kInvalidAddressFormat);
   }
 
   // Random nonsense.
@@ -152,7 +152,7 @@ TEST(PolkadotUtils, DestinationAddressParsing) {
     auto parsed = ParsePolkadotAccount("random string full of random words", 0);
     EXPECT_FALSE(parsed.has_value());
     EXPECT_EQ(parsed.error(),
-              mojom::PolkadotAddressError::kInvalidAddressFormat);
+              mojom::PolkadotValidationStatus::kInvalidAddressFormat);
   }
 }
 

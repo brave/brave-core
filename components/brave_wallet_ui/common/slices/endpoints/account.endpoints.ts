@@ -179,7 +179,7 @@ export const accountEndpoints = ({
     }),
 
     validatePolkadotAddress: query<
-      BraveWallet.PolkadotAddressError,
+      BraveWallet.PolkadotValidationStatus,
       {
         chainId: string
         address: string
@@ -188,13 +188,13 @@ export const accountEndpoints = ({
       queryFn: async ({ chainId, address }, { endpoint }, _, baseQuery) => {
         try {
           const { polkadotWalletService } = baseQuery(undefined).data
-          const { error } =
+          const { status } =
             await polkadotWalletService.validateAddressForTransaction(
               chainId,
               address,
             )
           return {
-            data: error,
+            data: status,
           }
         } catch (error) {
           return handleEndpointError(

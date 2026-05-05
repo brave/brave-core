@@ -494,38 +494,40 @@ TEST_F(PolkadotWalletServiceUnitTest, ValidateAddressForTransaction) {
 
   // Invalid chain_id should fail before metadata fetch.
   {
-    base::test::TestFuture<mojom::PolkadotAddressError> future;
+    base::test::TestFuture<mojom::PolkadotValidationStatus> future;
     polkadot_wallet_service->ValidateAddressForTransaction(
         "unknown-chain-id", "158HHeYTmEXMiMM1XufQt5bEe2CTia3EcVcfrpYBYcXA6bdb",
         future.GetCallback());
-    EXPECT_EQ(future.Get(), mojom::PolkadotAddressError::kInvalidAddressFormat);
+    EXPECT_EQ(future.Get(),
+              mojom::PolkadotValidationStatus::kInvalidAddressFormat);
   }
 
   AddValidMetadataResponses(url_loader_factory_, testnet_url, mainnet_url);
 
   {
-    base::test::TestFuture<mojom::PolkadotAddressError> future;
+    base::test::TestFuture<mojom::PolkadotValidationStatus> future;
     polkadot_wallet_service->ValidateAddressForTransaction(
         mojom::kPolkadotMainnet,
         "158HHeYTmEXMiMM1XufQt5bEe2CTia3EcVcfrpYBYcXA6bdb",
         future.GetCallback());
-    EXPECT_EQ(future.Get(), mojom::PolkadotAddressError::kNoError);
+    EXPECT_EQ(future.Get(), mojom::PolkadotValidationStatus::kNoError);
   }
 
   {
-    base::test::TestFuture<mojom::PolkadotAddressError> future;
+    base::test::TestFuture<mojom::PolkadotValidationStatus> future;
     polkadot_wallet_service->ValidateAddressForTransaction(
         mojom::kPolkadotMainnet,
         "5GvDB3LMJCoBVPyf7KgbfLe17FG7aQq2qqBKQ2YW9rJqNpHS",
         future.GetCallback());
-    EXPECT_EQ(future.Get(), mojom::PolkadotAddressError::kInvalidPrefix);
+    EXPECT_EQ(future.Get(), mojom::PolkadotValidationStatus::kInvalidPrefix);
   }
 
   {
-    base::test::TestFuture<mojom::PolkadotAddressError> future;
+    base::test::TestFuture<mojom::PolkadotValidationStatus> future;
     polkadot_wallet_service->ValidateAddressForTransaction(
         mojom::kPolkadotMainnet, "not-an-address", future.GetCallback());
-    EXPECT_EQ(future.Get(), mojom::PolkadotAddressError::kInvalidAddressFormat);
+    EXPECT_EQ(future.Get(),
+              mojom::PolkadotValidationStatus::kInvalidAddressFormat);
   }
 }
 
@@ -547,12 +549,12 @@ TEST_F(PolkadotWalletServiceUnitTest,
       "result": "invalid-metadata",
       "id": 1 })");
 
-  base::test::TestFuture<mojom::PolkadotAddressError> future;
+  base::test::TestFuture<mojom::PolkadotValidationStatus> future;
   polkadot_wallet_service->ValidateAddressForTransaction(
-      mojom::kPolkadotMainnet, "158HHeYTmEXMiMM1XufQt5bEe2CTia3EcVcfrpYBYcXA6bdb",
-      future.GetCallback());
+      mojom::kPolkadotMainnet,
+      "158HHeYTmEXMiMM1XufQt5bEe2CTia3EcVcfrpYBYcXA6bdb", future.GetCallback());
   EXPECT_EQ(future.Get(),
-            mojom::PolkadotAddressError::kFailedToFetchMetadata);
+            mojom::PolkadotValidationStatus::kFailedToFetchMetadata);
 }
 
 TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic) {

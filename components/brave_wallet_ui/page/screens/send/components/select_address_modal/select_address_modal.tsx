@@ -287,7 +287,7 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
 
     const {
       data: getPolkadotAddressValidationResult = BraveWallet
-        .PolkadotAddressError.kNoError,
+        .PolkadotValidationStatus.kNoError,
     } = useValidatePolkadotAddressQuery(
       fromAccountId
         && selectedNetwork
@@ -796,19 +796,19 @@ const processZCashAddress = (
 }
 
 const processPolkadotAddress = (
-  polkadotAddressError: BraveWallet.PolkadotAddressError,
+  polkadotAddressError: BraveWallet.PolkadotValidationStatus,
 ) => {
-  if (polkadotAddressError === BraveWallet.PolkadotAddressError.kNoError) {
+  if (polkadotAddressError === BraveWallet.PolkadotValidationStatus.kNoError) {
     return undefined
   }
   if (
-    polkadotAddressError === BraveWallet.PolkadotAddressError.kInvalidPrefix
+    polkadotAddressError === BraveWallet.PolkadotValidationStatus.kInvalidPrefix
   ) {
     return AddressMessageInfoIds.polkadotInvalidPrefixError
   }
   if (
     polkadotAddressError
-    === BraveWallet.PolkadotAddressError.kInvalidAddressFormat
+    === BraveWallet.PolkadotValidationStatus.kInvalidAddressFormat
   ) {
     return AddressMessageInfoIds.invalidAddressError
   }
@@ -912,7 +912,7 @@ function processAddressOrUrl({
   ethAddressChecksum: string
   isBase58: boolean
   zcashAddressError: BraveWallet.ZCashAddressError
-  polkadotAddressError: BraveWallet.PolkadotAddressError
+  polkadotAddressError: BraveWallet.PolkadotValidationStatus
   fullTokenList: BraveWallet.BlockchainToken[]
   isValidExtension: boolean
   resolvedDomainAddress: string | undefined

@@ -145,7 +145,8 @@ void PolkadotWalletService::ValidateAddressForTransaction(
     ValidateAddressForTransactionCallback callback) {
   auto network = network_manager_->GetChain(chain_id, mojom::CoinType::DOT);
   if (!network) {
-    std::move(callback).Run(mojom::PolkadotAddressError::kInvalidAddressFormat);
+    std::move(callback).Run(
+        mojom::PolkadotValidationStatus::kInvalidAddressFormat);
     return;
   }
 
@@ -289,7 +290,7 @@ void PolkadotWalletService::OnGetChainMetadataForValidateAddress(
     base::expected<PolkadotChainMetadata, std::string> metadata) {
   if (!metadata.has_value()) {
     std::move(callback).Run(
-        mojom::PolkadotAddressError::kFailedToFetchMetadata);
+        mojom::PolkadotValidationStatus::kFailedToFetchMetadata);
     return;
   }
 
@@ -300,7 +301,7 @@ void PolkadotWalletService::OnGetChainMetadataForValidateAddress(
     return;
   }
 
-  std::move(callback).Run(mojom::PolkadotAddressError::kNoError);
+  std::move(callback).Run(mojom::PolkadotValidationStatus::kNoError);
 }
 
 }  // namespace brave_wallet

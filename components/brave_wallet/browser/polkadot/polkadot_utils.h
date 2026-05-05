@@ -55,7 +55,7 @@ struct PolkadotAddress {
 //
 // TODO(https://github.com/brave/brave-browser/issues/51544): Eventually migrate
 // off of `const std::string&`.
-base::expected<PolkadotAddress, mojom::PolkadotAddressError>
+base::expected<PolkadotAddress, mojom::PolkadotValidationStatus>
 ParsePolkadotAccount(const std::string& input, uint16_t ss58_prefix);
 
 // Encodes a Polkadot sr25519 private key for export in Polkadot.js JSON format.
