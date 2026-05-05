@@ -288,7 +288,8 @@ void PolkadotWalletService::OnGetChainMetadataForValidateAddress(
     ValidateAddressForTransactionCallback callback,
     base::expected<PolkadotChainMetadata, std::string> metadata) {
   if (!metadata.has_value()) {
-    std::move(callback).Run(mojom::PolkadotAddressError::kInvalidAddressFormat);
+    std::move(callback).Run(
+        mojom::PolkadotAddressError::kFailedToFetchMetadata);
     return;
   }
 

@@ -481,14 +481,6 @@ TEST_F(PolkadotWalletServiceUnitTest, ValidateAddressForTransaction) {
       *keyring_service_, *network_manager_, prefs_,
       url_loader_factory_.GetSafeWeakWrapper());
 
-  {
-    base::test::TestFuture<mojom::PolkadotAddressError> future;
-    polkadot_wallet_service->ValidateAddressForTransaction(
-        "unknown-chain-id", "158HHeYTmEXMiMM1XufQt5bEe2CTia3EcVcfrpYBYcXA6bdb",
-        future.GetCallback());
-    EXPECT_EQ(future.Get(), mojom::PolkadotAddressError::kInvalidAddressFormat);
-  }
-
   std::string testnet_url =
       network_manager_
           ->GetKnownChain(mojom::kPolkadotTestnet, mojom::CoinType::DOT)
@@ -499,6 +491,16 @@ TEST_F(PolkadotWalletServiceUnitTest, ValidateAddressForTransaction) {
           ->GetKnownChain(mojom::kPolkadotMainnet, mojom::CoinType::DOT)
           ->rpc_endpoints.front()
           .spec();
+
+  // Invalid chain_id should fail before metadata fetch.
+  {
+    base::test::TestFuture<mojom::PolkadotAddressError> future;
+    polkadot_wallet_service->ValidateAddressForTransaction(
+        "unknown-chain-id", "158HHeYTmEXMiMM1XufQt5bEe2CTia3EcVcfrpYBYcXA6bdb",
+        future.GetCallback());
+    EXPECT_EQ(future.Get(), mojom::PolkadotAddressError::kInvalidAddressFormat);
+  }
+
   AddValidMetadataResponses(url_loader_factory_, testnet_url, mainnet_url);
 
   {
@@ -525,6 +527,32 @@ TEST_F(PolkadotWalletServiceUnitTest, ValidateAddressForTransaction) {
         mojom::kPolkadotMainnet, "not-an-address", future.GetCallback());
     EXPECT_EQ(future.Get(), mojom::PolkadotAddressError::kInvalidAddressFormat);
   }
+}
+
+TEST_F(PolkadotWalletServiceUnitTest,
+       ValidateAddressForTransaction_MetadataFetchFails) {
+  auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
+      *keyring_service_, *network_manager_, prefs_,
+      url_loader_factory_.GetSafeWeakWrapper());
+
+  std::string mainnet_url =
+      network_manager_
+          ->GetKnownChain(mojom::kPolkadotMainnet, mojom::CoinType::DOT)
+          ->rpc_endpoints.front()
+          .spec();
+
+  url_loader_factory_.ClearResponses();
+  url_loader_factory_.AddResponse(mainnet_url, R"(
+    { "jsonrpc": "2.0",
+      "result": "invalid-metadata",
+      "id": 1 })");
+
+  base::test::TestFuture<mojom::PolkadotAddressError> future;
+  polkadot_wallet_service->ValidateAddressForTransaction(
+      mojom::kPolkadotMainnet, "158HHeYTmEXMiMM1XufQt5bEe2CTia3EcVcfrpYBYcXA6bdb",
+      future.GetCallback());
+  EXPECT_EQ(future.Get(),
+            mojom::PolkadotAddressError::kFailedToFetchMetadata);
 }
 
 TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic) {
