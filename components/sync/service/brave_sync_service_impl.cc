@@ -11,6 +11,7 @@
 #include "base/auto_reset.h"
 #include "base/base64.h"
 #include "base/check.h"
+#include "base/check_is_test.h"
 #include "base/check_op.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_functions.h"
@@ -96,6 +97,7 @@ bool BraveSyncServiceImpl::has_encryptor() const {
 std::unique_ptr<os_crypt_async::Encryptor>
 BraveSyncServiceImpl::SetEncryptorForTesting(
     os_crypt_async::Encryptor encryptor_for_tests) {
+  CHECK_IS_TEST();
   std::unique_ptr<os_crypt_async::Encryptor> old_encryptor =
       std::move(encryptor_);
 
@@ -106,6 +108,7 @@ BraveSyncServiceImpl::SetEncryptorForTesting(
 }
 
 void BraveSyncServiceImpl::RemoveAllPrefsChangeRegistrarForTesting() {
+  CHECK_IS_TEST();
   brave_sync_prefs_change_registrar_.RemoveAll();
 }
 
@@ -150,6 +153,7 @@ bool BraveSyncServiceImpl::SetSeed(const std::string& seed) {
 }
 
 bool BraveSyncServiceImpl::SetSeedForTesting(const std::string& seed) {
+  CHECK_IS_TEST();
   return SetSeed(seed);
 }
 
@@ -342,6 +346,7 @@ void BraveSyncServiceImpl::OnEngineInitialized(
 }
 
 SyncServiceCrypto* BraveSyncServiceImpl::GetCryptoForTesting() {
+  CHECK_IS_TEST();
   return &crypto_;
 }
 

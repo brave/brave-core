@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/check_is_test.h"
 #include "base/files/file_path.h"
 #include "base/logging.h"
 #include "base/strings/strcat.h"
@@ -178,16 +179,19 @@ void Prefs::ClearLeaveChainDetails() {
 
 // static
 size_t Prefs::GetLeaveChainDetailsMaxLenForTesting() {
+  CHECK_IS_TEST();
   return kLeaveChainDetailsMaxLen;
 }
 
 // static
 std::string Prefs::GetLeaveChainDetailsPathForTesting() {
+  CHECK_IS_TEST();
   return kSyncLeaveChainDetails;
 }
 
 void Prefs::SetAddLeaveChainDetailBehaviourForTesting(
     AddLeaveChainDetailBehaviour add_leave_chain_detail_behaviour) {
+  CHECK_IS_TEST();
   add_leave_chain_detail_behaviour_ = add_leave_chain_detail_behaviour;
 }
 
