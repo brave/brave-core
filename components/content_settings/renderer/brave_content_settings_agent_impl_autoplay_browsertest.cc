@@ -35,6 +35,9 @@ class MockContentSettingsManagerImpl : public mojom::ContentSettingsManager {
 
   void AllowStorageAccess(const blink::LocalFrameToken& frame_token,
                           StorageType storage_type,
+                          const url::Origin& origin,
+                          const ::net::SiteForCookies& site_for_cookies,
+                          const url::Origin& top_frame_origin,
                           base::OnceCallback<void(bool)> callback) override {}
 
   void AllowEphemeralStorageAccess(
