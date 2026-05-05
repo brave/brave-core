@@ -114,10 +114,7 @@ bool SyncCannotRunInfoBarDelegate::Accept() {
 
 bool SyncCannotRunInfoBarDelegate::Cancel() {
   // "Don't show again" button
-  BraveSyncServiceImpl* brave_sync_service = GetSyncService(profile_);
-  if (!brave_sync_service) {
-    return true;
-  }
-  brave_sync_service->prefs().DismissFailedDecryptSeedNotice();
+  brave_sync::Prefs brave_sync_prefs(profile_->GetPrefs());
+  brave_sync_prefs.DismissFailedDecryptSeedNotice();
   return true;
 }
