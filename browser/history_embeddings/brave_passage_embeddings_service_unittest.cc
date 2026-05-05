@@ -309,8 +309,8 @@ TEST_F(BravePassageEmbeddingsServiceTest,
        PreInstalledModelDirCompletesLoadOnFactoryRegister) {
   // Set install_dir before constructing the service. AddObserver
   // re-fires OnLocalModelsReady synchronously when install_dir is
-  // already set, exercising the OneShotEvent's idempotent Signal()
-  // alongside the explicit signal in MaybeWaitForLocalModelFilesReady.
+  // already set; MaybeLoadLocalModelFiles is a no-op until the factory
+  // registers because GetInstallDir() is read fresh on each call.
   SetUpModelFiles();
   RecreateService();
 

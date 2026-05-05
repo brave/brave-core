@@ -27,10 +27,6 @@
 #include "mojo/public/cpp/bindings/remote.h"
 #include "services/passage_embeddings/public/mojom/passage_embeddings.mojom.h"
 
-namespace base {
-class OneShotEvent;
-}
-
 namespace content {
 class WebContents;
 }
@@ -195,24 +191,14 @@ class BravePassageEmbeddingsService
   void OnBackgroundContentsCreated(
       std::unique_ptr<local_ai::BackgroundWebContents> contents);
   void CloseBackgroundContents();
-  // Arms a fresh pair of OneShotEvents that chain into
-  // LoadLocalModelFiles once both (1) the EmbeddingGemma component is
-  // installed (OnLocalModelsReady signals component_ready_event_, or
-  // install_dir is already non-empty at arm time) and (2) the
-  // renderer's PassageEmbedderFactory registers via
-  // RegisterPassageEmbedderFactory.
-  void MaybeWaitForLocalModelFilesReady();
-  // Posted on component_ready_event_. Chains through
-  // factory_registered_event_ to LoadLocalModelFiles.
-  void OnComponentReadyForLoad();
-  void LoadLocalModelFiles();
+  void MaybeLoadLocalModelFiles();
   void OnLocalModelFilesLoaded(local_ai::mojom::ModelFilesPtr model_files);
   void OnFactoryInitDone(bool success);
   void FulfillPendingLoads();
   void FailPendingLoads();
   // Drops the renderer-facing embedder state (batch embedder, factory,
-  // pending loads, model-ready flag) and re-arms the load barrier.
-  // Shared by OnFactoryDisconnected and CloseBackgroundContents.
+  // pending loads) and resets the load phase to kWaiting. Shared by
+  // OnFactoryDisconnected and CloseBackgroundContents.
   void ResetEmbedderState();
   void OnFactoryDisconnected();
   void OnBatchEmbedderDisconnected();
@@ -227,17 +213,21 @@ class BravePassageEmbeddingsService
   std::unique_ptr<BraveBatchPassageEmbedder> batch_embedder_;
   std::vector<PendingLoad> pending_loads_;
 
-  // Signaled when the EmbeddingGemma component is installed. When
-  // fired, OnComponentReadyForLoad chains to factory_registered_event_.
-  // Re-armed (new OneShotEvent instance) on each arm cycle by
-  // MaybeWaitForLocalModelFilesReady; Signal() is idempotent via the
-  // is_signaled() guard at each call site.
-  std::unique_ptr<base::OneShotEvent> component_ready_event_;
-  // Signaled when the renderer's PassageEmbedderFactory registers.
-  // LoadLocalModelFiles is posted on this event (after component is
-  // also ready) by OnComponentReadyForLoad.
-  std::unique_ptr<base::OneShotEvent> factory_registered_event_;
-  bool model_ready_ = false;
+  // Load sequence:
+  //   kWaiting       -> need updater_state_->GetInstallDir() non-empty
+  //                     && factory_.is_bound()
+  //   kLoading       -> ThreadPool task reading model files from disk
+  //   kInitializing  -> factory_->Init in flight
+  //   kReady         -> can fulfill pending loads
+  //   kFailed        -> teardown via ResetEmbedderState pending
+  enum class LoadPhase {
+    kWaiting,
+    kLoading,
+    kInitializing,
+    kReady,
+    kFailed,
+  };
+  LoadPhase phase_ = LoadPhase::kWaiting;
 
   base::WeakPtrFactory<BravePassageEmbeddingsService> weak_ptr_factory_{this};
 };

@@ -15,7 +15,6 @@
 #include "base/logging.h"
 #include "base/no_destructor.h"
 #include "base/numerics/safe_math.h"
-#include "base/one_shot_event.h"
 #include "base/task/thread_pool.h"
 #include "components/history_embeddings/core/history_embeddings_features.h"
 #include "content/public/browser/web_contents.h"
@@ -266,13 +265,6 @@ BravePassageEmbeddingsService::BravePassageEmbeddingsService(
       updater_state_(updater_state) {
   CHECK(base::FeatureList::IsEnabled(history_embeddings::kHistoryEmbeddings));
   CHECK(updater_state_);
-  // Arm the events FIRST so AddObserver's immediate-notify (when
-  // install_dir is already set) has a live component_ready_event_ to
-  // signal. OneShotEvent::Signal() is idempotent under the
-  // is_signaled() guard, so the sync install_dir check inside
-  // MaybeWaitForLocalModelFilesReady and the observer callback can
-  // both fire without double-counting.
-  MaybeWaitForLocalModelFilesReady();
   updater_state_->AddObserver(this);
 }
 
@@ -325,7 +317,7 @@ void BravePassageEmbeddingsService::BindPassageEmbedder(
   load.callback = std::move(callback);
   pending_loads_.push_back(std::move(load));
 
-  if (model_ready_ && factory_.is_bound()) {
+  if (phase_ == LoadPhase::kReady) {
     FulfillPendingLoads();
   }
 }
@@ -361,16 +353,12 @@ void BravePassageEmbeddingsService::RegisterPassageEmbedderFactory(
   factory_.set_disconnect_handler(
       base::BindOnce(&BravePassageEmbeddingsService::OnFactoryDisconnected,
                      weak_ptr_factory_.GetWeakPtr()));
-  if (factory_registered_event_ && !factory_registered_event_->is_signaled()) {
-    factory_registered_event_->Signal();
-  }
+  MaybeLoadLocalModelFiles();
 }
 
 void BravePassageEmbeddingsService::OnLocalModelsReady(
     const base::FilePath& install_dir) {
-  if (component_ready_event_ && !component_ready_event_->is_signaled()) {
-    component_ready_event_->Signal();
-  }
+  MaybeLoadLocalModelFiles();
 }
 
 void BravePassageEmbeddingsService::OnBackgroundContentsDestroyed(
@@ -402,41 +390,21 @@ void BravePassageEmbeddingsService::CloseBackgroundContents() {
   DVLOG(3) << "CloseBackgroundContents (pending_loads=" << pending_loads_.size()
            << " batch_embedder=" << (batch_embedder_ ? "set" : "null")
            << " factory_bound=" << factory_.is_bound()
-           << " model_ready=" << model_ready_
+           << " phase=" << static_cast<int>(phase_)
            << " bg_contents=" << (background_web_contents_ ? "set" : "null")
            << ")";
   ResetEmbedderState();
   background_web_contents_.reset();
 }
 
-void BravePassageEmbeddingsService::MaybeWaitForLocalModelFilesReady() {
-  component_ready_event_ = std::make_unique<base::OneShotEvent>();
-  factory_registered_event_ = std::make_unique<base::OneShotEvent>();
-  // Chain: once the component is ready, wait for the factory
-  // registration and then load the model files. OneShotEvent::Post
-  // runs the closure asynchronously whether the event is already
-  // signaled or signals later, matching the pre-existing barrier's
-  // fire-once semantics.
-  component_ready_event_->Post(
-      FROM_HERE,
-      base::BindOnce(&BravePassageEmbeddingsService::OnComponentReadyForLoad,
-                     weak_ptr_factory_.GetWeakPtr()));
-  if (!updater_state_->GetInstallDir().empty()) {
-    component_ready_event_->Signal();
-  }
-}
-
-void BravePassageEmbeddingsService::OnComponentReadyForLoad() {
-  if (!factory_registered_event_) {
+void BravePassageEmbeddingsService::MaybeLoadLocalModelFiles() {
+  if (phase_ != LoadPhase::kWaiting) {
     return;
   }
-  factory_registered_event_->Post(
-      FROM_HERE,
-      base::BindOnce(&BravePassageEmbeddingsService::LoadLocalModelFiles,
-                     weak_ptr_factory_.GetWeakPtr()));
-}
-
-void BravePassageEmbeddingsService::LoadLocalModelFiles() {
+  if (updater_state_->GetInstallDir().empty() || !factory_.is_bound()) {
+    return;
+  }
+  phase_ = LoadPhase::kLoading;
   base::FilePath weights_path = updater_state_->GetEmbeddingGemmaModel();
   base::FilePath weights_dense1_path =
       updater_state_->GetEmbeddingGemmaDense1();
@@ -467,6 +435,7 @@ void BravePassageEmbeddingsService::OnLocalModelFilesLoaded(
     OnFactoryInitDone(false);
     return;
   }
+  phase_ = LoadPhase::kInitializing;
   factory_->Init(
       std::move(model_files),
       base::BindOnce(&BravePassageEmbeddingsService::OnFactoryInitDone,
@@ -477,6 +446,7 @@ void BravePassageEmbeddingsService::OnFactoryInitDone(bool success) {
   if (!success) {
     DVLOG(1) << "Factory Init failed, failing " << pending_loads_.size()
              << " pending load(s)";
+    phase_ = LoadPhase::kFailed;
     // CloseBackgroundContents runs FailPendingLoads internally and
     // tears down the rest of the state, matching LocalAIService's
     // old OnPassageEmbedderReady(false) behavior.
@@ -485,12 +455,12 @@ void BravePassageEmbeddingsService::OnFactoryInitDone(bool success) {
   }
   DVLOG(3) << "Factory Init succeeded, fulfilling " << pending_loads_.size()
            << " pending load(s)";
-  model_ready_ = true;
+  phase_ = LoadPhase::kReady;
   FulfillPendingLoads();
 }
 
 void BravePassageEmbeddingsService::FulfillPendingLoads() {
-  if (!model_ready_ || !factory_.is_bound() || pending_loads_.empty()) {
+  if (phase_ != LoadPhase::kReady || pending_loads_.empty()) {
     return;
   }
 
@@ -538,8 +508,7 @@ void BravePassageEmbeddingsService::ResetEmbedderState() {
   batch_embedder_.reset();
   factory_.reset();
   FailPendingLoads();
-  model_ready_ = false;
-  MaybeWaitForLocalModelFilesReady();
+  phase_ = LoadPhase::kWaiting;
 }
 
 void BravePassageEmbeddingsService::OnFactoryDisconnected() {
