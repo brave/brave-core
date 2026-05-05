@@ -13,9 +13,6 @@ import {
   EmailAliasModalResult,
 } from './content/email_aliases_modal'
 import {
-  AuthenticationStatus,
-  AuthState,
-  Alias,
   EmailAliasesServiceInterface,
   EmailAliasesServiceObserverInterface,
   EmailAliasesServiceObserverReceiver,
@@ -24,6 +21,7 @@ import {
   EmailAliasesPanelHandler,
   MAX_ALIASES,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
+import { useEmailAliasesObserver } from './content/use_email_aliases_observer'
 
 export const EmailAliasesPanelConnected = ({
   emailAliasesService,
@@ -34,30 +32,7 @@ export const EmailAliasesPanelConnected = ({
   emailAliasesPanelHandler: EmailAliasesPanelHandlerInterface
   bindObserver: (observer: EmailAliasesServiceObserverInterface) => () => void
 }) => {
-  const [authState, setAuthState] = React.useState<AuthState>({
-    status: AuthenticationStatus.kStartup,
-    email: '',
-  })
-  const [aliasesState, setAliasesState] = React.useState<Alias[]>([])
-  React.useEffect(() => {
-    let status: AuthenticationStatus = AuthenticationStatus.kStartup
-    const observer: EmailAliasesServiceObserverInterface = {
-      onAliasesUpdated: (aliases: Alias[]) => {
-        if (status !== AuthenticationStatus.kAuthenticated) {
-          return
-        }
-        setAliasesState(aliases)
-      },
-      onAuthStateChanged: (state: AuthState) => {
-        status = state.status
-        setAuthState(state)
-        if (status !== AuthenticationStatus.kAuthenticated) {
-          setAliasesState([])
-        }
-      },
-    }
-    return bindObserver(observer)
-  }, [])
+  const { authState, aliasesState } = useEmailAliasesObserver(bindObserver)
   return (
     <EmailAliasModal
       aliases={aliasesState}

@@ -9,14 +9,12 @@ import { StyleSheetManager } from 'styled-components'
 import * as React from 'react'
 import { setIconBasePath } from '@brave/leo/react/icon'
 import {
-  AuthenticationStatus,
-  AuthState,
-  Alias,
   EmailAliasesServiceInterface,
   EmailAliasesServiceObserverInterface,
   EmailAliasesServiceObserverReceiver,
   EmailAliasesService,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
+import { useEmailAliasesObserver } from './content/use_email_aliases_observer'
 
 export const ManagePageConnected = ({
   emailAliasesService,
@@ -25,37 +23,13 @@ export const ManagePageConnected = ({
   emailAliasesService: EmailAliasesServiceInterface
   bindObserver: (observer: EmailAliasesServiceObserverInterface) => () => void
 }) => {
-  const [authState, setAuthState] = React.useState<AuthState>({
-    status: AuthenticationStatus.kStartup,
-    email: '',
-  })
-  const [aliasesState, setAliasesState] = React.useState<Alias[]>([])
-  React.useEffect(() => {
-    // Note: We keep track of the status here so we can avoid setting aliases
-    // when the user is not logged in.
-    let status: AuthenticationStatus = AuthenticationStatus.kStartup
-    const observer: EmailAliasesServiceObserverInterface = {
-      onAliasesUpdated: (aliases: Alias[]) => {
-        if (status !== AuthenticationStatus.kAuthenticated) {
-          return
-        }
-        setAliasesState(aliases)
-      },
-      onAuthStateChanged: (state: AuthState) => {
-        status = state.status
-
-        setAuthState(state)
-        if (status !== AuthenticationStatus.kAuthenticated) {
-          setAliasesState([])
-        }
-      },
-    }
-    return bindObserver(observer)
-  }, [])
+  const { authState, aliasesState, aliasesError } =
+    useEmailAliasesObserver(bindObserver)
   return (
     <ManagePage
       authState={authState}
       aliasesState={aliasesState}
+      aliasesError={aliasesError}
       emailAliasesService={emailAliasesService}
     />
   )
