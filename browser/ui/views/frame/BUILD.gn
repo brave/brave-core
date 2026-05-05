@@ -82,8 +82,11 @@ source_set("browser_tests") {
     sources += [ "//brave/browser/ui/views/frame/brave_browser_frame_view_linux_browsertest.cc" ]
 
     deps += [
+      "//base/test:test_support",
       "//brave/browser/ui:brave_tab_prefs",
       "//chrome/browser/themes",
+      "//chrome/browser/ui:layout_constants",
+      "//chrome/browser/ui/tabs:features",
       "//chrome/browser/ui/views/frame",
       "//components/prefs",
       "//ui/linux:test_support",

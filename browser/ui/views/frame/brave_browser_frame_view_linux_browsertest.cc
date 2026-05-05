@@ -7,13 +7,17 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
+#include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/frame/brave_browser_frame_view_linux_native.h"
+#include "brave/browser/ui/views/frame/brave_opaque_browser_frame_view.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_service.h"
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/layout_constants.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/frame/browser_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/custom_corners_background.h"
@@ -212,3 +216,70 @@ IN_PROC_BROWSER_TEST_F(
   EXPECT_EQ(window_corners.upper_right(), tc_radii->upper_right());
   EXPECT_EQ(window_corners.upper_left(), tc_radii->upper_left());
 }
+
+// Parameterized fixture: bool param = compact mode enabled.
+// Enables #brave-compact-horizontal-tabs in the constructor so the layout
+// constants are in effect when the browser window is created.
+class BraveBrowserFrameViewTabStripHeightTest
+    : public BraveBrowserFrameViewTest,
+      public testing::WithParamInterface<bool> {
+ public:
+  BraveBrowserFrameViewTabStripHeightTest() {
+    if (GetParam()) {
+      features_.InitAndEnableFeature(tabs::kBraveCompactHorizontalTabs);
+    }
+  }
+
+ private:
+  base::test::ScopedFeatureList features_;
+};
+
+// Verifies the horizontal tab strip height equals kTabStripHeight for both
+// default and compact modes when BraveOpaqueBrowserFrameView is active.
+//
+// Regression: PR #35778 substituted GetHorizontalTabControlsDelta() (negative)
+// for kTabstripToolbarOverlap (positive) in GetTopAreaHeight(), adding extra
+// pixels to the tab strip: 41→45 px (default, delta=-4) and 38→43 px
+// (compact, delta=-5). The fix restores
+// OpaqueBrowserFrameView::GetTopAreaHeight().
+IN_PROC_BROWSER_TEST_P(BraveBrowserFrameViewTabStripHeightTest,
+                       TabStripHeightMatchesLayoutConstant) {
+  if (!views::AsViewClass<BraveOpaqueBrowserFrameView>(frame_view())) {
+    GTEST_SKIP() << "Not using BraveOpaqueBrowserFrameView";
+  }
+
+  RunScheduledLayouts();
+
+  // Default: 32 (height) + 2*4 (spacing) + 1 (overlap) = 41
+  // Compact: 26 (height) + 2*2 (spacing) + 8 (overlap) = 38
+  const int expected_height = GetParam() ? 38 : 41;
+  EXPECT_EQ(expected_height, GetLayoutConstant(LayoutConstant::kTabStripHeight))
+      << "kTabStripHeight constant is wrong for "
+      << (GetParam() ? "compact" : "default") << " mode";
+  EXPECT_EQ(GetLayoutConstant(LayoutConstant::kTabStripHeight),
+            browser_view()->tab_strip_view()->height())
+      << "Tab strip rendered height ("
+      << browser_view()->tab_strip_view()->height()
+      << ") does not match kTabStripHeight ("
+      << GetLayoutConstant(LayoutConstant::kTabStripHeight) << ") in "
+      << (GetParam() ? "compact" : "default") << " mode";
+
+  // Verify the overlap is applied correctly: toolbar top must be exactly
+  // kTabstripToolbarOverlap pixels above the tab strip bottom.
+  const int overlap =
+      GetLayoutConstant(LayoutConstant::kTabstripToolbarOverlap);
+  EXPECT_EQ(
+      browser_view()->tab_strip_view()->GetBoundsInScreen().bottom() - overlap,
+      browser_view()->toolbar()->GetBoundsInScreen().y())
+      << "Toolbar y (" << browser_view()->toolbar()->GetBoundsInScreen().y()
+      << ") should be tab strip bottom ("
+      << browser_view()->tab_strip_view()->GetBoundsInScreen().bottom()
+      << ") minus overlap (" << overlap << ")";
+}
+
+INSTANTIATE_TEST_SUITE_P(,
+                         BraveBrowserFrameViewTabStripHeightTest,
+                         testing::Bool(),
+                         [](const testing::TestParamInfo<bool>& info) {
+                           return info.param ? "Compact" : "Default";
+                         });

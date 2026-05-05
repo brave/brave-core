@@ -15,7 +15,6 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
-#include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/opaque_browser_frame_view_layout.h"
 #include "ui/base/hit_test.h"
@@ -143,13 +142,7 @@ int BraveOpaqueBrowserFrameView::GetTopAreaHeight() const {
     return layout_->NonClientTopHeight(false);
   }
 
-  const bool is_tabbed = GetBrowserView()->GetIsNormalType();
-  const auto info = GetClientFrameElementInfo();
-  const int frame_height = FrameBorderInsets(false).top();
-  const int top_height = layout_->NonClientTopHeight(false);
-  return std::max(frame_height + info.toolbar_minimum_height,
-                  top_height + info.tabstrip_preferred_height -
-                      (is_tabbed ? tabs::GetHorizontalTabControlsDelta() : 0));
+  return OpaqueBrowserFrameView::GetTopAreaHeight();
 }
 
 bool BraveOpaqueBrowserFrameView::ShouldShowVerticalTabs() const {
