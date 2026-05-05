@@ -21,9 +21,11 @@
 #include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/browser/ephemeral_storage/tld_ephemeral_lifetime.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -235,6 +237,10 @@ void BraveEphemeralStorageServiceDelegate::
     PrepareTabsForFirstPartyStorageCleanup(
         const std::vector<std::string>& ephemeral_domains,
         const bool enforced_by_user) {
+  if (enforced_by_user) {
+    brave_shields::RecordManualShredP3A(*g_browser_process->local_state());
+  }
+
   auto* profile = Profile::FromBrowserContext(context_);
   CHECK(profile);
 
