@@ -20,9 +20,8 @@
       sync_status.Set(                                                       \
           "hasSyncWordsDecryptionError",                                     \
           encryptor_ready && !brave_sync_service->GetSeed().has_value());    \
-      sync_status.Set(                                                       \
-          "isOsEncryptionAvailable",                                         \
-          encryptor_ready && brave_sync_service->IsEncryptionAvailable());   \
+      sync_status.Set("isOsEncryptionAvailable",                             \
+                      brave_sync_service->IsEncryptionAvailable());          \
     }                                                                        \
   }
 

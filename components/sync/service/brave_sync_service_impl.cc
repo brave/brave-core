@@ -118,7 +118,10 @@ void BraveSyncServiceImpl::RemoveAllPrefsChangeRegistrarForTesting() {
 }
 
 bool BraveSyncServiceImpl::IsEncryptionAvailable() const {
-  CHECK(has_encryptor());
+  if (!has_encryptor()) {
+    return false;
+  }
+
   return encryptor_->IsEncryptionAvailable();
 }
 
