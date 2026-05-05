@@ -95,7 +95,10 @@ class MockToolProvider : public ToolProvider {
   MockToolProvider() = default;
   ~MockToolProvider() override = default;
 
-  MOCK_METHOD(void, OnNewGenerationLoop, (), (override));
+  MOCK_METHOD(void,
+              UpdateToolsForNewGenerationLoop,
+              (base::OnceClosure),
+              (override));
   MOCK_METHOD(void, OnGenerationCompleteWithNoToolsToHandle, (), (override));
   MOCK_METHOD(std::vector<base::WeakPtr<Tool>>, GetTools, (), (override));
   MOCK_METHOD(void, StopAllTasks, (), (override));
@@ -266,6 +269,10 @@ class ConversationHandlerUnitTest : public testing::Test {
     ON_CALL(*mock_tool_provider_, GetTools()).WillByDefault([]() {
       return std::vector<base::WeakPtr<Tool>>();
     });
+
+    // Invoke the callback immediately by default
+    ON_CALL(*mock_tool_provider_, UpdateToolsForNewGenerationLoop)
+        .WillByDefault([](base::OnceClosure cb) { std::move(cb).Run(); });
 
     conversation_handler_->SetEngineForTesting(
         std::make_unique<NiceMock<MockEngineConsumer>>());
@@ -3571,9 +3578,10 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolIterations) {
 
   // Expect our tool provider will be informed of the new generation loop
   // starting when the initial message is submitted.
-  EXPECT_CALL(*mock_tool_provider_, OnNewGenerationLoop)
+  EXPECT_CALL(*mock_tool_provider_, UpdateToolsForNewGenerationLoop)
       .Times(1)
-      .InSequence(seq);
+      .InSequence(seq)
+      .WillOnce([](base::OnceClosure cb) { std::move(cb).Run(); });
 
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .InSequence(seq)
@@ -6204,6 +6212,8 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
     ON_CALL(*mock_tool_provider_, GetTools()).WillByDefault([]() {
       return std::vector<base::WeakPtr<Tool>>();
     });
+    ON_CALL(*mock_tool_provider_, UpdateToolsForNewGenerationLoop)
+        .WillByDefault([](base::OnceClosure cb) { std::move(cb).Run(); });
     conversation_handler_->SetEngineForTesting(
         std::make_unique<NiceMock<MockEngineConsumer>>());
     EmulateUserOptedIn();

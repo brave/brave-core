@@ -348,7 +348,7 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   // Setup tools for the conversation. When a new user message is added, we
   // can reset some of the state of the tools, ready for the next loop.
-  void InitToolsForNewGenerationLoop();
+  void InitToolsForNewGenerationLoop(base::OnceClosure on_updated);
 
   mojom::ConversationEntriesStatePtr GetStateForConversationEntries();
   void AddToConversationHistory(mojom::ConversationTurnPtr turn);

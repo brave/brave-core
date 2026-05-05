@@ -15,6 +15,7 @@
 #include <variant>
 #include <vector>
 
+#include "base/barrier_closure.h"
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/containers/fixed_flat_set.h"
@@ -621,10 +622,10 @@ void ConversationHandler::SubmitHumanConversationEntry(
 
   // Add the human part to the conversation
   AddToConversationHistory(std::move(turn));
-  // Give tools a chance to reset their state for the next loop
-  InitToolsForNewGenerationLoop();
-  // Get any content and perform the response generation
-  PerformAssistantGenerationWithPossibleContent();
+  // Give tools a chance to reset their state for the next loop, then generate.
+  InitToolsForNewGenerationLoop(base::BindOnce(
+      &ConversationHandler::PerformAssistantGenerationWithPossibleContent,
+      weak_ptr_factory_.GetWeakPtr()));
 }
 
 void ConversationHandler::SubmitHumanConversationEntryWithAction(
@@ -1185,15 +1186,20 @@ void ConversationHandler::AddToConversationHistory(
   OnConversationEntryAdded(chat_history_.back());
 }
 
-void ConversationHandler::InitToolsForNewGenerationLoop() {
-  // We can reset any already-created tools that don't want state to
-  // survive between loops (i.e. when a new user message is received).
-  for (auto& tool_provider : tool_providers_) {
-    tool_provider->OnNewGenerationLoop();
-  }
+void ConversationHandler::InitToolsForNewGenerationLoop(
+    base::OnceClosure on_updated) {
   // Remove state from any previous task
   tool_use_task_state_ = mojom::TaskState::kNone;
   OnToolUseTaskStateChanged();
+
+  // We can reset any already-created tools that don't want state to
+  // survive between loops (i.e. when a new user message is received).
+  // Wait for all providers to finish before continuing.
+  auto barrier =
+      base::BarrierClosure(tool_providers_.size(), std::move(on_updated));
+  for (auto& tool_provider : tool_providers_) {
+    tool_provider->UpdateToolsForNewGenerationLoop(barrier);
+  }
 }
 
 void ConversationHandler::PerformAssistantGenerationWithPossibleContent() {

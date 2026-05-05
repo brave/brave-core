@@ -77,7 +77,8 @@ ContentAgentToolProvider::ContentAgentToolProvider(
   // ToolProvider::UseTool, or similar.
   // If we want each conversation message to act on a different set of tabs and
   // not have access to any tabs previously acted on in the same conversation,
-  // we should create a new task inside `ToolProvider::OnNewGenerationLoop`.
+  // we should create a new task inside
+  // `ToolProvider::UpdateToolsForNewGenerationLoop`.
   task_id_ = actor_service_->CreateTask(
       actor::TaskSourceInfo(actor::TaskSourceInfo::Client::kExperimentalActor,
                             /*id=*/std::nullopt),
