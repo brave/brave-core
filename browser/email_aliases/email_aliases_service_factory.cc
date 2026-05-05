@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/check_deref.h"
 #include "brave/browser/brave_account/brave_account_service_factory.h"
 #include "brave/components/brave_account/brave_account_service.h"
 #include "brave/components/email_aliases/email_aliases_service.h"
@@ -24,9 +23,6 @@ namespace email_aliases {
 // static
 EmailAliasesService* EmailAliasesServiceFactory::GetServiceForProfile(
     Profile* profile) {
-  if (!IsServiceEnabled(profile)) {
-    return nullptr;
-  }
   return static_cast<EmailAliasesService*>(
       GetInstance()->GetServiceForBrowserContext(profile, true));
 }
@@ -47,16 +43,6 @@ EmailAliasesServiceFactory* EmailAliasesServiceFactory::GetInstance() {
   return instance.get();
 }
 
-// static
-bool EmailAliasesServiceFactory::IsServiceEnabled(
-    content::BrowserContext* context) {
-  if (!features::IsEmailAliasesEnabled()) {
-    return false;
-  }
-  const PrefService* pref_service = user_prefs::UserPrefs::Get(context);
-  return pref_service && pref_service->GetBoolean(prefs::kEmailAliasesEnabled);
-}
-
 EmailAliasesServiceFactory::EmailAliasesServiceFactory()
     : ProfileKeyedServiceFactory(
           "EmailAliasesService",
@@ -69,6 +55,14 @@ EmailAliasesServiceFactory::~EmailAliasesServiceFactory() = default;
 std::unique_ptr<KeyedService>
 EmailAliasesServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
+  if (!features::IsEmailAliasesEnabled()) {
+    return nullptr;
+  }
+  PrefService* pref_service = user_prefs::UserPrefs::Get(context);
+  if (!pref_service || !pref_service->GetBoolean(prefs::kEmailAliasesEnabled)) {
+    return nullptr;
+  }
+
   mojo::PendingRemote<brave_account::mojom::Authentication> brave_account_auth;
   brave_account::BraveAccountServiceFactory::GetFor(context)->BindInterface(
       brave_account_auth.InitWithNewPipeAndPassReceiver());
@@ -76,7 +70,7 @@ EmailAliasesServiceFactory::BuildServiceInstanceForBrowserContext(
       std::move(brave_account_auth),
       context->GetDefaultStoragePartition()
           ->GetURLLoaderFactoryForBrowserProcess(),
-      CHECK_DEREF(user_prefs::UserPrefs::Get(context)));
+      *pref_service);
 }
 
 }  // namespace email_aliases
