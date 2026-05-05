@@ -24,6 +24,8 @@ import {
 export class LedgerUntrustedMessagingTransport //
   extends LedgerMessagingTransport
 {
+  private deviceName: string = ''
+
   constructor(targetWindow: Window, targetUrl: string) {
     super(targetWindow, targetUrl)
 
@@ -40,29 +42,28 @@ export class LedgerUntrustedMessagingTransport //
     }
   }
 
-  private handleGetDeviceName = async (
-    command: GetDeviceNameCommand,
-  ): Promise<GetDeviceNameResponse> => {
+  private fillDeviceNameImpl = async (): Promise<void> => {
     try {
       const transport = await TransportWebHID.create()
       const deviceName = transport.deviceModel?.productName ?? ''
-      transport.close()
-      return {
-        ...command,
-        payload: {
-          success: true,
-          deviceName,
-        },
-      }
-    } catch (error) {
-      return {
-        ...command,
-        payload: {
-          success: false,
-          error: 'Failed to get device name',
-          code: undefined,
-        },
-      }
+      await transport.close()
+      this.deviceName = deviceName
+      console.log('this.deviceName', this.deviceName)
+    } catch (error) {}
+  }
+
+  private handleGetDeviceName = async (
+    command: GetDeviceNameCommand,
+  ): Promise<GetDeviceNameResponse> => {
+    if (!this.deviceName) {
+      await this.fillDeviceNameImpl()
+    }
+    return {
+      ...command,
+      payload: {
+        success: true,
+        deviceName: this.deviceName,
+      },
     }
   }
 
@@ -80,6 +81,9 @@ export class LedgerUntrustedMessagingTransport //
         },
       }
     }
+
+    await this.fillDeviceNameImpl()
+
     return {
       ...command,
       payload: {

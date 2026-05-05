@@ -113,29 +113,18 @@ export const ConnectHardwareWalletPanel = ({ hardwareWalletCode }: Props) => {
 
   const account = signMessageAccount || confirmTransactionAccount
 
-  React.useEffect(() => {
-    let subscribed = true
-
-    const fetchDeviceName = async () => {
-      if (!account || !account.hardware) {
-        return
-      }
-
-      const name = await getDeviceNameFromDevice(
-        account.hardware.vendor,
-        account.accountId.coin,
-      )
-      if (subscribed) {
-        setDeviceName(name.success ? name.deviceName : '')
-      }
+  const updateDeviceName = React.useCallback(async () => {
+    if (!account || !account.hardware) {
+      return
     }
+    const name = await getDeviceNameFromDevice(
+      account.hardware.vendor,
+      account.accountId.coin,
+    )
+    setDeviceName(name.success ? name.deviceName : '')
+  }, [account])
 
-    fetchDeviceName()
-
-    return () => {
-      subscribed = false
-    }
-  }, [account, hardwareWalletCode])
+  useInterval(updateDeviceName, 500, 500)
 
   // memos
   const isConnected = React.useMemo((): boolean => {
