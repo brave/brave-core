@@ -53,10 +53,10 @@ class BraveSyncPrefsTest : public testing::Test {
 using BraveSyncPrefsDeathTest = BraveSyncPrefsTest;
 
 TEST_F(BraveSyncPrefsTest, LeaveChainDetailsMaxLenIOS) {
-  brave_sync_prefs()->SetAddLeaveChainDetailBehaviourForTests(
+  brave_sync_prefs()->SetAddLeaveChainDetailBehaviourForTesting(
       brave_sync::Prefs::AddLeaveChainDetailBehaviour::kAdd);
 
-  auto max_len = Prefs::GetLeaveChainDetailsMaxLenForTests();
+  auto max_len = Prefs::GetLeaveChainDetailsMaxLenForTesting();
 
   std::string details("a");
   brave_sync_prefs()->AddLeaveChainDetail("", 0, details.c_str());

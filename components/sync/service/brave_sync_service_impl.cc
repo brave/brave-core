@@ -94,7 +94,7 @@ bool BraveSyncServiceImpl::has_encryptor() const {
 }
 
 std::unique_ptr<os_crypt_async::Encryptor>
-BraveSyncServiceImpl::SetEncryptorForTests(
+BraveSyncServiceImpl::SetEncryptorForTesting(
     os_crypt_async::Encryptor encryptor_for_tests) {
   std::unique_ptr<os_crypt_async::Encryptor> old_encryptor =
       std::move(encryptor_);
@@ -103,6 +103,10 @@ BraveSyncServiceImpl::SetEncryptorForTests(
       std::move(encryptor_for_tests));
 
   return old_encryptor;
+}
+
+void BraveSyncServiceImpl::RemoveAllPrefsChangeRegistrarForTesting() {
+  brave_sync_prefs_change_registrar_.RemoveAll();
 }
 
 bool BraveSyncServiceImpl::IsEncryptionAvailable() const {
@@ -333,7 +337,7 @@ void BraveSyncServiceImpl::OnEngineInitialized(
   }
 }
 
-SyncServiceCrypto* BraveSyncServiceImpl::GetCryptoForTests() {
+SyncServiceCrypto* BraveSyncServiceImpl::GetCryptoForTesting() {
   return &crypto_;
 }
 

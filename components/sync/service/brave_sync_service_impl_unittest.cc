@@ -335,7 +335,7 @@ TEST_F(BraveSyncServiceImplTest, ForcedSetDecryptionPassphrase) {
   // Pretend we need the passphrase by triggering OnPassphraseRequired and
   // supplying the encrypted portion of data, as it is done in
   // sync_service_crypto_unittest.cc
-  brave_sync_service_impl()->GetCryptoForTests()->OnPassphraseRequired(
+  brave_sync_service_impl()->GetCryptoForTesting()->OnPassphraseRequired(
       KeyDerivationParams::CreateForPbkdf2(),
       MakeEncryptedData(kValidSyncCode,
                         KeyDerivationParams::CreateForPbkdf2()));
@@ -364,8 +364,8 @@ TEST_F(BraveSyncServiceImplTest, ForcedSetDecryptionPassphrase) {
   // TODO(alexeybarabash): revert PR#13397 if it is not required anymore.
   // https://github.com/brave/brave-browser/issues/39353
 
-  brave_sync_service_impl()->GetCryptoForTests()->Reset();
-  brave_sync_service_impl()->GetCryptoForTests()->OnPassphraseRequired(
+  brave_sync_service_impl()->GetCryptoForTesting()->Reset();
+  brave_sync_service_impl()->GetCryptoForTesting()->OnPassphraseRequired(
       KeyDerivationParams::CreateForPbkdf2(),
       MakeEncryptedData(kValidSyncCode,
                         KeyDerivationParams::CreateForPbkdf2()));
@@ -430,7 +430,7 @@ TEST_F(BraveSyncServiceImplTest, ValidPassphraseKeyringLocked) {
 
   brave_sync_service_impl()->SetSeed(kValidSyncCode);
 
-  brave_sync_service_impl()->SetEncryptorForTests(
+  brave_sync_service_impl()->SetEncryptorForTesting(
       os_crypt_async::GetTestEncryptorForTesting());
 
   EXPECT_THAT(brave_sync_service_impl()->GetSeed(), Eq(std::nullopt));
@@ -450,7 +450,7 @@ TEST_F(BraveSyncServiceImplTest, FailedToDecryptBraveSeedValue) {
   // Since this test was moved here from BraveSyncPrefsTest
   // we don't want anymore to BraveSyncServiceImpl::OnBraveSyncPrefsChanged get
   // invoked
-  brave_sync_service_impl()->brave_sync_prefs_change_registrar_.RemoveAll();
+  brave_sync_service_impl()->RemoveAllPrefsChangeRegistrarForTesting();
 
   // Wrong base64-encoded seed must fail decryption
   const char kWrongBase64String[] = "AA%BB";
@@ -463,10 +463,10 @@ TEST_F(BraveSyncServiceImplTest, FailedToDecryptBraveSeedValue) {
   // Valid encrypted data but for a different key (e.g. key rotation or data
   // from another machine) must fail decryption.
   std::unique_ptr<os_crypt_async::Encryptor> original_encryptor =
-      brave_sync_service_impl()->SetEncryptorForTests(
+      brave_sync_service_impl()->SetEncryptorForTesting(
           os_crypt_async::GetTestEncryptorForTesting());
   ASSERT_TRUE(brave_sync_service_impl()->SetSeed(kValidSyncCode));
-  brave_sync_service_impl()->SetEncryptorForTests(
+  brave_sync_service_impl()->SetEncryptorForTesting(
       std::move(*original_encryptor));
 
   EXPECT_THAT(brave_sync_service_impl()->GetSeed(), Eq(std::nullopt));
@@ -613,7 +613,7 @@ TEST_F(BraveSyncServiceImplTest, HistoryPreconditions) {
   EXPECT_TRUE(engine());
 
   // Code below turns on encrypt everything
-  brave_sync_service_impl()->GetCryptoForTests()->OnEncryptedTypesChanged(
+  brave_sync_service_impl()->GetCryptoForTesting()->OnEncryptedTypesChanged(
       AlwaysEncryptedUserTypes(), true);
 
   // Ensure encrypt everything was actually enabled
@@ -714,7 +714,7 @@ TEST_F(BraveSyncServiceImplTest, NoLeaveDetailsWhenInitializeIOS) {
   // Pretend for test that we are doing iOS behaviour for leave sync chain
   // details, becuase BraveSyncServiceImplTest.NoLeaveDetailsWhenInitializeIOS
   // is not executed on iOS
-  brave_sync_prefs()->SetAddLeaveChainDetailBehaviourForTests(
+  brave_sync_prefs()->SetAddLeaveChainDetailBehaviourForTesting(
       brave_sync::Prefs::AddLeaveChainDetailBehaviour::kAdd);
 
   brave_sync_prefs()->AddLeaveChainDetail(__FILE__, __LINE__, "details");
@@ -724,7 +724,7 @@ TEST_F(BraveSyncServiceImplTest, NoLeaveDetailsWhenInitializeIOS) {
   PrefChangeRegistrar brave_sync_prefs_change_registrar_;
   brave_sync_prefs_change_registrar_.Init(pref_service());
   brave_sync_prefs_change_registrar_.Add(
-      brave_sync::Prefs::GetLeaveChainDetailsPathForTests(),
+      brave_sync::Prefs::GetLeaveChainDetailsPathForTesting(),
       base::BindRepeating(
           [](size_t* leave_chain_pref_changed_count) {
             ++(*leave_chain_pref_changed_count);

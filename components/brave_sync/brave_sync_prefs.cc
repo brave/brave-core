@@ -177,16 +177,16 @@ void Prefs::ClearLeaveChainDetails() {
 }
 
 // static
-size_t Prefs::GetLeaveChainDetailsMaxLenForTests() {
+size_t Prefs::GetLeaveChainDetailsMaxLenForTesting() {
   return kLeaveChainDetailsMaxLen;
 }
 
 // static
-std::string Prefs::GetLeaveChainDetailsPathForTests() {
+std::string Prefs::GetLeaveChainDetailsPathForTesting() {
   return kSyncLeaveChainDetails;
 }
 
-void Prefs::SetAddLeaveChainDetailBehaviourForTests(
+void Prefs::SetAddLeaveChainDetailBehaviourForTesting(
     AddLeaveChainDetailBehaviour add_leave_chain_detail_behaviour) {
   add_leave_chain_detail_behaviour_ = add_leave_chain_detail_behaviour;
 }

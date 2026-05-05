@@ -47,9 +47,9 @@ class Prefs {
   void AddLeaveChainDetail(const char* file, int line, const char* func);
   std::string GetLeaveChainDetails() const;
   void ClearLeaveChainDetails();
-  static size_t GetLeaveChainDetailsMaxLenForTests();
-  static std::string GetLeaveChainDetailsPathForTests();
-  void SetAddLeaveChainDetailBehaviourForTests(
+  static size_t GetLeaveChainDetailsMaxLenForTesting();
+  static std::string GetLeaveChainDetailsPathForTesting();
+  void SetAddLeaveChainDetailBehaviourForTesting(
       AddLeaveChainDetailBehaviour add_leave_chain_detail_behaviour);
   void Clear();
 

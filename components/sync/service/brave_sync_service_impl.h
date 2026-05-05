@@ -78,6 +78,12 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
   void StopAndClearWithShutdownReason();
   void StopAndClearWithResetLocalDataReason();
 
+  // Returns the original encryptor
+  std::unique_ptr<os_crypt_async::Encryptor> SetEncryptorForTesting(
+      os_crypt_async::Encryptor encryptor_for_tests);
+  void RemoveAllPrefsChangeRegistrarForTesting();
+  SyncServiceCrypto* GetCryptoForTesting();
+
  private:
   friend class BraveSyncServiceImplGACookiesTest;
   friend class BraveSyncServiceImplTest;
@@ -97,14 +103,11 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
                            P3aForHistoryThroughDelegate);
 
   BraveSyncAuthManager* GetBraveSyncAuthManager();
-  SyncServiceCrypto* GetCryptoForTests();
 
   void OnBraveSyncPrefsChanged(const std::string& path);
 
   void OnOsCryptAsyncReady(os_crypt_async::Encryptor encryptor);
   void OnEncryptorReady();
-  std::unique_ptr<os_crypt_async::Encryptor> SetEncryptorForTests(
-      os_crypt_async::Encryptor encryptor_for_tests);
 
   void PermanentlyDeleteAccountImpl(
       const int current_attempt,
