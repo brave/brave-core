@@ -40,7 +40,6 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/common/pref_names.h"
 #include "brave/components/debounce/core/browser/debounce_service.h"
-#include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/global_privacy_control/pref_names.h"
 #include "brave/components/ipfs/ipfs_prefs.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
@@ -165,10 +164,6 @@ using extensions::FeatureSwitch;
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/brave_wallet/browser/pref_names.h"
-#endif
-
-#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
-#include "brave/components/email_aliases/email_aliases_service.h"
 #endif
 
 namespace brave {
@@ -587,10 +582,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
   web_discovery::WebDiscoveryService::RegisterProfilePrefs(registry);
-#endif
-
-#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
-  email_aliases::EmailAliasesService::RegisterProfilePrefs(registry);
 #endif
 
 #if defined(TOOLKIT_VIEWS)

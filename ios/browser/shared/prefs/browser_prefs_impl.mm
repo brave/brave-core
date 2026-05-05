@@ -22,7 +22,6 @@
 #include "brave/components/de_amp/common/pref_names.h"
 #include "brave/components/debounce/core/browser/debounce_service.h"
 #include "brave/components/decentralized_dns/core/utils.h"
-#include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/global_privacy_control/pref_names.h"
 #include "brave/components/l10n/common/prefs.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
@@ -48,10 +47,6 @@
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
-#endif
-
-#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
-#include "brave/components/email_aliases/email_aliases_service.h"
 #endif
 
 namespace brave {
@@ -89,10 +84,6 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   registry->RegisterBooleanPref(brave_vpn::prefs::kManagedBraveVPNDisabled,
                                 false);
-#endif
-
-#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
-  email_aliases::EmailAliasesService::RegisterProfilePrefs(registry);
 #endif
 
   registry->RegisterIntegerPref(youtube::prefs::kAutoQualityMode, 0);
