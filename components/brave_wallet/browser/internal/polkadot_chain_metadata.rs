@@ -18,6 +18,7 @@ struct CxxPolkadotChainMetadataFields {
     transfer_all_call_index: u8,
     ss58_prefix: u16,
     spec_version: u32,
+    asset_tx_payment: bool,
 }
 
 crate::impl_result!(CxxPolkadotChainMetadataFields, CxxPolkadotChainMetadataFieldsResult);
@@ -45,6 +46,7 @@ mod ffi {
         fn transfer_all_call_index(self: &CxxPolkadotChainMetadataFields) -> u8;
         fn ss58_prefix(self: &CxxPolkadotChainMetadataFields) -> u16;
         fn spec_version(self: &CxxPolkadotChainMetadataFields) -> u32;
+        fn asset_tx_payment(self: &CxxPolkadotChainMetadataFields) -> bool;
     }
 }
 
@@ -79,6 +81,10 @@ impl CxxPolkadotChainMetadataFields {
 
     fn spec_version(self: &CxxPolkadotChainMetadataFields) -> u32 {
         self.spec_version
+    }
+
+    fn asset_tx_payment(self: &CxxPolkadotChainMetadataFields) -> bool {
+        self.asset_tx_payment
     }
 }
 
@@ -197,8 +203,8 @@ fn parse_type_def(input: &mut &[u8]) -> Result<Option<Vec<VariantInfo>>, Error> 
 
 fn parse_type(input: &mut &[u8]) -> Result<Option<Vec<VariantInfo>>, Error> {
     // path: Vec<String>
-    let _ = decode_vec(input, decode_scale::<String>)?;
-    // type params
+    let _: Vec<String> = decode_vec(input, decode_scale::<String>)?;
+    // type params: Vec<(name: String, type_id: Option<Compact<u32>>)>
     let _ = decode_vec(input, |input| {
         let _: String = decode_scale(input)?;
         let _: Option<u32> = decode_option(input, decode_type_id)?;
@@ -223,6 +229,7 @@ fn parse_portable_registry(input: &mut &[u8]) -> Result<HashMap<u32, Vec<Variant
             by_id.insert(id, variants);
         }
     }
+
     Ok(by_id)
 }
 
@@ -366,6 +373,49 @@ fn get_call_index(
         .ok_or(Error::InvalidMetadata)
 }
 
+// Returns true if "ChargeAssetTxPayment" is present in the signed extensions,
+// indicating the signature payload must include an asset_id field.
+// https://docs.rs/frame-metadata/latest/frame_metadata/v15/struct.SignedExtensionMetadata.html
+// https://github.com/paritytech/polkadot-sdk/blob/c3ecf63034924511d6b92e3533c23c15765f16b9/substrate/frame/transaction-payment/asset-conversion-tx-payment/src/lib.rs#L165-L182
+fn parse_signed_extensions(input: &mut &[u8]) -> Result<bool, Error> {
+    let mut found = false;
+    decode_vec(input, |input| {
+        let identifier: String = decode_scale(input)?;
+        if normalize_ident(&identifier) == "chargeassettxpayment" {
+            found = true;
+        }
+        let _: u32 = decode_type_id(input)?; // ty
+        let _: u32 = decode_type_id(input)?; // additional_signed
+        Ok(())
+    })?;
+
+    Ok(found)
+}
+
+fn parse_extrinsic_metadata(input: &mut &[u8], version: u8) -> Result<bool, Error> {
+    match version {
+        // V14: https://docs.rs/frame-metadata/latest/frame_metadata/v14/struct.ExtrinsicMetadata.html
+        //   { ty: Compact<u32>, version: u8, signed_extensions: Vec<...> }
+        14 => {
+            let _: u32 = decode_type_id(input)?; // ty
+            let _: u8 = decode_scale(input)?; // version
+        }
+        // V15: https://docs.rs/frame-metadata/latest/frame_metadata/v15/struct.ExtrinsicMetadata.html
+        //   { version: u8, address_ty, call_ty, signature_ty, extra_ty,
+        //     signed_extensions: Vec<...> }
+        15 => {
+            let _: u8 = decode_scale(input)?; // version
+            let _: u32 = decode_type_id(input)?; // address_ty
+            let _: u32 = decode_type_id(input)?; // call_ty
+            let _: u32 = decode_type_id(input)?; // signature_ty
+            let _: u32 = decode_type_id(input)?; // extra_ty
+        }
+        _ => return Err(Error::InvalidMetadata),
+    }
+
+    parse_signed_extensions(input)
+}
+
 /// Parses SCALE-encoded `state_getMetadata` bytes (RuntimeMetadataPrefixed).
 ///
 /// Structure expected by this parser:
@@ -381,11 +431,13 @@ fn get_call_index(
 ///   - `error: Option<PalletErrorMetadata { ty: Compact<u32> }>`
 ///   - `index: u8`
 ///   - `docs: Vec<String>` (v15 only)
+/// - ExtrinsicMetadata (signed extensions checked for `ChargeAssetTxPayment`)
 /// - Pallet/constants/type references needed to extract:
 ///   - `Balances` pallet index
 ///   - `transfer_allow_death` call index
 ///   - `System.SS58Prefix`
 ///   - `System.Version.spec_version`
+///   - whether `ChargeAssetTxPayment` is a signed extension
 ///
 /// References:
 /// - JSON-RPC method: https://github.com/w3f/PSPs/blob/b6d570173146e7a012cf43d270177e02ed886e2e/PSPs/drafts/psp-6.md#1119-state_getmetadata
@@ -407,6 +459,8 @@ fn parse_chain_metadata_fields(bytes: &[u8]) -> Result<CxxPolkadotChainMetadata,
     let portable_registry = parse_portable_registry(&mut input)?;
 
     let pallets = parse_pallets(&mut input, /* has_pallet_docs= */ version >= 15)?;
+
+    let asset_tx_payment = parse_extrinsic_metadata(&mut input, version)?;
 
     let balances_pallet = pallets
         .iter()
@@ -459,6 +513,7 @@ fn parse_chain_metadata_fields(bytes: &[u8]) -> Result<CxxPolkadotChainMetadata,
         transfer_all_call_index,
         ss58_prefix,
         spec_version,
+        asset_tx_payment,
     })
 }
 
@@ -475,6 +530,7 @@ fn parse_chain_metadata_from_scale(
             transfer_all_call_index: metadata.transfer_all_call_index,
             ss58_prefix: metadata.ss58_prefix,
             spec_version: metadata.spec_version,
+            asset_tx_payment: metadata.asset_tx_payment,
         }
     });
     Box::new(CxxPolkadotChainMetadataFieldsResult(fields))

@@ -24,6 +24,7 @@ constexpr char kTransferAllowDeathCallIndex[] =
     "transfer_allow_death_call_index";
 constexpr char kTransferKeepAliveCallIndex[] = "transfer_keep_alive_call_index";
 constexpr char kTransferAllCallIndex[] = "transfer_all_call_index";
+constexpr char kAssetTxPayment[] = "asset_tx_payment";
 constexpr char kSs58Prefix[] = "ss58_prefix";
 constexpr char kVersionField[] = "version";
 
@@ -46,7 +47,7 @@ TEST_F(PolkadotChainMetadataPrefsUnitTest, SetAndGetChainMetadataRoundTrip) {
       /*transfer_keep_alive_call_index=*/4,
       /*transfer_all_call_index=*/5,
       /*ss58_prefix=*/42,
-      /*spec_version=*/1234);
+      /*spec_version=*/1234, /*asset_tx_payment=*/false);
 
   PolkadotChainMetadataPrefs prefs = MakePrefs();
   EXPECT_TRUE(prefs.SetChainMetadata(mojom::kPolkadotMainnet, metadata));
@@ -61,6 +62,39 @@ TEST_F(PolkadotChainMetadataPrefsUnitTest, SetAndGetChainMetadataRoundTrip) {
   EXPECT_EQ(loaded->GetTransferAllCallIndex(), 5u);
   EXPECT_EQ(loaded->GetSs58Prefix(), 42u);
   EXPECT_EQ(loaded->GetSpecVersion(), 1234u);
+  EXPECT_FALSE(loaded->GetAssetTxPayment());
+
+  const auto& all_metadata =
+      profile_prefs_.GetDict(kBraveWalletPolkadotChainMetadata);
+  EXPECT_EQ(all_metadata.FindInt(kVersionField),
+            PolkadotChainMetadataPrefs::kVersion);
+}
+
+TEST_F(PolkadotChainMetadataPrefsUnitTest,
+       SetAndGetChainMetadataRoundTrip_AssetHub) {
+  auto metadata = PolkadotChainMetadata::FromFields(
+      /*system_pallet_index=*/3, /*balances_pallet_index=*/7,
+      /*transaction_payment_pallet_index=*/8,
+      /*transfer_allow_death_call_index=*/2,
+      /*transfer_keep_alive_call_index=*/4,
+      /*transfer_all_call_index=*/5,
+      /*ss58_prefix=*/42,
+      /*spec_version=*/1234, /*asset_tx_payment=*/true);
+
+  PolkadotChainMetadataPrefs prefs = MakePrefs();
+  EXPECT_TRUE(prefs.SetChainMetadata(mojom::kPolkadotMainnet, metadata));
+
+  auto loaded = prefs.GetChainMetadata(mojom::kPolkadotMainnet);
+  ASSERT_TRUE(loaded);
+  EXPECT_EQ(loaded->GetSystemPalletIndex(), 3u);
+  EXPECT_EQ(loaded->GetBalancesPalletIndex(), 7u);
+  EXPECT_EQ(loaded->GetTransactionPaymentPalletIndex(), 8u);
+  EXPECT_EQ(loaded->GetTransferAllowDeathCallIndex(), 2u);
+  EXPECT_EQ(loaded->GetTransferKeepAliveCallIndex(), 4u);
+  EXPECT_EQ(loaded->GetTransferAllCallIndex(), 5u);
+  EXPECT_EQ(loaded->GetSs58Prefix(), 42u);
+  EXPECT_EQ(loaded->GetSpecVersion(), 1234u);
+  EXPECT_TRUE(loaded->GetAssetTxPayment());
 
   const auto& all_metadata =
       profile_prefs_.GetDict(kBraveWalletPolkadotChainMetadata);
@@ -85,6 +119,7 @@ TEST_F(PolkadotChainMetadataPrefsUnitTest, InvalidRangeRejected) {
     value.Set(kTransferAllowDeathCallIndex, 1);
     value.Set(kTransferKeepAliveCallIndex, 1);
     value.Set(kTransferAllCallIndex, 1);
+    value.Set(kAssetTxPayment, false);
     value.Set(kSs58Prefix, 0);
     value.Set(kSpecVersion, 100);
     update->Set(mojom::kPolkadotMainnet, std::move(value));
@@ -106,6 +141,7 @@ TEST_F(PolkadotChainMetadataPrefsUnitTest, NegativeValueRejected) {
               -1);  // Negative should be rejected.
     value.Set(kTransferKeepAliveCallIndex, 1);
     value.Set(kTransferAllCallIndex, 1);
+    value.Set(kAssetTxPayment, false);
     value.Set(kSs58Prefix, 0);
     value.Set(kSpecVersion, 100);
     update->Set(mojom::kPolkadotMainnet, std::move(value));
@@ -126,6 +162,7 @@ TEST_F(PolkadotChainMetadataPrefsUnitTest, MissingRequiredFieldRejected) {
     value.Set(kTransferAllowDeathCallIndex, 1);
     value.Set(kTransferKeepAliveCallIndex, 4);
     value.Set(kTransferAllCallIndex, 1);
+    value.Set(kAssetTxPayment, false);
     value.Set(kSs58Prefix, 42);
     // Missing spec version should reject persisted value.
     update->Set(mojom::kPolkadotMainnet, std::move(value));
@@ -146,6 +183,7 @@ TEST_F(PolkadotChainMetadataPrefsUnitTest, VersionMismatchClearsMetadataPrefs) {
     value.Set(kTransferAllowDeathCallIndex, 1);
     value.Set(kTransferKeepAliveCallIndex, 4);
     value.Set(kTransferAllCallIndex, 1);
+    value.Set(kAssetTxPayment, false);
     value.Set(kSs58Prefix, 42);
     value.Set(kSpecVersion, 100);
     update->Set(mojom::kPolkadotMainnet, std::move(value));
@@ -167,6 +205,7 @@ TEST_F(PolkadotChainMetadataPrefsUnitTest, MissingVersionClearsMetadataPrefs) {
     value.Set(kTransferAllowDeathCallIndex, 1);
     value.Set(kTransferKeepAliveCallIndex, 4);
     value.Set(kTransferAllCallIndex, 1);
+    value.Set(kAssetTxPayment, false);
     value.Set(kSs58Prefix, 42);
     value.Set(kSpecVersion, 100);
     update->Set(mojom::kPolkadotMainnet, std::move(value));
