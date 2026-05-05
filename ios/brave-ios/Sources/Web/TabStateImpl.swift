@@ -162,4 +162,10 @@ extension TabStateImpl {
       $0.tabRenderProcessDidTerminate(self)
     }
   }
+
+  func frameDidBecomeAvailable(frame: BraveWebFrame) {
+    observers.forEach {
+      $0.tab(self, frameDidBecomeAvailable: frame)
+    }
+  }
 }

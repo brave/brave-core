@@ -23,6 +23,7 @@
 #include "brave/ios/browser/ai_chat/tab_tracker_service_factory.h"
 #include "brave/ios/browser/api/web_view/autofill/brave_autofill_controller.h"
 #include "brave/ios/browser/api/web_view/autofill/brave_web_view_autofill_client.h"
+#include "brave/ios/browser/api/web_view/brave_web_frame+private.h"
 #include "brave/ios/browser/api/web_view/passwords/brave_web_view_password_manager_client.h"
 #include "brave/ios/browser/brave_ads/ads_tab_helper.h"
 #include "brave/ios/browser/brave_search/brave_search_ad_results_javascript_feature.h"
@@ -73,6 +74,8 @@
 #include "ios/chrome/browser/web/model/print/print_handler.h"
 #include "ios/chrome/browser/web/model/print/print_tab_helper.h"
 #include "ios/web/common/crw_input_view_provider.h"
+#include "ios/web/public/js_messaging/content_world.h"
+#include "ios/web/public/js_messaging/web_frames_manager_observer_bridge.h"
 #include "ios/web/public/navigation/navigation_context.h"
 #include "ios/web/public/navigation/web_state_policy_decider.h"
 #include "ios/web/public/web_state.h"
@@ -249,7 +252,8 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
     didFinishNavigation:(web::NavigationContext*)navigation;
 @end
 
-@interface BraveWebView () <FaviconDriverObserverBridge>
+@interface BraveWebView () <FaviconDriverObserverBridge,
+                            CRWWebFramesManagerObserver>
 @property(nonatomic, weak)
     id<AIChatUIHandlerBridge, AIChatAssociatedContentPageFetcher>
         aiChatUIHandler;
@@ -266,6 +270,7 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
 @implementation BraveWebView {
   std::unique_ptr<BraveWebViewWebStatePolicyDecider> _webStatePolicyDecider;
   std::unique_ptr<FaviconDriverObserver> _faviconObserver;
+  std::unique_ptr<web::WebFramesManagerObserverBridge> _webFrameObserverBridge;
 }
 
 // These are shadowed CWVWebView properties
@@ -274,6 +279,8 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
 - (void)dealloc {
   if (self.webState) {
     BraveWebViewHolder::RemoveFromWebState(self.webState);
+    self.webState->GetWebFramesManager(web::ContentWorld::kIsolatedWorld)
+        ->RemoveObserver(self.webFrameObserverBridge);
   }
   if (auto* faviconDriver =
           brave_favicon::BraveIOSWebFaviconDriver::FromWebState(
@@ -287,6 +294,14 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
     _faviconObserver = std::make_unique<FaviconDriverObserver>(self);
   }
   return _faviconObserver.get();
+}
+
+- (web::WebFramesManagerObserverBridge*)webFrameObserverBridge {
+  if (!_webFrameObserverBridge) {
+    _webFrameObserverBridge =
+        std::make_unique<web::WebFramesManagerObserverBridge>(self);
+  }
+  return _webFrameObserverBridge.get();
 }
 
 + (nullable BraveWebView*)braveWebViewForWebState:(web::WebState*)webState {
@@ -335,6 +350,11 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
     favicon_driver->SetMaximumFaviconImageSize(/*max_image_width=*/1024,
                                                /*max_image_height=*/1024);
     favicon_driver->AddObserver(self.faviconDriverObserver);
+  }
+
+  if (self.webState) {
+    self.webState->GetWebFramesManager(web::ContentWorld::kIsolatedWorld)
+        ->AddObserver(self.webFrameObserverBridge);
   }
 }
 
@@ -545,6 +565,17 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
   if ([self.UIDelegate respondsToSelector:@selector(webView:
                                               didUpdateFaviconStatus:)]) {
     [self.UIDelegate webView:self didUpdateFaviconStatus:self.faviconStatus];
+  }
+}
+
+#pragma mark - CRWWebFramesManagerObserver
+
+- (void)webFramesManager:(web::WebFramesManager*)webFramesManager
+    frameBecameAvailable:(web::WebFrame*)webFrame {
+  if ([self.navigationDelegate
+          respondsToSelector:@selector(webView:frameDidBecomeAvailable:)]) {
+    BraveWebFrame* frame = [[BraveWebFrame alloc] initWithWebFrame:webFrame];
+    [self.navigationDelegate webView:self frameDidBecomeAvailable:frame];
   }
 }
 

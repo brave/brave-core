@@ -17,6 +17,8 @@
 #import "cwv_web_view.h"             // NOLINT
 #import "cwv_web_view_extras.h"      // NOLINT
 
+@class BraveWebFrame;
+
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol AIChatUIHandlerBridge;
@@ -86,6 +88,9 @@ CWV_EXPORT
 /// (reference fragment navigations, pushState/replaceState, same document
 /// history navigation)
 - (void)webViewDidCommitSameDocumentNavigation:(CWVWebView*)webView;
+/// Notifies the delegate one web frame has become available
+- (void)webView:(CWVWebView*)webView
+    frameDidBecomeAvailable:(BraveWebFrame*)frame;
 
 @end
 
