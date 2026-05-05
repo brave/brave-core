@@ -128,7 +128,7 @@ final public class RecentSearch: NSManagedObject, CRUD {
         guard let websiteUrlString = recentSearchItem.websiteUrl,
           let url = URL(string: websiteUrlString),
           let baseDomain = url.baseDomain,
-          baseDomains.contains(where: { $0 == baseDomain })
+          baseDomains.contains(baseDomain)
         else {
           // eTLD of the url does not match
           continue
