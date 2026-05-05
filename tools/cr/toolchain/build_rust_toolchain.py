@@ -12,7 +12,7 @@ To use this straight from Github just call:
 
 ```sh
 curl -sL \
-    https://raw.githubusercontent.com/brave/brave-core/refs/heads/master/tools/rust/build_rust_toolchain_standalone.py \
+    https://raw.githubusercontent.com/brave/brave-core/refs/heads/master/tools/cr/toolchain/build_rust_toolchain.py \
     | python3 - \
         --out-dir=./out/ \
         --chromium-src=~/dev/chromium/src/
@@ -22,7 +22,7 @@ If you do not have a Chromium checkout yet, pass `--clone-chromium` together
 with `--use-ref` to have the script fetch one automatically:
 
 ```sh
-python3 build_rust_toolchain_standalone.py \
+python3 build_rust_toolchain.py \
     --out-dir=./out/ \
     --chromium-src=~/dev/chromium/src/ \
     --clone-chromium \
@@ -111,6 +111,7 @@ if sys.platform == 'win32':
     # Path to Git's sh.exe on Windows, which is used by
     # `tools/rust/build_rust.py` to build the toolchain on Windows.`
     GIT_SH_PRESUMED_BIN_PATH = Path(r'C:\Program Files\Git\bin\sh.exe')
+
 
 def _check_call(*command, cwd=None):
     """Run *command* as a subprocess, logging the invocation and any stderr.
@@ -208,7 +209,6 @@ class ToolchainBuilder:
 
         # Module for tools/rust/package_rust.py. Initialised by `run()`.
         self.package_rust_module: Optional[ModuleType] = None
-
 
     @contextlib.contextmanager
     def _temporary_config_toml_template_edits(self):
