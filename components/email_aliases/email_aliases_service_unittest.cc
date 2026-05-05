@@ -5,6 +5,7 @@
 
 #include "brave/components/email_aliases/email_aliases_service.h"
 
+#include <optional>
 #include <string>
 #include <utility>
 #include <variant>
@@ -49,9 +50,23 @@ class AliasObserver : public mojom::EmailAliasesServiceObserver {
  public:
   void OnAuthStateChanged(mojom::AuthStatePtr) override {}
 
-  void OnAliasesUpdated(std::vector<mojom::AliasPtr> aliases) override {
+  void OnAliasesUpdated(mojom::AliasesUpdatePtr update) override {
     ++alias_updates;
-    last_aliases = std::move(aliases);
+    if (!update) {
+      last_aliases.clear();
+      last_error.reset();
+      return;
+    }
+    switch (update->which()) {
+      case mojom::AliasesUpdate::Tag::kAliases:
+        last_aliases = mojo::Clone(update->get_aliases());
+        last_error.reset();
+        break;
+      case mojom::AliasesUpdate::Tag::kError:
+        last_aliases.clear();
+        last_error = update->get_error();
+        break;
+    }
   }
 
   bool WaitForAliasUpdateCount(size_t count) {
@@ -70,9 +85,20 @@ class AliasObserver : public mojom::EmailAliasesServiceObserver {
     return last_aliases;
   }
 
+  const std::optional<std::string>& get_last_error() const {
+    return last_error;
+  }
+
+  void ResetForTesting() {
+    alias_updates = 0;
+    last_aliases.clear();
+    last_error.reset();
+  }
+
  private:
   size_t alias_updates = 0;
   std::vector<mojom::AliasPtr> last_aliases;
+  std::optional<std::string> last_error;
   mojo::Receiver<mojom::EmailAliasesServiceObserver> receiver{this};
 };
 
@@ -170,9 +196,14 @@ class EmailAliasesAPITest : public ::testing::Test {
     email_aliases::test::AuthStateObserver::Setup(service_.get(), true);
     service_->GetAuth()->SetAuthEmailForTesting("test@login.com");
 
+    // Default list response so AddObserver's initial refresh does not notify an
+    // error
+    AddRefreshResponseFor();
+
     mojo::PendingRemote<mojom::EmailAliasesServiceObserver> remote;
     observer_.BindReceiver(remote.InitWithNewPipeAndPassReceiver());
     service_->AddObserver(std::move(remote));
+    observer_.ResetForTesting();
   }
 
   base::test::ScopedFeatureList brave_account_feature_list_{
@@ -375,7 +406,7 @@ TEST_F(EmailAliasesAPITest, RefreshAliases_Notifies_OnValidResponse) {
   EXPECT_EQ(observer_.get_last_aliases()[0]->note, "note");
 }
 
-TEST_F(EmailAliasesAPITest, RefreshAliases_DoesNotNotify_OnErrorOrInvalidJson) {
+TEST_F(EmailAliasesAPITest, RefreshAliases_NotifiesWithError_OnErrorOrInvalidJson) {
   auto result_out =
       CallUpdateAliasWith("alias@example.com",
                           /*put_body=*/R"({"message":"updated"})",
@@ -383,7 +414,9 @@ TEST_F(EmailAliasesAPITest, RefreshAliases_DoesNotNotify_OnErrorOrInvalidJson) {
                           /*note=*/std::nullopt,
                           /*wait_for_update=*/false);
   ASSERT_TRUE(result_out.has_value());
-  EXPECT_EQ(observer_.alias_update_count(), 0u);
+  EXPECT_EQ(observer_.alias_update_count(), 2u);
+  ASSERT_TRUE(observer_.get_last_error().has_value());
+  EXPECT_FALSE(observer_.get_last_error()->empty());
 }
 
 TEST_F(EmailAliasesAPITest, ApiFetch_AttachesAuthTokenAndAPIKeyHeaders) {
