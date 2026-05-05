@@ -133,6 +133,7 @@ brave_core_public_headers = [
   "//ios/chrome/browser/web/model/print/print_handler.h",
   "//brave/ios/browser/youtube/youtube_pref_names_bridge.h",
   "//brave/ios/browser/global_privacy_control/gpc_pref_names_bridge.h",
+  "//brave/ios/browser/shared/prefs/shared_pref_names_bridge.h",
 ]
 
 brave_core_public_headers += ads_public_headers

@@ -465,7 +465,6 @@ public class BrowserViewController: UIViewController {
     // Observe some user preferences
     Preferences.Privacy.privateBrowsingOnly.observe(from: self)
     Preferences.General.tabBarVisibility.observe(from: self)
-    Preferences.General.mediaAutoBackgrounding.observe(from: self)
     Preferences.General.defaultPageZoomLevel.observe(from: self)
     Preferences.Shields.allShields.forEach { $0.observe(from: self) }
     Preferences.Privacy.blockAllCookies.observe(from: self)
@@ -484,6 +483,15 @@ public class BrowserViewController: UIViewController {
     }
     prefsChangeRegistrar.addObserver(forPath: kManagedBraveVPNDisabledPrefName) { [weak self] _ in
       self?.disconnectVPNIfDisabledByPolicy()
+    }
+    prefsChangeRegistrar.addObserver(forPath: kMediaBackgroundingEnabled) { [weak self] _ in
+      guard let self else { return }
+      tabManager.selectedTab?.browserData?.setScripts(scripts: [
+        .mediaBackgroundPlay: profileController.profile.prefs.boolean(
+          forPath: kMediaBackgroundingEnabled
+        )
+      ])
+      tabManager.reloadSelectedTab()
     }
 
     disconnectVPNIfDisabledByPolicy()
@@ -2981,11 +2989,6 @@ extension BrowserViewController: PreferencesObserver {
     case Preferences.Rewards.hideRewardsIcon.key,
       Preferences.Rewards.rewardsToggledOnce.key:
       updateRewardsButtonState()
-    case Preferences.General.mediaAutoBackgrounding.key:
-      tabManager.selectedTab?.browserData?.setScripts(scripts: [
-        .mediaBackgroundPlay: Preferences.General.mediaAutoBackgrounding.value
-      ])
-      tabManager.reloadSelectedTab()
     case Preferences.Playlist.enablePlaylistURLBarButton.key:
       let selectedTab = tabManager.selectedTab
       updatePlaylistURLBar(

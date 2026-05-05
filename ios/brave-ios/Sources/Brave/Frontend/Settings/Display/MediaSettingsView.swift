@@ -10,7 +10,7 @@ import Preferences
 import SwiftUI
 
 struct MediaSettingsView: View {
-  @ObservedObject var enableBackgroundAudio = Preferences.General.mediaAutoBackgrounding
+  @Bindable var enableBackgroundAudio: PrefBackedBoolean
   @ObservedObject var keepYouTubeInBrave = Preferences.General.keepYouTubeInBrave
   @ObservedObject var filterListStorage = FilterListStorage.shared
 
@@ -19,6 +19,11 @@ struct MediaSettingsView: View {
   @State var youtubeShortsBlocking = false
 
   var prefs: any PrefService
+
+  init(prefs: any PrefService) {
+    self.prefs = prefs
+    enableBackgroundAudio = .init(prefs: prefs, key: kMediaBackgroundingEnabled)
+  }
 
   var body: some View {
     Form {

@@ -29,6 +29,7 @@ public class BraveProfileMigrations {
     migrateShieldsToContentSettings()
     migrateYouTubeQualityPreference()
     migrateGPCPreference()
+    migrateMediaBackgroundingPreference()
   }
 
   private func migrateDefaultUserAgentPreferences() {
@@ -117,6 +118,12 @@ public class BraveProfileMigrations {
   private func migrateGPCPreference() {
     Preferences.DeprecatedPreferences.enableGPC.migrate { value in
       profileController.profile.prefs.set(value, forPath: kGlobalPrivacyControlEnabled)
+    }
+  }
+
+  private func migrateMediaBackgroundingPreference() {
+    Preferences.DeprecatedPreferences.mediaAutoBackgrounding.migrate { value in
+      profileController.profile.prefs.set(value, forPath: kMediaBackgroundingEnabled)
     }
   }
 }
@@ -357,6 +364,12 @@ extension Preferences {
     public static var enableGPC = Preferences.Option<Bool>(
       key: "shields.enable-gpc",
       default: true
+    )
+
+    /// Controls whether or not media should continue playing in the background
+    static let mediaAutoBackgrounding = Option<Bool>(
+      key: "general.media-auto-backgrounding",
+      default: false
     )
   }
 

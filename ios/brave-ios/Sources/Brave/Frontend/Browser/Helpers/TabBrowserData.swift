@@ -359,7 +359,7 @@ class TabBrowserData: NSObject, TabObserver {
   func tabDidCreateWebView(_ tab: some TabState) {
     let scriptPreferences: [UserScriptManager.ScriptType: Bool] = [
       .cookieBlocking: Preferences.Privacy.blockAllCookies.value,
-      .mediaBackgroundPlay: Preferences.General.mediaAutoBackgrounding.value,
+      .mediaBackgroundPlay: tab.profile.prefs.boolean(forPath: kMediaBackgroundingEnabled),
       .braveTranslate: Preferences.Translate.translateEnabled.value != false,
     ]
 
