@@ -89,6 +89,17 @@ auto MakeRequest(const std::string& bearer_token) {
   return request;
 }
 
+void NotifyObserversAliasesUpdated(
+    mojo::RemoteSet<mojom::EmailAliasesServiceObserver>& observers,
+    mojom::AliasesUpdatePtr update) {
+  if (observers.empty()) {
+    return;
+  }
+  for (auto& observer : observers) {
+    observer->OnAliasesUpdated(mojo::Clone(update));
+  }
+}
+
 }  // namespace
 
 EmailAliasesService::EmailAliasesService(
@@ -242,6 +253,10 @@ void EmailAliasesService::RefreshAliasesWithToken(TokenResult token) {
         url_loader_factory_, std::move(request),
         base::BindOnce(&EmailAliasesService::OnRefreshAliasesResponse,
                        weak_factory_.GetWeakPtr()));
+  } else {
+    NotifyObserversAliasesUpdated(
+        observers_, mojom::AliasesUpdate::NewError(l10n_util::GetStringUTF8(
+                        IDS_SETTINGS_EMAIL_ALIASES_AUTH_ERROR)));
   }
 }
 
@@ -322,34 +337,33 @@ void EmailAliasesService::DeleteAliasWithToken(const std::string& alias_email,
 
 void EmailAliasesService::OnRefreshAliasesResponse(
     endpoints::AliasList::Response response) {
-  // TODO(https://github.com/brave/brave-browser/issues/48959):
-  // In this function, when an error happens, we should show
-  // an error message to the user (requires design work)
   if (!response.body) {
-    LOG(ERROR) << "Email Aliases service error: No response body";
+    NotifyObserversAliasesUpdated(
+        observers_, mojom::AliasesUpdate::NewError(l10n_util::GetStringUTF8(
+                        IDS_EMAIL_ALIASES_SERVICE_ERROR_NO_RESPONSE_BODY)));
     return;
   }
   if (!response.body->has_value()) {
-    LOG(ERROR) << "Email Aliases service error: Invalid response format";
+    NotifyObserversAliasesUpdated(
+        observers_, mojom::AliasesUpdate::NewError(l10n_util::GetStringFUTF8(
+                        IDS_EMAIL_ALIASES_SERVICE_REPORTED_ERROR,
+                        base::UTF8ToUTF16(response.body->error().message))));
     return;
   }
 
   EmailAliasesNotes notes(pref_service_.get(), GetAuthEmail());
   notes.RemoveNotesForDeletedAliases(response.body.value()->result);
 
-  if (!observers_.empty()) {
-    std::vector<email_aliases::mojom::AliasPtr> aliases;
-    for (const auto& entry : response.body.value()->result) {
-      auto alias_obj = email_aliases::mojom::Alias::New();
-      alias_obj->email = entry.alias;
-      alias_obj->note = notes.GetNote(entry.alias);
-      aliases.push_back(std::move(alias_obj));
-    }
-
-    for (auto& observer : observers_) {
-      observer->OnAliasesUpdated(mojo::Clone(aliases));
-    }
+  std::vector<email_aliases::mojom::AliasPtr> aliases;
+  for (const auto& entry : response.body.value()->result) {
+    auto alias_obj = email_aliases::mojom::Alias::New();
+    alias_obj->email = entry.alias;
+    alias_obj->note = notes.GetNote(entry.alias);
+    aliases.push_back(std::move(alias_obj));
   }
+
+  NotifyObserversAliasesUpdated(
+      observers_, mojom::AliasesUpdate::NewAliases(std::move(aliases)));
 }
 
 }  // namespace email_aliases

@@ -36,7 +36,7 @@ class AuthStateObserver
           pending);
 
   void OnAuthStateChanged(email_aliases::mojom::AuthStatePtr state) override;
-  void OnAliasesUpdated(std::vector<email_aliases::mojom::AliasPtr>) override;
+  void OnAliasesUpdated(email_aliases::mojom::AliasesUpdatePtr update) override;
 
   mojom::AuthStatePtr last_status_ =
       mojom::AuthState::New(mojom::AuthenticationStatus::kStartup,
