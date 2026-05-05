@@ -256,7 +256,7 @@ void EmailAliasesService::RefreshAliasesWithToken(TokenResult token) {
   } else {
     NotifyObserversAliasesUpdated(
         observers_, mojom::AliasesUpdate::NewError(l10n_util::GetStringUTF8(
-                        IDS_SETTINGS_EMAIL_ALIASES_AUTH_ERROR)));
+                        IDS_SETTINGS_EMAIL_ALIASES_INFO_ERROR_MESSAGE)));
   }
 }
 
@@ -340,7 +340,7 @@ void EmailAliasesService::OnRefreshAliasesResponse(
   if (!response.body) {
     NotifyObserversAliasesUpdated(
         observers_, mojom::AliasesUpdate::NewError(l10n_util::GetStringUTF8(
-                        IDS_EMAIL_ALIASES_SERVICE_ERROR_NO_RESPONSE_BODY)));
+                        IDS_SETTINGS_EMAIL_ALIASES_INFO_ERROR_MESSAGE)));
     return;
   }
   if (!response.body->has_value()) {
