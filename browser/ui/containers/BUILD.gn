@@ -28,6 +28,7 @@ source_set("containers") {
     "//brave/components/containers/core/mojom",
     "//brave/components/vector_icons",
     "//chrome/app:generated_resources",
+    "//chrome/browser/ui/browser_window",
     "//ui/base",
     "//ui/menus",
   ]

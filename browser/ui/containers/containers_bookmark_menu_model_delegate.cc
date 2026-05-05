@@ -9,7 +9,7 @@
 #include "base/check_is_test.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/components/containers/core/common/features.h"
-#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "ui/compositor/compositor.h"
 #include "ui/views/widget/widget.h"
@@ -17,7 +17,7 @@
 namespace containers {
 
 ContainersBookmarkMenuModelDelegate::ContainersBookmarkMenuModelDelegate(
-    Browser* browser,
+    BrowserWindowInterface* browser,
     const GURL& bookmark_url)
     : browser_(browser), bookmark_url_(bookmark_url) {
   CHECK(base::FeatureList::IsEnabled(features::kContainers));
@@ -47,7 +47,7 @@ ContainersBookmarkMenuModelDelegate::GetCurrentContainerIds() {
 
 Browser* ContainersBookmarkMenuModelDelegate::GetBrowserToOpenSettings() {
   CHECK(browser_);
-  return base::to_address(browser_);
+  return browser_->GetBrowserForMigrationOnly();
 }
 
 float ContainersBookmarkMenuModelDelegate::GetScaleFactor() {

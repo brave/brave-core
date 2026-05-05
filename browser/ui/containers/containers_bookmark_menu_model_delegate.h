@@ -10,7 +10,7 @@
 #include "brave/browser/ui/containers/containers_menu_model.h"
 #include "url/gurl.h"
 
-class Browser;
+class BrowserWindowInterface;
 
 namespace containers {
 
@@ -19,7 +19,7 @@ namespace containers {
 class ContainersBookmarkMenuModelDelegate
     : public ContainersMenuModel::Delegate {
  public:
-  ContainersBookmarkMenuModelDelegate(Browser* browser,
+  ContainersBookmarkMenuModelDelegate(BrowserWindowInterface* browser,
                                       const GURL& bookmark_url);
   ~ContainersBookmarkMenuModelDelegate() override;
 
@@ -35,7 +35,7 @@ class ContainersBookmarkMenuModelDelegate
   float GetScaleFactor() override;
 
  private:
-  const raw_ptr<Browser> browser_;
+  const raw_ptr<BrowserWindowInterface> browser_;
   const GURL bookmark_url_;
 };
 
