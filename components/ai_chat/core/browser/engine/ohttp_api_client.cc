@@ -27,13 +27,13 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/mojom/network_context.mojom.h"
 #include "services/network/public/mojom/oblivious_http_request.mojom.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace ai_chat {
 
 namespace {
 
-constexpr char kOHTTPRelayPathPrefix[] = "v1/models/";
-constexpr char kOHTTPRelayPathSuffix[] = "/relay";
+constexpr char kOHTTPRelayPathFormat[] = "v1/models/%s/relay";
 
 constexpr base::TimeDelta kRequestTimeout = base::Seconds(60);
 
@@ -140,8 +140,8 @@ void OHTTPAPIClient::PerformRequest(
 
   credential_manager_->FetchPremiumCredential(base::BindOnce(
       &OHTTPAPIClient::OnCredentialFetched, weak_factory_.GetWeakPtr(),
-      Request{leo_opts.name, std::move(request_body),
-              std::move(completed_callback)}));
+      Request(leo_opts.name, std::move(request_body),
+              std::move(completed_callback))));
 }
 
 void OHTTPAPIClient::ClearAllQueries() {
@@ -152,11 +152,11 @@ void OHTTPAPIClient::ClearAllQueries() {
 void OHTTPAPIClient::OnCredentialFetched(
     Request request,
     std::optional<CredentialCacheEntry> credential) {
+  const std::string model_name = request.model_name;
   config_manager_->RequestKeyConfig(
-      request.model_name,
-      base::BindOnce(&OHTTPAPIClient::OnKeyConfigReady,
-                     weak_factory_.GetWeakPtr(), std::move(request),
-                     std::move(credential)));
+      model_name, base::BindOnce(&OHTTPAPIClient::OnKeyConfigReady,
+                                 weak_factory_.GetWeakPtr(), std::move(request),
+                                 std::move(credential)));
 }
 
 void OHTTPAPIClient::OnKeyConfigReady(
@@ -192,7 +192,7 @@ void OHTTPAPIClient::DispatchOHTTPRequest(
   auto ohttp_request = network::mojom::ObliviousHttpRequest::New();
   ohttp_request->relay_url = GetEndpointUrl(
       /*premium=*/credential.has_value(),
-      kOHTTPRelayPathPrefix + request.model_name + kOHTTPRelayPathSuffix);
+      absl::StrFormat(kOHTTPRelayPathFormat, request.model_name));
   ohttp_request->traffic_annotation =
       net::MutableNetworkTrafficAnnotationTag(GetOHTTPTrafficAnnotationTag());
   ohttp_request->timeout_duration = kRequestTimeout;

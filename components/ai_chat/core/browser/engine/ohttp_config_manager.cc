@@ -20,14 +20,14 @@
 #include "net/http/http_request_headers.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "url/gurl.h"
 
 namespace ai_chat {
 
 namespace {
 
-constexpr char kKeyConfigPathPrefix[] = "v1/models/";
-constexpr char kKeyConfigPathSuffix[] = "/ohttp_config";
+constexpr char kKeyConfigPathFormat[] = "v1/models/%s/ohttp_config";
 constexpr base::TimeDelta kKeyConfigExpiresAfter = base::Days(3);
 
 constexpr char kKeyConfigKey[] = "key_config";
@@ -152,7 +152,7 @@ void OHTTPConfigManager::FetchKeyConfig(const std::string& model_name,
   api_request_helper_->Request(
       net::HttpRequestHeaders::kGetMethod,
       GetEndpointUrl(/*premium=*/false,
-                     kKeyConfigPathPrefix + model_name + kKeyConfigPathSuffix),
+                     absl::StrFormat(kKeyConfigPathFormat, model_name)),
       /*payload=*/"", /*payload_content_type=*/"",
       base::BindOnce(&OHTTPConfigManager::OnKeyConfigFetched,
                      weak_factory_.GetWeakPtr(), model_name,
