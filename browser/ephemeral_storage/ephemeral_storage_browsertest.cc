@@ -45,6 +45,7 @@
 #include "net/test/embedded_test_server/request_handler_util.h"
 #include "services/network/public/cpp/network_switches.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
+#include "chrome/browser/history/history_service_factory.h"
 
 using content::RenderFrameHost;
 using content::WebContents;
@@ -1326,6 +1327,27 @@ class FirstPartyStorageCleanupSiteDataBrowserTest
         brave_shields::features::kBraveShredFeature);
   }
 
+  int GetHistoryCount() {
+    history::HistoryService* history_service =
+        HistoryServiceFactory::GetForProfile(
+            browser()->profile(), ServiceAccessType::IMPLICIT_ACCESS);
+    CHECK(history_service);
+    int history_count = 0;
+    base::RunLoop loop;
+    base::CancelableTaskTracker task_tracker;
+    history_service->GetHistoryCount(
+        /*begin_time=*/base::Time::UnixEpoch(),
+        /*end_time=*/base::Time::Now(),
+        history::VisitQuery404sPolicy::kInclude404s,
+        base::BindLambdaForTesting([&](history::HistoryCountResult result) {
+          ASSERT_TRUE(result.success);
+          history_count = result.count;
+          loop.Quit();
+        }),
+        &task_tracker);
+    loop.Run();
+    return history_count;
+  }
  private:
   base::test::ScopedFeatureList scoped_feature_list_;
 };
@@ -1369,6 +1391,68 @@ IN_PROC_BROWSER_TEST_F(FirstPartyStorageCleanupSiteDataBrowserTest,
   int site_a_tab_index =
       browser()->tab_strip_model()->GetIndexOfWebContents(site_a_tab);
   EXPECT_EQ(TabStripModel::kNoTab, site_a_tab_index);
+
+  // Open site A in new tab again and make sure that the storage is empty.
+  site_a_tab = LoadURLInNewTab(a_site_ephemeral_storage_url_);
+  auto site_a_tab_values_cleaned = GetValuesFromFrames(site_a_tab);
+  EXPECT_EQ(base::Value(), site_a_tab_values_cleaned.main_frame.local_storage);
+  EXPECT_EQ(base::Value(), site_a_tab_values_cleaned.iframe_1.local_storage);
+  EXPECT_EQ(base::Value(), site_a_tab_values_cleaned.iframe_2.local_storage);
+
+  // Make sure that site B's first and third party storage data exists.
+  site_b_tab_values = GetValuesFromFrames(site_b_tab);
+  EXPECT_EQ("b.com", site_b_tab_values.main_frame.local_storage);
+  EXPECT_EQ("b.com", site_b_tab_values.iframe_1.local_storage);
+  EXPECT_EQ("b.com", site_b_tab_values.iframe_2.local_storage);
+}
+
+IN_PROC_BROWSER_TEST_F(FirstPartyStorageCleanupSiteDataBrowserTest,
+                       StorageAndHistoryCleanedTabsIsClosed) {
+  // Open two tabs with different sites.
+  WebContents* site_a_tab = LoadURLInNewTab(a_site_ephemeral_storage_url_);
+  EXPECT_TRUE(LoadURLInNewTab(a_site_ephemeral_storage_url_));
+  WebContents* site_b_tab = LoadURLInNewTab(b_site_ephemeral_storage_url_);
+  EXPECT_EQ(browser()->tab_strip_model()->count(), 4);
+  EXPECT_TRUE(site_a_tab);
+  EXPECT_TRUE(site_b_tab);
+  // Make sure that both websites are in the history
+  EXPECT_EQ(2, GetHistoryCount());
+
+  // Set first and third party storage values in both tabs.
+  SetValuesInFrames(site_a_tab, "a.com", "from=a.com");
+  ValuesFromFrames site_a_tab_values = GetValuesFromFrames(site_a_tab);
+  EXPECT_EQ("a.com", site_a_tab_values.main_frame.local_storage);
+  EXPECT_EQ("a.com", site_a_tab_values.iframe_1.local_storage);
+  EXPECT_EQ("a.com", site_a_tab_values.iframe_2.local_storage);
+  SetValuesInFrames(site_b_tab, "b.com", "from=b.com");
+  ValuesFromFrames site_b_tab_values = GetValuesFromFrames(site_b_tab);
+  EXPECT_EQ("b.com", site_b_tab_values.main_frame.local_storage);
+  EXPECT_EQ("b.com", site_b_tab_values.iframe_1.local_storage);
+  EXPECT_EQ("b.com", site_b_tab_values.iframe_2.local_storage);
+
+  // Shred site data for site a.com
+  auto* profile = browser()->profile();
+  // Enable shred browsing history
+  brave_shields::SetShredBrowsingHistory(profile->GetPrefs(), true);
+
+  auto storage_partition_config = site_a_tab->GetSiteInstance()
+                                      ->GetSecurityPrincipal()
+                                      .GetStoragePartitionConfig();
+  EphemeralStorageServiceFactory::GetInstance()
+      ->GetForContext(profile)
+      ->CleanupTLDFirstPartyStorage(site_a_tab->GetLastCommittedURL(),
+                                    storage_partition_config, true);
+
+  // Wait for the cleanup to finish.
+  WaitForCleanupAfterKeepAlive(profile);
+
+  // Check if the tab related to site_a_tab has been closed
+  int site_a_tab_index =
+      browser()->tab_strip_model()->GetIndexOfWebContents(site_a_tab);
+  EXPECT_EQ(TabStripModel::kNoTab, site_a_tab_index);
+
+  // Make sure that the history only for a.com has been removed
+  EXPECT_EQ(1, GetHistoryCount());
 
   // Open site A in new tab again and make sure that the storage is empty.
   site_a_tab = LoadURLInNewTab(a_site_ephemeral_storage_url_);
