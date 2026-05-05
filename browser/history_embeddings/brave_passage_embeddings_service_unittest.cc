@@ -267,6 +267,35 @@ TEST_F(BravePassageEmbeddingsServiceTest, BackgroundContentsDestroyedCloses) {
   EXPECT_TRUE(last_created_web_contents_);
 }
 
+TEST_F(BravePassageEmbeddingsServiceTest,
+       DuplicateRegisterPassageEmbedderFactoryIgnored) {
+  // A buggy renderer that calls RegisterPassageEmbedderFactory twice
+  // without first disconnecting must not crash the browser. The
+  // service should ignore the duplicate and keep the first factory.
+  auto load = IssueLoad();
+  ASSERT_TRUE(last_created_web_contents_);
+
+  // First registration: real fake_factory_ wired up.
+  RegisterFactory();
+
+  // Second registration: bind a throwaway remote and pass it in.
+  // mojo::Remote::Bind CHECKs when already bound, so without the
+  // duplicate guard this would crash the browser.
+  mojo::Remote<local_ai::mojom::LocalAIService> local_ai_remote;
+  service_->BindLocalAIReceiver(local_ai_remote.BindNewPipeAndPassReceiver());
+  mojo::PendingRemote<local_ai::mojom::PassageEmbedderFactory> dummy;
+  std::ignore = dummy.InitWithNewPipeAndPassReceiver();
+  local_ai_remote->RegisterPassageEmbedderFactory(std::move(dummy));
+  local_ai_remote.FlushForTesting();
+
+  // The first factory is still in effect; the load completes once the
+  // model files become available.
+  SetUpModelFiles();
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return fake_factory_.init_count() > 0; }));
+  EXPECT_TRUE(load->load_success.Get());
+}
+
 TEST_F(BravePassageEmbeddingsServiceTest, BindRegistryRoutesToService) {
   // Manually exercise the static registry: install a bind callback for
   // a fake WebContents pointer, call BindForWebContents, and confirm

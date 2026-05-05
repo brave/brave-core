@@ -346,6 +346,15 @@ void BravePassageEmbeddingsService::RegisterPassageEmbedderFactory(
     DVLOG(1) << "RegisterPassageEmbedderFactory without background contents";
     return;
   }
+  if (factory_.is_bound()) {
+    // A buggy or compromised renderer could call this twice without
+    // first triggering a disconnect. mojo::Remote::Bind CHECKs when
+    // already bound; ignore the duplicate registration so the second
+    // call doesn't crash the browser.
+    DVLOG(1) << "RegisterPassageEmbedderFactory while factory_ already "
+                "bound; ignoring duplicate registration.";
+    return;
+  }
   factory_.Bind(std::move(factory));
   factory_.set_disconnect_handler(
       base::BindOnce(&BravePassageEmbeddingsService::OnFactoryDisconnected,
