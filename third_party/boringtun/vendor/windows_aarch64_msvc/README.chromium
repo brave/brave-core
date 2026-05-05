@@ -1,0 +1,14 @@
+Name: windows_aarch64_msvc
+Short Name: windows_aarch64_msvc
+URL: https://github.com/microsoft/windows-rs
+Version: 0.52.6
+License: MIT OR Apache-2.0
+License File: license-mit
+
+Description:
+Transitive dependency of BoringTun, vendored under
+brave/third_party/boringtun/vendor/windows_aarch64_msvc.
+
+Local Modifications:
+None. Source vendored via `cargo vendor` from crates.io at the version
+pinned by brave/third_party/boringtun/Cargo.lock.

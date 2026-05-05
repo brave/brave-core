@@ -1,0 +1,14 @@
+Name: version_check
+Short Name: version_check
+URL: https://github.com/SergioBenitez/version_check
+Version: 0.9.5
+License: MIT/Apache-2.0
+License File: LICENSE-MIT
+
+Description:
+Transitive dependency of BoringTun, vendored under
+brave/third_party/boringtun/vendor/version_check.
+
+Local Modifications:
+None. Source vendored via `cargo vendor` from crates.io at the version
+pinned by brave/third_party/boringtun/Cargo.lock.

@@ -1,0 +1,14 @@
+Name: rustc_version
+Short Name: rustc_version
+URL: https://github.com/djc/rustc-version-rs
+Version: 0.4.1
+License: MIT OR Apache-2.0
+License File: LICENSE-MIT
+
+Description:
+Transitive dependency of BoringTun, vendored under
+brave/third_party/boringtun/vendor/rustc_version.
+
+Local Modifications:
+None. Source vendored via `cargo vendor` from crates.io at the version
+pinned by brave/third_party/boringtun/Cargo.lock.

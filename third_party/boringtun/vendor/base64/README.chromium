@@ -1,0 +1,14 @@
+Name: base64
+Short Name: base64
+URL: https://github.com/marshallpierce/rust-base64
+Version: 0.13.1
+License: MIT/Apache-2.0
+License File: LICENSE-MIT
+
+Description:
+Transitive dependency of BoringTun, vendored under
+brave/third_party/boringtun/vendor/base64.
+
+Local Modifications:
+None. Source vendored via `cargo vendor` from crates.io at the version
+pinned by brave/third_party/boringtun/Cargo.lock.

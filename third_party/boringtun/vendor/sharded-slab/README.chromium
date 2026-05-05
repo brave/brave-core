@@ -1,0 +1,13 @@
+Name: sharded-slab
+Short Name: sharded-slab
+URL: https://github.com/hawkw/sharded-slab
+Version: 0.1.7
+License: MIT
+
+Description:
+Transitive dependency of BoringTun, vendored under
+brave/third_party/boringtun/vendor/sharded-slab.
+
+Local Modifications:
+None. Source vendored via `cargo vendor` from crates.io at the version
+pinned by brave/third_party/boringtun/Cargo.lock.

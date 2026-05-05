@@ -1,0 +1,13 @@
+Name: valuable
+Short Name: valuable
+URL: https://github.com/tokio-rs/valuable
+Version: 0.1.1
+License: MIT
+
+Description:
+Transitive dependency of BoringTun, vendored under
+brave/third_party/boringtun/vendor/valuable.
+
+Local Modifications:
+None. Source vendored via `cargo vendor` from crates.io at the version
+pinned by brave/third_party/boringtun/Cargo.lock.
