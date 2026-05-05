@@ -64,7 +64,7 @@ void BraveSyncAlertsService::ShowInfobar() {
         browser->tab_strip_model()->GetActiveWebContents();
     if (active_web_contents) {
       BraveSyncAccountDeletedInfoBarDelegate::Create(active_web_contents,
-                                                     profile_, browser);
+                                                     profile_);
     }
   }
 #endif
