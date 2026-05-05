@@ -145,6 +145,11 @@ function Conversation(props: ConversationProps) {
   const { scrollToBottomContinuously, hasScrollableContent } =
     useScrollToBottom(scrollElementRef, contentRef)
 
+  const scrollToBottom = React.useCallback(
+    () => scrollToBottomContinuously(),
+    [scrollToBottomContinuously],
+  )
+
   // Scroll to bottom when opening a conversation
   React.useEffect(() => {
     scrollToBottomContinuously(/*animate=*/ false)
@@ -201,9 +206,7 @@ function Conversation(props: ConversationProps) {
           </div>
         )}
 
-        <ConversationEntries
-          scrollToBottom={() => scrollToBottomContinuously()}
-        />
+        <ConversationEntries scrollToBottom={scrollToBottom} />
 
         <div ref={noticesRef}>
           {showSuggestions && (
