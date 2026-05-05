@@ -1671,7 +1671,7 @@ extension WKWebViewConfiguration {
   /// Updates a WebKit configuration with Brave's defaults and preferences that can't be done
   /// from inside Chromium's `WKWebViewConfigurationProvider::ResetWithWebViewConfiguration`
   func prepareBraveConfiguration() {
-    upgradeKnownHostsToHTTPS = Preferences.Shields.httpsUpgradeLevel.isEnabled
+    upgradeKnownHostsToHTTPS = false // Preferences.Shields.httpsUpgradeLevel.isEnabled
     preferences.isFraudulentWebsiteWarningEnabled = Preferences.Shields.googleSafeBrowsing.value
 
     if FeatureList.kWebKitAdvancedPrivacyProtections.enabled {

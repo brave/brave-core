@@ -13,6 +13,7 @@
 #import "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/chrome/browser/ssl/model/captive_portal_tab_helper.h"
 #include "ios/chrome/browser/tabs/model/ios_chrome_synced_tab_delegate.h"
+#import "ios/chrome/browser/tabs/model/tab_helper_attacher.h"
 #import "ios/components/security_interstitials/https_only_mode/https_only_mode_container.h"
 #import "ios/components/security_interstitials/ios_blocking_page_tab_helper.h"
 
@@ -25,4 +26,10 @@ void AttachTabHelpers(web::WebState* web_state, TabHelperFilter filter_flags) {
   // Create Brave's version instead of Chromes as we replace its usage in
   // ios_captive_portal_blocking_page.mm
   BraveCaptivePortalTabHelper::CreateForWebState(web_state);
+
+  TabHelperAttacher attacher(web_state, filter_flags);
+  ProfileIOS* const profile = attacher.GetProfile();
+  attacher.Create<HttpsOnlyModeUpgradeTabHelper>(
+      profile->GetPrefs(), HttpsUpgradeServiceFactory::GetForProfile(profile));
+  attacher.Create<HttpsOnlyModeContainer>();
 }

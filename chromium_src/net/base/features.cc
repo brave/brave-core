@@ -43,7 +43,11 @@ BASE_FEATURE(kBraveTorWindowsHttpsOnly,
 // Enabled HTTPS by Default.
 BASE_FEATURE(kBraveHttpsByDefault,
              "HttpsByDefault",
+#if BUILDFLAG(IS_IOS)
+             base::FEATURE_DISABLED_BY_DEFAULT);
+#else
              base::FEATURE_ENABLED_BY_DEFAULT);
+#endif
 
 // When enabled, use a fallback DNS over HTTPS (DoH)
 // provider when the current DNS provider does not offer Secure DNS.

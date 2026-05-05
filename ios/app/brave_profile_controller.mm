@@ -74,6 +74,7 @@
 #include "ios/web_view/internal/cwv_web_view_configuration_internal.h"
 #include "ios/web_view/internal/web_view_browser_state.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "ios/chrome/browser/shared/model/prefs/pref_names.h"
 
 #if BUILDFLAG(IOS_CREDENTIAL_PROVIDER_ENABLED)
 #include "ios/chrome/browser/credential_provider/model/credential_provider_service_factory.h"
@@ -134,6 +135,7 @@
 
     // Disable Safe-Browsing via Prefs
     _profile->GetPrefs()->SetBoolean(prefs::kSafeBrowsingEnabled, false);
+    _profile->GetPrefs()->SetBoolean(prefs::kHttpsOnlyModeEnabled, false);
 
     // Setup main browser
     _browserList = BrowserListFactory::GetForProfile(_profile);
