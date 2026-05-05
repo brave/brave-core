@@ -8,15 +8,12 @@
 
 #include <memory>
 
-#include "base/callback_list.h"
-#include "base/scoped_observation.h"
-#include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 #include "chrome/browser/ui/views/frame/browser_frame_view_mac.h"
 
 class BraveWindowFrameGraphic;
+class FocusModeRevealObserver;
 
-class BraveBrowserFrameViewMac : public BrowserFrameViewMac,
-                                 public FocusModeController::Observer {
+class BraveBrowserFrameViewMac : public BrowserFrameViewMac {
  public:
   BraveBrowserFrameViewMac(BrowserWidget* browser_widget,
                            BrowserView* browser_view);
@@ -28,9 +25,6 @@ class BraveBrowserFrameViewMac : public BrowserFrameViewMac,
 
   // BrowserFrameView:
   void OnFullscreenStateChanged() override;
-
-  // FocusModeController::Observer:
-  void OnFocusModeToggled(bool enabled) override;
 
  private:
   bool ShouldShowWindowTitleForVerticalTabs() const;
@@ -57,9 +51,7 @@ class BraveBrowserFrameViewMac : public BrowserFrameViewMac,
   BooleanPrefMember show_vertical_tabs_;
   BooleanPrefMember show_title_bar_on_vertical_tabs_;
 
-  base::ScopedObservation<FocusModeController, FocusModeController::Observer>
-      focus_mode_observation_{this};
-  base::CallbackListSubscription focus_mode_reveal_subscription_;
+  std::unique_ptr<FocusModeRevealObserver> focus_mode_reveal_observer_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_FRAME_VIEW_MAC_H_

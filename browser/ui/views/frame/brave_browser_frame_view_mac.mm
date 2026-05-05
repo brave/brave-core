@@ -17,7 +17,7 @@
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 #include "brave/browser/ui/views/frame/brave_window_frame_graphic.h"
-#include "brave/browser/ui/views/frame/focus_mode_top_overlay.h"
+#include "brave/browser/ui/views/frame/focus_mode_reveal_observer.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -57,9 +57,13 @@ BraveBrowserFrameViewMac::BraveBrowserFrameViewMac(
             base::Unretained(this)));
   }
 
-  if (auto* focus_mode = browser->GetFeatures().focus_mode_controller()) {
-    focus_mode_observation_.Observe(focus_mode);
-  }
+  focus_mode_reveal_observer_ = std::make_unique<FocusModeRevealObserver>(
+      BraveBrowserView::From(browser_view),
+      base::BindRepeating(&BraveBrowserFrameViewMac::SetTrafficLightAlpha,
+                          base::Unretained(this)),
+      base::BindRepeating([](BraveBrowserFrameViewMac* self,
+                             bool) { self->UpdateWindowTitleAndControls(); },
+                          base::Unretained(this)));
 }
 
 BraveBrowserFrameViewMac::~BraveBrowserFrameViewMac() = default;
@@ -221,24 +225,6 @@ void BraveBrowserFrameViewMac::OnFullscreenStateChanged() {
     }
   }
   BrowserFrameViewMac::OnFullscreenStateChanged();
-}
-
-void BraveBrowserFrameViewMac::OnFocusModeToggled(bool enabled) {
-  UpdateWindowTitleAndControls();
-
-  auto* overlay =
-      BraveBrowserView::From(GetBrowserView())->focus_mode_top_overlay();
-
-  if (!overlay || !enabled) {
-    focus_mode_reveal_subscription_ = {};
-    SetTrafficLightAlpha(1.0);
-    return;
-  }
-
-  focus_mode_reveal_subscription_ = overlay->AddRevealFractionChangedCallback(
-      base::BindRepeating(&BraveBrowserFrameViewMac::SetTrafficLightAlpha,
-                          base::Unretained(this)));
-  SetTrafficLightAlpha(overlay->GetRevealFraction());
 }
 
 void BraveBrowserFrameViewMac::SetTrafficLightAlpha(double reveal_fraction) {

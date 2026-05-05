@@ -5,10 +5,13 @@
 
 #include "brave/browser/ui/views/frame/brave_browser_frame_view_win.h"
 
+#include "base/functional/bind.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 #include "brave/browser/ui/views/frame/brave_win_caption_layout.h"
 #include "brave/browser/ui/views/frame/brave_window_frame_graphic.h"
+#include "brave/browser/ui/views/frame/focus_mode_reveal_observer.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "chrome/browser/profiles/profile.h"
@@ -21,6 +24,7 @@
 #include "ui/compositor/layer.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/rect.h"
+#include "ui/gfx/geometry/transform.h"
 #include "ui/gfx/scoped_canvas.h"
 
 BraveBrowserFrameViewWin::BraveBrowserFrameViewWin(
@@ -40,6 +44,12 @@ BraveBrowserFrameViewWin::BraveBrowserFrameViewWin(
       brave_tabs::kVerticalTabsShowTitleOnWindow, prefs,
       base::BindRepeating(&BraveBrowserFrameViewWin::OnVerticalTabsPrefsChanged,
                           base::Unretained(this)));
+
+  focus_mode_reveal_observer_ = std::make_unique<FocusModeRevealObserver>(
+      BraveBrowserView::From(browser_view),
+      base::BindRepeating(
+          &BraveBrowserFrameViewWin::ApplyFocusModeRevealFraction,
+          base::Unretained(this)));
 }
 
 BraveBrowserFrameViewWin::~BraveBrowserFrameViewWin() = default;
@@ -99,6 +109,20 @@ int BraveBrowserFrameViewWin::GetTopInset(bool restored) const {
 }
 
 int BraveBrowserFrameViewWin::NonClientHitTest(const gfx::Point& point) {
+  // While focus mode is animating or hiding the caption buttons, treat the
+  // container's visual band as client area. `View::HitTestPoint` is purely
+  // bounds-based and does not honor the layer transform that drives the slide
+  // animation, so without this gate the buttons would remain hit-testable at
+  // their original location even when visually offscreen. Reporting HTCLIENT
+  // also lets the overlay's reveal hot zone fire in this band.
+  if (caption_button_container_ && !focus_mode_caption_revealed_) {
+    gfx::Point local_point = point;
+    ConvertPointToTarget(parent(), caption_button_container_, &local_point);
+    if (caption_button_container_->HitTestPoint(local_point)) {
+      return HTCLIENT;
+    }
+  }
+
   auto result = BrowserFrameViewWin::NonClientHitTest(point);
   if (result != HTCLIENT) {
     return result;
@@ -124,6 +148,32 @@ int BraveBrowserFrameViewWin::NonClientHitTest(const gfx::Point& point) {
   }
 
   return result;
+}
+
+void BraveBrowserFrameViewWin::ApplyFocusModeRevealFraction(double fraction) {
+  if (!caption_button_container_) {
+    return;
+  }
+
+  // Lazily promote the container to a layer so we can animate its translation
+  // independently of layout. The chromium_src `BrowserCaptionButtonContainer`
+  // override and the WCO path may also paint to a layer; promoting here is a
+  // no-op in those cases. We deliberately leave the layer in place once
+  // created — destroying it on focus mode exit would race against a possible
+  // mid-animation deactivation and complicates ownership with the WCO path.
+  if (!caption_button_container_->layer()) {
+    caption_button_container_->SetPaintToLayer();
+    caption_button_container_->layer()->SetFillsBoundsOpaquely(false);
+  }
+
+  const int height = caption_button_container_->height();
+  caption_button_container_->layer()->SetTransform(
+      gfx::Transform::MakeTranslation(0, -height * (1.0 - fraction)));
+
+  // Only allow caption-button hit testing when the container is fully (or
+  // very nearly fully) revealed. During the slide the visual position lags
+  // behind the bounds-based hit test and pointer aim becomes ambiguous.
+  focus_mode_caption_revealed_ = fraction > 0.99;
 }
 
 bool BraveBrowserFrameViewWin::ShouldShowWindowTitle(TitlebarType type) const {

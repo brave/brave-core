@@ -12,6 +12,7 @@
 #include "components/prefs/pref_member.h"
 
 class BraveWindowFrameGraphic;
+class FocusModeRevealObserver;
 
 class BraveBrowserFrameViewWin : public BrowserFrameViewWin {
  public:
@@ -27,6 +28,13 @@ class BraveBrowserFrameViewWin : public BrowserFrameViewWin {
  private:
   void OnVerticalTabsPrefsChanged();
 
+  // Drives the caption button container's slide animation in lockstep with
+  // `FocusModeTopOverlay`'s reveal fraction. When `fraction` is 1.0 the
+  // container sits at its laid-out position; as `fraction` approaches 0.0 the
+  // container is translated upward by its own height so it slides off the top
+  // of the frame.
+  void ApplyFocusModeRevealFraction(double fraction);
+
   // BraveBrowserFrameViewWin overrides:
   void OnPaint(gfx::Canvas* canvas) override;
   int GetTopInset(bool restored) const override;
@@ -38,6 +46,15 @@ class BraveBrowserFrameViewWin : public BrowserFrameViewWin {
 
   BooleanPrefMember using_vertical_tabs_;
   BooleanPrefMember showing_window_title_for_vertical_tabs_;
+
+  // True unless focus mode is mid-animation or hiding the caption buttons.
+  // Gates the caption button hit-test path in `NonClientHitTest`: while false,
+  // the container's visual band is reported as client area to avoid the
+  // "invisible-but-clickable" effect that occurs because View hit testing is
+  // bounds-based and ignores layer transforms.
+  bool focus_mode_caption_revealed_ = true;
+
+  std::unique_ptr<FocusModeRevealObserver> focus_mode_reveal_observer_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_FRAME_VIEW_WIN_H_
