@@ -10,6 +10,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/observer_list.h"
 #include "base/values.h"
+#include "brave/components/brave_policy/brave_policy_manager_base.h"
 #include "brave/components/brave_policy/brave_policy_observer.h"
 #include "components/prefs/pref_change_registrar.h"
 
@@ -29,12 +30,14 @@ using AdBlockOnlyModePolicies = base::flat_map<std::string, base::Value>;
 // abstracts away the local state management from policy provider.
 // TODO(https://github.com/brave/brave-browser/issues/50077): Refactor this
 // class when `BravePolicyManager` is introduced.
-class AdBlockOnlyModePolicyManager final {
+class AdBlockOnlyModePolicyManager final : public BravePolicyManagerBase {
  public:
   static AdBlockOnlyModePolicyManager* GetInstance();
 
   void Init(PrefService* local_state);
   void Shutdown();
+
+  bool IsInitialized() const override;
 
   void AddObserver(BravePolicyObserver* observer);
   void RemoveObserver(BravePolicyObserver* observer);
@@ -48,7 +51,7 @@ class AdBlockOnlyModePolicyManager final {
  private:
   friend base::NoDestructor<AdBlockOnlyModePolicyManager>;
   AdBlockOnlyModePolicyManager();
-  ~AdBlockOnlyModePolicyManager();
+  ~AdBlockOnlyModePolicyManager() override;
 
   void OnAdBlockOnlyModeChanged();
   AdBlockOnlyModePolicies GetPoliciesImpl() const;

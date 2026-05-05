@@ -8,6 +8,7 @@
 #include "base/feature_list.h"
 #include "base/no_destructor.h"
 #include "brave/components/brave_policy/ad_block_only_mode/buildflags/buildflags.h"
+#include "brave/components/brave_policy/brave_policy_manager_base.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "components/content_settings/core/common/content_settings.h"
@@ -41,6 +42,10 @@ void AdBlockOnlyModePolicyManager::Shutdown() {
   pref_change_registrar_.RemoveAll();
   observers_.Clear();
   local_state_ = nullptr;
+}
+
+bool AdBlockOnlyModePolicyManager::IsInitialized() const {
+  return local_state_ != nullptr;
 }
 
 void AdBlockOnlyModePolicyManager::AddObserver(BravePolicyObserver* observer) {
