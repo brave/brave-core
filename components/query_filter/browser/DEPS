@@ -1,6 +1,7 @@
 include_rules = [
   "+components/component_updater",
   "+components/update_client",
+  "+third_party/re2/src/re2/re2.h",
 ]
 
 specific_include_rules = {

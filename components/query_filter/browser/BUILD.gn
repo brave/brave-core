@@ -9,6 +9,8 @@ static_library("browser") {
     "query_filter_component_installer.h",
     "query_filter_data.cc",
     "query_filter_data.h",
+    "utils.cc",
+    "utils.h",
   ]
 
   public_deps = [
@@ -16,11 +18,14 @@ static_library("browser") {
     "//brave/components/query_filter/common:schema",
     "//components/component_updater",
     "//components/update_client",
+    "//url",
   ]
 
   deps = [
     "//brave/components/brave_component_updater/browser:public",
     "//brave/components/query_filter/common",
+    "//net",
+    "//third_party/re2",
   ]
 }
 
@@ -30,6 +35,7 @@ source_set("unit_tests") {
   sources = [
     "query_filter_component_installer_unittest.cc",
     "query_filter_data_unittest.cc",
+    "utils_unittest.cc",
   ]
 
   deps = [
@@ -42,5 +48,7 @@ source_set("unit_tests") {
     "//components/update_client",
     "//testing/gmock",
     "//testing/gtest",
+    "//third_party/abseil-cpp:absl",
+    "//url",
   ]
 }

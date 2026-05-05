@@ -10,6 +10,7 @@ source_set("common") {
     "constants.h",
     "features.cc",
     "features.h",
+    "pref_names.h",
   ]
   deps = [ "//base" ]
 }

@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/query_filter/utils.h"
+#include "brave/components/query_filter/browser/utils.h"
 
 #include <optional>
 #include <string>
@@ -301,7 +301,7 @@ std::optional<GURL> MaybeApplyQueryStringFilter(
   return ApplyQueryFilter(request_url);
 }
 
-bool IsScopedTrackerForTesting(
+bool IsScopedTrackerForTesting(  // IN-TEST
     std::string_view param_name,
     std::string_view spec,
     const std::map<std::string_view, std::vector<std::string_view>>& trackers) {

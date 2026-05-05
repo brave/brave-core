@@ -896,7 +896,7 @@ source_set("ui") {
     "//brave/components/ntp_background_images/common",
     "//brave/components/p3a",
     "//brave/components/p3a_utils",
-    "//brave/components/query_filter",
+    "//brave/components/query_filter/browser",
     "//brave/components/resources:scaled_resources",
     "//brave/components/resources:static_resources",
     "//brave/components/services/bat_ads/public/interfaces",

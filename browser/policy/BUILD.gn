@@ -38,7 +38,7 @@ source_set("brave_simple_policy_map") {
     "//brave/components/ipfs/buildflags",
     "//brave/components/p3a",
     "//brave/components/playlist/core/common/buildflags",
-    "//brave/components/query_filter",
+    "//brave/components/query_filter/common",
     "//brave/components/speedreader/common/buildflags",
     "//brave/components/tor/buildflags",
     "//components/policy/core/browser",

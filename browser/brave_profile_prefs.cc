@@ -47,7 +47,7 @@
 #include "brave/components/ntp_background_images/common/view_counter_pref_registry.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/psst/buildflags/buildflags.h"
-#include "brave/components/query_filter/pref_names.h"
+#include "brave/components/query_filter/common/pref_names.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/serp_metrics/pref_names.h"
