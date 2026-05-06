@@ -19,6 +19,9 @@ bool ShouldFireAdEvent(const NewTabPageAdInfo& ad,
                        const AdEventList& ad_events,
                        mojom::NewTabPageAdEventType mojom_ad_event_type);
 
+mojom::ConfirmationType ToMojomConfirmationType(
+    mojom::NewTabPageAdEventType mojom_ad_event_type);
+
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_AD_EVENTS_NEW_TAB_PAGE_ADS_NEW_TAB_PAGE_AD_EVENT_HANDLER_UTIL_H_
