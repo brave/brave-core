@@ -86,7 +86,7 @@ public class BraveYouTubeScriptInjectorNativeHelper {
      * @noinspection unused
      */
     @NativeMethods
-    interface Natives {
+    public interface Natives {
         void setFullscreen(WebContents webContents);
 
         void exitFullscreen(WebContents webContents);
