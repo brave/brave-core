@@ -559,7 +559,7 @@ license_files = ['../../../../../common/licenses/Apache-2.0']
 extra_kv = { allow_unsafe = false }
 
 [crate.markup5ever]
-extra_build_script_src_roots = [ "entities.rs" ]
+extra_build_script_input_roots = [ "entities.rs" ]
 build_script_outputs = [ "generated.rs", "named_entities.rs", ]
 extra_kv = { allow_unsafe = true }
 
@@ -930,7 +930,7 @@ extra_kv = { allow_unsafe = true }
 extra_kv = { allow_unsafe = true }
 
 [crate.typenum]
-extra_build_script_src_roots = [ "../build" ]
+extra_build_script_input_roots = [ "../build" ]
 build_script_outputs = [ "consts.rs", "op.rs" ]
 extra_kv = { rustenv = [ "TYPENUM_BUILD_CONSTS=\" + rebase_path(target_gen_dir, root_build_dir) + \"/lib/consts.rs", "TYPENUM_BUILD_OP=\" + rebase_path(target_gen_dir, root_build_dir) + \"/lib/op.rs" ], allow_unsafe = false }
 
