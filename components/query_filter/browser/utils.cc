@@ -22,6 +22,7 @@
 #include "third_party/re2/src/re2/re2.h"
 
 namespace {
+inline constexpr char kAllDomainsPattern[] = "*://*/*";
 
 // Allows to replace the |kScopedQueryStringTrackers| with custom values during
 // testing.
@@ -141,6 +142,8 @@ static constexpr auto kSimpleQueryStringTrackers =
             "ysclid",
         });
 
+// The "key" is the parameter to remove from the url. This would only get
+// removed if the "value" was NOT found in the url.
 static constexpr auto kConditionalQueryStringTrackers =
     base::MakeFixedFlatMap<std::string_view, std::string_view>({
         // https://github.com/brave/brave-browser/issues/44341
@@ -161,6 +164,8 @@ static constexpr auto kConditionalQueryStringTrackers =
 // `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
 // added in the meantime to fix the build error. Remove this attribute and
 // provide a proper fix.
+// TODO(https://github.com/brave/brave-browser/issues/10188): Remove this
+// once we have migrated completely to query filter component.
 [[clang::no_destroy]] static const auto kScopedQueryStringTrackers =
     query_filter::ScopedQueryTrackerType({
         // https://github.com/brave/brave-browser/issues/35094
@@ -213,7 +218,9 @@ bool IsScopedTracker(std::string_view param_name, std::string_view spec) {
   return false;
 }
 
-bool ShouldRemoveParam(std::string_view spec, std::string_view original_param) {
+bool ShouldStripParam(std::string_view spec, std::string_view original_param) {
+  // TODO(https://github.com/brave/brave-browser/issues/10188): Remove this
+  // once we have migrated completely to query filter component.
   if (!base::FeatureList::IsEnabled(
           query_filter::features::kQueryFilterComponent)) {
     return kSimpleQueryStringTrackers.count(original_param) == 1 ||
@@ -225,22 +232,25 @@ bool ShouldRemoveParam(std::string_view spec, std::string_view original_param) {
 
   // Go over rules that matches on the |url|.
   for (const auto& rule : rules) {
-    const auto include_itr = std::find_if(
-        rule.include.cbegin(), rule.include.cend(), [&url](std::string str) {
-          return str == "*://*/*" || url.DomainIs(str);
-        });
-
-    const auto exclude_itr = std::find_if(
-        rule.exclude.cbegin(), rule.exclude.cend(), [&url](std::string str) {
-          return str == "*://*/*" || url.DomainIs(str);
-        });
-
+    // Check if the rule explictly "excludes" the |url| from consideration.
+    const auto& exclude_itr =
+        std::find_if(rule.exclude.cbegin(), rule.exclude.cend(),
+                     [&url](const std::string& str) {
+                       return str == kAllDomainsPattern || url.DomainIs(str);
+                     });
     // |url| excluded from consideration for the current |rule|
     if (exclude_itr != rule.exclude.cend()) {
       continue;
     }
 
-    // |url| flagged by the current |rule|. Check params
+    // Check if the rule explictly "includes" the |url| for consideration.
+    const auto& include_itr =
+        std::find_if(rule.include.cbegin(), rule.include.cend(),
+                     [&url](const std::string& str) {
+                       return str == kAllDomainsPattern || url.DomainIs(str);
+                     });
+    // |url| flagged by the current |rule|. So, check if |original_param|
+    // was flagged in the rule.
     if (include_itr != rule.include.cend()) {
       for (const auto& rule_param : rule.params) {
         if (rule_param == original_param) {
@@ -264,27 +274,45 @@ std::optional<std::string> StripQueryParameter(std::string_view query,
   // Split query string by ampersands, remove tracking parameters,
   // then join the remaining query parameters, untouched, back into
   // a single query string.
-  const std::vector<std::string_view> input_kv_strings =
+  const std::vector<std::string_view> tokens =
       SplitStringPiece(query, "&", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
-  std::vector<std::string_view> output_kv_strings;
-  int disallowed_count = 0;
-  for (const auto& kv_string : input_kv_strings) {
-    const std::vector<std::string_view> pieces = SplitStringPiece(
-        kv_string, "=", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
-    const std::string_view key = pieces.empty() ? "" : pieces[0];
-    if (pieces.size() >= 2 &&
-        (ShouldRemoveParam(spec, key) ||
-         (kConditionalQueryStringTrackers.count(key) == 1 &&
-          !re2::RE2::PartialMatch(
-              spec, kConditionalQueryStringTrackers.at(key).data())))) {
-      ++disallowed_count;
-    } else {
-      output_kv_strings.push_back(kv_string);
+
+  std::vector<std::string_view> output_tokens;
+  bool did_strip = false;
+
+  for (const auto token : tokens) {
+    // Try to parse the token as param=value.
+    const auto param_value = base::SplitStringOnce(token, "=");
+
+    // Not a param=value type string, so put it back as it is.
+    if (!param_value.has_value()) {
+      output_tokens.emplace_back(token);
+      continue;
     }
+
+    const auto [param, value] = param_value.value();
+
+    // Domains and scoped-domains query parameter stripping decisions.
+    if (ShouldStripParam(spec, param)) {
+      did_strip = true;
+      continue;
+    }
+
+    // Conditional query parameter stripping decision.
+    if (kConditionalQueryStringTrackers.contains(param) &&
+        !re2::RE2::PartialMatch(
+            spec, kConditionalQueryStringTrackers.at(param).data())) {
+      did_strip = true;
+      continue;
+    }
+
+    output_tokens.emplace_back(token);
   }
-  if (disallowed_count > 0) {
-    return base::JoinString(output_kv_strings, "&");
+
+  if (did_strip) {
+    return base::JoinString(output_tokens, "&");
   }
+
   return std::nullopt;
 }
 
