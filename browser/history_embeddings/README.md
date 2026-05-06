@@ -75,19 +75,20 @@ without touching the upstream header (see
   implementation of `passage_embeddings::mojom::PassageEmbeddingsService`
   (and `local_ai::mojom::LocalAIService` for renderer binding).
   Exposes a direct `BindPassageEmbedder(...)` entry point used by the
-  controller. Owns the guest-OTR background WebContents, the
-  `PassageEmbedderFactory` registration, and a
-  `BraveBatchPassageEmbedder` that translates upstream's batch mojom
-  to the renderer's one-passage-at-a-time interface. Also hosts the
-  static `WebContents*` → bind-callback registry used by
-  `UntrustedLocalAIUI::BindInterface`.
+  controller. Owns the guest-OTR background WebContents and the
+  `PassageEmbedderFactory` registration; hands the factory remote and
+  loaded model files off to a `BraveBatchPassageEmbedder` once both
+  are ready. Also hosts the static `WebContents*` → bind-callback
+  registry used by `UntrustedLocalAIUI::BindInterface`.
 
 - **`brave_batch_passage_embedder.{h,cc}`** — In-process
-  implementation of `passage_embeddings::mojom::PassageEmbedder` that
-  wraps a renderer-side `local_ai::mojom::PassageEmbedder`. Translates
-  the upstream batch mojom to the renderer's single-passage interface,
-  processing passages sequentially so callbacks resolve with all
-  embeddings in order.
+  implementation of `passage_embeddings::mojom::PassageEmbedder`.
+  Owns the per-load lifecycle: drives `factory_->Init` on
+  construction, binds the renderer-side `local_ai::mojom::PassageEmbedder`
+  on success, and signals load success/failure plus disconnect back
+  to the service. Translates upstream's batch mojom to the renderer's
+  one-passage-at-a-time interface, processing passages sequentially so
+  callbacks resolve with embeddings in order.
 
 - **`brave_passage_embeddings_service_controller.{h,cc}`** — Singleton
   subclass of `PassageEmbeddingsServiceController`. Overrides

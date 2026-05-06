@@ -11,11 +11,13 @@
 #include <vector>
 
 #include "base/functional/bind.h"
+#include "base/memory/raw_ptr.h"
+#include "base/test/run_until.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "brave/components/local_ai/core/local_ai.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
-#include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "services/passage_embeddings/public/mojom/passage_embeddings.mojom.h"
@@ -38,8 +40,8 @@ std::vector<float> AsFloatVector(const double (&arr)[3]) {
 }
 
 // Renderer-side fake. By default returns kEmbeddingA for every passage;
-// queue per-call canned responses to simulate empty / out-of-range
-// returns.
+// configurable to return per-call canned values, an empty embedding, or
+// an out-of-float-range value.
 class FakeRendererEmbedder : public local_ai::mojom::PassageEmbedder {
  public:
   void GenerateEmbeddings(const std::string& text,
@@ -54,10 +56,9 @@ class FakeRendererEmbedder : public local_ai::mojom::PassageEmbedder {
     std::move(callback).Run(AsVector(kEmbeddingA));
   }
 
-  mojo::PendingRemote<local_ai::mojom::PassageEmbedder> BindNewRemote() {
-    mojo::PendingRemote<local_ai::mojom::PassageEmbedder> remote;
-    receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
-    return remote;
+  void AddReceiver(
+      mojo::PendingReceiver<local_ai::mojom::PassageEmbedder> receiver) {
+    receivers_.Add(this, std::move(receiver));
   }
 
   void QueueResponse(std::vector<double> response) {
@@ -73,15 +74,68 @@ class FakeRendererEmbedder : public local_ai::mojom::PassageEmbedder {
   mojo::ReceiverSet<local_ai::mojom::PassageEmbedder> receivers_;
 };
 
+// Factory fake. Init replies asynchronously with init_success_; Bind
+// forwards the receiver to the renderer worker.
+class FakePassageEmbedderFactory
+    : public local_ai::mojom::PassageEmbedderFactory {
+ public:
+  explicit FakePassageEmbedderFactory(FakeRendererEmbedder* worker)
+      : worker_(worker) {}
+
+  void Init(local_ai::mojom::ModelFilesPtr model_files,
+            InitCallback callback) override {
+    ++init_count_;
+    if (defer_init_reply_) {
+      pending_init_callback_ = std::move(callback);
+      return;
+    }
+    std::move(callback).Run(init_success_);
+  }
+
+  void Bind(mojo::PendingReceiver<local_ai::mojom::PassageEmbedder> receiver)
+      override {
+    ++bind_count_;
+    worker_->AddReceiver(std::move(receiver));
+  }
+
+  mojo::Remote<local_ai::mojom::PassageEmbedderFactory> BindRemote() {
+    mojo::Remote<local_ai::mojom::PassageEmbedderFactory> remote;
+    receiver_.Bind(remote.BindNewPipeAndPassReceiver());
+    return remote;
+  }
+
+  void ResetReceiver() { receiver_.reset(); }
+
+  void set_init_success(bool success) { init_success_ = success; }
+  void set_defer_init_reply(bool defer) { defer_init_reply_ = defer; }
+  void RunDeferredInit(bool success) {
+    ASSERT_TRUE(pending_init_callback_);
+    std::move(pending_init_callback_).Run(success);
+  }
+
+  int init_count() const { return init_count_; }
+  int bind_count() const { return bind_count_; }
+
+ private:
+  raw_ptr<FakeRendererEmbedder> worker_;
+  bool init_success_ = true;
+  bool defer_init_reply_ = false;
+  InitCallback pending_init_callback_;
+  int init_count_ = 0;
+  int bind_count_ = 0;
+  mojo::Receiver<local_ai::mojom::PassageEmbedderFactory> receiver_{this};
+};
+
 }  // namespace
 
 class BraveBatchPassageEmbedderTest : public testing::Test {
  protected:
-  // Constructs the embedder under test wired to fake_worker_.
+  // Constructs the embedder under test; populates load_success_ via
+  // load_callback and disconnect_called_ via on_disconnect.
   void CreateEmbedder() {
     embedder_ = std::make_unique<BraveBatchPassageEmbedder>(
-        embedder_remote_.BindNewPipeAndPassReceiver(),
-        fake_worker_.BindNewRemote(),
+        embedder_remote_.BindNewPipeAndPassReceiver(), factory_.BindRemote(),
+        local_ai::mojom::ModelFiles::New(), load_success_.GetCallback(),
         base::BindOnce(
             [](base::test::TestFuture<void>* future) { future->SetValue(); },
             &disconnect_called_));
@@ -89,13 +143,37 @@ class BraveBatchPassageEmbedderTest : public testing::Test {
 
   base::test::TaskEnvironment task_environment_;
   FakeRendererEmbedder fake_worker_;
+  FakePassageEmbedderFactory factory_{&fake_worker_};
   mojo::Remote<mojom::PassageEmbedder> embedder_remote_;
+  base::test::TestFuture<bool> load_success_;
   base::test::TestFuture<void> disconnect_called_;
   std::unique_ptr<BraveBatchPassageEmbedder> embedder_;
 };
 
+TEST_F(BraveBatchPassageEmbedderTest, InitSuccessSignalsLoadAndBinds) {
+  CreateEmbedder();
+  EXPECT_TRUE(load_success_.Get());
+  // factory_->Bind is fired from OnInitDone before load_success runs;
+  // wait for the message to reach FakePassageEmbedderFactory.
+  ASSERT_TRUE(base::test::RunUntil([&] { return factory_.bind_count() > 0; }));
+  EXPECT_EQ(1, factory_.init_count());
+  EXPECT_EQ(1, factory_.bind_count());
+  EXPECT_FALSE(disconnect_called_.IsReady());
+}
+
+TEST_F(BraveBatchPassageEmbedderTest,
+       InitFailureSignalsLoadFalseAndDisconnect) {
+  factory_.set_init_success(false);
+  CreateEmbedder();
+  EXPECT_FALSE(load_success_.Get());
+  EXPECT_TRUE(disconnect_called_.Wait());
+  EXPECT_EQ(0, factory_.bind_count());
+}
+
 TEST_F(BraveBatchPassageEmbedderTest, EmptyPassagesShortCircuit) {
   CreateEmbedder();
+  ASSERT_TRUE(load_success_.Get());
+
   base::test::TestFuture<std::vector<mojom::PassageEmbeddingsResultPtr>> result;
   embedder_remote_->GenerateEmbeddings({}, mojom::PassagePriority::kPassive,
                                        result.GetCallback());
@@ -105,6 +183,8 @@ TEST_F(BraveBatchPassageEmbedderTest, EmptyPassagesShortCircuit) {
 
 TEST_F(BraveBatchPassageEmbedderTest, BatchReturnsResultsInOrder) {
   CreateEmbedder();
+  ASSERT_TRUE(load_success_.Get());
+
   fake_worker_.QueueResponse(AsVector(kEmbeddingA));
   fake_worker_.QueueResponse(AsVector(kEmbeddingB));
 
@@ -122,6 +202,8 @@ TEST_F(BraveBatchPassageEmbedderTest, BatchReturnsResultsInOrder) {
 
 TEST_F(BraveBatchPassageEmbedderTest, ConcurrentBatchesAreSerialized) {
   CreateEmbedder();
+  ASSERT_TRUE(load_success_.Get());
+
   base::test::TestFuture<std::vector<mojom::PassageEmbeddingsResultPtr>> a;
   base::test::TestFuture<std::vector<mojom::PassageEmbeddingsResultPtr>> b;
   embedder_remote_->GenerateEmbeddings({"a"}, mojom::PassagePriority::kPassive,
@@ -136,6 +218,8 @@ TEST_F(BraveBatchPassageEmbedderTest, ConcurrentBatchesAreSerialized) {
 
 TEST_F(BraveBatchPassageEmbedderTest, EmptyEmbeddingFailsBatch) {
   CreateEmbedder();
+  ASSERT_TRUE(load_success_.Get());
+
   fake_worker_.QueueResponse(AsVector(kEmbeddingA));
   fake_worker_.QueueResponse({});  // second passage returns empty
 
@@ -148,6 +232,8 @@ TEST_F(BraveBatchPassageEmbedderTest, EmptyEmbeddingFailsBatch) {
 
 TEST_F(BraveBatchPassageEmbedderTest, OutOfRangeFloatFailsBatch) {
   CreateEmbedder();
+  ASSERT_TRUE(load_success_.Get());
+
   // Value above max float overflows on cast.
   fake_worker_.QueueResponse({std::numeric_limits<double>::max()});
 
@@ -157,15 +243,36 @@ TEST_F(BraveBatchPassageEmbedderTest, OutOfRangeFloatFailsBatch) {
   EXPECT_TRUE(result.Get().empty());
 }
 
+TEST_F(BraveBatchPassageEmbedderTest, FactoryDisconnectBeforeInitFailsLoad) {
+  factory_.set_defer_init_reply(true);
+  CreateEmbedder();
+  EXPECT_FALSE(load_success_.IsReady());
+
+  factory_.ResetReceiver();
+
+  EXPECT_FALSE(load_success_.Get());
+  EXPECT_TRUE(disconnect_called_.Wait());
+}
+
 TEST_F(BraveBatchPassageEmbedderTest, RendererDisconnectFiresOnDisconnect) {
   CreateEmbedder();
+  ASSERT_TRUE(load_success_.Get());
+  // Ensure factory_->Bind has reached the worker before we reset its
+  // receiver set; otherwise ResetReceivers runs before AddReceiver and
+  // the disconnect we drive below never happens.
+  ASSERT_TRUE(base::test::RunUntil([&] { return factory_.bind_count() > 0; }));
+
   fake_worker_.ResetReceivers();
   EXPECT_TRUE(disconnect_called_.Wait());
 }
 
 TEST_F(BraveBatchPassageEmbedderTest, ReceiverDisconnectFiresOnDisconnect) {
   CreateEmbedder();
+  ASSERT_TRUE(load_success_.Get());
+
+  // Drop the caller-side remote; the embedder's receiver disconnects.
   embedder_remote_.reset();
+
   EXPECT_TRUE(disconnect_called_.Wait());
 }
 

@@ -7,7 +7,7 @@
 #define BRAVE_BROWSER_HISTORY_EMBEDDINGS_BRAVE_PASSAGE_EMBEDDINGS_SERVICE_H_
 
 #include <memory>
-#include <vector>
+#include <optional>
 
 #include "base/files/file_path.h"
 #include "base/functional/callback.h"
@@ -37,11 +37,20 @@ class BraveBatchPassageEmbedder;
 // service_remote_ directly to an instance of this class, so no IPC hop
 // is involved.
 //
-// Owns:
+// Matches the shape of upstream's PassageEmbeddingsService: on
+// LoadModels we create a PassageEmbedder (here,
+// BraveBatchPassageEmbedder) and hand it the loaded model files plus
+// the factory remote. All init/bind/disconnect bookkeeping lives
+// inside the BatchEmbedder, which calls us back via on_disconnect when
+// it is torn down.
+//
+// This service still owns:
 //   - The guest-OTR BackgroundWebContents that hosts the WASM worker.
-//   - The renderer-registered PassageEmbedderFactory remote.
-//   - A BraveBatchPassageEmbedder that implements the upstream mojom
-//     PassageEmbedder by fanning batches to the renderer.
+//   - The PassageEmbedderFactory remote received via
+//     RegisterPassageEmbedderFactory (until it is moved into the
+//     BatchEmbedder on successful load).
+//   - The load phase used to gate file loading on component install
+//     and renderer factory registration.
 //
 // Also implements local_ai::mojom::LocalAIService so the renderer WASM
 // page can register its PassageEmbedderFactory back to us via
@@ -90,14 +99,14 @@ class BravePassageEmbeddingsService
   base::WeakPtr<BravePassageEmbeddingsService> GetWeakPtr();
 
   // Direct in-process equivalent of mojom::PassageEmbeddingsService::LoadModels
-  // — binds `receiver` to our BraveBatchPassageEmbedder and invokes
-  // `callback` once the WASM renderer is ready. The upstream mojom is
-  // shaped for a tflite + sentencepiece embedder in a sandboxed utility
-  // process; we run in-process with a five-file EmbeddingGemma model, so
-  // the struct doesn't fit and the mojo hop adds no isolation. The
-  // controller calls this directly and leaves service_remote_ unbound.
-  // Model files are delivered separately via PassageEmbedderFactory::Init
-  // as local_ai::mojom::ModelFiles BigBuffers. See README.md for details.
+  // — queues the receiver + callback as the pending load and drives
+  // the startup flow. The upstream mojom is shaped for a tflite +
+  // sentencepiece embedder in a sandboxed utility process; we run
+  // in-process with a five-file EmbeddingGemma model, so the struct
+  // doesn't fit and the mojo hop adds no isolation. The controller
+  // calls this directly and leaves service_remote_ unbound. Model
+  // files are delivered separately via PassageEmbedderFactory::Init as
+  // local_ai::mojom::ModelFiles BigBuffers. See README.md for details.
   void BindPassageEmbedder(
       mojo::PendingReceiver<mojom::PassageEmbedder> receiver,
       base::OnceCallback<void(bool)> callback);
@@ -121,7 +130,7 @@ class BravePassageEmbeddingsService
     PendingLoad& operator=(PendingLoad&&) noexcept;
 
     mojo::PendingReceiver<mojom::PassageEmbedder> receiver;
-    LoadModelsCallback callback;
+    base::OnceCallback<void(bool)> callback;
   };
 
   // LocalModelsUpdaterState::Observer:
@@ -137,42 +146,45 @@ class BravePassageEmbeddingsService
   void CloseBackgroundContents();
   void MaybeLoadLocalModelFiles();
   void OnLocalModelFilesLoaded(local_ai::mojom::ModelFilesPtr model_files);
-  void OnFactoryInitDone(bool success);
-  void FulfillPendingLoads();
-  void FailPendingLoads();
-  // Drops the renderer-facing embedder state (batch embedder, factory,
-  // pending loads) and resets the load phase to kWaiting. Shared by
-  // OnFactoryDisconnected and CloseBackgroundContents.
-  void ResetEmbedderState();
-  void OnFactoryDisconnected();
   void OnBatchEmbedderDisconnected();
+  // Handler installed on factory_ while the remote is held by the
+  // service (before it is moved into the BatchEmbedder). Once the
+  // BatchEmbedder owns the factory it installs its own disconnect
+  // handler.
+  void OnEarlyFactoryDisconnected();
+  // Drops batch_embedder_/factory_, fails any pending load, returns
+  // phase_ to kWaiting, and invalidates in-flight load callbacks.
+  void ResetEmbedderState();
 
   std::unique_ptr<local_ai::BackgroundWebContents> background_web_contents_;
   BackgroundWebContentsFactory background_web_contents_factory_;
   raw_ptr<local_ai::LocalModelsUpdaterState> updater_state_;
 
   mojo::ReceiverSet<local_ai::mojom::LocalAIService> local_ai_receivers_;
+  // Holds the renderer's factory remote from RegisterPassageEmbedderFactory
+  // until a successful load moves it into the BatchEmbedder.
   mojo::Remote<local_ai::mojom::PassageEmbedderFactory> factory_;
 
   std::unique_ptr<BraveBatchPassageEmbedder> batch_embedder_;
-  std::vector<PendingLoad> pending_loads_;
+  std::optional<PendingLoad> pending_load_;
 
   // Load sequence:
-  //   kWaiting       -> need updater_state_->GetInstallDir() non-empty
-  //                     && factory_.is_bound()
-  //   kLoading       -> ThreadPool task reading model files from disk
-  //   kInitializing  -> factory_->Init in flight
-  //   kReady         -> can fulfill pending loads
-  //   kFailed        -> teardown via ResetEmbedderState pending
+  //   kWaiting -> need updater_state_->GetInstallDir() non-empty
+  //               && factory_.is_bound() && pending_load_ set
+  //   kLoading -> ThreadPool task reading model files from disk
+  //   kReady   -> batch_embedder_ created; it owns Init internally
+  //               and reports disconnect via OnBatchEmbedderDisconnected.
   enum class LoadPhase {
     kWaiting,
     kLoading,
-    kInitializing,
     kReady,
-    kFailed,
   };
   LoadPhase phase_ = LoadPhase::kWaiting;
 
+  // Separate factory for the ThreadPool file-load reply so
+  // ResetEmbedderState can cancel an in-flight load without also
+  // invalidating the rest of the service's weak-bound callbacks.
+  base::WeakPtrFactory<BravePassageEmbeddingsService> load_weak_factory_{this};
   base::WeakPtrFactory<BravePassageEmbeddingsService> weak_ptr_factory_{this};
 };
 

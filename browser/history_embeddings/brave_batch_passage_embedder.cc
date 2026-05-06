@@ -22,17 +22,23 @@ BraveBatchPassageEmbedder::Batch& BraveBatchPassageEmbedder::Batch::operator=(
 
 BraveBatchPassageEmbedder::BraveBatchPassageEmbedder(
     mojo::PendingReceiver<mojom::PassageEmbedder> receiver,
-    mojo::PendingRemote<local_ai::mojom::PassageEmbedder> renderer_embedder,
+    mojo::Remote<local_ai::mojom::PassageEmbedderFactory> factory,
+    local_ai::mojom::ModelFilesPtr model_files,
+    base::OnceCallback<void(bool)> load_callback,
     base::OnceClosure on_disconnect)
     : receiver_(this, std::move(receiver)),
-      renderer_embedder_(std::move(renderer_embedder)),
+      factory_(std::move(factory)),
+      load_callback_(std::move(load_callback)),
       on_disconnect_(std::move(on_disconnect)) {
   receiver_.set_disconnect_handler(
       base::BindOnce(&BraveBatchPassageEmbedder::OnDisconnected,
                      weak_ptr_factory_.GetWeakPtr()));
-  renderer_embedder_.set_disconnect_handler(
+  factory_.set_disconnect_handler(
       base::BindOnce(&BraveBatchPassageEmbedder::OnDisconnected,
                      weak_ptr_factory_.GetWeakPtr()));
+  factory_->Init(std::move(model_files),
+                 base::BindOnce(&BraveBatchPassageEmbedder::OnInitDone,
+                                weak_ptr_factory_.GetWeakPtr()));
 }
 
 BraveBatchPassageEmbedder::~BraveBatchPassageEmbedder() = default;
@@ -54,6 +60,20 @@ void BraveBatchPassageEmbedder::GenerateEmbeddings(
   if (!current_batch_) {
     ProcessNext();
   }
+}
+
+void BraveBatchPassageEmbedder::OnInitDone(bool success) {
+  if (!success) {
+    DVLOG(1) << "Factory Init failed";
+    OnDisconnected();
+    return;
+  }
+  factory_->Bind(renderer_embedder_.BindNewPipeAndPassReceiver());
+  renderer_embedder_.set_disconnect_handler(
+      base::BindOnce(&BraveBatchPassageEmbedder::OnDisconnected,
+                     weak_ptr_factory_.GetWeakPtr()));
+  DVLOG(3) << "Factory Init succeeded; signaling load success";
+  std::move(load_callback_).Run(true);
 }
 
 void BraveBatchPassageEmbedder::ProcessNext() {
@@ -132,6 +152,11 @@ void BraveBatchPassageEmbedder::FailCurrentBatch() {
 }
 
 void BraveBatchPassageEmbedder::OnDisconnected() {
+  // If Init hasn't replied yet, fail the outstanding load.
+  if (load_callback_) {
+    std::move(load_callback_).Run(false);
+  }
+
   std::deque<Batch> to_fail = std::move(pending_batches_);
   if (current_batch_) {
     to_fail.push_front(std::move(*current_batch_));

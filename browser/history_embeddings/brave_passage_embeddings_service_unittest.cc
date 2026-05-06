@@ -141,7 +141,17 @@ class BravePassageEmbeddingsServiceTest : public testing::Test {
             [](raw_ptr<FakeBackgroundWebContents>* ref) { *ref = nullptr; },
             &last_created_web_contents_));
     last_created_web_contents_ = web_contents.get();
+    if (defer_create_callback_) {
+      pending_create_callback_ =
+          base::BindOnce(std::move(callback), std::move(web_contents));
+      return;
+    }
     std::move(callback).Run(std::move(web_contents));
+  }
+
+  void RunDeferredCreate() {
+    ASSERT_TRUE(pending_create_callback_);
+    std::move(pending_create_callback_).Run();
   }
 
   void RecreateService() {
@@ -207,6 +217,8 @@ class BravePassageEmbeddingsServiceTest : public testing::Test {
   FakeRendererEmbedder fake_worker_;
   FakePassageEmbedderFactory fake_factory_{&fake_worker_};
   raw_ptr<FakeBackgroundWebContents> last_created_web_contents_ = nullptr;
+  bool defer_create_callback_ = false;
+  base::OnceClosure pending_create_callback_;
   base::ScopedTempDir temp_dir_;
 };
 
@@ -320,6 +332,56 @@ TEST_F(BravePassageEmbeddingsServiceTest,
   // AddObserver's sync re-fire of OnLocalModelsReady plus the
   // explicit factory-register path must collapse to a single load.
   EXPECT_EQ(1, fake_factory_.init_count());
+}
+
+TEST_F(BravePassageEmbeddingsServiceTest, BindAgainAfterEmbedderRemoteReset) {
+  auto load = IssueLoad();
+  SetUpModelFiles();
+  RegisterFactory();
+  ASSERT_TRUE(load->load_success.Get());
+  ASSERT_TRUE(last_created_web_contents_);
+
+  // Drop the caller-side embedder remote. The BatchEmbedder's receiver
+  // disconnects, on_disconnect fires up to the service, and
+  // CloseBackgroundContents tears down the contents.
+  load->embedder.reset();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return last_created_web_contents_ == nullptr; }));
+
+  // The factory pipe was reset along with the service state; the fake
+  // still holds a now-disconnected receiver, so reset it before
+  // re-binding for the next cycle.
+  fake_factory_.ResetReceiver();
+
+  auto load2 = IssueLoad();
+  ASSERT_TRUE(last_created_web_contents_);
+  RegisterFactory();
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return fake_factory_.init_count() > 1; }));
+  EXPECT_TRUE(load2->load_success.Get());
+}
+
+TEST_F(BravePassageEmbeddingsServiceTest,
+       LateContentsCreationDoesNotInstallOrphan) {
+  // Defer the factory callback so we can simulate destruction of the
+  // in-flight contents before OnBackgroundContentsCreated runs.
+  defer_create_callback_ = true;
+  auto load = IssueLoad();
+  ASSERT_TRUE(last_created_web_contents_);
+
+  // Simulate the in-flight contents being destroyed (e.g., renderer
+  // crash during profile setup). OnBackgroundContentsDestroyed →
+  // CloseBackgroundContents → ResetEmbedderState clears pending_load_
+  // and fails the load.
+  last_created_web_contents_->SimulateDestroyed();
+  EXPECT_FALSE(load->load_success.Get());
+
+  // The deferred factory callback finally arrives. The orphan guard
+  // sees pending_load_ is empty and drops the late contents instead
+  // of installing an orphan renderer.
+  RunDeferredCreate();
+  EXPECT_FALSE(last_created_web_contents_)
+      << "late contents must not be installed as background_web_contents_";
 }
 
 TEST_F(BravePassageEmbeddingsServiceTest, BindRegistryRoutesToService) {
