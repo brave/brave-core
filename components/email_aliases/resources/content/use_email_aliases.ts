@@ -11,7 +11,10 @@ import {
   EmailAliasesServiceObserverInterface,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 
-const emptyAliasesUpdate = (): AliasesUpdate => ({ aliases: [] })
+const emptyAliasesUpdate = (): AliasesUpdate => ({
+  aliases: [],
+  error: undefined,
+})
 
 /**
  * Subscribes to EmailAliasesService observer callbacks and exposes auth state
@@ -37,11 +40,7 @@ export function useEmailAliases(
         if (status !== AuthenticationStatus.kAuthenticated) {
           return
         }
-        if (update.aliases) {
-          setAliasesUpdate({ aliases: update.aliases })
-        } else {
-          setAliasesUpdate({ error: update.error! })
-        }
+        setAliasesUpdate(update)
       },
       onAuthStateChanged: (state: AuthState) => {
         status = state.status

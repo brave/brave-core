@@ -92,9 +92,6 @@ auto MakeRequest(const std::string& bearer_token) {
 void NotifyObserversAliasesUpdated(
     mojo::RemoteSet<mojom::EmailAliasesServiceObserver>& observers,
     mojom::AliasesUpdatePtr update) {
-  if (observers.empty()) {
-    return;
-  }
   for (auto& observer : observers) {
     observer->OnAliasesUpdated(mojo::Clone(update));
   }
