@@ -5,7 +5,10 @@
 
 source_set("unit_tests") {
   testonly = true
-  sources = [ "brave_passage_embeddings_service_unittest.cc" ]
+  sources = [
+    "brave_batch_passage_embedder_unittest.cc",
+    "brave_passage_embeddings_service_unittest.cc",
+  ]
 
   deps = [
     ":history_embeddings",
@@ -21,13 +24,17 @@ source_set("unit_tests") {
 }
 
 source_set("history_embeddings") {
-  sources = [
-    "brave_history_embeddings_service.cc",
+  public = [
     "brave_history_embeddings_service.h",
-    "brave_passage_embeddings_service.cc",
     "brave_passage_embeddings_service.h",
-    "brave_passage_embeddings_service_controller.cc",
     "brave_passage_embeddings_service_controller.h",
+  ]
+  sources = [
+    "brave_batch_passage_embedder.cc",
+    "brave_batch_passage_embedder.h",
+    "brave_history_embeddings_service.cc",
+    "brave_passage_embeddings_service.cc",
+    "brave_passage_embeddings_service_controller.cc",
   ]
 
   public_deps = [
