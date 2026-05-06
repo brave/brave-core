@@ -44,6 +44,14 @@ export const HardwareWalletGraphic = styled.div<{
   position: relative;
 `
 
+export const HardwareWalletCaption = styled.div`
+  font-family: Poppins;
+  font-size: 16px;
+  text-align: left;
+  flex-shrink: 0;
+  max-width: 200px;
+`
+
 interface StyleProps {
   isSelected: boolean
   size: 'big' | 'small'

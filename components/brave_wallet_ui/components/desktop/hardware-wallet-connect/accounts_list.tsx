@@ -50,6 +50,7 @@ import {
   AccountListHeader,
   AccountListContent,
   DropdownLabel,
+  HardwareWalletCaption,
   HelpLink,
 } from './hardware_wallet_connect.styles'
 import {
@@ -64,6 +65,7 @@ export interface AccountFromDeviceListItem extends AccountFromDevice {
 
 interface Props {
   currentHardwareImportScheme: HardwareImportScheme
+  deviceName: string
   supportedSchemes: HardwareImportScheme[]
   accounts: AccountFromDeviceListItem[]
   onLoadMore: () => void
@@ -109,6 +111,7 @@ const getHardwareImportSchemeLabel = (scheme: HardwareImportScheme): string => {
 
 export const HardwareWalletAccountsList = ({
   currentHardwareImportScheme,
+  deviceName,
   supportedSchemes,
   setHardwareImportScheme,
   accounts,
@@ -248,13 +251,23 @@ export const HardwareWalletAccountsList = ({
     <>
       <SelectRow>
         <SelectWrapper>
-          <NetworkFilterSelector
-            networkListSubset={networksSubset}
-            selectedNetwork={networksRegistry?.entities[selectedNetworkId]}
-            onSelectNetwork={onSelectNetwork}
-            disableAllAccountsOption
-            isV2
-          />
+          <Row
+            alignItems='center'
+            justifyContent='space-between'
+            gap='16px'
+            width='100%'
+          >
+            <NetworkFilterSelector
+              networkListSubset={networksSubset}
+              selectedNetwork={networksRegistry?.entities[selectedNetworkId]}
+              onSelectNetwork={onSelectNetwork}
+              disableAllAccountsOption
+              isV2
+            />
+            {deviceName ? (
+              <HardwareWalletCaption>{deviceName}</HardwareWalletCaption>
+            ) : null}
+          </Row>
           {coin === BraveWallet.CoinType.ETH ? (
             <Dropdown
               value={currentHardwareImportScheme.derivationScheme}

@@ -48,6 +48,9 @@ import {
   EmptySpace,
 } from './connect_hardware_wallet_panel.style'
 import { Row, Column } from '../../shared/style'
+
+import { getDeviceNameFromDevice } from '../../../common/async/hardware'
+
 export interface Props {
   hardwareWalletCode: HardwareWalletResponseCodeType | undefined
 }
@@ -98,6 +101,8 @@ export const ConnectHardwareWalletPanel = ({ hardwareWalletCode }: Props) => {
   const isSigning = request && request.id !== -1
 
   const { account: signMessageAccount } = useAccountQuery(request?.accountId)
+
+  const [deviceName, setDeviceName] = React.useState<string>('')
 
   // pending transactions
   const {
@@ -176,6 +181,19 @@ export const ConnectHardwareWalletPanel = ({ hardwareWalletCode }: Props) => {
     signMessageHardware,
   ])
 
+  const updateDeviceName = React.useCallback(async () => {
+    if (!account || !account.hardware) {
+      return
+    }
+    const name = await getDeviceNameFromDevice(
+      account.hardware.vendor,
+      account.accountId.coin,
+    )
+    setDeviceName(name.success ? name.deviceName : '')
+  }, [account])
+
+  useInterval(updateDeviceName, isConnected ? 500 : null)
+
   const retryHardwareOperation = React.useCallback(() => {
     if (isSigning) {
       onSignData()
@@ -239,10 +257,9 @@ export const ConnectHardwareWalletPanel = ({ hardwareWalletCode }: Props) => {
             name={isConnected ? 'check-circle-filled' : 'close-circle-filled'}
           />
           {isConnected
-            ? getLocale('braveWalletConnectHardwarePanelConnected').replace(
-                '$1',
-                account.name,
-              )
+            ? getLocale('braveWalletConnectHardwarePanelConnected')
+                .replace('$1', account.name)
+                .replace('$2', deviceName)
             : getLocale('braveWalletConnectHardwarePanelDisconnected').replace(
                 '$1',
                 account.name,

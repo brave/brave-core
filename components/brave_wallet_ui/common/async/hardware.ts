@@ -10,6 +10,7 @@ import {
   HardwareOperationResult,
   HardwareOperationResultEthereumSignatureBytes,
   HardwareOperationResultSolanaSignature,
+  HardwareOperationResultDeviceName,
 } from '../hardware/types'
 import { getLocale } from '../../../common/locale'
 import type WalletApiProxy from '../../common/wallet_api_proxy'
@@ -424,6 +425,14 @@ export async function cancelHardwareOperation(
   ) {
     return deviceKeyring.cancelOperation()
   }
+}
+
+export const getDeviceNameFromDevice = async (
+  vendor: BraveWallet.HardwareVendor,
+  coin: BraveWallet.CoinType,
+): Promise<HardwareOperationResultDeviceName> => {
+  const keyring = getHardwareKeyring(vendor, coin)
+  return keyring.getDeviceName()
 }
 
 export const loadAccountsFromDevice = async (

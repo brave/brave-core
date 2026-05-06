@@ -14,6 +14,7 @@ import FilecoinLedgerBridgeKeyring from './fil_ledger_bridge_keyring'
 import {
   FilGetAccountResponse,
   FilSignTransactionResponse,
+  GetDeviceNameResponse,
   LedgerCommand,
   UnlockResponse,
 } from './ledger-messages'
@@ -89,6 +90,13 @@ const getAccountsResponse: FilGetAccountResponse = {
   origin: 'origin',
 }
 
+const deviceNameResponse: GetDeviceNameResponse = {
+  id: LedgerCommand.GetDeviceName,
+  origin: window.origin,
+  command: LedgerCommand.GetDeviceName,
+  payload: { success: true, deviceName: 'Ledger Device' },
+}
+
 const createKeyring = () => {
   const keyring = new FilecoinLedgerBridgeKeyring()
   const transport = new MockLedgerTransport(window, window.origin)
@@ -105,6 +113,7 @@ test('Extracting accounts from device MAIN', async () => {
 
   transport.addSendCommandResponse(unlockSuccessResponse)
   transport.addSendCommandResponse(getAccountsResponse)
+  transport.addSendCommandResponse(deviceNameResponse)
 
   const expectedResult: HardwareOperationResultAccounts = {
     success: true,
@@ -114,6 +123,7 @@ test('Extracting accounts from device MAIN', async () => {
         derivationPath: "m/44'/461'/0'/0/0",
       },
     ],
+    deviceName: 'Ledger Device',
   }
 
   return expect(
@@ -126,6 +136,7 @@ test('Extracting accounts from device TEST', async () => {
 
   transport.addSendCommandResponse(unlockSuccessResponse)
   transport.addSendCommandResponse(getAccountsResponse)
+  transport.addSendCommandResponse(deviceNameResponse)
 
   const expectedResult: HardwareOperationResultAccounts = {
     success: true,
@@ -135,6 +146,7 @@ test('Extracting accounts from device TEST', async () => {
         derivationPath: "m/44'/1'/0'/0/0",
       },
     ],
+    deviceName: 'Ledger Device',
   }
 
   return expect(

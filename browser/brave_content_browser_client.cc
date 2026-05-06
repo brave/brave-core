@@ -157,6 +157,7 @@
 #include "ui/base/l10n/l10n_util.h"
 
 #if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/hid/brave_hid_delegate.h"
 #include "brave/browser/ui/geolocation/brave_geolocation_permission_tab_helper.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/brave_new_tab_page.mojom.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/brave_new_tab_page_ui.h"
@@ -1573,6 +1574,14 @@ content::BluetoothDelegate* BraveContentBrowserClient::GetBluetoothDelegate() {
   }
   return bluetooth_delegate_.get();
 }
+#if !BUILDFLAG(IS_ANDROID)
+content::HidDelegate* BraveContentBrowserClient::GetHidDelegate() {
+  if (!brave_hid_delegate_) {
+    brave_hid_delegate_ = std::make_unique<BraveHidDelegate>();
+  }
+  return brave_hid_delegate_.get();
+}
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 bool BraveContentBrowserClient::IsJitDisabledForSite(
     content::BrowserContext* browser_context,
