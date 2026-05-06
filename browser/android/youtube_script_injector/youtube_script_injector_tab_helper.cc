@@ -370,8 +370,13 @@ void YouTubeScriptInjectorTabHelper::MediaEffectivelyFullscreenChanged(
 
 void YouTubeScriptInjectorTabHelper::MaybeSetFullscreen() {
   content::RenderFrameHost* rfh = web_contents()->GetPrimaryMainFrame();
-  // Check if fullscreen has already been requested for this page.
-  if (!rfh || !rfh->IsRenderFrameLive() || HasFullscreenBeenRequested()) {
+  // Check if fullscreen has already been requested for this page. The
+  // IsYouTubeDomain guard closes a navigation race: callers gate at
+  // toolbar-click time, but the page may commit a cross-origin navigation
+  // before this Mojo IPC reaches the renderer, which would land the script in
+  // a non-YouTube document.
+  if (!rfh || !rfh->IsRenderFrameLive() || HasFullscreenBeenRequested() ||
+      !IsYouTubeDomain()) {
     return;
   }
 
@@ -389,7 +394,13 @@ void YouTubeScriptInjectorTabHelper::MaybeSetFullscreen() {
 
 void YouTubeScriptInjectorTabHelper::MaybeExitFullscreen() {
   content::RenderFrameHost* rfh = web_contents()->GetPrimaryMainFrame();
-  if (!rfh || !rfh->IsRenderFrameLive()) {
+  // The exit script begins with document.exitFullscreen(), which is observable
+  // on any page currently in DOM fullscreen. The controller treats this
+  // WebContents as YouTube based on a check made when the session started, but
+  // a navigation can commit before this IPC reaches the renderer. Verify the
+  // domain again here so the script never lands on a document that has since
+  // changed origins.
+  if (!rfh || !rfh->IsRenderFrameLive() || !IsYouTubeDomain()) {
     return;
   }
 
