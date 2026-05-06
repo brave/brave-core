@@ -35,7 +35,7 @@ public abstract class BraveFullscreenHtmlApiHandlerBase {
     /**
      * Invoked from upstream observer hooks (tab hidden, activity stopped) to decide whether the
      * persistent fullscreen teardown should be skipped. When a Brave-managed YouTube
-     * Picture-in-Picture session is alive we want to keep both the browser-chrome and DOM
+     * Picture-in-Picture session is alive we want to keep both the browser and DOM
      * fullscreen state intact across transient hides (screen-off, PiP window occlusion) so there is
      * no visible flicker when the user returns. {@code activity} is the activity bound to the
      * calling fullscreen handler so that multi-window setups only preserve state for the window
