@@ -37,7 +37,6 @@ void DownloadDisplayController::UpdateToolbarButtonState(
   bubble_controller_->update_service()->GetAllModelsToDisplay(
       all_models, GetWebAppIdForBrowser(browser_),
       /*force_backfill_download_items=*/true);
-  DCHECK(!all_models.empty());
   for (const auto& model : all_models) {
     if (model->GetState() == download::DownloadItem::IN_PROGRESS) {
       ShowToolbarButton();
