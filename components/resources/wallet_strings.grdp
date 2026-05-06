@@ -689,6 +689,14 @@
   <message name="IDS_BRAVE_WALLET_ACCOUNT_NAME" desc="Account name input label">Account name</message>
   <message name="IDS_BRAVE_WALLET_MINIMUM_AMOUNT" desc="Minimum amount error label">Minimum amount: <ph name="AMOUNT">$1<ex>$2 USD</ex></ph></message>
   <message name="IDS_BRAVE_WALLET_MAXIMUM_AMOUNT" desc="Maximum amount error label">Maximum amount: <ph name="AMOUNT">$1<ex>$1000 USD</ex></ph></message>
+  <message name="IDS_BRAVE_WALLET_ACCOUNT_CREATED_SUCCESSFULLY" desc="Account created successfully alert">Account created successfully</message>
+  <message name="IDS_BRAVE_WALLET_ACCOUNT_IMPORTED_SUCCESSFULLY" desc="Account imported successfully alert">Account imported successfully</message>
+  <message name="IDS_BRAVE_WALLET_HARDWARE_WALLET_ACCOUNT_CONNECTED_SUCCESSFULLY" desc="Hardware wallet account connected successfully alert">
+      {ACCOUNTS, plural,
+      =1 {Hardware wallet account connected successfully}
+      other {{ACCOUNTS} hardware wallet accounts connected successfully}
+    }
+  </message>
   <message name="IDS_BRAVE_WALLET_NETWORK_FILTER_ALL" desc="Network Filter Selector All Networks">All Networks</message>
   <message name="IDS_BRAVE_WALLET_ASSET_FILTER_LOW_TO_HIGH" desc="Asset Filter Selector Low to High">Low to High</message>
   <message name="IDS_BRAVE_WALLET_ASSET_FILTER_HIGH_TO_LOW" desc="Asset Filter Selector High to Low">High to Low</message>

@@ -720,6 +720,10 @@ provideStrings({
   braveWalletAccountName: 'Account name',
   braveWalletMinimumAmount: 'Minimum amount: $1',
   braveWalletMaximumAmount: 'Maximum amount: $1',
+  braveWalletAccountCreatedSuccessfully: 'Account created successfully',
+  braveWalletAccountImportedSuccessfully: 'Account imported successfully',
+  braveWalletHardwareWalletAccountConnectedSuccessfully:
+    'Hardware wallet account connected successfully',
 
   // Deposit Funds Screen
   braveWalletDepositFundsTitle: 'Deposit crypto',

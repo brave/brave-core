@@ -8,6 +8,7 @@ import * as React from 'react'
 import { useHistory, useLocation, useParams } from 'react-router'
 import { InputEventDetail } from '@brave/leo/react/input'
 import Button from '@brave/leo/react/button'
+import { showAlert } from '@brave/leo/react/alertCenter'
 
 // utils
 import { getLocale } from '$web-common/locale'
@@ -172,14 +173,24 @@ export const CreateAccountModal = () => {
       return
     }
 
-    await addAccount({
-      coin: selectedAccountType.coin,
-      keyringId: targetKeyringId,
-      accountName,
-    })
+    try {
+      await addAccount({
+        coin: selectedAccountType.coin,
+        keyringId: targetKeyringId,
+        accountName,
+      }).unwrap()
 
-    if (walletLocation.includes(WalletRoutes.Accounts)) {
-      history.push(WalletRoutes.Accounts)
+      showAlert({
+        type: 'success',
+        content: getLocale('braveWalletAccountCreatedSuccessfully'),
+        actions: [],
+      })
+
+      if (walletLocation.includes(WalletRoutes.Accounts)) {
+        history.push(WalletRoutes.Accounts)
+      }
+    } catch (error) {
+      console.log(error)
     }
   }, [
     accountName,

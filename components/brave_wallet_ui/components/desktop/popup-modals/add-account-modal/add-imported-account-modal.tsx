@@ -11,6 +11,7 @@ import Button from '@brave/leo/react/button'
 import SegmentedControl from '@brave/leo/react/segmentedControl'
 import SegmentedControlItem from '@brave/leo/react/segmentedControlItem'
 import Alert from '@brave/leo/react/alert'
+import { showAlert } from '@brave/leo/react/alertCenter'
 
 // utils
 import { FILECOIN_FORMAT_DESCRIPTION_URL } from '../../../../common/constants/urls'
@@ -211,6 +212,14 @@ export const ImportAccountModal = () => {
     [clearClipboard],
   )
 
+  const showSuccessAlert = React.useCallback(() => {
+    showAlert({
+      type: 'success',
+      content: getLocale('braveWalletAccountImportedSuccessfully'),
+      actions: [],
+    })
+  }, [])
+
   const onClickCreateAccount = React.useCallback(async () => {
     if (!selectedAccountType) {
       return
@@ -229,6 +238,7 @@ export const ImportAccountModal = () => {
               password,
               network: selectedAccountType.fixedNetwork,
             }).unwrap()
+            showSuccessAlert()
             history.push(WalletRoutes.Accounts)
           } catch (error) {
             setHasImportError(true)
@@ -279,6 +289,7 @@ export const ImportAccountModal = () => {
         setHasImportError(true)
         return
       }
+      showSuccessAlert()
       history.push(WalletRoutes.Accounts)
       return
     }
@@ -294,6 +305,7 @@ export const ImportAccountModal = () => {
               password,
               json: reader.result.toString().trim(),
             }).unwrap()
+            showSuccessAlert()
             history.push(WalletRoutes.Accounts)
           } catch (error) {
             setHasImportError(true)
@@ -317,6 +329,7 @@ export const ImportAccountModal = () => {
     importEthAccountFromJson,
     importSolAccount,
     password,
+    showSuccessAlert,
   ])
 
   const handleKeyDown = React.useCallback(

@@ -195,7 +195,10 @@ export const Container = () => {
 
   return (
     <>
-      <AlertCenter position='top-center' />
+      <AlertCenter
+        position='top-center'
+        size='small'
+      />
       <Switch>
         <ProtectedRoute
           path={WalletRoutes.Onboarding}

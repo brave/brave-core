@@ -6,9 +6,12 @@
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
 import LeoAlertCenter from '@brave/leo/react/alertCenter'
+import { layoutPanelWidth } from '../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const AlertCenter = styled(LeoAlertCenter)`
-  --leo-alert-center-width: 200px;
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    --leo-alert-center-width: 95%;
+  }
 `
 
 export const SimplePageWrapper = styled.div`

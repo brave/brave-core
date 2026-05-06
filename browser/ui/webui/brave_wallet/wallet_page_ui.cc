@@ -66,6 +66,9 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
       IDS_BRAVE_WALLET_EXCHANGE_NAME_PLUS_STEPS);
   plural_string_handler->AddLocalizedString(
       "braveWalletPendingTransactions", IDS_BRAVE_WALLET_PENDING_TRANSACTIONS);
+  plural_string_handler->AddLocalizedString(
+      "braveWalletHardwareWalletAccountConnectedSuccessfully",
+      IDS_BRAVE_WALLET_HARDWARE_WALLET_ACCOUNT_CONNECTED_SUCCESSFULLY);
   web_ui->AddMessageHandler(std::move(plural_string_handler));
   webui::SetupWebUIDataSource(source, base::span(kBraveWalletPageGenerated),
                               IDR_WALLET_PAGE_HTML);
