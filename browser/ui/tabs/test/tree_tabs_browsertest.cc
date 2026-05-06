@@ -2572,6 +2572,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
 // Pinning a tab while there is a split tabs in a pinned collection should work.
 IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
                        PinTab_PinnedCollectionAlreadyHasSplit) {
+  EnsureTabGroupSyncServiceInitialized();
   SetTreeTabsEnabled(true);
   AddTab();
 
