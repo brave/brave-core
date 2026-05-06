@@ -5,13 +5,13 @@ desc: |-
 
   The smart AI assistant built right into your browser. Ask questions, summarize pages, create new content, and more. Privately.
 
-            If this policy is set to true, AI Chat will always be enabled.
+  If this policy is set to true, AI Chat will always be enabled.
 
-            If this policy is set to false, AI Chat will always be disabled.
+  If this policy is set to false, AI Chat will always be disabled.
 
-            If you set this policy, users cannot change or override it.
+  If you set this policy, users cannot change or override it.
 
-            If this policy is left unset, AI Chat will be enabled by default.
+  If this policy is left unset, AI Chat will be enabled by default.
 example_value: true
 features:
   can_be_mandatory: true

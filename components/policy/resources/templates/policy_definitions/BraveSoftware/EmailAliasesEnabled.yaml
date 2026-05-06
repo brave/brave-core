@@ -5,13 +5,13 @@ desc: |-
 
   Email Aliases is a feature that allows users to sign up for services anonymously and keep their emails free from spam.
 
-            If this policy is set to true, Email Aliases will always be enabled.
+  If this policy is set to true, Email Aliases will always be enabled.
 
-            If this policy is set to false, Email Aliases will always be disabled and all related UI elements will be hidden.
+  If this policy is set to false, Email Aliases will always be disabled and all related UI elements will be hidden.
 
-            If you set this policy, users cannot change or override it.
+  If you set this policy, users cannot change or override it.
 
-            If this policy is left unset, Email Aliases will be enabled by default (subject to user preferences).
+  If this policy is left unset, Email Aliases will be enabled by default (subject to user preferences).
 example_value: true
 features:
   can_be_mandatory: true

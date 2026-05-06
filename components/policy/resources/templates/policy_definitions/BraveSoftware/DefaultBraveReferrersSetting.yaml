@@ -3,13 +3,13 @@ default: null
 desc: |-
   This policy determines how websites can access referrer information when a very permissive referrer policy is specified (i.e., "unsafe-url").
 
-            If this policy is set to 1 (AllowPermissiveReferrerPolicy), permissive referrer policies are allowed (i.e., "unsafe-url" requests contain the full URL of the referrer).
+  If this policy is set to 1 (AllowPermissiveReferrerPolicy), permissive referrer policies are allowed (i.e., "unsafe-url" requests contain the full URL of the referrer).
 
-            If this policy is set to 2 (CapToStrictReferrerPolicy), referrer values are capped to "strict-origin-when-cross-origin" policy, so cross-origin requests contain only the origin of the referrer or no referrer if downgraded from HTTPS to HTTP. Same-origin requests contain the full URL of the referrer.
+  If this policy is set to 2 (CapToStrictReferrerPolicy), referrer values are capped to "strict-origin-when-cross-origin" policy, so cross-origin requests contain only the origin of the referrer or no referrer if downgraded from HTTPS to HTTP. Same-origin requests contain the full URL of the referrer.
 
-            If left unset, referrer values are capped to "strict-origin-when-cross-origin" policy by default, but users can modify this by:
-            - changing the cookie control in the Shields panel to "Allow all cookies"
-            - disabling Shields on a specific site
+  If left unset, referrer values are capped to "strict-origin-when-cross-origin" policy by default, but users can modify this by:
+  - changing the cookie control in the Shields panel to "Allow all cookies"
+  - disabling Shields on a specific site
 example_value: 2
 features:
   can_be_mandatory: true

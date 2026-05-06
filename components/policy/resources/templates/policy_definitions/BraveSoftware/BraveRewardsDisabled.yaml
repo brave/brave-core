@@ -5,13 +5,13 @@ desc: |-
 
   Brave Rewards is a feature that allows users to get paid for ads they see in Brave and send contributions to their favorite websites and content creators.
 
-            If this policy is set to true, Brave Rewards will always be disabled.
+  If this policy is set to true, Brave Rewards will always be disabled.
 
-            If this policy is set to false, Brave Rewards will always be enabled.
+  If this policy is set to false, Brave Rewards will always be enabled.
 
-            If you set this policy, users cannot change or override it.
+  If you set this policy, users cannot change or override it.
 
-            If this policy is left unset, Brave Rewards will be enabled by default.
+  If this policy is left unset, Brave Rewards will be enabled by default.
 example_value: true
 features:
   can_be_mandatory: true
