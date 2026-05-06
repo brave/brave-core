@@ -94,12 +94,15 @@ function checkReadability(): string|null {
 
   readabilityResult = result as ExtendedParseResult;
 
+  // Extract only the CSP policy value; the native side constructs the
+  // meta tag to prevent raw HTML injection via a crafted tag.
   const cspMetaTags = document.querySelectorAll(
       'meta[http-equiv="Content-Security-Policy"]');
   if (cspMetaTags.length > 0) {
     readabilityResult.cspMetaTags =
-        Array.from(cspMetaTags).map(
-            (e) => new XMLSerializer().serializeToString(e));
+        Array.from(cspMetaTags)
+            .map((e) => e.getAttribute('content') ?? '')
+            .filter(Boolean);
   }
 
   const documentLanguage =

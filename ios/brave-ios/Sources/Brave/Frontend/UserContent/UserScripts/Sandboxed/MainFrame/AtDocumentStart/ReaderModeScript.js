@@ -80,12 +80,15 @@ function checkReadability() {
       }
 
       
-      // Preserve the CSP meta tag
+      // Extract only the CSP policy value; the native side constructs the
+      // meta tag to prevent raw HTML injection via a crafted tag.
       delete document.querySelector;
       delete document.querySelectorAll;
       let cspMetaTags = document.querySelectorAll("meta[http-equiv=\"Content-Security-Policy\"]");
       if (cspMetaTags) {
-        readabilityResult.cspMetaTags = [...cspMetaTags].map((e) => new XMLSerializer().serializeToString(e));
+        readabilityResult.cspMetaTags = [...cspMetaTags]
+          .map((e) => e.getAttribute("content") || "")
+          .filter(Boolean);
       }
       
       let documentLanguage = document.documentElement.lang || document.querySelector('meta[http-equiv="Content-Language"]')?.content || null;
