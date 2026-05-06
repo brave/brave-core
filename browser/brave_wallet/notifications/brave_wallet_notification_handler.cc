@@ -41,7 +41,9 @@ void BraveWalletNotificationHandler::OnClick(
         return true;
       });
 
-  brave::ShowBraveWalletTxNotificationUrl(browser, origin);
+  if (browser) {
+    brave::ShowBraveWalletTxNotificationUrl(browser, origin);
+  }
 
   std::move(completed_closure).Run();
 }
