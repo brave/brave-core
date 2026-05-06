@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/setup/install_worker.cc b/chrome/installer/setup/install_worker.cc
-index bd00b2806e6c2be78e88329fefafee7a99358ee9..68000e07d5d25801c294801cb8ab113c202edf91 100644
+index 59679ed4c8b5dd22e5e81f3fa55a684c78c50338..653f8fa1af7549c31b1dd797fd60ad6aa8dd46b4 100644
 --- a/chrome/installer/setup/install_worker.cc
 +++ b/chrome/installer/setup/install_worker.cc
 @@ -107,6 +107,7 @@ void AddInstallerCopyTasks(const InstallParams& install_params,
@@ -9,8 +9,8 @@ index bd00b2806e6c2be78e88329fefafee7a99358ee9..68000e07d5d25801c294801cb8ab113c
 +  BRAVE_ADD_INSTALLER_COPY_TASKS
  }
  
- // A callback invoked by |work_item| that adds firewall rules for Chrome. Rules
-@@ -217,6 +218,7 @@ void AddChromeWorkItems(const InstallParams& install_params,
+ // Adds work items to register the Elevation Service with Windows. Only for
+@@ -283,6 +284,7 @@ void AddChromeWorkItems(const InstallParams& install_params,
          installer_state.GetInstallerDirectory(current_version));
      base::FilePath old_archive(
          old_installer_dir.Append(installer::kChromeArchive));

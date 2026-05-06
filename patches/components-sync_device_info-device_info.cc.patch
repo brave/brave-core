@@ -1,8 +1,8 @@
 diff --git a/components/sync_device_info/device_info.cc b/components/sync_device_info/device_info.cc
-index 9dac3f990d14afdf8de2c2036e57f9bdf97609e8..b972c31de9e8e541846b4e94afb16b029e93970d 100644
+index badc4f4c2bd670e31cd4f10d38edb071dad8152b..0db5c34db323277954c11aaac08491ad99a29857 100644
 --- a/components/sync_device_info/device_info.cc
 +++ b/components/sync_device_info/device_info.cc
-@@ -82,7 +82,8 @@ DeviceInfo::DeviceInfo(
+@@ -84,7 +84,8 @@ DeviceInfo::DeviceInfo(
      bool desktop_to_ios_promo_receiving_enabled,
      const MobilePromoOnDesktopPromoTypeSet&
          desktop_to_ios_promo_receiving_types,
@@ -12,7 +12,7 @@ index 9dac3f990d14afdf8de2c2036e57f9bdf97609e8..b972c31de9e8e541846b4e94afb16b02
      : guid_(guid),
        client_name_(client_name),
        chrome_version_(chrome_version),
-@@ -107,7 +108,8 @@ DeviceInfo::DeviceInfo(
+@@ -109,7 +110,8 @@ DeviceInfo::DeviceInfo(
            desktop_to_ios_promo_receiving_enabled),
        desktop_to_ios_promo_receiving_types_(
            desktop_to_ios_promo_receiving_types),
@@ -20,5 +20,5 @@ index 9dac3f990d14afdf8de2c2036e57f9bdf97609e8..b972c31de9e8e541846b4e94afb16b02
 +      glic_experimental_triggering_state_(glic_experimental_triggering_state),
 +      self_delete_support_(self_delete_support) {}
  
- DeviceInfo::~DeviceInfo() = default;
+ DeviceInfo::DeviceInfo(const DeviceInfo& other) = default;
  

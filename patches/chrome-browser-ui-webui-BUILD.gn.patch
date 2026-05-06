@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/ui/webui/BUILD.gn b/chrome/browser/ui/webui/BUILD.gn
-index fa8bdb024fbee40394168f510310b6cca8c260f7..a8b8a6ee13d5447d8e81a60086296e2aec99c4f0 100644
+index b8099c5064df789ecb481ff40c40091504f91354..bc59c8682c9e534fb14cf2cf247be5ce3a1c3b68 100644
 --- a/chrome/browser/ui/webui/BUILD.gn
 +++ b/chrome/browser/ui/webui/BUILD.gn
-@@ -156,6 +156,7 @@ source_set("configs") {
-   if (is_mac) {
-     deps += [ "//chrome/browser/ui/webui/unexportable_keys_internals" ]
+@@ -224,6 +224,7 @@ source_set("configs") {
+       "//chrome/browser/ui/webui/webui_gallery",
+     ]
    }
 +  import("//brave/browser/ui/webui/sources.gni") deps += brave_browser_ui_webui_configs_deps
  }
