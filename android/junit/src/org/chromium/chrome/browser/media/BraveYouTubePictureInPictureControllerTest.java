@@ -33,7 +33,7 @@ import org.robolectric.Shadows;
 import org.robolectric.shadows.ShadowKeyguardManager;
 
 import org.chromium.base.ContextUtils;
-import org.chromium.base.supplier.MonotonicObservableSupplier;
+import org.chromium.base.supplier.ObservableSuppliers;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.base.test.BaseRobolectricTestRunner;
@@ -70,7 +70,6 @@ public class BraveYouTubePictureInPictureControllerTest {
     @Mock private FullscreenManager mFullscreenManager;
     @Mock private FullscreenHandlerStub mBraveFullscreenHandler;
     @Mock private BrowserControlsManager mBrowserControlsManager;
-    @Mock private MonotonicObservableSupplier<BrowserControlsManager> mBcmSupplier;
     @Mock private TabModelSelector mTabModelSelector;
     @Mock private Tab mTab;
     @Mock private MediaSession mMediaSession;
@@ -225,8 +224,8 @@ public class BraveYouTubePictureInPictureControllerTest {
     @Test
     public void onNewTabDuringPictureInPicture_active_suspendsExitsAndClearsSession() {
         when(mBraveActivity.getFullscreenManager()).thenReturn(mFullscreenManager);
-        when(mBraveActivity.getBrowserControlsManagerSupplier()).thenReturn(mBcmSupplier);
-        when(mBcmSupplier.get()).thenReturn(mBrowserControlsManager);
+        when(mBraveActivity.getBrowserControlsManagerSupplier())
+                .thenReturn(ObservableSuppliers.createMonotonic(mBrowserControlsManager));
         when(mFullscreenManager.getPersistentFullscreenMode()).thenReturn(false);
 
         BraveYouTubePictureInPictureController controller =
@@ -293,8 +292,8 @@ public class BraveYouTubePictureInPictureControllerTest {
     @Test
     public void onNewTabDuringPictureInPicture_restoredSession_usesRegisteredWebContents() {
         when(mBraveActivity.getFullscreenManager()).thenReturn(mFullscreenManager);
-        when(mBraveActivity.getBrowserControlsManagerSupplier()).thenReturn(mBcmSupplier);
-        when(mBcmSupplier.get()).thenReturn(mBrowserControlsManager);
+        when(mBraveActivity.getBrowserControlsManagerSupplier())
+                .thenReturn(ObservableSuppliers.createMonotonic(mBrowserControlsManager));
         when(mFullscreenManager.getPersistentFullscreenMode()).thenReturn(false);
         BraveMediaSessionHelper.setYouTubePictureInPictureWebContents(mWebContents);
 
@@ -339,8 +338,8 @@ public class BraveYouTubePictureInPictureControllerTest {
         // could be a different tab if the user switched during recreation.
         final int tabId = 42;
         when(mBraveActivity.getFullscreenManager()).thenReturn(mFullscreenManager);
-        when(mBraveActivity.getBrowserControlsManagerSupplier()).thenReturn(mBcmSupplier);
-        when(mBcmSupplier.get()).thenReturn(mBrowserControlsManager);
+        when(mBraveActivity.getBrowserControlsManagerSupplier())
+                .thenReturn(ObservableSuppliers.createMonotonic(mBrowserControlsManager));
         when(mFullscreenManager.getPersistentFullscreenMode()).thenReturn(false);
         when(mBraveActivity.getTabModelSelector()).thenReturn(mTabModelSelector);
         when(mTabModelSelector.getTabById(tabId)).thenReturn(mTab);
@@ -407,8 +406,8 @@ public class BraveYouTubePictureInPictureControllerTest {
         when(mBraveActivity.getFullscreenManager()).thenReturn(mBraveFullscreenHandler);
         when(mBraveActivity.getTabModelSelector()).thenReturn(mTabModelSelector);
         when(mTabModelSelector.getCurrentTab()).thenReturn(mTab);
-        when(mBraveActivity.getBrowserControlsManagerSupplier()).thenReturn(mBcmSupplier);
-        when(mBcmSupplier.get()).thenReturn(mBrowserControlsManager);
+        when(mBraveActivity.getBrowserControlsManagerSupplier())
+                .thenReturn(ObservableSuppliers.createMonotonic(mBrowserControlsManager));
         when(mBraveFullscreenHandler.getPersistentFullscreenMode()).thenReturn(true);
 
         BraveYouTubePictureInPictureController controller =
