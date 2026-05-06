@@ -20,6 +20,8 @@ BASE_FEATURE(kIPHBraveShieldsInPageInfoFeature,
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX)
+    {kIPHAutofillAccountNameEmailSuggestionFeature,
+     base::FEATURE_DISABLED_BY_DEFAULT},
     {kIPHDiscardRingFeature, base::FEATURE_DISABLED_BY_DEFAULT},
     {kIPHGMCCastStartStopFeature, base::FEATURE_DISABLED_BY_DEFAULT},
     {kIPHPasswordsManagementBubbleAfterSaveFeature,
