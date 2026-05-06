@@ -17,7 +17,7 @@ export function getHtml(this: BraveAccountEmailInputElement) {
     <leo-input
       maxlength=${MAX_EMAIL_LENGTH}
       placeholder="$i18n{BRAVE_ACCOUNT_EMAIL_INPUT_PLACEHOLDER}"
-      ?showErrors=${this.blockBraveAlias || this.shouldShowSuggestion}
+      ?showErrors=${this.blockBraveAlias || this.suggestion !== ''}
       type="email"
       @input=${this.onInput}
     >
@@ -36,7 +36,7 @@ export function getHtml(this: BraveAccountEmailInputElement) {
         </div>
       </div>
       <div
-        class="dropdown ${this.shouldShowSuggestion ? 'visible' : ''}"
+        class="dropdown ${this.suggestion !== '' ? 'visible' : ''}"
         slot="errors"
       >
         <div class="dropdown-content">

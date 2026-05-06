@@ -61,7 +61,7 @@ export class BraveAccountEmailInputElement extends CrLitElement {
   protected accessor blockBraveAlias = false
   private accessor email = ''
   private accessor isFormatValid = false
-  protected accessor suggestion: string = ''
+  protected accessor suggestion = ''
 
   protected get isBraveAlias(): boolean {
     return this.isFormatValid && /@bravealias\.com$/i.test(this.email)
@@ -72,10 +72,6 @@ export class BraveAccountEmailInputElement extends CrLitElement {
       (this.email.length !== 0 && !this.isFormatValid)
       || (this.blockBraveAlias && this.isBraveAlias)
     )
-  }
-
-  protected get shouldShowSuggestion(): boolean {
-    return this.suggestion !== ''
   }
 
   private get isValid(): boolean {
