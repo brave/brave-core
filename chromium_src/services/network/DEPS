@@ -1,5 +1,5 @@
 include_rules = [
-  "+brave/components/brave_service_keys",
+  "+brave/components/oblivious_http",
   "+brave/net",
   "+components/content_settings/core/common",
 ]

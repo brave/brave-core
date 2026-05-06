@@ -1,0 +1,27 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("oblivious_http") {
+  visibility = [ "//services/network:network_service" ]
+
+  sources = [
+    "oblivious_http_chunk_handler.cc",
+    "oblivious_http_chunk_handler.h",
+    "utils.cc",
+    "utils.h",
+  ]
+
+  public_deps = [
+    "//mojo/public/cpp/bindings",
+    "//net",
+    "//services/network/public/cpp",
+    "//services/network/public/mojom",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_service_keys",
+  ]
+}
