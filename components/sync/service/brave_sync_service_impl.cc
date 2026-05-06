@@ -86,7 +86,8 @@ void BraveSyncServiceImpl::OnEncryptorReady() {
     // SecretPortalKeyProvider may report kPermanentlyUnavailable even for a
     // locked keychain when the user cancels, making DecryptFlags unreliable for
     // distinguishing temporary from permanent failures at startup.
-    // SyncCannotRunInfoBarDelegate will surface the issue to the user.
+    // Notify observers so BraveSyncAlertsService can show SyncCannotRunInfoBar.
+    NotifyObservers();
     return;
   }
   GetBraveSyncAuthManager()->DeriveSigningKeys(*seed);

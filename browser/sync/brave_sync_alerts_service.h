@@ -33,6 +33,7 @@ class BraveSyncAlertsService : public KeyedService,
   void OnSyncShutdown(syncer::SyncService* sync) override;
 
   void ShowInfobar();
+  void ShowSyncCannotRunInfobar();
 
   raw_ptr<Profile> profile_ = nullptr;
   base::ScopedMultiSourceObservation<syncer::SyncService,

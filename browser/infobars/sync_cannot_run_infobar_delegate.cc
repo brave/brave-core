@@ -47,10 +47,6 @@ void SyncCannotRunInfoBarDelegate::Create(
     return;
   }
 
-  if (brave_sync_service->prefs().IsFailedDecryptSeedNoticeDismissed()) {
-    return;
-  }
-
   if (brave_sync_service->GetSeed().has_value()) {
     return;
   }

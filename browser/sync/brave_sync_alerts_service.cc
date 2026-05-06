@@ -7,6 +7,11 @@
 
 #include "base/check.h"
 #include "brave/browser/infobars/brave_sync_account_deleted_infobar_delegate.h"
+#include "build/build_config.h"
+
+#if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/infobars/sync_cannot_run_infobar_delegate.h"
+#endif
 #include "brave/components/sync/service/brave_sync_service_impl.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sync/sync_service_factory.h"
@@ -40,17 +45,45 @@ BraveSyncAlertsService::~BraveSyncAlertsService() {}
 void BraveSyncAlertsService::OnStateChanged(SyncService* service) {
   auto* brave_sync_service = static_cast<BraveSyncServiceImpl*>(service);
 
-  if (!brave_sync_service->prefs().IsSyncAccountDeletedNoticePending()) {
-    return;
+  if (brave_sync_service->prefs().IsSyncAccountDeletedNoticePending()) {
+    ShowInfobar();
   }
 
-  ShowInfobar();
+#if !BUILDFLAG(IS_ANDROID)
+  {
+    auto seed = brave_sync_service->GetSeed();
+    if (!brave_sync_service->prefs().IsFailedDecryptSeedNoticeDismissed() &&
+        !seed.has_value() &&
+        seed.error() ==
+            syncer::BraveSyncServiceImpl::GetSeedStatusEnum::kDecryptFailed) {
+      ShowSyncCannotRunInfobar();
+    }
+  }
+#endif
 }
 
 void BraveSyncAlertsService::OnSyncShutdown(SyncService* sync_service) {
   if (sync_service_observer_.IsObservingSource(sync_service)) {
     sync_service_observer_.RemoveObservation(sync_service);
   }
+}
+
+void BraveSyncAlertsService::ShowSyncCannotRunInfobar() {
+#if !BUILDFLAG(IS_ANDROID)
+  Browser* browser = chrome::FindLastActive();
+  if (browser) {
+    content::WebContents* active_web_contents =
+        browser->tab_strip_model()->GetActiveWebContents();
+    if (active_web_contents) {
+      infobars::ContentInfoBarManager* infobar_manager =
+          infobars::ContentInfoBarManager::FromWebContents(active_web_contents);
+      if (infobar_manager) {
+        SyncCannotRunInfoBarDelegate::Create(infobar_manager, profile_,
+                                             browser);
+      }
+    }
+  }
+#endif
 }
 
 void BraveSyncAlertsService::ShowInfobar() {
