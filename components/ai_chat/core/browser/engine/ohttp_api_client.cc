@@ -15,11 +15,10 @@
 #include "brave/components/ai_chat/core/browser/engine/oai_parsing.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
-#include "mojo/public/cpp/bindings/receiver.h"
-#include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "net/base/net_errors.h"
 #include "net/http/http_request_headers.h"
 #include "net/http/http_status_code.h"
@@ -60,27 +59,40 @@ net::NetworkTrafficAnnotationTag GetOHTTPTrafficAnnotationTag() {
   )cpp");
 }
 
+bool IsStreamingEnabled(
+    const EngineConsumer::GenerationDataCallback& data_received_callback) {
+  return ai_chat::features::kAIChatSSE.Get() &&
+         !data_received_callback.is_null();
+}
+
 }  // namespace
 
-OHTTPAPIClient::Request::Request(std::string model_name,
-                                 std::string request_body,
-                                 GenerationCompletedCallback completed_callback)
-    : model_name(std::move(model_name)),
-      request_body(std::move(request_body)),
-      completed_callback(std::move(completed_callback)) {}
-
-OHTTPAPIClient::Request::Request(Request&&) = default;
-
-OHTTPAPIClient::Request::~Request() = default;
-
-OHTTPAPIClient::InnerClient::InnerClient(DispatchCallback callback)
-    : callback_(std::move(callback)) {}
+OHTTPAPIClient::InnerClient::InnerClient(CompletionCallback completion_callback,
+                                         ChunkCallback chunk_callback)
+    : completion_callback_(std::move(completion_callback)),
+      chunk_callback_(std::move(chunk_callback)) {}
 
 OHTTPAPIClient::InnerClient::~InnerClient() = default;
 
+mojo::PendingRemote<network::mojom::ObliviousHttpClient>
+OHTTPAPIClient::InnerClient::BindCompletionReceiver() {
+  auto remote = completion_receiver_.BindNewPipeAndPassRemote();
+  completion_receiver_.set_disconnect_handler(
+      base::BindOnce(&InnerClient::OnPipeDisconnected, base::Unretained(this)));
+  return remote;
+}
+
+mojo::PendingRemote<network::mojom::ObliviousHttpChunkClient>
+OHTTPAPIClient::InnerClient::BindChunkReceiver() {
+  auto remote = chunk_receiver_.BindNewPipeAndPassRemote();
+  chunk_receiver_.set_disconnect_handler(
+      base::BindOnce(&InnerClient::OnPipeDisconnected, base::Unretained(this)));
+  return remote;
+}
+
 void OHTTPAPIClient::InnerClient::OnCompleted(
     network::mojom::ObliviousHttpCompletionResultPtr response) {
-  if (callback_.is_null()) {
+  if (completion_callback_.is_null()) {
     return;
   }
   int response_code = 0;
@@ -100,8 +112,34 @@ void OHTTPAPIClient::InnerClient::OnCompleted(
       break;
     }
   }
-  std::move(callback_).Run(response_code, std::move(body));
+  std::move(completion_callback_).Run(response_code, std::move(body));
 }
+
+void OHTTPAPIClient::InnerClient::OnBodyChunk(const std::string& chunk) {
+  if (!chunk_callback_.is_null()) {
+    chunk_callback_.Run(chunk);
+  }
+}
+
+void OHTTPAPIClient::InnerClient::OnPipeDisconnected() {
+  if (completion_callback_.is_null()) {
+    return;
+  }
+  std::move(completion_callback_).Run(net::ERR_FAILED, std::string());
+}
+
+OHTTPAPIClient::Request::Request(std::string model_name,
+                                 std::string request_body,
+                                 GenerationDataCallback data_received_callback,
+                                 GenerationCompletedCallback completed_callback)
+    : model_name(std::move(model_name)),
+      request_body(std::move(request_body)),
+      data_received_callback(std::move(data_received_callback)),
+      completed_callback(std::move(completed_callback)) {}
+
+OHTTPAPIClient::Request::Request(Request&&) = default;
+
+OHTTPAPIClient::Request::~Request() = default;
 
 OHTTPAPIClient::OHTTPAPIClient(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
@@ -122,16 +160,17 @@ void OHTTPAPIClient::PerformRequest(
     const mojom::ModelOptions& model_options,
     std::vector<OAIMessage> messages,
     std::optional<base::ListValue> oai_tool_definitions,
-    GenerationDataCallback /*data_received_callback*/,
+    GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback,
     const std::optional<std::vector<std::string>>& stop_sequences) {
   CHECK(model_options.is_leo_model_options());
   const auto& leo_opts = *model_options.get_leo_model_options();
 
-  std::string request_body =
-      CreateJSONRequestBody(SerializeOAIMessages(std::move(messages)),
-                            /*is_sse_enabled=*/false, leo_opts.name,
-                            std::move(oai_tool_definitions), stop_sequences);
+  const bool is_streaming_enabled = IsStreamingEnabled(data_received_callback);
+
+  std::string request_body = CreateJSONRequestBody(
+      SerializeOAIMessages(std::move(messages)), is_streaming_enabled,
+      leo_opts.name, std::move(oai_tool_definitions), stop_sequences);
 
   if (!credential_manager_) {
     return RunCompletedWithError(std::move(completed_callback),
@@ -141,12 +180,14 @@ void OHTTPAPIClient::PerformRequest(
   credential_manager_->FetchPremiumCredential(base::BindOnce(
       &OHTTPAPIClient::OnCredentialFetched, weak_factory_.GetWeakPtr(),
       Request(leo_opts.name, std::move(request_body),
+              std::move(data_received_callback),
               std::move(completed_callback))));
 }
 
 void OHTTPAPIClient::ClearAllQueries() {
   weak_factory_.InvalidateWeakPtrs();
   config_manager_->CancelAll();
+  inner_clients_.clear();
 }
 
 void OHTTPAPIClient::OnCredentialFetched(
@@ -189,6 +230,8 @@ void OHTTPAPIClient::DispatchOHTTPRequest(
                                  mojom::APIError::ConnectionIssue);
   }
 
+  // Build the OHTTP request before transferring credential ownership into the
+  // dispatch callback, since relay_url and relay_headers need to read it.
   auto ohttp_request = network::mojom::ObliviousHttpRequest::New();
   ohttp_request->relay_url = GetEndpointUrl(
       /*premium=*/credential.has_value(),
@@ -211,15 +254,30 @@ void OHTTPAPIClient::DispatchOHTTPRequest(
   ohttp_request->relay_request_headers = std::move(relay_headers);
   ohttp_request->brave_services_key = BUILDFLAG(SERVICE_KEY_AICHAT);
 
-  mojo::PendingRemote<network::mojom::ObliviousHttpClient> client_remote;
-  mojo::MakeSelfOwnedReceiver(
-      std::make_unique<InnerClient>(base::BindOnce(
-          &OHTTPAPIClient::OnInnerResponse, weak_factory_.GetWeakPtr(),
-          std::move(request), std::move(credential))),
-      client_remote.InitWithNewPipeAndPassReceiver());
+  // Reserve a stable slot in the list so we can capture the iterator into
+  // the dispatch callback before constructing the InnerClient.
+  inner_clients_.emplace_back(nullptr);
+  auto it = std::prev(inner_clients_.end());
+  request.it = it;
+
+  const bool chunking_enabled =
+      IsStreamingEnabled(request.data_received_callback);
+  *it = std::make_unique<InnerClient>(
+      base::BindOnce(&OHTTPAPIClient::OnInnerResponse,
+                     weak_factory_.GetWeakPtr(), std::move(request),
+                     std::move(credential)),
+      base::BindRepeating(&OHTTPAPIClient::OnInnerChunkReceived,
+                          weak_factory_.GetWeakPtr()));
+
+  InnerClient& inner_client = **it;
+
+  if (chunking_enabled) {
+    ohttp_request->enable_chunking = true;
+    ohttp_request->chunk_client = inner_client.BindChunkReceiver();
+  }
 
   network_context->GetViaObliviousHttp(std::move(ohttp_request),
-                                       std::move(client_remote));
+                                       inner_client.BindCompletionReceiver());
 }
 
 void OHTTPAPIClient::OnInnerResponse(
@@ -227,10 +285,22 @@ void OHTTPAPIClient::OnInnerResponse(
     std::optional<CredentialCacheEntry> credential,
     int response_code,
     std::string response_body) {
+  // Erase the InnerClient from the ownership list now that the request is done.
+  inner_clients_.erase(request.it);
+
   if (response_code >= 200 && response_code < 300) {
     // Recycle the credential for future requests.
     if (credential.has_value()) {
       credential_manager_->PutCredentialInCache(std::move(*credential));
+    }
+
+    if (IsStreamingEnabled(request.data_received_callback)) {
+      auto event = mojom::ConversationEntryEvent::NewCompletionEvent(
+          mojom::CompletionEvent::New("done"));
+      std::move(request.completed_callback)
+          .Run(base::ok(EngineConsumer::GenerationResultData(
+              std::move(event), /*model_key=*/std::nullopt)));
+      return;
     }
 
     auto value = base::JSONReader::Read(response_body, base::JSON_PARSE_RFC);
@@ -256,6 +326,10 @@ void OHTTPAPIClient::OnInnerResponse(
   }
   std::move(request.completed_callback)
       .Run(base::unexpected(MapResponseCodeToError(response_code)));
+}
+
+void OHTTPAPIClient::OnInnerChunkReceived(std::string chunk) {
+  LOG(ERROR) << "OHTTP chunk: " << chunk;
 }
 
 void OHTTPAPIClient::RunCompletedWithError(

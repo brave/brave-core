@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_OHTTP_API_CLIENT_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_OHTTP_API_CLIENT_H_
 
+#include <list>
 #include <memory>
 #include <optional>
 #include <string>
@@ -22,6 +23,7 @@
 #include "brave/components/ai_chat/core/browser/engine/ohttp_config_manager.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 #include "services/network/public/cpp/network_context_getter.h"
 #include "services/network/public/mojom/oblivious_http_request.mojom.h"
 
@@ -64,32 +66,60 @@ class OHTTPAPIClient : public OAIAPIClient {
   void ClearAllQueries() override;
 
  private:
-  // Self-owned mojo client receiver for the network service ObliviousHttp
-  // pipe. Lives until the network service either delivers OnCompleted or
-  // closes the pipe.
-  class InnerClient : public network::mojom::ObliviousHttpClient {
+  // Self-managed mojo client that receives both body chunks
+  // (ObliviousHttpChunkClient) and the final completion (ObliviousHttpClient)
+  // for a single OHTTP request. Owned by OHTTPAPIClient via inner_clients_. The
+  // owning list entry is erased once the dispatch callback fires (from either
+  // OnCompleted or a pipe disconnect).
+  class InnerClient : public network::mojom::ObliviousHttpClient,
+                      public network::mojom::ObliviousHttpChunkClient {
    public:
-    using DispatchCallback =
+    using CompletionCallback =
         base::OnceCallback<void(int response_code, std::string response_body)>;
+    using ChunkCallback = base::RepeatingCallback<void(std::string chunk)>;
 
-    explicit InnerClient(DispatchCallback callback);
+    InnerClient(CompletionCallback completion_callback,
+                ChunkCallback chunk_callback);
 
     InnerClient(const InnerClient&) = delete;
     InnerClient& operator=(const InnerClient&) = delete;
 
     ~InnerClient() override;
 
+    // Returns a pending_remote bound to the completion receiver.
+    mojo::PendingRemote<network::mojom::ObliviousHttpClient>
+    BindCompletionReceiver();
+
+    // Returns a pending_remote bound to the chunk receiver. Only call this
+    // when chunking is enabled.
+    mojo::PendingRemote<network::mojom::ObliviousHttpChunkClient>
+    BindChunkReceiver();
+
     // network::mojom::ObliviousHttpClient:
     void OnCompleted(
         network::mojom::ObliviousHttpCompletionResultPtr response) override;
 
+    // network::mojom::ObliviousHttpChunkClient:
+    void OnBodyChunk(const std::string& chunk) override;
+
    private:
-    DispatchCallback callback_;
+    void OnPipeDisconnected();
+
+    CompletionCallback completion_callback_;
+    ChunkCallback chunk_callback_;
+
+    mojo::Receiver<network::mojom::ObliviousHttpClient> completion_receiver_{
+        this};
+    mojo::Receiver<network::mojom::ObliviousHttpChunkClient> chunk_receiver_{
+        this};
   };
+
+  using InnerClientList = std::list<std::unique_ptr<InnerClient>>;
 
   struct Request {
     Request(std::string model_name,
             std::string request_body,
+            GenerationDataCallback data_received_callback,
             GenerationCompletedCallback completed_callback);
     Request(Request&&);
     Request(const Request&) = delete;
@@ -98,7 +128,10 @@ class OHTTPAPIClient : public OAIAPIClient {
 
     std::string model_name;
     std::string request_body;
+    GenerationDataCallback data_received_callback;
     GenerationCompletedCallback completed_callback;
+    // Set in DispatchOHTTPRequest once the client is inserted into the list.
+    InnerClientList::iterator it;
   };
 
   // Per-request helpers.
@@ -116,6 +149,7 @@ class OHTTPAPIClient : public OAIAPIClient {
                        std::optional<CredentialCacheEntry> credential,
                        int response_code,
                        std::string response_body);
+  void OnInnerChunkReceived(std::string chunk);
   void RunCompletedWithError(GenerationCompletedCallback completed_callback,
                              mojom::APIError error);
 
@@ -124,6 +158,7 @@ class OHTTPAPIClient : public OAIAPIClient {
   raw_ptr<AIChatCredentialManager> credential_manager_;
 
   std::unique_ptr<OHTTPConfigManager> config_manager_;
+  InnerClientList inner_clients_;
 
   base::WeakPtrFactory<OHTTPAPIClient> weak_factory_{this};
 };

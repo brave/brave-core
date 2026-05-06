@@ -81,8 +81,7 @@ void EngineConsumerOAIRemote::ClearAllQueries() {
 }
 
 bool EngineConsumerOAIRemote::SupportsDeltaTextResponses() const {
-  // TODO(djandries): Support SSE deltas for the OHTTP path.
-  return model_options_->is_custom_model_options();
+  return true;
 }
 
 bool EngineConsumerOAIRemote::RequiresClientSideTitleGeneration() const {
