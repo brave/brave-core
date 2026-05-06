@@ -345,26 +345,32 @@ void AssociatedWebContentsContent::GetScriptTools(
     std::move(callback).Run({});
     return;
   }
-  ai_page_content_agent_.reset();
-  rfh->GetRemoteInterfaces()->GetInterface(
-      ai_page_content_agent_.BindNewPipeAndPassReceiver());
+  // Use a local Remote rather than the `ai_page_content_agent_` member: the
+  // member is also used by FetchPageContentFromAIPageContentAgent (the
+  // GetContent fallback path). If GetContent's fallback was in flight when
+  // GetScriptTools is called, the shared remote gets reset and the in-flight
+  // response is dropped — and vice versa. Owning the remote in the bound
+  // callback keeps each call independent.
+  mojo::Remote<blink::mojom::AIPageContentAgent> agent;
+  rfh->GetRemoteInterfaces()->GetInterface(agent.BindNewPipeAndPassReceiver());
+  auto* agent_ptr = agent.get();
   auto options = blink::mojom::AIPageContentOptions::New();
   options->mode = blink::mojom::AIPageContentMode::kDefault;
   options->on_critical_path = true;
-  ai_page_content_agent_->GetAIPageContent(
+  agent_ptr->GetAIPageContent(
       std::move(options),
       mojo::WrapCallbackWithDefaultInvokeIfNotRun(
           base::BindOnce(&AssociatedWebContentsContent::OnScriptToolsFetched,
                          weak_ptr_factory_.GetWeakPtr(), std::move(callback),
-                         rfh->GetWeakDocumentPtr()),
+                         rfh->GetWeakDocumentPtr(), std::move(agent)),
           nullptr));
 }
 
 void AssociatedWebContentsContent::OnScriptToolsFetched(
     GetScriptToolsCallback callback,
     content::WeakDocumentPtr rfh,
+    mojo::Remote<blink::mojom::AIPageContentAgent> agent,
     blink::mojom::AIPageContentPtr result) {
-  ai_page_content_agent_.reset();
   std::vector<std::unique_ptr<Tool>> tools;
   if (result && result->frame_data) {
     for (const auto& script_tool : result->frame_data->script_tools) {

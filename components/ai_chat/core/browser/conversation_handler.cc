@@ -163,7 +163,8 @@ ConversationHandler::ConversationHandler(
       url_loader_factory_(url_loader_factory) {
   BuildCapabilitiesSet();
 
-  auto associated_content_manager = std::make_unique<AssociatedContentManager>(this);
+  auto associated_content_manager =
+      std::make_unique<AssociatedContentManager>(this);
   associated_content_manager_ = associated_content_manager.get();
   tool_providers_.push_back(std::move(associated_content_manager));
 
@@ -639,7 +640,6 @@ void ConversationHandler::SubmitHumanConversationEntry(
     engine_->SanitizeInput(*latest_turn->selected_text);
   }
 
-  
   // Add the human part to the conversation
   AddToConversationHistory(std::move(turn));
   // Give tools a chance to reset their state for the next loop, then generate.

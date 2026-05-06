@@ -406,6 +406,7 @@ source_set("browser_tests") {
       "page_content_fetcher_browsertest.cc",
       "text_file_extractor_browsertest.cc",
       "tools/history_search_tool_browsertest.cc",
+      "web_mcp_browsertest.cc",
     ]
 
     if (enable_pdf) {
