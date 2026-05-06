@@ -120,8 +120,8 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
         if (isBraveTalk(webContents)) {
             return true;
         }
-        final boolean isYouTube = isYouTube(webContents);
-        if (!isYouTube) {
+
+        if (!isYouTube(webContents)) {
             return false;
         }
         return isBackgroundVideo() || isYouTubePictureInPicture(webContents);
