@@ -18,7 +18,7 @@
 #include "base/values.h"
 #include "brave/components/brave_account/brave_account_service_constants.h"
 #include "brave/components/brave_account/brave_account_service_test.h"
-#include "brave/components/brave_account/brave_account_state.h"
+#include "brave/components/brave_account/brave_account_state_prefs.h"
 #include "brave/components/brave_account/endpoints/auth_validate.h"
 #include "brave/components/brave_account/endpoints/login_finalize.h"
 #include "brave/components/brave_account/endpoints/login_init.h"
@@ -84,6 +84,7 @@ struct AuthenticationObserverTestCase {
   static void Run(const AuthenticationObserverTestCase& test_case,
                   PrefService& pref_service,
                   mojom::Authentication& authentication) {
+    AccountStatePrefs account_state_prefs(pref_service);
     const auto account_state_eq = [](const mojom::AccountStatePtr& expected) {
       return testing::Truly([&](const mojom::AccountStatePtr& state) {
         return state.Equals(expected);
@@ -93,14 +94,14 @@ struct AuthenticationObserverTestCase {
     switch (CHECK_DEREF(test_case.from).which()) {
       case mojom::AccountState::Tag::kLoggedOut:
         if (test_case.from->get_logged_out()->verification) {
-          internal::SetLoggedOutWithVerification(
-              pref_service, EncryptedVerificationToken(),
+          account_state_prefs.SetLoggedOutWithVerification(
+              EncryptedVerificationToken(),
               mojom::LoggedOutVerificationIntent::kRegistration);
         }
         break;
       case mojom::AccountState::Tag::kLoggedIn:
-        internal::SetLoggedIn(pref_service, kEmailAddress,
-                              EncryptedAuthenticationToken());
+        account_state_prefs.SetLoggedIn(kEmailAddress,
+                                        EncryptedAuthenticationToken());
         break;
     }
 
@@ -120,19 +121,19 @@ struct AuthenticationObserverTestCase {
 
     switch (test_case.action) {
       case StateAction::kSwitchToVerification:
-        internal::SetLoggedOutWithVerification(
-            pref_service, EncryptedVerificationToken(),
+        account_state_prefs.SetLoggedOutWithVerification(
+            EncryptedVerificationToken(),
             mojom::LoggedOutVerificationIntent::kRegistration);
         break;
       case StateAction::kSwitchToLoggedIn:
-        internal::SetLoggedIn(pref_service, kEmailAddress,
-                              EncryptedAuthenticationToken());
+        account_state_prefs.SetLoggedIn(kEmailAddress,
+                                        EncryptedAuthenticationToken());
         break;
       case StateAction::kSwitchToLoggedOut:
-        internal::SetLoggedOut(pref_service);
+        account_state_prefs.SetLoggedOut();
         break;
       case StateAction::kUpdateEmailAddress:
-        internal::UpdateEmail(pref_service, "new_email");
+        account_state_prefs.UpdateEmail("new_email");
         break;
     }
 
@@ -907,15 +908,15 @@ TEST_P(BraveAccountServiceRegisterFinalizeTest,
 
   if (const auto& test_case = CHECK_DEREF(this->GetParam());
       test_case.mojo_expected.has_value()) {
-    const auto state = internal::GetAccountState(pref_service_);
+    AccountStatePrefs account_state_prefs(pref_service_);
+    const auto state = account_state_prefs.GetAccountState();
     ASSERT_TRUE(state->is_logged_out());
     ASSERT_TRUE(state->get_logged_out()->verification);
     EXPECT_EQ(state->get_logged_out()->verification->intent,
               mojom::LoggedOutVerificationIntent::kRegistration);
-    EXPECT_EQ(
-        internal::GetVerificationToken(
-            pref_service_, mojom::LoggedOutVerificationIntent::kRegistration),
-        test_case.encrypted_verification_token);
+    EXPECT_EQ(account_state_prefs.GetVerificationToken(
+                  mojom::LoggedOutVerificationIntent::kRegistration),
+              test_case.encrypted_verification_token);
   }
 }
 
@@ -946,9 +947,10 @@ struct RegisterVerifyTestCase {
                   mojom::Authentication& authentication,
                   base::OnceCallback<void(MojoExpected)> callback) {
     if (!test_case.encrypted_verification_token.empty()) {
-      internal::SetLoggedOutWithVerification(
-          pref_service, test_case.encrypted_verification_token,
-          mojom::LoggedOutVerificationIntent::kRegistration);
+      AccountStatePrefs(pref_service)
+          .SetLoggedOutWithVerification(
+              test_case.encrypted_verification_token,
+              mojom::LoggedOutVerificationIntent::kRegistration);
     }
 
     authentication.RegisterVerify(
@@ -956,12 +958,13 @@ struct RegisterVerifyTestCase {
         std::move(callback).Then(base::BindOnce(
             [](PrefService* pref_service,
                std::string initial_verification_token, bool success) {
-              const auto state = internal::GetAccountState(*pref_service);
+              AccountStatePrefs account_state_prefs(*pref_service);
+              const auto state = account_state_prefs.GetAccountState();
               if (success) {
                 ASSERT_TRUE(state->is_logged_in());
                 EXPECT_EQ(state->get_logged_in()->email, kEmailAddress);
                 EXPECT_FALSE(state->get_logged_in()->verification);
-                EXPECT_EQ(internal::GetAuthenticationToken(*pref_service),
+                EXPECT_EQ(account_state_prefs.GetAuthenticationToken(),
                           EncryptedAuthenticationToken());
               } else {
                 ASSERT_TRUE(state->is_logged_out());
@@ -972,8 +975,7 @@ struct RegisterVerifyTestCase {
                   EXPECT_EQ(state->get_logged_out()->verification->intent,
                             mojom::LoggedOutVerificationIntent::kRegistration);
                   EXPECT_EQ(
-                      internal::GetVerificationToken(
-                          *pref_service,
+                      account_state_prefs.GetVerificationToken(
                           mojom::LoggedOutVerificationIntent::kRegistration),
                       initial_verification_token);
                 }
@@ -1367,9 +1369,10 @@ struct ResendConfirmationEmailTestCase {
                   mojom::Authentication& authentication,
                   base::OnceCallback<void(MojoExpected)> callback) {
     if (!test_case.encrypted_verification_token.empty()) {
-      internal::SetLoggedOutWithVerification(
-          pref_service, test_case.encrypted_verification_token,
-          mojom::LoggedOutVerificationIntent::kRegistration);
+      AccountStatePrefs(pref_service)
+          .SetLoggedOutWithVerification(
+              test_case.encrypted_verification_token,
+              mojom::LoggedOutVerificationIntent::kRegistration);
     }
 
     authentication.ResendConfirmationEmail(std::move(callback));
@@ -1624,21 +1627,22 @@ struct AuthValidateTestCase {
                   PrefService& pref_service,
                   base::test::TaskEnvironment& task_environment,
                   base::OneShotTimer& auth_validate_timer) {
+    AccountStatePrefs account_state_prefs(pref_service);
     if (test_case.logged_in) {
-      internal::SetLoggedIn(pref_service, kEmailAddress,
-                            EncryptedAuthenticationToken());
+      account_state_prefs.SetLoggedIn(kEmailAddress,
+                                      EncryptedAuthenticationToken());
     }
 
     task_environment.FastForwardBy(kAuthValidatePollInterval -
                                    base::Seconds(1));
 
-    const auto state = internal::GetAccountState(pref_service);
+    const auto state = account_state_prefs.GetAccountState();
     if (test_case.expected_authentication_token.empty()) {
       EXPECT_TRUE(state->is_logged_out());
     } else {
       ASSERT_TRUE(state->is_logged_in());
       EXPECT_EQ(state->get_logged_in()->email, test_case.expected_email);
-      EXPECT_EQ(internal::GetAuthenticationToken(pref_service),
+      EXPECT_EQ(account_state_prefs.GetAuthenticationToken(),
                 test_case.expected_authentication_token);
     }
     if (test_case.expected_auth_validate_timer_delay.is_zero()) {
@@ -1832,13 +1836,14 @@ struct CancelRegistrationTestCase {
   static void Run(const CancelRegistrationTestCase& test_case,
                   PrefService& pref_service,
                   mojom::Authentication& authentication) {
+    AccountStatePrefs account_state_prefs(pref_service);
     if (!test_case.encrypted_verification_token.empty()) {
-      internal::SetLoggedOutWithVerification(
-          pref_service, test_case.encrypted_verification_token,
+      account_state_prefs.SetLoggedOutWithVerification(
+          test_case.encrypted_verification_token,
           mojom::LoggedOutVerificationIntent::kRegistration);
     }
     authentication.CancelRegistration();
-    const auto state = internal::GetAccountState(pref_service);
+    const auto state = account_state_prefs.GetAccountState();
     ASSERT_TRUE(state->is_logged_out());
     EXPECT_FALSE(state->get_logged_out()->verification);
   }
@@ -1889,12 +1894,13 @@ struct LogOutTestCase {
   static void Run(const LogOutTestCase& test_case,
                   PrefService& pref_service,
                   mojom::Authentication& authentication) {
+    AccountStatePrefs account_state_prefs(pref_service);
     if (!test_case.encrypted_authentication_token.empty()) {
-      internal::SetLoggedIn(pref_service, test_case.email_address,
-                            test_case.encrypted_authentication_token);
+      account_state_prefs.SetLoggedIn(test_case.email_address,
+                                      test_case.encrypted_authentication_token);
     }
     authentication.LogOut();
-    const auto state = internal::GetAccountState(pref_service);
+    const auto state = account_state_prefs.GetAccountState();
     ASSERT_TRUE(state->is_logged_out());
     EXPECT_FALSE(state->get_logged_out()->verification);
   }
@@ -2285,13 +2291,14 @@ struct LoginFinalizeTestCase {
         std::move(callback).Then(base::BindOnce(
             [](PrefService* pref_service, std::string expected_email,
                std::string expected_authentication_token) {
-              const auto state = internal::GetAccountState(*pref_service);
+              AccountStatePrefs account_state_prefs(*pref_service);
+              const auto state = account_state_prefs.GetAccountState();
               if (expected_authentication_token.empty()) {
                 EXPECT_TRUE(state->is_logged_out());
               } else {
                 ASSERT_TRUE(state->is_logged_in());
                 EXPECT_EQ(state->get_logged_in()->email, expected_email);
-                EXPECT_EQ(internal::GetAuthenticationToken(*pref_service),
+                EXPECT_EQ(account_state_prefs.GetAuthenticationToken(),
                           expected_authentication_token);
               }
             },
@@ -2723,8 +2730,8 @@ struct GetServiceTokenTestCase {
                   mojom::Authentication& authentication,
                   base::OnceCallback<void(MojoExpected)> callback) {
     if (test_case.logged_in) {
-      internal::SetLoggedIn(pref_service, kEmailAddress,
-                            EncryptedAuthenticationToken());
+      AccountStatePrefs(pref_service)
+          .SetLoggedIn(kEmailAddress, EncryptedAuthenticationToken());
       ScopedDictPrefUpdate(&pref_service, prefs::kBraveAccountState)
           ->Set(
               prefs::keys::kServiceTokens,
@@ -2767,7 +2774,7 @@ struct GetServiceTokenTestCase {
     // be processed on the next message pump iteration, so this runs before the
     // request completes.
     if (test_case.clear_authentication_token) {
-      internal::SetLoggedOut(pref_service);
+      AccountStatePrefs(pref_service).SetLoggedOut();
     }
   }
 

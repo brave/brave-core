@@ -3,7 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_account/brave_account_state.h"
+#include "brave/components/brave_account/brave_account_state_prefs.h"
+
+#include <optional>
 
 #include "base/check.h"
 #include "base/json/values_util.h"
@@ -12,7 +14,7 @@
 #include "brave/components/brave_account/brave_account_service_constants.h"
 #include "components/prefs/scoped_user_pref_update.h"
 
-namespace brave_account::internal {
+namespace brave_account {
 
 namespace {
 
@@ -33,19 +35,23 @@ auto MakeVerification(std::optional<int> verification_intent) {
 
 }  // namespace
 
-void SetLoggedOut(PrefService& pref_service) {
-  pref_service.SetDict(prefs::kBraveAccountState,
-                       base::DictValue().Set(prefs::keys::kKind,
-                                             prefs::state_kinds::kLoggedOut));
+void AccountStatePrefs::StartObserving(base::RepeatingClosure on_change) {
+  pref_change_registrar_.Init(&*pref_service_);
+  pref_change_registrar_.Add(prefs::kBraveAccountState, std::move(on_change));
 }
 
-void SetLoggedOutWithVerification(
-    PrefService& pref_service,
+void AccountStatePrefs::SetLoggedOut() {
+  pref_service_->SetDict(prefs::kBraveAccountState,
+                         base::DictValue().Set(prefs::keys::kKind,
+                                               prefs::state_kinds::kLoggedOut));
+}
+
+void AccountStatePrefs::SetLoggedOutWithVerification(
     const std::string& encrypted_verification_token,
     mojom::LoggedOutVerificationIntent intent) {
   CHECK(!encrypted_verification_token.empty());
 
-  pref_service.SetDict(
+  pref_service_->SetDict(
       prefs::kBraveAccountState,
       base::DictValue()
           .Set(prefs::keys::kKind, prefs::state_kinds::kLoggedOut)
@@ -57,13 +63,13 @@ void SetLoggedOutWithVerification(
                         static_cast<int>(intent))));
 }
 
-void SetLoggedIn(PrefService& pref_service,
-                 const std::string& email,
-                 const std::string& encrypted_authentication_token) {
+void AccountStatePrefs::SetLoggedIn(
+    const std::string& email,
+    const std::string& encrypted_authentication_token) {
   CHECK(!email.empty());
   CHECK(!encrypted_authentication_token.empty());
 
-  pref_service.SetDict(
+  pref_service_->SetDict(
       prefs::kBraveAccountState,
       base::DictValue()
           .Set(prefs::keys::kKind, prefs::state_kinds::kLoggedIn)
@@ -72,8 +78,8 @@ void SetLoggedIn(PrefService& pref_service,
                encrypted_authentication_token));
 }
 
-mojom::AccountStatePtr GetAccountState(const PrefService& pref_service) {
-  const auto& account_state = pref_service.GetDict(prefs::kBraveAccountState);
+mojom::AccountStatePtr AccountStatePrefs::GetAccountState() const {
+  const auto& account_state = pref_service_->GetDict(prefs::kBraveAccountState);
   const auto* kind = account_state.FindString(prefs::keys::kKind);
   const auto* verification = account_state.FindDict(prefs::keys::kVerification);
   const auto intent =
@@ -91,17 +97,17 @@ mojom::AccountStatePtr GetAccountState(const PrefService& pref_service) {
       MakeVerification<mojom::LoggedOutVerificationPtr>(intent)));
 }
 
-std::string GetAuthenticationToken(const PrefService& pref_service) {
-  const auto* token = pref_service.GetDict(prefs::kBraveAccountState)
+std::string AccountStatePrefs::GetAuthenticationToken() const {
+  const auto* token = pref_service_->GetDict(prefs::kBraveAccountState)
                           .FindString(prefs::keys::kAuthenticationToken);
   return token ? *token : "";
 }
 
-std::string GetCachedServiceToken(const PrefService& pref_service,
-                                  const std::string& service_name) {
+std::string AccountStatePrefs::GetCachedServiceToken(
+    const std::string& service_name) const {
   CHECK(!service_name.empty());
 
-  const auto* service_tokens = pref_service.GetDict(prefs::kBraveAccountState)
+  const auto* service_tokens = pref_service_->GetDict(prefs::kBraveAccountState)
                                    .FindDict(prefs::keys::kServiceTokens);
   const auto* service =
       service_tokens ? service_tokens->FindDict(service_name) : nullptr;
@@ -129,20 +135,19 @@ std::string GetCachedServiceToken(const PrefService& pref_service,
   return *encrypted_service_token;
 }
 
-void UpdateEmail(PrefService& pref_service, const std::string& email) {
+void AccountStatePrefs::UpdateEmail(const std::string& email) {
   CHECK(!email.empty());
 
-  ScopedDictPrefUpdate(&pref_service, prefs::kBraveAccountState)
+  ScopedDictPrefUpdate(&*pref_service_, prefs::kBraveAccountState)
       ->Set(prefs::keys::kEmail, email);
 }
 
-void CacheServiceToken(PrefService& pref_service,
-                       const std::string& service_name,
-                       std::string encrypted_service_token) {
+void AccountStatePrefs::CacheServiceToken(const std::string& service_name,
+                                          std::string encrypted_service_token) {
   CHECK(!service_name.empty());
   CHECK(!encrypted_service_token.empty());
 
-  ScopedDictPrefUpdate(&pref_service, prefs::kBraveAccountState)
+  ScopedDictPrefUpdate(&*pref_service_, prefs::kBraveAccountState)
       ->EnsureDict(prefs::keys::kServiceTokens)
       ->Set(service_name, base::DictValue()
                               .Set(prefs::keys::kServiceToken,
@@ -151,4 +156,4 @@ void CacheServiceToken(PrefService& pref_service,
                                    base::TimeToValue(base::Time::Now())));
 }
 
-}  // namespace brave_account::internal
+}  // namespace brave_account

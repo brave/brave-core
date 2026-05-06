@@ -11,11 +11,11 @@
 #include <vector>
 
 #include "base/functional/callback.h"
-#include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
+#include "brave/components/brave_account/brave_account_state_prefs.h"
 #include "brave/components/brave_account/endpoint_client/request_handle.h"
 #include "brave/components/brave_account/endpoints/auth_validate.h"
 #include "brave/components/brave_account/endpoints/login_finalize.h"
@@ -28,7 +28,6 @@
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/os_crypt/async/common/encryptor.h"
-#include "components/prefs/pref_change_registrar.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
@@ -152,13 +151,12 @@ class BraveAccountService : public KeyedService, public mojom::Authentication {
 
   std::string Decrypt(const std::string& base64) const;
 
-  const raw_ptr<PrefService> pref_service_;
+  AccountStatePrefs account_state_prefs_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   std::optional<os_crypt_async::Encryptor> encryptor_;
   std::vector<mojo::PendingReceiver<mojom::Authentication>> pending_receivers_;
   mojo::ReceiverSet<mojom::Authentication> authentication_receivers_;
   mojo::RemoteSet<mojom::AuthenticationObserver> observers_;
-  PrefChangeRegistrar pref_change_registrar_;
   base::OneShotTimer auth_validate_timer_;
   base::WeakPtrFactory<BraveAccountService> weak_factory_{this};
 };

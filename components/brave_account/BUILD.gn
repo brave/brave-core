@@ -56,8 +56,8 @@ source_set("internal") {
 
   sources = [
     "brave_account_service_constants.h",
-    "brave_account_state.cc",
-    "brave_account_state.h",
+    "brave_account_state_prefs.cc",
+    "brave_account_state_prefs.h",
     "pref_names.h",
   ]
 
