@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/resources/bookmarks/bookmarks.html b/chrome/browser/resources/bookmarks/bookmarks.html
-index d28056ba63641513b631df9990784870ae71cd13..b1cd9f314bad81b924c99d4e91bd75f8855a0e2f 100644
+index 4be33ff102af51c2f2be8e0c7ea6762792e3fb67..4b0ecae00aeb31039f58d3f5c659ca8ad2a34fd1 100644
 --- a/chrome/browser/resources/bookmarks/bookmarks.html
 +++ b/chrome/browser/resources/bookmarks/bookmarks.html
-@@ -25,6 +25,7 @@
-       }
+@@ -30,6 +30,7 @@
+       background: var(--color-webui-page-background);
      }
    </style>
 +  <link rel="stylesheet" href="chrome://resources/brave/page_specific/bookmarks/bookmarks_loading_shim.css">

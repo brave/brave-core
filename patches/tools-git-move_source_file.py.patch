@@ -1,16 +1,16 @@
 diff --git a/tools/git/move_source_file.py b/tools/git/move_source_file.py
-index e8cca8c242f6e9d9428949ac64835d613a22565c..7e0ba3fbe8ca407ad6862c7c3f573b08325d4214 100755
+index feb2f46241316baf7173c26dbbe0bbea8151a7df..e90ad243d450a4ef02363700fc6b72b4ca5b49d3 100755
 --- a/tools/git/move_source_file.py
 +++ b/tools/git/move_source_file.py
-@@ -91,6 +91,7 @@ def UpdatePostMove(from_path, to_path):
-   to update references in .gyp(i) files using a heuristic.
+@@ -92,6 +92,7 @@ def UpdatePostMove(from_path, to_path):
+   to update references in .gn/.gni/.gyp/.gypi files using a heuristic.
    """
    # Include paths always use forward slashes.
 +  from move_source_fille_utils import to_src_relative_path; from_path, to_path = to_src_relative_path(from_path, to_path)
    from_path = from_path.replace('\\', '/')
    to_path = to_path.replace('\\', '/')
    extension = os.path.splitext(from_path)[1]
-@@ -115,6 +116,7 @@ def UpdatePostMove(from_path, to_path):
+@@ -116,6 +117,7 @@ def UpdatePostMove(from_path, to_path):
    mffr.MultiFileFindReplace(
        r'(//.*)%s' % re.escape(from_path),
        r'\1%s' % to_path,

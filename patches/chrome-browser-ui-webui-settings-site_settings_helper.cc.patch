@@ -1,11 +1,11 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_helper.cc b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-index 46d1f1161d829a2cd0e3184933fb404424e4e5bc..17f87c413ac8700815178c0aae1b0f50eedf3172 100644
+index dc61627919a6bb39125edb227fe6ed0f97739a3b..c545e993f296bce5e4ff38e7aa2e817b039a57cb 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_helper.cc
 +++ b/chrome/browser/ui/webui/settings/site_settings_helper.cc
 @@ -259,6 +259,7 @@ constexpr auto kContentSettingsTypeGroupNames = std::to_array<
-     {ContentSettingsType::PERMISSION_ACTIONS_HISTORY, nullptr},
      {ContentSettingsType::SUSPICIOUS_NOTIFICATION_SHOW_ORIGINAL, nullptr},
      {ContentSettingsType::DEPRECATED_SUB_APP_INSTALLATION_PROMPTS, nullptr},
+     {ContentSettingsType::LOCAL_NETWORK_ACCESS, nullptr},
 +    BRAVE_CONTENT_SETTINGS_TYPE_GROUP_NAMES_LIST
  });
  
@@ -26,7 +26,7 @@ index 46d1f1161d829a2cd0e3184933fb404424e4e5bc..17f87c413ac8700815178c0aae1b0f50
    for (const auto& entry : kContentSettingsTypeGroupNames) {
      if (type == entry.type) {
        // Content setting types that aren't represented in the settings UI
-@@ -721,6 +724,7 @@ std::string SiteSettingSourceToString(const SiteSettingSource source) {
+@@ -716,6 +719,7 @@ std::string SiteSettingSourceToString(const SiteSettingSource source) {
  SiteSettingSource ProviderTypeToSiteSettingsSource(
      const ProviderType provider_type) {
    switch (provider_type) {
@@ -34,7 +34,7 @@ index 46d1f1161d829a2cd0e3184933fb404424e4e5bc..17f87c413ac8700815178c0aae1b0f50
      case ProviderType::kWebuiAllowlistProvider:
      case ProviderType::kComponentExtensionProvider:
        return SiteSettingSource::kAllowlist;
-@@ -750,6 +754,7 @@ SiteSettingSource ProviderTypeToSiteSettingsSource(
+@@ -745,6 +749,7 @@ SiteSettingSource ProviderTypeToSiteSettingsSource(
  std::string_view ProviderToDefaultSettingSourceString(
      const ProviderType provider) {
    switch (provider) {
@@ -42,7 +42,7 @@ index 46d1f1161d829a2cd0e3184933fb404424e4e5bc..17f87c413ac8700815178c0aae1b0f50
      case ProviderType::kPolicyProvider:
        return "policy";
      case ProviderType::kSupervisedProvider:
-@@ -875,6 +880,7 @@ base::DictValue GetExceptionForPage(
+@@ -870,6 +875,7 @@ base::DictValue GetExceptionForPage(
    exception.Set(kSource, SiteSettingSourceToString(source));
    exception.Set(kIncognito, incognito);
    exception.Set(kIsEmbargoed, is_embargoed);
