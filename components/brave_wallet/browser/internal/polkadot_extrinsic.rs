@@ -295,6 +295,21 @@ fn scale_encode_mortality(number: u32, mut period: u32) -> [u8; 2] {
     [(encoded & 0xff) as u8, (encoded >> 8) as u8]
 }
 
+fn append_extra(buf: &mut Vec<u8>, asset_tx_payment: bool) {
+    if asset_tx_payment {
+        buf.extend_from_slice(&[
+            0x00, /* tip */
+            0x00, /* asset_id */
+            0x00, /* mode (disable metadata hash verification) */
+        ]);
+    } else {
+        buf.extend_from_slice(&[
+            0x00, /* tip */
+            0x00, /* mode (disable metadata hash verification) */
+        ]);
+    }
+}
+
 /// The definition for the extrinsic signature can be found here:
 /// https://spec.polkadot.network/id-extrinsics#defn-extrinsic-signature
 ///
@@ -362,10 +377,7 @@ fn generate_extrinsic_signature_payload(
     // Write extra data, E.
     buf.extend_from_slice(&scale_encode_mortality(block_number, PERIOD));
     Compact(sender_nonce).encode_to(&mut buf);
-    buf.extend_from_slice(&[
-        0x00, /* tip */
-        0x00, /* mode (disable metadata hash verification) */
-    ]);
+    append_extra(&mut buf, chain_metadata.asset_tx_payment);
 
     // Write R_v.
     buf.extend_from_slice(&spec_version.to_le_bytes());
@@ -421,7 +433,7 @@ fn make_signed_extrinsic(
     buf.extend_from_slice(signature);
     buf.extend_from_slice(&scale_encode_mortality(block_number, PERIOD));
     Compact(sender_nonce).encode_to(&mut buf);
-    buf.extend_from_slice(&[0x00 /* tip */, 0x00 /* mode */]);
+    append_extra(&mut buf, chain_metadata.asset_tx_payment);
 
     let call_idx =
         if transfer_all { transfer_all_call_index } else { transfer_keep_alive_call_index };
