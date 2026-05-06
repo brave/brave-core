@@ -233,7 +233,7 @@ VERSION_UPGRADE_FILE = Path('.version_upgrade')
 # NOT dev-cycle changes and therefore must NOT be turned into fixups.
 _UPGRADE_COMMIT_WITH_PATCHES_PREFIXES = (
     'Conflict-resolved patches from Chromium ',
-    'Regen-fixed 🩹 patches from Chromium ',
+    'Apply-fixed 🩹 patches from Chromium ',
     'Update patches from Chromium ',
 )
 
@@ -1230,7 +1230,7 @@ class Upgrade(Versioned):
         # exception for the branch tag.
         self._commit_pinned_patches_and_fixups(
             patch_paths,
-            f'Regen-fixed 🩹 patches from Chromium {self.base_version} '
+            f'Apply-fixed 🩹 patches from Chromium {self.base_version} '
             f'to Chromium {self.target_version}.',
             no_verify=True)
 
@@ -1957,7 +1957,7 @@ class Rebase(Task):
             if comment.startswith('Update from Chromium '):
                 version.append(
                     line if not version else line.replace('pick', 'squash'))
-            elif comment.startswith('Regen-fixed 🩹 patches from Chromium '):
+            elif comment.startswith('Apply-fixed 🩹 patches from Chromium '):
                 plaster_reruns.append(line if not plaster_reruns else line.
                                       replace('pick', 'squash'))
             elif comment.startswith(

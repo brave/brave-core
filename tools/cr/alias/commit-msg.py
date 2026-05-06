@@ -65,7 +65,7 @@ import re
 
 PREFIXES_FOR_UPGRADE_COMMITS = [
     'Update from Chromium ',
-    'Regen-fixed 🩹 patches from Chromium ',
+    'Apply-fixed 🩹 patches from Chromium ',
     'Conflict-resolved patches from Chromium ',
     'Update patches from Chromium ',
     'Updated strings for Chromium ',
