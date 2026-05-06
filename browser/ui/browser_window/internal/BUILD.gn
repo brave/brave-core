@@ -57,6 +57,7 @@ source_set("internal") {
     deps += [
       "//brave/browser/email_aliases",
       "//brave/browser/ui/email_aliases",
+      "//brave/components/email_aliases:features",
     ]
   }
 }

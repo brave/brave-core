@@ -47,6 +47,7 @@ class BraveVPNController {};
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
 #include "brave/browser/email_aliases/email_aliases_service_factory.h"
 #include "brave/browser/ui/email_aliases/email_aliases_controller.h"
+#include "brave/components/email_aliases/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
@@ -113,12 +114,14 @@ void BrowserWindowFeatures::InitPostBrowserViewConstruction(
   }
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
-  if (auto* email_aliases_service =
-          email_aliases::EmailAliasesServiceFactory::GetServiceForProfile(
-              browser_view->GetProfile())) {
-    email_aliases_controller_ =
-        std::make_unique<email_aliases::EmailAliasesController>(
-            browser_view, email_aliases_service);
+  if (email_aliases::features::IsEmailAliasesEnabled()) {
+    if (auto* email_aliases_service =
+            email_aliases::EmailAliasesServiceFactory::GetServiceForProfile(
+                browser_view->GetProfile())) {
+      email_aliases_controller_ =
+          std::make_unique<email_aliases::EmailAliasesController>(
+              browser_view, email_aliases_service);
+    }
   }
 #endif
 

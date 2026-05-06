@@ -72,13 +72,15 @@ TEST_F(EmailAliasesServiceFactoryTest, NoServiceWhenFeatureDisabled) {
   EXPECT_EQ(service, nullptr);
 }
 
-TEST_F(EmailAliasesServiceFactoryTest, ServiceEnableDisableByPref) {
+TEST_F(EmailAliasesServiceFactoryTest, ServiceEnableByPref) {
   scoped_feature_list_.Reset();
   scoped_feature_list_.InitWithFeatures(
       {brave_account::features::BraveAccountFeatureForTesting(),
        features::kEmailAliases},
       {});
   auto* profile = profile_manager_.CreateTestingProfile("test");
+  profile->GetTestingPrefService()->SetManagedPref(prefs::kEmailAliasesEnabled,
+                                                   base::Value(true));
 
   brave_account::BraveAccountServiceFactory::GetInstance()->SetTestingFactory(
       profile, base::BindLambdaForTesting([&](content::BrowserContext* context)
@@ -89,20 +91,31 @@ TEST_F(EmailAliasesServiceFactoryTest, ServiceEnableDisableByPref) {
             os_crypt_async_.get());
       }));
 
-  {
-    // Pref on
-    profile->GetTestingPrefService()->SetManagedPref(
-        prefs::kEmailAliasesEnabled, base::Value(true));
-    auto* service = EmailAliasesServiceFactory::GetServiceForProfile(profile);
-    EXPECT_NE(service, nullptr);
-  }
-  {
-    // Pref off
-    profile->GetTestingPrefService()->SetManagedPref(
-        prefs::kEmailAliasesEnabled, base::Value(false));
-    auto* service = EmailAliasesServiceFactory::GetServiceForProfile(profile);
-    EXPECT_EQ(service, nullptr);
-  }
+  auto* service = EmailAliasesServiceFactory::GetServiceForProfile(profile);
+  EXPECT_NE(service, nullptr);
+}
+
+TEST_F(EmailAliasesServiceFactoryTest, ServiceDisableByPref) {
+  scoped_feature_list_.Reset();
+  scoped_feature_list_.InitWithFeatures(
+      {brave_account::features::BraveAccountFeatureForTesting(),
+       features::kEmailAliases},
+      {});
+  auto* profile = profile_manager_.CreateTestingProfile("test");
+  profile->GetTestingPrefService()->SetManagedPref(prefs::kEmailAliasesEnabled,
+                                                   base::Value(false));
+
+  brave_account::BraveAccountServiceFactory::GetInstance()->SetTestingFactory(
+      profile, base::BindLambdaForTesting([&](content::BrowserContext* context)
+                                              -> std::unique_ptr<KeyedService> {
+        return std::make_unique<brave_account::BraveAccountService>(
+            user_prefs::UserPrefs::Get(context),
+            test_url_loader_factory_.GetSafeWeakWrapper(),
+            os_crypt_async_.get());
+      }));
+
+  auto* service = EmailAliasesServiceFactory::GetServiceForProfile(profile);
+  EXPECT_EQ(service, nullptr);
 }
 
 #if !BUILDFLAG(IS_ANDROID)
