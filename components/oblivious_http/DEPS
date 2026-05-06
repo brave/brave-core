@@ -1,0 +1,4 @@
+include_rules = [
+  "+services/network/public/cpp/simple_url_loader_stream_consumer.h",
+  "+services/network/public/mojom/oblivious_http_request.mojom.h",
+]

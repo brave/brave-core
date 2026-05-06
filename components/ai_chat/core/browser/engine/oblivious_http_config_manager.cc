@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/ai_chat/core/browser/engine/ohttp_config_manager.h"
+#include "brave/components/ai_chat/core/browser/engine/oblivious_http_config_manager.h"
 
 #include <utility>
 
@@ -63,16 +63,17 @@ net::NetworkTrafficAnnotationTag GetKeyConfigTrafficAnnotationTag() {
 
 }  // namespace
 
-OHTTPConfigManager::OHTTPConfigManager(
+ObliviousHttpConfigManager::ObliviousHttpConfigManager(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* profile_prefs)
     : url_loader_factory_(std::move(url_loader_factory)),
       profile_prefs_(profile_prefs) {}
 
-OHTTPConfigManager::~OHTTPConfigManager() = default;
+ObliviousHttpConfigManager::~ObliviousHttpConfigManager() = default;
 
 // static
-void OHTTPConfigManager::DeleteExpiredKeyConfigs(PrefService* profile_prefs) {
+void ObliviousHttpConfigManager::DeleteExpiredKeyConfigs(
+    PrefService* profile_prefs) {
   if (!profile_prefs) {
     return;
   }
@@ -94,8 +95,9 @@ void OHTTPConfigManager::DeleteExpiredKeyConfigs(PrefService* profile_prefs) {
   }
 }
 
-std::optional<OHTTPConfigManager::KeyConfigResult>
-OHTTPConfigManager::GetCachedKeyConfig(const std::string& model_name) const {
+std::optional<ObliviousHttpConfigManager::KeyConfigResult>
+ObliviousHttpConfigManager::GetCachedKeyConfig(
+    const std::string& model_name) const {
   if (!profile_prefs_) {
     return std::nullopt;
   }
@@ -127,8 +129,8 @@ OHTTPConfigManager::GetCachedKeyConfig(const std::string& model_name) const {
                          std::move(endpoint_url)};
 }
 
-void OHTTPConfigManager::RequestKeyConfig(const std::string& model_name,
-                                          KeyConfigCallback callback) {
+void ObliviousHttpConfigManager::RequestKeyConfig(const std::string& model_name,
+                                                  KeyConfigCallback callback) {
   if (auto cached = GetCachedKeyConfig(model_name)) {
     std::move(callback).Run(std::move(cached));
     return;
@@ -136,14 +138,14 @@ void OHTTPConfigManager::RequestKeyConfig(const std::string& model_name,
   FetchKeyConfig(model_name, std::move(callback));
 }
 
-void OHTTPConfigManager::CancelAll() {
+void ObliviousHttpConfigManager::CancelAll() {
   if (api_request_helper_) {
     api_request_helper_->CancelAll();
   }
 }
 
-void OHTTPConfigManager::FetchKeyConfig(const std::string& model_name,
-                                        KeyConfigCallback callback) {
+void ObliviousHttpConfigManager::FetchKeyConfig(const std::string& model_name,
+                                                KeyConfigCallback callback) {
   if (!api_request_helper_) {
     api_request_helper_ =
         std::make_unique<api_request_helper::APIRequestHelper>(
@@ -154,13 +156,13 @@ void OHTTPConfigManager::FetchKeyConfig(const std::string& model_name,
       GetEndpointUrl(/*premium=*/false,
                      absl::StrFormat(kKeyConfigPathFormat, model_name)),
       /*payload=*/"", /*payload_content_type=*/"",
-      base::BindOnce(&OHTTPConfigManager::OnKeyConfigFetched,
+      base::BindOnce(&ObliviousHttpConfigManager::OnKeyConfigFetched,
                      weak_factory_.GetWeakPtr(), model_name,
                      std::move(callback)),
       GetBraveHeaders(/*credential=*/std::nullopt));
 }
 
-void OHTTPConfigManager::OnKeyConfigFetched(
+void ObliviousHttpConfigManager::OnKeyConfigFetched(
     std::string model_name,
     KeyConfigCallback callback,
     api_request_helper::APIRequestResult result) {

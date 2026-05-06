@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/ai_chat/core/browser/engine/ohttp_api_client.h"
+#include "brave/components/ai_chat/core/browser/engine/oblivious_http_api_client.h"
 
 #include <utility>
 
@@ -67,15 +67,16 @@ bool IsStreamingEnabled(
 
 }  // namespace
 
-OHTTPAPIClient::InnerClient::InnerClient(CompletionCallback completion_callback,
-                                         ChunkCallback chunk_callback)
+ObliviousHttpAPIClient::InnerClient::InnerClient(
+    CompletionCallback completion_callback,
+    ChunkCallback chunk_callback)
     : completion_callback_(std::move(completion_callback)),
       chunk_callback_(std::move(chunk_callback)) {}
 
-OHTTPAPIClient::InnerClient::~InnerClient() = default;
+ObliviousHttpAPIClient::InnerClient::~InnerClient() = default;
 
 mojo::PendingRemote<network::mojom::ObliviousHttpClient>
-OHTTPAPIClient::InnerClient::BindCompletionReceiver() {
+ObliviousHttpAPIClient::InnerClient::BindCompletionReceiver() {
   auto remote = completion_receiver_.BindNewPipeAndPassRemote();
   completion_receiver_.set_disconnect_handler(
       base::BindOnce(&InnerClient::OnPipeDisconnected, base::Unretained(this)));
@@ -83,14 +84,14 @@ OHTTPAPIClient::InnerClient::BindCompletionReceiver() {
 }
 
 mojo::PendingRemote<network::mojom::ObliviousHttpChunkClient>
-OHTTPAPIClient::InnerClient::BindChunkReceiver() {
+ObliviousHttpAPIClient::InnerClient::BindChunkReceiver() {
   auto remote = chunk_receiver_.BindNewPipeAndPassRemote();
   chunk_receiver_.set_disconnect_handler(
       base::BindOnce(&InnerClient::OnPipeDisconnected, base::Unretained(this)));
   return remote;
 }
 
-void OHTTPAPIClient::InnerClient::OnCompleted(
+void ObliviousHttpAPIClient::InnerClient::OnCompleted(
     network::mojom::ObliviousHttpCompletionResultPtr response) {
   if (completion_callback_.is_null()) {
     return;
@@ -115,33 +116,35 @@ void OHTTPAPIClient::InnerClient::OnCompleted(
   std::move(completion_callback_).Run(response_code, std::move(body));
 }
 
-void OHTTPAPIClient::InnerClient::OnBodyChunk(const std::string& chunk) {
+void ObliviousHttpAPIClient::InnerClient::OnBodyChunk(
+    const std::string& chunk) {
   if (!chunk_callback_.is_null()) {
     chunk_callback_.Run(chunk);
   }
 }
 
-void OHTTPAPIClient::InnerClient::OnPipeDisconnected() {
+void ObliviousHttpAPIClient::InnerClient::OnPipeDisconnected() {
   if (completion_callback_.is_null()) {
     return;
   }
   std::move(completion_callback_).Run(net::ERR_FAILED, std::string());
 }
 
-OHTTPAPIClient::Request::Request(std::string model_name,
-                                 std::string request_body,
-                                 GenerationDataCallback data_received_callback,
-                                 GenerationCompletedCallback completed_callback)
+ObliviousHttpAPIClient::Request::Request(
+    std::string model_name,
+    std::string request_body,
+    GenerationDataCallback data_received_callback,
+    GenerationCompletedCallback completed_callback)
     : model_name(std::move(model_name)),
       request_body(std::move(request_body)),
       data_received_callback(std::move(data_received_callback)),
       completed_callback(std::move(completed_callback)) {}
 
-OHTTPAPIClient::Request::Request(Request&&) = default;
+ObliviousHttpAPIClient::Request::Request(Request&&) = default;
 
-OHTTPAPIClient::Request::~Request() = default;
+ObliviousHttpAPIClient::Request::~Request() = default;
 
-OHTTPAPIClient::OHTTPAPIClient(
+ObliviousHttpAPIClient::ObliviousHttpAPIClient(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     network::NetworkContextGetter network_context_getter,
     AIChatCredentialManager* credential_manager,
@@ -150,13 +153,13 @@ OHTTPAPIClient::OHTTPAPIClient(
       url_loader_factory_(url_loader_factory),
       network_context_getter_(std::move(network_context_getter)),
       credential_manager_(credential_manager),
-      config_manager_(
-          std::make_unique<OHTTPConfigManager>(std::move(url_loader_factory),
-                                               profile_prefs)) {}
+      config_manager_(std::make_unique<ObliviousHttpConfigManager>(
+          std::move(url_loader_factory),
+          profile_prefs)) {}
 
-OHTTPAPIClient::~OHTTPAPIClient() = default;
+ObliviousHttpAPIClient::~ObliviousHttpAPIClient() = default;
 
-void OHTTPAPIClient::PerformRequest(
+void ObliviousHttpAPIClient::PerformRequest(
     const mojom::ModelOptions& model_options,
     std::vector<OAIMessage> messages,
     std::optional<base::ListValue> oai_tool_definitions,
@@ -178,32 +181,33 @@ void OHTTPAPIClient::PerformRequest(
   }
 
   credential_manager_->FetchPremiumCredential(base::BindOnce(
-      &OHTTPAPIClient::OnCredentialFetched, weak_factory_.GetWeakPtr(),
+      &ObliviousHttpAPIClient::OnCredentialFetched, weak_factory_.GetWeakPtr(),
       Request(leo_opts.name, std::move(request_body),
               std::move(data_received_callback),
               std::move(completed_callback))));
 }
 
-void OHTTPAPIClient::ClearAllQueries() {
+void ObliviousHttpAPIClient::ClearAllQueries() {
   weak_factory_.InvalidateWeakPtrs();
   config_manager_->CancelAll();
   inner_clients_.clear();
 }
 
-void OHTTPAPIClient::OnCredentialFetched(
+void ObliviousHttpAPIClient::OnCredentialFetched(
     Request request,
     std::optional<CredentialCacheEntry> credential) {
   const std::string model_name = request.model_name;
   config_manager_->RequestKeyConfig(
-      model_name, base::BindOnce(&OHTTPAPIClient::OnKeyConfigReady,
+      model_name, base::BindOnce(&ObliviousHttpAPIClient::OnKeyConfigReady,
                                  weak_factory_.GetWeakPtr(), std::move(request),
                                  std::move(credential)));
 }
 
-void OHTTPAPIClient::OnKeyConfigReady(
+void ObliviousHttpAPIClient::OnKeyConfigReady(
     Request request,
     std::optional<CredentialCacheEntry> credential,
-    std::optional<OHTTPConfigManager::KeyConfigResult> key_config_result) {
+    std::optional<ObliviousHttpConfigManager::KeyConfigResult>
+        key_config_result) {
   if (!key_config_result) {
     if (credential.has_value()) {
       credential_manager_->PutCredentialInCache(std::move(*credential));
@@ -215,8 +219,8 @@ void OHTTPAPIClient::OnKeyConfigReady(
                        std::move(credential));
 }
 
-void OHTTPAPIClient::DispatchOHTTPRequest(
-    OHTTPConfigManager::KeyConfigResult key_config_result,
+void ObliviousHttpAPIClient::DispatchOHTTPRequest(
+    ObliviousHttpConfigManager::KeyConfigResult key_config_result,
     Request request,
     std::optional<CredentialCacheEntry> credential) {
   if (!network_context_getter_) {
@@ -263,10 +267,10 @@ void OHTTPAPIClient::DispatchOHTTPRequest(
   const bool chunking_enabled =
       IsStreamingEnabled(request.data_received_callback);
   *it = std::make_unique<InnerClient>(
-      base::BindOnce(&OHTTPAPIClient::OnInnerResponse,
+      base::BindOnce(&ObliviousHttpAPIClient::OnInnerResponse,
                      weak_factory_.GetWeakPtr(), std::move(request),
                      std::move(credential)),
-      base::BindRepeating(&OHTTPAPIClient::OnInnerChunkReceived,
+      base::BindRepeating(&ObliviousHttpAPIClient::OnInnerChunkReceived,
                           weak_factory_.GetWeakPtr()));
 
   InnerClient& inner_client = **it;
@@ -280,7 +284,7 @@ void OHTTPAPIClient::DispatchOHTTPRequest(
                                        inner_client.BindCompletionReceiver());
 }
 
-void OHTTPAPIClient::OnInnerResponse(
+void ObliviousHttpAPIClient::OnInnerResponse(
     Request request,
     std::optional<CredentialCacheEntry> credential,
     int response_code,
@@ -328,11 +332,11 @@ void OHTTPAPIClient::OnInnerResponse(
       .Run(base::unexpected(MapResponseCodeToError(response_code)));
 }
 
-void OHTTPAPIClient::OnInnerChunkReceived(std::string chunk) {
+void ObliviousHttpAPIClient::OnInnerChunkReceived(std::string chunk) {
   LOG(ERROR) << "OHTTP chunk: " << chunk;
 }
 
-void OHTTPAPIClient::RunCompletedWithError(
+void ObliviousHttpAPIClient::RunCompletedWithError(
     GenerationCompletedCallback completed_callback,
     mojom::APIError error) {
   std::move(completed_callback).Run(base::unexpected(error));

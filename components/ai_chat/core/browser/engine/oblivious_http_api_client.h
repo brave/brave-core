@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_OHTTP_API_CLIENT_H_
-#define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_OHTTP_API_CLIENT_H_
+#ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_OBLIVIOUS_HTTP_API_CLIENT_H_
+#define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_OBLIVIOUS_HTTP_API_CLIENT_H_
 
 #include <list>
 #include <memory>
@@ -20,7 +20,7 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_api_client.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
-#include "brave/components/ai_chat/core/browser/engine/ohttp_config_manager.h"
+#include "brave/components/ai_chat/core/browser/engine/oblivious_http_config_manager.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
 #include "mojo/public/cpp/bindings/receiver.h"
@@ -37,21 +37,21 @@ namespace ai_chat {
 
 // Performs OAI-compatible chat completion requests over OHTTP. Routes the
 // inner HTTP request through the AI Chat OHTTP relay (the AI Chat server),
-// using a cached HPKE key config managed by OHTTPConfigManager. The Leo SKU
-// credential, the Brave services key, and the model name are passed as outer
-// (relay) request headers.
+// using a cached HPKE key config managed by ObliviousHttpConfigManager. The Leo
+// SKU credential, the Brave services key, and the model name are passed as
+// outer (relay) request headers.
 //
-class OHTTPAPIClient : public OAIAPIClient {
+class ObliviousHttpAPIClient : public OAIAPIClient {
  public:
-  OHTTPAPIClient(
+  ObliviousHttpAPIClient(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       network::NetworkContextGetter network_context_getter,
       AIChatCredentialManager* credential_manager,
       PrefService* profile_prefs);
 
-  OHTTPAPIClient(const OHTTPAPIClient&) = delete;
-  OHTTPAPIClient& operator=(const OHTTPAPIClient&) = delete;
-  ~OHTTPAPIClient() override;
+  ObliviousHttpAPIClient(const ObliviousHttpAPIClient&) = delete;
+  ObliviousHttpAPIClient& operator=(const ObliviousHttpAPIClient&) = delete;
+  ~ObliviousHttpAPIClient() override;
 
   // OAIAPIClient:
   // |model_options| must hold a LeoModelOptions variant.
@@ -68,9 +68,9 @@ class OHTTPAPIClient : public OAIAPIClient {
  private:
   // Self-managed mojo client that receives both body chunks
   // (ObliviousHttpChunkClient) and the final completion (ObliviousHttpClient)
-  // for a single OHTTP request. Owned by OHTTPAPIClient via inner_clients_. The
-  // owning list entry is erased once the dispatch callback fires (from either
-  // OnCompleted or a pipe disconnect).
+  // for a single OHTTP request. Owned by ObliviousHttpAPIClient via
+  // inner_clients_. The owning list entry is erased once the dispatch callback
+  // fires (from either OnCompleted or a pipe disconnect).
   class InnerClient : public network::mojom::ObliviousHttpClient,
                       public network::mojom::ObliviousHttpChunkClient {
    public:
@@ -140,9 +140,10 @@ class OHTTPAPIClient : public OAIAPIClient {
   void OnKeyConfigReady(
       Request request,
       std::optional<CredentialCacheEntry> credential,
-      std::optional<OHTTPConfigManager::KeyConfigResult> key_config_result);
+      std::optional<ObliviousHttpConfigManager::KeyConfigResult>
+          key_config_result);
   void DispatchOHTTPRequest(
-      OHTTPConfigManager::KeyConfigResult key_config_result,
+      ObliviousHttpConfigManager::KeyConfigResult key_config_result,
       Request request,
       std::optional<CredentialCacheEntry> credential);
   void OnInnerResponse(Request request,
@@ -157,12 +158,12 @@ class OHTTPAPIClient : public OAIAPIClient {
   network::NetworkContextGetter network_context_getter_;
   raw_ptr<AIChatCredentialManager> credential_manager_;
 
-  std::unique_ptr<OHTTPConfigManager> config_manager_;
+  std::unique_ptr<ObliviousHttpConfigManager> config_manager_;
   InnerClientList inner_clients_;
 
-  base::WeakPtrFactory<OHTTPAPIClient> weak_factory_{this};
+  base::WeakPtrFactory<ObliviousHttpAPIClient> weak_factory_{this};
 };
 
 }  // namespace ai_chat
 
-#endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_OHTTP_API_CLIENT_H_
+#endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_OBLIVIOUS_HTTP_API_CLIENT_H_

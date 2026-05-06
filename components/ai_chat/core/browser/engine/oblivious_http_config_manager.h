@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_OHTTP_CONFIG_MANAGER_H_
-#define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_OHTTP_CONFIG_MANAGER_H_
+#ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_OBLIVIOUS_HTTP_CONFIG_MANAGER_H_
+#define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_OBLIVIOUS_HTTP_CONFIG_MANAGER_H_
 
 #include <memory>
 #include <optional>
@@ -30,7 +30,7 @@ namespace ai_chat {
 // retrieves a key config and endpoint URL from
 // /v1/models/{model_name}/ohttp_config. Concurrent requests for the same model
 // are handled by APIRequestHelper independently.
-class OHTTPConfigManager {
+class ObliviousHttpConfigManager {
  public:
   struct KeyConfigResult {
     std::string key_config;  // decoded raw HPKE key bytes
@@ -44,13 +44,14 @@ class OHTTPConfigManager {
 
   static void DeleteExpiredKeyConfigs(PrefService* profile_prefs);
 
-  OHTTPConfigManager(
+  ObliviousHttpConfigManager(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       PrefService* profile_prefs);
 
-  OHTTPConfigManager(const OHTTPConfigManager&) = delete;
-  OHTTPConfigManager& operator=(const OHTTPConfigManager&) = delete;
-  ~OHTTPConfigManager();
+  ObliviousHttpConfigManager(const ObliviousHttpConfigManager&) = delete;
+  ObliviousHttpConfigManager& operator=(const ObliviousHttpConfigManager&) =
+      delete;
+  ~ObliviousHttpConfigManager();
 
   // Ensures a fresh key config is available for |model_name|, then calls
   // |callback|. If a valid cached config exists the callback is invoked
@@ -74,9 +75,9 @@ class OHTTPConfigManager {
   raw_ptr<PrefService> profile_prefs_;
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
 
-  base::WeakPtrFactory<OHTTPConfigManager> weak_factory_{this};
+  base::WeakPtrFactory<ObliviousHttpConfigManager> weak_factory_{this};
 };
 
 }  // namespace ai_chat
 
-#endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_OHTTP_CONFIG_MANAGER_H_
+#endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_OBLIVIOUS_HTTP_CONFIG_MANAGER_H_

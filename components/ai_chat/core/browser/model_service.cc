@@ -37,7 +37,7 @@
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_conversation_api.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_conversation_api_v2.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_oai.h"
-#include "brave/components/ai_chat/core/browser/engine/ohttp_config_manager.h"
+#include "brave/components/ai_chat/core/browser/engine/oblivious_http_config_manager.h"
 #include "brave/components/ai_chat/core/browser/model_validator.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/constants.h"
@@ -669,7 +669,7 @@ ModelService::ModelService(PrefService* prefs_service,
                            network::NetworkContextGetter network_context_getter)
     : pref_service_(prefs_service),
       network_context_getter_(std::move(network_context_getter)) {
-  OHTTPConfigManager::DeleteExpiredKeyConfigs(pref_service_);
+  ObliviousHttpConfigManager::DeleteExpiredKeyConfigs(pref_service_);
   // Load the model list synchronously so callers can resolve a default
   // model immediately after construction. Custom-model API keys decrypt
   // to empty strings until `OnEncryptorReady()` delivers the `Encryptor`;
