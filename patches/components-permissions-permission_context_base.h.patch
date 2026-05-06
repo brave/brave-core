@@ -1,5 +1,5 @@
 diff --git a/components/permissions/permission_context_base.h b/components/permissions/permission_context_base.h
-index 20e47a45e26c45bd0a146385075389f30e9763d1..928f6f7d33f90cdb37faad12d08f2bffe9a59cf9 100644
+index a6e895712f4a952581ea1c2ce7077a1ab703945f..789999766a5ee04926c1e205d57ac62186824f66 100644
 --- a/components/permissions/permission_context_base.h
 +++ b/components/permissions/permission_context_base.h
 @@ -88,6 +88,7 @@ using BrowserPermissionCallback =
@@ -10,7 +10,7 @@ index 20e47a45e26c45bd0a146385075389f30e9763d1..928f6f7d33f90cdb37faad12d08f2bff
  class PermissionContextBase : public content_settings::Observer {
   public:
    PermissionContextBase(
-@@ -289,6 +290,7 @@ class PermissionContextBase : public content_settings::Observer {
+@@ -301,6 +302,7 @@ class PermissionContextBase : public content_settings::Observer {
  #endif  // BUILDFLAG(IS_ANDROID)
  
   private:
@@ -18,8 +18,8 @@ index 20e47a45e26c45bd0a146385075389f30e9763d1..928f6f7d33f90cdb37faad12d08f2bff
    friend class PermissionContextBaseTests;
  
    // Called when a request is no longer used so it can be cleaned up.
-@@ -302,7 +304,7 @@ class PermissionContextBase : public content_settings::Observer {
-       PermissionSetting new_value);
+@@ -315,7 +317,7 @@ class PermissionContextBase : public content_settings::Observer {
+ 
    // This is the callback for PermissionRequest and is called once the user
    // allows/blocks/dismisses a permission prompt.
 -  void PermissionDecided(const permissions::PermissionPromptDecision& decision,
@@ -27,7 +27,7 @@ index 20e47a45e26c45bd0a146385075389f30e9763d1..928f6f7d33f90cdb37faad12d08f2bff
                           const PermissionRequestData& request_data);
  
    raw_ptr<content::BrowserContext> browser_context_;
-@@ -323,6 +325,7 @@ class PermissionContextBase : public content_settings::Observer {
+@@ -336,6 +338,7 @@ class PermissionContextBase : public content_settings::Observer {
    base::WeakPtrFactory<PermissionContextBase> weak_factory_{this};
  };
  
