@@ -65,6 +65,7 @@ cargo_crate("lib") {
   ]
   inputs = [
     "//brave/third_party/rust/chromium_crates_io/vendor/curve25519-dalek-v4/src/../README.md",
+    "//brave/third_party/rust/chromium_crates_io/vendor/curve25519-dalek-v4/src/../docs/assets/rustdoc-include-katex-header.html",
     "//brave/third_party/rust/chromium_crates_io/vendor/curve25519-dalek-v4/src/../docs/avx2-notes.md",
     "//brave/third_party/rust/chromium_crates_io/vendor/curve25519-dalek-v4/src/../docs/ifma-notes.md",
     "//brave/third_party/rust/chromium_crates_io/vendor/curve25519-dalek-v4/src/../docs/parallel-formulas.md",
