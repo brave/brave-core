@@ -52,6 +52,7 @@ extension Preferences.AutoCloseTabsOption: RepresentableOptionType {
 protocol SettingsDelegate: AnyObject {
   func settingsOpenURLInNewTab(_ url: URL)
   func settingsOpenURLs(_ urls: [URL], loadImmediately: Bool)
+  func settingsDidCompleteOriginPurchase()
 
   func settingsCreateFakeTabs()
   func settingsCreateFakeBookmarks()
@@ -889,9 +890,9 @@ class SettingsViewController: TableViewController {
                 rootView: OriginPaywallView(
                   viewModel: .init(store: .init(skusService: skusService)),
                   didPurchase: { [weak self] in
-                    PrivacyReportsManager.cancelNotification()
-                    BrowserViewController.cancelScheduleDefaultBrowserNotification()
-                    self?.navigationController?.pushViewController(
+                    guard let self else { return }
+                    settingsDelegate?.settingsDidCompleteOriginPurchase()
+                    navigationController?.pushViewController(
                       originSettingsController(),
                       animated: true
                     )
