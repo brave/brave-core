@@ -1,13 +1,44 @@
 diff --git a/services/network/oblivious_http_request_handler.cc b/services/network/oblivious_http_request_handler.cc
-index d143da451305d4c4fe520624f071042dbc79863d..485c5184f325033c582b68b0c73f1fe2a7f3ad6a 100644
+index d143da451305d4c4fe520624f071042dbc79863d..2b23b8e39f75ee1c6618106009a893480366ba48 100644
 --- a/services/network/oblivious_http_request_handler.cc
 +++ b/services/network/oblivious_http_request_handler.cc
-@@ -379,6 +379,8 @@ void ObliviousHttpRequestHandler::ContinueHandlingRequest(
+@@ -165,6 +165,7 @@ class ObliviousHttpRequestHandler::RequestState {
+   std::unique_ptr<TrustTokenRequestHelper> trust_token_helper;
+   net::NetLogWithSource net_log;
+   std::optional<StatefulObliviousHttpClient> ohttp_client;
++  BRAVE_OBLIVIOUS_HTTP_REQUEST_STATE_MEMBERS
+ };
+ 
+ ObliviousHttpRequestHandler::ObliviousHttpRequestHandler(
+@@ -354,6 +355,7 @@ void ObliviousHttpRequestHandler::ContinueHandlingRequest(
+   }
+ 
+   // Encrypt
++  BRAVE_OBLIVIOUS_HTTP_MAYBE_ENCRYPT_AS_CHUNKED
+   auto maybe_client = StatefulObliviousHttpClient::CreateFromKeyConfig(
+       std::move(state->request->key_config));
+   if (!maybe_client) {
+@@ -379,6 +381,7 @@ void ObliviousHttpRequestHandler::ContinueHandlingRequest(
    resource_request->load_flags |= net::LOAD_DISABLE_CACHE;
    resource_request->net_log_create_info = state->net_log.source();
  
 +  BRAVE_OBLIVIOUS_HTTP_CONTINUE_HANDLING_REQUEST
-+
    state->loader = SimpleURLLoader::Create(
        std::move(resource_request),
        net::NetworkTrafficAnnotationTag(state->request->traffic_annotation));
+@@ -388,6 +391,7 @@ void ObliviousHttpRequestHandler::ContinueHandlingRequest(
+   state->loader->SetTimeoutDuration(state->request->timeout_duration
+                                         ? *state->request->timeout_duration
+                                         : kDefaultRequestTimeout);
++  BRAVE_OBLIVIOUS_HTTP_MAYBE_DOWNLOAD_AS_STREAM
+   state->loader->DownloadToString(
+       GetURLLoaderFactory(),
+       base::BindOnce(&ObliviousHttpRequestHandler::OnRequestComplete,
+@@ -450,6 +454,7 @@ void ObliviousHttpRequestHandler::OnRequestComplete(
+     return;
+   }
+ 
++  BRAVE_OBLIVIOUS_HTTP_MAYBE_NOTIFY_COMPLETE_FROM_CHUNKS
+   auto maybe_payload =
+       state->ohttp_client->DecryptResponse(std::move(response).value());
+   if (!maybe_payload) {
