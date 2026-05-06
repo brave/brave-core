@@ -3,14 +3,23 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import {
+  getLocale,
+  // <if expr="enable_ai_chat_tab_management_tool">
+  formatLocale,
+  // </if>
+} from '$web-common/locale'
+import * as Mojom from '../../../common/mojom'
 // <if expr="enable_ai_chat_tab_management_tool">
 import * as React from 'react'
-import { formatLocale } from '$web-common/locale'
-import * as Mojom from '../../../common/mojom'
 // </if>
 
 export function getToolPermissionImplications(toolName: string) {
   switch (toolName) {
+    case Mojom.SEMANTIC_HISTORY_SEARCH_TOOL_NAME:
+      return getLocale(
+        S.CHAT_UI_TOOL_SEMANTIC_HISTORY_SEARCH_PERMISSION_IMPLICATIONS,
+      )
     // <if expr="enable_ai_chat_tab_management_tool">
     case Mojom.TAB_MANAGEMENT_TOOL_NAME:
       return formatLocale(

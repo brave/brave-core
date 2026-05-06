@@ -66,13 +66,11 @@ export default function ToolPermissionChallenge(props: Props) {
           </>
         )}
 
+        {toolPermissionImplications && <p>{toolPermissionImplications}</p>}
         {props.toolUseEvent.permissionChallenge?.plan && (
-          <>
-            {toolPermissionImplications && <p>{toolPermissionImplications}</p>}
-            <p className={styles.assessment}>
-              {props.toolUseEvent.permissionChallenge?.plan}
-            </p>
-          </>
+          <p className={styles.assessment}>
+            {props.toolUseEvent.permissionChallenge.plan}
+          </p>
         )}
 
         <ConversationAreaButton
