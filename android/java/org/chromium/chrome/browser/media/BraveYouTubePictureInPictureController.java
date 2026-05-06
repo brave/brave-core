@@ -69,7 +69,7 @@ public class BraveYouTubePictureInPictureController {
      * timeout. The ceiling exists only as a safety net for the case where the renderer never
      * reports the exit (broken page, JS failure, etc.).
      */
-    @VisibleForTesting static final long FULLSCREEN_EXIT_FALLBACK_MS = 300L;
+    @VisibleForTesting static final long FULLSCREEN_EXIT_FALLBACK_MS = 500L;
 
     /**
      * Time given to the user/system to confirm dismissal of the PiP window before we suspend the
