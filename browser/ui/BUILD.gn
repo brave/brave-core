@@ -439,6 +439,7 @@ source_set("ui") {
       "//brave/browser/ui/tabs:tab_strip",
       "//brave/browser/ui/webui/brave_welcome_page",
       "//brave/browser/ui/webui/settings/brave_account",
+      "//brave/browser/workspace",
       "//brave/common",
       "//brave/components/brave_account",
       "//brave/components/brave_account:features",

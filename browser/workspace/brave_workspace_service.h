@@ -21,7 +21,6 @@
 #include "components/sessions/core/command_storage_backend.h"
 #include "components/sessions/core/command_storage_manager.h"
 #include "components/sessions/core/session_command.h"
-#include "components/sessions/core/session_types.h"
 
 class PrefService;
 class Profile;
