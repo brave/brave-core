@@ -443,8 +443,6 @@ class ConversationHandler : public mojom::ConversationHandler,
       const std::optional<std::vector<mojom::UploadedFilePtr>>& uploaded_files,
       const std::optional<std::string>& intended_model_key = std::nullopt);
 
-  raw_ptr<AssociatedContentManager> associated_content_manager_;
-
   std::string model_key_;
   // Chat conversation entries
   std::vector<mojom::ConversationTurnPtr> chat_history_;
@@ -490,6 +488,12 @@ class ConversationHandler : public mojom::ConversationHandler,
   // ToolProvider can obtain its base::WeakPtr<Tool> instances from elsewhere
   // (e.g. a KeyedService, or global singleton).
   std::vector<std::unique_ptr<ToolProvider>> tool_providers_;
+
+  // Pointer into one of the entries in `tool_providers_` above. Declared after
+  // `tool_providers_` so that it is destroyed first — otherwise the unique_ptr
+  // owning the AssociatedContentManager is freed before this raw_ptr,
+  // triggering BackupRefPtr's dangling-pointer check.
+  raw_ptr<AssociatedContentManager> associated_content_manager_;
 
   // Data store UUID for conversation
   raw_ptr<mojom::Conversation> metadata_;

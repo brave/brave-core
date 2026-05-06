@@ -93,6 +93,7 @@ source_set("unit_tests") {
     "associated_web_contents_content_unittest.cc",
     "page_content_blocks_unittest.cc",
     "page_content_fetcher_unittest.cc",
+    "script_tool_unittest.cc",
   ]
 
   deps = [
