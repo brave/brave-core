@@ -44,6 +44,21 @@ AdBlockPrefService::AdBlockPrefService(AdBlockService* ad_block_service,
                                        const std::string& locale)
     : ad_block_service_(ad_block_service), prefs_(prefs) {
   pref_change_registrar_.reset(new PrefChangeRegistrar());
+  if (!local_state->GetBoolean(
+          prefs::kMigratedAdblockSocialMediaBlockingSettings)) {
+    // Yes, we're reading these on the first profile launched, and migrating
+    // them to Local State. It's not ideal, but that's how the settings have
+    // existed for a long time.
+    for (const auto& pref :
+         {prefs::kFBEmbedControlType, prefs::kTwitterEmbedControlType,
+          prefs::kLinkedInEmbedControlType}) {
+      if (prefs->FindPreference(pref)->HasUserSetting()) {
+        local_state->SetBoolean(pref, prefs->GetBoolean(pref));
+      }
+    }
+    local_state->SetBoolean(prefs::kMigratedAdblockSocialMediaBlockingSettings,
+                            true);
+  }
   pref_change_registrar_->Init(prefs_);
   pref_change_registrar_->Add(
       prefs::kFBEmbedControlType,

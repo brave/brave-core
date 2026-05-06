@@ -416,10 +416,16 @@ void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kAdBlockOnlyModeEnabled, false);
   registry->RegisterBooleanPref(
       prefs::kAdBlockOnlyModeWasEnabledForSupportedLocale, false);
+  registry->RegisterBooleanPref(prefs::kFBEmbedControlType, true);
+  registry->RegisterBooleanPref(prefs::kTwitterEmbedControlType, true);
+  registry->RegisterBooleanPref(prefs::kLinkedInEmbedControlType, false);
 }
 
 void RegisterPrefsForAdBlockServiceForMigration(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kAdBlockCookieListOptInShown, false);
+  // Added 05/2026
+  registry->RegisterBooleanPref(
+      prefs::kMigratedAdblockSocialMediaBlockingSettings, false);
 }
 
 void MigrateObsoletePrefsForAdBlockService(PrefService* local_state) {
