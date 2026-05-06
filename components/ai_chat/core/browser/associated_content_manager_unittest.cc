@@ -464,9 +464,8 @@ TEST_F(AssociatedContentManagerUnitTest,
   conversation_handler_->associated_content_manager()
       ->UpdateToolsForNewGenerationLoop(done.GetCallback());
   EXPECT_TRUE(done.Wait());
-  EXPECT_TRUE(conversation_handler_->associated_content_manager()
-                  ->GetTools()
-                  .empty());
+  EXPECT_TRUE(
+      conversation_handler_->associated_content_manager()->GetTools().empty());
 }
 
 TEST_F(AssociatedContentManagerUnitTest,
