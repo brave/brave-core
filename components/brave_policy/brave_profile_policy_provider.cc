@@ -11,7 +11,7 @@
 #include "base/values.h"
 #include "brave/components/brave_origin/brave_origin_utils.h"
 #include "brave/components/brave_policy/ad_block_only_mode/ad_block_only_mode_policy_manager.h"
-#include "brave/components/brave_policy/brave_policy_manager_base.h"
+#include "brave/components/brave_policy/brave_policy_manager_registry.h"
 #include "components/policy/core/common/policy_bundle.h"
 #include "components/policy/core/common/policy_map.h"
 #include "components/policy/core/common/policy_namespace.h"
@@ -96,7 +96,7 @@ void BraveProfilePolicyProvider::OnBravePoliciesReady() {
   // `IsFirstPolicyLoadComplete` on the empty load. Likewise,
   // `policies_ready_` is gated on full readiness so a `SetProfileID`
   // call in this window doesn't trigger a partial refresh.
-  if (!BravePolicyManagerBase::AllInitialized()) {
+  if (!BravePolicyManagerRegistry::AllInitialized()) {
     return;
   }
 

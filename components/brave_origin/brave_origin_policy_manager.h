@@ -12,7 +12,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/observer_list.h"
 #include "brave/components/brave_origin/brave_origin_policy_info.h"
-#include "brave/components/brave_policy/brave_policy_manager_base.h"
+#include "brave/components/brave_policy/brave_policy_manager_registry.h"
 #include "brave/components/brave_policy/brave_policy_observer.h"
 
 class PrefService;
@@ -28,7 +28,7 @@ using PoliciesEnabledMap = base::flat_map<std::string, bool>;
 // Singleton that holds BraveOrigin preference definitions and manages
 // access to policy values from local state. This completely abstracts away
 // the local state management from policy providers.
-class BraveOriginPolicyManager : public brave_policy::BravePolicyManagerBase {
+class BraveOriginPolicyManager {
  public:
   static BraveOriginPolicyManager* GetInstance();
 
@@ -68,7 +68,7 @@ class BraveOriginPolicyManager : public brave_policy::BravePolicyManagerBase {
   bool IsProfilePolicy(std::string_view policy_key) const;
 
   // Check if the singleton has been initialized
-  bool IsInitialized() const override;
+  bool IsInitialized() const;
 
   // Set/get the purchase state. When the purchase state changes,
   // observers are notified to refresh policies.
@@ -89,7 +89,7 @@ class BraveOriginPolicyManager : public brave_policy::BravePolicyManagerBase {
   friend class BraveOriginPolicyManagerTest;
 
   BraveOriginPolicyManager();
-  ~BraveOriginPolicyManager() override;
+  ~BraveOriginPolicyManager();
 
   // Internal helper to get policy value with policy key and default value
   bool GetPolicyValueInternal(std::string_view policy_key,
@@ -103,6 +103,11 @@ class BraveOriginPolicyManager : public brave_policy::BravePolicyManagerBase {
   BraveOriginPolicyMap profile_policy_definitions_;
   raw_ptr<PrefService> local_state_ = nullptr;
   base::ObserverList<brave_policy::BravePolicyObserver> observers_;
+
+  // Participates in `BravePolicyManagerRegistry::AllInitialized()`. Declared
+  // last so the readiness callback isn't invoked against partially
+  // constructed state (`initialized_` above must already exist).
+  brave_policy::BravePolicyManagerRegistration registration_;
 };
 
 }  // namespace brave_origin

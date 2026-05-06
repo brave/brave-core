@@ -33,7 +33,7 @@ class BraveProfilePolicyProviderTest : public ::testing::Test {
   void SetUp() override {
     // Register prefs needed by both managers so their `Init` calls succeed
     // and they report `IsInitialized() == true`. Without this the
-    // `BravePolicyManagerBase::AllInitialized()` gate inside
+    // `BravePolicyManagerRegistry::AllInitialized()` gate inside
     // `BraveProfilePolicyProvider::OnBravePoliciesReady` would early-return
     // and the provider would never call `RefreshPolicies`.
     pref_service_.registry()->RegisterDictionaryPref(

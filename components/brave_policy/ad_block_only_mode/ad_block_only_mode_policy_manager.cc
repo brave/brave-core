@@ -6,9 +6,9 @@
 #include "brave/components/brave_policy/ad_block_only_mode/ad_block_only_mode_policy_manager.h"
 
 #include "base/feature_list.h"
+#include "base/functional/bind.h"
 #include "base/no_destructor.h"
 #include "brave/components/brave_policy/ad_block_only_mode/buildflags/buildflags.h"
-#include "brave/components/brave_policy/brave_policy_manager_base.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "components/content_settings/core/common/content_settings.h"
@@ -76,7 +76,10 @@ AdBlockOnlyModePolicies AdBlockOnlyModePolicyManager::GetPolicies() const {
   return GetPoliciesImpl();
 }
 
-AdBlockOnlyModePolicyManager::AdBlockOnlyModePolicyManager() = default;
+AdBlockOnlyModePolicyManager::AdBlockOnlyModePolicyManager()
+    : registration_(
+          base::BindRepeating(&AdBlockOnlyModePolicyManager::IsInitialized,
+                              base::Unretained(this))) {}
 
 AdBlockOnlyModePolicyManager::~AdBlockOnlyModePolicyManager() = default;
 
