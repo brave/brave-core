@@ -19,7 +19,9 @@
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ai_chat/tab_tracker_service_factory.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
+#include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
+#include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
@@ -673,6 +675,52 @@ class AIChatUIPageHandlerPageContextDisabledBrowserTest
  private:
   base::test::ScopedFeatureList scoped_feature_list_;
 };
+
+// Regression test: when the page context menu fires Leo, the menu code calls
+// AIChatService::GetOrCreateConversationHandlerForContent(content_id, ...) and
+// SubmitSelectedText() *before* the side panel opens. The side panel must then
+// bind to that same conversation, otherwise the user sees an empty side panel
+// and the submitted message appears to have been dropped.
+IN_PROC_BROWSER_TEST_F(AIChatUIPageHandlerBrowserTest,
+                       BindRelatedConversation_PicksUpExistingTabConversation) {
+  OpenNewTab();
+  auto* tab_contents = web_contents();
+  ASSERT_TRUE(tab_contents);
+  auto* tab_helper = AIChatTabHelper::FromWebContents(tab_contents);
+  ASSERT_TRUE(tab_helper);
+
+  // Mimic the context menu flow: get or create a conversation tied to the
+  // tab's content_id before the side panel has opened.
+  auto* service = AIChatServiceFactory::GetForBrowserContext(GetProfile());
+  auto* preexisting = service->GetOrCreateConversationHandlerForContent(
+      tab_helper->web_contents_content().content_id(),
+      tab_helper->web_contents_content().GetWeakPtr());
+  ASSERT_TRUE(preexisting);
+  const std::string preexisting_uuid = preexisting->get_conversation_uuid();
+
+  // Stand up a fresh page handler for the same tab, simulating the side panel
+  // opening, and call BindRelatedConversation as the frontend does on startup.
+  mojo::PendingReceiver<mojom::AIChatUIHandler> receiver;
+  auto handler = std::make_unique<AIChatUIPageHandler>(
+      tab_contents, tab_contents,
+      Profile::FromBrowserContext(tab_contents->GetBrowserContext()),
+      std::move(receiver), browser()->tab_strip_model());
+
+  FakeConversationUI fake_conversation_ui;
+  mojo::Receiver<mojom::ConversationUI> conversation_ui_receiver(
+      &fake_conversation_ui);
+  mojo::Remote<mojom::ConversationHandler> conversation;
+  handler->BindRelatedConversation(
+      conversation.BindNewPipeAndPassReceiver(),
+      conversation_ui_receiver.BindNewPipeAndPassRemote());
+
+  base::test::TestFuture<std::string> uuid_future;
+  conversation->GetConversationUuid(
+      uuid_future.GetCallback<const std::string&>());
+  EXPECT_EQ(uuid_future.Get(), preexisting_uuid)
+      << "Side panel should bind to the conversation already tied to this "
+         "tab's content_id (e.g. created by the context menu), not a new one.";
+}
 
 IN_PROC_BROWSER_TEST_F(
     AIChatUIPageHandlerPageContextDisabledBrowserTest,
