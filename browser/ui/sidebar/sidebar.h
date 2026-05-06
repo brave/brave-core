@@ -18,6 +18,7 @@ class Sidebar {
 
   // Update sidebar item's UI state.
   virtual void UpdateSidebarItemsState() = 0;
+  virtual void UpdateSidebarVisibility() = 0;
 
  protected:
   virtual ~Sidebar() {}

@@ -8,6 +8,8 @@
 #include <memory>
 
 #include "brave/app/vector_icons/vector_icons.h"
+#include "brave/browser/ui/sidebar/buildflags/buildflags.h"
+#include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
@@ -81,7 +83,12 @@ SidePanelButton::SidePanelButton(Browser* browser)
 SidePanelButton::~SidePanelButton() = default;
 
 void SidePanelButton::ButtonPressed() {
+  // Different behavior in v1 and v2.
+#if BUILDFLAG(ENABLE_SIDEBAR_V2)
+  browser_->GetFeatures().sidebar_controller()->ToggleSidebarPinning();
+#else
   browser_->GetFeatures().side_panel_ui()->Toggle();
+#endif
 }
 
 void SidePanelButton::UpdateToolbarButtonIcon() {

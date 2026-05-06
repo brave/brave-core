@@ -64,6 +64,9 @@ class SidebarController : public SidebarService::Observer {
   void ActivatePanelItem(SidebarItem::BuiltInItemType panel_item);
   void DeactivateCurrentPanel();
 
+  void ToggleSidebarPinning();
+  bool sidebar_pinned() const { return sidebar_pinned_; }
+
   void SetSidePanelUIForTesting(SidePanelUI* side_panel_ui) {
     side_panel_ui_for_testing_ = side_panel_ui;
   }
@@ -100,6 +103,8 @@ class SidebarController : public SidebarService::Observer {
   // and activate it if found.
   bool ActiveTabFromOtherBrowsersForHost(const GURL& url);
 
+  // Sidebar is visible when pinned regardless of show option.
+  bool sidebar_pinned_ = false;
   raw_ptr<TabStripModel> tab_strip_model_ = nullptr;
   raw_ptr<Profile> profile_ = nullptr;
   raw_ptr<Browser> browser_ = nullptr;

@@ -176,6 +176,11 @@ void SidebarController::DeactivateCurrentPanel() {
   ActivatePanelItem(SidebarItem::BuiltInItemType::kNone);
 }
 
+void SidebarController::ToggleSidebarPinning() {
+  sidebar_pinned_ = !sidebar_pinned_;
+  sidebar_->UpdateSidebarVisibility();
+}
+
 bool SidebarController::ActiveTabFromOtherBrowsersForHost(const GURL& url) {
   const std::vector<Browser*> browsers =
       chrome::FindAllTabbedBrowsersWithProfile(profile_);
@@ -242,6 +247,7 @@ void SidebarController::LoadAtTab(const GURL& url) {
 void SidebarController::OnShowSidebarOptionChanged(
     SidebarService::ShowSidebarOption option) {
   CHECK(sidebar_);
+  sidebar_pinned_ = false;
   sidebar_->SetSidebarShowOption(option);
 }
 

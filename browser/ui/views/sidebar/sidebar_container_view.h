@@ -94,6 +94,7 @@ class SidebarContainerView : public sidebar::Sidebar,
   void SetSidebarShowOption(
       sidebar::SidebarService::ShowSidebarOption show_option) override;
   void UpdateSidebarItemsState() override;
+  void UpdateSidebarVisibility() override;
 
   // SidebarControlView::Delegate overrides:
   void MenuClosed() override;
@@ -144,7 +145,7 @@ class SidebarContainerView : public sidebar::Sidebar,
   void ShowSidebarControlView();
 
   // Show control view. panel's visibility depends on |show_side_panel|.
-  void ShowSidebar(bool show_side_panel);
+  void ShowSidebar(bool show_side_panel, bool suppress_animation = false);
 
   // Show all (panel + control view).
   void ShowSidebarAll();
@@ -163,6 +164,7 @@ class SidebarContainerView : public sidebar::Sidebar,
   bool IsSidePanelShowing() const;
   bool ShouldForceShowSidebar() const;
   void UpdateToolbarButtonVisibility();
+  void UpdateToolbarButtonHighlight();
 
   // true when fullscreen is initiated by tab. (Ex, fullscreen mode in youtube)
   bool IsFullscreenByTab() const;

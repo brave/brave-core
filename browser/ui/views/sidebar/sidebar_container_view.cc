@@ -17,6 +17,7 @@
 #include "base/time/time.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/sidebar/buildflags/buildflags.h"
 #include "brave/browser/ui/sidebar/features.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
@@ -297,14 +298,12 @@ void SidebarContainerView::SetSidebarShowOption(ShowSidebarOption show_option) {
   show_sidebar_option_ = show_option;
 
   if (base::FeatureList::IsEnabled(sidebar::features::kSidebarV2)) {
-    // When panel is visible, option change doesn't affect current UI status.
-    if (IsSidePanelShowing()) {
-      return;
-    }
+    // Toolbar button visibility depends on show options.
+    UpdateToolbarButtonVisibility();
 
     if (show_sidebar_option_ == ShowSidebarOption::kShowAlways) {
       if (!IsSidebarVisible()) {
-        ShowSidebarControlView();
+        ShowSidebar(false, true);
       }
       return;
     }
@@ -345,6 +344,23 @@ void SidebarContainerView::SetSidebarShowOption(ShowSidebarOption show_option) {
 void SidebarContainerView::UpdateSidebarItemsState() {
   // control view has items.
   sidebar_control_view_->Update();
+}
+
+void SidebarContainerView::UpdateSidebarVisibility() {
+#if BUILDFLAG(ENABLE_SIDEBAR_V2)
+  UpdateToolbarButtonHighlight();
+
+  // Pinning is an explicit user gesture, not a hover — snap to visible
+  // without animation, mirroring kShowAlways above. Otherwise, fall through
+  // and follow the current show option.
+  if (browser_->GetFeatures().sidebar_controller()->sidebar_pinned()) {
+    ShowSidebar(false, true);
+  } else {
+    // Refresh sidebar visibility with current show option.
+    SetSidebarShowOption(
+        GetSidebarService(GetBraveBrowser())->GetSidebarShowOption());
+  }
+#endif
 }
 
 void SidebarContainerView::MenuClosed() {
@@ -496,10 +512,15 @@ bool SidebarContainerView::IsSidePanelShowing() const {
 }
 
 bool SidebarContainerView::ShouldForceShowSidebar() const {
+#if BUILDFLAG(ENABLE_SIDEBAR_V2)
+  // In V2, don't hide sidebar when it's pinned.
+  return browser_->GetFeatures().sidebar_controller()->sidebar_pinned() ||
+#else
   // It is more reliable to check whether coordinator has current entry rather
   // than checking if side_panel_ is visible.
   return side_panel_coordinator_->GetCurrentEntryId(
              SidePanelEntry::PanelType::kContent) ||
+#endif
          sidebar_control_view_->IsItemReorderingInProgress() ||
          sidebar_control_view_->IsBubbleWidgetVisible();
 }
@@ -627,7 +648,8 @@ void SidebarContainerView::ShowSidebarControlView() {
   ShowSidebar(false);
 }
 
-void SidebarContainerView::ShowSidebar(bool show_side_panel) {
+void SidebarContainerView::ShowSidebar(bool show_side_panel,
+                                       bool suppress_animation) {
   DVLOG(1) << __func__ << ": show panel: " << show_side_panel;
 
   if (base::FeatureList::IsEnabled(sidebar::features::kSidebarV2)) {
@@ -645,7 +667,7 @@ void SidebarContainerView::ShowSidebar(bool show_side_panel) {
 
     sidebar_control_view_->SetVisible(true);
 
-    if (ShouldUseAnimation()) {
+    if (ShouldUseAnimation() && !suppress_animation) {
       width_animation_.Show();
     } else {
       PreferredSizeChanged();
@@ -867,18 +889,42 @@ bool SidebarContainerView::ShouldUseAnimation() {
 }
 
 void SidebarContainerView::UpdateToolbarButtonVisibility() {
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
+  auto* brave_toolbar = static_cast<BraveToolbarView*>(browser_view->toolbar());
+  if (!brave_toolbar) {
+    return;
+  }
+#if BUILDFLAG(ENABLE_SIDEBAR_V2)
+  // In V2, we hide button when show always as pinning doesn't make sense
+  // when always visible.
+  if (auto* button = brave_toolbar->side_panel_button()) {
+    button->SetVisible(show_side_panel_button_.GetValue() &&
+                       show_sidebar_option_ != ShowSidebarOption::kShowAlways);
+  }
+  UpdateToolbarButtonHighlight();
+#else
   // Coordinate sidebar toolbar button visibility based on
   // whether there are any sibar items with a sidepanel.
   // This is similar to how chromium's side_panel_coordinator View
   // also has some control on the toolbar button.
   auto has_panel_item =
       GetSidebarService(GetBraveBrowser())->GetDefaultPanelItem().has_value();
-  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
-  auto* brave_toolbar = static_cast<BraveToolbarView*>(browser_view->toolbar());
   if (brave_toolbar && brave_toolbar->side_panel_button()) {
     brave_toolbar->side_panel_button()->SetVisible(
         has_panel_item && show_side_panel_button_.GetValue());
   }
+#endif
+}
+
+void SidebarContainerView::UpdateToolbarButtonHighlight() {
+#if BUILDFLAG(ENABLE_SIDEBAR_V2)
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
+  auto* brave_toolbar = static_cast<BraveToolbarView*>(browser_view->toolbar());
+  if (brave_toolbar && brave_toolbar->side_panel_button()) {
+    brave_toolbar->side_panel_button()->SetHighlighted(
+        browser_->GetFeatures().sidebar_controller()->sidebar_pinned());
+  }
+#endif
 }
 
 void SidebarContainerView::StartBrowserWindowEventMonitoring() {

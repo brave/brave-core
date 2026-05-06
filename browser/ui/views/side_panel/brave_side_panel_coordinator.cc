@@ -154,6 +154,9 @@ BraveSidePanelCoordinator::GetLastActiveEntryKey() const {
 
 void BraveSidePanelCoordinator::UpdateToolbarButtonHighlight(
     bool side_panel_visible) {
+  // In V2, we don't highlight sidebar toolbar button when panel
+  // is opened.
+#if !BUILDFLAG(ENABLE_SIDEBAR_V2)
   // Workaround to prevent crashing while window closing.
   // See https://github.com/brave/brave-browser/issues/34334
   if (!browser_view_ || !browser_view_->GetWidget() ||
@@ -169,6 +172,7 @@ void BraveSidePanelCoordinator::UpdateToolbarButtonHighlight(
         side_panel_visible ? IDS_TOOLTIP_SIDEBAR_HIDE
                            : IDS_TOOLTIP_SIDEBAR_SHOW));
   }
+#endif
 }
 
 void BraveSidePanelCoordinator::PopulateSidePanel(
