@@ -1443,3 +1443,61 @@ bool IsPlaylistEnabled(PrefService* prefs);
 - `services/` — utility process services
 
 A new `+components/prefs` line (or similar) in a `common/DEPS` file is almost always a sign that the helper belongs in `browser/` instead.
+
+---
+
+<a id="ARCH-072"></a>
+
+## ✅ Factory Return Value Must Be Stable Across the Browser Session
+
+**A `KeyedServiceFactory` may only return `nullptr` (or skip service creation) based on attributes that are fixed for the entire browser session** — profile type, buildflags, and feature flags. Do not gate the result on user-modifiable prefs.
+
+This rule applies to both places a factory can return null:
+
+1. `BuildServiceInstanceForBrowserContext` (returning `nullptr` skips creation), and
+2. The static `GetForProfile` / `GetForBrowserContext` accessor (returning `nullptr` before delegating to the base class).
+
+If the null-vs-non-null result depends on a pref that can change at runtime, the service will be present or absent for the rest of the session regardless of subsequent toggles, forcing a browser restart to apply the user's choice. Callers also start to defensively null-check what should be a stable handle.
+
+```cpp
+// ❌ WRONG - factory result depends on a runtime-toggleable pref
+std::unique_ptr<KeyedService>
+BraveWalletServiceFactory::BuildServiceInstanceForBrowserContext(
+    content::BrowserContext* context) const {
+  PrefService* prefs = user_prefs::UserPrefs::Get(context);
+  if (!prefs->GetBoolean(kBraveWalletEnabledPref)) {
+    return nullptr;  // User toggling the pref now requires a restart
+  }
+  return std::make_unique<BraveWalletService>(...);
+}
+
+// ❌ ALSO WRONG - same anti-pattern, just moved into the accessor
+// static
+BraveWalletService* BraveWalletServiceFactory::GetForProfile(Profile* profile) {
+  if (!profile->GetPrefs()->GetBoolean(kBraveWalletEnabledPref)) {
+    return nullptr;  // Pref toggle still requires a restart to take effect
+  }
+  return static_cast<BraveWalletService*>(
+      GetInstance()->GetServiceForBrowserContext(profile, true));
+}
+
+// ✅ CORRECT - factory always builds; the service reads the pref at runtime
+std::unique_ptr<KeyedService>
+BraveWalletServiceFactory::BuildServiceInstanceForBrowserContext(
+    content::BrowserContext* context) const {
+  return std::make_unique<BraveWalletService>(
+      user_prefs::UserPrefs::Get(context), ...);
+}
+```
+
+**Valid bases for returning `nullptr` from a factory or its accessor:**
+- Profile type (incognito, guest, system) — see [ARCH-015](#ARCH-015)
+- `BUILDFLAG(ENABLE_*)` feature buildflags
+- `base::Feature` flags (stable for the session)
+- Managed/policy prefs that are documented to require a restart (short-term; ideally decouple)
+
+**Invalid bases:**
+- Any user-toggleable pref (e.g. `kPlaylistEnabledPref`, `kBraveWalletEnabledPref`)
+- Any state that can change while the browser is running
+
+If a feature must be fully disable-able at runtime, the service should remain instantiated and expose an `IsEnabled()` accessor, or callers should observe the pref directly.
