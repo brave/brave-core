@@ -370,8 +370,13 @@ void YouTubeScriptInjectorTabHelper::MediaEffectivelyFullscreenChanged(
 
 void YouTubeScriptInjectorTabHelper::MaybeSetFullscreen() {
   content::RenderFrameHost* rfh = web_contents()->GetPrimaryMainFrame();
-  // Check if fullscreen has already been requested for this page.
-  if (!rfh || !rfh->IsRenderFrameLive() || HasFullscreenBeenRequested()) {
+  // Check if fullscreen has already been requested for this page. The
+  // IsYouTubeDomain guard closes a navigation race: callers gate at
+  // toolbar-click time, but the page may commit a cross-origin navigation
+  // before this Mojo IPC reaches the renderer, which would land the script in
+  // a non-YouTube document.
+  if (!rfh || !rfh->IsRenderFrameLive() || HasFullscreenBeenRequested() ||
+      !IsYouTubeDomain()) {
     return;
   }
 
