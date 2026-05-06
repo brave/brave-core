@@ -5,9 +5,13 @@
 
 source_set("unit_tests") {
   testonly = true
-  sources = [ "brave_passage_embeddings_service_unittest.cc" ]
+  sources = [
+    "brave_batch_passage_embedder_unittest.cc",
+    "brave_passage_embeddings_service_unittest.cc",
+  ]
 
   deps = [
+    ":batch_passage_embedder",
     ":history_embeddings",
     "//base",
     "//base/test:test_support",
@@ -20,14 +24,37 @@ source_set("unit_tests") {
   ]
 }
 
+# Internal target for BraveBatchPassageEmbedder. Listed separately so
+# its header is reachable by the unit test target without becoming
+# part of //browser/history_embeddings's public surface.
+source_set("batch_passage_embedder") {
+  visibility = [
+    ":history_embeddings",
+    ":unit_tests",
+  ]
+  sources = [
+    "brave_batch_passage_embedder.cc",
+    "brave_batch_passage_embedder.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//brave/components/local_ai/core:mojom",
+    "//mojo/public/cpp/bindings",
+    "//services/passage_embeddings/public/mojom",
+  ]
+}
+
 source_set("history_embeddings") {
+  public = [
+    "brave_history_embeddings_service.h",
+    "brave_passage_embeddings_service.h",
+    "brave_passage_embeddings_service_controller.h",
+  ]
   sources = [
     "brave_history_embeddings_service.cc",
-    "brave_history_embeddings_service.h",
     "brave_passage_embeddings_service.cc",
-    "brave_passage_embeddings_service.h",
     "brave_passage_embeddings_service_controller.cc",
-    "brave_passage_embeddings_service_controller.h",
   ]
 
   public_deps = [
@@ -43,6 +70,7 @@ source_set("history_embeddings") {
   ]
 
   deps = [
+    ":batch_passage_embedder",
     "//brave/app:brave_generated_resources_grit",
     "//brave/components/history_embeddings",
     "//brave/components/local_ai/content",

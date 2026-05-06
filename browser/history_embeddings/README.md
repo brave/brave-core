@@ -82,6 +82,13 @@ without touching the upstream header (see
   static `WebContents*` → bind-callback registry used by
   `UntrustedLocalAIUI::BindInterface`.
 
+- **`brave_batch_passage_embedder.{h,cc}`** — In-process
+  implementation of `passage_embeddings::mojom::PassageEmbedder` that
+  wraps a renderer-side `local_ai::mojom::PassageEmbedder`. Translates
+  the upstream batch mojom to the renderer's single-passage interface,
+  processing passages sequentially so callbacks resolve with all
+  embeddings in order.
+
 - **`brave_passage_embeddings_service_controller.{h,cc}`** — Singleton
   subclass of `PassageEmbeddingsServiceController`. Overrides
   `MaybeLaunchService()`/`ResetServiceRemote()` to construct/destroy
