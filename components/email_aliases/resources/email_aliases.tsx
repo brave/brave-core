@@ -14,7 +14,7 @@ import {
   EmailAliasesServiceObserverReceiver,
   EmailAliasesService,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
-import { useEmailAliasesObserver } from './content/use_email_aliases_observer'
+import { useEmailAliases } from './content/use_email_aliases'
 
 export const ManagePageConnected = ({
   emailAliasesService,
@@ -23,7 +23,7 @@ export const ManagePageConnected = ({
   emailAliasesService: EmailAliasesServiceInterface
   bindObserver: (observer: EmailAliasesServiceObserverInterface) => () => void
 }) => {
-  const { authState, aliasesUpdate } = useEmailAliasesObserver(bindObserver)
+  const { authState, aliasesUpdate } = useEmailAliases(bindObserver)
   return (
     <ManagePage
       authState={authState}

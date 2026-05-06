@@ -19,7 +19,7 @@ const emptyAliasesUpdate = (): AliasesUpdate => ({ aliases: [] })
  * stable `bindObserver` from the host (e.g. one created when the Mojo pipes
  * are set up).
  */
-export function useEmailAliasesObserver(
+export function useEmailAliases(
   bindObserver: (observer: EmailAliasesServiceObserverInterface) => () => void,
 ) {
   const [authState, setAuthState] = React.useState<AuthState>({

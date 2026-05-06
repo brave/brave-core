@@ -21,7 +21,7 @@ import {
   EmailAliasesPanelHandler,
   MAX_ALIASES,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
-import { useEmailAliasesObserver } from './content/use_email_aliases_observer'
+import { useEmailAliases } from './content/use_email_aliases'
 
 export const EmailAliasesPanelConnected = ({
   emailAliasesService,
@@ -32,7 +32,7 @@ export const EmailAliasesPanelConnected = ({
   emailAliasesPanelHandler: EmailAliasesPanelHandlerInterface
   bindObserver: (observer: EmailAliasesServiceObserverInterface) => () => void
 }) => {
-  const { authState, aliasesUpdate } = useEmailAliasesObserver(bindObserver)
+  const { authState, aliasesUpdate } = useEmailAliases(bindObserver)
   const aliases = aliasesUpdate.error ? [] : (aliasesUpdate.aliases ?? [])
   return (
     <EmailAliasModal
