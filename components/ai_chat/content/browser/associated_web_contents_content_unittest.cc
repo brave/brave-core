@@ -15,6 +15,7 @@
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
+#include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "components/favicon/content/content_favicon_driver.h"
 #include "components/favicon/core/test/mock_favicon_service.h"
 #include "components/pdf/common/constants.h"
@@ -30,6 +31,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "third_party/blink/public/mojom/content_extraction/ai_page_content.mojom.h"
+#include "third_party/blink/public/mojom/content_extraction/script_tools.mojom.h"
 
 #if BUILDFLAG(ENABLE_PDF)
 #include "components/pdf/browser/pdf_document_helper.h"
@@ -122,6 +124,25 @@ blink::mojom::AIPageContentPtr CreateAIPageContentWithText(
       blink::mojom::AIPageContentFrameInteractionInfo::New();
   content->frame_data = std::move(frame_data);
   return content;
+}
+
+// Builds an AIPageContent response carrying the supplied set of script tools.
+blink::mojom::AIPageContentPtr CreateAIPageContentWithScriptTools(
+    std::vector<blink::mojom::ScriptToolPtr> script_tools) {
+  auto content = CreateAIPageContentWithText("");
+  content->frame_data->script_tools = std::move(script_tools);
+  return content;
+}
+
+blink::mojom::ScriptToolPtr MakeScriptTool(
+    const std::string& name,
+    const std::string& description,
+    std::optional<std::string> input_schema = std::nullopt) {
+  auto tool = blink::mojom::ScriptTool::New();
+  tool->name = name;
+  tool->description = description;
+  tool->input_schema = std::move(input_schema);
+  return tool;
 }
 
 class MockAssociatedContentObserver
@@ -217,6 +238,11 @@ class AssociatedWebContentsContentUnitTest
   void GetScreenshots(
       mojom::ConversationHandler::GetScreenshotsCallback callback) {
     web_contents_content_->GetScreenshots(std::move(callback));
+  }
+
+  void GetScriptTools(
+      AssociatedContentDelegate::GetScriptToolsCallback callback) {
+    web_contents_content_->GetScriptTools(std::move(callback));
   }
 
   void TitleWasSet(content::NavigationEntry* entry) {
@@ -650,6 +676,75 @@ TEST_P(AssociatedWebContentsContentUnitTest,
   base::test::TestFuture<std::string, bool, std::string> future;
   GetPageContent(future.GetCallback(), "");
   ExpectPageContent(future, "");
+}
+
+// Tests for the WebMCP script-tool plumbing. AssociatedWebContentsContent
+// asks blink's AIPageContentAgent for the page's set of script tools and
+// converts each entry into a ScriptTool. Behaviour is gated on the
+// enable-webmcp-testing flag end-to-end, but at the brave layer the contract
+// is just: "given a populated AIPageContent response, expose one Tool per
+// entry in frame_data->script_tools". These tests fake that response.
+TEST_P(AssociatedWebContentsContentUnitTest,
+       GetScriptTools_ReturnsToolsFromFrameData) {
+  auto* agent = SetUpFakeAIPageContentAgent();
+  std::vector<blink::mojom::ScriptToolPtr> script_tools;
+  script_tools.push_back(MakeScriptTool("search", "Search the page"));
+  script_tools.push_back(
+      MakeScriptTool("summarize", "Summarize the article",
+                     R"({"type":"object","properties":{}})"));
+  agent->SetResponse(
+      CreateAIPageContentWithScriptTools(std::move(script_tools)));
+
+  NavigateTo(GURL("https://www.example.com"));
+
+  base::test::TestFuture<std::vector<std::unique_ptr<Tool>>> future;
+  GetScriptTools(future.GetCallback());
+  auto tools = future.Take();
+  ASSERT_EQ(2u, tools.size());
+  EXPECT_EQ(tools[0]->Name(), "search");
+  EXPECT_EQ(tools[0]->Description(), "Search the page");
+  EXPECT_EQ(tools[1]->Name(), "summarize");
+  EXPECT_EQ(tools[1]->Description(), "Summarize the article");
+}
+
+TEST_P(AssociatedWebContentsContentUnitTest,
+       GetScriptTools_NoToolsWhenFrameDataEmpty) {
+  auto* agent = SetUpFakeAIPageContentAgent();
+  // CreateAIPageContentWithText leaves script_tools empty.
+  agent->SetResponse(CreateAIPageContentWithText("hello"));
+
+  NavigateTo(GURL("https://www.example.com"));
+
+  base::test::TestFuture<std::vector<std::unique_ptr<Tool>>> future;
+  GetScriptTools(future.GetCallback());
+  EXPECT_TRUE(future.Take().empty());
+}
+
+TEST_P(AssociatedWebContentsContentUnitTest, GetScriptTools_NullResponse) {
+  // If the renderer drops the call (no model context, feature disabled, etc.)
+  // the WrapCallbackWithDefaultInvokeIfNotRun helper delivers a null result
+  // and the callback must still fire with an empty list.
+  auto* agent = SetUpFakeAIPageContentAgent();
+  agent->SetResponse(nullptr);
+
+  NavigateTo(GURL("https://www.example.com"));
+
+  base::test::TestFuture<std::vector<std::unique_ptr<Tool>>> future;
+  GetScriptTools(future.GetCallback());
+  EXPECT_TRUE(future.Take().empty());
+}
+
+TEST_P(AssociatedWebContentsContentUnitTest,
+       GetScriptTools_NoLiveFrameReturnsEmpty) {
+  // If the main frame is not live, we should not attempt to bind the agent
+  // and the callback must run synchronously with an empty list.
+  NavigateTo(GURL("https://www.example.com"));
+  content::WebContentsTester::For(web_contents())
+      ->SetIsCrashed(base::TERMINATION_STATUS_PROCESS_CRASHED, 0);
+
+  base::test::TestFuture<std::vector<std::unique_ptr<Tool>>> future;
+  GetScriptTools(future.GetCallback());
+  EXPECT_TRUE(future.Take().empty());
 }
 
 #if BUILDFLAG(ENABLE_PDF)
