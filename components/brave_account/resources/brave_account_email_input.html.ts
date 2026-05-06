@@ -6,6 +6,7 @@
 import { html } from '//resources/lit/v3_0/lit.rollup.js'
 import { loadTimeData } from '//resources/js/load_time_data.js'
 
+import { freezeWhen } from './brave_account_common.js'
 import { BraveAccountStrings } from './brave_components_webui_strings.js'
 import {
   BraveAccountEmailInputElement,
@@ -42,9 +43,12 @@ export function getHtml(this: BraveAccountEmailInputElement) {
         <div class="dropdown-content">
           <leo-icon name="warning-triangle-filled"></leo-icon>
           <div>
-            ${loadTimeData.getStringF(
-              BraveAccountStrings.BRAVE_ACCOUNT_EMAIL_INPUT_DID_YOU_MEAN,
-              this.suggestion,
+            ${freezeWhen(
+              !this.suggestion,
+              loadTimeData.getStringF(
+                BraveAccountStrings.BRAVE_ACCOUNT_EMAIL_INPUT_DID_YOU_MEAN,
+                this.suggestion,
+              ),
             )}
           </div>
         </div>
