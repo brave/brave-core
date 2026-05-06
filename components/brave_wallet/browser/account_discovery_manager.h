@@ -34,6 +34,8 @@ class AccountDiscoveryManager {
 
   void StartDiscovery();
 
+  base::WeakPtr<AccountDiscoveryManager> GetWeakPtrForTesting();
+
  private:
   struct DiscoveryContext {
     DiscoveryContext(const mojom::CoinType& coin_type,

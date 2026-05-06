@@ -369,6 +369,9 @@ class BraveWalletService : public KeyedService,
   }
   SimulationService* simulation_service() { return simulation_service_.get(); }
   BraveWalletIpfsService* ipfs_service() { return ipfs_service_.get(); }
+  AccountDiscoveryManager* account_discovery_manager() {
+    return account_discovery_manager_.get();
+  }
 
   // Might return nullptr.
   BitcoinWalletService* GetBitcoinWalletService();
@@ -446,6 +449,8 @@ class BraveWalletService : public KeyedService,
   void CancelAllDecryptCallbacks();
   void OnGetNftsForCompressedMigration(
       std::vector<mojom::BlockchainTokenPtr> nfts);
+
+  void OnWalletReset();
 
   // For testing
   base::OnceClosure sign_tx_request_added_cb_for_testing_;

@@ -2623,6 +2623,14 @@ void KeyringService::IsLocked(IsLockedCallback callback) {
 }
 
 void KeyringService::Reset(bool notify_observer) {
+  // TODO(https://github.com/brave/brave-browser/issues/55303): Wallet Reset
+  // should be always initiated by BraveWalletService.
+  // Now it is a temporary workaround to synchronously stop account discovery in
+  // parent wallet service just before keyrings are reset.
+  if (wallet_reset_cb_) {
+    wallet_reset_cb_.Run();
+  }
+
   ResetAllAccountInfosCache();
   StopAutoLockTimer();
   encryptor_.reset();

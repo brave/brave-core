@@ -29,6 +29,7 @@
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
+#include "brave/components/brave_wallet/browser/account_discovery_manager.h"
 #include "brave/components/brave_wallet/browser/bip39.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_hd_keyring.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h"
@@ -768,6 +769,9 @@ TEST_F(KeyringServiceUnitTest, Reset) {
   EXPECT_TRUE(GetPrefs()->HasPrefPath(kBraveWalletLegacyEthSeedFormat));
 
   EXPECT_CALL(observer, WalletReset());
+  base::MockCallback<base::RepeatingClosure> wallet_reset_callback;
+  EXPECT_CALL(wallet_reset_callback, Run).Times(1);
+  service.set_wallet_reset_cb(wallet_reset_callback.Get());
   service.Reset();
   EXPECT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletKeyrings));
   EXPECT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletEncryptorSalt));
@@ -4334,13 +4338,23 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, RestoreWalletTwice) {
   requested_addresses.clear();
 
   first_restore = false;
+  auto account_discovery_manager_ptr =
+      brave_wallet_service.account_discovery_manager()->GetWeakPtrForTesting();
+  EXPECT_TRUE(account_discovery_manager_ptr);
   service.Reset();
+
+  // Reset immediately resets account discovery.
+  EXPECT_FALSE(brave_wallet_service.account_discovery_manager());
+  EXPECT_FALSE(account_discovery_manager_ptr);
 
   NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
 
   EXPECT_CALL(observer, AccountsChanged()).Times(2);  // Accounts 3 and 10.
-  EXPECT_TRUE(RestoreWallet(&service, saved_mnemonic(), "brave1", false));
+  EXPECT_CALL(observer, WalletRestored()).Times(1);
+  EXPECT_TRUE(service.RestoreWalletSync(saved_mnemonic(), "brave1", false));
   observer.WaitAndVerify();
+  // New account discovery starts.
+  EXPECT_TRUE(brave_wallet_service.account_discovery_manager());
 
   std::vector<mojom::AccountInfoPtr> account_infos =
       service.GetAccountInfosForKeyring(mojom::KeyringId::kDefault);

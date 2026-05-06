@@ -268,6 +268,8 @@ BraveWalletService::BraveWalletService(
 
   delegate_->AddObserver(this);
 
+  keyring_service_->set_wallet_reset_cb(base::BindRepeating(
+      &BraveWalletService::OnWalletReset, weak_ptr_factory_.GetWeakPtr()));
   keyring_service_->AddObserver(
       keyring_observer_receiver_.BindNewPipeAndPassRemote());
 
@@ -2156,6 +2158,10 @@ base::CallbackListSubscription
 BraveWalletService::RegisterSignTransactionRequestAddedCallback(
     base::RepeatingClosure cb) {
   return sign_transaction_added_callback_list_for_testing_.Add(std::move(cb));
+}
+
+void BraveWalletService::OnWalletReset() {
+  account_discovery_manager_.reset();
 }
 
 }  // namespace brave_wallet

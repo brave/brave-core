@@ -310,6 +310,10 @@ class KeyringService : public mojom::KeyringService {
   SignMessageByPolkadotKeyring(const mojom::AccountIdPtr& account_id,
                                base::span<const uint8_t> message);
 
+  void set_wallet_reset_cb(base::RepeatingClosure cb) {
+    wallet_reset_cb_ = std::move(cb);
+  }
+
   const std::vector<mojom::AccountInfoPtr>& GetAllAccountInfos();
   mojom::AccountInfoPtr FindAccount(const mojom::AccountIdPtr& account_id);
   mojom::AccountInfoPtr GetSelectedWalletAccount();
@@ -501,6 +505,7 @@ class KeyringService : public mojom::KeyringService {
   raw_ptr<PrefService> local_state_ = nullptr;
   bool request_unlock_pending_ = false;
 
+  base::RepeatingClosure wallet_reset_cb_;
   mojo::RemoteSet<mojom::KeyringServiceObserver> observers_;
   mojo::ReceiverSet<mojom::KeyringService> receivers_;
 
