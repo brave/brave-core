@@ -52,21 +52,7 @@ class AliasObserver : public mojom::EmailAliasesServiceObserver {
 
   void OnAliasesUpdated(mojom::AliasesUpdatePtr update) override {
     ++alias_updates;
-    if (!update) {
-      last_aliases.clear();
-      last_error.reset();
-      return;
-    }
-    switch (update->which()) {
-      case mojom::AliasesUpdate::Tag::kAliases:
-        last_aliases = mojo::Clone(update->get_aliases());
-        last_error.reset();
-        break;
-      case mojom::AliasesUpdate::Tag::kError:
-        last_aliases.clear();
-        last_error = update->get_error();
-        break;
-    }
+    last_update_ = std::move(update);
   }
 
   bool WaitForAliasUpdateCount(size_t count) {
@@ -81,24 +67,16 @@ class AliasObserver : public mojom::EmailAliasesServiceObserver {
 
   size_t alias_update_count() const { return alias_updates; }
 
-  const std::vector<mojom::AliasPtr>& get_last_aliases() const {
-    return last_aliases;
-  }
-
-  const std::optional<std::string>& get_last_error() const {
-    return last_error;
-  }
+  const mojom::AliasesUpdatePtr& last_update() const { return last_update_; }
 
   void ResetForTesting() {
     alias_updates = 0;
-    last_aliases.clear();
-    last_error.reset();
+    last_update_.reset();
   }
 
  private:
   size_t alias_updates = 0;
-  std::vector<mojom::AliasPtr> last_aliases;
-  std::optional<std::string> last_error;
+  mojom::AliasesUpdatePtr last_update_;
   mojo::Receiver<mojom::EmailAliasesServiceObserver> receiver{this};
 };
 
@@ -401,9 +379,13 @@ TEST_F(EmailAliasesAPITest, RefreshAliases_Notifies_OnValidResponse) {
           "\"status\":\"active\"}] }",
       "note");
   ASSERT_TRUE(result_out.has_value());
-  ASSERT_FALSE(observer_.get_last_aliases().empty());
-  EXPECT_EQ(observer_.get_last_aliases()[0]->email, alias_email);
-  EXPECT_EQ(observer_.get_last_aliases()[0]->note, "note");
+  ASSERT_TRUE(observer_.last_update());
+  ASSERT_EQ(observer_.last_update()->which(),
+            mojom::AliasesUpdate::Tag::kAliases);
+  const auto& aliases = observer_.last_update()->get_aliases();
+  ASSERT_FALSE(aliases.empty());
+  EXPECT_EQ(aliases[0]->email, alias_email);
+  EXPECT_EQ(aliases[0]->note, "note");
 }
 
 TEST_F(EmailAliasesAPITest,
@@ -416,8 +398,10 @@ TEST_F(EmailAliasesAPITest,
                           /*wait_for_update=*/false);
   ASSERT_TRUE(result_out.has_value());
   EXPECT_EQ(observer_.alias_update_count(), 2u);
-  ASSERT_TRUE(observer_.get_last_error().has_value());
-  EXPECT_FALSE(observer_.get_last_error()->empty());
+  ASSERT_TRUE(observer_.last_update());
+  ASSERT_EQ(observer_.last_update()->which(),
+            mojom::AliasesUpdate::Tag::kError);
+  EXPECT_FALSE(observer_.last_update()->get_error().empty());
 }
 
 TEST_F(EmailAliasesAPITest, ApiFetch_AttachesAuthTokenAndAPIKeyHeaders) {
