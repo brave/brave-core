@@ -23,6 +23,7 @@ class BrowserContext;
 namespace ai_chat {
 
 class CodeExecutionTool;
+class HistorySearchTool;
 class TabManagementTool;
 
 // Implementation of ToolProvider that provides browser-specific
@@ -41,11 +42,14 @@ class BrowserToolProvider : public ToolProvider {
   // ToolProvider implementation
   std::vector<base::WeakPtr<Tool>> GetTools() override;
 
+  HistorySearchTool* GetHistorySearchToolForTesting();
+
  private:
   void CreateTools(content::BrowserContext* browser_context);
 
   // Browser-specific tools owned by this provider
   std::unique_ptr<CodeExecutionTool> code_execution_tool_;
+  std::unique_ptr<HistorySearchTool> history_search_tool_;
 #if BUILDFLAG(ENABLE_AI_CHAT_TAB_MANAGEMENT_TOOL)
   std::unique_ptr<TabManagementTool> tab_management_tool_;
 #endif
