@@ -200,7 +200,8 @@ class NewTabPageViewController: UIViewController {
       StatsSectionProvider(
         isPrivateBrowsing: tab.isPrivate,
         openPrivacyHubPressed: { [weak self] in
-          if self?.privateBrowsingManager.isPrivateBrowsing == true {
+          guard let self, let tab = browserTab else { return }
+          if privateBrowsingManager.isPrivateBrowsing == true {
             return
           }
 
@@ -231,7 +232,7 @@ class NewTabPageViewController: UIViewController {
             )
           }
 
-          self?.present(host, animated: true)
+          present(host, animated: true)
         },
         hidePrivacyHubPressed: { [weak self] in
           self?.hidePrivacyHub()
