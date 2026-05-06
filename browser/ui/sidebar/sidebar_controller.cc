@@ -10,6 +10,7 @@
 
 #include "base/check.h"
 #include "base/check_op.h"
+#include "brave/browser/ui/sidebar/buildflags/buildflags.h"
 #include "brave/browser/ui/sidebar/sidebar.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
@@ -150,17 +151,25 @@ void SidebarController::ActivateItemAt(std::optional<size_t> index,
 void SidebarController::ActivatePanelItem(
     SidebarItem::BuiltInItemType panel_item) {
   // For panel item activation, SidePanelUI is the single source of truth.
-  auto* side_panel_ui = browser_->GetFeatures().side_panel_ui();
-  if (!side_panel_ui) {
-    return;
-  }
+  auto* side_panel_ui = side_panel_ui_for_testing_
+                            ? side_panel_ui_for_testing_.get()
+                            : browser_->GetFeatures().side_panel_ui();
   CHECK(side_panel_ui);
   if (panel_item == SidebarItem::BuiltInItemType::kNone) {
     side_panel_ui->Close(SidePanelEntry::PanelType::kContent);
     return;
   }
 
+#if BUILDFLAG(ENABLE_SIDEBAR_V2)
+  // Suppress opening animation when we have active item.
+  // When opening another panel while other panel is visible,
+  // we don't need to open new panel with animation.
+  const bool suppress_animations = sidebar_model_->active_index().has_value();
+  side_panel_ui->Show(sidebar::SidePanelIdFromSideBarItemType(panel_item),
+                      /*open_trigger*/ std::nullopt, suppress_animations);
+#else
   side_panel_ui->Show(sidebar::SidePanelIdFromSideBarItemType(panel_item));
+#endif
 }
 
 void SidebarController::DeactivateCurrentPanel() {

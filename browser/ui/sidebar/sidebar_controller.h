@@ -19,6 +19,7 @@
 class Browser;
 class GURL;
 class Profile;
+class SidePanelUI;
 class TabStripModel;
 
 namespace sidebar {
@@ -63,6 +64,10 @@ class SidebarController : public SidebarService::Observer {
   void ActivatePanelItem(SidebarItem::BuiltInItemType panel_item);
   void DeactivateCurrentPanel();
 
+  void SetSidePanelUIForTesting(SidePanelUI* side_panel_ui) {
+    side_panel_ui_for_testing_ = side_panel_ui;
+  }
+
   // If current browser doesn't have a tab for |url|, active tab will load
   // |url|. Otherwise, existing tab will be activated.
   // ShowSingletonTab() has similar functionality but it loads url in the
@@ -99,6 +104,7 @@ class SidebarController : public SidebarService::Observer {
   raw_ptr<Profile> profile_ = nullptr;
   raw_ptr<Browser> browser_ = nullptr;
   raw_ptr<Sidebar> sidebar_ = nullptr;
+  raw_ptr<SidePanelUI> side_panel_ui_for_testing_ = nullptr;
 
   std::unique_ptr<SidebarModel> sidebar_model_;
   std::unique_ptr<SidebarWebPanelController> web_panel_controller_;

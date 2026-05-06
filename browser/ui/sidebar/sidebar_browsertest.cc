@@ -2223,6 +2223,101 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
       << "No-border resize area width should equal kNoBorderResizeAreaWidth";
 }
 
+class ScopedSidePanelUIForTesting {
+ public:
+  ScopedSidePanelUIForTesting(SidebarController* controller, SidePanelUI* ui)
+      : controller_(controller) {
+    controller_->SetSidePanelUIForTesting(ui);
+  }
+  ~ScopedSidePanelUIForTesting() {
+    controller_->SetSidePanelUIForTesting(nullptr);
+  }
+
+ private:
+  raw_ptr<SidebarController> controller_;
+};
+
+class MockSidePanelUI : public SidePanelUI {
+ public:
+  MOCK_METHOD(void,
+              Show,
+              (SidePanelEntryId, std::optional<SidePanelOpenTrigger>, bool),
+              (override));
+  MOCK_METHOD(void,
+              Show,
+              (SidePanelEntryKey, std::optional<SidePanelOpenTrigger>, bool),
+              (override));
+  MOCK_METHOD(void, ShowFrom, (SidePanelEntryKey, gfx::Rect), (override));
+  MOCK_METHOD(void,
+              Close,
+              (SidePanelEntry::PanelType, SidePanelEntryHideReason, bool),
+              (override));
+  MOCK_METHOD(void,
+              Toggle,
+              (SidePanelEntryKey, SidePanelOpenTrigger),
+              (override));
+  MOCK_METHOD(std::optional<SidePanelEntryId>,
+              GetCurrentEntryId,
+              (SidePanelEntry::PanelType),
+              (const, override));
+  MOCK_METHOD(int,
+              GetCurrentEntryDefaultContentWidth,
+              (SidePanelEntry::PanelType),
+              (const, override));
+  MOCK_METHOD(bool,
+              IsSidePanelShowing,
+              (SidePanelEntry::PanelType),
+              (const, override));
+  MOCK_METHOD(bool,
+              IsSidePanelEntryShowing,
+              (const SidePanelEntryKey&),
+              (const, override));
+  MOCK_METHOD(bool,
+              IsSidePanelEntryShowing,
+              (const SidePanelEntry::Key&, bool),
+              (const, override));
+  MOCK_METHOD(base::CallbackListSubscription,
+              RegisterSidePanelShown,
+              (SidePanelEntry::PanelType, ShownCallback),
+              (override));
+  MOCK_METHOD(void,
+              OnActiveTabChanged,
+              (content::WebContents*, content::WebContents*, bool),
+              (override));
+  MOCK_METHOD(content::WebContents*,
+              GetWebContentsForTest,
+              (SidePanelEntryId),
+              (override));
+  MOCK_METHOD(void, DisableAnimationsForTesting, (), (override));
+  MOCK_METHOD(void, SetNoDelaysForTesting, (bool), (override));
+};
+
+// Verify suppress_animations is false when opening from a closed state and
+// true when switching panels while one is already active.
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
+                       SidebarV2ActivatePanelItemSuppressAnimation) {
+  MockSidePanelUI mock_ui;
+  ScopedSidePanelUIForTesting scoped_ui(controller(), &mock_ui);
+
+  // No active panel: opening should animate (suppress_animations=false).
+  ASSERT_FALSE(model()->active_index().has_value())
+      << "Expected no active panel before first ActivatePanelItem call";
+  EXPECT_CALL(mock_ui,
+              Show(testing::An<SidePanelEntryId>(), testing::Eq(std::nullopt),
+                   /*suppress_animations=*/false));
+  controller()->ActivatePanelItem(SidebarItem::BuiltInItemType::kBookmarks);
+  testing::Mock::VerifyAndClearExpectations(&mock_ui);
+  controller()->UpdateActiveItemState(SidebarItem::BuiltInItemType::kBookmarks);
+
+  // Active panel present: switching panels should suppress animations.
+  ASSERT_TRUE(model()->active_index().has_value())
+      << "Expected active panel after UpdateActiveItemState";
+  EXPECT_CALL(mock_ui,
+              Show(testing::An<SidePanelEntryId>(), testing::Eq(std::nullopt),
+                   /*suppress_animations=*/true));
+  controller()->ActivatePanelItem(SidebarItem::BuiltInItemType::kReadingList);
+}
+
 #endif  // BUILDFLAG(ENABLE_SIDEBAR_V2)
 
 }  // namespace sidebar
