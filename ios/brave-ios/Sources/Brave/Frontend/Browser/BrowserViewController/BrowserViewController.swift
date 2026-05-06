@@ -559,6 +559,14 @@ public class BrowserViewController: UIViewController {
         configuration.prepareBraveConfiguration()
       }
     }
+
+    Task { @MainActor in
+      if let originService = BraveOriginServiceFactory.get(profile: profileController.profile),
+        await originService.checkPurchaseState()
+      {
+        topToolbar.updateViewsForOverlayModeAndToolbarChanges()
+      }
+    }
   }
 
   private func setupAdsNotificationHandler() {

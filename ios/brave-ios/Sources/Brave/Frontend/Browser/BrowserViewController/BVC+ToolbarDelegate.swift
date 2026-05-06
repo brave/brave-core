@@ -16,6 +16,7 @@ import CertificateUtilities
 import Data
 import Lottie
 import Onboarding
+import OrderedCollections
 import Playlist
 import Preferences
 import Shared
@@ -570,6 +571,15 @@ extension BrowserViewController: TopToolbarDelegate {
       return
     }
     NavigationPath.handleWidgetShortcut(shortcut, with: self)
+  }
+
+  func topToolbarAvailableShortcutButtons(
+    _ topToolbar: TopToolbarView
+  ) -> OrderedSet<WidgetShortcut> {
+    return WidgetShortcut.eligibleButtonShortcuts(
+      prefs: profileController.profile.prefs,
+      isWalletAvailable: profileController.braveWalletAPI.isAllowed
+    )
   }
 
   func topToolbarDidTapBraveRewardsButton(_ topToolbar: TopToolbarView) {
