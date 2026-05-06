@@ -438,11 +438,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
 // Verifies BuildTreeTabs() with a group in the strip: group is wrapped in a
 // tree node, grouped tabs stay in the group, ungrouped tabs get tree nodes.
 IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, BuildTreeTabs_WithGroupedTabs) {
-  auto* tab_groups_service =
-      tab_groups::TabGroupSyncServiceFactory::GetForProfile(
-          browser()->profile());
-  ASSERT_TRUE(tab_groups_service);
-  tab_groups_service->SetIsInitializedForTesting(true);
+  EnsureTabGroupSyncServiceInitialized();
 
   // Add tabs to the browser.
   for (int i = 0; i < 4; ++i) {
@@ -491,11 +487,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, BuildTreeTabs_WithGroupedTabs) {
 // preserved; grouped tabs are direct children of the group, ungrouped of
 // unpinned.
 IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, FlattenTreeTabs_WithGroupedTabs) {
-  auto* tab_groups_service =
-      tab_groups::TabGroupSyncServiceFactory::GetForProfile(
-          browser()->profile());
-  ASSERT_TRUE(tab_groups_service);
-  tab_groups_service->SetIsInitializedForTesting(true);
+  EnsureTabGroupSyncServiceInitialized();
 
   // Add tabs and create a group.
   for (int i = 0; i < 4; ++i) {
@@ -547,11 +539,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, FlattenTreeTabs_WithGroupedTabs) {
 // BuildTreeTabsAndFlattenTreeTabs_WithSplitTabs).
 IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
                        BuildTreeTabsAndFlattenTreeTabs_WithGroups) {
-  auto* tab_groups_service =
-      tab_groups::TabGroupSyncServiceFactory::GetForProfile(
-          browser()->profile());
-  ASSERT_TRUE(tab_groups_service);
-  tab_groups_service->SetIsInitializedForTesting(true);
+  EnsureTabGroupSyncServiceInitialized();
 
   for (int i = 0; i < 4; ++i) {
     AddTab();
@@ -2060,11 +2048,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, Unsplit_FromMiddleNode) {
 // and tabs inside the group should be direct children of the group without
 // any tree nodes.
 IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, AddToNewGroup_UnwrapsIntoGroup) {
-  auto* tab_groups_service =
-      tab_groups::TabGroupSyncServiceFactory::GetForProfile(
-          browser()->profile());
-  ASSERT_TRUE(tab_groups_service);
-  tab_groups_service->SetIsInitializedForTesting(true);
+  EnsureTabGroupSyncServiceInitialized();
   SetTreeTabsEnabled(true);
 
   for (int i = 0; i < 3; ++i) {
@@ -2120,11 +2104,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, AddToNewGroup_UnwrapsIntoGroup) {
 
 // When removing a tab from a group, the tab should be wrapped in a tree node
 IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, RemoveFromGroup_WrapsInTreeNodes) {
-  auto* tab_groups_service =
-      tab_groups::TabGroupSyncServiceFactory::GetForProfile(
-          browser()->profile());
-  ASSERT_TRUE(tab_groups_service);
-  tab_groups_service->SetIsInitializedForTesting(true);
+  EnsureTabGroupSyncServiceInitialized();
 
   SetTreeTabsEnabled(true);
 
@@ -2164,11 +2144,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, RemoveFromGroup_WrapsInTreeNodes) {
 // Moving a tab from group A to group B - it should work well without any
 // crashes.
 IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, MoveTab_FromGroupAToGroupB) {
-  auto* tab_groups_service =
-      tab_groups::TabGroupSyncServiceFactory::GetForProfile(
-          browser()->profile());
-  ASSERT_TRUE(tab_groups_service);
-  tab_groups_service->SetIsInitializedForTesting(true);
+  EnsureTabGroupSyncServiceInitialized();
 
   SetTreeTabsEnabled(true);
   for (int i = 0; i < 4; ++i) {
@@ -2223,11 +2199,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, MoveTab_FromGroupAToGroupB) {
 // Make a tab group with a nested tree hierarchy (parent and child in group).
 IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
                        MakeTabGroup_WithNestedTreeHierarchy) {
-  auto* tab_groups_service =
-      tab_groups::TabGroupSyncServiceFactory::GetForProfile(
-          browser()->profile());
-  ASSERT_TRUE(tab_groups_service);
-  tab_groups_service->SetIsInitializedForTesting(true);
+  EnsureTabGroupSyncServiceInitialized();
 
   SetTreeTabsEnabled(true);
   // Build A (root) -> B (child).
@@ -2277,11 +2249,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
 // Move a tab from group A (which is nested under a tree node) to root. This
 // should work well without any crashes.
 IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, MoveTab_FromNestedGroupToRoot) {
-  auto* tab_groups_service =
-      tab_groups::TabGroupSyncServiceFactory::GetForProfile(
-          browser()->profile());
-  ASSERT_TRUE(tab_groups_service);
-  tab_groups_service->SetIsInitializedForTesting(true);
+  EnsureTabGroupSyncServiceInitialized();
 
   SetTreeTabsEnabled(true);
 
@@ -2334,11 +2302,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, MoveTab_FromNestedGroupToRoot) {
 // Ungroup tabs (partial: one tab out of a group).
 // This should work well without any crashes.
 IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, UngroupTabs_Partial) {
-  auto* tab_groups_service =
-      tab_groups::TabGroupSyncServiceFactory::GetForProfile(
-          browser()->profile());
-  ASSERT_TRUE(tab_groups_service);
-  tab_groups_service->SetIsInitializedForTesting(true);
+  EnsureTabGroupSyncServiceInitialized();
 
   SetTreeTabsEnabled(true);
   for (int i = 0; i < 3; ++i) {
@@ -2366,11 +2330,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, UngroupTabs_Partial) {
 
 // Ungroup all tabs in a group (single call).
 IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, UngroupAllTabs_InGroup) {
-  auto* tab_groups_service =
-      tab_groups::TabGroupSyncServiceFactory::GetForProfile(
-          browser()->profile());
-  ASSERT_TRUE(tab_groups_service);
-  tab_groups_service->SetIsInitializedForTesting(true);
+  EnsureTabGroupSyncServiceInitialized();
 
   SetTreeTabsEnabled(true);
   for (int i = 0; i < 3; ++i) {
@@ -2396,11 +2356,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, UngroupAllTabs_InGroup) {
 
 // Remove tabs from multiple groups at once should work as expected.
 IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, RemoveTabsFromMultipleGroups) {
-  auto* tab_groups_service =
-      tab_groups::TabGroupSyncServiceFactory::GetForProfile(
-          browser()->profile());
-  ASSERT_TRUE(tab_groups_service);
-  tab_groups_service->SetIsInitializedForTesting(true);
+  EnsureTabGroupSyncServiceInitialized();
 
   SetTreeTabsEnabled(true);
   for (int i = 0; i < 3; ++i) {
@@ -2529,11 +2485,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
 // |new_pinned_state|; the tab lands in the pinned collection
 IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
                        PinTab_FromGroupedTab_MovesToPinnedOutOfGroup) {
-  auto* tab_groups_service =
-      tab_groups::TabGroupSyncServiceFactory::GetForProfile(
-          browser()->profile());
-  ASSERT_TRUE(tab_groups_service);
-  tab_groups_service->SetIsInitializedForTesting(true);
+  EnsureTabGroupSyncServiceInitialized();
 
   SetTreeTabsEnabled(true);
   for (int i = 0; i < 3; ++i) {
@@ -2653,12 +2605,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
 // crash in the tree-tabs delegate; completing the flow verifies stability.
 IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
                        AddToNewGroup_SecondAndThirdPinnedTabs_NoCrash) {
-  auto* tab_groups_service =
-      tab_groups::TabGroupSyncServiceFactory::GetForProfile(
-          browser()->profile());
-  ASSERT_TRUE(tab_groups_service);
-  tab_groups_service->SetIsInitializedForTesting(true);
-
+  EnsureTabGroupSyncServiceInitialized();
   SetTreeTabsEnabled(true);
 
   AddTab();
@@ -2828,7 +2775,6 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
 IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
                        InsertDetachedSplitTabAt_IntoGroup_SplitChildOfGroup) {
   EnsureTabGroupSyncServiceInitialized();
-
   SetTreeTabsEnabled(true);
   AddTab();
   AddTab();
@@ -2865,7 +2811,6 @@ IN_PROC_BROWSER_TEST_F(
     TreeTabsBrowserTest,
     MoveSelectedTabsTo_SelectingFullGroup_MovesEntireGroupTogether) {
   EnsureTabGroupSyncServiceInitialized();
-
   SetTreeTabsEnabled(true);
 
   for (int i = 0; i < 3; ++i) {
@@ -2904,7 +2849,6 @@ IN_PROC_BROWSER_TEST_F(
     TreeTabsBrowserTest,
     MoveSelectedTabsTo_GroupTabAndUngroupedTab_MovesWithoutError) {
   EnsureTabGroupSyncServiceInitialized();
-
   SetTreeTabsEnabled(true);
 
   for (int i = 0; i < 3; ++i) {
@@ -2945,7 +2889,6 @@ IN_PROC_BROWSER_TEST_F(
 IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
                        MoveSelectedTabsTo_OneTabFromEachGroup_PartialGroupB) {
   EnsureTabGroupSyncServiceInitialized();
-
   SetTreeTabsEnabled(true);
 
   for (int i = 0; i < 3; ++i) {
