@@ -128,6 +128,17 @@ IN_PROC_BROWSER_TEST_P(BraveRewardsPolicyTest, RewardsPagesAccess) {
   }
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+// Verify that brave://ads-internals isn't reachable when Brave Rewards are
+// disabled by policy.
+IN_PROC_BROWSER_TEST_P(BraveRewardsPolicyTest, AdsInternalsPageAccess) {
+  auto* rfh =
+      ui_test_utils::NavigateToURL(browser(), GURL("chrome://ads-internals"));
+  EXPECT_TRUE(rfh);
+  EXPECT_EQ(IsBraveRewardsDisabledTest(), rfh->IsErrorDocument());
+}
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
+
 // Verify that Brave Rewards icon is not shown in the location bar when Brave
 // Rewards are disabled by policy.
 IN_PROC_BROWSER_TEST_P(BraveRewardsPolicyTest, RewardsIconIsHidden) {
