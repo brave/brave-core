@@ -1,0 +1,276 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+#include <set>
+#include <string>
+
+#include "base/test/scoped_feature_list.h"
+#include "base/test/test_future.h"
+#include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
+#include "brave/components/ai_chat/content/browser/associated_web_contents_content.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_service.h"
+#include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
+#include "brave/components/ai_chat/core/browser/associated_content_manager.h"
+#include "brave/components/ai_chat/core/browser/conversation_handler.h"
+#include "brave/components/ai_chat/core/browser/tools/tool.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/ui_test_utils.h"
+#include "content/public/test/browser_test.h"
+#include "content/public/test/browser_test_utils.h"
+#include "content/public/test/content_mock_cert_verifier.h"
+#include "net/dns/mock_host_resolver.h"
+#include "net/test/embedded_test_server/embedded_test_server.h"
+#include "net/test/embedded_test_server/http_request.h"
+#include "net/test/embedded_test_server/http_response.h"
+#include "testing/gmock/include/gmock/gmock.h"
+#include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/blink/public/common/features.h"
+
+namespace ai_chat {
+
+namespace {
+
+// HTML that registers two tools via navigator.modelContext. The feature is
+// only available on secure contexts when blink::features::kWebMCPTesting is
+// enabled (which implies kWebMCP).
+constexpr char kPageWithTools[] = R"HTML(
+<!doctype html>
+<html><head><title>WebMCP test</title></head>
+<body>
+<script>
+  window.__webmcpRegisterError = null;
+  try {
+    navigator.modelContext.registerTool({
+      execute: async ({text}) => text,
+      name: "echo",
+      description: "Echo input back",
+      inputSchema: {
+        type: "object",
+        properties: {
+          text: { type: "string", description: "Value to echo" }
+        },
+        required: ["text"]
+      },
+    });
+    navigator.modelContext.registerTool({
+      execute: async () => "ok",
+      name: "ping",
+      description: "Returns ok",
+    });
+  } catch (e) {
+    window.__webmcpRegisterError = String(e);
+  }
+</script>
+</body></html>)HTML";
+
+constexpr char kPageWithoutTools[] =
+    "<!doctype html><html><head><title>plain</title></head>"
+    "<body>no tools here</body></html>";
+
+}  // namespace
+
+class WebMcpBrowserTest : public InProcessBrowserTest {
+ public:
+  WebMcpBrowserTest() : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
+    // navigator.modelContext is gated by kWebMCPTesting (which implies
+    // kWebMCP). The base::Feature flips on the runtime-enabled feature in
+    // every renderer the browser spawns during this test.
+    scoped_feature_list_.InitWithFeatures(
+        /*enabled_features=*/{blink::features::kWebMCPTesting},
+        /*disabled_features=*/{});
+  }
+
+  ~WebMcpBrowserTest() override = default;
+
+  void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
+    mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
+    host_resolver()->AddRule("*", "127.0.0.1");
+
+    https_server_.RegisterRequestHandler(base::BindRepeating(
+        &WebMcpBrowserTest::HandleRequest, base::Unretained(this)));
+    ASSERT_TRUE(https_server_.Start());
+  }
+
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    InProcessBrowserTest::SetUpCommandLine(command_line);
+    mock_cert_verifier_.SetUpCommandLine(command_line);
+    // The runtime-enabled feature gating navigator.modelContext is marked
+    // "experimental" in runtime_enabled_features.json5 so the base::Feature
+    // toggle alone isn't enough; the blink-feature switch turns it on in
+    // every renderer for the duration of this test.
+    command_line->AppendSwitchASCII("enable-blink-features", "WebMCPTesting");
+  }
+
+  void SetUpInProcessBrowserTestFixture() override {
+    InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
+    mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
+  }
+
+  void TearDownInProcessBrowserTestFixture() override {
+    mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
+    InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
+  }
+
+ protected:
+  content::WebContents* GetActiveWebContents() {
+    return browser()->tab_strip_model()->GetActiveWebContents();
+  }
+
+  AssociatedWebContentsContent* GetActiveContent() {
+    auto* helper = AIChatTabHelper::FromWebContents(GetActiveWebContents());
+    return helper ? &helper->web_contents_content() : nullptr;
+  }
+
+  // Drives an empty new-generation-loop on the manager so it re-fetches the
+  // current set of tools, then returns them.
+  std::vector<base::WeakPtr<Tool>> RefreshAndGetTools(
+      AssociatedContentManager* manager) {
+    base::test::TestFuture<void> done;
+    manager->UpdateToolsForNewGenerationLoop(done.GetCallback());
+    EXPECT_TRUE(done.Wait());
+    return manager->GetTools();
+  }
+
+  net::EmbeddedTestServer* https_server() { return &https_server_; }
+
+ private:
+  std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
+      const net::test_server::HttpRequest& request) {
+    auto response = std::make_unique<net::test_server::BasicHttpResponse>();
+    response->set_code(net::HTTP_OK);
+    response->set_content_type("text/html");
+    if (request.relative_url == "/with-tools") {
+      response->set_content(kPageWithTools);
+    } else if (request.relative_url == "/no-tools") {
+      response->set_content(kPageWithoutTools);
+    } else {
+      return nullptr;
+    }
+    return response;
+  }
+
+  base::test::ScopedFeatureList scoped_feature_list_;
+  content::ContentMockCertVerifier mock_cert_verifier_;
+  net::EmbeddedTestServer https_server_;
+};
+
+// Registering tools via navigator.modelContext on the active page should be
+// observable through AssociatedContentManager::GetTools() once a generation
+// loop runs.
+// Diagnostic: confirms the renderer-side path returns script tools to brave's
+// content delegate, independent of the AssociatedContentManager wiring.
+IN_PROC_BROWSER_TEST_F(WebMcpBrowserTest,
+                       AssociatedWebContentsContent_DirectFetch) {
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), https_server()->GetURL("a.com", "/with-tools")));
+  ASSERT_EQ(
+      2, content::EvalJs(GetActiveWebContents(),
+                         "navigator.modelContextTesting.listTools().length"));
+
+  AssociatedContentDelegate* content = GetActiveContent();
+  ASSERT_TRUE(content);
+
+  base::test::TestFuture<std::vector<std::unique_ptr<Tool>>> future;
+  content->GetScriptTools(future.GetCallback());
+  EXPECT_EQ(2u, future.Take().size());
+}
+
+IN_PROC_BROWSER_TEST_F(WebMcpBrowserTest,
+                       AssociatedContentManager_SeesRegisteredTools) {
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), https_server()->GetURL("a.com", "/with-tools")));
+
+  // Make sure the WebMCP runtime feature is actually present in the renderer
+  // and the page-side registration didn't throw; without this the rest of the
+  // test would just see zero tools and the failure would be hard to diagnose.
+  EXPECT_EQ(true,
+            content::EvalJs(GetActiveWebContents(),
+                            "typeof navigator.modelContext === 'object'"));
+  EXPECT_EQ("null", content::EvalJs(GetActiveWebContents(),
+                                    "String(window.__webmcpRegisterError)"));
+  // Sanity check directly with the renderer that the tools are registered on
+  // navigator.modelContext at the moment the manager will fetch them.
+  ASSERT_EQ(
+      2, content::EvalJs(GetActiveWebContents(),
+                         "navigator.modelContextTesting.listTools().length"));
+
+  AssociatedContentDelegate* content = GetActiveContent();
+  ASSERT_TRUE(content);
+
+  auto* ai_chat_service =
+      AIChatServiceFactory::GetForBrowserContext(browser()->profile());
+  auto* conversation = ai_chat_service->CreateConversation();
+  ASSERT_TRUE(conversation);
+
+  auto* manager = conversation->associated_content_manager();
+  manager->AddContent(content);
+
+  auto tools = RefreshAndGetTools(manager);
+  ASSERT_EQ(2u, tools.size());
+
+  std::set<std::string> tool_names;
+  for (const auto& tool : tools) {
+    ASSERT_TRUE(tool);
+    tool_names.insert(std::string(tool->Name()));
+  }
+  EXPECT_THAT(tool_names, ::testing::UnorderedElementsAre("echo", "ping"));
+
+  // Sanity check on metadata for the richer tool.
+  for (const auto& tool : tools) {
+    if (tool->Name() == "echo") {
+      EXPECT_EQ(tool->Description(), "Echo input back");
+      ASSERT_TRUE(tool->InputProperties().has_value());
+      EXPECT_TRUE(tool->InputProperties()->contains("text"));
+      ASSERT_TRUE(tool->RequiredProperties().has_value());
+      EXPECT_THAT(*tool->RequiredProperties(), ::testing::ElementsAre("text"));
+    }
+  }
+}
+
+// A page with no script tools must not synthesize any.
+IN_PROC_BROWSER_TEST_F(WebMcpBrowserTest,
+                       AssociatedContentManager_NoToolsWhenPageHasNone) {
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), https_server()->GetURL("a.com", "/no-tools")));
+
+  auto* content = GetActiveContent();
+  ASSERT_TRUE(content);
+
+  auto* ai_chat_service =
+      AIChatServiceFactory::GetForBrowserContext(browser()->profile());
+  auto* conversation = ai_chat_service->CreateConversation();
+  ASSERT_TRUE(conversation);
+
+  auto* manager = conversation->associated_content_manager();
+  manager->AddContent(content);
+
+  EXPECT_TRUE(RefreshAndGetTools(manager).empty());
+}
+
+// Re-running the generation loop after a navigation should pick up the new
+// page's tools and drop the old page's tools.
+IN_PROC_BROWSER_TEST_F(WebMcpBrowserTest,
+                       AssociatedContentManager_RefreshesAcrossNavigations) {
+  auto* ai_chat_service =
+      AIChatServiceFactory::GetForBrowserContext(browser()->profile());
+  auto* conversation = ai_chat_service->CreateConversation();
+  ASSERT_TRUE(conversation);
+  auto* manager = conversation->associated_content_manager();
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), https_server()->GetURL("a.com", "/with-tools")));
+  manager->AddContent(GetActiveContent());
+  EXPECT_EQ(2u, RefreshAndGetTools(manager).size());
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), https_server()->GetURL("a.com", "/no-tools")));
+  EXPECT_TRUE(RefreshAndGetTools(manager).empty());
+}
+
+}  // namespace ai_chat
