@@ -22,8 +22,15 @@
   friend class BraveBrowserViewTabbedLayoutImpl;     \
   virtual int GetHorizontalTabStripLeadingMargin(params)
 
+// Make CalculateTopContainerLayoutImpl virtual to override it in
+// BraveBrowserViewTabbedLayoutImpl. CalculateTopContainerLayout is virtual
+// but it's only a wrapper around the Impl and internally the Impl is called
+// so we need to override the Impl.
+#define CalculateTopContainerLayoutImpl virtual CalculateTopContainerLayoutImpl
+
 #include <chrome/browser/ui/views/frame/layout/browser_view_tabbed_layout_impl.h>  // IWYU pragma: export
 
+#undef CalculateTopContainerLayoutImpl
 #undef GetTopSeparatorType
 #undef GetHorizontalTabStripLeadingMargin
 

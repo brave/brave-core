@@ -227,13 +227,15 @@ BraveBrowserViewTabbedLayoutImpl::CalculateProposedLayout(
   return layout;
 }
 
-gfx::Rect BraveBrowserViewTabbedLayoutImpl::CalculateTopContainerLayout(
+gfx::Rect BraveBrowserViewTabbedLayoutImpl::CalculateTopContainerLayoutImpl(
     ProposedLayout& layout,
     BrowserLayoutParams params,
-    bool needs_exclusion) const {
+    bool needs_exclusion,
+    bool suppress_top_separator) const {
   // Get base layout from parent
-  gfx::Rect bounds = BrowserViewTabbedLayoutImpl::CalculateTopContainerLayout(
-      layout, params, needs_exclusion);
+  gfx::Rect bounds =
+      BrowserViewTabbedLayoutImpl::CalculateTopContainerLayoutImpl(
+          layout, params, needs_exclusion, suppress_top_separator);
 
   if (!delegate().ShouldShowVerticalTabs()) {
     return bounds;

@@ -54,9 +54,11 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
   gfx::Size GetMinimumSize(const views::View* host) const override;
   ProposedLayout CalculateProposedLayout(
       const BrowserLayoutParams& params) const override;
-  gfx::Rect CalculateTopContainerLayout(ProposedLayout& layout,
-                                        BrowserLayoutParams params,
-                                        bool needs_exclusion) const override;
+  gfx::Rect CalculateTopContainerLayoutImpl(
+      ProposedLayout& layout,
+      BrowserLayoutParams params,
+      bool needs_exclusion,
+      bool suppress_top_separator) const override;
   void ConfigureTopContainerBackground(
       const BrowserLayoutParams& params,
       CustomCornersBackground* background) override;
