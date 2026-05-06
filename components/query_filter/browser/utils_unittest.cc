@@ -5,25 +5,170 @@
 
 #include "brave/components/query_filter/browser/utils.h"
 
+#include <vector>
+
+#include "base/files/file_util.h"
+#include "base/files/scoped_temp_dir.h"
+#include "base/test/scoped_feature_list.h"
+#include "brave/components/query_filter/browser/query_filter_data.h"
+#include "brave/components/query_filter/common/constants.h"
+#include "brave/components/query_filter/common/features.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
-// TODO(https://github.com/brave/brave-browser/issues/55305): Parameterize this
-// fixture on the QueryFilterComponent feature flag once the support to parse
-// the new downloaded rules is added.
-class BraveQueryFilter : public testing::Test {
+// Sample query filter JSON which would be written to a file during setup.
+// This maps to the default rules which are hardcoded in utils.cc.
+constexpr char kDefaultQueryFilterRules[] = R"json(
+[
+    {
+        "include": [
+            "*://*/*"
+        ],
+        "exclude": [],
+        "params": [
+            "__hsfp",
+            "__hssc",
+            "__hstc",
+            "__s",
+            "_bhlid",
+            "_branch_match_id",
+            "_branch_referrer",
+            "_gl",
+            "_hsenc",
+            "_openstat",
+            "at_recipient_id",
+            "at_recipient_list",
+            "bbeml",
+            "bsft_clkid",
+            "bsft_uid",
+            "dclid",
+            "et_rid",
+            "fb_action_ids",
+            "fb_comment_id",
+            "fbclid",
+            "gclid",
+            "guce_referrer",
+            "guce_referrer_sig",
+            "hsCtaTracking",
+            "irclickid",
+            "mc_eid",
+            "ml_subscriber",
+            "ml_subscriber_hash",
+            "msclkid",
+            "mtm_cid",
+            "oft_c",
+            "oft_ck",
+            "oft_d",
+            "oft_id",
+            "oft_ids",
+            "oft_k",
+            "oft_lk",
+            "oft_sk",
+            "oly_anon_id",
+            "oly_enc_id",
+            "pk_cid",
+            "rb_clickid",
+            "s_cid",
+            "sc_customer",
+            "sc_eh",
+            "sc_uid",
+            "sfmc_activityid",
+            "sfmc_id",
+            "sms_click",
+            "sms_source",
+            "sms_uph",
+            "srsltid",
+            "ss_email_id",
+            "syclid",
+            "ttclid",
+            "twclid",
+            "unicorn_click_id",
+            "vero_conv",
+            "vero_id",
+            "vgo_ee",
+            "wbraid",
+            "wickedid",
+            "yclid",
+            "ymclid",
+            "ysclid"
+        ]
+    },
+    {
+        "include": [
+            "*://*.instagram.com/*",
+            "*://instagram.com/*"
+        ],
+        "exclude": [],
+        "params": [
+            "igsh",
+            "igshid"
+        ]
+    },
+    {
+        "include": [
+            "*://*.twitter.com/*",
+            "*://twitter.com/*",
+            "*://*.x.com/*",
+            "*://x.com/*"
+        ],
+        "exclude": [],
+        "params": [
+            "ref_src",
+            "ref_url"
+        ]
+    },
+    {
+        "include": [
+            "*://*.youtube.com/*",
+            "*://youtube.com/*",
+            "*://youtu.be/*"
+        ],
+        "exclude": [],
+        "params": [
+            "si"
+        ]
+    }
+])json";
+
+class BraveQueryFilter : public testing::Test,
+                         public testing::WithParamInterface<bool> {
  public:
+  void SetUp() override {
+    if (GetParam()) {
+      feature_list_.InitAndEnableFeature(
+          query_filter::features::kQueryFilterComponent);
+      // Populate the rules
+      instance()->PopulateDataFromComponent(kDefaultQueryFilterRules);
+
+    } else {
+      feature_list_.InitAndDisableFeature(
+          query_filter::features::kQueryFilterComponent);
+    }
+  }
+
   void TearDown() override {
-    query_filter::SetScopedTrackerForTesting(nullptr);
+    if (GetParam()) {
+      instance()->ResetRulesForTesting();
+      query_filter::SetScopedTrackerForTesting(nullptr);
+    }
   }
 
   void SetScopedTrackerForTesting(
       query_filter::ScopedQueryTrackerType* trackers) {
     query_filter::SetScopedTrackerForTesting(trackers);
   }
+
+ private:
+  query_filter::QueryFilterData* instance() const {
+    return query_filter::QueryFilterData::GetInstance();
+  }
+
+  base::test::ScopedFeatureList feature_list_;
 };
 
-TEST_F(BraveQueryFilter, FilterQueryTrackers) {
+INSTANTIATE_TEST_SUITE_P(All, BraveQueryFilter, testing::Bool());
+
+TEST_P(BraveQueryFilter, FilterQueryTrackers) {
   // Expect filtering `gclid` param when cross origin `initiator_url`
   // and `redirect_source_url`
   EXPECT_EQ(query_filter::MaybeApplyQueryStringFilter(

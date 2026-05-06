@@ -5,6 +5,7 @@
 
 #include "brave/components/query_filter/browser/utils.h"
 
+#include <algorithm>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -15,6 +16,8 @@
 #include "base/containers/fixed_flat_set.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
+#include "brave/components/query_filter/browser/query_filter_data.h"
+#include "brave/components/query_filter/common/features.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "third_party/re2/src/re2/re2.h"
 
@@ -210,7 +213,47 @@ bool IsScopedTracker(std::string_view param_name, std::string_view spec) {
   return false;
 }
 
-// Remove tracking query parameters from a GURL, leaving all
+bool ShouldRemoveParam(std::string_view spec, std::string_view original_param) {
+  if (!base::FeatureList::IsEnabled(
+          query_filter::features::kQueryFilterComponent)) {
+    return kSimpleQueryStringTrackers.count(original_param) == 1 ||
+           IsScopedTracker(original_param, spec, kScopedQueryStringTrackers);
+  }
+
+  const GURL url = GURL(spec);
+  const auto& rules = query_filter::QueryFilterData::GetInstance()->rules();
+
+  // Go over rules that matches on the |url|.
+  for (const auto& rule : rules) {
+    const auto include_itr = std::find_if(
+        rule.include.cbegin(), rule.include.cend(), [&url](std::string str) {
+          return str == "*://*/*" || url.DomainIs(str);
+        });
+
+    const auto exclude_itr = std::find_if(
+        rule.exclude.cbegin(), rule.exclude.cend(), [&url](std::string str) {
+          return str == "*://*/*" || url.DomainIs(str);
+        });
+
+    // |url| excluded from consideration for the current |rule|
+    if (exclude_itr != rule.exclude.cend()) {
+      continue;
+    }
+
+    // |url| flagged by the current |rule|. Check params
+    if (include_itr != rule.include.cend()) {
+      for (const auto& rule_param : rule.params) {
+        if (rule_param == original_param) {
+          return true;
+        }
+      }
+    }
+  }
+
+  return false;
+}
+
+//  Remove tracking query parameters from a GURL, leaving all
 // other parts untouched.
 std::optional<std::string> StripQueryParameter(std::string_view query,
                                                std::string_view spec) {
@@ -230,8 +273,7 @@ std::optional<std::string> StripQueryParameter(std::string_view query,
         kv_string, "=", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
     const std::string_view key = pieces.empty() ? "" : pieces[0];
     if (pieces.size() >= 2 &&
-        (kSimpleQueryStringTrackers.count(key) == 1 ||
-         IsScopedTracker(key, spec) ||
+        (ShouldRemoveParam(spec, key) ||
          (kConditionalQueryStringTrackers.count(key) == 1 &&
           !re2::RE2::PartialMatch(
               spec, kConditionalQueryStringTrackers.at(key).data())))) {
@@ -245,6 +287,7 @@ std::optional<std::string> StripQueryParameter(std::string_view query,
   }
   return std::nullopt;
 }
+
 }  // namespace
 
 namespace query_filter {
