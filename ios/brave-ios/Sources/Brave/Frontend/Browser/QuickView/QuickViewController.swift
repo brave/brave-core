@@ -20,6 +20,7 @@ class QuickViewController: UIViewController {
   private var profileController: BraveProfileController
   private var profile: any Profile { profileController.profile }
   private let toolbarViewModel: QuickViewToolbarModel
+  private var readerModeHandler: ReaderModeScriptHandler?
   private lazy var toolbarHostingController = UIHostingController(
     rootView: QuickViewToolbarView(viewModel: toolbarViewModel)
   )
@@ -84,7 +85,9 @@ class QuickViewController: UIViewController {
         currentTab.goForward()
       case .shield:
         self?.presentBraveShieldsView()
-      case .refresh, .playlist, .readerMode,
+      case .readerMode:
+        self?.toggleReaderMode()
+      case .refresh, .playlist,
         .translate, .share, .openTab:
         break
       }
@@ -228,6 +231,87 @@ class QuickViewController: UIViewController {
   private func refreshShieldStatus(url: URL) {
     let isShieldsEnabled = currentTab?.braveShieldsHelper?.isBraveShieldsEnabled(for: url) ?? false
     toolbarViewModel.updateShieldingState(isShieldsEnabled)
+  }
+
+  private func toggleReaderMode() {
+    guard let tab = currentTab else { return }
+    let isActive: Bool
+    if FeatureList.kUseProfileWebViewConfiguration.enabled {
+      isActive = tab.readerMode?.state == .active
+    } else {
+      isActive = readerModeHandler?.state == .active
+    }
+    isActive ? disableReaderMode() : enableReaderMode()
+  }
+
+  private func enableReaderMode() {
+    guard let tab = currentTab,
+      let backForwardList = tab.backForwardList,
+      let currentURL = backForwardList.currentItem?.url,
+      !InternalURL.isValid(url: currentURL)
+    else { return }
+
+    let headers =
+      (tab.responses?[currentURL] as? HTTPURLResponse)?.allHeaderFields as? [String: String]
+    guard
+      let readerModeURL = currentURL.encodeEmbeddedInternalURL(for: .readermode, headers: headers)
+    else { return }
+
+    let readerModeCache = ReaderModeScriptHandler.cache(for: tab)
+
+    if FeatureList.kUseProfileWebViewConfiguration.enabled {
+      if let readabilityResult = tab.readerMode?.readabilityResult {
+        Task { @MainActor in
+          try? await readerModeCache.put(currentURL, readabilityResult)
+          tab.loadRequest(PrivilegedRequest(url: readerModeURL) as URLRequest)
+        }
+      }
+    } else {
+      tab.evaluateJavaScript(
+        functionName: "\(readerModeNamespace).readerize",
+        contentWorld: ReaderModeScriptHandler.scriptSandbox
+      ) { [weak tab] (object, error) in
+        guard let tab else { return }
+        if let readabilityResult = ReadabilityResult(object: object as AnyObject?) {
+          Task { @MainActor in
+            try? await readerModeCache.put(currentURL, readabilityResult)
+            tab.loadRequest(PrivilegedRequest(url: readerModeURL) as URLRequest)
+          }
+        }
+      }
+    }
+  }
+
+  private func disableReaderMode() {
+    guard let tab = currentTab,
+      let backForwardList = tab.backForwardList,
+      let currentURL = backForwardList.currentItem?.url,
+      let originalURL = currentURL.decodeEmbeddedInternalURL(for: .readermode)
+    else { return }
+
+    tab.loadRequest(URLRequest(url: originalURL))
+  }
+
+  private func checkReaderMode(for tab: some TabState) {
+    guard let url = tab.visibleURL,
+      !url.isNewTabURL,
+      !InternalURL.isValid(url: url) || url.isInternalURL(for: .readermode),
+      !url.isFileURL
+    else { return }
+
+    if FeatureList.kUseProfileWebViewConfiguration.enabled {
+      if let readerMode = tab.readerMode {
+        Task { @MainActor [weak self] in
+          await readerMode.checkReadability()
+          self?.toolbarViewModel.updateReaderModeState(readerMode.state)
+        }
+      }
+    } else {
+      tab.evaluateJavaScript(
+        functionName: "\(readerModeNamespace).checkReadability",
+        contentWorld: ReaderModeScriptHandler.scriptSandbox
+      )
+    }
   }
 }
 
