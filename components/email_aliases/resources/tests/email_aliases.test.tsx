@@ -413,4 +413,54 @@ describe('ManagePageConnected', () => {
     expect(screen.queryByText('alias1@brave.com')).not.toBeInTheDocument()
     expect(screen.queryByText('alias2@brave.com')).not.toBeInTheDocument()
   })
+
+  it('clears refresh error alert when user becomes unauthenticated', async () => {
+    const service = await setupTest()
+    await authenticate(service, AuthenticationStatus.kAuthenticated)
+
+    const errorText = 'Could not load your email aliases.'
+    await act(() => {
+      service.notifyObserverAliasesLoadError(errorText)
+    })
+    await waitFor(() => {
+      expect(screen.getByText(errorText)).toBeInTheDocument()
+    })
+
+    await authenticate(service, AuthenticationStatus.kUnauthenticated, '')
+
+    await waitFor(() => {
+      expect(screen.queryByText(errorText)).not.toBeInTheDocument()
+    })
+  })
+
+  it('does not show refresh error when not authenticated', async () => {
+    const service = await setupTest()
+    await authenticate(service, AuthenticationStatus.kUnauthenticated, '')
+
+    const errorText = 'Could not load your email aliases.'
+    await act(() => {
+      service.notifyObserverAliasesLoadError(errorText)
+    })
+
+    expect(screen.queryByText(errorText)).not.toBeInTheDocument()
+  })
+
+  it('does not display refresh errors or aliases when not authenticated', async () => {
+    const service = await setupTest()
+
+    const errorText = 'Could not load your email aliases.'
+    await act(() => {
+      service.notifyObserverAliasesLoadError(errorText)
+    })
+    await updateAliases(service, [
+      {
+        email: 'alias1@brave.com',
+        note: 'Test Alias 1',
+        domains: undefined,
+      },
+    ])
+
+    expect(screen.queryByText(errorText)).not.toBeInTheDocument()
+    await expectAliasesNotVisible()
+  })
 })
