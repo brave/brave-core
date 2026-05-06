@@ -14,7 +14,7 @@
 #include "brave/browser/net/features.h"
 #include "brave/browser/net/url_context.h"
 #include "brave/components/constants/network_constants.h"
-#include "brave/components/query_filter/pref_names.h"
+#include "brave/components/query_filter/common/pref_names.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
