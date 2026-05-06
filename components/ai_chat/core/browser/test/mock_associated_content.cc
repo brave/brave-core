@@ -9,7 +9,14 @@
 
 namespace ai_chat {
 
-MockAssociatedContent::MockAssociatedContent() = default;
+MockAssociatedContent::MockAssociatedContent() {
+  // Match the default behavior of AssociatedContentDelegate::GetScriptTools:
+  // run the callback immediately with no tools, so AssociatedContentManager's
+  // BarrierClosure can complete in tests that do not opt in to tools.
+  ON_CALL(*this, GetScriptTools)
+      .WillByDefault(
+          [](GetScriptToolsCallback cb) { std::move(cb).Run({}); });
+}
 MockAssociatedContent::~MockAssociatedContent() = default;
 
 void MockAssociatedContent::SetTitle(std::u16string title) {
