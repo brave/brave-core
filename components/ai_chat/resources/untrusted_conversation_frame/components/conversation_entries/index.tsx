@@ -30,6 +30,7 @@ import AssistantResponse from '../assistant_response'
 import EditInput from '../edit_input'
 import EditIndicator from '../edit_indicator'
 import {
+  getGroupAllowedLinks,
   getReasoningText,
   getToolArtifacts,
   groupConversationEntries,
@@ -312,6 +313,13 @@ function ConversationEntries(props: { scrollToBottom: () => void }) {
       ? getToolArtifacts(group)
       : null
 
+    // Computed once per group and passed to both AssistantTask and
+    // AssistantResponse so all entries in the group share the same set of
+    // anchor-permitted URLs. Required because a client-side tool call lives
+    // in a separate assistant entry from the follow-up response that
+    // references the tool's URLs.
+    const allowedLinks = getGroupAllowedLinks(group)
+
     return (
       <div key={firstEntryEdit.uuid || entryNumber}>
         <div
@@ -327,6 +335,7 @@ function ConversationEntries(props: { scrollToBottom: () => void }) {
                 assistantEntries={group}
                 isActiveTask={isActiveGroup}
                 isLeoModel={conversationContext.isLeoModel}
+                allowedLinks={allowedLinks}
               />
             )}
             {!groupIsTask
@@ -336,13 +345,6 @@ function ConversationEntries(props: { scrollToBottom: () => void }) {
                 const isActiveEntryInActiveGroup =
                   isActiveGroup && i === group.length - 1
                 const currentEntryEdit = entry.edits?.at(-1) ?? entry
-                const allowedLinksForEntry: string[] =
-                  currentEntryEdit.events?.flatMap(
-                    (event) =>
-                      event.sourcesEvent?.sources?.map(
-                        (source) => source.url.url,
-                      ) || [],
-                  ) || []
                 const entryText = getCompletion(currentEntryEdit)
                 const hasReasoning = entryText.includes('<think>')
 
@@ -368,7 +370,7 @@ function ConversationEntries(props: { scrollToBottom: () => void }) {
                             isActiveEntryInActiveGroup
                           }
                           isEntryInProgress={isEntryInProgress}
-                          allowedLinks={allowedLinksForEntry}
+                          allowedLinks={allowedLinks}
                           isLeoModel={conversationContext.isLeoModel}
                           toolArtifacts={
                             i === group.length - 1 ? toolArtifacts : null

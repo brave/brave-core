@@ -5,6 +5,7 @@
 
 import * as Mojom from '../../../common/mojom'
 import {
+  getGroupAllowedLinks,
   getReasoningText,
   removeReasoning,
   removeCitationsWithMissingLinks,
@@ -17,6 +18,7 @@ import {
   createConversationTurnWithDefaults,
   getToolUseEvent,
   getCompletionEvent,
+  getWebSourcesEvent,
 } from '../../../common/test_data_utils'
 
 describe('groupConversationEntries', () => {
@@ -473,5 +475,166 @@ describe('isAssistantGroupTask', () => {
     ]
 
     expect(isAssistantGroupTask(group)).toBe(false)
+  })
+})
+
+describe('getGroupAllowedLinks', () => {
+  const makeArtifact = (contentJson: string): Mojom.ToolArtifact => ({
+    id: null,
+    type: Mojom.VISITED_LINKS_ARTIFACT_TYPE,
+    contentJson,
+  })
+
+  const turnWithArtifacts = (
+    artifacts: Mojom.ToolArtifact[],
+  ): Mojom.ConversationTurn =>
+    createConversationTurnWithDefaults({
+      characterType: Mojom.CharacterType.ASSISTANT,
+      events: [
+        getToolUseEvent({
+          toolName: Mojom.SEMANTIC_HISTORY_SEARCH_TOOL_NAME,
+          id: '1',
+          argumentsJson: '{}',
+          output: [],
+          artifacts,
+        }),
+      ],
+    })
+
+  it('returns URL strings from a visited_links artifact', () => {
+    const group = [
+      turnWithArtifacts([
+        makeArtifact(
+          JSON.stringify(['https://a.com/one', 'https://a.com/two']),
+        ),
+      ]),
+    ]
+    expect(getGroupAllowedLinks(group)).toEqual([
+      'https://a.com/one',
+      'https://a.com/two',
+    ])
+  })
+
+  it('flattens across all entries in the group', () => {
+    const group = [
+      turnWithArtifacts([makeArtifact(JSON.stringify(['https://a.com']))]),
+      turnWithArtifacts([makeArtifact(JSON.stringify(['https://b.com']))]),
+    ]
+    expect(getGroupAllowedLinks(group)).toEqual([
+      'https://a.com',
+      'https://b.com',
+    ])
+  })
+
+  it('ignores artifacts of other types', () => {
+    const group = [
+      turnWithArtifacts([
+        { id: null, type: 'line_chart', contentJson: '{"data": []}' },
+        makeArtifact(JSON.stringify(['https://kept.com'])),
+      ]),
+    ]
+    expect(getGroupAllowedLinks(group)).toEqual(['https://kept.com'])
+  })
+
+  it('filters out malformed JSON, non-array, and non-string entries', () => {
+    const group = [
+      turnWithArtifacts([
+        makeArtifact('not valid json'),
+        makeArtifact(JSON.stringify({ not: 'an array' })),
+        makeArtifact(JSON.stringify(['https://example.com/ok', 42, null])),
+      ]),
+    ]
+    expect(getGroupAllowedLinks(group)).toEqual(['https://example.com/ok'])
+  })
+
+  it('returns an empty array when no tool_use events exist', () => {
+    const group = [
+      createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [getCompletionEvent('plain response')],
+      }),
+    ]
+    expect(getGroupAllowedLinks(group)).toEqual([])
+  })
+
+  it('uses the latest edit of each entry', () => {
+    const original = turnWithArtifacts([
+      makeArtifact(JSON.stringify(['https://original.com'])),
+    ])
+    original.edits = [
+      turnWithArtifacts([makeArtifact(JSON.stringify(['https://edited.com']))]),
+    ]
+    expect(getGroupAllowedLinks([original])).toEqual(['https://edited.com'])
+  })
+
+  it('collects URLs from sourcesEvent across all entries in the group', () => {
+    const group = [
+      createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [
+          getWebSourcesEvent([
+            {
+              url: { url: 'https://a.com' },
+              title: 'A',
+              faviconUrl: { url: 'https://a.com/favicon.ico' },
+            },
+          ]),
+        ],
+      }),
+      createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [
+          getWebSourcesEvent([
+            {
+              url: { url: 'https://b.com' },
+              title: 'B',
+              faviconUrl: { url: 'https://b.com/favicon.ico' },
+            },
+          ]),
+        ],
+      }),
+    ]
+    expect(getGroupAllowedLinks(group)).toEqual([
+      'https://a.com',
+      'https://b.com',
+    ])
+  })
+
+  it('unions sourcesEvent and visited_links URLs and dedupes', () => {
+    const group = [
+      createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [
+          getToolUseEvent({
+            toolName: Mojom.SEMANTIC_HISTORY_SEARCH_TOOL_NAME,
+            id: '1',
+            argumentsJson: '{}',
+            output: [],
+            artifacts: [
+              makeArtifact(
+                JSON.stringify(['https://history.example', 'https://dup.com']),
+              ),
+            ],
+          }),
+          getWebSourcesEvent([
+            {
+              url: { url: 'https://search.example' },
+              title: 'Search',
+              faviconUrl: { url: 'https://search.example/favicon.ico' },
+            },
+            {
+              url: { url: 'https://dup.com' },
+              title: 'Dup',
+              faviconUrl: { url: 'https://dup.com/favicon.ico' },
+            },
+          ]),
+        ],
+      }),
+    ]
+    expect(getGroupAllowedLinks(group)).toEqual([
+      'https://history.example',
+      'https://dup.com',
+      'https://search.example',
+    ])
   })
 })

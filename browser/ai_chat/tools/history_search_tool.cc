@@ -19,12 +19,14 @@
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_input_properties.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "chrome/browser/history_embeddings/history_embeddings_service_factory.h"
 #include "chrome/browser/history_embeddings/history_embeddings_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/history/core/browser/url_row.h"
 #include "components/history_embeddings/content/history_embeddings_service.h"
 #include "components/history_embeddings/core/history_embeddings_features.h"
+#include "url/url_constants.h"
 
 namespace ai_chat {
 
@@ -258,7 +260,30 @@ void HistorySearchTool::OnSearchResult(
   }
   std::string json = internal::BuildHistorySearchResultJson(
       result.query, result, include_all_passages);
-  std::move(*callback).Run(CreateContentBlocksForText(json), {});
+
+  // Surface the URLs in our results as a visited-links artifact so the
+  // conversation UI permits anchors in the assistant's reply for them.
+  // The artifact has no visual rendering -- it's a sidechannel trust-list.
+  ToolArtifacts artifacts;
+  if (!result.scored_url_rows.empty()) {
+    base::ListValue links;
+    for (const auto& row : result.scored_url_rows) {
+      if (row.row.url().is_valid() &&
+          row.row.url().SchemeIs(url::kHttpsScheme)) {
+        links.Append(row.row.url().spec());
+      }
+    }
+    if (!links.empty()) {
+      std::string links_json;
+      base::JSONWriter::Write(links, &links_json);
+      artifacts.push_back(mojom::ToolArtifact::New(
+          /*id=*/std::nullopt, mojom::kVisitedLinksArtifactType,
+          std::move(links_json)));
+    }
+  }
+
+  std::move(*callback).Run(CreateContentBlocksForText(json),
+                           std::move(artifacts));
 }
 
 }  // namespace ai_chat
