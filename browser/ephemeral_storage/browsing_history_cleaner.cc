@@ -9,20 +9,18 @@
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sync/sync_service_factory.h"
-#include "components/keyed_service/core/service_access_type.h"
 
 namespace ephemeral_storage {
 
-BrowsingHistoryCleaner::BrowsingHistoryCleaner(content::BrowserContext* context)
-    : profile_(Profile::FromBrowserContext(context)) {
-  CHECK(profile_);
-  auto* local_history = HistoryServiceFactory::GetForProfile(
-      profile_, ServiceAccessType::EXPLICIT_ACCESS);
-  CHECK(local_history);
-  auto* sync_service = SyncServiceFactory::GetForProfile(profile_);
+BrowsingHistoryCleaner::BrowsingHistoryCleaner(
+    Profile* profile,
+    history::HistoryService* history_service,
+    syncer::SyncService* sync_service)
+    : profile_(profile) {
+  CHECK(history_service);
   CHECK(sync_service);
   browsing_history_service_ = std::make_unique<history::BrowsingHistoryService>(
-      this, local_history, sync_service);
+      this, history_service, sync_service);
 }
 
 BrowsingHistoryCleaner::~BrowsingHistoryCleaner() = default;

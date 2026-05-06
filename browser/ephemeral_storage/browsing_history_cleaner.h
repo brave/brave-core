@@ -9,17 +9,18 @@
 #include "base/memory/raw_ptr.h"
 #include "chrome/browser/history/profile_based_browsing_history_driver.h"
 #include "components/history/core/browser/browsing_history_service.h"
-
-namespace content {
-class BrowserContext;
-}
+#include "components/sync/service/sync_service.h"
 
 namespace ephemeral_storage {
 
 class BrowsingHistoryCleaner : public ProfileBasedBrowsingHistoryDriver {
  public:
-  explicit BrowsingHistoryCleaner(content::BrowserContext* context);
+  explicit BrowsingHistoryCleaner(Profile* profile,
+                                  history::HistoryService* history_service,
+                                  syncer::SyncService* sync_service);
   ~BrowsingHistoryCleaner() override;
+  using WebHistoryServiceGetter =
+      base::RepeatingCallback<history::WebHistoryService*()>;
 
   void CleanupBrowsingHistoryForDomain(const std::string& domain);
 

@@ -24,6 +24,27 @@
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "net/base/features.h"
 
+namespace {
+
+std::unique_ptr<ephemeral_storage::BrowsingHistoryCleaner>
+CreateBrowsingHistoryCleanerForProfile(Profile* profile) {
+  if (!profile || profile->IsOffTheRecord()) {
+    return nullptr;
+  }
+  auto* history_service = HistoryServiceFactory::GetForProfile(
+      profile, ServiceAccessType::EXPLICIT_ACCESS);
+  auto* sync_service = SyncServiceFactory::GetForProfile(profile);
+
+  if (!history_service || !sync_service) {
+    return nullptr;
+  }
+
+  return std::make_unique<ephemeral_storage::BrowsingHistoryCleaner>(
+      profile, history_service, sync_service);
+}
+
+}  // namespace
+
 // static
 EphemeralStorageServiceFactory* EphemeralStorageServiceFactory::GetInstance() {
   static base::NoDestructor<EphemeralStorageServiceFactory> instance;
@@ -76,20 +97,13 @@ EphemeralStorageServiceFactory::BuildServiceInstanceForBrowserContext(
     return nullptr;
   }
   Profile* profile = Profile::FromBrowserContext(context);
-  std::unique_ptr<ephemeral_storage::BrowsingHistoryCleaner>
-      browsing_history_cleaner;
-  if (!profile->IsOffTheRecord()) {
-    browsing_history_cleaner =
-        std::make_unique<ephemeral_storage::BrowsingHistoryCleaner>(context);
-  }
-
   return std::make_unique<ephemeral_storage::EphemeralStorageService>(
       context, host_content_settings_map,
       std::make_unique<ephemeral_storage::BraveEphemeralStorageServiceDelegate>(
           context, host_content_settings_map,
           CookieSettingsFactory::GetForProfile(profile),
           BraveShieldsSettingsServiceFactory::GetForProfile(profile),
-          std::move(browsing_history_cleaner)));
+          CreateBrowsingHistoryCleanerForProfile(profile)));
 }
 
 content::BrowserContext* EphemeralStorageServiceFactory::GetBrowserContextToUse(
