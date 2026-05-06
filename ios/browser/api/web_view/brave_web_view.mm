@@ -23,7 +23,7 @@
 #include "brave/ios/browser/ai_chat/tab_tracker_service_factory.h"
 #include "brave/ios/browser/api/web_view/autofill/brave_autofill_controller.h"
 #include "brave/ios/browser/api/web_view/autofill/brave_web_view_autofill_client.h"
-#include "brave/ios/browser/api/web_view/brave_web_frame+private.h"
+#include "brave/ios/browser/api/web_view/brave_web_frame_internal.h"
 #include "brave/ios/browser/api/web_view/passwords/brave_web_view_password_manager_client.h"
 #include "brave/ios/browser/brave_ads/ads_tab_helper.h"
 #include "brave/ios/browser/brave_search/brave_search_ad_results_javascript_feature.h"
@@ -352,10 +352,8 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
     favicon_driver->AddObserver(self.faviconDriverObserver);
   }
 
-  if (self.webState) {
-    self.webState->GetWebFramesManager(web::ContentWorld::kIsolatedWorld)
-        ->AddObserver(self.webFrameObserverBridge);
-  }
+  self.webState->GetWebFramesManager(web::ContentWorld::kIsolatedWorld)
+      ->AddObserver(self.webFrameObserverBridge);
 }
 
 - (void)attachSecurityInterstitialHelpersToWebStateIfNecessary {
