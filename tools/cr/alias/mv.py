@@ -14,11 +14,12 @@ from __future__ import annotations
 
 import argparse
 import logging
+import subprocess
 from pathlib import Path
 
 import _boot  # noqa: F401
 from incendiary_error_handler import IncendiaryErrorHandler
-from terminal import console
+from terminal import console, terminal
 import repository
 import plaster
 from plaster import PlasterFile
@@ -58,6 +59,10 @@ def cmd_mv(args: list[str]) -> int:
                         action='store_true',
                         dest='no_run_plaster',
                         help='Skip running plaster after moving TOML files')
+    parser.add_argument('--no-format',
+                        action='store_true',
+                        dest='no_format',
+                        help='Skip running `npm run format` after the move')
     parser.add_argument('--verbose',
                         action='store_true',
                         help='Enable verbose logging')
@@ -93,8 +98,23 @@ def cmd_mv(args: list[str]) -> int:
 
     _step5_plaster(file_pairs, parsed.no_git, not parsed.no_run_plaster)
 
+    if not parsed.no_format:
+        _run_format()
+
     console.log(f'[bold green]✔[/] {parsed.source} → {parsed.destination}')
     return 0
+
+
+def _run_format() -> None:
+    """Runs `npm run format` to clean up files touched by the move.
+
+    Failures are downgraded to warnings: format must not block a successful
+    move.
+    """
+    try:
+        terminal.run_npm_command('format')
+    except (subprocess.CalledProcessError, FileNotFoundError) as e:
+        logging.warning('npm run format failed: %s', e)
 
 
 def _step1_move(src: Path, dest: Path, mkdir: bool,

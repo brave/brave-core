@@ -12,6 +12,7 @@ from __future__ import annotations
 import logging
 import os
 import re
+from collections.abc import Iterator
 from pathlib import Path
 
 import _boot  # noqa: F401
@@ -30,6 +31,9 @@ _INCLUDE_EXTENSIONS: frozenset[str] = CPP_EXTENSIONS | frozenset({'.mojom'})
 # Extensions whose files may contain // path references in comments.
 _COMMENT_EXTENSIONS: frozenset[str] = CPP_EXTENSIONS | frozenset(
     {'.gni', '.gn'})
+
+# Extensions whose files contain GN references in double-quoted strings.
+_GN_EXTENSIONS: frozenset[str] = frozenset({'.gn', '.gni'})
 
 # Walk filter rules, relative to the brave-core root.
 # Each entry is '+' (include) or '-' (exclude) followed by a path.
@@ -175,6 +179,8 @@ def update_references(old_path: Path, new_path: Path) -> None:
     Handles:
     - #include / #import directives (quoted and angle-bracket) in C++/.mojom
     - // comment lines in C++ and build files
+    - GN references in .gn/.gni files (root and relative; see
+      _update_gn_references for the per-file-type rules)
     - BUILD.gn / .gni source-list entries in the ancestor chain of the old file
     - For moved .mojom files: derived generated-header paths
 
@@ -200,45 +206,34 @@ def update_references(old_path: Path, new_path: Path) -> None:
             mojom_rewrites.append(
                 (pat, r'\g<1>' + new_base + suffix + r'\g<2>'))
 
-    for dirpath, dirnames, filenames in os.walk(repository.BRAVE_CORE_PATH):
-        rel_dir = Path(dirpath).relative_to(
-            repository.BRAVE_CORE_PATH).as_posix()
-        dirnames[:] = [
-            d for d in dirnames
-            if _should_walk_dir(d if rel_dir == '.' else f'{rel_dir}/{d}')
-        ]
-        if rel_dir != '.' and _is_path_excluded(rel_dir):
+    for fpath in _walk_brave_core():
+        ext = fpath.suffix.lower()
+        do_includes = ext in _INCLUDE_EXTENSIONS
+        do_comments = ext in _COMMENT_EXTENSIONS
+        if not (do_includes or do_comments):
             continue
-        for fname in filenames:
-            fpath = Path(dirpath) / fname
-            if fpath.suffix in SEARCH_EXCLUDE_EXTENSIONS:
-                continue
 
-            ext = fpath.suffix.lower()
-            do_includes = ext in _INCLUDE_EXTENSIONS
-            do_comments = ext in _COMMENT_EXTENSIONS
-            if not (do_includes or do_comments):
-                continue
+        content = fpath.read_text(encoding='utf-8')
+        new_content = content
 
-            content = fpath.read_text(encoding='utf-8')
-            new_content = content
+        if do_includes:
+            new_content = include_re.sub(include_sub, new_content)
+            for pat, sub in mojom_rewrites:
+                new_content = pat.sub(sub, new_content)
 
-            if do_includes:
-                new_content = include_re.sub(include_sub, new_content)
-                for pat, sub in mojom_rewrites:
-                    new_content = pat.sub(sub, new_content)
+        if do_comments:
+            lines = new_content.splitlines(keepends=True)
+            new_lines = [
+                line.replace(old_posix, new_posix) if
+                line.lstrip().startswith('//') and old_posix in line else line
+                for line in lines
+            ]
+            new_content = ''.join(new_lines)
 
-            if do_comments:
-                lines = new_content.splitlines(keepends=True)
-                new_lines = [
-                    line.replace(old_posix, new_posix)
-                    if line.lstrip().startswith('//') and old_posix in line
-                    else line for line in lines
-                ]
-                new_content = ''.join(new_lines)
+        if new_content != content:
+            fpath.write_text(new_content, encoding='utf-8', newline='\n')
 
-            if new_content != content:
-                fpath.write_text(new_content, encoding='utf-8', newline='\n')
+    _update_gn_references(old_path, new_path)
 
     # Update BUILD.gn / .gni source-list entries in the ancestor chain.
     old_abs = repository.CHROMIUM_SRC_PATH / old_posix
@@ -260,6 +255,121 @@ def patch_name_for(chromium_path: Path | str) -> str:
 # ---------------------------------------------------------------------------
 # Internal helpers
 # ---------------------------------------------------------------------------
+
+
+def _walk_brave_core() -> Iterator[Path]:
+    """Yields every non-excluded file path under brave-core.
+
+    Honours SEARCH_EXCLUDE_DIRS and SEARCH_EXCLUDE_EXTENSIONS via
+    _should_walk_dir / _is_path_excluded.
+    """
+    for dirpath, dirnames, filenames in os.walk(repository.BRAVE_CORE_PATH):
+        rel_dir = Path(dirpath).relative_to(
+            repository.BRAVE_CORE_PATH).as_posix()
+        dirnames[:] = [
+            d for d in dirnames
+            if _should_walk_dir(d if rel_dir == '.' else f'{rel_dir}/{d}')
+        ]
+        if rel_dir != '.' and _is_path_excluded(rel_dir):
+            continue
+        for fname in filenames:
+            fpath = Path(dirpath) / fname
+            if fpath.suffix in SEARCH_EXCLUDE_EXTENSIONS:
+                continue
+            yield fpath
+
+
+def _gn_token_re(prefix: str) -> re.Pattern[str]:
+    """Returns a regex matching `"prefix` at a GN reference token boundary.
+
+    Matches inside a double-quoted string, requiring the next character after
+    `prefix` to be `:` (target separator), `/` (sub-path), or `"` (closing
+    quote). The lookahead is zero-width so the substitution only replaces the
+    leading `"prefix` portion.
+    """
+    return re.compile(r'"' + re.escape(prefix) + r'(?=[:/"])')
+
+
+def _update_gn_references(old_path: Path, new_path: Path) -> None:
+    """Rewrites quoted GN references in .gn/.gni files across brave-core.
+
+    Scope is keyed off the moved file's name/extension:
+      - BUILD.gn -> directory rename: rewrite root references
+        (`"//<old_dir>` followed by `:`, `/`, or `"`) and per-file relative
+        references (the relative path from each visited file's dir to the
+        old/new dir, applied with the same token-boundary rule). In the
+        moved BUILD.gn itself, also rewrite the implicit directory-name
+        target -- both the declaration `"<old_basename>"` and any
+        same-file label reference `:<old_basename>"` -- to use the new
+        basename.
+      - .gni or non-BUILD.gn .gn -> single-file move: rewrite the exact
+        quoted root reference `"//<old_path>"`.
+      - C++ source -> single-file move: rewrite the exact quoted root
+        reference `"//<old_path>"`.
+      - Other -> no-op.
+
+    Only edits content inside double-quoted strings. Skips files that fall
+    outside _GN_EXTENSIONS.
+    """
+    suffix = old_path.suffix.lower()
+
+    if old_path.name == 'BUILD.gn':
+        old_dir = old_path.parent.as_posix()
+        new_dir = new_path.parent.as_posix()
+        if not old_dir or old_dir == '.':
+            return
+        old_root = '//' + old_dir
+        new_root = '//' + new_dir
+        root_re = _gn_token_re(old_root)
+        root_sub = '"' + new_root
+        old_abs_dir = repository.CHROMIUM_SRC_PATH / old_dir
+        new_abs_dir = repository.CHROMIUM_SRC_PATH / new_dir
+        for fpath in _walk_brave_core():
+            if fpath.suffix not in _GN_EXTENSIONS:
+                continue
+            content = fpath.read_text(encoding='utf-8')
+            new_content = root_re.sub(root_sub, content)
+            rel_old = os.path.relpath(old_abs_dir,
+                                      fpath.parent).replace('\\', '/')
+            rel_new = os.path.relpath(new_abs_dir,
+                                      fpath.parent).replace('\\', '/')
+            if rel_old and rel_old != '.':
+                rel_re = _gn_token_re(rel_old)
+                new_content = rel_re.sub('"' + rel_new, new_content)
+            if new_content != content:
+                fpath.write_text(new_content, encoding='utf-8', newline='\n')
+
+        # In the moved BUILD.gn, rename the implicit directory-name target.
+        old_basename = old_path.parent.name
+        new_basename = new_path.parent.name
+        if old_basename and old_basename != new_basename:
+            new_build = repository.CHROMIUM_SRC_PATH / new_path
+            if new_build.is_file():
+                content = new_build.read_text(encoding='utf-8')
+                new_content = content.replace(f'"{old_basename}"',
+                                              f'"{new_basename}"')
+                new_content = new_content.replace(f':{old_basename}"',
+                                                  f':{new_basename}"')
+                if new_content != content:
+                    new_build.write_text(new_content,
+                                         encoding='utf-8',
+                                         newline='\n')
+        return
+
+    if suffix not in _GN_EXTENSIONS and suffix not in CPP_EXTENSIONS:
+        return
+
+    old_quoted = f'"//{old_path.as_posix()}"'
+    new_quoted = f'"//{new_path.as_posix()}"'
+    for fpath in _walk_brave_core():
+        if fpath.suffix not in _GN_EXTENSIONS:
+            continue
+        content = fpath.read_text(encoding='utf-8')
+        if old_quoted not in content:
+            continue
+        fpath.write_text(content.replace(old_quoted, new_quoted),
+                         encoding='utf-8',
+                         newline='\n')
 
 
 def _update_build_ancestors(old_abs: Path, new_abs: Path,

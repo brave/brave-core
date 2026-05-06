@@ -37,7 +37,7 @@ import _boot  # noqa: F401
 from incendiary_error_handler import IncendiaryErrorHandler
 import plaster
 from plaster import PlasterFile
-from terminal import console
+from terminal import console, terminal
 import repository
 from alias.source_rewrite import (
     CPP_EXTENSIONS,
@@ -68,6 +68,11 @@ def cmd_follow_renames(args: list[str]) -> int:
                         action='store_true',
                         dest='no_run_plaster',
                         help='Skip running plaster after moving TOML files')
+    parser.add_argument(
+        '--no-format',
+        action='store_true',
+        dest='no_format',
+        help='Skip running `npm run format` after processing renames')
     parser.add_argument('--verbose',
                         action='store_true',
                         help='Enable verbose logging')
@@ -92,8 +97,23 @@ def cmd_follow_renames(args: list[str]) -> int:
         update_references(old_chromium, new_chromium)
         _repair_patch_files(old_chromium, new_chromium, parsed.no_git)
 
+    if renames and not parsed.no_format:
+        _run_format()
+
     console.log(f'[bold green]✔[/] {len(renames)} rename(s) processed')
     return 0
+
+
+def _run_format() -> None:
+    """Runs `npm run format` to clean up files touched by rename repairs.
+
+    Failures are downgraded to warnings: format must not block successful
+    rename processing.
+    """
+    try:
+        terminal.run_npm_command('format')
+    except (subprocess.CalledProcessError, FileNotFoundError) as e:
+        logging.warning('npm run format failed: %s', e)
 
 
 def _get_chromium_renames(ref_or_range: str) -> list[_RenamePair]:

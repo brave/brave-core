@@ -11,6 +11,7 @@ import subprocess
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 import _boot  # noqa: F401
 import repository
@@ -28,6 +29,9 @@ class _Base(unittest.TestCase):
         self.addCleanup(self._repo.cleanup)
         # chromium_src/, rewrite/ created by FakeChromiumSrc.setup()
         # patches/ is created by FakeChromiumRepo.__init__
+        # `npm run format` is not available in the fake repo; suppress it.
+        self._format_mock = patch('alias.mv._run_format').start()
+        self.addCleanup(patch.stopall)
 
     @property
     def _brave(self) -> Path:
@@ -281,6 +285,53 @@ class ReferencesTest(_Base):
                       'user.cc').read_text(encoding='utf-8')
         self.assertIn('#include <base/feature_list.h>', cc_content)
 
+    def test_directory_move_rewrites_gn_references(self) -> None:
+        """Moving a directory rewrites root and relative GN references in
+        unrelated BUILD.gn files."""
+        self._commit(
+            'components/api_request_helper/BUILD.gn',
+            'static_library("api_request_helper") {\n'
+            '  sources = [ "api_request_helper.cc" ]\n'
+            '}\n'
+            'source_set("test_support") {\n'
+            '  public_deps = [ ":api_request_helper" ]\n'
+            '}\n')
+        self._commit('components/api_request_helper/api_request_helper.cc',
+                     '// impl\n')
+        # Consumer at an unrelated dir uses a root reference.
+        self._commit(
+            'browser/BUILD.gn',
+            'deps = [ "//brave/components/api_request_helper:test_support" ]\n'
+        )
+        # Sibling under components/ uses a relative reference.
+        self._commit('components/ai_chat/BUILD.gn',
+                     'deps = [ "../api_request_helper" ]\n')
+
+        cmd_mv([
+            '--mkdir', 'components/api_request_helper', 'components/api_test'
+        ])
+
+        browser_content = (self._brave / 'browser' /
+                           'BUILD.gn').read_text(encoding='utf-8')
+        self.assertIn('"//brave/components/api_test:test_support"',
+                      browser_content)
+        self.assertNotIn('api_request_helper', browser_content)
+
+        sibling_content = (self._brave / 'components' / 'ai_chat' /
+                           'BUILD.gn').read_text(encoding='utf-8')
+        self.assertIn('"../api_test"', sibling_content)
+        self.assertNotIn('api_request_helper', sibling_content)
+
+        # The moved BUILD.gn's directory-name target is renamed too — both
+        # the declaration and same-file label refs. The `api_request_helper.cc`
+        # source-list entry is a stable same-dir reference and must remain.
+        moved_content = (self._brave / 'components' / 'api_test' /
+                         'BUILD.gn').read_text(encoding='utf-8')
+        self.assertIn('static_library("api_test")', moved_content)
+        self.assertIn(':api_test"', moved_content)
+        self.assertNotIn('"api_request_helper"', moved_content)
+        self.assertNotIn(':api_request_helper"', moved_content)
+
 
 # ---------------------------------------------------------------------------
 # Plaster TOML handling tests (Step 5)
@@ -496,6 +547,25 @@ class PlasterApplyTest(_Base):
         ])
 
         self.assertFalse((self._brave / 'patches' / 'B-foo.cc.patch').exists())
+
+
+# ---------------------------------------------------------------------------
+# Format step
+# ---------------------------------------------------------------------------
+
+
+class FormatTest(_Base):
+    """`npm run format` runs after a successful move unless --no-format."""
+
+    def test_format_called_by_default(self) -> None:
+        self._commit('foo/bar.h', '// header\n')
+        cmd_mv(['--mkdir', 'foo/bar.h', 'baz/bar.h'])
+        self._format_mock.assert_called_once()
+
+    def test_format_skipped_with_no_format_flag(self) -> None:
+        self._commit('foo/bar.h', '// header\n')
+        cmd_mv(['--mkdir', '--no-format', 'foo/bar.h', 'baz/bar.h'])
+        self._format_mock.assert_not_called()
 
 
 if __name__ == '__main__':

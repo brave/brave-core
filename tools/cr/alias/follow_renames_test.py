@@ -31,6 +31,9 @@ class _Base(unittest.TestCase):
         self._repo.setup()
         self.addCleanup(self._repo.cleanup)
         # chromium_src/, rewrite/ created by FakeChromiumSrc.setup()
+        # `npm run format` is not available in the fake repo; suppress it.
+        self._format_mock = patch('alias.follow_renames._run_format').start()
+        self.addCleanup(patch.stopall)
 
     @property
     def _brave(self) -> Path:
@@ -333,6 +336,36 @@ class ReferencesTest(_Base):
                    'user.cc').read_text(encoding='utf-8')
         self.assertIn('#include "B/foo.h"', content)
         self.assertNotIn('#include "A/foo.h"', content)
+
+    def test_gn_root_reference_updated_on_gni_rename(self) -> None:
+        """An upstream .gni rename rewrites `"//path"` refs in BUILD.gn."""
+        before = self._chromium_head()
+        self._chromium_commit('tools/grit/repack.gni', '# repack template\n')
+        self._brave_commit('browser/BUILD.gn',
+                           'import("//tools/grit/repack.gni")\n')
+        self._chromium_rename('tools/grit/repack.gni', 'build/grit/repack.gni')
+
+        cmd_follow_renames([f'{before}..HEAD'])
+
+        content = (self._brave / 'browser' /
+                   'BUILD.gn').read_text(encoding='utf-8')
+        self.assertIn('"//build/grit/repack.gni"', content)
+        self.assertNotIn('"//tools/grit/repack.gni"', content)
+
+    def test_gn_root_reference_updated_on_cpp_rename(self) -> None:
+        """An upstream C++ rename rewrites `"//path.h"` refs in BUILD.gn."""
+        before = self._chromium_head()
+        self._chromium_commit('base/foo.h', '// header\n')
+        self._brave_commit('browser/BUILD.gn',
+                           'sources = [ "//base/foo.h" ]\n')
+        self._chromium_rename('base/foo.h', 'base/sub/foo.h')
+
+        cmd_follow_renames([f'{before}..HEAD'])
+
+        content = (self._brave / 'browser' /
+                   'BUILD.gn').read_text(encoding='utf-8')
+        self.assertIn('"//base/sub/foo.h"', content)
+        self.assertNotIn('"//base/foo.h"', content)
 
 
 # ---------------------------------------------------------------------------
@@ -637,6 +670,39 @@ class PatchFileRepairTest(_Base):
 
         self.assertFalse((self._brave / 'patches' / 'A-foo.cc.patch').exists())
         self.assertTrue((self._brave / 'patches' / 'B-foo.cc.patch').exists())
+
+
+# ---------------------------------------------------------------------------
+# Format step
+# ---------------------------------------------------------------------------
+
+
+class FormatTest(_Base):
+    """`npm run format` runs once per invocation unless --no-format."""
+
+    def test_format_called_when_renames_exist(self) -> None:
+        before = self._chromium_head()
+        self._chromium_commit('A/foo.h', '// src\n')
+        self._chromium_rename('A/foo.h', 'B/foo.h')
+
+        cmd_follow_renames([f'{before}..HEAD'])
+
+        self._format_mock.assert_called_once()
+
+    def test_format_skipped_with_no_format_flag(self) -> None:
+        before = self._chromium_head()
+        self._chromium_commit('A/foo.h', '// src\n')
+        self._chromium_rename('A/foo.h', 'B/foo.h')
+
+        cmd_follow_renames(['--no-format', f'{before}..HEAD'])
+
+        self._format_mock.assert_not_called()
+
+    def test_format_skipped_when_no_renames(self) -> None:
+        """No renames in the range -> nothing to format."""
+        before = self._chromium_head()
+        cmd_follow_renames([f'{before}..HEAD'])
+        self._format_mock.assert_not_called()
 
 
 if __name__ == '__main__':
