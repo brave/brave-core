@@ -75,7 +75,7 @@ BASE_FEATURE(kBraveReduceLanguage,
              base::FEATURE_ENABLED_BY_DEFAULT);
 // When enabled, brave shred feature will be available
 BASE_FEATURE(kBraveShredFeature,
-#if BUILDFLAG(IS_IOS)
+#if BUILDFLAG(IS_IOS) || BUILDFLAG(IS_ANDROID)
              base::FEATURE_ENABLED_BY_DEFAULT);
 #else
              base::FEATURE_DISABLED_BY_DEFAULT);
