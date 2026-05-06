@@ -11,6 +11,21 @@ nala_icon_overrides = [
     source = "ic_browser_bookmark_normal.xml"
     dest = "ic_all_bookmarks_icon_16dp.xml"
   },
+  {
+    # Override Chromium's zoom button at url bar and app menu on tablets.
+    source = "ic_search_zoom_in.xml"
+    dest = "ic_zoom.xml"
+  },
+  {
+    # Override Chromium's zoom in button at floating toolbar and app menu on tablets.
+    source = "ic_add_circle_filled.xml"
+    dest = "ic_add_24dp.xml"
+  },
+  {
+    # Override Chromium's zoom out button at floating toolbar and app menu on tablets.
+    source = "ic_minus.xml"
+    dest = "ic_remove.xml"
+  },
 ]
 
 # Please keep this list sorted alphabetically.
