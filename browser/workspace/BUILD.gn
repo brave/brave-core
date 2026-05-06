@@ -3,29 +3,38 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-static_library("workspace") {
+source_set("impl") {
+  visibility = [
+    "//chrome/browser",
+  ]
+
   sources = [
     "brave_workspace.cc",
-    "brave_workspace.h",
     "brave_workspace_service.cc",
-    "brave_workspace_service.h",
     "brave_workspace_service_factory.cc",
-    "brave_workspace_service_factory.h",
     "features.cc",
+  ]
+
+  deps = [
+    ":workspace",
+    "//base",
+    "//chrome/browser/ui/tabs:tab_strip",
+    "//chrome/browser/ui",
+  ]
+}
+static_library("workspace") {
+  sources = [
+    "brave_workspace.h",
+    "brave_workspace_service.h",
+    "brave_workspace_service_factory.h",
     "features.h",
   ]
 
   public_deps = [
     "//base",
-    "//components/keyed_service/core",
-    "//components/prefs",
-    "//components/sessions",
-  ]
-
-  deps = [
-    "//chrome/browser/ui",
-    "//chrome/browser/ui/browser_window",
     "//chrome/browser/profiles:profile",
+    "//components/keyed_service/core",
     "//components/pref_registry",
+    "//components/sessions",
   ]
 }

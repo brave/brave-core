@@ -20,7 +20,6 @@
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/focus_mode/focus_mode_utils.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
-#include "brave/browser/workspace/brave_workspace.h"
 #include "brave/browser/workspace/brave_workspace_service.h"
 #include "brave/browser/workspace/brave_workspace_service_factory.h"
 #include "brave/browser/workspace/features.h"
