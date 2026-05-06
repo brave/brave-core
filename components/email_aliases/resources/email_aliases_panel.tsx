@@ -32,10 +32,11 @@ export const EmailAliasesPanelConnected = ({
   emailAliasesPanelHandler: EmailAliasesPanelHandlerInterface
   bindObserver: (observer: EmailAliasesServiceObserverInterface) => () => void
 }) => {
-  const { authState, aliasesState } = useEmailAliasesObserver(bindObserver)
+  const { authState, aliasesUpdate } = useEmailAliasesObserver(bindObserver)
+  const aliases = aliasesUpdate.error ? [] : (aliasesUpdate.aliases ?? [])
   return (
     <EmailAliasModal
-      aliases={aliasesState}
+      aliases={aliases}
       aliasLimit={MAX_ALIASES}
       onReturnToMain={(action: EmailAliasModalResult) => {
         switch (action.type) {

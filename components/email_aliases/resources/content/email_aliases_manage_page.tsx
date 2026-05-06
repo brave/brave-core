@@ -11,7 +11,7 @@ import Alert from '@brave/leo/react/alert'
 import Col from './styles/Col'
 import styled from 'styled-components'
 import {
-  Alias,
+  AliasesUpdate,
   AuthState,
   AuthenticationStatus,
   EmailAliasesServiceInterface,
@@ -35,13 +35,11 @@ const BraveAccountSignIn = () => {
 }
 
 export const ManagePage = ({
-  aliasesState,
-  aliasesError,
+  aliasesUpdate,
   authState,
   emailAliasesService,
 }: {
-  aliasesState: Alias[]
-  aliasesError: string | null
+  aliasesUpdate: AliasesUpdate
   authState: AuthState
   emailAliasesService: EmailAliasesServiceInterface
 }) => (
@@ -49,11 +47,11 @@ export const ManagePage = ({
     <Introduction />
     <BraveAccountSignIn />
     {authState.status === AuthenticationStatus.kAuthenticated
-      && (aliasesError ? (
-        <Alert type='error'>{aliasesError}</Alert>
+      && (aliasesUpdate.error ? (
+        <Alert type='error'>{aliasesUpdate.error}</Alert>
       ) : (
         <AliasList
-          aliases={aliasesState}
+          aliases={aliasesUpdate.aliases!}
           authEmail={authState.email}
           emailAliasesService={emailAliasesService}
         />

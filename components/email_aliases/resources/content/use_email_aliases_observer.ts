@@ -8,14 +8,16 @@ import {
   AliasesUpdate,
   AuthenticationStatus,
   AuthState,
-  Alias,
   EmailAliasesServiceObserverInterface,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 
+const emptyAliasesUpdate = (): AliasesUpdate => ({ aliases: [] })
+
 /**
- * Subscribes to EmailAliasesService observer callbacks and exposes auth state,
- * alias list, and list-load error. Pass a stable `bindObserver` from the host
- * (e.g. one created when the Mojo pipes are set up).
+ * Subscribes to EmailAliasesService observer callbacks and exposes auth state
+ * and alias updates (`AliasesUpdate`: list payload or load error). Pass a
+ * stable `bindObserver` from the host (e.g. one created when the Mojo pipes
+ * are set up).
  */
 export function useEmailAliasesObserver(
   bindObserver: (observer: EmailAliasesServiceObserverInterface) => () => void,
@@ -24,8 +26,8 @@ export function useEmailAliasesObserver(
     status: AuthenticationStatus.kStartup,
     email: '',
   })
-  const [aliasesState, setAliasesState] = React.useState<Alias[]>([])
-  const [aliasesError, setAliasesError] = React.useState<string | null>(null)
+  const [aliasesUpdate, setAliasesUpdate] =
+    React.useState<AliasesUpdate>(emptyAliasesUpdate)
 
   React.useEffect(() => {
     // Track auth locally so we do not apply alias updates while logged out.
@@ -36,24 +38,21 @@ export function useEmailAliasesObserver(
           return
         }
         if (update.aliases) {
-          setAliasesState(update.aliases!)
-          setAliasesError(null)
+          setAliasesUpdate({ aliases: update.aliases })
         } else {
-          setAliasesState([])
-          setAliasesError(update.error!)
+          setAliasesUpdate({ error: update.error! })
         }
       },
       onAuthStateChanged: (state: AuthState) => {
         status = state.status
         setAuthState(state)
         if (status !== AuthenticationStatus.kAuthenticated) {
-          setAliasesState([])
-          setAliasesError(null)
+          setAliasesUpdate(emptyAliasesUpdate())
         }
       },
     }
     return bindObserver(observer)
   }, [])
 
-  return { authState, aliasesState, aliasesError }
+  return { authState, aliasesUpdate }
 }

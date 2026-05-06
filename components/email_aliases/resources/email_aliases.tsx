@@ -23,13 +23,11 @@ export const ManagePageConnected = ({
   emailAliasesService: EmailAliasesServiceInterface
   bindObserver: (observer: EmailAliasesServiceObserverInterface) => () => void
 }) => {
-  const { authState, aliasesState, aliasesError } =
-    useEmailAliasesObserver(bindObserver)
+  const { authState, aliasesUpdate } = useEmailAliasesObserver(bindObserver)
   return (
     <ManagePage
       authState={authState}
-      aliasesState={aliasesState}
-      aliasesError={aliasesError}
+      aliasesUpdate={aliasesUpdate}
       emailAliasesService={emailAliasesService}
     />
   )
