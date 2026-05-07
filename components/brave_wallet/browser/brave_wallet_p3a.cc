@@ -127,58 +127,6 @@ void BraveWalletP3A::ReportUsage(bool unlocked) {
   ReportNftDiscoverySetting();
 }
 
-void BraveWalletP3A::ReportJSProvider(mojom::JSProviderType provider_type,
-                                      mojom::CoinType coin_type,
-                                      bool allow_provider_overwrite) {
-  CHECK(coin_type == mojom::CoinType::ETH || coin_type == mojom::CoinType::SOL);
-
-  const char* histogram_name;
-  switch (coin_type) {
-    case mojom::CoinType::ETH:
-      histogram_name = kEthProviderHistogramName;
-      break;
-    case mojom::CoinType::SOL:
-      histogram_name = kSolProviderHistogramName;
-      break;
-    default:
-      return;
-  }
-
-  JSProviderAnswer answer = JSProviderAnswer::kNoWallet;
-  bool is_wallet_setup = std::ranges::any_of(
-      keyring_service_->GetAllAccountInfos(), [coin_type](auto& account) {
-        return account->account_id->coin == coin_type;
-      });
-
-  switch (provider_type) {
-    case mojom::JSProviderType::None:
-      if (is_wallet_setup) {
-        answer = JSProviderAnswer::kWalletDisabled;
-      } else {
-        answer = JSProviderAnswer::kNoWallet;
-      }
-      break;
-    case mojom::JSProviderType::ThirdParty:
-      // Third-party overriding is considered if the native wallet
-      // is enabled and the native wallet is setup.
-      answer = is_wallet_setup && allow_provider_overwrite
-                   ? JSProviderAnswer::kThirdPartyOverriding
-                   : JSProviderAnswer::kThirdPartyNotOverriding;
-      break;
-    case mojom::JSProviderType::Native:
-      if (is_wallet_setup) {
-        // A native wallet is definitely not being overridden
-        // if provider overwrites are allowed.
-        answer = !allow_provider_overwrite
-                     ? JSProviderAnswer::kNativeOverridingDisallowed
-                     : JSProviderAnswer::kNativeNotOverridden;
-      }
-      break;
-  }
-
-  base::UmaHistogramEnumeration(histogram_name, answer);
-}
-
 std::optional<mojom::OnboardingAction>
 BraveWalletP3A::GetLastOnboardingAction() {
   if (local_state_->HasPrefPath(kBraveWalletP3AOnboardingLastStep)) {

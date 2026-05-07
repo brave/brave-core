@@ -688,15 +688,6 @@ export class MockedWalletApiProxy {
     reportOnboardingAction: (action) => {
       console.log(`reporting onboarding action: ${action}`)
     },
-    reportJSProvider: (providerType, coinType, allowProviderOverwrite) => {
-      console.log(
-        `reporting JS provider: ${JSON.stringify(
-          { providerType, coinType, allowProviderOverwrite },
-          undefined,
-          2,
-        )}`,
-      )
-    },
     recordActiveWalletCount(count, coinType) {
       // Follow up issue to fix test via https://github.com/brave/brave-browser/issues/43583
       // console.log(`active wallet count: ${count} for ${coinType}`)

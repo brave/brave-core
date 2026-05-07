@@ -5,20 +5,19 @@
 
 #include "brave/renderer/brave_wallet/brave_wallet_render_frame_observer.h"
 
-#include <memory>
 #include <optional>
 #include <utility>
 
 #include "base/check.h"
 #include "base/notreached.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/renderer/js_cardano_provider.h"
+#include "brave/components/brave_wallet/renderer/js_ethereum_provider.h"
+#include "brave/components/brave_wallet/renderer/js_solana_provider.h"
 #include "brave/components/brave_wallet/renderer/v8_helper.h"
-#include "build/buildflag.h"
-#include "content/public/common/isolated_world_ids.h"
 #include "content/public/renderer/render_frame.h"
 #include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
-#include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_local_frame.h"
+#include "v8/include/v8-microtask-queue.h"
 
 namespace brave_wallet {
 
@@ -62,19 +61,6 @@ bool BraveWalletRenderFrameObserver::CanCreateProvider() {
   }
 
   return true;
-}
-
-void BraveWalletRenderFrameObserver::DidFinishLoad() {
-#if !BUILDFLAG(IS_ANDROID)
-  // Only record P3A for desktop and valid HTTP/HTTPS pages
-  if (!IsPageValid()) {
-    return;
-  }
-
-  auto dynamic_params = get_dynamic_params_callback_.Run();
-
-  p3a_util_.ReportJSProviders(render_frame(), dynamic_params);
-#endif
 }
 
 void BraveWalletRenderFrameObserver::DidClearWindowObject() {

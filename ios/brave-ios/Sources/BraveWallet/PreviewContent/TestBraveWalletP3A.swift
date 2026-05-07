@@ -8,21 +8,6 @@ import BraveCore
 #if DEBUG
 
 class TestBraveWalletP3A: BraveWalletBraveWalletP3A {
-  var _reportProvider:
-    (
-      (
-        _ providerType: BraveWallet.JSProviderType, _ coinType: BraveWallet.CoinType,
-        _ allowProviderOverwrite: Bool
-      ) -> Void
-    )?
-  func reportJsProvider(
-    providerType: BraveWallet.JSProviderType,
-    coinType: BraveWallet.CoinType,
-    allowProviderOverwrite: Bool
-  ) {
-    _reportProvider?(providerType, coinType, allowProviderOverwrite)
-  }
-
   var _reportOnboarding: ((_ onboardingAction: BraveWallet.OnboardingAction) -> Void)?
   func reportOnboardingAction(_ onboardingAction: BraveWallet.OnboardingAction) {
     _reportOnboarding?(onboardingAction)

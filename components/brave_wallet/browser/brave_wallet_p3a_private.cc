@@ -7,11 +7,6 @@
 
 namespace brave_wallet {
 
-void BraveWalletP3APrivate::ReportJSProvider(
-    mojom::JSProviderType provider_type,
-    mojom::CoinType coin_type,
-    bool allow_provider_overwrite) {}
-
 void BraveWalletP3APrivate::ReportOnboardingAction(
     mojom::OnboardingAction onboarding_action) {}
 

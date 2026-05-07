@@ -467,48 +467,6 @@ TEST_F(BraveWalletP3AUnitTest, NewUserBalancePastDeadline) {
   histogram_tester_->ExpectTotalCount(kNewUserBalanceHistogramName, 0);
 }
 
-TEST_F(BraveWalletP3AUnitTest, JSProviders) {
-  auto test_func = [&](mojom::CoinType coin_type, const char* histogram_name) {
-    histogram_tester_->ExpectTotalCount(histogram_name, 0);
-
-    wallet_p3a()->ReportJSProvider(mojom::JSProviderType::None, coin_type,
-                                   /*allow_provider_override*/ true);
-    histogram_tester_->ExpectUniqueSample(histogram_name, 0, 1);
-
-    keyring_service()->CreateWallet("testing123", base::DoNothing());
-    WaitForResponse();
-
-    wallet_p3a()->ReportJSProvider(mojom::JSProviderType::None, coin_type,
-                                   /*allow_provider_override*/ true);
-    histogram_tester_->ExpectBucketCount(histogram_name, 1, 1);
-
-    wallet_p3a()->ReportJSProvider(mojom::JSProviderType::Native, coin_type,
-                                   /*allow_provider_override*/ true);
-    histogram_tester_->ExpectBucketCount(histogram_name, 2, 1);
-
-    wallet_p3a()->ReportJSProvider(mojom::JSProviderType::Native, coin_type,
-                                   /*allow_provider_override*/ false);
-    histogram_tester_->ExpectBucketCount(histogram_name, 3, 1);
-
-    wallet_p3a()->ReportJSProvider(mojom::JSProviderType::ThirdParty, coin_type,
-                                   /*allow_provider_override*/ true);
-    histogram_tester_->ExpectBucketCount(histogram_name, 5, 1);
-
-    keyring_service()->Reset();
-
-    wallet_p3a()->ReportJSProvider(mojom::JSProviderType::ThirdParty, coin_type,
-                                   /*allow_provider_override*/ true);
-    histogram_tester_->ExpectBucketCount(histogram_name, 4, 1);
-
-    keyring_service()->Reset();
-    wallet_p3a()->ReportJSProvider(mojom::JSProviderType::Native, coin_type,
-                                   /*allow_provider_override*/ true);
-    histogram_tester_->ExpectBucketCount(histogram_name, 0, 2);
-  };
-  test_func(mojom::CoinType::ETH, kEthProviderHistogramName);
-  test_func(mojom::CoinType::SOL, kSolProviderHistogramName);
-}
-
 TEST_F(BraveWalletP3AUnitTest, NFTGalleryViews) {
   histogram_tester_->ExpectTotalCount(kBraveWalletNFTCountHistogramName, 0);
   histogram_tester_->ExpectTotalCount(kBraveWalletNFTNewUserHistogramName, 0);

@@ -26,10 +26,6 @@ inline constexpr char kOnboardingConversionHistogramName[] =
     "Brave.Wallet.OnboardingConversion.3";
 inline constexpr char kNewUserBalanceHistogramName[] =
     "Brave.Wallet.NewUserBalance";
-inline constexpr char kEthProviderHistogramName[] =
-    "Brave.Wallet.EthProvider.4";
-inline constexpr char kSolProviderHistogramName[] =
-    "Brave.Wallet.SolProvider.2";
 inline constexpr char kEthTransactionSentHistogramName[] =
     "Brave.Wallet.EthTransactionSent";
 inline constexpr char kSolTransactionSentHistogramName[] =
@@ -75,16 +71,6 @@ class BraveWalletService;
 class KeyringService;
 class TxService;
 
-enum class JSProviderAnswer {
-  kNoWallet = 0,
-  kWalletDisabled = 1,
-  kNativeNotOverridden = 2,
-  kNativeOverridingDisallowed = 3,
-  kThirdPartyNotOverriding = 4,
-  kThirdPartyOverriding = 5,
-  kMaxValue = kThirdPartyOverriding
-};
-
 // Reports BraveWallet related P3A data
 class BraveWalletP3A : public KeyringServiceObserverBase,
                        public mojom::BraveWalletP3A,
@@ -108,9 +94,6 @@ class BraveWalletP3A : public KeyringServiceObserverBase,
   void AddObservers();
 
   void ReportUsage(bool unlocked);
-  void ReportJSProvider(mojom::JSProviderType provider_type,
-                        mojom::CoinType coin_type,
-                        bool allow_provider_overwrite) override;
   void ReportOnboardingAction(mojom::OnboardingAction action) override;
   void RecordActiveWalletCount(int count, mojom::CoinType coin_type) override;
   void RecordNFTGalleryView(int nft_count) override;
