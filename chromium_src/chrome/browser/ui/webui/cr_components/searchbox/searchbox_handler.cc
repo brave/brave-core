@@ -31,9 +31,8 @@ constexpr char kLeoMessageBubbleAskIconResourceName[] =
 
 // We tweak a few AutocompleteInput settings because unlike Chromium we only
 // want keyword search results.
-#define set_prefer_keyword(prefer)                    \
-  set_keyword_mode_entry_method(                      \
-      metrics::OmniboxEventProto::KEYBOARD_SHORTCUT); \
+#define set_prefer_keyword(prefer) \
+  set_in_keyword_mode(true);       \
   autocomplete_input.set_prefer_keyword(true)
 #define set_allow_exact_keyword_match(allow) set_allow_exact_keyword_match(true)
 
