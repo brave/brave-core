@@ -89,20 +89,25 @@ class ObliviousHttpChunkHandler
   absl::Status OnTrailersDone() override;
 
  private:
-  void NotifyComplete(bool success);
+  void NotifyBHTTPComplete(bool success);
+  void NotifyURLLoaderComplete(bool success);
+  void RunCompleteCallback();
 
-  mojo::Remote<network::mojom::ObliviousHttpChunkClient> chunk_client_;
-  // Populated in Create() after the handler has a stable address.
-  std::optional<quiche::ChunkedObliviousHttpClient> ohttp_client_;
-  quiche::BinaryHttpResponse::IndeterminateLengthDecoder bhttp_decoder_;
-
-  bool decrypt_error_ = false;
+  bool has_error_ = false;
+  bool url_loader_complete_ = false;
+  bool bhttp_complete_ = false;
 
   int inner_status_code_ = 0;
   scoped_refptr<net::HttpResponseHeaders> headers_;
   std::vector<std::pair<std::string, std::string>> pending_headers_;
 
+  quiche::BinaryHttpResponse::IndeterminateLengthDecoder bhttp_decoder_;
+  // Populated in Create() after the handler has a stable address.
+  std::optional<quiche::ChunkedObliviousHttpClient> ohttp_client_;
+
   base::OnceCallback<void(std::optional<std::string>)> on_request_complete_;
+
+  mojo::Remote<network::mojom::ObliviousHttpChunkClient> chunk_client_;
 };
 
 #endif  // BRAVE_COMPONENTS_OBLIVIOUS_HTTP_OBLIVIOUS_HTTP_CHUNK_HANDLER_H_

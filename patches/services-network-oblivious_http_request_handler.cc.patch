@@ -1,15 +1,15 @@
 diff --git a/services/network/oblivious_http_request_handler.cc b/services/network/oblivious_http_request_handler.cc
-index d143da451305d4c4fe520624f071042dbc79863d..e74ab7cc7e5e2d6c968c27535ba11f67cf4c3f15 100644
+index d143da451305d4c4fe520624f071042dbc79863d..e650747aa523ed30c1973da70d507462c7ea317e 100644
 --- a/services/network/oblivious_http_request_handler.cc
 +++ b/services/network/oblivious_http_request_handler.cc
-@@ -165,6 +165,7 @@ class ObliviousHttpRequestHandler::RequestState {
-   std::unique_ptr<TrustTokenRequestHelper> trust_token_helper;
-   net::NetLogWithSource net_log;
-   std::optional<StatefulObliviousHttpClient> ohttp_client;
+@@ -160,6 +160,7 @@ scoped_refptr<net::HttpResponseHeaders> GetSyntheticBhttpResponseHeader(
+ class ObliviousHttpRequestHandler::RequestState {
+  public:
+   mojom::ObliviousHttpRequestPtr request;
 +  BRAVE_OBLIVIOUS_HTTP_REQUEST_STATE_MEMBERS
- };
- 
- ObliviousHttpRequestHandler::ObliviousHttpRequestHandler(
+   std::unique_ptr<SimpleURLLoader> loader;
+   std::unique_ptr<TrustTokenRequestHelperFactory> trust_token_helper_factory;
+   std::unique_ptr<TrustTokenRequestHelper> trust_token_helper;
 @@ -354,6 +355,7 @@ void ObliviousHttpRequestHandler::ContinueHandlingRequest(
    }
  

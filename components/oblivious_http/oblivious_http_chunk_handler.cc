@@ -11,9 +11,9 @@ ObliviousHttpChunkHandler::ObliviousHttpChunkHandler(
     mojo::PendingRemote<network::mojom::ObliviousHttpChunkClient>
         chunk_client_remote,
     base::OnceCallback<void(std::optional<std::string>)> on_request_complete)
-    : chunk_client_(std::move(chunk_client_remote)),
-      bhttp_decoder_(this),
-      on_request_complete_(std::move(on_request_complete)) {}
+    : bhttp_decoder_(this),
+      on_request_complete_(std::move(on_request_complete)),
+      chunk_client_(std::move(chunk_client_remote)) {}
 
 ObliviousHttpChunkHandler::~ObliviousHttpChunkHandler() = default;
 
@@ -65,7 +65,7 @@ void ObliviousHttpChunkHandler::OnDataReceived(std::string_view data,
   DCHECK(ohttp_client_);
   auto status = ohttp_client_->DecryptResponse(data, /*end_stream=*/false);
   if (!status.ok()) {
-    decrypt_error_ = true;
+    has_error_ = true;
   }
   std::move(resume).Run();
 }
@@ -73,15 +73,16 @@ void ObliviousHttpChunkHandler::OnDataReceived(std::string_view data,
 void ObliviousHttpChunkHandler::OnComplete(bool success) {
   DCHECK(ohttp_client_);
   if (!success) {
-    NotifyComplete(false);
+    NotifyURLLoaderComplete(false);
     return;
   }
   auto status = ohttp_client_->DecryptResponse("", /*end_stream=*/true);
   if (!status.ok()) {
-    NotifyComplete(false);
+    NotifyURLLoaderComplete(false);
     return;
   }
   // On success, completion flows through OnChunksDone -> bhttp_decoder_.
+  NotifyURLLoaderComplete(true);
 }
 
 void ObliviousHttpChunkHandler::OnRetry(base::OnceClosure /*start_retry*/) {}
@@ -94,7 +95,7 @@ absl::Status ObliviousHttpChunkHandler::OnDecryptedChunk(
 absl::Status ObliviousHttpChunkHandler::OnChunksDone() {
   auto status = bhttp_decoder_.Decode({}, /*end_stream=*/true);
   if (!status.ok()) {
-    NotifyComplete(false);
+    NotifyBHTTPComplete(false);
     return status;
   }
   return absl::OkStatus();
@@ -149,7 +150,7 @@ absl::Status ObliviousHttpChunkHandler::OnBodyChunk(
 }
 
 absl::Status ObliviousHttpChunkHandler::OnBodyChunksDone() {
-  NotifyComplete(!decrypt_error_);
+  NotifyBHTTPComplete(true);
   return absl::OkStatus();
 }
 
@@ -162,9 +163,31 @@ absl::Status ObliviousHttpChunkHandler::OnTrailersDone() {
   return absl::OkStatus();
 }
 
-void ObliviousHttpChunkHandler::NotifyComplete(bool success) {
+void ObliviousHttpChunkHandler::NotifyBHTTPComplete(bool success) {
+  if (!success) {
+    has_error_ = true;
+  }
+  bhttp_complete_ = true;
+  if (url_loader_complete_) {
+    RunCompleteCallback();
+  }
+}
+
+void ObliviousHttpChunkHandler::NotifyURLLoaderComplete(bool success) {
+  if (!success) {
+    has_error_ = true;
+    RunCompleteCallback();
+    return;
+  }
+  url_loader_complete_ = true;
+  if (bhttp_complete_) {
+    RunCompleteCallback();
+  }
+}
+
+void ObliviousHttpChunkHandler::RunCompleteCallback() {
   if (on_request_complete_) {
     std::move(on_request_complete_)
-        .Run(success ? std::optional<std::string>("") : std::nullopt);
+        .Run(has_error_ ? std::nullopt : std::optional<std::string>(""));
   }
 }
