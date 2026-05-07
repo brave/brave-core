@@ -68,6 +68,7 @@ static_library("brave_origin") {
   ]
   deps = [
     "//brave/brave_domains",
+    "//brave/components/brave_policy:brave_policy_manager_registry",
     "//brave/components/brave_policy:brave_policy_observer",
     "//brave/components/skus/browser",
     "//brave/components/skus/common",

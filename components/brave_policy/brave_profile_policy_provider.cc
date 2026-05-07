@@ -11,6 +11,7 @@
 #include "base/values.h"
 #include "brave/components/brave_origin/brave_origin_utils.h"
 #include "brave/components/brave_policy/ad_block_only_mode/ad_block_only_mode_policy_manager.h"
+#include "brave/components/brave_policy/brave_policy_manager_registry.h"
 #include "components/policy/core/common/policy_bundle.h"
 #include "components/policy/core/common/policy_map.h"
 #include "components/policy/core/common/policy_namespace.h"
@@ -85,6 +86,20 @@ bool BraveProfilePolicyProvider::IsFirstPolicyLoadComplete(
 }
 
 void BraveProfilePolicyProvider::OnBravePoliciesReady() {
+  // Wait until every registered policy manager reports `IsInitialized()`
+  // before treating policies as ready. Each manager fires this callback
+  // independently from its own `AddObserver`; acting on the first one
+  // would push a partial bundle (e.g. AdBlockOnlyMode policies present
+  // but BraveOrigin policies missing because `IsBraveOriginPurchased()`
+  // short-circuits to false on an uninitialized manager), which then
+  // propagates through `PolicyServiceImpl` and flips
+  // `IsFirstPolicyLoadComplete` on the empty load. Likewise,
+  // `policies_ready_` is gated on full readiness so a `SetProfileID`
+  // call in this window doesn't trigger a partial refresh.
+  if (!BravePolicyManagerRegistry::AllInitialized()) {
+    return;
+  }
+
   policies_ready_ = true;
 
   // Once we have Brave policies and a profile ID trigger Refresh policies

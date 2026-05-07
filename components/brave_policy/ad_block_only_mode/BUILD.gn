@@ -17,6 +17,7 @@ static_library("ad_block_only_mode") {
 
   deps = [
     "//base",
+    "//brave/components/brave_policy:brave_policy_manager_registry",
     "//brave/components/brave_policy:brave_policy_observer",
     "//brave/components/brave_shields/core/common",
     "//components/content_settings/core/common",
