@@ -14,7 +14,6 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/path_service.h"
 #include "base/task/thread_pool.h"
-#include "brave/browser/brave_origin/brave_origin_service_factory.h"
 #include "brave/browser/brave_referrals/referrals_service_delegate.h"
 #include "brave/browser/brave_shields/ad_block_subscription_download_manager_getter.h"
 #include "brave/browser/brave_stats/brave_stats_updater.h"
@@ -210,18 +209,6 @@ void BraveBrowserProcessImpl::Init() {
 
   // Lazy initialization of AdBlockOnlyModePolicyManager
   brave_policy::AdBlockOnlyModePolicyManager::GetInstance()->Init(
-      local_state());
-
-  // Initialize BraveOriginPolicyManager at browser-process startup so the
-  // manager is ready before profile policy connectors are built. Combined
-  // with the profile-path stash consumed by
-  // BRAVE_PROFILE_POLICY_CONNECTOR_INIT, this ensures
-  // BraveProfilePolicyProvider can populate its bundle and propagate the
-  // resulting policies to the managed pref store before consumers like
-  // AdsService::CanStartBatAdsService read kDisabledByPolicy.
-  brave_origin::BraveOriginPolicyManager::GetInstance()->Init(
-      brave_origin::BraveOriginServiceFactory::GetBrowserPolicyDefinitions(),
-      brave_origin::BraveOriginServiceFactory::GetProfilePolicyDefinitions(),
       local_state());
 }
 

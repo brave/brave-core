@@ -7,9 +7,7 @@
 
 #include <memory>
 
-#include "base/files/file_path.h"
 #include "base/test/task_environment.h"
-#include "components/policy/core/common/configuration_policy_provider.h"
 #include "components/policy/core/common/policy_bundle.h"
 #include "components/policy/core/common/policy_namespace.h"
 #include "components/policy/core/common/policy_types.h"
@@ -183,92 +181,6 @@ TEST_F(BraveProfilePolicyProviderTest, OnProfilePolicyChanged_EmptyProfileId) {
   // Provider should still report no policies loaded since no profile ID set
   EXPECT_FALSE(
       provider_.IsFirstPolicyLoadComplete(policy::POLICY_DOMAIN_CHROME));
-}
-
-// ---- Pending profile-path stash ----
-
-class BraveProfilePolicyProviderStashTest : public ::testing::Test {
- protected:
-  void TearDown() override {
-    // Defensive: clear the stash so tests don't leak state between cases.
-    BraveProfilePolicyProvider::TakePendingProfilePath();
-  }
-};
-
-TEST_F(BraveProfilePolicyProviderStashTest, TakeWithoutSetReturnsEmpty) {
-  EXPECT_TRUE(BraveProfilePolicyProvider::TakePendingProfilePath().empty());
-}
-
-TEST_F(BraveProfilePolicyProviderStashTest, SetThenTakeReturnsSamePath) {
-  const base::FilePath path(FILE_PATH_LITERAL("/tmp/profile/Default"));
-  BraveProfilePolicyProvider::SetPendingProfilePath(path);
-  EXPECT_EQ(path, BraveProfilePolicyProvider::TakePendingProfilePath());
-}
-
-TEST_F(BraveProfilePolicyProviderStashTest, TakeClearsStash) {
-  BraveProfilePolicyProvider::SetPendingProfilePath(
-      base::FilePath(FILE_PATH_LITERAL("/tmp/profile/Default")));
-  EXPECT_FALSE(BraveProfilePolicyProvider::TakePendingProfilePath().empty());
-  // Subsequent Take should return empty.
-  EXPECT_TRUE(BraveProfilePolicyProvider::TakePendingProfilePath().empty());
-}
-
-TEST_F(BraveProfilePolicyProviderStashTest, RepeatedSetOnlyKeepsLatest) {
-  BraveProfilePolicyProvider::SetPendingProfilePath(
-      base::FilePath(FILE_PATH_LITERAL("/tmp/profile/A")));
-  BraveProfilePolicyProvider::SetPendingProfilePath(
-      base::FilePath(FILE_PATH_LITERAL("/tmp/profile/B")));
-  // Latest set wins; no leak from prior Set.
-  EXPECT_EQ(base::FilePath(FILE_PATH_LITERAL("/tmp/profile/B")),
-            BraveProfilePolicyProvider::TakePendingProfilePath());
-  // Only one path was stashed; subsequent Take is empty.
-  EXPECT_TRUE(BraveProfilePolicyProvider::TakePendingProfilePath().empty());
-}
-
-// ---- SetProfileID idempotency ----
-
-namespace {
-
-// Counts how many times the provider notifies observers via UpdatePolicy.
-class UpdateCountingObserver
-    : public policy::ConfigurationPolicyProvider::Observer {
- public:
-  void OnUpdatePolicy(
-      policy::ConfigurationPolicyProvider* /*provider*/) override {
-    ++count_;
-  }
-  int count() const { return count_; }
-
- private:
-  int count_ = 0;
-};
-
-}  // namespace
-
-TEST_F(BraveProfilePolicyProviderTest, SetProfileID_SameIdIsIdempotent) {
-  provider_.Init(&schema_registry_);
-  UpdateCountingObserver observer;
-  provider_.AddObserver(&observer);
-
-  // Make policies_ready_ true so SetProfileID would otherwise fire
-  // RefreshPolicies.
-  provider_.OnBravePoliciesReady();
-
-  // First SetProfileID triggers a RefreshPolicies → one observer notification.
-  provider_.SetProfileID("test-profile-id");
-  const int after_first = observer.count();
-  EXPECT_GT(after_first, 0);
-
-  // Calling SetProfileID with the same id should be a no-op — no new
-  // notifications.
-  provider_.SetProfileID("test-profile-id");
-  EXPECT_EQ(after_first, observer.count());
-
-  // Calling with a different id does fire RefreshPolicies again.
-  provider_.SetProfileID("different-id");
-  EXPECT_GT(observer.count(), after_first);
-
-  provider_.RemoveObserver(&observer);
 }
 
 }  // namespace brave_policy
