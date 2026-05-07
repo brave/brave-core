@@ -29,11 +29,19 @@ inline constexpr char kAdBlockDeveloperMode[] = "brave.ad_block.developer_mode";
 
 inline constexpr char kMigratedAdblockSocialMediaBlockingSettings[] =
     "brave.migrated_adblock_social_media_blocking_settings";
-inline constexpr char kFBEmbedControlType[] = "brave.fb_embed_default";
+// Migrated settings (local state)
+inline constexpr char kFBEmbedControlType[] = "brave.shields.fb_embed_default";
 inline constexpr char kTwitterEmbedControlType[] =
-    "brave.twitter_embed_default";
+    "brave.shields.twitter_embed_default";
 inline constexpr char kLinkedInEmbedControlType[] =
+    "brave.shields.linkedin_embed_default";
+// Legacy settings (profile preferences)
+inline constexpr char kLegacyFBEmbedControlType[] = "brave.fb_embed_default";
+inline constexpr char kLegacyTwitterEmbedControlType[] =
+    "brave.twitter_embed_default";
+inline constexpr char kLegacyLinkedInEmbedControlType[] =
     "brave.linkedin_embed_default";
+
 inline constexpr char kReduceLanguageEnabled[] = "brave.reduce_language";
 
 inline constexpr char kAdBlockOnlyModeEnabled[] =

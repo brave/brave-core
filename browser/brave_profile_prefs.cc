@@ -440,12 +440,12 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
       query_filter::kTrackingQueryParametersFilteringEnabled, true);
   registry->RegisterBooleanPref(
       global_privacy_control::kGlobalPrivacyControlEnabled, true);
-  registry->RegisterBooleanPref(brave_shields::prefs::kFBEmbedControlType,
+  registry->RegisterBooleanPref(brave_shields::prefs::kLegacyFBEmbedControlType,
                                 true);
-  registry->RegisterBooleanPref(brave_shields::prefs::kTwitterEmbedControlType,
-                                true);
-  registry->RegisterBooleanPref(brave_shields::prefs::kLinkedInEmbedControlType,
-                                false);
+  registry->RegisterBooleanPref(
+      brave_shields::prefs::kLegacyTwitterEmbedControlType, true);
+  registry->RegisterBooleanPref(
+      brave_shields::prefs::kLegacyLinkedInEmbedControlType, false);
   registry->RegisterBooleanPref(brave_shields::prefs::kAdBlockDeveloperMode,
                                 false);
   registry->RegisterIntegerPref(brave_shields::prefs::kShieldsDisabledCount, 0);
