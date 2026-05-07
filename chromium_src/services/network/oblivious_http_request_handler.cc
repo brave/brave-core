@@ -18,7 +18,7 @@ constexpr char kChunkedObliviousHttpRequestMimeType[] =
 // BRAVE_OBLIVIOUS_HTTP_REQUEST_STATE_MEMBERS adds the chunked-OHTTP handler
 // field to ObliviousHttpRequestHandler::RequestState.
 #define BRAVE_OBLIVIOUS_HTTP_REQUEST_STATE_MEMBERS \
-  std::unique_ptr<ObliviousHttpChunkHandler> chunk_handler;
+  std::unique_ptr<oblivious_http::ObliviousHttpChunkHandler> chunk_handler;
 
 // BRAVE_OBLIVIOUS_HTTP_MAYBE_ENCRYPT_AS_CHUNKED runs before non-chunked
 // encryption in ContinueHandlingRequest. When chunking is enabled it delegates
@@ -30,7 +30,7 @@ constexpr char kChunkedObliviousHttpRequestMimeType[] =
   std::optional<std::string> chunked_encrypted_blob;                         \
   if (state->request->enable_chunking) {                                     \
     CHECK(state->request->chunk_client);                                     \
-    state->chunk_handler = ObliviousHttpChunkHandler::Create(                \
+    state->chunk_handler = oblivious_http::ObliviousHttpChunkHandler::Create( \
         state->request->key_config, std::move(state->request->chunk_client), \
         base::BindOnce(&ObliviousHttpRequestHandler::OnRequestComplete,      \
                        base::Unretained(this), id));                         \
@@ -54,7 +54,7 @@ constexpr char kChunkedObliviousHttpRequestMimeType[] =
 // timeout, calls DownloadAsStream, and returns early so the upstream
 // DownloadToString path is never reached.
 #define BRAVE_OBLIVIOUS_HTTP_CONTINUE_HANDLING_REQUEST                         \
-  ApplyBraveRelayHeaders(*state->request,                                      \
+  oblivious_http::ApplyBraveRelayHeaders(*state->request,                      \
                          state->request->enable_chunking                       \
                              ? *chunked_encrypted_blob                         \
                              : *maybe_encrypted_blob,                          \

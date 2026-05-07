@@ -7,6 +7,8 @@
 
 #include "base/strings/string_number_conversions.h"
 
+namespace oblivious_http {
+
 ObliviousHttpChunkHandler::ObliviousHttpChunkHandler(
     mojo::PendingRemote<network::mojom::ObliviousHttpChunkClient>
         chunk_client_remote,
@@ -191,3 +193,5 @@ void ObliviousHttpChunkHandler::RunCompleteCallback() {
         .Run(has_error_ ? std::nullopt : std::optional<std::string>(""));
   }
 }
+
+}  // namespace oblivious_http

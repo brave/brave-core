@@ -8,6 +8,8 @@
 #include "base/containers/flat_map.h"
 #include "brave/components/brave_service_keys/brave_service_key_utils.h"
 
+namespace oblivious_http {
+
 void ApplyBraveRelayHeaders(const network::mojom::ObliviousHttpRequest& request,
                             const std::string& encrypted_body,
                             net::HttpRequestHeaders& headers) {
@@ -25,3 +27,5 @@ void ApplyBraveRelayHeaders(const network::mojom::ObliviousHttpRequest& request,
     headers.SetHeader(auth.first, auth.second);
   }
 }
+
+}  // namespace oblivious_http

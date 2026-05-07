@@ -22,6 +22,8 @@
 #include "services/network/public/cpp/simple_url_loader_stream_consumer.h"
 #include "services/network/public/mojom/oblivious_http_request.mojom.h"
 
+namespace oblivious_http {
+
 // Implements quiche::ObliviousHttpChunkHandler,
 // quiche::BinaryHttpResponse::IndeterminateLengthDecoder::MessageSectionHandler,
 // and network::SimpleURLLoaderStreamConsumer to support chunked OHTTP
@@ -109,5 +111,7 @@ class ObliviousHttpChunkHandler
 
   mojo::Remote<network::mojom::ObliviousHttpChunkClient> chunk_client_;
 };
+
+}  // namespace oblivious_http
 
 #endif  // BRAVE_COMPONENTS_OBLIVIOUS_HTTP_OBLIVIOUS_HTTP_CHUNK_HANDLER_H_
