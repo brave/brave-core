@@ -74,6 +74,10 @@ export class BraveAccountEmailInputElement extends CrLitElement {
     )
   }
 
+  protected get shouldShowDropdown(): boolean {
+    return (this.blockBraveAlias && this.isBraveAlias) || !!this.suggestion
+  }
+
   private get isValid(): boolean {
     return this.isFormatValid && (!this.blockBraveAlias || !this.isBraveAlias)
   }

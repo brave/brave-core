@@ -18,7 +18,7 @@ export function getHtml(this: BraveAccountEmailInputElement) {
     <leo-input
       maxlength=${MAX_EMAIL_LENGTH}
       placeholder="$i18n{BRAVE_ACCOUNT_EMAIL_INPUT_PLACEHOLDER}"
-      ?showErrors=${this.blockBraveAlias || this.suggestion !== ''}
+      showErrors
       type="email"
       @input=${this.onInput}
     >
@@ -26,32 +26,38 @@ export function getHtml(this: BraveAccountEmailInputElement) {
         $i18n{BRAVE_ACCOUNT_EMAIL_INPUT_LABEL}
       </div>
       <div
-        class="dropdown ${this.blockBraveAlias && this.isBraveAlias
-          ? 'visible'
-          : ''}"
+        class="dropdown ${this.shouldShowDropdown ? 'visible' : ''}"
         slot="errors"
       >
-        <div class="dropdown-content">
-          <leo-icon name="warning-triangle-filled"></leo-icon>
-          <div>$i18n{BRAVE_ACCOUNT_EMAIL_INPUT_ERROR_MESSAGE}</div>
-        </div>
-      </div>
-      <div
-        class="dropdown ${this.suggestion !== '' ? 'visible' : ''}"
-        slot="errors"
-      >
-        <div class="dropdown-content">
-          <leo-icon name="warning-triangle-filled"></leo-icon>
-          <div>
-            ${freezeWhen(
-              !this.suggestion,
-              loadTimeData.getStringF(
-                BraveAccountStrings.BRAVE_ACCOUNT_EMAIL_INPUT_DID_YOU_MEAN,
-                this.suggestion,
-              ),
-            )}
-          </div>
-        </div>
+        <!-- Note: .dropdown-content is included in each branch (rather than
+             wrapping the entire ternary) to ensure the fadeIn animation triggers
+             on content changes. When Lit replaces one branch with another, it
+             removes the old .dropdown-content and inserts a new one, causing the
+             animation to run.
+
+             freezeWhen directive freezes the previous content while the dropdown
+             is collapsing, preventing flashes during animation. -->
+        ${freezeWhen(
+          !this.shouldShowDropdown,
+          this.blockBraveAlias && this.isBraveAlias
+            ? html`
+                <div class="dropdown-content">
+                  <leo-icon name="warning-triangle-filled"></leo-icon>
+                  <div>$i18n{BRAVE_ACCOUNT_EMAIL_INPUT_ERROR_MESSAGE}</div>
+                </div>
+              `
+            : html`
+                <div class="dropdown-content">
+                  <leo-icon name="warning-triangle-filled"></leo-icon>
+                  <div>
+                    ${loadTimeData.getStringF(
+                      BraveAccountStrings.BRAVE_ACCOUNT_EMAIL_INPUT_DID_YOU_MEAN,
+                      this.suggestion,
+                    )}
+                  </div>
+                </div>
+              `,
+        )}
       </div>
     </leo-input>
     <!--_html_template_end_-->`
