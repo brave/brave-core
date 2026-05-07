@@ -308,6 +308,12 @@ void ObliviousHttpAPIClient::OnInnerResponse(
     credential_manager_->PutCredentialInCache(std::move(*credential));
   }
 
+  // A non-2xx outer response means the relay rejected the request; the cached
+  // key config may be stale so clear it to force a fresh fetch next time.
+  if (outer_response_code < 200 || outer_response_code >= 300) {
+    config_manager_->ClearKeyConfig(request.model_name);
+  }
+
   const bool success = inner_response_code >= 200 && inner_response_code < 300;
   sequenced_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,

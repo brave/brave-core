@@ -74,9 +74,6 @@ ObliviousHttpConfigManager::~ObliviousHttpConfigManager() = default;
 // static
 void ObliviousHttpConfigManager::DeleteExpiredKeyConfigs(
     PrefService* profile_prefs) {
-  if (!profile_prefs) {
-    return;
-  }
   const base::DictValue& all =
       profile_prefs->GetDict(prefs::kAIChatObliviousHttpKeyConfigs);
   std::vector<std::string> expired_keys;
@@ -98,9 +95,6 @@ void ObliviousHttpConfigManager::DeleteExpiredKeyConfigs(
 std::optional<ObliviousHttpConfigManager::KeyConfigResult>
 ObliviousHttpConfigManager::GetCachedKeyConfig(
     const std::string& model_name) const {
-  if (!profile_prefs_) {
-    return std::nullopt;
-  }
   const base::DictValue* entry =
       profile_prefs_->GetDict(prefs::kAIChatObliviousHttpKeyConfigs)
           .FindDict(model_name);
@@ -142,6 +136,12 @@ void ObliviousHttpConfigManager::CancelAll() {
   if (api_request_helper_) {
     api_request_helper_->CancelAll();
   }
+}
+
+void ObliviousHttpConfigManager::ClearKeyConfig(const std::string& model_name) {
+  ScopedDictPrefUpdate update(profile_prefs_,
+                              prefs::kAIChatObliviousHttpKeyConfigs);
+  update->Remove(model_name);
 }
 
 void ObliviousHttpConfigManager::FetchKeyConfig(const std::string& model_name,
@@ -193,16 +193,14 @@ void ObliviousHttpConfigManager::OnKeyConfigFetched(
     return;
   }
 
-  if (profile_prefs_) {
-    ScopedDictPrefUpdate update(profile_prefs_,
-                                prefs::kAIChatObliviousHttpKeyConfigs);
-    base::DictValue entry;
-    entry.Set(kKeyConfigKey, *key_config_b64);
-    entry.Set(kEndpointUrlKey, endpoint_url.spec());
-    entry.Set(kPrefExpiresAtField,
-              base::TimeToValue(base::Time::Now() + kKeyConfigExpiresAfter));
-    update->Set(model_name, std::move(entry));
-  }
+  ScopedDictPrefUpdate update(profile_prefs_,
+                              prefs::kAIChatObliviousHttpKeyConfigs);
+  base::DictValue entry;
+  entry.Set(kKeyConfigKey, *key_config_b64);
+  entry.Set(kEndpointUrlKey, endpoint_url.spec());
+  entry.Set(kPrefExpiresAtField,
+            base::TimeToValue(base::Time::Now() + kKeyConfigExpiresAfter));
+  update->Set(model_name, std::move(entry));
 
   std::move(callback).Run(KeyConfigResult{
       std::string(decoded->begin(), decoded->end()), std::move(endpoint_url)});

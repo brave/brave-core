@@ -62,6 +62,10 @@ class ObliviousHttpConfigManager {
   // Cancels any in-flight fetches and drops all queued callbacks.
   void CancelAll();
 
+  // Removes the cached key config for |model_name|, forcing a fresh fetch on
+  // the next request.
+  void ClearKeyConfig(const std::string& model_name);
+
  private:
   std::optional<KeyConfigResult> GetCachedKeyConfig(
       const std::string& model_name) const;
