@@ -178,6 +178,17 @@ BraveBrowserViewTabbedLayoutImpl::CalculateProposedLayout(
   ProposedLayout layout =
       BrowserViewTabbedLayoutImpl::CalculateProposedLayout(params);
 
+  if (auto title_bar = views().focus_mode_title_bar) {
+    gfx::Rect title_bar_bounds;
+    if (title_bar->GetVisible()) {
+      auto& client_area = params.visual_client_area;
+      title_bar_bounds =
+          gfx::Rect(client_area.x(), client_area.y(), client_area.width(),
+                    title_bar->GetPreferredSize().height());
+    }
+    layout.AddChild(title_bar, title_bar_bounds);
+  }
+
   // Retrieve contents container proposed bounds.
   auto* contents_layout = layout.GetLayoutFor(views().contents_container);
   CHECK(contents_layout);
@@ -269,6 +280,21 @@ gfx::Rect BraveBrowserViewTabbedLayoutImpl::CalculateTopContainerLayout(
   }
 
   return bounds;
+}
+
+void BraveBrowserViewTabbedLayoutImpl::DoPreLayoutComputations(
+    const BrowserLayoutParams& params) {
+  BrowserLayoutParams browser_params = params;
+
+  // In FocusMode, the titlebar appears at the top of the browser view. Before
+  // starting layout, adjust the layout top downward by the titlebar height.
+  if (auto title_bar = views().focus_mode_title_bar) {
+    if (title_bar->GetVisible()) {
+      browser_params.SetTop(title_bar->GetPreferredSize().height());
+    }
+  }
+
+  BrowserViewTabbedLayoutImpl::DoPreLayoutComputations(browser_params);
 }
 
 void BraveBrowserViewTabbedLayoutImpl::DoPostLayoutVisualAdjustments(
@@ -601,6 +627,11 @@ gfx::Insets BraveBrowserViewTabbedLayoutImpl::GetContentsMargins() const {
   auto contents_at_top_edge = [&]() {
     if (delegate().IsInfobarVisible()) {
       return false;
+    }
+    if (auto focus_mode_title_bar = views().focus_mode_title_bar) {
+      if (focus_mode_title_bar->GetVisible()) {
+        return false;
+      }
     }
     // In focus mode the top container is reparented out of the browser view, so
     // the top chrome no longer pushes the contents down. Only treat top UI as
