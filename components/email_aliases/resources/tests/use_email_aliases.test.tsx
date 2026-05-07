@@ -15,9 +15,7 @@ import {
 describe('useEmailAliases', () => {
   let lastObserver: EmailAliasesServiceObserverInterface | undefined
 
-  const bindObserver = (
-    observer: EmailAliasesServiceObserverInterface,
-  ) => {
+  const bindObserver = (observer: EmailAliasesServiceObserverInterface) => {
     lastObserver = observer
     return () => {
       lastObserver = undefined
@@ -138,9 +136,7 @@ describe('useEmailAliases', () => {
 
   it('runs bindObserver cleanup on unmount', () => {
     const unbind = jest.fn()
-    const { unmount } = renderHook(() =>
-      useEmailAliases((_observer) => unbind),
-    )
+    const { unmount } = renderHook(() => useEmailAliases((_observer) => unbind))
 
     unmount()
     expect(unbind).toHaveBeenCalledTimes(1)
