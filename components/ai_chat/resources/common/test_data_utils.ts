@@ -75,6 +75,16 @@ export function getSearchQueriesEvent(
   }
 }
 
+export function getInlineSearchEvent(
+  query: string,
+  resultsJson: string = '[]',
+): Mojom.ConversationEntryEvent {
+  return {
+    ...eventTemplate,
+    inlineSearchEvent: { query, resultsJson },
+  }
+}
+
 /**
  * Creates a conversation turn filling in any optional properties as undefined
  * and basic defaults for other properties.

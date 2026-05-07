@@ -4,12 +4,11 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as Mojom from '../../../common/mojom'
-import { extractAllowedLinksFromTurn } from '../../../common/conversation_history_utils'
+import {
+  extractAllowedLinksFromTurn,
+  inlineSearchRegex,
+} from '../../../common/conversation_history_utils'
 import { replaceCitationsWithUrlsExcludingCode } from './conversation_entries_utils'
-
-// Note: This regex is used to strip out inline searches, as they're not useful
-// for the user.
-const inlineSearchRegex = /^::search\[.+?\]{type=\w+?}$/gm
 
 // Possibly expose an event handler for copying the entry's text to clipboard,
 // if the entry is simple enough for the text to be extracted
@@ -19,16 +18,18 @@ export default function useConversationEventClipboardCopyHandler(
   return () => {
     const entry = group[0]
     if (entry.characterType === Mojom.CharacterType.ASSISTANT) {
-      // Collect completion text from all turns in the group (e.g. tool use turns
-      // split the completion across multiple entries in the group).
+      // Collect completion text from all turns in the group (e.g. tool use
+      // turns split the completion across multiple entries) and from all
+      // completion events within each turn (an inline-search event between
+      // streaming chunks splits the completion stream into multiple events).
       const allEvents = group.flatMap((turn) => turn.events ?? [])
-      const completionTexts = group.flatMap((turn) => {
-        const event = turn.events?.findLast((e) => e.completionEvent)
-        return event?.completionEvent?.completion
-          ? [event.completionEvent.completion]
-          : []
-      })
-      let text = completionTexts.join('\n\n') || entry.text
+      const completionTexts = group.map((turn) =>
+        (turn.events ?? [])
+          .filter((e) => e.completionEvent)
+          .map((e) => e.completionEvent!.completion)
+          .join(''),
+      )
+      let text = completionTexts.filter(Boolean).join('\n\n') || entry.text
       if (!text) return
       // Replace citations with URLs, skipping matches inside code blocks where
       // `[N]` is typically array indexing rather than a citation.

@@ -7,6 +7,7 @@ import * as Mojom from '../../../common/mojom'
 import {
   createConversationTurnWithDefaults,
   getCompletionEvent,
+  getInlineSearchEvent,
   getToolUseEvent,
   getWebSourcesEvent,
 } from '../../../common/test_data_utils'
@@ -131,16 +132,17 @@ describe('useConversationEventClipboardCopyHandler', () => {
       expect(writeText).toHaveBeenCalledWith('Hello from assistant')
     })
 
-    it('uses the last completion event when there are multiple', () => {
+    it('concatenates completion events split by an inline-search event', () => {
       const entry = createConversationTurnWithDefaults({
         characterType: Mojom.CharacterType.ASSISTANT,
         events: [
-          getCompletionEvent('First completion'),
-          getCompletionEvent('Last completion'),
+          getCompletionEvent('Before search. '),
+          getInlineSearchEvent('q'),
+          getCompletionEvent('After search.'),
         ],
       })
       useConversationEventClipboardCopyHandler([entry])()
-      expect(writeText).toHaveBeenCalledWith('Last completion')
+      expect(writeText).toHaveBeenCalledWith('Before search. After search.')
     })
 
     it('replaces citations with URLs from sources', () => {

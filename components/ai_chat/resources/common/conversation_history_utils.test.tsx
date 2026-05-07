@@ -15,6 +15,7 @@ import * as Mojom from './mojom'
 import {
   createConversationTurnWithDefaults,
   getCompletionEvent,
+  getInlineSearchEvent,
   getWebSourcesEvent,
 } from './test_data_utils'
 
@@ -1086,5 +1087,41 @@ describe('formatConversationForClipboard', () => {
 
     const result = formatConversationForClipboard(conversationHistory)
     expect(result).toBe('You: Check out reference [1]')
+  })
+
+  it('concatenates completion events split by an inline-search event', () => {
+    const conversationHistory = [
+      createConversationTurnWithDefaults({
+        uuid: 'turn1',
+        text: '',
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [
+          getCompletionEvent('Before search. '),
+          getInlineSearchEvent('q'),
+          getCompletionEvent('After search.'),
+        ],
+      }),
+    ]
+
+    const result = formatConversationForClipboard(conversationHistory)
+    expect(result).toBe('Leo AI: Before search. After search.')
+  })
+
+  it('strips inline search directives from the copied text', () => {
+    const conversationHistory = [
+      createConversationTurnWithDefaults({
+        uuid: 'turn1',
+        text: '',
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [
+          getCompletionEvent(
+            'Here you go:\n::search[query]{type=images}\nMore text.',
+          ),
+        ],
+      }),
+    ]
+
+    const result = formatConversationForClipboard(conversationHistory)
+    expect(result).toBe('Leo AI: Here you go:\n\nMore text.')
   })
 })
