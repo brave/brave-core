@@ -169,6 +169,25 @@ TEST_F(PolkadotChainMetadataPrefsUnitTest, MissingRequiredFieldRejected) {
   }
   PolkadotChainMetadataPrefs prefs = MakePrefs();
   EXPECT_FALSE(prefs.GetChainMetadata(mojom::kPolkadotMainnet));
+
+  {
+    // Missing AssetTxPayment.
+
+    ScopedDictPrefUpdate update(&profile_prefs_,
+                                kBraveWalletPolkadotChainMetadata);
+    update->Set(kVersionField, PolkadotChainMetadataPrefs::kVersion);
+    base::DictValue value;
+    value.Set(kSystemPalletIndex, 0);
+    value.Set(kBalancesPalletIndex, 3);
+    value.Set(kTransactionPaymentPalletIndex, 2);
+    value.Set(kTransferAllowDeathCallIndex, 1);
+    value.Set(kTransferKeepAliveCallIndex, 4);
+    value.Set(kTransferAllCallIndex, 1);
+    value.Set(kSs58Prefix, 42);
+    value.Set(kSpecVersion, 1234);
+    update->Set(mojom::kPolkadotMainnet, std::move(value));
+  }
+  EXPECT_FALSE(MakePrefs().GetChainMetadata(mojom::kPolkadotMainnet));
 }
 
 TEST_F(PolkadotChainMetadataPrefsUnitTest, VersionMismatchClearsMetadataPrefs) {
