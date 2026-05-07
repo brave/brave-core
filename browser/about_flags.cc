@@ -1293,8 +1293,8 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           "learn more about the server implementation in the repository link " \
           "mentioned below. "                                                  \
           "Note: Only HTTPS URLs are supported by default. HTTP URLs are "     \
-          "only allowed for potentially trustworthy origins like localhost."   \
-          "Insecure URLs that don't meet these requirements will be ignored"   \
+          "only allowed for potentially trustworthy origins like localhost. "  \
+          "Insecure URLs that don't meet these requirements will be ignored "  \
           "in favor of the official Brave-hosted server",                      \
           kOsAll,                                                              \
           ORIGIN_LIST_VALUE_TYPE(syncer::kSyncServiceURL, ""),                 \
@@ -1340,7 +1340,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           "brave-request-info-unique-ptr",                                     \
           "BraveRequestInfo unique_ptr",                                       \
           "Enable experimental use of unique_ptr/WeakPtr instead of "          \
-          "shared_ptr"                                                         \
+          "shared_ptr "                                                        \
           "for BraveRequestInfo",                                              \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(features::kBraveRequestInfoUniquePtr),            \
