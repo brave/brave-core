@@ -5,4 +5,8 @@
      You can obtain one at https://mozilla.org/MPL/2.0/. -->
 <resources>
     <color name="add_custom_search_engine_title_color">@color/primitive_primary_40</color>
+    <!-- Leo token button_disabled (#46464A at 20%) rewritten from RRGGBBAA to Android AARRGGBB -->
+    <color name="cse_button_disabled">#3346464A</color>
+    <!-- Leo token text_disabled (#21272A at 50%) rewritten from RRGGBBAA to Android AARRGGBB -->
+    <color name="cse_text_disabled">#8021272A</color>
 </resources>
