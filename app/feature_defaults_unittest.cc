@@ -169,7 +169,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kHttpsFirstBalancedMode,
       &features::kIdleDetection,
       &features::kIndigo,
-      &features::kInfobarRefresh,
       &features::kNewTabPageTriggerForPrerender2,
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
       &features::kPdfInfoBar,
