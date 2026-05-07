@@ -195,7 +195,7 @@ void WelcomeDOMHandler::HandleSetMetricsReportingEnabled(
   }
   bool enabled = args[0].GetBool();
   ChangeMetricsReportingState(
-      enabled, ChangeMetricsReportingStateCalledFrom::kUiSettings);
+      enabled, metrics::ChangeMetricsReportingStateCalledFrom::kUiSettings);
 }
 
 void WelcomeDOMHandler::HandleEnableWebDiscovery(const base::ListValue& args) {
