@@ -2050,7 +2050,7 @@
 -GlicInstanceCoordinatorUnbindOnCloseTest.KeptBoundWhenPinnedViaContextMenu
 -GlicInstanceCoordinatorUnbindOnCloseTest.UnboundWhenNoInputSubmitted
 -GlicMetricsBrowserTest.Invoke_CurrentConversation_SidePanel
--GlicMetricsBrowserTestWithMessageFirstFre.ToggleAndOpenSourceMetrics_SidePanel_MessageFirstFreEnabled 
+-GlicMetricsBrowserTestWithMessageFirstFre.ToggleAndOpenSourceMetrics_SidePanel_MessageFirstFreEnabled
 -GlicOnboardingApiTest.*
 -GlicPermissionEnforcementUiTest.*
 -GlicTabSubMenuModelTest.*
@@ -2125,9 +2125,6 @@
 # These tests fail because they expect the hardcoded view name BrowserRootView,
 # but instead get BraveBrowserRootView.
 -All/TabStripDumpAccessibilityEventsTest.*
-
-# These tests fail because we disable kInfobarRefresh feature.
--InfoBarRefreshViewBrowserTest.*
 
 # These tests fail because we remove CONTENT_SETTING_ASK as an option for
 # ContentSettingsType::SENSORS.
