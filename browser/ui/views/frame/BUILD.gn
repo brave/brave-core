@@ -7,6 +7,8 @@ source_set("frame") {
   sources = [
     "brave_contents_view_util.h",
     "focus_mode_title_bar_view.h",
+    "focus_mode_top_overlay.cc",
+    "focus_mode_top_overlay.h",
     "layout/brave_browser_view_layout_delegate_impl.cc",
     "layout/brave_browser_view_layout_delegate_impl.h",
     "layout/brave_browser_view_tabbed_layout_impl.cc",
@@ -21,6 +23,7 @@ source_set("frame") {
 
   deps = [
     "//brave/browser/ui:brave_tab_prefs",
+    "//brave/browser/ui/views/frame/edge_reveal",
     "//brave/browser/ui/views/sidebar",
     "//chrome/browser/ui/exclusive_access",
     "//chrome/browser/ui/views/infobars",

@@ -1,0 +1,36 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/ui.gni")
+
+assert(use_aura || is_mac)
+
+source_set("edge_reveal") {
+  sources = [
+    "edge_hover_detector.cc",
+    "edge_hover_detector.h",
+    "edge_reveal_watcher.cc",
+    "edge_reveal_watcher.h",
+    "transient_widget_tracker.cc",
+    "transient_widget_tracker.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//ui/views",
+  ]
+
+  deps = []
+
+  if (use_aura) {
+    sources += [ "transient_widget_tracker_aura.cc" ]
+    deps += [ "//ui/aura" ]
+  }
+
+  if (is_mac) {
+    sources += [ "transient_widget_tracker_mac.mm" ]
+    deps += [ "//components/remote_cocoa/app_shim" ]
+  }
+}

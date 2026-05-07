@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_FOCUS_MODE_FOCUS_MODE_CONTROLLER_H_
 #define BRAVE_BROWSER_UI_FOCUS_MODE_FOCUS_MODE_CONTROLLER_H_
 
+#include "base/memory/raw_ref.h"
 #include "base/observer_list.h"
 
 // Orchestrates Focus Mode for a single browser window.
@@ -31,6 +32,16 @@ class FocusModeController {
  private:
   base::ObserverList<Observer> observers_;
   bool enabled_ = false;
+};
+
+class ScopedFocusModeDisable {
+ public:
+  explicit ScopedFocusModeDisable(FocusModeController* controller);
+  ~ScopedFocusModeDisable();
+
+ private:
+  raw_ref<FocusModeController> controller_;
+  bool was_enabled_;
 };
 
 #endif  // BRAVE_BROWSER_UI_FOCUS_MODE_FOCUS_MODE_CONTROLLER_H_

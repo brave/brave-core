@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 
+#include "base/check_deref.h"
+
 FocusModeController::FocusModeController() = default;
 
 FocusModeController::~FocusModeController() = default;
@@ -31,4 +33,16 @@ void FocusModeController::SetEnabled(bool enabled) {
 
 void FocusModeController::ToggleEnabled() {
   SetEnabled(!enabled_);
+}
+
+ScopedFocusModeDisable::ScopedFocusModeDisable(FocusModeController* controller)
+    : controller_(CHECK_DEREF(controller)),
+      was_enabled_(controller->IsEnabled()) {
+  controller_->SetEnabled(false);
+}
+
+ScopedFocusModeDisable::~ScopedFocusModeDisable() {
+  if (was_enabled_) {
+    controller_->SetEnabled(true);
+  }
 }

@@ -10,6 +10,7 @@
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/chrome_command_ids.h"
+#include "chrome/browser/ui/views/frame/immersive_mode_controller.h"
 #include "ui/menus/simple_menu_model.h"
 
 BraveSystemMenuModelBuilder::~BraveSystemMenuModelBuilder() = default;
@@ -35,9 +36,11 @@ void BraveSystemMenuModelBuilder::InsertBraveSystemMenuForBrowserWindow(
   }
 
   if (BrowserSupportsFocusMode(browser())) {
-    if (auto pos = get_next_position()) {
-      model->InsertCheckItemWithStringIdAt(pos.value(), IDC_TOGGLE_FOCUS_MODE,
-                                           IDS_SYSTEM_MENU_FOCUS_MODE);
+    if (!ImmersiveModeController::From(browser())->IsEnabled()) {
+      if (auto pos = get_next_position()) {
+        model->InsertCheckItemWithStringIdAt(pos.value(), IDC_TOGGLE_FOCUS_MODE,
+                                             IDS_SYSTEM_MENU_FOCUS_MODE);
+      }
     }
   }
 }
