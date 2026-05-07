@@ -28,12 +28,6 @@ export function getHtml(this: SettingsBraveContentContainersElement) {
           >
           </localized-link>
         </div>
-        <cr-button
-          @click="${this.onAddContainerClick_}"
-          size="small"
-        >
-          $i18n{SETTINGS_CONTAINERS_ADD_CONTAINER_LABEL}
-        </cr-button>
       </div>
 
       ${this.containersList_?.length
@@ -76,6 +70,14 @@ export function getHtml(this: SettingsBraveContentContainersElement) {
             </div>
           `
         : nothing}
+        <div class="cr-row continuation">
+          <cr-button
+            @click="${this.onAddContainerClick_}"
+            size="small"
+          >
+            $i18n{SETTINGS_CONTAINERS_ADD_CONTAINER_LABEL}
+          </cr-button>
+        </div>
       ${this.editingContainer_
         ? html`
             <cr-dialog
