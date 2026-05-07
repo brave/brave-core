@@ -31,6 +31,7 @@
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/events/event.h"
+#include "ui/views/animation/ink_drop.h"
 #include "ui/views/controls/button/button.h"
 #include "ui/views/controls/button/button_controller.h"
 #include "ui/views/layout/flex_layout_types.h"
@@ -56,11 +57,14 @@ class BraveTabStripScrollButton : public TabStripControlButton {
 
   ~BraveTabStripScrollButton() override;
 
-  // views::View
+  bool IsRepeatingForTesting() const;
+
+  // TabStripControlButton:
   bool OnMousePressed(const ui::MouseEvent& event) override;
   void OnMouseReleased(const ui::MouseEvent& event) override;
   void OnMouseCaptureLost() override;
   void OnGestureEvent(ui::GestureEvent* event) override;
+  void StateChanged(ButtonState old_state) override;
 
  private:
   void OnRepeaterFired();
@@ -87,6 +91,10 @@ BraveTabStripScrollButton::BraveTabStripScrollButton(
 
 BraveTabStripScrollButton::~BraveTabStripScrollButton() {
   repeater_.Stop();
+}
+
+bool BraveTabStripScrollButton::IsRepeatingForTesting() const {
+  return repeater_.timer_for_testing().IsRunning();  // IN-TEST
 }
 
 void BraveTabStripScrollButton::OnRepeaterFired() {
@@ -143,6 +151,16 @@ void BraveTabStripScrollButton::OnGestureEvent(ui::GestureEvent* event) {
   TabStripControlButton::OnGestureEvent(event);
 }
 
+void BraveTabStripScrollButton::StateChanged(ButtonState old_state) {
+  TabStripControlButton::StateChanged(old_state);
+  if (GetState() == views::Button::STATE_DISABLED) {
+    repeater_.Stop();
+    views::InkDrop::Get(this)->SetMode(views::InkDropHost::InkDropMode::OFF);
+  } else {
+    views::InkDrop::Get(this)->SetMode(views::InkDropHost::InkDropMode::ON);
+  }
+}
+
 BEGIN_METADATA(BraveTabStripScrollButton)
 END_METADATA
 
@@ -161,6 +179,12 @@ ui::DropTargetEvent ConvertRootLocation(views::View* view,
 
 BraveHorizontalTabStripRegionView::~BraveHorizontalTabStripRegionView() =
     default;
+
+bool BraveHorizontalTabStripRegionView::IsRepeatingEventForTesting(
+    TabStripControlButton* button) {
+  return static_cast<BraveTabStripScrollButton*>(button)
+      ->IsRepeatingForTesting();  // IN-TEST
+}
 
 void BraveHorizontalTabStripRegionView::CreateScrollButtonsIfNeeded() {
   if (!base::FeatureList::IsEnabled(tabs::kBraveScrollableTabStrip)) {
@@ -258,7 +282,6 @@ void BraveHorizontalTabStripRegionView::OnScrollPreviousPressed() {
   BraveTabContainer* container = strip->GetBraveTabContainer();
   CHECK(container);
   container->ScrollTabsBy(container->GetHorizontalTabScrollStep());
-  UpdateScrollButtonsVisibility();
 }
 
 void BraveHorizontalTabStripRegionView::OnScrollNextPressed() {
@@ -267,7 +290,6 @@ void BraveHorizontalTabStripRegionView::OnScrollNextPressed() {
   BraveTabContainer* container = strip->GetBraveTabContainer();
   CHECK(container);
   container->ScrollTabsBy(-container->GetHorizontalTabScrollStep());
-  UpdateScrollButtonsVisibility();
 }
 
 bool BraveHorizontalTabStripRegionView::HaveScrollButtons() const {
@@ -286,6 +308,27 @@ views::View::Views BraveHorizontalTabStripRegionView::GetChildrenInZOrder() {
     order.push_back(scroll_button.get());
   }
   return order;
+}
+
+void BraveHorizontalTabStripRegionView::ViewHierarchyChanged(
+    const views::ViewHierarchyChangedDetails& details) {
+  HorizontalTabStripRegionView::ViewHierarchyChanged(details);
+
+  if (!base::FeatureList::IsEnabled(tabs::kBraveScrollableTabStrip)) {
+    return;
+  }
+
+  if (details.is_add &&
+      details.child->GetClassName() == BraveTabContainer::kViewClassName) {
+    BraveTabContainer* container =
+        views::AsViewClass<BraveTabContainer>(details.child);
+    CHECK(container);
+    horizontal_scroll_offset_changed_subscription_ =
+        container->RegisterHorizontalScrollOffsetChangedCallback(
+            base::BindRepeating(&BraveHorizontalTabStripRegionView::
+                                    UpdateScrollButtonsVisibility,
+                                weak_factory_.GetWeakPtr()));
+  }
 }
 
 void BraveHorizontalTabStripRegionView::Layout(PassKey) {
@@ -481,16 +524,6 @@ void BraveHorizontalTabStripRegionView::Initialize() {
   CreateScrollButtonsIfNeeded();
 
   if (base::FeatureList::IsEnabled(tabs::kBraveScrollableTabStrip)) {
-    if (auto* strip = views::AsViewClass<BraveTabStrip>(tab_strip_)) {
-      if (BraveTabContainer* container = strip->GetBraveTabContainer()) {
-        horizontal_scroll_offset_changed_subscription_ =
-            container->RegisterHorizontalScrollOffsetChangedCallback(
-                base::BindRepeating(&BraveHorizontalTabStripRegionView::
-                                        UpdateScrollButtonsVisibility,
-                                    weak_factory_.GetWeakPtr()));
-      }
-    }
-
     auto* bwi = tab_strip_->GetBrowserWindowInterface();
     CHECK(bwi);
     PrefService* prefs = bwi->GetProfile()->GetPrefs();

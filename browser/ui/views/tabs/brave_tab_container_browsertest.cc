@@ -36,6 +36,7 @@
 #include "ui/events/base_event_utils.h"
 #include "ui/events/event_constants.h"
 #include "ui/events/test/event_generator.h"
+#include "ui/views/animation/ink_drop.h"
 #include "ui/views/repeat_controller.h"
 #include "ui/views/view_utils.h"
 #include "ui/views/widget/widget_utils.h"
@@ -467,7 +468,7 @@ IN_PROC_BROWSER_TEST_F(HorizontalScrollableTabStripBrowserTest,
   StopAnimatingAndLayout();
   ASSERT_FALSE(container->CanScrollTabsStart());
   ASSERT_TRUE(base::test::RunUntil([&]() {
-    return region->tab_scroll_previous_for_testing()->GetEnabled();
+    return !region->tab_scroll_previous_for_testing()->GetEnabled();
   }));
 
   container->SetScrollOffsetForTesting(
@@ -612,4 +613,81 @@ IN_PROC_BROWSER_TEST_F(
   const int after = container->GetScrollOffsetForTesting();
   EXPECT_GT(before - after, step)
       << "Holding should run the repeat timer and scroll more than one action.";
+}
+
+IN_PROC_BROWSER_TEST_F(HorizontalScrollableTabStripBrowserTest,
+                       DisabledScrollButton_RepeaterShouldStop) {
+  auto* tab_strip = views::AsViewClass<BraveTabStrip>(
+      browser_view()->horizontal_tab_strip_for_testing());
+  BraveTabContainer* container = views::AsViewClass<BraveTabContainer>(
+      tab_strip->GetTabContainerForTesting());
+  ASSERT_TRUE(container);
+
+  browser()->profile()->GetPrefs()->SetBoolean(
+      brave_tabs::kShowHorizontalTabScrollButtons, false);
+  browser()->profile()->GetPrefs()->SetBoolean(
+      brave_tabs::kShowHorizontalTabScrollButtons, true);
+  GrowHorizontalStripUntilMaxOffsetAtLeastNTimesStep(container, 2);
+
+  BraveHorizontalTabStripRegionView* region = tab_strip_region();
+  ASSERT_TRUE(region);
+
+  TabStripControlButton* back = region->tab_scroll_previous_for_testing();
+  ASSERT_TRUE(back);
+  ASSERT_TRUE(back->GetVisible());
+  ASSERT_TRUE(back->GetEnabled());
+
+  ui::test::EventGenerator event_generator(
+      views::GetRootWindow(browser_view()->GetWidget()),
+      browser_view()->GetNativeWindow());
+  event_generator.MoveMouseTo(back->GetBoundsInScreen().CenterPoint());
+  event_generator.PressLeftButton();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return back->GetState() == views::Button::STATE_DISABLED; }));
+  StopAnimatingAndLayout();
+
+  // When the button is disabled, the repeater should stop even if the mouse
+  // released event didn't happen - when button is disabled, event won't be
+  // delivered to the button.
+  EXPECT_FALSE(region->IsRepeatingEventForTesting(back));
+}
+
+IN_PROC_BROWSER_TEST_F(HorizontalScrollableTabStripBrowserTest,
+                       DisabledScrollButton_InkDropShouldBeOff) {
+  auto* tab_strip = views::AsViewClass<BraveTabStrip>(
+      browser_view()->horizontal_tab_strip_for_testing());
+  BraveTabContainer* container = views::AsViewClass<BraveTabContainer>(
+      tab_strip->GetTabContainerForTesting());
+  ASSERT_TRUE(container);
+
+  browser()->profile()->GetPrefs()->SetBoolean(
+      brave_tabs::kShowHorizontalTabScrollButtons, false);
+  browser()->profile()->GetPrefs()->SetBoolean(
+      brave_tabs::kShowHorizontalTabScrollButtons, true);
+  GrowHorizontalStripUntilMaxOffsetAtLeastNTimesStep(container, 2);
+
+  BraveHorizontalTabStripRegionView* region = tab_strip_region();
+  ASSERT_TRUE(region);
+
+  TabStripControlButton* back = region->tab_scroll_previous_for_testing();
+  ASSERT_TRUE(back);
+  ASSERT_TRUE(back->GetVisible());
+  ASSERT_TRUE(back->GetEnabled());
+  EXPECT_EQ(views::InkDrop::Get(back)->GetMode(),
+            views::InkDropHost::InkDropMode::ON);
+
+  // When the button is disabled, the ink drop should be off.
+  container->SetScrollOffsetForTesting(0);
+  StopAnimatingAndLayout();
+  ASSERT_EQ(back->GetState(), views::Button::STATE_DISABLED);
+  EXPECT_EQ(views::InkDrop::Get(back)->GetMode(),
+            views::InkDropHost::InkDropMode::OFF);
+
+  // When the button is enabled, the ink drop should be on.
+  container->SetScrollOffsetForTesting(
+      container->GetMaxScrollOffsetForTesting());
+  StopAnimatingAndLayout();
+  ASSERT_EQ(back->GetState(), views::Button::STATE_NORMAL);
+  EXPECT_EQ(views::InkDrop::Get(back)->GetMode(),
+            views::InkDropHost::InkDropMode::ON);
 }

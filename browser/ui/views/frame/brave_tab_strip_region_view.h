@@ -30,9 +30,6 @@ class BraveHorizontalTabStripRegionView : public HorizontalTabStripRegionView {
 
   ~BraveHorizontalTabStripRegionView() override;
 
-  void Layout(PassKey) override;
-  views::View::Views GetChildrenInZOrder() override;
-
   TabStripControlButton* tab_scroll_previous_for_testing() {
     return tab_scroll_previous_button_;
   }  // IN-TEST
@@ -40,6 +37,13 @@ class BraveHorizontalTabStripRegionView : public HorizontalTabStripRegionView {
   TabStripControlButton* tab_scroll_next_for_testing() {
     return tab_scroll_next_button_;
   }  // IN-TEST
+
+  bool IsRepeatingEventForTesting(TabStripControlButton* button);
+
+  void Layout(PassKey) override;
+  views::View::Views GetChildrenInZOrder() override;
+  void ViewHierarchyChanged(
+      const views::ViewHierarchyChangedDetails& details) override;
 
  private:
   // TabStripRegionView:
