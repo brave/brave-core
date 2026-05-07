@@ -17,10 +17,12 @@
 
 namespace brave_shields {
 
-AdBlockPrefService::AdBlockPrefService(PrefService* prefs,
+AdBlockPrefService::AdBlockPrefService(bool is_regular_profile,
+                                       PrefService* prefs,
                                        PrefService* local_state,
                                        const std::string& locale) {
-  if (!local_state->GetBoolean(
+  if (is_regular_profile &&
+      !local_state->GetBoolean(
           prefs::kMigratedAdblockSocialMediaBlockingSettings)) {
     // Yes, we're reading these on the first profile launched, and migrating
     // them to Local State. It's not ideal, but that's how the settings have

@@ -23,7 +23,8 @@ namespace brave_shields {
 class AdBlockPrefService : public KeyedService,
                            public net::ProxyConfigService::Observer {
  public:
-  explicit AdBlockPrefService(PrefService* prefs,
+  explicit AdBlockPrefService(bool is_regular_profile,
+                              PrefService* prefs,
                               PrefService* local_state,
                               const std::string& locale);
   ~AdBlockPrefService() override;

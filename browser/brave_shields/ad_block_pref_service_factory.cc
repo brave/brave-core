@@ -48,7 +48,8 @@ AdBlockPrefServiceFactory::BuildServiceInstanceForBrowserContext(
   Profile* profile = Profile::FromBrowserContext(context);
 
   auto service = std::make_unique<AdBlockPrefService>(
-      profile->GetPrefs(), g_browser_process->local_state(),
+      profile->IsRegularProfile(), profile->GetPrefs(),
+      g_browser_process->local_state(),
       g_browser_process->GetApplicationLocale());
 
   auto pref_proxy_config_tracker =
