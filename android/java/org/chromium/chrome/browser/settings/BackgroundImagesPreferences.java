@@ -22,12 +22,12 @@ import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
+import org.chromium.chrome.browser.BraveRewardsPolicy;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.ntp.BraveFreshNtpHelper;
 import org.chromium.chrome.browser.ntp.NtpUtil;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
-import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
@@ -78,25 +78,30 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
         if (mShowBackgroundImagesPref != null) {
             mShowBackgroundImagesPref.setEnabled(true);
             mShowBackgroundImagesPref.setChecked(
-                    UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                    UserPrefs.get(getProfile())
                             .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE));
             mShowBackgroundImagesPref.setOnPreferenceChangeListener(this);
         }
+        boolean rewardsDisabledByPolicy = BraveRewardsPolicy.isDisabledByPolicy(getProfile());
         mShowSponsoredImagesPref =
                 (ChromeSwitchPreference) findPreference(PREF_SHOW_SPONSORED_IMAGES);
-        if (mShowSponsoredImagesPref != null) {
+        if (mShowSponsoredImagesPref != null && rewardsDisabledByPolicy) {
+            mShowSponsoredImagesPref.setVisible(false);
+        } else if (mShowSponsoredImagesPref != null) {
             mShowSponsoredImagesPref.setEnabled(
-                    UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                    UserPrefs.get(getProfile())
                             .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE));
             mShowSponsoredImagesPref.setChecked(
-                    UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                    UserPrefs.get(getProfile())
                             .getBoolean(
                                     BravePref.NEW_TAB_PAGE_SHOW_SPONSORED_IMAGES_BACKGROUND_IMAGE));
             mShowSponsoredImagesPref.setOnPreferenceChangeListener(this);
         }
         mLearnMorePreference =
                 (ChromeBasePreference) findPreference(PREF_SPONSORED_IMAGES_LEARN_MORE);
-        if (mLearnMorePreference != null) {
+        if (mLearnMorePreference != null && rewardsDisabledByPolicy) {
+            mLearnMorePreference.setVisible(false);
+        } else if (mLearnMorePreference != null) {
             SpannableString spannableString =
                     new SpannableString(
                             getContext().getString(R.string.sponsored_images_learn_more));
@@ -171,11 +176,11 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
             if (mShowSponsoredImagesPref != null) {
                 mShowSponsoredImagesPref.setEnabled((boolean) newValue);
             }
-            UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+            UserPrefs.get(getProfile())
                     .setBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE, (boolean) newValue);
             BraveRelaunchUtils.askForRelaunch(getActivity());
         } else if (PREF_SHOW_SPONSORED_IMAGES.equals(key)) {
-            UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+            UserPrefs.get(getProfile())
                     .setBoolean(
                             BravePref.NEW_TAB_PAGE_SHOW_SPONSORED_IMAGES_BACKGROUND_IMAGE,
                             (boolean) newValue);
