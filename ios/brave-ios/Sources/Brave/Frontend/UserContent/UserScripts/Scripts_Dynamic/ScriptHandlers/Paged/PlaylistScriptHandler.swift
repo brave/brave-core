@@ -182,8 +182,9 @@ class PlaylistScriptHandler: NSObject, TabContentScript, TabObserver {
   }
 
   /// Returns `true` when `pageSrc` is the kind of URL we can reasonably re-resolve later by re-loading it in a `LivePlaylistWebLoader`.
-  /// For known sites whose feed/home/search pages have no stable `<video>` element to extract from, returns `false` so we don't capture
-  /// items that are guaranteed to fail resolution. Unknown sites fall through and are trusted; we only special-case sites we have evidence for.
+  /// For `youtube.com` we use a **denylist** of listing/feed surfaces where reload rarely reproduces the same watchable item; all other paths on
+  /// that domain are trusted (new watch URL shapes from YouTube can work without an app update). Unknown sites fall through and are trusted;
+  /// we only special-case domains we have evidence for.
   private static func canResolvePageSrcLater(_ pageSrc: String) -> Bool {
     guard let url = URL(string: pageSrc), let baseDomain = url.baseDomain else {
       return true
@@ -191,13 +192,19 @@ class PlaylistScriptHandler: NSObject, TabContentScript, TabObserver {
     let path = url.path
     switch baseDomain {
     case "youtube.com":
-      // Only watch/shorts/embed pages have a stable video at a stable URL. Homepage,
-      // search results (`/results`), feed (`/feed/*`), channel (`/@handle`, `/c/*`,
-      // `/channel/*`, `/user/*`) and similar listings do not.
-      return path.hasPrefix("/watch")
-        || path.hasPrefix("/shorts/")
-        || path.hasPrefix("/embed/")
-        || path.hasPrefix("/v/")
+      // Homepage, search, feeds, channel listings, playlist index, etc.
+      if path.isEmpty || path == "/"
+        || path.hasPrefix("/results")
+        || path.hasPrefix("/feed")
+        || path.hasPrefix("/channel/")
+        || path.hasPrefix("/c/")
+        || path.hasPrefix("/user/")
+        || path.hasPrefix("/@")
+        || path.hasPrefix("/playlist")
+      {
+        return false
+      }
+      return true
     case "youtu.be":
       // Short links of the form `youtu.be/<videoId>`.
       return url.pathComponents[safe: 1]?.isEmpty == false
