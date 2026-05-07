@@ -2518,6 +2518,10 @@
 -SiteEngagementHelperBrowserTest.*
 -SitePerProcessWebViewTest.*
 -SmartSessionRestoreTest.CorrectLoadingOrder
+# Known upstream flake: 5.8% rate (83k verdicts, 30d). TCP read() returns
+# partial data. Disabled on Windows by Chromium (crbug.com/1319604).
+# https://github.com/brave/brave-browser/issues/54922
+-SocketApiTest.SocketTCPExtension
 -SoundContentSettingObserverBrowserTest.*
 -SpellcheckServiceBrowserTest.*
 -SpellcheckServiceHostBrowserTest.*
