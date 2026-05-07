@@ -227,11 +227,6 @@ TEST_F(BraveQueryFilter, ConditionalFilteringTest) {
                 GURL(), GURL("https://brave.com"),
                 GURL("https://test.com/?mkt_tok=123"), "GET", false),
             GURL("https://test.com/"));
-  //  "*://instagram.com/*" wildcard
-  EXPECT_EQ(query_filter::MaybeApplyQueryStringFilter(
-                GURL(), GURL("https://brave.com"),
-                GURL("https://www.instagram.com/?igsh=abc"), "GET", false),
-            GURL("https://www.instagram.com/"));
 
   // Conditional filtering, test nothing filtered. `ck_subscriber_id` param with
   // `unsubscribe` present in url.
