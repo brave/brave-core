@@ -4,10 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as Mojom from '../../../common/mojom'
-import {
-  extractAllowedLinksFromTurn,
-  replaceCitationsWithUrls,
-} from '../../../common/conversation_history_utils'
+import { extractAllowedLinksFromTurn } from '../../../common/conversation_history_utils'
+import { replaceCitationsWithUrlsExcludingCode } from './conversation_entries_utils'
 
 // Note: This regex is used to strip out inline searches, as they're not useful
 // for the user.
@@ -32,9 +30,10 @@ export default function useConversationEventClipboardCopyHandler(
       })
       let text = completionTexts.join('\n\n') || entry.text
       if (!text) return
-      // Replace citations with URLs
+      // Replace citations with URLs, skipping matches inside code blocks where
+      // `[N]` is typically array indexing rather than a citation.
       const allowedLinks = extractAllowedLinksFromTurn(allEvents)
-      text = replaceCitationsWithUrls(text, allowedLinks)
+      text = replaceCitationsWithUrlsExcludingCode(text, allowedLinks)
       text = text.replaceAll(inlineSearchRegex, '')
       navigator.clipboard.writeText(text)
     } else {

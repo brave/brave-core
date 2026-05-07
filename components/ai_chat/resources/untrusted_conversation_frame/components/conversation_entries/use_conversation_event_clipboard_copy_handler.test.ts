@@ -168,6 +168,26 @@ describe('useConversationEventClipboardCopyHandler', () => {
       )
     })
 
+    it('does not replace bracket-number syntax inside code blocks', () => {
+      const entry = createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [
+          getWebSourcesEvent([
+            {
+              url: { url: 'https://example.com' },
+              title: 'Example',
+              faviconUrl: { url: '' },
+            },
+          ]),
+          getCompletionEvent('See [1].\n```js\nconst x = arr[1]\n```\nDone.'),
+        ],
+      })
+      useConversationEventClipboardCopyHandler([entry])()
+      expect(writeText).toHaveBeenCalledWith(
+        'See https://example.com.\n```js\nconst x = arr[1]\n```\nDone.',
+      )
+    })
+
     it('strips inline search blocks', () => {
       const entry = createConversationTurnWithDefaults({
         characterType: Mojom.CharacterType.ASSISTANT,

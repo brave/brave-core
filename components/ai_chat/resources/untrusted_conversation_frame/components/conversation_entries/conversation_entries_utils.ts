@@ -3,6 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import remarkGfm from 'remark-gfm'
+import remarkParse from 'remark-parse'
+import { unified } from 'unified'
+import { visit } from 'unist-util-visit'
+
 import * as Mojom from '../../../common/mojom'
 
 const NON_TASK_TOOL_NAMES = [
@@ -169,16 +174,47 @@ export const removeReasoning = (text: string) => {
   return text
 }
 
+// Applies `transform` to every part of `text` that lies outside a markdown
+// fenced code block or inline code span. Code regions pass through unchanged,
+// so bracket-number syntax inside `arr[1]` etc. is preserved.
+const applyOutsideCodeBlocks = (
+  text: string,
+  transform: (segment: string) => string,
+): string => {
+  const tree = unified().use(remarkParse).use(remarkGfm).parse(text)
+  const ranges: Array<[number, number]> = []
+  visit(tree, (node) => {
+    if (node.type !== 'code' && node.type !== 'inlineCode') return
+    const start = node.position?.start.offset
+    const end = node.position?.end.offset
+    if (start !== undefined && end !== undefined) {
+      ranges.push([start, end])
+    }
+  })
+  if (ranges.length === 0) return transform(text)
+
+  let result = ''
+  let cursor = 0
+  for (const [start, end] of ranges) {
+    result += transform(text.slice(cursor, start))
+    result += text.slice(start, end)
+    cursor = end
+  }
+  result += transform(text.slice(cursor))
+  return result
+}
+
 export const removeCitationsWithMissingLinks = (
   text: string,
   citationLinks: string[],
-) => {
-  return text.replace(/\[(\d+)\]/g, (match, citationNumber) => {
-    // Convert to 0-based index
-    const index = parseInt(citationNumber) - 1
-    return index >= 0 && index < citationLinks.length ? match : ''
-  })
-}
+) =>
+  applyOutsideCodeBlocks(text, (segment) =>
+    segment.replace(/\[(\d+)\]/g, (match, citationNumber) => {
+      // Convert to 0-based index
+      const index = parseInt(citationNumber) - 1
+      return index >= 0 && index < citationLinks.length ? match : ''
+    }),
+  )
 
 /**
  * Normalizes citation spacing so markdown parses each citation as its own link.
@@ -186,10 +222,39 @@ export const removeCitationsWithMissingLinks = (
  *   as one link with text "2" and ref [3]).
  * - Adds space before a citation when it runs onto the previous word:
  *   "Japan[2]" → "Japan [2]".
+ * Code blocks and inline code are left untouched so that array indexing like
+ * `arr[1]` is not mangled into `arr [1]`.
  */
-export const normalizeCitationSpacing = (text: string): string => {
-  const withSeparatedCitations = text.replace(/\]\s*\[/g, '] [')
-  return withSeparatedCitations.replace(/(\w|\S)\[(\d+)\]/g, '$1 [$2]')
+export const normalizeCitationSpacing = (text: string): string =>
+  applyOutsideCodeBlocks(text, (segment) => {
+    const withSeparatedCitations = segment.replace(/\]\s*\[/g, '] [')
+    return withSeparatedCitations.replace(/(\w|\S)\[(\d+)\]/g, '$1 [$2]')
+  })
+
+/**
+ * Replaces citation numbers `[1]`, `[2]`, etc. with URLs from `allowedLinks`,
+ * skipping matches that fall inside fenced code blocks or inline code spans —
+ * where `[N]` is typically array indexing rather than a citation.
+ */
+export const replaceCitationsWithUrlsExcludingCode = (
+  text: string,
+  allowedLinks: string[],
+): string => {
+  if (allowedLinks.length === 0) {
+    return text
+  }
+  return applyOutsideCodeBlocks(text, (segment) =>
+    segment.replace(/\[(\d+)\]/g, (match, citationNumber, offset) => {
+      const index = parseInt(citationNumber) - 1
+      if (index >= 0 && index < allowedLinks.length) {
+        const url = allowedLinks[index]
+        const charBefore = offset > 0 ? segment[offset - 1] : ''
+        const needsSpace = charBefore && !/\s/.test(charBefore)
+        return needsSpace ? ` ${url}` : url
+      }
+      return match
+    }),
+  )
 }
 
 /**
