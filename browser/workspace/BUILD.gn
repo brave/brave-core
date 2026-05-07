@@ -22,7 +22,7 @@ source_set("impl") {
     "//chrome/browser/ui",
   ]
 }
-static_library("workspace") {
+source_set("workspace") {
   sources = [
     "brave_workspace.h",
     "brave_workspace_service.h",
