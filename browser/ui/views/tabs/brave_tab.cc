@@ -31,6 +31,7 @@
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/favicon_size.h"
 #include "ui/gfx/geometry/skia_conversions.h"
+#include "ui/gfx/scoped_canvas.h"
 #include "ui/views/animation/ink_drop.h"
 #include "ui/views/bubble/bubble_border.h"
 #include "ui/views/controls/button/image_button.h"
@@ -50,6 +51,10 @@ constexpr int kSmallAccentSize = 16;
 
 BraveTab::SmallAccentIconView::SmallAccentIconView() {
   SetCanProcessEventsWithinSubtree(false);
+  // In order to be clipped by Tab::PaintChildren(), we need to set paint to
+  // layer.
+  SetPaintToLayer();
+  layer()->SetFillsBoundsOpaquely(false);
 }
 
 BraveTab::SmallAccentIconView::~SmallAccentIconView() = default;
@@ -62,27 +67,33 @@ void BraveTab::SmallAccentIconView::OnPaint(gfx::Canvas* canvas) {
     return;
   }
   constexpr int kCenter = kSmallAccentSize / 2;
+
   if (auto accent_colors = tab->GetTabAccentColors();
       accent_colors.has_value()) {
+    gfx::ScopedCanvas scoped_canvas(canvas);
+    float scale = canvas->UndoDeviceScaleFactor();
     cc::PaintFlags flags;
     flags.setAntiAlias(true);
     flags.setColor(accent_colors->background_color);
     flags.setStyle(cc::PaintFlags::kFill_Style);
-    canvas->DrawCircle(gfx::PointF(kCenter, kCenter), kCenter, flags);
+    canvas->DrawCircle(gfx::PointF(kCenter * scale, kCenter * scale),
+                       kCenter * scale, flags);
 
     flags.setColor(accent_colors->icon_border_color);
     flags.setStyle(cc::PaintFlags::kStroke_Style);
     flags.setStrokeWidth(1);
-    canvas->DrawCircle(gfx::PointF(kCenter, kCenter), kCenter, flags);
+    canvas->DrawCircle(gfx::PointF(kCenter, kCenter), (kCenter - 0.5) * scale,
+                       flags);
   }
+
   auto accent_icon = tab->GetTabAccentIcon();
   if (!accent_icon.IsEmpty()) {
-    constexpr int dest_image_size = 12;
+    constexpr int kDestImageSize = 12;
     auto image = accent_icon.Rasterize(tab->GetColorProvider());
     canvas->DrawImageInt(image, 0, 0, image.width(), image.height(),
-                         kCenter - dest_image_size / 2,
-                         kCenter - dest_image_size / 2, dest_image_size,
-                         dest_image_size, true);
+                         kCenter - kDestImageSize / 2,
+                         kCenter - kDestImageSize / 2, kDestImageSize,
+                         kDestImageSize, true);
   }
 }
 
@@ -369,7 +380,7 @@ void BraveTab::LayoutSmallTabAccentIcon() {
     small_accent_icon_view_->SetBounds(
         std::min(tab_bounds.x(),
                  tab_bounds.CenterPoint().x() - kSmallAccentSize / 2),
-        tab_bounds.bottom() - kSmallAccentSize, kSmallAccentSize,
+        tab_bounds.bottom() - kSmallAccentSize + 1, kSmallAccentSize,
         kSmallAccentSize);
   }
 }
@@ -517,19 +528,6 @@ void BraveTab::OnTabDataChanged(TabChangeType tab_change_type,
           controller()->GetBrowserWindowInterface()) &&
       data_.pinned) {
     SetGroup(std::nullopt);
-  }
-
-  if (small_accent_icon_view_) {
-    if (controller_->CanPaintThrobberToLayer()) {
-      // In this case, the TabIcon will have its own layer. When this happens,
-      // we need to make small accent icon view have its own layer as well,
-      // so that the small accent icon view will be painted on top of the
-      // TabIcon.
-      small_accent_icon_view_->SetPaintToLayer();
-      small_accent_icon_view_->layer()->SetFillsBoundsOpaquely(false);
-    } else if (small_accent_icon_view_->layer()) {
-      small_accent_icon_view_->DestroyLayer();
-    }
   }
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
