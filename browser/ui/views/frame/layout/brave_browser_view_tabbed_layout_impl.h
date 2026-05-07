@@ -67,6 +67,7 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
   TopSeparatorType GetTopSeparatorType() const override;
   int GetHorizontalTabStripLeadingMargin(
       const BrowserLayoutParams& params) const override;
+  bool ShadowOverlayVisible() const override;
 
  private:
   void CalculateBraveVerticalTabStripLayout(

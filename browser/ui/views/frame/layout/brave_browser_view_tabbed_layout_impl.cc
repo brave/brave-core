@@ -640,6 +640,13 @@ void BraveBrowserViewTabbedLayoutImpl::UpdateInsetsForVerticalTabStrip() {
       insets.IsEmpty() ? nullptr : views::CreateEmptyBorder(insets));
 }
 
+bool BraveBrowserViewTabbedLayoutImpl::ShadowOverlayVisible() const {
+  // Brave manages its own rounded-corners shadow around the contents and side
+  // panel via BraveContentsViewUtil. Suppress the upstream shadow overlay (and
+  // its accompanying main-area padding) so it doesn't double up.
+  return false;
+}
+
 void BraveBrowserViewTabbedLayoutImpl::UpdateMarginsForSideBar() {
   if (!views().sidebar_container) {
     return;
