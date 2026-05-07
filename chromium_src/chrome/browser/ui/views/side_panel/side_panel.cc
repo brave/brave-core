@@ -19,22 +19,37 @@
 // panels, making it empty would not add any side-effect.
 #define RemoveHeaderView RemoveHeaderView_UnUsed
 
+// Rename the upstream Open/Close implementation so we can provide a thin
+// wrapper that reapplies border state after UpdateVisibility() runs.
+// UpdateVisibility() unconditionally re-shows border_view_ whenever the panel
+// opens, which would undo SetBorderEnabled(false).
+#define Open Open_ChromiumImpl
+#define Close Close_ChromiumImpl
+
 #include <chrome/browser/ui/views/side_panel/side_panel.cc>
 
+#undef Close
+#undef Open
 #undef RemoveHeaderView
 
 #endif  // BUILDFLAG(ENABLE_SIDEBAR_V2)
 
 #if BUILDFLAG(ENABLE_SIDEBAR_V2)
 
-void SidePanel::VisibilityChanged(View* starting_from, bool is_visible) {
-  AccessiblePaneView::VisibilityChanged(starting_from, is_visible);
+void SidePanel::Open(bool animated) {
+  Open_ChromiumImpl(animated);
 
-  // Whenever open/closes, upstream resets border style.
-  // Set our border style again.
-  if (GetVisible()) {
-    UpdateBorder();
-  }
+  // UpdateVisibility() unconditionally sets border_view_ visible when opening;
+  // restore desired state.
+  UpdateBorder();
+}
+
+void SidePanel::Close(bool animated) {
+  Close_ChromiumImpl(animated);
+
+  // At the start of Close(), GetVisible() is still true, so UpdateVisibility()
+  // shows border_view_; restore desired state.
+  UpdateBorder();
 }
 
 void SidePanel::SetResizeArea(std::unique_ptr<views::View> resize_area) {

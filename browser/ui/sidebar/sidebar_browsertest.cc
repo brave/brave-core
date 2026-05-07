@@ -2214,6 +2214,21 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
   RunScheduledLayouts();
   EXPECT_TRUE(side_panel->GetInsets().IsEmpty());
 
+  // --- Panel-switch: border OFF must survive switching panels ---
+  panel_ui->Show(SidePanelEntryId::kBookmarks);
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return panel_ui->IsSidePanelEntryShowing(
+        SidePanelEntry::Key(SidePanelEntryId::kBookmarks));
+  }));
+  panel_ui->Show(SidePanelEntryId::kCustomizeChrome);
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return panel_ui->IsSidePanelEntryShowing(
+        SidePanelEntry::Key(SidePanelEntryId::kCustomizeChrome));
+  }));
+  RunScheduledLayouts();
+  EXPECT_TRUE(side_panel->GetInsets().IsEmpty())
+      << "Border insets should stay empty after switching panels (border OFF)";
+
   const gfx::Rect no_border_bounds = resize_area->bounds();
   EXPECT_EQ(no_border_bounds.origin(),
             side_panel->GetContentParentView()->origin())
