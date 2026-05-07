@@ -17,11 +17,16 @@ namespace {
 BASE_FEATURE(kBraveAccount, base::FEATURE_DISABLED_BY_DEFAULT);
 }  // namespace
 
+// Checks that kBraveAccount feature flag is explicitly enabled (dev/testing)
+bool IsBraveAccountExplicitlyEnabled() {
+  return base::FeatureList::IsEnabled(kBraveAccount);
+}
+
 // Brave Account is enabled when:
 // - the explicit kBraveAccount feature flag is enabled (dev/testing), OR
 // - a dependent feature (e.g. Email Aliases) requires it
 bool IsBraveAccountEnabled() {
-  return base::FeatureList::IsEnabled(kBraveAccount)
+  return IsBraveAccountExplicitlyEnabled()
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
          || email_aliases::features::IsEmailAliasesEnabled()
 #endif

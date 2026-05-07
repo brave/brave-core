@@ -289,20 +289,28 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean(
       "isSharedPinnedTabsEnabled",
       base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs));
-#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
-  html_source->AddBoolean(
-      "isEmailAliasesEnabled",
-      email_aliases::features::IsEmailAliasesEnabled() &&
-          email_aliases::EmailAliasesServiceFactory::GetServiceForProfile(
-              profile));
-#endif
 #if BUILDFLAG(ENABLE_CONTAINERS)
   html_source->AddBoolean(
       "isContainersEnabled",
       base::FeatureList::IsEnabled(containers::features::kContainers));
 #endif
-  html_source->AddBoolean("isBraveAccountEnabled",
-                          brave_account::features::IsBraveAccountEnabled());
+  bool is_brave_account_enabled =
+      brave_account::features::IsBraveAccountEnabled();
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+  const bool is_email_aliases_enabled =
+      email_aliases::features::IsEmailAliasesEnabled() &&
+      email_aliases::EmailAliasesServiceFactory::GetServiceForProfile(profile);
+
+  if (!brave_account::features::IsBraveAccountExplicitlyEnabled()) {
+    // If BraveAccount feature is not explicitly enabled then it means that
+    // Brave Account available because the Email Aliases depends on it, we
+    // have to hide Brave Account's UI if Email Aliases is disabled by the pref
+    // toggle.
+    is_brave_account_enabled = is_email_aliases_enabled;
+  }
+  html_source->AddBoolean("isEmailAliasesEnabled", is_email_aliases_enabled);
+#endif
+  html_source->AddBoolean("isBraveAccountEnabled", is_brave_account_enabled);
   html_source->AddBoolean("isBraveOriginBrandedBuild",
                           BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED));
   html_source->AddBoolean("isBraveOriginPurchased",

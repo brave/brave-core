@@ -10,6 +10,8 @@
 
 namespace brave_account::features {
 
+bool IsBraveAccountExplicitlyEnabled();
+
 bool IsBraveAccountEnabled();
 
 const base::Feature& BraveAccountFeatureForTesting();
