@@ -114,24 +114,23 @@ public struct OriginSettingsView: View {
     .navigationBarTitleDisplayMode(.inline)
     .scrollContentBackground(.hidden)
     .background(Color(.braveGroupedBackground))
-    .safeAreaInset(edge: .bottom) {
+    .overlay(alignment: .bottom) {
       if viewModel.isRestartToastVisible {
         FeatureEnabledToastView {
-          viewModel.isRestartToastVisible = false
+          withAnimation(.toast) {
+            viewModel.isRestartToastVisible = false
+          }
         }
-        .transition(.move(edge: .bottom).combined(with: .opacity))
+        .transition(.move(edge: .bottom).combined(with: .blurReplace))
       }
     }
-    .animation(
-      .spring(response: 0.3, dampingFraction: 0.725),
-      value: viewModel.isRestartToastVisible
-    )
   }
 
   private struct FeatureEnabledToastView: View {
     var dismiss: () -> Void
     @State private var dragOffset: CGFloat = 0
     @State private var height: CGFloat = 0
+    @AccessibilityFocusState(for: .voiceOver) private var isAccessibilityFocused: Bool
 
     var body: some View {
       HStack(alignment: .firstTextBaseline) {
@@ -177,6 +176,16 @@ public struct OriginSettingsView: View {
           }
       )
       .padding(8)
+      .dynamicTypeSize(.xSmall..<DynamicTypeSize.accessibility2)
+      .accessibilityElement(children: .combine)
+      .accessibilityAddTraits(.isModal)
+      .accessibilityFocused($isAccessibilityFocused)
+      .accessibilityAction {
+        dismiss()
+      }
+      .onAppear {
+        isAccessibilityFocused = true
+      }
     }
   }
 }
@@ -213,6 +222,12 @@ extension Bool {
   fileprivate var inversed: Bool {
     get { !self }
     set { self = !newValue }
+  }
+}
+
+extension Animation {
+  static var toast: Animation {
+    .spring(response: 0.3, dampingFraction: 0.725)
   }
 }
 

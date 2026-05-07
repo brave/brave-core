@@ -28,10 +28,14 @@ struct OriginPolicyBooleanValue {
     }
     set {
       let key = instance[keyPath: storageKeyPath].key
-      instance.withMutation(keyPath: wrappedKeyPath) {
-        _ = instance.service.setPolicyValue(key, value: newValue)
+      let result = instance.withMutation(keyPath: wrappedKeyPath) {
+        instance.service.setPolicyValue(key, value: newValue)
       }
-      instance.isRestartToastVisible = true
+      if result {
+        withAnimation(.toast) {
+          instance.isRestartToastVisible = true
+        }
+      }
     }
   }
 }
