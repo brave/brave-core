@@ -108,7 +108,8 @@ BraveEphemeralStorageServiceDelegate::BraveEphemeralStorageServiceDelegate(
     scoped_refptr<content_settings::CookieSettings> cookie_settings,
     brave_shields::BraveShieldsSettingsService* shields_settings_service,
     std::unique_ptr<BrowsingHistoryCleaner> browsing_history_cleaner)
-    : context_(context),
+    : browsing_history_cleaner_(std::move(browsing_history_cleaner)),
+      context_(context),
       host_content_settings_map_(host_content_settings_map),
       cookie_settings_(std::move(cookie_settings)),
       application_state_observer_(std::make_unique<ApplicationStateObserver>(
@@ -116,8 +117,7 @@ BraveEphemeralStorageServiceDelegate::BraveEphemeralStorageServiceDelegate(
           context
 #endif  // !BUILDFLAG(IS_ANDROID
           )),
-      shields_settings_service_(shields_settings_service),
-      browsing_history_cleaner_(std::move(browsing_history_cleaner)) {
+      shields_settings_service_(shields_settings_service) {
   DCHECK(context_);
   DCHECK(host_content_settings_map_);
   DCHECK(cookie_settings_);

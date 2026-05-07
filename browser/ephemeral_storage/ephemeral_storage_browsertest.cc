@@ -14,6 +14,7 @@
 #include "base/strings/strcat.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/test/bind.h"
+#include "base/test/test_future.h"
 #include "base/time/time.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
@@ -1332,21 +1333,18 @@ class FirstPartyStorageCleanupSiteDataBrowserTest
         HistoryServiceFactory::GetForProfile(
             browser()->profile(), ServiceAccessType::IMPLICIT_ACCESS);
     CHECK(history_service);
-    int history_count = 0;
-    base::RunLoop loop;
+    // base::RunLoop loop;
     base::CancelableTaskTracker task_tracker;
+    base::test::TestFuture<history::HistoryCountResult> future;
     history_service->GetHistoryCount(
         /*begin_time=*/base::Time::UnixEpoch(),
         /*end_time=*/base::Time::Now(),
-        history::VisitQuery404sPolicy::kInclude404s,
-        base::BindLambdaForTesting([&](history::HistoryCountResult result) {
-          ASSERT_TRUE(result.success);
-          history_count = result.count;
-          loop.Quit();
-        }),
+        history::VisitQuery404sPolicy::kInclude404s, future.GetCallback(),
         &task_tracker);
-    loop.Run();
-    return history_count;
+
+    auto result = future.Get();
+    EXPECT_TRUE(result.success);
+    return result.count;
   }
 
  private:

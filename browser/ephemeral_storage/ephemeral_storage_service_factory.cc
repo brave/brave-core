@@ -66,7 +66,6 @@ EphemeralStorageServiceFactory::EphemeralStorageServiceFactory()
   DependsOn(HostContentSettingsMapFactory::GetInstance());
   DependsOn(CookieSettingsFactory::GetInstance());
   DependsOn(BraveShieldsSettingsServiceFactory::GetInstance());
-  DependsOn(BraveShieldsSettingsServiceFactory::GetInstance());
   DependsOn(HistoryServiceFactory::GetInstance());
   DependsOn(SyncServiceFactory::GetInstance());
 }

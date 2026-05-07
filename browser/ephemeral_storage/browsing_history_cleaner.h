@@ -34,8 +34,8 @@ class BrowsingHistoryCleaner : public ProfileBasedBrowsingHistoryDriver {
       base::OnceClosure continuation_closure) override;
   Profile* GetProfile() override;
 
-  raw_ptr<Profile> profile_ = nullptr;
   std::unique_ptr<history::BrowsingHistoryService> browsing_history_service_;
+  raw_ptr<Profile> profile_ = nullptr;
 };
 
 }  // namespace ephemeral_storage

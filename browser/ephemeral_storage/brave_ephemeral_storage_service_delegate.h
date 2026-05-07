@@ -68,6 +68,7 @@ class BraveEphemeralStorageServiceDelegate
  private:
   std::vector<std::string> GetEphemeralDomainsToCleanOnAppClose();
 
+  std::unique_ptr<BrowsingHistoryCleaner> browsing_history_cleaner_;
   raw_ptr<content::BrowserContext> context_ = nullptr;
   raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
   scoped_refptr<content_settings::CookieSettings> cookie_settings_;
@@ -75,7 +76,6 @@ class BraveEphemeralStorageServiceDelegate
   std::unique_ptr<ApplicationStateObserver> application_state_observer_;
   raw_ptr<brave_shields::BraveShieldsSettingsService>
       shields_settings_service_ = nullptr;
-  std::unique_ptr<BrowsingHistoryCleaner> browsing_history_cleaner_;
 };
 
 }  // namespace ephemeral_storage
