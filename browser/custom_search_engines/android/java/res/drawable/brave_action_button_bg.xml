@@ -10,7 +10,7 @@
     <item android:state_enabled="false">
         <shape android:shape="rectangle">
             <corners android:radius="1000dp"/>
-            <solid android:color="@color/cse_button_disabled"/>
+            <solid android:color="@color/button_disabled"/>
         </shape>
     </item>
 

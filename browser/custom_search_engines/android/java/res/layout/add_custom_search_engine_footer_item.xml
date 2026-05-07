@@ -10,8 +10,7 @@
     android:layout_height="wrap_content"
     android:minHeight="?android:attr/listPreferredItemHeightSmall"
     android:paddingHorizontal="16dp"
-    android:paddingTop="16dp"
-    android:paddingBottom="16dp"
+    android:paddingVertical="16dp"
     android:gravity="center_vertical"
     android:background="?attr/selectableItemBackground">
 
