@@ -293,6 +293,8 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/common/subdivision/test/subdivision_observer_mock.h",
     "//brave/components/brave_ads/core/internal/common/subdivision/test/subdivision_test_util.cc",
     "//brave/components/brave_ads/core/internal/common/subdivision/test/subdivision_test_util.h",
+    "//brave/components/brave_ads/core/internal/common/subdivision/test/test_subdivision_observer.cc",
+    "//brave/components/brave_ads/core/internal/common/subdivision/test/test_subdivision_observer.h",
     "//brave/components/brave_ads/core/internal/common/subdivision/url_request/subdivision_url_request_builder_unittest.cc",
     "//brave/components/brave_ads/core/internal/common/subdivision/url_request/subdivision_url_request_builder_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/common/subdivision/url_request/subdivision_url_request_json_reader_util_unittest.cc",

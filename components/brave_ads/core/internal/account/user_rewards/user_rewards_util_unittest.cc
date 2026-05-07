@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/account/user_rewards/user_rewards_util.h"
 
 #include "base/scoped_observation.h"
+#include "base/test/run_until.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/test/issuers_test_util.h"
@@ -35,15 +36,18 @@ class BraveAdsUserRewardsUtilTest : public test::TestBase {
 
 TEST_F(BraveAdsUserRewardsUtilTest, UpdateIssuers) {
   // Arrange
+  bool issuers_notified = false;
   EXPECT_CALL(ads_client_notifier_observer_mock_,
               OnNotifyPrefDidChange(prefs::kIssuerPing));
   EXPECT_CALL(ads_client_notifier_observer_mock_,
-              OnNotifyPrefDidChange(prefs::kIssuers));
+              OnNotifyPrefDidChange(prefs::kIssuers))
+      .WillOnce([&](const std::string&) { issuers_notified = true; });
 
   const IssuersInfo issuers = test::BuildIssuers();
 
   // Act
   UpdateIssuers(issuers);
+  EXPECT_TRUE(base::test::RunUntil([&] { return issuers_notified; }));
 
   // Assert
   EXPECT_TRUE(HasIssuers());

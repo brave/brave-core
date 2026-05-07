@@ -12,6 +12,8 @@
 #include "base/check.h"
 #include "base/files/file.h"
 #include "base/files/file_util.h"
+#include "base/functional/bind.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/common/test/file_path_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/internal/local_state_pref_storage_test_util_internal.h"
@@ -139,7 +141,12 @@ void MockSetProfilePref(const AdsClientMock& ads_client_mock,
       .WillByDefault(
           [&ads_client_notifier](const std::string& path, base::Value value) {
             SetProfilePrefValue(path, std::move(value));
-            ads_client_notifier.NotifyPrefDidChange(path);
+            // Run `NotifyPrefDidChange` asynchronously to match production
+            // behavior where `NotifyPrefDidChange` arrives via Mojo channel.
+            base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+                FROM_HERE,
+                base::BindOnce(&AdsClientNotifier::NotifyPrefDidChange,
+                               base::Unretained(&ads_client_notifier), path));
           });
 }
 
@@ -176,7 +183,12 @@ void MockSetLocalStatePref(const AdsClientMock& ads_client_mock,
       .WillByDefault(
           [&ads_client_notifier](const std::string& path, base::Value value) {
             SetLocalStatePrefValue(path, std::move(value));
-            ads_client_notifier.NotifyPrefDidChange(path);
+            // Run `NotifyPrefDidChange` asynchronously to match production
+            // behavior where `NotifyPrefDidChange` arrives via Mojo channel.
+            base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+                FROM_HERE,
+                base::BindOnce(&AdsClientNotifier::NotifyPrefDidChange,
+                               base::Unretained(&ads_client_notifier), path));
           });
 }
 
