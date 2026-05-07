@@ -8,7 +8,7 @@
 #include <string>
 
 #include "brave/app/brave_command_ids.h"
-#include "brave/browser/ui/focus_mode/focus_mode_controller.h"
+#include "brave/browser/ui/focus_mode/focus_mode_utils.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -27,8 +27,7 @@ bool SystemMenuModelDelegate::IsCommandIdChecked(int command_id) const {
     return tabs::utils::ShouldShowBraveVerticalTabs(browser_);
   }
   if (command_id == IDC_TOGGLE_FOCUS_MODE) {
-    auto* controller = browser_->GetFeatures().focus_mode_controller();
-    return controller && controller->IsEnabled();
+    return IsFocusModeEnabled(browser_);
   }
   return IsCommandIdChecked_ChromiumImpl(command_id);
 }

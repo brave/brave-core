@@ -9,6 +9,7 @@
 #include "base/check_is_test.h"
 #include "base/command_line.h"
 #include "base/numerics/safe_conversions.h"
+#include "brave/browser/ui/focus_mode/focus_mode_utils.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/switches.h"
 #include "build/build_config.h"
@@ -63,6 +64,10 @@ bool ShouldShowBraveVerticalTabs(const BrowserWindowInterface* browser) {
 bool ShouldShowWindowTitleForVerticalTabs(
     const BrowserWindowInterface* browser) {
   if (!ShouldShowBraveVerticalTabs(browser)) {
+    return false;
+  }
+
+  if (IsFocusModeEnabled(browser)) {
     return false;
   }
 
