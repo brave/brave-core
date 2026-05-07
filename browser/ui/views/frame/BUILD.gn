@@ -7,6 +7,7 @@ source_set("frame") {
   sources = [
     "brave_contents_view_util.h",
     "brave_side_panel_shadow_overlay_view.h",
+    "focus_mode_title_bar_view.h",
     "layout/brave_browser_view_layout_delegate_impl.cc",
     "layout/brave_browser_view_layout_delegate_impl.h",
     "layout/brave_browser_view_tabbed_layout_impl.cc",
@@ -16,6 +17,7 @@ source_set("frame") {
 
   public_deps = [
     "//base",
+    "//components/tabs:public",
     "//ui/views",
   ]
 
@@ -32,6 +34,7 @@ source_set("frame_impl") {
   sources = [
     "brave_contents_view_util.cc",
     "brave_side_panel_shadow_overlay_view.cc",
+    "focus_mode_title_bar_view.cc",
     "tab_strip_placement_coordinator.cc",
   ]
 
@@ -46,13 +49,16 @@ source_set("frame_impl") {
     "//chrome/common:constants",
     "//components/prefs",
     "//components/split_tabs",
-    "//components/tabs:public",
   ]
 }
 
 source_set("unit_tests") {
   testonly = true
-  sources = [ "layout/brave_browser_view_tabbed_layout_impl_unittest.cc" ]
+
+  sources = [
+    "focus_mode_title_bar_view_unittest.cc",
+    "layout/brave_browser_view_tabbed_layout_impl_unittest.cc",
+  ]
 
   if (is_linux) {
     sources += [ "browser_frame_view_layout_linux_unittest.cc" ]
@@ -60,11 +66,19 @@ source_set("unit_tests") {
 
   deps = [
     ":frame",
+    ":frame_impl",
     "//base",
     "//base/test:test_support",
     "//chrome/browser/ui",
+    "//chrome/test:test_support",
+    "//components/tabs:test_support",
+    "//content/test:test_support",
     "//testing/gmock",
     "//testing/gtest",
+    "//ui/base",
+    "//ui/gfx",
+    "//ui/views:test_support",
+    "//url",
   ]
 }
 
