@@ -216,7 +216,7 @@ bool FocusModeTopOverlay::ShouldRevealForChildWidget() const {
   // overlay, but should nevertheless keep the overlay in a revealed state. To
   // accommodate this, keep the overlay open, but only if it is already fully
   // revealed.
-  return has_visible_child_widget && GetRevealFraction() == 1.0;
+  return has_visible_child_widget && is_fully_revealed();
 }
 
 bool FocusModeTopOverlay::IsHoverPoint(const gfx::Point& screen_point) const {

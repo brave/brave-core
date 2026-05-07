@@ -93,6 +93,7 @@ source_set("browser_tests") {
   sources = [
     "//brave/browser/ui/views/frame/brave_browser_view_browsertest.cc",
     "//brave/browser/ui/views/frame/brave_horizontal_tab_strip_region_view_browsertest.cc",
+    "//brave/browser/ui/views/frame/focus_mode_title_bar_view_browsertest.cc",
     "//brave/browser/ui/views/frame/focus_mode_top_overlay_browsertest.cc",
     "//brave/browser/ui/views/frame/tab_strip_placement_coordinator_browsertest.cc",
   ]
