@@ -5,8 +5,6 @@
 
 #include "brave/components/query_filter/browser/utils.h"
 
-#include <vector>
-
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
@@ -15,8 +13,6 @@
 // the new downloaded rules is added.
 class BraveQueryFilter : public testing::Test {
  public:
-  void SetUp() override {}
-
   void TearDown() override {
     query_filter::SetScopedTrackerForTesting(nullptr);
   }
@@ -127,15 +123,14 @@ TEST_F(BraveQueryFilter, FilterQueryTrackers) {
 }
 
 TEST_F(BraveQueryFilter, ScopedQueryTrackingTest) {
-  auto trackers =
-      std::unordered_map<std::string_view, std::vector<std::string_view>>(
-          {{"igshid", {"instagram.com"}},
-           {"ref_src", {"twitter.com", "x.com", "y.com"}},
-           {"sample1", {"", " ", "brave.com", ""}},
-           {"sample2", {" "}},
-           {"sample3", {""}},
-           {"sample4", {}},
-           {"evil", {"*://*.facebook.com/*"}}});
+  auto trackers = query_filter::ScopedQueryTrackerType(
+      {{"igshid", {"instagram.com"}},
+       {"ref_src", {"twitter.com", "x.com", "y.com"}},
+       {"sample1", {"", " ", "brave.com", ""}},
+       {"sample2", {" "}},
+       {"sample3", {""}},
+       {"sample4", {}},
+       {"evil", {"*://*.facebook.com/*"}}});
 
   SetScopedTrackerForTesting(&trackers);
 

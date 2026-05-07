@@ -6,17 +6,17 @@
 #ifndef BRAVE_COMPONENTS_QUERY_FILTER_BROWSER_UTILS_H_
 #define BRAVE_COMPONENTS_QUERY_FILTER_BROWSER_UTILS_H_
 
+#include <map>
 #include <optional>
 #include <string>
 #include <string_view>
-#include <unordered_map>
 #include <vector>
 
 #include "url/gurl.h"
 
 namespace query_filter {
 using ScopedQueryTrackerType =
-    std::unordered_map<std::string_view, std::vector<std::string_view>>;
+    std::map<std::string_view, std::vector<std::string_view>>;
 
 std::optional<GURL> ApplyQueryFilter(const GURL& original_url);
 

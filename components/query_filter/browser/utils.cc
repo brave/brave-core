@@ -10,6 +10,7 @@
 #include <string_view>
 #include <vector>
 
+#include "base/check_is_test.h"
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/strings/string_split.h"
@@ -182,10 +183,14 @@ static constexpr auto kExemptedHostnames =
         });
 
 bool IsScopedTracker(std::string_view param_name, std::string_view spec) {
-  query_filter::ScopedQueryTrackerType trackers =
-      (g_scoped_trackers_for_testing_ != nullptr)
-          ? *g_scoped_trackers_for_testing_
-          : kScopedQueryStringTrackers;
+  query_filter::ScopedQueryTrackerType trackers;
+
+  if (g_scoped_trackers_for_testing_) {
+    CHECK_IS_TEST();
+    trackers = *g_scoped_trackers_for_testing_;
+  } else {
+    trackers = kScopedQueryStringTrackers;
+  }
 
   if (!trackers.contains(param_name)) {
     return false;
