@@ -185,7 +185,7 @@ bool PolkadotChainMetadataPrefs::SetChainMetadata(
     return false;
   }
 
-  bool asset_tx_payment = metadata.GetAssetTxPayment();
+  bool asset_tx_payment = metadata.UsesAssetTxPayment();
 
   value.Set(kSystemPalletIndex, system_pallet_index);
   value.Set(kBalancesPalletIndex, balances_pallet_index);

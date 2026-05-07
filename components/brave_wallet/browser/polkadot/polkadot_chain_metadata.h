@@ -74,7 +74,7 @@ class PolkadotChainMetadata {
 
   // Returns true if the runtime uses ChargeAssetTxPayment as a signed
   // extension, meaning the signature payload must include an asset_id field.
-  bool GetAssetTxPayment() const;
+  bool UsesAssetTxPayment() const;
 
  private:
   explicit PolkadotChainMetadata(CxxPolkadotChainMetadata chain_metadata);

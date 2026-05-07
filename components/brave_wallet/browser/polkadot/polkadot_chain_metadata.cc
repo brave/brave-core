@@ -164,7 +164,7 @@ uint32_t PolkadotChainMetadata::GetSpecVersion() const {
   return chain_metadata_.spec_version;
 }
 
-bool PolkadotChainMetadata::GetAssetTxPayment() const {
+bool PolkadotChainMetadata::UsesAssetTxPayment() const {
   return chain_metadata_.asset_tx_payment;
 }
 

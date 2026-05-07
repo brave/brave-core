@@ -39,7 +39,7 @@ TEST(PolkadotChainMetadataUnitTest, FromFields) {
   EXPECT_EQ(metadata.GetTransferAllCallIndex(), 5u);
   EXPECT_EQ(metadata.GetSs58Prefix(), 42u);
   EXPECT_EQ(metadata.GetSpecVersion(), 1'234'567u);
-  EXPECT_TRUE(metadata.GetAssetTxPayment());
+  EXPECT_TRUE(metadata.UsesAssetTxPayment());
 }
 
 TEST(PolkadotChainMetadataUnitTest, EqualityOperator) {

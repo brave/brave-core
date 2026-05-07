@@ -62,7 +62,7 @@ TEST_F(PolkadotChainMetadataPrefsUnitTest, SetAndGetChainMetadataRoundTrip) {
   EXPECT_EQ(loaded->GetTransferAllCallIndex(), 5u);
   EXPECT_EQ(loaded->GetSs58Prefix(), 42u);
   EXPECT_EQ(loaded->GetSpecVersion(), 1234u);
-  EXPECT_FALSE(loaded->GetAssetTxPayment());
+  EXPECT_FALSE(loaded->UsesAssetTxPayment());
 
   const auto& all_metadata =
       profile_prefs_.GetDict(kBraveWalletPolkadotChainMetadata);
@@ -94,7 +94,7 @@ TEST_F(PolkadotChainMetadataPrefsUnitTest,
   EXPECT_EQ(loaded->GetTransferAllCallIndex(), 5u);
   EXPECT_EQ(loaded->GetSs58Prefix(), 42u);
   EXPECT_EQ(loaded->GetSpecVersion(), 1234u);
-  EXPECT_TRUE(loaded->GetAssetTxPayment());
+  EXPECT_TRUE(loaded->UsesAssetTxPayment());
 
   const auto& all_metadata =
       profile_prefs_.GetDict(kBraveWalletPolkadotChainMetadata);
