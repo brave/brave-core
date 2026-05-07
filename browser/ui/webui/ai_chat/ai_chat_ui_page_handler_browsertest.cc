@@ -19,7 +19,6 @@
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ai_chat/tab_tracker_service_factory.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
-#include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
@@ -36,6 +35,7 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/ui_test_utils.h"
 #endif
+#include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/url_constants.h"
@@ -747,6 +747,56 @@ IN_PROC_BROWSER_TEST_F(
   EXPECT_TRUE(content_future.Take().empty())
       << "BindRelatedConversation should not add page content when "
          "kPageContextEnabledInitially is disabled";
+}
+
+// When a conversation already exists for the tab's content_id (e.g. created by
+// the context menu before the side panel opened), reusing it via
+// GetOrCreateConversationHandlerForContent must not attach page content if
+// features::kPageContextEnabledInitially is disabled — the cached path bypasses
+// MaybeAssociateContent, so this guards against any future change that might
+// add content unconditionally.
+IN_PROC_BROWSER_TEST_F(
+    AIChatUIPageHandlerPageContextDisabledBrowserTest,
+    BindRelatedConversation_CachedConversationStaysUnattachedWhenFlagDisabled) {
+  OpenNewTab();
+  auto* tab_contents = web_contents();
+  ASSERT_TRUE(tab_contents);
+  auto* tab_helper = AIChatTabHelper::FromWebContents(tab_contents);
+  ASSERT_TRUE(tab_helper);
+
+  // Pre-create a conversation tied to the tab. With the flag disabled,
+  // CreateConversationHandlerForContent passes nullptr to MaybeAssociateContent
+  // so no content gets attached at creation time.
+  auto* service = AIChatServiceFactory::GetForBrowserContext(GetProfile());
+  auto* preexisting = service->GetOrCreateConversationHandlerForContent(
+      tab_helper->web_contents_content().content_id(),
+      tab_helper->web_contents_content().GetWeakPtr());
+  ASSERT_TRUE(preexisting);
+  const std::string preexisting_uuid = preexisting->get_conversation_uuid();
+
+  auto handler = CreateHandlerForContents(tab_contents);
+
+  FakeConversationUI fake_conversation_ui;
+  mojo::Receiver<mojom::ConversationUI> conversation_ui_receiver(
+      &fake_conversation_ui);
+  mojo::Remote<mojom::ConversationHandler> conversation;
+  handler->BindRelatedConversation(
+      conversation.BindNewPipeAndPassReceiver(),
+      conversation_ui_receiver.BindNewPipeAndPassRemote());
+
+  // The bound conversation must be the cached one.
+  base::test::TestFuture<std::string> uuid_future;
+  conversation->GetConversationUuid(
+      uuid_future.GetCallback<const std::string&>());
+  EXPECT_EQ(uuid_future.Get(), preexisting_uuid);
+
+  // And it must still have no associated content.
+  base::test::TestFuture<std::vector<mojom::AssociatedContentPtr>>
+      content_future;
+  conversation->GetAssociatedContentInfo(content_future.GetCallback());
+  EXPECT_TRUE(content_future.Take().empty())
+      << "Reusing a cached tab-associated conversation must not attach page "
+         "content when kPageContextEnabledInitially is disabled";
 }
 
 #endif  // !BUILDFLAG(IS_ANDROID)
