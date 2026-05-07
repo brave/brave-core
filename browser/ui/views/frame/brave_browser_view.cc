@@ -36,6 +36,7 @@
 #include "brave/browser/ui/views/brave_help_bubble/brave_help_bubble_host_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
+#include "brave/browser/ui/views/frame/focus_mode_title_bar_view.h"
 #include "brave/browser/ui/views/frame/focus_mode_top_overlay.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
@@ -89,6 +90,7 @@
 #include "chrome/browser/ui/web_applications/app_browser_controller.h"
 #include "chrome/common/pref_names.h"
 #include "components/javascript_dialogs/tab_modal_dialog_manager.h"
+#include "components/omnibox/browser/location_bar_model.h"
 #include "components/permissions/permission_request_manager.h"
 #include "components/web_modal/web_contents_modal_dialog_manager.h"
 #include "content/public/browser/page_navigator.h"
@@ -290,6 +292,11 @@ BraveBrowserView* BraveBrowserView::From(BrowserView* view) {
   return static_cast<BraveBrowserView*>(view);
 }
 
+// static
+const BraveBrowserView* BraveBrowserView::From(const BrowserView* view) {
+  return static_cast<const BraveBrowserView*>(view);
+}
+
 bool BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
     const Browser* browser) {
   if (!browser->is_type_normal()) {
@@ -424,6 +431,10 @@ BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
     auto* controller = browser_->GetFeatures().focus_mode_controller();
     CHECK(controller);
     focus_mode_observation_.Observe(controller);
+
+    focus_mode_title_bar_view_ =
+        AddChildView(std::make_unique<FocusModeTitleBarView>());
+    focus_mode_title_bar_view_->SetVisible(false);
 
     focus_mode_top_overlay_ =
         AddChildView(std::make_unique<FocusModeTopOverlay>(
@@ -841,6 +852,11 @@ void BraveBrowserView::AddedToWidget() {
         vertical_tab_strip_host_view_.get());
   }
 
+  if (focus_mode_title_bar_view_) {
+    GetBrowserViewLayout()->set_focus_mode_title_bar(
+        focus_mode_title_bar_view_);
+  }
+
   UpdateFocusModeState();
   EnsureFindBarHostViewIsLastChild();
 }
@@ -918,6 +934,14 @@ void BraveBrowserView::OnTabStripModelChanged(
   if (selection.active_tab_changed() && brave_help_bubble_host_view_ &&
       brave_help_bubble_host_view_->GetVisible()) {
     brave_help_bubble_host_view_->Hide();
+  }
+
+  if (selection.active_tab_changed()) {
+    if (focus_mode_title_bar_view_ &&
+        focus_mode_title_bar_view_->GetVisible()) {
+      focus_mode_title_bar_view_->SetTab(
+          browser()->tab_strip_model()->GetActiveTab());
+    }
   }
 }
 
@@ -1038,13 +1062,9 @@ void BraveBrowserView::OnWidgetWindowModalVisibilityChanged(
   // parent class to make the scrim view visible
 }
 
-bool BraveBrowserView::IsBraveWebViewRoundedCornersEnabled() {
-  return browser_->profile()->GetPrefs()->GetBoolean(kWebViewRoundedCorners) &&
-         browser_->is_type_normal();
-}
-
 void BraveBrowserView::UpdateContentsShadowVisibility() {
-  bool show_contents_shadow = IsBraveWebViewRoundedCornersEnabled();
+  bool show_contents_shadow =
+      ShouldUseBraveWebViewRoundedCornersForContents(browser_.get());
 
   // With SideBySide, we use chromium's mini toolbar.
   // Unfortunately, it's not rendered well with contents shadow.
@@ -1281,6 +1301,24 @@ void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
     CHECK(tab_modal_dialog_manager);
     tab_modal_dialog_manager->OnTabActiveStateChanged();
   }
+}
+
+bool BraveBrowserView::UpdateToolbarSecurityState() {
+  bool security_state_changed = BrowserView::UpdateToolbarSecurityState();
+  if (!security_state_changed) {
+    return false;
+  }
+
+  if (focus_mode_top_overlay_ && focus_mode_top_overlay_->active()) {
+    if (auto* location_bar = GetLocationBar()) {
+      auto* model = location_bar->GetLocationBarModel();
+      if (model->GetSecurityLevel() != security_state::SecurityLevel::SECURE) {
+        focus_mode_top_overlay_->RevealTemporarily(base::Seconds(2));
+      }
+    }
+  }
+
+  return true;
 }
 
 bool BraveBrowserView::AcceleratorPressed(const ui::Accelerator& accelerator) {
@@ -1528,6 +1566,12 @@ void BraveBrowserView::UpdateFocusModeState() {
     }
     EnsureFindBarHostViewIsLastChild();
     InvalidateLayout();
+  }
+
+  if (focus_mode_title_bar_view_) {
+    focus_mode_title_bar_view_->SetVisible(enabled);
+    focus_mode_title_bar_view_->SetTab(
+        enabled ? browser()->tab_strip_model()->GetActiveTab() : nullptr);
   }
 }
 
