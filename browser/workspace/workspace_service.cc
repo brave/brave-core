@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/workspace/brave_workspace_service.h"
+#include "brave/browser/workspace/workspace_service.h"
 
 #include <algorithm>
 #include <memory>
@@ -46,33 +46,28 @@
 namespace {
 
 // Keys within each per-workspace dict entry.
-const char kWorkspaceName[] = "name";
-const char kWorkspaceWindowCount[] = "number-of-windows";
-const char kWorkspaceTabCount[] = "number-of-tabs";
-const char kWorkspaceModifiedAt[] = "modified-at";
+constexpr const char kWorkspaceName[] = "name";
+constexpr const char kWorkspaceWindowCount[] = "number-of-windows";
+constexpr const char kWorkspaceTabCount[] = "number-of-tabs";
+constexpr const char kWorkspaceModifiedAt[] = "modified-at";
 
 // Appends session commands for a single browser window to |commands| and
 // updates |active_window_id| to this window if it is active (focused), or if
 // no active window has been recorded yet. Returns the tab count serialized.
 int AppendBrowserSessionCommands(
+    SessionID& window_id,
     TabStripModel* tsm,
-    BrowserWindow* window,
-    std::vector<std::unique_ptr<sessions::SessionCommand>>& commands,
-    SessionID& active_window_id) {
+    gfx::Rect restored_bounds,
+    ui::mojom::WindowShowState restored_state,
+    std::vector<std::unique_ptr<sessions::SessionCommand>>& commands) {
   if (tsm->count() == 0) {
     return 0;
   }
 
-  SessionID window_id = SessionID::NewUnique();
   commands.push_back(sessions::CreateSetWindowTypeCommand(
       window_id, sessions::SessionWindow::TYPE_NORMAL));
   commands.push_back(sessions::CreateSetWindowBoundsCommand(
-      window_id, window->GetRestoredBounds(), window->GetRestoredState()));
-
-  // Prefer the focused window; fall back to the first window if none is active.
-  if (window->IsActive() || active_window_id == SessionID::InvalidValue()) {
-    active_window_id = window_id;
-  }
+      window_id, restored_bounds, restored_state));
 
   // Emit group metadata for every tab group in this window.
   if (tsm->group_model()) {
@@ -136,14 +131,13 @@ int AppendBrowserSessionCommands(
 
 }  // namespace
 
-BraveWorkspaceService::BraveWorkspaceService(Profile* profile)
-    : profile_(profile),
-      pref_service_(profile->GetPrefs()),
-      profile_path_(profile->GetPath()) {}
+WorkspaceService::WorkspaceService(PrefService* pref_service,
+                                   const base::FilePath profile_path)
+    : profile_path_(profile_path), pref_service_(pref_service) {}
 
-BraveWorkspaceService::~BraveWorkspaceService() = default;
+WorkspaceService::~WorkspaceService() = default;
 
-std::vector<WorkspaceInfo> BraveWorkspaceService::ListWorkspaces() const {
+std::vector<WorkspaceInfo> WorkspaceService::ListWorkspaces() const {
   std::vector<WorkspaceInfo> result;
   const base::DictValue& all = pref_service_->GetDict(kWorkspacesMetadataPref);
 
@@ -175,10 +169,10 @@ std::vector<WorkspaceInfo> BraveWorkspaceService::ListWorkspaces() const {
   return result;
 }
 
-void BraveWorkspaceService::SaveWorkspaceMetadata(const std::string& name,
-                                                  int window_count,
-                                                  int tab_count,
-                                                  base::Time modified_at) {
+void WorkspaceService::SaveWorkspaceMetadata(const std::string& name,
+                                             int window_count,
+                                             int tab_count,
+                                             base::Time modified_at) {
   base::DictValue updated =
       pref_service_->GetDict(kWorkspacesMetadataPref).Clone();
 
@@ -192,7 +186,7 @@ void BraveWorkspaceService::SaveWorkspaceMetadata(const std::string& name,
   pref_service_->SetDict(kWorkspacesMetadataPref, std::move(updated));
 }
 
-void BraveWorkspaceService::RemoveWorkspaceMetadata(const std::string& name) {
+void WorkspaceService::RemoveWorkspaceMetadata(const std::string& name) {
   base::DictValue updated =
       pref_service_->GetDict(kWorkspacesMetadataPref).Clone();
   updated.Remove(ComputeUniqueKey(name));
@@ -200,31 +194,35 @@ void BraveWorkspaceService::RemoveWorkspaceMetadata(const std::string& name) {
 }
 
 // static
-bool BraveWorkspaceService::DeleteWorkspace(
-    const base::FilePath& workspace_dir) {
+bool WorkspaceService::DeleteWorkspace(const base::FilePath& workspace_dir) {
   if (!base::PathExists(workspace_dir)) {
     return true;
   }
   return base::DeletePathRecursively(workspace_dir);
 }
 
-base::FilePath BraveWorkspaceService::GetWorkspacesDir() const {
+base::FilePath WorkspaceService::GetWorkspacesDir() const {
   return WorkspacesDir();
 }
 
-base::FilePath BraveWorkspaceService::GetWorkspaceDirForName(
+base::FilePath WorkspaceService::GetWorkspaceDirForName(
     const std::string& name) const {
   return WorkspaceDirForName(name);
 }
 
 // static
-void BraveWorkspaceService::WriteWorkspaceToDisk(
+void WorkspaceService::WriteWorkspaceToDisk(
     std::vector<std::unique_ptr<sessions::SessionCommand>> commands,
     const base::FilePath& workspace_dir,
     scoped_refptr<sessions::CommandStorageBackend> backend,
     base::OnceClosure on_success,
     base::OnceClosure on_error) {
-  if (commands.empty() || !base::CreateDirectory(workspace_dir)) {
+  if (commands.empty()) {
+    LOG(ERROR) << "Could not save workspace: no commands";
+    return;
+  }
+
+  if (!base::CreateDirectory(workspace_dir)) {
     LOG(ERROR) << "Failed to create workspace directory: " << workspace_dir;
     return;
   }
@@ -242,7 +240,7 @@ void BraveWorkspaceService::WriteWorkspaceToDisk(
 
 // static
 std::vector<std::unique_ptr<sessions::SessionCommand>>
-BraveWorkspaceService::ReadWorkspaceFromDisk(
+WorkspaceService::ReadWorkspaceFromDisk(
     const base::FilePath& workspace_dir,
     scoped_refptr<sessions::CommandStorageBackend> backend) {
   // Only do file I/O here.  Callers must call RestoreSessionFromCommands() on
@@ -257,7 +255,8 @@ BraveWorkspaceService::ReadWorkspaceFromDisk(
   return std::move(result.commands);
 }
 
-void BraveWorkspaceService::SaveWorkspace(const std::string& name) {
+void WorkspaceService::SaveWorkspace(Profile* profile,
+                                     const std::string& name) {
   if (name.empty()) {
     return;
   }
@@ -272,15 +271,24 @@ void BraveWorkspaceService::SaveWorkspace(const std::string& name) {
 
   GlobalBrowserCollection::GetInstance()->ForEach(
       [&](BrowserWindowInterface* bwi) {
-        if (bwi->GetProfile() != profile_ ||
+        if (bwi->GetProfile() != profile ||
             bwi->GetType() != BrowserWindowInterface::Type::TYPE_NORMAL) {
           return true;
         }
+
+        SessionID window_id = SessionID::NewUnique();
+        auto* window = bwi->GetWindow();
+        // Prefer the focused window; fall back to the first window if none is
+        // active.
+        if (window->IsActive() ||
+            active_window_id == SessionID::InvalidValue()) {
+          active_window_id = window_id;
+        }
+
         window_count++;
         tab_count += AppendBrowserSessionCommands(
-            bwi->GetBrowserForMigrationOnly()->tab_strip_model(),
-            bwi->GetBrowserForMigrationOnly()->window(), commands,
-            active_window_id);
+            window_id, bwi->GetTabStripModel(), window->GetRestoredBounds(),
+            window->GetRestoredState(), commands);
         return true;
       });
 
@@ -317,7 +325,7 @@ void BraveWorkspaceService::SaveWorkspace(const std::string& name) {
   auto on_success = base::BindPostTask(
       base::SequencedTaskRunner::GetCurrentDefault(),
       base::BindOnce(
-          [](base::WeakPtr<BraveWorkspaceService> service, std::string name,
+          [](base::WeakPtr<WorkspaceService> service, std::string name,
              int window_count, int tab_count, base::Time modified_at,
              scoped_refptr<base::RefCountedData<bool>> wrote_ok) {
             if (service && wrote_ok->data) {
@@ -334,23 +342,14 @@ void BraveWorkspaceService::SaveWorkspace(const std::string& name) {
       wrote_ok);
 
   task_runner->PostTask(
-      FROM_HERE, base::BindOnce(&BraveWorkspaceService::WriteWorkspaceToDisk,
+      FROM_HERE, base::BindOnce(&WorkspaceService::WriteWorkspaceToDisk,
                                 std::move(commands), std::move(workspace_dir),
                                 std::move(backend), std::move(on_success),
                                 std::move(on_error)));
 }
 
-void BraveWorkspaceService::ShowSaveWorkspaceDialog() {
-  // TODO(https://github.com/brave/brave-browser/issues/55108)
-  SaveWorkspace("example-workspace");
-}
-
-void BraveWorkspaceService::ShowOpenWorkspaceDialog() {
-  // TODO(https://github.com/brave/brave-browser/issues/55108)
-  RestoreWorkspace("example-workspace");
-}
-
-void BraveWorkspaceService::RestoreWorkspace(const std::string& name) {
+void WorkspaceService::RestoreWorkspace(Profile* profile,
+                                        const std::string& name) {
   base::FilePath path = GetWorkspaceDirForName(name);
 
   // Construct the backend on the UI thread (requires SingleThreadTaskRunner
@@ -364,16 +363,32 @@ void BraveWorkspaceService::RestoreWorkspace(const std::string& name) {
 
   task_runner->PostTaskAndReplyWithResult(
       FROM_HERE,
-      base::BindOnce(&BraveWorkspaceService::ReadWorkspaceFromDisk,
-                     std::move(path), std::move(backend)),
-      base::BindOnce(&BraveWorkspaceService::DoRestoreWorkspace,
-                     GetWeakPtr()));
+      base::BindOnce(&WorkspaceService::ReadWorkspaceFromDisk, std::move(path),
+                     std::move(backend)),
+      base::BindOnce(&WorkspaceService::DoRestoreWorkspace, GetWeakPtr(),
+                     profile->GetWeakPtr()));
 }
 
-void BraveWorkspaceService::DoRestoreWorkspace(
+void WorkspaceService::ShowSaveWorkspaceDialog(Profile* profile) {
+  // TODO(https://github.com/brave/brave-browser/issues/55108)
+  SaveWorkspace(profile, "example-workspace");
+}
+
+void WorkspaceService::ShowOpenWorkspaceDialog(Profile* profile) {
+  // TODO(https://github.com/brave/brave-browser/issues/55108)
+  RestoreWorkspace(profile, "example-workspace");
+}
+
+void WorkspaceService::DoRestoreWorkspace(
+    base::WeakPtr<Profile> profile,
     std::vector<std::unique_ptr<sessions::SessionCommand>> commands) {
   if (commands.empty()) {
-    LOG(ERROR) << "Could not load workspace";
+    LOG(ERROR) << "Could not load workspace: no commands";
+    return;
+  }
+
+  if (!profile) {
+    LOG(ERROR) << "Could not load workspace: profile is null";
     return;
   }
 
@@ -402,11 +417,11 @@ void BraveWorkspaceService::DoRestoreWorkspace(
       continue;
     }
 
-    if (Browser::GetCreationStatusForProfile(profile_) !=
+    if (Browser::GetCreationStatusForProfile(profile.get()) !=
         Browser::CreationStatus::kOk) {
       continue;
     }
-    Browser::CreateParams params(Browser::TYPE_NORMAL, profile_, false);
+    Browser::CreateParams params(Browser::TYPE_NORMAL, profile.get(), false);
     params.initial_bounds = window->bounds;
     params.initial_show_state = window->show_state;
     params.initial_workspace = window->workspace;
@@ -419,7 +434,7 @@ void BraveWorkspaceService::DoRestoreWorkspace(
     }
 
     auto* tsm = browser->tab_strip_model();
-    for (int i = 0; i < static_cast<int>(window->tabs.size()); ++i) {
+    for (size_t i = 0; i < window->tabs.size(); ++i) {
       const auto& tab = window->tabs[i];
       if (tab->navigations.empty()) {
         continue;
@@ -456,16 +471,16 @@ void BraveWorkspaceService::DoRestoreWorkspace(
   }
 }
 
-base::WeakPtr<BraveWorkspaceService> BraveWorkspaceService::GetWeakPtr() {
+base::WeakPtr<WorkspaceService> WorkspaceService::GetWeakPtr() {
   return weak_ptr_factory_.GetWeakPtr();
 }
 
-void BraveWorkspaceService::Shutdown() {
+void WorkspaceService::Shutdown() {
   weak_ptr_factory_.InvalidateWeakPtrs();
 }
 
 // static
-std::string BraveWorkspaceService::SanitizeName(const std::string& name) {
+std::string WorkspaceService::SanitizeName(const std::string& name) {
   std::string sanitized;
   sanitized.reserve(name.size());
   for (char c : name) {
@@ -487,12 +502,11 @@ std::string BraveWorkspaceService::SanitizeName(const std::string& name) {
   return sanitized;
 }
 
-base::FilePath BraveWorkspaceService::WorkspacesDir() const {
+base::FilePath WorkspaceService::WorkspacesDir() const {
   return profile_path_.AppendASCII("workspaces");
 }
 
-std::string BraveWorkspaceService::ComputeUniqueKey(
-    const std::string& name) const {
+std::string WorkspaceService::ComputeUniqueKey(const std::string& name) const {
   const base::DictValue& all = pref_service_->GetDict(kWorkspacesMetadataPref);
   const std::string base_key = SanitizeName(name);
 
@@ -517,7 +531,7 @@ std::string BraveWorkspaceService::ComputeUniqueKey(
                          base::PersistentHash(name));
 }
 
-base::FilePath BraveWorkspaceService::WorkspaceDirForName(
+base::FilePath WorkspaceService::WorkspaceDirForName(
     const std::string& name) const {
   const std::string key = ComputeUniqueKey(name);
   // SanitizeName's allow-list ([a-z0-9-_] only) guarantees no path separators
