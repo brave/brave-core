@@ -107,7 +107,7 @@
 <translation id="2170098639895543546">Selecciona calquera cousa da páxina</translation>
 <translation id="142389341645668510">Personalizar Brave</translation>
 <translation id="2174917724755363426">A instalación non finalizou. Seguro que queres cancelala?</translation>
-<translation id="8745514854244955877">Brave (inicio de sesión de rede, <ph name="PAGE_TITLE"/>)</translation>
+<translation id="8841019650931243995">Brave Origin (inicio de sesión de rede, <ph name="PAGE_TITLE"/>)</translation>
 <translation id="2190166659037789668">Produciuse un erro durante a comprobación de actualizacións: <ph name="UPDATE_CHECK_ERROR"/>.</translation>
 <translation id="2058539073923004395">Quitar conta de Brave</translation>
 <translation id="5550942974310218641">Protéxete esteas onde esteas coa Navegación segura mellorada en Brave para iOS</translation>
@@ -293,7 +293,7 @@
 <translation id="10925962326134232">Personaliza Brave para darlle outro aire ao navegador</translation>
 <translation id="6596295505984504022">Personalizar o teu Brave</translation>
 <translation id="4148957013307229264">Instalando...</translation>
-<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> (Inicio de sesión, Brave)</translation>
+<translation id="5011704081781303429"><ph name="PAGE_TITLE"/> (Inicio de sesión, Brave Origin)</translation>
 <translation id="2871190378186459992">Descubre aplicacións, xogos, extensións e temas fantásticos para Brave.</translation>
 <translation id="462105622535258178">Para obter esta extensión e moito máis en todos os teus ordenadores, inicia sesión en Brave</translation>
 <translation id="6670140629169983459">Para protexerte en liña coas eleccións dos teus pais, cambia ao teu perfil de Brave, onde xa tes a sesión iniciada como <ph name="USER_EMAIL_ADDRESS"/></translation>
@@ -529,7 +529,7 @@
 <translation id="6831043979455480757">Traducir</translation>
 <translation id="8211837073776713955">Brave permíteche saber se os teus contrasinais están en risco nalgún momento</translation>
 <translation id="684888714667046800">Non se puido establecer conexión con Internet. Se utilizas un firewall, asegúrate de que <ph name="PRODUCT_EXE_NAME"/> estea na lista de entidades permitidas.</translation>
-<translation id="7830723774663008396">Brave: <ph name="PAGE_TITLE"/></translation>
+<translation id="8237613041998823669">Brave Origin: <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">Toca para continuar</translation>
 <translation id="6862030660799253820">Busca esta imaxe coa busca de imaxes</translation>
 <translation id="3028928628792374067">Brave detectou que "<ph name="EXTENSION_NAME"/>" contén software malicioso</translation>

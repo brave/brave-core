@@ -105,7 +105,7 @@
 <translation id="2170098639895543546">இந்தப் பக்கத்தில் எதையும் தேர்ந்தெடுங்கள்</translation>
 <translation id="142389341645668510">Braveமைப் பிரத்தியேகப்படுத்து</translation>
 <translation id="2174917724755363426">நிறுவல் நிறைவடையவில்லை. நிச்சயமாக ரத்துசெய்ய வேண்டுமா?</translation>
-<translation id="8745514854244955877">Brave - நெட்வொர்க் உள்நுழைவு - <ph name="PAGE_TITLE"/></translation>
+<translation id="8841019650931243995">Brave Origin - நெட்வொர்க் உள்நுழைவு - <ph name="PAGE_TITLE"/></translation>
 <translation id="2190166659037789668">புதுப்பிப்புச் சரிபார்ப்புப் பிழை: <ph name="UPDATE_CHECK_ERROR"/>.</translation>
 <translation id="2058539073923004395">Braveமில் இருந்து கணக்கை அகற்று</translation>
 <translation id="5550942974310218641">iOSஸிற்கான Braveமில் மேம்பட்ட பாதுகாப்பான பிரவுசிங் மூலம் எங்கும் பாதுகாப்பாக இருக்கலாம்</translation>
@@ -291,7 +291,7 @@
 <translation id="10925962326134232">உங்கள் பிரவுசருக்குப் புதிய தோற்றத்தைக் கொடுக்க Braveமைப் பிரத்தியேகமாக்குங்கள்</translation>
 <translation id="6596295505984504022">Braveமைப் பிரத்தியேகமாக்கு</translation>
 <translation id="4148957013307229264">நிறுவுகிறது...</translation>
-<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - நெட்வொர்க் உள்நுழைவு - Brave</translation>
+<translation id="5011704081781303429"><ph name="PAGE_TITLE"/> - நெட்வொர்க் உள்நுழைவு - Brave Origin</translation>
 <translation id="2871190378186459992">Braveக்கான சிறந்த ஆப்ஸ், கேம்கள், நீட்டிப்புகள் மற்றும் தீம்களைக் கண்டறியவும்.</translation>
 <translation id="462105622535258178">உங்களின் எல்லாக் கம்ப்யூட்டர்களிலும் இந்த நீட்டிப்பையும், மேலும் பலவற்றையும் பெற Braveமில் உள்நுழையுங்கள்</translation>
 <translation id="6670140629169983459">உங்கள் பெற்றோர் தேர்வுசெய்துள்ள அமைப்புகளுடன் ஆன்லைனில் பாதுகாப்பாக இருக்க, <ph name="USER_EMAIL_ADDRESS"/> என்ற கணக்கில் ஏற்கெனவே உள்நுழைந்துள்ள Brave சுயவிவரத்திற்கு மாறுங்கள்</translation>
@@ -527,7 +527,7 @@
 <translation id="6831043979455480757">Translate</translation>
 <translation id="8211837073776713955">கடவுச்சொற்கள் பாதுகாப்பை இழக்கும்பட்சத்தில் அவற்றை Brave உங்களுக்குத் தெரியப்படுத்தும்</translation>
 <translation id="684888714667046800">இணையத்துடன் இணைக்க முடியவில்லை. ஃபயர்வாலைப் பயன்படுத்தினால் ஃபைல் ஏற்புப் பட்டியலில் <ph name="PRODUCT_EXE_NAME"/> இருப்பதை உறுதிசெய்துகொள்ளவும்.</translation>
-<translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="8237613041998823669">Brave Origin - <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">தொடர தட்டவும்</translation>
 <translation id="6862030660799253820">படத் தேடல் அம்சம் மூலம் இந்தப் படத்தைத் தேடுங்கள்</translation>
 <translation id="3028928628792374067">"<ph name="EXTENSION_NAME"/>" நீட்டிப்பில் மால்வேர் இருப்பதை Brave கண்டறிந்துள்ளது</translation>

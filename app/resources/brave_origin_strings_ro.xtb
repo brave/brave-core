@@ -105,7 +105,7 @@
 <translation id="2170098639895543546">Selectează orice din pagină</translation>
 <translation id="142389341645668510">Personalizează Brave</translation>
 <translation id="2174917724755363426">Instalarea nu este finalizată. Sigur anulezi?</translation>
-<translation id="8745514854244955877">Brave – conectare la rețea – <ph name="PAGE_TITLE"/></translation>
+<translation id="8841019650931243995">Brave Origin – conectare la rețea – <ph name="PAGE_TITLE"/></translation>
 <translation id="2190166659037789668">Eroare de verificare a actualizării: <ph name="UPDATE_CHECK_ERROR"/>.</translation>
 <translation id="2058539073923004395">Elimină contul din Brave</translation>
 <translation id="5550942974310218641">Protejează-te mai bine în mișcare cu Navigarea sigură îmbunătățită în Brave pentru iOS</translation>
@@ -291,7 +291,7 @@
 <translation id="10925962326134232">Personalizează Brave pentru a-i oferi browserului un aspect nou.</translation>
 <translation id="6596295505984504022">P&amp;ersonalizează Brave</translation>
 <translation id="4148957013307229264">Se instalează...</translation>
-<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> – conectare la rețea – Brave</translation>
+<translation id="5011704081781303429"><ph name="PAGE_TITLE"/> – conectare la rețea – Brave Origin</translation>
 <translation id="2871190378186459992">Descoperă aplicații, jocuri, extensii și teme extraordinare pentru Brave.</translation>
 <translation id="462105622535258178">Pentru a accesa această extensie și altele pe toate computerele, conectează-te la Brave</translation>
 <translation id="6670140629169983459">Pentru a fi mai în siguranță online cu alegerile părintelui tău, treci la profilul Brave în care te-ai conectat deja ca <ph name="USER_EMAIL_ADDRESS"/></translation>
@@ -527,7 +527,7 @@ Este posibil ca unele funcții să nu fie disponibile. Specificați un director 
 <translation id="6831043979455480757">Tradu</translation>
 <translation id="8211837073776713955">Brave te anunță dacă parolele tale sunt compromise</translation>
 <translation id="684888714667046800">Nu se poate realiza conexiunea la internet. Dacă folosești un firewall, verifică dacă <ph name="PRODUCT_EXE_NAME"/> se află în lista cu acces permis.</translation>
-<translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
+<translation id="8237613041998823669">Brave Origin – <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">Atinge pentru a continua</translation>
 <translation id="6862030660799253820">Caută această imagine cu Căutarea de imagini</translation>
 <translation id="3028928628792374067">Brave a descoperit că <ph name="EXTENSION_NAME"/> conține programe malware</translation>

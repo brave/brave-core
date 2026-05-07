@@ -106,7 +106,7 @@
 <translation id="2170098639895543546">페이지에서 항목 선택</translation>
 <translation id="142389341645668510">Brave 맞춤설정</translation>
 <translation id="2174917724755363426">설치가 완료되지 않았습니다. 취소하시겠습니까?</translation>
-<translation id="8745514854244955877">Brave - 네트워크 로그인 - <ph name="PAGE_TITLE"/></translation>
+<translation id="8841019650931243995">Brave Origin - 네트워크 로그인 - <ph name="PAGE_TITLE"/></translation>
 <translation id="2190166659037789668">업데이트 확인 오류: <ph name="UPDATE_CHECK_ERROR"/></translation>
 <translation id="2058539073923004395">Brave에서 계정 삭제</translation>
 <translation id="5550942974310218641">iOS용 Brave의 향상된 세이프 브라우징으로 이동 중에도 더 안전하게 보호하세요.</translation>
@@ -292,7 +292,7 @@
 <translation id="10925962326134232">Brave 브라우저를 새로운 디자인으로 맞춤설정합니다.</translation>
 <translation id="6596295505984504022">Brave 맞춤설정(&amp;U)</translation>
 <translation id="4148957013307229264">설치 중...</translation>
-<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - 네트워크 로그인 - Brave</translation>
+<translation id="5011704081781303429"><ph name="PAGE_TITLE"/> - 네트워크 로그인 - Brave Origin</translation>
 <translation id="2871190378186459992">Brave에 유용한 앱, 게임, 확장 프로그램, 테마를 찾아보세요.</translation>
 <translation id="462105622535258178">모든 컴퓨터에서 이 확장 프로그램 등을 사용하려면 Brave에 로그인하세요.</translation>
 <translation id="6670140629169983459">부모님의 선택을 통해 온라인에서 더 안전하게 보호하려면 이미 <ph name="USER_EMAIL_ADDRESS"/>님으로 로그인되어 있는 Brave 프로필로 전환하세요.</translation>
@@ -528,7 +528,7 @@
 <translation id="6831043979455480757">번역</translation>
 <translation id="8211837073776713955">비밀번호가 유출되면 Brave에서 알려줍니다.</translation>
 <translation id="684888714667046800">인터넷에 연결할 수 없습니다. 방화벽을 사용하는 경우 <ph name="PRODUCT_EXE_NAME"/>이(가) 허용 목록에 있는지 확인해 주세요.</translation>
-<translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="8237613041998823669">Brave Origin - <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">탭하여 계속하기</translation>
 <translation id="6862030660799253820">이미지 검색으로 이 이미지 검색하기</translation>
 <translation id="3028928628792374067">Brave에서 "<ph name="EXTENSION_NAME"/>"에 멀웨어가 포함된 것을 발견했습니다.</translation>

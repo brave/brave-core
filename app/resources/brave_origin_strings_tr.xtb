@@ -104,7 +104,7 @@
 <translation id="2170098639895543546">Sayfada herhangi bir şeyi seçin</translation>
 <translation id="142389341645668510">Brave'u özelleştir</translation>
 <translation id="2174917724755363426">Yükleme işlemi tamamlanmadı. İptal etmek istediğinizden emin misiniz?</translation>
-<translation id="8745514854244955877">Brave - Ağda Oturum Açın - <ph name="PAGE_TITLE"/></translation>
+<translation id="8841019650931243995">Brave Origin - Ağda Oturum Açın - <ph name="PAGE_TITLE"/></translation>
 <translation id="2190166659037789668">Güncelleme denetimi hatası: <ph name="UPDATE_CHECK_ERROR"/>.</translation>
 <translation id="2058539073923004395">Hesabı Brave'dan kaldır</translation>
 <translation id="5550942974310218641">iOS için Brave'da Gelişmiş Güvenli Tarama ile hareket halindeyken güvende kalın</translation>
@@ -288,7 +288,7 @@
 <translation id="10925962326134232">Tarayıcınıza yeni bir görünüm kazandırmak için Brave'u özelleştirin</translation>
 <translation id="6596295505984504022">Chromi&amp;um'unuzu özelleştirin</translation>
 <translation id="4148957013307229264">Yükleniyor...</translation>
-<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - Ağda Oturum Açın - Brave</translation>
+<translation id="5011704081781303429"><ph name="PAGE_TITLE"/> - Ağda Oturum Açın - Brave Origin</translation>
 <translation id="2871190378186459992">Brave'a özgü harika uygulamaları, oyunları, uzantıları ve temaları keşfedin.</translation>
 <translation id="462105622535258178">Bu uzantıya ve diğer öğelerinize tüm bilgisayarlarınızda erişmek için Brave'da oturum açın</translation>
 <translation id="6670140629169983459">Anne veya babanızın seçimleriyle internette daha güvende olmak için <ph name="USER_EMAIL_ADDRESS"/> olarak oturum açtığınız Brave profilinize geçin.</translation>
@@ -524,7 +524,7 @@ Bazı özellikler kullanılamayabilir. Lütfen farklı bir profil dizini belirti
 <translation id="6831043979455480757">Çevir</translation>
 <translation id="8211837073776713955">Brave, şifrelerinizin güvenliğinin ihlal edilip edilmediğini size bildirir</translation>
 <translation id="684888714667046800">İnternete bağlanılamıyor. Güvenlik duvarı kullanıyorsanız lütfen <ph name="PRODUCT_EXE_NAME"/> dosyasının izin verilenler listesine eklendiğinden emin olun.</translation>
-<translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="8237613041998823669">Brave Origin - <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">Devam etmek için sekmeye basın</translation>
 <translation id="6862030660799253820">Bu görseli görsel aramayla arayın</translation>
 <translation id="3028928628792374067">Brave, "<ph name="EXTENSION_NAME"/>" uzantısında kötü amaçlı yazılım tespit etti</translation>

@@ -107,7 +107,7 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 <translation id="2170098639895543546">Izberite kar koli na strani</translation>
 <translation id="142389341645668510">Prilagodi Brave</translation>
 <translation id="2174917724755363426">Namestitev še ni končana. Ali ste prepričani, da jo želite preklicati?</translation>
-<translation id="8745514854244955877">Brave – Prijava v omrežje – <ph name="PAGE_TITLE"/></translation>
+<translation id="8841019650931243995">Brave Origin – Prijava v omrežje – <ph name="PAGE_TITLE"/></translation>
 <translation id="2190166659037789668">Napaka pri preverjanju posodobitev: <ph name="UPDATE_CHECK_ERROR"/>.</translation>
 <translation id="2058539073923004395">Odstranitev računa iz Bravea</translation>
 <translation id="5550942974310218641">Ostanite varnejši na poti z izboljšanim varnim brskanjem v Braveu za iOS</translation>
@@ -293,7 +293,7 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 <translation id="10925962326134232">Prilagodite Brave, da bo brskalnik videti drugače</translation>
 <translation id="6596295505984504022">P&amp;rilagodite Brave</translation>
 <translation id="4148957013307229264">Nameščanje ...</translation>
-<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> – Prijava v omrežje – Brave</translation>
+<translation id="5011704081781303429"><ph name="PAGE_TITLE"/> – Prijava v omrežje – Brave Origin</translation>
 <translation id="2871190378186459992">Odkrijte zanimive aplikacije, igre, razširitve in teme za Brave.</translation>
 <translation id="462105622535258178">Če želite dostopati do te razširitve in drugega v vseh računalnikih, se prijavite v Brave</translation>
 <translation id="6670140629169983459">Zaradi večje varnosti v spletu s starševimi izbirami preklopi na svoj profil v Braveu, kjer si že prijavljen(-a) kot <ph name="USER_EMAIL_ADDRESS"/>.</translation>
@@ -529,7 +529,7 @@ Nekatere funkcije morda ne bodo na voljo. Določite drug imenik profila ali upor
 <translation id="6831043979455480757">Prevedi</translation>
 <translation id="8211837073776713955">Brave vam sporoči, ali so gesla ogrožena</translation>
 <translation id="684888714667046800">Internetne povezave ni mogoče vzpostaviti. Če uporabljate požarni zid, poskrbite, da je <ph name="PRODUCT_EXE_NAME"/> na seznamu dovoljenih.</translation>
-<translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
+<translation id="8237613041998823669">Brave Origin – <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">Pritisnite tabulatorko za nadaljevanje</translation>
 <translation id="6862030660799253820">Iščite to sliko s slikovnim iskanjem</translation>
 <translation id="3028928628792374067">Brave je ugotovil, da razširitev »<ph name="EXTENSION_NAME"/>« vsebuje zlonamerno programsko opremo.</translation>

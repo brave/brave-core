@@ -108,7 +108,7 @@
 <translation id="2170098639895543546">စာမျက်နှာပေါ်ရှိ မည်သည့်အရာကိုမဆို ရွေးရန်</translation>
 <translation id="142389341645668510">Brave ကို စိတ်ကြိုက်ပြင်ရန်</translation>
 <translation id="2174917724755363426">ထည့်သွင်းမှု မပြီးဆုံးပါ။ ပယ်ဖျက်လိုသည်မှာ သေချာပါသလား။</translation>
-<translation id="8745514854244955877">Brave - ကွန်ရက် လက်မှတ်ထိုးဝင်ခြင်း - <ph name="PAGE_TITLE"/></translation>
+<translation id="8841019650931243995">Brave Origin - ကွန်ရက် လက်မှတ်ထိုးဝင်ခြင်း - <ph name="PAGE_TITLE"/></translation>
 <translation id="2190166659037789668">အပ်ဒိတ်စစ်ဆေးရန် အမှား- <ph name="UPDATE_CHECK_ERROR"/>။</translation>
 <translation id="2058539073923004395">Brave မှ အကောင့်ကို ဖယ်ရှားရန်</translation>
 <translation id="5550942974310218641">iOS အတွက် Brave တွင် ‘အရည်အသွေးမြှင့် ဘေးကင်းလုံခြုံသည့် အသုံးပြုမှု’ ဖြင့် သွားရင်းလာရင်း ပိုလုံခြုံနိုင်သည်</translation>
@@ -294,7 +294,7 @@
 <translation id="10925962326134232">ဘရောင်ဇာတွင် အသွင်သစ်သုံးရန် Brave ကို စိတ်ကြိုက်ပြင်နိုင်သည်</translation>
 <translation id="6596295505984504022">သင့် Brave ကို စိတ်ကြိုက်လုပ်ရန်</translation>
 <translation id="4148957013307229264">တပ်ဆင်နေ...</translation>
-<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - ကွန်ရက် လက်မှတ်ထိုးဝင်ခြင်း - Brave</translation>
+<translation id="5011704081781303429"><ph name="PAGE_TITLE"/> - ကွန်ရက် လက်မှတ်ထိုးဝင်ခြင်း - Brave Origin</translation>
 <translation id="2871190378186459992">Brave အတွက် ကောင်းသော အက်ပ် များ၊ ဂိမ်းများ၊ တိုးချဲ့လိုင်းများနှင့် အပြင်အဆင်များအား ရှာဖွေလေ့လာပါ။</translation>
 <translation id="462105622535258178">ကွန်ပျူတာအားလုံးတွင် ဤနောက်ဆက်တွဲနှင့် အခြားအရာများ ရယူရန် Brave သို့ လက်မှတ်ထိုးဝင်ပါ</translation>
 <translation id="6670140629169983459">သင့်မိဘ၏ ရွေးချယ်မှုများဖြင့် အွန်လိုင်းတွင် ပိုမိုဘေးကင်းစေရန် <ph name="USER_EMAIL_ADDRESS"/> အဖြစ် သင်လက်မှတ်ထိုးဝင်ပြီးဖြစ်သည့် Brave ပရိုဖိုင်သို့ ပြောင်းပါ</translation>
@@ -531,7 +531,7 @@
 <translation id="6831043979455480757">ဘာသာပြန်ရန်</translation>
 <translation id="8211837073776713955">သင့်စကားဝှက်များ ကျိုးပေါက်ထားခြင်း ရှိမရှိ Brave က သင့်အား အသိပေးပါမည်</translation>
 <translation id="684888714667046800">အင်တာနက် ချိတ်ဆက်၍ မရပါ။ Firewall သုံးပါက <ph name="PRODUCT_EXE_NAME"/> သည် ခွင့်ပြုစာရင်းတွင် ရှိကြောင်း သေချာပါစေ။</translation>
-<translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="8237613041998823669">Brave Origin - <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">ရှေ့ဆက်ရန် တဘ်နှိပ်ပါ</translation>
 <translation id="6862030660799253820">‘ပုံဖြင့်ရှာဖွေမှု’ သုံး၍ ဤပုံကို ရှာရန်</translation>
 <translation id="3028928628792374067">“<ph name="EXTENSION_NAME"/>” တွင် မဲလ်ဝဲပါဝင်သည်ကို Brave ကတွေ့ထားသည်</translation>

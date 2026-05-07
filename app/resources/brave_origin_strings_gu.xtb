@@ -107,7 +107,7 @@
 <translation id="2170098639895543546">પેજ પર કંઈપણ પસંદ કરો</translation>
 <translation id="142389341645668510">Brave કસ્ટમાઇઝ કરો</translation>
 <translation id="2174917724755363426">ઇન્સ્ટૉલેશનની પ્રક્રિયા પૂર્ણ થઈ નથી. શું તમે ખરેખર રદ કરવા માગો છો?</translation>
-<translation id="8745514854244955877">Brave - નેટવર્ક સાઇન ઇન - <ph name="PAGE_TITLE"/></translation>
+<translation id="8841019650931243995">Brave Origin - નેટવર્ક સાઇન ઇન - <ph name="PAGE_TITLE"/></translation>
 <translation id="2190166659037789668">અપડેટ ચેક કરવામાં ભૂલ: <ph name="UPDATE_CHECK_ERROR"/>.</translation>
 <translation id="2058539073923004395">Braveમાંથી એકાઉન્ટ કાઢી નાખો</translation>
 <translation id="5550942974310218641">iOS માટે Brave પર Safe Browsingમાં વધારેલી સુરક્ષા વડે મુસાફરીમાં વધુ સલામત રહો</translation>
@@ -293,7 +293,7 @@
 <translation id="10925962326134232">તમારા બ્રાઉઝરને કોઈ નવો દેખાવ આપવા માટે Braveને કસ્ટમાઇઝ કરો</translation>
 <translation id="6596295505984504022">તમારા Braveને કસ્ટમાઇઝ કરો</translation>
 <translation id="4148957013307229264">ઇન્સ્ટોલ કરી રહ્યું છે...</translation>
-<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - નેટવર્ક સાઇન ઇન - Brave</translation>
+<translation id="5011704081781303429"><ph name="PAGE_TITLE"/> - નેટવર્ક સાઇન ઇન - Brave Origin</translation>
 <translation id="2871190378186459992">Brave માટે શ્રેષ્ઠ એપ્લીકેશન્સ, રમતો, એક્સટેન્શન્સ અને થીમ્સ શોધો.</translation>
 <translation id="462105622535258178">તમારા બધા કમ્પ્યૂટર પર આ એક્સ્ટેન્શન અને અન્ય ઘણું બધું મેળવવા માટે Braveમાં સાઇન ઇન કરો</translation>
 <translation id="6670140629169983459">તમારા માતાપિતાની પસંદગીઓ સાથે ઑનલાઇન વધુ સલામત રહેવા માટે, તમારી Brave પ્રોફાઇલ પર સ્વિચ કરો, જેમાં તમે પહેલેથી <ph name="USER_EMAIL_ADDRESS"/> તરીકે સાઇન ઇન થયા છો</translation>
@@ -529,7 +529,7 @@
 <translation id="6831043979455480757">અનુવાદ કરો</translation>
 <translation id="8211837073776713955">Brave વડે તમે તમારા પાસવર્ડમાં ક્યારેક ચેડાં થાય તો તેના વિશે જાણકારી મેળવી શકો છો</translation>
 <translation id="684888714667046800">ઇન્ટરનેટ સાથે કનેક્ટ કરી શકતા નથી. જો તમે કોઈ ફાયરવૉલનો ઉપયોગ કરતા હો, તો કૃપા કરીને ખાતરી કરો કે <ph name="PRODUCT_EXE_NAME"/> વ્હાઇટલિસ્ટમાં છે.</translation>
-<translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="8237613041998823669">Brave Origin - <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">ચાલુ રાખવા માટે Tab કી દબાવો</translation>
 <translation id="6862030660799253820">'છબી વડે શોધ' સુવિધા વડે આ છબી શોધો</translation>
 <translation id="3028928628792374067">Braveને "<ph name="EXTENSION_NAME"/>"માં માલવેર હોવાનું જાણવા મળ્યું છે</translation>

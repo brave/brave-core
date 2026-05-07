@@ -104,7 +104,7 @@
 <translation id="2170098639895543546">Seleziona qualsiasi elemento sulla pagina</translation>
 <translation id="142389341645668510">Personalizza Brave</translation>
 <translation id="2174917724755363426">Installazione non completata. Vuoi annullarla?</translation>
-<translation id="8745514854244955877">Brave - Accesso rete - <ph name="PAGE_TITLE"/></translation>
+<translation id="8841019650931243995">Brave Origin - Accesso rete - <ph name="PAGE_TITLE"/></translation>
 <translation id="2190166659037789668">Errore controllo aggiornamenti: <ph name="UPDATE_CHECK_ERROR"/>.</translation>
 <translation id="2058539073923004395">Rimuovi account da Brave</translation>
 <translation id="5550942974310218641">Maggiore sicurezza ovunque ti trovi con la Navigazione sicura avanzata su Brave per iOS</translation>
@@ -290,7 +290,7 @@
 <translation id="10925962326134232">Personalizza Brave per dare un nuovo look al tuo browser</translation>
 <translation id="6596295505984504022">Personalizza Brave</translation>
 <translation id="4148957013307229264">Installazione...</translation>
-<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - Accesso rete - Brave</translation>
+<translation id="5011704081781303429"><ph name="PAGE_TITLE"/> - Accesso rete - Brave Origin</translation>
 <translation id="2871190378186459992">Scopri app, giochi, estensioni e temi straordinari per Brave.</translation>
 <translation id="462105622535258178">Accedi a Brave per trovare questa estensione e altro su tutti i tuoi computer</translation>
 <translation id="6670140629169983459">Per navigare online in modo più sicuro con le scelte del tuo genitore, passa al tuo profilo Brave dove hai già eseguito l'accesso come <ph name="USER_EMAIL_ADDRESS"/></translation>
@@ -526,7 +526,7 @@ Alcune funzioni potrebbero non essere disponibili. Specifica un'altra directory 
 <translation id="6831043979455480757">Traduci</translation>
 <translation id="8211837073776713955">Brave ti avvisa se le tue password vengono compromesse</translation>
 <translation id="684888714667046800">Impossibile connettersi a internet. Se utilizzi un firewall, assicurati che <ph name="PRODUCT_EXE_NAME"/> sia nella lista consentita.</translation>
-<translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="8237613041998823669">Brave Origin - <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">Tocca per continuare</translation>
 <translation id="6862030660799253820">Cerca in questa immagine con la Ricerca immagini</translation>
 <translation id="3028928628792374067">Brave ha rilevato che l'estensione "<ph name="EXTENSION_NAME"/>" contiene malware</translation>

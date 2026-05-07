@@ -104,7 +104,7 @@
 <translation id="2170098639895543546">选择页面上的任何内容</translation>
 <translation id="142389341645668510">自定义 Brave</translation>
 <translation id="2174917724755363426">尚未完成安装，确定要取消吗？</translation>
-<translation id="8745514854244955877">Brave - 网络登录 - <ph name="PAGE_TITLE"/></translation>
+<translation id="8841019650931243995">Brave Origin - 网络登录 - <ph name="PAGE_TITLE"/></translation>
 <translation id="2190166659037789668">更新检查错误：<ph name="UPDATE_CHECK_ERROR"/>。</translation>
 <translation id="2058539073923004395">从 Brave 中移除账号</translation>
 <translation id="5550942974310218641">在 iOS 版 Brave 上启用增强型安全浏览功能，随时随地更安全地浏览网页</translation>
@@ -290,7 +290,7 @@
 <translation id="10925962326134232">自定义 Brave，为您的浏览器换上全新外观</translation>
 <translation id="6596295505984504022">自定义 Brave(&amp;U)</translation>
 <translation id="4148957013307229264">正在安装...</translation>
-<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - 网络登录 - Brave</translation>
+<translation id="5011704081781303429"><ph name="PAGE_TITLE"/> - 网络登录 - Brave Origin</translation>
 <translation id="2871190378186459992">在这里，您可以找到适用于 Brave 的精彩应用、游戏、扩展程序和主题背景。</translation>
 <translation id="462105622535258178">若要在您的所有计算机上使用此扩展程序等，请登录 Brave</translation>
 <translation id="6670140629169983459">若要使用家长选择的设置更安全地上网，请切换到你已用 <ph name="USER_EMAIL_ADDRESS"/> 身份登录的 Brave 资料</translation>
@@ -526,7 +526,7 @@
 <translation id="6831043979455480757">翻译</translation>
 <translation id="8211837073776713955">Brave 会让您知道您的密码是否曾被泄露</translation>
 <translation id="684888714667046800">无法连接到互联网。如果使用防火墙，请确保 <ph name="PRODUCT_EXE_NAME"/> 在许可名单中。</translation>
-<translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="8237613041998823669">Brave Origin - <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">按 Tab 键即可继续</translation>
 <translation id="6862030660799253820">使用图片搜索功能搜索此图片</translation>
 <translation id="3028928628792374067">Brave 发现“<ph name="EXTENSION_NAME"/>”包含恶意软件</translation>

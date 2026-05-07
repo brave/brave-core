@@ -105,7 +105,7 @@
 <translation id="2170098639895543546">Valitse mitä tahansa sivulta</translation>
 <translation id="142389341645668510">Yksilöi Braveia</translation>
 <translation id="2174917724755363426">Asennus ei ole valmis. Haluatko varmasti perua sen?</translation>
-<translation id="8745514854244955877">Brave – Kirjautuminen verkkoon – <ph name="PAGE_TITLE"/></translation>
+<translation id="8841019650931243995">Brave Origin – Kirjautuminen verkkoon – <ph name="PAGE_TITLE"/></translation>
 <translation id="2190166659037789668">Virhe päivityksiä tarkistettaessa: <ph name="UPDATE_CHECK_ERROR"/>.</translation>
 <translation id="2058539073923004395">Poista tili Braveista</translation>
 <translation id="5550942974310218641">Pysy turvassa liikkeellä iOS:n Bravein Parannetun selaussuojan avulla</translation>
@@ -291,7 +291,7 @@
 <translation id="10925962326134232">Tee Braveista näköisesi muokkaamalla selaimen tyyliä</translation>
 <translation id="6596295505984504022">M&amp;uokkaa Braveia</translation>
 <translation id="4148957013307229264">Asennetaan...</translation>
-<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> – Kirjautuminen verkkoon – Brave</translation>
+<translation id="5011704081781303429"><ph name="PAGE_TITLE"/> – Kirjautuminen verkkoon – Brave Origin</translation>
 <translation id="2871190378186459992">Löydät hienoja sovelluksia, pelejä, laajennuksia ja teemoja Braveille.</translation>
 <translation id="462105622535258178">Kirjaudu sisään Braveiin, niin voit käyttää tätä laajennusta ja muita ominaisuuksia kaikilla tietokoneilla</translation>
 <translation id="6670140629169983459">Jos haluat käyttää vanhempasi valitsemia asetuksia, vaihda Brave-profiiliin, jolla olet jo kirjautuneena (<ph name="USER_EMAIL_ADDRESS"/>)</translation>
@@ -527,7 +527,7 @@ Kaikki ominaisuudet eivät ehkä ole käytettävissä. Määritä jokin muu prof
 <translation id="6831043979455480757">Käännä</translation>
 <translation id="8211837073776713955">Brave ilmoittaa sinulle, jos salasanasi ovat vaarantuneet</translation>
 <translation id="684888714667046800">Internetyhteyttä ei voi muodostaa. Jos käytät palomuuria, varmista, että <ph name="PRODUCT_EXE_NAME"/> kuuluu sallittuihin.</translation>
-<translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
+<translation id="8237613041998823669">Brave Origin – <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">Jatka painamalla välilehteä</translation>
 <translation id="6862030660799253820">Hae tätä kuvaa kuvahaulla</translation>
 <translation id="3028928628792374067">Brave havaitsi, että "<ph name="EXTENSION_NAME"/>" sisältää haittaohjelmia</translation>

@@ -422,12 +422,12 @@ New bookmarks can’t be saved in your account until you delete some. If you sig
         <if expr="_is_chrome_for_testing_branded">
           <then>
             <message name="IDS_BROWSER_WINDOW_TITLE_FORMAT" desc="The format for titles displayed in tabs and popup windows">
-              <ph name="PAGE_TITLE">$1<ex>Brave</ex></ph> - Brave for Testing
+              <ph name="PAGE_TITLE">$1<ex>Brave Origin</ex></ph> - Brave Origin for Testing
             </message>
           </then>
           <else>
             <message name="IDS_BROWSER_WINDOW_TITLE_FORMAT" desc="The format for titles displayed in tabs and popup windows">
-              <ph name="PAGE_TITLE">$1<ex>Brave</ex></ph> - Brave
+              <ph name="PAGE_TITLE">$1<ex>Brave Origin</ex></ph> - Brave Origin
             </message>
           </else>
         </if>
@@ -435,25 +435,25 @@ New bookmarks can’t be saved in your account until you delete some. If you sig
       <if expr="is_chromeos">
         <!-- Browser Window Title Format -->
         <message name="IDS_BROWSER_WINDOW_TITLE_FORMAT" desc="The format for titles displayed in tabbed browser windows">
-          Brave - <ph name="PAGE_TITLE">$1<ex>Brave</ex></ph>
+          Brave Origin - <ph name="PAGE_TITLE">$1<ex>Brave Origin</ex></ph>
         </message>
       </if>
       <if expr="not is_chromeos and not is_macosx">
         <!-- Captive Portal Browser Window Title Format -->
         <message name="IDS_CAPTIVE_PORTAL_BROWSER_WINDOW_TITLE_FORMAT" desc="The format for titles displayed in captive portal popup windows">
-          <ph name="PAGE_TITLE">$1<ex>Brave</ex></ph> - Network Sign-in - Brave
+          <ph name="PAGE_TITLE">$1<ex>Brave Origin</ex></ph> - Network Sign-in - Brave Origin
         </message>
       </if>
       <if expr="is_chromeos">
         <!-- Captive Portal Browser Window Title Format -->
         <message name="IDS_CAPTIVE_PORTAL_BROWSER_WINDOW_TITLE_FORMAT" desc="The format for titles displayed in captive portal popup windows">
-          Brave - Network Sign-in - <ph name="PAGE_TITLE">$1<ex>Brave</ex></ph>
+          Brave Origin - Network Sign-in - <ph name="PAGE_TITLE">$1<ex>Brave Origin</ex></ph>
         </message>
       </if>
       <if expr="is_macosx">
         <!-- Captive Portal Browser Window Title Format -->
         <message name="IDS_CAPTIVE_PORTAL_BROWSER_WINDOW_TITLE_FORMAT" desc="The format for titles displayed in captive portal popup windows">
-          <ph name="PAGE_TITLE">$1<ex>Brave</ex></ph> - Network Sign-in
+          <ph name="PAGE_TITLE">$1<ex>Brave Origin</ex></ph> - Network Sign-in
         </message>
       </if>
       <!-- Accessible window title format - includes the channel, and the same
