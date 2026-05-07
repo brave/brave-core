@@ -41,6 +41,8 @@
 
 class PrefService;
 
+class PrefChangeRegistrar;
+
 namespace component_updater {
 class ComponentUpdateService;
 }  // namespace component_updater
@@ -214,6 +216,8 @@ class AdBlockService {
   void OnReadCachedDATFiles(std::optional<DATFileDataBuffer> default_dat,
                             std::optional<DATFileDataBuffer> additional_dat);
 
+  void OnPreferenceChanged(const std::string& pref_name);
+
   AdBlockComponentFiltersProvider* default_filters_provider() {
     DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
     return default_filters_provider_.get();
@@ -275,6 +279,8 @@ class AdBlockService {
       GUARDED_BY_CONTEXT(sequence_checker_);
 
   base::ObserverList<Observer> observers_;
+
+  std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
 
   bool default_dat_loaded_for_testing_ = false;
   bool additional_dat_loaded_for_testing_ = false;
