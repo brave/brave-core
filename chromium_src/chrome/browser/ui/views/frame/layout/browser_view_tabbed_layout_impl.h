@@ -27,8 +27,17 @@
 // so we need to override the Impl.
 #define CalculateTopContainerLayoutImpl virtual CalculateTopContainerLayoutImpl
 
+// Make ShadowOverlayVisible virtual so Brave can suppress the upstream
+// toolbar-height side panel's shadow overlay (Brave has its own rounded-
+// corners shadow handling around contents and the side panel).
+#define ShadowOverlayVisible()                   \
+  ShadowOverlayVisible_Unused();                 \
+  friend class BraveBrowserViewTabbedLayoutImpl; \
+  virtual bool ShadowOverlayVisible()
+
 #include <chrome/browser/ui/views/frame/layout/browser_view_tabbed_layout_impl.h>  // IWYU pragma: export
 
+#undef ShadowOverlayVisible
 #undef CalculateTopContainerLayoutImpl
 #undef GetTopSeparatorType
 #undef GetHorizontalTabStripLeadingMargin

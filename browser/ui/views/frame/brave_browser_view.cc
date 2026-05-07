@@ -1112,11 +1112,8 @@ void BraveBrowserView::UpdateSidebarBorder() {
         ShouldUseBraveWebViewRoundedCornersForContents(browser_));
   }
 #else
-  // The upstream BrowserView::side_panel_ is the panel toggled by
-  // SidePanelCoordinator and visible to the user. Update its border so the
-  // shadow/layer reflect the rounded-corners state.
-  if (auto* panel = side_panel()) {
-    panel->UpdateBorder();
+  if (side_panel_) {
+    side_panel_->UpdateBorder();
   }
 #endif
 
