@@ -105,9 +105,7 @@ TEST_F(BraveBookmarkProviderTest, QueryIsNotExactCannotBeDefaultMatch) {
 TEST_F(BraveBookmarkProviderTest, DontBumpContainsQueryIfKeywordIsUsed) {
   prefs()->SetBoolean(omnibox::kBookmarkSuggestionsEnabled, true);
   auto input = CreateAutocompleteInput("Hello");
-  input.set_keyword_mode_entry_method(
-      metrics::OmniboxEventProto::KeywordModeEntryMethod::
-          OmniboxEventProto_KeywordModeEntryMethod_KEYBOARD_SHORTCUT);
+  input.set_in_keyword_mode(true);
   input.set_prefer_keyword(true);
   input.set_allow_exact_keyword_match(true);
   provider_->Start(input, true);
