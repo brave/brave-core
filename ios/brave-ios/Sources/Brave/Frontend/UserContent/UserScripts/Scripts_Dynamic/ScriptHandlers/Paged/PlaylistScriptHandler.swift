@@ -200,7 +200,7 @@ class PlaylistScriptHandler: NSObject, TabContentScript, TabObserver {
         || path.hasPrefix("/v/")
     case "youtu.be":
       // Short links of the form `youtu.be/<videoId>`.
-      return url.pathComponents.count >= 2 && !url.pathComponents[1].isEmpty
+      return url.pathComponents[safe: 1]?.isEmpty == false
     default:
       return true
     }
