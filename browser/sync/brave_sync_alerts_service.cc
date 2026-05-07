@@ -7,6 +7,7 @@
 
 #include "base/check.h"
 #include "brave/browser/infobars/brave_sync_account_deleted_infobar_delegate.h"
+#include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "build/build_config.h"
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -43,17 +44,24 @@ BraveSyncAlertsService::BraveSyncAlertsService(Profile* profile)
 BraveSyncAlertsService::~BraveSyncAlertsService() {}
 
 void BraveSyncAlertsService::OnStateChanged(SyncService* service) {
-  auto* brave_sync_service = static_cast<BraveSyncServiceImpl*>(service);
+  // Use profile prefs directly for boolean checks — safe regardless of whether
+  // |service| is a BraveSyncServiceImpl or a test double (e.g.
+  // TestSyncService).
+  brave_sync::Prefs prefs(profile_->GetPrefs());
 
-  if (brave_sync_service->prefs().IsSyncAccountDeletedNoticePending()) {
+  if (prefs.IsSyncAccountDeletedNoticePending()) {
     ShowInfobar();
   }
 
 #if !BUILDFLAG(IS_ANDROID)
-  {
+  if (!prefs.IsFailedDecryptSeedNoticeDismissed() &&
+      !prefs.GetEncryptedSeed().empty()) {
+    // Only cast to BraveSyncServiceImpl here, after the early returns above
+    // have already guarded us. In tests without a sync chain configured,
+    // GetEncryptedSeed() is empty and we never reach this point.
+    auto* brave_sync_service = static_cast<BraveSyncServiceImpl*>(service);
     auto seed = brave_sync_service->GetSeed();
-    if (!brave_sync_service->prefs().IsFailedDecryptSeedNoticeDismissed() &&
-        !seed.has_value() &&
+    if (!seed.has_value() &&
         seed.error() ==
             syncer::BraveSyncServiceImpl::GetSeedStatusEnum::kDecryptFailed) {
       ShowSyncCannotRunInfobar();
