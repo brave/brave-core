@@ -122,6 +122,17 @@ void AddReferencedContainerIdsFromGroup(
   }
 }
 
+void AddReferencedContainerIdsFromSplit(
+    const sessions::tab_restore::Split& split,
+    base::flat_set<std::string>& ids) {
+  if (split.leading_tab) {
+    AddReferencedContainerIdsFromTab(*split.leading_tab, ids);
+  }
+  if (split.trailing_tab) {
+    AddReferencedContainerIdsFromTab(*split.trailing_tab, ids);
+  }
+}
+
 void AddReferencedContainerIdsFromEntry(
     const sessions::tab_restore::Entry& entry,
     base::flat_set<std::string>& ids) {
@@ -137,6 +148,10 @@ void AddReferencedContainerIdsFromEntry(
     case sessions::tab_restore::GROUP:
       AddReferencedContainerIdsFromGroup(
           static_cast<const sessions::tab_restore::Group&>(entry), ids);
+      break;
+    case sessions::tab_restore::SPLIT:
+      AddReferencedContainerIdsFromSplit(
+          static_cast<const sessions::tab_restore::Split&>(entry), ids);
       break;
   }
 }
