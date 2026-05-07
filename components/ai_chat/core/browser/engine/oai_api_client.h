@@ -75,6 +75,20 @@ class OAIAPIClient {
   // OAI / Anthropic.
   static mojom::APIError MapResponseCodeToError(int response_code);
 
+  // Parses and dispatches a single SSE chunk value. Handles both completion
+  // text and tool calls. Safe to call with a null/non-dict value.
+  static void OnQueryDataReceived(
+      GenerationDataCallback callback,
+      base::expected<base::Value, std::string> result);
+
+  // Dispatches the final completion callback. If |success| is false,
+  // |response_code| is mapped to an error. Otherwise |value| is the parsed
+  // JSON body, or nullopt if parsing failed or the body was empty.
+  static void HandleCompletion(GenerationCompletedCallback callback,
+                               bool success,
+                               int response_code,
+                               std::optional<base::Value> value);
+
   void SetAPIRequestHelperForTesting(
       std::unique_ptr<api_request_helper::APIRequestHelper> api_helper) {
     api_request_helper_ = std::move(api_helper);
@@ -86,8 +100,6 @@ class OAIAPIClient {
  private:
   void OnQueryCompleted(GenerationCompletedCallback callback,
                         api_request_helper::APIRequestResult result);
-  void OnQueryDataReceived(GenerationDataCallback callback,
-                           base::expected<base::Value, std::string> result);
 
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
 

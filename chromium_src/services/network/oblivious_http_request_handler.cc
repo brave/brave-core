@@ -26,26 +26,26 @@ constexpr char kChunkedObliviousHttpRequestMimeType[] =
 // encrypts the request payload via EncryptRequest(). The encrypted blob is
 // stored in a function-local for use in
 // BRAVE_OBLIVIOUS_HTTP_CONTINUE_HANDLING_REQUEST.
-#define BRAVE_OBLIVIOUS_HTTP_MAYBE_ENCRYPT_AS_CHUNKED                        \
-  std::optional<std::string> chunked_encrypted_blob;                         \
-  if (state->request->enable_chunking) {                                     \
-    CHECK(state->request->chunk_client);                                     \
+#define BRAVE_OBLIVIOUS_HTTP_MAYBE_ENCRYPT_AS_CHUNKED                         \
+  std::optional<std::string> chunked_encrypted_blob;                          \
+  if (state->request->enable_chunking) {                                      \
+    CHECK(state->request->chunk_client);                                      \
     state->chunk_handler = oblivious_http::ObliviousHttpChunkHandler::Create( \
-        state->request->key_config, std::move(state->request->chunk_client), \
-        base::BindOnce(&ObliviousHttpRequestHandler::OnRequestComplete,      \
-                       base::Unretained(this), id));                         \
-    if (!state->chunk_handler) {                                             \
-      RespondWithError(id, net::ERR_FAILED,                                  \
-                       /*outer_response_error_code=*/std::nullopt);          \
-      return;                                                                \
-    }                                                                        \
-    chunked_encrypted_blob =                                                 \
-        state->chunk_handler->EncryptRequest(padded_payload);                \
-    if (!chunked_encrypted_blob) {                                           \
-      RespondWithError(id, net::ERR_FAILED,                                  \
-                       /*outer_response_error_code=*/std::nullopt);          \
-      return;                                                                \
-    }                                                                        \
+        state->request->key_config, std::move(state->request->chunk_client),  \
+        base::BindOnce(&ObliviousHttpRequestHandler::OnRequestComplete,       \
+                       base::Unretained(this), id));                          \
+    if (!state->chunk_handler) {                                              \
+      RespondWithError(id, net::ERR_FAILED,                                   \
+                       /*outer_response_error_code=*/std::nullopt);           \
+      return;                                                                 \
+    }                                                                         \
+    chunked_encrypted_blob =                                                  \
+        state->chunk_handler->EncryptRequest(padded_payload);                 \
+    if (!chunked_encrypted_blob) {                                            \
+      RespondWithError(id, net::ERR_FAILED,                                   \
+                       /*outer_response_error_code=*/std::nullopt);           \
+      return;                                                                 \
+    }                                                                         \
   }
 
 // BRAVE_OBLIVIOUS_HTTP_CONTINUE_HANDLING_REQUEST applies Brave relay headers
@@ -55,10 +55,10 @@ constexpr char kChunkedObliviousHttpRequestMimeType[] =
 // DownloadToString path is never reached.
 #define BRAVE_OBLIVIOUS_HTTP_CONTINUE_HANDLING_REQUEST                         \
   oblivious_http::ApplyBraveRelayHeaders(*state->request,                      \
-                         state->request->enable_chunking                       \
-                             ? *chunked_encrypted_blob                         \
-                             : *maybe_encrypted_blob,                          \
-                         resource_request->headers);                           \
+                                         state->request->enable_chunking       \
+                                             ? *chunked_encrypted_blob         \
+                                             : *maybe_encrypted_blob,          \
+                                         resource_request->headers);           \
   if (state->request->enable_chunking) {                                       \
     state->loader = SimpleURLLoader::Create(                                   \
         std::move(resource_request),                                           \

@@ -16,6 +16,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_api_client.h"
@@ -75,7 +76,9 @@ class ObliviousHttpAPIClient : public OAIAPIClient {
                       public network::mojom::ObliviousHttpChunkClient {
    public:
     using CompletionCallback =
-        base::OnceCallback<void(int response_code, std::string response_body)>;
+        base::OnceCallback<void(int outer_response_code,
+                                int inner_response_code,
+                                std::string response_body)>;
     using ChunkCallback = base::RepeatingCallback<void(std::string chunk)>;
 
     InnerClient(CompletionCallback completion_callback,
@@ -148,11 +151,16 @@ class ObliviousHttpAPIClient : public OAIAPIClient {
       std::optional<CredentialCacheEntry> credential);
   void OnInnerResponse(Request request,
                        std::optional<CredentialCacheEntry> credential,
-                       int response_code,
+                       int outer_response_code,
+                       int inner_response_code,
                        std::string response_body);
-  void OnInnerChunkReceived(std::string chunk);
-  void RunCompletedWithError(GenerationCompletedCallback completed_callback,
-                             mojom::APIError error);
+  void OnInnerChunkReceived(GenerationDataCallback data_received_callback,
+                            std::string chunk);
+  static void OnChunkParsed(GenerationDataCallback data_received_callback,
+                            std::optional<base::Value> value);
+  static void RunCompletedWithError(
+      GenerationCompletedCallback completed_callback,
+      mojom::APIError error);
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   network::NetworkContextGetter network_context_getter_;
@@ -160,6 +168,7 @@ class ObliviousHttpAPIClient : public OAIAPIClient {
 
   std::unique_ptr<ObliviousHttpConfigManager> config_manager_;
   InnerClientList inner_clients_;
+  scoped_refptr<base::SequencedTaskRunner> sequenced_task_runner_;
 
   base::WeakPtrFactory<ObliviousHttpAPIClient> weak_factory_{this};
 };

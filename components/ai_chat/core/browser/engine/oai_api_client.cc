@@ -348,7 +348,6 @@ void OAIAPIClient::PerformRequest(
 
   if (is_sse_enabled) {
     auto on_received = base::BindRepeating(&OAIAPIClient::OnQueryDataReceived,
-                                           weak_ptr_factory_.GetWeakPtr(),
                                            std::move(data_received_callback));
     auto on_complete = base::BindOnce(&OAIAPIClient::OnQueryCompleted,
                                       weak_ptr_factory_.GetWeakPtr(),
@@ -379,29 +378,44 @@ void OAIAPIClient::OnQueryCompleted(
     GenerationCompletedCallback callback,
     api_request_helper::APIRequestResult result) {
   const bool success = result.Is2XXResponseCode();
-  // Handle successful request
-  if (success) {
-    // We're checking for a value body in case for non-streaming API results.
-    if (result.value_body().is_dict()) {
-      if (auto result_data = ParseOAICompletionResponse(
-              result.value_body().GetDict(), std::nullopt /* model_key */)) {
-        std::move(callback).Run(base::ok(std::move(*result_data)));
-        return;
-      }
-    }
+  const int response_code = result.response_code();
+  base::Value body = std::move(result).TakeBody();
+  std::optional<base::Value> value;
+  if (body.is_dict()) {
+    value = std::move(body);
+  }
+  HandleCompletion(std::move(callback), success, response_code,
+                   std::move(value));
+}
 
-    // May be an empty string if part of SSE request, and payload was invalid.
-    auto event = mojom::ConversationEntryEvent::NewCompletionEvent(
-        mojom::CompletionEvent::New(""));
-    std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
-        std::move(event), std::nullopt /* model_key */)));
+// static
+void OAIAPIClient::HandleCompletion(GenerationCompletedCallback callback,
+                                    bool success,
+                                    int response_code,
+                                    std::optional<base::Value> value) {
+  if (!success) {
+    std::move(callback).Run(
+        base::unexpected(MapResponseCodeToError(response_code)));
     return;
   }
 
-  std::move(callback).Run(
-      base::unexpected(MapResponseCodeToError(result.response_code())));
+  // We're checking for a value body in case for non-streaming API results.
+  if (value && value->is_dict()) {
+    if (auto result_data =
+            ParseOAICompletionResponse(value->GetDict(), std::nullopt)) {
+      std::move(callback).Run(base::ok(std::move(*result_data)));
+      return;
+    }
+  }
+
+  // May be an empty string if part of SSE request, and payload was invalid.
+  auto event = mojom::ConversationEntryEvent::NewCompletionEvent(
+      mojom::CompletionEvent::New(""));
+  std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+      std::move(event), std::nullopt /* model_key */)));
 }
 
+// static
 void OAIAPIClient::OnQueryDataReceived(
     GenerationDataCallback callback,
     base::expected<base::Value, std::string> result) {

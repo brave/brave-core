@@ -5,14 +5,15 @@
 
 #include "brave/components/ai_chat/core/browser/engine/oblivious_http_api_client.h"
 
+#include <string_view>
 #include <utility>
 
 #include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
-#include "base/logging.h"
+#include "base/strings/string_util.h"
+#include "base/task/thread_pool.h"
 #include "base/types/expected.h"
-#include "brave/components/ai_chat/core/browser/engine/oai_parsing.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -33,6 +34,8 @@ namespace ai_chat {
 namespace {
 
 constexpr char kOHTTPRelayPathFormat[] = "v1/models/%s/relay";
+
+constexpr std::string_view kSSEDataPrefix = "data: {";
 
 constexpr base::TimeDelta kRequestTimeout = base::Seconds(60);
 
@@ -96,24 +99,26 @@ void ObliviousHttpAPIClient::InnerClient::OnCompleted(
   if (completion_callback_.is_null()) {
     return;
   }
-  int response_code = 0;
+  int outer_response_code = net::HTTP_OK;
+  int inner_response_code = 0;
   std::string body;
   switch (response->which()) {
     case network::mojom::ObliviousHttpCompletionResult::Tag::kNetError:
-      response_code = response->get_net_error();
+      outer_response_code = response->get_net_error();
       break;
     case network::mojom::ObliviousHttpCompletionResult::Tag::
         kOuterResponseErrorCode:
-      response_code = response->get_outer_response_error_code();
+      outer_response_code = response->get_outer_response_error_code();
       break;
     case network::mojom::ObliviousHttpCompletionResult::Tag::kInnerResponse: {
       const auto& inner = response->get_inner_response();
-      response_code = inner->response_code;
+      inner_response_code = inner->response_code;
       body = inner->response_body;
       break;
     }
   }
-  std::move(completion_callback_).Run(response_code, std::move(body));
+  std::move(completion_callback_)
+      .Run(outer_response_code, inner_response_code, std::move(body));
 }
 
 void ObliviousHttpAPIClient::InnerClient::OnBodyChunk(
@@ -127,7 +132,8 @@ void ObliviousHttpAPIClient::InnerClient::OnPipeDisconnected() {
   if (completion_callback_.is_null()) {
     return;
   }
-  std::move(completion_callback_).Run(net::ERR_FAILED, std::string());
+  std::move(completion_callback_)
+      .Run(net::ERR_FAILED, /*inner_response_code=*/0, std::string());
 }
 
 ObliviousHttpAPIClient::Request::Request(
@@ -155,7 +161,8 @@ ObliviousHttpAPIClient::ObliviousHttpAPIClient(
       credential_manager_(credential_manager),
       config_manager_(std::make_unique<ObliviousHttpConfigManager>(
           std::move(url_loader_factory),
-          profile_prefs)) {}
+          profile_prefs)),
+      sequenced_task_runner_(base::ThreadPool::CreateSequencedTaskRunner({})) {}
 
 ObliviousHttpAPIClient::~ObliviousHttpAPIClient() = default;
 
@@ -266,12 +273,15 @@ void ObliviousHttpAPIClient::DispatchOHTTPRequest(
 
   const bool chunking_enabled =
       IsStreamingEnabled(request.data_received_callback);
+  GenerationDataCallback data_received_callback =
+      request.data_received_callback;
   *it = std::make_unique<InnerClient>(
       base::BindOnce(&ObliviousHttpAPIClient::OnInnerResponse,
                      weak_factory_.GetWeakPtr(), std::move(request),
                      std::move(credential)),
       base::BindRepeating(&ObliviousHttpAPIClient::OnInnerChunkReceived,
-                          weak_factory_.GetWeakPtr()));
+                          weak_factory_.GetWeakPtr(),
+                          std::move(data_received_callback)));
 
   InnerClient& inner_client = **it;
 
@@ -287,55 +297,57 @@ void ObliviousHttpAPIClient::DispatchOHTTPRequest(
 void ObliviousHttpAPIClient::OnInnerResponse(
     Request request,
     std::optional<CredentialCacheEntry> credential,
-    int response_code,
+    int outer_response_code,
+    int inner_response_code,
     std::string response_body) {
   // Erase the InnerClient from the ownership list now that the request is done.
   inner_clients_.erase(request.it);
 
-  if (response_code >= 200 && response_code < 300) {
-    // Recycle the credential for future requests.
-    if (credential.has_value()) {
-      credential_manager_->PutCredentialInCache(std::move(*credential));
-    }
-
-    if (IsStreamingEnabled(request.data_received_callback)) {
-      auto event = mojom::ConversationEntryEvent::NewCompletionEvent(
-          mojom::CompletionEvent::New("done"));
-      std::move(request.completed_callback)
-          .Run(base::ok(EngineConsumer::GenerationResultData(
-              std::move(event), /*model_key=*/std::nullopt)));
-      return;
-    }
-
-    auto value = base::JSONReader::Read(response_body, base::JSON_PARSE_RFC);
-    if (value && value->is_dict()) {
-      if (auto result =
-              ParseOAICompletionResponse(value->GetDict(),
-                                         /*model_key=*/std::nullopt)) {
-        std::move(request.completed_callback).Run(base::ok(std::move(*result)));
-        return;
-      }
-    }
-    auto event = mojom::ConversationEntryEvent::NewCompletionEvent(
-        mojom::CompletionEvent::New(""));
-    std::move(request.completed_callback)
-        .Run(base::ok(EngineConsumer::GenerationResultData(
-            std::move(event), /*model_key=*/std::nullopt)));
-    return;
-  }
-
-  if (response_code != 401 && credential.has_value()) {
-    // 401 indicates an invalid credential; do not return it to the cache.
+  // 401 outer response indicates an invalid credential; do not cache it.
+  if (outer_response_code != net::HTTP_UNAUTHORIZED && credential.has_value()) {
     credential_manager_->PutCredentialInCache(std::move(*credential));
   }
-  std::move(request.completed_callback)
-      .Run(base::unexpected(MapResponseCodeToError(response_code)));
+
+  const bool success = inner_response_code >= 200 && inner_response_code < 300;
+  sequenced_task_runner_->PostTaskAndReplyWithResult(
+      FROM_HERE,
+      base::BindOnce(&base::JSONReader::Read, std::move(response_body),
+                     base::JSON_PARSE_RFC, static_cast<size_t>(200)),
+      base::BindOnce(&OAIAPIClient::HandleCompletion,
+                     std::move(request.completed_callback), success,
+                     inner_response_code));
 }
 
-void ObliviousHttpAPIClient::OnInnerChunkReceived(std::string chunk) {
-  LOG(ERROR) << "OHTTP chunk: " << chunk;
+void ObliviousHttpAPIClient::OnInnerChunkReceived(
+    GenerationDataCallback data_received_callback,
+    std::string chunk) {
+  if (!base::StartsWith(chunk, kSSEDataPrefix)) {
+    return;
+  }
+  // OHTTP chunks are guaranteed to contain complete JSON,
+  // so there is no need to append chunks to a buffer and wait
+  // for a full JSON object.
+  sequenced_task_runner_->PostTaskAndReplyWithResult(
+      FROM_HERE,
+      base::BindOnce(&base::JSONReader::Read,
+                     chunk.substr(kSSEDataPrefix.size() - 1),
+                     base::JSON_PARSE_RFC, static_cast<size_t>(200)),
+      base::BindOnce(&ObliviousHttpAPIClient::OnChunkParsed,
+                     std::move(data_received_callback)));
 }
 
+// static
+void ObliviousHttpAPIClient::OnChunkParsed(
+    GenerationDataCallback data_received_callback,
+    std::optional<base::Value> value) {
+  if (!value) {
+    return;
+  }
+  OnQueryDataReceived(std::move(data_received_callback),
+                      base::ok(std::move(*value)));
+}
+
+// static
 void ObliviousHttpAPIClient::RunCompletedWithError(
     GenerationCompletedCallback completed_callback,
     mojom::APIError error) {
