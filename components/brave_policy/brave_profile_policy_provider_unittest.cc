@@ -9,17 +9,11 @@
 
 #include "base/files/file_path.h"
 #include "base/test/task_environment.h"
-#include "brave/components/brave_origin/brave_origin_policy_info.h"
-#include "brave/components/brave_origin/brave_origin_policy_manager.h"
-#include "brave/components/brave_origin/pref_names.h"
-#include "brave/components/brave_policy/ad_block_only_mode/ad_block_only_mode_policy_manager.h"
-#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "components/policy/core/common/configuration_policy_provider.h"
 #include "components/policy/core/common/policy_bundle.h"
 #include "components/policy/core/common/policy_namespace.h"
 #include "components/policy/core/common/policy_types.h"
 #include "components/policy/core/common/schema_registry.h"
-#include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -30,36 +24,14 @@ class BraveProfilePolicyProviderTest : public ::testing::Test {
   BraveProfilePolicyProviderTest() = default;
   ~BraveProfilePolicyProviderTest() override = default;
 
-  void SetUp() override {
-    // Register prefs needed by both managers so their `Init` calls succeed
-    // and they report `IsInitialized() == true`. Without this the
-    // `BravePolicyManagerRegistry::AllInitialized()` gate inside
-    // `BraveProfilePolicyProvider::OnBravePoliciesReady` would early-return
-    // and the provider would never call `RefreshPolicies`.
-    pref_service_.registry()->RegisterDictionaryPref(
-        brave_origin::kBraveOriginPolicies);
-    pref_service_.registry()->RegisterBooleanPref(
-        brave_origin::kOriginPurchaseValidated, false);
-    pref_service_.registry()->RegisterBooleanPref(
-        brave_shields::prefs::kAdBlockOnlyModeEnabled, false);
-
-    brave_origin::BraveOriginPolicyManager::GetInstance()->Init(
-        brave_origin::BraveOriginPolicyMap(),
-        brave_origin::BraveOriginPolicyMap(), &pref_service_);
-    AdBlockOnlyModePolicyManager::GetInstance()->Init(&pref_service_);
-  }
-
   void TearDown() override {
     if (provider_.IsInitializationComplete(policy::POLICY_DOMAIN_CHROME)) {
       provider_.Shutdown();
     }
-    AdBlockOnlyModePolicyManager::GetInstance()->Shutdown();
-    brave_origin::BraveOriginPolicyManager::GetInstance()->Shutdown();
   }
 
  protected:
   base::test::TaskEnvironment task_environment_;
-  TestingPrefServiceSimple pref_service_;
   policy::SchemaRegistry schema_registry_;
   BraveProfilePolicyProvider provider_;
 };

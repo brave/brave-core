@@ -13,7 +13,6 @@ static_library("brave_policy") {
   ]
 
   deps = [
-    ":brave_policy_manager_registry",
     ":brave_policy_observer",
     "//base",
     "//brave/components/brave_origin",
@@ -22,15 +21,6 @@ static_library("brave_policy") {
     "//components/policy/core/common",
     "//components/prefs",
   ]
-}
-
-source_set("brave_policy_manager_registry") {
-  sources = [
-    "brave_policy_manager_registry.cc",
-    "brave_policy_manager_registry.h",
-  ]
-
-  public_deps = [ "//base" ]
 }
 
 source_set("brave_policy_observer") {
@@ -44,19 +34,14 @@ source_set("unit_tests") {
   sources = [
     "brave_browser_policy_provider_unittest.cc",
     "brave_policy_conversions_unittest.cc",
-    "brave_policy_manager_registry_unittest.cc",
     "brave_policy_source_unittest.cc",
     "brave_profile_policy_provider_unittest.cc",
   ]
 
   deps = [
     ":brave_policy",
-    ":brave_policy_manager_registry",
     "//base",
     "//base/test:test_support",
-    "//brave/components/brave_origin",
-    "//brave/components/brave_policy/ad_block_only_mode",
-    "//brave/components/brave_shields/core/common",
     "//brave/components/resources:strings",
     "//components/enterprise",
     "//components/policy/core/browser",

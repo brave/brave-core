@@ -10,7 +10,6 @@
 #include "base/memory/raw_ptr.h"
 #include "base/observer_list.h"
 #include "base/values.h"
-#include "brave/components/brave_policy/brave_policy_manager_registry.h"
 #include "brave/components/brave_policy/brave_policy_observer.h"
 #include "components/prefs/pref_change_registrar.h"
 
@@ -37,8 +36,6 @@ class AdBlockOnlyModePolicyManager final {
   void Init(PrefService* local_state);
   void Shutdown();
 
-  bool IsInitialized() const;
-
   void AddObserver(BravePolicyObserver* observer);
   void RemoveObserver(BravePolicyObserver* observer);
 
@@ -59,11 +56,6 @@ class AdBlockOnlyModePolicyManager final {
   raw_ptr<PrefService> local_state_;  // Not owned.
   PrefChangeRegistrar pref_change_registrar_;
   base::ObserverList<BravePolicyObserver> observers_;
-
-  // Participates in `BravePolicyManagerRegistry::AllInitialized()`. Declared
-  // last so the readiness callback isn't invoked against partially
-  // constructed state (`local_state_` above must already exist).
-  BravePolicyManagerRegistration registration_;
 };
 
 }  // namespace brave_policy

@@ -6,7 +6,6 @@
 #include "brave/components/brave_origin/brave_origin_policy_manager.h"
 
 #include "base/containers/map_util.h"
-#include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/no_destructor.h"
 #include "brave/components/brave_origin/brave_origin_utils.h"
@@ -219,10 +218,7 @@ bool BraveOriginPolicyManager::GetPolicyValueInternal(
   return default_value;
 }
 
-BraveOriginPolicyManager::BraveOriginPolicyManager()
-    : registration_(
-          base::BindRepeating(&BraveOriginPolicyManager::IsInitialized,
-                              base::Unretained(this))) {}
+BraveOriginPolicyManager::BraveOriginPolicyManager() = default;
 
 BraveOriginPolicyManager::~BraveOriginPolicyManager() = default;
 

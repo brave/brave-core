@@ -12,7 +12,6 @@
 #include "base/memory/raw_ptr.h"
 #include "base/observer_list.h"
 #include "brave/components/brave_origin/brave_origin_policy_info.h"
-#include "brave/components/brave_policy/brave_policy_manager_registry.h"
 #include "brave/components/brave_policy/brave_policy_observer.h"
 
 class PrefService;
@@ -103,11 +102,6 @@ class BraveOriginPolicyManager {
   BraveOriginPolicyMap profile_policy_definitions_;
   raw_ptr<PrefService> local_state_ = nullptr;
   base::ObserverList<brave_policy::BravePolicyObserver> observers_;
-
-  // Participates in `BravePolicyManagerRegistry::AllInitialized()`. Declared
-  // last so the readiness callback isn't invoked against partially
-  // constructed state (`initialized_` above must already exist).
-  brave_policy::BravePolicyManagerRegistration registration_;
 };
 
 }  // namespace brave_origin
