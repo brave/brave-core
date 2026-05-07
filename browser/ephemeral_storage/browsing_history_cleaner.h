@@ -25,6 +25,7 @@ class BrowsingHistoryCleaner : public ProfileBasedBrowsingHistoryDriver {
   void CleanupBrowsingHistoryForDomain(const std::string& domain);
 
  private:
+  friend class BrowsingHistoryCleanerTest;
   // BrowsingHistoryDriver implementation.
   void OnQueryComplete(
       const std::vector<history::BrowsingHistoryService::HistoryEntry>&
@@ -34,8 +35,13 @@ class BrowsingHistoryCleaner : public ProfileBasedBrowsingHistoryDriver {
       base::OnceClosure continuation_closure) override;
   Profile* GetProfile() override;
 
+  // For testing: allows setting a callback that will be run when
+  // OnQueryComplete is called.
+  void SetOnQueryCompleteCallbackForTesting(base::OnceClosure callback);
+
   std::unique_ptr<history::BrowsingHistoryService> browsing_history_service_;
   raw_ptr<Profile> profile_ = nullptr;
+  base::OnceClosure on_query_complete_callback_for_testing_;
 };
 
 }  // namespace ephemeral_storage

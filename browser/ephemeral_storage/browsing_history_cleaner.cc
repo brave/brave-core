@@ -33,7 +33,7 @@ void BrowsingHistoryCleaner::CleanupBrowsingHistoryForDomain(
 
   history::QueryOptions options;
   options.max_count = 0;
-  options.host_only = false;
+  options.host_only = true;
   options.duplicate_policy = history::QueryOptions::KEEP_ALL_DUPLICATES;
   browsing_history_service_->QueryHistory(base::UTF8ToUTF16(domain), options);
 }
@@ -44,10 +44,19 @@ void BrowsingHistoryCleaner::OnQueryComplete(
     const history::BrowsingHistoryService::QueryResultsInfo& query_results_info,
     base::OnceClosure continuation_closure) {
   browsing_history_service_->RemoveVisits(query_results);
+
+  if (on_query_complete_callback_for_testing_) {
+    std::move(on_query_complete_callback_for_testing_).Run();
+  }
 }
 
 Profile* BrowsingHistoryCleaner::GetProfile() {
   return profile_;
+}
+
+void BrowsingHistoryCleaner::SetOnQueryCompleteCallbackForTesting(  // IN-TEST
+    base::OnceClosure callback) {
+  on_query_complete_callback_for_testing_ = std::move(callback);
 }
 
 }  // namespace ephemeral_storage
