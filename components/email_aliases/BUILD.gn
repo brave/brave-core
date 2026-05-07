@@ -27,10 +27,19 @@ generated_types("email_aliases_api_types") {
   root_namespace = "email_aliases"
 }
 
+source_set("pref_names") {
+  sources = [ "pref_names.h" ]
+}
+
 static_library("features") {
   sources = [
     "features.cc",
     "features.h",
+  ]
+
+  deps = [
+    ":pref_names",
+    "//components/prefs",
   ]
 
   public_deps = [ "//base" ]
@@ -45,11 +54,11 @@ static_library("service") {
     "email_aliases_notes.h",
     "email_aliases_service.cc",
     "email_aliases_service.h",
-    "pref_names.h",
   ]
   deps = [
     ":email_aliases_api_types",
     ":mojom",
+    ":pref_names",
     "//base",
     "//brave/brave_domains",
     "//brave/components/brave_account",
@@ -96,6 +105,7 @@ source_set("unit_tests") {
   ]
   deps = [
     ":features",
+    ":pref_names",
     ":service",
     ":test_utils",
     "//base/test:test_support",

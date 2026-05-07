@@ -43,6 +43,7 @@ source_set("unit_tests") {
     "//brave/components/brave_account",
     "//brave/components/brave_account:features",
     "//brave/components/email_aliases:features",
+    "//brave/components/email_aliases:pref_names",
     "//brave/components/email_aliases:service",
     "//chrome/browser/profiles",
     "//chrome/test:test_support",

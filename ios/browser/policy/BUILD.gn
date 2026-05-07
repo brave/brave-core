@@ -36,6 +36,9 @@ source_set("policy") {
     deps += [ "//brave/components/brave_talk" ]
   }
   if (enable_email_aliases) {
-    deps += [ "//brave/components/email_aliases:service" ]
+    deps += [
+      "//brave/components/email_aliases:pref_names",
+      "//brave/components/email_aliases:service",
+    ]
   }
 }

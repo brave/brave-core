@@ -292,17 +292,18 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   html_source->AddBoolean(
       "isEmailAliasesEnabled",
-      email_aliases::features::IsEmailAliasesEnabled() &&
-          email_aliases::EmailAliasesServiceFactory::GetServiceForProfile(
-              profile));
+      email_aliases::features::IsEmailAliasesEnabledForProfile(
+          CHECK_DEREF(profile->GetPrefs())));
 #endif
 #if BUILDFLAG(ENABLE_CONTAINERS)
   html_source->AddBoolean(
       "isContainersEnabled",
       base::FeatureList::IsEnabled(containers::features::kContainers));
 #endif
-  html_source->AddBoolean("isBraveAccountEnabled",
-                          brave_account::features::IsBraveAccountEnabled());
+  html_source->AddBoolean(
+      "isBraveAccountEnabled",
+      brave_account::features::IsBraveAccountEnabledForProfile(
+          CHECK_DEREF(profile->GetPrefs())));
   html_source->AddBoolean("isBraveOriginBrandedBuild",
                           BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED));
   html_source->AddBoolean("isBraveOriginPurchased",

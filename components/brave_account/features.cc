@@ -17,13 +17,26 @@ namespace {
 BASE_FEATURE(kBraveAccount, base::FEATURE_DISABLED_BY_DEFAULT);
 }  // namespace
 
-// Brave Account is enabled when:
-// - the explicit kBraveAccount feature flag is enabled (dev/testing), OR
-// - a dependent feature (e.g. Email Aliases) requires it
+// Process-wide: true if kBraveAccount is on, or a dependent feature (e.g.
+// Email Aliases) is built and feature-flagged on. Use when per-profile state
+// shouldn't or can't influence the answer.
 bool IsBraveAccountEnabled() {
   return base::FeatureList::IsEnabled(kBraveAccount)
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
          || email_aliases::features::IsEmailAliasesEnabled()
+#endif
+      ;
+}
+
+// Per-profile: "is Brave Account active for this profile?".
+// Use for UI gating and other per-profile decisions. The result can differ
+// across profiles because dependent features (Email Aliases) consult a
+// per-profile pref.
+bool IsBraveAccountEnabledForProfile(const PrefService& pref_service) {
+  return base::FeatureList::IsEnabled(kBraveAccount)
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+         ||
+         email_aliases::features::IsEmailAliasesEnabledForProfile(pref_service)
 #endif
       ;
 }

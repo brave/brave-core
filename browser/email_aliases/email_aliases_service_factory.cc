@@ -11,7 +11,6 @@
 #include "brave/components/brave_account/brave_account_service.h"
 #include "brave/components/email_aliases/email_aliases_service.h"
 #include "brave/components/email_aliases/features.h"
-#include "brave/components/email_aliases/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_selections.h"
 #include "components/pref_registry/pref_registry_syncable.h"
@@ -61,11 +60,9 @@ void EmailAliasesServiceFactory::RegisterProfilePrefs(
 std::unique_ptr<KeyedService>
 EmailAliasesServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  if (!features::IsEmailAliasesEnabled()) {
-    return nullptr;
-  }
   PrefService* pref_service = user_prefs::UserPrefs::Get(context);
-  if (!pref_service || !pref_service->GetBoolean(prefs::kEmailAliasesEnabled)) {
+  if (!pref_service ||
+      !features::IsEmailAliasesEnabledForProfile(*pref_service)) {
     return nullptr;
   }
 

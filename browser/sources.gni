@@ -362,6 +362,7 @@ if (enable_email_aliases) {
     "//brave/browser/ui/webui/email_aliases",
     "//brave/components/email_aliases:features",
     "//brave/components/email_aliases:mojom",
+    "//brave/components/email_aliases:pref_names",
     "//brave/components/email_aliases:service",
   ]
 }
