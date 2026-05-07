@@ -70,6 +70,7 @@ class BraveMultiContentsView;
 class ContentsLayoutManager;
 class SidebarContainerView;
 class SidePanelEntry;
+class TabStripPlacementCoordinator;
 class VerticalTabStripWidgetDelegateView;
 class ViewShadow;
 
@@ -166,6 +167,10 @@ class BraveBrowserView : public BrowserView,
 
   SidebarContainerView* sidebar_container_view() {
     return sidebar_container_view_;
+  }
+
+  TabStripPlacementCoordinator* tab_strip_placement_coordinator() {
+    return tab_strip_placement_.get();
   }
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
@@ -271,6 +276,7 @@ class BraveBrowserView : public BrowserView,
     return top_container_separator_;
   }
 
+  std::unique_ptr<TabStripPlacementCoordinator> tab_strip_placement_;
   std::unique_ptr<views::Widget> vertical_tab_strip_widget_;
 
   bool closing_confirm_dialog_activated_ = false;

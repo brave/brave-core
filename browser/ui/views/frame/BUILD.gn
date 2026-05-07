@@ -5,30 +5,45 @@
 
 source_set("frame") {
   sources = [
-    "brave_contents_view_util.cc",
     "brave_contents_view_util.h",
     "layout/brave_browser_view_layout_delegate_impl.cc",
     "layout/brave_browser_view_layout_delegate_impl.h",
     "layout/brave_browser_view_tabbed_layout_impl.cc",
     "layout/brave_browser_view_tabbed_layout_impl.h",
+    "tab_strip_placement_coordinator.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//ui/views",
   ]
 
   deps = [
-    "//base",
     "//brave/browser/ui:brave_tab_prefs",
-    "//brave/browser/ui/views/frame/vertical_tabs",
     "//brave/browser/ui/views/sidebar",
+    "//chrome/browser/ui/exclusive_access",
+    "//chrome/browser/ui/views/infobars",
+    "//ui/compositor",
+  ]
+}
+
+source_set("frame_impl") {
+  sources = [
+    "brave_contents_view_util.cc",
+    "tab_strip_placement_coordinator.cc",
+  ]
+
+  deps = [
+    ":frame",
+    "//brave/browser/ui/focus_mode",
+    "//brave/browser/ui/views/frame/vertical_tabs",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui/browser_window",
-    "//chrome/browser/ui/exclusive_access",
     "//chrome/browser/ui/tabs:tab_strip",
-    "//chrome/browser/ui/views/infobars",
     "//chrome/common:constants",
     "//components/prefs",
     "//components/split_tabs",
     "//components/tabs:public",
-    "//ui/compositor",
-    "//ui/views",
   ]
 }
 
@@ -54,11 +69,14 @@ source_set("browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-  sources =
-      [ "//brave/browser/ui/views/frame/brave_browser_view_browsertest.cc" ]
+  sources = [
+    "//brave/browser/ui/views/frame/brave_browser_view_browsertest.cc",
+    "//brave/browser/ui/views/frame/tab_strip_placement_coordinator_browsertest.cc",
+  ]
 
   deps = [
     ":frame",
+    ":frame_impl",
     "//base",
     "//brave/browser/ui/views/frame/vertical_tabs",
     "//brave/browser/ui/views/sidebar",
