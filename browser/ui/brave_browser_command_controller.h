@@ -12,7 +12,6 @@
 #include <vector>
 
 #include "base/memory/raw_ref.h"
-#include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -115,8 +114,6 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController
   const raw_ref<Browser> browser_;
 
   CommandUpdaterImpl brave_command_updater_;
-
-  base::WeakPtrFactory<BraveBrowserCommandController> weak_ptr_factory_{this};
 };
 
 }  // namespace chrome

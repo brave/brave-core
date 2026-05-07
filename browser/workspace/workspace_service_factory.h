@@ -3,30 +3,29 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_WORKSPACE_BRAVE_WORKSPACE_SERVICE_FACTORY_H_
-#define BRAVE_BROWSER_WORKSPACE_BRAVE_WORKSPACE_SERVICE_FACTORY_H_
+#ifndef BRAVE_BROWSER_WORKSPACE_WORKSPACE_SERVICE_FACTORY_H_
+#define BRAVE_BROWSER_WORKSPACE_WORKSPACE_SERVICE_FACTORY_H_
 
 #include "base/no_destructor.h"
 #include "chrome/browser/profiles/profile_keyed_service_factory.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 
-class BraveWorkspaceService;
+class WorkspaceService;
 class Profile;
 
-class BraveWorkspaceServiceFactory : public ProfileKeyedServiceFactory {
+class WorkspaceServiceFactory : public ProfileKeyedServiceFactory {
  public:
-  static BraveWorkspaceServiceFactory* GetInstance();
-  static BraveWorkspaceService* GetForProfile(Profile* profile);
+  static WorkspaceServiceFactory* GetInstance();
+  static WorkspaceService* GetForProfile(Profile* profile);
 
-  BraveWorkspaceServiceFactory(const BraveWorkspaceServiceFactory&) = delete;
-  BraveWorkspaceServiceFactory& operator=(const BraveWorkspaceServiceFactory&) =
-      delete;
+  WorkspaceServiceFactory(const WorkspaceServiceFactory&) = delete;
+  WorkspaceServiceFactory& operator=(const WorkspaceServiceFactory&) = delete;
 
  private:
-  friend class base::NoDestructor<BraveWorkspaceServiceFactory>;
+  friend class base::NoDestructor<WorkspaceServiceFactory>;
 
-  BraveWorkspaceServiceFactory();
-  ~BraveWorkspaceServiceFactory() override;
+  WorkspaceServiceFactory();
+  ~WorkspaceServiceFactory() override;
 
   // ProfileKeyedServiceFactory:
   std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext(
@@ -39,4 +38,4 @@ class BraveWorkspaceServiceFactory : public ProfileKeyedServiceFactory {
   bool ServiceIsNULLWhileTesting() const override;
 };
 
-#endif  // BRAVE_BROWSER_WORKSPACE_BRAVE_WORKSPACE_SERVICE_FACTORY_H_
+#endif  // BRAVE_BROWSER_WORKSPACE_WORKSPACE_SERVICE_FACTORY_H_

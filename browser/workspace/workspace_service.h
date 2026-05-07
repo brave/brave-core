@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_WORKSPACE_BRAVE_WORKSPACE_SERVICE_H_
-#define BRAVE_BROWSER_WORKSPACE_BRAVE_WORKSPACE_SERVICE_H_
+#ifndef BRAVE_BROWSER_WORKSPACE_WORKSPACE_SERVICE_H_
+#define BRAVE_BROWSER_WORKSPACE_WORKSPACE_SERVICE_H_
 
 #include <memory>
 #include <string>
@@ -16,7 +16,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
-#include "brave/browser/workspace/brave_workspace.h"
+#include "brave/browser/workspace/workspace.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/sessions/core/command_storage_backend.h"
 #include "components/sessions/core/command_storage_manager.h"
@@ -45,7 +45,7 @@ inline constexpr char kWorkspacesMetadataPref[] = "brave.workspaces";
 // Callers must therefore create the backend on the UI thread (passing a
 // MayBlock SequencedTaskRunner as the owning runner) and then invoke the
 // blocking I/O helpers on that same sequenced runner.
-class BraveWorkspaceService : public KeyedService {
+class WorkspaceService : public KeyedService {
  public:
   // Session type used for all workspace files.  Exposed so callers can
   // construct a CommandStorageBackend on the UI thread before posting I/O
@@ -54,11 +54,12 @@ class BraveWorkspaceService : public KeyedService {
       kWorkspaceSessionType =
           sessions::CommandStorageManager::SessionType::kSessionRestore;
 
-  explicit BraveWorkspaceService(Profile* profile);
-  ~BraveWorkspaceService() override;
+  explicit WorkspaceService(PrefService* pref_service,
+                            const base::FilePath profile_path);
+  ~WorkspaceService() override;
 
-  BraveWorkspaceService(const BraveWorkspaceService&) = delete;
-  BraveWorkspaceService& operator=(const BraveWorkspaceService&) = delete;
+  WorkspaceService(const WorkspaceService&) = delete;
+  WorkspaceService& operator=(const WorkspaceService&) = delete;
 
   // Returns summary information for all saved workspaces, sorted by creation
   // time (most-recent first).  Reads from the profile preference; no disk I/O.
@@ -113,16 +114,16 @@ class BraveWorkspaceService : public KeyedService {
 
   // Serializes all open windows/tabs for this profile and writes them to disk
   // under the given workspace name.
-  void SaveWorkspace(const std::string& name);
+  void SaveWorkspace(Profile* profile, const std::string& name);
 
   // Reads the named workspace from disk and opens its windows/tabs.
-  void RestoreWorkspace(const std::string& name);
+  void RestoreWorkspace(Profile* profile, const std::string& name);
 
   // Placeholder entry points for the save/open dialogs.
-  void ShowSaveWorkspaceDialog();
-  void ShowOpenWorkspaceDialog();
+  void ShowSaveWorkspaceDialog(Profile* profile);
+  void ShowOpenWorkspaceDialog(Profile* profile);
 
-  base::WeakPtr<BraveWorkspaceService> GetWeakPtr();
+  base::WeakPtr<WorkspaceService> GetWeakPtr();
 
   // KeyedService:
   void Shutdown() override;
@@ -140,15 +141,16 @@ class BraveWorkspaceService : public KeyedService {
   base::FilePath WorkspacesDir() const;
   base::FilePath WorkspaceDirForName(const std::string& name) const;
 
-  // Called on the UI thread with the commands read from disk by RestoreWorkspace.
+  // Called on the UI thread with the commands read from disk by
+  // RestoreWorkspace.
   void DoRestoreWorkspace(
+      base::WeakPtr<Profile> profile,
       std::vector<std::unique_ptr<sessions::SessionCommand>> commands);
 
-  raw_ptr<Profile> profile_;
-  raw_ptr<PrefService> pref_service_;
   const base::FilePath profile_path_;
+  raw_ptr<PrefService> pref_service_;
 
-  base::WeakPtrFactory<BraveWorkspaceService> weak_ptr_factory_{this};
+  base::WeakPtrFactory<WorkspaceService> weak_ptr_factory_{this};
 };
 
-#endif  // BRAVE_BROWSER_WORKSPACE_BRAVE_WORKSPACE_SERVICE_H_
+#endif  // BRAVE_BROWSER_WORKSPACE_WORKSPACE_SERVICE_H_

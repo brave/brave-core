@@ -20,9 +20,9 @@
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/focus_mode/focus_mode_utils.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
-#include "brave/browser/workspace/brave_workspace_service.h"
-#include "brave/browser/workspace/brave_workspace_service_factory.h"
 #include "brave/browser/workspace/features.h"
+#include "brave/browser/workspace/workspace_service.h"
+#include "brave/browser/workspace/workspace_service_factory.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/rewards_util.h"
@@ -369,7 +369,7 @@ void BraveBrowserCommandController::InitBraveCommandState() {
         kWorkspacesMetadataPref,
         base::BindRepeating(
             &BraveBrowserCommandController::UpdateCommandForWorkspace,
-            weak_ptr_factory_.GetWeakPtr()));
+            base::Unretained(this)));
   }
 
   if (browser_->is_type_normal()) {
@@ -550,8 +550,7 @@ void BraveBrowserCommandController::UpdateCommandForSplitView() {
 }
 
 void BraveBrowserCommandController::UpdateCommandForWorkspace() {
-  auto* service =
-      BraveWorkspaceServiceFactory::GetForProfile(browser_->profile());
+  auto* service = WorkspaceServiceFactory::GetForProfile(browser_->profile());
 
   if (!service) {
     return;
@@ -829,15 +828,15 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       brave::ToggleFocusMode(base::to_address(browser_));
       break;
     case IDC_SAVE_WORKSPACE:
-      if (auto* svc = BraveWorkspaceServiceFactory::GetForProfile(
-              browser_->profile())) {
-        svc->ShowSaveWorkspaceDialog();
+      if (auto* svc =
+              WorkspaceServiceFactory::GetForProfile(browser_->profile())) {
+        svc->ShowSaveWorkspaceDialog(browser_->profile());
       }
       break;
     case IDC_OPEN_WORKSPACE:
-      if (auto* svc = BraveWorkspaceServiceFactory::GetForProfile(
-              browser_->profile())) {
-        svc->ShowOpenWorkspaceDialog();
+      if (auto* svc =
+              WorkspaceServiceFactory::GetForProfile(browser_->profile())) {
+        svc->ShowOpenWorkspaceDialog(browser_->profile());
       }
       break;
     default:
