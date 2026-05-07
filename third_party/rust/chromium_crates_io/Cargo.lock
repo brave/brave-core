@@ -114,6 +114,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 [[package]]
 name = "arrayvec"
 version = "0.7.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "async-trait"
@@ -170,6 +171,7 @@ dependencies = [
 [[package]]
 name = "bitflags"
 version = "1.3.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "bitflags"
@@ -755,6 +757,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 [[package]]
 name = "encoding_rs"
 version = "0.8.35"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "cfg-if",
 ]
