@@ -303,7 +303,7 @@ void SidebarContainerView::SetSidebarShowOption(ShowSidebarOption show_option) {
 
     if (show_sidebar_option_ == ShowSidebarOption::kShowAlways) {
       if (!IsSidebarVisible()) {
-        ShowSidebar(false, true);
+        ShowSidebar(false, AnimationStyle::kImmediate);
       }
       return;
     }
@@ -354,7 +354,7 @@ void SidebarContainerView::UpdateSidebarVisibility() {
   // without animation, mirroring kShowAlways above. Otherwise, fall through
   // and follow the current show option.
   if (browser_->GetFeatures().sidebar_controller()->sidebar_pinned()) {
-    ShowSidebar(false, true);
+    ShowSidebar(false, AnimationStyle::kImmediate);
   } else {
     // Refresh sidebar visibility with current show option.
     SetSidebarShowOption(
@@ -649,7 +649,7 @@ void SidebarContainerView::ShowSidebarControlView() {
 }
 
 void SidebarContainerView::ShowSidebar(bool show_side_panel,
-                                       bool suppress_animation) {
+                                       AnimationStyle animation) {
   DVLOG(1) << __func__ << ": show panel: " << show_side_panel;
 
   if (base::FeatureList::IsEnabled(sidebar::features::kSidebarV2)) {
@@ -667,7 +667,7 @@ void SidebarContainerView::ShowSidebar(bool show_side_panel,
 
     sidebar_control_view_->SetVisible(true);
 
-    if (ShouldUseAnimation() && !suppress_animation) {
+    if (ShouldUseAnimation() && animation == AnimationStyle::kAnimated) {
       width_animation_.Show();
     } else {
       PreferredSizeChanged();
@@ -890,6 +890,11 @@ bool SidebarContainerView::ShouldUseAnimation() {
 
 void SidebarContainerView::UpdateToolbarButtonVisibility() {
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
+  // BraveToolbarView and SidebarContainerView are sibling children of
+  // BrowserView; their construction/destruction order is not strictly
+  // coordinated, so the toolbar pointer (or its side_panel_button child) may
+  // be null during early init or window teardown when this is invoked from
+  // pref/observer callbacks.
   auto* brave_toolbar = static_cast<BraveToolbarView*>(browser_view->toolbar());
   if (!brave_toolbar) {
     return;
@@ -919,6 +924,8 @@ void SidebarContainerView::UpdateToolbarButtonVisibility() {
 void SidebarContainerView::UpdateToolbarButtonHighlight() {
 #if BUILDFLAG(ENABLE_SIDEBAR_V2)
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
+  // See UpdateToolbarButtonVisibility() for why brave_toolbar /
+  // side_panel_button() may be null here.
   auto* brave_toolbar = static_cast<BraveToolbarView*>(browser_view->toolbar());
   if (brave_toolbar && brave_toolbar->side_panel_button()) {
     brave_toolbar->side_panel_button()->SetHighlighted(

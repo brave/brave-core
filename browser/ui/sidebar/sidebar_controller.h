@@ -64,6 +64,11 @@ class SidebarController : public SidebarService::Observer {
   void ActivatePanelItem(SidebarItem::BuiltInItemType panel_item);
   void DeactivateCurrentPanel();
 
+  // Toggles a session-only "pin" that forces the sidebar control view
+  // visible regardless of the current show option. Pinned state is cleared
+  // when the show option changes (via OnShowSidebarOptionChanged) and when
+  // the browser window closes; it is not persisted. V2 only — invoked by
+  // the toolbar SidePanelButton when V2 is enabled.
   void ToggleSidebarPinning();
   bool sidebar_pinned() const { return sidebar_pinned_; }
 

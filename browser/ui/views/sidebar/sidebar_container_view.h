@@ -139,13 +139,17 @@ class SidebarContainerView : public sidebar::Sidebar,
 
   class BrowserWindowEventObserver;
 
+  // Whether the show transition should slide in or snap immediately.
+  enum class AnimationStyle { kAnimated, kImmediate };
+
   void AddChildViews();
   void UpdateBackground();
   bool ShouldUseAnimation();
   void ShowSidebarControlView();
 
   // Show control view. panel's visibility depends on |show_side_panel|.
-  void ShowSidebar(bool show_side_panel, bool suppress_animation = false);
+  void ShowSidebar(bool show_side_panel,
+                   AnimationStyle animation = AnimationStyle::kAnimated);
 
   // Show all (panel + control view).
   void ShowSidebarAll();
