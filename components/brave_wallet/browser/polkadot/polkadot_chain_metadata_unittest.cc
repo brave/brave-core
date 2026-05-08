@@ -306,7 +306,8 @@ TEST(PolkadotChainMetadataUnitTest, Security_V14NoStorage_ParsesCorrectly) {
 
 // v14 metadata with Map storage, hasher=0 (Blake2_128).
 // Vec<StorageHasher> decode succeeds: 0x00 decodes as Compact(0)=empty vec.
-TEST(PolkadotChainMetadataUnitTest, Security_V14MapStorageHasher0_ParsesCorrectly) {
+TEST(PolkadotChainMetadataUnitTest,
+     Security_V14MapStorageHasher0_ParsesCorrectly) {
   std::vector<uint8_t> bytes;
   ASSERT_TRUE(PrefixedHexStringToBytes(
       "0x6d6574610e080000000000000400000104507472616e736665725f616c6c6f"
@@ -325,7 +326,8 @@ TEST(PolkadotChainMetadataUnitTest, Security_V14MapStorageHasher0_ParsesCorrectl
 // v14 metadata with Map storage, hasher=1 (Blake2_256).
 // Vec<StorageHasher> decode fails (0x01 triggers two-byte Compact mode),
 // but the single-byte fallback succeeds.
-TEST(PolkadotChainMetadataUnitTest, Security_V14MapStorageHasher1_ParsesCorrectly) {
+TEST(PolkadotChainMetadataUnitTest,
+     Security_V14MapStorageHasher1_ParsesCorrectly) {
   std::vector<uint8_t> bytes;
   ASSERT_TRUE(PrefixedHexStringToBytes(
       "0x6d6574610e080000000000000400000104507472616e736665725f616c6c6f"
@@ -342,7 +344,8 @@ TEST(PolkadotChainMetadataUnitTest, Security_V14MapStorageHasher1_ParsesCorrectl
 }
 
 // v15 metadata with Map storage, hasher=1 encoded as Vec<StorageHasher>([1]).
-TEST(PolkadotChainMetadataUnitTest, Security_V15MapStorageHasher1_ParsesCorrectly) {
+TEST(PolkadotChainMetadataUnitTest,
+     Security_V15MapStorageHasher1_ParsesCorrectly) {
   std::vector<uint8_t> bytes;
   ASSERT_TRUE(PrefixedHexStringToBytes(
       "0x6d6574610f080000000000000400000104507472616e736665725f616c6c6f"
@@ -368,7 +371,8 @@ TEST(PolkadotChainMetadataUnitTest, Security_V15MapStorageHasher1_ParsesCorrectl
 // to avoid misinterpreting multi-byte fixed-width encodings as compact.
 
 // v15 metadata with SS58Prefix as u16(42)=[0x2a, 0x00] → returns 42.
-TEST(PolkadotChainMetadataUnitTest, Security_SS58PrefixU16_ReturnsCorrectValue) {
+TEST(PolkadotChainMetadataUnitTest,
+     Security_SS58PrefixU16_ReturnsCorrectValue) {
   std::vector<uint8_t> bytes;
   ASSERT_TRUE(PrefixedHexStringToBytes(
       "0x6d6574610f080000000000000400000104507472616e736665725f616c6c6f"
@@ -383,7 +387,8 @@ TEST(PolkadotChainMetadataUnitTest, Security_SS58PrefixU16_ReturnsCorrectValue) 
 }
 
 // v15 metadata with SS58Prefix as Compact<u32>(42)=[0xa8] → returns 42.
-TEST(PolkadotChainMetadataUnitTest, Security_SS58PrefixCompact_ReturnsCorrectValue) {
+TEST(PolkadotChainMetadataUnitTest,
+     Security_SS58PrefixCompact_ReturnsCorrectValue) {
   std::vector<uint8_t> bytes;
   ASSERT_TRUE(PrefixedHexStringToBytes(
       "0x6d6574610f080000000000000400000104507472616e736665725f616c6c6f"
