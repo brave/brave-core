@@ -776,6 +776,37 @@
   <message name="IDS_SETTINGS_PUSH_MESSAGING" desc="Select value">
     Use Google services for push messaging
   </message>
+  <!-- History retention -->
+  <message name="IDS_SETTINGS_HISTORY_RETENTION_LABEL" desc="Label for the setting that controls how long browsing history is retained">
+    Local history retention
+  </message>
+  <message name="IDS_SETTINGS_HISTORY_RETENTION_SUB_LABEL" desc="Description for the setting that controls how long browsing history is retained">
+    How long Brave stores your browsing history locally
+  </message>
+  <message name="IDS_SETTINGS_HISTORY_RETENTION_ONE_DAY" desc="Dropdown option that keeps browsing history for one day">
+    1 day
+  </message>
+  <message name="IDS_SETTINGS_HISTORY_RETENTION_ONE_WEEK" desc="Dropdown option that keeps browsing history for one week">
+    1 week
+  </message>
+  <message name="IDS_SETTINGS_HISTORY_RETENTION_ONE_MONTH" desc="Dropdown option that keeps browsing history for one month">
+    1 month
+  </message>
+  <message name="IDS_SETTINGS_HISTORY_RETENTION_THREE_MONTHS" desc="Dropdown option that keeps browsing history for three months">
+    3 months
+  </message>
+  <message name="IDS_SETTINGS_HISTORY_RETENTION_SIX_MONTHS" desc="Dropdown option that keeps browsing history for six months">
+    6 months
+  </message>
+  <message name="IDS_SETTINGS_HISTORY_RETENTION_ONE_YEAR" desc="Dropdown option that keeps browsing history for one year">
+    1 year
+  </message>
+  <message name="IDS_SETTINGS_HISTORY_RETENTION_FIVE_YEARS" desc="Dropdown option that keeps browsing history for five years">
+    5 years
+  </message>
+  <message name="IDS_SETTINGS_HISTORY_RETENTION_FOREVER" desc="Dropdown option that keeps browsing history until the user deletes it">
+    Forever
+  </message>
   <!-- Diagnostic reports -->
   <message name="IDS_BRAVE_DIAGNOSTIC_REPORTS_PREF" desc="The label of the checkbox to enable/disable sending diagnostic reports (crashes, hangs).">
     Automatically send diagnostic reports

@@ -65,6 +65,7 @@
 #include "components/content_settings/core/common/pref_names.h"
 #include "components/embedder_support/pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
+#include "components/history/core/common/pref_names.h"
 #include "components/ntp_tiles/tile_type.h"
 #include "components/omnibox/browser/omnibox_prefs.h"
 #include "components/password_manager/core/common/password_manager_pref_names.h"
@@ -438,6 +439,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   registry->RegisterBooleanPref(kShieldsStatsBadgeVisible, true);
   registry->RegisterBooleanPref(kGoogleLoginControlType, true);
+  registry->RegisterIntegerPref(prefs::kBraveHistoryRetentionDays, 90);
   registry->RegisterBooleanPref(
       query_filter::kTrackingQueryParametersFilteringEnabled, true);
   registry->RegisterBooleanPref(

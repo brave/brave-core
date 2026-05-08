@@ -130,6 +130,7 @@ source_set("extensions") {
     "//chrome/common",
     "//components/browsing_data/core",
     "//components/gcm_driver:gcm_buildflags",
+    "//components/history/core/common",
     "//components/prefs",
     "//components/update_client:network_impl",
     "//components/user_prefs",
