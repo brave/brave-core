@@ -7,6 +7,8 @@
 
 namespace page_actions {
 
+PageActionModel::~PageActionModel() = default;
+
 void PageActionModel::SetAlwaysShowLabel(base::PassKey<PageActionController>,
                                          bool always_show) {
   if (always_show_label_ == always_show) {

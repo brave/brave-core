@@ -1,11 +1,11 @@
 diff --git a/chrome/browser/ui/views/page_action/page_action_model.h b/chrome/browser/ui/views/page_action/page_action_model.h
-index 05c873f91672109a073561149122969c5d906069..2cab1aaf5e6c742e437bcb849105912af57a106e 100644
+index 05c873f91672109a073561149122969c5d906069..0ec41b2c39083146f18f7864add7593b278d4f53 100644
 --- a/chrome/browser/ui/views/page_action/page_action_model.h
 +++ b/chrome/browser/ui/views/page_action/page_action_model.h
-@@ -40,6 +40,22 @@ class PageActionModelInterface {
-  public:
-   PageActionModelInterface() = default;
-   virtual ~PageActionModelInterface() = default;
+@@ -120,9 +120,25 @@ class PageActionModelInterface {
+   virtual PageActionColorSource GetColorSource() const = 0;
+ 
+   virtual bool IsEphemeral() const = 0;
 +  virtual void SetOverrideChipColors(
 +      base::PassKey<PageActionController>,
 +      std::optional<SkColor> override_background_color,
@@ -16,55 +16,44 @@ index 05c873f91672109a073561149122969c5d906069..2cab1aaf5e6c742e437bcb849105912a
 +                                 std::optional<int> height) = 0;
 +  virtual void SetOverrideTriggerableEvent(base::PassKey<PageActionController>,
 +                                           std::optional<int> event_flags) = 0;
-+
 +  virtual std::optional<SkColor> GetOverrideBackgroundColor() const = 0;
 +  virtual std::optional<SkColor> GetOverrideForegroundColor() const = 0;
 +  virtual bool GetAlwaysShowLabel() const = 0;
 +  virtual std::optional<int> GetOverrideHeight() const = 0;
 +  virtual std::optional<int> GetOverrideTriggerableEvent() const = 0;
+ };
  
-   virtual void AddObserver(PageActionModelObserver* observer) = 0;
-   virtual void RemoveObserver(PageActionModelObserver* observer) = 0;
-@@ -130,6 +146,31 @@ class PageActionModel : public PageActionModelInterface {
-   PageActionModel& operator=(const PageActionModel&) = delete;
-   ~PageActionModel() override;
+ // PageActionModel represents the page action's state, scoped to a single tab.
++namespace chromium_impl {
+ class PageActionModel : public PageActionModelInterface {
+  public:
+   explicit PageActionModel(bool is_ephemeral = false);
+@@ -219,6 +235,7 @@ class PageActionModel : public PageActionModelInterface {
+   bool IsEphemeral() const override;
  
-+  void SetOverrideChipColors(
-+      base::PassKey<PageActionController>,
-+      std::optional<SkColor> override_background_color,
-+      std::optional<SkColor> override_foreground_color) override;
-+  void SetAlwaysShowLabel(base::PassKey<PageActionController>,
-+                          bool always_show) override;
-+  void SetOverrideHeight(base::PassKey<PageActionController>,
-+                         std::optional<int> height_px) override;
-+  void SetOverrideTriggerableEvent(base::PassKey<PageActionController>,
-+                                  std::optional<int> event_flags) override;
-+  std::optional<SkColor> GetOverrideBackgroundColor() const override;
-+  std::optional<SkColor> GetOverrideForegroundColor() const override;
-+  bool GetAlwaysShowLabel() const override;
-+  std::optional<int> GetOverrideHeight() const override;
-+  std::optional<int> GetOverrideTriggerableEvent() const override;
-+
-+ private:
-+  std::optional<SkColor> override_background_color_;
-+  std::optional<SkColor> override_foreground_color_;
-+  bool always_show_label_ = false;
-+  std::optional<int> override_height_;
-+  std::optional<int> override_triggerable_event_flags_;
-+
-+ public:
-+
-   void AddObserver(PageActionModelObserver* observer) override;
-   void RemoveObserver(PageActionModelObserver* observer) override;
- 
-@@ -223,6 +264,10 @@ class PageActionModel : public PageActionModelInterface {
+  private:
++  friend class ::page_actions::PageActionModel;
+   // Identifies which property triggered a NotifyChange call, used for
    // per-property reentrancy checks.
    enum class Property {
-     kShowRequested,
+@@ -241,7 +258,11 @@ class PageActionModel : public PageActionModelInterface {
+     kAnchoredMessageActionIcon,
+     kIsAnchoredMessageShowing,
+     kAnchoredMessageIcon,
+-    kMaxValue = kAnchoredMessageIcon,
 +    kAlwaysShowLabel,
 +    kOverrideChipColors,
 +    kOverrideHeight,
 +    kOverrideTriggerableEvent,
-     kShouldShowSuggestionChip,
-     kSuggestionChipConfig,
-     kTabActive,
++    kMaxValue = kOverrideTriggerableEvent,
+   };
+   using PropertySet =
+       base::EnumSet<Property, Property::kShowRequested, Property::kMaxValue>;
+@@ -340,6 +361,7 @@ class PageActionModel : public PageActionModelInterface {
+ 
+   base::ObserverList<PageActionModelObserver> observer_list_;
+ };
++}  // namespace chromium_impl
+ 
+ class PageActionModelFactory {
+  public:

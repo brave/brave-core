@@ -60,7 +60,7 @@ class PartitionedStoragePageActionController {
   void OnPartitionedStorageMenuClosed();
 
   const raw_ref<tabs::TabInterface> tab_;
-  const raw_ref<page_actions::PageActionController> page_action_controller_;
+  const raw_ref<page_actions::PageActionControllerImpl> page_action_controller_;
   base::CallbackListSubscription did_activate_subscription_;
   base::CallbackListSubscription did_become_visible_subscription_;
   base::CallbackListSubscription will_discard_contents_subscription_;
