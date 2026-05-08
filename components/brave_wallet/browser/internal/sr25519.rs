@@ -19,7 +19,12 @@ mod ffi {
 
         fn generate_sr25519_keypair_from_seed(bytes: &[u8]) -> Box<CxxSchnorrkelKeyPair>;
         fn create_sr25519_keypair_from_pkcs8(pkcs8: &[u8; 117]) -> Box<CxxSchnorrkelKeyPairResult>;
+        fn clone(self: &CxxSchnorrkelKeyPair) -> Box<CxxSchnorrkelKeyPair>;
         fn derive_hard(self: &CxxSchnorrkelKeyPair, junction: &[u8]) -> Box<CxxSchnorrkelKeyPair>;
+        fn derive_hard_from_account_index(
+            self: &CxxSchnorrkelKeyPair,
+            index: u32,
+        ) -> Box<CxxSchnorrkelKeyPair>;
         fn get_public_key(self: &CxxSchnorrkelKeyPair) -> [u8; 32];
 
         // Used for deterministic schnorr signatures in testing.
@@ -31,6 +36,8 @@ mod ffi {
         fn verify_message(self: &CxxSchnorrkelKeyPair, sig_bytes: &[u8], msg: &[u8]) -> bool;
     }
 }
+
+use parity_scale_codec::Encode;
 
 #[derive(Clone, Debug)]
 pub enum Error {
@@ -165,6 +172,10 @@ fn create_sr25519_keypair_from_pkcs8(pkcs8: &[u8; 117]) -> Box<CxxSchnorrkelKeyP
 }
 
 impl CxxSchnorrkelKeyPair {
+    fn clone(self: &CxxSchnorrkelKeyPair) -> Box<CxxSchnorrkelKeyPair> {
+        Box::new(CxxSchnorrkelKeyPair { keypair: self.keypair.clone(), use_mock_rng: false })
+    }
+
     fn get_public_key(self: &CxxSchnorrkelKeyPair) -> [u8; 32] {
         self.keypair.public.to_bytes()
     }
@@ -212,6 +223,25 @@ impl CxxSchnorrkelKeyPair {
             Ok(_) => true,
             _ => false,
         }
+    }
+
+    fn derive_hard_from_account_index(
+        self: &CxxSchnorrkelKeyPair,
+        index: u32,
+    ) -> Box<CxxSchnorrkelKeyPair> {
+        let mut cc = [0_u8; JUNCTION_ID_LEN];
+        index.using_encoded(|data| {
+            cc[..data.len()].copy_from_slice(data);
+        });
+
+        Box::new(CxxSchnorrkelKeyPair {
+            keypair: self
+                .keypair
+                .hard_derive_mini_secret_key(Some(schnorrkel::derive::ChainCode(cc)), b"")
+                .0
+                .expand_to_keypair(schnorrkel::ExpansionMode::Ed25519),
+            use_mock_rng: false,
+        })
     }
 
     // `junction` must already be SCALE-encoded

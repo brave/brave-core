@@ -29,14 +29,14 @@ constexpr char kDevPhrase[] =
 // Expected SS58 addresses for kDevPhrase, matching PolkadotKeyring test
 // vectors. Mainnet (prefix 0).
 constexpr const char kMainnetAddress0[] =
-    "14YLzDFZTwnkcJkFij4Km7g5LdkLqKHy47xYGPN6HsLJpfnb";
+    "12bzRJfh7arnnfPPUZHeJUaE62QLEwhK48QnH9LXeK2m1iZU";
 constexpr const char kMainnetAddress1[] =
-    "14QspRnocdHvoDfFnGvvYwskrsSWG8nneJ2BAQ2oSMcsQUxB";
+    "1yMmfLti1k3huRQM2c47WugwonQMqTvQ2GUFxnU7Pcs7xPo";
 // Testnet (prefix 42).
 constexpr const char kTestnetAddress0[] =
-    "5HGiBcFgEBMgT6GEuo9SA98sBnGgwHtPKDXiUukT6aqCrKEx";
+    "5DfhGyQdFobKM8NsWvEeAKk5EQQgYe9AydgJ7rMB6E1EqRzV";
 constexpr const char kTestnetAddress1[] =
-    "5CofVLAGjwvdGXvBiP6ddtZYMVbhT5Xke8ZrshUpj2ZXAnND";
+    "5D34dL5prEUaGNQtPPZ3yN5Y6BnkfXunKXXz6fo7ZJbLwRRH";
 
 bool IsAddressAllowed(const std::string&) {
   return true;

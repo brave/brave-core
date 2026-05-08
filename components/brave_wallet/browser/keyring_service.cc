@@ -1045,6 +1045,7 @@ struct KeyringSeed {
   std::vector<uint8_t> eth_seed;
   std::vector<uint8_t> seed;
   std::vector<uint8_t> entropy;
+  std::array<uint8_t, bip39::kSeedSize> polkadot_seed;
 };
 
 std::optional<KeyringSeed> MakeSeedFromMnemonic(
@@ -1073,6 +1074,12 @@ std::optional<KeyringSeed> MakeSeedFromMnemonic(
   }
 
   result.entropy = *entropy;
+
+  auto polkadot_seed = bip39::MnemonicToEntropyToSeed(mnemonic, "");
+  if (!polkadot_seed) {
+    return std::nullopt;
+  }
+  result.polkadot_seed = *polkadot_seed;
 
   return result;
 }
@@ -1261,7 +1268,7 @@ void KeyringService::CreateKeyrings(const KeyringSeed& keyring_seed) {
   }
   if (IsKeyringEnabled(KeyringId::kPolkadotMainnet)) {
     auto polkadot_seed =
-        base::span(keyring_seed.seed).first<kPolkadotSeedSize>();
+        base::span(keyring_seed.polkadot_seed).first<kPolkadotSeedSize>();
     polkadot_mainnet_keyring_ = std::make_unique<PolkadotKeyring>(
         polkadot_seed, KeyringId::kPolkadotMainnet, is_address_allowed);
     polkadot_testnet_keyring_ = std::make_unique<PolkadotKeyring>(

@@ -34,6 +34,10 @@ HDKeySr25519& HDKeySr25519::operator=(HDKeySr25519&& rhs) noexcept {
 
 HDKeySr25519::~HDKeySr25519() = default;
 
+HDKeySr25519 HDKeySr25519::Clone() {
+  return HDKeySr25519(keypair_->clone());
+}
+
 // static
 HDKeySr25519 HDKeySr25519::GenerateFromSeed(
     base::span<const uint8_t, kSr25519SeedSize> seed) {
@@ -93,6 +97,13 @@ HDKeySr25519 HDKeySr25519::DeriveHard(
   return HDKeySr25519(
       keypair_->derive_hard(base::SpanToRustSlice(derive_junction)));
 }
+
+HDKeySr25519 HDKeySr25519::DeriveHard(uint32_t index) const {
+  CHECK(IsBoxNonNull(keypair_));
+  return HDKeySr25519(keypair_->derive_hard_from_account_index(index));
+}
+
+// HDKerySr25519 HDKeySr25519::DeriveHard(std::string_view) const {}
 
 void HDKeySr25519::UseMockRngForTesting() {
   CHECK_IS_TEST();
