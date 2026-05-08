@@ -5,6 +5,6 @@
      You can obtain one at https://mozilla.org/MPL/2.0/.
 -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_enabled="false" android:alpha="0.5" android:color="@color/text_disabled"/>
+    <item android:state_enabled="false" android:color="@color/text_disabled"/>
     <item android:color="@color/schemes_on_primary"/>
 </selector>
