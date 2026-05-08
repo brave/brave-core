@@ -55,14 +55,12 @@ ContainersTabMenuModelDelegate::GetCurrentContainerIds() {
       continue;
     }
 
-    auto storage_partition_config = contents->GetSiteInstance()
-                                        ->GetSecurityPrincipal()
-                                        .GetStoragePartitionConfig();
-    if (!containers::IsContainersStoragePartition(storage_partition_config)) {
+    auto container_id = containers::GetContainerIdForWebContents(contents);
+    if (container_id.empty()) {
       continue;
     }
 
-    container_ids.insert(storage_partition_config.partition_name());
+    container_ids.insert(container_id);
   }
 
   return container_ids;
