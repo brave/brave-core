@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_OBLIVIOUS_HTTP_OBLIVIOUS_HTTP_CHUNK_HANDLER_H_
-#define BRAVE_COMPONENTS_OBLIVIOUS_HTTP_OBLIVIOUS_HTTP_CHUNK_HANDLER_H_
+#ifndef BRAVE_COMPONENTS_OBLIVIOUS_HTTP_OBLIVIOUS_HTTP_CHUNK_PROCESSOR_H_
+#define BRAVE_COMPONENTS_OBLIVIOUS_HTTP_OBLIVIOUS_HTTP_CHUNK_PROCESSOR_H_
 
 #include <memory>
 #include <optional>
@@ -31,18 +31,18 @@ namespace oblivious_http {
 //
 // Use Create() to construct — it handles key parsing and client creation.
 // Call EncryptRequest() once after Create() to encrypt the request payload.
-class ObliviousHttpChunkHandler
+class ObliviousHttpChunkProcessor
     : public quiche::ObliviousHttpChunkHandler,
       public quiche::BinaryHttpResponse::IndeterminateLengthDecoder::
           MessageSectionHandler,
       public network::SimpleURLLoaderStreamConsumer {
  public:
-  ObliviousHttpChunkHandler(
+  ObliviousHttpChunkProcessor(
       mojo::PendingRemote<network::mojom::ObliviousHttpChunkClient>
           chunk_client_remote,
       base::OnceCallback<void(std::optional<std::string>)> on_request_complete);
 
-  // Parses |key_config_str| and constructs the handler. Returns nullptr if
+  // Parses |key_config_str| and constructs the decoder. Returns nullptr if
   // key parsing or client creation fails.
   //
   // |on_request_complete| maps directly to OnRequestComplete: called with
@@ -50,7 +50,7 @@ class ObliviousHttpChunkHandler
   // loader->NetError() runs) and with "" on success (so the chunked
   // completion path in BRAVE_OBLIVIOUS_HTTP_MAYBE_NOTIFY_COMPLETE_FROM_CHUNKS
   // runs).
-  static std::unique_ptr<ObliviousHttpChunkHandler> Create(
+  static std::unique_ptr<ObliviousHttpChunkProcessor> Create(
       const std::string& key_config_str,
       mojo::PendingRemote<network::mojom::ObliviousHttpChunkClient>
           chunk_client_remote,
@@ -60,7 +60,7 @@ class ObliviousHttpChunkHandler
   // Create() and before any response data arrives.
   std::optional<std::string> EncryptRequest(std::string_view plaintext);
 
-  ~ObliviousHttpChunkHandler() override;
+  ~ObliviousHttpChunkProcessor() override;
 
   int inner_status_code() const { return inner_status_code_; }
   scoped_refptr<net::HttpResponseHeaders> headers() const { return headers_; }
@@ -104,7 +104,7 @@ class ObliviousHttpChunkHandler
   std::vector<std::pair<std::string, std::string>> pending_headers_;
 
   quiche::BinaryHttpResponse::IndeterminateLengthDecoder bhttp_decoder_;
-  // Populated in Create() after the handler has a stable address.
+  // Populated in Create() after the decoder has a stable address.
   std::optional<quiche::ChunkedObliviousHttpClient> ohttp_client_;
 
   base::OnceCallback<void(std::optional<std::string>)> on_request_complete_;
@@ -114,4 +114,4 @@ class ObliviousHttpChunkHandler
 
 }  // namespace oblivious_http
 
-#endif  // BRAVE_COMPONENTS_OBLIVIOUS_HTTP_OBLIVIOUS_HTTP_CHUNK_HANDLER_H_
+#endif  // BRAVE_COMPONENTS_OBLIVIOUS_HTTP_OBLIVIOUS_HTTP_CHUNK_PROCESSOR_H_

@@ -7,8 +7,8 @@ source_set("oblivious_http") {
   visibility = [ "//services/network:network_service" ]
 
   sources = [
-    "oblivious_http_chunk_handler.cc",
-    "oblivious_http_chunk_handler.h",
+    "oblivious_http_chunk_processor.cc",
+    "oblivious_http_chunk_processor.h",
     "utils.cc",
     "utils.h",
   ]

@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/oblivious_http/oblivious_http_chunk_handler.h"
+#include "brave/components/oblivious_http/oblivious_http_chunk_processor.h"
 #include "brave/components/oblivious_http/utils.h"
 #include "net/base/net_errors.h"
 #include "url/gurl.h"
@@ -18,7 +18,7 @@ constexpr char kChunkedObliviousHttpRequestMimeType[] =
 // BRAVE_OBLIVIOUS_HTTP_REQUEST_STATE_MEMBERS adds the chunked-OHTTP handler
 // field to ObliviousHttpRequestHandler::RequestState.
 #define BRAVE_OBLIVIOUS_HTTP_REQUEST_STATE_MEMBERS \
-  std::unique_ptr<oblivious_http::ObliviousHttpChunkHandler> chunk_handler;
+  std::unique_ptr<oblivious_http::ObliviousHttpChunkProcessor> chunk_handler;
 
 // BRAVE_OBLIVIOUS_HTTP_MAYBE_ENCRYPT_AS_CHUNKED runs before non-chunked
 // encryption in ContinueHandlingRequest. When chunking is enabled it delegates
@@ -26,26 +26,28 @@ constexpr char kChunkedObliviousHttpRequestMimeType[] =
 // encrypts the request payload via EncryptRequest(). The encrypted blob is
 // stored in a function-local for use in
 // BRAVE_OBLIVIOUS_HTTP_CONTINUE_HANDLING_REQUEST.
-#define BRAVE_OBLIVIOUS_HTTP_MAYBE_ENCRYPT_AS_CHUNKED                         \
-  std::optional<std::string> chunked_encrypted_blob;                          \
-  if (state->request->enable_chunking) {                                      \
-    CHECK(state->request->chunk_client);                                      \
-    state->chunk_handler = oblivious_http::ObliviousHttpChunkHandler::Create( \
-        state->request->key_config, std::move(state->request->chunk_client),  \
-        base::BindOnce(&ObliviousHttpRequestHandler::OnRequestComplete,       \
-                       base::Unretained(this), id));                          \
-    if (!state->chunk_handler) {                                              \
-      RespondWithError(id, net::ERR_FAILED,                                   \
-                       /*outer_response_error_code=*/std::nullopt);           \
-      return;                                                                 \
-    }                                                                         \
-    chunked_encrypted_blob =                                                  \
-        state->chunk_handler->EncryptRequest(padded_payload);                 \
-    if (!chunked_encrypted_blob) {                                            \
-      RespondWithError(id, net::ERR_FAILED,                                   \
-                       /*outer_response_error_code=*/std::nullopt);           \
-      return;                                                                 \
-    }                                                                         \
+#define BRAVE_OBLIVIOUS_HTTP_MAYBE_ENCRYPT_AS_CHUNKED                       \
+  std::optional<std::string> chunked_encrypted_blob;                        \
+  if (state->request->enable_chunking) {                                    \
+    CHECK(state->request->chunk_client);                                    \
+    state->chunk_handler =                                                  \
+        oblivious_http::ObliviousHttpChunkProcessor::Create(                \
+            state->request->key_config,                                     \
+            std::move(state->request->chunk_client),                        \
+            base::BindOnce(&ObliviousHttpRequestHandler::OnRequestComplete, \
+                           base::Unretained(this), id));                    \
+    if (!state->chunk_handler) {                                            \
+      RespondWithError(id, net::ERR_FAILED,                                 \
+                       /*outer_response_error_code=*/std::nullopt);         \
+      return;                                                               \
+    }                                                                       \
+    chunked_encrypted_blob =                                                \
+        state->chunk_handler->EncryptRequest(padded_payload);               \
+    if (!chunked_encrypted_blob) {                                          \
+      RespondWithError(id, net::ERR_FAILED,                                 \
+                       /*outer_response_error_code=*/std::nullopt);         \
+      return;                                                               \
+    }                                                                       \
   }
 
 // BRAVE_OBLIVIOUS_HTTP_CONTINUE_HANDLING_REQUEST applies Brave relay headers
