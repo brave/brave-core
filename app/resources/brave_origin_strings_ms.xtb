@@ -105,7 +105,7 @@ peranti Bluetooth. <ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"
 <translation id="2170098639895543546">Pilih apa-apa sahaja pada halaman</translation>
 <translation id="142389341645668510">Sesuaikan Brave</translation>
 <translation id="2174917724755363426">Pemasangan belum selesai. Anda pasti ingin membatalkan?</translation>
-<translation id="8745514854244955877">Brave - Log Masuk Rangkaian - <ph name="PAGE_TITLE"/></translation>
+<translation id="8841019650931243995">Brave Origin - Log Masuk Rangkaian - <ph name="PAGE_TITLE"/></translation>
 <translation id="2190166659037789668">Ralat semakan kemaskinian: <ph name="UPDATE_CHECK_ERROR"/>.</translation>
 <translation id="2058539073923004395">Alih keluar akaun daripada Brave</translation>
 <translation id="5550942974310218641">Kekal lebih selamat semasa dalam perjalanan dengan Penyemakan Imbas Selamat Dipertingkat pada Brave untuk iOS</translation>
@@ -291,7 +291,7 @@ peranti Bluetooth. <ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"
 <translation id="10925962326134232">Sesuaikan Brave untuk memberikan penyemak imbas anda rupa baharu</translation>
 <translation id="6596295505984504022">Sesuaikan Brave anda</translation>
 <translation id="4148957013307229264">Memasang...</translation>
-<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - Log Masuk Rangkaian - Brave</translation>
+<translation id="5011704081781303429"><ph name="PAGE_TITLE"/> - Log Masuk Rangkaian - Brave Origin</translation>
 <translation id="2871190378186459992">Temui apl, permainan, sambungan dan tema yang hebat untuk Brave.</translation>
 <translation id="462105622535258178">Untuk mendapatkan sambungan ini dan pelbagai lagi pada semua komputer anda, log masuk ke Brave</translation>
 <translation id="6670140629169983459">Untuk kekal lebih selamat dalam talian dengan pilihan ibu/bapa anda, beralih kepada profil Brave anda yang sudah digunakan untuk log masuk sebagai <ph name="USER_EMAIL_ADDRESS"/></translation>
@@ -527,7 +527,7 @@ Beberapa ciri mungkin tidak tersedia. Sila nyatakan direktori profil yang berbez
 <translation id="6831043979455480757">Terjemah</translation>
 <translation id="8211837073776713955">Brave akan memberitahu anda sekiranya kata laluan anda terjejas</translation>
 <translation id="684888714667046800">Tidak dapat disambungkan kepada Internet. Jika anda menggunakan tembok api, sila pastikan bahawa <ph name="PRODUCT_EXE_NAME"/> terkandung dalam senarai putih.</translation>
-<translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="8237613041998823669">Brave Origin - <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">Tab untuk meneruskan proses</translation>
 <translation id="6862030660799253820">Cari imej ini dengan Carian Imej</translation>
 <translation id="3028928628792374067">Brave mendapati bahawa "<ph name="EXTENSION_NAME"/>" mengandungi perisian hasad</translation>

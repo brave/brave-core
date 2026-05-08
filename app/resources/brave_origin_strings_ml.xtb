@@ -107,7 +107,7 @@
 <translation id="2170098639895543546">പേജിലുള്ള എന്തെങ്കിലും തിരഞ്ഞെടുക്കുക</translation>
 <translation id="142389341645668510">Brave ഇഷ്ടാനുസൃതമാക്കുക</translation>
 <translation id="2174917724755363426">ഇൻസ്റ്റാൾ ചെയ്യൽ പൂർത്തിയായിട്ടില്ല. റദ്ദാക്കണമെന്ന് ഉറപ്പാണോ?</translation>
-<translation id="8745514854244955877">Brave - നെറ്റ്‌വർക്ക് സൈൻ ഇൻ - <ph name="PAGE_TITLE"/></translation>
+<translation id="8841019650931243995">Brave Origin - നെറ്റ്‌വർക്ക് സൈൻ ഇൻ - <ph name="PAGE_TITLE"/></translation>
 <translation id="2190166659037789668">അപ്ഡേറ്റ് പരിശോധനയിലെ പിശക്: <ph name="UPDATE_CHECK_ERROR"/>.</translation>
 <translation id="2058539073923004395">Brave-ൽ നിന്ന് അക്കൗണ്ട് നീക്കം ചെയ്യുക</translation>
 <translation id="5550942974310218641">iOS-നുള്ള Brave-ലെ മെച്ചപ്പെടുത്തിയ സുരക്ഷിത ബ്രൗസിംഗ് ഉപയോഗിച്ച് എവിടെയായിരുന്നാലും സുരക്ഷിതരായിരിക്കുക</translation>
@@ -293,7 +293,7 @@
 <translation id="10925962326134232">നിങ്ങളുടെ ബ്രൗസറിന് പുതിയ രൂപം നൽകാൻ Brave ഇഷ്‌ടാനുസൃതമാക്കുക</translation>
 <translation id="6596295505984504022">നിങ്ങളുടെ Brave ഇഷ്‌ടാനുസൃതമാക്കുക</translation>
 <translation id="4148957013307229264">ഇന്‍സ്റ്റാളുചെയ്യുന്നു...</translation>
-<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - നെറ്റ്‌വർക്ക് സൈൻ ഇൻ - Brave</translation>
+<translation id="5011704081781303429"><ph name="PAGE_TITLE"/> - നെറ്റ്‌വർക്ക് സൈൻ ഇൻ - Brave Origin</translation>
 <translation id="2871190378186459992">Brave-നായി മികച്ച അപ്ലിക്കേഷനുകളും വിപുലീകരണങ്ങളും തീമുകളും കണ്ടെത്തുക.</translation>
 <translation id="462105622535258178">ഈ വിപുലീകരണവും മറ്റും നിങ്ങളുടെ എല്ലാ കമ്പ്യൂട്ടറുകളിലും ലഭിക്കാൻ, Brave-ലേക്ക് സൈൻ ഇൻ ചെയ്യുക</translation>
 <translation id="6670140629169983459">നിങ്ങളുടെ രക്ഷിതാക്കളുടെ ചോയ്‌സുകൾ ഉപയോഗിച്ച് ഓൺലൈനിൽ സുരക്ഷിതരായിരിക്കാൻ, <ph name="USER_EMAIL_ADDRESS"/> ആയി ഇതിനകം സൈൻ ഇൻ ചെയ്ത നിങ്ങളുടെ Brave പ്രൊഫൈലിലേക്ക് മാറുക</translation>
@@ -529,7 +529,7 @@
 <translation id="6831043979455480757">വിവർത്തനം ചെയ്യുക</translation>
 <translation id="8211837073776713955">നിങ്ങളുടെ പാസ്‌വേഡുകൾ എപ്പോഴെങ്കിലും അപഹരിക്കപ്പെട്ടിട്ടുണ്ടെങ്കിൽ അക്കാര്യം Brave നിങ്ങളെ അറിയിക്കും</translation>
 <translation id="684888714667046800">ഇന്റർനെറ്റിലേക്ക് കണക്റ്റ് ചെയ്യാനാകുന്നില്ല. നിങ്ങൾ ഫയർവാൾ ഉപയോഗിക്കുന്നുണ്ടെങ്കിൽ, <ph name="PRODUCT_EXE_NAME"/> വൈറ്റ്‌ലിസ്റ്റിൽ ഉണ്ടെന്ന് ഉറപ്പാക്കുക.</translation>
-<translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="8237613041998823669">Brave Origin - <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">തുടരാൻ ടാബ് ചെയ്യുക</translation>
 <translation id="6862030660799253820">ചിത്രമുപയോഗിച്ചുള്ള തിരയൽ ഉപയോഗിച്ച് ഈ ചിത്രം തിരയുക</translation>
 <translation id="3028928628792374067">"<ph name="EXTENSION_NAME"/>" എന്നതിൽ മാൽ‌വെയർ അടങ്ങുന്നതായി Brave കണ്ടെത്തി</translation>

@@ -111,7 +111,7 @@ Mae'n bosib na fydd rhai nodweddion ar gael ac ni fydd newidiadau o ran dewisiad
 <translation id="2170098639895543546">Dewiswch unrhyw beth ar y dudalen</translation>
 <translation id="142389341645668510">Personoleiddio Brave</translation>
 <translation id="2174917724755363426">Gosod heb ei gwblhau. Ydych chi'n siŵr eich bod am ganslo?</translation>
-<translation id="8745514854244955877">Brave - Mewngofnodi Rhwydwaith - <ph name="PAGE_TITLE"/></translation>
+<translation id="8841019650931243995">Brave Origin - Mewngofnodi Rhwydwaith - <ph name="PAGE_TITLE"/></translation>
 <translation id="2190166659037789668">Gwall gwiriad diweddaru: <ph name="UPDATE_CHECK_ERROR"/>.</translation>
 <translation id="2058539073923004395">Tynnu cyfrif o Brave</translation>
 <translation id="5550942974310218641">Cadwch yn fwy diogel wrth fynd gyda Gwell Pori'n Ddiogel ar Brave ar gyfer iOS</translation>
@@ -303,7 +303,7 @@ Mae'n bosib na fydd rhai nodweddion ar gael ac ni fydd newidiadau o ran dewisiad
 <translation id="10925962326134232">Gallwch addasu Brave i roi gwedd newydd i'ch porwr</translation>
 <translation id="6596295505984504022">A&amp;ddasu eich Brave</translation>
 <translation id="4148957013307229264">Wrthi’n gosod...</translation>
-<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - Mewngofnodi Rhwydwaith - Brave</translation>
+<translation id="5011704081781303429"><ph name="PAGE_TITLE"/> - Mewngofnodi Rhwydwaith - Brave Origin</translation>
 <translation id="2871190378186459992">Darganfyddwch apiau, gemau, estyniadau a themâu gwych ar gyfer Brave.</translation>
 <translation id="462105622535258178">I gael yr estyniad hwn a rhagor ar eich holl gyfrifiaduron, mewngofnodwch i Brave</translation>
 <translation id="6670140629169983459">I aros yn fwy diogel ar-lein gyda dewisiadau eich rhiant, newidiwch i'ch proffil Brave lle rydych eisoes wedi mewngofnodi fel <ph name="USER_EMAIL_ADDRESS"/></translation>
@@ -541,7 +541,7 @@ Mae'n bosib na fydd rhai nodweddion ar gael. Rhowch gyfeiriadur proffil gwahanol
 <translation id="6831043979455480757">Cyfieithu</translation>
 <translation id="8211837073776713955">Mae Brave yn gadael i chi wybod a yw'ch cyfrineiriau byth wedi'u darganfod</translation>
 <translation id="684888714667046800">Methu â chysylltu â'r Rhyngrwyd. Os ydych yn defnyddio mur cadarn, sicrhewch fod <ph name="PRODUCT_EXE_NAME"/> yn y rhestr ganiatáu.</translation>
-<translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="8237613041998823669">Brave Origin - <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">Pwyswch Tab i barhau</translation>
 <translation id="6862030660799253820">Chwilio'r llun hwn gyda Chwilio Lluniau</translation>
 <translation id="3028928628792374067">Gwnaeth Brave ganfod bod "<ph name="EXTENSION_NAME"/>" yn cynnwys drwgwedd</translation>

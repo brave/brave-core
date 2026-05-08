@@ -105,7 +105,7 @@
 <translation id="2170098639895543546">পৃষ্ঠায় যা খুশি বেছে নিন</translation>
 <translation id="142389341645668510">Brave কাস্টমাইজ করুন</translation>
 <translation id="2174917724755363426">ইনস্টলেশন শেষ হয়নি। আপনি কি সত্যিই বাতিল করতে চান?</translation>
-<translation id="8745514854244955877">Brave - নেটওয়ার্ক সাইন-ইন - <ph name="PAGE_TITLE"/></translation>
+<translation id="8841019650931243995">Brave Origin - নেটওয়ার্ক সাইন-ইন - <ph name="PAGE_TITLE"/></translation>
 <translation id="2190166659037789668">আপডেট চেক করার সময় সমস্যা হয়েছে: <ph name="UPDATE_CHECK_ERROR"/>।</translation>
 <translation id="2058539073923004395">Brave থেকে অ্যাকাউন্ট সরান</translation>
 <translation id="5550942974310218641">iOS-এর জন্য Brave-এ উন্নত Safe Browsing সুবিধার সাহায্যে যেতে যেতে সুরক্ষিত থাকুন</translation>
@@ -291,7 +291,7 @@
 <translation id="10925962326134232">আপনার ব্রাউজারকে একটি নতুন লুক দিতে Brave কাস্টমাইজ করুন</translation>
 <translation id="6596295505984504022">আপনার Brave কাস্টমাইজ করুন</translation>
 <translation id="4148957013307229264">ইনস্টল হচ্ছে...</translation>
-<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - নেটওয়ার্ক সাইন-ইন - Brave</translation>
+<translation id="5011704081781303429"><ph name="PAGE_TITLE"/> - নেটওয়ার্ক সাইন-ইন - Brave Origin</translation>
 <translation id="2871190378186459992">Brave-এর জন্য খুব ভালো অ্যাপ্লিকেশান, গেম, এক্সটেনশন এবং থিমসমূহ আবিষ্কার করুন৷</translation>
 <translation id="462105622535258178">আপনার সব কম্পিউটারে এই এক্সটেনশন এবং আরও অনেক কিছু পেতে, Brave-এ সাইন-ইন করুন</translation>
 <translation id="6670140629169983459">তোমার অভিভাবকের পছন্দ মেনে অনলাইনে আরও নিরাপদ থাকতে, <ph name="USER_EMAIL_ADDRESS"/> হিসেবে আগে থেকেই সাইন-ইন করে আছো এমন Brave প্রোফাইলে পরিবর্তন করো</translation>
@@ -525,7 +525,7 @@
 <translation id="6831043979455480757">অনুবাদ</translation>
 <translation id="8211837073776713955">আপনার পাসওয়ার্ড কখনও চুরি হলে তা Brave আপনাকে জানিয়ে দেবে</translation>
 <translation id="684888714667046800">ইন্টারনেটের সাথে কানেক্ট করা যায়নি। আপনি ফায়ারওয়াল ব্যবহার করলে, <ph name="PRODUCT_EXE_NAME"/> সাদাতালিকায় আছে কিনা দেখে নিন।</translation>
-<translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="8237613041998823669">Brave Origin - <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">চালিয়ে যেতে ট্যাব করুন</translation>
 <translation id="6862030660799253820">'ছবি সার্চ করা' ফিচার ব্যবহার করে এই ছবিটি সার্চ করুন</translation>
 <translation id="3028928628792374067">Brave "<ph name="EXTENSION_NAME"/>"-এ ম্যালওয়্যার আছে বলে খুঁজে পেয়েছে</translation>

@@ -105,7 +105,7 @@
 <translation id="2170098639895543546">Επιλέξτε οτιδήποτε στη σελίδα</translation>
 <translation id="142389341645668510">Προσαρμογή του Brave</translation>
 <translation id="2174917724755363426">Η εγκατάσταση δεν έχει ολοκληρωθεί. Είστε βέβαιοι ότι θέλετε να την ακυρώσετε;</translation>
-<translation id="8745514854244955877">Brave - Σύνδεση δικτύου - <ph name="PAGE_TITLE"/></translation>
+<translation id="8841019650931243995">Brave Origin - Σύνδεση δικτύου - <ph name="PAGE_TITLE"/></translation>
 <translation id="2190166659037789668">Σφάλμα ελέγχου για ενημερώσεις: <ph name="UPDATE_CHECK_ERROR"/>.</translation>
 <translation id="2058539073923004395">Κατάργηση λογαριασμού από το Brave</translation>
 <translation id="5550942974310218641">Παραμείνετε ασφαλείς εν κινήσει με τη Βελτιωμένη Ασφαλή περιήγηση στο Brave για iOS</translation>
@@ -291,7 +291,7 @@
 <translation id="10925962326134232">Προσαρμόστε το Brave για να δώσετε μια νέα εμφάνιση στο πρόγραμμα περιήγησης</translation>
 <translation id="6596295505984504022">Π&amp;ροσαρμογή του Brave</translation>
 <translation id="4148957013307229264">Γίνεται εγκατάσταση...</translation>
-<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - Σύνδεση δικτύου - Brave</translation>
+<translation id="5011704081781303429"><ph name="PAGE_TITLE"/> - Σύνδεση δικτύου - Brave Origin</translation>
 <translation id="2871190378186459992">Ανακαλύψτε καταπληκτικές εφαρμογές, παιχνίδια, επεκτάσεις και θέματα για το Brave.</translation>
 <translation id="462105622535258178">Για να λάβετε αυτή την επέκταση και άλλα στοιχεία σε όλους τους υπολογιστές σας, συνδεθείτε στο Brave</translation>
 <translation id="6670140629169983459">Για να είσαι πιο ασφαλής στο διαδίκτυο με τις επιλογές του γονέα σου, επίλεξε το προφίλ Brave στο οποίο έχεις ήδη συνδεθεί ως <ph name="USER_EMAIL_ADDRESS"/></translation>
@@ -527,7 +527,7 @@
 <translation id="6831043979455480757">Μετάφραση</translation>
 <translation id="8211837073776713955">Το Brave σας ενημερώνει σε περίπτωση παραβίασης των κωδικών πρόσβασής σας.</translation>
 <translation id="684888714667046800">Δεν είναι δυνατή η σύνδεση στο διαδίκτυο. Εάν χρησιμοποιείτε τείχος προστασίας, βεβαιωθείτε ότι το <ph name="PRODUCT_EXE_NAME"/> είναι στη λίστα επιτρεπομένων.</translation>
-<translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="8237613041998823669">Brave Origin - <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">Πατήστε Tab για συνέχεια</translation>
 <translation id="6862030660799253820">Αναζήτηση αυτής της εικόνας με την Αναζήτηση με εικόνες</translation>
 <translation id="3028928628792374067">Το Brave εντόπισε κακόβουλο πρόγραμμα στην επέκταση <ph name="EXTENSION_NAME"/>.</translation>

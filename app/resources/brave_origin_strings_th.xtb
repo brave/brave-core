@@ -104,7 +104,7 @@
 <translation id="2170098639895543546">เลือกสิ่งที่ต้องการในหน้า</translation>
 <translation id="142389341645668510">ปรับแต่ง Brave</translation>
 <translation id="2174917724755363426">การติดตั้งไม่สมบูรณ์ คุณแน่ใจไหมว่าต้องการยกเลิก</translation>
-<translation id="8745514854244955877">Brave - หน้าลงชื่อเข้าใช้ของเครือข่าย - <ph name="PAGE_TITLE"/></translation>
+<translation id="8841019650931243995">Brave Origin - หน้าลงชื่อเข้าใช้ของเครือข่าย - <ph name="PAGE_TITLE"/></translation>
 <translation id="2190166659037789668">ข้อผิดพลาดในการตรวจสอบการอัปเดต: <ph name="UPDATE_CHECK_ERROR"/></translation>
 <translation id="2058539073923004395">นำบัญชีออกจาก Brave</translation>
 <translation id="5550942974310218641">ใช้งานได้อย่างปลอดภัยมากขึ้นทุกที่ทุกเวลาด้วย Safe Browsing พร้อมการปกป้องที่ดียิ่งขึ้นใน Brave สำหรับ iOS</translation>
@@ -290,7 +290,7 @@
 <translation id="10925962326134232">ปรับแต่ง Brave เพื่อสร้างรูปลักษณ์ใหม่ๆ ให้เบราว์เซอร์</translation>
 <translation id="6596295505984504022">ปรับแต่ง Brave</translation>
 <translation id="4148957013307229264">กำลังติดตั้ง...</translation>
-<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - หน้าลงชื่อเข้าใช้ของเครือข่าย - Brave</translation>
+<translation id="5011704081781303429"><ph name="PAGE_TITLE"/> - หน้าลงชื่อเข้าใช้ของเครือข่าย - Brave Origin</translation>
 <translation id="2871190378186459992">พบกับแอป เกม ส่วนขยาย และธีมเด็ดๆ สำหรับ Brave</translation>
 <translation id="462105622535258178">ลงชื่อเข้าใช้ Brave เพื่อรับส่วนขยายนี้และข้อมูลอื่นๆ ในคอมพิวเตอร์ทุกเครื่อง</translation>
 <translation id="6670140629169983459">หากต้องการท่องโลกออนไลน์อย่างปลอดภัยยิ่งขึ้นด้วยตัวเลือกของผู้ปกครอง ให้เปลี่ยนไปใช้โปรไฟล์ Brave ที่คุณลงชื่อเข้าใช้ด้วย <ph name="USER_EMAIL_ADDRESS"/> อยู่แล้ว</translation>
@@ -526,7 +526,7 @@
 <translation id="6831043979455480757">แปลภาษา</translation>
 <translation id="8211837073776713955">Brave จะแจ้งให้ทราบหากมีคนล่วงรู้รหัสผ่านของคุณ</translation>
 <translation id="684888714667046800">เชื่อมต่อกับอินเทอร์เน็ตไม่ได้ หากคุณใช้ไฟร์วอลล์ โปรดตรวจสอบว่า <ph name="PRODUCT_EXE_NAME"/> อยู่ในรายการที่อนุญาต</translation>
-<translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="8237613041998823669">Brave Origin - <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">แตะเพื่อดำเนินการต่อ</translation>
 <translation id="6862030660799253820">ค้นหารูปภาพนี้ด้วยการค้นหารูปภาพ</translation>
 <translation id="3028928628792374067">Brave พบว่า "<ph name="EXTENSION_NAME"/>" มีมัลแวร์</translation>

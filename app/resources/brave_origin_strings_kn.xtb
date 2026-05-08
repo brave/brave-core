@@ -105,7 +105,7 @@
 <translation id="2170098639895543546">ಪುಟದಲ್ಲಿ ಏನನ್ನಾದರೂ ಆಯ್ಕೆಮಾಡಿ</translation>
 <translation id="142389341645668510">Brave ಅನ್ನು ಕಸ್ಟಮೈಸ್ ಮಾಡಿ</translation>
 <translation id="2174917724755363426">ಇನ್‌ಸ್ಟಾಲೇಶನ್ ಪೂರ್ಣಗೊಂಡಿಲ್ಲ. ನೀವು ಖಂಡಿತವಾಗಿಯೂ ರದ್ದುಮಾಡಲು ಬಯಸುವಿರಾ?</translation>
-<translation id="8745514854244955877">Brave - ನೆಟ್‌ವರ್ಕ್ ಸೈನ್ ಇನ್ - <ph name="PAGE_TITLE"/></translation>
+<translation id="8841019650931243995">Brave Origin - ನೆಟ್‌ವರ್ಕ್ ಸೈನ್ ಇನ್ - <ph name="PAGE_TITLE"/></translation>
 <translation id="2190166659037789668">ಅಪ್‌ಡೇಟ್‌‌ ಪರಿಶೀಲನೆ ದೋಷ: <ph name="UPDATE_CHECK_ERROR"/>.</translation>
 <translation id="2058539073923004395">Brave ನಿಂದ ಖಾತೆಯನ್ನು ತೆಗೆದುಹಾಕಿ</translation>
 <translation id="5550942974310218641">iOS ಗಾಗಿ Brave ನಲ್ಲಿ ವರ್ಧಿತ ಸುರಕ್ಷಿತ ಬ್ರೌಸಿಂಗ್‌ನೊಂದಿಗೆ ಪ್ರಯಾಣದಲ್ಲಿರುವಾಗಲೂ ಸುರಕ್ಷಿತವಾಗಿರಿ</translation>
@@ -289,7 +289,7 @@
 <translation id="10925962326134232">ನಿಮ್ಮ ಬ್ರೌಸರ್‌ಗೆ ಹೊಸ ಲುಕ್ ಅನ್ನು ನೀಡಲು Brave ಅನ್ನು ಕಸ್ಟಮೈಸ್ ಮಾಡಿ</translation>
 <translation id="6596295505984504022">ನಿಮ್ಮ Brave ಅನ್ನು ಕಸ್ಟಮೈಸ್ ಮಾಡಿ</translation>
 <translation id="4148957013307229264">ಸ್ಥಾಪನೆಗೊಳ್ಳುತ್ತಿದೆ...</translation>
-<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - ನೆಟ್‌ವರ್ಕ್ ಸೈನ್ ಇನ್ - Brave</translation>
+<translation id="5011704081781303429"><ph name="PAGE_TITLE"/> - ನೆಟ್‌ವರ್ಕ್ ಸೈನ್ ಇನ್ - Brave Origin</translation>
 <translation id="2871190378186459992">Brave ಗಾಗಿ ಅದ್ಭುತ ಅಪ್ಲಿಕೇಶನ್‌‌ಗಳು, ಗೇಮ್‌ಗಳು, ಎಕ್ಸ್‌ಟೆನ್ಷನ್‌‌ಗಳು ಹಾಗೂ ಥೀಮ್‌ಗಳನ್ನು ಅನ್ವೇಷಿಸಿ.</translation>
 <translation id="462105622535258178">ನಿಮ್ಮ ಎಲ್ಲಾ ಕಂಪ್ಯೂಟರ್‌ಗಳಲ್ಲಿ ಈ ಎಕ್ಸ್‌ಟೆನ್ಶನ್ ಮತ್ತು ಹೆಚ್ಚಿನದನ್ನು ಪಡೆಯಲು, Brave ಗೆ ಸೈನ್ ಇನ್ ಮಾಡಿ</translation>
 <translation id="6670140629169983459">ನಿಮ್ಮ ಪೋಷಕರ ಆಯ್ಕೆಗಳೊಂದಿಗೆ ಆನ್‌ಲೈನ್‌ನಲ್ಲಿ ಸುರಕ್ಷಿತವಾಗಿರಲು, ನೀವು ಈಗಾಗಲೇ ಸೈನ್ ಇನ್ ಮಾಡಿರುವ ನಿಮ್ಮ Brave ಪ್ರೊಫೈಲ್‌ <ph name="USER_EMAIL_ADDRESS"/> ಗೆ ಬದಲಿಸಿ</translation>
@@ -523,7 +523,7 @@
 <translation id="6831043979455480757">Translate</translation>
 <translation id="8211837073776713955">ನಿಮ್ಮ ಪಾಸ್‌ವರ್ಡ್‌ಗಳು ಎಂದಾದರೂ ಹ್ಯಾಕ್‌ ಆಗಿವೆಯೇ ಎಂಬುದನ್ನು Brave ನಿಮಗೆ ತಿಳಿಸುತ್ತದೆ</translation>
 <translation id="684888714667046800">ಇಂಟರ್ನೆಟ್‌ಗೆ ಕನೆಕ್ಟ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ. ನೀವು ಫೈರ್‌ವಾಲ್ ಅನ್ನು ಬಳಸುತ್ತಿದ್ದರೆ, <ph name="PRODUCT_EXE_NAME"/> ಅನುಮತಿ ಪಟ್ಟಿಯಲ್ಲಿ ಇದೆ ಎಂದು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಿ.</translation>
-<translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="8237613041998823669">Brave Origin - <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">ಮುಂದುವರಿಸಲು ಟ್ಯಾಬ್ ಅನ್ನು ಒತ್ತಿರಿ</translation>
 <translation id="6862030660799253820">ಚಿತ್ರದ ಮೂಲಕ ಹುಡುಕಾಟ ಬಳಸಿಕೊಂಡು ಈ ಚಿತ್ರವನ್ನು ಹುಡುಕಿ</translation>
 <translation id="3028928628792374067">"<ph name="EXTENSION_NAME"/>" ನಲ್ಲಿ ಮಾಲ್‌ವೇರ್ ಇರುವುದನ್ನು Brave ಪತ್ತೆಹಚ್ಚಿದೆ</translation>

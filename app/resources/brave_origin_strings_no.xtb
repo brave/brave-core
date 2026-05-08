@@ -105,7 +105,7 @@
 <translation id="2170098639895543546">Velg hva som helst på siden</translation>
 <translation id="142389341645668510">Tilpass Brave</translation>
 <translation id="2174917724755363426">Installasjonen er ikke fullført. Er du sikker på at du vil avbryte?</translation>
-<translation id="8745514854244955877">Brave – nettverkspålogging – <ph name="PAGE_TITLE"/></translation>
+<translation id="8841019650931243995">Brave Origin – nettverkspålogging – <ph name="PAGE_TITLE"/></translation>
 <translation id="2190166659037789668">Feil ved oppdateringssjekk: <ph name="UPDATE_CHECK_ERROR"/>.</translation>
 <translation id="2058539073923004395">Fjern kontoen fra Brave</translation>
 <translation id="5550942974310218641">Hold deg tryggere på farten med Safe Browsing med økt beskyttelse for iOS.</translation>
@@ -291,7 +291,7 @@
 <translation id="10925962326134232">Tilpass Brave for å gi nettleseren et nytt utseende</translation>
 <translation id="6596295505984504022">Tilpass Brave</translation>
 <translation id="4148957013307229264">Installerer ...</translation>
-<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> – nettverkspålogging – Brave</translation>
+<translation id="5011704081781303429"><ph name="PAGE_TITLE"/> – nettverkspålogging – Brave Origin</translation>
 <translation id="2871190378186459992">Oppdag flotte apper, spill, utvidelser og temaer for Brave.</translation>
 <translation id="462105622535258178">For å få denne utvidelsen med flere på alle datamaskinene dine, logg på Brave</translation>
 <translation id="6670140629169983459">For å holde deg tryggere på nettet med innstillingene som forelderen din har valgt, bytt til Brave-profilen din der du allerede er logget på som <ph name="USER_EMAIL_ADDRESS"/></translation>
@@ -527,7 +527,7 @@ Det er mulig at enkelte funksjoner ikke er tilgjengelige. Angi en annen profilka
 <translation id="6831043979455480757">Oversett</translation>
 <translation id="8211837073776713955">Med Brave får du beskjed hvis passordene dine noensinne utsettes for sikkerhetsbrudd</translation>
 <translation id="684888714667046800">Kan ikke koble til internett. Hvis du bruker en brannmur, må du sørge for at <ph name="PRODUCT_EXE_NAME"/> står på godkjenningslisten.</translation>
-<translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
+<translation id="8237613041998823669">Brave Origin – <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">Trykk på Tab for å fortsette</translation>
 <translation id="6862030660799253820">Søk etter dette bildet med Bildesøk</translation>
 <translation id="3028928628792374067">Brave har oppdaget at «<ph name="EXTENSION_NAME"/>» inneholder skadelig programvare</translation>

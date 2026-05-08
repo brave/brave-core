@@ -104,7 +104,7 @@
 <translation id="2170098639895543546">選取網頁上的任何內容</translation>
 <translation id="142389341645668510">自訂 Brave</translation>
 <translation id="2174917724755363426">安裝作業尚未完成，確定要取消安裝嗎？</translation>
-<translation id="8745514854244955877">Brave - 網路登入 - <ph name="PAGE_TITLE"/></translation>
+<translation id="8841019650931243995">Brave Origin - 網路登入 - <ph name="PAGE_TITLE"/></translation>
 <translation id="2190166659037789668">更新檢查錯誤：<ph name="UPDATE_CHECK_ERROR"/>。</translation>
 <translation id="2058539073923004395">從 Brave 中移除帳戶</translation>
 <translation id="5550942974310218641">在 iOS 版 Brave 上啟用安全瀏覽強化防護功能，隨時隨地享有更安全的體驗</translation>
@@ -290,7 +290,7 @@
 <translation id="10925962326134232">自訂 Brave，讓瀏覽器煥然一新</translation>
 <translation id="6596295505984504022">自訂 Brave(&amp;U)</translation>
 <translation id="4148957013307229264">正在安裝...</translation>
-<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - 網路登入 - Brave</translation>
+<translation id="5011704081781303429"><ph name="PAGE_TITLE"/> - 網路登入 - Brave Origin</translation>
 <translation id="2871190378186459992">探索 Brave 專用的優質應用程式、遊戲、擴充功能和主題。</translation>
 <translation id="462105622535258178">如要在所有電腦上使用這個擴充功能及其他擴充功能，請登入 Brave</translation>
 <translation id="6670140629169983459">為確保家長監護設定可以進一步守護你的上網安全，請切換至以 <ph name="USER_EMAIL_ADDRESS"/> 登入的 Brave 設定檔</translation>
@@ -526,7 +526,7 @@
 <translation id="6831043979455480757">翻譯</translation>
 <translation id="8211837073776713955">Brave 會通知你密碼是否曾遭外洩</translation>
 <translation id="684888714667046800">無法連上網際網路。如果你使用防火牆，請確認 <ph name="PRODUCT_EXE_NAME"/> 已加入許可清單。</translation>
-<translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="8237613041998823669">Brave Origin - <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">按下 Tab 鍵即可繼續</translation>
 <translation id="6862030660799253820">使用「圖片搜尋」搜尋這張圖片</translation>
 <translation id="3028928628792374067">Brave 偵測到「<ph name="EXTENSION_NAME"/>」含有惡意軟體</translation>

@@ -111,7 +111,7 @@ Sumir eiginleikar kunna að vera óaðgengilegir og breytingar á kjörstillingu
 <translation id="2170098639895543546">Velja hvað sem er á síðu</translation>
 <translation id="142389341645668510">Sérsníða Brave</translation>
 <translation id="2174917724755363426">Uppsetningunni er ekki lokið. Ertu viss um að þú viljir hætta við?</translation>
-<translation id="8745514854244955877">Brave – innskráning á net – <ph name="PAGE_TITLE"/></translation>
+<translation id="8841019650931243995">Brave Origin – innskráning á net – <ph name="PAGE_TITLE"/></translation>
 <translation id="2190166659037789668">Villa við uppfærsluleit: <ph name="UPDATE_CHECK_ERROR"/>.</translation>
 <translation id="2058539073923004395">Fjarlægja reikning úr Brave</translation>
 <translation id="5550942974310218641">Vertu öruggari á ferðinni með Enn öruggari vefskoðun í Brave fyrir iOS</translation>
@@ -303,7 +303,7 @@ Sumir eiginleikar kunna að vera óaðgengilegir og breytingar á kjörstillingu
 <translation id="10925962326134232">Sérsníddu Brave til að gefa vafranum nýtt útlit</translation>
 <translation id="6596295505984504022">Sérsníddu Brave-vafrann þinn</translation>
 <translation id="4148957013307229264">Setur upp...</translation>
-<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> – innskráning á net – Brave</translation>
+<translation id="5011704081781303429"><ph name="PAGE_TITLE"/> – innskráning á net – Brave Origin</translation>
 <translation id="2871190378186459992">Uppgötvaðu frábær forrit, leiki, viðbætur og þemu fyrir Brave.</translation>
 <translation id="462105622535258178">Skráðu þig inn í Brave til að fá þessa viðbót og fleira í öllum tölvunum þínum</translation>
 <translation id="6670140629169983459">Til að vera öruggari á netinu með vali foreldra þinna skaltu skipta yfir í Brave-prófílinn þinn þar sem þú ert þegar innskráð(ur) sem <ph name="USER_EMAIL_ADDRESS"/></translation>
@@ -541,7 +541,7 @@ Sumir eiginleikar kunna að verða óaðgengilegir. Tilgreindu aðra prófílam�
 <translation id="6831043979455480757">Þýða</translation>
 <translation id="8211837073776713955">Brave lætur þig vita ef aðgangsorðin þín eru einhvern tímann í hættu</translation>
 <translation id="684888714667046800">Ekki er hægt að tengjast internetinu. Ef þú notar eldvegg skaltu tryggja að <ph name="PRODUCT_EXE_NAME"/> sé á hvíta listanum.</translation>
-<translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
+<translation id="8237613041998823669">Brave Origin – <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">Dálkalykill til að halda áfram</translation>
 <translation id="6862030660799253820">Leita á þessari mynd með Myndaleit</translation>
 <translation id="3028928628792374067">Brave komst að því að „<ph name="EXTENSION_NAME"/>“ inniheldur spilliforrit</translation>

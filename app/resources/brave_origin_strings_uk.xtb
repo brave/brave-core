@@ -105,7 +105,7 @@ Brave потрібен доступ до Bluetooth. <ph name="IDS_SERIAL_DEVICE_
 <translation id="2170098639895543546">Виберіть будь-що на сторінці</translation>
 <translation id="142389341645668510">Налаштувати Brave</translation>
 <translation id="2174917724755363426">Встановлення не завершено. Скасувати його?</translation>
-<translation id="8745514854244955877">Brave – Вхід у мережу– <ph name="PAGE_TITLE"/></translation>
+<translation id="8841019650931243995">Brave Origin – Вхід у мережу– <ph name="PAGE_TITLE"/></translation>
 <translation id="2190166659037789668">Помилка перевірки наявності оновлень: <ph name="UPDATE_CHECK_ERROR"/>.</translation>
 <translation id="2058539073923004395">Вилучити обліковий запис із Brave</translation>
 <translation id="5550942974310218641">Подбайте про себе в дорозі завдяки Безпечному перегляду з розширеним захистом у Brave для iOS</translation>
@@ -291,7 +291,7 @@ Brave потрібен доступ до Bluetooth. <ph name="IDS_SERIAL_DEVICE_
 <translation id="10925962326134232">Налаштуйте вигляд вебпереглядача Brave</translation>
 <translation id="6596295505984504022">Н&amp;алаштувати Brave</translation>
 <translation id="4148957013307229264">Встановлення...</translation>
-<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> – Вхід у мережу – Brave</translation>
+<translation id="5011704081781303429"><ph name="PAGE_TITLE"/> – Вхід у мережу – Brave Origin</translation>
 <translation id="2871190378186459992">Знаходьте чудові додатки, ігри, розширення й теми для Brave.</translation>
 <translation id="462105622535258178">Щоб отримати доступ до цього розширення й інших даних на всіх комп’ютерах, увійдіть у Brave</translation>
 <translation id="6670140629169983459">Щоб користуватися безпечнішими налаштуваннями, які вибрали твої батьки, перейди в профіль Brave, у який уже виконано вхід за допомогою електронної адреси <ph name="USER_EMAIL_ADDRESS"/></translation>
@@ -527,7 +527,7 @@ Brave потрібен доступ до Bluetooth. <ph name="IDS_SERIAL_DEVICE_
 <translation id="6831043979455480757">Перекласти</translation>
 <translation id="8211837073776713955">Якщо ваші паролі колись викрадуть, Brave повідомить вас про це</translation>
 <translation id="684888714667046800">Не вдалося підключитися до Інтернету. Якщо ви використовуєте брандмауер, переконайтеся, що <ph name="PRODUCT_EXE_NAME"/> є в білому списку.</translation>
-<translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
+<translation id="8237613041998823669">Brave Origin – <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">Натисніть, щоб продовжити</translation>
 <translation id="6862030660799253820">Знайти це зображення за допомогою сервісу "Пошук за зображенням"</translation>
 <translation id="3028928628792374067">Веб-переглядач Brave виявив, що розширення "<ph name="EXTENSION_NAME"/>" містить зловмисне програмне забезпечення</translation>

@@ -1,8 +1,16 @@
 diff --git a/chrome/app/BUILD.gn b/chrome/app/BUILD.gn
-index ae608f51c7ac8d5a6853f18b3dfa6b18d90db01c..002bf9eae6090aa1d5928d1f43fc7ab2148e5a39 100644
+index ae608f51c7ac8d5a6853f18b3dfa6b18d90db01c..dac96404337043b0535ca742ca0f85fecf23183f 100644
 --- a/chrome/app/BUILD.gn
 +++ b/chrome/app/BUILD.gn
-@@ -89,6 +89,7 @@ grit_strings("generated_resources") {
+@@ -47,6 +47,7 @@ source_set("chrome_dll_resources") {
+       "//build:branding_buildflags",
+       "//printing/buildflags",
+     ]
++    import("//brave/components/brave_origin/buildflags/buildflags.gni") if (is_brave_origin_branded) { defines = [ "IS_BRAVE_ORIGIN_BRANDED" ] }
+   }
+ }
+ 
+@@ -89,6 +90,7 @@ grit_strings("generated_resources") {
    if (is_android) {
      create_android_resources = true
    }
