@@ -38,7 +38,8 @@ std::optional<GURL> MaybeApplyQueryStringFilter(
     const std::string& request_method,
     const bool internal_redirect);
 
-// A method to override the scoped trackers maps for testing purposes.
+// Overrides the scoped trackers used by IsScopedTracker() for testing. Pass
+// nullptr to restore the default production data.
 void SetScopedTrackerForTesting(const ScopedQueryTrackerType* trackers);
 }  // namespace query_filter
 #endif  // BRAVE_COMPONENTS_QUERY_FILTER_BROWSER_UTILS_H_
