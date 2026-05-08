@@ -1,0 +1,15 @@
+diff --git a/crypto/signature_verifier.cc b/crypto/signature_verifier.cc
+index 126027bb5e6f31fe9c556597be3001f9788f30ef..ea15c75133ad7b20b672574d6e14c5f6febc5466 100644
+--- a/crypto/signature_verifier.cc
++++ b/crypto/signature_verifier.cc
+@@ -45,6 +45,10 @@ bool SignatureVerifier::VerifyInit(SignatureAlgorithm signature_algorithm,
+       pkey_type = EVP_PKEY_EC;
+       digest = EVP_sha256();
+       break;
++    case ECDSA_SHA384:
++      pkey_type = EVP_PKEY_EC;
++      digest = EVP_sha384();
++      break;
+   }
+   DCHECK_NE(EVP_PKEY_NONE, pkey_type);
+   DCHECK(digest);
