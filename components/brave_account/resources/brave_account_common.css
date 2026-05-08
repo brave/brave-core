@@ -89,5 +89,13 @@ leo-input:focus:has(.error) {
         color: var(--leo-color-systemfeedback-error-text);
       }
     }
+
+    leo-icon[name='warning-circle-filled'] {
+      --leo-icon-color: var(--leo-color-systemfeedback-warning-icon);
+
+      & + div {
+        color: var(--leo-color-systemfeedback-warning-text);
+      }
+    }
   }
 }

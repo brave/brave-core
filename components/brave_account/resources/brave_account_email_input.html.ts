@@ -48,7 +48,7 @@ export function getHtml(this: BraveAccountEmailInputElement) {
               `
             : html`
                 <div class="dropdown-content">
-                  <leo-icon name="warning-triangle-filled"></leo-icon>
+                  <leo-icon name="warning-circle-filled"></leo-icon>
                   <div>
                     ${loadTimeData.getStringF(
                       BraveAccountStrings.BRAVE_ACCOUNT_EMAIL_INPUT_DID_YOU_MEAN,
