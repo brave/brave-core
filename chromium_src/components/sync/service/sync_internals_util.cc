@@ -7,7 +7,6 @@
 
 #include "base/check_op.h"
 #include "brave/components/sync/service/brave_sync_service_impl.h"
-#include "components/os_crypt/sync/os_crypt.h"
 
 #define ConstructAboutInformation ConstructAboutInformation_ChromiumImpl
 #include <components/sync/service/sync_internals_util.cc>
@@ -19,25 +18,34 @@ base::DictValue ConstructAboutInformation(
     IncludeSensitiveData include_sensitive_data,
     SyncService* service,
     const std::string& channel) {
+  using GetSeedStatusEnum = BraveSyncServiceImpl::GetSeedStatusEnum;
   auto about_info = ConstructAboutInformation_ChromiumImpl(
       include_sensitive_data, service, channel);
 
   Section section_brave_sync("Brave Sync", /*is_sensitive=*/false);
 
-  Stat<bool>* is_passphrase_set =
-      section_brave_sync.AddBoolStat("Passphrase is set");
+  base::ListValue* details = about_info.FindList(kDetailsKey);
+  DCHECK_NE(details, nullptr);
+
   BraveSyncServiceImpl* brave_sync_service =
       static_cast<BraveSyncServiceImpl*>(service);
-  std::optional<std::string> seed = brave_sync_service->prefs().GetSeed();
+  auto seed = brave_sync_service->GetSeed();
   // If the passphrase has been set, either we can see it or we failed to
   // decrypt it
-  bool is_passphrase_set_val = !seed || !seed->empty();
-  is_passphrase_set->Set(is_passphrase_set_val);
+  bool is_passphrase_set_val;
+  if (seed.has_value()) {
+    is_passphrase_set_val = !seed.value().empty();
+  } else {
+    is_passphrase_set_val = seed.error() == GetSeedStatusEnum::kDecryptFailed;
+  }
 
+  Stat<bool>* is_passphrase_set =
+      section_brave_sync.AddBoolStat("Passphrase is set");
+  is_passphrase_set->Set(is_passphrase_set_val);
   // OSCrypt behavior varies depending on OS. It is possible that
   // OSCrypt::IsEncryptionAvailable reports false, but OSCrypt::DecryptString
   // succeeds. So put the additional field with actual decryption result.
-  if (!seed) {
+  if (!seed.has_value() && seed.error() == GetSeedStatusEnum::kDecryptFailed) {
     Stat<bool>* failed_to_decrypt_passphrase =
         section_brave_sync.AddBoolStat("Passphrase decryption failed");
     failed_to_decrypt_passphrase->Set(true);
@@ -45,15 +53,11 @@ base::DictValue ConstructAboutInformation(
 
   Stat<bool>* is_os_encryption_available =
       section_brave_sync.AddBoolStat("OS encryption available");
-  is_os_encryption_available->Set(
-      brave_sync_service->prefs().IsEncryptionAvailable());
+  is_os_encryption_available->Set(brave_sync_service->IsEncryptionAvailable());
 
   Stat<std::string>* leave_chain_details =
       section_brave_sync.AddStringStat("Leave chain details");
   leave_chain_details->Set(brave_sync_service->prefs().GetLeaveChainDetails());
-
-  base::ListValue* details = about_info.FindList(kDetailsKey);
-  DCHECK_NE(details, nullptr);
 
   details->Append(section_brave_sync.ToValue());
   return about_info;

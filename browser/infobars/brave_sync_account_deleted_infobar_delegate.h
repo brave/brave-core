@@ -10,7 +10,6 @@
 #include "base/memory/raw_ptr.h"
 #include "components/infobars/core/confirm_infobar_delegate.h"
 
-class Browser;
 class Profile;
 
 namespace content {
@@ -26,12 +25,10 @@ class BraveSyncAccountDeletedInfoBarDelegate : public ConfirmInfoBarDelegate {
       const BraveSyncAccountDeletedInfoBarDelegate&) = delete;
 
   static void Create(content::WebContents* active_web_contents,
-                     Profile* profile,
-                     Browser* browser);
+                     Profile* profile);
 
  private:
-  explicit BraveSyncAccountDeletedInfoBarDelegate(Browser* browser,
-                                                  Profile* profile);
+  explicit BraveSyncAccountDeletedInfoBarDelegate(Profile* profile);
   ~BraveSyncAccountDeletedInfoBarDelegate() override;
 
   infobars::InfoBarDelegate::InfoBarIdentifier GetIdentifier() const override;
@@ -48,7 +45,6 @@ class BraveSyncAccountDeletedInfoBarDelegate : public ConfirmInfoBarDelegate {
   bool IsCloseable() const override;
 
   raw_ptr<Profile> profile_ = nullptr;
-  raw_ptr<Browser> browser_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_INFOBARS_BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR_DELEGATE_H_

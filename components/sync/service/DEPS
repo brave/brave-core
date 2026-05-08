@@ -2,7 +2,7 @@ include_rules = [
   "+brave/components/constants",
   "+brave/components/sync/test",
   "+components/network_time",
-  "+components/os_crypt/sync",
+  "+components/os_crypt/async",
   "+components/prefs",
   "+components/saved_tab_groups/public/pref_names.h",
   "+components/signin",

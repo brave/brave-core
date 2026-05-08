@@ -157,10 +157,9 @@ void ChromeBrowserMainParts::PostBrowserStart() {
       if (profile && infobar_manager) {
         BraveConfirmP3AInfoBarDelegate::Create(
             infobar_manager, g_browser_process->local_state());
-        SyncCannotRunInfoBarDelegate::Create(infobar_manager, profile, browser);
 
         BraveSyncAccountDeletedInfoBarDelegate::Create(active_web_contents,
-                                                       profile, browser);
+                                                       profile);
       }
     }
   }
