@@ -42,7 +42,7 @@ void BrowsingHistoryCleaner::CleanupBrowsingHistoryForDomain(
     return;
   }
 
-  std::move(queries_.back()).Run();
+  std::move(queries_.front()).Run();
 }
 
 void BrowsingHistoryCleaner::CleanupQuery(const std::string& domain) {
@@ -61,7 +61,7 @@ void BrowsingHistoryCleaner::OnRemoveRequestCompleted() {
       queries_.end());
   if (!queries_.empty()) {
     // Run the next query in the queue.
-    std::move(queries_.back()).Run();
+    std::move(queries_.front()).Run();
     return;
   }
 
