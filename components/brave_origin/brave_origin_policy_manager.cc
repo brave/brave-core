@@ -71,6 +71,18 @@ std::optional<bool> BraveOriginPolicyManager::GetPolicyValue(
                                 policies_dict, profile_id);
 }
 
+std::optional<bool> BraveOriginPolicyManager::GetEnforcedPolicyValue(
+    std::string_view policy_key,
+    std::optional<std::string_view> profile_id) const {
+  if (!initialized_ || !local_state_) {
+    return std::nullopt;
+  }
+  if (!local_state_->GetBoolean(kOriginPoliciesWereEnforced)) {
+    return std::nullopt;
+  }
+  return GetPolicyValue(policy_key, profile_id);
+}
+
 bool BraveOriginPolicyManager::IsBrowserPolicy(
     std::string_view policy_key) const {
   return browser_policy_definitions_.contains(policy_key);

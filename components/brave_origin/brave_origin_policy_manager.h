@@ -46,6 +46,25 @@ class BraveOriginPolicyManager {
       std::string_view policy_key,
       std::optional<std::string_view> profile_id = std::nullopt) const;
 
+  // TEMPORARY WORKAROUND. Returns the BraveOrigin policy value read directly
+  // from local state, but only when Origin is currently enforcing policies on
+  // this install (`kOriginPoliciesWereEnforced` is true). Returns nullopt
+  // otherwise — including when the manager is not yet initialized, the local
+  // state is unavailable, or Origin is not in effect.
+  //
+  // This bypasses the chromium policy framework → managed pref propagation,
+  // which races against eager keyed-service construction during profile init
+  // (services like AdsServiceImpl are constructed before Origin policies have
+  // landed as managed prefs). The proper fix is for any service that takes
+  // irreversible action at construction to observe `policy::PolicyService` and
+  // wait for `IsInitializationComplete(POLICY_DOMAIN_CHROME)`. See
+  // chrome/browser/extensions/forced_extensions/force_installed_tracker.cc for
+  // the upstream pattern. Once such services are restructured to defer their
+  // startup work, this helper should be removed.
+  std::optional<bool> GetEnforcedPolicyValue(
+      std::string_view policy_key,
+      std::optional<std::string_view> profile_id = std::nullopt) const;
+
   // Get browser-level policy key-value pairs (policy values from local state or
   // defaults)
   PoliciesEnabledMap GetAllBrowserPolicies() const;

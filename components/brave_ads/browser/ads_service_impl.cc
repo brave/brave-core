@@ -44,6 +44,8 @@
 #include "brave/components/brave_ads/core/public/history/site_history.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_ads/core/public/user_attention/user_idle_detection/user_idle_detection_feature.h"
+#include "brave/components/brave_origin/brave_origin_policy_manager.h"
+#include "brave/components/brave_origin/profile_id.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
@@ -55,6 +57,7 @@
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/metrics/metrics_pref_names.h"
+#include "components/policy/policy_constants.h"
 #include "components/prefs/pref_service.h"
 #include "components/variations/pref_names.h"
 #include "content/public/browser/browser_context.h"
@@ -153,6 +156,7 @@ AdsServiceImpl::AdsServiceImpl(
           {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
       ads_service_path_(profile_path.AppendASCII("ads_service")),
+      profile_id_(brave_origin::GetProfileId(profile_path)),
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
       rewards_service_(rewards_service),
 #endif
@@ -247,6 +251,22 @@ bool AdsServiceImpl::UserHasOptedInToSearchResultAds() const {
 }
 
 bool AdsServiceImpl::CanStartBatAdsService() const {
+  // TEMPORARY WORKAROUND: read the BraveOrigin Rewards-disabled policy directly
+  // from local state via `BraveOriginPolicyManager::GetEnforcedPolicyValue`,
+  // because the chromium policy → managed-pref propagation races against eager
+  // AdsService construction at profile init, so `brave_rewards::IsSupported()`
+  // below may not yet reflect the policy. The proper fix is to defer the
+  // bat_ads launch until `policy::PolicyService::IsInitializationComplete`
+  // fires; see the helper's header comment for details. Remove this block
+  // when that restructuring lands.
+  const std::optional<bool> rewards_disabled_by_origin =
+      brave_origin::BraveOriginPolicyManager::GetInstance()
+          ->GetEnforcedPolicyValue(policy::key::kBraveRewardsDisabled,
+                                   profile_id_);
+  if (rewards_disabled_by_origin.value_or(false)) {
+    return false;
+  }
+
   if (!brave_rewards::IsSupported(&*prefs_)) {
     // Never start if Rewards is disabled by policy, feature flag, or
     // unsupported region, regardless of which ad unit the user has opted into.

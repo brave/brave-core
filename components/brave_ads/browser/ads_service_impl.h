@@ -447,6 +447,10 @@ class AdsServiceImpl : public AdsService,
 
   const base::FilePath ads_service_path_;
 
+  // Stable identifier for this profile, used to look up the BraveOrigin
+  // policy values stored in local state.
+  const std::string profile_id_;
+
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   const raw_ptr<brave_rewards::RewardsService> rewards_service_;  // Not owned.
   base::ScopedObservation<brave_rewards::RewardsService,
