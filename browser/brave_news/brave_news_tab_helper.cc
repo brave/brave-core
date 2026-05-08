@@ -18,10 +18,10 @@
 #include "base/functional/callback_helpers.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
+#include "brave/browser/brave_news/rss_links_fetcher.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/pref_names.h"
-#include "chrome/browser/feed/rss_links_fetcher.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
@@ -306,10 +306,11 @@ void BraveNewsTabHelper::DOMContentLoaded(content::RenderFrameHost* rfh) {
     return;
   }
 
-  feed::FetchRssLinks(GetWebContents().GetLastCommittedURL(), &GetWebContents(),
-                      base::BindOnce(&BraveNewsTabHelper::OnReceivedRssUrls,
-                                     weak_ptr_factory_.GetWeakPtr(),
-                                     GetWebContents().GetLastCommittedURL()));
+  brave_news::FetchRssLinks(
+      GetWebContents().GetLastCommittedURL(), &GetWebContents(),
+      base::BindOnce(&BraveNewsTabHelper::OnReceivedRssUrls,
+                     weak_ptr_factory_.GetWeakPtr(),
+                     GetWebContents().GetLastCommittedURL()));
 }
 
 void BraveNewsTabHelper::OnPublishersChanged() {
