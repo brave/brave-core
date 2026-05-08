@@ -54,15 +54,15 @@ MATCHER_P(EqId, id, "") {
 }
 
 TEST_F(ContainersMenuModelUnitTest, ModelContainsAllContainers) {
+  const auto containers = GetContainers();
   MockContainersMenuModelDelegate delegate;
+  EXPECT_CALL(delegate, GetCurrentContainerIds())
+      .WillOnce(
+          testing::Return(base::flat_set<std::string>{containers.at(0).id()}));
 
   ContainersMenuModel model =
       test::ContainersMenuModelTestApi::CreateContainersMenuModel(
           delegate, GetContainers());
-  auto containers = GetContainers();
-
-  // First item should be the "No container" command
-  EXPECT_EQ(IDC_OPEN_IN_CONTAINER_NO_CONTAINER, model.GetCommandIdAt(0));
 
   // Verify the model contains all containers from the service
   for (size_t i = 0; i < containers.size(); ++i) {
@@ -71,10 +71,17 @@ TEST_F(ContainersMenuModelUnitTest, ModelContainsAllContainers) {
     EXPECT_TRUE(model.GetIndexOfCommandId(command_id).has_value());
     EXPECT_EQ(containers.at(i).id(),
               test::ContainersMenuModelTestApi::GetItems(model).at(i).id());
-    EXPECT_EQ(base::UTF8ToUTF16(containers.at(i).name()),
-              model.GetLabelAt(
-                  i + 1));  // + 1 for "No container" item in the first position
+    EXPECT_EQ(base::UTF8ToUTF16(containers.at(i).name()), model.GetLabelAt(i));
   }
+
+  // Next item should be the "No container" command
+  EXPECT_EQ(IDC_OPEN_IN_CONTAINER_NO_CONTAINER,
+            model.GetCommandIdAt(model.GetItemCount() - 4));
+
+  // Next item should be the "New temporary container" command after the
+  // separator.
+  EXPECT_EQ(IDC_NEW_TEMPORARY_CONTAINER,
+            model.GetCommandIdAt(model.GetItemCount() - 2));
 
   // Last item should be the "Manage Containers" command
   EXPECT_EQ(IDC_OPEN_CONTAINERS_SETTING,
@@ -91,6 +98,17 @@ TEST_F(ContainersMenuModelUnitTest, ExecuteCommandCallsDelegate) {
       test::ContainersMenuModelTestApi::GetCommandIdFromItemIndex(model, 0), 0);
 }
 
+TEST_F(ContainersMenuModelUnitTest,
+       NoContainerDoesNotShowWhenNoContainersSelected) {
+  MockContainersMenuModelDelegate delegate;
+  ContainersMenuModel model =
+      test::ContainersMenuModelTestApi::CreateContainersMenuModel(
+          delegate, GetContainers());
+  for (size_t i = 0; i < model.GetItemCount(); ++i) {
+    EXPECT_NE(model.GetCommandIdAt(i), IDC_OPEN_IN_CONTAINER_NO_CONTAINER);
+  }
+}
+
 TEST_F(ContainersMenuModelUnitTest, GetCurrentContainerIdsAreChecked) {
   auto containers = GetContainers();
 
@@ -103,7 +121,6 @@ TEST_F(ContainersMenuModelUnitTest, GetCurrentContainerIdsAreChecked) {
     ContainersMenuModel model =
         test::ContainersMenuModelTestApi::CreateContainersMenuModel(
             delegate, GetContainers());
-    EXPECT_FALSE(model.IsCommandIdChecked(IDC_OPEN_IN_CONTAINER_NO_CONTAINER));
     EXPECT_TRUE(model.IsCommandIdChecked(
         test::ContainersMenuModelTestApi::GetCommandIdFromItemIndex(model, 0)));
     EXPECT_FALSE(model.IsCommandIdChecked(
@@ -119,7 +136,6 @@ TEST_F(ContainersMenuModelUnitTest, GetCurrentContainerIdsAreChecked) {
     ContainersMenuModel model =
         test::ContainersMenuModelTestApi::CreateContainersMenuModel(
             delegate, GetContainers());
-    EXPECT_FALSE(model.IsCommandIdChecked(IDC_OPEN_IN_CONTAINER_NO_CONTAINER));
     EXPECT_FALSE(model.IsCommandIdChecked(
         test::ContainersMenuModelTestApi::GetCommandIdFromItemIndex(model, 0)));
     EXPECT_TRUE(model.IsCommandIdChecked(
@@ -134,7 +150,6 @@ TEST_F(ContainersMenuModelUnitTest, GetCurrentContainerIdsAreChecked) {
     ContainersMenuModel model =
         test::ContainersMenuModelTestApi::CreateContainersMenuModel(
             delegate, GetContainers());
-    EXPECT_TRUE(model.IsCommandIdChecked(IDC_OPEN_IN_CONTAINER_NO_CONTAINER));
     EXPECT_FALSE(model.IsCommandIdChecked(
         test::ContainersMenuModelTestApi::GetCommandIdFromItemIndex(model, 0)));
     EXPECT_FALSE(model.IsCommandIdChecked(
@@ -150,7 +165,6 @@ TEST_F(ContainersMenuModelUnitTest, GetCurrentContainerIdsAreChecked) {
     ContainersMenuModel model =
         test::ContainersMenuModelTestApi::CreateContainersMenuModel(
             delegate, GetContainers());
-    EXPECT_FALSE(model.IsCommandIdChecked(IDC_OPEN_IN_CONTAINER_NO_CONTAINER));
     EXPECT_TRUE(model.IsCommandIdChecked(
         test::ContainersMenuModelTestApi::GetCommandIdFromItemIndex(model, 0)));
     EXPECT_TRUE(model.IsCommandIdChecked(
