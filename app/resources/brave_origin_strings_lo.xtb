@@ -107,7 +107,7 @@
 <translation id="2170098639895543546">ເລືອກສິ່ງໃດກໍໄດ້ໃນໜ້າ</translation>
 <translation id="142389341645668510">ປັບແຕ່ງ Brave</translation>
 <translation id="2174917724755363426">ການຕິດຕັ້ງບໍ່ສຳເລັດ. ທ່ານແນ່ໃຈບໍ່ວ່າທ່ານຕ້ອງການຍົກເລີກ?</translation>
-<translation id="8745514854244955877">Brave - ການເຂົ້າສູ່ລະບົບເຄືອຂ່າຍ - <ph name="PAGE_TITLE"/></translation>
+<translation id="8841019650931243995">Brave Origin - ການເຂົ້າສູ່ລະບົບເຄືອຂ່າຍ - <ph name="PAGE_TITLE"/></translation>
 <translation id="2190166659037789668">ກວດສອບການອັບເດດຜິດພາດ: <ph name="UPDATE_CHECK_ERROR"/>.</translation>
 <translation id="2058539073923004395">ລຶບບັນຊີອອກຈາກ Brave</translation>
 <translation id="5550942974310218641">ປອດໄພຍິ່ງຂຶ້ນໃນໂໝດເວລາເດີນທາງດ້ວຍ Safe Browsing ທີ່ປັບປຸງດີຂຶ້ນຢູ່ Brave ສໍາລັບ iOS</translation>
@@ -293,7 +293,7 @@
 <translation id="10925962326134232">ປັບແຕ່ງ Brave ເພື່ອສ້າງຮູບລັກໃໝ່ໃຫ້ໂປຣແກຣມທ່ອງເວັບຂອງທ່ານ</translation>
 <translation id="6596295505984504022">ປັບແຕ່ງ Brave ຂອງທ່ານ</translation>
 <translation id="4148957013307229264">ກໍາລັງ​ຕິດ​ຕັ້ງ...</translation>
-<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - ການເຂົ້າສູ່ລະບົບເຄືອຂ່າຍ - Brave</translation>
+<translation id="5011704081781303429"><ph name="PAGE_TITLE"/> - ການເຂົ້າສູ່ລະບົບເຄືອຂ່າຍ - Brave Origin</translation>
 <translation id="2871190378186459992">ຄົ້ນພົບແອັບ, ເກມ, ສ່ວນຂະຫຍາຍ ແລະ ຮູບແບບສີສັນສຳລັບ Brave.</translation>
 <translation id="462105622535258178">ເພື່ອຮັບສ່ວນຂະຫຍາຍນີ້ ແລະ ອື່ນໆຢູ່ຄອມພິວເຕີທັງໝົດຂອງທ່ານ, ໃຫ້ເຂົ້າສູ່ລະບົບ Brave</translation>
 <translation id="6670140629169983459">ເພື່ອທ່ອງໂລກອອນລາຍຢ່າງປອດໄພຍິ່ງຂຶ້ນດ້ວຍຕົວເລືອກຂອງຜູ້ປົກຄອງຂອງທ່ານ, ໃຫ້ປ່ຽນໄປໃຊ້ໂປຣໄຟລ໌ Brave ຂອງທ່ານທີ່ເຂົ້າສູ່ລະບົບໃນຖານະ <ph name="USER_EMAIL_ADDRESS"/> ຢູ່ກ່ອນແລ້ວ</translation>
@@ -529,7 +529,7 @@
 <translation id="6831043979455480757">ແປພາສາ</translation>
 <translation id="8211837073776713955">Brave ແຈ້ງໃຫ້ທ່ານຮູ້ຖ້າມີຄົນຮູ້ລະຫັດຜ່ານຂອງທ່ານ</translation>
 <translation id="684888714667046800">ບໍ່ສາມາດເຊື່ອມຕໍ່ກັບອິນເຕີເນັດໄດ້. ຫາກທ່ານໃຊ້ firewall, ກະລຸນາກວດສອບໃຫ້ໝັ້ນໃຈວ່າ <ph name="PRODUCT_EXE_NAME"/> ຢູ່ໃນລາຍຊື່ອະນຸຍາດ.</translation>
-<translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="8237613041998823669">Brave Origin - <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">ແຕະເພື່ອສືບຕໍ່</translation>
 <translation id="6862030660799253820">ຊອກຫາຮູບນີ້ດ້ວຍຄຸນສົມບັດຊອກຫາຮູບ</translation>
 <translation id="3028928628792374067">Brave ພົບວ່າ "<ph name="EXTENSION_NAME"/>" ມີເມົາແວ</translation>

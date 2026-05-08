@@ -107,7 +107,7 @@ Neke funkcije su možda nedostupne i promene podešavanja neće biti sačuvane.
 <translation id="2170098639895543546">Izaberite bilo šta na stranici</translation>
 <translation id="142389341645668510">Prilagodite Brave</translation>
 <translation id="2174917724755363426">Instalacija nije dovršena. Želite stvarno da je otkažete?</translation>
-<translation id="8745514854244955877">Brave – prijavljivanje na mrežu – <ph name="PAGE_TITLE"/></translation>
+<translation id="8841019650931243995">Brave Origin – prijavljivanje na mrežu – <ph name="PAGE_TITLE"/></translation>
 <translation id="2190166659037789668">Greška sa proverom ažuriranja: <ph name="UPDATE_CHECK_ERROR"/>.</translation>
 <translation id="2058539073923004395">Ukloni nalog iz Brave-a</translation>
 <translation id="5550942974310218641">Budite bezbedniji u pokretu uz poboljšano bezbedno pregledanje u Brave-u za iOS</translation>
@@ -293,7 +293,7 @@ Neke funkcije su možda nedostupne i promene podešavanja neće biti sačuvane.
 <translation id="10925962326134232">Prilagodite Brave da biste prešli na nov izgled pregledača</translation>
 <translation id="6596295505984504022">P&amp;rilagodite Brave</translation>
 <translation id="4148957013307229264">Instaliranje...</translation>
-<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> – prijavljivanje na mrežu – Brave</translation>
+<translation id="5011704081781303429"><ph name="PAGE_TITLE"/> – prijavljivanje na mrežu – Brave Origin</translation>
 <translation id="2871190378186459992">Otkrijte odlične aplikacije, igre, dodatke i teme za Brave.</translation>
 <translation id="462105622535258178">Da bi vam ovaj dodatak i drugi sadržaj bili dostupni na svim računarima, prijavite se u Brave</translation>
 <translation id="6670140629169983459">Ako želiš veću bezbednost onlajn uz izbore roditelja, pređi na svoj Brave profil na kom si već prijavljen/a kao <ph name="USER_EMAIL_ADDRESS"/></translation>
@@ -529,7 +529,7 @@ Neke funkcije će možda biti nedostupne. Navedite drugi direktorijum profila i
 <translation id="6831043979455480757">Prevedi</translation>
 <translation id="8211837073776713955">Brave vas obaveštava ako su lozinke ugrožene</translation>
 <translation id="684888714667046800">Povezivanje sa internetom nije uspelo. Ako koristite zaštitni zid, proverite da li se <ph name="PRODUCT_EXE_NAME"/> nalazi na listi dozvoljenih.</translation>
-<translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
+<translation id="8237613041998823669">Brave Origin – <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">Pritisnite Tab da biste nastavili</translation>
 <translation id="6862030660799253820">Pretražite ovu sliku pomoću pretrage slika</translation>
 <translation id="3028928628792374067">Brave je otkrio da <ph name="EXTENSION_NAME"/> sadrži malver</translation>

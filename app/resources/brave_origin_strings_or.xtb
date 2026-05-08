@@ -110,7 +110,7 @@
 <translation id="2170098639895543546">ପୃଷ୍ଠାରେ ଯେ କୌଣସି ଜିନିଷକୁ ଚୟନ କରନ୍ତୁ</translation>
 <translation id="142389341645668510">Braveକୁ କଷ୍ଟମାଇଜ୍ କରନ୍ତୁ</translation>
 <translation id="2174917724755363426">ଇନଷ୍ଟଲେସନ ସମ୍ପୂର୍ଣ୍ଣ ହୋଇନାହିଁ। ଆପଣ ବାତିଲ କରିବାକୁ ଚାହୁଁଥିବା ନିଶ୍ଚିତ?</translation>
-<translation id="8745514854244955877">Brave - ନେଟୱାର୍କ ସାଇନ୍-ଇନ୍ - <ph name="PAGE_TITLE"/></translation>
+<translation id="8841019650931243995">Brave Origin - ନେଟୱାର୍କ ସାଇନ୍-ଇନ୍ - <ph name="PAGE_TITLE"/></translation>
 <translation id="2190166659037789668">ଅପଡେଟ ଯାଞ୍ଚରେ ତ୍ରୁଟି: <ph name="UPDATE_CHECK_ERROR"/>।</translation>
 <translation id="2058539073923004395">Braveରୁ ଆକାଉଣ୍ଟକୁ କାଢ଼ି ଦିଅନ୍ତୁ</translation>
 <translation id="5550942974310218641">iOS ପାଇଁ Braveରେ ଉନ୍ନତ ସୁରକ୍ଷିତ ବ୍ରାଉଜିଂ ସହିତ ଅନ ଦି ଗୋରେ ଅଧିକ ସୁରକ୍ଷିତ ରୁହନ୍ତୁ</translation>
@@ -302,7 +302,7 @@
 <translation id="10925962326134232">ଆପଣଙ୍କ ବ୍ରାଉଜରକୁ ଏକ ନୂଆ ଲୁକ ଦେବା ପାଇଁ Braveକୁ କଷ୍ଟମାଇଜ କରନ୍ତୁ</translation>
 <translation id="6596295505984504022">ଆପଣଙ୍କ Braveକୁ କଷ୍ଟମାଇଜ କରନ୍ତୁ</translation>
 <translation id="4148957013307229264">ଇନଷ୍ଟଲ ହେଉଛି...</translation>
-<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - ନେଟୱାର୍କ ସାଇନ୍-ଇନ୍ - Brave</translation>
+<translation id="5011704081781303429"><ph name="PAGE_TITLE"/> - ନେଟୱାର୍କ ସାଇନ୍-ଇନ୍ - Brave Origin</translation>
 <translation id="2871190378186459992">Brave ପାଇଁ ଶ୍ରେଷ୍ଠ ଆପ୍ସ, ଗେମ୍, ଏକ୍ସଟେନ୍‍ସନ୍ ଓ ଥିମ୍ ଖୋଜନ୍ତୁ।</translation>
 <translation id="462105622535258178">ଆପଣଙ୍କର ସମସ୍ତ କମ୍ପ୍ୟୁଟରରେ ଏହି ଏକ୍ସଟେନସନ ଏବଂ ଆହୁରି ଅନେକ କିଛି ପାଇବା ପାଇଁ, Braveରେ ସାଇନ ଇନ କରନ୍ତୁ</translation>
 <translation id="6670140629169983459">ତୁମ ବାପାମାଙ୍କ ପସନ୍ଦଗୁଡ଼ିକ ସହିତ ଅନଲାଇନରେ ସୁରକ୍ଷିତ ରହିବା ପାଇଁ ତୁମେ ପୂର୍ବରୁ <ph name="USER_EMAIL_ADDRESS"/> ଭାବରେ ସାଇନ ଇନ କରିଥିବା ତୁମ Brave ପ୍ରୋଫାଇଲକୁ ସୁଇଚ କର</translation>
@@ -540,7 +540,7 @@
 <translation id="6831043979455480757">Translate</translation>
 <translation id="8211837073776713955">ଆପଣଙ୍କର ପାସ୍‍ୱାର୍ଡଗୁଡ଼ିକ କେବେ ବି ଚୋରି ହୋଇଛି କି ନାହିଁ ତାହା Brave ଆପଣଙ୍କୁ ଜାଣିବାକୁ ଦିଏ</translation>
 <translation id="684888714667046800">ଇଣ୍ଟରନେଟ ସହ କନେକ୍ଟ କରିବାରେ ଅସମର୍ଥ। ଯଦି ଆପଣ ଏକ ଫାୟାରୱାଲ ବ୍ୟବହାର କରନ୍ତି, ତେବେ <ph name="PRODUCT_EXE_NAME"/> ଆଲାଉଲିଷ୍ଟରେ ଥିବା ଦୟାକରି ନିଶ୍ଚିତ କରନ୍ତୁ।</translation>
-<translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="8237613041998823669">Brave Origin - <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">ଜାରି ରଖିବାକୁ ଟାବ କରନ୍ତୁ</translation>
 <translation id="6862030660799253820">ଇମେଜ ସର୍ଚ୍ଚ ସହିତ ଏହି ଇମେଜକୁ ସର୍ଚ୍ଚ କରନ୍ତୁ</translation>
 <translation id="3028928628792374067">"<ph name="EXTENSION_NAME"/>"ରେ ମାଲୱେର୍ ଥିବା Brave ଜାଣିବାକୁ ପାଇଛି</translation>

@@ -104,7 +104,7 @@
 <translation id="2170098639895543546">पेज पर मौजूद कोई भी आइटम चुनें</translation>
 <translation id="142389341645668510">Brave को पसंद के मुताबिक बनाएं</translation>
 <translation id="2174917724755363426">इंस्टॉल करने की प्रोसेस पूरी नहीं हुई. क्या आपको वाकई इसे रद्द करना है?</translation>
-<translation id="8745514854244955877">Brave - नेटवर्क में साइन इन करें - <ph name="PAGE_TITLE"/></translation>
+<translation id="8841019650931243995">Brave Origin - नेटवर्क में साइन इन करें - <ph name="PAGE_TITLE"/></translation>
 <translation id="2190166659037789668">अपडेट जांच में यह गड़बड़ी है: <ph name="UPDATE_CHECK_ERROR"/>.</translation>
 <translation id="2058539073923004395">Brave से खाता हटाएं</translation>
 <translation id="5550942974310218641">iOS के लिए Brave पर बेहतर सुरक्षित ब्राउज़िंग की सुविधा चालू करें और कभी भी, कहीं भी सुरक्षित रहें</translation>
@@ -290,7 +290,7 @@
 <translation id="10925962326134232">अपने ब्राउज़र को एक नया लुक देने के लिए, Brave को कस्टमाइज़ करें</translation>
 <translation id="6596295505984504022">Brave को अपनी पसंद के मुताबिक बनाएं</translation>
 <translation id="4148957013307229264">इंस्‍टॉल हो रहा है...</translation>
-<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - नेटवर्क में साइन इन करें - Brave</translation>
+<translation id="5011704081781303429"><ph name="PAGE_TITLE"/> - नेटवर्क में साइन इन करें - Brave Origin</translation>
 <translation id="2871190378186459992">Brave के लिए शानदार ऐप्‍स, गेम, एक्‍सटेंशन और थीम खोजें.</translation>
 <translation id="462105622535258178">अपने सभी कंप्यूटर पर यह एक्सटेंशन और इसी तरह का अन्य टूल पाने के लिए, Brave में साइन इन करें</translation>
 <translation id="6670140629169983459">अपने माता-पिता के चुने गए विकल्पों के साथ ऑनलाइन सुरक्षित रहने के लिए, अपनी Brave प्रोफ़ाइल पर स्विच करें, जहां आपने पहले से <ph name="USER_EMAIL_ADDRESS"/> के तौर पर साइन इन किया है</translation>
@@ -526,7 +526,7 @@
 <translation id="6831043979455480757">अनुवाद करें</translation>
 <translation id="8211837073776713955">'Brave' यह बताता है कि कहीं आपके पासवर्ड का गलत इस्तेमाल तो नहीं किया गया है</translation>
 <translation id="684888714667046800">इंटरनेट से कनेक्ट नहीं किया जा सका. अगर आपने फ़ायरवॉल का इस्तेमाल किया है, तो कृपया पक्का करें कि <ph name="PRODUCT_EXE_NAME"/> को अनुमति वाली सूची में शामिल किया गया हो.</translation>
-<translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="8237613041998823669">Brave Origin - <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">जारी रखने के लिए Tab दबाएं</translation>
 <translation id="6862030660799253820">इमेज सर्च की मदद से इस इमेज को खोजें</translation>
 <translation id="3028928628792374067">Brave को पता चला है कि "<ph name="EXTENSION_NAME"/>" में मैलवेयर है</translation>

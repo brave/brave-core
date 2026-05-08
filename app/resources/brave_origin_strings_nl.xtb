@@ -106,7 +106,7 @@ Sommige functies zijn wellicht niet beschikbaar en wijzigingen in voorkeuren wor
 <translation id="2170098639895543546">Iets op de pagina selecteren</translation>
 <translation id="142389341645668510">Brave aanpassen</translation>
 <translation id="2174917724755363426">Installatie niet afgerond. Weet je zeker dat je wilt annuleren?</translation>
-<translation id="8745514854244955877">Brave - Inloggen bij netwerk - <ph name="PAGE_TITLE"/></translation>
+<translation id="8841019650931243995">Brave Origin - Inloggen bij netwerk - <ph name="PAGE_TITLE"/></translation>
 <translation id="2190166659037789668">Fout bij updaten: <ph name="UPDATE_CHECK_ERROR"/>.</translation>
 <translation id="2058539073923004395">Account verwijderen uit Brave</translation>
 <translation id="5550942974310218641">Blijf onderweg beter beveiligd met de uitgebreide versie van Safe Browsing op Brave voor iOS</translation>
@@ -292,7 +292,7 @@ Dit heeft geen gevolgen voor bookmarks, geschiedenis en opgeslagen wachtwoorden.
 <translation id="10925962326134232">Pas Brave aan om je browser een nieuwe look te geven</translation>
 <translation id="6596295505984504022">Brave &amp;personaliseren</translation>
 <translation id="4148957013307229264">Installeren...</translation>
-<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - Inloggen bij netwerk - Brave</translation>
+<translation id="5011704081781303429"><ph name="PAGE_TITLE"/> - Inloggen bij netwerk - Brave Origin</translation>
 <translation id="2871190378186459992">Ontdek fantastische apps, games, extensies en thema's voor Brave.</translation>
 <translation id="462105622535258178">Log in bij Brave om onder andere deze extensie te gebruiken op al je computers</translation>
 <translation id="6670140629169983459">Als je online veiliger wilt blijven met de keuzes van je ouder, wissel je naar het Brave-profiel waarop je al bent ingelogd als <ph name="USER_EMAIL_ADDRESS"/></translation>
@@ -528,7 +528,7 @@ Sommige functies zijn mogelijk niet beschikbaar. Geef een andere profieldirector
 <translation id="6831043979455480757">Vertalen</translation>
 <translation id="8211837073776713955">Brave laat het je weten als je wachtwoorden mogelijk niet veilig meer zijn</translation>
 <translation id="684888714667046800">Kan geen verbinding maken met internet. Als je een firewall gebruikt, zorg je dat <ph name="PRODUCT_EXE_NAME"/> op de toelatingslijst staat.</translation>
-<translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="8237613041998823669">Brave Origin - <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">Druk op Tab om door te gaan</translation>
 <translation id="6862030660799253820">Deze afbeelding doorzoeken met Zoeken met afbeelding</translation>
 <translation id="3028928628792374067">Brave heeft vastgesteld dat <ph name="EXTENSION_NAME"/> malware bevat</translation>

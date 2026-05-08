@@ -104,7 +104,7 @@
 <translation id="2170098639895543546">ページ上のコンテンツを選択</translation>
 <translation id="142389341645668510">Brave をカスタマイズ</translation>
 <translation id="2174917724755363426">インストールは完了していません。キャンセルしてもよろしいですか？</translation>
-<translation id="8745514854244955877">Brave - ネットワークにログイン - <ph name="PAGE_TITLE"/></translation>
+<translation id="8841019650931243995">Brave Origin - ネットワークにログイン - <ph name="PAGE_TITLE"/></translation>
 <translation id="2190166659037789668">更新確認エラー: <ph name="UPDATE_CHECK_ERROR"/>。</translation>
 <translation id="2058539073923004395">Brave からアカウントを削除</translation>
 <translation id="5550942974310218641">iOS 版 Brave のセーフ ブラウジング保護強化機能により、外出先で安全に使用できます</translation>
@@ -286,7 +286,7 @@
 <translation id="10925962326134232">Brave をカスタマイズして、ブラウザのデザインを一新</translation>
 <translation id="6596295505984504022">Brave をカスタマイズ(&amp;U)</translation>
 <translation id="4148957013307229264">インストール中...</translation>
-<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - ネットワークにログイン - Brave</translation>
+<translation id="5011704081781303429"><ph name="PAGE_TITLE"/> - ネットワークにログイン - Brave Origin</translation>
 <translation id="2871190378186459992">Brave の優れたアプリ、ゲーム、拡張機能、テーマをぜひご利用ください。</translation>
 <translation id="462105622535258178">すべてのパソコンでこの拡張機能などを使用するには、Brave にログインしてください</translation>
 <translation id="6670140629169983459">保護者の方が指定した設定でインターネットをより安全に利用するには、すでに <ph name="USER_EMAIL_ADDRESS"/> としてログインしている Brave プロフィールに切り替えてください</translation>
@@ -520,7 +520,7 @@
 <translation id="6831043979455480757">翻訳</translation>
 <translation id="8211837073776713955">Brave では、特定のパスワードが侵害された事実の有無がわかります</translation>
 <translation id="684888714667046800">インターネットに接続できません。ファイアウォールを使用している場合は、<ph name="PRODUCT_EXE_NAME"/> が許可リストに含まれていることを確認してください。</translation>
-<translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="8237613041998823669">Brave Origin - <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">タブキーで続行</translation>
 <translation id="6862030660799253820">画像検索でこの画像を検索する</translation>
 <translation id="3028928628792374067">Brave で「<ph name="EXTENSION_NAME"/>」に不正なソフトウェアが含まれていることが検出されました</translation>

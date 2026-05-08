@@ -107,7 +107,7 @@
 <translation id="2170098639895543546">აირჩიეთ გვერდზე არსებული ნებისმიერი რამ</translation>
 <translation id="142389341645668510">Brave-ის მორგება</translation>
 <translation id="2174917724755363426">ინსტალაცია არ დასრულებულა. ნამდვილად გსურთ გაუქმება?</translation>
-<translation id="8745514854244955877">Brave — ქსელში შესვლა — <ph name="PAGE_TITLE"/></translation>
+<translation id="8841019650931243995">Brave Origin — ქსელში შესვლა — <ph name="PAGE_TITLE"/></translation>
 <translation id="2190166659037789668">შეცდომა განახლების შემოწმებისასr: <ph name="UPDATE_CHECK_ERROR"/>.</translation>
 <translation id="2058539073923004395">ანგარიშის ამოშლა Brave-იდან</translation>
 <translation id="5550942974310218641">დაიცავით უსაფრთხოება მგზავრობისას გაძლიერებული Safe Browsing-ის მეშვეობით Brave-ზე iOS-ისთვის</translation>
@@ -293,7 +293,7 @@
 <translation id="10925962326134232">მოირგეთ Brave — შესძინეთ მას ახალი იერი</translation>
 <translation id="6596295505984504022">თქვენი Brave-ის მორგება</translation>
 <translation id="4148957013307229264">ინსტალაცია…</translation>
-<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> — ქსელში შესვლა — Brave</translation>
+<translation id="5011704081781303429"><ph name="PAGE_TITLE"/> — ქსელში შესვლა — Brave Origin</translation>
 <translation id="2871190378186459992">აღმოაჩინეთ შესანიშნავი აპები, თამაშები, გაფართოებები და თემები Brave-ისთვის.</translation>
 <translation id="462105622535258178">ამ გაფართოების და სხვა ერთეულების თქვენს კომპიუტერზე მისაღებად შედით Brave-ში</translation>
 <translation id="6670140629169983459">ონლაინ უსაფრთხოების დასაცავად, თქვენი მშობლის არჩევანით, გადართეთ Brave პროფილზე, რომელშიც უკვე შესული ხართ, როგორც <ph name="USER_EMAIL_ADDRESS"/></translation>
@@ -529,7 +529,7 @@
 <translation id="6831043979455480757">თარგმნა</translation>
 <translation id="8211837073776713955">Brave გაცნობებთ, თუ თქვენს პაროლებს ვინმე გატეხავს</translation>
 <translation id="684888714667046800">ინტერნეტთან დაკავშირება ვერ ხერხდება. თუ ქსელის დაცვას იყენებთ, დარწმუნდით, რომ <ph name="PRODUCT_EXE_NAME"/> დაშვებულთა სიაშია.</translation>
-<translation id="7830723774663008396">Brave — <ph name="PAGE_TITLE"/></translation>
+<translation id="8237613041998823669">Brave Origin — <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">შეეხეთ გასაგრძელებლად</translation>
 <translation id="6862030660799253820">სურათების ძიების მეშვეობით ამ სურათის ძიება</translation>
 <translation id="3028928628792374067">Brave-მა აღმოაჩინა, რომ „<ph name="EXTENSION_NAME"/>“ შეიცავს მავნე პროგრამას</translation>
