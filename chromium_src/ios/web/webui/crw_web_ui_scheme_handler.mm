@@ -27,8 +27,20 @@
   didReceiveResponse:[strongSelf processResponse:response fetcher:fetcher]]; \
         [strongSelf dummy
 
+// Allow a WebUI page to load a different WebUI URL as a child frame. The
+// upstream same-origin guard at the top of `webView:startURLSchemeTask:`
+// rejects any sub-resource whose `SchemeHostPort` differs from the main
+// `webView.URL` unless it is `chrome://resources`. Brave's per-frame `WebUIIOS`
+// support deliberately allows e.g. AI Chat to embed a chrome-untrusted (or
+// sibling-host) WebUI iframe inside a trusted WebUI page, so extend the
+// allow-list to admit any URL that is recognized by a registered
+// `WebUIIOSControllerFactory`. Non-WebUI URLs continue to fall through to the
+// upstream check.
+#define DomainIs(host) DomainIs(host) && GetErrorCodeForUrl(URL) != 0
+
 #include <ios/web/webui/crw_web_ui_scheme_handler.mm>
 
+#undef DomainIs
 #undef didReceiveResponse
 
 @implementation CRWWebUISchemeHandler (Override)
