@@ -14,6 +14,7 @@ import org.chromium.chrome.browser.browser_controls.BottomControlsStacker;
 import org.chromium.chrome.browser.browser_controls.BottomControlsStacker.LayerType;
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
+import org.chromium.chrome.browser.overlay_panel.PanelState;
 import org.chromium.chrome.browser.tab.TabObscuringHandler;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.ui.base.WindowAndroid;
@@ -45,7 +46,7 @@ class BraveBottomControlsMediator extends BottomControlsMediator {
             TabObscuringHandler tabObscuringHandler,
             int bottomControlsHeight,
             int bottomControlsShadowHeight,
-            NonNullObservableSupplier<Boolean> overlayPanelVisibilitySupplier,
+            NonNullObservableSupplier<@PanelState Integer> overlayPanelStateSupplier,
             MonotonicObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
             Supplier<Boolean> readAloudRestoringSupplier) {
         super(
@@ -59,7 +60,7 @@ class BraveBottomControlsMediator extends BottomControlsMediator {
                 tabObscuringHandler,
                 bottomControlsHeight,
                 bottomControlsShadowHeight,
-                overlayPanelVisibilitySupplier,
+                overlayPanelStateSupplier,
                 edgeToEdgeControllerSupplier,
                 readAloudRestoringSupplier);
 
