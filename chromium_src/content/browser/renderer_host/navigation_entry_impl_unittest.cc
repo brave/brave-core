@@ -63,8 +63,8 @@ TEST_F(BraveNavigationEntryTest,
   entry = CreateEntry(GURL("http://chrome.com"));
   EXPECT_EQ(u"chrome.com", entry->GetTitleForDisplay());
 
-  entry = CreateEntry(GURL("http://example.com?chrome://settings"));
-  EXPECT_EQ(u"example.com?chrome://settings", entry->GetTitleForDisplay());
+  entry = CreateEntry(GURL("http://example.com/?chrome://settings"));
+  EXPECT_EQ(u"example.com/?chrome://settings", entry->GetTitleForDisplay());
 }
 
 }  // namespace content
