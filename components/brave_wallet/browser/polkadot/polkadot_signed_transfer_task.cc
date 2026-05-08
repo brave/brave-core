@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_signed_transfer_task.h"
 
 #include "base/containers/to_vector.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_wallet_service.h"
@@ -255,12 +256,16 @@ void PolkadotSignedTransferTask::MaybeFinalizeSignTransaction() {
   } else {
     auto sig = keyring_service_->SignMessageByPolkadotKeyring(
         sender_account_id_, signature_payload);
+    if (!sig) {
+      return StopWithError(WalletInternalErrorMessage());
+    }
 
-    CHECK(sig);
     signature = *sig;
   }
   auto sender_pubkey = keyring_service_->GetPolkadotPubKey(sender_account_id_);
-  CHECK(sender_pubkey);
+  if (!sender_pubkey) {
+    return StopWithError(WalletInternalErrorMessage());
+  }
 
   extrinsic_ = base::ToVector(make_signed_extrinsic(
       *chain_metadata_.value(), *sender_pubkey, recipient_, send_amount_bytes,
