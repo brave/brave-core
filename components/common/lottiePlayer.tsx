@@ -144,7 +144,7 @@ class LottiePlayerState {
         this.props.onPaused?.()
       } else if (event.data.name === 'stopped') {
         this.props.onStopped?.()
-      } else if (event.data.name === 'complete') {
+      } else if (event.data.name === 'completed') {
         this.props.onComplete?.()
       } else if (event.data.name === 'resized') {
         this.props.onResized?.(event.data.size)
