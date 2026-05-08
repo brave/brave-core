@@ -5,6 +5,10 @@
 
 #include "brave/browser/ephemeral_storage/browsing_history_cleaner.h"
 
+#include <algorithm>
+
+#include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "base/strings/utf_string_conversions.h"
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -31,6 +35,17 @@ void BrowsingHistoryCleaner::CleanupBrowsingHistoryForDomain(
     return;
   }
 
+  // Queue the query
+  queries_.emplace_back(base::BindOnce(&BrowsingHistoryCleaner::CleanupQuery,
+                                       weak_factory_.GetWeakPtr(), domain));
+  if (queries_.size() > 1) {
+    return;
+  }
+
+  std::move(queries_.back()).Run();
+}
+
+void BrowsingHistoryCleaner::CleanupQuery(const std::string& domain) {
   history::QueryOptions options;
   options.max_count = 0;
   options.host_only = true;
@@ -38,16 +53,36 @@ void BrowsingHistoryCleaner::CleanupBrowsingHistoryForDomain(
   browsing_history_service_->QueryHistory(base::UTF8ToUTF16(domain), options);
 }
 
-void BrowsingHistoryCleaner::OnQueryComplete(
-    const std::vector<history::BrowsingHistoryService::HistoryEntry>&
-        query_results,
-    const history::BrowsingHistoryService::QueryResultsInfo& query_results_info,
-    base::OnceClosure continuation_closure) {
-  browsing_history_service_->RemoveVisits(query_results);
+void BrowsingHistoryCleaner::OnRemoveRequestCompleted() {
+  // Clean the queue from the completed queries
+  queries_.erase(
+      std::remove_if(queries_.begin(), queries_.end(),
+                     [](const auto& query) { return query.is_null(); }),
+      queries_.end());
+  if (!queries_.empty()) {
+    // Run the next query in the queue.
+    std::move(queries_.back()).Run();
+    return;
+  }
 
   if (on_query_complete_callback_for_testing_) {
     std::move(on_query_complete_callback_for_testing_).Run();
   }
+}
+
+void BrowsingHistoryCleaner::OnQueryComplete(
+    const HistoryEntryRequests& query_results,
+    const history::BrowsingHistoryService::QueryResultsInfo& query_results_info,
+    base::OnceClosure continuation_closure) {
+  browsing_history_service_->RemoveVisits(query_results);
+}
+
+void BrowsingHistoryCleaner::OnRemoveVisitsComplete() {
+  OnRemoveRequestCompleted();
+}
+
+void BrowsingHistoryCleaner::OnRemoveVisitsFailed() {
+  OnRemoveRequestCompleted();
 }
 
 Profile* BrowsingHistoryCleaner::GetProfile() {

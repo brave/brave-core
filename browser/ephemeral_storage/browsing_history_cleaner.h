@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_EPHEMERAL_STORAGE_BROWSING_HISTORY_CLEANER_H_
 
 #include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
 #include "chrome/browser/history/profile_based_browsing_history_driver.h"
 #include "components/history/core/browser/browsing_history_service.h"
 #include "components/sync/service/sync_service.h"
@@ -21,27 +22,35 @@ class BrowsingHistoryCleaner : public ProfileBasedBrowsingHistoryDriver {
   ~BrowsingHistoryCleaner() override;
   using WebHistoryServiceGetter =
       base::RepeatingCallback<history::WebHistoryService*()>;
+  using HistoryEntryRequests =
+      std::vector<history::BrowsingHistoryService::HistoryEntry>;
 
   void CleanupBrowsingHistoryForDomain(const std::string& domain);
 
  private:
   friend class BrowsingHistoryCleanerTest;
+
+  void CleanupQuery(const std::string& domain);
+  void OnRemoveRequestCompleted();
+
   // BrowsingHistoryDriver implementation.
-  void OnQueryComplete(
-      const std::vector<history::BrowsingHistoryService::HistoryEntry>&
-          query_results,
-      const history::BrowsingHistoryService::QueryResultsInfo&
-          query_results_info,
-      base::OnceClosure continuation_closure) override;
+  void OnQueryComplete(const HistoryEntryRequests& query_results,
+                       const history::BrowsingHistoryService::QueryResultsInfo&
+                           query_results_info,
+                       base::OnceClosure continuation_closure) override;
+  void OnRemoveVisitsComplete() override;
+  void OnRemoveVisitsFailed() override;
   Profile* GetProfile() override;
 
   // For testing: allows setting a callback that will be run when
   // OnQueryComplete is called.
   void SetOnQueryCompleteCallbackForTesting(base::OnceClosure callback);
 
+  std::vector<base::OnceCallback<void()>> queries_;
   std::unique_ptr<history::BrowsingHistoryService> browsing_history_service_;
   raw_ptr<Profile> profile_ = nullptr;
   base::OnceClosure on_query_complete_callback_for_testing_;
+  base::WeakPtrFactory<BrowsingHistoryCleaner> weak_factory_{this};
 };
 
 }  // namespace ephemeral_storage

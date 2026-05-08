@@ -121,4 +121,31 @@ TEST_F(BrowsingHistoryCleanerTest, RemoveOnlyFullyMatchedDomains) {
   EXPECT_FALSE(HistoryContainsURL(url4));
 }
 
+TEST_F(BrowsingHistoryCleanerTest, MultipleRemoveRequests) {
+  GURL url1("https://a.com");
+  GURL url2("https://b.com");
+  GURL url3("https://c.com");
+
+  AddHistory(url1);
+  AddHistory(url2);
+  AddHistory(url3);
+
+  EXPECT_TRUE(HistoryContainsURL(url1));
+  EXPECT_TRUE(HistoryContainsURL(url2));
+  EXPECT_TRUE(HistoryContainsURL(url3));
+
+  auto on_cleanup_finished_future = base::test::TestFuture<void>();
+  SetOnQueryCompleteCallbackForTesting(
+      on_cleanup_finished_future.GetCallback());
+  browsing_history_cleaner()->CleanupBrowsingHistoryForDomain("a.com");
+  browsing_history_cleaner()->CleanupBrowsingHistoryForDomain("b.com");
+  browsing_history_cleaner()->CleanupBrowsingHistoryForDomain("");
+  browsing_history_cleaner()->CleanupBrowsingHistoryForDomain("c.com");
+  ASSERT_TRUE(on_cleanup_finished_future.Wait());
+
+  EXPECT_FALSE(HistoryContainsURL(url1));
+  EXPECT_FALSE(HistoryContainsURL(url2));
+  EXPECT_FALSE(HistoryContainsURL(url3));
+}
+
 }  // namespace ephemeral_storage
