@@ -40,6 +40,7 @@
 #include "components/content_settings/core/browser/content_settings_type_set.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/history/core/browser/history_service.h"
+#include "components/policy/core/common/policy_service.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
@@ -77,11 +78,13 @@ class AdsServiceImpl : public AdsService,
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
                        public brave_rewards::RewardsServiceObserver,
 #endif
-                       public content_settings::Observer {
+                       public content_settings::Observer,
+                       public policy::PolicyService::Observer {
  public:
-  // `http_client`, `resource_component`, `history_service`, and
-  // `host_content_settings` can be `nullptr` in tests. `rewards_service`
-  // can be `nullptr` when Rewards is unsupported or disabled by policy.
+  // `http_client`, `resource_component`, `history_service`,
+  // `host_content_settings`, and `policy_service` can be `nullptr` in tests.
+  // `rewards_service` can be `nullptr` when Rewards is unsupported or disabled
+  // by policy.
   explicit AdsServiceImpl(
       std::unique_ptr<Delegate> delegate,
       PrefService& prefs,
@@ -99,7 +102,8 @@ class AdsServiceImpl : public AdsService,
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
       brave_rewards::RewardsService* rewards_service,
 #endif
-      HostContentSettingsMap* host_content_settings);
+      HostContentSettingsMap* host_content_settings,
+      policy::PolicyService* policy_service);
 
   AdsServiceImpl(const AdsServiceImpl&) = delete;
   AdsServiceImpl& operator=(const AdsServiceImpl&) = delete;
@@ -389,6 +393,9 @@ class AdsServiceImpl : public AdsService,
       const ContentSettingsPattern& secondary_pattern,
       ContentSettingsTypeSet content_type_set) override;
 
+  // policy::PolicyService::Observer:
+  void OnPolicyServiceInitialized(policy::PolicyDomain domain) override;
+
   bool is_ineligible_to_start_ = false;
 
   bool is_bat_ads_initialized_ = false;
@@ -419,6 +426,14 @@ class AdsServiceImpl : public AdsService,
   const raw_ref<PrefService> prefs_;
 
   const raw_ref<PrefService> local_state_;
+
+  // Owned by the profile / browser process; may be `nullptr` in tests.
+  // When non-null, the service waits for this PolicyService to finish loading
+  // policies for `POLICY_DOMAIN_CHROME` before starting bat_ads, so that
+  // policy-driven prefs (e.g. `BraveRewardsDisabled`) are honored on first
+  // run instead of racing against eager service construction at profile init.
+  const raw_ptr<policy::PolicyService> policy_service_;
+  bool is_observing_policy_service_ = false;
 
   const std::unique_ptr<VirtualPrefProvider> virtual_pref_provider_;
 

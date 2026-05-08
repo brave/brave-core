@@ -133,10 +133,12 @@ AdsServiceImpl::AdsServiceImpl(
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
     brave_rewards::RewardsService* rewards_service,
 #endif
-    HostContentSettingsMap* host_content_settings_map)
+    HostContentSettingsMap* host_content_settings_map,
+    policy::PolicyService* policy_service)
     : AdsService(std::move(delegate)),
       prefs_(prefs),
       local_state_(local_state),
+      policy_service_(policy_service),
       virtual_pref_provider_(std::make_unique<VirtualPrefProvider>(
           prefs,
           local_state,
@@ -174,7 +176,20 @@ AdsServiceImpl::AdsServiceImpl(
   InitializeLocalStatePrefChangeRegistrar();
   InitializePrefChangeRegistrar();
 
-  MaybeStartBatAdsService();
+  // Defer the bat_ads launch until the PolicyService has finished loading
+  // policies for `POLICY_DOMAIN_CHROME`. Otherwise managed prefs that gate
+  // eligibility (e.g. `BraveRewardsDisabled` set by enterprise policy or by
+  // BraveOrigin) may not yet have propagated to the pref store, and bat_ads
+  // would launch even though it should be suppressed. Mirrors the upstream
+  // pattern in
+  // chrome/browser/extensions/forced_extensions/force_installed_tracker.cc.
+  if (!policy_service_ ||
+      policy_service_->IsInitializationComplete(policy::POLICY_DOMAIN_CHROME)) {
+    MaybeStartBatAdsService();
+  } else {
+    policy_service_->AddObserver(policy::POLICY_DOMAIN_CHROME, this);
+    is_observing_policy_service_ = true;
+  }
 }
 
 AdsServiceImpl::~AdsServiceImpl() = default;
@@ -1046,6 +1061,12 @@ void AdsServiceImpl::Shutdown() {
   // this is never reset to false.
   is_shutting_down_ = true;
 
+  if (is_observing_policy_service_) {
+    CHECK(policy_service_);
+    policy_service_->RemoveObserver(policy::POLICY_DOMAIN_CHROME, this);
+    is_observing_policy_service_ = false;
+  }
+
   ShutdownAdsService();
 }
 
@@ -1696,6 +1717,22 @@ void AdsServiceImpl::OnContentSettingChanged(
   if (content_type_set.Contains(ContentSettingsType::JAVASCRIPT)) {
     SetContentSettings();
   }
+}
+
+void AdsServiceImpl::OnPolicyServiceInitialized(policy::PolicyDomain domain) {
+  if (domain != policy::POLICY_DOMAIN_CHROME) {
+    return;
+  }
+  CHECK(policy_service_);
+  policy_service_->RemoveObserver(policy::POLICY_DOMAIN_CHROME, this);
+  is_observing_policy_service_ = false;
+
+  // Profile shutdown can race with this notification; respect it.
+  if (is_shutting_down_) {
+    return;
+  }
+
+  MaybeStartBatAdsService();
 }
 
 }  // namespace brave_ads

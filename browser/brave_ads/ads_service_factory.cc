@@ -28,6 +28,7 @@
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/notifications/notification_display_service.h"
 #include "chrome/browser/notifications/notification_display_service_factory.h"
+#include "chrome/browser/policy/profile_policy_connector.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
@@ -132,6 +133,8 @@ AdsServiceFactory::BuildServiceInstanceForBrowserContext(
   ProfileManager* const profile_manager = g_browser_process->profile_manager();
   CHECK(profile_manager);
 
+  auto* profile_policy_connector = profile->GetProfilePolicyConnector();
+
   return std::make_unique<AdsServiceImpl>(
       std::move(delegate), *prefs, *local_state, std::move(http_client),
       std::make_unique<VirtualPrefProviderDelegate>(
@@ -143,7 +146,9 @@ AdsServiceFactory::BuildServiceInstanceForBrowserContext(
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
       rewards_service,
 #endif
-      host_content_settings_map);
+      host_content_settings_map,
+      profile_policy_connector ? profile_policy_connector->policy_service()
+                               : nullptr);
 }
 
 bool AdsServiceFactory::ServiceIsNULLWhileTesting() const {

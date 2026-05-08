@@ -89,7 +89,8 @@ class BraveAdsAdsServiceImplTest : public testing::Test {
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
         &rewards_service_,
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
-        /*host_content_settings_map=*/nullptr);
+        /*host_content_settings_map=*/nullptr,
+        /*policy_service=*/nullptr);
   }
 
   void TearDown() override {
