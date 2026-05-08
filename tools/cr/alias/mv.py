@@ -226,5 +226,7 @@ def _step5_plaster(file_pairs: list[_FilePair], no_git: bool,
                         new_chromium_path)
                     if new_patch.exists():
                         repository.brave.run_git('add', str(new_patch))
-            except (Exception, SystemExit) as e:
+            # TODO(https://github.com/brave/brave-browser/issues/55370): Eventually
+            # we should better constrain this to only catch plaster exceptions.
+            except Exception as e:
                 logging.warning('plaster failed to apply %s: %s', new_file, e)
