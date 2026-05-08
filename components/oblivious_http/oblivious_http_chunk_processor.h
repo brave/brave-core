@@ -14,13 +14,13 @@
 #include <vector>
 
 #include "base/functional/callback.h"
-#include "brave/services/network/public/mojom/oblivious_http_request.mojom.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "net/http/http_response_headers.h"
 #include "net/third_party/quiche/src/quiche/binary_http/binary_http_message.h"
 #include "net/third_party/quiche/src/quiche/oblivious_http/common/oblivious_http_chunk_handler.h"
 #include "net/third_party/quiche/src/quiche/oblivious_http/oblivious_http_client.h"
 #include "services/network/public/cpp/simple_url_loader_stream_consumer.h"
+#include "services/network/public/mojom/oblivious_http_request.mojom.h"
 
 namespace oblivious_http {
 

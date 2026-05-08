@@ -12,12 +12,12 @@
 #include "base/functional/callback_helpers.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
-#include "brave/services/network/public/mojom/oblivious_http_request.mojom.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "net/http/http_status_code.h"
 #include "net/third_party/quiche/src/quiche/binary_http/binary_http_message.h"
 #include "net/third_party/quiche/src/quiche/oblivious_http/common/oblivious_http_header_key_config.h"
 #include "net/third_party/quiche/src/quiche/oblivious_http/oblivious_http_gateway.h"
+#include "services/network/public/mojom/oblivious_http_request.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace oblivious_http {
