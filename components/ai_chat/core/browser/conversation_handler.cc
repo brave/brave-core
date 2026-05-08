@@ -391,6 +391,10 @@ void ConversationHandler::GetState(GetStateCallback callback) {
   std::ranges::transform(suggestions_, std::back_inserter(suggestions),
                          [](const auto& s) { return s.title; });
 
+  // Build array of capabilities
+  std::vector<mojom::ConversationCapability> capabilities(
+      conversation_capabilities_.begin(), conversation_capabilities_.end());
+
   mojom::ConversationStatePtr state = mojom::ConversationState::New(
       metadata_->uuid, is_request_in_progress_, std::move(models_copy),
       model_key, default_model_key,
@@ -398,7 +402,7 @@ void ConversationHandler::GetState(GetStateCallback callback) {
       std::move(suggestions), suggestion_generation_status_,
 #endif
       associated_content_manager_->GetAssociatedContent(), current_error_,
-      metadata_->temporary, tool_use_task_state_);
+      metadata_->temporary, tool_use_task_state_, std::move(capabilities));
 
   std::move(callback).Run(std::move(state));
 }
@@ -2166,13 +2170,6 @@ bool ConversationHandler::MaybeRespondToNextToolUseRequest() {
       has_pending_tool_use_request = true;
       has_only_completed_tool_use_events = false;
 
-      // Initialize the task state for this tool loop if not already set.
-      // PauseTask() may have already set it to kPaused before we get here.
-      if (tool_use_task_state_ == mojom::TaskState::kNone) {
-        tool_use_task_state_ = mojom::TaskState::kRunning;
-        OnToolUseTaskStateChanged();
-      }
-
       // Now check if we're allowed to execute tools.
       if (tool_use_task_state_ == mojom::TaskState::kPaused ||
           tool_use_task_state_ == mojom::TaskState::kStopped) {
@@ -2252,9 +2249,16 @@ bool ConversationHandler::MaybeRespondToNextToolUseRequest() {
 
       // No user interaction needed - execute tool
 
-      // At this point task state should be kRunning (not paused, stopped, or
-      // none) since we initialized it earlier and checked for pause/stop above.
-      CHECK_EQ(tool_use_task_state_, mojom::TaskState::kRunning);
+      // Initialize the task state for this tool loop if not already set. We do
+      // this after checking for user interaction so that a tool requiring
+      // only user-interaction won't trigger a Task pause/stop UI. If we want
+      // the tool state to reset whenever there is a tool use that requires
+      // user interaction we should set it above before we `break` to kNone, or
+      // a new kWaitingForUser.
+      if (tool_use_task_state_ == mojom::TaskState::kNone) {
+        tool_use_task_state_ = mojom::TaskState::kRunning;
+        OnToolUseTaskStateChanged();
+      }
 
       is_tool_use_in_progress_ = true;
       OnAPIRequestInProgressChanged();

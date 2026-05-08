@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_CONVERSATION_HANDLER_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_CONVERSATION_HANDLER_H_
 
+#include <concepts>
 #include <cstdint>
 #include <memory>
 #include <optional>
@@ -276,6 +277,18 @@ class ConversationHandler : public mojom::ConversationHandler,
       return nullptr;
     }
     return tool_providers_[0].get();
+  }
+
+  // Adds an extra tool provider to this conversation. Returns the added
+  // provider; ownership stays with this ConversationHandler and the pointer
+  // is valid for the conversation's lifetime.
+  template <typename T>
+    requires(std::derived_from<T, ToolProvider>)
+  T* AddToolProviderForTesting(std::unique_ptr<T> tool_provider) {
+    T* raw = tool_provider.get();
+    tool_provider->AddObserver(this);
+    tool_providers_.push_back(std::move(tool_provider));
+    return raw;
   }
 
   void SetChatHistoryForTesting(

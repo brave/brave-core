@@ -90,6 +90,8 @@ class MockAIChatCredentialManager : public AIChatCredentialManager {
               (override));
 };
 
+// TODO(https://github.com/brave/brave-browser/issues/55381): Use
+// MockToolProvider from mock_tool_provider.h.
 class MockToolProvider : public ToolProvider {
  public:
   MockToolProvider() = default;
@@ -3480,10 +3482,6 @@ TEST_F(ConversationHandlerUnitTest,
                 first_generation_loop.Quit();
               })));
 
-  // Tool should not be called since there is no explicit call via user
-  // interaction.
-  EXPECT_CALL(*tool1, UseTool).Times(0);
-
   // When the user instead decides to send a new human entry, before the tool
   // use request is handled, the tool use request should be discarded.
   base::RunLoop second_generation_loop;
@@ -3511,6 +3509,13 @@ TEST_F(ConversationHandlerUnitTest,
   conversation_handler_->SubmitHumanConversationEntry("First question",
                                                       std::nullopt);
   first_generation_loop.Run();
+
+  // Tool should not be called since there is no explicit call via user
+  // interaction.
+  EXPECT_CALL(*tool1, UseTool).Times(0);
+
+  // State should not be running, since we're waiting
+  EXPECT_EQ(GetState()->tool_use_task_state, mojom::TaskState::kNone);
 
   // Verify the tool use event exists and has no output
   const auto& history_before = conversation_handler_->GetConversationHistory();

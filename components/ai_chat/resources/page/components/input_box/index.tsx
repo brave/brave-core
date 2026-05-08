@@ -13,7 +13,10 @@ import { Url } from 'gen/url/mojom/url.mojom.m.js'
 import ActionTypeLabel from '../../../common/components/action_type_label'
 import * as Mojom from '../../../common/mojom'
 import { AIChatContext, useAIChat } from '../../state/ai_chat_context'
-import { ConversationContext } from '../../state/conversation_context'
+import {
+  ConversationContext,
+  useConversationState,
+} from '../../state/conversation_context'
 import styles from './style.module.scss'
 import AttachmentButtonMenu from '../attachment_button_menu'
 import {
@@ -30,6 +33,10 @@ import { stringifyContent } from './editable_content'
 const LEARN_MORE_CONTENT_AGENT_URL =
   'https://support.brave.app/hc/en-us/articles/41240379376909'
 
+/**
+ * @deprecated This component is no longer independent of ConversationContext
+ * and AIChatContext. Use those instead.
+ */
 type Props = Pick<
   ConversationContext,
   | 'attachFiles'
@@ -175,6 +182,7 @@ function AttachmentChips(props: {
 
 function InputBox(props: InputBoxProps) {
   const aiChatContext = useAIChat()
+  const conversationState = useConversationState()
   const querySubmitted = React.useRef(false)
 
   const handleSubmit = () => {
@@ -256,7 +264,10 @@ function InputBox(props: InputBoxProps) {
     (c) => !c.conversationTurnUuid,
   )
   const showTaskStateActions =
-    props.context.toolUseTaskState !== Mojom.TaskState.kNone
+    conversationState.capabilitiesEnabled.includes(
+      Mojom.ConversationCapability.CONTENT_AGENT,
+    )
+    && props.context.toolUseTaskState !== Mojom.TaskState.kNone
     && props.context.toolUseTaskState !== Mojom.TaskState.kStopped
   const isSendButtonDisabled =
     props.context.shouldDisableUserInput
