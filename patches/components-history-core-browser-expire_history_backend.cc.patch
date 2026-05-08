@@ -1,0 +1,9 @@
+diff --git a/components/history/core/browser/expire_history_backend.cc b/components/history/core/browser/expire_history_backend.cc
+index 193014683e670facf7192eccf392c800cb2be879..2351d061567bfe09d5a0421fcc6d0d7bc08e4287 100644
+--- a/components/history/core/browser/expire_history_backend.cc
++++ b/components/history/core/browser/expire_history_backend.cc
+@@ -397,3 +397,4 @@ void ExpireHistoryBackend::StartExpiringOldStuff(
+   // Remove all readers, just in case this was method was called before.
+   readers_.clear();
++  BRAVE_EXPIRE_HISTORY_BACKEND_START_EXPIRING_OLD_STUFF
+   // For now, we explicitly add all known readers. If we come up with more
