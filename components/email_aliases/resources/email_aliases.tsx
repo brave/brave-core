@@ -3,6 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+// This page contains a copy of Svelte (via @brave/leo) which will attempt
+// to register its own trusted-types policy which duplicates the one registered
+// by the main page.
+import '$web-common/disableDuplicateSvelteTrustedPolicies'
+
 import { createRoot } from 'react-dom/client'
 import { SignInPage, ManagePage } from './content/email_aliases_manage_page'
 import { StyleSheetManager } from 'styled-components'

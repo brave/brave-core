@@ -86,7 +86,8 @@ AIChatUI::AIChatUI(web::WebUIIOS* web_ui, const GURL& url)
       absl::StrFormat("child-src %s;", kAIChatUntrustedConversationUIURL));
 
   source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::TrustedTypes, "trusted-types default;");
+      network::mojom::CSPDirectiveName::TrustedTypes,
+      "trusted-types svelte-trusted-html default;");
 
   web::URLDataSourceIOS::Add(
       profile_,

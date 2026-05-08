@@ -9,8 +9,6 @@ import { useHistory, useLocation } from 'react-router'
 // redux
 import { useAppDispatch } from '../../../../common/hooks/use-redux'
 
-import * as leo from '@brave/leo/tokens/css/variables'
-
 // utils
 import { getLocale } from '../../../../../common/locale'
 import { getWordIndicesToVerify } from '../../../../utils/ordinal-utils'
@@ -168,7 +166,6 @@ export const VerifyRecoveryPhrase = () => {
         </ContinueButton>
         <Button
           kind='plain-faint'
-          color={leo.color.text.secondary}
           onClick={onSkipBackup}
         >
           {getLocale('braveWalletButtonSkip')}

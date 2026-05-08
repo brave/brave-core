@@ -10,7 +10,6 @@ import Button from '@brave/leo/react/button'
 // redux
 import { useAppDispatch } from '../../../../common/hooks/use-redux'
 
-import * as leo from '@brave/leo/tokens/css/variables'
 import useMediaQuery from '$web-common/useMediaQuery'
 
 // assets
@@ -103,7 +102,6 @@ export const RecoveryPhraseExplainer = () => {
           </ContinueButton>
           <Button
             kind='plain-faint'
-            color={leo.color.text.secondary}
             onClick={() => setIsSkipWarningOpen(true)}
           >
             {getLocale('braveWalletButtonSkip')}

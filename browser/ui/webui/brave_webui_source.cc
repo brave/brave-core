@@ -55,7 +55,7 @@ content::WebUIDataSource* CreateWebUIDataSource(
   // Allow a policy to be created so that we
   // can allow trusted HTML and trusted lazy-load script sources.
   source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::TrustedTypes, "trusted-types default;");
+      network::mojom::CSPDirectiveName::TrustedTypes, "trusted-types svelte-trusted-html default;");
 
   source->UseStringsJs();
   source->SetDefaultResource(html_resource_id);

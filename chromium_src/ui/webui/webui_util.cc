@@ -42,6 +42,10 @@ void SetupWebUIDataSource(content::WebUIDataSource* source,
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ScriptSrc,
       IsChromeUntrustedDataSource(source) ? kBraveUntrustedCSP : kBraveCSP);
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::TrustedTypes,
+      base::StrCat(
+          {kDefaultTrustedTypesPolicies, " svelte-trusted-html default;"}));
 }
 
 }  // namespace webui

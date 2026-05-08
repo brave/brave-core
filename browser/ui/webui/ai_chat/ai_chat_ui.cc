@@ -119,7 +119,8 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
       absl::StrFormat("child-src %s;", kAIChatUntrustedConversationUIURL));
 
   source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::TrustedTypes, "trusted-types default;");
+      network::mojom::CSPDirectiveName::TrustedTypes,
+      "trusted-types svelte-trusted-html default;");
 
   content::URLDataSource::Add(
       profile_, std::make_unique<FaviconSource>(

@@ -22,17 +22,17 @@ export function getCreatorIconSrc(
 export function getCreatorPlatformIcon(site: CreatorSite) {
   switch (site.platform) {
     case 'github':
-      return 'social-github'
+      return 'social-github-color'
     case 'reddit':
-      return 'social-reddit'
+      return 'social-reddit-color'
     case 'twitch':
-      return 'social-twitch'
+      return 'social-twitch-color'
     case 'twitter':
-      return 'social-x'
+      return 'social-x-color'
     case 'vimeo':
-      return 'social-vimeo'
+      return 'social-vimeo-color'
     case 'youtube':
-      return 'social-youtube'
+      return 'social-youtube-color'
     case '':
       return ''
   }
