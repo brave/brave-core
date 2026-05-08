@@ -22,7 +22,9 @@
                            OnAccountDeleted_FailureAndRetry);                  \
   FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest, JoinDeletedChain);        \
   FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest,                           \
-                           ForcedSetDecryptionPassphrase);
+                           ForcedSetDecryptionPassphrase);                     \
+  FRIEND_TEST_ALL_PREFIXES(BraveSyncServiceImplTest,                           \
+                           StopAndClearDoNotWipePrefsWhenIsInitializing);
 
 #define GetUserActionableError(...)                       \
   GetUserActionableError_ChromiumImpl(__VA_ARGS__) const; \

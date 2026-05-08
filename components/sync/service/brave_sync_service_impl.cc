@@ -202,14 +202,14 @@ bool BraveSyncServiceImpl::IsSetupInProgress() const {
 }
 
 void BraveSyncServiceImpl::StopAndClear(ResetEngineReason reset_engine_reason) {
-  if (!has_encryptor() || is_initializing_) {
-    // Skip when encryptor is not ready yet (desktop: async keychain fires after
-    // Initialize) or when Initialize() is still running (Android: encryptor
-    // fires synchronously but DeriveSigningKeys() hasn't run yet via PostTask).
-    // SyncServiceImpl::StopAndClear() unconditionally calls
+  if ((!has_encryptor() || is_initializing_) &&
+      reset_engine_reason == ResetEngineReason::kNotSignedIn) {
+    // kNotSignedIn fires during Initialize() because DeriveSigningKeys() hasn't
+    // run yet (desktop: encryptor not ready; Android: encryptor fires
+    // synchronously but DeriveSigningKeys() is still in the PostTask queue).
+    // SyncServiceImpl::StopAndClear() would call
     // ClearInitialSyncFeatureSetupComplete() and Prefs::Clear() would wipe the
-    // seed, destroying the sync chain. Skip entirely — OnEncryptorReady() will
-    // call DeriveSigningKeys() to establish the correct auth state.
+    // seed. Skip — OnEncryptorReady() will establish the correct auth state.
     return;
   }
   // StopAndClear is invoked during |SyncServiceImpl::Initialize| even if sync
@@ -368,6 +368,11 @@ void BraveSyncServiceImpl::OnEngineInitialized(
 SyncServiceCrypto* BraveSyncServiceImpl::GetCryptoForTesting() {
   CHECK_IS_TEST();
   return &crypto_;
+}
+
+void BraveSyncServiceImpl::SetInitializingForTesting() {
+  CHECK_IS_TEST();
+  is_initializing_ = true;
 }
 
 namespace {

@@ -90,6 +90,7 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
   void RemoveAllPrefsChangeRegistrarForTesting();
   SyncServiceCrypto* GetCryptoForTesting();
   bool SetSeedForTesting(const std::string& seed);
+  void SetInitializingForTesting();
 
  private:
   friend class BraveSyncServiceImplGACookiesTest;
