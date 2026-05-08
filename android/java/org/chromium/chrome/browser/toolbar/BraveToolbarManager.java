@@ -23,7 +23,6 @@ import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.base.supplier.NullableObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
-import org.chromium.base.supplier.SettableNonNullObservableSupplier;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.build.annotations.Nullable;
@@ -137,7 +136,6 @@ public class BraveToolbarManager extends ToolbarManager
     private TopToolbarCoordinator mToolbar;
     private NullableObservableSupplier<BookmarkModel> mBookmarkModelSupplier;
     private LayoutManagerImpl mLayoutManager;
-    private SettableNonNullObservableSupplier<Boolean> mOverlayPanelVisibilitySupplier;
     private TabModelSelector mTabModelSelector;
     private IncognitoStateProvider mIncognitoStateProvider;
     private BottomSheetController mBottomSheetController;
@@ -419,7 +417,7 @@ public class BraveToolbarManager extends ToolbarManager
                         R.dimen.brave_bottom_toolbar_height,
                         bottomControlsContentDelegateSupplier,
                         mTabObscuringHandler,
-                        mOverlayPanelVisibilitySupplier,
+                        mLayoutManager.getOverlayPanelManager().getPanelStateSupplier(),
                         getConstraintsProxy(),
                         /* readAloudRestoringSupplier= */ () -> {
                             final var readAloud = mReadAloudControllerSupplier.get();

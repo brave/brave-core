@@ -2440,12 +2440,6 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/toolbar/ToolbarManager", "mLayoutManager"));
         Assert.assertTrue(
                 fieldExists(
-                        "org/chromium/chrome/browser/toolbar/ToolbarManager",
-                        "mOverlayPanelVisibilitySupplier",
-                        true,
-                        SettableNonNullObservableSupplier.class));
-        Assert.assertTrue(
-                fieldExists(
                         "org/chromium/chrome/browser/toolbar/ToolbarManager", "mTabModelSelector"));
         Assert.assertTrue(
                 fieldExists(
