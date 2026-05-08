@@ -10,6 +10,7 @@
 #include <string_view>
 #include <vector>
 
+#include "base/check_is_test.h"
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/strings/string_split.h"
@@ -18,6 +19,11 @@
 #include "third_party/re2/src/re2/re2.h"
 
 namespace {
+
+// Allows to replace the |kScopedQueryStringTrackers| with custom values during
+// testing.
+const query_filter::ScopedQueryTrackerType* g_scoped_trackers_for_testing_ =
+    nullptr;
 
 static constexpr auto kSimpleQueryStringTrackers =
     base::MakeFixedFlatSet<std::string_view>(
@@ -153,7 +159,7 @@ static constexpr auto kConditionalQueryStringTrackers =
 // added in the meantime to fix the build error. Remove this attribute and
 // provide a proper fix.
 [[clang::no_destroy]] static const auto kScopedQueryStringTrackers =
-    std::map<std::string_view, std::vector<std::string_view>>({
+    query_filter::ScopedQueryTrackerType({
         // https://github.com/brave/brave-browser/issues/35094
         {"igsh", {"instagram.com"}},
         // https://github.com/brave/brave-browser/issues/11580
@@ -176,10 +182,16 @@ static constexpr auto kExemptedHostnames =
             "urldefense.com",
         });
 
-bool IsScopedTracker(
-    std::string_view param_name,
-    std::string_view spec,
-    const std::map<std::string_view, std::vector<std::string_view>>& trackers) {
+bool IsScopedTracker(std::string_view param_name, std::string_view spec) {
+  query_filter::ScopedQueryTrackerType trackers;
+
+  if (g_scoped_trackers_for_testing_) {
+    CHECK_IS_TEST();
+    trackers = *g_scoped_trackers_for_testing_;
+  } else {
+    trackers = kScopedQueryStringTrackers;
+  }
+
   if (!trackers.contains(param_name)) {
     return false;
   }
@@ -219,7 +231,7 @@ std::optional<std::string> StripQueryParameter(std::string_view query,
     const std::string_view key = pieces.empty() ? "" : pieces[0];
     if (pieces.size() >= 2 &&
         (kSimpleQueryStringTrackers.count(key) == 1 ||
-         IsScopedTracker(key, spec, kScopedQueryStringTrackers) ||
+         IsScopedTracker(key, spec) ||
          (kConditionalQueryStringTrackers.count(key) == 1 &&
           !re2::RE2::PartialMatch(
               spec, kConditionalQueryStringTrackers.at(key).data())))) {
@@ -301,10 +313,8 @@ std::optional<GURL> MaybeApplyQueryStringFilter(
   return ApplyQueryFilter(request_url);
 }
 
-bool IsScopedTrackerForTesting(  // IN-TEST
-    std::string_view param_name,
-    std::string_view spec,
-    const std::map<std::string_view, std::vector<std::string_view>>& trackers) {
-  return IsScopedTracker(param_name, spec, trackers);
+void SetScopedTrackerForTesting(  // IN-TEST
+    const ScopedQueryTrackerType* trackers) {
+  g_scoped_trackers_for_testing_ = trackers;
 }
 }  // namespace query_filter

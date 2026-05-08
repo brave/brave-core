@@ -5,12 +5,25 @@
 
 #include "brave/components/query_filter/browser/utils.h"
 
-#include <vector>
-
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
-TEST(BraveQueryFilter, FilterQueryTrackers) {
+// TODO(https://github.com/brave/brave-browser/issues/55305): Parameterize this
+// fixture on the QueryFilterComponent feature flag once the support to parse
+// the new downloaded rules is added.
+class BraveQueryFilter : public testing::Test {
+ public:
+  void TearDown() override {
+    query_filter::SetScopedTrackerForTesting(nullptr);
+  }
+
+  void SetScopedTrackerForTesting(
+      query_filter::ScopedQueryTrackerType* trackers) {
+    query_filter::SetScopedTrackerForTesting(trackers);
+  }
+};
+
+TEST_F(BraveQueryFilter, FilterQueryTrackers) {
   // Expect filtering `gclid` param when cross origin `initiator_url`
   // and `redirect_source_url`
   EXPECT_EQ(query_filter::MaybeApplyQueryStringFilter(
@@ -109,47 +122,120 @@ TEST(BraveQueryFilter, FilterQueryTrackers) {
       "GET", false));
 }
 
-TEST(BraveQueryFilter, IsScopedTracker) {
-  auto trackers = std::map<std::string_view, std::vector<std::string_view>>({
-      {"igshid", {"instagram.com"}},
-      {"ref_src", {"twitter.com", "x.com", "y.com"}},
-      {"sample1", {"", " ", "brave.com", ""}},
-      {"sample2", {" "}},
-      {"sample3", {""}},
-      {"sample4", {}},
-  });
+TEST_F(BraveQueryFilter, ScopedQueryTrackingTest) {
+  auto trackers = query_filter::ScopedQueryTrackerType(
+      {{"igshid", {"instagram.com"}},
+       {"ref_src", {"twitter.com", "x.com", "y.com"}},
+       {"sample1", {"", " ", "brave.com", ""}},
+       {"sample2", {" "}},
+       {"sample3", {""}},
+       {"sample4", {}},
+       {"evil", {"*://*.facebook.com/*"}}});
+
+  SetScopedTrackerForTesting(&trackers);
 
   // Normal case for a parameter that's not on the list
-  EXPECT_FALSE(query_filter::IsScopedTrackerForTesting(
-      "t", "https://twitter.com/", trackers));
+  EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
+      GURL("https://brave.com"), GURL(), GURL("https://twitter.com/?t=123"),
+      "GET", false));
 
   // Normal case with a single domain
-  EXPECT_TRUE(query_filter::IsScopedTrackerForTesting(
-      "igshid", "https://instagram.com/", trackers));
-  EXPECT_TRUE(query_filter::IsScopedTrackerForTesting(
-      "igshid", "http://www.instagram.com/", trackers));
-  EXPECT_FALSE(query_filter::IsScopedTrackerForTesting(
-      "igshid", "https://example.com/", trackers));
+  EXPECT_EQ(query_filter::MaybeApplyQueryStringFilter(
+                GURL("https://brave.com"), GURL(),
+                GURL("https://instagram.com/?igshid=123"), "GET", false),
+            GURL("https://instagram.com/"));
+  EXPECT_EQ(query_filter::MaybeApplyQueryStringFilter(
+                GURL("https://brave.com"), GURL(),
+                GURL("http://www.instagram.com/?igshid=123"), "GET", false),
+            GURL("http://www.instagram.com/"));
+  EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
+      GURL("https://brave.com"), GURL(),
+      GURL("https://example.com/?igshid=123"), "GET", false));
 
   // Normal case with more than one domain
-  EXPECT_TRUE(query_filter::IsScopedTrackerForTesting(
-      "ref_src", "https://twitter.com/", trackers));
-  EXPECT_TRUE(query_filter::IsScopedTrackerForTesting(
-      "ref_src", "https://x.com/", trackers));
-  EXPECT_TRUE(query_filter::IsScopedTrackerForTesting(
-      "ref_src", "https://y.com/", trackers));
-  EXPECT_FALSE(query_filter::IsScopedTrackerForTesting(
-      "ref_src", "https://z.com/", trackers));
+  EXPECT_EQ(query_filter::MaybeApplyQueryStringFilter(
+                GURL("https://brave.com"), GURL(),
+                GURL("https://twitter.com/?ref_src=123"), "GET", false),
+            GURL("https://twitter.com/"));
+  EXPECT_EQ(query_filter::MaybeApplyQueryStringFilter(
+                GURL("https://brave.com"), GURL(),
+                GURL("https://x.com/?ref_src=123"), "GET", false),
+            GURL("https://x.com/"));
+  EXPECT_EQ(query_filter::MaybeApplyQueryStringFilter(
+                GURL("https://brave.com"), GURL(),
+                GURL("https://y.com/?ref_src=123"), "GET", false),
+            GURL("https://y.com/"));
+  EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
+      GURL("https://brave.com"), GURL(), GURL("https://z.com/?ref_src=123"),
+      "GET", false));
 
   // Edge cases
-  EXPECT_TRUE(query_filter::IsScopedTrackerForTesting(
-      "sample1", "https://brave.com/", trackers));
-  EXPECT_FALSE(query_filter::IsScopedTrackerForTesting(
-      "sample1", "https://example.com/", trackers));
-  EXPECT_FALSE(query_filter::IsScopedTrackerForTesting(
-      "sample2", "https://brave.com/", trackers));
-  EXPECT_FALSE(query_filter::IsScopedTrackerForTesting(
-      "sample3", "https://brave.com/", trackers));
-  EXPECT_FALSE(query_filter::IsScopedTrackerForTesting(
-      "sample4", "https://brave.com/", trackers));
+  EXPECT_EQ(query_filter::MaybeApplyQueryStringFilter(
+                GURL("https://example.com"), GURL(),
+                GURL("https://brave.com/?sample1=123"), "GET", false),
+            GURL("https://brave.com/"));
+  EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
+      GURL("https://brave.com"), GURL(),
+      GURL("https://example.com/?sample1=123"), "GET", false));
+  EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
+      GURL("https://example.com"), GURL(),
+      GURL("https://brave.com/?sample2=123"), "GET", false));
+  EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
+      GURL("https://example.com"), GURL(),
+      GURL("https://brave.com/?sample3=123"), "GET", false));
+  EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
+      GURL("https://example.com"), GURL(),
+      GURL("https://brave.com/?sample4=123"), "GET", false));
+
+  // Wildcard case for the domain *://*.facebook.com/*.
+  // TODO(https://github.com/brave/brave-browser/issues/55305): The new rules
+  // would have URL wildcard support on domains. Currently we don't have that
+  // support so query filter is not applied. When that's supported update this
+  // test to EXPECT_EQ.
+  EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
+      GURL("https:/google.com"), GURL(),
+      GURL("https://mobile.facebook.com/?evil=666"), "GET", false));
+}
+
+TEST_F(BraveQueryFilter, ConditionalFilteringTest) {
+  // `ck_subscriber_id` param gets removed when `unsubscribe` not present in
+  // url.
+  EXPECT_EQ(query_filter::MaybeApplyQueryStringFilter(
+                GURL(), GURL("https://brave.com"),
+                GURL("https://test.com/?ck_subscriber_id=123"), "GET", false),
+            GURL("https://test.com/"));
+  EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
+      GURL(), GURL("https://brave.com"),
+      GURL("https://unsubscribe.com/?ck_subscriber_id=123"), "GET", false));
+
+  // `h_sid` param gets removed when /email/ not present in url.
+  EXPECT_EQ(query_filter::MaybeApplyQueryStringFilter(
+                GURL(), GURL("https://brave.com"),
+                GURL("https://test.com/?h_sid=123"), "GET", false),
+            GURL("https://test.com/"));
+  EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
+      GURL(), GURL("https://brave.com"),
+      GURL("https://test.com/email/?h_sid=123"), "GET", false));
+
+  // `h_slt` param gets removed when /email/ not present in url.
+  EXPECT_EQ(query_filter::MaybeApplyQueryStringFilter(
+                GURL(), GURL("https://brave.com"),
+                GURL("https://test.com/?h_slt=123"), "GET", false),
+            GURL("https://test.com/"));
+  EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
+      GURL(), GURL("https://brave.com"),
+      GURL("https://test.com/email/?h_slt=123"), "GET", false));
+
+  // `mkt_tok` param gets removed when `unsubscribe` or `emailWebView` not
+  // present in url.
+  EXPECT_EQ(query_filter::MaybeApplyQueryStringFilter(
+                GURL(), GURL("https://brave.com"),
+                GURL("https://test.com/?mkt_tok=123"), "GET", false),
+            GURL("https://test.com/"));
+  EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
+      GURL(), GURL("https://brave.com"),
+      GURL("https://Unsubscribe.com/?mkt_tok=123"), "GET", false));
+  EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
+      GURL(), GURL("https://brave.com"),
+      GURL("https://test.com/emailWebview?mkt_tok=123"), "GET", false));
 }
