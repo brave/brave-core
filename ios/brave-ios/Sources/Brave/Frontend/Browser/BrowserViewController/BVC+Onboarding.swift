@@ -33,12 +33,6 @@ extension BrowserViewController {
       Preferences.DebugFlag.skipNTPCallouts != true
     {
 
-      if !Preferences.FullScreenCallout.omniboxCalloutCompleted.value,
-        Preferences.Onboarding.isNewRetentionUser.value == true
-      {
-        presentOmniBoxOnboarding()
-      }
-
       if !Preferences.FullScreenCallout.ntpCalloutCompleted.value {
         showPrivacyReportsOnboardingIfNeeded()
       }
