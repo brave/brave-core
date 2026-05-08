@@ -310,6 +310,12 @@ class KeyringService : public mojom::KeyringService {
   SignMessageByPolkadotKeyring(const mojom::AccountIdPtr& account_id,
                                base::span<const uint8_t> message);
 
+  // Sets if autolock timer is enabled.
+  // Typically is set to false or left unset in tests to prevent auto-locking
+  // during tests.
+  // Must not be called more than once.
+  void SetAutolockEnabled(bool enabled);
+
   void set_wallet_reset_cb(base::RepeatingClosure cb) {
     wallet_reset_cb_ = std::move(cb);
   }
@@ -504,6 +510,8 @@ class KeyringService : public mojom::KeyringService {
   raw_ptr<PrefService> profile_prefs_ = nullptr;
   raw_ptr<PrefService> local_state_ = nullptr;
   bool request_unlock_pending_ = false;
+
+  std::optional<bool> is_autolock_enabled_;
 
   base::RepeatingClosure wallet_reset_cb_;
   mojo::RemoteSet<mojom::KeyringServiceObserver> observers_;

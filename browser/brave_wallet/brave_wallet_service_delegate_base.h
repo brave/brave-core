@@ -33,6 +33,9 @@ class BraveWalletServiceDelegateBase : public BraveWalletServiceDelegate {
       const BraveWalletServiceDelegateBase&) = delete;
   ~BraveWalletServiceDelegateBase() override;
 
+  static void EnableAutolockCommandlineCheckForTesting(
+      bool enable_commandline_check);
+
   bool HasPermission(mojom::CoinType coin,
                      const url::Origin& origin,
                      const std::string& account) override;
@@ -44,7 +47,10 @@ class BraveWalletServiceDelegateBase : public BraveWalletServiceDelegate {
   void ResetAllPermissions() override;
 
   base::FilePath GetWalletBaseDirectory() override;
+
   bool IsPrivateWindow() override;
+
+  bool IsAutolockEnabled() override;
 
  protected:
   base::FilePath wallet_base_directory_;
