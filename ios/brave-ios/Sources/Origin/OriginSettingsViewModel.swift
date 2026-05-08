@@ -28,8 +28,13 @@ struct OriginPolicyBooleanValue {
     }
     set {
       let key = instance[keyPath: storageKeyPath].key
-      instance.withMutation(keyPath: wrappedKeyPath) {
-        _ = instance.service.setPolicyValue(key, value: newValue)
+      let result = instance.withMutation(keyPath: wrappedKeyPath) {
+        instance.service.setPolicyValue(key, value: newValue)
+      }
+      if result {
+        withAnimation(.toast) {
+          instance.isRestartToastVisible = true
+        }
       }
     }
   }
@@ -48,6 +53,8 @@ public class OriginSettingsViewModel {
       await updatePurchaseStatus()
     }
   }
+
+  var isRestartToastVisible: Bool = false
 
   @ObservationIgnored
   @OriginPolicyBooleanValue(key: .rewardsDisabled)

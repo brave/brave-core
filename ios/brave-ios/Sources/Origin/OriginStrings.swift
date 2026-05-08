@@ -98,6 +98,21 @@ extension Strings {
       value: "Reset to Defaults",
       comment: "A button label to reset all Origin settings to their default values"
     )
+    public static let featureEnabledToastTitle = NSLocalizedString(
+      "featureEnabledToastTitle",
+      bundle: .module,
+      value: "Changing Brave features",
+      comment:
+        "A title shown in a toast that appears after toggling a Brave feature on or off in Origin settings"
+    )
+    public static let featureEnabledToastMessage = NSLocalizedString(
+      "featureEnabledToastMessage",
+      bundle: .module,
+      value:
+        "Enabling or disabling a Brave feature requires a browser restart to apply changes. Please close (swipe up in the App Switcher) and then re-open Brave.",
+      comment:
+        "A message shown in a toast informing the user that enabling or disabling a Brave feature requires restarting the browser to take effect"
+    )
     public static let alreadyPurchasedTitle = NSLocalizedString(
       "alreadyPurchasedTitle",
       bundle: .module,

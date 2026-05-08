@@ -114,6 +114,79 @@ public struct OriginSettingsView: View {
     .navigationBarTitleDisplayMode(.inline)
     .scrollContentBackground(.hidden)
     .background(Color(.braveGroupedBackground))
+    .overlay(alignment: .bottom) {
+      if viewModel.isRestartToastVisible {
+        FeatureEnabledToastView {
+          withAnimation(.toast) {
+            viewModel.isRestartToastVisible = false
+          }
+        }
+        .transition(.move(edge: .bottom).combined(with: .blurReplace))
+      }
+    }
+  }
+
+  private struct FeatureEnabledToastView: View {
+    var dismiss: () -> Void
+    @State private var dragOffset: CGFloat = 0
+    @State private var height: CGFloat = 0
+    @AccessibilityFocusState(for: .voiceOver) private var isAccessibilityFocused: Bool
+
+    var body: some View {
+      HStack(alignment: .firstTextBaseline) {
+        VStack(alignment: .leading) {
+          Text(Strings.Origin.featureEnabledToastTitle)
+            .fontWeight(.semibold)
+          Text(Strings.Origin.featureEnabledToastMessage)
+        }
+        Spacer()
+        Button {
+          dismiss()
+        } label: {
+          Label(Strings.close, braveSystemImage: "leo.close")
+            .labelStyle(.iconOnly)
+            .foregroundStyle(Color(braveSystemName: .schemesPrimaryFixedDim))
+            .imageScale(.large)
+        }
+      }
+      .font(.subheadline)
+      .foregroundStyle(Color.white)
+      .padding(16)
+      .background(
+        Color(braveSystemName: .schemesOnPrimaryFixed)
+          .shadow(.drop(color: Color(braveSystemName: .elevationSecondary), radius: 2, y: 1))
+          .shadow(.drop(color: Color(braveSystemName: .elevationSecondary), radius: 3, y: 1)),
+        in: .rect(cornerRadius: 22, style: .continuous)
+      )
+      .onGeometryChange(for: CGFloat.self, of: \.size.height, action: { height = $0 })
+      .offset(y: max(0, dragOffset))
+      .gesture(
+        DragGesture()
+          .onChanged { value in
+            dragOffset = value.translation.height
+          }
+          .onEnded { value in
+            if value.predictedEndTranslation.height > height / 2 {
+              dismiss()
+            } else {
+              withAnimation(.snappy) {
+                dragOffset = 0
+              }
+            }
+          }
+      )
+      .padding(8)
+      .dynamicTypeSize(.xSmall..<DynamicTypeSize.accessibility2)
+      .accessibilityElement(children: .combine)
+      .accessibilityAddTraits(.isModal)
+      .accessibilityFocused($isAccessibilityFocused)
+      .accessibilityAction {
+        dismiss()
+      }
+      .onAppear {
+        isAccessibilityFocused = true
+      }
+    }
   }
 }
 
@@ -152,6 +225,12 @@ extension Bool {
   }
 }
 
+extension Animation {
+  static var toast: Animation {
+    .spring(response: 0.3, dampingFraction: 0.725)
+  }
+}
+
 #if DEBUG
 private class MockOriginService: BraveOriginService {
   private var values: [BraveOriginPolicyKey: Bool] = [:]
@@ -178,5 +257,15 @@ private class MockOriginService: BraveOriginService {
       viewModel: .init(service: MockOriginService(), storeSDK: .init(skusService: nil))
     )
   }
+}
+#Preview {
+  Color.white
+    .sheet(isPresented: .constant(true)) {
+      NavigationStack {
+        OriginSettingsView(
+          viewModel: .init(service: MockOriginService(), storeSDK: .init(skusService: nil))
+        )
+      }
+    }
 }
 #endif
