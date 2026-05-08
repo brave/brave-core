@@ -16,8 +16,10 @@
 #include "base/test/bind.h"
 #include "base/test/test_future.h"
 #include "base/time/time.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -211,6 +213,11 @@ void EphemeralStorageBrowserTest::SetUp() {
   InProcessBrowserTest::SetUp();
 }
 
+void EphemeralStorageBrowserTest::TearDownOnMainThread() {
+  brave_shields_settings_service_ = nullptr;
+  InProcessBrowserTest::TearDownOnMainThread();
+}
+
 void EphemeralStorageBrowserTest::SetUpOnMainThread() {
   InProcessBrowserTest::SetUpOnMainThread();
   std::vector<base::FilePath> test_data_dirs(2);
@@ -239,6 +246,10 @@ void EphemeralStorageBrowserTest::SetUpOnMainThread() {
       https_server_.GetURL("c.com", "/ephemeral_storage.html");
   a_site_ephemeral_storage_with_network_cookies_url_ = https_server_.GetURL(
       "a.com", "/ephemeral_storage_with_network_cookies.html");
+
+  brave_shields_settings_service_ =
+      BraveShieldsSettingsServiceFactory::GetForProfile(browser()->profile());
+  ASSERT_TRUE(brave_shields_settings_service_);
 }
 
 void EphemeralStorageBrowserTest::SetUpCommandLine(
@@ -512,6 +523,11 @@ std::vector<net::CanonicalCookie> EphemeralStorageBrowserTest::GetAllCookies() {
       }));
   run_loop.Run();
   return cookies_out;
+}
+
+brave_shields::BraveShieldsSettingsService*
+EphemeralStorageBrowserTest::GetBraveShieldsSettingsService() {
+  return brave_shields_settings_service_;
 }
 
 IN_PROC_BROWSER_TEST_F(EphemeralStorageBrowserTest, StorageIsPartitioned) {
@@ -1432,7 +1448,7 @@ IN_PROC_BROWSER_TEST_F(FirstPartyStorageCleanupSiteDataBrowserTest,
   // Shred site data for site a.com
   auto* profile = browser()->profile();
   // Enable shred browsing history
-  brave_shields::SetShredBrowsingHistory(profile->GetPrefs(), true);
+  GetBraveShieldsSettingsService()->SetShredBrowsingHistory(true);
 
   auto storage_partition_config = site_a_tab->GetSiteInstance()
                                       ->GetSecurityPrincipal()

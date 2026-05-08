@@ -887,14 +887,4 @@ bool GetAllowElementBlockerInPrivateModeEnabled(PrefService* local_state) {
   return local_state->GetBoolean(prefs::kAllowElementBlockerInPrivateMode);
 }
 
-void SetShredBrowsingHistory(PrefService* profile_prefs, bool value) {
-  CHECK(profile_prefs);
-  profile_prefs->SetBoolean(prefs::kShredBrowsingHistoryEnabled, value);
-}
-
-bool IsShredBrowsingHistoryEnabled(PrefService* profile_prefs) {
-  CHECK(profile_prefs);
-  return profile_prefs->GetBoolean(prefs::kShredBrowsingHistoryEnabled);
-}
-
 }  // namespace brave_shields

@@ -9,6 +9,7 @@
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/content_settings/core/common/content_settings_util.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
@@ -26,7 +27,9 @@ BraveShieldsSettingsService::BraveShieldsSettingsService(
     PrefService* profile_prefs)
     : host_content_settings_map_(host_content_settings_map),
       local_state_(local_state),
-      profile_prefs_(profile_prefs) {}
+      profile_prefs_(profile_prefs) {
+  CHECK(profile_prefs_);
+}
 
 BraveShieldsSettingsService::~BraveShieldsSettingsService() = default;
 
@@ -304,13 +307,11 @@ bool BraveShieldsSettingsService::IsShieldsDisabledOnAnyHostMatchingDomainOf(
 }
 
 void BraveShieldsSettingsService::SetShredBrowsingHistory(bool value) {
-  CHECK(profile_prefs_);
-  brave_shields::SetShredBrowsingHistory(profile_prefs_, value);
+  profile_prefs_->SetBoolean(prefs::kShredBrowsingHistoryEnabled, value);
 }
 
 bool BraveShieldsSettingsService::IsShredBrowsingHistoryEnabled() {
-  CHECK(profile_prefs_);
-  return brave_shields::IsShredBrowsingHistoryEnabled(profile_prefs_);
+  return profile_prefs_->GetBoolean(prefs::kShredBrowsingHistoryEnabled);
 }
 
 }  // namespace brave_shields
