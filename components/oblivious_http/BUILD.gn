@@ -4,7 +4,10 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 source_set("oblivious_http") {
-  visibility = [ "//services/network:network_service" ]
+  visibility = [
+    ":unit_tests",
+    "//services/network:network_service",
+  ]
 
   sources = [
     "oblivious_http_chunk_processor.cc",
@@ -23,5 +26,22 @@ source_set("oblivious_http") {
   deps = [
     "//base",
     "//brave/components/brave_service_keys",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "oblivious_http_chunk_processor_unittest.cc" ]
+
+  deps = [
+    ":oblivious_http",
+    "//base",
+    "//base/test:test_support",
+    "//mojo/public/cpp/bindings",
+    "//net",
+    "//net/third_party/quiche",
+    "//services/network/public/mojom",
+    "//testing/gtest",
   ]
 }
