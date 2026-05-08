@@ -126,6 +126,7 @@ struct LoginFinalizeResult {
 
 enum LoginClientErrorCode {
   kUnexpected,
+  kInvalidLoginError,
   kOpaqueError,
   kLoginTokenEncryptionFailed,
   kLoginTokenDecryptionFailed,

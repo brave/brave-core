@@ -5,6 +5,7 @@
 
 use argon2::Argon2;
 use opaque_ke::ciphersuite::CipherSuite;
+use opaque_ke::errors::ProtocolError;
 use opaque_ke::rand::rngs::OsRng;
 use opaque_ke::{
     ClientLogin, ClientLoginFinishParameters, ClientRegistration,
@@ -121,7 +122,10 @@ impl Login {
                     ..Default::default()
                 },
             )
-            .map_err(|_| "ClientLogin::<DefaultCipherSuite>::finish() failed!")?;
+            .map_err(|e| match e {
+                ProtocolError::InvalidLoginError => "InvalidLoginError",
+                _ => "ClientLogin::<DefaultCipherSuite>::finish() failed!",
+            })?;
 
         Ok(hex::encode(result.message.serialize()))
     }

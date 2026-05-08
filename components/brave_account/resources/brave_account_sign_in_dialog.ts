@@ -75,7 +75,12 @@ export class BraveAccountSignInDialogElement extends CrLitElement {
         error = e as LoginError
       } else if (typeof e === 'string') {
         error = {
-          clientError: { errorCode: LoginClientErrorCode.kOpaqueError },
+          clientError: {
+            errorCode:
+              e === 'InvalidLoginError'
+                ? LoginClientErrorCode.kInvalidLoginError
+                : LoginClientErrorCode.kOpaqueError,
+          },
         }
       } else {
         console.error('Unexpected error:', e)
