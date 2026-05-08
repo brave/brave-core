@@ -12,6 +12,7 @@
 #include "chrome/browser/ui/views/tabs/browser_tab_strip_controller.h"
 
 namespace tabs {
+class TabInterface;
 class TreeTabNode;
 }  // namespace tabs
 
@@ -59,13 +60,13 @@ class BraveBrowserTabStripController : public BrowserTabStripController {
   void OnTreeTabChanged(const TreeTabChange& change) override;
 
   // BrowserTabStripController overrides:
-  void ExecuteContextMenuCommand(int index,
+  void ExecuteContextMenuCommand(tabs::TabInterface* tab,
                                  TabStripModel::ContextMenuCommand command_id,
                                  int event_flags) override;
   bool IsContextMenuCommandChecked(
       TabStripModel::ContextMenuCommand command_id) override;
   bool IsContextMenuCommandEnabled(
-      int index,
+      tabs::TabInterface* tab,
       TabStripModel::ContextMenuCommand command_id) override;
   void OnTabStripModelChanged(
       TabStripModel* tab_strip_model,
