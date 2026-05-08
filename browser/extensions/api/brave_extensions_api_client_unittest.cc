@@ -33,10 +33,10 @@ class BraveExtensionsAPIClientTests : public ChromeRenderViewHostTestHarness {
 
 TEST_F(BraveExtensionsAPIClientTests, IsBraveProtectedUrlUphold) {
   auto create_request_params = [](const std::string& url) {
-    static constexpr int kRendererProcessId = 2;
+    const content::ChildProcessId kRendererProcessId(2);
     WebRequestInfoInitParams request;
     request.url = GURL(url);
-    request.render_process_id = kRendererProcessId;
+    request.global_id.child_id = kRendererProcessId;
     return request;
   };
 
