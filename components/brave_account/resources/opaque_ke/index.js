@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 export {
+  invalidLoginError,
   Login,
   Registration,
 } from 'gen/brave/components/brave_account/resources/opaque_ke/bundler/pkg'

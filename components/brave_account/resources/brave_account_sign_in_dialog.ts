@@ -17,8 +17,11 @@ import {
 } from './brave_account.mojom-webui.js'
 import { showError } from './brave_account_common.js'
 
-// @ts-expect-error
-import { Login } from 'chrome://resources/brave/opaque_ke.bundle.js'
+import {
+  invalidLoginError,
+  Login,
+  // @ts-expect-error
+} from 'chrome://resources/brave/opaque_ke.bundle.js'
 
 export class BraveAccountSignInDialogElement extends CrLitElement {
   static get is() {
@@ -75,7 +78,12 @@ export class BraveAccountSignInDialogElement extends CrLitElement {
         error = e as LoginError
       } else if (typeof e === 'string') {
         error = {
-          clientError: { errorCode: LoginClientErrorCode.kOpaqueError },
+          clientError: {
+            errorCode:
+              e === invalidLoginError()
+                ? LoginClientErrorCode.kInvalidLoginError
+                : LoginClientErrorCode.kOpaqueError,
+          },
         }
       } else {
         console.error('Unexpected error:', e)

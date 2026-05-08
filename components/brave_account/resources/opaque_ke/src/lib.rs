@@ -5,12 +5,20 @@
 
 use argon2::Argon2;
 use opaque_ke::ciphersuite::CipherSuite;
+use opaque_ke::errors::ProtocolError;
 use opaque_ke::rand::rngs::OsRng;
 use opaque_ke::{
     ClientLogin, ClientLoginFinishParameters, ClientRegistration,
     ClientRegistrationFinishParameters, CredentialResponse, Identifiers, RegistrationResponse,
 };
 use wasm_bindgen::prelude::*;
+
+const INVALID_LOGIN_ERROR: &str = "InvalidLoginError";
+
+#[wasm_bindgen(js_name = invalidLoginError)]
+pub fn invalid_login_error() -> String {
+    INVALID_LOGIN_ERROR.to_string()
+}
 
 pub struct DefaultCipherSuite;
 impl CipherSuite for DefaultCipherSuite {
@@ -121,7 +129,10 @@ impl Login {
                     ..Default::default()
                 },
             )
-            .map_err(|_| "ClientLogin::<DefaultCipherSuite>::finish() failed!")?;
+            .map_err(|e| match e {
+                ProtocolError::InvalidLoginError => INVALID_LOGIN_ERROR,
+                _ => "ClientLogin::<DefaultCipherSuite>::finish() failed!",
+            })?;
 
         Ok(hex::encode(result.message.serialize()))
     }

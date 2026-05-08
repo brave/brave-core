@@ -25,6 +25,13 @@ export type Error =
   | { kind: 'register'; details: RegisterError }
   | { kind: 'resendConfirmationEmail'; details: ResendConfirmationEmailError }
 
+const LOGIN_CLIENT_ERROR_STRINGS: Partial<
+  Record<LoginClientErrorCode, string>
+> = {
+  [LoginClientErrorCode.kInvalidLoginError]:
+    BraveAccountStrings.BRAVE_ACCOUNT_LOGIN_INCORRECT_PASSWORD,
+}
+
 const LOGIN_SERVER_ERROR_STRINGS: Partial<
   Record<LoginServerErrorCode, string>
 > = {
@@ -35,6 +42,10 @@ const LOGIN_SERVER_ERROR_STRINGS: Partial<
   [LoginServerErrorCode.kIncorrectPassword]:
     BraveAccountStrings.BRAVE_ACCOUNT_LOGIN_INCORRECT_PASSWORD,
 }
+
+const REGISTER_CLIENT_ERROR_STRINGS: Partial<
+  Record<RegisterClientErrorCode, string>
+> = {}
 
 const REGISTER_SERVER_ERROR_STRINGS: Partial<
   Record<RegisterServerErrorCode, string>
@@ -52,6 +63,10 @@ const REGISTER_SERVER_ERROR_STRINGS: Partial<
   [RegisterServerErrorCode.kInvalidVerificationCode]:
     BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_INVALID_VERIFICATION_CODE,
 }
+
+const RESEND_CONFIRMATION_EMAIL_CLIENT_ERROR_STRINGS: Partial<
+  Record<ResendConfirmationEmailClientErrorCode, string>
+> = {}
 
 const RESEND_CONFIRMATION_EMAIL_SERVER_ERROR_STRINGS: Partial<
   Record<ResendConfirmationEmailServerErrorCode, string>
@@ -72,6 +87,7 @@ function getErrorMessageImpl<
     | RegisterServerErrorCode
     | ResendConfirmationEmailServerErrorCode,
 >(
+  clientErrorStrings: Partial<Record<ClientErrorCode, string>>,
   serverErrorStrings: Partial<Record<ServerErrorCode, string>>,
   error: {
     clientError?: { errorCode: ClientErrorCode } | null
@@ -86,6 +102,11 @@ function getErrorMessageImpl<
   )
 
   if (error.clientError) {
+    const stringId = clientErrorStrings[error.clientError.errorCode]
+    if (stringId) {
+      return loadTimeData.getString(stringId)
+    }
+
     return loadTimeData.getStringF(
       BraveAccountStrings.BRAVE_ACCOUNT_CLIENT_ERROR,
       ` (${errorLabel}=${error.clientError.errorCode})`,
@@ -110,11 +131,20 @@ function getErrorMessageImpl<
 function getErrorMessage(error: Error): string {
   switch (error.kind) {
     case 'login':
-      return getErrorMessageImpl(LOGIN_SERVER_ERROR_STRINGS, error.details)
+      return getErrorMessageImpl(
+        LOGIN_CLIENT_ERROR_STRINGS,
+        LOGIN_SERVER_ERROR_STRINGS,
+        error.details,
+      )
     case 'register':
-      return getErrorMessageImpl(REGISTER_SERVER_ERROR_STRINGS, error.details)
+      return getErrorMessageImpl(
+        REGISTER_CLIENT_ERROR_STRINGS,
+        REGISTER_SERVER_ERROR_STRINGS,
+        error.details,
+      )
     case 'resendConfirmationEmail':
       return getErrorMessageImpl(
+        RESEND_CONFIRMATION_EMAIL_CLIENT_ERROR_STRINGS,
         RESEND_CONFIRMATION_EMAIL_SERVER_ERROR_STRINGS,
         error.details,
       )
