@@ -110,7 +110,7 @@ const ButtonRow = styled(Row)<{ bubble?: boolean; limitReached?: boolean }>`
   & leo-button {
     flex-grow: 0;
   }
-  & span {
+  & {
     display: flex;
     flex-direction: row;
     gap: ${spacing.m};
