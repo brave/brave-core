@@ -18,6 +18,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
+#include "brave/browser/history_embeddings/brave_batch_passage_embedder.h"
 #include "brave/components/local_ai/core/background_web_contents.h"
 #include "brave/components/local_ai/core/local_ai.mojom.h"
 #include "brave/components/local_ai/core/local_models_updater.h"
@@ -42,8 +43,6 @@ std::vector<float> TestEmbeddingFloat() {
   return {1.0f, 2.0f, 3.0f};
 }
 
-// Fake renderer-side PassageEmbedder. Returns kTestEmbeddingData for
-// every call.
 class FakeRendererEmbedder : public local_ai::mojom::PassageEmbedder {
  public:
   void GenerateEmbeddings(const std::string& text,
@@ -97,6 +96,10 @@ class FakePassageEmbedderFactory
   mojo::Receiver<local_ai::mojom::PassageEmbedderFactory> receiver_{this};
 };
 
+// Acts as the renderer-side LocalAIService consumer in the test:
+// receives a LocalAIService PendingReceiver from the embedder via
+// BindLocalAIReceiver and calls RegisterPassageEmbedderFactory back
+// through it.
 class FakeBackgroundWebContents : public local_ai::BackgroundWebContents {
  public:
   FakeBackgroundWebContents(Delegate* delegate, base::OnceClosure on_destroyed)
@@ -133,13 +136,21 @@ class BravePassageEmbeddingsServiceTest : public testing::Test {
 
   void CreateFakeWebContents(
       local_ai::BackgroundWebContents::Delegate* delegate,
-      BravePassageEmbeddingsService::BackgroundWebContentsCreatedCallback
+      BraveBatchPassageEmbedder::BackgroundWebContentsCreatedCallback
           callback) {
+    last_delegate_ = delegate;
+    // The delegate is the embedder which owns this BG contents — they
+    // die together. Clear both raw_ptrs from the destructor so neither is
+    // left dangling when the service drops batch_embedder_.
     auto web_contents = std::make_unique<FakeBackgroundWebContents>(
-        delegate,
-        base::BindOnce(
-            [](raw_ptr<FakeBackgroundWebContents>* ref) { *ref = nullptr; },
-            &last_created_web_contents_));
+        delegate, base::BindOnce(
+                      [](raw_ptr<FakeBackgroundWebContents>* contents_ref,
+                         raw_ptr<local_ai::BackgroundWebContents::Delegate>*
+                             delegate_ref) {
+                        *contents_ref = nullptr;
+                        *delegate_ref = nullptr;
+                      },
+                      &last_created_web_contents_, &last_delegate_));
     last_created_web_contents_ = web_contents.get();
     if (defer_create_callback_) {
       pending_create_callback_ =
@@ -163,9 +174,15 @@ class BravePassageEmbeddingsServiceTest : public testing::Test {
         local_ai::LocalModelsUpdaterState::GetInstance());
   }
 
+  // Drives the renderer-side half of the load: opens a LocalAIService
+  // pipe to the embedder (the way UntrustedLocalAIUI does in
+  // production) and registers the fake factory. Requires the
+  // embedder to have already created its background contents.
   void RegisterFactory() {
+    ASSERT_TRUE(last_delegate_);
+    auto* embedder = static_cast<BraveBatchPassageEmbedder*>(last_delegate_);
     mojo::Remote<local_ai::mojom::LocalAIService> local_ai_remote;
-    service_->BindLocalAIReceiver(local_ai_remote.BindNewPipeAndPassReceiver());
+    embedder->BindLocalAIReceiver(local_ai_remote.BindNewPipeAndPassReceiver());
     local_ai_remote->RegisterPassageEmbedderFactory(fake_factory_.BindRemote());
     local_ai_remote.FlushForTesting();
   }
@@ -197,9 +214,6 @@ class BravePassageEmbeddingsServiceTest : public testing::Test {
     local_ai::LocalModelsUpdaterState::GetInstance()->SetInstallDir(dir);
   }
 
-  // Issues BindPassageEmbedder via the direct in-process API and
-  // returns a TestFuture for the load result plus a Remote to the batch
-  // embedder. Caller drives the system and checks future.Get().
   struct LoadResult {
     base::test::TestFuture<bool> load_success;
     mojo::Remote<mojom::PassageEmbedder> embedder;
@@ -217,6 +231,7 @@ class BravePassageEmbeddingsServiceTest : public testing::Test {
   FakeRendererEmbedder fake_worker_;
   FakePassageEmbedderFactory fake_factory_{&fake_worker_};
   raw_ptr<FakeBackgroundWebContents> last_created_web_contents_ = nullptr;
+  raw_ptr<local_ai::BackgroundWebContents::Delegate> last_delegate_ = nullptr;
   bool defer_create_callback_ = false;
   base::OnceClosure pending_create_callback_;
   base::ScopedTempDir temp_dir_;
@@ -271,7 +286,10 @@ TEST_F(BravePassageEmbeddingsServiceTest, InitFailureFailsLoad) {
   ASSERT_TRUE(
       base::test::RunUntil([&] { return fake_factory_.init_count() > 0; }));
   EXPECT_FALSE(load->load_success.Get());
-  EXPECT_FALSE(last_created_web_contents_);
+  // Disconnect tears the embedder down, releasing its background
+  // contents.
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return last_created_web_contents_ == nullptr; }));
 }
 
 TEST_F(BravePassageEmbeddingsServiceTest, BackgroundContentsDestroyedCloses) {
@@ -292,18 +310,21 @@ TEST_F(BravePassageEmbeddingsServiceTest,
        DuplicateRegisterPassageEmbedderFactoryIgnored) {
   // A buggy renderer that calls RegisterPassageEmbedderFactory twice
   // without first disconnecting must not crash the browser. The
-  // service should ignore the duplicate and keep the first factory.
+  // embedder should ignore the duplicate and keep the first
+  // factory.
   auto load = IssueLoad();
   ASSERT_TRUE(last_created_web_contents_);
 
-  // First registration: real fake_factory_ wired up.
   RegisterFactory();
 
   // Second registration: bind a throwaway remote and pass it in.
   // mojo::Remote::Bind CHECKs when already bound, so without the
   // duplicate guard this would crash the browser.
+  ASSERT_TRUE(last_delegate_);
+  auto* embedder =
+      static_cast<BraveBatchPassageEmbedder*>(last_delegate_.get());
   mojo::Remote<local_ai::mojom::LocalAIService> local_ai_remote;
-  service_->BindLocalAIReceiver(local_ai_remote.BindNewPipeAndPassReceiver());
+  embedder->BindLocalAIReceiver(local_ai_remote.BindNewPipeAndPassReceiver());
   mojo::PendingRemote<local_ai::mojom::PassageEmbedderFactory> dummy;
   std::ignore = dummy.InitWithNewPipeAndPassReceiver();
   local_ai_remote->RegisterPassageEmbedderFactory(std::move(dummy));
@@ -321,8 +342,8 @@ TEST_F(BravePassageEmbeddingsServiceTest,
        PreInstalledModelDirCompletesLoadOnFactoryRegister) {
   // Set install_dir before constructing the service. AddObserver
   // re-fires OnLocalModelsReady synchronously when install_dir is
-  // already set; MaybeLoadLocalModelFiles is a no-op until the factory
-  // registers because GetInstallDir() is read fresh on each call.
+  // already set; MaybeLoadLocalModelFiles is a no-op until
+  // BindPassageEmbedder creates the embedder.
   SetUpModelFiles();
   RecreateService();
 
@@ -330,7 +351,7 @@ TEST_F(BravePassageEmbeddingsServiceTest,
   RegisterFactory();
   EXPECT_TRUE(load->load_success.Get());
   // AddObserver's sync re-fire of OnLocalModelsReady plus the
-  // explicit factory-register path must collapse to a single load.
+  // BindPassageEmbedder path must collapse to a single load.
   EXPECT_EQ(1, fake_factory_.init_count());
 }
 
@@ -341,14 +362,14 @@ TEST_F(BravePassageEmbeddingsServiceTest, BindAgainAfterEmbedderRemoteReset) {
   ASSERT_TRUE(load->load_success.Get());
   ASSERT_TRUE(last_created_web_contents_);
 
-  // Drop the caller-side embedder remote. The BatchEmbedder's receiver
-  // disconnects, on_disconnect fires up to the service, and
-  // CloseBackgroundContents tears down the contents.
+  // Drop the caller-side embedder remote. The embedder's receiver
+  // disconnects, on_disconnect fires up to the service, and the
+  // service drops the embedder (which tears down its contents).
   load->embedder.reset();
   ASSERT_TRUE(base::test::RunUntil(
       [&] { return last_created_web_contents_ == nullptr; }));
 
-  // The factory pipe was reset along with the service state; the fake
+  // The factory pipe was reset along with the embedder; the fake
   // still holds a now-disconnected receiver, so reset it before
   // re-binding for the next cycle.
   fake_factory_.ResetReceiver();
@@ -359,29 +380,6 @@ TEST_F(BravePassageEmbeddingsServiceTest, BindAgainAfterEmbedderRemoteReset) {
   ASSERT_TRUE(
       base::test::RunUntil([&] { return fake_factory_.init_count() > 1; }));
   EXPECT_TRUE(load2->load_success.Get());
-}
-
-TEST_F(BravePassageEmbeddingsServiceTest,
-       LateContentsCreationDoesNotInstallOrphan) {
-  // Defer the factory callback so we can simulate destruction of the
-  // in-flight contents before OnBackgroundContentsCreated runs.
-  defer_create_callback_ = true;
-  auto load = IssueLoad();
-  ASSERT_TRUE(last_created_web_contents_);
-
-  // Simulate the in-flight contents being destroyed (e.g., renderer
-  // crash during profile setup). OnBackgroundContentsDestroyed →
-  // CloseBackgroundContents → ResetEmbedderState clears pending_load_
-  // and fails the load.
-  last_created_web_contents_->SimulateDestroyed();
-  EXPECT_FALSE(load->load_success.Get());
-
-  // The deferred factory callback finally arrives. The orphan guard
-  // sees pending_load_ is empty and drops the late contents instead
-  // of installing an orphan renderer.
-  RunDeferredCreate();
-  EXPECT_FALSE(last_created_web_contents_)
-      << "late contents must not be installed as background_web_contents_";
 }
 
 TEST_F(BravePassageEmbeddingsServiceTest, BindRegistryRoutesToService) {

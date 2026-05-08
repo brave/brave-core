@@ -39,6 +39,7 @@ source_set("batch_passage_embedder") {
 
   public_deps = [
     "//base",
+    "//brave/components/local_ai/core",
     "//brave/components/local_ai/core:mojom",
     "//mojo/public/cpp/bindings",
     "//services/passage_embeddings/public/mojom",
