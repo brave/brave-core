@@ -42,7 +42,7 @@
 		</data>
 		<key>Headers/JitsiMeetSDK-Swift.h</key>
 		<data>
-		y+RuI0OAp71WAAUca6qAmnMQKQ4=
+		dJOb/7opBcPLeMNCYOwkz+mfPTI=
 		</data>
 		<key>Headers/JitsiMeetSDK.h</key>
 		<data>
@@ -62,7 +62,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		8buQSqUNMa3m6PdWfpcNf9Npa2k=
+		cTtvgWhx5yuwAQJDzWNA3U/v3q0=
 		</data>
 		<key>Modules/JitsiMeetSDK.swiftmodule/arm64-apple-ios-simulator.abi.json</key>
 		<data>
@@ -70,19 +70,19 @@
 		</data>
 		<key>Modules/JitsiMeetSDK.swiftmodule/arm64-apple-ios-simulator.private.swiftinterface</key>
 		<data>
-		mGFoBSrqZlkyavT3w7O3qLgeo2w=
+		1936CKKq1WOTVnmt/7rai+a0wPM=
 		</data>
 		<key>Modules/JitsiMeetSDK.swiftmodule/arm64-apple-ios-simulator.swiftdoc</key>
 		<data>
-		FtBbJNrdaQjD0yYMPUxAmYmwAJo=
+		1Rf7PWKf12PzmFTY+XIHggmbiRo=
 		</data>
 		<key>Modules/JitsiMeetSDK.swiftmodule/arm64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		mGFoBSrqZlkyavT3w7O3qLgeo2w=
+		1936CKKq1WOTVnmt/7rai+a0wPM=
 		</data>
 		<key>Modules/JitsiMeetSDK.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		FmH9LtOh/5M9QUgk6/kuMZ5YwCo=
+		NPzXaVTUwbDVknEZT0onm89Kius=
 		</data>
 		<key>Modules/JitsiMeetSDK.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
 		<data>
@@ -90,19 +90,19 @@
 		</data>
 		<key>Modules/JitsiMeetSDK.swiftmodule/x86_64-apple-ios-simulator.private.swiftinterface</key>
 		<data>
-		g+0PXgnajSjBGsxYOWTc+cJOAZQ=
+		K+RJAuOfFJUJRAX2cFVui/KWEyo=
 		</data>
 		<key>Modules/JitsiMeetSDK.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<data>
-		mfNUOyoHCrIXYRQQl9o8C6VZOk4=
+		QWPNH8JRXp8sehg4LyO/AB7DWuI=
 		</data>
 		<key>Modules/JitsiMeetSDK.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		g+0PXgnajSjBGsxYOWTc+cJOAZQ=
+		K+RJAuOfFJUJRAX2cFVui/KWEyo=
 		</data>
 		<key>Modules/JitsiMeetSDK.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		6/lU7jbH22cmn3J8z9z9TQ4qROA=
+		8sXnYu+1oTc/uo076zdBGaQfNBo=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -110,7 +110,7 @@
 		</data>
 		<key>RCT-Folly_privacy.bundle/Info.plist</key>
 		<data>
-		e3SJV1wqY2JOgJ9yKjm7UYlN1uY=
+		3V4jUmPJRwad0ZV5PwUW7kqwtUA=
 		</data>
 		<key>README.md</key>
 		<data>
@@ -118,7 +118,7 @@
 		</data>
 		<key>RNCAsyncStorage_resources.bundle/Info.plist</key>
 		<data>
-		mnWU/kS3H6FF/sz9CaxkYh51z4E=
+		eoJSBgvITdhwTZKgTg9jSyQHkqA=
 		</data>
 		<key>RNCAsyncStorage_resources.bundle/PrivacyInfo.xcprivacy</key>
 		<data>
@@ -126,7 +126,7 @@
 		</data>
 		<key>RNDeviceInfoPrivacyInfo.bundle/Info.plist</key>
 		<data>
-		Zn1OyCWKMz7uMSrOXGEwrnCRXoI=
+		+WVYmS4x2rMuWaKzycwoDSAIkfY=
 		</data>
 		<key>RNDeviceInfoPrivacyInfo.bundle/PrivacyInfo.xcprivacy</key>
 		<data>
@@ -134,7 +134,7 @@
 		</data>
 		<key>RNSVGFilters.bundle/Info.plist</key>
 		<data>
-		ADWTv2UOZKLYa5VEAySB00n32FQ=
+		GDuKONrDDqVWHJCy54fYuTeeIBA=
 		</data>
 		<key>RNSVGFilters.bundle/RNSVGArithmeticFilter.iphoneos.metallib</key>
 		<data>
@@ -146,7 +146,7 @@
 		</data>
 		<key>React-Core_privacy.bundle/Info.plist</key>
 		<data>
-		uWkmZJkxtJTDRGBHuv0w/wbASek=
+		9IYVuo8UJ2snQT+DBuJQ1S0MKn4=
 		</data>
 		<key>React-Core_privacy.bundle/PrivacyInfo.xcprivacy</key>
 		<data>
@@ -154,7 +154,7 @@
 		</data>
 		<key>React-cxxreact_privacy.bundle/Info.plist</key>
 		<data>
-		sU2b9zusoDwrwAGzZUOSe+IUAF8=
+		j5FbiSHN3780LVU9J0hf4mQdDoc=
 		</data>
 		<key>React-cxxreact_privacy.bundle/PrivacyInfo.xcprivacy</key>
 		<data>
@@ -222,59 +222,59 @@
 		</data>
 		<key>boost_privacy.bundle/Info.plist</key>
 		<data>
-		vAVt3x9qv8vRQeW+6f4izFR/0jk=
+		YMuWhMxuaVdxwkEzLSL901eHTG0=
 		</data>
 		<key>e2eeOff.mp3</key>
 		<data>
-		vX0Vb0leIMyc1gcniQ56G8w+3Tc=
+		IgI0iRy/Ow7rukCC/x/SVlBPwjQ=
 		</data>
 		<key>e2eeOff.opus</key>
 		<data>
-		jqkhj9h3UOZw0cnIDtsHdfIBENs=
+		zcZqtv1t23jHYhfNDgtZ5bwyoaQ=
 		</data>
 		<key>e2eeOff_fr.mp3</key>
 		<data>
-		Z0qVnx71rucbKiiOhjl4INdaWtE=
+		ETuuUGE09/pT09HQQUXCHP5Snq4=
 		</data>
 		<key>e2eeOff_fr.opus</key>
 		<data>
-		GSgbwQxczzEs9K4DujEFkXsMqp0=
+		I3Ui5RdEyCCciEbwzhNtiy8MDCo=
 		</data>
 		<key>e2eeOff_frCA.mp3</key>
 		<data>
-		Z0qVnx71rucbKiiOhjl4INdaWtE=
+		Rg5nN6MX0z+w8pKVKg+/c24kkOw=
 		</data>
 		<key>e2eeOff_frCA.opus</key>
 		<data>
-		GSgbwQxczzEs9K4DujEFkXsMqp0=
+		wwOkhhf7e7adgSLEcauq1CDxuXU=
 		</data>
 		<key>e2eeOn.mp3</key>
 		<data>
-		YaKS1bYLIKH3zJwWy/CbCMeUVEQ=
+		B93sDg8Vd2S9dGoLkN3wYXmzcwI=
 		</data>
 		<key>e2eeOn.opus</key>
 		<data>
-		sIY64oZqZ+Bsbjkmijud3TJnRQo=
+		GGw/A9/E/N10wMir847TXqSoVow=
 		</data>
 		<key>e2eeOn_fr.mp3</key>
 		<data>
-		PtPeARUjJslBvAz17mh8PG/9L2M=
+		XpVgctmHjNrUkxWNKRD9Q86VETg=
 		</data>
 		<key>e2eeOn_fr.opus</key>
 		<data>
-		+KgqJAAS5r68wS+9gHESLc50Iow=
+		sMGEiQVbrwjtHGqdfmKGjpk+sgY=
 		</data>
 		<key>e2eeOn_frCA.mp3</key>
 		<data>
-		PtPeARUjJslBvAz17mh8PG/9L2M=
+		Z6fDnYOKIUQ+iCVKDDJk//nAAo4=
 		</data>
 		<key>e2eeOn_frCA.opus</key>
 		<data>
-		+KgqJAAS5r68wS+9gHESLc50Iow=
+		q/KVvOOdEG0wlHQ/joP/qGTqKyU=
 		</data>
 		<key>glog_privacy.bundle/Info.plist</key>
 		<data>
-		EH+EkTNHMkexBo5831rEbjhUJLo=
+		Eh1xonOjpyjAlrsZbBDf2mH8uX4=
 		</data>
 		<key>image-resize@2x.png</key>
 		<data>
@@ -330,55 +330,55 @@
 		</data>
 		<key>liveStreamingOff.mp3</key>
 		<data>
-		QQDTmclxsXaam8KIlrftsHOKcss=
+		fmuBTtvHdubZvZXz34esMVbvxmE=
 		</data>
 		<key>liveStreamingOff.opus</key>
 		<data>
-		kK1MzhPKkqHYTASzLFqDezmWJQY=
+		7cnGcecRaR0ASyLkwgKrwGGe80s=
 		</data>
 		<key>liveStreamingOff_fr.mp3</key>
 		<data>
-		QrWLiJXHyAWIMFognlXPd8H1Z9o=
+		L4FX8KXQpPMNtxphGe2xariKADs=
 		</data>
 		<key>liveStreamingOff_fr.opus</key>
 		<data>
-		nFx7FRO6oXslputQ3prQATGd76c=
+		BgO/TNjFuDydRfVTwDXauKPGd2U=
 		</data>
 		<key>liveStreamingOff_frCA.mp3</key>
 		<data>
-		QrWLiJXHyAWIMFognlXPd8H1Z9o=
+		F+/aAQPUQWjVlwKYNOfwU1fPcYY=
 		</data>
 		<key>liveStreamingOff_frCA.opus</key>
 		<data>
-		nFx7FRO6oXslputQ3prQATGd76c=
+		qOKLTVqLP344xpZouqDau6QD0CE=
 		</data>
 		<key>liveStreamingOn.mp3</key>
 		<data>
-		xjd6Z0ElMLthzzCfw5OsZIj0JO4=
+		le+mM15vv8snnEHnnuNKMg8JADQ=
 		</data>
 		<key>liveStreamingOn.opus</key>
 		<data>
-		ES2j1+nMfJWKumQN3G2hyEHzhkw=
+		Ogvk6QmKhzbVLRuebYw12kyhdAs=
 		</data>
 		<key>liveStreamingOn_fr.mp3</key>
 		<data>
-		cPy/LKlVtSFTOLnkn6fuBtrExkA=
+		ZBw8zoa6zC7vpqWHHN94PJ1rTqc=
 		</data>
 		<key>liveStreamingOn_fr.opus</key>
 		<data>
-		t7ONHqdMSKLDV7FrGnA//CcJpLg=
+		KKqFCqHLm/19JKSV2pA+QHEpWq0=
 		</data>
 		<key>liveStreamingOn_frCA.mp3</key>
 		<data>
-		cPy/LKlVtSFTOLnkn6fuBtrExkA=
+		/3l1r/PgHfTGqT0L4QMiRBtYY3I=
 		</data>
 		<key>liveStreamingOn_frCA.opus</key>
 		<data>
-		t7ONHqdMSKLDV7FrGnA//CcJpLg=
+		9lYgkikVZUsQCaEWvAA2xCkf/58=
 		</data>
 		<key>main.jsbundle</key>
 		<data>
-		rQ8k14KHBylSSCxeUOmUK4LuyiA=
+		VnkPF/dXYau/laAjO6m/7Gl6u/c=
 		</data>
 		<key>noAudioSignal.mp3</key>
 		<data>
@@ -484,53 +484,101 @@
 		<data>
 		Xa1t4vON6nX5syo1lZR2cVFHZ3M=
 		</data>
+		<key>recordingAndTranscriptionOff.mp3</key>
+		<data>
+		FsoM8qpSDhMYD5EXu1V8oVD2d4Y=
+		</data>
+		<key>recordingAndTranscriptionOff.opus</key>
+		<data>
+		5+IdcXRrju1/aayx11gQkHEARDw=
+		</data>
+		<key>recordingAndTranscriptionOff_fr.mp3</key>
+		<data>
+		TBSYfJz8NFvRINUTlps7sqQOVRM=
+		</data>
+		<key>recordingAndTranscriptionOff_fr.opus</key>
+		<data>
+		rnHW7QoF0+eKwIDPMdULQj87qTQ=
+		</data>
+		<key>recordingAndTranscriptionOff_frCA.mp3</key>
+		<data>
+		kabK7dnMiTzVV5pNsMdH8Sgmink=
+		</data>
+		<key>recordingAndTranscriptionOff_frCA.opus</key>
+		<data>
+		pvctmHB4FeVian+u0uEnHdoT/ew=
+		</data>
+		<key>recordingAndTranscriptionOn.mp3</key>
+		<data>
+		/nGbvSjzurqdGhHOPciYV51FuC4=
+		</data>
+		<key>recordingAndTranscriptionOn.opus</key>
+		<data>
+		tYRUeZUJ/tMy4j5p9IV5ofeHw64=
+		</data>
+		<key>recordingAndTranscriptionOn_fr.mp3</key>
+		<data>
+		tXzQA8nZpJdMwz5FvyIZo5M358M=
+		</data>
+		<key>recordingAndTranscriptionOn_fr.opus</key>
+		<data>
+		UAqvLcDfz3Lm2LikMM+tJjJxSKY=
+		</data>
+		<key>recordingAndTranscriptionOn_frCA.mp3</key>
+		<data>
+		3STEmCKoSTInmsYa4iiptJelDOE=
+		</data>
+		<key>recordingAndTranscriptionOn_frCA.opus</key>
+		<data>
+		SUtCRV2rKmvECe4+Zmslo68MoNE=
+		</data>
 		<key>recordingOff.mp3</key>
 		<data>
-		qXPvRHo5SBhRG0hBb/3EDl7+dBM=
+		JOqhY4cwwy1M3ZkSpzlGlNvJuKo=
 		</data>
 		<key>recordingOff.opus</key>
 		<data>
-		8DbnHNMXUlgmxWzZVJ99xlsCxiY=
+		cfXDRbWVs9Q3dEcgBFQG9Bvduq8=
 		</data>
 		<key>recordingOff_fr.mp3</key>
 		<data>
-		hwsnAguuNQxzzKvmNcu2qEaaW9o=
+		12kNSJje1yIulryFNMmMhZ3JRaA=
 		</data>
 		<key>recordingOff_fr.opus</key>
 		<data>
-		QOpU8oxfrRxHQjQxkDYZcCkDkgs=
+		LgucLWIOuMpCBF3EerRc3dxfLEg=
 		</data>
 		<key>recordingOff_frCA.mp3</key>
 		<data>
-		hwsnAguuNQxzzKvmNcu2qEaaW9o=
+		nA9slnh60z/a25AvIWL0rz5+J/s=
 		</data>
 		<key>recordingOff_frCA.opus</key>
 		<data>
-		QOpU8oxfrRxHQjQxkDYZcCkDkgs=
+		9eIXK3H1v5HrcYo6JV6P8OQNk/c=
 		</data>
 		<key>recordingOn.mp3</key>
 		<data>
-		KPp2jEzKD9nL4R/c6GY3RGafGBk=
+		4vYBX1gF566e67pBRxnByEHcSsM=
 		</data>
 		<key>recordingOn.opus</key>
 		<data>
-		8bo3fQGV+/gcngckWX+rHVSq5bM=
+		KRMEdStJSJh/TVJrZLqxCyLU64k=
 		</data>
 		<key>recordingOn_fr.mp3</key>
 		<data>
-		AzBCiTaya/nvTIfBAK3BNR8MQss=
+		mkBKPTv7RyqulHXqL4eTDxn72i0=
 		</data>
 		<key>recordingOn_fr.opus</key>
 		<data>
-		PSQMwMHA3VK2razBAp3IegyOJoo=
+		5V6nDo1ZztuZgwWJH4oxNIUCkdg=
 		</data>
 		<key>recordingOn_frCA.mp3</key>
 		<data>
-		AzBCiTaya/nvTIfBAK3BNR8MQss=
+		8lYjE9OTbH+pYoKbZTEvA2wTK84=
 		</data>
 		<key>recordingOn_frCA.opus</key>
 		<data>
-		PSQMwMHA3VK2razBAp3IegyOJoo=
+		nOBgJj16ha++LDjO1Qdw7gwNl9E=
 		</data>
 		<key>rejected.mp3</key>
 		<data>
@@ -563,6 +611,54 @@
 		<key>talkWhileMuted.opus</key>
 		<data>
 		f080SaeV5boZEqynWfZfldv/b2g=
+		</data>
+		<key>transcriptionOff.mp3</key>
+		<data>
+		FhyeESHwsoEO6XSNCawCBIlzP6o=
+		</data>
+		<key>transcriptionOff.opus</key>
+		<data>
+		YDEhRJjU4GGpkv21CerEMepnKlA=
+		</data>
+		<key>transcriptionOff_fr.mp3</key>
+		<data>
+		BIcvz+nqc+2qL02U6X8w/f5gjNE=
+		</data>
+		<key>transcriptionOff_fr.opus</key>
+		<data>
+		L0ik8xFT75WJ+g/53nC5vbIUfEw=
+		</data>
+		<key>transcriptionOff_frCA.mp3</key>
+		<data>
+		ikWoCPYFX9GVgtFhMFNShngX+kc=
+		</data>
+		<key>transcriptionOff_frCA.opus</key>
+		<data>
+		jsHUZESWyEHyceF8M3VJBwDO3vM=
+		</data>
+		<key>transcriptionOn.mp3</key>
+		<data>
+		4jCAqCgZ+KOJk418L7e6Qkq33KU=
+		</data>
+		<key>transcriptionOn.opus</key>
+		<data>
+		YTGJAVlD4PtgmDqmViuoEMwwyAo=
+		</data>
+		<key>transcriptionOn_fr.mp3</key>
+		<data>
+		9PgyHWZfQkga4uWcYZ4Cypun51s=
+		</data>
+		<key>transcriptionOn_fr.opus</key>
+		<data>
+		7BT2L9yJuW+/4MWbjQzaAi72mZs=
+		</data>
+		<key>transcriptionOn_frCA.mp3</key>
+		<data>
+		TxQx1L92Fzd+9LXhvdEvIHU3F1k=
+		</data>
+		<key>transcriptionOn_frCA.opus</key>
+		<data>
+		zJ2J1KzwLIHldxhuOESnvtaLaAY=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -634,7 +730,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			3Q2xVvlXuPRhhJRS1KXIhhk40kHdb97+Psyqe4VSuTk=
+			X6FJag9tLN6r7pFu82T+WhTaEIkIKsqPMLV0ES2RhXA=
 			</data>
 		</dict>
 		<key>Headers/JitsiMeetSDK.h</key>
@@ -676,28 +772,28 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			qfLvaNFWLs7QRIaqU9wo/sqGLAotwyzOnkhb2tnn9XI=
+			EX3L/F2GO7U6K4GHucc5dAzQe9tD4FHRfqC5GWqNrn8=
 			</data>
 		</dict>
 		<key>Modules/JitsiMeetSDK.swiftmodule/arm64-apple-ios-simulator.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			SCebcvvG28vGkbSpp/CG+3EfXHZPB2XT/MhUtsnb55k=
+			ie6BvFAtKf+qC9sGrtyLvPkT7+7dDzq3dwnUjnSeccc=
 			</data>
 		</dict>
 		<key>Modules/JitsiMeetSDK.swiftmodule/arm64-apple-ios-simulator.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			qfLvaNFWLs7QRIaqU9wo/sqGLAotwyzOnkhb2tnn9XI=
+			EX3L/F2GO7U6K4GHucc5dAzQe9tD4FHRfqC5GWqNrn8=
 			</data>
 		</dict>
 		<key>Modules/JitsiMeetSDK.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			1+fWYINMyiUNbOMYAZo+L4vmt7MG6C+nd06L8SBxGMU=
+			CxMQ620dkj0YOhMjebQoGIdvXQo4Wmc3v0SnW6+lJNE=
 			</data>
 		</dict>
 		<key>Modules/JitsiMeetSDK.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
@@ -711,28 +807,28 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			zkam3rM+zoeLP/cf1jXCl6w72N/reSFyn/DXwyRe1a4=
+			yIlr+H99+o7hKPyGkcwKNpaxjTx86+NrvCOLLLX0pO0=
 			</data>
 		</dict>
 		<key>Modules/JitsiMeetSDK.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			uxwVswC/fnUrvrg8G+agsylLTokckGwYbywsocZUCp8=
+			CuC03f/sAzZF7HaL0w4I/ZUUMEIIZ+ccazyvOQhAsfk=
 			</data>
 		</dict>
 		<key>Modules/JitsiMeetSDK.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			zkam3rM+zoeLP/cf1jXCl6w72N/reSFyn/DXwyRe1a4=
+			yIlr+H99+o7hKPyGkcwKNpaxjTx86+NrvCOLLLX0pO0=
 			</data>
 		</dict>
 		<key>Modules/JitsiMeetSDK.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			dmP8cTUFxQJjMKtaOvjQResPuqL9rmqJKjX90f6oies=
+			TgVx5VuekYHps3KGPYDCRuIAC/Li2uXuS8qJpfBgdNY=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
@@ -746,7 +842,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			R1PQ7r8rHf9rC08nsptYFG70gJcWRvnwjYl+id8+p1w=
+			9ITLMi/ZWfTR1f5fblNUUH89ghPBYTnO0GfQLVsAn0Q=
 			</data>
 		</dict>
 		<key>README.md</key>
@@ -760,7 +856,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			IgURQ5Fjvoi1FRGnFdNnEesq3WJvVxlg9gzUsGcm5Lg=
+			W8Ae8xEXqFJl9m3N2Qrc2tDkUnTa6yN9OWw3TgBm7ZM=
 			</data>
 		</dict>
 		<key>RNCAsyncStorage_resources.bundle/PrivacyInfo.xcprivacy</key>
@@ -774,7 +870,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			UXTzBg6x6lelyaaZqZWMrt+7Ms9NzoWEido6FNTEqus=
+			Pr48UuGkJsQC4rL8pemiNkIuvzzBl3Bo5Z1IWJMSq6o=
 			</data>
 		</dict>
 		<key>RNDeviceInfoPrivacyInfo.bundle/PrivacyInfo.xcprivacy</key>
@@ -788,7 +884,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			190j3/CGVLb4dt6gv0/KpZbR+aQr2CaVNdqYI/7ubNs=
+			rd+gzLmM6sHJswtw6Q7Bp2wGkCPKC8/5S6kSqGAJwyU=
 			</data>
 		</dict>
 		<key>RNSVGFilters.bundle/RNSVGArithmeticFilter.iphoneos.metallib</key>
@@ -809,7 +905,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			XEPiqLRnqAqgLotI439B7/IdOMYlptekgP26/r/FsOs=
+			8R3tP2TsPmGkvoimi9eWmk1adnD//DXgw/QNstRk31Q=
 			</data>
 		</dict>
 		<key>React-Core_privacy.bundle/PrivacyInfo.xcprivacy</key>
@@ -823,7 +919,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			/XuBMFv/4Mq/gsaxi+ykZr56T/sJOixzZBEcAKEfOio=
+			IrJxnwOnNAw7TErasqPzcsPRWmq9wUGyheZunv6JVoI=
 			</data>
 		</dict>
 		<key>React-cxxreact_privacy.bundle/PrivacyInfo.xcprivacy</key>
@@ -942,98 +1038,98 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			L3m5QlGIQ8LTlTQVhKbNTxifGZ7IzA5j8Asp/o+dTGM=
+			7pPl70JY7YzyhKZHTGHd0zmbLC8pv0O87Zd6tWR5J+k=
 			</data>
 		</dict>
 		<key>e2eeOff.mp3</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			2d+sX6YjWWDbiJBbVe5O/I68ZO1WzX4wna5Au8AMcyk=
+			ZbAxfys2lzCwbI2HRTLNJ7fn/AQxuU1XxxeXvILl/OQ=
 			</data>
 		</dict>
 		<key>e2eeOff.opus</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			vO5dx93vb3Arz5bRVgg7+6ttWgv3vEPmMFgPryR+ApQ=
+			JHwlX1UW+qQ1KHjjkhqmuzfop9bORbveCK8SgDKIWX4=
 			</data>
 		</dict>
 		<key>e2eeOff_fr.mp3</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			q47V/kI8EXeMv+xzbGg8Wa9gDmtKYOCjqZqiHiTDPDo=
+			cB+1IfPtP3tDCOLK6VcSXcJ6gG9MZRThY8d3e7mwLYY=
 			</data>
 		</dict>
 		<key>e2eeOff_fr.opus</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			ESSVwMwwdPkyEjp+qggbGKlZmb7zq0jy/JdM7p2TnHA=
+			p74+cGoSzNTGVy8Tt4p5fmbw0hm2Cj73ce9AFy9Vx2M=
 			</data>
 		</dict>
 		<key>e2eeOff_frCA.mp3</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			q47V/kI8EXeMv+xzbGg8Wa9gDmtKYOCjqZqiHiTDPDo=
+			2Y52IlwnJSmGdDO1O0OkmBcEPAqbSvYm29eRpd5qZHk=
 			</data>
 		</dict>
 		<key>e2eeOff_frCA.opus</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			ESSVwMwwdPkyEjp+qggbGKlZmb7zq0jy/JdM7p2TnHA=
+			AiQramPQZrzmw4TcmTKmEBABuH80iVxKctpNv9n9Ovw=
 			</data>
 		</dict>
 		<key>e2eeOn.mp3</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			fRZjW9O1z46ablrxbzUIF39V0T3MXncPbRyyC1dTLX8=
+			cxfaHXLc33QfEJwdkG95rDdXTGK6T2G1nNz4lOg/LHA=
 			</data>
 		</dict>
 		<key>e2eeOn.opus</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			keni/n3jf1WPyl9Ne3tqtjY3ayqI4NzZazUKX42+S7U=
+			w71QESQd6Mzo4H9bqxqp4aaR5gEYhjVsMWtd3lJ87cg=
 			</data>
 		</dict>
 		<key>e2eeOn_fr.mp3</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			1aGAAgOVq6aKS2nQvTSrqBbl784vW8sye4/X8HPK9ig=
+			VUBCiYGZrxX+TTARAPT3QTo6tEVR417nPvU7rLolDMc=
 			</data>
 		</dict>
 		<key>e2eeOn_fr.opus</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			lpGPZ6tPfU7wJgWCDpTGGtb5VcbrlPUPDx8vdbSdUSA=
+			JRUCNebMOE+H2rLUiJkNPdyVXmPMM8pRJjJMkpr41S0=
 			</data>
 		</dict>
 		<key>e2eeOn_frCA.mp3</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			1aGAAgOVq6aKS2nQvTSrqBbl784vW8sye4/X8HPK9ig=
+			YMGpR20iiIzYf9wv9S5G8RlDRgz3FjEVsW/fKUazZWQ=
 			</data>
 		</dict>
 		<key>e2eeOn_frCA.opus</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			lpGPZ6tPfU7wJgWCDpTGGtb5VcbrlPUPDx8vdbSdUSA=
+			pB3NZQ2kJTFiVbhr9QT5a3nv2wx3TMoc3j9TtNbPAwY=
 			</data>
 		</dict>
 		<key>glog_privacy.bundle/Info.plist</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			Q5vo6XqbhoeGEM1LdEaYe9tEp5JG6IICsObEIJ6LN48=
+			WZoMGhTkNcxInhdEJVimUgNOkCxAdVCS5fd6IZPtNqI=
 			</data>
 		</dict>
 		<key>image-resize@2x.png</key>
@@ -1131,91 +1227,91 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			C4KhjNqOWbAijRZVySOg0t+E7qHu7AMil5lxxxCr6zI=
+			ugH4ZEcQRDF/Xp9i/h3GLVAbLSrASwA1uH5SGG47zgQ=
 			</data>
 		</dict>
 		<key>liveStreamingOff.opus</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			HIuwQqTvORbvxTs+xegP8H5WRYKPi+HZW7OFkKx9XBY=
+			f+WY2JArlweHMhRBwTXSkhIetphQU4gYQGb5AOy0SIg=
 			</data>
 		</dict>
 		<key>liveStreamingOff_fr.mp3</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			pDzQTrIYzzc2G4iauRb0lAfEJLdccofEftLyHVUasZY=
+			f5PPvcZfhB65SEGfoo15/QpacwSQ/vsBp1FGZkD72xE=
 			</data>
 		</dict>
 		<key>liveStreamingOff_fr.opus</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			mfQ3qZxZYUWaqO+fSI+EklsbwXDcxXi2Xv1rv2j2Bdw=
+			My1YBJTRnHrW2gNKchtvH5qaiXBl0sdGQot+bHrgOTY=
 			</data>
 		</dict>
 		<key>liveStreamingOff_frCA.mp3</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			pDzQTrIYzzc2G4iauRb0lAfEJLdccofEftLyHVUasZY=
+			mVhvOdy2HEDiTmjT9+n6QEIemrBO5CQfC2+/Ot/jdIE=
 			</data>
 		</dict>
 		<key>liveStreamingOff_frCA.opus</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			mfQ3qZxZYUWaqO+fSI+EklsbwXDcxXi2Xv1rv2j2Bdw=
+			j+YXwb+sGMdAkF0vSB/y1h7uP526JfPCIQ6ArDV0FWg=
 			</data>
 		</dict>
 		<key>liveStreamingOn.mp3</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			e0i9IyydNKfYfoO5nk+RSav8WVB2HIV+5/pknK4TeeY=
+			X4/eCLSu3sNnmRJfg/uGs0f3Q98+zuQvBhjVWlNa+WI=
 			</data>
 		</dict>
 		<key>liveStreamingOn.opus</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			0PRSJc2IrweBBPhz2Nq1Xf+5u62QUiN1jNe1n/YHuJs=
+			Inypkjmn0WkxZN2nIWziDX3j5WP2iwlhHiNXpH9KaG0=
 			</data>
 		</dict>
 		<key>liveStreamingOn_fr.mp3</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			ZVX+e3f4JCrTmJj08+EhbK2dTHa8F0LIBTEGggpv4oE=
+			W/Io5/d7gLYlBzGSxyfKf9soLTscMJd6Yhiej/xNzyA=
 			</data>
 		</dict>
 		<key>liveStreamingOn_fr.opus</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			gcgbiJjHjdtEtPBZ2xFYXa7lheyeqsFeU7+utShIZkY=
+			SjedgB1X652eGrjWgrFX1YPtRKKY/+iH6lmnxZ4EJPc=
 			</data>
 		</dict>
 		<key>liveStreamingOn_frCA.mp3</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			ZVX+e3f4JCrTmJj08+EhbK2dTHa8F0LIBTEGggpv4oE=
+			b2BC2AsOMubxp28yVs3R/nlDVpXMwat3v7k72tHaBEE=
 			</data>
 		</dict>
 		<key>liveStreamingOn_frCA.opus</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			gcgbiJjHjdtEtPBZ2xFYXa7lheyeqsFeU7+utShIZkY=
+			59AppMrKPPk+lqH0w4TjhFtpTaMS2D34EysjNIerVYo=
 			</data>
 		</dict>
 		<key>main.jsbundle</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			crA4Q7LU2agiDIWY5qcWkjVdf1qyQteEEmENktvi1yc=
+			L485JGcDa3Agz5/72IlrrhmY8c9t7MVjn2WmCscFTTA=
 			</data>
 		</dict>
 		<key>noAudioSignal.mp3</key>
@@ -1400,88 +1496,172 @@
 			Lh+sJpCGWYImSgkbfVqYCC8tt0JxVQmMQhiaWHrOTH0=
 			</data>
 		</dict>
+		<key>recordingAndTranscriptionOff.mp3</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			gWZW8o4iuanh0uWNqSPgF0rmvk5yT0+gqNZZOvUy1Nk=
+			</data>
+		</dict>
+		<key>recordingAndTranscriptionOff.opus</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			0+mfHufcZwQrQnNN4xRgG6Ni3sRzN2d/3zc4LputOf0=
+			</data>
+		</dict>
+		<key>recordingAndTranscriptionOff_fr.mp3</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			Ms9YcWe9Ho4NwGJ8S8zBFnptqyh0MEUUQEgpFFcksUs=
+			</data>
+		</dict>
+		<key>recordingAndTranscriptionOff_fr.opus</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			tjnXWMxYY8jV1Wnu+KswhAlW65WlORBmcVr3uwcf3CQ=
+			</data>
+		</dict>
+		<key>recordingAndTranscriptionOff_frCA.mp3</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			loSqzQ45AkDWd7GXMvXY3bz6WPgYiW+0A48cf+NOWRc=
+			</data>
+		</dict>
+		<key>recordingAndTranscriptionOff_frCA.opus</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			fEAknMhVzC1QtslroQRImffoeDhoruaJMr+a9QiyxvA=
+			</data>
+		</dict>
+		<key>recordingAndTranscriptionOn.mp3</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			ALCXHTmDvj0t9tbrh1bUI8ORMaUlueZYiMzgDxv8hwo=
+			</data>
+		</dict>
+		<key>recordingAndTranscriptionOn.opus</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			SwvEjpqy5yMx2bW5sXxySlSm+e+wyFmCYMCFoHRDvhg=
+			</data>
+		</dict>
+		<key>recordingAndTranscriptionOn_fr.mp3</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			4zuQFQ0CAW2xZSnQ9aaPBdqWGC7ujFn2/qhUU0/0nhA=
+			</data>
+		</dict>
+		<key>recordingAndTranscriptionOn_fr.opus</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			ziqIeaN3nBKZDGybKeGSSDfcmwN2hQI1y84U3VZvm2Q=
+			</data>
+		</dict>
+		<key>recordingAndTranscriptionOn_frCA.mp3</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			tC6CEvSKWdqHHm7H3bdjyZFoOcbTlbL/LbASCXd0EF4=
+			</data>
+		</dict>
+		<key>recordingAndTranscriptionOn_frCA.opus</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			8u1v7jZAwNGSFjJ2QoFvRPQ/oidhcsjMyczyBsjwT3M=
+			</data>
+		</dict>
 		<key>recordingOff.mp3</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			h+w4iVYoVLicZgD2g76BJXv+IplQRY1N8S7/6Mw2L2A=
+			S4WVwMSC42dd7O/v6cpoJHAxWfaIS4jItvfQI26yFpY=
 			</data>
 		</dict>
 		<key>recordingOff.opus</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			8ZX8yYmlHkDC9dtOv0j70BCF/aX6cgoZcCOAtw+yzuM=
+			jURXYo82/ysa1Ip/ydhS4RNFkvQ3jAhYVp3JjBrG1oI=
 			</data>
 		</dict>
 		<key>recordingOff_fr.mp3</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			bLM8YLmSFILst2noaDYIDu8/iKfw28uLm1FxlvXltF4=
+			tUQ4d7dX9dhBQ0EYOeCqVfagXcdsl8w3FBrThE1ELkc=
 			</data>
 		</dict>
 		<key>recordingOff_fr.opus</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			jZvnToDwuoAryPFcY02+o8o6/te8XI/1dMDbYRuWEhk=
+			0MufDF9qOP63ItCMJbHWQHS64d2LWzrFYYxJ/SBrVe0=
 			</data>
 		</dict>
 		<key>recordingOff_frCA.mp3</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			bLM8YLmSFILst2noaDYIDu8/iKfw28uLm1FxlvXltF4=
+			zmPtRmtf8Tat0DQTFODrpMBQO7eXvYZnjBaSqpkhtf4=
 			</data>
 		</dict>
 		<key>recordingOff_frCA.opus</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			jZvnToDwuoAryPFcY02+o8o6/te8XI/1dMDbYRuWEhk=
+			6XD3sK0UXRwOeitnRediIgY+krM2D1RQaFsTiPBeb34=
 			</data>
 		</dict>
 		<key>recordingOn.mp3</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			KV7YLNMe6q6NOVRnZwdh+cTbjRlZltpViIw0QIkdtoI=
+			wNPM7Jh+zMDkuTj9GPEcIYPJmx3ONtJyC48X8vB9rmE=
 			</data>
 		</dict>
 		<key>recordingOn.opus</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			Da2Txd66aJAnIlhCJVMC0UeyBb9BrbS+LTPEx/jqjLw=
+			wme7miK5VnFJTmohXPEwJt5oonQzuqYatiPsCr9PAsQ=
 			</data>
 		</dict>
 		<key>recordingOn_fr.mp3</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			/yVx4eOlkzXOBDjo9z8zbhA6RYLKLl61x9v7fMPqHJ4=
+			eP1arKTF9GS4d5nBh85YxvW/eOf3xFlwhCFDJnsEUIg=
 			</data>
 		</dict>
 		<key>recordingOn_fr.opus</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			5L3pketVbKY9wqr9ss9yV98jLnbb0XpF/R+H4BSoXMc=
+			Ogv9ZpElh2blwpA9o3QmhRoOo4iR6pLnQbA1KgxCSuw=
 			</data>
 		</dict>
 		<key>recordingOn_frCA.mp3</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			/yVx4eOlkzXOBDjo9z8zbhA6RYLKLl61x9v7fMPqHJ4=
+			q3wtkpd+SMIEqPndYmxAgUWYTZ9wOL2JSkg+L4oEU00=
 			</data>
 		</dict>
 		<key>recordingOn_frCA.opus</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			5L3pketVbKY9wqr9ss9yV98jLnbb0XpF/R+H4BSoXMc=
+			eIBqGJOC6lA1HNbakVOvBwPrScGW6eA+XAxoqcark0g=
 			</data>
 		</dict>
 		<key>rejected.mp3</key>
@@ -1538,6 +1718,90 @@
 			<key>hash2</key>
 			<data>
 			qeIe9m2S+0fXuk/wtx7o4IiYfZbhW7mT9hWZ6Am+KO0=
+			</data>
+		</dict>
+		<key>transcriptionOff.mp3</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			h0UOSYpUffKZjx7z2WHksAzUrZQSvLMivxgaClHqnH4=
+			</data>
+		</dict>
+		<key>transcriptionOff.opus</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			ncpM30QHGV7RLI5PWHl7nISopQOvd9wRh72dW5juTI8=
+			</data>
+		</dict>
+		<key>transcriptionOff_fr.mp3</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			Y+oTYbo16pUPgg4uH8o6L8lIC4FUiltP/NZ1c8STGbU=
+			</data>
+		</dict>
+		<key>transcriptionOff_fr.opus</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			2OLymscHKRYBG/wWGwHNLChc5IduCAzgK0cDlVxtGS4=
+			</data>
+		</dict>
+		<key>transcriptionOff_frCA.mp3</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			uJXprDCp1ksWQAuVgDvZPALtBBs4M4kRliI3UKcTVv4=
+			</data>
+		</dict>
+		<key>transcriptionOff_frCA.opus</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			+xvnALIcC3QfjHQ1vxpVbKzF0A7twLr4/zkAn3DGESE=
+			</data>
+		</dict>
+		<key>transcriptionOn.mp3</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			vQ8IMgNjNOa1R8qyLjibvmSWN5Sn96NqRuAUPvyxG6s=
+			</data>
+		</dict>
+		<key>transcriptionOn.opus</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			NoHFCFeUD5YGudEVn/4tHHl6fdUl+OMb0I7By2HiXDg=
+			</data>
+		</dict>
+		<key>transcriptionOn_fr.mp3</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			cVoUZadDpvXG3xPqpDzfFza7HQpMvLjeNR/+u6QFqvw=
+			</data>
+		</dict>
+		<key>transcriptionOn_fr.opus</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			2kB5G4VrIr+gOpBcl8P/ewMkt1YRPXv2lvq2UTPTBcM=
+			</data>
+		</dict>
+		<key>transcriptionOn_frCA.mp3</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			cxw4uoczlRsb1+w+mBoj0o42rHcWI2dGMpMb9jYkFwQ=
+			</data>
+		</dict>
+		<key>transcriptionOn_frCA.opus</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			LeAdwaISaD8StzdTX3KbZshm9MCUBm1vYVylvA7/E4U=
 			</data>
 		</dict>
 	</dict>
