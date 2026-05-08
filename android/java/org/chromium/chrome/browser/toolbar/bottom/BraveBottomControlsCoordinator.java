@@ -29,6 +29,7 @@ import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.layouts.LayoutManager;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
+import org.chromium.chrome.browser.overlay_panel.PanelState;
 import org.chromium.chrome.browser.tab.TabObscuringHandler;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
@@ -81,7 +82,7 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
             @DimenRes int heightResId,
             OneshotSupplier<BottomControlsContentDelegate> contentDelegateSupplier,
             TabObscuringHandler tabObscuringHandler,
-            NonNullObservableSupplier<Boolean> overlayPanelVisibilitySupplier,
+            NonNullObservableSupplier<@PanelState Integer> overlayPanelStateSupplier,
             NullableObservableSupplier<@BrowserControlsState Integer> constraintsSupplier,
             Supplier<Boolean> readAloudRestoringSupplier) {
         super(
@@ -97,7 +98,7 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
                 heightResId,
                 contentDelegateSupplier,
                 tabObscuringHandler,
-                overlayPanelVisibilitySupplier,
+                overlayPanelStateSupplier,
                 constraintsSupplier,
                 readAloudRestoringSupplier);
 
