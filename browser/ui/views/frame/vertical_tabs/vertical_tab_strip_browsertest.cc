@@ -1239,8 +1239,9 @@ class VerticalTabStripStringBrowserTest : public VerticalTabStripBrowserTest {
             ->horizontal_tab_strip_for_testing()
             ->controller());
 
-    auto context_menu_controller =
-        std::make_unique<TabContextMenuController>(tab_index, controller);
+    auto context_menu_controller = std::make_unique<TabContextMenuController>(
+        browser()->tab_strip_model()->GetTabAtIndex(tab_index)->GetHandle(),
+        controller);
 
     return context_menu_controller;
   }
