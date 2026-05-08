@@ -87,16 +87,14 @@ BraveBrowserTabStripController::GetTreeTabNodeIdForGroup(
 bool BraveBrowserTabStripController::IsCommandEnabledForTab(
     TabStripModel::ContextMenuCommand command_id,
     const Tab* tab) {
-  const std::optional<int> model_index = tabstrip_->GetModelIndexOf(tab);
-  return model_index.has_value()
-             ? IsContextMenuCommandEnabled(model_index.value(), command_id)
-             : false;
+  return IsContextMenuCommandEnabled(tab->tab_handle().Get(), command_id);
 }
 
 void BraveBrowserTabStripController::ExecuteContextMenuCommand(
-    int index,
+    tabs::TabInterface* tab,
     TabStripModel::ContextMenuCommand command_id,
     int event_flags) {
+  const int index = model_->GetIndexOfTab(tab);
   if (!model_->ContainsIndex(index)) {
     return;
   }
@@ -111,11 +109,10 @@ void BraveBrowserTabStripController::ExecuteContextMenuCommand(
   // We can add other specific situations when user want to.
   const auto split_id = model_->GetSplitForTab(index);
   if (command_id == TabStripModel::CommandCloseTab && split_id.has_value()) {
-    auto* tab_interface = model_->GetTabAtIndex(index);
     // If |tab| is split and selection size is 1, it means split tab that
     // contains |tab| is inactive and the active tab is normal. Close |tab|.
     if (model_->selection_model().size() == 1) {
-      tab_interface->Close();
+      tab->Close();
       return;
     }
 
@@ -124,7 +121,7 @@ void BraveBrowserTabStripController::ExecuteContextMenuCommand(
     // in single split view as selected. In this situation, |tab|
     // could be in that active split view or not. Close |tab|.
     if (model_->IsActiveTabSplit() && model_->selection_model().size() == 2) {
-      tab_interface->Close();
+      tab->Close();
       return;
     }
   }
@@ -172,7 +169,7 @@ void BraveBrowserTabStripController::ExecuteContextMenuCommand(
     return;
   }
 
-  BrowserTabStripController::ExecuteContextMenuCommand(index, command_id,
+  BrowserTabStripController::ExecuteContextMenuCommand(tab, command_id,
                                                        event_flags);
 }
 
@@ -186,8 +183,9 @@ bool BraveBrowserTabStripController::IsContextMenuCommandChecked(
 }
 
 bool BraveBrowserTabStripController::IsContextMenuCommandEnabled(
-    int index,
+    tabs::TabInterface* tab,
     TabStripModel::ContextMenuCommand command_id) {
+  const int index = model_->GetIndexOfTab(tab);
   if (!model_->ContainsIndex(index)) {
     return false;
   }
@@ -228,7 +226,7 @@ bool BraveBrowserTabStripController::IsContextMenuCommandEnabled(
     return true;
   }
 
-  return BrowserTabStripController::IsContextMenuCommandEnabled(index,
+  return BrowserTabStripController::IsContextMenuCommandEnabled(tab,
                                                                 command_id);
 }
 
