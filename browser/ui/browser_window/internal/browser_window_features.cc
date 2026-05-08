@@ -5,6 +5,7 @@
 
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 
+#include "base/check_deref.h"
 #include "base/memory/ptr_util.h"
 #include "base/notreached.h"
 #include "brave/browser/ui/brave_browser_window.h"
@@ -114,14 +115,14 @@ void BrowserWindowFeatures::InitPostBrowserViewConstruction(
   }
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
-  if (email_aliases::features::IsEmailAliasesEnabled()) {
-    if (auto* email_aliases_service =
-            email_aliases::EmailAliasesServiceFactory::GetServiceForProfile(
-                browser_view->GetProfile())) {
-      email_aliases_controller_ =
-          std::make_unique<email_aliases::EmailAliasesController>(
-              browser_view, email_aliases_service);
-    }
+  if (email_aliases::features::IsEmailAliasesEnabledForProfile(
+          CHECK_DEREF(browser_view->GetProfile()->GetPrefs()))) {
+    email_aliases_controller_ =
+        std::make_unique<email_aliases::EmailAliasesController>(
+            browser_view,
+            &CHECK_DEREF(
+                email_aliases::EmailAliasesServiceFactory::GetServiceForProfile(
+                    browser_view->GetProfile())));
   }
 #endif
 

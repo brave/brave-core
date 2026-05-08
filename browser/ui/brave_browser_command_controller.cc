@@ -8,6 +8,7 @@
 #include <optional>
 
 #include "base/check.h"
+#include "base/check_deref.h"
 #include "base/check_is_test.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/feature_list.h"
@@ -96,7 +97,6 @@
 #endif
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
-#include "brave/browser/email_aliases/email_aliases_service_factory.h"
 #include "brave/browser/ui/email_aliases/email_aliases_controller.h"
 #include "brave/components/email_aliases/features.h"
 #endif
@@ -351,11 +351,9 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandEnabled(IDC_EXPORT_ALL_BOOKMARKS, true);
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
-  UpdateCommandEnabled(
-      IDC_SHOW_EMAIL_ALIASES,
-      email_aliases::features::IsEmailAliasesEnabled() &&
-          email_aliases::EmailAliasesServiceFactory::GetServiceForProfile(
-              browser_->profile()));
+  UpdateCommandEnabled(IDC_SHOW_EMAIL_ALIASES,
+                       email_aliases::features::IsEmailAliasesEnabledForProfile(
+                           CHECK_DEREF(browser_->profile()->GetPrefs())));
 #endif
 
   if (browser_->is_type_normal()) {
