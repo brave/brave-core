@@ -181,12 +181,17 @@ void BraveSyncServiceImpl::Initialize(
 }
 
 DataTypeSet BraveSyncServiceImpl::GetPreferredDataTypes() const {
-  if (!has_encryptor()) {
-    // Encryptor not ready yet. Return all types to prevent
+  if (!has_encryptor() || is_initializing_) {
+    // Encryptor not ready (desktop: async keychain) or Initialize() is still
+    // running (Android: encryptor fires synchronously but DeriveSigningKeys()
+    // hasn't been called yet via PostTask). Return all types to prevent
     // ClearMetadataWhileStoppedExceptFor() from wiping DeviceInfo metadata
-    // before DeriveSigningKeys() establishes the correct auth state.
-    // The engine cannot start without the encryptor so no sync is triggered.
-    return DataTypeSet::All();
+    // before the correct auth state is established.
+    const std::string& raw_seed = sync_client_->GetPrefService()->GetString(
+        brave_sync::Prefs::GetSeedPath());
+    if (!raw_seed.empty()) {
+      return DataTypeSet::All();
+    }
   }
   return SyncServiceImpl::GetPreferredDataTypes();
 }
@@ -197,13 +202,14 @@ bool BraveSyncServiceImpl::IsSetupInProgress() const {
 }
 
 void BraveSyncServiceImpl::StopAndClear(ResetEngineReason reset_engine_reason) {
-  if (!has_encryptor()) {
-    // Encryptor is not ready yet (OSCrypt async callback hasn't fired).
-    // SyncServiceImpl::StopAndClear() unconditionally calls
-    // ClearInitialSyncFeatureSetupComplete() regardless of the reset reason,
-    // which would destroy the sync setup state and wipe the sync chain.
-    // Skip entirely — OnPrefsReady() will call DeriveSigningKeys() which
-    // establishes the correct auth state once the encryptor is available.
+  if ((!has_encryptor() || is_initializing_) &&
+      reset_engine_reason == ResetEngineReason::kNotSignedIn) {
+    // kNotSignedIn fires during Initialize() because DeriveSigningKeys() hasn't
+    // run yet (desktop: encryptor not ready; Android: encryptor fires
+    // synchronously but DeriveSigningKeys() is still in the PostTask queue).
+    // SyncServiceImpl::StopAndClear() would call
+    // ClearInitialSyncFeatureSetupComplete() and Prefs::Clear() would wipe the
+    // seed. Skip — OnEncryptorReady() will establish the correct auth state.
     return;
   }
   // StopAndClear is invoked during |SyncServiceImpl::Initialize| even if sync
@@ -362,6 +368,11 @@ void BraveSyncServiceImpl::OnEngineInitialized(
 SyncServiceCrypto* BraveSyncServiceImpl::GetCryptoForTesting() {
   CHECK_IS_TEST();
   return &crypto_;
+}
+
+void BraveSyncServiceImpl::SetInitializingForTesting() {
+  CHECK_IS_TEST();
+  is_initializing_ = true;
 }
 
 namespace {

@@ -484,12 +484,59 @@ TEST_F(BraveSyncServiceImplTest,
   CreateSyncService();
   EXPECT_FALSE(engine());
 
+  brave_sync_service_impl()->SetSeedForTesting(kValidSyncCode);
+
   brave_sync_service_impl()->ResetEncryptorForTesting();
 
   ASSERT_THAT(brave_sync_service_impl()->GetSeed().error(),
               Eq(GetSeedStatusEnum::kEncryptorIsNotSet));
   EXPECT_EQ(brave_sync_service_impl()->GetPreferredDataTypes(),
             DataTypeSet::All());
+}
+
+TEST_F(BraveSyncServiceImplTest,
+       GetPreferredDataTypesGivesAllWhenIsInitializing) {
+  CreateSyncService();
+  EXPECT_FALSE(engine());
+
+  brave_sync_service_impl()->SetSeedForTesting(kValidSyncCode);
+
+  brave_sync_service_impl()->SetInitializingForTesting();
+
+  EXPECT_EQ(brave_sync_service_impl()->GetPreferredDataTypes(),
+            DataTypeSet::All());
+}
+
+TEST_F(BraveSyncServiceImplTest,
+       StopAndClearWithNotSignedInDoNotWipePrefsWhenIsInitializing) {
+  CreateSyncService();
+  EXPECT_FALSE(engine());
+
+  brave_sync_service_impl()->SetSeedForTesting(kValidSyncCode);
+
+  brave_sync_service_impl()->SetInitializingForTesting();
+
+  using ResetEngineReason = syncer::SyncServiceImpl::ResetEngineReason;
+  brave_sync_service_impl()->StopAndClear(ResetEngineReason::kNotSignedIn);
+
+  auto seed = brave_sync_service_impl()->GetSeed();
+  EXPECT_TRUE(seed.has_value() && !seed.value().empty());
+}
+
+TEST_F(BraveSyncServiceImplTest,
+       StopAndClearWithoutNotSignedInDoesWipePrefsWhenIsInitializing) {
+  CreateSyncService();
+  EXPECT_FALSE(engine());
+
+  brave_sync_service_impl()->SetSeedForTesting(kValidSyncCode);
+
+  brave_sync_service_impl()->SetInitializingForTesting();
+
+  using ResetEngineReason = syncer::SyncServiceImpl::ResetEngineReason;
+  brave_sync_service_impl()->StopAndClear(ResetEngineReason::kDisabledAccount);
+
+  auto seed = brave_sync_service_impl()->GetSeed();
+  EXPECT_TRUE(seed.has_value() && seed.value().empty());
 }
 
 TEST_F(BraveSyncServiceImplTest, PermanentlyDeleteAccount) {
