@@ -28,7 +28,8 @@ TEST(PolkadotChainMetadataUnitTest, FromFields) {
       /*transfer_allow_death_call_index=*/2,
       /*transfer_keep_alive_call_index=*/4,
       /*transfer_all_call_index=*/5,
-      /*ss58_prefix=*/42, /*spec_version=*/1'234'567);
+      /*ss58_prefix=*/42, /*spec_version=*/1'234'567,
+      /*asset_tx_payment=*/true);
 
   EXPECT_EQ(metadata.GetSystemPalletIndex(), 0u);
   EXPECT_EQ(metadata.GetBalancesPalletIndex(), 7u);
@@ -38,6 +39,7 @@ TEST(PolkadotChainMetadataUnitTest, FromFields) {
   EXPECT_EQ(metadata.GetTransferAllCallIndex(), 5u);
   EXPECT_EQ(metadata.GetSs58Prefix(), 42u);
   EXPECT_EQ(metadata.GetSpecVersion(), 1'234'567u);
+  EXPECT_TRUE(metadata.UsesAssetTxPayment());
 }
 
 TEST(PolkadotChainMetadataUnitTest, EqualityOperator) {
@@ -47,24 +49,36 @@ TEST(PolkadotChainMetadataUnitTest, EqualityOperator) {
       /*transfer_allow_death_call_index=*/2,
       /*transfer_keep_alive_call_index=*/4,
       /*transfer_all_call_index=*/5,
-      /*ss58_prefix=*/42, /*spec_version=*/1'234'567);
+      /*ss58_prefix=*/42, /*spec_version=*/1'234'567,
+      /*asset_tx_payment=*/false);
   auto metadata_b = PolkadotChainMetadata::FromFields(
       /*system_pallet_index=*/0, /*balances_pallet_index=*/7,
       /*transaction_payment_pallet_index=*/0x20,
       /*transfer_allow_death_call_index=*/2,
       /*transfer_keep_alive_call_index=*/4,
       /*transfer_all_call_index=*/5,
-      /*ss58_prefix=*/42, /*spec_version=*/1'234'567);
+      /*ss58_prefix=*/42, /*spec_version=*/1'234'567,
+      /*asset_tx_payment=*/false);
   auto metadata_c = PolkadotChainMetadata::FromFields(
       /*system_pallet_index=*/0, /*balances_pallet_index=*/7,
       /*transaction_payment_pallet_index=*/0x20,
       /*transfer_allow_death_call_index=*/2,
       /*transfer_keep_alive_call_index=*/4,
       /*transfer_all_call_index=*/5,
-      /*ss58_prefix=*/42, /*spec_version=*/1'234'568);
+      /*ss58_prefix=*/42, /*spec_version=*/1'234'568,
+      /*asset_tx_payment=*/false);
+  auto metadata_d = PolkadotChainMetadata::FromFields(
+      /*system_pallet_index=*/0, /*balances_pallet_index=*/7,
+      /*transaction_payment_pallet_index=*/0x20,
+      /*transfer_allow_death_call_index=*/2,
+      /*transfer_keep_alive_call_index=*/4,
+      /*transfer_all_call_index=*/5,
+      /*ss58_prefix=*/42, /*spec_version=*/1'234'567,
+      /*asset_tx_payment=*/true);
 
   EXPECT_EQ(metadata_a, metadata_b);
   EXPECT_NE(metadata_a, metadata_c);
+  EXPECT_NE(metadata_a, metadata_d);
 }
 
 TEST(PolkadotChainMetadataUnitTest, FromChainName) {
@@ -74,7 +88,8 @@ TEST(PolkadotChainMetadataUnitTest, FromChainName) {
       /*transfer_allow_death_call_index=*/0,
       /*transfer_keep_alive_call_index=*/3,
       /*transfer_all_call_index=*/4,
-      /*ss58_prefix=*/42, /*spec_version=*/0);
+      /*ss58_prefix=*/42, /*spec_version=*/0,
+      /*asset_tx_payment=*/false);
   auto westend = PolkadotChainMetadata::FromChainName("Westend");
   ASSERT_TRUE(westend);
 
@@ -86,7 +101,8 @@ TEST(PolkadotChainMetadataUnitTest, FromChainName) {
       /*transfer_allow_death_call_index=*/0,
       /*transfer_keep_alive_call_index=*/3,
       /*transfer_all_call_index=*/4,
-      /*ss58_prefix=*/42, /*spec_version=*/0);
+      /*ss58_prefix=*/42, /*spec_version=*/0,
+      /*asset_tx_payment=*/true);
   auto westend_asset_hub =
       PolkadotChainMetadata::FromChainName("Westend Asset Hub");
   ASSERT_TRUE(westend_asset_hub);
@@ -98,7 +114,8 @@ TEST(PolkadotChainMetadataUnitTest, FromChainName) {
       /*transfer_allow_death_call_index=*/0,
       /*transfer_keep_alive_call_index=*/3,
       /*transfer_all_call_index=*/4,
-      /*ss58_prefix=*/0, /*spec_version=*/0);
+      /*ss58_prefix=*/0, /*spec_version=*/0,
+      /*asset_tx_payment=*/false);
   auto polkadot = PolkadotChainMetadata::FromChainName("Polkadot");
   ASSERT_TRUE(polkadot);
   EXPECT_EQ(*polkadot, expected_polkadot);
@@ -109,7 +126,8 @@ TEST(PolkadotChainMetadataUnitTest, FromChainName) {
       /*transfer_allow_death_call_index=*/0,
       /*transfer_keep_alive_call_index=*/3,
       /*transfer_all_call_index=*/4,
-      /*ss58_prefix=*/0, /*spec_version=*/0);
+      /*ss58_prefix=*/0, /*spec_version=*/0,
+      /*asset_tx_payment=*/true);
   auto polkadot_asset_hub =
       PolkadotChainMetadata::FromChainName("Polkadot Asset Hub");
   ASSERT_TRUE(polkadot_asset_hub);
@@ -162,7 +180,8 @@ TEST(PolkadotChainMetadataUnitTest, ParseRealStateGetMetadataResponsePolkadot) {
       /*transfer_allow_death_call_index=*/0,
       /*transfer_keep_alive_call_index=*/3,
       /*transfer_all_call_index=*/4,
-      /*ss58_prefix=*/0, /*spec_version=*/2'000'007);
+      /*ss58_prefix=*/0, /*spec_version=*/2'000'007,
+      /*asset_tx_payment=*/false);
   EXPECT_EQ(*metadata, expected);
 
   auto metadata2 = PolkadotChainMetadata::FromChainName("Polkadot");
@@ -173,8 +192,47 @@ TEST(PolkadotChainMetadataUnitTest, ParseRealStateGetMetadataResponsePolkadot) {
       /*transfer_allow_death_call_index=*/0,
       /*transfer_keep_alive_call_index=*/3,
       /*transfer_all_call_index=*/4,
-      /*ss58_prefix=*/0, /*spec_version=*/0);
+      /*ss58_prefix=*/0, /*spec_version=*/0,
+      /*asset_tx_payment=*/false);
   EXPECT_EQ(*metadata2, expected_from_name);
+}
+
+TEST(PolkadotChainMetadataUnitTest,
+     ParseRealStateGetMetadataResponseAssetHubPolkadot) {
+  // Refreshed with:
+  // curl -sS -H 'Content-Type: application/json' \
+  //   -d '{"id":1,"jsonrpc":"2.0","method":"state_getMetadata","params":[]}' \
+  //   https://polkadot-asset-hub-rpc.polkadot.io
+  const auto fixture_path =
+      base::PathService::CheckedGet(base::DIR_SRC_TEST_DATA_ROOT)
+          .AppendASCII("brave")
+          .AppendASCII("components")
+          .AppendASCII("test")
+          .AppendASCII("data")
+          .AppendASCII("brave_wallet")
+          .AppendASCII("polkadot")
+          .AppendASCII("chain_metadata")
+          .AppendASCII("state_getMetadata_assethub_polkadot.json");
+  const base::DictValue json = base::test::ParseJsonDictFromFile(fixture_path);
+
+  const std::string* metadata_hex = json.FindString(kResult);
+  ASSERT_TRUE(metadata_hex);
+  ASSERT_FALSE(metadata_hex->empty());
+
+  std::vector<uint8_t> metadata_bytes;
+  ASSERT_TRUE(PrefixedHexStringToBytes(*metadata_hex, &metadata_bytes));
+
+  auto metadata = PolkadotChainMetadata::FromBytes(metadata_bytes);
+  ASSERT_TRUE(metadata);
+  auto expected = PolkadotChainMetadata::FromFields(
+      /*system_pallet_index=*/0, /*balances_pallet_index=*/0x0a,
+      /*transaction_payment_pallet_index=*/0x0b,
+      /*transfer_allow_death_call_index=*/0,
+      /*transfer_keep_alive_call_index=*/3,
+      /*transfer_all_call_index=*/4,
+      /*ss58_prefix=*/0, /*spec_version=*/2'002'001,
+      /*asset_tx_payment=*/true);
+  EXPECT_EQ(*metadata, expected);
 }
 
 TEST(PolkadotChainMetadataUnitTest, ParseRealStateGetMetadataResponseWestend) {
@@ -209,7 +267,47 @@ TEST(PolkadotChainMetadataUnitTest, ParseRealStateGetMetadataResponseWestend) {
       /*transfer_allow_death_call_index=*/0,
       /*transfer_keep_alive_call_index=*/3,
       /*transfer_all_call_index=*/4,
-      /*ss58_prefix=*/42, /*spec_version=*/1'022'000);
+      /*ss58_prefix=*/42, /*spec_version=*/1'022'000,
+      /*asset_tx_payment=*/false);
+  EXPECT_EQ(*metadata, expected);
+}
+
+TEST(PolkadotChainMetadataUnitTest,
+     ParseRealStateGetMetadataResponseAssetHubWestend) {
+  // Refreshed with:
+  // curl -sS -H 'Content-Type: application/json' \
+  //   -d '{"id":1,"jsonrpc":"2.0","method":"state_getMetadata","params":[]}' \
+  //   https://westend-asset-hub-rpc.polkadot.io/
+  const auto fixture_path =
+      base::PathService::CheckedGet(base::DIR_SRC_TEST_DATA_ROOT)
+          .AppendASCII("brave")
+          .AppendASCII("components")
+          .AppendASCII("test")
+          .AppendASCII("data")
+          .AppendASCII("brave_wallet")
+          .AppendASCII("polkadot")
+          .AppendASCII("chain_metadata")
+          .AppendASCII("state_getMetadata_assethub_westend.json");
+  const base::DictValue json = base::test::ParseJsonDictFromFile(fixture_path);
+
+  const std::string* metadata_hex = json.FindString(kResult);
+  ASSERT_TRUE(metadata_hex);
+  ASSERT_FALSE(metadata_hex->empty());
+
+  std::vector<uint8_t> metadata_bytes;
+  ASSERT_TRUE(PrefixedHexStringToBytes(*metadata_hex, &metadata_bytes));
+
+  auto metadata = PolkadotChainMetadata::FromBytes(metadata_bytes);
+  ASSERT_TRUE(metadata);
+
+  auto expected = PolkadotChainMetadata::FromFields(
+      /*system_pallet_index=*/0, /*balances_pallet_index=*/0x0a,
+      /*transaction_payment_pallet_index=*/0x0b,
+      /*transfer_allow_death_call_index=*/0,
+      /*transfer_keep_alive_call_index=*/3,
+      /*transfer_all_call_index=*/4,
+      /*ss58_prefix=*/42, /*spec_version=*/1'022'005,
+      /*asset_tx_payment=*/true);
   EXPECT_EQ(*metadata, expected);
 }
 

@@ -57,6 +57,7 @@ mod ffi {
         pub transfer_all_call_index: u8,
         pub ss58_prefix: u16,
         pub spec_version: u32,
+        pub asset_tx_payment: bool,
     }
 
     extern "Rust" {

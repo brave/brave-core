@@ -40,7 +40,8 @@ PolkadotChainMetadata MakeWestendMetadata() {
       /*transfer_allow_death_call_index=*/0,
       /*transfer_keep_alive_call_index=*/3,
       /*transfer_all_call_index=*/4,
-      /*ss58_prefix=*/42, kSpecVersion);
+      /*ss58_prefix=*/42, kSpecVersion,
+      /*asset_tx_payment=*/false);
 }
 
 PolkadotChainMetadata MakePolkadotMetadata() {
@@ -50,7 +51,8 @@ PolkadotChainMetadata MakePolkadotMetadata() {
       /*transfer_allow_death_call_index=*/0,
       /*transfer_keep_alive_call_index=*/3,
       /*transfer_all_call_index=*/4,
-      /*ss58_prefix=*/0, kSpecVersion);
+      /*ss58_prefix=*/0, kSpecVersion,
+      /*asset_tx_payment=*/false);
 }
 
 PolkadotChainMetadata MakeWestendAssetHubMetadata() {
@@ -60,7 +62,8 @@ PolkadotChainMetadata MakeWestendAssetHubMetadata() {
       /*transfer_allow_death_call_index=*/0,
       /*transfer_keep_alive_call_index=*/3,
       /*transfer_all_call_index=*/4,
-      /*ss58_prefix=*/42, kSpecVersion);
+      /*ss58_prefix=*/42, kSpecVersion,
+      /*asset_tx_payment=*/true);
 }
 
 PolkadotChainMetadata MakePolkadotAssetHubMetadata() {
@@ -70,7 +73,8 @@ PolkadotChainMetadata MakePolkadotAssetHubMetadata() {
       /*transfer_allow_death_call_index=*/0,
       /*transfer_keep_alive_call_index=*/3,
       /*transfer_all_call_index=*/4,
-      /*ss58_prefix=*/0, kSpecVersion);
+      /*ss58_prefix=*/0, kSpecVersion,
+      /*asset_tx_payment=*/true);
 }
 
 TEST(PolkadotExtrinsics, UnsignedTransfer) {
