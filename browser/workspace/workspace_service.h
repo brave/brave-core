@@ -91,15 +91,14 @@ class WorkspaceService : public KeyedService {
   // |backend| must be constructed on the UI thread before posting these tasks.
 
   // Writes |commands| to a Chromium session-command binary file via |backend|.
-  // Both callbacks are posted to the UI thread: |on_error| (via
-  // AppendCommands' callback_task_runner_) if the write fails, |on_success|
-  // unconditionally after AppendCommands returns.  Because |on_error| is
-  // enqueued first, the UI thread always runs it before |on_success|.
+  // |on_error| is posted to the UI thread (via AppendCommands'
+  // callback_task_runner_) on write failure, or called directly if the
+  // workspace directory cannot be created.  Wrapped with BindPostTask in the
+  // caller so it always lands on the UI thread regardless of which path fires.
   static void WriteWorkspaceToDisk(
       std::vector<std::unique_ptr<sessions::SessionCommand>> commands,
       const base::FilePath& workspace_dir,
       scoped_refptr<sessions::CommandStorageBackend> backend,
-      base::OnceClosure on_success,
       base::OnceClosure on_error);
 
   // Reads the session-command binary via |backend| and returns the raw
