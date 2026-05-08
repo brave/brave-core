@@ -1501,3 +1501,41 @@ BraveWalletServiceFactory::BuildServiceInstanceForBrowserContext(
 - Any state that can change while the browser is running
 
 If a feature must be fully disable-able at runtime, the service should remain instantiated and expose an `IsEnabled()` accessor, or callers should observe the pref directly.
+
+---
+
+<a id="ARCH-073"></a>
+
+## ❌ Don't Read Policy-Backed State in `KeyedService` Constructors
+
+**A `KeyedService` constructor can run before `PolicyService` has finished merging policy bundles into the managed pref store.** Any constructor-time decision that depends on policy-controlled state — `IsManagedPreference(...)`, the value of a policy-mapped pref, or a direct `PolicyService::GetPolicies(...)` query — may evaluate as if no policy is set, even when an admin has applied one. The service then starts (or skips startup) under the wrong assumption for the rest of the session.
+
+`DependsOn(...)` only orders other `KeyedService`s; there is no factory-level handle on the policy stack's initialization. Treat `PolicyService` as an out-of-band subsystem and gate any policy-dependent work on `PolicyService::IsInitializationComplete(POLICY_DOMAIN_CHROME)`.
+
+**Fix pattern:** take `policy::PolicyService*` (nullable in tests) through the constructor. If initialization is already complete, do the work synchronously; otherwise observe and defer:
+
+```cpp
+MyServiceImpl::MyServiceImpl(policy::PolicyService* policy_service, ...) {
+  // ... non-policy construction ...
+  if (!policy_service ||
+      policy_service->IsInitializationComplete(policy::POLICY_DOMAIN_CHROME)) {
+    DoPolicyGatedStartup();
+    return;
+  }
+  policy_service->AddObserver(policy::POLICY_DOMAIN_CHROME, this);
+  observed_policy_service_ = policy_service;
+}
+
+void MyServiceImpl::OnPolicyServiceInitialized(policy::PolicyDomain domain) {
+  if (domain != policy::POLICY_DOMAIN_CHROME) return;
+  StopObservingPolicyService();
+  DoPolicyGatedStartup();
+}
+```
+
+Remove the observer in `Shutdown()` and (defensively) in the destructor for tests that destruct without calling `Shutdown`. Tests can pass `nullptr` for `policy_service`; the synchronous-start branch covers that case.
+
+**Applies to any of these in a constructor:**
+- `prefs->IsManagedPreference(some_policy_pref)` — returns `false` until policies are merged
+- Reading the value of a policy-mapped pref to decide whether to start a subservice
+- Calling `PolicyService::GetPolicies(...)` directly
