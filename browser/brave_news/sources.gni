@@ -19,17 +19,23 @@ if (enable_brave_news) {
     "//brave/browser/brave_news/brave_news_tab_helper.h",
     "//brave/browser/brave_news/direct_feed_fetcher_delegate_impl.cc",
     "//brave/browser/brave_news/direct_feed_fetcher_delegate_impl.h",
+    "//brave/browser/brave_news/rss_links_fetcher.cc",
+    "//brave/browser/brave_news/rss_links_fetcher.h",
   ]
 
   brave_browser_brave_news_deps += [
     "//base",
     "//brave/components/brave_news/browser",
     "//brave/components/brave_news/common",
+    "//brave/components/brave_news/common:rss_link_reader_mojom",
     "//brave/components/brave_policy:policy_initialization_waiter",
     "//brave/components/brave_shields/content/browser",
     "//chrome/browser/profiles:profile",
     "//components/keyed_service/content",
     "//components/policy/core/common",
     "//content/public/browser",
+    "//mojo/public/cpp/bindings",
+    "//services/service_manager/public/cpp",
+    "//url",
   ]
 }
