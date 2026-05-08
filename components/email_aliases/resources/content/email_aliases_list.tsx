@@ -33,10 +33,6 @@ const AliasListIntro = styled(Row)`
   }
 `
 
-const DivWithTopDivider = styled.div`
-  border-top: ${color.divider.subtle} 2px solid;
-`
-
 const AliasDialog = styled(Dialog)`
   --leo-dialog-backdrop-background: ${color.dialogs.scrimBackground};
   --leo-dialog-padding: ${spacing['2Xl']};
@@ -86,7 +82,7 @@ export const AliasList = ({
 }) => {
   const [editState, setEditState] = React.useState<EditState>({ mode: 'None' })
   return (
-    <DivWithTopDivider>
+    <>
       <ListIntroduction
         aliasesCount={aliases.length}
         onCreateClicked={() => setEditState({ mode: 'Create' })}
@@ -124,6 +120,6 @@ export const AliasList = ({
           />
         )}
       </AliasDialog>
-    </DivWithTopDivider>
+    </>
   )
 }
