@@ -13,6 +13,13 @@ use opaque_ke::{
 };
 use wasm_bindgen::prelude::*;
 
+const INVALID_LOGIN_ERROR: &str = "InvalidLoginError";
+
+#[wasm_bindgen(js_name = invalidLoginError)]
+pub fn invalid_login_error() -> String {
+    INVALID_LOGIN_ERROR.to_string()
+}
+
 pub struct DefaultCipherSuite;
 impl CipherSuite for DefaultCipherSuite {
     type OprfCs = opaque_ke::Ristretto255;
@@ -123,7 +130,7 @@ impl Login {
                 },
             )
             .map_err(|e| match e {
-                ProtocolError::InvalidLoginError => "InvalidLoginError",
+                ProtocolError::InvalidLoginError => INVALID_LOGIN_ERROR,
                 _ => "ClientLogin::<DefaultCipherSuite>::finish() failed!",
             })?;
 
