@@ -7,6 +7,7 @@ import * as React from 'react'
 import { getLocale } from '$web-common/locale'
 import { StubEmailAliasesService, demoData } from './utils/stubs'
 import { ManagePageConnected } from '../email_aliases'
+import { SignInPage } from '../content/email_aliases_manage_page'
 import {
   AuthenticationStatus,
   EmailAliasesServiceObserverInterface,
@@ -54,14 +55,9 @@ const bindListErrorObserver = (
   return () => {}
 }
 
-export const SignInPage = () => {
-  return (
-    <ManagePageConnected
-      // @ts-expect-error https://github.com/brave/brave-browser/issues/48960
-      emailAliasesService={stubEmailAliasesServiceNoAccountInstance}
-      bindObserver={bindNoAccountObserver}
-    />
-  )
+
+export const SignInPageStory = () => {
+  return <SignInPage />
 }
 
 export const ManageAliasesPage = () => {
@@ -86,4 +82,13 @@ export const ManageAliasesPageListLoadError = () => {
 
 export default {
   title: 'Email Aliases/ManagePageConnected',
+  decorators: [
+    (Story: any) => {
+      return (
+        <div style={{ width: '712px', margin: '0 auto' }}>
+          <Story />
+        </div>
+      )
+    },
+  ],
 }
