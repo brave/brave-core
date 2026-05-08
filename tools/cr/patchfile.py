@@ -206,6 +206,8 @@ class Patchfile:
                                     self.source.as_posix())
             PlasterFile(repository.BRAVE_CORE_PATH / self.plaster).apply()
             return self.ApplyStatus.PLASTER_FIXED
+        # TODO(https://github.com/brave/brave-browser/issues/55370): Eventually
+        # we should better constrain this to only catch plaster exceptions.
         except Exception:
             return self.ApplyStatus.PLASTER_BROKEN
 

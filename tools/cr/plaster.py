@@ -322,11 +322,7 @@ class PlasterFile:
             errors.append(f'Invalid regex: {e} in {self.path}')
 
         if errors:
-            print('\n\nThere were errors attempting to apply the patches:',
-                  file=sys.stderr)
-            for error in errors:
-                print(f'{error}', file=sys.stderr)
-            sys.exit(1)
+            raise PlasterApplyError(errors)
 
         has_changed = info.save_source_if_changed(contents, dry_run=dry_run)
         has_changed = info.save_patch_if_changed(
@@ -339,8 +335,22 @@ class PlasterFile:
             info.save_patchinfo_if_changed()
 
 
-class PlasterFileNeedsRegen(Exception):
+class PlasterError(Exception):
+    """Base class for errors reported by the plaster tool."""
+
+
+class PlasterFileNeedsRegen(PlasterError):
     pass
+
+
+class PlasterApplyError(PlasterError):
+    """Raised when applying a plaster file produces substitution errors."""
+
+    def __init__(self, errors: list[str]):
+        self.errors = errors
+        super().__init__(
+            'There were errors attempting to apply the patches:\n' +
+            '\n'.join(errors))
 
 
 def get_plaster_files(
@@ -394,17 +404,10 @@ def check(args):
     """Checks whether plaster files need to be reapplied.
     """
     plaster_files = get_plaster_files(getattr(args, 'filepaths', None))
-
-    has_failure = False
     for plaster_file in plaster_files:
-        try:
-            logging.debug('Checking plaster file: %s', plaster_file.path)
-            plaster_file.apply(dry_run=True)
-        except PlasterFileNeedsRegen as e:
-            print(e, file=sys.stderr)
-            has_failure = True
-
-    return 1 if has_failure else 0
+        logging.debug('Checking plaster file: %s', plaster_file.path)
+        plaster_file.apply(dry_run=True)
+    return 0
 
 
 def main():
@@ -445,7 +448,11 @@ def main():
         format='%(message)s',
         handlers=[IncendiaryErrorHandler(markup=True, rich_tracebacks=True)])
 
-    return args.func(args)
+    try:
+        return args.func(args)
+    except PlasterError as e:
+        print(e, file=sys.stderr)
+        return 1
 
 
 if __name__ == '__main__':
