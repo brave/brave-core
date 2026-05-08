@@ -16,7 +16,6 @@
 #include "base/functional/bind.h"
 #include "base/hash/hash.h"
 #include "base/logging.h"
-#include "base/memory/ref_counted.h"
 #include "base/strings/string_util.h"
 #include "base/task/bind_post_task.h"
 #include "base/task/sequenced_task_runner.h"
@@ -215,27 +214,16 @@ void WorkspaceService::WriteWorkspaceToDisk(
     std::vector<std::unique_ptr<sessions::SessionCommand>> commands,
     const base::FilePath& workspace_dir,
     scoped_refptr<sessions::CommandStorageBackend> backend,
-    base::OnceClosure on_success,
     base::OnceClosure on_error) {
-  if (commands.empty()) {
-    LOG(ERROR) << "Could not save workspace: no commands";
-    return;
-  }
-
   if (!base::CreateDirectory(workspace_dir)) {
     LOG(ERROR) << "Failed to create workspace directory: " << workspace_dir;
+    std::move(on_error).Run();
     return;
   }
-
-  // AppendCommands posts |on_error| to the UI thread (via the backend's
-  // callback_task_runner_) if the write fails.  |on_success| is bound with
-  // BindPostTask so calling Run() here also posts to the UI thread.
-  // Because |on_error| is enqueued first (from inside AppendCommands) and
-  // |on_success| is enqueued immediately after, the UI thread always processes
-  // them in order: on_error sets a shared flag, then on_success checks it.
+  // AppendCommands posts |on_error| to the backend's callback_task_runner_
+  // (the UI thread, set when the backend was constructed) on write failure.
   backend->AppendCommands(std::move(commands), /*truncate=*/true,
                           std::move(on_error));
-  std::move(on_success).Run();
 }
 
 // static
@@ -278,17 +266,19 @@ void WorkspaceService::SaveWorkspace(Profile* profile,
 
         SessionID window_id = SessionID::NewUnique();
         auto* window = bwi->GetWindow();
-        // Prefer the focused window; fall back to the first window if none is
-        // active.
+        int tabs = AppendBrowserSessionCommands(
+            window_id, bwi->GetTabStripModel(), window->GetRestoredBounds(),
+            window->GetRestoredState(), commands);
+        if (tabs == 0) {
+          return true;
+        }
+        // Prefer the focused window; fall back to the first non-empty window.
         if (window->IsActive() ||
             active_window_id == SessionID::InvalidValue()) {
           active_window_id = window_id;
         }
-
         window_count++;
-        tab_count += AppendBrowserSessionCommands(
-            window_id, bwi->GetTabStripModel(), window->GetRestoredBounds(),
-            window->GetRestoredState(), commands);
+        tab_count += tabs;
         return true;
       });
 
@@ -314,38 +304,22 @@ void WorkspaceService::SaveWorkspace(Profile* profile,
       task_runner, workspace_dir, kWorkspaceSessionType,
       /*encryptor=*/std::nullopt);
 
-  base::Time save_time = base::Time::Now();
+  // Save metadata optimistically now; roll it back if the write fails.
+  // BindPostTask ensures on_error always runs on the UI thread whether it is
+  // invoked by AppendCommands (via callback_task_runner_) or directly by
+  // WriteWorkspaceToDisk on a directory-creation failure.
+  SaveWorkspaceMetadata(name, window_count, tab_count, base::Time::Now());
 
-  // |wrote_ok| is shared between |on_error| (sets false) and |on_success|
-  // (reads).  Both run on the UI thread, with |on_error| guaranteed to run
-  // first because AppendCommands enqueues it before WriteWorkspaceToDisk
-  // enqueues |on_success|.
-  auto wrote_ok = base::MakeRefCounted<base::RefCountedData<bool>>(true);
-
-  auto on_success = base::BindPostTask(
+  // "Rolling back" is just removing the metadata from the dictionary.
+  auto on_error = base::BindPostTask(
       base::SequencedTaskRunner::GetCurrentDefault(),
-      base::BindOnce(
-          [](base::WeakPtr<WorkspaceService> service, std::string name,
-             int window_count, int tab_count, base::Time modified_at,
-             scoped_refptr<base::RefCountedData<bool>> wrote_ok) {
-            if (service && wrote_ok->data) {
-              service->SaveWorkspaceMetadata(name, window_count, tab_count,
-                                             modified_at);
-            }
-          },
-          GetWeakPtr(), name, window_count, tab_count, save_time, wrote_ok));
-
-  auto on_error = base::BindOnce(
-      [](scoped_refptr<base::RefCountedData<bool>> wrote_ok) {
-        wrote_ok->data = false;
-      },
-      wrote_ok);
+      base::BindOnce(&WorkspaceService::RemoveWorkspaceMetadata, GetWeakPtr(),
+                     name));
 
   task_runner->PostTask(
       FROM_HERE, base::BindOnce(&WorkspaceService::WriteWorkspaceToDisk,
                                 std::move(commands), std::move(workspace_dir),
-                                std::move(backend), std::move(on_success),
-                                std::move(on_error)));
+                                std::move(backend), std::move(on_error)));
 }
 
 void WorkspaceService::RestoreWorkspace(Profile* profile,
