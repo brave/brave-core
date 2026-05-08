@@ -36,6 +36,8 @@
         android:layout_height="wrap_content"
         android:layout="@layout/logo_view_layout" />
 
+    <!-- On rebase move `Search box` ViewStub inside of `id/ntp_main_layout` -->
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
@@ -96,7 +98,10 @@
         android:visibility="gone">
 
             <!-- Search box -->
-            <include layout="@layout/fake_search_box_layout"/>
+            <ViewStub
+                android:id="@+id/search_box_stub"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
             <ViewStub
                 android:id="@+id/composeplate_view_stub"
