@@ -9,6 +9,8 @@
 
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
+#include "base/strings/strcat.h"
+#include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -30,27 +32,29 @@ BrowsingHistoryCleaner::BrowsingHistoryCleaner(
 BrowsingHistoryCleaner::~BrowsingHistoryCleaner() = default;
 
 void BrowsingHistoryCleaner::CleanupBrowsingHistoryForDomain(
-    const std::string& domain) {
-  if (domain.empty()) {
+    const std::string& search_text) {
+  if (search_text.empty()) {
     return;
   }
-
   // Queue the query
   queries_.emplace_back(base::BindOnce(&BrowsingHistoryCleaner::CleanupQuery,
-                                       weak_factory_.GetWeakPtr(), domain));
+                                       weak_factory_.GetWeakPtr(),
+                                       search_text));
   if (queries_.size() > 1) {
     return;
   }
-
   std::move(queries_.front()).Run();
 }
 
-void BrowsingHistoryCleaner::CleanupQuery(const std::string& domain) {
+void BrowsingHistoryCleaner::CleanupQuery(const std::string& search_text) {
+  search_text_ = base::ToLowerASCII(search_text);
   history::QueryOptions options;
   options.max_count = 0;
-  options.host_only = true;
+  options.host_only = false;
+  options.matching_algorithm = query_parser::MatchingAlgorithm::DEFAULT;
   options.duplicate_policy = history::QueryOptions::KEEP_ALL_DUPLICATES;
-  browsing_history_service_->QueryHistory(base::UTF8ToUTF16(domain), options);
+  browsing_history_service_->QueryHistory(base::UTF8ToUTF16(search_text_),
+                                          options);
 }
 
 void BrowsingHistoryCleaner::OnRemoveRequestCompleted() {
@@ -74,7 +78,14 @@ void BrowsingHistoryCleaner::OnQueryComplete(
     const HistoryEntryRequests& query_results,
     const history::BrowsingHistoryService::QueryResultsInfo& query_results_info,
     base::OnceClosure continuation_closure) {
-  browsing_history_service_->RemoveVisits(query_results);
+  HistoryEntryRequests list_to_remove;
+  std::copy_if(query_results.begin(), query_results.end(),
+               std::back_inserter(list_to_remove), [this](const auto& entry) {
+                 return base::EndsWith(base::ToLowerASCII(entry.url.host()),
+                                       search_text_);
+               });
+
+  browsing_history_service_->RemoveVisits(list_to_remove);
 }
 
 void BrowsingHistoryCleaner::OnRemoveVisitsComplete() {

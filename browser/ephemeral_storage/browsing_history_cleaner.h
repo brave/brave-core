@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_EPHEMERAL_STORAGE_BROWSING_HISTORY_CLEANER_H_
 #define BRAVE_BROWSER_EPHEMERAL_STORAGE_BROWSING_HISTORY_CLEANER_H_
 
+#include <string>
+
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "chrome/browser/history/profile_based_browsing_history_driver.h"
@@ -25,12 +27,12 @@ class BrowsingHistoryCleaner : public ProfileBasedBrowsingHistoryDriver {
   using HistoryEntryRequests =
       std::vector<history::BrowsingHistoryService::HistoryEntry>;
 
-  void CleanupBrowsingHistoryForDomain(const std::string& domain);
+  void CleanupBrowsingHistoryForDomain(const std::string& search_text);
 
  private:
   friend class BrowsingHistoryCleanerTest;
 
-  void CleanupQuery(const std::string& domain);
+  void CleanupQuery(const std::string& search_text);
   void OnRemoveRequestCompleted();
 
   // BrowsingHistoryDriver implementation.
@@ -46,6 +48,7 @@ class BrowsingHistoryCleaner : public ProfileBasedBrowsingHistoryDriver {
   // OnQueryComplete is called.
   void SetOnQueryCompleteCallbackForTesting(base::OnceClosure callback);
 
+  std::string search_text_;
   std::vector<base::OnceCallback<void()>> queries_;
   std::unique_ptr<history::BrowsingHistoryService> browsing_history_service_;
   raw_ptr<Profile> profile_ = nullptr;
