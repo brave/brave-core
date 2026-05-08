@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { createRoot } from 'react-dom/client'
-import { ManagePage } from './content/email_aliases_manage_page'
+import { SignInPage, ManagePage } from './content/email_aliases_manage_page'
 import { StyleSheetManager } from 'styled-components'
 import * as React from 'react'
 import { setIconBasePath } from '@brave/leo/react/icon'
@@ -33,10 +33,9 @@ export const ManagePageConnected = ({
   )
 }
 
-export const mount = (at: HTMLElement) => {
+export const mount = (signInElem: HTMLElement, manageElem: HTMLElement) => {
   setIconBasePath('//resources/brave-icons')
 
-  const root = createRoot(at)
   const emailAliasesService = EmailAliasesService.getRemote()
 
   const bindObserver = (observer: EmailAliasesServiceObserverInterface) => {
@@ -47,8 +46,17 @@ export const mount = (at: HTMLElement) => {
       observerReceiver.$.close()
     }
   }
-  root.render(
-    <StyleSheetManager target={at.getRootNode() as ShadowRoot}>
+
+  const signInRoot = createRoot(signInElem)
+  signInRoot.render(
+    <StyleSheetManager target={signInElem.getRootNode() as ShadowRoot}>
+      <SignInPage />
+    </StyleSheetManager>,
+  )
+
+  const manageRoot = createRoot(manageElem)
+  manageRoot.render(
+    <StyleSheetManager target={manageElem.getRootNode() as ShadowRoot}>
       <ManagePageConnected
         emailAliasesService={emailAliasesService}
         bindObserver={bindObserver}

@@ -34,6 +34,13 @@ const BraveAccountSignIn = () => {
   })
 }
 
+export const SignInPage = () => (
+  <PageCol>
+    <Introduction />
+    <BraveAccountSignIn />
+  </PageCol>
+)
+
 export const ManagePage = ({
   aliasesUpdate,
   authState,
@@ -44,8 +51,6 @@ export const ManagePage = ({
   emailAliasesService: EmailAliasesServiceInterface
 }) => (
   <PageCol>
-    <Introduction />
-    <BraveAccountSignIn />
     {authState.status === AuthenticationStatus.kAuthenticated
       && (aliasesUpdate.error ? (
         <Alert type='error'>{aliasesUpdate.error}</Alert>
