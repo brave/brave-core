@@ -66,6 +66,11 @@ class ObliviousHttpAPIClient : public OAIAPIClient {
 
   void ClearAllQueries() override;
 
+  void SetConfigManagerForTesting(
+      std::unique_ptr<ObliviousHttpConfigManager> config_manager) {
+    config_manager_ = std::move(config_manager);
+  }
+
  private:
   // Self-managed mojo client that receives both body chunks
   // (ObliviousHttpChunkClient) and the final completion (ObliviousHttpClient)

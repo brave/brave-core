@@ -51,13 +51,13 @@ class ObliviousHttpConfigManager {
   ObliviousHttpConfigManager(const ObliviousHttpConfigManager&) = delete;
   ObliviousHttpConfigManager& operator=(const ObliviousHttpConfigManager&) =
       delete;
-  ~ObliviousHttpConfigManager();
+  virtual ~ObliviousHttpConfigManager();
 
   // Ensures a fresh key config is available for |model_name|, then calls
   // |callback|. If a valid cached config exists the callback is invoked
   // synchronously.
-  void RequestKeyConfig(const std::string& model_name,
-                        KeyConfigCallback callback);
+  virtual void RequestKeyConfig(const std::string& model_name,
+                                KeyConfigCallback callback);
 
   // Cancels any in-flight fetches and drops all queued callbacks.
   void CancelAll();

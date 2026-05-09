@@ -37,7 +37,7 @@ constexpr char kOHTTPRelayPathFormat[] = "v1/models/%s/relay";
 
 constexpr std::string_view kSSEDataPrefix = "data: {";
 
-constexpr base::TimeDelta kRequestTimeout = base::Seconds(60);
+constexpr base::TimeDelta kRequestTimeout = base::Minutes(5);
 
 net::NetworkTrafficAnnotationTag GetOHTTPTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("ai_chat_ohttp", R"cpp(
