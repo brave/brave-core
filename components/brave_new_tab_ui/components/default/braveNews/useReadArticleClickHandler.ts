@@ -4,8 +4,11 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { validateScheme } from '$web-common/SecureLink'
 import { ReadFeedItemPayload, VisitDisplayAdPayload } from '../../../actions/today_actions'
 import { OnReadFeedItem, OnVisitDisplayAd } from './'
+
+const displayAdTargetAllowedSchemes = ['https:']
 
 export default function useReadArticleClickHandler (action: OnReadFeedItem, payloadData: ReadFeedItemPayload) {
   return React.useCallback((e: React.MouseEvent) => {
@@ -21,6 +24,9 @@ export function useVisitDisplayAdClickHandler (action: OnVisitDisplayAd, payload
     if (!payloadData) {
       return
     }
+
+    validateScheme(payloadData.ad.targetUrl.url, displayAdTargetAllowedSchemes)
+
     const shouldOpenInNewTab = detectShouldOpenInNewTab(e)
     action({ ...payloadData, openInNewTab: shouldOpenInNewTab })
   }, [action, payloadData])
