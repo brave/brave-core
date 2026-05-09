@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/barrier_callback.h"
+#include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
@@ -29,6 +30,7 @@
 #include "brave/components/ai_chat/core/browser/engine/oai_api_client.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_parsing.h"
+#include "brave/components/ai_chat/core/browser/engine/oblivious_http_api_client.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "components/grit/brave_components_strings.h"
@@ -58,10 +60,18 @@ EngineConsumerOAIRemote::EngineConsumerOAIRemote(
     PrefService* prefs)
     : EngineConsumer(model_service, prefs) {
   model_options_ = std::move(model_options);
-  CHECK(model_options_->is_custom_model_options());
-  max_associated_content_length_ =
-      model_options_->get_custom_model_options()->max_associated_content_length;
-  api_ = std::make_unique<OAIAPIClient>(url_loader_factory);
+  if (model_options_->is_custom_model_options()) {
+    max_associated_content_length_ = model_options_->get_custom_model_options()
+                                         ->max_associated_content_length;
+    api_ = std::make_unique<OAIAPIClient>(url_loader_factory);
+  } else {
+    CHECK(model_options_->is_leo_model_options());
+    max_associated_content_length_ =
+        model_options_->get_leo_model_options()->max_associated_content_length;
+    api_ = std::make_unique<ObliviousHttpAPIClient>(
+        url_loader_factory, std::move(network_context_getter),
+        credential_manager, prefs);
+  }
 }
 
 EngineConsumerOAIRemote::~EngineConsumerOAIRemote() = default;

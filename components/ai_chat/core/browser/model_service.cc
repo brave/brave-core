@@ -1266,7 +1266,8 @@ std::unique_ptr<EngineConsumer> ModelService::GetEngineForModel(
     AIChatCredentialManager* credential_manager) {
   const mojom::Model* model = GetModel(model_key);
   std::unique_ptr<EngineConsumer> engine;
-  if (model->options->is_custom_model_options()) {
+  if (model->supports_private_inference ||
+      model->options->is_custom_model_options()) {
     DVLOG(1) << "Started AI engine: oai";
     engine = std::make_unique<EngineConsumerOAIRemote>(
         model->options.Clone(), url_loader_factory, network_context_getter_,
