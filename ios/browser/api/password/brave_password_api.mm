@@ -209,7 +209,10 @@ void PasswordStoreConsumerIOS::OnGetPasswordStoreResultsOrErrorFrom(
 }
 
 - (void)addLogin:(IOSPasswordForm*)passwordForm {
-  password_store_->AddLogin([self createCredentialForm:passwordForm]);
+  password_manager::PasswordForm password_form =
+      [self createCredentialForm:passwordForm];
+  password_store_->AddLogin(
+      password_manager::FromPasswordForm(std::move(password_form)));
 }
 
 - (password_manager::PasswordForm)createCredentialForm:
@@ -279,15 +282,21 @@ void PasswordStoreConsumerIOS::OnGetPasswordStoreResultsOrErrorFrom(
 }
 
 - (void)removeLogin:(IOSPasswordForm*)passwordForm {
-  password_store_->RemoveLogin(FROM_HERE,
-                               [self createCredentialForm:passwordForm]);
+  password_manager::PasswordForm password_form =
+      [self createCredentialForm:passwordForm];
+  password_store_->RemoveLogin(
+      FROM_HERE, password_manager::FromPasswordForm(std::move(password_form)));
 }
 
 - (void)updateLogin:(IOSPasswordForm*)newPasswordForm
     oldPasswordForm:(IOSPasswordForm*)oldPasswordForm {
+  password_manager::PasswordForm new_password_form =
+      [self createCredentialForm:newPasswordForm];
+  password_manager::PasswordForm old_password_form =
+      [self createCredentialForm:oldPasswordForm];
   password_store_->UpdateLoginWithPrimaryKey(
-      [self createCredentialForm:newPasswordForm],
-      [self createCredentialForm:oldPasswordForm]);
+      password_manager::FromPasswordForm(std::move(new_password_form)),
+      password_manager::FromPasswordForm(std::move(old_password_form)));
 }
 
 - (void)getSavedLogins:
