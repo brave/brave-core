@@ -5,11 +5,18 @@
 
 source_set("playlist") {
   sources = [
+    "playlist_exclusion_ios+private.h",
+    "playlist_exclusion_ios.h",
+    "playlist_exclusion_ios.mm",
     "playlist_pref_names_bridge.h",
     "playlist_pref_names_bridge.mm",
   ]
   deps = [
     "//base",
+    "//brave/components/playlist/core/browser",
     "//brave/components/playlist/core/common",
+    "//net",
+    "//url",
   ]
+  frameworks = [ "Foundation.framework" ]
 }
