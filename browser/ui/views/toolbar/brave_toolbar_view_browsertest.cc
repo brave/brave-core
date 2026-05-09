@@ -626,7 +626,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
   const auto ix_on_right = container->GetIndexOf(toggle);
   ASSERT_TRUE(ix_on_right.has_value());
 
-  auto* menu = toolbar_view_->GetAppMenuButton();
+  views::View* menu = toolbar_button_provider_->GetAppMenuButton();
   ASSERT_TRUE(menu);
   const auto menu_ix = container->GetIndexOf(menu);
   ASSERT_TRUE(menu_ix.has_value() && *menu_ix > 0);
