@@ -111,6 +111,9 @@
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_NEAR_GLM_5" desc="AI Chat intro message for the glm-5 model" formatter_data="webui=AiChat">
     Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by GLM-5, a model created by Zhipu AI to be performant and applicable to many use cases. GLM-5 is NEAR-hosted through their own verifiably private secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
   </message>
+  <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_NEAR_GLM_5_1" desc="AI Chat intro message for the glm-5.1 model" formatter_data="webui=AiChat">
+    Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by GLM-5.1, a model created by Zhipu AI to be performant and applicable to many use cases. GLM-5.1 is NEAR-hosted through their own verifiably private secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
+  </message>
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_CLAUDE_INSTANT" desc="AI Chat intro message for the Claude Instant model" formatter_data="webui=AiChat">
     Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Claude Instant, a model created by Anthropic to power conversational and text processing tasks. Claude Instant is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
   </message>
@@ -592,6 +595,9 @@
     Fast • Search • Vision
   </message>
   <message name="IDS_CHAT_UI_CHAT_NEAR_GLM_5_SUBTITLE" desc="A description for glm-5 model" formatter_data="webui=AiChat">
+    Verifiably Private With NEAR AI TEE
+  </message>
+  <message name="IDS_CHAT_UI_CHAT_NEAR_GLM_5_1_SUBTITLE" desc="A description for glm-5.1 model" formatter_data="webui=AiChat">
     Verifiably Private With NEAR AI TEE
   </message>
   <message name="IDS_CHAT_UI_CHAT_AUTOMATIC_SUBTITLE" desc="A description for automatic model" formatter_data="webui=AiChat">

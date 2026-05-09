@@ -20,6 +20,7 @@
 #include "components/os_crypt/async/browser/os_crypt_async.h"
 #include "components/os_crypt/async/browser/test_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "services/network/public/cpp/network_context_getter.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -53,8 +54,8 @@ class OllamaModelFetcherTest : public testing::Test {
     prefs::RegisterProfilePrefs(pref_service_.registry());
     ModelService::RegisterProfilePrefs(pref_service_.registry());
 
-    model_service_ =
-        std::make_unique<ModelService>(&pref_service_, os_crypt_async_.get());
+    model_service_ = std::make_unique<ModelService>(
+        &pref_service_, os_crypt_async_.get(), network::NetworkContextGetter());
 
     // Create mock delegate
     mock_delegate_ = std::make_unique<MockDelegate>();

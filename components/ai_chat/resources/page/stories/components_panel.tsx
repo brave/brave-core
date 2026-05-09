@@ -75,6 +75,7 @@ const MODELS: Mojom.Model[] = [
     supportedCapabilities: [Mojom.ConversationCapability.CHAT],
     isSuggestedModel: true,
     isNearModel: false,
+    supportsPrivateInference: false,
     options: {
       leoModelOptions: {
         name: 'model-one',
@@ -101,6 +102,7 @@ const MODELS: Mojom.Model[] = [
     ],
     isSuggestedModel: true,
     isNearModel: false,
+    supportsPrivateInference: false,
     options: {
       leoModelOptions: {
         name: 'model-two-premium',
@@ -124,6 +126,7 @@ const MODELS: Mojom.Model[] = [
     supportedCapabilities: [Mojom.ConversationCapability.CHAT],
     isSuggestedModel: false,
     isNearModel: false,
+    supportsPrivateInference: false,
     options: {
       leoModelOptions: {
         name: 'model-three-freemium',
@@ -147,6 +150,7 @@ const MODELS: Mojom.Model[] = [
     supportedCapabilities: [Mojom.ConversationCapability.CHAT],
     isSuggestedModel: false,
     isNearModel: false,
+    supportsPrivateInference: false,
     options: {
       leoModelOptions: undefined,
       customModelOptions: {

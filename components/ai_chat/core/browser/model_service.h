@@ -27,6 +27,7 @@
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/os_crypt/async/common/encryptor.h"
 #include "components/prefs/pref_registry_simple.h"
+#include "services/network/public/cpp/network_context_getter.h"
 
 class PrefRegistrySimple;
 class PrefService;
@@ -69,8 +70,9 @@ class ModelService : public KeyedService {
                                        const std::string& new_key) {}
   };
 
-  ModelService(PrefService* profile_prefs,
-               os_crypt_async::OSCryptAsync* os_crypt_async);
+  ModelService(PrefService* prefs_service,
+               os_crypt_async::OSCryptAsync* os_crypt_async,
+               network::NetworkContextGetter network_context_getter);
   ~ModelService() override;
 
   ModelService(const ModelService&) = delete;
@@ -140,6 +142,7 @@ class ModelService : public KeyedService {
   base::ObserverList<Observer> observers_;
   std::vector<ai_chat::mojom::ModelPtr> models_;
   raw_ptr<PrefService> pref_service_;
+  network::NetworkContextGetter network_context_getter_;
   std::optional<os_crypt_async::Encryptor> encryptor_;
   bool is_migrating_claude_instant_ = false;
 
