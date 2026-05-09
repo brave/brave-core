@@ -1,21 +1,26 @@
 diff --git a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
-index e3e889fb0ac835f4662e948c2b6d62f1f74a9cd6..3a1f156a55fa6ec3deb81d05c70e570c52977c27 100644
+index e3e889fb0ac835f4662e948c2b6d62f1f74a9cd6..828cb29570aed0dddef47445fa5b4f44a1e8026b 100644
 --- a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
 +++ b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
-@@ -82,6 +82,7 @@ public class SiteSettingsCategory {
+@@ -82,6 +82,8 @@ public class SiteSettingsCategory {
          Type.AUTO_PICTURE_IN_PICTURE,
          Type.LOCAL_NETWORK,
          Type.LOOPBACK_NETWORK,
-+        Type.AUTOPLAY, Type.BRAVE_GOOGLE_SIGN_IN,
++        Type.AUTOPLAY,
++        Type.BRAVE_GOOGLE_SIGN_IN,
          Type.NUM_ENTRIES
      })
      @Retention(RetentionPolicy.SOURCE)
-@@ -128,7 +129,7 @@ public class SiteSettingsCategory {
+@@ -126,9 +128,11 @@ public class SiteSettingsCategory {
+         int AUTO_PICTURE_IN_PICTURE = 35;
+         int LOCAL_NETWORK = 36;
          int LOOPBACK_NETWORK = 37;
++        int AUTOPLAY = 38;
++        int BRAVE_GOOGLE_SIGN_IN = AUTOPLAY + 1;
  
          /** Number of handled categories used for calculating array sizes. */
 -        int NUM_ENTRIES = 38;
-+        int AUTOPLAY = 38; int BRAVE_GOOGLE_SIGN_IN = 39 int NUM_ENTRIES = 40;
++        int NUM_ENTRIES = BRAVE_GOOGLE_SIGN_IN + 1;
      }
  
      private final BrowserContextHandle mBrowserContextHandle;

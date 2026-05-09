@@ -1,0 +1,28 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[[substitution]]
+description = 'Register AUTOPLAY and BRAVE_GOOGLE_SIGN_IN in the @IntDef list'
+re_pattern = '(@IntDef\(\{.+,)(.+?\}\))'
+re_flags = ['DOTALL']
+replace = '''\1
+        Type.AUTOPLAY,
+        Type.BRAVE_GOOGLE_SIGN_IN,\2'''
+
+[[substitution]]
+description = '''Define AUTOPLAY and BRAVE_GOOGLE_SIGN_IN at the end of Type
+
+A javadoc comment describing NUM_ENTRIES sits between the last upstream entry
+and the sentinel, so we use the `(.+?)` capture form (like the @interface Item
+case) rather than `\s+`.
+
+The prior value of `NUM_ENTRIES` is replaced to cascade over the keys we are
+inserting.
+'''
+re_pattern = '(@interface Type \{.+;\n)(.+?)int NUM_ENTRIES = (\d+);'
+re_flags = ['DOTALL']
+replace = '''\1        int AUTOPLAY = \3;
+        int BRAVE_GOOGLE_SIGN_IN = AUTOPLAY + 1;
+\2int NUM_ENTRIES = BRAVE_GOOGLE_SIGN_IN + 1;'''

@@ -1,25 +1,29 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
-index 0c274006e4382db4c17718470815c15b98de22a9..ad95d37aa44e9caa272769d3f128c71ed5415a54 100644
+index 0c274006e4382db4c17718470815c15b98de22a9..c6bdf24969a0b473ba61d5ecae0539654511fc19 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
-@@ -80,6 +80,7 @@ class ChromeContextMenuItem {
+@@ -79,7 +79,8 @@ class ChromeContextMenuItem {
+         Item.VIEW_PAGE_SOURCE,
          Item.INSPECT_ELEMENT,
          Item.COPY_VIDEO_FRAME,
-         Item.DOWNLOAD_VIDEO_FRAME
+-        Item.DOWNLOAD_VIDEO_FRAME
++        Item.DOWNLOAD_VIDEO_FRAME,
 +        Item.COPY_CLEAN_LINK,
      })
      @Retention(RetentionPolicy.SOURCE)
      public @interface Item {
-@@ -140,7 +141,7 @@ class ChromeContextMenuItem {
+@@ -139,8 +140,9 @@ class ChromeContextMenuItem {
+         int INSPECT_ELEMENT = 42;
          int COPY_VIDEO_FRAME = 43;
          int DOWNLOAD_VIDEO_FRAME = 44;
++        int COPY_CLEAN_LINK = 45;
          // ALWAYS UPDATE!
 -        int NUM_ENTRIES = 45;
-+        int COPY_CLEAN_LINK = 45;int NUM_ENTRIES = 46;
++        int NUM_ENTRIES = COPY_CLEAN_LINK + 1;
      }
  
      /** Mapping from {@link Item} to the ID found in the ids.xml. */
-@@ -190,6 +191,7 @@ class ChromeContextMenuItem {
+@@ -190,6 +192,7 @@ class ChromeContextMenuItem {
          R.id.contextmenu_inspect_element, // Item.INSPECT_ELEMENT
          R.id.contextmenu_copy_video_frame, // Item.COPY_VIDEO_FRAME
          R.id.contextmenu_download_video_frame, // Item.DOWNLOAD_VIDEO_FRAME
@@ -27,7 +31,7 @@ index 0c274006e4382db4c17718470815c15b98de22a9..ad95d37aa44e9caa272769d3f128c71e
      };
  
      /** Mapping from {@link Item} to the ID of the string that describes the action of the item. */
-@@ -239,6 +241,7 @@ class ChromeContextMenuItem {
+@@ -239,6 +242,7 @@ class ChromeContextMenuItem {
          R.string.contextmenu_inspect_element, // Item.INSPECT_ELEMENT
          R.string.contextmenu_copy_video_frame, // Item.COPY_VIDEO_FRAME
          R.string.contextmenu_download_video_frame, // Item.DOWNLOAD_VIDEO_FRAME
