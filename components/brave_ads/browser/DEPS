@@ -4,6 +4,7 @@ include_rules = [
   "+components/content_settings",
   "+components/metrics",
   "+components/history",
+  "+components/policy/core/common",
   "+components/prefs",
   "+components/variations",
   "+content/public/browser",

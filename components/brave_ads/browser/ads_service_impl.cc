@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <memory>
 #include <optional>
+#include <sstream>
 #include <utility>
 
 #include "base/base64.h"
@@ -55,6 +56,7 @@
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/metrics/metrics_pref_names.h"
+#include "components/policy/core/common/policy_service.h"
 #include "components/prefs/pref_service.h"
 #include "components/variations/pref_names.h"
 #include "content/public/browser/browser_context.h"
@@ -68,6 +70,25 @@
 #endif
 
 namespace brave_ads {
+
+// `LAZY_BLOG` mirrors `BLOG` from
+// `brave/components/brave_ads/core/internal/common/logging_util.h`, but with
+// the level check pulled out so the stream isn't built when the
+// `*/brave_ads/*` vmodule pattern isn't set. We can't use `VLOG` here: in
+// official Android release builds `base/logging.h` returns `-1` from the
+// templated `GetVlogLevel()` as a constexpr, which lets the compiler
+// dead-code-strip every `VLOG` site (including its string literals) for
+// binary-size reasons. `Log()` (the `AdsServiceImpl` member) routes through
+// `GetVlogLevelHelper` directly, so this macro fires whenever the
+// "Verbose Logs for Ad-Rewards" QA preference toggle is on.
+#define LAZY_BLOG(verbose_level, stream)                             \
+  do {                                                               \
+    if ((verbose_level) <=                                           \
+        ::logging::GetVlogLevelHelper(__FILE__, sizeof(__FILE__))) { \
+      Log(__FILE__, __LINE__, (verbose_level),                       \
+          (std::ostringstream() << stream).str());                   \
+    }                                                                \
+  } while (false)
 
 namespace {
 
@@ -120,6 +141,7 @@ AdsServiceImpl::AdsServiceImpl(
     std::unique_ptr<Delegate> delegate,
     PrefService& prefs,
     PrefService& local_state,
+    policy::PolicyService* policy_service,
     std::unique_ptr<HttpClient> http_client,
     std::unique_ptr<VirtualPrefProvider::Delegate>
         virtual_pref_provider_delegate,
@@ -174,10 +196,40 @@ AdsServiceImpl::AdsServiceImpl(
   InitializeLocalStatePrefChangeRegistrar();
   InitializePrefChangeRegistrar();
 
-  MaybeStartBatAdsService();
+  // Defer the initial start until the policy bundle has been merged into
+  // the managed pref store, so that BraveRewardsDisabled (and any other
+  // policy that gates ads eligibility) takes effect before the gate
+  // evaluates. If the service is already initialized, start immediately;
+  // otherwise observe and wait for `OnPolicyServiceInitialized`.
+  const bool has_policy_service = policy_service != nullptr;
+  const bool policy_init_complete =
+      has_policy_service &&
+      policy_service->IsInitializationComplete(policy::POLICY_DOMAIN_CHROME);
+  LAZY_BLOG(1,
+            "[AdsGate] AdsServiceImpl ctor"
+                << " has_policy_service=" << has_policy_service
+                << " policy_init_complete=" << policy_init_complete
+                << " is_managed="
+                << prefs_->IsManagedPreference(
+                       brave_rewards::prefs::kDisabledByPolicy)
+                << " disabled_by_policy="
+                << prefs_->GetBoolean(brave_rewards::prefs::kDisabledByPolicy));
+
+  if (!has_policy_service || policy_init_complete) {
+    LAZY_BLOG(1, "[AdsGate] starting immediately at ctor");
+    MaybeStartBatAdsService();
+  } else {
+    LAZY_BLOG(1, "[AdsGate] deferring start, observing PolicyService");
+    policy_service->AddObserver(policy::POLICY_DOMAIN_CHROME, this);
+    observed_policy_service_ = policy_service;
+  }
 }
 
-AdsServiceImpl::~AdsServiceImpl() = default;
+AdsServiceImpl::~AdsServiceImpl() {
+  // Defensive: in normal `KeyedService` lifecycle `Shutdown()` already removed
+  // the observer. This covers tests that destruct without calling `Shutdown`.
+  StopObservingPolicyService();
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -266,6 +318,16 @@ bool AdsServiceImpl::CanStartBatAdsService() const {
 }
 
 void AdsServiceImpl::MaybeStartBatAdsService() {
+  LAZY_BLOG(1,
+            "[AdsGate] MaybeStartBatAdsService"
+                << " bound=" << bat_ads_service_remote_.is_bound()
+                << " shutting_down=" << is_shutting_down_
+                << " can_start=" << CanStartBatAdsService() << " is_managed="
+                << prefs_->IsManagedPreference(
+                       brave_rewards::prefs::kDisabledByPolicy)
+                << " disabled_by_policy="
+                << prefs_->GetBoolean(brave_rewards::prefs::kDisabledByPolicy));
+
   // `is_shutting_down_` is set permanently when `KeyedService::Shutdown` is
   // called and the profile begins tearing down. There is no recovery from that
   // state, so any subsequent attempt to restart the service must be suppressed.
@@ -729,6 +791,15 @@ void AdsServiceImpl::InitializeSearchResultAdsPrefChangeRegistrar() {
 }
 
 void AdsServiceImpl::OnAdsPrefChanged(const std::string& path) {
+  LAZY_BLOG(1,
+            "[AdsGate] OnAdsPrefChanged path="
+                << path << " can_start=" << CanStartBatAdsService() << " bound="
+                << bat_ads_service_remote_.is_bound() << " is_managed="
+                << prefs_->IsManagedPreference(
+                       brave_rewards::prefs::kDisabledByPolicy)
+                << " disabled_by_policy="
+                << prefs_->GetBoolean(brave_rewards::prefs::kDisabledByPolicy));
+
   if (!CanStartBatAdsService()) {
     // The pref change made the service ineligible to run, so tear it down.
     return ShutdownAdsService();
@@ -1045,6 +1116,8 @@ void AdsServiceImpl::Shutdown() {
   // The profile is being destroyed and the service must never start again, so
   // this is never reset to false.
   is_shutting_down_ = true;
+
+  StopObservingPolicyService();
 
   ShutdownAdsService();
 }
@@ -1696,6 +1769,26 @@ void AdsServiceImpl::OnContentSettingChanged(
   if (content_type_set.Contains(ContentSettingsType::JAVASCRIPT)) {
     SetContentSettings();
   }
+}
+
+void AdsServiceImpl::OnPolicyServiceInitialized(policy::PolicyDomain domain) {
+  LAZY_BLOG(1, "[AdsGate] OnPolicyServiceInitialized domain="
+                   << domain << " is_chrome_domain="
+                   << (domain == policy::POLICY_DOMAIN_CHROME));
+  if (domain != policy::POLICY_DOMAIN_CHROME) {
+    return;
+  }
+  StopObservingPolicyService();
+  LAZY_BLOG(1, "[AdsGate] deferred start firing now");
+  MaybeStartBatAdsService();
+}
+
+void AdsServiceImpl::StopObservingPolicyService() {
+  if (!observed_policy_service_) {
+    return;
+  }
+  observed_policy_service_->RemoveObserver(policy::POLICY_DOMAIN_CHROME, this);
+  observed_policy_service_ = nullptr;
 }
 
 }  // namespace brave_ads
