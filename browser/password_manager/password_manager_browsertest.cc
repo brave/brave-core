@@ -13,6 +13,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/password_manager/core/browser/password_form_manager_for_ui.h"
+#include "components/password_manager/core/browser/password_store/password_form_converters.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "url/gurl.h"
@@ -42,7 +43,8 @@ IN_PROC_BROWSER_TEST_F(PasswordManagerTest,
   form.password_value = u"test_password";
   form.scheme = password_manager::PasswordForm::Scheme::kHtml;
   base::RunLoop run_loop;
-  store_->AddLogin(form, run_loop.QuitClosure());
+  store_->AddLogin(password_manager::FromPasswordForm(form),
+                   run_loop.QuitClosure());
   run_loop.Run();
 
   // Open password settings and expect no errors.

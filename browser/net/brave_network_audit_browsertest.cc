@@ -27,6 +27,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/search_test_utils.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/password_manager/core/browser/password_store/password_form_converters.h"
 #include "components/prefs/pref_service.h"
 #include "components/search_engines/template_url_service.h"
 #include "content/public/test/browser_test.h"
@@ -142,7 +143,7 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest, BasicTests) {
   signin_form.action = GURL("https://www.facebook.com/");
   signin_form.username_value = u"john";
   signin_form.password_value = u"password1";
-  password_store->AddLogin(signin_form);
+  password_store->AddLogin(password_manager::FromPasswordForm(signin_form));
 
   // Load the NTP to check requests made from the JS widgets.
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("brave://newtab")));
