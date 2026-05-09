@@ -1,0 +1,45 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[[substitution]]
+description = 'Register COPY_CLEAN_LINK at the end of the @IntDef list'
+re_pattern = '(@IntDef\(\{.+?),?(\n\s*\}\))'
+re_flags = ['DOTALL']
+replace = '''\1,
+        Item.COPY_CLEAN_LINK,\2'''
+
+[[substitution]]
+description = '''Define COPY_CLEAN_LINK at the end of @interface Item
+
+A `// ALWAYS UPDATE!` comment sits between the last upstream entry and the
+sentinel, so we capture it separately (`\2`) and keep it adjacent to
+`NUM_ENTRIES`. The indent before `NUM_ENTRIES` is captured into `\3` and
+reused for the inserted line, instead of hardcoding it.
+
+```
+int COPY_CLEAN_LINK = 43;
+// ALWAYS UPDATE!
+int NUM_ENTRIES = COPY_CLEAN_LINK + 1;
+```
+
+Notice that the value for `COPY_CLEAN_LINK` is being whatever was the value for
+`NUM_ENTRIES`, which allows us to take over the end of the list.
+'''
+re_pattern = '(@interface Item \{.+;\n)(.+?\n)(\s+)int NUM_ENTRIES = (\d+);'
+re_flags = ['DOTALL']
+replace = '''\1\3int COPY_CLEAN_LINK = \4;
+\2\3int NUM_ENTRIES = COPY_CLEAN_LINK + 1;'''
+
+[[substitution]]
+description = 'Append COPY_CLEAN_LINK at the end of the MENU_IDS array'
+re_pattern = '(int\[\] MENU_IDS = \{[^}]+\n)([^}]+\};)'
+replace = '''\1        R.id.contextmenu_copy_clean_link, // Item.COPY_CLEAN_LINK
+\2'''
+
+[[substitution]]
+description = 'Append COPY_CLEAN_LINK at the end of the STRING_IDS array'
+re_pattern = '(int\[\] STRING_IDS = \{[^}]+\n)([^}]+\};)'
+replace = '''\1        R.string.contextmenu_copy_clean_link, // Item.COPY_CLEAN_LINK
+\2'''

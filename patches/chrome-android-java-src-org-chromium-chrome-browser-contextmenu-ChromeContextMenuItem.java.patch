@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
-index 0e7032634735c6f32404e69e3f302170bd66cb47..1b99751fb6ae7578d43de5dca1f01f561d9264b6 100644
+index 0e7032634735c6f32404e69e3f302170bd66cb47..5bba71b4fbf6f9e0bcf0de3b0ce55b0eecfa0cdf 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
 @@ -78,6 +78,7 @@ class ChromeContextMenuItem {
@@ -10,16 +10,18 @@ index 0e7032634735c6f32404e69e3f302170bd66cb47..1b99751fb6ae7578d43de5dca1f01f56
      })
      @Retention(RetentionPolicy.SOURCE)
      public @interface Item {
-@@ -136,7 +137,7 @@ class ChromeContextMenuItem {
+@@ -135,8 +136,9 @@ class ChromeContextMenuItem {
+         // Developer Group
          int VIEW_PAGE_SOURCE = 41;
          int INSPECT_ELEMENT = 42;
++        int COPY_CLEAN_LINK = 43;
          // ALWAYS UPDATE!
 -        int NUM_ENTRIES = 43;
-+        int COPY_CLEAN_LINK = 43;int NUM_ENTRIES = 44;
++        int NUM_ENTRIES = COPY_CLEAN_LINK + 1;
      }
  
      /** Mapping from {@link Item} to the ID found in the ids.xml. */
-@@ -184,6 +185,7 @@ class ChromeContextMenuItem {
+@@ -184,6 +186,7 @@ class ChromeContextMenuItem {
          R.id.contextmenu_print_page, // Item.PRINT_PAGE
          R.id.contextmenu_view_page_source, // Item.VIEW_PAGE_SOURCE
          R.id.contextmenu_inspect_element, // Item.INSPECT_ELEMENT
@@ -27,7 +29,7 @@ index 0e7032634735c6f32404e69e3f302170bd66cb47..1b99751fb6ae7578d43de5dca1f01f56
      };
  
      /** Mapping from {@link Item} to the ID of the string that describes the action of the item. */
-@@ -231,6 +233,7 @@ class ChromeContextMenuItem {
+@@ -231,6 +234,7 @@ class ChromeContextMenuItem {
          R.string.contextmenu_print_page, // Item.PRINT_PAGE
          R.string.contextmenu_view_page_source, // Item.VIEW_PAGE_SOURCE
          R.string.contextmenu_inspect_element, // Item.INSPECT_ELEMENT
