@@ -67,11 +67,17 @@ export class BraveAccountEmailInputElement extends CrLitElement {
     return this.isFormatValid && /@bravealias\.com$/i.test(this.email)
   }
 
-  protected get shouldStyleAsError(): boolean {
-    return (
+  protected get severity(): 'error' | 'warning' | '' {
+    if (
       (this.email.length !== 0 && !this.isFormatValid)
       || (this.blockBraveAlias && this.isBraveAlias)
-    )
+    ) {
+      return 'error'
+    }
+    if (this.suggestion) {
+      return 'warning'
+    }
+    return ''
   }
 
   protected get shouldShowDropdown(): boolean {

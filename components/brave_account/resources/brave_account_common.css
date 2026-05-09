@@ -32,6 +32,10 @@
   color: var(--leo-color-systemfeedback-error-text);
 }
 
+.label.warning {
+  color: var(--leo-color-systemfeedback-warning-text);
+}
+
 leo-input {
   --leo-control-border-color: var(--leo-color-divider-strong);
 }
@@ -43,6 +47,15 @@ leo-input:not(:focus):has(.error) {
 leo-input:focus:has(.error) {
   --leo-control-focus-effect: 0 0 0 2px
     var(--leo-color-systemfeedback-error-icon);
+}
+
+leo-input:not(:focus):has(.warning) {
+  --leo-control-border-color: var(--leo-color-systemfeedback-warning-icon);
+}
+
+leo-input:focus:has(.warning) {
+  --leo-control-focus-effect: 0 0 0 2px
+    var(--leo-color-systemfeedback-warning-icon);
 }
 
 .dropdown {
