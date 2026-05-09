@@ -163,9 +163,6 @@ class ObliviousHttpAPIClient : public OAIAPIClient {
                             std::string chunk);
   static void OnChunkParsed(GenerationDataCallback data_received_callback,
                             std::optional<base::Value> value);
-  static void RunCompletedWithError(
-      GenerationCompletedCallback completed_callback,
-      mojom::APIError error);
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   network::NetworkContextGetter network_context_getter_;

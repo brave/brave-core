@@ -68,6 +68,12 @@ bool IsStreamingEnabled(
          !data_received_callback.is_null();
 }
 
+void RunCompletedWithError(
+    EngineConsumer::GenerationCompletedCallback completed_callback,
+    mojom::APIError error) {
+  std::move(completed_callback).Run(base::unexpected(error));
+}
+
 }  // namespace
 
 ObliviousHttpAPIClient::InnerClient::InnerClient(
@@ -351,13 +357,6 @@ void ObliviousHttpAPIClient::OnChunkParsed(
   }
   OnQueryDataReceived(std::move(data_received_callback),
                       base::ok(std::move(*value)));
-}
-
-// static
-void ObliviousHttpAPIClient::RunCompletedWithError(
-    GenerationCompletedCallback completed_callback,
-    mojom::APIError error) {
-  std::move(completed_callback).Run(base::unexpected(error));
 }
 
 }  // namespace ai_chat
