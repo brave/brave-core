@@ -184,6 +184,7 @@ source_set("unit_tests") {
     "engine/oai_parsing_unittest.cc",
     "engine/oai_serialization_utils_unittest.cc",
     "engine/oblivious_http_api_client_unittest.cc",
+    "engine/oblivious_http_config_manager_unittest.cc",
     "engine/test_utils.cc",
     "engine/test_utils.h",
     "history_ui_handler_unittest.cc",

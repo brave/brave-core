@@ -62,6 +62,11 @@ class ObliviousHttpConfigManager {
   // Cancels any in-flight fetches and drops all queued callbacks.
   void CancelAll();
 
+  void SetAPIRequestHelperForTesting(
+      std::unique_ptr<api_request_helper::APIRequestHelper> api_helper) {
+    api_request_helper_ = std::move(api_helper);
+  }
+
   // Removes the cached key config for |model_name|, forcing a fresh fetch on
   // the next request.
   void ClearKeyConfig(const std::string& model_name);
