@@ -270,6 +270,7 @@ void BraveToolbarView::Init() {
                                  [](BraveToolbarView* self) {
                                    self->UpdateHorizontalPadding();
                                    self->UpdateVerticalTabToggleVisibility();
+                                   self->UpdateVerticalTabTogglePlacement();
                                  },
                                  base::Unretained(this)));
     show_title_bar_on_vertical_tabs_.Init(
@@ -280,6 +281,10 @@ void BraveToolbarView::Init() {
     vertical_tabs_collapsed_.Init(
         brave_tabs::kVerticalTabsCollapsed, profile->GetPrefs(),
         base::BindRepeating(&BraveToolbarView::UpdateVerticalTabToggleState,
+                            base::Unretained(this)));
+    vertical_tabs_on_right_.Init(
+        brave_tabs::kVerticalTabsOnRight, profile->GetPrefs(),
+        base::BindRepeating(&BraveToolbarView::UpdateVerticalTabTogglePlacement,
                             base::Unretained(this)));
 #if BUILDFLAG(IS_LINUX)
     use_custom_chrome_frame_.Init(
@@ -381,6 +386,8 @@ void BraveToolbarView::Init() {
     container_view->ReorderChildView(
         avatar, *container_view->GetIndexOf(GetAppMenuButton()) - 1);
   }
+
+  UpdateVerticalTabTogglePlacement();
 
   brave_initialized_ = true;
   UpdateHorizontalPadding();
@@ -660,6 +667,42 @@ void BraveToolbarView::UpdateVerticalTabToggleVisibility() {
 
   vertical_tab_toggle_->SetVisible(
       tabs::utils::ShouldShowBraveVerticalTabs(browser_));
+}
+
+void BraveToolbarView::UpdateVerticalTabTogglePlacement() {
+  if (!vertical_tab_toggle_ || display_mode_ != DisplayMode::kNormal) {
+    return;
+  }
+
+  DCHECK(location_bar_view_ && location_bar_view_->parent());
+  views::View* container_view = location_bar_view_->parent();
+
+  const std::optional<size_t> toggle_idx =
+      container_view->GetIndexOf(vertical_tab_toggle_);
+  if (!toggle_idx.has_value()) {
+    return;
+  }
+
+  size_t target_idx = 0;
+  if (tabs::utils::IsVerticalTabOnRight(browser_)) {
+    const auto menu_idx = container_view->GetIndexOf(GetAppMenuButton());
+    if (!menu_idx.has_value() || *menu_idx == 0) {
+      return;
+    }
+    target_idx = *menu_idx - 1;
+  } else {
+    const auto back_idx = container_view->GetIndexOf(back_);
+    if (!back_idx.has_value()) {
+      return;
+    }
+    target_idx = *back_idx > 0 ? *back_idx - 1 : 0;
+  }
+
+  if (*toggle_idx == target_idx) {
+    return;
+  }
+
+  container_view->ReorderChildView(vertical_tab_toggle_, target_idx);
 }
 
 void BraveToolbarView::UpdateVerticalTabToggleState() {

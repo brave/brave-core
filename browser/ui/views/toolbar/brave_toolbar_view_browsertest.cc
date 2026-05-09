@@ -607,6 +607,34 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
   EXPECT_FALSE(button->GetVisible());
 }
 
+IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
+                       VerticalTabTogglePlacementRespectsTabsOnRight) {
+  auto* prefs = browser()->profile()->GetPrefs();
+  prefs->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
+  views::View* container = toolbar_view_->location_bar_view()->parent();
+  ASSERT_TRUE(container);
+
+  prefs->SetBoolean(brave_tabs::kVerticalTabsOnRight, false);
+  RunScheduledLayouts();
+  auto* toggle = toolbar_view_->vertical_tab_toggle_button();
+  ASSERT_TRUE(toggle);
+  const auto ix_left_side = container->GetIndexOf(toggle);
+  ASSERT_TRUE(ix_left_side.has_value());
+
+  prefs->SetBoolean(brave_tabs::kVerticalTabsOnRight, true);
+  RunScheduledLayouts();
+  const auto ix_on_right = container->GetIndexOf(toggle);
+  ASSERT_TRUE(ix_on_right.has_value());
+
+  auto* menu = toolbar_view_->GetAppMenuButton();
+  ASSERT_TRUE(menu);
+  const auto menu_ix = container->GetIndexOf(menu);
+  ASSERT_TRUE(menu_ix.has_value() && *menu_ix > 0);
+
+  EXPECT_EQ(*ix_on_right, *menu_ix - 1);
+  EXPECT_LT(*ix_left_side, *ix_on_right);
+}
+
 // Verifies that UpdateHorizontalPadding() keeps the toolbar container border
 // in sync with GetLeadingTrailingCaptionButtonWidth() across state changes.
 // Guards against the Qt-theme regression where a fixed estimate was used
