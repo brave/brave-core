@@ -178,6 +178,10 @@ class EmailAliasesBrowserTestBase : public InProcessBrowserTest {
   }
 
   void InjectHelpers(content::WebContents* contents) {
+    ASSERT_TRUE(base::test::RunUntil([&]() {
+      return !contents->GetLastCommittedURL().is_empty() &&
+             !contents->GetLastCommittedURL().IsAboutBlank();
+    }));
     ASSERT_TRUE(content::WaitForLoadStop(contents));
     constexpr char kDeepQuery[] = R"js(
       function deepQuery(selector) {
