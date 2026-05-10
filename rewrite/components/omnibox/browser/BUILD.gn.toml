@@ -1,0 +1,32 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[[substitution]]
+description = '''Enable legacy JS bindings generation for `mojo_bindings`.
+
+These bindings are used by `brave_new_tab_ui`. This plaster always adds the
+line at the beginning of the target.
+'''
+re_pattern = '(mojom\("mojo_bindings"\)\s*\{)'
+re_flags = ['DOTALL']
+replace = '\1\n  generate_legacy_js_bindings = true'
+
+[[substitution]]
+description = 'Append Brave sources right after sources declaration.'
+re_pattern = '(static_library\("browser"\).*?sources\s*=\s*\[.*?\])'
+re_flags = ['DOTALL']
+replace = '\1\n  sources += brave_components_omnibox_browser_sources'
+
+[[substitution]]
+description = 'Append Brave public deps right after public_deps'
+re_pattern = '(static_library\("browser"\).*?public_deps\s*=\s*\[.*?\])'
+re_flags = ['DOTALL']
+replace = '\1\n  public_deps += brave_components_omnibox_browser_public_deps'
+
+[[substitution]]
+description = 'Append Brave deps right after deps declaration.'
+re_pattern = '(static_library\("browser"\).*?\bdeps\s*=\s*\[.*?\])'
+re_flags = ['DOTALL']
+replace = '\1\n  deps += brave_components_omnibox_browser_deps'
