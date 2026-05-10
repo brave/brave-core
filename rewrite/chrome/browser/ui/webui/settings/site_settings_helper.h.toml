@@ -1,0 +1,12 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[[substitution]]
+description = 'Insert Brave `SiteSettingSource` entries before kNumSources sentinel'
+re_pattern = '(enum class SiteSettingSource\s*\{.*?)(\n\s*kNumSources,)'
+re_flags = ['DOTALL']
+count = 1
+replace = '''\1
+  kRemoteList,\2'''
