@@ -275,7 +275,7 @@ BraveWalletService::BraveWalletService(
       profile_prefs, CreateTxStorage(*delegate_));
 
   brave_wallet_p3a_ = std::make_unique<BraveWalletP3A>(
-      this, keyring_service(), tx_service(), profile_prefs, local_state),
+      this, keyring_service(), profile_prefs, local_state),
 
   simple_hash_client_ = std::make_unique<SimpleHashClient>(url_loader_factory);
   asset_discovery_manager_ = std::make_unique<AssetDiscoveryManager>(

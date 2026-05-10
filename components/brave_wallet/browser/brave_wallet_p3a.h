@@ -24,32 +24,6 @@ inline constexpr char kKeyringCreatedHistogramName[] =
     "Brave.Wallet.KeyringCreated";
 inline constexpr char kOnboardingConversionHistogramName[] =
     "Brave.Wallet.OnboardingConversion.3";
-inline constexpr char kNewUserBalanceHistogramName[] =
-    "Brave.Wallet.NewUserBalance";
-inline constexpr char kEthTransactionSentHistogramName[] =
-    "Brave.Wallet.EthTransactionSent";
-inline constexpr char kSolTransactionSentHistogramName[] =
-    "Brave.Wallet.SolTransactionSent";
-inline constexpr char kFilTransactionSentHistogramName[] =
-    "Brave.Wallet.FilTransactionSent";
-inline constexpr char kBtcTransactionSentHistogramName[] =
-    "Brave.Wallet.BtcTransactionSent";
-inline constexpr char kZecTransactionSentHistogramName[] =
-    "Brave.Wallet.ZecTransactionSent";
-inline constexpr char kAdaTransactionSentHistogramName[] =
-    "Brave.Wallet.AdaTransactionSent";
-inline constexpr char kEthActiveAccountHistogramName[] =
-    "Brave.Wallet.ActiveEthAccounts";
-inline constexpr char kSolActiveAccountHistogramName[] =
-    "Brave.Wallet.ActiveSolAccounts";
-inline constexpr char kFilActiveAccountHistogramName[] =
-    "Brave.Wallet.ActiveFilAccounts";
-inline constexpr char kBtcActiveAccountHistogramName[] =
-    "Brave.Wallet.ActiveBtcAccounts";
-inline constexpr char kZecActiveAccountHistogramName[] =
-    "Brave.Wallet.ActiveZecAccounts";
-inline constexpr char kAdaActiveAccountHistogramName[] =
-    "Brave.Wallet.ActiveAdaAccounts";
 inline constexpr char kBraveWalletDailyHistogramName[] =
     "Brave.Wallet.UsageDaily";
 inline constexpr char kBraveWalletWeeklyHistogramName[] =
@@ -69,16 +43,13 @@ inline constexpr char kBraveWalletNFTDiscoveryEnabledHistogramName[] =
 
 class BraveWalletService;
 class KeyringService;
-class TxService;
 
 // Reports BraveWallet related P3A data
 class BraveWalletP3A : public KeyringServiceObserverBase,
-                       public mojom::BraveWalletP3A,
-                       public mojom::TxServiceObserver {
+                       public mojom::BraveWalletP3A {
  public:
   BraveWalletP3A(BraveWalletService* wallet_service,
                  KeyringService* keyring_service,
-                 TxService* tx_service,
                  PrefService* profile_prefs,
                  PrefService* local_state);
 
@@ -95,17 +66,10 @@ class BraveWalletP3A : public KeyringServiceObserverBase,
 
   void ReportUsage(bool unlocked);
   void ReportOnboardingAction(mojom::OnboardingAction action) override;
-  void RecordActiveWalletCount(int count, mojom::CoinType coin_type) override;
   void RecordNFTGalleryView(int nft_count) override;
 
   // KeyringServiceObserverBase:
   void WalletCreated() override;
-
-  // mojom::TxServiceObserver:
-  void OnNewUnapprovedTx(mojom::TransactionInfoPtr tx_info) override {}
-  void OnUnapprovedTxUpdated(mojom::TransactionInfoPtr tx_info) override {}
-  void OnTransactionStatusChanged(mojom::TransactionInfoPtr tx_info) override;
-  void OnTxServiceReset() override {}
 
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveWalletP3AUnitTest, ReportTransactionSent);
@@ -116,19 +80,14 @@ class BraveWalletP3A : public KeyringServiceObserverBase,
   void RecordInitialBraveWalletP3AState();
   std::optional<mojom::OnboardingAction> GetLastOnboardingAction();
   void RecordOnboardingHistogram();
-  void MaybeRecordNewUserBalance();
   void ReportNftDiscoverySetting();
-  void ReportTransactionSent(mojom::CoinType coin, bool new_send);
   raw_ptr<BraveWalletService> wallet_service_;
   raw_ptr<KeyringService> keyring_service_;
-  raw_ptr<TxService> tx_service_;
   raw_ptr<PrefService> profile_prefs_;
   raw_ptr<PrefService> local_state_;
 
   mojo::Receiver<mojom::KeyringServiceObserver>
       keyring_service_observer_receiver_{this};
-
-  mojo::Receiver<mojom::TxServiceObserver> tx_service_observer_receiver_{this};
 
   base::OneShotTimer onboarding_report_timer_;
 

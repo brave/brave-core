@@ -58,9 +58,6 @@ WalletPageUI::WalletPageUI(web::WebUIIOS* web_ui, const GURL& url)
   source->AddString("braveWalletNftBridgeUrl", kUntrustedNftURL);
   source->AddString("braveWalletLineChartBridgeUrl", kUntrustedLineChartURL);
   source->AddString("braveWalletMarketUiBridgeUrl", kUntrustedMarketURL);
-  source->AddBoolean(brave_wallet::mojom::kP3ACountTestNetworksLoadTimeKey,
-                     base::CommandLine::ForCurrentProcess()->HasSwitch(
-                         brave_wallet::mojom::kP3ACountTestNetworksSwitch));
 
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,

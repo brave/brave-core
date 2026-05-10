@@ -144,6 +144,9 @@ void MigrateObsoleteLocalStatePrefs(PrefService* prefs) {
   ntp_background_images::NTPBackgroundImagesService::
       MigrateObsoleteLocalStatePrefs(prefs);
   brave_stats::MigrateObsoleteLocalStatePrefs(prefs);
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  brave_wallet::MigrateObsoleteLocalStatePrefs(prefs);
+#endif
 }
 
 }  // namespace brave

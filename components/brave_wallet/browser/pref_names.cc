@@ -196,7 +196,6 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   p3a_utils::RegisterFeatureUsagePrefs(
       registry, kBraveWalletP3AFirstUnlockTime, kBraveWalletP3ALastUnlockTime,
       kBraveWalletP3AUsedSecondDay, nullptr, nullptr);
-  registry->RegisterBooleanPref(kBraveWalletP3ANewUserBalanceReported, false);
   registry->RegisterIntegerPref(kBraveWalletP3AOnboardingLastStep, 0);
   registry->RegisterBooleanPref(kBraveWalletP3ANFTGalleryUsed, false);
 }
@@ -217,7 +216,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterStringPref(kDefaultBaseCurrency, "USD");
   registry->RegisterStringPref(kDefaultBaseCryptocurrency, "BTC");
   registry->RegisterBooleanPref(kShowWalletIconOnToolbar, true);
-  registry->RegisterDictionaryPref(kBraveWalletP3AActiveWalletDict);
   registry->RegisterDictionaryPref(kBraveWalletKeyrings);
   registry->RegisterBooleanPref(kBraveWalletKeyringEncryptionKeysMigrated,
                                 false);
@@ -234,7 +232,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterIntegerPref(kBraveWalletAutoLockMinutes,
                                 kDefaultWalletAutoLockMinutes);
   registry->RegisterDictionaryPref(kBraveWalletEthAllowancesCache);
-  registry->RegisterDictionaryPref(kBraveWalletLastTransactionSentTimeDict);
   registry->RegisterDictionaryPref(kBraveWalletPolkadotChainMetadata);
   registry->RegisterTimePref(kBraveWalletLastDiscoveredAssetsAt, base::Time());
 
@@ -263,7 +260,16 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kERCOptedIntoCryptoWalletsDeprecated, false);
 }
 
-void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {}
+void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
+  // Deprecated 05/2026
+  registry->RegisterBooleanPref(kBraveWalletP3ANewUserBalanceReportedDeprecated,
+                                false);
+}
+
+void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
+  // Deprecated 05/2026
+  local_state->ClearPref(kBraveWalletP3ANewUserBalanceReportedDeprecated);
+}
 
 void RegisterProfilePrefsForMigration(
     user_prefs::PrefRegistrySyncable* registry) {
@@ -290,6 +296,13 @@ void RegisterProfilePrefsForMigration(
 
   // Added 02/2025
   registry->RegisterDictionaryPref(kBraveWalletTransactions);
+
+  // Added 05/2026
+  registry->RegisterDictionaryPref(kBraveWalletP3AActiveWalletDictDeprecated);
+
+  // Added 05/2026
+  registry->RegisterDictionaryPref(
+      kBraveWalletLastTransactionSentTimeDictDeprecated);
 }
 
 void ClearJsonRpcServiceProfilePrefs(PrefService* prefs) {
@@ -359,6 +372,12 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
 
   // CryptoWallets Removed 05/2025
   MigrateCryptoWalletsPrefToBraveWallet(prefs);
+
+  // Added 05/2026
+  prefs->ClearPref(kBraveWalletP3AActiveWalletDictDeprecated);
+
+  // Added 05/2026
+  prefs->ClearPref(kBraveWalletLastTransactionSentTimeDictDeprecated);
 }
 
 }  // namespace brave_wallet

@@ -21,7 +21,6 @@ import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TxService;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 public class AsyncUtils {
@@ -359,21 +358,6 @@ public class AsyncUtils {
                                     / BraveWalletConstants.MICRO_LAMPORTS_PER_LAMPORT);
             this.error = error;
             this.errorMessage = errorMessage;
-            super.fireResponseCompleteCallback();
-        }
-    }
-
-    public static class GetP3ABalancesContext extends SingleResponseBaseContext
-            implements Callback1<HashMap<Integer, HashSet<String>>> {
-        public HashMap<Integer, HashSet<String>> activeAddresses;
-
-        public GetP3ABalancesContext(Runnable responseCompleteCallback) {
-            super(responseCompleteCallback);
-        }
-
-        @Override
-        public void call(HashMap<Integer, HashSet<String>> activeAddresses) {
-            this.activeAddresses = activeAddresses;
             super.fireResponseCompleteCallback();
         }
     }
