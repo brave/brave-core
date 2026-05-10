@@ -5,6 +5,11 @@
 
 // @ts-expect-error
 import { leoShowAlert } from '//resources/brave/leo.bundle.js'
+import {
+  AsyncDirective,
+  directive,
+  nothing,
+} from '//resources/lit/v3_0/lit.rollup.js'
 import { loadTimeData } from '//resources/js/load_time_data.js'
 
 import {
@@ -19,6 +24,20 @@ import {
   ResendConfirmationEmailServerErrorCode,
 } from './brave_account.mojom-webui.js'
 import { BraveAccountStrings } from './brave_components_webui_strings.js'
+
+// Custom directive that freezes the previously rendered value when `freeze`
+// is true. Similar to Lit's `noChange` (not exported by Chromium's Lit wrapper
+// from //third_party/lit/v3_0/lit.ts), but instead of preventing the update,
+// it reuses the last rendered value.
+class FreezeWhenDirective extends AsyncDirective {
+  private previousValue: unknown = nothing
+
+  render(freeze: boolean, value: unknown): unknown {
+    return freeze ? this.previousValue : (this.previousValue = value)
+  }
+}
+
+export const freezeWhen = directive(FreezeWhenDirective)
 
 export type Error =
   | { kind: 'login'; details: LoginError }

@@ -7,9 +7,9 @@ import { html } from '//resources/lit/v3_0/lit.rollup.js'
 
 import './brave_account_password_icons.js'
 import './brave_account_password_strength_meter.js'
+import { freezeWhen } from './brave_account_common.js'
 import {
   BraveAccountPasswordInputElement,
-  freezeWhen,
   MAX_PASSWORD_LENGTH,
 } from './brave_account_password_input.js'
 
