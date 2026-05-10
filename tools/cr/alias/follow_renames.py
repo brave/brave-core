@@ -166,24 +166,24 @@ def _repair_chromium_src(old_chromium: Path, new_chromium: Path,
     For moved files: updates the shadow #include line (C++ files) and
     regenerates the include guard (.h files only).
     """
-    old_shadow = repository.BRAVE_CORE_PATH / 'chromium_src' / old_chromium
+    old_shadow = repository.brave.root / 'chromium_src' / old_chromium
     if not old_shadow.exists():
         return
 
-    new_shadow = repository.BRAVE_CORE_PATH / 'chromium_src' / new_chromium
+    new_shadow = repository.brave.root / 'chromium_src' / new_chromium
     new_shadow.parent.mkdir(parents=True, exist_ok=True)
 
     if no_git:
         old_shadow.rename(new_shadow)
     else:
-        repository.brave.run_git('mv', str(old_shadow), str(new_shadow))
+        terminal.run_git('mv', str(old_shadow), str(new_shadow))
 
     if new_shadow.suffix.lower() in CPP_EXTENSIONS:
         update_shadow_include(new_shadow, old_chromium, new_chromium)
 
     if new_shadow.suffix == '.h':
         new_guard = compute_guard(
-            new_shadow.relative_to(repository.CHROMIUM_SRC_PATH))
+            repository.chromium.to_repo_relative(new_shadow))
         content = new_shadow.read_text(encoding='utf-8')
         old_guard = find_guard(content)
         if old_guard:
@@ -214,9 +214,9 @@ def _repair_plaster_files(old_chromium: Path,
     if no_git:
         old_toml.rename(new_toml)
     else:
-        repository.brave.run_git('mv', str(old_toml), str(new_toml))
+        terminal.run_git('mv', str(old_toml), str(new_toml))
 
-    patch_file = (repository.BRAVE_CORE_PATH / 'patches' /
+    patch_file = (repository.brave.root / 'patches' /
                   patch_name_for(old_chromium))
     if not patch_file.exists():
         logging.warning(
@@ -226,7 +226,7 @@ def _repair_plaster_files(old_chromium: Path,
         if no_git:
             patch_file.unlink()
         else:
-            repository.brave.run_git('rm', str(patch_file))
+            terminal.run_git('rm', str(patch_file))
         patchinfo_file = patch_file.with_suffix('.patchinfo')
         if patchinfo_file.exists():
             patchinfo_file.unlink()
@@ -235,10 +235,10 @@ def _repair_plaster_files(old_chromium: Path,
         try:
             PlasterFile(new_toml).apply()
             if not no_git:
-                new_patch = (repository.BRAVE_CORE_PATH / 'patches' /
+                new_patch = (repository.brave.root / 'patches' /
                              patch_name_for(new_chromium))
                 if new_patch.exists():
-                    repository.brave.run_git('add', str(new_patch))
+                    terminal.run_git('add', str(new_patch))
         # TODO(https://github.com/brave/brave-browser/issues/55370): Eventually
         # we should better constrain this to only catch plaster exceptions.
         except Exception as e:
@@ -257,7 +257,7 @@ def _repair_patch_files(old_chromium: Path, new_chromium: Path,
     path, the file is renamed, then git apply --3way is attempted. A warning
     is logged if the apply fails.
     """
-    patches_path = repository.BRAVE_CORE_PATH / 'patches'
+    patches_path = repository.brave.root / 'patches'
     old_patch = patches_path / patch_name_for(old_chromium)
     if not old_patch.exists():
         return
@@ -279,14 +279,18 @@ def _repair_patch_files(old_chromium: Path, new_chromium: Path,
     if no_git:
         old_patch.rename(new_patch)
     else:
-        repository.brave.run_git('mv', str(old_patch), str(new_patch))
+        terminal.run_git('mv', str(old_patch), str(new_patch))
     new_patch.write_text(updated_content, encoding='utf-8')
     if not no_git:
-        repository.brave.run_git('add', str(new_patch))
+        terminal.run_git('add', str(new_patch))
 
     try:
+        # `git apply` runs with chromium as its cwd (via run_git's `-C`), so
+        # pass the patch path resolved to absolute; a brave-relative path
+        # would not be found from chromium's cwd.
         repository.chromium.run_git('apply', '--3way', '--ignore-space-change',
-                                    '--ignore-whitespace', str(new_patch))
+                                    '--ignore-whitespace',
+                                    str(new_patch.resolve()))
     except subprocess.CalledProcessError as e:
         logging.warning('Failed to apply %s after rename: %s', new_patch,
                         e.stderr.strip() if e.stderr else str(e))

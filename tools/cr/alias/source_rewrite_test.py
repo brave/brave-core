@@ -14,7 +14,7 @@ from alias.source_rewrite import (
     _should_walk_dir,
     update_references,
 )
-from test.fake_chromium_src import FakeChromiumSrc
+from test.fake_chromium_repo import FakeChromiumRepo
 
 # ---------------------------------------------------------------------------
 # Unit tests: _is_path_excluded
@@ -148,7 +148,7 @@ class UpdateReferencesFilterTest(unittest.TestCase):
     """update_references skips excluded dirs and processes included ones."""
 
     def setUp(self):
-        self._repo = FakeChromiumSrc()
+        self._repo = FakeChromiumRepo()
         self._repo.setup()
         self.addCleanup(self._repo.cleanup)
 
@@ -199,7 +199,7 @@ class UpdateGnReferencesTest(unittest.TestCase):
     """update_references rewrites quoted GN references in .gn/.gni files."""
 
     def setUp(self):
-        self._repo = FakeChromiumSrc()
+        self._repo = FakeChromiumRepo()
         self._repo.setup()
         self.addCleanup(self._repo.cleanup)
 

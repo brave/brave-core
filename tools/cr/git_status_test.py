@@ -8,7 +8,7 @@ import subprocess
 import unittest
 from pathlib import Path
 
-from test.fake_chromium_src import FakeChromiumSrc
+from test.fake_chromium_repo import FakeChromiumRepo
 from git_status import GitStatus
 
 
@@ -16,7 +16,7 @@ class GitStatusTest(unittest.TestCase):
 
     def setUp(self):
         """Set up a fake Chromium repository for testing."""
-        self.fake_chromium_src = FakeChromiumSrc()
+        self.fake_chromium_src = FakeChromiumRepo()
         self.fake_chromium_src.setup()
         self.addCleanup(self.fake_chromium_src.cleanup)
 

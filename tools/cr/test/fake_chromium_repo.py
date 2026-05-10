@@ -4,7 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 from pathlib import Path
-from typing import List, Dict
+from typing import List, Dict, Optional
 import json
 import os
 import shutil
@@ -16,6 +16,8 @@ MINOR={minor}
 BUILD={build}
 PATCH={patch}
 """
+
+BRAVE_ROOT_FROM_FILE = Path(__file__).resolve().parents[3]
 
 class FakeChromiumRepo:
     """A fake Chromium repository for testing purposes."""
@@ -34,6 +36,29 @@ class FakeChromiumRepo:
         # Set a brave repository under src/.
         self._init_repo(self.brave)
         self.brave_patches.mkdir(parents=True, exist_ok=True)
+        self._original_cwd: Optional[Path] = None
+
+    def setup(self) -> None:
+        """Creates chromium_src/ and rewrite/, then chdirs into the brave repo.
+
+        Pair with `cleanup()` to restore the original cwd. Must be called
+        before any tools/cr code that resolves the brave-core root against
+        cwd.
+        """
+        (self.brave / 'chromium_src').mkdir(exist_ok=True)
+        (self.brave / 'rewrite').mkdir(exist_ok=True)
+        self._original_cwd = Path.cwd()
+        brave_root = BRAVE_ROOT_FROM_FILE
+        original_cwd = self._original_cwd.resolve()
+        try:
+            rel_from_brave = original_cwd.relative_to(brave_root)
+        except ValueError:
+            raise ValueError(
+                'FakeChromiumRepo.setup() must be called from within the '
+                f'brave-core tree ({brave_root}).') from None
+        fake_cwd = self.brave / rel_from_brave
+        fake_cwd.mkdir(parents=True, exist_ok=True)
+        os.chdir(fake_cwd)
 
     @property
     def chromium(self) -> Path:
@@ -382,6 +407,9 @@ class FakeChromiumRepo:
 
     def cleanup(self) -> None:
         """Cleans up the temporary directory used for the fake repository."""
+        if self._original_cwd is not None:
+            os.chdir(self._original_cwd)
+            self._original_cwd = None
         try:
             self.temp_dir.cleanup()
         except OSError:

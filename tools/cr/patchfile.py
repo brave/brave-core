@@ -11,7 +11,7 @@ import re
 import subprocess
 from typing import Optional
 
-from plaster import PlasterFile
+from plaster import PlasterFile, PLASTER_FILES_PATH
 from repository import Repository
 import repository
 
@@ -36,8 +36,9 @@ class Patchfile:
     # The repository the patch file is targeting to patch.
     repository: Repository = field(init=False)
 
-    # Path to the plaster (.toml) file for this patch, relative to the
-    # brave-core root.
+    # Path to the plaster (.toml) file for this patch, expressed via
+    # `PLASTER_FILES_PATH` (i.e. cwd-relative, the same shape every other
+    # path in tools/cr uses).
     plaster: Optional[Path] = field(init=False)
 
     def __post_init__(self):
@@ -52,9 +53,9 @@ class Patchfile:
 
         plaster = None
         if self.repository.is_chromium:
-            candidate = (Path('rewrite') / self.source.parent /
+            candidate = (PLASTER_FILES_PATH / self.source.parent /
                          (self.source.name + '.toml'))
-            if (repository.BRAVE_CORE_PATH / candidate).exists():
+            if candidate.exists():
                 plaster = candidate
         object.__setattr__(self, 'plaster', plaster)
 
@@ -71,7 +72,7 @@ class Patchfile:
 
         # Drops `patches/` at the beginning and the filename at the end.
         return Repository(
-            repository.CHROMIUM_SRC_PATH.joinpath(*self.path.parts[1:-1]))
+            repository.chromium.root.joinpath(*self.path.parts[1:-1]))
 
     class ApplyStatus(Enum):
         """The result of applying the patch.
@@ -204,7 +205,7 @@ class Patchfile:
             # Checking out HEAD resolves the index conflict first.
             self.repository.run_git('checkout', 'HEAD', '--',
                                     self.source.as_posix())
-            PlasterFile(repository.BRAVE_CORE_PATH / self.plaster).apply()
+            PlasterFile(self.plaster).apply()
             return self.ApplyStatus.PLASTER_FIXED
         # TODO(https://github.com/brave/brave-browser/issues/55370): Eventually
         # we should better constrain this to only catch plaster exceptions.

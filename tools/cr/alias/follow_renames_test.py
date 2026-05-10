@@ -20,17 +20,17 @@ from alias.follow_renames import (
     _repair_plaster_files,
     cmd_follow_renames,
 )
-from test.fake_chromium_src import FakeChromiumSrc
+from test.fake_chromium_repo import FakeChromiumRepo
 
 
 class _Base(unittest.TestCase):
     """Shared fixture: a fresh fake brave-core + chromium repo per test."""
 
     def setUp(self) -> None:
-        self._repo = FakeChromiumSrc()
+        self._repo = FakeChromiumRepo()
         self._repo.setup()
         self.addCleanup(self._repo.cleanup)
-        # chromium_src/, rewrite/ created by FakeChromiumSrc.setup()
+        # chromium_src/, rewrite/ created by FakeChromiumRepo.setup()
         # `npm run format` is not available in the fake repo; suppress it.
         self._format_mock = patch('alias.follow_renames._run_format').start()
         self.addCleanup(patch.stopall)
@@ -448,47 +448,6 @@ class NoGitTest(_Base):
         cmd_follow_renames(['--no-git', f'{before}..HEAD'])
 
         self.assertFalse(patch_file.exists())
-
-
-# ---------------------------------------------------------------------------
-# Subdirectory CWD — patch deletion bug
-# ---------------------------------------------------------------------------
-
-
-class SubdirPatchDeletionTest(_Base):
-    """git rm for patch deletion must succeed when CWD is not brave root.
-
-    _repair_plaster_files passes str(patch_file.relative_to(brave_root)) to
-    `git rm`, but git runs from the Python process CWD (not brave root).  When
-    CWD is a brave subdirectory the path resolves to CWD/patches/… which does
-    not exist, so git rm exits 128 and raises CalledProcessError.
-
-    Note: the bug is unreachable through cmd_follow_renames from a subdirectory
-    because repository.chromium.run_git uses a CWD-relative '-C ..' path and
-    fails before _repair_plaster_files is reached.  The test calls the function
-    directly to keep the regression focused.
-    """
-
-    def test_patch_deleted_from_subdirectory(self) -> None:
-        self._brave_commit('rewrite/A/foo.h.toml', '[substitution]\n')
-        self._brave_commit('patches/A-foo.h.patch', 'diff\n')
-        (self._brave / 'rewrite' / 'B').mkdir(parents=True, exist_ok=True)
-
-        subdir = self._brave / 'chromium_src'
-        subdir.mkdir(exist_ok=True)
-        saved = os.getcwd()
-        try:
-            os.chdir(str(subdir))
-            # Must not raise; patch must be deleted.
-            _repair_plaster_files(Path('A/foo.h'),
-                                  Path('B/foo.h'),
-                                  no_git=False)
-        finally:
-            os.chdir(saved)
-
-        self.assertTrue(
-            (self._brave / 'rewrite' / 'B' / 'foo.h.toml').exists())
-        self.assertFalse((self._brave / 'patches' / 'A-foo.h.patch').exists())
 
 
 # ---------------------------------------------------------------------------

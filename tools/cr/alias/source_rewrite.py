@@ -236,11 +236,12 @@ def update_references(old_path: Path, new_path: Path) -> None:
     _update_gn_references(old_path, new_path)
 
     # Update BUILD.gn / .gni source-list entries in the ancestor chain.
-    old_abs = repository.CHROMIUM_SRC_PATH / old_posix
-    if not old_abs.is_relative_to(repository.BRAVE_CORE_PATH):
+    old_abs = (repository.chromium.root / old_posix).resolve()
+    brave_root = repository.brave.root.resolve()
+    if not old_abs.is_relative_to(brave_root):
         return
-    new_abs = repository.CHROMIUM_SRC_PATH / new_posix
-    _update_build_ancestors(old_abs, new_abs, repository.BRAVE_CORE_PATH)
+    new_abs = (repository.chromium.root / new_posix).resolve()
+    _update_build_ancestors(old_abs, new_abs, brave_root)
 
 
 def patch_name_for(chromium_path: Path | str) -> str:
@@ -263,9 +264,8 @@ def _walk_brave_core() -> Iterator[Path]:
     Honours SEARCH_EXCLUDE_DIRS and SEARCH_EXCLUDE_EXTENSIONS via
     _should_walk_dir / _is_path_excluded.
     """
-    for dirpath, dirnames, filenames in os.walk(repository.BRAVE_CORE_PATH):
-        rel_dir = Path(dirpath).relative_to(
-            repository.BRAVE_CORE_PATH).as_posix()
+    for dirpath, dirnames, filenames in os.walk(repository.brave.root):
+        rel_dir = Path(dirpath).relative_to(repository.brave.root).as_posix()
         dirnames[:] = [
             d for d in dirnames
             if _should_walk_dir(d if rel_dir == '.' else f'{rel_dir}/{d}')
@@ -322,8 +322,8 @@ def _update_gn_references(old_path: Path, new_path: Path) -> None:
         new_root = '//' + new_dir
         root_re = _gn_token_re(old_root)
         root_sub = '"' + new_root
-        old_abs_dir = repository.CHROMIUM_SRC_PATH / old_dir
-        new_abs_dir = repository.CHROMIUM_SRC_PATH / new_dir
+        old_abs_dir = repository.chromium.root / old_dir
+        new_abs_dir = repository.chromium.root / new_dir
         for fpath in _walk_brave_core():
             if fpath.suffix not in _GN_EXTENSIONS:
                 continue
@@ -343,7 +343,7 @@ def _update_gn_references(old_path: Path, new_path: Path) -> None:
         old_basename = old_path.parent.name
         new_basename = new_path.parent.name
         if old_basename and old_basename != new_basename:
-            new_build = repository.CHROMIUM_SRC_PATH / new_path
+            new_build = repository.chromium.root / new_path
             if new_build.is_file():
                 content = new_build.read_text(encoding='utf-8')
                 new_content = content.replace(f'"{old_basename}"',

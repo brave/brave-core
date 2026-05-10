@@ -14,7 +14,7 @@ from unittest.mock import MagicMock, patch
 import brockit
 from brockit import ApplyPatchesRecord
 
-from test.fake_chromium_src import FakeChromiumSrc
+from test.fake_chromium_repo import FakeChromiumRepo
 
 
 class BrockitTest(unittest.TestCase):
@@ -22,7 +22,7 @@ class BrockitTest(unittest.TestCase):
 
     def setUp(self):
         """Set up a fake Chromium repository for testing."""
-        self.fake_chromium_src = FakeChromiumSrc()
+        self.fake_chromium_src = FakeChromiumRepo()
         self.fake_chromium_src.setup()
         self.fake_chromium_src.add_dep('v8')
         self.fake_chromium_src.add_dep('third_party/test1')
@@ -66,7 +66,7 @@ class BrockitTest(unittest.TestCase):
         original_pinslist_path = (
             Path(__file__).parent.parent.parent /
             'chromium_src/net/tools/transport_security_state_generator/'
-            'input_file_parsers.cc')
+            'input_file_parsers.cc').resolve()
         test_pinslist_path = (
             self.fake_chromium_src.brave /
             'chromium_src/net/tools/transport_security_state_generator/'

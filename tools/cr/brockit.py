@@ -216,7 +216,7 @@ from patchfile import Patchfile
 import plaster
 from plaster import PlasterFile, PlasterFileNeedsRegen
 import repository
-from repository import Repository, CHROMIUM_SRC_PATH
+from repository import Repository
 from terminal import console, terminal
 import versioning
 from versioning import Version
@@ -308,7 +308,9 @@ def _update_pinslist_timestamp() -> str:
     )
 
     # Write back to the file
-    with open(PINSLIST_TIMESTAMP_FILE, "w", encoding="utf-8") as file:
+    with open(repository.brave.root / PINSLIST_TIMESTAMP_FILE,
+              "w",
+              encoding="utf-8") as file:
         file.write(updated_content)
 
     updated = repository.brave.run_git('diff', PINSLIST_TIMESTAMP_FILE)
@@ -409,16 +411,15 @@ class ApplyPatchesRecord:
         Raises InvalidInputException if any broken plaster is not yet resolved.
         """
         for patchfile in self.plaster_broken_patches:
-            plaster_path = repository.BRAVE_CORE_PATH / patchfile.plaster
-            if plaster_path.exists():
+            if patchfile.plaster.exists():
                 try:
-                    PlasterFile(plaster_path).apply(dry_run=True)
+                    PlasterFile(patchfile.plaster).apply(dry_run=True)
                 except PlasterFileNeedsRegen as e:
                     raise InvalidInputException(
                         'Plaster file has not been fixed and re-applied: '
                         f'{patchfile.plaster}') from e
             else:
-                if (repository.BRAVE_CORE_PATH / patchfile.path).exists():
+                if (repository.brave.root / patchfile.path).exists():
                     raise InvalidInputException(
                         'Plaster file was deleted but patch still exists: '
                         f'{patchfile.path}')
@@ -433,7 +434,7 @@ class ApplyPatchesRecord:
         """
         for _, patches in self.patch_files.items():
             for patchfile in patches:
-                if not patchfile.path.exists():
+                if not (repository.brave.root / patchfile.path).exists():
                     # Skip deleted files.
                     continue
 
@@ -649,12 +650,12 @@ class Versioned(Task):
             Path('third_party/depot_tools/vpython3'),
             './tools/crates/run_gnrt.py', 'vendor'
         ],
-                     cwd=repository.chromium.path)
+                     cwd=repository.chromium.root)
         terminal.run([
             Path('third_party/depot_tools/vpython3'),
             './tools/crates/run_gnrt.py', 'gen'
         ],
-                     cwd=repository.chromium.path)
+                     cwd=repository.chromium.root)
 
         if dry_run:
             return
@@ -1286,7 +1287,7 @@ class Upgrade(Versioned):
         for patch in modified_patches:
             hunks_before = count_hunks(repository.brave.read_file(patch))
             hunks_after = count_hunks(
-                (repository.brave.path / patch).read_text())
+                (repository.brave.root / patch).read_text())
             if hunks_before != hunks_after:
                 patches_with_hunk_changes.append(
                     (patch, hunks_before, hunks_after))

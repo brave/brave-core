@@ -19,13 +19,12 @@ from typing import Optional
 from terminal import console, terminal
 from incendiary_error_handler import IncendiaryErrorHandler
 import repository
-from repository import Repository
 
 # The path to the directory containing plaster files in brave-core.
-PLASTER_FILES_PATH = repository.BRAVE_CORE_PATH / 'rewrite'
+PLASTER_FILES_PATH = repository.brave.root / 'rewrite'
 
 # The path to the directory where patch files are stored in brave-core.
-PATCHES_PATH = Path('patches/')
+PATCHES_PATH = repository.brave.root / 'patches'
 
 @dataclass
 class PathChecksumPair:
@@ -35,7 +34,7 @@ class PathChecksumPair:
     provides a way to track changes in the file content.
     """
 
-    # The file path relative to BRAVE_CORE_PATH.
+    # The file path relative to the brave-core root.
     path: Path
 
     # Cached checksum of the file content. It will be set to None if the file
@@ -133,7 +132,7 @@ class PatchInfo:
     this may change in the future.
     """
 
-    # Path to the plaster file, relative to BRAVE_CORE_PATH.
+    # Path to the plaster file, relative to the brave-core root.
     plaster_file: Path
 
     # Contents of the plaster file as a string (read during initialization).
@@ -178,10 +177,10 @@ class PatchInfo:
         self.patchinfo = PathChecksumPair(
             self.patch.path.with_suffix('.patchinfo'))
 
-        # This is set relative, so it gets validated to be under
-        # BRAVE_CORE_PATH.
+        # This is set relative, so it gets validated to be under the
+        # brave-core root.
         self.plaster_file = self.plaster_file.relative_to(
-            repository.BRAVE_CORE_PATH)
+            repository.brave.root)
 
     def save_source_if_changed(self,
                                content: str,
@@ -237,8 +236,8 @@ class PlasterFile:
     This class is used to apply plaster files to sources in other repositories.
     """
 
-    # The path to the plaster file. This path is relative to
-    # BRAVE_CORE_PATH.
+    # The path to the plaster file. This path is relative to the brave-core
+    # root.
     path: Path
 
     @classmethod
