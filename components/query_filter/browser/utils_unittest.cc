@@ -311,9 +311,9 @@ TEST_F(BraveQueryFilter_ComponentEnabled, ScopedQueryTrackingTest) {
         },
         {
             "include": [
-                "*://*.twitter.com",
-                "*://*.x.com",
-                "*://*.y.com"
+                "*://*twitter.com",
+                "*://*x.com",
+                "*://*y.com"
             ],
             "exclude": [],
             "params": [
@@ -334,73 +334,72 @@ TEST_F(BraveQueryFilter_ComponentEnabled, ScopedQueryTrackingTest) {
         },
         {
             "include": ["*://*.facebook.com/*"],
-            "exclude": ["://*.theshining.com/*"],
+            "exclude": ["://*theshining.com/*"],
             "params": ["evil"]
         }
         ])json"));
 
-  //   // Normal case for a parameter that's not on the list
-  //   EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
-  //       GURL("https://brave.com"), GURL(),
-  //       GURL("https://twitter.com/?t=123"), "GET", false));
+  // Normal case for a parameter that's not on the list
+  EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
+      GURL("https://brave.com"), GURL(), GURL("https://twitter.com/?t=123"),
+      "GET", false));
 
-  //   // Normal case with a single domain
-  //   EXPECT_EQ(query_filter::MaybeApplyQueryStringFilter(
-  //                 GURL("https://brave.com"), GURL(),
-  //                 GURL("https://instagram.com/?igshid=123"), "GET", false),
-  //             GURL("https://instagram.com/"));
-  //   EXPECT_EQ(query_filter::MaybeApplyQueryStringFilter(
-  //                 GURL("https://brave.com"), GURL(),
-  //                 GURL("http://www.instagram.com/?igshid=123"), "GET",
-  //                 false),
-  //             GURL("http://www.instagram.com/"));
-  //   EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
-  //       GURL("https://brave.com"), GURL(),
-  //       GURL("https://example.com/?igshid=123"), "GET", false));
+  // Normal case with a single domain
+  EXPECT_EQ(query_filter::MaybeApplyQueryStringFilter(
+                GURL("https://brave.com"), GURL(),
+                GURL("https://instagram.com/?igshid=123"), "GET", false),
+            GURL("https://instagram.com/"));
+  EXPECT_EQ(query_filter::MaybeApplyQueryStringFilter(
+                GURL("https://brave.com"), GURL(),
+                GURL("http://www.instagram.com/?igshid=123"), "GET", false),
+            GURL("http://www.instagram.com/"));
+  EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
+      GURL("https://brave.com"), GURL(),
+      GURL("https://example.com/?igshid=123"), "GET", false));
 
-  //   // Normal case with more than one domain
-  //   EXPECT_EQ(query_filter::MaybeApplyQueryStringFilter(
-  //                 GURL("https://brave.com"), GURL(),
-  //                 GURL("https://twitter.com/?ref_src=123"), "GET", false),
-  //             GURL("https://twitter.com/"));
-  //   EXPECT_EQ(query_filter::MaybeApplyQueryStringFilter(
-  //                 GURL("https://brave.com"), GURL(),
-  //                 GURL("https://x.com/?ref_src=123"), "GET", false),
-  //             GURL("https://x.com/"));
-  //   EXPECT_EQ(query_filter::MaybeApplyQueryStringFilter(
-  //                 GURL("https://brave.com"), GURL(),
-  //                 GURL("https://y.com/?ref_src=123"), "GET", false),
-  //             GURL("https://y.com/"));
-  //   EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
-  //       GURL("https://brave.com"), GURL(),
-  //       GURL("https://z.com/?ref_src=123"), "GET", false));
+  // Normal case with more than one domain
+  EXPECT_EQ(query_filter::MaybeApplyQueryStringFilter(
+                GURL("https://brave.com"), GURL(),
+                GURL("https://twitter.com/?ref_src=123"), "GET", false),
+            GURL("https://twitter.com/"));
+  EXPECT_EQ(query_filter::MaybeApplyQueryStringFilter(
+                GURL("https://brave.com"), GURL(),
+                GURL("https://x.com/?ref_src=123"), "GET", false),
+            GURL("https://x.com/"));
+  EXPECT_EQ(query_filter::MaybeApplyQueryStringFilter(
+                GURL("https://brave.com"), GURL(),
+                GURL("https://y.com/?ref_src=123"), "GET", false),
+            GURL("https://y.com/"));
+  EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
+      GURL("https://brave.com"), GURL(), GURL("https://z.com/?ref_src=123"),
+      "GET", false));
 
   // Edge cases
   EXPECT_EQ(query_filter::MaybeApplyQueryStringFilter(
                 GURL("https://example.com"), GURL(),
                 GURL("https://brave.com/?sample1=123"), "GET", false),
             GURL("https://brave.com/"));
-  //   EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
-  //       GURL("https://brave.com"), GURL(),
-  //       GURL("https://example.com/?sample1=123"), "GET", false));
-  //   EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
-  //       GURL("https://example.com"), GURL(),
-  //       GURL("https://brave.com/?sample2=123"), "GET", false));
-  //   EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
-  //       GURL("https://example.com"), GURL(),
-  //       GURL("https://brave.com/?sample3=123"), "GET", false));
-  //   EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
-  //       GURL("https://example.com"), GURL(),
-  //       GURL("https://brave.com/?sample4=123"), "GET", false));
-
-  // Wildcard case for the domain *://*.facebook.com/*.
-  // TODO(https://github.com/brave/brave-browser/issues/55305): The new rules
-  // would have URL wildcard support on domains. Currently we don't have that
-  // support so query filter is not applied. When that's supported update this
-  // test to EXPECT_EQ.
   EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
-      GURL("https:/google.com"), GURL(),
-      GURL("https://mobile.facebook.com/?evil=666"), "GET", false));
+      GURL("https://brave.com"), GURL(),
+      GURL("https://example.com/?sample1=123"), "GET", false));
+  EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
+      GURL("https://example.com"), GURL(),
+      GURL("https://brave.com/?sample2=123"), "GET", false));
+  EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
+      GURL("https://example.com"), GURL(),
+      GURL("https://brave.com/?sample3=123"), "GET", false));
+  EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
+      GURL("https://example.com"), GURL(),
+      GURL("https://brave.com/?sample4=123"), "GET", false));
+  EXPECT_EQ(query_filter::MaybeApplyQueryStringFilter(
+                GURL("https:/google.com"), GURL(),
+                GURL("https://mobile.facebook.com/?evil=666"), "GET", false),
+            GURL("https://mobile.facebook.com/"));
+  // theshinning.com is part of the exclude list for the evil param. So, we
+  // shouldn't be stripping it away.
+  EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
+      GURL("https://google.com"), GURL(),
+      GURL("https://theshinning.com/?evil=123"), "GET", false));
 }
 
 TEST_F(BraveQueryFilter_ComponentEnabled, ConditionalFilteringTest) {
@@ -444,4 +443,26 @@ TEST_F(BraveQueryFilter_ComponentEnabled, ConditionalFilteringTest) {
   EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
       GURL(), GURL("https://brave.com"),
       GURL("https://test.com/emailWebview?mkt_tok=123"), "GET", false));
+}
+
+class BraveQueryFilter_ComponentDisabled : public testing::Test {
+ public:
+  void SetUp() override {
+    feature_list_.InitAndDisableFeature(
+        query_filter::features::kQueryFilterComponent);
+    ASSERT_FALSE(instance());
+  }
+
+  query_filter::QueryFilterData* instance() const {
+    return query_filter::QueryFilterData::GetInstance();
+  }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+TEST_F(BraveQueryFilter_ComponentDisabled, NoStrippingOccurs) {
+  EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
+      GURL("https://brave.com"), GURL("https://brave.com"),
+      GURL("https://test.com/?gclid=123"), "GET", false));
 }

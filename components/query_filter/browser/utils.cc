@@ -10,15 +10,13 @@
 #include <string_view>
 #include <vector>
 
-#include "absl/container/flat_hash_set.h"
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/fixed_flat_set.h"
-#include "base/logging.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "brave/components/query_filter/browser/query_filter_data.h"
+#include "brave/components/query_filter/browser/schema_utils.h"
 #include "brave/components/query_filter/common/features.h"
-#include "brave/components/query_filter/common/schema_utils.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "third_party/re2/src/re2/re2.h"
 
@@ -56,18 +54,15 @@ std::optional<std::string> StripQueryParameter(std::string_view query,
           query_filter::features::kQueryFilterComponent)) {
     return std::nullopt;
   }
-  // A set of params which are flagged to be stripped from the |spec| based on
-  // the query filter rules.
-  const absl::flat_hash_set<std::string> blocked_params_set =
+  // Get all the params which are blocked for |spec| from our rules.
+  // We could have relied on absl::flat_hash_set here since we don't require the
+  // ordering but that would have meant adding the whole absl dependency to our
+  // build target. So, going with an "ordered" O(log(N)) container like
+  // base::flat_set which is already part of our target to avoid inflating the
+  // target.
+  const base::flat_set<std::string> blocked_params_set =
       query_filter::GetBlocklistedParamsForSpec(
           query_filter::QueryFilterData::GetInstance()->rules(), spec);
-  LOG(ERROR) << "Rohit: Param size:" << blocked_params_set.size()
-             << ", rules size: "
-             << query_filter::QueryFilterData::GetInstance()->rules().size();
-  for (const auto& param : blocked_params_set) {
-    LOG(ERROR) << "Rohit: Param blocked: " << param;
-  }
-
   if (blocked_params_set.empty()) {
     return std::nullopt;
   }
@@ -84,7 +79,7 @@ std::optional<std::string> StripQueryParameter(std::string_view query,
   std::vector<std::string_view> output_tokens;
   bool did_strip = false;
 
-  // Find all the matching rules for the spec.
+  // Iterate over all tokens sequentially maintaining their order in the URL.
   for (const auto token : tokens) {
     // Try to parse the token as param=value.
     const auto param_value = base::SplitStringOnce(token, "=");

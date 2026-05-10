@@ -9,6 +9,8 @@ static_library("browser") {
     "query_filter_component_installer.h",
     "query_filter_data.cc",
     "query_filter_data.h",
+    "schema_utils.cc",
+    "schema_utils.h",
     "utils.cc",
     "utils.h",
   ]
@@ -24,6 +26,7 @@ static_library("browser") {
   deps = [
     "//brave/components/brave_component_updater/browser:public",
     "//brave/components/query_filter/common",
+    "//components/url_pattern_index",
     "//net",
     "//third_party/re2",
   ]
@@ -35,6 +38,7 @@ source_set("unit_tests") {
   sources = [
     "query_filter_component_installer_unittest.cc",
     "query_filter_data_unittest.cc",
+    "schema_utils_unittest.cc",
     "utils_unittest.cc",
   ]
 
