@@ -11,6 +11,8 @@ source_set("common") {
     "features.cc",
     "features.h",
     "pref_names.h",
+    "schema_utils.cc",
+    "schema_utils.h",
   ]
   deps = [ "//base" ]
 }
