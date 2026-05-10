@@ -674,9 +674,13 @@ void BraveToolbarView::UpdateVerticalTabTogglePlacement() {
     return;
   }
 
-  DCHECK(location_bar_view_ && location_bar_view_->parent());
+  CHECK(location_bar_view_);
+  CHECK(location_bar_view_->parent());
   views::View* container_view = location_bar_view_->parent();
 
+  // The toggle may not yet be parented to `container_view` during early
+  // initialization or if it was removed by another flow; bail out instead of
+  // reordering an unrelated view.
   const std::optional<size_t> toggle_idx =
       container_view->GetIndexOf(vertical_tab_toggle_);
   if (!toggle_idx.has_value()) {
@@ -685,12 +689,17 @@ void BraveToolbarView::UpdateVerticalTabTogglePlacement() {
 
   size_t target_idx = 0;
   if (tabs::utils::IsVerticalTabOnRight(browser_)) {
+    // Place the toggle just before the app menu. If the menu isn't in the
+    // container yet, or is already the first child, there is no valid slot
+    // to the left of it.
     const auto menu_idx = container_view->GetIndexOf(GetAppMenuButton());
     if (!menu_idx.has_value() || *menu_idx == 0) {
       return;
     }
     target_idx = *menu_idx - 1;
   } else {
+    // Place the toggle just before the back button. If back isn't a direct
+    // child of the container yet, defer placement until it is.
     const auto back_idx = container_view->GetIndexOf(back_);
     if (!back_idx.has_value()) {
       return;

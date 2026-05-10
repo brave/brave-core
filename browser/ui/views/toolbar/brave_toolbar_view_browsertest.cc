@@ -617,22 +617,34 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
   prefs->SetBoolean(brave_tabs::kVerticalTabsOnRight, false);
   RunScheduledLayouts();
   auto* toggle = toolbar_view_->vertical_tab_toggle_button();
-  ASSERT_TRUE(toggle);
+  ASSERT_TRUE(toggle) << "vertical tabs enabled, kVerticalTabsOnRight=false";
   const auto ix_left_side = container->GetIndexOf(toggle);
-  ASSERT_TRUE(ix_left_side.has_value());
+  ASSERT_TRUE(ix_left_side.has_value())
+      << "toggle missing from toolbar container "
+         "(kVerticalTabsOnRight=false)";
 
   prefs->SetBoolean(brave_tabs::kVerticalTabsOnRight, true);
   RunScheduledLayouts();
   const auto ix_on_right = container->GetIndexOf(toggle);
-  ASSERT_TRUE(ix_on_right.has_value());
+  ASSERT_TRUE(ix_on_right.has_value())
+      << "toggle missing from toolbar container "
+         "(kVerticalTabsOnRight=true)";
 
   views::View* menu = toolbar_button_provider_->GetAppMenuButton();
   ASSERT_TRUE(menu);
   const auto menu_ix = container->GetIndexOf(menu);
-  ASSERT_TRUE(menu_ix.has_value() && *menu_ix > 0);
+  ASSERT_TRUE(menu_ix.has_value() && *menu_ix > 0)
+      << "app menu button must be a non-leading child of the toolbar "
+         "container";
 
-  EXPECT_EQ(*ix_on_right, *menu_ix - 1);
-  EXPECT_LT(*ix_left_side, *ix_on_right);
+  EXPECT_EQ(*ix_on_right, *menu_ix - 1)
+      << "with kVerticalTabsOnRight=true, toggle should sit immediately "
+         "before the app menu (toggle_ix="
+      << *ix_on_right << ", menu_ix=" << *menu_ix << ")";
+  EXPECT_LT(*ix_left_side, *ix_on_right)
+      << "toggle should move to a higher index when switching from "
+         "kVerticalTabsOnRight=false to true (left_ix="
+      << *ix_left_side << ", right_ix=" << *ix_on_right << ")";
 }
 
 // Verifies that UpdateHorizontalPadding() keeps the toolbar container border
