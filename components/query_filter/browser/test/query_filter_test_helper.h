@@ -10,13 +10,13 @@ namespace query_filter {
 
 namespace test {
 // Populates the query filter component with default set of rules.
-// |kQueryFilterComponent| flag must be enabled before calling this method or
-// the assertion will fail.
+// Must only be called with kQueryFilterComponent enabled; calling otherwise
+// will crash.
 void SetupWithDefaultQueryFilterRules();
 
 // Clears all rules from the query filter component.
-// |kQueryFilterComponent| flag must be enabled before calling this method or
-// the assertion will fail.
+// Must only be called with kQueryFilterComponent enabled; calling otherwise
+// will crash.
 void RemoveDefaultRules();
 }  // namespace test
 

@@ -84,22 +84,6 @@ TEST(SchemaUtilsTest, DomainSpecificIncludeMatchesOnlyThatDomain) {
   EXPECT_TRUE(result3.empty());
 }
 
-TEST(SchemaUtilsTest, ExcludePatternSkipsMatchingUrl) {
-  std::vector<schema::Rule> rules;
-  rules.push_back(
-      MakeRule({"*://*.facebook.com/*"}, {"*://*.safe.com/*"}, {"evil_param"}));
-
-  // URL matching include but not exclude – param should be blocked.
-  auto result1 = GetBlocklistedParamsForSpec(
-      rules, "https://mobile.facebook.com/?evil_param=1");
-  EXPECT_TRUE(result1.contains("evil_param"));
-
-  // URL matching include AND exclude – rule should be skipped entirely.
-  auto result2 =
-      GetBlocklistedParamsForSpec(rules, "https://safe.com/?evil_param=1");
-  EXPECT_TRUE(result2.empty());
-}
-
 TEST(SchemaUtilsTest, BlankIncludePatternsAreIgnored) {
   std::vector<schema::Rule> rules;
   // A rule with only blank/empty include strings should never match.

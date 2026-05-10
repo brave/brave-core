@@ -30,19 +30,20 @@ base::flat_set<std::string> GetBlocklistedParamsForSpec(
   const url_pattern_index::UrlPattern::UrlInfo url_info(url);
 
   // A helper method to detect blank empty strings.
-  constexpr auto IsBlank = [](std::string_view s) {
-    return s.empty() || std::all_of(s.begin(), s.end(), [](unsigned char c) {
+  constexpr auto is_blank = [](std::string_view s) {
+    return s.empty() ||
+           std::ranges::all_of(s.begin(), s.end(), [](unsigned char c) {
              return absl::ascii_isspace(c);
            });
   };
 
   // Go over rules that matches on the |url|.
   for (const auto& rule : rules) {
-    // Check if the rule explictly "excludes" the |url| from consideration.
-    const auto& exclude_itr = std::find_if(
+    // Check if the rule explicitly "excludes" the |url| from consideration.
+    const auto& exclude_itr = std::ranges::find_if(
         rule.exclude.cbegin(), rule.exclude.cend(),
-        [&url_info, &IsBlank](const std::string& str) {
-          return !IsBlank(str) &&
+        [&url_info, &is_blank](const std::string& str) {
+          return !is_blank(str) &&
                  url_pattern_index::UrlPattern(str).MatchesUrl(url_info);
         });
     // |url| excluded from consideration for the current |rule|
@@ -50,11 +51,11 @@ base::flat_set<std::string> GetBlocklistedParamsForSpec(
       continue;
     }
 
-    // Check if the rule explictly "includes" the |url| for consideration.
-    const auto& include_itr = std::find_if(
+    // Check if the rule explicitly "includes" the |url| for consideration.
+    const auto& include_itr = std::ranges::find_if(
         rule.include.cbegin(), rule.include.cend(),
-        [&url_info, &IsBlank](const std::string& str) {
-          return !IsBlank(str) &&
+        [&url_info, &is_blank](const std::string& str) {
+          return !is_blank(str) &&
                  url_pattern_index::UrlPattern(str).MatchesUrl(url_info);
         });
     if (include_itr != rule.include.cend()) {

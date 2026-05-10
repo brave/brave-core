@@ -12,6 +12,7 @@
 
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/fixed_flat_set.h"
+#include "base/containers/map_util.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "brave/components/query_filter/browser/query_filter_data.h"
@@ -46,28 +47,21 @@ static constexpr auto kExemptedHostnames =
             "urldefense.com",
         });
 
-//  Remove tracking query parameters from a GURL, leaving all
+// Remove tracking query parameters from a GURL, leaving all
 // other parts untouched.
 std::optional<std::string> StripQueryParameter(std::string_view query,
                                                std::string_view spec) {
+  // Note that when disabled this would also remove support for
+  // |kConditionalQueryStringTrackers|.
   if (!base::FeatureList::IsEnabled(
           query_filter::features::kQueryFilterComponent)) {
     return std::nullopt;
   }
-  // Get all the params which are blocked for |spec| from our rules.
-  // We could have relied on absl::flat_hash_set here since we don't require the
-  // ordering but that would have meant adding the whole absl dependency to our
-  // build target. So, going with the slightly less-efficient "ordered"
-  // O(log(N)) container like base::flat_set which is already part of our target
-  // to avoid inflating it further. However, given the small # of query
-  // parameters and reliance on a flat structure which is very cache friendly,
-  // no visible performance issue is expected.
+
+  // Set of all the params which are blocked for |spec| from our rules.
   const base::flat_set<std::string> blocked_params_set =
       query_filter::GetBlocklistedParamsForSpec(
           query_filter::QueryFilterData::GetInstance()->rules(), spec);
-  if (blocked_params_set.empty()) {
-    return std::nullopt;
-  }
 
   // We are using custom query string parsing code here. See
   // https://github.com/brave/brave-core/pull/13726#discussion_r897712350
@@ -107,10 +101,11 @@ std::optional<std::string> StripQueryParameter(std::string_view query,
       continue;
     }
 
-    // Conditional query parameter stripping decision.
-    if (kConditionalQueryStringTrackers.contains(param) &&
-        !re2::RE2::PartialMatch(
-            spec, kConditionalQueryStringTrackers.at(param).data())) {
+    // Check next for conditional query parameter stripping which is completely
+    // independent of the |blocked_params_set|.
+    if (const auto* pattern =
+            base::FindOrNull(kConditionalQueryStringTrackers, param);
+        pattern && !re2::RE2::PartialMatch(spec, pattern->data())) {
       did_strip = true;
       continue;
     }

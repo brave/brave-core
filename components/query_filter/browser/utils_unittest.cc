@@ -219,7 +219,7 @@ TEST_F(BraveQueryFilter_ComponentEnabled, ScopedQueryTrackingTest) {
         },
         {
             "include": ["*://*.facebook.com/*"],
-            "exclude": ["://*theshining.com/*"],
+            "exclude": ["*://*theshining.com/*"],
             "params": ["evil"]
         }
         ])json"));
@@ -284,7 +284,7 @@ TEST_F(BraveQueryFilter_ComponentEnabled, ScopedQueryTrackingTest) {
   // shouldn't be stripping it away.
   EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
       GURL("https://google.com"), GURL(),
-      GURL("https://theshinning.com/?evil=123"), "GET", false));
+      GURL("https://theshining.com/?evil=123"), "GET", false));
 }
 
 TEST_F(BraveQueryFilter_ComponentEnabled, ConditionalFilteringTest) {
@@ -330,6 +330,16 @@ TEST_F(BraveQueryFilter_ComponentEnabled, ConditionalFilteringTest) {
       GURL("https://test.com/emailWebview?mkt_tok=123"), "GET", false));
 }
 
+TEST_F(BraveQueryFilter_ComponentEnabled, ConditionalFilteringWithoutAnyRules) {
+  // We nuke the rules so we can test the hardcoded logic only.
+  query_filter::test::RemoveDefaultRules();
+
+  EXPECT_EQ(query_filter::MaybeApplyQueryStringFilter(
+                GURL(), GURL("https://brave.com"),
+                GURL("https://test.com/?mkt_tok=123"), "GET", false),
+            GURL("https://test.com/"));
+}
+
 class BraveQueryFilter_ComponentDisabled : public testing::Test {
  public:
   void SetUp() override {
@@ -350,4 +360,9 @@ TEST_F(BraveQueryFilter_ComponentDisabled, NoStrippingOccurs) {
   EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
       GURL("https://brave.com"), GURL("https://brave.com"),
       GURL("https://test.com/?gclid=123"), "GET", false));
+
+  // Conditional filtering also fails.
+  EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
+      GURL(), GURL("https://brave.com"), GURL("https://test.com/?mkt_tok=123"),
+      "GET", false));
 }
