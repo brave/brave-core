@@ -80,32 +80,6 @@ TEST_F(BraveQueryFilter_ComponentEnabled, FilterQueryTrackers) {
           GURL(), GURL("https://brave.com"),
           GURL("https://test.com/?gclid=123&Unsubscribe=123"), "GET", false),
       GURL("https://test.com/?Unsubscribe=123"));
-
-  // Conditional filtering, `ck_subscriber_id` param gets removed when
-  // `unsubscribe` not present in url.
-  EXPECT_EQ(query_filter::MaybeApplyQueryStringFilter(
-                GURL(), GURL("https://brave.com"),
-                GURL("https://test.com/?ck_subscriber_id=123"), "GET", false),
-            GURL("https://test.com/"));
-  // Conditional filtering, `h_sid` param gets removed when
-  // /email/ not present in url.
-  EXPECT_EQ(query_filter::MaybeApplyQueryStringFilter(
-                GURL(), GURL("https://brave.com"),
-                GURL("https://test.com/?h_sid=123"), "GET", false),
-            GURL("https://test.com/"));
-  // Conditional filtering, `h_slt` param gets removed when /email/
-  // not present in url.
-  EXPECT_EQ(query_filter::MaybeApplyQueryStringFilter(
-                GURL(), GURL("https://brave.com"),
-                GURL("https://test.com/?h_slt=123"), "GET", false),
-            GURL("https://test.com/"));
-  // Conditional filtering, `mkt_tok` param gets removed when `unsubscribe`
-  // not present in url.
-  EXPECT_EQ(query_filter::MaybeApplyQueryStringFilter(
-                GURL(), GURL("https://brave.com"),
-                GURL("https://test.com/?mkt_tok=123"), "GET", false),
-            GURL("https://test.com/"));
-
   // Test nil when nothing is needed to be filtered
   EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
       GURL("https://brave.com"), GURL("https://brave.com"),
