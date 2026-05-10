@@ -57,9 +57,11 @@ std::optional<std::string> StripQueryParameter(std::string_view query,
   // Get all the params which are blocked for |spec| from our rules.
   // We could have relied on absl::flat_hash_set here since we don't require the
   // ordering but that would have meant adding the whole absl dependency to our
-  // build target. So, going with an "ordered" O(log(N)) container like
-  // base::flat_set which is already part of our target to avoid inflating the
-  // target.
+  // build target. So, going with the slightly less-efficient "ordered"
+  // O(log(N)) container like base::flat_set which is already part of our target
+  // to avoid inflating it further. However, given the small # of query
+  // parameters and reliance on a flat structure which is very cache friendly,
+  // no visible performance issue is expected.
   const base::flat_set<std::string> blocked_params_set =
       query_filter::GetBlocklistedParamsForSpec(
           query_filter::QueryFilterData::GetInstance()->rules(), spec);
@@ -91,6 +93,15 @@ std::optional<std::string> StripQueryParameter(std::string_view query,
     }
 
     const auto [param, value] = param_value.value();
+    // For cases like "https://example.com/?fbclid=&foo=1",
+    // which would have the first |token| set as "fbclid=" which when split
+    // around '=' would have an empty value string. Similarly for param and
+    // value with a URL like "https://example.com/?=&foo=1".
+    if (param.empty() || value.empty()) {
+      output_tokens.emplace_back(token);
+      continue;
+    }
+
     if (blocked_params_set.contains(param)) {
       did_strip = true;
       continue;
