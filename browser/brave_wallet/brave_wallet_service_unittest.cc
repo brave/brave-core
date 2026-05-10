@@ -3512,8 +3512,8 @@ TEST_F(BraveWalletServiceUnitTest, AutolockIsDisabledInTests) {
   task_environment_.FastForwardBy(base::Minutes(20));
   EXPECT_FALSE(service_->keyring_service()->IsLockedSync());
 
-  BraveWalletServiceDelegateBase::EnableAutolockCommandlineCheckForTesting(
-      false);
+  auto scoped_enable_autolock =
+      BraveWalletServiceDelegateBase::GetScopedEnableAutolockForTesting();
 
   auto another_wallet_service = std::make_unique<BraveWalletService>(
       url_loader_factory_.GetSafeWeakWrapper(),
@@ -3525,9 +3525,6 @@ TEST_F(BraveWalletServiceUnitTest, AutolockIsDisabledInTests) {
   EXPECT_FALSE(another_wallet_service->keyring_service()->IsLockedSync());
   task_environment_.FastForwardBy(base::Minutes(20));
   EXPECT_TRUE(another_wallet_service->keyring_service()->IsLockedSync());
-
-  BraveWalletServiceDelegateBase::EnableAutolockCommandlineCheckForTesting(
-      true);
 }
 
 }  // namespace brave_wallet

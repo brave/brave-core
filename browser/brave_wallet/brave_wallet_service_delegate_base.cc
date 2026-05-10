@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_wallet/brave_wallet_service_delegate_base.h"
 
+#include "base/auto_reset.h"
 #include "base/check_is_test.h"
 #include "base/command_line.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -95,9 +96,9 @@ bool BraveWalletServiceDelegateBase::IsAutolockEnabled() {
 }
 
 // static
-void BraveWalletServiceDelegateBase::EnableAutolockCommandlineCheckForTesting(
-    bool enable_commandline_check) {
-  g_enable_autolock_commandline_check = enable_commandline_check;
+base::AutoReset<bool>
+BraveWalletServiceDelegateBase::GetScopedEnableAutolockForTesting() {
+  return {&g_enable_autolock_commandline_check, false};
 }
 
 }  // namespace brave_wallet
