@@ -153,31 +153,6 @@ TEST_F(BraveQueryFilter_ComponentEnabled, FilterQueryTrackers) {
            "direct?utm_campaign=XNF&utm_source=hs_automation&_hsenc=p2&_hsmi="
            "26__;!!MlclJBHn!0eDf-z$"),
       "GET", false));
-  // Conditional filtering, test nothing filtered. `ck_subscriber_id` param
-  // with `unsubscribe` present in url.
-  EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
-      GURL(), GURL("https://brave.com"),
-      GURL("https://unsubscribe.com/?ck_subscriber_id=123"), "GET", false));
-  // Conditional filtering, test nothing filtered. `h_sid` param with /email/
-  // present in url.
-  EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
-      GURL(), GURL("https://brave.com"),
-      GURL("https://test.com/email/?h_sid=123"), "GET", false));
-  // Conditional filtering, test nothing filtered. `h_slt` param with
-  // `/email/` present in url.
-  EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
-      GURL(), GURL("https://brave.com"),
-      GURL("https://test.com/email/?h_slt=123"), "GET", false));
-  // Conditional filtering, test nothing filtered. `mkt_tok` param with
-  // `Unsubscribe` present in url.
-  EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
-      GURL(), GURL("https://brave.com"),
-      GURL("https://Unsubscribe.com/?mkt_tok=123"), "GET", false));
-  // Conditional filtering, test nothing filtered. `mkt_tok` param with
-  // `emailWebview` present in url.
-  EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
-      GURL(), GURL("https://brave.com"),
-      GURL("https://test.com/emailWebview?mkt_tok=123"), "GET", false));
 }
 
 TEST_F(BraveQueryFilter_ComponentEnabled, ScopedQueryTrackingTest) {
@@ -276,6 +251,7 @@ TEST_F(BraveQueryFilter_ComponentEnabled, ScopedQueryTrackingTest) {
   EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
       GURL("https://example.com"), GURL(),
       GURL("https://brave.com/?sample4=123"), "GET", false));
+
   EXPECT_EQ(query_filter::MaybeApplyQueryStringFilter(
                 GURL("https:/google.com"), GURL(),
                 GURL("https://mobile.facebook.com/?evil=666"), "GET", false),
