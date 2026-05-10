@@ -1,20 +1,22 @@
 diff --git a/components/omnibox/browser/BUILD.gn b/components/omnibox/browser/BUILD.gn
-index e3769976d70686c8ce20f5f0ee13c1a31d895ec4..dec10c90d0dc35230a750721aa7a798b1a571ede 100644
+index 88a658e662620b4c0cc3e4a54d8cc0b44f5df873..4144d3cbfae5a0a700bb9992f1ad78cd3709b036 100644
 --- a/components/omnibox/browser/BUILD.gn
 +++ b/components/omnibox/browser/BUILD.gn
-@@ -404,6 +404,7 @@ static_library("browser") {
-     "//ui/base",
-     "//ui/gfx",
-   ]
-+  sources += brave_components_omnibox_browser_sources deps += brave_components_omnibox_browser_deps public_deps += brave_components_omnibox_browser_public_deps
+@@ -512,6 +512,9 @@ static_library("browser") {
+     ]
+     deps += [ "//content/public/common" ]
+   }
++  sources += brave_components_omnibox_browser_sources
++  public_deps += brave_components_omnibox_browser_public_deps
++  deps += brave_components_omnibox_browser_deps
+ }
  
-   configs += [ "//build/config/compiler:wexit_time_destructors" ]
- 
-@@ -1041,6 +1042,7 @@ fuzzer_test("search_suggestion_parser_fuzzer") {
+ source_set("pref_names") {
+@@ -1080,6 +1083,7 @@ fuzzer_test("search_suggestion_parser_fuzzer") {
+ }
  
  mojom("mojo_bindings") {
-   sources = [ "omnibox.mojom" ]
 +  generate_legacy_js_bindings = true
+   sources = [ "omnibox.mojom" ]
    if (!is_ios) {
      sources += [ "searchbox.mojom" ]
-   }
