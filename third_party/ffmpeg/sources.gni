@@ -17,12 +17,12 @@ brave_third_party_ffmpeg_asm_deps = []
 if (_use_linux_config && ffmpeg_branding == "Chrome") {
   brave_third_party_ffmpeg_c_sources += [
     # Byte-swap DSP (renamed to avoid duplicate object name with x86/bswapdsp.asm)
-    "libavcodec/autorename_libavcodec_bswapdsp.c",
+    "//brave/third_party/ffmpeg/libavcodec/autorename_libavcodec_bswapdsp.c",
 
     # HEVC core decoder
-    "libavcodec/hevc/autorename_libavcodec_hevc_cabac.c",
-    "libavcodec/hevc/autorename_libavcodec_hevc_parse.c",
-    "libavcodec/hevc/autorename_libavcodec_hevc_parser.c",
+    "//brave/third_party/ffmpeg/libavcodec/hevc/autorename_libavcodec_hevc_cabac.c",
+    "//brave/third_party/ffmpeg/libavcodec/hevc/autorename_libavcodec_hevc_parse.c",
+    "//brave/third_party/ffmpeg/libavcodec/hevc/autorename_libavcodec_hevc_parser.c",
     "libavcodec/hevc/data.c",
     "libavcodec/hevc/dsp.c",
     "libavcodec/hevc/filter.c",
