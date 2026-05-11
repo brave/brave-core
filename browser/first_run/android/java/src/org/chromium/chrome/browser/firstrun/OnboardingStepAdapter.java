@@ -21,8 +21,8 @@ import org.chromium.brave.browser.firstrun.R;
 import org.chromium.build.annotations.NullMarked;
 
 /**
- * RecyclerView adapter for the variant-B onboarding ViewPager2, inflating one layout per step and
- * delegating navigation requests to the host via {@link OnboardingNavigationListener}.
+ * RecyclerView adapter for the onboarding ViewPager2, inflating one layout per step and delegating
+ * navigation requests to the host via {@link OnboardingNavigationListener}.
  */
 @NullMarked
 public class OnboardingStepAdapter
