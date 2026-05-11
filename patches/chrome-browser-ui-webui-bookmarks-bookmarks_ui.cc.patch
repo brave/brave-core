@@ -1,12 +1,13 @@
 diff --git a/chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc b/chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc
-index b6c384d7a9b98ad2b3fd2f7b3ed6bbac0e398ace..022bbd4e4b70627b9a19e022f9feddd0ddeaa444 100644
+index b6c384d7a9b98ad2b3fd2f7b3ed6bbac0e398ace..70823f7ea56f96ce0d6129c871bdef8b966120c7 100644
 --- a/chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc
 +++ b/chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc
-@@ -160,6 +160,7 @@ content::WebUIDataSource* CreateAndAddBookmarksUIHTMLSource(Profile* profile) {
-                         ? "webui-refresh-2026"
-                         : "");
- 
-+  BRAVE_CREATE_BOOKMARKS_UI_HTML_SOURCE
-   return source;
- }
- 
+@@ -75,7 +75,7 @@ content::WebUIDataSource* CreateAndAddBookmarksUIHTMLSource(Profile* profile) {
+       {"editDialogInvalidUrl", IDS_BOOKMARK_MANAGER_INVALID_URL},
+       {"editDialogNameInput", IDS_BOOKMARK_MANAGER_NAME_INPUT_PLACE_HOLDER},
+       {"editDialogUrlInput", IDS_BOOKMARK_MANAGER_URL_INPUT_PLACE_HOLDER},
+-      {"emptyList", IDS_BOOKMARK_MANAGER_EMPTY_LIST},
++      {"emptyList", IDS_BRAVE_BOOKMARK_MANAGER_EMPTY_LIST},
+       {"emptyUnmodifiableList", IDS_BOOKMARK_MANAGER_EMPTY_UNMODIFIABLE_LIST},
+       {"folderLabel", IDS_BOOKMARK_MANAGER_FOLDER_LABEL},
+       {"importBegan", IDS_BOOKMARK_MANAGER_MENU_IMPORT_BEGAN},
