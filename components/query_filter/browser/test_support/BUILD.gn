@@ -10,8 +10,5 @@ source_set("test_support") {
     "query_filter_test_helper.h",
   ]
 
-  deps = [
-    "//brave/components/query_filter/browser",
-    "//testing/gtest",
-  ]
+  deps = [ "//brave/components/query_filter/browser" ]
 }

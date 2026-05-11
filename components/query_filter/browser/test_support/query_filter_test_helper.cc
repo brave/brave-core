@@ -6,7 +6,6 @@
 #include "brave/components/query_filter/browser/test_support/query_filter_test_helper.h"
 
 #include "brave/components/query_filter/browser/query_filter_data.h"
-#include "testing/gtest/include/gtest/gtest.h"
 
 namespace {
 // Sample query filter JSON which would be written to a file during setup.
@@ -125,14 +124,16 @@ constexpr char kDefaultQueryFilterRules[] = R"json(
 
 namespace query_filter {
 namespace test {
-void SetupWithDefaultQueryFilterRules() {
-  ASSERT_TRUE(QueryFilterData::GetInstance()->PopulateDataFromComponent(
-      kDefaultQueryFilterRules));
+
+ScopedTestingQueryFilterRules::ScopedTestingQueryFilterRules() {
+  QueryFilterData::GetInstance()->PopulateDataFromComponent(
+      kDefaultQueryFilterRules);
 }
 
-void RemoveDefaultRules() {
+ScopedTestingQueryFilterRules::~ScopedTestingQueryFilterRules() {
   QueryFilterData::GetInstance()->ResetRulesForTesting();
 }
+
 }  // namespace test
 
 }  // namespace query_filter

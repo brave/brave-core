@@ -5,7 +5,7 @@
 
 #include "brave/browser/net/brave_site_hacks_network_delegate_helper.h"
 
-#include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -59,9 +59,10 @@ class BraveSiteHacksNetworkDelegateHelperTest : public testing::Test {
     scoped_feature_list_.InitWithFeatureStates(
         {{features::kBraveRequestInfoUniquePtr, enable_flag},
          {query_filter::features::kQueryFilterComponent, true}});
+    testing_filter_rules_.emplace();
   }
 
-  void TearDown() override { query_filter::test::RemoveDefaultRules(); }
+  void TearDown() override { testing_filter_rules_.reset(); }
 
   sync_preferences::TestingPrefServiceSyncable* GetPrefs() {
     return profile_->GetTestingPrefService();
@@ -87,6 +88,8 @@ class BraveSiteHacksNetworkDelegateHelperTest : public testing::Test {
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<brave::BraveRequestInfo> owned_request_;
   base::test::ScopedFeatureList scoped_feature_list_;
+  std::optional<query_filter::test::ScopedTestingQueryFilterRules>
+      testing_filter_rules_;
 };
 
 using PtrStrategies = testing::Types<SharedPtrStrategy, WeakPtrStrategy>;

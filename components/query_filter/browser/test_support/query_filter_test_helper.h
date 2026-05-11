@@ -9,15 +9,20 @@
 namespace query_filter {
 
 namespace test {
-// Populates the query filter component with default set of rules.
-// Must only be called with kQueryFilterComponent enabled; calling otherwise
-// will crash.
-void SetupWithDefaultQueryFilterRules();
 
-// Clears all rules from the query filter component.
-// Must only be called with kQueryFilterComponent enabled; calling otherwise
-// will crash.
-void RemoveDefaultRules();
+// Populates the query filter component with default set of rules
+// and clears all rules from the query filter component upon
+// destruction. Must only be called with kQueryFilterComponent enabled;
+// otherwise will crash the test.
+class ScopedTestingQueryFilterRules {
+ public:
+  ScopedTestingQueryFilterRules();
+  ~ScopedTestingQueryFilterRules();
+
+  ScopedTestingQueryFilterRules(const ScopedTestingQueryFilterRules&) = delete;
+  ScopedTestingQueryFilterRules& operator=(
+      const ScopedTestingQueryFilterRules&) = delete;
+};
 }  // namespace test
 
 }  // namespace query_filter

@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <optional>
 #include <string_view>
 
 #include "base/base64url.h"
@@ -58,7 +59,7 @@ class BraveSiteHacksNetworkDelegateBrowserTest : public InProcessBrowserTest {
         base::Unretained(this)));
     ASSERT_TRUE(https_server_.Start());
 
-    query_filter::test::SetupWithDefaultQueryFilterRules();
+    testing_filter_rules_.emplace();
 
     simple_landing_url_ = https_server_.GetURL("a.com", "/simple.html");
     redirect_to_cross_site_landing_url_ =
@@ -129,7 +130,7 @@ class BraveSiteHacksNetworkDelegateBrowserTest : public InProcessBrowserTest {
   void TearDownInProcessBrowserTestFixture() override {
     mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
     InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
-    query_filter::test::RemoveDefaultRules();
+    testing_filter_rules_.reset();
   }
 
   GURL url(const GURL& destination_url, const GURL& navigation_url) {
@@ -251,6 +252,8 @@ class BraveSiteHacksNetworkDelegateBrowserTest : public InProcessBrowserTest {
   content::ContentMockCertVerifier mock_cert_verifier_;
   net::test_server::EmbeddedTestServer https_server_;
   base::test::ScopedFeatureList scoped_feature_list_;
+  std::optional<query_filter::test::ScopedTestingQueryFilterRules>
+      testing_filter_rules_;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
