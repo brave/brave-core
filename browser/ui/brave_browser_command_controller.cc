@@ -566,8 +566,7 @@ void BraveBrowserCommandController::UpdateCommandForWorkspace() {
   }
 
   UpdateCommandEnabled(IDC_SAVE_WORKSPACE, true);
-  UpdateCommandEnabled(IDC_OPEN_WORKSPACE,
-                       service->ListWorkspaces().size() > 0);
+  UpdateCommandEnabled(IDC_OPEN_WORKSPACE, !service->ListWorkspaces().empty());
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveSync() {
