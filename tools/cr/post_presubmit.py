@@ -13,6 +13,9 @@ Example:
 
 You can produce the JSON output for a presubmit run by using:
     npm run presubmit -- --base origin/master --json .presubmit_results.json
+
+Notice: Keep this script as *standalone*, with no deps to `tools/cr` code, so
+we can have no room for deps if downloaded and run on its own.
 """
 
 import argparse

@@ -2,7 +2,27 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""git_cr commit subcommand: wraps `git commit` with hook environment flags."""
+"""git_cr commit — wraps `git commit` with brave-core hook environment flags.
+
+Forwards user-specified tags, issues, and culprit commit hashes to the
+commit-msg hook via environment variables. All other arguments pass through
+to `git commit` unchanged.
+
+Usage
+-----
+  git cr commit [--tagged TAG[,TAG…]] [--issue NUM[,NUM…]]
+                [--culprit HASH[,HASH…]] [<git-commit-args> …]
+
+  git cr commit -m "Fix login button alignment"
+  git cr commit --tagged WIP -m "Work in progress"
+
+  Custom flags (forwarded to the commit-msg hook via environment variables):
+    --tagged    Comma-separated tags            → $tags
+    --issue     Comma-separated issue numbers   → $issue
+    --culprit   Comma-separated commit hashes   → $culprit
+
+  All other arguments are forwarded verbatim to git commit.
+"""
 
 from __future__ import annotations
 
@@ -46,6 +66,7 @@ def _run_commit(
     git_args: list[str],
 ) -> int:
     """Execute git commit with hook environment variables injected."""
+    _check_hook_ready()
     env = os.environ.copy()
     if tagged:
         env['tags'] = tagged
@@ -59,7 +80,6 @@ def _run_commit(
 
 def cmd_commit(args: list[str]) -> int:
     """Parse commit flags and invoke git commit with injected environment."""
-    _check_hook_ready()
     parser = argparse.ArgumentParser(
         prog='git cr commit',
         description='git commit wrapper with brave-core hook flags',

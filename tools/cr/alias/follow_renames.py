@@ -34,7 +34,6 @@ from pathlib import Path
 import subprocess
 
 import _boot  # noqa: F401
-from incendiary_error_handler import IncendiaryErrorHandler
 import plaster
 from plaster import PlasterFile
 from terminal import console, terminal
@@ -82,11 +81,6 @@ def cmd_follow_renames(args: list[str]) -> int:
               'A bare ref (e.g. HEAD or a tag) is treated as a single '
               'commit; a range (e.g. old_tag..new_tag) is used as-is.'))
     parsed = parser.parse_args(args)
-
-    logging.basicConfig(
-        level=logging.DEBUG if parsed.verbose else logging.INFO,
-        format='%(message)s',
-        handlers=[IncendiaryErrorHandler(markup=True, rich_tracebacks=True)])
 
     renames = _get_chromium_renames(parsed.ref_or_range)
 

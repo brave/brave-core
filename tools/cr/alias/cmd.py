@@ -5,46 +5,15 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 """git_cr — brave-core git helper.
 
-Subcommands
------------
-  git cr commit       Commit with brave-core hook flags
-  git cr mv           Move a file/directory and repair all artefacts
-  git cr follow-renames
-                      Repair artefacts after upstream Chromium renames
-  git cr install-hook Install commit-msg hook from tools/cr/alias/commit-msg.py
-  git cr setup-alias  Register the git cr alias in .git/config
-
-commit
-------
-  git cr commit [--tagged TAG[,TAG…]] [--issue NUM[,NUM…]]
-                [--culprit HASH[,HASH…]] [<git-commit-args> …]
-
-  git cr commit -m "Fix login button alignment"
-  git cr commit --tagged WIP -m "Work in progress"
-
-  Custom flags (forwarded to the commit-msg hook via environment variables):
-    --tagged    Comma-separated tags            → $tags
-    --issue     Comma-separated issue numbers   → $issue
-    --culprit   Comma-separated commit hashes   → $culprit
-
-  All other arguments are forwarded verbatim to git commit.
-
-mv
---
-  git cr mv [--mkdir] [--no-git] <source> <destination>
-
-  git cr mv foo/bar.h baz/bar.h
-  git cr mv --mkdir foo/bar.h new_dir/bar.h
-
-follow-renames
---------------
-  git cr follow-renames [--no-git] <rev-range>
-
-  # All renames between two Chromium version tags (typical version bump):
-  git cr follow-renames 130.0.6723.58..131.0.6778.85
-
-  # Renames introduced by a single upstream commit:
-  git cr follow-renames abc123^..abc123
+Subcommands:
+  - commit          Commit with brave-core hook flags.
+  - follow-renames  Repair brave-core artefacts after upstream Chromium
+                    renames.
+  - mv              Move a file/directory in brave-core and repair every
+                    downstream artefact.
+  - install-hook    Install the commit-msg hook from
+                    tools/cr/alias/commit-msg.py.
+  - setup-alias     Register the `git cr` alias in the local .git/config.
 
 Installing the alias
 --------------------
@@ -74,13 +43,32 @@ import repository
 from alias.base import (HOOK_DEST, HOOK_SOURCE, WINDOWS_SHIM,
                         UserValidationError, check_hooks_path)
 from alias.commit import cmd_commit
+from vpython_utils import VPYTHON3_PATH
 
-# This script's path in POSIX form, suitable for embedding in a git alias.
-# Git aliases prefixed with '!' run via git's bundled bash on all platforms,
-# including Git for Windows, which requires POSIX paths (C:/… → /c/…).
-_SCRIPT_PATH: str = Path(__file__).resolve().as_posix()
-if platform.system() == 'Windows':
-    _SCRIPT_PATH = '/' + _SCRIPT_PATH[0].lower() + _SCRIPT_PATH[2:]
+
+def _to_alias_path(p: Path) -> str:
+    """Returns `p` in a form suitable for embedding in a git !alias.
+
+    Absolute paths are POSIX-normalised, with Windows drive-letter
+    translation (C:/… → /c/…) for git's bundled bash. Relative paths — used
+    for bare command names like `vpython3` — are passed through verbatim so
+    bash resolves them via $PATH at alias-invocation time.
+    """
+    if not p.is_absolute():
+        return p.as_posix()
+    posix = p.as_posix()
+    if platform.system() == 'Windows':
+        posix = '/' + posix[0].lower() + posix[2:]
+    return posix
+
+
+# This script's path, in POSIX form for embedding in a git alias.
+_SCRIPT_PATH: str = _to_alias_path(Path(__file__).resolve())
+
+# `vpython3` invocation for the alias body. `VPYTHON3_PATH` is either a bare
+# `Path('vpython3')` (when depot_tools is on PATH) or an absolute path to
+# Chromium's bundled `third_party/depot_tools/vpython3` (when it isn't).
+_VPYTHON3_PATH: str = _to_alias_path(VPYTHON3_PATH)
 
 
 def cmd_install_hook() -> int:
@@ -119,7 +107,11 @@ def cmd_setup_alias() -> int:
     works on Linux, macOS, and Windows (Git for Windows) without any extra
     setup steps.
     """
-    alias_value = f'!vpython3 "{_SCRIPT_PATH}"'
+    # `!`-prefixed aliases run from the work-tree top by default, masking the
+    # user's actual cwd. Restore it via $GIT_PREFIX (git's path-from-top hint)
+    # so relative paths and `git rev-parse --show-cdup` behave as expected.
+    alias_value = (f'!cd "${{GIT_PREFIX:-.}}" && '
+                   f'"{_VPYTHON3_PATH}" "{_SCRIPT_PATH}"')
     try:
         repository.brave.run_git('config', '--local', 'alias.cr', alias_value)
     except subprocess.CalledProcessError as e:

@@ -18,6 +18,7 @@ import repository
 from alias.mv import cmd_mv
 from test.fake_chromium_repo import FakeChromiumRepo
 from alias.base import UserValidationError
+from vpython_utils import VPYTHON3_PATH
 
 
 class _Base(unittest.TestCase):
@@ -497,7 +498,7 @@ class CwdRelativeTest(_Base):
         cmd_py = Path(__file__).resolve().parent.parent / 'alias' / 'cmd.py'
         result = subprocess.run(
             [
-                'vpython3',
+                str(VPYTHON3_PATH),
                 str(cmd_py),
                 'mv',
                 '--no-format',
@@ -584,7 +585,7 @@ class SubdirPatchDeletionTest(_Base):
         cmd_py = Path(__file__).resolve().parent.parent / 'alias' / 'cmd.py'
         result = subprocess.run(
             [
-                'vpython3',
+                str(VPYTHON3_PATH),
                 str(cmd_py),
                 'mv',
                 '--mkdir',

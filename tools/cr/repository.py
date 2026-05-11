@@ -5,7 +5,9 @@
 
 from dataclasses import dataclass
 from pathlib import Path
+import logging
 import subprocess
+import sys
 from typing import Optional
 from rich.markup import escape
 
@@ -39,6 +41,13 @@ def _compute_brave_core_path() -> Path:
         raise RuntimeError(
             f'tools/cr expected to be inside a "{BRAVE_DIR_NAME}" git work '
             f'tree; resolved root is {brave_core.resolve()}.')
+    if brave_core != Path('.'):
+        logging.debug(
+            'Running %s from relative path: brave/%s, brave-core root set as:'
+            ' %s (resolves to %s)', (Path(sys.argv[0]).name if sys.argv
+                                     and sys.argv[0] else '<unknown>'),
+            Path.cwd().relative_to(brave_core.resolve()), brave_core,
+            brave_core.resolve())
     return brave_core
 
 
@@ -119,7 +128,16 @@ class Repository:
             return False
 
     def run_git(self, *cmd, no_trim=False) -> str:
-        """Runs a git command on the repository.
+        """Runs a git command on this repository.
+
+        Strongly preferred over calling `terminal.run_git` directly because
+        the call site makes it obvious which repository the command targets.
+
+        Caveat: git is invoked as if from this repo's root (via
+        `git -C <repo-root>`). Any relative path arguments are therefore
+        resolved against the repo root, not against the caller's cwd. If a
+        command needs paths relative to cwd, call `terminal.run_git` directly
+        instead.
         """
         if self.root == Path('.'):
             return terminal.run_git(*cmd, no_trim=no_trim)
