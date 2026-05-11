@@ -16,7 +16,7 @@
 namespace query_filter {
 
 base::flat_set<std::string> GetBlocklistedParamsForSpec(
-    const base::span<schema::Rule>& rules,
+    base::span<const schema::Rule> rules,
     std::string_view spec) {
   base::flat_set<std::string> result;
 

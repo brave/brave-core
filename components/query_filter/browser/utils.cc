@@ -13,11 +13,12 @@
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/containers/map_util.h"
+#include "base/containers/span.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "brave/components/query_filter/browser/query_filter_data.h"
-#include "brave/components/query_filter/browser/schema_utils.h"
 #include "brave/components/query_filter/common/features.h"
+#include "brave/components/query_filter/common/internal/schema_utils.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "third_party/re2/src/re2/re2.h"
 
@@ -59,9 +60,9 @@ std::optional<std::string> StripQueryParameter(std::string_view query,
   }
 
   // Set of all the params which are blocked for |spec| from our rules.
+  const auto& rules = query_filter::QueryFilterData::GetInstance()->rules();
   const base::flat_set<std::string> blocked_params_set =
-      query_filter::GetBlocklistedParamsForSpec(
-          query_filter::QueryFilterData::GetInstance()->rules(), spec);
+      query_filter::GetBlocklistedParamsForSpec(base::span(rules), spec);
 
   // We are using custom query string parsing code here. See
   // https://github.com/brave/brave-core/pull/13726#discussion_r897712350

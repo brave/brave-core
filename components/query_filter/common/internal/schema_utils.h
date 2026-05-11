@@ -28,7 +28,7 @@ namespace query_filter {
 // components/query_filter/browser/utils.cc when we support the query filter
 // component.
 base::flat_set<std::string> GetBlocklistedParamsForSpec(
-    const base::span<schema::Rule>& rules,
+    base::span<const schema::Rule> rules,
     std::string_view spec);
 }  // namespace query_filter
 
