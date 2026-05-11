@@ -47,7 +47,7 @@ const kBraveCustomAvatarStyleCss = `
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    border: 2px solid transparent;
+    border: 2px solid var(--leo-color-container-background);
     border-radius: 100%;
     box-sizing: border-box;
     display: flex;
