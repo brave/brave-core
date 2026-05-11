@@ -33,7 +33,7 @@ from alias.source_rewrite import (
     update_references,
     update_shadow_include,
 )
-from user_validation_error import UserValidationError
+from alias.base import UserValidationError
 
 # Only .h files receive include-guard processing (spec §1.2 Step 2).
 _HEADER_EXTENSIONS: frozenset[str] = frozenset({'.h'})
