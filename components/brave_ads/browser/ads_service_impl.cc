@@ -855,8 +855,12 @@ void AdsServiceImpl::CheckIdleStateAfterDelay() {
 #if !BUILDFLAG(IS_ANDROID)
   idle_state_timer_.Stop();
 
-  idle_state_timer_.Start(FROM_HERE, base::Seconds(1), this,
-                          &AdsServiceImpl::CheckIdleState);
+  // Poll at the same interval as the idle threshold (default 5s) to reduce
+  // CPU wakeups while still detecting state changes promptly.
+  idle_state_timer_.Start(
+      FROM_HERE,
+      std::max(base::Seconds(5), kUserIdleDetectionThreshold.Get()), this,
+      &AdsServiceImpl::CheckIdleState);
 #endif
 }
 

@@ -1805,9 +1805,9 @@ inline constexpr char kBlowfishAPIVersion[] = "2023-06-05";
 inline constexpr char kNativeEVMAssetContractAddress[] =
     "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
 
-inline constexpr int64_t kBlockTrackerDefaultTimeInSeconds = 20;
-inline constexpr int64_t kLogTrackerDefaultTimeInSeconds = 20;
-inline constexpr int64_t kSolanaBlockTrackerTimeInSeconds = 2;
+inline constexpr int64_t kBlockTrackerDefaultTimeInSeconds = 30;
+inline constexpr int64_t kLogTrackerDefaultTimeInSeconds = 30;
+inline constexpr int64_t kSolanaBlockTrackerTimeInSeconds = 10;
 
 // Ankr constants
 inline constexpr char kAnkrAdvancedAPIBaseURL[] =

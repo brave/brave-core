@@ -683,7 +683,7 @@ void BraveNewsController::ConditionallyStartOrStopTimer() {
           &BraveNewsController::CheckForPublishersUpdate);
     }
     if (!timer_prefetch_.IsRunning()) {
-      timer_prefetch_.Start(FROM_HERE, base::Minutes(1), this,
+      timer_prefetch_.Start(FROM_HERE, base::Minutes(5), this,
                             &BraveNewsController::Prefetch);
     }
 

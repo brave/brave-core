@@ -42,7 +42,7 @@
 namespace brave_ads {
 
 namespace {
-constexpr base::TimeDelta kRetryAfter = base::Seconds(15);
+constexpr base::TimeDelta kRetryAfter = base::Minutes(1);
 }  // namespace
 
 RefillConfirmationTokens::RefillConfirmationTokens() = default;
