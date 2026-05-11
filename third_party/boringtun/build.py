@@ -17,6 +17,8 @@ Commit the resulting Cargo.lock; subsequent builds use --locked.
 
 import argparse
 import os
+import logging
+import logging.handlers
 import shutil
 import subprocess
 import sys
@@ -39,39 +41,75 @@ LIB_NAME = {
     'mac': 'libboringtun.dylib',
 }
 
+# Host-platform tool names. The `.exe` suffix depends on the *host*
+# (where these binaries run), not the target -- a Linux host
+# cross-compiling to Windows still invokes `cargo`, not `cargo.exe`.
+_EXE = '.exe' if sys.platform == 'win32' else ''
+CLANG = f'clang{_EXE}'
+CLANG_CL = f'clang-cl{_EXE}'
+LLD_LINK = f'lld-link{_EXE}'
+LLVM_AR = f'llvm-ar{_EXE}'
+CARGO = f'cargo{_EXE}'
+RUSTC = f'rustc{_EXE}'
 
-class _Log:
-    """Build-script logger with optional buffering for quiet-on-success mode.
+log = logging.getLogger('boringtun')
+_buffer: logging.handlers.MemoryHandler | None = None
 
-    When `quiet` is True, `log(msg)` accumulates messages into a buffer
-    instead of printing them. `flush()` dumps the buffer to stderr; main()
-    only calls flush on the failure paths, so successful builds stay
-    silent in ninja's output.
+
+def _setup_logging(quiet: bool):
+    """Configure the 'boringtun' logger for this run.
+
+    In non-quiet mode, INFO and above stream directly to stderr.
+
+    In quiet mode, a MemoryHandler buffers records in memory; nothing
+    reaches stderr until _flush_logging() is called explicitly. The
+    buffer is sized for ~10k records (well above what a normal build
+    emits). flushLevel=CRITICAL serves as an emergency override -- any
+    record at that level auto-flushes -- but INFO and ERROR (the levels
+    actually used) stay buffered until the failure path calls
+    _flush_logging().
     """
-
-    def __init__(self):
-        self._buffer = []
-        self.quiet = False
-
-    def __call__(self, msg):
-        line = f'[boringtun] {msg}'
-        if self.quiet:
-            self._buffer.append(line)
-        else:
-            print(line, file=sys.stderr, flush=True)
-
-    def flush(self):
-        if self._buffer:
-            print('\n'.join(self._buffer), file=sys.stderr, flush=True)
-            self._buffer.clear()
+    global _buffer
+    log.setLevel(logging.INFO)
+    log.handlers.clear()
+    stream = logging.StreamHandler(sys.stderr)
+    stream.setFormatter(logging.Formatter('[boringtun] %(message)s'))
+    if quiet:
+        _buffer = logging.handlers.MemoryHandler(capacity=10000,
+                                                 flushLevel=logging.CRITICAL,
+                                                 target=stream,
+                                                 flushOnClose=False)
+        log.addHandler(_buffer)
+    else:
+        log.addHandler(stream)
 
 
-log = _Log()
+def _is_logging_buffered() -> bool:
+    """Return True if logging is in quiet-buffer mode.
+
+    Equivalent to "was _setup_logging called with quiet=True". Used
+    to decide whether to capture subprocesses' stdout/stderr (so
+    they can be appended to the log buffer) or let a process stream
+    directly to the terminal.
+    """
+    return _buffer is not None
 
 
-def _exe_name(name: str) -> str:
-    """Append '.exe' to name on Windows hosts; return as-is elsewhere."""
-    return name + '.exe' if sys.platform == 'win32' else name
+def _finalize_logging(flush: bool):
+    """Drain the buffer to stderr if flush=True, then discard it.
+
+    Called on every exit path. Failure paths pass flush=True so any
+    buffered build output and subprocesses' stderr reach the user. The
+    success path passes flush=False to silently drop the buffer;
+    this also neutralizes logging.shutdown()'s automatic flush at
+    interpreter exit (which would otherwise dump the buffer
+    regardless of flushOnClose) by unsetting the handler's target.
+    """
+    if _is_logging_buffered():
+        if flush:
+            _buffer.flush()
+        _buffer.target = None
+        _buffer.buffer.clear()
 
 
 def _has_prebuilt_std(toolchain_root: Path, triple: str) -> bool:
@@ -147,11 +185,11 @@ def _ensure_win_clang_shim(binpath: Path, shim_dir: Path) -> Path:
 
     Returns the shim directory.
     """
-    src = binpath / _exe_name('clang-cl')
+    src = binpath / CLANG_CL
     if not src.is_file():
         raise FileNotFoundError(f'clang-cl not found at {src}')
     shim_dir.mkdir(parents=True, exist_ok=True)
-    dst = shim_dir / _exe_name('clang')
+    dst = shim_dir / CLANG
     if dst.is_symlink() or dst.exists():
         dst.unlink()
     try:
@@ -223,7 +261,7 @@ def _make_compiler_wrappers(wrappers_dir: Path, binpath: Path,
     clang_cl = _write_shell_wrapper(
         wrappers_dir,
         'clang-cl',
-        str(binpath / _exe_name('clang-cl')),
+        str(binpath / CLANG_CL),
         ['/winsysroot', f'"{winsysroot}"'],
         flags_after_args=False,
     )
@@ -234,9 +272,9 @@ def _make_compiler_wrappers(wrappers_dir: Path, binpath: Path,
     # resolve correctly when the build's cwd happens to be the wrappers
     # directory.
     if sys.platform == 'win32':
-        local_clang = f'%~dp0{_exe_name("clang")}'
+        local_clang = f'%~dp0{CLANG}'
     else:
-        local_clang = f'$(dirname "$0")/{_exe_name("clang")}'
+        local_clang = f'$(dirname "$0")/{CLANG}'
     clang = _write_shell_wrapper(
         wrappers_dir,
         'clang',
@@ -245,8 +283,8 @@ def _make_compiler_wrappers(wrappers_dir: Path, binpath: Path,
         flags_after_args=False,
     )
 
-    log(f'wrapped clang:    {clang}')
-    log(f'wrapped clang-cl: {clang_cl}')
+    log.info(f'wrapped clang:    {clang}')
+    log.info(f'wrapped clang-cl: {clang_cl}')
     return clang, clang_cl
 
 
@@ -342,9 +380,9 @@ def _setup_cc_env(env, triple, target_os, wrappers_dir: Path, binpath: Path,
     triple_env_suffix_lc = triple_env_suffix_uc.lower()
 
     if binpath:
-        cc_name = _exe_name('clang-cl' if target_os == 'win' else 'clang')
-        link_name = _exe_name('lld-link' if target_os == 'win' else 'clang')
-        ar_name = _exe_name('lld-link' if target_os == 'win' else 'llvm-ar')
+        cc_name = CLANG_CL if target_os == 'win' else CLANG
+        link_name = LLD_LINK if target_os == 'win' else CLANG
+        ar_name = LLD_LINK if target_os == 'win' else LLVM_AR
         ar_extra = ' /lib' if target_os == 'win' else ''
 
         if sysroot and target_os == 'win':
@@ -437,49 +475,55 @@ def _run_cargo(cargo,
             f'source.vendored-sources.directory="{merged_str}"',
         ])
 
-    log('$ ' + ' '.join(cmd))
-    # Capture cargo output so success is silent. On failure, main() flushes
-    # the log buffer AND the captured cargo output together. Run from the
-    # manifest's dir so cargo's config discovery finds .cargo/config.toml.
+    log.info('$ ' + ' '.join(cmd))
+    # Capture cargo output so success is silent, when logging is buffered.
+    # On failure, main() flushes the log buffer AND the captured cargo
+    # output together. Run from the manifest's dir so cargo's config
+    # discovery finds .cargo/config.toml.
+    quiet = _is_logging_buffered()
     result = subprocess.run(cmd,
                             env=env,
                             cwd=manifest.parent,
-                            capture_output=log.quiet,
+                            capture_output=quiet,
                             text=True,
                             check=False)
-    if log.quiet:
+    if quiet:
         if result.stdout:
-            log(result.stdout.rstrip())
+            log.info(result.stdout.rstrip())
         if result.stderr:
-            log(result.stderr.rstrip())
+            log.error(result.stderr.rstrip())
     if result.returncode != 0:
         raise subprocess.CalledProcessError(result.returncode, cmd,
                                             result.stdout, result.stderr)
 
 
-def _locate_cargo_and_rustc(src_root: Path):
-    """Locate cargo and rustc.
+def _locate_cargo_and_rustc(rust_sysroot: Path | None, src_root: Path):
+    """Resolve cargo and rustc within the bundled Rust toolchain.
  
-    Cargo resolution order: BRAVE_BORINGTUN_CARGO env override ->
-    Brave's bundled toolchain -> system PATH. Rustc is taken only
-    from the bundled toolchain; if absent, the caller leaves RUSTC
-    unset and cargo falls back to whatever rustc PATH resolves to.
- 
-    Returns (cargo_path: str, bundled_rustc: Path or None,
-    toolchain_bin: Path). Exits if cargo cannot be located anywhere.
+    Resolution order:
+    1. --rust-sysroot (passed by BUILD.gn from Chromium's rust_sysroot).
+    2. Auto-derive third_party/rust-toolchain from this script's location
+       (for standalone CLI runs inside a Brave checkout).
+
+    Never falls back to PATH: builds must use the bundled toolchain to
+    guarantee a consistent Rust version across all environments. A
+    locally-installed rustc/cargo (e.g. via rustup) is not acceptable.
+
+    Returns (cargo: str, rustc: Path, toolchain_bin: Path). Exits if
+    either binary is missing under the resolved sysroot.
     """
-    cargo_exe = _exe_name('cargo')
-    rustc_exe = _exe_name('rustc')
-    toolchain_bin = src_root / 'third_party' / 'rust-toolchain' / 'bin'
-    bundled_cargo = toolchain_bin / cargo_exe
-    bundled_rustc = toolchain_bin / rustc_exe
-    cargo = (os.environ.get('BRAVE_BORINGTUN_CARGO')
-             or (str(bundled_cargo)
-                 if bundled_cargo.exists() else shutil.which('cargo')))
-    if not cargo:
-        sys.exit('cargo not found; set BRAVE_BORINGTUN_CARGO or install it')
-    rustc = bundled_rustc if bundled_rustc.exists() else None
-    return cargo, rustc, toolchain_bin
+    if rust_sysroot is None:
+        rust_sysroot = src_root / 'third_party' / 'rust-toolchain'
+    toolchain_bin = rust_sysroot / 'bin'
+    cargo = toolchain_bin / CARGO
+    rustc = toolchain_bin / RUSTC
+    if not cargo.exists():
+        sys.exit(f'cargo not found at {cargo}: pass --rust-sysroot or '
+                 f'ensure the bundled toolchain is present')
+    if not rustc.exists():
+        sys.exit(f'rustc not found at {rustc}: bundled toolchain is '
+                 f'incomplete')
+    return str(cargo), rustc, toolchain_bin
 
 
 # Static scrub list -- known names that affect cargo/rustc behavior.
@@ -507,19 +551,19 @@ _STATIC_SCRUB = frozenset({
 })
 
 
-def _make_isolated_env(toolchain_bin: Path, rustc, cargo_home: Path,
+def _make_isolated_env(toolchain_bin: Path, rustc: Path, cargo_home: Path,
                        target_dir: Path) -> dict:
     """Build a process env dict with all flag-injection vectors scrubbed.
  
-    Drops anything inherited from Chromium's build that could change
+        Drops anything inherited from Chromium's build that could change
     cargo's behavior; this build depends only on our own config.
     Untrusted upstream environments are also a concern -- these env
     vars are how an attacker would inject rustc flags to disable safety
     checks, alter codegen, or smuggle in a malicious linker/wrapper.
  
-    When the bundled rustc is present, sets RUSTC and prepends the
-    bundled bin to PATH so any sibling tools (rustdoc, rustfmt) resolve
-    consistently rather than via rustup's shim.
+    Sets RUSTC to the bundled rustc and prepends the bundled bin to
+    PATH so any sibling tools (rustdoc, rustfmt) resolve consistently
+    rather than via rustup's shim.
     """
     env = os.environ.copy()
     env['CARGO_HOME'] = str(cargo_home)
@@ -538,13 +582,11 @@ def _make_isolated_env(toolchain_bin: Path, rustc, cargo_home: Path,
             ('_RUSTFLAGS', '_LINKER')):
             env.pop(v, None)
 
-    # Force cargo to use Brave's bundled rustc rather than whatever is on
-    # PATH (typically rustup's shim, which would try to download/manage
-    # toolchains mid-build). Also prepend the bundled bin so any sibling
+    # Pin cargo to the bundled rustc (not whatever rustup's shim on PATH
+    # would resolve to). Prepend the bundled bin too so any sibling
     # tools (rustdoc, rustfmt) resolve consistently.
-    if rustc is not None:
-        env['RUSTC'] = str(rustc)
-        env['PATH'] = str(toolchain_bin) + os.pathsep + env.get('PATH', '')
+    env['RUSTC'] = str(rustc)
+    env['PATH'] = str(toolchain_bin) + os.pathsep + env.get('PATH', '')
 
     return env
 
@@ -581,8 +623,10 @@ def _write_depfile(depfile_path, stamp_path, vendor_dir):
         lines.append(f'  {escape(rel(f))}{suffix}')
 
     depfile_path.parent.mkdir(parents=True, exist_ok=True)
-    depfile_path.write_text('\n'.join(lines) + '\n', encoding='utf-8')
-    log(f'depfile -> {depfile_path} ({len(checksums)} vendored crates)')
+    depfile_path.write_text('\n'.join(lines) + '\n',
+                            encoding='utf-8',
+                            newline='\n')
+    log.info(f'depfile -> {depfile_path} ({len(checksums)} vendored crates)')
 
 
 def main():
@@ -598,6 +642,11 @@ def main():
                     action='store_true',
                     help='Build debug mode (default is release).')
     ap.add_argument('--cargo-target-dir')
+    ap.add_argument('--rust-sysroot',
+                    help='Path to the bundled Rust toolchain root '
+                    '(typically src/third_party/rust-toolchain). When '
+                    'absent, the script auto-derives it from its own '
+                    'location.')
     ap.add_argument('--cc-binpath',
                     help='Path to C compiler bin directory for the target '
                     'platform, if hermetic toolchain is used.')
@@ -626,7 +675,7 @@ def main():
                     'ninja output.')
 
     args = ap.parse_args()
-    log.quiet = args.quiet_until_error
+    _setup_logging(args.quiet_until_error)
 
     # Paths derive from script location.
     script = Path(__file__).resolve()
@@ -638,7 +687,10 @@ def main():
                   if args.cargo_target_dir else boringtun / 'target')
     wrappers_dir = target_dir / '.tool-wrappers'
 
-    cargo, rustc, toolchain_bin = _locate_cargo_and_rustc(src_root)
+    rust_sysroot = (Path(args.rust_sysroot).resolve()
+                    if args.rust_sysroot else None)
+    cargo, rustc, toolchain_bin = _locate_cargo_and_rustc(
+        rust_sysroot, src_root)
     env = _make_isolated_env(toolchain_bin, rustc, cargo_home, target_dir)
 
     bin_path = Path(args.cc_binpath).resolve() if args.cc_binpath else None
@@ -651,12 +703,12 @@ def main():
             extra = str(shim_dir) + os.pathsep + extra
         env['PATH'] = extra + os.pathsep + env['PATH']
 
-    log(f'cargo:            {cargo}')
-    log(f'rustc:            {env.get("RUSTC", "(default, via PATH)")}')
-    log(f'CARGO_HOME:       {cargo_home}')
-    log(f'CARGO_TARGET_DIR: {target_dir}')
-    log(f'CC path:          {bin_path}')
-    log(f'sysroot:          {sysroot_path}')
+    log.info(f'cargo:            {cargo}')
+    log.info(f'rustc:            {env["RUSTC"]}')
+    log.info(f'CARGO_HOME:       {cargo_home}')
+    log.info(f'CARGO_TARGET_DIR: {target_dir}')
+    log.info(f'CC path:          {bin_path}')
+    log.info(f'sysroot:          {sysroot_path}')
 
     lib_filename = LIB_NAME[args.target_os]
     triple = TRIPLE[(args.target_os, args.target_cpu)]
@@ -683,10 +735,11 @@ def main():
                      'cannot build std from source.')
         merged_vendor = _build_merged_vendor(target_dir, boringtun / 'vendor',
                                              rust_std_vendor)
-        log(f'merged vendor:    {merged_vendor}')
-        log(f'prebuilt rust-std not found for {triple}; using -Zbuild-std')
+        log.info(f'merged vendor:    {merged_vendor}')
+        log.info(
+            f'prebuilt rust-std not found for {triple}; using -Zbuild-std')
     else:
-        log(f'using prebuilt rust-std for {triple}')
+        log.info(f'using prebuilt rust-std for {triple}')
 
     _run_cargo(cargo,
                manifest,
@@ -706,7 +759,7 @@ def main():
         out.parent.mkdir(parents=True, exist_ok=True)
         built_lib = out / lib_filename
         shutil.copy2(cargo_lib, built_lib)
-        log(f'staged -> {built_lib}')
+        log.info(f'staged -> {built_lib}')
 
     if args.output_headers:
         # Extract the FFI header. Vendored sources put it at a fixed path.
@@ -716,7 +769,7 @@ def main():
         include_dir = Path(args.output_headers)
         include_dir.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(header, include_dir / 'wireguard_ffi.h')
-        log(f'header -> {include_dir / "wireguard_ffi.h"}')
+        log.info(f'header -> {include_dir / "wireguard_ffi.h"}')
 
     if args.depfile and args.stamp:
         _write_depfile(Path(args.depfile), Path(args.stamp),
@@ -726,7 +779,7 @@ def main():
         Path(args.stamp).parent.mkdir(parents=True, exist_ok=True)
         Path(args.stamp).touch()
 
-    log(f'Build complete in {time.monotonic() - start:.1f}s')
+    log.info(f'Build complete in {time.monotonic() - start:.1f}s')
 
 
 if __name__ == '__main__':
@@ -734,11 +787,12 @@ if __name__ == '__main__':
         rc = main()
     except subprocess.CalledProcessError:
         # cargo output is already in the log buffer.
-        log.flush()
+        _finalize_logging(flush=True)
         sys.exit(1)
     except BaseException:
         # SystemExit (from sys.exit() inside main) and anything else:
         # flush so the error message is visible, then re-raise.
-        log.flush()
+        _finalize_logging(flush=True)
         raise
+    _finalize_logging(flush=False)
     sys.exit(rc)

@@ -5,6 +5,7 @@
 
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//build/config/clang/clang.gni")
+import("//build/config/rust.gni")
 import("//build/config/sysroot.gni")
 
 assert(enable_brave_vpn2_deps,
@@ -44,10 +45,12 @@ action("boringtun") {
     target_cpu,
     "--cargo-target-dir",
     rebase_path("$target_gen_dir/cargo-target", root_build_dir),
+    "--rust-sysroot",
+    rebase_path(rust_sysroot, root_build_dir),
     "--cc-binpath",
     rebase_path("$clang_base_path/bin", root_build_dir),
     "--output-lib",
-    rebase_path("$root_out_dir", root_build_dir),
+    rebase_path(root_out_dir, root_build_dir),
     "--output-headers",
     rebase_path("$target_gen_dir/include", root_build_dir),
     "--depfile",
@@ -71,7 +74,7 @@ action("boringtun") {
     import("//build/config/win/visual_studio_version.gni")
     args += [
       "--cc-sysroot",
-      rebase_path("$visual_studio_path", root_build_dir),
+      rebase_path(visual_studio_path, root_build_dir),
     ]
   } else if (is_mac) {
     args += [
