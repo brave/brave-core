@@ -1,0 +1,29 @@
+diff --git a/chrome/browser/ui/views/page_action/page_action_controller.cc b/chrome/browser/ui/views/page_action/page_action_controller.cc
+index 41aa9c0770297d43d3e3ad40c228341fa83b2e83..62885b8e676a788862f1f9e241b44e7243bdeef6 100644
+--- a/chrome/browser/ui/views/page_action/page_action_controller.cc
++++ b/chrome/browser/ui/views/page_action/page_action_controller.cc
+@@ -73,6 +73,7 @@ void ScopedPageActionActivity::RegisterWillDestroyControllerCallback() {
+   }
+ }
+ 
++namespace chromium_impl {
+ PageActionControllerImpl::PageActionControllerImpl(
+     PinnedToolbarActionsModel* pinned_actions_model,
+     PageActionModelFactory* page_action_model_factory,
+@@ -414,7 +415,7 @@ std::unique_ptr<PageActionModelInterface> PageActionControllerImpl::CreateModel(
+   if (page_action_model_factory_ != nullptr) {
+     return page_action_model_factory_->Create(action_id, is_ephemeral);
+   } else {
+-    return std::make_unique<PageActionModel>(is_ephemeral);
++    return std::make_unique<::page_actions::PageActionModel>(is_ephemeral);
+   }
+ }
+ 
+@@ -513,6 +514,7 @@ void PageActionControllerImpl::OnIsChipShowingChanged(
+   FindPageActionModel(action_id).SetIsChipShowing(PassKey(), is_chip_showing);
+ }
+ 
++}  // namespace chromium_impl
+ std::ostream& operator<<(std::ostream& os, const SuggestionChipConfig& config) {
+   os << "{ should_animate: " << config.should_animate
+      << ", should_announce_chip: " << config.should_announce_chip << " }";

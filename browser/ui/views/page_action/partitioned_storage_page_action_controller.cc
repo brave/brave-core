@@ -66,7 +66,10 @@ std::optional<containers::ContainerModel> GetContainerModelForWebContents(
 PartitionedStoragePageActionController::PartitionedStoragePageActionController(
     tabs::TabInterface& tab,
     page_actions::PageActionController& page_action_controller)
-    : tab_(tab), page_action_controller_(page_action_controller) {
+    : tab_(tab),
+      page_action_controller_(
+          static_cast<page_actions::PageActionControllerImpl&>(
+              page_action_controller)) {
   CHECK(base::FeatureList::IsEnabled(containers::features::kContainers));
 }
 
