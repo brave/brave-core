@@ -17,7 +17,6 @@ re_pattern = '(DeviceInfo\((?=[^)]*std::string).*?)(\);)'
 re_flags = ['DOTALL']
 replace = '''\1,
              bool is_self_delete_supported = false\2'''
-count = 1
 
 [[substitution]]
 description = '''Add Brave-specific methods to DeviceInfo public interface
@@ -39,7 +38,6 @@ replace = '''\1
   // Converts the DeviceInfo values to a JS friendly DictionaryValue,
   // which extension APIs can expose to third party apps.
   base::DictValue ToValue() const;'''
-count = 1
 
 [[substitution]]
 description = '''Add is_self_delete_supported_ as last member of DeviceInfo
@@ -51,4 +49,3 @@ re_pattern = '(class DeviceInfo \{.*)(\n\};)'
 re_flags = ['DOTALL']
 replace = '''\1
   bool is_self_delete_supported_;\2'''
-count = 1

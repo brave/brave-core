@@ -10,7 +10,6 @@ Sets EVP_PKEY_EC with SHA-384 digest, mirroring the ECDSA_SHA256 case.
 '''
 re_pattern = '(VerifyInit\([^)]*\)\s*\{.*?\n\s*switch[^{]*\{.*?)(\n\s*\})'
 re_flags = ['DOTALL']
-count = 1
 replace = '''\1
     case ECDSA_SHA384:
       pkey_type = EVP_PKEY_EC;

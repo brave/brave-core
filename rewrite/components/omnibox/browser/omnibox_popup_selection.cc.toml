@@ -21,4 +21,3 @@ condition (e.g. swaps the match type check or refactors the body).
 '''
 re_pattern = '(case FOCUSED_BUTTON_THUMBS_DOWN:\n)(\s+)return'
 replace = '\1\2if ((true)) return false;\n\2return'
-count = 1

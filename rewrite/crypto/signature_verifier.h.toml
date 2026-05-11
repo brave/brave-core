@@ -12,6 +12,5 @@ value independently.
 '''
 re_pattern = '(enum SignatureAlgorithm\s*\{.*?)(\n\s*\})'
 re_flags = ['DOTALL']
-count = 1
 replace = '''\1
     ECDSA_SHA384,\2'''

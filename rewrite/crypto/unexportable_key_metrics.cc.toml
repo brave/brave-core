@@ -10,7 +10,6 @@ Ensures ECDSA_SHA384 is exercised alongside ECDSA_SHA256 in TPM metrics.
 '''
 re_pattern = '(kAllAlgorithms\[\]\s*=\s*\{.*?)(\n\s*\})'
 re_flags = ['DOTALL']
-count = 1
 replace = '''\1
     SignatureVerifier::SignatureAlgorithm::ECDSA_SHA384,\2'''
 
@@ -21,7 +20,6 @@ Treats ECDSA_SHA384 as ECDSA for virtual TPM support classification.
 '''
 re_pattern = '(MeasureVirtualTpmOperations\([^)]*\).*?)(\n\s*supported_virtual_algo)'
 re_flags = ['DOTALL']
-count = 1
 replace = '''\1
       case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA384:\2'''
 
@@ -32,7 +30,6 @@ Treats ECDSA_SHA384 as ECDSA for hardware TPM support classification.
 '''
 re_pattern = '(MeasureTpmOperationsInternal\([^)]*\).*?)(\n\s*supported_algo)'
 re_flags = ['DOTALL']
-count = 1
 replace = '''\1
       case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA384:\2'''
 
@@ -43,7 +40,6 @@ ECDSA_SHA384 keys are reported under the same "ECDSA" histogram bucket.
 '''
 re_pattern = '(AlgorithmToString\([^)]*\)\s*\{.*?\n\s*switch[^{]*\{.*?)(\n\s*\})'
 re_flags = ['DOTALL']
-count = 1
 replace = '''\1
     case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA384:
       return "ECDSA";\2'''

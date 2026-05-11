@@ -10,4 +10,3 @@
 description = 'Make addVisiblePreferences package-private to call it at BraveSettingsUtils.getVisiblePreferences override'
 pattern = 'private static void addVisiblePreferences('
 replace = 'static void addVisiblePreferences('
-count = 1
