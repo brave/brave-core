@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_QUERY_FILTER_BROWSER_TEST_SUPPORT_QUERY_FILTER_TEST_HELPER_H_
 #define BRAVE_COMPONENTS_QUERY_FILTER_BROWSER_TEST_SUPPORT_QUERY_FILTER_TEST_HELPER_H_
 
+#include <string_view>
+
 namespace query_filter {
 
 namespace test {
@@ -18,6 +20,10 @@ class ScopedTestingQueryFilterRules {
  public:
   ScopedTestingQueryFilterRules();
   ~ScopedTestingQueryFilterRules();
+
+  // Updates the currently stored rules with |rules_json|.
+  // Returns true if the update was successful, false otherwise.
+  bool UpdateRules(std::string_view rules_json);
 
   ScopedTestingQueryFilterRules(const ScopedTestingQueryFilterRules&) = delete;
   ScopedTestingQueryFilterRules& operator=(

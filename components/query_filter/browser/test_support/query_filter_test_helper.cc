@@ -130,6 +130,11 @@ ScopedTestingQueryFilterRules::ScopedTestingQueryFilterRules() {
       kDefaultQueryFilterRules);
 }
 
+bool ScopedTestingQueryFilterRules::UpdateRules(std::string_view rules_json) {
+  QueryFilterData::GetInstance()->ResetRulesForTesting();
+  return QueryFilterData::GetInstance()->PopulateDataFromComponent(rules_json);
+}
+
 ScopedTestingQueryFilterRules::~ScopedTestingQueryFilterRules() {
   QueryFilterData::GetInstance()->ResetRulesForTesting();
 }
