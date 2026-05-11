@@ -316,7 +316,8 @@ class MockBraveWalletServiceDelegate : public BraveWalletServiceDelegate {
                const GURL& tx_url),
               (override));
   MOCK_METHOD(base::FilePath, GetWalletBaseDirectory, (), (override));
-  MOCK_METHOD(bool, IsPrivateWindow, (), (override));
+  bool IsPrivateWindow() override { return false; }
+  bool IsAutolockEnabled() override { return false; }
 };
 
 class BraveWalletServiceUnitTest : public testing::Test {
