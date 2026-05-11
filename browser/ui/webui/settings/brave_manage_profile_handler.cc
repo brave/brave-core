@@ -34,6 +34,7 @@ namespace {
 constexpr char kMessageGetCustomAvatar[] = "getProfileCustomAvatar";
 constexpr char kMessageSetCustomAvatar[] = "setProfileCustomAvatar";
 constexpr char kMessageRemoveCustomAvatar[] = "removeProfileCustomAvatar";
+constexpr char kMessageActivateCustomAvatar[] = "activateProfileCustomAvatar";
 
 constexpr char kListenerCustomAvatarChanged[] = "brave-custom-avatar-changed";
 
@@ -91,6 +92,11 @@ void BraveManageProfileHandler::RegisterMessages() {
       kMessageRemoveCustomAvatar,
       base::BindRepeating(
           &BraveManageProfileHandler::HandleRemoveProfileCustomAvatar,
+          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      kMessageActivateCustomAvatar,
+      base::BindRepeating(
+          &BraveManageProfileHandler::HandleActivateProfileCustomAvatar,
           base::Unretained(this)));
 }
 
@@ -197,6 +203,18 @@ void BraveManageProfileHandler::HandleRemoveProfileCustomAvatar(
   // `FireCustomAvatarChanged` through our observer; no extra signal needed.
 }
 
+void BraveManageProfileHandler::HandleActivateProfileCustomAvatar(
+    const base::ListValue& /*args*/) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  AllowJavascript();
+
+  ProfileAttributesEntry* entry = GetEntry(profile_);
+  if (!entry) {
+    return;
+  }
+  entry->ActivateBraveCustomAvatar();
+}
+
 void BraveManageProfileHandler::OnImageDecoded(const SkBitmap& decoded_image) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   std::string callback_id;
@@ -253,9 +271,11 @@ void BraveManageProfileHandler::OnDecodeImageFailed() {
 base::DictValue BraveManageProfileHandler::BuildCustomAvatarState() const {
   base::DictValue state;
   ProfileAttributesEntry* entry = GetEntry(profile_);
-  const bool has_avatar = entry && entry->IsUsingBraveCustomAvatar();
-  state.Set("hasAvatar", has_avatar);
-  if (has_avatar) {
+  const bool has_saved = entry && entry->HasBraveCustomAvatar();
+  const bool is_active = entry && entry->IsUsingBraveCustomAvatar();
+  state.Set("hasSavedAvatar", has_saved);
+  state.Set("isActive", is_active);
+  if (has_saved) {
     const gfx::Image* image = entry->GetBraveCustomAvatar();
     // The image may still be loading from disk on the very first access after
     // a restart; in that case `dataUrl` stays empty and the storage will

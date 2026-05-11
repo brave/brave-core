@@ -64,8 +64,10 @@ class BraveManageProfileHandler
   void HandleSetProfileCustomAvatar(const base::ListValue& args);
   void HandleRemoveProfileCustomAvatar(const base::ListValue& args);
   void HandleGetProfileCustomAvatar(const base::ListValue& args);
+  void HandleActivateProfileCustomAvatar(const base::ListValue& args);
 
-  // Builds the `{hasAvatar, dataUrl}` dictionary that the front-end consumes.
+  // Builds the custom-avatar dictionary for the front-end (`hasSavedAvatar`,
+  // `isActive`, optional `dataUrl`).
   base::DictValue BuildCustomAvatarState() const;
 
   // Fires `brave-custom-avatar-changed` with the latest state.

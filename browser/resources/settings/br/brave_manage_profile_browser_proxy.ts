@@ -13,10 +13,11 @@
 import { sendWithPromise } from 'chrome://resources/js/cr.js'
 
 export interface BraveCustomAvatarState {
-  // True when a user-uploaded custom profile avatar is currently persisted.
-  hasAvatar: boolean
-  // PNG data URL of the current custom avatar (omitted while it is still
-  // loading from disk after a restart, or when `hasAvatar` is false).
+  // True when a custom avatar file exists on disk (may be inactive).
+  hasSavedAvatar: boolean
+  // True when that file is the profile icon in use.
+  isActive: boolean
+  // PNG data URL for preview (omitted while loading from disk, or when none).
   dataUrl?: string
 }
 
@@ -33,6 +34,9 @@ export interface BraveManageProfileBrowserProxy {
 
   // Clears the user-uploaded custom avatar (also deletes the on-disk file).
   removeProfileCustomAvatar(): void
+
+  // Uses the saved custom avatar again after the user had chosen a preset.
+  activateProfileCustomAvatar(): void
 }
 
 export class BraveManageProfileBrowserProxyImpl
@@ -48,6 +52,10 @@ export class BraveManageProfileBrowserProxyImpl
 
   removeProfileCustomAvatar() {
     chrome.send('removeProfileCustomAvatar')
+  }
+
+  activateProfileCustomAvatar() {
+    chrome.send('activateProfileCustomAvatar')
   }
 
   static getInstance(): BraveManageProfileBrowserProxy {

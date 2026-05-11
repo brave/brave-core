@@ -67,6 +67,11 @@ const kBraveCustomAvatarStyleCss = `
     user-select: none;
   }
 
+  /* Hide the upload hint once a custom image is shown (see `is-empty`). */
+  #braveCustomAvatarPreview:not(.is-empty) .placeholder {
+    display: none;
+  }
+
   #braveCustomAvatarPreview .check-badge {
     align-items: center;
     background: var(--leo-color-primary-50, #4c54d2);
@@ -86,6 +91,10 @@ const kBraveCustomAvatarStyleCss = `
 
   #braveCustomAvatarPreview.is-selected .check-badge {
     display: flex;
+  }
+
+  #braveCustomAvatarPreview.can-activate {
+    cursor: pointer;
   }
 
   .brave-custom-avatar-body {
@@ -137,6 +146,14 @@ type ManageProfileHost = HTMLElement & {
 
 const kBraveCustomAvatarWired = Symbol('braveCustomAvatarWired')
 
+function syncBravePresetAvatarBinding_(host: ManageProfileHost) {
+  if (!host.braveCustomAvatarState_.isActive) {
+    return
+  }
+  const withAvatarProp = host as unknown as { profileAvatar_: unknown }
+  withAvatarProp.profileAvatar_ = null
+}
+
 function braveOnCustomAvatarChanged_(
   host: ManageProfileHost, state: BraveCustomAvatarState) {
   host.braveCustomAvatarState_ = state
@@ -151,24 +168,36 @@ function braveOnCustomAvatarChanged_(
     return
   }
 
-  if (state.hasAvatar && state.dataUrl) {
+  const saved = state.hasSavedAvatar
+  const active = state.isActive
+
+  if (saved && state.dataUrl) {
     preview.style.backgroundImage = `url("${state.dataUrl}")`
-    preview.classList.add('is-selected')
     preview.classList.remove('is-empty')
     removeBtn.hidden = false
-  } else if (state.hasAvatar) {
-    // File is present but bitmap still loading from disk; show placeholder
-    // glyph and keep the selected outline.
+  } else if (saved) {
     preview.style.backgroundImage = ''
-    preview.classList.add('is-selected')
     preview.classList.add('is-empty')
     removeBtn.hidden = false
   } else {
     preview.style.backgroundImage = ''
-    preview.classList.remove('is-selected')
     preview.classList.add('is-empty')
     removeBtn.hidden = true
   }
+
+  if (active) {
+    preview.classList.add('is-selected')
+  } else {
+    preview.classList.remove('is-selected')
+  }
+
+  if (saved && !active) {
+    preview.classList.add('can-activate')
+  } else {
+    preview.classList.remove('can-activate')
+  }
+
+  syncBravePresetAvatarBinding_(host)
 }
 
 // `RegisterPolymerComponentBehaviors` is unreliable with lazy-loaded
@@ -205,7 +234,7 @@ function wireBraveManageProfileCustomAvatar(host: HTMLElement, attempt = 0) {
 
     const typedHost = host as ManageProfileHost
     typedHost.braveCustomAvatarState_ = typedHost.braveCustomAvatarState_ ||
-      { hasAvatar: false }
+      { hasSavedAvatar: false, isActive: false }
 
     uploadBtn.addEventListener('click', () => {
       fileInput.value = ''
@@ -236,26 +265,25 @@ function wireBraveManageProfileCustomAvatar(host: HTMLElement, attempt = 0) {
         console.warn('[Brave Settings Overrides] Failed to remove custom ' +
           'avatar:', err)
       }
-      braveOnCustomAvatarChanged_(typedHost, { hasAvatar: false })
+      braveOnCustomAvatarChanged_(typedHost, {
+        hasSavedAvatar: false,
+        isActive: false
+      })
     })
 
-    const grid = root.querySelector('#profileAvatarSelector')
-    if (grid) {
-      grid.addEventListener('click', (event: Event) => {
-        const target = event.target as HTMLElement | null
-        if (!target || !target.closest('.avatar')) {
-          return
-        }
-        if (!typedHost.braveCustomAvatarState_.hasAvatar) {
-          return
-        }
-        try {
-          BraveManageProfileBrowserProxyImpl.getInstance()
-            .removeProfileCustomAvatar()
-        } catch (_err) { /* best-effort */ }
-        braveOnCustomAvatarChanged_(typedHost, { hasAvatar: false })
-      })
-    }
+    preview.addEventListener('click', () => {
+      const st = typedHost.braveCustomAvatarState_
+      if (!st.hasSavedAvatar || st.isActive) {
+        return
+      }
+      try {
+        BraveManageProfileBrowserProxyImpl.getInstance()
+          .activateProfileCustomAvatar()
+      } catch (err) {
+        console.warn('[Brave Settings Overrides] Failed to activate custom ' +
+          'avatar:', err)
+      }
+    })
 
     addWebUiListener(
       'brave-custom-avatar-changed',

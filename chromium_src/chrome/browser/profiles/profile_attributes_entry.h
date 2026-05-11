@@ -36,11 +36,18 @@ class DictValue;
   /* Clears the user-uploaded custom profile avatar (also removes the      */ \
   /* file from disk on a background thread).                                */ \
   void ClearBraveCustomAvatar();                                               \
-  /* Returns true when a user-uploaded custom profile avatar is set, which */ \
-  /* takes precedence over GAIA and default avatars.                        */ \
+  /* True when a custom avatar file is saved for this profile (may be     */ \
+  /* inactive while the user uses a preset).                               */ \
+  bool HasBraveCustomAvatar() const;                                           \
+  /* True when the saved custom avatar is the one shown in Chrome UI      */ \
+  /* (toolbar, menus, settings).                                            */ \
   bool IsUsingBraveCustomAvatar() const;                                       \
+  /* Stops using the custom image for the profile icon; keeps the file.     */ \
+  void DeactivateBraveCustomAvatar();                                          \
+  /* Uses the saved custom image again for the profile icon.                */ \
+  void ActivateBraveCustomAvatar();                                            \
                                                                                \
- private:                                                                      \
+  private:                                                                      \
   friend class ProfileAttributeMigrationTest;                                  \
   void MigrateObsoleteProfileAttributes
 

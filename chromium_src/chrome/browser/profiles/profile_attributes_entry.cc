@@ -23,6 +23,10 @@ constexpr std::string_view kSerpMetricsKey = "serp_metrics";
 // custom profile avatar is stored. When empty, no custom avatar is set.
 constexpr char kBraveCustomAvatarFileNameKey[] = "brave_custom_avatar_file_name";
 
+// When true (and a custom file exists), the profile icon uses the custom image.
+// Absent key with an existing file is treated as true for backward compatibility.
+constexpr char kBraveCustomAvatarActiveKey[] = "brave_custom_avatar_active";
+
 // Filename (within the profile directory) used to store the user-uploaded
 // custom profile avatar PNG bytes on disk.
 constexpr char kBraveCustomAvatarFileName[] = "Brave Custom Avatar.png";
@@ -77,8 +81,20 @@ void ProfileAttributesEntry::SetSerpMetrics(base::DictValue serp_metrics) {
   SetValue(kSerpMetricsKey.data(), base::Value(std::move(serp_metrics)));
 }
 
-bool ProfileAttributesEntry::IsUsingBraveCustomAvatar() const {
+bool ProfileAttributesEntry::HasBraveCustomAvatar() const {
   return !GetString(kBraveCustomAvatarFileNameKey).empty();
+}
+
+bool ProfileAttributesEntry::IsUsingBraveCustomAvatar() const {
+  if (!HasBraveCustomAvatar()) {
+    return false;
+  }
+  const base::Value* active = GetValue(kBraveCustomAvatarActiveKey);
+  if (!active || !active->is_bool()) {
+    // Legacy profiles: file present before this pref existed → custom in use.
+    return true;
+  }
+  return active->GetBool();
 }
 
 const gfx::Image* ProfileAttributesEntry::GetBraveCustomAvatar() const {
@@ -106,6 +122,7 @@ void ProfileAttributesEntry::SetBraveCustomAvatar(
   // calls find the cached image immediately (the storage cache is populated
   // synchronously by `SaveGAIAImageAtPath` below).
   SetString(kBraveCustomAvatarFileNameKey, kBraveCustomAvatarFileName);
+  SetBool(kBraveCustomAvatarActiveKey, true);
 
   const base::FilePath image_path =
       profile_path_.AppendASCII(kBraveCustomAvatarFileName);
@@ -138,6 +155,7 @@ void ProfileAttributesEntry::ClearBraveCustomAvatar() {
   // Clear the entry pointer first so any synchronous observers see the cleared
   // state when the notification fires below.
   SetString(kBraveCustomAvatarFileNameKey, std::string());
+  ClearValue(kBraveCustomAvatarActiveKey);
 
   // Delete the file from disk on a background thread. We deliberately don't
   // use `DeleteGAIAImageAtPath` because it has the side effect of clearing
@@ -151,6 +169,28 @@ void ProfileAttributesEntry::ClearBraveCustomAvatar() {
        base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
       base::BindOnce(base::IgnoreResult(&base::DeleteFile), image_path));
 
+  profile_attributes_storage_->NotifyOnProfileAvatarChanged(profile_path_);
+}
+
+void ProfileAttributesEntry::DeactivateBraveCustomAvatar() {
+  if (!HasBraveCustomAvatar()) {
+    return;
+  }
+  if (!IsUsingBraveCustomAvatar()) {
+    return;
+  }
+  SetBool(kBraveCustomAvatarActiveKey, false);
+  profile_attributes_storage_->NotifyOnProfileAvatarChanged(profile_path_);
+}
+
+void ProfileAttributesEntry::ActivateBraveCustomAvatar() {
+  if (!HasBraveCustomAvatar()) {
+    return;
+  }
+  if (IsUsingBraveCustomAvatar()) {
+    return;
+  }
+  SetBool(kBraveCustomAvatarActiveKey, true);
   profile_attributes_storage_->NotifyOnProfileAvatarChanged(profile_path_);
 }
 

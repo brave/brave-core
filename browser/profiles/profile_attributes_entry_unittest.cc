@@ -112,6 +112,7 @@ class BraveCustomAvatarTest : public ProfileAttributeMigrationTest {};
 // Initially no custom avatar is set.
 TEST_F(BraveCustomAvatarTest, NoCustomAvatarByDefault) {
   ProfileAttributesEntry* e = entry();
+  EXPECT_FALSE(e->HasBraveCustomAvatar());
   EXPECT_FALSE(e->IsUsingBraveCustomAvatar());
   EXPECT_EQ(nullptr, e->GetBraveCustomAvatar());
 }
@@ -132,6 +133,7 @@ TEST_F(BraveCustomAvatarTest, SetMakesCustomAvatarAvailable) {
 
   EXPECT_TRUE(save_callback_called);
   EXPECT_TRUE(save_callback_success);
+  EXPECT_TRUE(e->HasBraveCustomAvatar());
   EXPECT_TRUE(e->IsUsingBraveCustomAvatar());
   const gfx::Image* fetched = e->GetBraveCustomAvatar();
   ASSERT_NE(nullptr, fetched);
@@ -165,6 +167,7 @@ TEST_F(BraveCustomAvatarTest, SetWithEmptyImageClears) {
   ProfileAttributesEntry* e = entry();
   e->SetBraveCustomAvatar(gfx::test::CreateImage(8, 8),
                           base::OnceCallback<void(bool)>());
+  ASSERT_TRUE(e->HasBraveCustomAvatar());
   ASSERT_TRUE(e->IsUsingBraveCustomAvatar());
 
   bool save_callback_called = false;
@@ -176,6 +179,7 @@ TEST_F(BraveCustomAvatarTest, SetWithEmptyImageClears) {
                           }));
   EXPECT_TRUE(save_callback_called);
   EXPECT_FALSE(save_callback_success);
+  EXPECT_FALSE(e->HasBraveCustomAvatar());
   EXPECT_FALSE(e->IsUsingBraveCustomAvatar());
 }
 
@@ -186,10 +190,12 @@ TEST_F(BraveCustomAvatarTest, ClearRemovesFlagAndFile) {
 
   // No-op when nothing is set.
   e->ClearBraveCustomAvatar();
+  EXPECT_FALSE(e->HasBraveCustomAvatar());
   EXPECT_FALSE(e->IsUsingBraveCustomAvatar());
 
   e->SetBraveCustomAvatar(gfx::test::CreateImage(16, 16),
                           base::OnceCallback<void(bool)>());
+  ASSERT_TRUE(e->HasBraveCustomAvatar());
   ASSERT_TRUE(e->IsUsingBraveCustomAvatar());
 
   // Wait for the background PNG write so we can observe the file getting
@@ -200,10 +206,32 @@ TEST_F(BraveCustomAvatarTest, ClearRemovesFlagAndFile) {
   ASSERT_TRUE(base::PathExists(image_path));
 
   e->ClearBraveCustomAvatar();
+  EXPECT_FALSE(e->HasBraveCustomAvatar());
   EXPECT_FALSE(e->IsUsingBraveCustomAvatar());
 
   content::RunAllTasksUntilIdle();
   EXPECT_FALSE(base::PathExists(image_path));
+}
+
+// Deactivation keeps the file and bitmap available but stops using custom
+// for `IsUsingBraveCustomAvatar` / avatar resolution.
+TEST_F(BraveCustomAvatarTest, DeactivateKeepsFileActivateRestores) {
+  ProfileAttributesEntry* e = entry();
+  gfx::Image image = gfx::test::CreateImage(32, 32);
+  e->SetBraveCustomAvatar(image, base::OnceCallback<void(bool)>());
+  content::RunAllTasksUntilIdle();
+  ASSERT_TRUE(e->HasBraveCustomAvatar());
+  ASSERT_TRUE(e->IsUsingBraveCustomAvatar());
+
+  e->DeactivateBraveCustomAvatar();
+  EXPECT_TRUE(e->HasBraveCustomAvatar());
+  EXPECT_FALSE(e->IsUsingBraveCustomAvatar());
+  const gfx::Image* after_deactivate = e->GetBraveCustomAvatar();
+  ASSERT_NE(nullptr, after_deactivate);
+
+  e->ActivateBraveCustomAvatar();
+  EXPECT_TRUE(e->HasBraveCustomAvatar());
+  EXPECT_TRUE(e->IsUsingBraveCustomAvatar());
 }
 
 #endif  // !BUILDFLAG(IS_ANDROID)
