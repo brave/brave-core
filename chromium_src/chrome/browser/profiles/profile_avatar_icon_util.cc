@@ -77,6 +77,8 @@ gfx::Image GetPlaceholderAvatarIconWithColors_ChromiumImpl(
 #include "chrome/browser/profiles/profile_attributes_entry.h"
 #include "chrome/browser/profiles/profile_manager.h"
 
+// CHROMIUM_SRC_NOLINT: macros are expanded from the #included Chromium TU;
+// presubmit scans the pristine upstream file without these names.
 #define BRAVE_ADJUST_PROFILE_AVATAR_SELECTOR_SELECTION(entry, using_gaia,   \
                                                        selected_avatar_idx) \
   do {                                                                      \
@@ -86,6 +88,7 @@ gfx::Image GetPlaceholderAvatarIconWithColors_ChromiumImpl(
     }                                                                       \
   } while (0)
 
+// CHROMIUM_SRC_NOLINT: expanded in #included profile_avatar_icon_util.cc.
 #define BRAVE_ON_DEFAULT_PROFILE_AVATAR_INDEX_SET(profile)       \
   do {                                                           \
     ProfileAttributesEntry* brave_entry =                        \

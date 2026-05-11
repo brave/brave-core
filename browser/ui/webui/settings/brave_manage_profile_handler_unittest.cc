@@ -34,6 +34,7 @@ namespace {
 class TestableBraveManageProfileHandler : public BraveManageProfileHandler {
  public:
   using BraveManageProfileHandler::BraveManageProfileHandler;
+  using BraveManageProfileHandler::RegisterMessages;
   using BraveManageProfileHandler::set_web_ui;
 };
 
@@ -58,7 +59,7 @@ const base::DictValue* LastWebUIListenerPayload(
 // `cr.webUIResponse` call carrying `callback_id`, or nullptr.
 struct WebUIResponse {
   bool success = false;
-  const base::Value* payload = nullptr;
+  raw_ptr<const base::Value> payload = nullptr;
 };
 std::optional<WebUIResponse> FindWebUIResponse(const content::TestWebUI& web_ui,
                                                const std::string& callback_id) {
