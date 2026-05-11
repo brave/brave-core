@@ -14,6 +14,8 @@
 #include "brave/browser/net/features.h"
 #include "brave/browser/net/url_context.h"
 #include "brave/components/constants/network_constants.h"
+#include "brave/components/query_filter/browser/test_support/query_filter_test_helper.h"
+#include "brave/components/query_filter/common/features.h"
 #include "brave/components/query_filter/common/pref_names.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -54,9 +56,12 @@ class BraveSiteHacksNetworkDelegateHelperTest : public testing::Test {
     bool enable_flag = std::is_same_v<
         typename PtrStrategy::template Ptr<brave::BraveRequestInfo>,
         base::WeakPtr<brave::BraveRequestInfo>>;
-    scoped_feature_list_.InitWithFeatureState(
-        features::kBraveRequestInfoUniquePtr, enable_flag);
+    scoped_feature_list_.InitWithFeatureStates(
+        {{features::kBraveRequestInfoUniquePtr, enable_flag},
+         {query_filter::features::kQueryFilterComponent, true}});
   }
+
+  void TearDown() override { query_filter::test::RemoveDefaultRules(); }
 
   sync_preferences::TestingPrefServiceSyncable* GetPrefs() {
     return profile_->GetTestingPrefService();
