@@ -6,7 +6,10 @@
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 
 #include "base/check.h"
+#include "base/command_line.h"
 #include "base/functional/callback_helpers.h"
+#include "base/i18n/base_i18n_switches.h"
+#include "base/i18n/rtl.h"
 #include "base/memory/raw_ptr.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/tabs/brave_split_tab_menu_model.h"
@@ -648,6 +651,71 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
       << "toggle should move to a higher index when switching from "
          "kVerticalTabsOnRight=false to true (left_ix="
       << *ix_left_side << ", right_ix=" << *ix_on_right << ")";
+}
+
+// Variant of BraveToolbarViewTest that forces the UI direction to RTL via
+// --force-ui-direction=rtl so we can verify that toggle placement stays on the
+// same physical side as the vertical tab strip when the toolbar's horizontal
+// FlexLayout mirrors child indices.
+class BraveToolbarViewRTLTest : public BraveToolbarViewTest {
+ public:
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    InProcessBrowserTest::SetUpCommandLine(command_line);
+    command_line->AppendSwitchASCII(::switches::kForceUIDirection,
+                                    ::switches::kForceDirectionRTL);
+  }
+};
+
+IN_PROC_BROWSER_TEST_F(BraveToolbarViewRTLTest,
+                       RtlInvertsVerticalTabTogglePlacement) {
+  ASSERT_TRUE(base::i18n::IsRTL())
+      << "--force-ui-direction=rtl should make IsRTL() true";
+
+  auto* prefs = browser()->profile()->GetPrefs();
+  prefs->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
+  views::View* container = toolbar_view_->location_bar_view()->parent();
+  ASSERT_TRUE(container);
+
+  // In RTL, the strip placed by kVerticalTabsOnRight=false is physically on
+  // the left; the toolbar container mirrors child indices, so a toggle that
+  // should appear visually on the left needs to sit at the trailing logical
+  // slot (just before the app menu).
+  prefs->SetBoolean(brave_tabs::kVerticalTabsOnRight, false);
+  RunScheduledLayouts();
+  auto* toggle = toolbar_view_->vertical_tab_toggle_button();
+  ASSERT_TRUE(toggle) << "vertical tabs enabled in RTL with on-left pref";
+
+  views::View* menu = toolbar_button_provider_->GetAppMenuButton();
+  ASSERT_TRUE(menu);
+  const auto menu_ix_left = container->GetIndexOf(menu);
+  ASSERT_TRUE(menu_ix_left.has_value() && *menu_ix_left > 0)
+      << "app menu button must be a non-leading child of the toolbar "
+         "container (RTL, on-left)";
+
+  const auto ix_rtl_on_left = container->GetIndexOf(toggle);
+  ASSERT_TRUE(ix_rtl_on_left.has_value())
+      << "toggle missing from toolbar container (RTL, "
+         "kVerticalTabsOnRight=false)";
+  EXPECT_EQ(*ix_rtl_on_left, *menu_ix_left - 1)
+      << "in RTL, on-left strip should map to toggle at app-menu-1 (toggle_ix="
+      << *ix_rtl_on_left << ", menu_ix=" << *menu_ix_left << ")";
+
+  // In RTL, the strip placed by kVerticalTabsOnRight=true is physically on the
+  // right; logical child index 0 mirrors to the visual right edge.
+  prefs->SetBoolean(brave_tabs::kVerticalTabsOnRight, true);
+  RunScheduledLayouts();
+  const auto ix_rtl_on_right = container->GetIndexOf(toggle);
+  ASSERT_TRUE(ix_rtl_on_right.has_value())
+      << "toggle missing from toolbar container (RTL, "
+         "kVerticalTabsOnRight=true)";
+  EXPECT_EQ(*ix_rtl_on_right, 0u)
+      << "in RTL, on-right strip should map to toggle at leading logical "
+         "index 0 (visual right edge), got "
+      << *ix_rtl_on_right;
+  EXPECT_LT(*ix_rtl_on_right, *ix_rtl_on_left)
+      << "in RTL, switching from on-left to on-right should *decrease* the "
+         "toggle's logical index (on_left_ix="
+      << *ix_rtl_on_left << ", on_right_ix=" << *ix_rtl_on_right << ")";
 }
 
 // Verifies that UpdateHorizontalPadding() keeps the toolbar container border

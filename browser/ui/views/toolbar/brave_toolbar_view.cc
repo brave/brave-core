@@ -12,6 +12,7 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/functional/bind.h"
+#include "base/i18n/rtl.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
@@ -685,8 +686,18 @@ void BraveToolbarView::UpdateVerticalTabTogglePlacement() {
       container_view->GetIndexOf(vertical_tab_toggle_);
   CHECK(toggle_idx.has_value());
 
+  // The vertical tab strip is placed by physical position and does not mirror
+  // in RTL: `kVerticalTabsOnRight` means physically right regardless of UI
+  // direction. The toolbar container, however, lays out children with a
+  // horizontal `views::FlexLayout` which mirrors logical child indices in RTL
+  // (logical index 0 renders on the visual right). To keep the toggle on the
+  // same physical side as the strip, invert the placement choice when the UI
+  // is RTL.
+  const bool place_near_app_menu =
+      tabs::utils::IsVerticalTabOnRight(browser_) != base::i18n::IsRTL();
+
   size_t target_idx = 0;
-  if (tabs::utils::IsVerticalTabOnRight(browser_)) {
+  if (place_near_app_menu) {
     const auto menu_idx = container_view->GetIndexOf(GetAppMenuButton());
     CHECK(menu_idx.has_value());
     CHECK_GT(*menu_idx, 0u);
