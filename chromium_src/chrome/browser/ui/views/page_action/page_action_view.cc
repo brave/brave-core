@@ -15,20 +15,25 @@
 #include "ui/views/style/platform_style.h"
 #include "ui/views/view_class_properties.h"
 
-#define GetMinimumSize GetMinimumSize_Chromium
-#define OnNewActiveController OnNewActiveController_Chromium
-#define OnPageActionModelChanged OnPageActionModelChanged_Chromium
-
 // Want to use default color even it's expanded.
 #define SetUseTonalColorsWhenExpanded(...) SetUseTonalColorsWhenExpanded(false)
 #include <chrome/browser/ui/views/page_action/page_action_view.cc>
-
 #undef SetUseTonalColorsWhenExpanded
-#undef OnPageActionModelChanged
-#undef OnNewActiveController
-#undef GetMinimumSize
 
 namespace page_actions {
+
+PageActionView::~PageActionView() = default;
+
+base::CallbackListSubscription PageActionView::AddChipVisibilityChangedCallback(
+    base::RepeatingCallback<void(PageActionView*)> callback) {
+  return chromium_impl::PageActionView::AddChipVisibilityChangedCallback(
+      base::BindRepeating(
+          [](base::RepeatingCallback<void(PageActionView*)> callback,
+             chromium_impl::PageActionView* view) {
+            callback.Run(static_cast<PageActionView*>(view));
+          },
+          std::move(callback)));
+}
 
 views::ProposedLayout PageActionView::CalculateProposedLayout(
     const views::SizeBounds& size_bounds) const {
@@ -82,7 +87,7 @@ gfx::Size PageActionView::GetSizeForLabelWidth(int label_width) const {
 }
 
 gfx::Size PageActionView::GetMinimumSize() const {
-  auto size = GetMinimumSize_Chromium();
+  auto size = chromium_impl::PageActionView::GetMinimumSize();
   if (auto override_height = GetOverrideHeight()) {
     size.set_height(*override_height);
   }
@@ -138,13 +143,13 @@ std::optional<int> PageActionView::GetOverrideHeight() const {
 }
 
 void PageActionView::OnNewActiveController(PageActionController* controller) {
-  OnNewActiveController_Chromium(controller);
+  chromium_impl::PageActionView::OnNewActiveController(controller);
   OnPageActionModelVisualRefresh(observation_.GetSource());
 }
 
 void PageActionView::OnPageActionModelChanged(
     const PageActionModelInterface& model) {
-  PageActionView::OnPageActionModelChanged_Chromium(model);
+  chromium_impl::PageActionView::OnPageActionModelChanged(model);
 
   const PageActionModelInterface* source = observation_.GetSource();
   if (source) {
@@ -154,5 +159,22 @@ void PageActionView::OnPageActionModelChanged(
         ui::EF_LEFT_MOUSE_BUTTON));
   }
 }
+
+void PageActionView::UpdateBorder() {
+  if (!observation_.IsObserving()) {
+    chromium_impl::PageActionView::UpdateBorder();
+  }
+
+  auto override_border_insets = observation_.GetSource()->GetOverrideBorder();
+  if (!override_border_insets.has_value()) {
+    chromium_impl::PageActionView::UpdateBorder();
+    return;
+  }
+
+  SetBorder(views::CreateEmptyBorder(*override_border_insets));
+}
+
+BEGIN_METADATA(PageActionView)
+END_METADATA
 
 }  // namespace page_actions

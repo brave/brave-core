@@ -4,6 +4,10 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 [[substitution]]
-description = 'Adding code to force show the label if it should be always shown in OnPageActionModelChanged()'
-re_pattern = 'else if \((model.ShouldShowSuggestionChip\(\))\)'
-replace = 'else if (\1 || model.GetAlwaysShowLabel())'
+description = '''Make namespace declaration `page_actions::` to 
+`page_actions::chromium_impl` in the translation unit. This will shadow the
+upstream's PageActionView implementation in the nested chromium_impl namespace.
+We'll add our own implementation of PageActionView in chromium_src/../page_action_view.cc .'''
+re_pattern = 'namespace page_actions \{([\s\S]*?)\n\}  // namespace page_actions'
+replace = '''namespace page_actions::chromium_impl {\1
+}  // namespace page_actions::chromium_impl'''

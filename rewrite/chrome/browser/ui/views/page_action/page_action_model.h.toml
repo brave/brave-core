@@ -26,11 +26,14 @@ replace = '''\1
                                  std::optional<int> height) = 0;
   virtual void SetOverrideTriggerableEvent(base::PassKey<PageActionController>,
                                            std::optional<int> event_flags) = 0;
+  virtual void SetOverrideBorder(base::PassKey<PageActionController>,
+                                 std::optional<gfx::Insets> insets) = 0;
   virtual std::optional<SkColor> GetOverrideBackgroundColor() const = 0;
   virtual std::optional<SkColor> GetOverrideForegroundColor() const = 0;
   virtual bool GetAlwaysShowLabel() const = 0;
   virtual std::optional<int> GetOverrideHeight() const = 0;
-  virtual std::optional<int> GetOverrideTriggerableEvent() const = 0;\2'''
+  virtual std::optional<int> GetOverrideTriggerableEvent() const = 0;
+  virtual std::optional<gfx::Insets> GetOverrideBorder() const = 0;\2'''
 
 [[substitution]]
 description = '''
@@ -46,7 +49,8 @@ replace = '''\1    kAlwaysShowLabel,
     kOverrideChipColors,
     kOverrideHeight,
     kOverrideTriggerableEvent,
-    kMaxValue = kOverrideTriggerableEvent,'''
+    kOverrideBorder,
+    kMaxValue = kOverrideBorder,'''
 
 [[substitution]]
 description = '''Wrap PageActionModel in a chromium_impl namespace.

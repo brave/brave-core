@@ -45,8 +45,16 @@ class MockPageActionModel : public MockPageActionModel_Chromium {
               SetOverrideTriggerableEvent,
               (base::PassKey<PageActionController>, std::optional<int>),
               (override));
+  MOCK_METHOD(void,
+              SetOverrideBorder,
+              (base::PassKey<PageActionController>, std::optional<gfx::Insets>),
+              (override));
   MOCK_METHOD(std::optional<int>,
               GetOverrideTriggerableEvent,
+              (),
+              (const, override));
+  MOCK_METHOD(std::optional<gfx::Insets>,
+              GetOverrideBorder,
               (),
               (const, override));
 };

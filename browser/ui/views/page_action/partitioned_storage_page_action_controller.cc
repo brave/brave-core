@@ -172,6 +172,7 @@ void PartitionedStoragePageActionController::UpdatePageAction() {
     page_action_controller_->ClearOverrideHeight(kActionShowPartitionedStorage);
     page_action_controller_->SetOverrideTriggerableEvent(
         kActionShowPartitionedStorage, std::nullopt);
+    page_action_controller_->ClearOverrideBorder(kActionShowPartitionedStorage);
     return;
   }
 
@@ -199,6 +200,8 @@ void PartitionedStoragePageActionController::UpdatePageAction() {
   page_action_controller_->SetOverrideHeight(kActionShowPartitionedStorage, 20);
   page_action_controller_->SetOverrideTriggerableEvent(
       kActionShowPartitionedStorage, ui::EF_RIGHT_MOUSE_BUTTON);
+  page_action_controller_->SetOverrideBorder(kActionShowPartitionedStorage,
+                                             gfx::Insets::TLBR(0, 0, 0, 0));
 }
 
 void PartitionedStoragePageActionController::OnPartitionedStorageMenuClosed() {

@@ -49,6 +49,16 @@ void PageActionControllerImpl::SetOverrideTriggerableEvent(
                                                              event_flags);
 }
 
+void PageActionControllerImpl::SetOverrideBorder(actions::ActionId action_id,
+                                                 const gfx::Insets& insets) {
+  FindPageActionModel(action_id).SetOverrideBorder(PassKey(), insets);
+}
+
+void PageActionControllerImpl::ClearOverrideBorder(
+    actions::ActionId action_id) {
+  FindPageActionModel(action_id).SetOverrideBorder(PassKey(), std::nullopt);
+}
+
 std::unique_ptr<PageActionModelInterface> PageActionControllerImpl::CreateModel(
     actions::ActionId action_id,
     bool is_ephemeral) {

@@ -35,3 +35,25 @@ re_pattern = '(class PageActionControllerImpl.*?\bprivate:)'
 re_flags = ['DOTALL']
 replace = '''\1
   friend class ::page_actions::PageActionControllerImpl;'''
+
+[[substitution]]
+description = '''
+Replace PassKey<PageActionView> with PassKey<chromium_impl::PageActionView> in
+chromium_impl::PageActionView. Replacing theses make sense because the upstream
+class shouldn't know about our implementation. So the passkey should also be
+allowed to upstream implementation
+'''
+pattern = 'PassKey<PageActionView>'
+replace = 'PassKey<chromium_impl::PageActionView>'
+count = 0 # 0 means replace all occurrences
+
+[[substitution]]
+description = '''
+Replace PageActionView* with chromium_impl::PageActionView* in
+chromium_impl::PageActionView. Replacing theses make sense because the upstream
+class shouldn't know about our implementation. So the pointer should also be
+allowed to upstream implementation
+'''
+pattern = 'PageActionView*'
+replace = 'chromium_impl::PageActionView*'
+count = 0 # 0 means replace all occurrences

@@ -6,52 +6,50 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_PAGE_ACTION_PAGE_ACTION_VIEW_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_PAGE_ACTION_PAGE_ACTION_VIEW_H_
 
-#include "chrome/browser/ui/views/location_bar/icon_label_bubble_view.h"
-#include "chrome/browser/ui/views/page_action/page_action_model_observer.h"
-#include "ui/views/view.h"
-#include "ui/views/widget/native_widget_delegate.h"
+#include <chrome/browser/ui/views/page_action/page_action_view.h>  // IWYU pragma: export
 
 // Add methods to override the IconLabelBubbleView methods.
 // Also add a friend class for testing.
-#define ShouldShowLabelAfterAnimation()                                     \
-  ShouldShowLabelAfterAnimation() const override;                           \
-  FRIEND_TEST_ALL_PREFIXES(PageActionViewTest,                              \
-                           AlwaysShowsLabelEnsuresLabelWidth);              \
-  FRIEND_TEST_ALL_PREFIXES(PageActionViewTest, UseTonalColorsWhenExpanded); \
-  FRIEND_TEST_ALL_PREFIXES(PageActionViewTest,                              \
-                           DefaultBackgroundColorIsTransparent);            \
-  FRIEND_TEST_ALL_PREFIXES(PageActionViewTest,                              \
-                           OverrideBackgroundColorReturnsModelValue);       \
-  views::ProposedLayout CalculateProposedLayout(                            \
-      const views::SizeBounds& size_bounds) const override;                 \
-  gfx::Size GetSizeForLabelWidth(int label_width) const override;           \
-  bool ShouldShowLabel() const override;                                    \
-  SkColor GetBackgroundColor() const override;                              \
-  SkColor GetForegroundColor() const override;                              \
-  std::optional<int> GetOverrideHeight() const;                             \
-  void OnPageActionModelVisualRefresh(PageActionModelInterface* model);     \
-  bool ShouldAlwaysShowLabel()
+namespace page_actions {
+class PageActionView : public chromium_impl::PageActionView {
+  METADATA_HEADER(PageActionView, chromium_impl::PageActionView)
 
-// Make a OnPageActionModelChanged wrapper
-#define OnPageActionModelChanged(...)             \
-  OnPageActionModelChanged_Chromium(__VA_ARGS__); \
-  void OnPageActionModelChanged(__VA_ARGS__)
+ public:
+  using chromium_impl::PageActionView::PageActionView;
+  ~PageActionView() override;
 
-// Make a GetMinimumSize wrapper
-#define GetMinimumSize()           \
-  GetMinimumSize_Chromium() const; \
-  gfx::Size GetMinimumSize()
+  // This callback is proxy of the
+  // chromium_impl::PageActionView::AddChipVisibilityChangedCallback. As the
+  // upstream's callback takes chromium_impl::PageActionView* as an argument, we
+  // need to convert it to PageActionView* by wrapping it in a lambda.
+  base::CallbackListSubscription AddChipVisibilityChangedCallback(
+      base::RepeatingCallback<void(PageActionView*)> callback);
 
-// Make a OnNewActiveController wrapper
-#define OnNewActiveController(...)             \
-  OnNewActiveController_Chromium(__VA_ARGS__); \
-  void OnNewActiveController(__VA_ARGS__)
+  // chromium_impl::PageActionView:
+  views::ProposedLayout CalculateProposedLayout(
+      const views::SizeBounds& size_bounds) const override;
+  gfx::Size GetSizeForLabelWidth(int label_width) const override;
+  bool ShouldShowLabel() const override;
+  SkColor GetBackgroundColor() const override;
+  SkColor GetForegroundColor() const override;
+  std::optional<int> GetOverrideHeight() const;
+  void OnPageActionModelVisualRefresh(PageActionModelInterface* model);
+  void OnPageActionModelChanged(const PageActionModelInterface& model) override;
+  gfx::Size GetMinimumSize() const override;
+  bool ShouldAlwaysShowLabel() const override;
+  void OnNewActiveController(PageActionController* controller) override;
+  void UpdateBorder() override;
 
-#include <chrome/browser/ui/views/page_action/page_action_view.h>  // IWYU pragma: export
+ private:
+  FRIEND_TEST_ALL_PREFIXES(PageActionViewTest,
+                           AlwaysShowsLabelEnsuresLabelWidth);
+  FRIEND_TEST_ALL_PREFIXES(PageActionViewTest, UseTonalColorsWhenExpanded);
+  FRIEND_TEST_ALL_PREFIXES(PageActionViewTest,
+                           DefaultBackgroundColorIsTransparent);
+  FRIEND_TEST_ALL_PREFIXES(PageActionViewTest,
+                           OverrideBackgroundColorReturnsModelValue);
+};
 
-#undef OnNewActiveController
-#undef GetMinimumSize
-#undef OnPageActionModelChanged
-#undef ShouldShowLabelAfterAnimation
+}  // namespace page_actions
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_PAGE_ACTION_PAGE_ACTION_VIEW_H_

@@ -6,7 +6,14 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_PAGE_ACTION_PAGE_ACTION_CONTROLLER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_PAGE_ACTION_PAGE_ACTION_CONTROLLER_H_
 
+namespace gfx {
+class Insets;
+}  // namespace gfx
+
 namespace page_actions {
+namespace chromium_impl {
+class PageActionView;
+}  // namespace chromium_impl
 class PageActionControllerImpl;
 }  // namespace page_actions
 
@@ -16,7 +23,7 @@ namespace page_actions {
 
 // Brave override of the upstream concrete page-action controller. Used by
 // PartitionedStoragePageActionController to drive Brave-specific page actions
-// (chip colors, label, height, triggerable event).
+// (chip colors, label, height, triggerable event, border).
 class PageActionControllerImpl
     : public chromium_impl::PageActionControllerImpl {
  public:
@@ -32,6 +39,9 @@ class PageActionControllerImpl
   void ClearOverrideHeight(actions::ActionId action_id);
   void SetOverrideTriggerableEvent(actions::ActionId action_id,
                                    std::optional<int> event_flags);
+  void SetOverrideBorder(actions::ActionId action_id,
+                         const gfx::Insets& insets);
+  void ClearOverrideBorder(actions::ActionId action_id);
 
   // chromium_impl::PageActionControllerImpl:
   std::unique_ptr<PageActionModelInterface> CreateModel(

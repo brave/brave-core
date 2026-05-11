@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include "chrome/browser/ui/views/page_action/page_action_model.h"
+
 #include <chrome/browser/ui/views/page_action/page_action_model.cc>
 
 namespace page_actions {
@@ -66,8 +68,21 @@ void PageActionModel::SetOverrideTriggerableEvent(
   NotifyChange(Property::kOverrideTriggerableEvent);
 }
 
+void PageActionModel::SetOverrideBorder(base::PassKey<PageActionController>,
+                                        std::optional<gfx::Insets> insets) {
+  if (override_border_ == insets) {
+    return;
+  }
+  override_border_ = insets;
+  NotifyChange(Property::kOverrideBorder);
+}
+
 std::optional<int> PageActionModel::GetOverrideTriggerableEvent() const {
   return override_triggerable_event_flags_;
+}
+
+std::optional<gfx::Insets> PageActionModel::GetOverrideBorder() const {
+  return override_border_;
 }
 
 }  // namespace page_actions
