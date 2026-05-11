@@ -10,7 +10,7 @@ import unittest
 import repository
 from repository import Repository
 
-from test.fake_chromium_src import FakeChromiumSrc
+from test.fake_chromium_repo import FakeChromiumRepo
 from unittest.mock import patch
 
 
@@ -18,55 +18,64 @@ class RepositoryTest(unittest.TestCase):
 
     def setUp(self):
         """Set up a fake Chromium repository for testing."""
-        self.fake_chromium_src = FakeChromiumSrc()
+        self.fake_chromium_src = FakeChromiumRepo()
         self.fake_chromium_src.setup()
         self.fake_chromium_src.add_dep('v8')
         self.fake_chromium_src.add_dep('third_party/test1')
         self.addCleanup(self.fake_chromium_src.cleanup)
 
+    def test_relative_path_constants(self):
+        # Pin the relative-path contract that the rest of tools/cr depends on
+        # for cwd-portability across tests and subprocesses: both paths must
+        # be relative (so they re-resolve against the *current* cwd) and
+        # resolve to the fake brave/chromium roots set up by FakeChromiumRepo.
+        self.assertFalse(repository.brave.root.is_absolute())
+        self.assertFalse(repository.chromium.root.is_absolute())
+        self.assertEqual(repository.brave.root.resolve(),
+                         self.fake_chromium_src.brave)
+        self.assertEqual(repository.chromium.root.resolve(),
+                         self.fake_chromium_src.chromium)
+
     def test_chromium_repository(self):
-        self.assertEqual(repository.chromium.path,
+        self.assertEqual(repository.chromium.root.resolve(),
                          self.fake_chromium_src.chromium)
         self.assertTrue(repository.chromium.is_chromium)
         self.assertFalse(repository.chromium.is_brave)
 
     def test_brave_repository(self):
-        self.assertEqual(repository.brave.path, self.fake_chromium_src.brave)
+        self.assertEqual(repository.brave.root.resolve(),
+                         self.fake_chromium_src.brave)
         self.assertTrue(repository.brave.is_brave)
         self.assertFalse(repository.brave.is_chromium)
 
     def test_to_brave(self):
+        self.assertEqual(repository.chromium.to_brave(), Path('brave'))
+        self.assertEqual(repository.brave.to_brave(), Path('../brave'))
         self.assertEqual(
-            Repository(self.fake_chromium_src.chromium).to_brave(),
-            Path('brave'))
-        self.assertEqual(
-            Repository(self.fake_chromium_src.brave).to_brave(),
+            Repository(repository.chromium.root / 'v8').to_brave(),
             Path('../brave'))
         self.assertEqual(
-            Repository(self.fake_chromium_src.chromium / 'v8').to_brave(),
-            Path('../brave'))
-        self.assertEqual(
-            Repository(self.fake_chromium_src.chromium /
+            Repository(repository.chromium.root /
                        'third_party/test1').to_brave(), Path('../../brave'))
 
     def test_from_brave(self):
+        self.assertEqual(repository.chromium.from_brave().resolve(),
+                         repository.brave.root.resolve().parent)
+        self.assertEqual(repository.brave.from_brave().resolve(),
+                         repository.brave.root.resolve())
         self.assertEqual(
-            Repository(self.fake_chromium_src.chromium).from_brave(),
-            Path('../'))
+            Repository(repository.chromium.root / 'v8').from_brave().resolve(),
+            repository.brave.root.resolve().parent / 'v8')
         self.assertEqual(
-            Repository(self.fake_chromium_src.brave).from_brave(),
-            Path('../brave'))
+            Repository(repository.chromium.root /
+                       'third_party/test1').from_brave().resolve(),
+            repository.brave.root.resolve().parent / 'third_party/test1')
         self.assertEqual(
-            Repository(self.fake_chromium_src.chromium / 'v8').from_brave(),
-            Path('../v8'))
-        self.assertEqual(
-            Repository(self.fake_chromium_src.chromium /
-                       'third_party/test1').from_brave(),
-            Path('../third_party/test1'))
-        self.assertEqual(
-            Repository(self.fake_chromium_src.chromium /
-                       'third_party/test1').from_brave(Path('test_file.txt')),
-            Path('../third_party/test1/test_file.txt'))
+            Repository(
+                repository.chromium.root / 'third_party/test1').from_brave(
+                    Path('test_file.txt')).resolve(),
+            repository.brave.root.resolve().parent /
+            'third_party/test1/test_file.txt')
 
     def test_run_git(self):
         """Test Repository.run_git by verifying the hash of the last commit."""
@@ -84,15 +93,15 @@ class RepositoryTest(unittest.TestCase):
         self.assertEqual(
             self.fake_chromium_src.commit_empty(
                 "Empty commit in v8", self.fake_chromium_src.chromium / "v8"),
-            Repository(self.fake_chromium_src.chromium / "v8").run_git(
+            Repository(repository.chromium.root / "v8").run_git(
                 "rev-parse", "HEAD"),
         )
         self.assertEqual(
             self.fake_chromium_src.commit_empty(
                 "Empty commit in third_party/test1",
                 self.fake_chromium_src.chromium / "third_party/test1"),
-            Repository(self.fake_chromium_src.chromium /
-                       "third_party/test1").run_git("rev-parse", "HEAD"),
+            Repository(repository.chromium.root / "third_party/test1").run_git(
+                "rev-parse", "HEAD"),
         )
 
     def test_run_git_no_trim(self):
@@ -100,12 +109,18 @@ class RepositoryTest(unittest.TestCase):
         with patch("terminal.terminal.run_git") as mock_run_git:
             # Call run_git with no_trim=True for brave repository
             repository.brave.run_git("log", no_trim=True)
-            mock_run_git.assert_called_once_with("log", no_trim=True)
+            mock_run_git.assert_called_once()
+            args, kwargs = mock_run_git.call_args
+            self.assertEqual(args[-1], "log")
+            self.assertEqual(kwargs.get("no_trim"), True)
 
             # Reset mock and call run_git with no_trim=False
             mock_run_git.reset_mock()
             repository.brave.run_git("log", no_trim=False)
-            mock_run_git.assert_called_once_with("log", no_trim=False)
+            mock_run_git.assert_called_once()
+            args, kwargs = mock_run_git.call_args
+            self.assertEqual(args[-1], "log")
+            self.assertEqual(kwargs.get("no_trim"), False)
 
     def test_unstage_all_changes(self):
         """Test unstage_all_changes and has_staged_changes."""
@@ -433,23 +448,23 @@ class RepositoryTest(unittest.TestCase):
 
     def test_relative_to_chromium(self):
         # Chromium root should be relative to itself as ''
-        self.assertEqual(
-            Repository(self.fake_chromium_src.chromium).relative_to_chromium.
-            as_posix(), '.')
+        self.assertEqual((self.fake_chromium_src.chromium /
+                          repository.chromium.relative_to_chromium).resolve(),
+                         repository.chromium.root.resolve())
         # Brave root should be relative to chromium as 'brave'
-        self.assertEqual(
-            Repository(
-                self.fake_chromium_src.brave).relative_to_chromium.as_posix(),
-            'brave')
+        self.assertEqual((self.fake_chromium_src.chromium /
+                          repository.brave.relative_to_chromium).resolve(),
+                         repository.brave.root.resolve())
         # Subdirectory v8 should be relative as 'v8'
-        self.assertEqual(
-            Repository(self.fake_chromium_src.chromium /
-                       'v8').relative_to_chromium.as_posix(), 'v8')
+        self.assertEqual((self.fake_chromium_src.chromium / Repository(
+            repository.chromium.root / 'v8').relative_to_chromium).resolve(),
+                         (repository.chromium.root / 'v8').resolve())
         # Nested subdirectory should be relative as 'third_party/test1'
         self.assertEqual(
-            Repository(self.fake_chromium_src.chromium /
-                       'third_party/test1').relative_to_chromium.as_posix(),
-            'third_party/test1')
+            (self.fake_chromium_src.chromium /
+             Repository(repository.chromium.root /
+                        'third_party/test1').relative_to_chromium).resolve(),
+            (repository.chromium.root / 'third_party/test1').resolve())
 
 
 if __name__ == "__main__":

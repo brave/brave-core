@@ -12,14 +12,14 @@ import time
 
 import plaster
 
-from test.fake_chromium_src import FakeChromiumSrc
+from test.fake_chromium_repo import FakeChromiumRepo
 
 
 class PlasterTest(unittest.TestCase):
 
     def setUp(self):
         """Set up a fake Chromium repository for testing."""
-        self.fake_chromium_src = FakeChromiumSrc()
+        self.fake_chromium_src = FakeChromiumRepo()
         self.fake_chromium_src.setup()
         self.addCleanup(self.fake_chromium_src.cleanup)
 
@@ -104,9 +104,7 @@ class PlasterTest(unittest.TestCase):
         self.assertEqual(
             patchinfo_from_disk['patchChecksum'],
             hashlib.sha256(
-                self.fake_chromium_src.get_patchfile_path_for_source(
-                    self.fake_chromium_src.chromium,
-                    test_file_chromium).read_text().encode()).hexdigest())
+                patchinfo.patch.path.read_text().encode()).hexdigest())
         self.assertEqual(patchinfo_from_disk['appliesTo'][0]['path'],
                          str(test_file_chromium))
         self.assertEqual(
@@ -114,9 +112,9 @@ class PlasterTest(unittest.TestCase):
             hashlib.sha256(
                 (self.fake_chromium_src.chromium /
                  test_file_chromium).read_text().encode()).hexdigest())
-        self.assertEqual(
-            patchinfo_from_disk['plaster']['path'],
-            str(plaster_path.relative_to(self.fake_chromium_src.brave)))
+        # PatchInfo normalizes plaster path to be relative to brave root.
+        self.assertEqual(patchinfo_from_disk['plaster']['path'],
+                         str(patchinfo.plaster_file))
         self.assertEqual(
             patchinfo_from_disk['plaster']['checksum'],
             hashlib.sha256(plaster_path.read_text().encode()).hexdigest())

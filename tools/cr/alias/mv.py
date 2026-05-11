@@ -77,11 +77,11 @@ def cmd_mv(args: list[str]) -> int:
 
     cwd = Path.cwd()
     try:
-        cwd.relative_to(repository.BRAVE_CORE_PATH)
+        repository.brave.to_repo_relative(cwd)
     except ValueError:
         raise UserValidationError(
             'git cr mv: must be run from within the brave-core tree '
-            f'({repository.BRAVE_CORE_PATH})') from None
+            f'({repository.brave.root})') from None
 
     src = (cwd / parsed.source).resolve()
     dest = (cwd / parsed.destination).resolve()
@@ -92,8 +92,8 @@ def cmd_mv(args: list[str]) -> int:
     _step3_shadow_includes(file_pairs)
 
     for old_file, new_file in file_pairs:
-        old_rel = old_file.relative_to(repository.CHROMIUM_SRC_PATH)
-        new_rel = new_file.relative_to(repository.CHROMIUM_SRC_PATH)
+        old_rel = repository.chromium.to_repo_relative(old_file)
+        new_rel = repository.chromium.to_repo_relative(new_file)
         update_references(old_rel, new_rel)
 
     _step5_plaster(file_pairs, parsed.no_git, not parsed.no_run_plaster)
@@ -125,7 +125,7 @@ def _step1_move(src: Path, dest: Path, mkdir: bool,
     All pairs are collected before the move so old paths are available
     for later artefact repair steps.
     """
-    rewrite_path = plaster.PLASTER_FILES_PATH
+    rewrite_path = plaster.PLASTER_FILES_PATH.resolve()
 
     if not src.exists():
         raise UserValidationError(f'git cr mv: source does not exist: {src}')
@@ -156,7 +156,7 @@ def _step1_move(src: Path, dest: Path, mkdir: bool,
     if no_git:
         src.rename(dest)
     else:
-        repository.brave.run_git('mv', str(src), str(dest))
+        terminal.run_git('mv', str(src), str(dest))
 
     return file_pairs
 
@@ -167,7 +167,7 @@ def _step2_guards(file_pairs: list[_FilePair]) -> None:
         if new_file.suffix not in _HEADER_EXTENSIONS:
             continue
         new_guard = compute_guard(
-            new_file.relative_to(repository.CHROMIUM_SRC_PATH))
+            repository.chromium.to_repo_relative(new_file))
         content = new_file.read_text(encoding='utf-8')
         old_guard = find_guard(content)
         if old_guard:
@@ -178,7 +178,7 @@ def _step2_guards(file_pairs: list[_FilePair]) -> None:
 
 def _step3_shadow_includes(file_pairs: list[_FilePair]) -> None:
     """Updates the upstream angle-bracket include in moved shadow files."""
-    chromium_src_path = repository.BRAVE_CORE_PATH / 'chromium_src'
+    chromium_src_path = (repository.brave.root / 'chromium_src').resolve()
     for old_file, new_file in file_pairs:
         if not old_file.is_relative_to(chromium_src_path):
             continue
@@ -193,8 +193,8 @@ def _step5_plaster(file_pairs: list[_FilePair], no_git: bool,
                    run_plaster: bool) -> None:
     """Deletes stale patch files and optionally re-runs plaster for moved
     TOMLs."""
-    rewrite_path = plaster.PLASTER_FILES_PATH
-    patches_path = repository.BRAVE_CORE_PATH / 'patches'
+    rewrite_path = plaster.PLASTER_FILES_PATH.resolve()
+    patches_path = repository.brave.root / 'patches'
 
     for old_file, new_file in file_pairs:
         if old_file.suffix != '.toml':
@@ -211,21 +211,26 @@ def _step5_plaster(file_pairs: list[_FilePair], no_git: bool,
             if no_git:
                 patch_file.unlink()
             else:
-                repository.brave.run_git('rm', str(patch_file))
+                terminal.run_git('rm', str(patch_file))
             patchinfo_file = patch_file.with_suffix('.patchinfo')
             if patchinfo_file.exists():
                 patchinfo_file.unlink()
 
         if run_plaster:
             try:
-                PlasterFile(new_file).apply()
+                # PlasterFile reads its path via `read_text()`, so pass the
+                # cwd-relative form (brave-relative path prefixed with brave
+                # root) so it works regardless of cwd's depth in the tree.
+                PlasterFile(
+                    repository.brave.root /
+                    repository.brave.to_repo_relative(new_file)).apply()
                 if not no_git:
                     new_chromium_path = new_file.relative_to(
                         rewrite_path).with_suffix('')
                     new_patch = patches_path / patch_name_for(
                         new_chromium_path)
                     if new_patch.exists():
-                        repository.brave.run_git('add', str(new_patch))
+                        terminal.run_git('add', str(new_patch))
             # TODO(https://github.com/brave/brave-browser/issues/55370): Eventually
             # we should better constrain this to only catch plaster exceptions.
             except Exception as e:

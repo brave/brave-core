@@ -11,39 +11,67 @@ from rich.markup import escape
 
 from terminal import terminal
 
-# The path to the brave/ directory.
-BRAVE_CORE_PATH = next(brave for brave in Path(__file__).parents
-                       if brave.name == 'brave')
+# The basename of the brave-core directory inside chromium/src. Used where we
+# need the literal 'brave' segment, since with relative path constants the
+# expression `brave_root.relative_to(chromium_root)` is no longer a valid
+# lexical operation.
+BRAVE_DIR_NAME = 'brave'
 
-# The path to chromium's src/ directory.
-CHROMIUM_SRC_PATH = BRAVE_CORE_PATH.parent
+
+def _compute_brave_core_path() -> Path:
+    """Returns the cwd-relative path to the brave-core repo root.
+
+    Computed once at module import via `git rev-parse --show-cdup`. The
+    relative form is intentional: it remains valid for the duration of the
+    script even when the resolved absolute path differs (e.g. tests chdir
+    into a fake brave repo before importing tools/cr modules, and
+    subprocesses inherit the same cwd). This relies on the invariant that
+    cwd does not change during the lifetime of a tools/cr script.
+    """
+    try:
+        cdup = terminal.run_git('rev-parse', '--show-cdup')
+    except (subprocess.CalledProcessError, FileNotFoundError) as e:
+        raise RuntimeError(
+            'tools/cr must be invoked from within a brave-core git work tree '
+            '(git rev-parse --show-cdup failed).') from e
+    brave_core = Path(cdup) if cdup else Path('.')
+    if brave_core.resolve().name != BRAVE_DIR_NAME:
+        raise RuntimeError(
+            f'tools/cr expected to be inside a "{BRAVE_DIR_NAME}" git work '
+            f'tree; resolved root is {brave_core.resolve()}.')
+    return brave_core
+
+
+# The path to the brave/ directory, relative to cwd at module import.
+_BRAVE_CORE_PATH = _compute_brave_core_path()
+
+# The path to chromium's src/ directory, relative to cwd at module import.
+_CHROMIUM_SRC_PATH = _BRAVE_CORE_PATH / '..'
 
 
 @dataclass(frozen=True)
 class Repository:
-    """Repository data class to hold the repository path.
+    """Repository data class to hold the repository root path.
 
     This class provides helpers around the use of repository paths, such as
     relative paths to and from the repository, and repository specific git
     operations.
     """
 
-    # The repository path. This path is extracted from the subdirectory section
-    # of a patch file, with chromium/src being ''.
-    # e.g. "third_party/search_engines_data/resources"
-    path: Path
+    # The repository's root path, relative to cwd at module import time.
+    root: Path
 
     @property
     def is_chromium(self) -> bool:
         """If this repo is chromium/src.
         """
-        return self.path == CHROMIUM_SRC_PATH
+        return self.root == _CHROMIUM_SRC_PATH
 
     @property
     def is_brave(self) -> bool:
         """If this repo is brave/.
         """
-        return self.path == BRAVE_CORE_PATH
+        return self.root == _BRAVE_CORE_PATH
 
     @property
     def relative_to_chromium(self) -> Path:
@@ -51,30 +79,49 @@ class Repository:
         """
         if self.is_chromium:
             return Path('')
-        return self.path.relative_to(CHROMIUM_SRC_PATH)
+        # The brave repo's root is `Path('.')` and chromium's is `Path('..')`,
+        # which `relative_to` cannot reconcile lexically, so name it directly.
+        if self.is_brave:
+            return Path(BRAVE_DIR_NAME)
+        return self.root.relative_to(_CHROMIUM_SRC_PATH)
 
     def to_brave(self) -> Path:
         """ Returns the path from the repository to brave/.
         """
         if self.is_chromium:
-            return BRAVE_CORE_PATH.relative_to(CHROMIUM_SRC_PATH)
+            return Path(BRAVE_DIR_NAME)
         return Path(
-            len(self.path.relative_to(CHROMIUM_SRC_PATH).parts) *
-            '../') / BRAVE_CORE_PATH.relative_to(CHROMIUM_SRC_PATH)
+            len(self.relative_to_chromium.parts) * '../') / BRAVE_DIR_NAME
 
     def from_brave(self, source: Optional[Path] = None) -> Path:
         """ Returns the path from brave/ to the repository.
         """
         if source:
-            return Path('..') / self.path.relative_to(
-                CHROMIUM_SRC_PATH) / source
+            return _BRAVE_CORE_PATH / Path(
+                '..') / self.relative_to_chromium / source
 
-        return Path('..') / self.path.relative_to(CHROMIUM_SRC_PATH)
+        return _BRAVE_CORE_PATH / Path('..') / self.relative_to_chromium
+
+    def to_repo_relative(self, p: Path) -> Path:
+        """Returns p expressed relative to this repo's root.
+
+        Accepts an absolute path or one relative to cwd; resolves both sides so
+        the comparison is lexical-after-normalisation.
+        """
+        return Path(p).resolve().relative_to(self.root.resolve())
+
+    def contains(self, p: Path) -> bool:
+        """Returns True if p resolves under this repo's root."""
+        try:
+            Path(p).resolve().relative_to(self.root.resolve())
+            return True
+        except ValueError:
+            return False
 
     def run_git(self, *cmd, no_trim=False) -> str:
         """Runs a git command on the repository.
         """
-        if self.is_brave:
+        if self.root == Path('.'):
             return terminal.run_git(*cmd, no_trim=no_trim)
 
         return terminal.run_git('-C', self.from_brave(), *cmd, no_trim=no_trim)
@@ -220,7 +267,7 @@ class Repository:
 
 
 # An instance to the chromium repository.
-chromium = Repository(CHROMIUM_SRC_PATH)
+chromium = Repository(_CHROMIUM_SRC_PATH)
 
 # An instance to the brave repository.
-brave = Repository(BRAVE_CORE_PATH)
+brave = Repository(_BRAVE_CORE_PATH)

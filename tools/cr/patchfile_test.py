@@ -10,7 +10,7 @@ from patchfile import Patchfile
 import repository
 from repository import Repository
 
-from test.fake_chromium_src import FakeChromiumSrc
+from test.fake_chromium_repo import FakeChromiumRepo
 
 
 class PatchfileTest(unittest.TestCase):
@@ -18,7 +18,7 @@ class PatchfileTest(unittest.TestCase):
 
     def setUp(self):
         """Set up a fake Chromium repository for testing."""
-        self.fake_chromium_src = FakeChromiumSrc()
+        self.fake_chromium_src = FakeChromiumRepo()
         self.fake_chromium_src.setup()
         self.fake_chromium_src.add_dep('v8')
         self.fake_chromium_src.add_dep('third_party/test1')
@@ -47,13 +47,13 @@ class PatchfileTest(unittest.TestCase):
         patchfile = Patchfile(
             path=Path("patches/v8/build-android-gyp-dex.py.patch"))
         self.assertEqual(patchfile.get_repository_from_patch_name(),
-                         Repository(self.fake_chromium_src.chromium / 'v8'))
+                         Repository(repository.chromium.root / 'v8'))
 
         patchfile = Patchfile(path=Path(
             "patches/third_party/test1/build-android-gyp-dex.py.patch"))
         self.assertEqual(
             patchfile.get_repository_from_patch_name(),
-            Repository(self.fake_chromium_src.chromium / 'third_party/test1'))
+            Repository(repository.chromium.root / 'third_party/test1'))
 
     def test_source_name_from_patch_naming(self):
         """Test patched file name name heuristics."""
@@ -420,11 +420,13 @@ class PatchfileTest(unittest.TestCase):
         self.fake_chromium_src.run_update_patches()
 
         self.assertEqual(
-            Patchfile(path=Path('patches/v8/build-android-gyp-dex.py.patch')).
-            source_from_brave().as_posix(), '../v8/build/android/gyp/dex.py')
+            Patchfile(path=Path('patches/v8/build-android-gyp-dex.py.patch')
+                      ).source_from_brave(),
+            repository.chromium.root / 'v8' / 'build/android/gyp/dex.py')
         self.assertEqual(
-            Patchfile(path=Path('patches/build-android-gyp-dex.py.patch')).
-            source_from_brave().as_posix(), '../build/android/gyp/dex.py')
+            Patchfile(path=Path(
+                'patches/build-android-gyp-dex.py.patch')).source_from_brave(),
+            repository.chromium.root / 'build/android/gyp/dex.py')
 
         _devtools_patch = ('patches/third_party/devtools-frontend/src/'
                            'front_end-panels-timeline-components-'
@@ -432,9 +434,9 @@ class PatchfileTest(unittest.TestCase):
         _devtools_source = (
             'front_end/panels/timeline/components/LiveMetricsView.ts')
         self.assertEqual(
-            Patchfile(
-                path=Path(_devtools_patch)).source_from_brave().as_posix(),
-            '../third_party/devtools-frontend/src/' + _devtools_source)
+            Patchfile(path=Path(_devtools_patch)).source_from_brave(),
+            repository.chromium.root / 'third_party/devtools-frontend/src' /
+            _devtools_source)
 
     def test_path_from_repo(self):
         """Tests the path_from_repo method of Patchfile."""
@@ -450,13 +452,15 @@ class PatchfileTest(unittest.TestCase):
         self.fake_chromium_src.run_update_patches()
 
         self.assertEqual(
-            Patchfile(path=Path('patches/v8/build-android-gyp-dex.py.patch')
-                      ).path_from_repo().as_posix(),
-            '../brave/patches/v8/build-android-gyp-dex.py.patch')
+            Patchfile(path=Path(
+                'patches/v8/build-android-gyp-dex.py.patch')).path_from_repo(),
+            Repository(repository.chromium.root / 'v8').to_brave() /
+            'patches/v8/build-android-gyp-dex.py.patch')
         self.assertEqual(
-            Patchfile(path=Path('patches/build-android-gyp-dex.py.patch')
-                      ).path_from_repo().as_posix(),
-            'brave/patches/build-android-gyp-dex.py.patch')
+            Patchfile(path=Path(
+                'patches/build-android-gyp-dex.py.patch')).path_from_repo(),
+            repository.chromium.to_brave() /
+            'patches/build-android-gyp-dex.py.patch')
 
     def test_get_last_commit_for_source(self):
         """Test get_last_commit_for_source method."""
@@ -629,7 +633,10 @@ class PatchfileTest(unittest.TestCase):
         self.assertEqual(rename_status.status, 'R')  # 'R' indicates rename
         self.assertIn('Rename developer_private.idl to renamed_private.idl',
                       rename_status.commit_details)
-        self.assertEqual(rename_status.renamed_to, renamed_file.as_posix())
+        self.assertEqual(
+            (self.fake_chromium_src.chromium /
+             rename_status.renamed_to).resolve(),
+            (self.fake_chromium_src.chromium / renamed_file).resolve())
 
     def test_plaster_set_when_file_exists(self):
         """Plaster path is set for a Chromium patch when the toml exists."""
@@ -650,8 +657,7 @@ class PatchfileTest(unittest.TestCase):
         patchfile = Patchfile(
             path=self.fake_chromium_src.get_patchfile_path_for_source(
                 self.fake_chromium_src.chromium, test_file))
-        self.assertEqual(patchfile.plaster,
-                         Path('rewrite/chrome/browser/foo.cc.toml'))
+        self.assertEqual(patchfile.plaster.resolve(), plaster_path.resolve())
 
     def test_plaster_none_when_file_missing(self):
         """Plaster is None for a Chromium patch when no toml file exists."""
@@ -709,7 +715,7 @@ class PatchfilePlasterApplyTest(unittest.TestCase):
     _BROKEN_TOML = '# no substitution\n'
 
     def setUp(self):
-        self.fake_chromium_src = FakeChromiumSrc()
+        self.fake_chromium_src = FakeChromiumRepo()
         self.fake_chromium_src.setup()
         self.addCleanup(self.fake_chromium_src.cleanup)
 
