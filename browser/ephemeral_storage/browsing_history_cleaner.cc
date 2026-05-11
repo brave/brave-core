@@ -9,12 +9,12 @@
 
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
-#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sync/sync_service_factory.h"
+#include "net/base/url_util.h"
 
 namespace ephemeral_storage {
 
@@ -46,15 +46,14 @@ void BrowsingHistoryCleaner::CleanupBrowsingHistoryForDomain(
   std::move(queries_.front()).Run();
 }
 
-void BrowsingHistoryCleaner::CleanupQuery(const std::string& search_text) {
-  search_text_ = base::ToLowerASCII(search_text);
+void BrowsingHistoryCleaner::CleanupQuery(const std::string& search_domain) {
   history::QueryOptions options;
   options.max_count = 0;
   options.host_only = false;
   options.matching_algorithm = query_parser::MatchingAlgorithm::DEFAULT;
   options.duplicate_policy = history::QueryOptions::KEEP_ALL_DUPLICATES;
-  browsing_history_service_->QueryHistory(base::UTF8ToUTF16(search_text_),
-                                          options);
+  browsing_history_service_->QueryHistory(
+      base::UTF8ToUTF16(base::ToLowerASCII(search_domain)), options);
 }
 
 void BrowsingHistoryCleaner::OnRemoveRequestCompleted() {
@@ -78,12 +77,13 @@ void BrowsingHistoryCleaner::OnQueryComplete(
     const HistoryEntryRequests& query_results,
     const history::BrowsingHistoryService::QueryResultsInfo& query_results_info,
     base::OnceClosure continuation_closure) {
+  const auto search_domain = base::UTF16ToUTF8(query_results_info.search_text);
   HistoryEntryRequests list_to_remove;
-  std::copy_if(query_results.begin(), query_results.end(),
-               std::back_inserter(list_to_remove), [this](const auto& entry) {
-                 return base::EndsWith(base::ToLowerASCII(entry.url.host()),
-                                       search_text_);
-               });
+  for (auto& entry : query_results) {
+    if (net::URLToEphemeralStorageDomain(entry.url) == search_domain) {
+      list_to_remove.emplace_back(std::move(entry));
+    }
+  }
 
   browsing_history_service_->RemoveVisits(list_to_remove);
 }

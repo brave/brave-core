@@ -48,7 +48,6 @@ class BrowsingHistoryCleaner : public ProfileBasedBrowsingHistoryDriver {
   // OnQueryComplete is called.
   void SetOnQueryCompleteCallbackForTesting(base::OnceClosure callback);
 
-  std::string search_text_;
   std::vector<base::OnceCallback<void()>> queries_;
   std::unique_ptr<history::BrowsingHistoryService> browsing_history_service_;
   raw_ptr<Profile> profile_ = nullptr;

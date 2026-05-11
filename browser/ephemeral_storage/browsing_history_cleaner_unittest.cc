@@ -137,7 +137,7 @@ TEST_F(BrowsingHistoryCleanerTest, MultipleRemoveRequests) {
   auto on_cleanup_finished_future = base::test::TestFuture<void>();
   SetOnQueryCompleteCallbackForTesting(
       on_cleanup_finished_future.GetCallback());
-  browsing_history_cleaner()->CleanupBrowsingHistoryForDomain("a.com");
+  browsing_history_cleaner()->CleanupBrowsingHistoryForDomain("A.com");
   browsing_history_cleaner()->CleanupBrowsingHistoryForDomain("b.com");
   browsing_history_cleaner()->CleanupBrowsingHistoryForDomain("");
   browsing_history_cleaner()->CleanupBrowsingHistoryForDomain("c.com");
