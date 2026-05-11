@@ -60,6 +60,7 @@
 #include "content/public/test/browser_task_environment.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/blink/public/common/storage_key/storage_key.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -300,6 +301,22 @@ class TestBraveWalletServiceObserver
   std::string cryptocurrency_;
   mojo::Receiver<brave_wallet::mojom::BraveWalletServiceObserver>
       observer_receiver_{this};
+};
+
+class MockBraveWalletServiceDelegate : public BraveWalletServiceDelegate {
+ public:
+  MockBraveWalletServiceDelegate() = default;
+  ~MockBraveWalletServiceDelegate() override = default;
+
+  MOCK_METHOD(void,
+              DisplayTxNotification,
+              (mojom::TransactionStatus status,
+               const std::string& account_name,
+               const std::string& tx_id,
+               const GURL& tx_url),
+              (override));
+  MOCK_METHOD(base::FilePath, GetWalletBaseDirectory, (), (override));
+  MOCK_METHOD(bool, IsPrivateWindow, (), (override));
 };
 
 class BraveWalletServiceUnitTest : public testing::Test {
@@ -887,6 +904,11 @@ class BraveWalletServiceUnitTest : public testing::Test {
   }
 
   AccountUtils GetAccountUtils() { return AccountUtils(keyring_service_); }
+
+  mojo::Receiver<brave_wallet::mojom::TxServiceObserver>&
+  GetTxServiceObserverReceiver() {
+    return service_->tx_service_observer_receiver_;
+  }
 
   content::BrowserTaskEnvironment task_environment_;
   network::TestURLLoaderFactory url_loader_factory_;
@@ -3428,6 +3450,58 @@ TEST_F(BraveWalletServiceUnitTest, GetNetworkForAccountOnActiveOrigin) {
       service_->GetNetworkForAccountOnOriginSync(origin, ada_testnet_account_id)
           ->chain_id,
       mojom::kCardanoTestnet);
+}
+
+TEST_F(BraveWalletServiceUnitTest, DisplayTxNotification) {
+  SetupWallet();
+  auto delegate =
+      std::make_unique<testing::NiceMock<MockBraveWalletServiceDelegate>>();
+  auto* delegate_ptr = delegate.get();
+  service_->SetDelegateForTesting(std::move(delegate));
+  auto account = GetAccountUtils().EnsureEthAccount(0);
+  ASSERT_TRUE(account);
+
+  const GURL expected_tx_url("chrome://wallet/crypto/accounts/" +
+                             account->address + "/transactions");
+
+  struct TestCase {
+    mojom::TransactionStatus status;
+    uint32_t times_called;
+  };
+
+  std::vector<TestCase> test_cases = {
+      {mojom::TransactionStatus::Unapproved, 0},
+      {mojom::TransactionStatus::Approved, 0},
+      {mojom::TransactionStatus::Rejected, 0},
+      {mojom::TransactionStatus::Submitted, 0},
+      {mojom::TransactionStatus::Confirmed, 1},
+      {mojom::TransactionStatus::Error, 1},
+      {mojom::TransactionStatus::Dropped, 1},
+      {mojom::TransactionStatus::Signed, 0},
+  };
+
+  for (auto test_case : test_cases) {
+    SCOPED_TRACE(test_case.status);
+    auto tx_info = mojom::TransactionInfo::New(
+        "tx_meta_id", account->account_id.Clone(), "",
+        mojom::TxDataUnion::NewEthTxData(
+            mojom::TxData::New(mojom::kLocalhostChainId, "0x0", "0x1", "0x5208",
+                               "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                               "0x0", std::vector<uint8_t>())),
+        test_case.status, mojom::TransactionType::ETHSend,
+        std::vector<std::string>(), std::vector<std::string>(),
+        base::Milliseconds(0), base::Milliseconds(0), base::Milliseconds(0),
+        nullptr, mojom::kLocalhostChainId, std::nullopt, false, nullptr,
+        nullptr);
+
+    EXPECT_CALL(*delegate_ptr,
+                DisplayTxNotification(test_case.status, account->name,
+                                      tx_info->id, expected_tx_url))
+        .Times(test_case.times_called);
+    tx_service_->OnTransactionStatusChanged(tx_info.Clone());
+    GetTxServiceObserverReceiver().FlushForTesting();
+    testing::Mock::VerifyAndClearExpectations(delegate_ptr);
+  }
 }
 
 }  // namespace brave_wallet

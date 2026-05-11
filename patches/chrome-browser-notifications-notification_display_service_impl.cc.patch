@@ -6,7 +6,7 @@ index c185575c57d0f0e72edc3c9bcfc5874e4c2a63dd..0632480d7827cf594eb696db0237068e
                               std::make_unique<NearbyNotificationHandler>());
      }
  #endif
-+    BRAVE_ADD_BRAVE_ADS_NOTIFICATION_HANDLER;
++    BRAVE_NOTIFICATION_DISPLAY_SERVICE_IMPL_CONSTRUCTOR;
    }
  
    bridge_delegator_ = std::make_unique<NotificationPlatformBridgeDelegator>(

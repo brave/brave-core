@@ -270,6 +270,7 @@ static_library("browser") {
     "tx_meta.h",
     "tx_service.cc",
     "tx_service.h",
+    "tx_service_observer_base.h",
     "tx_state_manager.cc",
     "tx_state_manager.h",
     "tx_storage.cc",

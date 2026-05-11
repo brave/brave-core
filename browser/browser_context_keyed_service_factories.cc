@@ -106,7 +106,6 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/browser/brave_wallet/notifications/wallet_notification_service_factory.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
@@ -169,9 +168,6 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-#if !BUILDFLAG(IS_ANDROID)
-  brave_wallet::WalletNotificationServiceFactory::GetInstance();
-#endif
   brave_wallet::BraveWalletServiceFactory::GetInstance();
 #endif
 

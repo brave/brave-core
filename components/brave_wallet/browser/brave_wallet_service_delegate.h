@@ -82,6 +82,11 @@ class BraveWalletServiceDelegate {
 
   virtual bool IsPrivateWindow() = 0;
 
+  virtual void DisplayTxNotification(mojom::TransactionStatus status,
+                                     const std::string& account_name,
+                                     const std::string& tx_id,
+                                     const GURL& tx_url);
+
   static std::unique_ptr<BraveWalletServiceDelegate> Create(
       content::BrowserContext* browser_context);
 };

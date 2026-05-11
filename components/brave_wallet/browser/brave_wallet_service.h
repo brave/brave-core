@@ -23,8 +23,10 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_p3a.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_wallet_service.h"
+#include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_wallet_service.h"
 #include "brave/components/brave_wallet/browser/simple_hash_client.h"
+#include "brave/components/brave_wallet/browser/tx_service_observer_base.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_wallet_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
@@ -63,6 +65,7 @@ struct PendingGetEncryptPublicKeyRequest;
 class BraveWalletService : public KeyedService,
                            public mojom::BraveWalletService,
                            public KeyringServiceObserverBase,
+                           public TxServiceObserverBase,
                            public BraveWalletServiceDelegate::Observer {
  public:
   using APIRequestHelper = api_request_helper::APIRequestHelper;
@@ -299,6 +302,9 @@ class BraveWalletService : public KeyedService,
   // KeyringServiceObserverBase:
   void WalletRestored() override;
 
+  // TxServiceObserverBase:
+  void OnTransactionStatusChanged(mojom::TransactionInfoPtr tx_info) override;
+
   void OnDiscoverAssetsStarted();
 
   void OnDiscoverAssetsCompleted(
@@ -349,6 +355,9 @@ class BraveWalletService : public KeyedService,
   BraveWalletServiceDelegate* GetDelegateForTesting() {
     return delegate_.get();
   }
+
+  void SetDelegateForTesting(
+      std::unique_ptr<BraveWalletServiceDelegate> delegate);
 
   base::CallbackListSubscription RegisterSignMessageRequestAddedCallback(
       base::RepeatingClosure cb);
@@ -507,6 +516,8 @@ class BraveWalletService : public KeyedService,
   mojo::ReceiverSet<mojom::BraveWalletService> receivers_;
   mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
       keyring_observer_receiver_{this};
+  mojo::Receiver<brave_wallet::mojom::TxServiceObserver>
+      tx_service_observer_receiver_{this};
   PrefChangeRegistrar pref_change_registrar_;
   base::WeakPtrFactory<BraveWalletService> weak_ptr_factory_;
 };

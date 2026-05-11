@@ -85,4 +85,12 @@ void BraveWalletServiceDelegate::ResetWebSitePermission(
   std::move(callback).Run(false);
 }
 
+void BraveWalletServiceDelegate::DisplayTxNotification(
+    brave_wallet::mojom::TransactionStatus status,
+    const std::string& account_name,
+    const std::string& tx_id,
+    const GURL& tx_url) {
+  NOTIMPLEMENTED();
+}
+
 }  // namespace brave_wallet

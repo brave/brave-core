@@ -1,5 +1,6 @@
 specific_include_rules = {
   "notification_display_service_impl\.cc": [
     "+brave/components/brave_ads/buildflags/buildflags.h",
+    "+brave/components/brave_wallet/common/buildflags/buildflags.h",
   ],
 }
