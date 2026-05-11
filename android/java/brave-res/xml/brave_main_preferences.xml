@@ -19,6 +19,7 @@
     <org.chromium.chrome.browser.settings.BraveAccountPreference
         android:key="sign_out"
         android:order="2"
+        android:icon="@drawable/ic_outside"
         android:title="@string/settings_brave_account_log_out_button_label"
         app:title_text_color="@color/schemes_primary"/>
     <org.chromium.chrome.browser.settings.BraveAccountPreference
