@@ -556,6 +556,10 @@ if (enable_brave_vpn) {
   ]
 }
 
+if (enable_brave_vpn2_deps) {
+  brave_chrome_browser_deps += [ "//brave/third_party/boringtun" ]
+}
+
 if (is_android) {
   brave_chrome_browser_sources += [
     "//brave/browser/android/brave_init_android.cc",
