@@ -753,23 +753,11 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
 
       <!-- Onboarding strings -->
-      <message name="IDS_PRIVACY_ONBOARDING" desc="Text for privacy onboarding">
-        Privacy. Made simple.
-      </message>
-      <message name="IDS_ONBOARDING_SET_DEFAULT" desc="Text for set default onboarding">
-        With Brave as default, every link you tap opens with Brave's privacy protections.
-      </message>
       <message name="IDS_P3A_TITLE" desc="Text for p3a title onboarding">
         Help make Brave better
       </message>
         <message name="IDS_P3A_SUBTITLE" desc="Text for p3a subtitle onboarding">
         Let us know which features you're enjoying the most.
-      </message>
-      <message name="IDS_P3A_CRASH" desc="Text for p3a crash onboarding">
-        Send diagnostic reports if you experience a crash or freeze.
-      </message>
-      <message name="IDS_P3A_INSIGHTS" desc="Text for p3a insights onboarding">
-        Share private and anonymous product insights about what features are being used by Brave's users.
       </message>
       <message name="IDS_WDP_TITLE" desc="Text for WDP title onboarding">
         Help Brave Search grow
@@ -781,21 +769,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Opt into the Web Discovery Project to help grow the index and improve search results. <ph name="LEARN_MORE_START">&lt;learn_more&gt;</ph>Learn more.<ph name="LEARN_MORE_END">&lt;/learn_more&gt;</ph>
       </message>
       <message name="IDS_BRAVE_ONBOARDING_SPLASH_LOGO_DESCRIPTION" desc="Accessibility description for the onboarding splash logo">
-        Brave logo
-      </message>
-      <message name="IDS_BRAVE_ONBOARDING_BACKGROUND_DESCRIPTION" desc="Accessibility description for the onboarding background image">
-        Onboarding background
-      </message>
-      <message name="IDS_BRAVE_ONBOARDING_TOP_LEAF_DESCRIPTION" desc="Accessibility description for the onboarding top leaf decoration">
-        Top leaf decoration
-      </message>
-      <message name="IDS_BRAVE_ONBOARDING_BOTTOM_LEAF_DESCRIPTION" desc="Accessibility description for the onboarding bottom leaf decoration">
-        Bottom leaf decoration
-      </message>
-      <message name="IDS_BRAVE_ONBOARDING_ARROW_DOWN_DESCRIPTION" desc="Accessibility description for the onboarding down arrow">
-        Scroll down
-      </message>
-      <message name="IDS_BRAVE_ONBOARDING_LOGO_DESCRIPTION" desc="Accessibility description for the onboarding Brave logo">
         Brave logo
       </message>
       <message name="IDS_BRAVE_ONBOARDING_HELP_BRAVE_SEARCH_ILLUSTRATION_DESCRIPTION" desc="Accessibility description for the help Brave Search onboarding illustration">
@@ -842,9 +815,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
       <message name="IDS_SKIP" desc="Text for skip button in onboarding">
         Skip
-      </message>
-      <message name="IDS_LEARN_MORE_ONBOARDING" desc="Text for learn more button onboarding">
-        Learn more
       </message>
       <message name="IDS_TROUBLESHOOTING_ONBOARDING" desc="Text for trouble shooting page for onboarding">
         Troubleshooting onboarding
