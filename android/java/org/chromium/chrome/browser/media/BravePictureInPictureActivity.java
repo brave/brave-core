@@ -9,9 +9,7 @@ import android.app.PictureInPictureParams;
 
 import androidx.annotation.NonNull;
 
-import org.chromium.chrome.browser.init.AsyncInitializationActivity;
-
-public abstract class BravePictureInPictureActivity extends AsyncInitializationActivity {
+public abstract class BravePictureInPictureActivity extends VideoOverlayActivity {
     @Override
     public void setPictureInPictureParams(@NonNull PictureInPictureParams params) {
         try {
