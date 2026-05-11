@@ -37,6 +37,13 @@ gfx::ImageSkia GenerateContainerIcon(std::string_view container_id,
                                      float scale_factor,
                                      const ui::ColorProvider* color_provider);
 
+// Same as above, but without background.
+gfx::ImageSkia GenerateContainerIconWithoutBackground(
+    std::string_view container_id,
+    mojom::Icon icon,
+    int dip_size,
+    float scale_factor);
+
 // Generates a transparent image containing only the temporary container
 // foreground identicon centered in |icon_size|.
 gfx::ImageSkia GenerateTemporaryContainerForegroundIcon(

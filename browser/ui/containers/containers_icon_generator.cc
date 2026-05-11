@@ -13,6 +13,7 @@
 #include "brave/components/containers/core/browser/temporary_container.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "ui/gfx/canvas.h"
+#include "ui/gfx/color_palette.h"
 #include "ui/gfx/geometry/rect_f.h"
 #include "ui/gfx/image/canvas_image_source.h"
 #include "ui/gfx/image/image_skia.h"
@@ -24,7 +25,7 @@ namespace {
 
 class ContainersIconImageSource : public gfx::CanvasImageSource {
  public:
-  ContainersIconImageSource(gfx::ImageSkia icon_image,
+  ContainersIconImageSource(const gfx::ImageSkia& icon_image,
                             SkColor background,
                             int dip_size,
                             int dip_icon_size)
@@ -33,8 +34,16 @@ class ContainersIconImageSource : public gfx::CanvasImageSource {
         background_(background),
         dip_icon_size_(dip_icon_size) {}
 
+  ContainersIconImageSource(const gfx::ImageSkia& icon_image, int dip_size)
+      : ContainersIconImageSource(icon_image,
+                                  gfx::kPlaceholderColor,
+                                  dip_size,
+                                  dip_size) {}
+
   void Draw(gfx::Canvas* canvas) override {
-    DrawBackground(canvas);
+    if (background_ != gfx::kPlaceholderColor) {
+      DrawBackground(canvas);
+    }
     DrawIcon(canvas);
   }
 
@@ -122,6 +131,18 @@ class TemporaryContainerForegroundIconImageSource
   const SkColor color_;
 };
 
+gfx::ImageSkia GetIconImageForContainer(std::string_view container_id,
+                                        mojom::Icon icon,
+                                        int dip_icon_size,
+                                        float scale_factor) {
+  if (IsTemporaryContainerId(container_id)) {
+    return GenerateTemporaryContainerForegroundIcon(
+        container_id, SK_ColorWHITE, dip_icon_size, scale_factor);
+  }
+  return gfx::CreateVectorIcon(GetVectorIconFromIconType(icon), dip_icon_size,
+                               SK_ColorWHITE);
+}
+
 }  // namespace
 
 const gfx::VectorIcon& GetVectorIconFromIconType(mojom::Icon icon) {
@@ -166,16 +187,21 @@ gfx::ImageSkia GenerateContainerIcon(std::string_view container_id,
                                      int dip_icon_size,
                                      float scale_factor,
                                      const ui::ColorProvider* color_provider) {
-  gfx::ImageSkia icon_image;
-  if (IsTemporaryContainerId(container_id)) {
-    icon_image = GenerateTemporaryContainerForegroundIcon(
-        container_id, SK_ColorWHITE, dip_icon_size, scale_factor);
-  } else {
-    icon_image = gfx::CreateVectorIcon(GetVectorIconFromIconType(icon),
-                                       dip_icon_size, SK_ColorWHITE);
-  }
+  gfx::ImageSkia icon_image =
+      GetIconImageForContainer(container_id, icon, dip_icon_size, scale_factor);
   auto image_source = std::make_unique<ContainersIconImageSource>(
       std::move(icon_image), background, dip_size, dip_icon_size);
+  return gfx::ImageSkia(std::move(image_source), scale_factor);
+}
+
+gfx::ImageSkia GenerateContainerIconWithoutBackground(
+    std::string_view container_id,
+    mojom::Icon icon,
+    int dip_size,
+    float scale_factor) {
+  auto image_source = std::make_unique<ContainersIconImageSource>(
+      GetIconImageForContainer(container_id, icon, dip_size, scale_factor),
+      dip_size);
   return gfx::ImageSkia(std::move(image_source), scale_factor);
 }
 
