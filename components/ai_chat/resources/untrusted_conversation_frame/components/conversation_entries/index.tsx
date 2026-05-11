@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Label from '@brave/leo/react/label'
 import ProgressRing from '@brave/leo/react/progressRing'
 import classnames from '$web-common/classnames'
 import { getLocale } from '$web-common/locale'
@@ -41,46 +40,112 @@ import useConversationEventClipboardCopyHandler from './use_conversation_event_c
 import styles from './style.module.scss'
 import AssistantTask from '../assistant_task/assistant_task'
 
-// Function to highlight skill shortcuts in text
-const maybeHighlightSkillText = (text: string, skill?: Mojom.SkillEntry) => {
-  if (!skill) return text
+const escape = (text: string): string => (RegExp as any).escape(text)
 
-  const shortcutPattern = `/${skill.shortcut}`
-  const index = text.indexOf(shortcutPattern)
+type RichSegment =
+  | { type: 'text'; value: string }
+  | { type: 'skill'; id: string; text: string }
+  | { type: 'attachment'; content: Mojom.AssociatedContent }
 
-  if (index === -1) return text
+const parseRichSegments = (
+  text: string,
+  skill: Mojom.SkillEntry | undefined | null,
+  associatedContent: Mojom.AssociatedContent[],
+): RichSegment[] => {
+  const replacements: string[] = []
+
+  // Skills can only be at the beginning of the text
+  if (skill) {
+    replacements.push(`^${escape(`/${skill.shortcut}`)}`)
+  }
+
+  replacements.push(
+    ...associatedContent.map((c) => escape(`[mention(${c.title})]`)),
+  )
+
+  if (!replacements.length) return [{ type: 'text', value: text }]
+
+  const regex = new RegExp(replacements.map((r) => `(${r})`).join('|'), 'g')
+
+  const segments: RichSegment[] = []
+  let lastIndex = 0
+  for (const match of text.matchAll(regex)) {
+    if (match.index > lastIndex) {
+      segments.push({
+        type: 'text',
+        value: text.substring(lastIndex, match.index),
+      })
+    }
+    lastIndex = match.index + match[0].length
+
+    const content = associatedContent.find(
+      (c) => match[0] === `[mention(${c.title})]`,
+    )
+    if (content) {
+      segments.push({ type: 'attachment', content })
+    } else {
+      segments.push({ type: 'skill', id: skill!.shortcut, text: match[0] })
+    }
+  }
+  if (lastIndex < text.length) {
+    segments.push({ type: 'text', value: text.substring(lastIndex) })
+  }
+
+  return segments
+}
+
+export const highlightRichText = (
+  text: string,
+  skill: Mojom.SkillEntry | undefined,
+  associatedContent: Mojom.AssociatedContent[],
+) => {
+  const segments = parseRichSegments(text, skill, associatedContent)
+
+  if (segments.every((s) => s.type === 'text')) return text
 
   return (
-    <span>
-      {text.substring(0, index)}
-      <Label
-        className={styles.skillLabel}
-        color='primary'
-        mode='default'
-      >
-        {shortcutPattern}
-      </Label>
-      {text.substring(index + shortcutPattern.length)}
-    </span>
+    <>
+      {segments.map((seg, i) => {
+        if (seg.type === 'text') return seg.value
+        return (
+          <span
+            key={i}
+            className={styles.richLabel}
+            title={seg.type === 'attachment' ? seg.content.url.url : undefined}
+          >
+            {seg.type === 'attachment' && (
+              <img
+                src={`chrome-untrusted://favicon2?size=64&pageUrl=${encodeURIComponent(seg.content.url.url)}`}
+              />
+            )}
+            <span className={styles.richLabelTitle}>
+              {seg.type === 'attachment' ? seg.content.title : seg.text}
+            </span>
+          </span>
+        )
+      })}
+    </>
   )
 }
 
-// Build editable Content, rendering the skill shortcut as a highlighted node
+// Build editable Content, rendering skill and attachment mentions as highlighted nodes
 const makeEditContent = (
   text: string,
   skill?: Mojom.SkillEntry | null,
-): Content => {
-  if (!skill) return [text]
-  const shortcutPattern = `/${skill.shortcut}`
-  const index = text.indexOf(shortcutPattern)
-  if (index === -1) return [text]
-  const parts: Content = []
-  if (index > 0) parts.push(text.substring(0, index))
-  parts.push({ type: 'skill', id: skill.shortcut, text: shortcutPattern })
-  const after = text.substring(index + shortcutPattern.length)
-  if (after) parts.push(after)
-  return parts
-}
+  associatedContent: Mojom.AssociatedContent[] = [],
+): Content =>
+  parseRichSegments(text, skill, associatedContent).map((seg) => {
+    if (seg.type === 'text') return seg.value
+    if (seg.type === 'skill') {
+      return { type: 'skill' as const, id: seg.id, text: seg.text }
+    }
+    return {
+      type: 'attachment' as const,
+      id: seg.content.contentId.toString(),
+      text: seg.content.title,
+      url: seg.content.url.url,
+    }
+  })
 
 function usePairedConversationGroups() {
   const conversationContext = useUntrustedConversationContext()
@@ -328,9 +393,10 @@ function ConversationEntries(props: { scrollToBottom: () => void }) {
                           />
                           <div className={styles.humanMessageBubble}>
                             <div className={styles.humanTextRow}>
-                              {maybeHighlightSkillText(
+                              {highlightRichText(
                                 currentEntryEdit.text,
                                 currentEntryEdit.skill,
+                                conversationContext.associatedContent ?? [],
                               )}
                               {!!entry.edits?.length && (
                                 <div className={styles.editLabel}>
@@ -365,6 +431,7 @@ function ConversationEntries(props: { scrollToBottom: () => void }) {
                         content={makeEditContent(
                           firstEntryEdit.text,
                           firstEntryEdit.skill,
+                          tabAttachments,
                         )}
                         onSubmit={(content) =>
                           handleEditSubmit(entryNumber, content)
