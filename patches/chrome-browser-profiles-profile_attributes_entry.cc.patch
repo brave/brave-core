@@ -2,7 +2,15 @@ diff --git a/chrome/browser/profiles/profile_attributes_entry.cc b/chrome/browse
 index 87f4db2aa47f3b6b69dbce2cfc4092b164fe535d..d557aabe7cc494f876fc517f9f8828e955a16177 100644
 --- a/chrome/browser/profiles/profile_attributes_entry.cc
 +++ b/chrome/browser/profiles/profile_attributes_entry.cc
-@@ -1056,6 +1056,7 @@ bool ProfileAttributesEntry::ClearValue(const char* key) {
+@@ -368,6 +368,7 @@ ProfileAttributesEntry::GetAvatarIconWithType(
+     int size_for_placeholder_avatar,
+     bool use_high_res_file,
+     const PlaceholderAvatarIconParams& icon_params) const {
++  BRAVE_GET_AVATAR_ICON_WITH_TYPE
+   if (IsUsingGAIAPicture()) {
+     // The picture may be null if it has not finished downloading yet; in that
+     // case fall through to return the avatar-index-based icon below.
+@@ -1056,6 +1057,7 @@ bool ProfileAttributesEntry::ClearValue(const char* key) {
  
  // This method should be periodically pruned of year+ old migrations.
  void ProfileAttributesEntry::MigrateObsoleteProfileAttributes() {

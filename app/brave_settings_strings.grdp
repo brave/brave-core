@@ -986,6 +986,17 @@
     Don't allow site to open Leo AI chat
   </message>
 
+  <!-- Settings / Manage profile / Custom avatar -->
+  <message name="IDS_SETTINGS_BRAVE_CUSTOM_AVATAR_TITLE" desc="Label for the row on the Manage Profile page that lets users upload their own image as the profile avatar.">
+    Upload your own image
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_CUSTOM_AVATAR_UPLOAD" desc="Button label that opens a file picker to choose a custom profile avatar image.">
+    Upload
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_CUSTOM_AVATAR_REMOVE" desc="Button label that removes a previously uploaded custom profile avatar image.">
+    Remove
+  </message>
+
   <!-- Settings / Sync -->
   <message name="IDS_SETTINGS_BRAVE_SYNC_TITLE" desc="The title for Brave Sync in settings">
     Sync
