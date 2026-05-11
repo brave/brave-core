@@ -70,7 +70,7 @@ void DecodeAndScaleImage(
       [](NSData* data) -> std::optional<std::vector<uint8_t>> {
         CGSize target_size = CGSizeMake(1024, 768);
         UIImage* image = [[UIImage alloc] initWithData:data];
-        if (image.size.width > target_size.width &&
+        if (image.size.width > target_size.width ||
             image.size.height > target_size.height) {
           image = [image imageByPreparingThumbnailOfSize:target_size];
         }
