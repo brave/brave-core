@@ -109,26 +109,26 @@ const kBraveCustomAvatarStyleCss = `
     gap: 8px;
   }
 
-  /* Native buttons: manage_profile.ts does not import cr-button, so
-     createElement('cr-button') stays un-upgraded and may not behave as a
-     control. Use plain buttons styled like settings actions. */
+  /* Native <button>: match leo-button filled / outline tokens (Nala). */
   #braveCustomAvatarUploadBtn,
   #braveCustomAvatarRemoveBtn {
-    background: var(--cr-button-fill-color, var(--google-blue-500));
-    border: none;
-    border-radius: var(--cr-button-border-radius, 9999px);
-    color: var(--cr-button-text-color, #fff);
+    border-radius: var(--leo-radius-full);
     cursor: pointer;
-    font: inherit;
-    font-weight: 500;
+    font: var(--leo-font-components-button-small, inherit);
     min-height: 32px;
-    padding: 0 16px;
+    padding: 0 var(--leo-spacing-l);
+  }
+
+  #braveCustomAvatarUploadBtn {
+    background: var(--leo-color-button-background);
+    border: none;
+    color: var(--leo-color-schemes-on-primary, #fff);
   }
 
   #braveCustomAvatarRemoveBtn {
-    background: var(--cr-button-secondary-fill-color, transparent);
-    border: 1px solid var(--cr-separator-color, #dadce0);
-    color: var(--cr-primary-text-color, #202124);
+    background: transparent;
+    border: 1px solid var(--leo-color-divider-interactive);
+    color: var(--leo-color-text-interactive);
   }
 
   #braveCustomAvatarFileInput {
