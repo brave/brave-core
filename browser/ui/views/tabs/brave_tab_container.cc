@@ -750,7 +750,19 @@ void BraveTabContainer::OnScrollableHorizontalTabStripPrefChanged() {
 
   if (!IsHorizontalScrollableTabStripEnabled()) {
     SetScrollOffset(0);
+
+    // No matter scroll offset has changed or not, we should force re-layout
+    // and re-evaluating visibility of all. i.e. ScrollOffset hasn't changed,
+    // we should still force all slot views to be visible and ideal bounds of
+    // them to be recalculated.
+    last_layout_size_ = std::nullopt;
+    InvalidateIdealBounds();
+    UpdateIdealBounds();
+    SetTabSlotVisibility();
+    UpdateClipPathForSlotViews();
+    return;
   }
+
   InvalidateIdealBounds();
   InvalidateLayout();
 }
@@ -1622,9 +1634,9 @@ void BraveTabContainer::ClampScrollOffset() {
 }
 
 void BraveTabContainer::UpdateClipPathForSlotViews() {
-  if (!GetScrollDirection()) {
-    return;
-  }
+  // We don't check scroll direction here, as UpdateClipPathForChildren() will
+  // check it and it'll decide to set clip or clear clip based on the scroll
+  // direction.
   const int pinned_tabs_area_boundary = GetPinnedTabsAreaBoundary();
   int tab_count = GetTabCount();
   for (int i = 0; i < tab_count; ++i) {
