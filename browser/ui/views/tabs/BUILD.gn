@@ -19,6 +19,7 @@ source_set("browser_tests") {
     "//base",
     "//base/test:test_support",
     "//brave/browser/ui:brave_tab_prefs",
+    "//brave/browser/ui/views/frame",
     "//chrome:resources",
     "//chrome:strings",
     "//chrome/browser",

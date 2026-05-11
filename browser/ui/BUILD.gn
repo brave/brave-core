@@ -623,24 +623,6 @@ source_set("ui") {
       "views/extensions/brave_extensions_menu_entry_view.h",
       "views/extensions/brave_extensions_menu_main_page_view.cc",
       "views/extensions/brave_extensions_menu_main_page_view.h",
-      "views/frame/brave_browser_root_view.cc",
-      "views/frame/brave_browser_root_view.h",
-      "views/frame/brave_browser_view.cc",
-      "views/frame/brave_browser_view.h",
-      "views/frame/brave_browser_widget.cc",
-      "views/frame/brave_browser_widget.h",
-      "views/frame/brave_contents_layout_manager.cc",
-      "views/frame/brave_contents_layout_manager.h",
-      "views/frame/brave_non_client_hit_test_helper.cc",
-      "views/frame/brave_non_client_hit_test_helper.h",
-      "views/frame/brave_opaque_browser_frame_view.cc",
-      "views/frame/brave_opaque_browser_frame_view.h",
-      "views/frame/brave_system_menu_model_builder.cc",
-      "views/frame/brave_system_menu_model_builder.h",
-      "views/frame/brave_tab_strip_region_view.cc",
-      "views/frame/brave_tab_strip_region_view.h",
-      "views/frame/brave_window_frame_graphic.cc",
-      "views/frame/brave_window_frame_graphic.h",
       "views/omnibox/brave_omnibox_popup_view_views.cc",
       "views/omnibox/brave_omnibox_popup_view_views.h",
       "views/omnibox/brave_omnibox_result_view.cc",
@@ -732,6 +714,10 @@ source_set("ui") {
       "//brave/browser/ui/sidebar/buildflags",
       "//brave/browser/ui/views:layout_provider",
       "//brave/browser/ui/views/frame",
+      "//brave/browser/ui/views/frame/split_view",
+      "//brave/browser/ui/views/frame/split_view:split_view_impl",
+      "//brave/browser/ui/views/frame/vertical_tabs",
+      "//brave/browser/ui/views/frame/vertical_tabs:vertical_tabs_impl",
       "//brave/browser/ui/views/location_bar",
       "//brave/browser/ui/views/page_action",
       "//brave/browser/ui/views/tabs/accent_color",
@@ -792,32 +778,13 @@ source_set("ui") {
     }
 
     if (is_win) {
-      sources += [
-        "views/frame/brave_browser_frame_view_win.cc",
-        "views/frame/brave_browser_frame_view_win.h",
-        "views/frame/brave_win_caption_layout.cc",
-
-        # "views/frame/brave_win_caption_layout.h",  # Removed to prevent circular dependency per project rules.
-      ]
-
       deps += [ "//chrome/browser:titlebar_config" ]
-    }
-
-    if (is_linux) {
-      sources += [
-        "views/frame/brave_browser_frame_view_linux_native.cc",
-        "views/frame/brave_browser_frame_view_linux_native.h",
-      ]
     }
 
     if (is_mac) {
       sources += [
         "views/commands/default_accelerators_mac.h",
         "views/commands/default_accelerators_mac.mm",
-        "views/frame/brave_browser_frame_view_mac.h",
-        "views/frame/brave_browser_frame_view_mac.mm",
-        "views/frame/brave_browser_native_widget_mac.h",
-        "views/frame/brave_browser_native_widget_mac.mm",
       ]
     }
   }
@@ -892,7 +859,6 @@ source_set("ui") {
     "//brave/app:command_ids",
     "//brave/app/vector_icons",
     "//brave/browser:browser_process",
-    "//brave/browser:sparkle_buildflags",
     "//brave/browser/misc_metrics",
     "//brave/browser/shell_integrations/buildflags",
     "//brave/browser/ui/brave_tooltips",
@@ -1539,6 +1505,7 @@ source_set("browser_tests") {
 
     deps = [
       "//brave/app:command_ids",
+      "//brave/browser/ui/views/frame",
       "//brave/components/constants",
       "//chrome/browser",
       "//chrome/browser/devtools:test_support",

@@ -31,6 +31,7 @@ source_set("browser_tests") {
     ":darker_theme",
     "//base",
     "//base/test:test_support",
+    "//brave/browser/ui/views/frame",
     "//chrome/browser/ui",
     "//chrome/browser/ui/color:mixers",
     "//chrome/test:test_support_ui",

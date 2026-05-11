@@ -50,6 +50,7 @@ if (!is_android) {
       "//brave/app:generate_command_metadata",
       "//brave/browser/speedreader",
       "//brave/browser/ui/speedreader",
+      "//brave/browser/ui/views/frame",
       "//brave/browser/ui/views/frame/split_view",
       "//brave/components/ai_chat/core/common/buildflags",
       "//brave/components/brave_wallet/common/buildflags",

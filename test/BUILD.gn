@@ -1328,6 +1328,7 @@ test("brave_browser_tests") {
       "//brave/browser/ui/sidebar:browser_tests",
       "//brave/browser/ui/tabs:browser_tests",
       "//brave/browser/ui/tabs:tab_model",
+      "//brave/browser/ui/views/frame",
       "//brave/browser/ui/views/frame:browser_tests",
       "//brave/browser/ui/views/frame/vertical_tabs:browser_tests",
       "//brave/browser/ui/views/location_bar",

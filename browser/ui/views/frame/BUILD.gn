@@ -3,10 +3,31 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//brave/components/speedreader/common/buildflags/buildflags.gni")
+
 source_set("frame") {
   sources = [
+    "brave_browser_root_view.cc",
+    "brave_browser_root_view.h",
+    "brave_browser_view.cc",
+    "brave_browser_view.h",
+    "brave_browser_widget.cc",
+    "brave_browser_widget.h",
+    "brave_contents_layout_manager.cc",
+    "brave_contents_layout_manager.h",
     "brave_contents_view_util.cc",
     "brave_contents_view_util.h",
+    "brave_non_client_hit_test_helper.cc",
+    "brave_non_client_hit_test_helper.h",
+    "brave_opaque_browser_frame_view.cc",
+    "brave_opaque_browser_frame_view.h",
+    "brave_system_menu_model_builder.cc",
+    "brave_system_menu_model_builder.h",
+    "brave_tab_strip_region_view.cc",
+    "brave_tab_strip_region_view.h",
+    "brave_window_frame_graphic.cc",
+    "brave_window_frame_graphic.h",
     "layout/brave_browser_view_layout_delegate_impl.cc",
     "layout/brave_browser_view_layout_delegate_impl.h",
     "layout/brave_browser_view_tabbed_layout_impl.cc",
@@ -15,21 +36,85 @@ source_set("frame") {
 
   deps = [
     "//base",
+    "//brave/app:brave_generated_resources_grit",
+    "//brave/app:command_ids",
+    "//brave/app/theme:brave_theme_resources_grit",
+    "//brave/browser:sparkle_buildflags",
     "//brave/browser/ui:brave_tab_prefs",
+    "//brave/browser/ui/darker_theme",
+    "//brave/browser/ui/focus_mode",
+    "//brave/browser/ui/page_info",
+    "//brave/browser/ui/sidebar/buildflags",
+    "//brave/browser/ui/tabs:tab_strip",
+    "//brave/browser/ui/views/brave_actions",
+    "//brave/browser/ui/views/frame/split_view",
     "//brave/browser/ui/views/frame/vertical_tabs",
+    "//brave/browser/ui/views/location_bar",
     "//brave/browser/ui/views/sidebar",
+    "//brave/components/brave_vpn/common/buildflags",
+    "//brave/components/commands/browser",
+    "//brave/components/sidebar/common",
+    "//brave/components/vector_icons",
+    "//chrome/browser/app_mode",
+    "//chrome/browser/devtools",
+    "//chrome/browser/enterprise/watermark:watermark_view_lib",
     "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui:tab_search_feature",
     "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/color:mixers",
     "//chrome/browser/ui/exclusive_access",
+    "//chrome/browser/ui/frame",
     "//chrome/browser/ui/tabs:tab_strip",
+    "//chrome/browser/ui/views/frame",
     "//chrome/browser/ui/views/infobars",
+    "//chrome/browser/ui/views/interaction",
+    "//chrome/browser/ui/views/tabs/shared",
+    "//chrome/browser/ui/views/toolbar",
+    "//chrome/browser/ui/web_applications",
     "//chrome/common:constants",
+    "//components/javascript_dialogs",
     "//components/prefs",
     "//components/split_tabs",
     "//components/tabs:public",
     "//ui/compositor",
     "//ui/views",
   ]
+
+  if (is_win) {
+    sources += [
+      "brave_browser_frame_view_win.cc",
+      "brave_browser_frame_view_win.h",
+      "brave_win_caption_layout.cc",
+      "brave_win_caption_layout.h",
+    ]
+  }
+
+  if (is_linux) {
+    sources += [
+      "brave_browser_frame_view_linux_native.cc",
+      "brave_browser_frame_view_linux_native.h",
+    ]
+  }
+
+  if (is_mac) {
+    sources += [
+      "brave_browser_frame_view_mac.h",
+      "brave_browser_frame_view_mac.mm",
+      "brave_browser_native_widget_mac.h",
+      "brave_browser_native_widget_mac.mm",
+    ]
+  }
+
+  if (enable_brave_vpn) {
+    deps += [ "//brave/components/brave_vpn/common" ]
+  }
+
+  if (enable_speedreader) {
+    deps += [
+      "//brave/browser/ui/speedreader",
+      "//brave/browser/ui/views/speedreader",
+    ]
+  }
 }
 
 source_set("unit_tests") {

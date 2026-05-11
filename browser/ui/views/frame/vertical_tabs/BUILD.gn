@@ -8,12 +8,24 @@ import("//build/config/ui.gni")
 
 source_set("vertical_tabs") {
   sources = [
-    "vertical_tab_strip_region_view.cc",
     "vertical_tab_strip_region_view.h",
+    "vertical_tab_strip_widget_delegate_view.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//chrome/browser/ui/exclusive_access",
+    "//components/prefs",
+    "//ui/views",
+  ]
+}
+
+source_set("vertical_tabs_impl") {
+  sources = [
+    "vertical_tab_strip_region_view.cc",
     "vertical_tab_strip_root_view.cc",
     "vertical_tab_strip_root_view.h",
     "vertical_tab_strip_widget_delegate_view.cc",
-    "vertical_tab_strip_widget_delegate_view.h",
   ]
 
   if (is_mac) {
@@ -22,9 +34,12 @@ source_set("vertical_tabs") {
       "vertical_tab_strip_widget_delegate_view_mac.mm",
     ]
   }
+
+  public_deps = [ ":vertical_tabs" ]
+
   deps = [
-    "//base",
     "//brave/browser/ui:brave_tab_prefs",
+    "//brave/browser/ui/views/frame",
     "//brave/components/constants",
     "//brave/components/vector_icons",
     "//chrome/app:command_ids",
@@ -34,13 +49,10 @@ source_set("vertical_tabs") {
     "//chrome/browser/ui:ui_features",
     "//chrome/browser/ui/color:color_headers",
     "//chrome/browser/ui/color:mixers",
-    "//chrome/browser/ui/exclusive_access",
     "//chrome/browser/ui/frame",
     "//chrome/browser/ui/tabs",
     "//chrome/browser/ui/views/toolbar",
     "//chrome/common:constants",
-    "//components/prefs",
-    "//ui/views",
   ]
 }
 
@@ -54,7 +66,7 @@ source_set("browser_tests") {
   ]
 
   deps = [
-    ":vertical_tabs",
+    ":vertical_tabs_impl",
     "//brave/browser/ui/tabs:tab_menu",
     "//brave/browser/ui/views/frame",
     "//chrome/browser",

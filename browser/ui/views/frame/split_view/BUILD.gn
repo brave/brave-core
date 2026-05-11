@@ -7,15 +7,35 @@ import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 
 source_set("split_view") {
   sources = [
-    "brave_contents_container_view.cc",
     "brave_contents_container_view.h",
-    "brave_multi_contents_view.cc",
     "brave_multi_contents_view.h",
-    "brave_multi_contents_view_delegate_impl.cc",
     "brave_multi_contents_view_delegate_impl.h",
-    "brave_multi_contents_view_mini_toolbar.cc",
     "brave_multi_contents_view_mini_toolbar.h",
   ]
+
+  public_deps = [
+    "//base",
+    "//brave/components/speedreader/common/buildflags",
+    "//chrome/browser/ui/color:mixers",
+    "//ui/views",
+  ]
+
+  if (enable_speedreader) {
+    public_deps += [ "//brave/browser/ui/views/speedreader" ]
+  }
+
+  deps = []
+}
+
+source_set("split_view_impl") {
+  sources = [
+    "brave_contents_container_view.cc",
+    "brave_multi_contents_view.cc",
+    "brave_multi_contents_view_delegate_impl.cc",
+    "brave_multi_contents_view_mini_toolbar.cc",
+  ]
+
+  public_deps = [ ":split_view" ]
 
   deps = [
     "//brave/browser/ui/tabs:tab_model",
@@ -30,10 +50,5 @@ source_set("split_view") {
     "//chrome/browser/ui/tabs:tab_strip",
     "//ui/base/metadata",
     "//ui/compositor",
-    "//ui/views",
   ]
-
-  if (enable_speedreader) {
-    deps += [ "//brave/browser/ui/views/speedreader" ]
-  }
 }
