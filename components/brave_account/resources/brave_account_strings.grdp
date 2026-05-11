@@ -38,7 +38,7 @@
     Cancel registration
   </message>
   <message name="IDS_SETTINGS_BRAVE_ACCOUNT_LOG_OUT_BUTTON_LABEL" desc="Label for the button that signs the user out of their account when clicked" formatter_data="webui=BraveAccountSettings android_java">
-    Log out
+    Sign out
   </message>
 
   <!-- 'Entry' dialog: -->
