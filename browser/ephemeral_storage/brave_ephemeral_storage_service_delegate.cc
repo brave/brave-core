@@ -19,6 +19,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
+#include "brave/browser/ephemeral_storage/browsing_history_cleaner.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/browser/ephemeral_storage/tld_ephemeral_lifetime.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
@@ -105,8 +106,10 @@ BraveEphemeralStorageServiceDelegate::BraveEphemeralStorageServiceDelegate(
     content::BrowserContext* context,
     HostContentSettingsMap* host_content_settings_map,
     scoped_refptr<content_settings::CookieSettings> cookie_settings,
-    brave_shields::BraveShieldsSettingsService* shields_settings_service)
-    : context_(context),
+    brave_shields::BraveShieldsSettingsService* shields_settings_service,
+    std::unique_ptr<BrowsingHistoryCleaner> browsing_history_cleaner)
+    : browsing_history_cleaner_(std::move(browsing_history_cleaner)),
+      context_(context),
       host_content_settings_map_(host_content_settings_map),
       cookie_settings_(std::move(cookie_settings)),
       application_state_observer_(std::make_unique<ApplicationStateObserver>(
@@ -198,6 +201,15 @@ void BraveEphemeralStorageServiceDelegate::CleanupFirstPartyStorageArea(
   content::BrowsingDataRemover* remover = context_->GetBrowsingDataRemover();
   remover->RemoveWithFilter(base::Time(), base::Time::Max(), data_to_remove,
                             origin_type, std::move(filter_builder));
+}
+
+void BraveEphemeralStorageServiceDelegate::CleanupTLDBrowsingHistory(
+    const TLDEphemeralAreaKey& key) {
+  DVLOG(1) << __func__ << " " << key.first << " " << key.second;
+  if (!browsing_history_cleaner_) {
+    return;
+  }
+  browsing_history_cleaner_->CleanupBrowsingHistoryForDomain(key.first);
 }
 
 void BraveEphemeralStorageServiceDelegate::OnApplicationBecameActive() {
@@ -382,6 +394,10 @@ BraveEphemeralStorageServiceDelegate::GetEphemeralDomainsToCleanOnAppClose() {
   }
 #endif
   return result;
+}
+
+bool BraveEphemeralStorageServiceDelegate::IsShredBrowsingHistoryEnabled() {
+  return shields_settings_service_->IsShredBrowsingHistoryEnabled();
 }
 
 }  // namespace ephemeral_storage

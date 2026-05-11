@@ -65,6 +65,9 @@ class BraveShieldsSettingsService : public KeyedService {
 
   bool IsShieldsDisabledOnAnyHostMatchingDomainOf(const GURL& url) const;
 
+  void SetShredBrowsingHistory(bool value);
+  bool IsShredBrowsingHistoryEnabled();
+
  private:
   const raw_ref<HostContentSettingsMap>
       host_content_settings_map_;       // NOT OWNED

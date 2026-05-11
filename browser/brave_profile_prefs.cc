@@ -589,6 +589,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(prefs::kPinPwaInstallButton, true);
 #endif  // defined(TOOLKIT_VIEWS)
 
+  registry->RegisterBooleanPref(
+      brave_shields::prefs::kShredBrowsingHistoryEnabled, false);
+
   OverrideDefaultPrefValues(registry);
 }
 

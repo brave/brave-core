@@ -10,8 +10,12 @@
 #include <string_view>
 #include <vector>
 
+#include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
+#include "brave/browser/ephemeral_storage/brave_ephemeral_storage_service_delegate.h"
+#include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -21,13 +25,18 @@
 #include "brave/components/ephemeral_storage/ephemeral_storage_types.h"
 #include "build/build_config.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
+#include "chrome/browser/history/history_service_factory.h"
+#include "chrome/browser/prefs/browser_prefs.h"
+#include "chrome/browser/sync/sync_service_factory.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
+#include "components/sync/test/test_sync_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/browser/storage_partition_config.h"
 #include "content/public/test/browser_task_environment.h"
 #include "net/base/features.h"
+#include "services/network/test/test_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -56,6 +65,10 @@ class MockDelegate : public EphemeralStorageServiceDelegate {
               (const TLDEphemeralAreaKey& key),
               (override));
   MOCK_METHOD(void,
+              CleanupTLDBrowsingHistory,
+              (const TLDEphemeralAreaKey& key),
+              (override));
+  MOCK_METHOD(void,
               CleanupFirstPartyStorageArea,
               (const TLDEphemeralAreaKey& key),
               (override));
@@ -79,6 +92,7 @@ class MockDelegate : public EphemeralStorageServiceDelegate {
 #if BUILDFLAG(IS_ANDROID)
   MOCK_METHOD(void, TriggerCurrentAppStateNotification, (), (override));
 #endif
+  MOCK_METHOD(bool, IsShredBrowsingHistoryEnabled, (), (override));
 
   void ExpectRegisterFirstWindowOpenedCallback(base::OnceClosure callback,
                                                bool trigger_callback) {
@@ -124,7 +138,18 @@ class EphemeralStorageServiceTest : public testing::Test {
   ~EphemeralStorageServiceTest() override = default;
 
   void SetUp() override {
-    service_ = CreateEphemeralStorageService(&profile_, mock_delegate_,
+    TestingProfile::Builder profile_builder;
+    profile_builder.AddTestingFactory(
+        HistoryServiceFactory::GetInstance(),
+        HistoryServiceFactory::GetDefaultFactory());
+    profile_builder.AddTestingFactory(
+        SyncServiceFactory::GetInstance(),
+        base::BindRepeating(
+            [](content::BrowserContext*) -> std::unique_ptr<KeyedService> {
+              return std::make_unique<syncer::TestSyncService>();
+            }));
+    profile_ = profile_builder.Build();
+    service_ = CreateEphemeralStorageService(profile_.get(), mock_delegate_,
                                              &mock_observer_);
   }
 
@@ -132,8 +157,8 @@ class EphemeralStorageServiceTest : public testing::Test {
 
   HostContentSettingsMap* host_content_settings_map(
       Profile* profile = nullptr) {
-    return HostContentSettingsMapFactory::GetForProfile(profile ? profile
-                                                                : &profile_);
+    return HostContentSettingsMapFactory::GetForProfile(
+        profile ? profile : profile_.get());
   }
 
   static std::unique_ptr<EphemeralStorageService> CreateEphemeralStorageService(
@@ -169,7 +194,7 @@ class EphemeralStorageServiceTest : public testing::Test {
 
  protected:
   content::BrowserTaskEnvironment task_environment_;
-  TestingProfile profile_;
+  std::unique_ptr<TestingProfile> profile_;
   testing::StrictMock<MockObserver> mock_observer_;
   std::unique_ptr<EphemeralStorageService> service_;
   raw_ptr<MockDelegate> mock_delegate_ = nullptr;
@@ -180,7 +205,7 @@ TEST_F(EphemeralStorageServiceTest, EphemeralCleanup) {
   const GURL url("https://a.com");
   const std::string ephemeral_domain = url.GetHost();
   const auto storage_partition_config =
-      content::StoragePartitionConfig::CreateDefault(&profile_);
+      content::StoragePartitionConfig::CreateDefault(profile_.get());
   EXPECT_CALL(*mock_delegate_, GetAutoShredMode(url))
       .WillOnce(testing::Return(std::nullopt));
   // Create tld ephemeral lifetime.
@@ -232,10 +257,10 @@ TEST_F(EphemeralStorageServiceTest,
   const GURL url("https://a.com");
   const std::string ephemeral_domain = url.GetHost();
   const auto storage_partition_config =
-      content::StoragePartitionConfig::CreateDefault(&profile_);
+      content::StoragePartitionConfig::CreateDefault(profile_.get());
   const auto second_storage_partition_config =
-      content::StoragePartitionConfig::Create(&profile_, "partition_domain",
-                                              "partition_name", false);
+      content::StoragePartitionConfig::Create(
+          profile_.get(), "partition_domain", "partition_name", false);
   EXPECT_CALL(*mock_delegate_, GetAutoShredMode(url))
       .WillOnce(testing::Return(std::nullopt));
   // Create tld ephemeral lifetime.
@@ -295,7 +320,7 @@ TEST_F(EphemeralStorageServiceNoKeepAliveTest, ImmediateCleanup) {
   const GURL url("https://a.com");
   const std::string ephemeral_domain = url.GetHost();
   const auto storage_partition_config =
-      content::StoragePartitionConfig::CreateDefault(&profile_);
+      content::StoragePartitionConfig::CreateDefault(profile_.get());
   EXPECT_CALL(*mock_delegate_, GetAutoShredMode(url))
       .WillOnce(testing::Return(std::nullopt));
   // Create tld ephemeral lifetime.
@@ -352,7 +377,7 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest, CleanupFirstPartyStorage) {
   const GURL url("https://a.com");
   const std::string ephemeral_domain = std::string(url.host());
   const auto storage_partition_config =
-      content::StoragePartitionConfig::CreateDefault(&profile_);
+      content::StoragePartitionConfig::CreateDefault(profile_.get());
 
   for (const auto& test_case : kTestCases) {
     SCOPED_TRACE(testing::Message()
@@ -367,9 +392,10 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest, CleanupFirstPartyStorage) {
         .WillOnce(testing::Return(std::nullopt));
     service_->TLDEphemeralLifetimeCreated(ephemeral_domain,
                                           storage_partition_config);
-    EXPECT_EQ(
-        profile_.GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
-        0u);
+    EXPECT_EQ(profile_->GetPrefs()
+                  ->GetList(kFirstPartyStorageOriginsToCleanup)
+                  .size(),
+              0u);
 
     {
       ScopedVerifyAndClearExpectations verify(mock_delegate_);
@@ -385,16 +411,17 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest, CleanupFirstPartyStorage) {
       service_->TLDEphemeralLifetimeDestroyed(
           ephemeral_domain, storage_partition_config,
           !test_case.shields_enabled, StorageCleanupMode::kDefault);
-      EXPECT_EQ(profile_.GetPrefs()
+      EXPECT_EQ(profile_->GetPrefs()
                     ->GetList(kFirstPartyStorageOriginsToCleanup)
                     .size(),
                 test_case.should_cleanup ? 1u : 0u);
       task_environment_.FastForwardBy(base::Seconds(30));
     }
 
-    EXPECT_EQ(
-        profile_.GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
-        0u);
+    EXPECT_EQ(profile_->GetPrefs()
+                  ->GetList(kFirstPartyStorageOriginsToCleanup)
+                  .size(),
+              0u);
   }
 }
 
@@ -402,7 +429,7 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest, CleanupOnRestart) {
   const GURL url("https://a.com");
   const std::string ephemeral_domain = std::string(url.host());
   const auto storage_partition_config =
-      content::StoragePartitionConfig::CreateDefault(&profile_);
+      content::StoragePartitionConfig::CreateDefault(profile_.get());
 
   host_content_settings_map()->SetContentSettingDefaultScope(
       url, url, ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE,
@@ -414,7 +441,7 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest, CleanupOnRestart) {
   service_->TLDEphemeralLifetimeCreated(ephemeral_domain,
                                         storage_partition_config);
   EXPECT_EQ(
-      profile_.GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
+      profile_->GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
       0u);
   EXPECT_CALL(*mock_delegate_, GetAutoShredMode(url))
       .WillOnce(testing::Return(std::nullopt));
@@ -426,9 +453,10 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest, CleanupOnRestart) {
     service_->TLDEphemeralLifetimeDestroyed(ephemeral_domain,
                                             storage_partition_config, false,
                                             StorageCleanupMode::kDefault);
-    EXPECT_EQ(
-        profile_.GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
-        1u);
+    EXPECT_EQ(profile_->GetPrefs()
+                  ->GetList(kFirstPartyStorageOriginsToCleanup)
+                  .size(),
+              1u);
   }
 
   // Simulate a browser restart. No cleanup should happen at construction.
@@ -436,12 +464,13 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest, CleanupOnRestart) {
     ScopedVerifyAndClearExpectations verify_observer(&mock_observer_);
     ShutdownEphemeralStorageService(service_);
 
-    service_ = CreateEphemeralStorageService(&profile_, mock_delegate_,
+    service_ = CreateEphemeralStorageService(profile_.get(), mock_delegate_,
                                              &mock_observer_);
     ScopedVerifyAndClearExpectations verify(mock_delegate_);
-    EXPECT_EQ(
-        profile_.GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
-        1u);
+    EXPECT_EQ(profile_->GetPrefs()
+                  ->GetList(kFirstPartyStorageOriginsToCleanup)
+                  .size(),
+              1u);
   }
 
   // Cleanup should happen in 5 seconds after the startup.
@@ -449,11 +478,15 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest, CleanupOnRestart) {
     ScopedVerifyAndClearExpectations verify(mock_delegate_);
     ScopedVerifyAndClearExpectations verify_observer(&mock_observer_);
     TLDEphemeralAreaKey key(ephemeral_domain, storage_partition_config);
+    EXPECT_CALL(*mock_delegate_, GetAutoShredMode(url))
+        .WillOnce(testing::Return(std::nullopt));
+    EXPECT_CALL(*mock_delegate_, IsShredBrowsingHistoryEnabled()).Times(0);
     EXPECT_CALL(*mock_delegate_, CleanupFirstPartyStorageArea(key));
     task_environment_.FastForwardBy(base::Seconds(5));
-    EXPECT_EQ(
-        profile_.GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
-        0u);
+    EXPECT_EQ(profile_->GetPrefs()
+                  ->GetList(kFirstPartyStorageOriginsToCleanup)
+                  .size(),
+              0u);
   }
 }
 
@@ -463,7 +496,7 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest, CleanupOnAppStateChange) {
   const GURL url("https://a.com");
   const std::string ephemeral_domain = std::string(url.host());
   const auto storage_partition_config =
-      content::StoragePartitionConfig::CreateDefault(&profile_);
+      content::StoragePartitionConfig::CreateDefault(profile_.get());
 
   host_content_settings_map()->SetContentSettingDefaultScope(
       url, url, ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE,
@@ -475,7 +508,7 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest, CleanupOnAppStateChange) {
   service_->TLDEphemeralLifetimeCreated(ephemeral_domain,
                                         storage_partition_config);
   EXPECT_EQ(
-      profile_.GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
+      profile_->GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
       0u);
   EXPECT_CALL(*mock_delegate_, GetAutoShredMode(url))
       .WillOnce(testing::Return(std::nullopt));
@@ -487,9 +520,10 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest, CleanupOnAppStateChange) {
     service_->TLDEphemeralLifetimeDestroyed(ephemeral_domain,
                                             storage_partition_config, false,
                                             StorageCleanupMode::kDefault);
-    EXPECT_EQ(
-        profile_.GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
-        1u);
+    EXPECT_EQ(profile_->GetPrefs()
+                  ->GetList(kFirstPartyStorageOriginsToCleanup)
+                  .size(),
+              1u);
   }
 
   // Simulate a browser lifecycle change. Service stays alive and the
@@ -513,9 +547,10 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest, CleanupOnAppStateChange) {
     mock_delegate_->TriggerFirstWindowOpenedCallback();
 
     ScopedVerifyAndClearExpectations verify(mock_delegate_);
-    EXPECT_EQ(
-        profile_.GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
-        1u);
+    EXPECT_EQ(profile_->GetPrefs()
+                  ->GetList(kFirstPartyStorageOriginsToCleanup)
+                  .size(),
+              1u);
   }
 
   // Cleanup should happen in 5 seconds after the startup.
@@ -523,11 +558,15 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest, CleanupOnAppStateChange) {
     ScopedVerifyAndClearExpectations verify(mock_delegate_);
     ScopedVerifyAndClearExpectations verify_observer(&mock_observer_);
     TLDEphemeralAreaKey key(ephemeral_domain, storage_partition_config);
+    EXPECT_CALL(*mock_delegate_, GetAutoShredMode(url))
+        .WillOnce(testing::Return(std::nullopt));
+    EXPECT_CALL(*mock_delegate_, IsShredBrowsingHistoryEnabled()).Times(0);
     EXPECT_CALL(*mock_delegate_, CleanupFirstPartyStorageArea(key));
     task_environment_.FastForwardBy(base::Seconds(5));
-    EXPECT_EQ(
-        profile_.GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
-        0u);
+    EXPECT_EQ(profile_->GetPrefs()
+                  ->GetList(kFirstPartyStorageOriginsToCleanup)
+                  .size(),
+              0u);
   }
 }
 
@@ -538,7 +577,7 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest,
   const GURL url("https://a.com");
   const std::string ephemeral_domain = std::string(url.host());
   const auto storage_partition_config =
-      content::StoragePartitionConfig::CreateDefault(&profile_);
+      content::StoragePartitionConfig::CreateDefault(profile_.get());
 
   host_content_settings_map()->SetContentSettingDefaultScope(
       url, url, ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE,
@@ -550,7 +589,7 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest,
   service_->TLDEphemeralLifetimeCreated(ephemeral_domain,
                                         storage_partition_config);
   EXPECT_EQ(
-      profile_.GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
+      profile_->GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
       0u);
   EXPECT_CALL(*mock_delegate_, GetAutoShredMode(url))
       .WillOnce(testing::Return(std::nullopt));
@@ -559,25 +598,27 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest,
                                           storage_partition_config, false,
                                           StorageCleanupMode::kDefault);
   EXPECT_EQ(
-      profile_.GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
+      profile_->GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
       1u);
 
   // Simulate a browser restart. No cleanup should happen at construction.
   {
     ShutdownEphemeralStorageService(service_);
-    service_ = CreateEphemeralStorageService(&profile_, mock_delegate_,
+    service_ = CreateEphemeralStorageService(profile_.get(), mock_delegate_,
                                              &mock_observer_);
     ScopedVerifyAndClearExpectations verify(mock_delegate_);
-    EXPECT_EQ(
-        profile_.GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
-        1u);
+    EXPECT_EQ(profile_->GetPrefs()
+                  ->GetList(kFirstPartyStorageOriginsToCleanup)
+                  .size(),
+              1u);
     EXPECT_CALL(*mock_delegate_, GetAutoShredMode(url))
         .WillOnce(testing::Return(std::nullopt));
     service_->TLDEphemeralLifetimeCreated(ephemeral_domain,
                                           storage_partition_config);
-    EXPECT_EQ(
-        profile_.GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
-        0u);
+    EXPECT_EQ(profile_->GetPrefs()
+                  ->GetList(kFirstPartyStorageOriginsToCleanup)
+                  .size(),
+              0u);
   }
 
   // Cleanup should NOT happen in 5 seconds after the startup.
@@ -592,10 +633,10 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest,
   const GURL url("https://a.com");
   const std::string ephemeral_domain = std::string(url.host());
   const auto storage_partition_config =
-      content::StoragePartitionConfig::CreateDefault(&profile_);
+      content::StoragePartitionConfig::CreateDefault(profile_.get());
   const auto second_storage_partition_config =
-      content::StoragePartitionConfig::Create(&profile_, "partition_domain",
-                                              "partition_name", false);
+      content::StoragePartitionConfig::Create(
+          profile_.get(), "partition_domain", "partition_name", false);
 
   host_content_settings_map()->SetContentSettingDefaultScope(
       url, url, ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE,
@@ -610,7 +651,7 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest,
   service_->TLDEphemeralLifetimeCreated(ephemeral_domain,
                                         second_storage_partition_config);
   EXPECT_EQ(
-      profile_.GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
+      profile_->GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
       0u);
   EXPECT_CALL(*mock_delegate_, GetAutoShredMode(url))
       .WillRepeatedly(testing::Return(std::nullopt));
@@ -622,25 +663,27 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest,
                                           second_storage_partition_config,
                                           false, StorageCleanupMode::kDefault);
   EXPECT_EQ(
-      profile_.GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
+      profile_->GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
       2u);
 
   // Simulate a browser restart. No cleanup should happen at construction.
   {
     ShutdownEphemeralStorageService(service_);
-    service_ = CreateEphemeralStorageService(&profile_, mock_delegate_,
+    service_ = CreateEphemeralStorageService(profile_.get(), mock_delegate_,
                                              &mock_observer_);
     ScopedVerifyAndClearExpectations verify(mock_delegate_);
-    EXPECT_EQ(
-        profile_.GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
-        2u);
+    EXPECT_EQ(profile_->GetPrefs()
+                  ->GetList(kFirstPartyStorageOriginsToCleanup)
+                  .size(),
+              2u);
     EXPECT_CALL(*mock_delegate_, GetAutoShredMode(url))
         .WillOnce(testing::Return(std::nullopt));
     service_->TLDEphemeralLifetimeCreated(ephemeral_domain,
                                           storage_partition_config);
-    EXPECT_EQ(
-        profile_.GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
-        1u);
+    EXPECT_EQ(profile_->GetPrefs()
+                  ->GetList(kFirstPartyStorageOriginsToCleanup)
+                  .size(),
+              1u);
   }
 
   // Cleanup should happen only for the second storage partition in 5 seconds
@@ -649,11 +692,16 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest,
     ScopedVerifyAndClearExpectations verify(mock_delegate_);
     ScopedVerifyAndClearExpectations verify_observer(&mock_observer_);
     TLDEphemeralAreaKey key(ephemeral_domain, second_storage_partition_config);
+    EXPECT_CALL(*mock_delegate_, GetAutoShredMode(url))
+        .WillOnce(testing::Return(std::nullopt));
+
+    EXPECT_CALL(*mock_delegate_, IsShredBrowsingHistoryEnabled()).Times(0);
     EXPECT_CALL(*mock_delegate_, CleanupFirstPartyStorageArea(key));
     task_environment_.FastForwardBy(base::Seconds(5));
-    EXPECT_EQ(
-        profile_.GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
-        0u);
+    EXPECT_EQ(profile_->GetPrefs()
+                  ->GetList(kFirstPartyStorageOriginsToCleanup)
+                  .size(),
+              0u);
   }
 }
 
@@ -662,7 +710,7 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest,
   const GURL url("https://a.com");
   const std::string ephemeral_domain = std::string(url.host());
   const auto storage_partition_config =
-      content::StoragePartitionConfig::CreateDefault(&profile_);
+      content::StoragePartitionConfig::CreateDefault(profile_.get());
 
   host_content_settings_map()->SetContentSettingDefaultScope(
       url, url, ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE,
@@ -674,7 +722,7 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest,
   service_->TLDEphemeralLifetimeCreated(ephemeral_domain,
                                         storage_partition_config);
   EXPECT_EQ(
-      profile_.GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
+      profile_->GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
       0u);
 
   // Make sure prefs is filled with the origin to cleanup.
@@ -687,9 +735,10 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest,
     service_->TLDEphemeralLifetimeDestroyed(ephemeral_domain,
                                             storage_partition_config, false,
                                             StorageCleanupMode::kDefault);
-    EXPECT_EQ(
-        profile_.GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
-        1u);
+    EXPECT_EQ(profile_->GetPrefs()
+                  ->GetList(kFirstPartyStorageOriginsToCleanup)
+                  .size(),
+              1u);
   }
 
   // Simulate a browser restart. No cleanup should happen at construction.
@@ -698,12 +747,13 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest,
     ShutdownEphemeralStorageService(service_);
 
     service_ = CreateEphemeralStorageService(
-        &profile_, mock_delegate_, &mock_observer_,
+        profile_.get(), mock_delegate_, &mock_observer_,
         ExpectFirstWindowOpenedCallback::kDontTrigger);
     ScopedVerifyAndClearExpectations verify(mock_delegate_);
-    EXPECT_EQ(
-        profile_.GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
-        1u);
+    EXPECT_EQ(profile_->GetPrefs()
+                  ->GetList(kFirstPartyStorageOriginsToCleanup)
+                  .size(),
+              1u);
   }
 
   // Cleanup should NOT happen in 5 seconds after the startup.
@@ -720,11 +770,15 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest,
     ScopedVerifyAndClearExpectations verify(mock_delegate_);
     ScopedVerifyAndClearExpectations verify_observer(&mock_observer_);
     TLDEphemeralAreaKey key(ephemeral_domain, storage_partition_config);
+    EXPECT_CALL(*mock_delegate_, GetAutoShredMode(url))
+        .WillOnce(testing::Return(std::nullopt));
+    EXPECT_CALL(*mock_delegate_, IsShredBrowsingHistoryEnabled()).Times(0);
     EXPECT_CALL(*mock_delegate_, CleanupFirstPartyStorageArea(key));
     task_environment_.FastForwardBy(base::Seconds(5));
-    EXPECT_EQ(
-        profile_.GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
-        0u);
+    EXPECT_EQ(profile_->GetPrefs()
+                  ->GetList(kFirstPartyStorageOriginsToCleanup)
+                  .size(),
+              0u);
   }
 }
 
@@ -732,10 +786,10 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest, OffTheRecordSkipsPrefs) {
   const GURL url("https://a.com");
   const std::string ephemeral_domain = std::string(url.host());
   const auto storage_partition_config =
-      content::StoragePartitionConfig::CreateDefault(&profile_);
+      content::StoragePartitionConfig::CreateDefault(profile_.get());
 
-  Profile* otr_profile =
-      profile_.GetOffTheRecordProfile(Profile::OTRProfileID::PrimaryID(), true);
+  Profile* otr_profile = profile_->GetOffTheRecordProfile(
+      Profile::OTRProfileID::PrimaryID(), true);
 
   auto otr_service = CreateEphemeralStorageService(
       otr_profile, mock_delegate_, &mock_observer_, std::nullopt);
@@ -784,11 +838,9 @@ class EphemeralStorageServiceAutoShredForgetFirstPartyTest
         {net::features::kBraveForgetFirstPartyStorage, true},
         {brave_shields::features::kBraveShredFeature, true},
     });
+    EphemeralStorageServiceTest::SetUp();
     brave_shields_settings_service_ =
-        BraveShieldsSettingsServiceFactory::GetForProfile(&profile_);
-    service_ = CreateEphemeralStorageService(
-        &profile_, mock_delegate_, &mock_observer_,
-        ExpectFirstWindowOpenedCallback::kTrigger);
+        BraveShieldsSettingsServiceFactory::GetForProfile(profile_.get());
   }
 
   brave_shields::BraveShieldsSettingsService* brave_shields_settings_service() {
@@ -814,6 +866,9 @@ TEST_F(EphemeralStorageServiceAutoShredForgetFirstPartyTest,
     bool should_cleanup_1p_storage;
     bool should_call_observer;
     StorageCleanupMode cleanup_source;
+    int is_shred_browsing_history_calls;
+    std::optional<bool> is_shred_browsing_history_result;
+    int cleanup_browsing_history_calls;
   } constexpr kTestCases[] = {
       {.name = "Case: Shields disabled, no forget first party",
        .shields_enabled = false,
@@ -824,7 +879,10 @@ TEST_F(EphemeralStorageServiceAutoShredForgetFirstPartyTest,
        .should_cleanup_ephemeral_area = false,
        .should_cleanup_1p_storage = false,
        .should_call_observer = true,
-       .cleanup_source = StorageCleanupMode::kDefault},
+       .cleanup_source = StorageCleanupMode::kDefault,
+       .is_shred_browsing_history_calls = 0,
+       .is_shred_browsing_history_result = std::nullopt,
+       .cleanup_browsing_history_calls = 0},
       {.name = "Case: Shields enabled, no forget first party",
        .shields_enabled = true,
        .forget_first_party = false,
@@ -834,19 +892,62 @@ TEST_F(EphemeralStorageServiceAutoShredForgetFirstPartyTest,
        .should_cleanup_ephemeral_area = true,
        .should_cleanup_1p_storage = false,
        .should_call_observer = true,
-       .cleanup_source = StorageCleanupMode::kDefault},
-      {
-          .name = "Case: Shields enabled, forget first party, no AutoShred",
-          .shields_enabled = true,
-          .forget_first_party = true,
-          .auto_shred_mode = brave_shields::mojom::AutoShredMode::NEVER,
-          .cleanup_list_size = 0,
-          .cleanup_list_size_after_wait = 0,
-          .should_cleanup_ephemeral_area = true,
-          .should_cleanup_1p_storage = false,
-          .should_call_observer = true,
-          .cleanup_source = StorageCleanupMode::kDefault,
-      },
+       .cleanup_source = StorageCleanupMode::kDefault,
+       .is_shred_browsing_history_calls = 0,
+       .is_shred_browsing_history_result = std::nullopt,
+       .cleanup_browsing_history_calls = 0},
+      {.name = "Case: Shields enabled, forget first party, no AutoShred",
+       .shields_enabled = true,
+       .forget_first_party = true,
+       .auto_shred_mode = brave_shields::mojom::AutoShredMode::NEVER,
+       .cleanup_list_size = 0,
+       .cleanup_list_size_after_wait = 0,
+       .should_cleanup_ephemeral_area = true,
+       .should_cleanup_1p_storage = false,
+       .should_call_observer = true,
+       .cleanup_source = StorageCleanupMode::kDefault,
+       .is_shred_browsing_history_calls = 0,
+       .is_shred_browsing_history_result = std::nullopt,
+       .cleanup_browsing_history_calls = 0},
+      {.name = "Case: Shields enabled, ManualShred, skip Browsing History",
+       .shields_enabled = true,
+       .forget_first_party = true,
+       .auto_shred_mode = brave_shields::mojom::AutoShredMode::NEVER,
+       .cleanup_list_size = 0,
+       .cleanup_list_size_after_wait = 0,
+       .should_cleanup_ephemeral_area = true,
+       .should_cleanup_1p_storage = true,
+       .should_call_observer = true,
+       .cleanup_source = StorageCleanupMode::kImmediateShred,
+       .is_shred_browsing_history_calls = 1,
+       .is_shred_browsing_history_result = false,
+       .cleanup_browsing_history_calls = 0},
+      {.name = "Case: Shields enabled, ManualShred, clean Browsing History",
+       .shields_enabled = true,
+       .forget_first_party = true,
+       .auto_shred_mode = brave_shields::mojom::AutoShredMode::NEVER,
+       .cleanup_list_size = 0,
+       .cleanup_list_size_after_wait = 0,
+       .should_cleanup_ephemeral_area = true,
+       .should_cleanup_1p_storage = true,
+       .should_call_observer = true,
+       .cleanup_source = StorageCleanupMode::kImmediateShred,
+       .is_shred_browsing_history_calls = 1,
+       .is_shred_browsing_history_result = true,
+       .cleanup_browsing_history_calls = 1},
+      {.name = "Case: Shields disabled, ManualShred, clean Browsing History",
+       .shields_enabled = false,
+       .forget_first_party = true,
+       .auto_shred_mode = brave_shields::mojom::AutoShredMode::NEVER,
+       .cleanup_list_size = 0,
+       .cleanup_list_size_after_wait = 0,
+       .should_cleanup_ephemeral_area = true,
+       .should_cleanup_1p_storage = true,
+       .should_call_observer = true,
+       .cleanup_source = StorageCleanupMode::kImmediateShred,
+       .is_shred_browsing_history_calls = 1,
+       .is_shred_browsing_history_result = true,
+       .cleanup_browsing_history_calls = 1},
       {.name = "Case: Shields enabled, no forget first party, AutoShred "
                "LAST_TAB_CLOSED",
        .shields_enabled = true,
@@ -857,7 +958,10 @@ TEST_F(EphemeralStorageServiceAutoShredForgetFirstPartyTest,
        .should_cleanup_ephemeral_area = true,
        .should_cleanup_1p_storage = true,
        .should_call_observer = true,
-       .cleanup_source = StorageCleanupMode::kDefault},
+       .cleanup_source = StorageCleanupMode::kDefault,
+       .is_shred_browsing_history_calls = 1,
+       .is_shred_browsing_history_result = true,
+       .cleanup_browsing_history_calls = 1},
       {.name = "Case: Shields enabled, no forget first party, AutoShred "
                "LAST_TAB_CLOSED",
        .shields_enabled = true,
@@ -868,7 +972,10 @@ TEST_F(EphemeralStorageServiceAutoShredForgetFirstPartyTest,
        .should_cleanup_ephemeral_area = true,
        .should_cleanup_1p_storage = true,
        .should_call_observer = true,
-       .cleanup_source = StorageCleanupMode::kDefault},
+       .cleanup_source = StorageCleanupMode::kDefault,
+       .is_shred_browsing_history_calls = 1,
+       .is_shred_browsing_history_result = true,
+       .cleanup_browsing_history_calls = 1},
       {
           .name =
               "Case: Shields enabled, forget first party, AutoShred APP_EXIT",
@@ -881,13 +988,16 @@ TEST_F(EphemeralStorageServiceAutoShredForgetFirstPartyTest,
           .should_cleanup_1p_storage = false,
           .should_call_observer = false,
           .cleanup_source = StorageCleanupMode::kOnExitShred,
+          .is_shred_browsing_history_calls = 1,
+          .is_shred_browsing_history_result = false,
+          .cleanup_browsing_history_calls = 0,
       },
   };
 
   const GURL url("https://a.com");
   const std::string ephemeral_domain = std::string(url.host());
   const auto storage_partition_config =
-      content::StoragePartitionConfig::CreateDefault(&profile_);
+      content::StoragePartitionConfig::CreateDefault(profile_.get());
 
   for (const auto& test_case : kTestCases) {
     SCOPED_TRACE(testing::Message() << test_case.name);
@@ -895,10 +1005,10 @@ TEST_F(EphemeralStorageServiceAutoShredForgetFirstPartyTest,
     brave_shields_settings_service()->SetForgetFirstPartyStorageEnabled(
         test_case.forget_first_party, url);
 
-    profile_.GetPrefs()->ClearPref(
+    profile_->GetPrefs()->ClearPref(
         content_settings::kBraveRemember1PStorageMigration);
     content_settings::BravePrefProvider provider(
-        profile_.GetPrefs(), false /* incognito */,
+        profile_->GetPrefs(), false /* incognito */,
         true /* store_last_modified */, false /* restore_session */);
 
     if (test_case.auto_shred_mode) {
@@ -910,14 +1020,27 @@ TEST_F(EphemeralStorageServiceAutoShredForgetFirstPartyTest,
         .WillOnce(testing::Return(std::nullopt));
     service_->TLDEphemeralLifetimeCreated(ephemeral_domain,
                                           storage_partition_config);
-    EXPECT_EQ(
-        profile_.GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
-        0u);
+    EXPECT_EQ(profile_->GetPrefs()
+                  ->GetList(kFirstPartyStorageOriginsToCleanup)
+                  .size(),
+              0u);
 
     {
       ScopedVerifyAndClearExpectations verify(mock_delegate_);
       ScopedVerifyAndClearExpectations verify_observer(&mock_observer_);
       TLDEphemeralAreaKey key(ephemeral_domain, storage_partition_config);
+      if (!test_case.is_shred_browsing_history_result.has_value()) {
+        EXPECT_CALL(*mock_delegate_, IsShredBrowsingHistoryEnabled())
+            .Times(test_case.is_shred_browsing_history_calls);
+      } else {
+        EXPECT_CALL(*mock_delegate_, IsShredBrowsingHistoryEnabled())
+            .Times(test_case.is_shred_browsing_history_calls)
+            .WillRepeatedly(testing::Return(
+                test_case.is_shred_browsing_history_result.value()));
+      }
+      EXPECT_CALL(*mock_delegate_, CleanupTLDBrowsingHistory)
+          .Times(test_case.cleanup_browsing_history_calls);
+
       EXPECT_CALL(*mock_delegate_, GetAutoShredMode(url))
           .WillOnce(testing::Return(test_case.auto_shred_mode));
       EXPECT_CALL(mock_observer_, OnCleanupTLDEphemeralArea(key))
@@ -929,12 +1052,12 @@ TEST_F(EphemeralStorageServiceAutoShredForgetFirstPartyTest,
       service_->TLDEphemeralLifetimeDestroyed(
           ephemeral_domain, storage_partition_config,
           !test_case.shields_enabled, test_case.cleanup_source);
-      EXPECT_EQ(profile_.GetPrefs()
+      EXPECT_EQ(profile_->GetPrefs()
                     ->GetList(kFirstPartyStorageOriginsToCleanup)
                     .size(),
                 test_case.cleanup_list_size);
       task_environment_.FastForwardBy(base::Seconds(30));
-      EXPECT_EQ(profile_.GetPrefs()
+      EXPECT_EQ(profile_->GetPrefs()
                     ->GetList(kFirstPartyStorageOriginsToCleanup)
                     .size(),
                 test_case.cleanup_list_size_after_wait);
@@ -953,6 +1076,9 @@ TEST_F(EphemeralStorageServiceAutoShredForgetFirstPartyTest, CleanupOnRestart) {
     int cleanup_tld_ephemeral_calls;
     int cleanup_first_party_calls;
     StorageCleanupMode cleanup_source;
+    int is_shred_browsing_history_calls;
+    std::optional<bool> is_shred_browsing_history_result;
+    int cleanup_browsing_history_calls;
   } constexpr kTestCases[] = {
       {.name = "Simple forgetful mode",
        .auto_shred_mode = std::nullopt,
@@ -961,7 +1087,10 @@ TEST_F(EphemeralStorageServiceAutoShredForgetFirstPartyTest, CleanupOnRestart) {
        .on_cleanup_tld_ephemeral_calls = 0,
        .cleanup_tld_ephemeral_calls = 0,
        .cleanup_first_party_calls = 1,
-       .cleanup_source = StorageCleanupMode::kDefault},
+       .cleanup_source = StorageCleanupMode::kDefault,
+       .is_shred_browsing_history_calls = 0,
+       .is_shred_browsing_history_result = std::nullopt,
+       .cleanup_browsing_history_calls = 0},
       {.name = "AutoShred: APP_EXIT mode",
        .auto_shred_mode = brave_shields::mojom::AutoShredMode::APP_EXIT,
        .forget_first_party = true,
@@ -969,7 +1098,21 @@ TEST_F(EphemeralStorageServiceAutoShredForgetFirstPartyTest, CleanupOnRestart) {
        .on_cleanup_tld_ephemeral_calls = 0,
        .cleanup_tld_ephemeral_calls = 0,
        .cleanup_first_party_calls = 1,
-       .cleanup_source = StorageCleanupMode::kOnExitShred},
+       .cleanup_source = StorageCleanupMode::kOnExitShred,
+       .is_shred_browsing_history_calls = 1,
+       .is_shred_browsing_history_result = true,
+       .cleanup_browsing_history_calls = 1},
+      {.name = "AutoShred: APP_EXIT mode, Cleanup Browser History disabled",
+       .auto_shred_mode = brave_shields::mojom::AutoShredMode::APP_EXIT,
+       .forget_first_party = true,
+       .saved_to_cleanup_list = true,
+       .on_cleanup_tld_ephemeral_calls = 0,
+       .cleanup_tld_ephemeral_calls = 0,
+       .cleanup_first_party_calls = 1,
+       .cleanup_source = StorageCleanupMode::kOnExitShred,
+       .is_shred_browsing_history_calls = 1,
+       .is_shred_browsing_history_result = false,
+       .cleanup_browsing_history_calls = 0},
       {.name = "AutoShred: LAST_TAB_CLOSED mode",
        .auto_shred_mode = brave_shields::mojom::AutoShredMode::LAST_TAB_CLOSED,
        .forget_first_party = false,
@@ -977,7 +1120,22 @@ TEST_F(EphemeralStorageServiceAutoShredForgetFirstPartyTest, CleanupOnRestart) {
        .on_cleanup_tld_ephemeral_calls = 0,
        .cleanup_tld_ephemeral_calls = 0,
        .cleanup_first_party_calls = 1,
-       .cleanup_source = StorageCleanupMode::kDefault},
+       .cleanup_source = StorageCleanupMode::kDefault,
+       .is_shred_browsing_history_calls = 1,
+       .is_shred_browsing_history_result = true,
+       .cleanup_browsing_history_calls = 1},
+      {.name =
+           "AutoShred: LAST_TAB_CLOSED mode, Cleanup Browser History disabled",
+       .auto_shred_mode = brave_shields::mojom::AutoShredMode::LAST_TAB_CLOSED,
+       .forget_first_party = false,
+       .saved_to_cleanup_list = true,
+       .on_cleanup_tld_ephemeral_calls = 0,
+       .cleanup_tld_ephemeral_calls = 0,
+       .cleanup_first_party_calls = 1,
+       .cleanup_source = StorageCleanupMode::kDefault,
+       .is_shred_browsing_history_calls = 1,
+       .is_shred_browsing_history_result = false,
+       .cleanup_browsing_history_calls = 0},
       {.name = "AutoShred: NEVER mode",
        .auto_shred_mode = brave_shields::mojom::AutoShredMode::NEVER,
        .forget_first_party = false,
@@ -985,13 +1143,16 @@ TEST_F(EphemeralStorageServiceAutoShredForgetFirstPartyTest, CleanupOnRestart) {
        .on_cleanup_tld_ephemeral_calls = 0,
        .cleanup_tld_ephemeral_calls = 0,
        .cleanup_first_party_calls = 0,
-       .cleanup_source = StorageCleanupMode::kDefault},
+       .cleanup_source = StorageCleanupMode::kDefault,
+       .is_shred_browsing_history_calls = 0,
+       .is_shred_browsing_history_result = std::nullopt,
+       .cleanup_browsing_history_calls = 0},
   };
 
   const GURL url("https://a.com");
   const std::string ephemeral_domain = std::string(url.host());
   const auto storage_partition_config =
-      content::StoragePartitionConfig::CreateDefault(&profile_);
+      content::StoragePartitionConfig::CreateDefault(profile_.get());
 
   for (const auto& test_case : kTestCases) {
     SCOPED_TRACE(testing::Message() << test_case.name);
@@ -999,10 +1160,10 @@ TEST_F(EphemeralStorageServiceAutoShredForgetFirstPartyTest, CleanupOnRestart) {
     brave_shields_settings_service()->SetForgetFirstPartyStorageEnabled(
         test_case.forget_first_party, url);
 
-    profile_.GetPrefs()->ClearPref(
+    profile_->GetPrefs()->ClearPref(
         content_settings::kBraveRemember1PStorageMigration);
     content_settings::BravePrefProvider provider(
-        profile_.GetPrefs(), false /* incognito */,
+        profile_->GetPrefs(), false /* incognito */,
         true /* store_last_modified */, false /* restore_session */);
 
     if (test_case.auto_shred_mode) {
@@ -1015,20 +1176,26 @@ TEST_F(EphemeralStorageServiceAutoShredForgetFirstPartyTest, CleanupOnRestart) {
     // Create tld ephemeral lifetime.
     service_->TLDEphemeralLifetimeCreated(ephemeral_domain,
                                           storage_partition_config);
-    EXPECT_EQ(
-        profile_.GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
-        0u);
-
+    EXPECT_EQ(profile_->GetPrefs()
+                  ->GetList(kFirstPartyStorageOriginsToCleanup)
+                  .size(),
+              0u);
     // Make sure prefs is filled with the origin to cleanup.
     {
       ScopedVerifyAndClearExpectations verify(mock_delegate_);
       ScopedVerifyAndClearExpectations verify_observer(&mock_observer_);
+
       EXPECT_CALL(*mock_delegate_, GetAutoShredMode(url))
           .WillOnce(testing::Return(test_case.auto_shred_mode));
+
+      EXPECT_CALL(*mock_delegate_, IsShredBrowsingHistoryEnabled())
+          .Times(test_case.is_shred_browsing_history_calls);
+      EXPECT_CALL(*mock_delegate_, CleanupTLDBrowsingHistory).Times(0);
+
       service_->TLDEphemeralLifetimeDestroyed(ephemeral_domain,
                                               storage_partition_config, false,
                                               test_case.cleanup_source);
-      EXPECT_EQ(profile_.GetPrefs()
+      EXPECT_EQ(profile_->GetPrefs()
                     ->GetList(kFirstPartyStorageOriginsToCleanup)
                     .size(),
                 test_case.saved_to_cleanup_list ? 1u : 0u);
@@ -1040,10 +1207,10 @@ TEST_F(EphemeralStorageServiceAutoShredForgetFirstPartyTest, CleanupOnRestart) {
       ShutdownEphemeralStorageService(service_);
 
       service_ = CreateEphemeralStorageService(
-          &profile_, mock_delegate_, &mock_observer_,
+          profile_.get(), mock_delegate_, &mock_observer_,
           ExpectFirstWindowOpenedCallback::kTrigger);
       ScopedVerifyAndClearExpectations verify(mock_delegate_);
-      EXPECT_EQ(profile_.GetPrefs()
+      EXPECT_EQ(profile_->GetPrefs()
                     ->GetList(kFirstPartyStorageOriginsToCleanup)
                     .size(),
                 test_case.saved_to_cleanup_list ? 1u : 0u);
@@ -1054,6 +1221,25 @@ TEST_F(EphemeralStorageServiceAutoShredForgetFirstPartyTest, CleanupOnRestart) {
       ScopedVerifyAndClearExpectations verify(mock_delegate_);
       ScopedVerifyAndClearExpectations verify_observer(&mock_observer_);
       TLDEphemeralAreaKey key(ephemeral_domain, storage_partition_config);
+
+      if (test_case.auto_shred_mode !=
+          brave_shields::mojom::AutoShredMode::NEVER) {
+        EXPECT_CALL(*mock_delegate_, GetAutoShredMode(url))
+            .WillOnce(testing::Return(test_case.auto_shred_mode));
+      }
+
+      if (!test_case.is_shred_browsing_history_result.has_value()) {
+        EXPECT_CALL(*mock_delegate_, IsShredBrowsingHistoryEnabled())
+            .Times(test_case.is_shred_browsing_history_calls);
+      } else {
+        EXPECT_CALL(*mock_delegate_, IsShredBrowsingHistoryEnabled())
+            .Times(test_case.is_shred_browsing_history_calls)
+            .WillRepeatedly(testing::Return(
+                test_case.is_shred_browsing_history_result.value()));
+      }
+      EXPECT_CALL(*mock_delegate_, CleanupTLDBrowsingHistory)
+          .Times(test_case.cleanup_browsing_history_calls);
+
       EXPECT_CALL(mock_observer_, OnCleanupTLDEphemeralArea(key))
           .Times(test_case.on_cleanup_tld_ephemeral_calls);
       EXPECT_CALL(*mock_delegate_, CleanupTLDEphemeralArea(key))
@@ -1065,7 +1251,7 @@ TEST_F(EphemeralStorageServiceAutoShredForgetFirstPartyTest, CleanupOnRestart) {
         service_->ScheduleFirstPartyStorageAreasCleanupOnStartup();
       }
       task_environment_.FastForwardBy(base::Seconds(5));
-      EXPECT_EQ(profile_.GetPrefs()
+      EXPECT_EQ(profile_->GetPrefs()
                     ->GetList(kFirstPartyStorageOriginsToCleanup)
                     .size(),
                 0u);

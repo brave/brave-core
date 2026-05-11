@@ -23,6 +23,10 @@
 
 class HostContentSettingsMap;
 
+namespace brave_shields {
+class BraveShieldsSettingsService;
+}  // namespace brave_shields
+
 class EphemeralStorageBrowserTest : public InProcessBrowserTest {
  public:
   enum StorageType { Session, Local };
@@ -66,6 +70,7 @@ class EphemeralStorageBrowserTest : public InProcessBrowserTest {
   void SetUpCommandLine(base::CommandLine* command_line) override;
   void SetUpInProcessBrowserTestFixture() override;
   void TearDownInProcessBrowserTestFixture() override;
+  void TearDownOnMainThread() override;
 
   void SetValuesInFrame(content::RenderFrameHost* frame,
                         std::string storage_value,
@@ -110,8 +115,11 @@ class EphemeralStorageBrowserTest : public InProcessBrowserTest {
   HostContentSettingsMap* content_settings();
   network::mojom::CookieManager* CookieManager();
   std::vector<net::CanonicalCookie> GetAllCookies();
+  brave_shields::BraveShieldsSettingsService* GetBraveShieldsSettingsService();
 
  protected:
+  raw_ptr<brave_shields::BraveShieldsSettingsService>
+      brave_shields_settings_service_ = nullptr;
   net::test_server::EmbeddedTestServer https_server_;
   content::ContentMockCertVerifier mock_cert_verifier_;
   GURL a_site_ephemeral_storage_url_;

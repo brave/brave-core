@@ -43,6 +43,8 @@ inline constexpr char kAdBlockOnlyModePromptDismissed[] =
     "brave.shields.adblock_only_mode_prompt_dismissed";
 inline constexpr char kAllowElementBlockerInPrivateMode[] =
     "brave.allow_element_blocker_in_private_mode";
+inline constexpr char kShredBrowsingHistoryEnabled[] =
+    "brave.shields.shred_browsing_history";
 
 }  // namespace prefs
 }  // namespace brave_shields
