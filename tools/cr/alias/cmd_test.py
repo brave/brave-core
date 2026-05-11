@@ -93,6 +93,7 @@ class _Sandbox:
         self._repo = FakeChromiumRepo()
 
     def __enter__(self) -> '_Sandbox':
+        self._repo.setup()
         _git(self.root, 'config', 'commit.gpgsign', 'false')
         # Tests reference file.txt as the working file to stage and commit.
         (self.root / 'file.txt').write_text('init\n', encoding='utf-8')

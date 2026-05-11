@@ -16,8 +16,7 @@ import sys
 import tomllib
 from typing import Optional
 
-from terminal import console, terminal
-from incendiary_error_handler import IncendiaryErrorHandler
+from terminal import IncendiaryErrorHandler, console, is_verbose, terminal
 import repository
 
 # The path to the directory containing plaster files in brave-core.
@@ -442,10 +441,10 @@ def main():
     if hasattr(args, 'infra_mode') and args.infra_mode:
         terminal.set_infra_mode()
 
-    logging.basicConfig(
-        level=logging.DEBUG if args.verbose else logging.INFO,
-        format='%(message)s',
-        handlers=[IncendiaryErrorHandler(markup=True, rich_tracebacks=True)])
+    logging.basicConfig(level=logging.DEBUG if is_verbose() else logging.INFO,
+                        format='%(message)s',
+                        handlers=[IncendiaryErrorHandler()],
+                        force=True)
 
     try:
         return args.func(args)

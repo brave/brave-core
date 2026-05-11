@@ -210,16 +210,16 @@ import subprocess
 import sys
 from typing import Optional, List, Dict
 
-from incendiary_error_handler import IncendiaryErrorHandler
 from git_status import GitStatus
 from patchfile import Patchfile
 import plaster
 from plaster import PlasterFile, PlasterFileNeedsRegen
 import repository
 from repository import Repository
-from terminal import console, terminal
+from terminal import IncendiaryErrorHandler, console, is_verbose, terminal
 import versioning
 from versioning import Version
+from vpython_utils import VPYTHON3_PATH
 from vscode import VsCodeIpcConnection
 
 # This file is updated whenever the version number is updated in package.json
@@ -646,15 +646,9 @@ class Versioned(Task):
     all patches that might have been changed or deleted. Untracked patches are
     excluded from addition at this stage.
     """
-        terminal.run([
-            Path('third_party/depot_tools/vpython3'),
-            './tools/crates/run_gnrt.py', 'vendor'
-        ],
+        terminal.run([VPYTHON3_PATH, './tools/crates/run_gnrt.py', 'vendor'],
                      cwd=repository.chromium.root)
-        terminal.run([
-            Path('third_party/depot_tools/vpython3'),
-            './tools/crates/run_gnrt.py', 'gen'
-        ],
+        terminal.run([VPYTHON3_PATH, './tools/crates/run_gnrt.py', 'gen'],
                      cwd=repository.chromium.root)
 
         if dry_run:
@@ -1788,7 +1782,7 @@ class Upgrade(Versioned):
                         ).create_or_update_version_issue(with_pr=False)
 
         try:
-            terminal.run([sys.executable, plaster.__file__, 'check'])
+            terminal.run([VPYTHON3_PATH, plaster.__file__, 'check'])
         except subprocess.CalledProcessError:
             terminal.log_task(
                 '[bold]❌[/] Plaster check. Please investigate it.')
@@ -2130,7 +2124,7 @@ class Rebase(Task):
         # if that's desired. That's done by calling this script again with
         # special internal flags.
         env = os.environ.copy()
-        editor = [sys.executable, __file__]
+        editor = [str(VPYTHON3_PATH), __file__]
         if discard_regen_changes:
             editor.append('--internal-rebase-remove-regen-changes')
         if recommit:
@@ -2141,7 +2135,7 @@ class Rebase(Task):
             # Squashes will cause `GIT_EDITOR` also to open for the commit
             # message, so we need to handle those too.
             env["GIT_EDITOR"] = (
-                f'{sys.executable} '
+                f'{str(VPYTHON3_PATH)} '
                 f'{__file__} --internal-rebase-squash-commit-message')
 
         if len(editor) > 2:
@@ -2481,13 +2475,10 @@ def main():
                           help='Detailed documentation for this tool.')
     args = parser.parse_args()
 
-    def has_verbose():
-        return hasattr(args, 'verbose') and args.verbose
-
-    logging.basicConfig(
-        level=logging.DEBUG if has_verbose() else logging.INFO,
-        format='%(message)s',
-        handlers=[IncendiaryErrorHandler(markup=True, rich_tracebacks=True)])
+    logging.basicConfig(level=logging.DEBUG if is_verbose() else logging.INFO,
+                        format='%(message)s',
+                        handlers=[IncendiaryErrorHandler()],
+                        force=True)
 
     if hasattr(args, 'infra_mode') and args.infra_mode:
         terminal.set_infra_mode()

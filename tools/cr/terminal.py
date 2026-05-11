@@ -9,6 +9,7 @@ import platform
 import secrets
 import shutil
 import subprocess
+import sys
 import threading
 import time
 from typing import Optional, Dict
@@ -21,6 +22,70 @@ KEEP_ALIVE_PING_INTERVAL = 20
 KEEP_ALIVE_PING_ART = [
     '(-_-)', '(⊙_⊙)', '(¬_¬)', '(－‸ლ)', '(◎_◎;)', '(⌐■_■)', '(•‿•)', '(≖_≖)'
 ]
+
+# The rich console used for all terminal output. Defined here (rather than
+# at the end of the file) so that the import-time logging preset below can
+# route through it.
+console = Console()
+
+
+def is_verbose() -> bool:
+    """Returns True if `--verbose` was passed on the command line.
+
+    Reads `sys.argv` directly so the answer is available at module import
+    time, before any `argparse` parser has had a chance to run.
+    """
+    return '--verbose' in sys.argv
+
+
+class _PresetLoggingHandler(logging.Handler):
+    """Baseline logging handler used both at import time and as the base
+    class for `IncendiaryErrorHandler`.
+
+    Renders DEBUG records in dim styling via `console.log`; all other
+    levels are emitted as plain rich-console log lines.
+    """
+
+    # Stack offset passed to `console.log` so the file:line column points
+    # at the caller's `logging.<level>(...)` site instead of into Python's
+    # logging internals. Subclasses that add their own `emit` frame on top
+    # of this one must override this with `_STACK_OFFSET + 1`.
+    _STACK_OFFSET = 8
+
+    def emit(self, record: logging.LogRecord) -> None:
+        msg = record.getMessage()
+        if record.levelno == logging.DEBUG:
+            console.log(f'[dim]{msg}[/]', _stack_offset=self._STACK_OFFSET)
+        else:
+            console.log(msg, _stack_offset=self._STACK_OFFSET)
+
+
+class IncendiaryErrorHandler(_PresetLoggingHandler):
+    """Logging handler used by tools/cr entry-point `main()` functions.
+
+    Inherits the dim-DEBUG / plain-other-levels behavior from
+    `_PresetLoggingHandler` and adds a loud emoji prefix to ERROR records
+    so failures stand out in the terminal output.
+    """
+
+    # One extra frame on top of `_PresetLoggingHandler.emit` (this class's
+    # `emit` calls `super().emit(record)`).
+    _STACK_OFFSET = _PresetLoggingHandler._STACK_OFFSET + 1
+
+    def emit(self, record: logging.LogRecord) -> None:
+        if record.levelno == logging.ERROR:
+            record.msg = f'¯\\_(ツ)_/¯\n🔥🔥 {record.msg}'
+        super().emit(record)
+
+
+# Baseline logging config installed at import time. Without this, debug
+# logs emitted during module import (e.g. `_compute_brave_core_path` in
+# repository.py) would be dropped because entry-point `main()` functions
+# only call `logging.basicConfig` *after* their imports finish. Entry
+# points can still override this with `logging.basicConfig(..., force=True)`
+# to install custom handlers/formatting.
+logging.basicConfig(level=logging.DEBUG if is_verbose() else logging.INFO,
+                    handlers=[_PresetLoggingHandler()])
 
 
 class Terminal:
@@ -214,5 +279,4 @@ class Terminal:
         return self.run(cmd)
 
 
-console = Console()
 terminal = Terminal()

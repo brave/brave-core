@@ -18,7 +18,6 @@ import subprocess
 from pathlib import Path
 
 import _boot  # noqa: F401
-from incendiary_error_handler import IncendiaryErrorHandler
 from terminal import console, terminal
 import repository
 import plaster
@@ -69,11 +68,6 @@ def cmd_mv(args: list[str]) -> int:
     parser.add_argument('source', help='Source file or directory')
     parser.add_argument('destination', help='Destination path')
     parsed = parser.parse_args(args)
-
-    logging.basicConfig(
-        level=logging.DEBUG if parsed.verbose else logging.INFO,
-        format='%(message)s',
-        handlers=[IncendiaryErrorHandler(markup=True, rich_tracebacks=True)])
 
     cwd = Path.cwd()
     try:
