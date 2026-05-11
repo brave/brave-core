@@ -49,7 +49,7 @@ follow-renames
 Installing the alias
 --------------------
   From inside the brave-core repository, run once:
-    python3 tools/cr/alias/cmd.py setup-alias
+    vpython3 tools/cr/alias/cmd.py setup-alias
   This writes a 'cr' entry to .git/config so that 'git cr' works immediately
   in the current repository without modifying any shell config files.
 
@@ -63,8 +63,6 @@ Installing the hook
 
 from __future__ import annotations
 
-import argparse
-import os
 import platform
 import stat
 import subprocess
@@ -72,19 +70,10 @@ import sys
 from pathlib import Path
 
 import _boot  # noqa: F401
-from user_validation_error import UserValidationError
-
-# tools/cr/ directory (parent of alias/).
-_REBASE_TOOLS_DIR: Path = Path(__file__).resolve().parent.parent
-
-# brave-core repository root, two levels above tools/cr/.
-_BRAVE_CORE_ROOT: Path = _REBASE_TOOLS_DIR.parent.parent
-
-# The commit-msg hook script that install-hook symlinks into .git/hooks/.
-_HOOK_SOURCE: Path = Path(__file__).resolve().parent / 'commit-msg.py'
-
-# Where the hook must live to be picked up by git.
-_HOOK_DEST: Path = _BRAVE_CORE_ROOT / '.git' / 'hooks' / 'commit-msg'
+import repository
+from alias.base import (HOOK_DEST, HOOK_SOURCE, WINDOWS_SHIM,
+                        UserValidationError, check_hooks_path)
+from alias.commit import cmd_commit
 
 # This script's path in POSIX form, suitable for embedding in a git alias.
 # Git aliases prefixed with '!' run via git's bundled bash on all platforms,
@@ -92,102 +81,6 @@ _HOOK_DEST: Path = _BRAVE_CORE_ROOT / '.git' / 'hooks' / 'commit-msg'
 _SCRIPT_PATH: str = Path(__file__).resolve().as_posix()
 if platform.system() == 'Windows':
     _SCRIPT_PATH = '/' + _SCRIPT_PATH[0].lower() + _SCRIPT_PATH[2:]
-    # On Windows a bash shim is written instead of a symlink.  cmd_install_hook
-    # writes this exact content so the hook always delegates to the live source.
-    _WINDOWS_SHIM: bytes = (
-        f'#!/bin/sh\nexec python3 "{_HOOK_SOURCE}" "$@"\n'.encode('utf-8'))
-
-
-def _check_hooks_path() -> None:
-    """Raise _UserError if core.hooksPath redirects git away from .git/hooks/.
-
-    When core.hooksPath is set to any directory other than .git/hooks/, git
-    ignores .git/hooks/ entirely and neither install-hook nor commit will have
-    any effect.
-    """
-    result = subprocess.run(
-        ['git', 'config', 'core.hooksPath'],
-        capture_output=True,
-        text=True,
-        check=False,
-        cwd=_BRAVE_CORE_ROOT,
-    )
-    if result.returncode != 0 or not result.stdout.strip():
-        return
-    configured = result.stdout.strip()
-    resolved = (Path(configured) if Path(configured).is_absolute() else
-                _BRAVE_CORE_ROOT / configured).resolve()
-    if resolved == _HOOK_DEST.parent.resolve():
-        return  # Points at .git/hooks/ — our hook will still run.
-    raise UserValidationError(
-        f'git_cr: core.hooksPath is set to "{configured}".\n'
-        'git ignores .git/hooks/ while this is set.\n'
-        'Unset core.hooksPath or point it to .git/hooks/.')
-
-
-def _check_hook_ready() -> None:
-    """Raise _UserError if the commit-msg hook is not ready to run.
-
-    Checks core.hooksPath first, then verifies the hook file exists and is
-    executable (POSIX) or contains the expected shim content (Windows).
-    """
-    _check_hooks_path()
-    ready = False
-    if _HOOK_DEST.exists():
-        if platform.system() == 'Windows':
-            try:
-                ready = _HOOK_DEST.read_bytes() == _WINDOWS_SHIM
-            except OSError:
-                pass
-        else:
-            ready = bool(_HOOK_DEST.stat().st_mode & stat.S_IXUSR)
-    if not ready:
-        raise UserValidationError(
-            'git_cr: commit-msg hook is not installed or not executable.\n'
-            'Run:    git cr install-hook')
-
-
-def _build_commit_parser() -> argparse.ArgumentParser:
-    """Return the argument parser for the commit subcommand's own flags."""
-    p = argparse.ArgumentParser(
-        prog='git cr commit',
-        description='git commit wrapper with brave-core hook flags',
-        epilog='All other arguments are forwarded verbatim to git commit.',
-    )
-    p.add_argument(
-        '--tagged',
-        metavar='TAG[,TAG...]',
-        help='Comma-separated tags injected as $tags for the commit-msg hook',
-    )
-    p.add_argument(
-        '--issue',
-        metavar='NUM[,NUM...]',
-        help='GitHub issue numbers injected as $issue',
-    )
-    p.add_argument(
-        '--culprit',
-        metavar='HASH[,HASH...]',
-        help='Chromium commit hashes injected as $culprit',
-    )
-    return p
-
-
-def _run_commit(
-    tagged: str | None,
-    issue: str | None,
-    culprit: str | None,
-    git_args: list[str],
-) -> int:
-    """Execute git commit with hook environment variables injected."""
-    env = os.environ.copy()
-    if tagged:
-        env['tags'] = tagged
-    if issue:
-        env['issue'] = issue
-    if culprit:
-        env['culprit'] = culprit
-    return subprocess.run(['git', 'commit'] + git_args, check=False,
-                          env=env).returncode
 
 
 def cmd_install_hook() -> int:
@@ -199,23 +92,23 @@ def cmd_install_hook() -> int:
     Git for Windows uses its bundled bash to run hooks regardless of the host
     OS, so a shebang script works correctly.
     """
-    _check_hooks_path()
-    _HOOK_DEST.parent.mkdir(parents=True, exist_ok=True)
+    check_hooks_path()
+    HOOK_DEST.parent.mkdir(parents=True, exist_ok=True)
 
-    if _HOOK_DEST.exists() or _HOOK_DEST.is_symlink():
-        _HOOK_DEST.unlink()
+    if HOOK_DEST.exists() or HOOK_DEST.is_symlink():
+        HOOK_DEST.unlink()
 
     if platform.system() == 'Windows':
-        _HOOK_DEST.write_bytes(_WINDOWS_SHIM)
-        _HOOK_DEST.chmod(_HOOK_DEST.stat().st_mode | stat.S_IXUSR
-                         | stat.S_IXGRP
-                         | stat.S_IXOTH)
+        HOOK_DEST.write_bytes(WINDOWS_SHIM)
+        HOOK_DEST.chmod(HOOK_DEST.stat().st_mode | stat.S_IXUSR
+                        | stat.S_IXGRP
+                        | stat.S_IXOTH)
     else:
-        _HOOK_DEST.symlink_to(_HOOK_SOURCE)
-        _HOOK_SOURCE.chmod(_HOOK_SOURCE.stat().st_mode | stat.S_IXUSR
-                           | stat.S_IXGRP | stat.S_IXOTH)
+        HOOK_DEST.symlink_to(HOOK_SOURCE)
+        HOOK_SOURCE.chmod(HOOK_SOURCE.stat().st_mode | stat.S_IXUSR
+                          | stat.S_IXGRP | stat.S_IXOTH)
 
-    print(f'Installed: {_HOOK_DEST} → {_HOOK_SOURCE}')
+    print(f'Installed: {HOOK_DEST} → {HOOK_SOURCE}')
     return 0
 
 
@@ -226,27 +119,14 @@ def cmd_setup_alias() -> int:
     works on Linux, macOS, and Windows (Git for Windows) without any extra
     setup steps.
     """
-    alias_value = f'!python3 "{_SCRIPT_PATH}"'
-    result = subprocess.run(
-        ['git', 'config', '--local', 'alias.cr', alias_value],
-        capture_output=True,
-        text=True,
-        check=False,
-        cwd=_BRAVE_CORE_ROOT,
-    )
-    if result.returncode != 0:
-        raise UserValidationError(f'git_cr: {result.stderr.strip()}')
+    alias_value = f'!vpython3 "{_SCRIPT_PATH}"'
+    try:
+        repository.brave.run_git('config', '--local', 'alias.cr', alias_value)
+    except subprocess.CalledProcessError as e:
+        raise UserValidationError(f'git_cr: {e.stderr.strip()}') from e
     print('Installed: git alias.cr')
     print('Run "git cr" for usage.')
     return 0
-
-
-def cmd_commit(args: list[str]) -> int:
-    """Parse commit flags and invoke git commit with injected environment."""
-    _check_hook_ready()
-    parser = _build_commit_parser()
-    parsed, extra = parser.parse_known_args(args)
-    return _run_commit(parsed.tagged, parsed.issue, parsed.culprit, extra)
 
 
 def main() -> int:

@@ -4,6 +4,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#Notice: keep this script standalone and free from depending on any other
+# python source we have.
+
 # This script has several convenience features when committing changes to
 # brave-core.
 #

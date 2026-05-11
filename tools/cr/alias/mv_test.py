@@ -17,7 +17,7 @@ import _boot  # noqa: F401
 import repository
 from alias.mv import cmd_mv
 from test.fake_chromium_repo import FakeChromiumRepo
-from user_validation_error import UserValidationError
+from alias.base import UserValidationError
 
 
 class _Base(unittest.TestCase):
