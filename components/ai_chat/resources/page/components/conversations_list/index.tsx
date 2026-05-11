@@ -58,11 +58,13 @@ function SimpleInput(props: SimpleInputProps) {
 
 interface ConversationItemProps extends ConversationsListProps {
   conversation: Mojom.Conversation
+  openOptionsMenuUuid: string | undefined
+  setOpenOptionsMenuUuid: React.Dispatch<
+    React.SetStateAction<string | undefined>
+  >
 }
 
 function ConversationItem(props: ConversationItemProps) {
-  const [isOptionsMenuOpen, setIsOptionsMenuOpen] = React.useState(false)
-
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
 
@@ -70,8 +72,16 @@ function ConversationItem(props: ConversationItemProps) {
   const title =
     props.conversation.title || getLocale(S.AI_CHAT_CONVERSATION_LIST_UNTITLED)
 
+  const isOptionsMenuOpen = props.openOptionsMenuUuid === uuid
+
   const handleButtonMenuChange = (e: { isOpen: boolean }) => {
-    setIsOptionsMenuOpen(e.isOpen)
+    if (e.isOpen) {
+      props.setOpenOptionsMenuUuid(uuid)
+    } else {
+      props.setOpenOptionsMenuUuid((current) =>
+        current === uuid ? undefined : current,
+      )
+    }
   }
 
   const handleEditTitle: EventListener = (e) => {
@@ -119,6 +129,7 @@ function ConversationItem(props: ConversationItemProps) {
           <div onClick={(e) => e.stopPropagation()}>
             <ButtonMenu
               className={styles.optionsMenu}
+              isOpen={isOptionsMenuOpen}
               onChange={handleButtonMenuChange}
             >
               <Button
@@ -169,6 +180,7 @@ interface ConversationsListProps {
 export default function ConversationsList(props: ConversationsListProps) {
   const aiChatContext = useAIChat()
   const [filterText, setFilterText] = React.useState('')
+  const [openOptionsMenuUuid, setOpenOptionsMenuUuid] = React.useState<string>()
 
   const startedNonTemporaryConversations = aiChatContext.conversations.filter(
     (c) => !c.temporary && c.hasContent,
@@ -273,6 +285,8 @@ export default function ConversationsList(props: ConversationsListProps) {
                   key={conversation.uuid}
                   {...props}
                   conversation={conversation}
+                  openOptionsMenuUuid={openOptionsMenuUuid}
+                  setOpenOptionsMenuUuid={setOpenOptionsMenuUuid}
                 />
               ))}
             </ol>
