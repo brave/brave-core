@@ -560,12 +560,6 @@ void BraveNewsController::AddConfigurationListener(
   listener->Changed(pref_manager_.GetConfig());
 }
 
-void BraveNewsController::GetDisplayAd(GetDisplayAdCallback callback) {
-  // TODO(https://github.com/brave/brave-browser/issues/50312): Remove Brave
-  // News inline content ads code.
-  std::move(callback).Run(nullptr);
-}
-
 void BraveNewsController::OnInteractionSessionStarted() {
   DVLOG(1) << __FUNCTION__;
   news_metrics_.RecordAtSessionStart();
@@ -599,20 +593,6 @@ void BraveNewsController::OnCardVisited(uint32_t depth) {
 void BraveNewsController::OnSidebarFilterUsage() {
   DVLOG(1) << __FUNCTION__;
   news_metrics_.RecordTotalActionCount(p3a::ActionType::kSidebarFilterUsage, 1);
-}
-
-void BraveNewsController::OnDisplayAdVisit(
-    const std::string& /*item_id*/,
-    const std::string& /*creative_instance_id*/) {
-  // TODO(https://github.com/brave/brave-browser/issues/50312): Remove Brave
-  // News inline content ads code.
-}
-
-void BraveNewsController::OnDisplayAdView(
-    const std::string& /*item_id*/,
-    const std::string& /*creative_instance_id*/) {
-  // TODO(https://github.com/brave/brave-browser/issues/50312): Remove Brave
-  // News inline content ads code.
 }
 
 void BraveNewsController::GetVisitedSites(GetVisitedSitesCallback callback) {

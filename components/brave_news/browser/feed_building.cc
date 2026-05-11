@@ -54,7 +54,6 @@ using mojom::CardType;
     CardType::HEADLINE,
     CardType::HEADLINE_PAIRED,
     CardType::HEADLINE_PAIRED,
-    CardType::DISPLAY_AD,
     CardType::HEADLINE,
     CardType::HEADLINE,
     CardType::PUBLISHER_GROUP,
@@ -231,10 +230,6 @@ void BuildFeedPageItem(std::list<mojom::ArticlePtr>* articles,
         Take<mojom::Deal>(supplemental_count, deals, &page_item->items,
                           base::BindRepeating(&FromDeal));
       }
-      break;
-    case CardType::DISPLAY_AD:
-      // Content is retrieved by front-end at a time
-      // closer to this item being viewed.
       break;
     case CardType::PROMOTED_ARTICLE:
       break;
