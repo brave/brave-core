@@ -23,7 +23,10 @@ import org.chromium.components.thinwebview.ThinWebView;
 import org.chromium.components.thinwebview.ThinWebViewAttachParams;
 import org.chromium.components.thinwebview.ThinWebViewConstraints;
 import org.chromium.components.thinwebview.ThinWebViewFactory;
+import org.chromium.content_public.browser.GlobalRenderFrameHostId;
 import org.chromium.content_public.browser.LoadUrlParams;
+import org.chromium.content_public.browser.NavigationHandle;
+import org.chromium.content_public.browser.Page;
 import org.chromium.content_public.browser.WebContents;
 import org.chromium.content_public.browser.WebContentsObserver;
 import org.chromium.net.NetId;
@@ -90,6 +93,28 @@ public class SponsoredRichMediaWebView {
 
         mObserver =
                 new WebContentsObserver(mWebContents) {
+                    @Override
+                    public void didStartLoading(GURL url) {
+                        Log.i(TAG, "didStartLoading url=%s.", url);
+                    }
+
+                    @Override
+                    public void didFinishNavigationInPrimaryMainFrame(
+                            NavigationHandle navigationHandle) {
+                        Log.i(
+                                TAG,
+                                "didFinishNavigationInPrimaryMainFrame"
+                                        + " isErrorPage=%b, hasCommitted=%b.",
+                                navigationHandle.isErrorPage(),
+                                navigationHandle.hasCommitted());
+                    }
+
+                    @Override
+                    public void documentLoadedInPrimaryMainFrame(
+                            Page page, GlobalRenderFrameHostId rfhId, int rfhLifecycleState) {
+                        Log.i(TAG, "documentLoadedInPrimaryMainFrame.");
+                    }
+
                     @Override
                     public void primaryMainFrameRenderProcessGone(int terminationStatus) {
                         Log.w(
