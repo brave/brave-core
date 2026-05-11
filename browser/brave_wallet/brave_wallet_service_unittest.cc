@@ -24,6 +24,7 @@
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "base/values.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_delegate_base.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
@@ -38,7 +39,6 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
@@ -316,7 +316,8 @@ class MockBraveWalletServiceDelegate : public BraveWalletServiceDelegate {
                const GURL& tx_url),
               (override));
   MOCK_METHOD(base::FilePath, GetWalletBaseDirectory, (), (override));
-  MOCK_METHOD(bool, IsPrivateWindow, (), (override));
+  bool IsPrivateWindow() override { return false; }
+  bool IsAutolockEnabled() override { return false; }
 };
 
 class BraveWalletServiceUnitTest : public testing::Test {
@@ -492,10 +493,12 @@ class BraveWalletServiceUnitTest : public testing::Test {
     return BlockchainRegistry::GetInstance();
   }
 
-  void SetupWallet() {
-    keyring_service_->CreateWalletInternal(kMnemonicDivideCruise,
-                                           kTestWalletPassword, false, false);
+  void SetupWallet(KeyringService* keyring_service) {
+    keyring_service->CreateWalletInternal(kMnemonicDivideCruise,
+                                          kTestWalletPassword, false, false);
   }
+
+  void SetupWallet() { SetupWallet(keyring_service_); }
 
   void SetInterceptors(std::map<GURL, std::string> responses) {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
@@ -3502,6 +3505,27 @@ TEST_F(BraveWalletServiceUnitTest, DisplayTxNotification) {
     GetTxServiceObserverReceiver().FlushForTesting();
     testing::Mock::VerifyAndClearExpectations(delegate_ptr);
   }
+}
+
+TEST_F(BraveWalletServiceUnitTest, AutolockIsDisabledInTests) {
+  // Wallet autolock is turned off in tests by default.
+  EXPECT_FALSE(service_->keyring_service()->IsLockedSync());
+  task_environment_.FastForwardBy(base::Minutes(20));
+  EXPECT_FALSE(service_->keyring_service()->IsLockedSync());
+
+  auto scoped_enable_autolock =
+      BraveWalletServiceDelegateBase::GetScopedEnableAutolockForTesting();
+
+  auto another_wallet_service = std::make_unique<BraveWalletService>(
+      url_loader_factory_.GetSafeWeakWrapper(),
+      BraveWalletServiceDelegate::Create(profile_.get()), profile_->GetPrefs(),
+      &local_state_);
+  SetupWallet(another_wallet_service->keyring_service());
+
+  // Wallet is locked after some period which matches production behavior.
+  EXPECT_FALSE(another_wallet_service->keyring_service()->IsLockedSync());
+  task_environment_.FastForwardBy(base::Minutes(20));
+  EXPECT_TRUE(another_wallet_service->keyring_service()->IsLockedSync());
 }
 
 }  // namespace brave_wallet

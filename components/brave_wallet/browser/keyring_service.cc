@@ -87,6 +87,9 @@ constexpr char kSelectedAccountDeprecated[] = "selected_account";
 constexpr char kPasswordEncryptorNonceDeprecated[] = "password_encryptor_nonce";
 constexpr char kPasswordEncryptorSaltDeprecated[] = "password_encryptor_salt";
 
+// 7 days. Matches settings UI limit.
+constexpr int kMaxAutolockMinutes = 10080;
+
 base::RepeatingCallback<std::array<uint8_t, kEncryptorNonceSize>()>*
     g_create_nonce_callback_for_testing = nullptr;
 
@@ -2648,11 +2651,18 @@ void KeyringService::StopAutoLockTimer() {
 }
 
 void KeyringService::ResetAutoLockTimer() {
+  // Autolock is disabled in most of the tests.
+  if (!is_autolock_enabled_.value_or(false)) {
+    CHECK_IS_TEST();
+    return;
+  }
+
   if (auto_lock_timer_->IsRunning()) {
     auto_lock_timer_->Reset();
   } else {
-    size_t auto_lock_minutes =
-        (size_t)profile_prefs_->GetInteger(kBraveWalletAutoLockMinutes);
+    int auto_lock_minutes =
+        std::clamp(profile_prefs_->GetInteger(kBraveWalletAutoLockMinutes), 1,
+                   kMaxAutolockMinutes);
     auto_lock_timer_->Start(FROM_HERE, base::Minutes(auto_lock_minutes), this,
                             &KeyringService::OnAutoLockFired);
   }
@@ -3669,6 +3679,11 @@ void KeyringService::MaybeFixAccountSelection() {
     // selection.
     SetSelectedDappAccountInternal(mojom::CoinType::SOL, {});
   }
+}
+
+void KeyringService::SetAutolockEnabled(bool enabled) {
+  CHECK(!is_autolock_enabled_.has_value());
+  is_autolock_enabled_ = enabled;
 }
 
 void KeyringService::MaybeUnlockWithCommandLine() {

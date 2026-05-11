@@ -2049,6 +2049,7 @@ TEST_F(KeyringServiceUnitTest, HardwareAccounts) {
 
 TEST_F(KeyringServiceUnitTest, AutoLock) {
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+  service.SetAutolockEnabled(true);
   std::optional<std::string> mnemonic = CreateWallet(&service, "brave");
   ASSERT_TRUE(mnemonic.has_value());
   ASSERT_FALSE(service.IsLockedSync());
@@ -2112,6 +2113,7 @@ TEST_F(KeyringServiceUnitTest, AutoLock) {
 
 TEST_F(KeyringServiceUnitTest, NotifyUserInteraction) {
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+  service.SetAutolockEnabled(true);
   ASSERT_TRUE(CreateWallet(&service, "brave"));
   ASSERT_FALSE(service.IsLockedSync());
 

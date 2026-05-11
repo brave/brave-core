@@ -454,6 +454,10 @@ bool TestBraveWalletServiceDelegate::IsPrivateWindow() {
   return false;
 }
 
+bool TestBraveWalletServiceDelegate::IsAutolockEnabled() {
+  return false;  // Don't need autolock to trigger in tests.
+}
+
 // static
 std::unique_ptr<BraveWalletServiceDelegate>
 TestBraveWalletServiceDelegate::Create() {

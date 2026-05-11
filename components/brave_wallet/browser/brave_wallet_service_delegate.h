@@ -87,6 +87,10 @@ class BraveWalletServiceDelegate {
                                      const std::string& tx_id,
                                      const GURL& tx_url);
 
+  // Must return true in production. Might return false in tests to disable
+  // autolock functionality.
+  virtual bool IsAutolockEnabled() = 0;
+
   static std::unique_ptr<BraveWalletServiceDelegate> Create(
       content::BrowserContext* browser_context);
 };
