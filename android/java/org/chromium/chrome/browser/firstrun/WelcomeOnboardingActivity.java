@@ -88,8 +88,8 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
 
     private static final String KEY_SPLASH_ANIMATION_FINISHED =
             "WelcomeOnboardingActivity.SplashAnimationFinished";
-    private static final String KEY_VARIANT_Y_PAGE_INDEX =
-            "WelcomeOnboardingActivity.VariantYPageIndex";
+    private static final String KEY_PAGE_INDEX =
+            "WelcomeOnboardingActivity.PageIndex";
 
     private static final float REDUCED_TENSION_OVERSHOOT_INTERPOLATOR = 1f;
     private static final float BRAVE_SPLASH_SCALE_ANIMATION = 0.4f;
@@ -97,15 +97,15 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
 
     private boolean mIsTablet;
     private boolean mSplashAnimationFinished;
-    private int mRestoredVariantYPageIndex;
+    private int mRestoredPageIndex;
 
-    private ConstraintLayout mVariantYConstraintLayout;
+    private ConstraintLayout mOnboardingContainer;
     private ImageView mBraveSplash;
     private FrameLayout mBraveSplashContainer;
 
     private Guideline mSplashGuideline;
-    private ViewPager2 mVariantYPager;
-    @Nullable private OnboardingStepAdapter mVariantYAdapter;
+    private ViewPager2 mOnboardingPager;
+    @Nullable private OnboardingStepAdapter mStepAdapter;
 
     @Nullable private PageBounceAnimator mPageBounceAnimator;
     private boolean mIsP3aManaged;
@@ -264,7 +264,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
         setContentView(R.layout.activity_welcome_onboarding);
 
         mSplashGuideline = findViewById(R.id.splash_anchor);
-        mVariantYPager = findViewById(R.id.onboarding_steps_pager);
+        mOnboardingPager = findViewById(R.id.onboarding_steps_pager);
 
         final ChromeClickableSpan wdpLearnMoreClickableSpan =
                 new ChromeClickableSpan(
@@ -277,14 +277,14 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
                         wdpText,
                         new SpanInfo("<learn_more>", "</learn_more>", wdpLearnMoreClickableSpan));
 
-        if (mVariantYPager != null) {
-            mVariantYPager.setUserInputEnabled(false);
-            mPageBounceAnimator = new PageBounceAnimator(mVariantYPager);
-            mVariantYAdapter = new OnboardingStepAdapter(wdpLearnMore, this);
-            mVariantYPager.setAdapter(mVariantYAdapter);
+        if (mOnboardingPager != null) {
+            mOnboardingPager.setUserInputEnabled(false);
+            mPageBounceAnimator = new PageBounceAnimator(mOnboardingPager);
+            mStepAdapter = new OnboardingStepAdapter(wdpLearnMore, this);
+            mOnboardingPager.setAdapter(mStepAdapter);
         }
 
-        mVariantYConstraintLayout = findViewById(R.id.onboarding_variant_y);
+        mOnboardingContainer = findViewById(R.id.onboarding_container);
         mBraveSplash = findViewById(R.id.brave_splash);
         mBraveSplashContainer = findViewById(R.id.brave_splash_container);
         assert !mIsTablet || mBraveSplashContainer != null
@@ -310,29 +310,29 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
 
         if (!mIsCrashReportingManaged) {
             final boolean isCrashReporting = getCrashReportingPreference();
-            if (mVariantYAdapter != null) {
-                mVariantYAdapter.setCrashReportingChecked(isCrashReporting);
+            if (mStepAdapter != null) {
+                mStepAdapter.setCrashReportingChecked(isCrashReporting);
             }
-        } else if (mVariantYAdapter != null) {
-            mVariantYAdapter.setCrashReportingManaged(true);
+        } else if (mStepAdapter != null) {
+            mStepAdapter.setCrashReportingManaged(true);
         }
 
         if (!mIsP3aManaged) {
             final boolean isP3aEnabled = getP3aPreference();
-            if (mVariantYAdapter != null) {
-                mVariantYAdapter.setP3aChecked(isP3aEnabled);
+            if (mStepAdapter != null) {
+                mStepAdapter.setP3aChecked(isP3aEnabled);
             }
-        } else if (mVariantYAdapter != null) {
-            mVariantYAdapter.setP3aManaged(true);
+        } else if (mStepAdapter != null) {
+            mStepAdapter.setP3aManaged(true);
         }
-        mVariantYConstraintLayout.setVisibility(View.VISIBLE);
+        mOnboardingContainer.setVisibility(View.VISIBLE);
         if (mSplashAnimationFinished) {
             if (mBraveSplashContainer != null) {
                 mBraveSplashContainer.setVisibility(View.GONE);
             }
-            if (mVariantYPager != null) {
-                mVariantYPager.setCurrentItem(mRestoredVariantYPageIndex, false);
-                mVariantYPager.setVisibility(View.VISIBLE);
+            if (mOnboardingPager != null) {
+                mOnboardingPager.setCurrentItem(mRestoredPageIndex, false);
+                mOnboardingPager.setVisibility(View.VISIBLE);
             }
         } else {
             final AnimatedVectorDrawable vectorDrawable = getAnimatedVectorDrawable();
@@ -344,8 +344,8 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(KEY_SPLASH_ANIMATION_FINISHED, mSplashAnimationFinished);
-        if (mVariantYPager != null) {
-            outState.putInt(KEY_VARIANT_Y_PAGE_INDEX, mVariantYPager.getCurrentItem());
+        if (mOnboardingPager != null) {
+            outState.putInt(KEY_PAGE_INDEX, mOnboardingPager.getCurrentItem());
         }
     }
 
@@ -356,7 +356,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
             return;
         }
         mSplashAnimationFinished = state.getBoolean(KEY_SPLASH_ANIMATION_FINISHED, false);
-        mRestoredVariantYPageIndex = state.getInt(KEY_VARIANT_Y_PAGE_INDEX, 0);
+        mRestoredPageIndex = state.getInt(KEY_PAGE_INDEX, 0);
     }
 
     private AnimatedVectorDrawable getAnimatedVectorDrawable() {
@@ -413,10 +413,10 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
         return isP3aEnabled;
     }
 
-    private void showVariantYPagerAfterSplash() {
-        if (mVariantYPager != null) {
-            mVariantYPager.setCurrentItem(isWDPSettingAvailable() ? 0 : 1, false);
-            mVariantYPager.setVisibility(View.VISIBLE);
+    private void showPagerAfterSplash() {
+        if (mOnboardingPager != null) {
+            mOnboardingPager.setCurrentItem(isWDPSettingAvailable() ? 0 : 1, false);
+            mOnboardingPager.setVisibility(View.VISIBLE);
         }
         mSplashAnimationFinished = true;
         maybeRequestDefaultBrowser();
@@ -440,7 +440,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
                     @Override
                     public void onAnimationEnd(@NonNull Animator animation) {
                         mBraveSplashContainer.setVisibility(View.GONE);
-                        showVariantYPagerAfterSplash();
+                        showPagerAfterSplash();
                     }
 
                     @Override
@@ -498,7 +498,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
                                 if (mBraveSplashContainer != null) {
                                     mBraveSplashContainer.setVisibility(View.GONE);
                                 }
-                                showVariantYPagerAfterSplash();
+                                showPagerAfterSplash();
                             }
 
                             @Override
