@@ -622,6 +622,9 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
   ASSERT_TRUE(ix_left_side.has_value())
       << "toggle missing from toolbar container "
          "(kVerticalTabsOnRight=false)";
+  EXPECT_EQ(*ix_left_side, 0u)
+      << "with kVerticalTabsOnRight=false, toggle should be pinned to child "
+         "index 0 (leading toolbar edge), not derived from back button index";
 
   prefs->SetBoolean(brave_tabs::kVerticalTabsOnRight, true);
   RunScheduledLayouts();

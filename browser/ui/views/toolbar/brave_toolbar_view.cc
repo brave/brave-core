@@ -692,9 +692,11 @@ void BraveToolbarView::UpdateVerticalTabTogglePlacement() {
     CHECK_GT(*menu_idx, 0u);
     target_idx = *menu_idx - 1;
   } else {
-    const auto back_idx = container_view->GetIndexOf(back_);
-    CHECK(back_idx.has_value());
-    target_idx = *back_idx > 0 ? *back_idx - 1 : 0;
+    // Pin index 0 for the leading edge so placement does not depend on the
+    // back button's child index (forward is pinnable today; back could become
+    // pinnable upstream). Computing `back_idx - 1` would risk CHECK failures or
+    // surprising order if navigation-button pinning changes.
+    target_idx = 0;
   }
 
   if (*toggle_idx == target_idx) {
