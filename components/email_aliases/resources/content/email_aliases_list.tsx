@@ -24,6 +24,10 @@ import {
   MAX_ALIASES,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 
+const Container = styled.div`
+  padding-bottom: ${spacing.s};
+`
+
 const AliasListIntro = styled(Row)`
   justify-content: space-between;
   padding: ${spacing.l} ${spacing['2Xl']};
@@ -32,11 +36,12 @@ const AliasListIntro = styled(Row)`
 const Aliases = styled.div`
   border: ${color.divider.subtle} 1px solid;
   border-radius: ${radius.m};
-  margin: ${spacing.l} ${spacing.xl};
+  margin: ${spacing.l} ${spacing.xl} ${spacing.xl};
 `
 
 const CreateButton = styled(Button)`
-  padding: ${spacing.l} ${spacing.xl};
+  padding-left: ${spacing.xl};
+  padding-bottom: ${spacing.xl};
   width: fit-content;
 `
 
@@ -72,7 +77,7 @@ export const AliasList = ({
 }) => {
   const [editState, setEditState] = React.useState<EditState>({ mode: 'None' })
   return (
-    <>
+    <Container>
       <ListIntroduction />
       <Aliases>
         {aliases.map((alias) => (
@@ -119,6 +124,6 @@ export const AliasList = ({
           />
         )}
       </AliasDialog>
-    </>
+    </Container>
   )
 }
