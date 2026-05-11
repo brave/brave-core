@@ -23,10 +23,6 @@ namespace query_filter {
 // and no exclude pattern. Blank/whitespace-only patterns are treated as
 // non-matching. Returns an empty set if |spec| is not a valid URL or no rule
 // matches.
-// TODO(https://github.com/brave/brave-browser/issues/55305): This is not used
-// at the moment. This would be plugged in to the
-// components/query_filter/browser/utils.cc when we support the query filter
-// component.
 base::flat_set<std::string> GetBlocklistedParamsForSpec(
     base::span<const schema::Rule> rules,
     std::string_view spec);
