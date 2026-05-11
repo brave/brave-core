@@ -487,7 +487,8 @@ test("brave_unit_tests") {
       "//components/gcm_driver/gcm_driver_unittest.cc",
       "//components/password_manager/core/browser/ui/weak_check_utility_unittest.cc",
 
-      # TODO(samartnik): this should work on Android, we will review it once unit tests are set up on CI
+      # TODO(samartnik): this should work on Android, we will review it once
+      # unit tests are set up on CI
       "//brave/browser/ui/brave_shields_data_controller_unittest.cc",
       "//brave/chromium_src/components/search_engines/brave_template_url_prepopulate_data_unittest.cc",
       "//brave/chromium_src/components/search_engines/brave_template_url_service_util_unittest.cc",
@@ -1295,7 +1296,8 @@ test("brave_browser_tests") {
     }
 
     deps += [
-      # Required for brave_perf_features_processor_browsertest.cc & ad_block_service_browsertest.cc
+      # Required for brave_perf_features_processor_browsertest.cc &
+      # ad_block_service_browsertest.cc
       "//brave/browser/speedreader",
       "//brave/components/speedreader",
     ]
