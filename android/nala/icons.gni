@@ -54,6 +54,7 @@ nala_icons = [
   "ic_location_on.xml",
   "ic_star_circle.xml",
   "ic_notification.xml",
+  "ic_outside.xml",
   "ic_product_bat_outline.xml",
   "ic_product_brave_leo.xml",
   "ic_product_brave_news.xml",

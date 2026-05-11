@@ -440,6 +440,7 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
           Row(
             text: L10nUtils.string(messageId: .SETTINGS_BRAVE_ACCOUNT_LOG_OUT_BUTTON_LABEL),
             selection: { braveAccountAuthentication.logOut() },
+            image: UIImage(braveSystemNamed: "leo.outside"),
             cellClass: BraveAccountIconCell.self,
             context: [
               BraveAccountIconCell.textColor: view.tintColor
@@ -1977,8 +1978,14 @@ private final class BraveAccountIconCell: UITableViewCell, Cell {
     var content = defaultContentConfiguration()
 
     if let image = row.image {
-      let scaledValue = UIFontMetrics.default.scaledValue(for: 26)
-      content.image = image.preparingThumbnail(of: .init(width: scaledValue, height: scaledValue))
+      if image.isSymbolImage {
+        content.image = image
+      } else {
+        let scaledValue = UIFontMetrics.default.scaledValue(for: 26)
+        content.image = image.preparingThumbnail(
+          of: .init(width: scaledValue, height: scaledValue)
+        )
+      }
     }
 
     content.text = row.text

@@ -176,6 +176,7 @@ export class SettingsBraveAccountRowElement extends I18nMixinLit(CrLitElement) {
           <leo-button kind="outline"
                       size="small"
                       @click=${this.onLogOutButtonClicked}>
+            <leo-icon name="outside" slot="icon-before"></leo-icon>
             ${this.i18n(
                   BraveAccountSettingsStrings
                        .SETTINGS_BRAVE_ACCOUNT_LOG_OUT_BUTTON_LABEL)}
