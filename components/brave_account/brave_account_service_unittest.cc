@@ -83,13 +83,14 @@ struct AuthenticationObserverTestCase {
 
   static void Run(const AuthenticationObserverTestCase& test_case,
                   PrefService& pref_service,
-                  mojom::Authentication& authentication) {
-    AccountStatePrefs account_state_prefs(pref_service);
+                  mojo::Remote<mojom::Authentication>& authentication) {
     const auto account_state_eq = [](const mojom::AccountStatePtr& expected) {
       return testing::Truly([&](const mojom::AccountStatePtr& state) {
         return state.Equals(expected);
       });
     };
+
+    AccountStatePrefs account_state_prefs(pref_service);
 
     switch (CHECK_DEREF(test_case.from).which()) {
       case mojom::AccountState::Tag::kLoggedOut:
@@ -111,7 +112,7 @@ struct AuthenticationObserverTestCase {
                 OnAccountStateChanged(account_state_eq(test_case.from)))
         .Times(1);
 
-    authentication.AddObserver(mock_observer.BindAndGetRemote());
+    authentication->AddObserver(mock_observer.BindAndGetRemote());
     mock_observer.FlushForTesting();
     testing::Mock::VerifyAndClearExpectations(&mock_observer);
 
@@ -252,9 +253,9 @@ struct RegisterInitializeTestCase {
   static void Run(const RegisterInitializeTestCase& test_case,
                   PrefService& pref_service,
                   base::test::TaskEnvironment& task_environment,
-                  mojom::Authentication& authentication,
+                  mojo::Remote<mojom::Authentication>& authentication,
                   base::OnceCallback<void(MojoExpected)> callback) {
-    authentication.RegisterInitialize(
+    authentication->RegisterInitialize(
         mojom::Service::kAccounts, test_case.email, test_case.blinded_message,
         std::move(callback));
   }
@@ -654,11 +655,11 @@ struct RegisterFinalizeTestCase {
   static void Run(const RegisterFinalizeTestCase& test_case,
                   PrefService& pref_service,
                   base::test::TaskEnvironment& task_environment,
-                  mojom::Authentication& authentication,
+                  mojo::Remote<mojom::Authentication>& authentication,
                   base::OnceCallback<void(MojoExpected)> callback) {
-    authentication.RegisterFinalize(test_case.encrypted_verification_token,
-                                    test_case.serialized_record,
-                                    std::move(callback));
+    authentication->RegisterFinalize(test_case.encrypted_verification_token,
+                                     test_case.serialized_record,
+                                     std::move(callback));
   }
 
   std::string test_name;
@@ -944,20 +945,17 @@ struct RegisterVerifyTestCase {
   static void Run(const RegisterVerifyTestCase& test_case,
                   PrefService& pref_service,
                   base::test::TaskEnvironment& task_environment,
-                  mojom::Authentication& authentication,
+                  mojo::Remote<mojom::Authentication>& authentication,
                   base::OnceCallback<void(MojoExpected)> callback) {
-    if (!test_case.encrypted_verification_token.empty()) {
-      AccountStatePrefs(pref_service)
-          .SetLoggedOutWithVerification(
-              test_case.encrypted_verification_token,
-              mojom::LoggedOutVerificationIntent::kRegistration);
-    }
+    AccountStatePrefs(pref_service)
+        .SetLoggedOutWithVerification(
+            EncryptedVerificationToken(),
+            mojom::LoggedOutVerificationIntent::kRegistration);
 
-    authentication.RegisterVerify(
+    authentication->RegisterVerify(
         test_case.code,
         std::move(callback).Then(base::BindOnce(
-            [](PrefService* pref_service,
-               std::string initial_verification_token, bool success) {
+            [](PrefService* pref_service, bool success) {
               AccountStatePrefs account_state_prefs(*pref_service);
               const auto state = account_state_prefs.GetAccountState();
               if (success) {
@@ -968,27 +966,21 @@ struct RegisterVerifyTestCase {
                           EncryptedAuthenticationToken());
               } else {
                 ASSERT_TRUE(state->is_logged_out());
-                if (initial_verification_token.empty()) {
-                  EXPECT_FALSE(state->get_logged_out()->verification);
-                } else {
-                  ASSERT_TRUE(state->get_logged_out()->verification);
-                  EXPECT_EQ(state->get_logged_out()->verification->intent,
-                            mojom::LoggedOutVerificationIntent::kRegistration);
-                  EXPECT_EQ(
-                      account_state_prefs.GetVerificationToken(
-                          mojom::LoggedOutVerificationIntent::kRegistration),
-                      initial_verification_token);
-                }
+                ASSERT_TRUE(state->get_logged_out()->verification);
+                EXPECT_EQ(state->get_logged_out()->verification->intent,
+                          mojom::LoggedOutVerificationIntent::kRegistration);
+                EXPECT_EQ(
+                    account_state_prefs.GetVerificationToken(
+                        mojom::LoggedOutVerificationIntent::kRegistration),
+                    EncryptedVerificationToken());
               }
             },
             base::Unretained(&pref_service),
-            test_case.encrypted_verification_token,
             test_case.mojo_expected.has_value())));
   }
 
   std::string test_name;
   std::string code;
-  std::string encrypted_verification_token;
   bool fail_decryption;
   bool fail_encryption;
   std::optional<EndpointResponse> endpoint_response;
@@ -997,30 +989,11 @@ struct RegisterVerifyTestCase {
 
 namespace {
 
-const RegisterVerifyTestCase* RegisterVerifyVerificationTokenEmpty() {
-  static const base::NoDestructor<RegisterVerifyTestCase>
-      kRegisterVerifyVerificationTokenEmpty({
-          .test_name = "register_verify_verification_token_empty",
-          .code = "23TZMP",
-          .encrypted_verification_token = "",
-          .fail_decryption = {},    // not used
-          .fail_encryption = {},    // not used
-          .endpoint_response = {},  // not used
-          .mojo_expected =
-              base::unexpected(mojom::RegisterError::NewClientError(
-                  mojom::RegisterClientError::New(
-                      mojom::RegisterClientErrorCode::
-                          kNoRegistrationInProgress))),
-      });
-  return kRegisterVerifyVerificationTokenEmpty.get();
-}
-
 const RegisterVerifyTestCase* RegisterVerifyVerificationTokenFailedToDecrypt() {
   static const base::NoDestructor<RegisterVerifyTestCase>
       kRegisterVerifyVerificationTokenFailedToDecrypt({
           .test_name = "register_verify_verification_token_failed_to_decrypt",
           .code = "23TZMP",
-          .encrypted_verification_token = EncryptedVerificationToken(),
           .fail_decryption = true,
           .fail_encryption = {},    // not used
           .endpoint_response = {},  // not used
@@ -1038,7 +1011,6 @@ const RegisterVerifyTestCase* RegisterVerifyNetworkError() {
       kRegisterVerifyNetworkError({
           .test_name = "register_verify_network_error",
           .code = "23TZMP",
-          .encrypted_verification_token = EncryptedVerificationToken(),
           .fail_decryption = false,
           .fail_encryption = {},  // not used
           .endpoint_response = {{.net_error = net::ERR_CONNECTION_REFUSED,
@@ -1058,7 +1030,6 @@ const RegisterVerifyTestCase* RegisterVerifyBodyMissingOrFailedToParse() {
       kRegisterVerifyBodyMissingOrFailedToParse({
           .test_name = "register_verify_body_missing_or_failed_to_parse",
           .code = "23TZMP",
-          .encrypted_verification_token = EncryptedVerificationToken(),
           .fail_decryption = false,
           .fail_encryption = {},  // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -1078,7 +1049,6 @@ const RegisterVerifyTestCase* RegisterVerifyErrorCodeIsNull() {
       kRegisterVerifyErrorCodeIsNull({
           .test_name = "register_verify_error_code_is_null",
           .code = "23TZMP",
-          .encrypted_verification_token = EncryptedVerificationToken(),
           .fail_decryption = false,
           .fail_encryption = {},  // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -1104,7 +1074,6 @@ RegisterVerifyVerificationNotFoundOrInvalidIdOrCode() {
           .test_name =
               "register_verify_verification_not_found_or_invalid_id_or_code",
           .code = "23TZMP",
-          .encrypted_verification_token = EncryptedVerificationToken(),
           .fail_decryption = false,
           .fail_encryption = {},  // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -1129,7 +1098,6 @@ const RegisterVerifyTestCase* RegisterVerifyEmailAlreadyVerified() {
       kRegisterVerifyEmailAlreadyVerified({
           .test_name = "register_verify_email_already_verified",
           .code = "23TZMP",
-          .encrypted_verification_token = EncryptedVerificationToken(),
           .fail_decryption = false,
           .fail_encryption = {},  // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -1155,7 +1123,6 @@ RegisterVerifyMaximumCodeVerificationAttemptsExceeded() {
           .test_name =
               "register_verify_maximum_code_verification_attempts_exceeded",
           .code = "23TZMP",
-          .encrypted_verification_token = EncryptedVerificationToken(),
           .fail_decryption = false,
           .fail_encryption = {},  // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -1180,7 +1147,6 @@ const RegisterVerifyTestCase* RegisterVerifyInvalidVerificationCode() {
       kRegisterVerifyInvalidVerificationCode({
           .test_name = "register_verify_invalid_verification_code",
           .code = "23TZMP",
-          .encrypted_verification_token = EncryptedVerificationToken(),
           .fail_decryption = false,
           .fail_encryption = {},  // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -1204,7 +1170,6 @@ const RegisterVerifyTestCase* RegisterVerifyServerError() {
       kRegisterVerifyServerError({
           .test_name = "register_verify_server_error",
           .code = "23TZMP",
-          .encrypted_verification_token = EncryptedVerificationToken(),
           .fail_decryption = false,
           .fail_encryption = {},  // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -1228,7 +1193,6 @@ const RegisterVerifyTestCase* RegisterVerifyAuthTokenEmpty() {
       kRegisterVerifyAuthTokenEmpty({
           .test_name = "register_verify_auth_token_empty",
           .code = "23TZMP",
-          .encrypted_verification_token = EncryptedVerificationToken(),
           .fail_decryption = false,
           .fail_encryption = {},  // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -1255,7 +1219,6 @@ const RegisterVerifyTestCase* RegisterVerifyEmailEmpty() {
       kRegisterVerifyEmailEmpty({
           .test_name = "register_verify_email_empty",
           .code = "23TZMP",
-          .encrypted_verification_token = EncryptedVerificationToken(),
           .fail_decryption = false,
           .fail_encryption = {},  // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -1283,7 +1246,6 @@ RegisterVerifyAuthenticationTokenEncryptionFailed() {
       kRegisterVerifyAuthenticationTokenEncryptionFailed({
           .test_name = "register_verify_authentication_token_encryption_failed",
           .code = "23TZMP",
-          .encrypted_verification_token = EncryptedVerificationToken(),
           .fail_decryption = false,
           .fail_encryption = true,
           .endpoint_response = {{.net_error = net::OK,
@@ -1310,7 +1272,6 @@ const RegisterVerifyTestCase* RegisterVerifySuccess() {
       kRegisterVerifySuccess({
           .test_name = "register_verify_success",
           .code = "23TZMP",
-          .encrypted_verification_token = EncryptedVerificationToken(),
           .fail_decryption = false,
           .fail_encryption = false,
           .endpoint_response = {{.net_error = net::OK,
@@ -1341,8 +1302,7 @@ TEST_P(BraveAccountServiceRegisterVerifyTest,
 INSTANTIATE_TEST_SUITE_P(
     BraveAccountServiceTests,
     BraveAccountServiceRegisterVerifyTest,
-    testing::Values(RegisterVerifyVerificationTokenEmpty(),
-                    RegisterVerifyVerificationTokenFailedToDecrypt(),
+    testing::Values(RegisterVerifyVerificationTokenFailedToDecrypt(),
                     RegisterVerifyNetworkError(),
                     RegisterVerifyBodyMissingOrFailedToParse(),
                     RegisterVerifyErrorCodeIsNull(),
@@ -1366,20 +1326,17 @@ struct ResendConfirmationEmailTestCase {
   static void Run(const ResendConfirmationEmailTestCase& test_case,
                   PrefService& pref_service,
                   base::test::TaskEnvironment& task_environment,
-                  mojom::Authentication& authentication,
+                  mojo::Remote<mojom::Authentication>& authentication,
                   base::OnceCallback<void(MojoExpected)> callback) {
-    if (!test_case.encrypted_verification_token.empty()) {
-      AccountStatePrefs(pref_service)
-          .SetLoggedOutWithVerification(
-              test_case.encrypted_verification_token,
-              mojom::LoggedOutVerificationIntent::kRegistration);
-    }
+    AccountStatePrefs(pref_service)
+        .SetLoggedOutWithVerification(
+            EncryptedVerificationToken(),
+            mojom::LoggedOutVerificationIntent::kRegistration);
 
-    authentication.ResendConfirmationEmail(std::move(callback));
+    authentication->ResendConfirmationEmail(std::move(callback));
   }
 
   std::string test_name;
-  std::string encrypted_verification_token;
   bool fail_decryption;
   std::optional<EndpointResponse> endpoint_response;
   MojoExpected mojo_expected;
@@ -1388,29 +1345,11 @@ struct ResendConfirmationEmailTestCase {
 namespace {
 
 const ResendConfirmationEmailTestCase*
-ResendConfirmationEmailVerificationTokenEmpty() {
-  static const base::NoDestructor<ResendConfirmationEmailTestCase>
-      kResendConfirmationEmailVerificationTokenEmpty({
-          .test_name = "resend_confirmation_email_verification_token_empty",
-          .encrypted_verification_token = "",
-          .fail_decryption = {},    // not used
-          .endpoint_response = {},  // not used
-          .mojo_expected = base::unexpected(
-              mojom::ResendConfirmationEmailError::NewClientError(
-                  mojom::ResendConfirmationEmailClientError::New(
-                      mojom::ResendConfirmationEmailClientErrorCode::
-                          kNoRegistrationInProgress))),
-      });
-  return kResendConfirmationEmailVerificationTokenEmpty.get();
-}
-
-const ResendConfirmationEmailTestCase*
 ResendConfirmationEmailVerificationTokenFailedToDecrypt() {
   static const base::NoDestructor<ResendConfirmationEmailTestCase>
       kResendConfirmationEmailVerificationTokenFailedToDecrypt({
           .test_name =
               "resend_confirmation_email_verification_token_failed_to_decrypt",
-          .encrypted_verification_token = EncryptedVerificationToken(),
           .fail_decryption = true,
           .endpoint_response = {},  // not used
           .mojo_expected = base::unexpected(
@@ -1426,7 +1365,6 @@ const ResendConfirmationEmailTestCase* ResendConfirmationEmailSuccess() {
   static const base::NoDestructor<ResendConfirmationEmailTestCase>
       kResendConfirmationEmailSuccess({
           .test_name = "resend_confirmation_email_success",
-          .encrypted_verification_token = EncryptedVerificationToken(),
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_NO_CONTENT,
@@ -1440,7 +1378,6 @@ const ResendConfirmationEmailTestCase* ResendConfirmationEmailNetworkError() {
   static const base::NoDestructor<ResendConfirmationEmailTestCase>
       kResendConfirmationEmailNetworkError({
           .test_name = "resend_confirmation_email_network_error",
-          .encrypted_verification_token = EncryptedVerificationToken(),
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::ERR_CONNECTION_REFUSED,
                                  .status_code = std::nullopt,
@@ -1461,7 +1398,6 @@ ResendConfirmationEmailBodyMissingOrFailedToParse() {
       kResendConfirmationEmailBodyMissingOrFailedToParse({
           .test_name =
               "resend_confirmation_email_body_missing_or_failed_to_parse",
-          .encrypted_verification_token = EncryptedVerificationToken(),
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
@@ -1482,7 +1418,6 @@ ResendConfirmationEmailBadRequestWithNullErrorCode() {
       kResendConfirmationEmailBadRequestWithNullErrorCode({
           .test_name =
               "resend_confirmation_email_bad_request_with_null_error_code",
-          .encrypted_verification_token = EncryptedVerificationToken(),
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_BAD_REQUEST,
@@ -1506,7 +1441,6 @@ ResendConfirmationEmailMaximumEmailSendAttemptsExceeded() {
       kResendConfirmationEmailMaximumEmailSendAttemptsExceeded({
           .test_name =
               "resend_confirmation_email_maximum_email_send_attempts_exceeded",
-          .encrypted_verification_token = EncryptedVerificationToken(),
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_BAD_REQUEST,
@@ -1530,7 +1464,6 @@ ResendConfirmationEmailEmailAlreadyVerified() {
   static const base::NoDestructor<ResendConfirmationEmailTestCase>
       kResendConfirmationEmailEmailAlreadyVerified({
           .test_name = "resend_confirmation_email_email_already_verified",
-          .encrypted_verification_token = EncryptedVerificationToken(),
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_BAD_REQUEST,
@@ -1553,7 +1486,6 @@ const ResendConfirmationEmailTestCase* ResendConfirmationEmailServerError() {
   static const base::NoDestructor<ResendConfirmationEmailTestCase>
       kResendConfirmationEmailServerError({
           .test_name = "resend_confirmation_email_server_error",
-          .encrypted_verification_token = EncryptedVerificationToken(),
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
@@ -1575,7 +1507,6 @@ const ResendConfirmationEmailTestCase* ResendConfirmationEmailUnknown() {
   static const base::NoDestructor<ResendConfirmationEmailTestCase>
       kResendConfirmationEmailUnknown({
           .test_name = "resend_confirmation_email_unknown",
-          .encrypted_verification_token = EncryptedVerificationToken(),
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_TOO_EARLY,
@@ -1607,8 +1538,7 @@ TEST_P(BraveAccountServiceResendConfirmationEmailTest,
 INSTANTIATE_TEST_SUITE_P(
     BraveAccountServiceTests,
     BraveAccountServiceResendConfirmationEmailTest,
-    testing::Values(ResendConfirmationEmailVerificationTokenEmpty(),
-                    ResendConfirmationEmailVerificationTokenFailedToDecrypt(),
+    testing::Values(ResendConfirmationEmailVerificationTokenFailedToDecrypt(),
                     ResendConfirmationEmailSuccess(),
                     ResendConfirmationEmailNetworkError(),
                     ResendConfirmationEmailBodyMissingOrFailedToParse(),
@@ -1626,12 +1556,10 @@ struct AuthValidateTestCase {
   static void Run(const AuthValidateTestCase& test_case,
                   PrefService& pref_service,
                   base::test::TaskEnvironment& task_environment,
-                  base::OneShotTimer& auth_validate_timer) {
+                  BraveAccountService& brave_account_service) {
     AccountStatePrefs account_state_prefs(pref_service);
-    if (test_case.logged_in) {
-      account_state_prefs.SetLoggedIn(kEmailAddress,
-                                      EncryptedAuthenticationToken());
-    }
+    account_state_prefs.SetLoggedIn(kEmailAddress,
+                                    EncryptedAuthenticationToken());
 
     task_environment.FastForwardBy(kAuthValidatePollInterval -
                                    base::Seconds(1));
@@ -1645,17 +1573,22 @@ struct AuthValidateTestCase {
       EXPECT_EQ(account_state_prefs.GetAuthenticationToken(),
                 test_case.expected_authentication_token);
     }
+
+    base::OneShotTimer* auth_validate_timer =
+        brave_account_service.AuthValidateTimerForTesting();
     if (test_case.expected_auth_validate_timer_delay.is_zero()) {
-      EXPECT_FALSE(auth_validate_timer.IsRunning());
+      if (auth_validate_timer) {
+        EXPECT_FALSE(auth_validate_timer->IsRunning());
+      }
     } else {
-      EXPECT_TRUE(auth_validate_timer.IsRunning());
-      EXPECT_EQ(auth_validate_timer.GetCurrentDelay(),
+      ASSERT_TRUE(auth_validate_timer);
+      EXPECT_TRUE(auth_validate_timer->IsRunning());
+      EXPECT_EQ(auth_validate_timer->GetCurrentDelay(),
                 test_case.expected_auth_validate_timer_delay);
     }
   }
 
   std::string test_name;
-  bool logged_in;
   bool fail_decryption;
   std::optional<EndpointResponse> endpoint_response;
   std::string expected_email;
@@ -1665,25 +1598,10 @@ struct AuthValidateTestCase {
 
 namespace {
 
-const AuthValidateTestCase* AuthValidateAuthenticationTokenEmpty() {
-  static const base::NoDestructor<AuthValidateTestCase>
-      kAuthValidateAuthenticationTokenEmpty({
-          .test_name = "auth_validate_authentication_token_empty",
-          .logged_in = false,
-          .fail_decryption = {},    // not used
-          .endpoint_response = {},  // not used
-          .expected_email = "",
-          .expected_authentication_token = "",
-          .expected_auth_validate_timer_delay = {},
-      });
-  return kAuthValidateAuthenticationTokenEmpty.get();
-}
-
 const AuthValidateTestCase* AuthValidateAuthenticationTokenFailedToDecrypt() {
   static const base::NoDestructor<AuthValidateTestCase>
       kAuthValidateAuthenticationTokenFailedToDecrypt({
           .test_name = "auth_validate_authentication_token_failed_to_decrypt",
-          .logged_in = true,
           .fail_decryption = true,
           .endpoint_response = {},  // not used
           .expected_email = kEmailAddress,
@@ -1697,7 +1615,6 @@ const AuthValidateTestCase* AuthValidateSuccessNoBody() {
   static const base::NoDestructor<AuthValidateTestCase>
       kAuthValidateSuccessNoBody({
           .test_name = "auth_validate_success_no_body",
-          .logged_in = true,
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_OK,
@@ -1713,7 +1630,6 @@ const AuthValidateTestCase* AuthValidateSuccessEmailEmpty() {
   static const base::NoDestructor<AuthValidateTestCase>
       kAuthValidateSuccessEmailEmpty({
           .test_name = "auth_validate_success_email_empty",
-          .logged_in = true,
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_OK,
@@ -1733,7 +1649,6 @@ const AuthValidateTestCase* AuthValidateSuccessEmailEmpty() {
 const AuthValidateTestCase* AuthValidateSuccess() {
   static const base::NoDestructor<AuthValidateTestCase> kAuthValidateSuccess({
       .test_name = "auth_validate_success",
-      .logged_in = true,
       .fail_decryption = false,
       .endpoint_response = {{.net_error = net::OK,
                              .status_code = net::HTTP_OK,
@@ -1754,7 +1669,6 @@ const AuthValidateTestCase* AuthValidateUnauthorized() {
   static const base::NoDestructor<AuthValidateTestCase>
       kAuthValidateUnauthorized({
           .test_name = "auth_validate_unauthorized",
-          .logged_in = true,
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_UNAUTHORIZED,
@@ -1773,7 +1687,6 @@ const AuthValidateTestCase* AuthValidateUnauthorized() {
 const AuthValidateTestCase* AuthValidateForbidden() {
   static const base::NoDestructor<AuthValidateTestCase> kAuthValidateForbidden({
       .test_name = "auth_validate_forbidden",
-      .logged_in = true,
       .fail_decryption = false,
       .endpoint_response = {{.net_error = net::OK,
                              .status_code = net::HTTP_FORBIDDEN,
@@ -1793,7 +1706,6 @@ const AuthValidateTestCase* AuthValidateInternalServerError() {
   static const base::NoDestructor<AuthValidateTestCase>
       kAuthValidateInternalServerError({
           .test_name = "auth_validate_internal_server_error",
-          .logged_in = true,
           .fail_decryption = false,
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
@@ -1822,8 +1734,7 @@ TEST_P(BraveAccountServiceScheduleAuthValidateTest,
 INSTANTIATE_TEST_SUITE_P(
     BraveAccountServiceTests,
     BraveAccountServiceScheduleAuthValidateTest,
-    testing::Values(AuthValidateAuthenticationTokenEmpty(),
-                    AuthValidateAuthenticationTokenFailedToDecrypt(),
+    testing::Values(AuthValidateAuthenticationTokenFailedToDecrypt(),
                     AuthValidateSuccessNoBody(),
                     AuthValidateSuccessEmailEmpty(),
                     AuthValidateSuccess(),
@@ -1835,40 +1746,28 @@ INSTANTIATE_TEST_SUITE_P(
 struct CancelRegistrationTestCase {
   static void Run(const CancelRegistrationTestCase& test_case,
                   PrefService& pref_service,
-                  mojom::Authentication& authentication) {
+                  mojo::Remote<mojom::Authentication>& authentication) {
     AccountStatePrefs account_state_prefs(pref_service);
-    if (!test_case.encrypted_verification_token.empty()) {
-      account_state_prefs.SetLoggedOutWithVerification(
-          test_case.encrypted_verification_token,
-          mojom::LoggedOutVerificationIntent::kRegistration);
-    }
-    authentication.CancelRegistration();
+    account_state_prefs.SetLoggedOutWithVerification(
+        EncryptedVerificationToken(),
+        mojom::LoggedOutVerificationIntent::kRegistration);
+    authentication->CancelRegistration();
+    authentication.FlushForTesting();
     const auto state = account_state_prefs.GetAccountState();
     ASSERT_TRUE(state->is_logged_out());
     EXPECT_FALSE(state->get_logged_out()->verification);
   }
 
   std::string test_name;
-  std::string encrypted_verification_token;
 };
 
 namespace {
-
-const CancelRegistrationTestCase* CancelRegistrationVerificationTokenEmpty() {
-  static const base::NoDestructor<CancelRegistrationTestCase>
-      kCancelRegistrationVerificationTokenEmpty({
-          .test_name = "cancel_registration_verification_token_empty",
-          .encrypted_verification_token = "",
-      });
-  return kCancelRegistrationVerificationTokenEmpty.get();
-}
 
 const CancelRegistrationTestCase*
 CancelRegistrationVerificationTokenNonEmpty() {
   static const base::NoDestructor<CancelRegistrationTestCase>
       kCancelRegistrationVerificationTokenNonEmpty({
           .test_name = "cancel_registration_verification_token_non_empty",
-          .encrypted_verification_token = EncryptedVerificationToken(),
       });
   return kCancelRegistrationVerificationTokenNonEmpty.get();
 }
@@ -1886,48 +1785,32 @@ TEST_P(BraveAccountServiceCancelRegistrationTest,
 INSTANTIATE_TEST_SUITE_P(
     BraveAccountServiceTests,
     BraveAccountServiceCancelRegistrationTest,
-    testing::Values(CancelRegistrationVerificationTokenEmpty(),
-                    CancelRegistrationVerificationTokenNonEmpty()),
+    testing::Values(CancelRegistrationVerificationTokenNonEmpty()),
     BraveAccountServiceCancelRegistrationTest::kNameGenerator);
 
 struct LogOutTestCase {
   static void Run(const LogOutTestCase& test_case,
                   PrefService& pref_service,
-                  mojom::Authentication& authentication) {
+                  mojo::Remote<mojom::Authentication>& authentication) {
     AccountStatePrefs account_state_prefs(pref_service);
-    if (!test_case.encrypted_authentication_token.empty()) {
-      account_state_prefs.SetLoggedIn(test_case.email_address,
-                                      test_case.encrypted_authentication_token);
-    }
-    authentication.LogOut();
+    account_state_prefs.SetLoggedIn(kEmailAddress,
+                                    EncryptedAuthenticationToken());
+    authentication->LogOut();
+    authentication.FlushForTesting();
     const auto state = account_state_prefs.GetAccountState();
     ASSERT_TRUE(state->is_logged_out());
     EXPECT_FALSE(state->get_logged_out()->verification);
   }
 
   std::string test_name;
-  std::string email_address;
-  std::string encrypted_authentication_token;
 };
 
 namespace {
-
-const LogOutTestCase* LogOutAuthenticationTokenEmpty() {
-  static const base::NoDestructor<LogOutTestCase>
-      kLogOutAuthenticationTokenEmpty({
-          .test_name = "log_out_authentication_token_empty",
-          .email_address = "",
-          .encrypted_authentication_token = "",
-      });
-  return kLogOutAuthenticationTokenEmpty.get();
-}
 
 const LogOutTestCase* LogOutAuthenticationTokenNonEmpty() {
   static const base::NoDestructor<LogOutTestCase>
       kLogOutAuthenticationTokenNonEmpty({
           .test_name = "log_out_authentication_token_non_empty",
-          .email_address = kEmailAddress,
-          .encrypted_authentication_token = EncryptedAuthenticationToken(),
       });
   return kLogOutAuthenticationTokenNonEmpty.get();
 }
@@ -1942,8 +1825,7 @@ TEST_P(BraveAccountServiceLogOutTest, HandlesLogOutOutcomes) {
 
 INSTANTIATE_TEST_SUITE_P(BraveAccountServiceTests,
                          BraveAccountServiceLogOutTest,
-                         testing::Values(LogOutAuthenticationTokenEmpty(),
-                                         LogOutAuthenticationTokenNonEmpty()),
+                         testing::Values(LogOutAuthenticationTokenNonEmpty()),
                          BraveAccountServiceLogOutTest::kNameGenerator);
 
 struct LoginInitializeTestCase {
@@ -1955,11 +1837,11 @@ struct LoginInitializeTestCase {
   static void Run(const LoginInitializeTestCase& test_case,
                   PrefService& pref_service,
                   base::test::TaskEnvironment& task_environment,
-                  mojom::Authentication& authentication,
+                  mojo::Remote<mojom::Authentication>& authentication,
                   base::OnceCallback<void(MojoExpected)> callback) {
-    authentication.LoginInitialize(mojom::Service::kAccounts, test_case.email,
-                                   test_case.serialized_ke1,
-                                   std::move(callback));
+    authentication->LoginInitialize(mojom::Service::kAccounts, test_case.email,
+                                    test_case.serialized_ke1,
+                                    std::move(callback));
   }
 
   std::string test_name;
@@ -2284,9 +2166,9 @@ struct LoginFinalizeTestCase {
   static void Run(const LoginFinalizeTestCase& test_case,
                   PrefService& pref_service,
                   base::test::TaskEnvironment& task_environment,
-                  mojom::Authentication& authentication,
+                  mojo::Remote<mojom::Authentication>& authentication,
                   base::OnceCallback<void(MojoExpected)> callback) {
-    authentication.LoginFinalize(
+    authentication->LoginFinalize(
         test_case.encrypted_login_token, test_case.client_mac,
         std::move(callback).Then(base::BindOnce(
             [](PrefService* pref_service, std::string expected_email,
@@ -2727,16 +2609,13 @@ struct GetServiceTokenTestCase {
   static void Run(const GetServiceTokenTestCase& test_case,
                   PrefService& pref_service,
                   base::test::TaskEnvironment& task_environment,
-                  mojom::Authentication& authentication,
+                  mojo::Remote<mojom::Authentication>& authentication,
                   base::OnceCallback<void(MojoExpected)> callback) {
-    if (test_case.logged_in) {
-      AccountStatePrefs(pref_service)
-          .SetLoggedIn(kEmailAddress, EncryptedAuthenticationToken());
-      ScopedDictPrefUpdate(&pref_service, prefs::kBraveAccountState)
-          ->Set(
-              prefs::keys::kServiceTokens,
+    AccountStatePrefs(pref_service)
+        .SetLoggedIn(kEmailAddress, EncryptedAuthenticationToken());
+    ScopedDictPrefUpdate(&pref_service, prefs::kBraveAccountState)
+        ->Set(prefs::keys::kServiceTokens,
               std::move(test_case.service_tokens_dict).Run(base::Time::Now()));
-    }
 
     task_environment.FastForwardBy(test_case.time_advance);
 
@@ -2745,7 +2624,7 @@ struct GetServiceTokenTestCase {
             ? test_case.mojo_expected.value()->serviceToken
             : "";
 
-    authentication.GetServiceToken(
+    authentication->GetServiceToken(
         mojom::Service::kEmailAliases,
         // |callback| resolves the TestFuture in BraveAccountServiceTest with
         // the result. The Then() callback runs immediately after, before the
@@ -2769,13 +2648,6 @@ struct GetServiceTokenTestCase {
             },
             base::Unretained(&pref_service),
             std::move(expected_service_token))));
-
-    // The ServiceToken (/v2/auth/service_token) network request's callback will
-    // be processed on the next message pump iteration, so this runs before the
-    // request completes.
-    if (test_case.clear_authentication_token) {
-      AccountStatePrefs(pref_service).SetLoggedOut();
-    }
   }
 
   std::string test_name;
@@ -2784,9 +2656,7 @@ struct GetServiceTokenTestCase {
   // when constructing the dictionary. This is necessary for cache expiration
   // tests that need to set timestamps relative to when the test runs.
   mutable base::OnceCallback<base::DictValue(base::Time)> service_tokens_dict;
-  bool logged_in;
   bool fail_decryption;
-  bool clear_authentication_token;
   bool fail_encryption;
   base::TimeDelta time_advance;
   std::optional<EndpointResponse> endpoint_response;
@@ -2808,9 +2678,7 @@ const GetServiceTokenTestCase* GetServiceTokenCacheHit() {
                     .Set(prefs::keys::kLastFetched,
                          base::TimeToValue(mock_now)));
           }),
-          .logged_in = true,
           .fail_decryption = {},             // not used
-          .clear_authentication_token = {},  // not used
           .fail_encryption = {},             // not used
           .time_advance = {},                // not used
           .endpoint_response = {},           // not used
@@ -2818,27 +2686,6 @@ const GetServiceTokenTestCase* GetServiceTokenCacheHit() {
               mojom::GetServiceTokenResult::New("cached_service_token"),
       });
   return kGetServiceTokenCacheHit.get();
-}
-
-const GetServiceTokenTestCase* GetServiceTokenUserNotLoggedIn() {
-  static const base::NoDestructor<GetServiceTokenTestCase>
-      kGetServiceTokenUserNotLoggedIn({
-          .test_name = "get_service_token_user_not_logged_in",
-          .service_tokens_dict =
-              base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .logged_in = {},                   // not used
-          .fail_decryption = {},             // not used
-          .clear_authentication_token = {},  // not used
-          .fail_encryption = {},             // not used
-          .time_advance = {},                // not used
-          .endpoint_response = {},           // not used
-          .mojo_expected =
-              base::unexpected(mojom::GetServiceTokenError::NewClientError(
-                  mojom::GetServiceTokenClientError::New(
-                      mojom::GetServiceTokenClientErrorCode::
-                          kUserNotLoggedIn))),
-      });
-  return kGetServiceTokenUserNotLoggedIn.get();
 }
 
 const GetServiceTokenTestCase*
@@ -2849,9 +2696,7 @@ GetServiceTokenAuthenticationTokenDecryptionFailed() {
               "get_service_token_authentication_token_decryption_failed",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .logged_in = true,
           .fail_decryption = true,
-          .clear_authentication_token = {},  // not used
           .fail_encryption = {},             // not used
           .time_advance = {},                // not used
           .endpoint_response = {},           // not used
@@ -2864,44 +2709,13 @@ GetServiceTokenAuthenticationTokenDecryptionFailed() {
   return kGetServiceTokenAuthenticationTokenDecryptionFailed.get();
 }
 
-const GetServiceTokenTestCase* GetServiceTokenAuthenticationSessionChanged() {
-  static const base::NoDestructor<GetServiceTokenTestCase>
-      kGetServiceTokenAuthenticationSessionChanged({
-          .test_name = "get_service_token_authentication_session_changed",
-          .service_tokens_dict =
-              base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .logged_in = true,
-          .fail_decryption = false,
-          .clear_authentication_token = true,
-          .fail_encryption = {},  // not used
-          .time_advance = {},     // not used
-          .endpoint_response = {{.net_error = net::OK,
-                                 .status_code = net::HTTP_OK,
-                                 .body =
-                                     [] {
-                                       ServiceToken::Response::SuccessBody body;
-                                       body.auth_token =
-                                           "fetched_service_token";
-                                       return body;
-                                     }()}},
-          .mojo_expected =
-              base::unexpected(mojom::GetServiceTokenError::NewClientError(
-                  mojom::GetServiceTokenClientError::New(
-                      mojom::GetServiceTokenClientErrorCode::
-                          kAuthenticationSessionChanged))),
-      });
-  return kGetServiceTokenAuthenticationSessionChanged.get();
-}
-
 const GetServiceTokenTestCase* GetServiceTokenNetworkError() {
   static const base::NoDestructor<GetServiceTokenTestCase>
       kGetServiceTokenNetworkError({
           .test_name = "get_service_token_network_error",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .logged_in = true,
           .fail_decryption = false,
-          .clear_authentication_token = false,
           .fail_encryption = {},  // not used
           .time_advance = {},     // not used
           .endpoint_response = {{.net_error = net::ERR_CONNECTION_REFUSED,
@@ -2923,9 +2737,7 @@ const GetServiceTokenTestCase* GetServiceTokenBodyMissingOrFailedToParse() {
           .test_name = "get_service_token_body_missing_or_failed_to_parse",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .logged_in = true,
           .fail_decryption = false,
-          .clear_authentication_token = false,
           .fail_encryption = {},  // not used
           .time_advance = {},     // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -2947,9 +2759,7 @@ const GetServiceTokenTestCase* GetServiceTokenErrorCodeIsNull() {
           .test_name = "get_service_token_error_code_is_null",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .logged_in = true,
           .fail_decryption = false,
-          .clear_authentication_token = false,
           .fail_encryption = {},  // not used
           .time_advance = {},     // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -2974,9 +2784,7 @@ const GetServiceTokenTestCase* GetServiceTokenEmailDomainNotSupported() {
           .test_name = "get_service_token_email_domain_not_supported",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .logged_in = true,
           .fail_decryption = false,
-          .clear_authentication_token = false,
           .fail_encryption = {},  // not used
           .time_advance = {},     // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -3002,9 +2810,7 @@ const GetServiceTokenTestCase* GetServiceTokenIncorrectCredentials() {
           .test_name = "get_service_token_incorrect_credentials",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .logged_in = true,
           .fail_decryption = false,
-          .clear_authentication_token = false,
           .fail_encryption = {},  // not used
           .time_advance = {},     // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -3030,9 +2836,7 @@ const GetServiceTokenTestCase* GetServiceTokenInvalidTokenAudience() {
           .test_name = "get_service_token_invalid_token_audience",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .logged_in = true,
           .fail_decryption = false,
-          .clear_authentication_token = false,
           .fail_encryption = {},  // not used
           .time_advance = {},     // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -3058,9 +2862,7 @@ const GetServiceTokenTestCase* GetServiceTokenBadRequest() {
           .test_name = "get_service_token_bad_request",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .logged_in = true,
           .fail_decryption = false,
-          .clear_authentication_token = false,
           .fail_encryption = {},  // not used
           .time_advance = {},     // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -3085,9 +2887,7 @@ const GetServiceTokenTestCase* GetServiceTokenUnauthorized() {
           .test_name = "get_service_token_unauthorized",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .logged_in = true,
           .fail_decryption = false,
-          .clear_authentication_token = false,
           .fail_encryption = {},  // not used
           .time_advance = {},     // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -3112,9 +2912,7 @@ const GetServiceTokenTestCase* GetServiceTokenServerError() {
           .test_name = "get_service_token_internal_server_error",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .logged_in = true,
           .fail_decryption = false,
-          .clear_authentication_token = false,
           .fail_encryption = {},  // not used
           .time_advance = {},     // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -3139,9 +2937,7 @@ const GetServiceTokenTestCase* GetServiceTokenUnknown() {
           .test_name = "get_service_token_unknown",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .logged_in = true,
           .fail_decryption = false,
-          .clear_authentication_token = false,
           .fail_encryption = {},  // not used
           .time_advance = {},     // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -3166,9 +2962,7 @@ const GetServiceTokenTestCase* GetServiceTokenServiceTokenEmpty() {
           .test_name = "get_service_token_service_token_empty",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .logged_in = true,
           .fail_decryption = false,
-          .clear_authentication_token = false,
           .fail_encryption = {},  // not used
           .time_advance = {},     // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -3194,9 +2988,7 @@ const GetServiceTokenTestCase* GetServiceTokenServiceTokenEncryptionFailed() {
           .test_name = "get_service_token_service_token_encryption_failed",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .logged_in = true,
           .fail_decryption = false,
-          .clear_authentication_token = false,
           .fail_encryption = true,
           .time_advance = {},  // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -3223,9 +3015,7 @@ const GetServiceTokenTestCase* GetServiceTokenSuccess() {
           .test_name = "get_service_token_success",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .logged_in = true,
           .fail_decryption = false,
-          .clear_authentication_token = false,
           .fail_encryption = false,
           .time_advance = {},  // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -3249,9 +3039,7 @@ const GetServiceTokenTestCase* GetServiceTokenServiceDictMissing() {
           .test_name = "get_service_token_service_dict_missing",
           .service_tokens_dict =
               base::BindOnce([](base::Time) { return base::DictValue(); }),
-          .logged_in = true,
           .fail_decryption = false,
-          .clear_authentication_token = false,
           .fail_encryption = false,
           .time_advance = {},  // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -3279,9 +3067,7 @@ const GetServiceTokenTestCase* GetServiceTokenServiceTokenMissing() {
                 base::DictValue().Set(prefs::keys::kLastFetched,
                                       base::TimeToValue(mock_now)));
           }),
-          .logged_in = true,
           .fail_decryption = false,
-          .clear_authentication_token = false,
           .fail_encryption = false,
           .time_advance = {},  // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -3310,9 +3096,7 @@ const GetServiceTokenTestCase* GetServiceTokenLastFetchedMissing() {
                     prefs::keys::kServiceToken,
                     base::Base64Encode("cached_service_token")));
           }),
-          .logged_in = true,
           .fail_decryption = false,
-          .clear_authentication_token = false,
           .fail_encryption = false,
           .time_advance = {},  // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -3342,9 +3126,7 @@ const GetServiceTokenTestCase* GetServiceTokenLastFetchedInvalid() {
                          base::Base64Encode("cached_service_token"))
                     .Set(prefs::keys::kLastFetched, "invalid-time-format"));
           }),
-          .logged_in = true,
           .fail_decryption = false,
-          .clear_authentication_token = false,
           .fail_encryption = false,
           .time_advance = {},  // not used
           .endpoint_response = {{.net_error = net::OK,
@@ -3375,9 +3157,7 @@ const GetServiceTokenTestCase* GetServiceTokenCacheExpired() {
                     .Set(prefs::keys::kLastFetched,
                          base::TimeToValue(mock_now)));
           }),
-          .logged_in = true,
           .fail_decryption = false,
-          .clear_authentication_token = false,
           .fail_encryption = false,
           // Advance time after setting cache to make it expired.
           .time_advance = kServiceTokenMaxAge + base::Minutes(1),
@@ -3409,9 +3189,7 @@ const GetServiceTokenTestCase* GetServiceTokenServiceTokenDecryptionFailed() {
                     .Set(prefs::keys::kLastFetched,
                          base::TimeToValue(mock_now)));
           }),
-          .logged_in = true,
           .fail_decryption = false,
-          .clear_authentication_token = false,
           .fail_encryption = false,
           .time_advance = base::TimeDelta(),
           .endpoint_response = {{.net_error = net::OK,
@@ -3442,9 +3220,7 @@ INSTANTIATE_TEST_SUITE_P(
     BraveAccountServiceTests,
     BraveAccountServiceGetServiceTokenTest,
     testing::Values(GetServiceTokenCacheHit(),
-                    GetServiceTokenUserNotLoggedIn(),
                     GetServiceTokenAuthenticationTokenDecryptionFailed(),
-                    GetServiceTokenAuthenticationSessionChanged(),
                     GetServiceTokenNetworkError(),
                     GetServiceTokenBodyMissingOrFailedToParse(),
                     GetServiceTokenErrorCodeIsNull(),

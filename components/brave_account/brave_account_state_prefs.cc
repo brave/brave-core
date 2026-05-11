@@ -78,23 +78,44 @@ void AccountStatePrefs::SetLoggedIn(
                encrypted_authentication_token));
 }
 
+// Firewall against tampered prefs: enforce on the way out the same
+// invariants the setters enforce on the way in, so downstream code can
+// trust the returned variant matches the underlying prefs without
+// re-checking pref shape.
 mojom::AccountStatePtr AccountStatePrefs::GetAccountState() const {
   const auto& account_state = pref_service_->GetDict(prefs::kBraveAccountState);
+
+  const auto* authentication_token =
+      account_state.FindString(prefs::keys::kAuthenticationToken);
+  const auto* email = account_state.FindString(prefs::keys::kEmail);
   const auto* kind = account_state.FindString(prefs::keys::kKind);
   const auto* verification = account_state.FindDict(prefs::keys::kVerification);
-  const auto intent =
+  const auto verification_intent =
       verification ? verification->FindInt(prefs::keys::kVerificationIntent)
                    : std::nullopt;
+  const auto* verification_token =
+      verification ? verification->FindString(prefs::keys::kVerificationToken)
+                   : nullptr;
+
+  CHECK((!verification && !verification_intent && !verification_token) ||
+        (verification && verification_intent && verification_token &&
+         !verification_token->empty()));
 
   if (kind && *kind == prefs::state_kinds::kLoggedIn) {
-    const auto* email = account_state.FindString(prefs::keys::kEmail);
+    CHECK(authentication_token && !authentication_token->empty());
     CHECK(email && !email->empty());
-    return mojom::AccountState::NewLoggedIn(mojom::LoggedInState::New(
-        *email, MakeVerification<mojom::LoggedInVerificationPtr>(intent)));
+    auto logged_in_verification =
+        MakeVerification<mojom::LoggedInVerificationPtr>(verification_intent);
+    CHECK(!verification == !logged_in_verification);
+    return mojom::AccountState::NewLoggedIn(
+        mojom::LoggedInState::New(*email, std::move(logged_in_verification)));
   }
 
-  return mojom::AccountState::NewLoggedOut(mojom::LoggedOutState::New(
-      MakeVerification<mojom::LoggedOutVerificationPtr>(intent)));
+  auto logged_out_verification =
+      MakeVerification<mojom::LoggedOutVerificationPtr>(verification_intent);
+  CHECK(!verification == !logged_out_verification);
+  return mojom::AccountState::NewLoggedOut(
+      mojom::LoggedOutState::New(std::move(logged_out_verification)));
 }
 
 std::string AccountStatePrefs::GetAuthenticationToken() const {

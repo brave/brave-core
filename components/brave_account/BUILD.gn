@@ -13,8 +13,17 @@ source_set("brave_account") {
     "brave_account_service.h",
     "brave_account_ui_base.h",
     "brave_account_utils.h",
+    "encryption.cc",
+    "encryption.h",
+    "logged_in_state.cc",
+    "logged_in_state.h",
+    "logged_out_state.cc",
+    "logged_out_state.h",
     "prefs.cc",
     "prefs.h",
+    "state_base.cc",
+    "state_base.h",
+    "state_internal.h",
   ]
 
   deps = [
