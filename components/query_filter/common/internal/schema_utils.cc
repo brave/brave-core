@@ -30,17 +30,13 @@ base::flat_set<std::string> GetBlocklistedParamsForSpec(
   // would need to be rewritten as ".*://.*\\.instagram\\.com/.*" first.
   const url_pattern_index::UrlPattern::UrlInfo url_info(url);
 
-  // A helper method to detect blank empty strings.
-  constexpr auto is_blank = [](std::string_view s) {
-    return base::TrimWhitespaceASCII(s, base::TrimPositions::TRIM_ALL).empty();
-  };
-
   // Go over rules that matches on the |url|.
   for (const auto& rule : rules) {
     // Check if the rule explicitly "excludes" the |url| from consideration.
-    const auto& exclude_itr = std::ranges::find_if(
-        rule.exclude, [&url_info, &is_blank](const std::string& str) {
-          return !is_blank(str) &&
+    const auto& exclude_itr =
+        std::ranges::find_if(rule.exclude, [&url_info](const std::string& str) {
+          return !base::TrimWhitespaceASCII(str, base::TrimPositions::TRIM_ALL)
+                      .empty() &&
                  url_pattern_index::UrlPattern(str).MatchesUrl(url_info);
         });
     // |url| excluded from consideration for the current |rule|
@@ -49,9 +45,10 @@ base::flat_set<std::string> GetBlocklistedParamsForSpec(
     }
 
     // Check if the rule explicitly "includes" the |url| for consideration.
-    const auto& include_itr = std::ranges::find_if(
-        rule.include, [&url_info, &is_blank](const std::string& str) {
-          return !is_blank(str) &&
+    const auto& include_itr =
+        std::ranges::find_if(rule.include, [&url_info](const std::string& str) {
+          return !base::TrimWhitespaceASCII(str, base::TrimPositions::TRIM_ALL)
+                      .empty() &&
                  url_pattern_index::UrlPattern(str).MatchesUrl(url_info);
         });
     if (include_itr != rule.include.cend()) {
