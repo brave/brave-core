@@ -140,6 +140,7 @@ import org.chromium.chrome.browser.tasks.HomeSurfaceTracker;
 import org.chromium.chrome.browser.tasks.tab_management.TabGroupCreationUiDelegate;
 import org.chromium.chrome.browser.tasks.tab_management.TabSwitcherPaneCoordinatorFactory;
 import org.chromium.chrome.browser.theme.AdjustedTopUiThemeColorProvider;
+import org.chromium.chrome.browser.theme.BottomUiThemeColorProvider;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarDataProvider;
@@ -1484,6 +1485,8 @@ public class BytecodeTest {
                         Callback.class,
                         TopUiThemeColorProvider.class,
                         AdjustedTopUiThemeColorProvider.class,
+                        BottomUiThemeColorProvider.class,
+                        IncognitoStateProvider.class,
                         TabObscuringHandler.class,
                         MonotonicObservableSupplier.class,
                         List.class,
