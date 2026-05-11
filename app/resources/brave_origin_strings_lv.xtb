@@ -104,7 +104,7 @@
 <translation id="2170098639895543546">Atlasīt jebkādu saturu lapā</translation>
 <translation id="142389341645668510">Pielāgot pārlūkprogrammu Brave</translation>
 <translation id="2174917724755363426">Instalēšana nav pabeigta. Vai tiešām vēlaties atcelt?</translation>
-<translation id="8745514854244955877">Brave — pierakstīšanās tīklā — <ph name="PAGE_TITLE"/></translation>
+<translation id="8841019650931243995">Brave Origin — pierakstīšanās tīklā — <ph name="PAGE_TITLE"/></translation>
 <translation id="2190166659037789668">Atjauninājumu pārbaudes kļūda: <ph name="UPDATE_CHECK_ERROR"/>.</translation>
 <translation id="2058539073923004395">Noņemt kontu no pārlūka Brave</translation>
 <translation id="5550942974310218641">Saņemiet labāku aizsardzību, atrodoties ceļā, ar funkciju “Droša pārlūkošana ar papildu aizsardzību” pārlūkā Brave operētājsistēmai iOS.</translation>
@@ -290,7 +290,7 @@
 <translation id="10925962326134232">Pielāgojiet pārlūku Brave, lai piešķirtu tam jaunu izskatu.</translation>
 <translation id="6596295505984504022">P&amp;ielāgot pārlūku Brave</translation>
 <translation id="4148957013307229264">Notiek instalēšana...</translation>
-<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> — pierakstīšanās tīklā — Brave</translation>
+<translation id="5011704081781303429"><ph name="PAGE_TITLE"/> — pierakstīšanās tīklā — Brave Origin</translation>
 <translation id="2871190378186459992">Atklājiet lieliskas lietotnes, spēles, paplašinājumus un motīvus, ko varat izmantot pārlūkā Brave.</translation>
 <translation id="462105622535258178">Lai piekļūtu šim paplašinājumam un citiem datiem visos savos datoros, pierakstieties pārlūkā Brave.</translation>
 <translation id="6670140629169983459">Lai tiktu lietoti jūsu vecāka izvēlētie iestatījumi un jūs tiešsaistē saņemtu labāku aizsardzību, pārslēdzieties uz Brave profilu, kurā jau pierakstījāties ar kontu <ph name="USER_EMAIL_ADDRESS"/>.</translation>
@@ -526,7 +526,7 @@ Dažas funkcijas var nebūt pieejamas. Norādiet citu profila direktoriju vai iz
 <translation id="6831043979455480757">Tulkot</translation>
 <translation id="8211837073776713955">Ja jūsu paroles kādreiz tiks apdraudētas, pārlūkā Brave saņemsiet paziņojumu</translation>
 <translation id="684888714667046800">Nevar izveidot savienojumu ar internetu. Ja izmantojat ugunsmūri, failam <ph name="PRODUCT_EXE_NAME"/> noteikti ir jābūt iekļautam atļaušanas sarakstā.</translation>
-<translation id="7830723774663008396">Brave — <ph name="PAGE_TITLE"/></translation>
+<translation id="8237613041998823669">Brave Origin — <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">Nospiediet tabulēšanas taustiņu, lai turpinātu</translation>
 <translation id="6862030660799253820">Meklēt šo attēlu, izmantojot attēlu meklēšanas funkciju</translation>
 <translation id="3028928628792374067">Pārlūkā Brave tika konstatēts, ka paplašinājums “<ph name="EXTENSION_NAME"/>” satur ļaunprātīgu programmatūru.</translation>

@@ -110,7 +110,7 @@
 <translation id="2170098639895543546">選取頁面上的任何內容</translation>
 <translation id="142389341645668510">自訂 Brave</translation>
 <translation id="2174917724755363426">安裝尚未完成。確定要取消嗎？</translation>
-<translation id="8745514854244955877">Brave - 網絡登入 - <ph name="PAGE_TITLE"/></translation>
+<translation id="8841019650931243995">Brave Origin - 網絡登入 - <ph name="PAGE_TITLE"/></translation>
 <translation id="2190166659037789668">更新檢查錯誤：<ph name="UPDATE_CHECK_ERROR"/>。</translation>
 <translation id="2058539073923004395">從 Brave 移除帳戶</translation>
 <translation id="5550942974310218641">在 iOS 版 Brave 啟用「強化安全瀏覽」，隨時隨地加強網上安全</translation>
@@ -302,7 +302,7 @@
 <translation id="10925962326134232">自訂 Brave 來為瀏覽器換上新風格</translation>
 <translation id="6596295505984504022">自訂 Brave</translation>
 <translation id="4148957013307229264">安裝中…</translation>
-<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - 網絡登入 - Brave</translation>
+<translation id="5011704081781303429"><ph name="PAGE_TITLE"/> - 網絡登入 - Brave Origin</translation>
 <translation id="2871190378186459992">為您的 Brave 探索各種實用有趣的應用程式、遊戲、擴充功能和主題。</translation>
 <translation id="462105622535258178">如要在所有電腦上使用此擴充程式和其他擴充程式，請登入 Brave</translation>
 <translation id="6670140629169983459">如要按家長所選設定加強網上安全，請切換至你以 <ph name="USER_EMAIL_ADDRESS"/> 登入的 Brave 設定檔</translation>
@@ -538,7 +538,7 @@
 <translation id="6831043979455480757">翻譯</translation>
 <translation id="8211837073776713955">Brave 會通知您密碼是否曾被盜用</translation>
 <translation id="684888714667046800">無法連線至互聯網。如果你使用防火牆，請確保已將 <ph name="PRODUCT_EXE_NAME"/> 加入許可名單。</translation>
-<translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="8237613041998823669">Brave Origin - <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">按 Tab 鍵繼續</translation>
 <translation id="6862030660799253820">使用「圖片搜尋」搜尋此圖片</translation>
 <translation id="3028928628792374067">Brave 發現「<ph name="EXTENSION_NAME"/>」含有惡意軟件</translation>

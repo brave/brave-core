@@ -107,7 +107,7 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="2170098639895543546">Kies enigiets op die bladsy</translation>
 <translation id="142389341645668510">Pasmaak Brave</translation>
 <translation id="2174917724755363426">Installering is nie afgehandel nie. Is jy seker jy wil kanselleer?</translation>
-<translation id="8745514854244955877">Brave – Netwerkaanmelding – <ph name="PAGE_TITLE"/></translation>
+<translation id="8841019650931243995">Brave Origin – Netwerkaanmelding – <ph name="PAGE_TITLE"/></translation>
 <translation id="2190166659037789668">Opdateringkontroleringfout: <ph name="UPDATE_CHECK_ERROR"/>.</translation>
 <translation id="2058539073923004395">Verwyder rekening uit Brave</translation>
 <translation id="5550942974310218641">Bly veiliger terwyl jy aan die beweeg is met Verbeterde Veiligblaai op Brave vir iOS</translation>
@@ -293,7 +293,7 @@ Sommige kenmerke kan dalk nie beskikbaar wees nie en veranderings aan voorkeure 
 <translation id="10925962326134232">Pasmaak Brave om vir jou blaaier ’n nuwe voorkoms te gee</translation>
 <translation id="6596295505984504022">P&amp;asmaak jou Brave</translation>
 <translation id="4148957013307229264">Installeer tans …</translation>
-<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> – Netwerkaanmelding – Brave</translation>
+<translation id="5011704081781303429"><ph name="PAGE_TITLE"/> – Netwerkaanmelding – Brave Origin</translation>
 <translation id="2871190378186459992">Ontdek wonderlike programme, speletjies, uitbreidings en temas vir Brave.</translation>
 <translation id="462105622535258178">Meld by Brave aan om hierdie uitbreiding en meer op al jou rekenaars te kry</translation>
 <translation id="6670140629169983459">Skakel oor na jou Brave-profiel waar jy reeds aangemeld is as <ph name="USER_EMAIL_ADDRESS"/> om met jou ouers se keuses veiliger aanlyn te bly</translation>
@@ -529,7 +529,7 @@ Sommige kenmerke sal dalk nie beskikbaar wees nie. Spesifiseer 'n ander profielg
 <translation id="6831043979455480757">Vertaal</translation>
 <translation id="8211837073776713955">Brave sal jou laat weet as jou wagwoorde gekompromitteer is</translation>
 <translation id="684888714667046800">Kan nie aan die internet koppel nie. As jy ’n brandmuur gebruik, moet jy seker maak dat <ph name="PRODUCT_EXE_NAME"/> op die toelaatlys is.</translation>
-<translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
+<translation id="8237613041998823669">Brave Origin – <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">Oortjie om voort te gaan</translation>
 <translation id="6862030660799253820">Soek hierdie prent met Prentsoektog</translation>
 <translation id="3028928628792374067">Brave het bevind dat "<ph name="EXTENSION_NAME"/>" wanware bevat</translation>

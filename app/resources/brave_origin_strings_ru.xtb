@@ -104,7 +104,7 @@
 <translation id="2170098639895543546">Выберите любой объект на странице</translation>
 <translation id="142389341645668510">Настроить Brave</translation>
 <translation id="2174917724755363426">Установка не завершена. Отменить ее?</translation>
-<translation id="8745514854244955877">Brave – вход в сеть – "<ph name="PAGE_TITLE"/>"</translation>
+<translation id="8841019650931243995">Brave Origin – вход в сеть – "<ph name="PAGE_TITLE"/>"</translation>
 <translation id="2190166659037789668">Ошибка проверки обновлений: <ph name="UPDATE_CHECK_ERROR"/>.</translation>
 <translation id="2058539073923004395">Удалить аккаунт из Brave</translation>
 <translation id="5550942974310218641">Улучшенный Безопасный просмотр в Brave для iOS поможет защитить данные мобильных устройств.</translation>
@@ -288,7 +288,7 @@
 <translation id="10925962326134232">Придайте Brave новый вид</translation>
 <translation id="6596295505984504022">Н&amp;астроить Brave</translation>
 <translation id="4148957013307229264">Установка...</translation>
-<translation id="4658486203392098459">"<ph name="PAGE_TITLE"/>" – вход в сеть – Brave</translation>
+<translation id="5011704081781303429">"<ph name="PAGE_TITLE"/>" – вход в сеть – Brave Origin</translation>
 <translation id="2871190378186459992">Широкий выбор приложений, игр, расширений и тем для Brave.</translation>
 <translation id="462105622535258178">Чтобы пользоваться этим и другими расширениями на всех компьютерах, войдите в Brave.</translation>
 <translation id="6670140629169983459">Чтобы тебе было безопаснее пользоваться интернетом благодаря родительским настройкам, переключись на свой профиль Brave, где уже выполнен вход в аккаунт <ph name="USER_EMAIL_ADDRESS"/>.</translation>
@@ -524,7 +524,7 @@
 <translation id="6831043979455480757">Перевести</translation>
 <translation id="8211837073776713955">Brave сообщит вам, если возникнет проблема с безопасностью ваших паролей.</translation>
 <translation id="684888714667046800">Не удалось подключиться к интернету. Если вы используете брандмауэр, убедитесь, что в белом списке есть файл <ph name="PRODUCT_EXE_NAME"/>.</translation>
-<translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
+<translation id="8237613041998823669">Brave Origin – <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">Нажмите Tab, чтобы продолжить</translation>
 <translation id="6862030660799253820">Найти это изображение через поиск картинок</translation>
 <translation id="3028928628792374067">Браузер Brave обнаружил, что расширение "<ph name="EXTENSION_NAME"/>" содержит вредоносное ПО.</translation>

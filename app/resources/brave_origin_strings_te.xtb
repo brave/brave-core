@@ -105,7 +105,7 @@
 <translation id="2170098639895543546">పేజీలో ఏదైనా ఎంచుకోండి</translation>
 <translation id="142389341645668510">Braveను అనుకూలంగా మార్చండి</translation>
 <translation id="2174917724755363426">ఇన్‌స్టాలేషన్ పూర్తి కాలేదు. మీరు ఖచ్చితంగా రద్దు చేయాలనుకుంటున్నారా?</translation>
-<translation id="8745514854244955877">Brave - నెట్‌వర్క్ సైన్ ఇన్ - <ph name="PAGE_TITLE"/></translation>
+<translation id="8841019650931243995">Brave Origin - నెట్‌వర్క్ సైన్ ఇన్ - <ph name="PAGE_TITLE"/></translation>
 <translation id="2190166659037789668">అప్‌డేట్‌ల కోసం చెక్ చేసేటప్పుడు ఎర్రర్ ఏర్పడింది: <ph name="UPDATE_CHECK_ERROR"/>.</translation>
 <translation id="2058539073923004395">Brave నుండి ఖాతాను తీసివేయండి</translation>
 <translation id="5550942974310218641">iOS కోసం Braveలో మెరుగైన సురక్షిత బ్రౌజింగ్‌కు సంబంధించి ప్రయాణంలో సురక్షితంగా ఉండండి</translation>
@@ -289,7 +289,7 @@
 <translation id="10925962326134232">మీ బ్రౌజర్‌కు కొత్త రూపాన్ని అందించడానికి Braveను అనుకూలంగా మార్చండి</translation>
 <translation id="6596295505984504022">మీ Braveను అనుకూలంగా మార్చండి</translation>
 <translation id="4148957013307229264">వ్యవస్థాపిస్తోంది...</translation>
-<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - నెట్‌వర్క్ సైన్ ఇన్ - Brave</translation>
+<translation id="5011704081781303429"><ph name="PAGE_TITLE"/> - నెట్‌వర్క్ సైన్ ఇన్ - Brave Origin</translation>
 <translation id="2871190378186459992">Brave కోసం గొప్ప యాప్‌లు, ఆటలు, ఎక్స్‌టెన్షన్‌లు మరియు థీమ్‌లను కనుగొనండి.</translation>
 <translation id="462105622535258178">మీ కంప్యూటర్‌లన్నింటిలో ఈ ఎక్స్‌టెన్షన్‌తో పాటు మరిన్నింటిని పొందడానికి Braveకు సైన్ ఇన్ చేయండి</translation>
 <translation id="6670140629169983459">మీ తల్లి/తండ్రి ఛాయిస్‌లతో ఆన్‌లైన్‌లో సురక్షితంగా ఉండటానికి, మీరు ఇప్పటికే <ph name="USER_EMAIL_ADDRESS"/>‌గా సైన్ ఇన్ చేసిన మీ Brave ప్రొఫైల్‌కు మారండి</translation>
@@ -525,7 +525,7 @@
 <translation id="6831043979455480757">అనువదించు</translation>
 <translation id="8211837073776713955">మీ పాస్‌వర్డ్‌లు ఎప్పుడైనా హ్యాక్ అయితే, Brave మీకు తెలియచేస్తుంది</translation>
 <translation id="684888714667046800">ఇంటర్నెట్‌కు కనెక్ట్ చేయడం సాధ్యపడలేదు. మీరు ఫైర్‌వాల్‌ను ఉపయోగిస్తుంటే, దయచేసి <ph name="PRODUCT_EXE_NAME"/> వైట్‌లిస్ట్‌లో ఉందని నిర్ధారించుకోండి.</translation>
-<translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="8237613041998823669">Brave Origin - <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">కొనసాగించడానికి ట్యాబ్ చేయండి</translation>
 <translation id="6862030660799253820">ఇమేజ్ సెర్చ్‌తో ఈ ఇమేజ్‌ను సెర్చ్ చేయండి</translation>
 <translation id="3028928628792374067">"<ph name="EXTENSION_NAME"/>"లో మాల్‌వేర్ ఉన్నట్టుగా Brave కనుగొన్నది</translation>

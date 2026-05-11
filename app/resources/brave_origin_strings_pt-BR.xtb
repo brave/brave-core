@@ -105,7 +105,7 @@
 <translation id="2170098639895543546">Selecione o que quiser na página</translation>
 <translation id="142389341645668510">Personalizar o Brave</translation>
 <translation id="2174917724755363426">A instalação não foi concluída. Tem certeza de que quer cancelar?</translation>
-<translation id="8745514854244955877">Brave - Login na rede - <ph name="PAGE_TITLE"/></translation>
+<translation id="8841019650931243995">Brave Origin - Login na rede - <ph name="PAGE_TITLE"/></translation>
 <translation id="2190166659037789668">Erro na verificação de atualização: <ph name="UPDATE_CHECK_ERROR"/>.</translation>
 <translation id="2058539073923004395">Remover conta do Brave</translation>
 <translation id="5550942974310218641">Tenha mais segurança em qualquer lugar com a Navegação Segura com Maior Proteção no Brave para iOS</translation>
@@ -289,7 +289,7 @@
 <translation id="10925962326134232">Personalize o Brave para mudar o visual do navegador</translation>
 <translation id="6596295505984504022">Personalizar o Brave</translation>
 <translation id="4148957013307229264">Instalando...</translation>
-<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - Login na rede - Brave</translation>
+<translation id="5011704081781303429"><ph name="PAGE_TITLE"/> - Login na rede - Brave Origin</translation>
 <translation id="2871190378186459992">Descubra ótimos aplicativos, jogos, extensões e temas para o Brave.</translation>
 <translation id="462105622535258178">Para acessar essa extensão e muito mais em todos os seus computadores, faça login no Brave</translation>
 <translation id="6670140629169983459">Para usar as opções de segurança da família, mude para o perfil do Brave em que você já fez login com a conta <ph name="USER_EMAIL_ADDRESS"/></translation>
@@ -523,7 +523,7 @@
 <translation id="6831043979455480757">Traduzir</translation>
 <translation id="8211837073776713955">O Brave avisa se suas senhas forem comprometidas</translation>
 <translation id="684888714667046800">Não foi possível se conectar à Internet. Se você usa um firewall, confira se <ph name="PRODUCT_EXE_NAME"/> está na lista de permissões.</translation>
-<translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="8237613041998823669">Brave Origin - <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">Pressione Tab para continuar</translation>
 <translation id="6862030660799253820">Pesquise esta imagem com a pesquisa por imagens</translation>
 <translation id="3028928628792374067">O Brave encontrou malware na extensão <ph name="EXTENSION_NAME"/></translation>

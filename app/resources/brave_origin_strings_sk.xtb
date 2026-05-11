@@ -106,7 +106,7 @@ Niektoré funkcie nemusia byť k dispozícii a zmeny vykonané v predvoľbách s
 <translation id="2170098639895543546">Vyberte čokoľvek na stránke</translation>
 <translation id="142389341645668510">Prispôsobiť Brave</translation>
 <translation id="2174917724755363426">Inštalácia nie je dokončená. Naozaj ju chcete zrušiť?</translation>
-<translation id="8745514854244955877">Brave – prihlásenie do siete – <ph name="PAGE_TITLE"/></translation>
+<translation id="8841019650931243995">Brave Origin – prihlásenie do siete – <ph name="PAGE_TITLE"/></translation>
 <translation id="2190166659037789668">Chyba kontroly aktualizácií: <ph name="UPDATE_CHECK_ERROR"/>.</translation>
 <translation id="2058539073923004395">Odstrániť účet z prehliadača Brave</translation>
 <translation id="5550942974310218641">Zlepšené bezpečné prehliadanie v prehliadači Brave pre systém iOS vám zaistí väčšiu bezpečnosť na cestách</translation>
@@ -292,7 +292,7 @@ Niektoré funkcie nemusia byť k dispozícii a zmeny vykonané v predvoľbách s
 <translation id="10925962326134232">Prispôsobte si Brave a dajte mu nový vzhľad</translation>
 <translation id="6596295505984504022">Prispôsobte si Brave</translation>
 <translation id="4148957013307229264">Inštaluje sa...</translation>
-<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> – prihlásenie do siete – Brave</translation>
+<translation id="5011704081781303429"><ph name="PAGE_TITLE"/> – prihlásenie do siete – Brave Origin</translation>
 <translation id="2871190378186459992">Objavte skvelé aplikácie, hry, rozšírenia a motívy pre prehliadač Brave.</translation>
 <translation id="462105622535258178">Ak chcete mať toto rozšírenie a ďalší obsah k dispozícii vo všetkých svojich počítačoch, prihláste sa do prehliadača Brave</translation>
 <translation id="6670140629169983459">Ak chceš zvýšiť svoju bezpečnosť na internete pomocou vybraných možností tvojho rodiča, prepni na profil Brave, v ktorom máš už prihlásený účet <ph name="USER_EMAIL_ADDRESS"/></translation>
@@ -528,7 +528,7 @@ Niektoré funkcie nemusia byť k dispozícii. Zadajte iný adresár profilu aleb
 <translation id="6831043979455480757">Preložiť</translation>
 <translation id="8211837073776713955">Ak budú vaše heslá napadnuté, Brave vám to oznámi</translation>
 <translation id="684888714667046800">Nedá sa pripojiť k internetu. Ak používate firewall, uistite sa, že <ph name="PRODUCT_EXE_NAME"/> je v zozname povolených.</translation>
-<translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
+<translation id="8237613041998823669">Brave Origin – <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">Pokračujte stlačením klávesa Tab</translation>
 <translation id="6862030660799253820">Vyhľadať tento obrázok pomocou vyhľadávania podľa obrázkov</translation>
 <translation id="3028928628792374067">Prehliadač Brave zistil, že <ph name="EXTENSION_NAME"/> obsahuje malvér</translation>

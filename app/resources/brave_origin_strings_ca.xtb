@@ -105,7 +105,7 @@
 <translation id="2170098639895543546">Selecciona alguna cosa a la pàgina</translation>
 <translation id="142389341645668510">Personalitza Brave</translation>
 <translation id="2174917724755363426">La instal·lació no s'ha completat. Confirmes que vols cancel·lar-la?</translation>
-<translation id="8745514854244955877">Brave - Inici de sessió a la xarxa - <ph name="PAGE_TITLE"/></translation>
+<translation id="8841019650931243995">Brave Origin - Inici de sessió a la xarxa - <ph name="PAGE_TITLE"/></translation>
 <translation id="2190166659037789668">Error de comprovació d'actualització: <ph name="UPDATE_CHECK_ERROR"/>.</translation>
 <translation id="2058539073923004395">Suprimeix el compte de Brave</translation>
 <translation id="5550942974310218641">Protegeix-te més siguis on siguis amb la funció Navegació segura millorada a Brave per a iOS</translation>
@@ -291,7 +291,7 @@
 <translation id="10925962326134232">Personalitza Brave per renovar l'aspecte del navegador</translation>
 <translation id="6596295505984504022">&amp;Personalitza Brave</translation>
 <translation id="4148957013307229264">S'està instal·lant...</translation>
-<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - Inici de sessió a la xarxa - Brave</translation>
+<translation id="5011704081781303429"><ph name="PAGE_TITLE"/> - Inici de sessió a la xarxa - Brave Origin</translation>
 <translation id="2871190378186459992">Descobriu aplicacions, jocs, extensions i temes genials per a Brave.</translation>
 <translation id="462105622535258178">Per accedir a aquesta extensió i a altres elements des de tots els teus ordinadors, inicia la sessió a Brave</translation>
 <translation id="6670140629169983459">Per protegir-te més en línia amb les opcions del teu pare o mare, canvia al perfil de Brave en què ja tens la sessió iniciada amb <ph name="USER_EMAIL_ADDRESS"/></translation>
@@ -527,7 +527,7 @@
 <translation id="6831043979455480757">Tradueix</translation>
 <translation id="8211837073776713955">Brave et permet saber si les contrasenyes s'han posat en perill</translation>
 <translation id="684888714667046800">No es pot connectar a Internet. Si fas servir un tallafoc, assegura't que <ph name="PRODUCT_EXE_NAME"/> sigui a la llista d'accés permès.</translation>
-<translation id="7830723774663008396">Brave: <ph name="PAGE_TITLE"/></translation>
+<translation id="8237613041998823669">Brave Origin: <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">Prem el tabulador per continuar</translation>
 <translation id="6862030660799253820">Cerca en aquesta imatge amb la cerca d'imatges</translation>
 <translation id="3028928628792374067">Brave ha detectat que l'extensió "<ph name="EXTENSION_NAME"/>" conté programari maliciós</translation>

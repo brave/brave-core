@@ -107,7 +107,7 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="2170098639895543546">Välj vad som helst på sidan</translation>
 <translation id="142389341645668510">Anpassa Brave</translation>
 <translation id="2174917724755363426">Installationen är inte klar. Är du säker på att du vill avbryta?</translation>
-<translation id="8745514854244955877">Brave – nätverksinloggning – <ph name="PAGE_TITLE"/></translation>
+<translation id="8841019650931243995">Brave Origin – nätverksinloggning – <ph name="PAGE_TITLE"/></translation>
 <translation id="2190166659037789668">Fel vid uppdateringskontroll: <ph name="UPDATE_CHECK_ERROR"/>.</translation>
 <translation id="2058539073923004395">Ta bort kontot från Brave</translation>
 <translation id="5550942974310218641">Surfa säkrare var du än är med Förbättrad säker webbsökning i Brave för iOS</translation>
@@ -293,7 +293,7 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="10925962326134232">Anpassa Brave så att webbläsaren får ett nytt utseende</translation>
 <translation id="6596295505984504022">Anpassa Brave</translation>
 <translation id="4148957013307229264">Installerar...</translation>
-<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> – nätverksinloggning – Brave</translation>
+<translation id="5011704081781303429"><ph name="PAGE_TITLE"/> – nätverksinloggning – Brave Origin</translation>
 <translation id="2871190378186459992">Upptäck fantastiska appar, spel, tillägg och teman för Brave.</translation>
 <translation id="462105622535258178">Logga in i Brave om du vill ha det här tillägget med mera på alla dina datorer</translation>
 <translation id="6670140629169983459">Du kan skydda dig online med dina föräldrars val genom att byta till din Brave-profil där du redan är inloggad som <ph name="USER_EMAIL_ADDRESS"/></translation>
@@ -529,7 +529,7 @@ Vissa funktioner är kanske inte tillgängliga. Ange en annan profilkatalog elle
 <translation id="6831043979455480757">Översätt</translation>
 <translation id="8211837073776713955">Om dina lösenord någonsin skulle läcka ut får du veta det i Brave</translation>
 <translation id="684888714667046800">Det går inte att ansluta till internet. Om du använder en brandvägg kontrollerar du att <ph name="PRODUCT_EXE_NAME"/> finns med i godkännandelistan.</translation>
-<translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
+<translation id="8237613041998823669">Brave Origin – <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">Tryck på tabbtangenten för att fortsätta</translation>
 <translation id="6862030660799253820">Sök i den här bilden med bildsökning</translation>
 <translation id="3028928628792374067">Brave har upptäckt att <ph name="EXTENSION_NAME"/> innehåller skadlig kod</translation>

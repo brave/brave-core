@@ -105,7 +105,7 @@
 <translation id="2170098639895543546">Jelöljön ki bármit az oldalon</translation>
 <translation id="142389341645668510">A Brave személyre szabása</translation>
 <translation id="2174917724755363426">A telepítés még nem fejeződött be. Biztosan megszakítja a műveletet?</translation>
-<translation id="8745514854244955877">Brave – Hálózati bejelentkezés – <ph name="PAGE_TITLE"/></translation>
+<translation id="8841019650931243995">Brave Origin – Hálózati bejelentkezés – <ph name="PAGE_TITLE"/></translation>
 <translation id="2190166659037789668">Frissítés-ellenőrzési hiba: <ph name="UPDATE_CHECK_ERROR"/>.</translation>
 <translation id="2058539073923004395">Fiók eltávolítása a Braveból</translation>
 <translation id="5550942974310218641">A Biztonságos Böngészés fokozott védelemmel funkcióval biztonságosabban böngészhet útközben is az iOS rendszeren működő Bravemal.</translation>
@@ -291,7 +291,7 @@
 <translation id="10925962326134232">A Brave személyre szabásával új megjelenést adhat böngészőjének</translation>
 <translation id="6596295505984504022">A Brave s&amp;zemélyre szabása</translation>
 <translation id="4148957013307229264">Telepítés...</translation>
-<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> – Hálózati bejelentkezés – Brave</translation>
+<translation id="5011704081781303429"><ph name="PAGE_TITLE"/> – Hálózati bejelentkezés – Brave Origin</translation>
 <translation id="2871190378186459992">Fedezzen fel nagyszerű alkalmazásokat, játékokat, bővítményeket és témákat a Bravehoz.</translation>
 <translation id="462105622535258178">Ha az összes számítógépén hozzá szeretne férni ehhez a bővítményhez és egyebekhez, jelentkezzen be a Braveba</translation>
 <translation id="6670140629169983459">Ha szeretnéd, hogy a szülőd által kiválasztott beállításokkal nagyobb biztonságban legyél az interneten, válts a Brave-profilodra, amelybe már be vagy jelentkezve a következő e-mail-címmel: <ph name="USER_EMAIL_ADDRESS"/></translation>
@@ -525,7 +525,7 @@
 <translation id="6831043979455480757">Fordítás</translation>
 <translation id="8211837073776713955">A Brave tájékoztatja arról, ha jelszavai illetéktelen kezekbe kerülnek</translation>
 <translation id="684888714667046800">Nem lehet kapcsolódni az internethez. Ha tűzfalat használ, győződjön meg arról, hogy a(z) <ph name="PRODUCT_EXE_NAME"/> szerepel az engedélyezőlistán.</translation>
-<translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
+<translation id="8237613041998823669">Brave Origin – <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">Nyomja meg a Tab billentyűt a folytatáshoz</translation>
 <translation id="6862030660799253820">A kép megkeresése a Képkereső használatával</translation>
 <translation id="3028928628792374067">A Brave kártékony programot talált a következőben: „<ph name="EXTENSION_NAME"/>”</translation>

@@ -107,7 +107,7 @@
 <translation id="2170098639895543546">Изберете што било на страницата</translation>
 <translation id="142389341645668510">Приспособете го Brave</translation>
 <translation id="2174917724755363426">Инсталирањето не е завршено. Дали сигурно сакате да го откажете?</translation>
-<translation id="8745514854244955877">Brave - Мрежно најавување - <ph name="PAGE_TITLE"/></translation>
+<translation id="8841019650931243995">Brave Origin - Мрежно најавување - <ph name="PAGE_TITLE"/></translation>
 <translation id="2190166659037789668">Грешка при проверка за ажурирање: <ph name="UPDATE_CHECK_ERROR"/>.</translation>
 <translation id="2058539073923004395">Отстранете ја сметката од Brave</translation>
 <translation id="5550942974310218641">Бидете побезбедни во движење со „Подобрено безбедно прелистување“ на Brave за iOS</translation>
@@ -293,7 +293,7 @@
 <translation id="10925962326134232">Приспособете го Brave за да му го подновите изгледот на вашиот прелистувач</translation>
 <translation id="6596295505984504022">П&amp;риспособете го вашиот Brave</translation>
 <translation id="4148957013307229264">Се инсталира...</translation>
-<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - Мрежно најавување - Brave</translation>
+<translation id="5011704081781303429"><ph name="PAGE_TITLE"/> - Мрежно најавување - Brave Origin</translation>
 <translation id="2871190378186459992">Откријте одлични апликации, игри, наставки и теми за Brave.</translation>
 <translation id="462105622535258178">За да ја добиете екстензијава, а и друго на сите ваши компјутери, најавете се на Brave</translation>
 <translation id="6670140629169983459">За поголема безбедност онлајн со изборите на твојот родител, префрли се на твојот профил на Brave каде што веќе се имаш најавено како <ph name="USER_EMAIL_ADDRESS"/></translation>
@@ -529,7 +529,7 @@
 <translation id="6831043979455480757">Преведи</translation>
 <translation id="8211837073776713955">Brave ве известува дали вашите лозинки се компромитирани</translation>
 <translation id="684888714667046800">Не може да се поврзе на интернет. Ако користите заштитен ѕид, погрижете се <ph name="PRODUCT_EXE_NAME"/> да биде во списокот со дозволени.</translation>
-<translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="8237613041998823669">Brave Origin - <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">Притиснете Tab за да продолжите</translation>
 <translation id="6862030660799253820">Пребарај ја сликава со „Пребарување слики“</translation>
 <translation id="3028928628792374067">Brave откри дека „<ph name="EXTENSION_NAME"/>“ содржи злонамерен софтвер</translation>

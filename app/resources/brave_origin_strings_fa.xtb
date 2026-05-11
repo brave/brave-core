@@ -105,7 +105,7 @@
 <translation id="2170098639895543546">هر چیزی در صفحه را انتخاب کنید</translation>
 <translation id="142389341645668510">‏سفارشی کردن Brave</translation>
 <translation id="2174917724755363426">نصب کامل نیست. مطمئنید می‌خواهید آن را لغو کنید؟</translation>
-<translation id="8745514854244955877">‏Brave - ورود به سیستم شبکه - <ph name="PAGE_TITLE"/></translation>
+<translation id="8841019650931243995">‏Brave Origin - ورود به سیستم شبکه - <ph name="PAGE_TITLE"/></translation>
 <translation id="2190166659037789668">خطای بررسی به‌روزرسانی: <ph name="UPDATE_CHECK_ERROR"/>.</translation>
 <translation id="2058539073923004395">‏برداشتن حساب از Brave</translation>
 <translation id="5550942974310218641">‏با «مرور ایمن پیشرفته» در Brave برای iOS، درحرکت ایمن‌تر مرور کنید</translation>
@@ -290,7 +290,7 @@
 <translation id="10925962326134232">‏با سفارشی‌سازی Brave، ظاهر جدیدی به مرورگرتان بدهید</translation>
 <translation id="6596295505984504022">‏سفارشی‌سازی Brave</translation>
 <translation id="4148957013307229264">درحال نصب…</translation>
-<translation id="4658486203392098459">‏<ph name="PAGE_TITLE"/> - ورود به سیستم شبکه - Brave</translation>
+<translation id="5011704081781303429">‏<ph name="PAGE_TITLE"/> - ورود به سیستم شبکه - Brave Origin</translation>
 <translation id="2871190378186459992">‏برنامه‌ها، بازی‌ها، افزونه‌ها و طرح‌های زمینه Brave را کشف کنید.</translation>
 <translation id="462105622535258178">‏برای دریافت این افزونه و موارد دیگر در همه رایانه‌هایتان، به سیستم Brave وارد شوید</translation>
 <translation id="6670140629169983459">‏برای ایمن‌تر ماندن در فضای آنلاین با کمک انتخاب‌های ولی‌تان، به همان نمایه Brave بروید که قبلاً با <ph name="USER_EMAIL_ADDRESS"/> به سیستم وارد شده‌اید</translation>
@@ -526,7 +526,7 @@
 <translation id="6831043979455480757">ترجمه</translation>
 <translation id="8211837073776713955">‏Brave می‌تواند، اگر گذرواژه‌هایتان در معرض خطر باشد، مطلعتان کند</translation>
 <translation id="684888714667046800">نمی‌توان به اینترنت متصل شد. اگر از دیوار آتش استفاده می‌کنید، لطفاً مطمئن شوید <ph name="PRODUCT_EXE_NAME"/> در فهرست مجازها باشد.</translation>
-<translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="8237613041998823669">Brave Origin - <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">برای ادامه دادن، کلید «جهش» را فشار دهید</translation>
 <translation id="6862030660799253820">جستجوی این تصویر با «جستجوی تصویر»</translation>
 <translation id="3028928628792374067">‏Brave متوجه شده است که «<ph name="EXTENSION_NAME"/>» حاوی بدافزار است</translation>

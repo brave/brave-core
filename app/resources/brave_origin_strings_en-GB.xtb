@@ -107,7 +107,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="2170098639895543546">Select anything on page</translation>
 <translation id="142389341645668510">Customise Brave</translation>
 <translation id="2174917724755363426">Installation is not complete. Are you sure that you want to cancel?</translation>
-<translation id="8745514854244955877">Brave – Network sign-in – <ph name="PAGE_TITLE"/></translation>
+<translation id="8841019650931243995">Brave Origin – Network sign-in – <ph name="PAGE_TITLE"/></translation>
 <translation id="2190166659037789668">Update check error: <ph name="UPDATE_CHECK_ERROR"/>.</translation>
 <translation id="2058539073923004395">Remove account from Brave</translation>
 <translation id="5550942974310218641">Stay safer on the go with Enhanced Safe Browsing on Brave for iOS</translation>
@@ -293,7 +293,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="10925962326134232">Customise Brave to give your browser a new look</translation>
 <translation id="6596295505984504022">Customise your Brave</translation>
 <translation id="4148957013307229264">Installing...</translation>
-<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> – Network sign-in – Brave</translation>
+<translation id="5011704081781303429"><ph name="PAGE_TITLE"/> – Network sign-in – Brave Origin</translation>
 <translation id="2871190378186459992">Discover great apps, games, extensions and themes for Brave.</translation>
 <translation id="462105622535258178">To get this extension and more on all your computers, sign in to Brave</translation>
 <translation id="6670140629169983459">To stay safer online with your parent's choices, switch to your Brave profile where you're already signed in as <ph name="USER_EMAIL_ADDRESS"/></translation>
@@ -529,7 +529,7 @@ Some features may be unavailable. Please specify a different profile directory o
 <translation id="6831043979455480757">Translate</translation>
 <translation id="8211837073776713955">Brave lets you know if your passwords are ever compromised</translation>
 <translation id="684888714667046800">Unable to connect to the Internet. If you use a firewall, please ensure that <ph name="PRODUCT_EXE_NAME"/> is in the allowlist.</translation>
-<translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
+<translation id="8237613041998823669">Brave Origin - <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">Tab to continue</translation>
 <translation id="6862030660799253820">Search this image with image search</translation>
 <translation id="3028928628792374067">Brave found that '<ph name="EXTENSION_NAME"/>' contains malware</translation>

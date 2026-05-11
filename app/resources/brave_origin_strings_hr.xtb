@@ -105,7 +105,7 @@
 <translation id="2170098639895543546">Odaberite bilo što na stranici</translation>
 <translation id="142389341645668510">Prilagodi Brave</translation>
 <translation id="2174917724755363426">Instaliranje nije dovršeno. Jeste li sigurni da ga želite otkazati?</translation>
-<translation id="8745514854244955877">Brave – Prijava na mrežu – <ph name="PAGE_TITLE"/></translation>
+<translation id="8841019650931243995">Brave Origin – Prijava na mrežu – <ph name="PAGE_TITLE"/></translation>
 <translation id="2190166659037789668">Pogreška provjere ažuriranja: <ph name="UPDATE_CHECK_ERROR"/>.</translation>
 <translation id="2058539073923004395">Uklanjanje računa iz Bravea</translation>
 <translation id="5550942974310218641">Budite sigurniji u pokretu uz poboljšano sigurno pregledavanje u Braveu za iOS</translation>
@@ -291,7 +291,7 @@
 <translation id="10925962326134232">Prilagodite Brave da biste svojem pregledniku dali novi izgled</translation>
 <translation id="6596295505984504022">P&amp;rilagodite Brave</translation>
 <translation id="4148957013307229264">Instaliranje...</translation>
-<translation id="4658486203392098459"><ph name="PAGE_TITLE"/> – Prijava na mrežu – Brave</translation>
+<translation id="5011704081781303429"><ph name="PAGE_TITLE"/> – Prijava na mrežu – Brave Origin</translation>
 <translation id="2871190378186459992">Otkrijte sjajne aplikacije, igre, proširenja i teme za Brave.</translation>
 <translation id="462105622535258178">Da biste imali ovo proširenje i druge mogućnosti na svim svojim računalima, prijavite se u Brave</translation>
 <translation id="6670140629169983459">Za više sigurnosti online uz postavke koje su odabrali tvoji roditelji, prebaci se na profil u Braveu na koji si već prijavljen/prijavljena kao <ph name="USER_EMAIL_ADDRESS"/></translation>
@@ -527,7 +527,7 @@ Neke su značajke možda nedostupne. Navedite neki drugi direktorij profila ili 
 <translation id="6831043979455480757">Prevedi</translation>
 <translation id="8211837073776713955">Brave će vas obavijestiti ako vaše zaporke budu ugrožene</translation>
 <translation id="684888714667046800">Povezivanje s internetom nije moguće. Ako upotrebljavate vatrozid, provjerite je li <ph name="PRODUCT_EXE_NAME"/> na popisu dopuštenih.</translation>
-<translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
+<translation id="8237613041998823669">Brave Origin – <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">Pritisnite Tab za nastavak</translation>
 <translation id="6862030660799253820">Pretražite tu sliku pomoću pretraživanja slika</translation>
 <translation id="3028928628792374067">Brave je otkrio da <ph name="EXTENSION_NAME"/> sadrži zlonamjerni softver</translation>
