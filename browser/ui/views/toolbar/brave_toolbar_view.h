@@ -77,6 +77,7 @@ class BraveToolbarView : public ToolbarView,
   void ResetBookmarkButtonBounds();
   void UpdateBookmarkVisibility();
   void UpdateVerticalTabToggleVisibility();
+  void UpdateVerticalTabTogglePlacement();
   void UpdateVerticalTabToggleState();
   void OnVerticalTabTogglePressed();
 
@@ -123,6 +124,7 @@ class BraveToolbarView : public ToolbarView,
   BooleanPrefMember show_vertical_tabs_;
   BooleanPrefMember show_title_bar_on_vertical_tabs_;
   BooleanPrefMember vertical_tabs_collapsed_;
+  BooleanPrefMember vertical_tabs_on_right_;
 #if BUILDFLAG(IS_LINUX)
   BooleanPrefMember use_custom_chrome_frame_;
 #endif  // BUILDFLAG(IS_LINUX)

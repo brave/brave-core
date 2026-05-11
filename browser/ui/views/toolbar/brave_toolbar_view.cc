@@ -12,6 +12,7 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/functional/bind.h"
+#include "base/i18n/rtl.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
@@ -270,6 +271,7 @@ void BraveToolbarView::Init() {
                                  [](BraveToolbarView* self) {
                                    self->UpdateHorizontalPadding();
                                    self->UpdateVerticalTabToggleVisibility();
+                                   self->UpdateVerticalTabTogglePlacement();
                                  },
                                  base::Unretained(this)));
     show_title_bar_on_vertical_tabs_.Init(
@@ -280,6 +282,10 @@ void BraveToolbarView::Init() {
     vertical_tabs_collapsed_.Init(
         brave_tabs::kVerticalTabsCollapsed, profile->GetPrefs(),
         base::BindRepeating(&BraveToolbarView::UpdateVerticalTabToggleState,
+                            base::Unretained(this)));
+    vertical_tabs_on_right_.Init(
+        brave_tabs::kVerticalTabsOnRight, profile->GetPrefs(),
+        base::BindRepeating(&BraveToolbarView::UpdateVerticalTabTogglePlacement,
                             base::Unretained(this)));
 #if BUILDFLAG(IS_LINUX)
     use_custom_chrome_frame_.Init(
@@ -380,6 +386,10 @@ void BraveToolbarView::Init() {
   if (auto* avatar = GetAvatarToolbarButton()) {
     container_view->ReorderChildView(
         avatar, *container_view->GetIndexOf(GetAppMenuButton()) - 1);
+  }
+
+  if (tabs::utils::SupportsBraveVerticalTabs(browser_)) {
+    UpdateVerticalTabTogglePlacement();
   }
 
   brave_initialized_ = true;
@@ -660,6 +670,51 @@ void BraveToolbarView::UpdateVerticalTabToggleVisibility() {
 
   vertical_tab_toggle_->SetVisible(
       tabs::utils::ShouldShowBraveVerticalTabs(browser_));
+}
+
+void BraveToolbarView::UpdateVerticalTabTogglePlacement() {
+  // Callers must gate on `SupportsBraveVerticalTabs(browser_)`, which both
+  // ensures we're in `DisplayMode::kNormal` (other modes early-return from
+  // `Init()` before the toggle is created) and guarantees the toggle has
+  // been added as a child of `container_view`.
+  CHECK(vertical_tab_toggle_);
+  CHECK(location_bar_view_);
+  CHECK(location_bar_view_->parent());
+  views::View* container_view = location_bar_view_->parent();
+
+  const std::optional<size_t> toggle_idx =
+      container_view->GetIndexOf(vertical_tab_toggle_);
+  CHECK(toggle_idx.has_value());
+
+  // The vertical tab strip is placed by physical position and does not mirror
+  // in RTL: `kVerticalTabsOnRight` means physically right regardless of UI
+  // direction. The toolbar container, however, lays out children with a
+  // horizontal `views::FlexLayout` which mirrors logical child indices in RTL
+  // (logical index 0 renders on the visual right). To keep the toggle on the
+  // same physical side as the strip, invert the placement choice when the UI
+  // is RTL.
+  const bool place_near_app_menu =
+      tabs::utils::IsVerticalTabOnRight(browser_) != base::i18n::IsRTL();
+
+  size_t target_idx = 0;
+  if (place_near_app_menu) {
+    const auto menu_idx = container_view->GetIndexOf(GetAppMenuButton());
+    CHECK(menu_idx.has_value());
+    CHECK_GT(*menu_idx, 0u);
+    target_idx = *menu_idx - 1;
+  } else {
+    // Pin index 0 for the leading edge so placement does not depend on the
+    // back button's child index (forward is pinnable today; back could become
+    // pinnable upstream). Computing `back_idx - 1` would risk CHECK failures or
+    // surprising order if navigation-button pinning changes.
+    target_idx = 0;
+  }
+
+  if (*toggle_idx == target_idx) {
+    return;
+  }
+
+  container_view->ReorderChildView(vertical_tab_toggle_, target_idx);
 }
 
 void BraveToolbarView::UpdateVerticalTabToggleState() {
