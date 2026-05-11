@@ -44,9 +44,13 @@ class BraveManageProfileHandler : public settings::SettingsPageUIHandler,
       delete;
   ~BraveManageProfileHandler() override;
 
+ protected:
+  // content::WebUIMessageHandler declares this protected; keep it that way so
+  // unit tests can `using`-expose it from a test subclass.
+  void RegisterMessages() override;
+
  private:
   // SettingsPageUIHandler:
-  void RegisterMessages() override;
   void OnJavascriptAllowed() override;
   void OnJavascriptDisallowed() override;
 
