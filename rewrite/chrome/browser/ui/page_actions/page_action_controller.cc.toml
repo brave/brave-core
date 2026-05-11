@@ -36,3 +36,14 @@ This substitution corrects the resolution, so we instantiate
 '''
 re_pattern = '\bPageActionModel\b'
 replace = '::page_actions::PageActionModel'
+
+[[substitution]]
+description = '''
+Replace PassKey<PageActionView> with PassKey<page_actions::PageActionView>.
+As the chromium_impl::PageActionView should be shadowed by the brave-specific
+implementation, replaces all occurrences of declaration of PassKey<PageActionView>
+with PassKey<page_actions::PageActionView>.
+'''
+pattern = 'PassKey<PageActionView>'
+replace = 'PassKey<page_actions::PageActionView>'
+count = 0 # 0 means replace all occurrences

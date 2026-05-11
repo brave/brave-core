@@ -1,0 +1,14 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[[substitution]]
+description = '''
+Replace PageActionView* with chromium_impl::PageActionView* in
+chromium_impl::PageActionView. Replacing theses make sense because the upstream
+class shouldn't know about our implementation.
+'''
+pattern = 'PageActionView*'
+replace = 'chromium_impl::PageActionView*'
+count = 0 # 0 means replace all occurrences

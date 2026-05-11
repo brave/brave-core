@@ -2,6 +2,15 @@ diff --git a/chrome/browser/ui/views/page_action/page_action_view.cc b/chrome/br
 index 271f5b9adba10ee60aa45b4c00e1bfb541fd05fd..1a20372af0948f87a8d94a99ea287c039e10d126 100644
 --- a/chrome/browser/ui/views/page_action/page_action_view.cc
 +++ b/chrome/browser/ui/views/page_action/page_action_view.cc
+@@ -32,7 +32,7 @@
+ #include "ui/views/view_class_properties.h"
+ #include "ui/views/widget/widget_delegate.h"
+ 
+-namespace page_actions {
++namespace page_actions::chromium_impl {
+ 
+ PageActionView::PageActionView(actions::ActionItem* action_item,
+                                const PageActionViewParams& params,
 @@ -167,7 +167,7 @@ void PageActionView::OnPageActionModelChanged(
    if (!visible) {
      ResetSlideAnimation(/*show=*/false);
@@ -11,3 +20,9 @@ index 271f5b9adba10ee60aa45b4c00e1bfb541fd05fd..1a20372af0948f87a8d94a99ea287c03
      if (model.GetShouldAnimateChipIn()) {
        AnimateIn(/*string_id=*/std::nullopt);
      } else {
+@@ -412,4 +412,4 @@ AnchoredMessageBubbleView* PageActionView::GetAnchoredMessageForTesting() {
+ BEGIN_METADATA(PageActionView)
+ END_METADATA
+ 
+-}  // namespace page_actions
++}  // namespace page_actions::chromium_impl

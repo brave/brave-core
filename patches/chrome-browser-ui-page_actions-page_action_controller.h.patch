@@ -3,6 +3,32 @@ index 0135daf089d8564440c30ca17fd5c31c84e335e7..37c383b837a5289d2bdc9a33c14ce9a8
 --- a/chrome/browser/ui/page_actions/page_action_controller.h
 +++ b/chrome/browser/ui/page_actions/page_action_controller.h
 @@ -286,6 +286,7 @@ class PageActionController {
+@@ -245,20 +245,20 @@ class PageActionController {
+   // Provides a metric recording callback to the caller. The callback won't run
+   // if the page action controller is destroyed.
+   virtual base::RepeatingCallback<void(PageActionTrigger)> GetClickCallback(
+-      base::PassKey<PageActionView>,
++      base::PassKey<::page_actions::PageActionView>,
+       actions::ActionId action_id) = 0;
+ 
+   // Provides callback for when an anchored message is closed by used, either by
+   // interacting with it or clicking the close icon.
+   virtual base::RepeatingClosure GetAnchoredMessageCloseCallback(
+-      base::PassKey<PageActionView>,
++      base::PassKey<::page_actions::PageActionView>,
+       actions::ActionId action_id) = 0;
+ 
+   // Subscribes this controller to get `page_action_view` complete chip
+   // visibility change (it final state after animation).
+-  virtual void RegisterCallbacks(base::PassKey<PageActionView>,
++  virtual void RegisterCallbacks(base::PassKey<::page_actions::PageActionView>,
+                                  actions::ActionId action_id,
+-                                 PageActionView* page_action_view) = 0;
++                                 chromium_impl::PageActionView* page_action_view) = 0;
+ 
+   static base::PassKey<PageActionController> PassKeyForTesting() {
+     return base::PassKey<PageActionController>();
+@@ -275,6 +275,7 @@ class PageActionController {
    virtual void DecrementActivityCounter(actions::ActionId action_id) = 0;
  };
  
@@ -11,6 +37,25 @@ index 0135daf089d8564440c30ca17fd5c31c84e335e7..37c383b837a5289d2bdc9a33c14ce9a8
                                   public PinnedToolbarActionsModel::Observer {
   public:
 @@ -357,6 +358,7 @@ class PageActionControllerImpl : public PageActionController,
+       actions::ActionItem* action_item) override;
+   void SetShouldHidePageActions(bool should_hide_page_actions) override;
+   base::RepeatingCallback<void(PageActionTrigger)> GetClickCallback(
+-      base::PassKey<PageActionView>,
++      base::PassKey<::page_actions::PageActionView>,
+       actions::ActionId action_id) override;
+   base::RepeatingClosure GetAnchoredMessageCloseCallback(
+-      base::PassKey<PageActionView>,
++      base::PassKey<::page_actions::PageActionView>,
+       actions::ActionId action_id) override;
+   base::CallbackListSubscription RegisterOnWillDestroyCallback(
+       base::OnceCallback<void(PageActionController&)> callback) override;
+-  void RegisterCallbacks(base::PassKey<PageActionView>,
++  void RegisterCallbacks(base::PassKey<::page_actions::PageActionView>,
+                          actions::ActionId action_id,
+-                         PageActionView* page_action_view) override;
++                         chromium_impl::PageActionView* page_action_view) override;
+ 
+   // PinnedToolbarActionsModel::Observer
    void OnActionsChanged() override;
  
   private:

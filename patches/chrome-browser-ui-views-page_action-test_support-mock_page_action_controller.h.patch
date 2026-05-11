@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/page_action/test_support/mock_page_action_controller.h b/chrome/browser/ui/views/page_action/test_support/mock_page_action_controller.h
+index 44061a0d73a53605f17042a7c55d1eeced98f733..d8b0fc45000fd4232c2b901f01772993c02b8a83 100644
+--- a/chrome/browser/ui/views/page_action/test_support/mock_page_action_controller.h
++++ b/chrome/browser/ui/views/page_action/test_support/mock_page_action_controller.h
+@@ -104,7 +104,7 @@ class MockPageActionController : public PageActionController {
+               RegisterCallbacks,
+               (base::PassKey<PageActionView>,
+                actions::ActionId,
+-               PageActionView*),
++               chromium_impl::PageActionView*),
+               (override));
+   MOCK_METHOD(void, DecrementActivityCounter, (actions::ActionId), (override));
+ 
