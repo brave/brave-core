@@ -156,7 +156,7 @@ TEST_F(BraveCustomAvatarTest, GetAvatarIconWithTypeReturnsCustom) {
   auto [resolved_image, icon_type] = e->GetAvatarIconWithType(
       /*size_for_placeholder_avatar=*/72,
       /*use_high_res_file=*/true, profiles::PlaceholderAvatarIconParams{});
-  EXPECT_EQ(profiles::AvatarIconType::kNonPlaceholder, icon_type);
+  EXPECT_EQ(AvatarIconType::kNonPlaceholder, icon_type);
   EXPECT_TRUE(gfx::test::AreImagesEqual(image, resolved_image));
 }
 
