@@ -179,10 +179,16 @@ export const Container = () => {
     if (
       !acceptedPartnerConsentTerms
       && walletLocation.includes(WalletRoutes.FundWalletPageStart)
+      && !walletNotYetCreated
     ) {
       setShowPartnerConsentModal(true)
     }
-  }, [acceptedPartnerConsentTerms, walletLocation, history])
+  }, [
+    acceptedPartnerConsentTerms,
+    walletLocation,
+    history,
+    walletNotYetCreated,
+  ])
 
   // render
   if (!hasInitialized) {
