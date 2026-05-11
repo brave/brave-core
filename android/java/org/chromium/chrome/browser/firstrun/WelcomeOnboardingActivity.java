@@ -88,8 +88,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
 
     private static final String KEY_SPLASH_ANIMATION_FINISHED =
             "WelcomeOnboardingActivity.SplashAnimationFinished";
-    private static final String KEY_PAGE_INDEX =
-            "WelcomeOnboardingActivity.PageIndex";
+    private static final String KEY_PAGE_INDEX = "WelcomeOnboardingActivity.PageIndex";
 
     private static final float REDUCED_TENSION_OVERSHOOT_INTERPOLATOR = 1f;
     private static final float BRAVE_SPLASH_SCALE_ANIMATION = 0.4f;

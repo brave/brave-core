@@ -123,7 +123,7 @@ public class OnboardingStepAdapter
         mP3aManaged = managed;
     }
 
-    abstract public static class OnboardingBaseViewHolder extends RecyclerView.ViewHolder {
+    public abstract static class OnboardingBaseViewHolder extends RecyclerView.ViewHolder {
 
         public OnboardingBaseViewHolder(View itemView) {
             super(itemView);
