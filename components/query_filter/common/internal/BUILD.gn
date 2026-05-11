@@ -1,0 +1,37 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+static_library("internal") {
+  sources = [
+    "schema_utils.cc",
+    "schema_utils.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//brave/components/query_filter/common:schema",
+  ]
+
+  deps = [
+    "//brave/components/brave_component_updater/browser:public",
+    "//brave/components/query_filter/common",
+    "//components/url_pattern_index",
+    "//third_party/abseil-cpp:absl",
+    "//url",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "schema_utils_unittest.cc" ]
+
+  deps = [
+    ":internal",
+    "//base",
+    "//testing/gtest",
+    "//url",
+  ]
+}

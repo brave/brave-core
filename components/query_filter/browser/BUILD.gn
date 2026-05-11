@@ -44,6 +44,7 @@ source_set("unit_tests") {
     "//base/test:test_support",
     "//brave/components/brave_component_updater/browser:test_support",
     "//brave/components/query_filter/common",
+    "//brave/components/query_filter/common/internal:unit_tests",
     "//components/component_updater:test_support",
     "//components/update_client",
     "//testing/gmock",
