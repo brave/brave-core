@@ -8,14 +8,15 @@
 #include <algorithm>
 #include <string_view>
 
+#include "base/containers/span.h"
+#include "base/strings/string_util.h"
 #include "components/url_pattern_index/url_pattern.h"
-#include "third_party/abseil-cpp/absl/strings/ascii.h"
 #include "url/gurl.h"
 
 namespace query_filter {
 
 base::flat_set<std::string> GetBlocklistedParamsForSpec(
-    const std::vector<schema::Rule>& rules,
+    const base::span<schema::Rule>& rules,
     std::string_view spec) {
   base::flat_set<std::string> result;
 
@@ -31,18 +32,14 @@ base::flat_set<std::string> GetBlocklistedParamsForSpec(
 
   // A helper method to detect blank empty strings.
   constexpr auto is_blank = [](std::string_view s) {
-    return s.empty() ||
-           std::ranges::all_of(s.begin(), s.end(), [](unsigned char c) {
-             return absl::ascii_isspace(c);
-           });
+    return base::TrimWhitespaceASCII(s, base::TrimPositions::TRIM_ALL).empty();
   };
 
   // Go over rules that matches on the |url|.
   for (const auto& rule : rules) {
     // Check if the rule explicitly "excludes" the |url| from consideration.
     const auto& exclude_itr = std::ranges::find_if(
-        rule.exclude.cbegin(), rule.exclude.cend(),
-        [&url_info, &is_blank](const std::string& str) {
+        rule.exclude, [&url_info, &is_blank](const std::string& str) {
           return !is_blank(str) &&
                  url_pattern_index::UrlPattern(str).MatchesUrl(url_info);
         });
@@ -53,8 +50,7 @@ base::flat_set<std::string> GetBlocklistedParamsForSpec(
 
     // Check if the rule explicitly "includes" the |url| for consideration.
     const auto& include_itr = std::ranges::find_if(
-        rule.include.cbegin(), rule.include.cend(),
-        [&url_info, &is_blank](const std::string& str) {
+        rule.include, [&url_info, &is_blank](const std::string& str) {
           return !is_blank(str) &&
                  url_pattern_index::UrlPattern(str).MatchesUrl(url_info);
         });

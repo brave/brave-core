@@ -8,9 +8,9 @@
 
 #include <string>
 #include <string_view>
-#include <vector>
 
 #include "base/containers/flat_set.h"
+#include "base/containers/span.h"
 #include "brave/components/query_filter/common/schema.h"
 
 namespace query_filter {
@@ -28,7 +28,7 @@ namespace query_filter {
 // components/query_filter/browser/utils.cc when we support the query filter
 // component.
 base::flat_set<std::string> GetBlocklistedParamsForSpec(
-    const std::vector<schema::Rule>& rules,
+    const base::span<schema::Rule>& rules,
     std::string_view spec);
 }  // namespace query_filter
 

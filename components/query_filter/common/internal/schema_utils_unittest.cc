@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/span.h"
 #include "base/values.h"
 #include "brave/components/query_filter/common/schema.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -46,9 +47,9 @@ schema::Rule MakeRule(std::vector<std::string> include,
 }  // namespace
 
 TEST(SchemaUtilsTest, EmptyRulesReturnsEmptySet) {
-  const std::vector<schema::Rule> rules;
-  auto result =
-      GetBlocklistedParamsForSpec(rules, "https://example.com/?gclid=123");
+  const base::span<schema::Rule> rules;
+  auto result = GetBlocklistedParamsForSpec(base::span(rules),
+                                            "https://example.com/?gclid=123");
   EXPECT_TRUE(result.empty());
 }
 
@@ -56,8 +57,8 @@ TEST(SchemaUtilsTest, GlobalWildcardIncludeMatchesAnyUrl) {
   std::vector<schema::Rule> rules;
   rules.push_back(MakeRule({"*://*/*"}, {}, {"gclid", "fbclid"}));
 
-  auto result =
-      GetBlocklistedParamsForSpec(rules, "https://example.com/?gclid=123");
+  auto result = GetBlocklistedParamsForSpec(base::span(rules),
+                                            "https://example.com/?gclid=123");
   EXPECT_EQ(result.size(), 2u);
   EXPECT_TRUE(result.contains("gclid"));
   EXPECT_TRUE(result.contains("fbclid"));
@@ -69,19 +70,19 @@ TEST(SchemaUtilsTest, DomainSpecificIncludeMatchesOnlyThatDomain) {
                            {"igshid", "igsh"}));
 
   // Should match instagram.com
-  auto result1 =
-      GetBlocklistedParamsForSpec(rules, "https://www.instagram.com/p/abc/");
+  auto result1 = GetBlocklistedParamsForSpec(
+      base::span(rules), "https://www.instagram.com/p/abc/");
   EXPECT_TRUE(result1.contains("igshid"));
   EXPECT_TRUE(result1.contains("igsh"));
 
   // Should match bare instagram.com
-  auto result2 =
-      GetBlocklistedParamsForSpec(rules, "https://instagram.com/p/abc/");
+  auto result2 = GetBlocklistedParamsForSpec(base::span(rules),
+                                             "https://instagram.com/p/abc/");
   EXPECT_TRUE(result2.contains("igshid"));
 
   // Should NOT match an unrelated domain
-  auto result3 =
-      GetBlocklistedParamsForSpec(rules, "https://example.com/?igshid=123");
+  auto result3 = GetBlocklistedParamsForSpec(base::span(rules),
+                                             "https://example.com/?igshid=123");
   EXPECT_TRUE(result3.empty());
 }
 
@@ -90,8 +91,8 @@ TEST(SchemaUtilsTest, BlankIncludePatternsAreIgnored) {
   // A rule with only blank/empty include strings should never match.
   rules.push_back(MakeRule({"", "   "}, {}, {"tracker"}));
 
-  auto result =
-      GetBlocklistedParamsForSpec(rules, "https://example.com/?tracker=1");
+  auto result = GetBlocklistedParamsForSpec(base::span(rules),
+                                            "https://example.com/?tracker=1");
   EXPECT_TRUE(result.empty());
 }
 
@@ -103,14 +104,14 @@ TEST(SchemaUtilsTest, MultipleMatchingRulesAggregateParams) {
 
   // twitter.com matches both rules.
   auto result = GetBlocklistedParamsForSpec(
-      rules, "https://twitter.com/?gclid=1&ref_src=2");
+      base::span(rules), "https://twitter.com/?gclid=1&ref_src=2");
   EXPECT_TRUE(result.contains("gclid"));
   EXPECT_TRUE(result.contains("fbclid"));
   EXPECT_TRUE(result.contains("ref_src"));
 
   // example.com only matches the global rule.
-  auto result2 =
-      GetBlocklistedParamsForSpec(rules, "https://example.com/?ref_src=1");
+  auto result2 = GetBlocklistedParamsForSpec(base::span(rules),
+                                             "https://example.com/?ref_src=1");
   EXPECT_TRUE(result2.contains("gclid"));
   EXPECT_TRUE(result2.contains("fbclid"));
   EXPECT_FALSE(result2.contains("ref_src"));
@@ -121,8 +122,8 @@ TEST(SchemaUtilsTest, NonMatchingIncludeReturnsEmptySet) {
   rules.push_back(
       MakeRule({"*://*.youtube.com/*", "*://youtube.com/*"}, {}, {"si"}));
 
-  auto result =
-      GetBlocklistedParamsForSpec(rules, "https://example.com/?si=abc");
+  auto result = GetBlocklistedParamsForSpec(base::span(rules),
+                                            "https://example.com/?si=abc");
   EXPECT_TRUE(result.empty());
 }
 
@@ -131,10 +132,10 @@ TEST(SchemaUtilsTest, InvalidUrlSpecReturnsEmptySet) {
   rules.push_back(MakeRule({"*://*/*"}, {}, {"gclid"}));
 
   // An empty/invalid spec should not crash and should return an empty set.
-  auto result = GetBlocklistedParamsForSpec(rules, "");
+  auto result = GetBlocklistedParamsForSpec(base::span(rules), "");
   EXPECT_TRUE(result.empty());
 
-  auto result2 = GetBlocklistedParamsForSpec(rules, "not a url");
+  auto result2 = GetBlocklistedParamsForSpec(base::span(rules), "not a url");
   EXPECT_TRUE(result2.empty());
 }
 
@@ -144,13 +145,13 @@ TEST(SchemaUtilsTest, SubdomainPatternDoesNotMatchRootDomain) {
   rules.push_back(MakeRule({"*://*.example.com/*"}, {}, {"tracker"}));
 
   // Subdomain should match.
-  auto result1 =
-      GetBlocklistedParamsForSpec(rules, "https://sub.example.com/?tracker=1");
+  auto result1 = GetBlocklistedParamsForSpec(
+      base::span(rules), "https://sub.example.com/?tracker=1");
   EXPECT_TRUE(result1.contains("tracker"));
 
   // Bare root domain should NOT match "*://*.example.com/*".
-  auto result2 =
-      GetBlocklistedParamsForSpec(rules, "https://example.com/?tracker=1");
+  auto result2 = GetBlocklistedParamsForSpec(base::span(rules),
+                                             "https://example.com/?tracker=1");
   EXPECT_TRUE(result2.empty());
 }
 
@@ -159,13 +160,13 @@ TEST(SchemaUtilsTest, ExcludePatternTakesPrecedenceOverInclude) {
   // Both include and exclude cover example.com; exclude wins.
   rules.push_back(MakeRule({"*://*/*"}, {"*://example.com/*"}, {"gclid"}));
 
-  auto result =
-      GetBlocklistedParamsForSpec(rules, "https://example.com/?gclid=1");
+  auto result = GetBlocklistedParamsForSpec(base::span(rules),
+                                            "https://example.com/?gclid=1");
   EXPECT_TRUE(result.empty());
 
   // A different domain is not excluded – param should be blocked.
-  auto result2 =
-      GetBlocklistedParamsForSpec(rules, "https://other.com/?gclid=1");
+  auto result2 = GetBlocklistedParamsForSpec(base::span(rules),
+                                             "https://other.com/?gclid=1");
   EXPECT_TRUE(result2.contains("gclid"));
 }
 
