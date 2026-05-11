@@ -29,10 +29,9 @@ class ListValue;
 // resize to `kAvatarSize`), persists it as a PNG via the entry's
 // `SetBraveCustomAvatar` API, and notifies the WebUI so the page can show
 // the new preview.
-class BraveManageProfileHandler
-    : public settings::SettingsPageUIHandler,
-      public ImageDecoder::ImageRequest,
-      public ProfileAttributesStorage::Observer {
+class BraveManageProfileHandler : public settings::SettingsPageUIHandler,
+                                  public ImageDecoder::ImageRequest,
+                                  public ProfileAttributesStorage::Observer {
  public:
   // Side length (in pixels) of the persisted custom avatar bitmap.
   static constexpr int kAvatarSize = 256;

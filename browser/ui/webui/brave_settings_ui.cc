@@ -159,8 +159,8 @@ BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui) : SettingsUI(web_ui) {
   web_ui->AddMessageHandler(std::make_unique<DefaultBraveShieldsHandler>());
   web_ui->AddMessageHandler(std::make_unique<BraveDefaultExtensionsHandler>());
   web_ui->AddMessageHandler(std::make_unique<BraveAppearanceHandler>());
-  web_ui->AddMessageHandler(std::make_unique<BraveManageProfileHandler>(
-      Profile::FromWebUI(web_ui)));
+  web_ui->AddMessageHandler(
+      std::make_unique<BraveManageProfileHandler>(Profile::FromWebUI(web_ui)));
   web_ui->AddMessageHandler(std::make_unique<BraveSyncHandler>());
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   web_ui->AddMessageHandler(std::make_unique<BraveWalletHandler>());

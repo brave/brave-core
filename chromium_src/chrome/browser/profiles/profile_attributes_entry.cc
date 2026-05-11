@@ -21,10 +21,12 @@ constexpr std::string_view kSerpMetricsKey = "serp_metrics";
 
 // Key under the entry dict where the on-disk filename of the user-uploaded
 // custom profile avatar is stored. When empty, no custom avatar is set.
-constexpr char kBraveCustomAvatarFileNameKey[] = "brave_custom_avatar_file_name";
+constexpr char kBraveCustomAvatarFileNameKey[] =
+    "brave_custom_avatar_file_name";
 
 // When true (and a custom file exists), the profile icon uses the custom image.
-// Absent key with an existing file is treated as true for backward compatibility.
+// Absent key with an existing file is treated as true for backward
+// compatibility.
 constexpr char kBraveCustomAvatarActiveKey[] = "brave_custom_avatar_active";
 
 // Filename (within the profile directory) used to store the user-uploaded
@@ -202,11 +204,11 @@ void ProfileAttributesEntry::ActivateBraveCustomAvatar() {
 // caller of `GetAvatarIcon` / `GetAvatarIconWithType` (toolbar button, profile
 // menu, profile picker, OS menus, settings, etc.) consistently displays the
 // custom image.
-#define BRAVE_GET_AVATAR_ICON_WITH_TYPE                            \
-  if (IsUsingBraveCustomAvatar()) {                                \
-    if (const gfx::Image* image = GetBraveCustomAvatar()) {        \
-      return {*image, AvatarIconType::kNonPlaceholder};            \
-    }                                                              \
+#define BRAVE_GET_AVATAR_ICON_WITH_TYPE                     \
+  if (IsUsingBraveCustomAvatar()) {                         \
+    if (const gfx::Image* image = GetBraveCustomAvatar()) { \
+      return {*image, AvatarIconType::kNonPlaceholder};     \
+    }                                                       \
   }
 
 #include <chrome/browser/profiles/profile_attributes_entry.cc>

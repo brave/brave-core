@@ -67,7 +67,7 @@ const kBraveCustomAvatarStyleCss = `
     user-select: none;
   }
 
-  /* Hide the upload hint once a custom image is shown (see `is-empty`). */
+  /* Hide the upload hint once a custom image is shown (no .is-empty). */
   #braveCustomAvatarPreview:not(.is-empty) .placeholder {
     display: none;
   }

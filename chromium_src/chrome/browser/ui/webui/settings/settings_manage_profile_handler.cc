@@ -8,15 +8,15 @@
 #include "chrome/browser/profiles/profile_attributes_entry.h"
 #include "chrome/browser/profiles/profile_manager.h"
 
-#define BRAVE_HANDLE_SET_PROFILE_ICON_TO_GAIA_AVATAR_END(profile)           \
-  do {                                                                        \
-    ProfileAttributesEntry* brave_entry =                                     \
-        g_browser_process->profile_manager()                                  \
-            ->GetProfileAttributesStorage()                                  \
-            .GetProfileAttributesWithPath((profile)->GetPath());              \
-    if (brave_entry) {                                                        \
-      brave_entry->DeactivateBraveCustomAvatar();                             \
-    }                                                                         \
+#define BRAVE_HANDLE_SET_PROFILE_ICON_TO_GAIA_AVATAR_END(profile) \
+  do {                                                            \
+    ProfileAttributesEntry* brave_entry =                         \
+        g_browser_process->profile_manager()                      \
+            ->GetProfileAttributesStorage()                       \
+            .GetProfileAttributesWithPath((profile)->GetPath());  \
+    if (brave_entry) {                                            \
+      brave_entry->DeactivateBraveCustomAvatar();                 \
+    }                                                             \
   } while (0)
 
 #include <chrome/browser/ui/webui/settings/settings_manage_profile_handler.cc>

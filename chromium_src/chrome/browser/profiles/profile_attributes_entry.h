@@ -29,17 +29,17 @@ class DictValue;
   /* none is set or the image has not finished loading from disk yet.       */ \
   const gfx::Image* GetBraveCustomAvatar() const;                              \
   /* Saves a user-uploaded custom profile avatar image. `on_saved` is run   */ \
-  /* on the UI thread after the file write completes with `true` on        */ \
+  /* on the UI thread after the file write completes with `true` on        */  \
   /* success or `false` on failure.                                         */ \
   void SetBraveCustomAvatar(gfx::Image image,                                  \
                             base::OnceCallback<void(bool)> on_saved);          \
-  /* Clears the user-uploaded custom profile avatar (also removes the      */ \
+  /* Clears the user-uploaded custom profile avatar (also removes the      */  \
   /* file from disk on a background thread).                                */ \
   void ClearBraveCustomAvatar();                                               \
-  /* True when a custom avatar file is saved for this profile (may be     */ \
-  /* inactive while the user uses a preset).                               */ \
+  /* True when a custom avatar file is saved for this profile (may be     */   \
+  /* inactive while the user uses a preset).                               */  \
   bool HasBraveCustomAvatar() const;                                           \
-  /* True when the saved custom avatar is the one shown in Chrome UI      */ \
+  /* True when the saved custom avatar is the one shown in Chrome UI      */   \
   /* (toolbar, menus, settings).                                            */ \
   bool IsUsingBraveCustomAvatar() const;                                       \
   /* Stops using the custom image for the profile icon; keeps the file.     */ \
@@ -47,7 +47,7 @@ class DictValue;
   /* Uses the saved custom image again for the profile icon.                */ \
   void ActivateBraveCustomAvatar();                                            \
                                                                                \
-  private:                                                                      \
+ private:                                                                      \
   friend class ProfileAttributeMigrationTest;                                  \
   void MigrateObsoleteProfileAttributes
 

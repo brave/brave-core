@@ -60,18 +60,18 @@ struct WebUIResponse {
   bool success = false;
   const base::Value* payload = nullptr;
 };
-std::optional<WebUIResponse> FindWebUIResponse(
-    const content::TestWebUI& web_ui,
-    const std::string& callback_id) {
+std::optional<WebUIResponse> FindWebUIResponse(const content::TestWebUI& web_ui,
+                                               const std::string& callback_id) {
   for (const std::unique_ptr<content::TestWebUI::CallData>& data :
        base::Reversed(web_ui.call_data())) {
     if (data->function_name() != "cr.webUIResponse" || !data->arg1() ||
-        !data->arg1()->is_string() || data->arg1()->GetString() != callback_id) {
+        !data->arg1()->is_string() ||
+        data->arg1()->GetString() != callback_id) {
       continue;
     }
     WebUIResponse response;
-    response.success = data->arg2() && data->arg2()->is_bool() &&
-                       data->arg2()->GetBool();
+    response.success =
+        data->arg2() && data->arg2()->is_bool() && data->arg2()->GetBool();
     response.payload = data->arg3();
     return response;
   }

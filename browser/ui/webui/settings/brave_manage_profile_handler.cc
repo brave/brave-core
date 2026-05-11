@@ -56,9 +56,8 @@ SkBitmap CropAndResizeToSquare(const SkBitmap& bitmap, int side) {
   const int crop_y = (bitmap.height() - crop_side) / 2;
 
   SkBitmap cropped;
-  if (!bitmap.extractSubset(&cropped,
-                            SkIRect::MakeXYWH(crop_x, crop_y, crop_side,
-                                              crop_side))) {
+  if (!bitmap.extractSubset(
+          &cropped, SkIRect::MakeXYWH(crop_x, crop_y, crop_side, crop_side))) {
     return SkBitmap();
   }
 
