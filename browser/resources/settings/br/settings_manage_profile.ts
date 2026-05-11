@@ -37,6 +37,7 @@ const kBraveCustomAvatarStyleCss = `
     column-gap: 16px;
     display: grid;
     grid-template-columns: 72px 1fr;
+    padding-inline-start: var(--cr-section-indent-width);
     padding-top: 4px;
   }
 
