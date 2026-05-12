@@ -291,9 +291,12 @@ class NewTabPageViewController: UIViewController {
 
       let isTabVisible = viewIfLoaded?.window != nil
       setupBackgroundVideoIfNeeded(shouldCreatePlayer: isTabVisible)
-      // Load the video asset here, as viewDidAppear is not called when the view
-      // is already visible
       if isTabVisible {
+        // `viewDidAppear` is not called when the view is already visible, so
+        // report the viewed impression event and load the video asset here
+        // if needed.
+        reportSponsoredBackgroundViewedEventIfNeeded()
+
         videoAdPlayer?.loadAndAutoplayVideoAssetIfNeeded(
           shouldAutoplay: false
         )
@@ -430,11 +433,7 @@ class NewTabPageViewController: UIViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
 
-    // Only record a sponsored background viewed impression when the NTP
-    // background is not covered by the URL bar overlay.
-    if delegate?.isURLBarInOverlayMode() == false {
-      reportSponsoredBackgroundViewedEventIfNeeded()
-    }
+    reportSponsoredBackgroundViewedEventIfNeeded()
 
     videoAdPlayer?.loadAndAutoplayVideoAssetIfNeeded(
       shouldAutoplay: shouldShowBackgroundVideo()
@@ -690,6 +689,12 @@ class NewTabPageViewController: UIViewController {
   // MARK: - Sponsored background events
 
   private func reportSponsoredBackgroundViewedEventIfNeeded() {
+    // Only record a sponsored background viewed impression when the NTP
+    // background is not covered by the URL bar overlay.
+    if delegate?.isURLBarInOverlayMode() == true {
+      return
+    }
+
     guard case .sponsoredMedia(_, let newTabPageAd) = background.currentBackground else {
       return
     }
