@@ -26,7 +26,10 @@ TEST_F(ManageProfileHandlerTest,
   ASSERT_TRUE(entry()->HasBraveCustomAvatar());
   ASSERT_TRUE(entry()->IsUsingBraveCustomAvatar());
 
-  handler()->HandleSetProfileIconToGaiaAvatar(base::ListValue());
+  // Exercise the real message path (handler method is private; only
+  // `HandleSetProfileIconToGaiaAvatar` is friended to the upstream-named test).
+  web_ui()->HandleReceivedMessage("setProfileIconToGaiaAvatar",
+                                  base::ListValue());
 
   EXPECT_TRUE(entry()->HasBraveCustomAvatar());
   EXPECT_FALSE(entry()->IsUsingBraveCustomAvatar());
