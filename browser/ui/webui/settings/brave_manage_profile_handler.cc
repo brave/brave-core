@@ -7,7 +7,6 @@
 
 #include <algorithm>
 #include <utility>
-#include <vector>
 
 #include "base/base64.h"
 #include "base/check.h"
@@ -184,8 +183,7 @@ void BraveManageProfileHandler::HandleSetProfileCustomAvatar(
   }
   pending_upload_callback_id_ = callback_id;
 
-  std::vector<uint8_t> image_data(raw_bytes.begin(), raw_bytes.end());
-  ImageDecoder::Start(this, std::move(image_data));
+  ImageDecoder::Start(this, std::move(raw_bytes));
 }
 
 void BraveManageProfileHandler::HandleRemoveProfileCustomAvatar(

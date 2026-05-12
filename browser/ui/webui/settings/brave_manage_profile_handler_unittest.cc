@@ -196,8 +196,10 @@ TEST_F(BraveManageProfileHandlerTest, SetWithValidPngResolvesAndStores) {
   EXPECT_TRUE(response->success);
   ASSERT_TRUE(response->payload && response->payload->is_dict());
   const base::DictValue* dict = response->payload->GetIfDict();
-  EXPECT_TRUE(dict->FindBool("hasSavedAvatar").value_or(false));
-  EXPECT_TRUE(dict->FindBool("isActive").value_or(false));
+  ASSERT_TRUE(dict->FindBool("hasSavedAvatar").has_value());
+  EXPECT_TRUE(dict->FindBool("hasSavedAvatar").value());
+  ASSERT_TRUE(dict->FindBool("isActive").has_value());
+  EXPECT_TRUE(dict->FindBool("isActive").value());
   const std::string* data_url = dict->FindString("dataUrl");
   ASSERT_TRUE(data_url);
   EXPECT_TRUE(data_url->starts_with("data:image/png;base64,"));
@@ -271,8 +273,10 @@ TEST_F(BraveManageProfileHandlerTest, RemoveClearsAvatarAndFiresListener) {
   const base::DictValue* listener_payload =
       LastWebUIListenerPayload(*web_ui(), "brave-custom-avatar-changed");
   ASSERT_TRUE(listener_payload);
-  EXPECT_FALSE(listener_payload->FindBool("hasSavedAvatar").value_or(true));
-  EXPECT_FALSE(listener_payload->FindBool("isActive").value_or(true));
+  ASSERT_TRUE(listener_payload->FindBool("hasSavedAvatar").has_value());
+  EXPECT_FALSE(listener_payload->FindBool("hasSavedAvatar").value());
+  ASSERT_TRUE(listener_payload->FindBool("isActive").has_value());
+  EXPECT_FALSE(listener_payload->FindBool("isActive").value());
 }
 
 // `activateProfileCustomAvatar` re-selects a saved but inactive custom
