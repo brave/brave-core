@@ -19,6 +19,7 @@
 #include "base/check_op.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/containers/span.h"
+#include "base/containers/to_vector.h"
 #include "base/debug/crash_logging.h"
 #include "base/debug/dump_without_crashing.h"
 #include "base/files/file_path.h"
@@ -391,10 +392,6 @@ void ConversationHandler::GetState(GetStateCallback callback) {
   std::ranges::transform(suggestions_, std::back_inserter(suggestions),
                          [](const auto& s) { return s.title; });
 
-  // Build array of capabilities
-  std::vector<mojom::ConversationCapability> capabilities(
-      conversation_capabilities_.begin(), conversation_capabilities_.end());
-
   mojom::ConversationStatePtr state = mojom::ConversationState::New(
       metadata_->uuid, is_request_in_progress_, std::move(models_copy),
       model_key, default_model_key,
@@ -402,7 +399,8 @@ void ConversationHandler::GetState(GetStateCallback callback) {
       std::move(suggestions), suggestion_generation_status_,
 #endif
       associated_content_manager_->GetAssociatedContent(), current_error_,
-      metadata_->temporary, tool_use_task_state_, std::move(capabilities));
+      metadata_->temporary, tool_use_task_state_,
+      base::ToVector(conversation_capabilities_));
 
   std::move(callback).Run(std::move(state));
 }
@@ -2253,8 +2251,9 @@ bool ConversationHandler::MaybeRespondToNextToolUseRequest() {
       // this after checking for user interaction so that a tool requiring
       // only user-interaction won't trigger a Task pause/stop UI. If we want
       // the tool state to reset whenever there is a tool use that requires
-      // user interaction we should set it above before we `break` to kNone, or
-      // a new kWaitingForUser.
+      // user interaction we should set it in the permission-challenge and
+      // user-output branches before they `break` (to kNone, or a new
+      // kWaitingForUser).
       if (tool_use_task_state_ == mojom::TaskState::kNone) {
         tool_use_task_state_ = mojom::TaskState::kRunning;
         OnToolUseTaskStateChanged();

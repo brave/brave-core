@@ -28,9 +28,11 @@ class AIChatConversationUIBrowserTest
 };
 
 // Test that when executing a tool, the task UI is not shown for chat
-// conversations (should only be shown for content agent conversations, verified
-// in the task browser tests.
-IN_PROC_BROWSER_TEST_F(AIChatConversationUIBrowserTest, NoTaskStateActions) {
+// conversations (it should only be shown for content agent conversations,
+// which is verified in the task browser tests).
+IN_PROC_BROWSER_TEST_F(
+    AIChatConversationUIBrowserTest,
+    NonAgentConversationDoesNotShowTaskStateActionsWhileToolExecutes) {
   CreateConversationWithMockEngine();
   std::string uuid = conversation_handler_->get_conversation_uuid();
 
@@ -80,7 +82,7 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationUIBrowserTest, NoTaskStateActions) {
   }
 
   // Wait for running state
-  EXPECT_TRUE(base::test::RunUntil([this]() {
+  ASSERT_TRUE(base::test::RunUntil([this]() {
     return GetConversationState()->tool_use_task_state ==
            mojom::TaskState::kRunning;
   }));

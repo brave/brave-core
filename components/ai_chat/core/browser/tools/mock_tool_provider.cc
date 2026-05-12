@@ -23,9 +23,7 @@ std::vector<base::WeakPtr<Tool>> MockToolProvider::GetTools() {
 }
 
 void MockToolProvider::StartContentTask(int32_t tab_id) {
-  for (auto& observer : observers_) {
-    observer.OnContentTaskStarted(tab_id);
-  }
+  observers_.Notify(&Observer::OnContentTaskStarted, tab_id);
 }
 
 void MockToolProvider::SetIsPausedByUser(bool is_paused) {
