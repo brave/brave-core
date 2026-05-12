@@ -47,6 +47,9 @@ class ShieldsSettingsViewModel: ObservableObject {
       tab.braveShieldsHelper?.setShredLevel(autoShredLevel, for: tab.visibleURL)
     }
   }
+  /// A boolean value indicates to wether to show `Advanced controls`or not inside the shield panel
+  /// with a default value true
+  @Published var advancedControlsEnabled: Bool = true
 
   var isPrivateBrowsing: Bool {
     tab.isPrivate
@@ -59,7 +62,7 @@ class ShieldsSettingsViewModel: ObservableObject {
   /// If we are updating our state values, we don't want to assign to the domain preference.
   private var isUpdatingState: Bool = false
 
-  init(tab: some TabState) {
+  init(tab: some TabState, isAdancedControlsEnabled: Bool) {
     self.tab = tab
     self.shieldsEnabled =
       tab.braveShieldsHelper?.isBraveShieldsEnabled(for: tab.visibleURL)
@@ -94,6 +97,8 @@ class ShieldsSettingsViewModel: ObservableObject {
     tab.contentBlocker?.statsDidChange = { [weak self, weak tab] _ in
       self?.stats = tab?.contentBlocker?.stats ?? .init()
     }
+
+    self.advancedControlsEnabled = isAdancedControlsEnabled
   }
 
   /// Update our properties value without affecting the Domain's value.
