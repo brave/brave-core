@@ -52,7 +52,8 @@ struct PlaylistDebugFilesView: View {
           }
         }
       }
-      .navigationTitle("Playlist File")
+      .navigationTitle("Playlist Files")
+      .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItem(placement: .cancellationAction) {
           Button("Done") { dismiss() }
@@ -92,6 +93,18 @@ struct PlaylistDebugFilesView: View {
         }
       }
       .onAppear(perform: loadFiles)
+      .alert(
+        "Couldn't delete file",
+        isPresented: Binding(
+          get: { deleteError != nil },
+          set: { if !$0 { deleteError = nil } }
+        ),
+        presenting: deleteError
+      ) { _ in
+        Button("OK", role: .cancel) {}
+      } message: { message in
+        Text(message)
+      }
     }
   }
 
@@ -172,6 +185,8 @@ struct PlaylistDebugFilesView: View {
   }
 }
 
+#if DEBUG
 #Preview {
   PlaylistDebugFilesView()
 }
+#endif

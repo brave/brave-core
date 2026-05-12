@@ -81,7 +81,7 @@ struct PlaylistItemList: View {
           // Mirror the badge's source of truth: only offer "Remove offline data" when the cached file
           // actually exists on disk. Otherwise we'd offer to remove a phantom download for an item whose bookmark
           // survived but whose file was wiped (e.g. by iOS reclaiming `com.apple.UserManagedAssets*`).
-          if downloadStates[item.uuid ?? ""] == .downloaded {
+          if let uuid = item.uuid, downloadStates[uuid] == .downloaded {
             Button {
               Task { @MainActor in
                 await PlaylistManager.shared.deleteCache(item: .init(item: item))
