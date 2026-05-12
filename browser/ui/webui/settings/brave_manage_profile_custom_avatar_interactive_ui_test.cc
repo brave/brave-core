@@ -4,8 +4,8 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/files/file_util.h"
+#include "base/files/scoped_temp_dir.h"
 #include "base/memory/ref_counted_memory.h"
-#include "base/scoped_temp_dir.h"
 #include "base/test/run_until.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile_attributes_entry.h"
