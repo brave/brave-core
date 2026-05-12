@@ -45,17 +45,6 @@ export type PromotedItemViewedPayload = {
 }
 export const promotedItemViewed = createAction<PromotedItemViewedPayload>('promotedItemViewed')
 
-export type VisitDisplayAdPayload = {
-  ad: BraveNews.DisplayAd
-  openInNewTab?: boolean
-}
-export const visitDisplayAd = createAction<VisitDisplayAdPayload>('visitDisplayAd')
-
-export type DisplayAdViewedPayload = {
-  ad: BraveNews.DisplayAd
-}
-export const displayAdViewed = createAction<DisplayAdViewedPayload>('displayAdViewed')
-
 export type SetPublisherPrefPayload = {
   publisherId: string
   enabled: boolean | null
