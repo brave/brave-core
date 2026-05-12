@@ -22,7 +22,7 @@ TEST(InstallShTest, RunTestScript) {
       base::PathService::CheckedGet(base::DIR_SRC_TEST_DATA_ROOT)
           .AppendUTF8("brave")
           .AppendUTF8("updater")
-          .AppendUTF8("install_sh_test.py");
+          .AppendUTF8("install_sh_mac_test.py");
   base::CommandLine cmd(base::FilePath("python3"));
   cmd.AppendArgPath(script);
   std::string output;
