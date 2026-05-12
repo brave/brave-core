@@ -1,0 +1,13 @@
+diff --git a/third_party/rust/aho_corasick/v1/BUILD.gn b/third_party/rust/aho_corasick/v1/BUILD.gn
+index 311fc1b2527207aa2126d33051cfc248f03dfc98..28c56447487ea1cca47ee764d318feee26b4d47b 100644
+--- a/third_party/rust/aho_corasick/v1/BUILD.gn
++++ b/third_party/rust/aho_corasick/v1/BUILD.gn
+@@ -70,7 +70,7 @@ cargo_crate("lib") {
+   # //third_party/rust/chromium_crates_io/Cargo.toml to use
+   # it from first-party code.
+   visibility = [ "//third_party/rust/*" ]
+-  testonly = true
++  testonly = false
+ 
+   #####################################################################
+   # Tweaking which GN `config`s apply to this target.
