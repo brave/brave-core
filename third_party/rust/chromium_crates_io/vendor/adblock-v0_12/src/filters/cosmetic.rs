@@ -832,20 +832,14 @@ mod css_validation {
     pub fn is_valid_css_style(style: &str) -> bool {
         use regex::{Regex, RegexBuilder};
         use std::sync::LazyLock;
-        static RE_URL_DIRECTIVE: LazyLock<Regex> = LazyLock::new(|| {
-            RegexBuilder::new(r"url\(")
+        static RE_INVALID_DIRECTIVE: LazyLock<Regex> = LazyLock::new(|| {
+            RegexBuilder::new(r"image-set\(|url\(|\\|\/\*")
                 .case_insensitive(true)
                 .build()
                 .unwrap()
         });
 
-        if style.contains('\\') {
-            return false;
-        }
-        if style.contains("/*") {
-            return false;
-        }
-        if RE_URL_DIRECTIVE.is_match(style) {
+        if RE_INVALID_DIRECTIVE.is_match(style) {
             return false;
         }
         true
