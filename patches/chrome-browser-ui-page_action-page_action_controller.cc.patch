@@ -1,7 +1,7 @@
-diff --git a/chrome/browser/ui/page_actions/page_action_controller.cc b/chrome/browser/ui/page_actions/page_action_controller.cc
-index 918af888a0a531c87989f73d7bd3b2a30c0d5f35..2472f9a1bbdcb9649bb907bd118ef616fe5755fe 100644
---- a/chrome/browser/ui/page_actions/page_action_controller.cc
-+++ b/chrome/browser/ui/page_actions/page_action_controller.cc
+diff --git a/chrome/browser/ui/page_action/page_action_controller.cc b/chrome/browser/ui/page_action/page_action_controller.cc
+index 5ad10051d1d1d65cce3e08ed6dbe2adb3ec449ac..0ff455485afcefda77552dd75fe3b91c885d7fba 100644
+--- a/chrome/browser/ui/page_action/page_action_controller.cc
++++ b/chrome/browser/ui/page_action/page_action_controller.cc
 @@ -69,6 +69,7 @@ void ScopedPageActionActivity::RegisterWillDestroyControllerCallback() {
    }
  }

@@ -1,7 +1,7 @@
-diff --git a/chrome/browser/ui/page_actions/page_action_controller.h b/chrome/browser/ui/page_actions/page_action_controller.h
-index 0135daf089d8564440c30ca17fd5c31c84e335e7..37c383b837a5289d2bdc9a33c14ce9a88504b9aa 100644
---- a/chrome/browser/ui/page_actions/page_action_controller.h
-+++ b/chrome/browser/ui/page_actions/page_action_controller.h
+diff --git a/chrome/browser/ui/page_action/page_action_controller.h b/chrome/browser/ui/page_action/page_action_controller.h
+index ff287e27cb927be96a36612b0f2de55b0663f98c..3747c54f6c96dcbc67f3d3428f8c8d92910a12c6 100644
+--- a/chrome/browser/ui/page_action/page_action_controller.h
++++ b/chrome/browser/ui/page_action/page_action_controller.h
 @@ -286,6 +286,7 @@ class PageActionController {
    virtual void DecrementActivityCounter(actions::ActionId action_id) = 0;
  };

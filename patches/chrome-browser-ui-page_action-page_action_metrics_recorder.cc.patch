@@ -1,7 +1,7 @@
-diff --git a/chrome/browser/ui/page_actions/page_action_metrics_recorder.cc b/chrome/browser/ui/page_actions/page_action_metrics_recorder.cc
-index 47e61124fa6647ee39466ceee5ca107ef15a6348..f3f2538a3bdc4cdf3149ea22cac43d9f8c5ad8ce 100644
---- a/chrome/browser/ui/page_actions/page_action_metrics_recorder.cc
-+++ b/chrome/browser/ui/page_actions/page_action_metrics_recorder.cc
+diff --git a/chrome/browser/ui/page_action/page_action_metrics_recorder.cc b/chrome/browser/ui/page_action/page_action_metrics_recorder.cc
+index f3759316a00cf603edb35fef71d0e2ffda839a27..429d3f2ec4bb715989a85545aed08c9094340fef 100644
+--- a/chrome/browser/ui/page_action/page_action_metrics_recorder.cc
++++ b/chrome/browser/ui/page_action/page_action_metrics_recorder.cc
 @@ -45,6 +45,7 @@ PageActionMetricsRecorder::~PageActionMetricsRecorder() {
  
  void PageActionMetricsRecorder::RecordClick(actions::ActionId action_id,

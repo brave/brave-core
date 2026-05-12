@@ -1,7 +1,7 @@
-diff --git a/chrome/browser/ui/page_actions/page_action_model.h b/chrome/browser/ui/page_actions/page_action_model.h
-index 7dacb805a0c88fc8d78095f29550e70375639634..3924212242cd280f61a77fe97bf2c83353aff35b 100644
---- a/chrome/browser/ui/page_actions/page_action_model.h
-+++ b/chrome/browser/ui/page_actions/page_action_model.h
+diff --git a/chrome/browser/ui/page_action/page_action_model.h b/chrome/browser/ui/page_action/page_action_model.h
+index b964935a88101e421a43fbc06c6bc3f8bc074cdb..3ae6eee63e876c78d4eb27768ed728ab17a279a4 100644
+--- a/chrome/browser/ui/page_action/page_action_model.h
++++ b/chrome/browser/ui/page_action/page_action_model.h
 @@ -118,9 +118,25 @@ class PageActionModelInterface {
    virtual PageActionColorSource GetColorSource() const = 0;
  

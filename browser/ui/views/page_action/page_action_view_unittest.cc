@@ -6,8 +6,8 @@
 #include "chrome/browser/ui/views/page_action/page_action_view.h"
 
 #include "chrome/browser/ui/color/chrome_color_id.h"
-#include "chrome/browser/ui/page_actions/test_support/mock_page_action_controller.h"
-#include "chrome/browser/ui/page_actions/test_support/mock_page_action_model.h"
+#include "chrome/browser/ui/page_action/test_support/mock_page_action_controller.h"
+#include "chrome/browser/ui/page_action/test_support/mock_page_action_model.h"
 #include "chrome/browser/ui/views/page_action/page_action_view_params.h"
 #include "chrome/test/views/chrome_views_test_base.h"
 #include "testing/gmock/include/gmock/gmock.h"

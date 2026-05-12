@@ -7,7 +7,7 @@
 
 #include <algorithm>
 
-#include "chrome/browser/ui/page_actions/page_action_model.h"
+#include "chrome/browser/ui/page_action/page_action_model.h"
 #include "ui/events/event_constants.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/views/layout/layout_types.h"
