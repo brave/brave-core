@@ -16,7 +16,7 @@ class BraveExtensionMenuItemView : public ExtensionMenuItemView {
   METADATA_HEADER(BraveExtensionMenuItemView, ExtensionMenuItemView)
 
  public:
-  BraveExtensionMenuItemView(Browser* browser,
+  BraveExtensionMenuItemView(BrowserWindowInterface* browser,
                              std::unique_ptr<ToolbarActionViewModel> view_model,
                              bool allow_pinning);
 

@@ -14,7 +14,7 @@ class BraveExtensionsMenuEntryView : public ExtensionsMenuEntryView {
 
  public:
   explicit BraveExtensionsMenuEntryView(
-      Browser* browser,
+      BrowserWindowInterface* browser,
       bool is_enterprise,
       ToolbarActionViewModel* view_model,
       views::Button::PressedCallback action_button_callback,

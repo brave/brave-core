@@ -22,7 +22,7 @@
 #include "ui/views/view_utils.h"
 
 BraveExtensionsMenuMainPageView::BraveExtensionsMenuMainPageView(
-    Browser* browser,
+    BrowserWindowInterface* browser,
     ExtensionsMenuHandler* menu_handler)
     : ExtensionsMenuMainPageView(browser, menu_handler) {
   UpdateButtons();

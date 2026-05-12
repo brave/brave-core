@@ -13,7 +13,7 @@ class BraveExtensionsMenuMainPageView : public ExtensionsMenuMainPageView {
   METADATA_HEADER(BraveExtensionsMenuMainPageView, ExtensionsMenuMainPageView)
 
  public:
-  BraveExtensionsMenuMainPageView(Browser* browser,
+  BraveExtensionsMenuMainPageView(BrowserWindowInterface* browser,
                                   ExtensionsMenuHandler* menu_handler);
   ~BraveExtensionsMenuMainPageView() override;
 

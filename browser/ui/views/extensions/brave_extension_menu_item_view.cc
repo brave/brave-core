@@ -23,7 +23,7 @@
 #include "ui/views/view_class_properties.h"
 
 BraveExtensionMenuItemView::BraveExtensionMenuItemView(
-    Browser* browser,
+    BrowserWindowInterface* browser,
     std::unique_ptr<ToolbarActionViewModel> view_model,
     bool allow_pinning)
     : ExtensionMenuItemView(browser, std::move(view_model), allow_pinning) {

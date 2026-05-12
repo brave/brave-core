@@ -11,7 +11,7 @@
 #include "ui/views/controls/highlight_path_generator.h"
 
 BraveExtensionsMenuEntryView::BraveExtensionsMenuEntryView(
-    Browser* browser,
+    BrowserWindowInterface* browser,
     bool is_enterprise,
     ToolbarActionViewModel* view_model,
     views::Button::PressedCallback action_button_callback,
