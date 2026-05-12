@@ -76,7 +76,7 @@ bool RemoteListProvider::SetWebsiteSetting(
     const ContentSettingsPattern& primary_pattern,
     const ContentSettingsPattern& secondary_pattern,
     ContentSettingsType content_type,
-    base::Value&& value,
+    const base::Value& value,
     const ContentSettingConstraints& constraints) {
   // RemoteListProvider is read-only.
   return false;
