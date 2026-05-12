@@ -44,6 +44,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatRadioButton;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -435,6 +437,7 @@ public class BraveUnifiedPanelHandler {
         mShieldsWarningSection = popupView.findViewById(R.id.shields_warning_section);
 
         // Set up shields toggle
+        setToggleAccessibility(mShieldsToggleSwitch);
         mShieldsToggleSwitch.setOnClickListener(
                 v -> {
                     boolean newState = !v.isSelected();
@@ -444,6 +447,7 @@ public class BraveUnifiedPanelHandler {
 
         // Set up advanced options switches
         if (mBlockScriptsSwitch != null) {
+            setToggleAccessibility(mBlockScriptsSwitch);
             mBlockScriptsSwitch.setOnClickListener(
                     v -> {
                         boolean newState = !v.isSelected();
@@ -452,6 +456,7 @@ public class BraveUnifiedPanelHandler {
                     });
         }
         if (mFingerprintingSwitch != null) {
+            setToggleAccessibility(mFingerprintingSwitch);
             mFingerprintingSwitch.setOnClickListener(
                     v -> {
                         boolean newState = !v.isSelected();
@@ -1823,6 +1828,21 @@ public class BraveUnifiedPanelHandler {
                                     tryNextTldCandidate(origin, candidates, index + 1);
                                 }
                             });
+                });
+    }
+
+    private static void setToggleAccessibility(ImageView toggle) {
+        ViewCompat.setAccessibilityDelegate(
+                toggle,
+                new androidx.core.view.AccessibilityDelegateCompat() {
+                    @Override
+                    public void onInitializeAccessibilityNodeInfo(
+                            View host, AccessibilityNodeInfoCompat info) {
+                        super.onInitializeAccessibilityNodeInfo(host, info);
+                        info.setClassName("android.widget.Switch");
+                        info.setCheckable(true);
+                        info.setChecked(host.isSelected());
+                    }
                 });
     }
 
