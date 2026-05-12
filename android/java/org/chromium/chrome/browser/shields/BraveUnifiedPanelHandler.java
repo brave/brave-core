@@ -1202,6 +1202,10 @@ public class BraveUnifiedPanelHandler {
                         mUrl.getSpec(),
                         BraveShieldsContentSettings.RESOURCE_IDENTIFIER_HTTPS_UPGRADE);
 
+        strictRadio.setChecked(false);
+        defaultRadio.setChecked(false);
+        disabledRadio.setChecked(false);
+
         if (currentSetting.equals(BraveShieldsContentSettings.BLOCK_RESOURCE)) {
             strictRadio.setChecked(true);
         } else if (currentSetting.equals(BraveShieldsContentSettings.ALLOW_RESOURCE)) {
@@ -1297,6 +1301,10 @@ public class BraveUnifiedPanelHandler {
                         BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS);
 
         if (aggressiveRadio != null && standardRadio != null && allowRadio != null) {
+            aggressiveRadio.setChecked(false);
+            standardRadio.setChecked(false);
+            allowRadio.setChecked(false);
+
             if (currentSetting.equals(BraveShieldsContentSettings.BLOCK_RESOURCE)) {
                 aggressiveRadio.setChecked(true);
             } else if (currentSetting.equals(BraveShieldsContentSettings.DEFAULT)
@@ -1400,6 +1408,10 @@ public class BraveUnifiedPanelHandler {
                         BraveShieldsContentSettings.RESOURCE_IDENTIFIER_COOKIES);
 
         if (blockAllRadio != null && blockThirdPartyRadio != null && allowRadio != null) {
+            blockAllRadio.setChecked(false);
+            blockThirdPartyRadio.setChecked(false);
+            allowRadio.setChecked(false);
+
             if (currentSetting.equals(BraveShieldsContentSettings.BLOCK_RESOURCE)) {
                 blockAllRadio.setChecked(true);
             } else if (currentSetting.equals(

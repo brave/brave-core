@@ -204,10 +204,8 @@ public class BraveShieldsContentSettings {
 
         String defaultHttpsUpgrade =
                 BraveShieldsContentSettingsJni.get().getHttpsUpgradeControlType("", profile);
-        if (!DEFAULT.equals(defaultHttpsUpgrade)) {
-            BraveShieldsContentSettingsJni.get()
-                    .setHttpsUpgradeControlType(defaultHttpsUpgrade, siteUrl, profile);
-        }
+        BraveShieldsContentSettingsJni.get()
+                .setHttpsUpgradeControlType(defaultHttpsUpgrade, siteUrl, profile);
 
         String defaultCookies =
                 BraveShieldsContentSettingsJni.get().getCookieControlType("", profile);

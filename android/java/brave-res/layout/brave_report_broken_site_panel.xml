@@ -30,16 +30,17 @@
         <!-- Title -->
         <TextView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="36dp"
             android:layout_weight="1"
             android:layout_marginStart="16dp"
+            android:gravity="center_vertical"
             android:text="@string/report_broken_site_panel_title"
-            android:textSize="20sp"
-            android:lineHeight="26sp"
+            android:textAppearance="?attr/textAppearanceTitleLarge"
             android:textColor="@color/text_primary"
-            android:fontFamily="sans-serif"
             android:maxLines="1"
-            android:ellipsize="end"/>
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="14sp"
+            android:autoSizeMaxTextSize="22sp"/>
 
     </LinearLayout>
 
