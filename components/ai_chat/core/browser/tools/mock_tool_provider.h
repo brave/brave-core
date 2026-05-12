@@ -27,7 +27,6 @@ class MockToolProvider : public ToolProvider {
   MockToolProvider();
   ~MockToolProvider() override;
 
-  MOCK_METHOD(void, OnNewGenerationLoop, (), (override));
   MOCK_METHOD(void, OnGenerationCompleteWithNoToolsToHandle, (), (override));
   MOCK_METHOD(void, StopAllTasks, (), (override));
 
