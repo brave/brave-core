@@ -506,12 +506,10 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
   // Check avatar is positioned at the right before app menu button.
   views::View* avatar = toolbar_button_provider_->GetAvatarToolbarButton();
   ASSERT_TRUE(!!avatar);
-  views::View* container = avatar->parent();
-  ASSERT_TRUE(!!container);
   views::View* app_menu = toolbar_button_provider_->GetAppMenuButton();
   ASSERT_TRUE(!!app_menu);
-  EXPECT_EQ(container->GetIndexOf(avatar).value(),
-            container->GetIndexOf(app_menu).value() - 1ul);
+  EXPECT_EQ(toolbar_view_->GetIndexOf(avatar).value(),
+            toolbar_view_->GetIndexOf(app_menu).value() - 1ul);
 
   // Check avatar button's size.
   const int avatar_size =

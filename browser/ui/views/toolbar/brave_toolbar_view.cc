@@ -196,14 +196,6 @@ void BraveToolbarView::Init() {
   // See brave_non_client_hit_test_helper.h
   views::SetHitTestComponent(this, HTCAPTION);
 
-  DCHECK(location_bar_view_);
-  // Get ToolbarView's container_view as a parent of location_bar_view_ because
-  // container_view's type in ToolbarView is internal to toolbar_view.cc.
-  views::View* container_view = location_bar_view_->parent();
-  DCHECK(container_view);
-
-  views::SetHitTestComponent(container_view, HTCAPTION);
-
   // For non-normal mode, we don't have to do any more work.
   if (display_mode_ != DisplayMode::kNormal) {
     brave_initialized_ = true;
@@ -216,7 +208,7 @@ void BraveToolbarView::Init() {
   // buttons. Upstream conditionally creates |toolbar_divider_|, they check
   // whether it's null or not. So safe to make remove here.
   if (toolbar_divider_) {
-    auto view = container_view->RemoveChildViewT(toolbar_divider_.get());
+    auto view = RemoveChildViewT(toolbar_divider_.get());
     toolbar_divider_ = nullptr;
   }
 
@@ -297,12 +289,12 @@ void BraveToolbarView::Init() {
 
   // Add vertical tab toggle button to the left of the back button.
   if (tabs::utils::SupportsBraveVerticalTabs(browser_)) {
-    auto back_button_index = container_view->GetIndexOf(back_);
-    vertical_tab_toggle_ = container_view->AddChildViewAt(
-        std::make_unique<ToolbarButton>(
-            base::BindRepeating(&BraveToolbarView::OnVerticalTabTogglePressed,
-                                base::Unretained(this))),
-        back_button_index.value_or(0));
+    auto back_button_index = GetIndexOf(back_);
+    vertical_tab_toggle_ =
+        AddChildViewAt(std::make_unique<ToolbarButton>(base::BindRepeating(
+                           &BraveToolbarView::OnVerticalTabTogglePressed,
+                           base::Unretained(this))),
+                       back_button_index.value_or(0));
     vertical_tab_toggle_->SetVectorIcon(
         vertical_tabs_collapsed_.GetValue()
             ? kVerticalTabStripToggleCollapsedIcon
@@ -311,24 +303,23 @@ void BraveToolbarView::Init() {
     UpdateVerticalTabToggleState();
   }
 
-  bookmark_ = container_view->AddChildViewAt(
-      std::make_unique<BraveBookmarkButton>(
-          base::BindRepeating(callback, browser_, IDC_BOOKMARK_THIS_TAB)),
-      *container_view->GetIndexOf(location_bar_view_));
+  bookmark_ =
+      AddChildViewAt(std::make_unique<BraveBookmarkButton>(base::BindRepeating(
+                         callback, browser_, IDC_BOOKMARK_THIS_TAB)),
+                     *GetIndexOf(location_bar_view_));
   bookmark_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON |
                                       ui::EF_MIDDLE_MOUSE_BUTTON);
   bookmark_->UpdateImageAndText();
   SetBraveButtonFlexBehavior(bookmark_);
 
-  side_panel_ = container_view->AddChildViewAt(
-      std::make_unique<SidePanelButton>(browser()),
-      *container_view->GetIndexOf(GetAppMenuButton()) - 1);
+  side_panel_ = AddChildViewAt(std::make_unique<SidePanelButton>(browser()),
+                               *GetIndexOf(GetAppMenuButton()) - 1);
   SetBraveButtonFlexBehavior(side_panel_);
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  wallet_ = container_view->AddChildViewAt(
+  wallet_ = AddChildViewAt(
       std::make_unique<WalletButton>(GetAppMenuButton(), profile),
-      *container_view->GetIndexOf(GetAppMenuButton()) - 1);
+      *GetIndexOf(GetAppMenuButton()) - 1);
   wallet_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON |
                                     ui::EF_MIDDLE_MOUSE_BUTTON);
   wallet_->UpdateImageAndText();
@@ -341,9 +332,8 @@ void BraveToolbarView::Init() {
   // Don't check policy status since we're going to
   // setup a watcher for policy pref.
   if (ai_chat::IsAllowedForContext(browser_->profile(), false)) {
-    ai_chat_button_ = container_view->AddChildViewAt(
-        std::make_unique<AIChatButton>(browser()),
-        *container_view->GetIndexOf(GetAppMenuButton()) - 1);
+    ai_chat_button_ = AddChildViewAt(std::make_unique<AIChatButton>(browser()),
+                                     *GetIndexOf(GetAppMenuButton()) - 1);
     SetBraveButtonFlexBehavior(ai_chat_button_);
     show_ai_chat_button_.Init(
         ai_chat::prefs::kBraveAIChatShowToolbarButton,
@@ -360,9 +350,8 @@ void BraveToolbarView::Init() {
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (brave_vpn::BraveVpnServiceFactory::GetForProfile(profile)) {
-    brave_vpn_ = container_view->AddChildViewAt(
-        std::make_unique<BraveVPNButton>(browser()),
-        *container_view->GetIndexOf(GetAppMenuButton()) - 1);
+    brave_vpn_ = AddChildViewAt(std::make_unique<BraveVPNButton>(browser()),
+                                *GetIndexOf(GetAppMenuButton()) - 1);
     SetBraveButtonFlexBehavior(brave_vpn_);
     show_brave_vpn_button_.Init(
         brave_vpn::prefs::kBraveVPNShowButton, profile->GetPrefs(),
@@ -378,8 +367,7 @@ void BraveToolbarView::Init() {
 
   // Make sure that avatar button should be located right before the app menu.
   if (auto* avatar = GetAvatarToolbarButton()) {
-    container_view->ReorderChildView(
-        avatar, *container_view->GetIndexOf(GetAppMenuButton()) - 1);
+    ReorderChildView(avatar, *GetIndexOf(GetAppMenuButton()) - 1);
   }
 
   brave_initialized_ = true;
@@ -488,19 +476,14 @@ void BraveToolbarView::UpdateHorizontalPadding() {
     return;
   }
 
-  // Get ToolbarView's container_view as a parent of location_bar_view_ because
-  // container_view's type in ToolbarView is internal to toolbar_view.cc.
-  DCHECK(location_bar_view_ && location_bar_view_->parent());
-  views::View* container_view = location_bar_view_->parent();
-
   if (!tabs::utils::ShouldShowBraveVerticalTabs(browser()) ||
       tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser())) {
-    container_view->SetBorder(nullptr);
+    SetBorder(nullptr);
   } else {
     auto [leading, trailing] =
         tabs::utils::GetLeadingTrailingCaptionButtonWidth(
             browser_view_->browser_widget());
-    container_view->SetBorder(views::CreateEmptyBorder(
+  SetBorder(views::CreateEmptyBorder(
         gfx::Insets().set_left(leading).set_right(trailing)));
   }
 }
