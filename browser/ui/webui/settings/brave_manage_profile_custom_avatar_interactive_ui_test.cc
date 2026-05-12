@@ -101,9 +101,10 @@ class BraveManageProfileCustomAvatarInteractiveTest
 // on the manage-profile settings page. Linux CI often lacks a working
 // xdg-desktop-portal FileChooser; drive the same `setProfileCustomAvatar` path
 // the page uses after a file pick, without opening a native file dialog.
-// Waits and removal use profile storage + `chrome.send` instead of shadow-DOM
-// polling so the test does not depend on Polymer flush timing (macOS CI can be
-// slow or noisy).
+// Wait for `settings-manage-profile` via a shadow-DOM walk: Brave hosts it
+// under `settings-getting-started-page-index`, not in the document light DOM.
+// Upload/removal still use profile storage + `chrome.send` so the test does not
+// depend on Polymer flush timing for controls (macOS CI can be slow or noisy).
 IN_PROC_BROWSER_TEST_F(BraveManageProfileCustomAvatarInteractiveTest,
                        UploadCustomAvatarThenRemove) {
   // Route paths use a leading slash as settings-root-absolute (see
@@ -122,7 +123,23 @@ IN_PROC_BROWSER_TEST_F(BraveManageProfileCustomAvatarInteractiveTest,
         ASSERT_TRUE(base::test::RunUntil([wc]() {
           const content::EvalJsResult result = content::EvalJs(wc, R"(
             (() => {
-              const el = document.querySelector('settings-manage-profile');
+              function deepQuerySelector(root, selector) {
+                const direct = root.querySelector(selector);
+                if (direct) {
+                  return direct;
+                }
+                const all = root.querySelectorAll('*');
+                for (const el of all) {
+                  if (el.shadowRoot) {
+                    const found = deepQuerySelector(el.shadowRoot, selector);
+                    if (found) {
+                      return found;
+                    }
+                  }
+                }
+                return null;
+              }
+              const el = deepQuerySelector(document, 'settings-manage-profile');
               return !!(el && el.shadowRoot);
             })()
           )");
