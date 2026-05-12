@@ -6,6 +6,8 @@
 package org.chromium.chrome.browser;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -56,5 +58,35 @@ public class BraveIntentHandlerUnitTest {
         String result = BraveIntentHandler.extractUrlFromIntent(intent);
 
         assertEquals("https://example.com/search?q=test&source=android", result);
+    }
+
+    @Test
+    @SmallTest
+    public void intentHasUnsafeInternalScheme_braveScheme_isBlocked() {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.addCategory(Intent.CATEGORY_BROWSABLE);
+        assertTrue(
+                BraveIntentHandler.intentHasUnsafeInternalScheme(
+                        "brave", "brave://flags/", intent));
+    }
+
+    @Test
+    @SmallTest
+    public void intentHasUnsafeInternalScheme_braveScheme_mixedCase_isBlocked() {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.addCategory(Intent.CATEGORY_DEFAULT);
+        assertTrue(
+                BraveIntentHandler.intentHasUnsafeInternalScheme(
+                        "Brave", "Brave://flags/", intent));
+    }
+
+    @Test
+    @SmallTest
+    public void intentHasUnsafeInternalScheme_httpsScheme_isAllowed() {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.addCategory(Intent.CATEGORY_BROWSABLE);
+        assertFalse(
+                BraveIntentHandler.intentHasUnsafeInternalScheme(
+                        "https", "https://example.com/", intent));
     }
 }
