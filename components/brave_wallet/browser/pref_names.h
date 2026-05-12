@@ -101,27 +101,6 @@ inline constexpr char kSolanaPrefKey[] = "solana";
 inline constexpr char kCardanoPrefKey[] = "cardano";
 inline constexpr char kPolkadotPrefKey[] = "polkadot";
 
-// Added 06/2024 to migrate Eip1559 flag to a separate pref.
-inline constexpr char kBraveWalletEip1559ForCustomNetworksMigrated[] =
-    "brave.wallet.eip1559_chains_migrated";
-// 06/2024 to mark existing compressed Solana NFTs as compressed.
-inline constexpr char kBraveWalletIsCompressedNftMigrated[] =
-    "brave.wallet.is_compressed_nft_migrated";
-// Added 11/2024 to mark Aurora mainnet as migrated.
-inline constexpr char kBraveWalletAuroraMainnetMigrated[] =
-    "brave.wallet.aurora_mainnet_migrated";
-
-// 08/2024 to mark fix existing SPL tokens marked as unsupported
-inline constexpr char kBraveWalletIsSPLTokenProgramMigrated[] =
-    "brave.wallet.is_spl_token_program_migrated";
-
-// 06/2024 migrated to kBraveWalletEip1559CustomChains.
-inline constexpr char kSupportEip1559OnLocalhostChainDeprecated[] =
-    "brave.wallet.support_eip1559_on_localhost_chain";
-// Added 07/2024 to remove Goerli mainnet, previously a preloaded network.
-inline constexpr char kBraveWalletGoerliNetworkMigrated[] =
-    "brave.wallet.custom_networks.goerli_migrated";
-
 // CryptoWallets prefs
 // Deprecated 05/2025
 inline constexpr char kERCAES256GCMSivNonceDeprecated[] =
