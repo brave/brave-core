@@ -3,23 +3,47 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.h"
+
 #include <optional>
 
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
+#include "brave/third_party/blink/renderer/modules/webgl/brave_webgl_debug_renderer_info_sanitizer.h"
+#include "third_party/blink/public/common/features.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/html/canvas/canvas_rendering_context_host.h"
 #include "third_party/blink/renderer/core/workers/worker_global_scope.h"
-#include "third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.h"
 
 namespace {
 
 bool AllowFingerprintingForHost(blink::CanvasRenderingContextHost* host) {
-  if (!host)
+  if (!host) {
     return true;
+  }
   return brave::AllowFingerprinting(host->GetTopExecutionContext(),
                                     ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL);
+}
+
+bool AllowFingerprintingForWebGLDebugRendererInfo(
+    blink::CanvasRenderingContextHost* host) {
+  if (!host) {
+    return true;
+  }
+
+  auto level = brave::GetBraveFarblingLevelFor(
+      host->GetTopExecutionContext(),
+      ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL, BraveFarblingLevel::OFF);
+
+  if (level == BraveFarblingLevel::OFF ||
+      (level == BraveFarblingLevel::BALANCED &&
+       !base::FeatureList::IsEnabled(
+           blink::features::kBraveWebGLDebugInfoFingerprintingProtection))) {
+    return true;
+  }
+
+  return false;
 }
 
 }  // namespace
@@ -59,23 +83,33 @@ bool AllowFingerprintingForHost(blink::CanvasRenderingContextHost* host) {
     precision = 0;                                          \
   }
 
-#define BRAVE_WEBGL_GET_PARAMETER_UNMASKED_RENDERER     \
-  if (ExtensionEnabled(kWebGLDebugRendererInfoName) &&  \
-      !AllowFingerprintingForHost(Host()))              \
-    return WebGLAny(                                    \
-        script_state,                                   \
-        String(brave::BraveSessionCache::From(          \
-                   *(Host()->GetTopExecutionContext())) \
-                   .GenerateRandomString("UNMASKED_RENDERER_WEBGL", 8)));
+// TODO(https://github.com/brave/brave-browser/issues/55442): Add fingerprinting
+// protections for GL_RENDERER and GL_VENDOR
+#define BRAVE_WEBGL_GL_RENDERER                                        \
+  if (ExtensionEnabled(kWebGLDebugRendererInfoName) &&                 \
+      !AllowFingerprintingForWebGLDebugRendererInfo(Host()))           \
+    return WebGLAny(                                                   \
+        script_state,                                                  \
+        String(BraveWebGLDebugRendererInfoSanitizer::SanitizeRenderer( \
+            getExtension_ChromiumImpl(script_state, "GL_RENDERER"))));
 
-#define BRAVE_WEBGL_GET_PARAMETER_UNMASKED_VENDOR       \
-  if (ExtensionEnabled(kWebGLDebugRendererInfoName) &&  \
-      !AllowFingerprintingForHost(Host()))              \
-    return WebGLAny(                                    \
-        script_state,                                   \
-        String(brave::BraveSessionCache::From(          \
-                   *(Host()->GetTopExecutionContext())) \
-                   .GenerateRandomString("UNMASKED_VENDOR_WEBGL", 8)));
+#define BRAVE_WEBGL_GET_PARAMETER_UNMASKED_RENDERER          \
+  if (ExtensionEnabled(kWebGLDebugRendererInfoName) &&       \
+      !AllowFingerprintingForWebGLDebugRendererInfo(Host())) \
+    return WebGLAny(script_state, String("Brave"));
+
+#define BRAVE_WEBGL_GL_VENDOR                                        \
+  if (ExtensionEnabled(kWebGLDebugRendererInfoName) &&               \
+      !AllowFingerprintingForWebGLDebugRendererInfo(Host()))         \
+    return WebGLAny(                                                 \
+        script_state,                                                \
+        String(BraveWebGLDebugRendererInfoSanitizer::SanitizeVendor( \
+            getExtension_ChromiumImpl(script_state, "GL_VENDOR"))));
+
+#define BRAVE_WEBGL_GET_PARAMETER_UNMASKED_VENDOR            \
+  if (ExtensionEnabled(kWebGLDebugRendererInfoName) &&       \
+      !AllowFingerprintingForWebGLDebugRendererInfo(Host())) \
+    return WebGLAny(script_state, String("Brave"));
 
 #define getExtension getExtension_ChromiumImpl
 #define getSupportedExtensions getSupportedExtensions_ChromiumImpl
@@ -94,8 +128,9 @@ WebGLRenderingContextBase::getSupportedExtensions() {
   if (real_extensions == std::nullopt) {
     return real_extensions;
   }
-  if (AllowFingerprintingForHost(Host()))
+  if (AllowFingerprintingForHost(Host())) {
     return real_extensions;
+  }
 
   Vector<String> fake_extensions;
   fake_extensions.push_back(WebGLDebugRendererInfo::ExtensionName());
@@ -107,8 +142,9 @@ WebGLRenderingContextBase::getSupportedExtensions() {
 ScriptObject WebGLRenderingContextBase::getExtension(ScriptState* script_state,
                                                      const String& name) {
   if (!AllowFingerprintingForHost(Host())) {
-    if (name != WebGLDebugRendererInfo::ExtensionName())
+    if (name != WebGLDebugRendererInfo::ExtensionName()) {
       return ScriptObject::CreateNull(v8::Isolate::GetCurrent());
+    }
   }
   return getExtension_ChromiumImpl(script_state, name);
 }
