@@ -1666,7 +1666,8 @@ void BraveTabContainer::UpdateClipPathForChildren(
     int pinned_tabs_area_boundary) {
   auto direction = GetScrollDirection();
   if (!view->parent() || !direction) {
-    // The |view| is detached so we just clear clip path.
+    // The |view| is detached or the scroll feature is disabled. In this case,
+    // we should clear clip path so that the view is not clipped.
     view->SetClipPath({});
     return;
   }
