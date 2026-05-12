@@ -21,13 +21,6 @@
 #include "ui/views/controls/button/toggle_button.h"
 #include "ui/views/view_utils.h"
 
-BraveExtensionsMenuMainPageView::BraveExtensionsMenuMainPageView(
-    Browser* browser,
-    ExtensionsMenuHandler* menu_handler)
-    : ExtensionsMenuMainPageView(browser, menu_handler) {
-  UpdateButtons();
-}
-
 BraveExtensionsMenuMainPageView::~BraveExtensionsMenuMainPageView() = default;
 
 void BraveExtensionsMenuMainPageView::OnThemeChanged() {
