@@ -75,8 +75,11 @@ void BrowserManager::NotifyBrowserDidEnterBackground() {
 }
 
 void BrowserManager::InitializeBrowserBackgroundState() {
-  is_in_foreground_ = GetAdsClient().IsBrowserActive();
+  const bool is_active = GetAdsClient().IsBrowserActive();
+  is_active_ = is_active;
+  is_in_foreground_ = is_active;
 
+  LogBrowserActiveState();
   LogBrowserBackgroundState();
 }
 
