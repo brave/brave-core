@@ -43,11 +43,11 @@ const kBraveCustomAvatarStyleCss = `
 
   #braveCustomAvatarPreview {
     align-items: center;
-    background: var(--leo-color-container-background, #f4f4f7);
+    background: var(--leo-color-container-background);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    border: 2px solid var(--leo-color-container-background);
+    border: 1px solid var(--leo-color-divider-subtle);
     border-radius: 100%;
     box-sizing: border-box;
     display: flex;
