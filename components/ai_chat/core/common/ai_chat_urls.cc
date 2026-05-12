@@ -18,10 +18,6 @@ GURL TabAssociatedConversationUrl() {
   return GURL(base::StrCat({kAIChatUIURL, "tab"}));
 }
 
-GURL GlobalConversationUrl() {
-  return GURL(base::StrCat({kAIChatUIURL, "global"}));
-}
-
 GURL ConversationUrl(std::string_view conversation_uuid) {
   return GURL(base::StrCat({kAIChatUIURL, conversation_uuid}));
 }

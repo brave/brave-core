@@ -487,7 +487,7 @@ function StoryContext(
     selectedConversationId: CONVERSATIONS[0].uuid,
     updateSelectedConversationId: () => {},
     createNewConversation: () => {},
-    isTabAssociated: argsRef.current.isDefaultConversation,
+    isMainConversation: argsRef.current.isDefaultConversation,
   }
 
   const currentError = Mojom.APIError[args.currentErrorState]
@@ -586,7 +586,7 @@ function StoryContext(
       }}
       conversationProps={{
         selectedConversationId: activeChatContext.selectedConversationId,
-        isTabAssociated: activeChatContext.isTabAssociated,
+        isMainConversation: activeChatContext.isMainConversation,
       }}
       // Overrides for values that come from internal hooks (useState, etc.)
       // and can't be controlled via API mocks

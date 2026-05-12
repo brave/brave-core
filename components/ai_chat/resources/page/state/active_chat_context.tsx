@@ -8,26 +8,17 @@ import { useRoute } from '$web-common/useRoute'
 import * as BindConversation from '../api/bind_conversation'
 import useHasConversationStarted from '../hooks/useHasConversationStarted'
 import { useAIChat } from './ai_chat_context'
+import { loadTimeData } from '$web-common/loadTimeData'
 
 export const tabAssociatedChatId = 'tab'
-export const globalChatId = 'global'
-
-// Both sentinel IDs cause the page to bind to the conversation that the
-// browser has associated with the active tab and to follow tab changes. They
-// differ only in URL: `/tab` is the contextual side panel and `/global` is
-// the global side panel, which stays on `/global` so the UI does not look
-// like a history conversation.
-const isTabFollowingChatId = (id: string | undefined) =>
-  id === tabAssociatedChatId || id === globalChatId
 
 export interface SelectedChatDetails
   extends Pick<BindConversation.ConversationBindings, 'api'> {
   selectedConversationId: string | undefined
   updateSelectedConversationId: (conversationId: string | undefined) => void
   createNewConversation: () => void
-  // TODO(https://github.com/brave/brave-browser/issues/48524): isTabAssociated
-  // is not relevant for global side panel and causes UI side effects.
-  isTabAssociated: boolean
+  isMainConversation: boolean
+  openMainConversation: () => void
 }
 
 /**
@@ -41,8 +32,8 @@ export const ActiveChatContext = React.createContext<SelectedChatDetails>({
   selectedConversationId: undefined,
   updateSelectedConversationId: () => {},
   createNewConversation: () => {},
-  isTabAssociated: false,
-
+  isMainConversation: false,
+  openMainConversation: () => {},
   // It's ok to stub undefined for now because we don't render children unless
   // we have a value. For convenience we don't need to have this as an optional
   // value.
@@ -70,8 +61,8 @@ export function ActiveChatProviderFromUrl(props: React.PropsWithChildren) {
 
 export const useActiveChat = () => React.useContext(ActiveChatContext)
 
-// Note: This is determined by whether the initial URL the user loads is the global panel.
-export const isGlobalPanel = location.pathname === globalChatId
+// Note: This is determined at load time and cannot be changed.
+export const isGlobalPanel = loadTimeData.getBoolean('isGlobalPanel')
 
 type ActiveChatContextProps = {
   selectedConversationId: string | undefined
@@ -86,17 +77,42 @@ function ActiveChatProvider({
   const aiChat = useAIChat()
   const [conversationAPI, setConversationAPI] =
     React.useState<BindConversation.ConversationBindings>()
+  const [globalConversationId, setGlobalConversationId] =
+    React.useState<string>('')
+
+  // Whenever we create a new conversation in global panel mode, that becomes the main conversation.
+  React.useEffect(() => {
+    if (isGlobalPanel && !selectedConversationId) {
+      conversationAPI?.api?.getState
+        .fetch()
+        .then((s) => setGlobalConversationId(s.conversationUuid))
+    }
+  }, [isGlobalPanel, conversationAPI])
+
+  const isMainConversation =
+    selectedConversationId === tabAssociatedChatId
+    || selectedConversationId === globalConversationId
+    || (isGlobalPanel && !selectedConversationId)
 
   const details = React.useMemo<SelectedChatDetails>(
     () => ({
       ...conversationAPI!, // It's always got a value
       selectedConversationId,
       updateSelectedConversationId,
+      openMainConversation: () => {
+        if (isGlobalPanel) {
+          updateSelectedConversationId(globalConversationId)
+        } else if (isMainConversation) {
+          updateSelectedConversationId(tabAssociatedChatId)
+        } else {
+          throw new Error('No main conversation!')
+        }
+      },
       createNewConversation: () => {
-        // For tab-following sentinels (/tab and /global) we simply bind a new
-        // conversation; the UIHandler associates it with the current tab and
-        // the URL stays on the sentinel.
-        if (isTabFollowingChatId(selectedConversationId)) {
+        // Special case for the tab-associated conversation mode
+        // Simply bind a new conversation, this will make it associated
+        // with the current tab, if applicable, via the UIHandler.
+        if (selectedConversationId === tabAssociatedChatId) {
           setConversationAPI(BindConversation.newConversation(aiChat.api))
           return
         }
@@ -104,11 +120,14 @@ function ActiveChatProvider({
         // Otherwise, navigate to "/"
         updateSelectedConversation('')
       },
-      // Both `/tab` and `/global` follow the active tab, so treat them as
-      // tab-associated for UI purposes.
-      isTabAssociated: isTabFollowingChatId(selectedConversationId),
+      isMainConversation,
     }),
-    [selectedConversationId, updateSelectedConversationId, conversationAPI],
+    [
+      selectedConversationId,
+      updateSelectedConversationId,
+      conversationAPI,
+      globalConversationId,
+    ],
   )
 
   // Handle child frame requests we switch to new conversation
@@ -148,7 +167,7 @@ function ActiveChatProvider({
       setConversationAPI(
         BindConversation.bindConversation(
           aiChat.api,
-          isTabFollowingChatId(selectedConversationId)
+          selectedConversationId === tabAssociatedChatId
             ? undefined
             : selectedConversationId,
         ),
@@ -176,7 +195,7 @@ function ActiveChatProvider({
 
     // Special case the default conversation - it gets treated specially as
     // the chat is rebound as the tab navigates.
-    if (isTabFollowingChatId(selectedConversationId)) return
+    if (isMainConversation) return
     if (!selectedConversationId) return
     if (conversations.find((c) => c.uuid === selectedConversationId)) return
 
@@ -224,7 +243,7 @@ function URLUpdater(props: SelectedChatDetails) {
 
     // Stay on the tab-associated conversation so that we know to change
     // conversation automatically when the target tab navigates.
-    if (isTabFollowingChatId(props.selectedConversationId)) return
+    if (props.isMainConversation) return
 
     // Don't need to do anything, the URL already represents the conversation
     if (conversationState.conversationUuid === props.selectedConversationId) {

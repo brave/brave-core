@@ -16,7 +16,6 @@
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_side_panel_web_view.h"
-#include "brave/components/ai_chat/core/common/ai_chat_urls.h"
 #endif
 
 #define PopulateGlobalEntries PopulateGlobalEntries_ChromiumImpl
@@ -49,7 +48,7 @@ void SidePanelHelper::PopulateGlobalEntries(
         SidePanelEntry::Key(SidePanelEntry::Id::kChatUI),
         base::BindRepeating(&AIChatSidePanelWebView::CreateView,
                             browser->profile(),
-                            ai_chat::GlobalConversationUrl()),
+                            /*is_tab_associated=*/false),
         base::NullCallback()));
   }
 #endif

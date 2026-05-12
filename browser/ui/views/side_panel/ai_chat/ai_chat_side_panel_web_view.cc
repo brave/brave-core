@@ -8,7 +8,9 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
+#include "brave/components/ai_chat/core/common/ai_chat_urls.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_navigator.h"
@@ -52,14 +54,15 @@ BrowserWindowInterface* FindNormalBrowser(
 // static
 std::unique_ptr<views::View> AIChatSidePanelWebView::CreateView(
     Profile* profile,
-    GURL initial_url,
+    bool is_tab_associated,
     SidePanelEntryScope& scope) {
   CHECK(profile);
 
   auto web_view = std::make_unique<AIChatSidePanelWebView>(
       scope, std::make_unique<WebUIContentsWrapperT<AIChatUI>>(
-                 std::move(initial_url), profile,
-                 IDS_SIDEBAR_CHAT_SUMMARIZER_ITEM_TITLE,
+                 is_tab_associated ? ai_chat::TabAssociatedConversationUrl()
+                                   : GURL(kAIChatUIURL),
+                 profile, IDS_SIDEBAR_CHAT_SUMMARIZER_ITEM_TITLE,
                  /*esc_closes_ui=*/false));
   web_view->ShowUI();
   return web_view;

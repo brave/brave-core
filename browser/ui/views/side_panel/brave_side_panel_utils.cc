@@ -11,7 +11,6 @@
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_side_panel_web_view.h"
-#include "brave/components/ai_chat/core/common/ai_chat_urls.h"
 #endif
 
 namespace brave {
@@ -33,7 +32,7 @@ void RegisterContextualSidePanel(SidePanelRegistry* registry,
         SidePanelEntry::Key(SidePanelEntry::Id::kChatUI),
         base::BindRepeating(&AIChatSidePanelWebView::CreateView,
                             Profile::FromBrowserContext(context),
-                            ai_chat::TabAssociatedConversationUrl()),
+                            /*is_tab_associated=*/true),
         /*default_content_width_callback=*/base::NullCallback()));
   }
 #endif

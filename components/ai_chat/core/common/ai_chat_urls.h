@@ -16,11 +16,6 @@ namespace ai_chat {
 // browser window. The conversation will change when that Tab navigates.
 COMPONENT_EXPORT(AI_CHAT_COMMON) GURL TabAssociatedConversationUrl();
 
-// UI for the global side panel. The conversation follows the active tab in
-// the browser window, but the URL is stable so the UI does not look like a
-// history conversation.
-COMPONENT_EXPORT(AI_CHAT_COMMON) GURL GlobalConversationUrl();
-
 // UI that will open to a specific conversation. The conversation will not
 // change upon any navigation.
 COMPONENT_EXPORT(AI_CHAT_COMMON)
