@@ -76,8 +76,17 @@ class HorizontalScrollableTabStripBrowserTest : public InProcessBrowserTest {
     browser_root_view()->OnMouseWheel(wheel_event);
   }
 
-  void StopAnimatingAndLayout() {
-    browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
+  void StopAnimatingAndLayout(
+      base::Location location = base::Location::Current()) {
+    SCOPED_TRACE(location.ToString());
+    auto* tab_strip = views::AsViewClass<BraveTabStrip>(
+        browser_view()->horizontal_tab_strip_for_testing());
+    tab_strip->StopAnimating();
+    BraveTabContainer* container = views::AsViewClass<BraveTabContainer>(
+        tab_strip->GetTabContainerForTesting());
+    ASSERT_TRUE(container);
+    // In order to reset the last layout size cache, call InvalidateLayout()
+    container->InvalidateLayout();
     RunScheduledLayouts();
   }
 
@@ -650,6 +659,81 @@ IN_PROC_BROWSER_TEST_F(HorizontalScrollableTabStripBrowserTest,
   // released event didn't happen - when button is disabled, event won't be
   // delivered to the button.
   EXPECT_FALSE(region->IsRepeatingEventForTesting(back));
+}
+
+// Regression test: when horizontal scrolling is disabled via pref, every tab
+// must be visible (not clipped away or hidden by a scroll offset) and must
+// have its clip path cleared.  The key code under test is
+// BraveTabContainer::OnScrollableHorizontalTabStripPrefChanged().
+IN_PROC_BROWSER_TEST_F(HorizontalScrollableTabStripBrowserTest,
+                       WhenScrollingDisabledAllTabsVisibleAndClipsCleared) {
+  auto* tab_strip = views::AsViewClass<BraveTabStrip>(
+      browser_view()->horizontal_tab_strip_for_testing());
+  BraveTabContainer* container = views::AsViewClass<BraveTabContainer>(
+      tab_strip->GetTabContainerForTesting());
+  ASSERT_TRUE(container);
+  GrowHorizontalStripUntilMaxOffsetAtLeastNTimesStep(container, 2);
+
+  // We need at least one pinned tab to have a clip path, so that the area
+  // intersected with pinned area can be clipped for tabs.
+  auto* model = browser()->tab_strip_model();
+  model->SetTabPinned(0, true);
+
+  // Scroll to the maximum offset.
+  const int max_offset = container->GetMaxScrollOffsetForTesting();
+  ASSERT_GT(max_offset, 0);
+  container->SetScrollOffsetForTesting(max_offset);
+  StopAnimatingAndLayout();
+
+  // ---- "before" sanity check ----
+  // With scrolling on and it overflows, there must be at least one tab that
+  // has a clip path.
+  bool any_clipped = false;
+  for (int i = 0; i < model->count(); ++i) {
+    Tab* tab = tab_strip->tab_at(i);
+    ASSERT_TRUE(tab);
+    if (!tab->data().pinned && !tab->clip_path().isEmpty()) {
+      any_clipped = true;
+      break;
+    }
+  }
+  ASSERT_TRUE(any_clipped)
+      << "Expected at least one unpinned tab to have a clip path while "
+         "horizontal scrolling is enabled with a pinned tab present.";
+
+  // When scrolling on and it's overflows a lot, a tab that is completely out of
+  // viewport bounds should be invisible
+  bool any_invisible = false;
+  for (int i = 0; i < model->count(); ++i) {
+    Tab* tab = tab_strip->tab_at(i);
+    ASSERT_TRUE(tab);
+    if (!tab->GetVisible()) {
+      any_invisible = true;
+      break;
+    }
+  }
+  ASSERT_TRUE(any_invisible)
+      << "Expected at least one tab to be invisible while horizontal scrolling "
+         "is enabled with a pinned tab present.";
+
+  // ---- Disable horizontal scrolling ----
+  // OnScrollableHorizontalTabStripPrefChanged() fires synchronously and
+  // must clear all clip paths and make all tabs visible.
+  browser()->profile()->GetPrefs()->SetBoolean(
+      brave_tabs::kScrollableHorizontalTabStrip, false);
+  StopAnimatingAndLayout();
+
+  // ---- "after" assertions ----
+  // Every tab must be visible and must have no clip path.
+  for (int i = 0; i < model->count(); ++i) {
+    Tab* tab = tab_strip->tab_at(i);
+    ASSERT_TRUE(tab);
+    EXPECT_TRUE(tab->GetVisible())
+        << "Tab " << i << " should be visible after scrolling is disabled.";
+    EXPECT_TRUE(tab->clip_path().isEmpty())
+        << "Tab " << i
+        << " should have an empty clip path after scrolling is disabled.";
+  }
 }
 
 IN_PROC_BROWSER_TEST_F(HorizontalScrollableTabStripBrowserTest,
