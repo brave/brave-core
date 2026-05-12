@@ -20,7 +20,7 @@ WorkspaceServiceFactory* WorkspaceServiceFactory::GetInstance() {
 
 // static
 WorkspaceService* WorkspaceServiceFactory::GetForProfile(Profile* profile) {
-  if (!base::FeatureList::IsEnabled(features::kBraveWorkspace)) {
+  if (!base::FeatureList::IsEnabled(features::kWorkspace)) {
     return nullptr;
   }
   return static_cast<WorkspaceService*>(
@@ -47,7 +47,7 @@ void WorkspaceServiceFactory::RegisterProfilePrefs(
 }
 
 bool WorkspaceServiceFactory::ServiceIsCreatedWithBrowserContext() const {
-  return false;
+  return true;
 }
 
 bool WorkspaceServiceFactory::ServiceIsNULLWhileTesting() const {

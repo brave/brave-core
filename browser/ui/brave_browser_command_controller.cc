@@ -362,7 +362,7 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 #endif
 
   // Reload options if person has an update in workspaces
-  if (base::FeatureList::IsEnabled(features::kBraveWorkspace) &&
+  if (base::FeatureList::IsEnabled(features::kWorkspace) &&
       browser_->is_type_normal()) {
     UpdateCommandForWorkspace();
     pref_change_registrar_.Add(
