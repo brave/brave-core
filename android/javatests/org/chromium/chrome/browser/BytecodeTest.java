@@ -810,6 +810,15 @@ public class BytecodeTest {
                         Intent.class));
         Assert.assertTrue(
                 methodExists(
+                        "org/chromium/chrome/browser/IntentHandler",
+                        "intentHasUnsafeInternalScheme",
+                        MethodModifier.STATIC,
+                        boolean.class,
+                        String.class,
+                        String.class,
+                        Intent.class));
+        Assert.assertTrue(
+                methodExists(
                         "org/chromium/chrome/browser/download/dialogs/DownloadLocationDialogCoordinator", // presubmit: ignore-long-line
                         "onDirectoryOptionsRetrieved",
                         MethodModifier.REGULAR,

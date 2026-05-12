@@ -32,6 +32,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/BraveFeatureUtil.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveIntentHandler.java",
+  "../../brave/android/java/org/chromium/chrome/browser/BraveIntentHandlerInternal.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveLaunchIntentDispatcher.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveLocalState.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveRelaunchUtils.java",
