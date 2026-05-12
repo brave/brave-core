@@ -296,6 +296,9 @@ fn scale_encode_mortality(number: u32, mut period: u32) -> [u8; 2] {
 }
 
 fn append_extra(buf: &mut Vec<u8>, asset_tx_payment: bool) {
+    // The asset_id is hard-coded to zero here as we only support paying transaction
+    // fees via the chain's native token (DOT) for our initial first pass.
+
     if asset_tx_payment {
         buf.extend_from_slice(&[
             0x00, /* tip */
