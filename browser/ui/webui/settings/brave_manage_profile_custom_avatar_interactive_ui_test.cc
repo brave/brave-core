@@ -133,16 +133,15 @@ IN_PROC_BROWSER_TEST_F(BraveManageProfileCustomAvatarInteractiveTest,
         content::WebContents* wc =
             browser()->tab_strip_model()->GetActiveWebContents();
         content::RenderFrameHost* rfh = wc->GetPrimaryMainFrame();
-        ASSERT_TRUE(content::ExecJs(
-            rfh, content::JsReplace(
-                     R"(
+        ASSERT_TRUE(content::ExecJs(rfh, content::JsReplace(
+                                             R"(
                       (async () => {
                         const cr = await import('chrome://resources/js/cr.js');
                         await cr.sendWithPromise('setProfileCustomAvatar', $1);
                         return true;
                       })()
                     )",
-                     test_png_base64_)));
+                                             test_png_base64_)));
       }),
       Do([this]() {
         ASSERT_TRUE(base::test::RunUntil([this]() {
@@ -155,8 +154,8 @@ IN_PROC_BROWSER_TEST_F(BraveManageProfileCustomAvatarInteractiveTest,
         content::WebContents* wc =
             browser()->tab_strip_model()->GetActiveWebContents();
         content::RenderFrameHost* rfh = wc->GetPrimaryMainFrame();
-        ASSERT_TRUE(
-            content::ExecJs(rfh, R"(chrome.send('removeProfileCustomAvatar', []);)"));
+        ASSERT_TRUE(content::ExecJs(
+            rfh, R"(chrome.send('removeProfileCustomAvatar', []);)"));
       }),
       Do([this]() {
         ASSERT_TRUE(base::test::RunUntil([this]() {
