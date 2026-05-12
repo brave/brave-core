@@ -16,7 +16,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
-#include "chrome/common/extensions/webstore_install_result.h"
+#include "extensions/browser/webstore_install_result.h"
 
 class Profile;
 
