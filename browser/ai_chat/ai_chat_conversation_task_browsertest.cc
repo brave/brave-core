@@ -127,9 +127,7 @@ class AIChatConversationTaskBrowserTest
   ConversationHandler* CreateConversationWithMockEngine() {
     AIChatConversationUIBrowserTestBase::CreateConversationWithMockEngine();
 
-    // Get the ContentAgentToolProvider from the conversation.
-    // We won't use MockToolProvider since these tests need the real
-    // ContentAgentToolProvider to validate it performs its actions.
+    // Get the ContentAgentToolProvider from the conversation
     auto* tool_provider =
         conversation_handler_->GetFirstToolProviderForTesting();
     EXPECT_TRUE(tool_provider);
@@ -166,6 +164,12 @@ class AIChatConversationTaskBrowserTest
     args.Set("website_url", url.spec());
     return mojom::ToolUseEvent::New("web_page_navigator", tool_id,
                                     *base::WriteJson(args), std::nullopt,
+                                    std::nullopt, nullptr, false);
+  }
+
+  mojom::ToolUseEventPtr CreateToolUseEvent(const std::string& tool_name,
+                                            const std::string& tool_id) {
+    return mojom::ToolUseEvent::New(tool_name, tool_id, "{}", std::nullopt,
                                     std::nullopt, nullptr, false);
   }
 

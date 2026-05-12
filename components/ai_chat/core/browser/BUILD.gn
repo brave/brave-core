@@ -247,8 +247,6 @@ source_set("test_support") {
     "test_utils.h",
     "tools/mock_tool.cc",
     "tools/mock_tool.h",
-    "tools/mock_tool_provider.cc",
-    "tools/mock_tool_provider.h",
   ]
 
   deps = [

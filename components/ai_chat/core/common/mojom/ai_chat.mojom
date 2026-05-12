@@ -284,9 +284,6 @@ struct ConversationState {
 
   // State of the current task (tool execution loop)
   TaskState tool_use_task_state = kNone;
-
-  // Which of the available capabilities are enabled for this conversation
-  array<ConversationCapability> capabilities_enabled;
 };
 
 // Browser-side handler for a Conversation
