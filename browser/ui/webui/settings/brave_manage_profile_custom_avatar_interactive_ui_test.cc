@@ -16,6 +16,7 @@
 #include "chrome/test/interaction/interactive_browser_test.h"
 #include "components/infobars/content/content_infobar_manager.h"
 #include "components/infobars/core/confirm_infobar_delegate.h"
+#include "components/infobars/core/infobar.h"
 #include "components/infobars/core/infobar_delegate.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
@@ -153,8 +154,7 @@ void DismissSyncCannotRunInfobarIfPresent(content::WebContents* web_contents) {
         infobars::InfoBarDelegate::SYNC_CANNOT_RUN_INFOBAR) {
       continue;
     }
-    infobars::ConfirmInfoBarDelegate* confirm =
-        delegate->AsConfirmInfoBarDelegate();
+    ConfirmInfoBarDelegate* confirm = delegate->AsConfirmInfoBarDelegate();
     if (confirm) {
       // "Don't show again" — clears the bar without navigating away from
       // settings (Accept opens sync settings).
