@@ -9,21 +9,32 @@ import("//ios/web/public/js_messaging/optimize_ts.gni")
 
 source_set("js_messaging") {
   sources = [
+    "js_prompt_communication_handler_impl.h",
+    "js_prompt_communication_handler_impl.mm",
     "randomized_message_handler_name.h",
     "randomized_message_handler_name.mm",
     "safe_builtins_javascript_feature.h",
     "safe_builtins_javascript_feature.mm",
   ]
-  deps = [ ":safe_builtins_js" ]
+  deps = [
+    ":safe_builtins_js",
+    "//ios/web/js_messaging:java_script_content_world_header",
+    "//ios/web/js_messaging:java_script_feature_manager_header",
+    "//ios/web/public",
+    "//net",
+    "//url",
+  ]
   public_deps = [
     "//base",
     "//ios/web/public/js_messaging",
+    "//ios/web/web_state/ui",
   ]
 }
 
 source_set("unittests") {
   testonly = true
   sources = [
+    "js_prompt_communication_handler_unittest.mm",
     "randomized_message_handler_name_inttest.mm",
     "safe_builtins_javascript_test.mm",
   ]
@@ -33,6 +44,8 @@ source_set("unittests") {
     ":safe_builtins_js",
     "//base",
     "//base/test:test_support",
+    "//ios/web/js_messaging:java_script_feature_manager_header",
+    "//ios/web/public",
     "//ios/web/public/js_messaging",
     "//ios/web/public/test:javascript_test",
     "//ios/web/public/test:test_fixture",
@@ -41,6 +54,11 @@ source_set("unittests") {
     "//testing/gtest",
     "//url",
   ]
+}
+
+compile_ts("prompt_utils") {
+  sources = [ "resources/prompt_utils.ts" ]
+  deps = [ "//ios/web/public/js_messaging:util_scripts" ]
 }
 
 compile_ts("safe_builtins") {

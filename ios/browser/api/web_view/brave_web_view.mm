@@ -41,6 +41,7 @@
 #include "brave/ios/browser/web/page_metadata/page_metadata_javascript_feature.h"
 #include "brave/ios/browser/web/reader_mode/reader_mode_javascript_feature.h"
 #include "brave/ios/browser/youtube/youtube_network_change_observer.h"
+#include "brave/ios/web/js_messaging/js_prompt_communication_handler_impl.h"
 #include "components/autofill/core/browser/logging/log_manager.h"
 #include "components/autofill/core/browser/logging/log_router.h"
 #include "components/autofill/ios/browser/autofill_agent.h"
@@ -359,6 +360,8 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
 - (void)attachSecurityInterstitialHelpersToWebStateIfNecessary {
   [super attachSecurityInterstitialHelpersToWebStateIfNecessary];
   AttachTabHelpers(self.webState);
+
+  web::JSPromptCommunicationHandlerImpl::CreateForWebState(self.webState);
 
   if (ai_chat::features::IsAIChatWebUIEnabled()) {
     ai_chat::UIHandlerBridgeHolder::CreateForWebState(self.webState);
