@@ -1022,7 +1022,7 @@
   <message name="IDS_BRAVE_WALLET_DIDNT_FIND_ASSET_IN_LIST" desc="Visible assets modal, didnt find asset in list after searching">If you didn't find your asset in this list, you can add it manually by using the button below</message>
   <message name="IDS_BRAVE_WALLET_ASSET_NOT_FOUND" desc="Visible assets modal, asset not found title">Asset not found</message>
   <message name="IDS_BRAVE_WALLET_REMOVE_ACCOUNT_MODAL_TITLE" desc="Title prompt to confirm removal of a wallet account">Are you sure you want to remove "<ph name="ACCOUNT_NAME">$1<ex>Eth Account 1</ex></ph>"?</message>
-  <message name="IDS_BRAVE_WALLET_REQUEST_FEATURE_BUTTON_TEXT" desc="Text displayed in request feature button">Request feature</message>
+  <message name="IDS_BRAVE_WALLET_REPORT_AN_ISSUE_BUTTON_TEXT" desc="Text displayed in report an issue button">Report an issue</message>
   <message name="IDS_BRAVE_WALLET_RECOVERY_PHRASE_LENGTH_ERROR" desc="Error message for when a supplied recovery phrase has an invalid number of words">Recovery phrase must be 12, 15, 18, 21, or 24 words long</message>
   <message name="IDS_BRAVE_WALLET_ENS_OFFCHAIN_PROCEED_WITH_YES" desc="Proceed with ENS offchain lookup answer">Yes</message>
   <message name="IDS_BRAVE_WALLET_ENS_OFFCHAIN_PROCEED_WITH_NO" desc="Proceed with ENS offchain lookup answer">No</message>
