@@ -113,38 +113,4 @@ TEST_F(BraveWalletP3AUnitTest, ReportOnboardingActionRestore) {
   histogram_tester_->ExpectTotalCount(kOnboardingConversionHistogramName, 0);
 }
 
-TEST_F(BraveWalletP3AUnitTest, NFTGalleryViews) {
-  histogram_tester_->ExpectTotalCount(kBraveWalletNFTCountHistogramName, 0);
-  histogram_tester_->ExpectTotalCount(kBraveWalletNFTNewUserHistogramName, 0);
-
-  wallet_p3a()->RecordNFTGalleryView(0);
-  histogram_tester_->ExpectUniqueSample(kBraveWalletNFTCountHistogramName, 0,
-                                        1);
-  histogram_tester_->ExpectUniqueSample(kBraveWalletNFTNewUserHistogramName, 1,
-                                        1);
-
-  wallet_p3a()->RecordNFTGalleryView(6);
-  histogram_tester_->ExpectBucketCount(kBraveWalletNFTCountHistogramName, 2, 1);
-  // new user histogram should only be reported once, ever
-  histogram_tester_->ExpectUniqueSample(kBraveWalletNFTNewUserHistogramName, 1,
-                                        1);
-}
-
-TEST_F(BraveWalletP3AUnitTest, NFTDiscoveryEnabled) {
-  histogram_tester_->ExpectTotalCount(
-      kBraveWalletNFTDiscoveryEnabledHistogramName, 0);
-
-  local_state_.SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
-  histogram_tester_->ExpectUniqueSample(
-      kBraveWalletNFTDiscoveryEnabledHistogramName, 0, 1);
-
-  prefs_.SetBoolean(kBraveWalletNftDiscoveryEnabled, true);
-  histogram_tester_->ExpectBucketCount(
-      kBraveWalletNFTDiscoveryEnabledHistogramName, 1, 1);
-
-  prefs_.SetBoolean(kBraveWalletNftDiscoveryEnabled, false);
-  histogram_tester_->ExpectBucketCount(
-      kBraveWalletNFTDiscoveryEnabledHistogramName, 0, 2);
-}
-
 }  // namespace brave_wallet

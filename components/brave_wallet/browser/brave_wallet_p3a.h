@@ -34,12 +34,6 @@ inline constexpr char kBraveWalletNewUserReturningHistogramName[] =
     "Brave.Wallet.NewUserReturning";
 inline constexpr char kBraveWalletLastUsageTimeHistogramName[] =
     "Brave.Wallet.LastUsageTime";
-inline constexpr char kBraveWalletNFTCountHistogramName[] =
-    "Brave.Wallet.NFTCount";
-inline constexpr char kBraveWalletNFTNewUserHistogramName[] =
-    "Brave.Wallet.NFTNewUser";
-inline constexpr char kBraveWalletNFTDiscoveryEnabledHistogramName[] =
-    "Brave.Wallet.NFTDiscoveryEnabled";
 
 class BraveWalletService;
 class KeyringService;
@@ -66,7 +60,6 @@ class BraveWalletP3A : public KeyringServiceObserverBase,
 
   void ReportUsage(bool unlocked);
   void ReportOnboardingAction(mojom::OnboardingAction action) override;
-  void RecordNFTGalleryView(int nft_count) override;
 
   // KeyringServiceObserverBase:
   void WalletCreated() override;
@@ -80,7 +73,6 @@ class BraveWalletP3A : public KeyringServiceObserverBase,
   void RecordInitialBraveWalletP3AState();
   std::optional<mojom::OnboardingAction> GetLastOnboardingAction();
   void RecordOnboardingHistogram();
-  void ReportNftDiscoverySetting();
   raw_ptr<BraveWalletService> wallet_service_;
   raw_ptr<KeyringService> keyring_service_;
   raw_ptr<PrefService> profile_prefs_;
@@ -94,7 +86,6 @@ class BraveWalletP3A : public KeyringServiceObserverBase,
   mojo::ReceiverSet<mojom::BraveWalletP3A> receivers_;
   base::RepeatingTimer update_timer_;
   PrefChangeRegistrar local_state_change_registrar_;
-  PrefChangeRegistrar profile_pref_change_registrar_;
 };
 
 }  // namespace brave_wallet

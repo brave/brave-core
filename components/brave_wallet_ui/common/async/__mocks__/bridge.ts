@@ -688,9 +688,6 @@ export class MockedWalletApiProxy {
     reportOnboardingAction: (action) => {
       console.log(`reporting onboarding action: ${action}`)
     },
-    recordNFTGalleryView(nftCount) {
-      console.log(`viewing nft gallery with ${nftCount} nfts`)
-    },
   }
 
   assetRatioService: Partial<
