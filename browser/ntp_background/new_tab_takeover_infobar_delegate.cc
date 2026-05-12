@@ -107,11 +107,6 @@ void NewTabTakeoverInfoBarDelegate::InfoBarDismissed() {
   SuppressNewTabTakeoverInfobar(prefs_);
 }
 
-std::vector<int> NewTabTakeoverInfoBarDelegate::GetButtonsOrder() const {
-  // The infobar has no buttons.
-  return {};
-}
-
 bool NewTabTakeoverInfoBarDelegate::ShouldSupportMultiLine() const {
   return true;
 }
