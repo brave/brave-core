@@ -83,9 +83,6 @@ std::string GetNetworkForPolkadotAccount(const mojom::AccountIdPtr& account_id);
 mojom::CoinType GetCoinForKeyring(mojom::KeyringId keyring_id);
 bool IsAccountBasedCoin(mojom::CoinType coin);
 
-mojom::CoinType GetCoinTypeFromTxDataUnion(
-    const mojom::TxDataUnion& tx_data_union);
-
 GURL GetActiveEndpointUrl(const mojom::NetworkInfo& chain);
 
 std::vector<mojom::CoinType> GetEnabledCoins();

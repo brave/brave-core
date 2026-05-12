@@ -938,11 +938,6 @@ enum KeyringId {
   kPolkadotImportTestnet = 17,
 };
 
-const string kP3ACountTestNetworksSwitch = "p3a-count-wallet-test-networks";
-
-const string kP3ACountTestNetworksLoadTimeKey =
-    "braveWalletP3ACountTestNetworks";
-
 enum FilecoinAddressProtocol {
   SECP256K1 = 1,  // Represents the address SECP256K1 protocol
   BLS = 3,  // Represents the address BLS protocol
@@ -3184,9 +3179,6 @@ interface BraveWalletService {
 interface BraveWalletP3A {
   // Called when a Wallet onboarding action is performed.
   ReportOnboardingAction(OnboardingAction onboarding_action);
-
-  // Called to report an active wallet count for P3A
-  RecordActiveWalletCount(int32 count, CoinType coin_type);
 
   // Called to report displayed NFT count upon viewing the NFT gallery
   RecordNFTGalleryView(int32 nft_count);

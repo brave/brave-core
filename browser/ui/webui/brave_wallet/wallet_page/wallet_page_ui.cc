@@ -119,9 +119,6 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
   source->AddString("braveWalletMarketUiBridgeUrl", kUntrustedMarketURL);
   source->AddBoolean("isMobile", IsMobile());
   source->AddBoolean("isIOS", false);
-  source->AddBoolean(mojom::kP3ACountTestNetworksLoadTimeKey,
-                     base::CommandLine::ForCurrentProcess()->HasSwitch(
-                         mojom::kP3ACountTestNetworksSwitch));
   source->AddBoolean("rewardsFeatureEnabled", IsRewardsFeatureEnabled(profile));
   source->AddBoolean("walletDebug", IsWalletDebugEnabled());
 

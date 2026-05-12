@@ -688,10 +688,6 @@ export class MockedWalletApiProxy {
     reportOnboardingAction: (action) => {
       console.log(`reporting onboarding action: ${action}`)
     },
-    recordActiveWalletCount(count, coinType) {
-      // Follow up issue to fix test via https://github.com/brave/brave-browser/issues/43583
-      // console.log(`active wallet count: ${count} for ${coinType}`)
-    },
     recordNFTGalleryView(nftCount) {
       console.log(`viewing nft gallery with ${nftCount} nfts`)
     },

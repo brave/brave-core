@@ -56,7 +56,6 @@ import org.chromium.chrome.browser.crypto_wallet.util.SolanaTransactionsGasHelpe
 import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.TransactionUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
-import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.util.TabUtils;
 
 import java.lang.ref.WeakReference;
@@ -302,32 +301,24 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
             AccountInfo txAccountInfo,
             AccountInfo[] accounts,
             BlockchainToken[] filterByTokens) {
-        LiveDataUtil.observeOnce(
-                getWalletModel().getCryptoModel().getNetworkModel().mCryptoNetworks,
-                allNetworks -> {
-                    Utils.getTxExtraInfo(
-                            new WeakReference<>((BraveWalletBaseActivity) getActivity()),
-                            TokenUtils.TokenType.ALL,
-                            allNetworks,
+        Utils.getTxExtraInfo(
+                new WeakReference<>((BraveWalletBaseActivity) getActivity()),
+                TokenUtils.TokenType.ALL,
+                txNetwork,
+                accounts,
+                filterByTokens,
+                false,
+                (assetPrices, fullTokenList, nativeAssetsBalances, blockchainTokensBalances) -> {
+                    if (!canUpdateUi() || mTxInfo == null) return;
+                    fillAssetDependentControls(
+                            mTxInfo,
+                            view,
                             txNetwork,
+                            txAccountInfo,
                             accounts,
-                            filterByTokens,
-                            false,
-                            (assetPrices,
-                                    fullTokenList,
-                                    nativeAssetsBalances,
-                                    blockchainTokensBalances) -> {
-                                if (!canUpdateUi() || mTxInfo == null) return;
-                                fillAssetDependentControls(
-                                        mTxInfo,
-                                        view,
-                                        txNetwork,
-                                        txAccountInfo,
-                                        accounts,
-                                        assetPrices,
-                                        fullTokenList,
-                                        mSolanaEstimatedTxFee);
-                            });
+                            assetPrices,
+                            fullTokenList,
+                            mSolanaEstimatedTxFee);
                 });
     }
 

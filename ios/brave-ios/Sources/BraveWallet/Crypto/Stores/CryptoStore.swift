@@ -252,7 +252,6 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
 
   public func setupObservers() {
     guard !isObserving else { return }
-    self.userAssetManager.addUserAssetDataObserver(self)
     self.keyringServiceObserver = KeyringServiceObserver(
       keyringService: keyringService,
       _walletReset: { [weak self] in
@@ -917,45 +916,6 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       }
     }
   }
-
-  private func recordP3AActiveWallets() {
-    Task { @MainActor in
-      let shouldCountTestNetworks = Preferences.BraveCore.activeSwitches.value.contains(
-        BraveWallet.P3aCountTestNetworksSwitch
-      )
-      let allAccounts = await keyringService.allAccounts().accounts
-      let supportedCoinTypes = WalletConstants.supportedCoinTypes()
-      let accountsForCoin = Dictionary(grouping: allAccounts, by: \.coin)
-      for coin in supportedCoinTypes {
-        var activeAccountsForCoin = Int32(0)
-        let accounts = accountsForCoin[coin] ?? []
-        for account in accounts {
-          if let balancesForAccount = userAssetManager.getAssetBalances(
-            for: nil,
-            account: account.id
-          ) {
-            let balancesScopedForP3A = balancesForAccount.optionallyFilter(
-              shouldFilter: !shouldCountTestNetworks,
-              isIncluded: { assetBalance in
-                !WalletConstants.supportedTestNetworkChainIds.contains(where: {
-                  $0 == assetBalance.chainId
-                })
-              }
-            )
-            if balancesScopedForP3A.contains(where: { assetBalance in
-              guard let balance = Double(assetBalance.balance) else { return false }
-              return balance > 0  // account has some balance
-            }) {
-              activeAccountsForCoin += 1
-              // move to next account
-              continue
-            }
-          }
-        }
-        walletP3A.recordActiveWalletCount(activeAccountsForCoin, coinType: coin)
-      }
-    }
-  }
 }
 
 extension CryptoStore: PreferencesObserver {
@@ -972,14 +932,5 @@ extension CryptoStore: PreferencesObserver {
         updateAssets()
       }
     }
-  }
-}
-
-extension CryptoStore: WalletUserAssetDataObserver {
-  public func cachedBalanceRefreshed() {
-    recordP3AActiveWallets()
-  }
-
-  public func userAssetUpdated() {
   }
 }

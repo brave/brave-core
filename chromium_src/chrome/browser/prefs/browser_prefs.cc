@@ -298,7 +298,9 @@ void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
 #endif
   ntp_background_images::NTPBackgroundImagesService::
       MigrateObsoleteLocalStatePrefs(local_state);
-
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  brave_wallet::MigrateObsoleteLocalStatePrefs(local_state);
+#endif
   // END_MIGRATE_OBSOLETE_LOCAL_STATE_PREFS
 }
 
