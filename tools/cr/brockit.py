@@ -214,6 +214,8 @@ from git_status import GitStatus
 from patchfile import Patchfile
 import plaster
 from plaster import PlasterFile, PlasterFileNeedsRegen
+import rebase_v2
+from rebase_v2 import REASSIGN_COMMIT_MSG_PREFIX
 import repository
 from repository import Repository
 from terminal import IncendiaryErrorHandler, console, is_verbose, terminal
@@ -266,8 +268,6 @@ MINOR_VERSION_BUMP_ISSUE_TEMPLATE = """### Minor Chromium bump
 - No specific code changes in Brave (only line number changes in patches)
 """
 
-# This is a brockit specific prefix for commit messages, similar to `fixup!`.
-REASSIGN_COMMIT_MSG_PREFIX = 'reassign!'
 
 def _get_current_branch_upstream_name() -> Optional[str]:
     """Retrieves the name of the current branch's upstream.
@@ -2072,9 +2072,13 @@ class Rebase(Task):
         with open(todo_file, 'w') as file:
             file.writelines(content_to_write)
 
-    def execute(self, from_ref: Optional[str], to_ref: Optional[str],
-                recommit: bool, discard_regen_changes: bool,
-                squash_minor_bumps: bool) -> bool:
+    def execute(self,
+                from_ref: Optional[str],
+                to_ref: Optional[str],
+                recommit: bool,
+                discard_regen_changes: bool,
+                squash_minor_bumps: bool,
+                v2: bool = False) -> bool:
         """Rebases the current branch onto the provided ref.
 
     This function rebases the current branch onto the provided branch. It is
@@ -2124,19 +2128,44 @@ class Rebase(Task):
         # if that's desired. That's done by calling this script again with
         # special internal flags.
         env = os.environ.copy()
+        # Capture the user's preferred editors BEFORE we override
+        # `GIT_SEQUENCE_EDITOR` / `GIT_EDITOR` below -- v2's editor
+        # fallback flows through `--internal-rebase-crash-*-editor` and
+        # needs to know what the user originally configured.
+        crash_seq_editor = rebase_v2.get_git_editor('GIT_SEQUENCE_EDITOR')
+        crash_msg_editor = rebase_v2.get_git_editor()
         editor = [str(VPYTHON3_PATH), __file__]
+        # v2 plan-rewriting flags share the `--internal-rebase-v2-plan-`
+        # prefix so the dispatch can detect them with one check and
+        # consolidate both into a single `rewrite_plan` call.
+        discard_flag = ('--internal-rebase-v2-plan-discard-recyclable'
+                        if v2 else '--internal-rebase-remove-regen-changes')
+        squash_plan_flag = ('--internal-rebase-v2-plan-squash-pinned'
+                            if v2 else '--internal-rebase-squash-minor-bumps')
+        squash_msg_flag = ('--internal-rebase-v2-fix-message' if v2 else
+                           '--internal-rebase-squash-commit-message')
         if discard_regen_changes:
-            editor.append('--internal-rebase-remove-regen-changes')
+            editor.append(discard_flag)
         if recommit:
             editor.append('--internal-rebase-recommit')
         if squash_minor_bumps:
-            editor.append('--internal-rebase-squash-minor-bumps')
+            editor.append(squash_plan_flag)
 
             # Squashes will cause `GIT_EDITOR` also to open for the commit
             # message, so we need to handle those too.
-            env["GIT_EDITOR"] = (
-                f'{str(VPYTHON3_PATH)} '
-                f'{__file__} --internal-rebase-squash-commit-message')
+            msg_editor_cmd = (
+                f'{str(VPYTHON3_PATH)} {__file__} {squash_msg_flag}')
+            if v2:
+                msg_editor_cmd += (
+                    f' --internal-rebase-crash-msg-editor={crash_msg_editor}')
+            env["GIT_EDITOR"] = msg_editor_cmd
+
+        if v2 and len(editor) > 2:
+            # Pass the captured sequence-editor fallback alongside the
+            # v2 plan flags so the subprocess can hand off to it when
+            # `EditorRecoverableFailure` fires.
+            editor.append(
+                f'--internal-rebase-crash-sequence-editor={crash_seq_editor}')
 
         if len(editor) > 2:
             env["GIT_SEQUENCE_EDITOR"] = " ".join(editor)
@@ -2436,6 +2465,10 @@ def main():
         help=
         'Squashes all the minor bumps in-between the the last version and the '
         'previous upstream ref.')
+    rebase_parser.add_argument(
+        '--v2',
+        action='store_true',
+        help='Use the Rebase v2 code path (rebase_v2.py).')
 
     subparsers.add_parser(
         'update-version-issue',
@@ -2519,7 +2552,8 @@ def main():
                          to_ref=args.to_ref,
                          recommit=args.recommit,
                          discard_regen_changes=args.discard_regen_changes,
-                         squash_minor_bumps=args.squash_minor_bumps)
+                         squash_minor_bumps=args.squash_minor_bumps,
+                         v2=args.v2)
         if args.command == 'regen':
             Regen(
                 resolve_version_with_from_ref_arg()).run(dry_run=args.dry_run)
@@ -2549,6 +2583,55 @@ if __name__ == '__main__':
             Rebase.squash_minor_bumps_from_rebase_plan(Path(sys.argv[-1]))
         if '--internal-rebase-squash-commit-message' in sys.argv:
             Rebase.fix_squash_commit_messages(Path(sys.argv[-1]))
+
+        def _crash_editor_from_argv(flag_prefix: str) -> str:
+            """Pulls a `--<flag_prefix>=<editor>` value out of `sys.argv`.
+
+            Raises `NotImplementedError` when the flag is absent or its
+            value is empty -- `Rebase.execute` appends this flag
+            unconditionally for v2 rebase steps, so a missing value
+            means a wiring bug rather than something recoverable at
+            runtime.
+            """
+            prefix = f'{flag_prefix}='
+            for arg in sys.argv:
+                if arg.startswith(prefix):
+                    value = arg[len(prefix):]
+                    if value:
+                        return value
+                    break
+            raise NotImplementedError(
+                f'Expected --{flag_prefix}=<editor> in sys.argv but '
+                f'none was found (or it was empty). `Rebase.execute` '
+                f'should have appended it for this v2 dispatch.')
+
+        if any(a.startswith('--internal-rebase-v2-plan-') for a in sys.argv):
+            editor_path = Path(sys.argv[-1])
+            crash_editor = _crash_editor_from_argv(
+                '--internal-rebase-crash-sequence-editor')
+            try:
+                rebase_v2.rewrite_plan(
+                    todo_file=editor_path,
+                    discard_recyclable=(
+                        '--internal-rebase-v2-plan-discard-recyclable'
+                        in sys.argv),
+                    pinned_squashed=('--internal-rebase-v2-plan-squash-pinned'
+                                     in sys.argv))
+            except rebase_v2.EditorRecoverableFailure as e:
+                rebase_v2.hand_off_to_editor(editor_path,
+                                             reason=str(e),
+                                             editor=crash_editor)
+        if '--internal-rebase-v2-fix-message' in sys.argv:
+            editor_path = Path(sys.argv[-1])
+            crash_editor = _crash_editor_from_argv(
+                '--internal-rebase-crash-msg-editor')
+            try:
+                writer = rebase_v2.MessageWriter.parse(editor_path)
+                writer.rewrite_with_last_message()
+            except rebase_v2.EditorRecoverableFailure as e:
+                rebase_v2.hand_off_to_editor(editor_path,
+                                             reason=str(e),
+                                             editor=crash_editor)
         sys.exit(0)
 
     sys.exit(main())
