@@ -759,6 +759,7 @@ if (!is_android) {
     sources = [ "//chrome/test/base/interactive_ui_tests_main.cc" ]
 
     deps = [
+      ":browser_test_support",
       "//brave:packed_resources",
       "//chrome:packed_resources",
       "//chrome/browser",
@@ -768,6 +769,10 @@ if (!is_android) {
       "//ui/base/interaction",
       "//ui/compositor",
     ]
+
+    if (is_win) {
+      deps += [ "//chrome/installer/util:strings" ]
+    }
 
     if (enable_commander) {
       deps += [ "//brave/browser/ui/commander:interactive_ui_tests" ]
