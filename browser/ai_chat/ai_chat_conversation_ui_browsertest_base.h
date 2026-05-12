@@ -94,6 +94,10 @@ class AIChatConversationUIBrowserTestBase : public InProcessBrowserTest {
   std::unique_ptr<base::test::TestFuture<MockGenerateCallbacks>>
   SetupMockGenerateAssistantResponse(testing::Sequence* sequence = nullptr);
 
+  // Create mock tool use event
+  mojom::ToolUseEventPtr CreateToolUseEvent(const std::string& tool_name,
+                                            const std::string& tool_id);
+
   raw_ptr<content::RenderFrameHost> conversation_rfh_ = nullptr;
   raw_ptr<AIChatService> service_ = nullptr;
   raw_ptr<ConversationHandler> conversation_handler_ = nullptr;

@@ -351,6 +351,7 @@ source_set("browser_tests") {
       "ai_chat_browsertests.cc",
       "ai_chat_conversation_entries_browsertest.cc",
       "ai_chat_conversation_task_browsertest.cc",
+      "ai_chat_conversation_ui_browsertest.cc",
       "ai_chat_conversation_ui_browsertest_base.cc",
       "ai_chat_conversation_ui_browsertest_base.h",
       "ai_chat_metrics_browsertest.cc",

@@ -284,6 +284,7 @@ type CustomArgs = {
   initialized: boolean
   currentErrorState: keyof typeof Mojom.APIError
   toolUseTaskState: keyof typeof Mojom.TaskState
+  capabilitiesEnabled: Array<keyof typeof Mojom.ConversationCapability>
   model: string
   inputText: Content
   editingConversationId: string | null
@@ -331,6 +332,7 @@ const args: CustomArgs = {
   inputText: [
     `Write a Star Trek poem about Data's life on board the Enterprise`,
   ],
+  capabilitiesEnabled: ['CHAT'],
   conversationListCount: CONVERSATIONS.length,
   hasSuggestedQuestions: true,
   hasAssociatedContent: true,
@@ -392,6 +394,10 @@ const meta: Meta<CustomArgs> = {
     toolUseTaskState: {
       options: getKeysForMojomEnum(Mojom.TaskState),
       control: { type: 'select' },
+    },
+    capabilitiesEnabled: {
+      options: getKeysForMojomEnum(Mojom.ConversationCapability),
+      control: { type: 'multi-select' },
     },
     suggestionStatus: {
       options: getKeysForMojomEnum(Mojom.SuggestionGenerationStatus),
@@ -567,6 +573,9 @@ function StoryContext(
               temporary: argsRef.current.isTemporaryChat,
               toolUseTaskState:
                 Mojom.TaskState[argsRef.current.toolUseTaskState],
+              capabilitiesEnabled: argsRef.current.capabilitiesEnabled.map(
+                (value) => Mojom.ConversationCapability[value],
+              ),
             },
           })
         },
@@ -637,9 +646,9 @@ function StoryContext(
               canSubmitUserEntries: currentError === Mojom.APIError.None,
               allModels: MODELS,
               currentModelKey: currentModel?.key ?? '',
-              conversationCapabilities: [
-                Mojom.ConversationCapability.CONTENT_AGENT,
-              ],
+              conversationCapabilities: args.capabilitiesEnabled.map(
+                (value) => Mojom.ConversationCapability[value],
+              ),
             },
           }}
           overrides={{

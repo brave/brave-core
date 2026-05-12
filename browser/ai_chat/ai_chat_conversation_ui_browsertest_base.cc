@@ -269,4 +269,11 @@ AIChatConversationUIBrowserTestBase::SetupMockGenerateAssistantResponse(
   return future;
 }
 
+mojom::ToolUseEventPtr AIChatConversationUIBrowserTestBase::CreateToolUseEvent(
+    const std::string& tool_name,
+    const std::string& tool_id) {
+  return mojom::ToolUseEvent::New(tool_name, tool_id, "{}", std::nullopt,
+                                  std::nullopt, nullptr, false);
+}
+
 }  // namespace ai_chat
