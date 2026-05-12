@@ -1423,8 +1423,8 @@ provideStrings({
     + 'by using the button below',
   braveWalletAssetNotFound: 'Asset not found',
 
-  // Request feature button
-  braveWalletRequestFeatureButtonText: 'Request feature',
+  // Report an issue button
+  braveWalletReportAnIssueButtonText: 'Report an issue',
 
   // Warnings
   braveWalletNonAsciiCharactersInMessageWarning:

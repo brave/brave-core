@@ -45,4 +45,5 @@ export const IdeaButtonIcon = styled.span`
   mask-image: url(${IdeaIcon});
   mask-size: cover;
   margin-right: 8px;
+  rotate: 180deg;
 `
