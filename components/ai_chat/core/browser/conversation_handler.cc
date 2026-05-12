@@ -28,7 +28,6 @@
 #include "base/functional/callback.h"
 #include "base/logging.h"
 #include "base/memory/weak_ptr.h"
-#include "base/notreached.h"
 #include "base/numerics/safe_math.h"
 #include "base/rand_util.h"
 #include "base/strings/strcat.h"
@@ -1396,23 +1395,6 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
         for (const auto& existing : *entry->events) {
           if (existing->is_tool_use_event() &&
               existing->get_tool_use_event()->id == tool_use_event->id) {
-            // Dump the tool and model name until we figure out
-            // which tool / model combination is causing duplicate IDs.
-            // TODO(https://github.com/brave/brave-browser/issues/55439):
-            // Consider removing this once we have enough information to address
-            // the root cause of which model/tool is generating duplicate IDs.
-            SCOPED_CRASH_KEY_STRING1024("BraveAIChatToolName", "name",
-                                        tool_use_event->tool_name);
-            SCOPED_CRASH_KEY_STRING1024("BraveAIChatToolId", "id",
-                                        tool_use_event->id);
-            if (GetCurrentModel().options->is_leo_model_options()) {
-              SCOPED_CRASH_KEY_STRING1024("BraveAIChatModel", "key",
-                                          model_key_);
-            }
-            DUMP_WILL_BE_NOTREACHED()
-                << "Dropping tool_use event with duplicate id: "
-                << tool_use_event->id << " (tool: " << tool_use_event->tool_name
-                << ")";
             return;
           }
         }
