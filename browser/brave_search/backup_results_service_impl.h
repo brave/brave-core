@@ -17,9 +17,12 @@
 #include "brave/components/brave_search/browser/backup_results_metrics.h"
 #include "brave/components/brave_search/browser/backup_results_service.h"
 #include "chrome/browser/profiles/profile_observer.h"
+#include "content/public/browser/navigation_controller.h"
 #include "net/http/http_request_headers.h"
+#include "third_party/blink/public/common/user_agent/user_agent_metadata.h"
 #include "url/gurl.h"
 
+class PrefService;
 class Profile;
 
 namespace content {
@@ -100,7 +103,22 @@ class BackupResultsServiceImpl : public BackupResultsService,
   void CleanupAndDispatchResult(PendingRequestList::iterator pending_request,
                                 std::optional<BackupResults> result);
 
+  void MaybeApplyUserAgentOverride(
+      content::WebContents& web_contents,
+      content::NavigationController::LoadURLParams& load_url_params);
+
+  net::HttpRequestHeaders GetExtraHeaders(
+      const std::optional<net::HttpRequestHeaders>& request_headers);
+
+  // Returns true if the daily request limit has been reached, false otherwise.
+  bool UpdateDailyRequestCount();
+
   raw_ptr<Profile> profile_;
+  raw_ptr<PrefService> local_state_;
+
+  // Cached on first use; nullopt if param is absent/invalid.
+  std::optional<blink::UserAgentOverride> ua_override_;
+  std::optional<net::HttpRequestHeaders> feature_headers_;
 
   PendingRequestList pending_requests_;
 

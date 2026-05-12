@@ -31,6 +31,20 @@ extern const base::FeatureParam<int> kBackupResultsFullRenderMaxRequests;
 
 bool IsBackupResultsFullRenderEnabled();
 
+// Provides request configuration for the backup results service.
+BASE_DECLARE_FEATURE(kBackupResults);
+// JSON-serialized headers object {"Header-Name": "value"} to include in
+// SimpleURLLoader requests.
+extern const base::FeatureParam<std::string> kBackupResultsHeaders;
+// UA string override for WebContents and User-Agent header in SimpleURLLoader
+// requests.
+extern const base::FeatureParam<std::string> kBackupResultsUAOverride;
+// Base64-encoded pickled blink::UserAgentMetadata. Only used if
+// kBackupResultsUAOverride is also provided.
+extern const base::FeatureParam<std::string> kBackupResultsUAMetadata;
+// Maximum number of backup results fetches allowed per day. -1 means no limit.
+extern const base::FeatureParam<int> kBackupResultsMaxDailyRequests;
+
 }  // namespace features
 }  // namespace brave_search
 
