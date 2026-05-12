@@ -756,7 +756,7 @@ bool BravePrefProvider::SetWebsiteSetting(
     const ContentSettingsPattern& primary_pattern,
     const ContentSettingsPattern& secondary_pattern,
     ContentSettingsType content_type,
-    base::Value&& in_value,
+    const base::Value& in_value,
     const ContentSettingConstraints& constraints) {
   const auto cookie_is_found_in =
       [&primary_pattern = std::as_const(primary_pattern),
@@ -783,31 +783,29 @@ bool BravePrefProvider::SetWebsiteSetting(
       // change to type ContentSettingsType::BRAVE_COOKIES
       return SetWebsiteSettingInternal(primary_pattern, secondary_pattern,
                                        ContentSettingsType::BRAVE_COOKIES,
-                                       std::move(in_value), constraints);
+                                       in_value, constraints);
     }
   }
 
   return SetWebsiteSettingInternal(primary_pattern, secondary_pattern,
-                                   content_type, std::move(in_value),
-                                   constraints);
+                                   content_type, in_value, constraints);
 }
 
 bool BravePrefProvider::SetWebsiteSettingForTest(
     const ContentSettingsPattern& primary_pattern,
     const ContentSettingsPattern& secondary_pattern,
     ContentSettingsType content_type,
-    base::Value&& value,
+    const base::Value& value,
     const ContentSettingConstraints& constraints) {
   return PrefProvider::SetWebsiteSetting(primary_pattern, secondary_pattern,
-                                         content_type, std::move(value),
-                                         constraints);
+                                         content_type, value, constraints);
 }
 
 bool BravePrefProvider::SetWebsiteSettingInternal(
     const ContentSettingsPattern& primary_pattern,
     const ContentSettingsPattern& secondary_pattern,
     ContentSettingsType content_type,
-    base::Value&& in_value,
+    const base::Value& in_value,
     const ContentSettingConstraints& constraints) {
   // PrefProvider ignores default settings so handle them here for shields
   if (content_settings::IsShieldsContentSettingsType(content_type) &&
@@ -837,7 +835,7 @@ bool BravePrefProvider::SetWebsiteSettingInternal(
 
     GetPref(content_type)
         ->SetWebsiteSetting(primary_pattern, secondary_pattern,
-                            std::move(in_value), std::move(metadata));
+                            in_value.Clone(), std::move(metadata));
     return true;
   }
 
@@ -850,8 +848,7 @@ bool BravePrefProvider::SetWebsiteSettingInternal(
   }
 
   return PrefProvider::SetWebsiteSetting(primary_pattern, secondary_pattern,
-                                         content_type, std::move(in_value),
-                                         constraints);
+                                         content_type, in_value, constraints);
 }
 
 std::unique_ptr<RuleIterator> BravePrefProvider::GetRuleIterator(
