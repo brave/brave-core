@@ -43,6 +43,20 @@
 -WebUIURLLoaderFactoryTest.RangeRequest/3
 -WebUIURLLoaderFactoryTest.RangeRequest/4
 
+# These tests fail because kPrerender2 feature is disabled.
+-PrerenderHostRegistryTest.*
+-PrerenderHostRegistryTest.*
+-PrerenderHostTest.*
+-PrerenderHostTest.*
+-PrerendererTest.*
+
+# These tests fail because we intentionally disable fenced frames via
+# blink::features::kFencedFrames
+-EmailVerificationRequestTest.FencedFrameRejected
+-FencedFrameReporterTest.AttributionManagerShutDown_NoCrash
+-FencedFrameReporterTest.SendFledgeReportsBeforeMapsReceivedWithErrors
+-FencedFrameReporterTest.SendFledgeReportsNoMapReceived
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AdAuctionServiceImplPrivateAggregationEnabledTest.*
 -AggregatableAttributionUtilsTest.*
@@ -85,9 +99,6 @@
 -ContextRecyclerPrivateAggregationErrorReportingEnabledTest.PrivateAggregationForEventErrorBindings
 -ContextRecyclerPrivateAggregationExtensionsEnabledTest.PrivateAggregationForEventBindingsReservedOnceOff
 -ContextRecyclerPrivateAggregationExtensionsEnabledTest.PrivateAggregationForEventNonErrorBindings
--FencedFrameReporterTest.AttributionManagerShutDown_NoCrash
--FencedFrameReporterTest.SendFledgeReportsBeforeMapsReceivedWithErrors
--FencedFrameReporterTest.SendFledgeReportsNoMapReceived
 -FetchLaterKeepAliveURLLoaderServiceTest.ForwardRedirectsAndResponseToAttributionRequestHelper
 -KeepAliveAttributionRequestHelperTest.*
 -KeepAliveAttributionRequestHelperTest.CreateIfNeeded_MetricRecorded
@@ -97,12 +108,8 @@
 -KeepAliveURLLoaderServiceTest.OnReceiveRedirectWithErrorRedirectMode_NotForwardedToAttributionRequestHelper
 -LocalResourceURLLoaderFactoryCanServeTest/LocalResourceURLLoaderFactoryCanServeTest.CanServe/1
 -LocalResourceURLLoaderFactoryCanServeTest/LocalResourceURLLoaderFactoryCanServeTest.CanServe/2
+-LocalResourceURLLoaderFactoryTest.QueryParametersFallBackOnMismatch
 -ParametrizedTests/PrefetchService*
--PrerenderHostRegistryTest.*
--PrerenderHostRegistryTest.*
--PrerenderHostTest.*
--PrerenderHostTest.*
--PrerendererTest.*
 -PrivateAggregationInternalsHandlerImplTest.ClearStorage
 -PrivateAggregationReportGoldenLatestVersionTest.VerifyGoldenReport
 -RenderFrameHostImplTest.*
