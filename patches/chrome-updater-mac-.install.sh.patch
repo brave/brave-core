@@ -1,7 +1,16 @@
 diff --git a/chrome/updater/mac/.install.sh b/chrome/updater/mac/.install.sh
-index 3b1874d09fca0cf88e361927dfea7c4273790030..598b668ee141a0fe97fa65807755ee866a1fe6b6 100755
+index 3b1874d09fca0cf88e361927dfea7c4273790030..a1b6a4fb30123dfd26ff22aad6c5a208e9777f09 100755
 --- a/chrome/updater/mac/.install.sh
 +++ b/chrome/updater/mac/.install.sh
+@@ -322,7 +322,7 @@ main() {
+   # --ignore-times, which is desirable, as it forces rsync to copy files even
+   # when their sizes and modification times are identical, as their content
+   # still may be different.
+-  readonly RSYNC_FLAGS="--ignore-times --links --perms --recursive --times"
++  readonly RSYNC_FLAGS="--ignore-times --links $(if [[ ${EUID} -eq 0 ]]; then echo "--perms --recursive --times"; else echo "--no-perms --executability --chmod=u=rwX,go=rX --recursive"; fi)"
+ 
+   note "update_dmg_mount_point = ${update_dmg_mount_point}"
+ 
 @@ -337,7 +337,7 @@ main() {
    # The update to install.
  
