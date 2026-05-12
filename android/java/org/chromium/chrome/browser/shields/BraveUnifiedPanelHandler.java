@@ -1752,13 +1752,13 @@ public class BraveUnifiedPanelHandler {
         if (registrableDomain == null
                 || registrableDomain.isEmpty()
                 || registrableDomain.equals(origin.getHost())) {
-            tryAlternativeTldFavicon(origin, origin.getHost());
+            onFaviconResult(origin, null);
             return;
         }
 
         GURL registrableOrigin = new GURL(origin.getScheme() + "://" + registrableDomain);
         if (!registrableOrigin.isValid()) {
-            tryAlternativeTldFavicon(origin, registrableDomain);
+            onFaviconResult(origin, null);
             return;
         }
 
@@ -1769,77 +1769,7 @@ public class BraveUnifiedPanelHandler {
                 /* fallbackToHost= */ false,
                 (bitmap, iconUrl) -> {
                     if (mBlockedItemsContainer == null || mContext == null) return;
-                    PostTask.postTask(
-                            TaskTraits.UI_DEFAULT,
-                            () -> {
-                                if (bitmap != null) {
-                                    onFaviconResult(origin, bitmap);
-                                } else {
-                                    tryAlternativeTldFavicon(origin, registrableDomain);
-                                }
-                            });
-                });
-    }
-
-    private void tryAlternativeTldFavicon(GURL origin, String registrableDomain) {
-        if (mFaviconHelper == null || mProfile == null || registrableDomain == null) {
-            onFaviconResult(origin, null);
-            return;
-        }
-
-        int lastDot = registrableDomain.lastIndexOf('.');
-        if (lastDot <= 0) {
-            onFaviconResult(origin, null);
-            return;
-        }
-
-        String baseName = registrableDomain.substring(0, lastDot);
-        String currentTld = registrableDomain.substring(lastDot);
-
-        String[] tldsToTry = {".com", ".net", ".org"};
-        List<GURL> candidates = new ArrayList<>();
-        for (String tld : tldsToTry) {
-            if (!tld.equals(currentTld)) {
-                GURL candidate = new GURL(origin.getScheme() + "://" + baseName + tld);
-                if (candidate.isValid()) {
-                    candidates.add(candidate);
-                }
-            }
-        }
-
-        if (candidates.isEmpty()) {
-            onFaviconResult(origin, null);
-            return;
-        }
-
-        tryNextTldCandidate(origin, candidates, 0);
-    }
-
-    private void tryNextTldCandidate(GURL origin, List<GURL> candidates, int index) {
-        if (index >= candidates.size()
-                || mFaviconHelper == null
-                || mProfile == null
-                || mBlockedItemsContainer == null
-                || mContext == null) {
-            onFaviconResult(origin, null);
-            return;
-        }
-
-        mFaviconHelper.getLocalFaviconImageForURL(
-                mProfile,
-                candidates.get(index),
-                mFaviconIconSize,
-                (bitmap, iconUrl) -> {
-                    if (mBlockedItemsContainer == null || mContext == null) return;
-                    PostTask.postTask(
-                            TaskTraits.UI_DEFAULT,
-                            () -> {
-                                if (bitmap != null) {
-                                    onFaviconResult(origin, bitmap);
-                                } else {
-                                    tryNextTldCandidate(origin, candidates, index + 1);
-                                }
-                            });
+                    PostTask.postTask(TaskTraits.UI_DEFAULT, () -> onFaviconResult(origin, bitmap));
                 });
     }
 
