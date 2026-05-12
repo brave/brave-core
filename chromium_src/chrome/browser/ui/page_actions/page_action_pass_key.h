@@ -10,6 +10,6 @@ namespace page_actions::chromium_impl {
 class PageActionControllerImpl;
 }  // namespace page_actions::chromium_impl
 
-#include <chrome/browser/ui/page_actions/page_action_pass_key.h>
+#include <chrome/browser/ui/page_actions/page_action_pass_key.h>  // IWYU pragma: export
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_PAGE_ACTIONS_PAGE_ACTION_PASS_KEY_H_
