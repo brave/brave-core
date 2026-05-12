@@ -25,9 +25,9 @@ ui::ImageModel GetImageModelForContainer(const mojom::ContainerPtr& container,
   constexpr int kDipSize = 16;
   constexpr int kDipIconSize = 12;
   return ui::ImageModel::FromImageGenerator(
-      base::BindRepeating(&GenerateContainerIcon, container->icon,
-                          container->background_color, kDipSize, kDipIconSize,
-                          scale_factor),
+      base::BindRepeating(&GenerateContainerIcon, container->id,
+                          container->icon, container->background_color,
+                          kDipSize, kDipIconSize, scale_factor),
       gfx::Size(kDipSize, kDipSize));
 }
 
