@@ -1711,10 +1711,8 @@ public class BraveUnifiedPanelHandler {
                 /* fallbackToHost= */ false,
                 (bitmap, iconUrl) -> {
                     if (mBlockedItemsContainer == null || mContext == null) return;
-                    Activity activity = (Activity) mContext;
-                    if (activity.isFinishing() || activity.isDestroyed()) return;
-
-                    activity.runOnUiThread(
+                    PostTask.postTask(
+                            TaskTraits.UI_DEFAULT,
                             () -> {
                                 if (bitmap != null) {
                                     onFaviconResult(origin, bitmap);
@@ -1754,10 +1752,8 @@ public class BraveUnifiedPanelHandler {
                 /* fallbackToHost= */ false,
                 (bitmap, iconUrl) -> {
                     if (mBlockedItemsContainer == null || mContext == null) return;
-                    Activity activity = (Activity) mContext;
-                    if (activity.isFinishing() || activity.isDestroyed()) return;
-
-                    activity.runOnUiThread(
+                    PostTask.postTask(
+                            TaskTraits.UI_DEFAULT,
                             () -> {
                                 if (bitmap != null) {
                                     onFaviconResult(origin, bitmap);
@@ -1818,10 +1814,8 @@ public class BraveUnifiedPanelHandler {
                 mFaviconIconSize,
                 (bitmap, iconUrl) -> {
                     if (mBlockedItemsContainer == null || mContext == null) return;
-                    Activity activity = (Activity) mContext;
-                    if (activity.isFinishing() || activity.isDestroyed()) return;
-
-                    activity.runOnUiThread(
+                    PostTask.postTask(
+                            TaskTraits.UI_DEFAULT,
                             () -> {
                                 if (bitmap != null) {
                                     onFaviconResult(origin, bitmap);

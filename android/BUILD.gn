@@ -532,6 +532,7 @@ android_resources("java_resources") {
     "java/brave-res/layout/brave_notification_permission_rationale_dialog.xml",
     "java/brave-res/layout/brave_notification_warning_dialog.xml",
     "java/brave-res/layout/brave_origin_description_preference.xml",
+    "java/brave-res/layout/brave_panel_back_button.xml",
     "java/brave-res/layout/brave_permission_prompt_dialog.xml",
     "java/brave-res/layout/brave_rating_dialog_fragment.xml",
     "java/brave-res/layout/brave_rating_news_layout.xml",

@@ -4,7 +4,7 @@
      License, v. 2.0. If a copy of the MPL was not distributed with this file,
      You can obtain one at https://mozilla.org/MPL/2.0/. -->
 
-<ScrollView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -13,30 +13,41 @@
     android:orientation="vertical"
     android:background="@color/container_background">
 
+    <!-- Top App Bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="18dp">
+
+        <!-- Back button -->
+        <include
+            android:id="@+id/shred_back_button"
+            layout="@layout/brave_panel_back_button"/>
+
+        <!-- Title -->
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="16dp"
+            android:text="@string/shred_site_data_title"
+            android:textSize="20sp"
+            android:textColor="@color/text_primary"
+            android:fontFamily="sans-serif"
+            android:maxLines="1"
+            android:ellipsize="end"/>
+
+    </LinearLayout>
+
+    <!-- Content -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp">
-
-        <!-- Header with back button -->
-        <TextView
-            android:id="@+id/shred_back_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="12dp"
-            android:gravity="center_vertical"
-            android:drawableStart="@drawable/ic_arrow_left"
-            android:drawablePadding="16dp"
-            app:drawableTint="@color/text_primary"
-            android:text="@string/shred_site_data_title"
-            android:textSize="18sp"
-            android:textColor="@color/text_primary"
-            android:fontFamily="sans-serif-medium"
-            android:background="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            android:contentDescription="@string/accessibility_toolbar_btn_back"/>
 
         <!-- Site label (uppercase, secondary color) -->
         <TextView
@@ -135,4 +146,4 @@
 
     </LinearLayout>
 
-</ScrollView>
+</LinearLayout>

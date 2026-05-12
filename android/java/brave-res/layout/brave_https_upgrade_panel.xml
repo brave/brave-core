@@ -23,13 +23,9 @@
         android:paddingVertical="18dp">
 
         <!-- Back button -->
-        <ImageButton
+        <include
             android:id="@+id/https_back_button"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_arrow_left"
-            android:background="?android:attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/back"/>
+            layout="@layout/brave_panel_back_button"/>
 
         <!-- Title -->
         <TextView
