@@ -81,12 +81,9 @@ int AppendBrowserSessionCommands(
     }
   }
 
-  int tab_count = 0;
   for (int i = 0; i < tsm->count(); ++i) {
     content::WebContents* contents = tsm->GetWebContentsAt(i);
-    if (!contents) {
-      continue;
-    }
+    CHECK(contents);
 
     SessionID tab_id = SessionID::NewUnique();
 
@@ -120,12 +117,11 @@ int AppendBrowserSessionCommands(
 
     commands.push_back(sessions::CreateSetSelectedNavigationIndexCommand(
         tab_id, current_entry));
-    tab_count++;
   }
 
   commands.push_back(sessions::CreateSetSelectedTabInWindowCommand(
       window_id, tsm->active_index()));
-  return tab_count;
+  return tsm->count();
 }
 
 }  // namespace

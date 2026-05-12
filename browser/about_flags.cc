@@ -803,7 +803,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
       "Brave Workspace",                                         \
       "Save sets of windows and tabs into loadable workspaces.", \
       kOsWin | kOsLinux | kOsMac,                                \
-      FEATURE_VALUE_TYPE(features::kBraveWorkspace),             \
+      FEATURE_VALUE_TYPE(features::kWorkspace),                  \
   })
 #else
 #define BRAVE_WORKSPACE_FEATURE_ENTRY

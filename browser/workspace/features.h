@@ -10,7 +10,7 @@
 
 namespace features {
 
-BASE_DECLARE_FEATURE(kBraveWorkspace);
+BASE_DECLARE_FEATURE(kWorkspace);
 
 }  // namespace features
 

@@ -7,6 +7,6 @@
 
 namespace features {
 
-BASE_FEATURE(kBraveWorkspace, base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kWorkspace, base::FEATURE_DISABLED_BY_DEFAULT);
 
 }  // namespace features

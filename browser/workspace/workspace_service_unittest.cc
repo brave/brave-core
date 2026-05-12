@@ -266,14 +266,14 @@ class WorkspaceServiceFactoryTest : public ::testing::Test {
 };
 
 TEST_F(WorkspaceServiceFactoryTest, FeatureDisabled_GetForProfileReturnsNull) {
-  feature_list_.InitAndDisableFeature(features::kBraveWorkspace);
+  feature_list_.InitAndDisableFeature(features::kWorkspace);
   auto* profile = profile_manager_.CreateTestingProfile("test");
   EXPECT_EQ(WorkspaceServiceFactory::GetForProfile(profile), nullptr);
 }
 
 TEST_F(WorkspaceServiceFactoryTest,
        FeatureEnabled_GetForProfileReturnsNonNull) {
-  feature_list_.InitAndEnableFeature(features::kBraveWorkspace);
+  feature_list_.InitAndEnableFeature(features::kWorkspace);
   auto* profile = profile_manager_.CreateTestingProfile("test");
   // ServiceIsNULLWhileTesting() suppresses service creation for test profiles.
   // Provide a testing factory so the feature-enabled path is exercised.
