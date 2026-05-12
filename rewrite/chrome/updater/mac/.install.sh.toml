@@ -13,8 +13,16 @@
 # /Applications/Brave Browser.app, then `update_app` tries to read Brave.app
 # from the DMG, when it should read Brave Browser.app. The substitution below
 # fixes this.
-
 [[substitution]]
 description = 'Use PRODUCT_NAME instead of APP_DIR for update app path'
 pattern = '${update_dmg_mount_point}/${APP_DIR}'
 replace = '${update_dmg_mount_point}/${PRODUCT_NAME}.app'
+
+# There are two installs scripts for updates in upstream: keystone_install.sh
+# and .install.sh. Chrome uses the former but it has legacy code related to
+# Keystone. The more modern alternative is .install.sh. But it lacks a fix
+# from Chromium CL 5866112. This substitution applies it.
+[[substitution]]
+description = 'Omit perms, link and dir times when non-root'
+pattern = 'RSYNC_FLAGS="--ignore-times --links --perms --recursive --times"'
+replace = 'RSYNC_FLAGS="--ignore-times --links $(if [[ ${EUID} -eq 0 ]]; then echo "--perms --recursive --times"; else echo "--no-perms --executability --chmod=u=rwX,go=rX --recursive"; fi)"'
