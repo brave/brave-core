@@ -216,7 +216,7 @@ void WorkspaceService::WriteWorkspaceToDisk(
     scoped_refptr<sessions::CommandStorageBackend> backend,
     base::OnceClosure on_error) {
   if (!base::CreateDirectory(workspace_dir)) {
-    LOG(ERROR) << "Failed to create workspace directory: " << workspace_dir;
+    DVLOG(1) << "Failed to create workspace directory: " << workspace_dir;
     std::move(on_error).Run();
     return;
   }
@@ -237,7 +237,7 @@ WorkspaceService::ReadWorkspaceFromDisk(
   sessions::CommandStorageBackend::ReadCommandsResult result =
       backend->ReadLastSessionCommands();
   if (result.error_reading || result.commands.empty()) {
-    LOG(ERROR) << "Could not read workspace session from: " << workspace_dir;
+    DVLOG(1) << "Could not read workspace session from: " << workspace_dir;
     return {};
   }
   return std::move(result.commands);
@@ -357,12 +357,12 @@ void WorkspaceService::DoRestoreWorkspace(
     base::WeakPtr<Profile> profile,
     std::vector<std::unique_ptr<sessions::SessionCommand>> commands) {
   if (commands.empty()) {
-    LOG(ERROR) << "Could not load workspace: no commands";
+    DVLOG(1) << "Could not load workspace: no commands";
     return;
   }
 
   if (!profile) {
-    LOG(ERROR) << "Could not load workspace: profile is null";
+    DVLOG(1) << "Could not load workspace: profile is null";
     return;
   }
 

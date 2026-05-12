@@ -61,8 +61,9 @@ class WorkspaceService : public KeyedService {
   WorkspaceService(const WorkspaceService&) = delete;
   WorkspaceService& operator=(const WorkspaceService&) = delete;
 
-  // Returns summary information for all saved workspaces, sorted by creation
-  // time (most-recent first).  Reads from the profile preference; no disk I/O.
+  // Returns summary information for all saved workspaces, sorted by time
+  // modified (most-recent first).  Reads from the profile preference; no disk
+  // I/O.
   std::vector<WorkspaceInfo> ListWorkspaces() const;
 
   // Writes workspace metadata into the profile preference.  Called on the UI
@@ -70,7 +71,7 @@ class WorkspaceService : public KeyedService {
   void SaveWorkspaceMetadata(const std::string& name,
                              int window_count,
                              int tab_count,
-                             base::Time created_at);
+                             base::Time modified_at);
 
   // Removes the workspace metadata entry from the profile preference.
   void RemoveWorkspaceMetadata(const std::string& name);

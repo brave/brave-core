@@ -68,7 +68,6 @@
 #include "brave/browser/ui/bookmark/bookmark_prefs_service_factory.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
-#include "brave/browser/workspace/features.h"
 #include "brave/browser/workspace/workspace_service_factory.h"
 #include "brave/components/commands/common/features.h"
 #include "chrome/browser/ui/tabs/features.h"
@@ -258,9 +257,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   serp_metrics::SerpMetricsServiceFactory::GetInstance();
 
 #if !BUILDFLAG(IS_ANDROID)
-  if (base::FeatureList::IsEnabled(features::kBraveWorkspace)) {
-    WorkspaceServiceFactory::GetInstance();
-  }
+  WorkspaceServiceFactory::GetInstance();
 #endif
 }
 
