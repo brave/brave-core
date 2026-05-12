@@ -85,26 +85,10 @@ bool AllowFingerprintingForWebGLDebugRendererInfo(
 
 // TODO(https://github.com/brave/brave-browser/issues/55442): Add fingerprinting
 // protections for GL_RENDERER and GL_VENDOR
-#define BRAVE_WEBGL_GL_RENDERER                                        \
-  if (ExtensionEnabled(kWebGLDebugRendererInfoName) &&                 \
-      !AllowFingerprintingForWebGLDebugRendererInfo(Host()))           \
-    return WebGLAny(                                                   \
-        script_state,                                                  \
-        String(BraveWebGLDebugRendererInfoSanitizer::SanitizeRenderer( \
-            getExtension_ChromiumImpl(script_state, "GL_RENDERER"))));
-
 #define BRAVE_WEBGL_GET_PARAMETER_UNMASKED_RENDERER          \
   if (ExtensionEnabled(kWebGLDebugRendererInfoName) &&       \
       !AllowFingerprintingForWebGLDebugRendererInfo(Host())) \
     return WebGLAny(script_state, String("Brave"));
-
-#define BRAVE_WEBGL_GL_VENDOR                                        \
-  if (ExtensionEnabled(kWebGLDebugRendererInfoName) &&               \
-      !AllowFingerprintingForWebGLDebugRendererInfo(Host()))         \
-    return WebGLAny(                                                 \
-        script_state,                                                \
-        String(BraveWebGLDebugRendererInfoSanitizer::SanitizeVendor( \
-            getExtension_ChromiumImpl(script_state, "GL_VENDOR"))));
 
 #define BRAVE_WEBGL_GET_PARAMETER_UNMASKED_VENDOR            \
   if (ExtensionEnabled(kWebGLDebugRendererInfoName) &&       \
