@@ -121,13 +121,6 @@ std::string GenerateBtcImportPayload(std::string_view private_key_hex) {
   return Base58EncodeWithCheck(buf);
 }
 
-void WaitForPostedTask() {
-  base::RunLoop run_loop;
-  base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, run_loop.QuitClosure());
-  run_loop.Run();
-}
-
 }  // namespace
 
 class TestKeyringServiceObserver : public mojom::KeyringServiceObserver {
@@ -4492,7 +4485,6 @@ TEST_F(KeyringServiceUnitTest, DevWalletPassword) {
   // Locked on start by default.
   {
     KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
-    WaitForPostedTask();
     EXPECT_TRUE(service.IsLockedSync());
   }
 
@@ -4500,7 +4492,6 @@ TEST_F(KeyringServiceUnitTest, DevWalletPassword) {
   {
     cmdline->AppendSwitchASCII(switches::kDevWalletPassword, "some_password");
     KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
-    WaitForPostedTask();
     EXPECT_FALSE(service.IsLockedSync());
     cmdline->RemoveSwitch(switches::kDevWalletPassword);
   }
@@ -4509,7 +4500,6 @@ TEST_F(KeyringServiceUnitTest, DevWalletPassword) {
   {
     cmdline->AppendSwitchASCII(switches::kDevWalletPassword, "wrong_password");
     KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
-    WaitForPostedTask();
     EXPECT_TRUE(service.IsLockedSync());
     cmdline->RemoveSwitch(switches::kDevWalletPassword);
   }

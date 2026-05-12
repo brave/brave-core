@@ -1096,10 +1096,7 @@ KeyringService::KeyringService(JsonRpcService* json_rpc_service,
 
   enabled_keyrings_ = GetEnabledKeyrings();
 
-  // Delay unlock attempt until after initialization is done by caller.
-  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(&KeyringService::MaybeUnlockWithCommandLine,
-                                weak_ptr_factory_.GetWeakPtr()));
+  MaybeUnlockWithCommandLine();
 }
 
 KeyringService::~KeyringService() {
