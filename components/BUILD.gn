@@ -151,7 +151,6 @@ test("brave_components_unittests") {
     "//extensions/common:core_api_provider",
     "//extensions/components/*",
     "//extensions/renderer/*",
-    "//extensions/shell/*",
   ]
 
   if (is_ios) {
