@@ -14,11 +14,6 @@ import {
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 import '../content/strings'
 
-const stubEmailAliasesServiceNoAccountInstance = new StubEmailAliasesService({
-  status: AuthenticationStatus.kUnauthenticated,
-  email: '',
-})
-
 const stubEmailAliasesServiceAccountReadyInstance = new StubEmailAliasesService(
   {
     status: AuthenticationStatus.kAuthenticated,
@@ -34,13 +29,6 @@ const stubEmailAliasesServiceListErrorInstance = new StubEmailAliasesService(
   getLocale(S.SETTINGS_EMAIL_ALIASES_INFO_ERROR_MESSAGE),
 )
 
-const bindNoAccountObserver = (
-  observer: EmailAliasesServiceObserverInterface,
-) => {
-  stubEmailAliasesServiceNoAccountInstance.addObserver(observer)
-  return () => {} // Do nothing in this mock implementation.
-}
-
 const bindAccountReadyObserver = (
   observer: EmailAliasesServiceObserverInterface,
 ) => {
@@ -54,7 +42,6 @@ const bindListErrorObserver = (
   stubEmailAliasesServiceListErrorInstance.addObserver(observer)
   return () => {}
 }
-
 
 export const SignInPageStory = () => {
   return <SignInPage />
