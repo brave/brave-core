@@ -14,6 +14,7 @@ source_set("js_messaging") {
   ]
   deps = [
     ":message_handler_token",
+    ":randomized_message_handler_name",
     ":safe_builtins_js",
   ]
   public_deps = [ "//ios/web/public/js_messaging" ]
@@ -30,15 +31,30 @@ source_set("message_handler_token") {
   ]
 }
 
+source_set("randomized_message_handler_name") {
+  sources = [
+    "randomized_message_handler_name.h",
+    "randomized_message_handler_name.mm",
+  ]
+  public_deps = [
+    "//base",
+    "//ios/web/public/js_messaging",
+  ]
+}
+
 source_set("unittests") {
   testonly = true
   sources = [
     "message_handler_token_inttest.mm",
+    "randomized_message_handler_name_inttest.mm",
     "safe_builtins_javascript_test.mm",
   ]
   deps = [
+    ":js_messaging",
     ":message_handler_token",
     ":message_handler_token_test_api",
+    ":randomized_message_handler_name",
+    ":randomized_message_handler_test_api",
     ":safe_builtins_js",
     "//base",
     "//base/test:test_support",
@@ -74,6 +90,16 @@ optimize_js("safe_builtins_js") {
 optimize_ts("message_handler_token_test_api") {
   testonly = true
   sources = [ "resources/message_handler_token_test_api.ts" ]
+  deps = [
+    ":util_scripts",
+    "//ios/web/public/js_messaging:gcrweb",
+    "//ios/web/public/js_messaging:util_scripts",
+  ]
+}
+
+optimize_ts("randomized_message_handler_test_api") {
+  testonly = true
+  sources = [ "resources/randomized_message_handler_test_api.ts" ]
   deps = [
     ":util_scripts",
     "//ios/web/public/js_messaging:gcrweb",
