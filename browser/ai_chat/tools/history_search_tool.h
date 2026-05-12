@@ -61,6 +61,11 @@ class HistorySearchTool : public Tool {
   void UseTool(const std::string& input_json,
                UseToolCallback callback) override;
 
+  // Tests inject a fake search interface to bypass the factory lookup and
+  // the per-profile enablement gate. The pointer must outlive any UseTool
+  // call made on this instance.
+  void SetSearchForTesting(history_embeddings::HistoryEmbeddingsSearch* search);
+
  private:
   // SearchResultCallback is a RepeatingCallback but with `skip_answering=true`
   // it's expected to fire once. `callback` is heap-allocated and owned by the
@@ -71,6 +76,8 @@ class HistorySearchTool : public Tool {
                       history_embeddings::SearchResult result);
 
   raw_ptr<Profile> profile_;
+  raw_ptr<history_embeddings::HistoryEmbeddingsSearch> search_for_testing_ =
+      nullptr;
   bool user_has_granted_permission_ = false;
 
   base::WeakPtrFactory<HistorySearchTool> weak_ptr_factory_{this};

@@ -405,6 +405,7 @@ source_set("browser_tests") {
       "code_execution_tool_browsertest.cc",
       "page_content_fetcher_browsertest.cc",
       "text_file_extractor_browsertest.cc",
+      "tools/history_search_tool_browsertest.cc",
     ]
 
     if (enable_pdf) {
@@ -438,6 +439,8 @@ source_set("browser_tests") {
       "//chrome/browser/ui/side_panel:side_panel_views_dependent",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",
+      "//components/history/core/browser",
+      "//components/history_embeddings/core",
       "//printing/buildflags",
       "//services/screen_ai/buildflags",
       "//services/screen_ai/public/cpp:utilities",
