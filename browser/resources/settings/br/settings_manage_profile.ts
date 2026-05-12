@@ -73,6 +73,32 @@ const kBraveCustomAvatarStyleCss = `
     display: none;
   }
 
+  #braveCustomAvatarPreview .upload-spinner {
+    animation: brave-custom-avatar-spin 0.75s linear infinite;
+    border: 3px solid var(--leo-color-divider-subtle, rgba(0, 0, 0, 0.12));
+    border-radius: 50%;
+    border-top-color: var(--leo-color-primary-50, #4c54d2);
+    box-sizing: border-box;
+    display: none;
+    flex-shrink: 0;
+    height: 28px;
+    width: 28px;
+  }
+
+  @keyframes brave-custom-avatar-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  #braveCustomAvatarPreview.is-uploading .placeholder {
+    display: none;
+  }
+
+  #braveCustomAvatarPreview.is-uploading .upload-spinner {
+    display: block;
+  }
+
   #braveCustomAvatarPreview .check-badge {
     align-items: center;
     background: var(--leo-color-primary-50, #4c54d2);
@@ -95,6 +121,10 @@ const kBraveCustomAvatarStyleCss = `
   }
 
   #braveCustomAvatarPreview.can-activate {
+    cursor: pointer;
+  }
+
+  #braveCustomAvatarPreview.is-empty:not(.is-uploading) {
     cursor: pointer;
   }
 
@@ -237,16 +267,20 @@ function wireBraveManageProfileCustomAvatar(host: HTMLElement, attempt = 0) {
     typedHost.braveCustomAvatarState_ = typedHost.braveCustomAvatarState_ ||
       { hasSavedAvatar: false, isActive: false }
 
-    uploadBtn.addEventListener('click', () => {
+    const openCustomAvatarFilePicker = () => {
       fileInput.value = ''
       fileInput.click()
-    })
+    }
+
+    uploadBtn.addEventListener('click', openCustomAvatarFilePicker)
 
     fileInput.addEventListener('change', async () => {
       const file = fileInput.files && fileInput.files[0]
       if (!file) {
         return
       }
+      preview.classList.add('is-uploading')
+      preview.setAttribute('aria-busy', 'true')
       try {
         const base64 = await fileToBase64(file)
         const state = await BraveManageProfileBrowserProxyImpl.getInstance()
@@ -255,6 +289,9 @@ function wireBraveManageProfileCustomAvatar(host: HTMLElement, attempt = 0) {
       } catch (err) {
         console.warn('[Brave Settings Overrides] Failed to set custom ' +
           'avatar:', err)
+      } finally {
+        preview.classList.remove('is-uploading')
+        preview.removeAttribute('aria-busy')
       }
     })
 
@@ -274,7 +311,11 @@ function wireBraveManageProfileCustomAvatar(host: HTMLElement, attempt = 0) {
 
     preview.addEventListener('click', () => {
       const st = typedHost.braveCustomAvatarState_
-      if (!st.hasSavedAvatar || st.isActive) {
+      if (!st.hasSavedAvatar) {
+        openCustomAvatarFilePicker()
+        return
+      }
+      if (st.isActive) {
         return
       }
       try {
@@ -385,6 +426,11 @@ function buildCustomAvatarRow(
   placeholder.className = 'placeholder'
   placeholder.textContent = '+'
   preview.appendChild(placeholder)
+
+  const uploadSpinner = document.createElement('div')
+  uploadSpinner.className = 'upload-spinner'
+  uploadSpinner.setAttribute('aria-hidden', 'true')
+  preview.appendChild(uploadSpinner)
 
   const checkBadge = document.createElement('span')
   checkBadge.className = 'check-badge'
