@@ -12,9 +12,9 @@
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
-#include "chrome/common/extensions/webstore_install_result.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_registry_observer.h"
+#include "extensions/browser/webstore_install_result.h"
 
 class BraveTorSnowflakeExtensionHandler
     : public settings::SettingsPageUIHandler,
