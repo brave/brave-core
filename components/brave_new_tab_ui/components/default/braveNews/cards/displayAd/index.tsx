@@ -22,6 +22,14 @@ type Props = {
   onViewedDisplayAd: OnViewedDisplayAd
 }
 
+function getHttpsUrlOrUndefined(url: string): string | undefined {
+  try {
+    return new URL(url).protocol === 'https:' ? url : undefined
+  } catch {
+    return undefined
+  }
+}
+
 export default function CardDisplayAd (props: Props) {
   // Content is retrieved when the element is close to the viewport
   const [content, setContent] = React.useState<DisplayAd | undefined | null>(undefined)
@@ -68,7 +76,7 @@ export default function CardDisplayAd (props: Props) {
       <Styles.BatAdLabel href='chrome://rewards'>
         {getLocale('braveNewsDisplayAdLabel')}
       </Styles.BatAdLabel>
-      <a onClick={onClick} href={content.targetUrl.url} ref={cardRef}>
+      <a onClick={onClick} href={getHttpsUrlOrUndefined(content.targetUrl.url)} ref={cardRef}>
         <CardImage
           imageUrl={imageUrl}
           isPromoted={true}
