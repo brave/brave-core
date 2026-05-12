@@ -15,7 +15,7 @@ import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.bookmarks.TabBookmarker;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsVisibilityManager;
-import org.chromium.chrome.browser.glic.GlicToolbarButtonController;
+import org.chromium.chrome.browser.glic.GlicButtonDelegate;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.tab_group_suggestion.toolbar.GroupSuggestionsButtonController;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
@@ -56,7 +56,7 @@ public class BraveTabbedAdaptiveToolbarBehavior extends TabbedAdaptiveToolbarBeh
             Supplier<GroupSuggestionsButtonController> groupSuggestionsButtonController,
             Supplier<@Nullable TabModelSelector> tabModelSelectorSupplier,
             MonotonicObservableSupplier<@StripVisibilityState Integer> tabStripVisibilitySupplier,
-            GlicToolbarButtonController.GlicButtonDelegate toggleGlicCallback,
+            GlicButtonDelegate toggleGlicCallback,
             Supplier<@Nullable ChromeAndroidTask> chromeAndroidTaskSupplier,
             BrowserControlsVisibilityManager browserControlsVisibilityManager) {
         super(
