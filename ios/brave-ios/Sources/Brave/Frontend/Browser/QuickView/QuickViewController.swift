@@ -144,13 +144,25 @@ class QuickViewController: UIViewController {
           guard let self else { return }
           switch action {
           case .navigate(let target, _):
-            guard target == .reportBrokenSite else { return }
-            weakPopover?.dismiss(animated: true) {
-              self.showSubmitReportView(for: url)
+            switch target {
+            case .reportBrokenSite:
+              weakPopover?.dismiss(animated: true) {
+                self.showSubmitReportView(for: url)
+              }
+            case .shareStats:
+              weakPopover?.dismiss(animated: true) {
+                let activityController =
+                  ShieldsActivityItemSourceProvider.shared.setupGlobalShieldsActivityController(
+                    isPrivateBrowsing: tab.isPrivate
+                  )
+                self.present(activityController, animated: true, completion: nil)
+              }
+            case .globalShields:  // not available in quickview mode
+              break
             }
           case .changedShieldSettings:
             self.changedShieldSettings()
-          case .shredSiteData:  // no shred in quickview mode
+          case .shredSiteData:  // not available in quickview mode
             break
           }
         }
