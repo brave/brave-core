@@ -205,6 +205,7 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
     super.viewWillAppear(animated)
     // Reset dev options access count
     aboutHeaderTapCount = 0
+    navigationController?.setToolbarHidden(true, animated: animated)
   }
 
   private func displayRewardsDebugMenu() {
