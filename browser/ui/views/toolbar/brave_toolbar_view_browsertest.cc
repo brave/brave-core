@@ -510,12 +510,10 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
   // Check avatar is positioned at the right before app menu button.
   views::View* avatar = toolbar_button_provider_->GetAvatarToolbarButton();
   ASSERT_TRUE(!!avatar);
-  views::View* container = avatar->parent();
-  ASSERT_TRUE(!!container);
   views::View* app_menu = toolbar_button_provider_->GetAppMenuButton();
   ASSERT_TRUE(!!app_menu);
-  EXPECT_EQ(container->GetIndexOf(avatar).value(),
-            container->GetIndexOf(app_menu).value() - 1ul);
+  EXPECT_EQ(toolbar_view_->GetIndexOf(avatar).value(),
+            toolbar_view_->GetIndexOf(app_menu).value() - 1ul);
 
   // Check avatar button's size.
   const int avatar_size =
@@ -614,34 +612,29 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
                        VerticalTabTogglePlacementRespectsTabsOnRight) {
   auto* prefs = browser()->profile()->GetPrefs();
   prefs->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
-  views::View* container = toolbar_view_->location_bar_view()->parent();
-  ASSERT_TRUE(container);
 
   prefs->SetBoolean(brave_tabs::kVerticalTabsOnRight, false);
   RunScheduledLayouts();
   auto* toggle = toolbar_view_->vertical_tab_toggle_button();
   ASSERT_TRUE(toggle) << "vertical tabs enabled, kVerticalTabsOnRight=false";
-  const auto ix_left_side = container->GetIndexOf(toggle);
+  const auto ix_left_side = toolbar_view_->GetIndexOf(toggle);
   ASSERT_TRUE(ix_left_side.has_value())
-      << "toggle missing from toolbar container "
-         "(kVerticalTabsOnRight=false)";
+      << "toggle missing from toolbar (kVerticalTabsOnRight=false)";
   EXPECT_EQ(*ix_left_side, 0u)
       << "with kVerticalTabsOnRight=false, toggle should be pinned to child "
          "index 0 (leading toolbar edge), not derived from back button index";
 
   prefs->SetBoolean(brave_tabs::kVerticalTabsOnRight, true);
   RunScheduledLayouts();
-  const auto ix_on_right = container->GetIndexOf(toggle);
+  const auto ix_on_right = toolbar_view_->GetIndexOf(toggle);
   ASSERT_TRUE(ix_on_right.has_value())
-      << "toggle missing from toolbar container "
-         "(kVerticalTabsOnRight=true)";
+      << "toggle missing from toolbar (kVerticalTabsOnRight=true)";
 
   views::View* menu = toolbar_button_provider_->GetAppMenuButton();
   ASSERT_TRUE(menu);
-  const auto menu_ix = container->GetIndexOf(menu);
+  const auto menu_ix = toolbar_view_->GetIndexOf(menu);
   ASSERT_TRUE(menu_ix.has_value() && *menu_ix > 0)
-      << "app menu button must be a non-leading child of the toolbar "
-         "container";
+      << "app menu button must be a non-leading child of the toolbar ";
 
   EXPECT_EQ(*ix_on_right, *menu_ix - 1)
       << "with kVerticalTabsOnRight=true, toggle should sit immediately "
@@ -673,11 +666,9 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewRTLTest,
 
   auto* prefs = browser()->profile()->GetPrefs();
   prefs->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
-  views::View* container = toolbar_view_->location_bar_view()->parent();
-  ASSERT_TRUE(container);
 
   // In RTL, the strip placed by kVerticalTabsOnRight=false is physically on
-  // the left; the toolbar container mirrors child indices, so a toggle that
+  // the left; the toolbar mirrors child indices, so a toggle that
   // should appear visually on the left needs to sit at the trailing logical
   // slot (just before the app menu).
   prefs->SetBoolean(brave_tabs::kVerticalTabsOnRight, false);
@@ -687,15 +678,14 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewRTLTest,
 
   views::View* menu = toolbar_button_provider_->GetAppMenuButton();
   ASSERT_TRUE(menu);
-  const auto menu_ix_left = container->GetIndexOf(menu);
+  const auto menu_ix_left = toolbar_view_->GetIndexOf(menu);
   ASSERT_TRUE(menu_ix_left.has_value() && *menu_ix_left > 0)
       << "app menu button must be a non-leading child of the toolbar "
-         "container (RTL, on-left)";
+         "(RTL, on-left)";
 
-  const auto ix_rtl_on_left = container->GetIndexOf(toggle);
+  const auto ix_rtl_on_left = toolbar_view_->GetIndexOf(toggle);
   ASSERT_TRUE(ix_rtl_on_left.has_value())
-      << "toggle missing from toolbar container (RTL, "
-         "kVerticalTabsOnRight=false)";
+      << "toggle missing from toolbar (RTL, kVerticalTabsOnRight=false)";
   EXPECT_EQ(*ix_rtl_on_left, *menu_ix_left - 1)
       << "in RTL, on-left strip should map to toggle at app-menu-1 (toggle_ix="
       << *ix_rtl_on_left << ", menu_ix=" << *menu_ix_left << ")";
@@ -704,10 +694,9 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewRTLTest,
   // right; logical child index 0 mirrors to the visual right edge.
   prefs->SetBoolean(brave_tabs::kVerticalTabsOnRight, true);
   RunScheduledLayouts();
-  const auto ix_rtl_on_right = container->GetIndexOf(toggle);
+  const auto ix_rtl_on_right = toolbar_view_->GetIndexOf(toggle);
   ASSERT_TRUE(ix_rtl_on_right.has_value())
-      << "toggle missing from toolbar container (RTL, "
-         "kVerticalTabsOnRight=true)";
+      << "toggle missing from toolbar (RTL, kVerticalTabsOnRight=true)";
   EXPECT_EQ(*ix_rtl_on_right, 0u)
       << "in RTL, on-right strip should map to toggle at leading logical "
          "index 0 (visual right edge), got "
@@ -718,7 +707,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewRTLTest,
       << *ix_rtl_on_left << ", on_right_ix=" << *ix_rtl_on_right << ")";
 }
 
-// Verifies that UpdateHorizontalPadding() keeps the toolbar container border
+// Verifies that UpdateHorizontalPadding() keeps the toolbar border
 // in sync with GetLeadingTrailingCaptionButtonWidth() across state changes.
 // Guards against the Qt-theme regression where a fixed estimate was used
 // instead of real button bounds, causing caption buttons to overlap the
@@ -727,11 +716,10 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
                        ToolbarPaddingMatchesFrameLayoutParams) {
   auto* browser_widget =
       BrowserView::GetBrowserViewForBrowser(browser())->browser_widget();
-  auto* container_view = toolbar_view_->location_bar_view()->parent();
   auto* prefs = browser()->profile()->GetPrefs();
 
   // Default: vertical tabs disabled — no border.
-  EXPECT_FALSE(container_view->GetBorder())
+  EXPECT_FALSE(toolbar_view_->GetBorder())
       << "default state (vertical tabs disabled)";
 
   // Enable vertical tabs, hide title bar.
@@ -744,7 +732,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
 
   // If both exclusions are zero (headless / no caption buttons) the early-
   // return optimisation may leave the border as null — treat null as zero.
-  const auto* border = container_view->GetBorder();
+  const auto* border = toolbar_view_->GetBorder();
   const gfx::Insets actual = border ? border->GetInsets() : gfx::Insets();
   EXPECT_EQ(actual.left(), expected_left)
       << "after enabling vertical tabs, hiding title bar";
@@ -754,12 +742,12 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
   // Show title bar → padding cleared.
   prefs->SetBoolean(brave_tabs::kVerticalTabsShowTitleOnWindow, true);
   RunScheduledLayouts();
-  EXPECT_FALSE(container_view->GetBorder())
+  EXPECT_FALSE(toolbar_view_->GetBorder())
       << "after enabling vertical tabs, showing title bar";
 
   // Hide title bar again, then disable vertical tabs → padding cleared.
   prefs->SetBoolean(brave_tabs::kVerticalTabsShowTitleOnWindow, false);
   prefs->SetBoolean(brave_tabs::kVerticalTabsEnabled, false);
   RunScheduledLayouts();
-  EXPECT_FALSE(container_view->GetBorder()) << "after disabling vertical tabs";
+  EXPECT_FALSE(toolbar_view_->GetBorder()) << "after disabling vertical tabs";
 }
