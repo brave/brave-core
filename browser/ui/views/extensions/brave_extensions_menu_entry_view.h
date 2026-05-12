@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_EXTENSIONS_BRAVE_EXTENSIONS_MENU_ENTRY_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_EXTENSIONS_BRAVE_EXTENSIONS_MENU_ENTRY_VIEW_H_
 
+#include <utility>
+
 #include "chrome/browser/ui/views/extensions/extensions_menu_entry_view.h"
 
 class BraveExtensionsMenuEntryView : public ExtensionsMenuEntryView {
@@ -13,18 +15,20 @@ class BraveExtensionsMenuEntryView : public ExtensionsMenuEntryView {
   METADATA_HEADER(BraveExtensionsMenuEntryView, ExtensionsMenuEntryView)
 
  public:
-  explicit BraveExtensionsMenuEntryView(
-      Browser* browser,
-      bool is_enterprise,
-      ToolbarActionViewModel* view_model,
-      views::Button::PressedCallback action_button_callback,
-      base::RepeatingCallback<void(bool)> site_access_toggle_callback,
-      views::Button::PressedCallback site_permissions_button_callback);
+  template <typename... Args>
+  explicit BraveExtensionsMenuEntryView(Args&&... args)
+      : ExtensionsMenuEntryView(std::forward<Args>(args)...) {
+    Init();
+  }
   ~BraveExtensionsMenuEntryView() override;
 
   // Overrides ExtensionsMenuEntryView:
   void UpdateContextMenuButton(
       ExtensionsMenuViewModel::ControlState button_state) override;
+
+ private:
+  // Applies Brave-specific styling to this entry's child views.
+  void Init();
 };
 
 BEGIN_VIEW_BUILDER(/* no export */,
