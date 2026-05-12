@@ -14,6 +14,7 @@
 #include "base/task/bind_post_task.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
+#include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
@@ -21,6 +22,7 @@
 #include "brave/browser/workspace/features.h"
 #include "brave/browser/workspace/workspace.h"
 #include "brave/browser/workspace/workspace_service_factory.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile_manager.h"
 #include "components/sessions/core/command_storage_backend.h"
@@ -206,7 +208,20 @@ TEST_F(WorkspaceServiceTest, WriteAndReadRoundTrip) {
       read_future.GetCallback());
 
   ASSERT_TRUE(read_future.Wait());
-  EXPECT_EQ(read_future.Get().size(), num_commands);
+  const auto& read_cmds = read_future.Get();
+  ASSERT_EQ(read_cmds.size(), num_commands);
+
+  // Verify content — not just count — survived the round-trip.
+  // Re-creating the reference commands from the same inputs and comparing
+  // serialized bytes confirms the window ID and TYPE_NORMAL encoding are
+  // preserved end-to-end (both are embedded in the serialized payload).
+  EXPECT_EQ(read_cmds[0]->Serialize(),
+            sessions::CreateSetWindowTypeCommand(
+                window_id, sessions::SessionWindow::TYPE_NORMAL)
+                ->Serialize());
+  EXPECT_EQ(
+      read_cmds[1]->Serialize(),
+      sessions::CreateSetSelectedTabInWindowCommand(window_id, 0)->Serialize());
 }
 
 TEST_F(WorkspaceServiceTest,
@@ -254,4 +269,19 @@ TEST_F(WorkspaceServiceFactoryTest, FeatureDisabled_GetForProfileReturnsNull) {
   feature_list_.InitAndDisableFeature(features::kBraveWorkspace);
   auto* profile = profile_manager_.CreateTestingProfile("test");
   EXPECT_EQ(WorkspaceServiceFactory::GetForProfile(profile), nullptr);
+}
+
+TEST_F(WorkspaceServiceFactoryTest,
+       FeatureEnabled_GetForProfileReturnsNonNull) {
+  feature_list_.InitAndEnableFeature(features::kBraveWorkspace);
+  auto* profile = profile_manager_.CreateTestingProfile("test");
+  // ServiceIsNULLWhileTesting() suppresses service creation for test profiles.
+  // Provide a testing factory so the feature-enabled path is exercised.
+  WorkspaceServiceFactory::GetInstance()->SetTestingFactory(
+      profile, base::BindLambdaForTesting([](content::BrowserContext* ctx)
+                                              -> std::unique_ptr<KeyedService> {
+        auto* p = Profile::FromBrowserContext(ctx);
+        return std::make_unique<WorkspaceService>(p->GetPrefs(), p->GetPath());
+      }));
+  EXPECT_NE(WorkspaceServiceFactory::GetForProfile(profile), nullptr);
 }
