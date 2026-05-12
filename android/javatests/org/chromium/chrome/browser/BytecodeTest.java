@@ -81,7 +81,7 @@ import org.chromium.chrome.browser.feed.SnapScrollHelper;
 import org.chromium.chrome.browser.findinpage.FindToolbarManager;
 import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
-import org.chromium.chrome.browser.glic.GlicToolbarButtonController;
+import org.chromium.chrome.browser.glic.GlicButtonDelegate;
 import org.chromium.chrome.browser.homepage.settings.BraveRadioButtonGroupHomepagePreference;
 import org.chromium.chrome.browser.hub.HubShowPaneHelper;
 import org.chromium.chrome.browser.hub.PaneListBuilder;
@@ -1498,7 +1498,8 @@ public class BytecodeTest {
                         SnackbarManager.class,
                         OmniboxChipManager.class,
                         BottomBarHostManager.class,
-                        ActionRegistry.class));
+                        ActionRegistry.class,
+                        GlicButtonDelegate.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
@@ -2306,7 +2307,7 @@ public class BytecodeTest {
                         Supplier.class,
                         Supplier.class,
                         MonotonicObservableSupplier.class,
-                        GlicToolbarButtonController.GlicButtonDelegate.class,
+                        GlicButtonDelegate.class,
                         Supplier.class,
                         BrowserControlsVisibilityManager.class));
         Assert.assertTrue(
