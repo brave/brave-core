@@ -164,11 +164,9 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
                 .setBoolean(BravePref.WEB_DISCOVERY_ENABLED, true);
     }
 
-    private void finalStep(final boolean showSearchWidgetPromoPanel) {
-        if (showSearchWidgetPromoPanel) {
-            ChromeSharedPreferences.getInstance()
-                    .writeBoolean(OnboardingPrefManager.SHOULD_SHOW_SEARCH_WIDGET_PROMO, true);
-        }
+    private void finalStep() {
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(OnboardingPrefManager.SHOULD_SHOW_SEARCH_WIDGET_PROMO, true);
         CustomizeBraveMenu.initDefaultInvisibleItems(getResources());
         OnboardingPrefManager.getInstance().setP3aOnboardingShown(true);
 
@@ -534,7 +532,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
         if (position == 2) {
             // If both settings are managed by policy, skip this page entirely
             if (mIsP3aManaged && mIsCrashReportingManaged) {
-                finalStep(true);
+                finalStep();
                 return;
             }
         }
@@ -545,7 +543,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
 
     @Override
     public void onDismiss() {
-        finalStep(true);
+        finalStep();
     }
 
     @Override
