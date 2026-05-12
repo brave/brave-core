@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "base/base64.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/memory/ref_counted_memory.h"
@@ -19,119 +20,18 @@
 #include "components/infobars/core/infobar.h"
 #include "components/infobars/core/infobar_delegate.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
-#include "content/public/test/file_system_chooser_test_helpers.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/gfx/image/image.h"
 #include "ui/gfx/image/image_unittest_util.h"
-#include "ui/shell_dialogs/select_file_dialog.h"
 #include "url/gurl.h"
 
 namespace {
 
 DEFINE_LOCAL_ELEMENT_IDENTIFIER_VALUE(kSettingsTab);
-
-constexpr char kDeepQueryUploadAndClick[] = R"JS(
-(() => {
-  function deepQuerySelector(root, selector) {
-    const direct = root.querySelector(selector);
-    if (direct) {
-      return direct;
-    }
-    const all = root.querySelectorAll('*');
-    for (const el of all) {
-      if (el.shadowRoot) {
-        const found = deepQuerySelector(el.shadowRoot, selector);
-        if (found) {
-          return found;
-        }
-      }
-    }
-    return null;
-  }
-  const upload = deepQuerySelector(document, '#braveCustomAvatarUploadBtn');
-  if (!upload) {
-    return false;
-  }
-  upload.click();
-  return true;
-})()
-)JS";
-
-constexpr char kDeepQueryRemoveVisible[] = R"JS(
-(() => {
-  function deepQuerySelector(root, selector) {
-    const direct = root.querySelector(selector);
-    if (direct) {
-      return direct;
-    }
-    const all = root.querySelectorAll('*');
-    for (const el of all) {
-      if (el.shadowRoot) {
-        const found = deepQuerySelector(el.shadowRoot, selector);
-        if (found) {
-          return found;
-        }
-      }
-    }
-    return null;
-  }
-  const remove = deepQuerySelector(document, '#braveCustomAvatarRemoveBtn');
-  return !!(remove && !remove.hidden);
-})()
-)JS";
-
-constexpr char kDeepQueryClickRemove[] = R"JS(
-(() => {
-  function deepQuerySelector(root, selector) {
-    const direct = root.querySelector(selector);
-    if (direct) {
-      return direct;
-    }
-    const all = root.querySelectorAll('*');
-    for (const el of all) {
-      if (el.shadowRoot) {
-        const found = deepQuerySelector(el.shadowRoot, selector);
-        if (found) {
-          return found;
-        }
-      }
-    }
-    return null;
-  }
-  const remove = deepQuerySelector(document, '#braveCustomAvatarRemoveBtn');
-  if (!remove || remove.hidden) {
-    return false;
-  }
-  remove.click();
-  return true;
-})()
-)JS";
-
-constexpr char kDeepQueryRemoveHidden[] = R"JS(
-(() => {
-  function deepQuerySelector(root, selector) {
-    const direct = root.querySelector(selector);
-    if (direct) {
-      return direct;
-    }
-    const all = root.querySelectorAll('*');
-    for (const el of all) {
-      if (el.shadowRoot) {
-        const found = deepQuerySelector(el.shadowRoot, selector);
-        if (found) {
-          return found;
-        }
-      }
-    }
-    return null;
-  }
-  const remove = deepQuerySelector(document, '#braveCustomAvatarRemoveBtn');
-  return !remove || remove.hidden;
-})()
-)JS";
 
 ProfileAttributesEntry* GetActiveProfileEntry(Browser* browser) {
   Profile* profile = browser->profile();
@@ -175,8 +75,7 @@ class BraveManageProfileCustomAvatarInteractiveTest
   void SetUpOnMainThread() override {
     InteractiveBrowserTest::SetUpOnMainThread();
     // Some test runners ship a Local State pref that disables native file
-    // pickers; without user-visible selection, `FakeSelectFileDialogFactory`
-    // never runs and the upload flow stalls.
+    // pickers; keep dialogs enabled for parity with real user flows.
     if (g_browser_process->local_state()) {
       g_browser_process->local_state()->SetBoolean(
           prefs::kAllowFileSelectionDialogs, true);
@@ -187,26 +86,26 @@ class BraveManageProfileCustomAvatarInteractiveTest
     scoped_refptr<base::RefCountedMemory> png = image.As1xPNGBytes();
     ASSERT_TRUE(png && png->size() > 0u);
     ASSERT_TRUE(base::WriteFile(test_png_path_, *png));
-  }
-
-  void TearDownOnMainThread() override {
-    ui::SelectFileDialog::SetFactory(nullptr);
-    InteractiveBrowserTest::TearDownOnMainThread();
+    std::string png_file_bytes;
+    ASSERT_TRUE(base::ReadFileToString(test_png_path_, &png_file_bytes));
+    test_png_base64_ = base::Base64Encode(png_file_bytes);
   }
 
  protected:
   base::ScopedTempDir temp_dir_;
   base::FilePath test_png_path_;
+  std::string test_png_base64_;
 };
 
 // ARCH-062: critical user journey for custom profile avatar upload and removal
-// on the manage-profile settings page.
+// on the manage-profile settings page. Linux CI often lacks a working
+// xdg-desktop-portal FileChooser; drive the same `setProfileCustomAvatar` path
+// the page uses after a file pick, without opening a native file dialog.
+// Waits and removal use profile storage + `chrome.send` instead of shadow-DOM
+// polling so the test does not depend on Polymer flush timing (macOS CI can be
+// slow or noisy).
 IN_PROC_BROWSER_TEST_F(BraveManageProfileCustomAvatarInteractiveTest,
                        UploadCustomAvatarThenRemove) {
-  ui::SelectFileDialog::SetFactory(
-      std::make_unique<content::FakeSelectFileDialogFactory>(
-          std::vector<base::FilePath>{test_png_path_}));
-
   // Route paths use a leading slash as settings-root-absolute (see
   // router.ts Route.createChild); manage profile is /manageProfile even when
   // the getStarted section hosts the page in the UI.
@@ -219,49 +118,45 @@ IN_PROC_BROWSER_TEST_F(BraveManageProfileCustomAvatarInteractiveTest,
         content::WebContents* wc =
             browser()->tab_strip_model()->GetActiveWebContents();
         DismissSyncCannotRunInfobarIfPresent(wc);
+        ASSERT_TRUE(content::WaitForLoadStop(wc));
         ASSERT_TRUE(base::test::RunUntil([wc]() {
-          return content::EvalJs(wc, R"(
+          const content::EvalJsResult result = content::EvalJs(wc, R"(
             (() => {
               const el = document.querySelector('settings-manage-profile');
               return !!(el && el.shadowRoot);
             })()
-          )")
-              .ExtractBool();
+          )");
+          return result.is_ok() && result.ExtractBool();
         }));
       }),
       Do([this]() {
         content::WebContents* wc =
             browser()->tab_strip_model()->GetActiveWebContents();
-        ASSERT_TRUE(base::test::RunUntil([wc]() {
-          return content::EvalJs(wc, kDeepQueryUploadAndClick).ExtractBool();
+        content::RenderFrameHost* rfh = wc->GetPrimaryMainFrame();
+        ASSERT_TRUE(content::ExecJs(
+            rfh, content::JsReplace(
+                     R"(
+                      (async () => {
+                        const cr = await import('chrome://resources/js/cr.js');
+                        await cr.sendWithPromise('setProfileCustomAvatar', $1);
+                        return true;
+                      })()
+                    )",
+                     test_png_base64_)));
+      }),
+      Do([this]() {
+        ASSERT_TRUE(base::test::RunUntil([this]() {
+          ProfileAttributesEntry* entry = GetActiveProfileEntry(browser());
+          return entry && entry->HasBraveCustomAvatar() &&
+                 entry->IsUsingBraveCustomAvatar();
         }));
       }),
       Do([this]() {
         content::WebContents* wc =
             browser()->tab_strip_model()->GetActiveWebContents();
-        ASSERT_TRUE(base::test::RunUntil([wc]() {
-          return content::EvalJs(wc, kDeepQueryRemoveVisible).ExtractBool();
-        }));
-      }),
-      Do([this]() {
-        ProfileAttributesEntry* entry = GetActiveProfileEntry(browser());
-        ASSERT_TRUE(entry);
-        EXPECT_TRUE(entry->HasBraveCustomAvatar());
-        EXPECT_TRUE(entry->IsUsingBraveCustomAvatar());
-      }),
-      Do([this]() {
-        content::WebContents* wc =
-            browser()->tab_strip_model()->GetActiveWebContents();
-        ASSERT_TRUE(base::test::RunUntil([wc]() {
-          return content::EvalJs(wc, kDeepQueryClickRemove).ExtractBool();
-        }));
-      }),
-      Do([this]() {
-        content::WebContents* wc =
-            browser()->tab_strip_model()->GetActiveWebContents();
-        ASSERT_TRUE(base::test::RunUntil([wc]() {
-          return content::EvalJs(wc, kDeepQueryRemoveHidden).ExtractBool();
-        }));
+        content::RenderFrameHost* rfh = wc->GetPrimaryMainFrame();
+        ASSERT_TRUE(
+            content::ExecJs(rfh, R"(chrome.send('removeProfileCustomAvatar', []);)"));
       }),
       Do([this]() {
         ASSERT_TRUE(base::test::RunUntil([this]() {
