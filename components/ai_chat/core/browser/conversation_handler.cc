@@ -28,10 +28,12 @@
 #include "base/functional/callback.h"
 #include "base/logging.h"
 #include "base/memory/weak_ptr.h"
+#include "base/notreached.h"
 #include "base/numerics/safe_math.h"
 #include "base/rand_util.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
+#include "base/task/bind_post_task.h"
 #include "base/time/time.h"
 #include "base/types/expected.h"
 #include "base/uuid.h"
@@ -1104,8 +1106,14 @@ void ConversationHandler::RespondToToolUseRequest(
 
   OnToolUseEventOutput(chat_history_.back().get(), tool_use);
 
-  // Run next tool, or perform generation with all the tools outputs
-  MaybeRespondToNextToolUseRequest();
+  // Run next tool, or perform generation with all the completed tools outputs.
+  // Run as Task to catch any reentrant issues.
+  base::BindPostTaskToCurrentDefault(
+      base::BindOnce(
+          base::IgnoreResult(
+              &ConversationHandler::MaybeRespondToNextToolUseRequest),
+          weak_ptr_factory_.GetWeakPtr()))
+      .Run();
 }
 
 void ConversationHandler::ProcessPermissionChallenge(
@@ -1375,6 +1383,39 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
         // Notify UI about the tool completion
         OnToolUseEventOutput(entry.get(), existing_tool_use_event);
         return;
+      }
+
+      // Drop tool_use events whose id collides with an existing tool_use
+      // event in this turn. ToolUseEvents in the engine APIs are keyed on 'id'
+      // (and in this class via GetToolUseEventForLastResponse). Internally, a
+      // duplicate id would route both completions to the same event, leave the
+      // second event's output unset, and cause MaybeRespondToNextToolUseRequest
+      // to execute the same pending tool indefinitely. And engine APIs will
+      // reject a request with duplicate tool use IDs.
+      if (!tool_use_event->id.empty()) {
+        for (const auto& existing : *entry->events) {
+          if (existing->is_tool_use_event() &&
+              existing->get_tool_use_event()->id == tool_use_event->id) {
+            // Dump the tool and model name until we figure out
+            // which tool / model combination is causing duplicate IDs.
+            // TODO(https://github.com/brave/brave-browser/issues/55439):
+            // Consider removing this once we have enough information to address
+            // the root cause of which model/tool is generating duplicate IDs.
+            SCOPED_CRASH_KEY_STRING1024("BraveAIChatToolName", "name",
+                                        tool_use_event->tool_name);
+            SCOPED_CRASH_KEY_STRING1024("BraveAIChatToolId", "id",
+                                        tool_use_event->id);
+            if (GetCurrentModel().options->is_leo_model_options()) {
+              SCOPED_CRASH_KEY_STRING1024("BraveAIChatModel", "key",
+                                          model_key_);
+            }
+            DUMP_WILL_BE_NOTREACHED()
+                << "Dropping tool_use event with duplicate id: "
+                << tool_use_event->id << " (tool: " << tool_use_event->tool_name
+                << ")";
+            return;
+          }
+        }
       }
     }
 
