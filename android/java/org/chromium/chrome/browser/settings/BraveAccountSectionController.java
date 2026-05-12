@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
 
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
@@ -68,18 +67,18 @@ public class BraveAccountSectionController
                 PREF_GET_STARTED
             };
 
-    private final PreferenceFragmentCompat mFragment;
+    private final ChromeBaseSettingsFragment mFragment;
     private final Profile mProfile;
     private @Nullable Authentication mBraveAccountService;
 
     public static @Nullable BraveAccountSectionController maybeCreate(
-            PreferenceFragmentCompat fragment, Profile profile) {
+            ChromeBaseSettingsFragment fragment, Profile profile) {
         return BraveAccountFeatures.isBraveAccountEnabled()
                 ? new BraveAccountSectionController(fragment, profile)
                 : null;
     }
 
-    private BraveAccountSectionController(PreferenceFragmentCompat fragment, Profile profile) {
+    private BraveAccountSectionController(ChromeBaseSettingsFragment fragment, Profile profile) {
         mFragment = fragment;
         mProfile = profile;
         initBraveAccountService();
@@ -209,6 +208,7 @@ public class BraveAccountSectionController
             setVisibility(cancelRegistrationPref, false);
             setVisibility(getStartedPref, true);
         }
+        mFragment.notifyPreferencesUpdated();
     }
 
     private void setVisibility(@Nullable Preference preference, boolean visible) {
