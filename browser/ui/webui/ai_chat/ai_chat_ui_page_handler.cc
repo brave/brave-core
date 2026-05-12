@@ -580,14 +580,15 @@ void AIChatUIPageHandler::BindRelatedConversation(
           &active_chat_tab_helper_->web_contents_content());
     }
   } else {
-    conversation = AIChatServiceFactory::GetForBrowserContext(profile_)
-                       ->CreateConversation();
-    if (features::IsPageContextEnabledInitially() &&
-        ai_chat::CanAssociateContent(
-            &active_chat_tab_helper_->web_contents_content())) {
-      conversation->associated_content_manager()->AddContent(
-          &active_chat_tab_helper_->web_contents_content());
-    }
+    // GetOrCreateConversationHandlerForContent ensures the side panel binds to
+    // the same conversation already tied to this content_id. For example, if we
+    // create a new conversation via the context menu, we want to make sure we
+    // load it here.
+    conversation =
+        AIChatServiceFactory::GetForBrowserContext(profile_)
+            ->GetOrCreateConversationHandlerForContent(
+                active_chat_tab_helper_->web_contents_content().content_id(),
+                active_chat_tab_helper_->web_contents_content().GetWeakPtr());
   }
 
   conversation->Bind(std::move(receiver), std::move(conversation_ui_handler));
