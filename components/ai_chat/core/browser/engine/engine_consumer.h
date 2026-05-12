@@ -60,8 +60,25 @@ class EngineConsumer {
     std::optional<bool> is_near_verified;
   };
 
+  struct Error {
+    ~Error();
+
+    Error();
+    Error(Error&&);
+    Error& operator=(Error&&);
+
+    Error(mojom::APIError api_error);
+    Error(mojom::APIError api_error, mojom::APIErrorDetailsPtr details);
+
+    bool operator==(mojom::APIError api_error_val) const {
+      return api_error == api_error_val;
+    }
+    mojom::APIError api_error = mojom::APIError::None;
+    mojom::APIErrorDetailsPtr details;
+  };
+
   using GenerationResult =
-      base::expected<GenerationResultData, mojom::APIError>;
+      base::expected<GenerationResultData, Error>;
 
   using GenerationDataCallback =
       base::RepeatingCallback<void(GenerationResultData)>;

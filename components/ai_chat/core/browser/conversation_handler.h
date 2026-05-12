@@ -375,7 +375,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   // send the results to the engine and wait for the next response for the loop.
   void PerformPostToolAssistantGeneration();
 
-  void SetAPIError(const mojom::APIError& error);
+  void SetAPIError(EngineConsumer::Error error);
   void UpdateOrCreateLastAssistantEntry(
       EngineConsumer::GenerationResultData result);
   void MaybeSeedOrClearSuggestions();
@@ -484,7 +484,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   bool is_print_preview_fallback_requested_ = false;
 
   std::unique_ptr<EngineConsumer> engine_ = nullptr;
-  mojom::APIError current_error_ = mojom::APIError::None;
+  EngineConsumer::Error current_error_;
 
   // Tool providers for this conversation. This allows those providers or their
   // tools to optionally store state that is only for this conversation. If they

@@ -141,7 +141,7 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
 
   MOCK_METHOD(void, OnAPIRequestInProgress, (bool), (override));
 
-  MOCK_METHOD(void, OnAPIResponseError, (mojom::APIError), (override));
+  MOCK_METHOD(void, OnAPIResponseError, (mojom::APIError, mojom::APIErrorDetailsPtr), (override));
 
   MOCK_METHOD(void,
               OnTaskStateChanged,
@@ -482,11 +482,11 @@ TEST_P(AIChatServiceUnitTest,
                          EngineConsumer::GenerationResultData)> callback,
                      base::OnceCallback<void(
                          base::expected<EngineConsumer::GenerationResultData,
-                                        mojom::APIError>)> done_callback) {
+                                        EngineConsumer::Error>)> done_callback) {
             resolve = base::BindOnce(
                 [](base::OnceCallback<void(
                        base::expected<EngineConsumer::GenerationResultData,
-                                      mojom::APIError>)> done_callback) {
+                                      EngineConsumer::Error>)> done_callback) {
                   std::move(done_callback)
                       .Run(base::ok(EngineConsumer::GenerationResultData(
                           mojom::ConversationEntryEvent::NewCompletionEvent(

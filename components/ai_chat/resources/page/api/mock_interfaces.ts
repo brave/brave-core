@@ -63,6 +63,7 @@ export const defaultConversationState: Mojom.ConversationState & {
   // </if>
   associatedContent: [],
   error: Mojom.APIError.None,
+  errorDetails: undefined,
   temporary: false,
   toolUseTaskState: Mojom.TaskState.kNone,
   capabilitiesEnabled: [Mojom.ConversationCapability.CHAT],

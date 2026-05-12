@@ -38,6 +38,11 @@ enum APIError {
   ServiceOverloaded
 };
 
+struct APIErrorDetails {
+  int32 status_code;
+  int32 error_code;
+};
+
 enum SuggestionGenerationStatus {
   None,
   CanGenerate,
@@ -697,6 +702,7 @@ struct ConversationEntriesState {
   SuggestionGenerationStatus suggestion_status;
   // Current API error state
   APIError current_error;
+  APIErrorDetails? current_error_details;
   // Whether this is a temporary (non-persisted) conversation
   bool is_temporary = false;
 };

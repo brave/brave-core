@@ -276,6 +276,7 @@ struct ConversationState {
 
   array<AssociatedContent> associated_content;
   APIError error;
+  APIErrorDetails? error_details;
   // Indicates whether the conversation is temporary which would be in-memory
   // only and not persisted in database.
   bool temporary = false;
@@ -365,7 +366,7 @@ interface ConversationUI {
 
   OnAPIRequestInProgress(bool is_request_in_progress);
 
-  OnAPIResponseError(APIError error);
+  OnAPIResponseError(APIError api_error, APIErrorDetails? details);
 
   OnTaskStateChanged(TaskState task_state);
 
