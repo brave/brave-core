@@ -8,9 +8,6 @@
 
 namespace brave_wallet::switches {
 
-// Allows auto unlocking wallet password with command line.
-inline constexpr char kDevWalletPassword[] = "dev-wallet-password";
-
 // Ratios service dev URL
 inline constexpr char kAssetRatioDevUrl[] = "asset-ratio-dev-url";
 inline constexpr char kMeldAssetRatioDevUrl[] = "meld-asset-ratio-dev-url";

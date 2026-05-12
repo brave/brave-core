@@ -56,6 +56,7 @@
 #include "brave/components/brave_wallet/common/bitcoin_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/common/buildflags/dev_buildflags.h"
 #include "brave/components/brave_wallet/common/cardano_address.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
@@ -89,6 +90,11 @@ constexpr char kPasswordEncryptorSaltDeprecated[] = "password_encryptor_salt";
 
 // 7 days. Matches settings UI limit.
 constexpr int kMaxAutolockMinutes = 10080;
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET_DEV_CMD_LINE_UNLOCK)
+// Allows auto unlocking wallet password with command line in dev builds.
+inline constexpr char kDevWalletPassword[] = "dev-wallet-password";
+#endif
 
 base::RepeatingCallback<std::array<uint8_t, kEncryptorNonceSize>()>*
     g_create_nonce_callback_for_testing = nullptr;
@@ -1096,7 +1102,10 @@ KeyringService::KeyringService(JsonRpcService* json_rpc_service,
 
   enabled_keyrings_ = GetEnabledKeyrings();
 
-  MaybeUnlockWithCommandLine();
+  // Delay unlock attempt until after initialization is done by caller.
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, base::BindOnce(&KeyringService::MaybeUnlockWithCommandLine,
+                                weak_ptr_factory_.GetWeakPtr()));
 }
 
 KeyringService::~KeyringService() {
@@ -3687,14 +3696,17 @@ void KeyringService::SetAutolockEnabled(bool enabled) {
 }
 
 void KeyringService::MaybeUnlockWithCommandLine() {
-#if !defined(OFFICIAL_BUILD)
+#if BUILDFLAG(ENABLE_BRAVE_WALLET_DEV_CMD_LINE_UNLOCK)
+#if defined(OFFICIAL_BUILD)
+  NOTREACHED();
+#endif
   std::string dev_wallet_password =
       base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
-          switches::kDevWalletPassword);
+          kDevWalletPassword);
   if (!dev_wallet_password.empty()) {
     Unlock(dev_wallet_password, base::DoNothing());
   }
-#endif  // !defined(OFFICIAL_BUILD)
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET_DEV_CMD_LINE_UNLOCK)
 }
 
 void KeyringService::OnCreateWalletRegisterComponentUpdater(

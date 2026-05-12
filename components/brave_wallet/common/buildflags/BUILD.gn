@@ -10,3 +10,11 @@ buildflag_header("buildflags") {
   header = "buildflags.h"
   flags = [ "ENABLE_BRAVE_WALLET=$enable_brave_wallet" ]
 }
+
+# Put dev build flag into a seprate header as it is supposed to be needed only
+# by a couple of .cc files. This limits impact on compilation caches when
+# buildflag is set to non default value.
+buildflag_header("dev_buildflags") {
+  header = "dev_buildflags.h"
+  flags = [ "ENABLE_BRAVE_WALLET_DEV_CMD_LINE_UNLOCK=$enable_brave_wallet_dev_cmd_line_unlock" ]
+}
