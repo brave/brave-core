@@ -150,8 +150,7 @@ class BraveManageProfileCustomAvatarInteractiveTest
     gfx::Image image(gfx::test::CreateImage(64, 64));
     scoped_refptr<base::RefCountedMemory> png = image.As1xPNGBytes();
     ASSERT_TRUE(png && png->size() > 0u);
-    ASSERT_EQ(static_cast<int>(png->size()),
-              base::WriteFile(test_png_path_, *png));
+    ASSERT_TRUE(base::WriteFile(test_png_path_, *png));
   }
 
   void TearDownOnMainThread() override {
@@ -172,7 +171,10 @@ IN_PROC_BROWSER_TEST_F(BraveManageProfileCustomAvatarInteractiveTest,
       std::make_unique<content::FakeSelectFileDialogFactory>(
           std::vector<base::FilePath>{test_png_path_}));
 
-  const GURL kManageProfileUrl("chrome://settings/getStarted/manageProfile");
+  // Route paths use a leading slash as settings-root-absolute (see
+  // router.ts Route.createChild); manage profile is /manageProfile even when
+  // the getStarted section hosts the page in the UI.
+  const GURL kManageProfileUrl("chrome://settings/manageProfile");
 
   RunTestSequence(
       InstrumentTab(kSettingsTab, 0, browser()),
