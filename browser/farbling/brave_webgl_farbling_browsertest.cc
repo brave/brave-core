@@ -4,6 +4,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <memory>
+#include <optional>
+#include <vector>
 
 #include "base/path_service.h"
 #include "base/strings/string_number_conversions.h"
@@ -16,6 +18,7 @@
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/webcompat/core/common/features.h"
+#include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/browser/profiles/profile.h"
@@ -27,6 +30,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
+#include "third_party/blink/public/common/features.h"
 
 using brave_shields::ControlType;
 
@@ -109,38 +113,89 @@ class BraveWebGLFarblingBrowserTest : public InProcessBrowserTest {
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
-IN_PROC_BROWSER_TEST_F(BraveWebGLFarblingBrowserTest, FarbleGetParameterWebGL) {
+class BraveWebGLGetParameterTest : public BraveWebGLFarblingBrowserTest,
+                                   public testing::WithParamInterface<bool> {
+ public:
+  BraveWebGLGetParameterTest() {
+    if (GetParam()) {
+      get_parameter_feature_list_.InitWithFeatures(
+          {blink::features::kWebGLBalancedFingerprintingProtection}, {});
+    } else {
+      get_parameter_feature_list_.InitWithFeatures(
+          {}, {blink::features::kWebGLBalancedFingerprintingProtection});
+    }
+  }
+
+  std::string GetExpectedString(BraveFarblingLevel level) {
+    // In the cases where we don't apply any farbling we need to give out the
+    // actual h/w string. Therefore we rely on EvalJs(contents(),
+    // kTitleScript).ExtractString() to get the information.
+    if (level == BraveFarblingLevel::MAXIMUM) {
+      return "uAfPPuXL,aseXyZzC";
+    } else if (level == BraveFarblingLevel::BALANCED) {
+      return GetParam() ? "Brave,Brave"
+                        : EvalJs(contents(), kTitleScript).ExtractString();
+    } else {
+      return EvalJs(contents(), kTitleScript).ExtractString();
+    }
+  }
+
+ private:
+  base::test::ScopedFeatureList get_parameter_feature_list_;
+};
+
+INSTANTIATE_TEST_SUITE_P(
+    /* no prefix */,
+    BraveWebGLGetParameterTest,
+    testing::Bool(),
+    [](const testing::TestParamInfo<bool>& info) {
+      return info.param ? "WebGLBalancedFingerprintingProtection_Enabled"
+                        : "WebGLBalancedFingerprintingProtection_Disabled";
+    });
+
+IN_PROC_BROWSER_TEST_P(BraveWebGLGetParameterTest, FarbleGetParameterWebGL) {
   std::string domain = "a.com";
   GURL url = embedded_test_server()->GetURL(domain, "/getParameter.html");
-  constexpr char kExpectedRandomString[] = "uAfPPuXL,aseXyZzC";
+
   // Farbling level: maximum
   // WebGL getParameter of restricted values: pseudo-random data with no
   // relation to original data
   BlockFingerprinting(domain);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  EXPECT_EQ(EvalJs(contents(), kTitleScript), kExpectedRandomString);
+  const std::string expected_value_maximum =
+      GetExpectedString(BraveFarblingLevel::MAXIMUM);
+  EXPECT_EQ(EvalJs(contents(), kTitleScript), expected_value_maximum);
   // second time, same as the first (tests that results are consistent for the
   // lifetime of a session, and that the PRNG properly resets itself at the
   // beginning of each calculation)
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   EXPECT_EQ(EvalJs(contents(), kTitleScript).ExtractString(),
-            kExpectedRandomString);
+            expected_value_maximum);
 
   // Farbling level: balanced (default)
-  // WebGL getParameter of restricted values: original data
   SetFingerprintingDefault(domain);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  std::string actual = EvalJs(contents(), kTitleScript).ExtractString();
+  std::string actual_value_balanced =
+      EvalJs(contents(), kTitleScript).ExtractString();
+  auto expected_value_balanced =
+      GetExpectedString(BraveFarblingLevel::BALANCED);
+  EXPECT_EQ(expected_value_balanced, actual_value_balanced);
+  EXPECT_NE(expected_value_balanced, expected_value_maximum);
 
   // Farbling level: off
   // WebGL getParameter of restricted values: original data
   AllowFingerprinting(domain);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  // Since this value depends on the underlying hardware, we just test that the
-  // results for "off" are the same as the results for "balanced", and that
-  // they're different than the results for "maximum".
-  EXPECT_EQ(EvalJs(contents(), kTitleScript).ExtractString(), actual);
-  EXPECT_NE(actual, kExpectedRandomString);
+  std::string actual_value_off =
+      EvalJs(contents(), kTitleScript).ExtractString();
+  std::string expected_value_off = GetExpectedString(BraveFarblingLevel::OFF);
+  EXPECT_EQ(expected_value_off, actual_value_off);
+  EXPECT_NE(expected_value_off, expected_value_maximum);
+  // When the balanced feature flag is off then we don't apply any farbling at
+  // all. So the state should be the same as if farbling was "off".
+  if (!GetParam()) {
+    EXPECT_EQ(actual_value_off, actual_value_balanced);
+  }
 }
 
 IN_PROC_BROWSER_TEST_F(BraveWebGLFarblingBrowserTest,

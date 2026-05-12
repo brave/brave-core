@@ -21,7 +21,7 @@ BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kBraveGlobalPrivacyControl);
 BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kBraveRoundTimeStamps);
 BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kRestrictEventSourcePool);
 BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(
-    kBraveWebGLDebugInfoFingerprintingProtection);
+    kWebGLBalancedFingerprintingProtection);
 
 #if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
 BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kMiddleButtonClickAutoscroll);

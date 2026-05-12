@@ -8,8 +8,8 @@
 #include <optional>
 
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
-#include "brave/third_party/blink/renderer/modules/webgl/brave_webgl_debug_renderer_info_sanitizer.h"
 #include "third_party/blink/public/common/features.h"
+#include "third_party/blink/renderer/bindings/modules/v8/webgl_any.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
@@ -17,6 +17,13 @@
 #include "third_party/blink/renderer/core/workers/worker_global_scope.h"
 
 namespace {
+const char kUnmaskedVendorWebGL[] = "UNMASKED_VENDOR_WEBGL";
+const char kUnmaskedRendererWebGL[] = "UNMASKED_RENDERER_WEBGL";
+
+enum class WebGLDebugRendererInfoType {
+  VENDOR,
+  RENDERER,
+};
 
 bool AllowFingerprintingForHost(blink::CanvasRenderingContextHost* host) {
   if (!host) {
@@ -26,24 +33,43 @@ bool AllowFingerprintingForHost(blink::CanvasRenderingContextHost* host) {
                                     ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL);
 }
 
-bool AllowFingerprintingForWebGLDebugRendererInfo(
-    blink::CanvasRenderingContextHost* host) {
-  if (!host) {
-    return true;
-  }
-
+blink::ScriptValue GetWebGLDebugInfoValue(
+    blink::ScriptState* script_state,
+    blink::CanvasRenderingContextHost* host,
+    const WebGLDebugRendererInfoType type,
+    const blink::String original_string_value) {
   auto level = brave::GetBraveFarblingLevelFor(
       host->GetTopExecutionContext(),
       ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL, BraveFarblingLevel::OFF);
+  blink::ScriptValue original_script_value =
+      blink::WebGLAny(script_state, original_string_value);
 
-  if (level == BraveFarblingLevel::OFF ||
-      (level == BraveFarblingLevel::BALANCED &&
-       !base::FeatureList::IsEnabled(
-           blink::features::kBraveWebGLDebugInfoFingerprintingProtection))) {
-    return true;
+  // For Balanced farbling level, we return "Brave" for both Vendor and Renderer
+  // iff blink::features::kBraveWebGLDebugInfoFingerprintingProtection is
+  // enabled, otherwise we return the real values. For maximum farbling level,
+  // we continue with the existing approach of generating a random 8 byte
+  // string.
+  switch (level) {
+    case BraveFarblingLevel::OFF:
+      return original_script_value;
+    case BraveFarblingLevel::BALANCED:
+      return base::FeatureList::IsEnabled(
+                 blink::features::kWebGLBalancedFingerprintingProtection)
+                 ? blink::WebGLAny(script_state, blink::String("Brave"))
+                 : original_script_value;
+    case BraveFarblingLevel::MAXIMUM:
+      return blink::WebGLAny(
+          script_state,
+          blink::String(
+              brave::BraveSessionCache::From(*(host->GetTopExecutionContext()))
+                  .GenerateRandomString(
+                      type == WebGLDebugRendererInfoType::VENDOR
+                          ? kUnmaskedVendorWebGL
+                          : kUnmaskedRendererWebGL,
+                      8)));
+    default:
+      return original_script_value;
   }
-
-  return false;
 }
 
 }  // namespace
@@ -83,17 +109,19 @@ bool AllowFingerprintingForWebGLDebugRendererInfo(
     precision = 0;                                          \
   }
 
-// TODO(https://github.com/brave/brave-browser/issues/55442): Add fingerprinting
+// TODO(https://github.com/brave/brave-browser/issues/55445): Add fingerprinting
 // protections for GL_RENDERER and GL_VENDOR
-#define BRAVE_WEBGL_GET_PARAMETER_UNMASKED_RENDERER          \
-  if (ExtensionEnabled(kWebGLDebugRendererInfoName) &&       \
-      !AllowFingerprintingForWebGLDebugRendererInfo(Host())) \
-    return WebGLAny(script_state, String("Brave"));
+#define BRAVE_WEBGL_GET_PARAMETER_UNMASKED_RENDERER                 \
+  if (ExtensionEnabled(kWebGLDebugRendererInfoName))                \
+    return GetWebGLDebugInfoValue(                                  \
+        script_state, Host(), WebGLDebugRendererInfoType::RENDERER, \
+        String(ContextGL()->GetString(GL_RENDERER)));
 
-#define BRAVE_WEBGL_GET_PARAMETER_UNMASKED_VENDOR            \
-  if (ExtensionEnabled(kWebGLDebugRendererInfoName) &&       \
-      !AllowFingerprintingForWebGLDebugRendererInfo(Host())) \
-    return WebGLAny(script_state, String("Brave"));
+#define BRAVE_WEBGL_GET_PARAMETER_UNMASKED_VENDOR                     \
+  if (ExtensionEnabled(kWebGLDebugRendererInfoName))                  \
+    return GetWebGLDebugInfoValue(script_state, Host(),               \
+                                  WebGLDebugRendererInfoType::VENDOR, \
+                                  String(ContextGL()->GetString(GL_VENDOR)));
 
 #define getExtension getExtension_ChromiumImpl
 #define getSupportedExtensions getSupportedExtensions_ChromiumImpl
@@ -103,8 +131,8 @@ bool AllowFingerprintingForWebGLDebugRendererInfo(
 
 namespace blink {
 
-// If fingerprinting is disallowed, claim that the only supported extension is
-// WebGLDebugRendererInfo.
+// If fingerprinting is disallowed, claim that the only supported
+// extension is WebGLDebugRendererInfo.
 std::optional<Vector<String>>
 WebGLRenderingContextBase::getSupportedExtensions() {
   std::optional<Vector<String>> real_extensions =
@@ -121,8 +149,9 @@ WebGLRenderingContextBase::getSupportedExtensions() {
   return fake_extensions;
 }
 
-// If fingerprinting is disallowed and they're asking for information about any
-// extension other than WebGLDebugRendererInfo, don't give it to them.
+// If fingerprinting is disallowed and they're asking for information
+// about any extension other than WebGLDebugRendererInfo, don't give it to
+// them.
 ScriptObject WebGLRenderingContextBase::getExtension(ScriptState* script_state,
                                                      const String& name) {
   if (!AllowFingerprintingForHost(Host())) {

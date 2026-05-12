@@ -59,8 +59,9 @@ BASE_FEATURE(kBraveBlockScreenFingerprinting,
 // Enables protection against fingerprinting via high-resolution time stamps.
 BASE_FEATURE(kBraveRoundTimeStamps, base::FEATURE_DISABLED_BY_DEFAULT);
 
-// Enables protection against WebGL debug info fingerprinting.
-BASE_FEATURE(kBraveWebGLDebugInfoFingerprintingProtection,
+// Enables protection against WebGL debug info fingerprinting on balanced
+// farbling.
+BASE_FEATURE(kWebGLBalancedFingerprintingProtection,
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Enables the Global Privacy Control header and navigator APIs.
