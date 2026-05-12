@@ -44,11 +44,6 @@ blink::ScriptValue GetWebGLDebugInfoValue(
   blink::ScriptValue original_script_value =
       blink::WebGLAny(script_state, original_string_value);
 
-  // For Balanced farbling level, we return "Brave" for both Vendor and Renderer
-  // iff blink::features::kBraveWebGLDebugInfoFingerprintingProtection is
-  // enabled, otherwise we return the real values. For maximum farbling level,
-  // we continue with the existing approach of generating a random 8 byte
-  // string.
   switch (level) {
     case BraveFarblingLevel::OFF:
       return original_script_value;
