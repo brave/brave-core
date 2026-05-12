@@ -26,4 +26,3 @@ AutocompleteResult::AppendMatches.
 '''
 re_pattern = 'IDS_OMNIBOX_HISTORY_EMBEDDINGS_DISCLAIMER_IPH(\))\s*\+\s*u" "'
 replace = 'IDS_BRAVE_OMNIBOX_HISTORY_EMBEDDINGS_DISCLAIMER_IPH\1'
-count = 1

@@ -13,7 +13,6 @@
 description = 'Brave mappings for `ContentSettingsType` -> `RequestType`'
 re_pattern = '(ContentSettingsTypeToRequestTypeIfExists\([^)]*\)\s*\{.*?\n\s*switch[^{]*\{.*?)(\n\s*default:)'
 re_flags = ['DOTALL']
-count = 1
 replace = '''\1
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
     case ContentSettingsType::BRAVE_ETHEREUM:
@@ -34,7 +33,6 @@ replace = '''\1
 description = 'Add Brave permission types to `GetIconIdAndroid`'
 re_pattern = '(GetIconIdAndroid\([^)]*\)\s*\{.*?\n\s*switch[^{]*\{.*?)(\n\s*\})'
 re_flags = ['DOTALL']
-count = 1
 replace = '''\1
     case RequestType::kWidevine:
     case RequestType::kBraveEthereum:
@@ -48,7 +46,6 @@ replace = '''\1
 description = 'Add Brave permission types to `GetIconIdDesktop`'
 re_pattern = '(GetIconIdDesktop\([^)]*\)\s*\{.*?\n\s*switch[^{]*\{.*?)(\n\s*\})'
 re_flags = ['DOTALL']
-count = 1
 replace = '''\1
     case RequestType::kWidevine:
     case RequestType::kBraveEthereum:
@@ -61,7 +58,6 @@ replace = '''\1
 [[substitution]]
 description = 'Brave mappings for `RequestType` -> `ContentSettingsType`'
 re_pattern = '(RequestTypeToContentSettingsType\([^)]*\)\s*\{.*?\n\s*switch[^{]*\{.*?)(\n\s*default:)'
-count = 1
 re_flags = ['DOTALL']
 replace = '''\1
     case RequestType::kBraveGoogleSignInPermission:
@@ -81,7 +77,6 @@ replace = '''\1
 description = 'Brave mappings for `RequestType` to permission key'
 re_pattern = '(PermissionKeyForRequestType\([^)]*\)\s*\{.*?\n\s*switch[^{]*\{.*?)(\n\s*\})'
 re_flags = ['DOTALL']
-count = 1
 replace = '''\1
     case permissions::RequestType::kWidevine:
       return "widevine";

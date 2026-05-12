@@ -7,6 +7,5 @@
 description = '''Add ECDSA_SHA384 to the EC key case in `AlgorithmToType`.'''
 re_pattern = '(AlgorithmToType\([^)]*\).*?)(\n\s*return DTKeyType::kEc;)'
 re_flags = ['DOTALL']
-count = 1
 replace = '''\1
     case crypto::SignatureVerifier::ECDSA_SHA384:\2'''

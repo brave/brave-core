@@ -12,11 +12,9 @@ re_pattern = '(DownloadToolbarUIController::UpdateIcon\(.*?\n)^\}'
 replace = '''\1  UpdateIcon_BraveImpl(browser_view_, action_item_);
 }'''
 re_flags = ['MULTILINE', 'DOTALL']
-count = 1
 
 [[substitution]]
 description = 'Override for the icon colour.'
 re_pattern = '^(\s*)action_item_->SetImage'
 replace = '\1icon_color = GetIconColor(state_, active_, browser_view_->GetColorProvider());\1action_item_->SetImage'
 re_flags = ['MULTILINE']
-count = 1
