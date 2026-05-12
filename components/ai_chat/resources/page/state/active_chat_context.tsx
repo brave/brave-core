@@ -8,7 +8,6 @@ import { useRoute } from '$web-common/useRoute'
 import * as BindConversation from '../api/bind_conversation'
 import useHasConversationStarted from '../hooks/useHasConversationStarted'
 import { useAIChat } from './ai_chat_context'
-import { loadTimeData } from '$web-common/loadTimeData'
 
 export const tabAssociatedChatId = 'tab'
 
@@ -61,20 +60,18 @@ export function ActiveChatProviderFromUrl(props: React.PropsWithChildren) {
 
 export const useActiveChat = () => React.useContext(ActiveChatContext)
 
-// Note: This is determined at load time and cannot be changed.
-export const isGlobalPanel = loadTimeData.getBoolean('isGlobalPanel')
-
 type ActiveChatContextProps = {
   selectedConversationId: string | undefined
   updateSelectedConversationId: (selectedId: string | undefined) => void
 }
 
-function ActiveChatProvider({
+export function ActiveChatProvider({
   children,
   selectedConversationId,
   updateSelectedConversationId,
 }: React.PropsWithChildren<ActiveChatContextProps>) {
   const aiChat = useAIChat()
+  const isGlobalPanel = aiChat.isGlobalPanel
   const [conversationAPI, setConversationAPI] =
     React.useState<BindConversation.ConversationBindings>()
   const [globalConversationId, setGlobalConversationId] =

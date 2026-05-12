@@ -59,6 +59,7 @@ const renderConversation = (overrides: RenderOverrides = {}) =>
           }}
           initialState={{ isStandalone: false }}
           conversationProps={{ isMainConversation: true }}
+          aiChatOverrides={{ isGlobalPanel: true }}
         >
           {children}
         </MockContext>

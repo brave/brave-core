@@ -16,7 +16,7 @@ import {
 import * as Mojom from '../../common/mojom'
 import { useIsDragging } from '../hooks/useIsDragging'
 import { isLeoModel } from '../model_utils'
-import { isGlobalPanel, SelectedChatDetails } from './active_chat_context'
+import { SelectedChatDetails } from './active_chat_context'
 import useSendFeedback, { SendFeedbackState } from './useSendFeedback'
 import { useAIChat } from './ai_chat_context'
 import {
@@ -321,7 +321,7 @@ export function useProvideConversationContext(props: ConversationContextProps) {
   const prevDefaultTabContentIdRef = React.useRef<number | undefined>(undefined)
   React.useEffect(() => {
     if (!conversationState.conversationUuid) return
-    if (!props.isMainConversation || !isGlobalPanel) {
+    if (!props.isMainConversation || !aiChat.isGlobalPanel) {
       return
     }
 
