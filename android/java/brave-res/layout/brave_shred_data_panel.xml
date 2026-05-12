@@ -26,9 +26,9 @@
             android:layout_height="wrap_content"
             android:paddingBottom="12dp"
             android:gravity="center_vertical"
-            android:drawableStart="@drawable/ic_arrow_back_24dp"
+            android:drawableStart="@drawable/ic_arrow_left"
             android:drawablePadding="16dp"
-            app:drawableTint="@color/text_interactive"
+            app:drawableTint="@color/text_primary"
             android:text="@string/shred_site_data_title"
             android:textSize="18sp"
             android:textColor="@color/text_primary"
@@ -125,7 +125,7 @@
                     android:textSize="17sp"
                     android:lineHeight="22sp"
                     android:textColor="@color/text_interactive"
-                    android:drawableEnd="@drawable/ic_brave_shred"
+                    android:drawableEnd="@drawable/ic_shred_data"
                     android:drawablePadding="8dp"
                     app:drawableTint="@color/text_interactive"/>
 

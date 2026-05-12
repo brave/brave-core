@@ -13,6 +13,8 @@ import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Outline;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
@@ -44,6 +46,7 @@ import androidx.appcompat.widget.AppCompatRadioButton;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.Log;
@@ -103,8 +106,9 @@ public class BraveUnifiedPanelHandler {
     private static final int POPUP_MARGIN_DP = 16;
     private static final int POPUP_MAX_WIDTH_DP = 400;
     private static final float LANDSCAPE_WIDTH_FRACTION = 0.50f;
-    private static final int BOTTOM_TOOLBAR_OFFSET_DP = 8;
     private static final int ICON_OVERLAP_MARGIN_DP = -8;
+    private static final int FAVICON_ELEVATION_DP = 1;
+    private static final int PANEL_OVERLAP_OFFSET_DP = 7;
 
     private static class BlockersInfo {
         public int mAdsBlocked;
@@ -145,6 +149,8 @@ public class BraveUnifiedPanelHandler {
     private LinearLayout mAdvancedOptionsButton;
     private @Nullable LinearLayout mAdvancedOptionsContent;
     private @Nullable ImageView mAdvancedOptionsArrow;
+    private @Nullable TextView mResetShieldsButton;
+    private @Nullable View mResetShieldsDivider;
     private boolean mIsAdvancedOptionsExpanded;
 
     // Advanced options switches (no Forget Me in new design)
@@ -157,7 +163,8 @@ public class BraveUnifiedPanelHandler {
 
     // Report broken site section
     private LinearLayout mReportBrokenSiteSection;
-    private android.widget.Button mReportBrokenSiteButton;
+    private @Nullable TextView mReportBrokenSiteButton;
+    private @Nullable View mShieldsWarningSection;
 
     // Report broken site panel
     private @Nullable AutoCompleteTextView mReportCategoryDropdown;
@@ -356,21 +363,30 @@ public class BraveUnifiedPanelHandler {
         }
 
         try {
+            int[] anchorLocation = new int[2];
+            mAnchorView.getLocationOnScreen(anchorLocation);
             if (BottomToolbarConfiguration.isToolbarBottomAnchored()) {
-                int[] anchorLocation = new int[2];
-                mAnchorView.getLocationOnScreen(anchorLocation);
-
+                // Mirror the top-toolbar rule: end the panel 7 dp above the toolbar top so
+                // its bottom edge lands in the browser-chrome space adjacent to the URL bar,
+                // which a web page cannot render into.
                 int screenHeight = mContext.getResources().getDisplayMetrics().heightPixels;
                 int anchorTop = anchorLocation[1];
-                int yOffset = screenHeight - anchorTop + (int) (BOTTOM_TOOLBAR_OFFSET_DP * density);
+                int yOffset = screenHeight - anchorTop - (int) (PANEL_OVERLAP_OFFSET_DP * density);
 
                 popupWindow.showAtLocation(
-                        mAnchorView,
-                        android.view.Gravity.BOTTOM | android.view.Gravity.CENTER_HORIZONTAL,
-                        0,
-                        yOffset);
+                        mAnchorView, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, yOffset);
             } else {
-                popupWindow.showAsDropDown(mAnchorView);
+                // Position the panel 7 dp above the bottom of the toolbar (anchorView is the
+                // full toolbar FrameLayout). Starting in the browser-chrome space just below
+                // the URL bar is a spoofing deterrent: a web page cannot render into that
+                // gap. On phones the panel width is screenWidth - 2 * marginPx; on tablets
+                // it is capped at POPUP_MAX_WIDTH_DP, right-aligned under the Shields icon.
+                int yOffset =
+                        anchorLocation[1]
+                                + mAnchorView.getHeight()
+                                - (int) (PANEL_OVERLAP_OFFSET_DP * density);
+                popupWindow.showAtLocation(
+                        mAnchorView, Gravity.TOP | Gravity.END, marginPx, yOffset);
             }
         } catch (Exception e) {
             Log.e(TAG, "Failed to show popup window", e);
@@ -416,6 +432,7 @@ public class BraveUnifiedPanelHandler {
         // Report broken site section
         mReportBrokenSiteSection = popupView.findViewById(R.id.report_broken_site_section);
         mReportBrokenSiteButton = popupView.findViewById(R.id.report_broken_site_button);
+        mShieldsWarningSection = popupView.findViewById(R.id.shields_warning_section);
 
         // Set up shields toggle
         mShieldsToggleSwitch.setOnClickListener(
@@ -508,10 +525,13 @@ public class BraveUnifiedPanelHandler {
             }
         }
 
-        View resetShieldsButton = mAdvancedOptionsContent.findViewById(R.id.reset_shields_button);
-        if (resetShieldsButton != null) {
-            resetShieldsButton.setOnClickListener(v -> resetSiteToShieldsDefaults());
+        mResetShieldsButton =
+                (TextView) mAdvancedOptionsContent.findViewById(R.id.reset_shields_button);
+        mResetShieldsDivider = mAdvancedOptionsContent.findViewById(R.id.reset_shields_divider);
+        if (mResetShieldsButton != null) {
+            mResetShieldsButton.setOnClickListener(v -> resetSiteToShieldsDefaults());
         }
+        updateResetButtonState();
 
         View globalSettingsItem = mAdvancedOptionsContent.findViewById(R.id.global_settings_item);
         if (globalSettingsItem != null) {
@@ -526,6 +546,7 @@ public class BraveUnifiedPanelHandler {
 
         BraveShieldsContentSettings.resetSiteToDefaults(mProfile, mUrl.getSpec());
         updateValues();
+        updateResetButtonState();
 
         if (mContext != null) {
             Toast.makeText(
@@ -534,6 +555,17 @@ public class BraveUnifiedPanelHandler {
                             Toast.LENGTH_SHORT)
                     .show();
         }
+    }
+
+    private void updateResetButtonState() {
+        if (mResetShieldsButton == null || mUrl == null || mProfile == null) {
+            return;
+        }
+        boolean matchesDefaults =
+                BraveShieldsContentSettings.siteMatchesDefaults(mProfile, mUrl.getSpec());
+        int visibility = matchesDefaults ? View.GONE : View.VISIBLE;
+        mResetShieldsButton.setVisibility(visibility);
+        if (mResetShieldsDivider != null) mResetShieldsDivider.setVisibility(visibility);
     }
 
     private void openGlobalShieldsSettings() {
@@ -606,6 +638,7 @@ public class BraveUnifiedPanelHandler {
                 true);
 
         updateValues();
+        updateResetButtonState();
 
         if (mMenuObserver != null) {
             mMenuObserver.onMenuTopShieldsChanged(isChecked, true);
@@ -620,6 +653,10 @@ public class BraveUnifiedPanelHandler {
             if (mReportBrokenSiteSection != null) {
                 mReportBrokenSiteSection.setVisibility(View.GONE);
             }
+            if (mShieldsWarningSection != null) {
+                mShieldsWarningSection.setVisibility(View.VISIBLE);
+            }
+            mShieldIconUnified.setColorFilter(null);
         } else {
             if (mAdvancedOptionsButton != null) {
                 mAdvancedOptionsButton.setVisibility(View.GONE);
@@ -627,6 +664,7 @@ public class BraveUnifiedPanelHandler {
             if (mAdvancedOptionsContent != null) {
                 mAdvancedOptionsContent.setVisibility(View.GONE);
                 mIsAdvancedOptionsExpanded = false;
+                mAdvancedOptionsButton.setActivated(false);
                 if (mAdvancedOptionsArrow != null) {
                     mAdvancedOptionsArrow.setRotation(0f);
                 }
@@ -634,6 +672,12 @@ public class BraveUnifiedPanelHandler {
             if (mReportBrokenSiteSection != null) {
                 mReportBrokenSiteSection.setVisibility(View.VISIBLE);
             }
+            if (mShieldsWarningSection != null) {
+                mShieldsWarningSection.setVisibility(View.GONE);
+            }
+            ColorMatrix matrix = new ColorMatrix();
+            matrix.setSaturation(0f);
+            mShieldIconUnified.setColorFilter(new ColorMatrixColorFilter(matrix));
         }
     }
 
@@ -720,6 +764,7 @@ public class BraveUnifiedPanelHandler {
                         @Override
                         public void updateDrawState(TextPaint ds) {
                             super.updateDrawState(ds);
+                            ds.setColor(ContextCompat.getColor(mContext, R.color.schemes_primary));
                             ds.setUnderlineText(false);
                         }
                     },
@@ -727,6 +772,8 @@ public class BraveUnifiedPanelHandler {
                     learnMoreEnd,
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             descLearnMore.setText(spannable);
+            descLearnMore.setHighlightColor(
+                    ContextCompat.getColor(mContext, R.color.schemes_primary));
             descLearnMore.setMovementMethod(LinkMovementMethod.getInstance());
         }
 
@@ -735,6 +782,13 @@ public class BraveUnifiedPanelHandler {
 
         mReportDetailsInput = panel.findViewById(R.id.report_details_input);
         mReportContactInput = panel.findViewById(R.id.report_contact_input);
+
+        TextInputLayout categoryLayout = panel.findViewById(R.id.report_category_layout);
+        TextInputLayout detailsLayout = panel.findViewById(R.id.report_details_layout);
+        TextInputLayout contactLayout = panel.findViewById(R.id.report_contact_layout);
+        if (categoryLayout != null) categoryLayout.setExpandedHintEnabled(false);
+        if (detailsLayout != null) detailsLayout.setExpandedHintEnabled(false);
+        if (contactLayout != null) contactLayout.setExpandedHintEnabled(false);
 
         mReportScreenshotCheckbox = panel.findViewById(R.id.report_screenshot_checkbox);
         mViewScreenshotLink = panel.findViewById(R.id.report_view_screenshot_link);
@@ -935,6 +989,7 @@ public class BraveUnifiedPanelHandler {
                 BraveShieldsContentSettings.RESOURCE_IDENTIFIER_JAVASCRIPTS,
                 isChecked,
                 false);
+        updateResetButtonState();
 
         if (mMenuObserver != null) {
             mMenuObserver.onMenuTopShieldsChanged(isChecked, false);
@@ -954,6 +1009,7 @@ public class BraveUnifiedPanelHandler {
                         ? BraveShieldsContentSettings.DEFAULT
                         : BraveShieldsContentSettings.ALLOW_RESOURCE,
                 false);
+        updateResetButtonState();
 
         if (mMenuObserver != null) {
             mMenuObserver.onMenuTopShieldsChanged(isChecked, false);
@@ -964,6 +1020,7 @@ public class BraveUnifiedPanelHandler {
         if (mAdvancedOptionsContent == null || mAdvancedOptionsArrow == null) return;
 
         mIsAdvancedOptionsExpanded = !mIsAdvancedOptionsExpanded;
+        mAdvancedOptionsButton.setActivated(mIsAdvancedOptionsExpanded);
 
         if (mIsAdvancedOptionsExpanded) {
             mAdvancedOptionsContent.setVisibility(View.VISIBLE);
@@ -1097,6 +1154,8 @@ public class BraveUnifiedPanelHandler {
             mAdvancedOptionsContent.setVisibility(View.VISIBLE);
             mAdvancedOptionsArrow.setRotation(180f);
         }
+
+        updateResetButtonState();
     }
 
     private void showHttpsUpgradePanel() {
@@ -1844,15 +1903,9 @@ public class BraveUnifiedPanelHandler {
         bg.setColor(ContextCompat.getColor(mContext, R.color.schemes_surface_container));
         frame.setBackground(bg);
 
-        frame.setOutlineProvider(
-                new ViewOutlineProvider() {
-                    @Override
-                    public void getOutline(View view, Outline outline) {
-                        outline.setOval(0, 0, view.getWidth(), view.getHeight());
-                        outline.setAlpha(0f);
-                    }
-                });
+        frame.setOutlineProvider(ViewOutlineProvider.BACKGROUND);
         frame.setClipToOutline(true);
+        frame.setElevation(ViewUtils.dpToPx(mContext, FAVICON_ELEVATION_DP));
         frame.setTranslationZ(MAX_BLOCKED_ICONS - childCount);
 
         return frame;

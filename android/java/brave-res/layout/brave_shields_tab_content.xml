@@ -96,7 +96,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/container_background"/>
+            android:background="@color/schemes_surface_container"/>
 
         <!-- Block counter -->
         <LinearLayout
@@ -107,14 +107,18 @@
             android:gravity="center"
             android:baselineAligned="false"
             android:paddingHorizontal="16dp"
-            android:paddingVertical="16dp">
+            android:paddingVertical="16dp"
+            android:clipChildren="false"
+            android:clipToPadding="false">
 
             <LinearLayout
                 android:id="@+id/blocked_items_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginEnd="8dp">
+                android:layout_marginEnd="8dp"
+                android:clipChildren="false"
+                android:clipToPadding="false">
             </LinearLayout>
 
             <TextView
@@ -164,20 +168,21 @@
             android:text="@string/report_broken_site_prompt"
             android:textColor="@color/text_primary"/>
 
-        <Button
+        <TextView
             android:id="@+id/report_broken_site_button"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="44dp"
             android:minWidth="80dp"
-            android:minHeight="0dp"
             android:paddingHorizontal="16dp"
-            android:paddingVertical="0dp"
             android:gravity="center"
             android:text="@string/report_broken_site_button"
             android:textSize="14sp"
             android:textColor="@color/schemes_on_primary"
-            android:textAllCaps="false"
-            android:background="@drawable/filled_button_background"/>
+            android:fontFamily="sans-serif-medium"
+            android:letterSpacing="0.006"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="@drawable/report_submit_button_bg"/>
 
     </LinearLayout>
 
@@ -210,14 +215,16 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/advanced_controls"
-                android:textColor="@color/text_interactive"/>
+                android:duplicateParentState="true"
+                android:textColor="@color/advanced_options_toggle_color"/>
 
             <ImageView
                 android:id="@+id/advanced_options_arrow"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_arrow_small_down"
-                app:tint="@color/text_interactive"
+                android:duplicateParentState="true"
+                app:tint="@color/advanced_options_toggle_color"
                 android:contentDescription="@null"/>
 
         </LinearLayout>
@@ -234,7 +241,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/container_background"/>
+                android:background="@color/schemes_surface_container"/>
 
             <!-- 1. Upgrade connections to HTTPS (navigation) -->
             <LinearLayout
@@ -260,8 +267,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/ic_arrow_small_down"
-                    android:rotation="270"
+                    android:src="@drawable/ic_arrow_small_right"
                     app:tint="@color/text_secondary"
                     android:contentDescription="@null"/>
 
@@ -270,7 +276,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/container_background"/>
+                android:background="@color/schemes_surface_container"/>
 
             <!-- 2. Block scripts (toggle) -->
             <LinearLayout
@@ -304,7 +310,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/container_background"/>
+                android:background="@color/schemes_surface_container"/>
 
             <!-- 3. Shred site's data (navigation) -->
             <LinearLayout
@@ -330,8 +336,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/ic_arrow_small_down"
-                    android:rotation="270"
+                    android:src="@drawable/ic_arrow_small_right"
                     app:tint="@color/text_secondary"
                     android:contentDescription="@null"/>
 
@@ -340,7 +345,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/container_background"/>
+                android:background="@color/schemes_surface_container"/>
 
             <!-- 4. Block trackers & ads (navigation) -->
             <LinearLayout
@@ -366,8 +371,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/ic_arrow_small_down"
-                    android:rotation="270"
+                    android:src="@drawable/ic_arrow_small_right"
                     app:tint="@color/text_secondary"
                     android:contentDescription="@null"/>
 
@@ -376,7 +380,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/container_background"/>
+                android:background="@color/schemes_surface_container"/>
 
             <!-- 5. Block cookies (navigation) -->
             <LinearLayout
@@ -402,8 +406,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/ic_arrow_small_down"
-                    android:rotation="270"
+                    android:src="@drawable/ic_arrow_small_right"
                     app:tint="@color/text_secondary"
                     android:contentDescription="@null"/>
 
@@ -412,7 +415,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/container_background"/>
+                android:background="@color/schemes_surface_container"/>
 
             <!-- 6. Block fingerprinting (toggle) -->
             <LinearLayout
@@ -446,7 +449,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/container_background"/>
+                android:background="@color/schemes_surface_container"/>
 
             <!-- 7. Block element (action with launch icon) -->
             <LinearLayout
@@ -472,16 +475,17 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/ic_open_in_new"
+                    android:src="@drawable/ic_launch"
                     app:tint="@color/text_secondary"
                     android:contentDescription="@null"/>
 
             </LinearLayout>
 
             <View
+                android:id="@+id/reset_shields_divider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/container_background"/>
+                android:background="@color/schemes_surface_container"/>
 
             <!-- 8. Reset to defaults button -->
             <TextView
@@ -500,7 +504,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/container_background"/>
+                android:background="@color/schemes_surface_container"/>
 
             <!-- 9. Shields global settings -->
             <LinearLayout
@@ -526,7 +530,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/ic_open_in_new"
+                    android:src="@drawable/ic_launch"
                     app:tint="@color/text_interactive"
                     android:contentDescription="@null"/>
 
@@ -538,6 +542,7 @@
 
     <!-- Warning text -->
     <LinearLayout
+        android:id="@+id/shields_warning_section"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"

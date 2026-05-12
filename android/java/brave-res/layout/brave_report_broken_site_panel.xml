@@ -27,8 +27,7 @@
             android:id="@+id/report_back_button"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/ic_arrow_small_down"
-            android:rotation="90"
+            android:src="@drawable/ic_arrow_left"
             android:background="?android:attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/back"/>
 
@@ -127,12 +126,14 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/issue_category_spinner_text"
                     app:placeholderText="@string/issue_category_placeholder"
-                    app:boxStrokeColor="@color/schemes_outline_variant"
+                    app:hintTextColor="@color/schemes_primary"
+                    app:boxStrokeColor="@color/schemes_primary"
                     app:boxCornerRadiusTopStart="12dp"
                     app:boxCornerRadiusTopEnd="12dp"
                     app:boxCornerRadiusBottomStart="12dp"
                     app:boxCornerRadiusBottomEnd="12dp"
                     app:endIconMode="dropdown_menu"
+                    app:endIconTint="@color/schemes_primary"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
 
                     <AutoCompleteTextView
@@ -153,7 +154,8 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/report_broken_site_details_placeholder"
                     app:placeholderText="@string/report_broken_site_panel_details_hint"
-                    app:boxStrokeColor="@color/schemes_outline_variant"
+                    app:hintTextColor="@color/schemes_primary"
+                    app:boxStrokeColor="@color/schemes_primary"
                     app:boxCornerRadiusTopStart="12dp"
                     app:boxCornerRadiusTopEnd="12dp"
                     app:boxCornerRadiusBottomStart="12dp"
@@ -178,7 +180,8 @@
                     android:layout_marginTop="16dp"
                     android:hint="@string/report_broken_site_panel_contact_label"
                     app:placeholderText="@string/report_broken_site_panel_contact_hint"
-                    app:boxStrokeColor="@color/schemes_outline_variant"
+                    app:hintTextColor="@color/schemes_primary"
+                    app:boxStrokeColor="@color/schemes_primary"
                     app:boxCornerRadiusTopStart="12dp"
                     app:boxCornerRadiusTopEnd="12dp"
                     app:boxCornerRadiusBottomStart="12dp"

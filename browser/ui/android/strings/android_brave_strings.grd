@@ -282,7 +282,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Enable support for bypassing top-level redirect tracking URLs.
       </message>
       <message name="IDS_BRAVE_SHIELDS_BLOCKS_SCRIPTS_SWITCH" desc="Switch for Block Scripts.">
-        Block Scripts
+        Block scripts
       </message>
       <message name="IDS_BRAVE_SHIELDS_BLOCKS_SCRIPTS_SUMMARY" desc="Switch for Block Scripts summary.">
         Blocks JavaScript (may break sites)
@@ -1434,7 +1434,7 @@ Are you sure you want to do this?
         <ph name="BEGIN_LINK_0">&lt;LINK_0&gt;</ph>The "Block all Cookies" option has been deprecated. To learn how to force-enable this option, visit<ph name="END_LINK_0">&lt;/LINK_0&gt;</ph> <ph name="BEGIN_LINK_1">&lt;LINK_1&gt;</ph>our help page<ph name="END_LINK_1">&lt;/LINK_1&gt;</ph>
       </message>
       <message name="IDS_BLOCK_COOKIES" desc="Title for shields option.">
-        Block Cookies
+        Block cookies
       </message>
       <message name="IDS_BLOCK_COOKIES_TEXT" desc="Text for shields option.">
         Prevents websites from storing information about your previous visits
@@ -1467,7 +1467,7 @@ Are you sure you want to do this?
         Never go Off-The-Record
       </message>
       <message name="IDS_BLOCK_FINGERPRINTING" desc="Title for shields option.">
-        Block Fingerprinting
+        Block fingerprinting
       </message>
       <message name="IDS_SHIELDS_SUMMARY" desc="Title for shields option.">
         These are the default Shields settings for new sites. Changing these won't affect your existing per-site settings.

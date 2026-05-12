@@ -6,6 +6,7 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -26,8 +27,7 @@
             android:id="@+id/cookies_back_button"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/ic_arrow_small_down"
-            android:rotation="90"
+            android:src="@drawable/ic_arrow_left"
             android:background="?android:attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/back"/>
 
@@ -104,6 +104,7 @@
                         android:id="@+id/cookies_block_all_radio"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        app:buttonTint="@color/schemes_primary"
                         android:clickable="false"
                         android:focusable="false"/>
 
@@ -135,6 +136,7 @@
                         android:id="@+id/cookies_block_third_party_radio"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        app:buttonTint="@color/schemes_primary"
                         android:clickable="false"
                         android:focusable="false"/>
 
@@ -166,6 +168,7 @@
                         android:id="@+id/cookies_allow_radio"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        app:buttonTint="@color/schemes_primary"
                         android:clickable="false"
                         android:focusable="false"/>
 

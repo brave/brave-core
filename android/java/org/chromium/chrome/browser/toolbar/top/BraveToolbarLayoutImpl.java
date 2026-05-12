@@ -1239,7 +1239,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             if (!isValidProtocolForShields(url.getProtocol())) {
                 return;
             }
-            mUnifiedPanelHandler.show(mBraveShieldsButton, currentTab);
+            mUnifiedPanelHandler.show(this, currentTab);
         } catch (Exception e) {
             return;
         }

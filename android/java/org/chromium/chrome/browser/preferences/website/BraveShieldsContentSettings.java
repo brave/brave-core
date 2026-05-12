@@ -125,6 +125,58 @@ public class BraveShieldsContentSettings {
     }
 
     /**
+     * Returns true if the per-site shields settings for siteUrl already match the global defaults.
+     */
+    public static boolean siteMatchesDefaults(Profile profile, String siteUrl) {
+        if (BraveShieldsContentSettingsJni.get().getBraveShieldsEnabled(siteUrl, profile)
+                != BraveShieldsContentSettingsJni.get().getBraveShieldsEnabled("", profile)) {
+            return false;
+        }
+        if (!BraveShieldsContentSettingsJni.get()
+                .getNoScriptControlType(siteUrl, profile)
+                .equals(BraveShieldsContentSettingsJni.get().getNoScriptControlType("", profile))) {
+            return false;
+        }
+        if (BraveShieldsContentSettingsJni.get().getForgetFirstPartyStorageEnabled(siteUrl, profile)
+                != BraveShieldsContentSettingsJni.get()
+                        .getForgetFirstPartyStorageEnabled("", profile)) {
+            return false;
+        }
+        if (!BraveShieldsContentSettingsJni.get()
+                .getFingerprintingControlType(siteUrl, profile)
+                .equals(
+                        BraveShieldsContentSettingsJni.get()
+                                .getFingerprintingControlType("", profile))) {
+            return false;
+        }
+        if (!BraveShieldsContentSettingsJni.get()
+                .getHttpsUpgradeControlType(siteUrl, profile)
+                .equals(
+                        BraveShieldsContentSettingsJni.get()
+                                .getHttpsUpgradeControlType("", profile))) {
+            return false;
+        }
+        if (!BraveShieldsContentSettingsJni.get()
+                .getCookieControlType(siteUrl, profile)
+                .equals(BraveShieldsContentSettingsJni.get().getCookieControlType("", profile))) {
+            return false;
+        }
+        if (!BraveShieldsContentSettingsJni.get()
+                .getCosmeticFilteringControlType(siteUrl, profile)
+                .equals(
+                        BraveShieldsContentSettingsJni.get()
+                                .getCosmeticFilteringControlType("", profile))) {
+            return false;
+        }
+        if (!BraveShieldsContentSettingsJni.get()
+                .getAdControlType(siteUrl, profile)
+                .equals(BraveShieldsContentSettingsJni.get().getAdControlType("", profile))) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * Resets all per-site shields settings for the given URL to the global defaults. Calls each JNI
      * getter/setter pair directly to avoid broken value conversions in the setShieldsValue
      * abstraction.
