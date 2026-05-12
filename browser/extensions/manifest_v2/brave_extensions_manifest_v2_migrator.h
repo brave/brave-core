@@ -14,9 +14,9 @@
 #include "base/scoped_observation.h"
 #include "base/version.h"
 #include "chrome/browser/profiles/profile_keyed_service_factory.h"
-#include "chrome/common/extensions/webstore_install_result.h"
 #include "extensions/browser/extension_prefs_observer.h"
 #include "extensions/browser/extension_registry_observer.h"
+#include "extensions/browser/webstore_install_result.h"
 
 class Profile;
 
