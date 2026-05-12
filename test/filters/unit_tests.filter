@@ -27,6 +27,7 @@
 -BrowsingHistoryHandlerTest.SendsUpdatedInfoOnAccountChange
 -CanOfferSigninTest.ProfileConnected
 -GlicButtonControllerTest.*
+-GlicEnablingCombinedObserverTest.*
 -GlicEnablingStandardFreTest.NotConsented_Returns*
 -GlicEnablingTrustFirstOnboardingTest.*
 -GlicFreControllerTest.*
@@ -34,6 +35,7 @@
 -GlicMetricsFeaturesEnabledTest.*
 -GlicMetricsTest.*
 -GlicMetricsTrustFirstOnboardingTest.*
+-GlicEnablingProfileReadyStateTestBase.*
 -MultistepFilterServiceFactoryTest.*
 -TabOrganizationServiceTest.*
 -TabStripActionContainerTest*.OrdersButtonsCorrectly*
@@ -337,8 +339,7 @@
 -DownloadProtectionUtilTest.ShouldSendDangerousDownloadReport
 -DownloadWarningDesktopHatsUtilsTest.ProductSpecificData_EnhancedSafeBrowsing
 -EnhancedProtectionDownloadTest.*
--ExtensionDataCollectionTest.CollectExtensionDataWithExtension
--ExtensionDataCollectionTest.CollectsLastInstalledExtension
+-ExtensionDataCollectionTest.*
 -ExternalAppRedirectCheckingTest.ShouldReportExternalAppRedirect
 -GeminiAntiscamProtectionServiceFactoryTest.*
 -GeminiAntiscamProtectionServiceTest.*
