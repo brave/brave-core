@@ -3572,25 +3572,13 @@ void JsonRpcService::GetSPLTokenProgramByMint(
     return;
   }
 
-  mojom::BlockchainTokenPtr user_asset;
-  if ((user_asset = GetUserAsset(prefs_, mojom::CoinType::SOL, chain_id,
-                                 mint_address, "", false, false, false))) {
-    if (user_asset->spl_token_program != mojom::SPLTokenProgram::kUnknown) {
-      std::move(callback).Run(user_asset->spl_token_program,
-                              mojom::SolanaProviderError::kSuccess, "");
-      return;
-    }
-  } else if (auto token = BlockchainRegistry::GetInstance()->GetTokenByAddress(
-                 chain_id, mojom::CoinType::SOL, mint_address)) {
-    // In theory token in registry won't have unknown value appears, but we let
-    // it fall through to fetch from network as it won't hurt if that does
-    // happen somehow.
-    if (token->spl_token_program != mojom::SPLTokenProgram::kUnknown) {
-      std::move(callback).Run(token->spl_token_program,
-                              mojom::SolanaProviderError::kSuccess, "");
-      return;
-    }
-  }
+  // Always read the mint account's owner from the chain. Cached
+  // `spl_token_program` values in user assets or the token list can be wrong
+  // (e.g. SPL Token vs Token-2022). A wrong program derives the wrong ATA and
+  // balance checks then treat a missing account as 0.
+  mojom::BlockchainTokenPtr user_asset =
+      GetUserAsset(prefs_, mojom::CoinType::SOL, chain_id, mint_address, "",
+                   false, false, false);
 
   auto internal_callback =
       base::BindOnce(&JsonRpcService::ContinueGetSPLTokenProgramByMint,
