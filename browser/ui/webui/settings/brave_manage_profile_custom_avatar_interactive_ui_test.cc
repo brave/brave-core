@@ -12,7 +12,12 @@
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/common/pref_names.h"
 #include "chrome/test/interaction/interactive_browser_test.h"
+#include "components/infobars/content/content_infobar_manager.h"
+#include "components/infobars/core/confirm_infobar_delegate.h"
+#include "components/infobars/core/infobar_delegate.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/file_system_chooser_test_helpers.h"
@@ -136,6 +141,29 @@ ProfileAttributesEntry* GetActiveProfileEntry(Browser* browser) {
       .GetProfileAttributesWithPath(profile->GetPath());
 }
 
+void DismissSyncCannotRunInfobarIfPresent(content::WebContents* web_contents) {
+  infobars::ContentInfoBarManager* manager =
+      infobars::ContentInfoBarManager::FromWebContents(web_contents);
+  if (!manager) {
+    return;
+  }
+  for (infobars::InfoBar* infobar : manager->infobars()) {
+    infobars::InfoBarDelegate* delegate = infobar->delegate();
+    if (delegate->GetIdentifier() !=
+        infobars::InfoBarDelegate::SYNC_CANNOT_RUN_INFOBAR) {
+      continue;
+    }
+    infobars::ConfirmInfoBarDelegate* confirm =
+        delegate->AsConfirmInfoBarDelegate();
+    if (confirm) {
+      // "Don't show again" — clears the bar without navigating away from
+      // settings (Accept opens sync settings).
+      confirm->Cancel();
+    }
+    break;
+  }
+}
+
 }  // namespace
 
 class BraveManageProfileCustomAvatarInteractiveTest
@@ -145,6 +173,13 @@ class BraveManageProfileCustomAvatarInteractiveTest
 
   void SetUpOnMainThread() override {
     InteractiveBrowserTest::SetUpOnMainThread();
+    // Some test runners ship a Local State pref that disables native file
+    // pickers; without user-visible selection, `FakeSelectFileDialogFactory`
+    // never runs and the upload flow stalls.
+    if (g_browser_process->local_state()) {
+      g_browser_process->local_state()->SetBoolean(
+          prefs::kAllowFileSelectionDialogs, true);
+    }
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     test_png_path_ = temp_dir_.GetPath().AppendASCII("test_avatar.png");
     gfx::Image image(gfx::test::CreateImage(64, 64));
@@ -180,6 +215,20 @@ IN_PROC_BROWSER_TEST_F(BraveManageProfileCustomAvatarInteractiveTest,
       InstrumentTab(kSettingsTab, 0, browser()),
       NavigateWebContents(kSettingsTab, kManageProfileUrl),
       WaitForWebContentsPainted(kSettingsTab), Do([this]() {
+        content::WebContents* wc =
+            browser()->tab_strip_model()->GetActiveWebContents();
+        DismissSyncCannotRunInfobarIfPresent(wc);
+        ASSERT_TRUE(base::test::RunUntil([wc]() {
+          return content::EvalJs(wc, R"(
+            (() => {
+              const el = document.querySelector('settings-manage-profile');
+              return !!(el && el.shadowRoot);
+            })()
+          )")
+              .ExtractBool();
+        }));
+      }),
+      Do([this]() {
         content::WebContents* wc =
             browser()->tab_strip_model()->GetActiveWebContents();
         ASSERT_TRUE(base::test::RunUntil([wc]() {
