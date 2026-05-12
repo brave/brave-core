@@ -121,12 +121,14 @@ std::string GenerateBtcImportPayload(std::string_view private_key_hex) {
   return Base58EncodeWithCheck(buf);
 }
 
+#if !defined(OFFICIAL_BUILD)
 void WaitForPostedTask() {
   base::RunLoop run_loop;
   base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, run_loop.QuitClosure());
   run_loop.Run();
 }
+#endif  // !defined(OFFICIAL_BUILD)
 
 }  // namespace
 
