@@ -1,7 +1,7 @@
-diff --git a/chrome/browser/ui/views/page_action/page_action_model.cc b/chrome/browser/ui/views/page_action/page_action_model.cc
-index 2e733d235303b70d89a19bc2e41863509478b542..b531d04fec8edd68f6c56185bf329535c593be37 100644
---- a/chrome/browser/ui/views/page_action/page_action_model.cc
-+++ b/chrome/browser/ui/views/page_action/page_action_model.cc
+diff --git a/chrome/browser/ui/page_actions/page_action_model.cc b/chrome/browser/ui/page_actions/page_action_model.cc
+index 5b7e428870b35b18237f31d4a4fba3d195378dd3..382891497f7f1c49ee519e85f3d2899702bc2ffa 100644
+--- a/chrome/browser/ui/page_actions/page_action_model.cc
++++ b/chrome/browser/ui/page_actions/page_action_model.cc
 @@ -16,6 +16,7 @@ namespace {
  using ::actions::ActionItem;
  }  // namespace
