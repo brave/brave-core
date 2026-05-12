@@ -76,7 +76,9 @@ class HorizontalScrollableTabStripBrowserTest : public InProcessBrowserTest {
     browser_root_view()->OnMouseWheel(wheel_event);
   }
 
-  void StopAnimatingAndLayout() {
+  void StopAnimatingAndLayout(
+      base::Location location = base::Location::Current()) {
+    SCOPED_TRACE(location.ToString());
     auto* tab_strip = views::AsViewClass<BraveTabStrip>(
         browser_view()->horizontal_tab_strip_for_testing());
     tab_strip->StopAnimating();
