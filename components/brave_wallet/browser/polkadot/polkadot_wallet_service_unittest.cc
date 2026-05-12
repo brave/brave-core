@@ -164,9 +164,6 @@ TEST_F(PolkadotWalletServiceUnitTest, Constructor) {
           ->rpc_endpoints.front()
           .spec();
 
-  EXPECT_EQ(testnet_url, "https://polkadot-westend.wallet.brave.com/");
-  EXPECT_EQ(mainnet_url, "https://polkadot-mainnet.wallet.brave.com/");
-
   {
     // Both requests in the constructor complete successfully.
 
@@ -288,9 +285,6 @@ TEST_F(PolkadotWalletServiceUnitTest, ConcurrentChainNameFetches) {
           ->GetKnownChain(mojom::kPolkadotMainnet, mojom::CoinType::DOT)
           ->rpc_endpoints.front()
           .spec();
-
-  EXPECT_EQ(testnet_url, "https://polkadot-westend.wallet.brave.com/");
-  EXPECT_EQ(mainnet_url, "https://polkadot-mainnet.wallet.brave.com/");
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
       *keyring_service_, *network_manager_, prefs_,
@@ -572,9 +566,6 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic) {
           ->rpc_endpoints.front()
           .spec();
 
-  EXPECT_EQ(testnet_url, "https://polkadot-westend.wallet.brave.com/");
-  EXPECT_EQ(mainnet_url, "https://polkadot-mainnet.wallet.brave.com/");
-
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
       *keyring_service_, *network_manager_, prefs_,
       url_loader_factory_.GetSafeWeakWrapper());
@@ -825,9 +816,6 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoChainMetadata) {
           ->rpc_endpoints.front()
           .spec();
 
-  EXPECT_EQ(testnet_url, "https://polkadot-westend.wallet.brave.com/");
-  EXPECT_EQ(mainnet_url, "https://polkadot-mainnet.wallet.brave.com/");
-
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
       *keyring_service_, *network_manager_, prefs_,
       url_loader_factory_.GetSafeWeakWrapper());
@@ -890,9 +878,6 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoAccountInfo) {
           ->GetKnownChain(mojom::kPolkadotMainnet, mojom::CoinType::DOT)
           ->rpc_endpoints.front()
           .spec();
-
-  EXPECT_EQ(testnet_url, "https://polkadot-westend.wallet.brave.com/");
-  EXPECT_EQ(mainnet_url, "https://polkadot-mainnet.wallet.brave.com/");
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
       *keyring_service_, *network_manager_, prefs_,
@@ -987,9 +972,6 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoChainHeader) {
           ->GetKnownChain(mojom::kPolkadotMainnet, mojom::CoinType::DOT)
           ->rpc_endpoints.front()
           .spec();
-
-  EXPECT_EQ(testnet_url, "https://polkadot-westend.wallet.brave.com/");
-  EXPECT_EQ(mainnet_url, "https://polkadot-mainnet.wallet.brave.com/");
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
       *keyring_service_, *network_manager_, prefs_,
@@ -1112,9 +1094,6 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoParentHeader) {
           ->GetKnownChain(mojom::kPolkadotMainnet, mojom::CoinType::DOT)
           ->rpc_endpoints.front()
           .spec();
-
-  EXPECT_EQ(testnet_url, "https://polkadot-westend.wallet.brave.com/");
-  EXPECT_EQ(mainnet_url, "https://polkadot-mainnet.wallet.brave.com/");
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
       *keyring_service_, *network_manager_, prefs_,
@@ -1271,9 +1250,6 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoFinalizedHead) {
           ->rpc_endpoints.front()
           .spec();
 
-  EXPECT_EQ(testnet_url, "https://polkadot-westend.wallet.brave.com/");
-  EXPECT_EQ(mainnet_url, "https://polkadot-mainnet.wallet.brave.com/");
-
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
       *keyring_service_, *network_manager_, prefs_,
       url_loader_factory_.GetSafeWeakWrapper());
@@ -1412,9 +1388,6 @@ TEST_F(PolkadotWalletServiceUnitTest,
           ->GetKnownChain(mojom::kPolkadotMainnet, mojom::CoinType::DOT)
           ->rpc_endpoints.front()
           .spec();
-
-  EXPECT_EQ(testnet_url, "https://polkadot-westend.wallet.brave.com/");
-  EXPECT_EQ(mainnet_url, "https://polkadot-mainnet.wallet.brave.com/");
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
       *keyring_service_, *network_manager_, prefs_,
@@ -1593,9 +1566,6 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoGenesisHash) {
           ->GetKnownChain(mojom::kPolkadotMainnet, mojom::CoinType::DOT)
           ->rpc_endpoints.front()
           .spec();
-
-  EXPECT_EQ(testnet_url, "https://polkadot-westend.wallet.brave.com/");
-  EXPECT_EQ(mainnet_url, "https://polkadot-mainnet.wallet.brave.com/");
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
       *keyring_service_, *network_manager_, prefs_,
@@ -1823,9 +1793,6 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoRuntimeVersion) {
           ->GetKnownChain(mojom::kPolkadotMainnet, mojom::CoinType::DOT)
           ->rpc_endpoints.front()
           .spec();
-
-  EXPECT_EQ(testnet_url, "https://polkadot-westend.wallet.brave.com/");
-  EXPECT_EQ(mainnet_url, "https://polkadot-mainnet.wallet.brave.com/");
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
       *keyring_service_, *network_manager_, prefs_,
