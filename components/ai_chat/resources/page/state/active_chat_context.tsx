@@ -82,7 +82,7 @@ function ActiveChatProvider({
 
   // Whenever we create a new conversation in global panel mode, that becomes the main conversation.
   React.useEffect(() => {
-    if (isGlobalPanel && !selectedConversationId) {
+    if (isGlobalPanel && (!selectedConversationId || !globalConversationId)) {
       conversationAPI?.api?.getState
         .fetch()
         .then((s) => setGlobalConversationId(s.conversationUuid))
@@ -195,7 +195,7 @@ function ActiveChatProvider({
 
     // Special case the default conversation - it gets treated specially as
     // the chat is rebound as the tab navigates.
-    if (isMainConversation) return
+    if (selectedConversationId === tabAssociatedChatId) return
     if (!selectedConversationId) return
     if (conversations.find((c) => c.uuid === selectedConversationId)) return
 
