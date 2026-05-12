@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-group("lib") {
-  public_deps = [ "//third_party/rust/regex_automata/v0_4:lib" ]
-}
+[[substitution]]
+description = 'Allow regex_automata to be used outside of test targets'
+pattern = 'testonly = true'
+replace = 'testonly = false'
