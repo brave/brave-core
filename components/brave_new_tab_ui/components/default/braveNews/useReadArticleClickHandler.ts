@@ -4,8 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { ReadFeedItemPayload, VisitDisplayAdPayload } from '../../../actions/today_actions'
-import { OnReadFeedItem, OnVisitDisplayAd } from './'
+import { ReadFeedItemPayload } from '../../../actions/today_actions'
+import { OnReadFeedItem } from './'
 
 export default function useReadArticleClickHandler (action: OnReadFeedItem, payloadData: ReadFeedItemPayload) {
   return React.useCallback((e: React.MouseEvent) => {
@@ -13,17 +13,6 @@ export default function useReadArticleClickHandler (action: OnReadFeedItem, payl
     const shouldOpenInNewTab = detectShouldOpenInNewTab(e)
     action({ ...payloadData, openInNewTab: shouldOpenInNewTab })
   }, [action, payloadData.item, payloadData.isPromoted])
-}
-
-export function useVisitDisplayAdClickHandler (action: OnVisitDisplayAd, payloadData?: VisitDisplayAdPayload) {
-  return React.useCallback((e: React.MouseEvent) => {
-    e.preventDefault()
-    if (!payloadData) {
-      return
-    }
-    const shouldOpenInNewTab = detectShouldOpenInNewTab(e)
-    action({ ...payloadData, openInNewTab: shouldOpenInNewTab })
-  }, [action, payloadData])
 }
 
 export function detectShouldOpenInNewTab (e: React.MouseEvent): boolean {

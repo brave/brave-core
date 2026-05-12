@@ -203,7 +203,6 @@ base::span<const webui::LocalizedString> GetWebUILocalizedStrings(
                {"braveNewsStatusFetching", IDS_BRAVE_NEWS_STATUS_FETCHING},
                {"braveNewsActionRefresh", IDS_BRAVE_NEWS_ACTION_REFRESH},
                {"braveNewsPromoted", IDS_BRAVE_NEWS_PROMOTED},
-               {"braveNewsDisplayAdLabel", IDS_BRAVE_NEWS_DISPLAY_AD_LABEL},
 
                {"addWidget", IDS_BRAVE_NEW_TAB_WIDGET_ADD},
                {"hideWidget", IDS_BRAVE_NEW_TAB_WIDGET_HIDE},

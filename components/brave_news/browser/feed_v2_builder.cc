@@ -353,13 +353,6 @@ std::vector<mojom::FeedItemV2Ptr> GenerateClusterBlock(
   }
 }
 
-std::vector<mojom::FeedItemV2Ptr> GenerateAd() {
-  DVLOG(1) << __FUNCTION__;
-  std::vector<mojom::FeedItemV2Ptr> result;
-  result.push_back(mojom::FeedItemV2::NewAdvert(mojom::FeedV2Ad::New()));
-  return result;
-}
-
 // Generates a "Special Block" this will be one of the following:
 // 1. An advert, if we have one
 // 2. A "Discover" entry, which suggests some more publishers for the user to
@@ -447,14 +440,6 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateBasicFeed(FeedGenerationInfo info,
     blocks++;
   }
 
-  // Insert an ad as the second item.
-  if (feed->items.size() > 1) {
-    auto ad = GenerateAd();
-    feed->items.insert(feed->items.begin() + 1,
-                       std::make_move_iterator(ad.begin()),
-                       std::make_move_iterator(ad.end()));
-  }
-
   return feed;
 }
 
@@ -484,13 +469,7 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateAllFeed(FeedGenerationInfo info) {
            << " articles)";
   add_items(initial_block);
 
-  // Step 2: We always add an advertisment after the first block.
-  // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.82154jsxm16
-  auto advert = GenerateAd();
-  DVLOG(1) << "Step 2: Advertisement";
-  add_items(advert);
-
-  // Step 3: Generate a top news block
+  // Step 2: Generate a top news block
   // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.7z05nb4b269d
   // This block is a bit special - we take the top articles from the top few
   // topics and display them in a cluster. If there are no topics, we try and do
@@ -500,10 +479,10 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateAllFeed(FeedGenerationInfo info) {
     top_news_block =
         GenerateChannelBlock(info, info.name_table().Add(kTopNewsChannel));
   }
-  DVLOG(1) << "Step 3: Top News Block";
+  DVLOG(1) << "Step 2: Top News Block";
   add_items(top_news_block);
 
-  // Repeat step 4 - 6 until we don't have any more articles to add to the feed.
+  // Repeat step 3 - 5 until we don't have any more articles to add to the feed.
   constexpr uint8_t kIterationTypes = 3;
   uint32_t iteration = 0;
   while (true) {
@@ -511,31 +490,26 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateAllFeed(FeedGenerationInfo info) {
 
     auto iteration_type = iteration % kIterationTypes;
 
-    // Step 4: Block Generation
+    // Step 3: Block Generation
     // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.os2ze8cesd8v
     if (iteration_type == 0) {
-      DVLOG(1) << "Step 4: Standard Block";
+      DVLOG(1) << "Step 3: Standard Block";
       items = GenerateBlockFromContentGroups(info);
     } else if (iteration_type == 1) {
-      // Step 5: Block or Cluster Generation
+      // Step 4: Block or Cluster Generation
       // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.tpvsjkq0lzmy
       // Half the time, a normal block
       if (TossCoin()) {
-        DVLOG(1) << "Step 5: Standard Block";
+        DVLOG(1) << "Step 4: Standard Block";
         items = GenerateBlockFromContentGroups(info);
       } else {
         items = GenerateClusterBlock(info);
       }
     } else if (iteration_type == 2) {
-      // Step 6: Optional special card or Advertisement
+      // Step 5: Optional special card
       // https://docs.google.com/document/d/1bSVHunwmcHwyQTpa3ab4KRbGbgNQ3ym_GHvONnrBypg/edit#heading=h.n1ipt86esc34
-      if (TossCoin()) {
-        DVLOG(1) << "Step 6.1: Special Block";
-        items = GenerateSpecialBlock(info);
-      } else {
-        DVLOG(1) << "Step 6.2: Advertisement";
-        items = GenerateAd();
-      }
+      DVLOG(1) << "Step 5: Special Block";
+      items = GenerateSpecialBlock(info);
     } else {
       NOTREACHED();
     }

@@ -207,9 +207,6 @@
   <message name="IDS_BRAVE_NEWS_SHOW_LESS" desc="Text for the button to show fewer publishers or channels" formatter_data="webui=BraveNews">
     Show less
   </message>
-  <message name="IDS_BRAVE_NEWS_ADVERT_BADGE" desc="Text for the badge indicating advertisements. Should be short" formatter_data="webui=BraveNews">
-    Ad
-  </message>
   <message name="IDS_BRAVE_NEWS_HIDE_CONTENT_FROM" desc="Text for menu item to hide content from a publisher" formatter_data="webui=BraveNews">
     Hide content from <ph name="PUBLISHER_NAME">$1<ex>The Verge</ex></ph>
   </message>

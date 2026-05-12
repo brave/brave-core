@@ -7,7 +7,6 @@ import { spacing } from "@brave/leo/tokens/css/variables";
 import { FeedItemV2, FeedV2, FeedV2Error } from "gen/brave/components/brave_news/common/brave_news.mojom.m";
 import * as React from 'react';
 import styled from "styled-components";
-import Advert from "./feed/Ad";
 import Article from "./feed/Article";
 import CaughtUp from "./feed/CaughtUp";
 import Cluster from "./feed/Cluster";
@@ -37,11 +36,6 @@ const FeedContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${spacing.xl};
-
-  /* Hide Ad elements, if we weren't able to fill them */
-  & .${CARD_CLASS}:empty {
-    display: none;
-  }
 `
 
 interface Props {
@@ -51,7 +45,6 @@ interface Props {
 }
 
 const getKey = (feedItem: FeedItemV2, index: number): React.Key => {
-  if (feedItem.advert) return index
   if (feedItem.article) return feedItem.article.data.url.url
   if (feedItem.hero) return feedItem.hero.data.url.url
   if (feedItem.cluster) return index
@@ -179,10 +172,7 @@ export default function Component({ feed, onViewCountChange, onSessionStart }: P
     return feed?.items.slice(0, count).map((item, index) => {
       let el: React.ReactNode
 
-      if (item.advert) {
-        el = <Advert info={item.advert} />
-      }
-      else if (item.article) {
+      if (item.article) {
         el = <Article info={item.article} feedDepth={currentCardCount} />
       }
       else if (item.cluster) {
@@ -199,7 +189,7 @@ export default function Component({ feed, onViewCountChange, onSessionStart }: P
 
       if (item.cluster) {
         currentCardCount += item.cluster.articles.length;
-      } else if (!item.advert) {
+      } else {
         currentCardCount++;
       }
 
