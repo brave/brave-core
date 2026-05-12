@@ -9,6 +9,23 @@ import Preferences
 import Shared
 import os.log
 
+/// Abstracts `BraveStats` so tests can inject a fake implementation.
+// TODO(https://github.com/brave/brave-browser/issues/55105):
+// Change this to use a protocol exposed from the `BraveStats` bridge.
+public protocol BraveCoreStats: AnyObject {
+  /// Reads the `brave.stats.reporting_enabled` Chromium preference,
+  // so must be accessed on the main thread.
+  var isStatsReportingEnabled: Bool { get }
+  /// Reads the `brave.brave_ads.enabled` Chromium preference,
+  // so must be accessed on the main thread.
+  var isNotificationAdsEnabled: Bool { get }
+  /// Reads and writes the `brave.stats.last_check_ymd` Chromium preference,
+  // so must be accessed on the main thread.
+  var lastPingDate: Date? { get set }
+}
+
+extension BraveStats: BraveCoreStats {}
+
 public class DAU {
 
   /// Default installation date for legacy woi version.
@@ -65,11 +82,11 @@ public class DAU {
   }
 
   private let apiKey: String?
-  private let braveCoreStats: BraveStats?
+  private let braveCoreStats: (any BraveCoreStats)?
   private let serpMetrics: (any SerpMetrics)?
 
   public init(
-    braveCoreStats: BraveStats?,
+    braveCoreStats: (any BraveCoreStats)?,
     serpMetrics: (any SerpMetrics)?
   ) {
     self.braveCoreStats = braveCoreStats
@@ -149,24 +166,26 @@ public class DAU {
     }
 
     let task = URLSession.shared.dataTask(with: request) { [self] _, _, error in
-      defer {
-        self.processingPing = false
-      }
+      DispatchQueue.main.async {
+        defer {
+          self.processingPing = false
+        }
 
-      if let e = error {
-        Logger.module.error("status update error: \(e.localizedDescription)")
-        return
-      }
+        if let e = error {
+          Logger.module.error("status update error: \(e.localizedDescription)")
+          return
+        }
 
-      // Ping was successful, next ping should be sent with `first` parameter set to false.
-      // This preference is set for future DAU pings.
-      Preferences.DAU.firstPingParam.value = false
+        // Ping was successful, next ping should be sent with `first` parameter set to false.
+        // This preference is set for future DAU pings.
+        Preferences.DAU.firstPingParam.value = false
 
-      // Store the last ping date in local state so all platform components share one source of truth.
-      // Thread hop to main is required because `lastPingDate` sets `brave.stats.last_check_ymd`
-      // Chromium preference, which must be done from the main thread.
-      DispatchQueue.main.async { [weak self] in
-        self?.braveCoreStats?.lastPingDate = paramsAndPrefs.date
+        // Store the last ping date in local state so all platform components
+        // share one source of truth.
+        // Thread hop to main is required because `lastPingDate` sets
+        // `brave.stats.last_check_ymd` Chromium preference, which must be done
+        // from the main thread.
+        self.braveCoreStats?.lastPingDate = paramsAndPrefs.date
       }
     }
 
@@ -284,9 +303,9 @@ public class DAU {
     return URLQueryItem(name: "channel", value: channel.dauServerChannelParam)
   }
 
-  func braveCoreParams(for braveStats: BraveStats) -> [URLQueryItem] {
+  func braveCoreParams(for braveCoreStats: any BraveCoreStats) -> [URLQueryItem] {
     return [
-      .init(name: "ads_enabled", value: braveStats.isNotificationAdsEnabled ? "true" : "false")
+      .init(name: "ads_enabled", value: braveCoreStats.isNotificationAdsEnabled ? "true" : "false")
     ]
   }
 
