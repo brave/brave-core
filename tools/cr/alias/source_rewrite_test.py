@@ -13,6 +13,7 @@ from alias.source_rewrite import (
     _is_path_excluded,
     _should_walk_dir,
     update_references,
+    update_shadow_include,
 )
 from test.fake_chromium_repo import FakeChromiumRepo
 
@@ -429,6 +430,110 @@ class UpdateGnReferencesTest(unittest.TestCase):
                           Path('brave/components/api_test/BUILD.gn'))
         self.assertIn('"//brave/components/api_request_helper"',
                       self._read('out/Default/gen/BUILD.gn'))
+
+
+# ---------------------------------------------------------------------------
+# Unit tests: update_shadow_include
+# ---------------------------------------------------------------------------
+
+
+class UpdateShadowIncludeTest(unittest.TestCase):
+    """update_shadow_include handles .h files with IWYU pragma comments."""
+
+    def setUp(self):
+        self._repo = FakeChromiumRepo()
+        self._repo.setup()
+        self.addCleanup(self._repo.cleanup)
+
+    def _write(self, rel: str, content: str) -> Path:
+        path = self._repo.brave / rel
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(content, encoding='utf-8')
+        return path
+
+    def _read(self, rel: str) -> str:
+        return (self._repo.brave / rel).read_text(encoding='utf-8')
+
+    def test_shadow_include_cc_file_no_pragma(self):
+        """Replacing shadow include in .cc file adds no pragma."""
+        self._write('chromium_src/crypto/aead.cc',
+                    '#include <crypto/aead.h>\n')
+        update_shadow_include(self._repo.brave / 'chromium_src/crypto/aead.cc',
+                              Path('crypto/aead.h'), Path('crypto/new_aead.h'))
+        content = self._read('chromium_src/crypto/aead.cc')
+        self.assertIn('#include <crypto/new_aead.h>', content)
+        self.assertNotIn('IWYU pragma', content)
+
+    def test_shadow_include_h_file_adds_pragma(self):
+        """Replacing shadow include in .h file adds IWYU pragma."""
+        self._write('chromium_src/crypto/aead.h', '#include <crypto/aead.h>\n')
+        update_shadow_include(self._repo.brave / 'chromium_src/crypto/aead.h',
+                              Path('crypto/aead.h'), Path('crypto/new_aead.h'))
+        content = self._read('chromium_src/crypto/aead.h')
+        self.assertIn('#include <crypto/new_aead.h>  // IWYU pragma: export',
+                      content)
+
+    def test_shadow_include_h_file_pragma_already_present(self):
+        """If pragma already exists, don't duplicate it."""
+        self._write('chromium_src/crypto/aead.h',
+                    '#include <crypto/aead.h>  // IWYU pragma: export\n')
+        update_shadow_include(self._repo.brave / 'chromium_src/crypto/aead.h',
+                              Path('crypto/aead.h'), Path('crypto/new_aead.h'))
+        content = self._read('chromium_src/crypto/aead.h')
+        self.assertIn('#include <crypto/new_aead.h>  // IWYU pragma: export',
+                      content)
+        # Ensure pragma appears exactly once
+        self.assertEqual(content.count('IWYU pragma: export'), 1)
+
+    def test_shadow_include_hh_file_adds_pragma(self):
+        """Replacing shadow include in .hh file doesn't add pragma (.hh is not .h)."""
+        self._write('chromium_src/crypto/aead.hh',
+                    '#include <crypto/aead.hh>\n')
+        update_shadow_include(self._repo.brave / 'chromium_src/crypto/aead.hh',
+                              Path('crypto/aead.hh'),
+                              Path('crypto/new_aead.hh'))
+        content = self._read('chromium_src/crypto/aead.hh')
+        self.assertIn('#include <crypto/new_aead.hh>', content)
+        self.assertNotIn('IWYU pragma', content)
+
+    def test_shadow_include_mm_file_no_pragma(self):
+        """Replacing shadow include in .mm file adds no pragma."""
+        self._write('chromium_src/crypto/aead.mm',
+                    '#include <crypto/aead.h>\n')
+        update_shadow_include(self._repo.brave / 'chromium_src/crypto/aead.mm',
+                              Path('crypto/aead.h'), Path('crypto/new_aead.h'))
+        content = self._read('chromium_src/crypto/aead.mm')
+        self.assertIn('#include <crypto/new_aead.h>', content)
+        self.assertNotIn('IWYU pragma', content)
+
+    def test_shadow_include_not_found_no_op(self):
+        """If the include line is not found, file is not modified."""
+        self._write('chromium_src/crypto/aead.h', '#include <other/path.h>\n')
+        update_shadow_include(self._repo.brave / 'chromium_src/crypto/aead.h',
+                              Path('crypto/aead.h'), Path('crypto/new_aead.h'))
+        content = self._read('chromium_src/crypto/aead.h')
+        self.assertIn('#include <other/path.h>', content)
+        self.assertNotIn('crypto/new_aead.h', content)
+
+    def test_shadow_include_multiline_with_pragma(self):
+        """Shadow include with pragma in a multiline file."""
+        self._write(
+            'chromium_src/crypto/aead.h', '// Copyright header\n'
+            '#ifndef CRYPTO_AEAD_H_\n'
+            '#define CRYPTO_AEAD_H_\n'
+            '\n'
+            '#include <crypto/aead.h>\n'
+            '\n'
+            'namespace crypto {\n'
+            '}  // namespace crypto\n'
+            '#endif\n')
+        update_shadow_include(self._repo.brave / 'chromium_src/crypto/aead.h',
+                              Path('crypto/aead.h'), Path('crypto/new_aead.h'))
+        content = self._read('chromium_src/crypto/aead.h')
+        self.assertIn('#include <crypto/new_aead.h>  // IWYU pragma: export',
+                      content)
+        # Verify the rest of the file is untouched
+        self.assertIn('namespace crypto', content)
 
 
 if __name__ == '__main__':
