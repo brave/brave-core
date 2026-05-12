@@ -47,6 +47,7 @@ import org.chromium.chrome.browser.data_sharing.DataSharingTabManager;
 import org.chromium.chrome.browser.ephemeraltab.EphemeralTabCoordinator;
 import org.chromium.chrome.browser.findinpage.FindToolbarManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
+import org.chromium.chrome.browser.glic.GlicButtonDelegate;
 import org.chromium.chrome.browser.homepage.HomepageManager;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
@@ -234,7 +235,8 @@ public class BraveToolbarManager extends ToolbarManager
             SnackbarManager snackbarManager,
             @Nullable OmniboxChipManager omniboxChipManager,
             @Nullable BottomBarHostManager bottomBarHostManager,
-            @Nullable ActionRegistry actionRegistry) {
+            @Nullable ActionRegistry actionRegistry,
+            GlicButtonDelegate toggleGlicCallback) {
         super(
                 activity,
                 bottomControlsStacker,
@@ -293,7 +295,8 @@ public class BraveToolbarManager extends ToolbarManager
                 snackbarManager,
                 omniboxChipManager,
                 bottomBarHostManager,
-                actionRegistry);
+                actionRegistry,
+                toggleGlicCallback);
 
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;
