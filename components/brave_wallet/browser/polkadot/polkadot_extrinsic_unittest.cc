@@ -714,6 +714,234 @@ TEST(PolkadotExtrinsics, SignedExtrinsic_TransferAll) {
   EXPECT_EQ(extrinsic, expected_extrinsic);
 }
 
+TEST(PolkadotExtrinsics, SignedExtrinsic_TransferKeepAlive_AssetId) {
+  auto testnet_metadata = MakeWestendAssetHubMetadata();
+
+  const char recipient_hex[] =
+      R"(2a2e19ed46a3875095b184d1d853085f732c1a56326fc25ebf7fc524904da05b)";
+
+  std::array<uint8_t, 32> recipient = {};
+  ASSERT_TRUE(base::HexStringToSpan(recipient_hex, recipient));
+
+  uint128_t send_amount = 500000000000;
+  uint32_t spec_version = 1022005;
+  uint32_t transaction_version = 16;
+
+  uint32_t sender_nonce = 23;
+  uint32_t block_number = 14843538;
+  const char block_hash_encoded[] =
+      R"(0xebb9782a456b98d387233e8273a9e9d56efd719c6aad65c650dc4fc90a0ff099)";
+
+  const char genesis_hash_encoded[] =
+      R"(0x67f9723393ef76214df0118c34bbbd3dbebc8ed46a10973a8c969d48fe7598c9)";
+
+  uint32_t account_index = 0;
+
+  auto keypair = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
+  keypair = keypair.DeriveHard(base::byte_span_from_cstring("\x1cwestend"));
+  keypair = keypair.DeriveHard(base::byte_span_from_ref(account_index));
+  EXPECT_EQ(base::HexEncodeLower(keypair.GetPublicKey()),
+            "d4f9c4dfa3e6ff57b4e1fdea8699e57b0210cf04afe0281acba187d7d1b49274");
+
+  keypair.UseMockRngForTesting();
+
+  const bool transfer_all = false;
+
+  std::array<uint8_t, 16> send_amount_bytes = {};
+  base::span(send_amount_bytes)
+      .copy_from(base::byte_span_from_ref(send_amount));
+
+  std::array<uint8_t, 32> genesis_hash = {};
+  EXPECT_TRUE(PrefixedHexStringToFixed(genesis_hash_encoded, genesis_hash));
+
+  std::array<uint8_t, 32> block_hash = {};
+  EXPECT_TRUE(PrefixedHexStringToFixed(block_hash_encoded, block_hash));
+
+  auto signature_payload = generate_extrinsic_signature_payload(
+      *testnet_metadata, sender_nonce, send_amount_bytes, transfer_all,
+      recipient, spec_version, transaction_version, block_number, genesis_hash,
+      block_hash);
+
+  auto signature = keypair.SignMessage(signature_payload);
+
+  EXPECT_TRUE(keypair.VerifyMessage(signature, signature_payload));
+
+  const char expected_signatured[] =
+      R"(de8379bdff3b46793aafb9ef811a21e3014b9417cc288a974369533ad864d32d30e52d839c8bfae650f0e1940de1c354e22293febc63605a73dd01d8e59ec485)";
+  EXPECT_EQ(base::HexEncodeLower(signature), expected_signatured);
+
+  auto signed_extrinsic = make_signed_extrinsic(
+      *testnet_metadata, keypair.GetPublicKey(), recipient, send_amount_bytes,
+      transfer_all, signature, block_number, sender_nonce);
+
+  auto extrinsic = base::HexEncodeLower(signed_extrinsic);
+
+  /*
+    Extrinsic lives here:
+    https://assethub-westend.subscan.io/tx/0xa08ca7b57a6115160a365d62d8bc48d25a1e1fc687e2514888edaeed0d4b2aed
+
+    Real extrinsic pulled from block using:
+
+    curl.exe
+      -H "Content-Type: application/json"
+      -d
+      "{\"id\":10,\"jsonrpc\":\"2.0\",\"method\":\"chain_getBlock\",\"params\":[\"0xb13147801054a1087a9b692b324d23c6b464f777387feb6c35a02d2c5eb4d36a\"]}"
+      https://westend-asset-hub-rpc.polkadot.io
+
+    4902
+    84
+    00
+    52707850d9298f5dfb0a3e5b23fcca39ea286c6def2db5716c996fb39db6477c
+    01
+    5a874d8382a24bfe79ff713903c7ee0fd80165f15a39e4f506bf025141826a64
+    1eeaa0ba4bf268997592f7ddbe03f8f6e1c81d91bba03700cfa24dbc98dea486
+    2501
+    5c
+    00
+    00
+    00
+    0a03
+    00
+    2a2e19ed46a3875095b184d1d853085f732c1a56326fc25ebf7fc524904da05b
+    070088526a74
+  */
+
+  std::string_view expected_extrinsic =
+      "4902"  // SCALE-encoded length.
+      "84"    // Signed, extrinsic version v4.
+      "00"    // Multi-address type.
+      "d4f9c4dfa3e6ff57b4e1fdea8699e57b0210cf04afe0281acba187d7d1b49274"
+      "01"  // Signature type (sr25519).
+      "de8379bdff3b46793aafb9ef811a21e3014b9417cc288a974369533ad864d32d"
+      "30e52d839c8bfae650f0e1940de1c354e22293febc63605a73dd01d8e59ec485"
+      "2501"  // Mortal era.
+      "5c"    // SCALE-encoded nonce.
+      "00"    // Tip.
+      "00"    // Asset ID.
+      "00"    // Mode (disable metadata hash checking).
+      "0a03"  // Pallet index, call index.
+      "00"    // Address type.
+      "2a2e19ed46a3875095b184d1d853085f732c1a56326fc25ebf7fc524904da05b"
+      "070088526a74"  // SCALE-encoded send amount
+      ;
+
+  EXPECT_EQ(extrinsic, expected_extrinsic);
+}
+
+TEST(PolkadotExtrinsics, SignedExtrinsic_TransferAll_AssetId) {
+  auto testnet_metadata = MakeWestendAssetHubMetadata();
+
+  const char recipient_hex[] =
+      R"(52707850d9298f5dfb0a3e5b23fcca39ea286c6def2db5716c996fb39db6477c)";
+
+  std::array<uint8_t, 32> recipient = {};
+  ASSERT_TRUE(base::HexStringToSpan(recipient_hex, recipient));
+
+  uint128_t send_amount = 500000000000;
+  uint32_t spec_version = 1022005;
+  uint32_t transaction_version = 16;
+
+  uint32_t sender_nonce = 0;
+  uint32_t block_number = 14845178;
+  const char block_hash_encoded[] =
+      R"(0x361e5966fcc99daf038aa155971c167545e09ab7fa170b847aa9f868f967c065)";
+
+  const char genesis_hash_encoded[] =
+      R"(0x67f9723393ef76214df0118c34bbbd3dbebc8ed46a10973a8c969d48fe7598c9)";
+
+  uint32_t account_index = 0;
+
+  auto keypair = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
+  keypair = keypair.DeriveHard(base::byte_span_from_cstring("\x1cwestend"));
+  keypair = keypair.DeriveHard(base::byte_span_from_ref(account_index));
+  EXPECT_EQ(base::HexEncodeLower(keypair.GetPublicKey()),
+            "d4f9c4dfa3e6ff57b4e1fdea8699e57b0210cf04afe0281acba187d7d1b49274");
+
+  keypair.UseMockRngForTesting();
+
+  const bool transfer_all = true;
+
+  std::array<uint8_t, 16> send_amount_bytes = {};
+  base::span(send_amount_bytes)
+      .copy_from(base::byte_span_from_ref(send_amount));
+
+  std::array<uint8_t, 32> genesis_hash = {};
+  EXPECT_TRUE(PrefixedHexStringToFixed(genesis_hash_encoded, genesis_hash));
+
+  std::array<uint8_t, 32> block_hash = {};
+  EXPECT_TRUE(PrefixedHexStringToFixed(block_hash_encoded, block_hash));
+
+  auto signature_payload = generate_extrinsic_signature_payload(
+      *testnet_metadata, sender_nonce, send_amount_bytes, transfer_all,
+      recipient, spec_version, transaction_version, block_number, genesis_hash,
+      block_hash);
+
+  auto signature = keypair.SignMessage(signature_payload);
+
+  EXPECT_TRUE(keypair.VerifyMessage(signature, signature_payload));
+
+  const char expected_signatured[] =
+      R"(bac21dbe3fc9544b429378d054632bff8701e6a2385b617b2c86c8534ab98459d2fd7a98b8da4180694e8032f65a3f574bdb41e8566e70e97677c09fb741328e)";
+  EXPECT_EQ(base::HexEncodeLower(signature), expected_signatured);
+
+  auto signed_extrinsic = make_signed_extrinsic(
+      *testnet_metadata, keypair.GetPublicKey(), recipient, send_amount_bytes,
+      transfer_all, signature, block_number, sender_nonce);
+
+  auto extrinsic = base::HexEncodeLower(signed_extrinsic);
+
+  /*
+    Extrinsic lives here:
+    https://assethub-westend.subscan.io/tx/0x290ef8f1c3689862427bb91653b9d398fe2001ed832c51d39402e64a0005244c
+
+    Real extrinsic pulled from block using:
+
+    curl.exe
+      -H "Content-Type: application/json"
+      -d
+      "{\"id\":10,\"jsonrpc\":\"2.0\",\"method\":\"chain_getBlock\",\"params\":[\"0x49c035e2befaa5f7406f702698b460ebab30f9b1047b7fa6629fc884f086302a\"]}"
+      https://westend-asset-hub-rpc.polkadot.io
+
+    3502
+    84
+    00
+    2a2e19ed46a3875095b184d1d853085f732c1a56326fc25ebf7fc524904da05b
+    01
+    901e7f007229fa35b5998839a77657097ec4c7bb813d5c99b45796d5f236d942
+    575473fbb5bd0481ad2a964d28d859b418026e5572471c8c50cf193865b4a880
+    a503
+    00
+    00
+    00
+    00
+    0a04
+    00
+    52707850d9298f5dfb0a3e5b23fcca39ea286c6def2db5716c996fb39db6477c
+    00
+  */
+
+  std::string_view expected_extrinsic =
+      "3502"  // SCALE-encoded length.
+      "84"    // Signed, extrinsic version v4.
+      "00"    // Multi-address type.
+      "d4f9c4dfa3e6ff57b4e1fdea8699e57b0210cf04afe0281acba187d7d1b49274"
+      "01"  // Signature type (sr25519).
+      "bac21dbe3fc9544b429378d054632bff8701e6a2385b617b2c86c8534ab98459"
+      "d2fd7a98b8da4180694e8032f65a3f574bdb41e8566e70e97677c09fb741328e"
+      "a503"  // Mortal era.
+      "00"    // SCALE-encoded nonce.
+      "00"    // Tip.
+      "00"    // Asset ID.
+      "00"    // Mode (disable metadata hash checking).
+      "0a04"  // Pallet index, call index.
+      "00"    // Address type.
+      "52707850d9298f5dfb0a3e5b23fcca39ea286c6def2db5716c996fb39db6477c"
+      "00"  // Keep-alive false.
+      ;
+
+  EXPECT_EQ(extrinsic, expected_extrinsic);
+}
+
 TEST(PolkadotExtrinsics, UnsignedExtrinsicBase) {
   // Test that our UnsignedExtrinsic base class enables us to encode the
   // transfer extrinsic and that we can also decode it trivially.
