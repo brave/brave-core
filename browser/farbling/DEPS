@@ -9,6 +9,9 @@ specific_include_rules = {
     "+content/public/renderer/render_frame.h",
     "+third_party/blink/public",
   ],
+  "brave_webgl_farbling_browsertest\.cc": [
+    "+brave/third_party/blink/renderer/brave_farbling_constants.h",
+  ],
   ".*_browsertest\.cc": [
     "+brave/components/brave_component_updater/browser/local_data_files_service.h",
   ],
