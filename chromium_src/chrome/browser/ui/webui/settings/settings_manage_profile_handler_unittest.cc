@@ -5,12 +5,12 @@
 
 // TI-040: include upstream tests so overrides keep passing upstream coverage,
 // then add Brave-specific assertions.
-#include <chrome/browser/ui/webui/settings/settings_manage_profile_handler_unittest.cc>
-
 #include "base/functional/callback_helpers.h"
 #include "content/public/test/test_utils.h"
 #include "ui/gfx/image/image.h"
 #include "ui/gfx/image/image_unittest_util.h"
+
+#include <chrome/browser/ui/webui/settings/settings_manage_profile_handler_unittest.cc>
 
 namespace settings {
 

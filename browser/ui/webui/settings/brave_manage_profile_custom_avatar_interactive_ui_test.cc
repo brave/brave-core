@@ -172,14 +172,12 @@ IN_PROC_BROWSER_TEST_F(BraveManageProfileCustomAvatarInteractiveTest,
       std::make_unique<content::FakeSelectFileDialogFactory>(
           std::vector<base::FilePath>{test_png_path_}));
 
-  const GURL kManageProfileUrl(
-      "chrome://settings/getStarted/manageProfile");
+  const GURL kManageProfileUrl("chrome://settings/getStarted/manageProfile");
 
   RunTestSequence(
       InstrumentTab(kSettingsTab, 0, browser()),
       NavigateWebContents(kSettingsTab, kManageProfileUrl),
-      WaitForWebContentsPainted(kSettingsTab),
-      Do([this]() {
+      WaitForWebContentsPainted(kSettingsTab), Do([this]() {
         content::WebContents* wc =
             browser()->tab_strip_model()->GetActiveWebContents();
         ASSERT_TRUE(base::test::RunUntil([wc]() {
