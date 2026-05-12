@@ -38,15 +38,7 @@ zcash::mojom::BlockIDPtr GetBlockIdResult(uint64_t height) {
 class BraveWalletUtilsServiceUnitTest : public testing::Test {
  public:
   BraveWalletUtilsServiceUnitTest() = default;
-  BraveWalletUtilsServiceUnitTest(const BraveWalletUtilsServiceUnitTest&) =
-      delete;
-  BraveWalletUtilsServiceUnitTest& operator=(
-      const BraveWalletUtilsServiceUnitTest&) = delete;
   ~BraveWalletUtilsServiceUnitTest() override = default;
-
-  void SetUp() override {}
-
-  void TearDown() override {}
 
  private:
   base::test::TaskEnvironment task_environment_;
