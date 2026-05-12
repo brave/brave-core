@@ -15,11 +15,8 @@
 #include "base/json/json_reader.h"
 #include "base/values.h"
 #include "brave/common/importer/importer_constants.h"
-#include "brave/common/importer/scoped_copy_file.h"
 #include "components/user_data_importer/common/importer_data_types.h"
 #include "components/webdata/common/webdata_constants.h"
-#include "sql/database.h"
-#include "sql/statement.h"
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "extensions/common/extension.h"
@@ -121,22 +118,9 @@ std::optional<base::DictValue> GetChromeExtensionsList(
 #endif
 
 bool HasPaymentMethods(const base::FilePath& payments_path) {
-  if (!base::PathExists(payments_path))
-    return false;
-
-  ScopedCopyFile copy_payments_file(payments_path);
-  if (!copy_payments_file.copy_success())
-    return false;
-
-  sql::Database db(sql::Database::Tag("Payments"));
-  if (!db.Open(copy_payments_file.copied_file_path())) {
-    return false;
-  }
-
-  constexpr char query[] = "SELECT name_on_card FROM credit_cards;";
-  sql::Statement s(db.GetUniqueStatement(query));
-  // Will return false if there is no payment info.
-  return s.Step();
+  // We can't import payment from Chrome due to encryption. See
+  // https://github.com/brave/brave-browser/issues/55377
+  return false;
 }
 
 bool IsLastActiveProfile(const std::string& profile,
