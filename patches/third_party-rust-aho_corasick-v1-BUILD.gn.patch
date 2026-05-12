@@ -1,0 +1,13 @@
+diff --git a/third_party/rust/aho_corasick/v1/BUILD.gn b/third_party/rust/aho_corasick/v1/BUILD.gn
+index f61292e11204fc75d7dcecd691fcbc3d406df555..dd69a11f78c850d52183d29b5dcf72f2ada4ddbe 100644
+--- a/third_party/rust/aho_corasick/v1/BUILD.gn
++++ b/third_party/rust/aho_corasick/v1/BUILD.gn
+@@ -67,7 +67,7 @@ cargo_crate("lib") {
+     "std",
+   ]
+ 
+-  testonly = true
++  testonly = false
+ 
+   #####################################################################
+   # Tweaking which GN `config`s apply to this target.
