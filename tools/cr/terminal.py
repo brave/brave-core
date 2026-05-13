@@ -12,7 +12,6 @@ import subprocess
 import sys
 import threading
 import time
-from typing import Optional, Dict
 
 from rich.console import Console
 
@@ -187,7 +186,7 @@ class Terminal:
     def run(self,
             cmd,
             *,
-            env: Optional[Dict[str, str]] = None,
+            env: dict[str, str] | None = None,
             cwd=None,
             interactive: bool = False):
         """Runs a command on the terminal.
@@ -235,7 +234,7 @@ class Terminal:
         # `.stdout` / `.stderr` strings on the result are usable directly.
         # Interactive mode skips both -- stdio is inherited from the parent,
         # nothing is captured, and `text` / `encoding` are irrelevant.
-        capture_kwargs: Dict[str, object] = {}
+        capture_kwargs: dict[str, object] = {}
         if not interactive:
             capture_kwargs.update(capture_output=True,
                                   text=True,

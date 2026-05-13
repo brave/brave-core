@@ -232,6 +232,7 @@ def hand_off_to_editor(todo_file: Path, reason: str, editor: str) -> None:
             (line if line.startswith('#') else f'# {line}') + '\n'
             for line in reason.splitlines())
         todo_file.write_text(prefix + todo_file.read_bytes().decode('utf-8'),
+                             encoding='utf-8',
                              newline='')
 
     # `editor` may be a multi-token command (e.g. `vim -X`,
@@ -570,7 +571,9 @@ def rewrite_plan(*,
         *(c.out for c in all_others)
     ]
 
-    todo_file.write_text('\n'.join(new_plan) + '\n', newline='')
+    todo_file.write_text('\n'.join(new_plan) + '\n',
+                         encoding='utf-8',
+                         newline='')
 
 
 _COMMIT_MSG_HEADER_GUARDS = re.compile(
@@ -799,6 +802,7 @@ class MessageWriter:
         block whose first-block content classifies as PINNED or
         REASSIGNMENT."""
         self.todo_file.write_text(self.blocks[-1].full_message + '\n',
+                                  encoding='utf-8',
                                   newline='')
 
     @staticmethod

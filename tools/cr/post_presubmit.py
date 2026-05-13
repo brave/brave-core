@@ -25,10 +25,10 @@ import subprocess
 import json
 import sys
 import hashlib
-from typing import List, Dict, Any
+from typing import Any
 
 
-def post_comments(presubmit_entries: Dict[str, List[Dict[str, Any]]],
+def post_comments(presubmit_entries: dict[str, list[dict[str, Any]]],
                   pr_number: str) -> None:
     """
     Posts comments to a GitHub pull request based on presubmit results.
@@ -48,7 +48,7 @@ def post_comments(presubmit_entries: Dict[str, List[Dict[str, Any]]],
                                                 text=True,
                                                 stderr=subprocess.PIPE)
     logging.debug('Existing comments response: %s', comments_response)
-    existing_comments: List[Dict[str, Any]] = []
+    existing_comments: list[dict[str, Any]] = []
     for line in comments_response.splitlines():
         if not line.strip():
             continue
@@ -175,7 +175,8 @@ def main() -> int:
     logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO)
 
     presubmit_path = Path(args.input)
-    presubmit_entries: Dict[str, Any] = json.loads(presubmit_path.read_text())
+    presubmit_entries: dict[str, Any] = json.loads(
+        presubmit_path.read_bytes().decode('utf-8'))
     if not presubmit_entries:
         logging.info('No presubmit entries found.')
         return 0

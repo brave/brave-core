@@ -4,6 +4,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+from __future__ import annotations
+
 import argparse
 from dataclasses import dataclass, field
 import hashlib
@@ -14,7 +16,6 @@ import os
 import re
 import sys
 import tomllib
-from typing import Optional
 
 from terminal import IncendiaryErrorHandler, console, is_verbose, terminal
 import repository
@@ -38,13 +39,13 @@ class PathChecksumPair:
 
     # Cached checksum of the file content. It will be set to None if the file
     # does not exist.
-    checksum: Optional[str] = field(init=False)
+    checksum: str | None = field(init=False)
 
     def __post_init__(self):
         """Initialize the PathChecksumPair and calculate the checksum."""
         self.checksum = self.calculate_file_checksum()
 
-    def calculate_file_checksum(self) -> Optional[str]:
+    def calculate_file_checksum(self) -> str | None:
         """Calculate the SHA-256 checksum of the file's current content."""
         if not self.path.exists():
             return None
@@ -138,7 +139,7 @@ class PatchInfo:
     plaster_contents: str = field(init=False)
 
     # SHA-256 checksum of the plaster file contents.
-    plaster_checksum: Optional[str] = field(init=False)
+    plaster_checksum: str | None = field(init=False)
 
     # The relative path to the source file that the plaster file applies to.
     # This field is kept separate to allow the use in git commands to the
@@ -156,7 +157,7 @@ class PatchInfo:
 
     def __post_init__(self):
         """Initializes the PatchInfo data with checksums and paths."""
-        self.plaster_contents = self.plaster_file.read_text(encoding='utf-8')
+        self.plaster_contents = self.plaster_file.read_bytes().decode('utf-8')
         self.plaster_checksum = hashlib.sha256(
             self.plaster_contents.encode()).hexdigest()
 
@@ -240,7 +241,7 @@ class PlasterFile:
     path: Path
 
     @classmethod
-    def find_all(cls) -> list["PlasterFile"]:
+    def find_all(cls) -> list[PlasterFile]:
         """ Finds all plaster files in the rewrite directory.
         Returns:
             A list of PlasterFile objects.
@@ -351,8 +352,7 @@ class PlasterApplyError(PlasterError):
             '\n'.join(errors))
 
 
-def get_plaster_files(
-        filepaths: Optional[list[str]] = None) -> list["PlasterFile"]:
+def get_plaster_files(filepaths: list[str] | None = None) -> list[PlasterFile]:
     """Returns plaster files matching the provided file paths.
 
     If no file paths are provided, all plaster files are returned.

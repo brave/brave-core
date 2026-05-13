@@ -162,7 +162,7 @@ def _step2_guards(file_pairs: list[_FilePair]) -> None:
             continue
         new_guard = compute_guard(
             repository.chromium.to_repo_relative(new_file))
-        content = new_file.read_text(encoding='utf-8')
+        content = new_file.read_bytes().decode('utf-8')
         old_guard = find_guard(content)
         if old_guard:
             rewrite_guard_in_file(new_file, old_guard, new_guard)

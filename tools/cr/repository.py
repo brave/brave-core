@@ -3,12 +3,13 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+from __future__ import annotations
+
 from dataclasses import dataclass
 from pathlib import Path
 import logging
 import subprocess
 import sys
-from typing import Optional
 from rich.markup import escape
 
 from terminal import terminal
@@ -102,7 +103,7 @@ class Repository:
         return Path(
             len(self.relative_to_chromium.parts) * '../') / BRAVE_DIR_NAME
 
-    def from_brave(self, source: Optional[Path] = None) -> Path:
+    def from_brave(self, source: Path | None = None) -> Path:
         """ Returns the path from brave/ to the repository.
         """
         if source:
@@ -118,14 +119,6 @@ class Repository:
         the comparison is lexical-after-normalisation.
         """
         return Path(p).resolve().relative_to(self.root.resolve())
-
-    def contains(self, p: Path) -> bool:
-        """Returns True if p resolves under this repo's root."""
-        try:
-            Path(p).resolve().relative_to(self.root.resolve())
-            return True
-        except ValueError:
-            return False
 
     def run_git(self, *cmd, no_trim=False) -> str:
         """Runs a git command on this repository.
@@ -237,9 +230,7 @@ class Repository:
         except subprocess.CalledProcessError:
             return False
 
-    def last_changed(self,
-                     file: str,
-                     from_commit: Optional[str] = None) -> str:
+    def last_changed(self, file: str, from_commit: str | None = None) -> str:
         """Gets the last commit for a file.
         """
         args = ['log', '--pretty=%h', '-1']

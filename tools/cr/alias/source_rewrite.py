@@ -111,7 +111,7 @@ def rewrite_guard_in_file(path: Path, old_guard: str, new_guard: str) -> None:
 
     Logs a warning (does not raise) if the replacement count is not 3.
     """
-    content = path.read_text(encoding='utf-8')
+    content = path.read_bytes().decode('utf-8')
     new_content = content.replace(old_guard, new_guard)
     count = new_content.count(new_guard)
     if count != 3:
@@ -127,7 +127,7 @@ def insert_guard(path: Path, new_guard: str) -> None:
     The opening lines are prepended before the first non-comment, non-blank
     line; the closing #endif is appended at the end of the file.
     """
-    lines = path.read_text(encoding='utf-8').splitlines(keepends=True)
+    lines = path.read_bytes().decode('utf-8').splitlines(keepends=True)
 
     insert_idx = len(lines)
     in_block = False
@@ -164,7 +164,7 @@ def update_shadow_include(path: Path, old_chromium_path: Path,
     file extension is a C++ type before calling.
     """
     old_include = f'#include <{old_chromium_path.as_posix()}>'
-    content = path.read_text(encoding='utf-8')
+    content = path.read_bytes().decode('utf-8')
     if old_include not in content:
         return
     path.write_text(content.replace(
@@ -213,7 +213,7 @@ def update_references(old_path: Path, new_path: Path) -> None:
         if not (do_includes or do_comments):
             continue
 
-        content = fpath.read_text(encoding='utf-8')
+        content = fpath.read_bytes().decode('utf-8')
         new_content = content
 
         if do_includes:
@@ -327,7 +327,7 @@ def _update_gn_references(old_path: Path, new_path: Path) -> None:
         for fpath in _walk_brave_core():
             if fpath.suffix not in _GN_EXTENSIONS:
                 continue
-            content = fpath.read_text(encoding='utf-8')
+            content = fpath.read_bytes().decode('utf-8')
             new_content = root_re.sub(root_sub, content)
             rel_old = os.path.relpath(old_abs_dir,
                                       fpath.parent).replace('\\', '/')
@@ -345,7 +345,7 @@ def _update_gn_references(old_path: Path, new_path: Path) -> None:
         if old_basename and old_basename != new_basename:
             new_build = repository.chromium.root / new_path
             if new_build.is_file():
-                content = new_build.read_text(encoding='utf-8')
+                content = new_build.read_bytes().decode('utf-8')
                 new_content = content.replace(f'"{old_basename}"',
                                               f'"{new_basename}"')
                 new_content = new_content.replace(f':{old_basename}"',
@@ -364,7 +364,7 @@ def _update_gn_references(old_path: Path, new_path: Path) -> None:
     for fpath in _walk_brave_core():
         if fpath.suffix not in _GN_EXTENSIONS:
             continue
-        content = fpath.read_text(encoding='utf-8')
+        content = fpath.read_bytes().decode('utf-8')
         if old_quoted not in content:
             continue
         fpath.write_text(content.replace(old_quoted, new_quoted),
@@ -402,7 +402,7 @@ def _update_build_entries(build_file: Path, build_dir: Path, old_abs: Path,
     rel_new = os.path.relpath(new_abs, build_dir).replace('\\', '/')
     old_str = f'"{rel_old}"'
     new_str = f'"{rel_new}"'
-    content = build_file.read_text(encoding='utf-8')
+    content = build_file.read_bytes().decode('utf-8')
     if old_str not in content:
         return
     build_file.write_text(content.replace(old_str, new_str),
