@@ -82,12 +82,6 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
       query_filter::kTrackingQueryParametersFilteringEnabled));
   EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       global_privacy_control::kGlobalPrivacyControlEnabled));
-  EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
-      brave_shields::prefs::kFBEmbedControlType));
-  EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
-      brave_shields::prefs::kTwitterEmbedControlType));
-  EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
-      brave_shields::prefs::kLinkedInEmbedControlType));
   EXPECT_EQ(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
                 brave_shields::prefs::kReduceLanguageEnabled),
             base::FeatureList::IsEnabled(
