@@ -25,6 +25,7 @@
 #include "brave/browser/containers/containers_service_factory.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/containers/containers_menu_model.h"
+#include "brave/components/containers/core/browser/containers_service.h"
 #include "brave/components/containers/core/common/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -187,8 +188,9 @@ void BraveNewTabButton::ShowContextMenuForViewImpl(
     // BrowserWindowInterface.
     auto* profile = browser_window_interface_->GetProfile();
     auto* service = ContainersServiceFactory::GetForProfile(profile);
-    if (service && !(containers_context_menu_runner_ &&
-                     containers_context_menu_runner_->IsRunning())) {
+    if (service && service->ShouldShowContainerControls() &&
+        !(containers_context_menu_runner_ &&
+          containers_context_menu_runner_->IsRunning())) {
       // clear runner/model before the delegate so reopening the menu does not
       // destroy the delegate first.
       containers_context_menu_runner_.reset();

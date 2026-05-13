@@ -25,6 +25,7 @@
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/browser/containers/containers_service_factory.h"
+#include "brave/components/containers/core/browser/containers_service.h"
 #include "brave/components/containers/core/common/features.h"
 #endif
 
@@ -94,6 +95,10 @@ void BraveBookmarkContextMenuController::MaybeAddContainersBookmarkSubmenu(
 
   auto* service = ContainersServiceFactory::GetForProfile(profile);
   if (!service) {
+    return;
+  }
+
+  if (!service->ShouldShowContainerControls()) {
     return;
   }
 

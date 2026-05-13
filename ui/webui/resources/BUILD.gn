@@ -204,6 +204,7 @@ leo_icons_sources = [
   "container-banking.svg",
   "container-events.svg",
   "container-messaging.svg",
+  "container-on.svg",
   "container-personal.svg",
   "container-private.svg",
   "container-school.svg",

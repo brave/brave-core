@@ -4,11 +4,14 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import '//resources/cr_elements/cr_icon_button/cr_icon_button.js'
+import '//resources/cr_elements/cr_toggle/cr_toggle.js'
 import '//resources/mojo/skia/public/mojom/skcolor.mojom-webui.js'
+import '//resources/brave/leo.bundle.js'
 
 import { I18nMixinLit } from '//resources/cr_elements/i18n_mixin_lit.js'
 import { assert } from '//resources/js/assert.js'
 import { CrInputElement } from 'chrome://resources/cr_elements/cr_input/cr_input.js'
+import type { CrToggleElement } from 'chrome://resources/cr_elements/cr_toggle/cr_toggle.js'
 import {
   CrLitElement,
   PropertyValues,
@@ -48,6 +51,9 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
 
   static override get properties() {
     return {
+      containersEnabled_: {
+        type: Boolean,
+      },
       containersList_: {
         type: Array,
       },
@@ -70,6 +76,7 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
   }
 
   private browserProxy = ContainersSettingsHandlerBrowserProxy.getInstance()
+  accessor containersEnabled_ = true
   accessor containersList_: Container[] = []
   accessor editingContainer_: Container | undefined
   accessor deletingContainer_: Container | undefined
@@ -79,12 +86,38 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
 
   override connectedCallback() {
     super.connectedCallback()
+    this.browserProxy.handler.getContainersEnabled().then(({ enabled }) => {
+      this.containersEnabled_ = enabled
+    })
     this.browserProxy.handler.getContainers().then(({ containers }) => {
       this.onContainersListUpdated_(containers)
     })
     this.browserProxy.callbackRouter.onContainersChanged.addListener(
       this.onContainersListUpdated_.bind(this),
     )
+    this.browserProxy.callbackRouter.onContainersEnabledChanged.addListener(
+      this.onContainersEnabledChanged_.bind(this),
+    )
+  }
+
+  override updated(changedProperties: PropertyValues<this>) {
+    super.updated(changedProperties)
+    if (
+      changedProperties.has('containersEnabled_') &&
+      !this.containersEnabled_
+    ) {
+      this.editingContainer_ = undefined
+      this.deletingContainer_ = undefined
+    }
+  }
+
+  private onContainersEnabledChanged_(enabled: boolean) {
+    this.containersEnabled_ = enabled
+  }
+
+  onContainersEnabledChange_(e: Event) {
+    const toggle = e.target as CrToggleElement
+    this.browserProxy.handler.setContainersEnabled(toggle.checked)
   }
 
   onContainersListUpdated_(containers: Container[]) {

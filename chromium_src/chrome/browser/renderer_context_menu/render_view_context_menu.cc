@@ -75,6 +75,7 @@
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/browser/containers/containers_service_factory.h"
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
+#include "brave/components/containers/core/browser/containers_service.h"
 #include "brave/components/containers/core/common/features.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
@@ -645,6 +646,10 @@ void RenderViewContextMenu::BuildContainersMenu() {
 
   auto* service = ContainersServiceFactory::GetForProfile(GetProfile());
   if (!service) {
+    return;
+  }
+
+  if (!service->ShouldShowContainerControls()) {
     return;
   }
 

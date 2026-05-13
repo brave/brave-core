@@ -45,6 +45,10 @@ class ContainersSettingsHandler : public mojom::ContainersSettingsHandler {
   // after data cleanup is complete.
   void RemoveContainer(const std::string& id,
                        RemoveContainerCallback callback) override;
+  // Whether the Containers feature (menus, management UI) is enabled.
+  void GetContainersEnabled(GetContainersEnabledCallback callback) override;
+  // Updates whether the Containers feature is enabled.
+  void SetContainersEnabled(bool enabled) override;
 
   // Returns an error if the given container properties are invalid.
   static std::optional<mojom::ContainerOperationError>
@@ -53,6 +57,7 @@ class ContainersSettingsHandler : public mojom::ContainersSettingsHandler {
  private:
   // Called when the containers list in preferences changes.
   void OnContainersChanged();
+  void OnContainersEnabledPrefChanged();
 
   // Interface to communicate with the settings page in the renderer.
   mojo::Remote<mojom::ContainersSettingsUI> ui_;

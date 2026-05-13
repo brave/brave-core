@@ -17,6 +17,7 @@
 #include "brave/components/containers/core/browser/temporary_container.h"
 #include "brave/components/containers/core/browser/unknown_container.h"
 #include "brave/components/containers/core/mojom/containers.mojom.h"
+#include "components/prefs/pref_service.h"
 
 namespace containers {
 
@@ -84,6 +85,10 @@ mojom::ContainerPtr ContainersService::GetRuntimeContainerById(
 
 std::vector<mojom::ContainerPtr> ContainersService::GetContainers() const {
   return GetContainersFromPrefs(*prefs_);
+}
+
+bool ContainersService::ShouldShowContainerControls() const {
+  return prefs_->GetBoolean(prefs::kContainersEnabled);
 }
 
 void ContainersService::ScheduleOrphanedContainersCleanupForTesting() {

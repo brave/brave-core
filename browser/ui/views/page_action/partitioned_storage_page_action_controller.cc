@@ -19,6 +19,7 @@
 #include "brave/browser/ui/containers/containers_menu_model.h"
 #include "brave/browser/ui/tabs/containers_tab_menu_model_delegate.h"
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
+#include "brave/components/containers/core/browser/containers_service.h"
 #include "brave/components/containers/core/common/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/actions/chrome_action_id.h"
@@ -129,6 +130,10 @@ void PartitionedStoragePageActionController::ExecuteAction(
   containers::ContainersService* const service =
       ContainersServiceFactory::GetForProfile(profile);
   if (!service) {
+    return;
+  }
+
+  if (!service->ShouldShowContainerControls()) {
     return;
   }
 

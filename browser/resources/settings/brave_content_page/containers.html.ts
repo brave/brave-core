@@ -30,54 +30,71 @@ export function getHtml(this: SettingsBraveContentContainersElement) {
         </div>
       </div>
 
-      ${this.containersList_?.length
+      <div class="cr-row continuation containers-enabled-toggle-row">
+        <div class="containers-enabled-toggle-icon" aria-hidden="true">
+          <leo-icon name="container-on"></leo-icon>
+        </div>
+        <div class="flex">
+          <div class="label">$i18n{SETTINGS_CONTAINERS_ENABLED_LABEL}</div>
+        </div>
+        <cr-toggle
+          .checked="${this.containersEnabled_}"
+          @change="${this.onContainersEnabledChange_}"
+        ></cr-toggle>
+      </div>
+
+      ${this.containersEnabled_
         ? html`
-            <div class="cr-row continuation">
-              <div class="list">
-                ${this.containersList_.map(
-                  (item) => html`
-                    <div class="container">
-                      <div class="icon-and-label">
-                        <settings-brave-content-containers-icon
-                          icon="${item.icon}"
-                          background-color="${skColorToHexColor(
-                            item.backgroundColor,
-                          )}"
-                          disabled
-                        ></settings-brave-content-containers-icon>
-                        <div class="label">${item.name}</div>
-                      </div>
-                      <div>
-                        <cr-icon-button
-                          @click="${this.onEditContainerClick_}"
-                          data-id="${item.id}"
-                          class="size-20"
-                          iron-icon="edit-pencil"
-                        >
-                        </cr-icon-button>
-                        <cr-icon-button
-                          @click="${this.onDeleteContainerClick_}"
-                          data-id="${item.id}"
-                          class="size-20"
-                          iron-icon="trash"
-                        >
-                        </cr-icon-button>
-                      </div>
+            ${this.containersList_?.length
+              ? html`
+                  <div class="cr-row continuation">
+                    <div class="list">
+                      ${this.containersList_.map(
+                        (item) => html`
+                          <div class="container">
+                            <div class="icon-and-label">
+                              <settings-brave-content-containers-icon
+                                icon="${item.icon}"
+                                background-color="${skColorToHexColor(
+                                  item.backgroundColor,
+                                )}"
+                                disabled
+                              ></settings-brave-content-containers-icon>
+                              <div class="label">${item.name}</div>
+                            </div>
+                            <div>
+                              <cr-icon-button
+                                @click="${this.onEditContainerClick_}"
+                                data-id="${item.id}"
+                                class="size-20"
+                                iron-icon="edit-pencil"
+                              >
+                              </cr-icon-button>
+                              <cr-icon-button
+                                @click="${this.onDeleteContainerClick_}"
+                                data-id="${item.id}"
+                                class="size-20"
+                                iron-icon="trash"
+                              >
+                              </cr-icon-button>
+                            </div>
+                          </div>
+                        `,
+                      )}
                     </div>
-                  `,
-                )}
-              </div>
+                  </div>
+                `
+              : nothing}
+            <div class="cr-row continuation containers-add-row">
+              <cr-button
+                @click="${this.onAddContainerClick_}"
+                size="small"
+              >
+                $i18n{SETTINGS_CONTAINERS_ADD_CONTAINER_LABEL}
+              </cr-button>
             </div>
           `
         : nothing}
-        <div class="cr-row continuation">
-          <cr-button
-            @click="${this.onAddContainerClick_}"
-            size="small"
-          >
-            $i18n{SETTINGS_CONTAINERS_ADD_CONTAINER_LABEL}
-          </cr-button>
-        </div>
       ${this.editingContainer_
         ? html`
             <cr-dialog

@@ -22,6 +22,7 @@ source_set("page_action") {
       "//brave/browser/ui/containers",
       "//brave/browser/ui/tabs:tab_menu",
       "//brave/components/containers/content/browser",
+      "//brave/components/containers/core/browser",
       "//brave/components/containers/core/common:features",
       "//chrome/browser/profiles",
       "//chrome/browser/ui/actions",
