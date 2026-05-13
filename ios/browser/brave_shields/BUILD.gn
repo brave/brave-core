@@ -3,16 +3,20 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//ios/web/public/js_messaging/optimize_ts.gni")
+
 source_set("brave_shields") {
   sources = [
     "brave_shields_settings_service_factory.h",
     "brave_shields_settings_service_factory.mm",
     "brave_shields_settings_service_factory_bridge.h",
     "brave_shields_settings_service_factory_bridge.mm",
+    "farbling_javascript_feature.h",
+    "farbling_javascript_feature.mm",
   ]
 
   deps = [
-    "//base",
+    ":farbling_js",
     "//brave/components/brave_shields/core/browser",
     "//brave/components/brave_shields/ios/browser",
     "//brave/ios/browser/api/profile",
@@ -27,5 +31,20 @@ source_set("brave_shields") {
     "//url",
   ]
 
+  public_deps = [
+    "//base",
+    "//ios/web/public/js_messaging",
+  ]
+
   frameworks = [ "Foundation.framework" ]
+}
+
+optimize_ts("farbling_js") {
+  visibility = [ ":brave_shields" ]
+  deps = [
+    "//brave/ios/web/js_messaging:prompt_utils",
+    "//ios/web/public/js_messaging:util_scripts",
+    "//brave/ios/web/js_messaging:util_scripts",
+  ]
+  sources = [ "resources/farbling.ts" ]
 }
