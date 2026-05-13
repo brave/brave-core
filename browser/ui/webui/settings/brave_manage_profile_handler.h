@@ -71,8 +71,6 @@ class BraveManageProfileHandler
   // any.
   void NotifyCustomAvatarChanged();
 
-  const raw_ptr<Profile> profile_;
-
   // Push channel from the browser to the settings page. Bound once via
   // `BindUI`; left unbound until then so observer events become a no-op.
   mojo::Remote<brave_manage_profile::mojom::BraveManageProfileSettingsUI> ui_;
@@ -85,6 +83,8 @@ class BraveManageProfileHandler
   base::ScopedObservation<ProfileAttributesStorage,
                           ProfileAttributesStorage::Observer>
       storage_observation_{this};
+
+  const raw_ptr<Profile> profile_;
 
   base::WeakPtrFactory<BraveManageProfileHandler> weak_ptr_factory_{this};
 };
