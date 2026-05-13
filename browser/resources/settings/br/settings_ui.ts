@@ -77,8 +77,8 @@ RegisterStyleOverride(
       #container {
         /* menu and content next to each other in the horizontal center */
       }
-      #left {
-        max-width: 250px;
+      #left{
+        flex:0 !important;
       }
       #main {
         margin: 0 var(--leo-spacing-m) var(--leo-spacing-m) 0;
@@ -86,6 +86,7 @@ RegisterStyleOverride(
         border-radius: var(--leo-radius-xl) var(--leo-radius-m) var(--leo-radius-m) var(--leo-radius-xl);
         overflow: auto;
       }
+        
       #right {
         /* this element is only a space filler in chromium */
         display: none;
