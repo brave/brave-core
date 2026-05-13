@@ -793,6 +793,7 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_NEW_SPLIT_VIEW: {
       chrome::NewSplitTab(base::to_address(browser_),
+                          split_tabs::SplitTabLayout::kVertical,
                           split_tabs::SplitTabCreatedSource::kToolbarButton);
       break;
     }
