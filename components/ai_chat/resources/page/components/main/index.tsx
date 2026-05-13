@@ -18,7 +18,7 @@ import { useAIChat } from '../../state/ai_chat_context'
 import ConversationsList from '../conversations_list'
 import DeleteConversationModal from '../delete_conversation_modal'
 import { ConversationHeader } from '../header'
-import InputBox from '../input_box'
+import InputBox, { type InputBoxHandle } from '../input_box'
 import OpenExternalLinkModal from '../open_external_link_modal'
 import RateMessagePrivacyModal from '../rate_message_privacy_modal'
 import SkillModal from '../skill_modal/skill_modal'
@@ -46,6 +46,7 @@ function Main() {
   const showAttachments = !!conversationContext.attachmentsDialog
 
   const headerElement = React.useRef<HTMLDivElement>(null)
+  const inputBoxRef = React.useRef<InputBoxHandle>(null)
 
   // Ask for opt-in once the first message is sent
   const showAgreementModal =
@@ -101,9 +102,12 @@ function Main() {
     (value: ExtendedActionEntry) => {
       if (getIsSkill(value)) {
         conversationContext.handleSkillClick(value)
-        return
+      } else {
+        conversationContext.handleActionTypeClick(value.details!.type)
       }
-      conversationContext.handleActionTypeClick(value.details!.type)
+      requestAnimationFrame(() => {
+        inputBoxRef.current?.focusInput()
+      })
     },
     [
       conversationContext.handleSkillClick,
@@ -118,10 +122,7 @@ function Main() {
       }
       handleToolsMenuSelect(value)
     },
-    [
-      conversationContext.handleSkillClick,
-      conversationContext.handleActionTypeClick,
-    ],
+    [aiChatContext.api.metrics, handleToolsMenuSelect],
   )
 
   const handleToolsMenuEditClick = (skill: Mojom.Skill) => {
@@ -235,6 +236,7 @@ function Main() {
         />
         <TabsMenu />
         <InputBox
+          ref={inputBoxRef}
           conversationStarted={hasConversationStarted}
           context={{ ...conversationContext, ...aiChatContext }}
           maybeShowSoftKeyboard={maybeShowSoftKeyboard}
