@@ -66,6 +66,7 @@ import org.chromium.build.annotations.Initializer;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_shields.BraveFirstPartyStorageCleanerUtils;
 import org.chromium.chrome.browser.brave_shields.FirstPartyStorageCleanerAnimationFragment;
 import org.chromium.chrome.browser.cosmetic_filters.BraveCosmeticFiltersUtils;
@@ -119,6 +120,8 @@ public class BraveUnifiedPanelHandler {
     private static final int ICON_OVERLAP_MARGIN_DP = -8;
     private static final int FAVICON_ELEVATION_DP = 1;
     private static final int PANEL_OVERLAP_OFFSET_DP = 7;
+    private static final float BLOCK_SCRIPTS_SWITCH_SHIELDS_ENABLED_ALPHA = 1f;
+    private static final float BLOCK_SCRIPTS_SWITCH_SHIELDS_DISABLED_ALPHA = 0.5f;
 
     private static class BlockersInfo {
         public int mAdsBlocked;
@@ -131,10 +134,7 @@ public class BraveUnifiedPanelHandler {
     private final Map<Integer, BlockersInfo> mTabsStat =
             Collections.synchronizedMap(new HashMap<>());
 
-    private final @Nullable Context mContext;
-    private static final float BLOCK_SCRIPTS_SWITCH_SHIELDS_ENABLED_ALPHA = 1f;
-    private static final float BLOCK_SCRIPTS_SWITCH_SHIELDS_DISABLED_ALPHA = 0.5f;
-
+    private @Nullable Context mContext;
     private @Nullable PopupWindow mPopupWindow;
     private @Nullable View mPopupView;
     private @Nullable View mAnchorView;
@@ -230,6 +230,16 @@ public class BraveUnifiedPanelHandler {
         mMenuObserver = menuObserver;
     }
 
+    private void ensureInitializedForCustomTabs() {
+        if (mHardwareButtonMenuAnchor == null && mContext == null) {
+            mContext = BraveActivity.getCustomTabActivity();
+            if (mContext != null) {
+                mHardwareButtonMenuAnchor =
+                        ((Activity) mContext).findViewById(R.id.menu_anchor_stub);
+            }
+        }
+    }
+
     /**
      * Displays the unified Shields panel anchored to the given view for the specified tab. Reads
      * current shield settings from the tab's profile and populates the UI accordingly.
@@ -238,6 +248,7 @@ public class BraveUnifiedPanelHandler {
      * @param tab the current browser tab whose shields state is displayed and modified.
      */
     public void show(@Nullable View anchorView, @Nullable Tab tab) {
+        ensureInitializedForCustomTabs();
         if (mHardwareButtonMenuAnchor == null || mContext == null) {
             return;
         }
@@ -777,8 +788,11 @@ public class BraveUnifiedPanelHandler {
                         @Override
                         public void updateDrawState(TextPaint ds) {
                             super.updateDrawState(ds);
-                            ds.setColor(ContextCompat.getColor(mContext, R.color.schemes_primary));
-                            ds.setUnderlineText(false);
+                            if (mContext != null) {
+                                ds.setColor(
+                                        ContextCompat.getColor(mContext, R.color.schemes_primary));
+                                ds.setUnderlineText(false);
+                            }
                         }
                     },
                     learnMoreStart,
@@ -842,6 +856,7 @@ public class BraveUnifiedPanelHandler {
                 && mReportCategoryDropdown != null
                 && mContext != null) {
             final AutoCompleteTextView dropdown = mReportCategoryDropdown;
+            var mContext = this.mContext;
             mWebcompatReporterHandler.getWebcompatCategories(
                     (categories) -> {
                         Activity activity = (Activity) mContext;
@@ -1546,6 +1561,7 @@ public class BraveUnifiedPanelHandler {
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        var mContext = this.mContext;
         builder.setTitle(R.string.brave_shred_data_dialog_title)
                 .setView(view)
                 .setPositiveButton(
