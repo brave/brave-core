@@ -112,7 +112,10 @@ export default function AssistantTask(props: Props) {
   }
 
   return (
-    <div data-testid='assistant-task'>
+    <div
+      data-testid='assistant-task'
+      className={styles.assistantTask}
+    >
       <div className={styles.taskContent}>
         <div className={styles.taskData}>
           {isExpanded && (
