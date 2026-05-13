@@ -13,7 +13,6 @@ $stickyMargin: var(--leo-spacing-m);
   --bubble-content-color: var(--leo-color-systemfeedback-success-text);
   z-index: 99;
   position: sticky;
-  margin-top: var(--leo-spacing-2xl);
   margin-left: -10px;
   max-width: 100%;
   top: $stickyMargin;
@@ -89,6 +88,11 @@ $stickyMargin: var(--leo-spacing-m);
   height: 1px;
 
   &.top {
+    // This is the first element so it gets the top margin
+    margin-top: var(--leo-spacing-2xl);
+    // The transforms for the sentinels move the threshold at which the
+    // sticky style kicks in, without affecting the position of the bubble
+    // itself.
     transform: translateY(calc(-1 * #{$stickyMargin}));
   }
   &.bottom {

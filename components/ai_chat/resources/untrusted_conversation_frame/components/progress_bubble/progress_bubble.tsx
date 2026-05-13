@@ -70,22 +70,26 @@ function useStickyState() {
   React.useEffect(() => {
     if (!beforeEl || !afterEl) return
 
+    let topSentinelInView = false
+    let bottomSentinelInView = false
+
     const observer = new IntersectionObserver(
       (entries) => {
-        let shouldBeInStuckState = false
         entries.forEach((entry) => {
           // The top sentinel sits just above the bubble's sticky `top`
           // position; it scrolls out of view exactly when the bubble starts
           // sticking.
-          if (entry.target === beforeEl)
-            shouldBeInStuckState = !entry.isIntersecting
+          if (entry.target === beforeEl) {
+            topSentinelInView = entry.isIntersecting
+          }
           // The bottom sentinel sits just below the bubble's sticky `bottom`
           // position; when the bubble is pinned to the bottom this sentinel
           // is also offscreen — keep `isStuck` true so the styled state holds.
-          if (!shouldBeInStuckState && entry.target === afterEl)
-            shouldBeInStuckState = !entry.isIntersecting
+          if (entry.target === afterEl) {
+            bottomSentinelInView = entry.isIntersecting
+          }
         })
-        setIsStuck(shouldBeInStuckState)
+        setIsStuck(!topSentinelInView || !bottomSentinelInView)
       },
       { threshold: [0] },
     )
