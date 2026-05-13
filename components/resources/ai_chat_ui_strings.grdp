@@ -941,9 +941,6 @@
   <message name="IDS_CHAT_UI_TOOL_LABEL_DEEP_RESEARCH" desc="Display label for the deep research tool shown above results" formatter_data="webui=AiChat">
     Deep Research
   </message>
-  <message name="IDS_CHAT_UI_PROGRESS_SEARCHING" desc="Progress label shown while an AI search tool is running" formatter_data="webui=AiChat">
-    Searching
-  </message>
   <!-- Deep Research strings -->
   <message name="IDS_CHAT_UI_DEEP_RESEARCH_SEARCHING" desc="Deep research status showing a search query in progress" formatter_data="webui=AiChat">
     Searching: "<ph name="QUERY">$1<ex>quantum computing</ex></ph>"
