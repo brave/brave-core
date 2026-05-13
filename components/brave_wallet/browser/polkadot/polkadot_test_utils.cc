@@ -116,7 +116,11 @@ std::optional<PolkadotChainMetadata> PolkadotMetadataFromChainName(
         /*transfer_keep_alive_call_index=*/3,
         /*transfer_all_call_index=*/4,
         /*ss58_prefix=*/42, kUnknownSpecVersion,
-        /*asset_tx_payment=*/true);
+        /*asset_tx_payment=*/true,
+        /*has_assets_pallet=*/true,
+        /*assets_pallet_index=*/50,
+        /*assets_transfer_all_call_index=*/32,
+        /*assets_transfer_keep_alive_call_index=*/9);
   }
 
   // https://github.com/polkadot-js/api/blob/f45dfc72ec320cab7d69f08010c9921d2a21065f/packages/types-support/src/metadata/v15/polkadot-json.json#L1096
@@ -142,7 +146,11 @@ std::optional<PolkadotChainMetadata> PolkadotMetadataFromChainName(
         /*transfer_keep_alive_call_index=*/3,
         /*transfer_all_call_index=*/4,
         /*ss58_prefix=*/0, kUnknownSpecVersion,
-        /*asset_tx_payment=*/true);
+        /*asset_tx_payment=*/true,
+        /*has_assets_pallet=*/true,
+        /*assets_pallet_index=*/50,
+        /*assets_transfer_all_call_index=*/32,
+        /*assets_transfer_keep_alive_call_index=*/9);
   }
 
   return std::nullopt;

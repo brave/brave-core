@@ -18,7 +18,7 @@ namespace brave_wallet {
 
 class PolkadotChainMetadataPrefs {
  public:
-  static constexpr int kVersion = 1;
+  static constexpr int kVersion = 2;
 
   explicit PolkadotChainMetadataPrefs(PrefService& profile_prefs);
   virtual ~PolkadotChainMetadataPrefs();

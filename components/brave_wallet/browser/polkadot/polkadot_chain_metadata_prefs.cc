@@ -24,6 +24,11 @@ constexpr char kTransferAllowDeathCallIndex[] =
     "transfer_allow_death_call_index";
 constexpr char kTransferKeepAliveCallIndex[] = "transfer_keep_alive_call_index";
 constexpr char kTransferAllCallIndex[] = "transfer_all_call_index";
+constexpr char kHasAssetsPallet[] = "has_assets_pallet";
+constexpr char kAssetsPalletIndex[] = "assets_pallet_index";
+constexpr char kAssetsTransferAllCallIndex[] = "assets_transfer_all_call_index";
+constexpr char kAssetsTransferKeepAliveCallIndex[] =
+    "assets_transfer_keep_alive_call_index";
 constexpr char kAssetTxPayment[] = "asset_tx_payment";
 constexpr char kSs58Prefix[] = "ss58_prefix";
 constexpr char kSpecVersion[] = "spec_version";
@@ -39,6 +44,10 @@ constexpr char kVersionField[] = "version";
 //     "transfer_allow_death_call_index": int,   // u8
 //     "transfer_keep_alive_call_index": int,    // u8
 //     "transfer_all_call_index": int,           // u8
+//     "has_assets_pallet": bool,                // bool
+//     "assets_pallet_index": int,               // u8
+//     "assets_transfer_all_call_index": int,    // u8
+//     "assets_transfer_keep_alive_call_index": int,  // u8
 //     "asset_tx_payment": bool,                 // bool
 //     "ss58_prefix": int,                       // u16
 //     "spec_version": int                       // u32
@@ -128,6 +137,26 @@ PolkadotChainMetadataPrefs::GetChainMetadata(std::string_view chain_id) const {
     return std::nullopt;
   }
 
+  if (!ReadBool(*chain_metadata, kHasAssetsPallet,
+                &metadata->has_assets_pallet)) {
+    return std::nullopt;
+  }
+
+  if (!ReadUint(*chain_metadata, kAssetsPalletIndex,
+                &metadata->assets_pallet_index)) {
+    return std::nullopt;
+  }
+
+  if (!ReadUint(*chain_metadata, kAssetsTransferAllCallIndex,
+                &metadata->assets_transfer_all_call_index)) {
+    return std::nullopt;
+  }
+
+  if (!ReadUint(*chain_metadata, kAssetsTransferKeepAliveCallIndex,
+                &metadata->assets_transfer_keep_alive_call_index)) {
+    return std::nullopt;
+  }
+
   if (!ReadBool(*chain_metadata, kAssetTxPayment,
                 &metadata->asset_tx_payment)) {
     return std::nullopt;
@@ -154,6 +183,9 @@ bool PolkadotChainMetadataPrefs::SetChainMetadata(
   int transfer_allow_death_call_index = 0;
   int transfer_keep_alive_call_index = 0;
   int transfer_all_call_index = 0;
+  int assets_pallet_index = 0;
+  int assets_transfer_all_call_index = 0;
+  int assets_transfer_keep_alive_call_index = 0;
   int ss58_prefix = 0;
   int spec_version = 0;
   if (!base::CheckedNumeric<int>(metadata->system_pallet_index)
@@ -168,6 +200,12 @@ bool PolkadotChainMetadataPrefs::SetChainMetadata(
            .AssignIfValid(&transfer_keep_alive_call_index) ||
       !base::CheckedNumeric<int>(metadata->transfer_all_call_index)
            .AssignIfValid(&transfer_all_call_index) ||
+      !base::CheckedNumeric<int>(metadata->assets_pallet_index)
+           .AssignIfValid(&assets_pallet_index) ||
+      !base::CheckedNumeric<int>(metadata->assets_transfer_all_call_index)
+           .AssignIfValid(&assets_transfer_all_call_index) ||
+      !base::CheckedNumeric<int>(metadata->assets_transfer_keep_alive_call_index)
+           .AssignIfValid(&assets_transfer_keep_alive_call_index) ||
       !base::CheckedNumeric<int>(metadata->ss58_prefix)
            .AssignIfValid(&ss58_prefix) ||
       !base::CheckedNumeric<int>(metadata->spec_version)
@@ -181,6 +219,11 @@ bool PolkadotChainMetadataPrefs::SetChainMetadata(
   value.Set(kTransferAllowDeathCallIndex, transfer_allow_death_call_index);
   value.Set(kTransferKeepAliveCallIndex, transfer_keep_alive_call_index);
   value.Set(kTransferAllCallIndex, transfer_all_call_index);
+  value.Set(kHasAssetsPallet, metadata->has_assets_pallet);
+  value.Set(kAssetsPalletIndex, assets_pallet_index);
+  value.Set(kAssetsTransferAllCallIndex, assets_transfer_all_call_index);
+  value.Set(kAssetsTransferKeepAliveCallIndex,
+            assets_transfer_keep_alive_call_index);
   value.Set(kAssetTxPayment, metadata->asset_tx_payment);
   value.Set(kSs58Prefix, ss58_prefix);
   value.Set(kSpecVersion, spec_version);
