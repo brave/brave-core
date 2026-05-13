@@ -184,8 +184,19 @@ class Terminal:
             status.stop()
             self.status = None
 
-    def run(self, cmd, env: Optional[Dict[str, str]] = None, cwd=None):
+    def run(self,
+            cmd,
+            *,
+            env: Optional[Dict[str, str]] = None,
+            cwd=None,
+            interactive: bool = False):
         """Runs a command on the terminal.
+
+        When `interactive=True`, the subprocess inherits the parent's
+        stdin/stdout/stderr instead of capturing them -- use this for
+        spawning editors, pagers, or anything else that needs to take
+        over the tty. The returned `CompletedProcess.stdout` /
+        `.stderr` are `None` in that case (nothing is captured).
         """
         # Convert all arguments to strings, to avoid issues with `PurePath`
         # being passed arguments
@@ -220,16 +231,26 @@ class Terminal:
             if resolved != cmd[0]:
                 cmd = [resolved] + cmd[1:]
 
+        # Captured mode pairs `capture_output` with text decoding so the
+        # `.stdout` / `.stderr` strings on the result are usable directly.
+        # Interactive mode skips both -- stdio is inherited from the parent,
+        # nothing is captured, and `text` / `encoding` are irrelevant.
+        capture_kwargs: Dict[str, object] = {}
+        if not interactive:
+            capture_kwargs.update(capture_output=True,
+                                  text=True,
+                                  encoding='utf-8')
+
         try:
             result = subprocess.run(cmd,
-                                    capture_output=True,
-                                    text=True,
                                     check=True,
-                                    encoding='utf-8',
                                     env=env,
-                                    cwd=cwd)
+                                    cwd=cwd,
+                                    **capture_kwargs)
         except subprocess.CalledProcessError as e:
-            logging.debug('❯ %s', e.stderr.strip())
+            if e.stderr:
+                # Only captured in non-interactive mode.
+                logging.debug('❯ %s', e.stderr.strip())
             raise e
         finally:
             if self.infra_mode:
