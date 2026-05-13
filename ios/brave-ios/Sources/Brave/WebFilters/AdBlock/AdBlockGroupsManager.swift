@@ -73,12 +73,7 @@ import os
 
   /// Load any cache data so its ready right during launch
   func loadResourcesFromCache() async {
-    if let resourcesURL = ShieldsURLs.resourcesURL,
-      await AsyncFileManager.default.fileExists(atPath: resourcesURL.path)
-    {
-      // use bundled resource so we can override scriptlet implementations
-      self.resourcesInfo = .init(localFileURL: resourcesURL, version: "2.0.0")
-    } else if let resourcesInfo = getCachedResourcesInfo() {
+    if let resourcesInfo = getCachedResourcesInfo() {
       // We need this for all filter lists so we can't compile anything until we download it
       self.resourcesInfo = resourcesInfo
 
@@ -511,20 +506,87 @@ import os
   }
 
   private func getCachedResourcesInfo() -> GroupedAdBlockEngine.ResourcesInfo? {
+    let cachedFileURL: URL
     if let resourcesFolderURL = AdblockService.makeAbsoluteURL(
       forComponentPath: Preferences.AppState.lastAdBlockResourcesFolderPath.value
     ), FileManager.default.fileExists(atPath: resourcesFolderURL.path) {
       // This is a legacy storage when we were gettting the component folder URL not the file URL
-      let resourcesFileURL = resourcesFolderURL.appendingPathComponent(
+      cachedFileURL = resourcesFolderURL.appendingPathComponent(
         "resources.json",
         conformingTo: .json
       )
-      return getResourcesInfo(fromFileURL: resourcesFileURL)
     } else if let resourcesFileURL = AdblockService.makeAbsoluteURL(
       forComponentPath: Preferences.AppState.lastAdBlockResourcesFilePath.value
     ), FileManager.default.fileExists(atPath: resourcesFileURL.path) {
-      return getResourcesInfo(fromFileURL: resourcesFileURL)
+      cachedFileURL = resourcesFileURL
     } else {
+      return nil
+    }
+
+    let cachedInfo = getResourcesInfo(fromFileURL: cachedFileURL)
+    // Inject a custom-scriptlet entry so our own scriptlet implementation is available
+    // to the engine. Falls back to the unmodified component file if augmentation fails.
+    guard
+      let augmentedFileURL = Self.customScriptletSource.isEmpty
+        ? cachedFileURL : writeAugmentedResources(from: cachedFileURL)
+    else {
+      return cachedInfo
+    }
+    return GroupedAdBlockEngine.ResourcesInfo(
+      localFileURL: augmentedFileURL,
+      version: cachedInfo.version
+    )
+  }
+
+  /// The javascript for a custom scriptlet
+  private static let customScriptletSource = """
+    document.addEventListener("DOMContentLoaded", () => {
+      console.log("Custom Scriptlet - DOMContentLoaded");
+    });
+    """
+
+  /// Read the resources JSON at `sourceURL`, append a `custom-scriptlet.js`
+  /// entry with base64-encoded content of `customScriptletSource` (if
+  /// non-empty), and write the result into the app caches directory.
+  /// - Returns: The URL of the augmented file, or nil if augmentation failed.
+  private func writeAugmentedResources(from sourceURL: URL) -> URL? {
+    guard
+      let data = try? Data(contentsOf: sourceURL),
+      var entries = try? JSONSerialization.jsonObject(with: data) as? [[String: Any]],
+      !Self.customScriptletSource.isEmpty
+    else {
+      return nil
+    }
+
+    let encodedContent = Data(Self.customScriptletSource.utf8).base64EncodedString()
+    entries.append([
+      "name": "custom-scriptlet.js",
+      "aliases": [],
+      "kind": ["mime": "application/javascript"],
+      "content": encodedContent,
+    ])
+
+    guard
+      let augmentedData = try? JSONSerialization.data(withJSONObject: entries),
+      let cachesURL = try? AsyncFileManager.default.url(for: .cachesDirectory, in: .userDomainMask)
+    else {
+      return nil
+    }
+
+    let folderURL = cachesURL.appendingPathComponent(
+      "adblock-resources",
+      conformingTo: .folder
+    )
+    let augmentedFileURL = folderURL.appendingPathComponent(
+      "resources.json",
+      conformingTo: .json
+    )
+
+    do {
+      try FileManager.default.createDirectory(at: folderURL, withIntermediateDirectories: true)
+      try augmentedData.write(to: augmentedFileURL, options: .atomic)
+      return augmentedFileURL
+    } catch {
       return nil
     }
   }
