@@ -785,14 +785,6 @@ brave_chrome_browser_ui_allow_circular_includes_from = [ "//brave/browser/ui" ]
 brave_chrome_browser_ui_allow_circular_includes_from +=
     brave_ui_allow_circular_includes_from
 
-# //brave/browser/ui is folded into //chrome/browser/ui, which has a circular
-# dependency with //chrome/browser:core. Mirror that relationship so brave UI
-# sources can include headers from //chrome/browser:core (e.g.
-# chrome/browser/defaults.h, chrome/browser/file_select_helper.h,
-# chrome/browser/command_observer.h).
-brave_chrome_browser_core_allow_circular_includes_from =
-    [ "//brave/browser/ui" ]
-
 brave_chrome_browser_allow_circular_includes_from += [
   "//brave/browser/brave_shields:brave_shields_impl",
   "//brave/browser/history_embeddings",

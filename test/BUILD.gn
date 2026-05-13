@@ -264,6 +264,7 @@ test("brave_unit_tests") {
     "//chrome:resources",
     "//chrome:strings",
     "//chrome/app:command_ids",
+    "//chrome/browser:chrome_content_browser_client",
     "//chrome/browser/bookmarks",
     "//chrome/browser/bookmarks:test_support",
     "//chrome/browser/browsing_data:constants",
