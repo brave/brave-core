@@ -170,40 +170,52 @@ TEST_F(BraveManageProfileHandlerTest, SetWithValidPngResolvesAndStores) {
   EXPECT_TRUE(entry()->IsUsingBraveCustomAvatar());
 }
 
-// An empty payload is rejected without invoking the decoder.
-TEST_F(BraveManageProfileHandlerTest, SetWithEmptyPayloadIsRejected) {
-  auto result = SetCustomAvatar(std::string());
+// Rejection cases for `SetCustomAvatar`: each payload must produce the
+// matching error and leave the profile entry untouched.
+struct RejectCase {
+  // Human-readable test suffix; also the GTest case name printer.
+  std::string name;
+  // Payload passed verbatim to `SetCustomAvatar` (base64 already applied
+  // where the failure mode is "decodes as base64 but isn't an image").
+  std::string payload;
+  brave_manage_profile::mojom::SetCustomAvatarError expected_error;
+};
+
+class BraveManageProfileHandlerRejectTest
+    : public BraveManageProfileHandlerTest,
+      public testing::WithParamInterface<RejectCase> {};
+
+TEST_P(BraveManageProfileHandlerRejectTest, SetIsRejected) {
+  const RejectCase& test_case = GetParam();
+  auto result = SetCustomAvatar(test_case.payload);
   ASSERT_TRUE(result.error.has_value());
-  EXPECT_EQ(brave_manage_profile::mojom::SetCustomAvatarError::kEmpty,
-            *result.error);
+  EXPECT_EQ(test_case.expected_error, *result.error);
   ASSERT_TRUE(entry());
   EXPECT_FALSE(entry()->HasBraveCustomAvatar());
   EXPECT_FALSE(entry()->IsUsingBraveCustomAvatar());
 }
 
-// Non-base64 garbage is rejected before the decoder is reached.
-TEST_F(BraveManageProfileHandlerTest, SetWithInvalidBase64IsRejected) {
-  auto result = SetCustomAvatar("!!! not base64 !!!");
-  ASSERT_TRUE(result.error.has_value());
-  EXPECT_EQ(brave_manage_profile::mojom::SetCustomAvatarError::kInvalidBase64,
-            *result.error);
-  ASSERT_TRUE(entry());
-  EXPECT_FALSE(entry()->HasBraveCustomAvatar());
-  EXPECT_FALSE(entry()->IsUsingBraveCustomAvatar());
-}
-
-// Base64-encoded random bytes decode fine as base64 but fail the image
-// decode step.
-TEST_F(BraveManageProfileHandlerTest, SetWithNonImageBytesIsRejected) {
-  const std::string garbage_bytes("\x01\x02\x03\x04not a PNG\x05\x06\x07", 18);
-  auto result = SetCustomAvatar(base::Base64Encode(garbage_bytes));
-  ASSERT_TRUE(result.error.has_value());
-  EXPECT_EQ(brave_manage_profile::mojom::SetCustomAvatarError::kDecodeFailed,
-            *result.error);
-  ASSERT_TRUE(entry());
-  EXPECT_FALSE(entry()->HasBraveCustomAvatar());
-  EXPECT_FALSE(entry()->IsUsingBraveCustomAvatar());
-}
+INSTANTIATE_TEST_SUITE_P(
+    All,
+    BraveManageProfileHandlerRejectTest,
+    testing::Values(
+        // Empty payload is rejected without invoking the decoder.
+        RejectCase{"EmptyPayload", std::string(),
+                   brave_manage_profile::mojom::SetCustomAvatarError::kEmpty},
+        // Non-base64 garbage is rejected before the decoder is reached.
+        RejectCase{
+            "InvalidBase64", "!!! not base64 !!!",
+            brave_manage_profile::mojom::SetCustomAvatarError::kInvalidBase64},
+        // Base64-encoded random bytes decode fine as base64 but fail the
+        // image decode step.
+        RejectCase{
+            "NonImageBytes",
+            base::Base64Encode(
+                std::string("\x01\x02\x03\x04not a PNG\x05\x06\x07", 18)),
+            brave_manage_profile::mojom::SetCustomAvatarError::kDecodeFailed}),
+    [](const testing::TestParamInfo<RejectCase>& info) {
+      return info.param.name;
+    });
 
 // `RemoveCustomAvatar` clears the stored avatar and pushes the change to the
 // bound `BraveManageProfileSettingsUI`.
