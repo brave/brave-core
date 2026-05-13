@@ -322,7 +322,6 @@ export const {
   useRemoveAccountMutation,
   useRemoveSitePermissionMutation,
   useRemoveUserTokenMutation,
-  useReportOnboardingActionMutation,
   useRequestSitePermissionMutation,
   useRestoreNetworksMutation,
   useRestoreWalletMutation,

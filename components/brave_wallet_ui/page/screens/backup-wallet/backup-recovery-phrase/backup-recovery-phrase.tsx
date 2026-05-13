@@ -15,12 +15,9 @@ import * as leo from '@brave/leo/tokens/css/variables'
 import { getLocale } from '../../../../../common/locale'
 import { PageSelectors } from '../../../selectors'
 import { WalletPageActions } from '../../../actions'
-import {
-  useReportOnboardingActionMutation, //
-} from '../../../../common/slices/api.slice'
 
 // routes
-import { BraveWallet, WalletRoutes } from '../../../../constants/types'
+import { WalletRoutes } from '../../../../constants/types'
 
 // hooks
 import {
@@ -69,9 +66,6 @@ export const BackupRecoveryPhrase = () => {
   const dispatch = useAppDispatch()
   const mnemonic = useSafePageSelector(PageSelectors.mnemonic)
 
-  // mutations
-  const [report] = useReportOnboardingActionMutation()
-
   // custom hooks
   const { isCopied, temporaryCopyToClipboard } = useTemporaryCopyToClipboard(
     undefined,
@@ -82,7 +76,6 @@ export const BackupRecoveryPhrase = () => {
   const skipBackup = () => {
     dispatch(WalletPageActions.recoveryWordsAvailable({ mnemonic: '' }))
     if (isOnboarding) {
-      report(BraveWallet.OnboardingAction.CompleteRecoverySkipped)
       history.push(WalletRoutes.OnboardingComplete)
       return
     }

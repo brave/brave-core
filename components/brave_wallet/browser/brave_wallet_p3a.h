@@ -22,8 +22,6 @@ namespace brave_wallet {
 
 inline constexpr char kKeyringCreatedHistogramName[] =
     "Brave.Wallet.KeyringCreated";
-inline constexpr char kOnboardingConversionHistogramName[] =
-    "Brave.Wallet.OnboardingConversion.3";
 inline constexpr char kBraveWalletDailyHistogramName[] =
     "Brave.Wallet.UsageDaily";
 inline constexpr char kBraveWalletWeeklyHistogramName[] =
@@ -59,7 +57,6 @@ class BraveWalletP3A : public KeyringServiceObserverBase,
   void AddObservers();
 
   void ReportUsage(bool unlocked);
-  void ReportOnboardingAction(mojom::OnboardingAction action) override;
 
   // KeyringServiceObserverBase:
   void WalletCreated() override;
@@ -71,8 +68,6 @@ class BraveWalletP3A : public KeyringServiceObserverBase,
   void OnUpdateTimerFired();
   void WriteUsageStatsToHistogram();
   void RecordInitialBraveWalletP3AState();
-  std::optional<mojom::OnboardingAction> GetLastOnboardingAction();
-  void RecordOnboardingHistogram();
   raw_ptr<BraveWalletService> wallet_service_;
   raw_ptr<KeyringService> keyring_service_;
   raw_ptr<PrefService> profile_prefs_;
@@ -80,8 +75,6 @@ class BraveWalletP3A : public KeyringServiceObserverBase,
 
   mojo::Receiver<mojom::KeyringServiceObserver>
       keyring_service_observer_receiver_{this};
-
-  base::OneShotTimer onboarding_report_timer_;
 
   mojo::ReceiverSet<mojom::BraveWalletP3A> receivers_;
   base::RepeatingTimer update_timer_;

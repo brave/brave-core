@@ -382,12 +382,7 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
   func markOnboardingCompleted() {
     self.isOnboarding = false
     self.isOnboardingVisible = false
-    reportP3AOnboarding(action: .complete)
     updateInfo()
-  }
-
-  func reportP3AOnboarding(action: BraveWallet.OnboardingAction) {
-    walletP3A.reportOnboardingAction(action)
   }
 
   func notifyWalletBackupComplete() {

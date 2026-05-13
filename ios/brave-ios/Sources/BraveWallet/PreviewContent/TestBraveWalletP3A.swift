@@ -8,10 +8,7 @@ import BraveCore
 #if DEBUG
 
 class TestBraveWalletP3A: BraveWalletBraveWalletP3A {
-  var _reportOnboarding: ((_ onboardingAction: BraveWallet.OnboardingAction) -> Void)?
-  func reportOnboardingAction(_ onboardingAction: BraveWallet.OnboardingAction) {
-    _reportOnboarding?(onboardingAction)
-  }
+
 }
 
 #endif

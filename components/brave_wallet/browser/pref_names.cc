@@ -77,6 +77,9 @@ inline constexpr char kBraveWalletLastTransactionSentTimeDictDeprecated[] =
 // Deprecated 05/2026
 inline constexpr char kBraveWalletP3ANFTGalleryUsedDeprecated[] =
     "brave.wallet.wallet_p3a_nft_gallery_used";
+// Deprecated 05/2026
+inline constexpr char kBraveWalletP3AOnboardingLastStepDeprecated[] =
+    "brave.wallet.p3a_last_onboarding_step";
 
 base::DictValue GetDefaultSelectedNetworks() {
   base::DictValue selected_networks;
@@ -207,7 +210,6 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   p3a_utils::RegisterFeatureUsagePrefs(
       registry, kBraveWalletP3AFirstUnlockTime, kBraveWalletP3ALastUnlockTime,
       kBraveWalletP3AUsedSecondDay, nullptr, nullptr);
-  registry->RegisterIntegerPref(kBraveWalletP3AOnboardingLastStep, 0);
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
@@ -276,6 +278,8 @@ void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
                                 false);
   // Deprecated 05/2026
   registry->RegisterBooleanPref(kBraveWalletP3ANFTGalleryUsedDeprecated, false);
+  // Deprecated 05/2026
+  registry->RegisterIntegerPref(kBraveWalletP3AOnboardingLastStepDeprecated, 0);
 }
 
 void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
@@ -283,6 +287,8 @@ void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
   local_state->ClearPref(kBraveWalletP3ANewUserBalanceReportedDeprecated);
   // Deprecated 05/2026
   local_state->ClearPref(kBraveWalletP3ANFTGalleryUsedDeprecated);
+  // Deprecated 05/2026
+  local_state->ClearPref(kBraveWalletP3AOnboardingLastStepDeprecated);
 }
 
 void RegisterProfilePrefsForMigration(

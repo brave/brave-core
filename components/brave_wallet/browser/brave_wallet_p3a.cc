@@ -24,7 +24,6 @@ namespace brave_wallet {
 namespace {
 
 const int kRefreshP3AFrequencyHours = 24;
-constexpr base::TimeDelta kOnboardingRecordDelay = base::Seconds(120);
 
 // Has the Wallet keyring been created?
 // 0) No, 1) Yes
@@ -54,12 +53,6 @@ BraveWalletP3A::BraveWalletP3A(BraveWalletService* wallet_service,
       kBraveWalletLastUnlockTime,
       base::BindRepeating(&BraveWalletP3A::ReportUsage, base::Unretained(this),
                           true));
-
-  // try to record the onboarding histogram
-  // just in the case the user quit the app
-  // before the 120 second deadline in the last
-  // app session
-  RecordOnboardingHistogram();
 }
 
 BraveWalletP3A::BraveWalletP3A() = default;
@@ -101,56 +94,6 @@ void BraveWalletP3A::ReportUsage(bool unlocked) {
   p3a_utils::RecordFeatureLastUsageTimeMetric(
       local_state_, kBraveWalletP3ALastUnlockTime,
       kBraveWalletLastUsageTimeHistogramName);
-}
-
-std::optional<mojom::OnboardingAction>
-BraveWalletP3A::GetLastOnboardingAction() {
-  if (local_state_->HasPrefPath(kBraveWalletP3AOnboardingLastStep)) {
-    int pref_value =
-        local_state_->GetInteger(kBraveWalletP3AOnboardingLastStep);
-    return static_cast<mojom::OnboardingAction>(pref_value);
-  }
-  return std::nullopt;
-}
-
-void BraveWalletP3A::ReportOnboardingAction(mojom::OnboardingAction action) {
-  if (action == mojom::OnboardingAction::StartRestore) {
-    // We do not want to monitor wallet restores; cancel the
-    // histogram record timer and wipe out the last onboarding step.
-    local_state_->ClearPref(kBraveWalletP3AOnboardingLastStep);
-    onboarding_report_timer_.Stop();
-    return;
-  }
-  std::optional<mojom::OnboardingAction> last_step = GetLastOnboardingAction();
-  if (!last_step.has_value() || *last_step < action) {
-    // Only record steps that are ahead of the previous step so we
-    // don't record back navigation.
-    local_state_->SetInteger(kBraveWalletP3AOnboardingLastStep,
-                             static_cast<int>(action));
-  }
-  if (onboarding_report_timer_.IsRunning() ||
-      action == mojom::OnboardingAction::Shown) {
-    // If the event is the first possible action (aka the shown event),
-    // or if timer is already running (re)start the timer to debounce.
-    onboarding_report_timer_.Start(
-        FROM_HERE, kOnboardingRecordDelay,
-        base::BindOnce(&BraveWalletP3A::RecordOnboardingHistogram,
-                       base::Unretained(this)));
-  } else {
-    // If the timer is not running and the action is after the first possible
-    // event, report it right away since it probably missed the 120 sec
-    // deadline.
-    RecordOnboardingHistogram();
-  }
-}
-
-void BraveWalletP3A::RecordOnboardingHistogram() {
-  std::optional<mojom::OnboardingAction> last_step = GetLastOnboardingAction();
-  if (!last_step.has_value()) {
-    return;
-  }
-  local_state_->ClearPref(kBraveWalletP3AOnboardingLastStep);
-  UMA_HISTOGRAM_ENUMERATION(kOnboardingConversionHistogramName, *last_step);
 }
 
 void BraveWalletP3A::OnUpdateTimerFired() {
