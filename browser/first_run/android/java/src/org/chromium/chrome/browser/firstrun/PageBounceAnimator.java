@@ -50,11 +50,6 @@ public class PageBounceAnimator {
     @Nullable private ValueAnimator mPageAnimator;
     @Nullable private ValueAnimator mBounceAnimator;
 
-    /** Listener called when a page finishes settling. */
-    public interface OnPageShownListener {
-        void onPageShown(final int position);
-    }
-
     /** Creates a new animator bound to the provided ViewPager2. */
     public PageBounceAnimator(final ViewPager2 viewPager) {
         mViewPager = viewPager;
@@ -136,11 +131,6 @@ public class PageBounceAnimator {
                 });
 
         mPageAnimator.start();
-    }
-
-    /** Returns the adapter position of the currently snapped page. */
-    public int getCurrentPosition() {
-        return mViewPager.getCurrentItem();
     }
 
     private void playBounce(final int targetPosition) {

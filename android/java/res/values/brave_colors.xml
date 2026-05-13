@@ -99,7 +99,6 @@
 
     <color name="onboarding_welcome_text_color">#F0F2FF</color>
     <color name="onboarding_card_bg_color">@android:color/white</color>
-    <color name="onboarding_card_text_color">#212529</color>
     <color name="onboarding_negative_button_color">#4C54D2</color>
     <color name="onboarding_search_highlight_color">#737ADE</color>
     <color name="onboarding_arrow_color">#4D54D3</color>
