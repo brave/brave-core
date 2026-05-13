@@ -82,6 +82,7 @@ TEST_F(BraveAdsBrowserManagerTest,
   ads_client_notifier_.NotifyDidInitializeAds();
 
   // Assert
+  EXPECT_TRUE(BrowserManager::GetInstance().IsActive());
   EXPECT_TRUE(BrowserManager::GetInstance().IsInForeground());
 }
 
@@ -94,6 +95,7 @@ TEST_F(BraveAdsBrowserManagerTest,
   ads_client_notifier_.NotifyDidInitializeAds();
 
   // Assert
+  EXPECT_FALSE(BrowserManager::GetInstance().IsActive());
   EXPECT_FALSE(BrowserManager::GetInstance().IsInForeground());
 }
 
