@@ -427,7 +427,6 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CheckExpectedExtensions) {
   // installation.
   std::set<std::string> expected_extensions = {
       brave_extension_id,
-      extensions::kWebStoreAppId,
       extension_misc::kPdfExtensionId,
   };
 
