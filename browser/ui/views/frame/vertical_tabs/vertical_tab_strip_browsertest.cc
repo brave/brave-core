@@ -305,7 +305,7 @@ IN_PROC_BROWSER_TEST_P(VerticalTabStripBrowserTest,
   auto* model = browser()->tab_strip_model();
   ASSERT_EQ(model->count(), 2);
   model->SetTabPinned(0, true);
-  chrome::NewSplitTab(browser(),
+  chrome::NewSplitTab(browser(), split_tabs::SplitTabLayout::kVertical,
                       split_tabs::SplitTabCreatedSource::kToolbarButton);
   ASSERT_EQ(model->count(), 3);
   auto assert_tab_insets = [this]() {
