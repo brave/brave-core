@@ -34,7 +34,7 @@ HDKeySr25519& HDKeySr25519::operator=(HDKeySr25519&& rhs) noexcept {
 
 HDKeySr25519::~HDKeySr25519() = default;
 
-HDKeySr25519 HDKeySr25519::Clone() {
+HDKeySr25519 HDKeySr25519::Clone() const {
   return HDKeySr25519(keypair_->clone());
 }
 
