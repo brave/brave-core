@@ -8,13 +8,18 @@
 #include <utility>
 
 #include "base/no_destructor.h"
+#include "brave/components/services/brave_wallet/public/cpp/brave_wallet_utils_service_in_process_launcher.h"
 #include "build/build_config.h"
 
-#if BUILDFLAG(IS_IOS)
-#include "brave/components/services/brave_wallet/public/cpp/brave_wallet_utils_service_in_process_launcher.h"
-#else
+#if !BUILDFLAG(IS_IOS)
 #include "brave/components/services/brave_wallet/content/brave_wallet_utils_service_launcher.h"
 #endif
+
+namespace {
+
+bool g_in_process_service_for_testing = false;
+
+}
 
 namespace brave_wallet {
 
@@ -27,13 +32,31 @@ BraveWalletUtilsService* BraveWalletUtilsService::GetInstance() {
   return service.get();
 }
 
+// static
+base::AutoReset<bool>
+BraveWalletUtilsService::ScopedInProcessServiceForTesting() {
+  return {&g_in_process_service_for_testing, true};
+}
+
 void BraveWalletUtilsService::CreateZCashDecoder(
-    mojo::PendingAssociatedReceiver<zcash::mojom::ZCashDecoder> receiver) {
+    mojo::PendingReceiver<zcash::mojom::ZCashDecoder> receiver) {
   MaybeLaunchService();
   brave_wallet_utils_service_->CreateZCashDecoderService(std::move(receiver));
 }
 
 void BraveWalletUtilsService::MaybeLaunchService() {
+  // Don't launch new instance if we already have one running.
+  if (brave_wallet_utils_service_.is_bound()) {
+    return;
+  }
+
+  if (g_in_process_service_for_testing) {
+    LaunchInProcessBraveWalletUtilsService(
+        brave_wallet_utils_service_.BindNewPipeAndPassReceiver());
+    brave_wallet_utils_service_.reset_on_disconnect();
+    return;
+  }
+
 #if BUILDFLAG(IS_IOS)
   LaunchInProcessBraveWalletUtilsService(
       brave_wallet_utils_service_.BindNewPipeAndPassReceiver());
