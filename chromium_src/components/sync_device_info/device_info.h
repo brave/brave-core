@@ -8,7 +8,16 @@
 
 #include "base/values.h"
 
-// This header only exists to add `base/values.h` to the Chromium header.
+namespace syncer {
+
+// Whether a peer device supports being remotely told to delete itself.
+enum class SelfDeleteSupport {
+  kNotSupported,
+  kSupported,
+};
+
+}  // namespace syncer
+
 #include <components/sync_device_info/device_info.h>  // IWYU pragma: export
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DEVICE_INFO_DEVICE_INFO_H_

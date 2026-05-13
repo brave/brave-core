@@ -418,8 +418,10 @@ base::ListValue BraveSyncHandler::GetSyncDeviceList() {
         local_device_info && local_device_info->guid() == device->guid();
     device_value.Set("isCurrentDevice", is_current_device);
     device_value.Set("guid", device->guid());
-    device_value.Set("supportsSelfDelete",
-                     !is_current_device && device->is_self_delete_supported());
+    device_value.Set(
+        "supportsSelfDelete",
+        !is_current_device && device->self_delete_support() ==
+                                  syncer::SelfDeleteSupport::kSupported);
 
     device_list.Append(std::move(device_value));
   }

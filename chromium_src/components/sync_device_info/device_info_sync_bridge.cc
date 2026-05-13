@@ -44,6 +44,16 @@ namespace {
 
 constexpr int kFailedAttemtpsToAckDeviceDelete = 5;
 
+SelfDeleteSupport SpecificsToSelfDeleteSupport(
+    const DeviceInfoSpecifics& specifics) {
+  if (specifics.has_brave_fields() &&
+      specifics.brave_fields().has_is_self_delete_supported() &&
+      specifics.brave_fields().is_self_delete_supported()) {
+    return SelfDeleteSupport::kSupported;
+  }
+  return SelfDeleteSupport::kNotSupported;
+}
+
 std::unique_ptr<DeviceInfo> BraveSpecificsToModel(
     const DeviceInfoSpecifics& specifics) {
   DataTypeSet data_types;
@@ -77,9 +87,7 @@ std::unique_ptr<DeviceInfo> BraveSpecificsToModel(
       SpecificsToAutoSignOutLastSigninTimestamp(specifics),
       specifics.feature_fields().desktop_to_ios_promo_receiving_enabled(),
       SpecificsToDesktopToIOSPromoReceivingTypes(specifics),
-      specifics.has_brave_fields() &&
-          specifics.brave_fields().has_is_self_delete_supported() &&
-          specifics.brave_fields().is_self_delete_supported());
+      SpecificsToSelfDeleteSupport(specifics));
 }
 
 }  // namespace

@@ -1,5 +1,5 @@
 diff --git a/components/sync_device_info/device_info.cc b/components/sync_device_info/device_info.cc
-index f828751332055e70fef223044da7dc6944f221a3..c578d1169cb46de6d8cfe3b18b717a7f20d3698c 100644
+index f828751332055e70fef223044da7dc6944f221a3..5ae8a20b5ffa20c2c05bc43cd2d8660a931182ba 100644
 --- a/components/sync_device_info/device_info.cc
 +++ b/components/sync_device_info/device_info.cc
 @@ -81,7 +81,8 @@ DeviceInfo::DeviceInfo(
@@ -8,7 +8,7 @@ index f828751332055e70fef223044da7dc6944f221a3..c578d1169cb46de6d8cfe3b18b717a7f
      const MobilePromoOnDesktopPromoTypeSet&
 -        desktop_to_ios_promo_receiving_types)
 +        desktop_to_ios_promo_receiving_types,
-+    bool is_self_delete_supported)
++    SelfDeleteSupport self_delete_support)
      : guid_(guid),
        client_name_(client_name),
        chrome_version_(chrome_version),
@@ -18,7 +18,7 @@ index f828751332055e70fef223044da7dc6944f221a3..c578d1169cb46de6d8cfe3b18b717a7f
        desktop_to_ios_promo_receiving_types_(
 -          desktop_to_ios_promo_receiving_types) {}
 +          desktop_to_ios_promo_receiving_types),
-+      is_self_delete_supported_(is_self_delete_supported) {}
++      self_delete_support_(self_delete_support) {}
  
  DeviceInfo::~DeviceInfo() = default;
  
