@@ -36,6 +36,7 @@
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
+#include "brave/browser/ui/views/frame/tab_strip_placement_coordinator.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
@@ -306,6 +307,10 @@ bool BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
 }
 
 BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
+  tab_strip_placement_ = std::make_unique<TabStripPlacementCoordinator>(
+      base::PassKey<BraveBrowserView>(), browser,
+      horizontal_tab_strip_region_view_);
+
   // Need this background view always as we have contents margin/rounded corners
   // when split view is active regardless of rounded corners feature.
   contents_background_view_ =
