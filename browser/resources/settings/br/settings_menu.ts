@@ -64,7 +64,6 @@ RegisterStyleOverride(
         top: var(--brave-settings-menu-margin-v);
         margin: 0 !important;
         min-width: 172px;
-        max-width: 250px;
         overflow-y: auto;
         padding: 12px 24px !important;
       }

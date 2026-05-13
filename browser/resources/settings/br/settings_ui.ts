@@ -77,8 +77,8 @@ RegisterStyleOverride(
       #container {
         /* menu and content next to each other in the horizontal center */
       }
-      #left {
-        max-width: 250px;
+      #left{
+        flex:0 !important;
       }
       #main {
         margin: 0 var(--leo-spacing-m) var(--leo-spacing-m) 0;
