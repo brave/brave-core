@@ -15,6 +15,8 @@
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
          android:paddingHorizontal="16dp"
+         android:paddingVertical="16dp"
+         android:gravity="center_vertical"
          android:orientation="horizontal">
 
           <ImageView
@@ -55,9 +57,7 @@
              android:layout_width="24dp"
              android:layout_height="24dp"
              android:src="@drawable/ic_edit_pencil"
-             android:layout_gravity="center_vertical"
              android:contentDescription="@null"
-             android:layout_marginVertical="12dp"
              android:layout_marginStart="8dp" />
 
      </LinearLayout>

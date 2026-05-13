@@ -64,5 +64,8 @@ android_resources("java_resources") {
     "java/res/values/dimens.xml",
     "java/res/values/styles.xml",
   ]
-  deps = [ "//brave/build/android:android_brave_strings_grd" ]
+  deps = [
+    "//brave/android/nala:java_resources",
+    "//brave/build/android:android_brave_strings_grd",
+  ]
 }

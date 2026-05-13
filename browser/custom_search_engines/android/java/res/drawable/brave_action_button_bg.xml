@@ -8,14 +8,10 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Disabled state -->
     <item android:state_enabled="false">
-        <layer-list>
-            <item android:alpha="0.2">
-                <shape android:shape="rectangle">
-                    <corners android:radius="1000dp"/>
-                    <solid android:color="@color/button_disabled"/>
-                </shape>
-            </item>
-        </layer-list>
+        <shape android:shape="rectangle">
+            <corners android:radius="1000dp"/>
+            <solid android:color="@color/button_disabled"/>
+        </shape>
     </item>
 
     <!-- Enabled state -->

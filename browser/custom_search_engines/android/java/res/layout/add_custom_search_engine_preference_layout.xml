@@ -96,26 +96,15 @@
         android:layout_weight="1" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_margin="24dp"
-        android:orientation="horizontal">
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/cancel_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/cancel_action_text"
-            android:textAllCaps="false"
-            android:paddingHorizontal="12dp"
-            android:layout_marginEnd="8dp"
-            android:textColor="@color/schemes_on_surface_variant"
-            style="?android:attr/borderlessButtonStyle"/>
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginBottom="24dp"
+        android:orientation="vertical">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/add_search_engine_button"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/add_search_engine"
             android:textAllCaps="false"
@@ -126,6 +115,18 @@
             app:cornerRadius="1000dp"
             app:elevation="0dp"
             style="@style/Widget.MaterialComponents.Button.UnelevatedButton"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/cancel_action_text"
+            android:textAllCaps="false"
+            android:paddingHorizontal="12dp"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/schemes_on_surface_variant"
+            style="?android:attr/borderlessButtonStyle"/>
 
     </LinearLayout>
 
