@@ -28,7 +28,7 @@ class ListValue;
 class SerpMetricsTimePeriodStore : public TimePeriodStore {
  public:
   SerpMetricsTimePeriodStore(
-      const base::FilePath& profile_path,
+      base::FilePath profile_path,
       ProfileAttributesStorage& profile_attributes_storage,
       std::string metric_name);
 
