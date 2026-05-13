@@ -1136,6 +1136,7 @@ public class BytecodeTest {
                         boolean.class,
                         int.class,
                         boolean.class,
+                        Bundle.class,
                         MotionEventInfo.class));
         Assert.assertTrue(
                 methodExists(

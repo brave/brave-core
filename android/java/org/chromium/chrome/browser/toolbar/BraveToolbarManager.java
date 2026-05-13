@@ -449,7 +449,9 @@ public class BraveToolbarManager extends ToolbarManager
                                         mIncognitoStateProvider.isIncognitoSelected()
                                                 ? R.id.new_incognito_tab_menu_id
                                                 : R.id.new_tab_menu_id,
-                                        false);
+                                        false,
+                                        /* menuItemData= */ null,
+                                        /* triggeringMotion= */ null);
                     };
 
             bottomControlsCoordinator.initializeWithNative(
