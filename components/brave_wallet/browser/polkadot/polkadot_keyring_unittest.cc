@@ -157,6 +157,32 @@ TEST(PolkadotKeyring, GetAddress) {
     EXPECT_EQ(keyring.GetAddress(0, 42u),
               "5DfhGyQdFobKM8NsWvEeAKk5EQQgYe9AydgJ7rMB6E1EqRzV");
   }
+
+  // Include test vectors from subkey documentation.
+  // https://github.com/paritytech/polkadot-sdk/blob/0f3e5c1917f08fe4e3fcc03ad8e50272311be3b7/substrate/bin/utils/subkey/README.md?plain=1#L58-L62
+  {
+    auto seed = bip39::MnemonicToEntropyToSeed(
+        "hotel forest jar hover kite book view eight stuff angle legend "
+        "defense");
+
+    ASSERT_TRUE(seed.has_value());
+
+    PolkadotKeyring keyring(base::span(seed.value()).first<kPolkadotSeedSize>(),
+                            mojom::KeyringId::kPolkadotMainnet,
+                            base::BindRepeating(IsAddressAllowed));
+
+    ASSERT_TRUE(keyring.AddNewHDAccount(0));
+
+    auto pubkey = keyring.GetPublicKey(0);
+    ASSERT_TRUE(pubkey.has_value());
+    EXPECT_EQ(
+        base::HexEncodeLower(pubkey.value()),
+        "fec70cfbf1977c6965b5af10a4534a6a35d548eb14580594d0bc543286892515");
+
+    auto address = keyring.GetAddress(0, 42);
+    ASSERT_TRUE(address.has_value());
+    EXPECT_EQ(address, "5Hpm9fq3W3dQgwWpAwDS2ZHKAdnk86QRCu7iX4GnmDxycrte");
+  }
 }
 
 TEST(PolkadotKeyring, AddHDAccount) {
