@@ -33,6 +33,7 @@ if (!is_android) {
       "//base",
       "//chrome/browser:browser_process",
       "//chrome/browser/image_decoder",
+      "//chrome/browser/profiles:profile_manager",
       "//chrome/browser/profiles:profile_util",
       "//content/public/browser",
       "//mojo/public/cpp/bindings",
