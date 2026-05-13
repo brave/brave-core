@@ -8,11 +8,12 @@ import { scoped } from '$web-common/scoped_css'
 
 export const style = scoped.css`
   & {
-    --leo-dialog-padding: 32px;
+    --leo-dialog-padding: 24px;
   }
 
   h4 {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 8px;
 
