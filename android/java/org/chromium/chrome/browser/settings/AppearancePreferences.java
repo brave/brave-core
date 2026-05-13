@@ -56,14 +56,16 @@ public class AppearancePreferences extends AppearanceSettingsFragment
     public static final String PREF_HIDE_BRAVE_REWARDS_ICON_MIGRATION =
             "hide_brave_rewards_icon_migration";
     public static final String PREF_SHOW_BRAVE_REWARDS_ICON = "show_brave_rewards_icon";
-    public static final String PREF_ADS_SWITCH = "ads_switch";
-    public static final String PREF_BRAVE_NIGHT_MODE_ENABLED = "brave_night_mode_enabled_key";
-    public static final String PREF_BRAVE_DISABLE_SHARING_HUB = "brave_disable_sharing_hub";
-    public static final String PREF_BRAVE_ENABLE_TAB_GROUPS = "brave_enable_tab_groups";
-    public static final String PREF_ENABLE_MULTI_WINDOWS = "enable_multi_windows";
-    public static final String PREF_SHOW_UNDO_WHEN_TABS_CLOSED = "show_undo_when_tabs_closed";
     public static final String PREF_ADDRESS_BAR = "address_bar";
-    static final String PREF_BRAVE_CUSTOMIZE_MENU = "brave_customize_menu";
+    /* package */ static final String PREF_ADS_SWITCH = "ads_switch";
+    /* package */ static final String PREF_BRAVE_NIGHT_MODE_ENABLED =
+            "brave_night_mode_enabled_key";
+    /* package */ static final String PREF_BRAVE_DISABLE_SHARING_HUB = "brave_disable_sharing_hub";
+    /* package */ static final String PREF_BRAVE_ENABLE_TAB_GROUPS = "brave_enable_tab_groups";
+    /* package */ static final String PREF_ENABLE_MULTI_WINDOWS = "enable_multi_windows";
+    /* package */ static final String PREF_SHOW_UNDO_WHEN_TABS_CLOSED =
+            "show_undo_when_tabs_closed";
+    /* package */ static final String PREF_BRAVE_CUSTOMIZE_MENU = "brave_customize_menu";
 
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
 
