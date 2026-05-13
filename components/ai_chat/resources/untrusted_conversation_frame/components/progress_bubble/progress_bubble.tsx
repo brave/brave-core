@@ -123,8 +123,8 @@ function useProgressState(
   // We are in progress if we are generating, executing a tool, or waiting
   // for a tool.
   const groupIsWorking =
-    (isActiveGroup && conversationState.isGenerating)
-    || conversationState.isToolExecuting
+    isActiveGroup
+    && (conversationState.isGenerating || conversationState.isToolExecuting)
 
   // Pick the most recent event that represents the bubble's status —
   // skip events that are extra data received in parallel, or that carry

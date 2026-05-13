@@ -327,6 +327,39 @@ describe('ProgressBubble completed state', () => {
     expect(bubble?.className).toContain('isExpandable')
   })
 
+  test(
+    'shows "Task complete" for a non-active task group even while the '
+      + 'conversation is generating / executing a tool',
+    () => {
+      // The conversation-wide isGenerating/isToolExecuting flags only describe
+      // the active group. A non-active task group should ignore them and stay
+      // in the completed state.
+      render(
+        <MockContext
+          initialState={{
+            conversationEntriesState: {
+              isGenerating: true,
+              isToolExecuting: true,
+              toolUseTaskState: Mojom.TaskState.kRunning,
+            },
+          }}
+        >
+          <ProgressBubble
+            responseGroup={makeTaskGroup()}
+            isLastGroup={false}
+          />
+        </MockContext>,
+      )
+
+      expect(
+        screen.getByText(S.CHAT_UI_TOOL_LABEL_COMPLETE),
+      ).toBeInTheDocument()
+      const bubble = getBubble()
+      expect(bubble?.className).not.toContain('isActive')
+      expect(bubble?.className).toContain('isExpandable')
+    },
+  )
+
   test('shows "Task complete" for the latest task group when not generating', () => {
     render(
       <MockContext
