@@ -7,6 +7,7 @@ import {
   RegisterPolymerPrototypeModification,
   RegisterPolymerTemplateModifications
 } from 'chrome://resources/brave/polymer_overriding.js'
+import 'chrome://resources/brave/leo.bundle.js'
 import { loadTimeData } from 'chrome://resources/js/load_time_data.js'
 
 import {
@@ -61,9 +62,8 @@ const kBraveCustomAvatarStyleCss = `
   }
 
   #braveCustomAvatarPreview .placeholder {
-    color: var(--leo-color-text-tertiary);
-    font-size: 28px;
-    font-weight: 600;
+    --leo-icon-color: var(--leo-color-text-tertiary);
+    --leo-icon-size: 28px;
     user-select: none;
   }
 
@@ -429,9 +429,10 @@ function buildCustomAvatarRow(
   preview.id = kCustomAvatarPreviewId
   preview.className = 'is-empty'
 
-  const placeholder = document.createElement('span')
+  const placeholder = document.createElement('leo-icon')
   placeholder.className = 'placeholder'
-  placeholder.textContent = '+'
+  placeholder.setAttribute('name', 'plus-add')
+  placeholder.setAttribute('aria-hidden', 'true')
   preview.appendChild(placeholder)
 
   const uploadSpinner = document.createElement('div')
