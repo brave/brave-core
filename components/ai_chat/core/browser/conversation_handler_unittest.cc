@@ -3446,6 +3446,128 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolsCalled) {
                       mojom::TextContentBlock::New("Result from tool2")));
 }
 
+TEST_F(ConversationHandlerUnitTest, ToolUseEvents_DuplicateToolIds) {
+  // Regression test for https://github.com/brave/brave-browser/issues/55438:
+  // an assistant response that contained two tool_use events
+  // sharing the same `id` could cause infinite synchronous recursion through
+  // MaybeRespondToNextToolUseRequest -> RespondToToolUseRequest. The lookup
+  // helper GetToolUseEventForLastResponse returned the first event matching
+  // the id, so both completions resolved to the same event, the second
+  // event's output was never assigned, and the next iteration kept
+  // re-dispatching the same pending tool.
+  //
+  // The fix drops duplicate-id tool_use events at insertion time.
+  conversation_handler_->associated_content_manager()->ClearContent();
+  auto* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  auto tool = std::make_unique<NiceMock<MockTool>>("shared_tool", "Shared");
+  tool->set_requires_user_interaction_before_handling(false);
+
+  ON_CALL(*mock_tool_provider_, GetTools()).WillByDefault([&]() {
+    std::vector<base::WeakPtr<Tool>> tools;
+    tools.push_back(tool->GetWeakPtr());
+    return tools;
+  });
+
+  int use_tool_call_count = 0;
+  ON_CALL(*tool, UseTool(_, _))
+      .WillByDefault(
+          [&](const std::string& input_json, Tool::UseToolCallback callback) {
+            ++use_tool_call_count;
+            std::vector<mojom::ContentBlockPtr> result;
+            result.push_back(mojom::ContentBlock::NewTextContentBlock(
+                mojom::TextContentBlock::New("Result for " + input_json)));
+            std::move(callback).Run(std::move(result), {});
+          });
+
+  testing::Sequence seq;
+  // First engine response: emit two tool_use events that share the same id.
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .InSequence(seq)
+      .WillOnce(testing::DoAll(
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewToolUseEvent(
+                        mojom::ToolUseEvent::New("shared_tool", "duplicate_id",
+                                                 "{\"call\":\"first\"}",
+                                                 std::nullopt, std::nullopt,
+                                                 nullptr, false)),
+                    std::nullopt));
+              }),
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewToolUseEvent(
+                        mojom::ToolUseEvent::New("shared_tool", "duplicate_id",
+                                                 "{\"call\":\"second\"}",
+                                                 std::nullopt, std::nullopt,
+                                                 nullptr, false)),
+                    std::nullopt));
+              }),
+          testing::WithArg<7>(
+              [](EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("")),
+                        std::nullopt)));
+              })));
+
+  // After the surviving tool completes, post-tool generation runs.
+  base::RunLoop run_loop;
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .InSequence(seq)
+      .WillOnce(testing::DoAll(
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("Final response")),
+                    std::nullopt));
+              }),
+          testing::WithArg<7>(
+              [&](EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("")),
+                        std::nullopt)));
+                run_loop.Quit();
+              })));
+
+  conversation_handler_->SubmitHumanConversationEntry("call the tool",
+                                                      std::nullopt);
+  run_loop.Run();
+
+  // Tool should be invoked exactly once: for the surviving (first) event.
+  // Higher counts indicate that duplicate ids re-dispatched the same pending
+  // event.
+  EXPECT_EQ(use_tool_call_count, 1);
+
+  const auto& history = conversation_handler_->GetConversationHistory();
+  // human + assistant with the surviving tool_use + assistant with final
+  // response.
+  ASSERT_EQ(history.size(), 3u);
+  auto& assistant_entry = history[1];
+  ASSERT_TRUE(assistant_entry->events.has_value());
+  auto& events = assistant_entry->events.value();
+  // The duplicate-id event is dropped at insertion time.
+  ASSERT_EQ(events.size(), 1u);
+
+  ASSERT_TRUE(events[0]->is_tool_use_event());
+  auto& tool_use = events[0]->get_tool_use_event();
+  EXPECT_EQ(tool_use->id, "duplicate_id");
+  EXPECT_EQ(tool_use->arguments_json, "{\"call\":\"first\"}");
+  ASSERT_TRUE(tool_use->output.has_value());
+  ASSERT_EQ(tool_use->output->size(), 1u);
+  EXPECT_EQ(tool_use->output->at(0)->get_text_content_block()->text,
+            "Result for {\"call\":\"first\"}");
+
+  EXPECT_EQ(history.back()->text, "Final response");
+}
+
 TEST_F(ConversationHandlerUnitTest,
        ToolUseEvents_RequiresUserInteractionBeforeHandling) {
   conversation_handler_->associated_content_manager()->ClearContent();
