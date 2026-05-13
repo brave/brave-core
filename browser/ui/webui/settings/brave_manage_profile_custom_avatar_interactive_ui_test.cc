@@ -105,6 +105,12 @@ IN_PROC_BROWSER_TEST_F(BraveManageProfileCustomAvatarInteractiveTest,
   // the getStarted section hosts the page in the UI.
   const GURL kManageProfileUrl("chrome://settings/manageProfile");
 
+  // Per TA-007, drive the renderer-side wait through the test sequence's
+  // own `WaitForJsResult` poller instead of running `content::EvalJs` inside
+  // `base::test::RunUntil` (which would spin a nested run loop and trip
+  // DCHECKs on macOS arm64). Brave hosts `settings-manage-profile` under
+  // `settings-getting-started-page-index`, so the predicate has to walk shadow
+  // roots manually to find it.
   RunTestSequence(
       InstrumentTab(kSettingsTab, 0, browser()),
       NavigateWebContents(kSettingsTab, kManageProfileUrl),
@@ -113,36 +119,29 @@ IN_PROC_BROWSER_TEST_F(BraveManageProfileCustomAvatarInteractiveTest,
             browser()->tab_strip_model()->GetActiveWebContents();
         DismissSyncCannotRunInfobarIfPresent(wc);
         ASSERT_TRUE(content::WaitForLoadStop(wc));
-        // Settle on the `settings-manage-profile` element being present in
-        // the shadow DOM. Brave hosts it under
-        // `settings-getting-started-page-index`, not in the document light
-        // DOM.
-        ASSERT_TRUE(base::test::RunUntil([wc]() {
-          const content::EvalJsResult result = content::EvalJs(wc, R"(
-            (() => {
-              function deepQuerySelector(root, selector) {
-                const direct = root.querySelector(selector);
-                if (direct) {
-                  return direct;
-                }
-                const all = root.querySelectorAll('*');
-                for (const el of all) {
-                  if (el.shadowRoot) {
-                    const found = deepQuerySelector(el.shadowRoot, selector);
-                    if (found) {
-                      return found;
-                    }
-                  }
-                }
-                return null;
-              }
-              const el = deepQuerySelector(document, 'settings-manage-profile');
-              return !!(el && el.shadowRoot);
-            })()
-          )");
-          return result.is_ok() && result.ExtractBool();
-        }));
       }),
+      WaitForJsResult(kSettingsTab, R"(
+        () => {
+          function deepQuerySelector(root, selector) {
+            const direct = root.querySelector(selector);
+            if (direct) {
+              return direct;
+            }
+            const all = root.querySelectorAll('*');
+            for (const el of all) {
+              if (el.shadowRoot) {
+                const found = deepQuerySelector(el.shadowRoot, selector);
+                if (found) {
+                  return found;
+                }
+              }
+            }
+            return null;
+          }
+          const el = deepQuerySelector(document, 'settings-manage-profile');
+          return !!(el && el.shadowRoot);
+        }
+      )"),
       Do([this]() {
         // Save via the same public profile-entry API the Mojo handler calls
         // after decoding the user-selected image.
