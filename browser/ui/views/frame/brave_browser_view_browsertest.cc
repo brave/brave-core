@@ -250,7 +250,7 @@ class BraveBrowserViewWithRoundedCornersTest
   }
 
   void NewSplitTab() {
-    chrome::NewSplitTab(browser(),
+    chrome::NewSplitTab(browser(), split_tabs::SplitTabLayout::kVertical,
                         split_tabs::SplitTabCreatedSource::kToolbarButton);
   }
 
