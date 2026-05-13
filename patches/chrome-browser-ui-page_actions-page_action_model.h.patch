@@ -16,11 +16,14 @@ index 7dacb805a0c88fc8d78095f29550e70375639634..3924212242cd280f61a77fe97bf2c833
 +                                 std::optional<int> height) = 0;
 +  virtual void SetOverrideTriggerableEvent(PageActionPassKey,
 +                                           std::optional<int> event_flags) = 0;
++  virtual void SetOverrideBorder(base::PassKey<PageActionController>,
++                                 const std::optional<gfx::Insets>& border) = 0;
 +  virtual std::optional<SkColor> GetOverrideBackgroundColor() const = 0;
 +  virtual std::optional<SkColor> GetOverrideForegroundColor() const = 0;
 +  virtual bool GetAlwaysShowLabel() const = 0;
 +  virtual std::optional<int> GetOverrideHeight() const = 0;
 +  virtual std::optional<int> GetOverrideTriggerableEvent() const = 0;
++  virtual std::optional<gfx::Insets> GetOverrideBorder() const = 0;
  };
  
  // PageActionModel represents the page action's state, scoped to a single tab.
@@ -45,7 +48,8 @@ index 7dacb805a0c88fc8d78095f29550e70375639634..3924212242cd280f61a77fe97bf2c833
 +    kOverrideChipColors,
 +    kOverrideHeight,
 +    kOverrideTriggerableEvent,
-+    kMaxValue = kOverrideTriggerableEvent,
++    kOverrideBorder,
++    kMaxValue = kOverrideBorder,
    };
    using PropertySet =
        base::EnumSet<Property, Property::kShowRequested, Property::kMaxValue>;

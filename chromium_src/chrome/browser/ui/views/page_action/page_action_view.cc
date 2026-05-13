@@ -18,11 +18,13 @@
 #define GetMinimumSize GetMinimumSize_Chromium
 #define OnNewActiveController OnNewActiveController_Chromium
 #define OnPageActionModelChanged OnPageActionModelChanged_Chromium
+#define UpdateBorder UpdateBorder_Chromium
 
 // Want to use default color even it's expanded.
 #define SetUseTonalColorsWhenExpanded(...) SetUseTonalColorsWhenExpanded(false)
 #include <chrome/browser/ui/views/page_action/page_action_view.cc>
 
+#undef UpdateBorder
 #undef SetUseTonalColorsWhenExpanded
 #undef OnPageActionModelChanged
 #undef OnNewActiveController
@@ -71,6 +73,8 @@ void PageActionView::OnPageActionModelVisualRefresh(
   } else {
     ClearProperty(views::kCrossAxisAlignmentKey);
   }
+
+  UpdateBorder();
 }
 
 gfx::Size PageActionView::GetSizeForLabelWidth(int label_width) const {
@@ -152,6 +156,16 @@ void PageActionView::OnPageActionModelChanged(
     // class.
     SetTriggerableEventFlags(source->GetOverrideTriggerableEvent().value_or(
         ui::EF_LEFT_MOUSE_BUTTON));
+  }
+  UpdateBorder();
+}
+
+void PageActionView::UpdateBorder() {
+  const PageActionModelInterface* source = observation_.GetSource();
+  if (source && source->GetOverrideBorder().has_value()) {
+    SetBorder(views::CreateEmptyBorder(source->GetOverrideBorder().value()));
+  } else {
+    UpdateBorder_Chromium();
   }
 }
 

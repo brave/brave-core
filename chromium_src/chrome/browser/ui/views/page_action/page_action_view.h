@@ -47,8 +47,14 @@
   OnNewActiveController_Chromium(__VA_ARGS__); \
   void OnNewActiveController(__VA_ARGS__)
 
+// Wrapper for UpdateBorder()
+#define UpdateBorder()     \
+  UpdateBorder_Chromium(); \
+  void UpdateBorder()
+
 #include <chrome/browser/ui/views/page_action/page_action_view.h>  // IWYU pragma: export
 
+#undef UpdateBorder
 #undef OnNewActiveController
 #undef GetMinimumSize
 #undef OnPageActionModelChanged

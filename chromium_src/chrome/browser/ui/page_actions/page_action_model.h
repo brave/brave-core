@@ -6,6 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_PAGE_ACTIONS_PAGE_ACTION_MODEL_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_PAGE_ACTIONS_PAGE_ACTION_MODEL_H_
 
+#include "ui/gfx/geometry/insets.h"
+
 namespace page_actions {
 class PageActionModel;
 }  // namespace page_actions
@@ -32,11 +34,14 @@ class PageActionModel : public chromium_impl::PageActionModel {
                          std::optional<int> height_px) override;
   void SetOverrideTriggerableEvent(PageActionPassKey,
                                    std::optional<int> event_flags) override;
+  void SetOverrideBorder(base::PassKey<PageActionController>,
+                         const std::optional<gfx::Insets>& border) override;
   std::optional<SkColor> GetOverrideBackgroundColor() const override;
   std::optional<SkColor> GetOverrideForegroundColor() const override;
   bool GetAlwaysShowLabel() const override;
   std::optional<int> GetOverrideHeight() const override;
   std::optional<int> GetOverrideTriggerableEvent() const override;
+  std::optional<gfx::Insets> GetOverrideBorder() const override;
 
  private:
   std::optional<SkColor> override_background_color_;
@@ -44,6 +49,7 @@ class PageActionModel : public chromium_impl::PageActionModel {
   bool always_show_label_ = false;
   std::optional<int> override_height_;
   std::optional<int> override_triggerable_event_flags_;
+  std::optional<gfx::Insets> override_border_;
 };
 
 }  // namespace page_actions
