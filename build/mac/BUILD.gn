@@ -386,9 +386,16 @@ copy("copy_dmg_background_image") {
 }
 
 copy("copy_dmg_icon") {
-  dmg_icon_file_name = "dmg"
-  if (!is_release_channel) {
-    dmg_icon_file_name = "dmg-$brave_channel"
+  if (is_brave_origin_branded) {
+    dmg_icon_file_name = "dmg-origin"
+    if (!is_release_channel) {
+      dmg_icon_file_name += "-$brave_channel"
+    }
+  } else {
+    dmg_icon_file_name = "dmg"
+    if (!is_release_channel) {
+      dmg_icon_file_name = "dmg-$brave_channel"
+    }
   }
   sources = [ "$dmg_icon_file_name.icns" ]
   outputs = [ "$packaging_dir/chrome_dmg_icon.icns" ]
