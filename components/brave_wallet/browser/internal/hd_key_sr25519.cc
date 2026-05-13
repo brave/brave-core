@@ -103,8 +103,6 @@ HDKeySr25519 HDKeySr25519::DeriveHard(uint32_t index) const {
   return HDKeySr25519(keypair_->derive_hard_from_account_index(index));
 }
 
-// HDKerySr25519 HDKeySr25519::DeriveHard(std::string_view) const {}
-
 void HDKeySr25519::UseMockRngForTesting() {
   CHECK_IS_TEST();
   keypair_->use_mock_rng_for_testing();  // IN-TEST

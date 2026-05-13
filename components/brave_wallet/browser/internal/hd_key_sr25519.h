@@ -69,15 +69,11 @@ class HDKeySr25519 {
       base::span<const uint8_t, kSr25519SignatureSize> signature,
       base::span<const uint8_t> message) const;
 
-  // Hard-derive a child key from a provided "derive junction" which is a
-  // SCALE-encoded path segment i.e. given "<mnemonic>//Alice", "Alice" is a
-  // plaintext junction representing a hard derivation that is transformed in
-  // line with:
+  // Hard-derive a child key from a provided "derive junction" which is a path
+  // segment i.e. given "<mnemonic>//Alice", "Alice" is a plaintext junction
+  // representing a hard derivation that is transformed in line with:
   // https://github.com/paritytech/polkadot-sdk/blob/7304295748b1d85eb9fc2b598eba43d9f7971f22/substrate/primitives/core/src/crypto.rs#L138-L151
-  // coded result is: { 20, 'A', 'l', 'i', 'c', 'e' }
   HDKeySr25519 DeriveHard(base::span<const uint8_t> derive_junction) const;
-
-  // HDKeySr25519 DeriveHard(std::string_view junction) const;
   HDKeySr25519 DeriveHard(uint32_t chain_code) const;
 
   // Update the keypair to use a mock RNG when deriving Shcnorr signatures. This
