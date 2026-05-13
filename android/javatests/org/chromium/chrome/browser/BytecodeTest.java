@@ -779,10 +779,9 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/IntentHandler",
-                        "intentHasUnsafeInternalScheme",
+                        "intentHasUnsafeUrl",
                         MethodModifier.STATIC,
                         boolean.class,
-                        String.class,
                         String.class,
                         Intent.class));
         Assert.assertTrue(

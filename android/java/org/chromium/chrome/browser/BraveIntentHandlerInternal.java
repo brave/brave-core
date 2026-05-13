@@ -20,8 +20,7 @@ import org.chromium.build.annotations.Nullable;
 final class BraveIntentHandlerInternal {
     private BraveIntentHandlerInternal() {}
 
-    static boolean intentHasUnsafeInternalScheme(
-            @Nullable String scheme, @Nullable String url, Intent intent) {
+    static boolean intentHasUnsafeUrl(@Nullable String url, Intent intent) {
         assert false;
         return false;
     }
