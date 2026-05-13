@@ -5146,7 +5146,7 @@ struct SkillImageUploadScenario {
   const char* starting_model;
   std::optional<const char*> skill_pinned_model;
   const char* expected_final_model_key;
-  int expected_model_changes_during_submit;
+  bool expects_model_change_during_submit;
 };
 
 class ConversationHandlerSkillImageUploadTest
@@ -5155,8 +5155,8 @@ class ConversationHandlerSkillImageUploadTest
 
 // Covers model resolution and file plumbing when a skill submission carries
 // an image attachment. Each case starts on a specific model and may have a
-// pinned skill model; the test asserts the final model key and the number
-// of ChangeModel calls during submit.
+// pinned skill model; the test asserts the final model key and whether a
+// ChangeModel call fired during submit.
 TEST_P(ConversationHandlerSkillImageUploadTest, ResolvesModelAndPlumbsImage) {
   const auto& tc = GetParam();
   conversation_handler_->associated_content_manager()->ClearContent();
@@ -5190,7 +5190,7 @@ TEST_P(ConversationHandlerSkillImageUploadTest, ResolvesModelAndPlumbsImage) {
 
   // Model change notification expectations during submit.
   EXPECT_CALL(client, OnModelDataChanged)
-      .Times(tc.expected_model_changes_during_submit);
+      .Times(tc.expects_model_change_during_submit ? 1 : 0);
 
   // Mock successful response. AtMost(1) because a ChangeModel inside submit
   // replaces the mock engine, in which case the original mock never fires
@@ -5233,8 +5233,7 @@ TEST_P(ConversationHandlerSkillImageUploadTest, ResolvesModelAndPlumbsImage) {
   // When ChangeModel replaces the engine mid-submit, the assistant turn
   // never completes, so only the human turn is present in those cases.
   const auto& history = conversation_handler_->GetConversationHistory();
-  const size_t expected_size =
-      tc.expected_model_changes_during_submit > 0 ? 1u : 2u;
+  const size_t expected_size = tc.expects_model_change_during_submit ? 1u : 2u;
   EXPECT_EQ(history.size(), expected_size);
   EXPECT_EQ(history[0]->text, "/describe photo");
   ASSERT_TRUE(history[0]->skill);
@@ -5252,27 +5251,27 @@ INSTANTIATE_TEST_SUITE_P(
     testing::Values(
         // Unmodeled skill + image, starting non-vision: switch to vision.
         SkillImageUploadScenario{"UnmodeledFromNonVision", "chat-basic",
-                                 std::nullopt, kClaudeHaikuModelKey, 1},
+                                 std::nullopt, kClaudeHaikuModelKey, true},
         // Unmodeled skill + image, already on vision: no switch.
         SkillImageUploadScenario{"UnmodeledFromVision", kClaudeHaikuModelKey,
-                                 std::nullopt, kClaudeHaikuModelKey, 0},
+                                 std::nullopt, kClaudeHaikuModelKey, false},
         // Pinned non-vision + image, on vision: vision wins, no switch
         // (validates the no-double-switch path).
         SkillImageUploadScenario{"PinnedNonVisionFromVision",
                                  kClaudeHaikuModelKey, "chat-basic",
-                                 kClaudeHaikuModelKey, 0},
+                                 kClaudeHaikuModelKey, false},
         // Pinned non-vision + image, on non-vision: switch once to vision
         // (NOT to the pinned non-vision model).
         SkillImageUploadScenario{"PinnedNonVisionFromNonVision", "chat-basic",
-                                 "chat-basic", kClaudeHaikuModelKey, 1},
+                                 "chat-basic", kClaudeHaikuModelKey, true},
         // Pinned vision equals current + image: no switch.
         SkillImageUploadScenario{"PinnedVisionEqualsCurrent",
                                  kClaudeHaikuModelKey, kClaudeHaikuModelKey,
-                                 kClaudeHaikuModelKey, 0},
+                                 kClaudeHaikuModelKey, false},
         // Pinned vision different from current + image: switch to pin once.
         SkillImageUploadScenario{"PinnedVisionDifferentFromCurrent",
                                  "chat-basic", kClaudeHaikuModelKey,
-                                 kClaudeHaikuModelKey, 1}),
+                                 kClaudeHaikuModelKey, true}),
     [](const testing::TestParamInfo<SkillImageUploadScenario>& info) {
       return std::string(info.param.test_name);
     });
