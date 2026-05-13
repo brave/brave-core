@@ -3896,7 +3896,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Write the search url and replace the query with <ph name="SPECIAL_SYMBOL">%s</ph>.
     </message>
     <message name="IDS_ADD_CUSTOM_SEARCH_ENGINE_TEXT2" desc="Add custom search engine text2">
-      For example: https://youtube.com/search?q=<ph name="SPECIAL_SYMBOL">%s</ph>. If the site supports OpenSearch an option to add automatically will be provided while editing this field.
+      For example: https://youtube.com/search?q=<ph name="SPECIAL_SYMBOL">%s</ph>.
     </message>
     <message name="IDS_ADD_CUSTOM_SEARCH_ENGINE_URL_ERROR" desc="Add custom search engine empty url text">
       URL is invalid.
