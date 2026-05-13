@@ -28,6 +28,8 @@ import org.chromium.ui.widget.ButtonCompat;
 @NullMarked
 public class BraveBrowserLockCoordinator extends IncognitoReauthCoordinatorBase {
     private final Activity mActivity;
+    private final IncognitoReauthManager mIncognitoReauthManager;
+    private final IncognitoReauthManager.IncognitoReauthCallback mIncognitoReauthCallback;
     private @Nullable View mLockView;
 
     public BraveBrowserLockCoordinator(
@@ -47,6 +49,8 @@ public class BraveBrowserLockCoordinator extends IncognitoReauthCoordinatorBase 
                 incognitoReauthCallback,
                 /* seeOtherTabsRunnable= */ () -> {});
         mActivity = activity;
+        mIncognitoReauthManager = incognitoReauthManager;
+        mIncognitoReauthCallback = incognitoReauthCallback;
     }
 
     @Override
@@ -64,6 +68,8 @@ public class BraveBrowserLockCoordinator extends IncognitoReauthCoordinatorBase 
 
         ViewGroup rootView = (ViewGroup) mActivity.getWindow().getDecorView();
         rootView.addView(mLockView);
+
+        mIncognitoReauthManager.startReauthenticationFlow(mIncognitoReauthCallback);
     }
 
     @Override
