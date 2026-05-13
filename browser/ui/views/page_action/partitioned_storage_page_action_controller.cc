@@ -183,9 +183,8 @@ void PartitionedStoragePageActionController::UpdatePageAction() {
                                               true);
   page_action_controller_->OverrideImage(
       kActionShowPartitionedStorage,
-      ui::ImageModel::FromImageSkia(
-          containers::GenerateContainerIconWithoutBackground(
-              model->id(), model->container()->icon, 14, kDefaultScaleFactor)));
+      ui::ImageModel::FromImageSkia(containers::GenerateContainerForegroundIcon(
+          model->id(), model->container()->icon, 14, kDefaultScaleFactor)));
 
   // So far, we didn't have any limit for the name length, so if we don't
   // truncate the name, it will make url invisible because the PageActinView
