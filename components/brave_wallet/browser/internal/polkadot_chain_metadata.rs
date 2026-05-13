@@ -16,6 +16,12 @@ struct CxxPolkadotChainMetadataFields {
     transfer_allow_death_call_index: u8,
     transfer_keep_alive_call_index: u8,
     transfer_all_call_index: u8,
+    assets_pallet_index: u8,
+    assets_asset_storage_index: u8,
+    assets_metadata_storage_index: u8,
+    assets_account_storage_index: u8,
+    assets_transfer_keep_alive_call_index: u8,
+    has_assets_pallet: bool,
     ss58_prefix: u16,
     spec_version: u32,
     asset_tx_payment: bool,
@@ -44,6 +50,12 @@ mod ffi {
         fn transfer_allow_death_call_index(self: &CxxPolkadotChainMetadataFields) -> u8;
         fn transfer_keep_alive_call_index(self: &CxxPolkadotChainMetadataFields) -> u8;
         fn transfer_all_call_index(self: &CxxPolkadotChainMetadataFields) -> u8;
+        fn assets_pallet_index(self: &CxxPolkadotChainMetadataFields) -> u8;
+        fn assets_asset_storage_index(self: &CxxPolkadotChainMetadataFields) -> u8;
+        fn assets_metadata_storage_index(self: &CxxPolkadotChainMetadataFields) -> u8;
+        fn assets_account_storage_index(self: &CxxPolkadotChainMetadataFields) -> u8;
+        fn assets_transfer_keep_alive_call_index(self: &CxxPolkadotChainMetadataFields) -> u8;
+        fn has_assets_pallet(self: &CxxPolkadotChainMetadataFields) -> bool;
         fn ss58_prefix(self: &CxxPolkadotChainMetadataFields) -> u16;
         fn spec_version(self: &CxxPolkadotChainMetadataFields) -> u32;
         fn asset_tx_payment(self: &CxxPolkadotChainMetadataFields) -> bool;
@@ -73,6 +85,30 @@ impl CxxPolkadotChainMetadataFields {
 
     fn transfer_all_call_index(self: &CxxPolkadotChainMetadataFields) -> u8 {
         self.transfer_all_call_index
+    }
+
+    fn assets_pallet_index(self: &CxxPolkadotChainMetadataFields) -> u8 {
+        self.assets_pallet_index
+    }
+
+    fn assets_asset_storage_index(self: &CxxPolkadotChainMetadataFields) -> u8 {
+        self.assets_asset_storage_index
+    }
+
+    fn assets_metadata_storage_index(self: &CxxPolkadotChainMetadataFields) -> u8 {
+        self.assets_metadata_storage_index
+    }
+
+    fn assets_account_storage_index(self: &CxxPolkadotChainMetadataFields) -> u8 {
+        self.assets_account_storage_index
+    }
+
+    fn assets_transfer_keep_alive_call_index(self: &CxxPolkadotChainMetadataFields) -> u8 {
+        self.assets_transfer_keep_alive_call_index
+    }
+
+    fn has_assets_pallet(self: &CxxPolkadotChainMetadataFields) -> bool {
+        self.has_assets_pallet
     }
 
     fn ss58_prefix(self: &CxxPolkadotChainMetadataFields) -> u16 {
@@ -238,7 +274,14 @@ struct PalletInfo {
     name: String,
     index: u8,
     calls_type_id: Option<u32>,
+    storage_entries: Vec<StorageEntryInfo>,
     constants: Vec<(String, Vec<u8>)>,
+}
+
+#[derive(Clone)]
+struct StorageEntryInfo {
+    name: String,
+    index: u8,
 }
 
 // https://github.com/paritytech/frame-metadata/blob/285e5bdc5e9a97b1fcd3dcc94c3666d8a61226a8/frame-metadata/src/v14.rs#L281-L293
@@ -264,24 +307,32 @@ fn parse_storage_entry_type(input: &mut &[u8]) -> Result<(), Error> {
     }
 }
 
-fn parse_storage_entry(input: &mut &[u8]) -> Result<(), Error> {
-    let _: String = decode_scale(input)?;
+fn parse_storage_entry(input: &mut &[u8]) -> Result<String, Error> {
+    let name: String = decode_scale(input)?;
     let _: u8 = decode_scale(input)?; // modifier
     parse_storage_entry_type(input)?;
     let _: Vec<u8> = decode_scale(input)?; // default
     let _: Vec<String> = decode_vec(input, decode_scale::<String>)?; // docs
-    Ok(())
+    Ok(name)
 }
 
 fn parse_pallet(input: &mut &[u8], has_pallet_docs: bool) -> Result<PalletInfo, Error> {
     let name: String = decode_scale(input)?;
 
     // storage: Option<PalletStorageMetadata>
-    let _storage = decode_option(input, |input| {
+    let storage_entries = decode_option(input, |input| {
         let _: String = decode_scale(input)?; // prefix
-        let _ = decode_vec(input, parse_storage_entry)?;
-        Ok(())
-    })?;
+        decode_vec(input, parse_storage_entry)
+    })?
+    .unwrap_or_default();
+    let storage_entries = storage_entries
+        .into_iter()
+        .enumerate()
+        .map(|(index, name)| {
+            let index = u8::try_from(index).map_err(|_| Error::InvalidLength)?;
+            Ok(StorageEntryInfo { name, index })
+        })
+        .collect::<Result<Vec<_>, Error>>()?;
 
     // calls: Option<PalletCallMetadata { ty: u32 }>
     let calls_type_id = decode_option(input, decode_type_id)?;
@@ -307,7 +358,7 @@ fn parse_pallet(input: &mut &[u8], has_pallet_docs: bool) -> Result<PalletInfo, 
         let _: Vec<String> = decode_vec(input, decode_scale::<String>)?;
     }
 
-    Ok(PalletInfo { name, index, calls_type_id, constants })
+    Ok(PalletInfo { name, index, calls_type_id, storage_entries, constants })
 }
 
 fn parse_pallets(input: &mut &[u8], has_pallet_docs: bool) -> Result<Vec<PalletInfo>, Error> {
@@ -370,6 +421,15 @@ fn get_call_index(
         .get(&pallet.calls_type_id.ok_or(Error::InvalidMetadata)?)
         .and_then(|variants| variants.iter().find(|v| normalize_ident(&v.name) == call_name))
         .map(|v| v.index)
+        .ok_or(Error::InvalidMetadata)
+}
+
+fn get_storage_entry_index(pallet: &PalletInfo, storage_entry_name: &str) -> Result<u8, Error> {
+    pallet
+        .storage_entries
+        .iter()
+        .find(|entry| normalize_ident(&entry.name) == storage_entry_name)
+        .map(|entry| entry.index)
         .ok_or(Error::InvalidMetadata)
 }
 
@@ -437,6 +497,8 @@ fn parse_extrinsic_metadata(input: &mut &[u8], version: u8) -> Result<bool, Erro
 ///   - `transfer_allow_death` call index
 ///   - `System.SS58Prefix`
 ///   - `System.Version.spec_version`
+///   - `Assets` pallet index, storage entry indexes, and `transfer_keep_alive`
+///     call index when the pallet is present
 ///   - whether `ChargeAssetTxPayment` is a signed extension
 ///
 /// References:
@@ -477,6 +539,22 @@ fn parse_chain_metadata_fields(bytes: &[u8]) -> Result<CxxPolkadotChainMetadata,
     let transfer_all_call_index =
         get_call_index(&portable_registry, balances_pallet, "transferall")?;
 
+    let mut assets_pallet_index = 0;
+    let mut assets_asset_storage_index = 0;
+    let mut assets_metadata_storage_index = 0;
+    let mut assets_account_storage_index = 0;
+    let mut assets_transfer_keep_alive_call_index = 0;
+    let mut has_assets_pallet = false;
+    if let Some(assets_pallet) = pallets.iter().find(|p| normalize_ident(&p.name) == "assets") {
+        has_assets_pallet = true;
+        assets_pallet_index = assets_pallet.index;
+        assets_asset_storage_index = get_storage_entry_index(assets_pallet, "asset")?;
+        assets_metadata_storage_index = get_storage_entry_index(assets_pallet, "metadata")?;
+        assets_account_storage_index = get_storage_entry_index(assets_pallet, "account")?;
+        assets_transfer_keep_alive_call_index =
+            get_call_index(&portable_registry, assets_pallet, "transferkeepalive")?;
+    }
+
     let system_pallet = pallets
         .iter()
         .find(|p| normalize_ident(&p.name) == "system")
@@ -511,6 +589,12 @@ fn parse_chain_metadata_fields(bytes: &[u8]) -> Result<CxxPolkadotChainMetadata,
         transfer_allow_death_call_index,
         transfer_keep_alive_call_index,
         transfer_all_call_index,
+        assets_pallet_index,
+        assets_asset_storage_index,
+        assets_metadata_storage_index,
+        assets_account_storage_index,
+        assets_transfer_keep_alive_call_index,
+        has_assets_pallet,
         ss58_prefix,
         spec_version,
         asset_tx_payment,
@@ -528,6 +612,12 @@ fn parse_chain_metadata_from_scale(
             transfer_allow_death_call_index: metadata.transfer_allow_death_call_index,
             transfer_keep_alive_call_index: metadata.transfer_keep_alive_call_index,
             transfer_all_call_index: metadata.transfer_all_call_index,
+            assets_pallet_index: metadata.assets_pallet_index,
+            assets_asset_storage_index: metadata.assets_asset_storage_index,
+            assets_metadata_storage_index: metadata.assets_metadata_storage_index,
+            assets_account_storage_index: metadata.assets_account_storage_index,
+            assets_transfer_keep_alive_call_index: metadata.assets_transfer_keep_alive_call_index,
+            has_assets_pallet: metadata.has_assets_pallet,
             ss58_prefix: metadata.ss58_prefix,
             spec_version: metadata.spec_version,
             asset_tx_payment: metadata.asset_tx_payment,

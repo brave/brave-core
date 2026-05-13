@@ -43,7 +43,12 @@ std::optional<PolkadotChainMetadata> PolkadotChainMetadata::FromBytes(
                     parsed->transfer_allow_death_call_index(),
                     parsed->transfer_keep_alive_call_index(),
                     parsed->transfer_all_call_index(), parsed->ss58_prefix(),
-                    parsed->spec_version(), parsed->asset_tx_payment());
+                    parsed->spec_version(), parsed->asset_tx_payment(),
+                    parsed->has_assets_pallet(), parsed->assets_pallet_index(),
+                    parsed->assets_asset_storage_index(),
+                    parsed->assets_metadata_storage_index(),
+                    parsed->assets_account_storage_index(),
+                    parsed->assets_transfer_keep_alive_call_index());
 }
 
 // static
@@ -56,7 +61,13 @@ PolkadotChainMetadata PolkadotChainMetadata::FromFields(
     uint8_t transfer_all_call_index,
     uint16_t ss58_prefix,
     uint32_t spec_version,
-    bool asset_tx_payment) {
+    bool asset_tx_payment,
+    bool has_assets_pallet,
+    uint8_t assets_pallet_index,
+    uint8_t assets_asset_storage_index,
+    uint8_t assets_metadata_storage_index,
+    uint8_t assets_account_storage_index,
+    uint8_t assets_transfer_keep_alive_call_index) {
   CxxPolkadotChainMetadata metadata;
   metadata.system_pallet_index = system_pallet_index;
   metadata.balances_pallet_index = balances_pallet_index;
@@ -64,6 +75,13 @@ PolkadotChainMetadata PolkadotChainMetadata::FromFields(
   metadata.transfer_allow_death_call_index = transfer_allow_death_call_index;
   metadata.transfer_keep_alive_call_index = transfer_keep_alive_call_index;
   metadata.transfer_all_call_index = transfer_all_call_index;
+  metadata.assets_pallet_index = assets_pallet_index;
+  metadata.assets_asset_storage_index = assets_asset_storage_index;
+  metadata.assets_metadata_storage_index = assets_metadata_storage_index;
+  metadata.assets_account_storage_index = assets_account_storage_index;
+  metadata.assets_transfer_keep_alive_call_index =
+      assets_transfer_keep_alive_call_index;
+  metadata.has_assets_pallet = has_assets_pallet;
   metadata.ss58_prefix = ss58_prefix;
   metadata.spec_version = spec_version;
   metadata.asset_tx_payment = asset_tx_payment;
@@ -98,7 +116,13 @@ std::optional<PolkadotChainMetadata> PolkadotChainMetadata::FromChainName(
                       /*transfer_keep_alive_call_index=*/3,
                       /*transfer_all_call_index=*/4,
                       /*ss58_prefix=*/42, kUnknownSpecVersion,
-                      /*asset_tx_payment=*/true);
+                      /*asset_tx_payment=*/true,
+                      /*has_assets_pallet=*/true,
+                      /*assets_pallet_index=*/50,
+                      /*assets_asset_storage_index=*/0,
+                      /*assets_metadata_storage_index=*/3,
+                      /*assets_account_storage_index=*/1,
+                      /*assets_transfer_keep_alive_call_index=*/9);
   }
 
   // https://github.com/polkadot-js/api/blob/f45dfc72ec320cab7d69f08010c9921d2a21065f/packages/types-support/src/metadata/v15/polkadot-json.json#L1096
@@ -122,7 +146,13 @@ std::optional<PolkadotChainMetadata> PolkadotChainMetadata::FromChainName(
                       /*transfer_keep_alive_call_index=*/3,
                       /*transfer_all_call_index=*/4,
                       /*ss58_prefix=*/0, kUnknownSpecVersion,
-                      /*asset_tx_payment=*/true);
+                      /*asset_tx_payment=*/true,
+                      /*has_assets_pallet=*/true,
+                      /*assets_pallet_index=*/50,
+                      /*assets_asset_storage_index=*/0,
+                      /*assets_metadata_storage_index=*/3,
+                      /*assets_account_storage_index=*/1,
+                      /*assets_transfer_keep_alive_call_index=*/9);
   }
 
   return std::nullopt;
@@ -154,6 +184,30 @@ uint8_t PolkadotChainMetadata::GetTransferKeepAliveCallIndex() const {
 
 uint8_t PolkadotChainMetadata::GetTransferAllCallIndex() const {
   return chain_metadata_.transfer_all_call_index;
+}
+
+bool PolkadotChainMetadata::HasAssetsPallet() const {
+  return chain_metadata_.has_assets_pallet;
+}
+
+uint8_t PolkadotChainMetadata::GetAssetsPalletIndex() const {
+  return chain_metadata_.assets_pallet_index;
+}
+
+uint8_t PolkadotChainMetadata::GetAssetsAssetStorageIndex() const {
+  return chain_metadata_.assets_asset_storage_index;
+}
+
+uint8_t PolkadotChainMetadata::GetAssetsMetadataStorageIndex() const {
+  return chain_metadata_.assets_metadata_storage_index;
+}
+
+uint8_t PolkadotChainMetadata::GetAssetsAccountStorageIndex() const {
+  return chain_metadata_.assets_account_storage_index;
+}
+
+uint8_t PolkadotChainMetadata::GetAssetsTransferKeepAliveCallIndex() const {
+  return chain_metadata_.assets_transfer_keep_alive_call_index;
 }
 
 uint16_t PolkadotChainMetadata::GetSs58Prefix() const {
