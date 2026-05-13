@@ -2169,7 +2169,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, ErrorParsing_SSE) {
         EXPECT_EQ(result.error().api_error, mojom::APIError::ConnectionIssue);
         ASSERT_TRUE(result.error().details);
         EXPECT_EQ(result.error().details->status_code, 400);
-        EXPECT_EQ(result.error().details->error_code, 1234);
+        EXPECT_EQ(result.error().details->error_type, "1234");
         run_loop.Quit();
       });
 
@@ -2214,7 +2214,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, ErrorParsing_NonSSE) {
         EXPECT_EQ(result.error().api_error, mojom::APIError::RateLimitReached);
         ASSERT_TRUE(result.error().details);
         EXPECT_EQ(result.error().details->status_code, 429);
-        EXPECT_EQ(result.error().details->error_code, 5678);
+        EXPECT_EQ(result.error().details->error_type, "5678");
         run_loop.Quit();
       });
 

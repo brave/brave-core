@@ -20,10 +20,10 @@ function ErrorConnection(props: Props) {
 
   let detailsText: string | undefined
   if (errorDetails) {
-    if (errorDetails.errorCode !== 0) {
+    if (errorDetails.errorType) {
       detailsText = formatLocale(S.CHAT_UI_ERROR_NETWORK_DETAILS, {
         $1: String(errorDetails.statusCode),
-        $2: String(errorDetails.errorCode),
+        $2: errorDetails.errorType,
       })
     } else {
       detailsText = formatLocale(S.CHAT_UI_ERROR_NETWORK_STATUS_CODE, {

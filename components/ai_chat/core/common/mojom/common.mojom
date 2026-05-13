@@ -40,7 +40,7 @@ enum APIError {
 
 struct APIErrorDetails {
   int32 status_code;
-  int32 error_code;
+  string error_type;
 };
 
 enum SuggestionGenerationStatus {

@@ -130,18 +130,15 @@ std::string_view GetContentBlockTypeString(
   }
 }
 
-int32_t ParseErrorCode(const base::Value& body) {
+std::string ParseErrorCode(const base::Value& body) {
   if (body.is_dict()) {
     if (auto* error_dict = body.GetDict().FindDict("error")) {
       if (auto* type_str = error_dict->FindString("type")) {
-        int parsed;
-        if (base::StringToInt(*type_str, &parsed)) {
-          return static_cast<int32_t>(parsed);
-        }
+        return *type_str;
       }
     }
   }
-  return 0;
+  return std::string();
 }
 
 }  // namespace
