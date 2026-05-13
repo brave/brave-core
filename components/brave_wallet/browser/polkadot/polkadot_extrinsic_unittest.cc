@@ -532,8 +532,8 @@ TEST(PolkadotExtrinsics, SignedExtrinsic_TransferKeepAlive) {
   uint32_t account_index = 0;
 
   auto keypair = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
-  keypair = keypair.DeriveHard(base::byte_span_from_cstring("\x1cwestend"));
-  keypair = keypair.DeriveHard(base::byte_span_from_ref(account_index));
+  keypair = keypair.DeriveHard(base::byte_span_from_cstring("westend"));
+  keypair = keypair.DeriveHard(account_index);
   EXPECT_EQ(base::HexEncodeLower(keypair.GetPublicKey()),
             "d4f9c4dfa3e6ff57b4e1fdea8699e57b0210cf04afe0281acba187d7d1b49274");
 
@@ -655,8 +655,8 @@ TEST(PolkadotExtrinsics, SignedExtrinsic_TransferAll) {
   uint32_t account_index = 0;
 
   auto keypair = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
-  keypair = keypair.DeriveHard(base::byte_span_from_cstring("\x1cwestend"));
-  keypair = keypair.DeriveHard(base::byte_span_from_ref(account_index));
+  keypair = keypair.DeriveHard(base::byte_span_from_cstring("westend"));
+  keypair = keypair.DeriveHard(account_index);
   EXPECT_EQ(base::HexEncodeLower(keypair.GetPublicKey()),
             "d4f9c4dfa3e6ff57b4e1fdea8699e57b0210cf04afe0281acba187d7d1b49274");
 
@@ -738,8 +738,8 @@ TEST(PolkadotExtrinsics, SignedExtrinsic_TransferKeepAlive_AssetId) {
   uint32_t account_index = 0;
 
   auto keypair = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
-  keypair = keypair.DeriveHard(base::byte_span_from_cstring("\x1cwestend"));
-  keypair = keypair.DeriveHard(base::byte_span_from_ref(account_index));
+  keypair = keypair.DeriveHard(base::byte_span_from_cstring("westend"));
+  keypair = keypair.DeriveHard(account_index);
   EXPECT_EQ(base::HexEncodeLower(keypair.GetPublicKey()),
             "d4f9c4dfa3e6ff57b4e1fdea8699e57b0210cf04afe0281acba187d7d1b49274");
 
@@ -852,8 +852,8 @@ TEST(PolkadotExtrinsics, SignedExtrinsic_TransferAll_AssetId) {
   uint32_t account_index = 0;
 
   auto keypair = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
-  keypair = keypair.DeriveHard(base::byte_span_from_cstring("\x1cwestend"));
-  keypair = keypair.DeriveHard(base::byte_span_from_ref(account_index));
+  keypair = keypair.DeriveHard(base::byte_span_from_cstring("westend"));
+  keypair = keypair.DeriveHard(account_index);
   EXPECT_EQ(base::HexEncodeLower(keypair.GetPublicKey()),
             "d4f9c4dfa3e6ff57b4e1fdea8699e57b0210cf04afe0281acba187d7d1b49274");
 

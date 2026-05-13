@@ -225,13 +225,21 @@ impl CxxSchnorrkelKeyPair {
         }
     }
 
-    fn derive_hard_from_account_index(
+    fn derive_hard_impl<T: Encode>(
         self: &CxxSchnorrkelKeyPair,
-        index: u32,
+        index: T,
     ) -> Box<CxxSchnorrkelKeyPair> {
-        let mut cc = [0_u8; JUNCTION_ID_LEN];
+        // Copy what the polkadot-sdk crate does:
+        // https://github.com/paritytech/polkadot-sdk/blob/607a1b24b7902a657426ce2412e316a57b61894b/substrate/primitives/core/src/crypto.rs#L138-L151
+        let mut cc: [u8; JUNCTION_ID_LEN] = Default::default();
         index.using_encoded(|data| {
-            cc[..data.len()].copy_from_slice(data);
+            if data.len() > JUNCTION_ID_LEN {
+                cc.copy_from_slice(
+                    blake2b_simd::Params::new().hash_length(JUNCTION_ID_LEN).hash(data).as_bytes(),
+                );
+            } else {
+                cc[0..data.len()].copy_from_slice(data);
+            }
         });
 
         Box::new(CxxSchnorrkelKeyPair {
@@ -244,28 +252,14 @@ impl CxxSchnorrkelKeyPair {
         })
     }
 
-    // `junction` must already be SCALE-encoded
-    fn derive_hard(self: &CxxSchnorrkelKeyPair, junction: &[u8]) -> Box<CxxSchnorrkelKeyPair> {
-        let mut cc = [0_u8; JUNCTION_ID_LEN];
-        if junction.len() > JUNCTION_ID_LEN {
-            // copy what the polkadot-sdk crate does
-            // https://paritytech.github.io/polkadot-sdk/master/src/sp_core/crypto.rs.html#138-151
-            // https://github.com/paritytech/polkadot-sdk/blob/607a1b24b7902a657426ce2412e316a57b61894b/substrate/primitives/core/src/crypto.rs#L138-L151
-            cc.copy_from_slice(
-                blake2b_simd::Params::new().hash_length(JUNCTION_ID_LEN).hash(junction).as_bytes(),
-            );
-        } else {
-            // use rote binary representation
-            cc[0..junction.len()].copy_from_slice(junction);
-        }
+    fn derive_hard_from_account_index(
+        self: &CxxSchnorrkelKeyPair,
+        index: u32,
+    ) -> Box<CxxSchnorrkelKeyPair> {
+        self.derive_hard_impl(index)
+    }
 
-        Box::new(CxxSchnorrkelKeyPair {
-            keypair: self
-                .keypair
-                .hard_derive_mini_secret_key(Some(schnorrkel::derive::ChainCode(cc)), b"")
-                .0
-                .expand_to_keypair(schnorrkel::ExpansionMode::Ed25519),
-            use_mock_rng: false,
-        })
+    fn derive_hard(self: &CxxSchnorrkelKeyPair, junction: &[u8]) -> Box<CxxSchnorrkelKeyPair> {
+        self.derive_hard_impl(junction)
     }
 }
