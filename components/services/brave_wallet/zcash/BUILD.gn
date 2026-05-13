@@ -23,9 +23,7 @@ source_set("zcash_decoder") {
 
 source_set("zcash_decoder_unit_tests") {
   testonly = true
-  sources = [
-    "//brave/components/services/brave_wallet/zcash/zcash_decoder_unittest.cc",
-  ]
+  sources = [ "zcash_decoder_unittest.cc" ]
 
   deps = [
     "//base/test:test_support",

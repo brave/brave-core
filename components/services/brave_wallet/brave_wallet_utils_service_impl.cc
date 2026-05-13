@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "brave/components/services/brave_wallet/zcash/zcash_decoder.h"
+#include "mojo/public/cpp/bindings/self_owned_receiver.h"
 
 namespace brave_wallet {
 
@@ -19,12 +20,9 @@ BraveWalletUtilsServiceImpl::BraveWalletUtilsServiceImpl(
 BraveWalletUtilsServiceImpl::~BraveWalletUtilsServiceImpl() = default;
 
 void BraveWalletUtilsServiceImpl::CreateZCashDecoderService(
-    mojo::PendingAssociatedReceiver<zcash::mojom::ZCashDecoder>
-        zcash_decoder_receiver) {
-  if (!instance_) {
-    instance_ = mojo::MakeSelfOwnedAssociatedReceiver(
-        std::make_unique<ZCashDecoder>(), std::move(zcash_decoder_receiver));
-  }
+    mojo::PendingReceiver<zcash::mojom::ZCashDecoder> zcash_decoder_receiver) {
+  mojo::MakeSelfOwnedReceiver(std::make_unique<ZCashDecoder>(),
+                              std::move(zcash_decoder_receiver));
 }
 
 }  // namespace brave_wallet
