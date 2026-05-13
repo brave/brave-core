@@ -61,12 +61,15 @@ class EngineConsumer {
   };
 
   struct Error {
+    Error();
     ~Error();
 
-    Error();
     Error(Error&&);
     Error& operator=(Error&&);
 
+    // Implicit constructor exists to avoid having to change all existing
+    // result instantiation call sites to explicitly construct `Error` instead
+    // of `mojom::APIError`.
     Error(mojom::APIError api_error);  // NOLINT(runtime/explicit)
     Error(mojom::APIError api_error, mojom::APIErrorDetailsPtr details);
 
