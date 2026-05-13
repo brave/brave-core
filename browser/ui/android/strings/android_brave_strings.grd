@@ -708,6 +708,15 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_CLOSE_TABS_ON_EXIT_SUMMARY" desc="Summary for closing tabs on exit.">
         Don't persist tabs between browsing sessions
       </message>
+      <message name="IDS_BRAVE_BROWSER_LOCK_TITLE" desc="Title for the browser biometrics lock setting.">
+        Lockdown Brave
+      </message>
+      <message name="IDS_BRAVE_BROWSER_LOCK_SUMMARY" desc="Summary for the browser biometrics lock setting.">
+        Require your screen lock every time you launch or switch back to Brave.
+      </message>
+      <message name="IDS_BRAVE_BROWSER_LOCK_UNLOCK_BUTTON" desc="Button label to unlock the browser via biometrics.">
+        Unlock browser
+      </message>
       <message name="IDS_SEND_P3A_ANALYTICS_TITLE" desc="Title for checkbox of send p3a analytics.">
         Allow privacy-preserving product analytics (P3A)
       </message>
