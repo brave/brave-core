@@ -154,8 +154,8 @@ void ProfileAttributesEntry::ClearBraveCustomAvatar() {
     return;
   }
 
-  // Clear the entry pointer first so any synchronous observers see the cleared
-  // state when the notification fires below.
+  // Clear the entry pointer before `NotifyOnProfileAvatarChanged` so any
+  // synchronous observers see the cleared state when the notification fires.
   SetString(kBraveCustomAvatarFileNameKey, std::string());
   ClearValue(kBraveCustomAvatarActiveKey);
 
