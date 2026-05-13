@@ -122,6 +122,19 @@ class TemporaryContainerForegroundIconImageSource
   const SkColor color_;
 };
 
+// Generates a transparent image containing only the temporary container
+// foreground identicon centered in |icon_size|.
+gfx::ImageSkia GenerateTemporaryContainerForegroundIcon(
+    std::string_view container_id,
+    SkColor color,
+    int icon_size,
+    float scale_factor) {
+  auto image_source =
+      std::make_unique<TemporaryContainerForegroundIconImageSource>(
+          container_id, icon_size, color);
+  return gfx::ImageSkia(std::move(image_source), scale_factor);
+}
+
 }  // namespace
 
 const gfx::VectorIcon& GetVectorIconFromIconType(mojom::Icon icon) {
@@ -176,24 +189,14 @@ gfx::ImageSkia GenerateContainerIcon(std::string_view container_id,
 gfx::ImageSkia GenerateContainerForegroundIcon(std::string_view container_id,
                                                mojom::Icon icon,
                                                int dip_icon_size,
-                                               float scale_factor) {
+                                               float scale_factor,
+                                               SkColor icon_color) {
   if (IsTemporaryContainerId(container_id)) {
     return GenerateTemporaryContainerForegroundIcon(
-        container_id, SK_ColorWHITE, dip_icon_size, scale_factor);
+        container_id, icon_color, dip_icon_size, scale_factor);
   }
   return gfx::CreateVectorIcon(GetVectorIconFromIconType(icon), dip_icon_size,
-                               SK_ColorWHITE);
-}
-
-gfx::ImageSkia GenerateTemporaryContainerForegroundIcon(
-    std::string_view container_id,
-    SkColor color,
-    int icon_size,
-    float scale_factor) {
-  auto image_source =
-      std::make_unique<TemporaryContainerForegroundIconImageSource>(
-          container_id, icon_size, color);
-  return gfx::ImageSkia(std::move(image_source), scale_factor);
+                               icon_color);
 }
 
 }  // namespace containers

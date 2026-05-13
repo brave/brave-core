@@ -458,14 +458,10 @@ ui::ImageModel BraveTabStrip::GetTabAccentIcon(const Tab* tab) const {
   const float scale_factor =
       widget ? widget->GetCompositor()->device_scale_factor() : 1.0f;
 
-  if (containers::IsTemporaryContainerId(container->id)) {
-    return ui::ImageModel::FromImageSkia(
-        containers::GenerateTemporaryContainerForegroundIcon(
-            container->id, accent_colors->icon_color, 16, scale_factor));
-  }
-
-  const auto& icon = containers::GetVectorIconFromIconType(container->icon);
-  return ui::ImageModel::FromVectorIcon(icon, accent_colors->icon_color, 16);
+  return ui::ImageModel::FromImageSkia(
+      containers::GenerateContainerForegroundIcon(
+          container->id, container->icon, 16, scale_factor,
+          accent_colors->icon_color));
 #else
   return ui::ImageModel();
 #endif

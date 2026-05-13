@@ -40,18 +40,12 @@ gfx::ImageSkia GenerateContainerIcon(std::string_view container_id,
 // Returns a foreground icon for the container. In case the container_id is a
 // temporary container, it will return a temporary container foreground icon.
 // Otherwise, it will return a vector icon for the container.
-gfx::ImageSkia GenerateContainerForegroundIcon(std::string_view container_id,
-                                               mojom::Icon icon,
-                                               int dip_icon_size,
-                                               float scale_factor);
-
-// Generates a transparent image containing only the temporary container
-// foreground identicon centered in |icon_size|.
-gfx::ImageSkia GenerateTemporaryContainerForegroundIcon(
+gfx::ImageSkia GenerateContainerForegroundIcon(
     std::string_view container_id,
-    SkColor color,
-    int icon_size,
-    float scale_factor);
+    mojom::Icon icon,
+    int dip_icon_size,
+    float scale_factor,
+    SkColor icon_color = SK_ColorWHITE);
 
 }  // namespace containers
 
