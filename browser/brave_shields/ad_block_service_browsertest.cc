@@ -176,6 +176,13 @@ void AdBlockServiceTest::PreRunTestOnMainThread() {
            counts.at("Brave.Adblock.MakeEngineWithRules.Default") >= 1;
   })) << "Timeout waiting for initial engine creation";
 
+  // The histogram is recorded on the background thread before OnEngineLoaded
+  // is posted to the UI thread. RunUntil above can exit as soon as it sees the
+  // histogram, leaving a pending OnEngineLoaded (and its OnFilterListLoaded
+  // notification) in the UI message queue. Drain that notification here so
+  // InstallDefaultAdBlockComponent's observer sees only its own event.
+  ad_block_test_helper_->WaitForAdBlockEngineInitialLoad();
+
   histogram_tester_.ExpectTotalCount(
       "Brave.Adblock.MakeEngineWithRules.Default", 1);
   InstallDefaultAdBlockComponent();
