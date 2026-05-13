@@ -742,7 +742,7 @@ source_set("ui") {
       "//brave/browser/ui/views/tabs/accent_color",
       "//chrome/browser:shell_integration",
       "//chrome/browser/devtools",
-      "//chrome/browser/enterprise/watermark:watermark_view_lib",
+      "//chrome/browser/enterprise/watermark:watermark_lib",
       "//chrome/browser/glic",
       "//chrome/browser/metrics",
       "//chrome/browser/sharing_hub",
