@@ -5,6 +5,7 @@
 
 #include "chrome/browser/download/background_download_service_factory.h"
 
+#include "base/functional/bind.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_download_client.h"
@@ -16,11 +17,16 @@
 
 namespace {
 
+brave_shields::AdBlockSubscriptionServiceManager*
+GetAdBlockSubscriptionServiceManager() {
+  return g_brave_browser_process->ad_block_service()
+      ->subscription_service_manager();
+}
+
 std::unique_ptr<download::Client> CreateAdBlockSubscriptionDownloadClient(
     Profile* profile) {
   return std::make_unique<brave_shields::AdBlockSubscriptionDownloadClient>(
-      g_brave_browser_process->ad_block_service()
-          ->subscription_service_manager());
+      base::BindRepeating(&GetAdBlockSubscriptionServiceManager));
 }
 
 }  // namespace
