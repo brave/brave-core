@@ -5,10 +5,7 @@
 
 import config from './config.ts'
 
-const versions = (buildConfig = config.defaultBuildConfig, options = {}) => {
-  config.buildConfig = buildConfig
-  config.update(options)
-
+const versions = () => {
   console.log('chrome ' + config.getProjectRef('chrome'))
   console.log('brave-core ' + config.getProjectRef('brave-core'))
 }

@@ -42,23 +42,22 @@ program
   .allowUnknownOption(true)
   .helpOption(false)
   .showHelpAfterError(true)
-  .action(runGn)
+  .action((gnCommand, args, options) => {
+    const gnArgs = [...args]
+    const outputDirRequired = isOutputDirRequired(gnCommand)
+    if (outputDirRequired) {
+      config.buildConfig =
+        getBuildConfigArg(gnArgs) || config.defaultBuildConfig
+    }
+    config.update(options)
+
+    if (outputDirRequired) {
+      gnArgs.unshift(config.outputDir)
+    }
+
+    util.run('gn', [gnCommand, ...gnArgs], config.defaultOptions)
+  })
   .parse()
-
-async function runGn(gnCommand, args, options) {
-  const gnArgs = [...args]
-  const outputDirRequired = isOutputDirRequired(gnCommand)
-  if (outputDirRequired) {
-    config.buildConfig = getBuildConfigArg(gnArgs) || config.defaultBuildConfig
-  }
-  config.update(options)
-
-  if (outputDirRequired) {
-    gnArgs.unshift(config.outputDir)
-  }
-
-  util.run('gn', [gnCommand, ...gnArgs], config.defaultOptions)
-}
 
 function isOutputDirRequired(gnCommand) {
   return !['format', 'help'].includes(gnCommand)
