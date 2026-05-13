@@ -431,6 +431,10 @@ class ConversationHandler : public mojom::ConversationHandler,
   // the current conversation state.
   std::vector<base::WeakPtr<Tool>> GetTools();
 
+  // Returns `model_key` if its model supports vision; otherwise returns the
+  // freemium/premium vision-default model key.
+  std::string GetVisionCapableModelKey(const std::string& model_key) const;
+
   // Helper method to switch to vision model if needed
   void MaybeSwitchToVisionModel(
       const std::optional<std::vector<mojom::UploadedFilePtr>>& uploaded_files);

@@ -72,6 +72,18 @@ using ai_chat::mojom::ConversationTurn;
 
 constexpr size_t kDefaultSuggestionsCount = 4;
 
+bool HasUploadedImageOrScreenshot(
+    const std::optional<std::vector<mojom::UploadedFilePtr>>& uploaded_files) {
+  if (!uploaded_files || uploaded_files->empty()) {
+    return false;
+  }
+  return std::ranges::any_of(
+      *uploaded_files, [](const mojom::UploadedFilePtr& file) {
+        return file->type == mojom::UploadedFileType::kImage ||
+               file->type == mojom::UploadedFileType::kScreenshot;
+      });
+}
+
 }  // namespace
 
 ConversationHandler::Suggestion::Suggestion(std::string title)
@@ -652,24 +664,28 @@ void ConversationHandler::SubmitHumanConversationEntryWithSkill(
   // Get Skill from prefs and convert to SkillEntry object
   auto skill = prefs::GetSkillFromPrefs(*prefs_, skill_id);
 
+  // Decide the intended target: skill's pinned model when set, else the
+  // current model. With an image attached, the target must support vision —
+  // fall back if it doesn't. Switch once if we're not already there.
+  std::string target = (skill && skill->model && !skill->model->empty())
+                           ? *skill->model
+                           : GetCurrentModel().key;
+  if (HasUploadedImageOrScreenshot(uploaded_files)) {
+    target = GetVisionCapableModelKey(target);
+  }
+  if (target != GetCurrentModel().key) {
+    ChangeModel(target);
+  }
+
   mojom::SkillEntryPtr skill_entry = nullptr;
 
   if (skill) {
-    // Switch model if specified and different from current model
-    if (skill->model && !skill->model->empty() &&
-        *skill->model != GetCurrentModel().key) {
-      ChangeModel(*skill->model);
-    }
-
     // Create Skill entry
     skill_entry = mojom::SkillEntry::New(skill->shortcut, skill->prompt);
 
     // Update last_used time
     prefs::UpdateSkillLastUsedInPrefs(skill_id, *prefs_);
   }
-
-  // Auto-switch to vision model if needed
-  MaybeSwitchToVisionModel(uploaded_files);
 
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
       std::nullopt, CharacterType::HUMAN, mojom::ActionType::QUERY, input,
@@ -2352,23 +2368,28 @@ bool ConversationHandler::IsTemporaryChat() const {
   return metadata_->temporary;
 }
 
+std::string ConversationHandler::GetVisionCapableModelKey(
+    const std::string& model_key) const {
+  const auto* model = model_service_->GetModel(model_key);
+  if (model && model->vision_support) {
+    return model_key;
+  }
+  return ai_chat_service_->IsPremiumStatus()
+             ? features::kAIModelsPremiumVisionDefaultKey.Get()
+             : features::kAIModelsVisionDefaultKey.Get();
+}
+
 void ConversationHandler::MaybeSwitchToVisionModel(
     const std::optional<std::vector<mojom::UploadedFilePtr>>& uploaded_files) {
-  if (uploaded_files && !uploaded_files->empty() &&
-      std::ranges::any_of(
-          uploaded_files.value(), [](const mojom::UploadedFilePtr& file) {
-            return file->type == mojom::UploadedFileType::kImage ||
-                   file->type == mojom::UploadedFileType::kScreenshot;
-          })) {
-    auto* current_model =
-        model_service_->GetModel(metadata_->model_key.value_or("").empty()
-                                     ? model_service_->GetDefaultModelKey()
-                                     : metadata_->model_key.value());
-    if (!current_model->vision_support) {
-      ChangeModel(ai_chat_service_->IsPremiumStatus()
-                      ? features::kAIModelsPremiumVisionDefaultKey.Get()
-                      : features::kAIModelsVisionDefaultKey.Get());
-    }
+  if (!HasUploadedImageOrScreenshot(uploaded_files)) {
+    return;
+  }
+  std::string current_key = metadata_->model_key.value_or("").empty()
+                                ? model_service_->GetDefaultModelKey()
+                                : metadata_->model_key.value();
+  std::string target = GetVisionCapableModelKey(current_key);
+  if (target != current_key) {
+    ChangeModel(target);
   }
 }
 
