@@ -1045,7 +1045,7 @@ struct KeyringSeed {
   std::vector<uint8_t> eth_seed;
   std::vector<uint8_t> seed;
   std::vector<uint8_t> entropy;
-  std::array<uint8_t, bip39::kSeedSize> polkadot_seed;
+  std::array<uint8_t, bip39::kSeedSize> polkadot_seed = {};
 };
 
 std::optional<KeyringSeed> MakeSeedFromMnemonic(
