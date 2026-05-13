@@ -317,6 +317,16 @@ public class BraveShieldsContentSettings {
                 BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FORGET_FIRST_PARTY_STORAGE);
     }
 
+    public static boolean isShredBrowsingHistoryEnabled() {
+        return BraveShieldsContentSettingsJni.get()
+                .isShredBrowsingHistoryEnabled(ProfileManager.getLastUsedRegularProfile());
+    }
+
+    public static void setShredBrowsingHistoryEnabled(boolean enabled) {
+        BraveShieldsContentSettingsJni.get()
+                .setShredBrowsingHistory(enabled, ProfileManager.getLastUsedRegularProfile());
+    }
+
     @CalledByNative
     private void setNativePtr(long nativePtr) {
         assert mNativeBraveShieldsContentSettings == 0;
@@ -372,5 +382,9 @@ public class BraveShieldsContentSettings {
         void setAutoShredMode(int mode, String url, Profile profile);
 
         int getAutoShredMode(String url, Profile profile);
+
+        boolean isShredBrowsingHistoryEnabled(Profile profile);
+
+        void setShredBrowsingHistory(boolean enabled, Profile profile);
     }
 }

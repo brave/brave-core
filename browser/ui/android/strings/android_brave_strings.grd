@@ -1481,6 +1481,21 @@ Are you sure you want to do this?
       <message name="IDS_BRAVE_SHIELDS_AUTO_SHRED_APP_CLOSE_MODE_TEXT" desc="Shields menu auto shred app close mode item text.">
         App close
       </message>   
+      <message name="IDS_BRAVE_SHIELDS_SHRED_SETTINGS_TEXT" desc="Shred site's data settings item text.">
+        Shred
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_SHRED_SETTINGS_DESCRIPTION_TEXT" desc="Shred site's data settings item description.">
+        Update Auto Shred and adjust what data is shred
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_SHRED_SETTINGS_CATEGORY_TEXT" desc="Shred site's data settings category text.">
+        Automatically shred browsing data
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_SHRED_REMOVES_HISTORY_TEXT" desc="Shred removes history toggle title text.">
+        Shred removes history
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_SHRED_REMOVES_HISTORY_DESCRIPTION_TEXT" desc="Shred removes history toggle description text.">
+        If Shred should remove history items
+      </message>
       <message name="IDS_REPORT_BROKEN_SITE_TEXT" desc="Shields text for broken text warning message.">
         Report a broken site
       </message>

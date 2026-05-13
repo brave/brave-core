@@ -363,6 +363,8 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveSettingsActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveSettingsIntentUtil.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveSettingsLauncherImpl.java",
+  "../../brave/android/java/org/chromium/chrome/browser/settings/BraveShredPreference.java",
+  "../../brave/android/java/org/chromium/chrome/browser/settings/BraveShredPreferencesFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveStatsPreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveSyncCodeCountdownFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveSyncScreensPreference.java",

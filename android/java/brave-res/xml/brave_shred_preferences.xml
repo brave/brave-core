@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2026 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory
+        android:key="general_section"
+        android:order="1"
+        android:title="@string/brave_shields_shred_settings_category_text">
+        <org.chromium.chrome.browser.settings.BraveShredPreference
+            android:key="auto_shred_storage"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="remove_history_section"
+        android:order="2">
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="shred_removes_history_switch"
+            android:persistent="false"
+            android:title="@string/brave_shields_shred_removes_history_text"
+            android:summary="@string/brave_shields_shred_removes_history_description_text"/>
+    </PreferenceCategory>
+</PreferenceScreen>
