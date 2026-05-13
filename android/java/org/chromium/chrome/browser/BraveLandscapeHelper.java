@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser;
 
+import static org.chromium.build.NullUtil.assumeNonNull;
+
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.view.View;
@@ -14,7 +16,7 @@ import org.chromium.build.annotations.NullMarked;
 @NullMarked
 public class BraveLandscapeHelper {
     public static void applyLandscapeWindowSizing(Activity activity) {
-        View content = activity.findViewById(android.R.id.content);
+        View content = assumeNonNull(activity.findViewById(android.R.id.content));
         boolean isLandscape =
                 activity.getResources().getConfiguration().orientation
                         == Configuration.ORIENTATION_LANDSCAPE;
