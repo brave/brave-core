@@ -45,8 +45,6 @@
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/history/core/browser/history_service.h"
-#include "components/policy/core/common/policy_namespace.h"
-#include "components/policy/core/common/policy_service.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
@@ -75,6 +73,10 @@ class OneShotTimer;
 class SequencedTaskRunner;
 }  // namespace base
 
+namespace brave_policy {
+class PolicyInitializationWaiter;
+}  // namespace brave_policy
+
 namespace brave_ads {
 
 class AdsTooltipsDelegate;
@@ -93,20 +95,19 @@ class AdsServiceImpl : public AdsService,
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
                        public brave_rewards::RewardsServiceObserver,
 #endif
-                       public content_settings::Observer,
-                       public policy::PolicyService::Observer {
+                       public content_settings::Observer {
  public:
   // `http_client`, `resource_component`, `history_service`, and
   // `host_content_settings` can be `nullptr` in tests. `rewards_service`
   // can be `nullptr` when Rewards is unsupported or disabled by policy.
-  // `policy_service` can be `nullptr` in tests; when null, the initial
-  // ads-eligibility gate is evaluated synchronously instead of waiting
-  // for `OnPolicyServiceInitialized`.
+  // `policy_initialization_waiter` defers the initial ads-eligibility gate
+  // until the policy bundle has been merged into the managed pref store.
   explicit AdsServiceImpl(
       std::unique_ptr<Delegate> delegate,
       PrefService& prefs,
       PrefService& local_state,
-      policy::PolicyService* policy_service,
+      std::unique_ptr<brave_policy::PolicyInitializationWaiter>
+          policy_initialization_waiter,
       std::unique_ptr<HttpClient> http_client,
       std::unique_ptr<VirtualPrefProvider::Delegate>
           virtual_pref_provider_delegate,
@@ -410,13 +411,6 @@ class AdsServiceImpl : public AdsService,
       const ContentSettingsPattern& secondary_pattern,
       ContentSettingsTypeSet content_type_set) override;
 
-  // policy::PolicyService::Observer:
-  void OnPolicyServiceInitialized(policy::PolicyDomain domain) override;
-
-  // No-op if not observing. Called from `OnPolicyServiceInitialized`,
-  // `Shutdown`, and the destructor; whichever runs first wins.
-  void StopObservingPolicyService();
-
   bool is_ineligible_to_start_ = false;
 
   bool is_bat_ads_initialized_ = false;
@@ -484,7 +478,8 @@ class AdsServiceImpl : public AdsService,
   base::ScopedObservation<ApplicationStateMonitor, ApplicationStateObserver>
       application_state_monitor_observation_{this};
 
-  raw_ptr<policy::PolicyService> observed_policy_service_ = nullptr;
+  const std::unique_ptr<brave_policy::PolicyInitializationWaiter>
+      policy_initialization_waiter_;
 
   mojo::Receiver<bat_ads::mojom::BatAdsObserver> bat_ads_observer_receiver_{
       this};

@@ -50,9 +50,9 @@ static_library("browser") {
     "application_state",
     "//brave/components/brave_ads/core",
     "//brave/components/brave_ads/core/mojom",
+    "//brave/components/brave_policy:policy_initialization_waiter",
     "//brave/components/services/bat_ads/public/interfaces",
     "//components/keyed_service/core",
-    "//components/policy/core/common",
     "//mojo/public/cpp/bindings",
   ]
 
@@ -148,6 +148,7 @@ source_set("unit_tests") {
     "//brave/components/brave_ads/core",
     "//brave/components/brave_ads/core/public:headers",
     "//brave/components/brave_component_updater/browser",
+    "//brave/components/brave_policy:policy_initialization_waiter",
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_rewards/core:features",
     "//brave/components/brave_rewards/core/buildflags",

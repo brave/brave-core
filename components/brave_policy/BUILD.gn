@@ -29,6 +29,18 @@ source_set("brave_policy_observer") {
   public_deps = [ "//base" ]
 }
 
+source_set("policy_initialization_waiter") {
+  sources = [
+    "policy_initialization_waiter.cc",
+    "policy_initialization_waiter.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//components/policy/core/common",
+  ]
+}
+
 source_set("unit_tests") {
   testonly = true
   sources = [
@@ -36,10 +48,12 @@ source_set("unit_tests") {
     "brave_policy_conversions_unittest.cc",
     "brave_policy_source_unittest.cc",
     "brave_profile_policy_provider_unittest.cc",
+    "policy_initialization_waiter_unittest.cc",
   ]
 
   deps = [
     ":brave_policy",
+    ":policy_initialization_waiter",
     "//base",
     "//base/test:test_support",
     "//brave/components/resources:strings",
@@ -50,6 +64,7 @@ source_set("unit_tests") {
     "//components/policy/proto",
     "//components/prefs:test_support",
     "//components/strings:components_strings_grit",
+    "//testing/gmock",
     "//testing/gtest",
   ]
 }
