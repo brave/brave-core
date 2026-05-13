@@ -86,7 +86,6 @@ RegisterStyleOverride(
         border-radius: var(--leo-radius-xl) var(--leo-radius-m) var(--leo-radius-m) var(--leo-radius-xl);
         overflow: auto;
       }
-        
       #right {
         /* this element is only a space filler in chromium */
         display: none;
