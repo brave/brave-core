@@ -224,6 +224,10 @@ export const style = scoped.css`
     margin-inline-end: 0;
   }
 
+  .caption-container:has(.centered-ntt-cta-button) {
+    position: static;
+  }
+
   .widget-container {
     --widget-height: 128px;
     --widget-min-width: 380px;

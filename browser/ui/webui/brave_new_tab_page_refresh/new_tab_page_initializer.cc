@@ -25,6 +25,7 @@
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_custom_images_source.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/regional_capabilities/regional_capabilities_service_factory.h"
@@ -190,6 +191,11 @@ void NewTabPageInitializer::AddLoadTimeValues() {
   source_->AddBoolean(
       "ntpSearchFeatureEnabled",
       base::FeatureList::IsEnabled(features::kBraveNtpSearchWidget));
+
+  source_->AddBoolean(
+      "centerNttCtaButtonFeatureEnabled",
+      base::FeatureList::IsEnabled(
+          ntp_background_images::features::kCenterNttCtaButton));
 
   source_->AddString(
       "ntpSearchDefaultHost",

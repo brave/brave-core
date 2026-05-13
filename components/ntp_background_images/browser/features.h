@@ -16,6 +16,8 @@ BASE_DECLARE_FEATURE(kBraveNTPBrandedWallpaperSurveyPanelist);
 
 BASE_DECLARE_FEATURE(kBraveNTPBrandedWallpaper);
 
+BASE_DECLARE_FEATURE(kCenterNttCtaButton);
+
 // The branded wallpaper will initially be displayed on the nth new tab. The
 // minimum value is 1.
 inline constexpr base::FeatureParam<int> kInitialCountToBrandedWallpaper{
