@@ -21,8 +21,6 @@ class TabFeatures {
 
   NewTabPagePreloadPipelineManager* new_tab_page_preload_pipeline_manager();
 
-  lens::TabContextualizationController* tab_contextualization_controller();
-
  private:
   friend BraveTabFeatures;
   std::unique_ptr<BraveTabFeatures> brave_tab_features_;
