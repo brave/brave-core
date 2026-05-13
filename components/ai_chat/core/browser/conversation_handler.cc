@@ -558,7 +558,7 @@ void ConversationHandler::SubmitHumanConversationEntry(
       << "than a single human conversation turn at a time.";
 
   // Auto-switch to vision model if needed
-  MaybeSwitchToVisionModel(uploaded_files);
+  MaybeSwitchModelForSubmission(uploaded_files);
 
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
       std::nullopt, CharacterType::HUMAN, mojom::ActionType::QUERY, input,
@@ -664,18 +664,11 @@ void ConversationHandler::SubmitHumanConversationEntryWithSkill(
   // Get Skill from prefs and convert to SkillEntry object
   auto skill = prefs::GetSkillFromPrefs(*prefs_, skill_id);
 
-  // Decide the intended target: skill's pinned model when set, else the
-  // current model. With an image attached, the target must support vision —
-  // fall back if it doesn't. Switch once if we're not already there.
-  std::string target = (skill && skill->model && !skill->model->empty())
-                           ? *skill->model
-                           : GetCurrentModel().key;
-  if (HasUploadedImageOrScreenshot(uploaded_files)) {
-    target = GetVisionCapableModelKey(target);
+  std::optional<std::string> skill_model;
+  if (skill && skill->model && !skill->model->empty()) {
+    skill_model = *skill->model;
   }
-  if (target != GetCurrentModel().key) {
-    ChangeModel(target);
-  }
+  MaybeSwitchModelForSubmission(uploaded_files, skill_model);
 
   mojom::SkillEntryPtr skill_entry = nullptr;
 
@@ -2379,16 +2372,21 @@ std::string ConversationHandler::GetVisionCapableModelKey(
              : features::kAIModelsVisionDefaultKey.Get();
 }
 
-void ConversationHandler::MaybeSwitchToVisionModel(
-    const std::optional<std::vector<mojom::UploadedFilePtr>>& uploaded_files) {
-  if (!HasUploadedImageOrScreenshot(uploaded_files)) {
-    return;
+void ConversationHandler::MaybeSwitchModelForSubmission(
+    const std::optional<std::vector<mojom::UploadedFilePtr>>& uploaded_files,
+    const std::optional<std::string>& intended_model_key) {
+  std::string target;
+  if (intended_model_key && !intended_model_key->empty()) {
+    target = *intended_model_key;
+  } else {
+    target = metadata_->model_key.value_or("").empty()
+                 ? model_service_->GetDefaultModelKey()
+                 : metadata_->model_key.value();
   }
-  std::string current_key = metadata_->model_key.value_or("").empty()
-                                ? model_service_->GetDefaultModelKey()
-                                : metadata_->model_key.value();
-  std::string target = GetVisionCapableModelKey(current_key);
-  if (target != current_key) {
+  if (HasUploadedImageOrScreenshot(uploaded_files)) {
+    target = GetVisionCapableModelKey(target);
+  }
+  if (target != GetCurrentModel().key) {
     ChangeModel(target);
   }
 }
@@ -2423,7 +2421,7 @@ void ConversationHandler::OnAutoScreenshotsTaken(
     }
 
     // Auto-switch to vision model if needed
-    MaybeSwitchToVisionModel(screenshots);
+    MaybeSwitchModelForSubmission(screenshots);
 
     // Update the last conversation turn with the uploaded files
     if (!chat_history_.empty() &&

@@ -435,9 +435,15 @@ class ConversationHandler : public mojom::ConversationHandler,
   // freemium/premium vision-default model key.
   std::string GetVisionCapableModelKey(const std::string& model_key) const;
 
-  // Helper method to switch to vision model if needed
-  void MaybeSwitchToVisionModel(
-      const std::optional<std::vector<mojom::UploadedFilePtr>>& uploaded_files);
+  // Resolves the model to use for an upcoming submission and switches to it
+  // at most once. The intended starting key (e.g. a skill's pinned model) is
+  // used as-is unless an image or screenshot is attached and the starting
+  // model lacks vision support — in which case the freemium/premium vision
+  // default is used. When `intended_model_key` is unset, the conversation's
+  // persisted model is the starting point.
+  void MaybeSwitchModelForSubmission(
+      const std::optional<std::vector<mojom::UploadedFilePtr>>& uploaded_files,
+      const std::optional<std::string>& intended_model_key = std::nullopt);
 
   std::unique_ptr<AssociatedContentManager> associated_content_manager_;
 
