@@ -5,66 +5,79 @@
 
 /**
  * Thin browser proxy for the Brave-specific "Upload your own image" row on
- * `brave://settings/manageProfile`. Wraps the three `chrome.send` /
- * `sendWithPromise` messages exposed by `BraveManageProfileHandler` and the
- * `brave-custom-avatar-changed` listener it fires.
+ * `brave://settings/manageProfile`. Wraps the Mojo
+ * `BraveManageProfileSettingsHandler` interface and exposes a typed Promise
+ * surface to the Polymer overlay in `settings_manage_profile.ts`.
  */
 
-import { sendWithPromise } from 'chrome://resources/js/cr.js'
+import {
+  BraveManageProfileSettingsHandler,
+  BraveManageProfileSettingsHandlerRemote,
+  BraveManageProfileSettingsUICallbackRouter,
+  CustomAvatarState,
+  SetCustomAvatarError,
+} from '../brave_manage_profile.mojom-webui.js'
 
-export interface BraveCustomAvatarState {
-  // True when a custom avatar file exists on disk (may be inactive).
-  hasSavedAvatar: boolean
-  // True when that file is the profile icon in use.
-  isActive: boolean
-  // PNG data URL for preview (omitted while loading from disk, or when none).
-  dataUrl?: string
-}
+export { SetCustomAvatarError }
+export type { CustomAvatarState }
 
-export interface BraveManageProfileBrowserProxy {
-  // Returns the current custom-avatar state (presence + preview data URL).
-  getProfileCustomAvatar(): Promise<BraveCustomAvatarState>
-
-  // Uploads new bytes as the user's custom avatar. `base64Bytes` is the
-  // base64-encoded contents of the user-selected image file (any common
-  // codec accepted by the sandboxed image decoder is allowed). Resolves
-  // with the new state on success, rejects with a short error tag on
-  // failure (e.g. "decode-failed", "too-large").
-  setProfileCustomAvatar(base64Bytes: string): Promise<BraveCustomAvatarState>
-
-  // Clears the user-uploaded custom avatar (also deletes the on-disk file).
-  removeProfileCustomAvatar(): void
-
-  // Uses the saved custom avatar again after the user had chosen a preset.
-  activateProfileCustomAvatar(): void
-}
-
-export class BraveManageProfileBrowserProxyImpl
-  implements BraveManageProfileBrowserProxy {
-  getProfileCustomAvatar() {
-    return sendWithPromise<BraveCustomAvatarState>('getProfileCustomAvatar')
-  }
-
-  setProfileCustomAvatar(base64Bytes: string) {
-    return sendWithPromise<BraveCustomAvatarState>(
-      'setProfileCustomAvatar', base64Bytes)
-  }
-
-  removeProfileCustomAvatar() {
-    chrome.send('removeProfileCustomAvatar')
-  }
-
-  activateProfileCustomAvatar() {
-    chrome.send('activateProfileCustomAvatar')
-  }
-
-  static getInstance(): BraveManageProfileBrowserProxy {
-    return instance || (instance = new BraveManageProfileBrowserProxyImpl())
-  }
-
-  static setInstance(obj: BraveManageProfileBrowserProxy) {
-    instance = obj
-  }
+// Result returned by `setCustomAvatar`. On success `error` is undefined and
+// `state` reflects the freshly-saved avatar. On failure `error` is set and
+// `state` is the unchanged current state.
+export interface SetCustomAvatarResult {
+  error?: SetCustomAvatarError
+  state: CustomAvatarState
 }
 
 let instance: BraveManageProfileBrowserProxy | null = null
+
+export class BraveManageProfileBrowserProxy {
+  handler: BraveManageProfileSettingsHandlerRemote
+  callbackRouter: BraveManageProfileSettingsUICallbackRouter
+
+  private constructor(
+    handler: BraveManageProfileSettingsHandlerRemote,
+    callbackRouter: BraveManageProfileSettingsUICallbackRouter,
+  ) {
+    this.handler = handler
+    this.callbackRouter = callbackRouter
+  }
+
+  // Returns the current custom-avatar state (presence + preview data URL).
+  async getCustomAvatar(): Promise<CustomAvatarState> {
+    const { state } = await this.handler.getCustomAvatar()
+    return state
+  }
+
+  // Uploads new bytes as the user's custom avatar. `base64Bytes` is the
+  // base64-encoded contents of the user-selected image file (any common
+  // codec accepted by the sandboxed image decoder is allowed).
+  async setCustomAvatar(base64Bytes: string): Promise<SetCustomAvatarResult> {
+    const { error, state } = await this.handler.setCustomAvatar(base64Bytes)
+    return { error: error ?? undefined, state }
+  }
+
+  // Clears the user-uploaded custom avatar (also deletes the on-disk file).
+  removeCustomAvatar(): void {
+    this.handler.removeCustomAvatar()
+  }
+
+  // Uses the saved custom avatar again after the user had chosen a preset.
+  activateCustomAvatar(): void {
+    this.handler.activateCustomAvatar()
+  }
+
+  static getInstance(): BraveManageProfileBrowserProxy {
+    if (!instance) {
+      const handler = BraveManageProfileSettingsHandler.getRemote()
+      const callbackRouter = new BraveManageProfileSettingsUICallbackRouter()
+      handler.bindUI(callbackRouter.$.bindNewPipeAndPassRemote())
+      instance = new BraveManageProfileBrowserProxy(handler, callbackRouter)
+    }
+    return instance
+  }
+
+  static setInstance(obj: BraveManageProfileBrowserProxy): void {
+    instance = obj
+  }
+}

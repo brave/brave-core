@@ -11,27 +11,26 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
+#include "brave/browser/ui/webui/settings/brave_manage_profile.mojom.h"
 #include "chrome/browser/image_decoder/image_decoder.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
-#include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/remote.h"
 
 class Profile;
 
-namespace base {
-class DictValue;
-class ListValue;
-}  // namespace base
-
-// Backs `brave://settings/manageProfile`'s "Upload your own image" row.
+// Backs `brave://settings/manageProfile`'s "Upload your own image" row over a
+// Mojo interface.
 //
 // Receives the raw bytes of a user-selected image, decodes them in a
 // sandboxed image_decoder service, normalizes the result (square-crop +
 // resize to `kAvatarSize`), persists it as a PNG via the entry's
-// `SetBraveCustomAvatar` API, and notifies the WebUI so the page can show
-// the new preview.
-class BraveManageProfileHandler : public settings::SettingsPageUIHandler,
-                                  public ImageDecoder::ImageRequest,
-                                  public ProfileAttributesStorage::Observer {
+// `SetBraveCustomAvatar` API, and pushes state updates to the WebUI through
+// the bound `BraveManageProfileSettingsUI` remote.
+class BraveManageProfileHandler
+    : public brave_manage_profile::mojom::BraveManageProfileSettingsHandler,
+      public ImageDecoder::ImageRequest,
+      public ProfileAttributesStorage::Observer {
  public:
   // Side length (in pixels) of the persisted custom avatar bitmap.
   static constexpr int kAvatarSize = 256;
@@ -44,16 +43,17 @@ class BraveManageProfileHandler : public settings::SettingsPageUIHandler,
       delete;
   ~BraveManageProfileHandler() override;
 
- protected:
-  // content::WebUIMessageHandler declares this protected; keep it that way so
-  // unit tests can `using`-expose it from a test subclass.
-  void RegisterMessages() override;
+  // brave_manage_profile::mojom::BraveManageProfileSettingsHandler:
+  void BindUI(mojo::PendingRemote<
+              brave_manage_profile::mojom::BraveManageProfileSettingsUI> ui)
+      override;
+  void GetCustomAvatar(GetCustomAvatarCallback callback) override;
+  void SetCustomAvatar(const std::string& base64_payload,
+                       SetCustomAvatarCallback callback) override;
+  void RemoveCustomAvatar() override;
+  void ActivateCustomAvatar() override;
 
  private:
-  // SettingsPageUIHandler:
-  void OnJavascriptAllowed() override;
-  void OnJavascriptDisallowed() override;
-
   // ImageDecoder::ImageRequest:
   void OnImageDecoded(const SkBitmap& decoded_image) override;
   void OnDecodeImageFailed() override;
@@ -63,24 +63,24 @@ class BraveManageProfileHandler : public settings::SettingsPageUIHandler,
   void OnProfileHighResAvatarLoaded(
       const base::FilePath& profile_path) override;
 
-  // WebUI messages.
-  void HandleSetProfileCustomAvatar(const base::ListValue& args);
-  void HandleRemoveProfileCustomAvatar(const base::ListValue& args);
-  void HandleGetProfileCustomAvatar(const base::ListValue& args);
-  void HandleActivateProfileCustomAvatar(const base::ListValue& args);
+  // Builds the custom-avatar state struct for the front-end.
+  brave_manage_profile::mojom::CustomAvatarStatePtr BuildCustomAvatarState()
+      const;
 
-  // Builds the custom-avatar dictionary for the front-end (`hasSavedAvatar`,
-  // `isActive`, optional `dataUrl`).
-  base::DictValue BuildCustomAvatarState() const;
-
-  // Fires `brave-custom-avatar-changed` with the latest state.
-  void FireCustomAvatarChanged();
+  // Pushes the latest state to the bound `BraveManageProfileSettingsUI`, if
+  // any.
+  void NotifyCustomAvatarChanged();
 
   const raw_ptr<Profile> profile_;
 
-  // Pending callback id for an in-flight upload (only one upload may be in
-  // flight at a time; subsequent uploads cancel any earlier decode).
-  std::string pending_upload_callback_id_;
+  // Push channel from the browser to the settings page. Bound once via
+  // `BindUI`; left unbound until then so observer events become a no-op.
+  mojo::Remote<brave_manage_profile::mojom::BraveManageProfileSettingsUI> ui_;
+
+  // Pending response for an in-flight upload (only one upload may be in
+  // flight at a time; a subsequent upload cancels the earlier decode and
+  // rejects its pending callback with `kSuperseded`).
+  SetCustomAvatarCallback pending_upload_callback_;
 
   base::ScopedObservation<ProfileAttributesStorage,
                           ProfileAttributesStorage::Observer>

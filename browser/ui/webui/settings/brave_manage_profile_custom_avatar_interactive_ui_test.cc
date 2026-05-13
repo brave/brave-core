@@ -3,12 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "base/base64.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
+#include "base/functional/callback_helpers.h"
 #include "base/memory/ref_counted_memory.h"
 #include "base/test/run_until.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/profiles/profile_attributes_entry.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/ui/browser.h"
@@ -20,7 +21,6 @@
 #include "components/infobars/core/infobar.h"
 #include "components/infobars/core/infobar_delegate.h"
 #include "components/prefs/pref_service.h"
-#include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -81,30 +81,23 @@ class BraveManageProfileCustomAvatarInteractiveTest
           prefs::kAllowFileSelectionDialogs, true);
     }
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
-    test_png_path_ = temp_dir_.GetPath().AppendASCII("test_avatar.png");
-    gfx::Image image(gfx::test::CreateImage(64, 64));
-    scoped_refptr<base::RefCountedMemory> png = image.As1xPNGBytes();
-    ASSERT_TRUE(png && png->size() > 0u);
-    ASSERT_TRUE(base::WriteFile(test_png_path_, *png));
-    std::string png_file_bytes;
-    ASSERT_TRUE(base::ReadFileToString(test_png_path_, &png_file_bytes));
-    test_png_base64_ = base::Base64Encode(png_file_bytes);
   }
 
  protected:
   base::ScopedTempDir temp_dir_;
-  base::FilePath test_png_path_;
-  std::string test_png_base64_;
 };
 
 // ARCH-062: critical user journey for custom profile avatar upload and removal
-// on the manage-profile settings page. Linux CI often lacks a working
-// xdg-desktop-portal FileChooser; drive the same `setProfileCustomAvatar` path
-// the page uses after a file pick, without opening a native file dialog.
-// Wait for `settings-manage-profile` via a shadow-DOM walk: Brave hosts it
-// under `settings-getting-started-page-index`, not in the document light DOM.
-// Upload/removal still use profile storage + `chrome.send` so the test does not
-// depend on Polymer flush timing for controls (macOS CI can be slow or noisy).
+// on the manage-profile settings page.
+//
+// The page is now backed by a Mojo interface (`BraveManageProfileSettings*`),
+// so this test does not drive `chrome.send` / `sendWithPromise` directly.
+// Linux CI lacks a working `xdg-desktop-portal` FileChooser, and the page-side
+// proxy is module-internal; instead the test drives the save/clear via the
+// `ProfileAttributesEntry` public API, which is the same path the Mojo handler
+// uses after a decode succeeds. The page is still loaded end-to-end and we
+// verify that `settings-manage-profile` renders, so the WebUI surface is
+// covered along with the storage observer wiring.
 IN_PROC_BROWSER_TEST_F(BraveManageProfileCustomAvatarInteractiveTest,
                        UploadCustomAvatarThenRemove) {
   // Route paths use a leading slash as settings-root-absolute (see
@@ -120,6 +113,10 @@ IN_PROC_BROWSER_TEST_F(BraveManageProfileCustomAvatarInteractiveTest,
             browser()->tab_strip_model()->GetActiveWebContents();
         DismissSyncCannotRunInfobarIfPresent(wc);
         ASSERT_TRUE(content::WaitForLoadStop(wc));
+        // Settle on the `settings-manage-profile` element being present in
+        // the shadow DOM. Brave hosts it under
+        // `settings-getting-started-page-index`, not in the document light
+        // DOM.
         ASSERT_TRUE(base::test::RunUntil([wc]() {
           const content::EvalJsResult result = content::EvalJs(wc, R"(
             (() => {
@@ -147,38 +144,26 @@ IN_PROC_BROWSER_TEST_F(BraveManageProfileCustomAvatarInteractiveTest,
         }));
       }),
       Do([this]() {
-        content::WebContents* wc =
-            browser()->tab_strip_model()->GetActiveWebContents();
-        content::RenderFrameHost* rfh = wc->GetPrimaryMainFrame();
-        ASSERT_TRUE(content::ExecJs(rfh, content::JsReplace(
-                                             R"(
-                      (async () => {
-                        const cr = await import('chrome://resources/js/cr.js');
-                        await cr.sendWithPromise('setProfileCustomAvatar', $1);
-                        return true;
-                      })()
-                    )",
-                                             test_png_base64_)));
-      }),
-      Do([this]() {
+        // Save via the same public profile-entry API the Mojo handler calls
+        // after decoding the user-selected image.
+        ProfileAttributesEntry* entry = GetActiveProfileEntry(browser());
+        ASSERT_TRUE(entry);
+        gfx::Image image = gfx::test::CreateImage(64, 64);
+        entry->SetBraveCustomAvatar(std::move(image), base::DoNothing());
         ASSERT_TRUE(base::test::RunUntil([this]() {
-          ProfileAttributesEntry* entry = GetActiveProfileEntry(browser());
-          return entry && entry->HasBraveCustomAvatar() &&
-                 entry->IsUsingBraveCustomAvatar();
+          ProfileAttributesEntry* current = GetActiveProfileEntry(browser());
+          return current && current->HasBraveCustomAvatar() &&
+                 current->IsUsingBraveCustomAvatar();
         }));
       }),
       Do([this]() {
-        content::WebContents* wc =
-            browser()->tab_strip_model()->GetActiveWebContents();
-        content::RenderFrameHost* rfh = wc->GetPrimaryMainFrame();
-        ASSERT_TRUE(content::ExecJs(
-            rfh, R"(chrome.send('removeProfileCustomAvatar', []);)"));
-      }),
-      Do([this]() {
+        ProfileAttributesEntry* entry = GetActiveProfileEntry(browser());
+        ASSERT_TRUE(entry);
+        entry->ClearBraveCustomAvatar();
         ASSERT_TRUE(base::test::RunUntil([this]() {
-          ProfileAttributesEntry* entry = GetActiveProfileEntry(browser());
-          return entry && !entry->HasBraveCustomAvatar() &&
-                 !entry->IsUsingBraveCustomAvatar();
+          ProfileAttributesEntry* current = GetActiveProfileEntry(browser());
+          return current && !current->HasBraveCustomAvatar() &&
+                 !current->IsUsingBraveCustomAvatar();
         }));
       }));
 }

@@ -7,21 +7,23 @@
 
 #include <memory>
 #include <string>
+#include <utility>
+#include <vector>
 
 #include "base/base64.h"
-#include "base/containers/adapters.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/ref_counted_memory.h"
-#include "base/values.h"
+#include "base/test/test_future.h"
+#include "brave/browser/ui/webui/settings/brave_manage_profile.mojom.h"
 #include "chrome/browser/profiles/profile_attributes_entry.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "chrome/test/base/testing_profile_manager.h"
-#include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/test_utils.h"
-#include "content/public/test/test_web_ui.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/gfx/image/image.h"
@@ -29,55 +31,45 @@
 
 namespace {
 
-// Helper that exposes the protected `set_web_ui` setter so tests can wire up
-// a `TestWebUI` to the handler.
-class TestableBraveManageProfileHandler : public BraveManageProfileHandler {
+// Test observer that captures `OnCustomAvatarChanged` events from the
+// handler so tests can assert on the pushed state.
+class TestSettingsUI
+    : public brave_manage_profile::mojom::BraveManageProfileSettingsUI {
  public:
-  using BraveManageProfileHandler::BraveManageProfileHandler;
-  using BraveManageProfileHandler::RegisterMessages;
-  using BraveManageProfileHandler::set_web_ui;
-};
+  TestSettingsUI() = default;
+  ~TestSettingsUI() override = default;
 
-// Returns the most recent payload published to `listener_name` by the
-// handler via `FireWebUIListener`, or `nullptr` if none was sent.
-const base::DictValue* LastWebUIListenerPayload(
-    const content::TestWebUI& web_ui,
-    const std::string& listener_name) {
-  for (const std::unique_ptr<content::TestWebUI::CallData>& data :
-       base::Reversed(web_ui.call_data())) {
-    if (data->function_name() != "cr.webUIListenerCallback" || !data->arg1() ||
-        !data->arg1()->is_string() ||
-        data->arg1()->GetString() != listener_name) {
-      continue;
-    }
-    return data->arg2() ? data->arg2()->GetIfDict() : nullptr;
+  mojo::PendingRemote<brave_manage_profile::mojom::BraveManageProfileSettingsUI>
+  BindAndGetRemote() {
+    return receiver_.BindNewPipeAndPassRemote();
   }
-  return nullptr;
-}
 
-// Returns the resolved/rejected payload for the most recent
-// `cr.webUIResponse` call carrying `callback_id`, or nullptr.
-struct WebUIResponse {
-  bool success = false;
-  raw_ptr<const base::Value> payload = nullptr;
-};
-std::optional<WebUIResponse> FindWebUIResponse(const content::TestWebUI& web_ui,
-                                               const std::string& callback_id) {
-  for (const std::unique_ptr<content::TestWebUI::CallData>& data :
-       base::Reversed(web_ui.call_data())) {
-    if (data->function_name() != "cr.webUIResponse" || !data->arg1() ||
-        !data->arg1()->is_string() ||
-        data->arg1()->GetString() != callback_id) {
-      continue;
+  // Flushes the in-flight mojo messages so test assertions observe the
+  // latest state pushed from the browser-side handler.
+  void Flush() {
+    if (receiver_.is_bound()) {
+      receiver_.FlushForTesting();
     }
-    WebUIResponse response;
-    response.success =
-        data->arg2() && data->arg2()->is_bool() && data->arg2()->GetBool();
-    response.payload = data->arg3();
-    return response;
   }
-  return std::nullopt;
-}
+
+  void OnCustomAvatarChanged(
+      brave_manage_profile::mojom::CustomAvatarStatePtr state) override {
+    last_state_ = std::move(state);
+    ++change_count_;
+  }
+
+  const brave_manage_profile::mojom::CustomAvatarState* last_state() const {
+    return last_state_.get();
+  }
+
+  int change_count() const { return change_count_; }
+
+ private:
+  mojo::Receiver<brave_manage_profile::mojom::BraveManageProfileSettingsUI>
+      receiver_{this};
+  brave_manage_profile::mojom::CustomAvatarStatePtr last_state_;
+  int change_count_ = 0;
+};
 
 }  // namespace
 
@@ -92,26 +84,17 @@ class BraveManageProfileHandlerTest : public testing::Test {
     ASSERT_TRUE(profile_manager_->SetUp());
     profile_ = profile_manager_->CreateTestingProfile("TestProfile");
 
-    web_contents_ = content::WebContents::Create(
-        content::WebContents::CreateParams(profile_));
-    web_ui_.set_web_contents(web_contents_.get());
-
-    handler_ =
-        std::make_unique<TestableBraveManageProfileHandler>(profile_.get());
-    handler_->set_web_ui(&web_ui_);
-    handler_->RegisterMessages();
+    handler_ = std::make_unique<BraveManageProfileHandler>(profile_.get());
+    handler_->BindUI(test_ui_.BindAndGetRemote());
   }
 
   void TearDown() override {
-    handler_->set_web_ui(nullptr);
     handler_.reset();
-    web_contents_.reset();
     profile_ = nullptr;
     profile_manager_->DeleteTestingProfile("TestProfile");
     profile_manager_.reset();
   }
 
-  content::TestWebUI* web_ui() { return &web_ui_; }
   Profile* profile() { return profile_; }
 
   ProfileAttributesEntry* entry() {
@@ -119,32 +102,6 @@ class BraveManageProfileHandlerTest : public testing::Test {
         ->profile_manager()
         ->GetProfileAttributesStorage()
         .GetProfileAttributesWithPath(profile_->GetPath());
-  }
-
-  void SendMessage(const std::string& message, base::ListValue args) {
-    web_ui_.HandleReceivedMessage(message, args);
-  }
-
-  void GetCustomAvatar(const std::string& callback_id) {
-    base::ListValue args;
-    args.Append(callback_id);
-    SendMessage("getProfileCustomAvatar", std::move(args));
-  }
-
-  void SetCustomAvatar(const std::string& callback_id,
-                       const std::string& base64_payload) {
-    base::ListValue args;
-    args.Append(callback_id);
-    args.Append(base64_payload);
-    SendMessage("setProfileCustomAvatar", std::move(args));
-  }
-
-  void RemoveCustomAvatar() {
-    SendMessage("removeProfileCustomAvatar", base::ListValue());
-  }
-
-  void ActivateCustomAvatar() {
-    SendMessage("activateProfileCustomAvatar", base::ListValue());
   }
 
   // Generates a valid PNG payload (base64-encoded) for a `side x side` test
@@ -156,53 +113,57 @@ class BraveManageProfileHandlerTest : public testing::Test {
     return base::Base64Encode(*png_bytes);
   }
 
+  // Convenience wrappers that drive the public mojom interface and wait for
+  // their reply via `base::test::TestFuture`.
+  brave_manage_profile::mojom::CustomAvatarStatePtr GetCustomAvatar() {
+    base::test::TestFuture<brave_manage_profile::mojom::CustomAvatarStatePtr>
+        future;
+    handler_->GetCustomAvatar(future.GetCallback());
+    return future.Take();
+  }
+
+  struct SetResult {
+    std::optional<brave_manage_profile::mojom::SetCustomAvatarError> error;
+    brave_manage_profile::mojom::CustomAvatarStatePtr state;
+  };
+
+  SetResult SetCustomAvatar(const std::string& base64_payload) {
+    base::test::TestFuture<
+        std::optional<brave_manage_profile::mojom::SetCustomAvatarError>,
+        brave_manage_profile::mojom::CustomAvatarStatePtr>
+        future;
+    handler_->SetCustomAvatar(base64_payload, future.GetCallback());
+    auto [error, state] = future.Take();
+    return {error, std::move(state)};
+  }
+
  protected:
   content::BrowserTaskEnvironment task_environment_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
   std::unique_ptr<TestingProfileManager> profile_manager_;
   raw_ptr<TestingProfile> profile_ = nullptr;
-  std::unique_ptr<content::WebContents> web_contents_;
-  content::TestWebUI web_ui_;
-  std::unique_ptr<TestableBraveManageProfileHandler> handler_;
+  TestSettingsUI test_ui_;
+  std::unique_ptr<BraveManageProfileHandler> handler_;
 };
 
-// `getProfileCustomAvatar` resolves with no saved custom avatar when none
-// has been uploaded yet.
+// `GetCustomAvatar` returns an empty snapshot when no upload has happened.
 TEST_F(BraveManageProfileHandlerTest, InitialStateHasNoCustomAvatar) {
-  GetCustomAvatar("cb-initial");
-
-  auto response = FindWebUIResponse(*web_ui(), "cb-initial");
-  ASSERT_TRUE(response.has_value());
-  EXPECT_TRUE(response->success);
-  ASSERT_TRUE(response->payload && response->payload->is_dict());
-  const base::DictValue* dict = response->payload->GetIfDict();
-  ASSERT_TRUE(dict->FindBool("hasSavedAvatar").has_value());
-  EXPECT_FALSE(dict->FindBool("hasSavedAvatar").value());
-  ASSERT_TRUE(dict->FindBool("isActive").has_value());
-  EXPECT_FALSE(dict->FindBool("isActive").value());
+  auto state = GetCustomAvatar();
+  ASSERT_TRUE(state);
+  EXPECT_FALSE(state->has_saved_avatar);
+  EXPECT_FALSE(state->is_active);
+  EXPECT_TRUE(state->data_url.empty());
 }
 
-// A valid PNG payload is decoded, persisted on the entry, and the
-// resolved response carries saved + active plus a data URL preview.
+// A valid PNG payload is decoded, persisted on the entry, and the response
+// carries saved + active plus a data URL preview.
 TEST_F(BraveManageProfileHandlerTest, SetWithValidPngResolvesAndStores) {
-  SetCustomAvatar("cb-set", CreatePngBase64(64));
-
-  // Decoding is async (through the data_decoder service); pump tasks until
-  // the response makes it back to the WebUI.
-  content::RunAllTasksUntilIdle();
-
-  auto response = FindWebUIResponse(*web_ui(), "cb-set");
-  ASSERT_TRUE(response.has_value());
-  EXPECT_TRUE(response->success);
-  ASSERT_TRUE(response->payload && response->payload->is_dict());
-  const base::DictValue* dict = response->payload->GetIfDict();
-  ASSERT_TRUE(dict->FindBool("hasSavedAvatar").has_value());
-  EXPECT_TRUE(dict->FindBool("hasSavedAvatar").value());
-  ASSERT_TRUE(dict->FindBool("isActive").has_value());
-  EXPECT_TRUE(dict->FindBool("isActive").value());
-  const std::string* data_url = dict->FindString("dataUrl");
-  ASSERT_TRUE(data_url);
-  EXPECT_TRUE(data_url->starts_with("data:image/png;base64,"));
+  auto result = SetCustomAvatar(CreatePngBase64(64));
+  ASSERT_TRUE(result.state);
+  EXPECT_FALSE(result.error.has_value());
+  EXPECT_TRUE(result.state->has_saved_avatar);
+  EXPECT_TRUE(result.state->is_active);
+  EXPECT_TRUE(result.state->data_url.starts_with("data:image/png;base64,"));
 
   ASSERT_TRUE(entry());
   EXPECT_TRUE(entry()->HasBraveCustomAvatar());
@@ -211,13 +172,10 @@ TEST_F(BraveManageProfileHandlerTest, SetWithValidPngResolvesAndStores) {
 
 // An empty payload is rejected without invoking the decoder.
 TEST_F(BraveManageProfileHandlerTest, SetWithEmptyPayloadIsRejected) {
-  SetCustomAvatar("cb-empty", std::string());
-
-  auto response = FindWebUIResponse(*web_ui(), "cb-empty");
-  ASSERT_TRUE(response.has_value());
-  EXPECT_FALSE(response->success);
-  ASSERT_TRUE(response->payload && response->payload->is_string());
-  EXPECT_EQ("empty", response->payload->GetString());
+  auto result = SetCustomAvatar(std::string());
+  ASSERT_TRUE(result.error.has_value());
+  EXPECT_EQ(brave_manage_profile::mojom::SetCustomAvatarError::kEmpty,
+            *result.error);
   ASSERT_TRUE(entry());
   EXPECT_FALSE(entry()->HasBraveCustomAvatar());
   EXPECT_FALSE(entry()->IsUsingBraveCustomAvatar());
@@ -225,13 +183,10 @@ TEST_F(BraveManageProfileHandlerTest, SetWithEmptyPayloadIsRejected) {
 
 // Non-base64 garbage is rejected before the decoder is reached.
 TEST_F(BraveManageProfileHandlerTest, SetWithInvalidBase64IsRejected) {
-  SetCustomAvatar("cb-garbage", "!!! not base64 !!!");
-
-  auto response = FindWebUIResponse(*web_ui(), "cb-garbage");
-  ASSERT_TRUE(response.has_value());
-  EXPECT_FALSE(response->success);
-  ASSERT_TRUE(response->payload && response->payload->is_string());
-  EXPECT_EQ("invalid-base64", response->payload->GetString());
+  auto result = SetCustomAvatar("!!! not base64 !!!");
+  ASSERT_TRUE(result.error.has_value());
+  EXPECT_EQ(brave_manage_profile::mojom::SetCustomAvatarError::kInvalidBase64,
+            *result.error);
   ASSERT_TRUE(entry());
   EXPECT_FALSE(entry()->HasBraveCustomAvatar());
   EXPECT_FALSE(entry()->IsUsingBraveCustomAvatar());
@@ -241,49 +196,38 @@ TEST_F(BraveManageProfileHandlerTest, SetWithInvalidBase64IsRejected) {
 // decode step.
 TEST_F(BraveManageProfileHandlerTest, SetWithNonImageBytesIsRejected) {
   const std::string garbage_bytes("\x01\x02\x03\x04not a PNG\x05\x06\x07", 18);
-  SetCustomAvatar("cb-not-image", base::Base64Encode(garbage_bytes));
-
-  content::RunAllTasksUntilIdle();
-
-  auto response = FindWebUIResponse(*web_ui(), "cb-not-image");
-  ASSERT_TRUE(response.has_value());
-  EXPECT_FALSE(response->success);
-  ASSERT_TRUE(response->payload && response->payload->is_string());
-  EXPECT_EQ("decode-failed", response->payload->GetString());
+  auto result = SetCustomAvatar(base::Base64Encode(garbage_bytes));
+  ASSERT_TRUE(result.error.has_value());
+  EXPECT_EQ(brave_manage_profile::mojom::SetCustomAvatarError::kDecodeFailed,
+            *result.error);
   ASSERT_TRUE(entry());
   EXPECT_FALSE(entry()->HasBraveCustomAvatar());
   EXPECT_FALSE(entry()->IsUsingBraveCustomAvatar());
 }
 
-// `removeProfileCustomAvatar` clears the stored avatar and notifies the
-// front-end via the `brave-custom-avatar-changed` web UI listener.
-TEST_F(BraveManageProfileHandlerTest, RemoveClearsAvatarAndFiresListener) {
-  SetCustomAvatar("cb-prepare", CreatePngBase64(48));
-  content::RunAllTasksUntilIdle();
+// `RemoveCustomAvatar` clears the stored avatar and pushes the change to the
+// bound `BraveManageProfileSettingsUI`.
+TEST_F(BraveManageProfileHandlerTest, RemoveClearsAvatarAndNotifiesUi) {
+  ASSERT_FALSE(SetCustomAvatar(CreatePngBase64(48)).error.has_value());
   ASSERT_TRUE(entry());
   ASSERT_TRUE(entry()->HasBraveCustomAvatar());
   ASSERT_TRUE(entry()->IsUsingBraveCustomAvatar());
 
-  web_ui()->ClearTrackedCalls();
-  RemoveCustomAvatar();
+  handler_->RemoveCustomAvatar();
   content::RunAllTasksUntilIdle();
+  test_ui_.Flush();
 
   EXPECT_FALSE(entry()->HasBraveCustomAvatar());
   EXPECT_FALSE(entry()->IsUsingBraveCustomAvatar());
-  const base::DictValue* listener_payload =
-      LastWebUIListenerPayload(*web_ui(), "brave-custom-avatar-changed");
-  ASSERT_TRUE(listener_payload);
-  ASSERT_TRUE(listener_payload->FindBool("hasSavedAvatar").has_value());
-  EXPECT_FALSE(listener_payload->FindBool("hasSavedAvatar").value());
-  ASSERT_TRUE(listener_payload->FindBool("isActive").has_value());
-  EXPECT_FALSE(listener_payload->FindBool("isActive").value());
+  ASSERT_TRUE(test_ui_.last_state());
+  EXPECT_FALSE(test_ui_.last_state()->has_saved_avatar);
+  EXPECT_FALSE(test_ui_.last_state()->is_active);
 }
 
-// `activateProfileCustomAvatar` re-selects a saved but inactive custom
-// avatar on the profile entry.
+// `ActivateCustomAvatar` re-selects a saved but inactive custom avatar on
+// the profile entry.
 TEST_F(BraveManageProfileHandlerTest, ActivateRestoresCustomAvatar) {
-  SetCustomAvatar("cb-act", CreatePngBase64(32));
-  content::RunAllTasksUntilIdle();
+  ASSERT_FALSE(SetCustomAvatar(CreatePngBase64(32)).error.has_value());
   ASSERT_TRUE(entry());
   ASSERT_TRUE(entry()->IsUsingBraveCustomAvatar());
 
@@ -291,7 +235,7 @@ TEST_F(BraveManageProfileHandlerTest, ActivateRestoresCustomAvatar) {
   ASSERT_TRUE(entry()->HasBraveCustomAvatar());
   ASSERT_FALSE(entry()->IsUsingBraveCustomAvatar());
 
-  ActivateCustomAvatar();
+  handler_->ActivateCustomAvatar();
   content::RunAllTasksUntilIdle();
 
   EXPECT_TRUE(entry()->HasBraveCustomAvatar());

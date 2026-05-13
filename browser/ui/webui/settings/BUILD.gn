@@ -6,6 +6,17 @@
 import("//brave/components/brave_ads/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/email_aliases/buildflags/buildflags.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
+
+# Mojo interface backing the Brave-specific "Upload your own image" row on
+# `brave://settings/manageProfile`. Desktop-only — `settings-manage-profile`
+# is not built on Android.
+if (!is_android) {
+  mojom("mojo_bindings") {
+    sources = [ "brave_manage_profile.mojom" ]
+    webui_module_path = "/"
+  }
+}
 
 # Split out of //brave/browser/ui per docs/gni_sources.md (avoid new sources
 # in the monolithic ui target; Semgrep ui_build_gn).
@@ -23,12 +34,14 @@ if (!is_android) {
       "//chrome/browser:browser_process",
       "//chrome/browser/image_decoder",
       "//chrome/browser/profiles:profile_util",
-      "//chrome/browser/ui/webui/settings",
       "//content/public/browser",
+      "//mojo/public/cpp/bindings",
       "//skia",
       "//ui/base",
       "//ui/gfx",
     ]
+
+    public_deps = [ ":mojo_bindings" ]
   }
 }
 
@@ -46,6 +59,7 @@ source_set("unit_tests") {
 
     deps = [
       ":manage_profile",
+      ":mojo_bindings",
       "//base/test:test_support",
       "//brave/components/brave_shields/core/common",
       "//brave/components/resources:strings_grit",
@@ -60,6 +74,7 @@ source_set("unit_tests") {
       "//components/search_engines",
       "//components/sync_preferences:test_support",
       "//content/test:test_support",
+      "//mojo/public/cpp/bindings",
       "//services/data_decoder/public/cpp:test_support",
       "//testing/gtest",
       "//ui/base/clipboard",

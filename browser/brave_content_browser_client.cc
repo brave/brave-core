@@ -243,6 +243,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/split_view/split_view_link_navigation_throttle.h"
 #include "brave/browser/ui/webui/brave_account/brave_account_ui_desktop.h"
+#include "brave/browser/ui/webui/settings/brave_manage_profile.mojom.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "brave/components/brave_account/mojom/brave_account_row.mojom.h"
 #include "brave/components/commands/common/commands.mojom.h"
@@ -673,6 +674,8 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
   }
   registry.ForWebUI<BraveSettingsUI>()
       .Add<brave_origin::mojom::BraveOriginSettingsHandler>();
+  registry.ForWebUI<BraveSettingsUI>()
+      .Add<brave_manage_profile::mojom::BraveManageProfileSettingsHandler>();
 #endif  // !BUILDFLAG(IS_ANDROID)
   // End of BraveSettingsUI interfaces
 

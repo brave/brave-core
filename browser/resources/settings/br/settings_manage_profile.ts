@@ -7,12 +7,11 @@ import {
   RegisterPolymerPrototypeModification,
   RegisterPolymerTemplateModifications
 } from 'chrome://resources/brave/polymer_overriding.js'
-import { addWebUiListener } from 'chrome://resources/js/cr.js'
 import { loadTimeData } from 'chrome://resources/js/load_time_data.js'
 
 import {
-  BraveCustomAvatarState,
-  BraveManageProfileBrowserProxyImpl
+  BraveManageProfileBrowserProxy,
+  CustomAvatarState
 } from './brave_manage_profile_browser_proxy.js'
 
 const kCustomAvatarRowId = 'braveCustomAvatarRow'
@@ -172,7 +171,7 @@ const kBraveCustomAvatarStyleCss = `
 `
 
 type ManageProfileHost = HTMLElement & {
-  braveCustomAvatarState_: BraveCustomAvatarState
+  braveCustomAvatarState_: CustomAvatarState
 }
 
 const kBraveCustomAvatarWired = Symbol('braveCustomAvatarWired')
@@ -185,8 +184,16 @@ function syncBravePresetAvatarBinding_(host: ManageProfileHost) {
   withAvatarProp.profileAvatar_ = null
 }
 
+// Empty state used before the first update arrives so DOM updates never
+// observe `undefined` fields.
+const kEmptyAvatarState: CustomAvatarState = {
+  hasSavedAvatar: false,
+  isActive: false,
+  dataUrl: ''
+}
+
 function braveOnCustomAvatarChanged_(
-  host: ManageProfileHost, state: BraveCustomAvatarState) {
+  host: ManageProfileHost, state: CustomAvatarState) {
   host.braveCustomAvatarState_ = state
 
   const root = host.shadowRoot
@@ -264,8 +271,10 @@ function wireBraveManageProfileCustomAvatar(host: HTMLElement, attempt = 0) {
     }
 
     const typedHost = host as ManageProfileHost
-    typedHost.braveCustomAvatarState_ = typedHost.braveCustomAvatarState_ ||
-      { hasSavedAvatar: false, isActive: false }
+    typedHost.braveCustomAvatarState_ =
+      typedHost.braveCustomAvatarState_ ?? kEmptyAvatarState
+
+    const proxy = BraveManageProfileBrowserProxy.getInstance()
 
     const openCustomAvatarFilePicker = () => {
       fileInput.value = ''
@@ -283,9 +292,12 @@ function wireBraveManageProfileCustomAvatar(host: HTMLElement, attempt = 0) {
       preview.setAttribute('aria-busy', 'true')
       try {
         const base64 = await fileToBase64(file)
-        const state = await BraveManageProfileBrowserProxyImpl.getInstance()
-          .setProfileCustomAvatar(base64)
-        braveOnCustomAvatarChanged_(typedHost, state)
+        const result = await proxy.setCustomAvatar(base64)
+        if (result.error !== undefined) {
+          console.warn('[Brave Settings Overrides] setCustomAvatar failed:',
+            result.error)
+        }
+        braveOnCustomAvatarChanged_(typedHost, result.state)
       } catch (err) {
         console.warn('[Brave Settings Overrides] Failed to set custom ' +
           'avatar:', err)
@@ -297,16 +309,14 @@ function wireBraveManageProfileCustomAvatar(host: HTMLElement, attempt = 0) {
 
     removeBtn.addEventListener('click', () => {
       try {
-        BraveManageProfileBrowserProxyImpl.getInstance()
-          .removeProfileCustomAvatar()
+        proxy.removeCustomAvatar()
       } catch (err) {
         console.warn('[Brave Settings Overrides] Failed to remove custom ' +
           'avatar:', err)
       }
-      braveOnCustomAvatarChanged_(typedHost, {
-        hasSavedAvatar: false,
-        isActive: false
-      })
+      // Optimistically update local state; the browser confirms via the
+      // `OnCustomAvatarChanged` event when the file delete completes.
+      braveOnCustomAvatarChanged_(typedHost, kEmptyAvatarState)
     })
 
     preview.addEventListener('click', () => {
@@ -319,21 +329,18 @@ function wireBraveManageProfileCustomAvatar(host: HTMLElement, attempt = 0) {
         return
       }
       try {
-        BraveManageProfileBrowserProxyImpl.getInstance()
-          .activateProfileCustomAvatar()
+        proxy.activateCustomAvatar()
       } catch (err) {
         console.warn('[Brave Settings Overrides] Failed to activate custom ' +
           'avatar:', err)
       }
     })
 
-    addWebUiListener(
-      'brave-custom-avatar-changed',
-      (state: BraveCustomAvatarState) =>
+    proxy.callbackRouter.onCustomAvatarChanged.addListener(
+      (state: CustomAvatarState) =>
         braveOnCustomAvatarChanged_(typedHost, state))
 
-    BraveManageProfileBrowserProxyImpl.getInstance()
-      .getProfileCustomAvatar()
+    proxy.getCustomAvatar()
       .then((state) => braveOnCustomAvatarChanged_(typedHost, state))
       .catch(() => { /* ignore - row stays in empty state */ })
 

@@ -159,8 +159,6 @@ BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui) : SettingsUI(web_ui) {
   web_ui->AddMessageHandler(std::make_unique<DefaultBraveShieldsHandler>());
   web_ui->AddMessageHandler(std::make_unique<BraveDefaultExtensionsHandler>());
   web_ui->AddMessageHandler(std::make_unique<BraveAppearanceHandler>());
-  web_ui->AddMessageHandler(
-      std::make_unique<BraveManageProfileHandler>(Profile::FromWebUI(web_ui)));
   web_ui->AddMessageHandler(std::make_unique<BraveSyncHandler>());
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   web_ui->AddMessageHandler(std::make_unique<BraveWalletHandler>());
@@ -348,6 +346,15 @@ void BraveSettingsUI::BindInterface(
   commands::AcceleratorServiceFactory::GetForContext(
       web_ui()->GetWebContents()->GetBrowserContext())
       ->BindInterface(std::move(pending_receiver));
+}
+
+void BraveSettingsUI::BindInterface(
+    mojo::PendingReceiver<
+        brave_manage_profile::mojom::BraveManageProfileSettingsHandler>
+        pending_receiver) {
+  auto handler =
+      std::make_unique<BraveManageProfileHandler>(Profile::FromWebUI(web_ui()));
+  MakeOwnedReceiver(std::move(handler), std::move(pending_receiver));
 }
 
 #if BUILDFLAG(ENABLE_AI_CHAT)

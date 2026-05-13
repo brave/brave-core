@@ -6,6 +6,7 @@
 #include "brave/browser/ui/webui/settings/brave_manage_profile_handler.h"
 
 #include <algorithm>
+#include <string>
 #include <utility>
 
 #include "base/base64.h"
@@ -13,14 +14,12 @@
 #include "base/check_op.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
-#include "base/values.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_attributes_entry.h"
 #include "chrome/browser/profiles/profile_avatar_icon_util.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "content/public/browser/browser_thread.h"
-#include "content/public/browser/web_ui.h"
 #include "skia/ext/image_operations.h"
 #include "third_party/skia/include/core/SkBitmap.h"
 #include "ui/base/webui/web_ui_util.h"
@@ -29,13 +28,6 @@
 #include "ui/gfx/image/image_skia.h"
 
 namespace {
-
-constexpr char kMessageGetCustomAvatar[] = "getProfileCustomAvatar";
-constexpr char kMessageSetCustomAvatar[] = "setProfileCustomAvatar";
-constexpr char kMessageRemoveCustomAvatar[] = "removeProfileCustomAvatar";
-constexpr char kMessageActivateCustomAvatar[] = "activateProfileCustomAvatar";
-
-constexpr char kListenerCustomAvatarChanged[] = "brave-custom-avatar-changed";
 
 ProfileAttributesEntry* GetEntry(Profile* profile) {
   return g_browser_process->profile_manager()
@@ -69,127 +61,74 @@ SkBitmap CropAndResizeToSquare(const SkBitmap& bitmap, int side) {
 BraveManageProfileHandler::BraveManageProfileHandler(Profile* profile)
     : profile_(profile) {
   CHECK(profile_);
+  storage_observation_.Observe(
+      &g_browser_process->profile_manager()->GetProfileAttributesStorage());
 }
 
 BraveManageProfileHandler::~BraveManageProfileHandler() {
   ImageDecoder::Cancel(this);
 }
 
-void BraveManageProfileHandler::RegisterMessages() {
-  web_ui()->RegisterMessageCallback(
-      kMessageGetCustomAvatar,
-      base::BindRepeating(
-          &BraveManageProfileHandler::HandleGetProfileCustomAvatar,
-          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      kMessageSetCustomAvatar,
-      base::BindRepeating(
-          &BraveManageProfileHandler::HandleSetProfileCustomAvatar,
-          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      kMessageRemoveCustomAvatar,
-      base::BindRepeating(
-          &BraveManageProfileHandler::HandleRemoveProfileCustomAvatar,
-          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      kMessageActivateCustomAvatar,
-      base::BindRepeating(
-          &BraveManageProfileHandler::HandleActivateProfileCustomAvatar,
-          base::Unretained(this)));
+void BraveManageProfileHandler::BindUI(
+    mojo::PendingRemote<
+        brave_manage_profile::mojom::BraveManageProfileSettingsUI> ui) {
+  // The settings page binds at most once per handler lifetime; resetting
+  // covers the in-test case where a fresh remote replaces a stale one.
+  ui_.reset();
+  ui_.Bind(std::move(ui));
 }
 
-void BraveManageProfileHandler::OnJavascriptAllowed() {
-  storage_observation_.Observe(
-      &g_browser_process->profile_manager()->GetProfileAttributesStorage());
+void BraveManageProfileHandler::GetCustomAvatar(
+    GetCustomAvatarCallback callback) {
+  std::move(callback).Run(BuildCustomAvatarState());
 }
 
-void BraveManageProfileHandler::OnJavascriptDisallowed() {
-  storage_observation_.Reset();
-  ImageDecoder::Cancel(this);
-  pending_upload_callback_id_.clear();
-  weak_ptr_factory_.InvalidateWeakPtrs();
-}
-
-void BraveManageProfileHandler::OnProfileAvatarChanged(
-    const base::FilePath& profile_path) {
-  if (profile_path != profile_->GetPath() || !IsJavascriptAllowed()) {
-    return;
-  }
-  FireCustomAvatarChanged();
-}
-
-void BraveManageProfileHandler::OnProfileHighResAvatarLoaded(
-    const base::FilePath& profile_path) {
-  if (profile_path != profile_->GetPath() || !IsJavascriptAllowed()) {
-    return;
-  }
-  // The custom avatar bitmap may have just finished loading from disk after a
-  // restart; rebuild the state so the front-end gets the now-decoded preview.
-  FireCustomAvatarChanged();
-}
-
-void BraveManageProfileHandler::HandleGetProfileCustomAvatar(
-    const base::ListValue& args) {
-  AllowJavascript();
-  CHECK_EQ(1u, args.size());
-  const base::Value& callback_id = args[0];
-  ResolveJavascriptCallback(callback_id, BuildCustomAvatarState());
-}
-
-void BraveManageProfileHandler::HandleSetProfileCustomAvatar(
-    const base::ListValue& args) {
+void BraveManageProfileHandler::SetCustomAvatar(
+    const std::string& base64_payload,
+    SetCustomAvatarCallback callback) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  AllowJavascript();
 
-  CHECK_EQ(2u, args.size());
-  const std::string callback_id = args[0].GetString();
-  if (!args[1].is_string()) {
-    RejectJavascriptCallback(base::Value(callback_id),
-                             base::Value("invalid-payload"));
-    return;
-  }
-  const std::string& base64_payload = args[1].GetString();
+  using brave_manage_profile::mojom::SetCustomAvatarError;
+
   if (base64_payload.empty()) {
-    RejectJavascriptCallback(base::Value(callback_id), base::Value("empty"));
+    std::move(callback).Run(SetCustomAvatarError::kEmpty,
+                            BuildCustomAvatarState());
     return;
   }
   // Rough cap on the encoded payload size before decoding (base64 grows by
   // ~4/3, so this comfortably bounds the decoded size below `kMaxUploadBytes`).
   if (base64_payload.size() > (kMaxUploadBytes * 4 / 3) + 4) {
-    RejectJavascriptCallback(base::Value(callback_id),
-                             base::Value("too-large"));
+    std::move(callback).Run(SetCustomAvatarError::kTooLarge,
+                            BuildCustomAvatarState());
     return;
   }
 
   std::string raw_bytes;
   if (!base::Base64Decode(base64_payload, &raw_bytes) || raw_bytes.empty()) {
-    RejectJavascriptCallback(base::Value(callback_id),
-                             base::Value("invalid-base64"));
+    std::move(callback).Run(SetCustomAvatarError::kInvalidBase64,
+                            BuildCustomAvatarState());
     return;
   }
   if (raw_bytes.size() > kMaxUploadBytes) {
-    RejectJavascriptCallback(base::Value(callback_id),
-                             base::Value("too-large"));
+    std::move(callback).Run(SetCustomAvatarError::kTooLarge,
+                            BuildCustomAvatarState());
     return;
   }
 
   // Cancel any in-flight decode for an earlier upload before starting a new
-  // one - only one upload result can be honored at a time.
-  if (!pending_upload_callback_id_.empty()) {
+  // one — only one upload result can be honored at a time.
+  if (pending_upload_callback_) {
     ImageDecoder::Cancel(this);
-    RejectJavascriptCallback(base::Value(pending_upload_callback_id_),
-                             base::Value("superseded"));
-    pending_upload_callback_id_.clear();
+    std::move(pending_upload_callback_)
+        .Run(SetCustomAvatarError::kSuperseded, BuildCustomAvatarState());
   }
-  pending_upload_callback_id_ = callback_id;
+  pending_upload_callback_ = std::move(callback);
 
   ImageDecoder::Start(this, std::move(raw_bytes));
 }
 
-void BraveManageProfileHandler::HandleRemoveProfileCustomAvatar(
-    const base::ListValue& /*args*/) {
+void BraveManageProfileHandler::RemoveCustomAvatar() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  AllowJavascript();
 
   ProfileAttributesEntry* entry = GetEntry(profile_);
   if (!entry) {
@@ -197,13 +136,11 @@ void BraveManageProfileHandler::HandleRemoveProfileCustomAvatar(
   }
   entry->ClearBraveCustomAvatar();
   // `ClearBraveCustomAvatar` fires `OnProfileAvatarChanged` which will trigger
-  // `FireCustomAvatarChanged` through our observer; no extra signal needed.
+  // `NotifyCustomAvatarChanged` through our observer; no extra signal needed.
 }
 
-void BraveManageProfileHandler::HandleActivateProfileCustomAvatar(
-    const base::ListValue& /*args*/) {
+void BraveManageProfileHandler::ActivateCustomAvatar() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  AllowJavascript();
 
   ProfileAttributesEntry* entry = GetEntry(profile_);
   if (!entry) {
@@ -214,23 +151,25 @@ void BraveManageProfileHandler::HandleActivateProfileCustomAvatar(
 
 void BraveManageProfileHandler::OnImageDecoded(const SkBitmap& decoded_image) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  std::string callback_id;
-  callback_id.swap(pending_upload_callback_id_);
+
+  using brave_manage_profile::mojom::SetCustomAvatarError;
+
+  SetCustomAvatarCallback callback = std::move(pending_upload_callback_);
 
   const SkBitmap normalized = CropAndResizeToSquare(decoded_image, kAvatarSize);
   if (normalized.drawsNothing()) {
-    if (IsJavascriptAllowed() && !callback_id.empty()) {
-      RejectJavascriptCallback(base::Value(callback_id),
-                               base::Value("decode-failed"));
+    if (callback) {
+      std::move(callback).Run(SetCustomAvatarError::kDecodeFailed,
+                              BuildCustomAvatarState());
     }
     return;
   }
 
   ProfileAttributesEntry* entry = GetEntry(profile_);
   if (!entry) {
-    if (IsJavascriptAllowed() && !callback_id.empty()) {
-      RejectJavascriptCallback(base::Value(callback_id),
-                               base::Value("no-profile-entry"));
+    if (callback) {
+      std::move(callback).Run(SetCustomAvatarError::kNoProfileEntry,
+                              BuildCustomAvatarState());
     }
     return;
   }
@@ -240,53 +179,70 @@ void BraveManageProfileHandler::OnImageDecoded(const SkBitmap& decoded_image) {
       std::move(image),
       base::BindOnce(
           [](base::WeakPtr<BraveManageProfileHandler> self,
-             std::string callback_id, bool success) {
-            if (!self || !self->IsJavascriptAllowed() || callback_id.empty()) {
+             SetCustomAvatarCallback callback, bool success) {
+            if (!self || !callback) {
               return;
             }
             if (success) {
-              self->ResolveJavascriptCallback(base::Value(callback_id),
-                                              self->BuildCustomAvatarState());
+              std::move(callback).Run(std::nullopt,
+                                      self->BuildCustomAvatarState());
             } else {
-              self->RejectJavascriptCallback(base::Value(callback_id),
-                                             base::Value("save-failed"));
+              std::move(callback).Run(SetCustomAvatarError::kSaveFailed,
+                                      self->BuildCustomAvatarState());
             }
           },
-          weak_ptr_factory_.GetWeakPtr(), std::move(callback_id)));
+          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void BraveManageProfileHandler::OnDecodeImageFailed() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  std::string callback_id;
-  callback_id.swap(pending_upload_callback_id_);
-  if (IsJavascriptAllowed() && !callback_id.empty()) {
-    RejectJavascriptCallback(base::Value(callback_id),
-                             base::Value("decode-failed"));
+
+  using brave_manage_profile::mojom::SetCustomAvatarError;
+
+  if (pending_upload_callback_) {
+    std::move(pending_upload_callback_)
+        .Run(SetCustomAvatarError::kDecodeFailed, BuildCustomAvatarState());
   }
 }
 
-base::DictValue BraveManageProfileHandler::BuildCustomAvatarState() const {
-  base::DictValue state;
+void BraveManageProfileHandler::OnProfileAvatarChanged(
+    const base::FilePath& profile_path) {
+  if (profile_path != profile_->GetPath()) {
+    return;
+  }
+  NotifyCustomAvatarChanged();
+}
+
+void BraveManageProfileHandler::OnProfileHighResAvatarLoaded(
+    const base::FilePath& profile_path) {
+  if (profile_path != profile_->GetPath()) {
+    return;
+  }
+  // The custom avatar bitmap may have just finished loading from disk after a
+  // restart; rebuild the state so the front-end gets the now-decoded preview.
+  NotifyCustomAvatarChanged();
+}
+
+brave_manage_profile::mojom::CustomAvatarStatePtr
+BraveManageProfileHandler::BuildCustomAvatarState() const {
+  auto state = brave_manage_profile::mojom::CustomAvatarState::New();
   ProfileAttributesEntry* entry = GetEntry(profile_);
-  const bool has_saved = entry && entry->HasBraveCustomAvatar();
-  const bool is_active = entry && entry->IsUsingBraveCustomAvatar();
-  state.Set("hasSavedAvatar", has_saved);
-  state.Set("isActive", is_active);
-  if (has_saved) {
+  state->has_saved_avatar = entry && entry->HasBraveCustomAvatar();
+  state->is_active = entry && entry->IsUsingBraveCustomAvatar();
+  if (state->has_saved_avatar) {
     const gfx::Image* image = entry->GetBraveCustomAvatar();
     // The image may still be loading from disk on the very first access after
-    // a restart; in that case `dataUrl` stays empty and the storage will
+    // a restart; in that case `data_url` stays empty and the storage will
     // re-notify via `OnProfileAvatarChanged` once loaded.
     if (image && !image->IsEmpty()) {
-      state.Set("dataUrl", webui::GetBitmapDataUrl(image->AsBitmap()));
+      state->data_url = webui::GetBitmapDataUrl(image->AsBitmap());
     }
   }
   return state;
 }
 
-void BraveManageProfileHandler::FireCustomAvatarChanged() {
-  if (!IsJavascriptAllowed()) {
-    return;
+void BraveManageProfileHandler::NotifyCustomAvatarChanged() {
+  if (ui_) {
+    ui_->OnCustomAvatarChanged(BuildCustomAvatarState());
   }
-  FireWebUIListener(kListenerCustomAvatarChanged, BuildCustomAvatarState());
 }
