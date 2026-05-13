@@ -152,6 +152,12 @@
             android:summary="@string/private_tab_screenshot_summary"
             android:defaultValue="false" />
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="browser_lock"
+            android:title="@string/brave_browser_lock_title"
+            android:summary="@string/brave_browser_lock_summary"
+            android:persistent="false"
+            android:defaultValue="false" />
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="close_tabs_on_exit"
             defaultValue="false"
             android:title="@string/close_tabs_on_exit_title"

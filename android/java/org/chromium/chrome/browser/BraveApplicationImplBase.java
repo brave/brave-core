@@ -18,6 +18,7 @@ import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.base.SplitCompatApplication;
 import org.chromium.chrome.browser.profiles.OriginalProfileSupplier;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
+import org.chromium.chrome.browser.privacy.BraveBrowserLockManager;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
 import org.chromium.components.safe_browsing.BraveSafeBrowsingApiHandler;
 import org.chromium.components.safe_browsing.SafeBrowsingApiBridge;
@@ -32,6 +33,7 @@ public class BraveApplicationImplBase extends SplitCompatApplication.Impl {
     public void onCreate() {
         super.onCreate();
         if (SplitCompatApplication.isBrowserProcess()) {
+            BraveBrowserLockManager.initialize(getApplication());
             // Handle Mojo BadMessageException gracefully by closing the pipe instead of
             // crashing. This matches the C++ behavior in Connector::DispatchMessage
             // (mojo/public/cpp/bindings/lib/connector.cc) where a failed Accept() calls
