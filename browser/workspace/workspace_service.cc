@@ -5,6 +5,8 @@
 
 #include "brave/browser/workspace/workspace_service.h"
 
+#include "brave/browser/workspace/workspace_utils.h"
+
 #include <algorithm>
 #include <memory>
 #include <set>
@@ -53,16 +55,12 @@ constexpr const char kWorkspaceModifiedAt[] = "modified-at";
 // Appends session commands for a single browser window to |commands| and
 // updates |active_window_id| to this window if it is active (focused), or if
 // no active window has been recorded yet. Returns the tab count serialized.
-int AppendBrowserSessionCommands(
+void AppendBrowserSessionCommands(
     SessionID& window_id,
     TabStripModel* tsm,
     gfx::Rect restored_bounds,
     ui::mojom::WindowShowState restored_state,
     std::vector<std::unique_ptr<sessions::SessionCommand>>& commands) {
-  if (tsm->count() == 0) {
-    return 0;
-  }
-
   commands.push_back(sessions::CreateSetWindowTypeCommand(
       window_id, sessions::SessionWindow::TYPE_NORMAL));
   commands.push_back(sessions::CreateSetWindowBoundsCommand(
@@ -121,7 +119,6 @@ int AppendBrowserSessionCommands(
 
   commands.push_back(sessions::CreateSetSelectedTabInWindowCommand(
       window_id, tsm->active_index()));
-  return tsm->count();
 }
 
 }  // namespace
@@ -205,40 +202,6 @@ base::FilePath WorkspaceService::GetWorkspaceDirForName(
   return WorkspaceDirForName(name);
 }
 
-// static
-void WorkspaceService::WriteWorkspaceToDisk(
-    std::vector<std::unique_ptr<sessions::SessionCommand>> commands,
-    const base::FilePath& workspace_dir,
-    scoped_refptr<sessions::CommandStorageBackend> backend,
-    base::OnceClosure on_error) {
-  if (!base::CreateDirectory(workspace_dir)) {
-    DVLOG(1) << "Failed to create workspace directory: " << workspace_dir;
-    std::move(on_error).Run();
-    return;
-  }
-  // AppendCommands posts |on_error| to the backend's callback_task_runner_
-  // (the UI thread, set when the backend was constructed) on write failure.
-  backend->AppendCommands(std::move(commands), /*truncate=*/true,
-                          std::move(on_error));
-}
-
-// static
-std::vector<std::unique_ptr<sessions::SessionCommand>>
-WorkspaceService::ReadWorkspaceFromDisk(
-    const base::FilePath& workspace_dir,
-    scoped_refptr<sessions::CommandStorageBackend> backend) {
-  // Only do file I/O here.  Callers must call RestoreSessionFromCommands() on
-  // the UI thread because SessionTab/SessionWindow constructors call
-  // SessionID::NewUnique() which is sequence-checked to the UI thread.
-  sessions::CommandStorageBackend::ReadCommandsResult result =
-      backend->ReadLastSessionCommands();
-  if (result.error_reading || result.commands.empty()) {
-    DVLOG(1) << "Could not read workspace session from: " << workspace_dir;
-    return {};
-  }
-  return std::move(result.commands);
-}
-
 void WorkspaceService::SaveWorkspace(Profile* profile,
                                      const std::string& name) {
   if (name.empty()) {
@@ -261,13 +224,16 @@ void WorkspaceService::SaveWorkspace(Profile* profile,
         }
 
         SessionID window_id = SessionID::NewUnique();
-        auto* window = bwi->GetWindow();
-        int tabs = AppendBrowserSessionCommands(
-            window_id, bwi->GetTabStripModel(), window->GetRestoredBounds(),
-            window->GetRestoredState(), commands);
+        int tabs = bwi->GetTabStripModel()->count();
         if (tabs == 0) {
           return true;
         }
+
+        auto* window = bwi->GetWindow();
+        AppendBrowserSessionCommands(window_id, bwi->GetTabStripModel(),
+                                     window->GetRestoredBounds(),
+                                     window->GetRestoredState(), commands);
+
         // Prefer the focused window; fall back to the first non-empty window.
         if (window->IsActive() ||
             active_window_id == SessionID::InvalidValue()) {
@@ -313,9 +279,9 @@ void WorkspaceService::SaveWorkspace(Profile* profile,
                      name));
 
   task_runner->PostTask(
-      FROM_HERE, base::BindOnce(&WorkspaceService::WriteWorkspaceToDisk,
-                                std::move(commands), std::move(workspace_dir),
-                                std::move(backend), std::move(on_error)));
+      FROM_HERE, base::BindOnce(&WriteWorkspaceToDisk, std::move(commands),
+                                std::move(workspace_dir), std::move(backend),
+                                std::move(on_error)));
 }
 
 void WorkspaceService::RestoreWorkspace(Profile* profile,
@@ -333,7 +299,7 @@ void WorkspaceService::RestoreWorkspace(Profile* profile,
 
   task_runner->PostTaskAndReplyWithResult(
       FROM_HERE,
-      base::BindOnce(&WorkspaceService::ReadWorkspaceFromDisk, std::move(path),
+      base::BindOnce(&ReadWorkspaceFromDisk, std::move(path),
                      std::move(backend)),
       base::BindOnce(&WorkspaceService::DoRestoreWorkspace, GetWeakPtr(),
                      profile->GetWeakPtr()));

@@ -20,9 +20,6 @@ WorkspaceServiceFactory* WorkspaceServiceFactory::GetInstance() {
 
 // static
 WorkspaceService* WorkspaceServiceFactory::GetForProfile(Profile* profile) {
-  if (!base::FeatureList::IsEnabled(features::kWorkspace)) {
-    return nullptr;
-  }
   return static_cast<WorkspaceService*>(
       GetInstance()->GetServiceForBrowserContext(profile, /*create=*/true));
 }
@@ -36,6 +33,10 @@ WorkspaceServiceFactory::~WorkspaceServiceFactory() = default;
 std::unique_ptr<KeyedService>
 WorkspaceServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
+  if (!base::FeatureList::IsEnabled(features::kWorkspace)) {
+    return nullptr;
+  }
+
   Profile* profile = Profile::FromBrowserContext(context);
   return std::make_unique<WorkspaceService>(profile->GetPrefs(),
                                             profile->GetPath());

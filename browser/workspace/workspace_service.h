@@ -11,15 +11,12 @@
 #include <vector>
 
 #include "base/files/file_path.h"
-#include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
-#include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 #include "brave/browser/workspace/workspace.h"
+#include "brave/browser/workspace/workspace_utils.h"
 #include "components/keyed_service/core/keyed_service.h"
-#include "components/sessions/core/command_storage_backend.h"
-#include "components/sessions/core/command_storage_manager.h"
 #include "components/sessions/core/session_command.h"
 
 class PrefService;
@@ -47,13 +44,6 @@ inline constexpr char kWorkspacesMetadataPref[] = "brave.workspaces";
 // blocking I/O helpers on that same sequenced runner.
 class WorkspaceService : public KeyedService {
  public:
-  // Session type used for all workspace files.  Exposed so callers can
-  // construct a CommandStorageBackend on the UI thread before posting I/O
-  // work to a background sequenced runner.
-  static constexpr sessions::CommandStorageManager::SessionType
-      kWorkspaceSessionType =
-          sessions::CommandStorageManager::SessionType::kSessionRestore;
-
   explicit WorkspaceService(PrefService* pref_service,
                             const base::FilePath profile_path);
   ~WorkspaceService() override;
@@ -86,29 +76,6 @@ class WorkspaceService : public KeyedService {
 
   // Returns the per-workspace subdirectory for |name|.
   base::FilePath GetWorkspaceDirForName(const std::string& name) const;
-
-  // ---- Blocking I/O helpers (run on a thread-pool sequenced task) ----------
-  //
-  // |backend| must be constructed on the UI thread before posting these tasks.
-
-  // Writes |commands| to a Chromium session-command binary file via |backend|.
-  // |on_error| is posted to the UI thread (via AppendCommands'
-  // callback_task_runner_) on write failure, or called directly if the
-  // workspace directory cannot be created.  Wrapped with BindPostTask in the
-  // caller so it always lands on the UI thread regardless of which path fires.
-  static void WriteWorkspaceToDisk(
-      std::vector<std::unique_ptr<sessions::SessionCommand>> commands,
-      const base::FilePath& workspace_dir,
-      scoped_refptr<sessions::CommandStorageBackend> backend,
-      base::OnceClosure on_error);
-
-  // Reads the session-command binary via |backend| and returns the raw
-  // commands.  Only does file I/O — callers must deserialize the commands into
-  // SessionWindow objects on the UI thread (SessionID::NewUnique() is
-  // sequence-checked to the UI thread).  Returns an empty vector on error.
-  static std::vector<std::unique_ptr<sessions::SessionCommand>>
-  ReadWorkspaceFromDisk(const base::FilePath& workspace_dir,
-                        scoped_refptr<sessions::CommandStorageBackend> backend);
 
   // ---- Browser-state commands (UI thread only) ----------------------------
 

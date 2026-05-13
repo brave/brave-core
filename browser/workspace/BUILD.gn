@@ -14,6 +14,7 @@ source_set("impl") {
     "workspace.cc",
     "workspace_service.cc",
     "workspace_service_factory.cc",
+    "workspace_utils.cc",
   ]
 
   deps = [
@@ -29,6 +30,7 @@ source_set("workspace") {
     "workspace.h",
     "workspace_service.h",
     "workspace_service_factory.h",
+    "workspace_utils.h",
   ]
 
   public_deps = [

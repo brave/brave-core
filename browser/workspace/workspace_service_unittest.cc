@@ -5,6 +5,8 @@
 
 #include "brave/browser/workspace/workspace_service.h"
 
+#include "brave/browser/workspace/workspace_utils.h"
+
 #include <memory>
 #include <vector>
 
@@ -173,7 +175,7 @@ TEST_F(WorkspaceServiceTest, WriteAndReadRoundTrip) {
       {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
        base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
   auto backend = base::MakeRefCounted<sessions::CommandStorageBackend>(
-      task_runner, workspace_dir, WorkspaceService::kWorkspaceSessionType,
+      task_runner, workspace_dir, kWorkspaceSessionType,
       /*encryptor=*/std::nullopt);
 
   bool error_called = false;
@@ -183,9 +185,9 @@ TEST_F(WorkspaceServiceTest, WriteAndReadRoundTrip) {
       base::BindOnce([](bool* flag) { *flag = true; }, &error_called));
 
   task_runner->PostTask(
-      FROM_HERE, base::BindOnce(&WorkspaceService::WriteWorkspaceToDisk,
-                                std::move(commands), workspace_dir,
-                                std::move(backend), std::move(on_error)));
+      FROM_HERE, base::BindOnce(&WriteWorkspaceToDisk, std::move(commands),
+                                workspace_dir, std::move(backend),
+                                std::move(on_error)));
   // A sequenced task after the write runs only after it completes.
   task_runner->PostTask(
       FROM_HERE,
@@ -198,13 +200,12 @@ TEST_F(WorkspaceServiceTest, WriteAndReadRoundTrip) {
 
   // Read back using a fresh backend (mirrors RestoreWorkspace's pattern).
   auto read_backend = base::MakeRefCounted<sessions::CommandStorageBackend>(
-      task_runner, workspace_dir, WorkspaceService::kWorkspaceSessionType,
+      task_runner, workspace_dir, kWorkspaceSessionType,
       /*encryptor=*/std::nullopt);
   base::test::TestFuture<CommandList> read_future;
   task_runner->PostTaskAndReplyWithResult(
       FROM_HERE,
-      base::BindOnce(&WorkspaceService::ReadWorkspaceFromDisk, workspace_dir,
-                     read_backend),
+      base::BindOnce(&ReadWorkspaceFromDisk, workspace_dir, read_backend),
       read_future.GetCallback());
 
   ASSERT_TRUE(read_future.Wait());
@@ -237,7 +238,7 @@ TEST_F(WorkspaceServiceTest,
       {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
        base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
   auto backend = base::MakeRefCounted<sessions::CommandStorageBackend>(
-      task_runner, workspace_dir, WorkspaceService::kWorkspaceSessionType,
+      task_runner, workspace_dir, kWorkspaceSessionType,
       /*encryptor=*/std::nullopt);
 
   bool error_called = false;
@@ -247,7 +248,7 @@ TEST_F(WorkspaceServiceTest,
 
   task_runner->PostTask(
       FROM_HERE,
-      base::BindOnce(&WorkspaceService::WriteWorkspaceToDisk,
+      base::BindOnce(&WriteWorkspaceToDisk,
                      std::vector<std::unique_ptr<sessions::SessionCommand>>(),
                      workspace_dir, std::move(backend), std::move(on_error)));
 
