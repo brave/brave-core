@@ -4,7 +4,6 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveShared
-import Foundation
 import Web
 
 extension TabDataValues {
@@ -22,15 +21,8 @@ extension TabDataValues {
 /// should use `source=ios-widget`.
 ///
 /// Install the widget tab helper when a widget search is initiated;
-/// It tears itself down once the attribution is applied or the tab navigates elsewhere
+/// It tears itself down once the search is committed or the tab navigates elsewhere.
 final class WidgetSearchTabHelper: TabObserver {
-  private enum BraveSearchSource {
-    static let host = "search.brave.com"
-    static let queryKey = "source"
-    static let appValue = "ios"
-    static let widgetValue = "ios-widget"
-  }
-
   private weak var tab: (any TabState)?
 
   init(tab: some TabState) {
@@ -55,42 +47,17 @@ final class WidgetSearchTabHelper: TabObserver {
     tab.removeObserver(self)
   }
 
-  // MARK: - Attribution
+  // MARK: - Teardown
 
-  /// Returns `url` rewritten with widget `source` attribution if the engine is Brave Search,
-  /// and tears the helper down. Returns `url` unchanged for other engines (still tearing down,
-  /// since the pending widget search has been resolved).
-  func finalize(_ url: URL, forEngine engineName: String?) -> URL {
-    defer { detach() }
-    guard engineName == OpenSearchEngine.EngineNames.brave else {
-      return url
-    }
-    return Self.applyWidgetAttribution(url)
+  /// Ends the pending widget search flow and removes this helper from the tab (similar to navigation teardown).
+  /// Call after the committed search URL has been built with `isWidgetSearchAttribution` as needed.
+  func finalize() {
+    detach()
   }
 
   /// Removes this helper from its tab. After this call the helper is no longer reachable
   /// via `TabDataValues` and will be deallocated once the current call stack unwinds.
   private func detach() {
     tab?.widgetSearchTabHelper = nil
-  }
-
-  // MARK: - URL rewriting
-
-  /// Rewrites `source=ios` to `source=ios-widget` on `search.brave.com`.
-  static func applyWidgetAttribution(_ url: URL) -> URL {
-    guard url.host?.lowercased() == BraveSearchSource.host,
-      var components = URLComponents(url: url, resolvingAgainstBaseURL: false),
-      let items = components.queryItems,
-      items.contains(where: {
-        $0.name == BraveSearchSource.queryKey && $0.value == BraveSearchSource.appValue
-      })
-    else { return url }
-
-    components.queryItems = items.map { item in
-      (item.name == BraveSearchSource.queryKey && item.value == BraveSearchSource.appValue)
-        ? URLQueryItem(name: BraveSearchSource.queryKey, value: BraveSearchSource.widgetValue)
-        : item
-    }
-    return components.url ?? url
   }
 }

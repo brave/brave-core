@@ -12,7 +12,6 @@ import Shared
 import Storage
 import Then
 import UIKit
-import Web
 
 // MARK: - SearchViewControllerDelegate
 
@@ -50,6 +49,16 @@ protocol SearchViewControllerDelegate: AnyObject {
     shouldFindInPage query: String
   )
   func searchViewControllerAllowFindInPage() -> Bool
+
+  /// Whether search attribution should treat this  session as widget-initiated (Brave Search `source=ios-widget`).
+  /// The browser decides based on tab state (e.g. pending widget shortcut attribution)
+  func searchViewControllerIsWidgetInitiatedSearchSession(
+    _ searchViewController: SearchViewController
+  )
+    -> Bool
+
+  /// Called after the search overlay commits a search URL built with widget attribution when ``searchViewControllerIsWidgetInitiatedSearchSession(_:)`` is true.
+  func searchViewControllerFinalizePendingWidgetSearch(_ searchViewController: SearchViewController)
 }
 
 class SearchCompositionalLayout: UICollectionViewCompositionalLayout {
@@ -210,7 +219,6 @@ public class SearchViewController: UIViewController, LoaderListener {
   )
 
   weak var searchDelegate: SearchViewControllerDelegate?
-  weak var associatedTab: (any TabState)?
 
   var isUsingBottomBar: Bool = false {
     didSet {
@@ -851,13 +859,17 @@ public class SearchViewController: UIViewController, LoaderListener {
     let offset = dataSource.isAIChatAvailable ? 1 : 0  // offset for the Leo button
     let engine = dataSource.quickSearchEngines[index - offset]
     let localSearchQuery = dataSource.searchQuery.lowercased()
-    guard var url = engine.searchURLForQuery(localSearchQuery) else {
+    let widgetAttr =
+      searchDelegate?.searchViewControllerIsWidgetInitiatedSearchSession(self) ?? false
+    guard
+      let url = engine.searchURLForQuery(localSearchQuery, isWidgetSearchAttribution: widgetAttr)
+    else {
       assertionFailure()
       return
     }
 
-    if let widgetSearch = associatedTab?.widgetSearchTabHelper {
-      url = widgetSearch.finalize(url, forEngine: engine.shortName)
+    if widgetAttr {
+      searchDelegate?.searchViewControllerFinalizePendingWidgetSearch(self)
     }
 
     if !dataSource.isPrivate {
@@ -1144,9 +1156,11 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
 
         var url = URIFixup.getURL(suggestion)
         if url == nil {
-          url = engine?.searchURLForQuery(suggestion)
-          if let sugestedUrl = url, let widgetSearch = associatedTab?.widgetSearchTabHelper {
-            url = widgetSearch.finalize(sugestedUrl, forEngine: engine?.shortName)
+          let widgetAttr =
+            searchDelegate?.searchViewControllerIsWidgetInitiatedSearchSession(self) ?? false
+          url = engine?.searchURLForQuery(suggestion, isWidgetSearchAttribution: widgetAttr)
+          if widgetAttr, url != nil {
+            searchDelegate?.searchViewControllerFinalizePendingWidgetSearch(self)
           }
         }
 

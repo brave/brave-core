@@ -9,53 +9,53 @@ import XCTest
 
 final class WidgetSearchAttributionTests: XCTestCase {
 
-  func testApplyWidgetAttribution_replacesIosSourceOnBraveSearch() {
+  func testApplyWidgetSearchAttribution_replacesIosSourceOnBraveSearch() {
     let url = URL(string: "https://search.brave.com/search?q=test&source=ios")!
     XCTAssertEqual(
-      WidgetSearchTabHelper.applyWidgetAttribution(url).absoluteString,
+      OpenSearchEngine.applyWidgetSearchAttribution(to: url)?.absoluteString,
       "https://search.brave.com/search?q=test&source=ios-widget"
     )
   }
 
-  func testApplyWidgetAttribution_isCaseInsensitiveOnHost() {
+  func testApplyWidgetSearchAttribution_isCaseInsensitiveOnHost() {
     let url = URL(string: "https://Search.Brave.com/search?q=test&source=ios")!
-    let result = WidgetSearchTabHelper.applyWidgetAttribution(url)
+    let result = OpenSearchEngine.applyWidgetSearchAttribution(to: url)!
     let components = URLComponents(url: result, resolvingAgainstBaseURL: false)!
     XCTAssertTrue(
       components.queryItems!.contains(URLQueryItem(name: "source", value: "ios-widget"))
     )
   }
 
-  func testApplyWidgetAttribution_preservesQueryOrder() {
+  func testApplyWidgetSearchAttribution_preservesQueryOrder() {
     let url = URL(string: "https://search.brave.com/search?source=ios&q=test")!
     XCTAssertEqual(
-      WidgetSearchTabHelper.applyWidgetAttribution(url).absoluteString,
+      OpenSearchEngine.applyWidgetSearchAttribution(to: url)?.absoluteString,
       "https://search.brave.com/search?source=ios-widget&q=test"
     )
   }
 
-  func testApplyWidgetAttribution_leavesAlreadyWidgetSourceUnchanged() {
+  func testApplyWidgetSearchAttribution_leavesAlreadyWidgetSourceUnchanged() {
     let url = URL(string: "https://search.brave.com/search?q=test&source=ios-widget")!
-    XCTAssertEqual(WidgetSearchTabHelper.applyWidgetAttribution(url), url)
+    XCTAssertEqual(OpenSearchEngine.applyWidgetSearchAttribution(to: url), url)
   }
 
-  func testApplyWidgetAttribution_leavesUrlWithoutSourceParamUnchanged() {
+  func testApplyWidgetSearchAttribution_leavesUrlWithoutSourceParamUnchanged() {
     let url = URL(string: "https://search.brave.com/search?q=test")!
-    XCTAssertEqual(WidgetSearchTabHelper.applyWidgetAttribution(url), url)
+    XCTAssertEqual(OpenSearchEngine.applyWidgetSearchAttribution(to: url), url)
   }
 
-  func testApplyWidgetAttribution_leavesOtherSourceValuesUnchanged() {
+  func testApplyWidgetSearchAttribution_leavesOtherSourceValuesUnchanged() {
     let url = URL(string: "https://search.brave.com/search?q=test&source=spotlight")!
-    XCTAssertEqual(WidgetSearchTabHelper.applyWidgetAttribution(url), url)
+    XCTAssertEqual(OpenSearchEngine.applyWidgetSearchAttribution(to: url), url)
   }
 
-  func testApplyWidgetAttribution_leavesNonBraveHostsUnchanged() {
+  func testApplyWidgetSearchAttribution_leavesNonBraveHostsUnchanged() {
     let url = URL(string: "https://www.google.com/search?q=test&source=ios")!
-    XCTAssertEqual(WidgetSearchTabHelper.applyWidgetAttribution(url), url)
+    XCTAssertEqual(OpenSearchEngine.applyWidgetSearchAttribution(to: url), url)
   }
 
-  func testApplyWidgetAttribution_doesNotMatchSpoofedHosts() {
+  func testApplyWidgetSearchAttribution_doesNotMatchSpoofedHosts() {
     let url = URL(string: "https://search.brave.com.evil.com/search?q=test&source=ios")!
-    XCTAssertEqual(WidgetSearchTabHelper.applyWidgetAttribution(url), url)
+    XCTAssertEqual(OpenSearchEngine.applyWidgetSearchAttribution(to: url), url)
   }
 }

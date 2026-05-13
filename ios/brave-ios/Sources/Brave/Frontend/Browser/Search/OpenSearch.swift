@@ -10,6 +10,13 @@ import UIKit
 private let typeSearch = "text/html"
 private let typeSuggest = "application/x-suggestions+json"
 
+private enum WidgetSearchAttribution {
+  static let host = "search.brave.com"
+  static let queryKey = "source"
+  static let appValue = "ios"
+  static let widgetValue = "ios-widget"
+}
+
 class OpenSearchEngine: NSObject, NSSecureCoding {
   static let preferredIconSize = 30
 
@@ -119,14 +126,39 @@ class OpenSearchEngine: NSObject, NSSecureCoding {
   func searchURLForQuery(
     _ query: String,
     locale: Locale = Locale.current,
-    isBraveSearchPromotion: Bool = false
+    isBraveSearchPromotion: Bool = false,
+    isWidgetSearchAttribution: Bool = false
   ) -> URL? {
     return getURLFromTemplate(
       searchTemplate,
       query: query,
       locale: locale,
-      isBraveSearchPromotion: isBraveSearchPromotion
+      isBraveSearchPromotion: isBraveSearchPromotion,
+      isWidgetSearchAttribution: isWidgetSearchAttribution
     )
+  }
+
+  /// Rewrites `source=ios` to `source=ios-widget` on `search.brave.com` (widget-initiated search attribution).
+  static func applyWidgetSearchAttribution(to url: URL?) -> URL? {
+    guard let url else { return nil }
+    guard url.host?.lowercased() == WidgetSearchAttribution.host,
+      var components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+      let items = components.queryItems,
+      items.contains(where: {
+        $0.name == WidgetSearchAttribution.queryKey && $0.value == WidgetSearchAttribution.appValue
+      })
+    else { return url }
+
+    components.queryItems = items.map { item in
+      (item.name == WidgetSearchAttribution.queryKey
+        && item.value == WidgetSearchAttribution.appValue)
+        ? URLQueryItem(
+          name: WidgetSearchAttribution.queryKey,
+          value: WidgetSearchAttribution.widgetValue
+        )
+        : item
+    }
+    return components.url ?? url
   }
 
   /// Return the arg that we use for searching for this engine
@@ -181,7 +213,8 @@ class OpenSearchEngine: NSObject, NSSecureCoding {
     _ searchTemplate: String,
     query: String,
     locale: Locale,
-    isBraveSearchPromotion: Bool = false
+    isBraveSearchPromotion: Bool = false,
+    isWidgetSearchAttribution: Bool = false
   ) -> URL? {
     guard let escapedQuery = query.addingPercentEncoding(withAllowedCharacters: .searchTermsAllowed)
     else {
@@ -228,6 +261,10 @@ class OpenSearchEngine: NSObject, NSSecureCoding {
 
     if isBraveSearchPromotion {
       searchUrl = searchUrl?.withQueryParam("action", value: "makeDefault")
+    }
+
+    if isWidgetSearchAttribution {
+      searchUrl = Self.applyWidgetSearchAttribution(to: searchUrl)
     }
 
     return searchUrl
