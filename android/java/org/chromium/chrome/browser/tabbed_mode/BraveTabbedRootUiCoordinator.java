@@ -39,6 +39,7 @@ import org.chromium.chrome.browser.keyboard_accessory.ManualFillingComponent;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.multiwindow.MultiInstanceManager;
+import org.chromium.chrome.browser.privacy.BraveBrowserLockManager;
 import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.safe_browsing.AdvancedProtectionCoordinator;
@@ -209,6 +210,11 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
         }
         mAdvancedProtectionCoordinator =
                 new AdvancedProtectionCoordinator(mWindowAndroid, BravePrivacySettings.class);
+
+        BraveBrowserLockManager lockManager = BraveBrowserLockManager.getInstance();
+        if (lockManager != null && mProfileSupplier.get() != null) {
+            lockManager.onNativeInitialized(mProfileSupplier.get());
+        }
     }
 
     @Override
