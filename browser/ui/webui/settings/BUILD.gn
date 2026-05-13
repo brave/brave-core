@@ -9,18 +9,17 @@ import("//brave/components/email_aliases/buildflags/buildflags.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 
 # Mojo interface backing the Brave-specific "Upload your own image" row on
-# `brave://settings/manageProfile`. Desktop-only — `settings-manage-profile`
-# is not built on Android.
+# `brave://settings/manageProfile`, plus the source_set that implements it.
+# Desktop-only — `settings-manage-profile` is not built on Android.
+#
+# `manage_profile` is split out of //brave/browser/ui per docs/gni_sources.md
+# (avoid new sources in the monolithic ui target; Semgrep ui_build_gn).
 if (!is_android) {
   mojom("mojo_bindings") {
     sources = [ "brave_manage_profile.mojom" ]
     webui_module_path = "/"
   }
-}
 
-# Split out of //brave/browser/ui per docs/gni_sources.md (avoid new sources
-# in the monolithic ui target; Semgrep ui_build_gn).
-if (!is_android) {
   source_set("manage_profile") {
     sources = [
       "brave_manage_profile_handler.cc",
@@ -32,9 +31,7 @@ if (!is_android) {
     deps = [
       "//base",
       "//chrome/browser:browser_process",
-      "//chrome/browser/image_decoder",
       "//chrome/browser/profiles:profile_manager",
-      "//chrome/browser/profiles:profile_util",
       "//content/public/browser",
       "//mojo/public/cpp/bindings",
       "//skia",
@@ -42,7 +39,14 @@ if (!is_android) {
       "//ui/gfx",
     ]
 
-    public_deps = [ ":mojo_bindings" ]
+    # `brave_manage_profile_handler.h` derives from `ImageDecoder::ImageRequest`
+    # and `ProfileAttributesStorage::Observer`, so consumers transitively need
+    # those headers.
+    public_deps = [
+      ":mojo_bindings",
+      "//chrome/browser/image_decoder",
+      "//chrome/browser/profiles:profile_util",
+    ]
   }
 }
 
