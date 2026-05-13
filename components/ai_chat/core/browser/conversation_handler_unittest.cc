@@ -5158,7 +5158,7 @@ class ConversationHandlerSkillImageUploadTest
 // pinned skill model; the test asserts the final model key and whether a
 // ChangeModel call fired during submit.
 TEST_P(ConversationHandlerSkillImageUploadTest, ResolvesModelAndPlumbsImage) {
-  const auto& tc = GetParam();
+  const auto& test_params = GetParam();
   conversation_handler_->associated_content_manager()->ClearContent();
 
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
@@ -5167,7 +5167,7 @@ TEST_P(ConversationHandlerSkillImageUploadTest, ResolvesModelAndPlumbsImage) {
   base::RunLoop setup_loop;
   EXPECT_CALL(client, OnModelDataChanged)
       .WillOnce(testing::InvokeWithoutArgs(&setup_loop, &base::RunLoop::Quit));
-  conversation_handler_->ChangeModel(tc.starting_model);
+  conversation_handler_->ChangeModel(test_params.starting_model);
   setup_loop.Run();
   testing::Mock::VerifyAndClearExpectations(&client);
   conversation_handler_->SetEngineForTesting(
@@ -5177,8 +5177,8 @@ TEST_P(ConversationHandlerSkillImageUploadTest, ResolvesModelAndPlumbsImage) {
 
   // Add a skill to prefs
   std::optional<std::string> pinned;
-  if (tc.skill_pinned_model) {
-    pinned = std::string(*tc.skill_pinned_model);
+  if (test_params.skill_pinned_model) {
+    pinned = std::string(*test_params.skill_pinned_model);
   }
   prefs::AddSkillToPrefs("describe", "Describe what you see in this image",
                          pinned, prefs_);
@@ -5190,7 +5190,7 @@ TEST_P(ConversationHandlerSkillImageUploadTest, ResolvesModelAndPlumbsImage) {
 
   // Model change notification expectations during submit.
   EXPECT_CALL(client, OnModelDataChanged)
-      .Times(tc.expects_model_change_during_submit ? 1 : 0);
+      .Times(test_params.expects_model_change_during_submit ? 1 : 0);
 
   // Mock successful response. AtMost(1) because a ChangeModel inside submit
   // replaces the mock engine, in which case the original mock never fires
@@ -5226,14 +5226,15 @@ TEST_P(ConversationHandlerSkillImageUploadTest, ResolvesModelAndPlumbsImage) {
 
   // Verify final model resolution and that vision support is guaranteed.
   EXPECT_EQ(conversation_handler_->GetCurrentModel().key,
-            tc.expected_final_model_key);
+            test_params.expected_final_model_key);
   EXPECT_TRUE(conversation_handler_->GetCurrentModel().vision_support);
 
   // Verify conversation history contains both skill data and uploaded files.
   // When ChangeModel replaces the engine mid-submit, the assistant turn
   // never completes, so only the human turn is present in those cases.
   const auto& history = conversation_handler_->GetConversationHistory();
-  const size_t expected_size = tc.expects_model_change_during_submit ? 1u : 2u;
+  const size_t expected_size =
+      test_params.expects_model_change_during_submit ? 1u : 2u;
   EXPECT_EQ(history.size(), expected_size);
   EXPECT_EQ(history[0]->text, "/describe photo");
   ASSERT_TRUE(history[0]->skill);
@@ -6532,7 +6533,7 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
     ConversationCapabilitySet expected_capabilities;
   };
 
-  const std::vector<TestCase> test_cases = {
+  const std::vector<TestCase> test_paramss = {
       {
           "Chat",
           /*is_content_agent_allowed=*/false,
@@ -6563,18 +6564,18 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
       },
   };
 
-  for (const auto& test_case : test_cases) {
-    SCOPED_TRACE(test_case.name);
+  for (const auto& test_params : test_paramss) {
+    SCOPED_TRACE(test_params.name);
 
     base::test::ScopedFeatureList feature_list;
-    if (test_case.deep_research_enabled) {
+    if (test_params.deep_research_enabled) {
       feature_list.InitAndEnableFeature(features::kAIChatDeepResearch);
     } else {
       feature_list.InitAndDisableFeature(features::kAIChatDeepResearch);
     }
 
     ai_chat_service_->SetIsContentAgentAllowed(
-        test_case.is_content_agent_allowed);
+        test_params.is_content_agent_allowed);
 
     mock_tool_provider_ = nullptr;
     std::vector<std::unique_ptr<ToolProvider>> tool_providers;
@@ -6599,10 +6600,10 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
         conversation_handler_->GetEngineForTesting());
 
     base::RunLoop run_loop;
-    EXPECT_CALL(
-        *engine,
-        GenerateAssistantResponse(
-            _, _, _, _, _, testing::Eq(test_case.expected_capabilities), _, _))
+    EXPECT_CALL(*engine,
+                GenerateAssistantResponse(
+                    _, _, _, _, _,
+                    testing::Eq(test_params.expected_capabilities), _, _))
         .WillOnce(testing::WithArg<7>(
             [&run_loop](EngineConsumer::GenerationCompletedCallback callback) {
               std::move(callback).Run(
