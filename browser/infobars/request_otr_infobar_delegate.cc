@@ -43,7 +43,7 @@ RequestOTRInfoBarDelegate::GetIdentifier() const {
 }
 
 const gfx::VectorIcon& RequestOTRInfoBarDelegate::GetVectorIcon() const {
-  return views::kInfoIcon;
+  return views::kInfoOldIcon;
 }
 
 std::u16string RequestOTRInfoBarDelegate::GetMessageText() const {
