@@ -80,24 +80,26 @@ TEST_F(ProfileAttributesTimePeriodStoreTest, ClearStore) {
   EXPECT_FALSE(store.Get());
 }
 
-TEST_F(ProfileAttributesTimePeriodStoreTest, GetUninitializedStore) {
+TEST_F(ProfileAttributesTimePeriodStoreTest,
+       GetReturnsEmptyListOnCleanProfile) {
   ProfileAttributesTimePeriodStore store(
       profile_path(), profile_attributes_storage(), kMetricName);
-  EXPECT_FALSE(store.Get());
+  ASSERT_TRUE(store.Get());
+  EXPECT_TRUE(store.Get()->empty());
 }
 
 TEST_F(ProfileAttributesTimePeriodStoreTest, SetStoresWithDifferentKeys) {
-  ProfileAttributesTimePeriodStore store1(
+  ProfileAttributesTimePeriodStore store_1(
       profile_path(), profile_attributes_storage(), kMetricName);
-  ProfileAttributesTimePeriodStore store2(
+  ProfileAttributesTimePeriodStore store_2(
       profile_path(), profile_attributes_storage(), "other_testing_metric");
-  store1.Set(base::ListValue().Append(1));
-  store2.Set(base::ListValue().Append(2).Append(3));
+  store_1.Set(base::ListValue().Append(1));
+  store_2.Set(base::ListValue().Append(2).Append(3));
 
-  ASSERT_TRUE(store1.Get());
-  EXPECT_THAT(*store1.Get(), ::testing::ElementsAre(1));
-  ASSERT_TRUE(store2.Get());
-  EXPECT_THAT(*store2.Get(), ::testing::ElementsAre(2, 3));
+  ASSERT_TRUE(store_1.Get());
+  EXPECT_THAT(*store_1.Get(), ::testing::ElementsAre(1));
+  ASSERT_TRUE(store_2.Get());
+  EXPECT_THAT(*store_2.Get(), ::testing::ElementsAre(2, 3));
 }
 
 }  // namespace serp_metrics
