@@ -185,7 +185,7 @@ BraveBrowserViewTabbedLayoutImpl::CalculateProposedLayout(
     // This is Brave specific view so the layout shouldn't be populated by
     // upstream's logic.
     CHECK(!layout.GetLayoutFor(views().vertical_tab_strip_host));
-    layout.AddChild(views().vertical_tab_strip_host, gfx::Rect());
+    layout.AddChild(views().vertical_tab_strip_host, gfx::Rect(), false);
   }
 
   // Adjust infobar layout if vertical tabs are shown. i.e. sets insets to
