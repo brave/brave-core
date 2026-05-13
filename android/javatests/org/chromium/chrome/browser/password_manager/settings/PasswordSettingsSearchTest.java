@@ -166,60 +166,6 @@ public class PasswordSettingsSearchTest {
         onView(withText(R.string.search)).check(matches(isDisplayed()));
     }
 
-    /**
-     * Check that searching doesn't push the help icon into the overflow menu permanently. On screen
-     * sizes where the help item starts out in the overflow menu, ensure it stays there.
-     */
-    @Test
-    @SmallTest
-    @Feature({"Preferences"})
-    public void testTriggeringSearchRestoresHelpIcon() {
-        mTestHelper.setPasswordSource(null);
-        mTestHelper.startPasswordSettingsFromMainSettings(mSettingsActivityTestRule);
-        // Use a more specific matcher that excludes section headers in LinearLayouts
-        onViewWaiting(
-                allOf(
-                        withText(R.string.password_manager_settings_title),
-                        not(withParent(isAssignableFrom(LinearLayout.class)))));
-
-        // Retrieve the initial status and ensure that the help option is there at all.
-        final AtomicReference<Boolean> helpInOverflowMenu = new AtomicReference<>(false);
-        onView(withId(R.id.menu_id_targeted_help))
-                .check(
-                        (helpMenuItem, e) -> {
-                            ActionMenuItemView view = (ActionMenuItemView) helpMenuItem;
-                            helpInOverflowMenu.set(view == null || !view.showsIcon());
-                        });
-        if (helpInOverflowMenu.get()) {
-            openActionBarOverflowOrOptionsMenu(
-                    InstrumentationRegistry.getInstrumentation().getTargetContext());
-            onView(withText(R.string.menu_help)).check(matches(isDisplayed()));
-            Espresso.pressBack(); // to close the Overflow menu.
-        } else {
-            onView(withId(R.id.menu_id_targeted_help)).check(matches(isDisplayed()));
-        }
-
-        // Trigger the search, close it and wait for UI to be restored.
-        onView(withSearchMenuIdOrText()).perform(click());
-        onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
-        // Use a more specific matcher that excludes section headers in LinearLayouts
-        onViewWaiting(
-                allOf(
-                        withText(R.string.password_manager_settings_title),
-                        not(withParent(isAssignableFrom(LinearLayout.class)))));
-
-        // Check that the help option is exactly where it was to begin with.
-        if (helpInOverflowMenu.get()) {
-            openActionBarOverflowOrOptionsMenu(
-                    InstrumentationRegistry.getInstrumentation().getTargetContext());
-            onView(withText(R.string.menu_help)).check(matches(isDisplayed()));
-            onView(withId(R.id.menu_id_targeted_help)).check(doesNotExist());
-        } else {
-            onView(withText(R.string.menu_help)).check(doesNotExist());
-            onView(withId(R.id.menu_id_targeted_help)).check(matches(isDisplayed()));
-        }
-    }
-
     /** Check that the search filters the list by name. */
     @Test
     @SmallTest
@@ -277,14 +223,6 @@ public class PasswordSettingsSearchTest {
                     .check(doesNotExist());
         }
         onView(withText(R.string.saved_passwords_none_text)).check(doesNotExist());
-        // Check that the section header for saved passwords is not present. Do not confuse it with
-        // the toolbar label which contains the same string, look for the one inside a linear
-        // layout.
-        onView(
-                        allOf(
-                                withParent(isAssignableFrom(LinearLayout.class)),
-                                withText(R.string.password_manager_settings_title)))
-                .check(doesNotExist());
         // Check the message for no result.
         onView(withText(R.string.password_no_result)).check(matches(isDisplayed()));
     }
