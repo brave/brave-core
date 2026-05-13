@@ -17,6 +17,7 @@ import { BraveWallet, SignDataSteps } from '../../../constants/types'
 // Utils
 import { getLocale } from '../../../../common/locale'
 import { unicodeEscape, hasUnicode } from '../../../utils/string-utils'
+import { isPermitLikeEthSignTypedData } from '../../../utils/sign_utils'
 import {
   useGetIsTxSimulationOptInStatusQuery,
   useGetNetworkQuery,
@@ -189,7 +190,7 @@ export const SignPanel = (props: Props) => {
   React.useEffect(() => {
     if (
       showWarning
-      || ethSignTypedData?.primaryType === 'Permit'
+      || isPermitLikeEthSignTypedData(ethSignTypedData)
       || (cardanoSignTypedData && network?.coin === BraveWallet.CoinType.ADA)
     ) {
       setSignStep(SignDataSteps.SignRisk)

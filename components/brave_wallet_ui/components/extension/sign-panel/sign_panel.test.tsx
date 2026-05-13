@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import '@testing-library/jest-dom'
 import { render, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
@@ -15,7 +16,10 @@ import {
   mockCardanoAccount, //
 } from '../../../stories/mock-data/mock-wallet-accounts'
 import { mockOriginInfo } from '../../../stories/mock-data/mock-origin-info'
-import { mockSolanaAccount } from '../../../common/constants/mocks'
+import {
+  mockEthAccount,
+  mockSolanaAccount,
+} from '../../../common/constants/mocks'
 
 // Utils
 import BraveCoreThemeProvider from '../../../../common/BraveCoreThemeProvider'
@@ -23,6 +27,23 @@ import { createMockStore } from '../../../utils/test-utils'
 
 // Components
 import { SignPanel } from './index'
+
+function makeEthSignTypedData(
+  overrides: Partial<BraveWallet.EthSignTypedData>,
+): BraveWallet.EthSignTypedData {
+  return {
+    addressParam: '0x',
+    chainId: '1',
+    domainHash: [],
+    domainJson: '{}',
+    messageJson: '{}',
+    meta: undefined,
+    primaryHash: [],
+    primaryType: 'Person',
+    typesJson: '{}',
+    ...overrides,
+  }
+}
 
 const signCardanoMessageData: BraveWallet.SignMessageRequest = {
   id: 0,
@@ -53,6 +74,92 @@ const signSolanaMessageData: BraveWallet.SignMessageRequest = {
       message: 'Test Solana Sign Data',
       messageBytes: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     },
+    ethSiweData: undefined,
+    ethStandardSignData: undefined,
+    cardanoSignData: undefined,
+  },
+}
+
+const signEthPermitTypedDataRequest: BraveWallet.SignMessageRequest = {
+  id: 0,
+  accountId: mockEthAccount.accountId,
+  originInfo: mockOriginInfo,
+  coin: BraveWallet.CoinType.ETH,
+  chainId: BraveWallet.MAINNET_CHAIN_ID,
+  signData: {
+    ethSignTypedData: makeEthSignTypedData({
+      primaryType: 'Permit',
+      typesJson: '{}',
+    }),
+    solanaSignData: undefined,
+    ethSiweData: undefined,
+    ethStandardSignData: undefined,
+    cardanoSignData: undefined,
+  },
+}
+
+const signEthTransferWithAuthorizationRequest: BraveWallet.SignMessageRequest =
+  {
+    id: 0,
+    accountId: mockEthAccount.accountId,
+    originInfo: mockOriginInfo,
+    coin: BraveWallet.CoinType.ETH,
+    chainId: BraveWallet.MAINNET_CHAIN_ID,
+    signData: {
+      ethSignTypedData: makeEthSignTypedData({
+        primaryType: 'TransferWithAuthorization',
+        typesJson: '{}',
+      }),
+      solanaSignData: undefined,
+      ethSiweData: undefined,
+      ethStandardSignData: undefined,
+      cardanoSignData: undefined,
+    },
+  }
+
+const signEthNestedPermit2Request: BraveWallet.SignMessageRequest = {
+  id: 0,
+  accountId: mockEthAccount.accountId,
+  originInfo: mockOriginInfo,
+  coin: BraveWallet.CoinType.ETH,
+  chainId: BraveWallet.MAINNET_CHAIN_ID,
+  signData: {
+    ethSignTypedData: makeEthSignTypedData({
+      primaryType: 'Nested',
+      typesJson: JSON.stringify({
+        Nested: [{ name: 'permit', type: 'PermitSingle' }],
+        PermitSingle: [
+          { name: 'details', type: 'PermitDetails' },
+          { name: 'spender', type: 'address' },
+          { name: 'sigDeadline', type: 'uint256' },
+        ],
+      }),
+    }),
+    solanaSignData: undefined,
+    ethSiweData: undefined,
+    ethStandardSignData: undefined,
+    cardanoSignData: undefined,
+  },
+}
+
+const signEthPermitShapeTypedDataRequest: BraveWallet.SignMessageRequest = {
+  id: 0,
+  accountId: mockEthAccount.accountId,
+  originInfo: mockOriginInfo,
+  coin: BraveWallet.CoinType.ETH,
+  chainId: BraveWallet.MAINNET_CHAIN_ID,
+  signData: {
+    ethSignTypedData: makeEthSignTypedData({
+      primaryType: 'CustomPermit',
+      typesJson: JSON.stringify({
+        CustomPermit: [
+          { name: 'owner', type: 'address' },
+          { name: 'spender', type: 'address' },
+          { name: 'value', type: 'uint256' },
+        ],
+      }),
+    }),
+    solanaSignData: undefined,
     ethSiweData: undefined,
     ethStandardSignData: undefined,
     cardanoSignData: undefined,
@@ -131,5 +238,101 @@ describe('SignTypedDataPanel', () => {
     expect(
       screen.getByText('braveWalletSignTransactionButton'),
     ).toBeInTheDocument()
+  })
+
+  it('Should show sign risk warning for EIP-712 Permit primary type', async () => {
+    const store = createMockStore({})
+    const { container } = render(
+      <Provider store={store}>
+        <BraveCoreThemeProvider>
+          <SignPanel
+            signMessageData={[signEthPermitTypedDataRequest]}
+            showWarning={false}
+          />
+        </BraveCoreThemeProvider>
+      </Provider>,
+    )
+
+    await waitFor(() => {
+      expect(container).toBeVisible()
+      expect(screen.getByText('Ethereum Mainnet')).toBeInTheDocument()
+      expect(
+        screen.getByText('braveWalletSignWarningTitle'),
+      ).toBeInTheDocument()
+      expect(screen.getByText('braveWalletSignWarning')).toBeInTheDocument()
+      expect(screen.getByText('braveWalletButtonContinue')).toBeInTheDocument()
+    })
+  })
+
+  it('Should show sign risk warning for EIP-3009 TransferWithAuthorization', async () => {
+    const store = createMockStore({})
+    const { container } = render(
+      <Provider store={store}>
+        <BraveCoreThemeProvider>
+          <SignPanel
+            signMessageData={[signEthTransferWithAuthorizationRequest]}
+            showWarning={false}
+          />
+        </BraveCoreThemeProvider>
+      </Provider>,
+    )
+
+    await waitFor(() => {
+      expect(container).toBeVisible()
+      expect(screen.getByText('Ethereum Mainnet')).toBeInTheDocument()
+      expect(
+        screen.getByText('braveWalletSignWarningTitle'),
+      ).toBeInTheDocument()
+      expect(screen.getByText('braveWalletSignWarning')).toBeInTheDocument()
+      expect(screen.getByText('braveWalletButtonContinue')).toBeInTheDocument()
+    })
+  })
+
+  it('Should show sign risk warning for permit-shaped EIP-712 message', async () => {
+    const store = createMockStore({})
+    const { container } = render(
+      <Provider store={store}>
+        <BraveCoreThemeProvider>
+          <SignPanel
+            signMessageData={[signEthPermitShapeTypedDataRequest]}
+            showWarning={false}
+          />
+        </BraveCoreThemeProvider>
+      </Provider>,
+    )
+
+    await waitFor(() => {
+      expect(container).toBeVisible()
+      expect(screen.getByText('Ethereum Mainnet')).toBeInTheDocument()
+      expect(
+        screen.getByText('braveWalletSignWarningTitle'),
+      ).toBeInTheDocument()
+      expect(screen.getByText('braveWalletSignWarning')).toBeInTheDocument()
+      expect(screen.getByText('braveWalletButtonContinue')).toBeInTheDocument()
+    })
+  })
+
+  it('Should show sign risk warning when permit2 is nested under benign primary type', async () => {
+    const store = createMockStore({})
+    const { container } = render(
+      <Provider store={store}>
+        <BraveCoreThemeProvider>
+          <SignPanel
+            signMessageData={[signEthNestedPermit2Request]}
+            showWarning={false}
+          />
+        </BraveCoreThemeProvider>
+      </Provider>,
+    )
+
+    await waitFor(() => {
+      expect(container).toBeVisible()
+      expect(screen.getByText('Ethereum Mainnet')).toBeInTheDocument()
+      expect(
+        screen.getByText('braveWalletSignWarningTitle'),
+      ).toBeInTheDocument()
+      expect(screen.getByText('braveWalletSignWarning')).toBeInTheDocument()
+      expect(screen.getByText('braveWalletButtonContinue')).toBeInTheDocument()
+    })
   })
 })
