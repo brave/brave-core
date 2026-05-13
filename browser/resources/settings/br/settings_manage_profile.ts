@@ -57,11 +57,11 @@ const kBraveCustomAvatarStyleCss = `
   }
 
   #braveCustomAvatarPreview.is-selected {
-    border-color: var(--leo-color-primary-50, #4c54d2);
+    border-color: var(--leo-color-primary-50);
   }
 
   #braveCustomAvatarPreview .placeholder {
-    color: var(--leo-color-text-tertiary, #6b7280);
+    color: var(--leo-color-text-tertiary);
     font-size: 28px;
     font-weight: 600;
     user-select: none;
@@ -74,9 +74,9 @@ const kBraveCustomAvatarStyleCss = `
 
   #braveCustomAvatarPreview .upload-spinner {
     animation: brave-custom-avatar-spin 0.75s linear infinite;
-    border: 3px solid var(--leo-color-divider-subtle, rgba(0, 0, 0, 0.12));
+    border: 3px solid var(--leo-color-divider-subtle);
     border-radius: 50%;
-    border-top-color: var(--leo-color-primary-50, #4c54d2);
+    border-top-color: var(--leo-color-primary-50);
     box-sizing: border-box;
     display: none;
     flex-shrink: 0;
@@ -100,8 +100,8 @@ const kBraveCustomAvatarStyleCss = `
 
   #braveCustomAvatarPreview .check-badge {
     align-items: center;
-    background: var(--leo-color-primary-50, #4c54d2);
-    border: 2px solid var(--leo-color-page-background, #fff);
+    background: var(--leo-color-primary-50);
+    border: 2px solid var(--leo-color-page-background);
     border-radius: 50%;
     color: #fff;
     display: none;
@@ -143,7 +143,7 @@ const kBraveCustomAvatarStyleCss = `
   #braveCustomAvatarRemoveBtn {
     border-radius: var(--leo-radius-full);
     cursor: pointer;
-    font: var(--leo-font-components-button-small, inherit);
+    font: var(--leo-font-components-button-small);
     min-height: 32px;
     padding: 0 var(--leo-spacing-l);
   }
@@ -151,7 +151,7 @@ const kBraveCustomAvatarStyleCss = `
   #braveCustomAvatarUploadBtn {
     background: var(--leo-color-button-background);
     border: none;
-    color: var(--leo-color-schemes-on-primary, #fff);
+    color: var(--leo-color-schemes-on-primary);
   }
 
   #braveCustomAvatarRemoveBtn {
