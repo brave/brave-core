@@ -64,6 +64,10 @@ class TreeTabNode {
   void CollectUncollapsedDescendantIds(
       std::vector<tree_tab::TreeTabNodeId>& out);
 
+  // Returns the id of the parent TreeTabNode, or nullopt if this node is a
+  // root (direct child of UnpinnedTabCollection or PinnedTabCollection).
+  std::optional<tree_tab::TreeTabNodeId> GetParentTreeNodeId() const;
+
   // Exposes the calculation of level and height to TreeTabNodeTabCollection.
   int CalculateLevelAndHeightRecursively(
       base::PassKey<TreeTabNodeTabCollection> pass_key);

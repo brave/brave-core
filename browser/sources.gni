@@ -723,6 +723,18 @@ if (is_mac) {
   brave_chrome_framework_bundle_deps = [ "//brave:framework_bundle_data" ]
 }
 
+if (!is_android) {
+  # Tree-tab session persistence helpers (desktop only, requires session
+  # service which is not available on Android).
+  brave_chrome_browser_sources += [
+    "//brave/browser/sessions/brave_session_tree_tab_helper.cc",
+    "//brave/browser/sessions/brave_session_tree_tab_helper.h",
+    "//brave/browser/sessions/brave_tree_tab_restore_helper.cc",
+    "//brave/browser/sessions/brave_tree_tab_restore_helper.h",
+    "//brave/browser/sessions/brave_tree_tab_session_keys.h",
+  ]
+}
+
 brave_chrome_browser_sources += brave_browser_profiles_sources
 brave_chrome_browser_sources += brave_browser_autocomplete_sources
 brave_chrome_browser_sources += brave_browser_brave_news_sources

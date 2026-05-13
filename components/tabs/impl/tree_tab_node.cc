@@ -35,6 +35,25 @@ int TreeTabNode::GetTreeHeight() const {
   return collection_->GetTopLevelAncestor()->node().height();
 }
 
+std::optional<tree_tab::TreeTabNodeId> TreeTabNode::GetParentTreeNodeId()
+    const {
+  // Walk up the collection hierarchy to find the nearest TREE_NODE ancestor.
+  // Stop if we reach an UNPINNED or TABSTRIP collection (tree root boundary).
+  const TabCollection* parent = collection_->GetParentCollection();
+  while (parent) {
+    if (parent->type() == TabCollection::Type::TREE_NODE) {
+      return static_cast<const TreeTabNodeTabCollection*>(parent)->node().id();
+    }
+    if (parent->type() == TabCollection::Type::UNPINNED ||
+        parent->type() == TabCollection::Type::PINNED ||
+        parent->type() == TabCollection::Type::TABSTRIP) {
+      break;
+    }
+    parent = parent->GetParentCollection();
+  }
+  return std::nullopt;
+}
+
 std::vector<const TabInterface*> TreeTabNode::GetTabs() const {
   const auto& value = collection_->current_value();
   if (!value.has_value()) {
