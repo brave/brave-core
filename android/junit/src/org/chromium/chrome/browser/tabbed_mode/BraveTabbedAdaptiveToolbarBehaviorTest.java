@@ -7,14 +7,14 @@ package org.chromium.chrome.browser.tabbed_mode;
 
 import static org.junit.Assert.assertEquals;
 
-import android.content.Context;
+import android.app.Activity;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.robolectric.RuntimeEnvironment;
+import org.robolectric.Robolectric;
 
 import org.chromium.base.supplier.ObservableSuppliers;
 import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
@@ -42,7 +42,7 @@ public class BraveTabbedAdaptiveToolbarBehaviorTest {
 
     @Before
     public void setUp() {
-        Context context = RuntimeEnvironment.getApplication();
+        Activity activity = Robolectric.setupActivity(Activity.class);
         AdaptiveToolbarBehavior.sValidButtons.clear();
 
         SettableNullableObservableSupplier<BookmarkModel> bookmarkModelSupplier =
@@ -59,7 +59,7 @@ public class BraveTabbedAdaptiveToolbarBehaviorTest {
 
         mBehavior =
                 new BraveTabbedAdaptiveToolbarBehavior(
-                        context,
+                        activity,
                         lifecycleDispatcher,
                         tabCreatorManagerSupplier,
                         () -> null,
