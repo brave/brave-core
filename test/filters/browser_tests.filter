@@ -2152,6 +2152,16 @@
 # This test is flakey upstream due to https://issues.chromium.org/issues/511493422
 -IFrameTest.FileChooserInDestroyedSubframe
 
+# These tests fail because a cr149 change in the tests swaps GCMProfileService
+# to a fake one after creating a test profile. However our EphemeralService has
+# a dependency chain on SyncInvalidationsService that creates an FCMHandler
+# that stores a pointer to GCMDriver, so when the swap happens that pointer
+# becomes invalid and when SyncInvalidationsService cleans it up in d'tor it
+# causes a crash.
+# https://source.chromium.org/chromium/chromium/src/+/23f0c1d6
+-NonWorkerExtension/ExtensionsPushMessagingServiceTest.*
+-WorkerExtension/ExtensionsPushMessagingServiceTest.*
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AdsPageLoadMetricsObserverBrowserTest.*
 -AdsPageLoadMetricsObserverSurfaceBrowserTest.DetectedAsAd/*
