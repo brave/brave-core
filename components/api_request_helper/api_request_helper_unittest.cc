@@ -17,9 +17,13 @@
 #include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "net/base/load_flags.h"
+#include "net/http/http_response_headers.h"
+#include "net/http/http_status_code.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
+#include "services/network/public/cpp/url_loader_completion_status.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
+#include "services/network/public/mojom/url_response_head.mojom.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -62,10 +66,11 @@ class ApiRequestHelperUnitTest : public testing::Test {
                       const GURL& expected_url,
                       const std::string& content_to_respond,
                       bool enable_cache,
-                      net::HttpStatusCode status = net::HTTP_OK) {
+                      net::HttpStatusCode status = net::HTTP_OK,
+                      std::optional<std::string> content_type = std::nullopt) {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [&, expected_method, expected_url, content_to_respond, enable_cache,
-         status](const network::ResourceRequest& request) {
+         status, content_type](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
           EXPECT_EQ(request.url, expected_url);
           EXPECT_EQ(request.method, expected_method);
@@ -76,8 +81,21 @@ class ApiRequestHelperUnitTest : public testing::Test {
                                               net::LOAD_BYPASS_CACHE |
                                               net::LOAD_DISABLE_CACHE);
           }
-          url_loader_factory_.AddResponse(request.url.spec(),
-                                          content_to_respond, status);
+          if (content_type) {
+            auto head = network::mojom::URLResponseHead::New();
+            head->headers = base::MakeRefCounted<net::HttpResponseHeaders>("");
+            head->headers->ReplaceStatusLine(
+                "HTTP/1.1 " + base::NumberToString(static_cast<int>(status)) +
+                " " + std::string(net::GetHttpReasonPhrase(status)));
+            head->headers->SetHeader("Content-Type", *content_type);
+            head->mime_type = *content_type;
+            url_loader_factory_.AddResponse(
+                request.url, std::move(head), content_to_respond,
+                network::URLLoaderCompletionStatus(net::OK));
+          } else {
+            url_loader_factory_.AddResponse(request.url.spec(),
+                                            content_to_respond, status);
+          }
         }));
   }
 
@@ -378,7 +396,7 @@ TEST_F(ApiRequestHelperUnitTest, SSEJsonParsingEscapedDoubleLineBreaks) {
 TEST_F(ApiRequestHelperUnitTest, SSE400WithJsonErrorBody) {
   SetInterceptor("POST", GURL("http://localhost/"),
                  R"({"error":{"type":1234,"message":"bad"}})", false,
-                 net::HTTP_BAD_REQUEST);
+                 net::HTTP_BAD_REQUEST, "application/json");
 
   base::RunLoop run_loop;
   api_request_helper_->RequestSSE(

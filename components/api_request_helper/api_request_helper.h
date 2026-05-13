@@ -167,7 +167,7 @@ class APIRequestHelper {
     ResponseConversionCallback conversion_callback_;
 
     bool is_sse_ = false;
-    std::optional<bool> is_response_success_;
+    std::optional<bool> is_response_fail_and_json_;
     base::Value error_value_;
 
     // Buffer for partial SSE lines across OnDataReceived calls.

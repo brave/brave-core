@@ -359,7 +359,9 @@ void APIRequestHelper::URLLoaderHandler::RegisterURLLoader(
           }
           if (response_head.headers) {
             const auto code = response_head.headers->response_code();
-            handler->is_response_success_ = IsSuccessCode(code);
+            handler->is_response_fail_and_json_ =
+                !IsSuccessCode(code) &&
+                response_head.mime_type == "application/json";
           }
           if (handler->response_started_callback_) {
             std::move(handler->response_started_callback_)
@@ -398,10 +400,6 @@ void APIRequestHelper::URLLoaderHandler::OnDataReceived(
     base::OnceClosure resume) {
   DVLOG(2) << "[[" << __func__ << "]]" << " Chunk received";
   if (is_sse_) {
-    if (MaybeParseErrorBody(string_piece)) {
-      std::move(resume).Run();
-      return;
-    }
     ParseSSE(string_piece);
   } else {
     DVLOG(4) << "Chunk content: \n" << string_piece;
@@ -515,10 +513,7 @@ void APIRequestHelper::URLLoaderHandler::OnParseJsonResponse(
 
 bool APIRequestHelper::URLLoaderHandler::MaybeParseErrorBody(
     std::string_view string_piece) {
-  if (!is_response_success_.has_value() || *is_response_success_) {
-    return false;
-  }
-  if (!string_piece.starts_with('{') || !string_piece.ends_with('}')) {
+  if (!is_response_fail_and_json_.has_value() || !*is_response_fail_and_json_) {
     return false;
   }
   current_decoding_operation_count_++;
