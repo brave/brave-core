@@ -52,9 +52,6 @@ import java.util.Map;
 
 public class AppearancePreferences extends AppearanceSettingsFragment
         implements Preference.OnPreferenceChangeListener, BraveRewardsObserver {
-    public static final String PREF_HIDE_BRAVE_REWARDS_ICON = "hide_brave_rewards_icon";
-    public static final String PREF_HIDE_BRAVE_REWARDS_ICON_MIGRATION =
-            "hide_brave_rewards_icon_migration";
     public static final String PREF_SHOW_BRAVE_REWARDS_ICON = "show_brave_rewards_icon";
     public static final String PREF_ADDRESS_BAR = "address_bar";
     /* package */ static final String PREF_ADS_SWITCH = "ads_switch";
