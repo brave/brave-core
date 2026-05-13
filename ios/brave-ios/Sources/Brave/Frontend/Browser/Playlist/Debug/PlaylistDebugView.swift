@@ -25,6 +25,9 @@ struct PlaylistDebugView: View {
   @State
   private var isDeletingCaches = false
 
+  @State
+  private var isShowingPlaylistFiles = false
+
   private var formatter: NumberFormatter {
     return NumberFormatter().then {
       $0.numberStyle = .decimal
@@ -198,6 +201,24 @@ struct PlaylistDebugView: View {
         }
       }
       .disabled(isGenerating || isDeletingItems || isDeletingCaches)
+
+      Button {
+        isShowingPlaylistFiles = true
+      } label: {
+        Text("Manage Playlist Files")
+          .foregroundStyle(Color(braveSystemName: .tertiary5))
+          .padding()
+          .background(
+            ContainerRelativeShape()
+              .fill(Color(braveSystemName: .iconInteractive))
+              .shadow(color: Color.black.opacity(0.25), radius: 8.0, x: 0.0, y: 1.0)
+          )
+          .containerShape(RoundedRectangle(cornerRadius: 8.0, style: .continuous))
+      }
+      .padding(.top, 60)
+      .sheet(isPresented: $isShowingPlaylistFiles) {
+        PlaylistDebugFilesView()
+      }
     }
     .padding()
   }
