@@ -72,8 +72,14 @@
   <message name="IDS_CUSTOM_MODEL_ENDPOINT_INVALID_ERROR" desc="An error presented when the model endpoint is invalid" formatter_data="webui=AiChat">
     This model has an invalid endpoint. Please check your configuration and try again.
   </message>
-  <message name="IDS_CHAT_UI_ERROR_NETWORK" desc="An error presented when there is a network issue in the UI" formatter_data="webui=AiChat">
-     There was a network issue connecting to Leo, check your connection and try again.
+  <message name="IDS_CHAT_UI_ERROR_NETWORK" desc="An error presented when a request to Leo fails due to a network or server issue" formatter_data="webui=AiChat">
+     Something went wrong while communicating with Leo. Please try again.
+  </message>
+  <message name="IDS_CHAT_UI_ERROR_NETWORK_DETAILS" desc="Error details showing HTTP status code and API error code" formatter_data="webui=AiChat">
+    Status code: <ph name="STATUS_CODE">$1<ex>500</ex></ph>, error code: <ph name="ERROR_CODE">$2<ex>1234</ex></ph>
+  </message>
+  <message name="IDS_CHAT_UI_ERROR_NETWORK_STATUS_CODE" desc="Error details showing only HTTP status code when no API error code is available" formatter_data="webui=AiChat">
+    Status code: <ph name="STATUS_CODE">$1<ex>500</ex></ph>
   </message>
   <message name="IDS_CHAT_UI_ERROR_RATE_LIMIT" desc="An error presented when the user has exhausted the API request limit" formatter_data="webui=AiChat">
     You've reached the premium rate limit. Please try again in a few hours.

@@ -119,10 +119,13 @@ class ConversationAPIV2Client {
   std::optional<std::string> GetLeoModelKeyFromResponse(
       const base::DictValue& response);
 
+  void ParseErrorCode(const base::Value& body);
+
   const std::string model_name_;
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
   raw_ptr<AIChatCredentialManager> credential_manager_;
   raw_ptr<ModelService> model_service_;
+  std::optional<int32_t> last_error_code_;
 
   base::WeakPtrFactory<ConversationAPIV2Client> weak_ptr_factory_{this};
 };

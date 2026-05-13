@@ -38,6 +38,10 @@ namespace {
 
 const unsigned int kRetriesCountOnNetworkChange = 1;
 
+bool IsSuccessCode(int response_code) {
+  return response_code >= 200 && response_code <= 299;
+}
+
 void ParseJsonInWorkerTaskRunner(
     std::string json,
     base::SequencedTaskRunner* task_runner,
@@ -137,7 +141,7 @@ bool APIRequestResult::operator==(const APIRequestResult& other) const {
 }
 
 bool APIRequestResult::Is2XXResponseCode() const {
-  return response_code_ >= 200 && response_code_ <= 299;
+  return IsSuccessCode(response_code_);
 }
 
 bool APIRequestResult::IsResponseCodeValid() const {
@@ -353,6 +357,10 @@ void APIRequestHelper::URLLoaderHandler::RegisterURLLoader(
           if (response_head.mime_type == "text/event-stream") {
             handler->is_sse_ = true;
           }
+          if (response_head.headers) {
+            const auto code = response_head.headers->response_code();
+            handler->is_response_success_ = IsSuccessCode(code);
+          }
           if (handler->response_started_callback_) {
             std::move(handler->response_started_callback_)
                 .Run(final_url.spec(), response_head.content_length);
@@ -390,11 +398,19 @@ void APIRequestHelper::URLLoaderHandler::OnDataReceived(
     base::OnceClosure resume) {
   DVLOG(2) << "[[" << __func__ << "]]" << " Chunk received";
   if (is_sse_) {
+    if (MaybeParseErrorBody(string_piece)) {
+      std::move(resume).Run();
+      return;
+    }
     ParseSSE(string_piece);
   } else {
     DVLOG(4) << "Chunk content: \n" << string_piece;
     TRACE_EVENT0("brave", "APIRequestHelper_OnDataReceivedNoSSE");
     ScopedPerfTracker tracker("Brave.APIRequestHelper.OnDataReceivedNoSSE");
+    if (MaybeParseErrorBody(string_piece)) {
+      std::move(resume).Run();
+      return;
+    }
     data_received_callback_.Run(base::Value(string_piece));
   }
   // Get next chunk
@@ -497,6 +513,31 @@ void APIRequestHelper::URLLoaderHandler::OnParseJsonResponse(
   std::move(result_callback_).Run(std::move(result));
 }
 
+bool APIRequestHelper::URLLoaderHandler::MaybeParseErrorBody(
+    std::string_view string_piece) {
+  if (!is_response_success_.has_value() || *is_response_success_) {
+    return false;
+  }
+  if (!string_piece.starts_with('{') || !string_piece.ends_with('}')) {
+    return false;
+  }
+  current_decoding_operation_count_++;
+  ParseJsonImpl(
+      std::string(string_piece),
+      base::BindOnce(&APIRequestHelper::URLLoaderHandler::OnParseErrorBody,
+                     GetWeakPtr()));
+  return true;
+}
+
+void APIRequestHelper::URLLoaderHandler::OnParseErrorBody(
+    ValueOrError result_value) {
+  current_decoding_operation_count_--;
+  if (result_value.has_value() && result_value->is_dict()) {
+    error_value_ = std::move(*result_value);
+  }
+  MaybeSendResult();
+}
+
 void APIRequestHelper::URLLoaderHandler::MaybeSendResult() {
   // Verify that counting hasn't gone wrong - it should never be less than 0.
   DCHECK_LE(0, current_decoding_operation_count_);
@@ -508,7 +549,9 @@ void APIRequestHelper::URLLoaderHandler::MaybeSendResult() {
   const bool decoding_is_complete = (current_decoding_operation_count_ == 0);
 
   if (request_is_finished_ && decoding_is_complete) {
-    std::move(result_callback_).Run(ToAPIRequestResult(std::move(url_loader_)));
+    auto result = ToAPIRequestResult(std::move(url_loader_));
+    result.value_body_ = std::move(error_value_);
+    std::move(result_callback_).Run(std::move(result));
   } else if (decoding_is_complete) {
     VLOG(3) << "Did not run URLLoaderHandler completion handler, still have "
             << current_decoding_operation_count_

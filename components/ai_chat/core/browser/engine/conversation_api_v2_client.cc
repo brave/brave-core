@@ -19,6 +19,7 @@
 #include "base/json/json_writer.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/strings/strcat.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/types/expected.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
@@ -425,6 +426,20 @@ void ConversationAPIV2Client::PerformRequestWithCredentials(
   }
 }
 
+void ConversationAPIV2Client::ParseErrorCode(const base::Value& body) {
+  if (!body.is_dict()) {
+    return;
+  }
+  if (auto* error_dict = body.GetDict().FindDict("error")) {
+    if (auto* type_str = error_dict->FindString("type")) {
+      int parsed;
+      if (base::StringToInt(*type_str, &parsed)) {
+        last_error_code_ = static_cast<int32_t>(parsed);
+      }
+    }
+  }
+}
+
 void ConversationAPIV2Client::OnQueryCompleted(
     std::optional<CredentialCacheEntry> credential,
     GenerationCompletedCallback callback,
@@ -432,6 +447,7 @@ void ConversationAPIV2Client::OnQueryCompleted(
   const bool success = result.Is2XXResponseCode();
   // Handle successful request
   if (success) {
+    last_error_code_ = std::nullopt;
     std::optional<bool> is_near_verified = std::nullopt;
     std::optional<std::string> model_key = std::nullopt;
     const auto& headers = result.headers();
@@ -475,7 +491,14 @@ void ConversationAPIV2Client::OnQueryCompleted(
     error = mojom::APIError::ConnectionIssue;
   }
 
-  std::move(callback).Run(base::unexpected(std::move(error)));
+  ParseErrorCode(result.value_body());
+  auto details = mojom::APIErrorDetails::New(
+      static_cast<int32_t>(result.response_code()),
+      last_error_code_.value_or(0));
+  last_error_code_ = std::nullopt;
+
+  std::move(callback).Run(base::unexpected(
+      EngineConsumer::Error(error, std::move(details))));
 }
 
 void ConversationAPIV2Client::OnQueryDataReceived(
@@ -484,6 +507,8 @@ void ConversationAPIV2Client::OnQueryDataReceived(
   if (!result.has_value() || !result->is_dict()) {
     return;
   }
+
+  ParseErrorCode(*result);
 
   auto& result_params = result->GetDict();
   std::optional<std::string> model_key =

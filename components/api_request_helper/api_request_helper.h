@@ -152,6 +152,12 @@ class APIRequestHelper {
     void OnParseJsonResponse(APIRequestResult result,
                              ValueOrError result_value);
 
+    void OnParseErrorBody(ValueOrError result_value);
+
+    // If response is non-2xx and string_piece looks like JSON, kick off async
+    // parse into error_value_. Returns true if handled (caller should return).
+    bool MaybeParseErrorBody(std::string_view string_piece);
+
     std::unique_ptr<network::SimpleURLLoader> url_loader_;
     raw_ptr<APIRequestHelper> api_request_helper_;
 
@@ -161,6 +167,8 @@ class APIRequestHelper {
     ResponseConversionCallback conversion_callback_;
 
     bool is_sse_ = false;
+    std::optional<bool> is_response_success_;
+    base::Value error_value_;
 
     // Buffer for partial SSE lines across OnDataReceived calls.
     std::string sse_line_buffer_;
