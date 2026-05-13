@@ -9,6 +9,7 @@
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
+#include "chrome/browser/ui/views/frame/contents_capture_border_view.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/views/frame/contents_container_view.h"
 #include "ui/base/metadata/metadata_header_macros.h"
@@ -65,6 +66,8 @@ class BraveContentsContainerView :
 
   // true when this view is used for web panel.
   const bool for_web_panel_;
+
+  raw_ptr<ContentsCaptureBorderView> capture_contents_border_view_ = nullptr;
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   raw_ptr<ReaderModeToolbarView> reader_mode_toolbar_ = nullptr;

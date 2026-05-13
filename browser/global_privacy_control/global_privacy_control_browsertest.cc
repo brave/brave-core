@@ -19,6 +19,8 @@
 #include "components/policy/policy_constants.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/content_mock_cert_verifier.h"
+#include "net/base/net_errors.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "third_party/blink/public/common/features.h"
@@ -36,8 +38,24 @@ class GlobalPrivacyControlBrowserTest : public PlatformBrowserTest {
   GlobalPrivacyControlBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    PlatformBrowserTest::SetUpCommandLine(command_line);
+    mock_cert_verifier_.SetUpCommandLine(command_line);
+  }
+
+  void SetUpInProcessBrowserTestFixture() override {
+    PlatformBrowserTest::SetUpInProcessBrowserTestFixture();
+    mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
+  }
+
+  void TearDownInProcessBrowserTestFixture() override {
+    mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
+    PlatformBrowserTest::TearDownInProcessBrowserTestFixture();
+  }
+
   void SetUpOnMainThread() override {
     PlatformBrowserTest::SetUpOnMainThread();
+    mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
 
     host_resolver()->AddRule("*", "127.0.0.1");
 
@@ -98,6 +116,7 @@ class GlobalPrivacyControlBrowserTest : public PlatformBrowserTest {
   }
 
  private:
+  content::ContentMockCertVerifier mock_cert_verifier_;
   net::test_server::EmbeddedTestServer https_server_;
   mutable base::Lock header_result_lock_;
   bool start_tracking_ GUARDED_BY(header_result_lock_) = false;
@@ -189,7 +208,7 @@ IN_PROC_BROWSER_TEST_F(GlobalPrivacyControlFlagDisabledTest,
 class GlobalPrivacyControlPolicyTest : public GlobalPrivacyControlBrowserTest {
  public:
   void SetUpInProcessBrowserTestFixture() override {
-    PlatformBrowserTest::SetUpInProcessBrowserTestFixture();
+    GlobalPrivacyControlBrowserTest::SetUpInProcessBrowserTestFixture();
     EXPECT_CALL(provider_, IsInitializationComplete(testing::_))
         .WillRepeatedly(testing::Return(true));
     policy::BrowserPolicyConnector::SetPolicyProviderForTesting(&provider_);
