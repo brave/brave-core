@@ -119,5 +119,6 @@ public class OriginSettingsViewModel {
     self.isTalkDisabled = true
     self.isWalletDisabled = true
     self.isVPNDisabled = true
+    self.isPlaylistEnabled = false
   }
 }
