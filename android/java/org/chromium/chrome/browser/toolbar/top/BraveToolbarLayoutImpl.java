@@ -26,7 +26,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -380,23 +379,27 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             }
         }
 
-        if (BraveReflectionUtil.equalTypes(this.getClass(), CustomTabToolbar.class)
-                && !ChromeFeatureList.sCctToolbarRefactor.isEnabled()) {
-            // Non-refactored CCT toolbar: reserve space for the shields button beside
-            // action_buttons.
-            LinearLayout customActionButtons = findViewById(R.id.action_buttons);
-            assert customActionButtons != null : "Something has changed in the upstream!";
-            if (customActionButtons != null && mBraveShieldsButton != null) {
-                ViewGroup.MarginLayoutParams braveShieldsButtonLayout =
-                        (ViewGroup.MarginLayoutParams) mBraveShieldsButton.getLayoutParams();
-                ViewGroup.MarginLayoutParams actionButtonsLayout =
-                        (ViewGroup.MarginLayoutParams) customActionButtons.getLayoutParams();
-                actionButtonsLayout.setMarginEnd(
-                        actionButtonsLayout.getMarginEnd()
-                                + braveShieldsButtonLayout.getMarginEnd());
-                customActionButtons.setLayoutParams(actionButtonsLayout);
-            }
-        }
+        // WIP(AlexeyBarabash): d21c401e5325ee0b4d90f04011ece593f8ba22ba
+        // This execution path is for sCctToolbarRefactor.isEnabled()
+        // Before deletion was defaulted to true
+        // Brave didn't override it
+        // if (BraveReflectionUtil.equalTypes(this.getClass(), CustomTabToolbar.class)
+        //         && !ChromeFeatureList.sCctToolbarRefactor.isEnabled()) {
+        //     // Non-refactored CCT toolbar: reserve space for the shields button beside
+        //     // action_buttons.
+        //     LinearLayout customActionButtons = findViewById(R.id.action_buttons);
+        //     assert customActionButtons != null : "Something has changed in the upstream!";
+        //     if (customActionButtons != null && mBraveShieldsButton != null) {
+        //         ViewGroup.MarginLayoutParams braveShieldsButtonLayout =
+        //                 (ViewGroup.MarginLayoutParams) mBraveShieldsButton.getLayoutParams();
+        //         ViewGroup.MarginLayoutParams actionButtonsLayout =
+        //                 (ViewGroup.MarginLayoutParams) customActionButtons.getLayoutParams();
+        //         actionButtonsLayout.setMarginEnd(
+        //                 actionButtonsLayout.getMarginEnd()
+        //                         + braveShieldsButtonLayout.getMarginEnd());
+        //         customActionButtons.setLayoutParams(actionButtonsLayout);
+        //     }
+        // }
         updateShieldsLayoutBackground(isIncognito() || !NtpUtil.shouldShowRewardsIcon());
     }
 
