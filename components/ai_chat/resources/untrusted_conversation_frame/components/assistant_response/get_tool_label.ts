@@ -36,9 +36,14 @@ function getHistoryToolNameLabel(toolInput: any) {
 }
 
 function getSearchToolNameLabel(toolInput: any) {
-  const queries: string[] | undefined = toolInput?.query
+  // toolInput is parsed (possibly malformed) JSON, so it may be undefined and
+  // its `query` field — confusingly named — may be missing or not actually be
+  // an array of strings.
+  const queries: string[] = Array.isArray(toolInput?.query)
+    ? toolInput.query
+    : []
 
-  if (!queries) {
+  if (!queries.length) {
     return getLocale(S.CHAT_UI_SEARCH_GENERIC)
   }
   return formatLocale(S.CHAT_UI_SEARCH_QUERIES, {

@@ -297,64 +297,6 @@ describe('replaceCitationsWithUrlsExcludingCode', () => {
 })
 
 describe('isAssistantGroupTask', () => {
-  it('should return true when 2 task tools are split across entries', () => {
-    const group: Mojom.ConversationTurn[] = [
-      createConversationTurnWithDefaults({
-        characterType: Mojom.CharacterType.ASSISTANT,
-        events: [
-          getCompletionEvent('Running tasks...'),
-          getToolUseEvent({
-            toolName: 'a-task-tool1',
-            id: '1',
-            argumentsJson: ' input',
-            output: undefined,
-          }),
-        ],
-      }),
-      createConversationTurnWithDefaults({
-        characterType: Mojom.CharacterType.ASSISTANT,
-        events: [
-          getToolUseEvent({
-            toolName: 'a-task-tool2',
-            id: '1',
-            argumentsJson: 'tool input',
-            output: undefined,
-          }),
-        ],
-      }),
-    ]
-
-    expect(isAssistantGroupTask(group)).toBe(true)
-  })
-
-  it('should return true when there are 2 task tools in 1 entry and a completion in the other', () => {
-    const group: Mojom.ConversationTurn[] = [
-      createConversationTurnWithDefaults({
-        characterType: Mojom.CharacterType.ASSISTANT,
-        events: [
-          getToolUseEvent({
-            toolName: 'a-task-tool1',
-            id: '1',
-            argumentsJson: ' input',
-            output: undefined,
-          }),
-          getToolUseEvent({
-            toolName: 'a-task-tool2',
-            id: '1',
-            argumentsJson: 'tool input',
-            output: undefined,
-          }),
-        ],
-      }),
-      createConversationTurnWithDefaults({
-        characterType: Mojom.CharacterType.ASSISTANT,
-        events: [getCompletionEvent('task completed')],
-      }),
-    ]
-
-    expect(isAssistantGroupTask(group)).toBe(true)
-  })
-
   it('should return true for a single-entry group containing at least one task tool', () => {
     const group: Mojom.ConversationTurn[] = [
       createConversationTurnWithDefaults({

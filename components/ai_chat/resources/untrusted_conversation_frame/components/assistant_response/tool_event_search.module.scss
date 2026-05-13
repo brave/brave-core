@@ -13,13 +13,14 @@
   font: var(--leo-font-small-regular);
   line-height: 1.4;
   color: var(--leo-color-text-secondary);
-}
-.searchSummary a {
-  width: fit-content;
-  max-width: 100%;
-  vertical-align: baseline;
-  text-align: left;
-  box-sizing: border-box;
+
+  a {
+    width: fit-content;
+    max-width: 100%;
+    vertical-align: baseline;
+    text-align: left;
+    box-sizing: border-box;
+  }
 }
 
 .searchQueryLink {

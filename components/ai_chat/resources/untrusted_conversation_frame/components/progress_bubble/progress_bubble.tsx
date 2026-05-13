@@ -50,7 +50,9 @@ export function useProgressBubbleContext() {
 
 /**
  * Aids tracking when a sticky item is stuck, given lack of CSS support to
- * target an element only when sticky is active.
+ * target an element only when sticky is active. Once CSS scroll-state
+ * container queries are widely supported (Chrome shipped them in 133, but
+ * WebKit support is still pending) this can be replaced with pure CSS.
  * @param beforeRef A sentinel element positioned at the top sticky position
  * @param afterRef A sentinel element positioned at the bottom sticky position
  * @returns whether either sentinel is outside the area of intersection
@@ -70,8 +72,13 @@ function useStickyState(
       (entries) => {
         let shouldBeInStuckState = false
         entries.forEach((entry) => {
+          // The top sentinel sits just above the bubble's sticky `top` position.
+          // It scrolls out of view exactly when the bubble starts sticking.
           if (entry.target === beforeEl)
             shouldBeInStuckState = !entry.isIntersecting
+          // The bottom sentinel sits just below the bubble's sticky `bottom`
+          // position. When the bubble is pinned to the bottom, this sentinel
+          // is also offscreen — keep `isStuck` true so the styled state holds.
           if (!shouldBeInStuckState && entry.target === afterEl)
             shouldBeInStuckState = !entry.isIntersecting
         })
@@ -83,111 +90,130 @@ function useStickyState(
     observer.observe(beforeEl)
     observer.observe(afterEl)
     return () => observer.disconnect()
-  }, [beforeRef, afterRef])
+    // Refs are stable; this effect runs once on mount.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return isStuck
 }
 
-export default function ProgressBubble(props: Props) {
+/**
+ * Computes the bubble's display state (`progressText`, `isComplete`,
+ * `isInterrupted`, `isExpandable`) from the response group and the current
+ * conversation state. Pulls conversation state from context internally so
+ * callers only have to supply what's specific to the bubble instance.
+ */
+function useProgressState(
+  responseGroup: Mojom.ConversationTurn[] | undefined,
+  isActiveGroup: boolean,
+) {
   const conversationContext = useUntrustedConversationContext()
+  const conversationState = conversationContext.api.useStateData()
+
+  // We are in progress if we are generating, executing a tool, or waiting
+  // for a tool.
+  const groupIsWorking =
+    (isActiveGroup && conversationState.isGenerating)
+    || conversationState.isToolExecuting
+
+  // Pick the most recent event that represents the bubble's status —
+  // skip events that are extra data received in parallel, or that carry
+  // their own dedicated UI rather than a status update.
+  const lastEvent = responseGroup
+    ?.at(-1)
+    ?.events?.filter(
+      (event) =>
+        !event.conversationTitleEvent
+        && !event.contentReceiptEvent
+        && !event.inlineSearchEvent
+        // Search status events are subsumed by the tool use event.
+        && !event.searchQueriesEvent
+        && !event.searchStatusEvent
+        && !event.sourcesEvent,
+    )
+    .at(-1)
+
+  const toolInput = React.useMemo(() => {
+    if (lastEvent?.toolUseEvent?.argumentsJson) {
+      try {
+        return JSON.parse(lastEvent.toolUseEvent.argumentsJson)
+      } catch (e) {
+        return null
+      }
+    }
+    return null
+  }, [lastEvent?.toolUseEvent?.argumentsJson])
+
+  // Since we only know the conversation's state, and not each entry's
+  // state, we can only display interrupted states for the active entry.
+  // See https://github.com/brave/brave-browser/issues/55283.
+  const taskState = isActiveGroup
+    ? conversationState.toolUseTaskState
+    : Mojom.TaskState.kNone
+
+  return React.useMemo(() => {
+    const isExpandable = !!responseGroup && isAssistantGroupTask(responseGroup)
+
+    let progressText: string | null = null
+    let isComplete = false
+    let isInterrupted = false
+
+    if (groupIsWorking) {
+      // Default to "Thinking"
+      progressText = getLocale(S.CHAT_UI_TOOL_LABEL_THINKING)
+
+      // While a tool is still in flight (no output yet), describe what it's
+      // doing. Once the tool has produced output it's effectively done — fall
+      // back to "Thinking" so the bubble reflects the model reasoning about
+      // its next step.
+      if (lastEvent?.toolUseEvent && !lastEvent.toolUseEvent.output) {
+        const toolLabel = getToolLabel(
+          lastEvent.toolUseEvent.toolName,
+          toolInput,
+        )
+        if (toolLabel) {
+          progressText = toolLabel
+        }
+      }
+      // TODO(https://github.com/brave/brave-browser/issues/55016): handle
+      // lastEvent?.deepResearchEvent and provide detailed status.
+
+      // TODO(https://github.com/brave/brave-browser/issues/51418): provide
+      // security scan event detail.
+    } else if (isExpandable) {
+      isComplete = true
+      isInterrupted = INTERRUPTED_TASK_STATES.includes(taskState)
+      if (taskState === Mojom.TaskState.kPaused) {
+        progressText = getLocale(S.CHAT_UI_TASK_STATE_PAUSED_LABEL)
+      }
+      if (taskState === Mojom.TaskState.kStopped) {
+        progressText = getLocale(S.CHAT_UI_TASK_STATE_STOPPED_LABEL)
+      }
+
+      if (!progressText) {
+        progressText = getLocale(S.CHAT_UI_TOOL_LABEL_COMPLETE)
+      }
+    }
+
+    return { progressText, isComplete, isInterrupted, isExpandable }
+  }, [
+    groupIsWorking,
+    toolInput,
+    lastEvent?.toolUseEvent,
+    responseGroup,
+    taskState,
+  ])
+}
+
+export default function ProgressBubble(props: Props) {
   const context = useProgressBubbleContext()
 
   const beforeSentinel = React.useRef<HTMLDivElement>(null)
   const afterSentinel = React.useRef<HTMLDivElement>(null)
   const isStuck = useStickyState(beforeSentinel, afterSentinel)
 
-  const conversationState = conversationContext.api.useStateData()
-
-  // We are in progress if we are generating, executing a tool, or waiting for
-  // a tool.
-  const conversationIsWorking =
-    conversationState.isGenerating || conversationState.isToolExecuting
-
-  const isExpandable =
-    props.responseGroup && isAssistantGroupTask(props.responseGroup)
-
-  let progressText: string | null = null
-  let isComplete = false
-  let isInterrupted = false
-
-  const lastEvents = props.responseGroup?.at(-1)?.events
-
-  const lastEvent = React.useMemo(() => {
-    const events = lastEvents?.filter(
-      (event) =>
-        // filter out events that are not replacements for status, i.e. do not
-        // have their own progress, even if we don't know the string for that
-        // progress. i.e. don't filter out events that are indicitive that something
-        // is happening - we don't want to show "doing A" if it's actually "doing B"
-        // even if we don't have a string representation for "B".
-
-        // Filter out events that are extra data received that might be parallel
-        // to other events.
-        !event.conversationTitleEvent
-        && !event.contentReceiptEvent
-        && !event.inlineSearchEvent
-        // Filter out search status events since we get more data from the tool
-        // use event.
-        && !event.searchQueriesEvent
-        && !event.searchStatusEvent
-        && !event.sourcesEvent,
-    )
-
-    return events?.at(-1)
-  }, [lastEvents])
-
-  const toolInput = React.useMemo(() => {
-    if (!lastEvent?.toolUseEvent?.argumentsJson) {
-      return null
-    }
-    try {
-      return JSON.parse(lastEvent?.toolUseEvent.argumentsJson)
-    } catch (e) {
-      return null
-    }
-  }, [lastEvent?.toolUseEvent?.argumentsJson])
-
-  if (conversationIsWorking && props.isLastGroup) {
-    // Default to "Thinking"
-    progressText = getLocale(S.CHAT_UI_TOOL_LABEL_THINKING)
-
-    // While a tool is still in flight (no output yet), describe what it's
-    // doing. Once the tool has produced output it's effectively done — fall
-    // back to "Thinking" so the bubble reflects the model reasoning about
-    // its next step.
-    if (lastEvent?.toolUseEvent && !lastEvent.toolUseEvent.output) {
-      const toolLabel = getToolLabel(lastEvent.toolUseEvent.toolName, toolInput)
-      if (toolLabel) {
-        progressText = toolLabel
-      }
-    }
-    // TODO(https://github.com/brave/brave-browser/issues/55016): handle
-    // lastEvent?.deepResearchEvent and provide detailed status.
-
-    // TODO(https://github.com/brave/brave-browser/issues/51418): provide
-    // security scan event detail.
-  } else if (isExpandable) {
-    isComplete = true
-    if (props.isLastGroup) {
-      // Since we only know the conversation's state, and not each entry's
-      // state, we can only display for the active entry.
-      // See https://github.com/brave/brave-browser/issues/55283 and
-      // ConversationHandler::SubmitHumanConversationEntry.
-      isInterrupted = INTERRUPTED_TASK_STATES.includes(
-        conversationState.toolUseTaskState,
-      )
-      if (conversationContext.toolUseTaskState === Mojom.TaskState.kPaused) {
-        progressText = getLocale(S.CHAT_UI_TASK_STATE_PAUSED_LABEL)
-      }
-      if (conversationContext.toolUseTaskState === Mojom.TaskState.kStopped) {
-        progressText = getLocale(S.CHAT_UI_TASK_STATE_STOPPED_LABEL)
-      }
-    }
-
-    if (!progressText) {
-      progressText = getLocale(S.CHAT_UI_TOOL_LABEL_COMPLETE)
-    }
-  }
+  const { progressText, isComplete, isInterrupted, isExpandable } =
+    useProgressState(props.responseGroup, props.isLastGroup)
 
   // This component doesn't show if not expandable and not generating.
   if (!progressText) {

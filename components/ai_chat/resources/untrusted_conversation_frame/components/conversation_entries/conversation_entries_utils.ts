@@ -52,16 +52,18 @@ export function groupConversationEntries(
 }
 
 /**
- * A task is when there are multiple entries within a group and there
- * are at least X task tool use events and 1 completion event.
- * @param group Group of assistant conversation entries from groupConversationEntries
+ * A task is an assistant response group with at least {@link TASK_TOOL_COUNT}
+ * task tool use events.
+ * @param group Group of assistant conversation entries from
+ *   groupConversationEntries
  * @returns true if the group is a task
  */
 export function isAssistantGroupTask(group: Mojom.ConversationTurn[]) {
-  // Must have at least X task tool uses within the group of responses
+  // Must have at least TASK_TOOL_COUNT task tool uses within the group of
+  // responses.
   let taskToolCount = 0
   for (const entry of group) {
-    // Sanity check: shouldn't have any non-assistant entries
+    // Sanity check: only assistant entries should be in the group.
     if (entry.characterType !== Mojom.CharacterType.ASSISTANT) {
       console.error(
         'isAssistantGroupTask: non-assistant entry found in group',

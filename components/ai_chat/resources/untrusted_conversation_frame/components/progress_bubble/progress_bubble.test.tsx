@@ -17,7 +17,7 @@ import MockContext from '../../mock_untrusted_conversation_context'
 import ProgressBubble, {
   ProgressBubbleContextProvider,
   useProgressBubbleContext,
-} from '.'
+} from './progress_bubble'
 
 // Helpers ---------------------------------------------------------------------
 

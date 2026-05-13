@@ -40,7 +40,7 @@ import styles from './style.module.scss'
 import AssistantTask from '../assistant_task/assistant_task'
 import ProgressBubble, {
   ProgressBubbleContextProvider,
-} from '../progress_bubble'
+} from '../progress_bubble/progress_bubble'
 
 const escape = (text: string): string => (RegExp as any).escape(text)
 
@@ -149,13 +149,20 @@ const makeEditContent = (
     }
   })
 
+/**
+ * Returns the conversation history as an array of pairs, each pair containing
+ * a human turn group followed by its associated assistant response group, so
+ * responses are treated as a single entity when they span multiple tool-use
+ * loops. For example:
+ *
+ *   [[[human], [assistant, ...assistant]], [[human], [assistant, ...assistant]]]
+ *
+ * Consecutive assistant entries are kept together in the same parent element
+ * for semantic and style purposes — the back-and-forth between tool calls is
+ * an implementation detail the user shouldn't have to see.
+ */
 function usePairedConversationGroups() {
   const conversationContext = useUntrustedConversationContext()
-  // Render events from consecutive assistant entries in the same parent element for both
-  // semantic and style purposes. The user should see them as a single entry since
-  // the back and forth could be considered an implementation detail when
-  // conceptually it's more like a continuation of a response without human interaction
-  // in-between.
   const groupedEntries = React.useMemo<Mojom.ConversationTurn[][]>(
     () => groupConversationEntries(conversationContext.conversationHistory),
     [conversationContext.conversationHistory],
@@ -200,12 +207,6 @@ function ConversationEntries(props: { scrollToBottom: () => void }) {
   const [hoverMenuButtonId, setHoverMenuButtonId] = React.useState<number>()
   const [activeMenuId, setActiveMenuId] = React.useState<number>()
   const [editInputId, setEditInputId] = React.useState<number>()
-  /**
-   * An array of pairs of a conversation, each one contained in an array so that
-   * responses are grouped as a single entity where they are multiple loops of
-   * a single response, i.e.:
-   * [[human], [assistant, assistant]], [[human], [assistant, assistant]]]
-   */
   const entryPairs = usePairedConversationGroups()
   const hasGenerated = React.useRef(false)
   hasGenerated.current =
@@ -332,7 +333,7 @@ function ConversationEntries(props: { scrollToBottom: () => void }) {
               && group.map((entry, i) => {
                 const isEntryInProgress =
                   isEntryInProgressButGroup && i === group.length - 1
-                const isLastEntryInLastGroup =
+                const isActiveEntryInActiveGroup =
                   isActiveGroup && i === group.length - 1
                 const currentEntryEdit = entry.edits?.at(-1) ?? entry
                 const allowedLinksForEntry: string[] =
@@ -363,7 +364,9 @@ function ConversationEntries(props: { scrollToBottom: () => void }) {
                           events={
                             currentEntryEdit.events?.filter(Boolean) ?? []
                           }
-                          isEntryInteractivityAllowed={isLastEntryInLastGroup}
+                          isEntryInteractivityAllowed={
+                            isActiveEntryInActiveGroup
+                          }
                           isEntryInProgress={isEntryInProgress}
                           allowedLinks={allowedLinksForEntry}
                           isLeoModel={conversationContext.isLeoModel}

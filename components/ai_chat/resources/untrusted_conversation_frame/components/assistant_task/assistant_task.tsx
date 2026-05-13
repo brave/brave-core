@@ -14,7 +14,7 @@ import AssistantResponse from '../assistant_response'
 import ToolEvent from '../assistant_response/tool_event'
 import styles from './assistant_task.module.scss'
 import useExtractTaskData, { TaskData } from './use_extract_task_data'
-import { useProgressBubbleContext } from '../progress_bubble'
+import { useProgressBubbleContext } from '../progress_bubble/progress_bubble'
 
 interface Props {
   // Entries that make up the task loop
@@ -53,7 +53,7 @@ interface TabProps {
  * The Steps tab displays everything in timeline order.
  */
 export default function AssistantTask(props: Props) {
-  const { isExpanded: showSteps } = useProgressBubbleContext()
+  const { isExpanded } = useProgressBubbleContext()
   const [taskThumbnail, setTaskThumbnail] = React.useState<string>()
   const conversationContext = useUntrustedConversationContext()
 
@@ -115,14 +115,14 @@ export default function AssistantTask(props: Props) {
     <div data-testid='assistant-task'>
       <div className={styles.taskContent}>
         <div className={styles.taskData}>
-          {showSteps && (
+          {isExpanded && (
             <Steps
               {...props}
               {...tabProps}
             />
           )}
 
-          {!showSteps && (
+          {!isExpanded && (
             <Progress
               {...props}
               {...tabProps}

@@ -20,7 +20,7 @@ import MockContext, {
 import {
   ProgressBubbleContextProvider,
   useProgressBubbleContext,
-} from '../progress_bubble'
+} from '../progress_bubble/progress_bubble'
 import AssistantTask from './assistant_task'
 
 // Renders AssistantTask inside a ProgressBubbleContextProvider that defaults
