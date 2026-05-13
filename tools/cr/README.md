@@ -8,6 +8,10 @@ All scripts here are intended to run via `vpython3`; the `.vpython3` spec in
 this directory pulls in `rich`, `requests`, and the other wheels they need.
 Most scripts accept `--verbose` to switch logging to `DEBUG`.
 
+> [!IMPORTANT]
+> Before adding or editing Python in this directory, read
+> [Python dos and donts](python_dos_and_donts.md).
+
 ## Entry points
 
 These are the user-facing scripts in this directory:
