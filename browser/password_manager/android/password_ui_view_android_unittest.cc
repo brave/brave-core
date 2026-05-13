@@ -75,7 +75,7 @@ class PasswordUiViewAndroidTest : public ::testing::Test {
     profiles::SetLastUsedProfile(testing_profile_->GetBaseName());
 
     store_ = CreateAndUseTestPasswordStore(testing_profile_);
-    store_->Init(/*affiliated_match_helper=*/nullptr);
+    store_->Init();
     ASSERT_TRUE(temp_dir().CreateUniqueTempDir());
   }
 

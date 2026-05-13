@@ -31,6 +31,7 @@ CreatePasswordStoreBackend(
   auto behavior = is_account_store
                       ? syncer::WipeModelUponSyncDisabledBehavior::kAlways
                       : syncer::WipeModelUponSyncDisabledBehavior::kNever;
+  CHECK(affiliation_service);
   auto affiliated_match_helper =
       std::make_unique<password_manager::AffiliatedMatchHelper>(
           affiliation_service);
