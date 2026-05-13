@@ -77,8 +77,15 @@ RegisterStyleOverride(
       #container {
         /* menu and content next to each other in the horizontal center */
       }
+      /*
+       * Chromium uses flex: 1 1 0 on #left, so the column grows beyond
+       * --settings-menu-width; cap it so layout matches menu width exactly.
+       */
       #left {
-        max-width: 250px;
+        flex: 0 0 var(--settings-menu-width);
+        max-width: var(--settings-menu-width);
+        min-width: 0;
+        overflow-x: hidden;
       }
       #main {
         margin: 0 var(--leo-spacing-m) var(--leo-spacing-m) 0;

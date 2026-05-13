@@ -63,10 +63,15 @@ RegisterStyleOverride(
         position: sticky;
         top: var(--brave-settings-menu-margin-v);
         margin: 0 !important;
-        min-width: 172px;
-        max-width: 250px;
+        min-width: 0;
+        overflow-x: hidden;
         overflow-y: auto;
         padding: 12px 24px !important;
+      }
+      /* Chromium sets min-width: fit-content here, forcing overflow past width. */
+      #menu {
+        max-width: 100%;
+        min-width: 0;
       }
       .cr-nav-menu-item {
         min-height: 20px !important;
