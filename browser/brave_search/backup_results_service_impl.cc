@@ -8,17 +8,24 @@
 #include <algorithm>
 #include <utility>
 
+#include "base/base64.h"
 #include "base/byte_count.h"
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
+#include "base/json/json_reader.h"
 #include "base/rand_util.h"
+#include "base/time/time.h"
+#include "base/values.h"
 #include "brave/components/brave_search/browser/backup_results_allowed_urls.h"
 #include "brave/components/brave_search/browser/backup_results_service.h"
+#include "brave/components/brave_search/browser/prefs.h"
 #include "brave/components/brave_search/common/features.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_extraction/inner_html.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_handle.h"
@@ -32,6 +39,7 @@
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "third_party/blink/public/common/navigation/navigation_policy.h"
+#include "third_party/blink/public/common/user_agent/user_agent_metadata.h"
 #include "third_party/blink/public/common/web_preferences/web_preferences.h"
 
 #if BUILDFLAG(IS_ANDROID)
@@ -113,7 +121,8 @@ WEB_CONTENTS_USER_DATA_KEY_IMPL(BackupResultsWebContentsObserver);
 
 BackupResultsServiceImpl::BackupResultsServiceImpl(Profile* profile)
     : profile_(profile),
-      backup_results_metrics_(g_browser_process->local_state()) {
+      local_state_(g_browser_process->local_state()),
+      backup_results_metrics_(local_state_) {
   profile_->AddObserver(this);
 }
 BackupResultsServiceImpl::~BackupResultsServiceImpl() = default;
@@ -122,7 +131,8 @@ void BackupResultsServiceImpl::FetchBackupResults(
     const GURL& url,
     std::optional<net::HttpRequestHeaders> headers,
     BackupResultsCallback callback) {
-  if (!profile_) {
+  if (!profile_ || !base::FeatureList::IsEnabled(features::kBackupResults) ||
+      UpdateDailyRequestCount()) {
     std::move(callback).Run(std::nullopt);
     return;
   }
@@ -184,9 +194,11 @@ void BackupResultsServiceImpl::FetchBackupResults(
           static_cast<blink::NavigationDownloadType>(i);
       load_url_params.download_policy.SetDisallowed(type);
     }
-    if (request->headers) {
-      load_url_params.extra_headers = request->headers->ToString();
+    auto extra_headers = GetExtraHeaders(request->headers);
+    if (!extra_headers.IsEmpty()) {
+      load_url_params.extra_headers = extra_headers.ToString();
     }
+    MaybeApplyUserAgentOverride(*request->web_contents, load_url_params);
     if (!request->web_contents->GetController().LoadURLWithParams(
             load_url_params)) {
       CleanupAndDispatchResult(request, std::nullopt);
@@ -282,6 +294,54 @@ base::WeakPtr<BackupResultsService> BackupResultsServiceImpl::GetWeakPtr() {
   return weak_ptr_factory_.GetWeakPtr();
 }
 
+net::HttpRequestHeaders BackupResultsServiceImpl::GetExtraHeaders(
+    const std::optional<net::HttpRequestHeaders>& request_headers) {
+  if (!feature_headers_) {
+    feature_headers_.emplace();
+    const std::string& headers_json = features::kBackupResultsHeaders.Get();
+    if (!headers_json.empty()) {
+      auto parsed = base::JSONReader::Read(headers_json, base::JSON_PARSE_RFC);
+      if (parsed && parsed->is_dict()) {
+        for (const auto [name, value] : parsed->GetDict()) {
+          if (value.is_string()) {
+            feature_headers_->SetHeader(name, value.GetString());
+          }
+        }
+      }
+    }
+  }
+  net::HttpRequestHeaders extra_headers = *feature_headers_;
+  if (request_headers) {
+    extra_headers.MergeFrom(*request_headers);
+  }
+  return extra_headers;
+}
+
+void BackupResultsServiceImpl::MaybeApplyUserAgentOverride(
+    content::WebContents& web_contents,
+    content::NavigationController::LoadURLParams& load_url_params) {
+  if (!ua_override_) {
+    const std::string& ua_string = features::kBackupResultsUAOverride.Get();
+    if (ua_string.empty()) {
+      return;
+    }
+    ua_override_.emplace();
+    ua_override_->ua_string_override = ua_string;
+    const std::string& encoded_ua = features::kBackupResultsUAMetadata.Get();
+    if (!encoded_ua.empty()) {
+      std::string decoded;
+      if (base::Base64Decode(encoded_ua, &decoded)) {
+        ua_override_->ua_metadata_override =
+            blink::UserAgentMetadata::Demarshal(decoded);
+      }
+    }
+  }
+  web_contents.SetUserAgentOverride(*ua_override_,
+                                    /*override_in_new_tabs=*/true);
+  load_url_params.override_user_agent =
+      content::NavigationController::UA_OVERRIDE_TRUE;
+}
+
 void BackupResultsServiceImpl::MakeSimpleURLLoaderRequest(
     PendingRequestList::iterator pending_request,
     const GURL& url) {
@@ -302,8 +362,11 @@ void BackupResultsServiceImpl::MakeSimpleURLLoaderRequest(
     resource_request->site_for_cookies = net::SiteForCookies::FromUrl(url);
   }
 
-  if (pending_request->headers) {
-    resource_request->headers = *pending_request->headers;
+  resource_request->headers = GetExtraHeaders(pending_request->headers);
+
+  if (ua_override_) {
+    resource_request->headers.SetHeader(net::HttpRequestHeaders::kUserAgent,
+                                        ua_override_->ua_string_override);
   }
 
   pending_request->simple_url_loader = network::SimpleURLLoader::Create(
@@ -357,6 +420,32 @@ void BackupResultsServiceImpl::CleanupAndDispatchResult(
   if (profile_) {
     profile_->DestroyOffTheRecordProfile(otr_profile);
   }
+}
+
+bool BackupResultsServiceImpl::UpdateDailyRequestCount() {
+  const int limit = features::kBackupResultsMaxDailyRequests.Get();
+  if (limit == -1) {
+    return false;
+  }
+
+  const auto now = base::Time::Now();
+  const auto window_start =
+      local_state_->GetTime(prefs::kBackupResultsDailyRequestWindowStart);
+
+  if (window_start.is_null() || (now - window_start) >= base::Days(1)) {
+    local_state_->SetTime(prefs::kBackupResultsDailyRequestWindowStart, now);
+    local_state_->SetInteger(prefs::kBackupResultsDailyRequestCount, 1);
+    return false;
+  }
+
+  const int count =
+      local_state_->GetInteger(prefs::kBackupResultsDailyRequestCount);
+  if (count >= limit) {
+    return true;
+  }
+
+  local_state_->SetInteger(prefs::kBackupResultsDailyRequestCount, count + 1);
+  return false;
 }
 
 void BackupResultsServiceImpl::OnProfileWillBeDestroyed(Profile* profile) {
