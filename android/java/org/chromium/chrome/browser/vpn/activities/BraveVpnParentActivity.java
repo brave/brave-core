@@ -23,6 +23,7 @@ import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveLandscapeHelper;
 import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.billing.PurchaseModel;
 import org.chromium.chrome.browser.init.ActivityProfileProvider;
@@ -90,8 +91,9 @@ public abstract class BraveVpnParentActivity extends AsyncInitializationActivity
     }
 
     @Override
-    public void finishNativeInitialization() {
-        super.finishNativeInitialization();
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) BraveLandscapeHelper.applyLandscapeWindowSizing(this);
     }
 
     @Override

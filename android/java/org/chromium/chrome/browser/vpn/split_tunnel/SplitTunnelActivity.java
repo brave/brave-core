@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveLandscapeHelper;
 import org.chromium.chrome.browser.init.ActivityProfileProvider;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.profiles.ProfileProvider;
@@ -154,6 +155,12 @@ public class SplitTunnelActivity extends AsyncInitializationActivity
                                     ? View.GONE
                                     : View.VISIBLE);
         }
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) BraveLandscapeHelper.applyLandscapeWindowSizing(this);
     }
 
     @Override
