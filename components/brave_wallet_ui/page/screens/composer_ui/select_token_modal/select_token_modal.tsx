@@ -42,7 +42,7 @@ import {
   getTokenPriceFromRegistry,
   getPriceRequestsForTokens,
 } from '../../../../utils/pricing-utils'
-import { getAssetIdKey } from '../../../../utils/asset-utils'
+import { getAssetIdKey, isNativeAsset } from '../../../../utils/asset-utils'
 import {
   getEntitiesListFromEntityState, //
 } from '../../../../utils/entities.utils'
@@ -406,7 +406,30 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
           token: a,
         })
 
-        return bFiatBalance.minus(aFiatBalance).toNumber()
+        // Primary order: higher owned fiat value first.
+        const fiatCompare = bFiatBalance.minus(aFiatBalance).toNumber()
+        if (fiatCompare !== 0) {
+          return fiatCompare
+        }
+
+        // When fiat ties (often $0 for zero balance), put native chain assets
+        // (e.g. ETH, SOL) above other tokens that also have zero balance so
+        // users still see gas / network currency first in the list.
+        const aBalanceIsZero = new Amount(aBalance).isZero()
+        const bBalanceIsZero = new Amount(bBalance).isZero()
+        if (aBalanceIsZero && bBalanceIsZero) {
+          const aIsNative = isNativeAsset(a)
+          const bIsNative = isNativeAsset(b)
+          if (aIsNative && !bIsNative) {
+            return -1
+          }
+          if (!aIsNative && bIsNative) {
+            return 1
+          }
+        }
+
+        // Same fiat tier and no native-vs-non-native tie to break.
+        return 0
       })
     }, [tokensBySelectedComposerOption, userTokenBalances, spotPrices])
 
