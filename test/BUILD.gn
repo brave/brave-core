@@ -1786,6 +1786,7 @@ if (is_android) {
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.native_page",
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.ntp",
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.preferences.website",
+      "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.privacy",
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.quick_search_engines",
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.rate",
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.referrer",
