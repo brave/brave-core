@@ -251,5 +251,11 @@ ContentsContainerView* BraveMultiContentsView::GetContentsContainerViewFor(
   return MultiContentsView::GetContentsContainerViewFor(web_contents);
 }
 
+void BraveMultiContentsView::SetSplitViewInsets(gfx::Insets, gfx::Insets) {
+  // Upstream re-applies kSplitViewContentInset on every layout pass; our split
+  // view doesn't use that padding, so force zero regardless of args
+  MultiContentsView::SetSplitViewInsets(gfx::Insets(), gfx::Insets());
+}
+
 BEGIN_METADATA(BraveMultiContentsView)
 END_METADATA

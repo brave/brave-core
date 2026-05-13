@@ -52,6 +52,9 @@ class BraveMultiContentsView : public MultiContentsView {
   ContentsContainerView* GetContentsContainerViewFor(
       content::WebContents* web_contents) const override;
 
+  void SetSplitViewInsets(gfx::Insets start_contents_view_inset,
+                          gfx::Insets end_contents_view_inset) override;
+
  private:
   friend class SideBySideEnabledBrowserTest;
   friend class SpeedReaderWithSplitViewBrowserTest;

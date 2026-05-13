@@ -29,8 +29,11 @@
   GetContentsContainerViewFor_UnUsed(); \
   virtual ContentsContainerView* GetContentsContainerViewFor
 
+#define SetSplitViewInsets virtual SetSplitViewInsets
+
 #include <chrome/browser/ui/views/frame/multi_contents_view.h>  // IWYU pragma: export
 
+#undef SetSplitViewInsets
 #undef GetContentsContainerViewFor
 #undef GetActiveContentsView
 #undef GetActiveContentsContainerView
