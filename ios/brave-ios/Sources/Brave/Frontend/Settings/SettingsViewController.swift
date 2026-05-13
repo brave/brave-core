@@ -57,7 +57,6 @@ protocol SettingsDelegate: AnyObject {
   func settingsCreateFakeTabs()
   func settingsCreateFakeBookmarks()
   func settingsCreateFakeHistory()
-  func settingsPresentQuickView()
 }
 
 class SettingsViewController: TableViewController, BraveAccountAuthenticationObserver {
@@ -1797,20 +1796,6 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
           },
           accessory: .disclosureIndicator,
           cellClass: MultilineValue1Cell.self
-        )
-      )
-    }
-    if FeatureList.kQuickViewEnabled.enabled {
-      section.rows.append(
-        Row(
-          text: "Test QuickView",
-          selection: { [weak self] in
-            guard let self else { return }
-            self.dismiss(animated: true) {
-              self.settingsDelegate?.settingsPresentQuickView()
-            }
-          },
-          cellClass: ButtonCell.self
         )
       )
     }
