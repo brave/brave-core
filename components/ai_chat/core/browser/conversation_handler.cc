@@ -30,6 +30,7 @@
 #include "base/rand_util.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
+#include "base/task/bind_post_task.h"
 #include "base/time/time.h"
 #include "base/types/expected.h"
 #include "base/uuid.h"
@@ -1092,8 +1093,14 @@ void ConversationHandler::RespondToToolUseRequest(
 
   OnToolUseEventOutput(chat_history_.back().get(), tool_use);
 
-  // Run next tool, or perform generation with all the tools outputs
-  MaybeRespondToNextToolUseRequest();
+  // Run next tool, or perform generation with all the completed tools outputs.
+  // Run as Task to catch any reentrant issues.
+  base::BindPostTaskToCurrentDefault(
+      base::BindOnce(
+          base::IgnoreResult(
+              &ConversationHandler::MaybeRespondToNextToolUseRequest),
+          weak_ptr_factory_.GetWeakPtr()))
+      .Run();
 }
 
 void ConversationHandler::ProcessPermissionChallenge(
@@ -1358,6 +1365,22 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
         // Notify UI about the tool completion
         OnToolUseEventOutput(entry.get(), existing_tool_use_event);
         return;
+      }
+
+      // Drop tool_use events whose id collides with an existing tool_use
+      // event in this turn. ToolUseEvents in the engine APIs are keyed on 'id'
+      // (and in this class via GetToolUseEventForLastResponse). Internally, a
+      // duplicate id would route both completions to the same event, leave the
+      // second event's output unset, and cause MaybeRespondToNextToolUseRequest
+      // to execute the same pending tool indefinitely. And engine APIs will
+      // reject a request with duplicate tool use IDs.
+      if (!tool_use_event->id.empty()) {
+        for (const auto& existing : *entry->events) {
+          if (existing->is_tool_use_event() &&
+              existing->get_tool_use_event()->id == tool_use_event->id) {
+            return;
+          }
+        }
       }
     }
 
