@@ -70,7 +70,7 @@ SyncCannotRunInfoBarDelegate::GetIdentifier() const {
 }
 
 const gfx::VectorIcon& SyncCannotRunInfoBarDelegate::GetVectorIcon() const {
-  return views::kInfoIcon;
+  return views::kInfoOldIcon;
 }
 
 bool SyncCannotRunInfoBarDelegate::ShouldExpire(

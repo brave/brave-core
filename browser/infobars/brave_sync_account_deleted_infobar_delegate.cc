@@ -65,7 +65,7 @@ BraveSyncAccountDeletedInfoBarDelegate::GetIdentifier() const {
 
 const gfx::VectorIcon& BraveSyncAccountDeletedInfoBarDelegate::GetVectorIcon()
     const {
-  return views::kInfoIcon;
+  return views::kInfoOldIcon;
 }
 
 bool BraveSyncAccountDeletedInfoBarDelegate::ShouldExpire(
