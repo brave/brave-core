@@ -808,6 +808,11 @@
 # These tests fail because we disable `blink::features::kAIRewriterAPI`
 -AIRewriterTest.*
 
+# These tests fail because we override HasTabSearchToolbarButton to always
+# return true.
+-TabStripPrefsTest.MigrateTabSearchPref_ExperimentDisabled
+-TabStripPrefsTest.MigrateTabSearchPref_RecoveryFromBrokenMigration
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.EveryFlagHasMetadata
