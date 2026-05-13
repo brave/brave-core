@@ -172,6 +172,10 @@ export default function ToolEvent(props: Props) {
           return null
         }
 
+        // TODO(https://github.com/brave/brave-browser/issues/55494): tool use
+        // events are always shown in 'expanded' state now, so we don't need
+        // to differentiate and can rename the variable to match the purpose
+        // of custom non-label content.
         const isExpandable = content.toolLabel && content.expandedContent
 
         // Show as executing if this is an active entry, we are currently

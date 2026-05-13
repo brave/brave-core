@@ -53,31 +53,34 @@ export function useProgressBubbleContext() {
  * target an element only when sticky is active. Once CSS scroll-state
  * container queries are widely supported (Chrome shipped them in 133, but
  * WebKit support is still pending) this can be replaced with pure CSS.
- * @param beforeRef A sentinel element positioned at the top sticky position
- * @param afterRef A sentinel element positioned at the bottom sticky position
- * @returns whether either sentinel is outside the area of intersection
+ *
+ * Returns callback refs to attach to two sentinel elements (the top sits at
+ * the sticky `top` position, the bottom at the sticky `bottom` position) and
+ * an `isStuck` flag that is true whenever either sentinel has scrolled out
+ * of view. Callback refs are used so the observer attaches whenever the
+ * sentinels mount — this matters when the consuming component renders them
+ * conditionally, since a plain ref-object effect would otherwise fire once
+ * on mount with `null` refs and never re-run.
  */
-function useStickyState(
-  beforeRef: React.RefObject<HTMLElement>,
-  afterRef: React.RefObject<HTMLElement>,
-) {
+function useStickyState() {
+  const [beforeEl, setBeforeEl] = React.useState<HTMLElement | null>(null)
+  const [afterEl, setAfterEl] = React.useState<HTMLElement | null>(null)
   const [isStuck, setIsStuck] = React.useState(false)
 
   React.useEffect(() => {
-    const beforeEl = beforeRef.current
-    const afterEl = afterRef.current
     if (!beforeEl || !afterEl) return
 
     const observer = new IntersectionObserver(
       (entries) => {
         let shouldBeInStuckState = false
         entries.forEach((entry) => {
-          // The top sentinel sits just above the bubble's sticky `top` position.
-          // It scrolls out of view exactly when the bubble starts sticking.
+          // The top sentinel sits just above the bubble's sticky `top`
+          // position; it scrolls out of view exactly when the bubble starts
+          // sticking.
           if (entry.target === beforeEl)
             shouldBeInStuckState = !entry.isIntersecting
           // The bottom sentinel sits just below the bubble's sticky `bottom`
-          // position. When the bubble is pinned to the bottom, this sentinel
+          // position; when the bubble is pinned to the bottom this sentinel
           // is also offscreen — keep `isStuck` true so the styled state holds.
           if (!shouldBeInStuckState && entry.target === afterEl)
             shouldBeInStuckState = !entry.isIntersecting
@@ -90,11 +93,14 @@ function useStickyState(
     observer.observe(beforeEl)
     observer.observe(afterEl)
     return () => observer.disconnect()
-    // Refs are stable; this effect runs once on mount.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [beforeEl, afterEl])
 
-  return isStuck
+  return {
+    isStuck,
+    beforeRef: setBeforeEl,
+    afterRef: setAfterEl,
+    beforeEl,
+  }
 }
 
 /**
@@ -208,9 +214,7 @@ function useProgressState(
 export default function ProgressBubble(props: Props) {
   const context = useProgressBubbleContext()
 
-  const beforeSentinel = React.useRef<HTMLDivElement>(null)
-  const afterSentinel = React.useRef<HTMLDivElement>(null)
-  const isStuck = useStickyState(beforeSentinel, afterSentinel)
+  const { isStuck, beforeRef, afterRef, beforeEl } = useStickyState()
 
   const { progressText, isComplete, isInterrupted, isExpandable } =
     useProgressState(props.responseGroup, props.isLastGroup)
@@ -228,14 +232,14 @@ export default function ProgressBubble(props: Props) {
         // the expanded/contracted content view. If that is not the case,
         // perhaps the scrollIntoView should be handled in the content's
         // component instead, reacting to context.isExpanded changing.
-        beforeSentinel.current?.scrollIntoView(true)
+        beforeEl?.scrollIntoView(true)
       }
     : undefined
 
   return (
     <>
       <div
-        ref={beforeSentinel}
+        ref={beforeRef}
         className={classnames(styles.sentinel, styles.top)}
         aria-hidden='true'
       />
@@ -275,7 +279,7 @@ export default function ProgressBubble(props: Props) {
         )}
       </div>
       <div
-        ref={afterSentinel}
+        ref={afterRef}
         className={classnames(styles.sentinel, styles.bottom)}
         aria-hidden='true'
       />
