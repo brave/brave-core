@@ -278,6 +278,21 @@ TEST_F(PolkadotWalletServiceUnitTest, Constructor) {
   }
 }
 
+TEST_F(PolkadotWalletServiceUnitTest, GetChainMetadataInvalidChainId) {
+  auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
+      *keyring_service_, *network_manager_, prefs_,
+      url_loader_factory_.GetSafeWeakWrapper());
+
+  base::test::TestFuture<base::expected<PolkadotChainMetadata, std::string>>
+      future;
+  polkadot_wallet_service->GetChainMetadata("unknown-chain-id",
+                                            future.GetCallback());
+
+  auto metadata = future.Take();
+  EXPECT_FALSE(metadata.has_value());
+  EXPECT_EQ(metadata.error(), WalletInternalErrorMessage());
+}
+
 TEST_F(PolkadotWalletServiceUnitTest, ConcurrentChainNameFetches) {
   // Test callback caching for getting chain names.
 

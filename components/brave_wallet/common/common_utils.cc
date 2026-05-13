@@ -451,6 +451,8 @@ bool IsFixedSelectedNetworkCoin(mojom::CoinType coin) {
 std::vector<mojom::KeyringId> GetSupportedKeyringsForKnownNetwork(
     mojom::CoinType coin,
     const std::string& chain_id) {
+  // TODO(https://github.com/brave/brave-browser/issues/55499) validate chain_id
+  // is hardcoded one.
   switch (coin) {
     case mojom::CoinType::ETH:
       return {mojom::KeyringId::kDefault};
@@ -489,8 +491,10 @@ std::vector<mojom::KeyringId> GetSupportedKeyringsForKnownNetwork(
         return {mojom::KeyringId::kPolkadotMainnet,
                 mojom::KeyringId::kPolkadotImport};
       }
-      return {mojom::KeyringId::kPolkadotTestnet,
-              mojom::KeyringId::kPolkadotImportTestnet};
+      if (chain_id == mojom::kPolkadotTestnet) {
+        return {mojom::KeyringId::kPolkadotTestnet,
+                mojom::KeyringId::kPolkadotImportTestnet};
+      }
   }
   NOTREACHED();
 }

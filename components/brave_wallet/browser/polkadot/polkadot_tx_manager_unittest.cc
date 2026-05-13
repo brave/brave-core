@@ -482,6 +482,24 @@ TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedPolkadotTransaction) {
     EXPECT_EQ(err_str,
               l10n_util::GetStringUTF8(IDS_WALLET_SEND_TRANSACTION_FROM_EMPTY));
   }
+
+  {
+    // Account keyring should be compatible with requested chain.
+    std::string chain_id = mojom::kPolkadotMainnet;
+    auto transaction_params = mojom::NewPolkadotTransactionParams::New(
+        chain_id, polkadot_testnet_account_->account_id->Clone(), kBob,
+        mojom::uint128::New(0, 1234), false, nullptr);
+
+    base::test::TestFuture<bool, const std::string&, const std::string&>
+        unapproved_future;
+    GetPolkadotTxManager()->AddUnapprovedPolkadotTransaction(
+        std::move(transaction_params), unapproved_future.GetCallback());
+    auto [success, tx_meta_id, err_str] = unapproved_future.Take();
+
+    EXPECT_FALSE(success);
+    EXPECT_TRUE(tx_meta_id.empty());
+    EXPECT_EQ(err_str, WalletInternalErrorMessage());
+  }
 }
 
 TEST_F(PolkadotTxManagerUnitTest,

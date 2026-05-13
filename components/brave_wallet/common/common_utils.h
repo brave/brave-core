@@ -88,6 +88,7 @@ GURL GetActiveEndpointUrl(const mojom::NetworkInfo& chain);
 
 std::vector<mojom::CoinType> GetEnabledCoins();
 std::vector<mojom::KeyringId> GetEnabledKeyrings();
+// This is used to get the supported keyrings for a known hardcoded network.
 std::vector<mojom::KeyringId> GetSupportedKeyringsForKnownNetwork(
     mojom::CoinType coin,
     const std::string& chain_id);

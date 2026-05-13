@@ -1003,7 +1003,7 @@ mojom::NetworkInfoPtr NetworkManager::GetChain(std::string_view chain_id,
 }
 
 bool NetworkManager::IsPolkadotChain(std::string_view chain_id) {
-  return !!GetChain(chain_id, mojom::CoinType::DOT);
+  return !(GetChain(chain_id, mojom::CoinType::DOT).is_null());
 }
 
 std::vector<mojom::NetworkInfoPtr> NetworkManager::GetAllCustomChains(

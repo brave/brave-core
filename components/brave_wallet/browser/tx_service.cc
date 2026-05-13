@@ -20,6 +20,7 @@
 #include "brave/components/brave_wallet/browser/fil_tx_manager.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_tx_manager.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_wallet_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/solana_tx_manager.h"
 #include "brave/components/brave_wallet/browser/tx_manager.h"
@@ -108,9 +109,10 @@ TxService::TxService(JsonRpcService* json_rpc_service,
       CHECK_IS_TEST();
     } else {
       tx_manager_map_[mojom::CoinType::DOT] =
-          std::make_unique<PolkadotTxManager>(*this, *polkadot_wallet_service,
-                                              keyring_service, *tx_storage_,
-                                              *account_resolver_delegate_);
+          std::make_unique<PolkadotTxManager>(
+              *this, *polkadot_wallet_service,
+              polkadot_wallet_service->GetNetworkManager(), keyring_service,
+              *tx_storage_, *account_resolver_delegate_);
     }
   }
 }

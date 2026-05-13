@@ -144,15 +144,15 @@ mojom::NetworkInfoPtr ValueToNetworkInfo(const base::Value& value) {
         GetFirstValidChainURLIndex(chain.rpc_endpoints);
   }
 
-  auto* supportedKeyringsValue = params_dict->Find("supportedKeyrings");
+  auto* supported_keyrings_value = params_dict->Find("supportedKeyrings");
 
-  if (supportedKeyringsValue) {
-    const auto* supportedKeyringIdsListValue =
+  if (supported_keyrings_value) {
+    const auto* supported_keyrings_list_value =
         params_dict->FindList("supportedKeyrings");
-    if (!supportedKeyringIdsListValue) {
+    if (!supported_keyrings_list_value) {
       return nullptr;
     }
-    for (const auto& entry : *supportedKeyringIdsListValue) {
+    for (const auto& entry : *supported_keyrings_list_value) {
       if (!entry.is_int()) {
         return nullptr;
       }

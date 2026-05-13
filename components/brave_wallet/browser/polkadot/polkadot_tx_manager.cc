@@ -5,12 +5,14 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_tx_manager.h"
 
+#include <ranges>
 #include <utility>
 
 #include "base/notimplemented.h"
 #include "brave/components/brave_wallet/browser/account_resolver_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_block_tracker.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_transaction_status_task.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_tx_meta.h"
@@ -29,6 +31,7 @@ using TransferAll = PolkadotWalletService::TransferAll;
 PolkadotTxManager::PolkadotTxManager(
     TxService& tx_service,
     PolkadotWalletService& polkadot_wallet_service,
+    NetworkManager& network_manager,
     KeyringService& keyring_service,
     TxStorage& tx_storage,
     AccountResolverDelegate& account_resolver_delegate)
@@ -40,7 +43,8 @@ PolkadotTxManager::PolkadotTxManager(
               polkadot_wallet_service.GetNetworkManager()),
           tx_service,
           keyring_service),
-      polkadot_wallet_service_(polkadot_wallet_service) {
+      polkadot_wallet_service_(polkadot_wallet_service),
+      network_manager_(network_manager) {
   GetPolkadotBlockTracker().AddObserver(this);
 }
 
@@ -153,8 +157,14 @@ void PolkadotTxManager::OnApprovePolkadotTransaction(
 void PolkadotTxManager::AddUnapprovedPolkadotTransaction(
     mojom::NewPolkadotTransactionParamsPtr params,
     AddUnapprovedPolkadotTransactionCallback callback) {
+  if (!params || !params->from) {
+    return std::move(callback).Run(false, "", WalletInternalErrorMessage());
+  }
+
   auto chain_id = params->chain_id;
-  if (!polkadot_wallet_service_->IsPolkadotChain(chain_id)) {
+  auto network = network_manager_->GetChain(chain_id, mojom::CoinType::DOT);
+  if (!network || !std::ranges::contains(network->supported_keyrings,
+                                         params->from->keyring_id)) {
     return std::move(callback).Run(false, "", WalletInternalErrorMessage());
   }
   polkadot_wallet_service_->GetChainMetadata(
