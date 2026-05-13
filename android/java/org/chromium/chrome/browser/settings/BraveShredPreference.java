@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
 
+import androidx.annotation.Nullable;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceViewHolder;
 
@@ -28,7 +29,7 @@ import java.util.Map;
 public class BraveShredPreference extends Preference implements RadioGroup.OnCheckedChangeListener {
     private final HashMap<String, RadioButtonWithDescription> mButtons;
     private RadioButtonWithDescriptionLayout mGroup;
-    private RadioButtonWithDescription mSettingRadioButton;
+    private @Nullable RadioButtonWithDescription mSettingRadioButton;
     private String mSetting;
 
     public BraveShredPreference(Context context, AttributeSet attrs) {
@@ -73,7 +74,9 @@ public class BraveShredPreference extends Preference implements RadioGroup.OnChe
                 BraveShieldsContentSettings.AUTO_SHRED_MODE_APP_EXIT,
                 (RadioButtonWithDescription) holder.findViewById(R.id.auto_shred_app_close_mode));
         mSettingRadioButton = mButtons.get(mSetting);
-        mSettingRadioButton.setChecked(true);
+        if (mSettingRadioButton != null) {
+            mSettingRadioButton.setChecked(true);
+        }
     }
 
     @Override

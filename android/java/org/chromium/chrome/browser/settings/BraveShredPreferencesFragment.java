@@ -9,7 +9,6 @@ import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.preference.PreferenceCategory;
 
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.ObservableSuppliers;
@@ -55,7 +54,6 @@ public class BraveShredPreferencesFragment extends BravePreferenceFragment {
                     BraveShieldsContentSettings.setShredBrowsingHistoryEnabled((boolean) newValue);
                     return true;
                 });
-        PreferenceCategory cat = (PreferenceCategory) mRemoveHistorySwitch.getParent();
     }
 
     @Override
@@ -70,7 +68,7 @@ public class BraveShredPreferencesFragment extends BravePreferenceFragment {
                     BaseSearchIndexProvider.INDEX_OPT_OUT);
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.O_MR1) {
