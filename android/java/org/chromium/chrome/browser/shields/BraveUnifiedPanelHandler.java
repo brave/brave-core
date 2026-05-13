@@ -15,7 +15,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Matrix;
 import android.graphics.Outline;
+import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
@@ -26,10 +28,15 @@ import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
+import android.view.InputDevice;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.Surface;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -42,6 +49,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatRadioButton;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
@@ -927,10 +935,13 @@ public class BraveUnifiedPanelHandler {
             return;
         }
 
-        ImageView imageView = new ImageView(mContext);
-        imageView.setImageBitmap(bitmap);
-        imageView.setAdjustViewBounds(true);
-        imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        DisplayMetrics dm = mContext.getResources().getDisplayMetrics();
+        int width = (int) (dm.widthPixels * 0.9f);
+        int height = (int) (dm.heightPixels * 0.7f);
+
+        ZoomableImageView imageView = new ZoomableImageView(mContext);
+        imageView.setLayoutParams(new ViewGroup.LayoutParams(width, height));
+        imageView.fitBitmap(bitmap);
 
         new AlertDialog.Builder(mContext)
                 .setView(imageView)
@@ -1875,5 +1886,140 @@ public class BraveUnifiedPanelHandler {
         overlay.setImageResource(R.drawable.ic_disable_outline);
         overlay.setScaleType(ImageView.ScaleType.FIT_CENTER);
         container.addView(overlay);
+    }
+
+    // Suppress this warning to avoid a catch-22: If we override onClick, it complains it's
+    // redundant.
+    // If we don't override it, it complains that's not implemented.
+    @SuppressWarnings("ClickableViewAccessibility")
+    private static final class ZoomableImageView extends AppCompatImageView {
+        private static final float MAX_SCALE = 5f;
+
+        private final Matrix mMatrix = new Matrix();
+        private final Matrix mSavedMatrix = new Matrix();
+        private final PointF mStartPoint = new PointF();
+        private final float[] mMatrixValues = new float[9];
+        private final ScaleGestureDetector mScaleDetector;
+        private float mMinScale = 1f;
+        private boolean mDragging;
+
+        ZoomableImageView(Context context) {
+            super(context);
+            setScaleType(ScaleType.MATRIX);
+            mScaleDetector =
+                    new ScaleGestureDetector(
+                            context,
+                            new ScaleGestureDetector.SimpleOnScaleGestureListener() {
+                                @Override
+                                public boolean onScale(ScaleGestureDetector detector) {
+                                    mMatrix.getValues(mMatrixValues);
+                                    float current = mMatrixValues[Matrix.MSCALE_X];
+                                    float next =
+                                            Math.max(
+                                                    mMinScale,
+                                                    Math.min(
+                                                            current * detector.getScaleFactor(),
+                                                            MAX_SCALE));
+                                    float ratio = next / current;
+                                    mMatrix.postScale(
+                                            ratio,
+                                            ratio,
+                                            detector.getFocusX(),
+                                            detector.getFocusY());
+                                    clampMatrix();
+                                    setImageMatrix(mMatrix);
+                                    return true;
+                                }
+                            });
+        }
+
+        void fitBitmap(Bitmap bitmap) {
+            setImageBitmap(bitmap);
+            post(
+                    () -> {
+                        if (getWidth() == 0 || getHeight() == 0) return;
+                        float sx = (float) getWidth() / bitmap.getWidth();
+                        float sy = (float) getHeight() / bitmap.getHeight();
+                        mMinScale = Math.min(sx, sy);
+                        float dx = (getWidth() - bitmap.getWidth() * mMinScale) / 2f;
+                        float dy = (getHeight() - bitmap.getHeight() * mMinScale) / 2f;
+                        mMatrix.setScale(mMinScale, mMinScale);
+                        mMatrix.postTranslate(dx, dy);
+                        setImageMatrix(mMatrix);
+                    });
+        }
+
+        @Override
+        public boolean onGenericMotionEvent(MotionEvent event) {
+            if ((event.getSource() & InputDevice.SOURCE_CLASS_POINTER) != 0
+                    && event.getAction() == MotionEvent.ACTION_SCROLL) {
+                float scroll = event.getAxisValue(MotionEvent.AXIS_VSCROLL);
+                float factor = scroll > 0 ? 1.1f : (1f / 1.1f);
+                mMatrix.getValues(mMatrixValues);
+                float current = mMatrixValues[Matrix.MSCALE_X];
+                float next = Math.max(mMinScale, Math.min(current * factor, MAX_SCALE));
+                float ratio = next / current;
+                mMatrix.postScale(ratio, ratio, event.getX(), event.getY());
+                clampMatrix();
+                setImageMatrix(mMatrix);
+                return true;
+            }
+            return super.onGenericMotionEvent(event);
+        }
+
+        @Override
+        public boolean onTouchEvent(MotionEvent event) {
+            mScaleDetector.onTouchEvent(event);
+            switch (event.getActionMasked()) {
+                case MotionEvent.ACTION_DOWN:
+                    mSavedMatrix.set(mMatrix);
+                    mStartPoint.set(event.getX(), event.getY());
+                    mDragging = true;
+                    break;
+                case MotionEvent.ACTION_POINTER_DOWN:
+                    mSavedMatrix.set(mMatrix);
+                    mDragging = false;
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    if (mDragging && !mScaleDetector.isInProgress()) {
+                        mMatrix.set(mSavedMatrix);
+                        mMatrix.postTranslate(
+                                event.getX() - mStartPoint.x, event.getY() - mStartPoint.y);
+                        clampMatrix();
+                        setImageMatrix(mMatrix);
+                    }
+                    break;
+                case MotionEvent.ACTION_UP:
+                    if (!mScaleDetector.isInProgress()) performClick();
+                    mDragging = false;
+                    break;
+                case MotionEvent.ACTION_POINTER_UP:
+                    mDragging = false;
+                    break;
+                default:
+                    break;
+            }
+            return true;
+        }
+
+        private void clampMatrix() {
+            if (getDrawable() == null) return;
+            mMatrix.getValues(mMatrixValues);
+            float scale = mMatrixValues[Matrix.MSCALE_X];
+            float bmpW = getDrawable().getIntrinsicWidth() * scale;
+            float bmpH = getDrawable().getIntrinsicHeight() * scale;
+            float dx = mMatrixValues[Matrix.MTRANS_X];
+            float dy = mMatrixValues[Matrix.MTRANS_Y];
+            dx =
+                    bmpW < getWidth()
+                            ? (getWidth() - bmpW) / 2f
+                            : Math.min(0f, Math.max(dx, getWidth() - bmpW));
+            dy =
+                    bmpH < getHeight()
+                            ? (getHeight() - bmpH) / 2f
+                            : Math.min(0f, Math.max(dy, getHeight() - bmpH));
+            mMatrix.setScale(scale, scale);
+            mMatrix.postTranslate(dx, dy);
+        }
     }
 }
