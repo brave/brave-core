@@ -130,6 +130,20 @@ std::string_view GetContentBlockTypeString(
   }
 }
 
+int32_t ParseErrorCode(const base::Value& body) {
+  if (body.is_dict()) {
+    if (auto* error_dict = body.GetDict().FindDict("error")) {
+      if (auto* type_str = error_dict->FindString("type")) {
+        int parsed;
+        if (base::StringToInt(*type_str, &parsed)) {
+          return static_cast<int32_t>(parsed);
+        }
+      }
+    }
+  }
+  return 0;
+}
+
 }  // namespace
 
 // static
@@ -426,20 +440,6 @@ void ConversationAPIV2Client::PerformRequestWithCredentials(
   }
 }
 
-void ConversationAPIV2Client::ParseErrorCode(const base::Value& body) {
-  if (!body.is_dict()) {
-    return;
-  }
-  if (auto* error_dict = body.GetDict().FindDict("error")) {
-    if (auto* type_str = error_dict->FindString("type")) {
-      int parsed;
-      if (base::StringToInt(*type_str, &parsed)) {
-        last_error_code_ = static_cast<int32_t>(parsed);
-      }
-    }
-  }
-}
-
 void ConversationAPIV2Client::OnQueryCompleted(
     std::optional<CredentialCacheEntry> credential,
     GenerationCompletedCallback callback,
@@ -447,7 +447,6 @@ void ConversationAPIV2Client::OnQueryCompleted(
   const bool success = result.Is2XXResponseCode();
   // Handle successful request
   if (success) {
-    last_error_code_ = std::nullopt;
     std::optional<bool> is_near_verified = std::nullopt;
     std::optional<std::string> model_key = std::nullopt;
     const auto& headers = result.headers();
@@ -491,14 +490,12 @@ void ConversationAPIV2Client::OnQueryCompleted(
     error = mojom::APIError::ConnectionIssue;
   }
 
-  ParseErrorCode(result.value_body());
-  auto details = mojom::APIErrorDetails::New(
-      static_cast<int32_t>(result.response_code()),
-      last_error_code_.value_or(0));
-  last_error_code_ = std::nullopt;
+  auto details =
+      mojom::APIErrorDetails::New(static_cast<int32_t>(result.response_code()),
+                                  ParseErrorCode(result.value_body()));
 
-  std::move(callback).Run(base::unexpected(
-      EngineConsumer::Error(error, std::move(details))));
+  std::move(callback).Run(
+      base::unexpected(EngineConsumer::Error(error, std::move(details))));
 }
 
 void ConversationAPIV2Client::OnQueryDataReceived(
@@ -507,8 +504,6 @@ void ConversationAPIV2Client::OnQueryDataReceived(
   if (!result.has_value() || !result->is_dict()) {
     return;
   }
-
-  ParseErrorCode(*result);
 
   auto& result_params = result->GetDict();
   std::optional<std::string> model_key =

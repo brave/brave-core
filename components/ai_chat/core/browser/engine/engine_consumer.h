@@ -67,7 +67,7 @@ class EngineConsumer {
     Error(Error&&);
     Error& operator=(Error&&);
 
-    Error(mojom::APIError api_error);
+    Error(mojom::APIError api_error);  // NOLINT(runtime/explicit)
     Error(mojom::APIError api_error, mojom::APIErrorDetailsPtr details);
 
     bool operator==(mojom::APIError api_error_val) const {
@@ -77,8 +77,7 @@ class EngineConsumer {
     mojom::APIErrorDetailsPtr details;
   };
 
-  using GenerationResult =
-      base::expected<GenerationResultData, Error>;
+  using GenerationResult = base::expected<GenerationResultData, Error>;
 
   using GenerationDataCallback =
       base::RepeatingCallback<void(GenerationResultData)>;

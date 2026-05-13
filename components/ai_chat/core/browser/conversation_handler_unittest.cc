@@ -143,7 +143,10 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
 
   MOCK_METHOD(void, OnAPIRequestInProgress, (bool), (override));
 
-  MOCK_METHOD(void, OnAPIResponseError, (mojom::APIError, mojom::APIErrorDetailsPtr), (override));
+  MOCK_METHOD(void,
+              OnAPIResponseError,
+              (mojom::APIError, mojom::APIErrorDetailsPtr),
+              (override));
 
   MOCK_METHOD(void,
               OnTaskStateChanged,

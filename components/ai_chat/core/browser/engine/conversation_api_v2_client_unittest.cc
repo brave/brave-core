@@ -2140,4 +2140,91 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_CompletionChunk) {
   }
 }
 
+TEST_F(ConversationAPIV2ClientUnitTest, ErrorParsing_SSE) {
+  MockAPIRequestHelper* mock_request_helper =
+      client_->GetMockAPIRequestHelper();
+  testing::StrictMock<MockCallbacks> mock_callbacks;
+  base::RunLoop run_loop;
+
+  EXPECT_CALL(*mock_request_helper, RequestSSE(_, _, _, _, _, _, _, _))
+      .WillOnce([&](const std::string& method, const GURL& url,
+                    const std::string& body, const std::string& content_type,
+                    DataReceivedCallback data_received_callback,
+                    ResultCallback result_callback,
+                    const base::flat_map<std::string, std::string>& headers,
+                    const api_request_helper::APIRequestOptions& options) {
+        // Error body arrives via value_body() in the terminal APIRequestResult,
+        // populated by APIRequestHelper from the non-2xx SSE response body.
+        auto error_dict = base::test::ParseJsonDict(
+            R"({"error":{"type":"1234","message":"bad request"}})");
+        std::move(result_callback)
+            .Run(api_request_helper::APIRequestResult(
+                400, base::Value(std::move(error_dict)), {}, net::OK, GURL()));
+        return Ticket();
+      });
+
+  EXPECT_CALL(mock_callbacks, OnCompleted(_))
+      .WillOnce([&](EngineConsumer::GenerationResult result) {
+        ASSERT_FALSE(result.has_value());
+        EXPECT_EQ(result.error().api_error, mojom::APIError::ConnectionIssue);
+        ASSERT_TRUE(result.error().details);
+        EXPECT_EQ(result.error().details->status_code, 400);
+        EXPECT_EQ(result.error().details->error_code, 1234);
+        run_loop.Quit();
+      });
+
+  client_->PerformRequest(
+      GetMockMessagesAndExpectedMessagesJson().first, std::nullopt,
+      std::nullopt, {mojom::ConversationCapability::CHAT},
+      base::BindRepeating(&MockCallbacks::OnDataReceived,
+                          base::Unretained(&mock_callbacks)),
+      base::BindOnce(&MockCallbacks::OnCompleted,
+                     base::Unretained(&mock_callbacks)));
+
+  run_loop.Run();
+}
+
+TEST_F(ConversationAPIV2ClientUnitTest, ErrorParsing_NonSSE) {
+  MockAPIRequestHelper* mock_request_helper =
+      client_->GetMockAPIRequestHelper();
+  testing::StrictMock<MockCallbacks> mock_callbacks;
+  base::RunLoop run_loop;
+
+  EXPECT_CALL(*mock_request_helper, Request(_, _, _, _, _, _, _, _))
+      .WillOnce(
+          [&](const std::string& method, const GURL& url,
+              const std::string& body, const std::string& content_type,
+              ResultCallback result_callback,
+              const base::flat_map<std::string, std::string>& headers,
+              const api_request_helper::APIRequestOptions& options,
+              api_request_helper::APIRequestHelper::ResponseConversionCallback
+                  conversion_callback) {
+            auto error_dict = base::test::ParseJsonDict(
+                R"({"error":{"type":"5678","message":"rate limited"}})");
+            std::move(result_callback)
+                .Run(api_request_helper::APIRequestResult(
+                    429, base::Value(std::move(error_dict)), {}, net::OK,
+                    GURL()));
+            return Ticket();
+          });
+
+  EXPECT_CALL(mock_callbacks, OnCompleted(_))
+      .WillOnce([&](EngineConsumer::GenerationResult result) {
+        ASSERT_FALSE(result.has_value());
+        EXPECT_EQ(result.error().api_error, mojom::APIError::RateLimitReached);
+        ASSERT_TRUE(result.error().details);
+        EXPECT_EQ(result.error().details->status_code, 429);
+        EXPECT_EQ(result.error().details->error_code, 5678);
+        run_loop.Quit();
+      });
+
+  client_->PerformRequest(
+      GetMockMessagesAndExpectedMessagesJson().first, std::nullopt,
+      std::nullopt, {mojom::ConversationCapability::CHAT}, base::NullCallback(),
+      base::BindOnce(&MockCallbacks::OnCompleted,
+                     base::Unretained(&mock_callbacks)));
+
+  run_loop.Run();
+}
+
 }  // namespace ai_chat

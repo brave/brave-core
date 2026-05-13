@@ -46,9 +46,8 @@ void ConversationClient::OnAPIRequestInProgress(bool in_progress) {
   [bridge_ onAPIRequestInProgress:in_progress];
 }
 
-void ConversationClient::OnAPIResponseError(
-    mojom::APIError api_error,
-    mojom::APIErrorDetailsPtr details) {
+void ConversationClient::OnAPIResponseError(mojom::APIError api_error,
+                                            mojom::APIErrorDetailsPtr details) {
   [bridge_ onAPIResponseError:(AiChatAPIError)api_error];
 }
 

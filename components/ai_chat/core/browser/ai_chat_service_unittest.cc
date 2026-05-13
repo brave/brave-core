@@ -141,7 +141,10 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
 
   MOCK_METHOD(void, OnAPIRequestInProgress, (bool), (override));
 
-  MOCK_METHOD(void, OnAPIResponseError, (mojom::APIError, mojom::APIErrorDetailsPtr), (override));
+  MOCK_METHOD(void,
+              OnAPIResponseError,
+              (mojom::APIError, mojom::APIErrorDetailsPtr),
+              (override));
 
   MOCK_METHOD(void,
               OnTaskStateChanged,
@@ -471,19 +474,20 @@ TEST_P(AIChatServiceUnitTest,
   // Function to call to finish generating the response.
   base::OnceClosure resolve;
   EXPECT_CALL(*engine, GenerateAssistantResponse)
-      .WillOnce(
-          [&resolve](PageContentsMap page_contents,
-                     const std::vector<mojom::ConversationTurnPtr>& history,
-                     bool is_temporary_chat,
-                     const std::vector<base::WeakPtr<Tool>>& tools,
-                     std::optional<std::string_view> preferred_tool_name,
-                     const ConversationCapabilitySet& conversation_capabilities,
-                     base::RepeatingCallback<void(
-                         EngineConsumer::GenerationResultData)> callback,
-                     base::OnceCallback<void(
-                         base::expected<EngineConsumer::GenerationResultData,
-                                        EngineConsumer::Error>)> done_callback) {
-            resolve = base::BindOnce(
+      .WillOnce([&resolve](
+                    PageContentsMap page_contents,
+                    const std::vector<mojom::ConversationTurnPtr>& history,
+                    bool is_temporary_chat,
+                    const std::vector<base::WeakPtr<Tool>>& tools,
+                    std::optional<std::string_view> preferred_tool_name,
+                    const ConversationCapabilitySet& conversation_capabilities,
+                    base::RepeatingCallback<void(
+                        EngineConsumer::GenerationResultData)> callback,
+                    base::OnceCallback<void(
+                        base::expected<EngineConsumer::GenerationResultData,
+                                       EngineConsumer::Error>)> done_callback) {
+        resolve =
+            base::BindOnce(
                 [](base::OnceCallback<void(
                        base::expected<EngineConsumer::GenerationResultData,
                                       EngineConsumer::Error>)> done_callback) {
@@ -494,7 +498,7 @@ TEST_P(AIChatServiceUnitTest,
                           std::nullopt /* model_key */)));
                 },
                 std::move(done_callback));
-          });
+      });
 
   // Conversation should exist in memory.
   EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 1u);

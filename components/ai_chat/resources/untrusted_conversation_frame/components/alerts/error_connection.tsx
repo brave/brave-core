@@ -36,11 +36,7 @@ function ErrorConnection(props: Props) {
     <div className={styles.alert}>
       <Alert type='error'>
         {getLocale(S.CHAT_UI_ERROR_NETWORK)}
-        {detailsText && (
-          <p className={styles.errorDetails}>
-            {detailsText}
-          </p>
-        )}
+        {detailsText && <p className={styles.errorDetails}>{detailsText}</p>}
         <Button
           slot='actions'
           kind='filled'
