@@ -92,6 +92,16 @@ export interface InputBoxProps {
   renderInputToggle?: () => React.ReactNode
 }
 
+/**
+ * Imperative handle for `InputBox` when passed a `ref` (`forwardRef`).
+ * Lets parents move focus back to the composer after actions such as picking
+ * a tool from the menu.
+ */
+export type InputBoxHandle = {
+  /** Focuses the contenteditable message field. */
+  focusInput: () => void
+}
+
 function usePlaceholderText(
   attachmentsCount: number,
   conversationStarted: boolean,
@@ -180,345 +190,357 @@ function AttachmentChips(props: {
   )
 }
 
-function InputBox(props: InputBoxProps) {
-  const aiChatContext = useAIChat()
-  const conversationState = useConversationState()
-  const querySubmitted = React.useRef(false)
+const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
+  function InputBox(props, ref) {
+    const aiChatContext = useAIChat()
+    const conversationState = useConversationState()
+    const querySubmitted = React.useRef(false)
+    const editableElementRef = React.useRef<HTMLElement | null>(null)
 
-  const handleSubmit = () => {
-    querySubmitted.current = true
-    props.context.submitInputTextToAPI()
-  }
+    const setEditableRef = (node: HTMLElement | null) => {
+      editableElementRef.current = node
+      if (!node) {
+        return
+      }
+      if (
+        props.context.selectedActionType
+        || props.maybeShowSoftKeyboard?.(querySubmitted.current)
+      ) {
+        node.focus()
+      }
+    }
 
-  const handleStopGenerating = () => {
-    props.context.handleStopGenerating()
-  }
+    React.useImperativeHandle(ref, () => ({
+      focusInput: () => {
+        editableElementRef.current?.focus()
+      },
+    }))
 
-  const handleMic = () => {
-    props.context.handleVoiceRecognition?.()
-  }
+    const handleSubmit = () => {
+      querySubmitted.current = true
+      props.context.submitInputTextToAPI()
+    }
 
-  const handleOnKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
-      if (!e.repeat) {
-        props.context.submitInputTextToAPI()
+    const handleStopGenerating = () => {
+      props.context.handleStopGenerating()
+    }
+
+    const handleMic = () => {
+      props.context.handleVoiceRecognition?.()
+    }
+
+    const handleOnKeyDown = (e: React.KeyboardEvent) => {
+      if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
+        if (!e.repeat) {
+          props.context.submitInputTextToAPI()
+        }
+
+        e.preventDefault()
       }
 
+      if (
+        e.key === 'Backspace'
+        && stringifyContent(props.context.inputText) === ''
+        && props.context.selectedActionType
+      ) {
+        props.context.resetSelectedActionType()
+      }
+    }
+
+    const handleOnPaste = async (
+      e: React.ClipboardEvent<HTMLTextAreaElement>,
+    ) => {
+      const clipboardData = e.clipboardData
+
+      if (!clipboardData || clipboardData.files.length === 0) {
+        return
+      }
+
+      const files = Array.from(clipboardData.files)
+
+      if (files.length === 0) {
+        return
+      }
+
+      // Prevent the default paste behavior for files
       e.preventDefault()
+
+      props.context.attachFiles(files)
     }
 
-    if (
-      e.key === 'Backspace'
-      && stringifyContent(props.context.inputText) === ''
-      && props.context.selectedActionType
-    ) {
-      props.context.resetSelectedActionType()
-    }
-  }
-
-  const handleOnPaste = async (
-    e: React.ClipboardEvent<HTMLTextAreaElement>,
-  ) => {
-    const clipboardData = e.clipboardData
-
-    if (!clipboardData || clipboardData.files.length === 0) {
-      return
-    }
-
-    const files = Array.from(clipboardData.files)
-
-    if (files.length === 0) {
-      return
-    }
-
-    // Prevent the default paste behavior for files
-    e.preventDefault()
-
-    props.context.attachFiles(files)
-  }
-
-  const maybeAutofocus = (node: HTMLElement | null) => {
-    if (!node) {
-      return
-    }
-    if (
-      props.context.selectedActionType
-      || props.maybeShowSoftKeyboard?.(querySubmitted.current)
-    ) {
-      node.focus()
-    }
-  }
-
-  const placeholderText = usePlaceholderText(
-    props.context.associatedContentInfo.length,
-    props.conversationStarted,
-    props.context.getPluralString,
-  )
-
-  const handleContentAgentToggle = () => {
-    props.context.openAIChatAgentProfile()
-  }
-
-  const showUploadedFiles = props.context.pendingMessageFiles.length > 0
-  const pendingContent = props.context.associatedContentInfo.filter(
-    (c) => !c.conversationTurnUuid,
-  )
-  const showTaskStateActions =
-    conversationState.capabilitiesEnabled.includes(
-      Mojom.ConversationCapability.CONTENT_AGENT,
+    const placeholderText = usePlaceholderText(
+      props.context.associatedContentInfo.length,
+      props.conversationStarted,
+      props.context.getPluralString,
     )
-    && props.context.toolUseTaskState !== Mojom.TaskState.kNone
-    && props.context.toolUseTaskState !== Mojom.TaskState.kStopped
-  const isSendButtonDisabled =
-    props.context.shouldDisableUserInput
-    || stringifyContent(props.context.inputText) === ''
 
-  const handleLearnMoreClicked = React.useCallback(() => {
-    const mojomUrl = new Url()
-    mojomUrl.url = LEARN_MORE_CONTENT_AGENT_URL
-    aiChatContext.api.uiHandler.openURL(mojomUrl)
-  }, [aiChatContext.api.uiHandler])
+    const handleContentAgentToggle = () => {
+      props.context.openAIChatAgentProfile()
+    }
 
-  return (
-    <form
-      className={styles.form}
-      onKeyDownCapture={handleOnKeyDown}
-    >
-      {props.context.selectedActionType && (
-        <div className={styles.actionsLabelContainer}>
-          <ActionTypeLabel
-            removable={true}
-            actionType={props.context.selectedActionType}
-            onCloseClick={props.context.resetSelectedActionType}
-          />
-        </div>
-      )}
-      {props.context.isAIChatAgentProfileFeatureEnabled
-        && props.context.isAIChatAgentProfile
-        && !props.conversationStarted && (
-          <div className={styles.contentAgentWarning}>
-            <div className={styles.contentAgentWarningIcon}>
-              <Icon name='leo-cursor-filled' />
+    const showUploadedFiles = props.context.pendingMessageFiles.length > 0
+    const pendingContent = props.context.associatedContentInfo.filter(
+      (c) => !c.conversationTurnUuid,
+    )
+    const showTaskStateActions =
+      conversationState.capabilitiesEnabled.includes(
+        Mojom.ConversationCapability.CONTENT_AGENT,
+      )
+      && props.context.toolUseTaskState !== Mojom.TaskState.kNone
+      && props.context.toolUseTaskState !== Mojom.TaskState.kStopped
+    const isSendButtonDisabled =
+      props.context.shouldDisableUserInput
+      || stringifyContent(props.context.inputText) === ''
+
+    const handleLearnMoreClicked = React.useCallback(() => {
+      const mojomUrl = new Url()
+      mojomUrl.url = LEARN_MORE_CONTENT_AGENT_URL
+      aiChatContext.api.uiHandler.openURL(mojomUrl)
+    }, [aiChatContext.api.uiHandler])
+
+    return (
+      <form
+        className={styles.form}
+        onKeyDownCapture={handleOnKeyDown}
+      >
+        {props.context.selectedActionType && (
+          <div className={styles.actionsLabelContainer}>
+            <ActionTypeLabel
+              removable={true}
+              actionType={props.context.selectedActionType}
+              onCloseClick={props.context.resetSelectedActionType}
+            />
+          </div>
+        )}
+        {props.context.isAIChatAgentProfileFeatureEnabled
+          && props.context.isAIChatAgentProfile
+          && !props.conversationStarted && (
+            <div className={styles.contentAgentWarning}>
+              <div className={styles.contentAgentWarningIcon}>
+                <Icon name='leo-cursor-filled' />
+              </div>
+              <div className={styles.contentAgentWarningText}>
+                {formatLocale(S.CHAT_UI_CONTENT_AGENT_WARNING_TEXT, {
+                  $1: (content) => (
+                    <a
+                      // While we preventDefault onClick, we still need to pass
+                      // the href here so we can show link preview.
+                      href={LEARN_MORE_CONTENT_AGENT_URL}
+                      className={styles.learnMoreLink}
+                      onClick={(e) => {
+                        e.preventDefault()
+                        handleLearnMoreClicked()
+                      }}
+                    >
+                      {content}
+                    </a>
+                  ),
+                })}
+              </div>
             </div>
-            <div className={styles.contentAgentWarningText}>
-              {formatLocale(S.CHAT_UI_CONTENT_AGENT_WARNING_TEXT, {
-                $1: (content) => (
-                  <a
-                    // While we preventDefault onClick, we still need to pass
-                    // the href here so we can show link preview.
-                    href={LEARN_MORE_CONTENT_AGENT_URL}
-                    className={styles.learnMoreLink}
-                    onClick={(e) => {
-                      e.preventDefault()
-                      handleLearnMoreClicked()
-                    }}
-                  >
-                    {content}
-                  </a>
-                ),
-              })}
-            </div>
+          )}
+
+        {showTaskStateActions && (
+          <div
+            className={styles.taskStateActions}
+            data-testid='task-state-actions'
+          >
+            {props.context.toolUseTaskState === Mojom.TaskState.kPaused && (
+              <Button
+                size='medium'
+                kind='outline'
+                onClick={props.context.resumeTask}
+                title={getLocale(S.CHAT_UI_RESUME_TASK_BUTTON_LABEL)}
+              >
+                <Icon
+                  slot='icon-before'
+                  name='play-circle'
+                />
+                <span data-testid='resume-task-button'>
+                  {getLocale(S.CHAT_UI_RESUME_TASK_BUTTON_LABEL)}
+                </span>
+              </Button>
+            )}
+
+            {props.context.toolUseTaskState === Mojom.TaskState.kRunning && (
+              <Button
+                kind='outline'
+                onClick={props.context.pauseTask}
+                title={getLocale(S.CHAT_UI_PAUSE_TASK_BUTTON_LABEL)}
+              >
+                <Icon
+                  slot='icon-before'
+                  name='pause-circle'
+                />
+                <span data-testid='pause-task-button'>
+                  {getLocale(S.CHAT_UI_PAUSE_TASK_BUTTON_LABEL)}
+                </span>
+              </Button>
+            )}
+
+            <Button
+              kind='outline'
+              onClick={props.context.stopTask}
+              title={getLocale(S.CHAT_UI_STOP_TASK_BUTTON_LABEL)}
+              className={styles.taskStateActionButtonStop}
+            >
+              <Icon
+                slot='icon-before'
+                name='stop-circle'
+              />
+              <span data-testid='stop-task-button'>
+                {getLocale(S.CHAT_UI_STOP_TASK_BUTTON_LABEL)}
+              </span>
+            </Button>
           </div>
         )}
 
-      {showTaskStateActions && (
-        <div
-          className={styles.taskStateActions}
-          data-testid='task-state-actions'
-        >
-          {props.context.toolUseTaskState === Mojom.TaskState.kPaused && (
-            <Button
-              size='medium'
-              kind='outline'
-              onClick={props.context.resumeTask}
-              title={getLocale(S.CHAT_UI_RESUME_TASK_BUTTON_LABEL)}
-            >
-              <Icon
-                slot='icon-before'
-                name='play-circle'
-              />
-              <span data-testid='resume-task-button'>
-                {getLocale(S.CHAT_UI_RESUME_TASK_BUTTON_LABEL)}
-              </span>
-            </Button>
-          )}
-
-          {props.context.toolUseTaskState === Mojom.TaskState.kRunning && (
-            <Button
-              kind='outline'
-              onClick={props.context.pauseTask}
-              title={getLocale(S.CHAT_UI_PAUSE_TASK_BUTTON_LABEL)}
-            >
-              <Icon
-                slot='icon-before'
-                name='pause-circle'
-              />
-              <span data-testid='pause-task-button'>
-                {getLocale(S.CHAT_UI_PAUSE_TASK_BUTTON_LABEL)}
-              </span>
-            </Button>
-          )}
-
-          <Button
-            kind='outline'
-            onClick={props.context.stopTask}
-            title={getLocale(S.CHAT_UI_STOP_TASK_BUTTON_LABEL)}
-            className={styles.taskStateActionButtonStop}
-          >
-            <Icon
-              slot='icon-before'
-              name='stop-circle'
-            />
-            <span data-testid='stop-task-button'>
-              {getLocale(S.CHAT_UI_STOP_TASK_BUTTON_LABEL)}
-            </span>
-          </Button>
-        </div>
-      )}
-
-      {(showUploadedFiles || pendingContent.length > 0) && (
-        <AttachmentChips
-          pendingContent={props.context.isGenerating ? [] : pendingContent}
-          pendingMessageFiles={props.context.pendingMessageFiles}
-          isUploadingFiles={props.context.isUploadingFiles}
-          isStandalone={!!aiChatContext.isStandalone}
-          disassociateContent={props.context.disassociateContent}
-          removeFile={props.context.removeFile}
+        {(showUploadedFiles || pendingContent.length > 0) && (
+          <AttachmentChips
+            pendingContent={props.context.isGenerating ? [] : pendingContent}
+            pendingMessageFiles={props.context.pendingMessageFiles}
+            isUploadingFiles={props.context.isUploadingFiles}
+            isStandalone={!!aiChatContext.isStandalone}
+            disassociateContent={props.context.disassociateContent}
+            removeFile={props.context.removeFile}
+          />
+        )}
+        <Editable
+          ref={setEditableRef}
+          placeholder={placeholderText}
+          content={props.context.inputText}
+          onContentChange={(e) => {
+            props.context.setInputText(e)
+          }}
+          onPaste={handleOnPaste}
         />
-      )}
-      <Editable
-        ref={maybeAutofocus}
-        placeholder={placeholderText}
-        content={props.context.inputText}
-        onContentChange={(e) => {
-          props.context.setInputText(e)
-        }}
-        onPaste={handleOnPaste}
-      />
-      {props.context.isCharLimitApproaching && (
-        <div
-          className={classnames({
-            [styles.counterText]: true,
-            [styles.counterTextVisible]: props.context.isCharLimitApproaching,
-            [styles.counterTextError]: props.context.isCharLimitExceeded,
-          })}
-        >
-          {props.context.inputTextCharCountDisplay}
-        </div>
-      )}
-      <div className={styles.toolsContainer}>
-        <div className={styles.tools}>
-          <Button
-            fab
-            kind='plain-faint'
-            onClick={(e) => {
-              e.preventDefault()
-              e.stopPropagation()
-              props.context.setIsToolsMenuOpen(!props.context.isToolsMenuOpen)
-            }}
-            title={getLocale(S.AI_CHAT_LEO_TOOLS_BUTTON_LABEL)}
-            data-testid='quick-action-button'
+        {props.context.isCharLimitApproaching && (
+          <div
+            className={classnames({
+              [styles.counterText]: true,
+              [styles.counterTextVisible]: props.context.isCharLimitApproaching,
+              [styles.counterTextError]: props.context.isCharLimitExceeded,
+            })}
           >
-            <Icon
-              className={classnames({
-                [styles.slashIconActive]: props.context.isToolsMenuOpen,
-              })}
-              name='slash'
-            />
-          </Button>
-          {props.context.isMobile && (
+            {props.context.inputTextCharCountDisplay}
+          </div>
+        )}
+        <div className={styles.toolsContainer}>
+          <div className={styles.tools}>
             <Button
               fab
               kind='plain-faint'
-              onClick={handleMic}
-              disabled={props.context.shouldDisableUserInput}
-              title={getLocale(S.AI_CHAT_USE_MICROPHONE_BUTTON_LABEL)}
-            >
-              <Icon name='microphone' />
-            </Button>
-          )}
-          <AttachmentButtonMenu
-            attachFiles={props.context.attachFiles}
-            getScreenshots={props.context.getScreenshots}
-            conversationHistory={props.context.conversationHistory}
-            associatedContentInfo={props.context.associatedContentInfo}
-            associateDefaultContent={props.context.associateDefaultContent}
-            conversationStarted={props.conversationStarted}
-            isMobile={props.context.isMobile}
-            unassociatedTabs={props.context.unassociatedTabs}
-            setAttachmentsDialog={props.context.setAttachmentsDialog}
-          />
-          {props.context.hasAcceptedAgreement
-            && props.context.isAIChatAgentProfileFeatureEnabled
-            && !props.context.isAIChatAgentProfile && (
-              <Button
-                fab
-                kind='plain-faint'
-                onClick={handleContentAgentToggle}
-                title={getLocale(S.CHAT_UI_AI_BROWSING_TOGGLE_BUTTON_LABEL)}
-              >
-                <Icon name='leo-cursor' />
-              </Button>
-            )}
-          {props.context.isAIChatAgentProfileFeatureEnabled
-            && props.context.isAIChatAgentProfile && (
-              <div data-testid='agent-profile-tooltip'>
-                <Tooltip
-                  text={getLocale(S.CHAT_UI_CONTENT_AGENT_PROFILE_BUTTON_LABEL)}
-                >
-                  <Icon
-                    className={styles.contentAgentButtonEnabled}
-                    name='leo-cursor'
-                  />
-                </Tooltip>
-              </div>
-            )}
-        </div>
-        <div className={styles.modelSelectorAndSendButton}>
-          <ModelSelector />
-          {props.renderInputToggle?.()}
-          {props.context.isGenerating ? (
-            <Button
-              fab
-              kind='filled'
-              className={classnames({
-                [styles.button]: true,
-                [styles.streamingButton]: true,
-              })}
-              onClick={handleStopGenerating}
-              title={getLocale(S.CHAT_UI_STOP_GENERATION_BUTTON_LABEL)}
-              data-testid='stop-generation-button'
-            >
-              <Icon
-                name='stop-circle'
-                className={styles.streamingIcon}
-              />
-            </Button>
-          ) : (
-            <Button
-              fab
-              kind='filled'
-              className={classnames({
-                [styles.button]: true,
-                [styles.sendButtonDisabled]: isSendButtonDisabled,
-              })}
-              onClick={handleSubmit}
-              disabled={isSendButtonDisabled}
-              title={getLocale(S.CHAT_UI_SEND_CHAT_BUTTON_LABEL)}
-              data-testid='leo-submit-button'
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                props.context.setIsToolsMenuOpen(!props.context.isToolsMenuOpen)
+              }}
+              title={getLocale(S.AI_CHAT_LEO_TOOLS_BUTTON_LABEL)}
+              data-testid='quick-action-button'
             >
               <Icon
                 className={classnames({
-                  [styles.sendIconDisabled]: isSendButtonDisabled,
+                  [styles.slashIconActive]: props.context.isToolsMenuOpen,
                 })}
-                name='arrow-up'
+                name='slash'
               />
             </Button>
-          )}
+            {props.context.isMobile && (
+              <Button
+                fab
+                kind='plain-faint'
+                onClick={handleMic}
+                disabled={props.context.shouldDisableUserInput}
+                title={getLocale(S.AI_CHAT_USE_MICROPHONE_BUTTON_LABEL)}
+              >
+                <Icon name='microphone' />
+              </Button>
+            )}
+            <AttachmentButtonMenu
+              attachFiles={props.context.attachFiles}
+              getScreenshots={props.context.getScreenshots}
+              conversationHistory={props.context.conversationHistory}
+              associatedContentInfo={props.context.associatedContentInfo}
+              associateDefaultContent={props.context.associateDefaultContent}
+              conversationStarted={props.conversationStarted}
+              isMobile={props.context.isMobile}
+              unassociatedTabs={props.context.unassociatedTabs}
+              setAttachmentsDialog={props.context.setAttachmentsDialog}
+            />
+            {props.context.hasAcceptedAgreement
+              && props.context.isAIChatAgentProfileFeatureEnabled
+              && !props.context.isAIChatAgentProfile && (
+                <Button
+                  fab
+                  kind='plain-faint'
+                  onClick={handleContentAgentToggle}
+                  title={getLocale(S.CHAT_UI_AI_BROWSING_TOGGLE_BUTTON_LABEL)}
+                >
+                  <Icon name='leo-cursor' />
+                </Button>
+              )}
+            {props.context.isAIChatAgentProfileFeatureEnabled
+              && props.context.isAIChatAgentProfile && (
+                <div data-testid='agent-profile-tooltip'>
+                  <Tooltip
+                    text={getLocale(
+                      S.CHAT_UI_CONTENT_AGENT_PROFILE_BUTTON_LABEL,
+                    )}
+                  >
+                    <Icon
+                      className={styles.contentAgentButtonEnabled}
+                      name='leo-cursor'
+                    />
+                  </Tooltip>
+                </div>
+              )}
+          </div>
+          <div className={styles.modelSelectorAndSendButton}>
+            <ModelSelector />
+            {props.renderInputToggle?.()}
+            {props.context.isGenerating ? (
+              <Button
+                fab
+                kind='filled'
+                className={classnames({
+                  [styles.button]: true,
+                  [styles.streamingButton]: true,
+                })}
+                onClick={handleStopGenerating}
+                title={getLocale(S.CHAT_UI_STOP_GENERATION_BUTTON_LABEL)}
+                data-testid='stop-generation-button'
+              >
+                <Icon
+                  name='stop-circle'
+                  className={styles.streamingIcon}
+                />
+              </Button>
+            ) : (
+              <Button
+                fab
+                kind='filled'
+                className={classnames({
+                  [styles.button]: true,
+                  [styles.sendButtonDisabled]: isSendButtonDisabled,
+                })}
+                onClick={handleSubmit}
+                disabled={isSendButtonDisabled}
+                title={getLocale(S.CHAT_UI_SEND_CHAT_BUTTON_LABEL)}
+                data-testid='leo-submit-button'
+              >
+                <Icon
+                  className={classnames({
+                    [styles.sendIconDisabled]: isSendButtonDisabled,
+                  })}
+                  name='arrow-up'
+                />
+              </Button>
+            )}
+          </div>
         </div>
-      </div>
-    </form>
-  )
-}
+      </form>
+    )
+  },
+)
 
 export default InputBox

@@ -10,7 +10,7 @@ import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
 import { clearAllDataForTesting } from '$web-common/api'
 import { ContentType, UploadedFileType, TaskState } from '../../../common/mojom'
 import { MockContext } from '../../state/mock_context'
-import InputBox, { InputBoxProps } from '.'
+import InputBox, { InputBoxProps, type InputBoxHandle } from '.'
 
 // Mock URL.createObjectURL for tests that include image files
 // This is needed because AttachmentUploadItems calls URL.createObjectURL to create blob URLs for images
@@ -525,4 +525,30 @@ describe('input box', () => {
       ).not.toBeInTheDocument()
     },
   )
+
+  it('focusInput ref focuses the editable', async () => {
+    const inputBoxRef = React.createRef<InputBoxHandle>()
+    const { container } = await renderInputBox(
+      <MockContext>
+        <InputBox
+          ref={inputBoxRef}
+          context={testContext}
+          conversationStarted
+        />
+      </MockContext>,
+    )
+
+    const editable = container.querySelector(
+      '[data-testid="leo-input"]',
+    ) as HTMLElement | null
+    expect(editable).not.toBeNull()
+    const focusSpy = jest.spyOn(editable!, 'focus')
+
+    await act(async () => {
+      inputBoxRef.current!.focusInput()
+    })
+
+    expect(focusSpy).toHaveBeenCalled()
+    focusSpy.mockRestore()
+  })
 })
