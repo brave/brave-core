@@ -193,6 +193,8 @@ the reassignment commit, the resulting commit adopts the reassignment commit's
 authorship.
 """
 
+from __future__ import annotations
+
 import argparse
 from dataclasses import dataclass, field, replace
 from datetime import datetime
@@ -208,7 +210,6 @@ from rich.markdown import Markdown
 from rich.padding import Padding
 import subprocess
 import sys
-from typing import Optional, List, Dict
 
 from git_status import GitStatus
 from patchfile import Patchfile
@@ -269,7 +270,7 @@ MINOR_VERSION_BUMP_ISSUE_TEMPLATE = """### Minor Chromium bump
 """
 
 
-def _get_current_branch_upstream_name() -> Optional[str]:
+def _get_current_branch_upstream_name() -> str | None:
     """Retrieves the name of the current branch's upstream.
     """
     try:
@@ -308,10 +309,8 @@ def _update_pinslist_timestamp() -> str:
     )
 
     # Write back to the file
-    with open(repository.brave.root / PINSLIST_TIMESTAMP_FILE,
-              "w",
-              encoding="utf-8") as file:
-        file.write(updated_content)
+    (repository.brave.root / PINSLIST_TIMESTAMP_FILE).write_text(
+        updated_content, encoding='utf-8', newline='')
 
     updated = repository.brave.run_git('diff', PINSLIST_TIMESTAMP_FILE)
     if updated == '':
@@ -463,12 +462,12 @@ class ContinuationFile:
     has_shown_advisory: bool = False
 
     # The continuation data for the patches.
-    apply_record: Optional[ApplyPatchesRecord] = field(default=None)
+    apply_record: ApplyPatchesRecord | None = field(default=None)
 
     @staticmethod
     def load(target_version: Version,
-             working_version: Optional[Version] = None,
-             check: bool = True) -> Optional["ContinuationFile"]:
+             working_version: Version | None = None,
+             check: bool = True) -> ContinuationFile | None:
         """Loads the continuation file.
 
         This function loads the continuation file, and returns the instance of
@@ -491,8 +490,7 @@ class ContinuationFile:
                     f'File {VERSION_UPGRADE_FILE} does not exist')
             return None
 
-        with open(VERSION_UPGRADE_FILE, 'rb') as file:
-            continuation = pickle.load(file)
+        continuation = pickle.loads(VERSION_UPGRADE_FILE.read_bytes())
 
         if (continuation.target_version != target_version
                 or (working_version is not None
@@ -513,8 +511,7 @@ class ContinuationFile:
     def save(self):
         """Saves the continuation file.
         """
-        with open(VERSION_UPGRADE_FILE, 'wb') as file:
-            pickle.dump(self, file)
+        VERSION_UPGRADE_FILE.write_bytes(pickle.dumps(self))
 
     @staticmethod
     def clear():
@@ -595,7 +592,7 @@ class Versioned(Task):
 
     def __init__(self,
                  base_version: Version,
-                 target_version: Optional[Version] = None):
+                 target_version: Version | None = None):
         # The version in `package.json` found in that upstream branch.
         self.base_version = base_version
 
@@ -721,7 +718,7 @@ class GitHubIssue(Versioned):
                                  to=str(self.target_version))
         return title
 
-    def lookup_issue(self, title: str) -> Optional[List]:
+    def lookup_issue(self, title: str) -> list | None:
         """Looks up the issue for the upgrade.
 
         This function checks if there's already an issue with the title
@@ -945,7 +942,7 @@ class Upgrade(Versioned):
     def __init__(self,
                  target_version: Version,
                  is_continuation: bool,
-                 base_version: Optional[Version] = None):
+                 base_version: Version | None = None):
         if ((base_version is None and not is_continuation)
                 or (base_version is not None and is_continuation)):
             # either it is a new upgrade, and a base version is provided, or it
@@ -1158,9 +1155,10 @@ class Upgrade(Versioned):
         package = versioning.load_package_file('HEAD')
         package['config']['projects']['chrome']['tag'] = str(
             self.target_version)
-        with open(versioning.PACKAGE_FILE, "w") as package_file:
-            json.dump(package, package_file, indent=2)
-            package_file.write("\n")
+        with Path(versioning.PACKAGE_FILE).open('w',
+                                                encoding='utf-8',
+                                                newline='') as package_file:
+            package_file.write(json.dumps(package, indent=2) + '\n')
 
         repository.brave.run_git('add', versioning.PACKAGE_FILE)
 
@@ -1281,7 +1279,7 @@ class Upgrade(Versioned):
         for patch in modified_patches:
             hunks_before = count_hunks(repository.brave.read_file(patch))
             hunks_after = count_hunks(
-                (repository.brave.root / patch).read_text())
+                (repository.brave.root / patch).read_bytes().decode('utf-8'))
             if hunks_before != hunks_after:
                 patches_with_hunk_changes.append(
                     (patch, hunks_before, hunks_after))
@@ -1312,7 +1310,7 @@ class Upgrade(Versioned):
                            contents: str,
                            lookup: str,
                            added: bool = False,
-                           removed: bool = False) -> Optional[str]:
+                           removed: bool = False) -> str | None:
         """Uses a basic regex to extract the value being assinged into a key.
 
     This function is useful to extract the value of a key from a file contents
@@ -1354,7 +1352,7 @@ class Upgrade(Versioned):
                 return value.strip().lstrip().replace('"', '').replace("'", "")
         return None
 
-    def _check_toolchain(self, file_path: str, key: str) -> Optional[Dict]:
+    def _check_toolchain(self, file_path: str, key: str) -> dict | None:
         """ Helper function to check for toolchain updates.
 
     This helper is used to check for the MacOS SDK, Windows SDK to see if the
@@ -1396,7 +1394,7 @@ class Upgrade(Versioned):
             }
         }
 
-    def _check_win_toolchain(self) -> Optional[Dict]:
+    def _check_win_toolchain(self) -> dict | None:
         """Check for Windows toolchain updates.
 
     This function returns an advisory record if the Windows SDK has been
@@ -1416,7 +1414,7 @@ class Upgrade(Versioned):
                 'build/commands/lib/config.js with correct hashes.')
         return result
 
-    def _check_mac_toolchain(self) -> Optional[Dict]:
+    def _check_mac_toolchain(self) -> dict | None:
         """Check for MacOS toolchain updates.
 
     This function returns an advisory record if the MacoOS SDK has been updated,
@@ -1435,7 +1433,7 @@ class Upgrade(Versioned):
                 'URL.')
         return result
 
-    def _check_rust_toolchain(self) -> Optional[Dict]:
+    def _check_rust_toolchain(self) -> dict | None:
         """Check for Rust toolchain updates.
 
     This function checks for any updates to the Rust toolchain, including the
@@ -1549,7 +1547,7 @@ class Upgrade(Versioned):
 
     def _continue(self,
                   no_conflict_continuation: bool = False,
-                  apply_record: Optional[ApplyPatchesRecord] = None):
+                  apply_record: ApplyPatchesRecord | None = None):
         """Continues the upgrade process.
 
     This function is responsible for continuing the upgrade process. It will
@@ -1793,7 +1791,7 @@ class Upgrade(Versioned):
             terminal.log_task('[bold]❌[/] GNRT rerun. Please investigate it.')
 
 
-def _solve_brave_ref(from_ref: Optional[str]) -> str:
+def _solve_brave_ref(from_ref: str | None) -> str:
     """Solves the git reference.
 
     This function is used to resolve the git reference provided by the user.
@@ -1884,14 +1882,14 @@ class Rebase(Task):
     or `Updated strings` from the rebase plan file, and saves the changes to
     the file.
         """
-        with open(todo_file, 'r') as file:
-            lines = file.readlines()
-
-        with open(todo_file, 'w') as file:
-            for line in lines:
-                if ('Update patches from Chromium ' not in line
-                        and 'Updated strings for Chromium ' not in line):
-                    file.write(line)
+        lines = todo_file.read_bytes().decode('utf-8').splitlines(
+            keepends=True)
+        todo_file.write_text(
+            ''.join(line for line in lines
+                    if 'Update patches from Chromium ' not in line
+                    and 'Updated strings for Chromium ' not in line),
+            encoding='utf-8',
+            newline='')
 
     @staticmethod
     def recommit_in_rebase_plan(todo_file: Path):
@@ -1900,12 +1898,10 @@ class Rebase(Task):
     This function replaces the first `pick` in the rebase plan with `edit`,
     which forces the first commit to be recommitted.
         """
-        with open(todo_file, 'r') as file:
-            contents = file.read()
-
-        with open(todo_file, 'w') as file:
-            contents = contents.replace('pick', 'edit', 1)
-            file.write(contents)
+        contents = todo_file.read_bytes().decode('utf-8')
+        todo_file.write_text(contents.replace('pick', 'edit', 1),
+                             encoding='utf-8',
+                             newline='')
 
     @staticmethod
     def squash_minor_bumps_from_rebase_plan(todo_file: Path):
@@ -1915,8 +1911,8 @@ class Rebase(Task):
     Chromium" into a single commit on top, and does the same for commits
     that start with "Conflict-resolved patches from Chromium"
     """
-        with open(todo_file, 'r') as file:
-            lines = file.readlines()
+        lines = todo_file.read_bytes().decode('utf-8').splitlines(
+            keepends=True)
 
         version = []
         conflict = []
@@ -2024,8 +2020,9 @@ class Rebase(Task):
                               1] = new_todo_file[target_index + 1].replace(
                                   'pick', 'squash', 1)
 
-        with open(todo_file, 'w') as file:
-            file.writelines(new_todo_file)
+        todo_file.write_text(''.join(new_todo_file),
+                             encoding='utf-8',
+                             newline='')
 
 
     @staticmethod
@@ -2042,8 +2039,8 @@ class Rebase(Task):
     For minor bumps, it keeps the message of the last minor bump, which is the
     one that should be retained.
         """
-        with open(todo_file, 'r') as file:
-            lines = file.readlines()
+        lines = todo_file.read_bytes().decode('utf-8').splitlines(
+            keepends=True)
 
         # Filter out empty lines and comments once to make searching easier
         # We keep the original index to reference back to 'lines' if needed
@@ -2069,12 +2066,13 @@ class Rebase(Task):
             _, last_line = valid_entries[-1]
             content_to_write = [last_line]
 
-        with open(todo_file, 'w') as file:
-            file.writelines(content_to_write)
+        todo_file.write_text(''.join(content_to_write),
+                             encoding='utf-8',
+                             newline='')
 
     def execute(self,
-                from_ref: Optional[str],
-                to_ref: Optional[str],
+                from_ref: str | None,
+                to_ref: str | None,
                 recommit: bool,
                 discard_regen_changes: bool,
                 squash_minor_bumps: bool,

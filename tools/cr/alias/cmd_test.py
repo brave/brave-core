@@ -15,6 +15,8 @@ helpers (_Sandbox, _run_gc, _GIT_ENV_OVERRIDES, CMD_SCRIPT, HOOK_SOURCE)
 from this module.
 """
 
+from __future__ import annotations
+
 import os
 import platform
 import shutil
@@ -23,7 +25,6 @@ import subprocess
 import sys
 import unittest
 from pathlib import Path
-from typing import Optional
 
 import _boot  # noqa: F401
 from test.fake_chromium_repo import FakeChromiumRepo
@@ -65,8 +66,8 @@ def _run_gc(
     args: list[str],
     *,
     cwd: Path,
-    env: Optional[dict[str, str]] = None,
-    stdin: Optional[str] = None,
+    env: dict[str, str] | None = None,
+    stdin: str | None = None,
 ) -> subprocess.CompletedProcess:
     """Run git_cr.py as a subprocess and return the result."""
     full_env = {**os.environ, **_GIT_ENV_OVERRIDES, **(env or {})}
@@ -156,8 +157,8 @@ class _Sandbox:
         self,
         args: list[str],
         *,
-        env: Optional[dict[str, str]] = None,
-        stdin: Optional[str] = None,
+        env: dict[str, str] | None = None,
+        stdin: str | None = None,
     ) -> subprocess.CompletedProcess:
         """Run git_cr.py from within this sandbox."""
         return _run_gc(args, cwd=self.root, env=env, stdin=stdin)

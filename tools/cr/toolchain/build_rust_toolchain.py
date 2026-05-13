@@ -60,6 +60,8 @@ Chromium source tree:
 
 """
 
+from __future__ import annotations
+
 import argparse
 import contextlib
 import importlib
@@ -72,7 +74,6 @@ import subprocess
 import sys
 import tarfile
 from types import ModuleType
-from typing import Optional
 
 # Filename of the LLVM linker binary produced by the Chromium LLVM build.
 LLD = 'lld' + ('.exe' if sys.platform == 'win32' else '')
@@ -205,10 +206,10 @@ class ToolchainBuilder:
         self.config_toml_template: Path = self.tools_rust / CONFIG_TOML_TEMPLATE
 
         # Module for tools/rust/build_rust.py. Initialised by `run()`.
-        self.build_rust_module: Optional[ModuleType] = None
+        self.build_rust_module: ModuleType | None = None
 
         # Module for tools/rust/package_rust.py. Initialised by `run()`.
-        self.package_rust_module: Optional[ModuleType] = None
+        self.package_rust_module: ModuleType | None = None
 
     @contextlib.contextmanager
     def _temporary_config_toml_template_edits(self):

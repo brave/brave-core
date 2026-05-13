@@ -12,8 +12,8 @@
 #
 # Arguments:
 #   --build-dir <path>  : Directory containing test binaries (required)
-#   --apply             : Actually remove obsolete tests from filter files (optional)
-#   --sort              : Sort the filters within each section (only valid with --apply)
+#   --apply             : Remove obsolete tests from filter files (optional)
+#   --sort              : Sort filters within each section (requires --apply)
 #
 
 import argparse
@@ -29,25 +29,32 @@ FILTER_DIR = BRAVE_ROOT / "test" / "filters"
 
 # Filters listed here (with or without *) are never removed
 PROTECTED_FILTERS = [
-    "All/ProfilePickerCreationFlowEphemeralProfileBrowserTest.ExitDuringSignin/*",
+    ("All/ProfilePickerCreationFlowEphemeralProfileBrowserTest."
+     "ExitDuringSignin/*"),
     "All/ProfilePickerCreationFlowEphemeralProfileBrowserTest.Signin/*",
     "BorderlessIsolatedWebAppBrowserTest.*",
-    "BorderlessIsolatedWebAppBrowserTestDisabledFlag.AppCannotUseFeatureWhenBorderlessFlagIsDisabled",
+    ("BorderlessIsolatedWebAppBrowserTestDisabledFlag."
+     "AppCannotUseFeatureWhenBorderlessFlagIsDisabled"),
     "BrowserInstantControllerTest.DefaultSearchProviderChanged",
     "FedCmAccountSelectionViewBrowserTest.*",
     "FirstPartySetsBrowserTestWithSiteLeavingSet.CookieDeleted",
     "GlicUserStatusBrowserTest.ClientDataHeaderExists",
     "GPMPasskeysAuthenticatorDialogTest.InvokeUi*",
     "HintsFetcherSearchPageLimitedURLsBrowserTest.HintsFetcherLimitedResults",
-    "HistorySyncOptinManagedType/AvatarToolbarButtonHistorySyncOptinManagedTypeTest.HistorySyncOptinNotShownWhenSyncManaged/*",
-    "Incognito/EnclaveAuthenticatorIncognitoBrowserTest.MultipleDeclinedBootstrappings/*",
+    ("HistorySyncOptinManagedType/"
+     "AvatarToolbarButtonHistorySyncOptinManagedTypeTest."
+     "HistorySyncOptinNotShownWhenSyncManaged/*"),
+    ("Incognito/EnclaveAuthenticatorIncognitoBrowserTest."
+     "MultipleDeclinedBootstrappings/*"),
     "ManagedProfileCreationBrowserTest.Test/*PrimaryAccount_*",
     "ModelExecutionValidationBrowserTest.ModelExecutionFailsServerFailure",
     "ModelExecutionValidationBrowserTest.ModelExecutionSuccess",
     "NTPTilesForSupervisedUsersTest.DoNotLoadBlockedURL",
     "OmniboxContextMenuControllerBrowserTest.ExecuteCommand",
-    "PageLoadMetricsBrowserTestWithFencedFrames.PageLoadPrivacySandboxAdsFencedFramesMetrics",
-    "ProfileMenuViewBookmarksLimitExceededTest.ResolveBookmarksLimitExceededError/kSyncTheFeature",
+    ("PageLoadMetricsBrowserTestWithFencedFrames."
+     "PageLoadPrivacySandboxAdsFencedFramesMetrics"),
+    ("ProfileMenuViewBookmarksLimitExceededTest."
+     "ResolveBookmarksLimitExceededError/kSyncTheFeature"),
     "ProfilePickerGlicFlowControllerBrowserTest.PickProfileWithCurrentProfile",
     "RustLogIntegrationTest.CheckAllSeverity",
     "SidePanelCoordinatorTest.ClosingMidShowFromAnimationReparentsContentView",
@@ -71,8 +78,9 @@ def get_current_platform_tag():
 def is_filter_applicable(filename, current_platform):
     """
     Determine if a filter file applies to the current platform.
-    The platform/variant info is everything after the first '-' and before '.filter'.
-    If it starts with a platform we don't support, skip the file.
+    The platform/variant info is everything after the first '-' and
+    before '.filter'. If it starts with a platform we don't support,
+    skip the file.
     """
     name = filename.name
     if not name.endswith(".filter"):
@@ -91,14 +99,12 @@ def is_filter_applicable(filename, current_platform):
         if platform_info.startswith(plat_key):
             if plat_tag == current_platform:
                 return True
-            print(
-                f"Skipping {filename} (platform '{plat_key}' does not match '{current_platform}')"
-            )
+            print(f"Skipping {filename} (platform '{plat_key}' does not "
+                  f"match '{current_platform}')")
             return False
 
-    print(
-        f"Warning: skipping {filename}, unknown platform pattern '{platform_info}'"
-    )
+    print(f"Warning: skipping {filename}, unknown platform pattern "
+          f"'{platform_info}'")
     return False
 
 
@@ -157,7 +163,8 @@ def list_tests_from_binary(binary_path):
         if not main_part:
             continue
 
-        full_name = f"{current_suite}.{main_part}" if current_suite else main_part
+        full_name = (f"{current_suite}.{main_part}"
+                     if current_suite else main_part)
         tests.add(full_name)
 
     return tests
@@ -231,8 +238,7 @@ def scan_filter_files(tests_by_binary,
             continue
         valid_tests = tests_by_binary[binary_name]
 
-        with path.open("r", newline="") as f:
-            content = f.read()
+        content = path.read_bytes().decode('utf-8')
 
         lines = content.splitlines()
         new_lines = []
@@ -248,7 +254,8 @@ def scan_filter_files(tests_by_binary,
 
         def flush_section():
             """Write current section, applying filtering and sorting rules."""
-            nonlocal section_header, section_filters, section_has_kept_filter, new_lines
+            nonlocal section_header, section_filters
+            nonlocal section_has_kept_filter, new_lines
             if not section_header and not section_filters:
                 return
 
@@ -328,8 +335,9 @@ def scan_filter_files(tests_by_binary,
 
         # Always write with LF line endings for consistency (BS-029)
         if apply and changed:
-            with path.open("w", newline="\n") as f:
-                f.write("\n".join(new_lines) + "\n")
+            path.write_text("\n".join(new_lines) + "\n",
+                            encoding='utf-8',
+                            newline='')
 
     return obsolete_by_file
 

@@ -3,8 +3,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+from __future__ import annotations
+
 from pathlib import Path
-from typing import List, Dict, Optional
 import json
 import os
 import platform
@@ -40,7 +41,7 @@ class FakeChromiumRepo:
         # Set a brave repository under src/.
         self._init_repo(self.brave)
         self.brave_patches.mkdir(parents=True, exist_ok=True)
-        self._original_cwd: Optional[Path] = None
+        self._original_cwd: Path | None = None
 
     def setup(self) -> None:
         """Creates chromium_src/ and rewrite/, then chdirs into the brave repo.
@@ -96,7 +97,7 @@ class FakeChromiumRepo:
         return self.base_path / 'remote'
 
     def _run_git_command(self,
-                         command: List[str],
+                         command: list[str],
                          cwd: Path,
                          strip: bool = True) -> str:
         """Runs a git command in the specified directory and returns the stdout.
@@ -175,7 +176,7 @@ class FakeChromiumRepo:
         self._run_git_command(
             ['commit', '-m', f'Add submodule {relative_path}'], self.chromium)
 
-    def install_vpython3_shim(self) -> Optional[Path]:
+    def install_vpython3_shim(self) -> Path | None:
         """Populates `chromium/third_party/depot_tools/vpython3` for tests.
 
         No-op when `vpython_utils.is_found_in_path_variable()` reports that
@@ -389,7 +390,7 @@ class FakeChromiumRepo:
                     self.brave)
 
 
-    def run_apply_patches(self) -> List[Dict]:
+    def run_apply_patches(self) -> list[dict]:
         """Similar to `npm run apply_patches`.
 
         This method applies patches for all modified files in Chromium and its

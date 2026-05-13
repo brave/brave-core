@@ -3,13 +3,14 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 from enum import Enum, auto
 import logging
 from pathlib import Path
 import re
 import subprocess
-from typing import Optional
 
 from plaster import PlasterFile, PLASTER_FILES_PATH
 from repository import Repository
@@ -39,7 +40,7 @@ class Patchfile:
     # Path to the plaster (.toml) file for this patch, expressed via
     # `PLASTER_FILES_PATH` (i.e. cwd-relative, the same shape every other
     # path in tools/cr uses).
-    plaster: Optional[Path] = field(init=False)
+    plaster: Path | None = field(init=False)
 
     def __post_init__(self):
         object.__setattr__(self, 'repository',
@@ -108,7 +109,7 @@ class Patchfile:
         commit_details: str
 
         # The name the source may have been renamed to.
-        renamed_to: Optional[str] = None
+        renamed_to: str | None = None
 
     @property
     def has_plaster(self) -> bool:

@@ -178,7 +178,7 @@ def _repair_chromium_src(old_chromium: Path, new_chromium: Path,
     if new_shadow.suffix == '.h':
         new_guard = compute_guard(
             repository.chromium.to_repo_relative(new_shadow))
-        content = new_shadow.read_text(encoding='utf-8')
+        content = new_shadow.read_bytes().decode('utf-8')
         old_guard = find_guard(content)
         if old_guard:
             rewrite_guard_in_file(new_shadow, old_guard, new_guard)
@@ -262,7 +262,7 @@ def _repair_patch_files(old_chromium: Path, new_chromium: Path,
     old_path_str = old_chromium.as_posix()
     new_path_str = new_chromium.as_posix()
     updated_lines = []
-    for line in old_patch.read_text(encoding='utf-8').splitlines(
+    for line in old_patch.read_bytes().decode('utf-8').splitlines(
             keepends=True):
         if (line.startswith('diff --git ') or line.startswith('--- ')
                 or line.startswith('+++ ')):
@@ -274,7 +274,7 @@ def _repair_patch_files(old_chromium: Path, new_chromium: Path,
         old_patch.rename(new_patch)
     else:
         terminal.run_git('mv', str(old_patch), str(new_patch))
-    new_patch.write_text(updated_content, encoding='utf-8')
+    new_patch.write_text(updated_content, encoding='utf-8', newline='')
     if not no_git:
         terminal.run_git('add', str(new_patch))
 

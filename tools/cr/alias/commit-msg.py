@@ -65,6 +65,7 @@ import os
 import sys
 import subprocess
 import re
+from pathlib import Path
 
 PREFIXES_FOR_UPGRADE_COMMITS = [
     'Update from Chromium ',
@@ -83,12 +84,11 @@ def main():
         # cherry-pick.
         return 0
 
-    commit_msg_file = sys.argv[1]
+    commit_msg_file = Path(sys.argv[1])
 
     # Read the message provided so we can check for duplicate insertions
     # beforehand.
-    with open(commit_msg_file, 'r') as f:
-        commit_message = f.read()
+    commit_message = commit_msg_file.read_bytes().decode('utf-8')
 
     if not commit_message or not commit_message.split('\n', 1)[0].strip():
         # We should not commmit if the commit message first line is empty as
@@ -185,7 +185,7 @@ def main():
                                chromium_links="\n".join(chromium_links),
                                culprits="\n\n".join(culprit_output)))
 
-    with open(commit_msg_file, 'w') as f:
+    with commit_msg_file.open('w', encoding='utf-8', newline='') as f:
         f.write(commit_message)
 
     return 0
