@@ -74,7 +74,7 @@ class HDKeySr25519 {
   // representing a hard derivation that is transformed in line with:
   // https://github.com/paritytech/polkadot-sdk/blob/7304295748b1d85eb9fc2b598eba43d9f7971f22/substrate/primitives/core/src/crypto.rs#L138-L151
   HDKeySr25519 DeriveHard(base::span<const uint8_t> derive_junction) const;
-  HDKeySr25519 DeriveHard(uint32_t chain_code) const;
+  HDKeySr25519 DeriveHard(uint32_t account_index) const;
 
   // Update the keypair to use a mock RNG when deriving Shcnorr signatures. This
   // is intended only for testing purposes and would be disastrous for

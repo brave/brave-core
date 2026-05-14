@@ -98,9 +98,9 @@ HDKeySr25519 HDKeySr25519::DeriveHard(
       keypair_->derive_hard(base::SpanToRustSlice(derive_junction)));
 }
 
-HDKeySr25519 HDKeySr25519::DeriveHard(uint32_t index) const {
+HDKeySr25519 HDKeySr25519::DeriveHard(uint32_t account_index) const {
   CHECK(IsBoxNonNull(keypair_));
-  return HDKeySr25519(keypair_->derive_hard_from_account_index(index));
+  return HDKeySr25519(keypair_->derive_hard_from_account_index(account_index));
 }
 
 void HDKeySr25519::UseMockRngForTesting() {
