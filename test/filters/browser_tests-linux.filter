@@ -104,6 +104,13 @@
 # before NetworkBecameIdle. 1% upstream flake rate over 30 days per LUCI Analysis.
 # https://github.com/brave/brave-browser/issues/54205
 -PageStabilityMetricsTest.NetworkAndMainThreadIdle
+# Same root cause as above: cosmetic filter polling prevents the
+# IdlenessDetector's 500ms quiet window. The Paint test path resolves the
+# network request after paint stability, so it also waits for
+# NetworkBecameIdle which never fires. 2.5% upstream flake rate over 30 days
+# per LUCI Analysis.
+# https://github.com/brave/brave-browser/issues/54503
+-PageStabilityMetricsTest.Paint
 
 # These tests fail on Linux because kPromptForDownload defaults to true,
 # triggering the GTK file chooser dialog which causes g_malloc leaks
@@ -141,6 +148,18 @@
 # asynchronously via JavaScript, and Brave's environment doesn't fully support
 # the Glic WebUI initialization flow. Stable upstream (0.3% flake rate).
 -GuestUtilBrowserTest.OnGuestAdded_Glic
+
+# Chromium test: ApplyDefaultSearchChangeForTesting(FROM_EXTENSION) on Linux
+# leaves default_search_provider_ null (extension DSEs unsupported on Linux)
+# while default_search_provider_source_ stays FROM_EXTENSION. Brave's
+# DefaultSearchManager override causes MaybeShowDialog() to record the
+# histogram twice with differing conditions (kControlledByPolicy and
+# kExtensionControlled), failing the ExpectUniqueSample assertion.
+# Already disabled on Windows in upstream source; upstream TODO crbug.com/429600559
+# acknowledges the broken extension DSE test setup.
+# Stable upstream: 0.3% flake rate over 30 days per LUCI Analysis.
+# https://github.com/brave/brave-browser/issues/54542
+-SearchEngineChoiceDialogBrowserTest.DialogDoesNotShowWithExtensionEnabledThatOverridesDSE
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccessCodeCastHandlerBrowserTest.*

@@ -217,7 +217,7 @@ TEST(PolkadotImportKeyringTest, AddAccount_RestrictedAddress) {
   const auto address_to_restrict = *address;
 
   // Add address to restricted list.
-  registry->UpdateRestrictedAddressesList(
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting scoped_restricted(
       {base::ToLowerASCII(address_to_restrict)});
 
   ASSERT_TRUE(import_keyring.RemoveAccount(0));
@@ -225,9 +225,6 @@ TEST(PolkadotImportKeyringTest, AddAccount_RestrictedAddress) {
   EXPECT_FALSE(import_keyring.AddAccount(0, pkcs8_key));
   EXPECT_FALSE(import_keyring.RemoveAccount(0));
   EXPECT_TRUE(import_keyring.AddAccount(1, pkcs8_key1));
-
-  // Clear restricted list
-  registry->UpdateRestrictedAddressesList({});
 }
 
 }  // namespace brave_wallet

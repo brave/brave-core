@@ -20,6 +20,12 @@
 # to be stripped out because the resource is not used by chrome.dll"
 -DesktopMediaPickerViewsSingleTabPaneTest.AccessibleProperties
 
+# Upstream flake: 1.0% flake rate over 30 days per LUCI Analysis (182K verdicts).
+# FindNewCheckTime() can schedule past Now()+interval due to timezone-dependent
+# LocalMidnight() boundary. Already filtered on Linux.
+# https://github.com/brave/brave-browser/issues/54960
+-PasswordStatusCheckServiceBaseTest.PrefInitialized
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -EnterpriseReportingPrivateGetContextInfoOSFirewallTest.*
 -ExtensionServiceTest.*

@@ -417,35 +417,34 @@ TEST(PolkadotKeyring, AddNewHDAccount_RestrictedAddress) {
   ASSERT_TRUE(address);
   const std::string address_to_restrict = *address;
 
-  // Add address to restricted list.
-  registry->UpdateRestrictedAddressesList(
-      {base::ToLowerASCII(address_to_restrict)});
-
-  // Try to add account again - should fail because it generates the same
-  // address Note: PolkadotKeyring doesn't have RemoveHDAccount, so we test by
-  // trying to add at index 1, which should succeed, then try index 0 again.
-  auto result1 = keyring.AddNewHDAccount(1);
-  EXPECT_TRUE(result1) << "Non-restricted address should succeed";
-
-  // Now try to add at index 0 again - this should fail because the address
-  // at index 0 is already in the restricted list
-  // Actually, we can't test this directly because AddNewHDAccount doesn't
-  // allow adding at an index that's already been used. Instead, let's test
-  // by creating a new keyring and trying to add at index 0.
   PolkadotKeyring keyring2(
       base::span(seed).first<kPolkadotSeedSize>(),
       mojom::KeyringId::kPolkadotMainnet,
       base::BindLambdaForTesting([=](const std::string& address) {
         return !registry->IsRestrictedAddress(address);
       }));
-  auto result2 = keyring2.AddNewHDAccount(0);
-  EXPECT_FALSE(result2) << "Restricted Polkadot address should be rejected";
+  {
+    // Add address to restricted list.
+    BlockchainRegistry::ScopedRestrictedAddressesForTesting scoped_restricted(
+        {base::ToLowerASCII(address_to_restrict)});
 
-  // Clear restricted list
-  registry->UpdateRestrictedAddressesList({});
+    // Try to add account again - should fail because it generates the same
+    // address Note: PolkadotKeyring doesn't have RemoveHDAccount, so we test by
+    // trying to add at index 1, which should succeed, then try index 0 again.
+    auto result1 = keyring.AddNewHDAccount(1);
+    EXPECT_TRUE(result1) << "Non-restricted address should succeed";
+
+    // Now try to add at index 0 again - this should fail because the address
+    // at index 0 is already in the restricted list
+    // Actually, we can't test this directly because AddNewHDAccount doesn't
+    // allow adding at an index that's already been used. Instead, let's test
+    // by creating a new keyring and trying to add at index 0.
+    auto result2 = keyring2.AddNewHDAccount(0);
+    EXPECT_FALSE(result2) << "Restricted Polkadot address should be rejected";
+  }
 
   // Prove that we didn't leave any remnant phantom keypairs.
-  result2 = keyring2.AddNewHDAccount(0);
+  auto result2 = keyring2.AddNewHDAccount(0);
   EXPECT_TRUE(result2);
 }
 

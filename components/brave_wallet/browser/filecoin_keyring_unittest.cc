@@ -223,15 +223,13 @@ TEST(FilecoinKeyring, AddNewHDAccount_RestrictedAddress) {
   EXPECT_TRUE(keyring.RemoveHDAccount(0));
 
   // Add address to restricted list.
-  registry->UpdateRestrictedAddressesList(
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting scoped_restricted(
       {base::ToLowerASCII(address_to_restrict)});
 
   // Try to add account again - should fail because it generates the same
   // address.
   auto result = keyring.AddNewHDAccount(0);
   EXPECT_FALSE(result) << "Restricted Filecoin address should be rejected";
-
-  registry->UpdateRestrictedAddressesList({});
 }
 
 TEST(FilecoinKeyring, ImportAccount_SECP256K1_RestrictedAddress) {
@@ -262,16 +260,14 @@ TEST(FilecoinKeyring, ImportAccount_SECP256K1_RestrictedAddress) {
   EXPECT_TRUE(keyring.RemoveImportedAccount(*address));
 
   // Add address to restricted list.
-  registry->UpdateRestrictedAddressesList(
-      {base::ToLowerASCII(address_to_restrict)});
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting
+      scoped_secp256k1_restricted({base::ToLowerASCII(address_to_restrict)});
 
   // Try to import account again - should fail.
   auto result = keyring.ImportFilecoinAccount(
       private_key, mojom::FilecoinAddressProtocol::SECP256K1);
   EXPECT_FALSE(result)
       << "Restricted Filecoin SECP256K1 address should be rejected";
-
-  registry->UpdateRestrictedAddressesList({});
 }
 
 TEST(FilecoinKeyring, ImportAccount_BLS_RestrictedAddress) {
@@ -304,14 +300,12 @@ TEST(FilecoinKeyring, ImportAccount_BLS_RestrictedAddress) {
   EXPECT_TRUE(keyring.RemoveImportedAccount(*address));
 
   // Add address to restricted list.
-  registry->UpdateRestrictedAddressesList(
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting scoped_bls_restricted(
       {base::ToLowerASCII(address_to_restrict)});
 
   // Try to import account again - should fail.
   auto result = keyring.ImportFilecoinAccount(private_key, protocol);
   EXPECT_FALSE(result) << "Restricted Filecoin BLS address should be rejected";
-
-  registry->UpdateRestrictedAddressesList({});
 }
 
 }  // namespace brave_wallet

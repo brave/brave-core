@@ -166,14 +166,15 @@ void AdBlockServiceTest::PreRunTestOnMainThread() {
   PlatformBrowserTest::PreRunTestOnMainThread();
   ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
 
-  // Wait for initial engine creation to complete, especially on slower
-  // platforms
+  // Wait for the initial engine creation reply to be fully processed on the
+  // UI thread. Using the UI-thread flag (set in OnEngineLoaded) instead of the
+  // cross-thread histogram avoids a race where RunUntil sees the histogram
+  // sample recorded on the background thread but returns before OnEngineLoaded
+  // dispatches OnFilterListLoaded on the UI thread, leaving a stale
+  // notification that the observer in InstallComponent can catch prematurely.
   ASSERT_TRUE(base::test::RunUntil([&]() {
-    auto counts = histogram_tester_.GetTotalCountsForPrefix(
-        "Brave.Adblock.MakeEngineWithRules.Default");
-    return counts.find("Brave.Adblock.MakeEngineWithRules.Default") !=
-               counts.end() &&
-           counts.at("Brave.Adblock.MakeEngineWithRules.Default") >= 1;
+    return g_brave_browser_process->ad_block_service()
+        ->IsFilterListLoadedForTesting(true);
   })) << "Timeout waiting for initial engine creation";
 
   histogram_tester_.ExpectTotalCount(
