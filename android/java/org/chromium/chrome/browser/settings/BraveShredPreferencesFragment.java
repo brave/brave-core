@@ -48,10 +48,11 @@ public class BraveShredPreferencesFragment extends BravePreferenceFragment {
         mRemoveHistorySwitch =
                 (ChromeSwitchPreference) findPreference(PREF_AUTO_SHRED_REMOVE_HISTORY);
         mRemoveHistorySwitch.setChecked(
-                BraveShieldsContentSettings.isShredBrowsingHistoryEnabled());
+                BraveShieldsContentSettings.isShredBrowsingHistoryEnabled(getProfile()));
         mRemoveHistorySwitch.setOnPreferenceChangeListener(
                 (preference, newValue) -> {
-                    BraveShieldsContentSettings.setShredBrowsingHistoryEnabled((boolean) newValue);
+                    BraveShieldsContentSettings.setShredBrowsingHistoryEnabled(
+                            (boolean) newValue, getProfile());
                     return true;
                 });
     }
