@@ -1,8 +1,8 @@
 diff --git a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
-index d335c6e2ea9edc45acd7af8e25d2d356a0063e30..9735dd0da81be01ddcbc4b6c58fffbfc7018b237 100644
+index e3e889fb0ac835f4662e948c2b6d62f1f74a9cd6..828cb29570aed0dddef47445fa5b4f44a1e8026b 100644
 --- a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
 +++ b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/SiteSettingsCategory.java
-@@ -83,6 +83,8 @@ public class SiteSettingsCategory {
+@@ -82,6 +82,8 @@ public class SiteSettingsCategory {
          Type.AUTO_PICTURE_IN_PICTURE,
          Type.LOCAL_NETWORK,
          Type.LOOPBACK_NETWORK,
@@ -11,15 +11,15 @@ index d335c6e2ea9edc45acd7af8e25d2d356a0063e30..9735dd0da81be01ddcbc4b6c58fffbfc
          Type.NUM_ENTRIES
      })
      @Retention(RetentionPolicy.SOURCE)
-@@ -128,9 +130,11 @@ public class SiteSettingsCategory {
-         int AUTO_PICTURE_IN_PICTURE = 36;
-         int LOCAL_NETWORK = 37;
-         int LOOPBACK_NETWORK = 38;
-+        int AUTOPLAY = 39;
+@@ -126,9 +128,11 @@ public class SiteSettingsCategory {
+         int AUTO_PICTURE_IN_PICTURE = 35;
+         int LOCAL_NETWORK = 36;
+         int LOOPBACK_NETWORK = 37;
++        int AUTOPLAY = 38;
 +        int BRAVE_GOOGLE_SIGN_IN = AUTOPLAY + 1;
  
          /** Number of handled categories used for calculating array sizes. */
--        int NUM_ENTRIES = 39;
+-        int NUM_ENTRIES = 38;
 +        int NUM_ENTRIES = BRAVE_GOOGLE_SIGN_IN + 1;
      }
  
