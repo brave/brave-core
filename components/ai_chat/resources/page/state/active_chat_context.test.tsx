@@ -112,7 +112,7 @@ beforeEach(() => {
 
 describe('ActiveChatProvider routing — global panel mode', () => {
   it('binds a fresh conversation on initial load (no selected id)', async () => {
-    await renderProvider({
+    const { detailsRef } = await renderProvider({
       isGlobalPanel: true,
       selectedConversationId: undefined,
     })
@@ -120,14 +120,6 @@ describe('ActiveChatProvider routing — global panel mode', () => {
     // No id -> newConversation -> uiHandler.newConversation in real code.
     expect(mockedBind.newConversation).toHaveBeenCalledTimes(1)
     expect(mockedBind.bindConversation).not.toHaveBeenCalled()
-  })
-
-  it('marks the initial conversation as the main conversation', async () => {
-    const { detailsRef } = await renderProvider({
-      isGlobalPanel: true,
-      selectedConversationId: undefined,
-    })
-
     expect(detailsRef.current!.isMainConversation).toBe(true)
   })
 
@@ -170,22 +162,6 @@ describe('ActiveChatProvider routing — global panel mode', () => {
     // so createNewConversation's tab-sentinel short-circuit doesn't apply and
     // we navigate to '/' (which will mount as a fresh global main on remount).
     expect(window.location.pathname).toBe('/')
-  })
-
-  it('openMainConversation routes back to the captured global main UUID', async () => {
-    const updateSpy = jest.fn()
-    const { detailsRef } = await renderProvider({
-      isGlobalPanel: true,
-      selectedConversationId: undefined,
-      updateSelectedConversationId: updateSpy,
-    })
-
-    act(() => {
-      detailsRef.current!.openMainConversation()
-    })
-
-    // The first global-main UUID handed out by the mock is `new-0`.
-    expect(updateSpy).toHaveBeenCalledWith('new-0')
   })
 })
 

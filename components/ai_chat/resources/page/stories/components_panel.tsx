@@ -488,6 +488,7 @@ function StoryContext(
     updateSelectedConversationId: () => {},
     createNewConversation: () => {},
     isMainConversation: argsRef.current.isDefaultConversation,
+    openMainConversation: () => {},
   }
 
   const currentError = Mojom.APIError[args.currentErrorState]
