@@ -86,6 +86,8 @@ export function getToolLabel(toolName: string, toolInput: any) {
       return getLocale(S.CHAT_UI_TOOL_LABEL_DEEP_RESEARCH)
     case Mojom.USER_CHOICE_TOOL_NAME:
       return getLocale(S.CHAT_UI_TOOL_LABEL_USER_CHOICE)
+    case Mojom.ASSISTANT_DETAIL_STORAGE_TOOL_NAME:
+      return getLocale(S.CHAT_UI_TOOL_LABEL_ASSISTANT_DETAIL_STORAGE)
     case Mojom.BRAVE_NEWS_SEARCH_TOOL_NAME:
     case Mojom.BRAVE_WEB_SEARCH_TOOL_NAME:
     case Mojom.BRAVE_FAQS_SEARCH_TOOL_NAME:
