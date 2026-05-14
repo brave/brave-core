@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_POLICY_POLICY_PREF_INTERCEPTOR_H_
 #define BRAVE_COMPONENTS_BRAVE_POLICY_POLICY_PREF_INTERCEPTOR_H_
 
-#include <string>
+#include <string_view>
 
 #include "base/component_export.h"
 #include "base/containers/flat_map.h"
@@ -34,7 +34,7 @@ class COMPONENT_EXPORT(POLICY_PREF_INTERCEPTOR) PolicyPrefInterceptor {
 
  private:
   // Cache of pref values that should remain stable across policy updates.
-  base::flat_map<std::string, bool> pref_cache_;
+  base::flat_map<std::string_view, bool> pref_cache_;
 
   // Tracks whether initial policies have been loaded and cached.
   bool initial_policies_loaded_ = false;
