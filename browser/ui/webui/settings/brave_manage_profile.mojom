@@ -5,6 +5,8 @@
 
 module brave_manage_profile.mojom;
 
+import "mojo/public/mojom/base/big_buffer.mojom";
+
 // Snapshot of the user-uploaded custom profile avatar state shown on
 // `brave://settings/manageProfile`.
 struct CustomAvatarState {
@@ -49,10 +51,13 @@ interface BraveManageProfileSettingsHandler {
   GetCustomAvatar() => (CustomAvatarState state);
 
   // Uploads `bytes` (raw bytes of any common image codec supported by the
-  // sandboxed image decoder) as the user's custom avatar. On success returns
-  // the new state (including a PNG preview). On any failure, `error` is set
-  // and `state` is the unchanged current state.
-  SetCustomAvatar(array<uint8> bytes)
+  // sandboxed image decoder) as the user's custom avatar. The `BigBuffer`
+  // payload is shipped via shared memory once it exceeds the inline-bytes
+  // threshold (~64 KiB), which avoids the per-byte boxing that an
+  // `array<uint8>` would impose on the JS-side bindings for multi-MiB image
+  // files. On success returns the new state (including a PNG preview). On any
+  // failure, `error` is set and `state` is the unchanged current state.
+  SetCustomAvatar(mojo_base.mojom.BigBuffer bytes)
       => (SetCustomAvatarError? error, CustomAvatarState state);
 
   // Removes the saved custom avatar (also deletes the on-disk file). The

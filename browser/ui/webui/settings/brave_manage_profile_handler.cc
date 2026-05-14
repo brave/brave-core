@@ -6,10 +6,13 @@
 #include "brave/browser/ui/webui/settings/brave_manage_profile_handler.h"
 
 #include <algorithm>
+#include <cstdint>
 #include <utility>
+#include <vector>
 
 #include "base/check.h"
 #include "base/check_op.h"
+#include "base/containers/span.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "chrome/browser/browser_process.h"
@@ -84,7 +87,7 @@ void BraveManageProfileHandler::GetCustomAvatar(
 }
 
 void BraveManageProfileHandler::SetCustomAvatar(
-    const std::vector<uint8_t>& bytes,
+    mojo_base::BigBuffer bytes,
     SetCustomAvatarCallback callback) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
@@ -96,7 +99,10 @@ void BraveManageProfileHandler::SetCustomAvatar(
     return;
   }
 
-  if (bytes.empty()) {
+  // `BigBuffer::size()` returns the logical payload size regardless of
+  // storage backing (inline bytes for small payloads, shared memory for large
+  // ones), so the cap check is correct without forcing a copy first.
+  if (bytes.size() == 0) {
     std::move(callback).Run(SetCustomAvatarError::kEmpty,
                             BuildCustomAvatarState());
     return;
@@ -116,11 +122,21 @@ void BraveManageProfileHandler::SetCustomAvatar(
   }
   pending_upload_callback_ = std::move(callback);
 
+  // `ImageDecoder::StartWithOptions` takes ownership of the input as a
+  // `std::vector<uint8_t>`. Materialize the BigBuffer into a vector once
+  // here. `base::span(bytes)` works for both storage variants of BigBuffer
+  // (inline bytes and shared-memory mapping); the resulting copy is the only
+  // copy of the payload on the browser side (the WebUI side ships it via
+  // shared memory through the Mojo binding).
+  base::span<const uint8_t> bytes_span = base::span(bytes);
+  std::vector<uint8_t> data(bytes_span.begin(), bytes_span.end());
+
   // `shrink_to_fit=true` asks the sandboxed decoder to halve oversized images
   // until the decoded bitmap fits the IPC channel limit, instead of failing
   // outright. We still enforce a stricter dimension cap in `OnImageDecoded`
   // before the bitmap reaches `CropAndResizeToSquare`.
-  ImageDecoder::StartWithOptions(this, bytes, ImageDecoder::DEFAULT_CODEC,
+  ImageDecoder::StartWithOptions(this, std::move(data),
+                                 ImageDecoder::DEFAULT_CODEC,
                                  /*shrink_to_fit=*/true,
                                  /*desired_image_frame_size=*/
                                  gfx::Size(kAvatarSize, kAvatarSize));

@@ -11,6 +11,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/span.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/ref_counted_memory.h"
 #include "base/test/test_future.h"
@@ -22,6 +23,7 @@
 #include "chrome/test/base/testing_profile_manager.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/test_utils.h"
+#include "mojo/public/cpp/base/big_buffer.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
@@ -136,7 +138,8 @@ class BraveManageProfileHandlerTest : public testing::Test {
         std::optional<brave_manage_profile::mojom::SetCustomAvatarError>,
         brave_manage_profile::mojom::CustomAvatarStatePtr>
         future;
-    handler_->SetCustomAvatar(bytes, future.GetCallback());
+    handler_->SetCustomAvatar(mojo_base::BigBuffer(base::span(bytes)),
+                              future.GetCallback());
     auto [error, state] = future.Take();
     return {error, std::move(state)};
   }
@@ -326,7 +329,9 @@ TEST_F(BraveManageProfileHandlerTest, InflightUploadResolvesOnProfileShutdown) {
   // Start the upload but don't pump the run loop — the data decoder runs on a
   // separate sequence so the callback can't have fired yet, leaving the
   // upload in flight when we tear the profile down.
-  handler_->SetCustomAvatar(CreatePngBytes(48), future.GetCallback());
+  std::vector<uint8_t> bytes = CreatePngBytes(48);
+  handler_->SetCustomAvatar(mojo_base::BigBuffer(base::span(bytes)),
+                            future.GetCallback());
   ASSERT_FALSE(future.IsReady());
 
   profile_ = nullptr;

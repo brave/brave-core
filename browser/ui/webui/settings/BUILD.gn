@@ -18,6 +18,10 @@ if (!is_android) {
   mojom("mojo_bindings") {
     sources = [ "brave_manage_profile.mojom" ]
     webui_module_path = "/"
+
+    # `brave_manage_profile.mojom` references `mojo_base.mojom.BigBuffer` for
+    # the custom-avatar upload payload.
+    public_deps = [ "//mojo/public/mojom/base" ]
   }
 
   source_set("manage_profile") {
@@ -33,6 +37,7 @@ if (!is_android) {
       "//chrome/browser:browser_process",
       "//chrome/browser/profiles:profile_manager",
       "//content/public/browser",
+      "//mojo/public/cpp/base",
       "//mojo/public/cpp/bindings",
       "//skia",
       "//ui/base",
@@ -81,6 +86,7 @@ source_set("unit_tests") {
       "//components/search_engines",
       "//components/sync_preferences:test_support",
       "//content/test:test_support",
+      "//mojo/public/cpp/base",
       "//mojo/public/cpp/bindings",
       "//services/data_decoder/public/cpp:test_support",
       "//testing/gtest",

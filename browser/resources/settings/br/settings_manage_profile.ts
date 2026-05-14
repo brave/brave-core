@@ -259,121 +259,203 @@ function braveOnCustomAvatarChanged_(
   syncBravePresetAvatarBinding_(host)
 }
 
-// `RegisterPolymerComponentBehaviors` is unreliable with lazy-loaded
-// `manage_profile.js`. `connectedCallback` can run before the shadow tree has
-// our injected nodes. `SettingsViewMixin` also uses `ready()`, which runs after
-// initial layout — hook both and retry with rAF until the controls exist.
-function wireBraveManageProfileCustomAvatar(host: HTMLElement, attempt = 0) {
-  try {
-    if ((host as unknown as Record<symbol, boolean>)[kBraveCustomAvatarWired]) {
-      return
-    }
-    const root = host.shadowRoot
-    if (!root) {
-      if (attempt < 24) {
-        requestAnimationFrame(() => wireBraveManageProfileCustomAvatar(
-          host, attempt + 1))
-      }
-      return
-    }
+// Maximum time to wait for the `settings-manage-profile` shadow tree to
+// render the custom-avatar controls before giving up and surfacing an error
+// in devtools. Picked generously above any normal Polymer / lazy-load delay
+// observed on slow CI hosts (~50ms typical, ~500ms p99); a longer wait is
+// pointless because the row is part of the same lazy module and will not
+// arrive separately.
+const kBraveCustomAvatarWireTimeoutMs = 5000
 
-    const uploadBtn = root.getElementById(kCustomAvatarUploadBtnId)
-    const removeBtn = root.getElementById(kCustomAvatarRemoveBtnId)
-    const fileInput =
-      root.getElementById(kCustomAvatarFileInputId) as HTMLInputElement | null
-    const preview = root.getElementById(kCustomAvatarPreviewId)
-
-    if (!uploadBtn || !removeBtn || !fileInput || !preview) {
-      if (attempt < 24) {
-        requestAnimationFrame(() => wireBraveManageProfileCustomAvatar(
-          host, attempt + 1))
-      }
-      return
-    }
-
-    const typedHost = host as ManageProfileHost
-    typedHost.braveCustomAvatarState_ =
-      typedHost.braveCustomAvatarState_ ?? kEmptyAvatarState
-
-    const proxy = BraveManageProfileBrowserProxy.getInstance()
-
-    const openCustomAvatarFilePicker = () => {
-      fileInput.value = ''
-      fileInput.click()
-    }
-
-    uploadBtn.addEventListener('click', openCustomAvatarFilePicker)
-
-    fileInput.addEventListener('change', async () => {
-      const file = fileInput.files && fileInput.files[0]
-      if (!file) {
-        return
-      }
-      preview.classList.add('is-uploading')
-      preview.setAttribute('aria-busy', 'true')
-      try {
-        const bytes = new Uint8Array(await file.arrayBuffer())
-        const result = await proxy.setCustomAvatar(bytes)
-        if (result.error !== undefined) {
-          console.warn('[Brave Settings Overrides] setCustomAvatar failed:',
-            result.error)
-        }
-        braveOnCustomAvatarChanged_(typedHost, result.state)
-      } catch (err) {
-        console.warn('[Brave Settings Overrides] Failed to set custom ' +
-          'avatar:', err)
-      } finally {
-        preview.classList.remove('is-uploading')
-        preview.removeAttribute('aria-busy')
-      }
-    })
-
-    removeBtn.addEventListener('click', () => {
-      try {
-        proxy.removeCustomAvatar()
-      } catch (err) {
-        console.warn('[Brave Settings Overrides] Failed to remove custom ' +
-          'avatar:', err)
-      }
-      // Optimistically update local state; the browser confirms via the
-      // `OnCustomAvatarChanged` event when the file delete completes.
-      braveOnCustomAvatarChanged_(typedHost, kEmptyAvatarState)
-    })
-
-    preview.addEventListener('click', () => {
-      const st = typedHost.braveCustomAvatarState_
-      if (!st.hasSavedAvatar) {
-        openCustomAvatarFilePicker()
-        return
-      }
-      if (st.isActive) {
-        return
-      }
-      try {
-        proxy.activateCustomAvatar()
-      } catch (err) {
-        console.warn('[Brave Settings Overrides] Failed to activate custom ' +
-          'avatar:', err)
-      }
-    })
-
-    proxy.callbackRouter.onCustomAvatarChanged.addListener(
-      (state: CustomAvatarState) =>
-        braveOnCustomAvatarChanged_(typedHost, state))
-
-    proxy.getCustomAvatar()
-      .then((state) => braveOnCustomAvatarChanged_(typedHost, state))
-      .catch(() => { /* ignore - row stays in empty state */ })
-
-    ;(host as unknown as Record<symbol, boolean>)[kBraveCustomAvatarWired] =
-      true
-  } catch (err) {
-    console.warn('[Brave Settings Overrides] Custom-avatar wiring failed:', err)
+// Returns true once wiring has been attached to the host's shadow tree (or
+// was already wired); false when the controls aren't rendered yet so the
+// caller can re-try via MutationObserver / rAF.
+function tryWireBraveManageProfileCustomAvatar(host: HTMLElement): boolean {
+  if ((host as unknown as Record<symbol, boolean>)[kBraveCustomAvatarWired]) {
+    return true
   }
+  const root = host.shadowRoot
+  if (!root) {
+    return false
+  }
+
+  const uploadBtn = root.getElementById(kCustomAvatarUploadBtnId)
+  const removeBtn = root.getElementById(kCustomAvatarRemoveBtnId)
+  const fileInput =
+    root.getElementById(kCustomAvatarFileInputId) as HTMLInputElement | null
+  const preview = root.getElementById(kCustomAvatarPreviewId)
+
+  if (!uploadBtn || !removeBtn || !fileInput || !preview) {
+    return false
+  }
+
+  const typedHost = host as ManageProfileHost
+  typedHost.braveCustomAvatarState_ =
+    typedHost.braveCustomAvatarState_ ?? kEmptyAvatarState
+
+  const proxy = BraveManageProfileBrowserProxy.getInstance()
+
+  const openCustomAvatarFilePicker = () => {
+    fileInput.value = ''
+    fileInput.click()
+  }
+
+  uploadBtn.addEventListener('click', openCustomAvatarFilePicker)
+
+  fileInput.addEventListener('change', async () => {
+    const file = fileInput.files && fileInput.files[0]
+    if (!file) {
+      return
+    }
+    preview.classList.add('is-uploading')
+    preview.setAttribute('aria-busy', 'true')
+    try {
+      const bytes = new Uint8Array(await file.arrayBuffer())
+      const result = await proxy.setCustomAvatar(bytes)
+      if (result.error !== undefined) {
+        console.warn('[Brave Settings Overrides] setCustomAvatar failed:',
+          result.error)
+      }
+      braveOnCustomAvatarChanged_(typedHost, result.state)
+    } catch (err) {
+      console.warn('[Brave Settings Overrides] Failed to set custom ' +
+        'avatar:', err)
+    } finally {
+      preview.classList.remove('is-uploading')
+      preview.removeAttribute('aria-busy')
+    }
+  })
+
+  removeBtn.addEventListener('click', () => {
+    try {
+      proxy.removeCustomAvatar()
+    } catch (err) {
+      console.warn('[Brave Settings Overrides] Failed to remove custom ' +
+        'avatar:', err)
+    }
+    // Optimistically update local state; the browser confirms via the
+    // `OnCustomAvatarChanged` event when the file delete completes.
+    braveOnCustomAvatarChanged_(typedHost, kEmptyAvatarState)
+  })
+
+  preview.addEventListener('click', () => {
+    const st = typedHost.braveCustomAvatarState_
+    if (!st.hasSavedAvatar) {
+      openCustomAvatarFilePicker()
+      return
+    }
+    if (st.isActive) {
+      return
+    }
+    try {
+      proxy.activateCustomAvatar()
+    } catch (err) {
+      console.warn('[Brave Settings Overrides] Failed to activate custom ' +
+        'avatar:', err)
+    }
+  })
+
+  proxy.callbackRouter.onCustomAvatarChanged.addListener(
+    (state: CustomAvatarState) =>
+      braveOnCustomAvatarChanged_(typedHost, state))
+
+  proxy.getCustomAvatar()
+    .then((state) => braveOnCustomAvatarChanged_(typedHost, state))
+    .catch(() => { /* ignore - row stays in empty state */ })
+
+  ;(host as unknown as Record<symbol, boolean>)[kBraveCustomAvatarWired] =
+    true
+  return true
 }
 
+// `RegisterPolymerComponentBehaviors` is unreliable with lazy-loaded
+// `manage_profile.js`. `connectedCallback` can run before the shadow tree has
+// our injected nodes, and `SettingsViewMixin.ready()` runs after initial
+// layout — hook both, attempt to wire immediately, and otherwise watch for
+// the controls to appear instead of polling rAF on a fixed budget.
 function scheduleWireBraveManageProfileCustomAvatar(host: HTMLElement) {
-  queueMicrotask(() => wireBraveManageProfileCustomAvatar(host, 0))
+  queueMicrotask(() => {
+    try {
+      if (tryWireBraveManageProfileCustomAvatar(host)) {
+        return
+      }
+
+      const startTime = performance.now()
+      let observer: MutationObserver | null = null
+      let timeoutHandle = 0
+      let rafHandle = 0
+
+      const cleanup = () => {
+        if (observer) {
+          observer.disconnect()
+          observer = null
+        }
+        if (timeoutHandle !== 0) {
+          clearTimeout(timeoutHandle)
+          timeoutHandle = 0
+        }
+        if (rafHandle !== 0) {
+          cancelAnimationFrame(rafHandle)
+          rafHandle = 0
+        }
+      }
+
+      const attempt = () => {
+        if (tryWireBraveManageProfileCustomAvatar(host)) {
+          cleanup()
+          return true
+        }
+        return false
+      }
+
+      const ensureObserver = () => {
+        const root = host.shadowRoot
+        if (!root || observer) {
+          return
+        }
+        // Observing the shadow root catches the controls being inserted
+        // without burning a frame on every animation tick.
+        observer = new MutationObserver(() => {
+          attempt()
+        })
+        observer.observe(root, { childList: true, subtree: true })
+      }
+
+      // Until the host has attached its shadow root, MutationObserver can't
+      // help — `attachShadow` does not fire mutations. Fall back to rAF in
+      // that narrow window only; once the shadow root exists we hand off to
+      // the observer.
+      const tick = () => {
+        rafHandle = 0
+        if (attempt()) {
+          return
+        }
+        ensureObserver()
+        if (!host.shadowRoot &&
+            performance.now() - startTime < kBraveCustomAvatarWireTimeoutMs) {
+          rafHandle = requestAnimationFrame(tick)
+        }
+      }
+      tick()
+
+      timeoutHandle = window.setTimeout(() => {
+        timeoutHandle = 0
+        if (attempt()) {
+          return
+        }
+        cleanup()
+        // Surface the failure so it is visible in devtools / crash reports
+        // instead of leaving the row inert. The upstream profile-management
+        // controls are still rendered; only the upload row is unresponsive.
+        console.error('[Brave Settings Overrides] Custom-avatar wiring ' +
+          'timed out after ' + kBraveCustomAvatarWireTimeoutMs + 'ms; the ' +
+          'upload row will not be interactive. Please reload the page.')
+      }, kBraveCustomAvatarWireTimeoutMs)
+    } catch (err) {
+      console.warn('[Brave Settings Overrides] Custom-avatar wiring failed:',
+        err)
+    }
+  })
 }
 
 RegisterPolymerPrototypeModification({

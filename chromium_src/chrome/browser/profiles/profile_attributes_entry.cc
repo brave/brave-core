@@ -126,7 +126,11 @@ void ProfileAttributesEntry::SetBraveCustomAvatar(
   const base::FilePath image_path =
       profile_path_.AppendASCII(brave::kBraveCustomAvatarFileName);
   // Reuse `SaveGAIAImageAtPath` for its PNG encode + background-write
-  // pipeline. Its only side effects outside of writing the file are
+  // pipeline. The lower-level `SaveAvatarImageAtPath` primitive is private
+  // on `ProfileAttributesStorage` and `ProfileAttributesEntry` is not a
+  // friend, so this is the only public entry point that gives us the
+  // synchronous in-memory cache insert + background disk write semantics
+  // we need. The only side effects outside of writing the file are
   // populating `cached_avatar_images_[key]` synchronously (so subsequent
   // `GetBraveCustomAvatar()` calls return the new image immediately even
   // before the file write completes) and re-setting the GAIA URL pref via

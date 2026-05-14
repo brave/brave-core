@@ -6,9 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_MANAGE_PROFILE_HANDLER_H_
 #define BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_MANAGE_PROFILE_HANDLER_H_
 
-#include <cstdint>
-#include <vector>
-
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
@@ -16,6 +13,7 @@
 #include "chrome/browser/image_decoder/image_decoder.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/browser/profiles/profile_observer.h"
+#include "mojo/public/cpp/base/big_buffer.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
@@ -57,7 +55,7 @@ class BraveManageProfileHandler
               brave_manage_profile::mojom::BraveManageProfileSettingsUI> ui)
       override;
   void GetCustomAvatar(GetCustomAvatarCallback callback) override;
-  void SetCustomAvatar(const std::vector<uint8_t>& bytes,
+  void SetCustomAvatar(mojo_base::BigBuffer bytes,
                        SetCustomAvatarCallback callback) override;
   void RemoveCustomAvatar() override;
   void ActivateCustomAvatar() override;
