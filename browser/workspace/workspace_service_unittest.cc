@@ -5,8 +5,6 @@
 
 #include "brave/browser/workspace/workspace_service.h"
 
-#include "brave/browser/workspace/workspace_utils.h"
-
 #include <memory>
 #include <vector>
 
@@ -24,6 +22,7 @@
 #include "brave/browser/workspace/features.h"
 #include "brave/browser/workspace/workspace.h"
 #include "brave/browser/workspace/workspace_service_factory.h"
+#include "brave/browser/workspace/workspace_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile_manager.h"
@@ -185,9 +184,9 @@ TEST_F(WorkspaceServiceTest, WriteAndReadRoundTrip) {
       base::BindOnce([](bool* flag) { *flag = true; }, &error_called));
 
   task_runner->PostTask(
-      FROM_HERE, base::BindOnce(&WriteWorkspaceToDisk, std::move(commands),
-                                workspace_dir, std::move(backend),
-                                std::move(on_error)));
+      FROM_HERE,
+      base::BindOnce(&WriteWorkspaceToDisk, std::move(commands), workspace_dir,
+                     std::move(backend), std::move(on_error)));
   // A sequenced task after the write runs only after it completes.
   task_runner->PostTask(
       FROM_HERE,

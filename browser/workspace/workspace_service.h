@@ -12,7 +12,9 @@
 
 #include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/time/time.h"
 #include "brave/browser/workspace/workspace.h"
 #include "brave/browser/workspace/workspace_utils.h"
@@ -37,11 +39,10 @@ inline constexpr char kWorkspacesMetadataPref[] = "brave.workspaces";
 // Workspace metadata (display name, window/tab counts, creation time) is
 // stored in a profile preference rather than a per-directory info.json file.
 //
-// Threading note: CommandStorageBackend must be constructed on the UI thread
-// because its constructor calls SingleThreadTaskRunner::GetCurrentDefault().
-// Callers must therefore create the backend on the UI thread (passing a
-// MayBlock SequencedTaskRunner as the owning runner) and then invoke the
-// blocking I/O helpers on that same sequenced runner.
+// Threading note: All workspace file I/O runs on |io_task_runner_|, a
+// MayBlock SequencedTaskRunner created at construction time.  Backends are
+// constructed on the UI thread with |io_task_runner_| as their owning
+// sequence, then all blocking I/O tasks are posted to that same runner.
 class WorkspaceService : public KeyedService {
  public:
   explicit WorkspaceService(PrefService* pref_service,
@@ -116,6 +117,7 @@ class WorkspaceService : public KeyedService {
 
   const base::FilePath profile_path_;
   raw_ptr<PrefService> pref_service_;
+  scoped_refptr<base::SequencedTaskRunner> io_task_runner_;
 
   base::WeakPtrFactory<WorkspaceService> weak_ptr_factory_{this};
 };

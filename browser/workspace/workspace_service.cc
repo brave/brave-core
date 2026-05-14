@@ -5,8 +5,6 @@
 
 #include "brave/browser/workspace/workspace_service.h"
 
-#include "brave/browser/workspace/workspace_utils.h"
-
 #include <algorithm>
 #include <memory>
 #include <set>
@@ -24,6 +22,7 @@
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
 #include "base/values.h"
+#include "brave/browser/workspace/workspace_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_tabrestore.h"
@@ -125,7 +124,11 @@ void AppendBrowserSessionCommands(
 
 WorkspaceService::WorkspaceService(PrefService* pref_service,
                                    const base::FilePath profile_path)
-    : profile_path_(profile_path), pref_service_(pref_service) {}
+    : profile_path_(profile_path),
+      pref_service_(pref_service),
+      io_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
+          {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
+           base::TaskShutdownBehavior::BLOCK_SHUTDOWN})) {}
 
 WorkspaceService::~WorkspaceService() = default;
 
@@ -255,21 +258,14 @@ void WorkspaceService::SaveWorkspace(Profile* profile,
 
   base::FilePath workspace_dir = GetWorkspaceDirForName(name);
 
-  // CommandStorageBackend must be constructed on the UI thread because its
-  // constructor calls SingleThreadTaskRunner::GetCurrentDefault().  We create
-  // a MayBlock SequencedTaskRunner here and pass it as the backend's owning
-  // runner, then post the actual file I/O to that same runner.
-  auto task_runner = base::ThreadPool::CreateSequencedTaskRunner(
-      {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
-       base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
   auto backend = base::MakeRefCounted<sessions::CommandStorageBackend>(
-      task_runner, workspace_dir, kWorkspaceSessionType,
+      io_task_runner_, workspace_dir, kWorkspaceSessionType,
       /*encryptor=*/std::nullopt);
 
   // Save metadata optimistically now; roll it back if the write fails.
   // BindPostTask ensures on_error always runs on the UI thread whether it is
-  // invoked by AppendCommands (via callback_task_runner_) or directly by
-  // WriteWorkspaceToDisk on a directory-creation failure.
+  // invoked by AppendCommands or directly by WriteWorkspaceToDisk on a
+  // directory-creation failure.
   SaveWorkspaceMetadata(name, window_count, tab_count, base::Time::Now());
 
   // "Rolling back" is just removing the metadata from the dictionary.
@@ -278,7 +274,7 @@ void WorkspaceService::SaveWorkspace(Profile* profile,
       base::BindOnce(&WorkspaceService::RemoveWorkspaceMetadata, GetWeakPtr(),
                      name));
 
-  task_runner->PostTask(
+  io_task_runner_->PostTask(
       FROM_HERE, base::BindOnce(&WriteWorkspaceToDisk, std::move(commands),
                                 std::move(workspace_dir), std::move(backend),
                                 std::move(on_error)));
@@ -287,17 +283,11 @@ void WorkspaceService::SaveWorkspace(Profile* profile,
 void WorkspaceService::RestoreWorkspace(Profile* profile,
                                         const std::string& name) {
   base::FilePath path = GetWorkspaceDirForName(name);
-
-  // Construct the backend on the UI thread (requires SingleThreadTaskRunner
-  // context), then hand it to the background sequenced runner for file I/O.
-  auto task_runner = base::ThreadPool::CreateSequencedTaskRunner(
-      {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
-       base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
   auto backend = base::MakeRefCounted<sessions::CommandStorageBackend>(
-      task_runner, path, kWorkspaceSessionType,
+      io_task_runner_, path, kWorkspaceSessionType,
       /*encryptor=*/std::nullopt);
 
-  task_runner->PostTaskAndReplyWithResult(
+  io_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(&ReadWorkspaceFromDisk, std::move(path),
                      std::move(backend)),
