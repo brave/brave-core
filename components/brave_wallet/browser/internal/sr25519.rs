@@ -173,10 +173,7 @@ fn create_sr25519_keypair_from_pkcs8(pkcs8: &[u8; 117]) -> Box<CxxSchnorrkelKeyP
 
 impl CxxSchnorrkelKeyPair {
     fn clone(self: &CxxSchnorrkelKeyPair) -> Box<CxxSchnorrkelKeyPair> {
-        Box::new(CxxSchnorrkelKeyPair {
-            keypair: self.keypair.clone(),
-            use_mock_rng: self.use_mock_rng,
-        })
+        Box::new(Clone::clone(self))
     }
 
     fn get_public_key(self: &CxxSchnorrkelKeyPair) -> [u8; 32] {
