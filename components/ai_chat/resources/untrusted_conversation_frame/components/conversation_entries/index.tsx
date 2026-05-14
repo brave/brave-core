@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import ProgressRing from '@brave/leo/react/progressRing'
 import classnames from '$web-common/classnames'
 import { getLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
@@ -39,6 +38,9 @@ import {
 import useConversationEventClipboardCopyHandler from './use_conversation_event_clipboard_copy_handler'
 import styles from './style.module.scss'
 import AssistantTask from '../assistant_task/assistant_task'
+import ProgressBubble, {
+  ProgressBubbleContextProvider,
+} from '../progress_bubble/progress_bubble'
 
 const escape = (text: string): string => (RegExp as any).escape(text)
 
@@ -147,13 +149,20 @@ const makeEditContent = (
     }
   })
 
+/**
+ * Returns the conversation history as an array of pairs, each pair containing
+ * a human turn group followed by its associated assistant response group, so
+ * responses are treated as a single entity when they span multiple tool-use
+ * loops. For example:
+ *
+ *   [[[human], [assistant, ...assistant]], [[human], [assistant, ...assistant]]]
+ *
+ * Consecutive assistant entries are kept together in the same parent element
+ * for semantic and style purposes — the back-and-forth between tool calls is
+ * an implementation detail the user shouldn't have to see.
+ */
 function usePairedConversationGroups() {
   const conversationContext = useUntrustedConversationContext()
-  // Render events from consecutive assistant entries in the same parent element for both
-  // semantic and style purposes. The user should see them as a single entry since
-  // the back and forth could be considered an implementation detail when
-  // conceptually it's more like a continuation of a response without human interaction
-  // in-between.
   const groupedEntries = React.useMemo<Mojom.ConversationTurn[][]>(
     () => groupConversationEntries(conversationContext.conversationHistory),
     [conversationContext.conversationHistory],
@@ -233,7 +242,7 @@ function ConversationEntries(props: { scrollToBottom: () => void }) {
   }
 
   function renderEntryGroup(
-    isLastGroup: boolean,
+    isActiveGroup: boolean,
     group: Mojom.ConversationTurn[],
     entryNumber: number,
   ) {
@@ -245,10 +254,9 @@ function ConversationEntries(props: { scrollToBottom: () => void }) {
     const isAIAssistant =
       firstEntryEdit.characterType === Mojom.CharacterType.ASSISTANT
     const isEntryInProgressButGroup =
-      isLastGroup && isAIAssistant && conversationContext.isGenerating
+      isActiveGroup && isAIAssistant && conversationContext.isGenerating
     const isHuman = firstEntryEdit.characterType === Mojom.CharacterType.HUMAN
-    const isGeneratingResponse =
-      isHuman && isLastGroup && conversationContext.isGenerating
+
     const showLongPageContentInfo =
       entryNumber === 1
       && isAIAssistant
@@ -294,12 +302,12 @@ function ConversationEntries(props: { scrollToBottom: () => void }) {
     const hasAttachments =
       !!firstEntryEdit.uploadedFiles?.length || tabAttachments.length > 0
 
-    const groupIsTask = isAssistantGroupTask(group)
+    const groupIsTask = isAIAssistant && isAssistantGroupTask(group)
 
     // Omit artifacts until generation is complete so we show
     // the artifacts and the final response text at the same time.
     const shouldOmitToolArtifacts =
-      isLastGroup && conversationContext.isGenerating
+      isActiveGroup && conversationContext.isGenerating
     const toolArtifacts = !shouldOmitToolArtifacts
       ? getToolArtifacts(group)
       : null
@@ -317,7 +325,7 @@ function ConversationEntries(props: { scrollToBottom: () => void }) {
             {groupIsTask && (
               <AssistantTask
                 assistantEntries={group}
-                isActiveTask={isLastGroup}
+                isActiveTask={isActiveGroup}
                 isLeoModel={conversationContext.isLeoModel}
               />
             )}
@@ -325,8 +333,8 @@ function ConversationEntries(props: { scrollToBottom: () => void }) {
               && group.map((entry, i) => {
                 const isEntryInProgress =
                   isEntryInProgressButGroup && i === group.length - 1
-                const isLastEntryInLastGroup =
-                  isLastGroup && i === group.length - 1
+                const isActiveEntryInActiveGroup =
+                  isActiveGroup && i === group.length - 1
                 const currentEntryEdit = entry.edits?.at(-1) ?? entry
                 const allowedLinksForEntry: string[] =
                   currentEntryEdit.events?.flatMap(
@@ -356,7 +364,9 @@ function ConversationEntries(props: { scrollToBottom: () => void }) {
                           events={
                             currentEntryEdit.events?.filter(Boolean) ?? []
                           }
-                          isEntryInteractivityAllowed={isLastEntryInLastGroup}
+                          isEntryInteractivityAllowed={
+                            isActiveEntryInActiveGroup
+                          }
                           isEntryInProgress={isEntryInProgress}
                           allowedLinks={allowedLinksForEntry}
                           isLeoModel={conversationContext.isLeoModel}
@@ -523,11 +533,6 @@ function ConversationEntries(props: { scrollToBottom: () => void }) {
                 )}
             </>
           )}
-          {isGeneratingResponse && (
-            <div className={styles.loading}>
-              <ProgressRing />
-            </div>
-          )}
         </div>
       </div>
     )
@@ -547,15 +552,24 @@ function ConversationEntries(props: { scrollToBottom: () => void }) {
               : undefined
           }
         >
-          {pair.map((group, groupIndex) =>
-            renderEntryGroup(
-              pairIndex === entryPairs.length - 1
-                && groupIndex === pair.length - 1,
-              group,
-              // Note, we need to keep track of the entry number across pairs and groups.
-              entryNumber++,
-            ),
-          )}
+          <ProgressBubbleContextProvider>
+            {pair.map((group, groupIndex) => (
+              <React.Fragment key={groupIndex}>
+                {renderEntryGroup(
+                  pairIndex === entryPairs.length - 1,
+                  group,
+                  // Note, we need to keep track of the entry number across pairs and groups.
+                  entryNumber++,
+                )}
+                {groupIndex === 0 && (
+                  <ProgressBubble
+                    responseGroup={pair[1]}
+                    isLastGroup={pairIndex === entryPairs.length - 1}
+                  />
+                )}
+              </React.Fragment>
+            ))}
+          </ProgressBubbleContextProvider>
         </div>
       ))}
     </div>

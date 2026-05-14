@@ -17,7 +17,23 @@ import {
 import MockContext, {
   MockContextRef,
 } from '../../mock_untrusted_conversation_context'
+import {
+  ProgressBubbleContextProvider,
+  useProgressBubbleContext,
+} from '../progress_bubble/progress_bubble'
 import AssistantTask from './assistant_task'
+
+// Renders AssistantTask inside a ProgressBubbleContextProvider that defaults
+// the Steps view to expanded. Used by tests that exercise the Steps panel,
+// since switching panels is now driven by the shared context rather than
+// internal tabs.
+function ExpandSteps() {
+  const ctx = useProgressBubbleContext()
+  React.useEffect(() => {
+    ctx.setIsExpanded(true)
+  }, [ctx])
+  return null
+}
 
 describe('AssistantTask', () => {
   const mockAssistantEntries: Mojom.ConversationTurn[] = [
@@ -310,7 +326,6 @@ describe('AssistantTask', () => {
         <AssistantTask
           assistantEntries={entriesWithInlineSearch}
           isActiveTask={false}
-          isGenerating={false}
           isLeoModel={true}
         />
       </MockContext>,
@@ -392,12 +407,16 @@ describe('AssistantTask web sources', () => {
       characterType: Mojom.CharacterType.ASSISTANT,
       events: [
         getToolUseEvent({
-          toolName: 'search_web',
-          input: '{"query":"test"}',
+          toolName: Mojom.BRAVE_WEB_SEARCH_TOOL_NAME,
+          id: '1',
+          argumentsJson: JSON.stringify({ query: ['test'] }),
+          output: undefined,
         }),
         getToolUseEvent({
           toolName: 'get_page',
-          input: '{"url":"https://example.com"}',
+          id: '2',
+          argumentsJson: JSON.stringify({ url: 'https://example.com' }),
+          output: undefined,
         }),
         getWebSourcesEvent([
           {
@@ -445,39 +464,19 @@ describe('AssistantTask web sources', () => {
     ).toBeInTheDocument()
   })
 
-  test('Progress view shows search summary', () => {
-    const { container } = render(
-      <MockContext>
-        <AssistantTask
-          assistantEntries={entriesWithSourcesInEarlierEntry}
-          isActiveTask={false}
-          isLeoModel={true}
-        />
-      </MockContext>,
-    )
-
-    expect(
-      container.querySelector('[data-testid="search-summary"]'),
-    ).toBeInTheDocument()
-  })
-
   test('Steps view shows web sources with completion step', () => {
     const { container } = render(
       <MockContext>
-        <AssistantTask
-          assistantEntries={entriesWithSourcesInEarlierEntry}
-          isActiveTask={false}
-          isLeoModel={true}
-        />
+        <ProgressBubbleContextProvider>
+          <ExpandSteps />
+          <AssistantTask
+            assistantEntries={entriesWithSourcesInEarlierEntry}
+            isActiveTask={false}
+            isLeoModel={true}
+          />
+        </ProgressBubbleContextProvider>
       </MockContext>,
     )
-
-    // Switch to Steps tab via shadowRoot click
-    const stepsTab = container.querySelector('leo-tabitem[value="steps"]')
-    expect(stepsTab).toBeTruthy()
-    act(() => {
-      stepsTab?.shadowRoot?.querySelector('button')?.click()
-    })
 
     // Verify sources appear in the Steps view
     expect(
@@ -496,30 +495,29 @@ describe('AssistantTask web sources', () => {
     ).toBeInTheDocument()
   })
 
-  test('Steps view shows search summary with completion step', () => {
+  test('Steps view renders a search summary alongside the search tool use', () => {
+    // The search summary is now produced by the per-tool ToolEventSearch
+    // component, so it appears in whichever step contains the search tool
+    // use event rather than always with the completion.
     const { container } = render(
       <MockContext>
-        <AssistantTask
-          assistantEntries={entriesWithSourcesInEarlierEntry}
-          isActiveTask={false}
-          isLeoModel={true}
-        />
+        <ProgressBubbleContextProvider>
+          <ExpandSteps />
+          <AssistantTask
+            assistantEntries={entriesWithSourcesInEarlierEntry}
+            isActiveTask={false}
+            isLeoModel={true}
+          />
+        </ProgressBubbleContextProvider>
       </MockContext>,
     )
 
-    // Switch to Steps tab
-    const stepsTab = container.querySelector('leo-tabitem[value="steps"]')
-    expect(stepsTab).toBeTruthy()
-    act(() => {
-      stepsTab?.shadowRoot?.querySelector('button')?.click()
-    })
-
-    // Search summary should be in the last step
     const steps = container.querySelectorAll('[class*="taskStep"]')
     expect(steps.length).toBe(2)
-    expect(steps[0].querySelector('[data-testid="search-summary"]')).toBeNull()
+    // The search tool use lives in the first (pre-completion) step.
     expect(
-      steps[1].querySelector('[data-testid="search-summary"]'),
+      steps[0].querySelector('[data-testid="search-summary"]'),
     ).toBeInTheDocument()
+    expect(steps[1].querySelector('[data-testid="search-summary"]')).toBeNull()
   })
 })

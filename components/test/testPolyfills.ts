@@ -25,3 +25,11 @@ windowAsAny.ResizeObserver = class ResizeObserverPolyfill {
 
   disconnect() {}
 }
+
+windowAsAny.IntersectionObserver = class IntersectionObserverPolyfill {
+  observe() {}
+
+  unobserve() {}
+
+  disconnect() {}
+}

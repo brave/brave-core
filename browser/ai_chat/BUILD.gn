@@ -383,6 +383,7 @@ source_set("browser_tests") {
       "//brave/components/ai_chat/core/common/mojom",
       "//brave/components/constants",
       "//brave/components/l10n/common:test_support",
+      "//brave/components/resources:strings_grit",
       "//brave/components/sidebar/browser",
       "//brave/components/text_recognition/common/buildflags",
       "//brave/components/tor/buildflags",

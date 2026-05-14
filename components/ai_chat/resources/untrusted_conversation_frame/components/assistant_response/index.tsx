@@ -4,9 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import ProgressRing from '@brave/leo/react/progressRing'
-import Icon from '@brave/leo/react/icon'
-import { getLocale, formatLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import MarkdownRenderer from '../markdown_renderer'
@@ -24,10 +21,6 @@ import {
 } from '../conversation_entries/conversation_entries_utils'
 import RichSearchWidget from './rich_search_widget'
 import AssistantResponseContextProvider from './assistant_response_context'
-import {
-  getBraveSearchUrlForQuery,
-  LEO_BRAVE_SEARCH_SUPPORT_URL,
-} from '../../../common/constants'
 
 interface BaseProps {
   // Whether data is currently being received (generated)
@@ -37,47 +30,6 @@ interface BaseProps {
   // Only these urls should be rendered as links
   allowedLinks: string[]
   isLeoModel: boolean
-}
-
-function SearchSummary(props: { searchQueries: string[] }) {
-  const context = useUntrustedConversationContext()
-
-  const handleLearnMoreClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault()
-    context.uiHandler?.openLearnMoreAboutBraveSearchWithLeo()
-  }
-
-  const message = formatLocale(S.CHAT_UI_SEARCH_QUERIES, {
-    $1: props.searchQueries.map((query, i, a) => (
-      <React.Fragment key={i}>
-        <a
-          className={styles.searchQueryLink}
-          href={getBraveSearchUrlForQuery(query)}
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          {`"${query}"`}
-        </a>
-        {i < a.length - 1 ? ', ' : null}
-      </React.Fragment>
-    )),
-  })
-
-  return (
-    <div className={styles.searchSummary}>
-      <Icon name='brave-icon-search-color' />
-      <span data-testid='search-summary'>
-        {message}{' '}
-        <a
-          className={styles.searchLearnMoreLink}
-          href={LEO_BRAVE_SEARCH_SUPPORT_URL}
-          onClick={handleLearnMoreClick}
-        >
-          {getLocale(S.CHAT_UI_LEARN_MORE)}
-        </a>
-      </span>
-    </div>
-  )
 }
 
 function AssistantEvent(
@@ -117,18 +69,7 @@ function AssistantEvent(
       />
     )
   }
-  if (
-    props.event.searchStatusEvent
-    && props.isEntryInProgress
-    && !props.hasCompletionStarted
-  ) {
-    return (
-      <div className={styles.actionInProgress}>
-        <ProgressRing />
-        Improving answer with Brave Search…
-      </div>
-    )
-  }
+
   if (props.event.toolUseEvent) {
     if (props.event.toolUseEvent.toolName === Mojom.MEMORY_STORAGE_TOOL_NAME) {
       return <MemoryToolEvent toolUseEvent={props.event.toolUseEvent} />
@@ -141,14 +82,6 @@ function AssistantEvent(
       />
     )
   }
-
-  // TODO(petemill): Consider displaying in-progress queries if the API
-  // timing improves (or worsens for the completion events).
-  // if (event.searchQueriesEvent && props.isEntryInProgress) {
-  //   return (<>
-  //     {event.searchQueriesEvent.searchQueries.map(query => <div className={styles.searchQuery}>Searching for <span className={styles.searchLink}><Icon name="brave-icon-search-color" /><Link href='#'>{query}</Link></span></div>)}
-  //   </>)
-  // }
 
   // Unknown events should be ignored
   return null
@@ -167,9 +100,6 @@ export default function AssistantResponse(props: AssistantResponseProps) {
   )
   const allRichResults = props.events.flatMap(
     (event) => event.sourcesEvent?.richResults?.filter((r) => !!r) ?? [],
-  )
-  const allSearchQueries = props.events.flatMap(
-    (event) => event.searchQueriesEvent?.searchQueries ?? [],
   )
 
   const deepResearch = React.useMemo(
@@ -230,9 +160,6 @@ export default function AssistantResponse(props: AssistantResponseProps) {
               artifact={artifact}
             />
           ))}
-        {!props.isEntryInProgress && allSearchQueries.length > 0 && (
-          <SearchSummary searchQueries={allSearchQueries} />
-        )}
       </div>
     </AssistantResponseContextProvider>
   )

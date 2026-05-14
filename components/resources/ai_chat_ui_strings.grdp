@@ -498,11 +498,11 @@
   <message name="IDS_CHAT_UI_CONVERSATION_END_ERROR" desc="An error issued when the user cannot continue chatting" formatter_data="webui=AiChat">
     This conversation is too long and cannot continue. There may be other models available with which Leo is capable of maintaining accuracy for longer conversations.
   </message>
-  <message name="IDS_CHAT_UI_SEARCH_IN_PROGRESS" desc="Status to indicate that AI response is being enhaced with Brave Search" formatter_data="webui=AiChat">
-    Improving your answer with Brave Search…
+  <message name="IDS_CHAT_UI_SEARCH_GENERIC" desc="AI Response status to indicate that a web search is in progress" formatter_data="webui=AiChat">
+    Searching the web
   </message>
   <message name="IDS_CHAT_UI_SEARCH_QUERIES" desc="AI Response status to indicate that search queries were used to enhance the response" formatter_data="webui=AiChat">
-    Improved answer searching for <ph name="SEARCH_TERMS">$1<ex>"my first search engine query", "my second search engine query"</ex></ph>.
+    Searching the web for <ph name="SEARCH_TERMS">$1<ex>"my first search engine query", "my second search engine query"</ex></ph>.
   </message>
   <message name="IDS_CHAT_UI_SOURCES" desc="Heading for a list of website sources that were used to generate an AI chat response" formatter_data="webui=AiChat">
     Sources
@@ -912,17 +912,23 @@
   <message name="IDS_CHAT_UI_TOOL_LABEL_THINKING" desc="Label for when the assistant is thinking" formatter_data="webui=AiChat">
     Thinking
   </message>
+  <message name="IDS_CHAT_UI_TOOL_LABEL_COMPLETE" desc="Label for when the assistant has completed all the steps to provide an answer" formatter_data="webui=AiChat">
+    Task complete
+  </message>
   <message name="IDS_CHAT_UI_CODE_EXECUTION_TITLE" desc="Title for code execution tool event" formatter_data="webui=AiChat">
     Code Execution
   </message>
   <message name="IDS_CHAT_UI_TOOL_LABEL_CODE_EXECUTION" desc="Title for code execution tool event" formatter_data="webui=AiChat">
-    Executed code in sandbox to help with your query
+    Executing code in sandbox to help with your query
   </message>
   <message name="IDS_CHAT_UI_CODE_EXECUTION_CODE_LABEL" desc="Label for code section in code execution tool" formatter_data="webui=AiChat">
     Code:
   </message>
   <message name="IDS_CHAT_UI_CODE_EXECUTION_OUTPUT_LABEL" desc="Label for output section in code execution tool" formatter_data="webui=AiChat">
     Output:
+  </message>
+  <message name="IDS_CHAT_UI_TOOL_LABEL_USER_CHOICE" desc="Label for when the assistant is waiting for the user to make a choice"  formatter_data="webui=AiChat">
+    Generating some options for you to choose from
   </message>
   <if expr="enable_ai_chat_tab_management_tool">
     <message name="IDS_CHAT_UI_TOOL_LABEL_TAB_MANAGEMENT" desc="Description for the active state of the AI tab management tool" formatter_data="webui=AiChat">

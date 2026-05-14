@@ -34,9 +34,11 @@
 #include "chrome/browser/glic/actor/glic_actor_policy_checker.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "components/grit/brave_components_strings.h"
 #include "content/public/test/browser_test.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/display/display_switches.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
@@ -438,8 +440,17 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskStopAction) {
 }
 
 IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskUI) {
-  // A task UI shows when there are 2 tool segments of a tool loop, i.e. the AI
-  // responds to a tool use result with another tool use request.
+  // The task UI shows for any assistant response group containing at least
+  // one task tool use; the ProgressBubble surfaces the active tool label or
+  // a "Thinking" placeholder while the loop runs, and a completion/paused/
+  // stopped state once the loop ends.
+  const std::string thinking_label =
+      l10n_util::GetStringUTF8(IDS_CHAT_UI_TOOL_LABEL_THINKING);
+  const std::string paused_label =
+      l10n_util::GetStringUTF8(IDS_CHAT_UI_TASK_STATE_PAUSED_LABEL);
+  const std::string complete_label =
+      l10n_util::GetStringUTF8(IDS_CHAT_UI_TOOL_LABEL_COMPLETE);
+
   CreateConversationWithMockEngine();
   std::string uuid = conversation_handler_->get_conversation_uuid();
 
@@ -483,8 +494,11 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskUI) {
             EngineConsumer::GenerationResultData(nullptr, std::nullopt)));
   }
 
-  // No task UI should be shown with only one tool segment in the loop
-  EXPECT_FALSE(VerifyConversationFrameElementState("assistant-task", false));
+  // The task UI shows as soon as there's at least one task tool use, and
+  // the progress bubble displays the tool label while the tool runs.
+  EXPECT_TRUE(VerifyConversationFrameElementState("assistant-task"));
+  EXPECT_TRUE(VerifyConversationFrameElementText("progress-bubble-description",
+                                                 "mock_tool"));
   // Handle the tool execution response with another tool use request.
   {
     auto generate_future = SetupMockGenerateAssistantResponse(&tool_call_seq);
@@ -505,8 +519,10 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskUI) {
         .InSequence(tool_call_seq)
         .WillOnce(testing::WithArg<1>([&](Tool::UseToolCallback callback) {
           EXPECT_TRUE(VerifyConversationFrameElementState("assistant-task"));
-          EXPECT_FALSE(VerifyConversationFrameElementState(
-              "tool-event-thinking", false));
+          // While a tool is executing the bubble shows that tool's label,
+          // not the "Thinking" placeholder.
+          EXPECT_TRUE(VerifyConversationFrameElementText(
+              "progress-bubble-description", "mock_tool"));
           tool_execute = base::BindOnce(
               [](Tool::UseToolCallback callback) {
                 std::move(callback).Run(
@@ -530,8 +546,10 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskUI) {
 
     auto callbacks = generate_future->Take();
 
-    // Now we should be thinking
-    EXPECT_TRUE(VerifyConversationFrameElementState("tool-event-thinking"));
+    // Now we should be thinking - tool execution finished, waiting for the
+    // engine to respond.
+    EXPECT_TRUE(VerifyConversationFrameElementText(
+        "progress-bubble-description", thinking_label));
 
     // Shouldn't call the tool again because we are pausing.
     EXPECT_CALL(*mock_tool, UseTool).Times(0).InSequence(tool_call_seq);
@@ -561,9 +579,9 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskUI) {
             EngineConsumer::GenerationResultData(nullptr, std::nullopt)));
   }
 
-  // The task should have a "paused" label
-  EXPECT_TRUE(
-      VerifyConversationFrameElementState("assistant-task-paused-label"));
+  // The task's progress bubble should now read "Paused"
+  EXPECT_TRUE(VerifyConversationFrameElementText("progress-bubble-description",
+                                                 paused_label));
 
   // When we submit a new message, the task is no longer active. It should still
   // exist but should not have its "paused" label.
@@ -589,8 +607,10 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskUI) {
             EngineConsumer::GenerationResultData(nullptr, std::nullopt)));
   }
   EXPECT_TRUE(VerifyConversationFrameElementState("assistant-task"));
-  EXPECT_FALSE(VerifyConversationFrameElementState(
-      "assistant-task-paused-label", false));
+  // The prior, no-longer-active task settles into the completed state — its
+  // bubble no longer reads "Paused".
+  EXPECT_TRUE(VerifyConversationFrameElementText("progress-bubble-description",
+                                                 complete_label));
 }
 
 #endif  // BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
