@@ -8,6 +8,7 @@
 #include <algorithm>
 
 #include "base/strings/string_util.h"
+#include "brave/components/containers/content/browser/containers_web_contents_user_data.h"
 #include "brave/components/containers/core/common/features.h"
 #include "content/public/browser/security_principal.h"
 #include "content/public/browser/site_instance.h"
@@ -58,11 +59,18 @@ std::string GetContainerIdForWebContents(content::WebContents* web_contents) {
   const auto& config = web_contents->GetSiteInstance()
                            ->GetSecurityPrincipal()
                            .GetStoragePartitionConfig();
-  if (!IsContainersStoragePartition(config)) {
-    return std::string();
+  if (IsContainersStoragePartition(config)) {
+    return config.partition_name();
   }
 
-  return config.partition_name();
+  const ContainersWebContentsUserData* user_data =
+      ContainersWebContentsUserData::FromWebContents(web_contents);
+  if (user_data &&
+      IsValidStoragePartitionKeyComponent(user_data->container_id())) {
+    return user_data->container_id();
+  }
+
+  return std::string();
 }
 
 }  // namespace containers

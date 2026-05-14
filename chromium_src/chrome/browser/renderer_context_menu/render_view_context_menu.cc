@@ -772,14 +772,13 @@ void RenderViewContextMenu::OnNewTemporaryContainerSelected() {
 base::flat_set<std::string> RenderViewContextMenu::GetCurrentContainerIds() {
   CHECK(base::FeatureList::IsEnabled(containers::features::kContainers));
 
-  const auto& storage_partition_config = source_web_contents_->GetSiteInstance()
-                                             ->GetSecurityPrincipal()
-                                             .GetStoragePartitionConfig();
-  if (!containers::IsContainersStoragePartition(storage_partition_config)) {
+  auto container_id =
+      containers::GetContainerIdForWebContents(source_web_contents_);
+  if (container_id.empty()) {
     return {};
   }
 
-  return {storage_partition_config.partition_name()};
+  return {container_id};
 }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 

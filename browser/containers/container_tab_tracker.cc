@@ -7,6 +7,7 @@
 
 #include "base/memory/ptr_util.h"
 #include "brave/browser/containers/containers_service_factory.h"
+#include "brave/components/containers/content/browser/containers_web_contents_user_data.h"
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
 #include "brave/components/containers/core/browser/containers_service.h"
 #include "chrome/browser/profiles/profile.h"
@@ -37,6 +38,8 @@ void ContainerTabTracker::OnDiscardContents(
     tabs::TabInterface* tab,
     content::WebContents* old_contents,
     content::WebContents* new_contents) {
+  ContainersWebContentsUserData::CopyContainerStateForDiscardedContents(
+      old_contents, new_contents);
   tracked_ = false;
   tabs::ContentsObservingTabFeature::OnDiscardContents(tab, old_contents,
                                                        new_contents);
