@@ -241,6 +241,10 @@ Generate the title dynamically based on the categories of PRs actually included:
 
 Only list the PRs being uplifted. Do NOT mention excluded PRs in the PR body.
 
+The body created here intentionally omits `Resolves` directives for the
+underlying tracking issues — those are appended in Step 7 once each included
+PR's linked or freshly created issue is known.
+
 Use a HEREDOC for correct formatting:
 
 ```bash
@@ -302,12 +306,18 @@ Do this for every PR that was successfully cherry-picked and included.
 
 ---
 
-## Step 7: Ensure each included PR has a linked issue
+## Step 7: Ensure each included PR has a linked issue (and link them from the uplift PR)
 
 Brave's post-merge checklist requires the associated issue milestone be set to
 the smallest version the change landed on. PRs uplifted without a linked issue
 make that step impossible, so create and close a tracking issue for any included
-PR that does not already have one.
+PR that does not already have one. While doing that, collect every resulting
+issue reference so the uplift PR body can `Resolves` them.
+
+Maintain a running list `RESOLVED_ISSUES` of issue references in
+`owner/repo#NNN` form (e.g. `brave/brave-browser#52310`). For each issue
+surfaced or created below, append it to this list — deduped, preserving
+discovery order.
 
 For **each PR included in the uplift**:
 
@@ -318,8 +328,10 @@ For **each PR included in the uplift**:
    ```
 
    Also inspect the PR body for closing keywords (`Fixes`, `Resolves`, `Closes`
-   followed by `#NNN` or `brave/brave-browser#NNN`). If either surfaces an
-   issue, no new issue is needed — skip this PR.
+   followed by `#NNN` or `<owner>/<repo>#NNN`). Normalize any matches to the
+   `owner/repo#NNN` form — bare `#NNN` references default to
+   `brave/brave-browser` — and append each to `RESOLVED_ISSUES`. If at least
+   one issue is found this way, no new issue is needed — skip to the next PR.
 
 2. **Create a new tracking issue** in `brave/brave-browser` (Brave's convention
    is that issues live in `brave-browser` while code lives in `brave-core`).
@@ -339,7 +351,8 @@ For **each PR included in the uplift**:
    )"
    ```
 
-   Capture the new issue number from the URL returned by `gh issue create`.
+   Capture the new issue number from the URL returned by `gh issue create`,
+   and append `brave/brave-browser#<ISSUE_NUMBER>` to `RESOLVED_ISSUES`.
 
 3. **Close the new issue** (the original PR has already merged, so the work the
    issue describes is complete):
@@ -365,6 +378,24 @@ closed.
 If issue creation fails for any reason (e.g., permission issues or rate limits),
 record the failure in the summary and continue rather than aborting the rest of
 the run.
+
+### Add `Resolves` directives to the uplift PR body
+
+After every included PR has been processed, prepend a `Resolves <ref>` line
+to the uplift PR body for each entry in `RESOLVED_ISSUES`. This is what
+makes the uplift PR show up as the closer of each tracked issue (and, more
+importantly to the user, makes the issue links visible from the PR).
+
+Fetch the current body, prepend the lines, then update the PR:
+
+```bash
+CURRENT_BODY=$(gh pr view <UPLIFT_PR_NUMBER> --repo brave/brave-core --json body --jq .body)
+gh pr edit <UPLIFT_PR_NUMBER> --repo brave/brave-core --body "$(printf 'Resolves brave/brave-browser#AAA\nResolves brave/brave-browser#BBB\n\n%s' "$CURRENT_BODY")"
+```
+
+Replace the example `AAA`/`BBB` lines with one line per entry in
+`RESOLVED_ISSUES`, in discovery order. If `RESOLVED_ISSUES` ended up empty
+(e.g., every lookup and issue creation failed), leave the body untouched.
 
 ---
 
