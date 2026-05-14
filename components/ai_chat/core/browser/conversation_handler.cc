@@ -2375,18 +2375,17 @@ std::string ConversationHandler::GetVisionCapableModelKey(
 void ConversationHandler::MaybeSwitchModelForSubmission(
     const std::optional<std::vector<mojom::UploadedFilePtr>>& uploaded_files,
     const std::optional<std::string>& intended_model_key) {
-  std::string target;
-  if (intended_model_key && !intended_model_key->empty()) {
-    target = *intended_model_key;
-  } else {
-    target = metadata_->model_key.value_or("").empty()
-                 ? model_service_->GetDefaultModelKey()
-                 : metadata_->model_key.value();
-  }
+  const std::string current_model_key =
+      metadata_->model_key.value_or("").empty()
+          ? model_service_->GetDefaultModelKey()
+          : metadata_->model_key.value();
+  std::string target = (intended_model_key && !intended_model_key->empty())
+                           ? *intended_model_key
+                           : current_model_key;
   if (HasUploadedImageOrScreenshot(uploaded_files)) {
     target = GetVisionCapableModelKey(target);
   }
-  if (target != GetCurrentModel().key) {
+  if (target != current_model_key) {
     ChangeModel(target);
   }
 }
