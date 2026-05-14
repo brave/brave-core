@@ -11,7 +11,6 @@
 
 #include "base/functional/bind.h"
 #include "base/memory/raw_ptr.h"
-#include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
@@ -299,32 +298,32 @@ TEST_F(BravePassageEmbeddingsServiceTest, BindAgainAfterEmbedderRemoteReset) {
   EXPECT_TRUE(load2->load_success.Get());
 }
 
-TEST_F(BravePassageEmbeddingsServiceTest, BindRegistryRoutesToService) {
-  // Manually exercise the static registry: install a bind callback for
-  // a fake WebContents pointer, call BindForWebContents, and confirm
-  // the callback fires.
-  auto* fake_web_contents =
-      reinterpret_cast<content::WebContents*>(uintptr_t{0xdeadbeef});
-  bool invoked = false;
-  BravePassageEmbeddingsService::SetBindCallbackForWebContents(
-      fake_web_contents,
-      base::BindLambdaForTesting(
-          [&](mojo::PendingReceiver<local_ai::mojom::LocalAIService>) {
-            invoked = true;
-          }));
+TEST_F(BravePassageEmbeddingsServiceTest, BindLocalAIReceiverNoopWithoutBatch) {
+  // Service-level forwarder is a no-op when no BatchEmbedder is bound.
+  // The receiver is dropped; the test just confirms the call doesn't
+  // crash and the remote sees a disconnect.
+  mojo::Remote<local_ai::mojom::LocalAIService> remote;
+  service_->BindLocalAIReceiver(remote.BindNewPipeAndPassReceiver());
+  base::test::TestFuture<void> disconnected;
+  remote.set_disconnect_handler(disconnected.GetCallback());
+  EXPECT_TRUE(disconnected.Wait());
+}
 
-  mojo::PendingRemote<local_ai::mojom::LocalAIService> dummy_remote;
-  BravePassageEmbeddingsService::BindForWebContents(
-      fake_web_contents, dummy_remote.InitWithNewPipeAndPassReceiver());
-  EXPECT_TRUE(invoked);
+TEST_F(BravePassageEmbeddingsServiceTest, BindLocalAIReceiverForwardsToBatch) {
+  // Once a BatchEmbedder is alive, the forwarder hands the receiver to
+  // it — RegisterPassageEmbedderFactory then drives the load to Ready.
+  auto load = IssueLoad();
+  ASSERT_TRUE(last_created_web_contents_);
+  ASSERT_TRUE(last_delegate_);
 
-  BravePassageEmbeddingsService::RemoveBindCallbackForWebContents(
-      fake_web_contents);
-  invoked = false;
-  mojo::PendingRemote<local_ai::mojom::LocalAIService> dummy_remote2;
-  BravePassageEmbeddingsService::BindForWebContents(
-      fake_web_contents, dummy_remote2.InitWithNewPipeAndPassReceiver());
-  EXPECT_FALSE(invoked);
+  mojo::Remote<local_ai::mojom::LocalAIService> local_ai_remote;
+  service_->BindLocalAIReceiver(local_ai_remote.BindNewPipeAndPassReceiver());
+  local_ai_remote->RegisterPassageEmbedderFactory(fake_factory_.BindRemote());
+  local_ai_remote.FlushForTesting();
+
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return fake_factory_.init_count() > 0; }));
+  EXPECT_TRUE(load->load_success.Get());
 }
 
 }  // namespace passage_embeddings

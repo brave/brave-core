@@ -8,28 +8,12 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/containers/flat_map.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
-#include "base/no_destructor.h"
 #include "components/history_embeddings/core/history_embeddings_features.h"
-#include "content/public/browser/web_contents.h"
 
 namespace passage_embeddings {
-
-namespace {
-
-using BindRegistry =
-    base::flat_map<content::WebContents*,
-                   BravePassageEmbeddingsService::BindCallback>;
-
-BindRegistry& GetBindRegistry() {
-  static base::NoDestructor<BindRegistry> registry;
-  return *registry;
-}
-
-}  // namespace
 
 BravePassageEmbeddingsService::BravePassageEmbeddingsService(
     BackgroundWebContentsFactory background_web_contents_factory)
@@ -40,27 +24,10 @@ BravePassageEmbeddingsService::BravePassageEmbeddingsService(
 
 BravePassageEmbeddingsService::~BravePassageEmbeddingsService() = default;
 
-// static
-void BravePassageEmbeddingsService::SetBindCallbackForWebContents(
-    content::WebContents* web_contents,
-    BindCallback callback) {
-  GetBindRegistry()[web_contents] = std::move(callback);
-}
-
-// static
-void BravePassageEmbeddingsService::RemoveBindCallbackForWebContents(
-    content::WebContents* web_contents) {
-  GetBindRegistry().erase(web_contents);
-}
-
-// static
-void BravePassageEmbeddingsService::BindForWebContents(
-    content::WebContents* web_contents,
+void BravePassageEmbeddingsService::BindLocalAIReceiver(
     mojo::PendingReceiver<local_ai::mojom::LocalAIService> receiver) {
-  auto& registry = GetBindRegistry();
-  auto it = registry.find(web_contents);
-  if (it != registry.end()) {
-    it->second.Run(std::move(receiver));
+  if (batch_embedder_) {
+    batch_embedder_->BindLocalAIReceiver(std::move(receiver));
   }
 }
 

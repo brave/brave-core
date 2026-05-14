@@ -74,6 +74,12 @@ class BravePassageEmbeddingsServiceController
   // BrowserContextImpl's `rph_with_bc_reference` NOTREACHED).
   void ObserveGuestOTRProfile(Profile* otr_profile);
 
+  // Routes a renderer-side LocalAIService binding from
+  // UntrustedLocalAIUI::BindInterface to the active embedder. No-op
+  // when no service is alive.
+  void BindLocalAIReceiver(
+      mojo::PendingReceiver<local_ai::mojom::LocalAIService> receiver);
+
  private:
   friend class base::NoDestructor<BravePassageEmbeddingsServiceController>;
 
