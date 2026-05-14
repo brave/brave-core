@@ -80,7 +80,7 @@ class BraveAdsAdsServiceImplTest : public testing::Test {
 
     ads_service_ = std::make_unique<AdsServiceImpl>(
         std::make_unique<test::FakeAdsServiceDelegate>(), prefs_, local_state_,
-        /*http_client=*/nullptr,
+        /*policy_service=*/nullptr, /*http_client=*/nullptr,
         std::make_unique<test::FakeVirtualPrefProviderDelegate>(),
         /*channel_name=*/"foo", profile_dir_.GetPath(),
         std::make_unique<test::FakeAdsTooltipsDelegate>(), std::move(device_id),
