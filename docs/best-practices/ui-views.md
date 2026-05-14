@@ -55,3 +55,36 @@ void MyView::OnTabStripModelDestroyed(TabStripModel* model) {
 
 ---
 
+<a id="UV-003"></a>
+
+## ✅ Prefer `views::AsViewClass` and `views::IsViewClass` Over `static_cast<>` for View Downcasting
+
+**Use `views::AsViewClass<T>()` and `views::IsViewClass<T>()` instead of `static_cast<T*>()` when downcasting `views::View` pointers.**
+
+Since Chromium disables RTTI, `dynamic_cast` is unavailable. `AsViewClass` and `IsViewClass` fill that role for the views hierarchy: they walk the metadata chain registered via `METADATA_HEADER` and catch — at compile time — target classes that have omitted `METADATA_HEADER` or left a metadata path unoverridden. At runtime, `AsViewClass` returns `nullptr` on a type mismatch, including for partially constructed views that have not yet installed their own class metadata. `static_cast` does none of this and silently produces a pointer whose dereference is undefined behaviour on a type mismatch.
+
+```cpp
+// ❌ WRONG - no type check; UB on dereference if type assumption is wrong.
+//            static_cast also cannot detect a partially constructed object —
+//            e.g. when a Brave-specific subclass overrides a Chromium view and
+//            the object is accessed before the subclass metadata is installed,
+//            UBSan will not catch the invalid access.
+auto* my_view = static_cast<MyCustomView*>(some_view);
+my_view->DoSomething();
+
+// ✅ CORRECT - metadata chain walk returns nullptr for a partially constructed
+//              object or any type mismatch, making it safe under UBSan
+auto* my_view = views::AsViewClass<MyCustomView>(some_view);
+if (!my_view) {
+  return;
+}
+my_view->DoSomething();
+
+// ✅ CORRECT - type predicate
+if (views::IsViewClass<MyCustomView>(some_view)) {
+  // ...
+}
+```
+
+---
+
