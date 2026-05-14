@@ -5,6 +5,7 @@
 
 #include "brave/components/oblivious_http/oblivious_http_chunk_processor.h"
 
+#include "base/check.h"
 #include "base/memory/ptr_util.h"
 #include "base/strings/string_number_conversions.h"
 
@@ -38,23 +39,22 @@ ObliviousHttpChunkProcessor::Create(
     return nullptr;
   }
 
-  // Construct the decoder first so we have a stable address to pass to
-  // ChunkedObliviousHttpClient::Create, which holds a non-owning reference.
-  auto decoder = base::WrapUnique(new ObliviousHttpChunkProcessor(
+  auto processor = base::WrapUnique(new ObliviousHttpChunkProcessor(
       std::move(chunk_client_remote), std::move(on_request_complete)));
 
   auto client_result = quiche::ChunkedObliviousHttpClient::Create(
-      *pub_key, key_config, decoder.get());
+      *pub_key, key_config, processor.get());
   if (!client_result.ok()) {
     return nullptr;
   }
 
-  decoder->ohttp_client_.emplace(std::move(*client_result));
-  return decoder;
+  processor->ohttp_client_.emplace(std::move(*client_result));
+  return processor;
 }
 
 std::optional<std::string> ObliviousHttpChunkProcessor::EncryptRequest(
     std::string_view plaintext) {
+  CHECK(ohttp_client_);
   auto result =
       ohttp_client_->EncryptRequestChunk(plaintext, /*is_final_chunk=*/true);
   if (!result.ok()) {
@@ -65,6 +65,7 @@ std::optional<std::string> ObliviousHttpChunkProcessor::EncryptRequest(
 
 void ObliviousHttpChunkProcessor::OnDataReceived(std::string_view data,
                                                  base::OnceClosure resume) {
+  CHECK(ohttp_client_);
   auto status = ohttp_client_->DecryptResponse(data, /*end_stream=*/false);
   if (!status.ok()) {
     has_error_ = true;
@@ -73,6 +74,7 @@ void ObliviousHttpChunkProcessor::OnDataReceived(std::string_view data,
 }
 
 void ObliviousHttpChunkProcessor::OnComplete(bool success) {
+  CHECK(ohttp_client_);
   if (!success) {
     NotifyURLLoaderComplete(/*success=*/false);
     return;

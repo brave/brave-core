@@ -64,7 +64,7 @@ constexpr char kLargeJsonResponse[] = R"({
 std::vector<std::string> SplitIntoChunks(const std::string& s,
                                          size_t chunk_count) {
   std::vector<std::string> chunks;
-  size_t chunk_size = std::max(1ul, s.size() / chunk_count);
+  size_t chunk_size = std::max(size_t{1}, s.size() / chunk_count);
   for (size_t i = 0; i < s.size(); i += chunk_size) {
     chunks.push_back(s.substr(i, chunk_size));
   }

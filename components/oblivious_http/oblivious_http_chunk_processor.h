@@ -103,7 +103,6 @@ class ObliviousHttpChunkProcessor
   std::vector<std::pair<std::string, std::string>> pending_headers_;
 
   quiche::BinaryHttpResponse::IndeterminateLengthDecoder bhttp_decoder_;
-  // Populated in Create() after the decoder has a stable address.
   std::optional<quiche::ChunkedObliviousHttpClient> ohttp_client_;
 
   base::OnceCallback<void(std::optional<std::string>)> on_request_complete_;
