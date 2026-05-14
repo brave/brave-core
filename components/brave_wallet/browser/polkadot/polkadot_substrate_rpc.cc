@@ -33,6 +33,13 @@ namespace {
 // Account info comes to us through the wire as 160 hex digits.
 inline constexpr size_t kPolkadotAccountInfoSize = 80;
 
+base::flat_map<std::string, std::string> MakePolkadotRpcHeaders(
+    const GURL& request_url) {
+  return IsEndpointUsingBraveWalletProxy(request_url)
+             ? MakeBraveServicesKeyHeaders()
+             : base::flat_map<std::string, std::string>();
+}
+
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("polkadot_substrate_rpc", R"(
       semantics {
@@ -300,8 +307,8 @@ void PolkadotSubstrateRpc::GetChainName(std::string_view chain_id,
       base::WriteJson(MakeRpcRequestJson("system_chain", base::ListValue()));
   CHECK(payload);
 
-  api_request_helper_.Request(
-      net::HttpRequestHeaders::kPostMethod, url, *payload, "application/json",
+  MakePostRequestInternal(
+      url, *payload,
       base::BindOnce(&PolkadotSubstrateRpc::OnGetChainName,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -367,8 +374,8 @@ void PolkadotSubstrateRpc::GetAccountBalance(
 
   auto url = GetNetworkURL(chain_id);
 
-  api_request_helper_.Request(
-      net::HttpRequestHeaders::kPostMethod, url, *payload, "application/json",
+  MakePostRequestInternal(
+      url, *payload,
       base::BindOnce(&PolkadotSubstrateRpc::OnGetAccountBalance,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -400,8 +407,8 @@ void PolkadotSubstrateRpc::GetFinalizedHead(std::string_view chain_id,
       MakeRpcRequestJson("chain_getFinalizedHead", base::ListValue()));
   CHECK(payload);
 
-  api_request_helper_.Request(
-      net::HttpRequestHeaders::kPostMethod, url, *payload, "application/json",
+  MakePostRequestInternal(
+      url, *payload,
       base::BindOnce(&PolkadotSubstrateRpc::OnGetFinalizedHead,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -444,8 +451,8 @@ void PolkadotSubstrateRpc::GetBlockHeader(
       base::WriteJson(MakeRpcRequestJson("chain_getHeader", std::move(params)));
   CHECK(payload);
 
-  api_request_helper_.Request(
-      net::HttpRequestHeaders::kPostMethod, url, *payload, "application/json",
+  MakePostRequestInternal(
+      url, *payload,
       base::BindOnce(&PolkadotSubstrateRpc::OnGetBlockHeader,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -493,8 +500,8 @@ void PolkadotSubstrateRpc::GetBlock(
       base::WriteJson(MakeRpcRequestJson("chain_getBlock", std::move(params)));
   CHECK(payload);
 
-  api_request_helper_.Request(
-      net::HttpRequestHeaders::kPostMethod, url, *payload, "application/json",
+  MakePostRequestInternal(
+      url, *payload,
       base::BindOnce(&PolkadotSubstrateRpc::OnGetBlock,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -550,8 +557,8 @@ void PolkadotSubstrateRpc::GetBlockHash(std::string_view chain_id,
       MakeRpcRequestJson("chain_getBlockHash", std::move(params)));
   CHECK(payload);
 
-  api_request_helper_.Request(
-      net::HttpRequestHeaders::kPostMethod, url, *payload, "application/json",
+  MakePostRequestInternal(
+      url, *payload,
       base::BindOnce(&PolkadotSubstrateRpc::OnGetBlockHash,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -598,8 +605,8 @@ void PolkadotSubstrateRpc::GetRuntimeVersion(
       MakeRpcRequestJson("state_getRuntimeVersion", std::move(params)));
   CHECK(payload);
 
-  api_request_helper_.Request(
-      net::HttpRequestHeaders::kPostMethod, url, *payload, "application/json",
+  MakePostRequestInternal(
+      url, *payload,
       base::BindOnce(&PolkadotSubstrateRpc::OnGetRuntimeVersion,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -650,8 +657,8 @@ void PolkadotSubstrateRpc::GetMetadata(std::string_view chain_id,
       MakeRpcRequestJson("state_getMetadata", base::ListValue()));
   CHECK(payload);
 
-  api_request_helper_.Request(
-      net::HttpRequestHeaders::kPostMethod, url, *payload, "application/json",
+  MakePostRequestInternal(
+      url, *payload,
       base::BindOnce(&PolkadotSubstrateRpc::OnGetMetadata,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -696,8 +703,8 @@ void PolkadotSubstrateRpc::SubmitExtrinsic(std::string_view chain_id,
       MakeRpcRequestJson("author_submitExtrinsic", std::move(params)));
   CHECK(payload);
 
-  api_request_helper_.Request(
-      net::HttpRequestHeaders::kPostMethod, url, *payload, "application/json",
+  MakePostRequestInternal(
+      url, *payload,
       base::BindOnce(&PolkadotSubstrateRpc::OnSubmitExtrinsic,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -747,8 +754,8 @@ void PolkadotSubstrateRpc::GetPaymentInfo(std::string_view chain_id,
       base::WriteJson(MakeRpcRequestJson("state_call", std::move(params)));
   CHECK(payload);
 
-  api_request_helper_.Request(
-      net::HttpRequestHeaders::kPostMethod, url, *payload, "application/json",
+  MakePostRequestInternal(
+      url, *payload,
       base::BindOnce(&PolkadotSubstrateRpc::OnGetPaymentInfo,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -811,8 +818,8 @@ void PolkadotSubstrateRpc::GetEvents(
       MakeRpcRequestJson("state_getStorage", std::move(params)));
   CHECK(payload);
 
-  api_request_helper_.Request(
-      net::HttpRequestHeaders::kPostMethod, url, *payload, "application/json",
+  MakePostRequestInternal(
+      url, *payload,
       base::BindOnce(&PolkadotSubstrateRpc::OnGetEvents,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -852,6 +859,15 @@ void PolkadotSubstrateRpc::OnGetEvents(GetEventsCallback callback,
 
 GURL PolkadotSubstrateRpc::GetNetworkURL(std::string_view chain_id) {
   return network_manager_->GetNetworkURL(chain_id, mojom::CoinType::DOT);
+}
+
+void PolkadotSubstrateRpc::MakePostRequestInternal(
+    const GURL& url,
+    const std::string& payload,
+    api_request_helper::APIRequestHelper::ResultCallback callback) {
+  api_request_helper_.Request(net::HttpRequestHeaders::kPostMethod, url,
+                              payload, "application/json", std::move(callback),
+                              MakePolkadotRpcHeaders(url));
 }
 
 }  // namespace brave_wallet
