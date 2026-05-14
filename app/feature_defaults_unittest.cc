@@ -76,6 +76,7 @@
 #include "chrome/browser/flags/android/chrome_feature_list.h"
 #include "components/security_interstitials/core/features.h"
 #else
+#include "chrome/browser/enterprise/data_protection/data_protection_features.h"
 #include "chrome/browser/sharing_hub/sharing_hub_features.h"
 #include "chrome/browser/ui/toasts/toast_features.h"
 #include "chrome/browser/ui/views/desktop_capture/desktop_media_picker_views.h"
@@ -132,6 +133,8 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &content_settings::features::kUserBypassUI,
       &contextual_tasks::kContextualTasks,
 #if !BUILDFLAG(IS_ANDROID)
+      &enterprise_data_protection::kEnableForceDownloadToCloud,
+      &enterprise_data_protection::kEnableForceDownloadToOneDrive,
       &enterprise_signals::features::kDeviceSignalsConsentDialog,
       &extensions_features::kExtensionManifestV2Disabled,
       &extensions_features::kExtensionManifestV2Unsupported,

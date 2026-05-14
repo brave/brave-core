@@ -148,6 +148,8 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest,
       spellcheck::prefs::kSpellCheckUseSpellingService));
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       prefs::kSafeBrowsingExtendedReportingOptInAllowed));
+  EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
+      prefs::kSafeBrowsingDeepScanningEnabled));
 #if !BUILDFLAG(IS_ANDROID)
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       prefs::kSearchSuggestEnabled));
@@ -166,6 +168,11 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest,
 
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       prefs::kSplitViewDragAndDropEnabled));
+
+  EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
+      prefs::kWebRtcEventLogCollectionAllowed));
+  EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
+      prefs::kWebRtcTextLogCollectionAllowed));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MediaRouterPrefTest) {

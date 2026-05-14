@@ -221,6 +221,10 @@ void OverrideDefaultPrefValues(user_prefs::PrefRegistrySyncable* registry) {
   registry->SetDefaultPrefValue(prefs::kSafeBrowsingScoutReportingEnabled,
                                 base::Value(false));
 
+  // Disable safe browsing deep scanning per security/privacy team.
+  registry->SetDefaultPrefValue(prefs::kSafeBrowsingDeepScanningEnabled,
+                                base::Value(false));
+
 #if defined(TOOLKIT_VIEWS)
   // Disable side search by default.
   // Copied from side_search_prefs.cc because it's not exported.
@@ -266,6 +270,12 @@ void OverrideDefaultPrefValues(user_prefs::PrefRegistrySyncable* registry) {
   // Disabled due to crash with tab group dragging.
   // TODO(https://github.com/brave/brave-browser/issues/49752): Re-enable.
   registry->SetDefaultPrefValue(prefs::kSplitViewDragAndDropEnabled,
+                                base::Value(false));
+
+  // Disables WebRTC logs collection.
+  registry->SetDefaultPrefValue(prefs::kWebRtcEventLogCollectionAllowed,
+                                base::Value(false));
+  registry->SetDefaultPrefValue(prefs::kWebRtcTextLogCollectionAllowed,
                                 base::Value(false));
 }
 

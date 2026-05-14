@@ -589,7 +589,9 @@
 -WebUIReadOnlyOmniboxTest.StateManagement
 
 # These tests fail because we disable uploading these event logs
-# See WebRtcLogUploader::UploadCompressedLog patch.
+# See WebRtcLogUploader::UploadCompressedLog patch as well as
+# prefs::kWebRtcEventLogCollectionAllowed and
+# prefs::kWebRtcTextLogCollectionAllowed.
 -RTCDiagnosticLoggingTest.EventLogUuidNotOverwrittenInFinish
 -RTCDiagnosticLoggingTest.MetadataMerged
 -RTCDiagnosticLoggingTest.StartFinishAndUploadDiagnosticLogging
@@ -598,6 +600,8 @@
 -UploadSupportingConnectionTypes/WebRtcEventLogManagerTestForNetworkConnectivity.*
 -WebRtcEventLogManagerTestPolicy.*
 -WebRtcEventLogUploaderImplTest.*
+-WebRtcLoggingControllerTest.ManagedProfileWithUnsetPolicy
+-WebRtcLoggingControllerTest.UnmanagedProfileWithUnsetPolicy
 
 # The following test uses Chromium's list of "starter pack engines", which
 # includes entries not supported by Brave (i.e. "@gemini").
