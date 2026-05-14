@@ -802,12 +802,12 @@ void ZCashRpc::OnGetLightdInfoResponse(
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-mojo::AssociatedRemote<zcash::mojom::ZCashDecoder>& ZCashRpc::GetDecoder() {
+mojo::Remote<zcash::mojom::ZCashDecoder>& ZCashRpc::GetDecoder() {
   if (zcash_decoder_.is_bound()) {
     return zcash_decoder_;
   }
   BraveWalletUtilsService::GetInstance()->CreateZCashDecoder(
-      zcash_decoder_.BindNewEndpointAndPassReceiver());
+      zcash_decoder_.BindNewPipeAndPassReceiver());
   zcash_decoder_.reset_on_disconnect();
   return zcash_decoder_;
 }

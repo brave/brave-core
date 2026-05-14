@@ -6,8 +6,8 @@
 #ifndef BRAVE_COMPONENTS_SERVICES_BRAVE_WALLET_PUBLIC_CPP_BRAVE_WALLET_UTILS_SERVICE_H_
 #define BRAVE_COMPONENTS_SERVICES_BRAVE_WALLET_PUBLIC_CPP_BRAVE_WALLET_UTILS_SERVICE_H_
 
+#include "base/auto_reset.h"
 #include "brave/components/services/brave_wallet/public/mojom/brave_wallet_utils_service.mojom.h"
-#include "mojo/public/cpp/bindings/pending_associated_receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
 namespace brave_wallet {
@@ -24,9 +24,11 @@ class BraveWalletUtilsService {
 
   // Creates decoder in brave wallet utils process and provides handles.
   void CreateZCashDecoder(
-      mojo::PendingAssociatedReceiver<zcash::mojom::ZCashDecoder> receiver);
+      mojo::PendingReceiver<zcash::mojom::ZCashDecoder> receiver);
 
   static BraveWalletUtilsService* GetInstance();
+
+  static base::AutoReset<bool> ScopedInProcessServiceForTesting();
 
  private:
   void MaybeLaunchService();
