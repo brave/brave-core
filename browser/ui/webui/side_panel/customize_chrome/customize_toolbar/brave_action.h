@@ -139,7 +139,7 @@ inline constexpr BraveAction kShowPwaInstallAction = {
                           // list
     .category = side_panel::customize_chrome::mojom::CategoryId::kAddressBar,
     .pref_name = prefs::kPinPwaInstallButton,
-    .icon = kInstallDesktopChromeRefreshIcon};
+    .icon = kInstallDesktopChromeRefreshOldIcon};
 
 inline constexpr auto kBraveActions =
     base::MakeFixedFlatMap<side_panel::customize_chrome::mojom::ActionId,
