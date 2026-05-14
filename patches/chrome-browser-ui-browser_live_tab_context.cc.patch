@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/ui/browser_live_tab_context.cc b/chrome/browser/ui/browser_live_tab_context.cc
+index 0af0c549fa723fc23d471619357fb756c13c91e1..acaa2bbf747e6b3ebab468d14d49924ce5de6c45 100644
+--- a/chrome/browser/ui/browser_live_tab_context.cc
++++ b/chrome/browser/ui/browser_live_tab_context.cc
+@@ -156,6 +156,7 @@ std::map<std::string, std::string> BrowserLiveTabContext::GetExtraDataForTab(
+ 
+   glic::PopulateGlicExtraData(tab_strip_model_->GetWebContentsAt(index),
+                               &extra_data);
++  BRAVE_GET_EXTRA_DATA_FOR_TAB;
+ 
+   return extra_data;
+ }
+@@ -355,6 +356,7 @@ sessions::LiveTab* BrowserLiveTabContext::AddRestoredTab(
+     // Load the tab manually if there's no BackgroundTabLoadingPolicy.
+     web_contents->GetController().LoadIfNecessary();
+   }
++  BRAVE_ADD_RESTORED_TAB;
+   return sessions::ContentLiveTab::GetOrCreateForWebContents(web_contents);
+ }
+ 
