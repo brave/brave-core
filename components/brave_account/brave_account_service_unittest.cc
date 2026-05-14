@@ -7,10 +7,13 @@
 
 #include <optional>
 #include <string>
+#include <string_view>
+#include <utility>
 
 #include "base/base64.h"
 #include "base/functional/callback.h"
 #include "base/json/values_util.h"
+#include "base/memory/raw_ref.h"
 #include "base/no_destructor.h"
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
@@ -20,17 +23,27 @@
 #include "brave/components/brave_account/brave_account_service_test.h"
 #include "brave/components/brave_account/brave_account_state_prefs.h"
 #include "brave/components/brave_account/endpoints/auth_validate.h"
+#include "brave/components/brave_account/endpoints/auth_validate_bodies.h"
+#include "brave/components/brave_account/endpoints/error_body.h"
 #include "brave/components/brave_account/endpoints/login_finalize.h"
+#include "brave/components/brave_account/endpoints/login_finalize_bodies.h"
 #include "brave/components/brave_account/endpoints/login_init.h"
+#include "brave/components/brave_account/endpoints/login_init_bodies.h"
 #include "brave/components/brave_account/endpoints/password_finalize.h"
+#include "brave/components/brave_account/endpoints/password_finalize_bodies.h"
 #include "brave/components/brave_account/endpoints/password_init.h"
+#include "brave/components/brave_account/endpoints/password_init_bodies.h"
 #include "brave/components/brave_account/endpoints/service_token.h"
+#include "brave/components/brave_account/endpoints/service_token_bodies.h"
+#include "brave/components/brave_account/endpoints/verify_complete_bodies.h"
 #include "brave/components/brave_account/endpoints/verify_resend.h"
+#include "brave/components/brave_account/endpoints/verify_resend_bodies.h"
 #include "brave/components/brave_account/mock_brave_account_authentication_observer.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "brave/components/brave_account/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
+#include "net/base/net_errors.h"
 #include "net/http/http_status_code.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"

@@ -12,6 +12,13 @@
 #include "brave/components/brave_account/endpoint_client/is_response.h"
 #include "brave/components/brave_account/endpoint_client/with_headers.h"
 
+namespace brave_account {
+namespace endpoint_client {
+template <typename T>
+struct WithHeaders;
+}  // namespace endpoint_client
+}  // namespace brave_account
+
 namespace brave_account::endpoint_client::detail {
 
 // Primary template: leaves types unchanged unless

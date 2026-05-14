@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_account/endpoint_client/is_response.h"
 
+#include <string>
+
 #include "brave/components/brave_account/endpoint_client/json_test_endpoint_bodies.h"
 #include "brave/components/brave_account/endpoint_client/protobuf_test_endpoint_bodies.pb.h"
 #include "brave/components/brave_account/endpoint_client/response.h"

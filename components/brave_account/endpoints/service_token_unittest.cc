@@ -6,9 +6,14 @@
 #include "brave/components/brave_account/endpoints/service_token.h"
 
 #include <optional>
+#include <ostream>
+#include <string>
 
+#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "base/no_destructor.h"
 #include "base/types/expected.h"
+#include "base/values.h"
 #include "brave/components/brave_account/endpoints/endpoint_test.h"
 #include "net/base/net_errors.h"
 #include "net/http/http_status_code.h"

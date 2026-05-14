@@ -10,6 +10,10 @@
 
 class PrefService;
 
+namespace base {
+struct Feature;
+}  // namespace base
+
 namespace brave_account::features {
 
 bool IsBraveAccountEnabled();

@@ -6,6 +6,10 @@
 #include "brave/components/brave_account/brave_account_service.h"
 
 #include <concepts>
+#include <functional>
+#include <map>
+#include <ostream>
+#include <string_view>
 #include <type_traits>
 #include <utility>
 
@@ -15,20 +19,32 @@
 #include "base/check_is_test.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
+#include "base/location.h"
+#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "base/no_destructor.h"
-#include "base/notimplemented.h"
 #include "base/types/expected.h"
+#include "base/types/strong_alias.h"
+#include "base/values.h"
 #include "brave/components/brave_account/brave_account_service_constants.h"
 #include "brave/components/brave_account/brave_account_state_prefs.h"
 #include "brave/components/brave_account/brave_account_utils.h"
 #include "brave/components/brave_account/endpoint_client/client.h"
+#include "brave/components/brave_account/endpoint_client/request.h"
 #include "brave/components/brave_account/endpoint_client/with_headers.h"
 #include "brave/components/brave_account/endpoints/auth_logout.h"
 #include "brave/components/brave_account/endpoints/error_body.h"
+#include "brave/components/brave_account/endpoints/login_finalize_bodies.h"
+#include "brave/components/brave_account/endpoints/login_init_bodies.h"
+#include "brave/components/brave_account/endpoints/password_finalize_bodies.h"
+#include "brave/components/brave_account/endpoints/password_init_bodies.h"
+#include "brave/components/brave_account/endpoints/service_token_bodies.h"
+#include "brave/components/brave_account/endpoints/verify_complete_bodies.h"
 #include "brave/components/brave_account/endpoints/verify_delete.h"
+#include "brave/components/brave_account/endpoints/verify_resend_bodies.h"
 #include "components/os_crypt/async/browser/os_crypt_async.h"
-#include "components/prefs/pref_service.h"
-#include "net/http/http_request_headers.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
 #include "net/http/http_status_code.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"

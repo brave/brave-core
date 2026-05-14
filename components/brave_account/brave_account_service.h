@@ -13,6 +13,8 @@
 #include "base/functional/callback.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/numerics/clamped_math.h"
+#include "base/numerics/safe_conversions.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_account/brave_account_state_prefs.h"
@@ -34,6 +36,11 @@
 #include "mojo/public/cpp/bindings/remote_set.h"
 
 class PrefService;
+
+namespace mojo {
+template <typename T>
+class PendingReceiver;
+}  // namespace mojo
 
 namespace network {
 class SharedURLLoaderFactory;

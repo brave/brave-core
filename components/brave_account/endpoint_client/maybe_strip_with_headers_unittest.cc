@@ -7,13 +7,18 @@
 
 #include <concepts>
 #include <optional>
+#include <string>
 #include <tuple>
 
-#include "base/values.h"
 #include "brave/components/brave_account/endpoint_client/request_types.h"
 #include "brave/components/brave_account/endpoint_client/response.h"
 #include "brave/components/brave_account/endpoint_client/with_headers.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+namespace base {
+class DictValue;
+class Value;
+}  // namespace base
 
 namespace brave_account::endpoint_client {
 

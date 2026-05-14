@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_account/mock_brave_account_authentication.h"
 
+#include <ostream>
+
 namespace brave_account {
 
 MockBraveAccountAuthentication::MockBraveAccountAuthentication() = default;

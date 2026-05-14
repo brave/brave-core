@@ -8,11 +8,14 @@
 
 #include <concepts>
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include "base/check_deref.h"
 #include "base/functional/callback.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
+#include "base/values.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "brave/components/brave_account/pref_names.h"
 #include "components/prefs/pref_change_registrar.h"

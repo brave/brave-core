@@ -9,6 +9,14 @@
 #include "brave/components/brave_account/endpoint_client/is_response_body.h"
 #include "brave/components/brave_account/endpoint_client/response.h"
 
+namespace brave_account {
+namespace endpoint_client {
+template <detail::IsResponseBody SuccessResponseBody,
+          detail::IsResponseBody ErrorResponseBody>
+struct Response;
+}  // namespace endpoint_client
+}  // namespace brave_account
+
 namespace brave_account::endpoint_client::detail {
 
 template <typename>
