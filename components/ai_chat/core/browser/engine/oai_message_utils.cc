@@ -345,10 +345,9 @@ std::vector<OAIMessage> BuildOAIMessages(
             // Prefer extracted text — works with all models including
             // local LLMs that cannot process raw PDF bytes.
             uploaded_pdfs_content_blocks.push_back(
-                mojom::ContentBlock::NewTextContentBlock(
-                    mojom::TextContentBlock::New(
-                        "[PDF: " + pdf_filename + "]\n" +
-                        *uploaded_file->extracted_text)));
+                mojom::ContentBlock::NewBraveFileExtractedTextContentBlock(
+                    mojom::BraveFileExtractedTextContentBlock::New(
+                        pdf_filename, *uploaded_file->extracted_text)));
           } else {
             // Fall back to raw PDF bytes when no text was extracted.
             uploaded_pdfs_content_blocks.push_back(
@@ -365,10 +364,9 @@ std::vector<OAIMessage> BuildOAIMessages(
           if (uploaded_file->extracted_text.has_value() &&
               !uploaded_file->extracted_text->empty()) {
             uploaded_text_files_content_blocks.push_back(
-                mojom::ContentBlock::NewTextContentBlock(
-                    mojom::TextContentBlock::New(
-                        "[File: " + text_filename + "]\n" +
-                        *uploaded_file->extracted_text)));
+                mojom::ContentBlock::NewBraveFileExtractedTextContentBlock(
+                    mojom::BraveFileExtractedTextContentBlock::New(
+                        text_filename, *uploaded_file->extracted_text)));
           }
         }
       }

@@ -180,6 +180,11 @@ struct TextContentBlock {
   string text;
 };
 
+struct BraveFileExtractedTextContentBlock {
+  string filename;
+  string text;
+};
+
 struct PageExcerptContentBlock {
   string text;
 };
@@ -287,6 +292,11 @@ union ContentBlock {
   ImageContentBlock image_content_block;
   TextContentBlock text_content_block;
   FileContentBlock file_content_block;
+
+  // Brave-specific block for file-extracted text (PDF, text files).
+  // Serialized as type "brave-file-extracted-text" so the server can apply
+  // large-file context handling distinct from ordinary text content.
+  BraveFileExtractedTextContentBlock brave_file_extracted_text_content_block;
 
   // Brave customized content blocks
   PageExcerptContentBlock page_excerpt_content_block;

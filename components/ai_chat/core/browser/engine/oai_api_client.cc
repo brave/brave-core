@@ -219,6 +219,15 @@ base::ListValue OAIAPIClient::SerializeOAIMessages(
           break;
         }
 
+        case mojom::ContentBlock::Tag::kBraveFileExtractedTextContentBlock: {
+          const auto& file_block =
+              block->get_brave_file_extracted_text_content_block();
+          content_block_dict.Set("type", "brave-file-extracted-text");
+          content_block_dict.Set("filename", file_block->filename);
+          content_block_dict.Set("text", file_block->text);
+          break;
+        }
+
         case mojom::ContentBlock::Tag::kRequestTitleContentBlock: {
           const auto& request = block->get_request_title_content_block();
           content_block_dict.Set("type", "text");
