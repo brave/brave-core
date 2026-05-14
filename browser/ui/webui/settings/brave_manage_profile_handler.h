@@ -6,7 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_MANAGE_PROFILE_HANDLER_H_
 #define BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_MANAGE_PROFILE_HANDLER_H_
 
-#include <string>
+#include <cstdint>
+#include <vector>
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
@@ -14,6 +15,7 @@
 #include "brave/browser/ui/webui/settings/brave_manage_profile.mojom.h"
 #include "chrome/browser/image_decoder/image_decoder.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
+#include "chrome/browser/profiles/profile_observer.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
@@ -30,7 +32,8 @@ class Profile;
 class BraveManageProfileHandler
     : public brave_manage_profile::mojom::BraveManageProfileSettingsHandler,
       public ImageDecoder::ImageRequest,
-      public ProfileAttributesStorage::Observer {
+      public ProfileAttributesStorage::Observer,
+      public ProfileObserver {
  public:
   // Side length (in pixels) of the persisted custom avatar bitmap.
   static constexpr int kAvatarSize = 256;
@@ -48,7 +51,7 @@ class BraveManageProfileHandler
               brave_manage_profile::mojom::BraveManageProfileSettingsUI> ui)
       override;
   void GetCustomAvatar(GetCustomAvatarCallback callback) override;
-  void SetCustomAvatar(const std::string& base64_payload,
+  void SetCustomAvatar(const std::vector<uint8_t>& bytes,
                        SetCustomAvatarCallback callback) override;
   void RemoveCustomAvatar() override;
   void ActivateCustomAvatar() override;
@@ -62,6 +65,9 @@ class BraveManageProfileHandler
   void OnProfileAvatarChanged(const base::FilePath& profile_path) override;
   void OnProfileHighResAvatarLoaded(
       const base::FilePath& profile_path) override;
+
+  // ProfileObserver:
+  void OnProfileWillBeDestroyed(Profile* profile) override;
 
   // Builds the custom-avatar state struct for the front-end.
   brave_manage_profile::mojom::CustomAvatarStatePtr BuildCustomAvatarState()
@@ -84,7 +90,13 @@ class BraveManageProfileHandler
                           ProfileAttributesStorage::Observer>
       storage_observation_{this};
 
-  const raw_ptr<Profile> profile_;
+  // Watches for the owning profile's destruction so synchronous methods can
+  // null-check `profile_` and stop dereferencing a destroyed profile.
+  base::ScopedObservation<Profile, ProfileObserver> profile_observation_{this};
+
+  // Cleared in `OnProfileWillBeDestroyed`. All entry points must null-check
+  // before dereferencing.
+  raw_ptr<Profile> profile_;
 
   base::WeakPtrFactory<BraveManageProfileHandler> weak_ptr_factory_{this};
 };

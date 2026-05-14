@@ -6,10 +6,8 @@
 #include "brave/browser/ui/webui/settings/brave_manage_profile_handler.h"
 
 #include <algorithm>
-#include <string>
 #include <utility>
 
-#include "base/base64.h"
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/functional/bind.h"
@@ -28,6 +26,9 @@
 namespace {
 
 ProfileAttributesEntry* GetEntry(Profile* profile) {
+  if (!profile) {
+    return nullptr;
+  }
   return g_browser_process->profile_manager()
       ->GetProfileAttributesStorage()
       .GetProfileAttributesWithPath(profile->GetPath());
@@ -61,6 +62,7 @@ BraveManageProfileHandler::BraveManageProfileHandler(Profile* profile)
   CHECK(profile_);
   storage_observation_.Observe(
       &g_browser_process->profile_manager()->GetProfileAttributesStorage());
+  profile_observation_.Observe(profile_.get());
 }
 
 BraveManageProfileHandler::~BraveManageProfileHandler() {
@@ -82,32 +84,24 @@ void BraveManageProfileHandler::GetCustomAvatar(
 }
 
 void BraveManageProfileHandler::SetCustomAvatar(
-    const std::string& base64_payload,
+    const std::vector<uint8_t>& bytes,
     SetCustomAvatarCallback callback) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   using brave_manage_profile::mojom::SetCustomAvatarError;
 
-  if (base64_payload.empty()) {
-    std::move(callback).Run(SetCustomAvatarError::kEmpty,
-                            BuildCustomAvatarState());
-    return;
-  }
-  // Rough cap on the encoded payload size before decoding (base64 grows by
-  // ~4/3, so this comfortably bounds the decoded size below `kMaxUploadBytes`).
-  if (base64_payload.size() > (kMaxUploadBytes * 4 / 3) + 4) {
-    std::move(callback).Run(SetCustomAvatarError::kTooLarge,
+  if (!profile_) {
+    std::move(callback).Run(SetCustomAvatarError::kProfileShuttingDown,
                             BuildCustomAvatarState());
     return;
   }
 
-  std::string raw_bytes;
-  if (!base::Base64Decode(base64_payload, &raw_bytes) || raw_bytes.empty()) {
-    std::move(callback).Run(SetCustomAvatarError::kInvalidBase64,
+  if (bytes.empty()) {
+    std::move(callback).Run(SetCustomAvatarError::kEmpty,
                             BuildCustomAvatarState());
     return;
   }
-  if (raw_bytes.size() > kMaxUploadBytes) {
+  if (bytes.size() > kMaxUploadBytes) {
     std::move(callback).Run(SetCustomAvatarError::kTooLarge,
                             BuildCustomAvatarState());
     return;
@@ -122,12 +116,15 @@ void BraveManageProfileHandler::SetCustomAvatar(
   }
   pending_upload_callback_ = std::move(callback);
 
-  ImageDecoder::Start(this, std::move(raw_bytes));
+  ImageDecoder::Start(this, bytes);
 }
 
 void BraveManageProfileHandler::RemoveCustomAvatar() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
+  if (!profile_) {
+    return;
+  }
   ProfileAttributesEntry* entry = GetEntry(profile_);
   if (!entry) {
     return;
@@ -140,6 +137,9 @@ void BraveManageProfileHandler::RemoveCustomAvatar() {
 void BraveManageProfileHandler::ActivateCustomAvatar() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
+  if (!profile_) {
+    return;
+  }
   ProfileAttributesEntry* entry = GetEntry(profile_);
   if (!entry) {
     return;
@@ -153,6 +153,17 @@ void BraveManageProfileHandler::OnImageDecoded(const SkBitmap& decoded_image) {
   using brave_manage_profile::mojom::SetCustomAvatarError;
 
   SetCustomAvatarCallback callback = std::move(pending_upload_callback_);
+
+  // `OnProfileWillBeDestroyed` already drains `pending_upload_callback_`, so
+  // a missing `profile_` here can only happen for an in-flight decode that
+  // raced past the teardown notification. Surface it cleanly either way.
+  if (!profile_) {
+    if (callback) {
+      std::move(callback).Run(SetCustomAvatarError::kProfileShuttingDown,
+                              BuildCustomAvatarState());
+    }
+    return;
+  }
 
   const SkBitmap normalized = CropAndResizeToSquare(decoded_image, kAvatarSize);
   if (normalized.drawsNothing()) {
@@ -219,6 +230,31 @@ void BraveManageProfileHandler::OnProfileHighResAvatarLoaded(
   // The custom avatar bitmap may have just finished loading from disk after a
   // restart; rebuild the state so the front-end gets the now-decoded preview.
   NotifyCustomAvatarChanged();
+}
+
+void BraveManageProfileHandler::OnProfileWillBeDestroyed(Profile* profile) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  CHECK_EQ(profile, profile_.get());
+
+  // Cancel any in-flight decode and resolve its pending callback so the
+  // Mojo response is not silently dropped.
+  ImageDecoder::Cancel(this);
+  if (pending_upload_callback_) {
+    std::move(pending_upload_callback_)
+        .Run(brave_manage_profile::mojom::SetCustomAvatarError::
+                 kProfileShuttingDown,
+             BuildCustomAvatarState());
+  }
+
+  // Stop observing before clearing `profile_` so the scoped observations
+  // don't outlive their target.
+  profile_observation_.Reset();
+  storage_observation_.Reset();
+
+  // Tear down the push channel; no more state updates are possible.
+  ui_.reset();
+
+  profile_ = nullptr;
 }
 
 brave_manage_profile::mojom::CustomAvatarStatePtr

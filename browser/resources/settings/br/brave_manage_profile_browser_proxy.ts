@@ -49,11 +49,14 @@ export class BraveManageProfileBrowserProxy {
     return state
   }
 
-  // Uploads new bytes as the user's custom avatar. `base64Bytes` is the
-  // base64-encoded contents of the user-selected image file (any common
-  // codec accepted by the sandboxed image decoder is allowed).
-  async setCustomAvatar(base64Bytes: string): Promise<SetCustomAvatarResult> {
-    const { error, state } = await this.handler.setCustomAvatar(base64Bytes)
+  // Uploads new bytes as the user's custom avatar. `bytes` is the raw
+  // contents of the user-selected image file (any common codec accepted by
+  // the sandboxed image decoder is allowed).
+  async setCustomAvatar(bytes: Uint8Array): Promise<SetCustomAvatarResult> {
+    // Mojo `array<uint8>` bindings expect a number[] in TS; the renderer-side
+    // structured-clone keeps this allocation-free for typed array inputs.
+    const { error, state } =
+      await this.handler.setCustomAvatar(Array.from(bytes))
     return { error: error ?? undefined, state }
   }
 

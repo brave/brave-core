@@ -22,14 +22,10 @@ struct CustomAvatarState {
 // Reasons a `SetCustomAvatar` upload may fail. All paths that don't return
 // an error also surface a fresh `CustomAvatarState` snapshot.
 enum SetCustomAvatarError {
-  // The payload argument was not a valid string-encoded image.
-  kInvalidPayload,
   // The payload was empty.
   kEmpty,
-  // The payload exceeded the encoded size cap (decoded bitmap could OOM).
+  // The payload exceeded the size cap (decoded bitmap could OOM).
   kTooLarge,
-  // The payload was not valid base64.
-  kInvalidBase64,
   // The sandboxed image decoder rejected the bytes.
   kDecodeFailed,
   // The profile attributes entry for this profile is missing.
@@ -38,6 +34,8 @@ enum SetCustomAvatarError {
   kSaveFailed,
   // A newer upload arrived before this one finished decoding.
   kSuperseded,
+  // The owning profile was destroyed before this upload finished.
+  kProfileShuttingDown,
 };
 
 // Browser-side handler for the Brave-specific "Upload your own image" row on
@@ -50,11 +48,11 @@ interface BraveManageProfileSettingsHandler {
   // Returns the current custom avatar state for the active profile.
   GetCustomAvatar() => (CustomAvatarState state);
 
-  // Uploads `base64_payload` (base64-encoded bytes of any common image codec
-  // supported by the sandboxed image decoder) as the user's custom avatar.
-  // On success returns the new state (including a PNG preview). On any
-  // failure, `error` is set and `state` is the unchanged current state.
-  SetCustomAvatar(string base64_payload)
+  // Uploads `bytes` (raw bytes of any common image codec supported by the
+  // sandboxed image decoder) as the user's custom avatar. On success returns
+  // the new state (including a PNG preview). On any failure, `error` is set
+  // and `state` is the unchanged current state.
+  SetCustomAvatar(array<uint8> bytes)
       => (SetCustomAvatarError? error, CustomAvatarState state);
 
   // Removes the saved custom avatar (also deletes the on-disk file). The

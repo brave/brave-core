@@ -17,6 +17,7 @@ import {
 
 const kCustomAvatarRowId = 'braveCustomAvatarRow'
 const kCustomAvatarPreviewId = 'braveCustomAvatarPreview'
+const kCustomAvatarImageId = 'braveCustomAvatarImage'
 const kCustomAvatarUploadBtnId = 'braveCustomAvatarUploadBtn'
 const kCustomAvatarRemoveBtnId = 'braveCustomAvatarRemoveBtn'
 const kCustomAvatarFileInputId = 'braveCustomAvatarFileInput'
@@ -44,9 +45,6 @@ const kBraveCustomAvatarStyleCss = `
   #braveCustomAvatarPreview {
     align-items: center;
     background: var(--leo-color-container-background);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
     border: 1px solid var(--leo-color-divider-subtle);
     border-radius: 100%;
     box-sizing: border-box;
@@ -70,6 +68,24 @@ const kBraveCustomAvatarStyleCss = `
   /* Hide the upload hint once a custom image is shown (no .is-empty). */
   #braveCustomAvatarPreview:not(.is-empty) .placeholder {
     display: none;
+  }
+
+  /*
+   * The avatar image fills the circular preview container. Rendered via a
+   * real <img> (rather than a CSS background-image: url("...")) so the
+   * server-built data URL never flows through a CSS string and can't escape
+   * the url() context regardless of its contents.
+   */
+  #braveCustomAvatarImage {
+    border-radius: 100%;
+    display: none;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  #braveCustomAvatarPreview:not(.is-empty) #braveCustomAvatarImage {
+    display: block;
   }
 
   #braveCustomAvatarPreview .upload-spinner {
@@ -202,23 +218,28 @@ function braveOnCustomAvatarChanged_(
   }
   const preview = root.getElementById(kCustomAvatarPreviewId)
   const removeBtn = root.getElementById(kCustomAvatarRemoveBtnId)
-  if (!preview || !removeBtn) {
+  const image =
+    root.getElementById(kCustomAvatarImageId) as HTMLImageElement | null
+  if (!preview || !removeBtn || !image) {
     return
   }
 
   const saved = state.hasSavedAvatar
   const active = state.isActive
 
+  // The data URL is server-built (PNG via webui::GetBitmapDataUrl) and is
+  // assigned as a property — not interpolated into CSS — so there is no
+  // url("...") parser context for an attacker-controlled string to escape.
   if (saved && state.dataUrl) {
-    preview.style.backgroundImage = `url("${state.dataUrl}")`
+    image.src = state.dataUrl
     preview.classList.remove('is-empty')
     removeBtn.hidden = false
   } else if (saved) {
-    preview.style.backgroundImage = ''
+    image.removeAttribute('src')
     preview.classList.add('is-empty')
     removeBtn.hidden = false
   } else {
-    preview.style.backgroundImage = ''
+    image.removeAttribute('src')
     preview.classList.add('is-empty')
     removeBtn.hidden = true
   }
@@ -291,8 +312,8 @@ function wireBraveManageProfileCustomAvatar(host: HTMLElement, attempt = 0) {
       preview.classList.add('is-uploading')
       preview.setAttribute('aria-busy', 'true')
       try {
-        const base64 = await fileToBase64(file)
-        const result = await proxy.setCustomAvatar(base64)
+        const bytes = new Uint8Array(await file.arrayBuffer())
+        const result = await proxy.setCustomAvatar(bytes)
         if (result.error !== undefined) {
           console.warn('[Brave Settings Overrides] setCustomAvatar failed:',
             result.error)
@@ -377,19 +398,6 @@ RegisterPolymerPrototypeModification({
   },
 })
 
-async function fileToBase64(file: File): Promise<string> {
-  const buffer = await file.arrayBuffer()
-  const bytes = new Uint8Array(buffer)
-  // Chunk the conversion to avoid blowing the call-stack on large files.
-  const CHUNK_SIZE = 0x8000
-  let binary = ''
-  for (let i = 0; i < bytes.length; i += CHUNK_SIZE) {
-    const chunk = bytes.subarray(i, Math.min(i + CHUNK_SIZE, bytes.length))
-    binary += String.fromCharCode.apply(null, Array.from(chunk))
-  }
-  return btoa(binary)
-}
-
 // Look up a localized string, returning `fallback` if the key isn't present
 // in `loadTimeData`. `loadTimeData.getString` is strict and throws an
 // assertion error when the key is missing, which would otherwise abort the
@@ -428,6 +436,15 @@ function buildCustomAvatarRow(
   const preview = document.createElement('div')
   preview.id = kCustomAvatarPreviewId
   preview.className = 'is-empty'
+
+  // Real <img> child instead of background-image: url("..."). The src is
+  // assigned as a property at runtime so the data URL never enters a CSS
+  // url("...") parser context.
+  const image = document.createElement('img')
+  image.id = kCustomAvatarImageId
+  image.alt = ''
+  image.setAttribute('aria-hidden', 'true')
+  preview.appendChild(image)
 
   const placeholder = document.createElement('leo-icon')
   placeholder.className = 'placeholder'

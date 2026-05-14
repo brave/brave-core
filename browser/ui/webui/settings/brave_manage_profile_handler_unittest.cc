@@ -5,12 +5,12 @@
 
 #include "brave/browser/ui/webui/settings/brave_manage_profile_handler.h"
 
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <utility>
 #include <vector>
 
-#include "base/base64.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/ref_counted_memory.h"
 #include "base/test/test_future.h"
@@ -90,8 +90,12 @@ class BraveManageProfileHandlerTest : public testing::Test {
 
   void TearDown() override {
     handler_.reset();
-    profile_ = nullptr;
-    profile_manager_->DeleteTestingProfile("TestProfile");
+    // Tests that exercise profile teardown already destroyed the profile and
+    // cleared `profile_`; only delete it here if it's still alive.
+    if (profile_) {
+      profile_ = nullptr;
+      profile_manager_->DeleteTestingProfile("TestProfile");
+    }
     profile_manager_.reset();
   }
 
@@ -104,13 +108,13 @@ class BraveManageProfileHandlerTest : public testing::Test {
         .GetProfileAttributesWithPath(profile_->GetPath());
   }
 
-  // Generates a valid PNG payload (base64-encoded) for a `side x side` test
+  // Generates a valid PNG payload as raw bytes for a `side x side` test
   // image.
-  std::string CreatePngBase64(int side) {
+  std::vector<uint8_t> CreatePngBytes(int side) {
     gfx::Image image = gfx::test::CreateImage(side, side);
     scoped_refptr<base::RefCountedMemory> png_bytes = image.As1xPNGBytes();
     EXPECT_TRUE(png_bytes && png_bytes->size() > 0u);
-    return base::Base64Encode(*png_bytes);
+    return std::vector<uint8_t>(png_bytes->begin(), png_bytes->end());
   }
 
   // Convenience wrappers that drive the public mojom interface and wait for
@@ -127,12 +131,12 @@ class BraveManageProfileHandlerTest : public testing::Test {
     brave_manage_profile::mojom::CustomAvatarStatePtr state;
   };
 
-  SetResult SetCustomAvatar(const std::string& base64_payload) {
+  SetResult SetCustomAvatar(const std::vector<uint8_t>& bytes) {
     base::test::TestFuture<
         std::optional<brave_manage_profile::mojom::SetCustomAvatarError>,
         brave_manage_profile::mojom::CustomAvatarStatePtr>
         future;
-    handler_->SetCustomAvatar(base64_payload, future.GetCallback());
+    handler_->SetCustomAvatar(bytes, future.GetCallback());
     auto [error, state] = future.Take();
     return {error, std::move(state)};
   }
@@ -158,7 +162,7 @@ TEST_F(BraveManageProfileHandlerTest, InitialStateHasNoCustomAvatar) {
 // A valid PNG payload is decoded, persisted on the entry, and the response
 // carries saved + active plus a data URL preview.
 TEST_F(BraveManageProfileHandlerTest, SetWithValidPngResolvesAndStores) {
-  auto result = SetCustomAvatar(CreatePngBase64(64));
+  auto result = SetCustomAvatar(CreatePngBytes(64));
   ASSERT_TRUE(result.state);
   EXPECT_FALSE(result.error.has_value());
   EXPECT_TRUE(result.state->has_saved_avatar);
@@ -175,9 +179,8 @@ TEST_F(BraveManageProfileHandlerTest, SetWithValidPngResolvesAndStores) {
 struct RejectCase {
   // Human-readable test suffix; also the GTest case name printer.
   std::string name;
-  // Payload passed verbatim to `SetCustomAvatar` (base64 already applied
-  // where the failure mode is "decodes as base64 but isn't an image").
-  std::string payload;
+  // Raw bytes passed verbatim to `SetCustomAvatar`.
+  std::vector<uint8_t> payload;
   brave_manage_profile::mojom::SetCustomAvatarError expected_error;
 };
 
@@ -200,18 +203,21 @@ INSTANTIATE_TEST_SUITE_P(
     BraveManageProfileHandlerRejectTest,
     testing::Values(
         // Empty payload is rejected without invoking the decoder.
-        RejectCase{"EmptyPayload", std::string(),
+        RejectCase{"EmptyPayload", std::vector<uint8_t>(),
                    brave_manage_profile::mojom::SetCustomAvatarError::kEmpty},
-        // Non-base64 garbage is rejected before the decoder is reached.
+        // Payloads larger than `kMaxUploadBytes` are rejected before the
+        // decoder is reached.
         RejectCase{
-            "InvalidBase64", "!!! not base64 !!!",
-            brave_manage_profile::mojom::SetCustomAvatarError::kInvalidBase64},
-        // Base64-encoded random bytes decode fine as base64 but fail the
-        // image decode step.
+            "TooLarge",
+            std::vector<uint8_t>(BraveManageProfileHandler::kMaxUploadBytes + 1,
+                                 0u),
+            brave_manage_profile::mojom::SetCustomAvatarError::kTooLarge},
+        // Random non-image bytes reach the decoder and fail the image decode
+        // step.
         RejectCase{
             "NonImageBytes",
-            base::Base64Encode(
-                std::string("\x01\x02\x03\x04not a PNG\x05\x06\x07", 18)),
+            std::vector<uint8_t>{0x01, 0x02, 0x03, 0x04, 'n', 'o', 't', ' ',
+                                 'a', ' ', 'P', 'N', 'G', 0x05, 0x06, 0x07},
             brave_manage_profile::mojom::SetCustomAvatarError::kDecodeFailed}),
     [](const testing::TestParamInfo<RejectCase>& info) {
       return info.param.name;
@@ -220,7 +226,7 @@ INSTANTIATE_TEST_SUITE_P(
 // `RemoveCustomAvatar` clears the stored avatar and pushes the change to the
 // bound `BraveManageProfileSettingsUI`.
 TEST_F(BraveManageProfileHandlerTest, RemoveClearsAvatarAndNotifiesUi) {
-  ASSERT_FALSE(SetCustomAvatar(CreatePngBase64(48)).error.has_value());
+  ASSERT_FALSE(SetCustomAvatar(CreatePngBytes(48)).error.has_value());
   ASSERT_TRUE(entry());
   ASSERT_TRUE(entry()->HasBraveCustomAvatar());
   ASSERT_TRUE(entry()->IsUsingBraveCustomAvatar());
@@ -239,7 +245,7 @@ TEST_F(BraveManageProfileHandlerTest, RemoveClearsAvatarAndNotifiesUi) {
 // `ActivateCustomAvatar` re-selects a saved but inactive custom avatar on
 // the profile entry.
 TEST_F(BraveManageProfileHandlerTest, ActivateRestoresCustomAvatar) {
-  ASSERT_FALSE(SetCustomAvatar(CreatePngBase64(32)).error.has_value());
+  ASSERT_FALSE(SetCustomAvatar(CreatePngBytes(32)).error.has_value());
   ASSERT_TRUE(entry());
   ASSERT_TRUE(entry()->IsUsingBraveCustomAvatar());
 
@@ -252,4 +258,60 @@ TEST_F(BraveManageProfileHandlerTest, ActivateRestoresCustomAvatar) {
 
   EXPECT_TRUE(entry()->HasBraveCustomAvatar());
   EXPECT_TRUE(entry()->IsUsingBraveCustomAvatar());
+}
+
+// After the owning `Profile` is destroyed, the synchronous mojom entry points
+// must not dereference the dangling pointer. They are no-ops for the void
+// methods and surface `kProfileShuttingDown` for `SetCustomAvatar`.
+TEST_F(BraveManageProfileHandlerTest, ProfileWillBeDestroyedTearsDownHandler) {
+  ASSERT_FALSE(SetCustomAvatar(CreatePngBytes(48)).error.has_value());
+  ASSERT_TRUE(entry()->HasBraveCustomAvatar());
+
+  // Drop the fixture's raw pointer and tear the profile down through the
+  // profile manager; this fires `Profile::OnProfileWillBeDestroyed`, which
+  // drives the handler into its safe-shutdown path.
+  profile_ = nullptr;
+  profile_manager_->DeleteTestingProfile("TestProfile");
+
+  // Synchronous void methods must be safe no-ops.
+  handler_->RemoveCustomAvatar();
+  handler_->ActivateCustomAvatar();
+
+  // `GetCustomAvatar` returns an empty snapshot.
+  auto state = GetCustomAvatar();
+  ASSERT_TRUE(state);
+  EXPECT_FALSE(state->has_saved_avatar);
+  EXPECT_FALSE(state->is_active);
+  EXPECT_TRUE(state->data_url.empty());
+
+  // `SetCustomAvatar` rejects with `kProfileShuttingDown`.
+  auto result = SetCustomAvatar(CreatePngBytes(16));
+  ASSERT_TRUE(result.error.has_value());
+  EXPECT_EQ(
+      brave_manage_profile::mojom::SetCustomAvatarError::kProfileShuttingDown,
+      *result.error);
+}
+
+// An upload that's still in flight when the profile is destroyed must have
+// its pending Mojo callback resolved (rather than silently dropped).
+TEST_F(BraveManageProfileHandlerTest, InflightUploadResolvesOnProfileShutdown) {
+  base::test::TestFuture<
+      std::optional<brave_manage_profile::mojom::SetCustomAvatarError>,
+      brave_manage_profile::mojom::CustomAvatarStatePtr>
+      future;
+  // Start the upload but don't pump the run loop — the data decoder runs on a
+  // separate sequence so the callback can't have fired yet, leaving the
+  // upload in flight when we tear the profile down.
+  handler_->SetCustomAvatar(CreatePngBytes(48), future.GetCallback());
+  ASSERT_FALSE(future.IsReady());
+
+  profile_ = nullptr;
+  profile_manager_->DeleteTestingProfile("TestProfile");
+
+  ASSERT_TRUE(future.IsReady());
+  auto [error, state] = future.Take();
+  ASSERT_TRUE(error.has_value());
+  EXPECT_EQ(
+      brave_manage_profile::mojom::SetCustomAvatarError::kProfileShuttingDown,
+      *error);
 }

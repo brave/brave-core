@@ -39,9 +39,11 @@ if (!is_android) {
       "//ui/gfx",
     ]
 
-    # `brave_manage_profile_handler.h` derives from `ImageDecoder::ImageRequest`
-    # and `ProfileAttributesStorage::Observer`, so consumers transitively need
-    # those headers.
+    # `brave_manage_profile_handler.h` derives from `ImageDecoder::ImageRequest`,
+    # `ProfileAttributesStorage::Observer`, and `ProfileObserver`, so consumers
+    # transitively need those headers. (`profile_observer.h` ships in
+    # //chrome/browser/profiles:profile, which is a public_dep of
+    # :profile_util.)
     public_deps = [
       ":mojo_bindings",
       "//chrome/browser/image_decoder",
