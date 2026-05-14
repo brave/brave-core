@@ -1494,7 +1494,7 @@ Are you sure you want to do this?
         Shred
       </message>
       <message name="IDS_BRAVE_SHIELDS_SHRED_SETTINGS_DESCRIPTION_TEXT" desc="Shred site's data settings item description.">
-        Update Auto Shred and adjust what data is shred
+        Update Auto Shred and adjust what data is shredded
       </message>
       <message name="IDS_BRAVE_SHIELDS_SHRED_SETTINGS_CATEGORY_TEXT" desc="Shred site's data settings category text.">
         Automatically shred browsing data
