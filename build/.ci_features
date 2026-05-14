@@ -8,3 +8,6 @@ presubmit_all_files
 brave_interactive_ui_tests
 
 cache_dir
+
+# Supports passing extra GN args to the build via .env file.
+env_gn_args
