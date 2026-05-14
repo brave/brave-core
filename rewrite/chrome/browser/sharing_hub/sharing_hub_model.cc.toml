@@ -1,0 +1,14 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[[substitution]]
+description = '''Route the sharing hub copy-link label through MaybeAddCopyCleanLinkItem.
+
+The helper, defined in the chromium_src wrapper for this source, adds a
+"Copy Clean Link" entry to the first-party action list when applicable and
+returns the original label ID so the upstream `emplace_back` keeps working.
+'''
+pattern = 'IDS_SHARING_HUB_COPY_LINK_LABEL'
+replace = 'MaybeAddCopyCleanLinkItem(context_, &first_party_action_list_)'
