@@ -15,10 +15,10 @@ source_set("oblivious_http") {
   ]
 
   public_deps = [
+    "//brave/services/network/public/mojom",
     "//mojo/public/cpp/bindings",
     "//net",
     "//services/network/public/cpp",
-    "//services/network/public/mojom",
   ]
 
   deps = [ "//base" ]
@@ -36,7 +36,6 @@ source_set("unit_tests") {
     "//mojo/public/cpp/bindings",
     "//net",
     "//net/third_party/quiche",
-    "//services/network/public/mojom",
     "//testing/gtest",
   ]
 }

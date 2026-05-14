@@ -14,20 +14,19 @@
 #include <vector>
 
 #include "base/functional/callback.h"
+#include "brave/services/network/public/mojom/oblivious_http_request.mojom.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "net/http/http_response_headers.h"
 #include "net/third_party/quiche/src/quiche/binary_http/binary_http_message.h"
 #include "net/third_party/quiche/src/quiche/oblivious_http/common/oblivious_http_chunk_handler.h"
 #include "net/third_party/quiche/src/quiche/oblivious_http/oblivious_http_client.h"
 #include "services/network/public/cpp/simple_url_loader_stream_consumer.h"
-#include "services/network/public/mojom/oblivious_http_request.mojom.h"
 
 namespace oblivious_http {
 
-// Implements quiche::ObliviousHttpChunkHandler,
-// quiche::BinaryHttpResponse::IndeterminateLengthDecoder::MessageSectionHandler,
-// and network::SimpleURLLoaderStreamConsumer to support chunked OHTTP
-// responses. Owned by RequestState and must not outlive it.
+// Integrates with the upstream ObliviousHttpRequestHandler to add support for
+// chunked OHTTP. Owned by ObliviousHttpRequestHandler::RequestState and must
+// not outlive it.
 //
 // Use Create() to construct — it handles key parsing and client creation.
 // Call EncryptRequest() once after Create() to encrypt the request payload.
@@ -37,11 +36,6 @@ class ObliviousHttpChunkProcessor
           MessageSectionHandler,
       public network::SimpleURLLoaderStreamConsumer {
  public:
-  ObliviousHttpChunkProcessor(
-      mojo::PendingRemote<network::mojom::ObliviousHttpChunkClient>
-          chunk_client_remote,
-      base::OnceCallback<void(std::optional<std::string>)> on_request_complete);
-
   // Parses |key_config_str| and constructs the decoder. Returns nullptr if
   // key parsing or client creation fails.
   //
@@ -91,6 +85,11 @@ class ObliviousHttpChunkProcessor
   absl::Status OnTrailersDone() override;
 
  private:
+  ObliviousHttpChunkProcessor(
+      mojo::PendingRemote<network::mojom::ObliviousHttpChunkClient>
+          chunk_client_remote,
+      base::OnceCallback<void(std::optional<std::string>)> on_request_complete);
+
   void NotifyBHTTPComplete(bool success);
   void NotifyURLLoaderComplete(bool success);
   void RunCompleteCallback();

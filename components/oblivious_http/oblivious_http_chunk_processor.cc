@@ -5,6 +5,7 @@
 
 #include "brave/components/oblivious_http/oblivious_http_chunk_processor.h"
 
+#include "base/memory/ptr_util.h"
 #include "base/strings/string_number_conversions.h"
 
 namespace oblivious_http {
@@ -39,8 +40,8 @@ ObliviousHttpChunkProcessor::Create(
 
   // Construct the decoder first so we have a stable address to pass to
   // ChunkedObliviousHttpClient::Create, which holds a non-owning reference.
-  auto decoder = std::make_unique<ObliviousHttpChunkProcessor>(
-      std::move(chunk_client_remote), std::move(on_request_complete));
+  auto decoder = base::WrapUnique(new ObliviousHttpChunkProcessor(
+      std::move(chunk_client_remote), std::move(on_request_complete)));
 
   auto client_result = quiche::ChunkedObliviousHttpClient::Create(
       *pub_key, key_config, decoder.get());
@@ -54,7 +55,6 @@ ObliviousHttpChunkProcessor::Create(
 
 std::optional<std::string> ObliviousHttpChunkProcessor::EncryptRequest(
     std::string_view plaintext) {
-  DCHECK(ohttp_client_);
   auto result =
       ohttp_client_->EncryptRequestChunk(plaintext, /*is_final_chunk=*/true);
   if (!result.ok()) {
@@ -65,7 +65,6 @@ std::optional<std::string> ObliviousHttpChunkProcessor::EncryptRequest(
 
 void ObliviousHttpChunkProcessor::OnDataReceived(std::string_view data,
                                                  base::OnceClosure resume) {
-  DCHECK(ohttp_client_);
   auto status = ohttp_client_->DecryptResponse(data, /*end_stream=*/false);
   if (!status.ok()) {
     has_error_ = true;
@@ -74,18 +73,17 @@ void ObliviousHttpChunkProcessor::OnDataReceived(std::string_view data,
 }
 
 void ObliviousHttpChunkProcessor::OnComplete(bool success) {
-  DCHECK(ohttp_client_);
   if (!success) {
-    NotifyURLLoaderComplete(false);
+    NotifyURLLoaderComplete(/*success=*/false);
     return;
   }
   auto status = ohttp_client_->DecryptResponse("", /*end_stream=*/true);
   if (!status.ok()) {
-    NotifyURLLoaderComplete(false);
+    NotifyURLLoaderComplete(/*success=*/false);
     return;
   }
   // On success, completion flows through OnChunksDone -> bhttp_decoder_.
-  NotifyURLLoaderComplete(true);
+  NotifyURLLoaderComplete(/*success=*/true);
 }
 
 void ObliviousHttpChunkProcessor::OnRetry(base::OnceClosure /*start_retry*/) {}
@@ -98,7 +96,7 @@ absl::Status ObliviousHttpChunkProcessor::OnDecryptedChunk(
 absl::Status ObliviousHttpChunkProcessor::OnChunksDone() {
   auto status = bhttp_decoder_.Decode({}, /*end_stream=*/true);
   if (!status.ok()) {
-    NotifyBHTTPComplete(false);
+    NotifyBHTTPComplete(/*success=*/false);
     return status;
   }
   return absl::OkStatus();
@@ -154,7 +152,7 @@ absl::Status ObliviousHttpChunkProcessor::OnBodyChunk(
 }
 
 absl::Status ObliviousHttpChunkProcessor::OnBodyChunksDone() {
-  NotifyBHTTPComplete(true);
+  NotifyBHTTPComplete(/*success=*/true);
   return absl::OkStatus();
 }
 

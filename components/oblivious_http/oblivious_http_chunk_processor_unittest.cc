@@ -10,15 +10,14 @@
 #include <vector>
 
 #include "base/functional/callback_helpers.h"
-#include "base/run_loop.h"
-#include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
+#include "brave/services/network/public/mojom/oblivious_http_request.mojom.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "net/http/http_status_code.h"
 #include "net/third_party/quiche/src/quiche/binary_http/binary_http_message.h"
 #include "net/third_party/quiche/src/quiche/oblivious_http/common/oblivious_http_header_key_config.h"
 #include "net/third_party/quiche/src/quiche/oblivious_http/oblivious_http_gateway.h"
-#include "services/network/public/mojom/oblivious_http_request.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace oblivious_http {
@@ -81,7 +80,10 @@ class ObliviousHttpChunkProcessorTest
  public:
   void SetUp() override { ResetDecoder(); }
 
-  void ResetDecoder() {
+ protected:
+  using CompleteFuture = base::test::TestFuture<std::optional<std::string>>;
+
+  CompleteFuture ResetDecoder() {
     received_server_response_body_.clear();
     received_client_request_body_.clear();
 
@@ -101,21 +103,14 @@ class ObliviousHttpChunkProcessorTest
             .value();
 
     chunk_client_receiver_.reset();
+    CompleteFuture future;
     processor_ = ObliviousHttpChunkProcessor::Create(
         key_config_string, chunk_client_receiver_.BindNewPipeAndPassRemote(),
-        base::BindLambdaForTesting([this](std::optional<std::string> result) {
-          if (result.has_value()) {
-            EXPECT_TRUE(result->empty());
-            complete_result_ = true;
-          } else {
-            complete_result_ = false;
-          }
-          run_loop_->Quit();
-        }));
-    ASSERT_NE(nullptr, processor_);
+        future.GetCallback());
+    EXPECT_NE(nullptr, processor_);
+    return future;
   }
 
- protected:
   // quiche::ObliviousHttpChunkHandler:
   absl::Status OnDecryptedChunk(absl::string_view chunk) override {
     received_client_request_body_ += chunk;
@@ -175,15 +170,15 @@ class ObliviousHttpChunkProcessorTest
   }
 
   // Drives a full round-trip: encrypts kTestRequestBody, feeds the simulated
-  // gateway response through the decoder's stream consumer interface, and runs
-  // the loop until idle so Mojo callbacks dispatch.
-  void RunRoundTrip(const std::string& response_body,
-                    net::HttpStatusCode status,
-                    std::vector<std::pair<std::string, std::string>> headers,
-                    size_t bhttp_chunk_count = 1,
-                    size_t network_chunk_count = 1) {
-    ResetDecoder();
-    run_loop_ = std::make_unique<base::RunLoop>();
+  // gateway response through the decoder's stream consumer interface, and
+  // returns the future resolved by the processor's completion callback.
+  CompleteFuture RunRoundTrip(
+      const std::string& response_body,
+      net::HttpStatusCode status,
+      std::vector<std::pair<std::string, std::string>> headers,
+      size_t bhttp_chunk_count = 1,
+      size_t network_chunk_count = 1) {
+    CompleteFuture future = ResetDecoder();
 
     EncryptRequestAndGatewayDecrypt();
 
@@ -192,14 +187,14 @@ class ObliviousHttpChunkProcessorTest
 
     for (const auto& network_chunk :
          SplitIntoChunks(response_bytes, network_chunk_count)) {
-      base::RunLoop data_loop;
-      processor_->OnDataReceived(network_chunk, data_loop.QuitClosure());
-      data_loop.Run();
+      base::test::TestFuture<void> data_future;
+      processor_->OnDataReceived(network_chunk, data_future.GetCallback());
+      EXPECT_TRUE(data_future.Wait());
     }
 
     processor_->OnComplete(/*success=*/true);
-    run_loop_->Run();
     chunk_client_receiver_.FlushForTesting();
+    return future;
   }
 
   base::test::TaskEnvironment task_environment_;
@@ -216,8 +211,6 @@ class ObliviousHttpChunkProcessorTest
   mojo::Receiver<network::mojom::ObliviousHttpChunkClient>
       chunk_client_receiver_{this};
   std::unique_ptr<ObliviousHttpChunkProcessor> processor_;
-  std::unique_ptr<base::RunLoop> run_loop_;
-  std::optional<bool> complete_result_;
   std::string received_server_response_body_;
   std::string received_client_request_body_;
 };
@@ -242,23 +235,20 @@ TEST_F(ObliviousHttpChunkProcessorTest,
 
 TEST_F(ObliviousHttpChunkProcessorTest,
        RoundTrip_BodyChunksDeliveredToChunkClient) {
-  RunRoundTrip("hello chunked", net::HTTP_OK, {{"content-type", "text/plain"}});
+  auto future = RunRoundTrip("hello chunked", net::HTTP_OK,
+                             {{"content-type", "text/plain"}});
 
-  ASSERT_TRUE(complete_result_.has_value());
-  EXPECT_TRUE(*complete_result_);
-
+  EXPECT_TRUE(future.Get().has_value());
   EXPECT_EQ("hello chunked", received_server_response_body_);
 }
 
 TEST_F(ObliviousHttpChunkProcessorTest,
        RoundTrip_StatusCodeAndHeadersPopulated) {
-  RunRoundTrip("body", net::HTTP_OK,
-               {{"content-type", "application/json"},
-                {"x-custom-header", "custom-value"}});
+  auto future = RunRoundTrip("body", net::HTTP_OK,
+                             {{"content-type", "application/json"},
+                              {"x-custom-header", "custom-value"}});
 
-  ASSERT_TRUE(complete_result_.has_value());
-  EXPECT_TRUE(*complete_result_);
-
+  EXPECT_TRUE(future.Get().has_value());
   EXPECT_EQ(200, processor_->inner_status_code());
   ASSERT_NE(nullptr, processor_->headers());
   EXPECT_EQ("application/json",
@@ -269,25 +259,23 @@ TEST_F(ObliviousHttpChunkProcessorTest,
 
 TEST_F(ObliviousHttpChunkProcessorTest,
        OnDataReceived_InvalidData_OnCompleteYieldsEmptyBody) {
+  auto future = ResetDecoder();
   EncryptRequestAndGatewayDecrypt();
 
-  run_loop_ = std::make_unique<base::RunLoop>();
-
-  base::RunLoop data_loop;
-  processor_->OnDataReceived("not valid ohttp data", data_loop.QuitClosure());
-  data_loop.Run();
+  base::test::TestFuture<void> data_future;
+  processor_->OnDataReceived("not valid ohttp data", data_future.GetCallback());
+  ASSERT_TRUE(data_future.Wait());
 
   processor_->OnComplete(/*success=*/true);
-  run_loop_->Run();
   chunk_client_receiver_.FlushForTesting();
 
-  ASSERT_TRUE(complete_result_.has_value());
-  EXPECT_FALSE(*complete_result_);
+  EXPECT_FALSE(future.Get().has_value());
   EXPECT_TRUE(received_server_response_body_.empty());
 }
 
 TEST_F(ObliviousHttpChunkProcessorTest,
        OnDataReceived_ValidOhttpInvalidBhttp_OnCompleteYieldsEmptyBody) {
+  auto future = ResetDecoder();
   EncryptRequestAndGatewayDecrypt();
 
   // Encrypt garbage bytes as a valid ohttp chunk, bypassing bhttp encoding.
@@ -295,23 +283,20 @@ TEST_F(ObliviousHttpChunkProcessorTest,
                                              /*is_final_chunk=*/true);
   ASSERT_TRUE(encrypted.ok());
 
-  run_loop_ = std::make_unique<base::RunLoop>();
-
-  base::RunLoop data_loop;
-  processor_->OnDataReceived(*encrypted, data_loop.QuitClosure());
-  data_loop.Run();
+  base::test::TestFuture<void> data_future;
+  processor_->OnDataReceived(*encrypted, data_future.GetCallback());
+  ASSERT_TRUE(data_future.Wait());
 
   processor_->OnComplete(/*success=*/true);
-  run_loop_->Run();
   chunk_client_receiver_.FlushForTesting();
 
-  ASSERT_TRUE(complete_result_.has_value());
-  EXPECT_FALSE(*complete_result_);
+  EXPECT_FALSE(future.Get().has_value());
   EXPECT_TRUE(received_server_response_body_.empty());
 }
 
 TEST_F(ObliviousHttpChunkProcessorTest,
        OnDataReceived_TruncatedPayload_OnCompleteFailureYieldsPartialBody) {
+  auto future = ResetDecoder();
   EncryptRequestAndGatewayDecrypt();
 
   std::string response_bytes = BuildGatewayResponse(
@@ -320,18 +305,14 @@ TEST_F(ObliviousHttpChunkProcessorTest,
   // Send only the first half of the encrypted payload.
   std::string truncated = response_bytes.substr(0, response_bytes.size() / 2);
 
-  run_loop_ = std::make_unique<base::RunLoop>();
-
-  base::RunLoop data_loop;
-  processor_->OnDataReceived(truncated, data_loop.QuitClosure());
-  data_loop.Run();
+  base::test::TestFuture<void> data_future;
+  processor_->OnDataReceived(truncated, data_future.GetCallback());
+  ASSERT_TRUE(data_future.Wait());
 
   processor_->OnComplete(/*success=*/false);
-  run_loop_->Run();
   chunk_client_receiver_.FlushForTesting();
 
-  ASSERT_TRUE(complete_result_.has_value());
-  EXPECT_FALSE(*complete_result_);
+  EXPECT_FALSE(future.Get().has_value());
   EXPECT_FALSE(received_server_response_body_.empty());
   EXPECT_LT(received_server_response_body_.size(),
             std::string_view(kLargeJsonResponse).size());
@@ -339,34 +320,30 @@ TEST_F(ObliviousHttpChunkProcessorTest,
 
 TEST_F(ObliviousHttpChunkProcessorTest,
        OnComplete_Failure_InvokesCallbackWithNullopt) {
+  auto future = ResetDecoder();
   EncryptRequestAndGatewayDecrypt();
 
-  run_loop_ = std::make_unique<base::RunLoop>();
   processor_->OnComplete(/*success=*/false);
-  run_loop_->Run();
 
-  ASSERT_TRUE(complete_result_.has_value());
-  EXPECT_FALSE(*complete_result_);
+  EXPECT_FALSE(future.Get().has_value());
 }
 
 TEST_F(ObliviousHttpChunkProcessorTest,
        RoundTrip_MixedChunkCounts_BodyReassembledCorrectly) {
   // Fewer bhttp chunks than network chunks: bhttp body spans multiple network
   // deliveries.
-  RunRoundTrip(kLargeJsonResponse, net::HTTP_OK,
-               {{"content-type", "application/json"}},
-               /*bhttp_chunk_count=*/2, /*network_chunk_count=*/10);
-  ASSERT_TRUE(complete_result_.has_value());
-  EXPECT_TRUE(*complete_result_);
+  auto future1 = RunRoundTrip(
+      kLargeJsonResponse, net::HTTP_OK, {{"content-type", "application/json"}},
+      /*bhttp_chunk_count=*/2, /*network_chunk_count=*/10);
+  EXPECT_TRUE(future1.Get().has_value());
   EXPECT_EQ(kLargeJsonResponse, received_server_response_body_);
 
   // More bhttp chunks than network chunks: multiple bhttp chunks arrive in a
   // single network delivery.
-  RunRoundTrip(kLargeJsonResponse, net::HTTP_OK,
-               {{"content-type", "application/json"}},
-               /*bhttp_chunk_count=*/10, /*network_chunk_count=*/2);
-  ASSERT_TRUE(complete_result_.has_value());
-  EXPECT_TRUE(*complete_result_);
+  auto future2 = RunRoundTrip(
+      kLargeJsonResponse, net::HTTP_OK, {{"content-type", "application/json"}},
+      /*bhttp_chunk_count=*/10, /*network_chunk_count=*/2);
+  EXPECT_TRUE(future2.Get().has_value());
   EXPECT_EQ(kLargeJsonResponse, received_server_response_body_);
 }
 
