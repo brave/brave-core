@@ -617,14 +617,26 @@ BuildOAIGenerateConversationTitleMessages(
         mojom::PageExcerptContentBlock::New(*first_turn->selected_text)));
   }
 
-  // Add a message for title generation.
-  // Use first assistant response as the content if files are uploaded (image,
-  // PDF), otherwise use the first human turn text.
+  // Use the first assistant response when it's non-empty as the title source
+  // when the user uploaded files (image, PDF) since it contains more useful
+  // context for title generation.
+  const bool use_assistant_text = first_turn->uploaded_files &&
+                                  !first_turn->uploaded_files->empty() &&
+                                  !assistant_turn->text.empty();
+  std::string title_text = use_assistant_text
+                               ? assistant_turn->text
+                               : EngineConsumer::GetPromptForEntry(first_turn);
+
+  // Withdraw the request entirely if we have nothing to summarize. Sending an
+  // empty title block wastes a server round-trip and cannot produce a useful
+  // title. Title errors are silently dropped in OnTitleGenerated, so the
+  // conversation simply keeps its placeholder title.
+  if (title_text.empty()) {
+    return std::nullopt;
+  }
+
   msg.content.push_back(mojom::ContentBlock::NewRequestTitleContentBlock(
-      mojom::RequestTitleContentBlock::New(
-          first_turn->uploaded_files
-              ? assistant_turn->text
-              : EngineConsumer::GetPromptForEntry(first_turn))));
+      mojom::RequestTitleContentBlock::New(std::move(title_text))));
 
   messages.push_back(std::move(msg));
   return messages;
