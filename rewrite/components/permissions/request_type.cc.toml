@@ -53,7 +53,7 @@ replace = '''\1
     case RequestType::kBraveCardano:
     case RequestType::kBraveGoogleSignInPermission:
     case RequestType::kBraveOpenAIChat:
-      return vector_icons::kExtensionIcon;\2'''
+      return vector_icons::kExtensionOldIcon;\2'''
 
 [[substitution]]
 description = 'Brave mappings for `RequestType` -> `ContentSettingsType`'
