@@ -39,11 +39,6 @@ class FakePdfListener : public pdf::mojom::PdfListener {
               GetMostVisiblePageIndex,
               (GetMostVisiblePageIndexCallback),
               (override));
-  MOCK_METHOD(void,
-              GetSaveDataBufferHandlerForDrive,
-              (pdf::mojom::SaveRequestType,
-               GetSaveDataBufferHandlerForDriveCallback),
-              (override));
 };
 
 class TestPdfDocumentHelperClient : public pdf::PDFDocumentHelperClient {
