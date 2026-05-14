@@ -15,4 +15,6 @@ BASE_FEATURE(kBraveNTPBrandedWallpaperSurveyPanelist,
 BASE_FEATURE(kBraveNTPBrandedWallpaper,
              base::FEATURE_ENABLED_BY_DEFAULT);
 
+BASE_FEATURE(kCenterNttCtaButton, base::FEATURE_DISABLED_BY_DEFAULT);
+
 }  // namespace ntp_background_images::features

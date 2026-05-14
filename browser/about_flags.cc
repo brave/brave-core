@@ -27,6 +27,7 @@
 #include "brave/components/debounce/core/common/features.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/google_sign_in_permission/features.h"
+#include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
@@ -822,6 +823,14 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           "Enables searching directly from the New Tab Page",                  \
           kOsDesktop,                                                          \
           FEATURE_VALUE_TYPE(features::kBraveNtpSearchWidget),                 \
+      },                                                                       \
+      {                                                                        \
+          "center-ntt-cta-button",                                             \
+          "Center image NTT CTA button",                                       \
+          "Centers image NTT CTA button above the widget area",                \
+          kOsDesktop,                                                          \
+          FEATURE_VALUE_TYPE(                                                  \
+              ntp_background_images::features::kCenterNttCtaButton),           \
       },                                                                       \
       {                                                                        \
           "brave-filled-bookmark-folder-icon",                                 \
