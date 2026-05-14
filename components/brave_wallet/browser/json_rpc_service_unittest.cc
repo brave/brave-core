@@ -8023,18 +8023,6 @@ TEST_F(JsonRpcServiceUnitTest, GetSPLTokenProgramByMint) {
       mojom::CoinType::SOL, false);
   ASSERT_TRUE(AddUserAsset(prefs(), asset2.Clone()));
 
-  // Test record in registry, the value should be used.
-  TestGetSPLTokenProgramByMint(
-      FROM_HERE, "2kMpEJCZL8vEDZe7YPLMCS9Y3WKSAMedXBn7xHPvsWvi",
-      mojom::kSolanaMainnet, mojom::SPLTokenProgram::kToken2022,
-      mojom::SolanaProviderError::kSuccess, "");
-
-  // Test record in both registry and user assets. The value in user assets
-  // should be used.
-  TestGetSPLTokenProgramByMint(FROM_HERE, tsla_mint_addr, mojom::kSolanaMainnet,
-                               mojom::SPLTokenProgram::kToken2022,
-                               mojom::SolanaProviderError::kSuccess, "");
-
   std::string json = R"(
     {
       "jsonrpc":"2.0","id":1,
@@ -8051,6 +8039,26 @@ TEST_F(JsonRpcServiceUnitTest, GetSPLTokenProgramByMint) {
     }
   )";
 
+  auto expected_network_url =
+      GetNetwork(mojom::kSolanaMainnet, mojom::CoinType::SOL);
+
+  // Mint program is always resolved via getAccountInfo so SPL vs Token-2022
+  // cannot go stale from prefs or the static token list.
+  SetInterceptor(expected_network_url, "getAccountInfo", "",
+                 base::ReplaceStringPlaceholders(
+                     json, {mojom::kSolanaToken2022ProgramId}, nullptr));
+
+  // Registry-only mint; network returns Token-2022 owner.
+  TestGetSPLTokenProgramByMint(
+      FROM_HERE, "2kMpEJCZL8vEDZe7YPLMCS9Y3WKSAMedXBn7xHPvsWvi",
+      mojom::kSolanaMainnet, mojom::SPLTokenProgram::kToken2022,
+      mojom::SolanaProviderError::kSuccess, "");
+
+  // Mint also in registry and user assets; network is authoritative.
+  TestGetSPLTokenProgramByMint(FROM_HERE, tsla_mint_addr, mojom::kSolanaMainnet,
+                               mojom::SPLTokenProgram::kToken2022,
+                               mojom::SolanaProviderError::kSuccess, "");
+
   // Test record in user assets with unknown token program, result is from
   // network and the pref value should be updated based on the result.
   auto user_asset =
@@ -8059,8 +8067,6 @@ TEST_F(JsonRpcServiceUnitTest, GetSPLTokenProgramByMint) {
   ASSERT_TRUE(user_asset);
   EXPECT_EQ(user_asset->spl_token_program, mojom::SPLTokenProgram::kUnknown);
 
-  auto expected_network_url =
-      GetNetwork(mojom::kSolanaMainnet, mojom::CoinType::SOL);
   SetInterceptor(expected_network_url, "getAccountInfo", "",
                  base::ReplaceStringPlaceholders(
                      json, {mojom::kSolanaTokenProgramId}, nullptr));
