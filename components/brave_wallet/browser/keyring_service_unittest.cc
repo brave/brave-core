@@ -4509,7 +4509,7 @@ TEST_F(KeyringServiceUnitTest, DevWalletPassword) {
     service.SetAutolockEnabled(true);
     WaitForPostedTask();
 
-#if BUILDFLAG(ENABLE_BRAVE_WALLET_DEV_CMD_LINE_UNLOCK)
+#if !BUILDFLAG(ENABLE_BRAVE_WALLET_DEV_CMD_LINE_UNLOCK)
     // `--dev-wallet-password` is noop without buildflag, so wallet stays
     // locked.
     EXPECT_TRUE(service.IsLockedSync());
