@@ -6,7 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_TEST_FAKE_REWARDS_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_TEST_FAKE_REWARDS_SERVICE_H_
 
+#include "brave/components/brave_rewards/content/rewards_notification_service.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/core/mojom/rewards.mojom-forward.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 #include <cstdint>

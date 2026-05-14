@@ -20,6 +20,10 @@
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 
+namespace brave_ads {
+class ResourceComponentObserver;
+}  // namespace brave_ads
+
 static_assert(BUILDFLAG(ENABLE_BRAVE_ADS));
 
 namespace brave_ads {

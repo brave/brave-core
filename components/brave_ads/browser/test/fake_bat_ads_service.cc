@@ -5,9 +5,13 @@
 
 #include "brave/components/brave_ads/browser/test/fake_bat_ads_service.h"
 
+#include <ostream>
 #include <utility>
 
 #include "base/functional/callback.h"
+#include "mojo/public/cpp/bindings/pending_associated_receiver.h"
+#include "mojo/public/cpp/bindings/pending_associated_remote.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
 
 namespace brave_ads::test {
 

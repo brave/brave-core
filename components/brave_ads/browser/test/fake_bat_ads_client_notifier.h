@@ -17,6 +17,11 @@
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "url/gurl.h"
 
+namespace mojo {
+template <typename T>
+class PendingReceiver;
+}  // namespace mojo
+
 namespace brave_ads::test {
 
 // Records calls to `NotifyUserDidBecomeIdle` and `NotifyUserDidBecomeActive`

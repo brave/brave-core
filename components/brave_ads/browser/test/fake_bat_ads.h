@@ -15,6 +15,11 @@
 #include "mojo/public/cpp/bindings/pending_associated_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 
+namespace mojo {
+template <typename T>
+class PendingAssociatedReceiver;
+}  // namespace mojo
+
 namespace brave_ads::test {
 
 // Minimal in-process implementation of `bat_ads::mojom::BatAds`. Only
