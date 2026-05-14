@@ -116,6 +116,14 @@ base::ListValue OAIAPIClient::SerializeOAIMessages(
           content_block_dict.Set("text", block->get_text_content_block()->text);
           break;
 
+        case mojom::ContentBlock::Tag::kFileExtractedTextContentBlock:
+          // Local LLMs don't understand the Brave-specific type; pass the
+          // extracted text through as a plain text block.
+          content_block_dict.Set("type", "text");
+          content_block_dict.Set(
+              "text", block->get_file_extracted_text_content_block()->text);
+          break;
+
         case mojom::ContentBlock::Tag::kImageContentBlock: {
           content_block_dict.Set("type", "image_url");
           content_block_dict.Set(

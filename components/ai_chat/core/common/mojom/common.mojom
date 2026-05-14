@@ -180,6 +180,13 @@ struct TextContentBlock {
   string text;
 };
 
+// Content block for text extracted from an uploaded file (PDF or text file).
+// Server side handles this type specially to better support large file content
+// without hitting context limits.
+struct FileExtractedTextContentBlock {
+  string text;
+};
+
 struct PageExcerptContentBlock {
   string text;
 };
@@ -287,6 +294,7 @@ union ContentBlock {
   ImageContentBlock image_content_block;
   TextContentBlock text_content_block;
   FileContentBlock file_content_block;
+  FileExtractedTextContentBlock file_extracted_text_content_block;
 
   // Brave customized content blocks
   PageExcerptContentBlock page_excerpt_content_block;

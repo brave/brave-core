@@ -362,6 +362,16 @@ INSTANTIATE_TEST_SUITE_P(
               }
             })"},
         ContentBlockTestParam{
+            "FileExtractedText", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewFileExtractedTextContentBlock(
+                  mojom::FileExtractedTextContentBlock::New(
+                      "[PDF: file.pdf]\nextracted content"));
+            }),
+            R"({
+              "type": "brave-file-extracted-text",
+              "content": "[PDF: file.pdf]\nextracted content"
+            })"},
+        ContentBlockTestParam{
             "PageExcerpt", base::BindRepeating([]() {
               return mojom::ContentBlock::NewPageExcerptContentBlock(
                   mojom::PageExcerptContentBlock::New(kTestContent));

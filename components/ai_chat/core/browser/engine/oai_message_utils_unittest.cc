@@ -577,9 +577,11 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_PdfExtractedTextPreferred) {
   ASSERT_EQ(messages[0].content.size(), 4u);
   VerifyTextBlock(FROM_HERE, messages[0].content[0],
                   "These PDFs are uploaded by the user");
-  // Extracted PDF becomes a TextContentBlock with [PDF: filename] prefix
-  VerifyTextBlock(FROM_HERE, messages[0].content[1],
-                  "[PDF: extracted.pdf]\nThis is the extracted PDF content.");
+  // Extracted PDF becomes a FileExtractedTextContentBlock with
+  // [PDF: filename] prefix
+  VerifyFileExtractedTextBlock(
+      FROM_HERE, messages[0].content[1],
+      "[PDF: extracted.pdf]\nThis is the extracted PDF content.");
   // Raw PDF still uses FileContentBlock
   VerifyFileBlock(FROM_HERE, messages[0].content[2], pdf_url2, "raw.pdf");
   VerifyTextBlock(FROM_HERE, messages[0].content[3], "query0");
@@ -612,8 +614,8 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_TextFileExtractedText) {
   ASSERT_EQ(messages[0].content.size(), 3u);
   VerifyTextBlock(FROM_HERE, messages[0].content[0],
                   "These text files are uploaded by the user");
-  VerifyTextBlock(FROM_HERE, messages[0].content[1],
-                  "[File: app.conf]\nconfig_key=config_value");
+  VerifyFileExtractedTextBlock(FROM_HERE, messages[0].content[1],
+                               "[File: app.conf]\nconfig_key=config_value");
   VerifyTextBlock(FROM_HERE, messages[0].content[2], "query0");
 }
 
@@ -635,8 +637,8 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_TextFileDefaultFilename) {
 
   ASSERT_EQ(messages.size(), 2u);
   ASSERT_EQ(messages[0].content.size(), 3u);
-  VerifyTextBlock(FROM_HERE, messages[0].content[1],
-                  "[File: uploaded.txt]\nsome content");
+  VerifyFileExtractedTextBlock(FROM_HERE, messages[0].content[1],
+                               "[File: uploaded.txt]\nsome content");
 }
 
 TEST_F(OAIMessageUtilsTest, BuildOAIMessages_Memory_Excluded) {

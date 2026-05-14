@@ -53,6 +53,7 @@ const history: Mojom.ConversationTurn[] = [
                   'Loan Amount: $350,000.00\nMonthly Payment: $2,025.73\nTotal Paid Over 25 Years: $607,717.54\nTotal Interest Paid: $257,717.54',
               },
               'fileContentBlock': undefined,
+              'fileExtractedTextContentBlock': undefined,
               'pageExcerptContentBlock': undefined,
               'pageTextContentBlock': undefined,
               'videoTranscriptContentBlock': undefined,

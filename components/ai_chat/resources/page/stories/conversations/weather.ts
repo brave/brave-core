@@ -50,6 +50,7 @@ const history: Mojom.ConversationTurn[] = [
               'imageContentBlock': undefined,
               'textContentBlock': undefined,
               'fileContentBlock': undefined,
+              'fileExtractedTextContentBlock': undefined,
               'pageExcerptContentBlock': undefined,
               'pageTextContentBlock': undefined,
               'videoTranscriptContentBlock': undefined,
