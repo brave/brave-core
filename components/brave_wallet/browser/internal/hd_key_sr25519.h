@@ -74,6 +74,10 @@ class HDKeySr25519 {
   // representing a hard derivation that is transformed in line with:
   // https://github.com/paritytech/polkadot-sdk/blob/7304295748b1d85eb9fc2b598eba43d9f7971f22/substrate/primitives/core/src/crypto.rs#L138-L151
   HDKeySr25519 DeriveHard(base::span<const uint8_t> derive_junction) const;
+
+  // Hard-derive a child key from a provided account index. This differs from
+  // the `span`-based overload in that it only accepts a numeric index instead
+  // of a general blob of bytes which can represent anything.
   HDKeySr25519 DeriveHard(uint32_t account_index) const;
 
   // Update the keypair to use a mock RNG when deriving Shcnorr signatures. This
