@@ -14,6 +14,7 @@
             android:key="auto_shred_storage"/>
     </PreferenceCategory>
     <PreferenceCategory
+        style="@style/PreferenceCategory.NoTitle"
         android:key="remove_history_section"
         android:order="2">
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference

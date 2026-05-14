@@ -28,9 +28,9 @@ import java.util.Map;
 @NullMarked
 public class BraveShredPreference extends Preference implements RadioGroup.OnCheckedChangeListener {
     private final HashMap<String, RadioButtonWithDescription> mButtons;
-    private RadioButtonWithDescriptionLayout mGroup;
+    private @Nullable RadioButtonWithDescriptionLayout mGroup;
     private @Nullable RadioButtonWithDescription mSettingRadioButton;
-    private String mSetting;
+    private @Nullable String mSetting;
 
     public BraveShredPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
