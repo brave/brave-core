@@ -15,6 +15,7 @@
 #include "base/values.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
+#include "chrome/browser/profiles/brave_profile_attributes_constants.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/browser/profiles/profile_avatar_icon_util.h"
 #include "chrome/grit/theme_resources.h"
@@ -201,7 +202,8 @@ TEST_F(BraveCustomAvatarTest, ClearRemovesFlagAndFile) {
   // deleted afterwards.
   content::RunAllTasksUntilIdle();
   const base::FilePath image_path =
-      GetProfilePath("TestProfile").AppendASCII("Brave Custom Avatar.png");
+      GetProfilePath("TestProfile")
+          .AppendASCII(brave::kBraveCustomAvatarFileName);
   ASSERT_TRUE(base::PathExists(image_path));
 
   e->ClearBraveCustomAvatar();

@@ -13,6 +13,7 @@
 #include "base/functional/bind.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
+#include "chrome/browser/profiles/brave_profile_attributes_constants.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/browser/profiles/profile_avatar_icon_util.h"
 
@@ -28,10 +29,6 @@ constexpr char kBraveCustomAvatarFileNameKey[] =
 // Absent key with an existing file is treated as true for backward
 // compatibility.
 constexpr char kBraveCustomAvatarActiveKey[] = "brave_custom_avatar_active";
-
-// Filename (within the profile directory) used to store the user-uploaded
-// custom profile avatar PNG bytes on disk.
-constexpr char kBraveCustomAvatarFileName[] = "Brave Custom Avatar.png";
 
 // Returns a cache key (distinct from the GAIA cache key) for use with
 // `ProfileAttributesStorage::LoadAvatarPictureFromPath` so the custom avatar
@@ -123,11 +120,11 @@ void ProfileAttributesEntry::SetBraveCustomAvatar(
   // Persist the filename in the entry so subsequent `GetBraveCustomAvatar()`
   // calls find the cached image immediately (the storage cache is populated
   // synchronously by `SaveGAIAImageAtPath` below).
-  SetString(kBraveCustomAvatarFileNameKey, kBraveCustomAvatarFileName);
+  SetString(kBraveCustomAvatarFileNameKey, brave::kBraveCustomAvatarFileName);
   SetBool(kBraveCustomAvatarActiveKey, true);
 
   const base::FilePath image_path =
-      profile_path_.AppendASCII(kBraveCustomAvatarFileName);
+      profile_path_.AppendASCII(brave::kBraveCustomAvatarFileName);
   // Reuse `SaveGAIAImageAtPath` for its PNG encode + background-write
   // pipeline. Its only side effects outside of writing the file are
   // populating `cached_avatar_images_[key]` synchronously (so subsequent
