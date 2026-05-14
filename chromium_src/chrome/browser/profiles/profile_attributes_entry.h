@@ -29,8 +29,11 @@ class DictValue;
   /* none is set or the image has not finished loading from disk yet.       */ \
   const gfx::Image* GetBraveCustomAvatar() const;                              \
   /* Saves a user-uploaded custom profile avatar image. `on_saved` is run   */ \
-  /* on the UI thread after the file write completes with `true` on        */  \
-  /* success or `false` on failure.                                         */ \
+  /* on the UI thread once the disk write has been scheduled (the file is   */ \
+  /* persisted on a background thread). `true` means the write was          */ \
+  /* accepted and the in-memory cache was already updated, so the next      */ \
+  /* `GetBraveCustomAvatar()` call returns the new image immediately;       */ \
+  /* `false` means the supplied image was empty and nothing was saved.      */ \
   void SetBraveCustomAvatar(gfx::Image image,                                  \
                             base::OnceCallback<void(bool)> on_saved);          \
   /* Clears the user-uploaded custom profile avatar (also removes the      */  \
