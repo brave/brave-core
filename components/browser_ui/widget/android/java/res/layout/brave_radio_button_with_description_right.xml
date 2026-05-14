@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2026 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<!-- A custom RadioButtonWithDescription that places the radio button on the right. -->
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout
+        android:id="@+id/radio_container"
+        android:layout_toStartOf="@id/end_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/radio_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:clickable="false"
+            android:focusable="false"
+            android:background="@null" />
+
+        <org.chromium.ui.widget.ChromeImageView
+            android:id="@+id/icon"
+            android:layout_width="@dimen/radio_button_with_description_icon_size"
+            android:layout_height="@dimen/radio_button_with_description_icon_size"
+            android:layout_marginEnd="16dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:scaleType="fitCenter"
+            android:tint="@macro/default_icon_color"
+            android:visibility="gone"
+            android:importantForAccessibility="no" />
+
+        <org.chromium.ui.widget.TextViewWithLeading
+            android:id="@+id/primary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/icon"
+            android:layout_toStartOf="@id/radio_button"
+            android:layout_marginEnd="12dp"
+            android:textAppearance="@style/TextAppearance.TextLarge.Primary" />
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@id/primary"
+            android:layout_toStartOf="@id/radio_button"
+            android:layout_below="@id/primary"
+            android:layout_marginEnd="12dp"
+            android:textAppearance="@style/TextAppearance.TextMedium.Secondary"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <ViewStub
+        android:id="@+id/end_view_stub"
+        android:inflatedId="@+id/end_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/radio_container"
+        android:layout_alignBottom="@id/radio_container"
+        android:layout_alignParentEnd="true"
+        android:background="@null" />
+</merge>

@@ -1475,12 +1475,21 @@ Are you sure you want to do this?
       <message name="IDS_BRAVE_SHIELDS_AUTO_SHRED_NEVER_MODE_TEXT" desc="Shields menu auto shred never mode item text.">
         Never
       </message>
+      <message name="IDS_BRAVE_SHIELDS_AUTO_SHRED_NEVER_MODE_DESCRIPTION_TEXT" desc="Shields menu auto shred never mode item description text.">
+        Browsing data is never shredded automatically
+      </message>
       <message name="IDS_BRAVE_SHIELDS_AUTO_SHRED_SITE_TAB_CLOSED_MODE_TEXT" desc="Shields menu auto shred site tab closed mode item text.">
         Site tab closed
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_AUTO_SHRED_SITE_TAB_CLOSED_MODE_DESCRIPTION_TEXT" desc="Shields menu auto shred site tab closed mode item description text.">
+        Browsing data is automatically shredded when all tabs open to a site are closed
       </message>
       <message name="IDS_BRAVE_SHIELDS_AUTO_SHRED_APP_CLOSE_MODE_TEXT" desc="Shields menu auto shred app close mode item text.">
         App close
       </message>   
+      <message name="IDS_BRAVE_SHIELDS_AUTO_SHRED_APP_CLOSE_MODE_DESCRIPTION_TEXT" desc="Shields menu auto shred app close mode item description text.">
+        Browsing data is automatically shredded when the Brave app is closed / restarted
+      </message>
       <message name="IDS_BRAVE_SHIELDS_SHRED_SETTINGS_TEXT" desc="Shred site's data settings item text.">
         Shred
       </message>
