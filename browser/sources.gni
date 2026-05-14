@@ -729,6 +729,8 @@ if (!is_android) {
   brave_chrome_browser_sources += [
     "//brave/browser/sessions/brave_session_tree_tab_helper.cc",
     "//brave/browser/sessions/brave_session_tree_tab_helper.h",
+    "//brave/browser/sessions/brave_tab_restore_tree_helper.cc",
+    "//brave/browser/sessions/brave_tab_restore_tree_helper.h",
     "//brave/browser/sessions/brave_tree_tab_restore_helper.cc",
     "//brave/browser/sessions/brave_tree_tab_restore_helper.h",
     "//brave/browser/sessions/brave_tree_tab_session_keys.h",

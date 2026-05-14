@@ -3,6 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <map>
+#include <memory>
+#include <vector>
+
+#include "base/no_destructor.h"
 #include "brave/browser/sessions/brave_session_tree_tab_helper.h"
 #include "brave/browser/sessions/brave_tree_tab_session_keys.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
@@ -13,6 +18,20 @@
 #include "components/prefs/pref_service.h"
 #include "components/sessions/core/session_service_commands.h"
 #include "brave/components/constants/pref_names.h"
+
+// File-scope storage for per-browser BraveSessionTreeTabHelper instances.
+// Keyed by the owning SessionService pointer. Helpers become inert (browser_
+// set to nullptr) when their TabStripModel is destroyed; they are fully
+// removed when the SessionService itself is destroyed.
+namespace {
+using BraveTreeTabHelperMap =
+    std::map<SessionService*,
+             std::vector<std::unique_ptr<BraveSessionTreeTabHelper>>>;
+BraveTreeTabHelperMap& GetBraveTreeTabHelpers() {
+  static base::NoDestructor<BraveTreeTabHelperMap> map;
+  return *map;
+}
+}  // namespace
 
 // Prevent detached tab has unnecessary tab restore steps.
 // When last window's last tab is closed, |has_open_trackable_browsers_|
@@ -78,10 +97,45 @@
     }                                                                           \
   } while (false)
 
+// Called at the end of SessionService::WindowOpened (browser still alive,
+// already tracked). Creates a BraveSessionTreeTabHelper for the browser if
+// tree tabs are active so that incremental tree-structure changes (new child
+// tabs, collapsed-state changes) are saved via ScheduleCommand.
+#define BRAVE_SESSION_SERVICE_WINDOW_OPENED                                    \
+  do {                                                                          \
+    if (base::FeatureList::IsEnabled(tabs::kBraveTreeTab)) {                   \
+      auto* brave_tsm =                                                         \
+          static_cast<BraveTabStripModel*>(browser->tab_strip_model());        \
+      if (brave_tsm->tree_model()) {                                            \
+        GetBraveTreeTabHelpers()[this].push_back(                              \
+            std::make_unique<BraveSessionTreeTabHelper>(browser, this));       \
+      }                                                                         \
+    }                                                                           \
+  } while (false)
+
+// Called at the start of SessionService::WindowClosing (browser is still in
+// the browser list and its tab strip is intact). Forces a full session rebuild
+// so that any tree-structure reparenting that happened since the last periodic
+// rebuild is captured before the browser is removed from the list.
+#define BRAVE_SESSION_SERVICE_WINDOW_CLOSING                                   \
+  do {                                                                          \
+    if (base::FeatureList::IsEnabled(tabs::kBraveTreeTab)) {                   \
+      ScheduleResetCommands();                                                  \
+    }                                                                           \
+  } while (false)
+
+// Called at the start of SessionService::~SessionService to release all
+// BraveSessionTreeTabHelper instances owned by this service.
+#define BRAVE_SESSION_SERVICE_DESTRUCTOR \
+  GetBraveTreeTabHelpers().erase(this)
+
 #include <chrome/browser/sessions/session_service.cc>
 
 #undef BRAVE_SESSION_SERVICE_TAB_CLOSED
 #undef BRAVE_SESSION_SERVICE_BUILD_COMMANDS_FOR_TAB
+#undef BRAVE_SESSION_SERVICE_WINDOW_OPENED
+#undef BRAVE_SESSION_SERVICE_WINDOW_CLOSING
+#undef BRAVE_SESSION_SERVICE_DESTRUCTOR
 
 // ---- Brave additions after the Chromium include ----
 
@@ -103,3 +157,4 @@ void SessionService::SetTreeTabNodeData(SessionID window_id,
         tab_id, kBraveTreeNodeCollapsedKey, collapsed ? "1" : "0"));
   }
 }
+

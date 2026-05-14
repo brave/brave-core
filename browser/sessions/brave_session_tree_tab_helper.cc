@@ -172,9 +172,10 @@ void BraveSessionTreeTabHelper::ScheduleCollapsedStateExtraData(
   SessionID tab_id = session_helper->session_id();
   SessionID window_id = browser_->GetSessionID();
 
+  auto parent_id = node.GetParentTreeNodeId();
   session_service_->SetTreeTabNodeData(window_id, tab_id,
                                        node.id().ToString(),
-                                       /*parent_node_id=*/"",
+                                       parent_id ? parent_id->ToString() : "",
                                        node.collapsed(),
                                        /*has_collapsed_key=*/true);
 }
