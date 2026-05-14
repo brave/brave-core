@@ -229,8 +229,12 @@ impl CxxSchnorrkelKeyPair {
         self: &CxxSchnorrkelKeyPair,
         index: T,
     ) -> Box<CxxSchnorrkelKeyPair> {
-        // Copy what the polkadot-sdk crate does:
-        // https://github.com/paritytech/polkadot-sdk/blob/607a1b24b7902a657426ce2412e316a57b61894b/substrate/primitives/core/src/crypto.rs#L138-L151
+        // Mirror chain code construction from the polkadot-sdk:
+        // https://github.com/paritytech/polkadot-sdk/blob/6e063cc8b622c26fd0198d9ab45bba5c468cda2f/substrate/primitives/core/src/crypto.rs#L133-L165
+        //
+        // Note that the polkadot-sdk uses the same chain code routines for both Hard
+        // and Soft variants of their DeriveJunction enum, which they internally branch
+        // on when it comes time to derive child keypairs.
         let mut cc: [u8; JUNCTION_ID_LEN] = Default::default();
         index.using_encoded(|data| {
             if data.len() > JUNCTION_ID_LEN {
