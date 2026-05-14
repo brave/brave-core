@@ -31,12 +31,10 @@ namespace passage_embeddings {
 // to register its PassageEmbedderFactory, and the factory->Init +
 // factory->Bind handshake.
 //
-// Construction kicks off background contents creation. Initialization
-// proceeds once both halves are present: the renderer registers its
-// PassageEmbedderFactory via RegisterPassageEmbedderFactory, and the
-// owner (BravePassageEmbeddingsService) hands over loaded model files
-// via SetModelFiles. The embedder then drives factory->Init and
-// binds the per-embedder renderer pipe.
+// The owner (BravePassageEmbeddingsService) constructs this with the
+// loaded model files already in hand. Construction kicks off the
+// background WebContents; init proceeds once the renderer registers
+// its PassageEmbedderFactory via RegisterPassageEmbedderFactory.
 //
 // Disconnect handling (renderer crash, factory drop, caller drop, or
 // background contents teardown) routes through OnDisconnected, which
@@ -61,6 +59,7 @@ class BraveBatchPassageEmbedder
   BraveBatchPassageEmbedder(
       mojo::PendingReceiver<mojom::PassageEmbedder> receiver,
       BackgroundWebContentsFactory background_web_contents_factory,
+      local_ai::mojom::ModelFilesPtr model_files,
       base::OnceCallback<void(bool)> load_callback,
       base::OnceClosure on_disconnect);
   ~BraveBatchPassageEmbedder() override;
@@ -68,11 +67,6 @@ class BraveBatchPassageEmbedder
   BraveBatchPassageEmbedder(const BraveBatchPassageEmbedder&) = delete;
   BraveBatchPassageEmbedder& operator=(const BraveBatchPassageEmbedder&) =
       delete;
-
-  // Hands the loaded model files in. Drives factory->Init if the
-  // renderer factory is already registered; otherwise stashes the files
-  // until RegisterPassageEmbedderFactory arrives.
-  void SetModelFiles(local_ai::mojom::ModelFilesPtr model_files);
 
   // Adds a renderer-facing LocalAIService receiver. Installed as the
   // BindCallback in the static registry on BravePassageEmbeddingsService
@@ -132,22 +126,20 @@ class BraveBatchPassageEmbedder
   mojo::Remote<local_ai::mojom::PassageEmbedderFactory> factory_;
   mojo::Remote<local_ai::mojom::PassageEmbedder> renderer_embedder_;
 
-  // Stashed until both factory_ and pending_model_files_ are present;
-  // moved into factory_->Init when the handshake starts.
-  local_ai::mojom::ModelFilesPtr pending_model_files_;
+  // Held from ctor until factory_->Init consumes them.
+  local_ai::mojom::ModelFilesPtr model_files_;
 
   // Load sequence:
   //   kCreatingContents  -> ctor invoked the BackgroundWebContentsFactory
   //                         and is waiting for OnBackgroundContentsCreated.
-  //   kAwaitingPrereqs   -> background contents up; waiting for the
-  //                         renderer to RegisterPassageEmbedderFactory and
-  //                         the owner to call SetModelFiles.
-  //   kInitializing      -> both prereqs present; factory_->Init in flight.
+  //   kAwaitingFactory   -> background contents up; waiting for the
+  //                         renderer to RegisterPassageEmbedderFactory.
+  //   kInitializing      -> factory registered; factory_->Init in flight.
   //   kReady             -> Init succeeded and the renderer-side
   //                         PassageEmbedder pipe is bound; batches flow.
   enum class LoadPhase {
     kCreatingContents,
-    kAwaitingPrereqs,
+    kAwaitingFactory,
     kInitializing,
     kReady,
   };

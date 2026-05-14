@@ -10,14 +10,19 @@
 #include <string>
 #include <vector>
 
+#include "base/files/file_path.h"
+#include "base/memory/weak_ptr.h"
 #include "base/no_destructor.h"
 #include "base/scoped_observation.h"
 #include "base/types/optional_ref.h"
 #include "brave/browser/history_embeddings/brave_passage_embeddings_service.h"
+#include "brave/components/local_ai/core/local_ai.mojom.h"
+#include "brave/components/local_ai/core/local_models_updater.h"
 #include "chrome/browser/passage_embeddings/chrome_passage_embeddings_service_controller.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_observer.h"
 #include "components/optimization_guide/core/delivery/model_info.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
 
 namespace passage_embeddings {
 
@@ -52,7 +57,8 @@ namespace passage_embeddings {
 // ChromePassageEmbeddingsServiceController::Get().
 class BravePassageEmbeddingsServiceController
     : public ChromePassageEmbeddingsServiceController,
-      public ProfileObserver {
+      public ProfileObserver,
+      public local_ai::LocalModelsUpdaterState::Observer {
  public:
   static BravePassageEmbeddingsServiceController* Get();
 
@@ -96,9 +102,32 @@ class BravePassageEmbeddingsServiceController
   // ProfileObserver:
   void OnProfileWillBeDestroyed(Profile* profile) override;
 
+  // local_ai::LocalModelsUpdaterState::Observer:
+  void OnLocalModelsReady(const base::FilePath& install_dir) override;
+
+  // Posts the disk read for the five EmbeddingGemma files. Wired to
+  // OnLocalModelFilesLoaded; the receiver waits on the mojo pipe until
+  // BindPassageEmbedder is invoked there.
+  void LoadModelFilesAndBind(
+      mojo::PendingReceiver<mojom::PassageEmbedder> receiver);
+  void OnLocalModelFilesLoaded(
+      mojo::PendingReceiver<mojom::PassageEmbedder> receiver,
+      local_ai::mojom::ModelFilesPtr model_files);
+
   std::unique_ptr<BravePassageEmbeddingsService> service_;
   base::ScopedObservation<Profile, ProfileObserver> otr_profile_observation_{
       this};
+  base::ScopedObservation<local_ai::LocalModelsUpdaterState,
+                          local_ai::LocalModelsUpdaterState::Observer>
+      updater_state_observation_{this};
+
+  // Set true when LocalModelsUpdaterState reports the EmbeddingGemma
+  // component is installed. Required for EmbedderReady() to return
+  // true.
+  bool model_dir_ready_ = false;
+
+  base::WeakPtrFactory<BravePassageEmbeddingsServiceController>
+      weak_ptr_factory_{this};
 };
 
 }  // namespace passage_embeddings

@@ -150,15 +150,15 @@ class BraveBatchPassageEmbedderTest : public testing::Test {
         base::Unretained(this));
     embedder_ = std::make_unique<BraveBatchPassageEmbedder>(
         embedder_remote_.BindNewPipeAndPassReceiver(), std::move(bg_factory),
-        load_success_.GetCallback(),
+        local_ai::mojom::ModelFiles::New(), load_success_.GetCallback(),
         base::BindOnce(
             [](base::test::TestFuture<void>* future) { future->SetValue(); },
             &disconnect_called_));
   }
 
   // Drives the renderer-side half: opens a LocalAIService pipe to the
-  // embedder and registers the fake factory. Caller must
-  // optionally call HandModelFiles() to complete the load.
+  // embedder and registers the fake factory. Completes the load
+  // unless the factory is configured to defer or fail Init.
   void RegisterFactory() {
     ASSERT_TRUE(last_created_web_contents_);
     mojo::Remote<local_ai::mojom::LocalAIService> local_ai_remote;
@@ -168,15 +168,10 @@ class BraveBatchPassageEmbedderTest : public testing::Test {
     local_ai_remote.FlushForTesting();
   }
 
-  void HandModelFiles() {
-    embedder_->SetModelFiles(local_ai::mojom::ModelFiles::New());
-  }
-
   // Brings the embedder into a Ready state via the standard
-  // RegisterFactory + SetModelFiles + load_success path.
+  // RegisterFactory + load_success path.
   void DriveLoadToReady() {
     RegisterFactory();
-    HandModelFiles();
     ASSERT_TRUE(load_success_.Get());
     ASSERT_TRUE(
         base::test::RunUntil([&] { return factory_.bind_count() > 0; }));
@@ -214,7 +209,6 @@ TEST_F(BraveBatchPassageEmbedderTest, CtorCreatesBackgroundContents) {
 TEST_F(BraveBatchPassageEmbedderTest, InitSuccessSignalsLoadAndBinds) {
   CreateEmbedder();
   RegisterFactory();
-  HandModelFiles();
   EXPECT_TRUE(load_success_.Get());
   ASSERT_TRUE(base::test::RunUntil([&] { return factory_.bind_count() > 0; }));
   EXPECT_EQ(1, factory_.init_count());
@@ -222,15 +216,12 @@ TEST_F(BraveBatchPassageEmbedderTest, InitSuccessSignalsLoadAndBinds) {
   EXPECT_FALSE(disconnect_called_.IsReady());
 }
 
-TEST_F(BraveBatchPassageEmbedderTest, InitWaitsForBothFactoryAndModelFiles) {
+TEST_F(BraveBatchPassageEmbedderTest, InitWaitsForFactoryRegistration) {
   CreateEmbedder();
-
-  // Files alone don't start init.
-  HandModelFiles();
+  // No factory yet: init is gated on RegisterPassageEmbedderFactory.
   EXPECT_FALSE(load_success_.IsReady());
   EXPECT_EQ(0, factory_.init_count());
 
-  // Factory registration completes the prerequisites; init runs.
   RegisterFactory();
   EXPECT_TRUE(load_success_.Get());
   EXPECT_EQ(1, factory_.init_count());
@@ -241,7 +232,6 @@ TEST_F(BraveBatchPassageEmbedderTest,
   factory_.set_init_success(false);
   CreateEmbedder();
   RegisterFactory();
-  HandModelFiles();
   EXPECT_FALSE(load_success_.Get());
   EXPECT_TRUE(disconnect_called_.Wait());
   EXPECT_EQ(0, factory_.bind_count());
@@ -323,26 +313,12 @@ TEST_F(BraveBatchPassageEmbedderTest, FactoryDisconnectBeforeInitFailsLoad) {
   factory_.set_defer_init_reply(true);
   CreateEmbedder();
   RegisterFactory();
-  HandModelFiles();
   EXPECT_FALSE(load_success_.IsReady());
 
   factory_.ResetReceiver();
 
   EXPECT_FALSE(load_success_.Get());
   EXPECT_TRUE(disconnect_called_.Wait());
-}
-
-TEST_F(BraveBatchPassageEmbedderTest, FactoryDropBeforeInitStartsFailsLoad) {
-  // Factory registers, then drops before model files arrive — never
-  // reaches Init. The early-disconnect handler still has to fail the
-  // load.
-  CreateEmbedder();
-  RegisterFactory();
-  factory_.ResetReceiver();
-
-  EXPECT_FALSE(load_success_.Get());
-  EXPECT_TRUE(disconnect_called_.Wait());
-  EXPECT_EQ(0, factory_.init_count());
 }
 
 TEST_F(BraveBatchPassageEmbedderTest, RendererDisconnectFiresOnDisconnect) {
@@ -373,6 +349,9 @@ TEST_F(BraveBatchPassageEmbedderTest,
 
 TEST_F(BraveBatchPassageEmbedderTest,
        DuplicateRegisterPassageEmbedderFactoryIgnored) {
+  // Defer the init reply so the first factory stays in flight while
+  // we issue the duplicate registration.
+  factory_.set_defer_init_reply(true);
   CreateEmbedder();
   RegisterFactory();
 
@@ -385,9 +364,8 @@ TEST_F(BraveBatchPassageEmbedderTest,
   local_ai_remote->RegisterPassageEmbedderFactory(std::move(dummy));
   local_ai_remote.FlushForTesting();
 
-  // First factory still in effect: load completes once model files
-  // arrive.
-  HandModelFiles();
+  // First factory still in effect: complete its deferred init.
+  factory_.RunDeferredInit(true);
   EXPECT_TRUE(load_success_.Get());
   EXPECT_EQ(1, factory_.init_count());
 }

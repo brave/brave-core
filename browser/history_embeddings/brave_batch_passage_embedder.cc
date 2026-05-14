@@ -23,13 +23,16 @@ BraveBatchPassageEmbedder::Batch& BraveBatchPassageEmbedder::Batch::operator=(
 BraveBatchPassageEmbedder::BraveBatchPassageEmbedder(
     mojo::PendingReceiver<mojom::PassageEmbedder> receiver,
     BackgroundWebContentsFactory background_web_contents_factory,
+    local_ai::mojom::ModelFilesPtr model_files,
     base::OnceCallback<void(bool)> load_callback,
     base::OnceClosure on_disconnect)
     : background_web_contents_factory_(
           std::move(background_web_contents_factory)),
       receiver_(this, std::move(receiver)),
+      model_files_(std::move(model_files)),
       load_callback_(std::move(load_callback)),
       on_disconnect_(std::move(on_disconnect)) {
+  CHECK(model_files_);
   receiver_.set_disconnect_handler(
       base::BindOnce(&BraveBatchPassageEmbedder::OnDisconnected,
                      weak_ptr_factory_.GetWeakPtr()));
@@ -45,22 +48,6 @@ BraveBatchPassageEmbedder::~BraveBatchPassageEmbedder() {
   if (load_callback_) {
     std::move(load_callback_).Run(false);
   }
-}
-
-void BraveBatchPassageEmbedder::SetModelFiles(
-    local_ai::mojom::ModelFilesPtr model_files) {
-  CHECK(model_files);
-  // A re-fire of LocalModelsUpdaterState::OnLocalModelsReady can drive
-  // the service to post another file-load after Init has already
-  // started/completed. The original files were moved into
-  // factory_->Init at that point; ignore the late reload.
-  if (phase_ != LoadPhase::kCreatingContents &&
-      phase_ != LoadPhase::kAwaitingPrereqs) {
-    DVLOG(1) << "SetModelFiles ignored in phase=" << static_cast<int>(phase_);
-    return;
-  }
-  pending_model_files_ = std::move(model_files);
-  MaybeStartInit();
 }
 
 void BraveBatchPassageEmbedder::BindLocalAIReceiver(
@@ -98,8 +85,8 @@ void BraveBatchPassageEmbedder::RegisterPassageEmbedderFactory(
   // triggering a disconnect, or call it after the renderer-side
   // PassageEmbedder pipe is already up. mojo::Remote::Bind CHECKs when
   // already bound; the phase guard rejects any call past
-  // kAwaitingPrereqs so duplicates can't crash the browser.
-  if (phase_ != LoadPhase::kAwaitingPrereqs || factory_.is_bound()) {
+  // kAwaitingFactory so duplicates can't crash the browser.
+  if (phase_ != LoadPhase::kAwaitingFactory || factory_.is_bound()) {
     DVLOG(1) << "Ignoring RegisterPassageEmbedderFactory in phase="
              << static_cast<int>(phase_);
     return;
@@ -132,17 +119,16 @@ void BraveBatchPassageEmbedder::OnBackgroundContentsCreated(
     return;
   }
   background_web_contents_ = std::move(contents);
-  phase_ = LoadPhase::kAwaitingPrereqs;
+  phase_ = LoadPhase::kAwaitingFactory;
   MaybeStartInit();
 }
 
 void BraveBatchPassageEmbedder::MaybeStartInit() {
-  if (phase_ != LoadPhase::kAwaitingPrereqs || !factory_.is_bound() ||
-      !pending_model_files_) {
+  if (phase_ != LoadPhase::kAwaitingFactory || !factory_.is_bound()) {
     return;
   }
   phase_ = LoadPhase::kInitializing;
-  factory_->Init(std::move(pending_model_files_),
+  factory_->Init(std::move(model_files_),
                  base::BindOnce(&BraveBatchPassageEmbedder::OnInitDone,
                                 weak_ptr_factory_.GetWeakPtr()));
 }

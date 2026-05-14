@@ -8,13 +8,10 @@
 
 #include <memory>
 
-#include "base/files/file_path.h"
 #include "base/functional/callback.h"
-#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/history_embeddings/brave_batch_passage_embedder.h"
 #include "brave/components/local_ai/core/local_ai.mojom.h"
-#include "brave/components/local_ai/core/local_models_updater.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "services/passage_embeddings/public/mojom/passage_embeddings.mojom.h"
 
@@ -31,34 +28,24 @@ namespace passage_embeddings {
 // service_remote_ directly to an instance of this class, so no IPC hop
 // is involved.
 //
-// The service is intentionally thin: its only responsibility is reading
-// the EmbeddingGemma model files from disk (driven by
-// LocalModelsUpdaterState component-updater notifications) and feeding
-// them to a BraveBatchPassageEmbedder, which owns the renderer-side
-// lifecycle (background WebContents, LocalAIService receiver set,
-// PassageEmbedderFactory remote, and the mojom::PassageEmbedder pipe
-// to the controller).
-//
-// On BindPassageEmbedder we construct an embedder eagerly, kick off
-// the file-load task on the ThreadPool, and hand the loaded files to
-// the embedder once they arrive. Disconnect of the embedder
-// (renderer crash, factory drop, caller drop, or background contents
-// teardown) routes back through OnBatchEmbedderDisconnected so the
-// service can drop the embedder and accept a new load.
+// The service is a thin factory: BravePassageEmbeddingsServiceController
+// owns the file-loading lifecycle and hands a fully populated
+// ModelFilesPtr to BindPassageEmbedder. The service constructs a
+// BraveBatchPassageEmbedder around it; the embedder owns the full
+// renderer-side lifecycle (background WebContents, LocalAIService
+// receiver set, PassageEmbedderFactory remote, and the
+// mojom::PassageEmbedder pipe back to the controller).
 //
 // Also exposes the static WebContents -> BindCallback registry used by
 // UntrustedLocalAIUI::BindInterface to route renderer-side
 // LocalAIService bindings to the active embedder.
-class BravePassageEmbeddingsService
-    : public mojom::PassageEmbeddingsService,
-      public local_ai::LocalModelsUpdaterState::Observer {
+class BravePassageEmbeddingsService : public mojom::PassageEmbeddingsService {
  public:
   using BackgroundWebContentsFactory =
       BraveBatchPassageEmbedder::BackgroundWebContentsFactory;
 
-  BravePassageEmbeddingsService(
-      BackgroundWebContentsFactory background_web_contents_factory,
-      local_ai::LocalModelsUpdaterState* updater_state);
+  explicit BravePassageEmbeddingsService(
+      BackgroundWebContentsFactory background_web_contents_factory);
   ~BravePassageEmbeddingsService() override;
 
   BravePassageEmbeddingsService(const BravePassageEmbeddingsService&) = delete;
@@ -81,8 +68,8 @@ class BravePassageEmbeddingsService
       mojo::PendingReceiver<local_ai::mojom::LocalAIService> receiver);
 
   // Direct in-process equivalent of mojom::PassageEmbeddingsService::LoadModels
-  // — constructs a embedder for the given receiver and starts the
-  // file-load task. The upstream mojom is shaped for a tflite +
+  // — constructs an embedder for the given receiver using the supplied
+  // model files. The upstream mojom is shaped for a tflite +
   // sentencepiece embedder in a sandboxed utility process; we run
   // in-process with a five-file EmbeddingGemma model, so the struct
   // doesn't fit and the mojo hop adds no isolation. The controller
@@ -90,6 +77,7 @@ class BravePassageEmbeddingsService
   // README.md for details.
   void BindPassageEmbedder(
       mojo::PendingReceiver<mojom::PassageEmbedder> receiver,
+      local_ai::mojom::ModelFilesPtr model_files,
       base::OnceCallback<void(bool)> callback);
 
   // mojom::PassageEmbeddingsService:
@@ -99,19 +87,10 @@ class BravePassageEmbeddingsService
                   LoadModelsCallback callback) override;
 
  private:
-  // LocalModelsUpdaterState::Observer:
-  void OnLocalModelsReady(const base::FilePath& install_dir) override;
-
-  void MaybeLoadLocalModelFiles();
-  void OnLocalModelFilesLoaded(local_ai::mojom::ModelFilesPtr model_files);
   void OnBatchEmbedderDisconnected();
 
   BackgroundWebContentsFactory background_web_contents_factory_;
-  raw_ptr<local_ai::LocalModelsUpdaterState> updater_state_;
-
   std::unique_ptr<BraveBatchPassageEmbedder> batch_embedder_;
-  // True between PostTask and OnLocalModelFilesLoaded.
-  bool file_load_in_flight_ = false;
 
   base::WeakPtrFactory<BravePassageEmbeddingsService> weak_ptr_factory_{this};
 };

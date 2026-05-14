@@ -9,8 +9,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/files/file_util.h"
-#include "base/files/scoped_temp_dir.h"
 #include "base/functional/bind.h"
 #include "base/memory/raw_ptr.h"
 #include "base/test/bind.h"
@@ -21,7 +19,6 @@
 #include "brave/browser/history_embeddings/brave_batch_passage_embedder.h"
 #include "brave/components/local_ai/core/background_web_contents.h"
 #include "brave/components/local_ai/core/local_ai.mojom.h"
-#include "brave/components/local_ai/core/local_models_updater.h"
 #include "components/history_embeddings/core/history_embeddings_features.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
@@ -121,18 +118,13 @@ class BravePassageEmbeddingsServiceTest : public testing::Test {
  protected:
   void SetUp() override {
     feature_list_.InitAndEnableFeature(history_embeddings::kHistoryEmbeddings);
-    service_ = std::make_unique<BravePassageEmbeddingsService>(
-        base::BindRepeating(
+    service_ =
+        std::make_unique<BravePassageEmbeddingsService>(base::BindRepeating(
             &BravePassageEmbeddingsServiceTest::CreateFakeWebContents,
-            base::Unretained(this)),
-        local_ai::LocalModelsUpdaterState::GetInstance());
+            base::Unretained(this)));
   }
 
-  void TearDown() override {
-    service_.reset();
-    local_ai::LocalModelsUpdaterState::GetInstance()->SetInstallDir(
-        base::FilePath());
-  }
+  void TearDown() override { service_.reset(); }
 
   void CreateFakeWebContents(
       local_ai::BackgroundWebContents::Delegate* delegate,
@@ -152,26 +144,7 @@ class BravePassageEmbeddingsServiceTest : public testing::Test {
                       },
                       &last_created_web_contents_, &last_delegate_));
     last_created_web_contents_ = web_contents.get();
-    if (defer_create_callback_) {
-      pending_create_callback_ =
-          base::BindOnce(std::move(callback), std::move(web_contents));
-      return;
-    }
     std::move(callback).Run(std::move(web_contents));
-  }
-
-  void RunDeferredCreate() {
-    ASSERT_TRUE(pending_create_callback_);
-    std::move(pending_create_callback_).Run();
-  }
-
-  void RecreateService() {
-    service_.reset();
-    service_ = std::make_unique<BravePassageEmbeddingsService>(
-        base::BindRepeating(
-            &BravePassageEmbeddingsServiceTest::CreateFakeWebContents,
-            base::Unretained(this)),
-        local_ai::LocalModelsUpdaterState::GetInstance());
   }
 
   // Drives the renderer-side half of the load: opens a LocalAIService
@@ -187,33 +160,6 @@ class BravePassageEmbeddingsServiceTest : public testing::Test {
     local_ai_remote.FlushForTesting();
   }
 
-  void SetUpModelFiles() {
-    ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
-    base::FilePath dir = temp_dir_.GetPath();
-    base::FilePath model_dir =
-        dir.AppendASCII(local_ai::kEmbeddingGemmaModelDir);
-    ASSERT_TRUE(base::CreateDirectory(model_dir));
-    ASSERT_TRUE(base::CreateDirectory(
-        model_dir.AppendASCII(local_ai::kEmbeddingGemmaDense1Dir)));
-    ASSERT_TRUE(base::CreateDirectory(
-        model_dir.AppendASCII(local_ai::kEmbeddingGemmaDense2Dir)));
-    ASSERT_TRUE(base::WriteFile(
-        model_dir.AppendASCII(local_ai::kEmbeddingGemmaModelFile), "w"));
-    ASSERT_TRUE(base::WriteFile(
-        model_dir.AppendASCII(local_ai::kEmbeddingGemmaDense1Dir)
-            .AppendASCII(local_ai::kEmbeddingGemmaDenseModelFile),
-        "d1"));
-    ASSERT_TRUE(base::WriteFile(
-        model_dir.AppendASCII(local_ai::kEmbeddingGemmaDense2Dir)
-            .AppendASCII(local_ai::kEmbeddingGemmaDenseModelFile),
-        "d2"));
-    ASSERT_TRUE(base::WriteFile(
-        model_dir.AppendASCII(local_ai::kEmbeddingGemmaTokenizerFile), "t"));
-    ASSERT_TRUE(base::WriteFile(
-        model_dir.AppendASCII(local_ai::kEmbeddingGemmaConfigFile), "c"));
-    local_ai::LocalModelsUpdaterState::GetInstance()->SetInstallDir(dir);
-  }
-
   struct LoadResult {
     base::test::TestFuture<bool> load_success;
     mojo::Remote<mojom::PassageEmbedder> embedder;
@@ -221,6 +167,7 @@ class BravePassageEmbeddingsServiceTest : public testing::Test {
   std::unique_ptr<LoadResult> IssueLoad() {
     auto result = std::make_unique<LoadResult>();
     service_->BindPassageEmbedder(result->embedder.BindNewPipeAndPassReceiver(),
+                                  local_ai::mojom::ModelFiles::New(),
                                   result->load_success.GetCallback());
     return result;
   }
@@ -232,9 +179,6 @@ class BravePassageEmbeddingsServiceTest : public testing::Test {
   FakePassageEmbedderFactory fake_factory_{&fake_worker_};
   raw_ptr<FakeBackgroundWebContents> last_created_web_contents_ = nullptr;
   raw_ptr<local_ai::BackgroundWebContents::Delegate> last_delegate_ = nullptr;
-  bool defer_create_callback_ = false;
-  base::OnceClosure pending_create_callback_;
-  base::ScopedTempDir temp_dir_;
 };
 
 TEST_F(BravePassageEmbeddingsServiceTest, BindCreatesBackgroundContents) {
@@ -243,13 +187,9 @@ TEST_F(BravePassageEmbeddingsServiceTest, BindCreatesBackgroundContents) {
   EXPECT_FALSE(load->load_success.IsReady());
 }
 
-TEST_F(BravePassageEmbeddingsServiceTest, BindWaitsForBothConditions) {
+TEST_F(BravePassageEmbeddingsServiceTest, BindCompletesOnFactoryRegistration) {
   auto load = IssueLoad();
   ASSERT_TRUE(last_created_web_contents_);
-
-  SetUpModelFiles();
-  EXPECT_FALSE(load->load_success.IsReady());
-  EXPECT_EQ(0, fake_factory_.init_count());
 
   RegisterFactory();
   ASSERT_TRUE(
@@ -259,7 +199,6 @@ TEST_F(BravePassageEmbeddingsServiceTest, BindWaitsForBothConditions) {
 
 TEST_F(BravePassageEmbeddingsServiceTest, EndToEndBatchGenerateEmbeddings) {
   auto load = IssueLoad();
-  SetUpModelFiles();
   RegisterFactory();
   ASSERT_TRUE(load->load_success.Get());
 
@@ -280,7 +219,6 @@ TEST_F(BravePassageEmbeddingsServiceTest, InitFailureFailsLoad) {
   fake_factory_.set_init_success(false);
 
   auto load = IssueLoad();
-  SetUpModelFiles();
   RegisterFactory();
 
   ASSERT_TRUE(
@@ -294,7 +232,6 @@ TEST_F(BravePassageEmbeddingsServiceTest, InitFailureFailsLoad) {
 
 TEST_F(BravePassageEmbeddingsServiceTest, BackgroundContentsDestroyedCloses) {
   auto load = IssueLoad();
-  SetUpModelFiles();
   RegisterFactory();
   ASSERT_TRUE(load->load_success.Get());
   ASSERT_TRUE(last_created_web_contents_);
@@ -330,34 +267,14 @@ TEST_F(BravePassageEmbeddingsServiceTest,
   local_ai_remote->RegisterPassageEmbedderFactory(std::move(dummy));
   local_ai_remote.FlushForTesting();
 
-  // The first factory is still in effect; the load completes once the
-  // model files become available.
-  SetUpModelFiles();
   ASSERT_TRUE(
       base::test::RunUntil([&] { return fake_factory_.init_count() > 0; }));
   EXPECT_TRUE(load->load_success.Get());
-}
-
-TEST_F(BravePassageEmbeddingsServiceTest,
-       PreInstalledModelDirCompletesLoadOnFactoryRegister) {
-  // Set install_dir before constructing the service. AddObserver
-  // re-fires OnLocalModelsReady synchronously when install_dir is
-  // already set; MaybeLoadLocalModelFiles is a no-op until
-  // BindPassageEmbedder creates the embedder.
-  SetUpModelFiles();
-  RecreateService();
-
-  auto load = IssueLoad();
-  RegisterFactory();
-  EXPECT_TRUE(load->load_success.Get());
-  // AddObserver's sync re-fire of OnLocalModelsReady plus the
-  // BindPassageEmbedder path must collapse to a single load.
   EXPECT_EQ(1, fake_factory_.init_count());
 }
 
 TEST_F(BravePassageEmbeddingsServiceTest, BindAgainAfterEmbedderRemoteReset) {
   auto load = IssueLoad();
-  SetUpModelFiles();
   RegisterFactory();
   ASSERT_TRUE(load->load_success.Get());
   ASSERT_TRUE(last_created_web_contents_);
