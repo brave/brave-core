@@ -2055,6 +2055,171 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetMetadata) {
   }
 }
 
+TEST_F(PolkadotSubstrateRpcUnitTest, GetSupportedAssets) {
+  url_loader_factory_.ClearResponses();
+
+  const auto* chain_id = mojom::kPolkadotTestnet;
+  std::string testnet_url =
+      network_manager_
+          ->GetKnownChain(mojom::kPolkadotTestnet, mojom::CoinType::DOT)
+          ->rpc_endpoints.front()
+          .spec();
+
+  base::test::TestFuture<base::expected<std::vector<uint32_t>, std::string>>
+      future;
+
+  polkadot_substrate_rpc_->GetSupportedAssets(chain_id, future.GetCallback());
+
+  auto* reqs = url_loader_factory_.pending_requests();
+  EXPECT_TRUE(reqs);
+  ASSERT_EQ(reqs->size(), 1u);
+
+  auto const& req = reqs->at(0);
+  ASSERT_TRUE(req.request.request_body->elements());
+  auto const& element = req.request.request_body->elements()->at(0);
+
+  std::string expected_body = R"(
+      {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "method": "state_getKeysPaged",
+        "params": [
+          "0x682a59d51ab9e48a8c8cc418ff9708d2d34371a193a751eea5883e9553457b2e",
+          1000
+        ]
+      })";
+
+  EXPECT_EQ(base::test::ParseJsonDict(
+                element.As<network::DataElementBytes>().AsStringPiece()),
+            base::test::ParseJsonDict(expected_body));
+
+  url_loader_factory_.AddResponse(testnet_url,
+                                  R"({
+        "jsonrpc": "2.0",
+        "id": 1,
+        "result": [
+          "0x682a59d51ab9e48a8c8cc418ff9708d2d34371a193a751eea5883e9553457b2ed82c12285b5d4551f88e8f6e7eb52b8101000000",
+          "0x682a59d51ab9e48a8c8cc418ff9708d2d34371a193a751eea5883e9553457b2ea319d0e87221ca1ee751c1529f201522c0070000"
+        ]
+      })");
+
+  auto assets = future.Take();
+  ASSERT_TRUE(assets.has_value());
+  EXPECT_EQ(*assets, (std::vector<uint32_t>{1, 1984}));
+}
+
+TEST_F(PolkadotSubstrateRpcUnitTest, GetAssetMetadata) {
+  url_loader_factory_.ClearResponses();
+
+  const auto* chain_id = mojom::kPolkadotTestnet;
+  std::string testnet_url =
+      network_manager_
+          ->GetKnownChain(mojom::kPolkadotTestnet, mojom::CoinType::DOT)
+          ->rpc_endpoints.front()
+          .spec();
+
+  base::test::TestFuture<
+      base::expected<std::optional<std::vector<uint8_t>>, std::string>>
+      future;
+
+  polkadot_substrate_rpc_->GetAssetMetadata(chain_id, /*asset_id=*/1984,
+                                            future.GetCallback());
+
+  auto* reqs = url_loader_factory_.pending_requests();
+  EXPECT_TRUE(reqs);
+  ASSERT_EQ(reqs->size(), 1u);
+
+  auto const& req = reqs->at(0);
+  ASSERT_TRUE(req.request.request_body->elements());
+  auto const& element = req.request.request_body->elements()->at(0);
+
+  std::string expected_body = R"(
+      {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "method": "state_getStorage",
+        "params": [
+          "0x682a59d51ab9e48a8c8cc418ff9708d2b5f3822e35ca2f31ce3526eab1363fd2a319d0e87221ca1ee751c1529f201522c0070000"
+        ]
+      })";
+
+  EXPECT_EQ(base::test::ParseJsonDict(
+                element.As<network::DataElementBytes>().AsStringPiece()),
+            base::test::ParseJsonDict(expected_body));
+
+  url_loader_factory_.AddResponse(
+      testnet_url, R"({"jsonrpc":"2.0","id":1,"result":"0x01020304"})");
+
+  auto metadata = future.Take();
+  ASSERT_TRUE(metadata.has_value());
+  ASSERT_TRUE(metadata->has_value());
+  EXPECT_EQ(**metadata, (std::vector<uint8_t>{1, 2, 3, 4}));
+
+  url_loader_factory_.AddResponse(testnet_url,
+                                  R"({"jsonrpc":"2.0","id":1,"result":null})");
+  polkadot_substrate_rpc_->GetAssetMetadata(chain_id, /*asset_id=*/1984,
+                                            future.GetCallback());
+  metadata = future.Take();
+  ASSERT_TRUE(metadata.has_value());
+  EXPECT_FALSE(metadata->has_value());
+}
+
+TEST_F(PolkadotSubstrateRpcUnitTest, GetStorageHash) {
+  url_loader_factory_.ClearResponses();
+
+  const auto* chain_id = mojom::kPolkadotTestnet;
+  std::string testnet_url =
+      network_manager_
+          ->GetKnownChain(mojom::kPolkadotTestnet, mojom::CoinType::DOT)
+          ->rpc_endpoints.front()
+          .spec();
+
+  base::test::TestFuture<base::expected<
+      std::optional<std::array<uint8_t, kPolkadotBlockHashSize>>, std::string>>
+      future;
+
+  polkadot_substrate_rpc_->GetStorageHash(chain_id, "0x1234",
+                                          future.GetCallback());
+
+  auto* reqs = url_loader_factory_.pending_requests();
+  EXPECT_TRUE(reqs);
+  ASSERT_EQ(reqs->size(), 1u);
+
+  auto const& req = reqs->at(0);
+  ASSERT_TRUE(req.request.request_body->elements());
+  auto const& element = req.request.request_body->elements()->at(0);
+
+  std::string expected_body = R"(
+      {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "method": "state_getStorageHash",
+        "params": ["0x1234"]
+      })";
+
+  EXPECT_EQ(base::test::ParseJsonDict(
+                element.As<network::DataElementBytes>().AsStringPiece()),
+            base::test::ParseJsonDict(expected_body));
+
+  url_loader_factory_.AddResponse(
+      testnet_url,
+      R"({"jsonrpc":"2.0","id":1,"result":"0x000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f"})");
+
+  auto storage_hash = future.Take();
+  ASSERT_TRUE(storage_hash.has_value());
+  ASSERT_TRUE(storage_hash->has_value());
+  EXPECT_EQ(base::HexEncodeLower(**storage_hash),
+            "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f");
+
+  url_loader_factory_.AddResponse(testnet_url,
+                                  R"({"jsonrpc":"2.0","id":1,"result":null})");
+  polkadot_substrate_rpc_->GetStorageHash(chain_id, "0x1234",
+                                          future.GetCallback());
+  storage_hash = future.Take();
+  ASSERT_TRUE(storage_hash.has_value());
+  EXPECT_FALSE(storage_hash->has_value());
+}
+
 TEST_F(PolkadotSubstrateRpcUnitTest, SubmitExtrinsic) {
   url_loader_factory_.ClearResponses();
 

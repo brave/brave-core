@@ -32,6 +32,18 @@ namespace {
 
 // Account info comes to us through the wire as 160 hex digits.
 inline constexpr size_t kPolkadotAccountInfoSize = 80;
+inline constexpr size_t kAssetsStorageMapPrefixSize = 32;
+inline constexpr size_t kBlakeTwo128ConcatU32StorageKeySize = 20;
+inline constexpr size_t kAssetsStorageKeySize =
+    kAssetsStorageMapPrefixSize + kBlakeTwo128ConcatU32StorageKeySize;
+inline constexpr int kAssetsStorageKeysPageSize = 1000;
+
+// xxhash("Assets") | xxhash("Asset")
+inline constexpr char kAssetsAssetStoragePrefix[] =
+    "0x682a59d51ab9e48a8c8cc418ff9708d2d34371a193a751eea5883e9553457b2e";
+// xxhash("Assets") | xxhash("Metadata")
+inline constexpr char kAssetsMetadataStoragePrefix[] =
+    "0x682a59d51ab9e48a8c8cc418ff9708d2b5f3822e35ca2f31ce3526eab1363fd2";
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("polkadot_substrate_rpc", R"(
@@ -131,6 +143,51 @@ mojom::PolkadotAccountInfoPtr MakeDefaultAccount() {
   account->data->frozen = mojom::uint128::New(0, 0);
   account->data->flags = mojom::uint128::New(0x8000000000000000, 0);
   return account;
+}
+
+std::string MakeBlakeTwo128ConcatU32StoragePath(std::string_view prefix,
+                                                uint32_t key) {
+  auto key_bytes = base::byte_span_from_ref(key);
+  return base::StrCat({"0x", prefix.substr(2),
+                       base::HexEncodeLower(Blake2bHash<16>({key_bytes})),
+                       base::HexEncodeLower(key_bytes)});
+}
+
+std::string MakeAssetsMetadataStoragePath(uint32_t asset_id) {
+  return MakeBlakeTwo128ConcatU32StoragePath(kAssetsMetadataStoragePrefix,
+                                             asset_id);
+}
+
+base::expected<std::optional<std::vector<uint8_t>>, std::string>
+ParseOptionalHexBytes(const std::optional<std::string>& maybe_hex) {
+  if (!maybe_hex) {
+    return base::ok(std::nullopt);
+  }
+
+  std::vector<uint8_t> bytes;
+  if (!PrefixedHexStringToBytes(*maybe_hex, &bytes)) {
+    return base::unexpected(WalletParsingErrorMessage());
+  }
+
+  return base::ok(std::move(bytes));
+}
+
+std::optional<uint32_t> AssetIdFromAssetStorageKey(
+    std::string_view storage_key) {
+  std::vector<uint8_t> bytes;
+  if (!PrefixedHexStringToBytes(storage_key, &bytes) ||
+      bytes.size() != kAssetsStorageKeySize) {
+    return std::nullopt;
+  }
+
+  base::SpanReader<const uint8_t> reader(
+      base::span(bytes).last<sizeof(uint32_t)>());
+  uint32_t asset_id = 0;
+  if (!reader.ReadU32LittleEndian(asset_id)) {
+    return std::nullopt;
+  }
+
+  return asset_id;
 }
 
 mojom::PolkadotAccountInfoPtr ParseAccountInfoFromJson(
@@ -848,6 +905,132 @@ void PolkadotSubstrateRpc::OnGetEvents(GetEventsCallback callback,
   }
 
   std::move(callback).Run(base::ok(std::move(events)));
+}
+
+void PolkadotSubstrateRpc::GetSupportedAssets(
+    std::string_view chain_id,
+    GetSupportedAssetsCallback callback) {
+  auto url = GetNetworkURL(chain_id);
+
+  base::ListValue params;
+  params.Append(kAssetsAssetStoragePrefix);
+  params.Append(kAssetsStorageKeysPageSize);
+
+  auto payload = base::WriteJson(
+      MakeRpcRequestJson("state_getKeysPaged", std::move(params)));
+  CHECK(payload);
+
+  api_request_helper_.Request(
+      net::HttpRequestHeaders::kPostMethod, url, *payload, "application/json",
+      base::BindOnce(&PolkadotSubstrateRpc::OnGetSupportedAssets,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void PolkadotSubstrateRpc::OnGetSupportedAssets(
+    GetSupportedAssetsCallback callback,
+    APIRequestResult api_result) {
+  auto res = HandleRpcCall<
+      polkadot_substrate_rpc_responses::PolkadotStorageKeysResponse>(
+      api_result);
+
+  if (!res.has_value()) {
+    return std::move(callback).Run(base::unexpected(res.error()));
+  }
+
+  if (!res->result) {
+    return std::move(callback).Run(
+        base::unexpected(WalletParsingErrorMessage()));
+  }
+
+  std::vector<uint32_t> asset_ids;
+  asset_ids.reserve(res->result->size());
+  for (const auto& storage_key : *res->result) {
+    auto asset_id = AssetIdFromAssetStorageKey(storage_key);
+    if (!asset_id) {
+      return std::move(callback).Run(
+          base::unexpected(WalletParsingErrorMessage()));
+    }
+    asset_ids.push_back(*asset_id);
+  }
+
+  return std::move(callback).Run(base::ok(std::move(asset_ids)));
+}
+
+void PolkadotSubstrateRpc::GetAssetMetadata(std::string_view chain_id,
+                                            uint32_t asset_id,
+                                            GetAssetMetadataCallback callback) {
+  auto url = GetNetworkURL(chain_id);
+
+  base::ListValue params;
+  params.Append(MakeAssetsMetadataStoragePath(asset_id));
+
+  auto payload = base::WriteJson(
+      MakeRpcRequestJson("state_getStorage", std::move(params)));
+  CHECK(payload);
+
+  api_request_helper_.Request(
+      net::HttpRequestHeaders::kPostMethod, url, *payload, "application/json",
+      base::BindOnce(&PolkadotSubstrateRpc::OnGetAssetMetadata,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void PolkadotSubstrateRpc::OnGetAssetMetadata(GetAssetMetadataCallback callback,
+                                              APIRequestResult api_result) {
+  auto res =
+      HandleRpcCall<polkadot_substrate_rpc_responses::PolkadotStorageResponse>(
+          api_result);
+
+  if (!res.has_value()) {
+    return std::move(callback).Run(base::unexpected(res.error()));
+  }
+
+  auto bytes = ParseOptionalHexBytes(res->result);
+  if (!bytes.has_value()) {
+    return std::move(callback).Run(base::unexpected(bytes.error()));
+  }
+
+  return std::move(callback).Run(base::ok(std::move(*bytes)));
+}
+
+void PolkadotSubstrateRpc::GetStorageHash(std::string_view chain_id,
+                                          std::string_view storage_path,
+                                          GetStorageHashCallback callback) {
+  auto url = GetNetworkURL(chain_id);
+
+  base::ListValue params;
+  params.Append(storage_path);
+
+  auto payload = base::WriteJson(
+      MakeRpcRequestJson("state_getStorageHash", std::move(params)));
+  CHECK(payload);
+
+  api_request_helper_.Request(
+      net::HttpRequestHeaders::kPostMethod, url, *payload, "application/json",
+      base::BindOnce(&PolkadotSubstrateRpc::OnGetStorageHash,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void PolkadotSubstrateRpc::OnGetStorageHash(GetStorageHashCallback callback,
+                                            APIRequestResult api_result) {
+  auto res = HandleRpcCall<
+      polkadot_substrate_rpc_responses::PolkadotStorageHashResponse>(
+      api_result);
+
+  if (!res.has_value()) {
+    return std::move(callback).Run(base::unexpected(res.error()));
+  }
+
+  if (!res->result) {
+    return std::move(callback).Run(base::ok(std::nullopt));
+  }
+
+  std::array<uint8_t, kPolkadotBlockHashSize> storage_hash = {};
+  if (!PrefixedHexStringToFixed(*res->result, storage_hash)) {
+    return std::move(callback).Run(
+        base::unexpected(WalletParsingErrorMessage()));
+  }
+
+  return std::move(callback).Run(base::ok(storage_hash));
 }
 
 GURL PolkadotSubstrateRpc::GetNetworkURL(std::string_view chain_id) {

@@ -6,6 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_SUBSTRATE_RPC_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_SUBSTRATE_RPC_H_
 
+#include <array>
+#include <optional>
+#include <string>
+#include <string_view>
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
@@ -73,6 +77,16 @@ class PolkadotSubstrateRpc {
 
   using GetEventsCallback = base::OnceCallback<void(
       base::expected<std::vector<uint8_t>, std::string>)>;
+
+  using GetSupportedAssetsCallback = base::OnceCallback<void(
+      base::expected<std::vector<uint32_t>, std::string>)>;
+
+  using GetAssetMetadataCallback = base::OnceCallback<void(
+      base::expected<std::optional<std::vector<uint8_t>>, std::string>)>;
+
+  using GetStorageHashCallback = base::OnceCallback<void(
+      base::expected<std::optional<std::array<uint8_t, kPolkadotBlockHashSize>>,
+                     std::string>)>;
 
   // Get the name of the chain pointed to by the current network
   // configuration. "Westend" or "Paseo" for the testnets, "Polkadot" for
@@ -177,6 +191,23 @@ class PolkadotSubstrateRpc {
                  base::span<const uint8_t, kPolkadotBlockHashSize> block_hash,
                  GetEventsCallback callback);
 
+  // Retrieves the AssetId keys currently present in pallet-assets'
+  // `Assets.Asset` storage map.
+  void GetSupportedAssets(std::string_view chain_id,
+                          GetSupportedAssetsCallback callback);
+
+  // Retrieves the raw SCALE bytes stored under pallet-assets'
+  // `Assets.Metadata(asset_id)` entry. A missing entry is returned as
+  // std::nullopt.
+  void GetAssetMetadata(std::string_view chain_id,
+                        uint32_t asset_id,
+                        GetAssetMetadataCallback callback);
+
+  // Calls state_getStorageHash for an already-built storage key/path.
+  void GetStorageHash(std::string_view chain_id,
+                      std::string_view storage_path,
+                      GetStorageHashCallback callback);
+
  private:
   using APIRequestResult = api_request_helper::APIRequestResult;
 
@@ -198,6 +229,11 @@ class PolkadotSubstrateRpc {
                          APIRequestResult res);
   void OnGetPaymentInfo(GetPaymentInfoCallback callback, APIRequestResult res);
   void OnGetEvents(GetEventsCallback callback, APIRequestResult res);
+  void OnGetSupportedAssets(GetSupportedAssetsCallback callback,
+                            APIRequestResult res);
+  void OnGetAssetMetadata(GetAssetMetadataCallback callback,
+                          APIRequestResult res);
+  void OnGetStorageHash(GetStorageHashCallback callback, APIRequestResult res);
 
   const raw_ref<NetworkManager> network_manager_;
   api_request_helper::APIRequestHelper api_request_helper_;

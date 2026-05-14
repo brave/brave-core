@@ -168,4 +168,28 @@ namespace polkadot_substrate_rpc_responses {
     DOMString? result;
     Error? error;
   };
+
+  dictionary PolkadotStorageResponse {
+    DOMString jsonrpc;
+    long id;
+
+    DOMString? result;
+    Error? error;
+  };
+
+  dictionary PolkadotStorageHashResponse {
+    DOMString jsonrpc;
+    long id;
+
+    DOMString? result;
+    Error? error;
+  };
+
+  dictionary PolkadotStorageKeysResponse {
+    DOMString jsonrpc;
+    long id;
+
+    DOMString[]? result;
+    Error? error;
+  };
 };
