@@ -14,9 +14,9 @@ into a target channel branch.
 By default, eligibility is broad: any merged PR that is a reasonable uplift
 candidate is included (bug fixes, correctness fixes, crash fixes, intermittent
 test fixes, test filter updates, minor polish). The caller can narrow the scope
-by appending a free-form English description as the final argument — for
-example `only automated test fixes and crash fixes`, which restores the
-previous restrictive behavior.
+by appending a free-form English description as the final argument — for example
+`only automated test fixes and crash fixes`, which restores the previous
+restrictive behavior.
 
 ## Inputs
 
@@ -39,18 +39,18 @@ previous restrictive behavior.
       individually with
       `gh pr view <number> --repo brave/brave-core --json number,title,mergedAt,mergeCommit,labels,body,url`.
     - If omitted, defaults to the recent 50 closed PRs (current behavior).
-  - Remaining arguments (optional): **Scope description** — any remaining
-    text after the filter is treated as a free-form English description of
-    what to include or exclude. Apply your judgment when classifying PRs in
-    Step 2. If absent, use the default broad eligibility.
+  - Remaining arguments (optional): **Scope description** — any remaining text
+    after the filter is treated as a free-form English description of what to
+    include or exclude. Apply your judgment when classifying PRs in Step 2. If
+    absent, use the default broad eligibility.
 
-Parse the arguments by splitting `$ARGUMENTS` on whitespace for the first
-three positional arguments. Everything after the third token (if any) is the
-free-form scope description and should be kept intact as a single string. The
-first token is always the username. The second token, if it equals `beta` or
-`release`, is the channel; otherwise it is treated as the filter and the
-channel defaults to `beta`. The third token, if present, is the filter;
-otherwise filter defaults to recent 50.
+Parse the arguments by splitting `$ARGUMENTS` on whitespace for the first three
+positional arguments. Everything after the third token (if any) is the free-form
+scope description and should be kept intact as a single string. The first token
+is always the username. The second token, if it equals `beta` or `release`, is
+the channel; otherwise it is treated as the filter and the channel defaults to
+`beta`. The third token, if present, is the filter; otherwise filter defaults to
+recent 50.
 
 Examples:
 
@@ -116,31 +116,31 @@ Run these in parallel:
 
 ## Step 2: Classify PRs
 
-Review each **merged** PR (skip any where `mergedAt` is null) and classify it
-as either **include** or **exclude** for the uplift.
+Review each **merged** PR (skip any where `mergedAt` is null) and classify it as
+either **include** or **exclude** for the uplift.
 
 **Always EXCLUDE** (regardless of scope):
 
 - Not merged (`mergedAt` is null)
-- Already has the uplift label for the target channel (check the `labels`
-  array in the PR JSON for `uplift/beta` or `uplift/release` depending on the
-  target channel)
+- Already has the uplift label for the target channel (check the `labels` array
+  in the PR JSON for `uplift/beta` or `uplift/release` depending on the target
+  channel)
 
-**If a scope description was provided** in the arguments, follow it. Use the
-PR title and body to judge whether each PR matches the described scope. When
-in doubt, prefer to exclude and note the reason in the summary so the caller
-can override.
+**If a scope description was provided** in the arguments, follow it. Use the PR
+title and body to judge whether each PR matches the described scope. When in
+doubt, prefer to exclude and note the reason in the summary so the caller can
+override.
 
-A common scope description is restricting to automated test and crash fixes
-only — in that case use this classification:
+A common scope description is restricting to automated test and crash fixes only
+— in that case use this classification:
 
 - **INCLUDE**:
-  - Intermittent/flaky test fix (titles often contain "Fix flaky",
-    "Fix test:", "Fix intermittent", "Disable flaky")
+  - Intermittent/flaky test fix (titles often contain "Fix flaky", "Fix test:",
+    "Fix intermittent", "Disable flaky")
   - Crash fix (titles mention "crash", "null dereference",
     "EXCEPTION_ACCESS_VIOLATION", etc.)
-  - Test filter updates (disabling broken upstream tests, updating stale
-    filter entries)
+  - Test filter updates (disabling broken upstream tests, updating stale filter
+    entries)
 - **EXCLUDE**: feature additions, refactors, anything else unrelated to test
   stability or crashes.
 
@@ -157,12 +157,11 @@ only — in that case use this classification:
   - New feature additions (not fixes)
   - Large refactors with no behavior change
   - Risky changes that the author or reviewers would likely not want
-    auto-uplifted (e.g., security-sensitive rewrites, schema migrations);
-    when uncertain, exclude and note the reason
+    auto-uplifted (e.g., security-sensitive rewrites, schema migrations); when
+    uncertain, exclude and note the reason
 
-When in doubt about a PR, exclude it and explain the reasoning in the
-summary; the caller can re-run the skill with an explicit scope or PR list to
-include it.
+When in doubt about a PR, exclude it and explain the reasoning in the summary;
+the caller can re-run the skill with an explicit scope or PR list to include it.
 
 ---
 
@@ -232,8 +231,8 @@ Generate the title dynamically based on the categories of PRs actually included:
 - If the uplift contains **only** test fixes and crash fixes (no other PRs):
   `Uplift intermittent test fixes and crash fixes to <target-branch>`
 - If the uplift contains a **single** PR outside the test/crash categories,
-  mirror that PR's title with an `(uplift to <target-branch>)` suffix —
-  e.g., `Fix Foo on Linux (uplift to 1.88.x)`.
+  mirror that PR's title with an `(uplift to <target-branch>)` suffix — e.g.,
+  `Fix Foo on Linux (uplift to 1.88.x)`.
 - Otherwise (a mix of categories or multiple non-test/non-crash PRs), use a
   short summary title appropriate for the contents, ending with
   `to <target-branch>` — e.g., `Uplift fixes to <target-branch>`.
@@ -306,24 +305,26 @@ Do this for every PR that was successfully cherry-picked and included.
 ## Step 7: Ensure each included PR has a linked issue
 
 Brave's post-merge checklist requires the associated issue milestone be set to
-the smallest version the change landed on. PRs uplifted without a linked
-issue make that step impossible, so create and close a tracking issue for any
-included PR that does not already have one.
+the smallest version the change landed on. PRs uplifted without a linked issue
+make that step impossible, so create and close a tracking issue for any included
+PR that does not already have one.
 
 For **each PR included in the uplift**:
 
 1. **Check for an existing linked issue**:
+
    ```bash
    gh pr view <PR_NUMBER> --repo brave/brave-core --json closingIssuesReferences
    ```
-   Also inspect the PR body for closing keywords (`Fixes`, `Resolves`,
-   `Closes` followed by `#NNN` or `brave/brave-browser#NNN`). If either
-   surfaces an issue, no new issue is needed — skip this PR.
 
-2. **Create a new tracking issue** in `brave/brave-browser` (Brave's
-   convention is that issues live in `brave-browser` while code lives in
-   `brave-core`). Mirror the original PR's title and reference both PRs in
-   the body so the relationship is discoverable from either direction.
+   Also inspect the PR body for closing keywords (`Fixes`, `Resolves`, `Closes`
+   followed by `#NNN` or `brave/brave-browser#NNN`). If either surfaces an
+   issue, no new issue is needed — skip this PR.
+
+2. **Create a new tracking issue** in `brave/brave-browser` (Brave's convention
+   is that issues live in `brave-browser` while code lives in `brave-core`).
+   Mirror the original PR's title and reference both PRs in the body so the
+   relationship is discoverable from either direction.
 
    ```bash
    gh issue create --repo brave/brave-browser \
@@ -340,16 +341,17 @@ For **each PR included in the uplift**:
 
    Capture the new issue number from the URL returned by `gh issue create`.
 
-3. **Close the new issue** (the original PR has already merged, so the work
-   the issue describes is complete):
+3. **Close the new issue** (the original PR has already merged, so the work the
+   issue describes is complete):
+
    ```bash
    gh issue close <ISSUE_NUMBER> --repo brave/brave-browser \
      --comment "Closing — work landed in brave/brave-core#<PR_NUMBER>. Uplifted in brave/brave-core#<UPLIFT_PR_NUMBER>."
    ```
 
-4. **Cross-link from the PRs**: post one short comment on the original PR
-   and one on the uplift PR pointing at the new issue, so future readers of
-   either PR can find the tracking issue.
+4. **Cross-link from the PRs**: post one short comment on the original PR and
+   one on the uplift PR pointing at the new issue, so future readers of either
+   PR can find the tracking issue.
    ```bash
    gh pr comment <PR_NUMBER> --repo brave/brave-core \
      --body "Tracking issue: brave/brave-browser#<ISSUE_NUMBER> (created for uplift to <target-branch>)."
@@ -360,9 +362,9 @@ For **each PR included in the uplift**:
 The uplift PR itself remains open — only the newly created tracking issue is
 closed.
 
-If issue creation fails for any reason (e.g., permission issues or rate
-limits), record the failure in the summary and continue rather than aborting
-the rest of the run.
+If issue creation fails for any reason (e.g., permission issues or rate limits),
+record the failure in the summary and continue rather than aborting the rest of
+the run.
 
 ---
 
@@ -382,10 +384,10 @@ branch", "outside requested scope", "cherry-pick conflict").
 
 ### Tracking Issues Created:
 
-For each included PR that lacked a linked issue, list the original PR
-number and the new tracking issue number (e.g., `#34501 → brave-browser#52310,
-closed`). If no new issues were needed, say so explicitly. If any issue
-creation failed, list the PR and the reason.
+For each included PR that lacked a linked issue, list the original PR number and
+the new tracking issue number (e.g., `#34501 → brave-browser#52310, closed`). If
+no new issues were needed, say so explicitly. If any issue creation failed, list
+the PR and the reason.
 
 ### PR Link:
 
