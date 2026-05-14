@@ -21,12 +21,23 @@ def LoadPList(path):
     with open(path, 'rb') as f:
         return plistlib.load(f)
 
-# This contains binaries from Xcode 26.4.1, along with the macOS 26.4 SDK
-XCODE_VERSION = '26.4.1'
-HERMETIC_XCODE_BINARY = (
-    DEPS_PACKAGES_INTERNAL_URL +
-    '/xcode-hermetic-toolchain/xcode-hermetic-toolchain-' + XCODE_VERSION +
-    '.tar.gz')
+# The xcode version used for the hermetic toolchain.
+XCODE_VERSION = '26.5'
+XCODE_BUILD_VERSION = '17F42'
+
+# The SDK version used for the hermetic toolchain.
+MAC_SDK_OFFICIAL_VERSION = '26.5'
+MAC_SDK_OFFICIAL_BUILD_VERSION = '25F70'
+
+# The SDK used in Chromium upstream for this version.
+MAC_SDK_UPSTREAM_VERSION = '26.5'
+MAC_SDK_UPSTREAM_BUILD_VERSION = '25F70'
+
+HERMETIC_XCODE_TOOLCHAIN_URL = (
+    f'{DEPS_PACKAGES_INTERNAL_URL}/xcode-hermetic-toolchain'
+    f'/xcode-hermetic-toolchain-{XCODE_VERSION}-{XCODE_BUILD_VERSION}-'
+    f'{MAC_SDK_OFFICIAL_VERSION}-{MAC_SDK_OFFICIAL_BUILD_VERSION}-for-upstream'
+    f'-{MAC_SDK_UPSTREAM_VERSION}-{MAC_SDK_UPSTREAM_BUILD_VERSION}.tar.gz')
 
 # The toolchain will not be downloaded if the minimum OS version is not met. 19
 # is the major version number for macOS 10.15. Xcode 13.2 13C90 only runs on
@@ -71,7 +82,7 @@ def InstallXcodeBinaries():
         print(f"Hermetic Xcode {XCODE_VERSION} already installed")
         return 0
 
-    url = HERMETIC_XCODE_BINARY
+    url = HERMETIC_XCODE_TOOLCHAIN_URL
     print(f"Downloading hermetic Xcode: {url}")
     try:
         deps.DownloadAndUnpack(url, binaries_root)
