@@ -79,7 +79,9 @@ base::ListValue BraveSyncDevicesAndroid::GetSyncDeviceList() {
     device_value.Set("isCurrentDevice", is_current_device);
     // DeviceInfo::ToValue doesn't put guid
     device_value.Set("guid", device->guid());
-    device_value.Set("supportsSelfDelete", device->is_self_delete_supported());
+    device_value.Set(
+        "supportsSelfDelete",
+        device->self_delete_support() == syncer::SelfDeleteSupport::kSupported);
     device_list.Append(std::move(device_value));
   }
 
