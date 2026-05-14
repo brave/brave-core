@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_BRAVE_VPN_SERVICE_H_
-#define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_BRAVE_VPN_SERVICE_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_BRAVE_VPN_SERVICE_IMPL_H_
+#define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_BRAVE_VPN_SERVICE_IMPL_H_
 
 #include <memory>
 #include <optional>
@@ -59,7 +59,7 @@ class BraveVPNServiceDelegate;
 // This class is used by desktop and android.
 // However, it includes desktop specific impls and it's hidden
 // by IS_ANDROID ifdef.
-class BraveVpnService :
+class BraveVpnServiceImpl :
 #if !BUILDFLAG(IS_ANDROID)
     public BraveVPNConnectionManager::Observer,
 #endif
@@ -67,7 +67,7 @@ class BraveVpnService :
     public KeyedService,
     public BraveVpnMetrics::Delegate {
  public:
-  BraveVpnService(
+  BraveVpnServiceImpl(
       BraveVPNConnectionManager* connection_manager,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       PrefService* local_prefs,
@@ -75,10 +75,10 @@ class BraveVpnService :
       base::WeakPtr<misc_metrics::UptimeMonitor> uptime_monitor,
       base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
           skus_service_getter);
-  ~BraveVpnService() override;
+  ~BraveVpnServiceImpl() override;
 
-  BraveVpnService(const BraveVpnService&) = delete;
-  BraveVpnService& operator=(const BraveVpnService&) = delete;
+  BraveVpnServiceImpl(const BraveVpnServiceImpl&) = delete;
+  BraveVpnServiceImpl& operator=(const BraveVpnServiceImpl&) = delete;
 
 #if BUILDFLAG(IS_ANDROID)
   mojo::PendingRemote<brave_vpn::mojom::ServiceHandler> MakeRemote();
@@ -254,9 +254,9 @@ class BraveVpnService :
   std::unique_ptr<BraveVPNServiceDelegate> delegate_;
   base::OneShotTimer subs_cred_refresh_timer_;
   BraveVpnMetrics brave_vpn_metrics_;
-  base::WeakPtrFactory<BraveVpnService> weak_ptr_factory_{this};
+  base::WeakPtrFactory<BraveVpnServiceImpl> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_vpn
 
-#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_BRAVE_VPN_SERVICE_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_BRAVE_VPN_SERVICE_IMPL_H_

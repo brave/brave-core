@@ -14,7 +14,7 @@
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/misc_metrics/uptime_monitor_impl.h"
 #include "brave/browser/skus/skus_service_factory.h"
-#include "brave/components/brave_vpn/browser/brave_vpn_service.h"
+#include "brave/components/brave_vpn/browser/brave_vpn_service_impl.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/skus/common/features.h"
 #include "build/build_config.h"
@@ -71,11 +71,10 @@ std::unique_ptr<KeyedService> BuildVpnService(
                          ->GetWeakPtr();
   }
 
-  std::unique_ptr<BraveVpnService> vpn_service =
-      std::make_unique<BraveVpnService>(
-          g_brave_browser_process->brave_vpn_connection_manager(),
-          shared_url_loader_factory, local_state,
-          user_prefs::UserPrefs::Get(context), uptime_monitor, callback);
+  auto vpn_service = std::make_unique<BraveVpnServiceImpl>(
+      g_brave_browser_process->brave_vpn_connection_manager(),
+      shared_url_loader_factory, local_state,
+      user_prefs::UserPrefs::Get(context), uptime_monitor, callback);
 #if BUILDFLAG(IS_WIN)
   vpn_service->set_delegate(std::make_unique<BraveVPNServiceDelegateWin>());
   if (auto* wg_observer_service =
@@ -105,7 +104,7 @@ BraveVpnServiceFactory* BraveVpnServiceFactory::GetInstance() {
 // static
 mojo::PendingRemote<brave_vpn::mojom::ServiceHandler>
 BraveVpnServiceFactory::GetRemoteForProfile(Profile* profile) {
-  auto* service = static_cast<BraveVpnService*>(
+  auto* service = static_cast<BraveVpnServiceImpl*>(
       GetInstance()->GetServiceForBrowserContext(profile, true));
 
   if (!service) {
@@ -117,8 +116,8 @@ BraveVpnServiceFactory::GetRemoteForProfile(Profile* profile) {
 #endif  // BUILDFLAG(IS_ANDROID)
 
 // static
-BraveVpnService* BraveVpnServiceFactory::GetForProfile(Profile* profile) {
-  return static_cast<BraveVpnService*>(
+BraveVpnServiceImpl* BraveVpnServiceFactory::GetForProfile(Profile* profile) {
+  return static_cast<BraveVpnServiceImpl*>(
       GetInstance()->GetServiceForBrowserContext(profile, true));
 }
 
@@ -126,7 +125,7 @@ BraveVpnService* BraveVpnServiceFactory::GetForProfile(Profile* profile) {
 void BraveVpnServiceFactory::BindForContext(
     content::BrowserContext* context,
     mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler> receiver) {
-  auto* service = static_cast<BraveVpnService*>(
+  auto* service = static_cast<BraveVpnServiceImpl*>(
       GetInstance()->GetServiceForBrowserContext(context, true));
   if (service) {
     service->BindInterface(std::move(receiver));

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_vpn/browser/brave_vpn_service.h"
+#include "brave/components/brave_vpn/browser/brave_vpn_service_impl.h"
 
 #include <memory>
 #include <optional>
@@ -140,11 +140,11 @@ std::string GenerateTestingCreds(const std::string& domain,
 using ConnectionState = mojom::ConnectionState;
 using PurchasedState = mojom::PurchasedState;
 
-class MockBraveVpnService : public BraveVpnService {
+class MockBraveVpnServiceImpl : public BraveVpnServiceImpl {
  public:
   template <typename... Args>
-  explicit MockBraveVpnService(Args&&... args)
-      : BraveVpnService(std::forward<Args>(args)...) {}
+  explicit MockBraveVpnServiceImpl(Args&&... args)
+      : BraveVpnServiceImpl(std::forward<Args>(args)...) {}
 
 #if !BUILDFLAG(IS_ANDROID)
   MOCK_METHOD(void, OnInstallSystemServicesCompleted, (bool), (override));
@@ -274,7 +274,7 @@ class BraveVPNServiceTest : public testing::Test {
     if (service_) {
       service_->Shutdown();
     }
-    service_ = std::make_unique<testing::NiceMock<MockBraveVpnService>>(
+    service_ = std::make_unique<testing::NiceMock<MockBraveVpnServiceImpl>>(
 #if !BUILDFLAG(IS_ANDROID)
         connection_manager_.get(),
 #else
@@ -594,7 +594,7 @@ class BraveVPNServiceTest : public testing::Test {
     EXPECT_EQ(observer->GetPurchasedState().value(), state);
   }
 
-  void GetAllRegions(BraveVpnService::ResponseCallback callback) {
+  void GetAllRegions(BraveVpnServiceImpl::ResponseCallback callback) {
     service_->api_request_->GetServerRegions(
         std::move(callback), brave_vpn::mojom::kRegionPrecisionCityByCountry);
   }
@@ -608,7 +608,7 @@ class BraveVPNServiceTest : public testing::Test {
   TestingPrefServiceSimple local_pref_service_;
   sync_preferences::TestingPrefServiceSyncable profile_pref_service_;
   std::unique_ptr<skus::SkusServiceImpl> skus_service_;
-  std::unique_ptr<MockBraveVpnService> service_;
+  std::unique_ptr<MockBraveVpnServiceImpl> service_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
 };
@@ -835,7 +835,7 @@ TEST_F(BraveVPNServiceTest, IsConnectedWithPurchasedStateTest) {
   // Gets connected for purchased user.
   EXPECT_TRUE(service_->IsConnected());
 
-  // Check BraveVpnService gives false for IsConnected() when
+  // Check BraveVpnServiceImpl gives false for IsConnected() when
   // it's connected state but not purchased.
   SetPurchasedState(env, PurchasedState::NOT_PURCHASED);
   EXPECT_EQ(ConnectionState::CONNECTED, observer.GetConnectionState());
