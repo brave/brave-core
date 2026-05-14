@@ -1820,8 +1820,9 @@ public class BrowserViewController: UIViewController {
 
     updateRewardsButtonState()
 
+    let playlistItem = tab.playlistItem
     DispatchQueue.main.async {
-      if let item = tab.playlistItem {
+      if let item = playlistItem {
         if PlaylistItem.itemExists(uuid: item.tagId)
           || PlaylistItem.itemExists(pageSrc: item.pageSrc)
         {
