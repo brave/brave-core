@@ -185,12 +185,31 @@ TEST_F(BraveConfirmInfoBarTest, LabelAndLinkAlwaysExist) {
 
 // ----- Child order -----
 
-// Accessibility focus order requires the close button to be the last child.
+// Accessibility focus order requires the close button to be the last child,
+// regardless of how many other interactive children the infobar has (label,
+// buttons, checkbox, link).
 TEST_F(BraveConfirmInfoBarTest, CloseButtonOrderTest) {
-  auto infobar = CreateInfoBar(std::make_unique<TestInfoBarDelegate>());
-  auto* close_button = infobar->close_button_for_testing();
-  ASSERT_TRUE(close_button);
-  EXPECT_EQ(close_button, infobar->children().back());
+  // No buttons / no checkbox / no link.
+  {
+    auto infobar = CreateInfoBar(std::make_unique<TestInfoBarDelegate>());
+    auto* close_button = infobar->close_button_for_testing();
+    ASSERT_TRUE(close_button);
+    EXPECT_EQ(close_button, infobar->children().back());
+  }
+  // OK + Cancel + checkbox + link — close button still last.
+  {
+    auto delegate = std::make_unique<TestInfoBarDelegate>();
+    delegate->set_message_text(u"hello");
+    delegate->set_buttons(ConfirmInfoBarDelegate::BUTTON_OK |
+                          ConfirmInfoBarDelegate::BUTTON_CANCEL);
+    delegate->set_has_checkbox(true);
+    delegate->set_checkbox_text(u"Don't show again");
+    delegate->set_link_text(u"learn more");
+    auto infobar = CreateInfoBar(std::move(delegate));
+    auto* close_button = infobar->close_button_for_testing();
+    ASSERT_TRUE(close_button);
+    EXPECT_EQ(close_button, infobar->children().back());
+  }
 }
 
 // ----- Layout positioning -----

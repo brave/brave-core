@@ -11,6 +11,7 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
+#include "base/memory/raw_ref.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/grit/generated_resources.h"
@@ -39,6 +40,7 @@
 #include "ui/views/controls/image_view.h"
 #include "ui/views/controls/label.h"
 #include "ui/views/controls/link.h"
+#include "ui/views/focus/external_focus_tracker.h"
 #include "ui/views/style/typography.h"
 #include "ui/views/view_class_properties.h"
 #include "ui/views/widget/widget.h"
@@ -54,10 +56,35 @@ std::unique_ptr<infobars::InfoBar> CreateBraveConfirmInfoBar(
   return std::make_unique<BraveConfirmInfoBar>(std::move(delegate));
 }
 
+class BraveConfirmInfoBar::FocusTracker : public views::ExternalFocusTracker {
+ public:
+  explicit FocusTracker(BraveConfirmInfoBar& owner)
+      : views::ExternalFocusTracker(&owner, nullptr), owner_(owner) {}
+  FocusTracker(const FocusTracker&) = delete;
+  FocusTracker& operator=(const FocusTracker&) = delete;
+  ~FocusTracker() override = default;
+
+  // views::ExternalFocusTracker:
+  void OnWillChangeFocus(views::View* focused_before,
+                         views::View* focused_now) override {
+    views::ExternalFocusTracker::OnWillChangeFocus(focused_before, focused_now);
+    // Fire an accessibility alert when focus enters the infobar from outside
+    // so screen readers announce its contents.
+    if (focused_before && focused_now && !owner_->Contains(focused_before) &&
+        owner_->Contains(focused_now)) {
+      owner_->NotifyAccessibilityEventDeprecated(ax::mojom::Event::kAlert,
+                                                 true);
+    }
+  }
+
+ private:
+  const raw_ref<BraveConfirmInfoBar> owner_;
+};
+
 BraveConfirmInfoBar::BraveConfirmInfoBar(
     std::unique_ptr<BraveConfirmInfoBarDelegate> delegate)
     : infobars::InfoBar(std::move(delegate)),
-      views::ExternalFocusTracker(this, nullptr) {
+      focus_tracker_(std::make_unique<FocusTracker>(*this)) {
   // Drive the InfoBar animation off the compositor.
   SetNotifier(std::make_unique<
               gfx::AnimationDelegateNotifier<views::AnimationDelegateViews>>(
@@ -206,9 +233,6 @@ void BraveConfirmInfoBar::Layout(PassKey) {
             reserved_x + close_button_spacing.left(),
             width() - close_button_spacing.right() - close_button_->width()),
         OffsetY(close_button_)));
-
-    // For accessibility reasons, the close button should come last.
-    DCHECK_EQ(close_button_, children().back());
   }
 
   // Size the button content first so NonLabelWidth() reflects real widths.
@@ -249,6 +273,7 @@ void BraveConfirmInfoBar::Layout(PassKey) {
   place_button(ok_button_);
   place_button(cancel_button_);
 
+  // Place checkbox after latest button
   if (checkbox_) {
     checkbox_->SizeToPreferredSize();
     x += kCheckboxSpacing;
@@ -302,18 +327,6 @@ void BraveConfirmInfoBar::OnThemeChanged() {
   }
 }
 
-void BraveConfirmInfoBar::OnWillChangeFocus(View* focused_before,
-                                            View* focused_now) {
-  views::ExternalFocusTracker::OnWillChangeFocus(focused_before, focused_now);
-
-  // Trigger screen readers to announce the infobar's contents on focus
-  // entering.
-  if (focused_before && focused_now && !Contains(focused_before) &&
-      Contains(focused_now)) {
-    NotifyAccessibilityEventDeprecated(ax::mojom::Event::kAlert, true);
-  }
-}
-
 BraveConfirmInfoBarDelegate* BraveConfirmInfoBar::GetDelegate() {
   return static_cast<BraveConfirmInfoBarDelegate*>(delegate());
 }
@@ -325,14 +338,14 @@ const BraveConfirmInfoBarDelegate* BraveConfirmInfoBar::GetDelegate() const {
 void BraveConfirmInfoBar::PlatformSpecificShow(bool animate) {
   // Capture focus tracking once attached to a Widget so we can restore focus
   // on dismissal.
-  SetFocusManager(GetFocusManager());
+  focus_tracker_->SetFocusManager(GetFocusManager());
   NotifyAccessibilityEventDeprecated(ax::mojom::Event::kAlert, true);
 }
 
 void BraveConfirmInfoBar::PlatformSpecificHide(bool animate) {
   // Called twice (with animate=true then animate=false); the second
   // SetFocusManager(nullptr) is a silent no-op.
-  SetFocusManager(nullptr);
+  focus_tracker_->SetFocusManager(nullptr);
 
   if (!animate) {
     return;
@@ -341,7 +354,7 @@ void BraveConfirmInfoBar::PlatformSpecificHide(bool animate) {
   // Restore focus only if we're still in the active window.
   views::Widget* widget = GetWidget();
   if (!widget || widget->IsActive()) {
-    FocusLastFocusedExternalView();
+    focus_tracker_->FocusLastFocusedExternalView();
   }
 }
 

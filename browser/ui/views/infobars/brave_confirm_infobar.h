@@ -16,7 +16,6 @@
 #include "components/infobars/core/infobar.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/controls/button/image_button.h"
-#include "ui/views/focus/external_focus_tracker.h"
 #include "ui/views/view.h"
 
 namespace gfx {
@@ -37,15 +36,13 @@ class MdTextButton;
 
 // An infobar that shows a message, up to two optional buttons, an optional
 // checkbox, and an optional right-aligned link. Commonly used for:
-//   "Would you like to do X?  [Yes]  [No]  [_Learn More_] [x]"
+//  "Would you like to do X?  [Yes]  [No]  [check] Remember  [_Learn More_] [x]"
 //
 // Unlike upstream's ConfirmInfoBar/InfoBarView, this class is self-contained:
 // it inherits directly from infobars::InfoBar + views::View instead of from
 // InfoBarView, so its layout doesn't change with features::kInfobarRefresh
 // and stays insulated from future upstream restructuring of InfoBarView.
-class BraveConfirmInfoBar : public infobars::InfoBar,
-                            public views::View,
-                            public views::ExternalFocusTracker {
+class BraveConfirmInfoBar : public infobars::InfoBar, public views::View {
   METADATA_HEADER(BraveConfirmInfoBar, views::View)
 
  public:
@@ -65,9 +62,6 @@ class BraveConfirmInfoBar : public infobars::InfoBar,
       const views::SizeBounds& available_size) const override;
   void OnThemeChanged() override;
 
-  // views::ExternalFocusTracker:
-  void OnWillChangeFocus(View* focused_before, View* focused_now) override;
-
   BraveConfirmInfoBarDelegate* GetDelegate();
   const BraveConfirmInfoBarDelegate* GetDelegate() const;
 
@@ -85,6 +79,10 @@ class BraveConfirmInfoBar : public infobars::InfoBar,
   views::View* close_button_for_testing() const { return close_button_.get(); }
 
  private:
+  // Tracks the previously focused external view so we can restore focus on
+  // dismissal; defined in the .cc.
+  class FocusTracker;
+
   // infobars::InfoBar:
   void PlatformSpecificShow(bool animate) override;
   void PlatformSpecificHide(bool animate) override;
@@ -118,6 +116,8 @@ class BraveConfirmInfoBar : public infobars::InfoBar,
   raw_ptr<views::Link> link_ = nullptr;
   raw_ptr<views::Checkbox> checkbox_ = nullptr;
   raw_ptr<views::ImageButton> close_button_ = nullptr;
+
+  std::unique_ptr<FocusTracker> focus_tracker_;
 
   base::WeakPtrFactory<BraveConfirmInfoBar> weak_ptr_factory_{this};
 };
