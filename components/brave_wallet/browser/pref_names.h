@@ -34,8 +34,6 @@ inline constexpr char kShowWalletIconOnToolbar[] =
     "brave.wallet.show_wallet_icon_on_toolbar";
 inline constexpr char kBraveWalletLastUnlockTime[] =
     "brave.wallet.wallet_last_unlock_time_v2";
-inline constexpr char kBraveWalletP3ANFTGalleryUsed[] =
-    "brave.wallet.wallet_p3a_nft_gallery_used";
 inline constexpr char kBraveWalletCustomNetworks[] =
     "brave.wallet.custom_networks";
 inline constexpr char kBraveWalletEip1559CustomChains[] =
@@ -137,21 +135,13 @@ inline constexpr char kERCOptedIntoCryptoWalletsDeprecated[] =
 // Deprecated 12/2025
 inline constexpr char kBraveWalletPingReportedUnlockTimeDeprecated[] =
     "brave.wallet.wallet_report_unlock_time_ping";
-// Deprecated 05/2026
-inline constexpr char kBraveWalletP3ANewUserBalanceReportedDeprecated[] =
-    "brave.wallet.p3a_new_user_balance_reported";
-// Deprecated 05/2026
-inline constexpr char kBraveWalletP3AActiveWalletDictDeprecated[] =
-    "brave.wallet.wallet_p3a_active_wallets";
-// Deprecated 05/2026
-inline constexpr char kBraveWalletLastTransactionSentTimeDictDeprecated[] =
-    "brave.wallet.last_transaction_sent_time_dict";
 
-// Pref registration and migration functions.
+// Localstate prefs registration and migration functions.
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry);
 void MigrateObsoleteLocalStatePrefs(PrefService* local_state);
 
+// Profile prefs registration and migration functions.
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 void RegisterProfilePrefsForMigration(
     user_prefs::PrefRegistrySyncable* registry);

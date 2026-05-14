@@ -3179,9 +3179,6 @@ interface BraveWalletService {
 interface BraveWalletP3A {
   // Called when a Wallet onboarding action is performed.
   ReportOnboardingAction(OnboardingAction onboarding_action);
-
-  // Called to report displayed NFT count upon viewing the NFT gallery
-  RecordNFTGalleryView(int32 nft_count);
 };
 
 enum OnboardingAction {

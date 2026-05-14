@@ -10,6 +10,4 @@ namespace brave_wallet {
 void BraveWalletP3APrivate::ReportOnboardingAction(
     mojom::OnboardingAction onboarding_action) {}
 
-void BraveWalletP3APrivate::RecordNFTGalleryView(int nft_count) {}
-
 }  // namespace brave_wallet

@@ -12,21 +12,6 @@ class TestBraveWalletP3A: BraveWalletBraveWalletP3A {
   func reportOnboardingAction(_ onboardingAction: BraveWallet.OnboardingAction) {
     _reportOnboarding?(onboardingAction)
   }
-
-  var _reportTransactionSent: ((_ coin: BraveWallet.CoinType, _ newSend: Bool) -> Void)?
-  func reportTransactionSent(coin: BraveWallet.CoinType, newSend: Bool) {
-    _reportTransactionSent?(coin, newSend)
-  }
-
-  var _recordActiveWalletCount: ((_ count: Int32, _ coinType: BraveWallet.CoinType) -> Void)?
-  func recordActiveWalletCount(_ count: Int32, coinType: BraveWallet.CoinType) {
-    _recordActiveWalletCount?(count, coinType)
-  }
-
-  var _recordNftGalleryView: ((_ nftCount: Int32) -> Void)?
-  func recordNftGalleryView(nftCount: Int32) {
-    _recordNftGalleryView?(nftCount)
-  }
 }
 
 #endif

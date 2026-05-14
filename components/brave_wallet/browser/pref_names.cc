@@ -9,13 +9,11 @@
 
 #include "base/check.h"
 #include "base/values.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service_migrations.h"
-#include "brave/components/brave_wallet/browser/tx_state_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/p3a_utils/feature_usage.h"
 #include "components/pref_registry/pref_registry_syncable.h"
@@ -66,6 +64,19 @@ inline constexpr char kBraveWalletTransactions[] = "brave.wallet.transactions";
 // Deprecated 02/2025
 inline constexpr char kBraveWalletTransactionsDBFormatMigrated[] =
     "brave.wallet.transactions_db_format_migrated";
+
+// Deprecated 05/2026
+inline constexpr char kBraveWalletP3ANewUserBalanceReportedDeprecated[] =
+    "brave.wallet.p3a_new_user_balance_reported";
+// Deprecated 05/2026
+inline constexpr char kBraveWalletP3AActiveWalletDictDeprecated[] =
+    "brave.wallet.wallet_p3a_active_wallets";
+// Deprecated 05/2026
+inline constexpr char kBraveWalletLastTransactionSentTimeDictDeprecated[] =
+    "brave.wallet.last_transaction_sent_time_dict";
+// Deprecated 05/2026
+inline constexpr char kBraveWalletP3ANFTGalleryUsedDeprecated[] =
+    "brave.wallet.wallet_p3a_nft_gallery_used";
 
 base::DictValue GetDefaultSelectedNetworks() {
   base::DictValue selected_networks;
@@ -197,7 +208,6 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
       registry, kBraveWalletP3AFirstUnlockTime, kBraveWalletP3ALastUnlockTime,
       kBraveWalletP3AUsedSecondDay, nullptr, nullptr);
   registry->RegisterIntegerPref(kBraveWalletP3AOnboardingLastStep, 0);
-  registry->RegisterBooleanPref(kBraveWalletP3ANFTGalleryUsed, false);
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
@@ -264,11 +274,15 @@ void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
   // Deprecated 05/2026
   registry->RegisterBooleanPref(kBraveWalletP3ANewUserBalanceReportedDeprecated,
                                 false);
+  // Deprecated 05/2026
+  registry->RegisterBooleanPref(kBraveWalletP3ANFTGalleryUsedDeprecated, false);
 }
 
 void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
   // Deprecated 05/2026
   local_state->ClearPref(kBraveWalletP3ANewUserBalanceReportedDeprecated);
+  // Deprecated 05/2026
+  local_state->ClearPref(kBraveWalletP3ANFTGalleryUsedDeprecated);
 }
 
 void RegisterProfilePrefsForMigration(
