@@ -405,7 +405,7 @@ void APIRequestHelper::URLLoaderHandler::OnDataReceived(
     DVLOG(4) << "Chunk content: \n" << string_piece;
     TRACE_EVENT0("brave", "APIRequestHelper_OnDataReceivedNoSSE");
     ScopedPerfTracker tracker("Brave.APIRequestHelper.OnDataReceivedNoSSE");
-    if (MaybeParseErrorBody(string_piece)) {
+    if (MaybeAppendToErrorBodyBuffer(string_piece)) {
       std::move(resume).Run();
       return;
     }
@@ -430,6 +430,10 @@ void APIRequestHelper::URLLoaderHandler::OnComplete(bool success) {
   // always end on a line boundary.
   sse_line_buffer_.clear();
   request_is_finished_ = true;
+
+  if (MaybeParseErrorBody()) {
+    return;
+  }
 
   // Delete now or when decoding operations are complete
   MaybeSendResult();
@@ -511,14 +515,21 @@ void APIRequestHelper::URLLoaderHandler::OnParseJsonResponse(
   std::move(result_callback_).Run(std::move(result));
 }
 
-bool APIRequestHelper::URLLoaderHandler::MaybeParseErrorBody(
+bool APIRequestHelper::URLLoaderHandler::MaybeAppendToErrorBodyBuffer(
     std::string_view string_piece) {
   if (!is_response_fail_and_json_.has_value() || !*is_response_fail_and_json_) {
     return false;
   }
-  current_decoding_operation_count_++;
+  error_body_buffer_.append(string_piece);
+  return true;
+}
+
+bool APIRequestHelper::URLLoaderHandler::MaybeParseErrorBody() {
+  if (error_body_buffer_.empty()) {
+    return false;
+  }
   ParseJsonImpl(
-      std::string(string_piece),
+      std::move(error_body_buffer_),
       base::BindOnce(&APIRequestHelper::URLLoaderHandler::OnParseErrorBody,
                      GetWeakPtr()));
   return true;
@@ -526,7 +537,6 @@ bool APIRequestHelper::URLLoaderHandler::MaybeParseErrorBody(
 
 void APIRequestHelper::URLLoaderHandler::OnParseErrorBody(
     ValueOrError result_value) {
-  current_decoding_operation_count_--;
   if (result_value.has_value() && result_value->is_dict()) {
     error_value_ = std::move(*result_value);
   }

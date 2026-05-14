@@ -38,6 +38,7 @@ enum APIError {
   ServiceOverloaded
 };
 
+// TODO(https://github.com/brave/brave-browser/issues/55518): Add APIError to this struct
 struct APIErrorDetails {
   int32 status_code;
   string error_type;

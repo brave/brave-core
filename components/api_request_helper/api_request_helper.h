@@ -154,9 +154,14 @@ class APIRequestHelper {
 
     void OnParseErrorBody(ValueOrError result_value);
 
-    // If response is non-2xx and string_piece looks like JSON, kick off async
-    // parse into error_value_. Returns true if handled (caller should return).
-    bool MaybeParseErrorBody(std::string_view string_piece);
+    // If response is non-2xx, appends string_piece to error_body_buffer_.
+    // Returns true if handled (caller should skip normal data dispatch).
+    bool MaybeAppendToErrorBodyBuffer(std::string_view string_piece);
+
+    // If response is non-2xx and error_body_buffer_ looks like JSON, kick off
+    // async parse into error_value_. Returns true if handled (caller should
+    // return).
+    bool MaybeParseErrorBody();
 
     std::unique_ptr<network::SimpleURLLoader> url_loader_;
     raw_ptr<APIRequestHelper> api_request_helper_;
@@ -172,6 +177,10 @@ class APIRequestHelper {
 
     // Buffer for partial SSE lines across OnDataReceived calls.
     std::string sse_line_buffer_;
+
+    // Buffer for accumulating error response body chunks across OnDataReceived
+    // calls. Parsed in OnComplete via MaybeParseErrorBody.
+    std::string error_body_buffer_;
 
     // Keep track of number of in-progress data decoding operations
     // so that we can know if any are still in-progress when the request
