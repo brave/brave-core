@@ -6,10 +6,12 @@
 #include "brave/browser/ui/email_aliases/email_aliases_controller.h"
 
 #include <memory>
+#include <optional>
 
 #include "base/check_is_test.h"
 #include "brave/browser/ui/webui/email_aliases/email_aliases_panel_ui.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/email_aliases/constants.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
@@ -24,7 +26,6 @@
 namespace {
 inline constexpr char kEmailAliasesPanelURL[] = "chrome://email-aliases.panel/";
 
-constexpr char kEmailAliasesSettingsURL[] = "brave://settings/email-aliases";
 constexpr int kDialogWidth = 512;
 constexpr gfx::Size kDialogMinSize(kDialogWidth, 336);
 constexpr gfx::Size kDialogMaxSize(kDialogWidth, 794);
@@ -162,11 +163,13 @@ bool EmailAliasesController::IsAvailableFor(
          params.form_control_type == FormControlType::kInputText;
 }
 
-void EmailAliasesController::ShowBubble(content::WebContents* initiator,
-                                        content::RenderFrameHost* render_frame,
-                                        uint64_t field_renderer_id) {
+void EmailAliasesController::ShowBubble(
+    content::WebContents* initiator,
+    content::RenderFrameHost* render_frame,
+    uint64_t field_renderer_id,
+    std::optional<SettingsPageMethod> method) {
   if (!email_aliases_service_->IsAuthenticated()) {
-    return OpenSettingsPage();
+    return OpenSettingsPage(method);
   }
 
   CloseBubble();
@@ -186,7 +189,11 @@ void EmailAliasesController::CloseBubble() {
   bubble_->GetWebDialogDelegate()->OnDialogClosed({});
 }
 
-void EmailAliasesController::OpenSettingsPage() {
+void EmailAliasesController::OpenSettingsPage(
+    std::optional<SettingsPageMethod> method) {
+  if (method) {
+    email_aliases_service_->metrics().RecordSettingsPageNavigation(*method);
+  }
   ShowSingletonTabOverwritingNTP(browser_view_->browser(),
                                  GURL(kEmailAliasesSettingsURL));
 }

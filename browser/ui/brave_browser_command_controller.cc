@@ -774,7 +774,8 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
     case IDC_SHOW_EMAIL_ALIASES:
-      browser_->GetFeatures().email_aliases_controller()->OpenSettingsPage();
+      browser_->GetFeatures().email_aliases_controller()->OpenSettingsPage(
+          email_aliases::SettingsPageMethod::kAppMenu);
       break;
 #endif
 #if BUILDFLAG(ENABLE_CONTAINERS)

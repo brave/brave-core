@@ -13,6 +13,10 @@ inline constexpr char kEmailAliasesEnabled[] = "brave.email_aliases.enabled";
 // Preference key for storing the aliases notes.
 inline constexpr char kEmailAliasesNotes[] = "brave.email_aliases.notes";
 
+// Set to true once the settings page access method metric has been recorded.
+inline constexpr char kSettingsPageMethodReported[] =
+    "brave.email_aliases.settings_page_method_reported";
+
 }  // namespace email_aliases::prefs
 
 #endif  // BRAVE_COMPONENTS_EMAIL_ALIASES_PREF_NAMES_H_

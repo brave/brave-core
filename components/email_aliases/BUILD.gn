@@ -47,9 +47,12 @@ static_library("features") {
 
 static_library("service") {
   sources = [
+    "constants.h",
     "email_aliases_auth.cc",
     "email_aliases_auth.h",
     "email_aliases_endpoints.h",
+    "email_aliases_metrics.cc",
+    "email_aliases_metrics.h",
     "email_aliases_notes.cc",
     "email_aliases_notes.h",
     "email_aliases_service.cc",

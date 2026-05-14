@@ -18,6 +18,7 @@
 #include "brave/components/constants/network_constants.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
 #include "brave/components/email_aliases/email_aliases_api.h"
+#include "brave/components/email_aliases/email_aliases_metrics.h"
 #include "brave/components/email_aliases/email_aliases_notes.h"
 #include "brave/components/email_aliases/features.h"
 #include "brave/components/email_aliases/pref_names.h"
@@ -104,7 +105,9 @@ EmailAliasesService::EmailAliasesService(
         brave_account_auth,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService& pref_service)
-    : url_loader_factory_(url_loader_factory), pref_service_(pref_service) {
+    : url_loader_factory_(url_loader_factory),
+      pref_service_(pref_service),
+      metrics_(pref_service) {
   CHECK(base::FeatureList::IsEnabled(email_aliases::features::kEmailAliases));
   CHECK(brave_account_auth);
 
@@ -118,6 +121,7 @@ EmailAliasesService::~EmailAliasesService() = default;
 // static
 void EmailAliasesService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kEmailAliasesEnabled, true);
+  EmailAliasesMetrics::RegisterPrefs(registry);
   EmailAliasesNotes::RegisterProfilePrefs(registry);
 }
 

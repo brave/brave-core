@@ -455,8 +455,10 @@ void RenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
     case IDC_NEW_EMAIL_ALIAS:
       if (auto* email_aliases = GetEmailAliasesController(GetBrowser())) {
-        email_aliases->ShowBubble(source_web_contents_, GetRenderFrameHost(),
-                                  params_.field_renderer_id);
+        email_aliases->ShowBubble(
+            source_web_contents_, GetRenderFrameHost(),
+            params_.field_renderer_id,
+            email_aliases::SettingsPageMethod::kContextMenu);
       }
       break;
 #endif
