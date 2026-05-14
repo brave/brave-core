@@ -201,11 +201,19 @@ void ProfileAttributesEntry::ActivateBraveCustomAvatar() {
 // caller of `GetAvatarIcon` / `GetAvatarIconWithType` (toolbar button, profile
 // menu, profile picker, OS menus, settings, etc.) consistently displays the
 // custom image.
-#define BRAVE_GET_AVATAR_ICON_WITH_TYPE                     \
-  if (IsUsingBraveCustomAvatar()) {                         \
-    if (const gfx::Image* image = GetBraveCustomAvatar()) { \
-      return {*image, AvatarIconType::kNonPlaceholder};     \
-    }                                                       \
+//
+// `GetBraveCustomAvatar()` may return a non-null but still-empty `gfx::Image`
+// on the very first access after a restart while the bitmap is being loaded
+// from disk. In that case fall through to the upstream resolution so the UI
+// keeps showing the previous (GAIA / preset / placeholder) avatar instead of
+// flashing an empty icon; the storage's `OnProfileHighResAvatarLoaded`
+// notification will trigger a repaint once the bitmap is ready.
+#define BRAVE_GET_AVATAR_ICON_WITH_TYPE                   \
+  if (IsUsingBraveCustomAvatar()) {                       \
+    if (const gfx::Image* image = GetBraveCustomAvatar(); \
+        image && !image->IsEmpty()) {                     \
+      return {*image, AvatarIconType::kNonPlaceholder};   \
+    }                                                     \
   }
 
 #include <chrome/browser/profiles/profile_attributes_entry.cc>

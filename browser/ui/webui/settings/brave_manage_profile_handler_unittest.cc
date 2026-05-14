@@ -223,6 +223,30 @@ INSTANTIATE_TEST_SUITE_P(
       return info.param.name;
     });
 
+// Decoded bitmaps with a dimension over `kMaxDecodedDimension` are rejected
+// after decode — the encoded PNG fits comfortably under `kMaxUploadBytes`,
+// so the only guard that catches it is the post-decode dimension cap.
+TEST_F(BraveManageProfileHandlerTest, SetWithOversizedDecodedDimensions) {
+  // A long, thin solid-color image: just over the cap on the long axis, but
+  // its encoded PNG stays small (highly compressible) and the decoded total
+  // bytes stay under the sandboxed decoder's IPC-channel limit, so the
+  // rejection is exclusively driven by the dimension check.
+  gfx::Image image = gfx::test::CreateImage(
+      BraveManageProfileHandler::kMaxDecodedDimension + 1, 32);
+  scoped_refptr<base::RefCountedMemory> png_bytes = image.As1xPNGBytes();
+  ASSERT_TRUE(png_bytes && png_bytes->size() > 0u);
+  std::vector<uint8_t> bytes(png_bytes->begin(), png_bytes->end());
+  ASSERT_LE(bytes.size(), BraveManageProfileHandler::kMaxUploadBytes);
+
+  auto result = SetCustomAvatar(bytes);
+  ASSERT_TRUE(result.error.has_value());
+  EXPECT_EQ(brave_manage_profile::mojom::SetCustomAvatarError::kTooLarge,
+            *result.error);
+  ASSERT_TRUE(entry());
+  EXPECT_FALSE(entry()->HasBraveCustomAvatar());
+  EXPECT_FALSE(entry()->IsUsingBraveCustomAvatar());
+}
+
 // `RemoveCustomAvatar` clears the stored avatar and pushes the change to the
 // bound `BraveManageProfileSettingsUI`.
 TEST_F(BraveManageProfileHandlerTest, RemoveClearsAvatarAndNotifiesUi) {

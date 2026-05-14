@@ -116,7 +116,14 @@ void BraveManageProfileHandler::SetCustomAvatar(
   }
   pending_upload_callback_ = std::move(callback);
 
-  ImageDecoder::Start(this, bytes);
+  // `shrink_to_fit=true` asks the sandboxed decoder to halve oversized images
+  // until the decoded bitmap fits the IPC channel limit, instead of failing
+  // outright. We still enforce a stricter dimension cap in `OnImageDecoded`
+  // before the bitmap reaches `CropAndResizeToSquare`.
+  ImageDecoder::StartWithOptions(this, bytes, ImageDecoder::DEFAULT_CODEC,
+                                 /*shrink_to_fit=*/true,
+                                 /*desired_image_frame_size=*/
+                                 gfx::Size(kAvatarSize, kAvatarSize));
 }
 
 void BraveManageProfileHandler::RemoveCustomAvatar() {
@@ -160,6 +167,19 @@ void BraveManageProfileHandler::OnImageDecoded(const SkBitmap& decoded_image) {
   if (!profile_) {
     if (callback) {
       std::move(callback).Run(SetCustomAvatarError::kProfileShuttingDown,
+                              BuildCustomAvatarState());
+    }
+    return;
+  }
+
+  // Reject decoded bitmaps with extreme dimensions before they reach
+  // `CropAndResizeToSquare`. The sandboxed decoder caps total decoded bytes,
+  // but a long, thin bitmap can still slip under that cap with absurd
+  // dimensions; this guard keeps the resize work bounded regardless.
+  if (decoded_image.width() > kMaxDecodedDimension ||
+      decoded_image.height() > kMaxDecodedDimension) {
+    if (callback) {
+      std::move(callback).Run(SetCustomAvatarError::kTooLarge,
                               BuildCustomAvatarState());
     }
     return;

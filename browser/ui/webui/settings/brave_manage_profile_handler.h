@@ -39,6 +39,12 @@ class BraveManageProfileHandler
   static constexpr int kAvatarSize = 256;
   // Maximum size of the upload payload in bytes (rejected before decode).
   static constexpr size_t kMaxUploadBytes = 10 * 1024 * 1024;
+  // Maximum width or height (in pixels) of the decoded source bitmap. Bounds
+  // the work `CropAndResizeToSquare` does on the decoded pixel buffer. A
+  // 10 MiB encoded JPEG/WebP can decode to hundreds of MB of pixels; this
+  // additionally rejects extreme aspect ratios that slip under the decoder's
+  // total-byte limit (~128 MB). Well above any reasonable avatar source.
+  static constexpr int kMaxDecodedDimension = 4096;
 
   explicit BraveManageProfileHandler(Profile* profile);
   BraveManageProfileHandler(const BraveManageProfileHandler&) = delete;
