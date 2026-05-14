@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/ui/views/overlay/playback_image_button.cc b/chrome/browser/ui/views/overlay/playback_image_button.cc
+index 3883520bd5b12191fb909050ff9e3e326f2a7105..930552d0dd6d735f4dcf721c43d1baa07882179d 100644
+--- a/chrome/browser/ui/views/overlay/playback_image_button.cc
++++ b/chrome/browser/ui/views/overlay/playback_image_button.cc
+@@ -35,12 +35,12 @@ PlaybackImageButton::PlaybackImageButton(PressedCallback callback)
+   views::InkDrop::Get(this)->SetLayerRegion(views::LayerRegion::kAbove);
+ 
+   play_image_ = ui::ImageModel::FromVectorIcon(
+-      vector_icons::kPlayArrowOldIcon, ui::kColorSysOnSecondaryContainer,
++      kLeoPlayFilledIcon, ui::kColorSysOnSecondaryContainer,
+       kPlaybackButtonIconSize);
+-  pause_image_ = ui::ImageModel::FromVectorIcon(vector_icons::kPauseOldIcon,
++  pause_image_ = ui::ImageModel::FromVectorIcon(kLeoPauseFilledIcon,
+                                                 kColorPipWindowForeground,
+                                                 kPlaybackButtonIconSize);
+-  replay_image_ = ui::ImageModel::FromVectorIcon(vector_icons::kReplayOldIcon,
++  replay_image_ = ui::ImageModel::FromVectorIcon(kLeoReloadIcon,
+                                                  kColorPipWindowForeground,
+                                                  kPlaybackButtonIconSize);
+ 

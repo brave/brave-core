@@ -1,0 +1,23 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Replace the upstream play/pause/replay vector icons with Brave's Leo
+# equivalents. The Leo icon symbols are pulled in by the chromium_src wrapper
+# for this source.
+
+[[substitution]]
+description = 'Use Leo play icon for the picture-in-picture play button.'
+pattern = 'vector_icons::kPlayArrowOldIcon'
+replace = 'kLeoPlayFilledIcon'
+
+[[substitution]]
+description = 'Use Leo pause icon for the picture-in-picture pause button.'
+pattern = 'vector_icons::kPauseOldIcon'
+replace = 'kLeoPauseFilledIcon'
+
+[[substitution]]
+description = 'Use Leo reload icon for the picture-in-picture replay button.'
+pattern = 'vector_icons::kReplayOldIcon'
+replace = 'kLeoReloadIcon'

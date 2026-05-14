@@ -1,5 +1,5 @@
 diff --git a/components/permissions/request_type.cc b/components/permissions/request_type.cc
-index ab1a37059b72dcf2af2af32d1ff2f9036dcfa26e..1b9f857d1cc88014602afcf9f32c15c9f99eec9c 100644
+index ab1a37059b72dcf2af2af32d1ff2f9036dcfa26e..304b15250fe764cc62430b86d45e626968a75cb4 100644
 --- a/components/permissions/request_type.cc
 +++ b/components/permissions/request_type.cc
 @@ -73,6 +73,13 @@ int GetIconIdAndroid(RequestType type) {
@@ -26,7 +26,7 @@ index ab1a37059b72dcf2af2af32d1ff2f9036dcfa26e..1b9f857d1cc88014602afcf9f32c15c9
 +    case RequestType::kBraveCardano:
 +    case RequestType::kBraveGoogleSignInPermission:
 +    case RequestType::kBraveOpenAIChat:
-+      return vector_icons::kExtensionIcon;
++      return vector_icons::kExtensionOldIcon;
    }
    NOTREACHED();
  }
