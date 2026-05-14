@@ -310,7 +310,8 @@ interface ConversationHandler {
   SubmitHumanConversationEntry(
       string input, array<UploadedFile>? uploaded_files);
   SubmitHumanConversationEntryWithAction(string input, ActionType action_type);
-  SubmitHumanConversationEntryWithSkill(string input, string skill_id);
+  SubmitHumanConversationEntryWithSkill(
+      string input, string skill_id, array<UploadedFile>? uploaded_files);
 
   // Get associated page information. If there is none then |associated_content|
   // will be empty.

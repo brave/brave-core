@@ -5007,8 +5007,8 @@ TEST_F(ConversationHandlerUnitTest,
             run_loop.QuitWhenIdle();
           }));
 
-  conversation_handler_->SubmitHumanConversationEntryWithSkill("/playlist 2000",
-                                                               skill_id);
+  conversation_handler_->SubmitHumanConversationEntryWithSkill(
+      "/playlist 2000", skill_id, std::nullopt);
 
   run_loop.Run();
 
@@ -5052,7 +5052,7 @@ TEST_F(ConversationHandlerUnitTest,
           }));
 
   conversation_handler_->SubmitHumanConversationEntryWithSkill(
-      "Test input", "invalid-mode-id");
+      "Test input", "invalid-mode-id", std::nullopt);
 
   run_loop.Run();
 
@@ -5092,8 +5092,8 @@ TEST_F(ConversationHandlerUnitTest,
         run_loop.Quit();
       })));
 
-  conversation_handler_->SubmitHumanConversationEntryWithSkill("Test input",
-                                                               skill_id);
+  conversation_handler_->SubmitHumanConversationEntryWithSkill(
+      "Test input", skill_id, std::nullopt);
 
   run_loop.Run();
 }
@@ -5132,13 +5132,219 @@ TEST_F(ConversationHandlerUnitTest,
             run_loop.QuitWhenIdle();
           }));
 
-  conversation_handler_->SubmitHumanConversationEntryWithSkill("Test input",
-                                                               skill_id);
+  conversation_handler_->SubmitHumanConversationEntryWithSkill(
+      "Test input", skill_id, std::nullopt);
 
   run_loop.Run();
 
   // Verify model remained the same
   EXPECT_EQ(conversation_handler_->GetCurrentModel().key, current_model);
+}
+
+struct SkillImageUploadScenario {
+  const char* test_name;
+  const char* starting_model;
+  std::optional<const char*> skill_pinned_model;
+  const char* expected_final_model_key;
+  bool expects_model_change_during_submit;
+};
+
+class ConversationHandlerSkillImageUploadTest
+    : public ConversationHandlerUnitTest,
+      public testing::WithParamInterface<SkillImageUploadScenario> {};
+
+// Covers model resolution and file plumbing when a skill submission carries
+// an image attachment. Each case starts on a specific model and may have a
+// pinned skill model; the test asserts the final model key and whether a
+// ChangeModel call fired during submit.
+TEST_P(ConversationHandlerSkillImageUploadTest, ResolvesModelAndPlumbsImage) {
+  const auto& test_params = GetParam();
+  conversation_handler_->associated_content_manager()->ClearContent();
+
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+
+  // Force a deterministic starting model.
+  base::RunLoop setup_loop;
+  EXPECT_CALL(client, OnModelDataChanged)
+      .WillOnce(testing::InvokeWithoutArgs(&setup_loop, &base::RunLoop::Quit));
+  conversation_handler_->ChangeModel(test_params.starting_model);
+  setup_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(&client);
+  conversation_handler_->SetEngineForTesting(
+      std::make_unique<NiceMock<MockEngineConsumer>>());
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  // Add a skill to prefs
+  std::optional<std::string> pinned;
+  if (test_params.skill_pinned_model) {
+    pinned = std::string(*test_params.skill_pinned_model);
+  }
+  prefs::AddSkillToPrefs("describe", "Describe what you see in this image",
+                         pinned, prefs_);
+  auto skills = prefs::GetSkillsFromPrefs(prefs_);
+  ASSERT_EQ(skills.size(), 1u);
+  std::string skill_id = skills[0]->id;
+
+  base::RunLoop run_loop;
+
+  // Model change notification expectations during submit.
+  EXPECT_CALL(client, OnModelDataChanged)
+      .Times(test_params.expects_model_change_during_submit ? 1 : 0);
+
+  // Mock successful response. AtMost(1) because a ChangeModel inside submit
+  // replaces the mock engine, in which case the original mock never fires
+  // (see VisionModelSwitchOnScreenshots for the same pattern).
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .Times(testing::AtMost(1))
+      .WillRepeatedly(testing::WithArg<7>(
+          [](EngineConsumer::GenerationCompletedCallback callback) {
+            std::move(callback).Run(EngineConsumer::GenerationResultData(
+                mojom::ConversationEntryEvent::NewCompletionEvent(
+                    mojom::CompletionEvent::New("I see a photo")),
+                std::nullopt));
+          }));
+
+  // Quit once submission has reached the engine-call stage: by then the
+  // human turn is in history and any expected model changes have fired.
+  // Engine-independent so it works whether or not ChangeModel replaced the
+  // engine mid-flight.
+  EXPECT_CALL(client, OnAPIRequestInProgress(true))
+      .WillOnce(
+          testing::InvokeWithoutArgs(&run_loop, &base::RunLoop::QuitWhenIdle));
+  EXPECT_CALL(client, OnAPIRequestInProgress(false))
+      .Times(testing::AnyNumber());
+
+  // Create uploaded files with an image
+  auto uploaded_files = std::make_optional(
+      CreateSampleUploadedFiles(1, mojom::UploadedFileType::kImage));
+
+  conversation_handler_->SubmitHumanConversationEntryWithSkill(
+      "/describe photo", skill_id, std::move(uploaded_files));
+
+  run_loop.Run();
+
+  // Verify final model resolution and that vision support is guaranteed.
+  EXPECT_EQ(conversation_handler_->GetCurrentModel().key,
+            test_params.expected_final_model_key);
+  EXPECT_TRUE(conversation_handler_->GetCurrentModel().vision_support);
+
+  // Verify conversation history contains both skill data and uploaded files.
+  // When ChangeModel replaces the engine mid-submit, the assistant turn
+  // never completes, so only the human turn is present in those cases.
+  const auto& history = conversation_handler_->GetConversationHistory();
+  const size_t expected_size =
+      test_params.expects_model_change_during_submit ? 1u : 2u;
+  EXPECT_EQ(history.size(), expected_size);
+  EXPECT_EQ(history[0]->text, "/describe photo");
+  ASSERT_TRUE(history[0]->skill);
+  EXPECT_EQ(history[0]->skill->shortcut, "describe");
+  EXPECT_EQ(history[0]->skill->prompt, "Describe what you see in this image");
+  ASSERT_TRUE(history[0]->uploaded_files);
+  EXPECT_EQ(history[0]->uploaded_files->size(), 1u);
+  EXPECT_EQ(history[0]->uploaded_files->at(0)->type,
+            mojom::UploadedFileType::kImage);
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    All,
+    ConversationHandlerSkillImageUploadTest,
+    testing::Values(
+        // Unmodeled skill + image, starting non-vision: switch to vision.
+        SkillImageUploadScenario{"UnmodeledFromNonVision", "chat-basic",
+                                 std::nullopt, kClaudeHaikuModelKey, true},
+        // Unmodeled skill + image, already on vision: no switch.
+        SkillImageUploadScenario{"UnmodeledFromVision", kClaudeHaikuModelKey,
+                                 std::nullopt, kClaudeHaikuModelKey, false},
+        // Pinned non-vision + image, on vision: vision wins, no switch
+        // (validates the no-double-switch path).
+        SkillImageUploadScenario{"PinnedNonVisionFromVision",
+                                 kClaudeHaikuModelKey, "chat-basic",
+                                 kClaudeHaikuModelKey, false},
+        // Pinned non-vision + image, on non-vision: switch once to vision
+        // (NOT to the pinned non-vision model).
+        SkillImageUploadScenario{"PinnedNonVisionFromNonVision", "chat-basic",
+                                 "chat-basic", kClaudeHaikuModelKey, true},
+        // Pinned vision equals current + image: no switch.
+        SkillImageUploadScenario{"PinnedVisionEqualsCurrent",
+                                 kClaudeHaikuModelKey, kClaudeHaikuModelKey,
+                                 kClaudeHaikuModelKey, false},
+        // Pinned vision different from current + image: switch to pin once.
+        SkillImageUploadScenario{"PinnedVisionDifferentFromCurrent",
+                                 "chat-basic", kClaudeHaikuModelKey,
+                                 kClaudeHaikuModelKey, true}),
+    [](const testing::TestParamInfo<SkillImageUploadScenario>& info) {
+      return std::string(info.param.test_name);
+    });
+
+TEST_F(ConversationHandlerUnitTest,
+       SubmitHumanConversationEntryWithSkill_PdfFileNoVisionSwitch) {
+  // Non-image uploads (e.g. PDFs) should be plumbed through to the turn but
+  // must not trigger a vision auto-switch even when starting on a non-vision
+  // model.
+  conversation_handler_->associated_content_manager()->ClearContent();
+
+  base::RunLoop loop_for_change_model;
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  EXPECT_CALL(client, OnModelDataChanged)
+      .WillOnce(testing::InvokeWithoutArgs(&loop_for_change_model,
+                                           &base::RunLoop::Quit));
+  conversation_handler_->ChangeModel("chat-basic");
+  loop_for_change_model.Run();
+  testing::Mock::VerifyAndClearExpectations(&client);
+  conversation_handler_->SetEngineForTesting(
+      std::make_unique<NiceMock<MockEngineConsumer>>());
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+  ASSERT_FALSE(conversation_handler_->GetCurrentModel().vision_support);
+
+  // Add a skill to prefs
+  prefs::AddSkillToPrefs("summarize", "Summarize the attached document",
+                         std::nullopt /* model */, prefs_);
+  auto skills = prefs::GetSkillsFromPrefs(prefs_);
+  ASSERT_EQ(skills.size(), 1u);
+  std::string skill_id = skills[0]->id;
+
+  base::RunLoop run_loop;
+
+  // Model must not change for a non-image upload.
+  EXPECT_CALL(client, OnModelDataChanged).Times(0);
+
+  // Mock successful response
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(testing::WithArg<7>(
+          [&run_loop](EngineConsumer::GenerationCompletedCallback callback) {
+            std::move(callback).Run(EngineConsumer::GenerationResultData(
+                mojom::ConversationEntryEvent::NewCompletionEvent(
+                    mojom::CompletionEvent::New("Summary")),
+                std::nullopt));
+            run_loop.QuitWhenIdle();
+          }));
+
+  // Create uploaded files with a PDF
+  auto uploaded_files = std::make_optional(
+      CreateSampleUploadedFiles(1, mojom::UploadedFileType::kPdf));
+
+  conversation_handler_->SubmitHumanConversationEntryWithSkill(
+      "/summarize report", skill_id, std::move(uploaded_files));
+
+  run_loop.Run();
+
+  // Model stayed put — no vision switch for non-image uploads.
+  EXPECT_EQ(conversation_handler_->GetCurrentModel().key, "chat-basic");
+  EXPECT_FALSE(conversation_handler_->GetCurrentModel().vision_support);
+
+  // Verify conversation history contains both skill data and uploaded files
+  const auto& history = conversation_handler_->GetConversationHistory();
+  EXPECT_EQ(history.size(), 2u);
+  EXPECT_EQ(history[0]->text, "/summarize report");
+  ASSERT_TRUE(history[0]->skill);
+  EXPECT_EQ(history[0]->skill->shortcut, "summarize");
+  EXPECT_EQ(history[0]->skill->prompt, "Summarize the attached document");
+  ASSERT_TRUE(history[0]->uploaded_files);
+  EXPECT_EQ(history[0]->uploaded_files->size(), 1u);
+  EXPECT_EQ(history[0]->uploaded_files->at(0)->type,
+            mojom::UploadedFileType::kPdf);
 }
 
 TEST_F(ConversationHandlerUnitTest, PermissionChallenge) {
@@ -6327,7 +6533,7 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
     ConversationCapabilitySet expected_capabilities;
   };
 
-  const std::vector<TestCase> test_cases = {
+  const std::vector<TestCase> test_paramss = {
       {
           "Chat",
           /*is_content_agent_allowed=*/false,
@@ -6358,18 +6564,18 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
       },
   };
 
-  for (const auto& test_case : test_cases) {
-    SCOPED_TRACE(test_case.name);
+  for (const auto& test_params : test_paramss) {
+    SCOPED_TRACE(test_params.name);
 
     base::test::ScopedFeatureList feature_list;
-    if (test_case.deep_research_enabled) {
+    if (test_params.deep_research_enabled) {
       feature_list.InitAndEnableFeature(features::kAIChatDeepResearch);
     } else {
       feature_list.InitAndDisableFeature(features::kAIChatDeepResearch);
     }
 
     ai_chat_service_->SetIsContentAgentAllowed(
-        test_case.is_content_agent_allowed);
+        test_params.is_content_agent_allowed);
 
     mock_tool_provider_ = nullptr;
     std::vector<std::unique_ptr<ToolProvider>> tool_providers;
@@ -6394,10 +6600,10 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
         conversation_handler_->GetEngineForTesting());
 
     base::RunLoop run_loop;
-    EXPECT_CALL(
-        *engine,
-        GenerateAssistantResponse(
-            _, _, _, _, _, testing::Eq(test_case.expected_capabilities), _, _))
+    EXPECT_CALL(*engine,
+                GenerateAssistantResponse(
+                    _, _, _, _, _,
+                    testing::Eq(test_params.expected_capabilities), _, _))
         .WillOnce(testing::WithArg<7>(
             [&run_loop](EngineConsumer::GenerationCompletedCallback callback) {
               std::move(callback).Run(

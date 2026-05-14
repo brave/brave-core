@@ -204,7 +204,9 @@ class ConversationHandler : public mojom::ConversationHandler,
       mojom::ActionType action_type) override;
   void SubmitHumanConversationEntryWithSkill(
       const std::string& input,
-      const std::string& skill_id) override;
+      const std::string& skill_id,
+      std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files)
+      override;
   void ModifyConversation(
       const std::string& entry_uuid,
       const std::string& new_text,
@@ -429,9 +431,19 @@ class ConversationHandler : public mojom::ConversationHandler,
   // the current conversation state.
   std::vector<base::WeakPtr<Tool>> GetTools();
 
-  // Helper method to switch to vision model if needed
-  void MaybeSwitchToVisionModel(
-      const std::optional<std::vector<mojom::UploadedFilePtr>>& uploaded_files);
+  // Returns `model_key` if its model supports vision; otherwise returns the
+  // freemium/premium vision-default model key.
+  std::string GetVisionCapableModelKey(const std::string& model_key) const;
+
+  // Resolves the model to use for an upcoming submission and switches to it
+  // at most once. The intended starting key (e.g. a skill's pinned model) is
+  // used as-is unless an image or screenshot is attached and the starting
+  // model lacks vision support — in which case the freemium/premium vision
+  // default is used. When `intended_model_key` is unset, the conversation's
+  // persisted model is the starting point.
+  void MaybeSwitchModelForSubmission(
+      const std::optional<std::vector<mojom::UploadedFilePtr>>& uploaded_files,
+      const std::optional<std::string>& intended_model_key = std::nullopt);
 
   std::unique_ptr<AssociatedContentManager> associated_content_manager_;
 
