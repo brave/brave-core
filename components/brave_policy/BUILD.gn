@@ -29,7 +29,7 @@ source_set("brave_policy_observer") {
   public_deps = [ "//base" ]
 }
 
-source_set("policy_initialization_waiter") {
+static_library("policy_initialization_waiter") {
   sources = [
     "policy_initialization_waiter.cc",
     "policy_initialization_waiter.h",

@@ -1074,6 +1074,9 @@ void AdsServiceImpl::Shutdown() {
   // this is never reset to false.
   is_shutting_down_ = true;
 
+  // Detach from PolicyService eagerly rather than waiting for the destructor.
+  policy_initialization_waiter_.reset();
+
   ShutdownAdsService();
 }
 

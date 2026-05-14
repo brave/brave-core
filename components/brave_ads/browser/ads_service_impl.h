@@ -478,7 +478,9 @@ class AdsServiceImpl : public AdsService,
   base::ScopedObservation<ApplicationStateMonitor, ApplicationStateObserver>
       application_state_monitor_observation_{this};
 
-  const std::unique_ptr<brave_policy::PolicyInitializationWaiter>
+  // Reset eagerly in Shutdown() so the observer is detached from
+  // PolicyService before the destructor runs.
+  std::unique_ptr<brave_policy::PolicyInitializationWaiter>
       policy_initialization_waiter_;
 
   mojo::Receiver<bat_ads::mojom::BatAdsObserver> bat_ads_observer_receiver_{
