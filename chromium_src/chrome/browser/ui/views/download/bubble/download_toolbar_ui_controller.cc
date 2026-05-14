@@ -81,8 +81,8 @@ void UpdateIcon_BraveImpl(BrowserView* browser_view,
     auto icon_color = browser_view->GetColorProvider()->GetColor(
         ui::kColorAlertMediumSeverityIcon);
     button->SetIconEnabledColorsOverride(icon_color);
-    button->SetVectorIcon(vector_icons::kNotSecureWarningIcon);
-    const gfx::VectorIcon* new_icon = &vector_icons::kNotSecureWarningIcon;
+    button->SetVectorIcon(vector_icons::kNotSecureWarningOldIcon);
+    const gfx::VectorIcon* new_icon = &vector_icons::kNotSecureWarningOldIcon;
     const int icon_size = action_item->GetImage().Size().height();
     action_item->SetImage(
         ui::ImageModel::FromVectorIcon(*new_icon, icon_color, icon_size));

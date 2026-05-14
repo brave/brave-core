@@ -1,0 +1,21 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Brave hides the "link copied" and "image copied" toasts entirely (see the
+# Brave-side tests added in the chromium_src wrapper). The upstream test
+# fixtures still need a valid `ToastId` to exercise the controller paths, so
+# redirect them to a couple of toasts we don't suppress.
+
+[[substitution]]
+description = 'Redirect upstream kLinkCopied tests to a non-suppressed toast.'
+pattern = 'ToastId::kLinkCopied'
+replace = 'ToastId::kLinkToHighlightCopied'
+count = 0
+
+[[substitution]]
+description = 'Redirect upstream kImageCopied tests to a non-suppressed toast.'
+pattern = 'ToastId::kImageCopied'
+replace = 'ToastId::kClearBrowsingData'
+count = 0
