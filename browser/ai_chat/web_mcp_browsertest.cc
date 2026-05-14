@@ -214,17 +214,23 @@ IN_PROC_BROWSER_TEST_F(WebMcpBrowserTest,
   auto tools = RefreshAndGetTools(manager);
   ASSERT_EQ(2u, tools.size());
 
+  // Names are prefixed with the sanitized host ("a.com" → "a_com") to
+  // disambiguate page-defined tools across origins.
   std::set<std::string> tool_names;
   for (const auto& tool : tools) {
     ASSERT_TRUE(tool);
     tool_names.insert(std::string(tool->Name()));
   }
-  EXPECT_THAT(tool_names, ::testing::UnorderedElementsAre("echo", "ping"));
+  EXPECT_THAT(tool_names,
+              ::testing::UnorderedElementsAre("a_com_echo", "a_com_ping"));
 
   // Sanity check on metadata for the richer tool.
   for (const auto& tool : tools) {
-    if (tool->Name() == "echo") {
-      EXPECT_EQ(tool->Description(), "Echo input back");
+    if (tool->Name() == "a_com_echo") {
+      // The description embeds the host and the page-provided description.
+      std::string description(tool->Description());
+      EXPECT_NE(description.find("a.com"), std::string::npos);
+      EXPECT_NE(description.find("Echo input back"), std::string::npos);
       ASSERT_TRUE(tool->InputProperties().has_value());
       EXPECT_TRUE(tool->InputProperties()->contains("text"));
       ASSERT_TRUE(tool->RequiredProperties().has_value());

@@ -32,11 +32,19 @@ class ScriptTool : public Tool {
   std::string_view Description() const override;
   std::optional<base::DictValue> InputProperties() const override;
   std::optional<std::vector<std::string>> RequiredProperties() const override;
+  std::variant<bool, mojom::PermissionChallengePtr>
+  RequiresUserInteractionBeforeHandling(
+      const mojom::ToolUseEvent& tool_use) const override;
+  void UserPermissionGranted(const std::string& tool_use_id) override;
+
   void UseTool(const std::string& input_json,
                UseToolCallback callback) override;
 
  private:
+  bool user_permission_granted_ = false;
+
   content::WeakDocumentPtr rfh_;
+  std::string internal_tool_name_;
   std::string name_;
   std::string description_;
   std::optional<base::DictValue> input_properties_;

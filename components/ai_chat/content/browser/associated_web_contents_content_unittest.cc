@@ -700,11 +700,16 @@ TEST_P(AssociatedWebContentsContentUnitTest,
   base::test::TestFuture<std::vector<std::unique_ptr<Tool>>> future;
   GetScriptTools(future.GetCallback());
   auto tools = future.Take();
+  // ScriptTool prefixes names with the sanitized host ("www.example.com" →
+  // "www_example_com") and embeds the host plus the page-provided description
+  // in the description so the LLM has the website-attribution context.
   ASSERT_EQ(2u, tools.size());
-  EXPECT_EQ(tools[0]->Name(), "search");
-  EXPECT_EQ(tools[0]->Description(), "Search the page");
-  EXPECT_EQ(tools[1]->Name(), "summarize");
-  EXPECT_EQ(tools[1]->Description(), "Summarize the article");
+  EXPECT_EQ(tools[0]->Name(), "www_example_com_search");
+  EXPECT_NE(std::string(tools[0]->Description()).find("Search the page"),
+            std::string::npos);
+  EXPECT_EQ(tools[1]->Name(), "www_example_com_summarize");
+  EXPECT_NE(std::string(tools[1]->Description()).find("Summarize the article"),
+            std::string::npos);
 }
 
 TEST_P(AssociatedWebContentsContentUnitTest,

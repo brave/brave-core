@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <cstdint>
 #include <memory>
+#include <ranges>
 #include <string>
 #include <utility>
 #include <vector>
@@ -27,6 +28,10 @@
 #include "brave/components/ai_chat/core/browser/model_service.h"
 
 namespace ai_chat {
+
+namespace {
+constexpr size_t kMaxToolsPerContent = 10;
+}
 
 AssociatedContentManager::AssociatedContentManager(
     ConversationHandler* conversation)
@@ -492,9 +497,10 @@ void AssociatedContentManager::UpdateToolsForNewGenerationLoop(
            base::RepeatingClosure done,
            std::vector<std::unique_ptr<Tool>> tools) {
           if (self) {
-            for (auto& tool : tools) {
-              self->tools_.push_back(std::move(tool));
-            }
+            std::move(
+                tools.begin(),
+                tools.begin() + std::min(tools.size(), kMaxToolsPerContent),
+                std::back_inserter(self->tools_));
           }
           done.Run();
         },
