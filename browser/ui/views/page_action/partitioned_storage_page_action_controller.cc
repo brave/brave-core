@@ -15,6 +15,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/containers/containers_service_factory.h"
 #include "brave/browser/ui/containers/container_model.h"
+#include "brave/browser/ui/containers/containers_icon_generator.h"
 #include "brave/browser/ui/containers/containers_menu_model.h"
 #include "brave/browser/ui/tabs/containers_tab_menu_model_delegate.h"
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
@@ -180,8 +181,10 @@ void PartitionedStoragePageActionController::UpdatePageAction() {
   page_action_controller_->ShowSuggestionChip(kActionShowPartitionedStorage);
   page_action_controller_->SetAlwaysShowLabel(kActionShowPartitionedStorage,
                                               true);
-  page_action_controller_->OverrideImage(kActionShowPartitionedStorage,
-                                         model->icon());
+  page_action_controller_->OverrideImage(
+      kActionShowPartitionedStorage,
+      ui::ImageModel::FromImageSkia(containers::GenerateContainerForegroundIcon(
+          model->id(), model->container()->icon, 14, kDefaultScaleFactor)));
 
   // So far, we didn't have any limit for the name length, so if we don't
   // truncate the name, it will make url invisible because the PageActinView
