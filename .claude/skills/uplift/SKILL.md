@@ -242,8 +242,9 @@ Generate the title dynamically based on the categories of PRs actually included:
 Only list the PRs being uplifted. Do NOT mention excluded PRs in the PR body.
 
 The body created here intentionally omits `Resolves` directives for the
-underlying tracking issues — those are appended in Step 7 once each included
-PR's linked or freshly created issue is known.
+underlying tracking issues — those are inserted in Step 7 (immediately after the
+last `Uplift of #XXXX` line) once each included PR's linked or freshly created
+issue is known.
 
 Use a HEREDOC for correct formatting:
 
@@ -330,8 +331,8 @@ For **each PR included in the uplift**:
    Also inspect the PR body for closing keywords (`Fixes`, `Resolves`, `Closes`
    followed by `#NNN` or `<owner>/<repo>#NNN`). Normalize any matches to the
    `owner/repo#NNN` form — bare `#NNN` references default to
-   `brave/brave-browser` — and append each to `RESOLVED_ISSUES`. If at least
-   one issue is found this way, no new issue is needed — skip to the next PR.
+   `brave/brave-browser` — and append each to `RESOLVED_ISSUES`. If at least one
+   issue is found this way, no new issue is needed — skip to the next PR.
 
 2. **Create a new tracking issue** in `brave/brave-browser` (Brave's convention
    is that issues live in `brave-browser` while code lives in `brave-core`).
@@ -351,8 +352,8 @@ For **each PR included in the uplift**:
    )"
    ```
 
-   Capture the new issue number from the URL returned by `gh issue create`,
-   and append `brave/brave-browser#<ISSUE_NUMBER>` to `RESOLVED_ISSUES`.
+   Capture the new issue number from the URL returned by `gh issue create`, and
+   append `brave/brave-browser#<ISSUE_NUMBER>` to `RESOLVED_ISSUES`.
 
 3. **Close the new issue** (the original PR has already merged, so the work the
    issue describes is complete):
@@ -381,19 +382,40 @@ the run.
 
 ### Add `Resolves` directives to the uplift PR body
 
-After every included PR has been processed, prepend a `Resolves <ref>` line
-to the uplift PR body for each entry in `RESOLVED_ISSUES`. This is what
-makes the uplift PR show up as the closer of each tracked issue (and, more
-importantly to the user, makes the issue links visible from the PR).
+After every included PR has been processed, insert one `Resolves <ref>` line
+into the uplift PR body for each entry in `RESOLVED_ISSUES`. Place the new lines
+**immediately after the last `Uplift of #XXXX` line** (i.e. underneath the list
+of uplifts, before the blank line preceding `## Included PRs`). The opening of
+the body should end up looking like:
 
-Fetch the current body, prepend the lines, then update the PR:
+```
+Uplift of #XXXX
+Uplift of #YYYY
+Resolves brave/brave-browser#AAA
+Resolves brave/brave-browser#BBB
+
+## Included PRs
+...
+```
+
+Fetch the current body, splice the lines in at the correct position, then update
+the PR. One way to do the splice in bash:
 
 ```bash
 CURRENT_BODY=$(gh pr view <UPLIFT_PR_NUMBER> --repo brave/brave-core --json body --jq .body)
-gh pr edit <UPLIFT_PR_NUMBER> --repo brave/brave-core --body "$(printf 'Resolves brave/brave-browser#AAA\nResolves brave/brave-browser#BBB\n\n%s' "$CURRENT_BODY")"
+NEW_BODY=$(printf '%s' "$CURRENT_BODY" | python3 -c '
+import sys
+body = sys.stdin.read()
+resolves = ["Resolves brave/brave-browser#AAA", "Resolves brave/brave-browser#BBB"]
+lines = body.splitlines()
+idx = max((i for i, l in enumerate(lines) if l.startswith("Uplift of #")), default=-1)
+out = lines[:idx+1] + resolves + lines[idx+1:] if idx >= 0 else resolves + [""] + lines
+print("\n".join(out))
+')
+gh pr edit <UPLIFT_PR_NUMBER> --repo brave/brave-core --body "$NEW_BODY"
 ```
 
-Replace the example `AAA`/`BBB` lines with one line per entry in
+Replace the example `AAA`/`BBB` references with one line per entry in
 `RESOLVED_ISSUES`, in discovery order. If `RESOLVED_ISSUES` ended up empty
 (e.g., every lookup and issue creation failed), leave the body untouched.
 
