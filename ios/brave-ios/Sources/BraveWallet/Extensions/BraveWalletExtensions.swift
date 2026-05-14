@@ -859,3 +859,38 @@ extension BraveWallet.MeldCryptoCurrency {
     }
   }
 }
+
+extension BraveWallet.SignDataUnion {
+  var isWarningsNeeded: Bool {
+    if cardanoSignData != nil { return true }
+    if let ethSignTypedData {
+      let permitLikeTypes: [String] = [
+        "Permit",
+        "PermitSingle",
+        "PermitBatch",
+        "PermitTransferFrom",
+        "PermitWitnessTransferFrom",
+      ]
+      return permitLikeTypes.contains(ethSignTypedData.primaryType)
+        || ethSignTypedData.hasPermitShape
+    }
+    return false
+  }
+}
+
+extension BraveWallet.EthSignTypedData {
+  var hasPermitShape: Bool {
+    guard
+      let data = self.typesJson.data(using: .utf8),
+      let typeMap = try? JSONDecoder().decode([String: [[String: String]]].self, from: data),
+      let fields = typeMap[primaryType]
+    else { return false }
+    let fieldNames = Set(fields.compactMap { $0["name"] })
+    return fieldNames.contains("spender")
+      && (fieldNames.contains("value")
+        || fieldNames.contains("amount")
+        || fields.contains(where: {
+          ["PermitDetails", "PermitDetails[]", "TokenPermissions"].contains($0["type"])
+        }))
+  }
+}
