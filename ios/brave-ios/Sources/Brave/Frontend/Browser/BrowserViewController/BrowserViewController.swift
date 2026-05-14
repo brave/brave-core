@@ -577,6 +577,17 @@ public class BrowserViewController: UIViewController {
       BraveWebView.didResetConfiguration = { profile, configuration in
         configuration.prepareBraveConfiguration()
       }
+      let configuration = BraveWebViewConfiguration(profile: profileController.profile)
+      configuration.setSkusCredentialsFetchedCallback { [weak self] domain, message in
+        guard let self,
+          let skusService = Skus.SkusServiceFactory.get(profile: profileController.profile)
+        else {
+          return
+        }
+        Task {
+          await skusService.updatePreferences(for: domain, summaryData: Data(message.utf8))
+        }
+      }
     }
 
     Task { @MainActor in
