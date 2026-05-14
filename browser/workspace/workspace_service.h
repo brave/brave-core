@@ -15,22 +15,20 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/task/sequenced_task_runner.h"
-#include "base/time/time.h"
-#include "brave/browser/workspace/workspace.h"
-#include "brave/browser/workspace/workspace_utils.h"
+#include "brave/browser/workspace/workspace_metadata.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/sessions/core/session_command.h"
 
 class PrefService;
 class Profile;
 
-// Profile preference key — stores a dict keyed by sanitized workspace name.
+// Profile preference key — stores a dict keyed by hash of the display name.
 inline constexpr char kWorkspacesMetadataPref[] = "brave.workspaces";
 
 // Per-profile service that manages saving and restoring named workspaces.
 //
 // Each workspace is stored in its own subdirectory under
-//   {profile_dir}/workspaces/{sanitized_name}/
+//   {profile_dir}/workspaces/{hashed_name}/
 //
 // Inside that subdirectory:
 //   Sessions/Session_*   — full browser state in Chromium's session-command
@@ -45,8 +43,7 @@ inline constexpr char kWorkspacesMetadataPref[] = "brave.workspaces";
 // sequence, then all blocking I/O tasks are posted to that same runner.
 class WorkspaceService : public KeyedService {
  public:
-  explicit WorkspaceService(PrefService* pref_service,
-                            const base::FilePath profile_path);
+  explicit WorkspaceService(Profile* profile);
   ~WorkspaceService() override;
 
   WorkspaceService(const WorkspaceService&) = delete;
@@ -55,22 +52,14 @@ class WorkspaceService : public KeyedService {
   // Returns summary information for all saved workspaces, sorted by time
   // modified (most-recent first).  Reads from the profile preference; no disk
   // I/O.
-  std::vector<WorkspaceInfo> ListWorkspaces() const;
+  std::vector<WorkspaceMetadata> ListWorkspaces() const;
 
   // Writes workspace metadata into the profile preference.  Called on the UI
   // thread after a successful WriteWorkspaceToDisk background task.
-  void SaveWorkspaceMetadata(const std::string& name,
-                             int window_count,
-                             int tab_count,
-                             base::Time modified_at);
+  void SaveWorkspaceMetadata(const WorkspaceMetadata& meta);
 
   // Removes the workspace metadata entry from the profile preference.
   void RemoveWorkspaceMetadata(const std::string& name);
-
-  // Deletes |workspace_dir|.  Returns true on success.  Runs on a background
-  // thread; the caller must resolve the path on the UI thread first via
-  // GetWorkspaceDirForName().
-  static bool DeleteWorkspace(const base::FilePath& workspace_dir);
 
   // Returns the directory that contains all workspace subdirectories.
   base::FilePath GetWorkspacesDir() const;
@@ -82,14 +71,14 @@ class WorkspaceService : public KeyedService {
 
   // Serializes all open windows/tabs for this profile and writes them to disk
   // under the given workspace name.
-  void SaveWorkspace(Profile* profile, const std::string& name);
+  void SaveWorkspace(const std::string& name);
 
   // Reads the named workspace from disk and opens its windows/tabs.
-  void RestoreWorkspace(Profile* profile, const std::string& name);
+  void RestoreWorkspace(const std::string& name);
 
   // Placeholder entry points for the save/open dialogs.
-  void ShowSaveWorkspaceDialog(Profile* profile);
-  void ShowOpenWorkspaceDialog(Profile* profile);
+  void ShowSaveWorkspaceDialog();
+  void ShowOpenWorkspaceDialog();
 
   base::WeakPtr<WorkspaceService> GetWeakPtr();
 
@@ -97,25 +86,13 @@ class WorkspaceService : public KeyedService {
   void Shutdown() override;
 
  private:
-  static std::string SanitizeName(const std::string& name);
-
-  // Returns the pref key for |name|.  If |name| already has a saved entry,
-  // returns its existing key.  For a new name, returns SanitizeName(name) if
-  // that key is free, or SanitizeName(name) + "-" + PersistentHash(name) if
-  // another display name has claimed the base key.  Must be called on the UI
-  // thread because it reads from the profile preference.
-  std::string ComputeUniqueKey(const std::string& name) const;
-
-  base::FilePath WorkspacesDir() const;
-  base::FilePath WorkspaceDirForName(const std::string& name) const;
-
   // Called on the UI thread with the commands read from disk by
   // RestoreWorkspace.
   void DoRestoreWorkspace(
-      base::WeakPtr<Profile> profile,
       std::vector<std::unique_ptr<sessions::SessionCommand>> commands);
 
-  const base::FilePath profile_path_;
+  raw_ptr<Profile> profile_;
+  const base::FilePath workspaces_path_;
   raw_ptr<PrefService> pref_service_;
   scoped_refptr<base::SequencedTaskRunner> io_task_runner_;
 

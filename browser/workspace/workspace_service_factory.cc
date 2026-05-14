@@ -11,6 +11,7 @@
 #include "brave/browser/workspace/workspace_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_selections.h"
+#include "components/pref_registry/pref_registry_syncable.h"
 
 // static
 WorkspaceServiceFactory* WorkspaceServiceFactory::GetInstance() {
@@ -38,8 +39,7 @@ WorkspaceServiceFactory::BuildServiceInstanceForBrowserContext(
   }
 
   Profile* profile = Profile::FromBrowserContext(context);
-  return std::make_unique<WorkspaceService>(profile->GetPrefs(),
-                                            profile->GetPath());
+  return std::make_unique<WorkspaceService>(profile);
 }
 
 void WorkspaceServiceFactory::RegisterProfilePrefs(
@@ -52,5 +52,7 @@ bool WorkspaceServiceFactory::ServiceIsCreatedWithBrowserContext() const {
 }
 
 bool WorkspaceServiceFactory::ServiceIsNULLWhileTesting() const {
+  // Workspace Service does actual file I/O. We should try to avoid that in
+  // tests.
   return true;
 }

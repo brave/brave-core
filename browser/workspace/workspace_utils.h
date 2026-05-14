@@ -12,9 +12,16 @@
 #include "base/files/file_path.h"
 #include "base/functional/callback.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/values.h"
+#include "brave/browser/workspace/workspace_metadata.h"
 #include "components/sessions/core/command_storage_backend.h"
 #include "components/sessions/core/command_storage_manager.h"
 #include "components/sessions/core/session_command.h"
+#include "components/sessions/core/session_id.h"
+#include "ui/base/mojom/window_show_state.mojom.h"
+#include "ui/gfx/geometry/rect.h"
+
+class TabStripModel;
 
 // Session type used for all workspace files.  Exposed so callers can
 // construct a CommandStorageBackend on the UI thread before posting I/O
@@ -45,5 +52,24 @@ void WriteWorkspaceToDisk(
 std::vector<std::unique_ptr<sessions::SessionCommand>> ReadWorkspaceFromDisk(
     const base::FilePath& workspace_dir,
     scoped_refptr<sessions::CommandStorageBackend> backend);
+
+// Parses a workspace metadata dict (the value stored under
+// kWorkspacesMetadataPref) and returns a list sorted by modified_at descending.
+std::vector<WorkspaceMetadata> ListWorkspacesFromDict(
+    const base::DictValue& dict);
+
+// Serializes |meta| into a single dict entry suitable for storing under its key
+// in kWorkspacesMetadataPref.
+base::DictValue WorkspaceMetadataToDictEntry(const WorkspaceMetadata& meta);
+
+// Appends session commands for a single browser window to |commands|.
+// Serializes window type, bounds, tab groups, tabs (with full navigation
+// history), pinned state, and the active tab index.
+void AppendBrowserSessionCommands(
+    const SessionID& window_id,
+    TabStripModel* tsm,
+    gfx::Rect restored_bounds,
+    ui::mojom::WindowShowState restored_state,
+    std::vector<std::unique_ptr<sessions::SessionCommand>>& commands);
 
 #endif  // BRAVE_BROWSER_WORKSPACE_WORKSPACE_UTILS_H_

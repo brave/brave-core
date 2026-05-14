@@ -12,11 +12,9 @@
 #include <utility>
 #include <vector>
 
-#include "base/files/file_util.h"
 #include "base/functional/bind.h"
 #include "base/hash/hash.h"
 #include "base/logging.h"
-#include "base/strings/string_util.h"
 #include "base/task/bind_post_task.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
@@ -31,182 +29,59 @@
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
-#include "components/pref_registry/pref_registry_syncable.h"
-#include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
-#include "components/sessions/content/content_serialized_navigation_builder.h"
 #include "components/sessions/core/session_id.h"
 #include "components/sessions/core/session_service_commands.h"
 #include "components/tab_groups/tab_group_visual_data.h"
-#include "components/tabs/public/tab_group.h"
-#include "content/public/browser/navigation_entry.h"
-#include "content/public/browser/web_contents.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace {
 
-// Keys within each per-workspace dict entry.
-constexpr const char kWorkspaceName[] = "name";
-constexpr const char kWorkspaceWindowCount[] = "number-of-windows";
-constexpr const char kWorkspaceTabCount[] = "number-of-tabs";
-constexpr const char kWorkspaceModifiedAt[] = "modified-at";
-
-// Appends session commands for a single browser window to |commands| and
-// updates |active_window_id| to this window if it is active (focused), or if
-// no active window has been recorded yet. Returns the tab count serialized.
-void AppendBrowserSessionCommands(
-    SessionID& window_id,
-    TabStripModel* tsm,
-    gfx::Rect restored_bounds,
-    ui::mojom::WindowShowState restored_state,
-    std::vector<std::unique_ptr<sessions::SessionCommand>>& commands) {
-  commands.push_back(sessions::CreateSetWindowTypeCommand(
-      window_id, sessions::SessionWindow::TYPE_NORMAL));
-  commands.push_back(sessions::CreateSetWindowBoundsCommand(
-      window_id, restored_bounds, restored_state));
-
-  // Emit group metadata for every tab group in this window.
-  if (tsm->group_model()) {
-    for (const tab_groups::TabGroupId& group_id :
-         tsm->group_model()->ListTabGroups()) {
-      auto* group = tsm->group_model()->GetTabGroup(group_id);
-      if (!group || !group->visual_data()) {
-        continue;
-      }
-      commands.push_back(sessions::CreateTabGroupMetadataUpdateCommand(
-          group_id, group->visual_data()));
-    }
-  }
-
-  for (int i = 0; i < tsm->count(); ++i) {
-    content::WebContents* contents = tsm->GetWebContentsAt(i);
-    CHECK(contents);
-
-    SessionID tab_id = SessionID::NewUnique();
-
-    commands.push_back(sessions::CreateSetTabWindowCommand(window_id, tab_id));
-    commands.push_back(sessions::CreateSetTabIndexInWindowCommand(tab_id, i));
-
-    if (tsm->IsTabPinned(i)) {
-      commands.push_back(sessions::CreatePinnedStateCommand(tab_id, true));
-    }
-
-    std::optional<tab_groups::TabGroupId> group_id = tsm->GetTabGroupForTab(i);
-    if (group_id.has_value()) {
-      commands.push_back(sessions::CreateTabGroupCommand(tab_id, group_id));
-    }
-
-    // Serialize the full navigation history for this tab.
-    auto& controller = contents->GetController();
-    int nav_count = controller.GetEntryCount();
-    int current_entry = controller.GetCurrentEntryIndex();
-    for (int j = 0; j < nav_count; ++j) {
-      content::NavigationEntry* entry = controller.GetEntryAtIndex(j);
-      if (!entry) {
-        continue;
-      }
-      auto serialized =
-          sessions::ContentSerializedNavigationBuilder::FromNavigationEntry(
-              j, entry);
-      commands.push_back(
-          sessions::CreateUpdateTabNavigationCommand(tab_id, serialized));
-    }
-
-    commands.push_back(sessions::CreateSetSelectedNavigationIndexCommand(
-        tab_id, current_entry));
-  }
-
-  commands.push_back(sessions::CreateSetSelectedTabInWindowCommand(
-      window_id, tsm->active_index()));
+std::string ComputeKey(const std::string& name) {
+  return absl::StrFormat("%08x", base::PersistentHash(name));
 }
 
 }  // namespace
 
-WorkspaceService::WorkspaceService(PrefService* pref_service,
-                                   const base::FilePath profile_path)
-    : profile_path_(profile_path),
-      pref_service_(pref_service),
+WorkspaceService::WorkspaceService(Profile* profile)
+    : profile_(profile),
+      workspaces_path_(profile->GetPath().AppendASCII("workspaces")),
+      pref_service_(profile->GetPrefs()),
       io_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})) {}
 
 WorkspaceService::~WorkspaceService() = default;
 
-std::vector<WorkspaceInfo> WorkspaceService::ListWorkspaces() const {
-  std::vector<WorkspaceInfo> result;
-  const base::DictValue& all = pref_service_->GetDict(kWorkspacesMetadataPref);
-
-  for (const auto [key, value] : all) {
-    const base::DictValue* entry = value.GetIfDict();
-    if (!entry) {
-      continue;
-    }
-    const std::string* name = entry->FindString(kWorkspaceName);
-    if (!name || name->empty()) {
-      continue;
-    }
-    std::optional<double> modified_at = entry->FindDouble(kWorkspaceModifiedAt);
-    if (!modified_at) {
-      continue;
-    }
-    WorkspaceInfo info;
-    info.name = *name;
-    info.number_of_windows = entry->FindInt(kWorkspaceWindowCount).value_or(1);
-    info.number_of_tabs = entry->FindInt(kWorkspaceTabCount).value_or(0);
-    info.modified_at = base::Time::FromSecondsSinceUnixEpoch(*modified_at);
-    result.push_back(std::move(info));
-  }
-
-  std::sort(result.begin(), result.end(),
-            [](const WorkspaceInfo& a, const WorkspaceInfo& b) {
-              return a.modified_at > b.modified_at;
-            });
-  return result;
+std::vector<WorkspaceMetadata> WorkspaceService::ListWorkspaces() const {
+  return ListWorkspacesFromDict(
+      pref_service_->GetDict(kWorkspacesMetadataPref));
 }
 
-void WorkspaceService::SaveWorkspaceMetadata(const std::string& name,
-                                             int window_count,
-                                             int tab_count,
-                                             base::Time modified_at) {
+void WorkspaceService::SaveWorkspaceMetadata(const WorkspaceMetadata& meta) {
   base::DictValue updated =
       pref_service_->GetDict(kWorkspacesMetadataPref).Clone();
-
-  base::DictValue entry;
-  entry.Set(kWorkspaceName, name);
-  entry.Set(kWorkspaceWindowCount, window_count);
-  entry.Set(kWorkspaceTabCount, tab_count);
-  entry.Set(kWorkspaceModifiedAt, modified_at.InSecondsFSinceUnixEpoch());
-
-  updated.Set(ComputeUniqueKey(name), std::move(entry));
+  updated.Set(ComputeKey(meta.name), WorkspaceMetadataToDictEntry(meta));
   pref_service_->SetDict(kWorkspacesMetadataPref, std::move(updated));
 }
 
 void WorkspaceService::RemoveWorkspaceMetadata(const std::string& name) {
   base::DictValue updated =
       pref_service_->GetDict(kWorkspacesMetadataPref).Clone();
-  updated.Remove(ComputeUniqueKey(name));
+  updated.Remove(ComputeKey(name));
   pref_service_->SetDict(kWorkspacesMetadataPref, std::move(updated));
 }
 
-// static
-bool WorkspaceService::DeleteWorkspace(const base::FilePath& workspace_dir) {
-  if (!base::PathExists(workspace_dir)) {
-    return true;
-  }
-  return base::DeletePathRecursively(workspace_dir);
-}
-
 base::FilePath WorkspaceService::GetWorkspacesDir() const {
-  return WorkspacesDir();
+  return workspaces_path_;
 }
 
 base::FilePath WorkspaceService::GetWorkspaceDirForName(
     const std::string& name) const {
-  return WorkspaceDirForName(name);
+  return workspaces_path_.AppendASCII(ComputeKey(name));
 }
 
-void WorkspaceService::SaveWorkspace(Profile* profile,
-                                     const std::string& name) {
+void WorkspaceService::SaveWorkspace(const std::string& name) {
   if (name.empty()) {
     return;
   }
@@ -221,17 +96,17 @@ void WorkspaceService::SaveWorkspace(Profile* profile,
 
   GlobalBrowserCollection::GetInstance()->ForEach(
       [&](BrowserWindowInterface* bwi) {
-        if (bwi->GetProfile() != profile ||
+        if (bwi->GetProfile() != profile_ ||
             bwi->GetType() != BrowserWindowInterface::Type::TYPE_NORMAL) {
           return true;
         }
 
-        SessionID window_id = SessionID::NewUnique();
         int tabs = bwi->GetTabStripModel()->count();
         if (tabs == 0) {
           return true;
         }
 
+        SessionID window_id = SessionID::NewUnique();
         auto* window = bwi->GetWindow();
         AppendBrowserSessionCommands(window_id, bwi->GetTabStripModel(),
                                      window->GetRestoredBounds(),
@@ -266,7 +141,12 @@ void WorkspaceService::SaveWorkspace(Profile* profile,
   // BindPostTask ensures on_error always runs on the UI thread whether it is
   // invoked by AppendCommands or directly by WriteWorkspaceToDisk on a
   // directory-creation failure.
-  SaveWorkspaceMetadata(name, window_count, tab_count, base::Time::Now());
+  WorkspaceMetadata meta;
+  meta.name = name;
+  meta.number_of_windows = window_count;
+  meta.number_of_tabs = tab_count;
+  meta.modified_at = base::Time::Now();
+  SaveWorkspaceMetadata(meta);
 
   // "Rolling back" is just removing the metadata from the dictionary.
   auto on_error = base::BindPostTask(
@@ -280,8 +160,7 @@ void WorkspaceService::SaveWorkspace(Profile* profile,
                                 std::move(on_error)));
 }
 
-void WorkspaceService::RestoreWorkspace(Profile* profile,
-                                        const std::string& name) {
+void WorkspaceService::RestoreWorkspace(const std::string& name) {
   base::FilePath path = GetWorkspaceDirForName(name);
   auto backend = base::MakeRefCounted<sessions::CommandStorageBackend>(
       io_task_runner_, path, kWorkspaceSessionType,
@@ -291,29 +170,27 @@ void WorkspaceService::RestoreWorkspace(Profile* profile,
       FROM_HERE,
       base::BindOnce(&ReadWorkspaceFromDisk, std::move(path),
                      std::move(backend)),
-      base::BindOnce(&WorkspaceService::DoRestoreWorkspace, GetWeakPtr(),
-                     profile->GetWeakPtr()));
+      base::BindOnce(&WorkspaceService::DoRestoreWorkspace, GetWeakPtr()));
 }
 
-void WorkspaceService::ShowSaveWorkspaceDialog(Profile* profile) {
+void WorkspaceService::ShowSaveWorkspaceDialog() {
   // TODO(https://github.com/brave/brave-browser/issues/55108)
-  SaveWorkspace(profile, "example-workspace");
+  SaveWorkspace("example-workspace");
 }
 
-void WorkspaceService::ShowOpenWorkspaceDialog(Profile* profile) {
+void WorkspaceService::ShowOpenWorkspaceDialog() {
   // TODO(https://github.com/brave/brave-browser/issues/55108)
-  RestoreWorkspace(profile, "example-workspace");
+  RestoreWorkspace("example-workspace");
 }
 
 void WorkspaceService::DoRestoreWorkspace(
-    base::WeakPtr<Profile> profile,
     std::vector<std::unique_ptr<sessions::SessionCommand>> commands) {
   if (commands.empty()) {
     DVLOG(1) << "Could not load workspace: no commands";
     return;
   }
 
-  if (!profile) {
+  if (!profile_) {
     DVLOG(1) << "Could not load workspace: profile is null";
     return;
   }
@@ -343,11 +220,11 @@ void WorkspaceService::DoRestoreWorkspace(
       continue;
     }
 
-    if (Browser::GetCreationStatusForProfile(profile.get()) !=
+    if (Browser::GetCreationStatusForProfile(profile_) !=
         Browser::CreationStatus::kOk) {
       continue;
     }
-    Browser::CreateParams params(Browser::TYPE_NORMAL, profile.get(), false);
+    Browser::CreateParams params(Browser::TYPE_NORMAL, profile_, false);
     params.initial_bounds = window->bounds;
     params.initial_show_state = window->show_state;
     params.initial_workspace = window->workspace;
@@ -403,65 +280,4 @@ base::WeakPtr<WorkspaceService> WorkspaceService::GetWeakPtr() {
 
 void WorkspaceService::Shutdown() {
   weak_ptr_factory_.InvalidateWeakPtrs();
-}
-
-// static
-std::string WorkspaceService::SanitizeName(const std::string& name) {
-  std::string sanitized;
-  sanitized.reserve(name.size());
-  for (char c : name) {
-    if (base::IsAsciiAlphaNumeric(c) || c == '-' || c == '_') {
-      sanitized += base::ToLowerASCII(c);
-    } else if (c == ' ') {
-      sanitized += '-';
-    }
-    if (sanitized.size() >= 64) {
-      break;
-    }
-  }
-  if (sanitized.empty()) {
-    // Use a stable hash of the original so two distinct inputs that both
-    // produce an empty sanitized form (e.g. "" and "!!!") still get different
-    // base keys, preventing silent collisions at a fixed fallback string.
-    return absl::StrFormat("workspace-%08x", base::PersistentHash(name));
-  }
-  return sanitized;
-}
-
-base::FilePath WorkspaceService::WorkspacesDir() const {
-  return profile_path_.AppendASCII("workspaces");
-}
-
-std::string WorkspaceService::ComputeUniqueKey(const std::string& name) const {
-  const base::DictValue& all = pref_service_->GetDict(kWorkspacesMetadataPref);
-  const std::string base_key = SanitizeName(name);
-
-  // Returns true if |key| is free to use for |name|: either the slot is empty
-  // or it already belongs to this display name (update / re-save case).
-  auto is_available = [&](const std::string& key) {
-    const base::DictValue* entry = all.FindDict(key);
-    if (!entry) {
-      return true;
-    }
-    const std::string* stored = entry->FindString(kWorkspaceName);
-    return stored && *stored == name;
-  };
-
-  if (is_available(base_key)) {
-    return base_key;
-  }
-  // Append a stable hash of the display name so the key is deterministic
-  // without a serial number.  Two names that collide on SanitizeName are
-  // overwhelmingly unlikely to also collide on PersistentHash.
-  return absl::StrFormat("%s-%08x", base_key.c_str(),
-                         base::PersistentHash(name));
-}
-
-base::FilePath WorkspaceService::WorkspaceDirForName(
-    const std::string& name) const {
-  const std::string key = ComputeUniqueKey(name);
-  // SanitizeName's allow-list ([a-z0-9-_] only) guarantees no path separators
-  // or dot sequences can survive into the key.  Assert as defence-in-depth.
-  DCHECK(!key.empty() && key.find_first_of("/\\.") == std::string::npos);
-  return WorkspacesDir().AppendASCII(key);
 }

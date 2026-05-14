@@ -8,7 +8,10 @@
 
 #include "base/no_destructor.h"
 #include "chrome/browser/profiles/profile_keyed_service_factory.h"
-#include "components/pref_registry/pref_registry_syncable.h"
+
+namespace user_prefs {
+class PrefRegistrySyncable;
+}  // namespace user_prefs
 
 class WorkspaceService;
 class Profile;

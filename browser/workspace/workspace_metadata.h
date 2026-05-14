@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_WORKSPACE_WORKSPACE_H_
-#define BRAVE_BROWSER_WORKSPACE_WORKSPACE_H_
+#ifndef BRAVE_BROWSER_WORKSPACE_WORKSPACE_METADATA_H_
+#define BRAVE_BROWSER_WORKSPACE_WORKSPACE_METADATA_H_
 
 #include <string>
 
@@ -12,14 +12,11 @@
 
 // Lightweight summary returned by ListWorkspaces(), used to populate UI.
 // The full session state is stored as Chromium session commands on disk.
-struct WorkspaceInfo {
-  WorkspaceInfo();
-  ~WorkspaceInfo();
-
-  std::string name = "";
+struct WorkspaceMetadata {
+  std::string name;
   base::Time modified_at;
   int number_of_windows = 0;
   int number_of_tabs = 0;
 };
 
-#endif  // BRAVE_BROWSER_WORKSPACE_WORKSPACE_H_
+#endif  // BRAVE_BROWSER_WORKSPACE_WORKSPACE_METADATA_H_

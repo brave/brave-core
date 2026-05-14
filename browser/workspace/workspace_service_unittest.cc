@@ -9,8 +9,8 @@
 #include <vector>
 
 #include "base/files/file_util.h"
-#include "base/files/scoped_temp_dir.h"
 #include "base/functional/bind.h"
+#include "base/memory/raw_ptr.h"
 #include "base/task/bind_post_task.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
@@ -20,7 +20,7 @@
 #include "base/test/test_future.h"
 #include "base/time/time.h"
 #include "brave/browser/workspace/features.h"
-#include "brave/browser/workspace/workspace.h"
+#include "brave/browser/workspace/workspace_metadata.h"
 #include "brave/browser/workspace/workspace_service_factory.h"
 #include "brave/browser/workspace/workspace_utils.h"
 #include "chrome/browser/profiles/profile.h"
@@ -30,22 +30,38 @@
 #include "components/sessions/core/session_id.h"
 #include "components/sessions/core/session_service_commands.h"
 #include "components/sessions/core/session_types.h"
-#include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+namespace {
+WorkspaceMetadata MakeMeta(const std::string& name,
+                           int windows,
+                           int tabs,
+                           base::Time t) {
+  WorkspaceMetadata meta;
+  meta.name = name;
+  meta.number_of_windows = windows;
+  meta.number_of_tabs = tabs;
+  meta.modified_at = t;
+  return meta;
+}
+}  // namespace
 
 class WorkspaceServiceTest : public ::testing::Test {
  protected:
   void SetUp() override {
-    ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
-    pref_service_.registry()->RegisterDictionaryPref(kWorkspacesMetadataPref);
-    service_ =
-        std::make_unique<WorkspaceService>(&pref_service_, temp_dir_.GetPath());
+    ASSERT_TRUE(profile_manager_.SetUp());
+    // Instantiate the factory so it registers with
+    // BrowserContextDependencyManager before profile creation, ensuring
+    // kWorkspacesMetadataPref is registered.
+    WorkspaceServiceFactory::GetInstance();
+    profile_ = profile_manager_.CreateTestingProfile("test");
+    service_ = std::make_unique<WorkspaceService>(profile_);
   }
 
   content::BrowserTaskEnvironment task_environment_;
-  sync_preferences::TestingPrefServiceSyncable pref_service_;
-  base::ScopedTempDir temp_dir_;
+  TestingProfileManager profile_manager_{TestingBrowserProcess::GetGlobal()};
+  raw_ptr<Profile> profile_ = nullptr;
   std::unique_ptr<WorkspaceService> service_;
 };
 
@@ -59,8 +75,7 @@ TEST_F(WorkspaceServiceTest, ListWorkspaces_InitiallyEmpty) {
 // Verify saving preference adds workspace to list
 TEST_F(WorkspaceServiceTest, SaveMetadata_AppearsInList) {
   base::Time t = base::Time::FromSecondsSinceUnixEpoch(1700000000.0);
-  service_->SaveWorkspaceMetadata("My Workspace", /*window_count=*/2,
-                                  /*tab_count=*/5, t);
+  service_->SaveWorkspaceMetadata(MakeMeta("My Workspace", 2, 5, t));
 
   auto workspaces = service_->ListWorkspaces();
   ASSERT_EQ(workspaces.size(), 1u);
@@ -76,9 +91,9 @@ TEST_F(WorkspaceServiceTest, ListWorkspaces_SortedByModifiedAtDescending) {
   base::Time t1 = base::Time::FromSecondsSinceUnixEpoch(1700000000.0);
   base::Time t2 = base::Time::FromSecondsSinceUnixEpoch(1700000100.0);
   base::Time t3 = base::Time::FromSecondsSinceUnixEpoch(1699999900.0);
-  service_->SaveWorkspaceMetadata("Alpha", 1, 3, t1);
-  service_->SaveWorkspaceMetadata("Beta", 1, 5, t2);
-  service_->SaveWorkspaceMetadata("Gamma", 1, 2, t3);
+  service_->SaveWorkspaceMetadata(MakeMeta("Alpha", 1, 3, t1));
+  service_->SaveWorkspaceMetadata(MakeMeta("Beta", 1, 5, t2));
+  service_->SaveWorkspaceMetadata(MakeMeta("Gamma", 1, 2, t3));
 
   auto workspaces = service_->ListWorkspaces();
   ASSERT_EQ(workspaces.size(), 3u);
@@ -90,7 +105,7 @@ TEST_F(WorkspaceServiceTest, ListWorkspaces_SortedByModifiedAtDescending) {
 // Removing preference removes it from the list
 TEST_F(WorkspaceServiceTest, RemoveMetadata_DisappearsFromList) {
   base::Time t = base::Time::FromSecondsSinceUnixEpoch(1700000000.0);
-  service_->SaveWorkspaceMetadata("Work", 1, 3, t);
+  service_->SaveWorkspaceMetadata(MakeMeta("Work", 1, 3, t));
   ASSERT_EQ(service_->ListWorkspaces().size(), 1u);
 
   service_->RemoveWorkspaceMetadata("Work");
@@ -101,8 +116,8 @@ TEST_F(WorkspaceServiceTest, RemoveMetadata_DisappearsFromList) {
 TEST_F(WorkspaceServiceTest, SaveMetadata_SameNameOverwrites) {
   base::Time t1 = base::Time::FromSecondsSinceUnixEpoch(1700000000.0);
   base::Time t2 = base::Time::FromSecondsSinceUnixEpoch(1700000100.0);
-  service_->SaveWorkspaceMetadata("Work", 1, 3, t1);
-  service_->SaveWorkspaceMetadata("Work", 2, 7, t2);
+  service_->SaveWorkspaceMetadata(MakeMeta("Work", 1, 3, t1));
+  service_->SaveWorkspaceMetadata(MakeMeta("Work", 2, 7, t2));
 
   auto workspaces = service_->ListWorkspaces();
   ASSERT_EQ(workspaces.size(), 1u);
@@ -113,46 +128,18 @@ TEST_F(WorkspaceServiceTest, SaveMetadata_SameNameOverwrites) {
 
 // ---- Name / path computation tests -----------------------------------------
 
-// Test the path sanitization (lowercases, space => dash, etc)
-TEST_F(WorkspaceServiceTest, GetWorkspaceDirForName_SpacesConvertedToDashes) {
-  base::FilePath path = service_->GetWorkspaceDirForName("My Workspace");
-  EXPECT_EQ(path.BaseName().MaybeAsASCII(), "my-workspace");
-}
-
-// Two display names that sanitize to the same base key ("work-space") must get
-// different subdirectory paths once the first is recorded in the pref.
+// Key is a stable hex hash — different display names get different directories.
 TEST_F(WorkspaceServiceTest,
-       GetWorkspaceDirForName_CollidingNames_DifferentPaths) {
-  base::Time t = base::Time::FromSecondsSinceUnixEpoch(1700000000.0);
-  service_->SaveWorkspaceMetadata("Work Space", 1, 3, t);
-
+       GetWorkspaceDirForName_DifferentNamesDifferentDirs) {
   base::FilePath path1 = service_->GetWorkspaceDirForName("Work Space");
   base::FilePath path2 = service_->GetWorkspaceDirForName("Work-Space");
   EXPECT_NE(path1, path2);
-
-  // Version w/ space exists already; that version should be unmodified.
-  EXPECT_EQ(path1.BaseName().value(), FILE_PATH_LITERAL("work-space"));
-
-  // Version w/ dash is a new permutation. It'll have a base::PersistantHash.
-  EXPECT_EQ(path2.BaseName().value(), FILE_PATH_LITERAL("work-space-46f45668"));
 }
 
-// ---- DeleteWorkspace tests --------------------------------------------------
-
-// Deleting workspace deletes the workspace directory in profile.
-TEST_F(WorkspaceServiceTest, DeleteWorkspace_RemovesDirectory) {
-  base::FilePath workspace_dir = service_->GetWorkspaceDirForName("test");
-  ASSERT_TRUE(base::CreateDirectory(workspace_dir));
-
-  EXPECT_TRUE(WorkspaceService::DeleteWorkspace(workspace_dir));
-  EXPECT_FALSE(base::PathExists(workspace_dir));
-}
-
-// Handle deleting a workspace that doesn't exist
-TEST_F(WorkspaceServiceTest, DeleteWorkspace_NonExistent_ReturnsTrue) {
-  base::FilePath nonexistent =
-      temp_dir_.GetPath().AppendASCII("no-such-workspace");
-  EXPECT_TRUE(WorkspaceService::DeleteWorkspace(nonexistent));
+// Same name always resolves to the same directory (deterministic key).
+TEST_F(WorkspaceServiceTest, GetWorkspaceDirForName_SameNameSameDir) {
+  EXPECT_EQ(service_->GetWorkspaceDirForName("My Workspace"),
+            service_->GetWorkspaceDirForName("My Workspace"));
 }
 
 // ---- Disk I/O tests (async, use RunUntil not RunUntilIdle) ------------------
@@ -278,10 +265,11 @@ TEST_F(WorkspaceServiceFactoryTest,
   // ServiceIsNULLWhileTesting() suppresses service creation for test profiles.
   // Provide a testing factory so the feature-enabled path is exercised.
   WorkspaceServiceFactory::GetInstance()->SetTestingFactory(
-      profile, base::BindLambdaForTesting([](content::BrowserContext* ctx)
-                                              -> std::unique_ptr<KeyedService> {
-        auto* p = Profile::FromBrowserContext(ctx);
-        return std::make_unique<WorkspaceService>(p->GetPrefs(), p->GetPath());
-      }));
+      profile,
+      base::BindLambdaForTesting(
+          [](content::BrowserContext* ctx) -> std::unique_ptr<KeyedService> {
+            auto* p = Profile::FromBrowserContext(ctx);
+            return std::make_unique<WorkspaceService>(p);
+          }));
   EXPECT_NE(WorkspaceServiceFactory::GetForProfile(profile), nullptr);
 }
