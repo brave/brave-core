@@ -10,7 +10,6 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
-#include "base/notreached.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -77,8 +76,7 @@ BraveConfirmInfoBar::BraveConfirmInfoBar(
   if (buttons & ConfirmInfoBarDelegate::BUTTON_CANCEL) {
     cancel_button_ = create_button(ConfirmInfoBarDelegate::BUTTON_CANCEL,
                                    &BraveConfirmInfoBar::CancelButtonPressed);
-    if (buttons == ConfirmInfoBarDelegate::BUTTON_CANCEL ||
-        delegate_ptr->IsProminent(ConfirmInfoBarDelegate::BUTTON_CANCEL)) {
+    if (buttons == ConfirmInfoBarDelegate::BUTTON_CANCEL) {
       cancel_button_->SetStyle(ui::ButtonStyle::kProminent);
     }
     cancel_button_->SetImageModel(
@@ -88,22 +86,6 @@ BraveConfirmInfoBar::BraveConfirmInfoBar(
         delegate_ptr->GetButtonEnabled(ConfirmInfoBarDelegate::BUTTON_CANCEL));
     cancel_button_->SetTooltipText(
         delegate_ptr->GetButtonTooltip(ConfirmInfoBarDelegate::BUTTON_CANCEL));
-  }
-
-  if (buttons & ConfirmInfoBarDelegate::BUTTON_EXTRA) {
-    extra_button_ = create_button(ConfirmInfoBarDelegate::BUTTON_EXTRA,
-                                  &BraveConfirmInfoBar::ExtraButtonPressed);
-    if (buttons == ConfirmInfoBarDelegate::BUTTON_EXTRA ||
-        delegate_ptr->IsProminent(ConfirmInfoBarDelegate::BUTTON_EXTRA)) {
-      extra_button_->SetStyle(ui::ButtonStyle::kProminent);
-    }
-    extra_button_->SetImageModel(
-        views::Button::STATE_NORMAL,
-        delegate_ptr->GetButtonImage(ConfirmInfoBarDelegate::BUTTON_EXTRA));
-    extra_button_->SetEnabled(
-        delegate_ptr->GetButtonEnabled(ConfirmInfoBarDelegate::BUTTON_EXTRA));
-    extra_button_->SetTooltipText(
-        delegate_ptr->GetButtonTooltip(ConfirmInfoBarDelegate::BUTTON_EXTRA));
   }
 
   link_ = AddChildView(CreateLink(delegate_ptr->GetLinkText()));
@@ -132,18 +114,6 @@ BraveConfirmInfoBar::BraveConfirmInfoBar(
 
 BraveConfirmInfoBar::~BraveConfirmInfoBar() = default;
 
-views::MdTextButton* BraveConfirmInfoBar::GetButtonById(int id) {
-  switch (id) {
-    case ConfirmInfoBarDelegate::BUTTON_OK:
-      return ok_button_;
-    case ConfirmInfoBarDelegate::BUTTON_CANCEL:
-      return cancel_button_;
-    case ConfirmInfoBarDelegate::BUTTON_EXTRA:
-      return extra_button_;
-  }
-  NOTREACHED();
-}
-
 void BraveConfirmInfoBar::Layout(PassKey) {
   LayoutSuperclass<InfoBarView>(this);
 
@@ -153,10 +123,6 @@ void BraveConfirmInfoBar::Layout(PassKey) {
 
   if (cancel_button_) {
     cancel_button_->SizeToPreferredSize();
-  }
-
-  if (extra_button_) {
-    extra_button_->SizeToPreferredSize();
   }
 
   int x = GetStartX();
@@ -176,17 +142,17 @@ void BraveConfirmInfoBar::Layout(PassKey) {
             DISTANCE_INFOBAR_HORIZONTAL_ICON_LABEL_PADDING);
   }
 
-  auto order = GetDelegate()->GetButtonsOrder();
-  for (const auto& id : order) {
-    auto* current_button = GetButtonById(id);
-    if (!current_button) {
-      continue;
+  const auto place_button = [&](views::MdTextButton* button) {
+    if (!button) {
+      return;
     }
-    current_button->SetPosition(gfx::Point(x, OffsetY(current_button)));
-    x = current_button->bounds().right() +
+    button->SetPosition(gfx::Point(x, OffsetY(button)));
+    x = button->bounds().right() +
         layout_provider->GetDistanceMetric(
             views::DISTANCE_RELATED_BUTTON_HORIZONTAL);
-  }
+  };
+  place_button(ok_button_);
+  place_button(cancel_button_);
 
   // Place checkbox after latest button
   if (checkbox_) {
@@ -260,15 +226,6 @@ void BraveConfirmInfoBar::CancelButtonPressed() {
   }
 }
 
-void BraveConfirmInfoBar::ExtraButtonPressed() {
-  if (!owner()) {
-    return;  // We're closing; don't call anything, it might access the owner.
-  }
-  if (GetDelegate()->ExtraButtonPressed()) {
-    RemoveSelf();
-  }
-}
-
 BraveConfirmInfoBarDelegate* BraveConfirmInfoBar::GetDelegate() {
   return reinterpret_cast<BraveConfirmInfoBarDelegate*>(delegate());
 }
@@ -290,8 +247,7 @@ int BraveConfirmInfoBar::NonLabelWidth() const {
   const int button_spacing = layout_provider->GetDistanceMetric(
       views::DISTANCE_RELATED_BUTTON_HORIZONTAL);
 
-  const int button_count = GetDelegate()->GetButtonsOrder().size();
-  ;
+  const int button_count = (ok_button_ ? 1 : 0) + (cancel_button_ ? 1 : 0);
 
   int width =
       (label_->GetText().empty() || button_count == 0) ? 0 : label_spacing;
@@ -300,7 +256,6 @@ int BraveConfirmInfoBar::NonLabelWidth() const {
 
   width += ok_button_ ? ok_button_->width() : 0;
   width += cancel_button_ ? cancel_button_->width() : 0;
-  width += extra_button_ ? extra_button_->width() : 0;
 
   if (checkbox_) {
     width += checkbox_->width() + kCheckboxSpacing;

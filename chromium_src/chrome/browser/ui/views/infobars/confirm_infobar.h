@@ -6,19 +6,13 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_INFOBARS_CONFIRM_INFOBAR_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_INFOBARS_CONFIRM_INFOBAR_H_
 
-#define target_height_for_testing              \
-  Unused() {                                   \
-    return 0;                                  \
-  }                                            \
-  friend class BraveSyncAccountDeletedInfoBar; \
-  friend class BraveConfirmInfoBar;            \
-  int target_height_for_testing
-
-#define NonLabelWidth virtual NonLabelWidth
+// BraveSyncAccountDeletedInfoBar refers ConfirmInfoBar's private members.
+#define OkButtonPressed(...)    \
+  OkButtonPressed(__VA_ARGS__); \
+  friend class BraveSyncAccountDeletedInfoBar
 
 #include <chrome/browser/ui/views/infobars/confirm_infobar.h>  // IWYU pragma: export
 
-#undef NonLabelWidth
-#undef target_height_for_testing
+#undef OkButtonPressed
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_INFOBARS_CONFIRM_INFOBAR_H_

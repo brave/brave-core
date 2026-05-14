@@ -8,26 +8,6 @@
 BraveConfirmInfoBarDelegate::BraveConfirmInfoBarDelegate() = default;
 BraveConfirmInfoBarDelegate::~BraveConfirmInfoBarDelegate() = default;
 
-int BraveConfirmInfoBarDelegate::GetButtons() const {
-#if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
-  return BUTTON_OK | BUTTON_CANCEL | BUTTON_EXTRA;
-#else
-  return BUTTON_OK | BUTTON_CANCEL;
-#endif
-}
-
-std::vector<int> BraveConfirmInfoBarDelegate::GetButtonsOrder() const {
-#if !BUILDFLAG(IS_IOS) && !BUILDFLAG(IS_ANDROID)
-  return {BUTTON_OK, BUTTON_EXTRA, BUTTON_CANCEL};
-#else
-  return {BUTTON_OK, BUTTON_CANCEL};
-#endif
-}
-
-bool BraveConfirmInfoBarDelegate::IsProminent(int id) const {
-  return id == BUTTON_OK;
-}
-
 bool BraveConfirmInfoBarDelegate::HasCheckbox() const {
   return false;
 }
@@ -40,10 +20,6 @@ void BraveConfirmInfoBarDelegate::SetCheckboxChecked(bool checked) {}
 
 bool BraveConfirmInfoBarDelegate::InterceptClosing() {
   return false;
-}
-
-bool BraveConfirmInfoBarDelegate::ExtraButtonPressed() {
-  return true;
 }
 
 bool BraveConfirmInfoBarDelegate::ShouldSupportMultiLine() const {

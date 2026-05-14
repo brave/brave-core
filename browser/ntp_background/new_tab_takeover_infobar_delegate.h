@@ -7,7 +7,6 @@
 #define BRAVE_BROWSER_NTP_BACKGROUND_NEW_TAB_TAKEOVER_INFOBAR_DELEGATE_H_
 
 #include <string>
-#include <vector>
 
 #include "base/memory/raw_ptr.h"
 #include "brave/components/infobars/core/brave_confirm_infobar_delegate.h"
@@ -53,7 +52,6 @@ class NewTabTakeoverInfoBarDelegate : public BraveConfirmInfoBarDelegate {
   void InfoBarDismissed() override;
 
   // BraveConfirmInfoBarDelegate:
-  std::vector<int> GetButtonsOrder() const override;
   bool ShouldSupportMultiLine() const override;
 
  private:

@@ -51,11 +51,8 @@ class BraveConfirmInfoBar : public InfoBarView {
 
   void OkButtonPressed();
   void CancelButtonPressed();
-  void ExtraButtonPressed();
   void CloseButtonPressed() override;
   void CheckboxPressed();
-
-  views::MdTextButton* GetButtonById(int id);
 
   // Returns the width of all content other than the label and link.  Layout()
   // uses this to determine how much space the label and link can take.
@@ -66,7 +63,6 @@ class BraveConfirmInfoBar : public InfoBarView {
   raw_ptr<views::Label> label_ = nullptr;
   raw_ptr<views::MdTextButton> ok_button_ = nullptr;
   raw_ptr<views::MdTextButton> cancel_button_ = nullptr;
-  raw_ptr<views::MdTextButton> extra_button_ = nullptr;
   raw_ptr<views::Link> link_ = nullptr;
   raw_ptr<views::Checkbox> checkbox_ = nullptr;
 

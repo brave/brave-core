@@ -112,12 +112,6 @@ bool CreativeSearchResultAdClickedInfoBarDelegate::LinkClicked(
   return true;
 }
 
-std::vector<int> CreativeSearchResultAdClickedInfoBarDelegate::GetButtonsOrder()
-    const {
-  // The infobar has no buttons.
-  return {};
-}
-
 bool CreativeSearchResultAdClickedInfoBarDelegate::ShouldSupportMultiLine()
     const {
   return true;
