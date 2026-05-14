@@ -223,7 +223,7 @@ export class Config {
         'scripts',
         'signature_generator.py',
       ) || ''
-    this.extraGnArgs = {}
+    this.extraGnArgs = envConfig.getMergedObject(['gn', 'args'])
     this.extraGnGenOpts = envConfig.getString(['brave_extra_gn_gen_opts'], '')
     this.extraNinjaOpts = []
     this.sisoJobsLimit = undefined
