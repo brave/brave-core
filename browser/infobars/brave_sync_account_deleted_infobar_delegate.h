@@ -8,7 +8,7 @@
 
 #include "base/compiler_specific.h"
 #include "base/memory/raw_ptr.h"
-#include "components/infobars/core/confirm_infobar_delegate.h"
+#include "brave/components/infobars/core/brave_confirm_infobar_delegate.h"
 
 class Profile;
 
@@ -17,7 +17,8 @@ class WebContents;
 }
 
 // An infobar that is run with a string, "re-create account" link and a button.
-class BraveSyncAccountDeletedInfoBarDelegate : public ConfirmInfoBarDelegate {
+class BraveSyncAccountDeletedInfoBarDelegate
+    : public BraveConfirmInfoBarDelegate {
  public:
   BraveSyncAccountDeletedInfoBarDelegate(
       const BraveSyncAccountDeletedInfoBarDelegate&) = delete;
