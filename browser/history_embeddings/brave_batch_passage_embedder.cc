@@ -28,14 +28,11 @@ BraveBatchPassageEmbedder::BraveBatchPassageEmbedder(
     base::OnceClosure on_disconnect)
     : background_web_contents_factory_(
           std::move(background_web_contents_factory)),
-      receiver_(this, std::move(receiver)),
+      pending_receiver_(std::move(receiver)),
       model_files_(std::move(model_files)),
       load_callback_(std::move(load_callback)),
       on_disconnect_(std::move(on_disconnect)) {
   CHECK(model_files_);
-  receiver_.set_disconnect_handler(
-      base::BindOnce(&BraveBatchPassageEmbedder::OnDisconnected,
-                     weak_ptr_factory_.GetWeakPtr()));
   background_web_contents_factory_.Run(
       this,
       base::BindOnce(&BraveBatchPassageEmbedder::OnBackgroundContentsCreated,
@@ -147,6 +144,13 @@ void BraveBatchPassageEmbedder::OnInitDone(bool success) {
   renderer_embedder_.set_disconnect_handler(
       base::BindOnce(&BraveBatchPassageEmbedder::OnDisconnected,
                      weak_ptr_factory_.GetWeakPtr()));
+  // Now that the renderer-side pipe is up, bind the caller-side
+  // receiver. Any GenerateEmbeddings calls already on the wire drain
+  // here.
+  receiver_.Bind(std::move(pending_receiver_));
+  receiver_.set_disconnect_handler(
+      base::BindOnce(&BraveBatchPassageEmbedder::OnDisconnected,
+                     weak_ptr_factory_.GetWeakPtr()));
   phase_ = LoadPhase::kReady;
   DVLOG(3) << "Factory Init succeeded; signaling load success";
   std::move(load_callback_).Run(true);
@@ -160,12 +164,9 @@ void BraveBatchPassageEmbedder::ProcessNext() {
   current_batch_.emplace(std::move(pending_batches_.front()));
   pending_batches_.pop_front();
 
-  if (!renderer_embedder_.is_bound()) {
-    DVLOG(1) << "Renderer embedder not bound; failing batch of "
-             << current_batch_->passages.size() << " passage(s)";
-    FailCurrentBatch();
-    return;
-  }
+  // GenerateEmbeddings can only be delivered after OnInitDone bound
+  // receiver_, which also binds renderer_embedder_.
+  CHECK(renderer_embedder_.is_bound());
   DVLOG(3) << "ProcessNext: dispatching passage "
            << current_batch_->next_index + 1 << "/"
            << current_batch_->passages.size();

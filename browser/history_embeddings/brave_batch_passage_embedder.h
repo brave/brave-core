@@ -122,7 +122,13 @@ class BraveBatchPassageEmbedder
   std::optional<Batch> current_batch_;
   std::deque<Batch> pending_batches_;
 
-  mojo::Receiver<mojom::PassageEmbedder> receiver_;
+  // Held unbound until OnInitDone(true) binds receiver_ to it. Callers
+  // dispatch GenerateEmbeddings through embedder_remote_ immediately
+  // after BindPassageEmbedder; mojo queues those messages on the pipe
+  // until the receiver actually binds, so by the time GenerateEmbeddings
+  // is delivered to this object renderer_embedder_ is guaranteed bound.
+  mojo::PendingReceiver<mojom::PassageEmbedder> pending_receiver_;
+  mojo::Receiver<mojom::PassageEmbedder> receiver_{this};
   mojo::Remote<local_ai::mojom::PassageEmbedderFactory> factory_;
   mojo::Remote<local_ai::mojom::PassageEmbedder> renderer_embedder_;
 
