@@ -734,8 +734,8 @@ void BraveTab::UpdateTreeToggleButtonIcon() {
   const SkColor icon_color =
       tab_style_views()->CalculateTargetColors().foreground_color;
   const bool collapsed = GetTreeTabNode()->collapsed();
-  const auto& icon = collapsed ? vector_icons::kSubmenuArrowChromeRefreshIcon
-                               : vector_icons::kExpandMoreIcon;
+  const auto& icon = collapsed ? vector_icons::kSubmenuArrowChromeRefreshOldIcon
+                               : vector_icons::kExpandMoreOldIcon;
   tree_toggle_button_->SetImageModel(
       views::Button::STATE_NORMAL,
       ui::ImageModel::FromVectorIcon(icon, icon_color, icon_size));
