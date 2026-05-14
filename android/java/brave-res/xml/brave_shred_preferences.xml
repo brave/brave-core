@@ -20,7 +20,6 @@
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="shred_removes_history_switch"
             android:persistent="false"
-            android:title="@string/brave_shields_shred_removes_history_text"
-            android:summary="@string/brave_shields_shred_removes_history_description_text"/>
+            android:title="@string/brave_shields_shred_removes_history_text"/>
     </PreferenceCategory>
 </PreferenceScreen>

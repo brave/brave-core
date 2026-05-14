@@ -1500,10 +1500,7 @@ Are you sure you want to do this?
         Automatically shred browsing data
       </message>
       <message name="IDS_BRAVE_SHIELDS_SHRED_REMOVES_HISTORY_TEXT" desc="Shred removes history toggle title text.">
-        Shred removes history
-      </message>
-      <message name="IDS_BRAVE_SHIELDS_SHRED_REMOVES_HISTORY_DESCRIPTION_TEXT" desc="Shred removes history toggle description text.">
-        If Shred should remove history items
+        Shred browsing history
       </message>
       <message name="IDS_REPORT_BROKEN_SITE_TEXT" desc="Shields text for broken text warning message.">
         Report a broken site
