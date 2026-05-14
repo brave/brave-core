@@ -5,46 +5,55 @@
 
 #include "brave/components/brave_policy/policy_pref_interceptor.h"
 
-#include "brave/components/brave_news/common/pref_names.h"
-#include "brave/components/brave_rewards/core/pref_names.h"
+#include <string_view>
+
+#include "brave/components/brave_policy/policy_pref_interceptor_list.h"
 #include "components/prefs/pref_value_map.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_policy {
 
 namespace {
-constexpr char kUnmanagedPref[] = "some.unmanaged.pref";
+constexpr std::string_view kManagedPref1 = "test.managed.pref1";
+constexpr std::string_view kManagedPref2 = "test.managed.pref2";
+constexpr std::string_view kUnmanagedPref = "test.unmanaged.pref";
+
+constexpr std::string_view kTestPrefs[] = {kManagedPref1, kManagedPref2};
 }  // namespace
 
 class PolicyPrefInterceptorTest : public ::testing::Test {
  protected:
+  void SetUp() override {
+    PolicyPrefInterceptorList::GetInstance()->SetPrefs(kTestPrefs);
+  }
+
+  void TearDown() override {
+    PolicyPrefInterceptorList::GetInstance()->SetPrefs({});
+  }
+
   PolicyPrefInterceptor interceptor_;
 };
 
 TEST_F(PolicyPrefInterceptorTest, CachesInitialValuesAndBlocksChanges) {
   PrefValueMap initial_map;
-  initial_map.SetBoolean(brave_rewards::prefs::kDisabledByPolicy, true);
-  initial_map.SetBoolean(brave_news::prefs::kBraveNewsDisabledByPolicy, false);
+  initial_map.SetBoolean(kManagedPref1, true);
+  initial_map.SetBoolean(kManagedPref2, false);
   interceptor_.InterceptPrefValues(&initial_map);
 
   bool value;
-  ASSERT_TRUE(
-      initial_map.GetBoolean(brave_rewards::prefs::kDisabledByPolicy, &value));
+  ASSERT_TRUE(initial_map.GetBoolean(kManagedPref1, &value));
   EXPECT_TRUE(value);
-  ASSERT_TRUE(initial_map.GetBoolean(
-      brave_news::prefs::kBraveNewsDisabledByPolicy, &value));
+  ASSERT_TRUE(initial_map.GetBoolean(kManagedPref2, &value));
   EXPECT_FALSE(value);
 
   PrefValueMap updated_map;
-  updated_map.SetBoolean(brave_rewards::prefs::kDisabledByPolicy, false);
-  updated_map.SetBoolean(brave_news::prefs::kBraveNewsDisabledByPolicy, true);
+  updated_map.SetBoolean(kManagedPref1, false);
+  updated_map.SetBoolean(kManagedPref2, true);
   interceptor_.InterceptPrefValues(&updated_map);
 
-  ASSERT_TRUE(
-      updated_map.GetBoolean(brave_rewards::prefs::kDisabledByPolicy, &value));
+  ASSERT_TRUE(updated_map.GetBoolean(kManagedPref1, &value));
   EXPECT_TRUE(value);
-  ASSERT_TRUE(updated_map.GetBoolean(
-      brave_news::prefs::kBraveNewsDisabledByPolicy, &value));
+  ASSERT_TRUE(updated_map.GetBoolean(kManagedPref2, &value));
   EXPECT_FALSE(value);
 }
 
@@ -70,15 +79,13 @@ TEST_F(PolicyPrefInterceptorTest, RemovesNewlyAddedPrefs) {
   interceptor_.InterceptPrefValues(&initial_map);
 
   bool value;
-  EXPECT_FALSE(
-      initial_map.GetBoolean(brave_rewards::prefs::kDisabledByPolicy, &value));
+  EXPECT_FALSE(initial_map.GetBoolean(kManagedPref1, &value));
 
   PrefValueMap updated_map;
-  updated_map.SetBoolean(brave_rewards::prefs::kDisabledByPolicy, true);
+  updated_map.SetBoolean(kManagedPref1, true);
   interceptor_.InterceptPrefValues(&updated_map);
 
-  EXPECT_FALSE(
-      updated_map.GetBoolean(brave_rewards::prefs::kDisabledByPolicy, &value));
+  EXPECT_FALSE(updated_map.GetBoolean(kManagedPref1, &value));
 }
 
 }  // namespace brave_policy
