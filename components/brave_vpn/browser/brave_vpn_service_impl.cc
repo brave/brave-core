@@ -117,17 +117,18 @@ void BraveVpnServiceImpl::CheckInitialState() {
   }
 }
 
-#if BUILDFLAG(IS_ANDROID)
-mojo::PendingRemote<brave_vpn::mojom::ServiceHandler>
-BraveVpnServiceImpl::MakeRemote() {
-  mojo::PendingRemote<brave_vpn::mojom::ServiceHandler> remote;
-  receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
-  return remote;
-}
-#endif  // BUILDFLAG(IS_ANDROID)
-
 std::string BraveVpnServiceImpl::GetCurrentEnvironment() const {
   return local_prefs_->GetString(prefs::kBraveVPNEnvironment);
+}
+
+#if !BUILDFLAG(IS_ANDROID)
+void BraveVpnServiceImpl::RecordWidgetUsageMetrics(bool new_usage) {
+  brave_vpn_metrics_.RecordWidgetUsage(new_usage);
+}
+#endif  // !BUILDFLAG(IS_ANDROID)
+
+bool BraveVpnServiceImpl::IsPurchased() const {
+  return is_purchased_user();
 }
 
 bool BraveVpnServiceImpl::is_purchased_user() const {
@@ -136,12 +137,6 @@ bool BraveVpnServiceImpl::is_purchased_user() const {
 
 void BraveVpnServiceImpl::ReloadPurchasedState() {
   LoadPurchasedState(skus::GetDomain("vpn", GetCurrentEnvironment()));
-}
-
-void BraveVpnServiceImpl::BindInterface(
-    mojo::PendingReceiver<mojom::ServiceHandler> receiver) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  receivers_.Add(this, std::move(receiver));
 }
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -177,9 +172,7 @@ void BraveVpnServiceImpl::OnConnectionStateChanged(
     brave_vpn_metrics_.RecordAllMetrics(true);
   }
 
-  for (const auto& obs : observers_) {
-    obs->OnConnectionStateChanged(state);
-  }
+  NotifyConnectionStateChanged(state);
 }
 
 void BraveVpnServiceImpl::OnRegionDataReady(bool success) {
@@ -206,9 +199,7 @@ void BraveVpnServiceImpl::OnSelectedRegionChanged(
   const auto region_ptr = GetRegionPtrWithNameFromRegionList(
       region_name, connection_manager_->GetRegionDataManager().GetRegions());
   region_ptr->is_automatic = IsCurrentRegionSelectedAutomatically(region_ptr);
-  for (const auto& obs : observers_) {
-    obs->OnSelectedRegionChanged(region_ptr.Clone());
-  }
+  NotifySelectedRegionChanged(region_ptr.Clone());
 }
 
 void BraveVpnServiceImpl::OnInstallSystemServicesCompleted(bool success) {
@@ -230,6 +221,10 @@ bool BraveVpnServiceImpl::IsConnected() const {
   }
 
   return GetConnectionState() == ConnectionState::CONNECTED;
+}
+
+bool BraveVpnServiceImpl::is_connected_vpn() const {
+  return IsConnected();
 }
 
 void BraveVpnServiceImpl::Connect() {
@@ -390,9 +385,7 @@ void BraveVpnServiceImpl::OnPreferenceChanged(const std::string& pref_name) {
 
   if (pref_name == prefs::kBraveVPNSmartProxyRoutingEnabled) {
     const bool enabled = smart_proxy_routing_enabled_.GetValue();
-    for (const auto& obs : observers_) {
-      obs->OnSmartProxyRoutingStateChanged(enabled);
-    }
+    NotifySmartProxyRoutingStateChanged(enabled);
     return;
   }
 }
@@ -556,12 +549,6 @@ void BraveVpnServiceImpl::GetPurchaseToken(GetPurchaseTokenCallback callback) {
   std::move(callback).Run(base::Base64Encode(response_json));
 }
 #endif  // BUILDFLAG(IS_ANDROID)
-
-void BraveVpnServiceImpl::AddObserver(
-    mojo::PendingRemote<mojom::ServiceObserver> observer) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  observers_.Add(std::move(observer));
-}
 
 mojom::PurchasedInfo BraveVpnServiceImpl::GetPurchasedInfoSync() const {
   return purchased_state_.value_or(
@@ -894,9 +881,7 @@ void BraveVpnServiceImpl::SetPurchasedState(
   VLOG(2) << __func__ << " : " << state;
   purchased_state_ = mojom::PurchasedInfo(state, description);
 
-  for (const auto& obs : observers_) {
-    obs->OnPurchasedStateChanged(state, description);
-  }
+  NotifyPurchasedStateChanged(state, description);
 
 #if !BUILDFLAG(IS_ANDROID)
   if (state == PurchasedState::PURCHASED) {
@@ -932,15 +917,17 @@ void BraveVpnServiceImpl::Shutdown() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   skus_service_.reset();
-  observers_.Clear();
   api_request_.reset();
   subs_cred_refresh_timer_.Stop();
 
 #if !BUILDFLAG(IS_ANDROID)
   observed_.Reset();
-  receivers_.Clear();
 #endif  // !BUILDFLAG(IS_ANDROID)
+
+  BraveVpnService::Shutdown();
 }
+
+#if BUILDFLAG(IS_ANDROID)
 
 void BraveVpnServiceImpl::GetTimezonesForRegions(ResponseCallback callback) {
   api_request_->GetTimezonesForRegions(std::move(callback));
@@ -1019,5 +1006,24 @@ void BraveVpnServiceImpl::GetSubscriberCredentialV12(
   std::move(callback).Run(::brave_vpn::GetSubscriberCredential(local_prefs_),
                           HasValidSubscriberCredential(local_prefs_));
 }
+
+void BraveVpnServiceImpl::RecordAllMetrics() {
+  brave_vpn_metrics_.RecordAllMetrics(true);
+}
+
+#else  // BUILDFLAG(IS_ANDROID)
+
+void BraveVpnServiceImpl::SetConnectionStateForTesting(  // IN-TEST
+    mojom::ConnectionState state) {
+  connection_manager_->SetConnectionStateForTesting(state);  // IN-TEST
+}
+
+void BraveVpnServiceImpl::SetPurchasedStateForTesting(  // IN-TEST
+    const std::string& env,
+    mojom::PurchasedState state) {
+  SetPurchasedState(env, state);
+}
+
+#endif  // BUILDFLAG(IS_ANDROID)
 
 }  // namespace brave_vpn

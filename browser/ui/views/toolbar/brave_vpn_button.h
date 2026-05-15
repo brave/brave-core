@@ -17,7 +17,7 @@
 #include "ui/views/controls/button/menu_button_controller.h"
 
 namespace brave_vpn {
-class BraveVpnServiceImpl;
+class BraveVpnService;
 class BraveVpnButtonUnitTest;
 }  // namespace brave_vpn
 
@@ -75,7 +75,7 @@ class BraveVPNButton : public ToolbarButton,
   std::optional<brave_vpn::mojom::ConnectionState>
       connection_state_for_testing_;
   raw_ptr<Browser, DanglingUntriaged> browser_ = nullptr;
-  raw_ptr<brave_vpn::BraveVpnServiceImpl, DanglingUntriaged> service_ = nullptr;
+  raw_ptr<brave_vpn::BraveVpnService, DanglingUntriaged> service_ = nullptr;
   raw_ptr<views::MenuButtonController> menu_button_controller_ = nullptr;
   base::WeakPtrFactory<BraveVPNButton> weak_ptr_factory_{this};
 };

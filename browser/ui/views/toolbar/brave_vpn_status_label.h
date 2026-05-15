@@ -12,7 +12,7 @@
 #include "ui/views/controls/label.h"
 
 namespace brave_vpn {
-class BraveVpnServiceImpl;
+class BraveVpnService;
 }  // namespace brave_vpn
 
 class Browser;
@@ -36,7 +36,7 @@ class BraveVPNStatusLabel : public views::Label,
 
   int longest_state_string_id_ = -1;
   raw_ptr<Browser> browser_ = nullptr;
-  raw_ptr<brave_vpn::BraveVpnServiceImpl> service_ = nullptr;
+  raw_ptr<brave_vpn::BraveVpnService> service_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_VPN_STATUS_LABEL_H_

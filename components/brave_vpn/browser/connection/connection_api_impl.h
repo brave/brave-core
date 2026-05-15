@@ -82,8 +82,6 @@ class ConnectionAPIImpl
   const raw_ref<BraveVPNConnectionManager> manager_;  // owner
 
  private:
-  friend class BraveVpnButtonUnitTest;
-  friend class BraveVPNServiceTest;
   FRIEND_TEST_ALL_PREFIXES(SystemVPNConnectionAPIUnitTest, NeedsConnectTest);
   FRIEND_TEST_ALL_PREFIXES(SystemVPNConnectionAPIUnitTest, HostnamesTest);
   FRIEND_TEST_ALL_PREFIXES(SystemVPNConnectionAPIUnitTest, ConnectionInfoTest);
@@ -99,8 +97,6 @@ class ConnectionAPIImpl
                            CreateOSVPNEntryWithInvalidInfoTest);
   FRIEND_TEST_ALL_PREFIXES(BraveVPNWireguardConnectionAPIUnitTest,
                            SetSelectedRegion);
-
-  void SetConnectionStateForTesting(mojom::ConnectionState state);
 
   std::unique_ptr<Hostname> hostname_;
   std::string last_connection_error_;

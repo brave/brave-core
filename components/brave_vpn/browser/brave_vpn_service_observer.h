@@ -15,7 +15,7 @@
 
 namespace brave_vpn {
 
-class BraveVpnServiceImpl;
+class BraveVpnService;
 
 class BraveVPNServiceObserver : public mojom::ServiceObserver {
  public:
@@ -24,7 +24,7 @@ class BraveVPNServiceObserver : public mojom::ServiceObserver {
   BraveVPNServiceObserver(const BraveVPNServiceObserver&) = delete;
   BraveVPNServiceObserver& operator=(const BraveVPNServiceObserver&) = delete;
 
-  void Observe(BraveVpnServiceImpl* service);
+  void Observe(BraveVpnService* service);
 
   // mojom::ServiceObserver overrides:
   void OnPurchasedStateChanged(

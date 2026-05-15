@@ -64,7 +64,7 @@
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/browser/brave_vpn/vpn_utils.h"
-#include "brave/components/brave_vpn/browser/brave_vpn_service_impl.h"
+#include "brave/components/brave_vpn/browser/brave_vpn_service.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
 #endif
 
@@ -459,9 +459,8 @@ void BraveBrowserCommandController::UpdateCommandForBraveVPN() {
   if (auto* vpn_service = brave_vpn::BraveVpnServiceFactory::GetForProfile(
           browser_->profile())) {
     // Only show vpn sub menu for purchased user.
-    UpdateCommandEnabled(IDC_BRAVE_VPN_MENU, vpn_service->is_purchased_user());
-    UpdateCommandEnabled(IDC_TOGGLE_BRAVE_VPN,
-                         vpn_service->is_purchased_user());
+    UpdateCommandEnabled(IDC_BRAVE_VPN_MENU, vpn_service->IsPurchased());
+    UpdateCommandEnabled(IDC_TOGGLE_BRAVE_VPN, vpn_service->IsPurchased());
   }
 #endif
 }

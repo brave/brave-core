@@ -40,7 +40,7 @@ class BraveVpnMetrics {
     virtual bool is_purchased_user() const = 0;
 
 #if !BUILDFLAG(IS_ANDROID)
-    virtual bool IsConnected() const = 0;
+    virtual bool is_connected_vpn() const = 0;
 #endif
   };
 

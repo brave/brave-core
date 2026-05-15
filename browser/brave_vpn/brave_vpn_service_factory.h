@@ -24,11 +24,11 @@ class NoDestructor;
 
 namespace brave_vpn {
 
-class BraveVpnServiceImpl;
+class BraveVpnService;
 
 class BraveVpnServiceFactory : public BrowserContextKeyedServiceFactory {
  public:
-  static BraveVpnServiceImpl* GetForProfile(Profile* profile);
+  static BraveVpnService* GetForProfile(Profile* profile);
 #if BUILDFLAG(IS_ANDROID)
   static mojo::PendingRemote<brave_vpn::mojom::ServiceHandler>
   GetRemoteForProfile(Profile* profile);

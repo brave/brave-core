@@ -12,18 +12,18 @@
 #include "base/json/json_writer.h"
 #include "base/values.h"
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
-#include "brave/components/brave_vpn/browser/brave_vpn_service_impl.h"
+#include "brave/components/brave_vpn/browser/brave_vpn_service.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/l10n/common/ofac_sanction_util.h"
 #include "chrome/android/chrome_jni_headers/BraveVpnNativeWorker_jni.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 
-using brave_vpn::BraveVpnServiceImpl;
+using brave_vpn::BraveVpnService;
 
 namespace {
 
-BraveVpnServiceImpl* GetBraveVpnService() {
+BraveVpnService* GetBraveVpnService() {
   return brave_vpn::BraveVpnServiceFactory::GetForProfile(
       ProfileManager::GetActiveUserProfile()->GetOriginalProfile());
 }
@@ -249,7 +249,7 @@ void BraveVpnNativeWorker::OnVerifyPurchaseToken(
 jboolean BraveVpnNativeWorker::IsPurchasedUser(JNIEnv* env) {
   auto* brave_vpn_service = GetBraveVpnService();
   if (brave_vpn_service) {
-    return brave_vpn_service->is_purchased_user();
+    return brave_vpn_service->IsPurchased();
   }
 
   return false;
@@ -271,7 +271,7 @@ void BraveVpnNativeWorker::ReportForegroundP3A(JNIEnv* env) {
   auto* brave_vpn_service = GetBraveVpnService();
   if (brave_vpn_service) {
     // Reporting a new session to P3A functions.
-    brave_vpn_service->brave_vpn_metrics()->RecordAllMetrics(true);
+    brave_vpn_service->RecordAllMetrics();
   }
 }
 
