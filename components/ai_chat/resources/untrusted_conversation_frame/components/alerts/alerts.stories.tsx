@@ -5,6 +5,8 @@
 
 import * as React from 'react'
 import { Meta } from '@storybook/react'
+import * as Mojom from '../../../common/mojom'
+import { InferControlsFromArgs } from '../../../../../../.storybook/utils'
 import UntrustedMockContext from '../../mock_untrusted_conversation_context'
 import ErrorConnection from './error_connection'
 import ErrorConversationEnd from './error_conversation_end'
@@ -16,16 +18,35 @@ import LongConversationInfo from './long_conversation_info'
 import WarningPremiumDisconnected from './warning_premium_disconnected'
 import styles from '../../../page/stories/style.module.scss'
 
+type Args = {
+  showErrorDetails: boolean
+}
+
+const args: Args = {
+  showErrorDetails: true,
+}
+
+const MOCK_ERROR_DETAILS: Mojom.APIErrorDetails = {
+  statusCode: 429,
+  errorType: '42901',
+}
+
 export default {
   title: 'AI Chat/Alerts',
+  argTypes: InferControlsFromArgs(args),
+  args,
 } as Meta
 
 export const _Alerts = {
-  render: () => {
+  render: (args: Args) => {
     return (
       <UntrustedMockContext>
         <div className={`${styles.container} ${styles.containerAlerts}`}>
-          <ErrorConnection />
+          <ErrorConnection
+            errorDetails={
+              args.showErrorDetails ? MOCK_ERROR_DETAILS : undefined
+            }
+          />
           <ErrorConversationEnd />
           <ErrorInvalidAPIKey />
           <ErrorInvalidEndpointURL />
