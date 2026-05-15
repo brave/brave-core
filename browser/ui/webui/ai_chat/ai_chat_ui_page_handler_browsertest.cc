@@ -495,7 +495,8 @@ class FakeConversationUI : public mojom::ConversationUI {
   void OnConversationHistoryUpdate(
       const mojom::ConversationTurnPtr entry) override {}
   void OnAPIRequestInProgress(bool in_progress) override {}
-  void OnAPIResponseError(mojom::APIError error) override {}
+  void OnAPIResponseError(mojom::APIError api_error,
+                          mojom::APIErrorDetailsPtr details) override {}
   void OnTaskStateChanged(mojom::TaskState task_state) override {}
   void OnModelDataChanged(const std::string& conversation_model_key,
                           const std::string& default_model_key,

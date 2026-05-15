@@ -258,8 +258,7 @@ void OnRewriteSuggestionCompleted(
     base::WeakPtr<content::WebContents> web_contents,
     const std::string& selected_text,
     ai_chat::mojom::ActionType action_type,
-    base::expected<ai_chat::EngineConsumer::GenerationResultData,
-                   ai_chat::mojom::APIError> result) {
+    ai_chat::EngineConsumer::GenerationResult result) {
   if (!web_contents) {
     return;
   }
@@ -301,7 +300,7 @@ void OnRewriteSuggestionCompleted(
     ai_chat::OpenAIChatForTab(web_contents.get());
 
     conversation->AddSubmitSelectedTextError(selected_text, action_type,
-                                             result.error());
+                                             result.error().api_error);
   }
 
   web_contents->RemoveUserData(kAIChatRewriteDataKey);

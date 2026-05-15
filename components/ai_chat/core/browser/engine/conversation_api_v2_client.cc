@@ -19,6 +19,7 @@
 #include "base/json/json_writer.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/strings/strcat.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/types/expected.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
@@ -127,6 +128,17 @@ std::string_view GetContentBlockTypeString(
     case mojom::ContentBlock::Tag::kWebSourcesContentBlock:
       return "brave-chat.webSources";
   }
+}
+
+std::string ParseErrorCode(const base::Value& body) {
+  if (body.is_dict()) {
+    if (auto* error_dict = body.GetDict().FindDict("error")) {
+      if (auto* type_str = error_dict->FindString("type")) {
+        return *type_str;
+      }
+    }
+  }
+  return std::string();
 }
 
 }  // namespace
@@ -483,7 +495,12 @@ void ConversationAPIV2Client::OnQueryCompleted(
     error = mojom::APIError::ConnectionIssue;
   }
 
-  std::move(callback).Run(base::unexpected(std::move(error)));
+  auto details =
+      mojom::APIErrorDetails::New(static_cast<int32_t>(result.response_code()),
+                                  ParseErrorCode(result.value_body()));
+
+  std::move(callback).Run(
+      base::unexpected(EngineConsumer::Error(error, std::move(details))));
 }
 
 void ConversationAPIV2Client::OnQueryDataReceived(

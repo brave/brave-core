@@ -126,7 +126,7 @@ void EngineConsumerOAIRemote::OnGenerateQuestionSuggestionsResponse(
     GenerationResult result) {
   if (!result.has_value()) {
     // Query resulted in error
-    std::move(callback).Run(base::unexpected(std::move(result.error())));
+    std::move(callback).Run(base::unexpected(result.error().api_error));
     return;
   }
 

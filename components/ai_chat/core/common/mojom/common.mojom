@@ -38,6 +38,12 @@ enum APIError {
   ServiceOverloaded
 };
 
+// TODO(https://github.com/brave/brave-browser/issues/55518): Add APIError to this struct
+struct APIErrorDetails {
+  int32 status_code;
+  string error_type;
+};
+
 enum SuggestionGenerationStatus {
   None,
   CanGenerate,
@@ -697,6 +703,7 @@ struct ConversationEntriesState {
   SuggestionGenerationStatus suggestion_status;
   // Current API error state
   APIError current_error;
+  APIErrorDetails? current_error_details;
   // Whether this is a temporary (non-persisted) conversation
   bool is_temporary = false;
 };

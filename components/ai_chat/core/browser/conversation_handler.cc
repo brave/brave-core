@@ -398,7 +398,9 @@ void ConversationHandler::GetState(GetStateCallback callback) {
 #if BUILDFLAG(IS_IOS)
       std::move(suggestions), suggestion_generation_status_,
 #endif
-      associated_content_manager_->GetAssociatedContent(), current_error_,
+      associated_content_manager_->GetAssociatedContent(),
+      current_error_.api_error,
+      current_error_.details ? current_error_.details->Clone() : nullptr,
       metadata_->temporary, tool_use_task_state_);
 
   std::move(callback).Run(std::move(state));
@@ -1248,13 +1250,15 @@ void ConversationHandler::PerformPostToolAssistantGeneration() {
   PerformAssistantGenerationWithPossibleContent();
 }
 
-void ConversationHandler::SetAPIError(const mojom::APIError& error) {
-  current_error_ = error;
+void ConversationHandler::SetAPIError(EngineConsumer::Error error) {
+  current_error_ = std::move(error);
 
   OnStateForConversationEntriesChanged();
 
   for (auto& client : conversation_ui_handlers_) {
-    client->OnAPIResponseError(error);
+    client->OnAPIResponseError(
+        current_error_.api_error,
+        current_error_.details ? current_error_.details->Clone() : nullptr);
   }
 }
 
@@ -1639,7 +1643,7 @@ void ConversationHandler::OnEngineCompletionComplete(
     EngineConsumer::GenerationResult result) {
   // Handle failure
   if (!result.has_value()) {
-    if (result.error() != mojom::APIError::None) {
+    if (result.error().api_error != mojom::APIError::None) {
       DVLOG(2) << __func__ << ": With error";
       SetAPIError(std::move(result.error()));
     } else {
@@ -2019,7 +2023,9 @@ ConversationHandler::GetStateForConversationEntries() {
   entries_state->suggestion_status = suggestion_generation_status_;
 
   // API error
-  entries_state->current_error = current_error_;
+  entries_state->current_error = current_error_.api_error;
+  entries_state->current_error_details =
+      current_error_.details ? current_error_.details->Clone() : nullptr;
 
   // Temporary chat flag
   entries_state->is_temporary = metadata_->temporary;
@@ -2312,7 +2318,7 @@ bool ConversationHandler::should_send_page_contents() const {
 }
 
 mojom::APIError ConversationHandler::current_error() const {
-  return current_error_;
+  return current_error_.api_error;
 }
 
 void ConversationHandler::SetTemporary(bool temporary) {
