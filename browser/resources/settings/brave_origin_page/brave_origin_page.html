@@ -192,13 +192,13 @@
     </origin-toggle-button> 
   </if>
 
-  <!-- TODO: Web Discovery policy not yet registered in Brave Origin
-  <origin-toggle-button id="toggleWebDiscoveryProjectButton"
-      policy-key="BraveWebDiscoveryEnabled"
-      label="$i18n{braveOriginWebDiscoveryProjectToggleTitle}"
-      icon="brave-icon-search">
-  </origin-toggle-button>
-  -->
+  <if expr="enable_web_discovery">
+    <origin-toggle-button id="toggleWebDiscoveryProjectButton"
+        policy-key="BraveWebDiscoveryEnabled"
+        label="$i18n{braveOriginWebDiscoveryProjectToggleTitle}"
+        icon="brave-icon-search">
+    </origin-toggle-button>
+  </if>
 
   <cr-link-row id="resetToDefaults" class="hr"
     label="$i18n{braveOriginResetToDefaultsTitle}"
