@@ -106,6 +106,7 @@ source_set("test_utils") {
 source_set("unit_tests") {
   testonly = true
   sources = [
+    "email_aliases_metrics_unittest.cc",
     "email_aliases_notes_unittest.cc",
     "email_aliases_service_unittest.cc",
   ]

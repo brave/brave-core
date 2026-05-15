@@ -18,7 +18,7 @@
 namespace email_aliases {
 
 namespace {
-constexpr int kCountBuckets[] = {0, 1, 5, 15};
+constexpr int kCountBuckets[] = {0, 5, 15};
 }  // namespace
 
 EmailAliasesMetrics::EmailAliasesMetrics(PrefService& pref_service)
