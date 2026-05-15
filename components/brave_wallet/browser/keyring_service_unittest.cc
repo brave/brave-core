@@ -25,10 +25,12 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
+#include "base/time/time.h"
 #include "brave/components/brave_wallet/browser/account_discovery_manager.h"
 #include "brave/components/brave_wallet/browser/bip39.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_hd_keyring.h"
@@ -49,6 +51,8 @@
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/dev_buildflags.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -119,6 +123,13 @@ std::string GenerateBtcImportPayload(std::string_view private_key_hex) {
 
   CHECK_EQ(span_writer.remaining(), 0u);
   return Base58EncodeWithCheck(buf);
+}
+
+void WaitForPostedTask() {
+  base::RunLoop run_loop;
+  base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, run_loop.QuitClosure());
+  run_loop.Run();
 }
 
 }  // namespace
@@ -4472,39 +4483,62 @@ TEST_F(KeyringServiceUnitTest, AccountsAdded) {
   observer.WaitAndVerify();
 }
 
-#if !defined(OFFICIAL_BUILD)
 TEST_F(KeyringServiceUnitTest, DevWalletPassword) {
   base::CommandLine* cmdline = base::CommandLine::ForCurrentProcess();
+  constexpr char kSwitchName[] = "dev-wallet-password";
 
   // Setup wallet.
   {
     KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+    service.SetAutolockEnabled(true);
     CreateWallet(&service, "some_password");
   }
 
   // Locked on start by default.
   {
     KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+    service.SetAutolockEnabled(true);
+    WaitForPostedTask();
     EXPECT_TRUE(service.IsLockedSync());
   }
 
-  // Unlocked on start with right password.
+  // Unlocked on start with right password. Autolock by inactivity still works.
   {
-    cmdline->AppendSwitchASCII(switches::kDevWalletPassword, "some_password");
+    cmdline->AppendSwitchASCII(kSwitchName, "some_password");
     KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+    service.SetAutolockEnabled(true);
+    WaitForPostedTask();
+
+#if !BUILDFLAG(ENABLE_BRAVE_WALLET_DEV_CMD_LINE_UNLOCK)
+    // `--dev-wallet-password` is noop without buildflag, so wallet stays
+    // locked.
+    EXPECT_TRUE(service.IsLockedSync());
+    // Able to unlock.
+    EXPECT_TRUE(Unlock(&service, "some_password"));
+#endif
+
+    // Wallet gets unlocked.
     EXPECT_FALSE(service.IsLockedSync());
-    cmdline->RemoveSwitch(switches::kDevWalletPassword);
+
+    // Still unlocked after 1 minute, but eventually locks by inactivity
+    // timeout.
+    task_environment_.FastForwardBy(base::Minutes(1));
+    EXPECT_FALSE(service.IsLockedSync());
+    ASSERT_TRUE(base::test::RunUntil([&]() { return service.IsLockedSync(); }));
+
+    cmdline->RemoveSwitch(kSwitchName);
   }
 
   // Locked on start with wrong password.
   {
-    cmdline->AppendSwitchASCII(switches::kDevWalletPassword, "wrong_password");
+    cmdline->AppendSwitchASCII(kSwitchName, "wrong_password");
     KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+    service.SetAutolockEnabled(true);
+    WaitForPostedTask();
     EXPECT_TRUE(service.IsLockedSync());
-    cmdline->RemoveSwitch(switches::kDevWalletPassword);
+    cmdline->RemoveSwitch(kSwitchName);
   }
 }
-#endif  // !defined(OFFICIAL_BUILD)
 
 TEST_F(KeyringServiceUnitTest, GetBitcoinAddresses) {
   // TODO(apaymyshev): update existing tests above to also cover Bitcoin
