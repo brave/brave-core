@@ -306,9 +306,12 @@ void PermissionLifetimeManager::ResetPermission(
     ContentSettingsType content_type,
     const GURL& requesting_origin,
     const GURL& embedding_origin) {
-  host_content_settings_map_->SetContentSettingDefaultScope(
-      requesting_origin, embedding_origin, content_type,
-      CONTENT_SETTING_DEFAULT);
+  // Use SetPermissionSettingDefaultScope (nullopt = delete/reset) rather than
+  // SetContentSettingDefaultScope: the latter CHECKs the type is in
+  // ContentSettingsRegistry, which excludes types like GEOLOCATION_WITH_OPTIONS
+  // that are registered only in PermissionSettingsRegistry.
+  host_content_settings_map_->SetPermissionSettingDefaultScope(
+      requesting_origin, embedding_origin, content_type, std::nullopt);
 }
 
 }  // namespace permissions
