@@ -706,7 +706,13 @@
 -FileSystemAccessDeepScanningBrowserTest.WarnedWrite/*
 
 # These tests fail because of the Ephemeral Storage (they pass with
-# kBraveEphemeralStorage feature disabled).
+# kBraveEphemeralStorage feature disabled). The multi-navigation test design
+# causes late-arriving cookie access events that double-count UseCounter
+# features. Stable upstream (0.2% flake rate / 30d per LUCI Analysis).
+# Upstream deflake CL (chromium-review.googlesource.com/c/chromium/src/+/7694592)
+# landed after the Chromium 148 branch cut; will be picked up in a future roll.
+# https://github.com/brave/brave-browser/issues/55224
+-CookieUseCounterBrowserTest.HttpOnlyCookieShadowedByNonHttpOnlyPartitioned_BothAvailable
 -CookieUseCounterBrowserTest.HttpOnlyCookieShadowedByNonHttpOnlyPartitioned_NeitherAvailable
 -FirstPartySetsBrowserTestWithSiteLeavingSet.CookieDeleted
 -NativeUnpartitionedStorageTest/NativeUnpartitionedStorageAccessWhen3PCOff.CrossOriginsAccessWithCookieBlocking/0
