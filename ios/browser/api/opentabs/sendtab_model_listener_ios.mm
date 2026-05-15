@@ -37,13 +37,7 @@ SendTabToSelfModelListenerIOS::~SendTabToSelfModelListenerIOS() {
   model_->RemoveObserver(this);
 }
 
-void SendTabToSelfModelListenerIOS::SendTabToSelfModelLoaded() {
-  if ([observer_ respondsToSelector:@selector(sendTabToSelfModelLoaded)]) {
-    [observer_ sendTabToSelfModelLoaded];
-  }
-}
-
-void SendTabToSelfModelListenerIOS::EntriesAddedRemotely(
+void SendTabToSelfModelListenerIOS::OnEntriesAddedRemotely(
     const std::vector<const send_tab_to_self::SendTabToSelfEntry*>&
         new_entries) {
   NSMutableArray<IOSOpenDistantTab*>* entries = [[NSMutableArray alloc] init];
@@ -63,7 +57,7 @@ void SendTabToSelfModelListenerIOS::EntriesAddedRemotely(
   }
 }
 
-void SendTabToSelfModelListenerIOS::EntriesRemovedRemotely(
+void SendTabToSelfModelListenerIOS::OnEntriesRemovedRemotely(
     const std::vector<std::string>& guids) {
   if ([observer_
           respondsToSelector:@selector(sendTabToSelfEntriesRemovedRemotely)]) {
@@ -71,7 +65,7 @@ void SendTabToSelfModelListenerIOS::EntriesRemovedRemotely(
   }
 }
 
-void SendTabToSelfModelListenerIOS::EntriesOpenedRemotely(
+void SendTabToSelfModelListenerIOS::OnEntriesOpenedRemotely(
     const std::vector<const send_tab_to_self::SendTabToSelfEntry*>&
         opened_entries) {
   if ([observer_
