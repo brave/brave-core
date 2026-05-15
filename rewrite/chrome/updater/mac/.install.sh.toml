@@ -28,13 +28,12 @@ pattern = 'RSYNC_FLAGS="--ignore-times --links --perms --recursive --times"'
 replace = 'RSYNC_FLAGS="--ignore-times --links $(if [[ ${EUID} -eq 0 ]]; then echo "--perms --recursive --times"; else echo "--no-perms --executability --chmod=u=rwX,go=rX --recursive"; fi)"'
 
 # .install.sh fails with exit code 12 in ~1% of update attempts. It is unclear
-# why. The following two substitions attempt three possible fixes and report
-# their effectiveness in the script's exit code. They do this in such a way that
-# the externally-visible behavior of the script is unchanged. In particular,
-# the script still fails even when one of the fixes is successful. The
-# motivation for this is that right now, we only want to know which of the fixes
-# (if any) can be successful. In a future change, only the effective fixes will
-# be kept.
+# why. The following two substitions attempt two possible fixes and report their
+# effectiveness in the script's exit code. They do this in such a way that the
+# externally-visible behavior of the script is unchanged. In particular, the
+# script still fails even when one of the fixes is successful. The motivation
+# for this is that right now, we only want to know which of the fixes (if any)
+# can be successful. In a future change, only the effective fixes will be kept.
 [[substitution]]
 description = 'Initialize variable debug_flags'
 pattern = 'note "rsyncing versioned directory"'
