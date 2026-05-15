@@ -65,8 +65,6 @@ inline constexpr char kBraveWalletP3ALastUnlockTime[] =
     "brave.wallet.p3a_last_unlock_time";
 inline constexpr char kBraveWalletP3AUsedSecondDay[] =
     "brave.wallet.p3a_used_second_day";
-inline constexpr char kBraveWalletP3AOnboardingLastStep[] =
-    "brave.wallet.p3a_last_onboarding_step";
 inline constexpr char kBraveWalletKeyringEncryptionKeysMigrated[] =
     "brave.wallet.keyring_encryption_keys_migrated";
 inline constexpr char kBraveWalletNftDiscoveryEnabled[] =

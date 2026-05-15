@@ -13,7 +13,6 @@ import {
   useCheckExternalWalletPasswordMutation,
   useGetWalletsToImportQuery,
   useImportFromMetaMaskMutation,
-  useReportOnboardingActionMutation,
 } from '../../../../common/slices/api.slice'
 
 // types
@@ -60,8 +59,6 @@ export const OnboardingRestoreFromExtension = ({ restoreFrom }: Props) => {
   const { isFetching: isCheckingExtensions } = useGetWalletsToImportQuery()
 
   // mutations
-  const [report] = useReportOnboardingActionMutation()
-
   const [checkExtensionPassword, { isLoading: isCheckingImportPassword }] =
     useCheckExternalWalletPasswordMutation()
 
@@ -177,13 +174,6 @@ export const OnboardingRestoreFromExtension = ({ restoreFrom }: Props) => {
         return { title: '', description: '' }
     }
   }, [currentStep])
-
-  // effects
-  React.useEffect(() => {
-    if (currentStep === 'currentPassword') {
-      report(BraveWallet.OnboardingAction.LegalAndPassword)
-    }
-  }, [report, currentStep])
 
   // render
   if (isCreatingWallet) {

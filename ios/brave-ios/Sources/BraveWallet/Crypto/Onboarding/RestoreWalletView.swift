@@ -249,9 +249,6 @@ struct RestoreWalletView: View {
       }
     }
     .transparentUnlessScrolledNavigationAppearance()
-    .onAppear {
-      keyringStore.reportP3AOnboarding(action: .startRestore)
-    }
   }
 
   private func resignFirstResponder() {

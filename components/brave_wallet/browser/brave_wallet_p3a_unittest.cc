@@ -75,42 +75,4 @@ TEST_F(BraveWalletP3AUnitTest, KeyringCreated) {
   histogram_tester_->ExpectBucketCount(kKeyringCreatedHistogramName, 1, 1);
 }
 
-TEST_F(BraveWalletP3AUnitTest, ReportOnboardingAction) {
-  histogram_tester_->ExpectTotalCount(kOnboardingConversionHistogramName, 0);
-
-  wallet_p3a()->ReportOnboardingAction(mojom::OnboardingAction::Shown);
-  // should not record immediately, should delay
-  histogram_tester_->ExpectTotalCount(kOnboardingConversionHistogramName, 0);
-  task_environment_.FastForwardBy(base::Seconds(110));
-
-  // report new action before 120 seconds deadline, should postpone timer
-  wallet_p3a()->ReportOnboardingAction(
-      mojom::OnboardingAction::LegalAndPassword);
-  histogram_tester_->ExpectTotalCount(kOnboardingConversionHistogramName, 0);
-  task_environment_.FastForwardBy(base::Seconds(120));
-  histogram_tester_->ExpectUniqueSample(kOnboardingConversionHistogramName, 1,
-                                        1);
-
-  // report new action after 120 seconds deadline, should record
-  // immediately to correct histogram value
-  wallet_p3a()->ReportOnboardingAction(mojom::OnboardingAction::RecoverySetup);
-  histogram_tester_->ExpectTotalCount(kOnboardingConversionHistogramName, 2);
-  histogram_tester_->ExpectBucketCount(kOnboardingConversionHistogramName, 2,
-                                       1);
-}
-
-TEST_F(BraveWalletP3AUnitTest, ReportOnboardingActionRestore) {
-  histogram_tester_->ExpectTotalCount(kOnboardingConversionHistogramName, 0);
-
-  wallet_p3a()->ReportOnboardingAction(mojom::OnboardingAction::Shown);
-  histogram_tester_->ExpectTotalCount(kOnboardingConversionHistogramName, 0);
-  task_environment_.FastForwardBy(base::Seconds(50));
-
-  wallet_p3a()->ReportOnboardingAction(mojom::OnboardingAction::StartRestore);
-  histogram_tester_->ExpectTotalCount(kOnboardingConversionHistogramName, 0);
-  task_environment_.FastForwardBy(base::Seconds(120));
-  // should not monitor the wallet restore flow
-  histogram_tester_->ExpectTotalCount(kOnboardingConversionHistogramName, 0);
-}
-
 }  // namespace brave_wallet

@@ -20,12 +20,9 @@ import ExamplePhraseDark from './images/example_recovery_phrase_dark.png'
 // utils
 import { getLocale } from '../../../../../common/locale'
 import { WalletPageActions } from '../../../actions'
-import {
-  useReportOnboardingActionMutation, //
-} from '../../../../common/slices/api.slice'
 
 // routes
-import { BraveWallet, WalletRoutes } from '../../../../constants/types'
+import { WalletRoutes } from '../../../../constants/types'
 
 // components
 import { SkipWarningDialog } from './skip_warning_dialog'
@@ -49,9 +46,6 @@ export const RecoveryPhraseExplainer = () => {
   // redux
   const dispatch = useAppDispatch()
 
-  // mutations
-  const [report] = useReportOnboardingActionMutation()
-
   // routing
   const history = useHistory()
   const { pathname } = useLocation()
@@ -61,7 +55,6 @@ export const RecoveryPhraseExplainer = () => {
   const skipBackup = () => {
     dispatch(WalletPageActions.recoveryWordsAvailable({ mnemonic: '' }))
     if (isOnboarding) {
-      report(BraveWallet.OnboardingAction.CompleteRecoverySkipped)
       history.push(WalletRoutes.OnboardingComplete)
       return
     }
@@ -75,11 +68,6 @@ export const RecoveryPhraseExplainer = () => {
         : WalletRoutes.BackupRecoveryPhrase,
     )
   }
-
-  // effects
-  React.useEffect(() => {
-    report(BraveWallet.OnboardingAction.RecoverySetup)
-  }, [report])
 
   // hooks
   const isDarkMode = useMediaQuery('(prefers-color-scheme: dark)')

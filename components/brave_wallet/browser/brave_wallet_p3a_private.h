@@ -16,9 +16,6 @@ namespace brave_wallet {
 class BraveWalletP3APrivate : public mojom::BraveWalletP3A {
  public:
   BraveWalletP3APrivate() = default;
-
-  void ReportOnboardingAction(
-      mojom::OnboardingAction onboarding_action) override;
 };
 
 }  // namespace brave_wallet

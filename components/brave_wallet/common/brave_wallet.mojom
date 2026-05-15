@@ -3176,19 +3176,7 @@ interface BraveWalletService {
 };
 
 // For reporting wallet related P3A metrics.
-interface BraveWalletP3A {
-  // Called when a Wallet onboarding action is performed.
-  ReportOnboardingAction(OnboardingAction onboarding_action);
-};
-
-enum OnboardingAction {
-  Shown = 0,
-  LegalAndPassword = 1,
-  RecoverySetup = 2,
-  Complete = 3,
-  CompleteRecoverySkipped = 4,
-  StartRestore = 5,
-};
+interface BraveWalletP3A {};
 
 enum DefaultWallet {
   AskDeprecated = 0,

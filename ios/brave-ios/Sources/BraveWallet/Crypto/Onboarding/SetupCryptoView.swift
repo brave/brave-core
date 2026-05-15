@@ -136,9 +136,6 @@ struct SetupCryptoView: View {
       backButtonTitle: Strings.Wallet.setupCryptoButtonBackButtonTitle,
       backButtonDisplayMode: .generic
     )
-    .onAppear {
-      keyringStore.reportP3AOnboarding(action: .shown)
-    }
   }
 }
 
