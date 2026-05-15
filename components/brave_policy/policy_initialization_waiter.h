@@ -34,8 +34,10 @@ class PolicyInitializationWaiter : public policy::PolicyService::Observer {
   ~PolicyInitializationWaiter() override;
 
   // Registers `on_ready` to fire once when the configured domain finishes
-  // initialising. Runs synchronously if the waiter is already ready. A second
-  // call replaces any previously registered callback.
+  // initialising. Runs synchronously if the waiter is already ready at call
+  // time; otherwise posted asynchronously to the current sequence when
+  // initialisation completes. A second call replaces any previously
+  // registered callback.
   void Wait(base::OnceClosure on_ready);
 
  private:

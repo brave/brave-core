@@ -9,6 +9,8 @@
 
 #include "base/functional/bind.h"
 #include "base/memory/raw_ptr.h"
+#include "base/test/run_until.h"
+#include "base/test/task_environment.h"
 #include "components/policy/core/common/mock_policy_service.h"
 #include "components/policy/core/common/policy_service.h"
 #include "components/policy/core/common/policy_types.h"
@@ -38,6 +40,7 @@ class PolicyInitializationWaiterTest : public ::testing::Test {
         });
   }
 
+  base::test::TaskEnvironment task_environment_;
   policy::MockPolicyService mock_;
   raw_ptr<policy::PolicyService::Observer> observer_ = nullptr;
 };
@@ -72,7 +75,8 @@ TEST_F(PolicyInitializationWaiterTest, DefersUntilInitialized) {
 
   ASSERT_TRUE(observer_);
   observer_->OnPolicyServiceInitialized(policy::POLICY_DOMAIN_CHROME);
-  EXPECT_TRUE(fired);
+  EXPECT_FALSE(fired);
+  EXPECT_TRUE(base::test::RunUntil([&] { return fired; }));
 }
 
 TEST_F(PolicyInitializationWaiterTest, IgnoresWrongDomain) {
@@ -117,7 +121,9 @@ TEST_F(PolicyInitializationWaiterTest, SecondWaitReplacesCallback) {
   ASSERT_TRUE(observer_);
   observer_->OnPolicyServiceInitialized(policy::POLICY_DOMAIN_CHROME);
   EXPECT_FALSE(first_fired);
-  EXPECT_TRUE(second_fired);
+  EXPECT_FALSE(second_fired);
+  EXPECT_TRUE(base::test::RunUntil([&] { return second_fired; }));
+  EXPECT_FALSE(first_fired);
 }
 
 }  // namespace brave_policy

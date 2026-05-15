@@ -7,6 +7,9 @@
 
 #include <utility>
 
+#include "base/location.h"
+#include "base/task/sequenced_task_runner.h"
+
 namespace brave_policy {
 
 PolicyInitializationWaiter::PolicyInitializationWaiter(
@@ -41,7 +44,8 @@ void PolicyInitializationWaiter::OnPolicyServiceInitialized(
   is_ready_ = true;
   StopObserving();
   if (on_ready_) {
-    std::move(on_ready_).Run();
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, std::move(on_ready_));
   }
 }
 
