@@ -336,13 +336,6 @@ BraveWalletService::BraveWalletService(
       kBraveWalletSelectedNetworks,
       base::BindRepeating(&BraveWalletService::OnNetworkChanged,
                           weak_ptr_factory_.GetWeakPtr()));
-
-  // Added 05/2024 to label compressed nfts as such.
-  BraveWalletService::MaybeMigrateCompressedNfts();
-
-  // Added 08/2024 to reset spl_token_program for SPL tokens incorrectly marked
-  // as unsupported.
-  BraveWalletService::MaybeMigrateSPLTokenProgram();
 }
 
 BraveWalletService::BraveWalletService() : weak_ptr_factory_(this) {}
@@ -1136,123 +1129,6 @@ void BraveWalletService::MigrateDeadNetwork(
   }
 
   prefs->SetBoolean(pref_key, true);
-}
-
-void BraveWalletService::MigrateGoerliNetwork(PrefService* prefs) {
-  MigrateDeadNetwork(prefs, "0x5", mojom::kSepoliaChainId,
-                     kBraveWalletGoerliNetworkMigrated);
-}
-
-void BraveWalletService::MigrateAuroraMainnetAsCustomNetwork(
-    PrefService* prefs) {
-  mojom::NetworkInfo network(
-      mojom::kAuroraMainnetChainId, "Aurora Mainnet", {"https://aurora.dev"},
-      {}, 0, {GURL("https://mainnet.aurora.dev")}, "ETH", "Aurora", 18,
-      mojom::CoinType::ETH,
-      GetSupportedKeyringsForNetwork(mojom::CoinType::ETH,
-                                     mojom::kAuroraMainnetChainId));
-  MigrateAsCustomNetwork(prefs, network, false,
-                         kBraveWalletAuroraMainnetMigrated);
-}
-
-// static
-void BraveWalletService::MigrateEip1559ForCustomNetworks(PrefService* prefs) {
-  if (prefs->GetBoolean(kBraveWalletEip1559ForCustomNetworksMigrated)) {
-    return;
-  }
-  prefs->SetBoolean(kBraveWalletEip1559ForCustomNetworksMigrated, true);
-
-  NetworkManager network_manager(prefs);
-  if (prefs->HasPrefPath(kSupportEip1559OnLocalhostChainDeprecated)) {
-    network_manager.SetEip1559ForCustomChain(
-        mojom::kLocalhostChainId,
-        prefs->GetBoolean(kSupportEip1559OnLocalhostChainDeprecated));
-    prefs->ClearPref(kSupportEip1559OnLocalhostChainDeprecated);
-  }
-
-  ScopedDictPrefUpdate update(prefs, kBraveWalletCustomNetworks);
-  for (auto&& [coin_key, value] : update.Get()) {
-    auto* value_list = value.GetIfList();
-    if (!value_list) {
-      continue;
-    }
-
-    bool eth_custom_networks =
-        coin_key == GetPrefKeyForCoinType(mojom::CoinType::ETH);
-
-    for (auto& custom_network : *value_list) {
-      if (!custom_network.is_dict()) {
-        continue;
-      }
-      if (eth_custom_networks) {
-        auto* chain_id = custom_network.GetDict().FindString("chainId");
-        auto is_eip1559 = custom_network.GetDict().FindBool("is_eip1559");
-        if (chain_id && is_eip1559) {
-          network_manager.SetEip1559ForCustomChain(*chain_id, *is_eip1559);
-        }
-      }
-
-      custom_network.GetDict().Remove("is_eip1559");
-    }
-  }
-}
-
-void BraveWalletService::MaybeMigrateCompressedNfts() {
-  if (profile_prefs_->GetBoolean(kBraveWalletIsCompressedNftMigrated)) {
-    return;
-  }
-
-  // Get all solana NFTs.
-  std::vector<mojom::NftIdentifierPtr> nft_ids;
-  for (auto& item : ::brave_wallet::GetAllUserAssets(profile_prefs_)) {
-    if (item->coin == mojom::CoinType::SOL && item->is_nft) {
-      auto nft_id = mojom::NftIdentifier::New();
-      nft_id->chain_id =
-          mojom::ChainId::New(mojom::CoinType::SOL, item->chain_id);
-      nft_id->contract_address = item->contract_address;
-      nft_id->token_id = item->token_id;
-      nft_ids.push_back(std::move(nft_id));
-    }
-  }
-
-  simple_hash_client_->GetNfts(
-      std::move(nft_ids),
-      base::BindOnce(&BraveWalletService::OnGetNftsForCompressedMigration,
-                     weak_ptr_factory_.GetWeakPtr()));
-}
-
-void BraveWalletService::OnGetNftsForCompressedMigration(
-    std::vector<mojom::BlockchainTokenPtr> nfts) {
-  for (auto& nft : nfts) {
-    if (!nft->is_compressed) {
-      continue;
-    }
-
-    if (!::brave_wallet::SetAssetCompressed(profile_prefs_, nft)) {
-      continue;
-    }
-  }
-
-  profile_prefs_->SetBoolean(kBraveWalletIsCompressedNftMigrated, true);
-}
-
-void BraveWalletService::MaybeMigrateSPLTokenProgram() {
-  if (profile_prefs_->GetBoolean(kBraveWalletIsSPLTokenProgramMigrated)) {
-    return;
-  }
-
-  // Get all solana SPL NFTs that are marked incorrectly as unsupported
-  // and reset their spl_token_program to unknown.
-  for (const auto& item : ::brave_wallet::GetAllUserAssets(profile_prefs_)) {
-    if (item->is_nft &&
-        item->spl_token_program == mojom::SPLTokenProgram::kUnsupported &&
-        IsSPLToken(item)) {
-      SetAssetSPLTokenProgram(profile_prefs_, item,
-                              mojom::SPLTokenProgram::kUnknown);
-    }
-  }
-
-  profile_prefs_->SetBoolean(kBraveWalletIsSPLTokenProgramMigrated, true);
 }
 
 void BraveWalletService::OnWalletUnlockPreferenceChanged(

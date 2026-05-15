@@ -105,11 +105,6 @@ class BraveWalletService : public KeyedService,
                                      const mojom::NetworkInfo& network,
                                      bool is_eip1559,
                                      std::string_view pref_key);
-  static void MigrateGoerliNetwork(PrefService* prefs);
-  static void MigrateAuroraMainnetAsCustomNetwork(PrefService* prefs);
-  static void MigrateEip1559ForCustomNetworks(PrefService* prefs);
-  void MaybeMigrateCompressedNfts();
-  void MaybeMigrateSPLTokenProgram();
 
   // mojom::BraveWalletService:
   void AddObserver(::mojo::PendingRemote<mojom::BraveWalletServiceObserver>
