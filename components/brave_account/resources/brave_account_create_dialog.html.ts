@@ -62,7 +62,8 @@ export function getHtml(this: BraveAccountCreateDialogElement) {
         ?isDisabled=${!this.isEmailValid
         || !this.isPasswordValid
         || !this.isPasswordStrongEnough
-        || this.passwordConfirmation !== this.password}
+        || this.passwordConfirmation !== this.password
+        || this.isCreatingAccount}
         @click=${this.onCreateAccountButtonClicked}
       >
         $i18n{BRAVE_ACCOUNT_CREATE_ACCOUNT_BUTTON_LABEL}
