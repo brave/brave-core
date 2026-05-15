@@ -31,12 +31,11 @@ void EmailAliasesNotes::RegisterProfilePrefs(PrefRegistrySimple* registry) {
 // static
 size_t EmailAliasesNotes::GetTotalCount(PrefService& pref_service) {
   const auto& pref = pref_service.GetDict(prefs::kEmailAliasesNotes);
-  return std::accumulate(pref.begin(), pref.end(), size_t{0},
-                         [](size_t acc, const auto& entry) {
-                           return acc + (entry.second.is_dict()
-                                             ? entry.second.GetDict().size()
-                                             : 0);
-                         });
+  return std::accumulate(
+      pref.begin(), pref.end(), size_t{0}, [](size_t acc, const auto& entry) {
+        return acc +
+               (entry.second.is_dict() ? entry.second.GetDict().size() : 0);
+      });
 }
 
 std::optional<std::string> EmailAliasesNotes::GetNote(

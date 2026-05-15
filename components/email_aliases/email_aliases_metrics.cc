@@ -24,7 +24,7 @@ constexpr int kCountBuckets[] = {0, 1, 5, 15};
 EmailAliasesMetrics::EmailAliasesMetrics(PrefService& pref_service)
     : pref_service_(pref_service),
       clipboard_copy_storage_(&pref_service,
-                               prefs::kClipboardCopyCountStorage) {
+                              prefs::kClipboardCopyCountStorage) {
   // Suppress reporting for existing users to avoid attributing prior opt-ins.
   if (!pref_service_->GetBoolean(prefs::kSettingsPageMethodReported) &&
       pref_service_->GetBoolean(prefs::kEmailAliasesEnabled)) {
@@ -66,10 +66,9 @@ void EmailAliasesMetrics::OnAliasCopied() {
 }
 
 void EmailAliasesMetrics::ReportAllMetrics() {
-  report_timer_.Start(
-      FROM_HERE, base::Time::Now() + base::Days(1),
-      base::BindOnce(&EmailAliasesMetrics::ReportAllMetrics,
-                     base::Unretained(this)));
+  report_timer_.Start(FROM_HERE, base::Time::Now() + base::Days(1),
+                      base::BindOnce(&EmailAliasesMetrics::ReportAllMetrics,
+                                     base::Unretained(this)));
   ReportCopyCount();
   ReportNotesCount();
 }
@@ -80,8 +79,7 @@ void EmailAliasesMetrics::ReportCopyCount() {
     return;
   }
   p3a_utils::RecordToHistogramBucket(kClipboardCopyCountHistogramName,
-                                     kCountBuckets,
-                                     static_cast<int>(total));
+                                     kCountBuckets, static_cast<int>(total));
 }
 
 void EmailAliasesMetrics::ReportNotesCount() {

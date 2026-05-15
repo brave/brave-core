@@ -119,7 +119,10 @@ export const AliasItem = ({
 }) => (
   <AliasItemRow>
     <Col>
-      <CopyToast text={alias.email} onCopy={onCopy}>
+      <CopyToast
+        text={alias.email}
+        onCopy={onCopy}
+      >
         <EmailContainer
           title={getLocale(S.SETTINGS_EMAIL_ALIASES_CLICK_TO_COPY_ALIAS)}
         >
