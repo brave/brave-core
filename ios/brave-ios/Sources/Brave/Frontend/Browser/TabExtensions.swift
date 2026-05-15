@@ -122,17 +122,6 @@ extension TabState {
   }
 }
 
-// MARK: - Brave SKU
-extension TabState {
-  func injectLocalStorageItem(key: String, value: String) {
-    self.evaluateJavaScript(
-      functionName: "localStorage.setItem",
-      args: [key, value],
-      contentWorld: BraveSkusScriptHandler.scriptSandbox
-    )
-  }
-}
-
 extension SecureContentState {
   public var shouldDisplayWarning: Bool {
     switch self {

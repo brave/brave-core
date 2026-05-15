@@ -7,10 +7,34 @@ import BraveVPN
 import UIKit
 
 extension BrowserViewController {
+  public func vpnSessionExpiredStateAlert(
+    loginCallback: @escaping (UIAlertAction) -> Void
+  ) -> UIAlertController {
+    let alert = UIAlertController(
+      title: Strings.VPN.sessionExpiredTitle,
+      message: Strings.VPN.sessionExpiredDescription,
+      preferredStyle: .alert
+    )
+
+    let loginButton = UIAlertAction(
+      title: Strings.VPN.sessionExpiredLoginButton,
+      style: .default,
+      handler: loginCallback
+    )
+    let dismissButton = UIAlertAction(
+      title: Strings.VPN.sessionExpiredDismissButton,
+      style: .cancel
+    )
+    alert.addAction(loginButton)
+    alert.addAction(dismissButton)
+
+    return alert
+  }
+
   /// Shows a vpn screen based on vpn state.
   public func presentCorrespondingVPNViewController() {
-    if BraveSkusManager.keepShowingSessionExpiredState {
-      let alert = BraveSkusManager.sessionExpiredStateAlert(loginCallback: { [unowned self] _ in
+    if BraveVPN.isSkusCredentialSessionExpired {
+      let alert = vpnSessionExpiredStateAlert(loginCallback: { [unowned self] _ in
         self.openURLInNewTab(
           .brave.account,
           isPrivate: self.privateBrowsingManager.isPrivateBrowsing,

@@ -88,18 +88,21 @@ class BraveSkusScriptHandler: TabContentScript {
     method: Method,
     for skusDomain: String
   ) async throws -> Any? {
-    guard let skusManager = BraveSkusManager(isPrivateMode: tab.isPrivate) else {
+    guard let skusService = Skus.SkusServiceFactory.get(profile: tab.profile) else {
       return nil
     }
 
     switch method {
     case .refreshOrder:
       let order = try OrderMessage.from(message: message)
-      return await skusManager.refreshOrder(for: order.orderId, domain: skusDomain)
+      let message = await skusService.refreshOrder(domain: skusDomain, orderId: order.orderId)
+        .message
+      return try? JSONSerialization.jsonObject(with: Data(message.utf8))
 
     case .fetchOrderCredentials:
       let order = try OrderMessage.from(message: message)
-      return await skusManager.fetchOrderCredentials(for: order.orderId, domain: skusDomain)
+      return await skusService.fetchOrderCredentials(domain: skusDomain, orderId: order.orderId)
+        .message
 
     case .prepareCredentialsPresentation:
       Logger.module.error(
@@ -109,42 +112,19 @@ class BraveSkusScriptHandler: TabContentScript {
 
     case .credentialsSummary:
       let summary = try CredentialSummaryMessage.from(message: message)
-      return await skusManager.credentialSummary(for: summary.domain)
-
-    case .setLocalStorageReceipt:
-      let storeMessage = try StoreReceiptMessage.from(message: message)
-      if storeMessage.message == "vpn" {
-        if let vpnSubscriptionProductId = Preferences.VPN.subscriptionProductId.value,
-          let product = BraveStoreProduct(rawValue: vpnSubscriptionProductId)
-        {
-          let storageKey = product.localStorageKey
-          let receipt = try AppStoreReceipt.receipt(for: product)
-          return ["key": storageKey, "data": receipt]
-        }
+      let message = await skusService.credentialSummary(domain: summary.domain).message
+      guard !message.isEmpty,
+        let data = message.data(using: .utf8),
+        let json = try? JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
+      else {
+        Logger.module.debug("[SkusManager] - Failed to Serialize Credential Summary")
+        return nil
       }
-
-      if storeMessage.message == "leo" {
-        if let aiChatSubscriptionProductId = Preferences.AIChat.subscriptionProductId.value,
-          let orderId = Preferences.AIChat.subscriptionOrderId.value,
-          let product = BraveStoreProduct(rawValue: aiChatSubscriptionProductId)
-        {
-          let storageKey = product.localStorageKey
-          let receipt = try AppStoreReceipt.receipt(for: product)
-          return ["key": storageKey, "data": receipt, "braveLeo.orderId": orderId]
-        }
+      // Update credentials for VPN
+      if !message.isEmpty, message != "{}" {
+        await skusService.updatePreferences(for: summary.domain, summaryData: data)
       }
-
-      if storeMessage.message == "origin" {
-        if let originSubscriptionProductId = Preferences.BraveOrigin.purchaseProductId.value,
-          let orderId = Preferences.BraveOrigin.purchaseOrderId.value,
-          let product = BraveStoreProduct(rawValue: originSubscriptionProductId)
-        {
-          let storageKey = product.localStorageKey
-          let receipt = try AppStoreReceipt.receipt(for: product)
-          return ["key": storageKey, "data": receipt, "braveOrigin.orderId": orderId]
-        }
-      }
-      throw SkusWebMessageError.invalidFormat
+      return json
     }
   }
 }
@@ -155,7 +135,6 @@ extension BraveSkusScriptHandler {
     case fetchOrderCredentials
     case prepareCredentialsPresentation
     case credentialsSummary
-    case setLocalStorageReceipt
 
     static var map: [String: String] {
       var jsDict = [String: String]()
