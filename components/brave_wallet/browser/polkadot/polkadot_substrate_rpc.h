@@ -185,6 +185,13 @@ class PolkadotSubstrateRpc {
 
   GURL GetNetworkURL(std::string_view chain_id);
 
+  // Issues a POST request with a JSON payload to `url`, attaching the Brave
+  // services key header when `url` points at a Brave wallet proxy endpoint.
+  void MakePostRequestInternal(
+      const GURL& url,
+      const std::string& payload,
+      api_request_helper::APIRequestHelper::ResultCallback callback);
+
   void OnGetChainName(GetChainNameCallback callback, APIRequestResult res);
   void OnGetAccountBalance(GetAccountBalanceCallback, APIRequestResult res);
   void OnGetFinalizedHead(GetFinalizedHeadCallback, APIRequestResult res);
