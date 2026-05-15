@@ -41,14 +41,17 @@ bool GetDefaultPrefValueForMetricsReporting() {
 bool ShouldShowCrashReportPermissionAskDialog() {
 #if BUILDFLAG(ENABLE_CRASH_DIALOG)
   PrefService* local_prefs = g_browser_process->local_state();
-  if (local_prefs->GetBoolean(kDontAskForCrashReporting))
+  if (local_prefs->GetBoolean(kDontAskForCrashReporting)) {
     return false;
+  }
 
-  if (IsMetricsReportingPolicyManaged())
+  if (metrics::IsMetricsReportingPolicyManaged()) {
     return false;
+  }
 
-  if (BraveMetricsServiceAccessor::IsMetricsAndCrashReportingEnabled())
+  if (BraveMetricsServiceAccessor::IsMetricsAndCrashReportingEnabled()) {
     return false;
+  }
 
   return true;
 #else
