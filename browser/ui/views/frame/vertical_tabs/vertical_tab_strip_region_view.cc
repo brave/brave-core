@@ -24,6 +24,7 @@
 #include "brave/browser/ui/tabs/public/switches.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 #include "brave/browser/ui/views/frame/tab_strip_placement_coordinator.h"
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
 #include "brave/browser/ui/views/tabs/brave_tab_search_button.h"
@@ -287,6 +288,13 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
       browser_(browser_view->browser()),
       original_region_view_(region_view),
       tab_style_(TabStyle::Get()) {
+  // Register this view to handle caption area hit test, so that users can drag
+  // the window by dragging the vertical tab strip region.
+  browser()
+      ->browser_window_features()
+      ->brave_non_client_hit_test_helper()
+      ->RegisterCaptionArea(this);
+
   // As we follow user's choice for vertical tab alignment,
   // we don't need to mirror this view.
   SetMirrored(false);
