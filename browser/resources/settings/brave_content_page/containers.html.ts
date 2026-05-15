@@ -30,18 +30,13 @@ export function getHtml(this: SettingsBraveContentContainersElement) {
         </div>
       </div>
 
-      <div class="cr-row continuation containers-enabled-toggle-row">
-        <div class="containers-enabled-toggle-icon" aria-hidden="true">
-          <leo-icon name="container-on"></leo-icon>
-        </div>
-        <div class="flex">
-          <div class="label">$i18n{SETTINGS_CONTAINERS_ENABLED_LABEL}</div>
-        </div>
-        <cr-toggle
-          .checked="${this.containersEnabled_}"
-          @change="${this.onContainersEnabledChange_}"
-        ></cr-toggle>
-      </div>
+      <settings-toggle-button
+        .checked="${this.containersEnabled_}"
+        icon="container-on"
+        label="$i18n{SETTINGS_CONTAINERS_ENABLED_LABEL}"
+        no-set-pref
+        @change="${this.onContainersEnabledChange_}"
+      ></settings-toggle-button>
 
       ${this.containersEnabled_
         ? html`

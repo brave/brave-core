@@ -4,20 +4,20 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import '//resources/cr_elements/cr_icon_button/cr_icon_button.js'
-import '//resources/cr_elements/cr_toggle/cr_toggle.js'
 import '//resources/mojo/skia/public/mojom/skcolor.mojom-webui.js'
 import '//resources/brave/leo.bundle.js'
+import '../controls/settings_toggle_button.js'
 
 import { I18nMixinLit } from '//resources/cr_elements/i18n_mixin_lit.js'
 import { assert } from '//resources/js/assert.js'
 import { CrInputElement } from 'chrome://resources/cr_elements/cr_input/cr_input.js'
-import type { CrToggleElement } from 'chrome://resources/cr_elements/cr_toggle/cr_toggle.js'
 import {
   CrLitElement,
   PropertyValues,
 } from 'chrome://resources/lit/v3_0/lit.rollup.js'
 
 import { ContainersStrings } from '../brave_generated_resources_webui_strings.js'
+import type { SettingsToggleButtonElement } from '../controls/settings_toggle_button.js'
 import {
   Container,
   ContainerOperationError,
@@ -103,8 +103,8 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
   override updated(changedProperties: PropertyValues<this>) {
     super.updated(changedProperties)
     if (
-      changedProperties.has('containersEnabled_') &&
-      !this.containersEnabled_
+      changedProperties.has('containersEnabled_')
+      && !this.containersEnabled_
     ) {
       this.editingContainer_ = undefined
       this.deletingContainer_ = undefined
@@ -116,7 +116,7 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
   }
 
   onContainersEnabledChange_(e: Event) {
-    const toggle = e.target as CrToggleElement
+    const toggle = e.target as SettingsToggleButtonElement
     this.browserProxy.handler.setContainersEnabled(toggle.checked)
   }
 
