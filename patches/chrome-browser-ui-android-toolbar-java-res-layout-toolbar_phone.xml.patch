@@ -10,7 +10,7 @@ index 52e1748d74a589cb37bbfda824f6868c9bd86433..47c1123d1905fa0792c36c73c46be26f
          android:layout_gravity="top|end"
          android:focusable="false"
          android:focusableInTouchMode="false">
-+    <include layout="@layout/brave_toolbar" android:layout_height="wrap_content" android:layout_width="match_parent" />
++    <include layout="@layout/brave_toolbar" android:layout_height="@dimen/brave_toolbar_button_height" android:layout_width="match_parent" android:layout_marginTop="@dimen/location_bar_vertical_margin" />
  
          <ViewStub
              android:id="@+id/optional_button_stub"
