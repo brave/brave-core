@@ -21,6 +21,11 @@
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
 #endif
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/tor/tor_profile_manager.h"
+#endif
+
 namespace tor {
 class BraveTorClientUpdater;
 }
@@ -48,6 +53,15 @@ void TestingBraveBrowserProcess::DeleteInstance() {
 void TestingBraveBrowserProcess::StartTearDown() {
   // Reset BraveOriginPolicyManager to prevent dangling pointer to local_state_.
   brave_origin::BraveOriginPolicyManager::GetInstance()->Shutdown();
+#if BUILDFLAG(ENABLE_TOR)
+  // TorProfileManager is a base::NoDestructor singleton whose
+  // TorBrowserCollectionObserver observes GlobalBrowserCollection for the
+  // process lifetime. In tests the collection is owned by the per-test
+  // GlobalFeatures and is destroyed at OnTestEnd, which would leave the
+  // singleton's ScopedObservation dangling. Mirrors the Shutdown() call in
+  // ~BraveBrowserProcessImpl().
+  TorProfileManager::GetInstance().Shutdown();
+#endif
 }
 
 // static

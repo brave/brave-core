@@ -65,6 +65,9 @@ static_library("test_support") {
   if (enable_brave_vpn) {
     deps += [ "//brave/components/brave_vpn/browser/connection:api" ]
   }
+  if (enable_tor) {
+    deps += [ "//brave/browser/tor" ]
+  }
 }
 
 static_library("brave_test_support_unit") {
