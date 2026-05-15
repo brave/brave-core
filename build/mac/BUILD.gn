@@ -390,6 +390,9 @@ copy("copy_dmg_icon") {
   if (!is_release_channel) {
     dmg_icon_file_name = "dmg-$brave_channel"
   }
+  if (is_brave_origin_branded) {
+    dmg_icon_file_name += ".origin"
+  }
   sources = [ "$dmg_icon_file_name.icns" ]
   outputs = [ "$packaging_dir/chrome_dmg_icon.icns" ]
 }
