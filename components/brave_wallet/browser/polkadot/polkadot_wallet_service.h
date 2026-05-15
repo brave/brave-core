@@ -8,6 +8,8 @@
 
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_chain_assets_metadata_provider.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_chain_assets_pref.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_chain_metadata.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_chain_metadata_prefs.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_extrinsic.h"
@@ -162,6 +164,8 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
   PolkadotSubstrateRpc polkadot_substrate_rpc_;
   PolkadotChainMetadataPrefs chain_metadata_prefs_;
   PolkadotMetadataProvider metadata_provider_;
+  PolkadotChainAssetsPref chain_assets_pref_;
+  PolkadotChainAssetsMetadataProvider chain_assets_metadata_provider_;
   mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
       keyring_observer_receiver_{this};
   absl::flat_hash_set<std::unique_ptr<PolkadotSignedTransferTask>>

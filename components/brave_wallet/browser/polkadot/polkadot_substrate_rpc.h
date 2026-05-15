@@ -193,20 +193,23 @@ class PolkadotSubstrateRpc {
 
   // Retrieves the AssetId keys currently present in pallet-assets'
   // `Assets.Asset` storage map.
-  void GetSupportedAssets(std::string_view chain_id,
-                          GetSupportedAssetsCallback callback);
+  virtual void GetSupportedAssets(std::string_view chain_id,
+                                  GetSupportedAssetsCallback callback);
 
   // Retrieves the raw SCALE bytes stored under pallet-assets'
   // `Assets.Metadata(asset_id)` entry. A missing entry is returned as
   // std::nullopt.
-  void GetAssetMetadata(std::string_view chain_id,
-                        uint32_t asset_id,
-                        GetAssetMetadataCallback callback);
+  virtual void GetAssetMetadata(std::string_view chain_id,
+                                uint32_t asset_id,
+                                GetAssetMetadataCallback callback);
 
   // Calls state_getStorageHash for an already-built storage key/path.
-  void GetStorageHash(std::string_view chain_id,
-                      std::string_view storage_path,
-                      GetStorageHashCallback callback);
+  virtual void GetStorageHash(std::string_view chain_id,
+                              std::string_view storage_path,
+                              GetStorageHashCallback callback);
+
+  static std::string_view GetAssetsAssetStoragePrefix();
+  static std::string_view GetAssetsMetadataStoragePrefix();
 
  private:
   using APIRequestResult = api_request_helper::APIRequestResult;

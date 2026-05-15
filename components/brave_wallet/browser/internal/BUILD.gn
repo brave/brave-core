@@ -113,10 +113,13 @@ rust_static_library("polkadot_extrinsic_rs") {
   crate_root = "polkadot_extrinsic.rs"
   allow_unsafe = true
   sources = [
+    "polkadot_assets.rs",
     "polkadot_chain_metadata.rs",
     "polkadot_extrinsic.rs",
+    "polkadot_scale_utils.rs",
   ]
   cxx_bindings = [
+    "polkadot_assets.rs",
     "polkadot_chain_metadata.rs",
     "polkadot_extrinsic.rs",
   ]

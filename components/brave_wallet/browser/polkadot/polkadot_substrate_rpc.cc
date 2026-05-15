@@ -19,6 +19,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/internal/polkadot_extrinsic.rs.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_assets.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc_responses.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -32,10 +33,6 @@ namespace {
 
 // Account info comes to us through the wire as 160 hex digits.
 inline constexpr size_t kPolkadotAccountInfoSize = 80;
-inline constexpr size_t kAssetsStorageMapPrefixSize = 32;
-inline constexpr size_t kBlakeTwo128ConcatU32StorageKeySize = 20;
-inline constexpr size_t kAssetsStorageKeySize =
-    kAssetsStorageMapPrefixSize + kBlakeTwo128ConcatU32StorageKeySize;
 inline constexpr int kAssetsStorageKeysPageSize = 1000;
 
 // xxhash("Assets") | xxhash("Asset")
@@ -170,24 +167,6 @@ ParseOptionalHexBytes(const std::optional<std::string>& maybe_hex) {
   }
 
   return base::ok(std::move(bytes));
-}
-
-std::optional<uint32_t> AssetIdFromAssetStorageKey(
-    std::string_view storage_key) {
-  std::vector<uint8_t> bytes;
-  if (!PrefixedHexStringToBytes(storage_key, &bytes) ||
-      bytes.size() != kAssetsStorageKeySize) {
-    return std::nullopt;
-  }
-
-  base::SpanReader<const uint8_t> reader(
-      base::span(bytes).last<sizeof(uint32_t)>());
-  uint32_t asset_id = 0;
-  if (!reader.ReadU32LittleEndian(asset_id)) {
-    return std::nullopt;
-  }
-
-  return asset_id;
 }
 
 mojom::PolkadotAccountInfoPtr ParseAccountInfoFromJson(
@@ -942,18 +921,14 @@ void PolkadotSubstrateRpc::OnGetSupportedAssets(
         base::unexpected(WalletParsingErrorMessage()));
   }
 
-  std::vector<uint32_t> asset_ids;
-  asset_ids.reserve(res->result->size());
-  for (const auto& storage_key : *res->result) {
-    auto asset_id = AssetIdFromAssetStorageKey(storage_key);
-    if (!asset_id) {
-      return std::move(callback).Run(
-          base::unexpected(WalletParsingErrorMessage()));
-    }
-    asset_ids.push_back(*asset_id);
+  auto assets_list = AssetsList::FromStorageKeys(*res->result);
+  if (!assets_list) {
+    return std::move(callback).Run(
+        base::unexpected(WalletParsingErrorMessage()));
   }
 
-  return std::move(callback).Run(base::ok(std::move(asset_ids)));
+  return std::move(callback).Run(
+      base::ok(std::move(assets_list->identifiers())));
 }
 
 void PolkadotSubstrateRpc::GetAssetMetadata(std::string_view chain_id,
@@ -1031,6 +1006,16 @@ void PolkadotSubstrateRpc::OnGetStorageHash(GetStorageHashCallback callback,
   }
 
   return std::move(callback).Run(base::ok(storage_hash));
+}
+
+// static
+std::string_view PolkadotSubstrateRpc::GetAssetsAssetStoragePrefix() {
+  return kAssetsAssetStoragePrefix;
+}
+
+// static
+std::string_view PolkadotSubstrateRpc::GetAssetsMetadataStoragePrefix() {
+  return kAssetsMetadataStoragePrefix;
 }
 
 GURL PolkadotSubstrateRpc::GetNetworkURL(std::string_view chain_id) {

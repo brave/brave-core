@@ -27,7 +27,10 @@ PolkadotWalletService::PolkadotWalletService(
       network_manager_(network_manager),
       polkadot_substrate_rpc_(network_manager, std::move(url_loader_factory)),
       chain_metadata_prefs_(profile_prefs),
-      metadata_provider_(chain_metadata_prefs_, polkadot_substrate_rpc_) {
+      metadata_provider_(chain_metadata_prefs_, polkadot_substrate_rpc_),
+      chain_assets_pref_(profile_prefs),
+      chain_assets_metadata_provider_(chain_assets_pref_,
+                                      polkadot_substrate_rpc_) {
   keyring_service_->AddObserver(
       keyring_observer_receiver_.BindNewPipeAndPassRemote());
 }

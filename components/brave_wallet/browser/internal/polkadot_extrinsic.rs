@@ -8,6 +8,8 @@ use parity_scale_codec::{Compact, Decode, Encode};
 use std::fmt;
 
 mod polkadot_chain_metadata;
+mod polkadot_assets;
+mod polkadot_scale_utils;
 
 const SIGNED_EXTRINSIC: u8 = 0x80;
 const EXTRINSIC_VERSION: u8 = 0x04;

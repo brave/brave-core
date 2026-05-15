@@ -77,6 +77,8 @@ inline constexpr char kBraveWalletLastDiscoveredAssetsAt[] =
     "brave.wallet.last_discovered_assets_at";
 inline constexpr char kBraveWalletPolkadotChainMetadata[] =
     "brave.wallet.polkadot_chain_metadata";
+inline constexpr char kBraveWalletPolkadotChainAssets[] =
+    "brave.wallet.polkadot_chain_assets";
 inline constexpr char kBraveWalletPrivateWindowsEnabled[] =
     "brave.wallet.private_windows_enabled";
 inline constexpr char kBraveWalletTransactionSimulationOptInStatus[] =

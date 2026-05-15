@@ -5,7 +5,10 @@
 
 use crate::CxxPolkadotChainMetadata;
 use crate::Error;
-use parity_scale_codec::{Compact, Decode};
+use crate::polkadot_scale_utils::{
+    decode_option, decode_scale, decode_type_id, decode_vec, decode_vec_len,
+};
+use parity_scale_codec::Decode;
 use std::collections::HashMap;
 
 #[derive(Clone, Copy)]
@@ -124,42 +127,6 @@ impl CxxPolkadotChainMetadataFields {
     }
 }
 
-fn decode_scale<T: Decode>(input: &mut &[u8]) -> Result<T, Error> {
-    T::decode(input).map_err(|_| Error::InvalidScale)
-}
-
-fn decode_vec_len(input: &mut &[u8]) -> Result<usize, Error> {
-    let len: Compact<u32> = decode_scale(input)?;
-    usize::try_from(len.0).map_err(|_| Error::InvalidLength)
-}
-
-fn decode_type_id(input: &mut &[u8]) -> Result<u32, Error> {
-    decode_scale::<Compact<u32>>(input).map(|v| v.0)
-}
-
-fn decode_vec<T>(
-    input: &mut &[u8],
-    mut parse_elem: impl FnMut(&mut &[u8]) -> Result<T, Error>,
-) -> Result<Vec<T>, Error> {
-    let len = decode_vec_len(input)?;
-    let mut out = Vec::with_capacity(len);
-    for _ in 0..len {
-        out.push(parse_elem(input)?);
-    }
-    Ok(out)
-}
-
-fn decode_option<T>(
-    input: &mut &[u8],
-    parse_some: impl FnOnce(&mut &[u8]) -> Result<T, Error>,
-) -> Result<Option<T>, Error> {
-    match decode_scale::<u8>(input)? {
-        0 => Ok(None),
-        1 => Ok(Some(parse_some(input)?)),
-        _ => Err(Error::InvalidMetadata),
-    }
-}
-
 fn parse_field(input: &mut &[u8]) -> Result<(), Error> {
     // Option<String>
     let _: Option<String> = decode_scale(input)?;
@@ -260,7 +227,7 @@ fn parse_portable_registry(input: &mut &[u8]) -> Result<HashMap<u32, Vec<Variant
     let mut by_id = HashMap::new();
     let types_len = decode_vec_len(input)?;
     for _ in 0..types_len {
-        let id: u32 = decode_scale::<Compact<u32>>(input)?.0;
+        let id = decode_type_id(input)?;
         if let Some(variants) = parse_type(input)? {
             by_id.insert(id, variants);
         }
