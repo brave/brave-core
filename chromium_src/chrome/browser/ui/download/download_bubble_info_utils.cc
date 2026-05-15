@@ -10,7 +10,7 @@
 // Add an action to deleted local file in QuickActionsForDownload. This is added
 // only when the download can be opened. That's why we're defining
 // kLaunchChromeRefreshIcon.
-#define kLaunchChromeRefreshIcon kLaunchChromeRefreshIcon);           \
+#define kLaunchChromeRefreshOldIcon kLaunchChromeRefreshOldIcon);     \
   actions.emplace_back<DownloadCommands::Command>(                        \
       DownloadCommands::Command(DownloadCommands::DELETE_LOCAL_FILE), \
       l10n_util::GetStringUTF16(IDS_DOWNLOAD_BUBBLE_DELETE),   \
@@ -18,4 +18,4 @@
 
 #include <chrome/browser/ui/download/download_bubble_info_utils.cc>
 
-#undef kLaunchChromeRefreshIcon
+#undef kLaunchChromeRefreshOldIcon
