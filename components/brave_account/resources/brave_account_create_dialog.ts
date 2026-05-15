@@ -32,6 +32,7 @@ export class BraveAccountCreateDialogElement extends CrLitElement {
     return {
       email: { type: String },
       isCapsLockOn: { type: Boolean },
+      isCreatingAccount: { type: Boolean, state: true },
       isEmailValid: { type: Boolean },
       isPasswordStrongEnough: { type: Boolean },
       isPasswordValid: { type: Boolean },
@@ -48,6 +49,9 @@ export class BraveAccountCreateDialogElement extends CrLitElement {
   // (`registerInitialize`/`registerFinalize`). We'll revisit handling this
   // through Mojo in C++ if that proves practical.
   protected async onCreateAccountButtonClicked() {
+    if (this.isCreatingAccount) return
+    this.isCreatingAccount = true
+
     try {
       const blindedMessage = this.registration.start(this.password)
       const { encryptedVerificationToken, serializedResponse } =
@@ -83,6 +87,8 @@ export class BraveAccountCreateDialogElement extends CrLitElement {
 
       showError({ kind: 'register', details: error })
     }
+
+    this.isCreatingAccount = false
   }
 
   private browserProxy: BraveAccountBrowserProxy =
@@ -90,6 +96,7 @@ export class BraveAccountCreateDialogElement extends CrLitElement {
 
   protected accessor email: string = ''
   protected accessor isCapsLockOn: boolean = false
+  protected accessor isCreatingAccount: boolean = false
   protected accessor isEmailValid: boolean = false
   protected accessor isPasswordStrongEnough: boolean = false
   protected accessor isPasswordValid: boolean = false
