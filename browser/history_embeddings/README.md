@@ -72,31 +72,40 @@ without touching the upstream header (see
 ## Key Files
 
 - **`brave_passage_embeddings_service.{h,cc}`** — In-process
-  implementation of `passage_embeddings::mojom::PassageEmbeddingsService`
-  (and `local_ai::mojom::LocalAIService` for renderer binding).
-  Exposes a direct `BindPassageEmbedder(...)` entry point used by the
-  controller. Owns the guest-OTR background WebContents, the
-  `PassageEmbedderFactory` registration, and a
-  `BraveBatchPassageEmbedder` that translates upstream's batch mojom
-  to the renderer's one-passage-at-a-time interface. Also hosts the
+  implementation of `passage_embeddings::mojom::PassageEmbeddingsService`.
+  Exposes a direct `BindPassageEmbedder(receiver, model_files, cb)`
+  entry point used by the controller; constructs a
+  `BraveBatchPassageEmbedder` around the supplied files. Also hosts the
   static `WebContents*` → bind-callback registry used by
-  `UntrustedLocalAIUI::BindInterface`.
+  `UntrustedLocalAIUI::BindInterface` (the registered callback routes
+  to the active `BraveBatchPassageEmbedder`).
 
 - **`brave_batch_passage_embedder.{h,cc}`** — In-process
-  implementation of `passage_embeddings::mojom::PassageEmbedder` that
-  wraps a renderer-side `local_ai::mojom::PassageEmbedder`. Translates
-  the upstream batch mojom to the renderer's single-passage interface,
-  processing passages sequentially so callbacks resolve with all
-  embeddings in order.
+  implementation of `passage_embeddings::mojom::PassageEmbedder` and
+  `local_ai::mojom::LocalAIService`. Owns the full renderer-side
+  lifecycle for a single load: the guest-OTR background WebContents
+  that hosts the WASM worker, the `LocalAIService` receiver set the
+  WASM page uses to register its `PassageEmbedderFactory`, and the
+  `factory->Init` + `factory->Bind` handshake. Initialization is gated
+  on an explicit `LoadPhase` (`kCreatingContents → kAwaitingFactory →
+  kInitializing → kReady`); the model files arrive via the ctor, and
+  Init runs as soon as the renderer registers its factory. Translates
+  upstream's batch mojom to the renderer's one-passage-at-a-time
+  interface, processing passages sequentially so callbacks resolve
+  with embeddings in order.
 
 - **`brave_passage_embeddings_service_controller.{h,cc}`** — Singleton
-  subclass of `PassageEmbeddingsServiceController`. Overrides
-  `MaybeLaunchService()`/`ResetServiceRemote()` to construct/destroy
-  the in-process service, `EmbedderReady()`/`GetEmbedderMetadata()`
-  to report static metadata, and `GetEmbeddings()` to call
-  `service_->BindPassageEmbedder()` directly and route batches to the
-  bound `embedder_remote_`. Fires the initial
-  `EmbedderMetadataUpdated` notification in its constructor.
+  subclass of `PassageEmbeddingsServiceController`. Observes
+  `LocalModelsUpdaterState` so it knows when the EmbeddingGemma
+  component is installed; `EmbedderReady()` returns true iff the
+  component is present, and `OnLocalModelsReady` fires
+  `EmbedderMetadataUpdated` on observer_list_ so SchedulingEmbedder
+  retries. Overrides `MaybeLaunchService()`/`ResetServiceRemote()`
+  to construct/destroy the in-process service, and
+  `GetEmbeddings()` to short-circuit with `kModelUnavailable` when not
+  ready, otherwise post the disk read for the five EmbeddingGemma
+  files and hand them to `service_->BindPassageEmbedder()` once
+  loaded.
 
 ## Related Files
 
@@ -137,9 +146,16 @@ PageContentAnnotationsWebContentsObserver (upstream)
       → PageEmbeddingsService (chunks text into passages)
         → SchedulingEmbedder (upstream; queues, reorders by priority)
           → BravePassageEmbeddingsServiceController::GetEmbeddings
-            → service_->BindPassageEmbedder (first time, in-process)
-              → PassageEmbedderFactory::Init (loads WASM model)
-                → BraveBatchPassageEmbedder bound to embedder_remote_
+            → !EmbedderReady() → kModelUnavailable (SchedulingEmbedder
+              retries on the next EmbedderMetadataUpdated)
+            → PostTask: read five EmbeddingGemma files from disk
+              → service_->BindPassageEmbedder(receiver, model_files, cb)
+                → BraveBatchPassageEmbedder created with files in hand;
+                  creates background WebContents and waits for factory
+                  registration
+                  → PassageEmbedderFactory::Init (loads WASM model)
+                    → renderer-side PassageEmbedder bound; embedder_remote_
+                      ready
             → embedder_remote_->GenerateEmbeddings (subsequent batches)
               → WASM renderer (EmbeddingGemma, one passage at a time)
                 → HistoryEmbeddingsService (stores passages + embeddings)

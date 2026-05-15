@@ -9,8 +9,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/files/file_util.h"
-#include "base/files/scoped_temp_dir.h"
 #include "base/functional/bind.h"
 #include "base/memory/raw_ptr.h"
 #include "base/test/bind.h"
@@ -18,9 +16,9 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
+#include "brave/browser/history_embeddings/brave_batch_passage_embedder.h"
 #include "brave/components/local_ai/core/background_web_contents.h"
 #include "brave/components/local_ai/core/local_ai.mojom.h"
-#include "brave/components/local_ai/core/local_models_updater.h"
 #include "components/history_embeddings/core/history_embeddings_features.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
@@ -42,8 +40,6 @@ std::vector<float> TestEmbeddingFloat() {
   return {1.0f, 2.0f, 3.0f};
 }
 
-// Fake renderer-side PassageEmbedder. Returns kTestEmbeddingData for
-// every call.
 class FakeRendererEmbedder : public local_ai::mojom::PassageEmbedder {
  public:
   void GenerateEmbeddings(const std::string& text,
@@ -97,6 +93,10 @@ class FakePassageEmbedderFactory
   mojo::Receiver<local_ai::mojom::PassageEmbedderFactory> receiver_{this};
 };
 
+// Acts as the renderer-side LocalAIService consumer in the test:
+// receives a LocalAIService PendingReceiver from the embedder via
+// BindLocalAIReceiver and calls RegisterPassageEmbedderFactory back
+// through it.
 class FakeBackgroundWebContents : public local_ai::BackgroundWebContents {
  public:
   FakeBackgroundWebContents(Delegate* delegate, base::OnceClosure on_destroyed)
@@ -118,78 +118,48 @@ class BravePassageEmbeddingsServiceTest : public testing::Test {
  protected:
   void SetUp() override {
     feature_list_.InitAndEnableFeature(history_embeddings::kHistoryEmbeddings);
-    service_ = std::make_unique<BravePassageEmbeddingsService>(
-        base::BindRepeating(
+    service_ =
+        std::make_unique<BravePassageEmbeddingsService>(base::BindRepeating(
             &BravePassageEmbeddingsServiceTest::CreateFakeWebContents,
-            base::Unretained(this)),
-        local_ai::LocalModelsUpdaterState::GetInstance());
+            base::Unretained(this)));
   }
 
-  void TearDown() override {
-    service_.reset();
-    local_ai::LocalModelsUpdaterState::GetInstance()->SetInstallDir(
-        base::FilePath());
-  }
+  void TearDown() override { service_.reset(); }
 
   void CreateFakeWebContents(
       local_ai::BackgroundWebContents::Delegate* delegate,
-      BravePassageEmbeddingsService::BackgroundWebContentsCreatedCallback
+      BraveBatchPassageEmbedder::BackgroundWebContentsCreatedCallback
           callback) {
+    last_delegate_ = delegate;
+    // The delegate is the embedder which owns this BG contents — they
+    // die together. Clear both raw_ptrs from the destructor so neither is
+    // left dangling when the service drops batch_embedder_.
     auto web_contents = std::make_unique<FakeBackgroundWebContents>(
-        delegate,
-        base::BindOnce(
-            [](raw_ptr<FakeBackgroundWebContents>* ref) { *ref = nullptr; },
-            &last_created_web_contents_));
+        delegate, base::BindOnce(
+                      [](raw_ptr<FakeBackgroundWebContents>* contents_ref,
+                         raw_ptr<local_ai::BackgroundWebContents::Delegate>*
+                             delegate_ref) {
+                        *contents_ref = nullptr;
+                        *delegate_ref = nullptr;
+                      },
+                      &last_created_web_contents_, &last_delegate_));
     last_created_web_contents_ = web_contents.get();
     std::move(callback).Run(std::move(web_contents));
   }
 
-  void RecreateService() {
-    service_.reset();
-    service_ = std::make_unique<BravePassageEmbeddingsService>(
-        base::BindRepeating(
-            &BravePassageEmbeddingsServiceTest::CreateFakeWebContents,
-            base::Unretained(this)),
-        local_ai::LocalModelsUpdaterState::GetInstance());
-  }
-
+  // Drives the renderer-side half of the load: opens a LocalAIService
+  // pipe to the embedder (the way UntrustedLocalAIUI does in
+  // production) and registers the fake factory. Requires the
+  // embedder to have already created its background contents.
   void RegisterFactory() {
+    ASSERT_TRUE(last_delegate_);
+    auto* embedder = static_cast<BraveBatchPassageEmbedder*>(last_delegate_);
     mojo::Remote<local_ai::mojom::LocalAIService> local_ai_remote;
-    service_->BindLocalAIReceiver(local_ai_remote.BindNewPipeAndPassReceiver());
+    embedder->BindLocalAIReceiver(local_ai_remote.BindNewPipeAndPassReceiver());
     local_ai_remote->RegisterPassageEmbedderFactory(fake_factory_.BindRemote());
     local_ai_remote.FlushForTesting();
   }
 
-  void SetUpModelFiles() {
-    ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
-    base::FilePath dir = temp_dir_.GetPath();
-    base::FilePath model_dir =
-        dir.AppendASCII(local_ai::kEmbeddingGemmaModelDir);
-    ASSERT_TRUE(base::CreateDirectory(model_dir));
-    ASSERT_TRUE(base::CreateDirectory(
-        model_dir.AppendASCII(local_ai::kEmbeddingGemmaDense1Dir)));
-    ASSERT_TRUE(base::CreateDirectory(
-        model_dir.AppendASCII(local_ai::kEmbeddingGemmaDense2Dir)));
-    ASSERT_TRUE(base::WriteFile(
-        model_dir.AppendASCII(local_ai::kEmbeddingGemmaModelFile), "w"));
-    ASSERT_TRUE(base::WriteFile(
-        model_dir.AppendASCII(local_ai::kEmbeddingGemmaDense1Dir)
-            .AppendASCII(local_ai::kEmbeddingGemmaDenseModelFile),
-        "d1"));
-    ASSERT_TRUE(base::WriteFile(
-        model_dir.AppendASCII(local_ai::kEmbeddingGemmaDense2Dir)
-            .AppendASCII(local_ai::kEmbeddingGemmaDenseModelFile),
-        "d2"));
-    ASSERT_TRUE(base::WriteFile(
-        model_dir.AppendASCII(local_ai::kEmbeddingGemmaTokenizerFile), "t"));
-    ASSERT_TRUE(base::WriteFile(
-        model_dir.AppendASCII(local_ai::kEmbeddingGemmaConfigFile), "c"));
-    local_ai::LocalModelsUpdaterState::GetInstance()->SetInstallDir(dir);
-  }
-
-  // Issues BindPassageEmbedder via the direct in-process API and
-  // returns a TestFuture for the load result plus a Remote to the batch
-  // embedder. Caller drives the system and checks future.Get().
   struct LoadResult {
     base::test::TestFuture<bool> load_success;
     mojo::Remote<mojom::PassageEmbedder> embedder;
@@ -197,6 +167,7 @@ class BravePassageEmbeddingsServiceTest : public testing::Test {
   std::unique_ptr<LoadResult> IssueLoad() {
     auto result = std::make_unique<LoadResult>();
     service_->BindPassageEmbedder(result->embedder.BindNewPipeAndPassReceiver(),
+                                  local_ai::mojom::ModelFiles::New(),
                                   result->load_success.GetCallback());
     return result;
   }
@@ -207,7 +178,7 @@ class BravePassageEmbeddingsServiceTest : public testing::Test {
   FakeRendererEmbedder fake_worker_;
   FakePassageEmbedderFactory fake_factory_{&fake_worker_};
   raw_ptr<FakeBackgroundWebContents> last_created_web_contents_ = nullptr;
-  base::ScopedTempDir temp_dir_;
+  raw_ptr<local_ai::BackgroundWebContents::Delegate> last_delegate_ = nullptr;
 };
 
 TEST_F(BravePassageEmbeddingsServiceTest, BindCreatesBackgroundContents) {
@@ -216,13 +187,9 @@ TEST_F(BravePassageEmbeddingsServiceTest, BindCreatesBackgroundContents) {
   EXPECT_FALSE(load->load_success.IsReady());
 }
 
-TEST_F(BravePassageEmbeddingsServiceTest, BindWaitsForBothConditions) {
+TEST_F(BravePassageEmbeddingsServiceTest, BindCompletesOnFactoryRegistration) {
   auto load = IssueLoad();
   ASSERT_TRUE(last_created_web_contents_);
-
-  SetUpModelFiles();
-  EXPECT_FALSE(load->load_success.IsReady());
-  EXPECT_EQ(0, fake_factory_.init_count());
 
   RegisterFactory();
   ASSERT_TRUE(
@@ -232,7 +199,6 @@ TEST_F(BravePassageEmbeddingsServiceTest, BindWaitsForBothConditions) {
 
 TEST_F(BravePassageEmbeddingsServiceTest, EndToEndBatchGenerateEmbeddings) {
   auto load = IssueLoad();
-  SetUpModelFiles();
   RegisterFactory();
   ASSERT_TRUE(load->load_success.Get());
 
@@ -253,18 +219,19 @@ TEST_F(BravePassageEmbeddingsServiceTest, InitFailureFailsLoad) {
   fake_factory_.set_init_success(false);
 
   auto load = IssueLoad();
-  SetUpModelFiles();
   RegisterFactory();
 
   ASSERT_TRUE(
       base::test::RunUntil([&] { return fake_factory_.init_count() > 0; }));
   EXPECT_FALSE(load->load_success.Get());
-  EXPECT_FALSE(last_created_web_contents_);
+  // Disconnect tears the embedder down, releasing its background
+  // contents.
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return last_created_web_contents_ == nullptr; }));
 }
 
 TEST_F(BravePassageEmbeddingsServiceTest, BackgroundContentsDestroyedCloses) {
   auto load = IssueLoad();
-  SetUpModelFiles();
   RegisterFactory();
   ASSERT_TRUE(load->load_success.Get());
   ASSERT_TRUE(last_created_web_contents_);
@@ -280,46 +247,56 @@ TEST_F(BravePassageEmbeddingsServiceTest,
        DuplicateRegisterPassageEmbedderFactoryIgnored) {
   // A buggy renderer that calls RegisterPassageEmbedderFactory twice
   // without first disconnecting must not crash the browser. The
-  // service should ignore the duplicate and keep the first factory.
+  // embedder should ignore the duplicate and keep the first
+  // factory.
   auto load = IssueLoad();
   ASSERT_TRUE(last_created_web_contents_);
 
-  // First registration: real fake_factory_ wired up.
   RegisterFactory();
 
   // Second registration: bind a throwaway remote and pass it in.
   // mojo::Remote::Bind CHECKs when already bound, so without the
   // duplicate guard this would crash the browser.
+  ASSERT_TRUE(last_delegate_);
+  auto* embedder =
+      static_cast<BraveBatchPassageEmbedder*>(last_delegate_.get());
   mojo::Remote<local_ai::mojom::LocalAIService> local_ai_remote;
-  service_->BindLocalAIReceiver(local_ai_remote.BindNewPipeAndPassReceiver());
+  embedder->BindLocalAIReceiver(local_ai_remote.BindNewPipeAndPassReceiver());
   mojo::PendingRemote<local_ai::mojom::PassageEmbedderFactory> dummy;
   std::ignore = dummy.InitWithNewPipeAndPassReceiver();
   local_ai_remote->RegisterPassageEmbedderFactory(std::move(dummy));
   local_ai_remote.FlushForTesting();
 
-  // The first factory is still in effect; the load completes once the
-  // model files become available.
-  SetUpModelFiles();
   ASSERT_TRUE(
       base::test::RunUntil([&] { return fake_factory_.init_count() > 0; }));
   EXPECT_TRUE(load->load_success.Get());
+  EXPECT_EQ(1, fake_factory_.init_count());
 }
 
-TEST_F(BravePassageEmbeddingsServiceTest,
-       PreInstalledModelDirCompletesLoadOnFactoryRegister) {
-  // Set install_dir before constructing the service. AddObserver
-  // re-fires OnLocalModelsReady synchronously when install_dir is
-  // already set; MaybeLoadLocalModelFiles is a no-op until the factory
-  // registers because GetInstallDir() is read fresh on each call.
-  SetUpModelFiles();
-  RecreateService();
-
+TEST_F(BravePassageEmbeddingsServiceTest, BindAgainAfterEmbedderRemoteReset) {
   auto load = IssueLoad();
   RegisterFactory();
-  EXPECT_TRUE(load->load_success.Get());
-  // AddObserver's sync re-fire of OnLocalModelsReady plus the
-  // explicit factory-register path must collapse to a single load.
-  EXPECT_EQ(1, fake_factory_.init_count());
+  ASSERT_TRUE(load->load_success.Get());
+  ASSERT_TRUE(last_created_web_contents_);
+
+  // Drop the caller-side embedder remote. The embedder's receiver
+  // disconnects, on_disconnect fires up to the service, and the
+  // service drops the embedder (which tears down its contents).
+  load->embedder.reset();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return last_created_web_contents_ == nullptr; }));
+
+  // The factory pipe was reset along with the embedder; the fake
+  // still holds a now-disconnected receiver, so reset it before
+  // re-binding for the next cycle.
+  fake_factory_.ResetReceiver();
+
+  auto load2 = IssueLoad();
+  ASSERT_TRUE(last_created_web_contents_);
+  RegisterFactory();
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return fake_factory_.init_count() > 1; }));
+  EXPECT_TRUE(load2->load_success.Get());
 }
 
 TEST_F(BravePassageEmbeddingsServiceTest, BindRegistryRoutesToService) {
