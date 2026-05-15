@@ -23,18 +23,9 @@ if [[ $installerPath =~ $installerPathPromoCodeRegex ]]; then
   fi
 fi
 
-# Get a channel-safe version of the application name (based on the
-# .pkg file name)
-if [ "$promoCode" == "" ]; then
-  appName=$(basename "$1" | sed "s/.pkg//" | sed "s/ /\-/g")
-else
-  appName=$(basename "$1" | sed "s/.pkg//" | sed "s/ /\-/g" | perl -ple "s/-${promoCode}//i")
-fi
-
-appNameNoDash=$(echo $appName | sed "s/-/ /g")
-installationAppPath="$installationPath/${appNameNoDash}.app"
-userDataDir="$HOME/Library/Application Support/BraveSoftware"
-appDataDir="$userDataDir/${appName}"
+# The bundle name and user-data subdirectory come from GN at build time.
+installationAppPath="$installationPath/@APP_BUNDLE@"
+appDataDir="$HOME/Library/Application Support/@PRODUCT_DIR_NAME@"
 promoCodePath="$appDataDir/promoCode"
 
 # pkg runs this script as root so we need to get current username
@@ -57,8 +48,9 @@ if [ "$promoCode" != "" ]; then
   echo "Writing to user data directory at: $promoCodePath"
   mkdir -p "$appDataDir"
   echo "$promoCode" > "$promoCodePath"
-  # fix permissions
-  sudo chown -R "$userName" "$userDataDir"
+  # mkdir -p above may have created the parent directory as root; chown
+  # it (and everything below) so the installing user can write here.
+  sudo chown -R "$userName" "$(dirname "$appDataDir")"
 fi
 
 exit 0
