@@ -79,6 +79,13 @@ class BraveConfirmInfoBar : public infobars::InfoBar, public views::View {
   views::View* close_button_for_testing() const { return close_button_.get(); }
 
  protected:
+  static void AssignWidths(Views* views, int available_width);
+
+  int GetStartX() const;
+  int GetEndX() const;
+  int OffsetY(views::View* view) const;
+  int NonLabelWidth() const;
+
   // Subclasses (e.g. BraveSyncAccountDeletedInfoBar) override Layout() and
   // reposition the views, so expose the children and the positioning
   // helpers here.
@@ -89,12 +96,6 @@ class BraveConfirmInfoBar : public infobars::InfoBar, public views::View {
   raw_ptr<views::Link> link_ = nullptr;
   raw_ptr<views::Checkbox> checkbox_ = nullptr;
   raw_ptr<views::ImageButton> close_button_ = nullptr;
-
-  int GetStartX() const;
-  int GetEndX() const;
-  int OffsetY(views::View* view) const;
-  static void AssignWidths(Views* views, int available_width);
-  int NonLabelWidth() const;
 
  private:
   // Tracks the previously focused external view so we can restore focus on
