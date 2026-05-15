@@ -100,6 +100,8 @@ std::string_view GetContentBlockTypeString(
       return "image_url";
     case mojom::ContentBlock::Tag::kFileContentBlock:
       return "file";
+    case mojom::ContentBlock::Tag::kFileExtractedTextContentBlock:
+      return "brave-file-extracted-text";
     case mojom::ContentBlock::Tag::kPageExcerptContentBlock:
       return "brave-page-excerpt";
     case mojom::ContentBlock::Tag::kPageTextContentBlock:
@@ -199,6 +201,11 @@ base::ListValue ConversationAPIV2Client::SerializeOAIMessages(
               "file", FileContentBlockToDict(*block->get_file_content_block()));
           break;
         }
+
+        case mojom::ContentBlock::Tag::kFileExtractedTextContentBlock:
+          content_block_dict.Set(
+              "content", block->get_file_extracted_text_content_block()->text);
+          break;
 
         case mojom::ContentBlock::Tag::kChangeToneContentBlock: {
           const auto& tone = block->get_change_tone_content_block();

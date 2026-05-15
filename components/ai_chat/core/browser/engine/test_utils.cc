@@ -93,6 +93,16 @@ void VerifyFileBlock(const base::Location& location,
   EXPECT_EQ(block->get_file_content_block()->filename, expected_filename);
 }
 
+void VerifyFileExtractedTextBlock(const base::Location& location,
+                                  const mojom::ContentBlockPtr& block,
+                                  std::string_view expected_text) {
+  SCOPED_TRACE(testing::Message() << location.ToString());
+  ASSERT_EQ(block->which(),
+            mojom::ContentBlock::Tag::kFileExtractedTextContentBlock);
+  EXPECT_EQ(block->get_file_extracted_text_content_block()->text,
+            expected_text);
+}
+
 void VerifyPageTextBlock(const base::Location& location,
                          const mojom::ContentBlockPtr& block,
                          std::string_view expected_text) {

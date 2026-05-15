@@ -497,6 +497,12 @@ INSTANTIATE_TEST_SUITE_P(
             }),
             "image_url", std::nullopt, std::nullopt},
         ContentBlockSerializationTestParam{
+            "FileExtractedText", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewFileExtractedTextContentBlock(
+                  mojom::FileExtractedTextContentBlock::New(kTestContent));
+            }),
+            "text", std::nullopt, kTestContent},
+        ContentBlockSerializationTestParam{
             "PageExcerpt", base::BindRepeating([]() {
               return mojom::ContentBlock::NewPageExcerptContentBlock(
                   mojom::PageExcerptContentBlock::New(kTestContent));
