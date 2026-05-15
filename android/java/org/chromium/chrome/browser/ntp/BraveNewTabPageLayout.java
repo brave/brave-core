@@ -1125,6 +1125,17 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
         mBackgroundSponsoredRichMediaView.removeAllViews();
         mSponsoredRichMediaWebView.destroy();
         mSponsoredRichMediaWebView = null;
+
+        // Only fall back to the static image when we were showing rich media.
+        // The non-rich path in maybeShowNTPImage() calls setBackgroundImage() itself.
+        if (mNtpImageGlobal instanceof Wallpaper
+                && ((Wallpaper) mNtpImageGlobal).isRichMedia()
+                && UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                        .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)
+                && mSponsoredTab != null
+                && NTPImageUtil.shouldEnableNTPFeature()) {
+            setBackgroundImage(mNtpImageGlobal);
+        }
     }
 
     private void setBackgroundImage(NTPImage ntpImage) {
