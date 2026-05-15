@@ -24,6 +24,7 @@
 @implementation BraveWebViewConfiguration {
   CWVAutofillDataManager* _autofillDataManager;
 }
+@dynamic preferences;
 
 - (id<ProfileBridge>)profile {
   auto* profile = ProfileIOS::FromBrowserState(self.browserState);
