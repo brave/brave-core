@@ -26,10 +26,17 @@ public class BravePermissionDialogDelegate {
     /** Don't ask again checkbox fors reqeusts. */
     private boolean mDontAskAgain;
 
+    /** Whether this is a GEOLOCATION_WITH_OPTIONS request needing an accuracy selector. */
+    private boolean mIsGeolocationWithOptions;
+
+    /** Geolocation accuracy selected by the user: 0 = Precise, 1 = Approximate. */
+    private int mSelectedGeolocationAccuracy;
+
     public BravePermissionDialogDelegate() {
         mSelectedLifetimeOption = -1;
         mIsWidevinePermissionRequest = false;
         mDontAskAgain = false;
+        mSelectedGeolocationAccuracy = 0; // kPrecise
     }
 
     @CalledByNative
@@ -75,5 +82,23 @@ public class BravePermissionDialogDelegate {
     @CalledByNative
     public boolean getDontAskAgain() {
         return mDontAskAgain;
+    }
+
+    @CalledByNative
+    public void setIsGeolocationWithOptions(boolean isGeolocationWithOptions) {
+        mIsGeolocationWithOptions = isGeolocationWithOptions;
+    }
+
+    public boolean getIsGeolocationWithOptions() {
+        return mIsGeolocationWithOptions;
+    }
+
+    public void setSelectedGeolocationAccuracy(int accuracy) {
+        mSelectedGeolocationAccuracy = accuracy;
+    }
+
+    @CalledByNative
+    public int getSelectedGeolocationAccuracy() {
+        return mSelectedGeolocationAccuracy;
     }
 }
