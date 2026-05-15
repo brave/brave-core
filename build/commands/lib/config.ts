@@ -357,14 +357,15 @@ export class Config {
   }
 
   getBraveLogoIconName() {
-    let iconName = 'brave-icon-dev-color.svg'
+    const prefix = this.isBraveOriginBranded ? 'brave-origin' : 'brave-icon'
+    let iconName = `${prefix}-dev-color.svg`
     if (this.isBraveReleaseBuild()) {
       if (this.channel === 'beta') {
-        iconName = 'brave-icon-beta-color.svg'
+        iconName = `${prefix}-beta-color.svg`
       } else if (this.channel === 'nightly') {
-        iconName = 'brave-icon-nightly-color.svg'
+        iconName = `${prefix}-nightly-color.svg`
       } else {
-        iconName = 'brave-icon-release-color.svg'
+        iconName = `${prefix}-release-color.svg`
       }
     }
     return iconName
