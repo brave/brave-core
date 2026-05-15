@@ -32,7 +32,7 @@ class ProfileAttributesTimePeriodStore final
     : public SerpMetricsTimePeriodStore {
  public:
   ProfileAttributesTimePeriodStore(
-      const base::FilePath& profile_path,
+      base::FilePath profile_path,
       ProfileAttributesStorage& profile_attributes_storage,
       std::string_view metric_name);
 
