@@ -307,10 +307,6 @@ extension Preferences {
     static let attemptToShowClaimRewardsNotification =
       Option<Bool>(key: "newtabpage.show-grant-notification", default: true)
 
-    /// Whether preloaded favorites have been initialized. Uses custom favorites in case of super referral or default ones instead.
-    static let preloadedFavoritiesInitialized =
-      Option<Bool>(key: "newtabpage.favorites-initialized", default: false)
-
     /// Custom theme used in app. Nil if default theme is used.
     static let selectedCustomTheme =
       Option<String?>(key: "newtabpage.selected-custom-theme", default: nil)
