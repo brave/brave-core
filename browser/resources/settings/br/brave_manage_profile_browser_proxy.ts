@@ -30,19 +30,60 @@ export type { CustomAvatarState }
 // allocate millions of boxed Numbers and stall GC.
 const kInlineUploadThresholdBytes = 64 * 1024
 
+// Renderer-side cap on the upload payload size. Kept in sync with the
+// browser-side `BraveManageProfileHandler::kMaxUploadBytes` (10 MiB) so the
+// renderer can reject oversized files before reading them into memory or
+// allocating a shared-memory region for the Mojo hop. The browser-side
+// handler enforces the same limit again — the renderer cap is defense in
+// depth, not the security boundary.
+export const kMaxUploadBytes = 10 * 1024 * 1024
+
+// `MOJO_RESULT_OK` (0) from `MojoResult` in `third_party/blink/.../mojo.idl`.
+// `Mojo.createSharedBuffer` / `MojoHandle.mapBuffer` return a result enum
+// alongside the handle / ArrayBuffer; any non-zero value means the operation
+// failed and the payload field is unset.
+const kMojoResultOk = 0
+
+// Thrown by `bytesToBigBuffer` when allocating or mapping the shared-memory
+// region for an oversized upload fails (e.g., low memory or an OS shared-
+// memory handle limit). Surfaced to the caller so the UI can present a
+// clean error instead of corrupting the upload with a zero-length mapping.
+export class CustomAvatarSharedBufferError extends Error {
+  constructor(message: string) {
+    super(message)
+    this.name = 'CustomAvatarSharedBufferError'
+  }
+}
+
 // Wraps raw image bytes in a `mojo_base.mojom.BigBuffer`. The TS Mojo
 // binding requires the union's `bytes` arm to be a plain number[]; for
 // large payloads we therefore prefer the `sharedMemory` arm and let Mojo
 // transfer the buffer handle to the browser without per-byte boxing. The
 // browser-side handler reads either backing store transparently via
 // `base::span(big_buffer)`.
+//
+// `Mojo.createSharedBuffer` and `MojoHandle.mapBuffer` can fail (e.g., low
+// memory, OS shared-memory handle limit). Both return a `{ result, … }`
+// dictionary with `result === 0` (`MOJO_RESULT_OK`) on success; on failure
+// the handle / ArrayBuffer field is unset. Validate each step explicitly
+// and throw `CustomAvatarSharedBufferError` rather than passing a missing
+// handle or null buffer through, which would otherwise corrupt the upload
+// with a zero-length mapping or silently throw inside `new Uint8Array(…)`.
 function bytesToBigBuffer(bytes: Uint8Array): BigBuffer {
   if (bytes.byteLength < kInlineUploadThresholdBytes) {
     return { bytes: Array.from(bytes) } as BigBuffer
   }
   const sharedBuffer = Mojo.createSharedBuffer(bytes.byteLength)
-  const mapping =
-    new Uint8Array(sharedBuffer.handle.mapBuffer(0, bytes.byteLength).buffer)
+  if (sharedBuffer.result !== kMojoResultOk || !sharedBuffer.handle) {
+    throw new CustomAvatarSharedBufferError(
+      'Mojo.createSharedBuffer failed with result=' + sharedBuffer.result)
+  }
+  const mapResult = sharedBuffer.handle.mapBuffer(0, bytes.byteLength)
+  if (mapResult.result !== kMojoResultOk || !mapResult.buffer) {
+    throw new CustomAvatarSharedBufferError(
+      'MojoHandle.mapBuffer failed with result=' + mapResult.result)
+  }
+  const mapping = new Uint8Array(mapResult.buffer)
   mapping.set(bytes)
   return {
     sharedMemory: {
@@ -85,7 +126,17 @@ export class BraveManageProfileBrowserProxy {
   // the sandboxed image decoder is allowed). Multi-MiB uploads ride a
   // `BigBuffer` shared-memory handle to skip the per-byte boxing cost of an
   // `array<uint8>` Mojo argument.
+  //
+  // Payloads larger than `kMaxUploadBytes` are rejected synchronously here
+  // (mirroring the browser-side limit) so we don't allocate a shared-memory
+  // region for, or copy, bytes that the handler would only reject again.
+  // Callers should also gate on `file.size` before reading the bytes off
+  // disk to avoid materializing oversized uploads in the first place.
   async setCustomAvatar(bytes: Uint8Array): Promise<SetCustomAvatarResult> {
+    if (bytes.byteLength > kMaxUploadBytes) {
+      const { state } = await this.handler.getCustomAvatar()
+      return { error: SetCustomAvatarError.kTooLarge, state }
+    }
     const { error, state } =
       await this.handler.setCustomAvatar(bytesToBigBuffer(bytes))
     return { error: error ?? undefined, state }

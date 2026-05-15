@@ -12,7 +12,9 @@ import { loadTimeData } from 'chrome://resources/js/load_time_data.js'
 
 import {
   BraveManageProfileBrowserProxy,
-  CustomAvatarState
+  CustomAvatarState,
+  kMaxUploadBytes,
+  SetCustomAvatarError,
 } from './brave_manage_profile_browser_proxy.js'
 
 const kCustomAvatarRowId = 'braveCustomAvatarRow'
@@ -307,6 +309,20 @@ function tryWireBraveManageProfileCustomAvatar(host: HTMLElement): boolean {
     if (!file) {
       return
     }
+    // Gate on `file.size` *before* reading the file contents into memory
+    // so multi-hundred-MB selections never get materialized in the
+    // renderer (and never go on to allocate a shared-memory region for
+    // the Mojo hop). The browser-side handler enforces the same limit
+    // again; this renderer check is defense in depth, not the security
+    // boundary.
+    if (file.size > kMaxUploadBytes) {
+      console.warn('[Brave Settings Overrides] setCustomAvatar rejected: ' +
+        'file size ' + file.size + ' bytes exceeds the ' + kMaxUploadBytes +
+        '-byte cap.')
+      braveOnCustomAvatarChanged_(
+        typedHost, typedHost.braveCustomAvatarState_ ?? kEmptyAvatarState)
+      return
+    }
     preview.classList.add('is-uploading')
     preview.setAttribute('aria-busy', 'true')
     try {
@@ -314,7 +330,10 @@ function tryWireBraveManageProfileCustomAvatar(host: HTMLElement): boolean {
       const result = await proxy.setCustomAvatar(bytes)
       if (result.error !== undefined) {
         console.warn('[Brave Settings Overrides] setCustomAvatar failed:',
-          result.error)
+          result.error,
+          result.error === SetCustomAvatarError.kTooLarge
+            ? '(payload exceeds ' + kMaxUploadBytes + ' bytes)'
+            : '')
       }
       braveOnCustomAvatarChanged_(typedHost, result.state)
     } catch (err) {
