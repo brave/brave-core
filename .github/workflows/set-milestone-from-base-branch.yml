@@ -1,8 +1,7 @@
 name: Set PR Milestone
 
 on:
-  pull_request:
-    types: [closed]
+  push:
     branches: [master, 1.*]
 
 concurrency: set-bb-issues-milestone
@@ -15,34 +14,44 @@ permissions:
 
 jobs:
   set-pr-milestone:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-slim
+    outputs:
+      pr_number: ${{ steps.set-milestone.outputs.pr_number }}
     steps:
       - env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPO_NAME: ${{ github.event.repository.full_name }}
-          PR_NUMBER: ${{ github.event.number }}
+          REPO_NAME: ${{ github.repository }}
+          COMMIT_SHA: ${{ github.sha }}
+          BASE_REF: ${{ github.ref_name }}
+        id: set-milestone
         name: "Set milestone on PR based on base branch"
         run: |
+          pr_number=$(gh api "repos/${REPO_NAME}/commits/${COMMIT_SHA}/pulls" -q '.[0].number // empty')
+          if [[ -z "$pr_number" ]]; then
+              echo "No merged PR associated with ${COMMIT_SHA}; skipping" >&2
+              exit 0
+          fi
+          echo "pr_number=${pr_number}" >> "${GITHUB_OUTPUT:?}"
+
           readarray -t milestones < <(gh api /repos/brave/brave-core/milestones -q ".[] | .title")
-          if [[ "$GITHUB_BASE_REF" = "master" ]]; then
+          if [[ "$BASE_REF" = "master" ]]; then
               milestone_selector="Nightly"
           else
-              milestone_selector="$GITHUB_BASE_REF"
+              milestone_selector="$BASE_REF"
           fi
 
           milestone=$(printf "%s\n" "${milestones[@]}" | grep -F "$milestone_selector")
-          gh pr edit "$PR_NUMBER" -R "$REPO_NAME" -m "$milestone"
+          gh pr edit "$pr_number" -R "$REPO_NAME" -m "$milestone"
 
   set-brave-browser-issues-milestone:
-    if: github.event.pull_request.merged == true
+    if: needs.set-pr-milestone.outputs.pr_number != ''
     runs-on: ubuntu-slim
     needs: set-pr-milestone
     steps:
       - env:
-          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          REPO_NAME: ${{ github.event.repository.full_name }}
-          PR_NUMBER: ${{ github.event.number }}
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN_SET_MILESTONE }}
+          REPO_NAME: ${{ github.repository }}
+          PR_NUMBER: ${{ needs.set-pr-milestone.outputs.pr_number }}
         name: "Set milestone on related issues in brave-browser"
         run: |
           BB_ISSUE_PREFIX="https://github.com/brave/brave-browser/issues/"
