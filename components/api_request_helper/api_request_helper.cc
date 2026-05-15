@@ -517,7 +517,7 @@ void APIRequestHelper::URLLoaderHandler::OnParseJsonResponse(
 
 bool APIRequestHelper::URLLoaderHandler::MaybeAppendToErrorBodyBuffer(
     std::string_view string_piece) {
-  if (!is_response_fail_and_json_.has_value() || !*is_response_fail_and_json_) {
+  if (!is_response_fail_and_json_.value_or(false)) {
     return false;
   }
   error_body_buffer_.append(string_piece);
