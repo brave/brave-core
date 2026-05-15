@@ -173,7 +173,7 @@ void CustomBackgroundFileManager::DecodeImageInIsolatedProcess(
 
   data_decoder::DecodeImageIsolated(
       image_data_span, data_decoder::mojom::ImageCodec::kDefault,
-      /*shrink_to_fit=*/false,
+      /*shrink_to_fit=*/true,
       static_cast<uint64_t>(IPC::mojom::kChannelMaximumMessageSize),
       gfx::Size() /* No particular size desired. */,
       std::move(skbitmap_to_image).Then(std::move(on_decode)));
