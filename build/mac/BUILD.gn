@@ -7,6 +7,7 @@ import("//brave/build/config.gni")
 import("//brave/build/mac/config.gni")
 import("//brave/updater/config.gni")
 import("//build/util/branding.gni")
+import("//build/util/process_version.gni")
 import("//chrome/common/features.gni")
 import("//chrome/updater/branding.gni")
 import("//chrome/version.gni")
@@ -279,9 +280,17 @@ if (install_omaha4_with_pkg) {
     sources = [ "pkg-scripts/preinstall" ]
     outputs = [ preinstall_script ]
   }
-  copy("copy_postinstall") {
-    sources = [ "pkg-scripts/postinstall" ]
-    outputs = [ postinstall_script ]
+  process_version("copy_postinstall") {
+    process_only = true
+    template_file = "pkg-scripts/postinstall"
+    output = postinstall_script
+    executable = true
+    extra_args = [
+      "-e",
+      "APP_BUNDLE=\"$brave_exe\"",
+      "-e",
+      "PRODUCT_DIR_NAME=\"$brave_product_dir_name\"",
+    ]
   }
 }
 
