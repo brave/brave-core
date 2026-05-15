@@ -4,7 +4,13 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { Redirect, Route, Switch, useHistory } from 'react-router-dom'
+import {
+  Redirect,
+  Route,
+  Switch,
+  useHistory,
+  useLocation,
+} from 'react-router-dom'
 
 // redux
 import { useAppDispatch } from '../common/hooks/use-redux'
@@ -35,7 +41,6 @@ import {
   useSafeUISelector,
   useSafeWalletSelector,
 } from '../common/hooks/use-safe-selector'
-import { useLocationPathName } from '../common/hooks/use-pathname'
 import { useLocalStorage } from '../common/hooks/use_local_storage'
 
 // style
@@ -74,8 +79,9 @@ import { Connections } from '../components/extension/connections/connections'
 import { PageNotFound } from './screens/page_not_found/page_not_found'
 
 export const Container = () => {
-  // routing
-  const walletLocation = useLocationPathName()
+  // routing — persist search + hash so e.g. (Buy, Send, Swap and Bridge) query params survive lock/unlock
+  const { pathname, search, hash } = useLocation()
+  const walletSessionLocation = `${pathname}${search}${hash}`
   const history = useHistory()
 
   // redux
@@ -136,17 +142,17 @@ export const Container = () => {
 
   // effects
   React.useEffect(() => {
-    // update page title
-    document.title = getWalletLocationTitle(walletLocation)
+    // update page title (pathname only: send/swap titles use strict path checks)
+    document.title = getWalletLocationTitle(pathname)
 
     // store the last url before wallet lock
     // so that we can return to that page after unlock
-    if (isPersistableSessionRoute(walletLocation, isPanel)) {
+    if (isPersistableSessionRoute(walletSessionLocation, isPanel)) {
       window.localStorage.setItem(
         LOCAL_STORAGE_KEYS.SAVED_SESSION_ROUTE,
-        walletLocation,
+        walletSessionLocation,
       )
-      setSessionRoute(walletLocation)
+      setSessionRoute(walletSessionLocation)
     }
 
     // Save the previous location (from ref) before updating it with
@@ -162,33 +168,28 @@ export const Container = () => {
     }
 
     // Update the ref with current location for next route change
-    if (isPersistableSessionRoute(walletLocation, isPanel)) {
-      previousLocationRef.current = walletLocation
+    if (isPersistableSessionRoute(walletSessionLocation, isPanel)) {
+      previousLocationRef.current = walletSessionLocation
     }
     // clean recovery phrase if not backing up or onboarding on route change
     if (
       mnemonic
-      && !walletLocation.includes(WalletRoutes.Backup)
-      && !walletLocation.includes(WalletRoutes.Onboarding)
+      && !pathname.includes(WalletRoutes.Backup)
+      && !pathname.includes(WalletRoutes.Onboarding)
     ) {
       dispatch(WalletPageActions.recoveryWordsAvailable({ mnemonic: '' }))
     }
-  }, [walletLocation, isPanel, mnemonic, dispatch])
+  }, [walletSessionLocation, pathname, isPanel, mnemonic, dispatch])
 
   React.useEffect(() => {
     if (
       !acceptedPartnerConsentTerms
-      && walletLocation.includes(WalletRoutes.FundWalletPageStart)
+      && pathname.includes(WalletRoutes.FundWalletPageStart)
       && !walletNotYetCreated
     ) {
       setShowPartnerConsentModal(true)
     }
-  }, [
-    acceptedPartnerConsentTerms,
-    walletLocation,
-    history,
-    walletNotYetCreated,
-  ])
+  }, [acceptedPartnerConsentTerms, pathname, history, walletNotYetCreated])
 
   // render
   if (!hasInitialized) {
