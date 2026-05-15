@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_ENGINE_CONSUMER_CONVERSATION_API_V2_H_
-#define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_ENGINE_CONSUMER_CONVERSATION_API_V2_H_
+#ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_ENGINE_CONSUMER_CONVERSATION_API_H_
+#define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_ENGINE_CONSUMER_CONVERSATION_API_H_
 
 #include <memory>
 #include <string>
@@ -12,7 +12,7 @@
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/components/ai_chat/core/browser/engine/conversation_api_v2_client.h"
+#include "brave/components/ai_chat/core/browser/engine/conversation_api_client.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
@@ -41,19 +41,18 @@ class ModelOptions;
 // Converts between AI Chat's Conversation actions and data model
 // (history, associated content, suggested questions, etc.) and the Conversation
 // API's request/response format.
-class EngineConsumerConversationAPIV2 : public EngineConsumer {
+class EngineConsumerConversationAPI : public EngineConsumer {
  public:
-  EngineConsumerConversationAPIV2(
+  EngineConsumerConversationAPI(
       const mojom::LeoModelOptions& model_options,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       AIChatCredentialManager* credential_manager,
       ModelService* model_service,
       PrefService* pref_service);
-  EngineConsumerConversationAPIV2(const EngineConsumerConversationAPIV2&) =
-      delete;
-  EngineConsumerConversationAPIV2& operator=(
-      const EngineConsumerConversationAPIV2&) = delete;
-  ~EngineConsumerConversationAPIV2() override;
+  EngineConsumerConversationAPI(const EngineConsumerConversationAPI&) = delete;
+  EngineConsumerConversationAPI& operator=(
+      const EngineConsumerConversationAPI&) = delete;
+  ~EngineConsumerConversationAPI() override;
 
   // EngineConsumer
   void GenerateQuestionSuggestions(
@@ -92,10 +91,10 @@ class EngineConsumerConversationAPIV2 : public EngineConsumer {
                     GetFocusTabsCallback callback) override;
 
   void SetAPIForTesting(
-      std::unique_ptr<ConversationAPIV2Client> api_for_testing) {
+      std::unique_ptr<ConversationAPIClient> api_for_testing) {
     api_ = std::move(api_for_testing);
   }
-  ConversationAPIV2Client* GetAPIForTesting() { return api_.get(); }
+  ConversationAPIClient* GetAPIForTesting() { return api_.get(); }
 
  private:
   void OnGenerateQuestionSuggestionsResponse(
@@ -108,11 +107,11 @@ class EngineConsumerConversationAPIV2 : public EngineConsumer {
       base::expected<std::vector<std::string>, mojom::APIError> topics_result,
       GetSuggestedTopicsCallback callback) override;
 
-  std::unique_ptr<ConversationAPIV2Client> api_ = nullptr;
+  std::unique_ptr<ConversationAPIClient> api_ = nullptr;
 
-  base::WeakPtrFactory<EngineConsumerConversationAPIV2> weak_ptr_factory_{this};
+  base::WeakPtrFactory<EngineConsumerConversationAPI> weak_ptr_factory_{this};
 };
 
 }  // namespace ai_chat
 
-#endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_ENGINE_CONSUMER_CONVERSATION_API_V2_H_
+#endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_ENGINE_CONSUMER_CONVERSATION_API_H_

@@ -3,13 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/ai_chat/core/browser/engine/engine_consumer_conversation_api_v2.h"
+#include "brave/components/ai_chat/core/browser/engine/engine_consumer_conversation_api.h"
 
 #include "base/barrier_callback.h"
 #include "base/check.h"
 #include "base/strings/string_split.h"
 #include "base/types/expected.h"
-#include "brave/components/ai_chat/core/browser/engine/conversation_api_v2_client.h"
+#include "brave/components/ai_chat/core/browser/engine/conversation_api_client.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_parsing.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
@@ -17,7 +17,7 @@
 
 namespace ai_chat {
 
-EngineConsumerConversationAPIV2::EngineConsumerConversationAPIV2(
+EngineConsumerConversationAPI::EngineConsumerConversationAPI(
     const mojom::LeoModelOptions& model_options,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     AIChatCredentialManager* credential_manager,
@@ -26,28 +26,28 @@ EngineConsumerConversationAPIV2::EngineConsumerConversationAPIV2(
     : EngineConsumer(model_service, pref_service) {
   DCHECK(!model_options.name.empty());
   model_name_ = model_options.name;
-  api_ = std::make_unique<ConversationAPIV2Client>(
+  api_ = std::make_unique<ConversationAPIClient>(
       model_options.name, url_loader_factory, credential_manager,
       model_service);
   max_associated_content_length_ = model_options.max_associated_content_length;
 }
 
-EngineConsumerConversationAPIV2::~EngineConsumerConversationAPIV2() = default;
+EngineConsumerConversationAPI::~EngineConsumerConversationAPI() = default;
 
-void EngineConsumerConversationAPIV2::GenerateQuestionSuggestions(
+void EngineConsumerConversationAPI::GenerateQuestionSuggestions(
     PageContents page_contents,
     SuggestedQuestionsCallback callback) {
   auto messages = BuildOAIQuestionSuggestionsMessages(
       page_contents, max_associated_content_length_,
       [this](std::string& input) { SanitizeInput(input); });
   auto on_response = base::BindOnce(
-      &EngineConsumerConversationAPIV2::OnGenerateQuestionSuggestionsResponse,
+      &EngineConsumerConversationAPI::OnGenerateQuestionSuggestionsResponse,
       weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   api_->PerformRequest(std::move(messages), std::nullopt, std::nullopt, {},
                        base::NullCallback(), std::move(on_response));
 }
 
-void EngineConsumerConversationAPIV2::OnGenerateQuestionSuggestionsResponse(
+void EngineConsumerConversationAPI::OnGenerateQuestionSuggestionsResponse(
     SuggestedQuestionsCallback callback,
     GenerationResult result) {
   if (!result.has_value()) {
@@ -71,7 +71,7 @@ void EngineConsumerConversationAPIV2::OnGenerateQuestionSuggestionsResponse(
   std::move(callback).Run(std::move(questions));
 }
 
-void EngineConsumerConversationAPIV2::GenerateAssistantResponse(
+void EngineConsumerConversationAPI::GenerateAssistantResponse(
     PageContentsMap&& page_contents,
     const ConversationHistory& conversation_history,
     bool is_temporary_chat,
@@ -105,7 +105,7 @@ void EngineConsumerConversationAPIV2::GenerateAssistantResponse(
                        std::move(completed_callback), model_name);
 }
 
-void EngineConsumerConversationAPIV2::GenerateRewriteSuggestion(
+void EngineConsumerConversationAPI::GenerateRewriteSuggestion(
     const std::string& text,
     mojom::ActionType action_type,
     GenerationDataCallback received_callback,
@@ -121,20 +121,19 @@ void EngineConsumerConversationAPIV2::GenerateRewriteSuggestion(
                        std::move(completed_callback));
 }
 
-void EngineConsumerConversationAPIV2::ClearAllQueries() {
+void EngineConsumerConversationAPI::ClearAllQueries() {
   api_->ClearAllQueries();
 }
 
-bool EngineConsumerConversationAPIV2::SupportsDeltaTextResponses() const {
+bool EngineConsumerConversationAPI::SupportsDeltaTextResponses() const {
   return true;
 }
 
-bool EngineConsumerConversationAPIV2::RequiresClientSideTitleGeneration()
-    const {
+bool EngineConsumerConversationAPI::RequiresClientSideTitleGeneration() const {
   return true;
 }
 
-void EngineConsumerConversationAPIV2::GenerateConversationTitle(
+void EngineConsumerConversationAPI::GenerateConversationTitle(
     const PageContentsMap& page_contents,
     const ConversationHistory& conversation_history,
     GenerationCompletedCallback completed_callback) {
@@ -152,11 +151,11 @@ void EngineConsumerConversationAPIV2::GenerateConversationTitle(
       std::move(*messages), std::nullopt, std::nullopt, {},
       base::NullCallback(),  // no streaming needed
       base::BindOnce(
-          &EngineConsumerConversationAPIV2::OnConversationTitleGenerated,
+          &EngineConsumerConversationAPI::OnConversationTitleGenerated,
           weak_ptr_factory_.GetWeakPtr(), std::move(completed_callback)));
 }
 
-void EngineConsumerConversationAPIV2::DedupeTopics(
+void EngineConsumerConversationAPI::DedupeTopics(
     base::expected<std::vector<std::string>, mojom::APIError> topics_result,
     GetSuggestedTopicsCallback callback) {
   if (!topics_result.has_value() || topics_result->empty()) {
@@ -181,7 +180,7 @@ void EngineConsumerConversationAPIV2::DedupeTopics(
           std::move(callback)));
 }
 
-void EngineConsumerConversationAPIV2::GetSuggestedTopics(
+void EngineConsumerConversationAPI::GetSuggestedTopics(
     const std::vector<Tab>& tabs,
     GetSuggestedTopicsCallback callback) {
   auto chunked_messages = BuildChunkedTabFocusMessages(tabs, "");
@@ -192,9 +191,8 @@ void EngineConsumerConversationAPIV2::GetSuggestedTopics(
 
   const auto barrier_callback = base::BarrierCallback<GenerationResult>(
       chunked_messages.size(),
-      base::BindOnce(
-          &EngineConsumerConversationAPIV2::MergeSuggestTopicsResults,
-          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+      base::BindOnce(&EngineConsumerConversationAPI::MergeSuggestTopicsResults,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 
   for (auto& messages : chunked_messages) {
     api_->PerformRequest(std::move(messages), std::nullopt, std::nullopt, {},
@@ -203,7 +201,7 @@ void EngineConsumerConversationAPIV2::GetSuggestedTopics(
   }
 }
 
-void EngineConsumerConversationAPIV2::GetFocusTabs(
+void EngineConsumerConversationAPI::GetFocusTabs(
     const std::vector<Tab>& tabs,
     const std::string& topic,
     EngineConsumer::GetFocusTabsCallback callback) {

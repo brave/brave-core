@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/ai_chat/core/browser/engine/conversation_api_v2_client.h"
+#include "brave/components/ai_chat/core/browser/engine/conversation_api_client.h"
 
 #include <optional>
 #include <string>
@@ -146,7 +146,7 @@ std::string ParseErrorCode(const base::Value& body) {
 }  // namespace
 
 // static
-base::ListValue ConversationAPIV2Client::SerializeOAIMessages(
+base::ListValue ConversationAPIClient::SerializeOAIMessages(
     std::vector<OAIMessage> messages) {
   base::ListValue serialized_messages;
   for (auto& message : messages) {
@@ -309,7 +309,7 @@ base::ListValue ConversationAPIV2Client::SerializeOAIMessages(
   return serialized_messages;
 }
 
-ConversationAPIV2Client::ConversationAPIV2Client(
+ConversationAPIClient::ConversationAPIClient(
     const std::string& model_name,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     AIChatCredentialManager* credential_manager,
@@ -322,13 +322,13 @@ ConversationAPIV2Client::ConversationAPIV2Client(
       GetNetworkTrafficAnnotationTag(), url_loader_factory);
 }
 
-ConversationAPIV2Client::~ConversationAPIV2Client() = default;
+ConversationAPIClient::~ConversationAPIClient() = default;
 
-void ConversationAPIV2Client::ClearAllQueries() {
+void ConversationAPIClient::ClearAllQueries() {
   api_request_helper_->CancelAll();
 }
 
-void ConversationAPIV2Client::PerformRequest(
+void ConversationAPIClient::PerformRequest(
     std::vector<OAIMessage> messages,
     std::optional<base::ListValue> oai_tool_definitions,
     const std::optional<std::string>& preferred_tool_name,
@@ -338,7 +338,7 @@ void ConversationAPIV2Client::PerformRequest(
     const std::optional<std::string>& model_name) {
   // Get credentials and then perform request
   auto callback = base::BindOnce(
-      &ConversationAPIV2Client::PerformRequestWithCredentials,
+      &ConversationAPIClient::PerformRequestWithCredentials,
       weak_ptr_factory_.GetWeakPtr(), std::move(messages),
       std::move(oai_tool_definitions), preferred_tool_name,
       conversation_capabilities, model_name, std::move(data_received_callback),
@@ -346,7 +346,7 @@ void ConversationAPIV2Client::PerformRequest(
   credential_manager_->FetchPremiumCredential(std::move(callback));
 }
 
-std::string ConversationAPIV2Client::CreateJSONRequestBody(
+std::string ConversationAPIClient::CreateJSONRequestBody(
     std::vector<OAIMessage> messages,
     std::optional<base::ListValue> oai_tool_definitions,
     const std::optional<std::string>& preferred_tool_name,
@@ -380,7 +380,7 @@ std::string ConversationAPIV2Client::CreateJSONRequestBody(
   return json;
 }
 
-void ConversationAPIV2Client::PerformRequestWithCredentials(
+void ConversationAPIClient::PerformRequestWithCredentials(
     std::vector<OAIMessage> messages,
     std::optional<base::ListValue> oai_tool_definitions,
     const std::optional<std::string>& preferred_tool_name,
@@ -420,10 +420,10 @@ void ConversationAPIV2Client::PerformRequestWithCredentials(
   if (is_sse_enabled) {
     DVLOG(2) << "Making streaming AI Chat Conversation API Request";
     auto on_received = base::BindRepeating(
-        &ConversationAPIV2Client::OnQueryDataReceived,
+        &ConversationAPIClient::OnQueryDataReceived,
         weak_ptr_factory_.GetWeakPtr(), std::move(data_received_callback));
     auto on_complete =
-        base::BindOnce(&ConversationAPIV2Client::OnQueryCompleted,
+        base::BindOnce(&ConversationAPIClient::OnQueryCompleted,
                        weak_ptr_factory_.GetWeakPtr(), std::move(credential),
                        std::move(completed_callback));
 
@@ -434,7 +434,7 @@ void ConversationAPIV2Client::PerformRequestWithCredentials(
   } else {
     DVLOG(2) << "Making non-streaming AI Chat Conversation API Request";
     auto on_complete =
-        base::BindOnce(&ConversationAPIV2Client::OnQueryCompleted,
+        base::BindOnce(&ConversationAPIClient::OnQueryCompleted,
                        weak_ptr_factory_.GetWeakPtr(), std::move(credential),
                        std::move(completed_callback));
 
@@ -444,7 +444,7 @@ void ConversationAPIV2Client::PerformRequestWithCredentials(
   }
 }
 
-void ConversationAPIV2Client::OnQueryCompleted(
+void ConversationAPIClient::OnQueryCompleted(
     std::optional<CredentialCacheEntry> credential,
     GenerationCompletedCallback callback,
     api_request_helper::APIRequestResult result) {
@@ -502,7 +502,7 @@ void ConversationAPIV2Client::OnQueryCompleted(
       base::unexpected(EngineConsumer::Error(error, std::move(details))));
 }
 
-void ConversationAPIV2Client::OnQueryDataReceived(
+void ConversationAPIClient::OnQueryDataReceived(
     GenerationDataCallback callback,
     base::expected<base::Value, std::string> result) {
   if (!result.has_value() || !result->is_dict()) {
@@ -562,7 +562,7 @@ void ConversationAPIV2Client::OnQueryDataReceived(
   }
 }
 
-std::optional<std::string> ConversationAPIV2Client::GetLeoModelKeyFromResponse(
+std::optional<std::string> ConversationAPIClient::GetLeoModelKeyFromResponse(
     const base::DictValue& response) {
   const std::string* model = response.FindString("model");
   if (!model_service_ || !model) {

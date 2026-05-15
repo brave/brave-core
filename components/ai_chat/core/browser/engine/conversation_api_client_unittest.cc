@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ai_chat/core/browser/engine/conversation_api_v2_client.h"
+#include "brave/components/ai_chat/core/browser/engine/conversation_api_client.h"
 
 #include <optional>
 #include <string>
@@ -239,14 +239,14 @@ class MockAIChatCredentialManager : public AIChatCredentialManager {
 };
 
 // Create a version of the ConversationAPIClient that contains our mocks
-class TestConversationAPIV2Client : public ConversationAPIV2Client {
+class TestConversationAPIClient : public ConversationAPIClient {
  public:
-  TestConversationAPIV2Client(AIChatCredentialManager* credential_manager,
-                              ModelService* model_service)
-      : ConversationAPIV2Client("test-model-name",
-                                nullptr,
-                                credential_manager,
-                                model_service) {
+  TestConversationAPIClient(AIChatCredentialManager* credential_manager,
+                            ModelService* model_service)
+      : ConversationAPIClient("test-model-name",
+                              nullptr,
+                              credential_manager,
+                              model_service) {
     auto mock_helper =
         std::make_unique<testing::NiceMock<MockAPIRequestHelper>>(
             TRAFFIC_ANNOTATION_FOR_TESTS, nullptr);
@@ -258,10 +258,10 @@ class TestConversationAPIV2Client : public ConversationAPIV2Client {
   }
 };
 
-class ConversationAPIV2ClientUnitTest : public testing::Test {
+class ConversationAPIClientUnitTest : public testing::Test {
  public:
-  ConversationAPIV2ClientUnitTest() = default;
-  ~ConversationAPIV2ClientUnitTest() override = default;
+  ConversationAPIClientUnitTest() = default;
+  ~ConversationAPIClientUnitTest() override = default;
 
   void SetUp() override {
     prefs::RegisterProfilePrefs(prefs_.registry());
@@ -271,7 +271,7 @@ class ConversationAPIV2ClientUnitTest : public testing::Test {
     model_service_ = std::make_unique<ModelService>(
         &prefs_, os_crypt_async_.get(), network::NetworkContextGetter());
 
-    client_ = std::make_unique<TestConversationAPIV2Client>(
+    client_ = std::make_unique<TestConversationAPIClient>(
         credential_manager_.get(), model_service_.get());
 
     // Default credential behavior: non-premium (nullopt)
@@ -300,16 +300,16 @@ class ConversationAPIV2ClientUnitTest : public testing::Test {
           /*is_sync_for_unittests=*/true);
   std::unique_ptr<MockAIChatCredentialManager> credential_manager_;
   std::unique_ptr<ModelService> model_service_;
-  std::unique_ptr<TestConversationAPIV2Client> client_;
+  std::unique_ptr<TestConversationAPIClient> client_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   std::optional<CredentialCacheEntry> credential_ = std::nullopt;
 };
 
-class ConversationAPIV2ClientUnitTest_ContentBlocks
-    : public ConversationAPIV2ClientUnitTest,
+class ConversationAPIClientUnitTest_ContentBlocks
+    : public ConversationAPIClientUnitTest,
       public testing::WithParamInterface<ContentBlockTestParam> {};
 
-TEST_P(ConversationAPIV2ClientUnitTest_ContentBlocks,
+TEST_P(ConversationAPIClientUnitTest_ContentBlocks,
        SerializeOAIMessages_ContentBlocks) {
   ContentBlockTestParam params = GetParam();
 
@@ -322,7 +322,7 @@ TEST_P(ConversationAPIV2ClientUnitTest_ContentBlocks,
   messages.push_back(std::move(message));
 
   base::ListValue serialized =
-      ConversationAPIV2Client::SerializeOAIMessages(std::move(messages));
+      ConversationAPIClient::SerializeOAIMessages(std::move(messages));
   std::string expected_json = absl::StrFormat(
       R"([{"role": "user", "content": [%s]}])", params.expected_json);
 
@@ -332,7 +332,7 @@ TEST_P(ConversationAPIV2ClientUnitTest_ContentBlocks,
 
 INSTANTIATE_TEST_SUITE_P(
     ,
-    ConversationAPIV2ClientUnitTest_ContentBlocks,
+    ConversationAPIClientUnitTest_ContentBlocks,
     testing::Values(
         ContentBlockTestParam{"Text", base::BindRepeating([]() {
                                 return mojom::ContentBlock::NewTextContentBlock(
@@ -587,7 +587,7 @@ INSTANTIATE_TEST_SUITE_P(
       return info.param.name;
     });
 
-TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_PremiumHeaders) {
+TEST_F(ConversationAPIClientUnitTest, PerformRequest_PremiumHeaders) {
   // Tests the request building part of the ConversationAPIClient:
   //  - headers are set correctly when premium credentials are available
   //  - messages are correctly formatted into JSON
@@ -723,7 +723,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_PremiumHeaders) {
   testing::Mock::VerifyAndClearExpectations(credential_manager_.get());
 }
 
-TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_NonPremium) {
+TEST_F(ConversationAPIClientUnitTest, PerformRequest_NonPremium) {
   // Performs the same test as Premium, verifying that nothing else changes
   // apart from request headers (and request url).
   // Tests the request building part of the ConversationAPIClient:
@@ -850,7 +850,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_NonPremium) {
   testing::Mock::VerifyAndClearExpectations(credential_manager_.get());
 }
 
-TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_WithToolUseResponse) {
+TEST_F(ConversationAPIClientUnitTest, PerformRequest_WithToolUseResponse) {
   // Tests that we interpret tool use reponses. For more variants
   // see tests for `ToolUseEventFromToolCallsResponse`.
   std::vector<OAIMessage> messages =
@@ -970,7 +970,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_WithToolUseResponse) {
   testing::Mock::VerifyAndClearExpectations(mock_request_helper);
 }
 
-TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_PermissionChallenge) {
+TEST_F(ConversationAPIClientUnitTest, PerformRequest_PermissionChallenge) {
   // Tests that we correctly parse alignment_check from each tool call:
   // - Populate PermissionChallenge when allowed is false
   // - Don't populate PermissionChallenge when allowed is true
@@ -1186,7 +1186,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_PermissionChallenge) {
   run_loop.Run();
 }
 
-TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_NonStreaming) {
+TEST_F(ConversationAPIClientUnitTest, PerformRequest_NonStreaming) {
   std::string expected_completion_response = "complete text";
 
   MockAPIRequestHelper* mock_request_helper =
@@ -1265,7 +1265,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_NonStreaming) {
   testing::Mock::VerifyAndClearExpectations(credential_manager_.get());
 }
 
-TEST_F(ConversationAPIV2ClientUnitTest,
+TEST_F(ConversationAPIClientUnitTest,
        PerformRequest_WithModelNameOverride_Streaming) {
   // Tests that the model name override is correctly passed to the API
   auto [messages, expected_messages_json] =
@@ -1343,7 +1343,7 @@ TEST_F(ConversationAPIV2ClientUnitTest,
   testing::Mock::VerifyAndClearExpectations(credential_manager_.get());
 }
 
-TEST_F(ConversationAPIV2ClientUnitTest,
+TEST_F(ConversationAPIClientUnitTest,
        PerformRequest_WithModelNameOverride_NonStreaming) {
   // Tests that the non-streaming version (Request) is called with null
   // callback
@@ -1417,7 +1417,7 @@ TEST_F(ConversationAPIV2ClientUnitTest,
   testing::Mock::VerifyAndClearExpectations(credential_manager_.get());
 }
 
-TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_NEARVerification) {
+TEST_F(ConversationAPIClientUnitTest, PerformRequest_NEARVerification) {
   std::string expected_completion_response = "Verified response";
   auto [messages, expected_messages_json] =
       GetMockMessagesAndExpectedMessagesJson();
@@ -1485,7 +1485,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_NEARVerification) {
   testing::Mock::VerifyAndClearExpectations(mock_request_helper);
 }
 
-TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_FailWithEmptyMessages) {
+TEST_F(ConversationAPIClientUnitTest, PerformRequest_FailWithEmptyMessages) {
   // Tests handling invalid request parameters (empty messages)
   std::vector<OAIMessage> messages;
 
@@ -1519,8 +1519,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_FailWithEmptyMessages) {
   testing::Mock::VerifyAndClearExpectations(credential_manager_.get());
 }
 
-TEST_F(ConversationAPIV2ClientUnitTest,
-       PerformRequest_NullEventUponBadResponse) {
+TEST_F(ConversationAPIClientUnitTest, PerformRequest_NullEventUponBadResponse) {
   // Tests handling of successful response with invalid/unparseable body
   auto messages = GetMockMessagesAndExpectedMessagesJson().first;
 
@@ -1572,7 +1571,7 @@ TEST_F(ConversationAPIV2ClientUnitTest,
   testing::Mock::VerifyAndClearExpectations(credential_manager_.get());
 }
 
-TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_ServerErrorResponse) {
+TEST_F(ConversationAPIClientUnitTest, PerformRequest_ServerErrorResponse) {
   // Tests handling of server error response (rate limit)
   auto messages = GetMockMessagesAndExpectedMessagesJson().first;
 
@@ -1620,7 +1619,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, PerformRequest_ServerErrorResponse) {
   testing::Mock::VerifyAndClearExpectations(credential_manager_.get());
 }
 
-TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_ContentReceipt) {
+TEST_F(ConversationAPIClientUnitTest, OnQueryDataReceived_ContentReceipt) {
   // Test content receipt event parsing in OnQueryDataReceived
   testing::StrictMock<MockCallbacks> mock_callbacks;
 
@@ -1795,7 +1794,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_ContentReceipt) {
   }
 }
 
-TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_ToolStart) {
+TEST_F(ConversationAPIClientUnitTest, OnQueryDataReceived_ToolStart) {
   // Test toolStart event parsing for server-side search tools
   testing::StrictMock<MockCallbacks> mock_callbacks;
 
@@ -1900,7 +1899,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_ToolStart) {
   }
 }
 
-TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_InlineSearch) {
+TEST_F(ConversationAPIClientUnitTest, OnQueryDataReceived_InlineSearch) {
   // Test inline search event parsing in OnQueryDataReceived
   testing::StrictMock<MockCallbacks> mock_callbacks;
 
@@ -2017,7 +2016,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_InlineSearch) {
   }
 }
 
-TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_CompletionChunk) {
+TEST_F(ConversationAPIClientUnitTest, OnQueryDataReceived_CompletionChunk) {
   // Test streaming completion chunk parsing in OnQueryDataReceived
   testing::StrictMock<MockCallbacks> mock_callbacks;
 
@@ -2151,7 +2150,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_CompletionChunk) {
   }
 }
 
-TEST_F(ConversationAPIV2ClientUnitTest, ErrorParsing_SSE) {
+TEST_F(ConversationAPIClientUnitTest, ErrorParsing_SSE) {
   MockAPIRequestHelper* mock_request_helper =
       client_->GetMockAPIRequestHelper();
   testing::StrictMock<MockCallbacks> mock_callbacks;
@@ -2195,7 +2194,7 @@ TEST_F(ConversationAPIV2ClientUnitTest, ErrorParsing_SSE) {
   run_loop.Run();
 }
 
-TEST_F(ConversationAPIV2ClientUnitTest, ErrorParsing_NonSSE) {
+TEST_F(ConversationAPIClientUnitTest, ErrorParsing_NonSSE) {
   MockAPIRequestHelper* mock_request_helper =
       client_->GetMockAPIRequestHelper();
   testing::StrictMock<MockCallbacks> mock_callbacks;

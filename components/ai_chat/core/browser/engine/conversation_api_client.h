@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_CONVERSATION_API_V2_CLIENT_H_
-#define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_CONVERSATION_API_V2_CLIENT_H_
+#ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_CONVERSATION_API_CLIENT_H_
+#define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_CONVERSATION_API_CLIENT_H_
 
 #include <memory>
 #include <optional>
@@ -37,7 +37,7 @@ class ModelService;
 struct OAIMessage;
 
 // Performs remote request to the remote HTTP Brave Conversation API.
-class ConversationAPIV2Client {
+class ConversationAPIClient {
  public:
   using GenerationResult = EngineConsumer::GenerationResult;
   using GenerationResultData = EngineConsumer::GenerationResultData;
@@ -45,14 +45,14 @@ class ConversationAPIV2Client {
   using GenerationCompletedCallback =
       EngineConsumer::GenerationCompletedCallback;
 
-  ConversationAPIV2Client(
+  ConversationAPIClient(
       const std::string& model_name,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       AIChatCredentialManager* credential_manager,
       ModelService* model_service);
-  ConversationAPIV2Client(const ConversationAPIV2Client&) = delete;
-  ConversationAPIV2Client& operator=(const ConversationAPIV2Client&) = delete;
-  virtual ~ConversationAPIV2Client();
+  ConversationAPIClient(const ConversationAPIClient&) = delete;
+  ConversationAPIClient& operator=(const ConversationAPIClient&) = delete;
+  virtual ~ConversationAPIClient();
 
   virtual void PerformRequest(
       std::vector<OAIMessage> messages,
@@ -85,19 +85,19 @@ class ConversationAPIV2Client {
   static base::ListValue SerializeOAIMessages(std::vector<OAIMessage> messages);
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(ConversationAPIV2ClientUnitTest_ContentBlocks,
+  FRIEND_TEST_ALL_PREFIXES(ConversationAPIClientUnitTest_ContentBlocks,
                            SerializeOAIMessages_ContentBlocks);
-  FRIEND_TEST_ALL_PREFIXES(ConversationAPIV2ClientUnitTest,
+  FRIEND_TEST_ALL_PREFIXES(ConversationAPIClientUnitTest,
                            OnQueryDataReceived_ContentReceipt);
-  FRIEND_TEST_ALL_PREFIXES(ConversationAPIV2ClientUnitTest,
+  FRIEND_TEST_ALL_PREFIXES(ConversationAPIClientUnitTest,
                            OnQueryDataReceived_CompletionChunk);
-  FRIEND_TEST_ALL_PREFIXES(ConversationAPIV2ClientUnitTest,
+  FRIEND_TEST_ALL_PREFIXES(ConversationAPIClientUnitTest,
                            OnQueryDataReceived_ToolStart);
-  FRIEND_TEST_ALL_PREFIXES(ConversationAPIV2ClientUnitTest,
+  FRIEND_TEST_ALL_PREFIXES(ConversationAPIClientUnitTest,
                            OnQueryDataReceived_InlineSearch);
-  FRIEND_TEST_ALL_PREFIXES(ConversationAPIV2ClientUnitTest,
+  FRIEND_TEST_ALL_PREFIXES(ConversationAPIClientUnitTest,
                            OnQueryDataReceived_ToolCallRequest);
-  FRIEND_TEST_ALL_PREFIXES(ConversationAPIV2ClientUnitTest,
+  FRIEND_TEST_ALL_PREFIXES(ConversationAPIClientUnitTest,
                            OnQueryDataReceived_ToolCallResult);
 
   void PerformRequestWithCredentials(
@@ -124,9 +124,9 @@ class ConversationAPIV2Client {
   raw_ptr<AIChatCredentialManager> credential_manager_;
   raw_ptr<ModelService> model_service_;
 
-  base::WeakPtrFactory<ConversationAPIV2Client> weak_ptr_factory_{this};
+  base::WeakPtrFactory<ConversationAPIClient> weak_ptr_factory_{this};
 };
 
 }  // namespace ai_chat
 
-#endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_CONVERSATION_API_V2_CLIENT_H_
+#endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_CONVERSATION_API_CLIENT_H_
