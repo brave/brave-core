@@ -14,13 +14,16 @@ export function getHtml(this: BraveAccountPasswordStrengthMeterElement) {
         class="strength"
         style="--strength: ${this.strength}"
       ></div>
+      <div class="threshold"></div>
     </div>
-    <div class="text">
-      ${this.category === 'Weak'
-        ? '$i18n{BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_WEAK}'
-        : this.category === 'Medium'
-          ? '$i18n{BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_MEDIUM}'
-          : '$i18n{BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_STRONG}'}
+    <div id="text">
+      ${this.category === 'TooWeak'
+        ? '$i18n{BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_TOO_WEAK}'
+        : this.category === 'GettingThere'
+          ? '$i18n{BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_GETTING_THERE}'
+          : this.category === 'StrongEnough'
+            ? '$i18n{BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_STRONG_ENOUGH}'
+            : '$i18n{BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_EXCEPTIONALLY_STRONG}'}
     </div>
     <!--_html_template_end_-->`
 }
