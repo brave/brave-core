@@ -81,6 +81,12 @@ interface ContainersSettingsHandler {
 
   // Removes a container by its ID.
   RemoveContainer(string id) => (ContainerOperationError? error);
+
+  // Whether the Containers feature (menus, settings list) is enabled.
+  GetContainersEnabled() => (bool enabled);
+
+  // Updates whether the Containers feature is enabled.
+  SetContainersEnabled(bool enabled);
 };
 
 // Interface for browser -> settings UI communication. This interface allows the
@@ -91,4 +97,7 @@ interface ContainersSettingsUI {
   // the UI stays in sync with the browser-side container state.
   // - `containers`: Updated list of all containers.
   OnContainersChanged(array<Container> containers);
+
+  // Notifies the settings UI when `brave.containers.enabled` changes.
+  OnContainersEnabledChanged(bool enabled);
 };

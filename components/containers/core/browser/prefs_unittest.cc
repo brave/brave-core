@@ -198,4 +198,10 @@ TEST_F(ContainersPrefsTest, UpdateAndRemoveLocallyUsedContainer) {
   EXPECT_TRUE(GetLocallyUsedContainersFromPrefs(prefs_).empty());
 }
 
+TEST_F(ContainersPrefsTest, ContainersEnabledDefaultsToTrue) {
+  EXPECT_TRUE(prefs_.GetBoolean(prefs::kContainersEnabled));
+  prefs_.SetBoolean(prefs::kContainersEnabled, false);
+  EXPECT_FALSE(prefs_.GetBoolean(prefs::kContainersEnabled));
+}
+
 }  // namespace containers
