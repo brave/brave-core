@@ -362,6 +362,8 @@ if (brave_wallet_enabled) {
 
 **When tests or other classes need access to private members, use `friend` declarations instead of making methods public or protected.** This rule is about bypassing access control for convenience. It does not apply to normal inheritance where a subclass calls inherited protected methods or exposes new public methods that delegate to them.
 
+This rule does not apply to `*ForTesting()` methods, which are an accepted Chromium convention for exposing test-only accessors.
+
 ```cpp
 // ❌ WRONG - making methods public just for testing
 public:
