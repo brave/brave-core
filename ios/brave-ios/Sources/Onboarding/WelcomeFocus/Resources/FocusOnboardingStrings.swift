@@ -122,21 +122,5 @@ extension Strings {
       value: "Not Now",
       comment: "The title of the button that closes the default browser full screen callout"
     )
-
-    public static let urlBarIndicatorTitle = NSLocalizedString(
-      "focusOnboarding.urlBarIndicatorTitle",
-      tableName: "FocusOnboarding",
-      bundle: .module,
-      value: "See the Brave difference",
-      comment: "The title of the popup which points to URL Bar after onboarding"
-    )
-
-    public static let urlBarIndicatorDescription = NSLocalizedString(
-      "focusOnboarding.urlBarIndicatorDescription",
-      tableName: "FocusOnboarding",
-      bundle: .module,
-      value: "Start streaming and enjoy fewer ads & trackers.",
-      comment: "The description of the popup which points to URL Bar after onboarding"
-    )
   }
 }

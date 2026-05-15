@@ -346,13 +346,6 @@ extension BrowserViewController: TopToolbarDelegate {
   func topToolbarDidEnterOverlayMode(_ topToolbar: TopToolbarView) {
     updateTabsBarVisibility()
     displayFavoritesController()
-
-    // Dismiss any onboarding popovers when entering overlay mode
-    if let popoverController = presentedViewController as? PopoverController,
-      popoverController.contentController is FocusNTPOnboardingViewController
-    {
-      popoverController.dismissPopover()
-    }
   }
 
   func topToolbarDidLeaveOverlayMode(_ topToolbar: TopToolbarView) {
