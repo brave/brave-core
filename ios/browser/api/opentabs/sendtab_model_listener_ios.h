@@ -36,12 +36,11 @@ class SendTabToSelfModelListenerIOS
 
  private:
   // SendTabToSelfModelListener implementation.
-  void SendTabToSelfModelLoaded() override;
-  void EntriesAddedRemotely(
+  void OnEntriesAddedRemotely(
       const std::vector<const send_tab_to_self::SendTabToSelfEntry*>&
           new_entries) override;
-  void EntriesRemovedRemotely(const std::vector<std::string>& guids) override;
-  void EntriesOpenedRemotely(
+  void OnEntriesRemovedRemotely(const std::vector<std::string>& guids) override;
+  void OnEntriesOpenedRemotely(
       const std::vector<const send_tab_to_self::SendTabToSelfEntry*>&
           opened_entries) override;
 
