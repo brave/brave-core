@@ -8,6 +8,7 @@
 
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
+#include "components/policy/core/common/policy_namespace.h"
 #include "components/policy/core/common/policy_service.h"
 
 namespace brave_policy {

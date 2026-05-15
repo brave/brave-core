@@ -233,6 +233,29 @@ BraveOriginServiceFactory::BraveOriginServiceFactory()
           "BraveOriginService",
           ProfileSelections::BuildRedirectedInIncognito()) {
   DependsOn(skus::SkusServiceFactory::GetInstance());
+  // This factory owns the lazy initialization of `BraveOriginPolicyManager`
+  // (in `BuildServiceInstanceForBrowserContext`). Mark the manager as
+  // expected-to-be-initialized as soon as the factory is registered so that
+  // `BraveProfilePolicyProvider::IsInitializationComplete` knows to gate on
+  // the manager actually finishing initialization. Without this gate
+  // `BraveProvider`'s first `RefreshPolicies` (triggered by
+  // `AdBlockOnlyModePolicyManager`'s `OnBravePoliciesReady`, which fires at
+  // process start) would flip `first_policies_loaded_` to true with an
+  // empty Brave Origin bundle, and consumers of
+  // `PolicyService::OnPolicyServiceInitialized` (notably
+  // `AdsServiceImpl::MaybeStartBatAdsService`) would evaluate against a
+  // managed pref store that does not yet reflect `BraveRewardsDisabled`.
+  //
+  // Upstream unit tests build `ProfilePolicyConnector` directly without
+  // going through `EnsureBrowserContextKeyedServiceFactoriesBuilt()`, so this
+  // factory's `GetInstance()` is never called in those tests, the flag stays
+  // false, and `BraveProvider::IsInitializationComplete` short-circuits to
+  // true to avoid blocking the upstream tests forever. The affected tests
+  // are in `chrome/browser/policy/profile_policy_connector_unittest.cc`,
+  // primarily the `ProfilePolicyConnectorTest.AffiliationMetrics_*`,
+  // `LocalTestProviderUseAndRevert`, and `ChromeosPrimaryUserPoliciesProxied`
+  // cases that use `PolicyServiceInitializedWaiter`.
+  BraveOriginPolicyManager::GetInstance()->SetExpectedToBeInitialized();
 }
 
 BraveOriginServiceFactory::~BraveOriginServiceFactory() = default;

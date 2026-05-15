@@ -8,6 +8,8 @@
 #include <memory>
 
 #include "base/test/task_environment.h"
+#include "brave/components/brave_origin/brave_origin_policy_manager.h"
+#include "brave/components/brave_origin/brave_origin_prefs.h"
 #include "components/policy/core/common/policy_bundle.h"
 #include "components/policy/core/common/policy_namespace.h"
 #include "components/policy/core/common/policy_types.h"
@@ -19,18 +21,23 @@ namespace brave_policy {
 
 class BraveProfilePolicyProviderTest : public ::testing::Test {
  public:
-  BraveProfilePolicyProviderTest() = default;
+  BraveProfilePolicyProviderTest() {
+    brave_origin::RegisterLocalStatePrefs(local_state_.registry());
+  }
   ~BraveProfilePolicyProviderTest() override = default;
 
   void TearDown() override {
-    if (provider_.IsInitializationComplete(policy::POLICY_DOMAIN_CHROME)) {
-      provider_.Shutdown();
-    }
+    provider_.Shutdown();
+    // Reset the process-wide singleton so its state does not leak between
+    // tests. `BraveOriginPolicyManager::Shutdown()` is safe to call even if
+    // `Init()` was never called.
+    brave_origin::BraveOriginPolicyManager::GetInstance()->Shutdown();
   }
 
  protected:
   base::test::TaskEnvironment task_environment_;
   policy::SchemaRegistry schema_registry_;
+  TestingPrefServiceSimple local_state_;
   BraveProfilePolicyProvider provider_;
 };
 
@@ -53,6 +60,39 @@ TEST_F(BraveProfilePolicyProviderTest, InitAndPolicyLoadComplete) {
   // Now policies should be loaded
   EXPECT_TRUE(
       provider_.IsFirstPolicyLoadComplete(policy::POLICY_DOMAIN_CHROME));
+}
+
+TEST_F(BraveProfilePolicyProviderTest, IsInitializationCompleteGated) {
+  auto* manager = brave_origin::BraveOriginPolicyManager::GetInstance();
+  // On desktop/Android the override short-circuits to true when the manager
+  // has not been declared as expected-to-initialize (see the `#if !IS_IOS`
+  // block in `IsInitializationComplete`). Set the flag so the gating path
+  // below is exercised on all platforms.
+  manager->SetExpectedToBeInitialized();
+
+  // Before the manager is initialized, the override gates initialisation on
+  // `IsInitialized()` so consumers do not observe an empty managed pref
+  // store before Brave Origin policies have been merged.
+  EXPECT_FALSE(provider_.IsInitializationComplete(policy::POLICY_DOMAIN_CHROME))
+      << "Before provider Init: manager not initialised, no refresh";
+
+  provider_.Init(&schema_registry_);
+  EXPECT_FALSE(provider_.IsInitializationComplete(policy::POLICY_DOMAIN_CHROME))
+      << "After provider Init: manager still not initialised";
+
+  // Initializing the manager flips `IsInitialized()` and synchronously
+  // notifies our observer, but `RefreshPolicies` is gated on a non-empty
+  // `profile_id_`, so `first_policies_loaded_` is still false.
+  manager->Init(/*browser_policy_definitions=*/{},
+                /*profile_policy_definitions=*/{}, &local_state_);
+  EXPECT_FALSE(provider_.IsInitializationComplete(policy::POLICY_DOMAIN_CHROME))
+      << "After manager Init: profile_id_ still empty, refresh has not run";
+
+  // Setting the profile ID drives the first refresh.
+  provider_.SetProfileID("test-profile-id");
+  EXPECT_TRUE(provider_.IsInitializationComplete(policy::POLICY_DOMAIN_CHROME))
+      << "After SetProfileID: first refresh has run and manager is "
+         "initialised";
 }
 
 TEST_F(BraveProfilePolicyProviderTest, EmptyPolicyBundle) {
