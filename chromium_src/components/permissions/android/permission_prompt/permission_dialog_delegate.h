@@ -22,6 +22,7 @@ class PermissionPromptAndroid_ChromiumImpl;
       JNIEnv* env, PermissionPromptAndroid* permission_prompt);             \
   void ApplyDontAskAgainOption(JNIEnv* env,                                 \
                                PermissionPromptAndroid* permission_prompt); \
+  int GetGeolocationAccuracy(JNIEnv* env);                                  \
   void OnRequestingOriginFaviconLoaded
 
 // Additional PermissionDialogDelegate::Create stub method to be in accordance
