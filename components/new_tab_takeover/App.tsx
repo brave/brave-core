@@ -34,9 +34,14 @@ function useParametersFromQuery(): { placementId: string | null;
     const placementId = urlParams.get('placementId');
     const creativeInstanceId = urlParams.get('creativeInstanceId');
 
+    const sanitizedPlacementId = sanitizeId(placementId)
+    const sanitizedCreativeInstanceId = sanitizeId(creativeInstanceId)
+    console.log('SponsoredRichMedia: parsed params, placementId=', sanitizedPlacementId,
+      'creativeInstanceId=', sanitizedCreativeInstanceId)
+
     return {
-      placementId: sanitizeId(placementId),
-      creativeInstanceId: sanitizeId(creativeInstanceId)
+      placementId: sanitizedPlacementId,
+      creativeInstanceId: sanitizedCreativeInstanceId
     };
   }, []);
 }
@@ -50,13 +55,19 @@ export default function App(props: React.PropsWithChildren) {
 
   const getCurrentWallpaper = React.useCallback(async () => {
     if (!newTabTakeover || !placementId || !creativeInstanceId) {
+      console.warn('SponsoredRichMedia: skipping getCurrentWallpaper, prerequisites missing,'
+        + ' newTabTakeover=', !!newTabTakeover,
+        ' placementId=', placementId,
+        ' creativeInstanceId=', creativeInstanceId)
       return
     }
 
     try {
       const response =
           await newTabTakeover.getCurrentWallpaper(creativeInstanceId);
+      console.log('SponsoredRichMedia: getCurrentWallpaper response=', response)
       if (!response || !response.url || !response.targetUrl) {
+        console.warn('SponsoredRichMedia: getCurrentWallpaper response missing required fields')
         return
       }
 
@@ -67,6 +78,8 @@ export default function App(props: React.PropsWithChildren) {
         metricType: response.metricType,
         targetUrl: response.targetUrl.url
       }
+      console.log('SponsoredRichMedia: setting background info, url=',
+        sponsoredRichMediaBackgroundInfo.url)
       setSponsoredRichMediaBackgroundInfo(sponsoredRichMediaBackgroundInfo)
     } catch (error) {
       console.error('Failed to get last displayed branded wallpaper:', error);
@@ -80,6 +93,7 @@ export default function App(props: React.PropsWithChildren) {
     const sponsoredRichMediaAdEventHandler = new NTPBackgroundMediaMojom.SponsoredRichMediaAdEventHandlerRemote()
     newTabTakeover.setSponsoredRichMediaAdEventHandler(sponsoredRichMediaAdEventHandler.$.bindNewPipeAndPassReceiver())
     setSponsoredRichMediaAdEventHandler(sponsoredRichMediaAdEventHandler)
+    console.log('SponsoredRichMedia: Mojo setup initiated, handler receiver bound locally.')
 
     return () => {
       setSponsoredRichMediaBackgroundInfo(null)
@@ -98,7 +112,10 @@ export default function App(props: React.PropsWithChildren) {
         <SponsoredRichMediaBackground
           sponsoredRichMediaBackgroundInfo={sponsoredRichMediaBackgroundInfo}
           richMediaHasLoaded={richMediaHasLoaded}
-          onLoaded={() => setRichMediaHasLoaded(true)}
+          onLoaded={() => {
+            console.log('SponsoredRichMedia: rich media loaded, setting richMediaHasLoaded=true.')
+            setRichMediaHasLoaded(true)
+          }}
           onEventReported={(adEventType) => {
             sponsoredRichMediaAdEventHandler.maybeReportRichMediaAdEvent(
               sponsoredRichMediaBackgroundInfo.placementId,
