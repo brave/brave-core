@@ -26,8 +26,8 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
 }});
 
 // Disable this feature because we it includes google-specific branding and
-// causes a crash when interacted with. Brave will make its own version, or fix the Chromium
-// version and remove this feature override.
+// causes a crash when interacted with. Brave will make its own version, or
+// fix the Chromium version and remove this feature override.
 const base::FeatureParam<bool> kGlicActorUiTaskIcon{
     &kGlicActorUi, kGlicActorUiTaskIconName, false};
 
