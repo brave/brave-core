@@ -210,6 +210,11 @@ void BraveOriginStartupView::Init(Profile* profile) {
 
   web_view_ = std::make_unique<views::WebView>(profile);
 
+  // Sets the widget's minimum size to match the initial dialog dimensions, so
+  // users cannot resize below the designed layout. View::GetMinimumSize()
+  // defaults to GetPreferredSize() when no layout manager is set.
+  web_view_->SetPreferredSize(gfx::Size(kDialogWidth, kDialogHeight));
+
   // GetWebContents() creates the WebContents if it doesn't already exist.
   web_view_->GetWebContents()->SetDelegate(this);
   Observe(web_view_->web_contents());
