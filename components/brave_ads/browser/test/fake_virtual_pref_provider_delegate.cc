@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/browser/test/fake_virtual_pref_provider_delegate.h"
 
+#include "base/values.h"
+
 namespace brave_ads::test {
 
 FakeVirtualPrefProviderDelegate::FakeVirtualPrefProviderDelegate() = default;

@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/functional/callback.h"
 
 namespace brave_ads::test {
 

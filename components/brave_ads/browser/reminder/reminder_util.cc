@@ -5,8 +5,10 @@
 
 #include "brave/components/brave_ads/browser/reminder/reminder_util.h"
 
+#include <ostream>
 #include <string_view>
 
+#include "base/check.h"
 #include "base/notreached.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_constants.h"

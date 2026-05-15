@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/browser/application_state/application_state_monitor.h"
 
+#include <string>
+
 #include "brave/components/brave_ads/browser/application_state/test/test_application_state_observer.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

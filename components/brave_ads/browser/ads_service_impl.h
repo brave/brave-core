@@ -11,6 +11,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include "base/files/file_path.h"
@@ -22,9 +23,11 @@
 #include "base/task/cancelable_task_tracker.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
+#include "base/values.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_ads/browser/application_state/application_state_monitor.h"
 #include "brave/components/brave_ads/browser/application_state/application_state_observer.h"
+#include "brave/components/brave_ads/browser/component_updater/resource_component.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component_observer.h"
 #include "brave/components/brave_ads/core/browser/network/http_client.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
@@ -33,13 +36,16 @@
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_callback.h"
+#include "brave/components/brave_rewards/content/rewards_service_observer.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/mojom/rewards.mojom-forward.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "components/content_settings/core/browser/content_settings_observer.h"
 #include "components/content_settings/core/browser/content_settings_type_set.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/history/core/browser/history_service.h"
+#include "components/policy/core/common/policy_namespace.h"
 #include "components/policy/core/common/policy_service.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
@@ -48,6 +54,13 @@
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "ui/base/idle/idle.h"
+
+namespace brave_rewards {
+class RewardsService;
+}  // namespace brave_rewards
+namespace history {
+class HistoryService;
+}  // namespace history
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 #include "brave/components/brave_rewards/content/rewards_service.h"
@@ -69,6 +82,8 @@ class BatAdsServiceFactory;
 class BraveAdsAdsServiceImplTest;
 class DeviceId;
 class ResourceComponent;
+class ApplicationStateMonitor;
+class HttpClient;
 
 class AdsServiceImpl : public AdsService,
                        public bat_ads::mojom::BatAdsClient,

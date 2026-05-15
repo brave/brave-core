@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/browser/ads_service_impl.h"
 
 #include <algorithm>
+#include <atomic>
 #include <memory>
 #include <optional>
 #include <sstream>
@@ -16,25 +17,34 @@
 #include "base/check_is_test.h"
 #include "base/containers/circular_deque.h"
 #include "base/feature_list.h"
+#include "base/files/file.h"
 #include "base/files/file_util.h"
 #include "base/files/important_file_writer.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
+#include "base/functional/callback_tags.h"
+#include "base/location.h"
 #include "base/logging.h"
+#include "base/metrics/field_trial_params.h"
+#include "base/metrics/histogram_base.h"
 #include "base/metrics/histogram_macros.h"
+#include "base/numerics/safe_math.h"
+#include "base/observer_list.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
+#include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "base/trace_event/trace_event.h"
-#include "brave/components/brave_adaptive_captcha/pref_names.h"
 #include "brave/components/brave_ads/browser/bat_ads_service_factory.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component.h"
 #include "brave/components/brave_ads/browser/device_id/device_id.h"
 #include "brave/components/brave_ads/browser/reminder/reminder_util.h"
 #include "brave/components/brave_ads/browser/tooltips/ads_tooltips_delegate.h"
+#include "brave/components/brave_ads/core/browser/network/http_client.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service_observer.h"
 #include "brave/components/brave_ads/core/browser/virtual_pref/virtual_pref_provider.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_feature.h"
@@ -52,18 +62,26 @@
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "build/build_config.h"
+#include "components/content_settings/core/browser/content_settings_type_set.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
-#include "components/content_settings/core/common/content_settings_pattern.h"
+#include "components/content_settings/core/common/content_settings_types.h"
+#include "components/content_settings/core/common/content_settings_types.mojom-shared.h"
+#include "components/history/core/browser/history_service.h"
+#include "components/history/core/browser/history_types.h"
+#include "components/history/core/browser/url_row.h"
 #include "components/metrics/metrics_pref_names.h"
 #include "components/policy/core/common/policy_service.h"
 #include "components/prefs/pref_service.h"
 #include "components/variations/pref_names.h"
-#include "content/public/browser/browser_context.h"
 #include "mojo/public/cpp/bindings/callback_helpers.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
 #include "net/base/network_change_notifier.h"
-#include "ui/base/resource/resource_bundle.h"
 #include "url/gurl.h"
+
+#if !BUILDFLAG(IS_ANDROID)
+#include "brave/components/brave_adaptive_captcha/pref_names.h"
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 #include "brave/components/brave_rewards/content/rewards_service.h"

@@ -5,10 +5,15 @@
 
 #include "brave/components/brave_ads/browser/component_updater/resource_component_registrar.h"
 
+#include <stddef.h>
+
 #include <memory>
 #include <string>
+#include <utility>
 
 #include "base/files/file_path.h"
+#include "base/functional/callback.h"
+#include "base/memory/scoped_refptr.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component_registrar_delegate.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "testing/gtest/include/gtest/gtest.h"

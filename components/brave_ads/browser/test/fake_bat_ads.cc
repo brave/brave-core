@@ -6,9 +6,13 @@
 #include "brave/components/brave_ads/browser/test/fake_bat_ads.h"
 
 #include <optional>
+#include <ostream>
 #include <utility>
 
+#include "base/time/time.h"
+#include "base/values.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "mojo/public/cpp/bindings/pending_associated_receiver.h"
 
 namespace brave_ads::test {
 

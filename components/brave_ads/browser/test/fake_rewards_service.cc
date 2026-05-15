@@ -7,7 +7,9 @@
 
 #include <optional>
 #include <utility>
+#include <vector>
 
+#include "base/functional/callback.h"
 #include "base/no_destructor.h"
 #include "brave/components/brave_rewards/content/rewards_notification_service.h"
 #include "brave/components/brave_rewards/core/mojom/rewards.mojom.h"

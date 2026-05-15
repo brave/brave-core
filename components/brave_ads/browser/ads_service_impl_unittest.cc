@@ -9,7 +9,9 @@
 #include <utility>
 
 #include "base/files/scoped_temp_dir.h"
+#include "base/functional/function_ref.h"
 #include "base/memory/raw_ptr.h"
+#include "base/numerics/safe_math.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
@@ -23,7 +25,6 @@
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
-#include "brave/components/brave_rewards/core/features.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_registry.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
@@ -34,6 +35,10 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/idle/idle.h"
+
+#if BUILDFLAG(IS_ANDROID)
+#include "brave/components/brave_rewards/core/features.h"
+#endif  // BUILDFLAG(IS_ANDROID)
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 #include "brave/components/brave_ads/browser/test/fake_rewards_service.h"
