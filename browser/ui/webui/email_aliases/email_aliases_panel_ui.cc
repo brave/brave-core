@@ -9,6 +9,7 @@
 #include "brave/browser/resources/settings/grit/brave_settings_resources.h"
 #include "brave/browser/ui/webui/settings/brave_settings_localized_strings_provider.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/email_aliases/email_aliases_service.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/theme_source.h"
@@ -61,6 +62,16 @@ void EmailAliasesPanelUI::BindInterface(
   auto* profile = Profile::FromWebUI(web_ui());
   email_aliases::EmailAliasesServiceFactory::BindForProfile(
       profile, std::move(receiver));
+}
+
+void EmailAliasesPanelUI::BindInterface(
+    mojo::PendingReceiver<email_aliases::mojom::EmailAliasesMetrics> receiver) {
+  auto* profile = Profile::FromWebUI(web_ui());
+  auto* service =
+      email_aliases::EmailAliasesServiceFactory::GetServiceForProfile(profile);
+  if (service) {
+    service->metrics().BindInterface(std::move(receiver));
+  }
 }
 
 void EmailAliasesPanelUI ::BindInterface(

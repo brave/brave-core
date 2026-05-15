@@ -90,6 +90,8 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.DNS.AutoSecureRequests.Quad9.2", MetricConfig{.ephemeral = true}},
     {"Brave.DNS.AutoSecureRequests.Wikimedia.2", MetricConfig{.ephemeral = true}},
     {"Brave.DNS.SecureSetting", {}},
+    {"Brave.EmailAliases.ClipboardCopyCount", MetricConfig{.ephemeral = true}},
+    {"Brave.EmailAliases.NotesCount", MetricConfig{.ephemeral = true}},
     {"Brave.EmailAliases.SettingsPageMethod", MetricConfig{.ephemeral = true}},
     {"Brave.Extensions.AdBlock", {}},
     {"Brave.Extensions.SelectManifestV2", {}},

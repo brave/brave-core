@@ -5,20 +5,37 @@
 
 #include "brave/components/email_aliases/email_aliases_metrics.h"
 
+#include "base/functional/bind.h"
 #include "base/metrics/histogram_macros.h"
+#include "base/time/time.h"
+#include "brave/components/email_aliases/email_aliases_notes.h"
 #include "brave/components/email_aliases/pref_names.h"
+#include "brave/components/p3a_utils/bucket.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 
 namespace email_aliases {
 
+namespace {
+constexpr int kCountBuckets[] = {0, 1, 5, 15};
+}  // namespace
+
 EmailAliasesMetrics::EmailAliasesMetrics(PrefService& pref_service)
-    : pref_service_(pref_service) {
+    : pref_service_(pref_service),
+      clipboard_copy_storage_(&pref_service,
+                               prefs::kClipboardCopyCountStorage) {
   // Suppress reporting for existing users to avoid attributing prior opt-ins.
   if (!pref_service_->GetBoolean(prefs::kSettingsPageMethodReported) &&
       pref_service_->GetBoolean(prefs::kEmailAliasesEnabled)) {
     pref_service_->SetBoolean(prefs::kSettingsPageMethodReported, true);
   }
+  pref_change_registrar_.Init(&pref_service);
+  pref_change_registrar_.Add(
+      prefs::kEmailAliasesNotes,
+      base::BindRepeating(&EmailAliasesMetrics::ReportNotesCount,
+                          base::Unretained(this)));
+  ReportAllMetrics();
 }
 
 EmailAliasesMetrics::~EmailAliasesMetrics() = default;
@@ -26,6 +43,7 @@ EmailAliasesMetrics::~EmailAliasesMetrics() = default;
 // static
 void EmailAliasesMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kSettingsPageMethodReported, false);
+  registry->RegisterListPref(prefs::kClipboardCopyCountStorage);
 }
 
 void EmailAliasesMetrics::RecordSettingsPageNavigation(
@@ -35,6 +53,44 @@ void EmailAliasesMetrics::RecordSettingsPageNavigation(
   }
   UMA_HISTOGRAM_ENUMERATION(kSettingsPageMethodHistogramName, method);
   pref_service_->SetBoolean(prefs::kSettingsPageMethodReported, true);
+}
+
+void EmailAliasesMetrics::BindInterface(
+    mojo::PendingReceiver<mojom::EmailAliasesMetrics> receiver) {
+  receivers_.Add(this, std::move(receiver));
+}
+
+void EmailAliasesMetrics::OnAliasCopied() {
+  clipboard_copy_storage_.AddDelta(1u);
+  ReportCopyCount();
+}
+
+void EmailAliasesMetrics::ReportAllMetrics() {
+  report_timer_.Start(
+      FROM_HERE, base::Time::Now() + base::Days(1),
+      base::BindOnce(&EmailAliasesMetrics::ReportAllMetrics,
+                     base::Unretained(this)));
+  ReportCopyCount();
+  ReportNotesCount();
+}
+
+void EmailAliasesMetrics::ReportCopyCount() {
+  uint64_t total = clipboard_copy_storage_.GetWeeklySum();
+  if (total == 0) {
+    return;
+  }
+  p3a_utils::RecordToHistogramBucket(kClipboardCopyCountHistogramName,
+                                     kCountBuckets,
+                                     static_cast<int>(total));
+}
+
+void EmailAliasesMetrics::ReportNotesCount() {
+  if (!pref_service_->GetBoolean(prefs::kEmailAliasesEnabled)) {
+    return;
+  }
+  size_t count = EmailAliasesNotes::GetTotalCount(*pref_service_);
+  p3a_utils::RecordToHistogramBucket(kNotesCountHistogramName, kCountBuckets,
+                                     static_cast<int>(count));
 }
 
 }  // namespace email_aliases

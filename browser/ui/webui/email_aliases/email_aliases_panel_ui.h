@@ -31,6 +31,10 @@ class EmailAliasesPanelUI
           receiver);
 
   void BindInterface(
+      mojo::PendingReceiver<email_aliases::mojom::EmailAliasesMetrics>
+          receiver);
+
+  void BindInterface(
       mojo::PendingReceiver<email_aliases::mojom::EmailAliasesPanelHandler>
           receiver);
 

@@ -7,12 +7,22 @@
 #define BRAVE_COMPONENTS_EMAIL_ALIASES_EMAIL_ALIASES_METRICS_H_
 
 #include "base/memory/raw_ref.h"
+#include "base/timer/wall_clock_timer.h"
+#include "brave/components/email_aliases/email_aliases.mojom.h"
+#include "brave/components/time_period_storage/weekly_storage.h"
+#include "components/prefs/pref_change_registrar.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "mojo/public/cpp/bindings/receiver_set.h"
 
 class PrefRegistrySimple;
 class PrefService;
 
 namespace email_aliases {
 
+inline constexpr char kClipboardCopyCountHistogramName[] =
+    "Brave.EmailAliases.ClipboardCopyCount";
+inline constexpr char kNotesCountHistogramName[] =
+    "Brave.EmailAliases.NotesCount";
 inline constexpr char kSettingsPageMethodHistogramName[] =
     "Brave.EmailAliases.SettingsPageMethod";
 
@@ -24,20 +34,34 @@ enum class SettingsPageMethod {
   kMaxValue = kManualNavigation,
 };
 
-class EmailAliasesMetrics {
+class EmailAliasesMetrics : public mojom::EmailAliasesMetrics {
  public:
   explicit EmailAliasesMetrics(PrefService& pref_service);
-  ~EmailAliasesMetrics();
+  ~EmailAliasesMetrics() override;
 
   EmailAliasesMetrics(const EmailAliasesMetrics&) = delete;
   EmailAliasesMetrics& operator=(const EmailAliasesMetrics&) = delete;
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
+  void BindInterface(
+      mojo::PendingReceiver<mojom::EmailAliasesMetrics> receiver);
+
+  // mojom::EmailAliasesMetrics:
+  void OnAliasCopied() override;
+
   void RecordSettingsPageNavigation(SettingsPageMethod method);
 
  private:
+  void ReportAllMetrics();
+  void ReportCopyCount();
+  void ReportNotesCount();
+
   const raw_ref<PrefService> pref_service_;
+  WeeklyStorage clipboard_copy_storage_;
+  PrefChangeRegistrar pref_change_registrar_;
+  base::WallClockTimer report_timer_;
+  mojo::ReceiverSet<mojom::EmailAliasesMetrics> receivers_;
 };
 
 }  // namespace email_aliases

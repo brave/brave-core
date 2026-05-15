@@ -20,6 +20,7 @@ import Row from './styles/Row'
 import styled from 'styled-components'
 import {
   Alias,
+  EmailAliasesMetrics,
   EmailAliasesServiceInterface,
   MAX_ALIASES,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
@@ -76,6 +77,7 @@ export const AliasList = ({
   authEmail: string
 }) => {
   const [editState, setEditState] = React.useState<EditState>({ mode: 'None' })
+  const emailAliasesMetrics = React.useRef(EmailAliasesMetrics.getRemote())
   return (
     <Container>
       <ListIntroduction />
@@ -84,6 +86,7 @@ export const AliasList = ({
           <AliasItem
             key={alias.email}
             alias={alias}
+            onCopy={() => emailAliasesMetrics.current.onAliasCopied()}
             onEdit={() => setEditState({ mode: 'Edit', alias: alias })}
             onDelete={() => setEditState({ mode: 'Delete', alias: alias })}
           ></AliasItem>
