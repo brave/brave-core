@@ -215,6 +215,9 @@ void EmailAliasesService::OnGenerateAliasResponse(
       parsed.has_value()
           ? base::expected<std::string, std::string>(parsed.value().alias)
           : base::unexpected(parsed.error());
+  if (result.has_value()) {
+    metrics_.ReportEmailAliasPresence(true);
+  }
   std::move(user_callback).Run(std::move(result));
 }
 
@@ -363,6 +366,7 @@ void EmailAliasesService::OnRefreshAliasesResponse(
     aliases.push_back(std::move(alias_obj));
   }
 
+  metrics_.ReportEmailAliasPresence(!aliases.empty());
   NotifyObserversAliasesUpdated(
       observers_, mojom::AliasesUpdate::NewAliases(std::move(aliases)));
 }

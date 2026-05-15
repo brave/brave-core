@@ -90,6 +90,9 @@ class BraveSettingsUI : public settings::SettingsUI {
   void BindInterface(
       mojo::PendingReceiver<email_aliases::mojom::EmailAliasesService>
           pending_receiver);
+  void BindInterface(
+      mojo::PendingReceiver<email_aliases::mojom::EmailAliasesMetrics>
+          pending_receiver);
 #endif
 
   void BindInterface(

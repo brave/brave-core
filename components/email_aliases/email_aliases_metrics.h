@@ -51,6 +51,7 @@ class EmailAliasesMetrics : public mojom::EmailAliasesMetrics {
   void OnAliasCopied() override;
 
   void RecordSettingsPageNavigation(SettingsPageMethod method);
+  void ReportEmailAliasPresence(bool is_present);
 
  private:
   void ReportAllMetrics();

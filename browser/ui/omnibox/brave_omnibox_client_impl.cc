@@ -41,6 +41,7 @@
 #include "brave/components/email_aliases/constants.h"
 #include "brave/components/email_aliases/email_aliases_metrics.h"
 #include "brave/components/email_aliases/email_aliases_service.h"
+#include "brave/components/email_aliases/features.h"
 #endif
 
 namespace {
@@ -114,10 +115,13 @@ BraveOmniboxClientImpl::BraveOmniboxClientImpl(LocationBar* location_bar,
   }
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
-  auto* email_aliases_service =
-      email_aliases::EmailAliasesServiceFactory::GetServiceForProfile(profile);
-  if (email_aliases_service) {
-    email_aliases_metrics_ = &email_aliases_service->metrics();
+  if (email_aliases::features::IsEmailAliasesEnabled()) {
+    auto* email_aliases_service =
+        email_aliases::EmailAliasesServiceFactory::GetServiceForProfile(
+            profile);
+    if (email_aliases_service) {
+      email_aliases_metrics_ = &email_aliases_service->metrics();
+    }
   }
 #endif
 

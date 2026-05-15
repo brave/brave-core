@@ -25,11 +25,6 @@ EmailAliasesMetrics::EmailAliasesMetrics(PrefService& pref_service)
     : pref_service_(pref_service),
       clipboard_copy_storage_(&pref_service,
                               prefs::kClipboardCopyCountStorage) {
-  // Suppress reporting for existing users to avoid attributing prior opt-ins.
-  if (!pref_service_->GetBoolean(prefs::kSettingsPageMethodReported) &&
-      pref_service_->GetBoolean(prefs::kEmailAliasesEnabled)) {
-    pref_service_->SetBoolean(prefs::kSettingsPageMethodReported, true);
-  }
   pref_change_registrar_.Init(&pref_service);
   pref_change_registrar_.Add(
       prefs::kEmailAliasesNotes,
@@ -42,8 +37,9 @@ EmailAliasesMetrics::~EmailAliasesMetrics() = default;
 
 // static
 void EmailAliasesMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
-  registry->RegisterBooleanPref(prefs::kSettingsPageMethodReported, false);
+  registry->RegisterBooleanPref(prefs::kAliasesPresent, false);
   registry->RegisterListPref(prefs::kClipboardCopyCountStorage);
+  registry->RegisterBooleanPref(prefs::kSettingsPageMethodReported, false);
 }
 
 void EmailAliasesMetrics::RecordSettingsPageNavigation(
@@ -58,6 +54,19 @@ void EmailAliasesMetrics::RecordSettingsPageNavigation(
 void EmailAliasesMetrics::BindInterface(
     mojo::PendingReceiver<mojom::EmailAliasesMetrics> receiver) {
   receivers_.Add(this, std::move(receiver));
+}
+
+void EmailAliasesMetrics::ReportEmailAliasPresence(bool is_present) {
+  pref_service_->SetBoolean(prefs::kAliasesPresent, is_present);
+  if (!is_present) {
+    return;
+  }
+  // Suppress the settings page navigation metric for existing users who already
+  // have aliases, to avoid attributing prior opt-ins.
+  if (!pref_service_->GetBoolean(prefs::kSettingsPageMethodReported)) {
+    pref_service_->SetBoolean(prefs::kSettingsPageMethodReported, true);
+  }
+  ReportAllMetrics();
 }
 
 void EmailAliasesMetrics::OnAliasCopied() {
@@ -83,7 +92,7 @@ void EmailAliasesMetrics::ReportCopyCount() {
 }
 
 void EmailAliasesMetrics::ReportNotesCount() {
-  if (!pref_service_->GetBoolean(prefs::kEmailAliasesEnabled)) {
+  if (!pref_service_->GetBoolean(prefs::kAliasesPresent)) {
     return;
   }
   size_t count = EmailAliasesNotes::GetTotalCount(*pref_service_);
