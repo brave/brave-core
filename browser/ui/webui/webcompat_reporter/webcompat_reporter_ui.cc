@@ -57,7 +57,7 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
-#include "brave/components/brave_vpn/browser/brave_vpn_service.h"
+#include "brave/components/brave_vpn/browser/brave_vpn_service_impl.h"
 #endif
 
 namespace webcompat_reporter {
@@ -167,8 +167,7 @@ WebcompatReporterDOMHandler::WebcompatReporterDOMHandler(Profile* profile)
 
 void WebcompatReporterDOMHandler::InitAdditionalParameters(Profile* profile) {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  brave_vpn::BraveVpnService* vpn_service =
-      brave_vpn::BraveVpnServiceFactory::GetForProfile(profile);
+  auto* vpn_service = brave_vpn::BraveVpnServiceFactory::GetForProfile(profile);
   if (vpn_service != nullptr) {
     pending_report_->brave_vpn_connected =
         BoolToString(vpn_service->IsConnected());

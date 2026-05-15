@@ -13,7 +13,7 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/ui/brave_vpn/brave_vpn_controller.h"
-#include "brave/components/brave_vpn/browser/brave_vpn_service.h"
+#include "brave/components/brave_vpn/browser/brave_vpn_service_impl.h"
 #endif
 
 namespace brave_new_tab_page_refresh {
@@ -21,7 +21,7 @@ namespace brave_new_tab_page_refresh {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 
 VPNFacade::VPNFacade(content::WebContents& web_contents,
-                     brave_vpn::BraveVpnService* vpn_service)
+                     brave_vpn::BraveVpnServiceImpl* vpn_service)
     : web_contents_(web_contents), vpn_service_(vpn_service) {}
 
 VPNFacade::~VPNFacade() = default;

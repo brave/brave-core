@@ -64,7 +64,7 @@
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/browser/brave_vpn/vpn_utils.h"
-#include "brave/components/brave_vpn/browser/brave_vpn_service.h"
+#include "brave/components/brave_vpn/browser/brave_vpn_service_impl.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
 #endif
 
