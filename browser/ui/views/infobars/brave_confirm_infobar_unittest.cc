@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "brave/browser/ui/views/infobars/brave_sync_account_deleted_infobar.h"
 #include "brave/components/infobars/core/brave_confirm_infobar_delegate.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/test/views/chrome_views_test_base.h"
@@ -371,4 +372,33 @@ TEST_F(BraveConfirmInfoBarTest, CheckboxClickPropagatesToDelegate) {
       ui::MouseEvent(ui::EventType::kMousePressed, gfx::Point(), gfx::Point(),
                      ui::EventTimeForNow(), ui::EF_LEFT_MOUSE_BUTTON, 0));
   EXPECT_TRUE(delegate->checkbox_checked());
+}
+
+// BraveSyncAccountDeletedInfoBar overrides BraveConfirmInfoBar's Layout to
+// produce "Text _link_   [ok_button]": link sits right after the label and
+// the ok_button is pushed to the right edge.
+TEST_F(BraveConfirmInfoBarTest, SyncAccountDeletedInfoBarLayout) {
+  auto delegate = std::make_unique<TestInfoBarDelegate>();
+  delegate->set_message_text(u"Your sync account was deleted.");
+  delegate->set_link_text(u"re-create");
+  delegate->set_buttons(ConfirmInfoBarDelegate::BUTTON_OK);
+  delegate->set_closeable(false);
+
+  auto infobar =
+      std::make_unique<BraveSyncAccountDeletedInfoBar>(std::move(delegate));
+  infobar->SetBounds(
+      0, 0, kTestInfoBarWidth,
+      ChromeLayoutProvider::Get()->GetDistanceMetric(DISTANCE_INFOBAR_HEIGHT));
+  views::test::RunScheduledLayout(infobar.get());
+
+  auto* label = infobar->label_for_testing();
+  auto* link = infobar->link_for_testing();
+  auto* ok = infobar->ok_button_for_testing();
+  ASSERT_TRUE(label);
+  ASSERT_TRUE(link);
+  ASSERT_TRUE(ok);
+
+  // Horizontal order: label < link < ok, left-to-right.
+  EXPECT_LE(label->bounds().right(), link->x());
+  EXPECT_LE(link->bounds().right(), ok->x());
 }

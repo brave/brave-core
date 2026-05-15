@@ -78,6 +78,25 @@ class BraveConfirmInfoBar : public infobars::InfoBar, public views::View {
   views::Checkbox* checkbox_for_testing() const { return checkbox_.get(); }
   views::View* close_button_for_testing() const { return close_button_.get(); }
 
+ protected:
+  static void AssignWidths(Views* views, int available_width);
+
+  int GetStartX() const;
+  int GetEndX() const;
+  int OffsetY(views::View* view) const;
+  int NonLabelWidth() const;
+
+  // Subclasses (e.g. BraveSyncAccountDeletedInfoBar) override Layout() and
+  // reposition the views, so expose the children and the positioning
+  // helpers here.
+  raw_ptr<views::ImageView> icon_ = nullptr;
+  raw_ptr<views::Label> label_ = nullptr;
+  raw_ptr<views::MdTextButton> ok_button_ = nullptr;
+  raw_ptr<views::MdTextButton> cancel_button_ = nullptr;
+  raw_ptr<views::Link> link_ = nullptr;
+  raw_ptr<views::Checkbox> checkbox_ = nullptr;
+  raw_ptr<views::ImageButton> close_button_ = nullptr;
+
  private:
   // Tracks the previously focused external view so we can restore focus on
   // dismissal; defined in the .cc.
@@ -92,30 +111,17 @@ class BraveConfirmInfoBar : public infobars::InfoBar, public views::View {
   std::unique_ptr<views::Label> CreateLabel(const std::u16string& text) const;
   std::unique_ptr<views::Link> CreateLink(const std::u16string& text);
   void SetLabelDetails(views::Label* label) const;
-  static void AssignWidths(Views* views, int available_width);
   static void AssignWidthsSorted(Views* views, int available_width);
-  int GetStartX() const;
-  int GetEndX() const;
-  int OffsetY(views::View* view) const;
   gfx::Insets GetCloseButtonSpacing() const;
   int GetElementSpacing() const;
   void LinkClicked(const ui::Event& event);
 
   // Brave-specific.
-  int NonLabelWidth() const;
   void MaybeLayoutMultiLineLabelAndLink();
   void OkButtonPressed();
   void CancelButtonPressed();
   void CloseButtonPressed();
   void CheckboxPressed();
-
-  raw_ptr<views::ImageView> icon_ = nullptr;
-  raw_ptr<views::Label> label_ = nullptr;
-  raw_ptr<views::MdTextButton> ok_button_ = nullptr;
-  raw_ptr<views::MdTextButton> cancel_button_ = nullptr;
-  raw_ptr<views::Link> link_ = nullptr;
-  raw_ptr<views::Checkbox> checkbox_ = nullptr;
-  raw_ptr<views::ImageButton> close_button_ = nullptr;
 
   std::unique_ptr<FocusTracker> focus_tracker_;
 
