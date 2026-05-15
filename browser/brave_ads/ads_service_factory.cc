@@ -22,6 +22,7 @@
 #include "brave/components/brave_ads/browser/ads_service_impl.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/public/ads_util.h"
+#include "brave/components/brave_policy/policy_initialization_waiter.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -115,6 +116,9 @@ AdsServiceFactory::BuildServiceInstanceForBrowserContext(
   if (auto* policy_connector = profile->GetProfilePolicyConnector()) {
     policy_service = policy_connector->policy_service();
   }
+  auto policy_initialization_waiter =
+      std::make_unique<brave_policy::PolicyInitializationWaiter>(
+          policy_service);
 
   auto delegate = std::make_unique<AdsServiceDelegate>(
       *profile, *local_state, brave_adaptive_captcha_service);
@@ -140,8 +144,8 @@ AdsServiceFactory::BuildServiceInstanceForBrowserContext(
   CHECK(profile_manager);
 
   return std::make_unique<AdsServiceImpl>(
-      std::move(delegate), *prefs, *local_state, policy_service,
-      std::move(http_client),
+      std::move(delegate), *prefs, *local_state,
+      std::move(policy_initialization_waiter), std::move(http_client),
       std::make_unique<VirtualPrefProviderDelegate>(
           *profile, profile_manager->GetProfileAttributesStorage()),
       brave::GetChannelName(), profile->GetPath(), CreateAdsTooltipsDelegate(),
