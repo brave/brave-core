@@ -8,6 +8,7 @@
 #include "base/bit_cast.h"
 #include "base/check.h"
 #include "base/containers/extend.h"
+#include "base/containers/flat_map.h"
 #include "base/containers/span.h"
 #include "base/containers/span_reader.h"
 #include "base/containers/to_vector.h"
