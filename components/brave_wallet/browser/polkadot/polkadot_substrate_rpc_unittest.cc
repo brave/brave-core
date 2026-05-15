@@ -132,7 +132,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, BraveServicesKey) {
       mojom::kPolkadotTestnet, GURL("https://polkadot-test.example.com/"));
   polkadot_substrate_rpc_->GetChainName(mojom::kPolkadotTestnet,
                                         callback.Get());
-  EXPECT_EQ(url_loader_factory_.pending_requests()->size(), 1u);
+  ASSERT_EQ(url_loader_factory_.pending_requests()->size(), 1u);
   EXPECT_FALSE(
       url_loader_factory_.pending_requests()->front().request.headers.GetHeader(
           kBraveServicesKeyHeader));
@@ -143,7 +143,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, BraveServicesKey) {
   network_manager_->SetNetworkURLForTesting(mojom::kPolkadotTestnet, GURL());
   polkadot_substrate_rpc_->GetChainName(mojom::kPolkadotTestnet,
                                         callback.Get());
-  EXPECT_EQ(url_loader_factory_.pending_requests()->size(), 1u);
+  ASSERT_EQ(url_loader_factory_.pending_requests()->size(), 1u);
   EXPECT_TRUE(
       url_loader_factory_.pending_requests()->front().request.headers.GetHeader(
           kBraveServicesKeyHeader));
@@ -152,7 +152,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, BraveServicesKey) {
 
   polkadot_substrate_rpc_->GetChainName(mojom::kPolkadotMainnet,
                                         callback.Get());
-  EXPECT_EQ(url_loader_factory_.pending_requests()->size(), 1u);
+  ASSERT_EQ(url_loader_factory_.pending_requests()->size(), 1u);
   EXPECT_TRUE(
       url_loader_factory_.pending_requests()->front().request.headers.GetHeader(
           kBraveServicesKeyHeader));
