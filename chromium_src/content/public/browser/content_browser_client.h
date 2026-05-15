@@ -9,6 +9,10 @@
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
 #include "third_party/blink/public/mojom/loader/referrer.mojom.h"
 
+namespace content {
+class StoragePartitionConfig;
+}  // namespace content
+
 // Brave-specific: allows the embedder to modify the referrer string
 // according to user preferences.
 // Allow the embedder to determine the user-agent according to user preferences.
@@ -27,8 +31,9 @@
   virtual bool AllowWorkerFingerprinting(const GURL& url,                    \
                                          BrowserContext* browser_context);   \
   virtual brave_shields::mojom::ShieldsSettingsPtr                           \
-  WorkerGetBraveShieldSettings(const GURL& url,                              \
-                               BrowserContext* browser_context);             \
+  WorkerGetBraveShieldSettings(                                              \
+      const GURL& url, BrowserContext* browser_context,                      \
+      const StoragePartitionConfig* storage_partition_config);               \
   virtual std::optional<GURL> SanitizeURL(content::RenderFrameHost*,         \
                                           const GURL&);                      \
   virtual bool IsWindowsRecallDisabled();                                    \

@@ -852,22 +852,32 @@ BraveContentBrowserClient::GetEphemeralStorageToken(
 bool BraveContentBrowserClient::AllowWorkerFingerprinting(
     const GURL& url,
     content::BrowserContext* browser_context) {
-  return WorkerGetBraveShieldSettings(url, browser_context)->farbling_level !=
-         brave_shields::mojom::FarblingLevel::MAXIMUM;
+  return WorkerGetBraveShieldSettings(url, browser_context, nullptr)
+             ->farbling_level != brave_shields::mojom::FarblingLevel::MAXIMUM;
 }
 
 brave_shields::mojom::ShieldsSettingsPtr
 BraveContentBrowserClient::WorkerGetBraveShieldSettings(
     const GURL& url,
-    content::BrowserContext* browser_context) {
+    content::BrowserContext* browser_context,
+    const content::StoragePartitionConfig* storage_partition_config) {
   const brave_shields::mojom::FarblingLevel farbling_level =
       brave_shields::GetFarblingLevel(
           HostContentSettingsMapFactory::GetForProfile(browser_context), url);
+  std::string additional_entropy;
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  if (storage_partition_config &&
+      base::FeatureList::IsEnabled(containers::features::kContainers)) {
+    additional_entropy +=
+        std::string(containers::GetContainerIdFromStoragePartitionConfig(
+            *storage_partition_config));
+  }
+#endif
   const base::Token farbling_token =
       farbling_level != brave_shields::mojom::FarblingLevel::OFF
           ? brave_shields::GetFarblingToken(
                 HostContentSettingsMapFactory::GetForProfile(browser_context),
-                url)
+                url, base::as_byte_span(additional_entropy))
           : base::Token();
 
   PrefService* pref_service = user_prefs::UserPrefs::Get(browser_context);

@@ -6,28 +6,15 @@
 #ifndef BRAVE_BROWSER_NET_BRAVE_REDUCE_LANGUAGE_NETWORK_DELEGATE_HELPER_H_
 #define BRAVE_BROWSER_NET_BRAVE_REDUCE_LANGUAGE_NETWORK_DELEGATE_HELPER_H_
 
-#include <memory>
-#include <string>
-
 #include "brave/browser/net/url_context.h"
-#include "url/gurl.h"
 
-class HostContentSettingsMap;
-class PrefService;
-class Profile;
 struct BraveRequestInfo;
 
 namespace net {
 class HttpRequestHeaders;
-class URLRequest;
 }  // namespace net
 
 namespace brave {
-
-std::string FarbleAcceptLanguageHeader(
-    const GURL& tab_origin,
-    Profile* profile,
-    HostContentSettingsMap* content_settings);
 
 template <template <typename> class T>
 int OnBeforeStartTransaction_ReduceLanguageWork(

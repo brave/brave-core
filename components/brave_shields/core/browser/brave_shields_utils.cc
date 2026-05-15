@@ -848,7 +848,9 @@ mojom::FarblingLevel GetFarblingLevel(HostContentSettingsMap* map,
   }
 }
 
-base::Token GetFarblingToken(HostContentSettingsMap* map, const GURL& url) {
+base::Token GetFarblingToken(HostContentSettingsMap* map,
+                             const GURL& url,
+                             base::span<const uint8_t> additional_entropy) {
   base::Token token;
   if (!url.SchemeIsHTTPOrHTTPS()) {
     return token;
@@ -871,7 +873,15 @@ base::Token GetFarblingToken(HostContentSettingsMap* map, const GURL& url) {
     SetShieldsMetadata(map, url, std::move(shields_metadata));
   }
 
-  return token;
+  if (additional_entropy.empty()) {
+    return token;
+  }
+
+  const uint32_t entropy_hash = base::PersistentHash(additional_entropy);
+  const uint32_t high = token.high() ^ entropy_hash;
+  const uint32_t low =
+      token.low() ^ base::PersistentHash(base::byte_span_from_ref(high));
+  return base::Token(high, low);
 }
 
 bool IsDeveloperModeEnabled(PrefService* profile_state) {

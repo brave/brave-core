@@ -59,7 +59,14 @@
 
 namespace containers {
 
+namespace {
+
 constexpr char kTestContainerId[] = "test-container-id";
+
+constexpr char kFarblingPluginsStringScript[] =
+    "Array.from(navigator.plugins).map(p => p.name).join(',');";
+
+}  // namespace
 
 class ContainersBrowserTest : public InProcessBrowserTest {
  public:
@@ -1804,6 +1811,45 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   // The storage directory should not be empty because the container was
   // recreated.
   EXPECT_FALSE(IsContainersStorageDirectoryEmpty());
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       WebsiteFarblingDiffersBetweenContainers) {
+  const GURL url("https://a.test/simple.html");
+
+  NavigateParams params_a(browser(), url, ui::PAGE_TRANSITION_LINK);
+  params_a.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params_a.storage_partition_config = content::StoragePartitionConfig::Create(
+      browser()->profile(), kContainersStoragePartitionDomain, "farbling-a",
+      browser()->profile()->IsOffTheRecord());
+  ui_test_utils::NavigateToURL(&params_a);
+
+  content::WebContents* web_contents_a =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(web_contents_a);
+  ASSERT_TRUE(content::WaitForLoadStop(web_contents_a));
+  const std::string plugins_a =
+      content::EvalJs(web_contents_a, kFarblingPluginsStringScript)
+          .ExtractString();
+
+  NavigateParams params_b(browser(), url, ui::PAGE_TRANSITION_LINK);
+  params_b.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params_b.storage_partition_config = content::StoragePartitionConfig::Create(
+      browser()->profile(), kContainersStoragePartitionDomain, "farbling-b",
+      browser()->profile()->IsOffTheRecord());
+  ui_test_utils::NavigateToURL(&params_b);
+
+  content::WebContents* web_contents_b =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(web_contents_b);
+  ASSERT_TRUE(content::WaitForLoadStop(web_contents_b));
+  const std::string plugins_b =
+      content::EvalJs(web_contents_b, kFarblingPluginsStringScript)
+          .ExtractString();
+
+  EXPECT_FALSE(plugins_a.empty());
+  EXPECT_FALSE(plugins_b.empty());
+  EXPECT_NE(plugins_a, plugins_b);
 }
 
 // Test suite to verify behavior when containers feature is disabled after
