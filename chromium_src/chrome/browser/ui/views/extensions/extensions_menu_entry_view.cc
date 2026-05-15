@@ -5,8 +5,8 @@
 
 #include "chrome/browser/ui/views/extensions/extensions_menu_entry_view.h"
 
-#define kBrowserToolsChromeRefreshIcon kLeoMoreVerticalIcon
+#define kBrowserToolsChromeRefreshOldIcon kLeoMoreVerticalIcon
 
 #include <chrome/browser/ui/views/extensions/extensions_menu_entry_view.cc>
 
-#undef kBrowserToolsChromeRefreshIcon
+#undef kBrowserToolsChromeRefreshOldIcon
