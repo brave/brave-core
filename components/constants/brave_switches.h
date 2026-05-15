@@ -39,10 +39,13 @@ inline constexpr char kDisableEncryptionWin[] = "disable-encryption-win";
 // Allows disabling the machine ID generation on Windows.
 inline constexpr char kDisableMachineId[] = "disable-machine-id";
 
-// Developer override: load Parakeet on-device speech-recognition model
-// files from the given local directory instead of the component-updater
-// install path. The directory must contain model.gguf, config.json,
-// tokenizer.json, and mel_filters.bytes.
+// Developer override: load on-device speech-recognition model files
+// from the given local directory instead of the component-updater
+// install path. The value is the model directory itself (it must
+// contain model.gguf, config.json, tokenizer.json, and
+// mel_filters.bytes side by side). No per-model subfolder is appended;
+// point it directly at e.g. `~/brave/local-ai-models/parakeet-ctc-110m`
+// or `~/brave/local-ai-models/candle_parakeet_600m_q4_k`.
 inline constexpr char kOnDeviceSpeechRecognitionModelDir[] =
     "on-device-speech-recognition-model-dir";
 

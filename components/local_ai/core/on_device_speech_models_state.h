@@ -14,32 +14,26 @@
 
 namespace local_ai {
 
-// File names shared by every on-device speech model shipped through
-// this component: each model lives in its own subdirectory, and
-// inside that subdir the files follow this convention. Consumers
-// should use the per-model accessors on `OnDeviceSpeechModelsState`
-// instead of re-composing paths from these constants.
+// File names that the on-device speech recognition model directory is
+// expected to contain. The install directory points at this set of
+// files directly; no per-model subdirectory is appended.
 inline constexpr char kOnDeviceSpeechModelFile[] = "model.gguf";
 inline constexpr char kOnDeviceSpeechConfigFile[] = "config.json";
 inline constexpr char kOnDeviceSpeechTokenizerFile[] = "tokenizer.json";
 inline constexpr char kOnDeviceSpeechMelFiltersFile[] = "mel_filters.bytes";
 
-// Per-model subdirectory under the component's install dir.
-inline constexpr char kParakeetCtc110mDir[] = "parakeet-ctc-110m";
-
-// Singleton holding the install directory and per-model file paths
-// for Brave's on-device speech recognition component. Populated
-// either by the Component Updater installer (a follow-up PR) or by
-// the `--on-device-speech-recognition-model-dir` switch handler in
-// the browser controller.
+// Singleton holding the install directory and derived per-file paths
+// for Brave's on-device speech recognition model. Populated either
+// by the Component Updater installer (a follow-up PR) or by the
+// `--on-device-speech-recognition-model-dir` switch handler in the
+// browser controller. The path given to either source is the model
+// directory itself (containing `model.gguf` + sidecars), NOT a parent
+// of named subfolders.
 //
 // Mirrors `LocalModelsUpdaterState`'s shape but for a separate
 // Component Updater extension: on-device speech ships in its own
-// component, gated by its own feature flag, so it gets its own
-// state singleton rather than sharing one with the embedding model.
-//
-// A new model added to the same component gets its own
-// `Get<ModelName>*()` accessors; existing consumers are not touched.
+// component, gated by its own feature flag, so it gets its own state
+// singleton rather than sharing one with the embedding model.
 class OnDeviceSpeechModelsState {
  public:
   class Observer : public base::CheckedObserver {
@@ -57,19 +51,17 @@ class OnDeviceSpeechModelsState {
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
-  // Sets the install directory and recomputes all derived paths.
-  // An empty path clears the state.
+  // Sets the install directory (the model directory itself) and
+  // recomputes all derived file paths. An empty path clears the state.
   void SetInstallDir(const base::FilePath& install_dir);
 
   const base::FilePath& GetInstallDir() const;
 
-  // Parakeet-CTC-110M.
-  const base::FilePath& GetParakeetCtc110mDir() const;
-  const base::FilePath& GetParakeetCtc110mModel() const;      // model.gguf
-  const base::FilePath& GetParakeetCtc110mConfig() const;     // config.json
-  const base::FilePath& GetParakeetCtc110mTokenizer() const;  // tokenizer.json
-  const base::FilePath& GetParakeetCtc110mMelFilters()
-      const;  // mel_filters.bytes
+  // Speech model file paths, derived from the install directory.
+  const base::FilePath& GetSpeechModel() const;       // model.gguf
+  const base::FilePath& GetSpeechConfig() const;      // config.json
+  const base::FilePath& GetSpeechTokenizer() const;   // tokenizer.json
+  const base::FilePath& GetSpeechMelFilters() const;  // mel_filters.bytes
 
  private:
   friend base::NoDestructor<OnDeviceSpeechModelsState>;
@@ -78,11 +70,10 @@ class OnDeviceSpeechModelsState {
 
   base::FilePath install_dir_;
 
-  base::FilePath parakeet_ctc_110m_dir_;
-  base::FilePath parakeet_ctc_110m_model_path_;
-  base::FilePath parakeet_ctc_110m_config_path_;
-  base::FilePath parakeet_ctc_110m_tokenizer_path_;
-  base::FilePath parakeet_ctc_110m_mel_filters_path_;
+  base::FilePath speech_model_path_;
+  base::FilePath speech_config_path_;
+  base::FilePath speech_tokenizer_path_;
+  base::FilePath speech_mel_filters_path_;
 
   base::ObserverList<Observer> observers_;
 

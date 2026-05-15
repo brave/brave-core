@@ -42,22 +42,18 @@ void OnDeviceSpeechModelsState::SetInstallDir(
   }
   install_dir_ = install_dir;
   if (install_dir.empty()) {
-    parakeet_ctc_110m_dir_ = base::FilePath();
-    parakeet_ctc_110m_model_path_ = base::FilePath();
-    parakeet_ctc_110m_config_path_ = base::FilePath();
-    parakeet_ctc_110m_tokenizer_path_ = base::FilePath();
-    parakeet_ctc_110m_mel_filters_path_ = base::FilePath();
+    speech_model_path_ = base::FilePath();
+    speech_config_path_ = base::FilePath();
+    speech_tokenizer_path_ = base::FilePath();
+    speech_mel_filters_path_ = base::FilePath();
     return;
   }
-  parakeet_ctc_110m_dir_ = install_dir_.AppendASCII(kParakeetCtc110mDir);
-  parakeet_ctc_110m_model_path_ =
-      parakeet_ctc_110m_dir_.AppendASCII(kOnDeviceSpeechModelFile);
-  parakeet_ctc_110m_config_path_ =
-      parakeet_ctc_110m_dir_.AppendASCII(kOnDeviceSpeechConfigFile);
-  parakeet_ctc_110m_tokenizer_path_ =
-      parakeet_ctc_110m_dir_.AppendASCII(kOnDeviceSpeechTokenizerFile);
-  parakeet_ctc_110m_mel_filters_path_ =
-      parakeet_ctc_110m_dir_.AppendASCII(kOnDeviceSpeechMelFiltersFile);
+  speech_model_path_ = install_dir_.AppendASCII(kOnDeviceSpeechModelFile);
+  speech_config_path_ = install_dir_.AppendASCII(kOnDeviceSpeechConfigFile);
+  speech_tokenizer_path_ =
+      install_dir_.AppendASCII(kOnDeviceSpeechTokenizerFile);
+  speech_mel_filters_path_ =
+      install_dir_.AppendASCII(kOnDeviceSpeechMelFiltersFile);
 
   observers_.Notify(&Observer::OnModelsReady, install_dir_);
 }
@@ -66,28 +62,20 @@ const base::FilePath& OnDeviceSpeechModelsState::GetInstallDir() const {
   return install_dir_;
 }
 
-const base::FilePath& OnDeviceSpeechModelsState::GetParakeetCtc110mDir() const {
-  return parakeet_ctc_110m_dir_;
+const base::FilePath& OnDeviceSpeechModelsState::GetSpeechModel() const {
+  return speech_model_path_;
 }
 
-const base::FilePath& OnDeviceSpeechModelsState::GetParakeetCtc110mModel()
-    const {
-  return parakeet_ctc_110m_model_path_;
+const base::FilePath& OnDeviceSpeechModelsState::GetSpeechConfig() const {
+  return speech_config_path_;
 }
 
-const base::FilePath& OnDeviceSpeechModelsState::GetParakeetCtc110mConfig()
-    const {
-  return parakeet_ctc_110m_config_path_;
+const base::FilePath& OnDeviceSpeechModelsState::GetSpeechTokenizer() const {
+  return speech_tokenizer_path_;
 }
 
-const base::FilePath& OnDeviceSpeechModelsState::GetParakeetCtc110mTokenizer()
-    const {
-  return parakeet_ctc_110m_tokenizer_path_;
-}
-
-const base::FilePath& OnDeviceSpeechModelsState::GetParakeetCtc110mMelFilters()
-    const {
-  return parakeet_ctc_110m_mel_filters_path_;
+const base::FilePath& OnDeviceSpeechModelsState::GetSpeechMelFilters() const {
+  return speech_mel_filters_path_;
 }
 
 }  // namespace local_ai

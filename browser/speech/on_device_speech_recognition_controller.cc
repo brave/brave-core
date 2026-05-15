@@ -188,8 +188,7 @@ void OnDeviceSpeechRecognitionController::RegisterSpeechRecognitionFactory(
 void OnDeviceSpeechRecognitionController::CreateAsrSession(
     on_device_model::mojom::AsrStreamOptionsPtr options,
     mojo::PendingReceiver<on_device_model::mojom::AsrStreamInput> stream,
-    mojo::PendingRemote<on_device_model::mojom::AsrStreamResponder>
-        responder) {
+    mojo::PendingRemote<on_device_model::mojom::AsrStreamResponder> responder) {
   ++active_session_count_;
   idle_timer_.Stop();
 
@@ -294,10 +293,9 @@ void OnDeviceSpeechRecognitionController::LoadInitFiles() {
   auto* state = local_ai::OnDeviceSpeechModelsState::GetInstance();
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock(), base::TaskPriority::USER_VISIBLE},
-      base::BindOnce(&ReadInitFiles, state->GetParakeetCtc110mConfig(),
-                     state->GetParakeetCtc110mTokenizer(),
-                     state->GetParakeetCtc110mMelFilters(),
-                     state->GetParakeetCtc110mModel()),
+      base::BindOnce(&ReadInitFiles, state->GetSpeechConfig(),
+                     state->GetSpeechTokenizer(), state->GetSpeechMelFilters(),
+                     state->GetSpeechModel()),
       base::BindOnce(&OnDeviceSpeechRecognitionController::OnInitFilesRead,
                      weak_factory_.GetWeakPtr()));
 }
@@ -305,9 +303,9 @@ void OnDeviceSpeechRecognitionController::LoadInitFiles() {
 void OnDeviceSpeechRecognitionController::OnInitFilesRead(
     InitReadResult result) {
   if (!result.files) {
-    LOG(ERROR) << "OnDeviceSpeechRecognition: failed to read model files from "
-               << local_ai::OnDeviceSpeechModelsState::GetInstance()
-                      ->GetParakeetCtc110mDir();
+    LOG(ERROR)
+        << "OnDeviceSpeechRecognition: failed to read model files from "
+        << local_ai::OnDeviceSpeechModelsState::GetInstance()->GetInstallDir();
     TearDown();
     return;
   }
@@ -339,7 +337,7 @@ void OnDeviceSpeechRecognitionController::ReadNextChunk() {
   auto* state = local_ai::OnDeviceSpeechModelsState::GetInstance();
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock(), base::TaskPriority::USER_VISIBLE},
-      base::BindOnce(&ReadModelChunk, state->GetParakeetCtc110mModel(),
+      base::BindOnce(&ReadModelChunk, state->GetSpeechModel(),
                      model_bytes_sent_, chunk_size),
       base::BindOnce(&OnDeviceSpeechRecognitionController::OnChunkRead,
                      weak_factory_.GetWeakPtr()));
@@ -387,8 +385,7 @@ void OnDeviceSpeechRecognitionController::ForwardPendingSessions() {
 void OnDeviceSpeechRecognitionController::ForwardSession(
     on_device_model::mojom::AsrStreamOptionsPtr options,
     mojo::PendingReceiver<on_device_model::mojom::AsrStreamInput> stream,
-    mojo::PendingRemote<on_device_model::mojom::AsrStreamResponder>
-        responder) {
+    mojo::PendingRemote<on_device_model::mojom::AsrStreamResponder> responder) {
   if (!factory_.is_bound()) {
     return;
   }
