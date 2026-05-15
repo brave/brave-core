@@ -139,16 +139,6 @@ source_set("ui") {
       "//brave/browser/ui/webui/brave_wallet/market",
       "//brave/browser/ui/webui/brave_wallet/nft",
       "//brave/browser/ui/webui/brave_wallet/wallet_page",
-      "//brave/components/brave_wallet/browser",
-      "//brave/components/brave_wallet/browser:constants",
-      "//brave/components/brave_wallet/browser:pref_names",
-      "//brave/components/brave_wallet/browser:utils",
-      "//brave/components/brave_wallet/common",
-      "//brave/components/brave_wallet/common:mojom",
-      "//brave/components/brave_wallet_ui/line_chart:line_chart_display_generated",
-      "//brave/components/brave_wallet_ui/market:market_display_generated",
-      "//brave/components/brave_wallet_ui/nft:nft_display_generated",
-      "//brave/components/brave_wallet_ui/page:brave_wallet_page_generated",
       "//brave/components/decentralized_dns/core",
     ]
 
@@ -173,12 +163,6 @@ source_set("ui") {
         "//brave/browser/ui/webui/brave_wallet/ledger",
         "//brave/browser/ui/webui/brave_wallet/trezor",
         "//brave/browser/ui/webui/brave_wallet/wallet_panel",
-        "//brave/components/brave_wallet/browser:permission_utils",
-        "//brave/components/brave_wallet/browser:wallet_handler",
-        "//brave/components/brave_wallet_ui:resources",
-        "//brave/components/brave_wallet_ui/ledger:ledger_bridge_generated",
-        "//brave/components/brave_wallet_ui/panel:brave_wallet_panel_generated",
-        "//brave/components/brave_wallet_ui/trezor:trezor_bridge_generated",
       ]
     }
   }
