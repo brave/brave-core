@@ -9,14 +9,13 @@
       xmlns:tools="http://schemas.android.com/tools"
       android:orientation="horizontal"
       android:layout_width="wrap_content"
-      android:layout_height="wrap_content" >
+      android:layout_height="match_parent" >
 
     <FrameLayout android:id="@+id/brave_youtube_pip_layout"
         android:layout_width="45dp"
         android:orientation="vertical"
         android:background="@drawable/modern_toolbar_background_grey_middle_segment"
-        android:layout_marginTop="8dp"
-        android:layout_height="40dp"
+        android:layout_height="match_parent"
         android:visibility="gone" >
 
         <ImageButton android:id="@+id/brave_youtube_pip_button"
@@ -32,8 +31,7 @@
       android:layout_width="45dp"
       android:orientation="vertical"
       android:background="@drawable/modern_toolbar_background_grey_middle_segment"
-      android:layout_marginTop="8dp"
-      android:layout_height="40dp"
+      android:layout_height="match_parent"
       android:visibility="gone" >
 
       <ImageButton android:id="@+id/brave_wallet_button"
@@ -59,8 +57,7 @@
       android:layout_width="45dp"
       android:orientation="vertical"
       android:background="@drawable/modern_toolbar_background_grey_middle_segment"
-      android:layout_marginTop="8dp"
-      android:layout_height="40dp" >
+      android:layout_height="match_parent" >
 
       <ImageButton android:id="@+id/brave_shields_button"
           style="@style/ToolbarButton"
@@ -74,9 +71,8 @@
   <FrameLayout android:id="@+id/brave_rewards_button_layout"
       android:layout_width="45dp"
       android:orientation="vertical"
-      android:layout_marginTop="8dp"
       android:background="@drawable/modern_toolbar_background_grey_end_segment"
-      android:layout_height="40dp"
+      android:layout_height="match_parent"
       android:visibility="gone" >
 
       <ImageButton android:id="@+id/brave_rewards_button"
@@ -87,7 +83,7 @@
           android:layout_gravity="center"
           android:contentDescription="@string/accessibility_toolbar_btn_brave_rewards" />
 
-      <ImageView 
+      <ImageView
           android:id="@+id/br_rewards_onboarding_icon"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
