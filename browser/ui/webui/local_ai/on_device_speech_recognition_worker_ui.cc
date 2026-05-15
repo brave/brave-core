@@ -11,6 +11,16 @@
 #include "brave/browser/speech/on_device_speech_recognition_controller.h"
 #include "brave/components/local_ai/core/local_ai.mojom.h"
 #include "brave/components/local_ai/core/url_constants.h"
+#include "brave/components/local_ai/resources/grit/candle_nemotron_module_generated.h"
+#include "brave/components/local_ai/resources/grit/candle_nemotron_module_generated_map.h"
+#include "brave/components/local_ai/resources/grit/candle_nemotron_q8_0_module_generated.h"
+#include "brave/components/local_ai/resources/grit/candle_nemotron_q8_0_module_generated_map.h"
+#include "brave/components/local_ai/resources/grit/candle_parakeet_600m_f16_module_generated.h"
+#include "brave/components/local_ai/resources/grit/candle_parakeet_600m_f16_module_generated_map.h"
+#include "brave/components/local_ai/resources/grit/candle_parakeet_600m_q4_k_module_generated.h"
+#include "brave/components/local_ai/resources/grit/candle_parakeet_600m_q4_k_module_generated_map.h"
+#include "brave/components/local_ai/resources/grit/candle_parakeet_600m_q8_0_module_generated.h"
+#include "brave/components/local_ai/resources/grit/candle_parakeet_600m_q8_0_module_generated_map.h"
 #include "brave/components/local_ai/resources/grit/candle_parakeet_module_generated.h"
 #include "brave/components/local_ai/resources/grit/candle_parakeet_module_generated_map.h"
 #include "brave/components/local_ai/resources/grit/on_device_speech_recognition_worker_generated.h"
@@ -32,6 +42,11 @@ UntrustedOnDeviceSpeechRecognitionWorkerUI::
       kOnDeviceSpeechRecognitionWorkerURL);
 
   source->AddResourcePaths(kCandleParakeetModuleGenerated);
+  source->AddResourcePaths(kCandleNemotronModuleGenerated);
+  source->AddResourcePaths(kCandleNemotronQ80ModuleGenerated);
+  source->AddResourcePaths(kCandleParakeet600mF16ModuleGenerated);
+  source->AddResourcePaths(kCandleParakeet600mQ4KModuleGenerated);
+  source->AddResourcePaths(kCandleParakeet600mQ80ModuleGenerated);
   webui::SetupWebUIDataSource(source, kOnDeviceSpeechRecognitionWorkerGenerated,
                               IDR_ON_DEVICE_SPEECH_RECOGNITION_WORKER_HTML);
 

@@ -1,0 +1,44 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/common/typescript.gni")
+import("//tools/grit/repack.gni")
+
+# Bundle the candle_parakeet_600m_q4_k WASM crate + wasm-bindgen JS glue
+# into a single `candle_parakeet_600m_q4_k.bundle.js` served by the worker
+# WebUI under chrome-untrusted://on-device-speech-recognition-worker/.
+# This crate runs Parakeet-TDT-0.6B-v3 with Q4_K GGUF weights from
+# cstr/parakeet-tdt-0.6b-v3-GGUF.
+transpile_web_ui("candle_parakeet_600m_q4_k_module") {
+  resource_name = "candle_parakeet_600m_q4_k_module"
+
+  entry_points = [ [
+        "candle_parakeet_600m_q4_k",
+        rebase_path("index.js"),
+      ] ]
+
+  inputs = [
+    rebase_path("//brave/third_party/wasm/Cargo.lock"),
+    rebase_path("src/lib.rs"),
+    rebase_path("src/audio.rs"),
+    rebase_path("src/audio_fft.rs"),
+    rebase_path("src/model.rs"),
+  ]
+
+  imports_from =
+      [ "//brave/components/local_ai/resources/candle_parakeet_600m_q4_k/" ]
+
+  rust_packages = [ rebase_path("Cargo.toml") ]
+
+  no_iife = true
+  output_module = true
+  public_asset_path = "chrome-untrusted://on-device-speech-recognition-worker/"
+}
+
+pack_web_resources("candle_parakeet_600m_q4_k_module_generated") {
+  resource_name = "candle_parakeet_600m_q4_k_module"
+  output_dir = "$root_gen_dir/brave/components/local_ai/resources"
+  deps = [ ":candle_parakeet_600m_q4_k_module" ]
+}

@@ -267,6 +267,10 @@
     "META": {"sizes": {"includes": [5]}},
     "includes": [54160],
   },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-candle_nemotron_module/candle_nemotron_module.grd": {
+    "META": {"sizes": {"includes": [5]}},
+    "includes": [54165],
+  },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-on_device_speech_recognition_worker/on_device_speech_recognition_worker.grd": {
     "META": {"sizes": {"includes": [5]}},
     "includes": [54170],
@@ -274,6 +278,22 @@
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-on_device_speech_recognition_internals/on_device_speech_recognition_internals.grd": {
     "META": {"sizes": {"includes": [5]}},
     "includes": [54180],
+  },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-candle_parakeet_600m_f16_module/candle_parakeet_600m_f16_module.grd": {
+    "META": {"sizes": {"includes": [5]}},
+    "includes": [54185],
+  },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-candle_parakeet_600m_q4_k_module/candle_parakeet_600m_q4_k_module.grd": {
+    "META": {"sizes": {"includes": [5]}},
+    "includes": [54190],
+  },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-candle_parakeet_600m_q8_0_module/candle_parakeet_600m_q8_0_module.grd": {
+    "META": {"sizes": {"includes": [5]}},
+    "includes": [54195],
+  },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-candle_nemotron_q8_0_module/candle_nemotron_q8_0_module.grd": {
+    "META": {"sizes": {"includes": [5]}},
+    "includes": [54200],
   },
   # WARNING: The IDs range is 2^16-1. Check
   # out/<BUILD_TYPE>/gen/brave/resources/brave_resource_ids for how much the
