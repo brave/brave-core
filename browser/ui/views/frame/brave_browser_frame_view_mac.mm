@@ -14,6 +14,7 @@
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/fullscreen_util_mac.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/features.h"
@@ -158,9 +159,13 @@ int BraveBrowserFrameViewMac::NonClientHitTest(const gfx::Point& point) {
   // widget, violating brave::NonClientHitTest's precondition that the toolbar
   // and browser view share the same widget. Skip it while immersive mode is
   // active.
-  if (!ImmersiveModeController::From(GetBrowserView()->browser())
-           ->IsEnabled()) {
-    if (auto res = brave::NonClientHitTest(GetBrowserView(), point);
+  auto* browser_view = GetBrowserView();
+  auto* browser = browser_view->browser();
+  if (!ImmersiveModeController::From(browser)->IsEnabled()) {
+    auto* non_client_hit_test_helper =
+        browser->browser_window_features()->brave_non_client_hit_test_helper();
+    if (auto res =
+            non_client_hit_test_helper->NonClientHitTest(browser_view, point);
         res != HTNOWHERE) {
       return res;
     }

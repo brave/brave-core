@@ -5,45 +5,63 @@
 
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 
+#include "base/check_deref.h"
 #include "base/check_op.h"
-#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
-#include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "ui/base/hit_test.h"
 #include "ui/views/window/hit_test_utils.h"
 
-namespace brave {
+BraveNonClientHitTestHelper::BraveNonClientHitTestHelper() = default;
+BraveNonClientHitTestHelper::~BraveNonClientHitTestHelper() = default;
 
-int NonClientHitTest(BrowserView* browser_view,
-                     const gfx::Point& point_in_widget) {
+int BraveNonClientHitTestHelper::NonClientHitTest(
+    BrowserView* browser_view,
+    const gfx::Point& point_in_widget) {
   if (!browser_view) {
     return HTNOWHERE;
   }
 
-  if (!browser_view->toolbar() || !browser_view->toolbar()->GetVisible()) {
+  auto get_hit_test_component = [&](const raw_ptr<views::View>& view) {
+    if (!CHECK_DEREF(view).GetVisible()) {
+      return HTNOWHERE;
+    }
+
+    // The view must live in the same widget as the browser view to make
+    // this method work properly. If it has been reparented to a different
+    // widget (e.g. overlay_widget_ during macOS immersive fullscreen),
+    // GetHitTestComponent() will convert |point_in_widget| using the wrong
+    // widget's coordinate space, producing spurious HTCAPTION results.
+    // Callers must guard against this before calling NonClientHitTest().
+    CHECK_EQ(view->GetWidget(), browser_view->GetWidget());
+
+#if BUILDFLAG(IS_WIN)
+    auto hit_test_result = views::GetHitTestComponent(view, point_in_widget);
+#else
+    HitTestCompat hit_test_result = static_cast<HitTestCompat>(
+        views::GetHitTestComponent(view, point_in_widget));
+#endif
+
+    if (hit_test_result == HTNOWHERE || hit_test_result == HTCLIENT) {
+      // The |point_in_widget| is out of toolbar or on toolbar's sub views.
+      return hit_test_result;
+    }
+
+    return HTCAPTION;
+  };
+
+  // Find if any view returned HTCAPTION
+  auto caption_view =
+      std::ranges::find_if(observation_.sources(), [&](const auto& view) {
+        return get_hit_test_component(view) == HTCAPTION;
+      });
+
+  if (caption_view == observation_.sources().end()) {
     return HTNOWHERE;
   }
 
-  // The toolbar must live in the same widget as the browser view to make
-  // this method work properly. If it has been reparented to a different widget
-  // (e.g. overlay_widget_ during macOS immersive fullscreen),
-  // GetHitTestComponent() will convert |point_in_widget| using the wrong
-  // widget's coordinate space, producing spurious HTCAPTION results. Callers
-  // must guard against this before calling NonClientHitTest().
-  CHECK_EQ(browser_view->toolbar()->GetWidget(), browser_view->GetWidget());
-
-  int hit_test_result =
-      views::GetHitTestComponent(browser_view->toolbar(), point_in_widget);
-  if (hit_test_result == HTNOWHERE || hit_test_result == HTCLIENT) {
-    // The |point_in_widget| is out of toolbar or on toolbar's sub views.
-    return hit_test_result;
-  }
-
-  DCHECK_EQ(hit_test_result, HTCAPTION);
-  // Users are interacting with empty area in toolbar. Check if the area should
-  // be resize area for the window.
+  // Now we check if HTCAPTION is considered as resize area for the window
   if (!browser_view->CanResize()) {
-    return hit_test_result;
+    return HTCAPTION;
   }
 
   constexpr int kResizableArea = 8;
@@ -52,22 +70,16 @@ int NonClientHitTest(BrowserView* browser_view,
   auto non_resizable_area = widget_bounds;
   non_resizable_area.Inset(kResizableArea);
   if (non_resizable_area.Contains(point_in_widget)) {
-    return hit_test_result;
-  }
-
-  // Below checking is only for dragging with tab when vertical tab is
-  // enabled and title is hidden.
-  if (!tabs::utils::ShouldShowBraveVerticalTabs(browser_view->browser())) {
-    return HTNOWHERE;
+    return HTCAPTION;
   }
 
   // Don't need to give resize area when maximized.
   // Having resize area prevents window dragging by grab top border.
   if (browser_view->IsMaximized()) {
-    return hit_test_result;
+    return HTCAPTION;
   }
 
-  // Now we have only resizable areas.
+  // Now we check if the point is which side of resize area.
   if (point_in_widget.x() <= kResizableArea &&
       point_in_widget.y() <= kResizableArea) {
     return HTTOPLEFT;
@@ -85,4 +97,20 @@ int NonClientHitTest(BrowserView* browser_view,
   return HTNOWHERE;
 }
 
-}  // namespace brave
+void BraveNonClientHitTestHelper::RegisterCaptionArea(views::View* view) {
+  views::SetHitTestComponent(view, HTCAPTION);
+  observation_.AddObservation(view);
+
+  for (auto& child : view->children()) {
+    OnChildViewAdded(view, child);
+  }
+}
+
+void BraveNonClientHitTestHelper::OnChildViewAdded(views::View* observed_view,
+                                                   views::View* child) {
+  views::SetHitTestComponent(child, HTCLIENT);
+}
+
+void BraveNonClientHitTestHelper::OnViewIsDeleting(views::View* observed_view) {
+  observation_.RemoveObservation(observed_view);
+}
