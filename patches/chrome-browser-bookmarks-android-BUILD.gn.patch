@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/bookmarks/android/BUILD.gn b/chrome/browser/bookmarks/android/BUILD.gn
-index d24b0644c2767b8917aa31544d920e86cfd18064..b0a8103e8cc595e32b6bfec8eebd5a53df4df857 100644
+index f7df6031b3fe017b7e756bbf4f8e0cfb33956a3c..7de582a844491ec0b1952bbd688faade6c843736 100644
 --- a/chrome/browser/bookmarks/android/BUILD.gn
 +++ b/chrome/browser/bookmarks/android/BUILD.gn
 @@ -38,6 +38,7 @@ source_set("impl") {

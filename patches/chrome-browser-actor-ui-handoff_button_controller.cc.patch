@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/actor/ui/handoff_button_controller.cc b/chrome/browser/actor/ui/handoff_button_controller.cc
-index f7efc4d9584c9c9cd3087d5f5452b0f14268f82f..232a0f87ffeccdd25b35181a54753af59afecb61 100644
+index 7b619a3f95e3738be1279e299b9b8b20f18702c5..4575ae38403f40e5625b21ffa646e03ebfe292bf 100644
 --- a/chrome/browser/actor/ui/handoff_button_controller.cc
 +++ b/chrome/browser/actor/ui/handoff_button_controller.cc
 @@ -141,6 +141,7 @@ class GradientBubbleFrameView : public views::BubbleFrameView {

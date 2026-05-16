@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/page_action/page_action_controller.h b/chrome/browser/ui/page_action/page_action_controller.h
-index ff287e27cb927be96a36612b0f2de55b0663f98c..3747c54f6c96dcbc67f3d3428f8c8d92910a12c6 100644
+index 535e51b327cbaf86cc9378af986c9e491d51636b..8374a3344043badc1ec0e7363b4224315041da1e 100644
 --- a/chrome/browser/ui/page_action/page_action_controller.h
 +++ b/chrome/browser/ui/page_action/page_action_controller.h
-@@ -286,6 +286,7 @@ class PageActionController {
+@@ -287,6 +287,7 @@ class PageActionController {
    virtual void DecrementActivityCounter(actions::ActionId action_id) = 0;
  };
  
@@ -10,7 +10,7 @@ index ff287e27cb927be96a36612b0f2de55b0663f98c..3747c54f6c96dcbc67f3d3428f8c8d92
  class PageActionControllerImpl : public PageActionController,
                                   public PinnedToolbarActionsModel::Observer {
   public:
-@@ -357,6 +358,7 @@ class PageActionControllerImpl : public PageActionController,
+@@ -358,6 +359,7 @@ class PageActionControllerImpl : public PageActionController,
    void OnActionsChanged() override;
  
   private:
@@ -18,7 +18,7 @@ index ff287e27cb927be96a36612b0f2de55b0663f98c..3747c54f6c96dcbc67f3d3428f8c8d92
    using PageActionModelsMap =
        std::map<actions::ActionId, std::unique_ptr<PageActionModelInterface>>;
  
-@@ -383,7 +385,7 @@ class PageActionControllerImpl : public PageActionController,
+@@ -384,7 +386,7 @@ class PageActionControllerImpl : public PageActionController,
    void ActionItemChanged(const actions::ActionItem* action_item);
    void PinnedActionsModelChanged();
  
@@ -27,7 +27,7 @@ index ff287e27cb927be96a36612b0f2de55b0663f98c..3747c54f6c96dcbc67f3d3428f8c8d92
        actions::ActionId action_id,
        bool is_ephemeral);
  
-@@ -441,6 +443,8 @@ class PageActionControllerImpl : public PageActionController,
+@@ -442,6 +444,8 @@ class PageActionControllerImpl : public PageActionController,
  
    base::WeakPtrFactory<PageActionControllerImpl> weak_factory_{this};
  };

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/extensions/extensions_menu_main_page_view.cc b/chrome/browser/ui/views/extensions/extensions_menu_main_page_view.cc
-index a652daeb9aed5bdce23e8be4e8cc7715c2dc388a..7221345fecf525c5529ef76a109511fe0b4adc24 100644
+index 6ee221eea1bc4ed3d65fcd1749fb39bf89a30523..5a1f1f98d81e25055f656b8c632e383e43010897 100644
 --- a/chrome/browser/ui/views/extensions/extensions_menu_main_page_view.cc
 +++ b/chrome/browser/ui/views/extensions/extensions_menu_main_page_view.cc
-@@ -199,6 +199,7 @@ void ExtensionsMenuMainPageView::CreateAndInsertMenuEntry(
+@@ -200,6 +200,7 @@ void ExtensionsMenuMainPageView::CreateAndInsertMenuEntry(
      ExtensionsMenuViewModel::MenuEntryState entry_state,
      int index) {
    auto extension_id = action_model->GetId();

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/page_info/page_info_cookies_content_view.cc b/chrome/browser/ui/views/page_info/page_info_cookies_content_view.cc
-index 7717722bb64caf8c0a80e335330f29d7eef76ae4..e9ef22a6d4d400119ab380d74c6f336f8542c302 100644
+index 8b6f795c2b1177e883ba62074f2c45ef7b02dfd5..61b9e4761caf64cdb877b3b5edc1a5cbc1145056 100644
 --- a/chrome/browser/ui/views/page_info/page_info_cookies_content_view.cc
 +++ b/chrome/browser/ui/views/page_info/page_info_cookies_content_view.cc
 @@ -338,6 +338,7 @@ void PageInfoCookiesContentView::SetThirdPartyCookiesInfo(

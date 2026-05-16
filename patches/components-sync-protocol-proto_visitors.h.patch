@@ -1,5 +1,5 @@
 diff --git a/components/sync/protocol/proto_visitors.h b/components/sync/protocol/proto_visitors.h
-index 43127968d39c9c8abeaf446e7feccb75e2befc07..035bc42471446532812d82737ba5adc96e44bb10 100644
+index 64bbae03f1ca4785ca99b177831dfd0d4aeb61b0..d43966bd3a8a60f14914904611ebc5881cc26fca 100644
 --- a/components/sync/protocol/proto_visitors.h
 +++ b/components/sync/protocol/proto_visitors.h
 @@ -638,6 +638,7 @@ VISIT_PROTO_FIELDS(const sync_pb::DeviceInfoSpecifics& proto) {

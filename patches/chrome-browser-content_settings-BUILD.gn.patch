@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/content_settings/BUILD.gn b/chrome/browser/content_settings/BUILD.gn
-index ae43f4a6f5a12c04769da38b1effea7c97a421e3..1dda789d7fa56b3bebd4a6f6d014a9eb80fbcb9b 100644
+index 60320a154c3b2095f8b3527299b4512839d231ed..b72f9bff4661ee4ebba19af75893ebc4c163510a 100644
 --- a/chrome/browser/content_settings/BUILD.gn
 +++ b/chrome/browser/content_settings/BUILD.gn
-@@ -135,6 +135,7 @@ source_set("impl") {
+@@ -136,6 +136,7 @@ source_set("impl") {
        "//extensions/browser/mime_handler",
      ]
    }
@@ -10,7 +10,7 @@ index ae43f4a6f5a12c04769da38b1effea7c97a421e3..1dda789d7fa56b3bebd4a6f6d014a9eb
  }
  
  # Fixes circular deps with different components. For example -
-@@ -348,6 +349,7 @@ source_set("unit_tests") {
+@@ -349,6 +350,7 @@ source_set("unit_tests") {
    if (is_android) {
      sources += [ "javascript_optimizer_provider_android_unittest.cc" ]
      deps += [ "//chrome/browser/android:tabs_public" ]

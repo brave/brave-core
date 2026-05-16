@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index fe38d6c7ac96460668f39b23dd28601a5e7289df..835c7fb80a3d750953ccb8ca70e5f91c42ad746a 100644
+index f44d02b458d142750c39867e59951607c3a57ed5..863bad749881fdc6597db3c879bc24fe026ce64a 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -4667,6 +4667,7 @@ const FeatureEntry::FeatureVariation kGestureUserEducationVariations[] = {
+@@ -4685,6 +4685,7 @@ const FeatureEntry::FeatureVariation kWebAuthnAmbientSigninVariations[] = {
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {

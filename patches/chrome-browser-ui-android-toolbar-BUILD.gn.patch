@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/android/toolbar/BUILD.gn b/chrome/browser/ui/android/toolbar/BUILD.gn
-index a3ac3433d202f587deeed6d16f4bb3f0c0ccf6d5..f95abfacd96ddd8a98b49d5b266d43c1eeb8531b 100644
+index 35a4ec6cf66cbbd09540225d63cb37dee05417b6..6e6023ed7817039a78d4a6f0daf2e8b083fc4ae6 100644
 --- a/chrome/browser/ui/android/toolbar/BUILD.gn
 +++ b/chrome/browser/ui/android/toolbar/BUILD.gn
-@@ -223,6 +223,7 @@ android_library("core_java") {
+@@ -224,6 +224,7 @@ android_library("core_java") {
      "java/src/org/chromium/chrome/browser/toolbar/top/tab_strip/HeightTransitionHandler.java",
      "java/src/org/chromium/chrome/browser/toolbar/top/tab_strip/TabStripTransitionCoordinator.java",
    ]
@@ -10,7 +10,7 @@ index a3ac3433d202f587deeed6d16f4bb3f0c0ccf6d5..f95abfacd96ddd8a98b49d5b266d43c1
  
    deps = [
      ":adaptive_features_java",
-@@ -440,6 +441,7 @@ android_resources("java_resources") {
+@@ -443,6 +444,7 @@ android_resources("java_resources") {
      "//components/browser_ui/styles/android:java_resources",
      "//ui/android:ui_java_resources",
    ]

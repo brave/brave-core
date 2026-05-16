@@ -1,5 +1,5 @@
 diff --git a/components/permissions/permission_util.cc b/components/permissions/permission_util.cc
-index 7ed353d3dfe079f90c0c36e5d37219b24a0239e2..233475e71cfef9ff0236ca74b0a731e8f1bbac33 100644
+index b44e1f29f48140239d774abd97d52c513af062f0..57dcde292a26cc7afb2ba87203abe11782367290 100644
 --- a/components/permissions/permission_util.cc
 +++ b/components/permissions/permission_util.cc
 @@ -116,6 +116,7 @@ RequestTypeForUma PermissionUtil::GetUmaValueForRequests(
@@ -10,7 +10,7 @@ index 7ed353d3dfe079f90c0c36e5d37219b24a0239e2..233475e71cfef9ff0236ca74b0a731e8
    return permissions::GetUmaValueForRequests(request_type);
  }
  
-@@ -217,6 +218,7 @@ RequestTypeForUma PermissionUtil::GetUmaValueForRequestType(
+@@ -215,6 +216,7 @@ RequestTypeForUma PermissionUtil::GetUmaValueForRequestType(
  #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
      case RequestType::kIdentityProvider:
        return RequestTypeForUma::PERMISSION_IDENTITY_PROVIDER;
@@ -18,7 +18,7 @@ index 7ed353d3dfe079f90c0c36e5d37219b24a0239e2..233475e71cfef9ff0236ca74b0a731e8
    }
  }
  
-@@ -569,6 +571,7 @@ ContentSettingsType PermissionUtil::PermissionTypeToContentSettingsTypeSafe(
+@@ -567,6 +569,7 @@ ContentSettingsType PermissionUtil::PermissionTypeToContentSettingsTypeSafe(
        return ContentSettingsType::LOOPBACK_NETWORK;
      case PermissionType::NUM:
        break;

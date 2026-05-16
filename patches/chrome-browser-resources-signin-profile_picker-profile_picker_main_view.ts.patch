@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.ts b/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.ts
-index 9d69aa0193b034bb946ca776ac9ee4e134d0694f..187240aea5021b5449254635c487c9ca2c57fd35 100644
+index 30af54a3fe9afd2e4daf333034c62af75e0ddf29..92b10a3ab23c3da7cbaceb1df574709be808fce2 100644
 --- a/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.ts
 +++ b/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.ts
-@@ -150,6 +150,7 @@ export class ProfilePickerMainViewElement extends
+@@ -148,6 +148,7 @@ export class ProfilePickerMainViewElement extends
    }
  
    override firstUpdated() {

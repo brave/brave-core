@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index b181dee1613018c77173bde483b5d22ed7334cb4..40429e8fb47987a2ef3016e96f711602c1a5fbef 100644
+index be2aa87801ebcfd84f0ef3e59aaaf9392bccb221..668cb09ca13ce558c50730fcf32b86df29eb08a2 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -566,6 +566,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+@@ -567,6 +567,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
    // Deprecated 01/2026.
    registry->RegisterListPref(kMagicStackSafetyCheckNotificationsShown);
    registry->RegisterListPref(kBottomOmniboxByDefault);
@@ -10,7 +10,7 @@ index b181dee1613018c77173bde483b5d22ed7334cb4..40429e8fb47987a2ef3016e96f711602
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -1036,6 +1037,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -1040,6 +1041,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
    registry->RegisterIntegerPref(kPreallocatedAddressesNext, 0);
    registry->RegisterTimePref(kFirstPlusAddressCreationTime, base::Time());
    registry->RegisterTimePref(kLastPlusAddressFillingTime, base::Time());

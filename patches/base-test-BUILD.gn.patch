@@ -1,5 +1,5 @@
 diff --git a/base/test/BUILD.gn b/base/test/BUILD.gn
-index d1289a78081f6333a46d0fad4aed5079faa5edad..fe1fbcd22ac7d26946739f5edbd397a0acbaf36a 100644
+index 3e64db0c2d97f28a3ac59ec50b747ead25a9fbc6..4cd9e95002a910dbaadd7fd34c1ba89e4bf0da76 100644
 --- a/base/test/BUILD.gn
 +++ b/base/test/BUILD.gn
 @@ -397,6 +397,7 @@ static_library("test_support") {

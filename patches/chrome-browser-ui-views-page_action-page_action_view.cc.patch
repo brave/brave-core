@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/page_action/page_action_view.cc b/chrome/browser/ui/views/page_action/page_action_view.cc
-index 271f5b9adba10ee60aa45b4c00e1bfb541fd05fd..1a20372af0948f87a8d94a99ea287c039e10d126 100644
+index dfd4bc11fdd9d0c85a6a67f3872b0e52afec4ea2..02eb3bcb991263ff6420bab82287412db3baa937 100644
 --- a/chrome/browser/ui/views/page_action/page_action_view.cc
 +++ b/chrome/browser/ui/views/page_action/page_action_view.cc
 @@ -167,7 +167,7 @@ void PageActionView::OnPageActionModelChanged(
