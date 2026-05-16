@@ -29,7 +29,7 @@ class MockOpaqueLayoutDelegate : public OpaqueBrowserFrameViewLayoutDelegate {
   MOCK_METHOD(bool, IsMaximized, (), (const, override));
   MOCK_METHOD(bool, IsMinimized, (), (const, override));
   MOCK_METHOD(bool, IsFullscreen, (), (const, override));
-  MOCK_METHOD(bool, GetBorderlessModeEnabled, (), (const, override));
+  MOCK_METHOD(bool, GetUnframedModeEnabled, (), (const, override));
   MOCK_METHOD(bool, IsTabStripVisible, (), (const, override));
   MOCK_METHOD(bool, IsToolbarVisible, (), (const, override));
   MOCK_METHOD(int, GetTopAreaHeight, (), (const, override));
