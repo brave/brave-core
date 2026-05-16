@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_account/encryption.h"
+#include "brave/components/brave_account/brave_account_encryption.h"
 
 #include <utility>
 
@@ -11,31 +11,22 @@
 #include "base/check_is_test.h"
 #include "base/no_destructor.h"
 
-namespace brave_account::internal {
+namespace brave_account {
 
-namespace {
-
-OSCryptCallback& EncryptCallbackForTesting() {
-  static base::NoDestructor<OSCryptCallback> callback;
-  return *callback;
-}
-
-OSCryptCallback& DecryptCallbackForTesting() {
-  static base::NoDestructor<OSCryptCallback> callback;
-  return *callback;
-}
-
-}  // namespace
-
-void SetOSCryptCallbacksForTesting(  // IN-TEST
+// static
+void BraveAccountEncryption::SetOSCryptCallbacksForTesting(  // IN-TEST
     OSCryptCallback encrypt_callback,
     OSCryptCallback decrypt_callback) {
   EncryptCallbackForTesting() = std::move(encrypt_callback);  // IN-TEST
   DecryptCallbackForTesting() = std::move(decrypt_callback);  // IN-TEST
 }
 
-std::string Encrypt(const os_crypt_async::Encryptor& encryptor,
-                    const std::string& plain_text) {
+BraveAccountEncryption::BraveAccountEncryption(
+    const os_crypt_async::Encryptor& encryptor)
+    : encryptor_(encryptor) {}
+
+std::string BraveAccountEncryption::Encrypt(
+    const std::string& plain_text) const {
   if (plain_text.empty()) {
     return std::string();
   }
@@ -47,7 +38,7 @@ std::string Encrypt(const os_crypt_async::Encryptor& encryptor,
       return std::string();
     }
   } else {
-    if (!encryptor.EncryptString(plain_text, &encrypted)) {
+    if (!encryptor_->EncryptString(plain_text, &encrypted)) {
       return std::string();
     }
   }
@@ -55,8 +46,7 @@ std::string Encrypt(const os_crypt_async::Encryptor& encryptor,
   return base::Base64Encode(encrypted);
 }
 
-std::string Decrypt(const os_crypt_async::Encryptor& encryptor,
-                    const std::string& base64) {
+std::string BraveAccountEncryption::Decrypt(const std::string& base64) const {
   if (base64.empty()) {
     return std::string();
   }
@@ -73,7 +63,7 @@ std::string Decrypt(const os_crypt_async::Encryptor& encryptor,
       return std::string();
     }
   } else {
-    if (!encryptor.DecryptString(encrypted, &plain_text)) {
+    if (!encryptor_->DecryptString(encrypted, &plain_text)) {
       return std::string();
     }
   }
@@ -81,4 +71,18 @@ std::string Decrypt(const os_crypt_async::Encryptor& encryptor,
   return plain_text;
 }
 
-}  // namespace brave_account::internal
+// static
+BraveAccountEncryption::OSCryptCallback&
+BraveAccountEncryption::EncryptCallbackForTesting() {
+  static base::NoDestructor<OSCryptCallback> callback;
+  return *callback;
+}
+
+// static
+BraveAccountEncryption::OSCryptCallback&
+BraveAccountEncryption::DecryptCallbackForTesting() {
+  static base::NoDestructor<OSCryptCallback> callback;
+  return *callback;
+}
+
+}  // namespace brave_account

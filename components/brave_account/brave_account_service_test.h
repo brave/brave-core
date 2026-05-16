@@ -18,8 +18,8 @@
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "base/values.h"
+#include "brave/components/brave_account/brave_account_encryption.h"
 #include "brave/components/brave_account/brave_account_service.h"
-#include "brave/components/brave_account/encryption.h"
 #include "brave/components/brave_account/endpoint_client/test_support.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
@@ -58,7 +58,7 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
  protected:
   void SetUp() override {
     prefs::RegisterPrefs(pref_service_.registry());
-    internal::SetOSCryptCallbacksForTesting(
+    BraveAccountEncryption::SetOSCryptCallbacksForTesting(
         base::BindRepeating(&BraveAccountServiceTest::Encrypt,
                             base::Unretained(this)),
         base::BindRepeating(&BraveAccountServiceTest::Decrypt,
@@ -73,8 +73,8 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
   }
 
   void TearDown() override {
-    internal::SetOSCryptCallbacksForTesting(base::NullCallback(),
-                                            base::NullCallback());
+    BraveAccountEncryption::SetOSCryptCallbacksForTesting(base::NullCallback(),
+                                                          base::NullCallback());
   }
 
   void RunTestCase() {

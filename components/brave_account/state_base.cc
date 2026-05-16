@@ -8,9 +8,8 @@
 #include <utility>
 
 #include "base/check.h"
-#include "brave/components/brave_account/encryption.h"
+#include "brave/components/brave_account/brave_account_encryption.h"
 #include "brave/components/brave_account/state_internal.h"
-#include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_account {
 
@@ -33,7 +32,7 @@ StateBase::StateBase(
     AddObserverCallback add_observer)
     : account_state_prefs_(account_state_prefs),
       url_loader_factory_(std::move(url_loader_factory)),
-      encryptor_(encryptor),
+      encryption_(encryptor),
       add_observer_(std::move(add_observer)) {
   CHECK(url_loader_factory_);
   CHECK(add_observer_);
@@ -42,11 +41,11 @@ StateBase::StateBase(
 StateBase::~StateBase() = default;
 
 std::string StateBase::Encrypt(const std::string& plain_text) const {
-  return internal::Encrypt(*encryptor_, plain_text);
+  return encryption_.Encrypt(plain_text);
 }
 
 std::string StateBase::Decrypt(const std::string& base64) const {
-  return internal::Decrypt(*encryptor_, base64);
+  return encryption_.Decrypt(base64);
 }
 
 void StateBase::AddObserver(

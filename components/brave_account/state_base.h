@@ -15,11 +15,11 @@
 #include "base/functional/callback.h"
 #include "base/memory/raw_ref.h"
 #include "base/memory/scoped_refptr.h"
+#include "brave/components/brave_account/brave_account_encryption.h"
 #include "brave/components/brave_account/brave_account_state_prefs.h"
 #include "brave/components/brave_account/endpoint_client/client.h"
 #include "brave/components/brave_account/endpoint_client/request_handle.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
-#include "components/os_crypt/async/common/encryptor.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
@@ -27,6 +27,10 @@
 namespace network {
 class SharedURLLoaderFactory;
 }  // namespace network
+
+namespace os_crypt_async {
+class Encryptor;
+}  // namespace os_crypt_async
 
 namespace brave_account {
 
@@ -160,7 +164,7 @@ class StateBase : public mojom::Authentication {
 
  private:
   const scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
-  const raw_ref<const os_crypt_async::Encryptor> encryptor_;
+  const BraveAccountEncryption encryption_;
   const AddObserverCallback add_observer_;
   mojo::ReceiverSet<mojom::Authentication> receivers_;
   std::list<endpoint_client::RequestHandle> in_flight_;
