@@ -304,12 +304,6 @@ public class BrowserViewController: UIViewController {
       privateBrowsingManager: privateBrowsingManager
     )
 
-    // Add default favorites
-    if !Preferences.NewTabPage.preloadedFavoritiesInitialized.value {
-      FavoritesHelper.addDefaultFavorites()
-      Preferences.NewTabPage.preloadedFavoritiesInitialized.value = true
-    }
-
     // Initialize TabManager
     self.tabManager = TabManager(
       windowId: windowId,
