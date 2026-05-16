@@ -18,7 +18,6 @@ source_set("market") {
     "//brave/components/brave_wallet_ui/market:market_display_generated",
     "//brave/components/constants",
     "//brave/components/resources:static_resources_grit",
-    "//chrome/browser:resources",
     "//chrome/browser/profiles",
     "//content/public/browser",
     "//ui/webui",

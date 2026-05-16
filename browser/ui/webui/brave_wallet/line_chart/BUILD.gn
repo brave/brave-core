@@ -18,8 +18,6 @@ source_set("line_chart") {
     "//brave/components/brave_wallet_ui/line_chart:line_chart_display_generated",
     "//brave/components/constants",
     "//brave/components/resources:static_resources_grit",
-    "//chrome/app:generated_resources",
-    "//chrome/browser:resources",
     "//chrome/browser/profiles",
     "//content/public/browser",
     "//ui/webui",

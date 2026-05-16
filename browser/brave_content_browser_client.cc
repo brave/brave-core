@@ -294,13 +294,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ui/webui/new_tab_takeover/android/new_tab_takeover_ui.h"
 #endif  // BUILDFLAG(IS_ANDROID)
 
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-#include "brave/browser/ui/webui/brave_wallet/wallet_page/wallet_page_ui.h"
-#if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/ui/webui/brave_wallet/wallet_panel/wallet_panel_ui.h"
-#endif  // !BUILDFLAG(IS_ANDROID)
-#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
-
 #if !BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
 #include "brave/browser/ui/webui/brave_news_internals/brave_news_internals_ui.h"
