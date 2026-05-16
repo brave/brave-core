@@ -42,7 +42,7 @@ class EmailAliasesMetrics : public mojom::EmailAliasesMetrics {
   EmailAliasesMetrics(const EmailAliasesMetrics&) = delete;
   EmailAliasesMetrics& operator=(const EmailAliasesMetrics&) = delete;
 
-  static void RegisterPrefs(PrefRegistrySimple* registry);
+  static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
   void BindInterface(
       mojo::PendingReceiver<mojom::EmailAliasesMetrics> receiver);

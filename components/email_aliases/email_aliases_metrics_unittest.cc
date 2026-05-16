@@ -21,7 +21,7 @@ class EmailAliasesMetricsTest : public testing::Test {
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
 
   void SetUp() override {
-    EmailAliasesMetrics::RegisterPrefs(pref_service_.registry());
+    EmailAliasesMetrics::RegisterProfilePrefs(pref_service_.registry());
     EmailAliasesNotes::RegisterProfilePrefs(pref_service_.registry());
     metrics_ = std::make_unique<EmailAliasesMetrics>(pref_service_);
   }

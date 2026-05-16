@@ -31,7 +31,7 @@ void EmailAliasesNotes::RegisterProfilePrefs(PrefRegistrySimple* registry) {
 // static
 size_t EmailAliasesNotes::GetTotalCount(PrefService& pref_service) {
   const auto& pref = pref_service.GetDict(prefs::kEmailAliasesNotes);
-  return std::accumulate(
+  return std::reduce(
       pref.begin(), pref.end(), size_t{0}, [](size_t acc, const auto& entry) {
         return acc +
                (entry.second.is_dict() ? entry.second.GetDict().size() : 0);

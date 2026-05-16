@@ -5,6 +5,8 @@
 
 #include "brave/components/email_aliases/email_aliases_metrics.h"
 
+#include <limits>
+
 #include "base/functional/bind.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/time/time.h"
@@ -36,7 +38,7 @@ EmailAliasesMetrics::EmailAliasesMetrics(PrefService& pref_service)
 EmailAliasesMetrics::~EmailAliasesMetrics() = default;
 
 // static
-void EmailAliasesMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
+void EmailAliasesMetrics::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kAliasesPresent, false);
   registry->RegisterListPref(prefs::kClipboardCopyCountStorage);
   registry->RegisterBooleanPref(prefs::kSettingsPageMethodReported, false);
@@ -84,7 +86,8 @@ void EmailAliasesMetrics::ReportAllMetrics() {
 
 void EmailAliasesMetrics::ReportCopyCount() {
   uint64_t total = clipboard_copy_storage_.GetWeeklySum();
-  if (total == 0) {
+  if (total == 0 ||
+      total > static_cast<uint64_t>(std::numeric_limits<int>::max())) {
     return;
   }
   p3a_utils::RecordToHistogramBucket(kClipboardCopyCountHistogramName,
@@ -96,6 +99,9 @@ void EmailAliasesMetrics::ReportNotesCount() {
     return;
   }
   size_t count = EmailAliasesNotes::GetTotalCount(*pref_service_);
+  if (count > static_cast<size_t>(std::numeric_limits<int>::max())) {
+    return;
+  }
   p3a_utils::RecordToHistogramBucket(kNotesCountHistogramName, kCountBuckets,
                                      static_cast<int>(count));
 }

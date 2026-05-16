@@ -121,7 +121,7 @@ EmailAliasesService::~EmailAliasesService() = default;
 // static
 void EmailAliasesService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kEmailAliasesEnabled, true);
-  EmailAliasesMetrics::RegisterPrefs(registry);
+  EmailAliasesMetrics::RegisterProfilePrefs(registry);
   EmailAliasesNotes::RegisterProfilePrefs(registry);
 }
 
