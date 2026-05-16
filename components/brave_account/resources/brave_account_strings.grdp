@@ -172,6 +172,9 @@
   <message name="IDS_BRAVE_ACCOUNT_REGISTER_INVALID_VERIFICATION_CODE" desc="" formatter_data="webui=BraveAccount">
     Wrong code, please try again.
   </message>
+  <message name="IDS_BRAVE_ACCOUNT_REGISTER_REGISTRATION_VERIFICATION_ALREADY_PENDING_FOR_THIS_EMAIL" desc="" formatter_data="webui=BraveAccount">
+    An account has already been requested for this email address. Please check your email or try again in 30 minutes.
+  </message>
 
   <!-- Common: -->
   <message name="IDS_BRAVE_ACCOUNT_DESCRIPTION" desc="Description explaining the benefits of having a Brave Account" formatter_data="webui=BraveAccount,BraveAccountSettings">
