@@ -17,6 +17,9 @@
 
 class PrefService;
 class PrefProxyConfigTracker;
+namespace user_prefs {
+class PrefRegistrySyncable;
+}
 
 namespace brave_shields {
 
@@ -34,6 +37,9 @@ class AdBlockPrefService : public KeyedService,
       std::unique_ptr<net::ProxyConfigService> proxy_config_service);
   net::ProxyConfigService::ConfigAvailability GetLatestProxyConfig(
       net::ProxyConfigWithAnnotation* config) const;
+
+  static void RegisterProfilePrefsForMigration(
+      user_prefs::PrefRegistrySyncable* prefs);
 
  private:
   void Shutdown() override;

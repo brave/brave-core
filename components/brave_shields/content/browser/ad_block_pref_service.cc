@@ -10,10 +10,20 @@
 #include "base/check.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_locale_utils.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
+#include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "components/proxy_config/pref_proxy_config_tracker.h"
 #include "components/user_prefs/user_prefs.h"
+
+namespace {
+
+inline constexpr char kLegacyFBEmbedControlType[] = "brave.fb_embed_default";
+inline constexpr char kLegacyTwitterEmbedControlType[] =
+    "brave.twitter_embed_default";
+inline constexpr char kLegacyLinkedInEmbedControlType[] =
+    "brave.linkedin_embed_default";
+}
 
 namespace brave_shields {
 
@@ -28,11 +38,10 @@ AdBlockPrefService::AdBlockPrefService(bool is_regular_profile,
     // them to Local State. It's not ideal, but that's how the settings have
     // existed for a long time.
     for (const auto& [old_pref, new_pref] :
-         {std::pair{prefs::kLegacyFBEmbedControlType,
-                    prefs::kFBEmbedControlType},
-          std::pair{prefs::kLegacyTwitterEmbedControlType,
+         {std::pair{kLegacyFBEmbedControlType, prefs::kFBEmbedControlType},
+          std::pair{kLegacyTwitterEmbedControlType,
                     prefs::kTwitterEmbedControlType},
-          std::pair{prefs::kLegacyLinkedInEmbedControlType,
+          std::pair{kLegacyLinkedInEmbedControlType,
                     prefs::kLinkedInEmbedControlType}}) {
       if (prefs->FindPreference(old_pref)->HasUserSetting()) {
         local_state->SetBoolean(new_pref, prefs->GetBoolean(old_pref));
@@ -91,6 +100,14 @@ void AdBlockPrefService::OnProxyConfigChanged(
     net::ProxyConfigService::ConfigAvailability availability) {
   last_proxy_config_availability_ = availability;
   last_proxy_config_ = config;
+}
+
+// static
+void AdBlockPrefService::RegisterProfilePrefsForMigration(
+    user_prefs::PrefRegistrySyncable* registry) {
+  registry->RegisterBooleanPref(kLegacyFBEmbedControlType, true);
+  registry->RegisterBooleanPref(kLegacyTwitterEmbedControlType, true);
+  registry->RegisterBooleanPref(kLegacyLinkedInEmbedControlType, false);
 }
 
 }  // namespace brave_shields
