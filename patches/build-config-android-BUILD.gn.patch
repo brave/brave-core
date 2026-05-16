@@ -1,8 +1,8 @@
 diff --git a/build/config/android/BUILD.gn b/build/config/android/BUILD.gn
-index 481763e48039b3aae6f8af8d0a53a88e65319a74..5d6c1fef61230fd3a6306a01d2a7c1aa6122ae2d 100644
+index 5ba1536435d46bfad31cb75b0a1bbdfc57765232..8e09ac96ee13d2d0d2f54e9ec8e65dcea83ca0d3 100644
 --- a/build/config/android/BUILD.gn
 +++ b/build/config/android/BUILD.gn
-@@ -63,6 +63,7 @@ config("compiler") {
+@@ -64,6 +64,7 @@ config("compiler") {
        rustflags = [ "-Zbranch-protection=pac-ret" ]
      }
    }

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/first_run/upgrade_util_win.cc b/chrome/browser/first_run/upgrade_util_win.cc
-index 043740980c68875ff846cd40b69852033377378c..cc7542b8bef8d62a42d355b4d6ea43f4e7870d59 100644
+index 22402345685edd96a4df10f1d20cb6a32da34777..e96fba74625655d3a8065c26583190d018a5c3e2 100644
 --- a/chrome/browser/first_run/upgrade_util_win.cc
 +++ b/chrome/browser/first_run/upgrade_util_win.cc
 @@ -62,7 +62,7 @@
@@ -20,7 +20,7 @@ index 043740980c68875ff846cd40b69852033377378c..cc7542b8bef8d62a42d355b4d6ea43f4
  // Holds the result of the IPC to CoCreate `GoogleUpdate3Web`.
  struct CreateGoogleUpdate3WebResult
      : public base::RefCountedThreadSafe<CreateGoogleUpdate3WebResult> {
-@@ -217,7 +217,8 @@ Microsoft::WRL::ComPtr<IUnknown> CreateGoogleUpdate3Web() {
+@@ -216,7 +216,8 @@ Microsoft::WRL::ComPtr<IUnknown> CreateGoogleUpdate3Web() {
  #endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)
  
  bool InvokeGoogleUpdateForRename() {

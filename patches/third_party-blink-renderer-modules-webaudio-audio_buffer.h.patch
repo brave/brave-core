@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/webaudio/audio_buffer.h b/third_party/blink/renderer/modules/webaudio/audio_buffer.h
-index 2e798e3e5bae783d2abca6c9b1301e933187b97a..b0a129d93e50eaf598f3975f992430a55bb54a58 100644
+index ded499af2ffae58d1717a61abdb8987c17566e27..0fba833a423c97ca70613afd9ed46e848448bfb2 100644
 --- a/third_party/blink/renderer/modules/webaudio/audio_buffer.h
 +++ b/third_party/blink/renderer/modules/webaudio/audio_buffer.h
 @@ -43,6 +43,7 @@ class AudioBus;

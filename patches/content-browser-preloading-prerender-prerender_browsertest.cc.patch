@@ -1,8 +1,8 @@
 diff --git a/content/browser/preloading/prerender/prerender_browsertest.cc b/content/browser/preloading/prerender/prerender_browsertest.cc
-index 6caa757890083a6fc0b6f8642c1afdf617e9d967..3769b6fff245c3bfe9ef90ade8653144219515c4 100644
+index 5f1a57384fea6562f71d43c88cfe38c1ef8c7638..17ba90c7bc31e15c9dfba3e4021d92d44abf542b 100644
 --- a/content/browser/preloading/prerender/prerender_browsertest.cc
 +++ b/content/browser/preloading/prerender/prerender_browsertest.cc
-@@ -12986,6 +12986,9 @@ class MultiplePrerendersWithLimitedMemoryBrowserTest
+@@ -12998,6 +12998,9 @@ class MultiplePrerendersWithLimitedMemoryBrowserTest
    base::test::ScopedFeatureList feature_list_;
  };
  
@@ -12,7 +12,7 @@ index 6caa757890083a6fc0b6f8642c1afdf617e9d967..3769b6fff245c3bfe9ef90ade8653144
  // Tests that moderate-level memory pressure doesn't cancel prerendering on
  // trigger.
  IN_PROC_BROWSER_TEST_F(MultiplePrerendersBrowserTest,
-@@ -13094,6 +13097,7 @@ IN_PROC_BROWSER_TEST_F(MultiplePrerendersBrowserTest,
+@@ -13106,6 +13109,7 @@ IN_PROC_BROWSER_TEST_F(MultiplePrerendersBrowserTest,
        PrerenderFinalStatus::kMemoryPressureAfterTriggered,
        prerender_urls.size());
  }
