@@ -148,6 +148,7 @@ source_set("unit_tests") {
     "//components/embedder_support",
     "//components/enterprise/connectors/core",
     "//components/feature_engagement/public:feature_constants",
+    "//components/feed:feature_list",
     "//components/heap_profiling/in_process",
     "//components/history_clusters/core",
     "//components/history_embeddings/content",
