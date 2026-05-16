@@ -22,7 +22,7 @@ namespace {
 
 // Default pubkey from our test wallet for account id 0.
 constexpr std::string_view kDefaultPubkey =
-    "D6B2A5CC606EA86342001DD036B301C15A5CBA63C413CAD5CA0E8F47E6FA9516";
+    "14BCCFBAD15C6327408E833D162271F93A51FA3A6BC67D3EACC384BB9704D71E";
 
 bool IsEmpty(
     const std::array<uint8_t, kPolkadotSubstrateAccountIdSize>& pubkey) {

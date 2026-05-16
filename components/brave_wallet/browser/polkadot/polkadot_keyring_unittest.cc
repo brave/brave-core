@@ -102,13 +102,13 @@ TEST(PolkadotKeyring, GetAddress) {
   // ));
   //
   // let pair = polkadot_sdk::sp_core::sr25519::Pair::from_string(
-  //     &format!("{DEV_PHRASE}//polkadot//0"),
+  //     &format!("{DEV_PHRASE}"),
   //     None,
   // )
   // .unwrap();
   //
   // let s = pair.public().to_string();
-  // assert_eq!(s, "14YLzDFZTwnkcJkFij4Km7g5LdkLqKHy47xYGPN6HsLJpfnb");
+  // assert_eq!(s, "12bzRJfh7arnnfPPUZHeJUaE62QLEwhK48QnH9LXeK2m1iZU");
   //
   // clang-format on
 
@@ -122,19 +122,24 @@ TEST(PolkadotKeyring, GetAddress) {
     ASSERT_TRUE(keyring.AddNewHDAccount(1));
 
     EXPECT_EQ(keyring.GetAddress(0, 0u),
-              "14YLzDFZTwnkcJkFij4Km7g5LdkLqKHy47xYGPN6HsLJpfnb");
+              "12bzRJfh7arnnfPPUZHeJUaE62QLEwhK48QnH9LXeK2m1iZU");
+
+    // DEV_PHRASE//0
     EXPECT_EQ(keyring.GetAddress(1, 0u),
-              "14QspRnocdHvoDfFnGvvYwskrsSWG8nneJ2BAQ2oSMcsQUxB");
+              "1yMmfLti1k3huRQM2c47WugwonQMqTvQ2GUFxnU7Pcs7xPo");
     // This test exercises the caching codepath in the GetAddress
     // implementation.
     EXPECT_EQ(keyring.GetAddress(0, 0u),
-              "14YLzDFZTwnkcJkFij4Km7g5LdkLqKHy47xYGPN6HsLJpfnb");
+              "12bzRJfh7arnnfPPUZHeJUaE62QLEwhK48QnH9LXeK2m1iZU");
   }
 
   // Testnet.
-  // Generated using subkey:
-  // subkey inspect --scheme sr25519 --network substrate "bottom drive obey lake
-  // curtain smoke basket hold race lonely fit walk//westend//*".
+  // Generated using subkey, provided by:
+  // https://github.com/paritytech/polkadot-sdk/tree/823a550f4be744bd1ba9e47a2ce82ede6e8aa4bd
+  //
+  // clang-format off
+  // cargo run -p subkey --bin subkey -- inspect --scheme sr25519 --network substrate "bottom drive obey lake curtain smoke basket hold race lonely fit walk//*"
+  // clang-format on
   {
     auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
     PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
@@ -144,13 +149,39 @@ TEST(PolkadotKeyring, GetAddress) {
     ASSERT_TRUE(keyring.AddNewHDAccount(1));
 
     EXPECT_EQ(keyring.GetAddress(0, 42u),
-              "5HGiBcFgEBMgT6GEuo9SA98sBnGgwHtPKDXiUukT6aqCrKEx");
+              "5DfhGyQdFobKM8NsWvEeAKk5EQQgYe9AydgJ7rMB6E1EqRzV");
     EXPECT_EQ(keyring.GetAddress(1, 42u),
-              "5CofVLAGjwvdGXvBiP6ddtZYMVbhT5Xke8ZrshUpj2ZXAnND");
+              "5D34dL5prEUaGNQtPPZ3yN5Y6BnkfXunKXXz6fo7ZJbLwRRH");
     // This test exercises the caching codepath in the GetAddress
     // implementation.
     EXPECT_EQ(keyring.GetAddress(0, 42u),
-              "5HGiBcFgEBMgT6GEuo9SA98sBnGgwHtPKDXiUukT6aqCrKEx");
+              "5DfhGyQdFobKM8NsWvEeAKk5EQQgYe9AydgJ7rMB6E1EqRzV");
+  }
+
+  // Include test vectors from subkey documentation.
+  // https://github.com/paritytech/polkadot-sdk/blob/0f3e5c1917f08fe4e3fcc03ad8e50272311be3b7/substrate/bin/utils/subkey/README.md?plain=1#L58-L62
+  {
+    auto seed = bip39::MnemonicToEntropyToSeed(
+        "hotel forest jar hover kite book view eight stuff angle legend "
+        "defense");
+
+    ASSERT_TRUE(seed.has_value());
+
+    PolkadotKeyring keyring(base::span(seed.value()).first<kPolkadotSeedSize>(),
+                            mojom::KeyringId::kPolkadotMainnet,
+                            base::BindRepeating(IsAddressAllowed));
+
+    ASSERT_TRUE(keyring.AddNewHDAccount(0));
+
+    auto pubkey = keyring.GetPublicKey(0);
+    ASSERT_TRUE(pubkey.has_value());
+    EXPECT_EQ(
+        base::HexEncodeLower(pubkey.value()),
+        "fec70cfbf1977c6965b5af10a4534a6a35d548eb14580594d0bc543286892515");
+
+    auto address = keyring.GetAddress(0, 42);
+    ASSERT_TRUE(address.has_value());
+    EXPECT_EQ(address, "5Hpm9fq3W3dQgwWpAwDS2ZHKAdnk86QRCu7iX4GnmDxycrte");
   }
 }
 
@@ -164,13 +195,13 @@ TEST(PolkadotKeyring, AddHDAccount) {
   // ));
   //
   // let pair = polkadot_sdk::sp_core::sr25519::Pair::from_string(
-  //     &format!("{DEV_PHRASE}//polkadot//0"),
+  //     &format!("{DEV_PHRASE}"),
   //     None,
   // )
   // .unwrap();
   //
   // let s = pair.public().to_string();
-  // assert_eq!(s, "14YLzDFZTwnkcJkFij4Km7g5LdkLqKHy47xYGPN6HsLJpfnb");
+  // assert_eq!(s, "12bzRJfh7arnnfPPUZHeJUaE62QLEwhK48QnH9LXeK2m1iZU");
   //
   // clang-format on
 
@@ -182,15 +213,17 @@ TEST(PolkadotKeyring, AddHDAccount) {
                             base::BindRepeating(IsAddressAllowed));
 
     EXPECT_EQ(keyring.AddNewHDAccount(0u).value(),
-              "14YLzDFZTwnkcJkFij4Km7g5LdkLqKHy47xYGPN6HsLJpfnb");
+              "12bzRJfh7arnnfPPUZHeJUaE62QLEwhK48QnH9LXeK2m1iZU");
+    // "DEV_PHRASE//0"
     EXPECT_EQ(keyring.AddNewHDAccount(1u).value(),
-              "14QspRnocdHvoDfFnGvvYwskrsSWG8nneJ2BAQ2oSMcsQUxB");
+              "1yMmfLti1k3huRQM2c47WugwonQMqTvQ2GUFxnU7Pcs7xPo");
   }
 
   // Testnet.
   // Generated using subkey:
-  // subkey inspect --scheme sr25519 --network substrate "bottom drive obey lake
-  // curtain smoke basket hold race lonely fit walk//westend//*".
+  // clang-format off
+  // cargo run -p subkey --bin subkey -- inspect --scheme sr25519 --network substrate "bottom drive obey lake curtain smoke basket hold race lonely fit walk"
+  // clang-format on
   {
     auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
     PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
@@ -198,9 +231,9 @@ TEST(PolkadotKeyring, AddHDAccount) {
                             base::BindRepeating(IsAddressAllowed));
 
     EXPECT_EQ(keyring.AddNewHDAccount(0u).value(),
-              "5HGiBcFgEBMgT6GEuo9SA98sBnGgwHtPKDXiUukT6aqCrKEx");
+              "5DfhGyQdFobKM8NsWvEeAKk5EQQgYe9AydgJ7rMB6E1EqRzV");
     EXPECT_EQ(keyring.AddNewHDAccount(1u).value(),
-              "5CofVLAGjwvdGXvBiP6ddtZYMVbhT5Xke8ZrshUpj2ZXAnND");
+              "5D34dL5prEUaGNQtPPZ3yN5Y6BnkfXunKXXz6fo7ZJbLwRRH");
   }
 }
 
@@ -209,7 +242,7 @@ TEST(PolkadotKeyring, GetPublicKey) {
   // clang-format off
   //
   // let pair = polkadot_sdk::sp_core::sr25519::Pair::from_string(
-  //     &format!("{DEV_PHRASE}//polkadot//0"),
+  //     &format!("{DEV_PHRASE}"),
   //     None,
   // )
   // .unwrap();
@@ -233,14 +266,15 @@ TEST(PolkadotKeyring, GetPublicKey) {
     ASSERT_TRUE(pubkey.has_value());
 
     constexpr char const* kPublicKey =
-        "9C9C968EBB31417A36BEC0908ECD9EB6E847B44821E521DDA9ADD8C418EF7C30";
-    EXPECT_EQ(base::HexEncode(*pubkey), kPublicKey);
+        "46ebddef8cd9bb167dc30878d7113b7e168e6f0646beffd77d69d39bad76b47a";
+    EXPECT_EQ(base::HexEncodeLower(*pubkey), kPublicKey);
   }
 
   // Testnet.
   // Generated using subkey:
-  // subkey inspect --scheme sr25519 --network substrate "bottom drive obey lake
-  // curtain smoke basket hold race lonely fit walk//westend//*".
+  // clang-format off
+  // cargo run -p subkey --bin subkey -- inspect --scheme sr25519 --network substrate "bottom drive obey lake curtain smoke basket hold race lonely fit walk"
+  // clang-format on
   {
     auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
     PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
@@ -252,8 +286,8 @@ TEST(PolkadotKeyring, GetPublicKey) {
     ASSERT_TRUE(pubkey.has_value());
 
     constexpr char const* kPublicKey =
-        "E655361D12F3CCCA5F128187CF3F5EEA052BE722746E392C8B498D0D18723470";
-    EXPECT_EQ(base::HexEncode(*pubkey), kPublicKey);
+        "46ebddef8cd9bb167dc30878d7113b7e168e6f0646beffd77d69d39bad76b47a";
+    EXPECT_EQ(base::HexEncodeLower(*pubkey), kPublicKey);
   }
 }
 
@@ -310,8 +344,9 @@ TEST(PolkadotKeyring, VerifyMessage) {
 
   // Testnet.
   // Generated using subkey:
-  // subkey:latest sign --suri "bottom drive obey lake curtain smoke basket hold
-  // race lonely fit walk//westend//0" --message "hello, world!".
+  // clang-format off
+  // cargo run -p subkey --bin subkey -- sign --suri "bottom drive obey lake curtain smoke basket hold race lonely fit walk" --message "hello, world!"
+  // clang-format on
   {
     auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
     PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
@@ -321,8 +356,8 @@ TEST(PolkadotKeyring, VerifyMessage) {
     ASSERT_TRUE(keyring.AddNewHDAccount(1));
 
     std::string signature_hex =
-        "4C62835B705663D221F45A70E493C2B48FEEE5B541D3071727139A44A71F1E46E5F536"
-        "165977C187FFBCA045170EAC8B8AF33E94EF2D6410C264B536DF9C5C86";
+        "a490725b1fc73fea10414c29d9fedc42855cbdbb8fac56bae3c671d17218a6793c82cd"
+        "fccb51b435f4a5f8fbcacaa048691c03368e9886f2f5475f7f4f68808c";
 
     bool verified =
         keyring.VerifyMessage(ToSignature(signature_hex), message, 0);
@@ -332,8 +367,8 @@ TEST(PolkadotKeyring, VerifyMessage) {
     EXPECT_FALSE(verified);
 
     std::string signature_hex2 =
-        "20EBF57512301FB068AB1DE33C00DC2A9B020F0F446B5C1EA89D3F4A04A5B05C8206C5"
-        "5DCCD8419019FC86F4B8D177CDEF035FC36A0BE8755423BA7377927D8D";
+        "32890817c929ed60f093174a2c08e408bb9e6b0b87ec4df40a5cf8a8f4556118de5e7d"
+        "824e6c4fe5b73008b63f6ac85a4164f76698f0b90d1a65eaa9be861f8f";
 
     verified = keyring.VerifyMessage(ToSignature(signature_hex2), message, 0);
     EXPECT_TRUE(verified);
@@ -344,8 +379,8 @@ TEST(PolkadotKeyring, VerifyMessage) {
 
     // Test with wrong signature data - should fail
     std::string wrong_signature_hex =
-        "FFFFFFF512301FB068AB1DE33C00DC2A9B020F0F446B5C1EA89D3F4A04A5B05C8206C5"
-        "5DCCD8419019FC86F4B8D177CDEF035FC36A0BE8755423BA7377927D8D";
+        "fffffff512301fb068ab1de33c00dc2a9b020f0f446b5c1ea89d3f4a04a5b05c8206c5"
+        "5dccd8419019fc86f4b8d177cdef035fc36a0be8755423ba7377927d8d";
 
     verified =
         keyring.VerifyMessage(ToSignature(wrong_signature_hex), message, 0);
@@ -354,8 +389,9 @@ TEST(PolkadotKeyring, VerifyMessage) {
 
   // Mainnet.
   // Generated using subkey:
-  // subkey:latest sign --suri "bottom drive obey lake curtain smoke basket hold
-  // race lonely fit walk//polkadot//0" --message "hello, world!".
+  // clang-format off
+  // cargo run -p subkey --bin subkey -- sign --suri "bottom drive obey lake curtain smoke basket hold race lonely fit walk" --message "hello, world!"
+  // clang-format on
   {
     auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
     PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
@@ -366,8 +402,8 @@ TEST(PolkadotKeyring, VerifyMessage) {
 
     // Test with first mainnet signature vector
     std::string signature_hex =
-        "462D47EAABE15026127324CE0917A696BAE38472C57B6670154BC33F5E053B0ACF5BA2"
-        "EDC706366B407829DA3083F21C04FD1617B6AED5AED13177A4B2E9358F";
+        "b21560c19d6771af374ddb15bd5dcd9cabe723c44063aae8157fca46d2bba16ae1ca9f"
+        "40b15ce66d9c1f7a0e961a8bf2452200534bde7a03d7531b2b7fa11186";
 
     bool verified =
         keyring.VerifyMessage(ToSignature(signature_hex), message, 0);
@@ -379,8 +415,8 @@ TEST(PolkadotKeyring, VerifyMessage) {
 
     // Test with second mainnet signature vector
     std::string signature_hex2 =
-        "EAB9949387D0D89F0E22DF4D90F5F8CCAA9E6B974DF6CAD39C79764C655EA924378536"
-        "559E2D925EE534F31583511BF5050D9CB881AD51CE4607A5AD3C75E78A";
+        "4e96e323b240c68d361f3a3439156dbad35d9cbae68f735c7c06b7803933f217b79b73"
+        "eade9507fd901cf28b903b0a420fede4312594ac833ef92825e44b8480";
 
     verified = keyring.VerifyMessage(ToSignature(signature_hex2), message, 0);
     EXPECT_TRUE(verified);
@@ -391,8 +427,8 @@ TEST(PolkadotKeyring, VerifyMessage) {
 
     // Test with wrong signature data - should fail
     std::string wrong_signature_hex =
-        "FFFFFF9387D0D89F0E22DF4D90F5F8CCAA9E6B974DF6CAD39C79764C655EA924378536"
-        "559E2D925EE534F31583511BF5050D9CB881AD51CE4607A5AD3C75E78A";
+        "ffffff9387d0d89f0e22df4d90f5f8ccaa9e6b974df6cad39c79764c655ea924378536"
+        "559e2d925ee534f31583511bf5050d9cb881ad51ce4607a5ad3c75e78a";
 
     verified =
         keyring.VerifyMessage(ToSignature(wrong_signature_hex), message, 0);
@@ -446,6 +482,65 @@ TEST(PolkadotKeyring, AddNewHDAccount_RestrictedAddress) {
   // Prove that we didn't leave any remnant phantom keypairs.
   auto result2 = keyring2.AddNewHDAccount(0);
   EXPECT_TRUE(result2);
+}
+
+TEST(PolkadotKeyring, TalismanParity) {
+  // These can be verified by extending the tests here:
+  // https://github.com/TalismanSociety/talisman/blob/8e1f3eb6815d9628abf764cc33f09e632ba6262d/packages/crypto/src/derivation/derive.test.ts
+  //
+  // to include:
+  //
+  // const checkPolkadotDerivedAddress = async (
+  //   mnemonic: string,
+  //   derivationPath: string,
+  //   curve: KeypairCurve,
+  //   address: string
+  // ) => {
+  //   const entropy = mnemonicToEntropy(mnemonic)
+  //   const seed = await entropyToSeed(entropy, curve)
+  //   const secret = deriveKeypair(seed, derivationPath, curve)
+  //   const format = addressEncodingFromCurve(curve)
+  //   expect(address).toEqual(
+  //    addressFromPublicKey(
+  //      secret.publicKey, format, {ss58Prefix: 0}))
+  // }
+  //
+  // Verify by running the tests using:
+  // pnpm test packages/crypto/src/derivation/derive.test.ts
+
+  static constexpr std::string_view kSeedPhrase =
+      "educate orient stock gate struggle glass awkward sad crop tornado "
+      "august during";
+
+  auto seed = bip39::MnemonicToEntropyToSeed(kSeedPhrase).value();
+  PolkadotKeyring keyring(base::span(seed).first<kPolkadotSeedSize>(),
+                          mojom::KeyringId::kPolkadotMainnet,
+                          base::BindRepeating(IsAddressAllowed));
+  ASSERT_TRUE(keyring.AddNewHDAccount(0));
+  ASSERT_TRUE(keyring.AddNewHDAccount(1));
+  ASSERT_TRUE(keyring.AddNewHDAccount(2));
+  ASSERT_TRUE(keyring.AddNewHDAccount(3));
+  ASSERT_TRUE(keyring.AddNewHDAccount(4));
+
+  // <mnemonic>
+  auto address = keyring.GetAddress(0, 0);
+  ASSERT_TRUE(address.has_value());
+  EXPECT_EQ(*address, "16Pp1xFjkz1ruD63F84Nk6h2X4ijWfAhtrs66vEAgLWUkXp7");
+
+  // <mnemonic>//0
+  address = keyring.GetAddress(1, 0);
+  ASSERT_TRUE(address.has_value());
+  EXPECT_EQ(*address, "1RqoB2myWtys99XJYBhRQFoZx6N4PghsphpMCWQ4xkAxmH8");
+
+  // <mnemonic>//1
+  address = keyring.GetAddress(2, 0);
+  ASSERT_TRUE(address.has_value());
+  EXPECT_EQ(*address, "15DgT3UXTHyC5BXWiVo8zT37X3hA2mjrN3jzncrsjAn9WgKr");
+
+  // <mnemonic>//2
+  address = keyring.GetAddress(3, 0);
+  ASSERT_TRUE(address.has_value());
+  EXPECT_EQ(*address, "15D7hSjTdnHBwbavvmFwQSN8FGdz6b6LhH5QvAaeoDmvCrx5");
 }
 
 }  // namespace brave_wallet

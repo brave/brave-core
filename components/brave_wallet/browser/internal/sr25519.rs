@@ -19,7 +19,12 @@ mod ffi {
 
         fn generate_sr25519_keypair_from_seed(bytes: &[u8]) -> Box<CxxSchnorrkelKeyPair>;
         fn create_sr25519_keypair_from_pkcs8(pkcs8: &[u8; 117]) -> Box<CxxSchnorrkelKeyPairResult>;
+        fn clone(self: &CxxSchnorrkelKeyPair) -> Box<CxxSchnorrkelKeyPair>;
         fn derive_hard(self: &CxxSchnorrkelKeyPair, junction: &[u8]) -> Box<CxxSchnorrkelKeyPair>;
+        fn derive_hard_from_account_index(
+            self: &CxxSchnorrkelKeyPair,
+            index: u32,
+        ) -> Box<CxxSchnorrkelKeyPair>;
         fn get_public_key(self: &CxxSchnorrkelKeyPair) -> [u8; 32];
 
         // Used for deterministic schnorr signatures in testing.
@@ -31,6 +36,8 @@ mod ffi {
         fn verify_message(self: &CxxSchnorrkelKeyPair, sig_bytes: &[u8], msg: &[u8]) -> bool;
     }
 }
+
+use parity_scale_codec::Encode;
 
 #[derive(Clone, Debug)]
 pub enum Error {
@@ -165,6 +172,10 @@ fn create_sr25519_keypair_from_pkcs8(pkcs8: &[u8; 117]) -> Box<CxxSchnorrkelKeyP
 }
 
 impl CxxSchnorrkelKeyPair {
+    fn clone(self: &CxxSchnorrkelKeyPair) -> Box<CxxSchnorrkelKeyPair> {
+        Box::new(Clone::clone(self))
+    }
+
     fn get_public_key(self: &CxxSchnorrkelKeyPair) -> [u8; 32] {
         self.keypair.public.to_bytes()
     }
@@ -214,20 +225,26 @@ impl CxxSchnorrkelKeyPair {
         }
     }
 
-    // `junction` must already be SCALE-encoded
-    fn derive_hard(self: &CxxSchnorrkelKeyPair, junction: &[u8]) -> Box<CxxSchnorrkelKeyPair> {
-        let mut cc = [0_u8; JUNCTION_ID_LEN];
-        if junction.len() > JUNCTION_ID_LEN {
-            // copy what the polkadot-sdk crate does
-            // https://paritytech.github.io/polkadot-sdk/master/src/sp_core/crypto.rs.html#138-151
-            // https://github.com/paritytech/polkadot-sdk/blob/607a1b24b7902a657426ce2412e316a57b61894b/substrate/primitives/core/src/crypto.rs#L138-L151
-            cc.copy_from_slice(
-                blake2b_simd::Params::new().hash_length(JUNCTION_ID_LEN).hash(junction).as_bytes(),
-            );
-        } else {
-            // use rote binary representation
-            cc[0..junction.len()].copy_from_slice(junction);
-        }
+    fn derive_hard_impl<T: Encode>(
+        self: &CxxSchnorrkelKeyPair,
+        index: T,
+    ) -> Box<CxxSchnorrkelKeyPair> {
+        // Mirror chain code construction from the polkadot-sdk:
+        // https://github.com/paritytech/polkadot-sdk/blob/6e063cc8b622c26fd0198d9ab45bba5c468cda2f/substrate/primitives/core/src/crypto.rs#L133-L165
+        //
+        // Note that the polkadot-sdk uses the same chain code routines for both Hard
+        // and Soft variants of their DeriveJunction enum, which they internally branch
+        // on when it comes time to derive child keypairs.
+        let mut cc: [u8; JUNCTION_ID_LEN] = Default::default();
+        index.using_encoded(|data| {
+            if data.len() > JUNCTION_ID_LEN {
+                cc.copy_from_slice(
+                    blake2b_simd::Params::new().hash_length(JUNCTION_ID_LEN).hash(data).as_bytes(),
+                );
+            } else {
+                cc[0..data.len()].copy_from_slice(data);
+            }
+        });
 
         Box::new(CxxSchnorrkelKeyPair {
             keypair: self
@@ -237,5 +254,16 @@ impl CxxSchnorrkelKeyPair {
                 .expand_to_keypair(schnorrkel::ExpansionMode::Ed25519),
             use_mock_rng: false,
         })
+    }
+
+    fn derive_hard_from_account_index(
+        self: &CxxSchnorrkelKeyPair,
+        index: u32,
+    ) -> Box<CxxSchnorrkelKeyPair> {
+        self.derive_hard_impl(index)
+    }
+
+    fn derive_hard(self: &CxxSchnorrkelKeyPair, junction: &[u8]) -> Box<CxxSchnorrkelKeyPair> {
+        self.derive_hard_impl(junction)
     }
 }

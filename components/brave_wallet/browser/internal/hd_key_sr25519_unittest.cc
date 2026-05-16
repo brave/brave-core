@@ -143,9 +143,6 @@ TEST(HDKeySr25519, HardDerive) {
   auto keypair = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
   EXPECT_EQ(base::HexEncode(keypair.GetPublicKey()), kSchnorrkelPubKey);
 
-  // Manually create a SCALE-encoded chaincode values for deriving child
-  // keypairs from a parent.
-  //
   // When it comes to deriving chaincodes for deriving child keypairs from a
   // path like `<mnemonic>//Alice`, the polkdadot-sdk does this:
   //
@@ -157,21 +154,16 @@ TEST(HDKeySr25519, HardDerive) {
   //
   // `index.using_encoded()` invokes the provided lambda with a SCALE-encoded
   // version of the `index`. In our case, we simply prepend a length prefix
-  // manually that matches what the polkadot-sdk calculates. Someday we'll need
-  // to have our own SCALE routines.
+  // manually that matches what the polkadot-sdk calculates.
   //
   // The encoding routines live here as a separate crate:
   // https://github.com/paritytech/parity-scale-codec/blob/cbb20a746ef1db377f4c1df54ab89da6ebc316f4/src/codec.rs#L1105-L1115
   //
-  // The routines work without explicit SCALE coding but it means our results
-  // will diverge if we update these to match test vectors from the polkadot-sdk
-  // from paritytech.
-  //
   // See also:
   // https://wiki.polkadot.com/learn/learn-account-advanced/#soft-and-hard-derivation
   //
-  unsigned char path1[] = {20, 'A', 'l', 'i', 'c', 'e'};
-  unsigned char path2[] = {20, 'e', 'c', 'i', 'l', 'A'};
+  unsigned char path1[] = {'A', 'l', 'i', 'c', 'e'};
+  unsigned char path2[] = {'e', 'c', 'i', 'l', 'A'};
 
   auto derived1 = keypair.DeriveHard(path1);
   auto derived2 = keypair.DeriveHard(path2);
@@ -222,9 +214,8 @@ TEST(HDKeySr25519, HardDerive) {
 TEST(HDKeySr25519, HardDeriveSignAndVerify) {
   auto keypair = HDKeySr25519::GenerateFromSeed(kSchnorrkelSeed);
 
-  // Manually create a SCALE-encoded chaincode value.
-  unsigned char path1[] = {20, 'A', 'l', 'i', 'c', 'e'};
-  unsigned char path2[] = {20, 'e', 'c', 'i', 'l', 'A'};
+  unsigned char path1[] = {'A', 'l', 'i', 'c', 'e'};
+  unsigned char path2[] = {'e', 'c', 'i', 'l', 'A'};
 
   auto derived1 = keypair.DeriveHard(path1);
   auto derived2 = keypair.DeriveHard(path2);
@@ -253,14 +244,13 @@ TEST(HDKeySr25519, PolkadotSDKTestVector1) {
           60,  141, 101, 48,  242, 2,   176, 47,  216, 249, 245,
           202, 53,  128, 236, 141, 235, 119, 151, 71,  158});
 
-  // Manually create a SCALE-encoded chaincode value.
-  unsigned char path[] = {20, 'A', 'l', 'i', 'c', 'e'};
+  unsigned char path[] = {'A', 'l', 'i', 'c', 'e'};
 
   constexpr const char* kDerivedPubKey =
-      "D43593C715FDD31C61141ABD04A99FD6822C8558854CCDE39A5684E7A56DA27D";
+      "d43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d";
 
   auto derived = keypair.DeriveHard(path);
-  EXPECT_EQ(base::HexEncode(derived.GetPublicKey()), kDerivedPubKey);
+  EXPECT_EQ(base::HexEncodeLower(derived.GetPublicKey()), kDerivedPubKey);
 
   // Now test the blake2 hashing portion given a sufficiently long derive
   // junction.
@@ -277,17 +267,11 @@ TEST(HDKeySr25519, PolkadotSDKTestVector1) {
   // assert_eq!(pair1.public().as_slice(), &expected);
 
   constexpr const char* kLongDerivedPubKey =
-      "225BA704A8FB5ACFADB790E41CDA8C8F75698E6F1FD5A99A5BD2183B9B899857";
+      "225ba704a8fb5acfadb790e41cda8c8f75698e6f1fd5a99a5bd2183b9b899857";
 
-  // Rotely copy the SCALE-encoded version of the string:
-  // "AnIncrediblyLongDerivationPathNameToTriggerBlake2"
-  unsigned char long_path[] = {196, 65,  110, 73,  110, 99,  114, 101, 100, 105,
-                               98,  108, 121, 76,  111, 110, 103, 68,  101, 114,
-                               105, 118, 97,  116, 105, 111, 110, 80,  97,  116,
-                               104, 78,  97,  109, 101, 84,  111, 84,  114, 105,
-                               103, 103, 101, 114, 66,  108, 97,  107, 101, 50};
-  derived = keypair.DeriveHard(long_path);
-  EXPECT_EQ(base::HexEncode(derived.GetPublicKey()), kLongDerivedPubKey);
+  const char long_path[] = "AnIncrediblyLongDerivationPathNameToTriggerBlake2";
+  derived = keypair.DeriveHard(base::byte_span_from_cstring(long_path));
+  EXPECT_EQ(base::HexEncodeLower(derived.GetPublicKey()), kLongDerivedPubKey);
 }
 
 TEST(HDKeySr25519, PolkadotSDKTestVector2) {

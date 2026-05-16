@@ -214,8 +214,8 @@ TEST(PolkadotUtils, EncodePrivateKeyForExport) {
         base::test::ParseJsonDict(*private_key_0, base::JSON_PARSE_RFC);
     constexpr const char kExpectedJson[] =
         R"({
-            "address":"5Fc3qszVcAXHAmjjm61KcxqvV1kh91jpydE476NjjnJneNdP",
-            "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgJwZYie6q9xdZXp0Tp0awNekjcrjm4Ge+Vh5Lwh9XlJ3sEQ6F4cJUGsR6Kx5IcNP7LBci3ArjzqlJ7/qOSQzS/rJ45+1kPakLVG2YZXQWW3LAzdc6CkDXzrzYnrUF3DyhY6sm59VLHwd6azVzFxqAMd+NJYVWxAxUlESkQlJafdg/4z3wmY",
+            "address":"5DfhGyQdFobKM8NsWvEeAKk5EQQgYe9AydgJ7rMB6E1EqRzV",
+            "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgIwzkDYhRCw+IdkOicc2Yh3kjcrjm4Ge+Vh5Lwh9XlJ3tA5UqJjSku1cAtVjOkDkEV0G/vmmLGXkDA+5ksPMKTuSfr+F0Lm6rRe5bKuQ4ZEmKD+IuD/EeR8eNkp535llXA6sm59VGuHPMeEv8sd437VEIuE8KS+DJIKLR/7L3MZiKGGRsHS",
             "encoding":{"content":["pkcs8","sr25519"],"type":["scrypt","xsalsa20-poly1305"],"version":"3"}})";
     EXPECT_EQ(json_value, base::test::ParseJsonDict(kExpectedJson));
   }
@@ -232,8 +232,8 @@ TEST(PolkadotUtils, EncodePrivateKeyForExport) {
         base::test::ParseJsonDict(*private_key_1, base::JSON_PARSE_RFC);
     constexpr const char kExpectedJsonAccount1[] =
         R"({
-            "address":"5FUag6Xjkr2TMgejpdsvQo3c1FSrZqEeZoHh173StGbME4XF",
-            "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgI35vhV4Hb3Cr04X+unU7qckjcrjm4Ge+Vh5Lwh9XlJ3tSn4/Z3n+oAn5X+MByi6HOHjolX4w2S+vHn7qX2ExTqqMqygndQ5qbu68HgGm326rq2dZ8nZ9n6VnS1dX88/MQ6sm59VLuGiKa4uQ4KX1JrUFoTxhgvl83I4WrM1y+1/nbb1yyn",
+            "address":"5D34dL5prEUaGNQtPPZ3yN5Y6BnkfXunKXXz6fo7ZJbLwRRH",
+            "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgLTbm4tzKImwlp+eooQnWJrkjcrjm4Ge+Vh5Lwh9XlJ3s2YTtKXeTLFuneM0BD85jwGoUM9PzT086Z1nm+oS0TpzwQ0SgO0SebKBeClkDdjfDOp7Q7TNAWLeuw72BZZ+LE6sm59VAeXSA+GVrz9OHNuwOp2/W2o6g1Jrcf2H/qJl2Vs6/za",
             "encoding":{"content":["pkcs8","sr25519"],"type":["scrypt","xsalsa20-poly1305"],"version":"3"}})";
     EXPECT_EQ(json_value_1, base::test::ParseJsonDict(kExpectedJsonAccount1));
   }
@@ -274,8 +274,8 @@ TEST(PolkadotUtils, EncodePrivateKeyForExport_Testnet) {
         base::test::ParseJsonDict(*private_key_0, base::JSON_PARSE_RFC);
     constexpr const char kExpectedJson[] =
         R"({
-            "address":"5HGiBcFgEBMgT6GEuo9SA98sBnGgwHtPKDXiUukT6aqCrKEx",
-            "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgK8fiV6lGVSFewy6uxsU1C4kjcrjm4Ge+Vh5Lwh9XlJ3vAbQs+/0vSBKGe71ik2n/owjXKi9/fBCOIbIDIttGbopozlHDAyPEOrftWc4aiMZfTHRTh/Hb0kJ4C79LBJ84Y6sm59VMs51zUalbzBwa9c75OqlTCtqRouH8891IU51jczQkHY",
+            "address":"5DfhGyQdFobKM8NsWvEeAKk5EQQgYe9AydgJ7rMB6E1EqRzV",
+            "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgIwzkDYhRCw+IdkOicc2Yh3kjcrjm4Ge+Vh5Lwh9XlJ3tA5UqJjSku1cAtVjOkDkEV0G/vmmLGXkDA+5ksPMKTuSfr+F0Lm6rRe5bKuQ4ZEmKD+IuD/EeR8eNkp535llXA6sm59VGuHPMeEv8sd437VEIuE8KS+DJIKLR/7L3MZiKGGRsHS",
             "encoding":{"content":["pkcs8","sr25519"],"type":["scrypt","xsalsa20-poly1305"],"version":"3"}})";
     EXPECT_EQ(json_value, base::test::ParseJsonDict(kExpectedJson));
   }
@@ -292,8 +292,8 @@ TEST(PolkadotUtils, EncodePrivateKeyForExport_Testnet) {
         base::test::ParseJsonDict(*private_key_1, base::JSON_PARSE_RFC);
     constexpr const char kExpectedJsonAccount1[] =
         R"({
-            "address":"5CofVLAGjwvdGXvBiP6ddtZYMVbhT5Xke8ZrshUpj2ZXAnND",
-            "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgLCddKZgcxBjl0hYwjTBbfXkjcrjm4Ge+Vh5Lwh9XlJ3lxHMOsL8JTT373MVhPUPjpg0fdTnx8C0Rn6NlqE25XqYVmzHtu08FNDkPHRB7gGS7QEMooZrcX7+67a+1Uv3HE6sm59VA2vdfwY70yn/WROki1+SZ1OLWclpgVjEDift12grx7X",
+            "address":"5D34dL5prEUaGNQtPPZ3yN5Y6BnkfXunKXXz6fo7ZJbLwRRH",
+            "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgLTbm4tzKImwlp+eooQnWJrkjcrjm4Ge+Vh5Lwh9XlJ3s2YTtKXeTLFuneM0BD85jwGoUM9PzT086Z1nm+oS0TpzwQ0SgO0SebKBeClkDdjfDOp7Q7TNAWLeuw72BZZ+LE6sm59VAeXSA+GVrz9OHNuwOp2/W2o6g1Jrcf2H/qJl2Vs6/za",
             "encoding":{"content":["pkcs8","sr25519"],"type":["scrypt","xsalsa20-poly1305"],"version":"3"}})";
     EXPECT_EQ(json_value_1, base::test::ParseJsonDict(kExpectedJsonAccount1));
   }

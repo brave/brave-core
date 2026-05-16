@@ -835,12 +835,12 @@ TEST_F(KeyringServiceUnitTest, AccountMetasForKeyring_PolkadotEnabled) {
   [
     {
         "account_index" : "0",
-        "account_address": "158HHeYTmEXMiMM1XufQt5bEe2CTia3EcVcfrpYBYcXA6bdb",
+        "account_address": "1UC3h7uQVraXVhGhfPqmk6F7syCLrxMSVbJBuQqW7R8SHdK",
         "account_name": "PolkadotAcc1"
     },
     {
         "account_index" : "1",
-        "account_address": "16HxitzrPKoiCgUdhhMvuJBsxTa3W7hEKFhet1LD6vkk4CRb",
+        "account_address": "15YL2X3M7ovYs7moKsdp4GiLxuKHf3gPjFjZryLZSE7oTmX4",
         "account_name": "PolkadotAcc2"
     }
   ]
