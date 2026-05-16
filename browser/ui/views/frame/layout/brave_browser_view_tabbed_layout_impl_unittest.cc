@@ -31,7 +31,7 @@ class FakeBrowserViewLayoutDelegate : public BrowserViewLayoutDelegate {
   bool ShouldDrawVerticalTabStrip() const override { return false; }
   bool IsVerticalTabStripCollapsed() const override { return false; }
   bool ShouldDrawWebAppFrameToolbar() const override { return false; }
-  bool GetBorderlessModeEnabled() const override { return false; }
+  bool GetUnframedModeEnabled() const override { return false; }
   BrowserLayoutParams GetBrowserLayoutParams(bool) const override {
     return BrowserLayoutParams();
   }
