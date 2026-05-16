@@ -34,6 +34,11 @@
 #include "chrome/browser/glic/actor/glic_actor_policy_checker.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_element_identifiers.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/interaction/browser_elements_views.h"
+#include "chrome/browser/ui/views/tabs/tab_strip_action_container.h"
+#include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/test/browser_test.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -611,6 +616,57 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskUI) {
   // bubble no longer reads "Paused".
   EXPECT_TRUE(VerifyConversationFrameElementText("progress-bubble-description",
                                                  complete_label));
+}
+
+// Verify that the upstream GlicAndActorButtonsContainer is not constructed in
+// either the toolbar or the tab strip of a window that is executing a task.
+// The container has been the source of crashes; Brave disables it by
+// overriding the `kGlicActorUiTaskIcon` feature param to false (see
+// chromium_src/chrome/common/chrome_features.cc). This test guards against
+// regressions of that override.
+IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest,
+                       NoUpstreamGlicAndActorButtonsContainer) {
+  CreateConversationWithMockEngine();
+  std::string uuid = conversation_handler_->get_conversation_uuid();
+  NavigateToConversationUI(uuid);
+
+  // Drive the conversation into a running task state via a tool use event.
+  {
+    auto generate_future = SetupMockGenerateAssistantResponse();
+    conversation_handler_->SubmitHumanConversationEntry(
+        "Navigate to example.com", std::nullopt);
+    auto callbacks = generate_future->Take();
+    GURL test_url = embedded_https_test_server().GetURL("/actor/link.html");
+    callbacks.data_callback.Run(EngineConsumer::GenerationResultData(
+        mojom::ConversationEntryEvent::NewToolUseEvent(
+            CreateNavigateToolUseEvent("tool_id_1", test_url)),
+        std::nullopt));
+    std::move(callbacks.completed_callback)
+        .Run(base::ok(
+            EngineConsumer::GenerationResultData(nullptr, std::nullopt)));
+  }
+  ASSERT_TRUE(base::test::RunUntil([this]() {
+    return GetConversationState()->tool_use_task_state ==
+           mojom::TaskState::kRunning;
+  }));
+
+  // The toolbar must not contain the upstream glic actor task icon.
+  BrowserView* agent_browser_view =
+      BrowserView::GetBrowserViewForBrowser(agent_browser_window_);
+  ASSERT_TRUE(agent_browser_view);
+  EXPECT_EQ(agent_browser_view->toolbar()->glic_actor_task_icon(), nullptr);
+
+  // The tab strip's action container must not contain the upstream glic actor
+  // button container. The container itself may be absent depending on the
+  // window's tab strip configuration; if so, there is nothing to verify.
+  auto* tab_strip_action_container =
+      BrowserElementsViews::From(agent_browser_window_)
+          ->GetViewAs<TabStripActionContainer>(
+              kTabStripActionContainerElementId);
+  if (tab_strip_action_container) {
+    EXPECT_EQ(tab_strip_action_container->glic_actor_button_container(),
+              nullptr);
+  }
 }
 
 #endif  // BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
