@@ -1084,7 +1084,7 @@ dependencies = [
 
 [[package]]
 name = "hashbrown"
-version = "0.17.0"
+version = "0.17.1"
 
 [[package]]
 name = "hex"
@@ -1164,7 +1164,7 @@ name = "indexmap"
 version = "2.14.0"
 dependencies = [
  "equivalent",
- "hashbrown 0.17.0",
+ "hashbrown 0.17.1",
 ]
 
 [[package]]
