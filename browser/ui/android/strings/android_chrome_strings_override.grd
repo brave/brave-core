@@ -421,6 +421,10 @@ CHAR_LIMIT guidelines:
       <message name="IDS_HUB_SEARCH_EMPTY_HINT_INCOGNITO" desc="The text displayed in the private search box when it's empty.">
         Search your Private tabs
       </message>
+      <message name="IDS_GLIC_INCOGNITO_NOT_AVAILABLE" desc="Text displayed in a snackbar when clicking the Glic toolbar button in a Private tab.">
+        Gemini isn’t available in Private mode
+      </message>
+
       </messages>
   </release>
 </grit>

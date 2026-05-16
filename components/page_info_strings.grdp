@@ -398,9 +398,6 @@
     <message name="IDS_PAGE_INFO_STATE_TEXT_WEB_PRINTING_ASK" desc="The Page Info permission subpage and the main page info page contain a label which shows the state of the site permission. This is the text shown if the bluetooth devices permission is in the ask state and the site can prompt the user to ask if they allow the site to use advanced printer features.">
       Can ask to use advanced printer features
     </message>
-    <message name="IDS_PAGE_INFO_STATE_TEXT_LOCAL_NETWORK_ACCESS_ASK" desc="The Page Info permission subpage and the main page info page contain a label which shows the state of the site permission. This is the text shown if the local network access permission is in the ask state and the site can prompt the user to ask if they allow the site to make local network requests.">
-      Can ask to connect to any device on your local network
-    </message>
     <message name="IDS_PAGE_INFO_STATE_TEXT_LOCAL_NETWORK_ASK" desc="The Page Info permission subpage and the main page info page contain a label which shows the state of the site permission. This is the text shown if the local network permission is in the ask state and the site can prompt the user to ask if they allow the site to make local network requests to other local network devices.">
       Can ask to access other devices on your local network
     </message>
@@ -761,7 +758,7 @@
   <message name="IDS_PAGE_INFO_TRACKING_PROTECTION_PERMANENT_ALLOWED_TITLE" desc="A subtitle in the Tracking Protection subpage bubble telling the user they allowed third-party cookies on the current site.">
     You allowed third-party cookies on this site
   </message>
-  <message name="IDS_PAGE_INFO_TRACKING_PROTECTION_COOKIES_PERMANENT_ALLOWED_DESCRIPTION" desc="Descriptive text in the page info Tracking Protection subpage if the user is visiting a site on their third-party cookies allow list.">
+  <message name="IDS_PAGE_INFO_TRACKING_PROTECTION_COOKIES_PERMANENT_ALLOWED_DESCRIPTION" desc="Descriptive text in the page info Tracking Protection subpage if the user is visiting a site on their third-party cookies allow list." formatter_data="android_java">
     This means site features should work as expected, but you may have less browsing protection.
   </message>
   <message name="IDS_PAGE_INFO_COOKIE_SYNC_DESCRIPTION" desc="The disclaimer about cookies for this site being synced across ChromeOS devices.">
@@ -944,6 +941,15 @@
   <message name="IDS_CERT_EKU_TIME_STAMPING" desc="description of extended key usage Time Stamping">
     Time Stamping
   </message>
+  <message name="IDS_CERT_EKU_TLS_WEB_SERVER_AUTHENTICATION" desc="description of extended key usage TLS WWW Server Authentication">
+    TLS WWW Server Authentication
+  </message>
+  <message name="IDS_CERT_EKU_TLS_WEB_CLIENT_AUTHENTICATION" desc="description of extended key usage TLS WWW Client Authentication">
+    TLS WWW Client Authentication
+  </message>
+  <message name="IDS_CERT_EKU_OCSP_SIGNING" desc="description of extended key usage Signing OCSP Responses">
+    Signing OCSP Responses
+  </message>
 
   <!-- Certificate Key Usage strings shared across platforms -->
   <message name="IDS_CERT_X509_AUTH_INFO_ACCESS" desc="description of extension Authority Information Access">
@@ -980,6 +986,17 @@
   </message>
   <message name="IDS_CERT_PKIX_USER_NOTICE_QUALIFIER" desc="description of User Notice certificate policy qualifier">
     User Notice
+  </message>
+
+  <!-- ETSI Qualified Certificate fields shared across platforms -->
+  <message name="IDS_CERT_QC_ETSI_QCS_QCCOMPLIANCE" desc="description of ETSI qualified certificate statement compliance" translateable="false">
+    ETSI QcCompliance
+  </message>
+  <message name="IDS_CERT_QC_ETSI_QCS_QCTYPE" desc="description of ETSI qualified certificate statement certificate type" translateable="false">
+    ETSI QcType
+  </message>
+  <message name="IDS_CERT_QC_ETSI_QCT_WEB" desc="description of ETSI qualified certificate statement certificate type for web site authentication" translateable="false">
+    ETSI qct-web
   </message>
 
 </grit-part>

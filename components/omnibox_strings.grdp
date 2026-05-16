@@ -171,6 +171,9 @@
       <message name="IDS_FUSEBOX_ADD_CURRENT_TAB" desc="The text displayed in the omnibox attachments popup. When clicked - adds the curernt tab as context." formatter_data="android_java">
         Add current tab
       </message>
+      <message name="IDS_FUSEBOX_CURRENT_TAB" desc="The text displayed in the omnibox attachments popup for the Current tab option." formatter_data="android_java">
+        Current tab
+      </message>
       <message name="IDS_FUSEBOX_UPLOAD_FAILED" desc="The text displayed in a snackbar when an attachment fails to upload" formatter_data="android_java">
         Unable to add attachments
       </message>
@@ -343,6 +346,20 @@
   </message>
   <message name="IDS_ACC_OMNIBOX_SUGGESTION_IN_GROUP_WITH_DESCRIPTION" desc="Accessibility text for an omnibox suggestion that may be in a specific group, with the group's header text, along with its list position. Speaks the suggestion title and description, followed by its position within the group and the group's header." formatter_data="android_java">
     <ph name="SUGGESTION_TITLE">$1<ex>Brave</ex></ph>, <ph name="SUGGESTION_DESCRIPTION">$2<ex>Search result</ex></ph>, <ph name="MATCH_POSITION">$3<ex>2</ex></ph> of <ph name="NUM_MATCHES_IN_GROUP">$4<ex>5</ex></ph> in the group <ph name="GROUP_HEADER">$5<ex>Trending Searches</ex></ph>.
+  </message>
+
+  <!-- TODO(crbug.com/508162292): Mark these strings as translateable in future patches. -->
+  <message name="IDS_OMNIBOX_ACTION_CROSS_DEVICE_TAB_HINT" desc="The button text for the Cross-Device Tab omnibox action. Clicking this button takes users to a view of their synced tabs from other devices." translateable="false">
+    Tabs from other devices
+  </message>
+  <message name="IDS_OMNIBOX_ACTION_CROSS_DEVICE_TAB_SUGGESTION_CONTENTS" desc="The button tooltip for the Cross-Device Tab omnibox action. Clicking this button takes users to a view of their synced tabs from other devices." translateable="false">
+    Tabs from other devices
+  </message>
+  <message name="IDS_ACC_OMNIBOX_ACTION_CROSS_DEVICE_TAB_SUFFIX" desc="Suffix for spoken suggestion description with action button to explain keystroke used to see cross-device tabs." translateable="false">
+    <ph name="CROSS_DEVICE_TAB_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>google.com</ex></ph>, press Tab, then Enter for tabs from other devices
+  </message>
+  <message name="IDS_ACC_OMNIBOX_ACTION_CROSS_DEVICE_TAB" desc="Announcement when the Cross-Device Tab action button is focused." translateable="false">
+    Tabs from other devices button, press Enter to see tabs from other devices
   </message>
 
   <!-- History Clusters Actions. -->

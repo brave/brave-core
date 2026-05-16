@@ -2,7 +2,7 @@
 <!-- Actor specific strings (included from generated_resources.grd). -->
 <!--This file is created by l10nUtil.js. Do not edit manually.-->
 <grit-part>
-  <message name="IDS_HANDOFF_TAKE_OVER_TASK_LABEL" desc="Text on the handoff button when an actor is in control">
+  <message name="IDS_HANDOFF_TAKE_OVER_TASK_LABEL" desc="Text on the handoff button when an actor is in control" formatter_data="android_java">
     Take over task
   </message>
   <message name="IDS_HANDOFF_GIVE_TASK_BACK_LABEL" desc="[Placeholder Description]" translateable="false">
@@ -39,7 +39,7 @@
   <message name="IDS_ACTOR_TASK_LIST_BUBBLE_A11Y_LABEL" desc="Text used by screenreaders for the list of tasks the user is running." translateable="true">
     Task list
   </message>
-  <message name="IDS_ACTOR_TASK_INDICATOR_TOOLTIP" desc="Tooltip text for the task indicator button. The button will open a bubble containing the list of tasks currently running." translateable="true">
+  <message name="IDS_ACTOR_TASK_INDICATOR_TOOLTIP" desc="Tooltip text for the task indicator button. The button will open a bubble containing the list of tasks currently running." formatter_data="android_java" translateable="true">
     Check your tasks
   </message>
   <message name="IDR_ACTOR_TASK_LIST_BUBBLE_ROW_PAUSED_TASK_SUBTITLE" desc="Subtitle shown for a task in the task list bubble informing the user that the task is paused." translateable="true">
@@ -136,5 +136,14 @@
   </message>
   <message name="IDS_PEEK_STATE_VIEW_BUTTON_LABEL" desc="Button text for the actor control button in the waiting state." formatter_data="android_java">
     View
+  </message>
+  <message name="IDS_ACTOR_LEAVE_SITE_DIALOG_TITLE" desc="Title of a dialog asking if the user really wants to stop the actor task." formatter_data="android_java">
+    Leave site?
+  </message>
+  <message name="IDS_ACTOR_LEAVE_SITE_DIALOG_DESCRIPTION" desc="Description of the action of stopping an actor task, shown in a confirmation dialog." formatter_data="android_java">
+    Leaving this site stops your task. Open a new tab to let Gemini keep working.
+  </message>
+  <message name="IDS_ACTOR_LEAVE_SITE_DIALOG_LEAVE_SITE" desc="Button text to confirm leaving the site and stopping the task." formatter_data="android_java">
+    Leave site
   </message>
 </grit-part>

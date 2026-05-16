@@ -842,9 +842,7 @@
     <message name="IDS_AUTOFILL_AT_MEMORY_POPUP_SEARCH_BAR_PLACEHOLDER" desc="Placeholder in the Autofill @memory search bar, used for filling personal data.">
       Search and fill from anywhere...
     </message>
-    <message name="IDS_AUTOFILL_AT_MEMORY_POPUP_NO_RESULTS" desc="The label shown in the @memory search popup when no results match the query.">
-      No results found
-    </message>
+
     <message name="IDS_AUTOFILL_POPUP_SEARCH_BAR_PASSWORDS_NOT_FOUND" desc="On the autofill popup for paswords, the label to be used when no passwords matching user's request were found.">
       No passwords found
     </message>
@@ -907,6 +905,14 @@
   </message>
   <message name="IDS_AUTOFILL_AT_MEMORY_UNSUPPORTED_QUERY_DESCRIPTION" desc="Description for the suggestion shown when the query is unsupported by @memory." translateable="false">
     Try asking Gemini
+  </message>
+  <if expr="is_android">
+    <message name="IDS_AT_MEMORY_SEARCH_HINT" desc="Hint text for the search bar in the @memory bottom sheet." formatter_data="android_java" translateable="false">
+      Find and fill info with Gemini
+    </message>
+  </if>
+  <message name="IDS_AUTOFILL_AT_MEMORY_MANAGE_SUGGESTION_MAIN_TEXT" desc="The label for a button in the At Memory flyout that opens the Autofill for AI information management interface in Brave settings." formatter_data="android_java" translateable="false">
+    Manage information
   </message>
 
   <!-- Autofill Address Edit Dialog -->

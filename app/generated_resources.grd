@@ -637,6 +637,10 @@ are declared in tools/grit/grit_args.gni.
           <message name="IDS_CONTENT_CONTEXT_ARCHIVE_GLIC" desc="Context menu item to archive Glic conversation">
            Archive
           </message>
+          <!-- TODO(b/510738735) Placeholder for now so mark translateable=false -->
+          <message name="IDS_CONTENT_CONTEXT_DICTATION" desc="Context menu item to start dictation" translateable="false">
+           Start dictation
+          </message>
           <message name="IDS_CONTENT_CONTEXT_RELOAD" desc="The name of the Reload command in the content area context menu">
             &amp;Reload
           </message>
@@ -944,6 +948,10 @@ are declared in tools/grit/grit_args.gni.
           </message>
           <message name="IDS_CONTENT_CONTEXT_ARCHIVE_GLIC" desc="Context menu item to archive a Glic conversation">
            Archive
+          </message>
+          <!-- TODO(b/510738735) Placeholder for now so mark translateable=false -->
+          <message name="IDS_CONTENT_CONTEXT_DICTATION" desc="In Title Case: Context menu item to start dictation" translateable="false">
+           Start Dictation
           </message>
           <message name="IDS_CONTENT_CONTEXT_RELOAD" desc="In Title Case: The name of the Reload command in the content area context menu">
             &amp;Reload
@@ -3204,6 +3212,12 @@ are declared in tools/grit/grit_args.gni.
       <message name="IDS_INSTALL_PWA_DIALOG_TITLE" meaning="Shown only on PWA install dialogs" desc="Title for dialog that shows up when a web app needs to be installed to the operating system.">
         Install app
       </message>
+      <message name="IDS_WEB_APP_INSTALL_FLOW_SUBTITLE" desc="Subtitle for the web app install dialog flow.">
+        Access this site in a dedicated window on your computer
+      </message>
+      <message name="IDS_WEB_APP_INSTALL_FLOW_NEXT" desc="Label for the Next button in the web app install dialog flow.">
+        Next
+      </message>
       <message name="IDS_WEB_APP_INSTALL_SUCCESS_TITLE" desc="Title for PWA install dialog that appears when a web app is installed successfully.">
         Successfully installed
       </message>
@@ -4285,31 +4299,12 @@ are declared in tools/grit/grit_args.gni.
         <message name="IDS_CERT_EXT_MS_NTDS_REPLICATION" desc="description of extension Microsoft Domain GUID">
           Microsoft Domain GUID
         </message>
-        <message name="IDS_CERT_EKU_TLS_WEB_SERVER_AUTHENTICATION" desc="description of extended key usage TLS WWW Server Authentication">
-          TLS WWW Server Authentication
-        </message>
-        <message name="IDS_CERT_EKU_TLS_WEB_CLIENT_AUTHENTICATION" desc="description of extended key usage TLS WWW Client Authentication">
-          TLS WWW Client Authentication
-        </message>
-        <message name="IDS_CERT_EKU_OCSP_SIGNING" desc="description of extended key usage Signing OCSP Responses">
-          Signing OCSP Responses
-        </message>
 
         <message name="IDS_CERT_POLICY_ETSI_QEVCP_W" desc="description of ETSI qualified website certificates that offer the Extended Validated level of assurance" translateable="false">
           ETSI QEVCP-w
         </message>
         <message name="IDS_CERT_POLICY_ETSI_QNCP_W" desc="description of ETSI qualified website certificates that offer the Organization Validated or Individual Validated level of assurance" translateable="false">
           ETSI QNCP-w
-        </message>
-
-        <message name="IDS_CERT_QC_ETSI_QCS_QCCOMPLIANCE" desc="description of ETSI qualified certificate statement compliance" translateable="false">
-          ETSI QcCompliance
-        </message>
-        <message name="IDS_CERT_QC_ETSI_QCS_QCTYPE" desc="description of ETSI qualified certificate statement certificate type" translateable="false">
-          ETSI QcType
-        </message>
-        <message name="IDS_CERT_QC_ETSI_QCT_WEB" desc="description of ETSI qualified certificate statement certificate type for web site authentication" translateable="false">
-          ETSI qct-web
         </message>
 
         <message name="IDS_CERT_EKU_MS_INDIVIDUAL_CODE_SIGNING" desc="description of extended key usage Microsoft Individual Code Signing">
@@ -6217,7 +6212,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
        <message name="IDS_EXTENSIONS_MENU_SITE_SETTINGS_TOGGLE_ACCESSIBLE_NAME" desc="Accessibility string for the site setting toggle button.">
         Allow extensions
       </message>
-      <message name="IDS_EXTENSIONS_MENU_MESSAGE_SECTION_ENTERPRISE_TOOLTIP_ICON_TEXT" desc="Text of the info tooltip icon in the message section when the user blocked access to this site to all extensions but extensions installed by admin still have access.">
+      <message name="IDS_EXTENSIONS_MENU_MESSAGE_SECTION_ENTERPRISE_TOOLTIP_ICON_TEXT" desc="Text of the info tooltip icon in the message section when the user blocked access to this site to all extensions but extensions installed by admin still have access." formatter_data="android_java">
         Extensions installed by your administrator can still read and change this site
       </message>
       <message name="IDS_EXTENSIONS_MENU_MESSAGE_SECTION_RELOAD_CONTAINER_DESCRIPTION_TEXT" desc="Text of the message section when the user has to reload the page to apply the updated user site settings." formatter_data="android_java">
@@ -7242,9 +7237,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_WEBUI_OMNIBOX_COMPOSE_ASK_ABOUT_THIS_PAGE_ARIA_LABEL" desc="The aria-label for the button that allows the user to ask a question about the content of their current page. The $1 is a placeholder for the page title.">
         Ask Brave about this page: <ph name="PAGE_TITLE">$1</ph>
-      </message>
-      <message name="IDS_WEBUI_OMNIBOX_COMPOSE_LENS_OVERLAY" desc="The name of the Lens overlay command in the content area context menu">
-        Search with Google Lens
       </message>
       <message name="IDS_WEBUI_OMNIBOX_COMPOSE_ASK_ABOUT_YOUR_TABS" desc="Label for a button that guides the user to composebox's context menu using a suggestion like label.">
         Ask about your tabs
@@ -8323,6 +8315,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_COMPOSEBOX_TAB_PICKER_ADD_TABS_TITLE" desc="Title for the Composebox tab picker when no tabs are selected.">
         Add recent tabs
       </message>
+      <message name="IDS_NTP_COMPOSEBOX_SHARE_TABS" desc="Label for the row in the Composebox context menu that opens a flyout listing all open tabs to share.">
+        Share tabs
+      </message>
+      <message name="IDS_NTP_COMPOSEBOX_RECENT_TAB_SUFFIX" desc="Suffix label appended after the title of the most recently active tab in the Share tabs flyout. Visual separation from the title is handled by CSS, not by leading white space in this string.">
+        · Recent tab
+      </message>
       <message name="IDS_NTP_COMPOSE_ADD_IMAGE" desc="Text for a button label that opens a menu so users can add an image to their search.">
         Add image
       </message>
@@ -8391,6 +8389,20 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_COMPOSE_HINT_TEXT_ASK_ABOUT_THIS_DOC" desc="Placeholder text for the composebox when there is exactly one document (PDF) in the carousel.">
         Ask about this doc
+      </message>
+      <message name="IDS_COMPOSE_SHARING_TABS" desc="Text for a menu item that indicates how many tabs are currently being shared. [ICU Syntax]">
+        {TAB_COUNT, plural,
+          =1 {Sharing 1 tab}
+          other {Sharing # tabs}}
+      </message>
+      <message name="IDS_COMPOSE_SHARING_TABS_WITH_GOOGLE" desc="Text for the tooltip above the favicons that show a user is sharing tabs as context.">
+        Sharing tabs with Brave
+      </message>
+      <message name="IDS_COMPOSE_ADD_TABS" desc="Label for the row in the Composebox context menu that opens a flyout listing all open tabs to share.">
+        Add tabs
+      </message>
+       <message name="IDS_COMPOSE_CURRENT_TAB" desc="Label for the row in the Composebox context menu flyout that shows the current tab the user has open.">
+        Current tab
       </message>
       <message name="IDS_NTP_ACTION_CHIP_TAB_HEADING_1" desc="Heading of the tab action chip on the NTP.">
         Ask about previous tab
@@ -11107,6 +11119,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
             Update password
           </message>
         </if>
+        <message name="IDS_PASSWORD_MANAGER_SHORT_UPDATE_BUTTON" desc="Update button text for password manager for short width dialog">
+          Update
+        </message>
         <message name="IDS_PASSWORD_MANAGER_BUBBLE_BLOCKLIST_BUTTON" desc="Button text for the 'Save Password' bubble's 'Never remember for this site' option">
           Never
         </message>
@@ -11932,6 +11947,12 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_SPLIT_TAB_SWAP_BOTTOM_VIEW" desc="The label for a menu item that swaps the bottom view in the active split with the selected tab.">
           Swap with bottom view
         </message>
+        <message name="IDS_SPLIT_TAB_NEW_VERTICAL" desc="The label for a menu item for creating a new split view with a vertical divider.">
+          Side by side
+        </message>
+        <message name="IDS_SPLIT_TAB_NEW_HORIZONTAL" desc="The label for a menu item for creating a new split view with a horizontal divider.">
+          Stacked
+        </message>
         <message name="IDS_SPLIT_TAB_SEND_FEEDBACK" desc="The label for a menu item that opens a dialog to send feedback.">
           Send feedback
         </message>
@@ -11972,6 +11993,12 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         </message>
         <message name="IDS_SPLIT_TAB_SWAP_BOTTOM_VIEW" desc="In title case: The label for a menu item that swaps the bottom view in the active split with the selected tab.">
           Swap with Bottom View
+        </message>
+        <message name="IDS_SPLIT_TAB_NEW_VERTICAL" desc="In title case: The label for a menu item for creating a new split view with a vertical divider.">
+          Side by Side
+        </message>
+        <message name="IDS_SPLIT_TAB_NEW_HORIZONTAL" desc="In title case: The label for a menu item for creating a new split view with a horizontal divider.">
+          Stacked
         </message>
         <message name="IDS_SPLIT_TAB_SEND_FEEDBACK" desc="The label for a menu item that opens a dialog to send feedback.">
           Send Feedback
@@ -13489,7 +13516,7 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       </if>
 
       <!-- Self share item in different entry points. -->
-      <message name="IDS_OMNIBOX_ICON_SEND_TAB_TO_SELF" desc="The label of item for share this tab to other devices in different context menus.">
+      <message name="IDS_SEND_TAB_TO_SELF_SEND_BUTTON_LABEL" desc="The label of the Send button in the Send Tab to Self bubble.">
         Send
       </message>
       <message name="IDS_OMNIBOX_TOOLTIP_SEND_TAB_TO_SELF" desc="The label of item for share this tab to other devices in different context menus.">
@@ -13500,6 +13527,12 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       </message>
       <message name="IDS_TOOLBAR_BUTTON_SEND_TAB_TO_SELF_TITLE" desc="The title for the received tab dialog shown from the toolbar button.">
         Page shared from another device
+      </message>
+      <message name="IDS_SEND_TAB_TO_SELF_DEVICE_PICKER_TITLE" desc="Title for the Send Tab To Self device picker bubble.">
+        Choose a device
+      </message>
+      <message name="IDS_SEND_TAB_TO_SELF_DEVICE_PICKER_SUBTITLE" desc="Subtitle for the Send Tab To Self device picker bubble.">
+        Select the device where you want to get this link.
       </message>
       <message name="IDS_TOOLBAR_BUTTON_SEND_TAB_TO_SELF_BUTTON_LABEL" desc="The label for the button in the received tab dialog shown from the toolbar button.">
         Open in New Tab
@@ -13550,6 +13583,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       </message>
       <message name="IDS_SEND_TAB_TO_SELF_NO_TARGET_DEVICE_LABEL" desc="Text shown when a user with no available target devices attempts to use send-tab-to-self.">
         To send this tab to another device, sign in to Brave there
+      </message>
+      <message name="IDS_SEND_TAB_TO_SELF_SIGN_IN_PROMO_BODY" desc="Body label text of the send-tab-to-self sign-in promo bubble.">
+        To send links between devices, ensure both are signed in to the same Brave account.
       </message>
 
       <!-- Share via QR Code strings -->
@@ -17878,9 +17914,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_GPM_PASSKEY_DELETED_TITLE" desc="The title of a bubble that is displayed as a confirmation that a passkey was deleted in Brave Password Manager. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'">
         Deleted passkey
       </message>
-      <message name="IDS_WEBAUTHN_GPM_PASSKEY_DELETED_LABEL" desc="The label in a bubble that is displayed as a confirmation that a passkey was deleted in Brave Password Manager, explaining that the passkeys can be managed in Brave Password Manager. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'">
-        Manage your passwords &amp; passkeys in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave Password Manager</ex></ph>
-      </message>
       <message name="IDS_WEBAUTHN_GPM_PASSKEY_DOESNT_WORK_LABEL" desc="The label in a bubble that is displayed after a passkey is deleted from a site. Since the passkey is now useless, it will be automatically removed from Brave Password Manager after about 30 days. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'">
         This passkey doesn't work anymore. It will get deleted soon from <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave Password Manager</ex></ph>.
       </message>
@@ -18090,8 +18123,11 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_DEEP_SCANNING_DIALOG_CUSTOM_MESSAGE" desc="Message shown around the custom message provided by the administrator when deep scanning returns a failure.">
       Your administrator says: "<ph name="CUSTOM_MESSAGE">$1<ex>Please don't upload this type of data.</ex></ph>"
     </message>
-    <message name="IDS_DEEP_SCANNING_DIALOG_DOWNLOADS_CUSTOM_MESSAGE" desc="Message shown around the custom message provided by the administrator when deep scanning returns a failure on a downloaded file.">
-      <ph name="FILE_NAME">$1<ex>foo.txt</ex></ph> has sensitive or dangerous data. Your administrator says: "<ph name="CUSTOM_MESSAGE">$2<ex>Please don't upload this type of data.</ex></ph>"
+    <message name="IDS_DEEP_SCANNING_DIALOG_COMBINED_CUSTOM_MESSAGE" desc="Combines a verdict message with an administrator custom quote.">
+      <ph name="VERDICT_MESSAGE">$1<ex>foo.txt has sensitive data.</ex></ph>. Your administrator says: "<ph name="CUSTOM_MESSAGE">$2<ex>Please don't upload this type of data.</ex></ph>"
+    </message>
+    <message name="IDS_DEEP_SCANNING_DIALOG_DOWNLOADS_SENSITIVE_DATA" desc="Message shown when deep scanning returns a failure on a downloaded file.">
+      <ph name="FILE_NAME">$1<ex>foo.txt</ex></ph> has sensitive or dangerous data
     </message>
     <message name="IDS_DEEP_SCANNING_DIALOG_CUSTOM_MESSAGE_LEARN_MORE_LINK" desc="Text value of the link passed for the custom message set by the administrator when deep scanning returns a failure.">
       Learn more
@@ -18122,9 +18158,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
     <message name="IDS_DEEP_SCANNING_DIALOG_SAVE_TO_CLOUD_STORAGE_MESSAGE" desc="Button text to allow the user to save a file to cloud storage">
       <ph name="FILE_NAME">$1<ex>foo.txt</ex></ph> has sensitive data. Your organization will let you save it to cloud storage or discard it
-    </message>
-    <message name="IDS_DEEP_SCANNING_DIALOG_SAVE_TO_CLOUD_STORAGE_CUSTOM_MESSAGE" desc="Message shown for force save with a custom message.">
-      <ph name="FILE_NAME">$1<ex>foo.txt</ex></ph> has sensitive data. Your organization will let you save it to cloud storage or discard it. Your administrator says: <ph name="CUSTOM_MESSAGE">$2<ex>Please don't upload this type of data.</ex></ph>
     </message>
 
     <!-- Data sharing UI strings -->
@@ -18887,17 +18920,17 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_OVERFLOW_MENU_ITEM_TEXT_MEDIA_CONTROLS" desc="Text of overflow menu item of media controls">
       Media controls
     </message>
-    <message name="IDS_OVERFLOW_MENU_ITEM_TEXT_NEW_TAB" desc="Text of overflow menu item of new tab button in tablet mode">
-      New tab
-    </message>
     <message name="IDS_OVERFLOW_MENU_ITEM_TEXT_SIDE_PANEL" desc="Text of overflow menu item of side panel button">
       Open side panel
     </message>
-    <message name="IDS_OVERFLOW_MENU_ITEM_TEXT_SPLIT_TABS" desc="Text of overflow menu item of split tabs button">
-      Split Tabs
+    <message name="IDS_OVERFLOW_MENU_ITEM_TEXT_SPLIT_VIEW" desc="Text of overflow menu item of split tabs button">
+      Split View
     </message>
     <message name="IDS_OVERFLOW_MENU_ITEM_TEXT_CONTEXTUAL_TASKS" desc="Text of overflow menu item of contextual tasks button">
       Contextual Tasks
+    </message>
+    <message name="IDS_OVERFLOW_MENU_ITEM_TEXT_ENERGY_SAVER" desc="Text of overflow menu item of energy saver button">
+      Energy Saver
     </message>
 
     <!-- Promise icon status labels. -->
@@ -18928,7 +18961,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
       Change your preferences
     </message>
     <message name="IDS_IWA_INSTALLER_DISABLED_SUBTITLE" desc="Subtitle of the feature disabled screen of the IWA installer. $1 = IDS_IWA_INSTALLER_DISABLED_CHANGE_PREFERENCE">
-      You security preferences do not allow installations of Isolated Apps. <ph name="CHANGE_PREFERENCE">$1<ex>Change your preferences</ex></ph>
+      Your security preferences do not allow installation of isolated web apps. <ph name="CHANGE_PREFERENCE">$1<ex>Change your preferences</ex></ph>.
     </message>
     <message name="IDS_IWA_INSTALLER_ALREADY_INSTALLED_TITLE" desc="Title of an error dialog shown when the bundle trying to be installed is already installed.">
       <ph name="APP_NAME">$1<ex>Brave Maps</ex></ph> is already installed
@@ -18963,6 +18996,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_IWA_INSTALLER_SHOW_METADATA_APP_ENTERPRISE_NAME_LABEL" desc="Label before the Isolated Web App enterprise name in the pre-install app info summary screen">
       Offered by: <ph name="ENTERPRISE_NAME">$1<ex>Brave</ex></ph>
     </message>
+    <message name="IDS_IWA_INSTALLER_UPDATE_SETTINGS" desc="Label of a collapsible area containing advanced settings related to application updates.">
+      Update settings
+    </message>
+    <message name="IDS_IWA_INSTALLER_UPDATE_CHANNEL" desc="Label of a combobox to select an update channel.">
+      Update channel
+    </message>
     <message name="IDS_IWA_INSTALLER_CONFIRM_TITLE" desc="Title of the confirmation popup that appears immediately before Isolated Web App installation">
       Do you want to continue and allow this software to make changes to your device?
     </message>
@@ -18976,7 +19015,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
       Something went wrong
     </message>
     <message name="IDS_IWA_INSTALLER_INSTALL_FAILED_SUBTITLE" desc="Subtitle of the error dialog that is shown when an Isolated Web App failed to install">
-      The installation could not be completed. Please try again or close this window
+      The installation could not be completed. Please try again or close this window.
     </message>
     <message name="IDS_IWA_INSTALLER_INSTALL_FAILED_BUNDLE_BLOCKED_USER_INSTALL_ALLOWLIST_BLOCKLIST_TITLE" desc="Title of the error dialog that is shown when an Isolated Web App failed to install because it's not on the user install allowlist or because it's on the blocklist">
       Can't install app
@@ -19533,6 +19572,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_UPDATER_FILTER_CHIP_UPDATER_SCOPE" desc="Text displayed in a filter chip showing the selected updater scopes.">
         Updater Scope: <ph name="OUTCOMES">$1<ex>Per-system updater, Per-user updater</ex></ph>
       </message>
+      <message name="IDS_UPDATER_HELP_CENTER_TOOLTIP" desc="Tooltip for the help center link about maintaining Brave updates.">
+        Learn more about maintaining Brave updates
+      </message>
       <message name="IDS_UPDATER_INACTIVE_VERSIONS_LABEL" desc="A label for a list of inactive versions of the Brave Updater. Multiple Brave Updater versions may be present on a users machine but only one may be active at a time.">
         Inactive Versions:
       </message>
@@ -19553,6 +19595,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_UPDATER_LAST_STARTED_LABEL" desc="A label for a timestamp indicating the last time the Brave Updater performed its periodic tasks.">
         Last Periodic Task Run:
+      </message>
+      <message name="IDS_UPDATER_LEARN_MORE" desc="Label for a button that opens a help center article.">
+        Learn More
       </message>
       <message name="IDS_UPDATER_LOAD_HISTORY_FILE" desc="Label for the button that allows users to upload one or more external updater history files for display.">
         Load History Files
@@ -19695,6 +19740,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_UPDATER_UPDATE_OUTCOME_UPDATE_ERROR" desc="Label for the outcome of an update attempt in which the update could not complete because of an error.">
         Update Error
       </message>
+      <message name="IDS_UPDATER_VIEW_ALL_CHROME_POLICIES" desc="Label for a button that opens the chrome://policy page.">
+        View all Brave Policies
+      </message>
       <message name="IDS_UPDATER_VIEW_RAW_DETAILS" desc="Title of the button to display the contents of a Brave Updater log in JSON format">
         Source
       </message>
@@ -19745,6 +19793,14 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
     <message name="IDS_CHROME_FINDS_NOTIFICATIONS_UNHELPFUL_BUTTON_TEXT" desc="Text for the unhelpful button found on Brave finds notifications.">
       Not interested
+    </message>
+
+    <!-- OSCryptAsync Availability InfoBar -->
+    <message name="IDS_OSCRYPTASYNC_AVAILABILITY_INFOBAR_MESSAGE" desc="Label displayed in an infobar when a keychain issue prevents some profile data from being read/written and a browser relaunch is required to resolve.">
+      Relaunch the browser to load your profile data and keep it encrypted
+    </message>
+    <message name="IDS_OSCRYPTASYNC_AVAILABILITY_INFOBAR_BUTTON" desc="The text of the button to proceed with relaunching the entire browser to resolve keychain permission issues.">
+      Relaunch
     </message>
   </messages>
 </release>
