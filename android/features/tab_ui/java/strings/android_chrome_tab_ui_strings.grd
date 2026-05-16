@@ -1066,6 +1066,11 @@
         Dismiss the card.
       </message>
 
+      <!-- Tab Strip Hover Card strings -->
+      <message name="IDS_TAB_HOVER_CARD_MEMORY_USAGE" desc="Text at the bottom of a hovercard that shows how much memory a specific tab is using.">
+        Memory usage: <ph name="MEMORY_USAGE">%1$s<ex>300 MB</ex></ph>
+      </message>
+
       <!-- Tab context menu -->
       <message name="IDS_SELECT_TAB" desc="Content description for an action which selects a singular tab.">
         Select tab
@@ -1078,6 +1083,7 @@
           =1 {Move tab to new window}
           other {Move tab to another window}}
       </message>
+
       <message name="IDS_MOVE_TABS_LEFT" desc="Menu item for moving tab(s) to the left in the tab strip order.">
         {TAB_COUNT, plural,
           =1 {Move tab left}
@@ -1138,6 +1144,12 @@
       </message>
       <message name="IDS_DUPLICATE_TAB_MENU_ITEM" desc="Content description for an action which duplicates a selection of tabs.">
         Duplicate
+      </message>
+      <message name="IDS_CLOSE_OTHER_TABS_MENU_ITEM" desc="Content description for an action which closes all tabs not currently selected.">
+        Close other tabs
+      </message>
+      <message name="IDS_CLOSE_TABS_TO_THE_RIGHT_MENU_ITEM" desc="Content description for an action which closes all tabs to the right of the right most selected tab.">
+        Close tabs to the right
       </message>
 
       <!-- Tab Group List Bottom Sheet -->

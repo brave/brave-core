@@ -315,8 +315,8 @@ are declared in tools/grit/grit_args.gni.
       </if>
 
       <!-- Settings specific strings -->
+      <part file="settings_strings.grdp" />
       <if expr="not is_android">
-        <part file="settings_strings.grdp" />
         <part file="shared_settings_strings.grdp" />
       </if>
 
@@ -628,6 +628,9 @@ are declared in tools/grit/grit_args.gni.
           <message name="IDS_CONTENT_CONTEXT_READING_MODE" desc="Context menu menuitem to open page in reading mode view">
            Open in reading mode
           </message>
+          <message name="IDS_CONTENT_CONTEXT_LISTEN_TO_THIS_PAGE" desc="Context menu item to listen to this page">
+           Listen to this page
+          </message>
           <message name="IDS_CONTENT_CONTEXT_CLOSE_GLIC" desc="Context menu item to close glic view">
            Close
           </message>
@@ -692,31 +695,7 @@ are declared in tools/grit/grit_args.gni.
           <message name="IDS_CONTENT_CONTEXT_OPENLINKWEBAPP_NEWTAB" desc="The name of the command to open a link in a new tab of the same app the user is currently in">
             Open link in new <ph name="APP">$1<ex>Gmail App</ex></ph> tab
           </message>
-          <message name="IDS_CONTENT_CONTEXT_OPENLINKPREVIEW" desc="The name of the Preview link command in the content area context menu">
-            Preview link
-          </message>
-          <if expr="is_macosx">
-            <message name="IDS_CONTENT_CONTEXT_OPENLINKPREVIEW_TRIGGER_ALTCLICK" desc="The minor text of the Preview link command in the content area context menu, alt+click trigger">
-              ⌥+Click
-            </message>
-            <message name="IDS_CONTENT_CONTEXT_OPENLINKPREVIEW_TRIGGER_ALTHOVER" desc="The minor text of the Preview link command in the content area context menu, alt+hover trigger">
-              ⌥+Hover
-            </message>
-            <message name="IDS_CONTENT_CONTEXT_OPENLINKPREVIEW_TRIGGER_LONGPRESS" desc="The minor text of the Preview link command in the content area context menu, long press trigger">
-              Long press
-            </message>
-          </if>
-          <if expr="not is_macosx">
-            <message name="IDS_CONTENT_CONTEXT_OPENLINKPREVIEW_TRIGGER_ALTCLICK" desc="The minor text of the Preview link command in the content area context menu, alt+click trigger">
-              Alt+Click
-            </message>
-            <message name="IDS_CONTENT_CONTEXT_OPENLINKPREVIEW_TRIGGER_ALTHOVER" desc="The minor text of the Preview link command in the content area context menu, alt+hover trigger">
-              Alt+Hover
-            </message>
-            <message name="IDS_CONTENT_CONTEXT_OPENLINKPREVIEW_TRIGGER_LONGPRESS" desc="The minor text of the Preview link command in the content area context menu, long press trigger">
-              Long press
-            </message>
-          </if>
+
 
           <message name="IDS_CONTENT_CONTEXT_SAVELINKAS" desc="The name of the Save Link As command in the content area context menu">
             Save lin&amp;k as...
@@ -781,6 +760,9 @@ are declared in tools/grit/grit_args.gni.
             Rotate c&amp;ounterclockwise
           </message>
 
+          <message name="IDS_CONTENT_CONTEXT_VIDEO_FRAME" desc="The name of the Video Frame submenu in the content area context menu">
+            &amp;Video frame
+          </message>
           <message name="IDS_CONTENT_CONTEXT_SAVEVIDEOFRAMEAS" desc="The name of the Save Video Frame As command in the content area context menu">
             Save video &amp;frame as...
           </message>
@@ -954,6 +936,9 @@ are declared in tools/grit/grit_args.gni.
           <message name="IDS_CONTENT_CONTEXT_READING_MODE" desc="Context menu menuitem to open page in reading mode view">
            Open in Reading Mode
           </message>
+          <message name="IDS_CONTENT_CONTEXT_LISTEN_TO_THIS_PAGE" desc="In Title Case: Context menu item to listen to this page">
+           Listen to This Page
+          </message>
           <message name="IDS_CONTENT_CONTEXT_CLOSE_GLIC" desc="Context menu item to close glic view">
            Close
           </message>
@@ -1017,31 +1002,7 @@ are declared in tools/grit/grit_args.gni.
           <message name="IDS_CONTENT_CONTEXT_OPENLINKWEBAPP_NEWTAB" desc="In Title Case: The name of the command to open a link in a new tab of the same app the user is currently in">
             Open Link in new <ph name="APP">$1<ex>Gmail App</ex></ph> Tab
           </message>
-          <message name="IDS_CONTENT_CONTEXT_OPENLINKPREVIEW" desc="In Title Case: The name of the Preview link command in the content area context menu">
-            Preview Link
-          </message>
-          <if expr="is_macosx">
-            <message name="IDS_CONTENT_CONTEXT_OPENLINKPREVIEW_TRIGGER_ALTCLICK" desc="In Title Case: The minor text of the Preview link command in the content area context menu, alt+click trigger">
-              ⌥+Click
-            </message>
-            <message name="IDS_CONTENT_CONTEXT_OPENLINKPREVIEW_TRIGGER_ALTHOVER" desc="In Title Case: The minor text of the Preview link command in the content area context menu, alt+hover trigger">
-              ⌥+Hover
-            </message>
-            <message name="IDS_CONTENT_CONTEXT_OPENLINKPREVIEW_TRIGGER_LONGPRESS" desc="In Title Case: The minor text of the Preview link command in the content area context menu, long press trigger">
-              Long Press
-            </message>
-          </if>
-          <if expr="not is_macosx">
-            <message name="IDS_CONTENT_CONTEXT_OPENLINKPREVIEW_TRIGGER_ALTCLICK" desc="In Title Case: The minor text of the Preview link command in the content area context menu, alt+click trigger">
-              Alt+Click
-            </message>
-            <message name="IDS_CONTENT_CONTEXT_OPENLINKPREVIEW_TRIGGER_ALTHOVER" desc="In Title Case: The minor text of the Preview link command in the content area context menu, alt+hover trigger">
-              Alt+Hover
-            </message>
-            <message name="IDS_CONTENT_CONTEXT_OPENLINKPREVIEW_TRIGGER_LONGPRESS" desc="In Title Case: The minor text of the Preview link command in the content area context menu, long press trigger">
-              Long Press
-            </message>
-          </if>
+
 
           <message name="IDS_CONTENT_CONTEXT_SAVELINKAS" desc="In Title Case: The name of the Save Link As command in the content area context menu">
             Save Lin&amp;k As...
@@ -1106,6 +1067,9 @@ are declared in tools/grit/grit_args.gni.
             Rotate C&amp;ounterclockwise
           </message>
 
+          <message name="IDS_CONTENT_CONTEXT_VIDEO_FRAME" desc="In Title Case: The name of the Video Frame submenu in the content area context menu">
+            &amp;Video Frame
+          </message>
           <message name="IDS_CONTENT_CONTEXT_SAVEVIDEOFRAMEAS" desc="In Title Case: The name of the Save Video Frame As command in the content area context menu">
            Save Video &amp;Frame As...
           </message>
@@ -1775,7 +1739,7 @@ are declared in tools/grit/grit_args.gni.
       <message name="IDS_MANAGED_BY_PARENT" desc="The text label shown in the app menu for users subject to parental controls.">
         Managed by your parent
       </message>
-      <message name="IDS_PROFILE_MANAGED_BY" desc="The text label of the 'Managed by' UI in the app menu, for enterprise users where only the profile is managed as opposed to the the whole browser. MANAGER can be a domain or an email address.">
+      <message name="IDS_PROFILE_MANAGED_BY" desc="The text label of the 'Managed by' UI in the app menu, for enterprise users where only the profile is managed as opposed to the whole browser. MANAGER can be a domain or an email address.">
         Profile managed by <ph name="MANAGER">$1<ex>example.com</ex></ph>
       </message>
       <message name="IDS_BROWSER_PROFILE_MANAGED" desc="The text label of the 'Managed by' UI in the app menu, for enterprise users where the profile is managed by a different entity from the browser.">
@@ -3240,6 +3204,15 @@ are declared in tools/grit/grit_args.gni.
       <message name="IDS_INSTALL_PWA_DIALOG_TITLE" meaning="Shown only on PWA install dialogs" desc="Title for dialog that shows up when a web app needs to be installed to the operating system.">
         Install app
       </message>
+      <message name="IDS_WEB_APP_INSTALL_SUCCESS_TITLE" desc="Title for PWA install dialog that appears when a web app is installed successfully.">
+        Successfully installed
+      </message>
+      <message name="IDS_WEB_APP_INSTALL_SUCCESS_OPEN_APP" desc="Text for button that opens the current tab in the newly installed app.">
+        Open tab in app
+      </message>
+      <message name="IDS_INSTALL_PWA_DIALOG_INSTALLING" desc="Text shown when the app is installing.">
+        Installing app…
+      </message>
       <message name="IDS_WEB_APP_DETAILED_INSTALL_DIALOG_DESCRIPTION_TITLE" desc="Title above app description to explain the content below is from this app">
         From the app
       </message>
@@ -3249,11 +3222,30 @@ are declared in tools/grit/grit_args.gni.
       <message name="IDS_DIY_APP_INSTALL_DIALOG_SUBTITLE" desc="Subtitle of the DIY app install dialog containing information about how the app opens">
         Apps open in a window
       </message>
+      <message name="IDS_WEB_APP_INSTALL_PIN_TO_SHELF" desc="Checkbox label to pin the web app to the shelf during installation.">
+        Pin to shelf
+      </message>
       <message name="IDS_DIY_APP_AX_BUBBLE_NAME_LABEL" desc="Text preceding the name of a DIY app, read by spoken feedback.">
         App name
       </message>
       <message name="IDS_INSTALL_PWA_DIALOG_ORIGIN_LABEL" desc="The label in front of the origin of the site that is installing the web app.">
         from: <ph name="APP_ORIGIN">$1<ex>example.com</ex></ph>
+      </message>
+       <!-- Install dialog resources for Windows specific behavior. They cannot be guarded by expr="is_win", because these resources need to be compiled for screenshot testing. -->
+      <message name="IDS_WEB_APP_INSTALL_ADD_TO_START_MENU" desc="Installer option text for the new install dialog for web apps, signifying that a shortcut will be added to the Start Menu on Windows">
+        Adding to Start Menu
+      </message>
+      <message name="IDS_WEB_APP_INSTALL_CHROME_APPS_LOCATION" desc="Installer option text signifying where inside the Start Menu the web app shortcut will be created on Windows.">
+        Brave Apps &gt; <ph name="APP_NAME">$1<ex>AppName</ex></ph>
+      </message>
+      <message name="IDS_WEB_APP_INSTALL_CREATE_DESKTOP_SHORTCUT" desc="Label of the checkbox to add a shortcut to the desktop after installing the web app.">
+        Add desktop shortcut
+      </message>
+      <message name="IDS_WEB_APP_INSTALL_PIN_TO_TASKBAR" desc="Label of the checkbox to pin an installed web app shortcut to taskbar.">
+        Pin to Taskbar
+      </message>
+      <message name="IDS_WEB_APP_INSTALL_LAUNCHER" desc="Label for the ChromeOS Launcher icon in the install options view.">
+        Launcher
       </message>
 
       <message name="IDS_BOOKMARK_APP_AX_BUBBLE_NAME_LABEL" desc="Text preceding the name of a bookmark app, read by spoken feedback.">
@@ -3809,6 +3801,9 @@ are declared in tools/grit/grit_args.gni.
       <message name="IDS_TRACKING_PROTECTION_BUBBLE_SITE_NOT_WORKING_DESCRIPTION" desc="Descriptive text in the trackings protection bubble mentioning the option to enable third-party cookies and mentions the trade off of doing so.">
         Try temporarily allowing third-party cookies, which means less browsing protection but site features are more likely to work as expected.
       </message>
+      <message name="IDS_COOKIE_CONTROLS_BUBBLE_SITE_NOT_WORKING_DESCRIPTION" desc="Descriptive text in the third-party cookies bubble describing the option to allow third-party cookies and the trade offs of doing so.">
+        Try allowing third-party cookies, which means less browsing protection but site features are more likely to work as expected.
+      </message>
       <message name="IDS_TRACKING_PROTECTION_BUBBLE_BLOCKING_RESTART_TITLE" desc="Subtitle shown on the tracking protection bubble indicating how long until cookies are blocked again.">
         {COUNT, plural,
               =0 {Cookies will be blocked again today}
@@ -3862,22 +3857,19 @@ are declared in tools/grit/grit_args.gni.
       <message name="IDS_JS_OPTIMIZATIONS_DISABLED_ICON_TOOLTIP" desc="Tooltip for the JS Optimizations chip in the toolbar when it's disabled.">
         JavaScript optimizations are disabled.
       </message>
-      <message name="IDS_JS_OPTIMIZATION_BUBBLE_TITLE" desc="Title for the V8 optimization bubble.">
-        V8 optimization is off
+      <message name="IDS_JS_OPTIMIZATION_BUBBLE_TITLE" desc="Title for the JavaScript optimization disabled bubble.">
+        JavaScript optimization is off
       </message>
-      <message name="IDS_JS_OPTIMIZATION_BUBBLE_POLICY_BODY" desc="Body text for the V8 optimization bubble when disabled by enterprise policy.">
+      <message name="IDS_JS_OPTIMIZATION_BUBBLE_POLICY_BODY" desc="Body text for the JavaScript optimization bubble when disabled by enterprise policy.">
         JavaScript optimization is off for this site.
       </message>
-      <message name="IDS_JS_OPTIMIZATION_BUBBLE_BODY_NON_POLICY_BODY" desc="Body text for the V8 optimization bubble when disabled for other reasons.">
-        JavaScript optimization is off for this site. Enable for better performance.
-      </message>
      <if expr="not use_titlecase">
-      <message name="IDS_JS_OPTIMIZATION_BUBBLE_ENABLE_BUTTON" desc="Button text to enable V8 optimization for the current site.">
+      <message name="IDS_JS_OPTIMIZATION_BUBBLE_ENABLE_BUTTON" desc="Button text to enable JavaScript optimization for the current site.">
         Allow for this site
       </message>
     </if>
     <if expr="use_titlecase">
-      <message name="IDS_JS_OPTIMIZATION_BUBBLE_ENABLE_BUTTON" desc="In Title Case: Button text to enable V8 optimization for the current site.">
+      <message name="IDS_JS_OPTIMIZATION_BUBBLE_ENABLE_BUTTON" desc="In Title Case: Button text to enable JavaScript optimization for the current site.">
         Allow for This Site
       </message>
     </if>
@@ -4724,7 +4716,7 @@ are declared in tools/grit/grit_args.gni.
       <message name="IDS_TASK_MANAGER_PRELOADED_RENDERER_FOR_UI" desc="Task Manager row for the render process that is preloaded with Top Brave WebUI resources.">
         Preloaded UI Renderer
       </message>
-      <!-- TODO(liuwilliam): crbug/1325318 renaming the rest of existing Prerender to NoStatePrefetch -->
+      <!-- TODO(liuwilliam): crbug.com/40225436 renaming the rest of existing Prerender to NoStatePrefetch -->
       <message name="IDS_TASK_MANAGER_NO_STATE_PREFETCH_PREFIX" desc="The prefix for a Task Manager No State Prefetch row">
         Prerender: <ph name="PRERENDER_CONTENTS_NAME">$1<ex>http://www.google.com</ex></ph>
       </message>
@@ -5021,9 +5013,6 @@ are declared in tools/grit/grit_args.gni.
       </message>
       <message name="IDS_EXTENSION_PROMPT_GRANT_PERMISSIONS_CHECKBOX" desc="Label next to the checkbox in the extension or app installation prompt, which indicates if a user wants to grant access to all requested sites.">
         Grant access to all requested sites.
-      </message>
-      <message name="IDS_EXTENSION_PROMPT_MESSAGE_FROM_ADMIN" desc="Second line in the content area of the extension of app blocked prompt. It gives user the additional message which comes from their administrator.">
-        From your administrator: <ph name="ADMIN_MESSAGE">$1<ex>Please visit www.example.com/extension for more information.</ex></ph>
       </message>
 
       <message name="IDS_EXTENSION_PERMISSION_LINE" desc="Template for item in list of privileges that an extension or app has">
@@ -5555,7 +5544,36 @@ are declared in tools/grit/grit_args.gni.
         <message name="IDS_EXTENSIONS_HAS_ACCESS_TO_SITE" desc="The message shown on mouseover when an extension currently can run on a specific site.">
           Has access to this site
         </message>
-
+        <message name="IDS_EXTENSIONS_REQUEST_ACCESS_BUTTON_TOOLTIP_SINGLE_EXTENSION" desc="The tooltip text of the request access button that appears on the toolbar when an extension requests access to the site">
+          Click to allow "<ph name="EXTENSIONS_REQUESTING_ACCESS">$1<ex>Extension A</ex></ph>" on <ph name="ORIGIN">$2<ex>google.com</ex></ph>
+        </message>
+        <message name="IDS_EXTENSIONS_TOOLBAR_ACTION_HOVER_CARD_TITLE_HAS_ACCESS" desc="The title in the card that shows up on mouse hover of a toolbar action when extension has access to the current site.">
+          Allowed to read &amp; change
+        </message>
+        <message name="IDS_EXTENSIONS_TOOLBAR_ACTION_HOVER_CARD_TITLE_BLOCKED_ACCESS" desc="The title in the card that shows up on mouse hover of a toolbar action when the extension cannot access the current site.">
+          Not allowed to read &amp; change
+        </message>
+        <message name="IDS_EXTENSIONS_TOOLBAR_ACTION_HOVER_CARD_TITLE_REQUESTS_ACCESS" desc="The title in the card that shows up on mouse hover of a toolbar action when the extension requests access to the current site.">
+          Requesting to read &amp; change
+        </message>
+        <message name="IDS_EXTENSIONS_TOOLBAR_ACTION_HOVER_CARD_DESCRIPTION_ALL_EXTENSIONS_ALLOWED_ACCESS" desc="The description in the card that shows up on mouse hover of a toolbar action when all extensions have access to the current site.">
+          All extensions can read &amp; change <ph name="HOST">$1<ex>google.com</ex></ph>
+        </message>
+        <message name="IDS_EXTENSIONS_TOOLBAR_ACTION_HOVER_CARD_DESCRIPTION_ALL_EXTENSIONS_BLOCKED_ACCESS" desc="The description in the card that shows up on mouse hover of a toolbar action when all extensions cannot access the current site.">
+          You blocked all extensions from <ph name="HOST">$1<ex>google.com</ex></ph>
+        </message>
+         <message name="IDS_EXTENSIONS_TOOLBAR_ACTION_HOVER_CARD_DESCRIPTION_EXTENSION_HAS_ACCESS" desc="The description in the card that shows up on mouse hover of a toolbar action when the extension has access to the current site.">
+          This extension can read and change <ph name="HOST">$1<ex>google.com</ex></ph>
+        </message>
+        <message name="IDS_EXTENSIONS_TOOLBAR_ACTION_HOVER_CARD_DESCRIPTION_EXTENSION_REQUESTS_ACCESS" desc="The description in the card that shows up on mouse hover of a toolbar action when the extension requests access to the current site.">
+          Click this extension's icon to read and change <ph name="HOST">$1<ex>google.com</ex></ph>
+        </message>
+        <message name="IDS_EXTENSIONS_TOOLBAR_ACTION_HOVER_CARD_POLICY_LABEL_PINNED_TEXT" desc="The text in the card that shows up on mouse hover of a toolbar action when extension was pinned by the administrator.">
+          Pinned by your administrator
+        </message>
+        <message name="IDS_EXTENSIONS_TOOLBAR_ACTION_HOVER_CARD_POLICY_LABEL_INSTALLED_TEXT" desc="The text in the card that shows up on mouse hover of a toolbar action when extension was installed by the administrator.">
+          Installed by your administrator
+        </message>
         <if expr="not use_titlecase">
           <message name="IDS_EXTENSIONS_CONTEXT_MENU_SITE_PERMISSIONS" desc="The label in an extension's context menu for the submenu specifying the extension site permissions (sentence case).">
             Site permissions
@@ -5706,38 +5724,7 @@ are declared in tools/grit/grit_args.gni.
         </if>
       </if>
       <if expr="enable_extensions">
-        <message name="IDS_EXTENSIONS_REQUEST_ACCESS_BUTTON_TOOLTIP_SINGLE_EXTENSION" desc="The tooltip text of the request access button that appears on the toolbar when an extension requests access to the site">
-          Click to allow "<ph name="EXTENSIONS_REQUESTING_ACCESS">$1<ex>Extension A</ex></ph>" on <ph name="ORIGIN">$2<ex>google.com</ex></ph>
-        </message>
-        <message name="IDS_EXTENSIONS_TOOLBAR_ACTION_HOVER_CARD_TITLE_HAS_ACCESS" desc="The title in the card that shows up on mouse hover of a toolbar action when extension has access to the current site.">
-          Allowed to read &amp; change
-        </message>
-        <message name="IDS_EXTENSIONS_TOOLBAR_ACTION_HOVER_CARD_TITLE_BLOCKED_ACCESS" desc="The title in the card that shows up on mouse hover of a toolbar action when the extension cannot access the current site.">
-          Not allowed to read &amp; change
-        </message>
-        <message name="IDS_EXTENSIONS_TOOLBAR_ACTION_HOVER_CARD_TITLE_REQUESTS_ACCESS" desc="The title in the card that shows up on mouse hover of a toolbar action when the extension requests access to the current site.">
-          Requesting to read &amp; change
-        </message>
-        <message name="IDS_EXTENSIONS_TOOLBAR_ACTION_HOVER_CARD_DESCRIPTION_ALL_EXTENSIONS_ALLOWED_ACCESS" desc="The description in the card that shows up on mouse hover of a toolbar action when all extensions have access to the current site.">
-          All extensions can read &amp; change <ph name="HOST">$1<ex>google.com</ex></ph>
-        </message>
-        <message name="IDS_EXTENSIONS_TOOLBAR_ACTION_HOVER_CARD_DESCRIPTION_ALL_EXTENSIONS_BLOCKED_ACCESS" desc="The description in the card that shows up on mouse hover of a toolbar action when all extensions cannot access the current site.">
-          You blocked all extensions from <ph name="HOST">$1<ex>google.com</ex></ph>
-        </message>
-         <message name="IDS_EXTENSIONS_TOOLBAR_ACTION_HOVER_CARD_DESCRIPTION_EXTENSION_HAS_ACCESS" desc="The description in the card that shows up on mouse hover of a toolbar action when the extension has access to the current site.">
-          This extension can read and change <ph name="HOST">$1<ex>google.com</ex></ph>
-        </message>
-        <message name="IDS_EXTENSIONS_TOOLBAR_ACTION_HOVER_CARD_DESCRIPTION_EXTENSION_REQUESTS_ACCESS" desc="The description in the card that shows up on mouse hover of a toolbar action when the extension requests access to the current site.">
-          Click this extension's icon to read and change <ph name="HOST">$1<ex>google.com</ex></ph>
-        </message>
-        <message name="IDS_EXTENSIONS_TOOLBAR_ACTION_HOVER_CARD_POLICY_LABEL_PINNED_TEXT" desc="The text in the card that shows up on mouse hover of a toolbar action when extension was pinned by the administrator.">
-          Pinned by your administrator
-        </message>
-        <message name="IDS_EXTENSIONS_TOOLBAR_ACTION_HOVER_CARD_POLICY_LABEL_INSTALLED_TEXT" desc="The text in the card that shows up on mouse hover of a toolbar action when extension was installed by the administrator.">
-          Installed by your administrator
-        </message>
-
-        <if expr="not use_titlecase">
+       <if expr="not use_titlecase">
           <message name="IDS_EXTENSIONS_DISABLE" desc="The link for disabling an extension (sentence case).">
             Disable
           </message>
@@ -5796,13 +5783,6 @@ are declared in tools/grit/grit_args.gni.
       </message>
       <message name="IDS_EXTENSION_COMMANDS_GENERIC_ACTIVATE" desc="The generic 'activate extension' text used as description for some commands.">
         Activate the extension
-      </message>
-
-      <message name="IDS_EXTENSIONS_SUPERVISED_USER_PARENTAL_PERMISSION_FAILURE" desc="The error information displayed in extra details if the parent permission request flow fails unexpectedly when a supervised user attempts to install or enable an extension. Note that this does not include the case where a parent fails to enter their password.">
-        Parent permission request failed.
-      </message>
-      <message name="IDS_EXTENSIONS_SUPERVISED_USER_BLOCKED_BY_PARENT" desc="The information displayed in extra details if the parent blocks or cancels the installation flow for an extension.">
-        Your parent didn't approve this extension
       </message>
 
       <message name="IDS_EXTENSION_PACK_DIALOG_HEADING" desc="The heading of the pack extension dialog.">
@@ -6059,16 +6039,16 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Change back to <ph name="OLD_SEARCH_PROVIDER">$1<ex>DuckDuckGo</ex></ph>?
       </message>
       <message name="IDS_EXTENSION_SEARCH_OVERRIDDEN_DIALOG_TITLE_EXPLICIT_CHOICE" desc="The title of the dialog informing the user that the default search engine has been overridden by an extension, and presenting an explicit choice on whether to use the new or previous search providers.">
-        Confirm your default search engine
+        Confirm the default search engine you want
       </message>
       <message name="IDS_EXTENSION_SEARCH_OVERRIDDEN_DIALOG_BODY_GENERIC" desc="The body of the dialog informing the user that the default search engine has been overridden by an extension, indicating which extension now controls it.">
         The "<ph name="EXTENSION_NAME">$2<ex>Some New Search</ex></ph>" extension changed search to use <ph name="SEARCH_PROVIDER_DOMAIN">$1<ex>google.com</ex></ph>
       </message>
       <message name="IDS_EXTENSION_SEARCH_OVERRIDDEN_DIALOG_BODY_EXPLICIT_CHOICE" desc="The title of the dialog informing the user that the default search engine has been overridden by an extension, and presenting an explicit choice on whether to use the new or previous search providers.">
-        The extension "<ph name="EXTENSION_NAME">$1<ex>Some Extension</ex></ph>" attempted to change your search engine to <ph name="SEARCH_PROVIDER">$2<ex>DuckDuckGo</ex></ph>. Confirm your preference below
+        The extension "<ph name="EXTENSION_NAME">$1<ex>Some Extension</ex></ph>" changed your settings
       </message>
       <message name="IDS_EXTENSION_SEARCH_OVERRIDDEN_DIALOG_RECENT_CHANGE" desc="Describes why a new search provider (added by an extension) is listed as an option for which search to use.">
-        Recently changed to by <ph name="EXTENSION_NAME">$1<ex>Some Extension</ex></ph>
+        Changed to this by extension
       </message>
       <message name="IDS_EXTENSION_SEARCH_OVERRIDDEN_DIALOG_PREVIOUS_CHOICE" desc="Describes why the previous search provider is being presented as an option for which search to use.">
         Your previous choice
@@ -6482,6 +6462,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
         No thanks
       </message>
 
+      <message name="IDS_WEB_APP_UNINSTALL_BUTTON_FRAME_TOOLTIP" desc="The tooltip text for the uninstall button in the web app frame toolbar.">
+        Uninstall App
+      </message>
+      <message name="IDS_WEB_APP_UNINSTALL_BUTTON_FRAME" desc="The text for the uninstall button in the web app frame toolbar.">
+        Uninstall
+      </message>
       <message name="IDS_WEB_APP_MENU_BUTTON_TOOLTIP" desc="The tooltip to show for the three-dot menu in a web app window">
         Customize and control <ph name="APP_NAME">$1<ex>GMail</ex></ph>
       </message>
@@ -6705,7 +6691,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Verify
       </message>
       <if expr="is_android">
-        <message name="IDS_PASSWORD_ERROR_SIGN_IN_BUTTON_TITLE" desc="The title of the sign in button in the password manager error message." formatter_data="android_java">
+        <message name="IDS_PASSWORD_ERROR_SIGN_IN_BUTTON_TITLE" desc="The title of the sign in button in the password manager error message.">
           Sign in
         </message>
       </if>
@@ -7260,12 +7246,15 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_WEBUI_OMNIBOX_COMPOSE_LENS_OVERLAY" desc="The name of the Lens overlay command in the content area context menu">
         Search with Google Lens
       </message>
+      <message name="IDS_WEBUI_OMNIBOX_COMPOSE_ASK_ABOUT_YOUR_TABS" desc="Label for a button that guides the user to composebox's context menu using a suggestion like label.">
+        Ask about your tabs
+      </message>
 
 
       <!-- NTP -->
       <!-- Google Drive integration disclaimer for New Tab Page -->
       <message name="IDS_NTP_DRIVE_CONNECT_TITLE" desc="Title of the dialog asking to connect Google Drive to AIM.">
-        Allow Search to Access Drive Content?
+        Allow Search to access Drive content?
       </message>
       <message name="IDS_NTP_DRIVE_DISCLAIMER_BODY" desc="Body text explaining how Drive data is handled in AIM.">
         Your Google Drive content is accessed only to provide this file search feature. It is not used to improve Brave Search. Brave will not access your Google Drive content unless you explicitly upload a file.
@@ -8294,7 +8283,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Can't upload. File appears to be empty.
       </message>
       <message name="IDS_NTP_COMPOSE_FILE_UPLOAD_INVALID_TOO_LARGE" desc="The text to display when a file upload exceeds the allowed size">
-        Can't upload. File exceeds maximum supported size.
+        Can't upload. File exceeds maximum supported size of <ph name="MAX_FILE_SIZE">$1<ex>100</ex></ph> MB.
       </message>
       <message name="IDS_NTP_COMPOSE_FILE_UPLOAD_IMAGE_PROCESSING_ERROR" desc="The text to display when an file upload image can't be processed.">
         Can't upload. Failed to process image file.
@@ -9045,6 +9034,16 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
       </if>
       <if expr="use_titlecase">
+        <message name="IDS_SIDE_PANEL_SHOW_TABS_FROM_OTHER_DEVICES" desc="Title of the menu item for showing the 'Tabs from other devices' side panel entry.">
+          Show Tabs From Other Devices in Side Panel
+        </message>
+      </if>
+      <if expr="not use_titlecase">
+        <message name="IDS_SIDE_PANEL_SHOW_TABS_FROM_OTHER_DEVICES" desc="Title of the menu item for showing the 'Tabs from other devices' side panel entry.">
+          Show tabs from other devices in side panel
+        </message>
+      </if>
+      <if expr="use_titlecase">
         <message name="IDS_SIDE_PANEL_TABS_FROM_OTHER_DEVICES_TITLE" desc="Title of the 'Tabs from other devices' side panel entry.">
           Tabs From Other Devices
         </message>
@@ -9321,6 +9320,16 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_IMMERSIVE_READING_MODE_OPENED_ANNOUNCEMENT" desc="Accessibility announcement read by screen readers when reading mode is opened." is_accessibility_with_no_ui="true">
         Reading mode opened, full page view
       </message>
+      <if expr="is_macosx">
+        <message name="IDS_READING_MODE_TOOLTIP" desc="Tooltip for the reading mode feature, which gives users an accessible reading experience.">
+          Reading mode (<ph name="READING_MODE_SHORTCUT">$1<ex>⌥⌘R</ex></ph>)
+        </message>
+      </if>
+      <if expr="not is_macosx">
+        <message name="IDS_READING_MODE_TOOLTIP" desc="Tooltip for the reading mode feature, which gives users an accessible reading experience.">
+          Reading mode (<ph name="READING_MODE_SHORTCUT">$1<ex>Alt+Shift+R</ex></ph>)
+        </message>
+      </if>
       <message name="IDS_READING_MODE_NOT_SELECTABLE_HEADER" desc="Header for reading mode when the current webpage cannot be opened in reading mode, even when selecting text.">
         Reading mode isn’t available on this page
       </message>
@@ -9480,6 +9489,43 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_READING_MODE_LINE_FOCUS_OFF_LABEL" desc="Dropdown option for turning off line focus.">
         Off
       </message>
+      <message name="IDS_READING_MODE_LINE_FOCUS_SMALL_FOCUS_LABEL_SCREENREADER" desc="Screen reader label for the dropdown option for the small height window line focus option.">
+        Small focus style
+      </message>
+      <message name="IDS_READING_MODE_LINE_FOCUS_MEDIUM_FOCUS_LABEL_SCREENREADER" desc="Screen reader label for the dropdown option for the medium height window line focus option.">
+        Medium focus style
+      </message>
+      <message name="IDS_READING_MODE_LINE_FOCUS_LARGE_FOCUS_LABEL_SCREENREADER" desc="Screen reader label for the dropdown option for the large height window line focus option.">
+        Large focus style
+      </message>
+      <message name="IDS_READING_MODE_LINE_FOCUS_UNDERLINE_LABEL_SCREENREADER" desc="Screen reader label for the dropdown option for the single-line underline line focus option.">
+        Underline style
+      </message>
+      <message name="IDS_READING_MODE_LINE_FOCUS_STATIC_LABEL_SCREENREADER" desc="Screen reader label for the dropdown option for the line focus option of staying in the middle of the panel.">
+        Static movement
+      </message>
+      <message name="IDS_READING_MODE_LINE_FOCUS_CURSOR_LINE_LABEL_SCREENREADER" desc="Screen reader label for the dropdown option for the line focus option of a single line following the cursor.">
+        Follow cursor movement
+      </message>
+      <message name="IDS_READING_MODE_LINE_FOCUS_OFF_LABEL_SCREENREADER" desc="Screen reader label for the dropdown option for turning off line focus.">
+        Off (no line focus)
+      </message>
+      <if expr="is_macosx">
+        <message name="IDS_READING_MODE_KEYBOARD_SHORTCUT_IPH_BODY" desc="Text for the help bubble describing the keyboard shortcut used to open and close reading mode.">
+          Open reading mode faster with a shortcut. Press ⌥ + ⌘ + R to toggle reading mode.
+        </message>
+        <message name="IDS_READING_MODE_KEYBOARD_SHORTCUT_IPH_SCREENREADER" is_accessibility_with_no_ui="true" desc="Accessible text for the help bubble describing the keyboard shortcut used to open and close reading mode.">
+          Open reading mode faster with a shortcut. Press ⌥ + ⌘ + R to toggle reading mode.
+        </message>
+      </if>
+      <if expr="not is_macosx">
+        <message name="IDS_READING_MODE_KEYBOARD_SHORTCUT_IPH_BODY" desc="Text for the help bubble describing the keyboard shortcut used to open and close reading mode.">
+          Open reading mode faster with a shortcut. Press Alt + Shift + R to toggle reading mode.
+        </message>
+        <message name="IDS_READING_MODE_KEYBOARD_SHORTCUT_IPH_SCREENREADER" is_accessibility_with_no_ui="true" desc="Accessible text for the help bubble describing the keyboard shortcut used to open and close reading mode.">
+          Open reading mode faster with a shortcut. Press Alt + Shift + R to toggle reading mode.
+        </message>
+      </if>
       <message name="IDS_READ_ANYTHING_LOADING" desc="Message to show while Read Anything is figuring out what text to display.">
         Getting ready
       </message>
@@ -9552,9 +9598,16 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_READING_MODE_LANGUAGE_MENU_CLOSE" desc="Label for a button to close a dialog with options for managing language preferences for Read Aloud.">
         Close
       </message>
-      <message name="IDS_READING_MODE_CLOSE" desc="Tooltip and screen reader label for a button to close reading mode.">
-        Close reading mode
-      </message>
+      <if expr="is_macosx">
+        <message name="IDS_READING_MODE_CLOSE" desc="Tooltip and screen reader label for a button to close reading mode.">
+          Close reading mode (<ph name="SHORTCUT">$1<ex>⌥⌘R</ex></ph>)
+        </message>
+      </if>
+      <if expr="not is_macosx">
+        <message name="IDS_READING_MODE_CLOSE" desc="Tooltip and screen reader label for a button to close reading mode.">
+          Close reading mode (<ph name="SHORTCUT">$1<ex>Alt+Shift+R</ex></ph>)
+        </message>
+      </if>
       <message name="IDS_READING_MODE_LANGUAGE_MENU_NO_RESULTS" desc="Text shown in the Read Aloud language menu after a search yields no matching languages.">
         No results found
       </message>
@@ -9704,19 +9757,19 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Hidden toolbar buttons
       </message>
       <if expr="enable_extensions_core">
-      <message name="IDS_TOOLTIP_EXTENSIONS_BUTTON_ALL_EXTENSIONS_BLOCKED" desc="The tooltip for the extensions button when all the extensions are blocked on the current site." formatter_data="android_java">
+      <message name="IDS_TOOLTIP_EXTENSIONS_BUTTON_ALL_EXTENSIONS_BLOCKED" desc="The tooltip for the extensions button when all the extensions are blocked on the current site.">
         Extensions not allowed on this site
       </message>
-      <message name="IDS_TOOLTIP_EXTENSIONS_BUTTON_ANY_EXTENSION_HAS_ACCESS" desc="The tooltip for the extensions button when any extension has access to the current site." formatter_data="android_java">
+      <message name="IDS_TOOLTIP_EXTENSIONS_BUTTON_ANY_EXTENSION_HAS_ACCESS" desc="The tooltip for the extensions button when any extension has access to the current site.">
         Extensions allowed on this site
       </message>
-      <message name="IDS_ACC_NAME_EXTENSIONS_BUTTON" desc="The accessible text for the extensions button.">
+      <message name="IDS_ACC_NAME_EXTENSIONS_BUTTON" desc="The accessible text for the extensions button." formatter_data="android_java">
         Extensions menu
       </message>
-          <message name="IDS_ACC_NAME_EXTENSIONS_BUTTON_ALL_EXTENSIONS_BLOCKED" desc="The accessible text for the extensions button when all the extensions are blocked on the current site." formatter_data="android_java">
+      <message name="IDS_ACC_NAME_EXTENSIONS_BUTTON_ALL_EXTENSIONS_BLOCKED" desc="The accessible text for the extensions button when all the extensions are blocked on the current site." formatter_data="android_java">
         Extensions not allowed on this site. Select to open menu
       </message>
-      <message name="IDS_ACC_NAME_EXTENSIONS_BUTTON_ANY_EXTENSION_HAS_ACCESS" desc="The accessible text for the extensions button when all the extensions are blocked on the current site." formatter_data="android_java">
+      <message name="IDS_ACC_NAME_EXTENSIONS_BUTTON_ANY_EXTENSION_HAS_ACCESS" desc="The accessible text for the extensions button when any extension has access." formatter_data="android_java">
         Extensions allowed on this site. Select to open menu
       </message>
       </if>
@@ -11837,28 +11890,6 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         </message>
       </if>
 
-      <!-- WebUI Tab Strip -->
-      <if expr="enable_webui_tab_strip">
-        <message name="IDS_TOOLTIP_WEBUI_TAB_STRIP_TAB_COUNTER" desc="The tooltip for the button which toggles the tab strip. It counts the number of open tabs. [ICU Syntax]">
-          {NUM_OPEN_TABS, plural, =1 {# open tab, press to toggle tab strip} other {# open tabs, press to toggle tab strip}}
-        </message>
-        <if expr="not use_titlecase">
-          <message name="IDS_WEBUI_TAB_STRIP_TAB_COUNTER_CXMENU_NEW_TAB" desc="The label of a context menu item used to create a new tab and switch to it.">
-            New tab
-          </message>
-          <message name="IDS_WEBUI_TAB_STRIP_TAB_COUNTER_CXMENU_CLOSE_TAB" desc="The label of a context menu item used to close the current tab.">
-            Close tab
-          </message>
-        </if>
-        <if expr="use_titlecase">
-          <message name="IDS_WEBUI_TAB_STRIP_TAB_COUNTER_CXMENU_NEW_TAB" desc="The label of a context menu item used to create a new tab and switch to it.">
-            New Tab
-          </message>
-          <message name="IDS_WEBUI_TAB_STRIP_TAB_COUNTER_CXMENU_CLOSE_TAB" desc="The label of a context menu item used to close the current tab.">
-            Close Tab
-          </message>
-        </if>
-      </if>
 
       <!-- Side By Side -->
       <message name="IDS_ACCNAME_SPLIT_TABS_RESIZE" desc="Screen reader announcement when the side by side resize handle is focused.">
@@ -13295,6 +13326,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       <!-- Settings related strings not specific to chrome://settings.
            (Settings specific strings are in settings_strings.grdp).
            Not necessary on Android that uses native UI in settings unless extensions are enabled. -->
+        <message name="IDS_CONTROLLED_SETTING_POLICY" desc="Text displayed in the controlled settings bubble when a setting's value is managed by policy.">
+          This setting is managed by your administrator.
+        </message>
       <if expr="not is_android or enable_extensions_core">
         <message name="IDS_TOOLBAR_INFORM_SET_HOME_PAGE" desc="The confirmation message when dropping a link on the Home toolbar button">
            Your home page has been set.
@@ -13305,9 +13339,7 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
           Extensions
         </message>
 
-        <message name="IDS_CONTROLLED_SETTING_POLICY" desc="Text displayed in the controlled settings bubble when a setting's value is managed by policy.">
-          This setting is managed by your administrator.
-        </message>
+
         <message name="IDS_CONTROLLED_SETTING_EXTENSION" desc="Text displayed in the controlled settings bubble when a setting's value is enforced by an extension.">
           This setting is enforced by the "<ph name="NAME">$1<ex>Brave Cast</ex></ph>" extension.
         </message>
@@ -13492,6 +13524,12 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       </if>
       <message name="IDS_SEND_TAB_TO_SELF" desc="The title of an action or bubble letting the user share the current tab to other devices">
         Send to your devices
+      </message>
+      <message name="IDS_SEND_TAB_TO_SELF_DEVICE_LABEL" desc="The label for a target device in the Send Tab to Self context menu, which includes the device name and its last active time.">
+        <ph name="DEVICE_NAME">$1<ex>Pixel 9 Pro</ex></ph> (<ph name="LAST_ACTIVE_TIME">$2<ex>Active 5 mins ago</ex></ph>)
+      </message>
+      <message name="IDS_SEND_TAB_TO_SELF_MANAGE_DEVICES" desc="Label for a menu item to manage the devices that can receive tabs.">
+        Manage your devices
       </message>
       <if expr="is_android">
       <message name="IDS_SEND_TAB_TO_SELF_MESSAGE" desc="Text for a message indicating that the tab was shared from a syncing device.">
@@ -14187,6 +14225,12 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       </message>
       <message name="IDS_NEW_TAB_VOICE_SEARCH_CLOSED" desc="Message announced to screen reader users that the voice search overlay is closed.">
         Voice search closed
+      </message>
+      <message name="IDS_FUSEBOX_VOICE_SEARCH_TRANSCRIBING" desc="Text shown as needed while the speech recognition service is transcribing the user's voice input.">
+        Transcribing...
+      </message>
+      <message name="IDS_FUSEBOX_VOICE_SEARCH_STOP_TITLE" desc="Accessibility text shown for the stop button's title.">
+        Stop
       </message>
 
       <if expr="not use_titlecase">
@@ -17730,12 +17774,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_SIGN_IN_AGAIN_DESCRIPTION" desc="The second line in a button that is shown when Sync is 'paused' and the user is trying to sign in with or create a passkey. Sync 'paused' is a state where the user has opted in to Sync, but their sign-in status has expired and they need to sign in again to restore it. Tapping this button closes the passkey window and opens a new tab where the user can sign in to Brave. Note that the English string only just fits within the allocated space. Longer strings will be elided at the end.">
         To use passkeys saved in your Brave sync chain
       </message>
-      <message name="IDS_WEBAUTHN_GPM_INCOGNITO_CREATE_TITLE" desc="The title of a dialog that is shown when a user is creating a Brave Password Manager passkey while browsing in Private mode. The title is asking the user to confirm that they want to perform the action, while suggesting that the new passkey will exist outside of Private mode.">
-        Save this passkey outside Private?
-      </message>
-      <message name="IDS_WEBAUTHN_GPM_INCOGNITO_CREATE_DESC" desc="The description of a dialog that is shown when a user is creating a Brave Password Manager passkey while browsing in Private mode. It is explaining to the user that the passkey will continue to exist in the password manager outside of Private mode.">
-        This passkey will be saved to your password manager. Anyone with access to it will be able to use this passkey.
-      </message>
       <message name="IDS_WEBAUTHN_GPM_PIN_OPTION_NUMBERS" desc="A label on the pin options dropdown menu that allows to choose a Brave Password Manager pin with digits only.">
         Numbers
       </message>
@@ -17856,6 +17894,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <!-- WebAuthn passkey / password selector UIs -->
       <message name="IDS_WEBAUTHN_SIGN_IN_TO_WEBSITE_DIALOG_TITLE" desc="The title of a bubble that displays passkeys or passwords for signing in to a given site.">
         Sign in to <ph name="RP_ID">$1<ex>webauthn.io</ex></ph>
+      </message>
+      <message name="IDS_WEBAUTHN_SIGN_IN_AS_PROMPT" desc="The text of a prompt that allows the user to sign in to a website using an account with the provided username." translateable="false">
+        Sign in as <ph name="USERNAME">$1<ex>elisa@example.com</ex></ph>
       </message>
 
       <!-- WebAuthn Automatic Passkey Upgrades -->
@@ -18081,6 +18122,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
     <message name="IDS_DEEP_SCANNING_DIALOG_SAVE_TO_CLOUD_STORAGE_MESSAGE" desc="Button text to allow the user to save a file to cloud storage">
       <ph name="FILE_NAME">$1<ex>foo.txt</ex></ph> has sensitive data. Your organization will let you save it to cloud storage or discard it
+    </message>
+    <message name="IDS_DEEP_SCANNING_DIALOG_SAVE_TO_CLOUD_STORAGE_CUSTOM_MESSAGE" desc="Message shown for force save with a custom message.">
+      <ph name="FILE_NAME">$1<ex>foo.txt</ex></ph> has sensitive data. Your organization will let you save it to cloud storage or discard it. Your administrator says: <ph name="CUSTOM_MESSAGE">$2<ex>Please don't upload this type of data.</ex></ph>
     </message>
 
     <!-- Data sharing UI strings -->
@@ -19191,6 +19235,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_PDF_GLIC_SUMMARIZE_TOOLTIP" desc="Tooltip for the button to summarize PDFs with Gemini.">
         Summarize with Gemini
       </message>
+      <message name="IDS_PDF_GLIC_SUMMARIZE_PROMPT" desc="Prompt sent to Gemini to summarize a PDF document.">
+        Summarize this document
+      </message>
     </if>
 
     <!-- Protected content identifiers permission -->
@@ -19222,7 +19269,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </if>
 
     <!-- New Tab Page browser feature promotions. -->
-    <if expr="not is_android">
+    <if expr="enable_webui_ntp">
       <message name="IDS_NTP_PROMO_DISMISS" desc="Text shown on the menu option to dismiss a New Tab Page promo.">
         Don't show this promo
       </message>
@@ -19662,6 +19709,13 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_REPORT_UNSAFE_SITE_DIALOG_URL_LABEL" desc="Label which denotes URL of the unsafe-site in report-unsafe-site dialog">
       URL
     </message>
+    <message name="IDS_REPORT_UNSAFE_SITE_DIALOG_SENDING_BUTTON_LABEL" desc="Dialog button label while unsafe-site-report is sending to Brave">
+      Sending...
+    </message>
+    <message name="IDS_REPORT_UNSAFE_SITE_CONFIRMATION_TOAST" desc="Message confirmation after unsafe-site-report sends to Brave">
+      Report sent
+    </message>
+
 
     <!-- Indigo -->
     <if expr="not is_android">
