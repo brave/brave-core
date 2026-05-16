@@ -1,5 +1,5 @@
 diff --git a/services/network/public/cpp/header_util.cc b/services/network/public/cpp/header_util.cc
-index ca0abc83883d9cb03d0fbcb53adf27f9232273a7..6211127ac172c9365b009ab0a8e9f3030036970c 100644
+index cabfb3121e1d30d0cf84e7985a21de78b27cf65c..e2c59b3ab40e629283eb3529bf66e5e1df5f3f2d 100644
 --- a/services/network/public/cpp/header_util.cc
 +++ b/services/network/public/cpp/header_util.cc
 @@ -43,7 +43,8 @@ const char* kUnsafeHeaders[] = {

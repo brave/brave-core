@@ -1,5 +1,5 @@
 diff --git a/net/cookies/cookie_monster.cc b/net/cookies/cookie_monster.cc
-index 18f267aef11323164c73564d482b9c92a80be81c..1c5799dd9c07951dbe44827255346cb3344ef95a 100644
+index 3fe2b6bbabbcfa8b4fd4ed8a2614a7cc74b0b998..d18c10ef5699dfb604262ebac4d7bc004779a34c 100644
 --- a/net/cookies/cookie_monster.cc
 +++ b/net/cookies/cookie_monster.cc
 @@ -146,7 +146,7 @@ enum CookieType {
@@ -20,7 +20,7 @@ index 18f267aef11323164c73564d482b9c92a80be81c..1c5799dd9c07951dbe44827255346cb3
  
  // See comments at declaration of these variables in cookie_monster.h
  // for details.
-@@ -2999,4 +2999,4 @@ std::optional<bool> CookieMonster::SiteHasCookieInOtherPartition(
+@@ -3012,4 +3012,4 @@ std::optional<bool> CookieMonster::SiteHasCookieInOtherPartition(
    });
  }
  

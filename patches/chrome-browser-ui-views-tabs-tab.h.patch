@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/tab.h b/chrome/browser/ui/views/tabs/tab.h
-index e3fe43ec48c0cf387ae3cc49aac9e49ecfb8572b..769b3fb6bd543da40216b9f1530615f41f90dc66 100644
+index 190d0cd9fd770f71cd47c65a31c26b5c5bea8f9e..3f2454a9ab472886caf9df52f201ee7d28329257 100644
 --- a/chrome/browser/ui/views/tabs/tab.h
 +++ b/chrome/browser/ui/views/tabs/tab.h
-@@ -310,7 +310,7 @@ class Tab : public gfx::AnimationDelegate,
+@@ -312,7 +312,7 @@ class Tab : public gfx::AnimationDelegate,
  
    // Whether we are showing the close button. It is cached so that we can
    // detect when it changes and layout appropriately.

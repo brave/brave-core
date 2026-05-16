@@ -1,8 +1,8 @@
 diff --git a/services/network/public/cpp/network_param_mojom_traits.h b/services/network/public/cpp/network_param_mojom_traits.h
-index b2570d6f1d045e690295f14818404599353301e9..9a300205842075e6b1a9ac762c0ff1136c67396b 100644
+index ec9258e0b376ffc17b10520a041a96e8726342eb..81e919b659624bd14eb9ece2a24879d4d8ce822d 100644
 --- a/services/network/public/cpp/network_param_mojom_traits.h
 +++ b/services/network/public/cpp/network_param_mojom_traits.h
-@@ -99,6 +99,7 @@ class COMPONENT_EXPORT(NETWORK_CPP_NETWORK_PARAM)
+@@ -73,6 +73,7 @@ class COMPONENT_EXPORT(NETWORK_CPP_NETWORK_PARAM)
      return host_port_pair.port();
    }
  

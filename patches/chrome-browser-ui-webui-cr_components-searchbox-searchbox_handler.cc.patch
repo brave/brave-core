@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/cr_components/searchbox/searchbox_handler.cc b/chrome/browser/ui/webui/cr_components/searchbox/searchbox_handler.cc
-index 18f2a5a27bf9a017ffd3265ec0f360c3d181510e..83e1012ff1c0aa36006475e28dcde0c4c2349086 100644
+index c9ad08b51c2db392e0dc0733dbd6405670d764e3..8ea1153b5545959947f893f4e41cbf7ebbd258f6 100644
 --- a/chrome/browser/ui/webui/cr_components/searchbox/searchbox_handler.cc
 +++ b/chrome/browser/ui/webui/cr_components/searchbox/searchbox_handler.cc
-@@ -637,6 +637,7 @@ std::string SearchboxHandler::AutocompleteIconToResourceName(
+@@ -699,6 +699,7 @@ std::string SearchboxHandler::AutocompleteIconToResourceName(
    // TODO(446953331): It's error-prone to keep the above if's up to date. When
    //   omnibox input and popup views are replaced with webUI, matches and
    //   actions can store an icon enum instead of `VectorIcon`.

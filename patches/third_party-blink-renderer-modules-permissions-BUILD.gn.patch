@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/permissions/BUILD.gn b/third_party/blink/renderer/modules/permissions/BUILD.gn
-index 312a2db74139bdb6ade7dff60030f0655231b37a..db4a4819fd32a76c0982e4c0a03665d2fc441b09 100644
+index 5809817f9e11993f145fd48288a523d2b350cb95..5265bca4ca54c9c3b191db4381845b2a54ee456b 100644
 --- a/third_party/blink/renderer/modules/permissions/BUILD.gn
 +++ b/third_party/blink/renderer/modules/permissions/BUILD.gn
-@@ -15,6 +15,7 @@ blink_modules_sources("permissions") {
+@@ -17,6 +17,7 @@ blink_modules_sources("permissions") {
      "permissions.cc",
      "permissions.h",
    ]
