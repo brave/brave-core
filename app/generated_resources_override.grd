@@ -102,8 +102,8 @@ are declared in tools/grit/grit_args.gni.
         <part file="os_settings_search_tag_strings_override.grdp" />
         </if>
 
+      <part file="settings_strings_override.grdp" />
       <if expr="not is_android">
-        <part file="settings_strings_override.grdp" />
         <part file="shared_settings_strings_override.grdp" />
       </if>
 
@@ -167,21 +167,11 @@ are declared in tools/grit/grit_args.gni.
             </if>
           <if expr="not is_macosx">
             </if>
-
-          <if expr="is_macosx">
-            </if>
-          <if expr="not is_macosx">
-            </if>
           </if>
         <if expr="use_titlecase">
           <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD" desc="In Title Case: The name of the open a link in Private window command">
             Open Link in &amp;Private Window
           </message>
-          <if expr="is_macosx">
-            </if>
-          <if expr="not is_macosx">
-            </if>
-
           <if expr="is_macosx">
             </if>
           <if expr="not is_macosx">
@@ -517,7 +507,7 @@ are declared in tools/grit/grit_args.gni.
           </if>
       </if>
       <if expr="enable_extensions">
-        <if expr="not use_titlecase">
+       <if expr="not use_titlecase">
           </if>
         <if expr="use_titlecase">
           </if>
@@ -659,6 +649,22 @@ are declared in tools/grit/grit_args.gni.
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
+        </if>
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="is_macosx">
+        </if>
+      <if expr="not is_macosx">
+        </if>
+      <if expr="is_macosx">
+        </if>
+      <if expr="not is_macosx">
+        </if>
+      <if expr="is_macosx">
+        </if>
+      <if expr="not is_macosx">
         </if>
       <if expr="enable_extensions_core">
       </if>
@@ -845,12 +851,6 @@ are declared in tools/grit/grit_args.gni.
       <if expr="use_titlecase">
         </if>
 
-      <if expr="enable_webui_tab_strip">
-        <if expr="not use_titlecase">
-          </if>
-        <if expr="use_titlecase">
-          </if>
-      </if>
 
       <if expr="not use_titlecase">
         </if>
@@ -1264,9 +1264,6 @@ are declared in tools/grit/grit_args.gni.
       <message name="IDS_WEBAUTHN_CREATE_PASSKEY_EXTRA_INCOGNITO" desc="Additional body text on a dialog prompting the user to create a passkey for signing into a website. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'.">
          This passkey will only be saved on this device. It will remain on this device after you close all Private windows.
       </message>
-      <message name="IDS_WEBAUTHN_GPM_INCOGNITO_CREATE_TITLE" desc="The title of a dialog that is shown when a user is creating a Brave Password Manager passkey while browsing in Private mode. The title is asking the user to confirm that they want to perform the action, while suggesting that the new passkey will exist outside of Private mode.">
-        Save this passkey outside Private?
-      </message>
       </if>
 
    <message name="IDS_INCOGNITO_PROFILE_MENU_TITLE" desc="The title of the Private version of profile menu.">
@@ -1378,7 +1375,7 @@ are declared in tools/grit/grit_args.gni.
     <if expr="is_win">
       </if>
 
-    <if expr="not is_android">
+    <if expr="enable_webui_ntp">
       </if>
 
     <if expr="is_linux or is_macosx or is_win">
