@@ -50,6 +50,7 @@ const PasswordInitTestCase* Success() {
 //   - { "code": 13003, "error": "intent not allowed", "status": 400 }
 //   - { "code": 13004, "error": "account already exists", "status": 400 }
 //   - { "code": 13006, "error": "email domain is not supported", "status": 400 }
+//   - { "code": 13012, "error": "registration verification already pending for this email", "status": 400 }
 // - HTTP 401:
 //   - { "code": null, "error": "Unauthorized", "status": 401 }
 // - HTTP 5XX:
