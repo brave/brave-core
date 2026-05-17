@@ -59,6 +59,7 @@
 #include "ui/views/widget/widget_delegate.h"
 
 #if BUILDFLAG(IS_MAC)
+#include "base/mac/mac_util.h"
 #include "chrome/browser/ui/fullscreen_util_mac.h"
 #endif  // BUILDFLAG(IS_MAC)
 
@@ -392,6 +393,14 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
 // Test 2: Rounded corners in split tab mode
 IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
                        RoundedCornersWithSplitTabTest) {
+#if BUILDFLAG(IS_MAC)
+  // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
+  // unexpected test timeout failures are resolved.
+  if (base::mac::MacOSMajorVersion() == 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  }
+#endif
+
   auto* panel_ui = browser()->GetFeatures().side_panel_ui();
   panel_ui->Toggle();
   RunScheduledLayouts();
@@ -429,6 +438,14 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
 // Test 3: Rounded corners after exiting split tab mode
 IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
                        RoundedCornersAfterExitingSplitTabTest) {
+#if BUILDFLAG(IS_MAC)
+  // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
+  // unexpected test timeout failures are resolved.
+  if (base::mac::MacOSMajorVersion() == 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  }
+#endif
+
   auto* panel_ui = browser()->GetFeatures().side_panel_ui();
   panel_ui->Toggle();
   RunScheduledLayouts();
