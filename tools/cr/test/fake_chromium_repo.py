@@ -35,7 +35,11 @@ class FakeChromiumRepo:
         """
         self.temp_dir: tempfile.TemporaryDirectory = (
             tempfile.TemporaryDirectory())
-        self.base_path: Path = Path(self.temp_dir.name) / 'workspace'
+        # Resolve the temp dir so derived paths are symlink-canonical. On
+        # macOS, tempfile returns paths under /var/folders/..., but /var is a
+        # symlink to /private/var; without resolving here, equality checks
+        # against `Repository.root.resolve()` (which follows the symlink) fail.
+        self.base_path: Path = Path(self.temp_dir.name).resolve() / 'workspace'
         self._init_repo(self.chromium)
 
         # Set a brave repository under src/.
