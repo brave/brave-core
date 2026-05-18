@@ -5,9 +5,17 @@
 
 #include "brave/browser/workspace/workspace_session_utils.h"
 
+#include <algorithm>
 #include <memory>
+#include <set>
 #include <vector>
 
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_tabrestore.h"
+#include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/sessions/content/content_serialized_navigation_builder.h"
@@ -83,4 +91,134 @@ void AppendBrowserSessionCommands(
 
   commands.push_back(sessions::CreateSetSelectedTabInWindowCommand(
       window_id, tsm->active_index()));
+}
+
+std::vector<std::unique_ptr<sessions::SessionCommand>>
+GenerateBrowserSessionCommandsForWorkspace(Profile* profile,
+                                           int& window_count,
+                                           int& tab_count) {
+  std::vector<std::unique_ptr<sessions::SessionCommand>> commands;
+  SessionID active_window_id = SessionID::InvalidValue();
+
+  GlobalBrowserCollection::GetInstance()->ForEach(
+      [&](BrowserWindowInterface* bwi) {
+        if (bwi->GetProfile() != profile ||
+            bwi->GetType() != BrowserWindowInterface::Type::TYPE_NORMAL) {
+          return true;
+        }
+
+        int tabs = bwi->GetTabStripModel()->count();
+        if (tabs == 0) {
+          return true;
+        }
+
+        SessionID window_id = SessionID::NewUnique();
+        auto* window = bwi->GetWindow();
+        AppendBrowserSessionCommands(window_id, bwi->GetTabStripModel(),
+                                     window->GetRestoredBounds(),
+                                     window->GetRestoredState(), commands);
+
+        // Prefer the focused window; fall back to the first non-empty window.
+        if (window->IsActive() ||
+            active_window_id == SessionID::InvalidValue()) {
+          active_window_id = window_id;
+        }
+        window_count++;
+        tab_count += tabs;
+        return true;
+      });
+
+  if (tab_count == 0) {
+    return {};
+  }
+
+  if (active_window_id != SessionID::InvalidValue()) {
+    commands.push_back(
+        sessions::CreateSetActiveWindowCommand(active_window_id));
+  }
+
+  return commands;
+}
+
+void RestoreBrowserSessionCommandsForWorkspace(
+    Profile* profile,
+    std::vector<std::unique_ptr<sessions::SessionCommand>> commands) {
+  // RestoreSessionFromCommands constructs SessionTab/SessionWindow objects
+  // whose constructors call SessionID::NewUnique(), which is sequence-checked
+  // to the UI thread.  It must therefore be called here (UI thread), not in
+  // the background I/O task.
+  std::vector<std::unique_ptr<sessions::SessionWindow>> windows;
+  SessionID active_window_id = SessionID::InvalidValue();
+  std::string platform_session_id;
+  std::set<SessionID> discarded_window_ids;
+  sessions::RestoreSessionFromCommands(commands, &windows, &active_window_id,
+                                       &platform_session_id,
+                                       &discarded_window_ids);
+  if (windows.empty()) {
+    return;
+  }
+
+  // We restore tabs ourselves rather than using RestoreForeignSessionWindows
+  // because that API creates an empty new_group_ids map and never calls
+  // RestoreTabGroupMetadata, so tab group names/colors are silently dropped.
+  // By passing the original TabGroupId directly to AddRestoredTab, we avoid
+  // any ID remapping and can apply visual data with the same IDs afterwards.
+  for (const auto& window : windows) {
+    if (window->tabs.empty()) {
+      continue;
+    }
+
+    if (Browser::GetCreationStatusForProfile(profile) !=
+        Browser::CreationStatus::kOk) {
+      continue;
+    }
+
+    Browser::CreateParams params(Browser::TYPE_NORMAL, profile, false);
+    params.initial_bounds = window->bounds;
+    params.initial_show_state = window->show_state;
+    params.initial_workspace = window->workspace;
+    params.initial_visible_on_all_workspaces_state =
+        window->visible_on_all_workspaces;
+    params.should_trigger_session_restore = false;
+    Browser* browser = Browser::Create(params);
+    if (!browser) {
+      continue;
+    }
+
+    auto* tsm = browser->tab_strip_model();
+    for (size_t i = 0; i < window->tabs.size(); ++i) {
+      const auto& tab = window->tabs[i];
+      if (tab->navigations.empty()) {
+        continue;
+      }
+      chrome::AddRestoredTab(
+          browser, tab->navigations,
+          /*tab_index=*/i, tab->normalized_navigation_index(),
+          tab->extension_app_id,
+          /*group=*/tab->group,
+          /*select=*/false, tab->pinned,
+          /*last_active_time_ticks=*/base::TimeTicks(), tab->last_active_time,
+          /*storage_namespace=*/nullptr, tab->user_agent_override,
+          tab->extra_data,
+          /*from_session_restore=*/true,
+          /*is_active_browser=*/std::nullopt);
+    }
+
+    // Apply group names, colors, and collapsed state.  Since we passed the
+    // original TabGroupIds to AddRestoredTab, no ID remapping is needed.
+    for (const auto& session_group : window->tab_groups) {
+      if (!tsm->group_model() ||
+          !tsm->group_model()->ContainsTabGroup(session_group->id)) {
+        continue;
+      }
+      tsm->ChangeTabGroupVisuals(session_group->id, session_group->visual_data);
+    }
+
+    int active = std::clamp(window->selected_tab_index, 0,
+                            std::max(0, tsm->count() - 1));
+    if (active < tsm->count()) {
+      tsm->ActivateTabAt(active);
+    }
+    browser->window()->Show();
+  }
 }

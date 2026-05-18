@@ -15,7 +15,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/task/sequenced_task_runner.h"
-#include "brave/browser/workspace/preferences.h"
+#include "brave/browser/workspace/pref_names.h"
 #include "brave/browser/workspace/workspace_metadata.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/sessions/core/session_command.h"
@@ -60,10 +60,10 @@ class WorkspaceService : public KeyedService {
   void RemoveWorkspaceMetadata(const std::string& name);
 
   // Returns the directory that contains all workspace subdirectories.
-  base::FilePath GetWorkspacesDir() const;
+  const base::FilePath& GetWorkspacesPath() const { return workspaces_path_; }
 
   // Returns the per-workspace subdirectory for |name|.
-  base::FilePath GetWorkspaceDirForName(const std::string& name) const;
+  base::FilePath GetWorkspacePathForName(const std::string& name) const;
 
   // ---- Browser-state commands (UI thread only) ----------------------------
 

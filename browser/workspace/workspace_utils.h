@@ -34,7 +34,7 @@ inline constexpr sessions::CommandStorageManager::SessionType
 // Must run on a background sequenced task runner.
 void WriteWorkspaceToDisk(
     std::vector<std::unique_ptr<sessions::SessionCommand>> commands,
-    const base::FilePath& workspace_dir,
+    const base::FilePath& workspace_path,
     scoped_refptr<sessions::CommandStorageBackend> backend,
     base::OnceClosure on_error);
 
@@ -45,7 +45,7 @@ void WriteWorkspaceToDisk(
 //
 // Must run on a background sequenced task runner.
 std::vector<std::unique_ptr<sessions::SessionCommand>> ReadWorkspaceFromDisk(
-    const base::FilePath& workspace_dir,
+    const base::FilePath& workspace_path,
     scoped_refptr<sessions::CommandStorageBackend> backend);
 
 // Parses a workspace metadata dict (the value stored under

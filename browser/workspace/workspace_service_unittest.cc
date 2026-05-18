@@ -38,11 +38,10 @@ WorkspaceMetadata MakeMeta(const std::string& name,
                            int windows,
                            int tabs,
                            base::Time t) {
-  WorkspaceMetadata meta;
-  meta.name = name;
-  meta.number_of_windows = windows;
-  meta.number_of_tabs = tabs;
-  meta.modified_at = t;
+  WorkspaceMetadata meta{.name = name,
+                         .modified_at = t,
+                         .number_of_windows = windows,
+                         .number_of_tabs = tabs};
   return meta;
 }
 }  // namespace
@@ -56,7 +55,7 @@ class WorkspaceServiceTest : public ::testing::Test {
     // kWorkspacesMetadataPref is registered.
     WorkspaceServiceFactory::GetInstance();
     profile_ = profile_manager_.CreateTestingProfile("test");
-    service_ = std::make_unique<WorkspaceService>(profile_);
+    service_ = std::make_unique<WorkspaceService>(*profile_);
   }
 
   content::BrowserTaskEnvironment task_environment_;
@@ -128,18 +127,18 @@ TEST_F(WorkspaceServiceTest, SaveMetadata_SameNameOverwrites) {
 
 // ---- Name / path computation tests -----------------------------------------
 
-// Key is a stable hex hash — different display names get different directories.
+// Key is a stable hex hash — different display names get different paths.
 TEST_F(WorkspaceServiceTest,
-       GetWorkspaceDirForName_DifferentNamesDifferentDirs) {
-  base::FilePath path1 = service_->GetWorkspaceDirForName("Work Space");
-  base::FilePath path2 = service_->GetWorkspaceDirForName("Work-Space");
+       GetWorkspacePathForName_DifferentNamesDifferentPaths) {
+  base::FilePath path1 = service_->GetWorkspacePathForName("Work Space");
+  base::FilePath path2 = service_->GetWorkspacePathForName("Work-Space");
   EXPECT_NE(path1, path2);
 }
 
-// Same name always resolves to the same directory (deterministic key).
-TEST_F(WorkspaceServiceTest, GetWorkspaceDirForName_SameNameSameDir) {
-  EXPECT_EQ(service_->GetWorkspaceDirForName("My Workspace"),
-            service_->GetWorkspaceDirForName("My Workspace"));
+// Same name always resolves to the same path (deterministic key).
+TEST_F(WorkspaceServiceTest, GetWorkspacePathForName_SameNameSamePath) {
+  EXPECT_EQ(service_->GetWorkspacePathForName("My Workspace"),
+            service_->GetWorkspacePathForName("My Workspace"));
 }
 
 // ---- Disk I/O tests (async, use RunUntil not RunUntilIdle) ------------------
@@ -156,12 +155,13 @@ TEST_F(WorkspaceServiceTest, WriteAndReadRoundTrip) {
       sessions::CreateSetSelectedTabInWindowCommand(window_id, 0));
   const size_t num_commands = commands.size();
 
-  base::FilePath workspace_dir = service_->GetWorkspaceDirForName("roundtrip");
+  base::FilePath workspace_path =
+      service_->GetWorkspacePathForName("roundtrip");
   auto task_runner = base::ThreadPool::CreateSequencedTaskRunner(
       {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
        base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
   auto backend = base::MakeRefCounted<sessions::CommandStorageBackend>(
-      task_runner, workspace_dir, kWorkspaceSessionType,
+      task_runner, workspace_path, kWorkspaceSessionType,
       /*encryptor=*/std::nullopt);
 
   bool error_called = false;
@@ -172,7 +172,7 @@ TEST_F(WorkspaceServiceTest, WriteAndReadRoundTrip) {
 
   task_runner->PostTask(
       FROM_HERE,
-      base::BindOnce(&WriteWorkspaceToDisk, std::move(commands), workspace_dir,
+      base::BindOnce(&WriteWorkspaceToDisk, std::move(commands), workspace_path,
                      std::move(backend), std::move(on_error)));
   // A sequenced task after the write runs only after it completes.
   task_runner->PostTask(
@@ -186,12 +186,12 @@ TEST_F(WorkspaceServiceTest, WriteAndReadRoundTrip) {
 
   // Read back using a fresh backend (mirrors RestoreWorkspace's pattern).
   auto read_backend = base::MakeRefCounted<sessions::CommandStorageBackend>(
-      task_runner, workspace_dir, kWorkspaceSessionType,
+      task_runner, workspace_path, kWorkspaceSessionType,
       /*encryptor=*/std::nullopt);
   base::test::TestFuture<CommandList> read_future;
   task_runner->PostTaskAndReplyWithResult(
       FROM_HERE,
-      base::BindOnce(&ReadWorkspaceFromDisk, workspace_dir, read_backend),
+      base::BindOnce(&ReadWorkspaceFromDisk, workspace_path, read_backend),
       read_future.GetCallback());
 
   ASSERT_TRUE(read_future.Wait());
@@ -216,15 +216,15 @@ TEST_F(WorkspaceServiceTest,
   // Place a regular FILE where the workspace directory would be so that
   // base::CreateDirectory fails on the background thread and on_error is
   // posted back to the UI thread.
-  ASSERT_TRUE(base::CreateDirectory(service_->GetWorkspacesDir()));
-  base::FilePath workspace_dir = service_->GetWorkspaceDirForName("blocked");
-  ASSERT_TRUE(base::WriteFile(workspace_dir, "not-a-directory"));
+  ASSERT_TRUE(base::CreateDirectory(service_->GetWorkspacesPath()));
+  base::FilePath workspace_path = service_->GetWorkspacePathForName("blocked");
+  ASSERT_TRUE(base::WriteFile(workspace_path, "not-a-directory"));
 
   auto task_runner = base::ThreadPool::CreateSequencedTaskRunner(
       {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
        base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
   auto backend = base::MakeRefCounted<sessions::CommandStorageBackend>(
-      task_runner, workspace_dir, kWorkspaceSessionType,
+      task_runner, workspace_path, kWorkspaceSessionType,
       /*encryptor=*/std::nullopt);
 
   bool error_called = false;
@@ -236,7 +236,7 @@ TEST_F(WorkspaceServiceTest,
       FROM_HERE,
       base::BindOnce(&WriteWorkspaceToDisk,
                      std::vector<std::unique_ptr<sessions::SessionCommand>>(),
-                     workspace_dir, std::move(backend), std::move(on_error)));
+                     workspace_path, std::move(backend), std::move(on_error)));
 
   EXPECT_TRUE(base::test::RunUntil([&] { return error_called; }));
 }
@@ -269,7 +269,7 @@ TEST_F(WorkspaceServiceFactoryTest,
       base::BindLambdaForTesting(
           [](content::BrowserContext* ctx) -> std::unique_ptr<KeyedService> {
             auto* p = Profile::FromBrowserContext(ctx);
-            return std::make_unique<WorkspaceService>(p);
+            return std::make_unique<WorkspaceService>(*p);
           }));
   EXPECT_NE(WorkspaceServiceFactory::GetForProfile(profile), nullptr);
 }

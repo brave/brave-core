@@ -8,7 +8,7 @@
 #include <memory>
 
 #include "brave/browser/workspace/features.h"
-#include "brave/browser/workspace/preferences.h"
+#include "brave/browser/workspace/pref_names.h"
 #include "brave/browser/workspace/workspace_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_selections.h"

@@ -27,7 +27,7 @@ source_set("impl") {
 source_set("workspace") {
   sources = [
     "features.h",
-    "preferences.h",
+    "pref_names.h",
     "workspace_metadata.h",
     "workspace_service.h",
     "workspace_service_factory.h",

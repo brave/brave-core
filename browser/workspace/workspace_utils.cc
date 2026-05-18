@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/files/file_util.h"
+#include "base/json/values_util.h"
 #include "base/logging.h"
 #include "base/time/time.h"
 
@@ -35,17 +36,15 @@ std::vector<WorkspaceMetadata> ListWorkspacesFromDict(
     if (!name || name->empty()) {
       continue;
     }
-    std::optional<double> modified_at = entry->FindDouble(kWorkspaceModifiedAt);
-    if (!modified_at) {
-      continue;
-    }
-    WorkspaceMetadata info;
-    info.name = *name;
-    info.number_of_windows = entry->FindInt(kWorkspaceWindowCount).value_or(1);
-    info.number_of_tabs = entry->FindInt(kWorkspaceTabCount).value_or(0);
-    info.modified_at = base::Time::FromSecondsSinceUnixEpoch(*modified_at);
+    WorkspaceMetadata info = {
+        .name = *name,
+        .modified_at = base::ValueToTime(entry->Find(kWorkspaceModifiedAt))
+                           .value_or(base::Time::Now()),
+        .number_of_windows = entry->FindInt(kWorkspaceWindowCount).value_or(1),
+        .number_of_tabs = entry->FindInt(kWorkspaceTabCount).value_or(0)};
     result.push_back(std::move(info));
   }
+
   std::sort(result.begin(), result.end(),
             [](const WorkspaceMetadata& a, const WorkspaceMetadata& b) {
               return a.modified_at > b.modified_at;
@@ -54,21 +53,20 @@ std::vector<WorkspaceMetadata> ListWorkspacesFromDict(
 }
 
 base::DictValue WorkspaceMetadataToDictEntry(const WorkspaceMetadata& meta) {
-  base::DictValue entry;
-  entry.Set(kWorkspaceName, meta.name);
-  entry.Set(kWorkspaceWindowCount, meta.number_of_windows);
-  entry.Set(kWorkspaceTabCount, meta.number_of_tabs);
-  entry.Set(kWorkspaceModifiedAt, meta.modified_at.InSecondsFSinceUnixEpoch());
-  return entry;
+  return base::DictValue()
+      .Set(kWorkspaceName, meta.name)
+      .Set(kWorkspaceWindowCount, meta.number_of_windows)
+      .Set(kWorkspaceTabCount, meta.number_of_tabs)
+      .Set(kWorkspaceModifiedAt, base::TimeToValue(meta.modified_at));
 }
 
 void WriteWorkspaceToDisk(
     std::vector<std::unique_ptr<sessions::SessionCommand>> commands,
-    const base::FilePath& workspace_dir,
+    const base::FilePath& workspace_path,
     scoped_refptr<sessions::CommandStorageBackend> backend,
     base::OnceClosure on_error) {
-  if (!base::CreateDirectory(workspace_dir)) {
-    DVLOG(1) << "Failed to create workspace directory: " << workspace_dir;
+  if (!base::CreateDirectory(workspace_path)) {
+    DVLOG(1) << "Failed to create workspace directory: " << workspace_path;
     std::move(on_error).Run();
     return;
   }
@@ -79,7 +77,7 @@ void WriteWorkspaceToDisk(
 }
 
 std::vector<std::unique_ptr<sessions::SessionCommand>> ReadWorkspaceFromDisk(
-    const base::FilePath& workspace_dir,
+    const base::FilePath& workspace_path,
     scoped_refptr<sessions::CommandStorageBackend> backend) {
   // Only do file I/O here.  Callers must call RestoreSessionFromCommands() on
   // the UI thread because SessionTab/SessionWindow constructors call
@@ -87,7 +85,7 @@ std::vector<std::unique_ptr<sessions::SessionCommand>> ReadWorkspaceFromDisk(
   sessions::CommandStorageBackend::ReadCommandsResult result =
       backend->ReadLastSessionCommands();
   if (result.error_reading || result.commands.empty()) {
-    DVLOG(1) << "Could not read workspace session from: " << workspace_dir;
+    DVLOG(1) << "Could not read workspace session from: " << workspace_path;
     return {};
   }
   return std::move(result.commands);

@@ -14,6 +14,7 @@
 #include "ui/base/mojom/window_show_state.mojom.h"
 #include "ui/gfx/geometry/rect.h"
 
+class Profile;
 class TabStripModel;
 
 // Appends session commands for a single browser window to |commands|.
@@ -25,5 +26,20 @@ void AppendBrowserSessionCommands(
     gfx::Rect restored_bounds,
     ui::mojom::WindowShowState restored_state,
     std::vector<std::unique_ptr<sessions::SessionCommand>>& commands);
+
+// Iterates all normal browser windows for |profile|, serializes their state
+// into session commands, and returns the result.  |window_count| and
+// |tab_count| are incremented to reflect what was captured.  Returns an empty
+// vector if there are no tabs to save.
+std::vector<std::unique_ptr<sessions::SessionCommand>>
+GenerateBrowserSessionCommandsForWorkspace(Profile* profile,
+                                           int& window_count,
+                                           int& tab_count);
+
+// Deserializes |commands| and opens the encoded windows/tabs in new browser
+// windows belonging to |profile|.  Must be called on the UI thread.
+void RestoreBrowserSessionCommandsForWorkspace(
+    Profile* profile,
+    std::vector<std::unique_ptr<sessions::SessionCommand>> commands);
 
 #endif  // BRAVE_BROWSER_WORKSPACE_WORKSPACE_SESSION_UTILS_H_
