@@ -26,6 +26,12 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry.h"
+#include "chrome/browser/ui/views/side_panel/side_panel.h"
+
+#if BUILDFLAG(ENABLE_SIDEBAR_V2)
+#include "brave/browser/ui/views/side_panel/brave_side_panel_header.h"
+#include "brave/browser/ui/views/side_panel/brave_side_panel_header_controller.h"
+#endif
 
 namespace {
 
@@ -202,7 +208,26 @@ void BraveSidePanelCoordinator::PopulateSidePanel(
   SidePanelCoordinator::PopulateSidePanel(supress_animations, unique_key,
                                           std::move(open_trigger), entry,
                                           std::move(content_view));
+
+#if BUILDFLAG(ENABLE_SIDEBAR_V2)
+  if (ShouldShowBraveHeader(entry)) {
+    auto* side_panel = GetSidePanelFor(entry->type());
+    CHECK(side_panel);
+    side_panel->AddHeaderView(std::make_unique<BraveSidePanelHeader>(
+        std::make_unique<BraveSidePanelHeaderController>(
+            *browser_view_->browser(), entry)));
+  }
+#endif
 }
+
+#if BUILDFLAG(ENABLE_SIDEBAR_V2)
+bool BraveSidePanelCoordinator::ShouldShowBraveHeader(
+    SidePanelEntry* entry) const {
+  const SidePanelEntry::Id id = entry->key().id();
+  return id == SidePanelEntry::Id::kReadingList ||
+         id == SidePanelEntry::Id::kBookmarks;
+}
+#endif
 
 BraveBrowserView* BraveSidePanelCoordinator::GetBraveBrowserView() {
   return static_cast<BraveBrowserView*>(browser_view_);

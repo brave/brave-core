@@ -23,8 +23,34 @@ source_set("side_panel") {
 
   if (enable_sidebar_v2) {
     sources += [
+      "brave_side_panel_header.cc",
+      "brave_side_panel_header.h",
+      "brave_side_panel_header_controller.h",
       "brave_side_panel_resize_area.cc",
       "brave_side_panel_resize_area.h",
+    ]
+  }
+}
+
+source_set("side_panel_impl") {
+  sources = []
+  deps = []
+
+  if (enable_sidebar_v2) {
+    sources += [ "brave_side_panel_header_controller.cc" ]
+
+    deps += [
+      ":side_panel",
+      "//base",
+      "//brave/app:brave_generated_resources_grit_grit",
+      "//brave/components/vector_icons",
+      "//chrome/app:generated_resources",
+      "//chrome/browser/ui/browser_window",
+      "//chrome/browser/ui/color:mixers",
+      "//chrome/browser/ui/side_panel:side_panel_views_dependent",
+      "//chrome/common",
+      "//ui/base",
+      "//ui/views",
     ]
   }
 }
