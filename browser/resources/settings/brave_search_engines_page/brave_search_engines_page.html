@@ -13,7 +13,7 @@
     margin-inline-end: auto;
   }
 
-  site-favicon {
+  settings-search-engine-icon {
     --site-favicon-border-radius: 4px;
     --site-favicon-height: var(--favicon-size);
     --site-favicon-width: var(--favicon-size);
@@ -38,11 +38,8 @@
         </a>
       </div>
       <div class="cr-row first">
-        <site-favicon
-          favicon-url="[[defaultPrivateSearchEngine_.iconURL]]"
-          url="[[defaultPrivateSearchEngine_.url]]"
-          icon-path="[[defaultPrivateSearchEngine_.iconPath]]">
-        </site-favicon>
+        <settings-search-engine-icon engine="[[defaultPrivateSearchEngine_]]">
+        </settings-search-engine-icon>
         <div class="search-engine-name">[[defaultPrivateSearchEngine_.name]]</div>
         <cr-button
           id="openPrivateDialogButton"

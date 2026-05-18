@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * you can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import '../search_page/search_engine_icon.js';
 import '../settings_shared.css.js'
 import '../settings_vars.css.js'
 
