@@ -6,9 +6,9 @@
 [[substitution]]
 description = 'Preserve fullscreen state while Brave-managed YouTube PiP is active when a tab is hidden'
 re_pattern = '''(public void onHidden\(Tab tab, @TabHidingType int reason\)\s+\{\n)([\s\S]*?\n) +mFullscreenManagerDelegate\.onExitFullscreen\(null\);'''
-replace = '''\1                        BraveFullscreenHtmlApiHandlerBase brave = BraveFullscreenHtmlApiHandlerBase.class.cast(FullscreenHtmlApiHandlerBase.this);
-                        brave.mTabHiddenByChangedTabs = reason == TabHidingType.CHANGED_TABS;
-                        if (brave.shouldPreservePersistentFullscreenForPictureInPicture(mActivity)) {
+replace = '''\1                        if (BraveFullscreenHtmlApiHandlerBase.class.cast(
+                                        FullscreenHtmlApiHandlerBase.this)
+                                .maybeSkipExitFullscreenOnTabHidden(mActivity, reason)) {
                             return;
                         }
 \2                        mFullscreenManagerDelegate.onExitFullscreen(null);'''
