@@ -10,6 +10,8 @@
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/page_transition_types.h"
 #include "ui/base/window_open_disposition.h"
@@ -63,9 +65,9 @@ void ChromeAutocompleteProviderClient::OpenLeo(const std::u16string& query) {
   // so active browser is unlikely to be changed
   // * Even if the active browser is changed, it'd be better to open the Leo in
   // the new active browser.
-  Browser* browser =
-      chrome::FindTabbedBrowser(profile_,
-                                /*match_original_profiles=*/true);
+  auto* browser =
+      ProfileBrowserCollection::GetForProfile(profile_)->FindTabbedBrowser(
+          /*match_original_profiles=*/true);
   if (!browser) {
     return;
   }
@@ -75,14 +77,15 @@ void ChromeAutocompleteProviderClient::OpenLeo(const std::u16string& query) {
   if (ai_chat_service->IsAIChatHistoryEnabled() &&
       ai_chat::features::kOmniboxOpensFullPage.Get()) {
     conversation_handler = ai_chat_service->CreateConversation();
-    browser->OpenURL({ai_chat::ConversationUrl(
-                          conversation_handler->get_conversation_uuid()),
-                      content::Referrer(), WindowOpenDisposition::CURRENT_TAB,
-                      ui::PageTransition::PAGE_TRANSITION_GENERATED, false},
-                     {});
+    browser->GetBrowserForMigrationOnly()->OpenURL(
+        {ai_chat::ConversationUrl(
+             conversation_handler->get_conversation_uuid()),
+         content::Referrer(), WindowOpenDisposition::CURRENT_TAB,
+         ui::PageTransition::PAGE_TRANSITION_GENERATED, false},
+        {});
   } else {
     auto* chat_tab_helper = ai_chat::AIChatTabHelper::FromWebContents(
-        browser->tab_strip_model()->GetActiveWebContents());
+        browser->GetTabStripModel()->GetActiveWebContents());
     DCHECK(chat_tab_helper);
     conversation_handler =
         ai_chat_service->GetOrCreateConversationHandlerForContent(

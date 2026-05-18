@@ -20,7 +20,7 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/startup/startup_browser_creator.h"
 #include "chrome/common/chrome_constants.h"
 #include "chrome/common/chrome_paths.h"
@@ -299,7 +299,8 @@ IN_PROC_BROWSER_TEST_F(BraveOriginStartupViewBrowserTest,
                        StartOverrideShowsDialogAndProceeds) {
   EXPECT_FALSE(BraveOriginStartupView::IsShowing());
 
-  size_t browser_count_before = chrome::GetTotalBrowserCount();
+  size_t browser_count_before =
+      GlobalBrowserCollection::GetInstance()->GetSize();
 
   BraveOriginStartupView::SetShouldShowDialogForTesting(true);
 
@@ -321,7 +322,8 @@ IN_PROC_BROWSER_TEST_F(BraveOriginStartupViewBrowserTest,
   }));
 
   // A new browser window should have been created by Start_ChromiumImpl.
-  EXPECT_GT(chrome::GetTotalBrowserCount(), browser_count_before);
+  EXPECT_GT(GlobalBrowserCollection::GetInstance()->GetSize(),
+            browser_count_before);
 }
 
 // Verifies that StartupBrowserCreator::Start() proceeds normally (no dialog)
@@ -330,7 +332,8 @@ IN_PROC_BROWSER_TEST_F(BraveOriginStartupViewBrowserTest,
                        StartOverrideSkipsDialogWhenNotNeeded) {
   BraveOriginStartupView::SetShouldShowDialogForTesting(false);
 
-  size_t browser_count_before = chrome::GetTotalBrowserCount();
+  size_t browser_count_before =
+      GlobalBrowserCollection::GetInstance()->GetSize();
 
   StartupBrowserCreator browser_creator;
   StartupProfileInfo profile_info{browser()->profile(),
@@ -342,5 +345,6 @@ IN_PROC_BROWSER_TEST_F(BraveOriginStartupViewBrowserTest,
   EXPECT_FALSE(BraveOriginStartupView::IsShowing());
 
   // Start_ChromiumImpl should have run directly, creating a new browser.
-  EXPECT_GT(chrome::GetTotalBrowserCount(), browser_count_before);
+  EXPECT_GT(GlobalBrowserCollection::GetInstance()->GetSize(),
+            browser_count_before);
 }

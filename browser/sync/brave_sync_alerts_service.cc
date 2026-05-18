@@ -16,7 +16,7 @@
 #include "brave/components/sync/service/brave_sync_service_impl.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sync/sync_service_factory.h"
-#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "components/infobars/content/content_infobar_manager.h"
 
 #if BUILDFLAG(IS_ANDROID)
@@ -78,7 +78,8 @@ void BraveSyncAlertsService::OnSyncShutdown(SyncService* sync_service) {
 
 void BraveSyncAlertsService::ShowSyncCannotRunInfobar() {
 #if !BUILDFLAG(IS_ANDROID)
-  BrowserWindowInterface* browser = chrome::FindLastActive();
+  BrowserWindowInterface* browser =
+      GetLastActiveBrowserWindowInterfaceWithAnyProfile();
   if (browser) {
     content::WebContents* active_web_contents =
         browser->GetTabStripModel()->GetActiveWebContents();
@@ -98,7 +99,8 @@ void BraveSyncAlertsService::ShowInfobar() {
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveSyncAccountDeletedInformer_show(env);
 #else
-  BrowserWindowInterface* browser = chrome::FindLastActive();
+  BrowserWindowInterface* browser =
+      GetLastActiveBrowserWindowInterfaceWithAnyProfile();
   if (browser) {
     content::WebContents* active_web_contents =
         browser->GetTabStripModel()->GetActiveWebContents();

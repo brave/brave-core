@@ -8,7 +8,8 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
 #include "chrome/browser/ui/startup/launch_mode_recorder.h"
 #include "chrome/browser/ui/startup/startup_browser_creator.h"
 #include "chrome/browser/ui/startup/startup_browser_creator_impl.h"
@@ -30,7 +31,9 @@ Browser* OpenNewBrowser(Profile* profile) {
                                     chrome::startup::IsFirstRun::kYes);
   creator.Launch(profile, chrome::startup::IsProcessStartup::kNo,
                  /*restore_tabbed_browser=*/true);
-  return chrome::FindBrowserWithProfile(profile);
+  return ProfileBrowserCollection::GetForProfile(profile)
+      ->GetLastActiveBrowser()
+      ->GetBrowserForMigrationOnly();
 }
 }  // namespace
 

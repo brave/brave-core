@@ -30,9 +30,9 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
-#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
+#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/webui/tab_search/tab_search.mojom-forward.h"
 #include "chrome/browser/ui/webui/tab_search/tab_search_ui.h"
 #include "chrome/common/webui_url_constants.h"
@@ -376,7 +376,7 @@ IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerBrowserTest, GetFocusTabs) {
                                          run_loop1.Quit();
                                        }));
   run_loop1.Run();
-  ASSERT_EQ(chrome::GetTotalBrowserCount(), 3u)
+  ASSERT_EQ(GlobalBrowserCollection::GetInstance()->GetSize(), 3u)
       << "A new window should be created.";
   Browser* focus_tabs_browser =
       GetLastActiveBrowserWindowInterfaceWithAnyProfile()
@@ -401,7 +401,7 @@ IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerBrowserTest, GetFocusTabs) {
   base::RunLoop run_loop2;
   handler()->UndoFocusTabs(base::BindLambdaForTesting([&]() {
     // Focused tabs window should already be closed.
-    ASSERT_EQ(chrome::GetTotalBrowserCount(), 2u);
+    ASSERT_EQ(GlobalBrowserCollection::GetInstance()->GetSize(), 2u);
 
     EXPECT_EQ(browser()->tab_strip_model()->count(), 3)
         << "The tabs should be moved back to the previous active window.";

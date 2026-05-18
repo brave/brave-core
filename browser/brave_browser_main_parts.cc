@@ -61,7 +61,7 @@
 #include "brave/browser/infobars/brave_sync_account_deleted_infobar_delegate.h"
 #include "brave/browser/infobars/sync_cannot_run_infobar_delegate.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "components/infobars/content/content_infobar_manager.h"
 #else
 #include "brave/browser/android/youtube_script_injector/features.h"
@@ -143,7 +143,8 @@ void ChromeBrowserMainParts::PostBrowserStart() {
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
-  BrowserWindowInterface* browser = chrome::FindLastActive();
+  BrowserWindowInterface* browser =
+      GetLastActiveBrowserWindowInterfaceWithAnyProfile();
   content::WebContents* active_web_contents = nullptr;
 
   if (browser) {

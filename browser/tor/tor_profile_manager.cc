@@ -17,14 +17,15 @@
 #include "brave/components/tor/tor_launcher_factory.h"
 #include "brave/components/tor/tor_launcher_observer.h"
 #include "brave/components/tor/tor_profile_service.h"
+#include "chrome/browser/lifetime/application_lifetime_desktop.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
-#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_collection_observer.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
+#include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/safe_browsing/core/common/safe_browsing_prefs.h"
@@ -195,7 +196,10 @@ Browser* TorProfileManager::SwitchToTorProfile(
 
   // Find an existing Tor Browser, making a new one if no such Browser is
   // located.
-  Browser* browser = chrome::FindTabbedBrowser(tor_profile, false);
+  auto* collection = ProfileBrowserCollection::GetForProfile(tor_profile);
+  auto* tabbed_browser = collection ? collection->FindTabbedBrowser() : nullptr;
+  auto* browser =
+      tabbed_browser ? tabbed_browser->GetBrowserForMigrationOnly() : nullptr;
   if (!browser && Browser::GetCreationStatusForProfile(tor_profile) ==
                       Browser::CreationStatus::kOk) {
     browser = Browser::Create(Browser::CreateParams(tor_profile, true));
