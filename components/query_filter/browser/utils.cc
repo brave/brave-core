@@ -52,13 +52,6 @@ static constexpr auto kExemptedHostnames =
 // other parts untouched.
 std::optional<std::string> StripQueryParameter(std::string_view query,
                                                std::string_view spec) {
-  // Note that when disabled this would also remove support for
-  // |kConditionalQueryStringTrackers|.
-  if (!base::FeatureList::IsEnabled(
-          query_filter::features::kQueryFilterComponent)) {
-    return std::nullopt;
-  }
-
   // Set of all the params which are blocked for |spec| from our rules.
   const auto& rules = query_filter::QueryFilterData::GetInstance()->rules();
   const base::flat_set<std::string> blocked_params_set =
@@ -183,6 +176,11 @@ std::optional<GURL> MaybeApplyQueryStringFilter(
                  net::registry_controlled_domains::
                      INCLUDE_PRIVATE_REGISTRIES)) {
     // Same-site requests are exempted.
+    return std::nullopt;
+  }
+
+  if (!base::FeatureList::IsEnabled(
+          query_filter::features::kQueryFilterComponent)) {
     return std::nullopt;
   }
 
