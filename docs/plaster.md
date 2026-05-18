@@ -26,6 +26,7 @@ Plaster files are placed under `rewrite/`, using a `.toml` extension, and they
 are supposed to match the path for the file being plastered.
 
 > [!WARNING]
+>
 > At the moment, only plaster files to sources in Chromium's `src` repo are
 > supported.
 
@@ -33,21 +34,25 @@ Each plaster file will be used to apply changes into a given source, and then
 generate a patch for the effected changes.
 
 For example, imagine you want to add changes to
-`chrome/browser/autocomplete/autocomplete_classifier_factory.cc`. You would
-care about the following files.
+`chrome/browser/autocomplete/autocomplete_classifier_factory.cc`. You would care
+about the following files.
 
- * **Plaster file:** `brave/rewrite/chrome/browser/autocomplete/autocomplete_classifier_factory.cc.toml`
- * **Source file:** `chrome/browser/autocomplete/autocomplete_classifier_factory.cc`
- * **Patch file** `brave/patches/chrome-browser-autocomplete-autocomplete_classifier_factory.cc.patch`
+- **Plaster file:**
+  `brave/rewrite/chrome/browser/autocomplete/autocomplete_classifier_factory.cc.toml`
+- **Source file:**
+  `chrome/browser/autocomplete/autocomplete_classifier_factory.cc`
+- **Patch file**
+  `brave/patches/chrome-browser-autocomplete-autocomplete_classifier_factory.cc.patch`
 
 ### Creating a plaster file
 
-A plaster file is a `toml` file used to list regexes operations to be applied
-in the corresponding source, based on its path. The following is plaster file
-to apply a few changes to
+A plaster file is a `toml` file used to list regexes operations to be applied in
+the corresponding source, based on its path. The following is plaster file to
+apply a few changes to
 `chrome/browser/autocomplete/autocomplete_classifier_factory.cc`.
 
 Creating the source file with `vscode`:
+
 ```sh
 code rewrite/chrome/browser/autocomplete/autocomplete_classifier_factory.cc.toml
 ```
@@ -57,7 +62,7 @@ adds a header to the list of headers in the source. The second one replaces all
 occurrences of `ChromeAutocompleteSchemeClassifier` with
 `BraveAutocompleteSchemeClassifier`.
 
-```toml
+````toml
 # Copyright (c) 2025 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
@@ -84,7 +89,7 @@ re_pattern = ''  # regex pattern
 replace = ''
 re_flags = []  # These are traditional python regex flags.
 count = 1  # use 0 to ignore the match count and replace all
-```
+````
 
 To apply this plaster file, just run `plaster.py`:
 
@@ -142,4 +147,5 @@ This is the equivalent of a dry run of `plaster.py apply`.
 
 ### Best practices
 
-See https://github.com/brave-experiments/brave-core-tools/blob/master/docs/best-practices/plaster.md
+See
+https://github.com/brave-experiments/brave-core-tools/blob/master/docs/best-practices/plaster.md

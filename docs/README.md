@@ -60,6 +60,8 @@ This directory contains documentation for the Brave Browser. For additional reso
     [Markdown Style
     Guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/markdown/markdown.md).
 
+Use `npm run format` to auto format documents.
+
 ### Previewing changes
 
 #### Locally using [md_browser](https://chromium.googlesource.com/chromium/src/+/refs/heads/main/tools/md_browser/)

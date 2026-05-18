@@ -1,7 +1,7 @@
 # Overriding Upstream WebUIs
 
-Currently, there are a number of ways to override upstream WebUIs. Which one
-you want will depend on what you're trying to do, and how the upstream WebUI is
+Currently, there are a number of ways to override upstream WebUIs. Which one you
+want will depend on what you're trying to do, and how the upstream WebUI is
 implemented.
 
 ## chromium_src overrides
@@ -59,8 +59,8 @@ CSS file or a Polymer CSS file (you need to make sure `type` is correct in the
 ## Lit Functions
 
 Adding a new function to a Lit component can be complicated because the types
-for the HTML template depend on what's exported, so naively super classing
-the upstream component does not work. The best approach is to use
+for the HTML template depend on what's exported, so naively super classing the
+upstream component does not work. The best approach is to use
 [declaration merging](https://www.typescriptlang.org/docs/handbook/declaration-merging.html)
 and modify the prototype of the upstream class.
 
@@ -73,7 +73,7 @@ declare module './fancy-chromium.js' {
   }
 }
 
-FancyElement.prototype.isBraveAndFancy = () => true;
+FancyElement.prototype.isBraveAndFancy = () => true
 
 export * from './fancy-chromium.js'
 ```
@@ -87,14 +87,18 @@ Unfortunately, the above strategies don't work for modifying Lit HTML. To modify
 a Lit HTML template we need a way to directly modify the source file. This is
 done with a Lit mangler.
 
-Create a file in `chromium_src` for `path/to/your/file.html.ts` at `chromium_src/path/to/your/file.html.ts.lit_mangler.ts`
+Create a file in `chromium_src` for `path/to/your/file.html.ts` at
+`chromium_src/path/to/your/file.html.ts.lit_mangler.ts`
 
 ```ts
 import mangle from 'lit-mangler'
 
-mangle(element => {
-  element.textContent = element.textContent.replaceAll("Chrome", "Brave")
-}, literal => literal.text.includes("id='thing-i-want-to-edit'"))
+mangle(
+  (element) => {
+    element.textContent = element.textContent.replaceAll('Chrome', 'Brave')
+  },
+  (literal) => literal.text.includes("id='thing-i-want-to-edit'"),
+)
 ```
 
 The `mangle` function extracts all templates from the `.html.ts` file and loads
@@ -104,16 +108,16 @@ The second argument to this function is optional but lets you select what
 template you want to edit (in the case of multiple nested templates).
 
 For example:
+
 ```ts
 // this template literal from upstream:
 html`<div class="container">
-  ${this.children.map(c => html`<li class="chrome-item">${c.text}</li>`)}
+  ${this.children.map((c) => html`<li class="chrome-item">${c.text}</li>`)}
 </div>`
 
 // would have two templates
 // 1. For the container
 // 2. For the children, iterated over the array.
-
 
 // in our mangler:
 // We'll make the following changes with a Lit Mangler:
@@ -123,34 +127,40 @@ html`<div class="container">
 
 import mangle from 'lit-mangler'
 
-mangle(e => {
-  const container = e.querySelector('.container')
+mangle(
+  (e) => {
+    const container = e.querySelector('.container')
 
-  // Its good practise to throw an error when the mangler can't find something
-  // - it will cause the build to fail, so we'll know quickly that something
-  // went wrong.
-  if (!container) throw new Error("Couldn't find the container")
-// Note: We use this predicate to select the right template.
-}, t => t.text.includes('class="container"'))
+    // Its good practise to throw an error when the mangler can't find something
+    // - it will cause the build to fail, so we'll know quickly that something
+    // went wrong.
+    if (!container) throw new Error("Couldn't find the container")
+    // Note: We use this predicate to select the right template.
+  },
+  (t) => t.text.includes('class="container"'),
+)
 
-mangle(e => {
-  // Note: The element passed to the mangler is a document fragment, as there
-  // could be multiple root elements in a template.
-  const li = e.querySelector('li')
+mangle(
+  (e) => {
+    // Note: The element passed to the mangler is a document fragment, as there
+    // could be multiple root elements in a template.
+    const li = e.querySelector('li')
 
-  // Assuming our children have an id element. Note: We set this to a string
-  // literal, because we're editing the source text of the .html.ts file.
-  li.setAttribute('id', '${c.id}');
+    // Assuming our children have an id element. Note: We set this to a string
+    // literal, because we're editing the source text of the .html.ts file.
+    li.setAttribute('id', '${c.id}')
 
-  // Similarly, we need to escape the template interpolation here, because we
-  // want it to happen at runtime, not now!
-  // If we mess something up we'll get a typescript error (as the mangled source
-  // file still runs through the type checker)!
-  li.innerHTML = `<span>
+    // Similarly, we need to escape the template interpolation here, because we
+    // want it to happen at runtime, not now!
+    // If we mess something up we'll get a typescript error (as the mangled source
+    // file still runs through the type checker)!
+    li.innerHTML = `<span>
     \${c.text}
   </span>`
-// select the list items
-}, t => t.text.startsWith('<li'))
+    // select the list items
+  },
+  (t) => t.text.startsWith('<li'),
+)
 ```
 
 These overrides have an automatically generated test which checks to see whether

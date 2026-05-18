@@ -10,11 +10,12 @@ certain profile types.
 `ProfileKeyedServiceFactory/ProfileKeyedServiceFactoryIOS`
 [profile_keyed_service_factory.md](https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/profiles/profile_keyed_service_factory.md;bpv=0)
 with `ProfileSelections::Builder` is the preferred method to use for determining
-which (if any) profile should be used for the service. Think twice about how your
-feature / service should behave in incognito / tor / etc and ask if not sure.
-
+which (if any) profile should be used for the service. Think twice about how
+your feature / service should behave in incognito / tor / etc and ask if not
+sure.
 
 keyed-service-docs
+
 ```cpp
 MyServiceFactory::MyServiceFactory()
     : ProfileKeyedServiceFactory(
@@ -58,18 +59,18 @@ testing/mocking simpler.
 #### Keyed Services and Unit Tests
 
 If the KeyedService needs to be created automatically with the profile, then it
-should not be created during unit tests otherwise it is not possible to
-use a `TestingProfile`/`TestProfileIOS` without this service (and then the tests 
-cannot be independent from the service). On iOS, This behaviour will be verified 
+should not be created during unit tests otherwise it is not possible to use a
+`TestingProfile`/`TestProfileIOS` without this service (and then the tests
+cannot be independent from the service). On iOS, This behaviour will be verified
 by a `CHECK` when creating the `ProfileKeyedServiceFactoryIOS`
 
-On desktop/android you need to return false for 
-`ServiceIsCreatedWithBrowserContext` or return false for 
+On desktop/android you need to return false for
+`ServiceIsCreatedWithBrowserContext` or return false for
 `ServiceIsNULLWhileTesting`
 
-On iOS you need to either remove `ServiceCreation::kCreateWithProfile` or add 
-`TestCreation::kNoServiceForTests` and inject a test factory in tests 
-that need the service to exist.
+On iOS you need to either remove `ServiceCreation::kCreateWithProfile` or add
+`TestCreation::kNoServiceForTests` and inject a test factory in tests that need
+the service to exist.
 
 #### Keyed Services and Mojo
 
@@ -85,6 +86,7 @@ remote if it is `mojo::PendingRemote<mojom::ExampleService>()`.
 C++
 
 brave/components/example/example_service_impl.cc
+
 ```cpp
 namespace example {
 class ExampleServiceImpl : public KeyedService, public mojom::ExampleService {
@@ -94,6 +96,7 @@ class ExampleServiceImpl : public KeyedService, public mojom::ExampleService {
 ```
 
 brave/browser/example/example_service_factory.cc
+
 ```cpp
 mojo::PendingRemote<mojom::ExampleService> ExampleServiceFactory::GetRemoteForProfile(
     content::BrowserContext* context) {
@@ -127,6 +130,7 @@ static jlong JNI_ExampleService_GetForProfile(
 Java
 
 brave/browser/example/android/java/src/org/chromium/brave/browser/example/ExampleServiceFactory.java
+
 ```java
 public @Nullable ExampleService getForProfile(Profile profile,
         @Nullable ConnectionErrorHandler connectionErrorHandler) {
@@ -165,6 +169,7 @@ check both `Profile` and `ProfileIOS`
 obj-c
 
 brave/ios/browser/example/example_service_factory.mm
+
 ```cpp
 mojo::PendingRemote<example::mojom::ExampleService> ExampleServiceFactory::GetRemoteForProfile(
     ProfileIOS* profile) {
@@ -191,6 +196,7 @@ mojo::PendingRemote<example::mojom::ExampleService> ExampleServiceFactory::GetRe
 ```
 
 brave/ios/browser/example/example_service_factory_wrapper.h
+
 ```objc
 @protocol ExampleService;
 
@@ -202,6 +208,7 @@ NS_SWIFT_NAME(Example.ExampleServiceFactory)
 ```
 
 swift
+
 ```swift
 ExampleServiceFactory.get(privateMode: privateMode),
 ```
