@@ -19,7 +19,7 @@ count = 1
 
 [[substitution]]
 description = 'Let Brave handle YouTube PiP dismiss signals using upstream enum names'
-re_pattern = '''(    private void dismissActivityIfNeeded\(Activity activity, @MetricsEndReason int reason\) \{\n)'''
+re_pattern = '''(\s+private void dismissActivityIfNeeded\(Activity activity, @MetricsEndReason int reason\) \{\n)'''
 replace = '''\1        if (BraveFullscreenVideoPictureInPictureController.class.cast(this)
                 .maybeHandleDismissActivityForYouTubePictureInPicture(
                         activity,
@@ -66,7 +66,7 @@ count = 1
 
 [[substitution]]
 description = 'Add a helper to detect Brave-managed YouTube PiP candidates for manual fullscreen-video PiP'
-re_pattern = '''(    private boolean canStartPipBasedOnRecentTasks\(\) \{\n\s+return AndroidTaskUtils\.getRecentAppTasksMatchingComponentNames\(\n\s+mActivity, NO_PIP_COMPONENT_NAMES\)\n\s+\.isEmpty\(\);\n\s+\}\n\n)(    /\*\*)'''
+re_pattern = '''(\s+private boolean canStartPipBasedOnRecentTasks\(\) \{\n\s+return AndroidTaskUtils\.getRecentAppTasksMatchingComponentNames\(\n\s+mActivity, NO_PIP_COMPONENT_NAMES\)\n\s+\.isEmpty\(\);\n\s+\}\n\n)(\s+/\*\*)'''
 replace = '''\1    private @Nullable BraveActivity getBraveActivityForYouTubePictureInPicture(
             WebContents webContents) {
         if (!(mActivity instanceof BraveActivity braveActivity)
@@ -77,5 +77,6 @@ replace = '''\1    private @Nullable BraveActivity getBraveActivityForYouTubePic
 
         return braveActivity;
     }
+
 \2'''
 count = 1
