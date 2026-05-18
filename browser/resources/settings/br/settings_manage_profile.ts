@@ -229,9 +229,10 @@ function braveOnCustomAvatarChanged_(
   const saved = state.hasSavedAvatar
   const active = state.isActive
 
-  // The data URL is server-built (PNG via webui::GetBitmapDataUrl) and is
-  // assigned as a property — not interpolated into CSS — so there is no
-  // url("...") parser context for an attacker-controlled string to escape.
+  // Preview URL comes from the browser (`webui::GetBitmapDataUrl` over the
+  // persisted bitmap), not from user file bytes. Assign `src` as a DOM property
+  // on a real `<img>` — never `background-image: url("…")` or other CSS
+  // interpolation — so the value never enters a CSS `url()` parser context.
   if (saved && state.dataUrl) {
     image.src = state.dataUrl
     preview.classList.remove('is-empty')

@@ -16,8 +16,12 @@ struct CustomAvatarState {
   // True when the saved custom avatar is the one currently rendered as the
   // profile icon across Chrome UI surfaces.
   bool is_active;
-  // PNG `data:` URL preview for the saved image. Empty when no custom avatar
-  // is saved or while the bitmap is still loading from disk after a restart.
+  // PNG `data:` URL preview for the saved image (`data:image/png;base64,…`),
+  // built server-side via `webui::GetBitmapDataUrl`. The settings page assigns
+  // this to `<img id="braveCustomAvatarImage">.src` as a DOM property (not a
+  // CSS `url()`), avoiding a CSS-injection parser context. Empty when no
+  // custom avatar is saved or while the bitmap is still loading from disk
+  // after a restart.
   string data_url;
 };
 

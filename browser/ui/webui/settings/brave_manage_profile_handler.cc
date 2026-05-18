@@ -312,6 +312,10 @@ BraveManageProfileHandler::BuildCustomAvatarState() const {
     // a restart; in that case `data_url` stays empty and the storage will
     // re-notify via `OnProfileAvatarChanged` once loaded.
     if (image && !image->IsEmpty()) {
+      // PNG `data:` URL for the settings preview. Built in the browser via
+      // `webui::GetBitmapDataUrl` (never assembled in the renderer). The WebUI
+      // assigns this to `<img>.src` as a DOM property, not a CSS `url()`, so
+      // there is no CSS-injection surface for the string.
       state->data_url = webui::GetBitmapDataUrl(image->AsBitmap());
     }
   }

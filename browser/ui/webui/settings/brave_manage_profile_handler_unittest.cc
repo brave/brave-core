@@ -170,6 +170,7 @@ TEST_F(BraveManageProfileHandlerTest, SetWithValidPngResolvesAndStores) {
   EXPECT_FALSE(result.error.has_value());
   EXPECT_TRUE(result.state->has_saved_avatar);
   EXPECT_TRUE(result.state->is_active);
+  // Preview is a server-built PNG data URL (see `webui::GetBitmapDataUrl`).
   EXPECT_TRUE(result.state->data_url.starts_with("data:image/png;base64,"));
 
   ASSERT_TRUE(entry());
