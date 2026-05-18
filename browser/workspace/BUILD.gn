@@ -13,6 +13,7 @@ source_set("impl") {
     "features.cc",
     "workspace_service.cc",
     "workspace_service_factory.cc",
+    "workspace_session_utils.cc",
     "workspace_utils.cc",
   ]
 
@@ -26,9 +27,11 @@ source_set("impl") {
 source_set("workspace") {
   sources = [
     "features.h",
+    "preferences.h",
     "workspace_metadata.h",
     "workspace_service.h",
     "workspace_service_factory.h",
+    "workspace_session_utils.h",
     "workspace_utils.h",
   ]
 

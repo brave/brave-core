@@ -20,6 +20,7 @@
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
 #include "base/values.h"
+#include "brave/browser/workspace/workspace_session_utils.h"
 #include "brave/browser/workspace/workspace_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -30,6 +31,7 @@
 #include "chrome/browser/ui/tabs/tab_group_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/prefs/pref_service.h"
+#include "components/prefs/scoped_user_pref_update.h"
 #include "components/sessions/core/session_id.h"
 #include "components/sessions/core/session_service_commands.h"
 #include "components/tab_groups/tab_group_visual_data.h"
@@ -43,10 +45,10 @@ std::string ComputeKey(const std::string& name) {
 
 }  // namespace
 
-WorkspaceService::WorkspaceService(Profile* profile)
+WorkspaceService::WorkspaceService(Profile& profile)
     : profile_(profile),
-      workspaces_path_(profile->GetPath().AppendASCII("workspaces")),
-      pref_service_(profile->GetPrefs()),
+      workspaces_path_(profile.GetPath().AppendASCII("workspaces")),
+      pref_service_(*profile.GetPrefs()),
       io_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})) {}
@@ -59,10 +61,8 @@ std::vector<WorkspaceMetadata> WorkspaceService::ListWorkspaces() const {
 }
 
 void WorkspaceService::SaveWorkspaceMetadata(const WorkspaceMetadata& meta) {
-  base::DictValue updated =
-      pref_service_->GetDict(kWorkspacesMetadataPref).Clone();
-  updated.Set(ComputeKey(meta.name), WorkspaceMetadataToDictEntry(meta));
-  pref_service_->SetDict(kWorkspacesMetadataPref, std::move(updated));
+  ScopedDictPrefUpdate updated(*pref_service_, kWorkspacesMetadataPref);
+  updated->Set(ComputeKey(meta.name), WorkspaceMetadataToDictEntry(meta));
 }
 
 void WorkspaceService::RemoveWorkspaceMetadata(const std::string& name) {
@@ -96,7 +96,7 @@ void WorkspaceService::SaveWorkspace(const std::string& name) {
 
   GlobalBrowserCollection::GetInstance()->ForEach(
       [&](BrowserWindowInterface* bwi) {
-        if (bwi->GetProfile() != profile_ ||
+        if (bwi->GetProfile() != base::to_address(profile_) ||
             bwi->GetType() != BrowserWindowInterface::Type::TYPE_NORMAL) {
           return true;
         }
@@ -190,11 +190,6 @@ void WorkspaceService::DoRestoreWorkspace(
     return;
   }
 
-  if (!profile_) {
-    DVLOG(1) << "Could not load workspace: profile is null";
-    return;
-  }
-
   // RestoreSessionFromCommands constructs SessionTab/SessionWindow objects
   // whose constructors call SessionID::NewUnique(), which is sequence-checked
   // to the UI thread.  It must therefore be called here (UI thread), not in
@@ -220,11 +215,13 @@ void WorkspaceService::DoRestoreWorkspace(
       continue;
     }
 
-    if (Browser::GetCreationStatusForProfile(profile_) !=
+    if (Browser::GetCreationStatusForProfile(base::to_address(profile_)) !=
         Browser::CreationStatus::kOk) {
       continue;
     }
-    Browser::CreateParams params(Browser::TYPE_NORMAL, profile_, false);
+
+    Browser::CreateParams params(Browser::TYPE_NORMAL,
+                                 base::to_address(profile_), false);
     params.initial_bounds = window->bounds;
     params.initial_show_state = window->show_state;
     params.initial_workspace = window->workspace;

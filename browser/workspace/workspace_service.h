@@ -11,19 +11,17 @@
 #include <vector>
 
 #include "base/files/file_path.h"
-#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/task/sequenced_task_runner.h"
+#include "brave/browser/workspace/preferences.h"
 #include "brave/browser/workspace/workspace_metadata.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/sessions/core/session_command.h"
 
 class PrefService;
 class Profile;
-
-// Profile preference key — stores a dict keyed by hash of the display name.
-inline constexpr char kWorkspacesMetadataPref[] = "brave.workspaces";
 
 // Per-profile service that manages saving and restoring named workspaces.
 //
@@ -43,7 +41,7 @@ inline constexpr char kWorkspacesMetadataPref[] = "brave.workspaces";
 // sequence, then all blocking I/O tasks are posted to that same runner.
 class WorkspaceService : public KeyedService {
  public:
-  explicit WorkspaceService(Profile* profile);
+  explicit WorkspaceService(Profile& profile);
   ~WorkspaceService() override;
 
   WorkspaceService(const WorkspaceService&) = delete;
@@ -91,9 +89,9 @@ class WorkspaceService : public KeyedService {
   void DoRestoreWorkspace(
       std::vector<std::unique_ptr<sessions::SessionCommand>> commands);
 
-  raw_ptr<Profile> profile_;
+  raw_ref<Profile> profile_;
   const base::FilePath workspaces_path_;
-  raw_ptr<PrefService> pref_service_;
+  raw_ref<PrefService> pref_service_;
   scoped_refptr<base::SequencedTaskRunner> io_task_runner_;
 
   base::WeakPtrFactory<WorkspaceService> weak_ptr_factory_{this};

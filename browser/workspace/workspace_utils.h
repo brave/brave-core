@@ -17,11 +17,6 @@
 #include "components/sessions/core/command_storage_backend.h"
 #include "components/sessions/core/command_storage_manager.h"
 #include "components/sessions/core/session_command.h"
-#include "components/sessions/core/session_id.h"
-#include "ui/base/mojom/window_show_state.mojom.h"
-#include "ui/gfx/geometry/rect.h"
-
-class TabStripModel;
 
 // Session type used for all workspace files.  Exposed so callers can
 // construct a CommandStorageBackend on the UI thread before posting I/O
@@ -61,15 +56,5 @@ std::vector<WorkspaceMetadata> ListWorkspacesFromDict(
 // Serializes |meta| into a single dict entry suitable for storing under its key
 // in kWorkspacesMetadataPref.
 base::DictValue WorkspaceMetadataToDictEntry(const WorkspaceMetadata& meta);
-
-// Appends session commands for a single browser window to |commands|.
-// Serializes window type, bounds, tab groups, tabs (with full navigation
-// history), pinned state, and the active tab index.
-void AppendBrowserSessionCommands(
-    const SessionID& window_id,
-    TabStripModel* tsm,
-    gfx::Rect restored_bounds,
-    ui::mojom::WindowShowState restored_state,
-    std::vector<std::unique_ptr<sessions::SessionCommand>>& commands);
 
 #endif  // BRAVE_BROWSER_WORKSPACE_WORKSPACE_UTILS_H_

@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "brave/browser/workspace/features.h"
+#include "brave/browser/workspace/preferences.h"
 #include "brave/browser/workspace/workspace_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_selections.h"
@@ -39,7 +40,7 @@ WorkspaceServiceFactory::BuildServiceInstanceForBrowserContext(
   }
 
   Profile* profile = Profile::FromBrowserContext(context);
-  return std::make_unique<WorkspaceService>(profile);
+  return std::make_unique<WorkspaceService>(*profile);
 }
 
 void WorkspaceServiceFactory::RegisterProfilePrefs(
@@ -48,11 +49,5 @@ void WorkspaceServiceFactory::RegisterProfilePrefs(
 }
 
 bool WorkspaceServiceFactory::ServiceIsCreatedWithBrowserContext() const {
-  return true;
-}
-
-bool WorkspaceServiceFactory::ServiceIsNULLWhileTesting() const {
-  // Workspace Service does actual file I/O. We should try to avoid that in
-  // tests.
   return true;
 }
