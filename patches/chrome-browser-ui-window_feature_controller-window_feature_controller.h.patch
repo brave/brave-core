@@ -1,0 +1,31 @@
+diff --git a/chrome/browser/ui/window_feature_controller/window_feature_controller.h b/chrome/browser/ui/window_feature_controller/window_feature_controller.h
+index fb04cbaf8b0491eb2d06764386294de56f367a52..3b864f40bbf5e5805162d33ebe67d1147647aa03 100644
+--- a/chrome/browser/ui/window_feature_controller/window_feature_controller.h
++++ b/chrome/browser/ui/window_feature_controller/window_feature_controller.h
+@@ -38,7 +38,8 @@ class WindowFeatureController {
+       web_app::AppBrowserController* app_controller,
+       BrowserWindowInterface::Type browser_type,
+       bool is_trusted_source,
+-      ui::UnownedUserDataHost& host);
++      ui::UnownedUserDataHost& host,
++      BrowserWindowInterface& browser);
+   ~WindowFeatureController();
+ 
+   WindowFeatureController(const WindowFeatureController&) = delete;
+@@ -70,6 +71,8 @@ class WindowFeatureController {
+  private:
+   bool NormalBrowserSupportsWindowFeature(WindowFeature feature,
+                                           bool check_can_support) const;
++  bool NormalBrowserSupportsWindowFeature_ChromiumImpl(WindowFeature feature,
++                                          bool check_can_support) const;
+   bool PopupBrowserSupportsWindowFeature(WindowFeature feature,
+                                          bool check_can_support) const;
+   bool AppPopupBrowserSupportsWindowFeature(WindowFeature feature,
+@@ -92,6 +95,7 @@ class WindowFeatureController {
+   const bool is_trusted_source_;
+ 
+   ui::ScopedUnownedUserData<WindowFeatureController> scoped_unowned_user_data_;
++  const raw_ref<BrowserWindowInterface> browser_;
+ };
+ 
+ #endif  // CHROME_BROWSER_UI_WINDOW_FEATURE_CONTROLLER_WINDOW_FEATURE_CONTROLLER_H_
