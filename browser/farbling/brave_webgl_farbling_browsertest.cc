@@ -18,7 +18,6 @@
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/webcompat/core/common/features.h"
-#include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/browser/profiles/profile.h"
@@ -34,8 +33,17 @@
 
 using brave_shields::ControlType;
 
+namespace {
 constexpr char kEmbeddedTestServerDirectory[] = "webgl";
 constexpr char kTitleScript[] = "document.title";
+
+enum class TestFarblingLevel {
+  OFF = 0,
+  BALANCED = 1,
+  MAXIMUM = 2,
+};
+
+}  // namespace
 
 class BraveWebGLFarblingBrowserTest : public InProcessBrowserTest {
  public:
@@ -232,17 +240,23 @@ class BraveWebGLGetParameterTest : public BraveWebGLFarblingBrowserTest,
   }
 
   std::string GetExpectedString(
-      BraveFarblingLevel level,
+      TestFarblingLevel level,
       std::optional<std::string> expected_override = std::nullopt) {
     if (expected_override.has_value()) {
       return expected_override.value();
     }
-    if (level == BraveFarblingLevel::MAXIMUM) {
+    if (level == TestFarblingLevel::MAXIMUM) {
       return "uAfPPuXL,aseXyZzC";
-    } else if (level == BraveFarblingLevel::BALANCED) {
-      return GetParam() ? "Brave,Brave" : expected_override.value();
+    } else if (level == TestFarblingLevel::BALANCED) {
+      if (GetParam()) {
+        return "Brave,Brave";
+      } else {
+        ADD_FAILURE() << "Must provide a valid expected_override";
+        return "";
+      }
     } else {
-      return expected_override.value();
+      ADD_FAILURE() << "Must provide a valid expected_override";
+      return "";
     }
   }
 
@@ -277,7 +291,7 @@ IN_PROC_BROWSER_TEST_P(BraveWebGLGetParameterTest,
   BlockFingerprinting(domain);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   const std::string expected_value_maximum =
-      GetExpectedString(BraveFarblingLevel::MAXIMUM);
+      GetExpectedString(TestFarblingLevel::MAXIMUM);
   std::string actual_value_maximum =
       EvalJs(contents(), kTitleScript).ExtractString();
   EXPECT_EQ(expected_value_maximum, actual_value_maximum);
@@ -297,7 +311,7 @@ IN_PROC_BROWSER_TEST_P(BraveWebGLGetParameterTest,
   std::string actual_value_balanced =
       EvalJs(contents(), kTitleScript).ExtractString();
   auto expected_value_balanced = GetExpectedString(
-      BraveFarblingLevel::BALANCED, /*expected_override= */
+      TestFarblingLevel::BALANCED, /*expected_override= */
       GetParam() ? std::nullopt : std::optional<std::string>(actual_value_off));
   EXPECT_EQ(expected_value_balanced, actual_value_balanced);
   // Check never the same as "maximum" state.
