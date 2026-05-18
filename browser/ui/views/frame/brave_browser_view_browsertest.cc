@@ -49,6 +49,7 @@
 #include "chrome/browser/ui/views/frame/scrim_view.h"
 #include "chrome/browser/ui/views/frame/top_container_view.h"
 #include "chrome/browser/ui/views/infobars/infobar_container_view.h"
+#include "chrome/browser/ui/window_feature_controller/window_feature_controller.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/prefs/pref_service.h"
@@ -862,9 +863,11 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
                        ImmersiveModeAndVerticalTabsAtStartup) {
   // Default browser: vertical tabs off at startup.
   ASSERT_FALSE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
-  EXPECT_TRUE(brave_browser_view()->UsesImmersiveFullscreenMode());
+  EXPECT_TRUE(
+      WindowFeatureController::From(browser())->UsesImmersiveFullscreenMode());
   ToggleVerticalTabStrip();
-  EXPECT_FALSE(brave_browser_view()->UsesImmersiveFullscreenMode());
+  EXPECT_FALSE(
+      WindowFeatureController::From(browser())->UsesImmersiveFullscreenMode());
 
   // Second window: vertical tabs on at startup.
   browser()->profile()->GetPrefs()->SetBoolean(brave_tabs::kVerticalTabsEnabled,
@@ -873,10 +876,12 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
       CreateBrowser(browser()->profile());
   BraveBrowserView* view_with_vertical_at_startup = BraveBrowserView::From(
       BrowserView::GetBrowserViewForBrowser(browser_with_vertical_at_startup));
-  EXPECT_FALSE(view_with_vertical_at_startup->UsesImmersiveFullscreenMode());
+  EXPECT_FALSE(WindowFeatureController::From(browser_with_vertical_at_startup)
+                   ->UsesImmersiveFullscreenMode());
   brave::ToggleVerticalTabStrip(browser_with_vertical_at_startup);
   view_with_vertical_at_startup->DeprecatedLayoutImmediately();
-  EXPECT_FALSE(view_with_vertical_at_startup->UsesImmersiveFullscreenMode());
+  EXPECT_FALSE(WindowFeatureController::From(browser_with_vertical_at_startup)
+                   ->UsesImmersiveFullscreenMode());
 }
 
 // Regression test: when a browser starts with horizontal tabs and the user
@@ -891,12 +896,14 @@ IN_PROC_BROWSER_TEST_F(
   // Verify the precondition that triggers the bug: horizontal tabs at startup
   // means immersive mode is on (and fullscreen_toolbar_controller_ is nil).
   ASSERT_FALSE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
-  ASSERT_TRUE(brave_browser_view()->UsesImmersiveFullscreenMode());
+  ASSERT_TRUE(
+      WindowFeatureController::From(browser())->UsesImmersiveFullscreenMode());
 
   // Switch to vertical tabs at runtime.
   ToggleVerticalTabStrip();
   ASSERT_TRUE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
-  ASSERT_FALSE(brave_browser_view()->UsesImmersiveFullscreenMode());
+  ASSERT_FALSE(
+      WindowFeatureController::From(browser())->UsesImmersiveFullscreenMode());
 
   // Fake tab (content) fullscreen without triggering any OS fullscreen
   // transition — IsWindowFullscreenForTabOrPending() becomes true immediately.
