@@ -55,6 +55,23 @@ class EntryLineParseTest(unittest.TestCase):
         self.assertEqual(entry_line.subcommand, ['reassign', 'c080270dd7e'])
         self.assertEqual(entry_line.message, '[cr149] Fix bookmark bar.')
 
+    def test_parse_reassign_subcommand_hash_starting_with_digit(self):
+        """`reassign!<hash>!` where `<hash>` starts with a digit must
+        still capture both tokens. Regression: an earlier regex required
+        every `!`-separated token to start with a letter, which silently
+        dropped digit-leading hashes -- the subcommand collapsed to
+        `['reassign']` and the hash leaked into `message`, causing
+        `rewrite_plan` to orphan-drop the reassign."""
+        entry_line = rebase_v2.EntryLine.parse(
+            'pick 04d3a656bb1 # reassign!859ab9caa74! [cr150][ios] Add '
+            '//brave/ios/browser/svg to visibility for //third_party/expat\n')
+        self.assertEqual(entry_line.subcommand, ['reassign', '859ab9caa74'])
+        self.assertEqual(
+            entry_line.message,
+            '[cr150][ios] Add //brave/ios/browser/svg to visibility for '
+            '//third_party/expat')
+        self.assertEqual(entry_line.reassign_target_hash, '859ab9caa74')
+
     def test_parse_trailing_empty_note(self):
         """A trailing ` # empty` marker is split into `note` and stripped
         out of the comment portion."""
@@ -484,6 +501,34 @@ class RewritePlanTest(unittest.TestCase):
             path.read_text(), 'pick aaa # [cr148] Feature A\n'
             'pick zzz # reassign!bbb! [cr148] Feature B\n'
             'squash bbb # [cr148] Feature B\n')
+
+    def test_squashed_reassign_target_hash_starts_with_digit(self):
+        """Real-world regression: a `reassign!<hash>!` where the hash
+        starts with a digit (which is the case for ~6/16 short hashes on
+        average) must still be matched to its target. Previously the
+        subcommand regex required each token to start with a letter, so
+        the hash never made it into `subcommand` -- the reassign was
+        silently dropped and the target was left untouched."""
+        path = self._todo(
+            'pick 7606227b5da # [cr150][ios] Add backend promo provider\n'
+            'pick 859ab9caa74 # [cr150][ios] Add //brave/ios/browser/svg '
+            'to visibility for //third_party/expat\n'
+            'pick 04d3a656bb1 # reassign!859ab9caa74! [cr150][ios] Add '
+            '//brave/ios/browser/svg to visibility for '
+            '//third_party/expat # empty\n'
+            'pick 9c160e03412 # [cr150] wip-reassing-bug\n')
+
+        rebase_v2.rewrite_plan(todo_file=path, pinned_squashed=True)
+
+        self.assertEqual(
+            path.read_text(),
+            'pick 7606227b5da # [cr150][ios] Add backend promo provider\n'
+            'pick 04d3a656bb1 # reassign!859ab9caa74! [cr150][ios] Add '
+            '//brave/ios/browser/svg to visibility for '
+            '//third_party/expat # empty\n'
+            'squash 859ab9caa74 # [cr150][ios] Add //brave/ios/browser/svg '
+            'to visibility for //third_party/expat\n'
+            'pick 9c160e03412 # [cr150] wip-reassing-bug\n')
 
     def test_squashed_reassign_falls_back_to_message_match(self):
         """Non-matching hash, matching message: the hash lookup misses,
