@@ -10,6 +10,7 @@ import { getLocale } from '$web-common/locale'
 import classnames from '$web-common/classnames'
 import * as Mojom from '../../../common/mojom'
 import scrollerStyles from '../../../common/scroller.module.scss'
+import { useAutoHideScrollbar } from '../../../common/useAutoHideScrollbar'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import ConversationEntries from '../conversation_entries'
 import ModelIntro from '../model_intro'
@@ -145,6 +146,7 @@ function Conversation(props: ConversationProps) {
   // Scroll tracking
   const { scrollToBottomContinuously, hasScrollableContent } =
     useScrollToBottom(scrollElementRef, contentRef)
+  useAutoHideScrollbar(scrollElementRef)
 
   const scrollToBottom = React.useCallback(
     () => scrollToBottomContinuously(),

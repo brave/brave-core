@@ -13,6 +13,7 @@ import classnames from '$web-common/classnames'
 import DragOverlay from '../drag_overlay'
 import * as Mojom from '../../../common/mojom'
 import scrollerStyles from '../../../common/scroller.module.scss'
+import { useAutoHideScrollbar } from '../../../common/useAutoHideScrollbar'
 import { useConversation } from '../../state/conversation_context'
 import { useAIChat } from '../../state/ai_chat_context'
 import ConversationsList from '../conversations_list'
@@ -47,6 +48,8 @@ function Main() {
 
   const headerElement = React.useRef<HTMLDivElement>(null)
   const inputBoxRef = React.useRef<InputBoxHandle>(null)
+  const welcomeScrollerRef = React.useRef<HTMLDivElement>(null)
+  useAutoHideScrollbar(welcomeScrollerRef)
 
   // Ask for opt-in once the first message is sent
   const showAgreementModal =
@@ -186,6 +189,7 @@ function Main() {
       />
       {!aiChatContext.hasAcceptedAgreement && !hasConversationStarted ? (
         <div
+          ref={welcomeScrollerRef}
           className={classnames(
             scrollerStyles.scroller,
             styles.centeredContent,

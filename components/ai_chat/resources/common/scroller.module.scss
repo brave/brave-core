@@ -5,19 +5,34 @@
 
 .scroller {
   --scrollbar-width: 6px;
-
+  --scrollbar-thumb-color: var(--leo-color-neutral-30);
   position: relative;
   overflow: auto;
-  scrollbar-gutter: stable;
   height: 100%;
   padding-bottom: var(--leo-spacing-xl);
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
 
   &::-webkit-scrollbar {
     width: var(--scrollbar-width);
   }
 
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
   &::-webkit-scrollbar-thumb {
-    background: var(--leo-color-neutral-20);
+    background: transparent;
     border-radius: var(--leo-spacing-m);
+    transition: background 0.2s ease;
+  }
+
+  &:hover,
+  &.scrollbarVisible {
+    scrollbar-color: var(--scrollbar-thumb-color) transparent;
+
+    &::-webkit-scrollbar-thumb {
+      background: var(--scrollbar-thumb-color);
+    }
   }
 }
