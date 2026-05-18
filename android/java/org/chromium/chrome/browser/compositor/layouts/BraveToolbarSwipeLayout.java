@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.layouts.LayoutManager;
-import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
+import org.chromium.chrome.browser.theme.ToolbarThemeColorProvider;
 
 /** Layout defining the animation and positioning of the tabs during the edge swipe effect. */
 public class BraveToolbarSwipeLayout extends ToolbarSwipeLayout {
@@ -28,7 +28,7 @@ public class BraveToolbarSwipeLayout extends ToolbarSwipeLayout {
             LayoutRenderHost renderHost,
             BrowserControlsStateProvider browserControlsStateProvider,
             LayoutManager layoutManager,
-            TopUiThemeColorProvider topUiColorProvider,
+            ToolbarThemeColorProvider toolbarColorProvider,
             NonNullObservableSupplier<Integer> bottomControlsOffsetSupplier,
             ViewGroup contentContainer,
             Runnable forceLayoutUpdateAndCaptureRunnable) {
@@ -38,7 +38,7 @@ public class BraveToolbarSwipeLayout extends ToolbarSwipeLayout {
                 renderHost,
                 browserControlsStateProvider,
                 layoutManager,
-                topUiColorProvider,
+                toolbarColorProvider,
                 bottomControlsOffsetSupplier,
                 contentContainer,
                 forceLayoutUpdateAndCaptureRunnable);

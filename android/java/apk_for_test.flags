@@ -166,7 +166,7 @@
     *** mModalDialogManagerSupplier;
     *** mTabObscuringHandler;
     *** mReadAloudControllerSupplier;
-    *** mTopUiThemeColorProvider;
+    *** mToolbarThemeColorProvider;
     *** mCurrentOrientation;
     *** mInitializedWithNative;
     *** mTabGroupUiOneshotSupplier;
