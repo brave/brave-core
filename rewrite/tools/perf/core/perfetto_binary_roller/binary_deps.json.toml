@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[[substitution]]
+description = '''Pin trace_processor_shell Windows binary to the cr149 version.
+
+The cr150 upstream binary is broken on Windows; see
+https://issues.chromium.org/issues/512709653. Matching the whole `"win"`
+block keeps the substitution working even when upstream bumps the hash
+or remote path.
+'''
+re_pattern = '"win": \{[^}]*\}'
+replace = '''"win": {
+            "hash": "bbfdca9a518712ec83e4cec27407d02e1843e5b5",
+            "full_remote_path": "chromium-telemetry/perfetto_binaries/trace_processor_shell/win/e2b82363b4c2a1912a6e33c9c6ae8a6561a35b93/trace_processor_shell.exe"
+        }'''
