@@ -1,5 +1,5 @@
 diff --git a/chrome/updater/mac/.install.sh b/chrome/updater/mac/.install.sh
-index 3b1874d09fca0cf88e361927dfea7c4273790030..f2d4a4c9eec54857b07cf6442b78535bc584006d 100755
+index 3b1874d09fca0cf88e361927dfea7c4273790030..2957229bb05423ca6f5df9d3e8bb72ca522b785d 100755
 --- a/chrome/updater/mac/.install.sh
 +++ b/chrome/updater/mac/.install.sh
 @@ -322,7 +322,7 @@ main() {
@@ -40,7 +40,7 @@ index 3b1874d09fca0cf88e361927dfea7c4273790030..f2d4a4c9eec54857b07cf6442b78535b
 -      exit 12
 +      rsync ${RSYNC_FLAGS} --delete-before "${update_versioned_dir}" "${installed_versions_dir}" && (( debug_flags |= 4 ))
 +      rm -rf "${new_versioned_dir}"
-+      exit $((17 + debug_flags))
++      exit $((80 + debug_flags))
      fi
    fi
  

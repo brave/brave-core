@@ -46,8 +46,18 @@ replace = '''note "rsyncing versioned directory"
     fi'''
 
 [[substitution]]
-description = 'Return debug_flags in exit code'
+description = '''Return debug_flags in exit code'
+
+We anchor on upstream's `exit 12` because it is expected to remain unchanged.
+The reasons are:
+ 1. The numeric value gets used in telemetry.
+ 2. It is documented at the top of the script.
+ 3. Other numeric error values in //chrome/updater are treated as unchangeable.
+
+We start our custom codes at 80 in order to not clash with upstream's, even in
+case they add new ones beyond the current maximum 16.
+'''
 pattern = 'exit 12'
 replace = '''rsync ${RSYNC_FLAGS} --delete-before "${update_versioned_dir}" "${installed_versions_dir}" && (( debug_flags |= 4 ))
       rm -rf "${new_versioned_dir}"
-      exit $((17 + debug_flags))'''
+      exit $((80 + debug_flags))'''
