@@ -35,22 +35,22 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kReduceUserAgentMinorVersion, base::FEATURE_ENABLED_BY_DEFAULT},
 }});
 
-BASE_FEATURE(kFileSystemAccessAPI,
-             base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kFileSystemAccessAPI, base::FEATURE_DISABLED_BY_DEFAULT);
 
-BASE_FEATURE(kBraveWebBluetoothAPI,
-             base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveWebBluetoothAPI, base::FEATURE_DISABLED_BY_DEFAULT);
 
-BASE_FEATURE(kNavigatorConnectionAttribute,
-             base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kNavigatorConnectionAttribute, base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Enable blink::MemoryCache partitioning for non SameSite requests.
-BASE_FEATURE(kPartitionBlinkMemoryCache,
-             base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kPartitionBlinkMemoryCache, base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Enable WebSockets connection pool limit per eTLD+1 for each renderer.
-BASE_FEATURE(kRestrictWebSocketsPool,
-             base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kRestrictWebSocketsPool, base::FEATURE_ENABLED_BY_DEFAULT);
+
+// Enable protection against fingerprinting via WebGL's getSupportedExtensions
+// and getExtension.
+BASE_FEATURE(kBraveWebGLFingerprintingProtection,
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Enables protection against fingerprinting on screen dimensions.
 BASE_FEATURE(kBraveBlockScreenFingerprinting,
@@ -62,12 +62,10 @@ BASE_FEATURE(kBraveBlockScreenFingerprinting,
 );
 
 // Enables protection against fingerprinting via high-resolution time stamps.
-BASE_FEATURE(kBraveRoundTimeStamps,
-             base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveRoundTimeStamps, base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Enables the Global Privacy Control header and navigator APIs.
-BASE_FEATURE(kBraveGlobalPrivacyControl,
-             base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveGlobalPrivacyControl, base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Enable EventSource connection pool limit per eTLD+1.
 BASE_FEATURE(kRestrictEventSourcePool,

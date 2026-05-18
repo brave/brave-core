@@ -52,6 +52,7 @@ brave_blink_renderer_modules_visibility =
 
 brave_blink_sub_modules = [
   "//brave/third_party/blink/renderer/modules/brave",
+  "//brave/third_party/blink/renderer/modules/webgl",
   "//brave/third_party/blink/renderer/modules/global_privacy_control",
 ]
 
