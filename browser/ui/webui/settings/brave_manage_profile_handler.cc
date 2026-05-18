@@ -100,9 +100,11 @@ void BraveManageProfileHandler::SetCustomAvatar(
     return;
   }
 
-  // `BigBuffer::size()` returns the logical payload size regardless of
-  // storage backing (inline bytes for small payloads, shared memory for large
-  // ones), so the cap check is correct without forcing a copy first.
+  // `BigBuffer::size()` returns the logical payload size regardless of backing
+  // store (inline bytes below ~64 KiB, shared-memory handle above). The
+  // renderer builds the shared-memory arm in `bytesToBigBuffer` after
+  // validating `Mojo.createSharedBuffer` / `mapBuffer`; we read either variant
+  // via `base::span(bytes)` below without branching on storage type.
   if (bytes.size() == 0) {
     std::move(callback).Run(SetCustomAvatarError::kEmpty,
                             BuildCustomAvatarState());
@@ -126,12 +128,10 @@ void BraveManageProfileHandler::SetCustomAvatar(
   }
   pending_upload_callback_ = std::move(callback);
 
-  // `ImageDecoder::StartWithOptions` takes ownership of the input as a
-  // `std::vector<uint8_t>`. Materialize the BigBuffer into a vector once
-  // here. `base::span(bytes)` works for both storage variants of BigBuffer
-  // (inline bytes and shared-memory mapping); the resulting copy is the only
-  // copy of the payload on the browser side (the WebUI side ships it via
-  // shared memory through the Mojo binding).
+  // `ImageDecoder::StartWithOptions` needs a `std::vector<uint8_t>`.
+  // Materialize once from `base::span(bytes)`, which maps both BigBuffer arms
+  // (inline bytes and the renderer's shared-memory region) without an extra
+  // size check.
   std::vector<uint8_t> data = base::ToVector(base::span(bytes));
 
   // `shrink_to_fit=true` asks the sandboxed decoder to halve oversized images
@@ -255,7 +255,7 @@ void BraveManageProfileHandler::OnDecodeImageFailed() {
 
 void BraveManageProfileHandler::OnProfileAvatarChanged(
     const base::FilePath& profile_path) {
-  if (profile_path != profile_->GetPath()) {
+  if (!profile_ || profile_path != profile_->GetPath()) {
     return;
   }
   NotifyCustomAvatarChanged();
@@ -263,7 +263,7 @@ void BraveManageProfileHandler::OnProfileAvatarChanged(
 
 void BraveManageProfileHandler::OnProfileHighResAvatarLoaded(
     const base::FilePath& profile_path) {
-  if (profile_path != profile_->GetPath()) {
+  if (!profile_ || profile_path != profile_->GetPath()) {
     return;
   }
   ProfileAttributesEntry* entry = GetEntry(profile_);
@@ -278,6 +278,12 @@ void BraveManageProfileHandler::OnProfileHighResAvatarLoaded(
 void BraveManageProfileHandler::OnProfileWillBeDestroyed(Profile* profile) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   CHECK_EQ(profile, profile_.get());
+
+  // Safe-shutdown path when the profile goes away before the Mojo pipe closes.
+  // The self-owned receiver can keep this object alive with `profile_ =
+  // nullptr`; synchronous entry points must no-op or return
+  // `kProfileShuttingDown` until `BraveSettingsUI` tears down the receiver on
+  // WebUI destruction.
 
   // Cancel any in-flight decode and resolve its pending callback so the
   // Mojo response is not silently dropped.

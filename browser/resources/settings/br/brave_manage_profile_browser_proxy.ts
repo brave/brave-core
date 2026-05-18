@@ -124,11 +124,12 @@ export class BraveManageProfileBrowserProxy {
     return state
   }
 
-  // Uploads new bytes as the user's custom avatar. `bytes` is the raw
-  // contents of the user-selected image file (any common codec accepted by
-  // the sandboxed image decoder is allowed). Multi-MiB uploads ride a
-  // `BigBuffer` shared-memory handle to skip the per-byte boxing cost of an
-  // `array<uint8>` Mojo argument.
+  // Uploads new bytes as the user's custom avatar. `bytes` is the raw contents
+  // of the user-selected image file. Payloads at or above
+  // `kInlineUploadThresholdBytes` are wrapped by `bytesToBigBuffer` into a
+  // `BigBuffer` shared-memory handle (with explicit `createSharedBuffer` /
+  // `mapBuffer` validation); smaller payloads use the inline-bytes arm. The
+  // browser reads either backing store via `base::span(big_buffer)`.
   //
   // Payloads larger than `kMaxUploadBytes` are rejected synchronously here
   // (mirroring the browser-side limit) so we don't allocate a shared-memory

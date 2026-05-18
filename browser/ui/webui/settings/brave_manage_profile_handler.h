@@ -99,12 +99,14 @@ class BraveManageProfileHandler
                           ProfileAttributesStorage::Observer>
       storage_observation_{this};
 
-  // Watches for the owning profile's destruction so synchronous methods can
-  // null-check `profile_` and stop dereferencing a destroyed profile.
+  // Watches for the owning profile's destruction. The handler is owned by the
+  // Mojo self-owned receiver (`BraveSettingsUI::MakeOwnedReceiver`), so it can
+  // outlive the profile if the settings page keeps the pipe open; in that case
+  // `OnProfileWillBeDestroyed` clears `profile_` and resets observers.
   base::ScopedObservation<Profile, ProfileObserver> profile_observation_{this};
 
-  // Cleared in `OnProfileWillBeDestroyed`. All entry points must null-check
-  // before dereferencing.
+  // Cleared in `OnProfileWillBeDestroyed`. All entry points (including storage
+  // observer callbacks) must null-check before dereferencing.
   raw_ptr<Profile> profile_;
 
   base::WeakPtrFactory<BraveManageProfileHandler> weak_ptr_factory_{this};

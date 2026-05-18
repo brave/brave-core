@@ -55,12 +55,15 @@ interface BraveManageProfileSettingsHandler {
   GetCustomAvatar() => (CustomAvatarState state);
 
   // Uploads `bytes` (raw bytes of any common image codec supported by the
-  // sandboxed image decoder) as the user's custom avatar. The `BigBuffer`
-  // payload is shipped via shared memory once it exceeds the inline-bytes
-  // threshold (~64 KiB), which avoids the per-byte boxing that an
-  // `array<uint8>` would impose on the JS-side bindings for multi-MiB image
-  // files. On success returns the new state (including a PNG preview). On any
-  // failure, `error` is set and `state` is the unchanged current state.
+  // sandboxed image decoder) as the user's custom avatar.
+  //
+  // Large uploads use the `BigBuffer` shared-memory arm (see
+  // `bytesToBigBuffer` in `brave_manage_profile_browser_proxy.ts`): the
+  // renderer validates `Mojo.createSharedBuffer` / `mapBuffer` results before
+  // sending. The browser reads either inline bytes or the mapped region via
+  // `base::span(big_buffer)` (see `BraveManageProfileHandler::SetCustomAvatar`).
+  // On success returns the new state (including a PNG preview). On any failure,
+  // `error` is set and `state` is the unchanged current state.
   SetCustomAvatar(mojo_base.mojom.BigBuffer bytes)
       => (SetCustomAvatarError? error, CustomAvatarState state);
 
