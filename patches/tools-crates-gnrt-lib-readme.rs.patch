@@ -1,25 +1,18 @@
 diff --git a/tools/crates/gnrt/lib/readme.rs b/tools/crates/gnrt/lib/readme.rs
-index eca43529cf1575caa6f5bc374c44fdee2fbe34e7..aeb10595bc2505fb4d4fcccdfcd9dba1540602da 100644
+index 33f8517b271fcafe44d96666b2f88d30a04e5590..3e323ecc496136c0efcb35c9182683ddebbaf66c 100644
 --- a/tools/crates/gnrt/lib/readme.rs
 +++ b/tools/crates/gnrt/lib/readme.rs
-@@ -120,6 +120,7 @@ fn readme_file_from_package<'a>(
-     });
-     let license_files = if let Some(config_license_files) = config_license_files {
-         for path in config_license_files.iter() {
-+          if true { continue; }
-             ensure!(
-                 does_license_file_exist(path)?,
-                 "`gnrt_config.toml` for `{crate_name}` crate listed \
-@@ -139,7 +140,7 @@ fn readme_file_from_package<'a>(
-         Vec::new()
-     };
+@@ -118,7 +118,8 @@ fn readme_file_from_package<'a>(
+         &crate_vendor_dir,
+         config_license_files,
+         package.license(),
+-    )?;
++    )
++    .unwrap_or_default();
  
--    if license_files.is_empty() {
-+    if license_files.is_empty() && false {
-         bail!(
-             r#"License file not found for crate `{name}-{version}`.
- 
-@@ -250,6 +251,12 @@ enum LicenseKind {
+     let revision = {
+         if let Ok(file) = std::fs::File::open(
+@@ -280,6 +281,12 @@ enum LicenseKind {
      /// https://spdx.org/licenses/IJG.html
      #[strum(serialize = "IJG")]
      IJG,
