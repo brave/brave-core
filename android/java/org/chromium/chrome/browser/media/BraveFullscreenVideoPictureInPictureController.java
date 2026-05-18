@@ -7,7 +7,10 @@ package org.chromium.chrome.browser.media;
 
 import android.app.Activity;
 
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.youtube_script_injector.BraveYouTubeScriptInjectorNativeHelper;
+import org.chromium.content_public.browser.WebContents;
 
 public class BraveFullscreenVideoPictureInPictureController {
     /**
@@ -16,7 +19,48 @@ public class BraveFullscreenVideoPictureInPictureController {
      */
     protected boolean mDismissPending;
 
-    boolean maybeHandleDismissActivityForYouTubePictureInPicture(
+    /**
+     * Tracks the Brave activity that owns the YouTube PiP session being attempted in
+     * attemptPictureInPicture, so we can notify it if entry fails.
+     */
+    @Nullable private BraveActivity mPendingBraveActivityForPiP;
+
+    /**
+     * Called by upstream's attemptPictureInPicture before entering PiP. Resolves the Brave
+     * activity that should manage the upcoming YouTube PiP session (or null if this is not a
+     * Brave-managed YouTube PiP attempt) and notifies it that a session is being requested.
+     */
+    protected void onYouTubePictureInPictureAttempt(Activity activity, WebContents webContents) {
+        mPendingBraveActivityForPiP =
+                resolveBraveActivityForYouTubePictureInPicture(activity, webContents);
+        if (mPendingBraveActivityForPiP != null) {
+            mPendingBraveActivityForPiP.onYouTubePictureInPictureRequested(webContents);
+        }
+    }
+
+    /**
+     * Called by upstream when {@code enterPictureInPictureMode} returns false or throws, so the
+     * Brave activity can roll back any YouTube PiP session state set up in
+     * {@link #onYouTubePictureInPictureAttempt}.
+     */
+    protected void onYouTubePictureInPictureEnterFailed() {
+        if (mPendingBraveActivityForPiP != null) {
+            mPendingBraveActivityForPiP.onYouTubePictureInPictureEnterFailed();
+            mPendingBraveActivityForPiP = null;
+        }
+    }
+
+    private @Nullable BraveActivity resolveBraveActivityForYouTubePictureInPicture(
+            Activity activity, WebContents webContents) {
+        if (!(activity instanceof BraveActivity braveActivity)
+                || !BraveYouTubeScriptInjectorNativeHelper.isPictureInPictureAvailable(
+                        webContents)) {
+            return null;
+        }
+        return braveActivity;
+    }
+
+    protected boolean maybeHandleDismissActivityForYouTubePictureInPicture(
             Activity activity,
             boolean isStart,
             boolean isResume,
