@@ -12,6 +12,7 @@ namespace blink {
 namespace features {
 
 BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kFileSystemAccessAPI);
+BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kBraveCollapsedElementAttribute);
 BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kBraveWebBluetoothAPI);
 BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kNavigatorConnectionAttribute);
 BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kPartitionBlinkMemoryCache);

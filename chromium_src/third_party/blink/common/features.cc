@@ -38,6 +38,11 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
 BASE_FEATURE(kFileSystemAccessAPI,
              base::FEATURE_DISABLED_BY_DEFAULT);
 
+// Add `brave-collapsed-element` attribute to collapsed HTML image/iframe
+// elements
+BASE_FEATURE(kBraveCollapsedElementAttribute,
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 BASE_FEATURE(kBraveWebBluetoothAPI,
              base::FEATURE_DISABLED_BY_DEFAULT);
 
