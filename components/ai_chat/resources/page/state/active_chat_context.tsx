@@ -16,9 +16,8 @@ export interface SelectedChatDetails
   selectedConversationId: string | undefined
   updateSelectedConversationId: (conversationId: string | undefined) => void
   createNewConversation: () => void
-  // TODO(https://github.com/brave/brave-browser/issues/48524): isTabAssociated
-  // is not relevant for global side panel and causes UI side effects.
-  isTabAssociated: boolean
+  isMainConversation: boolean
+  openMainConversation: () => void
 }
 
 /**
@@ -32,8 +31,8 @@ export const ActiveChatContext = React.createContext<SelectedChatDetails>({
   selectedConversationId: undefined,
   updateSelectedConversationId: () => {},
   createNewConversation: () => {},
-  isTabAssociated: false,
-
+  isMainConversation: false,
+  openMainConversation: () => {},
   // It's ok to stub undefined for now because we don't render children unless
   // we have a value. For convenience we don't need to have this as an optional
   // value.
@@ -66,25 +65,51 @@ type ActiveChatContextProps = {
   updateSelectedConversationId: (selectedId: string | undefined) => void
 }
 
-function ActiveChatProvider({
+export function ActiveChatProvider({
   children,
   selectedConversationId,
   updateSelectedConversationId,
 }: React.PropsWithChildren<ActiveChatContextProps>) {
   const aiChat = useAIChat()
+  const isGlobalPanel = aiChat.isGlobalPanel
   const [conversationAPI, setConversationAPI] =
     React.useState<BindConversation.ConversationBindings>()
+  const [globalConversationId, setGlobalConversationId] =
+    React.useState<string>('')
+
+  // Whenever we create a new conversation in global panel mode, that becomes the main conversation.
+  React.useEffect(() => {
+    if (isGlobalPanel && (!selectedConversationId || !globalConversationId)) {
+      conversationAPI?.api?.getState
+        .fetch()
+        .then((s) => setGlobalConversationId(s.conversationUuid))
+    }
+  }, [isGlobalPanel, conversationAPI])
+
+  const isMainConversation =
+    selectedConversationId === tabAssociatedChatId
+    || selectedConversationId === globalConversationId
+    || (isGlobalPanel && !selectedConversationId)
 
   const details = React.useMemo<SelectedChatDetails>(
     () => ({
       ...conversationAPI!, // It's always got a value
       selectedConversationId,
       updateSelectedConversationId,
+      openMainConversation: () => {
+        if (isGlobalPanel) {
+          updateSelectedConversationId(globalConversationId)
+        } else if (isMainConversation) {
+          updateSelectedConversationId(tabAssociatedChatId)
+        } else {
+          throw new Error('No main conversation!')
+        }
+      },
       createNewConversation: () => {
         // Special case for the tab-associated conversation mode
+        // Simply bind a new conversation, this will make it associated
+        // with the current tab, if applicable, via the UIHandler.
         if (selectedConversationId === tabAssociatedChatId) {
-          // Simply bind a new conversation, this will make it associated
-          // with the current tab, if applicable, via the UIHandler.
           setConversationAPI(BindConversation.newConversation(aiChat.api))
           return
         }
@@ -92,9 +117,14 @@ function ActiveChatProvider({
         // Otherwise, navigate to "/"
         updateSelectedConversation('')
       },
-      isTabAssociated: selectedConversationId === tabAssociatedChatId,
+      isMainConversation,
     }),
-    [selectedConversationId, updateSelectedConversationId, conversationAPI],
+    [
+      selectedConversationId,
+      updateSelectedConversationId,
+      conversationAPI,
+      globalConversationId,
+    ],
   )
 
   // Handle child frame requests we switch to new conversation
@@ -102,12 +132,11 @@ function ActiveChatProvider({
     details.createNewConversation()
   }, [aiChat.api])
 
-  // Only update conversation if we're on the tab associated conversation
-  // and the event fires
+  // Only rebind the conversation when a new default is signalled in normal
+  // sidebar mode. In global panel mode the conversation persists across tab
+  // switches; the conversation_context effects handle content updates instead.
   aiChat.api.useOnNewDefaultConversation(() => {
     if (selectedConversationId === tabAssociatedChatId) {
-      // If the selected conversation is the tab associated one, we need to
-      // bind to the new default conversation.
       setConversationAPI(
         BindConversation.bindConversation(aiChat.api, undefined),
       )
@@ -211,13 +240,12 @@ function URLUpdater(props: SelectedChatDetails) {
 
     // Stay on the tab-associated conversation so that we know to change
     // conversation automatically when the target tab navigates.
-    if (props.selectedConversationId === tabAssociatedChatId) return
+    if (props.isMainConversation) return
 
     // Don't need to do anything, the URL already represents the conversation
     if (conversationState.conversationUuid === props.selectedConversationId) {
       return
     }
-
     props.updateSelectedConversationId(conversationState.conversationUuid)
     // We don't want to re-run this effect on selectedConversationId change as
     // that would cause an infinite loop.

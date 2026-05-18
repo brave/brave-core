@@ -320,8 +320,10 @@ export function useProvideConversationContext(props: ConversationContextProps) {
   // active tab or page changes, clear staged content and attach the new tab.
   const prevDefaultTabContentIdRef = React.useRef<number | undefined>(undefined)
   React.useEffect(() => {
-    if (aiChat.isStandalone !== false || props.isTabAssociated) return
     if (!conversationState.conversationUuid) return
+    if (!props.isMainConversation || !aiChat.isGlobalPanel) {
+      return
+    }
 
     const prevContentId = prevDefaultTabContentIdRef.current
     const newContentId = aiChat.defaultTabContentId
@@ -356,7 +358,7 @@ export function useProvideConversationContext(props: ConversationContextProps) {
   }, [
     aiChat.defaultTabContentId,
     aiChat.isStandalone,
-    props.isTabAssociated,
+    props.isMainConversation,
     conversationState.conversationUuid,
     tabsData,
   ])

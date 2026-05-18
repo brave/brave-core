@@ -58,6 +58,8 @@ const renderConversation = (overrides: RenderOverrides = {}) =>
             disassociateContent: overrides.disassociateContent ?? jest.fn(),
           }}
           initialState={{ isStandalone: false }}
+          conversationProps={{ isMainConversation: true }}
+          aiChatOverrides={{ isGlobalPanel: true }}
         >
           {children}
         </MockContext>

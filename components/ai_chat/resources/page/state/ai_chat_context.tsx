@@ -61,6 +61,7 @@ export default function useProvideAIChatContext(props: AIChatContextProps) {
       'isAIChatAgentProfileFeatureEnabled',
     ),
     isAIChatAgentProfile: loadTimeData.getBoolean('isAIChatAgentProfile'),
+    isGlobalPanel: loadTimeData.getBoolean('isGlobalPanel'),
 
     // TODO(https://github.com/brave/brave-browser/issues/52541): consumers
     // should consume directly from
