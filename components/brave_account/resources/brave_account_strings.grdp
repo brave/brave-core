@@ -62,14 +62,17 @@
   <message name="IDS_BRAVE_ACCOUNT_CREATE_PASSWORD_INPUT_LABEL" desc="Label for the 'Create a password' input field" formatter_data="webui=BraveAccount">
     Create a password
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_WEAK" desc="The password strength meter's 'weak' state" formatter_data="webui=BraveAccount">
-    Weak
+  <message name="IDS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_TOO_WEAK" desc="The password strength meter's 'too weak' state (below the minimum required strength)" formatter_data="webui=BraveAccount">
+    Too weak to proceed
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_MEDIUM" desc="The password strength meter's 'medium' state" formatter_data="webui=BraveAccount">
-    Medium
+  <message name="IDS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_GETTING_THERE" desc="The password strength meter's 'getting there' state (below the minimum required strength, but close)" formatter_data="webui=BraveAccount">
+    Getting there
   </message>
-  <message name="IDS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_STRONG" desc="The password strength meter's 'strong' state" formatter_data="webui=BraveAccount">
-    Strong
+  <message name="IDS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_STRONG_ENOUGH" desc="The password strength meter's 'strong enough' state (meets the minimum required strength)" formatter_data="webui=BraveAccount">
+    Strong enough
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_EXCEPTIONALLY_STRONG" desc="The password strength meter's 'exceptionally strong' state (maximum strength)" formatter_data="webui=BraveAccount">
+    Exceptionally strong
   </message>
   <message name="IDS_BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_LABEL" desc="Label for the 'Confirm password' input field" formatter_data="webui=BraveAccount">
     Confirm password

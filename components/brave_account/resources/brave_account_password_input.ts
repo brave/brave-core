@@ -46,6 +46,7 @@ export class BraveAccountPasswordInputElement extends CrLitElement {
       config: { type: Object },
       isCapsLockOn: { type: Boolean },
       isInputFocused: { type: Boolean, state: true },
+      isStrongEnough: { type: Boolean, state: true },
       label: { type: String },
       password: { type: String, state: true },
       placeholder: { type: String },
@@ -75,6 +76,7 @@ export class BraveAccountPasswordInputElement extends CrLitElement {
     e: CustomEvent<PasswordStrengthChangedEventDetail>,
   ) {
     if (this.config.mode === 'strength') {
+      this.isStrongEnough = e.detail.isStrongEnough
       this.config.onPasswordStrengthChanged(e.detail)
     }
   }
@@ -86,12 +88,18 @@ export class BraveAccountPasswordInputElement extends CrLitElement {
   }
 
   protected get shouldStyleAsError() {
-    return (
-      this.password.length !== 0
-      && (this.config.mode === 'confirmation'
-        ? this.password !== this.confirmPassword
-        : this.password !== this.password.trim())
-    )
+    if (this.password.length === 0) {
+      return false
+    }
+
+    switch (this.config.mode) {
+      case 'confirmation':
+        return this.password !== this.confirmPassword
+      case 'regular':
+        return this.password !== this.password.trim()
+      case 'strength':
+        return this.password !== this.password.trim() || !this.isStrongEnough
+    }
   }
 
   protected get shouldShowDropdown() {
@@ -108,6 +116,7 @@ export class BraveAccountPasswordInputElement extends CrLitElement {
   protected accessor config: PasswordInputConfig = { mode: 'regular' }
   protected accessor isCapsLockOn = false
   protected accessor isInputFocused = false
+  protected accessor isStrongEnough = false
   protected accessor label = ''
   protected accessor password = ''
   protected accessor placeholder = ''
