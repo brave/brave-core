@@ -1,0 +1,14 @@
+diff --git a/third_party/expat/BUILD.gn b/third_party/expat/BUILD.gn
+index 720f1d12e23ebb4f0c9225173ae60ccee7a3083b..b1f9c13d2a9008406f11cbeb5f729e2b0131f55c 100644
+--- a/third_party/expat/BUILD.gn
++++ b/third_party/expat/BUILD.gn
+@@ -13,6 +13,9 @@ expat_visibility = [
+   "//third_party/libjingle_xmpp:*",
+   "//third_party/wayland:*",
+ ]
++if (is_ios) {
++  expat_visibility += ["//brave/ios/browser/svg:*" ]
++}
+ 
+ # On Linux, we implicitly already depend on expat via fontconfig;
+ # let's not pull it in twice.
