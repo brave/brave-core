@@ -155,6 +155,40 @@ IN_PROC_BROWSER_TEST_F(BraveManageProfileCustomAvatarInteractiveTest,
                  current->IsUsingBraveCustomAvatar();
         }));
       }),
+      WaitForJsResult(kSettingsTab, R"(
+        () => {
+          function deepQuerySelector(root, selector) {
+            const direct = root.querySelector(selector);
+            if (direct) {
+              return direct;
+            }
+            const all = root.querySelectorAll('*');
+            for (const el of all) {
+              if (el.shadowRoot) {
+                const found = deepQuerySelector(el.shadowRoot, selector);
+                if (found) {
+                  return found;
+                }
+              }
+            }
+            return null;
+          }
+          const host = deepQuerySelector(document, 'settings-manage-profile');
+          if (!host || !host.shadowRoot) {
+            return false;
+          }
+          const root = host.shadowRoot;
+          const preview = root.querySelector('#braveCustomAvatarPreview');
+          const image = root.querySelector('#braveCustomAvatarImage');
+          const removeBtn = root.querySelector('#braveCustomAvatarRemoveBtn');
+          if (!preview || !image || !removeBtn) {
+            return false;
+          }
+          return preview.classList.contains('is-selected') &&
+                 !preview.classList.contains('is-empty') &&
+                 !!image.src && !removeBtn.hidden;
+        }
+      )"),
       Do([this]() {
         ProfileAttributesEntry* entry = GetActiveProfileEntry(browser());
         ASSERT_TRUE(entry);
@@ -164,5 +198,39 @@ IN_PROC_BROWSER_TEST_F(BraveManageProfileCustomAvatarInteractiveTest,
           return current && !current->HasBraveCustomAvatar() &&
                  !current->IsUsingBraveCustomAvatar();
         }));
-      }));
+      }),
+      WaitForJsResult(kSettingsTab, R"(
+        () => {
+          function deepQuerySelector(root, selector) {
+            const direct = root.querySelector(selector);
+            if (direct) {
+              return direct;
+            }
+            const all = root.querySelectorAll('*');
+            for (const el of all) {
+              if (el.shadowRoot) {
+                const found = deepQuerySelector(el.shadowRoot, selector);
+                if (found) {
+                  return found;
+                }
+              }
+            }
+            return null;
+          }
+          const host = deepQuerySelector(document, 'settings-manage-profile');
+          if (!host || !host.shadowRoot) {
+            return false;
+          }
+          const root = host.shadowRoot;
+          const preview = root.querySelector('#braveCustomAvatarPreview');
+          const image = root.querySelector('#braveCustomAvatarImage');
+          const removeBtn = root.querySelector('#braveCustomAvatarRemoveBtn');
+          if (!preview || !image || !removeBtn) {
+            return false;
+          }
+          return !preview.classList.contains('is-selected') &&
+                 preview.classList.contains('is-empty') &&
+                 !image.getAttribute('src') && removeBtn.hidden;
+        }
+      )"));
 }

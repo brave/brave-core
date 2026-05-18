@@ -10,6 +10,7 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/functional/callback.h"
+#include "base/functional/callback_helpers.h"
 #include "base/memory/raw_ptr.h"
 #include "base/test/bind.h"
 #include "base/values.h"
@@ -152,7 +153,7 @@ TEST_F(BraveCustomAvatarTest, GetAvatarIconWithTypeReturnsCustom) {
   e->SetAvatarIconIndex(profiles::GetPlaceholderAvatarIndex());
 
   gfx::Image image = gfx::test::CreateImage(72, 72);
-  e->SetBraveCustomAvatar(image, base::OnceCallback<void(bool)>());
+  e->SetBraveCustomAvatar(image, base::DoNothing());
 
   auto [resolved_image, icon_type] = e->GetAvatarIconWithType(
       /*size_for_placeholder_avatar=*/72,
@@ -165,8 +166,7 @@ TEST_F(BraveCustomAvatarTest, GetAvatarIconWithTypeReturnsCustom) {
 // surfaces a failure to the caller's save callback.
 TEST_F(BraveCustomAvatarTest, SetWithEmptyImageClears) {
   ProfileAttributesEntry* e = entry();
-  e->SetBraveCustomAvatar(gfx::test::CreateImage(8, 8),
-                          base::OnceCallback<void(bool)>());
+  e->SetBraveCustomAvatar(gfx::test::CreateImage(8, 8), base::DoNothing());
   ASSERT_TRUE(e->HasBraveCustomAvatar());
   ASSERT_TRUE(e->IsUsingBraveCustomAvatar());
 
@@ -193,8 +193,7 @@ TEST_F(BraveCustomAvatarTest, ClearRemovesFlagAndFile) {
   EXPECT_FALSE(e->HasBraveCustomAvatar());
   EXPECT_FALSE(e->IsUsingBraveCustomAvatar());
 
-  e->SetBraveCustomAvatar(gfx::test::CreateImage(16, 16),
-                          base::OnceCallback<void(bool)>());
+  e->SetBraveCustomAvatar(gfx::test::CreateImage(16, 16), base::DoNothing());
   ASSERT_TRUE(e->HasBraveCustomAvatar());
   ASSERT_TRUE(e->IsUsingBraveCustomAvatar());
 
@@ -219,7 +218,7 @@ TEST_F(BraveCustomAvatarTest, ClearRemovesFlagAndFile) {
 TEST_F(BraveCustomAvatarTest, DeactivateKeepsFileActivateRestores) {
   ProfileAttributesEntry* e = entry();
   gfx::Image image = gfx::test::CreateImage(32, 32);
-  e->SetBraveCustomAvatar(image, base::OnceCallback<void(bool)>());
+  e->SetBraveCustomAvatar(image, base::DoNothing());
   content::RunAllTasksUntilIdle();
   ASSERT_TRUE(e->HasBraveCustomAvatar());
   ASSERT_TRUE(e->IsUsingBraveCustomAvatar());

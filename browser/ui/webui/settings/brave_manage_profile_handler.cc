@@ -13,6 +13,7 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/containers/span.h"
+#include "base/containers/to_vector.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "chrome/browser/browser_process.h"
@@ -128,8 +129,7 @@ void BraveManageProfileHandler::SetCustomAvatar(
   // (inline bytes and shared-memory mapping); the resulting copy is the only
   // copy of the payload on the browser side (the WebUI side ships it via
   // shared memory through the Mojo binding).
-  base::span<const uint8_t> bytes_span = base::span(bytes);
-  std::vector<uint8_t> data(bytes_span.begin(), bytes_span.end());
+  std::vector<uint8_t> data = base::ToVector(base::span(bytes));
 
   // `shrink_to_fit=true` asks the sandboxed decoder to halve oversized images
   // until the decoded bitmap fits the IPC channel limit, instead of failing
@@ -261,6 +261,10 @@ void BraveManageProfileHandler::OnProfileAvatarChanged(
 void BraveManageProfileHandler::OnProfileHighResAvatarLoaded(
     const base::FilePath& profile_path) {
   if (profile_path != profile_->GetPath()) {
+    return;
+  }
+  ProfileAttributesEntry* entry = GetEntry(profile_);
+  if (!entry || !entry->HasBraveCustomAvatar()) {
     return;
   }
   // The custom avatar bitmap may have just finished loading from disk after a
