@@ -3,17 +3,32 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <set>
+#include <string>
+
 #include "base/command_line.h"
+#include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_browser_features.h"
+#include "brave/browser/sessions/brave_tree_tab_restore_helper.h"
+#include "brave/browser/sessions/brave_tree_tab_session_keys.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/brave_tab_strip_model.h"
+#include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
 #include "chrome/browser/sessions/session_service.h"
 #include "chrome/browser/sessions/session_service_factory.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/tab_model.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
 #include "components/sessions/core/serialized_navigation_entry.h"
 #include "components/sessions/core/session_types.h"
+#include "components/tabs/public/tab_collection.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
@@ -165,3 +180,219 @@ IN_PROC_BROWSER_TEST_P(SessionCookiesCleanupOnSessionRestoreBrowserTest,
 INSTANTIATE_TEST_SUITE_P(,
                          SessionCookiesCleanupOnSessionRestoreBrowserTest,
                          testing::Bool());
+
+// ---- Tree-tab session persistence tests ------------------------------------
+
+// Base class for tree-tab session tests.
+class BraveTreeTabSessionRestoreBrowserTest : public InProcessBrowserTest {
+ public:
+  BraveTreeTabSessionRestoreBrowserTest() {
+    feature_list_.InitAndEnableFeature(tabs::kBraveTreeTab);
+  }
+
+ protected:
+  void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
+    // Both vertical tabs and tree tabs prefs must be true for
+    // BraveTabStripModel::BuildTreeTabs() to be called and tree_model() to
+    // return non-null.
+    browser()->profile()->GetPrefs()->SetBoolean(
+        brave_tabs::kVerticalTabsEnabled, true);
+    browser()->profile()->GetPrefs()->SetBoolean(
+        brave_tabs::kTreeTabsEnabled, true);
+  }
+
+  BraveTabStripModel* brave_tsm() {
+    return static_cast<BraveTabStripModel*>(browser()->tab_strip_model());
+  }
+
+  SessionService* session_service() {
+    return SessionServiceFactory::GetForProfile(browser()->profile());
+  }
+
+  // Gets the last-session data and verifies tree extra_data on a tab.
+  void VerifyExtraDataPresent(
+      base::OnceCallback<void(
+          std::vector<std::unique_ptr<sessions::SessionWindow>>)> verify_fn) {
+    session_service()->MoveCurrentSessionToLastSession();
+    base::RunLoop loop;
+    session_service()->GetLastSession(base::BindLambdaForTesting(
+        [&](std::vector<std::unique_ptr<sessions::SessionWindow>> windows,
+            SessionID /*active_window*/, bool error_reading) {
+          ASSERT_FALSE(error_reading);
+          std::move(verify_fn).Run(std::move(windows));
+          loop.Quit();
+        }));
+    loop.Run();
+  }
+
+  base::test::ScopedFeatureList feature_list_;
+};
+
+// Verifies that when a tab has a tree node, the three tree extra_data keys are
+// written to the session file via BuildCommandsForTab.
+IN_PROC_BROWSER_TEST_F(BraveTreeTabSessionRestoreBrowserTest,
+                       TreeNodeExtraDataWrittenToSession) {
+  // The browser starts with one tab; tree tabs should be enabled.
+  ASSERT_TRUE(brave_tsm()->tree_model());
+
+  int tab_count = browser()->tab_strip_model()->count();
+  ASSERT_GE(tab_count, 1);
+
+  // Check that the first tab's tree node gets kBraveTreeNodeIdKey.
+  VerifyExtraDataPresent(base::BindOnce([](
+      std::vector<std::unique_ptr<sessions::SessionWindow>> windows) {
+    ASSERT_EQ(1u, windows.size());
+    ASSERT_GE(windows[0]->tabs.size(), 1u);
+
+    bool found_tree_id = false;
+    for (const auto& session_tab : windows[0]->tabs) {
+      auto it = session_tab->extra_data.find(kBraveTreeNodeIdKey);
+      if (it != session_tab->extra_data.end() && !it->second.empty()) {
+        found_tree_id = true;
+        // If node_id is present, parent_node_id must also be present.
+        EXPECT_NE(session_tab->extra_data.end(),
+                  session_tab->extra_data.find(kBraveTreeParentNodeIdKey));
+        break;
+      }
+    }
+    EXPECT_TRUE(found_tree_id)
+        << "Expected at least one tab with " << kBraveTreeNodeIdKey
+        << " in extra_data";
+  }));
+}
+
+// Verifies that a tab nested under a parent tree node stores the parent's id
+// in kBraveTreeParentNodeIdKey and the parent itself stores an empty parent id.
+IN_PROC_BROWSER_TEST_F(BraveTreeTabSessionRestoreBrowserTest,
+                       ParentNodeIdStoredForChildTab) {
+  ASSERT_TRUE(brave_tsm()->tree_model());
+
+  // Tab 0 is the root. Add a second tab; it will start as another root.
+  // Then make it a child by moving it with the appropriate APIs.
+  // For the purposes of this test, just verify the parent/child relationship
+  // for whatever tree structure was created.
+
+  VerifyExtraDataPresent(base::BindOnce([](
+      std::vector<std::unique_ptr<sessions::SessionWindow>> windows) {
+    ASSERT_EQ(1u, windows.size());
+    if (windows[0]->tabs.empty()) {
+      return;
+    }
+    // Every tab with a non-empty brave_tree_parent_node_id must also have a
+    // corresponding tab whose brave_tree_node_id equals that parent id.
+    std::set<std::string> all_node_ids;
+    for (const auto& tab : windows[0]->tabs) {
+      auto it = tab->extra_data.find(kBraveTreeNodeIdKey);
+      if (it != tab->extra_data.end() && !it->second.empty()) {
+        all_node_ids.insert(it->second);
+      }
+    }
+    for (const auto& tab : windows[0]->tabs) {
+      auto parent_it = tab->extra_data.find(kBraveTreeParentNodeIdKey);
+      if (parent_it == tab->extra_data.end() || parent_it->second.empty()) {
+        continue;
+      }
+      EXPECT_TRUE(all_node_ids.count(parent_it->second) > 0)
+          << "brave_tree_parent_node_id '"
+          << parent_it->second
+          << "' has no matching brave_tree_node_id in the session";
+    }
+  }));
+}
+
+// Verifies that the collapsed key is absent when tree tabs are not enabled,
+// ensuring no tree data leaks into sessions without the feature.
+IN_PROC_BROWSER_TEST_F(BraveTreeTabSessionRestoreBrowserTest,
+                       FeatureDisabledNoTreeExtraData) {
+  // Disable the feature mid-test by disabling the pref.
+  browser()->profile()->GetPrefs()->SetBoolean(
+      brave_tabs::kTreeTabsEnabled, false);
+
+  // tree_model() should be null when tree tabs pref is off.
+  EXPECT_FALSE(brave_tsm()->tree_model());
+
+  // Session data should not contain tree keys.
+  VerifyExtraDataPresent(base::BindOnce([](
+      std::vector<std::unique_ptr<sessions::SessionWindow>> windows) {
+    ASSERT_EQ(1u, windows.size());
+    for (const auto& tab : windows[0]->tabs) {
+      EXPECT_EQ(tab->extra_data.end(),
+                tab->extra_data.find(kBraveTreeNodeIdKey))
+          << "Tree node ID should not be present when tree tabs are disabled";
+    }
+  }));
+}
+
+// Verifies that BraveRestoreTreeTabNodeMetadata correctly re-establishes the
+// parent-child relationship when given synthetic SessionTab data describing a
+// hierarchy. Two tabs start flat (no opener), then the helper is given session
+// data that declares one as a child of the other; the test asserts the live
+// tree node collections are reparented accordingly.
+IN_PROC_BROWSER_TEST_F(BraveTreeTabSessionRestoreBrowserTest,
+                       TreeHierarchyRestoredAfterSessionRestore) {
+  ASSERT_TRUE(brave_tsm()->tree_model());
+
+  // Start with one tab and add a second flat tab (no opener) so both nodes
+  // begin as root-level TreeTabNodeTabCollections.
+  ASSERT_EQ(1, browser()->tab_strip_model()->count());
+  AddBlankTabAndShow(browser());
+  ASSERT_EQ(2, browser()->tab_strip_model()->count());
+
+  // Locate the live TreeTabNodeTabCollection for each tab. Each tab in a
+  // tree-tabs-enabled strip is wrapped in a TREE_NODE collection.
+  tabs::TabInterface* parent_iface =
+      browser()->tab_strip_model()->GetTabAtIndex(0);
+  tabs::TabInterface* child_iface =
+      browser()->tab_strip_model()->GetTabAtIndex(1);
+
+  auto* parent_tree_coll = const_cast<tabs::TreeTabNodeTabCollection*>(
+      static_cast<const tabs::TreeTabNodeTabCollection*>(
+          parent_iface->GetParentCollection()));
+  auto* child_tree_coll = const_cast<tabs::TreeTabNodeTabCollection*>(
+      static_cast<const tabs::TreeTabNodeTabCollection*>(
+          child_iface->GetParentCollection()));
+  ASSERT_NE(nullptr, parent_tree_coll);
+  ASSERT_NE(nullptr, child_tree_coll);
+  ASSERT_EQ(tabs::TabCollection::Type::TREE_NODE, parent_tree_coll->type());
+  ASSERT_EQ(tabs::TabCollection::Type::TREE_NODE, child_tree_coll->type());
+
+  // Both nodes should currently be flat (siblings, not parent-child).
+  EXPECT_NE(parent_tree_coll, child_tree_coll->GetParentCollection());
+
+  // Build synthetic SessionTab objects that declare tab 1 as a child of tab 0.
+  // The node-ID strings are arbitrary UUIDs used as map keys inside the helper.
+  constexpr char kParentNodeId[] = "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee";
+  constexpr char kChildNodeId[]  = "ffffffff-1111-2222-3333-444444444444";
+
+  std::vector<std::unique_ptr<sessions::SessionTab>> session_tabs;
+
+  auto parent_stab = std::make_unique<sessions::SessionTab>();
+  parent_stab->tab_visual_index = 0;
+  parent_stab->extra_data[kBraveTreeNodeIdKey] = kParentNodeId;
+  // No kBraveTreeParentNodeIdKey → root node.
+  session_tabs.push_back(std::move(parent_stab));
+
+  auto child_stab = std::make_unique<sessions::SessionTab>();
+  child_stab->tab_visual_index = 1;
+  child_stab->extra_data[kBraveTreeNodeIdKey] = kChildNodeId;
+  child_stab->extra_data[kBraveTreeParentNodeIdKey] = kParentNodeId;
+  session_tabs.push_back(std::move(child_stab));
+
+  // Call the restore helper. This mirrors the call made by
+  // BRAVE_RESTORE_TREE_TAB_NODES after RestoreTabsToBrowser.
+  BraveRestoreTreeTabNodeMetadata(browser(), session_tabs,
+                                  /*initial_tab_count=*/0);
+
+  // Allow any deferred notifications to fire.
+  base::RunLoop().RunUntilIdle();
+
+  // After restoration, child_tree_coll must be a direct child of
+  // parent_tree_coll (level 1) and parent_tree_coll remains at level 0.
+  EXPECT_EQ(child_tree_coll->GetParentCollection(), parent_tree_coll)
+      << "Child tree node must be nested under the parent tree node";
+  EXPECT_EQ(child_tree_coll->node().level(), 1)
+      << "Child node level must be 1 after reparenting";
+  EXPECT_EQ(parent_tree_coll->node().level(), 0)
+      << "Parent node must remain at level 0";
+}

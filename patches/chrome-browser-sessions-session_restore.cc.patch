@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/sessions/session_restore.cc b/chrome/browser/sessions/session_restore.cc
+index 027a52340bae2119bba70ec97dc33f1cb5432d63..3f1da9d2a771f15b927fa16fe3355cc0d0fa43ae 100644
+--- a/chrome/browser/sessions/session_restore.cc
++++ b/chrome/browser/sessions/session_restore.cc
+@@ -823,6 +823,7 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
+       //    restore the groups' visual data.
+       //    Note, this may delete some of the WebContents created earlier.
+       RestoreTabGroupMetadata(browser, new_group_ids, window->tab_groups);
++      BRAVE_RESTORE_TREE_TAB_NODES
+ 
+       // 8. Notify SessionService of restored tabs, so they can be saved to the
+       //    current session.

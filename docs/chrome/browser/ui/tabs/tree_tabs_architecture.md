@@ -666,3 +666,11 @@ unwraps them and adds them to the target group.
 → delegate) to set the tab’s **tree_tab_node** when adding to a group in tree mode, so layout
 shows the tab under the group’s tree node. **GetTreeTabNode** returns **GetEmptyTreeTabNode()**
 when the node is temporarily null (e.g. tab just moved into group before **TabGroupedStateChanged**).
+
+---
+
+## Related Documents
+
+- [tree_tabs_session_restore.md](tree_tabs_session_restore.md) — Design for
+  persisting the `TreeTabNode` hierarchy across browser restarts via the session
+  service.
