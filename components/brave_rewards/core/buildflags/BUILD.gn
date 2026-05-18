@@ -8,9 +8,12 @@ import("//build/buildflag_header.gni")
 
 buildflag_header("buildflags") {
   header = "buildflags.h"
-  flags = [
-    "ENABLE_BRAVE_REWARDS=$enable_brave_rewards",
+  flags = [ "ENABLE_BRAVE_REWARDS=$enable_brave_rewards" ]
+}
 
+buildflag_header("endpoint_buildflags") {
+  header = "endpoint_buildflags.h"
+  flags = [
     "BITFLYER_PRODUCTION_FEE_ADDRESS=\"$bitflyer_production_fee_address\"",
     "BITFLYER_PRODUCTION_URL=\"$bitflyer_production_url\"",
     "BITFLYER_SANDBOX_FEE_ADDRESS=\"$bitflyer_sandbox_fee_address\"",

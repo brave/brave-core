@@ -40,6 +40,7 @@ static_library("content") {
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_rewards/core:features",
     "//brave/components/brave_rewards/core/buildflags",
+    "//brave/components/brave_rewards/core/buildflags:endpoint_buildflags",
     "//brave/components/brave_rewards/core/engine",
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/ntp_background_images/common",
