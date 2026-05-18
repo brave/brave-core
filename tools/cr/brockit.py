@@ -170,6 +170,26 @@ away all minor bumps in a branch down to a single one. This is useful when
 when running a cr branch, as it is common to have multiple minor daily bumps
 in a branch.
 
+### `brockit.py update-xcode-toolchain`
+The hermetic toolchain is generated in CI, and at the end of it, a download URL
+is provided for the generated toolchain. The URL is usually printed in the logs
+as:
+
+```
+Download URL: https://....tar.gz
+```
+
+To create a commit updating the hermetic toolchain, simply pass this URL to the
+command:
+
+```sh
+tools/cr/brockit.py update-xcode-toolchain <URL>
+```
+
+Pass `--culprit=<hash>` to provide a specific culprit for the toolchain update.
+If none is provided, `brockit` will trying to determine the culprit by looking
+for the last commit updating the toolchain in Chromium.
+
 ### `brockit.py reassign`
 This command is used to change the authorship of a given commit in the branch.
 It generates an empty commit with the message `reassign! {original_subject}`
@@ -246,6 +266,15 @@ GOOGLESOURCE_COMMIT_LINK = f'{versioning.GOOGLESOURCE_LINK}' '/+/{commit}'
 # A basic url to the rust toolchain that can be used to check for the toolchain
 # availability for a given version.
 RUST_TOOLCHAIN_URL = 'https://brave-build-deps-public.s3.brave.com/rust-toolchain-aux/linux-x64-rust-toolchain-{revision}.tar.xz'
+
+# Brave-side script that pins the hermetic Xcode toolchain. Its
+# `XCODE_VERSION` / `XCODE_BUILD_VERSION` / `MAC_SDK_*` constants are the only
+# thing `update-xcode-toolchain` edits.
+HERMETIC_XCODE_SCRIPT = 'build/mac/download_hermetic_xcode.py'
+
+# Chromium-side file pinning the macOS SDK that we cross-reference to find the
+# upstream commit that triggered this toolchain bump.
+CHROMIUM_MAC_SDK_GNI = 'build/config/mac/mac_sdk.gni'
 
 # Google dash link used to check the latest version for a given channel
 CHROMIUMDASH_LATEST_RELEASE = 'https://chromiumdash.appspot.com/fetch_releases?channel={channel}&platform={platform}&num=1'
@@ -1429,10 +1458,12 @@ class Upgrade(Versioned):
                 'MacOS SDK has been updated. '
                 f'{result["current"]} ➜ {result["target"]}')
             result['advice'] = (
-                'Contact DevOps regarding the new macOS SDK for the hermetic '
-                'toolchain. Update `XCODE_VERSION` and `XCODE_VERSION` values '
-                'in build/mac/download_hermetic_xcode.py for the new download '
-                'URL.')
+                'Contact DevOps to ask for an updated MacOS toolchain node to '
+                'be used to generate a new toolchain, then generate the new '
+                'toolchain in https://ci.brave.com/view/toolchains/. Once the '
+                'new toolchain is generated, call '
+                '`brockit.py update-xcode-toolchain <url>` with the URL in the '
+                '"Download URL:" line printed in CI.')
         return result
 
     def _check_rust_toolchain(self) -> dict | None:
@@ -1486,7 +1517,8 @@ class Upgrade(Versioned):
             'current': get_rust_clang_revision(self.working_version),
             'target': updated_version,
             'description': 'The rust toolchain has been updated.',
-            'advice': 'Run the jobs in https://ci.brave.com/view/rust to generate a new Rust toolchain.',
+            'advice': ('Run the jobs in https://ci.brave.com/view/toolchains/ '
+                       'to generate a new Rust toolchain.'),
             'commit': {
                 'hash': commit_hash,
                 'message': commit_message
@@ -1504,7 +1536,8 @@ class Upgrade(Versioned):
         * The rust toolchain has been updated.
             CL: Roll clang+rust llvmorg-21-init-1655-g7b473dfe-1 : llvmorg-2...
                 https://chromium.googlesource.com/chromium/src/+/f9fada98083846
-            Run the jobs in https://ci.brave.com/view/rust to generate a new...
+            Run the jobs in https://ci.brave.com/view/toolchains/ to generate
+            a new...
 
     Returns:
         True if all checks pass, and False otherwise.
@@ -2230,6 +2263,136 @@ class Reassign(Task):
             no_verify=True)
 
 
+class UpdateXcodeToolchain(Task):
+    """Pins `build/mac/download_hermetic_xcode.py` to a freshly built archive.
+
+    This is a convenience command to update the URL for downloading the hermetic
+    Xcode toolchain.
+    """
+
+    # Filename pattern emitted by tools/cr/toolchain/build_xcode_toolchain.py.
+    # The six dash-separated tokens map 1:1 onto the six constants in
+    # `HERMETIC_XCODE_SCRIPT`.
+    _TOOLCHAIN_URL_RE = re.compile(
+        r'xcode-hermetic-toolchain'
+        r'-(?P<xcode_version>[^-/]+)'
+        r'-(?P<xcode_build_version>[^-/]+)'
+        r'-(?P<mac_sdk_official_version>[^-/]+)'
+        r'-(?P<mac_sdk_official_build_version>[^-/]+)'
+        r'-for-upstream'
+        r'-(?P<mac_sdk_upstream_version>[^-/]+)'
+        r'-(?P<mac_sdk_upstream_build_version>[^-/]+)'
+        r'\.tar\.gz')
+
+    def status_message(self):
+        return "Updating Apple toolchain..."
+
+    @staticmethod
+    def _replace_constant(text: str, name: str, value: str) -> str:
+        """Rewrites a single `<name> = '<value>'` assignment in *text*.
+
+        Anchored at line start and matches both single- and double-quoted
+        existing values so it stays robust if the script ever switches quote
+        style.
+        """
+        pattern = re.compile(rf"^({re.escape(name)}\s*=\s*)(['\"])[^'\"]*\2",
+                             re.MULTILINE)
+        new_text, count = pattern.subn(rf"\1'{value}'", text, count=1)
+        if count != 1:
+            raise InvalidInputException(
+                f'Could not find assignment for {name} in '
+                f'{HERMETIC_XCODE_SCRIPT}')
+        return new_text
+
+    def _rewrite_hermetic_xcode_script(self, tokens: dict[str, str]) -> bool:
+        """Pins the six toolchain constants to the values parsed from the URL.
+
+        Returns True if the on-disk file actually changed, False when every
+        constant was already set to the requested value (so the caller can
+        skip committing).
+        """
+        script_path = repository.brave.root / HERMETIC_XCODE_SCRIPT
+        original = script_path.read_bytes().decode('utf-8')
+        updated = original
+        mapping = (
+            ('XCODE_VERSION', tokens['xcode_version']),
+            ('XCODE_BUILD_VERSION', tokens['xcode_build_version']),
+            ('MAC_SDK_OFFICIAL_VERSION', tokens['mac_sdk_official_version']),
+            ('MAC_SDK_OFFICIAL_BUILD_VERSION',
+             tokens['mac_sdk_official_build_version']),
+            ('MAC_SDK_UPSTREAM_VERSION', tokens['mac_sdk_upstream_version']),
+            ('MAC_SDK_UPSTREAM_BUILD_VERSION',
+             tokens['mac_sdk_upstream_build_version']),
+        )
+        for name, value in mapping:
+            updated = self._replace_constant(updated, name, value)
+
+        if updated == original:
+            return False
+
+        script_path.write_text(updated, encoding='utf-8', newline='')
+        return True
+
+    def _resolve_chromium_commit(self, tokens: dict[str, str]) -> str:
+        """Finds the Chromium commit that pinned the upstream macOS SDK.
+
+        We attempt to find the last commit that introduced one of the values
+        indicated as the upstream toolchain numbers.
+        """
+        version = re.escape(tokens['mac_sdk_upstream_version'])
+        build = re.escape(tokens['mac_sdk_upstream_build_version'])
+        regex = (f'mac_sdk_official_version = "{version}"'
+                 f'|mac_sdk_official_build_version = "{build}"')
+        commit_hash = repository.chromium.run_git('log', '--extended-regexp',
+                                                  '-G', regex, '--pretty=%H',
+                                                  '-1', '--',
+                                                  CHROMIUM_MAC_SDK_GNI)
+        if not commit_hash:
+            raise InvalidInputException(
+                f'Could not find a Chromium commit setting '
+                '`mac_sdk_official_version = '
+                f'"{tokens["mac_sdk_upstream_version"]}"` '
+                'or '
+                '`mac_sdk_official_build_version = '
+                f'"{tokens["mac_sdk_upstream_build_version"]}"` '
+                f'in {CHROMIUM_MAC_SDK_GNI}. Pass [bold cyan]--culprit[/] to '
+                'point at it explicitly.')
+        return commit_hash
+
+    def execute(self, url: str, culprit: str | None):
+        # Regex breaking each part of the url in different groups.
+        status = GitStatus()
+        if status.has_staged_files():
+            raise InvalidInputException(
+                'Staged files detected. Please commit or unstage changes '
+                'before generating a toolchain update:\n%s' %
+                '\n'.join(status.get_all_staged_entries()))
+
+        match = self._TOOLCHAIN_URL_RE.search(url)
+        if match is None:
+            raise InvalidInputException(
+                f'URL does not match the xcode-hermetic-toolchain pattern: '
+                f'{url}')
+        tokens = match.groupdict()
+
+        if not self._rewrite_hermetic_xcode_script(tokens):
+            raise InvalidInputException(
+                f'{HERMETIC_XCODE_SCRIPT} is already pinned to these values; '
+                'nothing to commit.')
+
+        commit_hash = culprit or self._resolve_chromium_commit(tokens)
+
+        title = (f'Switch to Xcode {tokens["xcode_version"]} '
+                 f'{tokens["xcode_build_version"]}')
+        repository.brave.run_git('add', HERMETIC_XCODE_SCRIPT)
+        repository.brave.git_commit(title,
+                                    env={
+                                        **os.environ,
+                                        'tags': 'toolchain',
+                                        'culprit': commit_hash,
+                                    })
+
+
 def fetch_chromium_dash_version(channel: str) -> Version:
     """Fetches the highest latest version across all platforms for a channel.
 
@@ -2497,6 +2660,25 @@ def main():
         'change',
         help='The commit reference to reassign (hash, HEAD~N, etc.).')
 
+    update_xcode_parser = subparsers.add_parser(
+        'update-xcode-toolchain',
+        parents=[global_parser],
+        help='Pins build/mac/download_hermetic_xcode.py to a freshly built '
+        'hermetic Xcode toolchain archive.')
+    update_xcode_parser.add_argument(
+        'url',
+        help=
+        'Archive URL emitted by tools/cr/toolchain/build_xcode_toolchain.py '
+        '(filename must follow the xcode-hermetic-toolchain-<...>.tar.gz '
+        'pattern).')
+    update_xcode_parser.add_argument(
+        '--culprit',
+        default=None,
+        help='Chromium commit hash to reference in the commit body. Defaults '
+        'to auto-detecting the commit that pinned the upstream macOS SDK in '
+        f'{CHROMIUM_MAC_SDK_GNI}.',
+        dest='culprit')
+
     subparsers.add_parser('reference',
                           help='Detailed documentation for this tool.')
     args = parser.parse_args()
@@ -2554,6 +2736,8 @@ def main():
             GitHubIssue(resolve_version_with_from_ref_arg()).run()
         if args.command == 'reassign':
             Reassign().run(change=args.change)
+        if args.command == 'update-xcode-toolchain':
+            UpdateXcodeToolchain().run(url=args.url, culprit=args.culprit)
         if args.command == 'reference':
             console.print(Markdown(__doc__))
         if args.command == 'show':
