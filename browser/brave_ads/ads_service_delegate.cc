@@ -27,7 +27,7 @@
 #else
 #include "chrome/browser/fullscreen.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
 #include "chrome/browser/ui/navigator/browser_navigator.h"
 #endif
 
@@ -57,7 +57,9 @@ void AdsServiceDelegate::OpenNewTabWithUrl(const GURL& url) {
   ServiceTabLauncher::GetInstance()->LaunchTab(
       &*profile_, params, base::BindOnce([](content::WebContents*) {}));
 #else
-  Browser* browser = chrome::FindTabbedBrowser(&*profile_, false);
+  auto* browser = ProfileBrowserCollection::GetForProfile(&*profile_)
+                      ->FindTabbedBrowser()
+                      ->GetBrowserForMigrationOnly();
   if (!browser) {
     browser = Browser::Create(Browser::CreateParams(&*profile_, true));
   }

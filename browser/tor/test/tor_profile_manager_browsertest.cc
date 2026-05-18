@@ -73,7 +73,8 @@ Browser* SwitchToTorProfile(Profile* parent_profile,
       TorProfileServiceFactory::GetForContext(tor_browser->profile());
   service->SetTorLauncherFactoryForTest(factory);
 
-  EXPECT_EQ(current_profile_num + 1, chrome::GetTotalBrowserCount());
+  EXPECT_EQ(current_profile_num + 1,
+            GlobalBrowserCollection::GetInstance()->GetSize());
   return tor_browser;
 }
 
@@ -169,7 +170,7 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, LaunchWithTorUrl) {
   // There should be one normal and one Tor window now.
   Relaunch(new_command_line);
   ui_test_utils::WaitForBrowserToOpen();
-  ASSERT_EQ(2u, chrome::GetTotalBrowserCount());
+  ASSERT_EQ(2u, GlobalBrowserCollection::GetInstance()->GetSize());
   ASSERT_EQ(1u, GetTabbedBrowserCount(browser()->profile()));
 }
 #endif
@@ -323,11 +324,11 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, CloseLastTorWindow) {
   ASSERT_TRUE(profile_manager);
 
   Profile* parent_profile = ProfileManager::GetLastUsedProfile();
-  EXPECT_EQ(chrome::GetTotalBrowserCount(), 1u);
+  EXPECT_EQ(GlobalBrowserCollection::GetInstance()->GetSize(), 1u);
   Browser* tor_browser =
       SwitchToTorProfile(parent_profile, GetTorLauncherFactory());
   Profile* tor_profile = tor_browser->profile();
-  EXPECT_EQ(chrome::GetTotalBrowserCount(), 2u);
+  EXPECT_EQ(GlobalBrowserCollection::GetInstance()->GetSize(), 2u);
   ASSERT_TRUE(tor_profile->IsTor());
   EXPECT_TRUE(tor_profile->IsOffTheRecord());
   EXPECT_EQ(tor_profile->GetOriginalProfile(), parent_profile);
@@ -338,7 +339,7 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, CloseLastTorWindow) {
   TorProfileManager::CloseTorProfileWindows(tor_profile);
   observer.Wait();
   EXPECT_EQ(0UL, chrome::GetBrowserCount(tor_profile));
-  ASSERT_EQ(chrome::GetTotalBrowserCount(), 1u);
+  ASSERT_EQ(GlobalBrowserCollection::GetInstance()->GetSize(), 1u);
   EXPECT_FALSE(browser()->profile()->IsTor());
 }
 
@@ -348,7 +349,7 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, CloseAllTorWindows) {
 
   Profile* parent_profile1 = ProfileManager::GetLastUsedProfile();
   ASSERT_NE(CreateIncognitoBrowser(parent_profile1), nullptr);
-  ASSERT_EQ(chrome::GetTotalBrowserCount(), 2u);
+  ASSERT_EQ(GlobalBrowserCollection::GetInstance()->GetSize(), 2u);
 
   // Create another profile.
   base::FilePath dest_path = profile_manager->user_data_dir();
@@ -360,19 +361,21 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, CloseAllTorWindows) {
   }
   ASSERT_TRUE(parent_profile2);
   ASSERT_NE(CreateBrowser(parent_profile2), nullptr);
-  ASSERT_EQ(chrome::GetTotalBrowserCount(), 3u);
+  ASSERT_EQ(GlobalBrowserCollection::GetInstance()->GetSize(), 3u);
 
-  Browser* tor_browser1 = SwitchToTorProfile(
-      parent_profile1, GetTorLauncherFactory(), chrome::GetTotalBrowserCount());
+  Browser* tor_browser1 =
+      SwitchToTorProfile(parent_profile1, GetTorLauncherFactory(),
+                         GlobalBrowserCollection::GetInstance()->GetSize());
   Profile* tor_profile1 = tor_browser1->profile();
   ASSERT_TRUE(tor_profile1->IsTor());
-  ASSERT_EQ(chrome::GetTotalBrowserCount(), 4u);
+  ASSERT_EQ(GlobalBrowserCollection::GetInstance()->GetSize(), 4u);
 
-  Browser* tor_browser2 = SwitchToTorProfile(
-      parent_profile2, GetTorLauncherFactory(), chrome::GetTotalBrowserCount());
+  Browser* tor_browser2 =
+      SwitchToTorProfile(parent_profile2, GetTorLauncherFactory(),
+                         GlobalBrowserCollection::GetInstance()->GetSize());
   Profile* tor_profile2 = tor_browser2->profile();
   ASSERT_TRUE(tor_profile2->IsTor());
-  ASSERT_EQ(chrome::GetTotalBrowserCount(), 5u);
+  ASSERT_EQ(GlobalBrowserCollection::GetInstance()->GetSize(), 5u);
 
   testing::Mock::AllowLeak(GetTorLauncherFactory());
   EXPECT_CALL(*GetTorLauncherFactory(), KillTorProcess).Times(1);
@@ -389,7 +392,7 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, CloseAllTorWindows) {
   EXPECT_EQ(0UL, chrome::GetBrowserCount(tor_profile1));
   EXPECT_EQ(0UL, chrome::GetBrowserCount(tor_profile2));
   // only two regular windows and one private window left
-  ASSERT_EQ(chrome::GetTotalBrowserCount(), 3u);
+  ASSERT_EQ(GlobalBrowserCollection::GetInstance()->GetSize(), 3u);
   GlobalBrowserCollection::GetInstance()->ForEach(
       [](BrowserWindowInterface* browser) {
         EXPECT_FALSE(browser->GetProfile()->IsTor());

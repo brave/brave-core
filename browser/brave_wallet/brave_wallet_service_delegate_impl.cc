@@ -20,7 +20,7 @@
 #include "chrome/browser/notifications/notification_display_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/browser_context.h"
@@ -44,7 +44,8 @@ content::WebContents* GetActiveWebContents() {
     return g_web_contents_for_testing;
   }
 
-  BrowserWindowInterface* browser = chrome::FindLastActive();
+  BrowserWindowInterface* browser =
+      GetLastActiveBrowserWindowInterfaceWithAnyProfile();
   return browser ? browser->GetTabStripModel()->GetActiveWebContents()
                  : nullptr;
 }

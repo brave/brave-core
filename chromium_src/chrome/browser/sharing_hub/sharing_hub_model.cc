@@ -10,7 +10,7 @@
 #include "chrome/app/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/grit/generated_resources.h"
 #include "content/public/browser/browser_context.h"
@@ -20,12 +20,13 @@
 namespace {
 
 bool ShouldAddCopyCleanLinkItem(content::BrowserContext* context) {
-  auto* browser =
-      chrome::FindBrowserWithProfile(Profile::FromBrowserContext(context));
-  if (!browser) {
+  auto* browser = ProfileBrowserCollection::GetForProfile(
+                      Profile::FromBrowserContext(context))
+                      ->GetLastActiveBrowser();
+  if (!browser || !browser->GetTabStripModel()) {
     return false;
   }
-  auto* contents = browser->tab_strip_model()->GetActiveWebContents();
+  auto* contents = browser->GetTabStripModel()->GetActiveWebContents();
   if (!contents) {
     return false;
   }
