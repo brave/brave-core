@@ -12,8 +12,8 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "components/constrained_window/constrained_window_views.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -22,7 +22,7 @@
 namespace brave {
 
 void ShowObsoleteSystemConfirmDialog(base::OnceCallback<void(bool)> callback) {
-  if (auto* browser = chrome::FindLastActive()) {
+  if (auto* browser = GetLastActiveBrowserWindowInterfaceWithAnyProfile()) {
     constrained_window::CreateBrowserModalDialogViews(
         new ObsoleteSystemConfirmDialogView(std::move(callback)),
         browser->GetWindow()->GetNativeWindow())

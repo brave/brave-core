@@ -18,7 +18,8 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
-#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/policy/core/common/policy_pref_names.h"
 #include "components/prefs/pref_member.h"
@@ -221,11 +222,31 @@ void BraveRestoreProfileMenu() {
 }
 
 - (Browser*)getBrowser {
-  return chrome::FindBrowserWithProfile([self lastProfileIfLoaded]);
+  Profile* profile = [self lastProfileIfLoaded];
+  if (!profile) {
+    return nullptr;
+  }
+
+  auto* collection = ProfileBrowserCollection::GetForProfile(profile);
+  if (!collection) {
+    return nullptr;
+  }
+
+  auto* browser_interface = collection->FindTabbedBrowser();
+  if (!browser_interface) {
+    return nullptr;
+  }
+
+  return browser_interface->GetBrowserForMigrationOnly();
 }
 
 - (BOOL)shouldShowCleanLinkItem {
-  return brave::HasSelectedURL([self getBrowser]);
+  Browser* browser = [self getBrowser];
+  if (!browser) {
+    return NO;
+  }
+
+  return brave::HasSelectedURL(browser);
 }
 
 - (void)setKeyEquivalentToItem:(NSMenuItem*)item {
@@ -330,7 +351,12 @@ void BraveRestoreProfileMenu() {
 
   NSInteger tag = [sender tag];
   if (tag == IDC_COPY_CLEAN_LINK) {
-    brave::CleanAndCopySelectedURL([self getBrowser]);
+    Browser* browser = [self getBrowser];
+    if (!browser) {
+      return;
+    }
+
+    brave::CleanAndCopySelectedURL(browser);
     return;
   }
 
