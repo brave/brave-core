@@ -1,0 +1,32 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: 'Add headers'
+    pattern: |-
+      #include "url/gurl.h"
+    replace: |-
+      #include "url/gurl.h"
+      // Containers headers begin
+      #include "brave/components/containers/buildflags/buildflags.h"
+
+      #if BUILDFLAG(ENABLE_CONTAINERS)
+      #include "brave/components/containers/core/browser/container_specifier.h"
+      #endif
+      // Containers headers end
+
+  - description: 'Add fields to StartupTab'
+    pattern: |-
+      Type type;
+    replace: |-
+      Type type;
+      #if BUILDFLAG(ENABLE_CONTAINERS)
+        containers::ContainerSpecifier container;
+      #endif
+
+        StartupTab(const StartupTab&);
+        StartupTab& operator=(const StartupTab&);
+        StartupTab(StartupTab&&) noexcept;
+        StartupTab& operator=(StartupTab&&) noexcept;

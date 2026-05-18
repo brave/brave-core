@@ -6,6 +6,7 @@
 #include "brave/components/containers/core/browser/containers_service.h"
 
 #include <utility>
+#include <variant>
 
 #include "base/check.h"
 #include "base/check_deref.h"
@@ -85,6 +86,21 @@ mojom::ContainerPtr ContainersService::GetRuntimeContainerById(
   return nullptr;
 }
 
+mojom::ContainerPtr ContainersService::GetRuntimeContainerByName(
+    std::string_view name) const {
+  for (auto& container : GetContainersFromPrefs(*prefs_)) {
+    if (container->name == name) {
+      return std::move(container);
+    }
+  }
+  for (auto& container : GetLocallyUsedContainersFromPrefs(*prefs_)) {
+    if (container->name == name) {
+      return std::move(container);
+    }
+  }
+  return nullptr;
+}
+
 std::vector<mojom::ContainerPtr> ContainersService::GetContainers() const {
   return GetContainersFromPrefs(*prefs_);
 }
@@ -118,6 +134,28 @@ void ContainersService::RefreshLocallyUsedContainersFromSyncedList() {
       // removed with a separate cleanup logic later.
     }
   }
+}
+
+std::optional<std::string>
+ContainersService::GetContainerIdFromContainerSpecifier(
+    const ContainerSpecifier& container_specifier) const {
+  if (auto* container_id = std::get_if<ContainerId>(&container_specifier)) {
+    if (auto runtime_container =
+            GetRuntimeContainerById(container_id->value())) {
+      return runtime_container->id;
+    }
+    LOG(WARNING) << "Container with id " << container_id->value()
+                 << " not found";
+  } else if (auto* container_name =
+                 std::get_if<ContainerName>(&container_specifier)) {
+    if (auto runtime_container =
+            GetRuntimeContainerByName(container_name->value())) {
+      return runtime_container->id;
+    }
+    LOG(WARNING) << "Container with name " << container_name->value()
+                 << " not found";
+  }
+  return std::nullopt;
 }
 
 void ContainersService::ScheduleOrphanedContainersCleanup() {

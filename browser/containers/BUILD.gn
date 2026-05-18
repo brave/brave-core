@@ -9,6 +9,8 @@ assert(enable_containers)
 
 source_set("containers") {
   sources = [
+    "container_specifier_utils.cc",
+    "container_specifier_utils.h",
     "container_tab_tracker.cc",
     "container_tab_tracker.h",
     "containers_service_delegate.cc",

@@ -1,0 +1,33 @@
+diff --git a/chrome/browser/ui/startup/startup_tab.h b/chrome/browser/ui/startup/startup_tab.h
+index 4d5b4d6775ff8afd9946a8acde07bb40b508692e..6adf1cb6d309e6b407dbd958913a93935824f6b9 100644
+--- a/chrome/browser/ui/startup/startup_tab.h
++++ b/chrome/browser/ui/startup/startup_tab.h
+@@ -8,6 +8,13 @@
+ #include <vector>
+ 
+ #include "url/gurl.h"
++// Containers headers begin
++#include "brave/components/containers/buildflags/buildflags.h"
++
++#if BUILDFLAG(ENABLE_CONTAINERS)
++#include "brave/components/containers/core/browser/container_specifier.h"
++#endif
++// Containers headers end
+ 
+ // Represents tab data at startup.
+ struct StartupTab {
+@@ -26,6 +33,14 @@ struct StartupTab {
+   GURL url;
+ 
+   Type type;
++#if BUILDFLAG(ENABLE_CONTAINERS)
++  containers::ContainerSpecifier container;
++#endif
++
++  StartupTab(const StartupTab&);
++  StartupTab& operator=(const StartupTab&);
++  StartupTab(StartupTab&&) noexcept;
++  StartupTab& operator=(StartupTab&&) noexcept;
+ };
+ 
+ using StartupTabs = std::vector<StartupTab>;
