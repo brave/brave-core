@@ -5,7 +5,8 @@
 
 #include "brave/components/brave_wallet/common/cardano_address.h"
 
-#include <cstdint>
+#include <stddef.h>
+
 #include <optional>
 #include <string_view>
 #include <utility>
@@ -16,7 +17,7 @@
 #include "base/containers/span_rust.h"
 #include "base/containers/span_writer.h"
 #include "base/containers/to_vector.h"
-#include "base/notreached.h"
+#include "base/numerics/safe_conversions.h"
 #include "brave/components/brave_wallet/common/bech32.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/lib.rs.h"

@@ -6,17 +6,25 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_VALUE_CONVERSION_UTILS_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_VALUE_CONVERSION_UTILS_H_
 
+#include <stddef.h>
+#include <stdint.h>
+
 #include <algorithm>
 #include <array>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "url/origin.h"
+#include "url/gurl.h"
+
+namespace url {
+class Origin;
+}  // namespace url
 
 namespace brave_wallet {
 

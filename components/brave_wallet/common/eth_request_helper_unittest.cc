@@ -5,18 +5,16 @@
 
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
 
-#include <memory>
+#include <array>
+#include <functional>
 #include <utility>
 #include <vector>
 
 #include "base/base64.h"
 #include "base/json/json_reader.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/strings/string_util.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
-#include "brave/components/brave_wallet/common/brave_wallet_types.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"

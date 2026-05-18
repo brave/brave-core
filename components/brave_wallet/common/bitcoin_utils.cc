@@ -6,7 +6,11 @@
 
 #include "brave/components/brave_wallet/common/bitcoin_utils.h"
 
+#include <stddef.h>
+
+#include <cmath>
 #include <optional>
+#include <string_view>
 #include <utility>
 
 #include "base/check_op.h"

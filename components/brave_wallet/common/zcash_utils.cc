@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 
+#include <algorithm>
 #include <array>
 #include <string>
 #include <string_view>
@@ -15,6 +16,8 @@
 #include "base/containers/extend.h"
 #include "base/containers/span.h"
 #include "base/numerics/byte_conversions.h"
+#include "base/numerics/safe_conversions.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/common/bech32.h"
 #include "brave/components/brave_wallet/common/btc_like_serializer_stream.h"

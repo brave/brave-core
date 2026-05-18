@@ -5,14 +5,13 @@
 
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 
-#include <utility>
-
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/containers/extend.h"
 #include "base/containers/span.h"
 #include "base/containers/span_writer.h"
 #include "base/containers/to_vector.h"
+#include "base/numerics/safe_conversions.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/third_party/bitcoin-core/src/src/base58.h"
 

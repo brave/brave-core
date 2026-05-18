@@ -6,6 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_BTC_LIKE_SERIALIZER_STREAM_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_BTC_LIKE_SERIALIZER_STREAM_H_
 
+#include <stdint.h>
+
+#include <type_traits>
 #include <vector>
 
 #include "base/containers/span.h"

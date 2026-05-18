@@ -7,6 +7,7 @@
 #include "brave/components/brave_wallet/common/bitcoin_utils.h"
 
 #include <optional>
+#include <string_view>
 
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"

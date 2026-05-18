@@ -6,10 +6,16 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_HASH_UTILS_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_HASH_UTILS_H_
 
+#include <stddef.h>
+#include <stdint.h>
+
 #include <array>
+#include <initializer_list>
+#include <optional>
 #include <string>
 #include <string_view>
 
+#include "base/containers/span.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "crypto/hash.h"
 

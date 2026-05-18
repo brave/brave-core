@@ -6,9 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_FEATURES_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_FEATURES_H_
 
+#include "base/feature.h"
 #include "base/feature_list.h"
 #include "base/metrics/field_trial_params.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "build/build_config.h"
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
 namespace brave_wallet::features {

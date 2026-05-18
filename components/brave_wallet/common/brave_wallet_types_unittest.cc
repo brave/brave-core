@@ -7,6 +7,7 @@
 
 #include <limits>
 #include <optional>
+#include <string_view>
 
 #include "base/test/values_test_util.h"
 #include "base/values.h"

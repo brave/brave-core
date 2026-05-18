@@ -6,8 +6,10 @@
 #include "brave/components/brave_wallet/common/btc_like_serializer_stream.h"
 
 #include <algorithm>
+#include <string>
 #include <vector>
 
+#include "base/numerics/safe_conversions.h"
 #include "base/strings/string_number_conversions.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

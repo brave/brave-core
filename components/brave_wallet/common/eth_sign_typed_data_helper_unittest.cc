@@ -5,12 +5,13 @@
 
 #include "brave/components/brave_wallet/common/eth_sign_typed_data_helper.h"
 
+#include <array>
+#include <initializer_list>
 #include <memory>
 #include <string>
 
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/strings/string_util.h"
 #include "base/test/values_test_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

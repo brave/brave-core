@@ -6,7 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_ETH_ADDRESS_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_ETH_ADDRESS_H_
 
+#include <stddef.h>
+#include <stdint.h>
+
+#include <array>
+#include <optional>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include "base/containers/span.h"

@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/common/fil_address.h"
 
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include "base/containers/span.h"
