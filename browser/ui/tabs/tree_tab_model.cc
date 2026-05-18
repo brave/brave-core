@@ -186,6 +186,8 @@ void TreeTabModel::OnTreeTabNodeMoved(const tree_tab::TreeTabNodeId& id) {
       }
     }
   }
+
+  moved_tree_tab_node_callback_list_.Notify(id);
 }
 
 const tree_tab::TreeTabNodeId* TreeTabModel::GetClosestCollapsedAncestor(
@@ -262,4 +264,9 @@ base::CallbackListSubscription
 TreeTabModel::RegisterWillRemoveTreeTabNodeCallback(
     base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> callback) {
   return will_remove_tree_tab_node_callback_list_.Add(std::move(callback));
+}
+
+base::CallbackListSubscription TreeTabModel::RegisterMovedTreeTabNodeCallback(
+    base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> callback) {
+  return moved_tree_tab_node_callback_list_.Add(std::move(callback));
 }

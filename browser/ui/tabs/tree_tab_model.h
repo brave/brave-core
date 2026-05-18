@@ -69,6 +69,8 @@ class TreeTabModel {
       base::RepeatingCallback<void(const tabs::TreeTabNode&)> callback);
   base::CallbackListSubscription RegisterWillRemoveTreeTabNodeCallback(
       base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> callback);
+  base::CallbackListSubscription RegisterMovedTreeTabNodeCallback(
+      base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> callback);
 
  private:
   std::map<tree_tab::TreeTabNodeId, raw_ptr<tabs::TreeTabNode>> tree_tab_nodes_;
@@ -87,6 +89,8 @@ class TreeTabModel {
       add_tree_tab_node_callback_list_;
   base::RepeatingCallbackList<void(const tree_tab::TreeTabNodeId&)>
       will_remove_tree_tab_node_callback_list_;
+  base::RepeatingCallbackList<void(const tree_tab::TreeTabNodeId&)>
+      moved_tree_tab_node_callback_list_;
 
   base::WeakPtrFactory<TreeTabModel> weak_ptr_factory_{this};
 };
