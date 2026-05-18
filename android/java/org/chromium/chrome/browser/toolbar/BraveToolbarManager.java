@@ -68,10 +68,9 @@ import org.chromium.chrome.browser.tabmodel.TabClosureParams;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tasks.tab_management.TabGroupUiOneshotSupplier;
-import org.chromium.chrome.browser.theme.AdjustedTopUiThemeColorProvider;
 import org.chromium.chrome.browser.theme.BottomUiThemeColorProvider;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
-import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
+import org.chromium.chrome.browser.theme.ToolbarThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.bottom.BottomControlsContentDelegate;
 import org.chromium.chrome.browser.toolbar.bottom.BottomControlsCoordinator;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
@@ -146,7 +145,7 @@ public class BraveToolbarManager extends ToolbarManager
     private TabObscuringHandler mTabObscuringHandler;
 
     private MonotonicObservableSupplier<ReadAloudController> mReadAloudControllerSupplier;
-    private TopUiThemeColorProvider mTopUiThemeColorProvider;
+    private ToolbarThemeColorProvider mToolbarThemeColorProvider;
     private int mCurrentOrientation;
     private boolean mInitializedWithNative;
 
@@ -185,8 +184,8 @@ public class BraveToolbarManager extends ToolbarManager
             ToolbarControlContainer controlContainer,
             CompositorViewHolder compositorViewHolder,
             Callback<Boolean> urlFocusChangedCallback,
-            TopUiThemeColorProvider topUiThemeColorProvider,
-            @Nullable AdjustedTopUiThemeColorProvider adjustedTopUiThemeColorProvider,
+            ToolbarThemeColorProvider toolbarThemeColorProvider,
+            @Nullable ToolbarThemeColorProvider adjustedTopUiThemeColorProvider,
             BottomUiThemeColorProvider bottomUiThemeColorProvider,
             IncognitoStateProvider incognitoStateProvider,
             TabObscuringHandler tabObscuringHandler,
@@ -246,7 +245,7 @@ public class BraveToolbarManager extends ToolbarManager
                 controlContainer,
                 compositorViewHolder,
                 urlFocusChangedCallback,
-                topUiThemeColorProvider,
+                toolbarThemeColorProvider,
                 adjustedTopUiThemeColorProvider,
                 bottomUiThemeColorProvider,
                 incognitoStateProvider,
@@ -360,7 +359,7 @@ public class BraveToolbarManager extends ToolbarManager
 
         ThemeColorProvider bottomUiThemeColorProvider =
                 new BottomUiThemeColorProvider(
-                        mTopUiThemeColorProvider,
+                        mToolbarThemeColorProvider,
                         mBrowserControlsSizer,
                         mBottomControlsStacker,
                         mIncognitoStateProvider,
