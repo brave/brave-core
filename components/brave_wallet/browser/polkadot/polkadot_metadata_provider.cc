@@ -97,7 +97,7 @@ void PolkadotMetadataProvider::OnGetRuntimeVersion(
     return;
   }
 
-  if (saved_metadata.GetSpecVersion() == runtime_version->spec_version) {
+  if (saved_metadata->spec_version == runtime_version->spec_version) {
     SetCachedMetadata(chain_id, saved_metadata);
     std::move(callback).Run(base::ok(std::move(saved_metadata)));
     return;

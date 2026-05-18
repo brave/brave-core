@@ -313,8 +313,7 @@ void PolkadotWalletService::OnGetChainMetadataForValidateAddress(
     return;
   }
 
-  auto parsed_address =
-      ParsePolkadotAccount(address, metadata->GetSs58Prefix());
+  auto parsed_address = ParsePolkadotAccount(address, (*metadata)->ss58_prefix);
   if (!parsed_address.has_value()) {
     std::move(callback).Run(parsed_address.error());
     return;

@@ -117,10 +117,7 @@ rust_static_library("polkadot_extrinsic_rs") {
     "polkadot_chain_metadata.rs",
     "polkadot_extrinsic.rs",
   ]
-  cxx_bindings = [
-    "polkadot_chain_metadata.rs",
-    "polkadot_extrinsic.rs",
-  ]
+  cxx_bindings = [ "polkadot_extrinsic.rs" ]
 
   deps = [
     "//brave/third_party/rust/blake2b_simd/v1:lib",

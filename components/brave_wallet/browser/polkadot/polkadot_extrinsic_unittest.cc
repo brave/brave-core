@@ -34,47 +34,59 @@ constexpr uint8_t kSchnorrkelSeed[] = {
 }  // namespace
 
 PolkadotChainMetadata MakeWestendMetadata() {
-  return PolkadotChainMetadata::FromFields(
-      /*system_pallet_index=*/0, /*balances_pallet_index=*/4,
-      /*transaction_payment_pallet_index=*/0x1a,
-      /*transfer_allow_death_call_index=*/0,
-      /*transfer_keep_alive_call_index=*/3,
-      /*transfer_all_call_index=*/4,
-      /*ss58_prefix=*/42, kSpecVersion,
-      /*asset_tx_payment=*/false);
+  PolkadotChainMetadata metadata;
+  metadata->system_pallet_index = 0;
+  metadata->balances_pallet_index = 4;
+  metadata->transaction_payment_pallet_index = 0x1a;
+  metadata->transfer_allow_death_call_index = 0;
+  metadata->transfer_keep_alive_call_index = 3;
+  metadata->transfer_all_call_index = 4;
+  metadata->ss58_prefix = 42;
+  metadata->spec_version = kSpecVersion;
+  metadata->asset_tx_payment = false;
+  return metadata;
 }
 
 PolkadotChainMetadata MakePolkadotMetadata() {
-  return PolkadotChainMetadata::FromFields(
-      /*system_pallet_index=*/0, /*balances_pallet_index=*/5,
-      /*transaction_payment_pallet_index=*/0x20,
-      /*transfer_allow_death_call_index=*/0,
-      /*transfer_keep_alive_call_index=*/3,
-      /*transfer_all_call_index=*/4,
-      /*ss58_prefix=*/0, kSpecVersion,
-      /*asset_tx_payment=*/false);
+  PolkadotChainMetadata metadata;
+  metadata->system_pallet_index = 0;
+  metadata->balances_pallet_index = 5;
+  metadata->transaction_payment_pallet_index = 0x20;
+  metadata->transfer_allow_death_call_index = 0;
+  metadata->transfer_keep_alive_call_index = 3;
+  metadata->transfer_all_call_index = 4;
+  metadata->ss58_prefix = 0;
+  metadata->spec_version = kSpecVersion;
+  metadata->asset_tx_payment = false;
+  return metadata;
 }
 
 PolkadotChainMetadata MakeWestendAssetHubMetadata() {
-  return PolkadotChainMetadata::FromFields(
-      /*system_pallet_index=*/0, /*balances_pallet_index=*/10,
-      /*transaction_payment_pallet_index=*/0x0b,
-      /*transfer_allow_death_call_index=*/0,
-      /*transfer_keep_alive_call_index=*/3,
-      /*transfer_all_call_index=*/4,
-      /*ss58_prefix=*/42, kSpecVersion,
-      /*asset_tx_payment=*/true);
+  PolkadotChainMetadata metadata;
+  metadata->system_pallet_index = 0;
+  metadata->balances_pallet_index = 10;
+  metadata->transaction_payment_pallet_index = 0x0b;
+  metadata->transfer_allow_death_call_index = 0;
+  metadata->transfer_keep_alive_call_index = 3;
+  metadata->transfer_all_call_index = 4;
+  metadata->ss58_prefix = 42;
+  metadata->spec_version = kSpecVersion;
+  metadata->asset_tx_payment = true;
+  return metadata;
 }
 
 PolkadotChainMetadata MakePolkadotAssetHubMetadata() {
-  return PolkadotChainMetadata::FromFields(
-      /*system_pallet_index=*/0, /*balances_pallet_index=*/10,
-      /*transaction_payment_pallet_index=*/0x0b,
-      /*transfer_allow_death_call_index=*/0,
-      /*transfer_keep_alive_call_index=*/3,
-      /*transfer_all_call_index=*/4,
-      /*ss58_prefix=*/0, kSpecVersion,
-      /*asset_tx_payment=*/true);
+  PolkadotChainMetadata metadata;
+  metadata->system_pallet_index = 0;
+  metadata->balances_pallet_index = 10;
+  metadata->transaction_payment_pallet_index = 0x0b;
+  metadata->transfer_allow_death_call_index = 0;
+  metadata->transfer_keep_alive_call_index = 3;
+  metadata->transfer_all_call_index = 4;
+  metadata->ss58_prefix = 0;
+  metadata->spec_version = kSpecVersion;
+  metadata->asset_tx_payment = true;
+  return metadata;
 }
 
 TEST(PolkadotExtrinsics, MortalityEncoding) {

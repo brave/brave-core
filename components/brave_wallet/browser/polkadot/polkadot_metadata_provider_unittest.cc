@@ -117,27 +117,31 @@ TEST_F(PolkadotMetadataProviderUnitTest, InitInitialization) {
   auto mainnet_metadata =
       chain_metadata_prefs_->GetChainMetadata(mojom::kPolkadotMainnet);
   ASSERT_TRUE(mainnet_metadata.has_value());
-  auto expected_mainnet = PolkadotChainMetadata::FromFields(
-      /*system_pallet_index=*/0, /*balances_pallet_index=*/5,
-      /*transaction_payment_pallet_index=*/0x20,
-      /*transfer_allow_death_call_index=*/0,
-      /*transfer_keep_alive_call_index=*/3,
-      /*transfer_all_call_index=*/4,
-      /*ss58_prefix=*/0, /*spec_version=*/2'000'007,
-      /*asset_tx_payment=*/false);
+  PolkadotChainMetadata expected_mainnet;
+  expected_mainnet->system_pallet_index = 0;
+  expected_mainnet->balances_pallet_index = 5;
+  expected_mainnet->transaction_payment_pallet_index = 0x20;
+  expected_mainnet->transfer_allow_death_call_index = 0;
+  expected_mainnet->transfer_keep_alive_call_index = 3;
+  expected_mainnet->transfer_all_call_index = 4;
+  expected_mainnet->ss58_prefix = 0;
+  expected_mainnet->spec_version = 2'000'007;
+  expected_mainnet->asset_tx_payment = false;
   EXPECT_EQ(*mainnet_metadata, expected_mainnet);
 
   auto testnet_metadata =
       chain_metadata_prefs_->GetChainMetadata(mojom::kPolkadotTestnet);
   ASSERT_TRUE(testnet_metadata.has_value());
-  auto expected_testnet = PolkadotChainMetadata::FromFields(
-      /*system_pallet_index=*/0, /*balances_pallet_index=*/4,
-      /*transaction_payment_pallet_index=*/0x1a,
-      /*transfer_allow_death_call_index=*/0,
-      /*transfer_keep_alive_call_index=*/3,
-      /*transfer_all_call_index=*/4,
-      /*ss58_prefix=*/42, /*spec_version=*/1'022'000,
-      /*asset_tx_payment=*/false);
+  PolkadotChainMetadata expected_testnet;
+  expected_testnet->system_pallet_index = 0;
+  expected_testnet->balances_pallet_index = 4;
+  expected_testnet->transaction_payment_pallet_index = 0x1a;
+  expected_testnet->transfer_allow_death_call_index = 0;
+  expected_testnet->transfer_keep_alive_call_index = 3;
+  expected_testnet->transfer_all_call_index = 4;
+  expected_testnet->ss58_prefix = 42;
+  expected_testnet->spec_version = 1'022'000;
+  expected_testnet->asset_tx_payment = false;
   EXPECT_EQ(*testnet_metadata, expected_testnet);
 }
 
@@ -191,22 +195,26 @@ TEST_F(PolkadotMetadataProviderUnitTest, InitRetryCase) {
       chain_metadata_prefs_->GetChainMetadata(mojom::kPolkadotTestnet);
   ASSERT_TRUE(mainnet_metadata.has_value());
   ASSERT_TRUE(testnet_metadata.has_value());
-  auto expected_mainnet = PolkadotChainMetadata::FromFields(
-      /*system_pallet_index=*/0, /*balances_pallet_index=*/5,
-      /*transaction_payment_pallet_index=*/0x20,
-      /*transfer_allow_death_call_index=*/0,
-      /*transfer_keep_alive_call_index=*/3,
-      /*transfer_all_call_index=*/4,
-      /*ss58_prefix=*/0, /*spec_version=*/2'000'007,
-      /*asset_tx_payment=*/false);
-  auto expected_testnet = PolkadotChainMetadata::FromFields(
-      /*system_pallet_index=*/0, /*balances_pallet_index=*/4,
-      /*transaction_payment_pallet_index=*/0x1a,
-      /*transfer_allow_death_call_index=*/0,
-      /*transfer_keep_alive_call_index=*/3,
-      /*transfer_all_call_index=*/4,
-      /*ss58_prefix=*/42, /*spec_version=*/1'022'000,
-      /*asset_tx_payment=*/false);
+  PolkadotChainMetadata expected_mainnet;
+  expected_mainnet->system_pallet_index = 0;
+  expected_mainnet->balances_pallet_index = 5;
+  expected_mainnet->transaction_payment_pallet_index = 0x20;
+  expected_mainnet->transfer_allow_death_call_index = 0;
+  expected_mainnet->transfer_keep_alive_call_index = 3;
+  expected_mainnet->transfer_all_call_index = 4;
+  expected_mainnet->ss58_prefix = 0;
+  expected_mainnet->spec_version = 2'000'007;
+  expected_mainnet->asset_tx_payment = false;
+  PolkadotChainMetadata expected_testnet;
+  expected_testnet->system_pallet_index = 0;
+  expected_testnet->balances_pallet_index = 4;
+  expected_testnet->transaction_payment_pallet_index = 0x1a;
+  expected_testnet->transfer_allow_death_call_index = 0;
+  expected_testnet->transfer_keep_alive_call_index = 3;
+  expected_testnet->transfer_all_call_index = 4;
+  expected_testnet->ss58_prefix = 42;
+  expected_testnet->spec_version = 1'022'000;
+  expected_testnet->asset_tx_payment = false;
   EXPECT_EQ(*mainnet_metadata, expected_mainnet);
   EXPECT_EQ(*testnet_metadata, expected_testnet);
 }
@@ -214,8 +222,16 @@ TEST_F(PolkadotMetadataProviderUnitTest, InitRetryCase) {
 // Verifies that when persisted metadata is present and runtime spec version
 // matches, data is served from cache without network metadata refresh.
 TEST_F(PolkadotMetadataProviderUnitTest, DataIsRestoredFromCache) {
-  auto saved_metadata =
-      PolkadotChainMetadata::FromFields(0, 5, 32, 1, 3, 4, 0, 100, false);
+  PolkadotChainMetadata saved_metadata;
+  saved_metadata->system_pallet_index = 0;
+  saved_metadata->balances_pallet_index = 5;
+  saved_metadata->transaction_payment_pallet_index = 32;
+  saved_metadata->transfer_allow_death_call_index = 1;
+  saved_metadata->transfer_keep_alive_call_index = 3;
+  saved_metadata->transfer_all_call_index = 4;
+  saved_metadata->ss58_prefix = 0;
+  saved_metadata->spec_version = 100;
+  saved_metadata->asset_tx_payment = false;
   ASSERT_TRUE(chain_metadata_prefs_->SetChainMetadata(mojom::kPolkadotMainnet,
                                                       saved_metadata));
 
@@ -279,8 +295,16 @@ TEST_F(PolkadotMetadataProviderUnitTest, DataIsSavedToCache) {
 TEST_F(PolkadotMetadataProviderUnitTest, CachedDataIsUpdated) {
   const std::vector<uint8_t> metadata_bytes =
       ReadMetadataFixture("state_getMetadata_westend.json");
-  auto saved_metadata =
-      PolkadotChainMetadata::FromFields(0, 1, 32, 0, 3, 4, 0, 1, false);
+  PolkadotChainMetadata saved_metadata;
+  saved_metadata->system_pallet_index = 0;
+  saved_metadata->balances_pallet_index = 1;
+  saved_metadata->transaction_payment_pallet_index = 32;
+  saved_metadata->transfer_allow_death_call_index = 0;
+  saved_metadata->transfer_keep_alive_call_index = 3;
+  saved_metadata->transfer_all_call_index = 4;
+  saved_metadata->ss58_prefix = 0;
+  saved_metadata->spec_version = 1;
+  saved_metadata->asset_tx_payment = false;
   ASSERT_TRUE(chain_metadata_prefs_->SetChainMetadata(mojom::kPolkadotMainnet,
                                                       saved_metadata));
 
@@ -305,14 +329,16 @@ TEST_F(PolkadotMetadataProviderUnitTest, CachedDataIsUpdated) {
   auto result = future.Take();
 
   ASSERT_TRUE(result.has_value());
-  auto expected = PolkadotChainMetadata::FromFields(
-      /*system_pallet_index=*/0, /*balances_pallet_index=*/4,
-      /*transaction_payment_pallet_index=*/0x1a,
-      /*transfer_allow_death_call_index=*/0,
-      /*transfer_keep_alive_call_index=*/3,
-      /*transfer_all_call_index=*/4,
-      /*ss58_prefix=*/42, /*spec_version=*/1'022'000,
-      /*asset_tx_payment=*/false);
+  PolkadotChainMetadata expected;
+  expected->system_pallet_index = 0;
+  expected->balances_pallet_index = 4;
+  expected->transaction_payment_pallet_index = 0x1a;
+  expected->transfer_allow_death_call_index = 0;
+  expected->transfer_keep_alive_call_index = 3;
+  expected->transfer_all_call_index = 4;
+  expected->ss58_prefix = 42;
+  expected->spec_version = 1'022'000;
+  expected->asset_tx_payment = false;
   EXPECT_EQ(*result, expected);
   auto stored =
       chain_metadata_prefs_->GetChainMetadata(mojom::kPolkadotMainnet);

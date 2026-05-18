@@ -64,12 +64,21 @@ mod ffi {
         fn compact_scale_encode_u32(x: u32) -> Vec<u8>;
 
         type CxxPolkadotDecodeUnsignedTransferResult;
+        type CxxPolkadotChainMetadataResult;
+
+        fn is_ok(self: &CxxPolkadotChainMetadataResult) -> bool;
+        fn error_message(self: &CxxPolkadotChainMetadataResult) -> String;
+        fn unwrap(self: &mut CxxPolkadotChainMetadataResult) -> Box<CxxPolkadotChainMetadata>;
 
         fn is_ok(self: &CxxPolkadotDecodeUnsignedTransferResult) -> bool;
         fn error_message(self: &CxxPolkadotDecodeUnsignedTransferResult) -> String;
         fn unwrap(
             self: &mut CxxPolkadotDecodeUnsignedTransferResult,
         ) -> Box<CxxPolkadotDecodeUnsignedTransfer>;
+
+        fn parse_chain_metadata_from_scale(
+            metadata_bytes: &[u8],
+        ) -> Box<CxxPolkadotChainMetadataResult>;
 
         fn encode_unsigned_transfer_allow_death(
             chain_metadata: &CxxPolkadotChainMetadata,
@@ -120,7 +129,10 @@ mod ffi {
     }
 }
 
-pub(crate) use ffi::CxxPolkadotChainMetadata;
+use ffi::CxxPolkadotChainMetadata;
+impl_result!(CxxPolkadotChainMetadata, CxxPolkadotChainMetadataResult);
+
+use crate::polkadot_chain_metadata::parse_chain_metadata_from_scale;
 
 #[macro_export]
 macro_rules! impl_result {

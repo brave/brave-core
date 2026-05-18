@@ -3,90 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-use crate::CxxPolkadotChainMetadata;
-use crate::Error;
+use crate::{CxxPolkadotChainMetadata, CxxPolkadotChainMetadataResult, Error};
 use parity_scale_codec::{Compact, Decode};
 use std::collections::HashMap;
-
-#[derive(Clone, Copy)]
-struct CxxPolkadotChainMetadataFields {
-    system_pallet_index: u8,
-    balances_pallet_index: u8,
-    transaction_payment_pallet_index: u8,
-    transfer_allow_death_call_index: u8,
-    transfer_keep_alive_call_index: u8,
-    transfer_all_call_index: u8,
-    ss58_prefix: u16,
-    spec_version: u32,
-    asset_tx_payment: bool,
-}
-
-crate::impl_result!(CxxPolkadotChainMetadataFields, CxxPolkadotChainMetadataFieldsResult);
-
-#[cxx::bridge(namespace = brave_wallet)]
-mod ffi {
-    extern "Rust" {
-        type CxxPolkadotChainMetadataFieldsResult;
-
-        fn parse_chain_metadata_from_scale(
-            metadata_bytes: &[u8],
-        ) -> Box<CxxPolkadotChainMetadataFieldsResult>;
-        fn is_ok(self: &CxxPolkadotChainMetadataFieldsResult) -> bool;
-        fn error_message(self: &CxxPolkadotChainMetadataFieldsResult) -> String;
-        fn unwrap(
-            self: &mut CxxPolkadotChainMetadataFieldsResult,
-        ) -> Box<CxxPolkadotChainMetadataFields>;
-
-        type CxxPolkadotChainMetadataFields;
-        fn system_pallet_index(self: &CxxPolkadotChainMetadataFields) -> u8;
-        fn balances_pallet_index(self: &CxxPolkadotChainMetadataFields) -> u8;
-        fn transaction_payment_pallet_index(self: &CxxPolkadotChainMetadataFields) -> u8;
-        fn transfer_allow_death_call_index(self: &CxxPolkadotChainMetadataFields) -> u8;
-        fn transfer_keep_alive_call_index(self: &CxxPolkadotChainMetadataFields) -> u8;
-        fn transfer_all_call_index(self: &CxxPolkadotChainMetadataFields) -> u8;
-        fn ss58_prefix(self: &CxxPolkadotChainMetadataFields) -> u16;
-        fn spec_version(self: &CxxPolkadotChainMetadataFields) -> u32;
-        fn asset_tx_payment(self: &CxxPolkadotChainMetadataFields) -> bool;
-    }
-}
-
-impl CxxPolkadotChainMetadataFields {
-    fn system_pallet_index(self: &CxxPolkadotChainMetadataFields) -> u8 {
-        self.system_pallet_index
-    }
-
-    fn balances_pallet_index(self: &CxxPolkadotChainMetadataFields) -> u8 {
-        self.balances_pallet_index
-    }
-
-    fn transaction_payment_pallet_index(self: &CxxPolkadotChainMetadataFields) -> u8 {
-        self.transaction_payment_pallet_index
-    }
-
-    fn transfer_allow_death_call_index(self: &CxxPolkadotChainMetadataFields) -> u8 {
-        self.transfer_allow_death_call_index
-    }
-
-    fn transfer_keep_alive_call_index(self: &CxxPolkadotChainMetadataFields) -> u8 {
-        self.transfer_keep_alive_call_index
-    }
-
-    fn transfer_all_call_index(self: &CxxPolkadotChainMetadataFields) -> u8 {
-        self.transfer_all_call_index
-    }
-
-    fn ss58_prefix(self: &CxxPolkadotChainMetadataFields) -> u16 {
-        self.ss58_prefix
-    }
-
-    fn spec_version(self: &CxxPolkadotChainMetadataFields) -> u32 {
-        self.spec_version
-    }
-
-    fn asset_tx_payment(self: &CxxPolkadotChainMetadataFields) -> bool {
-        self.asset_tx_payment
-    }
-}
 
 fn decode_scale<T: Decode>(input: &mut &[u8]) -> Result<T, Error> {
     T::decode(input).map_err(|_| Error::InvalidScale)
@@ -517,21 +436,8 @@ fn parse_chain_metadata_fields(bytes: &[u8]) -> Result<CxxPolkadotChainMetadata,
     })
 }
 
-fn parse_chain_metadata_from_scale(
+pub(super) fn parse_chain_metadata_from_scale(
     metadata_bytes: &[u8],
-) -> Box<CxxPolkadotChainMetadataFieldsResult> {
-    let fields = parse_chain_metadata_fields(metadata_bytes).map(|metadata| {
-        CxxPolkadotChainMetadataFields {
-            system_pallet_index: metadata.system_pallet_index,
-            balances_pallet_index: metadata.balances_pallet_index,
-            transaction_payment_pallet_index: metadata.transaction_payment_pallet_index,
-            transfer_allow_death_call_index: metadata.transfer_allow_death_call_index,
-            transfer_keep_alive_call_index: metadata.transfer_keep_alive_call_index,
-            transfer_all_call_index: metadata.transfer_all_call_index,
-            ss58_prefix: metadata.ss58_prefix,
-            spec_version: metadata.spec_version,
-            asset_tx_payment: metadata.asset_tx_payment,
-        }
-    });
-    Box::new(CxxPolkadotChainMetadataFieldsResult(fields))
+) -> Box<CxxPolkadotChainMetadataResult> {
+    Box::new(CxxPolkadotChainMetadataResult(parse_chain_metadata_fields(metadata_bytes)))
 }

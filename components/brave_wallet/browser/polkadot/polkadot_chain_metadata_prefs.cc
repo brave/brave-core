@@ -97,61 +97,51 @@ PolkadotChainMetadataPrefs::GetChainMetadata(std::string_view chain_id) const {
     return std::nullopt;
   }
 
-  uint8_t balances_pallet_index = 0;
+  PolkadotChainMetadata metadata;
   if (!ReadUint(*chain_metadata, kBalancesPalletIndex,
-                &balances_pallet_index)) {
+                &metadata->balances_pallet_index)) {
     return std::nullopt;
   }
 
-  uint8_t system_pallet_index = 0;
-  if (!ReadUint(*chain_metadata, kSystemPalletIndex, &system_pallet_index)) {
+  if (!ReadUint(*chain_metadata, kSystemPalletIndex,
+                &metadata->system_pallet_index)) {
     return std::nullopt;
   }
 
-  uint8_t transaction_payment_pallet_index = 0;
   if (!ReadUint(*chain_metadata, kTransactionPaymentPalletIndex,
-                &transaction_payment_pallet_index)) {
+                &metadata->transaction_payment_pallet_index)) {
     return std::nullopt;
   }
 
-  uint8_t transfer_allow_death_call_index = 0;
   if (!ReadUint(*chain_metadata, kTransferAllowDeathCallIndex,
-                &transfer_allow_death_call_index)) {
+                &metadata->transfer_allow_death_call_index)) {
     return std::nullopt;
   }
 
-  uint8_t transfer_keep_alive_call_index = 0;
   if (!ReadUint(*chain_metadata, kTransferKeepAliveCallIndex,
-                &transfer_keep_alive_call_index)) {
+                &metadata->transfer_keep_alive_call_index)) {
     return std::nullopt;
   }
 
-  uint8_t transfer_all_call_index = 0;
   if (!ReadUint(*chain_metadata, kTransferAllCallIndex,
-                &transfer_all_call_index)) {
+                &metadata->transfer_all_call_index)) {
     return std::nullopt;
   }
 
-  bool asset_tx_payment = false;
-  if (!ReadBool(*chain_metadata, kAssetTxPayment, &asset_tx_payment)) {
+  if (!ReadBool(*chain_metadata, kAssetTxPayment,
+                &metadata->asset_tx_payment)) {
     return std::nullopt;
   }
 
-  uint16_t ss58_prefix = 0;
-  if (!ReadUint(*chain_metadata, kSs58Prefix, &ss58_prefix)) {
+  if (!ReadUint(*chain_metadata, kSs58Prefix, &metadata->ss58_prefix)) {
     return std::nullopt;
   }
 
-  uint32_t spec_version = 0;
-  if (!ReadUint(*chain_metadata, kSpecVersion, &spec_version)) {
+  if (!ReadUint(*chain_metadata, kSpecVersion, &metadata->spec_version)) {
     return std::nullopt;
   }
 
-  return PolkadotChainMetadata::FromFields(
-      system_pallet_index, balances_pallet_index,
-      transaction_payment_pallet_index, transfer_allow_death_call_index,
-      transfer_keep_alive_call_index, transfer_all_call_index, ss58_prefix,
-      spec_version, asset_tx_payment);
+  return metadata;
 }
 
 bool PolkadotChainMetadataPrefs::SetChainMetadata(
@@ -166,26 +156,24 @@ bool PolkadotChainMetadataPrefs::SetChainMetadata(
   int transfer_all_call_index = 0;
   int ss58_prefix = 0;
   int spec_version = 0;
-  if (!base::CheckedNumeric<int>(metadata.GetSystemPalletIndex())
+  if (!base::CheckedNumeric<int>(metadata->system_pallet_index)
            .AssignIfValid(&system_pallet_index) ||
-      !base::CheckedNumeric<int>(metadata.GetBalancesPalletIndex())
+      !base::CheckedNumeric<int>(metadata->balances_pallet_index)
            .AssignIfValid(&balances_pallet_index) ||
-      !base::CheckedNumeric<int>(metadata.GetTransactionPaymentPalletIndex())
+      !base::CheckedNumeric<int>(metadata->transaction_payment_pallet_index)
            .AssignIfValid(&transaction_payment_pallet_index) ||
-      !base::CheckedNumeric<int>(metadata.GetTransferAllowDeathCallIndex())
+      !base::CheckedNumeric<int>(metadata->transfer_allow_death_call_index)
            .AssignIfValid(&transfer_allow_death_call_index) ||
-      !base::CheckedNumeric<int>(metadata.GetTransferKeepAliveCallIndex())
+      !base::CheckedNumeric<int>(metadata->transfer_keep_alive_call_index)
            .AssignIfValid(&transfer_keep_alive_call_index) ||
-      !base::CheckedNumeric<int>(metadata.GetTransferAllCallIndex())
+      !base::CheckedNumeric<int>(metadata->transfer_all_call_index)
            .AssignIfValid(&transfer_all_call_index) ||
-      !base::CheckedNumeric<int>(metadata.GetSs58Prefix())
+      !base::CheckedNumeric<int>(metadata->ss58_prefix)
            .AssignIfValid(&ss58_prefix) ||
-      !base::CheckedNumeric<int>(metadata.GetSpecVersion())
+      !base::CheckedNumeric<int>(metadata->spec_version)
            .AssignIfValid(&spec_version)) {
     return false;
   }
-
-  bool asset_tx_payment = metadata.UsesAssetTxPayment();
 
   value.Set(kSystemPalletIndex, system_pallet_index);
   value.Set(kBalancesPalletIndex, balances_pallet_index);
@@ -193,7 +181,7 @@ bool PolkadotChainMetadataPrefs::SetChainMetadata(
   value.Set(kTransferAllowDeathCallIndex, transfer_allow_death_call_index);
   value.Set(kTransferKeepAliveCallIndex, transfer_keep_alive_call_index);
   value.Set(kTransferAllCallIndex, transfer_all_call_index);
-  value.Set(kAssetTxPayment, asset_tx_payment);
+  value.Set(kAssetTxPayment, metadata->asset_tx_payment);
   value.Set(kSs58Prefix, ss58_prefix);
   value.Set(kSpecVersion, spec_version);
   ScopedDictPrefUpdate update(profile_prefs_.get(),

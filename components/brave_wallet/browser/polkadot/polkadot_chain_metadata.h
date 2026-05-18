@@ -23,7 +23,7 @@ namespace brave_wallet {
 // We parse minimal fields needed for transfer extrinsic handling.
 class PolkadotChainMetadata {
  public:
-  PolkadotChainMetadata() = delete;
+  PolkadotChainMetadata();
   PolkadotChainMetadata(const PolkadotChainMetadata&);
   PolkadotChainMetadata(PolkadotChainMetadata&&) noexcept;
   ~PolkadotChainMetadata();
@@ -37,18 +37,6 @@ class PolkadotChainMetadata {
   static std::optional<PolkadotChainMetadata> FromBytes(
       base::span<const uint8_t> metadata_bytes);
 
-  // Build metadata from explicit fields. Always succeeds.
-  static PolkadotChainMetadata FromFields(
-      uint8_t system_pallet_index,
-      uint8_t balances_pallet_index,
-      uint8_t transaction_payment_pallet_index,
-      uint8_t transfer_allow_death_call_index,
-      uint8_t transfer_keep_alive_call_index,
-      uint8_t transfer_all_call_index,
-      uint16_t ss58_prefix,
-      uint32_t spec_version,
-      bool asset_tx_payment);
-
   // Build metadata from a known relay/parachain name returned by system_chain.
   // Returns std::nullopt for unknown names. The returned metadata has an
   // unknown spec_version (set to 0); callers must populate spec_version from
@@ -60,21 +48,8 @@ class PolkadotChainMetadata {
   // to Rust routines.
   const CxxPolkadotChainMetadata& operator*() const;
 
-  uint8_t GetSystemPalletIndex() const;
-  uint8_t GetBalancesPalletIndex() const;
-  uint8_t GetTransactionPaymentPalletIndex() const;
-  uint8_t GetTransferAllowDeathCallIndex() const;
-  uint8_t GetTransferKeepAliveCallIndex() const;
-  uint8_t GetTransferAllCallIndex() const;
-
-  // Returns the ss58 prefix used by the chain when encoding/working with ss58
-  // addresses.
-  uint16_t GetSs58Prefix() const;
-  uint32_t GetSpecVersion() const;
-
-  // Returns true if the runtime uses ChargeAssetTxPayment as a signed
-  // extension, meaning the signature payload must include an asset_id field.
-  bool UsesAssetTxPayment() const;
+  CxxPolkadotChainMetadata* operator->();
+  const CxxPolkadotChainMetadata* operator->() const;
 
  private:
   explicit PolkadotChainMetadata(CxxPolkadotChainMetadata chain_metadata);
