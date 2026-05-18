@@ -26,9 +26,9 @@ public class BraveFullscreenVideoPictureInPictureController {
     @Nullable private BraveActivity mPendingBraveActivityForPiP;
 
     /**
-     * Called by upstream's attemptPictureInPicture before entering PiP. Resolves the Brave
-     * activity that should manage the upcoming YouTube PiP session (or null if this is not a
-     * Brave-managed YouTube PiP attempt) and notifies it that a session is being requested.
+     * Called by upstream's attemptPictureInPicture before entering PiP. Resolves the Brave activity
+     * that should manage the upcoming YouTube PiP session (or null if this is not a Brave-managed
+     * YouTube PiP attempt) and notifies it that a session is being requested.
      */
     protected void onYouTubePictureInPictureAttempt(Activity activity, WebContents webContents) {
         mPendingBraveActivityForPiP =
@@ -40,8 +40,8 @@ public class BraveFullscreenVideoPictureInPictureController {
 
     /**
      * Called by upstream when {@code enterPictureInPictureMode} returns false or throws, so the
-     * Brave activity can roll back any YouTube PiP session state set up in
-     * {@link #onYouTubePictureInPictureAttempt}.
+     * Brave activity can roll back any YouTube PiP session state set up in {@link
+     * #onYouTubePictureInPictureAttempt}.
      */
     protected void onYouTubePictureInPictureEnterFailed() {
         if (mPendingBraveActivityForPiP != null) {
