@@ -1773,13 +1773,17 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
         Tab tab = getToolbarDataProvider().getTab();
         Profile profile = tab != null ? Profile.fromWebContents(tab.getWebContents()) : null;
-        mRewardsLayout.setVisibility(
-                width >= DeviceFormFactor.getNonMultiDisplayMinimumTabletWidthPx(getContext())
-                                && !BraveRewardsPolicy.isDisabledByPolicy(profile)
-                        ? View.VISIBLE
-                        : View.GONE);
+        boolean shouldShowRewards =
+                !isIncognito()
+                        && width
+                                >= DeviceFormFactor.getNonMultiDisplayMinimumTabletWidthPx(
+                                        getContext())
+                        && !BraveRewardsPolicy.isDisabledByPolicy(profile)
+                        && mBraveRewardsNativeWorker != null
+                        && mBraveRewardsNativeWorker.isSupported();
+        mRewardsLayout.setVisibility(shouldShowRewards ? View.VISIBLE : View.GONE);
         // Update the shields layout background to match the rewards layout visibility.
-        updateShieldsLayoutBackground(mRewardsLayout.getVisibility() == View.GONE);
+        updateShieldsLayoutBackground(!shouldShowRewards);
     }
 
     public void maybeShowTermsOfServiceUpdateRequiredBadge() {
