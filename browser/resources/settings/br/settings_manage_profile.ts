@@ -12,6 +12,7 @@ import { loadTimeData } from 'chrome://resources/js/load_time_data.js'
 
 import {
   BraveManageProfileBrowserProxy,
+  CustomAvatarSharedBufferError,
   CustomAvatarState,
   kMaxUploadBytes,
   SetCustomAvatarError,
@@ -23,6 +24,15 @@ const kCustomAvatarImageId = 'braveCustomAvatarImage'
 const kCustomAvatarUploadBtnId = 'braveCustomAvatarUploadBtn'
 const kCustomAvatarRemoveBtnId = 'braveCustomAvatarRemoveBtn'
 const kCustomAvatarFileInputId = 'braveCustomAvatarFileInput'
+const kCustomAvatarErrorId = 'braveCustomAvatarError'
+
+const kAcceptedMimeTypes = new Set([
+  'image/png',
+  'image/jpeg',
+  'image/jpg',
+  'image/webp',
+  'image/gif',
+])
 
 // Injected as a normal `<style>` via `textContent` inside the component
 // template. Do **not** use `RegisterStyleOverride` + `<style include="…">` here:
@@ -186,6 +196,17 @@ const kBraveCustomAvatarStyleCss = `
     position: absolute;
     width: 1px;
   }
+
+  #braveCustomAvatarError {
+    color: var(--leo-color-systemfeedback-error-text);
+    font-size: 13px;
+    line-height: 1.4;
+    margin: 0;
+  }
+
+  #braveCustomAvatarError[hidden] {
+    display: none;
+  }
 `
 
 type ManageProfileHost = HTMLElement & {
@@ -310,18 +331,30 @@ function tryWireBraveManageProfileCustomAvatar(host: HTMLElement): boolean {
     if (!file) {
       return
     }
+    clearBraveCustomAvatarError_(typedHost)
+    if (!isAcceptedImageFile(file)) {
+      setBraveCustomAvatarError_(typedHost, getLocalizedString(
+        'braveCustomAvatarErrorInvalidFormat',
+        'This file type is not supported. Choose a PNG, JPEG, WebP, or ' +
+        'GIF image.'))
+      return
+    }
     // Gate on `file.size` *before* reading the file contents into memory
     // so multi-hundred-MB selections never get materialized in the
     // renderer (and never go on to allocate a shared-memory region for
     // the Mojo hop). The browser-side handler enforces the same limit
     // again; this renderer check is defense in depth, not the security
     // boundary.
+    if (file.size === 0) {
+      setBraveCustomAvatarError_(typedHost, getLocalizedString(
+        'braveCustomAvatarErrorEmpty',
+        'The selected file is empty. Choose a different image.'))
+      return
+    }
     if (file.size > kMaxUploadBytes) {
-      console.warn('[Brave Settings Overrides] setCustomAvatar rejected: ' +
-        'file size ' + file.size + ' bytes exceeds the ' + kMaxUploadBytes +
-        '-byte cap.')
-      braveOnCustomAvatarChanged_(
-        typedHost, typedHost.braveCustomAvatarState_ ?? kEmptyAvatarState)
+      setBraveCustomAvatarError_(typedHost, getLocalizedString(
+        'braveCustomAvatarErrorFileTooLarge',
+        'This image is too large. Choose a file smaller than 10 MB.'))
       return
     }
     preview.classList.add('is-uploading')
@@ -330,16 +363,24 @@ function tryWireBraveManageProfileCustomAvatar(host: HTMLElement): boolean {
       const bytes = new Uint8Array(await file.arrayBuffer())
       const result = await proxy.setCustomAvatar(bytes)
       if (result.error !== undefined) {
-        console.warn('[Brave Settings Overrides] setCustomAvatar failed:',
-          result.error,
-          result.error === SetCustomAvatarError.kTooLarge
-            ? '(payload exceeds ' + kMaxUploadBytes + ' bytes)'
-            : '')
+        if (result.error !== SetCustomAvatarError.kSuperseded) {
+          setBraveCustomAvatarError_(
+            typedHost, messageForSetCustomAvatarError(result.error))
+        }
+      } else {
+        clearBraveCustomAvatarError_(typedHost)
       }
       braveOnCustomAvatarChanged_(typedHost, result.state)
     } catch (err) {
-      console.warn('[Brave Settings Overrides] Failed to set custom ' +
-        'avatar:', err)
+      if (err instanceof CustomAvatarSharedBufferError) {
+        setBraveCustomAvatarError_(typedHost, getLocalizedString(
+          'braveCustomAvatarErrorSharedBuffer',
+          'Could not upload this image. Try again or choose a smaller file.'))
+      } else {
+        setBraveCustomAvatarError_(typedHost, getLocalizedString(
+          'braveCustomAvatarErrorGeneric',
+          'Could not upload this image. Try again.'))
+      }
     } finally {
       preview.classList.remove('is-uploading')
       preview.removeAttribute('aria-busy')
@@ -347,11 +388,14 @@ function tryWireBraveManageProfileCustomAvatar(host: HTMLElement): boolean {
   })
 
   removeBtn.addEventListener('click', () => {
+    clearBraveCustomAvatarError_(typedHost)
     try {
       proxy.removeCustomAvatar()
     } catch (err) {
-      console.warn('[Brave Settings Overrides] Failed to remove custom ' +
-        'avatar:', err)
+      setBraveCustomAvatarError_(typedHost, getLocalizedString(
+        'braveCustomAvatarErrorActionFailed',
+        'Something went wrong. Try again.'))
+      return
     }
     // Optimistically update local state; the browser confirms via the
     // `OnCustomAvatarChanged` event when the file delete completes.
@@ -370,8 +414,9 @@ function tryWireBraveManageProfileCustomAvatar(host: HTMLElement): boolean {
     try {
       proxy.activateCustomAvatar()
     } catch (err) {
-      console.warn('[Brave Settings Overrides] Failed to activate custom ' +
-        'avatar:', err)
+      setBraveCustomAvatarError_(typedHost, getLocalizedString(
+        'braveCustomAvatarErrorActionFailed',
+        'Something went wrong. Try again.'))
     }
   })
 
@@ -515,6 +560,74 @@ function getLocalizedString(key: string, fallback: string): string {
   return fallback
 }
 
+function isAcceptedImageFile(file: File): boolean {
+  if (file.type && kAcceptedMimeTypes.has(file.type)) {
+    return true
+  }
+  return /\.(png|jpe?g|webp|gif)$/i.test(file.name)
+}
+
+function messageForSetCustomAvatarError(error: SetCustomAvatarError): string {
+  switch (error) {
+    case SetCustomAvatarError.kEmpty:
+      return getLocalizedString(
+        'braveCustomAvatarErrorEmpty',
+        'The selected file is empty. Choose a different image.')
+    case SetCustomAvatarError.kTooLarge:
+      return getLocalizedString(
+        'braveCustomAvatarErrorTooLarge',
+        'This image is too large to use as a profile picture.')
+    case SetCustomAvatarError.kDecodeFailed:
+      return getLocalizedString(
+        'braveCustomAvatarErrorDecodeFailed',
+        'This image could not be read. Try a different PNG, JPEG, WebP, ' +
+        'or GIF file.')
+    case SetCustomAvatarError.kNoProfileEntry:
+      return getLocalizedString(
+        'braveCustomAvatarErrorNoProfile',
+        'Could not update this profile. Try again.')
+    case SetCustomAvatarError.kSaveFailed:
+      return getLocalizedString(
+        'braveCustomAvatarErrorSaveFailed',
+        'Could not save this image. Try again.')
+    case SetCustomAvatarError.kProfileShuttingDown:
+      return getLocalizedString(
+        'braveCustomAvatarErrorProfileShuttingDown',
+        'This profile is closing. Try uploading again after switching ' +
+        'profiles.')
+    case SetCustomAvatarError.kSuperseded:
+      return getLocalizedString(
+        'braveCustomAvatarErrorGeneric',
+        'Could not upload this image. Try again.')
+    default:
+      return getLocalizedString(
+        'braveCustomAvatarErrorGeneric',
+        'Could not upload this image. Try again.')
+  }
+}
+
+function setBraveCustomAvatarError_(host: ManageProfileHost, message: string) {
+  const root = host.shadowRoot
+  if (!root) {
+    return
+  }
+  const errorEl = root.getElementById(kCustomAvatarErrorId)
+  if (!errorEl) {
+    return
+  }
+  if (message) {
+    errorEl.textContent = message
+    errorEl.hidden = false
+  } else {
+    errorEl.textContent = ''
+    errorEl.hidden = true
+  }
+}
+
+function clearBraveCustomAvatarError_(host: ManageProfileHost) {
+  setBraveCustomAvatarError_(host, '')
+}
+
 // Build the upload-row markup programmatically. `innerHTML` is blocked on
 // `brave://settings` by the Trusted Types CSP, so we have to construct every
 // node via `document.createElement`. Using `textContent` for the labels also
@@ -587,6 +700,13 @@ function buildCustomAvatarRow(
   actions.appendChild(removeBtn)
 
   body.appendChild(actions)
+
+  const errorEl = document.createElement('p')
+  errorEl.id = kCustomAvatarErrorId
+  errorEl.hidden = true
+  errorEl.setAttribute('role', 'alert')
+  body.appendChild(errorEl)
+
   rowDiv.appendChild(body)
 
   const fileInput = document.createElement('input')
