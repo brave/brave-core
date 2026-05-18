@@ -252,7 +252,6 @@ void NewTabPageInitializer::AddLoadTimeValues() {
   source_->AddBoolean("isAIChatAgentProfileFeatureEnabled",
                       ai_chat::features::IsAIChatAgentProfileEnabled());
   source_->AddBoolean("isAIChatAgentProfile", profile->IsAIChatAgent());
-  source_->AddBoolean("isGlobalPanel", false);
 #endif
 
   source_->AddBoolean("aiChatInputEnabled", ai_chat_input_enabled);
