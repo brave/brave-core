@@ -1,0 +1,30 @@
+diff --git a/chrome/browser/ui/window_feature_controller/window_feature_controller.cc b/chrome/browser/ui/window_feature_controller/window_feature_controller.cc
+index a4c56226d36b8c8ef418cbd6033251bcc01df426..24d3009e357427c916302c7f86f07bf334714fcc 100644
+--- a/chrome/browser/ui/window_feature_controller/window_feature_controller.cc
++++ b/chrome/browser/ui/window_feature_controller/window_feature_controller.cc
+@@ -17,12 +17,14 @@ WindowFeatureController::WindowFeatureController(
+     web_app::AppBrowserController* app_controller,
+     BrowserWindowInterface::Type browser_type,
+     bool is_trusted_source,
+-    ui::UnownedUserDataHost& host)
++    ui::UnownedUserDataHost& host,
++    BrowserWindowInterface& browser)
+     : fullscreen_controller_(CHECK_DEREF(fullscreen_controller)),
+       app_controller_(app_controller),
+       browser_type_(browser_type),
+       is_trusted_source_(is_trusted_source),
+-      scoped_unowned_user_data_(host, *this) {}
++      scoped_unowned_user_data_(host, *this),
++      browser_(browser) {}
+ 
+ WindowFeatureController::~WindowFeatureController() = default;
+ 
+@@ -70,7 +72,7 @@ bool WindowFeatureController::UsesImmersiveFullscreenTabbedMode() const {
+ }
+ #endif
+ 
+-bool WindowFeatureController::NormalBrowserSupportsWindowFeature(
++bool WindowFeatureController::NormalBrowserSupportsWindowFeature_ChromiumImpl(
+     WindowFeature feature,
+     bool check_can_support) const {
+   switch (feature) {
