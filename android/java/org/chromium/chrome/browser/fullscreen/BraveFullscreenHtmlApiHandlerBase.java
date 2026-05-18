@@ -49,9 +49,9 @@ public abstract class BraveFullscreenHtmlApiHandlerBase {
 
     /**
      * Tab-hidden variant of {@link #shouldPreservePersistentFullscreenForPictureInPicture}. Records
-     * whether the tab was hidden because of a tab switch (so the Compat/Legacy
-     * {@code exitPersistentFullscreenMode} override can still tear down fullscreen UI in that case)
-     * and returns whether upstream should skip its tab-hidden fullscreen exit.
+     * whether the tab was hidden because of a tab switch (so the Compat/Legacy {@code
+     * exitPersistentFullscreenMode} override can still tear down fullscreen UI in that case) and
+     * returns whether upstream should skip its tab-hidden fullscreen exit.
      */
     protected boolean maybeSkipExitFullscreenOnTabHidden(
             Activity activity, @TabHidingType int reason) {
