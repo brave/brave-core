@@ -1,0 +1,33 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[[substitution]]
+description = '''Add `browser` to the ctor.
+
+This `browser_` field is required for `NormalBrowserSupportsWindowFeature`.
+'''
+re_pattern = '(WindowFeatureController::WindowFeatureController\(.*?)(\)\n\s+:)'
+re_flags = ['DOTALL']
+replace = '''\1,
+    BrowserWindowInterface& browser\2'''
+
+[[substitution]]
+description = '''Initialise `browser_` in the constructor
+
+This `browser_` field is required for `NormalBrowserSupportsWindowFeature`.
+'''
+re_pattern = '(WindowFeatureController::WindowFeatureController\(.*?)( \{\})'
+re_flags = ['DOTALL']
+replace = '''\1,
+      browser_(browser)\2'''
+
+[[substitution]]
+description = '''Make `NormalBrowserSupportsWindowFeature` an internal method
+
+This is done so we can provide our own `NormalBrowserSupportsWindowFeature` with
+specific handling for Windows.
+'''
+pattern = 'WindowFeatureController::NormalBrowserSupportsWindowFeature('
+replace = 'WindowFeatureController::NormalBrowserSupportsWindowFeature_ChromiumImpl('
