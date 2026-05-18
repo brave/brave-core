@@ -1,7 +1,16 @@
 diff --git a/chrome/browser/actor/ui/handoff_button_controller.cc b/chrome/browser/actor/ui/handoff_button_controller.cc
-index f7efc4d9584c9c9cd3087d5f5452b0f14268f82f..232a0f87ffeccdd25b35181a54753af59afecb61 100644
+index f7efc4d9584c9c9cd3087d5f5452b0f14268f82f..75fd5d6443afd0e661ec9cdea37fa298619308fa 100644
 --- a/chrome/browser/actor/ui/handoff_button_controller.cc
 +++ b/chrome/browser/actor/ui/handoff_button_controller.cc
+@@ -58,7 +58,7 @@ constexpr float kBackgroundInset = 2.0f;
+ constexpr float kHandoffButtonCornerRadius = 48.0f;
+ constexpr int kHandoffButtonIconSize = 20;
+ constexpr gfx::Insets kHandoffButtonContentPadding =
+-    gfx::Insets::TLBR(10, 10, 10, 14);
++    BRAVE_HANDOFF_BUTTON_CONTENT_PADDING(gfx::Insets::TLBR(10, 10, 10, 14));
+ 
+ // A customized LabelButton that shows a hand cursor on hover.
+ class HandoffLabelButton : public views::LabelButton {
 @@ -141,6 +141,7 @@ class GradientBubbleFrameView : public views::BubbleFrameView {
        auto blur_filter = sk_make_sp<cc::BlurPaintFilter>(
            kShadowBlurSigma, kShadowBlurSigma, SkTileMode::kDecal, nullptr);
@@ -9,4 +18,13 @@ index f7efc4d9584c9c9cd3087d5f5452b0f14268f82f..232a0f87ffeccdd25b35181a54753af5
 +      BRAVE_GRADIENT_BUBBLE_FRAME_VIEW_ON_PAINT_SHADOW_BEFORE_DRAW
        paint_canvas->drawRRect(rrect, shadow_flags);
      }
+ 
+@@ -378,7 +379,7 @@ gfx::Rect HandoffButtonController::GetHandoffButtonBounds() {
+   const int y =
+       is_tab_strip_visible
+           // Vertically center the button on the top edge of the anchor.
+-          ? anchor_bounds.y() - kHandoffButtonPreferredHeight
++          ? anchor_bounds.y() - kHandoffButtonPreferredHeight BRAVE_HANDOFF_BUTTON_Y_TAB_STRIP_VISIBLE_ADJUST
+           // Position with a fixed offset from the top of the anchor.
+           : anchor_bounds.y() - kHandoffButtonTopOffset;
  

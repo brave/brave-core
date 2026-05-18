@@ -18,5 +18,18 @@
       SkTileMode::kClamp, 0, 360);                                         \
   shadow_flags.setShader(std::move(brave_shader));
 
+// Tighten the button's content padding. Brave's location bar centers its URL
+// text, so the centered handoff button covers it more than in upstream where
+// the URL is left-aligned; a smaller button is less obtrusive.
+#define BRAVE_HANDOFF_BUTTON_CONTENT_PADDING(default_value) \
+  gfx::Insets::TLBR(4, 6, 4, 10)
+
+// Nudge the button down when the location bar is visible, so the visible
+// button sits lower and covers less of Brave's centered URL text.
+#define BRAVE_HANDOFF_BUTTON_Y_TAB_STRIP_VISIBLE_ADJUST \
+  +(kHandoffButtonPreferredHeight / 3)
+
 #include <chrome/browser/actor/ui/handoff_button_controller.cc>
+#undef BRAVE_HANDOFF_BUTTON_Y_TAB_STRIP_VISIBLE_ADJUST
+#undef BRAVE_HANDOFF_BUTTON_CONTENT_PADDING
 #undef BRAVE_GRADIENT_BUBBLE_FRAME_VIEW_ON_PAINT_SHADOW_BEFORE_DRAW
