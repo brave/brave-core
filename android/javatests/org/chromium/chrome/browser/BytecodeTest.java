@@ -138,9 +138,9 @@ import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tasks.HomeSurfaceTracker;
 import org.chromium.chrome.browser.tasks.tab_management.TabGroupCreationUiDelegate;
 import org.chromium.chrome.browser.tasks.tab_management.TabSwitcherPaneCoordinatorFactory;
-import org.chromium.chrome.browser.theme.AdjustedTopUiThemeColorProvider;
 import org.chromium.chrome.browser.theme.BottomUiThemeColorProvider;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
+import org.chromium.chrome.browser.theme.ToolbarThemeColorProvider;
 import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarDataProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarManager;
@@ -1450,8 +1450,8 @@ public class BytecodeTest {
                         ToolbarControlContainer.class,
                         CompositorViewHolder.class,
                         Callback.class,
-                        TopUiThemeColorProvider.class,
-                        AdjustedTopUiThemeColorProvider.class,
+                        ToolbarThemeColorProvider.class,
+                        ToolbarThemeColorProvider.class,
                         BottomUiThemeColorProvider.class,
                         IncognitoStateProvider.class,
                         TabObscuringHandler.class,
@@ -2160,7 +2160,7 @@ public class BytecodeTest {
                         LayoutRenderHost.class,
                         BrowserControlsStateProvider.class,
                         LayoutManager.class,
-                        TopUiThemeColorProvider.class,
+                        ToolbarThemeColorProvider.class,
                         NonNullObservableSupplier.class,
                         ViewGroup.class,
                         Runnable.class));
@@ -2199,7 +2199,8 @@ public class BytecodeTest {
                         TopUiThemeColorProvider.class,
                         EdgeToEdgeSystemBarColorHelper.class,
                         DesktopWindowStateManager.class,
-                        NonNullObservableSupplier.class));
+                        NonNullObservableSupplier.class,
+                        BrowserControlsStateProvider.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/browsing_data/ClearBrowsingDataFragment", // presubmit: ignore-long-line
@@ -2473,7 +2474,7 @@ public class BytecodeTest {
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/toolbar/ToolbarManager",
-                        "mTopUiThemeColorProvider"));
+                        "mToolbarThemeColorProvider"));
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/toolbar/ToolbarManager",
