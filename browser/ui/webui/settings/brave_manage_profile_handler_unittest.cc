@@ -209,7 +209,8 @@ INSTANTIATE_TEST_SUITE_P(
         RejectCase{"EmptyPayload", std::vector<uint8_t>(),
                    brave_manage_profile::mojom::SetCustomAvatarError::kEmpty},
         // Payloads larger than `kMaxUploadBytes` are rejected before the
-        // decoder is reached.
+        // decoder is reached (simulates a compromised renderer bypassing the
+        // WebUI file-size gate and invoking Mojo with an oversized BigBuffer).
         RejectCase{
             "TooLarge",
             std::vector<uint8_t>(BraveManageProfileHandler::kMaxUploadBytes + 1,
@@ -225,6 +226,21 @@ INSTANTIATE_TEST_SUITE_P(
     [](const testing::TestParamInfo<RejectCase>& info) {
       return info.param.name;
     });
+
+// Bitmap with a long edge at exactly `kMaxDecodedDimension` is accepted.
+TEST_F(BraveManageProfileHandlerTest, SetWithMaxDecodedDimensionAccepted) {
+  gfx::Image image = gfx::test::CreateImage(
+      BraveManageProfileHandler::kMaxDecodedDimension, 32);
+  scoped_refptr<base::RefCountedMemory> png_bytes = image.As1xPNGBytes();
+  ASSERT_TRUE(png_bytes && png_bytes->size() > 0u);
+  std::vector<uint8_t> bytes(png_bytes->begin(), png_bytes->end());
+  ASSERT_LE(bytes.size(), BraveManageProfileHandler::kMaxUploadBytes);
+
+  auto result = SetCustomAvatar(bytes);
+  EXPECT_FALSE(result.error.has_value());
+  ASSERT_TRUE(entry());
+  EXPECT_TRUE(entry()->HasBraveCustomAvatar());
+}
 
 // Decoded bitmaps with a dimension over `kMaxDecodedDimension` are rejected
 // after decode — the encoded PNG fits comfortably under `kMaxUploadBytes`,

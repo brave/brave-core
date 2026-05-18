@@ -108,6 +108,9 @@ void BraveManageProfileHandler::SetCustomAvatar(
                             BuildCustomAvatarState());
     return;
   }
+  // Authoritative upload cap (see `kMaxUploadBytes`). Runs before decode so a
+  // compromised renderer cannot bypass the WebUI file-size gate by calling
+  // Mojo directly with a multi-MiB `BigBuffer`.
   if (bytes.size() > kMaxUploadBytes) {
     std::move(callback).Run(SetCustomAvatarError::kTooLarge,
                             BuildCustomAvatarState());

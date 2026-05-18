@@ -33,9 +33,12 @@ const kInlineUploadThresholdBytes = 64 * 1024
 // Renderer-side cap on the upload payload size. Kept in sync with the
 // browser-side `BraveManageProfileHandler::kMaxUploadBytes` (10 MiB) so the
 // renderer can reject oversized files before reading them into memory or
-// allocating a shared-memory region for the Mojo hop. The browser-side
-// handler enforces the same limit again — the renderer cap is defense in
-// depth, not the security boundary.
+// allocating a shared-memory region for the Mojo hop.
+//
+// The browser-side handler enforces the same limit again before decode; that
+// check is the authoritative security boundary (a compromised renderer can
+// skip this gate and call Mojo directly). `kMaxDecodedDimension` is enforced
+// only in the browser after out-of-process decode.
 export const kMaxUploadBytes = 10 * 1024 * 1024
 
 // `MOJO_RESULT_OK` (0) from `MojoResult` in `third_party/blink/.../mojo.idl`.

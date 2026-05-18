@@ -35,13 +35,18 @@ class BraveManageProfileHandler
  public:
   // Side length (in pixels) of the persisted custom avatar bitmap.
   static constexpr int kAvatarSize = 256;
-  // Maximum size of the upload payload in bytes (rejected before decode).
+
+  // Primary guard against upload-side resource exhaustion. Enforced in
+  // `SetCustomAvatar` before any decode work. This is the authoritative
+  // security boundary: a compromised renderer can bypass the WebUI file-size
+  // check and invoke Mojo with up to this many bytes, so the browser must
+  // reject oversize payloads here (not rely on renderer-side limits).
   static constexpr size_t kMaxUploadBytes = 10 * 1024 * 1024;
-  // Maximum width or height (in pixels) of the decoded source bitmap. Bounds
-  // the work `CropAndResizeToSquare` does on the decoded pixel buffer. A
-  // 10 MiB encoded JPEG/WebP can decode to hundreds of MB of pixels; this
-  // additionally rejects extreme aspect ratios that slip under the decoder's
-  // total-byte limit (~128 MB). Well above any reasonable avatar source.
+
+  // Post-decode guard against decoded-pixel exhaustion. A 10 MiB encoded image
+  // can expand to hundreds of MiB of pixels, and extreme aspect ratios can
+  // slip under the sandboxed decoder's total-byte cap while still presenting
+  // absurd width or height. Reject before `CropAndResizeToSquare` runs.
   static constexpr int kMaxDecodedDimension = 4096;
 
   explicit BraveManageProfileHandler(Profile* profile);
