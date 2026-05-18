@@ -407,7 +407,26 @@ class PlasterTest(unittest.TestCase):
               pattern = 'Chromium'
               re_pattern = 'Chromium'
               replace = 'Plaster'
-            ''', 'Please specify either pattern or re_pattern'),
+            ''', 'Please specify only one of pattern, re_pattern, or token'),
+            ('''
+              [[substitution]]
+              description = 'Pattern and token specified'
+              pattern = 'Chromium'
+              token = 'Chromium'
+              replace = 'Plaster'
+            ''', 'Please specify only one of pattern, re_pattern, or token'),
+            ('''
+              [[substitution]]
+              description = 'Token with separators'
+              token = 'Chromium browser'
+              replace = 'Plaster'
+            ''', 'token must contain no separators'),
+            ('''
+              [[substitution]]
+              description = 'Token with punctuation'
+              token = 'Chromium++'
+              replace = 'Plaster'
+            ''', 'token must contain no separators'),
             ('''
               [[substitution]]
               description = 'No pattern specified'
@@ -558,6 +577,39 @@ class PlasterTest(unittest.TestCase):
         result2 = (self.fake_chromium_src.chromium /
                    test_file_chromium2).read_text()
         self.assertEqual(result2, 'Text with {braces} and (parentheses).')
+
+    def test_token_word_boundary_match_works(self):
+        """Test that using token wraps the value in \\b boundaries."""
+        test_file_chromium = Path(
+            'chrome/common/extensions/api/test_token.idl')
+
+        # Write a file where the token appears both standalone and as a
+        # substring of a longer identifier. Only the standalone occurrence
+        # should be replaced.
+        self.fake_chromium_src.write_and_stage_file(
+            test_file_chromium,
+            'Use Chromium here, but ChromiumBased should stay intact.',
+            self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit('Add test_token.idl',
+                                      self.fake_chromium_src.chromium)
+
+        plaster_path = plaster.PLASTER_FILES_PATH / (str(test_file_chromium) +
+                                                     '.toml')
+        plaster_path.parent.mkdir(parents=True, exist_ok=True)
+        plaster_path.write_text('''
+          [[substitution]]
+          description = 'Replace Chromium token only at word boundaries'
+          token = 'Chromium'
+          replace = 'Brave'
+        ''')
+
+        plaster_file = plaster.PlasterFile(plaster_path)
+        plaster_file.apply()
+
+        result = (self.fake_chromium_src.chromium /
+                  test_file_chromium).read_text()
+        self.assertEqual(
+            result, 'Use Brave here, but ChromiumBased should stay intact.')
 
     def test_count_mismatch_fails(self):
         """Test that count mismatch raises PlasterApplyError."""

@@ -26,6 +26,7 @@ PLASTER_FILES_PATH = repository.brave.root / 'rewrite'
 # The path to the directory where patch files are stored in brave-core.
 PATCHES_PATH = repository.brave.root / 'patches'
 
+
 @dataclass
 class PathChecksumPair:
     """ A path/checksum pair to check for changes in a file.
@@ -266,6 +267,7 @@ class PlasterFile:
                 description = substitution.get('description')
                 re_pattern = substitution.get('re_pattern')
                 pattern = substitution.get('pattern')
+                token = substitution.get('token')
                 replace = substitution.get('replace')
                 expected_count = substitution.get('count', 1)
                 flags = substitution.get('re_flags', [])
@@ -274,16 +276,30 @@ class PlasterFile:
                     raise ValueError(
                         f'No description specified in {info.source}')
 
-                if re_pattern is not None and pattern is not None:
+                specified = [
+                    name for name, value in (('pattern', pattern),
+                                             ('re_pattern',
+                                              re_pattern), ('token', token))
+                    if value is not None
+                ]
+                if len(specified) > 1:
                     raise ValueError(
-                        f'Please specify either pattern or re_pattern '
-                        f' in {info.source}')
+                        f'Please specify only one of pattern, re_pattern, '
+                        f'or token in {info.source}')
 
                 if re_pattern is None:
-                    if pattern is None:
+                    if token is not None:
+                        if not re.fullmatch(r'\w+', token):
+                            raise ValueError(
+                                f'token must contain no separators '
+                                f'(only word characters): {token!r} in '
+                                f'{info.source}')
+                        re_pattern = rf'\b{token}\b'
+                    elif pattern is not None:
+                        re_pattern = re.escape(pattern)
+                    else:
                         raise ValueError(
                             f'No pattern specified in {info.source}')
-                    re_pattern = re.escape(pattern)
 
                 if replace is None:
                     raise ValueError(

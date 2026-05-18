@@ -5,7 +5,7 @@
 
 [[substitution]]
 description = 'Insert kActionShowPartitionedStorage before kActionVirtualCardEnroll'
-pattern = 'kActionVirtualCardEnroll,'
+token = 'kActionVirtualCardEnroll'
 replace = '''kActionShowPartitionedStorage,
             {
                 .histogram_name = "PartitionedStorage",
@@ -13,4 +13,4 @@ replace = '''kActionShowPartitionedStorage,
             },
         },
         {
-            kActionVirtualCardEnroll,'''
+            kActionVirtualCardEnroll'''
