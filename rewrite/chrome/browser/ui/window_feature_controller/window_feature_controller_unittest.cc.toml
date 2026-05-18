@@ -1,0 +1,14 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[[substitution]]
+description = '''Fix ``make_unique<WindowFeatureController>` call.
+
+`WindowFeatureController` now takes the owning `BrowserWindowInterface&` as
+its last constructor argument. This requires a fix for the tests in question.
+'''
+re_pattern = '(make_unique<WindowFeatureController>\(.*?)(\);)'
+re_flags = ['DOTALL']
+replace = '''\1, mock_browser_window_interface_\2'''
