@@ -33,12 +33,6 @@
   GetTabSearchBubbleHost_Unused(); \
   virtual TabSearchBubbleHost* GetTabSearchBubbleHost
 
-#if BUILDFLAG(IS_MAC)
-#define UsesImmersiveFullscreenMode virtual UsesImmersiveFullscreenMode
-#define UsesImmersiveFullscreenTabbedMode \
-  virtual UsesImmersiveFullscreenTabbedMode
-#endif
-
 #if BUILDFLAG(IS_WIN)
 // On Windows <winuser.h> defines LoadAccelerators
 // Using push_macro seems to be causing #undef not to work in Chromium 125.
@@ -64,11 +58,6 @@
 #undef LoadAccelerators
 #if BUILDFLAG(IS_WIN)
 // #pragma pop_macro("LoadAccelerators")
-#endif
-
-#if BUILDFLAG(IS_MAC)
-#undef UsesImmersiveFullscreenTabbedMode
-#undef UsesImmersiveFullscreenMode
 #endif
 
 #undef GetTabSearchBubbleHost
