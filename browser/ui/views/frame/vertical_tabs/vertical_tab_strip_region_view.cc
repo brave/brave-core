@@ -49,6 +49,7 @@
 #include "chrome/grit/generated_resources.h"
 #include "components/prefs/pref_service.h"
 #include "ui/base/cursor/cursor.h"
+#include "ui/base/hit_test.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/compositor/compositor.h"
@@ -68,6 +69,7 @@
 #include "ui/views/layout/flex_layout.h"
 #include "ui/views/layout/layout_types.h"
 #include "ui/views/view_utils.h"
+#include "ui/views/window/hit_test_utils.h"
 
 #if BUILDFLAG(IS_WIN)
 #include "ui/views/win/hwnd_util.h"

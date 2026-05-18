@@ -65,8 +65,6 @@ class BraveToolbarView : public ToolbarView,
   void OnShowBookmarksButtonChanged();
   void ShowBookmarkBubble(const GURL& url, bool already_bookmarked) override;
   void VisibilityChanged(views::View* starting_from, bool visible) override;
-  void ViewHierarchyChanged(
-      const views::ViewHierarchyChangedDetails& details) override;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveToolbarViewTest, ToolbarCornerRadiusTest);

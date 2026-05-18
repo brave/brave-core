@@ -72,7 +72,11 @@ int BraveOpaqueBrowserFrameView::NonClientHitTest(const gfx::Point& point) {
     }
   }
 
-  if (auto res = brave::NonClientHitTest(GetBrowserView(), point);
+  if (auto res = GetBrowserView()
+                     ->browser()
+                     ->browser_window_features()
+                     ->brave_non_client_hit_test_helper()
+                     ->NonClientHitTest(GetBrowserView(), point);
       res != HTNOWHERE) {
     return res;
   }

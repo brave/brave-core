@@ -14,6 +14,7 @@
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/brave_browser_tab_menu_model_delegate.h"
+#include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 #include "brave/browser/ui/views/page_info/brave_shields_ui_contents_cache.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
@@ -97,6 +98,9 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
           browser->GetSessionID(), profile, app_browser_controller_.get(),
           tab_groups::TabGroupSyncServiceFactory::GetForProfile(profile),
           browser);
+
+  brave_non_client_hit_test_helper_ =
+      std::make_unique<BraveNonClientHitTestHelper>();
 }
 
 void BrowserWindowFeatures::InitPostBrowserViewConstruction(

@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/check_deref.h"
 #include "base/check_op.h"
 #include "base/functional/bind.h"
 #include "base/i18n/rtl.h"
@@ -17,6 +18,7 @@
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
@@ -195,7 +197,10 @@ void BraveToolbarView::Init() {
 
   // This will allow us to move this window by dragging toolbar.
   // See brave_non_client_hit_test_helper.h
-  views::SetHitTestComponent(this, HTCAPTION);
+  CHECK_DEREF(browser())
+      .browser_window_features()
+      ->brave_non_client_hit_test_helper()
+      ->RegisterCaptionArea(this);
 
   // For non-normal mode, we don't have to do any more work.
   if (display_mode_ != DisplayMode::kNormal) {
@@ -525,17 +530,6 @@ void BraveToolbarView::VisibilityChanged(views::View* starting_from,
   if (visible) {
     // Ink drop highlight is cleared whenever visibility changes, so re-apply.
     UpdateVerticalTabToggleState();
-  }
-}
-
-void BraveToolbarView::ViewHierarchyChanged(
-    const views::ViewHierarchyChangedDetails& details) {
-  ToolbarView::ViewHierarchyChanged(details);
-
-  if (details.is_add && details.parent == this) {
-    // Mark children of the toolbar view as client area so that they are not
-    // perceived as caption area. See brave_non_client_hit_test_helper.h
-    views::SetHitTestComponent(details.child, HTCLIENT);
   }
 }
 
