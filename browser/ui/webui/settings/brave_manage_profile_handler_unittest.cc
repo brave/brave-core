@@ -133,12 +133,12 @@ class BraveManageProfileHandlerTest : public testing::Test {
     brave_manage_profile::mojom::CustomAvatarStatePtr state;
   };
 
-  SetResult SetCustomAvatar(const std::vector<uint8_t>& bytes) {
+  SetResult SetCustomAvatar(base::span<const uint8_t> bytes) {
     base::test::TestFuture<
         std::optional<brave_manage_profile::mojom::SetCustomAvatarError>,
         brave_manage_profile::mojom::CustomAvatarStatePtr>
         future;
-    handler_->SetCustomAvatar(mojo_base::BigBuffer(base::span(bytes)),
+    handler_->SetCustomAvatar(mojo_base::BigBuffer(bytes),
                               future.GetCallback());
     auto [error, state] = future.Take();
     return {error, std::move(state)};

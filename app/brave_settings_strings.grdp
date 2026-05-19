@@ -1000,10 +1000,10 @@
     This image is too large. Choose a file smaller than 10 MB.
   </message>
   <message name="IDS_SETTINGS_BRAVE_CUSTOM_AVATAR_ERROR_INVALID_FORMAT" desc="Error shown when the user selects a file that is not a supported image type for a custom profile avatar." formatter_data="webui=BraveSettings">
-    This file type is not supported. Choose a PNG, JPEG, WebP, or GIF image.
+    This file type isn't supported. Choose a PNG, JPEG, WebP, or GIF image.
   </message>
   <message name="IDS_SETTINGS_BRAVE_CUSTOM_AVATAR_ERROR_DECODE_FAILED" desc="Error shown when the browser cannot decode the selected image as a custom profile avatar." formatter_data="webui=BraveSettings">
-    This image could not be read. Try a different PNG, JPEG, WebP, or GIF file.
+    This image couldn't be read. Try a different PNG, JPEG, WebP, or GIF file.
   </message>
   <message name="IDS_SETTINGS_BRAVE_CUSTOM_AVATAR_ERROR_TOO_LARGE" desc="Error shown when a custom profile avatar image exceeds size or dimension limits after upload." formatter_data="webui=BraveSettings">
     This image is too large to use as a profile picture.
@@ -1012,22 +1012,22 @@
     The selected file is empty. Choose a different image.
   </message>
   <message name="IDS_SETTINGS_BRAVE_CUSTOM_AVATAR_ERROR_SAVE_FAILED" desc="Error shown when saving a custom profile avatar to disk fails." formatter_data="webui=BraveSettings">
-    Could not save this image. Try again.
+    Couldn't save this image. Try again.
   </message>
   <message name="IDS_SETTINGS_BRAVE_CUSTOM_AVATAR_ERROR_SHARED_BUFFER" desc="Error shown when allocating shared memory for a custom profile avatar upload fails." formatter_data="webui=BraveSettings">
-    Could not upload this image. Try again or choose a smaller file.
+    Couldn't upload this image. Try again or choose a smaller file.
   </message>
   <message name="IDS_SETTINGS_BRAVE_CUSTOM_AVATAR_ERROR_PROFILE_SHUTTING_DOWN" desc="Error shown when a custom profile avatar upload fails because the profile is closing." formatter_data="webui=BraveSettings">
     This profile is closing. Try uploading again after switching profiles.
   </message>
   <message name="IDS_SETTINGS_BRAVE_CUSTOM_AVATAR_ERROR_NO_PROFILE" desc="Error shown when a custom profile avatar upload fails because the profile entry is missing." formatter_data="webui=BraveSettings">
-    Could not update this profile. Try again.
+    Couldn't update this profile. Try again.
   </message>
   <message name="IDS_SETTINGS_BRAVE_CUSTOM_AVATAR_ERROR_GENERIC" desc="Generic error shown when a custom profile avatar upload fails for an unexpected reason." formatter_data="webui=BraveSettings">
-    Could not upload this image. Try again.
+    Couldn't upload this image. Try again.
   </message>
   <message name="IDS_SETTINGS_BRAVE_CUSTOM_AVATAR_ERROR_ACTION_FAILED" desc="Error shown when removing or activating a custom profile avatar fails." formatter_data="webui=BraveSettings">
-    Something went wrong. Try again.
+    Couldn't apply the change. Try again.
   </message>
 
   <!-- Settings / Sync -->

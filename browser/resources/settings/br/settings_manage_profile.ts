@@ -335,7 +335,7 @@ function tryWireBraveManageProfileCustomAvatar(host: HTMLElement): boolean {
     if (!isAcceptedImageFile(file)) {
       setBraveCustomAvatarError_(typedHost, getLocalizedString(
         'braveCustomAvatarErrorInvalidFormat',
-        'This file type is not supported. Choose a PNG, JPEG, WebP, or ' +
+        'This file type isn\'t supported. Choose a PNG, JPEG, WebP, or ' +
         'GIF image.'))
       return
     }
@@ -375,11 +375,11 @@ function tryWireBraveManageProfileCustomAvatar(host: HTMLElement): boolean {
       if (err instanceof CustomAvatarSharedBufferError) {
         setBraveCustomAvatarError_(typedHost, getLocalizedString(
           'braveCustomAvatarErrorSharedBuffer',
-          'Could not upload this image. Try again or choose a smaller file.'))
+          'Couldn\'t upload this image. Try again or choose a smaller file.'))
       } else {
         setBraveCustomAvatarError_(typedHost, getLocalizedString(
           'braveCustomAvatarErrorGeneric',
-          'Could not upload this image. Try again.'))
+          'Couldn\'t upload this image. Try again.'))
       }
     } finally {
       preview.classList.remove('is-uploading')
@@ -394,7 +394,7 @@ function tryWireBraveManageProfileCustomAvatar(host: HTMLElement): boolean {
     } catch (err) {
       setBraveCustomAvatarError_(typedHost, getLocalizedString(
         'braveCustomAvatarErrorActionFailed',
-        'Something went wrong. Try again.'))
+        'Couldn\'t apply the change. Try again.'))
       return
     }
     // Optimistically update local state; the browser confirms via the
@@ -416,7 +416,7 @@ function tryWireBraveManageProfileCustomAvatar(host: HTMLElement): boolean {
     } catch (err) {
       setBraveCustomAvatarError_(typedHost, getLocalizedString(
         'braveCustomAvatarErrorActionFailed',
-        'Something went wrong. Try again.'))
+        'Couldn\'t apply the change. Try again.'))
     }
   })
 
@@ -580,16 +580,16 @@ function messageForSetCustomAvatarError(error: SetCustomAvatarError): string {
     case SetCustomAvatarError.kDecodeFailed:
       return getLocalizedString(
         'braveCustomAvatarErrorDecodeFailed',
-        'This image could not be read. Try a different PNG, JPEG, WebP, ' +
+        'This image couldn\'t be read. Try a different PNG, JPEG, WebP, ' +
         'or GIF file.')
     case SetCustomAvatarError.kNoProfileEntry:
       return getLocalizedString(
         'braveCustomAvatarErrorNoProfile',
-        'Could not update this profile. Try again.')
+        'Couldn\'t update this profile. Try again.')
     case SetCustomAvatarError.kSaveFailed:
       return getLocalizedString(
         'braveCustomAvatarErrorSaveFailed',
-        'Could not save this image. Try again.')
+        'Couldn\'t save this image. Try again.')
     case SetCustomAvatarError.kProfileShuttingDown:
       return getLocalizedString(
         'braveCustomAvatarErrorProfileShuttingDown',
@@ -598,11 +598,11 @@ function messageForSetCustomAvatarError(error: SetCustomAvatarError): string {
     case SetCustomAvatarError.kSuperseded:
       return getLocalizedString(
         'braveCustomAvatarErrorGeneric',
-        'Could not upload this image. Try again.')
+        'Couldn\'t upload this image. Try again.')
     default:
       return getLocalizedString(
         'braveCustomAvatarErrorGeneric',
-        'Could not upload this image. Try again.')
+        'Couldn\'t upload this image. Try again.')
   }
 }
 

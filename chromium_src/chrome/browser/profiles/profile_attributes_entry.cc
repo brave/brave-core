@@ -141,9 +141,12 @@ void ProfileAttributesEntry::SetBraveCustomAvatar(
       image_path, GetLastDownloadedGAIAPictureUrlWithSize());
 
   // The image is now in the in-memory cache and the disk write has been
-  // scheduled. The avatar-changed notification will fire from the storage
-  // when the write completes; surface success to the caller now so it can
-  // immediately update its UI.
+  // scheduled. Notify observers immediately so the profile menu, toolbar
+  // button, and other `GetAvatarIcon` consumers repaint without waiting for
+  // the background PNG write (which only fires `OnProfileHighResAvatarLoaded`,
+  // not `OnProfileAvatarChanged`).
+  profile_attributes_storage_->NotifyOnProfileAvatarChanged(profile_path_);
+
   if (on_saved) {
     std::move(on_saved).Run(true);
   }

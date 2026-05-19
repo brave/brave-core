@@ -12,12 +12,14 @@
 #include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
 #include "base/memory/raw_ptr.h"
+#include "base/scoped_observation.h"
 #include "base/test/bind.h"
 #include "base/values.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/brave_profile_attributes_constants.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
+#include "chrome/browser/profiles/profile_attributes_storage_observer.h"
 #include "chrome/browser/profiles/profile_avatar_icon_util.h"
 #include "chrome/grit/theme_resources.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -108,6 +110,28 @@ TEST_F(ProfileAttributeMigrationTest,
   EXPECT_EQ(profile_attribute_entry->GetAvatarIconIndex(), 56u);
 }
 
+class ProfileAvatarChangeObserver : public ProfileAttributesStorage::Observer {
+ public:
+  explicit ProfileAvatarChangeObserver(ProfileAttributesStorage* storage) {
+    observation_.Observe(storage);
+  }
+
+  void OnProfileAvatarChanged(const base::FilePath& profile_path) override {
+    ++avatar_change_count_;
+    last_profile_path_ = profile_path;
+  }
+
+  int avatar_change_count() const { return avatar_change_count_; }
+  const base::FilePath& last_profile_path() const { return last_profile_path_; }
+
+ private:
+  base::ScopedObservation<ProfileAttributesStorage,
+                          ProfileAttributesStorage::Observer>
+      observation_{this};
+  int avatar_change_count_ = 0;
+  base::FilePath last_profile_path_;
+};
+
 // Tests for the Brave custom-uploaded profile avatar API.
 class BraveCustomAvatarTest : public ProfileAttributeMigrationTest {};
 
@@ -117,6 +141,18 @@ TEST_F(BraveCustomAvatarTest, NoCustomAvatarByDefault) {
   EXPECT_FALSE(e->HasBraveCustomAvatar());
   EXPECT_FALSE(e->IsUsingBraveCustomAvatar());
   EXPECT_EQ(nullptr, e->GetBraveCustomAvatar());
+}
+
+// Setting a custom avatar notifies storage observers immediately so UI
+// surfaces (profile menu, toolbar button) repaint without waiting for disk.
+TEST_F(BraveCustomAvatarTest, SetNotifiesProfileAvatarChanged) {
+  ProfileAttributesEntry* e = entry();
+  ProfileAvatarChangeObserver observer(&storage());
+
+  e->SetBraveCustomAvatar(gfx::test::CreateImage(32, 32), base::DoNothing());
+
+  EXPECT_EQ(1, observer.avatar_change_count());
+  EXPECT_EQ(e->GetPath(), observer.last_profile_path());
 }
 
 // Setting a non-empty image flips the flag and makes the image available
