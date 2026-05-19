@@ -109,6 +109,10 @@ public final class FakeTabState: TabState {
   public var sampledPageTopColor: UIColor? { nil }
   public var viewScale: CGFloat = 1.0
   public func clearBackForwardList() {}
+  public func pauseAllMediaPlayback() {}
+  public func requestMediaPlaybackState() async -> MediaPlaybackState {
+    return .none
+  }
 
   // MARK: - Chromium specific
 

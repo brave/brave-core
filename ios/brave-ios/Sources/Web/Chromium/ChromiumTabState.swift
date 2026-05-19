@@ -518,6 +518,21 @@ class ChromiumTabState: TabState, TabStateImpl {
     }
   }
 
+  func pauseAllMediaPlayback() {
+    webView?.internalWebView?.pauseAllMediaPlayback()
+  }
+
+  func requestMediaPlaybackState() async -> MediaPlaybackState {
+    let state = await webView?.internalWebView?.requestMediaPlaybackState() ?? .none
+    return switch state {
+    case .none: .none
+    case .paused: .paused
+    case .playing: .playing
+    case .suspended: .suspended
+    @unknown default: .none
+    }
+  }
+
   func clearBackForwardList() {
     webView?.internalWebView?.backForwardList.clear()
   }

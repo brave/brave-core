@@ -25,7 +25,6 @@ extension TabDataValues {
 }
 
 protocol TabMiscDelegate {
-  func stopMediaPlayback(_ tab: some TabState)
   func showWalletNotification(_ tab: some TabState, origin: URLOrigin)
   func updateURLBarWalletButton()
 }

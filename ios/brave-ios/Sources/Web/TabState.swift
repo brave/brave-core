@@ -25,6 +25,13 @@ public enum SecureContentState {
   case mixedContent
 }
 
+public enum MediaPlaybackState {
+  case none
+  case paused
+  case playing
+  case suspended
+}
+
 public class TabStateFactory {
   public struct CreateTabParams {
     public var id: UUID
@@ -259,6 +266,10 @@ public protocol TabState: AnyObject {
   var viewScale: CGFloat { get set }
   /// Clears the back forward list of the WKWebView
   func clearBackForwardList()
+  /// Pauses playback of all media in the web view
+  func pauseAllMediaPlayback()
+  /// Requests the playback status of media in the web view.
+  func requestMediaPlaybackState() async -> MediaPlaybackState
 
   // MARK: - Chromium specific
   func updateScripts()
