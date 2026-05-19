@@ -10,12 +10,14 @@
 #include <memory>
 
 #include "base/apple/foundation_util.h"
+#include "base/functional/bind.h"
 #include "base/notreached.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/ios/browser/ai_chat_associated_content_page_fetcher.h"
 #include "brave/components/ai_chat/ios/browser/ai_chat_tab_helper.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/serp_metrics/serp_metrics_feature.h"
 #include "brave/ios/browser/ai_chat/ai_chat_distiller_javascript_feature.h"
 #include "brave/ios/browser/ai_chat/ai_chat_ui_handler_bridge_holder.h"
@@ -92,6 +94,13 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
 #include "brave/ios/browser/brave_talk/brave_talk_tab_helper.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/ios/browser/playlist/playlist_compatibility_flag_data.h"
+#include "brave/ios/browser/playlist/playlist_javascript_feature.h"
+#include "brave/ios/browser/playlist/playlist_tab_helper.h"
+#include "brave/ios/browser/playlist/playlist_tab_helper_bridge.h"
 #endif
 
 @interface BraveNavigationAction ()
@@ -262,6 +271,10 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
 @property(nonatomic, weak) id<BraveTalkTabHelperBridge> braveTalkHelper;
 #endif
+#if BUILDFLAG(ENABLE_PLAYLIST)
+@property(nonatomic, weak) id<PlaylistTabHelperBridge> playlistHelper;
+@property(nonatomic) BOOL isPlaylistCompatibilityModeEnabled;
+#endif
 @property(nonatomic, weak) id<BraveSearchMakeDefaultTabHelperBridge>
     braveSearchHelper;
 @property(nonatomic, weak) id<PrintHandler> printHandler;
@@ -389,6 +402,15 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
   BraveTalkTabHelper::CreateForWebState(self.webState);
   BraveTalkTabHelper::FromWebState(self.webState)
       ->SetBridge(self.braveTalkHelper);
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  playlist::PlaylistTabHelper::CreateForWebState(self.webState);
+  playlist::PlaylistTabHelper::FromWebState(self.webState)
+      ->SetBridge(self.playlistHelper);
+  if (self.isPlaylistCompatibilityModeEnabled) {
+    playlist::PlaylistCompatibilityFlagData::CreateForWebState(self.webState);
+  }
 #endif
 
   BraveSearchMakeDefaultTabHelper::CreateForWebState(self.webState);
@@ -745,6 +767,47 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
     tab_helper->SetBridge(braveTalkHelper);
   }
 #endif  // BUILDFLAG(ENABLE_BRAVE_TALK)
+}
+
+@end
+
+@implementation BraveWebView (Playlist)
+
+- (void)setPlaylistHelper:(id<PlaylistTabHelperBridge>)playlistHelper {
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  _playlistHelper = playlistHelper;
+  playlist::PlaylistTabHelper* tab_helper =
+      playlist::PlaylistTabHelper::FromWebState(self.webState);
+  if (tab_helper) {
+    tab_helper->SetBridge(playlistHelper);
+  }
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
+}
+
+- (void)playlistCurrentTimeForTag:(NSString*)tag
+                       completion:(void (^)(double currentTime))completion {
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  playlist::PlaylistJavaScriptFeature::GetInstance()
+      ->GetCurrentTimeForVideoWithTag(self.webState,
+                                      base::SysNSStringToUTF8(tag),
+                                      base::BindOnce(^(double currentTime) {
+                                        completion(currentTime);
+                                      }));
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
+}
+
+- (void)playlistLongPressedAtPoint:(CGPoint)point {
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  playlist::PlaylistJavaScriptFeature::GetInstance()->LongPressedAtLocation(
+      self.webState, point.x, point.y);
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
+}
+
+- (void)enablePlaylistCompatibilityMode {
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  _isPlaylistCompatibilityModeEnabled = YES;
+  playlist::PlaylistCompatibilityFlagData::CreateForWebState(self.webState);
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 }
 
 @end

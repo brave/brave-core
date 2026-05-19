@@ -3,12 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveShared
 import Data
 import OSLog
 import Preferences
 import UIKit
-import Web
+@_spi(ChromiumWebViewAccess) import Web
 
 enum PlaylistItemAddedState {
   case none
@@ -36,7 +37,7 @@ extension TabDataValues {
   }
 }
 
-class PlaylistTabHelper: NSObject, TabObserver {
+class PlaylistTabHelper: NSObject, TabObserver, PlaylistTabHelperBridge {
   weak var delegate: PlaylistTabHelperDelegate?
   private weak var tab: (any TabState)?
   private var url: URL?
@@ -142,10 +143,24 @@ class PlaylistTabHelper: NSObject, TabObserver {
   }
 
   /// Queries the current playback time of the media element tagged with
-  /// `nodeTag` in the legacy `PlaylistScript`.
+  /// `nodeTag`. Uses `PlaylistJavaScriptFeature` when the new web view
+  /// configuration is enabled, otherwise the legacy `PlaylistScript`.
   func getCurrentTime(nodeTag: String, completion: @escaping (Double) -> Void) {
     guard let tab = self.tab else {
       completion(0.0)
+      return
+    }
+
+    if FeatureList.kUseProfileWebViewConfiguration.enabled {
+      guard let webView = BraveWebView.from(tab: tab) else {
+        completion(0.0)
+        return
+      }
+      webView.playlistCurrentTime(forTag: nodeTag) { currentTime in
+        DispatchQueue.main.async {
+          completion(currentTime)
+        }
+      }
       return
     }
 
@@ -177,7 +192,20 @@ class PlaylistTabHelper: NSObject, TabObserver {
     }
   }
 
+  /// Receives a media item detected by `PlaylistJavaScriptFeature`. The payload
+  /// mirrors `PlaylistInfo` so it can be processed identically to the legacy
+  /// `PlaylistScript` messages.
+  func onMediaDetected(_ info: [String: Any]) {
+    processPlaylistInfo(item: PlaylistInfo.from(dictionary: info))
+  }
+
   // MARK: - TabObserver
+
+  func tabDidCreateWebView(_ tab: some TabState) {
+    if FeatureList.kUseProfileWebViewConfiguration.enabled {
+      BraveWebView.from(tab: tab)?.setPlaylistHelper(self)
+    }
+  }
 
   func tabDidUpdateURL(_ tab: some TabState) {
     url = tab.visibleURL
@@ -195,11 +223,16 @@ class PlaylistTabHelper: NSObject, TabObserver {
     {
 
       // If this URL is blocked from Playlist support, do nothing
-      if tab.url?.isPlaylistBlockedSiteURL == true {
+      if tab.visibleURL?.isPlaylistBlockedSiteURL == true {
         return
       }
 
       let touchPoint = gestureRecognizer.location(in: tab.view)
+
+      if FeatureList.kUseProfileWebViewConfiguration.enabled {
+        BraveWebView.from(tab: tab)?.playlistLongPressed(at: touchPoint)
+        return
+      }
 
       tab.evaluateJavaScript(
         functionName: "window.__firefox__.\(PlaylistScriptHandler.playlistLongPressed)",
