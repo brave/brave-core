@@ -95,11 +95,12 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
   void OnUserScriptResult(int id,
                           std::unique_ptr<MatchedRule> rule,
                           base::Value script_result);
-  void OnUserAcceptedPsstSettings(int id,
-                                  bool is_initial,
-                                  std::unique_ptr<MatchedRule> rule,
-                                  base::Value user_script_result,
-                                  const std::vector<std::string>& perform_for_uids);
+  void OnUserAcceptedPsstSettings(
+      int id,
+      bool is_initial,
+      std::unique_ptr<MatchedRule> rule,
+      base::Value user_script_result,
+      const std::vector<std::string>& perform_for_uids);
   void OnPolicyScriptResult(int nav_entry_id, base::Value script_result);
   void RunWithTimeout(const int last_committed_entry_id,
                       const std::string& script,
