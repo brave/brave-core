@@ -12,7 +12,7 @@
 
 [[substitution]]
 description = 'Swap IDS_OMNIBOX_HISTORY_EMBEDDINGS_DISCLAIMER_IPH_LINK_TEXT to an empty string so the "Learn more" link view renders at zero width.'
-re_pattern = '\bIDS_OMNIBOX_HISTORY_EMBEDDINGS_DISCLAIMER_IPH_LINK_TEXT\b'
+token = 'IDS_OMNIBOX_HISTORY_EMBEDDINGS_DISCLAIMER_IPH_LINK_TEXT'
 replace = 'IDS_BRAVE_EMPTY_STRING'
 
 [[substitution]]

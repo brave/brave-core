@@ -9,7 +9,7 @@ description = '''Using `chromium_impl::CookieMonster` for this type.
 `CookieMonsterChangeDispatcher` has to use `chromium_impl::CookieMonster`
 because it gets used by the Chromium implementation of `CookieMonster`.
 '''
-re_pattern = '\bCookieMonster\b'
+token = 'CookieMonster'
 replace = 'chromium_impl::CookieMonster'
 count = 4
 

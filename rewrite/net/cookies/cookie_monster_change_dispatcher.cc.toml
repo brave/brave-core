@@ -5,6 +5,6 @@
 
 [[substitution]]
 description = 'Using `chromium_impl::CookieMonster` as in the header.'
-re_pattern = '\bCookieMonster\b'
+token = 'CookieMonster'
 replace = 'chromium_impl::CookieMonster'
 

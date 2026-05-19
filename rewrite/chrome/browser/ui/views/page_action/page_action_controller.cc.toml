@@ -34,5 +34,5 @@ be instantiated on its own, as it is made an abstract class by another plaster.
 This substitution corrects the resolution, so we instantiate
 `page_actions::PageActionModel` with the parent namespace.
 '''
-re_pattern = '\bPageActionModel\b'
+token = 'PageActionModel'
 replace = '::page_actions::PageActionModel'

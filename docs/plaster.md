@@ -25,29 +25,32 @@ place, as well as audit as patch files.
 Plaster files are placed under `rewrite/`, using a `.toml` extension, and they
 are supposed to match the path for the file being plastered.
 
-> [!WARNING]
-> At the moment, only plaster files to sources in Chromium's `src` repo are
-> supported.
+> [!WARNING] At the moment, only plaster files to sources in Chromium's `src`
+> repo are supported.
 
 Each plaster file will be used to apply changes into a given source, and then
 generate a patch for the effected changes.
 
 For example, imagine you want to add changes to
-`chrome/browser/autocomplete/autocomplete_classifier_factory.cc`. You would
-care about the following files.
+`chrome/browser/autocomplete/autocomplete_classifier_factory.cc`. You would care
+about the following files.
 
- * **Plaster file:** `brave/rewrite/chrome/browser/autocomplete/autocomplete_classifier_factory.cc.toml`
- * **Source file:** `chrome/browser/autocomplete/autocomplete_classifier_factory.cc`
- * **Patch file** `brave/patches/chrome-browser-autocomplete-autocomplete_classifier_factory.cc.patch`
+- **Plaster file:**
+  `brave/rewrite/chrome/browser/autocomplete/autocomplete_classifier_factory.cc.toml`
+- **Source file:**
+  `chrome/browser/autocomplete/autocomplete_classifier_factory.cc`
+- **Patch file**
+  `brave/patches/chrome-browser-autocomplete-autocomplete_classifier_factory.cc.patch`
 
 ### Creating a plaster file
 
-A plaster file is a `toml` file used to list regexes operations to be applied
-in the corresponding source, based on its path. The following is plaster file
-to apply a few changes to
+A plaster file is a `toml` file used to list regexes operations to be applied in
+the corresponding source, based on its path. The following is plaster file to
+apply a few changes to
 `chrome/browser/autocomplete/autocomplete_classifier_factory.cc`.
 
 Creating the source file with `vscode`:
+
 ```sh
 code rewrite/chrome/browser/autocomplete/autocomplete_classifier_factory.cc.toml
 ```
@@ -57,7 +60,7 @@ adds a header to the list of headers in the source. The second one replaces all
 occurrences of `ChromeAutocompleteSchemeClassifier` with
 `BraveAutocompleteSchemeClassifier`.
 
-```toml
+````toml
 # Copyright (c) 2025 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
@@ -70,7 +73,7 @@ replace = '#include "brave/browser/autocomplete/brave_autocomplete_scheme_classi
 
 [[substitution]]
 description = 'Patching in BraveAutocompleteSchemeClassifier'
-pattern = 'ChromeAutocompleteSchemeClassifier'
+token = 'ChromeAutocompleteSchemeClassifier'
 replace = 'BraveAutocompleteSchemeClassifier'
 
 The basic format for a `[[substitution]]` entry is as follow:
@@ -78,13 +81,20 @@ The basic format for a `[[substitution]]` entry is as follow:
 ```toml
 [[substition]]
 description = ''
-# One of either pattern or re_pattern must be specified
+# Exactly one of pattern, re_pattern, or token must be specified.
 pattern = ''  # non-regex pattern (string will be escaped)
 re_pattern = ''  # regex pattern
+token = ''    # single \w+ identifier; matched with \b boundaries
 replace = ''
 re_flags = []  # These are traditional python regex flags.
 count = 1  # use 0 to ignore the match count and replace all
-```
+````
+
+It is preferrable to use `token` when renaming a single identifier (letters,
+digits, underscores only), to avoid adjacent unintended matches (e.g. `FOO`
+should not match with `FOO_VALUE`). It is okay to use `pattern` when you have
+separators on your match, or when you intentionally want to have partial
+matches.
 
 To apply this plaster file, just run `plaster.py`:
 
@@ -129,6 +139,16 @@ index 00000000000..63703e6940b
 
 The produced patch is supposed to be committed in the repository as usual.
 
+You can run `apply` for specific plaster files or patches, as below:
+
+```sh
+# With the plaster file
+tools/cr/plaster.py apply rewrite/net/cookies/cookie_monster.cc.toml
+
+# With the patch
+tools/cr/plaster.py apply rewrite/net/cookies/cookie_monster.cc.toml
+```
+
 ### Checking if files are up-to-date
 
 You can verify if all plaster files are applied, with Chromium sources updated
@@ -142,4 +162,5 @@ This is the equivalent of a dry run of `plaster.py apply`.
 
 ### Best practices
 
-See https://github.com/brave-experiments/brave-core-tools/blob/master/docs/best-practices/plaster.md
+See
+https://github.com/brave-experiments/brave-core-tools/blob/master/docs/best-practices/plaster.md
