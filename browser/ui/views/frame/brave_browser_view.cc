@@ -185,7 +185,11 @@ class BraveBrowserView::BrowserWindowMouseEventHandler
       : browser_view_(browser_view) {
     auto* widget = browser_view_->GetWidget();
     CHECK(widget && widget->GetNativeWindow());
-    monitor_ = views::EventMonitor::CreateWindowMonitor(
+
+    // Use application monitor to get events when browser widget is inactive
+    // while application is active. This can happen in fullscreen and other
+    // overlay widget is focused. (ex, immersive mode on macOS)
+    monitor_ = views::EventMonitor::CreateApplicationMonitor(
         this, widget->GetNativeWindow(), {ui::EventType::kMouseMoved});
   }
 
