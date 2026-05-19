@@ -171,6 +171,13 @@ void SetShieldsMetadata(HostContentSettingsMap* map,
       base::Value(std::move(shields_metadata)));
 }
 
+// Returns a 64-bit persistent hash of |data| (two rounds of PersistentHash).
+uint64_t PersistentHashU64(base::span<const uint8_t> data) {
+  const uint32_t hash = base::PersistentHash(data);
+  return (static_cast<uint64_t>(hash) << 32) |
+         base::PersistentHash(base::byte_span_from_ref(hash));
+}
+
 base::Token CreateStableFarblingToken(const GURL& url) {
   const uint32_t high =
       base::PersistentHash(url.host()) + g_stable_farbling_tokens_seed - 1;
@@ -877,10 +884,9 @@ base::Token GetFarblingToken(HostContentSettingsMap* map,
     return token;
   }
 
-  const uint32_t entropy_hash = base::PersistentHash(additional_entropy);
-  const uint32_t high = token.high() ^ entropy_hash;
-  const uint32_t low =
-      token.low() ^ base::PersistentHash(base::byte_span_from_ref(high));
+  const uint64_t high = token.high() ^ PersistentHashU64(additional_entropy);
+  const uint64_t low =
+      token.low() ^ PersistentHashU64(base::byte_span_from_ref(high));
   return base::Token(high, low);
 }
 
