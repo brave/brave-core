@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_PAGE_ACTIONS_PAGE_ACTION_MODEL_H_
-#define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_PAGE_ACTIONS_PAGE_ACTION_MODEL_H_
+#ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_PAGE_ACTION_PAGE_ACTION_MODEL_H_
+#define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_PAGE_ACTION_PAGE_ACTION_MODEL_H_
 
 #include "ui/gfx/geometry/insets.h"
 
@@ -12,7 +12,7 @@ namespace page_actions {
 class PageActionModel;
 }  // namespace page_actions
 
-#include <chrome/browser/ui/page_actions/page_action_model.h>  // IWYU pragma: export
+#include <chrome/browser/ui/page_action/page_action_model.h>  // IWYU pragma: export
 
 namespace page_actions {
 
@@ -54,4 +54,4 @@ class PageActionModel : public chromium_impl::PageActionModel {
 
 }  // namespace page_actions
 
-#endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_PAGE_ACTIONS_PAGE_ACTION_MODEL_H_
+#endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_PAGE_ACTION_PAGE_ACTION_MODEL_H_

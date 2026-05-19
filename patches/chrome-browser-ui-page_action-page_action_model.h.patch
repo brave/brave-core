@@ -1,8 +1,8 @@
-diff --git a/chrome/browser/ui/page_actions/page_action_model.h b/chrome/browser/ui/page_actions/page_action_model.h
-index 7dacb805a0c88fc8d78095f29550e70375639634..a8bb1e8007b1bf5ed6fc755084cc6e21bae7058e 100644
---- a/chrome/browser/ui/page_actions/page_action_model.h
-+++ b/chrome/browser/ui/page_actions/page_action_model.h
-@@ -118,9 +118,28 @@ class PageActionModelInterface {
+diff --git a/chrome/browser/ui/page_action/page_action_model.h b/chrome/browser/ui/page_action/page_action_model.h
+index bea88558bf05a7ebbd6c3bc13ef3dedcdd5f460a..5df133150275c30339d5805797ec9054960afd07 100644
+--- a/chrome/browser/ui/page_action/page_action_model.h
++++ b/chrome/browser/ui/page_action/page_action_model.h
+@@ -123,9 +123,28 @@ class PageActionModelInterface {
    virtual PageActionColorSource GetColorSource() const = 0;
  
    virtual bool IsEphemeral() const = 0;
@@ -31,7 +31,7 @@ index 7dacb805a0c88fc8d78095f29550e70375639634..a8bb1e8007b1bf5ed6fc755084cc6e21
  class PageActionModel : public PageActionModelInterface {
   public:
    explicit PageActionModel(actions::ActionId action_id,
-@@ -217,6 +236,7 @@ class PageActionModel : public PageActionModelInterface {
+@@ -229,6 +248,7 @@ class PageActionModel : public PageActionModelInterface {
    bool IsEphemeral() const override;
  
   private:
@@ -39,11 +39,11 @@ index 7dacb805a0c88fc8d78095f29550e70375639634..a8bb1e8007b1bf5ed6fc755084cc6e21
    // Identifies which property triggered a NotifyChange call, used for
    // per-property reentrancy checks.
    enum class Property {
-@@ -239,7 +259,12 @@ class PageActionModel : public PageActionModelInterface {
-     kAnchoredMessageActionIcon,
+@@ -252,7 +272,12 @@ class PageActionModel : public PageActionModelInterface {
      kIsAnchoredMessageShowing,
      kAnchoredMessageIcon,
--    kMaxValue = kAnchoredMessageIcon,
+     kAnchoredMessageExpandableContent,
+-    kMaxValue = kAnchoredMessageExpandableContent,
 +    kAlwaysShowLabel,
 +    kOverrideChipColors,
 +    kOverrideHeight,
@@ -53,7 +53,7 @@ index 7dacb805a0c88fc8d78095f29550e70375639634..a8bb1e8007b1bf5ed6fc755084cc6e21
    };
    using PropertySet =
        base::EnumSet<Property, Property::kShowRequested, Property::kMaxValue>;
-@@ -339,6 +364,7 @@ class PageActionModel : public PageActionModelInterface {
+@@ -356,6 +381,7 @@ class PageActionModel : public PageActionModelInterface {
  
    base::ObserverList<PageActionModelObserver> observer_list_;
  };
