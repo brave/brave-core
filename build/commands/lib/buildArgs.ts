@@ -345,7 +345,7 @@ export function getBuildArgs(config: Config) {
     // https://chromium.googlesource.com/chromium/src/+/master/docs/component_build.md
     args.is_component_build = false
 
-    if (!args.is_official_build) {
+    if (!config.isBraveReleaseBuild()) {
       // When building locally iOS needs dSYMs in order for Xcode to map source
       // files correctly since we are using a framework build
       args.enable_dsyms = true
