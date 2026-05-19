@@ -135,13 +135,12 @@ WebGLRenderingContextBase::getSupportedExtensions() {
   if (real_extensions == std::nullopt) {
     return real_extensions;
   }
-  if (AllowFingerprintingForHost(Host())) {
-    return real_extensions;
-  }
 
-  Vector<String> fake_extensions;
-  fake_extensions.push_back(WebGLDebugRendererInfo::ExtensionName());
-  return fake_extensions;
+  auto handler =
+      brave::BraveSessionCache::From(*Host()->GetTopExecutionContext())
+          .GetBraveWebGLFingerprintHandler(real_extensions.value());
+
+  return handler->GetSupportedExtensions();
 }
 
 // If fingerprinting is disallowed and they're asking for information
@@ -149,12 +148,23 @@ WebGLRenderingContextBase::getSupportedExtensions() {
 // them.
 ScriptObject WebGLRenderingContextBase::getExtension(ScriptState* script_state,
                                                      const String& name) {
-  if (!AllowFingerprintingForHost(Host())) {
-    if (name != WebGLDebugRendererInfo::ExtensionName()) {
-      return ScriptObject::CreateNull(v8::Isolate::GetCurrent());
-    }
+  std::optional<Vector<String>> real_extensions =
+      getSupportedExtensions_ChromiumImpl();
+  if (real_extensions == std::nullopt) {
+    return ScriptObject::CreateNull(v8::Isolate::GetCurrent());
   }
-  return getExtension_ChromiumImpl(script_state, name);
+
+  auto handler =
+      brave::BraveSessionCache::From(*Host()->GetTopExecutionContext())
+          .GetBraveWebGLFingerprintHandler(real_extensions.value());
+  // if (handler->IsFarbledExtension(name)) {
+  //   return ScriptObject(v8::Isolate::GetCurrent(),
+  //   v8::Local<v8::Value>(name));
+  // }
+
+  return handler->IsExtensionSupported(name)
+             ? getExtension_ChromiumImpl(script_state, name)
+             : ScriptObject::CreateNull(v8::Isolate::GetCurrent());
 }
 
 }  // namespace blink
