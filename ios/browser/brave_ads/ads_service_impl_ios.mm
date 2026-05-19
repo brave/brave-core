@@ -27,6 +27,8 @@
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "brave/components/brave_ads/core/public/ads_constants.h"
 #include "brave/components/brave_ads/core/public/command_line_switches/command_line_switches_util.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#include "brave/components/ntp_background_images/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "sql/database.h"
 #include "ui/base/page_transition_types.h"
@@ -56,8 +58,10 @@ AdsClientNotifier* AdsServiceImplIOS::GetAdsClientNotifier() {
 }
 
 bool AdsServiceImplIOS::IsIneligibleToStart() const {
-  // iOS has no eligibility gate; the service is never ineligible to start.
-  return false;
+  return !prefs_->GetBoolean(prefs::kOptedInToNotificationAds) &&
+         !prefs_->GetBoolean(prefs::kOptedInToSearchResultAds) &&
+         !prefs_->GetBoolean(ntp_background_images::prefs::
+                                 kNewTabPageShowSponsoredImagesBackgroundImage);
 }
 
 bool AdsServiceImplIOS::IsInitialized() const {

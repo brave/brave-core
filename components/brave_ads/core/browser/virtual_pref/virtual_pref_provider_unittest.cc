@@ -33,6 +33,10 @@ class BraveAdsVirtualPrefProviderTest : public ::testing::Test {
         ntp_background_images::prefs::kNewTabPageSponsoredImagesSurveyPanelist,
         true);
     prefs_.registry()->RegisterBooleanPref(
+        ntp_background_images::prefs::
+            kNewTabPageShowSponsoredImagesBackgroundImage,
+        true);
+    prefs_.registry()->RegisterBooleanPref(
         brave_rewards::prefs::kDisabledByPolicy, false);
     local_state_.registry()->RegisterDictionaryPref(skus::prefs::kSkusState);
 

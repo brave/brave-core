@@ -1,0 +1,38 @@
+caption: Enable Brave Ads
+default: null
+desc: |-
+  Enable or disable Brave Ads in Brave.
+
+  Brave Ads is a privacy-preserving advertising feature in Brave.
+
+            If this policy is set to false, all ad types are disabled and users
+            cannot override this.
+
+            If this policy is set to true or left unset, users retain full
+            control over each ad type individually.
+
+            Changes to this policy take effect after a browser restart.
+example_value: true
+features:
+  can_be_mandatory: true
+  can_be_recommended: false
+  dynamic_refresh: false
+  per_profile: true
+items:
+- caption: Enable Brave Ads
+  value: true
+- caption: Disable Brave Ads
+  value: false
+- caption: Allow the user to decide
+  value: null
+owners:
+- tmancey@brave.com
+- aseren@brave.com
+schema:
+  type: boolean
+supported_on:
+- chrome.*:148-
+- ios:148-
+- android:148-
+tags: []
+type: main

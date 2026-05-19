@@ -24,6 +24,7 @@ source_set("brave_ads") {
     "//base/version_info",
     "//brave/components/brave_ads/core",
     "//brave/components/brave_rewards/core",
+    "//brave/components/ntp_background_images/common",
     "//components/pref_registry",
     "//components/prefs",
     "//components/search_engines",

@@ -62,6 +62,13 @@ bool UserHasOptedInToSurveyPanelist() {
   if (GetProfileBooleanPref(brave_rewards::prefs::kDisabledByPolicy)) {
     return false;
   }
+
+  if (!GetProfileBooleanPref(
+          ntp_background_images::prefs::
+              kNewTabPageShowSponsoredImagesBackgroundImage)) {
+    return false;
+  }
+
   return GetProfileBooleanPref(
       ntp_background_images::prefs::kNewTabPageSponsoredImagesSurveyPanelist);
 }
