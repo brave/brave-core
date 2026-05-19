@@ -263,6 +263,11 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
       profile_prefs);
 #endif
 
+  // Added 2026-05
+  // Migration of social media blocking preferences in
+  // `brave_shields::AdBlockPrefService`, which requires access to local
+  // state and distinguishing between system/regular profiles.
+
   // END_MIGRATE_OBSOLETE_PROFILE_PREFS
 }
 
