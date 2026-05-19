@@ -8,7 +8,7 @@
 #include "base/threading/thread_restrictions.h"
 #include "brave/browser/brave_shields/brave_farbling_service_factory.h"
 #include "brave/components/brave_shields/content/browser/brave_farbling_service.h"
-#include "brave/components/brave_shields/content/browser/brave_shields_test_utils.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_test_utils.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/webcompat/core/common/features.h"
