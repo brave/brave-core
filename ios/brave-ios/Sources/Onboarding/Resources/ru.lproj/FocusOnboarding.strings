@@ -1,3 +1,9 @@
+/* The subtitle of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenDescription" = "Нажмите и удерживайте значок Brave, затем перетащите его в док для быстрого доступа.";
+
+/* The title of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenTitle" = "Добавьте Brave в док";
+
 /* The title of the button that changes the screen to next */
 "focusOnboarding.continueButtonTitle" = "Далее";
 
@@ -5,7 +11,7 @@
 "focusOnboarding.defaultBrowserScreenDescription" = "Установите Brave в качестве браузера по умолчанию сегодня.";
 
 /* The title of the screen that requests user to set Brave as default */
-"focusOnboarding.defaultBrowserScreenTitle" = "Получите блокировку рекламы на каждом сайте, который вы посещаете";
+"focusOnboarding.defaultBrowserScreenTitle" = "Блокируйте рекламу на каждом сайте, который вы посещаете";
 
 /* The title of the button that closes the default browser full screen callout */
 "focusOnboarding.notNowActionButtonTitle" = "Не сейчас";
@@ -25,18 +31,12 @@
 /* The description shown below the toggle for enabling privacy preserving analytics. This uses standard markdown syntax. The Learn More is a link and #p3a-learn-more is a URL fragment */
 "focusOnboarding.p3aToggleDescription" = "Вы можете отказаться в любой момент в Настройках в разделе **Защита и конфиденциальность**. [Подробнее](#p3a-learn-more) о нашем продукте Аналитика, сохраняющая конфиденциальность.";
 
-/* The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The "completely private & anonymous" snippet should be bold in all languages */
-"focusOnboarding.p3aToggleTitle" = "Поделитесь **полностью приватным & анонимным** мнением о продукте.";
+/* The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The "private & anonymous" snippet should be bold in all languages */
+"focusOnboarding.p3aToggleTitle" = "Делитесь **приватной и анонимной** информацией о продукте.";
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "Начать поиск";
 
 /* The title of the button that triggers navigation link to settings */
 "focusOnboarding.systemSettingsButtonTitle" = "Установить по умолчанию";
-
-/* The description of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorDescription" = "Начните потоковое вещание и наслаждайтесь меньшим количеством рекламы & трекеров.";
-
-/* The title of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorTitle" = "Ощутите разницу с Brave";
 

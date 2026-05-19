@@ -1,0 +1,96 @@
+/* A section header title for ads-related settings */
+"adsHeader" = "Oglasi";
+
+/* A title asking if the user already purchased on brave.com */
+"alreadyPurchasedTitle" = "Ste že nakupovali na brave.com?";
+
+/* A section header title for analytics-related settings */
+"analyticsHeader" = "Analitika";
+
+/* A button label to purchase Brave Origin */
+"buyNowButton" = "Kupi zdaj";
+
+/* A note that indicates a feature is enabled */
+"enabledFeatureNote" = "Ta funkcija je omogočena, ker ste se zanjo odločili.";
+
+/* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
+"featuresFooter" = "Brave Origin je različica brskalnika Brave, ki vam omogoča preprosto onemogočanje funkcij, ki ustvarjajo prihodek in sicer podpirajo Brave kot podjetje. Uporabniki Brave Origin bodo še naprej imeli korist od naše vodilne zasebnosti, blokade oglasov in hitrosti (prek Brave Ščitov), kot tudi rednih posodobitev programske opreme, popravkov Chromium in izboljšav varnosti ter zasebnosti. Odklenili bodo tudi možnost onemogočanja funkcij, kot so Brave Leo, Rewards, Denarnica, VPN, Web3 domene in drugo.\n\nPo nakupu bodo uporabniki videli nov nadzorni pult v meniju Nastavitve brskalnika. Obstoječe funkcije – kot tudi katere koli nove funkcije, ki jih bomo izdali v prihodnosti – bi se prikazale tukaj in bi bile privzeto izklopljene.\n\n**Opomba: Brave Origin ne bo onemogočil funkcij brskalnika, ki jih trenutno uporabljate, in ne bo vplival na funkcije Brave Iskanja ali oglase Brave Iskanja.**";
+
+/* A section header title that is shown over a list of Brave specific features */
+"featuresHeader" = "Funkcije";
+
+/* A button label to get a login code for users who purchased on brave.com */
+"getLoginCodeButton" = "Pridobi kodo za prijavo";
+
+/* A toggle label for Brave Leo AI feature */
+"leoAILabel" = "Leo AI";
+
+/* A button title that when triggered will allow a user to link their App Store purchase with Brave Account */
+"linkPurchase" = "Povežite nakup z računom Brave";
+
+/* A toggle label for Brave News feature */
+"newsLabel" = "Novice";
+
+/* A label indicating this is a one-time purchase product */
+"oneTimePurchaseLabel" = "Enkratni nakup";
+
+/* A description of Brave Origin displayed on the paywall screen. This text contains Markdown formatting, the stars represent markdown and the same paragraphs should be also be bolded when translated. */
+"paywallDescription" = "**Prilagodite svoj brskalnik in hkrati še naprej podpirajte Brave**\n\nBrave Origin je plačljiva različica brskalnika za uporabnike, ki ne potrebujejo vseh funkcij, ki podpirajo Brave kot podjetje, a si še vedno želijo zasebnosti, ki jo ponuja samo Brave. Uporabniki Brave Origin bodo še naprej imeli korist od naše vodilne zasebnosti, blokade oglasov in hitrosti (prek Brave Ščitov), kot tudi rednih posodobitev programske opreme, popravkov Chromium in izboljšav varnosti ter zasebnosti. Odklenili bodo tudi možnost onemogočanja funkcij, kot so AI, Rewards, Denarnica, VPN, Web3 domene in drugo.\n\n**Brave Origin je na voljo z enkratnim nakupom. Na mobilnih napravah (Android in iOS) in namizju lahko Origin kupite kot nadgradnjo obstoječe različice.** Na namizju je Origin na voljo tudi kot ločena, samostojna aplikacija. Ne glede na to, ali je kupljen kot nadgradnja ali kot ločena aplikacija, bodo uporabniki Origin videli nov nadzorni pult v meniju Nastavitve. Obstoječe funkcije – kot tudi katere koli nove funkcije, ki jih bomo izdali v prihodnosti – bi se prikazale tukaj in bi bile privzeto izklopljene.*\n\n* Upoštevajte, da če ste Origin kupili kot nadgradnjo obstoječe različice Brave, Origin ne bo onemogočil funkcij brskalnika, ki jih trenutno uporabljate. Tako za nadgradnjo kot za samostojno različico Origin ne bo vplival na funkcije Brave Iskanja ali oglase Brave Iskanja.";
+
+/* A toggle label for Brave Playlist feature */
+"playlistLabel" = "Seznam predvajanja";
+
+/* A toggle label for privacy preserving analytics feature */
+"privacyPreservingAnalyticsLabel" = "Analitika, ki ohranja zasebnost";
+
+/* A title asking if the user has a promo code */
+"promoCodeTitle" = "Imate promocijsko kodo?";
+
+/* An error message displayed when a purchase fails */
+"purchaseErrorMessage" = "Nakupa ni mogoče dokončati. Prosimo, poskusite znova ali preverite svoje podatke o plačilu pri Apple in poskusite znova.";
+
+/* The footer shown below the Purchase section of the settings page */
+"purchaseSectionFooter" = "Povežite nakup v App Store s svojim računom Brave, da uporabljate Brave Origin v drugih napravah";
+
+/* The header shown below the Purchase section of the settings page */
+"purchaseSectionHeader" = "Nakup";
+
+/* A button label to redeem a promo code */
+"redeemPromoCodeButton" = "Unovči promocijsko kodo";
+
+/* A button label to reset all Origin settings to their default values */
+"resetToDefaultsButton" = "Ponastavitev na privzete nastavitve";
+
+/* A button label to restore previous purchases */
+"restoreButton" = "Obnovi";
+
+/* A toggle label for Brave Rewards feature */
+"rewardsLabel" = "Nagrade";
+
+/* A toggle label for statistics reporting feature */
+"statisticsReportingLabel" = "Poročanje o statističnih podatkih";
+
+/* A toggle label for Brave Talk feature */
+"talkLabel" = "Govor";
+
+/* An upsell point about maintaining core features like adblock, privacy, and speed */
+"upsellCoreFeatures" = "Ohranite osnovni adblocker, zasebnost in hitrost";
+
+/* An upsell point about minimal browser UI */
+"upsellMinimalUI" = "Minimalni uporabniški vmesnik brskalnika, osredotočen na ščite";
+
+/* An upsell point about the one-time purchase model */
+"upsellOneTimePurchase" = "Enkratni nakup, brez dodatnih stroškov naročnine";
+
+/* An upsell point about supporting Brave's mission and open-source work */
+"upsellSupportMission" = "Podprite naše poslanstvo & odprtokodno delo";
+
+/* A button title that when triggered will allow a user to view their App Store receipt */
+"viewAppStoreReceipt" = "Prikaži potrdilo App Store";
+
+/* A toggle label for Brave VPN feature */
+"vpnLabel" = "VPN";
+
+/* A toggle label for Brave Wallet feature */
+"walletLabel" = "Denarnica";
+

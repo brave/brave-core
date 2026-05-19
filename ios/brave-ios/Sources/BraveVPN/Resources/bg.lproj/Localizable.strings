@@ -158,7 +158,7 @@
 "vpn.paywallYearlyPriceDividend" = "година";
 
 /* Text to show user when their vpn plan has expired */
-"vpn.planExpired" = "Изтекло";
+"vpn.planExpired" = "Изтекъл";
 
 /* Description of vpn tunnel protocol */
 "vpn.protocolPickerDescription" = "Моля, избери предпочитания си транспортен протокол. След като превключиш, съществуващите ти данни за VPN ще се изчистят и ще се свържеш отново, ако има установена VPN връзка.";

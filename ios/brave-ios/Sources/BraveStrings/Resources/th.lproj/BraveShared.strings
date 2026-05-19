@@ -16,11 +16,17 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "เพิ่มบุ๊กมาร์ก";
 
+/* Add a new item to the current list */
+"addButtonTitle" = "เพิ่ม";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "เพิ่มไปยังรายการโปรด";
 
 /* Cell title for add folder action */
 "AddFolderActionCellTitle" = "โฟลเดอร์ใหม่";
+
+/* Settings item that opens instructions for adding Brave to the iOS dock. */
+"addToDockSettingsCell" = "เพิ่มไปยัง Dock";
 
 /* Add to favorites share action. */
 "AddToFavorites" = "เพิ่มไปยังรายการโปรด";
@@ -69,6 +75,42 @@
 
 /* Settings autofill section title */
 "Autofill" = "ป้อนอัตโนมัติ";
+
+/* Label for account when indicating that a domain has multiple accounts */
+"autofill.managePassword.multipleAccounts" = "บัญชี";
+
+/* Alert message warning the user that deleting non-synced passwords will permanently remove them */
+"autofill.managePasswords.deleteCredentialConfirmMessage" = "การดำเนินการนี้จะลบรหัสผ่านที่บันทึกไว้สำหรับ %@ ออกจากซิงค์เชนและอุปกรณ์ของคุณ";
+
+/* Prompt title when deleting passwords */
+"autofill.managePasswords.deleteCredentialsAlertTitle" = "คุณแน่ใจหรือไม่";
+
+/* Label for the button used to delete the current login. */
+"autofill.managePasswords.deleteManagePasswordButtonTitle" = "ลบ";
+
+/* Title for the section header in the Manage Passwords list screen, that lists the saved sites */
+"autofill.managePasswords.headerTitle" = "บันทึกแล้ว";
+
+/* The message displayed on the manage passwords list screen, when there's at least one password, explain the feature */
+"autofill.managePasswords.instructions" = "สร้าง บันทึก และจัดการรหัสผ่านของคุณเพื่อลงชื่อเข้าใช้ไซต์และแอปได้อย่างง่ายดาย";
+
+/* The header title displayed over the never saved passwords list */
+"autofill.managePasswords.neverSavedListHeaderTitle" = "ไม่เคยบันทึก";
+
+/* Display text for the option to offer to save passwords */
+"autofill.managePasswords.offerToSavePasswords" = "เสนอให้บันทึกรหัสผ่าน";
+
+/* Prompt that is diplayed in the search bar of the Manage Passwords list screen */
+"autofill.managePasswords.searchWebsitesPrompt" = "ค้นหาเว็บไซต์";
+
+/* Title for navigation bar of the Manage Passwords screen */
+"autofill.managePasswords.title" = "จัดการรหัสผ่าน";
+
+/* Text to show when the origin of a managed password is not available */
+"autofill.managePasswords.UnknownDomainText" = "ไม่รู้จัก";
+
+/* Settings autofill section title */
+"autofill.settings.title" = "ป้อนอัตโนมัติ";
 
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "เปลี่ยนเส้นทางหน้า AMP อัตโนมัติ";
@@ -3141,6 +3183,12 @@
 
 /* No comment provided by engineer. */
 "tabs.settings.privateTabsSettingsTitle" = "แท็บส่วนตัว";
+
+/* The description of the toggle for users to allow the browser to remember its last browsing mode so it can re-launch in that mode when Keep Private Tabs is enabled. */
+"tabs.settings.rememberBrowsingModeDescription" = "หากเบราว์เซอร์อยู่ในโหมดส่วนตัวเมื่อปิดครั้งล่าสุด จะเปิดในโหมดส่วนตัวเมื่อเปิดใช้งานใหม่";
+
+/* Toggle to launch the browser in private mode when Keep Private Tabs is enabled */
+"tabs.settings.rememberBrowsingModeTitle" = "จดจำโหมดการท่องเว็บ";
 
 /* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
 "TabToolbarAccessibilityLabel" = "แถบเครื่องมือการนำทาง";

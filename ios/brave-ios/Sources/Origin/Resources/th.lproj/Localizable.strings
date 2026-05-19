@@ -14,7 +14,7 @@
 "enabledFeatureNote" = "คุณลักษณะนี้ถูกเปิดใช้งานเนื่องจากคุณได้เลือกที่จะใช้งาน";
 
 /* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
-"featuresFooter" = "Brave Origin เป็นเวอร์ชันของเบราว์เซอร์ Brave ที่อนุญาตให้คุณปิดใช้งานคุณสมบัติที่สร้างรายได้ซึ่งมิฉะนั้นจะสนับสนุน Brave ในฐานะธุรกิจ ผู้ใช้ Brave Origin จะได้รับประโยชน์ต่อไปจากความเป็นส่วนตัวที่นำอุตสาหกรรม การปิดกั้นโฆษณา และความเร็ว (ผ่าน Brave Shields) ตลอดจนการอัปเดตซอฟต์แวร์ทั่วไป แพตช์ Chromium และการปรับปรุงด้านความปลอดภัยและความเป็นส่วนตัว พวกเขายังสามารถปลดล็อคตัวเลือกเพื่อปิดใช้งานคุณสมบัติเช่น Brave Leo รางวัล วอลเล็ท VPN โดเมน Web3 และอื่นๆ\n\nเมื่อสิ้นสุดการซื้อ ผู้ใช้จะเห็นแผงควบคุมใหม่ในเมนู Settings ของเบราว์เซอร์ คุณสมบัติที่มีอยู่ ตลอดจนคุณสมบัติใหม่ที่เราจัดส่งในอนาคต จะปรากฏที่นี่ และจะถูกตั้งให้ปิดใช้งานโดยค่าเริ่มต้น\n\n**หมายเหตุ: Brave Origin จะไม่ปิดใช้งานคุณสมบัติของเบราว์เซอร์ที่คุณใช้อยู่ในปัจจุบัน และจะไม่ส่งผลกระทบต่อคุณสมบัติของ Brave Search หรือโฆษณา Brave Search";
+"featuresFooter" = "Brave Origin คือเวอร์ชันหนึ่งของเบราว์เซอร์ Brave ที่ช่วยให้คุณปิดใช้งานคุณสมบัติที่สร้างรายได้ซึ่งสนับสนุน Brave ในฐานะธุรกิจได้อย่างง่ายดาย ผู้ใช้ Brave Origin จะยังคงได้รับประโยชน์จากความเป็นส่วนตัวที่นำอุตสาหกรรม การปิดกั้นโฆษณา และความเร็ว (ผ่าน Brave Shields) ตลอดจนการอัปเดตซอฟต์แวร์ทั่วไป แพตช์ Chromium และการปรับปรุงด้านความปลอดภัยและความเป็นส่วนตัว พวกเขายังสามารถปลดล็อกตัวเลือกเพื่อปิดใช้งานคุณสมบัติ เช่น Brave Leo, รางวัล, วอลเล็ท, VPN, โดเมน Web3 และอื่นๆ\n\nเมื่อซื้อแล้ว ผู้ใช้จะเห็นแผงควบคุมใหม่ในเมนูการตั้งค่าของเบราว์เซอร์ คุณสมบัติที่มีอยู่ ตลอดจนคุณสมบัติใหม่ที่เราจะเปิดตัวในอนาคต จะปรากฏที่นี่ และจะถูกตั้งให้ปิดใช้งานโดยค่าเริ่มต้น\n\n**หมายเหตุ: Brave Origin จะไม่ปิดใช้งานคุณสมบัติของเบราว์เซอร์ที่คุณใช้อยู่ในปัจจุบัน และจะไม่ส่งผลกระทบต่อคุณสมบัติของ Brave Search หรือโฆษณาใน Brave Search**";
 
 /* A section header title that is shown over a list of Brave specific features */
 "featuresHeader" = "ฟีเจอร์";
@@ -25,6 +25,9 @@
 /* A toggle label for Brave Leo AI feature */
 "leoAILabel" = "Leo AI";
 
+/* A button title that when triggered will allow a user to link their App Store purchase with Brave Account */
+"linkPurchase" = "ลิงก์การซื้อกับบัญชี Brave ของคุณ";
+
 /* A toggle label for Brave News feature */
 "newsLabel" = "ข่าวสาร";
 
@@ -32,7 +35,7 @@
 "oneTimePurchaseLabel" = "การซื้อครั้งเดียว";
 
 /* A description of Brave Origin displayed on the paywall screen. This text contains Markdown formatting, the stars represent markdown and the same paragraphs should be also be bolded when translated. */
-"paywallDescription" = "**ปรับแต่งเบราว์เซอร์ของคุณและยังคงสนับสนุน Brave**\n\nBrave Origin เป็นเวอร์ชันเบราว์เซอร์แบบชำระเงินสำหรับผู้ใช้ที่ไม่ต้องการคุณสมบัติทั้งหมดที่สนับสนุน Brave ในฐานะธุรกิจ แต่ยังต้องการความเป็นส่วนตัวที่เพียงแค่ Brave เท่านั้นที่มี ผู้ใช้ Brave Origin จะได้รับประโยชน์ต่อไปจากความเป็นส่วนตัวที่นำอุตสาหกรรม การปิดกั้นโฆษณา และความเร็ว (ผ่าน Brave Shields) ตลอดจนการอัปเดตซอฟต์แวร์ทั่วไป แพตช์ Chromium และการปรับปรุงด้านความปลอดภัยและความเป็นส่วนตัว พวกเขายังสามารถปลดล็อคตัวเลือกเพื่อปิดใช้งานคุณสมบัติเช่น AI รางวัล วอลเล็ท VPN โดเมน Web3 และอื่นๆ\n\n**Brave Origin พร้อมให้บริการผ่านการซื้อครั้งเดียว บนอุปกรณ์เคลื่อนที่ (Android และ iOS) และเดสก์ทอป Origin สามารถซื้อได้เป็นอัพเกรดสำหรับเวอร์ชันปล่อยตัวที่มีอยู่ของคุณ** บนเดสก์ทอป Origin ยังมีให้บริการเป็นแอปแยกต่างหาก ไม่ว่าจะซื้อเป็นอัพเกรดหรือแอปแยกต่างหาก ผู้ใช้ Origin จะเห็นแผงควบคุมใหม่ในเมนู Settings คุณสมบัติที่มีอยู่ ตลอดจนคุณสมบัติใหม่ที่เราจัดส่งในอนาคต จะปรากฏที่นี่ และจะถูกตั้งให้ปิดใช้งานโดยค่าเริ่มต้น*\n\n* โปรดทราบว่าหากคุณซื้อ Origin เป็นอัพเกรดสำหรับเวอร์ชัน Brave ที่มีอยู่ของคุณ Origin จะไม่ปิดใช้งานคุณสมบัติของเบราว์เซอร์ที่คุณใช้อยู่ในปัจจุบัน สำหรับการอัพเกรดและเวอร์ชันแยกต่างหาก Origin จะไม่ส่งผลกระทบต่อคุณสมบัติของ Brave Search หรือโฆษณา Brave Search";
+"paywallDescription" = "**ปรับแต่งเบราว์เซอร์ของคุณในขณะที่ยังคงสนับสนุน Brave**\n\nBrave Origin คือเวอร์ชันที่ต้องชำระเงินของเบราว์เซอร์สำหรับผู้ใช้ที่ไม่ต้องการคุณสมบัติทั้งหมดที่สนับสนุน Brave ในฐานะธุรกิจ แต่ยังคงต้องการความเป็นส่วนตัวที่มีเพียง Brave เท่านั้นที่นำเสนอ ผู้ใช้ Brave Origin จะยังคงได้รับประโยชน์จากความเป็นส่วนตัวที่นำอุตสาหกรรม การปิดกั้นโฆษณา และความเร็ว (ผ่าน Brave Shields) ตลอดจนการอัปเดตซอฟต์แวร์ทั่วไป แพตช์ Chromium และการปรับปรุงด้านความปลอดภัยและความเป็นส่วนตัว พวกเขายังสามารถปลดล็อกตัวเลือกเพื่อปิดใช้งานคุณสมบัติ เช่น AI, รางวัล, วอลเล็ท, VPN, โดเมน Web3 และอื่นๆ\n\n**Brave Origin มีให้บริการผ่านการซื้อแบบครั้งเดียว บนมือถือ (Android และ iOS) และเดสก์ท็อป Origin สามารถซื้อเป็นการอัปเกรดจากเวอร์ชันที่คุณใช้อยู่ในปัจจุบันได้** บนเดสก์ท็อป Origin ยังมีให้บริการเป็นแอปแบบสแตนด์อโลนแยกต่างหากอีกด้วย ไม่ว่าจะซื้อเป็นการอัปเกรดหรือเป็นแอปแยกต่างหาก ผู้ใช้ Origin จะเห็นแผงควบคุมใหม่ในเมนูการตั้งค่า คุณสมบัติที่มีอยู่ ตลอดจนคุณสมบัติใหม่ที่เราจะเปิดตัวในอนาคต จะปรากฏที่นี่ และจะถูกตั้งให้ปิดใช้งานโดยค่าเริ่มต้น*\n\n* โปรดทราบว่าหากคุณซื้อ Origin เป็นการอัปเกรดจากเวอร์ชัน Brave ที่คุณใช้อยู่ Origin จะไม่ปิดใช้งานคุณสมบัติของเบราว์เซอร์ที่คุณใช้อยู่ในปัจจุบัน ทั้งสำหรับเวอร์ชันอัปเกรดและเวอร์ชันสแตนด์อโลน Origin จะไม่ส่งผลกระทบต่อคุณสมบัติของ Brave Search หรือโฆษณาใน Brave Search";
 
 /* A toggle label for Brave Playlist feature */
 "playlistLabel" = "เพลย์ลิสต์";
@@ -45,6 +48,12 @@
 
 /* An error message displayed when a purchase fails */
 "purchaseErrorMessage" = "ไม่สามารถดำเนินการสั่งซื้อให้เสร็จสมบูรณ์ได้ โปรดลองอีกครั้ง หรือตรวจสอบรายละเอียดการชำระเงินของคุณบน Apple แล้วลองอีกครั้ง";
+
+/* The footer shown below the Purchase section of the settings page */
+"purchaseSectionFooter" = "ลิงก์การซื้อใน App Store กับบัญชี Brave เพื่อใช้ Brave Origin บนอุปกรณ์อื่นๆ";
+
+/* The header shown below the Purchase section of the settings page */
+"purchaseSectionHeader" = "ซื้อ";
 
 /* A button label to redeem a promo code */
 "redeemPromoCodeButton" = "ใช้โค้ดโปรโมชั่น";
@@ -75,6 +84,9 @@
 
 /* An upsell point about supporting Brave's mission and open-source work */
 "upsellSupportMission" = "สนับสนุนภารกิจของเรา & งานโอเพนซอร์ส";
+
+/* A button title that when triggered will allow a user to view their App Store receipt */
+"viewAppStoreReceipt" = "ดูใบเสร็จ AppStore";
 
 /* A toggle label for Brave VPN feature */
 "vpnLabel" = "VPN";

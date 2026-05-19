@@ -16,11 +16,17 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Додај обележивач";
 
+/* Add a new item to the current list */
+"addButtonTitle" = "Додај";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "Додај у омиљено";
 
 /* Cell title for add folder action */
 "AddFolderActionCellTitle" = "Нови фолдер";
+
+/* Settings item that opens instructions for adding Brave to the iOS dock. */
+"addToDockSettingsCell" = "Додај у Dock";
 
 /* Add to favorites share action. */
 "AddToFavorites" = "Додај у омиљено";
@@ -69,6 +75,42 @@
 
 /* Settings autofill section title */
 "Autofill" = "Аутоматски унос";
+
+/* Label for account when indicating that a domain has multiple accounts */
+"autofill.managePassword.multipleAccounts" = "Налози";
+
+/* Alert message warning the user that deleting non-synced passwords will permanently remove them */
+"autofill.managePasswords.deleteCredentialConfirmMessage" = "Ово ће уклонити сачуване лозинке за %@ из вашег синхронизационог ланца и са вашег уређаја.";
+
+/* Prompt title when deleting passwords */
+"autofill.managePasswords.deleteCredentialsAlertTitle" = "Да ли сте сигурни?";
+
+/* Label for the button used to delete the current login. */
+"autofill.managePasswords.deleteManagePasswordButtonTitle" = "Избриши";
+
+/* Title for the section header in the Manage Passwords list screen, that lists the saved sites */
+"autofill.managePasswords.headerTitle" = "Сачувано";
+
+/* The message displayed on the manage passwords list screen, when there's at least one password, explain the feature */
+"autofill.managePasswords.instructions" = "Креирајте, сачувајте и управљајте својим лозинкама да бисте се лако пријављивали на сајтове и у апликације.";
+
+/* The header title displayed over the never saved passwords list */
+"autofill.managePasswords.neverSavedListHeaderTitle" = "Никад није сачувано";
+
+/* Display text for the option to offer to save passwords */
+"autofill.managePasswords.offerToSavePasswords" = "Понуди чување лозинки";
+
+/* Prompt that is diplayed in the search bar of the Manage Passwords list screen */
+"autofill.managePasswords.searchWebsitesPrompt" = "Претражите веб-сајтове";
+
+/* Title for navigation bar of the Manage Passwords screen */
+"autofill.managePasswords.title" = "Управљајте лозинкама";
+
+/* Text to show when the origin of a managed password is not available */
+"autofill.managePasswords.UnknownDomainText" = "Непознато";
+
+/* Settings autofill section title */
+"autofill.settings.title" = "Аутоматски унос";
 
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "Аутоматски преусмери AMP странице";
@@ -2834,7 +2876,7 @@
 "sync.deleteAccountAlertDescriptionPart2" = "Међутим, неће избрисати податке који се налазе на локалном меморијском простору на тим уређајима.";
 
 /* Title for Alert used action Delete Sync Account. */
-"sync.deleteAccountAlertTitle" = "Избриши налог за синхронизацију";
+"sync.deleteAccountAlertTitle" = "Брисање налога за синхронизацију";
 
 /* Sync Error Description */
 "sync.deprecatedVersionError" = "Изгледа да је овај код креиран на уређају који користи старију верзију Brave-а. Ажурирајте Brave на најновију верзију на другом уређају, а затим креирајте нови код за синхронизацију.";
@@ -3141,6 +3183,12 @@
 
 /* No comment provided by engineer. */
 "tabs.settings.privateTabsSettingsTitle" = "Приватне картице";
+
+/* The description of the toggle for users to allow the browser to remember its last browsing mode so it can re-launch in that mode when Keep Private Tabs is enabled. */
+"tabs.settings.rememberBrowsingModeDescription" = "Ако је прегледач био у режиму приватног прегледања када је последњи пут затворен, отвориће се у том режиму при поновном покретању.";
+
+/* Toggle to launch the browser in private mode when Keep Private Tabs is enabled */
+"tabs.settings.rememberBrowsingModeTitle" = "Запамти режим прегледања";
 
 /* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
 "TabToolbarAccessibilityLabel" = "Алатке за навигацију";

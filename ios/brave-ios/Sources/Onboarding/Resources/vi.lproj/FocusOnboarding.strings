@@ -1,3 +1,9 @@
+/* The subtitle of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenDescription" = "Chạm và giữ biểu tượng Brave, sau đó kéo nó vào dock để truy cập nhanh.";
+
+/* The title of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenTitle" = "Thêm Brave vào Dock của bạn";
+
 /* The title of the button that changes the screen to next */
 "focusOnboarding.continueButtonTitle" = "Tiếp tục";
 
@@ -25,18 +31,12 @@
 /* The description shown below the toggle for enabling privacy preserving analytics. This uses standard markdown syntax. The Learn More is a link and #p3a-learn-more is a URL fragment */
 "focusOnboarding.p3aToggleDescription" = "Bạn có thể chọn không tham gia bất cứ lúc nào trong phần Cài đặt của **Lá chắn và Quyền riêng tư**. [Tìm hiểu thêm](#p3a-learn-more) về Phân tích Sản phẩm bảo vệ quyền riêng tư.";
 
-/* The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The "completely private & anonymous" snippet should be bold in all languages */
-"focusOnboarding.p3aToggleTitle" = "Chia sẻ thông tin chuyên sâu về sản phẩm **hoàn toàn riêng tư & ẩn danh**.";
+/* The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The "private & anonymous" snippet should be bold in all languages */
+"focusOnboarding.p3aToggleTitle" = "Chia sẻ thông tin chi tiết về sản phẩm **riêng tư & ẩn danh**.";
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "Bắt đầu duyệt";
 
 /* The title of the button that triggers navigation link to settings */
 "focusOnboarding.systemSettingsButtonTitle" = "Đặt làm mặc định";
-
-/* The description of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorDescription" = "Tận hưởng nội dung trực tuyến với ít quảng cáo & trình theo dõi hơn.";
-
-/* The title of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorTitle" = "Sự khác biệt mang tên Brave";
 

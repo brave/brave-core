@@ -811,6 +811,9 @@
 /* A title of a button which will a new view to display the error. */
 "wallet.failedTransactionViewErrorButtonTitle" = "ดูข้อผิดพลาด";
 
+/* The title above the featured networks in onboarding network selection screen. */
+"wallet.featured" = "ฟีเจอร์";
+
 /* A description of an Filecoin account, displayed in Accounts tab. */
 "wallet.filAccountDescription" = "Filecoin";
 
@@ -899,7 +902,7 @@
 "wallet.highToLowSortOption" = "สูงไปต่ำ";
 
 /* A title above a text field that is used to enter a password */
-"wallet.importAccountOriginPasswordTitle" = "รหัสผ่านเดิม";
+"wallet.importAccountOriginPasswordTitle" = "รหัสผ่านสำหรับ Origin";
 
 /* A placeholder on a text box for entering the users private key/json data to import accounts */
 "wallet.importAccountPlaceholder" = "ป้อน วาง หรือนำเข้าไฟล์สตริงคีย์ส่วนตัวหรือ JSON";
@@ -1204,6 +1207,15 @@
 /* The title of the button in the last step for user to create a new wallet. This will direct users to the wallet portfolio screen. */
 "wallet.onboardingCompletedButtonTitle" = "ไปที่พอร์ตโฟลิโอของฉัน";
 
+/* The title of the continue button in onboarding network selection screen. '%lld' refers to a number (for example "Continue with 8 Networks") */
+"wallet.onboardingNetworkSelectionContinue" = "ดำเนินการต่อด้วย %lld เครือข่าย";
+
+/* The description of the view during wallet onboarding that allows user to select which networks they want to see. */
+"wallet.onboardingNetworkSelectionDescription" = "เลือกบล็อกเชนที่จะใช้ในวอลเล็ทของคุณ";
+
+/* The title of the view during wallet onboarding that allows user to select which networks they want to see. */
+"wallet.onboardingNetworkSelectionTitle" = "เครือข่ายที่รองรับ";
+
 /* The subtitle of the last step of creating a new wallet. */
 "wallet.onbordingCompletedSubTitle" = "Brave Wallet ของคุณพร้อมใช้งานแล้ว";
 
@@ -1248,6 +1260,9 @@
 
 /* A title above a text field for inputting the per-gas tip limit in Gwei */
 "wallet.perGasTipLimit" = "วงเงินทิปต่อค่าแก๊ส (Gwei)";
+
+/* The title above the popular networks in onboarding network selection screen. */
+"wallet.popular" = "ยอดนิยม";
 
 /* The title of the empty state in Portfolio when no assets are shown. */
 "wallet.portfolioEmptyStateDescription" = "ฝากหรือซื้อโทเค็นเพื่อเริ่มต้น ถ้าคุณไม่เห็นโทเค็นจากบัญชีที่นำเข้า ให้ตรวจสอบตัวกรองและการตั้งค่าการแสดงผล อาจต้องเพิ่มโทเค็นที่ไม่รู้จักเป็นสินทรัพย์ที่กำหนดเอง";
@@ -1585,6 +1600,9 @@
 /* A button title that will make a private key visible on the screen */
 "wallet.showPrivateKeyButtonTitle" = "แสดงคีย์ส่วนตัว";
 
+/* The title beside the toggle in onboarding network selection screen that shows test networks. */
+"wallet.showTestnets" = "แสดงเครือข่ายทดสอบ";
+
 /* The title of a button that updates the filter to show tokens with zero balances. */
 "wallet.showZeroBalances" = "แสดงที่มียอดคงเหลือเป็นศูนย์";
 
@@ -1605,6 +1623,12 @@
 
 /* A title of the view shown over a dapps website that requests the user sign a message. */
 "wallet.signatureRequestTitle" = "ขอลายเซ็นแล้ว";
+
+/* The label displayed in details for Sign Cardano Transaction Request details panel beside/above the Address index. */
+"wallet.signCardanoTxRequestDetailsAddressLabel" = "แอดเดรส";
+
+/* The label displayed in details for Sign Cardano Transaction Request details panel beside/above the Token index. */
+"wallet.signCardanoTxRequestDetailsTokenLabel" = "Token";
 
 /* A description explains signed transaction will be sent to network by dapps and awaits confirmation. */
 "wallet.signedTransactionDescription" = "การทำธุรกรรมที่เซ็นแล้วและจะถูกส่งไปยังเครือข่ายโดย DApps และกำลังรอการยืนยัน";
@@ -1926,6 +1950,9 @@
 
 /* The title of the view shown over a dapps website that requests the user change the current network. */
 "wallet.switchNetworkTitle" = "สลับเครือข่าย";
+
+/* The title above the testnets in onboarding network selection screen. */
+"wallet.testnets" = "เครือข่ายทดสอบ";
 
 /* A label appended after a certain dollar or percent change. Example: 'Up 1.4% Today' */
 "wallet.today" = "วันนี้";
