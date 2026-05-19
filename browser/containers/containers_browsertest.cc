@@ -273,6 +273,17 @@ class ContainersBrowserTest : public InProcessBrowserTest {
            base::IsDirectoryEmpty(storage_path);
   }
 
+  content::WebContents* OpenUrlInContainerTab(const GURL& url,
+                                              const std::string& container_id) {
+    NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
+    params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+    params.storage_partition_config = content::StoragePartitionConfig::Create(
+        browser()->profile(), kContainersStoragePartitionDomain, container_id,
+        browser()->profile()->IsOffTheRecord());
+    ui_test_utils::NavigateToURL(&params);
+    return browser()->tab_strip_model()->GetActiveWebContents();
+  }
+
  protected:
   base::test::ScopedFeatureList feature_list_;
   net::EmbeddedTestServer https_server_;
@@ -1814,42 +1825,39 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
-                       WebsiteFarblingDiffersBetweenContainers) {
+                       WebsiteFarblingRespectsContainerPartitions) {
   const GURL url("https://a.test/simple.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
-  NavigateParams params_a(browser(), url, ui::PAGE_TRANSITION_LINK);
-  params_a.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
-  params_a.storage_partition_config = content::StoragePartitionConfig::Create(
-      browser()->profile(), kContainersStoragePartitionDomain, "farbling-a",
-      browser()->profile()->IsOffTheRecord());
-  ui_test_utils::NavigateToURL(&params_a);
+  auto get_farbled_navigator_plugins = [](content::WebContents* web_contents) {
+    return content::EvalJs(web_contents, kFarblingPluginsStringScript)
+        .ExtractString();
+  };
 
-  content::WebContents* web_contents_a =
-      browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(web_contents_a);
-  ASSERT_TRUE(content::WaitForLoadStop(web_contents_a));
-  const std::string plugins_a =
-      content::EvalJs(web_contents_a, kFarblingPluginsStringScript)
-          .ExtractString();
+  const std::string plugins_default = get_farbled_navigator_plugins(
+      browser()->tab_strip_model()->GetActiveWebContents());
 
-  NavigateParams params_b(browser(), url, ui::PAGE_TRANSITION_LINK);
-  params_b.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
-  params_b.storage_partition_config = content::StoragePartitionConfig::Create(
-      browser()->profile(), kContainersStoragePartitionDomain, "farbling-b",
-      browser()->profile()->IsOffTheRecord());
-  ui_test_utils::NavigateToURL(&params_b);
+  const std::string plugins_container_a_tab1 =
+      get_farbled_navigator_plugins(OpenUrlInContainerTab(url, "farbling-a"));
+  const std::string plugins_container_b =
+      get_farbled_navigator_plugins(OpenUrlInContainerTab(url, "farbling-b"));
+  const std::string plugins_container_a_tab2 =
+      get_farbled_navigator_plugins(OpenUrlInContainerTab(url, "farbling-a"));
 
-  content::WebContents* web_contents_b =
-      browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(web_contents_b);
-  ASSERT_TRUE(content::WaitForLoadStop(web_contents_b));
-  const std::string plugins_b =
-      content::EvalJs(web_contents_b, kFarblingPluginsStringScript)
-          .ExtractString();
+  EXPECT_FALSE(plugins_default.empty());
+  EXPECT_FALSE(plugins_container_a_tab1.empty());
+  EXPECT_FALSE(plugins_container_b.empty());
+  EXPECT_FALSE(plugins_container_a_tab2.empty());
 
-  EXPECT_FALSE(plugins_a.empty());
-  EXPECT_FALSE(plugins_b.empty());
-  EXPECT_NE(plugins_a, plugins_b);
+  // Default partition vs container partitions.
+  EXPECT_NE(plugins_default, plugins_container_a_tab1);
+  EXPECT_NE(plugins_default, plugins_container_b);
+
+  // Different container ids.
+  EXPECT_NE(plugins_container_a_tab1, plugins_container_b);
+
+  // Same container id across separate tabs.
+  EXPECT_EQ(plugins_container_a_tab1, plugins_container_a_tab2);
 }
 
 // Test suite to verify behavior when containers feature is disabled after
