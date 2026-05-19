@@ -1,0 +1,34 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//ios/web/public/js_messaging/optimize_ts.gni")
+
+static_library("cosmetic_filtering") {
+  sources = [
+    "cosmetic_filtering_javascript_feature.h",
+    "cosmetic_filtering_javascript_feature.mm",
+  ]
+  deps = [
+    ":cosmetic_filtering_js",
+    "//base",
+    "//components/prefs",
+    "//ios/chrome/browser/shared/model/profile",
+    "//ios/web/public",
+    "//ios/web/public/js_messaging",
+    "//url",
+  ]
+  public_deps = [
+    "//base",
+    "//ios/web/public/js_messaging",
+  ]
+}
+
+optimize_ts("cosmetic_filtering_js") {
+  visibility = [ ":cosmetic_filtering" ]
+
+  sources = [ "resources/cosmetic_filtering.ts" ]
+
+  deps = [ "//ios/web/public/js_messaging:util_scripts" ]
+}
