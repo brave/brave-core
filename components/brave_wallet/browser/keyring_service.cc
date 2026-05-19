@@ -1283,7 +1283,7 @@ void KeyringService::CreateKeyrings(const KeyringSeed& keyring_seed) {
   }
   if (IsKeyringEnabled(KeyringId::kPolkadotTestnet)) {
     auto polkadot_seed =
-        base::span(keyring_seed.seed).first<kPolkadotSeedSize>();
+        base::span(keyring_seed.polkadot_seed).first<kPolkadotSeedSize>();
     polkadot_testnet_keyring_ = std::make_unique<PolkadotKeyring>(
         polkadot_seed, KeyringId::kPolkadotTestnet, is_address_allowed);
   }
