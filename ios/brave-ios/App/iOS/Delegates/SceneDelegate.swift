@@ -739,8 +739,11 @@ extension SceneDelegate {
       {
         // Restore the scene from the User-Info WindowID
         windowId = windowUUID
-        isPrivate = windowInfo.isPrivate
-        privateBrowsingManager.isPrivateBrowsing = windowInfo.isPrivate
+        let isPrivateFromActivity = windowInfo.isPrivate
+        isPrivate =
+          isPrivateFromActivity
+          || self.shouldLaunchInPrivateMode(windowId: windowUUID)
+        privateBrowsingManager.isPrivateBrowsing = isPrivate
         urlToOpen = windowInfo.openURL
 
         // Create a new session window if it does not already exist
