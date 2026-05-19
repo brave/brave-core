@@ -196,6 +196,11 @@ class Terminal:
         spawning editors, pagers, or anything else that needs to take
         over the tty. The returned `CompletedProcess.stdout` /
         `.stderr` are `None` in that case (nothing is captured).
+
+        `env` follows the same semantics as `subprocess.run`: `None` inherits
+        the parent's environment, a dict fully replaces it. If you want to
+        add a few keys on top of `os.environ`, copy it first
+        (`env={**os.environ, ...}`).
         """
         # Convert all arguments to strings, to avoid issues with `PurePath`
         # being passed arguments
@@ -258,7 +263,10 @@ class Terminal:
 
         return result
 
-    def run_git(self, *cmd, no_trim=False) -> str:
+    def run_git(self,
+                *cmd,
+                no_trim=False,
+                env: dict[str, str] | None = None) -> str:
         """Runs a git command with the arguments provided.
 
     This function returns a proper utf8 string in success, otherwise it allows
@@ -268,13 +276,14 @@ class Terminal:
         *cmd: The command to run, with any arguments.
         no_trim: If True, the output will not be trimmed. This is usually rare
         but preferred when producing the contents of a file.
+        env: Optional environment variables to be forwarded to `terminal.run`.
     e.g:
         self.run_git('add', '-u', '*.patch')
     """
         cmd = ['git'] + list(cmd)
         if no_trim:
-            return self.run(cmd).stdout
-        return self.run(cmd).stdout.strip()
+            return self.run(cmd, env=env).stdout
+        return self.run(cmd, env=env).stdout.strip()
 
     def log_task(self, message):
         """Logs a task to the console using common decorators

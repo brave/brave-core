@@ -255,8 +255,9 @@ class RepositoryTest(unittest.TestCase):
                               return_value='abcd123 msg') as mock_run_git:
             repository.chromium.git_commit_fixup('deadbeef')
 
-        self.assertIn(unittest.mock.call('commit', '--fixup', 'deadbeef'),
-                      mock_run_git.mock_calls)
+        self.assertIn(
+            unittest.mock.call('commit', '--fixup', 'deadbeef', env=None),
+            mock_run_git.mock_calls)
 
     def test_git_commit_no_verify(self):
         """Test git_commit passes --no-verify when no_verify=True."""
@@ -269,8 +270,33 @@ class RepositoryTest(unittest.TestCase):
                                            no_verify=True)
 
         self.assertIn(
-            unittest.mock.call('commit', '-m', 'Commit with no verify',
-                               '--no-verify'), mock_run_git.mock_calls)
+            unittest.mock.call('commit',
+                               '-m',
+                               'Commit with no verify',
+                               '--no-verify',
+                               env=None), mock_run_git.mock_calls)
+
+    def test_git_commit_env_plumbed_to_run_git(self):
+        """Test git_commit forwards `env` down to run_git."""
+        with patch.object(Repository, 'has_staged_changes',
+                          return_value=True), patch.object(
+                              Repository,
+                              'run_git',
+                              return_value='abcd123 msg') as mock_run_git:
+            repository.chromium.git_commit('Toolchain bump',
+                                           env={
+                                               'tags': 'toolchain',
+                                               'culprit': 'deadbeef',
+                                           })
+
+        self.assertIn(
+            unittest.mock.call('commit',
+                               '-m',
+                               'Toolchain bump',
+                               env={
+                                   'tags': 'toolchain',
+                                   'culprit': 'deadbeef',
+                               }), mock_run_git.mock_calls)
 
     def test_is_valid_git_reference(self):
         """Test is_valid_git_reference using the chromium repository."""

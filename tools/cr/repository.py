@@ -120,7 +120,10 @@ class Repository:
         """
         return Path(p).resolve().relative_to(self.root.resolve())
 
-    def run_git(self, *cmd, no_trim=False) -> str:
+    def run_git(self,
+                *cmd,
+                no_trim=False,
+                env: dict[str, str] | None = None) -> str:
         """Runs a git command on this repository.
 
         Strongly preferred over calling `terminal.run_git` directly because
@@ -131,11 +134,19 @@ class Repository:
         resolved against the repo root, not against the caller's cwd. If a
         command needs paths relative to cwd, call `terminal.run_git` directly
         instead.
+
+        `env` is forwarded to `terminal.run_git`, which merges it on top of
+        `os.environ` for this invocation (useful for the commit-msg hook's
+        `tags` / `culprit` vars).
         """
         if self.root == Path('.'):
-            return terminal.run_git(*cmd, no_trim=no_trim)
+            return terminal.run_git(*cmd, no_trim=no_trim, env=env)
 
-        return terminal.run_git('-C', self.from_brave(), *cmd, no_trim=no_trim)
+        return terminal.run_git('-C',
+                                self.from_brave(),
+                                *cmd,
+                                no_trim=no_trim,
+                                env=env)
 
     def unstage_all_changes(self):
         """Unstages all changes in the repository.
@@ -154,8 +165,10 @@ class Repository:
 
     def _git_commit_internal(self,
                              args: list[str],
+                             *,
                              allows_empty: bool,
-                             no_verify: bool = False):
+                             no_verify: bool = False,
+                             env: dict[str, str] | None = None):
         """Shared implementation for git commit operations.
 
         Args:
@@ -165,6 +178,9 @@ class Repository:
             Whether to allow empty commits.
         no_verify:
             Whether to skip pre-commit and commit-msg hooks.
+        env:
+            Optional environment variables to be forwarded to
+            `terminal.run_git`.
         """
         has_staged_changes = self.has_staged_changes()
         if not allows_empty and not has_staged_changes:
@@ -180,7 +196,7 @@ class Repository:
             args.append('--allow-empty')
         if no_verify:
             args.append('--no-verify')
-        self.run_git('commit', *args)
+        self.run_git('commit', *args, env=env)
 
         commit = self.run_git('log', '-1', '--pretty=oneline',
                               '--abbrev-commit')
@@ -188,8 +204,10 @@ class Repository:
 
     def git_commit(self,
                    message: str,
+                   *,
                    allows_empty: bool = False,
-                   no_verify: bool = False):
+                   no_verify: bool = False,
+                   env: dict[str, str] | None = None):
         """Commits the current staged changes.
 
     This function calls `git commit` and prints a user friendly message as a
@@ -203,10 +221,15 @@ class Repository:
             Whether to allow empty commits.
         no_verify:
             Whether to skip pre-commit and commit-msg hooks.
+        env:
+            Optional environment variables to be forwarded to `terminal.run`.
         """
-        self._git_commit_internal(['-m', message], allows_empty, no_verify)
+        self._git_commit_internal(['-m', message],
+                                  allows_empty=allows_empty,
+                                  no_verify=no_verify,
+                                  env=env)
 
-    def git_commit_fixup(self, commit: str, allows_empty: bool = False):
+    def git_commit_fixup(self, commit: str, *, allows_empty: bool = False):
         """Commits the current staged changes as a fixup for a given commit.
 
     This function calls `git commit --fixup` and prints a user friendly message
@@ -219,7 +242,8 @@ class Repository:
         allows_empty:
             Whether to allow empty commits.
         """
-        self._git_commit_internal(['--fixup', commit], allows_empty)
+        self._git_commit_internal(['--fixup', commit],
+                                  allows_empty=allows_empty)
 
     def is_valid_git_reference(self, reference: str) -> bool:
         """Checks if a name is a valid git branch name or hash.
