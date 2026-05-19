@@ -53,7 +53,7 @@ class QuickViewToolbarModel {
     self.secondaryTopButton = secondaryTopButton
     self.onActionButton = onActionButton
   }
-  
+
   func updateShieldingState(_ isEnabled: Bool) {
     isShieldDisabled = !isEnabled
   }

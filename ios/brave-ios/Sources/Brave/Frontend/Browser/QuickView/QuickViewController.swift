@@ -17,7 +17,8 @@ import WebKit
 class QuickViewController: UIViewController {
   private let url: URL
   private var currentTab: (any TabState)?
-  private let profile: any Profile
+  private var profileController: BraveProfileController
+  private var profile: any Profile { profileController.profile }
   private let toolbarViewModel: QuickViewToolbarModel
   private lazy var toolbarHostingController = UIHostingController(
     rootView: QuickViewToolbarView(viewModel: toolbarViewModel)
@@ -26,12 +27,12 @@ class QuickViewController: UIViewController {
 
   init(
     url: URL,
-    profile: any Profile,
+    profileController: BraveProfileController,
     onOpenInNewTab: ((URLRequest) -> Void)?
   ) {
     self.url = url
     self.toolbarViewModel = QuickViewToolbarModel(url: url)
-    self.profile = profile
+    self.profileController = profileController
     self.onOpenInNewTab = onOpenInNewTab
     super.init(nibName: nil, bundle: nil)
     modalPresentationStyle = .fullScreen
@@ -52,26 +53,19 @@ class QuickViewController: UIViewController {
     let tab = TabStateFactory.create(
       with: .init(profile: profile, initialConfiguration: initialConfiguration)
     )
-    tab.createWebView()
     tab.addObserver(toolbarViewModel)
+    tab.addObserver(self)
+    tab.createWebView()
     tab.delegate = self
-    let braveShieldsTabHelper: BraveShieldsTabHelper = .init(
-      tab: tab,
-      braveShieldsSettings: BraveShieldsSettingsServiceFactory.get(profile: tab.profile)
-    )
-    tab.braveShieldsHelper = braveShieldsTabHelper
-    tab.addPolicyDecider(braveShieldsTabHelper)
     tab.webViewProxy?.scrollView?.layer.masksToBounds = true
     tab.isVisible = true
     self.currentTab = tab
 
-    guard let currentTab = currentTab else {
-      return
-    }
+    updateViewModel()
 
     setupUI()
 
-    currentTab.loadRequest(URLRequest(url: url))
+    currentTab?.loadRequest(URLRequest(url: url))
   }
 
   private func updateViewModel() {
@@ -259,12 +253,11 @@ extension QuickViewController: TabObserver {
       tab.readerMode = .init(tab: tab)
     } else {
       // content blocker
-      if let contentBlocker = tab.contentBlocker {
-        tab.browserData?.addContentScript(
-          contentBlocker,
-          name: ContentBlockerHelper.scriptName,
-          contentWorld: ContentBlockerHelper.scriptSandbox
-        )
+      if let detachedTabPrivacyHelper = DetachedTabPrivacyHelper(
+        tab: tab,
+        profileController: profileController
+      ) {
+        tab.data.detachedPrivacyHelper = detachedTabPrivacyHelper
       }
     }
   }
