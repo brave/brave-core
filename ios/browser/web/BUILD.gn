@@ -29,6 +29,7 @@ source_set("web") {
     "//brave/ios/browser/brave_ads",
     "//brave/ios/browser/brave_search",
     "//brave/ios/browser/brave_shields",
+    "//brave/ios/browser/brave_shields/cosmetic_filtering",
     "//brave/ios/browser/component_updater:zxcvbn_data_component_installer",
     "//brave/ios/browser/global_privacy_control",
     "//brave/ios/browser/skus",
