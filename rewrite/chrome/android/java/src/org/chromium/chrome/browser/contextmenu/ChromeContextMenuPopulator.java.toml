@@ -1,0 +1,28 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[[substitution]]
+description = 'Register COPY_CLEAN_LINK at the end of the Action @IntDef list'
+re_pattern = '(@IntDef\(\{[^}]*Action\..+?),?(\n\s*\}\))'
+re_flags = ['DOTALL']
+replace = '''\1,
+            Action.COPY_CLEAN_LINK,\2'''
+
+[[substitution]]
+description = '''Define COPY_CLEAN_LINK at the end of @interface Action
+
+Notice that the value for `COPY_CLEAN_LINK` is being whatever was the value for
+`NUM_ENTRIES`, which allows us to take over the end of the list.
+'''
+re_pattern = '(@interface Action \{.+?;\n)(\s+)int NUM_ENTRIES = (\d+);'
+re_flags = ['DOTALL']
+replace = '''\1\2int COPY_CLEAN_LINK = \3;
+\2int NUM_ENTRIES = COPY_CLEAN_LINK + 1;'''
+
+[[substitution]]
+description = 'Append the COPY_CLEAN_LINK list item after COPY_LINK_ADDRESS'
+pattern = 'linkGroup.add(createListItem(Item.COPY_LINK_ADDRESS));'
+replace = '''linkGroup.add(createListItem(Item.COPY_LINK_ADDRESS));
+                linkGroup.add(createListItem(Item.COPY_CLEAN_LINK));'''
