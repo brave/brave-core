@@ -127,12 +127,14 @@ extension ContentBlockerHelper: TabContentScript {
 
           // Ensure we check that the stats we're tracking is still for the same page
           // Some web pages (like youtube) like to rewrite their main frame urls
-          // so we check the source etld+1 agains the tab url etld+1
+          // so we check the source etld+1 against the tab url etld+1
           // For subframes which may use different etld+1 than the main frame (example `reddit.com` and `redditmedia.com`)
           // We simply check the known subframeURLs on this page.
-          guard
-            self.tab?.visibleURL?.baseDomain == sourceURL.baseDomain
-              || self.tab?.currentPageData?.allSubframeURLs.contains(sourceURL) == true
+          let subframeBaseDomains = (tab.currentPageData?.allSubframeURLs ?? [])
+            .compactMap(\.baseDomain)
+          guard let sourceURLBaseDomain = sourceURL.baseDomain,
+            tab.visibleURL?.baseDomain == sourceURLBaseDomain
+              || subframeBaseDomains.contains(sourceURLBaseDomain) == true
           else {
             return
           }
