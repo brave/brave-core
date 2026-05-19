@@ -2805,9 +2805,7 @@ bool KeyringService::CanHideAccount(const mojom::AccountId& account_id) const {
     return false;
   }
 
-  if (account_it == derived_accounts.begin() &&
-      account_id.coin == mojom::CoinType::ETH &&
-      account_id.keyring_id == mojom::KeyringId::kDefault) {
+  if (account_it == derived_accounts.begin()) {
     return false;
   }
 
@@ -3796,18 +3794,22 @@ void KeyringService::MaybeFixAccountSelection() {
     SetSelectedAccountInternal(*account_infos[0]);
   }
 
-  if (!unique_keys.contains(GetSelectedDappAccountFromPrefs(
-          profile_prefs_, mojom::CoinType::ETH))) {
-    // ETH dApp account appears to be removed. Forcedly clear ETH dApp account
-    // selection.
-    SetSelectedDappAccountInternal(mojom::CoinType::ETH, {});
-  }
+  for (auto coin : GetEnabledCoins()) {
+    if (!CoinSupportsDapps(coin)) {
+      continue;
+    }
 
-  if (!unique_keys.contains(GetSelectedDappAccountFromPrefs(
-          profile_prefs_, mojom::CoinType::SOL))) {
-    // SOL dApp account appears to be removed. Forcedly clear SOL dApp account
-    // selection.
-    SetSelectedDappAccountInternal(mojom::CoinType::SOL, {});
+    if (!unique_keys.contains(
+            GetSelectedDappAccountFromPrefs(profile_prefs_, coin))) {
+      auto first_account_for_coin =
+          std::ranges::find_if(account_infos, [&](const auto& account_info) {
+            return account_info->account_id->coin == coin;
+          });
+      SetSelectedDappAccountInternal(
+          coin, first_account_for_coin == account_infos.end()
+                    ? nullptr
+                    : (*first_account_for_coin)->Clone());
+    }
   }
 }
 

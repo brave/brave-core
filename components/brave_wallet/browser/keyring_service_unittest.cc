@@ -3096,11 +3096,19 @@ TEST_F(KeyringServiceUnitTest, HiddenAccounts) {
                                    mojom::KeyringId::kDefault, "Account 2");
   ASSERT_TRUE(second_account);
   observer.WaitAndVerify();
+  EXPECT_CALL(observer, AccountsChanged());
+  auto second_sol_account =
+      AddAccount(&service, mojom::CoinType::SOL, mojom::KeyringId::kSolana,
+                 "Solana Account 2");
+  ASSERT_TRUE(second_sol_account);
+  observer.WaitAndVerify();
 
   auto second_account_id = second_account->account_id.Clone();
+  auto second_sol_account_id = second_sol_account->account_id.Clone();
   EXPECT_FALSE(service.CanHideAccount(*first_account_id));
   EXPECT_TRUE(service.CanHideAccount(*second_account_id));
-  EXPECT_TRUE(service.CanHideAccount(*first_sol_account_id));
+  EXPECT_FALSE(service.CanHideAccount(*first_sol_account_id));
+  EXPECT_TRUE(service.CanHideAccount(*second_sol_account_id));
 
   // Test case: The first account for default ETH keyring cannot be hidden.
   {
@@ -3115,43 +3123,23 @@ TEST_F(KeyringServiceUnitTest, HiddenAccounts) {
     EXPECT_TRUE(hidden_accounts.empty());
   }
 
-  // Test case: The first account for non-default-ETH keyrings can be hidden.
+  // Test case: The first account for non-default-ETH keyrings cannot be hidden.
   {
-    EXPECT_CALL(observer, AccountsChanged());
-    EXPECT_TRUE(AddHiddenAccount(&service, first_sol_account_id.Clone()));
+    EXPECT_CALL(observer, AccountsChanged()).Times(0);
+    EXPECT_FALSE(AddHiddenAccount(&service, first_sol_account_id.Clone()));
     observer.WaitAndVerify();
 
-    EXPECT_THAT(GetHiddenAccounts(&service),
-                ElementsAre(first_sol_account_id->unique_key));
-
-    EXPECT_CALL(observer, AccountsChanged());
-    std::vector<mojom::AccountIdPtr> account_ids_to_restore;
-    account_ids_to_restore.push_back(first_sol_account_id.Clone());
-    EXPECT_TRUE(
-        RemoveHiddenAccounts(&service, std::move(account_ids_to_restore)));
-    observer.WaitAndVerify();
     EXPECT_TRUE(GetHiddenAccounts(&service).empty());
   }
 
   // Test case: Hide a non-first derived account.
   {
-    EXPECT_TRUE(SetSelectedAccount(&service, second_account_id));
-    const auto selected_account_before_hide =
-        service.GetSelectedWalletAccount();
-    ASSERT_TRUE(selected_account_before_hide);
-    EXPECT_EQ(second_account_id->unique_key,
-              selected_account_before_hide->account_id->unique_key);
-
     EXPECT_CALL(observer, AccountsChanged());
     EXPECT_TRUE(AddHiddenAccount(&service, second_account_id.Clone()));
     observer.WaitAndVerify();
 
     const auto hidden_accounts = GetHiddenAccounts(&service);
     EXPECT_THAT(hidden_accounts, ElementsAre(second_account_id->unique_key));
-    const auto selected_account_after_hide = service.GetSelectedWalletAccount();
-    ASSERT_TRUE(selected_account_after_hide);
-    EXPECT_EQ(first_account_id->unique_key,
-              selected_account_after_hide->account_id->unique_key);
     EXPECT_FALSE(std::ranges::any_of(
         service.GetAllAccountsSync()->accounts, [&](const auto& account_info) {
           return account_info->account_id->unique_key ==
@@ -3248,7 +3236,7 @@ TEST_F(KeyringServiceUnitTest, HiddenAccounts) {
     observer.WaitAndVerify();
 
     EXPECT_CALL(observer, AccountsChanged());
-    EXPECT_TRUE(AddHiddenAccount(&service, first_sol_account_id.Clone()));
+    EXPECT_TRUE(AddHiddenAccount(&service, second_sol_account_id.Clone()));
     observer.WaitAndVerify();
 
     const auto hidden_accounts = GetHiddenAccounts(&service);
@@ -3259,17 +3247,117 @@ TEST_F(KeyringServiceUnitTest, HiddenAccounts) {
         }));
     EXPECT_TRUE(
         std::ranges::any_of(hidden_accounts, [&](const auto& unique_key) {
-          return unique_key == first_sol_account_id->unique_key;
+          return unique_key == second_sol_account_id->unique_key;
         }));
 
     std::vector<mojom::AccountIdPtr> account_ids_to_restore;
     account_ids_to_restore.push_back(second_account_id.Clone());
-    account_ids_to_restore.push_back(first_sol_account_id.Clone());
+    account_ids_to_restore.push_back(second_sol_account_id.Clone());
     EXPECT_CALL(observer, AccountsChanged());
     EXPECT_TRUE(
         RemoveHiddenAccounts(&service, std::move(account_ids_to_restore)));
     observer.WaitAndVerify();
     EXPECT_TRUE(GetHiddenAccounts(&service).empty());
+  }
+}
+
+TEST_F(KeyringServiceUnitTest, HiddenAccounts_AccountSelection) {
+  base::test::ScopedFeatureList feature_list{
+      features::kBraveWalletCardanoFeature};
+
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+  ASSERT_TRUE(CreateWallet(&service, "brave"));
+
+  auto first_account_id = GetAccountUtils(&service).EthAccountId(0);
+  auto first_sol_account = GetAccountUtils(&service).EnsureSolAccount(0);
+  ASSERT_TRUE(first_sol_account);
+  auto first_sol_account_id = first_sol_account->account_id.Clone();
+  auto first_ada_account = GetAccountUtils(&service).EnsureAdaAccount(0);
+  ASSERT_TRUE(first_ada_account);
+  auto first_ada_account_id = first_ada_account->account_id.Clone();
+  auto second_sol_account =
+      AddAccount(&service, mojom::CoinType::SOL, mojom::KeyringId::kSolana,
+                 "Solana Account 2");
+  ASSERT_TRUE(second_sol_account);
+  auto second_sol_account_id = second_sol_account->account_id.Clone();
+  auto second_ada_account =
+      AddAccount(&service, mojom::CoinType::ADA,
+                 mojom::KeyringId::kCardanoMainnet, "Cardano Account 2");
+  ASSERT_TRUE(second_ada_account);
+  auto second_ada_account_id = second_ada_account->account_id.Clone();
+
+  auto second_account = AddAccount(&service, mojom::CoinType::ETH,
+                                   mojom::KeyringId::kDefault, "Account 2");
+  ASSERT_TRUE(second_account);
+  auto second_account_id = second_account->account_id.Clone();
+
+  // Test case: Selected ADA dapp account falls back to first visible account.
+  {
+    NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
+
+    ASSERT_TRUE(service.GetSelectedCardanoDappAccount());
+    EXPECT_EQ(second_ada_account_id->unique_key,
+              service.GetSelectedCardanoDappAccount()->account_id->unique_key);
+
+    EXPECT_CALL(observer, SelectedWalletAccountChanged(_)).Times(0);
+    EXPECT_CALL(observer, SelectedDappAccountChanged(mojom::CoinType::ETH, _))
+        .Times(0);
+    EXPECT_CALL(observer, SelectedDappAccountChanged(mojom::CoinType::SOL, _))
+        .Times(0);
+    EXPECT_CALL(observer,
+                SelectedDappAccountChanged(mojom::CoinType::ADA,
+                                           Eq(std::ref(first_ada_account))));
+    EXPECT_CALL(observer, AccountsChanged());
+    EXPECT_TRUE(AddHiddenAccount(&service, second_ada_account_id.Clone()));
+    observer.WaitAndVerify();
+
+    ASSERT_TRUE(service.GetSelectedCardanoDappAccount());
+    EXPECT_EQ(first_ada_account_id->unique_key,
+              service.GetSelectedCardanoDappAccount()->account_id->unique_key);
+  }
+
+  // Test case: Selected SOL dapp account falls back to first visible account.
+  {
+    NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
+
+    ASSERT_TRUE(service.GetSelectedSolanaDappAccount());
+    EXPECT_EQ(second_sol_account_id->unique_key,
+              service.GetSelectedSolanaDappAccount()->account_id->unique_key);
+
+    EXPECT_CALL(observer, SelectedWalletAccountChanged(_)).Times(0);
+    EXPECT_CALL(observer, SelectedDappAccountChanged(mojom::CoinType::ETH, _))
+        .Times(0);
+    EXPECT_CALL(observer,
+                SelectedDappAccountChanged(mojom::CoinType::SOL,
+                                           Eq(std::ref(first_sol_account))));
+    EXPECT_CALL(observer, AccountsChanged());
+    EXPECT_TRUE(AddHiddenAccount(&service, second_sol_account_id.Clone()));
+    observer.WaitAndVerify();
+
+    ASSERT_TRUE(service.GetSelectedSolanaDappAccount());
+    EXPECT_EQ(first_sol_account_id->unique_key,
+              service.GetSelectedSolanaDappAccount()->account_id->unique_key);
+  }
+
+  // Test case: Selected wallet account is switched when it becomes hidden.
+  {
+    NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
+
+    ASSERT_TRUE(SetSelectedAccount(&service, second_account_id.Clone()));
+    ASSERT_TRUE(service.GetSelectedWalletAccount());
+    EXPECT_EQ(second_account_id->unique_key,
+              service.GetSelectedWalletAccount()->account_id->unique_key);
+
+    EXPECT_CALL(observer, AccountsChanged());
+    EXPECT_TRUE(AddHiddenAccount(&service, second_account_id.Clone()));
+    observer.WaitAndVerify();
+
+    ASSERT_TRUE(service.GetSelectedWalletAccount());
+    EXPECT_EQ(first_account_id->unique_key,
+              service.GetSelectedWalletAccount()->account_id->unique_key);
+    ASSERT_TRUE(service.GetSelectedEthereumDappAccount());
+    EXPECT_EQ(first_account_id->unique_key,
+              service.GetSelectedEthereumDappAccount()->account_id->unique_key);
   }
 }
 
