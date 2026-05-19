@@ -473,6 +473,30 @@ def CheckPlasterFiles(input_api, output_api):
     ])
 
 
+def CheckJson5ParseErrors(input_api, output_api):
+    """Check that .json5 files parse without syntax errors.
+
+    Upstream `CheckParseErrors` covers `.idl` and `.json` but not `.json5`.
+    `json5.loads` natively accepts `//` and `/* */` comments, trailing
+    commas, and unquoted keys, so no comment-stripping pre-pass is needed.
+    """
+    import json5
+
+    def _is_json5(affected_file):
+        return affected_file.LocalPath().endswith('.json5')
+
+    results = []
+    for affected_file in input_api.AffectedFiles(file_filter=_is_json5,
+                                                 include_deletes=False):
+        try:
+            json5.loads(input_api.ReadFile(affected_file))
+        except ValueError as e:
+            results.append(
+                output_api.PresubmitError(
+                    f'{affected_file.LocalPath()} could not be parsed: {e}'))
+    return results
+
+
 # DON'T ADD NEW BRAVE CHECKS AFTER THIS LINE.
 #
 # This call inlines Chromium checks into current scope from src/PRESUBMIT.py. We
