@@ -1757,9 +1757,12 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     /**
-     * Hides the rewards layout if the toolbar width is less than the minimum tablet width and the
-     * rewards icon should be shown. Uses the same threshold as the existing toolbar button
-     * visibility logic in ToolbarTablet.
+     * Updates the rewards layout visibility on tablet. The layout is shown only when all of the
+     * following are true: the current tab is not incognito, the toolbar width is at least the
+     * minimum tablet width (same threshold as the existing toolbar button visibility logic in
+     * ToolbarTablet), rewards are not disabled by policy, and the native rewards worker is
+     * available and reports rewards as supported. Also updates the shields layout background to
+     * match the resulting rewards layout visibility.
      */
     private void maybeHideRewardsLayout(int width) {
         // Only hide the rewards layout on tablet devices, like it is done in the upstream code.
