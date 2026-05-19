@@ -14,7 +14,7 @@
 "enabledFeatureNote" = "Ciri ini diaktifkan kerana anda bersetuju untuk menggunakannya";
 
 /* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
-"featuresFooter" = "Brave Origin ialah versi pelayar Brave yang membolehkan anda dengan mudah melumpuhkan ciri penjanaan hasil yang menyokong Brave sebagai perniagaan. Pengguna Brave Origin akan terus menikmati privasi terkemuka industri kami, penapisan iklan, dan prestasi pantas (melalui Perisai Brave), serta kemas kini perisian tetap, tampalan Chromium, dan penambahbaikan keselamatan dan privasi. Mereka juga akan membuka pilihan untuk melumpuhkan ciri seperti Brave Leo, Ganjaran, Wallet, VPN, domain Web3, dan banyak lagi.\n\nSetelah dibeli, pengguna akan melihat panel kawalan baharu dalam menu Tetapan pelayar. Ciri sedia ada—serta sebarang ciri baharu yang kami hantar pada masa hadapan—akan muncul di sini, dan akan dilumpuhkan secara lalai.\n\n**Nota: Brave Origin tidak akan melumpuhkan ciri pelayar yang sedang anda gunakan, dan tidak akan menjejaskan ciri Carian Brave atau Iklan Carian Brave.**";
+"featuresFooter" = "Brave Origin ialah versi pelayar Brave yang membolehkan anda menyahaktifkan dengan mudah ciri penjanaan hasil yang sebaliknya menyokong Brave sebagai perniagaan. Pengguna Brave Origin akan terus menikmati privasi terkemuka industri kami, penapisan iklan, dan kelajuan (melalui Perisai Brave), serta kemas kini perisian tetap, tampalan Chromium, dan penambahbaikan keselamatan dan privasi. Mereka juga akan membuka pilihan untuk menyahaktifkan ciri seperti Brave Leo, Rewards, Wallet, VPN, domain Web3 dan banyak lagi.\n\nSetelah dibeli, pengguna akan melihat panel kawalan baharu dalam menu Tetapan pelayar. Ciri sedia ada—serta sebarang ciri baharu yang kami hantar pada masa hadapan—akan muncul di sini, dan akan dilumpuhkan secara lalai.\n\n**Nota: Brave Origin tidak akan menyahaktifkan ciri pelayar yang sedang anda gunakan, dan tidak akan menjejaskan ciri Carian Brave atau Iklan Carian Brave.**";
 
 /* A section header title that is shown over a list of Brave specific features */
 "featuresHeader" = "Ciri";
@@ -25,6 +25,9 @@
 /* A toggle label for Brave Leo AI feature */
 "leoAILabel" = "AI Leo";
 
+/* A button title that when triggered will allow a user to link their App Store purchase with Brave Account */
+"linkPurchase" = "Pautkan Pembelian Ke Akaun Brave Anda";
+
 /* A toggle label for Brave News feature */
 "newsLabel" = "Berita";
 
@@ -32,7 +35,7 @@
 "oneTimePurchaseLabel" = "Pembelian Sekali Sahaja";
 
 /* A description of Brave Origin displayed on the paywall screen. This text contains Markdown formatting, the stars represent markdown and the same paragraphs should be also be bolded when translated. */
-"paywallDescription" = "**Sesuaikan pelayar anda sambil masih menyokong Brave**\n\nBrave Origin ialah versi berbayar pelayar untuk pengguna yang tidak memerlukan semua ciri yang menyokong Brave sebagai perniagaan, tetapi masih menginginkan privasi yang hanya Brave tawarkan. Pengguna Brave Origin akan terus menikmati privasi terkemuka industri kami, penapisan iklan, dan prestasi pantas (melalui Perisai Brave), serta kemas kini perisian tetap, tampalan Chromium, dan penambahbaikan keselamatan dan privasi. Mereka juga akan membuka pilihan untuk melumpuhkan ciri seperti AI, Ganjaran, Wallet, VPN, domain Web3, dan banyak lagi.\n\n**Brave Origin tersedia melalui pembelian sekali sahaja. Pada mudah alih (Android dan iOS) dan desktop, Origin boleh dibeli sebagai peningkatan kepada versi keluaran sedia ada anda.** Pada desktop, Origin juga tersedia sebagai aplikasi berasingan dan mandiri. Sama ada dibeli sebagai peningkatan atau aplikasi berasingan, pengguna Origin akan melihat panel kawalan baharu dalam menu Tetapan. Ciri sedia ada—serta sebarang ciri baharu yang kami hantar pada masa hadapan—akan muncul di sini, dan akan dilumpuhkan secara lalai.*\n\n* Ambil perhatian bahawa jika anda telah membeli Origin sebagai peningkatan kepada versi Brave sedia ada anda, Origin tidak akan melumpuhkan ciri pelayar yang sedang anda gunakan. Untuk kedua-dua versi peningkatan dan mandiri, Origin tidak akan menjejaskan ciri Carian Brave atau Iklan Carian Brave.";
+"paywallDescription" = "**Sesuaikan pelayar anda sambil terus menyokong Brave**\n\nBrave Origin ialah versi berbayar pelayar untuk pengguna yang tidak memerlukan semua ciri yang menyokong Brave sebagai perniagaan, tetapi masih mahukan privasi yang hanya ditawarkan oleh Brave. Pengguna Brave Origin akan terus menikmati privasi terkemuka industri kami, penapisan iklan, dan kelajuan (melalui Perisai Brave), serta kemas kini perisian tetap, tampalan Chromium, dan penambahbaikan keselamatan dan privasi. Mereka juga akan membuka pilihan untuk menyahaktifkan ciri seperti AI, Rewards, Wallet, VPN, domain Web3 dan banyak lagi.\n\n**Brave Origin tersedia melalui pembelian sekali sahaja. Pada mudah alih (Android dan iOS) dan desktop, Origin boleh dibeli sebagai naik taraf kepada versi keluaran sedia ada anda.** Pada desktop, Origin juga tersedia sebagai aplikasi berasingan dan kendiri. Sama ada dibeli sebagai naik taraf atau aplikasi berasingan, pengguna Origin akan melihat panel kawalan baharu dalam menu Tetapan. Ciri sedia ada—serta sebarang ciri baharu yang kami hantar pada masa hadapan—akan muncul di sini, dan akan dilumpuhkan secara lalai.*\n\n* Ambil perhatian bahawa jika anda telah membeli Origin sebagai naik taraf kepada versi Brave sedia ada anda, Origin tidak akan menyahaktifkan ciri pelayar yang sedang anda gunakan. Untuk kedua-dua versi naik taraf dan kendiri, Origin tidak akan menjejaskan ciri Carian Brave atau Iklan Carian Brave.";
 
 /* A toggle label for Brave Playlist feature */
 "playlistLabel" = "Senarai main";
@@ -45,6 +48,12 @@
 
 /* An error message displayed when a purchase fails */
 "purchaseErrorMessage" = "Tidak dapat menghabiskan pembelian. Sila cuba lagi, atau periksa maklumat pembayaran anda di Apple dan cuba lagi.";
+
+/* The footer shown below the Purchase section of the settings page */
+"purchaseSectionFooter" = "Pautkan pembelian App Store anda ke akaun Brave anda untuk menggunakan Brave Origin pada peranti lain";
+
+/* The header shown below the Purchase section of the settings page */
+"purchaseSectionHeader" = "Beli";
 
 /* A button label to redeem a promo code */
 "redeemPromoCodeButton" = "Tebus Kod Promo";
@@ -75,6 +84,9 @@
 
 /* An upsell point about supporting Brave's mission and open-source work */
 "upsellSupportMission" = "Sokong misi & kerja sumber terbuka kami";
+
+/* A button title that when triggered will allow a user to view their App Store receipt */
+"viewAppStoreReceipt" = "Paparkan Resit App Store";
 
 /* A toggle label for Brave VPN feature */
 "vpnLabel" = "VPN";

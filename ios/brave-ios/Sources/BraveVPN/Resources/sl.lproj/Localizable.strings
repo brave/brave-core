@@ -1,0 +1,366 @@
+/* The button text that starts the subscription action */
+"vpn.activateSubscriptionAction" = "aktiviraj";
+
+/* Text for toggle which indicating the toggle action is for selecting region in automatic */
+"vpn.automaticServerSelectionToggleTitle" = "Samodejno";
+
+/* Title on top the list of available servers */
+"vpn.availableServerTitle" = "RAZPOLOŽLJIVI STREŽNIKI";
+
+/* Button text to buy Brave VPN */
+"vpn.buyButton" = "Kupi";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxDevicesProtect" = "Zaščitite 5 naprav z eno naročnino";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxGeoLocation" = "Izberite svojo geografsko lokacijo/državo";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxNoIPLog" = "Brave nikoli ne beleži vaših dejavnosti";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxProtectYourDevices" = "Zaščitite vsako aplikacijo in amp; amp; amp; celotno napravo";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxSaferWifi" = "Varnejše za domači ali javni Wi-Fi";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxSpeedFast" = "Svetlobna hitrost do 100 Mb/s";
+
+/* Text indicating how many cities is used for that country used as Ex: '1 City' */
+"vpn.cityCountTitle" = "%ld Mesto";
+
+/* Text showing the vpn region is connected */
+"vpn.connectedRegionDescription" = "Povezano";
+
+/* App Store Receipt field for customer support contact form. */
+"vpn.contactFormAppStoreReceipt" = "Potrdilo App Store";
+
+/* App Version field for customer support contact form. */
+"vpn.contactFormAppVersion" = "Različica aplikacije";
+
+/* Cellular Carrier field for customer support contact form. */
+"vpn.contactFormCarrier" = "Mobilni operater";
+
+/* Text to tell user to not modify support info below email's body. */
+"vpn.contactFormDoNotEditText" = "Brave vam ne sledi in ne ve, kako uporabljate našo aplikacijo, zato ne vemo, kako ste nastavili VPN. Prosimo, sporočite informacije o težavi, s katero se soočate, in potrudili se bomo, da jo čim prej odpravimo.";
+
+/* Button name to send contact form. */
+"vpn.contactFormEmailNotConfiguredBody" = "E-pošte ni mogoče poslati. Prosimo, preverite nastavitve e-pošte.";
+
+/* Footer for customer support contact form. */
+"vpn.contactFormFooter" = "Prosimo, izberite informacije, ki jih želite deliti z nami.\n\nVeč informacij kot boste na začetku delili z nami, lažje vam bo naše osebje za podporo pomagalo rešiti vašo težavo.";
+
+/* Footer for customer support contact form. */
+"vpn.contactFormFooterSharedWithGuardian" = "Podpora s pomočjo ekipe Guardian.";
+
+/* VPN Hostname field for customer support contact form. */
+"vpn.contactFormHostname" = "Ime gostitelja VPN";
+
+/* Specific issue field for customer support contact form. */
+"vpn.contactFormIssue" = "Težava";
+
+/* Connection problems for contact form issue field. */
+"vpn.contactFormIssueConnectionReliability" = "Težava z zanesljivostjo povezave";
+
+/* Description used for specific issue field for customer support contact form. */
+"vpn.contactFormIssueDescription" = "Prosimo, izberite kategorijo, ki opisuje težavo.";
+
+/* No internet problem for contact form issue field. */
+"vpn.contactFormIssueNoInternet" = "Pri vzpostavljeni povezavi ni interneta";
+
+/* Other problem for contact form issue field. */
+"vpn.contactFormIssueOther" = "Drugo";
+
+/* Other connection problem for contact form issue field. */
+"vpn.contactFormIssueOtherConnectionError" = "Ne morem se povezati z VPN (druga vrsta napake)";
+
+/* Slow connection problem for contact form issue field. */
+"vpn.contactFormIssueSlowConnection" = "Počasna povezava";
+
+/* Website problem for contact form issue field. */
+"vpn.contactFormIssueWebsiteProblems" = "Spletna stran ne deluje";
+
+/* VPN logs field for customer support contact form. */
+"vpn.contactFormLogs" = "Dnevniki napak";
+
+/* Network Type field for customer support contact form. */
+"vpn.contactFormNetworkType" = "Vrsta omrežja";
+
+/* A contact form field that displays platform type: 'iOS' 'Android' or 'Desktop' */
+"vpn.contactFormPlatform" = "Platforma";
+
+/* Button name to send contact form. */
+"vpn.contactFormSendButton" = "Naprej k e-pošti";
+
+/* Subscription Type field for customer support contact form. */
+"vpn.contactFormSubscriptionType" = "Vrsta naročnine";
+
+/* iOS Timezone field for customer support contact form. */
+"vpn.contactFormTimezone" = "Časovni pas iOS";
+
+/* Title for contact form email. */
+"vpn.contactFormTitle" = "Težava z Brave VPN";
+
+/* Button text to enable Brave VPN */
+"vpn.enableButton" = "Omogoči";
+
+/* Used in context: All plans include a 'free 7-day trial'! */
+"vpn.freeTrialDetail" = "Vsi načrti vključujejo";
+
+/* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
+"vpn.freeTrialPeriod" = "brezplačen 7-dnevni preizkus";
+
+/* The button text that starts the trial action */
+"vpn.freeTrialPeriodAction" = "poskusite 7 dni brezplačno";
+
+/* Disclaimer about in app subscription */
+"vpn.iapDisclaimer" = "Vse naročnine se samodejno podaljšajo, vendar jih lahko prekličete pred podaljšanjem.";
+
+/* Text explaining how the VPN works. */
+"vpn.installProfileBody" = "Ta profil omogoča VPN, da samodejno povezuje in varuje promet v vaši napravi ves čas. Ta VPN povezava bo šifrirana in preusmerjena prek inteligentnega požarnega zidu Brave, da blokira potencialno škodljive in invazivne povezave.";
+
+/* Text for 'install vpn profile' button */
+"vpn.installProfileButtonText" = "Namesti VPN profil";
+
+/* No comment provided by engineer. */
+"vpn.installProfileTitle" = "Brave bo zdaj namestil VPN profil.";
+
+/* Popup that shows after user installs the vpn for the first time. */
+"vpn.installSuccessPopup" = "VPN je zdaj omogočen";
+
+/* Title for screen to install the VPN. */
+"vpn.installTitle" = "Namesti VPN";
+
+/* Button text to try free Brave VPN */
+"vpn.learnMore" = "Začni 7-dnevni brezplačni preizkus";
+
+/* Used in context: 'Monthly subscription, (it) renews monthly' */
+"vpn.monthlySubDetail" = "Obnavlja se mesečno";
+
+/* No comment provided by engineer. */
+"vpn.monthlySubTitle" = "Mesečna naročnina";
+
+/* Text indicating how many cities is used for that region used as Ex: '2 Cities' */
+"vpn.multipleCityCountTitle" = "%ld Mest";
+
+/* Text indicating how many server is used for that region used as Ex: '2 Servers' */
+"vpn.multipleServerCountTitle" = "%ld Strežnikov";
+
+/* The text that briefly explains how Brave VPN subscription is going to be charged and managed. */
+"vpn.paywallDisclaimer" = "Naročnine bodo zaračunane prek vašega Apple računa. Vsak morebitni neizkoriščen del brezplačnega preizkusa se ob nakupu naročnine izgubi.\n\nVaša naročnina se bo samodejno obnovila, razen če je preklicana vsaj 24 ur pred koncem trenutnega obdobja.\n\nNaročnine lahko upravljate v nastavitvah.\n\nZ uporabo brskalnika Brave se strinjate s pogoji uporabe in politiko zasebnosti.";
+
+/* The text which will be used to indicate period of payments like 10 / month */
+"vpn.paywallMonthlyPriceDividend" = "mesec";
+
+/* The text which will be used to indicate period of payments like 150 / year */
+"vpn.paywallYearlyPriceDividend" = "leto";
+
+/* Text to show user when their vpn plan has expired */
+"vpn.planExpired" = "Poteklo";
+
+/* Description of vpn tunnel protocol */
+"vpn.protocolPickerDescription" = "Prosimo, izberite svoj prednostni transportni protokol. Ko ga preuredite, bodo izbrisani vaši trenutni VPN poverilnički podatki in boste ponovno povezani, če je VPN povezava trenutno vzpostavljena.";
+
+/* Message for error when we fail to switch tunnel protocol for the user */
+"vpn.protocolPickerErrorMessage" = "Neuspešna zamenjava tunelskega protokola. Prosimo, poskusite pozneje.";
+
+/* Title for error when we fail to switch tunnel protocol for the user */
+"vpn.protocolPickerErrorTitle" = "Napaka strežnika";
+
+/* Title for vpn tunnel protocol screen */
+"vpn.protocolPickerTitle" = "Transportni protokol";
+
+/* Message that we show after successfully changing tunnel protocol. */
+"vpn.protocolSwitchSuccessPopupText" = "VPN tunelski protokol spremenjen.";
+
+/* Description of what automatic server selection does. */
+"vpn.regionPickerAutomaticDescription" = "Regija strežnika, ki je vam najbližja, bo samodejno izbrana glede na vaš časovni pas sistema. To je priporočljivo, da se zagotovijo hitre internetne hitrosti.";
+
+/* Message for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorMessage" = "Zamenjava strežnikov ni uspela. Prosimo, poskusite pozneje.";
+
+/* Title for error when we fail to switch vpn server for the user */
+"vpn.regionPickerErrorTitle" = "Napaka strežnika";
+
+/* Title for vpn region selector screen */
+"vpn.regionPickerTitle" = "Regija strežnika";
+
+/* Message that we show after successfully changing vpn region. */
+"vpn.regionSwitchSuccessPopupText" = "Regija VPN spremenjena.";
+
+/* Yearly tier explaination. Subscription will be renewed annually. */
+"vpn.renewAnnually" = "Obnovi se vsako leto";
+
+/* Monthly tier explaination. Subscription will be renewed monthly. */
+"vpn.renewMonthly" = "Obnavlja se mesečno";
+
+/* Message to show when vpn configuration reset fails. */
+"vpn.resetVPNErrorBody" = "Ponastavke konfiguracije VPN ni mogoče opraviti. Prosimo, poskusite znova. Če se težava nadaljuje, se obrnite na podporo za pomoč.";
+
+/* Title of button to try again when vpn configuration reset fails. */
+"vpn.resetVPNErrorButtonActionTitle" = "Poskusi znova";
+
+/* Title for error message when vpn configuration reset fails. */
+"vpn.resetVPNErrorTitle" = "Ponastavljanje ni uspelo";
+
+/* Message to show when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessBody" = "Konfiguracija VPN je bila uspešno ponastavljena.";
+
+/* Title for success message when vpn configuration reset succeeds. */
+"vpn.resetVPNSuccessTitle" = "Ponastavljanje je uspelo";
+
+/* No comment provided by engineer. */
+"vpn.restorePurchases" = "Obnovi";
+
+/* Use in context: save 16%. */
+"vpn.save" = "varčuj";
+
+/* Title showing which country serves list showing. Ex: 'Brazil Server */
+"vpn.serverNameTitle" = "%@ Strežnik";
+
+/* Text for description of toggle that auto selcets the server according to time zone. */
+"vpn.serverRegionAutoSelectDescription" = "Samodejno izberite regijo strežnika VPN, ki vam je glede na vaš časovni pas najbližja. Ta možnost je priporočljiva za povečanje hitrosti interneta.";
+
+/* Text indicating how many server is used for that region used as Ex: '1 Server' */
+"vpn.serverTitle" = "%ld Strežnik";
+
+/* VPN Banner Description */
+"vpn.settingHeaderBody" = "Zaščitite vsako aplikacijo z Brave VPN. Zaščitite do 10 naprav z enim načrtom.";
+
+/* Button to contact tech support */
+"vpn.settingsContactSupport" = "Obrnite se na tehnično podporo";
+
+/* Error message shown if we failed to retrieve vpn server list. */
+"vpn.settingsFailedToFetchServerList" = "Pridobivanje seznama strežnikov ni uspelo. Prosimo, poskusite pozneje.";
+
+/* Button for FAQ */
+"vpn.settingsFAQ" = "Podpora za VPN";
+
+/* Button to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceipt" = "Povežite nakup z računom Brave";
+
+/* Footer text to link your VPN receipt to other devices. */
+"vpn.settingsLinkReceiptFooter" = "Povežite nakup v App Store s svojim računom Brave, da uporabljate Brave VPN v drugih napravah.";
+
+/* Button to manage your VPN subscription */
+"vpn.settingsManageSubscription" = "Urejanje naročnine";
+
+/* Button to redeem offer code subscription */
+"vpn.settingsRedeemOfferCode" = "Odkupi kodo ponudbe";
+
+/* Button to reset VPN configuration */
+"vpn.settingsResetConfiguration" = "Ponastavi konfiguracijo";
+
+/* Table cell title for vpn's server host */
+"vpn.settingsServerHost" = "Gostitelj";
+
+/* Table cell title for vpn's server location and which open opens location select */
+"vpn.settingsServerLocation" = "Lokacija";
+
+/* Header title for vpn settings server section. */
+"vpn.settingsServerSection" = "Strežnik";
+
+/* Table cell title for cell that shows when the VPN subscription expires. */
+"vpn.settingsSubscriptionExpiration" = "Poteče";
+
+/* Header title for vpn settings subscription section. */
+"vpn.settingsSubscriptionSection" = "Naročnina";
+
+/* Table cell title for status of current VPN subscription. */
+"vpn.settingsSubscriptionStatus" = "Status";
+
+/* Table cell title for vpn's transport protocol and which open opens protocol select */
+"vpn.settingsTransportProtocol" = "Transportni protokol";
+
+/* Button to allow the user to view the App Store receipt. */
+"vpn.settingsViewReceipt" = "Prikaži potrdilo App Store";
+
+/* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
+"vpn.settingsVPNKillSwitchDescription" = "Ko je omogočeno, se bo vaša naprava samodejno odpravila iz interneta, če se VPN povezava nenadoma prekine, da preprečite uhajanje IP naslova in podatkov. [Več informacij](%@)";
+
+/* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
+"vpn.settingsVPNKillSwitchTitle" = "Omogoči Kill Switch";
+
+/* The description of what a Smart Proxy is. Describes the Smart Proxy feature toggle in settings. */
+"vpn.settingsVPNSmartProxyDescription" = "Pametno usmerjevanje proxy zagotavlja, da se promet usmeri prek namenske proxy strežnike, da omogoči dostop do običajno omejene vsebine/spletnih mest ali storitev tretjih oseb. [Več informacij](%@)";
+
+/* Whether the VPN's Smart-Proxy feature is enabled or not */
+"vpn.settingsVPNSmartProxyEnabled" = "Omogoči pametni proxy";
+
+/* Text for necesseray required action of VPN subscription needs a method of payment update */
+"vpn.vpnActionUpdatePaymentMethodSettingsText" = "Posodobi način plačila";
+
+/* Notification title to tell user that the vpn is turned on even in background */
+"vpn.vpnBackgroundNotificationBody" = "Celo v ozadju bo Brave še naprej varovati vam.";
+
+/* Notification title to tell user that the vpn is turned on even in background */
+"vpn.vpnBackgroundNotificationTitle" = "Brave VPN je VKLOPLJEN";
+
+/* Text for description of list item which chooses the optimal server for the country region */
+"vpn.vpnCityRegionOptimalDescription" = "Uporabite najboljši razpoložljivi strežnik";
+
+/* Text for title of list item which chooses the optimal server for the country region */
+"vpn.vpnCityRegionOptimalTitle" = "Optimalno";
+
+/* Message for an alert when the VPN can't be configured. */
+"vpn.vpnConfigGenericErrorBody" = "Težava pri inicializaciji VPN. Prosimo, poskusite znova ali poskusite s ponastavitvijo konfiguracije na strani nastavitev VPN.";
+
+/* Title for an alert when the VPN can't be configured */
+"vpn.vpnConfigGenericErrorTitle" = "Napaka";
+
+/* Title for an alert when the user didn't allow to install VPN profile */
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave VPN zahteva, da je na vaši napravi nameščen profil VPN. ";
+
+/* Title for an alert when the user didn't allow to install VPN profile */
+"vpn.vpnConfigPermissionDeniedErrorTitle" = "Dovoljenje zavrnjeno";
+
+/* Message for error when VPN offer code could not be redeemed. */
+"vpn.vpnErrorOfferCodeFailedBody" = "Kode ponudbe ni mogoče odkupiti. Prosimo, poskusite znova ali preverite podatke kode ponudbe in poskusite znova.";
+
+/* Message for error when VPN could not be purchased. */
+"vpn.vpnErrorPurchaseFailedBody" = "Nakupa ni mogoče dokončati. Prosimo, poskusite znova ali preverite svoje podatke o plačilu pri Apple in poskusite znova.";
+
+/* Title for error when VPN could not be purchased. */
+"vpn.vpnErrorPurchaseFailedTitle" = "Napaka";
+
+/* Disclaimer for user purchasing the VPN plan. */
+"vpn.vpnIAPBoilerPlate" = "Naročnine bodo zaračunane prek vašega iTunes računa.\n\nVsak morebitni neizkoriščen del brezplačnega preizkusa se ob nakupu naročnine izgubi.\n\nVaša naročnina se bo samodejno obnovila, razen če je preklicana vsaj 24 ur pred koncem trenutnega obdobja.\n\nNaročnine lahko upravljate v nastavitvah.\n\nZ uporabo brskalnika Brave se strinjate s pogoji uporabe in politiko zasebnosti.";
+
+/* The title shown on the menu when the VPN connection is disconnected */
+"vpn.vpnOffMenuButtonTitle" = "VPN izključena";
+
+/* The title shown on the menu when the VPN connection is connected */
+"vpn.vpnOnMenuButtonTitle" = "VPN vključena";
+
+/* Title for a button for enabling the Redeem Code flow */
+"vpn.vpnRedeemCodeButtonActionTitle" = "Odkupi kodo";
+
+/* The alert title showing vpn region is changed */
+"vpn.vpnRegionChangedTitle" = "Regija VPN spremenjena";
+
+/* Message for alert to reset vpn configuration */
+"vpn.vpnResetAlertBody" = "To bo ponastavilo vašo konfiguraciju Brave VPN in odpravilo napake. Ta postopek lahko traja minuto.";
+
+/* Title for alert to reset vpn configuration */
+"vpn.vpnResetAlertTitle" = "Ponastavi konfiguracijo";
+
+/* Button name to reset vpn configuration */
+"vpn.vpnResetButton" = "Ponastavi";
+
+/* Name of monthly subscription in VPN Settings */
+"vpn.vpnSettingsMonthlySubName" = "Mesečna naročnina";
+
+/* Name of annual subscription in VPN Settings */
+"vpn.vpnSettingsYearlySubName" = "Letna naročnina";
+
+/* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
+"vpn.yearlySubDetail" = "Letno obnovljivi varčevanje %@";
+
+/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - BEST VALUE' */
+"vpn.yearlySubDisclaimer" = "NAJBOLJŠA VREDNOST";
+
+/* One year length vpn subcription */
+"vpn.yearlySubTitle" = "Eno leto";
+

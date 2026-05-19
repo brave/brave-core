@@ -16,11 +16,17 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Lesezeichen hinzufügen";
 
+/* Add a new item to the current list */
+"addButtonTitle" = "Hinzufügen";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "Zu Favoriten hinzufügen";
 
 /* Cell title for add folder action */
 "AddFolderActionCellTitle" = "Neuer Ordner";
+
+/* Settings item that opens instructions for adding Brave to the iOS dock. */
+"addToDockSettingsCell" = "Zum Dock hinzufügen";
 
 /* Add to favorites share action. */
 "AddToFavorites" = "Zu Favoriten hinzufügen";
@@ -69,6 +75,42 @@
 
 /* Settings autofill section title */
 "Autofill" = "AutoFill";
+
+/* Label for account when indicating that a domain has multiple accounts */
+"autofill.managePassword.multipleAccounts" = "Konten";
+
+/* Alert message warning the user that deleting non-synced passwords will permanently remove them */
+"autofill.managePasswords.deleteCredentialConfirmMessage" = "Dadurch werden die gespeicherten Passwörter für %@ aus Ihrer Synchronisierung der Blockchain und Ihrem Gerät entfernt.";
+
+/* Prompt title when deleting passwords */
+"autofill.managePasswords.deleteCredentialsAlertTitle" = "Bist du sicher?";
+
+/* Label for the button used to delete the current login. */
+"autofill.managePasswords.deleteManagePasswordButtonTitle" = "Löschen";
+
+/* Title for the section header in the Manage Passwords list screen, that lists the saved sites */
+"autofill.managePasswords.headerTitle" = "Gespeichert";
+
+/* The message displayed on the manage passwords list screen, when there's at least one password, explain the feature */
+"autofill.managePasswords.instructions" = "Erstelle, speichere und verwalte deine Passwörter, um dich einfach bei Websites und Apps anzumelden.";
+
+/* The header title displayed over the never saved passwords list */
+"autofill.managePasswords.neverSavedListHeaderTitle" = "Nie speichern für...";
+
+/* Display text for the option to offer to save passwords */
+"autofill.managePasswords.offerToSavePasswords" = "Speichern von Passwörtern anbieten";
+
+/* Prompt that is diplayed in the search bar of the Manage Passwords list screen */
+"autofill.managePasswords.searchWebsitesPrompt" = "Websites durchsuchen";
+
+/* Title for navigation bar of the Manage Passwords screen */
+"autofill.managePasswords.title" = "Passwörter verwalten";
+
+/* Text to show when the origin of a managed password is not available */
+"autofill.managePasswords.UnknownDomainText" = "Unbekannt";
+
+/* Settings autofill section title */
+"autofill.settings.title" = "AutoFill";
 
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "AMP-Seiten automatisch umleiten";
@@ -1133,7 +1175,7 @@
 "OBRewardsDetail" = "Wenn du dich für private Brave Ads entscheidest, werden Publisher und Content Creators unterstützt, wann immer du eine Anzeige öffnen.";
 
 /* Detail text for rewards onboarding screen */
-"OBRewardsDetailInAdRegion" = "Verdiene Token und belohne die Creators für großartige Inhalte, während du surfst.";
+"OBRewardsDetailInAdRegion" = "Verdiene Token und belohne die Erstellenden für großartige Inhalte, während du surfst.";
 
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsPrivacyPolicyDetailLink" = "Datenschutzerklärung";
@@ -1559,7 +1601,7 @@
 "playList.reopenButtonTitle" = "Erneut öffnen";
 
 /* Title for load resources error alert */
-"playList.sorryAlertTitle" = "Entschuldigung";
+"playList.sorryAlertTitle" = "Sorry";
 
 /* The title for the toast that shows up on a page containing a playlist item that was added to playlist */
 "playList.toastAddedToPlaylistTitle" = "In Playlist anzeigen";
@@ -1736,7 +1778,7 @@
 "privacyHub.settingsSlearDataTitle" = "Shields-Daten löschen";
 
 /* This label says shields, as a source of by what a resource was blocked. Think of it in context of 'Blocked by Shields' */
-"privacyHub.shieldsLabel" = "Shields";
+"privacyHub.shieldsLabel" = "Schutz";
 
 /* Text of a callout that tells the user they shields tracking data is disabled. The %@ placeholder will name the setting that needs to be enabled */
 "privacyHub.trackingDisabledCalloutBody" = "Aktiviere %@, um hier Daten anzuzeigen.";
@@ -3141,6 +3183,12 @@
 
 /* No comment provided by engineer. */
 "tabs.settings.privateTabsSettingsTitle" = "Private Registerkarten";
+
+/* The description of the toggle for users to allow the browser to remember its last browsing mode so it can re-launch in that mode when Keep Private Tabs is enabled. */
+"tabs.settings.rememberBrowsingModeDescription" = "Wenn sich der Browser beim letzten Schließen im privaten Modus befand, wird er beim erneuten Start im privaten Modus geöffnet.";
+
+/* Toggle to launch the browser in private mode when Keep Private Tabs is enabled */
+"tabs.settings.rememberBrowsingModeTitle" = "Browsing-Modus merken";
 
 /* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
 "TabToolbarAccessibilityLabel" = "Navigationsleiste";

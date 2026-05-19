@@ -16,11 +16,17 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Yer İşareti Ekle";
 
+/* Add a new item to the current list */
+"addButtonTitle" = "Ekle";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "Sık Kullanılanlara Ekle";
 
 /* Cell title for add folder action */
 "AddFolderActionCellTitle" = "Yeni klasör";
+
+/* Settings item that opens instructions for adding Brave to the iOS dock. */
+"addToDockSettingsCell" = "Dock'a ekle";
 
 /* Add to favorites share action. */
 "AddToFavorites" = "Sık Kullanılanlara Ekle";
@@ -69,6 +75,42 @@
 
 /* Settings autofill section title */
 "Autofill" = "Otomatik doldurma";
+
+/* Label for account when indicating that a domain has multiple accounts */
+"autofill.managePassword.multipleAccounts" = "Hesaplar";
+
+/* Alert message warning the user that deleting non-synced passwords will permanently remove them */
+"autofill.managePasswords.deleteCredentialConfirmMessage" = "Bu işlem, %@ için kaydedilen parolaları senkronizasyon zincirinizden ve cihazınızdan kaldıracaktır.";
+
+/* Prompt title when deleting passwords */
+"autofill.managePasswords.deleteCredentialsAlertTitle" = "Emin misiniz?";
+
+/* Label for the button used to delete the current login. */
+"autofill.managePasswords.deleteManagePasswordButtonTitle" = "Sil";
+
+/* Title for the section header in the Manage Passwords list screen, that lists the saved sites */
+"autofill.managePasswords.headerTitle" = "Kaydedilenler";
+
+/* The message displayed on the manage passwords list screen, when there's at least one password, explain the feature */
+"autofill.managePasswords.instructions" = "Sitelere ve uygulamalara kolayca giriş yapmak için şifrelerinizi oluşturun, kaydedin ve yönetin.";
+
+/* The header title displayed over the never saved passwords list */
+"autofill.managePasswords.neverSavedListHeaderTitle" = "Hiç Kaydedilmeyenler";
+
+/* Display text for the option to offer to save passwords */
+"autofill.managePasswords.offerToSavePasswords" = "Şifreleri kaydetmeyi öner";
+
+/* Prompt that is diplayed in the search bar of the Manage Passwords list screen */
+"autofill.managePasswords.searchWebsitesPrompt" = "Web Sitelerinde Ara";
+
+/* Title for navigation bar of the Manage Passwords screen */
+"autofill.managePasswords.title" = "Şifreleri Yönet";
+
+/* Text to show when the origin of a managed password is not available */
+"autofill.managePasswords.UnknownDomainText" = "Bilinmiyor";
+
+/* Settings autofill section title */
+"autofill.settings.title" = "Otomatik doldurma";
 
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "AMP Sayfalarını Otomatik Yönlendir";
@@ -3141,6 +3183,12 @@
 
 /* No comment provided by engineer. */
 "tabs.settings.privateTabsSettingsTitle" = "Gizli Sekmeler";
+
+/* The description of the toggle for users to allow the browser to remember its last browsing mode so it can re-launch in that mode when Keep Private Tabs is enabled. */
+"tabs.settings.rememberBrowsingModeDescription" = "Tarayıcı son kapatıldığında gizli moddaysa, yeniden başlatıldığında gizli modda açılır.";
+
+/* Toggle to launch the browser in private mode when Keep Private Tabs is enabled */
+"tabs.settings.rememberBrowsingModeTitle" = "Tarama Modunu Hatırla";
 
 /* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
 "TabToolbarAccessibilityLabel" = "Gezinti Araç Çubuğu";

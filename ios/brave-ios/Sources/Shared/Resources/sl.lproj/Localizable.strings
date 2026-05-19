@@ -1,0 +1,132 @@
+/* Toast displayed to user after copy url pressed. */
+"AppMenuCopyURLConfirmMessage" = "Naslov URL kopiran v odložišče";
+
+/* Label for the button, displayed in the menu, used to request the desktop version of the current website. */
+"AppMenuViewDesktopSiteTitleString" = "Zahtevaj namizno spletno mesto";
+
+/* Label for the button, displayed in the menu, used to request the mobile version of the current website. */
+"AppMenuViewMobileSiteTitleString" = "Zahtevaj mobilno spletno mesto";
+
+/* General settings bookmarks last visited folder toggle title */
+"BookmarksLastVisitedFolderTitle" = "Prikaži zadnje obiskane zaznamke";
+
+/* Button confirming the cancellation of the download. */
+"CancelDownloadDialogCancel" = "Prekliči";
+
+/* Alert dialog body when the user taps the cancel download icon. */
+"CancelDownloadDialogMessage" = "Ali ste prepričani, da želite preklicati ta prenos?";
+
+/* Button declining the cancellation of the download. */
+"CancelDownloadDialogResume" = "Nadaljuj";
+
+/* Alert dialog title when the user taps the cancel download icon. */
+"CancelDownloadDialogTitle" = "Prekliči prenos";
+
+/* Cancel button */
+"CancelString" = "Prekliči";
+
+/* The button text in the Button Toast for switching to a fresh New Tab. */
+"ContextMenuButtonToastNewTabOpenedButtonText" = "Zamenjaj";
+
+/* The label text in the Button Toast for switching to a fresh New Tab. */
+"ContextMenuButtonToastNewTabOpenedLabelText" = "Odprt je bil nov zavihek";
+
+/* The label text in the Download Cancelled toast for showing confirmation that the download was cancelled. */
+"DownloadCancelledToastLabelText" = "Prenos je bil preklic";
+
+/* The label text in the Download Failed toast for showing confirmation that the download has failed. */
+"DownloadFailedToastLabelText" = "Prenos ni uspel";
+
+/* The description text in the Download progress toast for showing the number of files (1$) and download progress (2$). This string only consists of two placeholders for purposes of displaying two other strings side-by-side where 1$ is Downloads.Toast.MultipleFiles.DescriptionText and 2$ is Downloads.Toast.Progress.DescriptionText. This string should only consist of the two placeholders side-by-side separated by a single space and 1$ should come before 2$ everywhere except for right-to-left locales. */
+"DownloadMultipleFilesAndProgressToastDescriptionText" = "%1$@ %2$@";
+
+/* The description text in the Download progress toast for showing the number of files when multiple files are downloading. */
+"DownloadMultipleFilesToastDescriptionText" = "1 od %d datotek";
+
+/* The description text in the Download progress toast for showing the downloaded file size (1$) out of the total expected file size (2$). */
+"DownloadProgressToastDescriptionText" = "%1$@/%2$@";
+
+/* The button to open a new tab with the Downloads home panel */
+"DownloadsButtonTitle" = "Prenosi";
+
+/* Question shown to user when tapping a link that opens the App Store app */
+"ExternalLinkAppStoreConfirmationTitle" = "Ali želite odpreti to povezavo v aplikaciji App Store?";
+
+/* The button to open a new tab with the copied link */
+"GoButtonTittle" = "Naprej";
+
+/* Button to not save the user's password */
+"LoginsHelperDontSaveButtonTitle" = "Ne shrani";
+
+/* Button to not update the user's password */
+"LoginsHelperDontUpdateButtonTitle" = "Ne posodobi";
+
+/* Button to save the user's password */
+"LoginsHelperSaveLoginButtonTitle" = "Shrani prijavo";
+
+/* Button to update the user's password */
+"LoginsHelperUpdateButtonTitle" = "Posodobi";
+
+/* OK button */
+"OKString" = "V redu";
+
+/* Accessibility message e.g. spoken by VoiceOver when Reader Mode becomes available. */
+"ReaderModeAvailableVoiceOverAnnouncement" = "Načini branja je na voljo";
+
+/* Accessibility label for button resetting font size in display settings of reader mode */
+"ReaderModeResetFontSizeAccessibilityLabel" = "Ponastavi velikost besedila";
+
+/* Prompt for saving a password with no username. The parameter is the hostname of the site. */
+"SaveLoginPrompt" = "Shraniti geslo za %@?";
+
+/* Prompt for saving a login. The first parameter is the username being saved. The second parameter is the hostname of the site. */
+"SaveLoginUsernamePrompt" = "Shraniti prijavo %1$@ za %2$@?";
+
+/* OK button to dismiss the error prompt. */
+"ScanQRCodeErrorOKButton" = "V redu";
+
+/* Text for the instructions label, displayed in the QR scanner view */
+"ScanQRCodeInstructionsLabel" = "Poravnajte QR kodo v okvir za skeniranje";
+
+/* Text of the prompt that is shown to the user when the data is invalid */
+"ScanQRCodeInvalidDataErrorMessage" = "Podatki niso veljavni";
+
+/* Text of the prompt user to setup the camera authorization. */
+"ScanQRCodePermissionErrorMessage" = "Prosim dovolite Brave dostop do kamere vašega naprave v \"Nastavitve\" -> \"Zasebnost\" -> \"Kamera\".";
+
+/* Title for the QR code scanner view. */
+"ScanQRCodeViewTitle" = "Skeniraj QR kodo";
+
+/* General settings section title */
+"SettingsGeneralSectionTitle" = "Splošno";
+
+/* Button displayed at the top of the search settings. */
+"SettingsSearchDoneButton" = "Končano";
+
+/* The button to undo the delete all tabs */
+"TabsDeleteAllUndoAction" = "Razveljavi";
+
+/* The label indicating that all the tabs were closed */
+"TabsDeleteAllUndoTitle" = "%d zavihek(-ov) zaprt(-ih)";
+
+/* Button to dismiss the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorDismiss" = "V redu";
+
+/* Text of the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorMessage" = "Prišlo je do napake pri dodajanju prepustnice v denarnico. Prosimo, poskusite ponovno pozneje.";
+
+/* Title of the 'Add Pass Failed' alert. See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorTitle" = "Dodajanje prepustnice ni uspelo";
+
+/* The message displayed to a user when they try to open a URL that cannot be handled by Brave, or any external app. */
+"UnableToOpenURLError" = "Brave ne more odpreti strani, ker ima neveljaven naslov.";
+
+/* Title of the message shown when the user attempts to navigate to an invalid link. */
+"UnableToOpenURLErrorTitle" = "Ne mogu odpreti strani";
+
+/* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
+"UpdateLoginPrompt" = "Posodabljam prijavo %1$@ za %2$@?";
+
+/* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
+"UpdateLoginUsernamePrompt" = "Posodabljam prijavo %1$@ za %2$@?";
+

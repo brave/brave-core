@@ -65,7 +65,7 @@
 "importTutorialDetailedProcessTitle" = "Quer obter um processo de exportação pormenorizado?";
 
 /* The title of the tutorial page that shows in the Navigation Bar. */
-"importTutorialScreenTitle" = "Como exportar a partir do Safari";
+"importTutorialScreenTitle" = "Como exportar do Safari";
 
 /* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
 "importTutorialStepFiveTitle" = "Guarde o ficheiro em **Files**, escolhendo uma localização que possa encontrar facilmente mais tarde.";

@@ -1,3 +1,9 @@
+/* The subtitle of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenDescription" = "Érintse meg és tartsa lenyomva a Brave ikont, majd húzza a dokkba a gyors hozzáférés érdekében.";
+
+/* The title of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenTitle" = "Adja hozzá a Brave-et a dokkhoz";
+
 /* The title of the button that changes the screen to next */
 "focusOnboarding.continueButtonTitle" = "Folytatás";
 
@@ -5,7 +11,7 @@
 "focusOnboarding.defaultBrowserScreenDescription" = "Legyen a Brave az alapértelmezett böngészője";
 
 /* The title of the screen that requests user to set Brave as default */
-"focusOnboarding.defaultBrowserScreenTitle" = "Tiltsa le a hirdetéseket minden oldalon, amit meglátogat";
+"focusOnboarding.defaultBrowserScreenTitle" = "Hirdetésblokkolás minden meglátogatott webhelyen";
 
 /* The title of the button that closes the default browser full screen callout */
 "focusOnboarding.notNowActionButtonTitle" = "Ne most";
@@ -25,18 +31,12 @@
 /* The description shown below the toggle for enabling privacy preserving analytics. This uses standard markdown syntax. The Learn More is a link and #p3a-learn-more is a URL fragment */
 "focusOnboarding.p3aToggleDescription" = "Bármikor leiratkozhat a Beállítások menüpontban a **Védelem és adatvédelem** alatt. [Tudjon meg többet](#p3a-learn-more) az adatvédelmet megőrző termékanalitikánkról.";
 
-/* The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The "completely private & anonymous" snippet should be bold in all languages */
-"focusOnboarding.p3aToggleTitle" = "Ossza meg használati adatait **teljesen privát& anonim módon**.";
+/* The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The "private & anonymous" snippet should be bold in all languages */
+"focusOnboarding.p3aToggleTitle" = "**Privát és anonim** termékelemzések megosztása.";
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "Böngészés elkezdése";
 
 /* The title of the button that triggers navigation link to settings */
 "focusOnboarding.systemSettingsButtonTitle" = "Beállítás alapértelmezettként";
-
-/* The description of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorDescription" = "Nézzen videókat kevesebb hirdetés & tracker nélkül.";
-
-/* The title of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorTitle" = "Tapasztalja meg a Brave élményt";
 

@@ -16,11 +16,17 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "बुकमार्क लगाएँ";
 
+/* Add a new item to the current list */
+"addButtonTitle" = "जोड़ें";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "पसंदीदा में जोड़ें";
 
 /* Cell title for add folder action */
 "AddFolderActionCellTitle" = "नया फ़ोल्डर";
+
+/* Settings item that opens instructions for adding Brave to the iOS dock. */
+"addToDockSettingsCell" = "डॉक में जोड़ें";
 
 /* Add to favorites share action. */
 "AddToFavorites" = "पसंदीदा में जोड़ें";
@@ -69,6 +75,42 @@
 
 /* Settings autofill section title */
 "Autofill" = "ऑटोमैटिक भरना";
+
+/* Label for account when indicating that a domain has multiple accounts */
+"autofill.managePassword.multipleAccounts" = "खाते";
+
+/* Alert message warning the user that deleting non-synced passwords will permanently remove them */
+"autofill.managePasswords.deleteCredentialConfirmMessage" = "यह %@ के लिए सहेजे गए पासवर्ड को आपकी सिंक चेन और आपके डिवाइस से हटा देगा।";
+
+/* Prompt title when deleting passwords */
+"autofill.managePasswords.deleteCredentialsAlertTitle" = "क्या आप आश्वस्त हैं?";
+
+/* Label for the button used to delete the current login. */
+"autofill.managePasswords.deleteManagePasswordButtonTitle" = "हटाएं";
+
+/* Title for the section header in the Manage Passwords list screen, that lists the saved sites */
+"autofill.managePasswords.headerTitle" = "सेव कर लिया गया है";
+
+/* The message displayed on the manage passwords list screen, when there's at least one password, explain the feature */
+"autofill.managePasswords.instructions" = "साइटों और ऐप्स में आसानी से साइन इन करने के लिए अपने पासवर्ड बनाएं, सेव करें और मैनेज करें।";
+
+/* The header title displayed over the never saved passwords list */
+"autofill.managePasswords.neverSavedListHeaderTitle" = "कभी नहीं सहेजा गया";
+
+/* Display text for the option to offer to save passwords */
+"autofill.managePasswords.offerToSavePasswords" = "पासवर्ड सेव करने का ऑफर दें";
+
+/* Prompt that is diplayed in the search bar of the Manage Passwords list screen */
+"autofill.managePasswords.searchWebsitesPrompt" = "वेबसाइट सर्च करें";
+
+/* Title for navigation bar of the Manage Passwords screen */
+"autofill.managePasswords.title" = "पासवर्ड मैनेज करें";
+
+/* Text to show when the origin of a managed password is not available */
+"autofill.managePasswords.UnknownDomainText" = "अज्ञात";
+
+/* Settings autofill section title */
+"autofill.settings.title" = "ऑटोमैटिक भरना";
 
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "AMP पेजों को अपने-आप रीडायइरेक्ट करें";
@@ -3141,6 +3183,12 @@
 
 /* No comment provided by engineer. */
 "tabs.settings.privateTabsSettingsTitle" = "निजी टैब";
+
+/* The description of the toggle for users to allow the browser to remember its last browsing mode so it can re-launch in that mode when Keep Private Tabs is enabled. */
+"tabs.settings.rememberBrowsingModeDescription" = "अगर ब्राउज़र को आखिरी बार बंद करते समय वह प्राइवेट मोड में था, तो दोबारा लॉन्च होने पर वह प्राइवेट मोड में ही खुलेगा।";
+
+/* Toggle to launch the browser in private mode when Keep Private Tabs is enabled */
+"tabs.settings.rememberBrowsingModeTitle" = "ब्राउज़िंग मोड याद रखें";
 
 /* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
 "TabToolbarAccessibilityLabel" = "नेविगेशन टूलबार";
