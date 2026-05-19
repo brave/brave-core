@@ -16,7 +16,7 @@ export const Title = styled(Text)`
 
 export const Segment = styled(Column)<{ $grow: number }>`
   flex: ${(p) => p.$grow} 1 0;
-  min-width: 0;
+  min-width: 46px;
   overflow: hidden;
 `
 
