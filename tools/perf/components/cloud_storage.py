@@ -43,7 +43,7 @@ def UploadFileToCloudStorage(folder: CloudFolder, path: str):
   s3_url = f's3://{_CLOUD_BUCKET}/{folder.value}/{sha1}'
   print(f'Uploading {path} to {s3_url}')
   success, _ = perf_test_utils.GetProcessOutput(
-      ['aws', 's3', 'cp', path, s3_url, '--sse', 'AES256'], timeout=10 * 60)
+      ['C:\\Program Files\\Amazon\\AWSCLIV2\\aws.exe', 's3', 'cp', path, s3_url, '--sse', 'AES256'], timeout=10 * 60)
   if not success:
     raise RuntimeError(f'Can\'t upload to {s3_url}')
   return path + '.sha1'
