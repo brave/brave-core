@@ -193,7 +193,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginTop="8dp"
-        android:background="@drawable/advanced_options_bg">
+        android:background="@drawable/advanced_options_bg"
+        android:clipToOutline="true">
 
         <!-- Advanced Options Header (clickable to expand/collapse) -->
         <LinearLayout

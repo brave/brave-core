@@ -4,7 +4,18 @@
      License, v. 2.0. If a copy of the MPL was not distributed with this file,
      You can obtain one at https://mozilla.org/MPL/2.0/. -->
 
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_selected="true" android:drawable="@drawable/shields_switch_small_on" />
-    <item android:drawable="@drawable/shields_switch_small_off" />
-</selector>
+<animated-selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/shields_switch_small_state_on"
+        android:state_selected="true"
+        android:drawable="@drawable/shields_switch_small_on" />
+    <item
+        android:id="@+id/shields_switch_small_state_off"
+        android:drawable="@drawable/shields_switch_small_off" />
+
+    <transition
+        android:fromId="@+id/shields_switch_small_state_off"
+        android:toId="@+id/shields_switch_small_state_on"
+        android:drawable="@drawable/shields_switch_small_off_to_on"
+        android:reversible="true" />
+</animated-selector>

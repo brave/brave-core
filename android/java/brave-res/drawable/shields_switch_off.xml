@@ -4,32 +4,26 @@
      License, v. 2.0. If a copy of the MPL was not distributed with this file,
      You can obtain one at https://mozilla.org/MPL/2.0/. -->
 
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Track fill with border -->
-    <item>
-        <shape android:shape="rectangle">
-            <corners android:radius="35dp" />
-            <solid android:color="@color/schemes_surface_container_highest" />
-            <stroke
-                android:width="2dp"
-                android:color="@color/schemes_outline" />
-            <size
-                android:width="65dp"
-                android:height="40dp" />
-        </shape>
-    </item>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="65dp"
+    android:height="40dp"
+    android:viewportWidth="65"
+    android:viewportHeight="40">
 
-    <!-- Thumb on left side (20dp, centered vertically) -->
-    <item
-        android:left="10dp"
-        android:top="10dp"
-        android:right="35dp"
-        android:bottom="10dp">
-        <shape android:shape="oval">
-            <solid android:color="@color/schemes_outline" />
-            <size
-                android:width="20dp"
-                android:height="20dp" />
-        </shape>
-    </item>
-</layer-list>
+    <!-- Outer path filled with outline colour — provides the 2dp border without a stroke -->
+    <path
+        android:name="outline"
+        android:fillColor="@color/schemes_outline"
+        android:pathData="M20,0 L45,0 A20,20 0 0,1 45,40 L20,40 A20,20 0 0,1 20,0 Z" />
+
+    <!-- Inner fill 2dp inset on every side (concentric, same arc centres) -->
+    <path
+        android:name="track"
+        android:fillColor="@color/schemes_surface_container_highest"
+        android:pathData="M20,2 L45,2 A18,18 0 0,1 45,38 L20,38 A18,18 0 0,1 20,2 Z" />
+
+    <path
+        android:name="thumb"
+        android:fillColor="@color/schemes_outline"
+        android:pathData="M10,20 A10,10 0 1,0 30,20 A10,10 0 1,0 10,20 Z" />
+</vector>

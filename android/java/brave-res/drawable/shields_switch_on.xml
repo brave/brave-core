@@ -4,29 +4,25 @@
      License, v. 2.0. If a copy of the MPL was not distributed with this file,
      You can obtain one at https://mozilla.org/MPL/2.0/. -->
 
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Track background - solid blue -->
-    <item>
-        <shape android:shape="rectangle">
-            <corners android:radius="35dp" />
-            <solid android:color="@color/schemes_primary" />
-            <size
-                android:width="65dp"
-                android:height="40dp" />
-        </shape>
-    </item>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="65dp"
+    android:height="40dp"
+    android:viewportWidth="65"
+    android:viewportHeight="40">
 
-    <!-- Thumb on right side (white, 31dp) -->
-    <item
-        android:left="29dp"
-        android:top="4dp"
-        android:right="5dp"
-        android:bottom="4dp">
-        <shape android:shape="oval">
-            <solid android:color="@color/schemes_on_primary" />
-            <size
-                android:width="31dp"
-                android:height="31dp" />
-        </shape>
-    </item>
-</layer-list>
+    <!-- Both outline and track use the same primary colour so they form one solid fill -->
+    <path
+        android:name="outline"
+        android:fillColor="@color/schemes_primary"
+        android:pathData="M20,0 L45,0 A20,20 0 0,1 45,40 L20,40 A20,20 0 0,1 20,0 Z" />
+
+    <path
+        android:name="track"
+        android:fillColor="@color/schemes_primary"
+        android:pathData="M20,2 L45,2 A18,18 0 0,1 45,38 L20,38 A18,18 0 0,1 20,2 Z" />
+
+    <path
+        android:name="thumb"
+        android:fillColor="@color/schemes_on_primary"
+        android:pathData="M29,20 A15.5,15.5 0 1,0 60,20 A15.5,15.5 0 1,0 29,20 Z" />
+</vector>

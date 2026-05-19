@@ -19,7 +19,9 @@ import android.graphics.Matrix;
 import android.graphics.Outline;
 import android.graphics.PointF;
 import android.graphics.Rect;
+import android.graphics.drawable.Animatable;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.text.SpannableString;
@@ -122,6 +124,25 @@ public class BraveUnifiedPanelHandler {
     private static final int PANEL_OVERLAP_OFFSET_DP = 7;
     private static final float BLOCK_SCRIPTS_SWITCH_SHIELDS_ENABLED_ALPHA = 1f;
     private static final float BLOCK_SCRIPTS_SWITCH_SHIELDS_DISABLED_ALPHA = 0.5f;
+    private static final int TOGGLE_ANIMATION_MS = 200;
+
+    // Nala primitive_*_50 colours used as deterministic placeholder backgrounds for blocked-tracker
+    // favicons. The colour is chosen by hashing the display domain so the same origin always maps
+    // to the same colour across reloads.
+    private static final int[] PLACEHOLDER_FAVICON_COLORS = {
+        R.color.primitive_primary_50,
+        R.color.primitive_secondary_50,
+        R.color.primitive_tertiary_50,
+        R.color.primitive_red_50,
+        R.color.primitive_orange_50,
+        R.color.primitive_yellow_50,
+        R.color.primitive_green_50,
+        R.color.primitive_teal_50,
+        R.color.primitive_blue_50,
+        R.color.primitive_blurple_50,
+        R.color.primitive_purple_50,
+        R.color.primitive_pink_50,
+    };
 
     private static class BlockersInfo {
         public int mAdsBlocked;
@@ -152,6 +173,12 @@ public class BraveUnifiedPanelHandler {
     private TextView mSiteTextUnified;
     private TextView mShieldsStatusText;
     private ImageView mShieldsToggleSwitch;
+    private final Runnable mRestoreToggleOnDrawable =
+            () -> {
+                if (mShieldsToggleSwitch != null) {
+                    mShieldsToggleSwitch.setImageResource(R.drawable.shields_switch_on);
+                }
+            };
     private TextView mBlockCountNumber;
     private TextView mBlockCountText;
     private LinearLayout mBlockedItemsContainer;
@@ -166,7 +193,6 @@ public class BraveUnifiedPanelHandler {
     // Advanced options switches (no Forget Me in new design)
     private ImageView mBlockScriptsSwitch;
     private ImageView mFingerprintingSwitch;
-    private boolean mIsUpdatingSwitches;
 
     // Observer for notifying toolbar of shields changes (icon update, page reload)
     private @Nullable BraveShieldsMenuObserver mMenuObserver;
@@ -283,7 +309,7 @@ public class BraveUnifiedPanelHandler {
                         mProfile,
                         mUrl.getSpec(),
                         BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS);
-        mShieldsToggleSwitch.setSelected(isShieldsUp);
+        applyToggleState(isShieldsUp, false);
         mShieldsStatusText.setText(
                 isShieldsUp
                         ? mContext.getString(R.string.shields_up_status)
@@ -460,7 +486,7 @@ public class BraveUnifiedPanelHandler {
         mShieldsToggleSwitch.setOnClickListener(
                 v -> {
                     boolean newState = !v.isSelected();
-                    v.setSelected(newState);
+                    applyToggleState(newState, true);
                     onShieldsToggleChanged(newState);
                 });
 
@@ -608,8 +634,6 @@ public class BraveUnifiedPanelHandler {
             return;
         }
 
-        mIsUpdatingSwitches = true;
-
         if (mBlockScriptsSwitch != null) {
             if (shieldsEnabled) {
                 boolean scriptsBlocked =
@@ -645,8 +669,22 @@ public class BraveUnifiedPanelHandler {
                 mFingerprintingSwitch.setSelected(false);
             }
         }
+    }
 
-        mIsUpdatingSwitches = false;
+    private void applyToggleState(boolean isOn, boolean animated) {
+        mShieldsToggleSwitch.setSelected(isOn);
+        mShieldsToggleSwitch.removeCallbacks(mRestoreToggleOnDrawable);
+        if (animated && isOn && mContext != null) {
+            Drawable avd = ContextCompat.getDrawable(mContext, R.drawable.shields_switch_off_to_on);
+            if (avd != null) {
+                mShieldsToggleSwitch.setImageDrawable(avd);
+                ((Animatable) avd).start();
+                mShieldsToggleSwitch.postDelayed(mRestoreToggleOnDrawable, TOGGLE_ANIMATION_MS);
+                return;
+            }
+        }
+        mShieldsToggleSwitch.setImageResource(
+                isOn ? R.drawable.shields_switch_on : R.drawable.shields_switch_off);
     }
 
     private void onShieldsToggleChanged(boolean isChecked) {
@@ -661,7 +699,14 @@ public class BraveUnifiedPanelHandler {
                 isChecked,
                 true);
 
-        updateValues();
+        if (mContext != null) {
+            mShieldsStatusText.setText(
+                    isChecked
+                            ? mContext.getString(R.string.shields_up_status)
+                            : mContext.getString(R.string.shields_down_status));
+        }
+        updateShieldsSectionVisibility(isChecked);
+        updateAdvancedOptionsSwitches(isChecked);
         updateResetButtonState();
 
         if (mMenuObserver != null) {
@@ -1010,7 +1055,7 @@ public class BraveUnifiedPanelHandler {
     }
 
     private void onBlockScriptsChanged(boolean isChecked) {
-        if (mIsUpdatingSwitches || mUrl == null || mProfile == null) {
+        if (mUrl == null || mProfile == null) {
             return;
         }
 
@@ -1028,7 +1073,7 @@ public class BraveUnifiedPanelHandler {
     }
 
     private void onFingerprintingChanged(boolean isChecked) {
-        if (mIsUpdatingSwitches || mUrl == null || mProfile == null) {
+        if (mUrl == null || mProfile == null) {
             return;
         }
 
@@ -1834,7 +1879,15 @@ public class BraveUnifiedPanelHandler {
         textView.setText(letter);
         textView.setGravity(Gravity.CENTER);
         textView.setTextAppearance(R.style.TextAppearance_BraveBlockedItemIcon);
-        textView.setBackgroundResource(R.drawable.blocked_item_default_bg);
+
+        // Pick a colour deterministically from the Nala primitive_*_50 palette by hashing the
+        // display domain so the same origin always gets the same colour.
+        int colorIndex = Math.floorMod(displayDomain.hashCode(), PLACEHOLDER_FAVICON_COLORS.length);
+        int bgColor = ContextCompat.getColor(mContext, PLACEHOLDER_FAVICON_COLORS[colorIndex]);
+        GradientDrawable bg = new GradientDrawable();
+        bg.setShape(GradientDrawable.OVAL);
+        bg.setColor(bgColor);
+        textView.setBackground(bg);
 
         container.addView(textView);
         addBlockOverlay(container, iconSize);

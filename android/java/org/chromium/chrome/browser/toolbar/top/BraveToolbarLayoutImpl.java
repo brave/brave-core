@@ -946,8 +946,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             mShieldsPopupWindowTooltip =
                     new PopupWindowTooltip.Builder(getContext())
                             .anchorView(mBraveShieldsButton)
-                            .arrowColor(ContextCompat.getColor(
-                                    getContext(), R.color.onboarding_arrow_color))
+                            .arrowColor(
+                                    ContextCompat.getColor(
+                                            getContext(), R.color.onboarding_arrow_color))
                             .gravity(Gravity.BOTTOM)
                             .dismissOnOutsideTouch(true)
                             .dismissOnInsideTouch(false)
@@ -955,12 +956,13 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                             .padding(padding)
                             .parentPaddingHorizontal(dpToPx(getContext(), 10))
                             .modal(true)
-                            .onDismissListener(tooltip -> {
-                                if (viewGroup != null && highlightView != null) {
-                                    highlightView.stopAnimation();
-                                    viewGroup.removeView(highlightView);
-                                }
-                            })
+                            .onDismissListener(
+                                    tooltip -> {
+                                        if (viewGroup != null && highlightView != null) {
+                                            highlightView.stopAnimation();
+                                            viewGroup.removeView(highlightView);
+                                        }
+                                    })
                             .contentView(R.layout.brave_shields_tooltip_layout)
                             .build();
 

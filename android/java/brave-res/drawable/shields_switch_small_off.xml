@@ -4,32 +4,24 @@
      License, v. 2.0. If a copy of the MPL was not distributed with this file,
      You can obtain one at https://mozilla.org/MPL/2.0/. -->
 
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Track fill with border -->
-    <item>
-        <shape android:shape="rectangle">
-            <corners android:radius="35dp" />
-            <solid android:color="@color/schemes_surface_container_highest" />
-            <stroke
-                android:width="2dp"
-                android:color="@color/schemes_outline" />
-            <size
-                android:width="42dp"
-                android:height="26dp" />
-        </shape>
-    </item>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="42dp"
+    android:height="26dp"
+    android:viewportWidth="42"
+    android:viewportHeight="26">
 
-    <!-- Thumb on left side (12dp, centered vertically) -->
-    <item
-        android:left="7dp"
-        android:top="7dp"
-        android:right="23dp"
-        android:bottom="7dp">
-        <shape android:shape="oval">
-            <solid android:color="@color/schemes_outline" />
-            <size
-                android:width="12dp"
-                android:height="12dp" />
-        </shape>
-    </item>
-</layer-list>
+    <path
+        android:name="outline"
+        android:fillColor="@color/schemes_outline"
+        android:pathData="M13,0 L29,0 A13,13 0 0,1 29,26 L13,26 A13,13 0 0,1 13,0 Z" />
+
+    <path
+        android:name="track"
+        android:fillColor="@color/schemes_surface_container_highest"
+        android:pathData="M13,2 L29,2 A11,11 0 0,1 29,24 L13,24 A11,11 0 0,1 13,2 Z" />
+
+    <path
+        android:name="thumb"
+        android:fillColor="@color/schemes_outline"
+        android:pathData="M7,13 A6,6 0 1,0 19,13 A6,6 0 1,0 7,13 Z" />
+</vector>
