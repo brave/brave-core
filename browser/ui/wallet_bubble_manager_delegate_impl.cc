@@ -15,7 +15,7 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
-#include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
+#include "brave/browser/ui/webui/brave_wallet/wallet_panel/wallet_panel_ui.h"
 #include "chrome/browser/file_select_helper.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"

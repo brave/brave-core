@@ -13,8 +13,6 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/market_display/resources/grit/market_display_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/grit/browser_resources.h"
-#include "chrome/grit/generated_resources.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/url_data_source.h"
 #include "content/public/browser/web_contents.h"

@@ -346,7 +346,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/browser/ui/webui/brave_wallet/wallet_page/wallet_page_ui.h"
 #if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
+#include "brave/browser/ui/webui/brave_wallet/wallet_panel/wallet_panel_ui.h"
 #endif
 #endif
 
@@ -713,16 +713,16 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
       .Add<brave_wallet::mojom::PageHandlerFactory>()
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
       .Add<brave_rewards::mojom::RewardsPageHandler>()
-#endif
+#endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
       ;
 #if !BUILDFLAG(IS_ANDROID)
   registry.ForWebUI<WalletPanelUI>()
       .Add<brave_wallet::mojom::PanelHandlerFactory>()
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
       .Add<brave_rewards::mojom::RewardsPageHandler>()
-#endif
+#endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
       ;
-#endif
+#endif  // !BUILDFLAG(IS_ANDROID)
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 #if !BUILDFLAG(IS_ANDROID)
