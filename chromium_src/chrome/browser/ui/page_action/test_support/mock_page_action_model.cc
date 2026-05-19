@@ -3,10 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "chrome/browser/ui/page_actions/test_support/mock_page_action_model.h"
+#include "chrome/browser/ui/page_action/test_support/mock_page_action_model.h"
 
 #define MockPageActionModel MockPageActionModel_Chromium
-#include <chrome/browser/ui/page_actions/test_support/mock_page_action_model.cc>
+#include <chrome/browser/ui/page_action/test_support/mock_page_action_model.cc>
 #undef MockPageActionModel
 
 namespace page_actions {
