@@ -66,6 +66,7 @@ BraveSidePanelHeader::~BraveSidePanelHeader() = default;
 void BraveSidePanelHeader::Layout(PassKey) {
   LayoutSuperclass<views::View>(this);
 
+  // Need to set bounds as parent view(SidePanel) uses FillLayout.
   const gfx::Rect contents_bounds = parent()->GetContentsBounds();
   SetBoundsRect(gfx::Rect(contents_bounds.x(),
                           contents_bounds.y() - kHeaderHeight,
