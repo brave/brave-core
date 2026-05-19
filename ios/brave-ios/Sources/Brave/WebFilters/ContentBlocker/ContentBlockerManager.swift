@@ -571,7 +571,8 @@ import os.log
   /// Return the valid generic types for the given domain
   public func validGenericTypes(
     isShieldsEnabled: Bool,
-    isAdBlockEnabled: Bool
+    isAdBlockEnabled: Bool,
+    isBlockAllCookiesEnabled: Bool
   ) -> Set<GenericBlocklistType> {
     guard isShieldsEnabled else { return [] }
     var results = Set<GenericBlocklistType>()
@@ -582,7 +583,7 @@ import os.log
     }
 
     // Get global rule types
-    if Preferences.Privacy.blockAllCookies.value {
+    if isBlockAllCookiesEnabled {
       results.insert(.blockCookies)
     }
 

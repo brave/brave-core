@@ -462,7 +462,6 @@ public class BrowserViewController: UIViewController {
     Preferences.General.tabBarVisibility.observe(from: self)
     Preferences.General.defaultPageZoomLevel.observe(from: self)
     Preferences.Shields.allShields.forEach { $0.observe(from: self) }
-    Preferences.Privacy.blockAllCookies.observe(from: self)
     Preferences.Rewards.hideRewardsIcon.observe(from: self)
     Preferences.Rewards.rewardsToggledOnce.observe(from: self)
     Preferences.Playlist.enablePlaylistURLBarButton.observe(from: self)
@@ -487,6 +486,22 @@ public class BrowserViewController: UIViewController {
         )
       ])
       tabManager.reloadSelectedTab()
+    }
+    prefsChangeRegistrar.addObserver(forPath: kBlockAllCookiesEnabled) { [weak self] _ in
+      guard let self else { return }
+      // All `block all cookies` toggle requires a hard reset of Webkit configuration.
+      tabManager.reset()
+      if !profileController.profile.prefs.boolean(forPath: kBlockAllCookiesEnabled) {
+        tabManager.reloadSelectedTab()
+        for tab in tabManager.allTabs where tab !== tabManager.selectedTab {
+          tab.createWebView()
+          if let url = tab.visibleURL {
+            tab.loadRequest(PrivilegedRequest(url: url) as URLRequest)
+          }
+        }
+      } else {
+        tabManager.reloadSelectedTab()
+      }
     }
 
     disconnectVPNIfDisabledByPolicy()
@@ -2900,21 +2915,10 @@ extension BrowserViewController: PreferencesObserver {
             ?? Preferences.General.defaultPageZoomLevel.value
         $0.viewScale = zoomLevel
       })
-    case Preferences.Privacy.blockAllCookies.key,
-      Preferences.Shields.googleSafeBrowsing.key:
-      // All `block all cookies` toggle requires a hard reset of Webkit configuration.
+    case Preferences.Shields.googleSafeBrowsing.key:
+      // Toggling Google safe browsing requires a hard reset of Webkit configuration.
       tabManager.reset()
-      if !Preferences.Privacy.blockAllCookies.value {
-        self.tabManager.reloadSelectedTab()
-        for tab in self.tabManager.allTabs where tab !== self.tabManager.selectedTab {
-          tab.createWebView()
-          if let url = tab.visibleURL {
-            tab.loadRequest(PrivilegedRequest(url: url) as URLRequest)
-          }
-        }
-      } else {
-        tabManager.reloadSelectedTab()
-      }
+      tabManager.reloadSelectedTab()
     case Preferences.Rewards.hideRewardsIcon.key,
       Preferences.Rewards.rewardsToggledOnce.key:
       updateRewardsButtonState()

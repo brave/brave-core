@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveShields
 import Foundation
 import Web
@@ -40,7 +41,8 @@ extension BraveShieldsTabHelper: TabPolicyDecider {
     // Load rule lists
     let ruleLists = await AdBlockGroupsManager.shared.ruleLists(
       isBraveShieldsEnabled: isBraveShieldsEnabled,
-      shieldLevel: shieldLevel
+      shieldLevel: shieldLevel,
+      isBlockAllCookiesEnabled: tab.profile.prefs.boolean(forPath: kBlockAllCookiesEnabled)
     )
     tab.contentBlocker?.set(ruleLists: ruleLists)
     return .allow

@@ -109,7 +109,8 @@ extension ContentBlockerHelper: TabContentScript {
           )
           let genericTypes = AdBlockGroupsManager.shared.contentBlockerManager.validGenericTypes(
             isShieldsEnabled: braveShieldsHelper.isBraveShieldsEnabled(for: currentTabURL),
-            isAdBlockEnabled: shieldLevel.isEnabled
+            isAdBlockEnabled: shieldLevel.isEnabled,
+            isBlockAllCookiesEnabled: tab.profile.prefs.boolean(forPath: kBlockAllCookiesEnabled)
           )
 
           let blockedType = await blockedTypes(

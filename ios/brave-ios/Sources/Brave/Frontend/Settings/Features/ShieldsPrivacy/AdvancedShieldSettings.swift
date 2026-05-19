@@ -71,6 +71,11 @@ import os
       prefs.set(isGPCEnabled, forPath: kGlobalPrivacyControlEnabled)
     }
   }
+  @Published var isBlockAllCookiesEnabled: Bool {
+    didSet {
+      prefs.set(isBlockAllCookiesEnabled, forPath: kBlockAllCookiesEnabled)
+    }
+  }
   @Published var adBlockAndTrackingPreventionLevel: ShieldLevel {
     didSet {
       guard oldValue != adBlockAndTrackingPreventionLevel else { return }
@@ -210,6 +215,7 @@ import os
     self.httpsUpgradeLevel = Preferences.Shields.httpsUpgradeLevel
     self.isDeAmpEnabled = deAmpPrefs.isDeAmpEnabled
     self.isGPCEnabled = prefs.boolean(forPath: kGlobalPrivacyControlEnabled)
+    self.isBlockAllCookiesEnabled = prefs.boolean(forPath: kBlockAllCookiesEnabled)
     self.isDebounceEnabled = debounceService?.isEnabled ?? false
     self.shredHistoryItems = Preferences.Shields.shredHistoryItems.value
     self.webcompatReporterHandler = webcompatReporterHandler
@@ -330,9 +336,10 @@ import os
       }
     }
 
+    let prefs = self.prefs
     @Sendable func _toggleFolderAccessForBlockCookies(locked: Bool) async {
       do {
-        if Preferences.Privacy.blockAllCookies.value,
+        if prefs.boolean(forPath: kBlockAllCookiesEnabled),
           try await AsyncFileManager.default.isWebDataLocked(atPath: .cookie) != locked
         {
           try await AsyncFileManager.default.setWebDataAccess(atPath: .cookie, lock: locked)
