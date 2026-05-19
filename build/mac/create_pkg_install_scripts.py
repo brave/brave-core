@@ -38,7 +38,6 @@ def main():
         'Contents/Helpers/ksadmin'
     }
     for key, value in replacements.items():
-        assert key in script, key
         script = script.replace(key, value)
 
     m = re.search(r'@[^@\n]+@', script)
