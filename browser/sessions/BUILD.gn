@@ -3,6 +3,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+static_library("sessions") {
+  sources = [ "brave_session_keys.h" ]
+}
+
 source_set("browser_tests") {
   testonly = true
   if (!is_android) {
@@ -10,7 +14,11 @@ source_set("browser_tests") {
     sources = [ "brave_session_restore_browsertest.cc" ]
 
     deps = [
+      ":sessions",
       "//base/test:test_support",
+      "//brave/browser/ui/tabs:tab_strip",
+      "//brave/browser/ui/tabs:tree_tab",
+      "//brave/components/tabs",
       "//chrome/browser",
       "//chrome/browser/profiles:profile",
       "//chrome/test:test_support_ui",

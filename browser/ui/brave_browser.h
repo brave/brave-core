@@ -19,6 +19,10 @@ namespace content {
 class WebContents;
 }  // namespace content
 
+namespace tabs {
+class TreeTabNode;
+}  // namespace tabs
+
 class BraveBrowser : public Browser {
  public:
   explicit BraveBrowser(const CreateParams& params);
@@ -34,6 +38,7 @@ class BraveBrowser : public Browser {
       TabStripModel* tab_strip_model,
       const TabStripModelChange& change,
       const TabStripSelectionChange& selection) override;
+  void OnTreeTabChanged(const TreeTabChange& change) override;
   void FinishWarnBeforeClosing(WarnBeforeClosingResult result) override;
   void BeforeUnloadFired(content::WebContents* source,
                          bool proceed,
@@ -89,6 +94,13 @@ class BraveBrowser : public Browser {
   bool AreAllTabsSharedPinnedTabs();
 
   bool ShouldSuppressDialogs(content::WebContents* source) override;
+
+  // Tree tab session persistence helpers, mirroring the
+  // UpdateTabGroupSessionMetadata / UpdateTabGroupSessionDataForTab pattern in
+  // Browser. Called from OnTreeTabChanged to push incremental tree-structure
+  // changes directly to SessionService.
+  void UpdateTreeTabSessionDataForNode(const tabs::TreeTabNode& node);
+  void UpdateTreeTabCollapsedState(const tabs::TreeTabNode& node);
 
   // Set true when user allowed to close browser before starting any
   // warning or onbeforeunload handlers.

@@ -322,6 +322,8 @@ void BraveBrowserTabStripController::OnTreeTabChanged(
           ->InvalidateTabContainerLayout();
       break;
     }
+    case TreeTabChange::Type::kNodeReparented:
+      break;
   }
 }
 

@@ -123,6 +123,23 @@ void TreeTabNode::CollectUncollapsedDescendantIds(
   }
 }
 
+std::optional<tree_tab::TreeTabNodeId> TreeTabNode::GetParentTreeNodeId()
+    const {
+  const TabCollection* parent = collection_->GetParentCollection();
+  while (parent) {
+    if (parent->type() == TabCollection::Type::TREE_NODE) {
+      return static_cast<const TreeTabNodeTabCollection*>(parent)->node().id();
+    }
+    if (parent->type() == TabCollection::Type::UNPINNED ||
+        parent->type() == TabCollection::Type::PINNED ||
+        parent->type() == TabCollection::Type::TABSTRIP) {
+      break;
+    }
+    parent = parent->GetParentCollection();
+  }
+  return std::nullopt;
+}
+
 int TreeTabNode::CalculateLevelAndHeightRecursively(
     base::PassKey<TreeTabNodeTabCollection> pass_key) {
   return CalculateLevelAndHeightRecursivelyImpl();
