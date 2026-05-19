@@ -10,6 +10,7 @@
 #include <string>
 #include <string_view>
 
+#include "base/compiler_specific.h"
 #include "base/component_export.h"
 #include "base/types/optional_ref.h"
 
@@ -53,7 +54,7 @@ std::optional<content::StoragePartitionConfig> MaybeInheritStoragePartition(
 // of data owned by |partition_config|.
 COMPONENT_EXPORT(CONTAINERS_CONTENT_BROWSER)
 std::string_view GetContainerIdFromStoragePartitionConfig(
-    const content::StoragePartitionConfig& partition_config);
+    const content::StoragePartitionConfig& partition_config LIFETIME_BOUND);
 
 // Returns the container ID for |web_contents|: first from SiteInstance when it
 // identifies a Containers storage partition; otherwise from WebContentsUserData
