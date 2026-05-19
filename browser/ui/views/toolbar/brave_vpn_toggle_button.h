@@ -12,7 +12,7 @@
 #include "ui/views/controls/button/toggle_button.h"
 
 namespace brave_vpn {
-class BraveVpnServiceImpl;
+class BraveVpnService;
 }  // namespace brave_vpn
 
 class Browser;
@@ -36,7 +36,7 @@ class BraveVPNToggleButton : public views::ToggleButton,
   void UpdateState();
 
   raw_ptr<Browser> browser_ = nullptr;
-  raw_ptr<brave_vpn::BraveVpnServiceImpl> service_ = nullptr;
+  raw_ptr<brave_vpn::BraveVpnService> service_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_VPN_TOGGLE_BUTTON_H_

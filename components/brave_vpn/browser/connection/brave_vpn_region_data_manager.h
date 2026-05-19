@@ -51,7 +51,7 @@ class BraveVPNRegionDataManager {
   std::string GetRegionPrecisionForName(const std::string& name) const;
 
  private:
-  friend class BraveVPNServiceTest;
+  friend class BraveVpnServiceImplV1Test;
   friend class SystemVPNConnectionAPIUnitTest;
 
   std::string GetCountryRegionNameFrom(const std::string& country_iso) const;

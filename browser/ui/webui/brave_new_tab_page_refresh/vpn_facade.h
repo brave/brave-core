@@ -20,7 +20,7 @@ class WebContents;
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 namespace brave_vpn {
-class BraveVpnServiceImpl;
+class BraveVpnService;
 }
 
 class BraveVPNController;
@@ -36,7 +36,7 @@ namespace brave_new_tab_page_refresh {
 class VPNFacade {
  public:
   VPNFacade(content::WebContents& web_contents,
-            brave_vpn::BraveVpnServiceImpl* vpn_service);
+            brave_vpn::BraveVpnService* vpn_service);
   ~VPNFacade();
 
   VPNFacade(const VPNFacade&) = delete;
@@ -52,7 +52,7 @@ class VPNFacade {
   BraveVPNController* GetBraveVPNController();
 
   raw_ref<content::WebContents> web_contents_;
-  raw_ptr<brave_vpn::BraveVpnServiceImpl> vpn_service_;
+  raw_ptr<brave_vpn::BraveVpnService> vpn_service_;
 };
 
 #else

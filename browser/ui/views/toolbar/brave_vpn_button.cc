@@ -16,7 +16,7 @@
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/color/color_palette.h"
 #include "brave/browser/ui/views/brave_actions/brave_icon_with_badge_image_source.h"
-#include "brave/components/brave_vpn/browser/brave_vpn_service_impl.h"
+#include "brave/components/brave_vpn/browser/brave_vpn_service.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/browser.h"
@@ -79,7 +79,7 @@ class VPNButtonMenuModel : public ui::SimpleMenuModel,
             browser_->profile())) {
     CHECK(service_);
     Observe(service_);
-    Build(service_->is_purchased_user());
+    Build(service_->IsPurchased());
   }
 
   ~VPNButtonMenuModel() override = default;
@@ -97,7 +97,7 @@ class VPNButtonMenuModel : public ui::SimpleMenuModel,
       brave_vpn::mojom::PurchasedState state,
       const std::optional<std::string>& description) override {
     // Rebuild menu items based on purchased state change.
-    Build(service_->is_purchased_user());
+    Build(service_->IsPurchased());
   }
 
   void Build(bool purchased) {
@@ -117,7 +117,7 @@ class VPNButtonMenuModel : public ui::SimpleMenuModel,
   }
 
   raw_ptr<Browser, DanglingUntriaged> browser_ = nullptr;
-  raw_ptr<brave_vpn::BraveVpnServiceImpl, DanglingUntriaged> service_ = nullptr;
+  raw_ptr<brave_vpn::BraveVpnService, DanglingUntriaged> service_ = nullptr;
 };
 
 const ui::ColorProvider* GetColorProviderForView(
@@ -367,7 +367,7 @@ bool BraveVPNButton::IsConnectError() const {
 }
 
 bool BraveVPNButton::IsPurchased() const {
-  return service_->is_purchased_user();
+  return service_->IsPurchased();
 }
 void BraveVPNButton::OnButtonPressed(const ui::Event& event) {
   chrome::ExecuteCommand(browser_, IDC_SHOW_BRAVE_VPN_PANEL);

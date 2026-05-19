@@ -12,7 +12,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
-#include "brave/components/brave_vpn/browser/brave_vpn_service_impl.h"
+#include "brave/components/brave_vpn/browser/brave_vpn_service.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
 #include "brave/components/brave_vpn/browser/connection/connection_api_impl.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/connection_api_impl_sim.h"
@@ -104,13 +104,11 @@ class BraveVpnButtonUnitTest : public testing::Test {
   bool DoesButtonHaveConnectedState() const { return button_->is_connected_; }
 
   void SetPurchasedState(const std::string& env, mojom::PurchasedState state) {
-    button_->service_->SetPurchasedState(env, state);
+    button_->service_->SetPurchasedStateForTesting(env, state);
   }
 
   void SetConnectionState(mojom::ConnectionState state) {
-    ASSERT_TRUE(button_->service_->connection_manager_->connection_api_impl_);
-    button_->service_->connection_manager_->connection_api_impl_
-        ->SetConnectionStateForTesting(state);
+    button_->service_->SetConnectionStateForTesting(state);
   }
 
   bool IsOsVpnConnected() const {

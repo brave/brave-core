@@ -58,7 +58,7 @@
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/browser/ui/brave_vpn/brave_vpn_controller.h"
-#include "brave/components/brave_vpn/browser/brave_vpn_service_impl.h"
+#include "brave/components/brave_vpn/browser/brave_vpn_service.h"
 #endif
 
 namespace {
@@ -363,7 +363,7 @@ void BraveNewTabPageHandler::OpenVPNAccountPage(
 void BraveNewTabPageHandler::ReportVPNWidgetUsage() {
   auto* vpn_service =
       brave_vpn::BraveVpnServiceFactory::GetForProfile(profile_);
-  vpn_service->brave_vpn_metrics()->RecordWidgetUsage(true);
+  vpn_service->RecordWidgetUsageMetrics(true);
 }
 #endif
 

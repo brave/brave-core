@@ -14,6 +14,7 @@
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/misc_metrics/uptime_monitor_impl.h"
 #include "brave/browser/skus/skus_service_factory.h"
+#include "brave/components/brave_vpn/browser/brave_vpn_service.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service_impl.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/skus/common/features.h"
@@ -104,7 +105,7 @@ BraveVpnServiceFactory* BraveVpnServiceFactory::GetInstance() {
 // static
 mojo::PendingRemote<brave_vpn::mojom::ServiceHandler>
 BraveVpnServiceFactory::GetRemoteForProfile(Profile* profile) {
-  auto* service = static_cast<BraveVpnServiceImpl*>(
+  auto* service = static_cast<BraveVpnService*>(
       GetInstance()->GetServiceForBrowserContext(profile, true));
 
   if (!service) {
@@ -116,8 +117,8 @@ BraveVpnServiceFactory::GetRemoteForProfile(Profile* profile) {
 #endif  // BUILDFLAG(IS_ANDROID)
 
 // static
-BraveVpnServiceImpl* BraveVpnServiceFactory::GetForProfile(Profile* profile) {
-  return static_cast<BraveVpnServiceImpl*>(
+BraveVpnService* BraveVpnServiceFactory::GetForProfile(Profile* profile) {
+  return static_cast<BraveVpnService*>(
       GetInstance()->GetServiceForBrowserContext(profile, true));
 }
 
@@ -125,7 +126,7 @@ BraveVpnServiceImpl* BraveVpnServiceFactory::GetForProfile(Profile* profile) {
 void BraveVpnServiceFactory::BindForContext(
     content::BrowserContext* context,
     mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler> receiver) {
-  auto* service = static_cast<BraveVpnServiceImpl*>(
+  auto* service = static_cast<BraveVpnService*>(
       GetInstance()->GetServiceForBrowserContext(context, true));
   if (service) {
     service->BindInterface(std::move(receiver));
