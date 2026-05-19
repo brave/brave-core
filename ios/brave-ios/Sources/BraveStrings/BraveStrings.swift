@@ -7788,61 +7788,6 @@ extension Strings {
       value: "on %@",
       comment: "This is a suffix statement. example: SomeChannel on Twitter"
     )
-    public static let braveTalkRewardsOptInTitle =
-      NSLocalizedString(
-        "rewards.braveTalkRewardsOptInTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "To start a free call, turn on Brave Rewards",
-        comment: "Title for Brave Talk rewards opt-in screen"
-      )
-
-    public static let braveTalkRewardsOptInBody =
-      NSLocalizedString(
-        "rewards.braveTalkRewardsOptInBody",
-        tableName: "BraveShared",
-        bundle: .module,
-        value:
-          "With Brave Rewards, you can view privacy-preserving ads from the Brave Ads network. No trackers. No slowdowns. And your data stays totally safe.",
-        comment: "Body for Brave Talk rewards opt-in screen"
-      )
-
-    public static let braveTalkRewardsOptInButtonTitle =
-      NSLocalizedString(
-        "rewards.braveTalkRewardsOptInButtonTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Turn on Rewards",
-        comment: "Title for Brave Talk rewards opt-in screen button"
-      )
-
-    public static let braveTalkRewardsOptInDisclaimer =
-      NSLocalizedString(
-        "rewards.optInDisclaimer",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "By clicking, you agree to the %@ and %@. Disable any time in Settings.",
-        comment:
-          "The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...'"
-      )
-
-    public static let braveTalkRewardsOptInSuccessTitle =
-      NSLocalizedString(
-        "rewards.braveTalkRewardsOptInSuccessTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "You can now start a free call",
-        comment: "Title for successful Brave Talk rewards opt-in"
-      )
-
-    public static let braveTalkRewardsOptInSuccessBody =
-      NSLocalizedString(
-        "rewards.braveTalkRewardsOptInSuccessBody",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Click anywhere on the screen to continue to Brave Talk.",
-        comment: "Body for successful Brave Talk rewards opt-in"
-      )
   }
 }
 

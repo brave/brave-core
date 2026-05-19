@@ -2470,39 +2470,6 @@ extension BrowserViewController: TabsBarViewControllerDelegate {
 }
 
 extension BrowserViewController: TabMiscDelegate {
-  func showRequestRewardsPanel(_ tab: some TabState) {
-    let vc = BraveTalkRewardsOptInViewController()
-
-    // Edge case: user disabled Rewards button and wants to access free Brave Talk
-    // We re-enable the button again. It can be disabled in settings later.
-    Preferences.Rewards.hideRewardsIcon.value = false
-
-    let popover = PopoverController(
-      contentController: vc,
-      contentSizeBehavior: .preferredContentSize
-    )
-    popover.addsConvenientDismissalMargins = false
-    popover.present(from: topToolbar.rewardsButton, on: self)
-
-    vc.rewardsEnabledHandler = { [weak self] in
-      guard let self = self else { return }
-
-      self.rewards.isEnabled = true
-
-      let vc2 = BraveTalkOptInSuccessViewController()
-      let popover2 = PopoverController(
-        contentController: vc2,
-        contentSizeBehavior: .preferredContentSize
-      )
-      popover2.present(from: self.topToolbar.rewardsButton, on: self)
-    }
-
-    vc.linkTapped = { [unowned self] request in
-      self.tabManager
-        .addTabAndSelect(request, isPrivate: privateBrowsingManager.isPrivateBrowsing)
-    }
-  }
-
   func stopMediaPlayback(_ tab: some TabState) {
     tabManager.allTabs.forEach({
       PlaylistScriptHandler.stopPlayback(tab: $0)
