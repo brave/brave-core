@@ -1,3 +1,9 @@
+/* The subtitle of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenDescription" = "Dodirnite i držite ikonu preglednika Brave, a zatim je povucite u svoj dock za brz pristup.";
+
+/* The title of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenTitle" = "Dodajte Brave u svoj Dock";
+
 /* The title of the button that changes the screen to next */
 "focusOnboarding.continueButtonTitle" = "Nastavite";
 
@@ -5,7 +11,7 @@
 "focusOnboarding.defaultBrowserScreenDescription" = "Postavite Brave kao zadani preglednik.";
 
 /* The title of the screen that requests user to set Brave as default */
-"focusOnboarding.defaultBrowserScreenTitle" = "Dobivate blokiranje oglasa sa svakom stranicom koju posjetite";
+"focusOnboarding.defaultBrowserScreenTitle" = "Blokirajte oglase na svakom web-mjestu koje posjetite";
 
 /* The title of the button that closes the default browser full screen callout */
 "focusOnboarding.notNowActionButtonTitle" = "Ne sada";
@@ -25,18 +31,12 @@
 /* The description shown below the toggle for enabling privacy preserving analytics. This uses standard markdown syntax. The Learn More is a link and #p3a-learn-more is a URL fragment */
 "focusOnboarding.p3aToggleDescription" = "Uvijek se možete odjaviti u Postavkama, u odjeljku **Štitovi i privatnost**. [Doznajte više](#p3a-learn-more) o našim Analitika proizvoda koja čuva privatnost.";
 
-/* The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The "completely private & anonymous" snippet should be bold in all languages */
-"focusOnboarding.p3aToggleTitle" = "Podijelite **u postpunosti privatne i anonimne** informacije o proizvodu.";
+/* The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The "private & anonymous" snippet should be bold in all languages */
+"focusOnboarding.p3aToggleTitle" = "Dijelite **privatne i anonimne** uvide u proizvod.";
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "Započni s pregledavanjem";
 
 /* The title of the button that triggers navigation link to settings */
 "focusOnboarding.systemSettingsButtonTitle" = "Postavi kao zadano";
-
-/* The description of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorDescription" = "Počnite streamati i uživajte u manje oglasa i elemenata za praćenje.";
-
-/* The title of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorTitle" = "Razlika preglednika Brave";
 

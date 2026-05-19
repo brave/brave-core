@@ -14,7 +14,7 @@
 "enabledFeatureNote" = "Tato funkce je povolena, protože jste se k ní přihlásili.";
 
 /* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
-"featuresFooter" = "Brave Origin je verze prohlížeče Brave, která vám umožňuje snadno zakázat funkce generující příjmy, které jinak podporují Brave jako podnik. Uživatelé Brave Origin budou nadále těžit z našeho špičkového chránění soukromí, blokátoru reklam a rychlosti (prostřednictvím Štítů Brave), stejně jako z pravidelných aktualizací softwaru, záplat Chromium a vylepšení zabezpečení a ochrany soukromí. Budou také moci odemknout možnost zakázat funkce jako Brave Leo, Odměny, peněženka, VPN, Web3 domény a další.\n\nPo zakoupení budou uživatelé vidět nový ovládací panel v nabídce Nastavení prohlížeče. Existující funkce – stejně jako všechny nové funkce, které v budoucnu vydáme – by se zde zobrazily a byly by standardně vypnuté.\n\n**Poznámka: Brave Origin nebude zakázávat funkce prohlížeče, které právě používáte, a nebude mít vliv na funkce Vyhledávače Brave nebo reklamy ve Vyhledávači Brave.**";
+"featuresFooter" = "Brave Origin je verze prohlížeče Brave, která vám umožňuje snadno zakázat funkce generující příjmy, které jinak podporují Brave jako podnik. Uživatelé Brave Origin budou nadále těžit z našeho špičkového chránění soukromí, blokátoru reklam a rychlosti (prostřednictvím Štítů Brave), stejně jako z pravidelných aktualizací softwaru, záplat Chromium a vylepšení zabezpečení a ochrany soukromí. Budou také moci odemknout možnost zakázat funkce jako Brave Leo, Odměny, peněženku, VPN, Web3 domény a další.\n\nPo zakoupení uvidí uživatelé nový ovládací panel v nabídce Nastavení prohlížeče. Existující funkce – stejně jako všechny nové funkce, které v budoucnu vydáme – by se zde zobrazily a byly by standardně vypnuté.\n\n**Poznámka: Brave Origin nebude zakazovat funkce prohlížeče, které právě používáte, a nebude mít vliv na funkce Vyhledávače Brave nebo reklamy ve Vyhledávači Brave.**";
 
 /* A section header title that is shown over a list of Brave specific features */
 "featuresHeader" = "Funkce";
@@ -25,6 +25,9 @@
 /* A toggle label for Brave Leo AI feature */
 "leoAILabel" = "Umělá inteligence Leo";
 
+/* A button title that when triggered will allow a user to link their App Store purchase with Brave Account */
+"linkPurchase" = "Propojit nákup s účtem Brave";
+
 /* A toggle label for Brave News feature */
 "newsLabel" = "Zprávy";
 
@@ -32,7 +35,7 @@
 "oneTimePurchaseLabel" = "Jednorázový nákup";
 
 /* A description of Brave Origin displayed on the paywall screen. This text contains Markdown formatting, the stars represent markdown and the same paragraphs should be also be bolded when translated. */
-"paywallDescription" = "**Přizpůsobte si svůj prohlížeč a zároveň podporujte Brave**\n\nBrave Origin je placená verze prohlížeče pro uživatele, kteří nepotřebují všechny funkce, které podporují Brave jako podnik, ale přesto chtějí ochranu soukromí, kterou nabízí pouze Brave. Uživatelé Brave Origin budou nadále těžit z našeho špičkového chránění soukromí, blokátoru reklam a rychlosti (prostřednictvím Štítů Brave), stejně jako z pravidelných aktualizací softwaru, záplat Chromium a vylepšení zabezpečení a ochrany soukromí. Budou také moci odemknout možnost zakázat funkce jako AI, Odměny, peněženka, VPN, Web3 domény a další.\n\n**Brave Origin je dostupný prostřednictvím jednorázového nákupu. Na mobilních zařízeních (Android a iOS) a na počítačích lze Origin koupit jako upgrade vaší stávající verze. Na počítači je Origin také dostupný jako samostatná aplikace.** Ať už je Origin zakoupen jako upgrade nebo jako samostatná aplikace, uživatelé Origin uvidí nový ovládací panel v nabídce Nastavení. Existující funkce – stejně jako všechny nové funkce, které v budoucnu vydáme – by se zde zobrazily a byly by standardně vypnuté.*\n\n* Upozorňujeme, že pokud jste si Origin koupili jako upgrade vaší stávající verze Brave, Origin nebude zakázávat funkce prohlížeče, které právě používáte. Pro upgrade i samostatnou verzi Origin nebude mít vliv na funkce Vyhledávače Brave nebo reklamy ve Vyhledávači Brave.";
+"paywallDescription" = "**Přizpůsobte si prohlížeč a zároveň nadále podporujte Brave**\n\nBrave Origin je placená verze prohlížeče pro uživatele, kteří nepotřebují všechny funkce, které podporují Brave jako podnik, ale stále chtějí soukromí, které nabízí pouze Brave. Uživatelé Brave Origin budou nadále těžit z našeho špičkového chránění soukromí, blokátoru reklam a rychlosti (prostřednictvím Štítů Brave), stejně jako z pravidelných aktualizací softwaru, záplat Chromium a vylepšení zabezpečení a ochrany soukromí. Budou také moci odemknout možnost zakázat funkce jako AI, Odměny, peněženku, VPN, Web3 domény a další.\n\n**Brave Origin je k dispozici prostřednictvím jednorázového nákupu. Na mobilních zařízeních (Android a iOS) a na počítači lze Origin zakoupit jako upgrade vaší stávající vydané verze.** Na počítači je Origin k dispozici také jako samostatná aplikace. Ať už je zakoupen jako upgrade nebo jako samostatná aplikace, uživatelé Origin uvidí nový ovládací panel v nabídce Nastavení. Existující funkce – stejně jako všechny nové funkce, které v budoucnu vydáme – by se zde zobrazily a byly by standardně vypnuté.*\n\n* Upozorňujeme, že pokud jste si Origin zakoupili jako upgrade vaší stávající verze Brave, Origin nebude zakazovat funkce prohlížeče, které právě používáte. U upgrade i samostatné verze nebude mít Origin vliv na funkce Vyhledávače Brave nebo reklamy ve Vyhledávači Brave.";
 
 /* A toggle label for Brave Playlist feature */
 "playlistLabel" = "Seznam stop";
@@ -45,6 +48,12 @@
 
 /* An error message displayed when a purchase fails */
 "purchaseErrorMessage" = "Nelze dokončit nákup. Zkuste to prosím znovu, nebo zkontrolujte své platební údaje na Apple a následně to zkuste znovu.";
+
+/* The footer shown below the Purchase section of the settings page */
+"purchaseSectionFooter" = "Propojte svůj nákup v App Store s účtem Brave a používejte Brave Origin na dalších zařízeních";
+
+/* The header shown below the Purchase section of the settings page */
+"purchaseSectionHeader" = "Koupit";
 
 /* A button label to redeem a promo code */
 "redeemPromoCodeButton" = "Uplatnit promo kód";
@@ -75,6 +84,9 @@
 
 /* An upsell point about supporting Brave's mission and open-source work */
 "upsellSupportMission" = "Podpořte naši misi & open-source práce";
+
+/* A button title that when triggered will allow a user to view their App Store receipt */
+"viewAppStoreReceipt" = "Zobrazit stvrzenku z App Store";
 
 /* A toggle label for Brave VPN feature */
 "vpnLabel" = "VPN";

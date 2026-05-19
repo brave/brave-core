@@ -16,11 +16,17 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Dodaj oznaku";
 
+/* Add a new item to the current list */
+"addButtonTitle" = "Dodaj";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "Dodaj u omiljene stavke";
 
 /* Cell title for add folder action */
 "AddFolderActionCellTitle" = "Nova mapa";
+
+/* Settings item that opens instructions for adding Brave to the iOS dock. */
+"addToDockSettingsCell" = "Dodaj u Dock";
 
 /* Add to favorites share action. */
 "AddToFavorites" = "Dodaj u omiljene stavke";
@@ -69,6 +75,42 @@
 
 /* Settings autofill section title */
 "Autofill" = "Automatski unos";
+
+/* Label for account when indicating that a domain has multiple accounts */
+"autofill.managePassword.multipleAccounts" = "Računi";
+
+/* Alert message warning the user that deleting non-synced passwords will permanently remove them */
+"autofill.managePasswords.deleteCredentialConfirmMessage" = "Ovo će ukloniti sačuvane lozinke za %@ iz vašeg lanca sinhronizacije i sa vašeg uređaja.";
+
+/* Prompt title when deleting passwords */
+"autofill.managePasswords.deleteCredentialsAlertTitle" = "Jeste li sigurni?";
+
+/* Label for the button used to delete the current login. */
+"autofill.managePasswords.deleteManagePasswordButtonTitle" = "Izbriši";
+
+/* Title for the section header in the Manage Passwords list screen, that lists the saved sites */
+"autofill.managePasswords.headerTitle" = "Spremljeno";
+
+/* The message displayed on the manage passwords list screen, when there's at least one password, explain the feature */
+"autofill.managePasswords.instructions" = "Stvorite, spremite i upravljajte svojim zaporkama kako biste se lako prijavili na stranice i u aplikacije.";
+
+/* The header title displayed over the never saved passwords list */
+"autofill.managePasswords.neverSavedListHeaderTitle" = "Nikad spremljeno";
+
+/* Display text for the option to offer to save passwords */
+"autofill.managePasswords.offerToSavePasswords" = "Ponudi spremanje zaporki";
+
+/* Prompt that is diplayed in the search bar of the Manage Passwords list screen */
+"autofill.managePasswords.searchWebsitesPrompt" = "Pretraži web-stranice";
+
+/* Title for navigation bar of the Manage Passwords screen */
+"autofill.managePasswords.title" = "Upravljanje zaporkama";
+
+/* Text to show when the origin of a managed password is not available */
+"autofill.managePasswords.UnknownDomainText" = "Nepoznato";
+
+/* Settings autofill section title */
+"autofill.settings.title" = "Automatski unos";
 
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "Automatsko preusmjeravanje stranica AMP";
@@ -3141,6 +3183,12 @@
 
 /* No comment provided by engineer. */
 "tabs.settings.privateTabsSettingsTitle" = "Kartice Privatno";
+
+/* The description of the toggle for users to allow the browser to remember its last browsing mode so it can re-launch in that mode when Keep Private Tabs is enabled. */
+"tabs.settings.rememberBrowsingModeDescription" = "Ako je preglednik bio u privatnom načinu rada kad je posljednji put zatvoren, otvorit će se u privatnom načinu rada pri ponovnom pokretanju.";
+
+/* Toggle to launch the browser in private mode when Keep Private Tabs is enabled */
+"tabs.settings.rememberBrowsingModeTitle" = "Zapamti način pregledavanja";
 
 /* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
 "TabToolbarAccessibilityLabel" = "Navigacijska alatna traka";

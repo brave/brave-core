@@ -158,7 +158,7 @@
 "vpn.paywallYearlyPriceDividend" = "an";
 
 /* Text to show user when their vpn plan has expired */
-"vpn.planExpired" = "Expirée";
+"vpn.planExpired" = "Expiré";
 
 /* Description of vpn tunnel protocol */
 "vpn.protocolPickerDescription" = "Veuillez sélectionner votre protocole de transport préféré. Une fois le protocole sélectionné, vos identifiants VPN seront effacés et nous vous reconnecterons dès qu’une connexion VPN est établie.";
@@ -194,7 +194,7 @@
 "vpn.renewAnnually" = "Renouvellement annuel";
 
 /* Monthly tier explaination. Subscription will be renewed monthly. */
-"vpn.renewMonthly" = "Renouvelé chaque mois";
+"vpn.renewMonthly" = "Renouvellement mensuel";
 
 /* Message to show when vpn configuration reset fails. */
 "vpn.resetVPNErrorBody" = "Impossible de réinitialiser la configuration du VPN. Veuillez réessayer ou contacter l’équipe d’assistance pour obtenir de l’aide si le problème persiste.";
@@ -311,7 +311,7 @@
 "vpn.vpnConfigGenericErrorTitle" = "Erreur";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Le VPN Brave nécessite l’installation d’un profil VPN sur votre appareil pour fonctionner. ";
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Le VPN Brave nécessite l'installation d'un profil VPN sur votre appareil pour fonctionner. ";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "Autorisation refusée";

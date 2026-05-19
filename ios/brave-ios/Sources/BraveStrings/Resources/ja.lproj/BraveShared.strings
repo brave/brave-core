@@ -16,11 +16,17 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "ブックマーク追加";
 
+/* Add a new item to the current list */
+"addButtonTitle" = "追加";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "お気に入りに追加";
 
 /* Cell title for add folder action */
 "AddFolderActionCellTitle" = "新しいフォルダ";
+
+/* Settings item that opens instructions for adding Brave to the iOS dock. */
+"addToDockSettingsCell" = "Dock に追加";
 
 /* Add to favorites share action. */
 "AddToFavorites" = "お気に入りに追加";
@@ -69,6 +75,42 @@
 
 /* Settings autofill section title */
 "Autofill" = "自動入力";
+
+/* Label for account when indicating that a domain has multiple accounts */
+"autofill.managePassword.multipleAccounts" = "アカウント";
+
+/* Alert message warning the user that deleting non-synced passwords will permanently remove them */
+"autofill.managePasswords.deleteCredentialConfirmMessage" = "%@ の保存されたパスワードを Sync Chain とお使いのデバイスから削除します。";
+
+/* Prompt title when deleting passwords */
+"autofill.managePasswords.deleteCredentialsAlertTitle" = "よろしいですか？";
+
+/* Label for the button used to delete the current login. */
+"autofill.managePasswords.deleteManagePasswordButtonTitle" = "削除";
+
+/* Title for the section header in the Manage Passwords list screen, that lists the saved sites */
+"autofill.managePasswords.headerTitle" = "追加済み";
+
+/* The message displayed on the manage passwords list screen, when there's at least one password, explain the feature */
+"autofill.managePasswords.instructions" = "パスワードを作成、保存、管理して、サイトやアプリに簡単にサインインできます。";
+
+/* The header title displayed over the never saved passwords list */
+"autofill.managePasswords.neverSavedListHeaderTitle" = "常に保存しない";
+
+/* Display text for the option to offer to save passwords */
+"autofill.managePasswords.offerToSavePasswords" = "パスワードの保存を提案";
+
+/* Prompt that is diplayed in the search bar of the Manage Passwords list screen */
+"autofill.managePasswords.searchWebsitesPrompt" = "ウェブサイトを検索";
+
+/* Title for navigation bar of the Manage Passwords screen */
+"autofill.managePasswords.title" = "パスワードを管理";
+
+/* Text to show when the origin of a managed password is not available */
+"autofill.managePasswords.UnknownDomainText" = "不明";
+
+/* Settings autofill section title */
+"autofill.settings.title" = "自動入力";
 
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "AMPページの自動リダイレクト";
@@ -3141,6 +3183,12 @@
 
 /* No comment provided by engineer. */
 "tabs.settings.privateTabsSettingsTitle" = "プライベートタブ";
+
+/* The description of the toggle for users to allow the browser to remember its last browsing mode so it can re-launch in that mode when Keep Private Tabs is enabled. */
+"tabs.settings.rememberBrowsingModeDescription" = "前回終了時にブラウザがプライベートモードだった場合、再起動時にプライベートモードで開きます。";
+
+/* Toggle to launch the browser in private mode when Keep Private Tabs is enabled */
+"tabs.settings.rememberBrowsingModeTitle" = "閲覧モードを記憶";
 
 /* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
 "TabToolbarAccessibilityLabel" = "ナビゲーションツールバー";

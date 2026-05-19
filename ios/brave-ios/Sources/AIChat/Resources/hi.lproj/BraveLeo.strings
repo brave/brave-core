@@ -166,6 +166,12 @@
 /* The label for the system prompt field */
 "aichat.customModelFormSystemPromptFieldTitle" = "सिस्टम प्रॉम्प्ट";
 
+/* The description text explaining what tools supports means */
+"aichat.customModelFormToolsSupportFieldDescription" = "यदि यह मॉडल फ़ंक्शन कॉलिंग/टूल का उपयोग करने का समर्थन करता है";
+
+/* The label for the tools support toggle */
+"aichat.customModelFormToolsSupportFieldTitle" = "टूल सपोर्ट";
+
 /* Warning message shown when user enters an HTTP (not HTTPS) endpoint */
 "aichat.customModelFormUnsafeEndpointWarning" = "शायद यह एंडपॉइंट असुरक्षित है।";
 

@@ -127,6 +127,9 @@
 /* The error message when the App Store Receipt was not found in the Application Bundle */
 "storekitReceiptViewer.noReceiptFoundTitle" = "Ho sentim, no s'ha trobat cap rebut de l'App Store";
 
+/* The title of the Brave Origin product */
+"storekitReceiptViewer.originPurchaseName" = "Brave Origin";
+
 /* The title of the label that shows the date when the product subscription was cancelled */
 "storekitReceiptViewer.receiptCancellationDate" = "Data de cancel·lació";
 
