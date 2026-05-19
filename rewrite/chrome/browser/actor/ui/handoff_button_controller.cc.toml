@@ -1,0 +1,38 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[[substitution]]
+description = '''Use Brave's gradient colors and stops for the handoff button shadow.
+
+Replaces both branches of upstream's `kActorUiThemed` feature flag with an
+unconditional Brave sweep gradient.
+'''
+re_pattern = 'std::vector<SkColor> colors;.+?const SkScalar pos\[\] = \{0\.0f, 0\.4f, 0\.6f, 1\.0f\};'
+re_flags = ['DOTALL']
+replace = '''std::vector<SkColor> colors = {
+          SkColorSetARGB(255, 250, 114, 80),
+          SkColorSetARGB(255, 255, 24, 147),
+          SkColorSetARGB(255, 167, 138, 255),
+      };
+      const SkScalar pos[] = {0.0f, 0.5f, 1.0f};'''
+
+[[substitution]]
+description = '''Tighten handoff button content padding.
+
+Brave's location bar centers its URL text, so the centered handoff button
+covers it more than upstream; a smaller button is less obtrusive.
+'''
+pattern = 'gfx::Insets::TLBR(10, 10, 10, 14)'
+replace = 'gfx::Insets::TLBR(4, 6, 4, 10)'
+
+[[substitution]]
+description = '''Nudge the handoff button down when the location bar is visible.
+
+The widget bottom otherwise sits flush with the top of the contents container,
+putting the visible button into the toolbar area where it covers Brave's
+centered URL text.
+'''
+pattern = '? anchor_bounds.y() - kHandoffButtonPreferredHeight'
+replace = '? anchor_bounds.y() - kHandoffButtonPreferredHeight + (kHandoffButtonPreferredHeight / 3)'
