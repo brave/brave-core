@@ -118,7 +118,7 @@ int OnBeforeStartTransaction_ReduceLanguageWork(
                 ctx->render_frame_token())) {
       if (content::WebContents* web_contents =
               content::WebContents::FromRenderFrameHost(rfh)) {
-        additional_entropy +=
+        additional_entropy =
             containers::GetContainerIdForWebContents(web_contents);
       }
     }

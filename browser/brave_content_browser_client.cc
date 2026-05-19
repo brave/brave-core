@@ -868,7 +868,7 @@ BraveContentBrowserClient::WorkerGetBraveShieldSettings(
 #if BUILDFLAG(ENABLE_CONTAINERS)
   if (storage_partition_config &&
       base::FeatureList::IsEnabled(containers::features::kContainers)) {
-    additional_entropy +=
+    additional_entropy =
         std::string(containers::GetContainerIdFromStoragePartitionConfig(
             *storage_partition_config));
   }

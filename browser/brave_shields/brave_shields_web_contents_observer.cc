@@ -332,7 +332,7 @@ void BraveShieldsWebContentsObserver::SendShieldsSettings(
   std::string additional_entropy;
 #if BUILDFLAG(ENABLE_CONTAINERS)
   if (base::FeatureList::IsEnabled(containers::features::kContainers)) {
-    additional_entropy += containers::GetContainerIdForWebContents(
+    additional_entropy = containers::GetContainerIdForWebContents(
         navigation_handle->GetWebContents());
   }
 #endif

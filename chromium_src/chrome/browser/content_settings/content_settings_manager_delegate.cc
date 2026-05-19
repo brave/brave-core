@@ -61,7 +61,7 @@ brave_shields::mojom::ShieldsSettingsPtr GetBraveShieldsSettingsOnUI(
   if (base::FeatureList::IsEnabled(containers::features::kContainers)) {
     if (content::WebContents* web_contents =
             content::WebContents::FromRenderFrameHost(top_frame_rfh)) {
-      additional_entropy +=
+      additional_entropy =
           containers::GetContainerIdForWebContents(web_contents);
     }
   }
