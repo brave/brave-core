@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { AliasItem } from './email_aliases_item'
-import { color, font, spacing } from '@brave/leo/tokens/css/variables'
+import { color, spacing, radius } from '@brave/leo/tokens/css/variables'
 import {
   DeleteAliasModal,
   EditMode,
@@ -24,17 +24,25 @@ import {
   MAX_ALIASES,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 
+const Container = styled.div`
+  padding-bottom: ${spacing.s};
+`
+
 const AliasListIntro = styled(Row)`
   justify-content: space-between;
   padding: ${spacing.l} ${spacing['2Xl']};
-  & leo-button {
-    flex-grow: 0;
-    font: ${font.components.buttonSmall};
-  }
 `
 
-const DivWithTopDivider = styled.div`
-  border-top: ${color.divider.subtle} 2px solid;
+const Aliases = styled.div`
+  border: ${color.divider.subtle} 1px solid;
+  border-radius: ${radius.m};
+  margin: ${spacing.l} ${spacing.xl} ${spacing.xl};
+`
+
+const CreateButton = styled(Button)`
+  padding-left: ${spacing.xl};
+  padding-bottom: ${spacing.xl};
+  width: fit-content;
 `
 
 const AliasDialog = styled(Dialog)`
@@ -47,13 +55,7 @@ export type EditState = {
   alias?: Alias
 }
 
-export const ListIntroduction = ({
-  aliasesCount,
-  onCreateClicked,
-}: {
-  aliasesCount: number
-  onCreateClicked: () => void
-}) => (
+export const ListIntroduction = () => (
   <AliasListIntro>
     <Col>
       <h4>{getLocale(S.SETTINGS_EMAIL_ALIASES_LIST_TITLE)}</h4>
@@ -61,17 +63,6 @@ export const ListIntroduction = ({
         {getLocale(S.SETTINGS_EMAIL_ALIASES_CREATE_DESCRIPTION)}
       </Description>
     </Col>
-    <Button
-      id='create-new-item-button'
-      isDisabled={aliasesCount >= MAX_ALIASES}
-      kind='filled'
-      size='small'
-      name='create-alias'
-      title={getLocale(S.SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_TITLE)}
-      onClick={onCreateClicked}
-    >
-      {getLocale(S.SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_LABEL)}
-    </Button>
   </AliasListIntro>
 )
 
@@ -86,19 +77,28 @@ export const AliasList = ({
 }) => {
   const [editState, setEditState] = React.useState<EditState>({ mode: 'None' })
   return (
-    <DivWithTopDivider>
-      <ListIntroduction
-        aliasesCount={aliases.length}
-        onCreateClicked={() => setEditState({ mode: 'Create' })}
-      />
-      {aliases.map((alias) => (
-        <AliasItem
-          key={alias.email}
-          alias={alias}
-          onEdit={() => setEditState({ mode: 'Edit', alias: alias })}
-          onDelete={() => setEditState({ mode: 'Delete', alias: alias })}
-        ></AliasItem>
-      ))}
+    <Container>
+      <ListIntroduction />
+      <Aliases>
+        {aliases.map((alias) => (
+          <AliasItem
+            key={alias.email}
+            alias={alias}
+            onEdit={() => setEditState({ mode: 'Edit', alias: alias })}
+            onDelete={() => setEditState({ mode: 'Delete', alias: alias })}
+          ></AliasItem>
+        ))}
+      </Aliases>
+      <CreateButton
+        id='create-new-item-button'
+        isDisabled={aliases.length >= MAX_ALIASES}
+        kind='filled'
+        name='create-alias'
+        title={getLocale(S.SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_TITLE)}
+        onClick={() => setEditState({ mode: 'Create' })}
+      >
+        {getLocale(S.SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_LABEL)}
+      </CreateButton>
       <AliasDialog
         isOpen={editState.mode !== 'None'}
         onClose={() => setEditState({ mode: 'None' })}
@@ -124,6 +124,6 @@ export const AliasList = ({
           />
         )}
       </AliasDialog>
-    </DivWithTopDivider>
+    </Container>
   )
 }

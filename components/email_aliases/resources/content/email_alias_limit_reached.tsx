@@ -32,7 +32,7 @@ const ListLabel = styled.div`
 
 const AliasListBox = styled.div`
   border: 1px solid ${color.divider.subtle};
-  border-radius: ${radius.xl};
+  border-radius: ${radius.m};
   overflow: hidden auto;
   max-height: 208px;
 `
