@@ -56,7 +56,7 @@
   <FrameLayout android:id="@+id/brave_shields_button_layout"
       android:layout_width="45dp"
       android:orientation="vertical"
-      android:background="@drawable/modern_toolbar_background_grey_middle_segment"
+      android:background="@drawable/modern_toolbar_background_grey_end_segment"
       android:layout_height="match_parent" >
 
       <ImageButton android:id="@+id/brave_shields_button"
