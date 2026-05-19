@@ -8,18 +8,20 @@
 
 #include <memory>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
+#include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/conversation_api_v2_client.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 
 template <class T>
 class scoped_refptr;
-
 class PrefService;
 
 namespace network {
@@ -29,6 +31,7 @@ class SharedURLLoaderFactory;
 namespace ai_chat {
 
 class AIChatCredentialManager;
+class ModelService;
 
 namespace mojom {
 class LeoModelOptions;

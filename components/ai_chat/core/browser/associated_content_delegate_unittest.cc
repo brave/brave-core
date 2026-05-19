@@ -6,12 +6,14 @@
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 
 #include <string>
+#include <string_view>
 
 #include "base/functional/callback_helpers.h"
 #include "base/scoped_observation.h"
 #include "brave/components/ai_chat/core/browser/test/mock_associated_content.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
 namespace ai_chat {
 
 class AssociatedContentSnapShotObserver

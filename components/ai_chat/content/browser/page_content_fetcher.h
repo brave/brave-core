@@ -11,8 +11,11 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/ai_chat/content/browser/associated_web_contents_content.h"
+#include "brave/components/ai_chat/core/browser/associated_content_driver.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+
+class GURL;
 
 namespace content {
 class WebContents;

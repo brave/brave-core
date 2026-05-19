@@ -6,20 +6,35 @@
 #include "brave/components/ai_chat/content/browser/full_screenshotter.h"
 
 #include <algorithm>
+#include <optional>
+#include <ostream>
 #include <utility>
 
 #include "base/check.h"
+#include "base/containers/flat_map.h"
+#include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
+#include "base/location.h"
 #include "base/logging.h"
+#include "base/memory/raw_ref.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "base/types/expected.h"
+#include "base/unguessable_token.h"
 #include "brave/components/ai_chat/content/browser/pdf_utils.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "components/paint_preview/browser/compositor_utils.h"
 #include "components/paint_preview/browser/paint_preview_base_service.h"
+#include "components/paint_preview/browser/paint_preview_file_mixin.h"
+#include "components/paint_preview/browser/paint_preview_policy.h"
+#include "components/paint_preview/common/capture_result.h"
+#include "components/paint_preview/common/proto/paint_preview.pb.h"
 #include "components/paint_preview/common/recording_map.h"
+#include "components/paint_preview/common/serialized_recording.h"
+#include "components/paint_preview/public/paint_preview_compositor_client.h"
+#include "components/paint_preview/public/paint_preview_compositor_service.h"
 #include "content/public/browser/render_widget_host_view.h"
 #include "mojo/public/cpp/base/proto_wrapper.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"

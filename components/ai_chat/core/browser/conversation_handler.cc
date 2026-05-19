@@ -9,37 +9,39 @@
 
 #include <algorithm>
 #include <iterator>
+#include <map>
 #include <memory>
 #include <optional>
+#include <ostream>
 #include <string_view>
 #include <variant>
 #include <vector>
 
+#include "absl/container/flat_hash_set.h"
+#include "absl/hash/hash.h"
 #include "base/barrier_closure.h"
 #include "base/check.h"
-#include "base/check_op.h"
-#include "base/containers/fixed_flat_set.h"
 #include "base/containers/span.h"
 #include "base/containers/to_vector.h"
 #include "base/debug/crash_logging.h"
 #include "base/debug/dump_without_crashing.h"
-#include "base/files/file_path.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/logging.h"
+#include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
+#include "base/metrics/field_trial_params.h"
 #include "base/numerics/safe_math.h"
 #include "base/rand_util.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/task/bind_post_task.h"
 #include "base/time/time.h"
-#include "base/types/expected.h"
+#include "base/types/strong_alias.h"
 #include "base/uuid.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_feedback_api.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
-#include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/model_validator.h"
@@ -51,14 +53,14 @@
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/prefs.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
+#include "build/build_config.h"
 #include "components/grit/brave_components_strings.h"
-#include "components/prefs/pref_service.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
-#include "mojo/public/cpp/bindings/struct_ptr.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "url/gurl.h"
 
 using api_request_helper::APIRequestResult;
 

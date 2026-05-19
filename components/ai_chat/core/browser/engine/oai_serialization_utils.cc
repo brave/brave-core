@@ -5,8 +5,15 @@
 
 #include "brave/components/ai_chat/core/browser/engine/oai_serialization_utils.h"
 
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include <string>
+#include <string_view>
+#include <utility>
+#include <vector>
+
+#include "base/containers/flat_map.h"
+#include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "url/gurl.h"
 
 namespace ai_chat {
 

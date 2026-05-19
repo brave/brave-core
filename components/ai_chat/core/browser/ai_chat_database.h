@@ -6,18 +6,27 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_AI_CHAT_DATABASE_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_AI_CHAT_DATABASE_H_
 
+#include <stddef.h>
+#include <stdint.h>
+
 #include <optional>
 #include <string>
 #include <string_view>
 #include <vector>
 
+#include "base/files/file_path.h"
 #include "base/sequence_checker.h"
 #include "base/thread_annotations.h"
+#include "base/time/time.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
 #include "components/os_crypt/async/common/encryptor.h"
 #include "sql/database.h"
 #include "sql/init_status.h"
+
+namespace sql {
+class Statement;
+}  // namespace sql
 
 namespace ai_chat {
 

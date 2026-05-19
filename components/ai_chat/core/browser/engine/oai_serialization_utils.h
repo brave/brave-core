@@ -14,6 +14,12 @@
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
 
 namespace ai_chat {
+namespace mojom {
+class FileContentBlock;
+class ImageContentBlock;
+class MemoryContentBlock;
+}  // namespace mojom
+struct OAIMessage;
 
 // Converts a MemoryContentBlock's memory map to a base::DictValue.
 // String values are stored directly; list values become base::ListValue.

@@ -5,11 +5,16 @@
 
 #include "brave/components/ai_chat/core/browser/engine/oblivious_http_config_manager.h"
 
+#include <compare>
+#include <string_view>
 #include <utility>
+#include <vector>
 
 #include "base/base64.h"
 #include "base/functional/bind.h"
 #include "base/json/values_util.h"
+#include "base/memory/raw_ref.h"
+#include "base/numerics/clamped_math.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/utils.h"

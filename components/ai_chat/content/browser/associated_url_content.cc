@@ -5,21 +5,29 @@
 
 #include "brave/components/ai_chat/content/browser/associated_url_content.h"
 
+#include <ostream>
+#include <string_view>
 #include <utility>
 
 #include "base/functional/bind.h"
-#include "base/functional/callback_forward.h"
+#include "base/location.h"
 #include "base/logging.h"
+#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
+#include "base/numerics/clamped_math.h"
+#include "base/one_shot_event.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/utf_ostream_operators.h"
+#include "base/time/time.h"
 #include "base/uuid.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
-#include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
 #include "net/base/net_errors.h"
 #include "ui/base/page_transition_types.h"
+#include "url/gurl.h"
 
 namespace ai_chat {
 

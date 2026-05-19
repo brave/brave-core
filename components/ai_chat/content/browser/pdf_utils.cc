@@ -5,6 +5,8 @@
 
 #include "brave/components/ai_chat/content/browser/pdf_utils.h"
 
+#include <string>
+
 #include "content/public/browser/web_contents.h"
 
 namespace ai_chat {

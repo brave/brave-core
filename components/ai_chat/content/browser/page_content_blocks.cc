@@ -5,9 +5,13 @@
 
 #include "brave/components/ai_chat/content/browser/page_content_blocks.h"
 
-#include <string>
+#include <stddef.h>
 
-#include "base/logging.h"
+#include <string>
+#include <string_view>
+
+#include "base/check_op.h"
+#include "base/metrics/field_trial_params.h"
 #include "base/strings/escape.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
@@ -17,6 +21,7 @@
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "components/optimization_guide/proto/features/common_quality_data.pb.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
+#include "third_party/protobuf/src/google/protobuf/repeated_ptr_field.h"
 
 namespace ai_chat {
 

@@ -6,11 +6,15 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_tab_focus_metrics.h"
 
 #include <memory>
+#include <string>
+#include <string_view>
 
+#include "base/numerics/clamped_math.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

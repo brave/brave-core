@@ -7,36 +7,43 @@
 
 #include <algorithm>
 #include <cstddef>
+#include <functional>
 #include <optional>
+#include <ostream>
 #include <string>
 #include <string_view>
-#include <type_traits>
 #include <vector>
 
+#include "absl/hash/hash.h"
 #include "base/barrier_callback.h"
 #include "base/check.h"
 #include "base/containers/adapters.h"
+#include "base/containers/adapters_internal.h"
+#include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
 #include "base/json/json_writer.h"
+#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/numerics/clamped_math.h"
+#include "base/metrics/field_trial_params.h"
 #include "base/strings/string_split.h"
-#include "base/time/time.h"
+#include "base/strings/string_util.h"
 #include "base/types/expected.h"
 #include "base/values.h"
+#include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_parsing.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/common/features.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/prefs.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
+#include "url/origin.h"
 
 namespace ai_chat {
 

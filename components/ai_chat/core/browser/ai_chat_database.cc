@@ -6,15 +6,20 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"
 
 #include <algorithm>
+#include <functional>
 #include <map>
 #include <numeric>
 #include <optional>
+#include <ostream>
 #include <string>
 #include <utility>
 #include <vector>
 
 #include "base/check.h"
 #include "base/check_op.h"
+#include "base/containers/flat_set.h"
+#include "base/containers/flat_tree.h"
+#include "base/containers/span.h"
 #include "base/logging.h"
 #include "base/sequence_checker.h"
 #include "base/strings/string_split.h"
@@ -31,6 +36,8 @@
 #include "sql/statement.h"
 #include "sql/statement_id.h"
 #include "sql/transaction.h"
+#include "third_party/protobuf/src/google/protobuf/repeated_ptr_field.h"
+#include "url/gurl.h"
 
 namespace ai_chat {
 

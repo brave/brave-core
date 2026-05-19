@@ -6,13 +6,16 @@
 #include "brave/components/ai_chat/core/browser/customization_settings_handler.h"
 
 #include <memory>
+#include <optional>
+#include <ostream>
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ref.h"
+#include "base/run_loop.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
-#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/customization_settings.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/prefs.h"

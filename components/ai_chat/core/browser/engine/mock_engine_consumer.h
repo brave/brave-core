@@ -6,16 +6,23 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_MOCK_ENGINE_CONSUMER_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_MOCK_ENGINE_CONSUMER_H_
 
+#include <optional>
 #include <string>
+#include <string_view>
 #include <vector>
 
+#include "base/memory/weak_ptr.h"
+#include "base/types/expected.h"
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "testing/gmock/include/gmock/gmock.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 namespace ai_chat {
+class Tool;
 
 class MockEngineConsumer : public EngineConsumer {
  public:

@@ -6,12 +6,17 @@
 #include "brave/components/ai_chat/content/browser/ai_page_content_fetcher.h"
 
 #include <string>
+#include <tuple>
 #include <utility>
 
+#include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
+#include "base/memory/raw_ref.h"
 #include "base/test/test_future.h"
+#include "base/types/expected.h"
 #include "brave/components/ai_chat/content/browser/annotated_page_content_test_util.h"
 #include "components/optimization_guide/content/browser/page_content_proto_provider.h"
+#include "components/optimization_guide/proto/features/common_quality_data.pb.h"
 #include "content/public/test/test_renderer_host.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"

@@ -17,9 +17,11 @@
 #include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/types/expected.h"
 #include "brave/components/ai_chat/content/browser/full_screenshotter.h"
 #include "brave/components/ai_chat/core/browser/associated_content_driver.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
@@ -42,6 +44,7 @@ class AIChatUIBrowserTest;
 
 namespace ai_chat {
 class AIChatMetrics;
+class FullScreenshotter;
 
 // Provides context to an AI Chat conversation in the form of the Tab's content
 class AssociatedWebContentsContent : public content::WebContentsObserver,

@@ -5,6 +5,8 @@
 
 #include "brave/components/ai_chat/core/browser/engine/oai_parsing.h"
 
+#include <ostream>
+#include <string_view>
 #include <utility>
 
 #include "base/json/json_writer.h"

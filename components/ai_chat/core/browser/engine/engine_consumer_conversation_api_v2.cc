@@ -5,14 +5,27 @@
 
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_conversation_api_v2.h"
 
+#include <functional>
+#include <optional>
+#include <vector>
+
+#include "absl/hash/hash.h"
 #include "base/barrier_callback.h"
 #include "base/check.h"
+#include "base/functional/bind.h"
+#include "base/functional/callback.h"
+#include "base/functional/callback_helpers.h"
+#include "base/functional/function_ref.h"
+#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/strings/string_split.h"
 #include "base/types/expected.h"
 #include "brave/components/ai_chat/core/browser/engine/conversation_api_v2_client.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_parsing.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace ai_chat {

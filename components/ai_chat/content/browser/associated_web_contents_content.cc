@@ -5,7 +5,10 @@
 
 #include "brave/components/ai_chat/content/browser/associated_web_contents_content.h"
 
+#include <stddef.h>
+
 #include <cstdint>
+#include <functional>
 #include <memory>
 #include <optional>
 #include <ostream>
@@ -13,16 +16,15 @@
 #include <string_view>
 #include <vector>
 
-#include "base/barrier_callback.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
+#include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_ostream_operators.h"
-#include "base/strings/utf_string_conversions.h"
-#include "base/types/fixed_array.h"
 #include "base/uuid.h"
 #include "brave/components/ai_chat/content/browser/ai_page_content_fetcher.h"
+#include "brave/components/ai_chat/content/browser/full_screenshotter.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
 #include "brave/components/ai_chat/content/browser/pdf_utils.h"
 #include "brave/components/ai_chat/core/browser/associated_content_driver.h"
@@ -32,7 +34,6 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
-#include "content/public/browser/browser_accessibility_state.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_details.h"
 #include "content/public/browser/navigation_entry.h"
@@ -47,6 +48,9 @@
 #include "services/service_manager/public/cpp/interface_provider.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "third_party/blink/public/common/permissions/permission_utils.h"
+#include "third_party/blink/public/mojom/permissions/permission.mojom.h"
+#include "third_party/blink/public/mojom/permissions/permission_status.mojom-forward.h"
+#include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_PDF)
 #include "brave/components/ai_chat/content/browser/pdf_text_helper.h"

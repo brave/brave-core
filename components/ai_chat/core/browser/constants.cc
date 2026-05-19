@@ -5,11 +5,11 @@
 
 #include "brave/components/ai_chat/core/browser/constants.h"
 
+#include <string>
 #include <utility>
 
 #include "base/strings/string_util.h"
 #include "components/grit/brave_components_strings.h"
-#include "mojo/public/cpp/bindings/struct_ptr.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace ai_chat {

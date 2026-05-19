@@ -8,6 +8,10 @@
 
 #include "content/public/browser/navigation_throttle.h"
 
+namespace content {
+class NavigationThrottleRegistry;
+}  // namespace content
+
 namespace ai_chat {
 
 // Prevents navigation to certain AI Chat URLs

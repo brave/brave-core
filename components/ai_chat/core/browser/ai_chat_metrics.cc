@@ -8,27 +8,35 @@
 #include <limits.h>
 
 #include <algorithm>
+#include <atomic>
 #include <cmath>
-#include <cstdint>
+#include <compare>
+#include <functional>
+#include <iterator>
 #include <limits>
+#include <ostream>
 #include <string_view>
 #include <utility>
+#include <vector>
 
 #include "base/check.h"
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/map_util.h"
 #include "base/functional/bind.h"
 #include "base/location.h"
+#include "base/memory/raw_ref.h"
+#include "base/metrics/histogram_base.h"
 #include "base/metrics/histogram_functions_internal_overloads.h"
 #include "base/metrics/histogram_macros.h"
+#include "base/numerics/clamped_math.h"
 #include "base/time/time.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "brave/components/p3a_utils/feature_usage.h"
 #include "brave/components/sidebar/common/features.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
 
 namespace ai_chat {
 

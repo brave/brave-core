@@ -7,23 +7,30 @@
 
 #include <memory>
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include "base/functional/callback_helpers.h"
-#include "base/run_loop.h"
+#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
+#include "base/numerics/clamped_math.h"
 #include "base/test/gmock_callback_support.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
+#include "base/time/time.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
-#include "content/public/browser/browser_context.h"
-#include "content/public/browser/navigation_handle.h"
-#include "content/public/browser/web_contents.h"
+#include "content/public/test/browser_task_environment.h"
 #include "content/public/test/mock_navigation_handle.h"
 #include "content/public/test/test_renderer_host.h"
-#include "content/public/test/web_contents_tester.h"
+#include "net/base/net_errors.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
+
+namespace base {
+class OneShotEvent;
+}  // namespace base
 
 using base::test::RunOnceCallback;
 using testing::_;
