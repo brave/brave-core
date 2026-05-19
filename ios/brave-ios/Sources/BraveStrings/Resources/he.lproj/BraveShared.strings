@@ -16,11 +16,17 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "הוספת סימנייה";
 
+/* Add a new item to the current list */
+"addButtonTitle" = "הוספה";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "הוספה למועדפים";
 
 /* Cell title for add folder action */
 "AddFolderActionCellTitle" = "תיקייה חדשה";
+
+/* Settings item that opens instructions for adding Brave to the iOS dock. */
+"addToDockSettingsCell" = "הוספה ל-Dock";
 
 /* Add to favorites share action. */
 "AddToFavorites" = "הוספה למועדפים";
@@ -69,6 +75,42 @@
 
 /* Settings autofill section title */
 "Autofill" = "מילוי אוטומטי";
+
+/* Label for account when indicating that a domain has multiple accounts */
+"autofill.managePassword.multipleAccounts" = "חשבונות";
+
+/* Alert message warning the user that deleting non-synced passwords will permanently remove them */
+"autofill.managePasswords.deleteCredentialConfirmMessage" = "פעולה זו תסיר את הסיסמאות השמורות עבור %@ משרשרת הסנכרון שלך ומהמכשיר שלך.";
+
+/* Prompt title when deleting passwords */
+"autofill.managePasswords.deleteCredentialsAlertTitle" = "האם את/ה בטוח/ה?";
+
+/* Label for the button used to delete the current login. */
+"autofill.managePasswords.deleteManagePasswordButtonTitle" = "מחיקה";
+
+/* Title for the section header in the Manage Passwords list screen, that lists the saved sites */
+"autofill.managePasswords.headerTitle" = "בוצעה שמירה";
+
+/* The message displayed on the manage passwords list screen, when there's at least one password, explain the feature */
+"autofill.managePasswords.instructions" = "יצירה, שמירה וניהול של הסיסמאות שלך כדי להתחבר בקלות לאתרים ולאפליקציות.";
+
+/* The header title displayed over the never saved passwords list */
+"autofill.managePasswords.neverSavedListHeaderTitle" = "פריטים שאף פעם לא נשמרו";
+
+/* Display text for the option to offer to save passwords */
+"autofill.managePasswords.offerToSavePasswords" = "הצעה לשמירת סיסמאות";
+
+/* Prompt that is diplayed in the search bar of the Manage Passwords list screen */
+"autofill.managePasswords.searchWebsitesPrompt" = "חיפוש אתרים";
+
+/* Title for navigation bar of the Manage Passwords screen */
+"autofill.managePasswords.title" = "ניהול סיסמאות";
+
+/* Text to show when the origin of a managed password is not available */
+"autofill.managePasswords.UnknownDomainText" = "לא ידוע";
+
+/* Settings autofill section title */
+"autofill.settings.title" = "מילוי אוטומטי";
 
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "הפניה אוטומטית של דפי AMP";
@@ -2375,7 +2417,7 @@
 "settings.blockYouTubeDistractingElementsDesc" = "חסימת אלמנטים מסיחים ב-YouTube";
 
 /* Title beside the toggle for blocking YouTube distracting elements */
-"settings.blockYouTubeDistractingElementsTitle" = "חסימת רכיבים מסיחים ב-YouTube";
+"settings.blockYouTubeDistractingElementsTitle" = "חסימת אלמנטים מסיחים ב-YouTube";
 
 /* Description beside the toggle for blocking YouTube recommendations */
 "settings.blockYoutubeRecommendationsDesc" = "חוסם את הרכיב ׳הבא׳ ואת כרטיסיות הסיום ב-youtube.com";
@@ -3141,6 +3183,12 @@
 
 /* No comment provided by engineer. */
 "tabs.settings.privateTabsSettingsTitle" = "כרטיסיות פרטיות";
+
+/* The description of the toggle for users to allow the browser to remember its last browsing mode so it can re-launch in that mode when Keep Private Tabs is enabled. */
+"tabs.settings.rememberBrowsingModeDescription" = "אם הדפדפן היה במצב פרטי כאשר נסגר לאחרונה, הוא ייפתח במצב פרטי בהפעלה מחדש.";
+
+/* Toggle to launch the browser in private mode when Keep Private Tabs is enabled */
+"tabs.settings.rememberBrowsingModeTitle" = "זכור מצב גלישה";
 
 /* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
 "TabToolbarAccessibilityLabel" = "סרגל הניווט";

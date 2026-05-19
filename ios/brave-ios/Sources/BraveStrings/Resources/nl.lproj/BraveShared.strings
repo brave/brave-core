@@ -16,11 +16,17 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Voeg bladwijzer toe";
 
+/* Add a new item to the current list */
+"addButtonTitle" = "Voeg toe";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "Voeg toe aan Favorieten";
 
 /* Cell title for add folder action */
 "AddFolderActionCellTitle" = "Nieuwe map";
+
+/* Settings item that opens instructions for adding Brave to the iOS dock. */
+"addToDockSettingsCell" = "Toevoegen aan Dock";
 
 /* Add to favorites share action. */
 "AddToFavorites" = "Voeg toe aan Favorieten";
@@ -69,6 +75,42 @@
 
 /* Settings autofill section title */
 "Autofill" = "Automatisch aanvullen";
+
+/* Label for account when indicating that a domain has multiple accounts */
+"autofill.managePassword.multipleAccounts" = "Accounts";
+
+/* Alert message warning the user that deleting non-synced passwords will permanently remove them */
+"autofill.managePasswords.deleteCredentialConfirmMessage" = "Hiermee worden de opgeslagen wachtwoorden voor %@ verwijderd uit je synchronisatieketen en van je apparaat.";
+
+/* Prompt title when deleting passwords */
+"autofill.managePasswords.deleteCredentialsAlertTitle" = "Weet je het zeker?";
+
+/* Label for the button used to delete the current login. */
+"autofill.managePasswords.deleteManagePasswordButtonTitle" = "Verwijder";
+
+/* Title for the section header in the Manage Passwords list screen, that lists the saved sites */
+"autofill.managePasswords.headerTitle" = "Opgeslagen";
+
+/* The message displayed on the manage passwords list screen, when there's at least one password, explain the feature */
+"autofill.managePasswords.instructions" = "Maak, sla op en beheer je wachtwoorden om eenvoudig in te loggen op sites en apps.";
+
+/* The header title displayed over the never saved passwords list */
+"autofill.managePasswords.neverSavedListHeaderTitle" = "Nooit bewaard";
+
+/* Display text for the option to offer to save passwords */
+"autofill.managePasswords.offerToSavePasswords" = "Aanbieden om wachtwoorden op te slaan";
+
+/* Prompt that is diplayed in the search bar of the Manage Passwords list screen */
+"autofill.managePasswords.searchWebsitesPrompt" = "Zoek websites";
+
+/* Title for navigation bar of the Manage Passwords screen */
+"autofill.managePasswords.title" = "Wachtwoorden beheren";
+
+/* Text to show when the origin of a managed password is not available */
+"autofill.managePasswords.UnknownDomainText" = "Onbekend";
+
+/* Settings autofill section title */
+"autofill.settings.title" = "Automatisch aanvullen";
 
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "Leid AMP-pagina's automatisch om";
@@ -3141,6 +3183,12 @@
 
 /* No comment provided by engineer. */
 "tabs.settings.privateTabsSettingsTitle" = "Privétabbladen";
+
+/* The description of the toggle for users to allow the browser to remember its last browsing mode so it can re-launch in that mode when Keep Private Tabs is enabled. */
+"tabs.settings.rememberBrowsingModeDescription" = "Als de browser bij het laatst sluiten in de privémodus was, wordt deze bij het opnieuw starten in de privémodus geopend.";
+
+/* Toggle to launch the browser in private mode when Keep Private Tabs is enabled */
+"tabs.settings.rememberBrowsingModeTitle" = "Browsemodus onthouden";
 
 /* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
 "TabToolbarAccessibilityLabel" = "Navigatiebalk";

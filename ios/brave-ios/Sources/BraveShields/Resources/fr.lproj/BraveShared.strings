@@ -140,7 +140,7 @@
 "FilterListsEdit" = "Modifier";
 
 /* This is a placeholder for an input field that takes a custom filter list URL. */
-"FilterListsEnterFilterListURL" = "Saisissez l'URL de la liste de filtres";
+"FilterListsEnterFilterListURL" = "Saisissez l’URL de la liste de filtres";
 
 /* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
 "FilterListsLastUpdatedLabel" = "Dernière mise à jour %@";
@@ -152,7 +152,7 @@
 "ForgetMeDescription" = "Efface les cookies et autres données de site lorsque vous fermez un site";
 
 /* A toggle option that deletes website content when the site is closed */
-"ForgetMeLabel" = "M'oublier quand je ferme ce site";
+"ForgetMeLabel" = "M’oublier quand je ferme ce site";
 
 /* The option the user can select to do strict https upgrading */
 "HttpsUpgradeLevelStrict" = "Strict";
@@ -206,7 +206,7 @@
 "ShredNever" = "Jamais";
 
 /* An option setting for automatically shredding only when the app is closed */
-"ShredOnAppClose" = "Fermeture de l'application";
+"ShredOnAppClose" = "Fermeture de l’application";
 
 /* An option setting for automatically shredding when the site is closed */
 "ShredOnSiteTabsClosed" = "Onglets du site fermés";
@@ -230,10 +230,10 @@
 "shredSiteSelectedTabsConfirmationMessage" = "La suppression fermera les onglets sélectionnés et effacera toutes les données du site. Cette action est irréversible.";
 
 /* A page title for the warning page that appears when http was blocked */
-"SiteIsNotSecure" = "Le site n'est pas sécurisé";
+"SiteIsNotSecure" = "Le site n’est pas sécurisé";
 
 /* A page title for the warning page that appears when http was blocked */
-"TheConnectionIsNotSecure" = "La connexion à %@ n'est pas sécurisée";
+"TheConnectionIsNotSecure" = "La connexion à %@ n’est pas sécurisée";
 
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
 "TrackersAndAdsBlocking" = "Blocage des traqueurs et annonces";

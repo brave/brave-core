@@ -1,3 +1,9 @@
+/* The subtitle of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenDescription" = "Hızlı erişim için Brave simgesine dokunup basılı tutun, ardından dock'unuza sürükleyin.";
+
+/* The title of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenTitle" = "Brave'i Dock'unuza Ekleyin";
+
 /* The title of the button that changes the screen to next */
 "focusOnboarding.continueButtonTitle" = "Devam";
 
@@ -25,18 +31,12 @@
 /* The description shown below the toggle for enabling privacy preserving analytics. This uses standard markdown syntax. The Learn More is a link and #p3a-learn-more is a URL fragment */
 "focusOnboarding.p3aToggleDescription" = "Ayarlar'da **Kalkanlar ve Gizlilik** altında istediğiniz zaman devre dışı bırakabilirsiniz. Gizliliği Koruyan Ürün Analitiğimiz hakkında [daha fazla bilgi](#p3a-learn-more).";
 
-/* The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The "completely private & anonymous" snippet should be bold in all languages */
-"focusOnboarding.p3aToggleTitle" = "**Tamamen gizli & anonim** ürün içgörüleri paylaşın.";
+/* The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The "private & anonymous" snippet should be bold in all languages */
+"focusOnboarding.p3aToggleTitle" = "**Gizli ve anonim** ürün içgörüleri paylaşın.";
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "Göz Atmaya Başla";
 
 /* The title of the button that triggers navigation link to settings */
 "focusOnboarding.systemSettingsButtonTitle" = "Varsayılan Olarak Ayarla";
-
-/* The description of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorDescription" = "Daha az reklam & izleyiciyle seyretmenin tadını çıkarın.";
-
-/* The title of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorTitle" = "Brave farkını görün";
 

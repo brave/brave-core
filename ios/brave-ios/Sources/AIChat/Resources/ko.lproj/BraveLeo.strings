@@ -166,6 +166,12 @@
 /* The label for the system prompt field */
 "aichat.customModelFormSystemPromptFieldTitle" = "시스템 프롬프트";
 
+/* The description text explaining what tools supports means */
+"aichat.customModelFormToolsSupportFieldDescription" = "이 모델이 함수 호출/도구 사용을 지원하는 경우";
+
+/* The label for the tools support toggle */
+"aichat.customModelFormToolsSupportFieldTitle" = "도구 지원";
+
 /* Warning message shown when user enters an HTTP (not HTTPS) endpoint */
 "aichat.customModelFormUnsafeEndpointWarning" = "이 엔드포인트는 안전하지 않을 수 있습니다.";
 

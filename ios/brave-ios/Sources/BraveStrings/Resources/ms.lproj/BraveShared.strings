@@ -16,11 +16,17 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Tambah Penanda Buku";
 
+/* Add a new item to the current list */
+"addButtonTitle" = "Tambah";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "Tambahkan pada Kegemaran";
 
 /* Cell title for add folder action */
 "AddFolderActionCellTitle" = "Folder baharu";
+
+/* Settings item that opens instructions for adding Brave to the iOS dock. */
+"addToDockSettingsCell" = "Tambah pada Dock";
 
 /* Add to favorites share action. */
 "AddToFavorites" = "Tambah kepada Kegemaran";
@@ -69,6 +75,42 @@
 
 /* Settings autofill section title */
 "Autofill" = "Autoisi";
+
+/* Label for account when indicating that a domain has multiple accounts */
+"autofill.managePassword.multipleAccounts" = "Akaun";
+
+/* Alert message warning the user that deleting non-synced passwords will permanently remove them */
+"autofill.managePasswords.deleteCredentialConfirmMessage" = "Tindakan ini akan mengeluarkan kata laluan yang disimpan untuk %@ daripada rangkaian penyegerakan dan peranti anda.";
+
+/* Prompt title when deleting passwords */
+"autofill.managePasswords.deleteCredentialsAlertTitle" = "Adakah anda pasti?";
+
+/* Label for the button used to delete the current login. */
+"autofill.managePasswords.deleteManagePasswordButtonTitle" = "Padam";
+
+/* Title for the section header in the Manage Passwords list screen, that lists the saved sites */
+"autofill.managePasswords.headerTitle" = "Disimpan";
+
+/* The message displayed on the manage passwords list screen, when there's at least one password, explain the feature */
+"autofill.managePasswords.instructions" = "Cipta, simpan dan urus kata laluan anda untuk log masuk dengan mudah ke laman dan apl.";
+
+/* The header title displayed over the never saved passwords list */
+"autofill.managePasswords.neverSavedListHeaderTitle" = "Tidak Pernah Disimpan";
+
+/* Display text for the option to offer to save passwords */
+"autofill.managePasswords.offerToSavePasswords" = "Tawarkan untuk menyimpan kata laluan";
+
+/* Prompt that is diplayed in the search bar of the Manage Passwords list screen */
+"autofill.managePasswords.searchWebsitesPrompt" = "Cari Laman Web";
+
+/* Title for navigation bar of the Manage Passwords screen */
+"autofill.managePasswords.title" = "Urus Kata Laluan";
+
+/* Text to show when the origin of a managed password is not available */
+"autofill.managePasswords.UnknownDomainText" = "Tidak diketahui";
+
+/* Settings autofill section title */
+"autofill.settings.title" = "Autoisi";
 
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "Ubah Hala Auto Halaman AMP";
@@ -3141,6 +3183,12 @@
 
 /* No comment provided by engineer. */
 "tabs.settings.privateTabsSettingsTitle" = "Tab Sulit";
+
+/* The description of the toggle for users to allow the browser to remember its last browsing mode so it can re-launch in that mode when Keep Private Tabs is enabled. */
+"tabs.settings.rememberBrowsingModeDescription" = "Jika pelayar berada dalam mod peribadi semasa terakhir ditutup, ia akan dibuka dalam mod peribadi semasa dilancarkan semula.";
+
+/* Toggle to launch the browser in private mode when Keep Private Tabs is enabled */
+"tabs.settings.rememberBrowsingModeTitle" = "Ingat Mod Pelayaran";
 
 /* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
 "TabToolbarAccessibilityLabel" = "Bar Alat Navigasi";

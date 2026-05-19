@@ -16,11 +16,17 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Lisää kirjanmerkki";
 
+/* Add a new item to the current list */
+"addButtonTitle" = "Lisää";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "Lisää suosikkeihin";
 
 /* Cell title for add folder action */
 "AddFolderActionCellTitle" = "Uusi kansio";
+
+/* Settings item that opens instructions for adding Brave to the iOS dock. */
+"addToDockSettingsCell" = "Lisää Dockiin";
 
 /* Add to favorites share action. */
 "AddToFavorites" = "Lisää suosikkeihin";
@@ -69,6 +75,42 @@
 
 /* Settings autofill section title */
 "Autofill" = "Automaattinen täyttö";
+
+/* Label for account when indicating that a domain has multiple accounts */
+"autofill.managePassword.multipleAccounts" = "Tilit";
+
+/* Alert message warning the user that deleting non-synced passwords will permanently remove them */
+"autofill.managePasswords.deleteCredentialConfirmMessage" = "Tämä poistaa tallennetut salasanat kohteelle %@ synkronointiketjustasi ja laitteeltasi.";
+
+/* Prompt title when deleting passwords */
+"autofill.managePasswords.deleteCredentialsAlertTitle" = "Oletko varma?";
+
+/* Label for the button used to delete the current login. */
+"autofill.managePasswords.deleteManagePasswordButtonTitle" = "Poista";
+
+/* Title for the section header in the Manage Passwords list screen, that lists the saved sites */
+"autofill.managePasswords.headerTitle" = "Tallennettu";
+
+/* The message displayed on the manage passwords list screen, when there's at least one password, explain the feature */
+"autofill.managePasswords.instructions" = "Luo, tallenna ja hallitse salasanojasi, jotta voit kirjautua sivustoille ja sovelluksiin helposti.";
+
+/* The header title displayed over the never saved passwords list */
+"autofill.managePasswords.neverSavedListHeaderTitle" = "Tallentamaton";
+
+/* Display text for the option to offer to save passwords */
+"autofill.managePasswords.offerToSavePasswords" = "Tarjoa salasanojen tallennusta";
+
+/* Prompt that is diplayed in the search bar of the Manage Passwords list screen */
+"autofill.managePasswords.searchWebsitesPrompt" = "Hae sivustoja";
+
+/* Title for navigation bar of the Manage Passwords screen */
+"autofill.managePasswords.title" = "Hallitse salasanoja";
+
+/* Text to show when the origin of a managed password is not available */
+"autofill.managePasswords.UnknownDomainText" = "Tuntematon";
+
+/* Settings autofill section title */
+"autofill.settings.title" = "Automaattinen täyttö";
 
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "AMP-sivujen automaattinen uudelleenohjaus";
@@ -3141,6 +3183,12 @@
 
 /* No comment provided by engineer. */
 "tabs.settings.privateTabsSettingsTitle" = "Yksityiset välilehdet";
+
+/* The description of the toggle for users to allow the browser to remember its last browsing mode so it can re-launch in that mode when Keep Private Tabs is enabled. */
+"tabs.settings.rememberBrowsingModeDescription" = "Jos selain oli yksityisessä tilassa, kun se viimeksi suljettiin, se avautuu yksityisessä tilassa uudelleenkäynnistyksen yhteydessä.";
+
+/* Toggle to launch the browser in private mode when Keep Private Tabs is enabled */
+"tabs.settings.rememberBrowsingModeTitle" = "Muista selaustila";
 
 /* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
 "TabToolbarAccessibilityLabel" = "Navigointityökalupalkki";
