@@ -48,6 +48,11 @@ class PolkadotChainMetadata {
   // to Rust routines.
   const CxxPolkadotChainMetadata& operator*() const;
 
+  // We want to expose the native data members of the underlying
+  // CxxPolkadotChainMetadata struct, but the cxx crate marks generated structs
+  // as final so we can't simply inherit from them publicly. To make accessing
+  // the data members more ergonomic, we overload the arrow operator to return a
+  // pointer to the generated struct.
   CxxPolkadotChainMetadata* operator->();
   const CxxPolkadotChainMetadata* operator->() const;
 
