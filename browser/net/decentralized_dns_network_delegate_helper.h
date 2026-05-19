@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "base/types/expected.h"
 #include "brave/browser/net/url_context.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "net/base/completion_once_callback.h"
@@ -50,9 +51,7 @@ template <template <typename> class T>
 void OnBeforeURLRequest_SnsRedirectWork(
     const brave::ResponseCallback& next_callback,
     T<brave::BraveRequestInfo> ctx,
-    const std::optional<GURL>& url,
-    brave_wallet::mojom::SolanaProviderError error,
-    const std::string& error_message);
+    const std::optional<GURL>& url);
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 }  // namespace decentralized_dns
