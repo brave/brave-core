@@ -51,10 +51,11 @@ export default function useProvideAIChatContext(props: AIChatContextProps) {
   const { getConversationsData, isPlaceholderData: isConversationsLoading } =
     api.useGetConversations()
 
+  const isStandalone = api.useIsStandalone().data
+
   const store = {
     api: props.api,
-    initialized:
-      api.isStandalone.current !== undefined && !isConversationsLoading,
+    initialized: isStandalone !== undefined && !isConversationsLoading,
     isMobile: loadTimeData.getBoolean('isMobile'),
     isHistoryFeatureEnabled: loadTimeData.getBoolean('isHistoryEnabled'),
     isAIChatAgentProfileFeatureEnabled: loadTimeData.getBoolean(
@@ -93,7 +94,7 @@ export default function useProvideAIChatContext(props: AIChatContextProps) {
      */
     actionList: api.useGetActionMenuList().data,
 
-    isStandalone: api.useIsStandalone().data,
+    isStandalone,
 
     /**
      * @deprecated use api.useGetConversations() instead
