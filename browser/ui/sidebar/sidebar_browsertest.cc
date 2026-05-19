@@ -96,6 +96,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_SIDEBAR_V2)
+#include "brave/browser/ui/views/side_panel/brave_side_panel_header.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel_resize_area.h"
 #endif
 
@@ -2150,30 +2151,41 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarV2ActiveItemStateSync) {
       [&]() { return !model()->active_index().has_value(); }));
 }
 
-// Verify that the upstream SidePanelHeader is never added when a sidebar panel
-// is opened in V2, so Brave can render its own header.
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarV2NoUpstreamHeaderTest) {
+// Verify the Brave-styled side panel header is attached for reading list and
+// bookmarks and absent for other entries.
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarV2BraveHeaderTest) {
   auto* panel_ui = browser()->GetFeatures().side_panel_ui();
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
   auto* side_panel = browser_view->contents_height_side_panel();
   side_panel->DisableAnimationsForTesting();
 
-  panel_ui->Toggle();
-  ASSERT_TRUE(base::test::RunUntil([&]() { return side_panel->GetVisible(); }));
+  // Reading list: Brave header attached.
+  panel_ui->Show(SidePanelEntryId::kReadingList);
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return panel_ui->IsSidePanelEntryShowing(
+        SidePanelEntry::Key(SidePanelEntryId::kReadingList));
+  }));
+  EXPECT_NE(nullptr, side_panel->GetHeaderView<BraveSidePanelHeader>())
+      << "BraveSidePanelHeader should be attached for the reading list panel";
 
-  EXPECT_EQ(nullptr, side_panel->GetHeaderView<views::View>())
-      << "Upstream SidePanelHeader should not be present after V2 panel open";
+  // Bookmarks: Brave header attached.
+  panel_ui->Show(SidePanelEntryId::kBookmarks);
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return panel_ui->IsSidePanelEntryShowing(
+        SidePanelEntry::Key(SidePanelEntryId::kBookmarks));
+  }));
+  EXPECT_NE(nullptr, side_panel->GetHeaderView<BraveSidePanelHeader>())
+      << "BraveSidePanelHeader should be attached for the bookmarks panel";
 
-  // Also verify CustomizeChrome panel does not get an upstream header.
+  // CustomizeChrome: no Brave header (the previous one must be cleared when
+  // switching to an entry that doesn't request a Brave header).
   panel_ui->Show(SidePanelEntryId::kCustomizeChrome);
   ASSERT_TRUE(base::test::RunUntil([&]() {
     return panel_ui->IsSidePanelEntryShowing(
         SidePanelEntry::Key(SidePanelEntryId::kCustomizeChrome));
   }));
-
-  EXPECT_EQ(nullptr, side_panel->GetHeaderView<views::View>())
-      << "Upstream SidePanelHeader should not be present for CustomizeChrome "
-         "panel";
+  EXPECT_EQ(nullptr, side_panel->GetHeaderView<BraveSidePanelHeader>())
+      << "BraveSidePanelHeader should not be attached for CustomizeChrome";
 }
 
 // Verify that the resize area is positioned correctly for both border states.

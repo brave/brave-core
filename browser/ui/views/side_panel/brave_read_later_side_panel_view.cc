@@ -9,6 +9,7 @@
 
 #include "base/functional/bind.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/sidebar/features.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/ui/color/nala/nala_color_id.h"
@@ -112,6 +113,8 @@ BraveReadLaterSidePanelView::BraveReadLaterSidePanelView(
     TabStripModel* tab_strip_model,
     SidePanelEntryScope& scope,
     base::RepeatingClosure close_cb) {
+  CHECK(!base::FeatureList::IsEnabled(sidebar::features::kSidebarV2));
+
   SetLayoutManager(std::make_unique<views::FlexLayout>())
       ->SetOrientation(views::LayoutOrientation::kVertical);
   AddChildView(std::make_unique<ReadLaterSidePanelHeaderView>(scope));
