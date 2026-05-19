@@ -4,6 +4,13 @@ _Plaster_ is an experimental tool being introduced in Brave to allow us to apply
 changes to upstream sources files, by relying on regex transformations to search
 for patterns and apply substitutions.
 
+> [!IMPORTANT]
+>
+> Before writing or modifying a plaster file, read
+> [Plaster Dos and Don'ts](plaster_dos_and_donts.md). It collects the rules and
+> examples that keep plasters robust across Chromium rebases, and is required
+> reading for anyone touching `rewrite/`.
+
 ## Why 🩹 _Plaster_
 
 The two traditional approaches to introduce changes to Chromium have been `git`
@@ -17,8 +24,8 @@ of unintended replacements.
 Using regexes, _Plaster_ avoids the brittleness of patch files, while providing
 matching mechanisms that are more flexible than the methods currently employed
 for macro replacement. This also means a language-agnostic way to approach
-source changes semantically, and in place. _Plaster_ changes can be both seen in
-place, as well as audited as patch files.
+source changes semantically. _Plaster_ changes can be both seen in place, as
+well as audited as patch files.
 
 ## How does it work
 
@@ -30,8 +37,9 @@ this document.
 
 > [!WARNING]
 >
-> At the moment, only plaster files to sources in Chromium's `src` repo are
-> supported.
+> At the moment, Chromium's `src` repo can be patched with plaster. Support for
+> more repos may be considered in the future, but it is not a priority at the
+> moment.
 
 Each plaster file will be used to apply changes into a given source, and then
 generate a patch for the effected changes.
