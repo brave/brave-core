@@ -1,7 +1,7 @@
-diff --git a/chrome/browser/ui/page_actions/page_action_controller.cc b/chrome/browser/ui/page_actions/page_action_controller.cc
-index 918af888a0a531c87989f73d7bd3b2a30c0d5f35..2472f9a1bbdcb9649bb907bd118ef616fe5755fe 100644
---- a/chrome/browser/ui/page_actions/page_action_controller.cc
-+++ b/chrome/browser/ui/page_actions/page_action_controller.cc
+diff --git a/chrome/browser/ui/page_action/page_action_controller.cc b/chrome/browser/ui/page_action/page_action_controller.cc
+index 0882cbd4a970255083a3d4c8e1c690d11842e7f1..5633b7281fa533f40e3299f4fb703457178694d4 100644
+--- a/chrome/browser/ui/page_action/page_action_controller.cc
++++ b/chrome/browser/ui/page_action/page_action_controller.cc
 @@ -69,6 +69,7 @@ void ScopedPageActionActivity::RegisterWillDestroyControllerCallback() {
    }
  }
@@ -10,7 +10,7 @@ index 918af888a0a531c87989f73d7bd3b2a30c0d5f35..2472f9a1bbdcb9649bb907bd118ef616
  PageActionControllerImpl::PageActionControllerImpl(
      PinnedToolbarActionsModel* pinned_actions_model,
      PageActionModelFactory* page_action_model_factory,
-@@ -452,7 +453,7 @@ std::unique_ptr<PageActionModelInterface> PageActionControllerImpl::CreateModel(
+@@ -485,7 +486,7 @@ std::unique_ptr<PageActionModelInterface> PageActionControllerImpl::CreateModel(
    if (page_action_model_factory_ != nullptr) {
      return page_action_model_factory_->Create(action_id, is_ephemeral);
    } else {
@@ -19,8 +19,8 @@ index 918af888a0a531c87989f73d7bd3b2a30c0d5f35..2472f9a1bbdcb9649bb907bd118ef616
    }
  }
  
-@@ -522,6 +523,7 @@ void PageActionControllerImpl::OnIsChipShowingChanged(
-                                                   is_chip_showing);
+@@ -563,6 +564,7 @@ void PageActionControllerImpl::OnImageAnimationStarted(
+   FindPageActionModel(action_id).SetDidAnimateImage(PageActionPassKey());
  }
  
 +}  // namespace chromium_impl

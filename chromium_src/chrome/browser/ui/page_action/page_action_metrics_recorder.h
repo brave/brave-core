@@ -3,14 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_PAGE_ACTIONS_PAGE_ACTION_METRICS_RECORDER_H_
-#define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_PAGE_ACTIONS_PAGE_ACTION_METRICS_RECORDER_H_
+#ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_PAGE_ACTION_PAGE_ACTION_METRICS_RECORDER_H_
+#define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_PAGE_ACTION_PAGE_ACTION_METRICS_RECORDER_H_
 
 #include "base/functional/callback.h"
 #include "base/functional/callback_forward.h"
-#include "chrome/browser/ui/page_actions/page_action_metrics_recorder_interface.h"
-#include "chrome/browser/ui/page_actions/page_action_model_observer.h"
-#include "chrome/browser/ui/page_actions/page_action_triggers.h"
+#include "chrome/browser/ui/page_action/page_action_metrics_recorder_interface.h"
+#include "chrome/browser/ui/page_action/page_action_model_observer.h"
+#include "chrome/browser/ui/page_action/page_action_triggers.h"
 #include "ui/actions/action_id.h"
 
 // Overrides the upstream class to be a no-op.
@@ -50,4 +50,4 @@ class PageActionMetricsRecorder : public PageActionMetricsRecorderInterface,
 
 }  // namespace page_actions
 
-#endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_PAGE_ACTIONS_PAGE_ACTION_METRICS_RECORDER_H_
+#endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_PAGE_ACTION_PAGE_ACTION_METRICS_RECORDER_H_

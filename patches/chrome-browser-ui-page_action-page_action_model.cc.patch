@@ -1,0 +1,18 @@
+diff --git a/chrome/browser/ui/page_action/page_action_model.cc b/chrome/browser/ui/page_action/page_action_model.cc
+index c0dc2f8169e196d830389b2f0a970b417daaf364..6181f9e87b29c0ad12ebba19367010753f91a777 100644
+--- a/chrome/browser/ui/page_action/page_action_model.cc
++++ b/chrome/browser/ui/page_action/page_action_model.cc
+@@ -16,6 +16,7 @@ namespace {
+ using ::actions::ActionItem;
+ }  // namespace
+ 
++namespace chromium_impl {
+ PageActionModel::PageActionModel(actions::ActionId action_id, bool is_ephemeral)
+     : action_id_(action_id), is_ephemeral_(is_ephemeral) {}
+ 
+@@ -369,4 +370,5 @@ PageActionModel::GetAnchoredMessageExpandableContent() const {
+   return expandable_content_;
+ }
+ 
++}  // namespace chromium_impl
+ }  // namespace page_actions

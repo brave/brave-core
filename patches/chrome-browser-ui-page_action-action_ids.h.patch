@@ -1,7 +1,7 @@
-diff --git a/chrome/browser/ui/page_actions/action_ids.h b/chrome/browser/ui/page_actions/action_ids.h
-index df9a31797670d8be67ec70b17fc459d071f8855d..539c953b1e95edbcf555e25d7034ba034f4f2918 100644
---- a/chrome/browser/ui/page_actions/action_ids.h
-+++ b/chrome/browser/ui/page_actions/action_ids.h
+diff --git a/chrome/browser/ui/page_action/action_ids.h b/chrome/browser/ui/page_action/action_ids.h
+index da4b739fa93eb62273a0beba4413d8413a6ad9f4..adc3c2c4640ce84811b720c430e3f00dd93ecd5e 100644
+--- a/chrome/browser/ui/page_action/action_ids.h
++++ b/chrome/browser/ui/page_action/action_ids.h
 @@ -16,6 +16,8 @@ namespace page_actions {
  // the array.
  inline constexpr auto kActionIds = std::to_array<actions::ActionId>({

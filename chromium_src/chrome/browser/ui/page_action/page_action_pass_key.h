@@ -3,13 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_PAGE_ACTIONS_PAGE_ACTION_PASS_KEY_H_
-#define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_PAGE_ACTIONS_PAGE_ACTION_PASS_KEY_H_
+#ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_PAGE_ACTION_PAGE_ACTION_PASS_KEY_H_
+#define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_PAGE_ACTION_PAGE_ACTION_PASS_KEY_H_
 
 namespace page_actions::chromium_impl {
 class PageActionControllerImpl;
 }  // namespace page_actions::chromium_impl
 
-#include <chrome/browser/ui/page_actions/page_action_pass_key.h>  // IWYU pragma: export
+#include <chrome/browser/ui/page_action/page_action_pass_key.h>  // IWYU pragma: export
 
-#endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_PAGE_ACTIONS_PAGE_ACTION_PASS_KEY_H_
+#endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_PAGE_ACTION_PAGE_ACTION_PASS_KEY_H_
