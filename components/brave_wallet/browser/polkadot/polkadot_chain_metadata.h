@@ -54,7 +54,7 @@ class PolkadotChainMetadata {
  private:
   explicit PolkadotChainMetadata(CxxPolkadotChainMetadata chain_metadata);
 
-  CxxPolkadotChainMetadata chain_metadata_;
+  CxxPolkadotChainMetadata chain_metadata_ = {};
 };
 
 }  // namespace brave_wallet
