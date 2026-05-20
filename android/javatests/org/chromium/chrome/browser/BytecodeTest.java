@@ -11,7 +11,6 @@ import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
@@ -322,7 +321,7 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/tabmodel/RedirectTabCreator"));
         Assert.assertTrue(
                 classExists(
-                        "org/chromium/chrome/browser/safe_browsing/settings/StandardProtectionSettingsFragment"));
+                        "org/chromium/chrome/browser/safe_browsing/settings/StandardProtectionSettingsFragment")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/toolbar/top/ToolbarPhone"));
@@ -349,15 +348,12 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/share/ShareDelegateImpl"));
         Assert.assertTrue(
                 classExists(
-                        "org/chromium/components/browser_ui/site_settings/ContentSettingsResources$ResourceItem"));
-        Assert.assertTrue(
-                classExists("org/chromium/chrome/browser/tasks/tab_management/TabUiThemeProvider"));
-        Assert.assertTrue(classExists("org/chromium/chrome/browser/tab_ui/TabCardThemeUtil"));
+                        "org/chromium/components/browser_ui/site_settings/ContentSettingsResources$ResourceItem")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 classExists("org/chromium/components/variations/firstrun/VariationsSeedFetcher"));
         Assert.assertTrue(
                 classExists(
-                        "org/chromium/chrome/browser/partnercustomizations/CustomizationProviderDelegateUpstreamImpl"));
+                        "org/chromium/chrome/browser/partnercustomizations/CustomizationProviderDelegateUpstreamImpl")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/share/send_tab_to_self/ManageAccountDevicesLinkView")); // presubmit: ignore-long-line
@@ -696,36 +692,6 @@ public class BytecodeTest {
                         void.class));
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/tab_ui/TabCardThemeUtil",
-                        "getTitleTextColor",
-                        MethodModifier.STATIC,
-                        int.class,
-                        Context.class,
-                        boolean.class,
-                        boolean.class,
-                        Integer.class));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/tab_ui/TabCardThemeUtil",
-                        "getCardViewBackgroundColor",
-                        MethodModifier.STATIC,
-                        int.class,
-                        Context.class,
-                        boolean.class,
-                        boolean.class,
-                        Integer.class));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/tab_ui/TabCardThemeUtil",
-                        "getActionButtonTintList",
-                        MethodModifier.STATIC,
-                        ColorStateList.class,
-                        Context.class,
-                        boolean.class,
-                        boolean.class,
-                        Integer.class));
-        Assert.assertTrue(
-                methodExists(
                         "org/chromium/chrome/browser/ntp/NewTabPage",
                         "updateSearchProvider",
                         MethodModifier.REGULAR,
@@ -1056,7 +1022,7 @@ public class BytecodeTest {
                         int.class));
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/quickactionsearchwidget/QuickActionSearchWidgetProvider",
+                        "org/chromium/chrome/browser/quickactionsearchwidget/QuickActionSearchWidgetProvider", // presubmit: ignore-long-line
                         "setWidgetEnabled",
                         MethodModifier.STATIC,
                         void.class,
@@ -1264,7 +1230,7 @@ public class BytecodeTest {
                         "getResourceItem",
                         MethodModifier.STATIC,
                         getClassForPath(
-                                "org/chromium/components/browser_ui/site_settings/ContentSettingsResources$ResourceItem"),
+                                "org/chromium/components/browser_ui/site_settings/ContentSettingsResources$ResourceItem"), // presubmit: ignore-long-line
                         int.class));
         Assert.assertTrue(
                 methodExists(
@@ -1348,7 +1314,7 @@ public class BytecodeTest {
                         boolean.class));
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/omnibox/suggestions/editurl/EditUrlSuggestionProcessor",
+                        "org/chromium/chrome/browser/omnibox/suggestions/editurl/EditUrlSuggestionProcessor", // presubmit: ignore-long-line
                         "onCopyLink",
                         MethodModifier.REGULAR,
                         void.class,
@@ -1388,7 +1354,7 @@ public class BytecodeTest {
                         boolean.class));
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/quickactionsearchwidget/QuickActionSearchWidgetProvider",
+                        "org/chromium/chrome/browser/quickactionsearchwidget/QuickActionSearchWidgetProvider", // presubmit: ignore-long-line
                         "setWidgetEnabled",
                         MethodModifier.STATIC,
                         void.class,
@@ -1553,7 +1519,7 @@ public class BytecodeTest {
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/tasks/tab_management/TabGroupUiCoordinator",
-                        "org/chromium/chrome/browser/tasks/tab_management/BraveTabGroupUiCoordinator",
+                        "org/chromium/chrome/browser/tasks/tab_management/BraveTabGroupUiCoordinator", // presubmit: ignore-long-line
                         Activity.class,
                         ViewGroup.class,
                         BrowserControlsStateProvider.class,
@@ -1578,8 +1544,8 @@ public class BytecodeTest {
                         Profile.class));
         Assert.assertTrue(
                 constructorsMatch(
-                        "org/chromium/components/browser_ui/notifications/NotificationManagerProxyImpl",
-                        "org/chromium/chrome/browser/notifications/BraveNotificationManagerProxyImpl"));
+                        "org/chromium/components/browser_ui/notifications/NotificationManagerProxyImpl", // presubmit: ignore-long-line
+                        "org/chromium/chrome/browser/notifications/BraveNotificationManagerProxyImpl")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/ntp/NewTabPage",
@@ -1768,18 +1734,18 @@ public class BytecodeTest {
                         Profile.class));
         Assert.assertTrue(
                 constructorsMatch(
-                        "org/chromium/chrome/browser/partnercustomizations/CustomizationProviderDelegateUpstreamImpl",
-                        "org/chromium/chrome/browser/partnercustomizations/BraveCustomizationProviderDelegateImpl"));
+                        "org/chromium/chrome/browser/partnercustomizations/CustomizationProviderDelegateUpstreamImpl", // presubmit: ignore-long-line
+                        "org/chromium/chrome/browser/partnercustomizations/BraveCustomizationProviderDelegateImpl")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 constructorsMatch(
-                        "org/chromium/chrome/browser/share/send_tab_to_self/ManageAccountDevicesLinkView",
-                        "org/chromium/chrome/browser/share/send_tab_to_self/BraveManageAccountDevicesLinkView",
+                        "org/chromium/chrome/browser/share/send_tab_to_self/ManageAccountDevicesLinkView", // presubmit: ignore-long-line
+                        "org/chromium/chrome/browser/share/send_tab_to_self/BraveManageAccountDevicesLinkView", // presubmit: ignore-long-line
                         Context.class,
                         AttributeSet.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesMediator",
-                        "org/chromium/chrome/browser/suggestions/tile/BraveMostVisitedTilesMediator",
+                        "org/chromium/chrome/browser/suggestions/tile/BraveMostVisitedTilesMediator", // presubmit: ignore-long-line
                         Context.class,
                         UiConfig.class,
                         View.class,
@@ -1807,8 +1773,8 @@ public class BytecodeTest {
                         MonotonicObservableSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
-                        "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListManager",
-                        "org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListManager",
+                        "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListManager", // presubmit: ignore-long-line
+                        "org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListManager", // presubmit: ignore-long-line
                         ModelList.class,
                         Context.class));
         Assert.assertTrue(
@@ -1926,8 +1892,8 @@ public class BytecodeTest {
                         Drawable.class));
         Assert.assertTrue(
                 constructorsMatch(
-                        "org/chromium/chrome/browser/notifications/permissions/NotificationPermissionRationaleDialogController",
-                        "org/chromium/chrome/browser/notifications/permissions/BraveNotificationPermissionRationaleDialogController",
+                        "org/chromium/chrome/browser/notifications/permissions/NotificationPermissionRationaleDialogController", // presubmit: ignore-long-line
+                        "org/chromium/chrome/browser/notifications/permissions/BraveNotificationPermissionRationaleDialogController", // presubmit: ignore-long-line
                         Context.class,
                         ModalDialogManager.class));
         Assert.assertTrue(
@@ -2207,7 +2173,7 @@ public class BytecodeTest {
                         AttributeSet.class));
         Assert.assertTrue(
                 constructorsMatch(
-                        "org/chromium/chrome/browser/omnibox/suggestions/editurl/EditUrlSuggestionProcessor", // presubmit: ignore-long-line
+                        "org/chromium/chrome/browser/omnibox/suggestions/editurl/EditUrlSuggestionProcessor", // presubmit: ignore-long-line // presubmit: ignore-long-line
                         "org/chromium/chrome/browser/omnibox/suggestions/editurl/BraveEditUrlSuggestionProcessor", // presubmit: ignore-long-line
                         AutocompleteUIContext.class));
 
@@ -2913,7 +2879,7 @@ public class BytecodeTest {
         Assert.assertTrue(
                 checkSuperName(
                         "org/chromium/components/browser_ui/site_settings/SiteSettings",
-                        "org/chromium/components/browser_ui/site_settings/BraveSiteSettingsPreferencesBase"));
+                        "org/chromium/components/browser_ui/site_settings/BraveSiteSettingsPreferencesBase")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 checkSuperName(
                         "org/chromium/chrome/browser/download/DownloadMessageUiControllerImpl",
@@ -2969,15 +2935,15 @@ public class BytecodeTest {
         Assert.assertTrue(
                 checkSuperName(
                         "org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesLayout",
-                        "org/chromium/chrome/browser/suggestions/tile/BraveMostVisitedTilesLayoutBase"));
+                        "org/chromium/chrome/browser/suggestions/tile/BraveMostVisitedTilesLayoutBase")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 checkSuperName(
                         "org/chromium/chrome/browser/suggestions/tile/TilesLinearLayout",
                         "android/widget/GridLayout"));
         Assert.assertTrue(
                 checkSuperName(
-                        "org/chromium/chrome/browser/omnibox/suggestions/editurl/EditUrlSuggestionProcessor",
-                        "org/chromium/chrome/browser/omnibox/suggestions/editurl/BraveEditUrlSuggestionProcessorBase"));
+                        "org/chromium/chrome/browser/omnibox/suggestions/editurl/EditUrlSuggestionProcessor", // presubmit: ignore-long-line
+                        "org/chromium/chrome/browser/omnibox/suggestions/editurl/BraveEditUrlSuggestionProcessorBase")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 checkSuperName(
                         "org/chromium/chrome/browser/tasks/tab_management/TabSwitcherPane",
