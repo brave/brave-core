@@ -5,6 +5,7 @@
 
 #include "brave/components/ai_chat/core/browser/remote_models_fetcher.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/functional/bind.h"
@@ -27,11 +28,7 @@ constexpr char kModelsKey[] = "models";
 
 constexpr char kKeyField[] = "key";
 constexpr char kDisplayNameField[] = "display_name";
-constexpr char kVisionSupportField[] = "vision_support";
-constexpr char kSupportsToolsField[] = "supports_tools";
-constexpr char kAudioSupportField[] = "audio_support";
-constexpr char kVideoSupportField[] = "video_support";
-constexpr char kSupportedCapabilitiesField[] = "supported_capabilities";
+constexpr char kCapabilitiesField[] = "capabilities";
 constexpr char kIsSuggestedModelField[] = "is_suggested_model";
 constexpr char kIsNearModelField[] = "is_near_model";
 constexpr char kOptionsField[] = "options";
@@ -40,7 +37,6 @@ constexpr char kTypeField[] = "type";
 constexpr char kNameField[] = "name";
 constexpr char kDisplayMakerField[] = "display_maker";
 constexpr char kDescriptionField[] = "description";
-constexpr char kCategoryField[] = "category";
 constexpr char kAccessField[] = "access";
 constexpr char kMaxAssociatedContentLengthField[] =
     "max_associated_content_length";
@@ -76,26 +72,18 @@ constexpr net::NetworkTrafficAnnotationTag kTrafficAnnotation =
       policy {
         cookies_allowed: NO
         setting:
-          "This feature can be disabled by setting the remote_models_endpoint "
-          "feature parameter to an empty string."
+          "This feature can be disabled via the AIChatRemoteModelsConfig "
+          "feature flag."
       })");
-
-mojom::ModelCategory ParseCategory(const std::string& category_str) {
-  if (category_str == "chat") {
-    return mojom::ModelCategory::CHAT;
-  } else if (category_str == "summary") {
-    return mojom::ModelCategory::SUMMARY;
-  }
-  DVLOG(1) << "Unknown model category: " << category_str;
-  return mojom::ModelCategory::CHAT;
-}
 
 std::optional<mojom::ModelAccess> ParseAccess(const std::string& access_str) {
   if (access_str == "basic") {
     return mojom::ModelAccess::BASIC;
-  } else if (access_str == "premium") {
+  }
+  if (access_str == "premium") {
     return mojom::ModelAccess::PREMIUM;
-  } else if (access_str == "basic_and_premium") {
+  }
+  if (access_str == "basic_and_premium") {
     return mojom::ModelAccess::BASIC_AND_PREMIUM;
   }
   DVLOG(1) << "Unknown model access: " << access_str;
@@ -106,10 +94,18 @@ std::optional<mojom::ConversationCapability> ParseCapability(
     const std::string& capability_str) {
   if (capability_str == "chat") {
     return mojom::ConversationCapability::CHAT;
-  } else if (capability_str == "content_agent") {
+  }
+  if (capability_str == "content_agent") {
     return mojom::ConversationCapability::CONTENT_AGENT;
-  } else if (capability_str == "deep_research") {
+  }
+  if (capability_str == "deep_research") {
     return mojom::ConversationCapability::DEEP_RESEARCH;
+  }
+  if (capability_str == "files") {
+    return mojom::ConversationCapability::FILES;
+  }
+  if (capability_str == "summary") {
+    return mojom::ConversationCapability::SUMMARY;
   }
   DVLOG(1) << "Unknown conversation capability: " << capability_str;
   return std::nullopt;
@@ -118,46 +114,38 @@ std::optional<mojom::ConversationCapability> ParseCapability(
 mojom::ModelPtr ParseModel(const base::DictValue& model_dict) {
   const std::string* key = model_dict.FindString(kKeyField);
   if (!key || key->empty()) {
-    DVLOG(1) << "Model missing or has empty 'key' field";
     return nullptr;
   }
 
   const std::string* display_name = model_dict.FindString(kDisplayNameField);
   if (!display_name || display_name->empty()) {
-    DVLOG(1) << "Model missing or has empty 'display_name' field: " << *key;
     return nullptr;
   }
 
   const base::DictValue* options_dict = model_dict.FindDict(kOptionsField);
   if (!options_dict) {
-    DVLOG(1) << "Model missing 'options' field: " << *key;
     return nullptr;
   }
 
   const std::string* type = options_dict->FindString(kTypeField);
   if (!type || *type != "leo") {
-    DVLOG(1) << "Model options must have type='leo': " << *key;
     return nullptr;
   }
 
   const std::string* name = options_dict->FindString(kNameField);
   if (!name || name->empty()) {
-    DVLOG(1) << "Model options missing or has empty 'name' field: " << *key;
     return nullptr;
   }
 
   std::optional<int> max_content_length =
       options_dict->FindInt(kMaxAssociatedContentLengthField);
   if (max_content_length.has_value() && *max_content_length <= 0) {
-    DVLOG(1) << "Model has invalid max_associated_content_length: " << *key;
     return nullptr;
   }
 
   std::optional<int> warning_limit =
       options_dict->FindInt(kLongConversationWarningCharacterLimitField);
   if (warning_limit.has_value() && *warning_limit <= 0) {
-    DVLOG(1) << "Model has invalid long_conversation_warning_character_limit: "
-             << *key;
     return nullptr;
   }
 
@@ -168,33 +156,46 @@ mojom::ModelPtr ParseModel(const base::DictValue& model_dict) {
     return nullptr;
   }
 
+  const base::ListValue* capabilities_list =
+      model_dict.FindList(kCapabilitiesField);
+  if (!capabilities_list) {
+    return nullptr;
+  }
+
+  std::vector<mojom::ConversationCapability> capabilities;
+  mojom::ModelCategory category = mojom::ModelCategory::CHAT;
+  bool has_category = false;
+  for (const auto& capability_value : *capabilities_list) {
+    if (!capability_value.is_string()) {
+      continue;
+    }
+    auto capability = ParseCapability(capability_value.GetString());
+    if (!capability.has_value()) {
+      continue;
+    }
+    capabilities.push_back(*capability);
+    if (*capability == mojom::ConversationCapability::CHAT && !has_category) {
+      category = mojom::ModelCategory::CHAT;
+      has_category = true;
+    }
+    if (*capability == mojom::ConversationCapability::SUMMARY &&
+        !has_category) {
+      category = mojom::ModelCategory::SUMMARY;
+      has_category = true;
+    }
+  }
+
+  if (!has_category) {
+    return nullptr;
+  }
+
   auto model = mojom::Model::New();
   model->key = *key;
   model->display_name = *display_name;
-  model->vision_support =
-      model_dict.FindBool(kVisionSupportField).value_or(false);
-  model->supports_tools =
-      model_dict.FindBool(kSupportsToolsField).value_or(false);
-  model->audio_support =
-      model_dict.FindBool(kAudioSupportField).value_or(false);
-  model->video_support =
-      model_dict.FindBool(kVideoSupportField).value_or(false);
   model->is_suggested_model =
       model_dict.FindBool(kIsSuggestedModelField).value_or(false);
   model->is_near_model = model_dict.FindBool(kIsNearModelField).value_or(false);
-
-  if (const base::ListValue* capabilities_list =
-          model_dict.FindList(kSupportedCapabilitiesField)) {
-    for (const auto& capability_value : *capabilities_list) {
-      if (!capability_value.is_string()) {
-        continue;
-      }
-      auto capability = ParseCapability(capability_value.GetString());
-      if (capability.has_value()) {
-        model->supported_capabilities.push_back(*capability);
-      }
-    }
-  }
+  model->supported_capabilities = std::move(capabilities);
 
   auto leo_opts = mojom::LeoModelOptions::New();
   leo_opts->name = *name;
@@ -208,9 +209,7 @@ mojom::ModelPtr ParseModel(const base::DictValue& model_dict) {
   const std::string* description = options_dict->FindString(kDescriptionField);
   leo_opts->description = description ? *description : "";
 
-  const std::string* category = options_dict->FindString(kCategoryField);
-  leo_opts->category =
-      category ? ParseCategory(*category) : mojom::ModelCategory::CHAT;
+  leo_opts->category = category;
 
   leo_opts->access = *parsed_access;
 
@@ -233,41 +232,7 @@ mojom::ModelPtr ParseModel(const base::DictValue& model_dict) {
   return model;
 }
 
-}  // namespace
-
-RemoteModelsFetcher::RemoteModelsFetcher(
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : api_request_helper_(
-          std::make_unique<api_request_helper::APIRequestHelper>(
-              kTrafficAnnotation,
-              url_loader_factory)) {}
-
-RemoteModelsFetcher::~RemoteModelsFetcher() = default;
-
-void RemoteModelsFetcher::FetchModels(const std::string& url,
-                                      FetchModelsCallback callback) {
-  GURL endpoint_url(url);
-
-  if (!endpoint_url.is_valid() || !endpoint_url.SchemeIs(url::kHttpsScheme)) {
-    std::move(callback).Run({});
-    return;
-  }
-
-  auto result_callback =
-      base::BindOnce(&RemoteModelsFetcher::OnFetchComplete,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-
-  api_request_helper::APIRequestOptions options;
-  options.max_body_size = kMaxResponseSize;
-  options.timeout = base::Seconds(30);
-
-  api_request_helper_->Request(
-      "GET", endpoint_url, "", "", std::move(result_callback),
-      base::flat_map<std::string, std::string>(), options);
-}
-
-std::vector<mojom::ModelPtr> RemoteModelsFetcher::ParseModelsFromJSON(
-    const base::Value& json) {
+std::vector<mojom::ModelPtr> ParseModelsFromJSON(const base::Value& json) {
   const base::ListValue* models_list = nullptr;
 
   if (json.is_dict()) {
@@ -291,6 +256,39 @@ std::vector<mojom::ModelPtr> RemoteModelsFetcher::ParseModelsFromJSON(
     }
   }
   return models;
+}
+
+}  // namespace
+
+RemoteModelsFetcher::RemoteModelsFetcher(
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+    : api_request_helper_(
+          std::make_unique<api_request_helper::APIRequestHelper>(
+              kTrafficAnnotation,
+              url_loader_factory)) {}
+
+RemoteModelsFetcher::~RemoteModelsFetcher() = default;
+
+void RemoteModelsFetcher::FetchModels(const std::string& url,
+                                      FetchModelsCallback callback) {
+  const GURL endpoint_url(url);
+
+  if (!endpoint_url.is_valid() || !endpoint_url.SchemeIs(url::kHttpsScheme)) {
+    std::move(callback).Run({});
+    return;
+  }
+
+  auto result_callback =
+      base::BindOnce(&RemoteModelsFetcher::OnFetchComplete,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+
+  api_request_helper::APIRequestOptions options;
+  options.max_body_size = kMaxResponseSize;
+  options.timeout = base::Seconds(30);
+
+  api_request_helper_->Request(
+      "GET", endpoint_url, "", "", std::move(result_callback),
+      base::flat_map<std::string, std::string>(), options);
 }
 
 void RemoteModelsFetcher::OnFetchComplete(

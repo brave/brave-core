@@ -13,11 +13,7 @@
 #include "base/functional/callback.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
-
-namespace base {
-class Value;
-}  // namespace base
+#include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
 
 namespace network {
 class SharedURLLoaderFactory;
@@ -47,8 +43,6 @@ class RemoteModelsFetcher {
   void FetchModels(const std::string& url, FetchModelsCallback callback);
 
  private:
-  std::vector<mojom::ModelPtr> ParseModelsFromJSON(const base::Value& json);
-
   void OnFetchComplete(FetchModelsCallback callback,
                        api_request_helper::APIRequestResult result);
 

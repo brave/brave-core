@@ -59,7 +59,9 @@ enum CharacterType {
 enum ConversationCapability {
   CHAT,
   CONTENT_AGENT,
-  DEEP_RESEARCH
+  DEEP_RESEARCH,
+  FILES,
+  SUMMARY
 };
 
 // Which action the user was taking for the entry. This can be used
