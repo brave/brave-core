@@ -259,10 +259,10 @@ class BraveBrowserFrameViewTabStripHeightTest
 // Verifies the horizontal tab strip height equals kTabStripHeight for both
 // default and compact modes when BraveOpaqueBrowserFrameView is active.
 //
-// Regression: PR #35778 substituted GetHorizontalTabControlsDelta() (negative)
+// Regression: PR #35778 substituted GetHorizontalTabButtonYOffset() (negative)
 // for kTabstripToolbarOverlap (positive) in GetTopAreaHeight(), adding extra
-// pixels to the tab strip: 41→45 px (default, delta=-4) and 38→43 px
-// (compact, delta=-5). The fix restores
+// pixels to the tab strip: 41→45 px (default, offset=-4) and 38→43 px
+// (compact, offset=-5). The fix restores
 // OpaqueBrowserFrameView::GetTopAreaHeight().
 IN_PROC_BROWSER_TEST_P(BraveBrowserFrameViewTabStripHeightTest,
                        TabStripHeightMatchesLayoutConstant) {

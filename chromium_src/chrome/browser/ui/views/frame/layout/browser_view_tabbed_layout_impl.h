@@ -13,10 +13,9 @@
   friend class BraveBrowserViewTabbedLayoutImpl; \
   virtual TopSeparatorType GetTopSeparatorType()
 
-// Make GetHorizontalTabStripLeadingMargin virtual so the Brave subclass can
-// reduce the leading inset between the traffic-light cluster and the first
-// tab pill in compact horizontal tabs mode. See
-// `BraveBrowserViewTabbedLayoutImpl::GetHorizontalTabStripLeadingMargin()`.
+// Make GetHorizontalTabStripLeadingMargin virtual so subclasses can reduce the
+// leading inset between leading caption buttons and the first tab in compact
+// horizontal tabs mode.
 #define GetHorizontalTabStripLeadingMargin(params)   \
   GetHorizontalTabStripLeadingMargin_Unused(params); \
   friend class BraveBrowserViewTabbedLayoutImpl;     \

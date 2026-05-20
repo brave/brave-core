@@ -9,7 +9,6 @@
 #include <optional>
 
 #include "base/feature_list.h"
-#include "brave/browser/ui/tabs/brave_compact_horizontal_tabs_layout.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "ui/base/pointer/touch_ui_controller.h"
 #include "ui/gfx/geometry/insets.h"
@@ -17,19 +16,14 @@
 namespace {
 
 using tabs::HorizontalTabsUpdateEnabled;
-using tabs::ShouldUseCompactHorizontalTabsForNonTouchUI;
+using tabs::UseCompactHorizontalTabs;
 
 std::optional<gfx::Insets> GetBraveLayoutInsets(LayoutInset inset) {
   const bool touch_ui = ui::TouchUiController::Get()->touch_ui();
-  const bool compact = ShouldUseCompactHorizontalTabsForNonTouchUI();
+  const bool compact = UseCompactHorizontalTabs();
   switch (inset) {
     case LOCATION_BAR_PAGE_INFO_ICON_PADDING:
-      return gfx::Insets::VH(
-          compact ? tabs::compact_horizontal_tabs_layout::
-                        kPageInfoIconPaddingVertical
-                  : tabs::compact_horizontal_tabs_layout::
-                        kPageInfoIconPaddingVerticalDefault,
-          tabs::compact_horizontal_tabs_layout::kPageInfoIconPaddingHorizontal);
+      return gfx::Insets::VH(compact ? 4 : 6, 6);
     case LOCATION_BAR_PAGE_ACTION_ICON_PADDING:
       return gfx::Insets::VH(4, 4);
     case TOOLBAR_BUTTON:
@@ -40,15 +34,7 @@ std::optional<gfx::Insets> GetBraveLayoutInsets(LayoutInset inset) {
       if (touch_ui) {
         return gfx::Insets();
       }
-      return compact
-                 ? gfx::Insets::VH(tabs::compact_horizontal_tabs_layout::
-                                       kToolbarInteriorMarginVertical,
-                                   tabs::compact_horizontal_tabs_layout::
-                                       kToolbarInteriorMarginHorizontal)
-                 : gfx::Insets::VH(tabs::compact_horizontal_tabs_layout::
-                                       kToolbarInteriorMarginVerticalDefault,
-                                   tabs::compact_horizontal_tabs_layout::
-                                       kToolbarInteriorMarginHorizontalDefault);
+      return gfx::Insets::VH(compact ? 2 : 4, 6);
     default:
       break;
   }
@@ -83,10 +69,7 @@ std::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
       if (!HorizontalTabsUpdateEnabled()) {
         return std::nullopt;
       }
-      return ShouldUseCompactHorizontalTabsForNonTouchUI()
-                 ? tabs::compact_horizontal_tabs_layout::kTabstripToolbarOverlap
-                 : tabs::compact_horizontal_tabs_layout::
-                       kTabstripToolbarOverlapDefault;
+      return UseCompactHorizontalTabs() ? 8 : 1;
     }
     case LayoutConstant::kLocationBarChildCornerRadius:
       return 4;
@@ -102,10 +85,7 @@ std::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
 
     case LayoutConstant::kLocationBarHeight:
       // Consider adjust below element padding also when this height is changed.
-      return ShouldUseCompactHorizontalTabsForNonTouchUI()
-                 ? tabs::compact_horizontal_tabs_layout::kLocationBarHeight
-                 : tabs::compact_horizontal_tabs_layout::
-                       kLocationBarHeightDefault;
+      return UseCompactHorizontalTabs() ? 28 : 32;
     case LayoutConstant::kLocationBarTrailingIconSize:
       return 18;
     case LayoutConstant::kLocationBarIconSize:
@@ -113,11 +93,7 @@ std::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
     case LayoutConstant::kLocationBarElementPadding:
     case LayoutConstant::kLocationBarPageInfoIconVerticalPadding:
     case LayoutConstant::kLocationBarTrailingDecorationEdgePadding:
-      return ShouldUseCompactHorizontalTabsForNonTouchUI()
-                 ? tabs::compact_horizontal_tabs_layout::
-                       kLocationBarInnerPadding
-                 : tabs::compact_horizontal_tabs_layout::
-                       kLocationBarInnerPaddingDefault;
+      return UseCompactHorizontalTabs() ? 1 : 2;
     default:
       break;
   }
@@ -157,29 +133,16 @@ int GetLayoutConstant(LayoutConstant constant) {
 
 namespace tabs {
 
-bool ShouldUseCompactHorizontalTabsForNonTouchUI() {
-  return base::FeatureList::IsEnabled(tabs::kBraveCompactHorizontalTabs) &&
-         !ui::TouchUiController::Get()->touch_ui();
-}
-
 int GetHorizontalTabHeight() {
-  return ShouldUseCompactHorizontalTabsForNonTouchUI()
-             ? tabs::compact_horizontal_tabs_layout::kTabVisualHeight
-             : tabs::compact_horizontal_tabs_layout::kTabVisualHeightDefault;
+  return UseCompactHorizontalTabs() ? 26 : 32;
 }
 
 int GetHorizontalTabVerticalSpacing() {
-  return ShouldUseCompactHorizontalTabsForNonTouchUI()
-             ? tabs::compact_horizontal_tabs_layout::kTabVerticalSpacing
-             : tabs::compact_horizontal_tabs_layout::kTabVerticalSpacingDefault;
+  return UseCompactHorizontalTabs() ? 2 : 4;
 }
 
-int GetHorizontalTabControlsDelta() {
-  return ShouldUseCompactHorizontalTabsForNonTouchUI()
-             ? tabs::compact_horizontal_tabs_layout::
-                   kTabStripControlsHeightDelta
-             : tabs::compact_horizontal_tabs_layout::
-                   kTabStripControlsHeightDeltaDefault;
+int GetHorizontalTabButtonYOffset() {
+  return UseCompactHorizontalTabs() ? -5 : -4;
 }
 
 int GetHorizontalTabStripHeight() {
@@ -187,10 +150,7 @@ int GetHorizontalTabStripHeight() {
 }
 
 int GetHorizontalTabPadding() {
-  return ShouldUseCompactHorizontalTabsForNonTouchUI()
-             ? tabs::compact_horizontal_tabs_layout::kTabHorizontalPadding
-             : tabs::compact_horizontal_tabs_layout::
-                   kTabHorizontalPaddingDefault;
+  return UseCompactHorizontalTabs() ? 4 : 8;
 }
 
 int GetTabGroupTitleVerticalInset() {
@@ -198,11 +158,16 @@ int GetTabGroupTitleVerticalInset() {
 }
 
 int GetTabGroupTitleHorizontalInset() {
-  return ShouldUseCompactHorizontalTabsForNonTouchUI()
-             ? tabs::compact_horizontal_tabs_layout::
-                   kTabGroupTitleHorizontalInset
-             : tabs::compact_horizontal_tabs_layout::
-                   kTabGroupTitleHorizontalInsetDefault;
+  return UseCompactHorizontalTabs() ? 6 : 10;
+}
+
+int GetDragHandleExtensionHeight() {
+  return UseCompactHorizontalTabs() ? 2 : 4;
+}
+
+bool UseCompactHorizontalTabs() {
+  return base::FeatureList::IsEnabled(kBraveCompactHorizontalTabs) &&
+         !ui::TouchUiController::Get()->touch_ui();
 }
 
 }  // namespace tabs

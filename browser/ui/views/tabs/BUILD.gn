@@ -50,7 +50,6 @@ source_set("unit_tests") {
     "//chrome/browser/ui/views/tabs/fake_base_tab_strip_controller.h",
     "//chrome/browser/ui/views/tabs/fake_tab_slot_controller.cc",
     "//chrome/browser/ui/views/tabs/fake_tab_slot_controller.h",
-    "brave_compact_horizontal_tabs_layout_unittest.cc",
     "brave_new_tab_button_unittest.cc",
     "brave_tab_strip_layout_helper_unittest.cc",
     "brave_tab_strip_unittest.cc",
