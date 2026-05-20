@@ -3,13 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/workspace/workspace_service_factory.h"
+#include "brave/browser/workspaces/workspace_service_factory.h"
 
 #include <memory>
 
-#include "brave/browser/workspace/features.h"
-#include "brave/browser/workspace/pref_names.h"
-#include "brave/browser/workspace/workspace_service.h"
+#include "brave/browser/workspaces/features.h"
+#include "brave/browser/workspaces/pref_names.h"
+#include "brave/browser/workspaces/workspace_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_selections.h"
 #include "components/pref_registry/pref_registry_syncable.h"
@@ -35,7 +35,7 @@ WorkspaceServiceFactory::~WorkspaceServiceFactory() = default;
 std::unique_ptr<KeyedService>
 WorkspaceServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  if (!base::FeatureList::IsEnabled(features::kWorkspace)) {
+  if (!base::FeatureList::IsEnabled(features::kWorkspaces)) {
     return nullptr;
   }
 

@@ -68,7 +68,7 @@
 #include "brave/browser/ui/bookmark/bookmark_prefs_service_factory.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
-#include "brave/browser/workspace/workspace_service_factory.h"
+#include "brave/browser/workspaces/workspace_service_factory.h"
 #include "brave/components/commands/common/features.h"
 #include "chrome/browser/ui/tabs/features.h"
 #else

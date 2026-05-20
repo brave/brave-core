@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_WORKSPACE_WORKSPACE_SERVICE_FACTORY_H_
-#define BRAVE_BROWSER_WORKSPACE_WORKSPACE_SERVICE_FACTORY_H_
+#ifndef BRAVE_BROWSER_WORKSPACES_WORKSPACE_SERVICE_FACTORY_H_
+#define BRAVE_BROWSER_WORKSPACES_WORKSPACE_SERVICE_FACTORY_H_
 
 #include "base/no_destructor.h"
 #include "chrome/browser/profiles/profile_keyed_service_factory.h"
@@ -38,4 +38,4 @@ class WorkspaceServiceFactory : public ProfileKeyedServiceFactory {
   bool ServiceIsCreatedWithBrowserContext() const override;
 };
 
-#endif  // BRAVE_BROWSER_WORKSPACE_WORKSPACE_SERVICE_FACTORY_H_
+#endif  // BRAVE_BROWSER_WORKSPACES_WORKSPACE_SERVICE_FACTORY_H_

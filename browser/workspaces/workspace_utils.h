@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_WORKSPACE_WORKSPACE_UTILS_H_
-#define BRAVE_BROWSER_WORKSPACE_WORKSPACE_UTILS_H_
+#ifndef BRAVE_BROWSER_WORKSPACES_WORKSPACE_UTILS_H_
+#define BRAVE_BROWSER_WORKSPACES_WORKSPACE_UTILS_H_
 
 #include <memory>
 #include <vector>
@@ -13,7 +13,7 @@
 #include "base/functional/callback.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/values.h"
-#include "brave/browser/workspace/workspace_metadata.h"
+#include "brave/browser/workspaces/workspace_metadata.h"
 #include "components/sessions/core/command_storage_backend.h"
 #include "components/sessions/core/command_storage_manager.h"
 #include "components/sessions/core/session_command.h"
@@ -57,4 +57,4 @@ std::vector<WorkspaceMetadata> ListWorkspacesFromDict(
 // in kWorkspacesMetadataPref.
 base::DictValue WorkspaceMetadataToDictEntry(const WorkspaceMetadata& meta);
 
-#endif  // BRAVE_BROWSER_WORKSPACE_WORKSPACE_UTILS_H_
+#endif  // BRAVE_BROWSER_WORKSPACES_WORKSPACE_UTILS_H_

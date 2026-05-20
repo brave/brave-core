@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_WORKSPACE_WORKSPACE_SESSION_UTILS_H_
-#define BRAVE_BROWSER_WORKSPACE_WORKSPACE_SESSION_UTILS_H_
+#ifndef BRAVE_BROWSER_WORKSPACES_WORKSPACE_SESSION_UTILS_H_
+#define BRAVE_BROWSER_WORKSPACES_WORKSPACE_SESSION_UTILS_H_
 
 #include <memory>
 #include <vector>
@@ -16,16 +16,7 @@
 
 class Profile;
 class TabStripModel;
-
-// Appends session commands for a single browser window to |commands|.
-// Serializes window type, bounds, tab groups, tabs (with full navigation
-// history), pinned state, and the active tab index.
-void AppendBrowserSessionCommands(
-    const SessionID& window_id,
-    TabStripModel* tsm,
-    gfx::Rect restored_bounds,
-    ui::mojom::WindowShowState restored_state,
-    std::vector<std::unique_ptr<sessions::SessionCommand>>& commands);
+struct WorkspaceMetadata;
 
 // Iterates all normal browser windows for |profile|, serializes their state
 // into session commands, and returns the result.  |window_count| and
@@ -33,8 +24,7 @@ void AppendBrowserSessionCommands(
 // vector if there are no tabs to save.
 std::vector<std::unique_ptr<sessions::SessionCommand>>
 GenerateBrowserSessionCommandsForWorkspace(Profile* profile,
-                                           int& window_count,
-                                           int& tab_count);
+                                           WorkspaceMetadata& workspace);
 
 // Deserializes |commands| and opens the encoded windows/tabs in new browser
 // windows belonging to |profile|.  Must be called on the UI thread.
@@ -42,4 +32,4 @@ void RestoreBrowserSessionCommandsForWorkspace(
     Profile* profile,
     std::vector<std::unique_ptr<sessions::SessionCommand>> commands);
 
-#endif  // BRAVE_BROWSER_WORKSPACE_WORKSPACE_SESSION_UTILS_H_
+#endif  // BRAVE_BROWSER_WORKSPACES_WORKSPACE_SESSION_UTILS_H_

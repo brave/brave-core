@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_WORKSPACE_FEATURES_H_
-#define BRAVE_BROWSER_WORKSPACE_FEATURES_H_
+#ifndef BRAVE_BROWSER_WORKSPACES_FEATURES_H_
+#define BRAVE_BROWSER_WORKSPACES_FEATURES_H_
 
 #include "base/feature_list.h"
 
 namespace features {
 
-BASE_DECLARE_FEATURE(kWorkspace);
+BASE_DECLARE_FEATURE(kWorkspaces);
 
 }  // namespace features
 
-#endif  // BRAVE_BROWSER_WORKSPACE_FEATURES_H_
+#endif  // BRAVE_BROWSER_WORKSPACES_FEATURES_H_

@@ -21,9 +21,9 @@
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/focus_mode/focus_mode_utils.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
-#include "brave/browser/workspace/features.h"
-#include "brave/browser/workspace/workspace_service.h"
-#include "brave/browser/workspace/workspace_service_factory.h"
+#include "brave/browser/workspaces/features.h"
+#include "brave/browser/workspaces/workspace_service.h"
+#include "brave/browser/workspaces/workspace_service_factory.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/rewards_util.h"
@@ -371,7 +371,7 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 #endif
 
   // Reload options if person has an update in workspaces
-  if (base::FeatureList::IsEnabled(features::kWorkspace) &&
+  if (base::FeatureList::IsEnabled(features::kWorkspaces) &&
       browser_->is_type_normal()) {
     UpdateCommandForWorkspace();
     pref_change_registrar_.Add(

@@ -81,7 +81,7 @@
 #include "chrome/browser/flags/android/chrome_feature_list.h"
 #else
 #include "brave/browser/ui/views/tabs/switches.h"
-#include "brave/browser/workspace/features.h"
+#include "brave/browser/workspaces/features.h"
 #include "brave/components/commander/common/features.h"
 #include "brave/components/commands/common/features.h"
 #endif
@@ -803,7 +803,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
       "Brave Workspace",                                         \
       "Save sets of windows and tabs into loadable workspaces.", \
       kOsWin | kOsLinux | kOsMac,                                \
-      FEATURE_VALUE_TYPE(features::kWorkspace),                  \
+      FEATURE_VALUE_TYPE(features::kWorkspaces),                 \
   })
 #else
 #define BRAVE_WORKSPACE_FEATURE_ENTRY

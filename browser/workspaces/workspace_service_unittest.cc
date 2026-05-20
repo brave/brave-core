@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/workspace/workspace_service.h"
+#include "brave/browser/workspaces/workspace_service.h"
 
 #include <memory>
 #include <vector>
@@ -19,10 +19,10 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
 #include "base/time/time.h"
-#include "brave/browser/workspace/features.h"
-#include "brave/browser/workspace/workspace_metadata.h"
-#include "brave/browser/workspace/workspace_service_factory.h"
-#include "brave/browser/workspace/workspace_utils.h"
+#include "brave/browser/workspaces/features.h"
+#include "brave/browser/workspaces/workspace_metadata.h"
+#include "brave/browser/workspaces/workspace_service_factory.h"
+#include "brave/browser/workspaces/workspace_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile_manager.h"
@@ -253,14 +253,14 @@ class WorkspaceServiceFactoryTest : public ::testing::Test {
 };
 
 TEST_F(WorkspaceServiceFactoryTest, FeatureDisabled_GetForProfileReturnsNull) {
-  feature_list_.InitAndDisableFeature(features::kWorkspace);
+  feature_list_.InitAndDisableFeature(features::kWorkspaces);
   auto* profile = profile_manager_.CreateTestingProfile("test");
   EXPECT_EQ(WorkspaceServiceFactory::GetForProfile(profile), nullptr);
 }
 
 TEST_F(WorkspaceServiceFactoryTest,
        FeatureEnabled_GetForProfileReturnsNonNull) {
-  feature_list_.InitAndEnableFeature(features::kWorkspace);
+  feature_list_.InitAndEnableFeature(features::kWorkspaces);
   auto* profile = profile_manager_.CreateTestingProfile("test");
   // ServiceIsNULLWhileTesting() suppresses service creation for test profiles.
   // Provide a testing factory so the feature-enabled path is exercised.

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/workspace/workspace_service.h"
+#include "brave/browser/workspaces/workspace_service.h"
 
 #include <memory>
 #include <string>
@@ -17,8 +17,8 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
-#include "brave/browser/workspace/workspace_session_utils.h"
-#include "brave/browser/workspace/workspace_utils.h"
+#include "brave/browser/workspaces/workspace_session_utils.h"
+#include "brave/browser/workspaces/workspace_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -70,10 +70,10 @@ void WorkspaceService::SaveWorkspace(const std::string& name) {
 
   // Collect session commands on the UI thread, then write to disk on a
   // background task (WriteWorkspaceToDisk does blocking file I/O).
-  int window_count = 0, tab_count = 0;
+  WorkspaceMetadata workspace{.name = name, .modified_at = base::Time::Now()};
   std::vector<std::unique_ptr<sessions::SessionCommand>> commands =
       GenerateBrowserSessionCommandsForWorkspace(base::to_address(profile_),
-                                                 window_count, tab_count);
+                                                 workspace);
   base::FilePath workspace_path = GetWorkspacePathForName(name);
 
   auto backend = base::MakeRefCounted<sessions::CommandStorageBackend>(
@@ -84,11 +84,7 @@ void WorkspaceService::SaveWorkspace(const std::string& name) {
   // BindPostTask ensures on_error always runs on the UI thread whether it is
   // invoked by AppendCommands or directly by WriteWorkspaceToDisk on a
   // directory-creation failure.
-  WorkspaceMetadata meta{.name = name,
-                         .modified_at = base::Time::Now(),
-                         .number_of_windows = window_count,
-                         .number_of_tabs = tab_count};
-  SaveWorkspaceMetadata(meta);
+  SaveWorkspaceMetadata(workspace);
 
   // "Rolling back" is just removing the metadata from the dictionary.
   auto on_error = base::BindPostTask(

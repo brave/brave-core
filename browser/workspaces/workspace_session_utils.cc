@@ -3,13 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/workspace/workspace_session_utils.h"
+#include "brave/browser/workspaces/workspace_session_utils.h"
 
 #include <algorithm>
 #include <memory>
 #include <set>
 #include <vector>
 
+#include "brave/browser/workspaces/workspace_metadata.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_tabrestore.h"
@@ -27,6 +28,11 @@
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/web_contents.h"
 
+namespace {
+
+// Appends session commands for a single browser window to |commands|.
+// Serializes window type, bounds, tab groups, tabs (with full navigation
+// history), pinned state, and the active tab index.
 void AppendBrowserSessionCommands(
     const SessionID& window_id,
     TabStripModel* tsm,
@@ -93,10 +99,11 @@ void AppendBrowserSessionCommands(
       window_id, tsm->active_index()));
 }
 
+}  // namespace
+
 std::vector<std::unique_ptr<sessions::SessionCommand>>
 GenerateBrowserSessionCommandsForWorkspace(Profile* profile,
-                                           int& window_count,
-                                           int& tab_count) {
+                                           WorkspaceMetadata& workspace) {
   std::vector<std::unique_ptr<sessions::SessionCommand>> commands;
   SessionID active_window_id = SessionID::InvalidValue();
 
@@ -123,12 +130,12 @@ GenerateBrowserSessionCommandsForWorkspace(Profile* profile,
             active_window_id == SessionID::InvalidValue()) {
           active_window_id = window_id;
         }
-        window_count++;
-        tab_count += tabs;
+        workspace.number_of_windows++;
+        workspace.number_of_tabs += tabs;
         return true;
       });
 
-  if (tab_count == 0) {
+  if (workspace.number_of_tabs == 0) {
     return {};
   }
 
