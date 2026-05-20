@@ -202,13 +202,13 @@ TEST_F(WorkspaceServiceTest, WriteAndReadRoundTrip) {
   // Re-creating the reference commands from the same inputs and comparing
   // serialized bytes confirms the window ID and TYPE_NORMAL encoding are
   // preserved end-to-end (both are embedded in the serialized payload).
-  EXPECT_EQ(read_cmds[0]->Serialize(),
+  EXPECT_EQ(read_cmds[0]->Serialize(/*encryptor*/ nullptr),
             sessions::CreateSetWindowTypeCommand(
                 window_id, sessions::SessionWindow::TYPE_NORMAL)
-                ->Serialize());
-  EXPECT_EQ(
-      read_cmds[1]->Serialize(),
-      sessions::CreateSetSelectedTabInWindowCommand(window_id, 0)->Serialize());
+                ->Serialize(/*encryptor*/ nullptr));
+  EXPECT_EQ(read_cmds[1]->Serialize(/*encryptor*/ nullptr),
+            sessions::CreateSetSelectedTabInWindowCommand(window_id, 0)
+                ->Serialize(/*encryptor*/ nullptr));
 }
 
 TEST_F(WorkspaceServiceTest,
