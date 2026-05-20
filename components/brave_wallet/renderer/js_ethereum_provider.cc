@@ -121,8 +121,7 @@ JSEthereumProvider::JSEthereumProvider(content::RenderFrame* render_frame)
 
 JSEthereumProvider::~JSEthereumProvider() = default;
 
-void JSEthereumProvider::OnDestruct() {
-}
+void JSEthereumProvider::OnDestruct() {}
 
 void JSEthereumProvider::WillReleaseScriptContext(v8::Local<v8::Context>,
                                                   int32_t world_id) {
@@ -273,8 +272,10 @@ bool JSEthereumProvider::GetIsMetaMask() {
 }
 
 JSEthereumProvider::MetaMask::MetaMask(content::RenderFrame* render_frame)
-    : render_frame_(render_frame) {}
+    : RenderFrameObserver(render_frame) {}
 JSEthereumProvider::MetaMask::~MetaMask() = default;
+
+void JSEthereumProvider::MetaMask::OnDestruct() {}
 
 gin::ObjectTemplateBuilder
 JSEthereumProvider::MetaMask::GetObjectTemplateBuilder(v8::Isolate* isolate) {
@@ -288,8 +289,12 @@ const gin::WrapperInfo* JSEthereumProvider::MetaMask::wrapper_info() const {
 
 v8::Local<v8::Promise> JSEthereumProvider::MetaMask::IsUnlocked(
     v8::Isolate* isolate) {
+  if (!render_frame()) {
+    return v8::Local<v8::Promise>();
+  }
+
   if (!ethereum_provider_.is_bound()) {
-    render_frame_->GetBrowserInterfaceBroker().GetInterface(
+    render_frame()->GetBrowserInterfaceBroker().GetInterface(
         ethereum_provider_.BindNewPipeAndPassReceiver());
   }
 
