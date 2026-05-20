@@ -156,8 +156,8 @@ extension SessionTab {
 
   /// Marks the specified tab as selected
   /// Since only one tab can be active at a time, all other tabs are marked as deselected
-  public static func setSelected(tabId: UUID) {
-    DataController.perform { context in
+  public static func setSelected(tabId: UUID, synchronously: Bool = false) {
+    let update: (NSManagedObjectContext) -> Void = { context in
       guard let tab = Self.from(tabId: tabId, in: context) else { return }
 
       let predicate = NSPredicate(format: "isSelected == true")
@@ -166,6 +166,16 @@ extension SessionTab {
       }
 
       tab.isSelected = true
+
+      if synchronously, context.hasChanges {
+        try? context.save()
+      }
+    }
+
+    if synchronously {
+      DataController.performOnMainContext(task: update)
+    } else {
+      DataController.perform { update($0) }
     }
   }
 
@@ -195,8 +205,8 @@ extension SessionTab {
     }
   }
 
-  public static func saveTabOrder(tabIds: [UUID]) {
-    DataController.perform { context in
+  public static func saveTabOrder(tabIds: [UUID], synchronously: Bool = false) {
+    let update: (NSManagedObjectContext) -> Void = { context in
       for (index, tabId) in tabIds.enumerated() {
         guard let tab = Self.from(tabId: tabId, in: context) else {
           Logger.module.error("Error: SessionTab.updateScreenshot missing managed object")
@@ -204,6 +214,15 @@ extension SessionTab {
         }
         tab.index = Int32(index)
       }
+      if synchronously, context.hasChanges {
+        try? context.save()
+      }
+    }
+
+    if synchronously {
+      DataController.performOnMainContext(task: update)
+    } else {
+      DataController.perform { update($0) }
     }
   }
 
@@ -222,10 +241,72 @@ extension SessionTab {
         sessionTab.interactionState = tab.interactionState
         sessionTab.title = tab.title
         sessionTab.url = tab.url
+        sessionTab.lastUpdated = .now
       }
       if synchronously {
         try? context.save()
       }
+    }
+  }
+
+  /// Creates or updates session tabs for the given window
+  public static func persistTabs(
+    windowId: UUID,
+    tabs: [(
+      tabId: UUID,
+      interactionState: Data,
+      title: String,
+      url: URL,
+      isPrivate: Bool
+    )],
+    synchronously: Bool = true
+  ) {
+    let update: (NSManagedObjectContext) -> Void = { context in
+      guard let window = SessionWindow.ensureWindow(
+        windowId: windowId,
+        isSelected: true,
+        in: context
+      )
+      else {
+        Logger.module.error("Error: SessionTab.persistTabs missing session window")
+        return
+      }
+
+      for (index, tab) in tabs.enumerated() {
+        if let sessionTab = Self.from(tabId: tab.tabId, in: context) {
+          sessionTab.interactionState = tab.interactionState
+          sessionTab.title = tab.title
+          sessionTab.url = tab.url
+          sessionTab.lastUpdated = .now
+          sessionTab.index = Int32(index)
+          sessionTab.sessionWindow = window
+        } else {
+          _ = SessionTab(
+            context: context,
+            sessionWindow: window,
+            sessionTabGroup: nil,
+            index: Int32(index),
+            interactionState: tab.interactionState,
+            isPrivate: tab.isPrivate,
+            isSelected: false,
+            lastUpdated: .now,
+            screenshotData: Data(),
+            title: tab.title,
+            url: tab.url,
+            tabId: tab.tabId
+          )
+        }
+      }
+
+      if context.hasChanges {
+        try? context.save()
+      }
+    }
+
+    if synchronously {
+      DataController.performOnMainContext(task: update)
+    } else {
+      DataController.perform { update($0) }
     }
   }
 
