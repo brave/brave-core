@@ -333,7 +333,7 @@ void PolkadotWalletService::OnGetChainMetadataForAddress(
 
   PolkadotAddress polkadot_address;
   polkadot_address.pubkey = pubkey;
-  polkadot_address.ss58_prefix = metadata->GetSs58Prefix();
+  polkadot_address.ss58_prefix = metadata.value()->ss58_prefix;
   auto address = polkadot_address.ToString();
   if (!address) {
     std::move(callback).Run(std::nullopt, WalletInternalErrorMessage());
