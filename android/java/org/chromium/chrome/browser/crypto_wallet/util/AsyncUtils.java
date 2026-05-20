@@ -362,49 +362,6 @@ public class AsyncUtils {
         }
     }
 
-    public abstract static class BaseGetNftMetadataContext extends SingleResponseBaseContext {
-        public BlockchainToken asset;
-        public String tokenMetadata;
-        public Integer errorCode;
-        public String errorMessage;
-
-        public BaseGetNftMetadataContext(Runnable responseCompleteCallback) {
-            super(responseCompleteCallback);
-        }
-    }
-
-    public static class GetNftSolanaMetadataContext extends BaseGetNftMetadataContext
-            implements JsonRpcService.GetSolTokenMetadata_Response {
-        public GetNftSolanaMetadataContext(Runnable responseCompleteCallback) {
-            super(responseCompleteCallback);
-        }
-
-        @Override
-        public void call(
-                String tokenUrl, String tokenMetadata, int errorCode, String errorMessage) {
-            this.tokenMetadata = tokenMetadata;
-            this.errorCode = errorCode;
-            this.errorMessage = errorMessage;
-            super.fireResponseCompleteCallback();
-        }
-    }
-
-    public static class GetNftErc721MetadataContext extends BaseGetNftMetadataContext
-            implements JsonRpcService.GetErc721Metadata_Response {
-        public GetNftErc721MetadataContext(Runnable responseCompleteCallback) {
-            super(responseCompleteCallback);
-        }
-
-        @Override
-        public void call(
-                String tokenUrl, String erc721Metadata, int errorCode, String errorMessage) {
-            this.tokenMetadata = erc721Metadata;
-            this.errorCode = errorCode;
-            this.errorMessage = errorMessage;
-            super.fireResponseCompleteCallback();
-        }
-    }
-
     public static class GetNetworkAllTokensContext extends SingleResponseBaseContext
             implements BlockchainRegistry.GetAllTokens_Response {
         public BlockchainToken[] tokens;

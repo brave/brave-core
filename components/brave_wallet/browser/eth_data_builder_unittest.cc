@@ -108,16 +108,6 @@ TEST(EthCallDataBuilderTest, OwnerOf) {
             "0000000f");
 }
 
-TEST(EthCallDataBuilderTest, TokenUri) {
-  std::string data;
-  uint256_t token_id;
-  ASSERT_TRUE(HexValueToUint256("0xf", &token_id));
-  TokenUri(token_id, &data);
-  ASSERT_EQ(data,
-            "0xc87b56dd00000000000000000000000000000000000000000000000000000000"
-            "0000000f");
-}
-
 }  // namespace erc721
 
 namespace erc1155 {
@@ -151,16 +141,6 @@ TEST(EthCallDataBuilderTest, BalanceOf_erc1155) {
       data,
       "0x00fdd58e000000000000000000000000e53960ca4712052615a6eb4c635b44514b2b42"
       "b60000000000000000000000000000000000000000000000000000000000000001");
-}
-
-TEST(EthCallDataBuilderTest, Uri) {
-  std::string data;
-  uint256_t token_id;
-  ASSERT_TRUE(HexValueToUint256("0xf", &token_id));
-  Uri(token_id, &data);
-  ASSERT_EQ(data,
-            "0x0e89341c00000000000000000000000000000000000000000000000000000000"
-            "0000000f");
 }
 
 }  // namespace erc1155

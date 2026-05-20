@@ -1859,20 +1859,6 @@ interface JsonRpcService {
                          string chain_id)
       => (string allowance, ProviderError error, string error_message);
 
-  // Obtains the metadata JSON for a token ID of an ERC721 contract
-  GetERC721Metadata(string contract, string token_id, string chain_id)
-      => (string token_url,
-          string response,
-          ProviderError error,
-          string error_message);
-
-  // Obtains the metadata JSON for a token ID of an ERC1155 contract
-  GetERC1155Metadata(string contract, string token_id, string chain_id)
-      => (string token_url,
-          string response,
-          ProviderError error,
-          string error_message);
-
   GetUnstoppableDomainsResolveMethod() => (ResolveMethod method);
 
   GetEnsResolveMethod() => (ResolveMethod method);
@@ -1989,13 +1975,6 @@ interface JsonRpcService {
   GetNftBalances(
       string wallet_address, array<NftIdentifier> nft_identifiers)
       => (array<uint64> balances, string error_message);
-
-  // Returns the metadata json associated with the NFT account address
-  GetSolTokenMetadata(string chain_id, string token_mint_address)
-      => (string token_url,
-          string response,
-          SolanaProviderError error,
-          string error_message);
 
   // Returns whether a blockhash is still valid or not for a given chain.
   IsSolanaBlockhashValid(
