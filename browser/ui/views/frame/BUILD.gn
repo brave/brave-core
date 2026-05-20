@@ -111,4 +111,14 @@ source_set("browser_tests") {
       "//ui/native_theme",
     ]
   }
+
+  if (is_win) {
+    sources += [ "//brave/browser/ui/views/frame/brave_browser_frame_view_win_browsertest.cc" ]
+
+    deps += [
+      "//base/test:test_support",
+      "//chrome/browser/ui/tabs:features",
+      "//chrome/browser/ui/views/frame",
+    ]
+  }
 }

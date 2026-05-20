@@ -3,7 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ui/views/frame/brave_win_caption_layout.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/layout_constants.h"
@@ -35,30 +34,24 @@
 namespace {
 
 // Translation-unit-local wrapper around `GetLayoutConstant`. Inside Win caption
-// button layout, `kTabstripToolbarOverlap` is used to vertically center the
-// minimize/maximize/close controls. In compact mode that role wants the
-// smaller `tabs::GetHorizontalTabControlsDelta()` value; using the
-// tab/toolbar geometry value (which is what `GetBraveLayoutConstant()`
-// returns centrally for `kTabstripToolbarOverlap`) leaves the caption
-// buttons visibly off-center because their target height is the controls
-// row, not the tab strip body. Routing only this TU's `GetLayoutConstant`
-// calls through the wrapper keeps the central override intact for every
-// other consumer (tab/toolbar geometry, frame view top-area math, etc.) and
-// avoids patching upstream. See the matching wrapper in
-// `chromium_src/chrome/browser/ui/views/
-// frame/horizontal_tab_strip_region_view.cc`.
-//
-// Standalone web apps with a web-app titlebar (no horizontal tab strip) use
-// the same overlap in WebAppFrameToolbar height; the controls delta would
-// mismatch (see WebAppBrowserFrameViewWinWindowControlsOverlayTest.
-// ContainerHeight).
+// button layout, `kTabstripToolbarOverlap` is used to compute the caption
+// button container height. This must use the geometry overlap value (what
+// `GetBraveLayoutConstant()` returns for `kTabstripToolbarOverlap`, e.g. 1 in
+// default mode and 8 in compact mode) — always a positive value that correctly
+// sizes the container. Using `tabs::GetHorizontalTabControlsDelta()` here was
+// wrong: it is negative in both default (-4) and compact (-5) mode and caused
+// the container height to be miscalculated
+// (https://github.com/brave/brave-browser/issues/55406).
+// `::GetLayoutConstant` bypasses the `#define` redirection and calls the
+// Brave-overridden global directly, keeping the central override intact for
+// every other consumer (tab/toolbar geometry, frame view top-area math, etc.)
+// and avoiding patching upstream.
+// Note: `horizontal_tab_strip_region_view.cc` has a similar wrapper that
+// intentionally DOES use `GetHorizontalTabControlsDelta()` for centering
+// tab-strip control buttons (new tab, tab search, etc.) — a different role.
 int GetLayoutConstantForBraveWindowControls(LayoutConstant constant) {
   if (constant == LayoutConstant::kTabstripToolbarOverlap) {
-    if (brave::ScopedWinCaptionLayoutUsesGeometryTabstripOverlap::
-            GetCurrentWinCaptionGeometryTabstripOverlapDepth() > 0) {
       return ::GetLayoutConstant(LayoutConstant::kTabstripToolbarOverlap);
-    }
-    return tabs::GetHorizontalTabControlsDelta();
   }
   return GetLayoutConstant(constant);
 }
