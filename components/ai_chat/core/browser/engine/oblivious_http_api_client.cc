@@ -182,16 +182,16 @@ void ObliviousHttpAPIClient::PerformRequest(
   CHECK(model_options.is_leo_model_options());
   const auto& leo_opts = *model_options.get_leo_model_options();
 
+  if (!credential_manager_) {
+    return RunCompletedWithError(std::move(completed_callback),
+                                 mojom::APIError::ConnectionIssue);
+  }
+
   const bool is_streaming_enabled = IsStreamingEnabled(data_received_callback);
 
   std::string request_body = CreateJSONRequestBody(
       SerializeOAIMessages(std::move(messages)), is_streaming_enabled,
       leo_opts.name, std::move(oai_tool_definitions), stop_sequences);
-
-  if (!credential_manager_) {
-    return RunCompletedWithError(std::move(completed_callback),
-                                 mojom::APIError::ConnectionIssue);
-  }
 
   credential_manager_->FetchPremiumCredential(base::BindOnce(
       &ObliviousHttpAPIClient::OnCredentialFetched, weak_factory_.GetWeakPtr(),
@@ -265,8 +265,8 @@ void ObliviousHttpAPIClient::DispatchOHTTPRequest(
   // Build outer (relay) request headers. These are sent to the relay in the
   // clear and are NOT encapsulated in the encrypted bhttp inner request.
   net::HttpRequestHeaders relay_headers;
-  for (const auto& [name, value] : GetBraveHeaders(credential)) {
-    relay_headers.SetHeader(name, value);
+  for (auto [name, value] : GetBraveHeaders(credential)) {
+    relay_headers.SetHeader(name, std::move(value));
   }
   ohttp_request->relay_request_headers = std::move(relay_headers);
   ohttp_request->brave_services_key = BUILDFLAG(SERVICE_KEY_AICHAT);
