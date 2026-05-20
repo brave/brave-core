@@ -132,9 +132,9 @@ PsstTabWebContentsObserver::MaybeCreateForWebContents(
         auto* rfh = web_contents->GetPrimaryMainFrame();
         CHECK(rfh);
         CHECK(rfh->IsRenderFrameLive());
-        script_injector_remote.reset();
         if (!script_injector_remote.is_bound() ||
             !script_injector_remote.is_connected()) {
+          script_injector_remote.reset();
           rfh->GetRemoteAssociatedInterfaces()->GetInterface(
               &script_injector_remote);
           script_injector_remote.reset_on_disconnect();
