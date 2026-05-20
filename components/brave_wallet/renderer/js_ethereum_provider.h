@@ -11,7 +11,6 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -53,15 +52,19 @@ class JSEthereumProvider final : public gin::Wrappable<JSEthereumProvider>,
                     base::Value result) override;
 
  private:
-  class MetaMask final : public gin::Wrappable<MetaMask> {
+  class MetaMask final : public content::RenderFrameObserver,
+                         public gin::Wrappable<MetaMask> {
    public:
     static constexpr gin::WrapperInfo kWrapperInfo = {{gin::kEmbedderNativeGin},
                                                       gin::kMetaMask};
 
-    explicit MetaMask(content::RenderFrame*);
+    explicit MetaMask(content::RenderFrame* render_frame);
     ~MetaMask() override;
     MetaMask(const MetaMask&) = delete;
     MetaMask& operator=(const MetaMask&) = delete;
+
+    // content::RenderFrameObserver:
+    void OnDestruct() override;
 
     // gin::WrappableBase
     gin::ObjectTemplateBuilder GetObjectTemplateBuilder(
@@ -74,7 +77,6 @@ class JSEthereumProvider final : public gin::Wrappable<JSEthereumProvider>,
                       v8::Global<v8::Promise::Resolver> promise_resolver,
                       v8::Isolate* isolate,
                       bool locked);
-    raw_ptr<content::RenderFrame> render_frame_;
     mojo::Remote<mojom::EthereumProvider> ethereum_provider_;
   };
 
