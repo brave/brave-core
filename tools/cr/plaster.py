@@ -84,13 +84,111 @@ class PathChecksumPair:
         return True
 
 
-@dataclass
-class PatchInfo:
-    """ Manages a .patchinfo file contents.
+@dataclass(frozen=True)
+class Patchinfo:
+    """In-memory representation of a parsed .patchinfo file.
+    """
 
-    This class is used to manage the patchfile metadata, known as .patchinfo,
-    which are used by our machinery when applying patches to determine if a file
-    needs to be updated or not.
+    @dataclass(frozen=True)
+    class Entry:
+        """A single path/checksum pair from a .patchinfo file."""
+
+        # Path of the file the entry refers to. Stored as a string because
+        # that is how it is serialized in JSON.
+        path: str
+
+        # SHA-256 checksum (hex) of the file at `path`.
+        checksum: str
+
+    # Schema version of the patchinfo file format.
+    schema_version: int
+
+    # SHA-256 checksum (hex) of the .patch file.
+    patch_checksum: str
+
+    # The file the patch applies to, paired with its post-patch checksum.
+    # JSON stores this under "appliesTo" as an array, but in practice we only
+    # ever produce and accept a single entry.
+    applies_to: Entry
+
+    # The plaster .toml file that produced this patchinfo.
+    plaster: Entry
+
+    @staticmethod
+    def from_json(content: str) -> Patchinfo | None:
+        """Parse the JSON content of a .patchinfo file.
+
+        Returns None if the content is not valid JSON, if any required
+        path/checksum pair is missing, if any field has the wrong type, or
+        if "appliesTo" does not contain exactly one entry.
+        """
+        try:
+            data = json.loads(content)
+        except json.JSONDecodeError:
+            return None
+        if not isinstance(data, dict):
+            return None
+
+        schema_version = data.get('schemaVersion')
+        if not isinstance(schema_version, int):
+            return None
+        patch_checksum = data.get('patchChecksum')
+        if not isinstance(patch_checksum, str):
+            return None
+
+        applies_to_raw = data.get('appliesTo')
+        if not isinstance(applies_to_raw, list) or len(applies_to_raw) != 1:
+            return None
+        entry = applies_to_raw[0]
+        if not isinstance(entry, dict):
+            return None
+        applies_path = entry.get('path')
+        applies_checksum = entry.get('checksum')
+        if (not isinstance(applies_path, str)
+                or not isinstance(applies_checksum, str)):
+            return None
+
+        plaster_raw = data.get('plaster')
+        if not isinstance(plaster_raw, dict):
+            return None
+        plaster_path = plaster_raw.get('path')
+        plaster_checksum = plaster_raw.get('checksum')
+        if (not isinstance(plaster_path, str)
+                or not isinstance(plaster_checksum, str)):
+            return None
+
+        return Patchinfo(
+            schema_version=schema_version,
+            patch_checksum=patch_checksum,
+            applies_to=Patchinfo.Entry(path=applies_path,
+                                       checksum=applies_checksum),
+            plaster=Patchinfo.Entry(path=plaster_path,
+                                    checksum=plaster_checksum),
+        )
+
+    def to_json(self) -> str:
+        """Serialize this Patchinfo to the .patchinfo JSON representation."""
+        return json.dumps({
+            'schemaVersion': self.schema_version,
+            'patchChecksum': self.patch_checksum,
+            'appliesTo': [{
+                'path': self.applies_to.path,
+                'checksum': self.applies_to.checksum,
+            }],
+            'plaster': {
+                'path': self.plaster.path,
+                'checksum': self.plaster.checksum,
+            },
+        })
+
+
+@dataclass
+class PatchinfoBuilder:
+    """ Builds a .patchinfo file's contents for a given plaster.
+
+    A builder for the patchfile metadata, known as .patchinfo, which is used
+    by our machinery when applying patches to determine if a file needs to be
+    updated or not.
 
     patchinfo files are not committted to the repository. These files have the
     same name as the patch file, but with a .patchinfo extension. They usually
@@ -106,8 +204,9 @@ class PatchInfo:
       ]
     }
 
-    This class extends the contents of patchinfo files to include the details
-    of the plaster file, including path and checksum, under the "plaster" key.
+    This builder extends the contents of patchinfo files to include the
+    details of the plaster file, including path and checksum, under the
+    "plaster" key.
     {
       "schemaVersion": 1,
       "patchChecksum": "78cb50920870416befe307fa4272bb6076e5000ba25dfbcac2cf00",
@@ -123,10 +222,10 @@ class PatchInfo:
       }
     }
 
-    This class is used to generate a patchinfo file, and with its hash data,
-    determine if we should make changes to the source, patch, and patchinfo
-    files. These three files are supposed to be changed only when the resulting
-    new content is different from what is in disk.
+    It produces a patchinfo file and, with its hash data, decides whether
+    changes need to be persisted to the source, patch, and patchinfo files.
+    These three files are supposed to be changed only when the resulting new
+    content is different from what is in disk.
 
     The new additions to .patchinfo are not known yet to `apply_patches`, but
     this may change in the future.
@@ -156,7 +255,7 @@ class PatchInfo:
     patchinfo: PathChecksumPair = field(init=False)
 
     def __post_init__(self):
-        """Initializes the PatchInfo data with checksums and paths."""
+        """Initializes the PatchinfoBuilder data with checksums and paths."""
         self.plaster_contents = self.plaster_file.read_bytes().decode('utf-8')
         self.plaster_checksum = hashlib.sha256(
             self.plaster_contents.encode()).hexdigest()
@@ -215,18 +314,18 @@ class PatchInfo:
 
     def save_patchinfo_if_changed(self):
         """Save the patchinfo metadata JSON only if it has changed."""
-        content = json.dumps({
-            'schemaVersion': 1,
-            'patchChecksum': self.patch.checksum,
-            'appliesTo': [{
-                'path': str(self.source),
-                'checksum': self.source_with_checksum.checksum,
-            }],
-            'plaster': {
-                'path': str(self.plaster_file),
-                'checksum': self.plaster_checksum,
-            },
-        })
+        content = Patchinfo(
+            schema_version=1,
+            patch_checksum=self.patch.checksum,
+            applies_to=Patchinfo.Entry(
+                path=str(self.source),
+                checksum=self.source_with_checksum.checksum,
+            ),
+            plaster=Patchinfo.Entry(
+                path=str(self.plaster_file),
+                checksum=self.plaster_checksum,
+            ),
+        ).to_json()
         self.patchinfo.save_if_changed(content)
 
 
@@ -255,8 +354,56 @@ class PlasterFile:
 
         return plaster_files
 
+    def needs_apply(self) -> bool:
+        """Returns True if this plaster file needs to be re-applied.
+
+        The basics of this function is that it checks if a given plaster file
+        or its source last change occurred after the last change for
+        `.pathcinfo`. If that's the case, then it means something changed in
+        these files, since the last time the patch was applied with our
+        tooling, which warrent checksum checks for all of them, and at that
+        point if any of the checksum values don't match, we do return True.
+        """
+        source_relative = self.path.relative_to(
+            PLASTER_FILES_PATH).with_suffix('')
+        source_path = Path(repository.chromium.from_brave(source_relative))
+        patch_stem = source_relative.as_posix().replace('/', '-')
+        patch_path = PATCHES_PATH / f'{patch_stem}.patch'
+        patchinfo_path = PATCHES_PATH / f'{patch_stem}.patchinfo'
+
+        # Only the plaster toml is guaranteed to exist here; any of the
+        # other files may be missing and that is by itself a reason to
+        # re-apply.
+        if (not patchinfo_path.exists() or not patch_path.exists()
+                or not source_path.exists()):
+            return True
+
+        patchinfo_mtime = patchinfo_path.stat().st_mtime
+        plaster_mtime = self.path.stat().st_mtime
+        patch_mtime = patch_path.stat().st_mtime
+        source_mtime = source_path.stat().st_mtime
+
+        if (patchinfo_mtime >= plaster_mtime
+                and patchinfo_mtime >= source_mtime
+                and patchinfo_mtime >= patch_mtime):
+            return False
+
+        try:
+            content = patchinfo_path.read_bytes().decode('utf-8')
+        except OSError:
+            return True
+
+        info = Patchinfo.from_json(content)
+        if info is None:
+            return True
+
+        return (
+            PathChecksumPair(source_path).checksum != info.applies_to.checksum
+            or PathChecksumPair(self.path).checksum != info.plaster.checksum
+            or PathChecksumPair(patch_path).checksum != info.patch_checksum)
+
     def apply(self, dry_run=False):
-        info = PatchInfo(self.path)
+        info = PatchinfoBuilder(self.path)
         plaster_file = tomllib.loads(info.plaster_contents)
         contents = repository.chromium.read_file(info.source)
         errors = []
@@ -389,10 +536,25 @@ def get_plaster_files(filepaths: list[str] | None = None) -> list[PlasterFile]:
 
 def apply(args):
     """Applies plaster files to brave.
+
+    This function default mode, meaning no arguments were provided when calling
+    `plaster apply` will cause a `needs_apply` check to be used before applying
+    a plaster, which is a way to make calling plaster inexpensive.
+
+    When `--all` is passed, this causes all plaster files to be reapplied. When
+    specific plaster file paths or patch file paths are passed, only those are
+    run.
     """
+    filepaths = getattr(args, 'filepaths', None)
+    apply_all = getattr(args, 'all', False)
+    skip_up_to_date = not apply_all and not filepaths
+
     with terminal.with_status('Applying plaster files'):
-        plaster_files = get_plaster_files(getattr(args, 'filepaths', None))
+        plaster_files = get_plaster_files(filepaths)
         for plaster_file in plaster_files:
+            if skip_up_to_date and not plaster_file.needs_apply():
+                logging.debug('Up-to-date, skipping: %s', plaster_file.path)
+                continue
             console.log(f'Applying plaster file: {plaster_file.path}')
             plaster_file.apply()
     return 0
@@ -423,6 +585,11 @@ def main():
     # Add the 'apply' subparser
     apply_parser = subparsers.add_parser(
         'apply', help='Apply all plaster files to the sources in brave-core')
+    apply_parser.add_argument(
+        '--all',
+        action='store_true',
+        help='Re-apply every plaster file unconditionally, even if the '
+        'patchinfo indicates it is already up-to-date.')
     apply_parser.add_argument('filepaths',
                               nargs='*',
                               help='Filepaths to apply')
