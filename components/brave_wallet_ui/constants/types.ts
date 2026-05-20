@@ -757,6 +757,7 @@ export const CardanoTestnetKeyringIds = [BraveWallet.KeyringId.kCardanoTestnet]
 
 export const PolkadotTestnetKeyringIds = [
   BraveWallet.KeyringId.kPolkadotTestnet,
+  BraveWallet.KeyringId.kPolkadotImportTestnet,
 ]
 
 /**

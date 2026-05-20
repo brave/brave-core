@@ -5,12 +5,14 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_tx_manager.h"
 
+#include <ranges>
 #include <utility>
 
 #include "base/notimplemented.h"
 #include "brave/components/brave_wallet/browser/account_resolver_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_block_tracker.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_transaction_status_task.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_tx_meta.h"
@@ -19,7 +21,6 @@
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_wallet_service.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -30,6 +31,7 @@ using TransferAll = PolkadotWalletService::TransferAll;
 PolkadotTxManager::PolkadotTxManager(
     TxService& tx_service,
     PolkadotWalletService& polkadot_wallet_service,
+    NetworkManager& network_manager,
     KeyringService& keyring_service,
     TxStorage& tx_storage,
     AccountResolverDelegate& account_resolver_delegate)
@@ -37,10 +39,12 @@ PolkadotTxManager::PolkadotTxManager(
           std::make_unique<PolkadotTxStateManager>(tx_storage,
                                                    account_resolver_delegate),
           std::make_unique<PolkadotBlockTracker>(
-              *polkadot_wallet_service.GetPolkadotRpc()),
+              *polkadot_wallet_service.GetPolkadotRpc(),
+              polkadot_wallet_service.GetNetworkManager()),
           tx_service,
           keyring_service),
-      polkadot_wallet_service_(polkadot_wallet_service) {
+      polkadot_wallet_service_(polkadot_wallet_service),
+      network_manager_(network_manager) {
   GetPolkadotBlockTracker().AddObserver(this);
 }
 
@@ -153,11 +157,16 @@ void PolkadotTxManager::OnApprovePolkadotTransaction(
 void PolkadotTxManager::AddUnapprovedPolkadotTransaction(
     mojom::NewPolkadotTransactionParamsPtr params,
     AddUnapprovedPolkadotTransactionCallback callback) {
-  auto chain_id = params->chain_id;
-  if (chain_id != GetNetworkForPolkadotAccount(params->from)) {
+  if (!params || !params->from) {
     return std::move(callback).Run(false, "", WalletInternalErrorMessage());
   }
 
+  auto chain_id = params->chain_id;
+  auto network = network_manager_->GetChain(chain_id, mojom::CoinType::DOT);
+  if (!network || !std::ranges::contains(network->supported_keyrings,
+                                         params->from->keyring_id)) {
+    return std::move(callback).Run(false, "", WalletInternalErrorMessage());
+  }
   polkadot_wallet_service_->GetChainMetadata(
       chain_id,
       base::BindOnce(&PolkadotTxManager::OnGetChainMetadataForUnapproved,

@@ -24,6 +24,7 @@ class KeyringService;
 class TxService;
 class TxStorage;
 class AccountResolverDelegate;
+class NetworkManager;
 class PolkadotWalletService;
 class PolkadotTxStateManager;
 
@@ -36,6 +37,7 @@ class PolkadotTxManager : public TxManager,
 
   PolkadotTxManager(TxService& tx_service,
                     PolkadotWalletService& polkadot_wallet_service,
+                    NetworkManager& network_manager,
                     KeyringService& keyring_service,
                     TxStorage& tx_storage,
                     AccountResolverDelegate& account_resolver_delegate);
@@ -105,6 +107,7 @@ class PolkadotTxManager : public TxManager,
   PolkadotBlockTracker& GetPolkadotBlockTracker();
 
   raw_ref<PolkadotWalletService> polkadot_wallet_service_;
+  raw_ref<NetworkManager> network_manager_;
   absl::flat_hash_set<std::unique_ptr<PolkadotTransactionStatusTask>>
       polkadot_transaction_status_tasks_;
 

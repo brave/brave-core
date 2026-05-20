@@ -21,6 +21,7 @@
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "base/values.h"
@@ -36,6 +37,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_test_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
@@ -2804,16 +2806,14 @@ TEST_F(BraveWalletServiceUnitTest, ConvertFEVMToFVMAddress) {
   }
 }
 
-TEST_F(BraveWalletServiceUnitTest, GenerateReceiveAddress_EthFilSolDot) {
+TEST_F(BraveWalletServiceUnitTest, GenerateReceiveAddress_EthFilSol) {
   SetupWallet();
 
   std::vector<mojom::AccountInfoPtr> accounts;
   accounts.push_back(GetAccountUtils().EnsureEthAccount(0));
   accounts.push_back(GetAccountUtils().EnsureSolAccount(0));
   accounts.push_back(GetAccountUtils().EnsureFilAccount(0));
-  accounts.push_back(GetAccountUtils().EnsureDotAccount(0));
   accounts.push_back(GetAccountUtils().EnsureFilTestAccount(0));
-  accounts.push_back(GetAccountUtils().EnsureDotTestAccount(0));
 
   for (auto& acc : accounts) {
     base::MockCallback<BraveWalletService::GenerateReceiveAddressCallback>
@@ -2825,6 +2825,50 @@ TEST_F(BraveWalletServiceUnitTest, GenerateReceiveAddress_EthFilSolDot) {
     service_->GenerateReceiveAddress(acc->account_id.Clone(), callback.Get());
     service_->GenerateReceiveAddress(acc->account_id.Clone(), callback.Get());
     testing::Mock::VerifyAndClearExpectations(&callback);
+  }
+}
+
+TEST_F(BraveWalletServiceUnitTest, GenerateReceiveAddress_Dot) {
+  SetupWallet();
+
+  auto dot_mainnet_account = GetAccountUtils().EnsureDotAccount(0);
+  auto dot_testnet_account = GetAccountUtils().EnsureDotTestAccount(0);
+
+  auto polkadot_mainnet_url =
+      network_manager_
+          ->GetKnownChain(mojom::kPolkadotMainnet, mojom::CoinType::DOT)
+          ->rpc_endpoints.front();
+  auto polkadot_testnet_url =
+      network_manager_
+          ->GetKnownChain(mojom::kPolkadotTestnet, mojom::CoinType::DOT)
+          ->rpc_endpoints.front();
+
+  SetInterceptors(
+      {{polkadot_mainnet_url,
+        ReadMetadataFixtureJson("state_getMetadata_polkadot.json")},
+       {polkadot_testnet_url,
+        ReadMetadataFixtureJson("state_getMetadata_westend.json")}});
+
+  for (auto* acc : {dot_mainnet_account.get(), dot_testnet_account.get()}) {
+    auto expected_address = std::optional<std::string>(acc->address);
+
+    base::test::TestFuture<const std::optional<std::string>&,
+                           const std::optional<std::string>&>
+        future1;
+    service_->GenerateReceiveAddress(acc->account_id.Clone(),
+                                     future1.GetCallback());
+    auto [address1, error1] = future1.Take();
+    EXPECT_EQ(address1, expected_address);
+    EXPECT_FALSE(error1.has_value());
+
+    base::test::TestFuture<const std::optional<std::string>&,
+                           const std::optional<std::string>&>
+        future2;
+    service_->GenerateReceiveAddress(acc->account_id.Clone(),
+                                     future2.GetCallback());
+    auto [address2, error2] = future2.Take();
+    EXPECT_EQ(address2, expected_address);
+    EXPECT_FALSE(error2.has_value());
   }
 }
 

@@ -141,15 +141,17 @@ export const DepositModal = ({ selectedAccount }: DepositModalProps) => {
       isPolkadotAccount ? selectedAccount.accountId : skipToken,
     )
   const polkadotCompatibleNetworks = polkadotCompatibleNetworksResponse ?? []
-  const { data: polkadotAddress, isLoading: isLoadingPolkadotAddress } =
-    useGetPolkadotAddressForNetworkQuery(
-      isPolkadotAccount && selectedPolkadotNetwork
-        ? {
-            accountId: selectedAccount.accountId,
-            chainId: selectedPolkadotNetwork.chainId,
-          }
-        : skipToken,
-    )
+  const {
+    currentData: polkadotAddress,
+    isFetching: isFetchingPolkadotAddress,
+  } = useGetPolkadotAddressForNetworkQuery(
+    isPolkadotAccount && selectedPolkadotNetwork
+      ? {
+          accountId: selectedAccount.accountId,
+          chainId: selectedPolkadotNetwork.chainId,
+        }
+      : skipToken,
+  )
   const { data: zcashAccountInfo } = useGetZCashAccountInfoQuery(
     isZCashShieldedTransactionsEnabled
       && selectedAccount.accountId.coin === BraveWallet.CoinType.ZEC
@@ -157,7 +159,7 @@ export const DepositModal = ({ selectedAccount }: DepositModalProps) => {
       : skipToken,
   )
   const isLoadingAddress = isPolkadotAccount
-    ? isLoadingPolkadotAddress
+    ? isFetchingPolkadotAddress
     : isFetchingAddress
 
   React.useEffect(() => {

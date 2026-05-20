@@ -18,7 +18,6 @@
 #include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
-#include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -128,6 +127,21 @@ TEST_F(NetworkManagerUnitTest, KnownChainExists) {
                                                   mojom::CoinType::DOT));
 
   static_assert(AllCoinsTested<7>());
+}
+
+TEST_F(NetworkManagerUnitTest, IsPolkadotChain) {
+  EXPECT_TRUE(network_manager()->IsPolkadotChain(mojom::kPolkadotMainnet));
+  EXPECT_TRUE(network_manager()->IsPolkadotChain(mojom::kPolkadotTestnet));
+
+  auto custom_dot_chain = network_manager()->GetKnownChain(
+      mojom::kPolkadotMainnet, mojom::CoinType::DOT);
+  ASSERT_TRUE(custom_dot_chain);
+  custom_dot_chain->chain_id = "custom_dot_chain";
+  network_manager()->AddCustomNetwork(*custom_dot_chain);
+  EXPECT_TRUE(network_manager()->IsPolkadotChain("custom_dot_chain"));
+
+  EXPECT_FALSE(network_manager()->IsPolkadotChain(mojom::kMainnetChainId));
+  EXPECT_FALSE(network_manager()->IsPolkadotChain("unknown_chain"));
 }
 
 TEST_F(NetworkManagerUnitTest, CustomChainExists) {
@@ -620,14 +634,14 @@ TEST_F(NetworkManagerUnitTest, GetChain) {
   // Polkadot (mainnet: HD + import keyrings; testnet: HD + import keyrings)
   mojom::NetworkInfo polkadot_mainnet(
       mojom::kPolkadotMainnet, "Polkadot Mainnet",
-      {"https://polkadot.statescan.io/"}, {}, 0,
+      {"https://polkadot.subscan.io/"}, {}, 0,
       {GURL("https://polkadot-mainnet.wallet.brave.com/")}, "DOT", "Polkadot",
       10, mojom::CoinType::DOT,
       {mojom::KeyringId::kPolkadotMainnet, mojom::KeyringId::kPolkadotImport});
   mojom::NetworkInfo polkadot_testnet(
       mojom::kPolkadotTestnet, "Polkadot Westend",
       {"https://westend.subscan.io/"}, {}, 0,
-      {GURL("https://polkadot-westend.wallet.brave.com/")}, "WND", "Polkadot",
+      {GURL("https://polkadot-westend.wallet.brave.com/")}, "WND", "Westend",
       12, mojom::CoinType::DOT,
       {mojom::KeyringId::kPolkadotTestnet,
        mojom::KeyringId::kPolkadotImportTestnet});
