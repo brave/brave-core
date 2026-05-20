@@ -9,8 +9,11 @@
 
 #include "base/command_line.h"
 #include "base/files/file_path.h"
+#include "base/files/file_util.h"
+#include "base/path_service.h"
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
+#include "base/threading/thread_restrictions.h"
 #include "brave/components/brave_origin/pref_names.h"
 #include "brave/components/skus/browser/pref_names.h"
 #include "build/build_config.h"
@@ -19,6 +22,8 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/startup/startup_browser_creator.h"
+#include "chrome/common/chrome_constants.h"
+#include "chrome/common/chrome_paths.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
@@ -166,6 +171,44 @@ IN_PROC_BROWSER_TEST_F(BraveOriginStartupViewBrowserTest,
 
   EXPECT_FALSE(BraveOriginStartupView::IsShowing());
   EXPECT_TRUE(attempt_exit_called);
+}
+
+// Verifies closing without validation deletes the first run sentinel so that
+// the next launch is treated as a fresh first run (and shows onboarding).
+IN_PROC_BROWSER_TEST_F(BraveOriginStartupViewBrowserTest,
+                       CloseWithoutValidationDeletesFirstRunSentinel) {
+  base::ScopedAllowBlockingForTesting allow_blocking;
+  base::FilePath sentinel = base::PathService::CheckedGet(chrome::DIR_USER_DATA)
+                                .Append(chrome::kFirstRunSentinel);
+  ASSERT_TRUE(base::WriteFile(sentinel, ""));
+  ASSERT_TRUE(base::PathExists(sentinel));
+
+  BraveOriginStartupView::Show(base::DoNothing(),
+                               std::make_unique<TestDelegate>(nullptr));
+  HideAndWaitForClose();
+
+  EXPECT_FALSE(base::PathExists(sentinel));
+}
+
+// Verifies that closing with successful validation leaves the first run
+// sentinel in place (so subsequent launches are not treated as first run).
+IN_PROC_BROWSER_TEST_F(BraveOriginStartupViewBrowserTest,
+                       CloseWithValidationKeepsFirstRunSentinel) {
+  base::ScopedAllowBlockingForTesting allow_blocking;
+  base::FilePath sentinel = base::PathService::CheckedGet(chrome::DIR_USER_DATA)
+                                .Append(chrome::kFirstRunSentinel);
+  ASSERT_TRUE(base::WriteFile(sentinel, ""));
+  ASSERT_TRUE(base::PathExists(sentinel));
+
+  BraveOriginStartupView::Show(base::DoNothing(),
+                               std::make_unique<TestDelegate>(nullptr));
+
+  ASSERT_TRUE(base::test::RunUntil([] {
+    BraveOriginStartupView::ValidateForTesting();
+    return !BraveOriginStartupView::IsShowing();
+  }));
+
+  EXPECT_TRUE(base::PathExists(sentinel));
 }
 
 // Verifies that when the purchase is validated and SKU credentials exist,
