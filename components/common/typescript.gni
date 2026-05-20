@@ -181,6 +181,10 @@ template("transpile_web_ui") {
       "--depfile_path=" + rebase_path(depfile),
     ]
 
+    if (defined(invoker.no_externals) && invoker.no_externals) {
+      args += [ "--no_externals" ]
+    }
+
     if (defined(invoker.webpack_aliases)) {
       # support multiple web pack aliases
       foreach(alias, invoker.webpack_aliases) {

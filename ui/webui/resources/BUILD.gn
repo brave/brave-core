@@ -26,9 +26,9 @@ include_polymer = !is_android && !is_ios
 
 group("grdp") {
   public_deps = [
+    ":external_js_bundles",
     ":fonts_grdp",
     ":icons_grdp",
-    ":leo_bundle",
     ":static_grdp",
     "//brave/components/brave_account/resources/opaque_ke",
   ]
@@ -90,18 +90,28 @@ if (include_polymer) {
   ]
 }
 
-transpile_web_ui("leo_bundle") {
+transpile_web_ui("external_js_bundles") {
   generate_grdp = true
   resource_path_prefix = "brave"
+  no_externals = true
 
-  imports_from = [ "//brave/ui/webui/resources/leo/" ]
+  imports_from = [
+    "//brave/ui/webui/resources/leo/",
+    "//brave/ui/webui/resources/react/",
+  ]
 
-  entry_points = [ [
-        "leo",
-        rebase_path("leo/initialize_bundle.ts"),
-      ] ]
+  entry_points = [
+    [
+      "leo",
+      rebase_path("leo/initialize_bundle.ts"),
+    ],
+    [
+      "react",
+      rebase_path("react/initialize_bundle.ts"),
+    ],
+  ]
 
-  resource_name = "leo"
+  resource_name = "external_js"
 }
 
 # Create a grdp that //ui/webui/resources can include in its main resources GRD
