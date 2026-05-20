@@ -162,7 +162,7 @@ TEST_F(WorkspaceServiceTest, WriteAndReadRoundTrip) {
        base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
   auto backend = base::MakeRefCounted<sessions::CommandStorageBackend>(
       task_runner, workspace_path, kWorkspaceSessionType,
-      /*encryptor=*/std::nullopt);
+      /*encryptor=*/nullptr);
 
   bool error_called = false;
   bool write_done = false;
@@ -187,7 +187,7 @@ TEST_F(WorkspaceServiceTest, WriteAndReadRoundTrip) {
   // Read back using a fresh backend (mirrors RestoreWorkspace's pattern).
   auto read_backend = base::MakeRefCounted<sessions::CommandStorageBackend>(
       task_runner, workspace_path, kWorkspaceSessionType,
-      /*encryptor=*/std::nullopt);
+      /*encryptor=*/nullptr);
   base::test::TestFuture<CommandList> read_future;
   task_runner->PostTaskAndReplyWithResult(
       FROM_HERE,
@@ -225,7 +225,7 @@ TEST_F(WorkspaceServiceTest,
        base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
   auto backend = base::MakeRefCounted<sessions::CommandStorageBackend>(
       task_runner, workspace_path, kWorkspaceSessionType,
-      /*encryptor=*/std::nullopt);
+      /*encryptor=*/nullptr);
 
   bool error_called = false;
   auto on_error = base::BindPostTask(

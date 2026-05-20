@@ -78,7 +78,7 @@ void WorkspaceService::SaveWorkspace(const std::string& name) {
 
   auto backend = base::MakeRefCounted<sessions::CommandStorageBackend>(
       io_task_runner_, workspace_path, kWorkspaceSessionType,
-      /*encryptor=*/std::nullopt);
+      /*encryptor=*/nullptr);
 
   // Save metadata optimistically now; roll it back if the write fails.
   // BindPostTask ensures on_error always runs on the UI thread whether it is
@@ -102,7 +102,7 @@ void WorkspaceService::RestoreWorkspace(const std::string& name) {
   base::FilePath path = GetWorkspacePathForName(name);
   auto backend = base::MakeRefCounted<sessions::CommandStorageBackend>(
       io_task_runner_, path, kWorkspaceSessionType,
-      /*encryptor=*/std::nullopt);
+      /*encryptor=*/nullptr);
 
   io_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,
