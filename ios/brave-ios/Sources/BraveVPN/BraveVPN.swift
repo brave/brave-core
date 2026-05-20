@@ -228,6 +228,13 @@ public class BraveVPN {
     }
   }
 
+  /// An in-memory flag that will show a "session expired" prompt to the user in the current browsing session.
+  public private(set) static var isSkusCredentialSessionExpired: Bool = false
+
+  public static func markSkusSessionExpired() {
+    Self.isSkusCredentialSessionExpired = true
+  }
+
   // MARK: - Actions
 
   /// Reconnects to the vpn.

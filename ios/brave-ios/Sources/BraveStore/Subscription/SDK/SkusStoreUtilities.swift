@@ -167,7 +167,6 @@ extension JSONDecoder {
   }()
 }
 
-/// A group of helper methods built around BraveStoreProduct
 extension SkusSkusService {
   /// Creates an order from an AppStore Receipt
   /// If an order already exists, returns the existing Order-ID
@@ -200,30 +199,6 @@ extension SkusSkusService {
 
     Logger.module.info("[SkusService] - OrderID: \(orderId, privacy: .private(mask: .hash))")
     return orderId
-  }
-
-  /// Links an existing order to an AppStore Receipt
-  /// - Returns: The Order-ID associated with the AppStore receipt
-  /// - Parameter product: The purchased product to submit a receipt for
-  /// - Throws: An exception if the Order could not be linked with the receipt or if the Order already exists
-  @MainActor
-  public func submitReceipt(orderId: String, for product: BraveStoreProduct) async throws -> String
-  {
-    let receipt = try AppStoreReceipt.receipt(for: product)
-    let skusResult = await submitReceipt(
-      domain: product.group.skusDomain,
-      orderId: orderId,
-      receipt: receipt
-    )
-
-    if skusResult.code != Skus.SkusResultCode.ok {
-      Logger.module.info(
-        "[SkusService] - Failed to Submit Receipt - \(skusResult.message, privacy: .public)"
-      )
-      throw SkusError.cannotSubmitReceipt
-    }
-
-    return skusResult.message
   }
 
   /// Retrieves and refreshes the local cached order for the given Order-ID
@@ -294,76 +269,5 @@ extension SkusSkusService {
     }
 
     return try decode(skusResult.message)
-  }
-
-  /// Retrieves the Customer's Credentials for a specified Order
-  /// - Parameter orderId: The ID of the order whose credentials to retrieve
-  /// - Parameter group: The purchased product group whose credentials to fetch
-  /// - Throws: An exception if fetching credentials failed
-  @MainActor
-  public func fetchCredentials(orderId: String, for group: BraveStoreProductGroup) async throws {
-    Logger.module.info("[SkusService] - Fetching Order Credentials")
-    let skusResult = await fetchOrderCredentials(
-      domain: group.skusDomain,
-      orderId: orderId
-    )
-
-    if skusResult.code != Skus.SkusResultCode.ok {
-      Logger.module.info(
-        "[SkusService] - Failed Fetching Credentials - \(skusResult.message, privacy: .public)"
-      )
-      throw SkusError.cannotFetchCredentials
-    }
-
-    if !skusResult.message.isEmpty {
-      Logger.module.error(
-        "[SkusService] - Failed to Fetch Credentials: \(skusResult.message, privacy: .public)"
-      )
-      throw SkusError.cannotFetchCredentials
-    }
-  }
-
-  /// Retrieves the Customer's Credentials encoded as an HTTP-Cookie
-  /// - Parameter group: The purchased product group whose credentials to prepare
-  /// - Parameter path: Attribute that indicates a URL path that must exist in the requested URL in order to send the Cookie header.
-  /// - Returns: The Customer's Credentials Cookie.
-  ///            Example: `__Secure-sku#brave-product-premium=EncodedCookie;path=*;samesite=strict;expires=Tue, 06 Feb 2024 16:18:43 GMT;secure*`
-  @MainActor
-  public func prepareCredentials(
-    for group: BraveStoreProductGroup,
-    path: String = "*"
-  ) async throws -> String {
-    let skusResult = await prepareCredentialsPresentation(
-      domain: group.skusDomain,
-      path: path
-    )
-
-    if skusResult.code != Skus.SkusResultCode.ok {
-      Logger.module.info(
-        "[SkusService] - Failed Preparing Credentials - \(skusResult.message, privacy: .public)"
-      )
-      throw SkusError.cannotPrepareCredentials
-    }
-
-    return skusResult.message
-  }
-
-  @MainActor
-  public func testSkus() async throws {
-    let product = BraveStoreProduct.leoMonthly
-    let orderId = try await createOrder(for: product)
-    let order = try await refreshOrder(orderId: orderId, for: product.group)
-    assert(orderId == order.id, "Skus Order-Id Mismatch")
-
-    try await fetchCredentials(orderId: order.id, for: product.group)
-
-    let credentialsToken = try await prepareCredentials(for: product.group, path: "/")
-    assert(
-      credentialsToken.starts(with: "__Secure-sku#brave-leo-premium"),
-      "Invalid Skus Credentials"
-    )
-
-    let credentials = try await credentialsSummary(for: product.group)
-    assert(credentials.order.id == orderId, "Skus Credentials Mismatch")
   }
 }

@@ -648,10 +648,14 @@ public struct AIChatView: View {
             if let skusService = Skus.SkusServiceFactory.get(privateMode: false),
               let orderId = Preferences.AIChat.subscriptionOrderId.value
             {
-              try? await skusService.fetchCredentials(orderId: orderId, for: .leo)
+              let result = await skusService.fetchOrderCredentials(
+                domain: BraveStoreProductGroup.leo.skusDomain,
+                orderId: orderId
+              )
+              if result.code == .ok {
+                model.retryLastRequest()
+              }
             }
-
-            model.retryLastRequest()
           }
         }
       } else {
