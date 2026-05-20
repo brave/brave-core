@@ -10,6 +10,8 @@ import useHasConversationStarted from '../hooks/useHasConversationStarted'
 import { useAIChat } from './ai_chat_context'
 
 export const tabAssociatedChatId = 'tab'
+export const initiallyTabAssociated =
+  window.location.pathname === '/' + tabAssociatedChatId
 
 export interface SelectedChatDetails
   extends Pick<BindConversation.ConversationBindings, 'api'> {

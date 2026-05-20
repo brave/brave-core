@@ -9,7 +9,7 @@ import { loadTimeData } from '$web-common/loadTimeData'
 import useMediaQuery from '$web-common/useMediaQuery'
 import * as Mojom from '../../common/mojom'
 import { AIChatAPI } from '../api/ai_chat_api'
-import { tabAssociatedChatId } from './active_chat_context'
+import { initiallyTabAssociated } from './active_chat_context'
 
 export interface ConversationEntriesProps {
   /* Class to put on the element in order to customize scroll */
@@ -31,9 +31,6 @@ type AIChatContextProps = {
 export function useIsSmall() {
   return useMediaQuery('(max-width: 1024px)')
 }
-
-const initiallyTabAssociated =
-  window.location.pathname.substring(1) === tabAssociatedChatId
 
 export default function useProvideAIChatContext(props: AIChatContextProps) {
   // This hook should only have any state or anything
