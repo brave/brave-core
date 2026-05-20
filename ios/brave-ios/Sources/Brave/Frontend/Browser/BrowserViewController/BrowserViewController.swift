@@ -2472,12 +2472,6 @@ extension BrowserViewController: TabsBarViewControllerDelegate {
 }
 
 extension BrowserViewController: TabMiscDelegate {
-  func stopMediaPlayback(_ tab: some TabState) {
-    tabManager.allTabs.forEach({
-      PlaylistScriptHandler.stopPlayback(tab: $0)
-    })
-  }
-
   func showWalletNotification(_ tab: some TabState, origin: URLOrigin) {
     // only display notification when BVC is front and center
     guard presentedViewController == nil,

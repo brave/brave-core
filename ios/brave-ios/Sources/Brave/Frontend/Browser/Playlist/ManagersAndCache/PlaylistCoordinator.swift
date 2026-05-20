@@ -99,7 +99,7 @@ public class PlaylistCoordinator: NSObject {
     // Even if another controller is presented and even when PIP is enabled in playlist.
     // Therefore we need to stop the page/tab from playing when using playlist.
     // On iPad, media will continue to play with or without the background play setting.
-    tab?.stopMediaPlayback()
+    tab?.pauseAllMediaPlayback()
 
     let mediaStreamer = PlaylistMediaStreamer(
       playerView: browserController!.view,

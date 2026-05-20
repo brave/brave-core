@@ -109,10 +109,6 @@ extension TabState {
     }
   }
 
-  func stopMediaPlayback() {
-    data.browserData?.miscDelegate?.stopMediaPlayback(self)
-  }
-
   var containsWebPage: Bool {
     if let url = visibleURL {
       return url.isWebPage()

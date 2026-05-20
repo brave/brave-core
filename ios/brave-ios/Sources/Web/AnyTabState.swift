@@ -207,6 +207,14 @@ public class AnyTabState: TabState {
     tab.clearBackForwardList()
   }
 
+  public func pauseAllMediaPlayback() {
+    tab.pauseAllMediaPlayback()
+  }
+
+  public func requestMediaPlaybackState() async -> MediaPlaybackState {
+    await tab.requestMediaPlaybackState()
+  }
+
   public func updateScripts() {
     tab.updateScripts()
   }
