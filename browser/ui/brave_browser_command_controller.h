@@ -104,6 +104,7 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController
   void UpdateCommandsForPin();
   void UpdateCommandForFocusMode();
   void UpdateCommandForSplitView();
+  void UpdateCommandForWorkspace();
 
   bool ExecuteBraveCommandWithDisposition(int id,
                                           WindowOpenDisposition disposition,

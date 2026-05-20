@@ -253,6 +253,24 @@
         Email Aliases
       </message>
 
+      <!-- Workspaces -->
+      <if expr="use_titlecase">
+        <message name="IDS_SAVE_WORKSPACE" desc="App menu item to save all open tabs and tab groups as a named workspace">
+          Save Tabs as Workspace…
+        </message>
+        <message name="IDS_OPEN_WORKSPACE" desc="App menu item to open a previously saved workspace">
+          Open Workspace…
+        </message>
+      </if>
+      <if expr="not use_titlecase">
+        <message name="IDS_SAVE_WORKSPACE" desc="App menu item to save all open tabs and tab groups as a named workspace">
+          Save tabs as workspace…
+        </message>
+        <message name="IDS_OPEN_WORKSPACE" desc="App menu item to open a previously saved workspace">
+          Open workspace…
+        </message>
+      </if>
+
       <!-- Widevine -->
       <message name="IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT" desc="Text fragment for Widevine permission request. 'Widevine' is the name of a plugin and should not be translated.">
           Install and run Google Widevine

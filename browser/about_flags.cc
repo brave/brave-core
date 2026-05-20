@@ -81,6 +81,7 @@
 #include "chrome/browser/flags/android/chrome_feature_list.h"
 #else
 #include "brave/browser/ui/views/tabs/switches.h"
+#include "brave/browser/workspaces/features.h"
 #include "brave/components/commander/common/features.h"
 #include "brave/components/commands/common/features.h"
 #endif
@@ -795,6 +796,19 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           FEATURE_VALUE_TYPE(email_aliases::features::kEmailAliases),         \
       }))
 
+#if !BUILDFLAG(IS_ANDROID)
+#define BRAVE_WORKSPACE_FEATURE_ENTRY                            \
+  EXPAND_FEATURE_ENTRIES({                                       \
+      "brave-workspace",                                         \
+      "Brave Workspace",                                         \
+      "Save sets of windows and tabs into loadable workspaces.", \
+      kOsWin | kOsLinux | kOsMac,                                \
+      FEATURE_VALUE_TYPE(features::kWorkspaces),                 \
+  })
+#else
+#define BRAVE_WORKSPACE_FEATURE_ENTRY
+#endif
+
 // Keep the last item empty.
 #define LAST_BRAVE_FEATURE_ENTRIES_ITEM
 
@@ -1379,6 +1393,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   PSST_FEATURE_ENTRIES                                                         \
   BRAVE_FORCE_POPUP_TO_BE_OPENED_IN_NEW_TAB_FEATURE_ENTRY                      \
   EMAIL_ALIASES_FEATURE_ENTRIES                                                \
+  BRAVE_WORKSPACE_FEATURE_ENTRY                                                \
   EXPAND_FEATURE_ENTRIES({                                                     \
       "brave-origin",                                                          \
       "Enable Brave Origin",                                                   \

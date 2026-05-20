@@ -307,6 +307,25 @@ void BraveAppMenuModel::BuildMoreToolsSubMenu() {
     need_separator = false;
   }
 
+  // Save/Open workspaces
+  if (IsCommandIdEnabled(IDC_SAVE_WORKSPACE)) {
+    more_tools_menu_model->InsertItemWithStringIdAt(
+        next_target_index++, IDC_SAVE_WORKSPACE, IDS_SAVE_WORKSPACE);
+    need_separator = true;
+  }
+
+  if (IsCommandIdEnabled(IDC_OPEN_WORKSPACE)) {
+    more_tools_menu_model->InsertItemWithStringIdAt(
+        next_target_index++, IDC_OPEN_WORKSPACE, IDS_OPEN_WORKSPACE);
+    need_separator = true;
+  }
+
+  if (need_separator) {
+    more_tools_menu_model->InsertSeparatorAt(next_target_index++,
+                                             ui::NORMAL_SEPARATOR);
+    need_separator = false;
+  }
+
   if (!browser()->profile()->IsOffTheRecord()) {
     if (auto index =
             more_tools_menu_model->GetIndexOfCommandId(IDC_NAME_WINDOW)) {
