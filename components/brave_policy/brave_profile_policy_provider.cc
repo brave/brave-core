@@ -52,8 +52,12 @@ void BraveProfilePolicyProvider::RefreshPolicies(
 
 bool BraveProfilePolicyProvider::IsInitializationComplete(
     policy::PolicyDomain domain) const {
+#if BUILDFLAG(IS_IOS)
+  // iOS fails to load its ProfileIOS when we wait for the manager's policies to
+  // initialize.
+  return true;
+#else
   auto* manager = brave_origin::BraveOriginPolicyManager::GetInstance();
-#if !BUILDFLAG(IS_IOS)
   // Desktop/Android only: short-circuit when our factory has not been
   // registered in this process. This is the case for upstream unit tests
   // (e.g. `ProfilePolicyConnectorTest`) that build `ProfilePolicyConnector`
@@ -69,7 +73,6 @@ bool BraveProfilePolicyProvider::IsInitializationComplete(
   if (!manager->IsExpectedToBeInitialized()) {
     return true;
   }
-#endif  // !BUILDFLAG(IS_IOS)
   // We observe both `BraveOriginPolicyManager` and
   // `AdBlockOnlyModePolicyManager` but they initialise on different schedules:
   // `AdBlockOnlyModePolicyManager` is initialised synchronously at process
@@ -81,6 +84,7 @@ bool BraveProfilePolicyProvider::IsInitializationComplete(
   // observe an empty managed pref store before Brave Origin policies (e.g.
   // `BraveRewardsDisabled`) have been merged.
   return first_policies_loaded_ && manager->IsInitialized();
+#endif  // BUILDFLAG(IS_IOS)
 }
 
 bool BraveProfilePolicyProvider::IsFirstPolicyLoadComplete(
