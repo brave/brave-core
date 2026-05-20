@@ -31,9 +31,9 @@ section links to a detailed document.
   props, spread args, XSS prevention
 - **[Android (Java/Kotlin)](./best-practices/android.md)** - Activity/Fragment
   lifecycle, null safety, LazyHolder singletons, theme handling, Robolectric,
-  bytecode patching, NullAway (`@Nullable` placement, `@MonotonicNonNull`,
-  assert/assume patterns, destruction, view binders, Supplier variance, JNI
-  nullness)
+  bytecode patching, Material component preference, NullAway (`@Nullable`
+  placement, `@MonotonicNonNull`, assert/assume patterns, destruction, view
+  binders, Supplier variance, JNI nullness)
 - **[chromium_src Overrides](./best-practices/chromium-src-overrides.md)** -
   Overrides vs patches, minimizing duplication, ChromiumImpl fallback
 - **[Build System](./best-practices/build-system.md)** - BUILD.gn organization,
