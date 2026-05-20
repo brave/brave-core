@@ -1,3 +1,9 @@
+/* The subtitle of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenDescription" = "Sentuh dan tahan ikon Brave, kemudian seret ke dok anda untuk akses pantas.";
+
+/* The title of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenTitle" = "Tambah Brave ke Dok Anda";
+
 /* The title of the button that changes the screen to next */
 "focusOnboarding.continueButtonTitle" = "Teruskan";
 
@@ -25,18 +31,12 @@
 /* The description shown below the toggle for enabling privacy preserving analytics. This uses standard markdown syntax. The Learn More is a link and #p3a-learn-more is a URL fragment */
 "focusOnboarding.p3aToggleDescription" = "Anda boleh menarik diri pada bila-bila masa dalam Tetapan di bawah **Perlindungan dan Privasi**. [Ketahui lebih lanjut](#p3a-learn-more) tentang Analitik Produk Memelihara Privasi kami.";
 
-/* The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The "completely private & anonymous" snippet should be bold in all languages */
-"focusOnboarding.p3aToggleTitle" = "Kongsikan pengetahuan tentang produk yang **privet & tanpa nama sepenuhnya**.";
+/* The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The "private & anonymous" snippet should be bold in all languages */
+"focusOnboarding.p3aToggleTitle" = "Kongsi cerapan produk **peribadi & tanpa nama**.";
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "Mulakan Penyemakan Imbas";
 
 /* The title of the button that triggers navigation link to settings */
 "focusOnboarding.systemSettingsButtonTitle" = "Tetapkan Sebagai Lalai";
-
-/* The description of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorDescription" = "Mula menstrim dengan iklan & penjejak yang semakin sedikit.";
-
-/* The title of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorTitle" = "Lihat perbezaan Brave";
 

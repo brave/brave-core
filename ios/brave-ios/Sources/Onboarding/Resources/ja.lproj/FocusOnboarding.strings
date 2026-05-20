@@ -1,3 +1,9 @@
+/* The subtitle of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenDescription" = "Braveアイコンを長押しして、Dockにドラッグするとすばやくアクセスできます。";
+
+/* The title of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenTitle" = "BraveをDockに追加";
+
 /* The title of the button that changes the screen to next */
 "focusOnboarding.continueButtonTitle" = "続ける";
 
@@ -25,18 +31,12 @@
 /* The description shown below the toggle for enabling privacy preserving analytics. This uses standard markdown syntax. The Learn More is a link and #p3a-learn-more is a URL fragment */
 "focusOnboarding.p3aToggleDescription" = "この設定は **Shields & プライバシー** でいつでもオプトアウトできます。P3A（プライバシー保護製品分析）の[詳細はこちら](#p3a-learn-more) をご覧ください。";
 
-/* The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The "completely private & anonymous" snippet should be bold in all languages */
-"focusOnboarding.p3aToggleTitle" = "製品に関するインサイトが **完全にプライベートな匿名情報** として共有されます。";
+/* The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The "private & anonymous" snippet should be bold in all languages */
+"focusOnboarding.p3aToggleTitle" = "**プライバシーを保護した匿名の**プロダクト分析を共有します。";
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "ブラウジングを開始する";
 
 /* The title of the button that triggers navigation link to settings */
 "focusOnboarding.systemSettingsButtonTitle" = "デフォルトとして設定";
-
-/* The description of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorDescription" = "広告&トラッカーを減らして、動画を楽しみましょう。";
-
-/* The title of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorTitle" = "Braveと他社ブラウザの比較を見る";
 

@@ -14,7 +14,7 @@
 "enabledFeatureNote" = "Bu özellik etkinleştirildi çünkü siz bu özelliği seçtiniz";
 
 /* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
-"featuresFooter" = "Brave Origin, Brave'i bir işletme olarak destekleyen gelir getiren özellikleri devre dışı bırakmanın kolay bir yolunu sunan Brave tarayıcısının bir versiyonudur. Brave Origin kullanıcıları, endüstri lideri gizlilik, reklam engelleyici ve hız (Brave Kalkanlar aracılığıyla) ile birlikte düzenli yazılım güncellemeleri, Chromium yamaları ve güvenlik ve gizlilik iyileştirmelerinden yararlanmaya devam edeceklerdir. Ayrıca Brave Leo, Ödüller, Cüzdan, VPN, Web3 alan adları ve daha fazlası gibi özellikleri devre dışı bırakma seçeneğinin kilidini açacaklar.\n\nSatın aldıktan sonra, kullanıcılar tarayıcı Ayarlar menüsünde yeni bir kontrol paneli göreceklerdir. Mevcut özellikler ve gelecekte gönderdiğimiz yeni özellikler burada görünür ve varsayılan olarak kapalı durumda olur.\n\n**Not: Brave Origin, şu anda kullandığınız tarayıcı özelliklerini devre dışı bırakmayacak ve Brave Arama özellikleri veya Brave Arama Reklamlarını etkilemeyecektir.**";
+"featuresFooter" = "Brave Origin, Brave'i bir işletme olarak destekleyen gelir getiren özellikleri kolayca devre dışı bırakmanıza olanak tanıyan bir Brave tarayıcı sürümüdür. Brave Origin kullanıcıları, endüstri lideri gizlilik, reklam engelleyici ve hız (Brave Kalkanlar aracılığıyla) ile birlikte düzenli yazılım güncellemeleri, Chromium yamaları ve güvenlik ve gizlilik iyileştirmelerinden yararlanmaya devam edeceklerdir. Ayrıca Brave Leo, Ödüller, Cüzdan, VPN, Web3 alan adları ve daha fazlası gibi özellikleri devre dışı bırakma seçeneğinin kilidini açacaklar.\n\nSatın alındıktan sonra kullanıcılar, tarayıcı Ayarlar menüsünde yeni bir kontrol paneli göreceklerdir. Mevcut özellikler ve gelecekte sunacağımız yeni özellikler burada görünecek ve varsayılan olarak kapalı durumda olacaktır.\n\n**Not: Brave Origin, şu anda kullandığınız tarayıcı özelliklerini devre dışı bırakmayacak ve Brave Arama özellikleri veya Brave Arama Reklamlarını etkilemeyecektir.**";
 
 /* A section header title that is shown over a list of Brave specific features */
 "featuresHeader" = "Özellik";
@@ -25,6 +25,9 @@
 /* A toggle label for Brave Leo AI feature */
 "leoAILabel" = "Leo Yapay Zeka";
 
+/* A button title that when triggered will allow a user to link their App Store purchase with Brave Account */
+"linkPurchase" = "Satın Alımı Brave Hesabınıza Bağlayın";
+
 /* A toggle label for Brave News feature */
 "newsLabel" = "Haberler";
 
@@ -32,7 +35,7 @@
 "oneTimePurchaseLabel" = "Tek Seferlik Satın Alma";
 
 /* A description of Brave Origin displayed on the paywall screen. This text contains Markdown formatting, the stars represent markdown and the same paragraphs should be also be bolded when translated. */
-"paywallDescription" = "**Brave'i desteklerken tarayıcınızı özelleştirin**\n\nBrave Origin, Brave'in işletmesini destekleyen tüm özelliklere ihtiyaç duymayan, ancak yalnızca Brave'in sunduğu gizliliği isteyen kullanıcılar için ücretli bir tarayıcı versiyonudur. Brave Origin kullanıcıları, endüstri lideri gizlilik, reklam engelleyici ve hız (Brave Kalkanlar aracılığıyla) ile birlikte düzenli yazılım güncellemeleri, Chromium yamaları ve güvenlik ve gizlilik iyileştirmelerinden yararlanmaya devam edeceklerdir. Ayrıca Yapay Zeka, Ödüller, Cüzdan, VPN, Web3 alan adları ve daha fazlası gibi özellikleri devre dışı bırakma seçeneğinin kilidini açacaklar.\n\n**Brave Origin, tek seferlik satın alma yoluyla kullanılabilir. Mobilde (Android ve iOS) ve masaüstünde, Origin mevcut sürümünüze yükseltme olarak satın alınabilir.** Masaüstünde, Origin ayrı bir bağımsız uygulama olarak da mevcuttur. Origin yükseltme veya ayrı uygulama olarak satın alınmış olsun, Origin kullanıcıları Ayarlar menüsünde yeni bir kontrol paneli göreceklerdir. Mevcut özellikler ve gelecekte gönderdiğimiz yeni özellikler burada görünür ve varsayılan olarak kapalı durumda olur.*\n\n* Brave'in mevcut versiyonunuz için Origin yükseltmesi satın aldıysanız, Origin şu anda kullandığınız tarayıcı özelliklerini devre dışı bırakmayacağını unutmayın. Hem yükseltme hem de bağımsız sürüm için Origin, Brave Arama özellikleri veya Brave Arama Reklamlarını etkilemeyecektir.";
+"paywallDescription" = "**Brave'i desteklemeye devam ederken tarayıcınızı özelleştirin**\n\nBrave Origin, Brave'i bir işletme olarak destekleyen tüm özelliklere ihtiyaç duymayan ancak yalnızca Brave'in sunduğu gizliliği isteyen kullanıcılar için tarayıcının ücretli bir sürümüdür. Brave Origin kullanıcıları, endüstri lideri gizlilik, reklam engelleyici ve hız (Brave Kalkanlar aracılığıyla) ile birlikte düzenli yazılım güncellemeleri, Chromium yamaları ve güvenlik ve gizlilik iyileştirmelerinden yararlanmaya devam edeceklerdir. Ayrıca AI, Ödüller, Cüzdan, VPN, Web3 alan adları ve daha fazlası gibi özellikleri devre dışı bırakma seçeneğinin kilidini açacaklar.\n\n**Brave Origin, tek seferlik satın alma yoluyla kullanılabilir. Mobil (Android ve iOS) ve masaüstünde, Origin mevcut sürümünüze yükseltme olarak satın alınabilir.** Masaüstünde, Origin ayrıca ayrı, bağımsız bir uygulama olarak da mevcuttur. Yükseltme olarak veya ayrı bir uygulama olarak satın alınmış olsun, Origin kullanıcıları Ayarlar menüsünde yeni bir kontrol paneli göreceklerdir. Mevcut özellikler ve gelecekte sunacağımız yeni özellikler burada görünecek ve varsayılan olarak kapalı durumda olacaktır.*\n\n* Brave'in mevcut sürümünüze yükseltme olarak Origin satın aldıysanız, Origin şu anda kullandığınız tarayıcı özelliklerini devre dışı bırakmayacaktır. Hem yükseltme hem de bağımsız sürüm için Origin, Brave Arama özelliklerini veya Brave Arama Reklamlarını etkilemeyecektir.";
 
 /* A toggle label for Brave Playlist feature */
 "playlistLabel" = "Oynatma Listesi";
@@ -45,6 +48,12 @@
 
 /* An error message displayed when a purchase fails */
 "purchaseErrorMessage" = "Satın alma işlemi tamamlanamıyor. Lütfen yeniden deneyin veya Apple'daki ödeme bilgilerinizi kontrol edin ve yeniden deneyin.";
+
+/* The footer shown below the Purchase section of the settings page */
+"purchaseSectionFooter" = "Brave Origin'i diğer cihazlarda kullanmak için App Store satın alımınızı Brave hesabınıza bağlayın";
+
+/* The header shown below the Purchase section of the settings page */
+"purchaseSectionHeader" = "Satın al";
 
 /* A button label to redeem a promo code */
 "redeemPromoCodeButton" = "Promosyon Kodunu Kullanın";
@@ -75,6 +84,9 @@
 
 /* An upsell point about supporting Brave's mission and open-source work */
 "upsellSupportMission" = "Misyonumuzu destekleyin & açık kaynak çalışmaları";
+
+/* A button title that when triggered will allow a user to view their App Store receipt */
+"viewAppStoreReceipt" = "App Store Makbuzunu Görüntüle";
 
 /* A toggle label for Brave VPN feature */
 "vpnLabel" = "VPN";

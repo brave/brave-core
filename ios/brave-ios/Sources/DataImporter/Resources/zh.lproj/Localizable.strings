@@ -56,7 +56,7 @@
 "importStateSuccessTitle" = "成功！";
 
 /* The title of the button on the import error screen that lets the user try to import the data again */
-"importStateTryAgainTitle" = "重试";
+"importStateTryAgainTitle" = "请重试";
 
 /* The message on the tutorial page explaining the detailed process to export your data from other browsers. */
 "importTutorialDetailedProcessMessage" = "打开 Safari 帮助页面";

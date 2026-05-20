@@ -1,3 +1,9 @@
+/* The subtitle of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenDescription" = "Klepněte a podržte ikonu Brave, poté ji přetáhněte do svého doku pro rychlý přístup.";
+
+/* The title of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenTitle" = "Přidejte Brave do svého doku";
+
 /* The title of the button that changes the screen to next */
 "focusOnboarding.continueButtonTitle" = "Pokračovat";
 
@@ -25,18 +31,12 @@
 /* The description shown below the toggle for enabling privacy preserving analytics. This uses standard markdown syntax. The Learn More is a link and #p3a-learn-more is a URL fragment */
 "focusOnboarding.p3aToggleDescription" = "Tuto funkci můžete kdykoli vypnout v Nastavení v části **Štíty Brave a soukromí**. [Zjistit více](#p3a-learn-more) o naší produktové analýze uchovávající soukromí.";
 
-/* The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The "completely private & anonymous" snippet should be bold in all languages */
-"focusOnboarding.p3aToggleTitle" = "Sdílejte **zcela soukromé a anonymní** informace o produktu.";
+/* The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The "private & anonymous" snippet should be bold in all languages */
+"focusOnboarding.p3aToggleTitle" = "Sdílejte **soukromé a anonymní** informace o produktu.";
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "Začít prohlížet";
 
 /* The title of the button that triggers navigation link to settings */
 "focusOnboarding.systemSettingsButtonTitle" = "Nastavit jako výchozí";
-
-/* The description of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorDescription" = "Začněte streamovat s menším množstvím reklam a trackerů.";
-
-/* The title of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorTitle" = "Brave je jiný";
 

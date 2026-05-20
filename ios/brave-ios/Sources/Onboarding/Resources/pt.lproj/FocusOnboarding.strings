@@ -1,3 +1,9 @@
+/* The subtitle of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenDescription" = "Toque e mantenha pressionado o ícone do Brave e, em seguida, arraste-o para a sua dock para acesso rápido.";
+
+/* The title of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenTitle" = "Adicione o Brave à sua dock";
+
 /* The title of the button that changes the screen to next */
 "focusOnboarding.continueButtonTitle" = "Continuar";
 
@@ -5,7 +11,7 @@
 "focusOnboarding.defaultBrowserScreenDescription" = "Defina o Brave como o seu navegador padrão.";
 
 /* The title of the screen that requests user to set Brave as default */
-"focusOnboarding.defaultBrowserScreenTitle" = "Bloqueie Anúncios em Todos os Websites que Visitar";
+"focusOnboarding.defaultBrowserScreenTitle" = "Bloqueie anúncios em todos os sites que visitar";
 
 /* The title of the button that closes the default browser full screen callout */
 "focusOnboarding.notNowActionButtonTitle" = "Não agora";
@@ -25,18 +31,12 @@
 /* The description shown below the toggle for enabling privacy preserving analytics. This uses standard markdown syntax. The Learn More is a link and #p3a-learn-more is a URL fragment */
 "focusOnboarding.p3aToggleDescription" = "Pode optar por desativar em qualquer altura, nas Definições, em **Escudos e Privacidade**. [Saiba mais](#p3a-learn-more) sobre os nossos Dados de Produtos que Preservam a Privacidade.";
 
-/* The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The "completely private & anonymous" snippet should be bold in all languages */
-"focusOnboarding.p3aToggleTitle" = "Partilhe ideias sobre produtos de forma totalmente **privada e anónima**.";
+/* The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The "private & anonymous" snippet should be bold in all languages */
+"focusOnboarding.p3aToggleTitle" = "Partilhe opiniões sobre produtos de forma **privada e anónima**.";
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "Comece a navegar";
 
 /* The title of the button that triggers navigation link to settings */
 "focusOnboarding.systemSettingsButtonTitle" = "Definir como Padrão";
-
-/* The description of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorDescription" = "Comece a fazer streaming e a desfrutar de menos anúncios e rastreadores.";
-
-/* The title of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorTitle" = "Veja a diferença do Bravo";
 

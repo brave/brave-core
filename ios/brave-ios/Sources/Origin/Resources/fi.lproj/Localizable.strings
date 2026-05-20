@@ -14,7 +14,7 @@
 "enabledFeatureNote" = "Tämä ominaisuus on käytössä, koska olet valinnut sen.";
 
 /* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
-"featuresFooter" = "Brave Origin on Brave-selaimen versio, jonka avulla voit helposti poistaa käytöstä tuloja tuottavat ominaisuudet, jotka muuten tukevat Bravea liiketoimintana. Brave Originin käyttäjät hyötyvät jatkossakin alan johtavista yksityisyydensuoja-, mainosesto- ja nopeusominaisuuksista (Brave-suojauksen kautta) sekä säännöllisistä ohjelmistopäivityksistä, Chromium-korjauksista ja tietoturva- ja yksityisyysparannuksista. He voivat myös poistaa käytöstä ominaisuuksia, kuten Brave Leo, Rewards, Wallet, VPN, Web3-verkkotunnukset ja paljon muuta.\n\nOston jälkeen käyttäjät näkevät selaimen asetusvalikossa uuden ohjauspaneelin. Olemassa olevat ominaisuudet – samoin kuin kaikki uudet ominaisuudet, jotka toimitamme tulevaisuudessa – näkyvät täällä, ja ne ovat oletusarvoisesti pois päältä.\n\n**Huomautus: Brave Origin ei poista käytöstä selaimen ominaisuuksia, joita käytät tällä hetkellä, eikä vaikuta Brave-haun ominaisuuksiin tai Brave-haun mainoksiin.**";
+"featuresFooter" = "Brave Origin on Brave-selaimen versio, jonka avulla voit helposti poistaa käytöstä tuloja tuottavat ominaisuudet, jotka muuten tukevat Bravea liiketoimintana. Brave Originin käyttäjät hyötyvät jatkossakin alan johtavista yksityisyydensuoja-, mainosesto- ja nopeusominaisuuksista (Brave-suojauksen kautta) sekä säännöllisistä ohjelmistopäivityksistä, Chromium-korjauksista ja tietoturva- ja yksityisyysparannuksista. Heillä on myös mahdollisuus poistaa käytöstä ominaisuuksia, kuten Brave Leo, Rewards, Wallet, VPN, Web3-verkkotunnukset ja paljon muuta.\n\nOston jälkeen käyttäjät näkevät selaimen asetusvalikossa uuden ohjauspaneelin. Olemassa olevat ominaisuudet – samoin kuin kaikki uudet ominaisuudet, jotka toimitamme tulevaisuudessa – näkyvät täällä, ja ne ovat oletusarvoisesti pois päältä.\n\n**Huomautus: Brave Origin ei poista käytöstä selaimen ominaisuuksia, joita käytät tällä hetkellä, eikä vaikuta Brave-haun ominaisuuksiin tai Brave-haun mainoksiin.**";
 
 /* A section header title that is shown over a list of Brave specific features */
 "featuresHeader" = "Ominaisuudet";
@@ -25,6 +25,9 @@
 /* A toggle label for Brave Leo AI feature */
 "leoAILabel" = "Leo-tekoäly";
 
+/* A button title that when triggered will allow a user to link their App Store purchase with Brave Account */
+"linkPurchase" = "Linkitä ostos Brave-tiliisi";
+
 /* A toggle label for Brave News feature */
 "newsLabel" = "Uutiset";
 
@@ -32,7 +35,7 @@
 "oneTimePurchaseLabel" = "Kertaluonteinen osto";
 
 /* A description of Brave Origin displayed on the paywall screen. This text contains Markdown formatting, the stars represent markdown and the same paragraphs should be also be bolded when translated. */
-"paywallDescription" = "**Mukauta selaintasi samalla kun tuet Bravea**\n\nBrave Origin on maksettu versio selaimesta käyttäjille, jotka eivät tarvitse kaikkia ominaisuuksia, jotka tukevat Bravea liiketoimintana, mutta haluavat silti yksityisyydensuojan, jonka vain Brave tarjoaa. Brave Originin käyttäjät hyötyvät jatkossakin alan johtavista yksityisyydensuoja-, mainosesto- ja nopeusominaisuuksista (Brave-suojauksen kautta) sekä säännöllisistä ohjelmistopäivityksistä, Chromium-korjauksista ja tietoturva- ja yksityisyysparannuksista. He voivat myös poistaa käytöstä ominaisuuksia, kuten tekoäly, Rewards, Wallet, VPN, Web3-verkkotunnukset ja paljon muuta.\n\n**Brave Origin on saatavissa kertaluonteisella ostolla. Mobiilissa (Android ja iOS) sekä pöytäkoneessa Origin voidaan ostaa päivityksenä olemassa olevaan release-versioon.** Pöytäkoneella Origin on saatavissa myös erillisenä, itsenäisenä sovelluksena. Riippumatta siitä, ostetaanko Origin päivityksenä vai erillisenä sovelluksena, Origin-käyttäjät näkevät asetusvalikossa uuden ohjauspaneelin. Olemassa olevat ominaisuudet – samoin kuin kaikki uudet ominaisuudet, jotka toimitamme tulevaisuudessa – näkyvät täällä, ja ne ovat oletusarvoisesti pois päältä.*\n\n* Huomaa, että jos olet ostanut Originin päivityksenä olemassa olevaan Braven versioon, Origin ei poista käytöstä selaimen ominaisuuksia, joita käytät tällä hetkellä. Sekä päivityksessä että itsenäisessä versiossa Origin ei vaikuta Brave-haun ominaisuuksiin tai Brave-haun mainoksiin.";
+"paywallDescription" = "**Mukauta selaintasi ja tue silti Bravea**\n\nBrave Origin on selaimen maksullinen versio käyttäjille, jotka eivät tarvitse kaikkia ominaisuuksia, jotka tukevat Bravea liiketoimintana, mutta haluavat silti yksityisyyden, jota vain Brave tarjoaa. Brave Originin käyttäjät hyötyvät jatkossakin alan johtavista yksityisyydensuoja-, mainosesto- ja nopeusominaisuuksista (Brave-suojauksen kautta) sekä säännöllisistä ohjelmistopäivityksistä, Chromium-korjauksista ja tietoturva- ja yksityisyysparannuksista. Heillä on myös mahdollisuus poistaa käytöstä ominaisuuksia, kuten tekoäly, Rewards, Wallet, VPN, Web3-verkkotunnukset ja paljon muuta.\n\n**Brave Origin on saatavilla kertaostona. Mobiililaitteilla (Android ja iOS) ja työpöydällä Origin voidaan ostaa olemassa olevan julkaisuversiosi päivityksenä.** Työpöydällä Origin on saatavilla myös erillisenä, itsenäisenä sovelluksena. Riippumatta siitä, ostetaanko se päivityksenä vai erillisenä sovelluksena, Originin käyttäjät näkevät uuden ohjauspaneelin Asetukset-valikossa. Olemassa olevat ominaisuudet – samoin kuin kaikki uudet ominaisuudet, jotka toimitamme tulevaisuudessa – näkyvät täällä, ja ne ovat oletusarvoisesti pois päältä.*\n\n* Huomaa, että jos olet ostanut Originin nykyisen Brave-versiosi päivityksenä, Origin ei poista käytöstä selaimen ominaisuuksia, joita käytät tällä hetkellä. Sekä päivitys- että itsenäisessä versiossa Origin ei vaikuta Brave-haun ominaisuuksiin tai Brave-haun mainoksiin.";
 
 /* A toggle label for Brave Playlist feature */
 "playlistLabel" = "Soittolista";
@@ -45,6 +48,12 @@
 
 /* An error message displayed when a purchase fails */
 "purchaseErrorMessage" = "Ostoa ei voi suorittaa loppuun. Yritä uudelleen tai tarkista Apple-palveluun tallennetut maksutietosi ja yritä uudelleen.";
+
+/* The footer shown below the Purchase section of the settings page */
+"purchaseSectionFooter" = "Linkitä App Storen ostos Brave-tiliisi, jotta voit käyttää Brave Originia muissa laitteissa";
+
+/* The header shown below the Purchase section of the settings page */
+"purchaseSectionHeader" = "Osta";
 
 /* A button label to redeem a promo code */
 "redeemPromoCodeButton" = "Lunasta kampanjakoodi";
@@ -75,6 +84,9 @@
 
 /* An upsell point about supporting Brave's mission and open-source work */
 "upsellSupportMission" = "Tue missiotamme & avoimen lähdekoodin työ";
+
+/* A button title that when triggered will allow a user to view their App Store receipt */
+"viewAppStoreReceipt" = "Näytä App Store -kuitti";
 
 /* A toggle label for Brave VPN feature */
 "vpnLabel" = "VPN";

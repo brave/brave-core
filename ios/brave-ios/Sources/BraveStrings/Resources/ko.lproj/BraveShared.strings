@@ -16,11 +16,17 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "북마크 추가";
 
+/* Add a new item to the current list */
+"addButtonTitle" = "추가";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "즐겨찾기에 추가";
 
 /* Cell title for add folder action */
 "AddFolderActionCellTitle" = "새 폴더";
+
+/* Settings item that opens instructions for adding Brave to the iOS dock. */
+"addToDockSettingsCell" = "Dock에 추가";
 
 /* Add to favorites share action. */
 "AddToFavorites" = "즐겨찾기에 추가";
@@ -69,6 +75,42 @@
 
 /* Settings autofill section title */
 "Autofill" = "자동 완성";
+
+/* Label for account when indicating that a domain has multiple accounts */
+"autofill.managePassword.multipleAccounts" = "계정";
+
+/* Alert message warning the user that deleting non-synced passwords will permanently remove them */
+"autofill.managePasswords.deleteCredentialConfirmMessage" = "이렇게 하면 %@의 저장된 비밀번호가 동기화 체인 및 기기에서 제거됩니다.";
+
+/* Prompt title when deleting passwords */
+"autofill.managePasswords.deleteCredentialsAlertTitle" = "계속하시겠습니까?";
+
+/* Label for the button used to delete the current login. */
+"autofill.managePasswords.deleteManagePasswordButtonTitle" = "삭제";
+
+/* Title for the section header in the Manage Passwords list screen, that lists the saved sites */
+"autofill.managePasswords.headerTitle" = "저장됨";
+
+/* The message displayed on the manage passwords list screen, when there's at least one password, explain the feature */
+"autofill.managePasswords.instructions" = "비밀번호를 생성, 저장 및 관리하여 사이트 및 앱에 쉽게 로그인하세요.";
+
+/* The header title displayed over the never saved passwords list */
+"autofill.managePasswords.neverSavedListHeaderTitle" = "저장되지 않음";
+
+/* Display text for the option to offer to save passwords */
+"autofill.managePasswords.offerToSavePasswords" = "비밀번호 저장 제안";
+
+/* Prompt that is diplayed in the search bar of the Manage Passwords list screen */
+"autofill.managePasswords.searchWebsitesPrompt" = "웹사이트 검색";
+
+/* Title for navigation bar of the Manage Passwords screen */
+"autofill.managePasswords.title" = "비밀번호 관리";
+
+/* Text to show when the origin of a managed password is not available */
+"autofill.managePasswords.UnknownDomainText" = "알 수 없음";
+
+/* Settings autofill section title */
+"autofill.settings.title" = "자동 완성";
 
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "AMP 페이지 자동 리디렉션";
@@ -2375,7 +2417,7 @@
 "settings.blockYouTubeDistractingElementsDesc" = "유튜브의 방해 요소를 차단합니다";
 
 /* Title beside the toggle for blocking YouTube distracting elements */
-"settings.blockYouTubeDistractingElementsTitle" = "유튜브 방해 요소 차단";
+"settings.blockYouTubeDistractingElementsTitle" = "유튜브의 방해 요소를 차단합니다";
 
 /* Description beside the toggle for blocking YouTube recommendations */
 "settings.blockYoutubeRecommendationsDesc" = "Youtube.com에서 다음 동영상과 엔드카드 요소를 차단합니다";
@@ -3141,6 +3183,12 @@
 
 /* No comment provided by engineer. */
 "tabs.settings.privateTabsSettingsTitle" = "비공개 탭";
+
+/* The description of the toggle for users to allow the browser to remember its last browsing mode so it can re-launch in that mode when Keep Private Tabs is enabled. */
+"tabs.settings.rememberBrowsingModeDescription" = "브라우저가 마지막으로 종료될 때 비공개 모드였다면, 다시 실행 시 비공개 모드로 열립니다.";
+
+/* Toggle to launch the browser in private mode when Keep Private Tabs is enabled */
+"tabs.settings.rememberBrowsingModeTitle" = "브라우징 모드 기억하기";
 
 /* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
 "TabToolbarAccessibilityLabel" = "탐색 도구 모음";

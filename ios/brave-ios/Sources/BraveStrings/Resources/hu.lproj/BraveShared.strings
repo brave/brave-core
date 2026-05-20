@@ -16,11 +16,17 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Könyvjelző hozzáadása";
 
+/* Add a new item to the current list */
+"addButtonTitle" = "Hozzáadás";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "Hozzáadás a kedvencekhez";
 
 /* Cell title for add folder action */
 "AddFolderActionCellTitle" = "Új mappa";
+
+/* Settings item that opens instructions for adding Brave to the iOS dock. */
+"addToDockSettingsCell" = "Hozzáadás a Dockhoz";
 
 /* Add to favorites share action. */
 "AddToFavorites" = "Hozzáadás a kedvencekhez";
@@ -69,6 +75,42 @@
 
 /* Settings autofill section title */
 "Autofill" = "Automatikus kitöltés";
+
+/* Label for account when indicating that a domain has multiple accounts */
+"autofill.managePassword.multipleAccounts" = "Fiókok";
+
+/* Alert message warning the user that deleting non-synced passwords will permanently remove them */
+"autofill.managePasswords.deleteCredentialConfirmMessage" = "Ez eltávolítja a(z) %@ mentett jelszavait a szinkronizált blokkláncról és az eszközéről.";
+
+/* Prompt title when deleting passwords */
+"autofill.managePasswords.deleteCredentialsAlertTitle" = "Biztos benne?";
+
+/* Label for the button used to delete the current login. */
+"autofill.managePasswords.deleteManagePasswordButtonTitle" = "Törlés";
+
+/* Title for the section header in the Manage Passwords list screen, that lists the saved sites */
+"autofill.managePasswords.headerTitle" = "Mentve";
+
+/* The message displayed on the manage passwords list screen, when there's at least one password, explain the feature */
+"autofill.managePasswords.instructions" = "Hozza létre, mentse és kezelje jelszavait, hogy egyszerűen bejelentkezhessen a webhelyekre és alkalmazásokba.";
+
+/* The header title displayed over the never saved passwords list */
+"autofill.managePasswords.neverSavedListHeaderTitle" = "Soha nem került mentésre";
+
+/* Display text for the option to offer to save passwords */
+"autofill.managePasswords.offerToSavePasswords" = "Jelszavak mentésének felajánlása";
+
+/* Prompt that is diplayed in the search bar of the Manage Passwords list screen */
+"autofill.managePasswords.searchWebsitesPrompt" = "Webhelyek keresése";
+
+/* Title for navigation bar of the Manage Passwords screen */
+"autofill.managePasswords.title" = "Jelszavak kezelése";
+
+/* Text to show when the origin of a managed password is not available */
+"autofill.managePasswords.UnknownDomainText" = "Ismeretlen";
+
+/* Settings autofill section title */
+"autofill.settings.title" = "Automatikus kitöltés";
 
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "AMP-oldalak automatikus átirányítása";
@@ -3141,6 +3183,12 @@
 
 /* No comment provided by engineer. */
 "tabs.settings.privateTabsSettingsTitle" = "Privát fülek";
+
+/* The description of the toggle for users to allow the browser to remember its last browsing mode so it can re-launch in that mode when Keep Private Tabs is enabled. */
+"tabs.settings.rememberBrowsingModeDescription" = "Ha a böngésző privát módban volt az utolsó bezáráskor, akkor újraindításkor privát módban fog megnyílni.";
+
+/* Toggle to launch the browser in private mode when Keep Private Tabs is enabled */
+"tabs.settings.rememberBrowsingModeTitle" = "Böngészési mód megjegyzése";
 
 /* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
 "TabToolbarAccessibilityLabel" = "Navigációs eszköztár";

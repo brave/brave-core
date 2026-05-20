@@ -14,7 +14,7 @@
 "enabledFeatureNote" = "此功能已啟用，因為您已選擇使用。";
 
 /* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
-"featuresFooter" = "Brave Origin 是 Brave 瀏覽器的版本，可讓您輕鬆停用原本支持 Brave 業務運營的創收功能。Brave Origin 使用者將繼續享受我們業界領先的隱私保護、廣告封鎖和速度優化（透過 Brave 盾牌），以及定期軟體更新、Chromium 修補程式和安全性與隱私改進。他們還可解鎖選項以停用 Brave Leo、獎勵、錢包、VPN、Web3 網域等功能。\n\n購買後，使用者將在瀏覽器設定菜單中看到新的控制面板。現有功能和我們未來推出的任何新功能都會顯示在這裡，並預設為停用。\n\n**注意：Brave Origin 不會停用您目前使用的瀏覽器功能，也不會影響 Brave 搜尋功能或 Brave 搜尋廣告。**";
+"featuresFooter" = "Brave Origin 是 Brave 瀏覽器的一個版本，讓您可以輕鬆停用原本支援 Brave 業務運營的創收功能。Brave Origin 使用者將繼續享有我們業界領先的隱私保護、廣告封鎖和速度優化（透過 Brave 盾牌），以及定期軟體更新、Chromium 修補程式和安全性與隱私改進。他們還可解鎖選項以停用 Brave Leo、獎勵、錢包、VPN、Web3 網域等功能。\n\n購買後，使用者將在瀏覽器設定選單中看到新的控制面板。現有功能以及我們未來推出的任何新功能都會顯示在這裡，並預設為停用。\n\n**注意：Brave Origin 不會停用您目前使用的瀏覽器功能，也不會影響 Brave 搜尋功能或 Brave 搜尋廣告。**";
 
 /* A section header title that is shown over a list of Brave specific features */
 "featuresHeader" = "功能";
@@ -25,6 +25,9 @@
 /* A toggle label for Brave Leo AI feature */
 "leoAILabel" = "Leo 人工智能";
 
+/* A button title that when triggered will allow a user to link their App Store purchase with Brave Account */
+"linkPurchase" = "將購買交易連結至您的 Brave 帳戶";
+
 /* A toggle label for Brave News feature */
 "newsLabel" = "News";
 
@@ -32,7 +35,7 @@
 "oneTimePurchaseLabel" = "一次性購買";
 
 /* A description of Brave Origin displayed on the paywall screen. This text contains Markdown formatting, the stars represent markdown and the same paragraphs should be also be bolded when translated. */
-"paywallDescription" = "**自訂您的瀏覽器，同時仍支持 Brave**\n\nBrave Origin 是適合不需要支持 Brave 業務運營的所有功能，但仍希望獲得只有 Brave 提供的隱私保護的使用者推出的付費瀏覽器版本。Brave Origin 使用者將繼續享受我們業界領先的隱私保護、廣告封鎖和速度優化（透過 Brave 盾牌），以及定期軟體更新、Chromium 修補程式和安全性與隱私改進。他們還可解鎖選項以停用 AI、獎勵、錢包、VPN、Web3 網域等功能。\n\n**Brave Origin 可透過一次性購買取得。在行動裝置（Android 和 iOS）和桌面上，Origin 可作為現有版本的升級購買。** 在桌面上，Origin 也可作為獨立應用程式購買。無論是購買作為升級還是獨立應用程式，Origin 使用者都會在設定菜單中看到新的控制面板。現有功能和我們未來推出的任何新功能都會顯示在這裡，並預設為停用。*\n\n* 請注意，如果您已購買 Origin 作為現有 Brave 版本的升級，Origin 不會停用您目前使用的瀏覽器功能。對於升級版和獨立版本，Origin 都不會影響 Brave 搜尋功能或 Brave 搜尋廣告。";
+"paywallDescription" = "**自訂您的瀏覽器，同時持續支持 Brave**\n\nBrave Origin 是瀏覽器的付費版本，適用於不需要所有支援 Brave 業務運營功能、但仍希望享有只有 Brave 才能提供的隱私保護的使用者。Brave Origin 使用者將繼續享有我們業界領先的隱私保護、廣告封鎖和速度優化（透過 Brave 盾牌），以及定期軟體更新、Chromium 修補程式和安全性與隱私改進。他們還可解鎖選項以停用 AI、獎勵、錢包、VPN、Web3 網域等功能。\n\n**Brave Origin 可透過一次性購買取得。在行動裝置（Android 和 iOS）及桌面版上，Origin 可作為您現有發行版本的升級購買。** 在桌面版上，Origin 也可作為獨立的應用程式提供。無論是作為升級或獨立應用程式購買，Origin 使用者都將在設定選單中看到新的控制面板。現有功能以及我們未來推出的任何新功能都會顯示在這裡，並預設為停用。*\n\n* 請注意，如果您將 Origin 作為現有 Brave 版本的升級購買，Origin 不會停用您目前使用的瀏覽器功能。無論是升級版或獨立版，Origin 都不會影響 Brave 搜尋功能或 Brave 搜尋廣告。";
 
 /* A toggle label for Brave Playlist feature */
 "playlistLabel" = "Playlist";
@@ -45,6 +48,12 @@
 
 /* An error message displayed when a purchase fails */
 "purchaseErrorMessage" = "無法完成購買。請再試一次，或到 Apple 帳戶查看付款詳細資訊後重試。";
+
+/* The footer shown below the Purchase section of the settings page */
+"purchaseSectionFooter" = "將您的 App Store 購買交易連結至 Brave 帳戶，以便在其他裝置上使用 Brave Origin";
+
+/* The header shown below the Purchase section of the settings page */
+"purchaseSectionHeader" = "購買";
 
 /* A button label to redeem a promo code */
 "redeemPromoCodeButton" = "兌換優惠代碼";
@@ -75,6 +84,9 @@
 
 /* An upsell point about supporting Brave's mission and open-source work */
 "upsellSupportMission" = "支持我們的使命 & 開源工作";
+
+/* A button title that when triggered will allow a user to view their App Store receipt */
+"viewAppStoreReceipt" = "查看 App Store 收據";
 
 /* A toggle label for Brave VPN feature */
 "vpnLabel" = "VPN";

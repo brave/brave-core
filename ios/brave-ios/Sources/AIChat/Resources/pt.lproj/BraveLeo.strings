@@ -152,7 +152,7 @@
 "aichat.customModelFormRequiredFieldIndicator" = "Obrigatório";
 
 /* The button title for saving a custom model */
-"aichat.customModelFormSaveButtonTitle" = "Salvar";
+"aichat.customModelFormSaveButtonTitle" = "Guardar";
 
 /* The footer text explaining what the server endpoint is and providing an example URL for Ollama */
 "aichat.customModelFormServerEndpointFieldFooter" = "O URL onde o seu framework de serviço está a aguardar solicitações. Se não tiver a certeza, consulte a documentação do framework de serviço. Por exemplo, para Ollama, é sempre `http://localhost:11434/v1/chat/completions`. O Brave não encaminha estes pedidos, consulte os termos de privacidade do fornecedor escolhido.";
@@ -165,6 +165,12 @@
 
 /* The label for the system prompt field */
 "aichat.customModelFormSystemPromptFieldTitle" = "Solicitação do sistema";
+
+/* The description text explaining what tools supports means */
+"aichat.customModelFormToolsSupportFieldDescription" = "Se este modelo suporta chamadas de função/uso de ferramenta";
+
+/* The label for the tools support toggle */
+"aichat.customModelFormToolsSupportFieldTitle" = "Suporte a ferramentas";
 
 /* Warning message shown when user enters an HTTP (not HTTPS) endpoint */
 "aichat.customModelFormUnsafeEndpointWarning" = "Este terminal pode ser perigoso.";
