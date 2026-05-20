@@ -6,7 +6,7 @@
 #include "base/check.h"
 #include "brave/browser/brave_local_state_prefs.h"
 #include "brave/browser/brave_profile_prefs.h"
-#include "brave/browser/brave_stats/brave_stats_updater.h"
+#include "brave/browser/brave_stats/buildflags.h"
 #include "brave/browser/misc_metrics/uptime_monitor_impl.h"
 #include "brave/browser/translate/brave_translate_prefs_migration.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -39,6 +39,10 @@
 #include "components/translate/core/browser/translate_prefs.h"
 #include "extensions/buildflags/buildflags.h"
 #include "third_party/widevine/cdm/buildflags.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_STATS_UPDATER)
+#include "brave/browser/brave_stats/brave_stats_updater.h"
+#endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/browser/model_service.h"
@@ -289,7 +293,9 @@ void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
   misc_metrics::UptimeMonitorImpl::MigrateObsoletePrefs(local_state);
   brave_search_conversion::p3a::MigrateObsoleteLocalStatePrefs(local_state);
   brave_shields::MigrateObsoletePrefsForAdBlockService(local_state);
+#if BUILDFLAG(ENABLE_BRAVE_STATS_UPDATER)
   brave_stats::MigrateObsoleteLocalStatePrefs(local_state);
+#endif
   brave_l10n::MigrateObsoleteLocalStatePrefs(local_state);
   p3a::MetricLogStore::MigrateObsoleteLocalStatePrefs(local_state);
   p3a::RotationScheduler::MigrateObsoleteLocalStatePrefs(local_state);

@@ -78,8 +78,10 @@ void BraveBrowserMainExtraParts::PreProfileInit() {
   g_brave_browser_process->ads_brave_stats_helper();
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
+#if BUILDFLAG(ENABLE_BRAVE_STATS_UPDATER)
   // Early initialize brave stats
   g_brave_browser_process->brave_stats_updater();
+#endif
 }
 
 void BraveBrowserMainExtraParts::PostBrowserStart() {

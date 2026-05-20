@@ -10,13 +10,14 @@ import("//build/buildflag_header.gni")
 
 buildflag_header("buildflags") {
   header = "buildflags.h"
-  flags = [ "BRAVE_USAGE_SERVER=\"$brave_stats_updater_url\"" ]
+  flags = [
+    "BRAVE_USAGE_SERVER=\"$brave_stats_updater_url\"",
+    "ENABLE_BRAVE_STATS_UPDATER=$enable_brave_stats_updater",
+  ]
 }
 
 source_set("brave_stats") {
   sources = [
-    "//brave/browser/brave_stats/brave_stats_updater.cc",
-    "//brave/browser/brave_stats/brave_stats_updater.h",
     "//brave/browser/brave_stats/brave_stats_updater_params.cc",
     "//brave/browser/brave_stats/brave_stats_updater_params.h",
     "//brave/browser/brave_stats/features.cc",
@@ -26,12 +27,21 @@ source_set("brave_stats") {
     "//brave/browser/brave_stats/switches.h",
   ]
 
-  public_deps = [ "//brave/components/brave_stats/browser" ]
+  if (enable_brave_stats_updater) {
+    sources += [
+      "//brave/browser/brave_stats/brave_stats_updater.cc",
+      "//brave/browser/brave_stats/brave_stats_updater.h",
+    ]
+  }
+
+  public_deps = [
+    "//brave/browser/brave_stats:buildflags",
+    "//brave/components/brave_stats/browser",
+  ]
 
   deps = [
     "//base",
     "//brave/browser:browser_process",
-    "//brave/browser/brave_stats:buildflags",
     "//brave/browser/misc_metrics",
     "//brave/browser/serp_metrics",
     "//brave/common",
@@ -71,7 +81,12 @@ source_set("brave_stats") {
 source_set("browser_tests") {
   testonly = true
 
-  sources = [ "//brave/browser/brave_stats/brave_stats_updater_browsertest.cc" ]
+  sources = []
+
+  if (enable_brave_stats_updater) {
+    sources +=
+        [ "//brave/browser/brave_stats/brave_stats_updater_browsertest.cc" ]
+  }
 
   deps = [
     "//brave/browser/brave_stats",
@@ -87,10 +102,13 @@ source_set("unit_tests") {
   testonly = true
 
   sources = [
-    "//brave/browser/brave_stats/brave_stats_updater_unittest.cc",
     "//brave/browser/brave_stats/brave_stats_updater_util_unittest.cc",
     "//brave/browser/brave_stats/first_run_util_unittest.cc",
   ]
+
+  if (enable_brave_stats_updater) {
+    sources += [ "//brave/browser/brave_stats/brave_stats_updater_unittest.cc" ]
+  }
 
   deps = [
     "//brave/browser/brave_stats",
