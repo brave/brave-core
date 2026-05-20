@@ -56,7 +56,7 @@ _SERVICE_HOSTS = [
 def run_httparchive(args: List[str]) -> str:
   _, output = perf_test_utils.GetProcessOutput(
       ['go', 'run', os.path.join('src', 'httparchive.go'), *args],
-      cwd=os.path.join(path_util.GetCatapultDir(), 'web_page_replay_go'),
+      cwd=path_util.GetWprGoDir(),
       check=True)
   return output
 
