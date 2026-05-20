@@ -10,6 +10,7 @@ import android.widget.ImageView;
 
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
+import org.chromium.brave.browser.custom_search_engines.CustomSearchEnginesManager;
 import org.chromium.brave.browser.quick_search_engines.R;
 import org.chromium.brave.browser.quick_search_engines.settings.QuickSearchEnginesModel;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
@@ -168,6 +169,15 @@ public class QuickSearchEnginesUtil {
         // Sort and filter unnecessary template URLs based on region
         SearchEngineAdapter.sortAndFilterUnnecessaryTemplateUrl(
                 templateUrls, defaultSearchEngine, regionalCapabilities.isInEeaCountry());
+        // Drop OpenSearch auto-discovered "recently visited" engines. User-added
+        // custom engines (tracked by CustomSearchEnginesManager) are also non-
+        // prepopulated but should be kept.
+        CustomSearchEnginesManager customSearchEngines = CustomSearchEnginesManager.getInstance();
+        templateUrls.removeIf(
+                templateUrl ->
+                        !templateUrl.getIsPrepopulated()
+                                && !customSearchEngines.isCustomSearchEngine(
+                                        templateUrl.getKeyword()));
         return templateUrls;
     }
 
