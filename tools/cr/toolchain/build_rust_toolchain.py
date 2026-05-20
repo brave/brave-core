@@ -522,7 +522,12 @@ class ToolchainBuilder:
         if not self.tools_rust.is_dir():
             raise RuntimeError(f'{self.tools_rust} directory not found.')
 
-        # Loading the build modules from `src/tools/rust/`.
+        if use_ref:
+            self._checkout_chromium_ref(use_ref)
+
+        # Only loading the rust libs now that the desired git ref checkout is
+        # done, otherwise the runtime would already be loaded with whatever rust
+        # version values were in disk.
         tools_rust_str: str = str(self.tools_rust)
         if tools_rust_str not in sys.path:
             sys.path.insert(0, tools_rust_str)
@@ -532,9 +537,6 @@ class ToolchainBuilder:
         if not self.package_rust_module:
             self.package_rust_module: ModuleType = importlib.import_module(
                 'package_rust')
-
-        if use_ref:
-            self._checkout_chromium_ref(use_ref)
 
         # Build process
         if sys.platform == 'win32' and shutil.which('sh') is None:
