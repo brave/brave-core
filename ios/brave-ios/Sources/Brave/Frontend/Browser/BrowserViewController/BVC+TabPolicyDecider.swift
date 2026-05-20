@@ -216,14 +216,6 @@ extension BrowserViewController: TabPolicyDecider {
       }
     }
 
-    // QuickView
-    if FeatureList.kQuickViewEnabled.enabled,
-      shouldOpenInQuickView(requestURL: requestURL, requestInfo: requestInfo, tab: tab)
-    {
-      presentQuickView(url: requestURL, for: tab)
-      return .cancel
-    }
-
     tab.currentRequestURL = requestURL
 
     // Website redirection logic
@@ -630,44 +622,6 @@ extension BrowserViewController {
       shouldUpgrade = false
     }
     return shouldUpgrade
-  }
-
-  fileprivate func shouldOpenInQuickView(
-    requestURL: URL,
-    requestInfo: WebRequestInfo,
-    tab: some TabState
-  ) -> Bool {
-    guard requestInfo.isMainFrame,
-      requestInfo.navigationType == .linkActivated,
-      let sourceURL = tab.lastCommittedURL,
-      !BraveSearchManager.isValidURL(requestURL),  // don't intercept same-domain nav
-      isQuickViewEntryPoint(sourceURL),
-      !InternalURL.isValid(url: requestURL),
-      requestURL.isWebPage(includeDataURIs: false)
-    else { return false }
-    return true
-  }
-
-  fileprivate func isQuickViewEntryPoint(_ url: URL) -> Bool {
-    guard BraveSearchManager.isValidURL(url),
-      let path = URLComponents(url: url, resolvingAgainstBaseURL: false)?.path
-    else { return false }
-    return path == "/search" || path == "/ask"
-  }
-
-  private func presentQuickView(url: URL, for tab: some TabState) {
-    let quickViewController = QuickViewController(
-      url: url,
-      for: tab,
-      privateBrowsingManager: privateBrowsingManager
-    ) { [weak self] request in
-      guard let self else { return }
-      self.tabManager.addTabAndSelect(
-        request,
-        isPrivate: self.privateBrowsingManager.isPrivateBrowsing
-      )
-    }
-    present(quickViewController, animated: true)
   }
 
   /// Upon an invalid response, check that we need to roll back any HTTPS upgrade
