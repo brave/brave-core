@@ -1034,8 +1034,9 @@ void MaybeRunPasswordMigrations(PrefService* profile_prefs,
   MaybeMigrateToWalletMnemonic(profile_prefs, password);
 }
 
-std::set<std::string> GetHiddenAccountUniqueKeys(PrefService* profile_prefs) {
-  std::set<std::string> hidden_account_unique_keys;
+base::flat_set<std::string> GetHiddenAccountUniqueKeys(
+    PrefService* profile_prefs) {
+  base::flat_set<std::string> hidden_account_unique_keys;
   for (const auto& hidden_account :
        profile_prefs->GetList(kBraveWalletHiddenAccounts)) {
     if (auto* unique_key = hidden_account.GetIfString()) {
@@ -2775,8 +2776,7 @@ void KeyringService::GetHiddenAccounts(GetHiddenAccountsCallback callback) {
 }
 
 std::vector<mojom::AccountInfoPtr> KeyringService::GetHiddenAccountsSync() {
-  std::set<std::string> account_unique_keys =
-      GetHiddenAccountUniqueKeys(profile_prefs_.get());
+  auto account_unique_keys = GetHiddenAccountUniqueKeys(profile_prefs_.get());
 
   std::vector<mojom::AccountInfoPtr> hidden_accounts;
   for (const auto& keyring_id : GetEnabledKeyrings()) {

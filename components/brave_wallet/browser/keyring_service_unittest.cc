@@ -2920,15 +2920,16 @@ TEST_F(KeyringServiceUnitTest, SetSelectedAccount_CardanoDisabled) {
   EXPECT_EQ(first_account, service.GetSelectedEthereumDappAccount());
   observer.WaitAndVerify();
 
-  // Removing not-selected sol account. Only sol dapp observer is called with
-  // empty arg.
+  // Removing selected sol account falls back to first available sol account.
   EXPECT_CALL(observer, SelectedWalletAccountChanged(_)).Times(0);
   EXPECT_CALL(observer, SelectedDappAccountChanged(mojom::CoinType::ETH, _))
       .Times(0);
-  EXPECT_CALL(observer, SelectedDappAccountChanged(
-                            mojom::CoinType::SOL, Eq(std::ref(empty_account))));
+  EXPECT_CALL(observer,
+              SelectedDappAccountChanged(mojom::CoinType::SOL,
+                                         Eq(std::ref(first_sol_account))));
   EXPECT_TRUE(RemoveAccount(&service, sol_imported_account->account_id,
                             kPasswordBrave));
+  EXPECT_EQ(first_sol_account, service.GetSelectedSolanaDappAccount());
   observer.WaitAndVerify();
 }
 
