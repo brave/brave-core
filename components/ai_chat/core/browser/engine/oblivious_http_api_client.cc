@@ -74,6 +74,10 @@ void RunCompletedWithError(
   std::move(completed_callback).Run(base::unexpected(error));
 }
 
+std::string GetModelKey(const std::string& model_name) {
+  return "chat-" + model_name;
+}
+
 }  // namespace
 
 ObliviousHttpAPIClient::InnerClient::InnerClient(
@@ -281,13 +285,15 @@ void ObliviousHttpAPIClient::DispatchOHTTPRequest(
       IsStreamingEnabled(request.data_received_callback);
   GenerationDataCallback data_received_callback =
       request.data_received_callback;
+  std::string model_name = request.model_name;
   *it = std::make_unique<InnerClient>(
       base::BindOnce(&ObliviousHttpAPIClient::OnInnerResponse,
                      weak_factory_.GetWeakPtr(), std::move(request),
                      std::move(credential)),
       base::BindRepeating(&ObliviousHttpAPIClient::OnInnerChunkReceived,
                           weak_factory_.GetWeakPtr(),
-                          std::move(data_received_callback)));
+                          std::move(data_received_callback),
+                          std::move(model_name)));
 
   InnerClient& inner_client = **it;
 
@@ -327,11 +333,14 @@ void ObliviousHttpAPIClient::OnInnerResponse(
                      base::JSON_PARSE_RFC, static_cast<size_t>(200)),
       base::BindOnce(&OAIAPIClient::HandleCompletion,
                      std::move(request.completed_callback), success,
-                     inner_response_code));
+                     inner_response_code,
+                     /*model_key=*/GetModelKey(request.model_name),
+                     /*is_near_verified=*/true));
 }
 
 void ObliviousHttpAPIClient::OnInnerChunkReceived(
     GenerationDataCallback data_received_callback,
+    std::string model_name,
     std::string chunk) {
   if (!base::StartsWith(chunk, kSSEDataPrefix)) {
     return;
@@ -345,17 +354,19 @@ void ObliviousHttpAPIClient::OnInnerChunkReceived(
                      chunk.substr(kSSEDataPrefix.size() - 1),
                      base::JSON_PARSE_RFC, static_cast<size_t>(200)),
       base::BindOnce(&ObliviousHttpAPIClient::OnChunkParsed,
-                     std::move(data_received_callback)));
+                     std::move(data_received_callback), std::move(model_name)));
 }
 
 // static
 void ObliviousHttpAPIClient::OnChunkParsed(
     GenerationDataCallback data_received_callback,
+    std::string model_name,
     std::optional<base::Value> value) {
   if (!value) {
     return;
   }
   OnQueryDataReceived(std::move(data_received_callback),
+                      GetModelKey(model_name), /*is_near_verified=*/true,
                       base::ok(std::move(*value)));
 }
 

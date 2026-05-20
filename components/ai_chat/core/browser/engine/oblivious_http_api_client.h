@@ -160,8 +160,10 @@ class ObliviousHttpAPIClient : public OAIAPIClient {
                        int inner_response_code,
                        std::string response_body);
   void OnInnerChunkReceived(GenerationDataCallback data_received_callback,
+                            std::string model_name,
                             std::string chunk);
   static void OnChunkParsed(GenerationDataCallback data_received_callback,
+                            std::string model_name,
                             std::optional<base::Value> value);
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
