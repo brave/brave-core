@@ -72,6 +72,12 @@ ViewCounterService::ViewCounterService(
 
   if (ads_service_) {
     ads_service_->AddObserver(this);
+    if (ads_service_->IsInitialized()) {
+      // If `AdsService` was initialized before observer registration, the
+      // `ViewCounterService::OnDidInitializeAdsService` callback will not be
+      // called so we call it explicitly.
+      OnDidInitializeAdsService();
+    }
   }
 
   host_content_settings_map_->AddObserver(this);
