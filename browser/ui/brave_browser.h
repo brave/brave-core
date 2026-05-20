@@ -52,7 +52,8 @@ class BraveBrowser : public Browser {
       bool user_gesture,
       bool* was_blocked) override;
 
-  void OnTabClosing(content::WebContents* contents) override;
+  void OnTabClosing(tabs::TabInterface* tab,
+                    bool* had_active_modal_dialog) override;
   void TabStripEmpty() override;
 
   void RunFileChooser(content::RenderFrameHost* render_frame_host,
