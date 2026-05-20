@@ -14,6 +14,7 @@ import {
   AliasesUpdate,
   AuthState,
   AuthenticationStatus,
+  EmailAliasesMetricsRemote,
   EmailAliasesServiceInterface,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 
@@ -45,10 +46,12 @@ export const ManagePage = ({
   aliasesUpdate,
   authState,
   emailAliasesService,
+  metrics,
 }: {
   aliasesUpdate: AliasesUpdate
   authState: AuthState
   emailAliasesService: EmailAliasesServiceInterface
+  metrics?: EmailAliasesMetricsRemote
 }) => (
   <PageCol>
     {authState.status === AuthenticationStatus.kAuthenticated
@@ -59,6 +62,7 @@ export const ManagePage = ({
           aliases={aliasesUpdate.aliases!}
           authEmail={authState.email}
           emailAliasesService={emailAliasesService}
+          metrics={metrics}
         />
       ))}
   </PageCol>

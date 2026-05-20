@@ -9,6 +9,7 @@ import { StyleSheetManager } from 'styled-components'
 import * as React from 'react'
 import { setIconBasePath } from '@brave/leo/react/icon'
 import {
+  EmailAliasesMetrics,
   EmailAliasesServiceInterface,
   EmailAliasesServiceObserverInterface,
   EmailAliasesServiceObserverReceiver,
@@ -19,9 +20,11 @@ import { useEmailAliases } from './content/use_email_aliases'
 export const ManagePageConnected = ({
   emailAliasesService,
   bindObserver,
+  metrics,
 }: {
   emailAliasesService: EmailAliasesServiceInterface
   bindObserver: (observer: EmailAliasesServiceObserverInterface) => () => void
+  metrics?: ReturnType<typeof EmailAliasesMetrics.getRemote>
 }) => {
   const { authState, aliasesUpdate } = useEmailAliases(bindObserver)
   return (
@@ -29,6 +32,7 @@ export const ManagePageConnected = ({
       authState={authState}
       aliasesUpdate={aliasesUpdate}
       emailAliasesService={emailAliasesService}
+      metrics={metrics}
     />
   )
 }
@@ -37,6 +41,7 @@ export const mount = (signInElem: HTMLElement, manageElem: HTMLElement) => {
   setIconBasePath('//resources/brave-icons')
 
   const emailAliasesService = EmailAliasesService.getRemote()
+  const emailAliasesMetrics = EmailAliasesMetrics.getRemote()
 
   const bindObserver = (observer: EmailAliasesServiceObserverInterface) => {
     const observerReceiver = new EmailAliasesServiceObserverReceiver(observer)
@@ -60,6 +65,7 @@ export const mount = (signInElem: HTMLElement, manageElem: HTMLElement) => {
       <ManagePageConnected
         emailAliasesService={emailAliasesService}
         bindObserver={bindObserver}
+        metrics={emailAliasesMetrics}
       />
     </StyleSheetManager>,
   )
