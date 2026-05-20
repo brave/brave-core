@@ -19,8 +19,8 @@ import android.provider.Settings;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.chromium.base.Log;
+import org.chromium.chrome.browser.BraveConstants;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
-import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.components.embedder_support.util.UrlConstants;
 
 import java.util.Calendar;
