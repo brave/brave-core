@@ -11,7 +11,6 @@ import type { AnyAction } from 'redux'
 // types
 import {
   BraveWallet,
-  CommonNftMetadata,
   MeldCryptoCurrency,
   MeldFiatCurrency,
   MeldFilter,
@@ -1067,65 +1066,6 @@ export class MockedWalletApiProxy {
         allowance: '1000000000000000000', // 1 unit
         error: BraveWallet.ProviderError.kSuccess,
         errorMessage: '',
-      }
-    },
-    // NFT Metadata
-    getERC721Metadata: async (contract, tokenId, chainId) => {
-      const mockedMetadata = mockNFTMetadata.find(
-        (d) =>
-          new Amount(d.tokenID).toHex() === new Amount(tokenId).toHex()
-          && d.contractInformation.address === contract,
-      )
-      if (!mockedMetadata) {
-        return {
-          error: 1,
-          errorMessage: 'metadata not found',
-          tokenUrl: '',
-          response: '',
-        }
-      }
-      return {
-        error: 0,
-        errorMessage: '',
-        tokenUrl: mockedMetadata.contractInformation.logo,
-        response: JSON.stringify({
-          attributes: [
-            {
-              trait_type: 'mocked trait name',
-              value: '100%',
-            } as { trait_type: string; value: string },
-          ],
-          description: mockedMetadata.contractInformation.description,
-          image: mockedMetadata.imageURL,
-          name: mockedMetadata.contractInformation.name,
-        } as CommonNftMetadata),
-      }
-    },
-    getERC1155Metadata: async (contract, tokenId, chainId) => {
-      return this.jsonRpcService.getERC721Metadata!(contract, tokenId, chainId)
-    },
-    getSolTokenMetadata: async (chainId, tokenMintAddress) => {
-      const mockedMetadata =
-        mockNFTMetadata.find(
-          (d) =>
-            d.tokenID === tokenMintAddress
-            && d.contractInformation.address === tokenMintAddress,
-        ) || mockNFTMetadata[0]
-      return {
-        error: 0,
-        errorMessage: '',
-        tokenUrl: mockedMetadata.contractInformation.logo,
-        response: JSON.stringify({
-          attributes: [
-            {
-              trait_type: 'mocked trait name',
-              value: '100%',
-            } as { trait_type: string; value: string },
-          ],
-          description: mockedMetadata.contractInformation.description,
-          image: mockedMetadata.imageURL,
-          name: mockedMetadata.contractInformation.name,
-        } as CommonNftMetadata),
       }
     },
     getNftMetadatas: async (nftIdentifiers) => {

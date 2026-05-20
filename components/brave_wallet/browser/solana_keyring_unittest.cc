@@ -253,19 +253,6 @@ TEST(SolanaKeyringUnitTest, GetAssociatedTokenAccount) {
   }
 }
 
-TEST(SolanaKeyringUnitTest, GetAssociatedMetadataAccount) {
-  auto addr = SolanaKeyring::GetAssociatedMetadataAccount(
-      "5ZXToo7froykjvjnpHtTLYr9u2tW3USMwPg3sNkiaQVh");
-  ASSERT_TRUE(addr);
-  EXPECT_EQ(*addr, "6L255rMB19d544HLNumpvbdTKkTgiQ3fgMszzX6F9VAL");
-
-  addr = SolanaKeyring::GetAssociatedMetadataAccount(
-      "8q5qbP8xu1TgDWYXokwFjgTqoSNe6W3Ljj3phwqhDKqe");
-  ASSERT_TRUE(addr);
-
-  EXPECT_EQ(*addr, "586XgHr69ZhbUkkGJsQqGt16mf7jpFS6uhnvCAwb68Qq");
-}
-
 TEST(SolanaKeyringUnitTest, AddNewHDAccount_RestrictedAddress) {
   auto* registry = BlockchainRegistry::GetInstance();
   CHECK(registry);

@@ -57,9 +57,6 @@ bool TransferFromOrSafeTransferFrom(bool is_safe_transfer_from,
 // Find the owner of an NFT.
 bool OwnerOf(uint256_t token_id, std::string* data);
 
-// Get the URI of an NFT.
-bool TokenUri(uint256_t token_id, std::string* data);
-
 }  // namespace erc721
 
 namespace erc1155 {
@@ -75,9 +72,6 @@ bool SafeTransferFrom(std::string_view from_address,
 bool BalanceOf(std::string_view owner_address,
                uint256_t token_id,
                std::string* data);
-
-// Get the URI of a token
-bool Uri(uint256_t token_id, std::string* data);
 
 }  // namespace erc1155
 

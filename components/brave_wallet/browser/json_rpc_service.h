@@ -44,7 +44,6 @@ class PrefService;
 namespace brave_wallet {
 
 class EnsResolverTask;
-class NftMetadataFetcher;
 class NetworkManager;
 struct PendingAddChainRequest;
 struct PendingSwitchChainRequest;
@@ -351,28 +350,6 @@ class JsonRpcService : public mojom::JsonRpcService {
                              const std::string& chain_id,
                              GetERC721TokenBalanceCallback callback) override;
 
-  using GetEthTokenUriCallback =
-      base::OnceCallback<void(const GURL& uri,
-                              mojom::ProviderError error,
-                              const std::string& error_message)>;
-
-  void GetERC721Metadata(const std::string& contract_address,
-                         const std::string& token_id,
-                         const std::string& chain_id,
-                         GetERC721MetadataCallback callback) override;
-
-  void GetERC1155Metadata(const std::string& contract_address,
-                          const std::string& token_id,
-                          const std::string& chain_id,
-                          GetERC1155MetadataCallback callback) override;
-  // GetEthTokenUri should only be called after check whether the contract
-  // supports the ERC721 or ERC1155 interface
-  void GetEthTokenUri(const std::string& chain_id,
-                      const std::string& contract_address,
-                      const std::string& token_id,
-                      const std::string& interface_id,
-                      GetEthTokenUriCallback callback);
-
   void EthGetLogs(const std::string& chain_id,
                   base::DictValue filter_options,
                   EthGetLogsCallback callback);
@@ -463,10 +440,6 @@ class JsonRpcService : public mojom::JsonRpcService {
       const std::string& token_mint_address,
       const std::string& chain_id,
       GetSPLTokenAccountBalanceCallback callback) override;
-  void GetSolTokenMetadata(const std::string& chain_id,
-                           const std::string& token_mint_address,
-                           GetSolTokenMetadataCallback callback) override;
-
   void IsSolanaBlockhashValid(const std::string& chain_id,
                               const std::string& blockhash,
                               const std::optional<std::string>& commitment,
@@ -711,9 +684,6 @@ class JsonRpcService : public mojom::JsonRpcService {
                                      mojom::ProviderError error,
                                      const std::string& error_message);
 
-  void OnGetEthTokenUri(GetEthTokenUriCallback callback,
-                        const APIRequestResult api_request_result);
-
   void OnGetSupportsInterface(GetSupportsInterfaceCallback callback,
                               APIRequestResult api_request_result);
 
@@ -841,7 +811,6 @@ class JsonRpcService : public mojom::JsonRpcService {
   raw_ptr<NetworkManager> network_manager_ = nullptr;
   const raw_ptr<PrefService> prefs_ = nullptr;
   const raw_ptr<PrefService> local_state_prefs_ = nullptr;
-  std::unique_ptr<NftMetadataFetcher> nft_metadata_fetcher_;
   std::unique_ptr<SimpleHashClient> simple_hash_client_;
   base::WeakPtrFactory<JsonRpcService> weak_ptr_factory_{this};
 };

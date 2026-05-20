@@ -38,7 +38,6 @@
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
-#include "brave/components/brave_wallet/browser/nft_metadata_fetcher.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/solana_keyring.h"
 #include "brave/components/brave_wallet/browser/solana_requests.h"
@@ -367,8 +366,6 @@ JsonRpcService::JsonRpcService(
   api_request_helper_ens_offchain_ = std::make_unique<APIRequestHelper>(
       GetENSOffchainNetworkTrafficAnnotationTag(), url_loader_factory);
 
-  nft_metadata_fetcher_ =
-      std::make_unique<NftMetadataFetcher>(url_loader_factory, this, prefs_);
   simple_hash_client_ = std::make_unique<SimpleHashClient>(url_loader_factory);
 }
 
@@ -2214,106 +2211,6 @@ void JsonRpcService::ContinueGetERC721TokenBalance(
                           mojom::ProviderError::kSuccess, "");
 }
 
-void JsonRpcService::GetERC721Metadata(const std::string& contract_address,
-                                       const std::string& token_id,
-                                       const std::string& chain_id,
-                                       GetERC721MetadataCallback callback) {
-  nft_metadata_fetcher_->GetEthTokenMetadata(
-      contract_address, token_id, chain_id, kERC721MetadataInterfaceId,
-      std::move(callback));
-}
-
-void JsonRpcService::GetERC1155Metadata(const std::string& contract_address,
-                                        const std::string& token_id,
-                                        const std::string& chain_id,
-                                        GetERC1155MetadataCallback callback) {
-  nft_metadata_fetcher_->GetEthTokenMetadata(
-      contract_address, token_id, chain_id, kERC1155MetadataInterfaceId,
-      std::move(callback));
-}
-
-void JsonRpcService::GetEthTokenUri(const std::string& chain_id,
-                                    const std::string& contract_address,
-                                    const std::string& token_id,
-                                    const std::string& interface_id,
-                                    GetEthTokenUriCallback callback) {
-  auto network_url = GetNetworkURL(chain_id, mojom::CoinType::ETH);
-  if (!network_url.is_valid()) {
-    std::move(callback).Run(
-        GURL(), mojom::ProviderError::kInvalidParams,
-        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
-    return;
-  }
-
-  if (!EthAddress::IsValidAddress(contract_address)) {
-    std::move(callback).Run(
-        GURL(), mojom::ProviderError::kInvalidParams,
-        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
-    return;
-  }
-
-  uint256_t token_id_uint = 0;
-  if (!HexValueToUint256(token_id, &token_id_uint)) {
-    std::move(callback).Run(
-        GURL(), mojom::ProviderError::kInvalidParams,
-        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
-    return;
-  }
-
-  std::string function_signature;
-  if (interface_id == kERC721MetadataInterfaceId) {
-    if (!erc721::TokenUri(token_id_uint, &function_signature)) {
-      std::move(callback).Run(
-          GURL(), mojom::ProviderError::kInvalidParams,
-          l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
-      return;
-    }
-  } else if (interface_id == kERC1155MetadataInterfaceId) {
-    if (!erc1155::Uri(token_id_uint, &function_signature)) {
-      std::move(callback).Run(
-          GURL(), mojom::ProviderError::kInvalidParams,
-          l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
-      return;
-    }
-  } else {
-    // Unknown inteface ID
-    std::move(callback).Run(
-        GURL(), mojom::ProviderError::kInvalidParams,
-        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
-    return;
-  }
-
-  auto internal_callback =
-      base::BindOnce(&JsonRpcService::OnGetEthTokenUri,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-
-  RequestInternal(eth::GetCallPayload(contract_address, function_signature),
-                  true, network_url, std::move(internal_callback));
-}
-
-void JsonRpcService::OnGetEthTokenUri(GetEthTokenUriCallback callback,
-                                      APIRequestResult api_request_result) {
-  if (!api_request_result.Is2XXResponseCode()) {
-    std::move(callback).Run(
-        GURL(), mojom::ProviderError::kInternalError,
-        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
-    return;
-  }
-
-  // Parse response JSON that wraps the result
-  GURL url;
-  if (!eth::ParseTokenUri(api_request_result.value_body(), &url)) {
-    mojom::ProviderError error;
-    std::string error_message;
-    ParseErrorResult<mojom::ProviderError>(api_request_result.value_body(),
-                                           &error, &error_message);
-    std::move(callback).Run(GURL(), error, error_message);
-    return;
-  }
-
-  std::move(callback).Run(url, mojom::ProviderError::kSuccess, "");
-}
-
 void JsonRpcService::GetERC1155TokenBalance(
     const std::string& contract_address,
     const std::string& token_id,
@@ -2960,13 +2857,6 @@ void JsonRpcService::OnGetSPLTokenAccountBalance(
 
   std::move(callback).Run(amount, decimals, ui_amount_string,
                           mojom::SolanaProviderError::kSuccess, "");
-}
-
-void JsonRpcService::GetSolTokenMetadata(const std::string& chain_id,
-                                         const std::string& token_mint_address,
-                                         GetSolTokenMetadataCallback callback) {
-  nft_metadata_fetcher_->GetSolTokenMetadata(chain_id, token_mint_address,
-                                             std::move(callback));
 }
 
 void JsonRpcService::GetNftMetadatas(
