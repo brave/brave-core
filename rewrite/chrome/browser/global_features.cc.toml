@@ -3,12 +3,16 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-[[substitution]]
-description = 'Replacing GlobalFeatures with BraveGlobalFeatures'
+[[comby-substitution]]
+description = 'Construct BraveGlobalFeatures instead of GlobalFeatures'
 pattern = 'new GlobalFeatures()'
 replace = 'CreateBraveGlobalFeatures()'
 
-[[substitution]]
-description = 'Forward declare CreateBraveGlobalFeatures'
-re_pattern = '(namespace {)'
-replace = 'GlobalFeatures* CreateBraveGlobalFeatures();\n\1'
+[[comby-substitution]]
+description = 'Forward declare CreateBraveGlobalFeatures before the anonymous namespace'
+# `:[body]` closes the brace pair so comby treats the pattern as a
+# balanced block; bare `namespace {` doesn't match under the .cpp
+# matcher.
+pattern = 'namespace {:[body]}'
+replace = '''GlobalFeatures* CreateBraveGlobalFeatures();
+namespace {:[body]}'''

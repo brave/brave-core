@@ -3,7 +3,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-[[substitution]]
-description = 'Add virtual keyword to Init()'
-pattern = '[[nodiscard]] Liveness Init('
-replace = '[[nodiscard]] virtual Liveness Init('
+[[comby-substitution]]
+description = 'Add virtual keyword to Init() so Brave can override it in a subclass'
+# `:[args]` closes the open `(` so comby's .cpp matcher accepts the
+# pattern; the captured args are re-emitted verbatim, preserving the
+# original multi-line argument list formatting.
+pattern = '[[nodiscard]] Liveness Init(:[args])'
+replace = '[[nodiscard]] virtual Liveness Init(:[args])'

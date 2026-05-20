@@ -3,8 +3,17 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-[[substitution]]
+[[comby-substitution]]
 description = 'Add kActionShowPartitionedStorage as the second entry of kActionIds'
-re_pattern = '(kActionIds = std::to_array<actions::ActionId>\(\{\n[ \t]*\w+,\n)'
-replace = '''\1    kActionShowPartitionedStorage,
-'''
+# `:[[first]]` matches just the first identifier; `:[rest]` captures
+# the remaining entries verbatim (including their newlines and indent)
+# via comby's balanced-delimiter hole semantics.
+pattern = '''std::to_array<actions::ActionId>({
+    :[[first]],
+    :[rest]
+})'''
+replace = '''std::to_array<actions::ActionId>({
+    :[[first]],
+    kActionShowPartitionedStorage,
+    :[rest]
+})'''

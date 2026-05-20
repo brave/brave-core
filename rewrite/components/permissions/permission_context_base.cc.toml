@@ -3,14 +3,22 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-[[substitution]]
+[[comby-substitution]]
 description = 'Moving `PermissionContextBase` into `chromium_impl` as in the header.'
+# `.generic` matcher (rather than the file-extension default of `.cpp`)
+# so the substitution also rewrites the closing `// namespace permissions`
+# trailing comment -- comby's language-aware matchers skip comment
+# contents by default.
+matcher = '.generic'
 pattern = 'namespace permissions'
 replace = 'namespace permissions::chromium_impl'
 count = 2
 
-[[substitution]]
+[[comby-substitution]]
 description = 'Calls BraveCanBypassEmbeddingOriginCheck for wallet handling'
-pattern = 'CanBypassEmbeddingOriginCheck('
-replace = 'BraveCanBypassEmbeddingOriginCheck(content_settings_type_, '
+# `:[args]` closes the `(` so comby's .cpp matcher accepts the pattern;
+# the captured args are re-emitted verbatim, preserving the original
+# multi-line call formatting.
+pattern = 'CanBypassEmbeddingOriginCheck(:[args])'
+replace = 'BraveCanBypassEmbeddingOriginCheck(content_settings_type_, :[args])'
 count = 2
