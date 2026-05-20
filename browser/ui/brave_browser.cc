@@ -112,8 +112,9 @@ void BraveBrowser::ScheduleUIUpdate(content::WebContents* source,
   }
 }
 
-void BraveBrowser::OnTabClosing(content::WebContents* contents) {
-  Browser::OnTabClosing(contents);
+void BraveBrowser::OnTabClosing(tabs::TabInterface* tab,
+                                bool* had_active_modal_dialog) {
+  Browser::OnTabClosing(tab, had_active_modal_dialog);
 
   if (!AreAllTabsSharedPinnedTabs()) {
     return;
