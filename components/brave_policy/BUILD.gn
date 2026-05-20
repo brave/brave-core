@@ -56,6 +56,7 @@ source_set("unit_tests") {
     ":policy_initialization_waiter",
     "//base",
     "//base/test:test_support",
+    "//brave/components/brave_origin",
     "//brave/components/resources:strings",
     "//components/enterprise",
     "//components/policy/core/browser",
