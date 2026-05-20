@@ -14,6 +14,7 @@ from pathlib import Path, PurePath
 import json
 import os
 import re
+import subprocess
 import sys
 import tomllib
 
@@ -25,6 +26,99 @@ PLASTER_FILES_PATH = repository.brave.root / 'rewrite'
 
 # The path to the directory where patch files are stored in brave-core.
 PATCHES_PATH = repository.brave.root / 'patches'
+
+# ============================================================================
+# Experimental substitution back-ends
+#
+# `[[ast-substitution]]` is routed to ast-grep; `[[comby-substitution]]` is
+# routed to comby. The substitution methods themselves live on `PlasterFile`
+# (`_apply_ast_substitutions`, `_apply_comby_substitutions`); this section
+# holds the flags, binary paths, and pure helpers they depend on.
+#
+# To turn either back-end off without removing the code, flip its
+# `*_SUBSTITUTION_ENABLED` flag below. A plaster file that contains the
+# corresponding TOML table while the flag is False errors out rather than
+# being silently ignored, so the "I disabled it and forgot why my plaster
+# stopped working" case is loud.
+# ============================================================================
+
+AST_SUBSTITUTION_ENABLED = True
+COMBY_SUBSTITUTION_ENABLED = True
+
+# Rewriter binaries are deployed by:
+#   tools/cr/ast_grep/build_ast_grep.py  -> third_party/ast-grep-toolchain/
+#   tools/cr/comby/build_comby.py        -> third_party/comby-toolchain/
+#
+# Anchored to `__file__` rather than `repository.brave.root` so the paths
+# survive cwd changes: tests use `FakeChromiumRepo` which chdirs into a
+# temp fake-brave directory before invoking `PlasterFile.apply()`. A
+# cwd-relative anchor would then resolve against the temp dir, miss the
+# real binary, and trip the binary-missing branch even when ast-grep /
+# comby are actually installed.
+_BRAVE_ROOT: Path = Path(__file__).resolve().parents[2]
+AST_GREP_BIN: Path = (_BRAVE_ROOT / 'third_party' / 'ast-grep-toolchain' /
+                      'bin' / 'ast-grep')
+COMBY_BIN: Path = (_BRAVE_ROOT / 'third_party' / 'comby-toolchain' / 'bin' /
+                   'comby')
+
+
+def _infer_ast_grep_language(source: Path) -> str | None:
+    """Map a source path to an ast-grep `--lang` value.
+
+    Returns None for extensions we have no mapping for; the caller
+    surfaces that as a plaster error rather than silently picking a
+    default that would mis-parse the file.
+    """
+    return {
+        '.h': 'cpp',
+        '.hpp': 'cpp',
+        '.cc': 'cpp',
+        '.cpp': 'cpp',
+        '.cxx': 'cpp',
+        '.c': 'c',
+        '.py': 'python',
+        '.js': 'javascript',
+        '.jsx': 'jsx',
+        '.ts': 'typescript',
+        '.tsx': 'tsx',
+        '.go': 'go',
+        '.rs': 'rust',
+        '.java': 'java',
+    }.get(source.suffix.lower())
+
+
+def _infer_comby_matcher(source: Path) -> str:
+    """Map a source path to a comby matcher token.
+
+    Falls back to `.generic` for unknown extensions: comby's generic
+    matcher still understands balanced delimiters but does not know
+    about language-specific comment / string syntax, which is good
+    enough for many one-off substitutions. `.gn` / `.gni` deliberately
+    fall through to `.generic` for now -- comby has no GN matcher and
+    `.python` is close but not exact; patterns there need to be
+    conservative enough not to need comment / string awareness.
+    """
+    return {
+        '.h': '.cpp',
+        '.hpp': '.cpp',
+        '.cc': '.cpp',
+        '.cpp': '.cpp',
+        '.cxx': '.cpp',
+        '.c': '.c',
+        '.py': '.py',
+        '.js': '.js',
+        '.ts': '.ts',
+        '.go': '.go',
+        '.rs': '.rs',
+        '.java': '.java',
+    }.get(source.suffix.lower(), '.generic')
+
+
+def _format_subprocess_error(e: subprocess.CalledProcessError) -> str:
+    """Compact stderr-or-stringified-exception for plaster's error list."""
+    if e.stderr:
+        return e.stderr.strip()
+    return str(e)
 
 @dataclass
 class PathChecksumPair:
@@ -408,8 +502,33 @@ class PlasterFile:
         contents = repository.chromium.read_file(info.source)
         errors = []
 
+        # Experimental structural-rewrite passes run before the regex
+        # path so they can "make the source pliable" first (e.g. drop
+        # `final`, virtualize a destructor) and the regex pass can then
+        # do textual finalisation on top. To disable either back-end
+        # without removing it, flip its module-level flag below; a
+        # disabled table that still appears in a plaster file is a hard
+        # error rather than a silent skip.
+        if AST_SUBSTITUTION_ENABLED:
+            contents = self._apply_ast_substitutions(contents, plaster_file,
+                                                     info.source, errors)
+        elif plaster_file.get('ast-substitution'):
+            errors.append(
+                f'[[ast-substitution]] is present in {self.path} but '
+                f'AST_SUBSTITUTION_ENABLED is False in plaster.py')
+
+        if COMBY_SUBSTITUTION_ENABLED:
+            contents = self._apply_comby_substitutions(contents, plaster_file,
+                                                       info.source, errors)
+        elif plaster_file.get('comby-substitution'):
+            errors.append(
+                f'[[comby-substitution]] is present in {self.path} but '
+                f'COMBY_SUBSTITUTION_ENABLED is False in plaster.py')
+
         try:
-            for substitution in plaster_file.get('substitution'):
+            # `or []` tolerates plaster files that use only ast / comby
+            # substitutions and have no `[[substitution]]` entries.
+            for substitution in plaster_file.get('substitution') or []:
                 description = substitution.get('description')
                 re_pattern = substitution.get('re_pattern')
                 pattern = substitution.get('pattern')
@@ -479,6 +598,198 @@ class PlasterFile:
                     f"Plaster file needs to be reapplied: {self.path}")
         else:
             info.save_patchinfo_if_changed()
+
+    def _apply_ast_substitutions(self, contents: str, plaster_data: dict,
+                                 source: Path, errors: list[str]) -> str:
+        """Apply every `[[ast-substitution]]` entry, returning the new content.
+
+        Each entry triggers two ast-grep invocations: one with
+        `--json=compact` to count matches (so the `count` assertion is
+        symmetric with the regex code path), one with `--rewrite` to
+        apply the substitution. Errors are appended to `errors`; an
+        error in one entry does not stop later entries from being
+        attempted.
+
+        No-op (returns `contents` unchanged) when the plaster file has
+        no `[[ast-substitution]]` entries.
+        """
+        entries = plaster_data.get('ast-substitution') or []
+        if not entries:
+            return contents
+        if not AST_GREP_BIN.is_file():
+            errors.append(
+                f'[[ast-substitution]] entries in {self.path} but ast-grep '
+                f'is not installed at {AST_GREP_BIN}. See '
+                f'brave/tools/cr/ast_grep/README.md for build instructions.')
+            return contents
+
+        language = _infer_ast_grep_language(source)
+        if language is None:
+            errors.append(
+                f'[[ast-substitution]] does not know how to handle the file '
+                f'extension {source.suffix} ({self.path})')
+            return contents
+
+        for entry in entries:
+            description = entry.get('description')
+            pattern = entry.get('pattern')
+            replace = entry.get('replace')
+            expected_count = entry.get('count', 1)
+
+            if description is None:
+                errors.append(
+                    f'[[ast-substitution]] missing description in {self.path}')
+                continue
+            if pattern is None or replace is None:
+                errors.append(
+                    f'[[ast-substitution]] "{description}" needs both '
+                    f'pattern and replace ({self.path})')
+                continue
+
+            # Count pass.
+            find_cmd = [
+                str(AST_GREP_BIN), 'run', '--pattern', pattern, '--lang',
+                language, '--json=compact', '--stdin'
+            ]
+            try:
+                find_out = terminal.run(find_cmd, stdin=contents).stdout
+            except subprocess.CalledProcessError as e:
+                # ast-grep exits 1 (with `[]` on stdout) when the
+                # pattern parses fine but matches nothing. Treat that
+                # as a legitimate "zero matches" answer so the count
+                # assertion below can report the mismatch.
+                stdout = e.stdout or ''
+                if e.returncode == 1 and stdout.strip() in ('[]', ''):
+                    find_out = stdout
+                else:
+                    errors.append(
+                        f'ast-grep find failed for "{description}" in '
+                        f'{self.path}: {_format_subprocess_error(e)}')
+                    continue
+            try:
+                matches = json.loads(find_out) if find_out.strip() else []
+            except json.JSONDecodeError:
+                matches = []
+            num_changes = len(matches) if isinstance(matches, list) else 0
+
+            # count == 0 means "any count is acceptable", matching the
+            # regex path's semantics.
+            if expected_count not in (0, num_changes):
+                errors.append(
+                    f'Unexpected number of ast-grep matches ({num_changes} '
+                    f'vs {expected_count}) for "{description}" in '
+                    f'{self.path}')
+                continue
+
+            # Rewrite pass. `--update-all` is required to make ast-grep
+            # emit the rewritten content on stdout; without it `--stdin`
+            # produces a colorised diff preview instead. The "Applied N
+            # changes" log line goes to stderr, so stdout stays clean.
+            rewrite_cmd = [
+                str(AST_GREP_BIN), 'run', '--pattern', pattern, '--rewrite',
+                replace, '--lang', language, '--stdin', '--update-all'
+            ]
+            try:
+                new_contents = terminal.run(rewrite_cmd, stdin=contents).stdout
+            except subprocess.CalledProcessError as e:
+                errors.append(
+                    f'ast-grep rewrite failed for "{description}" in '
+                    f'{self.path}: {_format_subprocess_error(e)}')
+                continue
+            # `--update-all --stdin` appends an extra trailing newline
+            # to the output. Re-anchor the trailing newline count to
+            # the input so the generated patch doesn't pick up the
+            # artefact.
+            trailing = '\n' * (len(contents) - len(contents.rstrip('\n')))
+            contents = new_contents.rstrip('\n') + trailing
+
+        return contents
+
+    def _apply_comby_substitutions(self, contents: str, plaster_data: dict,
+                                   source: Path, errors: list[str]) -> str:
+        """Apply every `[[comby-substitution]]` entry, returning the new
+        content.
+
+        Mirrors `_apply_ast_substitutions`: a `-match-only -json-lines`
+        pass counts matches (one JSON object per match), then a rewrite
+        pass actually substitutes. The matcher token is inferred from
+        the source file extension; an explicit `matcher` field on the
+        entry overrides that.
+
+        No-op when the plaster file has no `[[comby-substitution]]`
+        entries.
+        """
+        entries = plaster_data.get('comby-substitution') or []
+        if not entries:
+            return contents
+        if not COMBY_BIN.is_file():
+            errors.append(
+                f'[[comby-substitution]] entries in {self.path} but comby '
+                f'is not installed at {COMBY_BIN}. See '
+                f'brave/tools/cr/comby/README.md for build instructions.')
+            return contents
+
+        default_matcher = _infer_comby_matcher(source)
+
+        for entry in entries:
+            description = entry.get('description')
+            pattern = entry.get('pattern')
+            replace = entry.get('replace')
+            expected_count = entry.get('count', 1)
+            matcher = entry.get('matcher', default_matcher)
+
+            if description is None:
+                errors.append(f'[[comby-substitution]] missing description in '
+                              f'{self.path}')
+                continue
+            if pattern is None or replace is None:
+                errors.append(
+                    f'[[comby-substitution]] "{description}" needs both '
+                    f'pattern and replace ({self.path})')
+                continue
+
+            # Count pass: `-json-lines` emits one JSON object *per
+            # file* (not per match), with the matches collected in a
+            # `matches` array. For stdin input that's a single line, but
+            # we handle multi-line output anyway so the count remains
+            # correct if comby's output shape evolves.
+            find_cmd = [
+                str(COMBY_BIN), pattern, replace, matcher, '-stdin', '-stdout',
+                '-match-only', '-json-lines'
+            ]
+            try:
+                find_out = terminal.run(find_cmd, stdin=contents).stdout
+            except subprocess.CalledProcessError as e:
+                errors.append(f'comby find failed for "{description}" in '
+                              f'{self.path}: {_format_subprocess_error(e)}')
+                continue
+            num_changes = 0
+            for line in find_out.splitlines():
+                if not line.strip():
+                    continue
+                try:
+                    num_changes += len(json.loads(line).get('matches', []))
+                except json.JSONDecodeError:
+                    pass
+
+            if expected_count not in (0, num_changes):
+                errors.append(
+                    f'Unexpected number of comby matches ({num_changes} vs '
+                    f'{expected_count}) for "{description}" in {self.path}')
+                continue
+
+            # Rewrite pass.
+            rewrite_cmd = [
+                str(COMBY_BIN), pattern, replace, matcher, '-stdin', '-stdout'
+            ]
+            try:
+                contents = terminal.run(rewrite_cmd, stdin=contents).stdout
+            except subprocess.CalledProcessError as e:
+                errors.append(f'comby rewrite failed for "{description}" in '
+                              f'{self.path}: {_format_subprocess_error(e)}')
+                continue
+
+        return contents
 
 
 class PlasterError(Exception):
