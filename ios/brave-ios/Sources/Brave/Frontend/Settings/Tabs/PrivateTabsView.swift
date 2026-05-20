@@ -18,7 +18,6 @@ struct PrivateTabsView: View {
 
   @ObservedObject var privateBrowsingOnly = Preferences.Privacy.privateBrowsingOnly
   @ObservedObject var persistentPrivateBrowsing = Preferences.Privacy.persistentPrivateBrowsing
-  @ObservedObject var rememberBrowsingMode = Preferences.Privacy.rememberBrowsingMode
   @ObservedObject var privateBrowsingLock = Preferences.Privacy.privateBrowsingLock
 
   var tabManager: TabManager?
@@ -83,19 +82,6 @@ struct PrivateTabsView: View {
             } else {
               tabManager?.removeAllTabsForPrivateMode(isPrivate: true, isActiveTabIncluded: true)
             }
-          }
-
-          if persistentPrivateBrowsing.value {
-            Toggle(isOn: $rememberBrowsingMode.value) {
-              VStack(alignment: .leading, spacing: 4) {
-                Text(Strings.TabsSettings.rememberBrowsingModeTitle)
-                  .foregroundStyle(Color(braveSystemName: .textPrimary))
-                Text(Strings.TabsSettings.rememberBrowsingModeDescription)
-                  .foregroundStyle(Color(braveSystemName: .textSecondary))
-                  .font(.footnote)
-              }
-            }
-            .toggleStyle(SwitchToggleStyle(tint: .accentColor))
           }
         }
 
