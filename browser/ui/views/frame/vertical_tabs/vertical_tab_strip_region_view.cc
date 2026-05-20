@@ -23,7 +23,6 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/brave_tab_search_bubble_host.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
-#include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 #include "brave/browser/ui/views/frame/tab_strip_placement_coordinator.h"
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
 #include "brave/browser/ui/views/tabs/brave_tab_search_button.h"
@@ -288,15 +287,6 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
       browser_(browser_view->browser()),
       original_region_view_(region_view),
       tab_style_(TabStyle::Get()) {
-  if (base::FeatureList::IsEnabled(tabs::kBraveVerticalTabStripEmbedded)) {
-    // This can only work when the vertical tab strip is embedded under
-    // BrowserView's same widget.
-    browser()
-        ->browser_window_features()
-        ->brave_non_client_hit_test_helper()
-        ->RegisterCaptionArea(this);
-  }
-
   // As we follow user's choice for vertical tab alignment,
   // we don't need to mirror this view.
   SetMirrored(false);
