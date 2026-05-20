@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/accelerator_table.cc b/chrome/browser/ui/accelerator_table.cc
+index 51837acdf5a13e6ae75e163943d977c85c6c7fd1..234c5d6a24808f0734411e8398f179f1283060b2 100644
+--- a/chrome/browser/ui/accelerator_table.cc
++++ b/chrome/browser/ui/accelerator_table.cc
+@@ -305,7 +305,7 @@ std::vector<AcceleratorMapping>* GetAcceleratorsPointer() {
+ 
+ }  // namespace
+ 
+-std::vector<AcceleratorMapping> GetAcceleratorList() {
++std::vector<AcceleratorMapping> GetAcceleratorList_ChromiumImpl() {
+   std::vector<AcceleratorMapping>* accelerators = GetAcceleratorsPointer();
+ 
+   if (accelerators->empty()) {
