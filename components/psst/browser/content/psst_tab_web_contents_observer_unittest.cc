@@ -123,7 +123,7 @@ ACTION_P(InsertScriptInPageCallback, future, value) {
 
 ACTION_P(InsertPolicyScriptInPageCallback, future, value) {
   std::move(
-      const_cast<PsstTabWebContentsObserver::InsertScriptInPageCallback&>(arg2))
+      const_cast<PsstTabWebContentsObserver::InsertScriptInPageCallback&>(arg1))
       .Run(value.Clone());
   future->SetValue(value.Clone());
 }
@@ -204,9 +204,11 @@ class PsstTabWebContentsObserverUnitTestBase
 
     psst_web_contents_observer_ = base::WrapUnique<PsstTabWebContentsObserver>(
         new PsstTabWebContentsObserver(web_contents(), rule_registry_.get(),
-                                       &prefs_, std::move(ui_delegate),
-                                       inject_script_callback_.Get(),
-                                       inject_async_script_callback_.Get()));
+                                       &prefs_, std::move(ui_delegate)));
+    psst_web_contents_observer_->SetInjectScriptCallback(
+        inject_script_callback_.Get());
+    psst_web_contents_observer_->SetInjectAsyncScriptCallback(
+        inject_async_script_callback_.Get());
   }
 
   void TearDown() override {
@@ -668,7 +670,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
        ";\n", policy_script});
 
   // Policy script executed, parameters added
-  EXPECT_CALL(inject_async_script_callback(), Run(_, script_with_parameters, _))
+  EXPECT_CALL(inject_async_script_callback(), Run(script_with_parameters, _))
       .WillOnce(InsertPolicyScriptInPageCallback(&policy_script_insert_future,
                                                  policy_script_result.Clone()));
 
@@ -782,7 +784,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
                              expected_uids_to_perform));
 
   // Policy script executed, parameters not added
-  EXPECT_CALL(inject_async_script_callback(), Run(_, policy_script, _))
+  EXPECT_CALL(inject_async_script_callback(), Run(policy_script, _))
       .WillOnce(InsertPolicyScriptInPageCallback(&policy_script_insert_future,
                                                  policy_script_result.Clone()));
 
@@ -881,7 +883,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
        ";\n", policy_script});
   // Policy script executed, parameters added
   EXPECT_CALL(inject_async_script_callback(),
-              Run(_, policy_script_with_parameters, _))
+              Run(policy_script_with_parameters, _))
       .WillOnce(InsertPolicyScriptInPageCallback(&policy_script_insert_future,
                                                  policy_script_result.Clone()));
 
