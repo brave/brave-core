@@ -57,10 +57,7 @@ export const ListImageFrame = styled(ImageFrame)`
   padding-top: 0;
 `
 
-type ImageProps = {
-  isPromoted?: boolean
-}
-export const Image = styled('img')<ImageProps>`
+export const Image = styled('img')`
   box-sizing: border-box;
   display: block;
   position: absolute;
@@ -72,8 +69,8 @@ export const Image = styled('img')<ImageProps>`
   right: 0;
   width: 100%;
   height: 100%;
-  object-fit: ${p => p.isPromoted ? 'contain' : 'cover'};
-  object-position: ${p => p.isPromoted ? 'center center' : 'center top'};
+  object-fit: cover;
+  object-position: center top;
   background-color: rgba(188,188,188,0.2);
 `
 

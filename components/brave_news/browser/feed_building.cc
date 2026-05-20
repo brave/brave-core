@@ -46,14 +46,21 @@ using mojom::CardType;
 // added in the meantime to fix the build error. Remove this attribute and
 // provide a proper fix.
 [[clang::no_destroy]] std::vector<CardType> g_page_content_order = {
-    CardType::HEADLINE,        CardType::HEADLINE,
-    CardType::HEADLINE_PAIRED, CardType::PROMOTED_ARTICLE,
-    CardType::CATEGORY_GROUP,  CardType::HEADLINE,
-    CardType::HEADLINE,        CardType::HEADLINE_PAIRED,
-    CardType::HEADLINE_PAIRED, CardType::DISPLAY_AD,
-    CardType::HEADLINE,        CardType::HEADLINE,
-    CardType::PUBLISHER_GROUP, CardType::HEADLINE_PAIRED,
-    CardType::HEADLINE,        CardType::DEALS};
+    CardType::HEADLINE,
+    CardType::HEADLINE,
+    CardType::HEADLINE_PAIRED,
+    CardType::CATEGORY_GROUP,
+    CardType::HEADLINE,
+    CardType::HEADLINE,
+    CardType::HEADLINE_PAIRED,
+    CardType::HEADLINE_PAIRED,
+    CardType::DISPLAY_AD,
+    CardType::HEADLINE,
+    CardType::HEADLINE,
+    CardType::PUBLISHER_GROUP,
+    CardType::HEADLINE_PAIRED,
+    CardType::HEADLINE,
+    CardType::DEALS};
 
 // TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
 // `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
@@ -68,10 +75,6 @@ mojom::FeedItemPtr FromArticle(mojom::ArticlePtr article) {
 
 mojom::FeedItemPtr FromDeal(mojom::DealPtr deal) {
   return mojom::FeedItem::NewDeal(std::move(deal));
-}
-
-mojom::FeedItemPtr FromPromotedArticle(mojom::PromotedArticlePtr item) {
-  return mojom::FeedItem::NewPromotedArticle(std::move(item));
 }
 
 bool MatchesDealsCategory(const std::string& category_name, mojom::Deal* deal) {
@@ -142,7 +145,6 @@ void TakeRandom(
 // could be 2 cards (e.g. HEADLINE_PAIRED) or multiple
 // articles (e.g. CATEGORY_GROUP).
 void BuildFeedPageItem(std::list<mojom::ArticlePtr>* articles,
-                       std::list<mojom::PromotedArticlePtr>* promoted_articles,
                        std::list<mojom::DealPtr>* deals,
                        const std::string& deal_category_name,
                        const std::string& article_category_name,
@@ -235,8 +237,6 @@ void BuildFeedPageItem(std::list<mojom::ArticlePtr>* articles,
       // closer to this item being viewed.
       break;
     case CardType::PROMOTED_ARTICLE:
-      Take<mojom::PromotedArticle>(1u, promoted_articles, &page_item->items,
-                                   base::BindRepeating(&FromPromotedArticle));
       break;
   }
 }
@@ -323,7 +323,6 @@ bool BuildFeed(const std::vector<mojom::FeedItemPtr>& feed_items,
       ChannelsController::GetChannelsFromPublishers(*publishers, subscriptions);
 
   std::list<mojom::ArticlePtr> articles;
-  std::list<mojom::PromotedArticlePtr> promoted_articles;
   std::list<mojom::DealPtr> deals;
   std::hash<std::string> hasher;
   absl::flat_hash_set<std::string> seen_articles;
@@ -378,21 +377,15 @@ bool BuildFeed(const std::vector<mojom::FeedItemPtr>& feed_items,
         deals.push_back(std::move(item->get_deal()));
         break;
       case mojom::FeedItem::Tag::kPromotedArticle:
-        promoted_articles.push_back(std::move(item->get_promoted_article()));
         break;
     }
   }
   VLOG(1) << "Got articles # " << articles.size();
   VLOG(1) << "Got deals # " << deals.size();
-  VLOG(1) << "Got promoted articles # " << promoted_articles.size();
   // Sort by score, ascending
   articles.sort([](mojom::ArticlePtr& a, mojom::ArticlePtr& b) {
     return (a.get()->data->score < b.get()->data->score);
   });
-  promoted_articles.sort(
-      [](mojom::PromotedArticlePtr& a, mojom::PromotedArticlePtr& b) {
-        return (a.get()->data->score < b.get()->data->score);
-      });
   deals.sort([](mojom::DealPtr& a, mojom::DealPtr& b) {
     return (a.get()->data->score < b.get()->data->score);
   });
@@ -491,17 +484,15 @@ bool BuildFeed(const std::vector<mojom::FeedItemPtr>& feed_items,
     for (auto card_type : g_page_content_order) {
       auto feed_page_item = mojom::FeedPageItem::New();
       feed_page_item->card_type = card_type;
-      BuildFeedPageItem(&articles, &promoted_articles, &deals,
-                        deal_category_name, article_category_name, false,
-                        &feed_page_item);
+      BuildFeedPageItem(&articles, &deals, deal_category_name,
+                        article_category_name, false, &feed_page_item);
       feed_page->items.push_back(std::move(feed_page_item));
     }
     for (auto card_type : g_random_content_order) {
       auto feed_page_item = mojom::FeedPageItem::New();
       feed_page_item->card_type = card_type;
-      BuildFeedPageItem(&articles, &promoted_articles, &deals,
-                        deal_category_name, article_category_name, true,
-                        &feed_page_item);
+      BuildFeedPageItem(&articles, &deals, deal_category_name,
+                        article_category_name, true, &feed_page_item);
       feed_page->items.push_back(std::move(feed_page_item));
     }
     feed->pages.push_back(std::move(feed_page));

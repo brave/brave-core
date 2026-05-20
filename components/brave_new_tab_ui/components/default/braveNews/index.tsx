@@ -24,8 +24,6 @@ if (defaultState.featureFlagBraveNewsFeedV2Enabled) {
 
 export type OnReadFeedItem = (args: TodayActions.ReadFeedItemPayload) => any
 export type OnSetPublisherPref = (publisherId: string, enabled: boolean) => any
-export type OnPromotedItemViewed = (args: TodayActions.PromotedItemViewedPayload) => any
-
 export type Props = {
   isFetching: boolean
   hasInteracted: boolean
@@ -36,7 +34,6 @@ export type Props = {
   articleToScrollTo?: BraveNews.FeedItemMetadata
   displayedPageCount: number
   onReadFeedItem: OnReadFeedItem
-  onPromotedItemViewed: OnPromotedItemViewed
   onFeedItemViewedCountChanged: (feedItemsViewed: number) => any
   onSetPublisherPref: OnSetPublisherPref
   onAnotherPageNeeded: () => any

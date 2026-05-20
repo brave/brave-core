@@ -10,7 +10,7 @@ import CardSmall from './cards/_articles/cardArticleMedium'
 import CategoryGroup from './cards/categoryGroup'
 import PublisherGroup from './cards/publisherGroup'
 import CardDeals from './cards/cardDeals'
-import { attributeNameCardCount, OnPromotedItemViewed, OnReadFeedItem, OnSetPublisherPref } from './'
+import { attributeNameCardCount, OnReadFeedItem, OnSetPublisherPref } from './'
 
 import CardType = BraveNews.CardType
 
@@ -25,7 +25,6 @@ type Props = {
   onReadFeedItem: OnReadFeedItem
   onSetPublisherPref: OnSetPublisherPref
   onPeriodicCardViews: (element: HTMLElement | null) => void
-  onPromotedItemViewed: OnPromotedItemViewed
 }
 
 function getCard (props: Props, content: BraveNews.FeedPageItem) {
@@ -47,15 +46,7 @@ function getCard (props: Props, content: BraveNews.FeedPageItem) {
               onSetPublisherPref={props.onSetPublisherPref}
       />
     case CardType.PROMOTED_ARTICLE:
-      return <CardLarge
-                isPromoted={true}
-                content={content.items}
-                publishers={props.publishers}
-                articleToScrollTo={props.articleToScrollTo}
-                onReadFeedItem={props.onReadFeedItem}
-                onSetPublisherPref={props.onSetPublisherPref}
-                onItemViewed={props.onPromotedItemViewed}
-      />
+      return null
     case CardType.CATEGORY_GROUP:
       const categoryName = content.items[0]?.article?.data.categoryName
       if (!categoryName) {

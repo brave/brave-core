@@ -88,8 +88,6 @@ std::tuple<FeedItems, ETags> FeedFetcher::CombineFeedSourceResults(
       GURL url;
       if (item->is_article()) {
         url = item->get_article()->data->url;
-      } else if (item->is_promoted_article()) {
-        url = item->get_promoted_article()->data->url;
       }
 
       // Skip this, we've already seen it.

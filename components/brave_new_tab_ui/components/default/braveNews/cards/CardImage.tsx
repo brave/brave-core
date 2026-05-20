@@ -10,7 +10,6 @@ import * as BraveNews from '../../../../../brave_news/browser/resources/shared/a
 type Props = {
   imageUrl?: string
   list?: boolean
-  isPromoted?: boolean
   onLoaded?: () => any
 }
 
@@ -36,7 +35,7 @@ export default function CardImage(props: Props) {
   const Frame = props.list ? Card.ListImageFrame : Card.ImageFrame
   return (
     <Frame data-source={props.imageUrl} isImageLoaded={isImageLoaded}>
-      <Card.Image isPromoted={props.isPromoted} src={imageUrl} />
+      <Card.Image src={imageUrl} />
     </Frame>
   )
 }
@@ -67,7 +66,6 @@ export function CardImageFromFeedItem(props: FromFeedItemProps) {
       <CardImage
         {...baseProps}
         imageUrl={imageUrl}
-        isPromoted={props.isPromoted}
       />
     )
   }

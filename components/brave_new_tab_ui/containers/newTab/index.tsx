@@ -849,7 +849,6 @@ class NewTabPage extends React.Component<Props, State> {
           }
           onCustomizeBraveNews={() => { this.openSettings(SettingsTabType.BraveNews) }}
           onReadFeedItem={this.props.actions.today.readFeedItem}
-          onPromotedItemViewed={this.props.actions.today.promotedItemViewed}
           onSetPublisherPref={this.props.actions.today.setPublisherPref}
           onCheckForUpdate={this.props.actions.today.checkForUpdate}
         />
