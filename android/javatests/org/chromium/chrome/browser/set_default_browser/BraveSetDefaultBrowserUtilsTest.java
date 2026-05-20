@@ -22,7 +22,7 @@ import org.junit.runner.RunWith;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.test.util.Batch;
-import org.chromium.chrome.browser.util.BraveConstants;
+import org.chromium.chrome.browser.BraveConstants;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 import org.chromium.components.embedder_support.util.UrlConstants;
 
