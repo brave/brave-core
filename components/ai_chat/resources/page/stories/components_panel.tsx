@@ -314,6 +314,7 @@ type CustomArgs = {
   trimmedTokens: number
   isGenerating: boolean
   isToolExecuting: boolean
+  isUploadingFiles: boolean
   attachmentsDialog: 'tabs' | 'bookmarks' | 'history' | null
   isNewConversation: boolean
   generatedUrlToBeOpened: Url | undefined
@@ -364,6 +365,7 @@ const args: CustomArgs = {
   trimmedTokens: 0,
   isGenerating: false,
   isToolExecuting: false,
+  isUploadingFiles: false,
   attachmentsDialog: null,
   isNewConversation: false,
   generatedUrlToBeOpened: undefined,
@@ -614,6 +616,7 @@ function StoryContext(
         isDragActive: args.isDragActive,
         isDragOver: args.isDragOver,
         generatedUrlToBeOpened: args.generatedUrlToBeOpened,
+        isUploadingFiles: args.isUploadingFiles,
       }}
       deps={[...Object.values(args)]}
     >

@@ -321,6 +321,47 @@ describe('input box', () => {
     expect(attachmentWrapper).toBeInTheDocument()
   })
 
+  it('shows the upload spinner when isUploadingFiles is true and there are no pending files', async () => {
+    const { container } = await renderInputBox(
+      <MockContext>
+        <InputBox
+          context={{
+            ...testContext,
+            pendingMessageFiles: [],
+            isUploadingFiles: true,
+          }}
+          conversationStarted={false}
+        />
+      </MockContext>,
+    )
+
+    const attachmentWrapper = container.querySelector('.attachmentWrapper')
+    expect(attachmentWrapper).toBeInTheDocument()
+    expect(
+      attachmentWrapper!.querySelector('leo-progressring'),
+    ).toBeInTheDocument()
+  })
+
+  it('does not show the upload spinner when isUploadingFiles is false and there are no pending files', async () => {
+    const { container } = await renderInputBox(
+      <MockContext>
+        <InputBox
+          context={{
+            ...testContext,
+            pendingMessageFiles: [],
+            isUploadingFiles: false,
+          }}
+          conversationStarted={false}
+        />
+      </MockContext>,
+    )
+
+    expect(
+      container.querySelector('.attachmentWrapper'),
+    ).not.toBeInTheDocument()
+    expect(container.querySelector('leo-progressring')).not.toBeInTheDocument()
+  })
+
   it('attachments are shown if only documents are available', async () => {
     const { container } = await renderInputBox(
       <MockContext>

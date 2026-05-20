@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { expect, jest, describe, it, beforeEach } from '@jest/globals'
-import { act, renderHook, RenderHookResult } from '@testing-library/react'
+import { act, renderHook, RenderHookResult, waitFor } from '@testing-library/react'
 import {
   createInterfaceApi,
   state,
@@ -474,6 +474,66 @@ describe('createInterfaceApi', () => {
     const result = await api.doSomething()
     expect(result).toBeUndefined()
     expect(mutationFn).toHaveBeenCalledTimes(1)
+  })
+
+   it('isPending stays true while any concurrent mutateAsync is in flight', async () => {
+    // Allow the test to control when each mutation resolves.
+    const resolvers = new Map<number, (value: number) => void>()
+    const mutationFn = jest.fn((id: number) => {
+      return new Promise<number>((resolve) => {
+        resolvers.set(id, resolve)
+      })
+    })
+
+    const api = createInterfaceApi({
+      actions: {},
+      endpoints: {
+        doSomething: {
+          mutation: mutationFn,
+        },
+      },
+    })
+
+    const hookResult = await act(async () =>
+      renderHook(() => api.useDoSomething()),
+    )
+
+    expect(hookResult.result.current.isPending).toBe(false)
+
+    // Fire two mutations without awaiting their completion.
+    let p1: Promise<number> = Promise.resolve(0)
+    act(() => {
+      p1 = hookResult.result.current.mutateAsync([1])
+    })
+    await waitFor(() =>
+      expect(hookResult.result.current.isPending).toBe(true),
+    )
+
+    let p2: Promise<number> = Promise.resolve(0)
+    act(() => {
+      p2 = hookResult.result.current.mutateAsync([2])
+    })
+    await waitFor(() =>
+      expect(hookResult.result.current.isPending).toBe(true),
+    )
+
+    // Resolve the SECOND (later) mutation first.
+    await act(async () => {
+      resolvers.get(2)!(2)
+      await p2
+    })
+
+    // The first mutation is still in flight, so isPending should remain true.
+    expect(hookResult.result.current.isPending).toBe(true)
+
+    // Resolve the first mutation; now nothing is in flight.
+    await act(async () => {
+      resolvers.get(1)!(1)
+      await p1
+    })
+    await waitFor(() =>
+      expect(hookResult.result.current.isPending).toBe(false),
+    )
   })
 
   it('accepts mutations defined via endpointsFor under strict function types', async () => {

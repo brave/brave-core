@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { renderHook, act } from '@testing-library/react'
+import { renderHook, act, waitFor } from '@testing-library/react'
 import { clearAllDataForTesting } from '$web-common/api'
 import * as Mojom from '../../common/mojom'
 import { defaultConversationState } from '../api/mock_interfaces'
@@ -232,6 +232,104 @@ describe('useProvideConversationContext default tab attachment', () => {
       CONVERSATION_UUID,
     )
   })
+
+  it('attachFiles flips isUploadingFiles to true while running, and back to false when done', async () => {
+    // Hold the processXFile call open via a controllable resolver so we can
+    // observe both the rising and falling edge of isUploadingFiles.
+    let resolveProcess:
+      | ((value: { processedFile: Mojom.UploadedFile | null }) => void)
+      | undefined
+    const rendered = renderHook(() => useConversation(), {
+      wrapper: ({ children }: { children: React.ReactNode }) => (
+        <MockContext
+          uiHandler={{
+            processTextFile: () =>
+              new Promise((r) => {
+                resolveProcess = r
+              }),
+          }}
+        >
+          {children}
+        </MockContext>
+      ),
+    })
+
+    expect(rendered.result.current.isUploadingFiles).toBe(false)
+
+    // Fire-and-forget so the mutation stays pending while we assert.
+    let attachPromise: Promise<unknown> = Promise.resolve()
+    act(() => {
+      attachPromise = rendered.result.current.attachFiles([
+        new File(['hi'], 'foo.txt', { type: 'text/plain' }),
+      ])
+    })
+
+    // attachFiles awaits file.arrayBuffer() before calling mutateAsync, so
+    // the rising edge is a couple of microtasks away — wait for it.
+    await waitFor(() =>
+      expect(rendered.result.current.isUploadingFiles).toBe(true),
+    )
+
+    // Resolve the pending mutation; isUploadingFiles must flip back.
+    await act(async () => {
+      resolveProcess!({ processedFile: null })
+      await attachPromise
+    })
+    await waitFor(() =>
+      expect(rendered.result.current.isUploadingFiles).toBe(false),
+    )
+  })
+
+  it.each([
+    ['text', 'processTextFile' as const, 'text/plain', 'foo.txt'],
+    ['image', 'processImageFile' as const, 'image/png', 'foo.png'],
+    ['pdf', 'processPdfFile' as const, 'application/pdf', 'foo.pdf'],
+  ])(
+    'isUploadingFiles stays true while a %s file mutation is pending',
+    async (_label, methodName, mime, filename) => {
+      let resolveProcess:
+        | ((value: { processedFile: Mojom.UploadedFile | null }) => void)
+        | undefined
+      const rendered = renderHook(() => useConversation(), {
+        wrapper: ({ children }: { children: React.ReactNode }) => (
+          <MockContext
+            uiHandler={{
+              [methodName]: () =>
+                new Promise((r) => {
+                  resolveProcess = r
+                }),
+            }}
+          >
+            {children}
+          </MockContext>
+        ),
+      })
+
+      let attachPromise: Promise<unknown> = Promise.resolve()
+      act(() => {
+        attachPromise = rendered.result.current.attachFiles([
+          new File(['hi'], filename, { type: mime }),
+        ])
+      })
+
+      // While the specific processXFile mutation is pending, isUploadingFiles
+      // should be true.
+      await waitFor(() =>
+        expect(rendered.result.current.isUploadingFiles).toBe(true),
+      )
+      // And it stays true as long as we don't resolve.
+      expect(rendered.result.current.isUploadingFiles).toBe(true)
+
+      // Resolve the mutation; isUploadingFiles flips back to false.
+      await act(async () => {
+        resolveProcess!({ processedFile: null })
+        await attachPromise
+      })
+      await waitFor(() =>
+        expect(rendered.result.current.isUploadingFiles).toBe(false),
+      )
+    },
+  )
 
   it('clears staged content and attaches the new tab when the default changes', async () => {
     const associateTab = jest.fn()
