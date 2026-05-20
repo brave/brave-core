@@ -1,16 +1,16 @@
 diff --git a/components/permissions/permission_util.cc b/components/permissions/permission_util.cc
-index 7ed353d3dfe079f90c0c36e5d37219b24a0239e2..233475e71cfef9ff0236ca74b0a731e8f1bbac33 100644
+index 1c31e16a4db45f2d36d91abdbd3056959633c1da..f473289ba1fcd3928a2b8f2a46c6aa946dba958b 100644
 --- a/components/permissions/permission_util.cc
 +++ b/components/permissions/permission_util.cc
-@@ -116,6 +116,7 @@ RequestTypeForUma PermissionUtil::GetUmaValueForRequests(
-   if (requests.size() == 1) {
-     return GetUmaValueForRequestType(request_type);
-   }
-+  BRAVE_GET_UMA_VALUE_FOR_REQUESTS
-   return permissions::GetUmaValueForRequests(request_type);
- }
+@@ -84,6 +84,7 @@ constexpr const char* kIsFileURLHistogram =
  
-@@ -217,6 +218,7 @@ RequestTypeForUma PermissionUtil::GetUmaValueForRequestType(
+ RequestTypeForUma PermissionUtil::GetUmaValueForMultipleRequests(
+     const RequestType first_request) {
++  BRAVE_GET_UMA_VALUE_FOR_REQUESTS
+   if (
+ #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+       first_request == RequestType::kCameraPanTiltZoom ||
+@@ -216,6 +217,7 @@ RequestTypeForUma PermissionUtil::GetUmaValueForRequestType(
  #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
      case RequestType::kIdentityProvider:
        return RequestTypeForUma::PERMISSION_IDENTITY_PROVIDER;
@@ -18,7 +18,7 @@ index 7ed353d3dfe079f90c0c36e5d37219b24a0239e2..233475e71cfef9ff0236ca74b0a731e8
    }
  }
  
-@@ -569,6 +571,7 @@ ContentSettingsType PermissionUtil::PermissionTypeToContentSettingsTypeSafe(
+@@ -568,6 +570,7 @@ ContentSettingsType PermissionUtil::PermissionTypeToContentSettingsTypeSafe(
        return ContentSettingsType::LOOPBACK_NETWORK;
      case PermissionType::NUM:
        break;
