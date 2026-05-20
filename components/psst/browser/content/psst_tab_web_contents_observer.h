@@ -36,7 +36,6 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
       const std::string&,
       PsstTabWebContentsObserver::InsertScriptInPageCallback)>;
   using InjectScriptAsyncCallback = base::RepeatingCallback<void(
-      mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>&,
       const std::string&,
       PsstTabWebContentsObserver::InsertScriptInPageCallback)>;
   using ConsentCallback =
@@ -81,13 +80,10 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
  private:
   friend class PsstTabWebContentsObserverUnitTestBase;
 
-  PsstTabWebContentsObserver(
-      content::WebContents* web_contents,
-      PsstRuleRegistry* registry,
-      PrefService* prefs,
-      std::unique_ptr<PsstUiDelegate> ui_delegate,
-      InjectScriptCallback inject_script_callback,
-      InjectScriptAsyncCallback inject_async_script_callback);
+  PsstTabWebContentsObserver(content::WebContents* web_contents,
+                             PsstRuleRegistry* registry,
+                             PrefService* prefs,
+                             std::unique_ptr<PsstUiDelegate> ui_delegate);
 
   bool ShouldInsertScriptForPage(int id);
   void InsertUserScript(int id, std::unique_ptr<MatchedRule> rule);
@@ -110,7 +106,12 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
 
   // content::WebContentsObserver overrides
   void DocumentOnLoadCompletedInPrimaryMainFrame() override;
+  void PrimaryPageChanged(content::Page& page) override;
   void DidFinishNavigation(content::NavigationHandle* handle) override;
+
+  void SetInjectScriptCallback(InjectScriptCallback inject_script_callback);
+  void SetInjectAsyncScriptCallback(
+      InjectScriptAsyncCallback inject_async_script_callback);
 
   const raw_ptr<PsstRuleRegistry> registry_;
   const raw_ptr<PrefService> prefs_;
