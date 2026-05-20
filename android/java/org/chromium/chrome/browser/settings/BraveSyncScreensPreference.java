@@ -1309,6 +1309,8 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     private void setAddMobileDeviceLayout() {
         getActivity().setTitle(R.string.brave_sync_btn_mobile);
 
+        getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+
         if (null != mScrollViewSyncInitial) {
             mScrollViewSyncInitial.setVisibility(View.GONE);
         }
@@ -1352,6 +1354,8 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     private void setAddLaptopLayout() {
         getActivity().setTitle(R.string.brave_sync_btn_laptop);
 
+        getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+
         if (null != mScrollViewSyncInitial) {
             mScrollViewSyncInitial.setVisibility(View.GONE);
         }
@@ -1389,6 +1393,8 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     }
 
     private void setSyncDoneLayout() {
+        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
+
         if (!mDeviceInfoObserverSet) {
             BraveSyncDevices.get().addDeviceInfoChangedListener(this);
             mDeviceInfoObserverSet = true;
