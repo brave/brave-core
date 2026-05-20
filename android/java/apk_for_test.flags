@@ -490,16 +490,6 @@
     public <init>(...);
 }
 
--keep class org.chromium.chrome.browser.tasks.tab_management.TabUiThemeProvider {
-    *** getActionButtonTintList(...);
-}
-
--keep class org.chromium.chrome.browser.tab_ui.TabCardThemeUtil {
-    *** getTitleTextColor(...);
-    *** getCardViewBackgroundColor(...);
-    *** getActionButtonTintList(...);
-}
-
 -keep class org.chromium.chrome.browser.download.dialogs.DownloadLocationDialogCoordinator {
     public <init>(...);
     *** mController;
