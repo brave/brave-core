@@ -16,11 +16,17 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Thêm Dấu trang";
 
+/* Add a new item to the current list */
+"addButtonTitle" = "Thêm";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "Thêm vào Yêu thích";
 
 /* Cell title for add folder action */
 "AddFolderActionCellTitle" = "Thư mục mới";
+
+/* Settings item that opens instructions for adding Brave to the iOS dock. */
+"addToDockSettingsCell" = "Thêm vào Dock";
 
 /* Add to favorites share action. */
 "AddToFavorites" = "Thêm vào Yêu thích";
@@ -69,6 +75,42 @@
 
 /* Settings autofill section title */
 "Autofill" = "Tự động điền";
+
+/* Label for account when indicating that a domain has multiple accounts */
+"autofill.managePassword.multipleAccounts" = "Tài khoản";
+
+/* Alert message warning the user that deleting non-synced passwords will permanently remove them */
+"autofill.managePasswords.deleteCredentialConfirmMessage" = "Thao tác này sẽ xóa (các) mật khẩu đã lưu cho %@ khỏi chuỗi đồng bộ và thiết bị của bạn.";
+
+/* Prompt title when deleting passwords */
+"autofill.managePasswords.deleteCredentialsAlertTitle" = "Bạn có chắc không?";
+
+/* Label for the button used to delete the current login. */
+"autofill.managePasswords.deleteManagePasswordButtonTitle" = "Xóa";
+
+/* Title for the section header in the Manage Passwords list screen, that lists the saved sites */
+"autofill.managePasswords.headerTitle" = "Đã lưu";
+
+/* The message displayed on the manage passwords list screen, when there's at least one password, explain the feature */
+"autofill.managePasswords.instructions" = "Tạo, lưu và quản lý mật khẩu của bạn để dễ dàng đăng nhập vào các trang web và ứng dụng.";
+
+/* The header title displayed over the never saved passwords list */
+"autofill.managePasswords.neverSavedListHeaderTitle" = "Không bao giờ lưu";
+
+/* Display text for the option to offer to save passwords */
+"autofill.managePasswords.offerToSavePasswords" = "Đề nghị lưu mật khẩu";
+
+/* Prompt that is diplayed in the search bar of the Manage Passwords list screen */
+"autofill.managePasswords.searchWebsitesPrompt" = "Tìm kiếm trang web";
+
+/* Title for navigation bar of the Manage Passwords screen */
+"autofill.managePasswords.title" = "Quản lý mật khẩu";
+
+/* Text to show when the origin of a managed password is not available */
+"autofill.managePasswords.UnknownDomainText" = "Không xác định";
+
+/* Settings autofill section title */
+"autofill.settings.title" = "Tự động điền";
 
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "Tự động chuyển hướng trang AMP";
@@ -3141,6 +3183,12 @@
 
 /* No comment provided by engineer. */
 "tabs.settings.privateTabsSettingsTitle" = "Thẻ riêng tư";
+
+/* The description of the toggle for users to allow the browser to remember its last browsing mode so it can re-launch in that mode when Keep Private Tabs is enabled. */
+"tabs.settings.rememberBrowsingModeDescription" = "Nếu trình duyệt ở chế độ riêng tư khi đóng lần cuối, nó sẽ mở ở chế độ riêng tư khi khởi chạy lại.";
+
+/* Toggle to launch the browser in private mode when Keep Private Tabs is enabled */
+"tabs.settings.rememberBrowsingModeTitle" = "Ghi nhớ chế độ duyệt web";
 
 /* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
 "TabToolbarAccessibilityLabel" = "Thanh công cụ điều hướng";

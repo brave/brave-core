@@ -65,7 +65,7 @@
 "importTutorialDetailedProcessTitle" = "ต้องการขั้นตอนการส่งออกแบบละเอียดไหม";
 
 /* The title of the tutorial page that shows in the Navigation Bar. */
-"importTutorialScreenTitle" = "วิธีการส่งออก Safari";
+"importTutorialScreenTitle" = "วิธีส่งออกจาก Safari";
 
 /* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
 "importTutorialStepFiveTitle" = "บันทึกไฟล์ไว้ใน **Files** โดยเลือกตำแหน่งที่คุณสามารถหาเจอได้ง่ายในภายหลัง";

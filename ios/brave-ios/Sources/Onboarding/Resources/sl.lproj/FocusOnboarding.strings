@@ -1,0 +1,42 @@
+/* The subtitle of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenDescription" = "Pritisnite in pridržite ikono Brave, nato jo povlecite v svojo dock vrstico za hiter dostop.";
+
+/* The title of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenTitle" = "Dodajte Brave v svojo Dock vrstico";
+
+/* The title of the button that changes the screen to next */
+"focusOnboarding.continueButtonTitle" = "Naprej";
+
+/* The subtitle of the screen that requests user to set Brave as default */
+"focusOnboarding.defaultBrowserScreenDescription" = "Danes nastavite Brave kot privzeti brskalnik.";
+
+/* The title of the screen that requests user to set Brave as default */
+"focusOnboarding.defaultBrowserScreenTitle" = "Blokirajte oglase na vsakem spletnem mestu, ki ga obiščete";
+
+/* The title of the button that closes the default browser full screen callout */
+"focusOnboarding.notNowActionButtonTitle" = "Ne zdaj";
+
+/* The subtitle of the screen that shows ads embeded in video are blocked */
+"focusOnboarding.noVideoAdsScreenDescription" = "Blokirajte nadležne motnje na svojih priljubljenih spletnih mestih za pretakanje.";
+
+/* The title of the screen that shows ads embeded in video are blocked */
+"focusOnboarding.noVideoAdsScreenTitle" = "Blokirajte motnje med pretakanjem";
+
+/* The subtitle of the screen that asks user to enable privacy preserving analytics. */
+"focusOnboarding.p3aScreenDescription" = "Povejte nam, katere funkcije vam najbolj všečkajo.";
+
+/* The title of the screen which asks user to enable privacy preserving analytics. */
+"focusOnboarding.p3aScreenTitle" = "Naredite Brave boljši";
+
+/* The description shown below the toggle for enabling privacy preserving analytics. This uses standard markdown syntax. The Learn More is a link and #p3a-learn-more is a URL fragment */
+"focusOnboarding.p3aToggleDescription" = "Lahko se odjavite kadarkoli v Nastavitvah pod **Ščiti in zasebnost**. [Več informacij](#p3a-learn-more) o naših analitiki izdelkov za ohranjanje zasebnosti.";
+
+/* The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The "private & anonymous" snippet should be bold in all languages */
+"focusOnboarding.p3aToggleTitle" = "Delite **zasebne in anonimne** vpoglede v izdelke.";
+
+/* The title of the button that finishes the onboarding without setting default */
+"focusOnboarding.startBrowseActionButtonTitle" = "Začnite z brskanjem";
+
+/* The title of the button that triggers navigation link to settings */
+"focusOnboarding.systemSettingsButtonTitle" = "Nastavi kot privzeti";
+

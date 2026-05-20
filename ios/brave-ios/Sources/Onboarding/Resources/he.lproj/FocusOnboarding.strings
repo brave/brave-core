@@ -1,3 +1,9 @@
+/* The subtitle of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenDescription" = "יש לגעת ולהחזיק את הסמל של Brave, ולאחר מכן לגרור אותו אל ה-Dock לגישה מהירה.";
+
+/* The title of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenTitle" = "הוספת Brave ל-Dock שלך";
+
 /* The title of the button that changes the screen to next */
 "focusOnboarding.continueButtonTitle" = "המשך";
 
@@ -25,18 +31,12 @@
 /* The description shown below the toggle for enabling privacy preserving analytics. This uses standard markdown syntax. The Learn More is a link and #p3a-learn-more is a URL fragment */
 "focusOnboarding.p3aToggleDescription" = "אפשר לבטל את ההסכמה בכל עת בהגדרות תחת **מגנים ופרטיות**. [למידע נוסף](#p3a-learn-more) על ניתוח נתוני המוצר משמר הפרטיות שלנו.";
 
-/* The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The "completely private & anonymous" snippet should be bold in all languages */
-"focusOnboarding.p3aToggleTitle" = "שיתוף תובנות מוצר **פרטיות ואנונימיות לחלוטין**.";
+/* The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The "private & anonymous" snippet should be bold in all languages */
+"focusOnboarding.p3aToggleTitle" = "שיתוף תובנות מוצר **פרטיות ואנונימיות**.";
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "להתחיל לגלוש";
 
 /* The title of the button that triggers navigation link to settings */
 "focusOnboarding.systemSettingsButtonTitle" = "הגדרה כברירת מחדל";
-
-/* The description of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorDescription" = "להתחיל בסטרימינג וליהנות מפחות מודעות וכלי מעקב.";
-
-/* The title of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorTitle" = "לראות את ההבדל עם Brave";
 

@@ -1,3 +1,9 @@
+/* The subtitle of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenDescription" = "Brave 아이콘을 길게 누른 후 Dock으로 끌어다 놓으면 빠르게 액세스할 수 있습니다.";
+
+/* The title of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenTitle" = "Dock에 Brave 추가하기";
+
 /* The title of the button that changes the screen to next */
 "focusOnboarding.continueButtonTitle" = "계속";
 
@@ -5,7 +11,7 @@
 "focusOnboarding.defaultBrowserScreenDescription" = "지금 Brave를 기본 브라우저로 설정하세요.";
 
 /* The title of the screen that requests user to set Brave as default */
-"focusOnboarding.defaultBrowserScreenTitle" = "방문하는 모든 사이트에서 광고 차단";
+"focusOnboarding.defaultBrowserScreenTitle" = "방문하는 모든 사이트에서 광고 차단 이용";
 
 /* The title of the button that closes the default browser full screen callout */
 "focusOnboarding.notNowActionButtonTitle" = "나중에";
@@ -25,18 +31,12 @@
 /* The description shown below the toggle for enabling privacy preserving analytics. This uses standard markdown syntax. The Learn More is a link and #p3a-learn-more is a URL fragment */
 "focusOnboarding.p3aToggleDescription" = "설정의 **쉴드 및 개인 정보 보호**에서 언제든지 사용하지 않도록 선택할 수 있습니다. Brave의 개인 정보 보호 제품 분석에 관해 [자세히 알아보세요](#p3a-learn-more).";
 
-/* The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The "completely private & anonymous" snippet should be bold in all languages */
-"focusOnboarding.p3aToggleTitle" = "**완전한 프라이버시가 보장되는 익명** 제품 인사이트를 공유합니다.";
+/* The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The "private & anonymous" snippet should be bold in all languages */
+"focusOnboarding.p3aToggleTitle" = "**프라이버시가 보장되는 익명** 제품 인사이트를 공유합니다.";
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "브라우징 시작";
 
 /* The title of the button that triggers navigation link to settings */
 "focusOnboarding.systemSettingsButtonTitle" = "기본값으로 설정";
-
-/* The description of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorDescription" = "광고와 트래커가 한결 적어진 스트리밍을 시작하세요.";
-
-/* The title of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorTitle" = "Brave의 차별점 보기";
 

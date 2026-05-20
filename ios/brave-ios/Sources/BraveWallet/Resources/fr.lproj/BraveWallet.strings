@@ -811,6 +811,9 @@
 /* A title of a button which will a new view to display the error. */
 "wallet.failedTransactionViewErrorButtonTitle" = "Afficher l’erreur";
 
+/* The title above the featured networks in onboarding network selection screen. */
+"wallet.featured" = "En vedette";
+
 /* A description of an Filecoin account, displayed in Accounts tab. */
 "wallet.filAccountDescription" = "Filecoin";
 
@@ -899,7 +902,7 @@
 "wallet.highToLowSortOption" = "Du plus élevé au plus faible";
 
 /* A title above a text field that is used to enter a password */
-"wallet.importAccountOriginPasswordTitle" = "Mot de passe d’origine";
+"wallet.importAccountOriginPasswordTitle" = "Mot de passe Origin";
 
 /* A placeholder on a text box for entering the users private key/json data to import accounts */
 "wallet.importAccountPlaceholder" = "Saisissez, collez ou importez le fichier ou JSON contenant votre clé privée.";
@@ -1204,6 +1207,15 @@
 /* The title of the button in the last step for user to create a new wallet. This will direct users to the wallet portfolio screen. */
 "wallet.onboardingCompletedButtonTitle" = "Accéder à mon portefeuille";
 
+/* The title of the continue button in onboarding network selection screen. '%lld' refers to a number (for example "Continue with 8 Networks") */
+"wallet.onboardingNetworkSelectionContinue" = "Poursuivre avec %lld réseaux";
+
+/* The description of the view during wallet onboarding that allows user to select which networks they want to see. */
+"wallet.onboardingNetworkSelectionDescription" = "Choisissez quelles chaînes de blocs utiliser dans votre portefeuille.";
+
+/* The title of the view during wallet onboarding that allows user to select which networks they want to see. */
+"wallet.onboardingNetworkSelectionTitle" = "Réseaux pris en charge";
+
 /* The subtitle of the last step of creating a new wallet. */
 "wallet.onbordingCompletedSubTitle" = "Votre portefeuille Brave est prêt à être utilisé.";
 
@@ -1248,6 +1260,9 @@
 
 /* A title above a text field for inputting the per-gas tip limit in Gwei */
 "wallet.perGasTipLimit" = "Limite de Gas par contribution (Gwei)";
+
+/* The title above the popular networks in onboarding network selection screen. */
+"wallet.popular" = "Populaires";
 
 /* The title of the empty state in Portfolio when no assets are shown. */
 "wallet.portfolioEmptyStateDescription" = "Déposez ou achetez des jetons pour commencer. Si vous ne voyez pas les jetons d’un compte importé, vérifiez les filtres et les paramètres d’affichage. Il se peut que des jetons inconnus doivent être ajoutés en tant qu’actifs personnalisés.";
@@ -1298,7 +1313,7 @@
 "wallet.providerSelectionSectionHeader" = "Sélectionnez l’une des options suivantes";
 
 /* The title of the button for users to click to select a purchase method. */
-"wallet.purchaseMethodButtonTitle" = "Sélectionner une méthode d’achat";
+"wallet.purchaseMethodButtonTitle" = "Sélectionner une méthode d'achat";
 
 /* The message displayed when the user takes a screenshot of their recovery phrase */
 "wallet.recoveryPhraseScreenshotDetectedMessage" = "Avertissement : Une capture d’écran de votre phrase de récupération peut être sauvegardée sur un service de fichiers sur le cloud. Elle pourra être lue par n’importe quelle application disposant d’un accès aux photos. Brave vous recommande de ne pas enregistrer cette capture d’écran et de la supprimer dès que possible.";
@@ -1421,7 +1436,7 @@
 "wallet.selectNetworksDescription" = "Sélectionner les réseaux à filtrer par";
 
 /* The label of the filter option that allows users to select which networks to filter assets by. Used in Portfolio/NFT filters and display settings. */
-"wallet.selectNetworksTitle" = "Sélectionnez les réseaux";
+"wallet.selectNetworksTitle" = "Sélectionner les réseaux";
 
 /* The description of the view that lets the user select a token & account at the same time in the Send crypto view when there are no available tokens. */
 "wallet.selectTokenToSendNoTokens" = "Aucun jeton disponible";
@@ -1585,6 +1600,9 @@
 /* A button title that will make a private key visible on the screen */
 "wallet.showPrivateKeyButtonTitle" = "Afficher la clé privée";
 
+/* The title beside the toggle in onboarding network selection screen that shows test networks. */
+"wallet.showTestnets" = "Afficher les réseaux de test";
+
 /* The title of a button that updates the filter to show tokens with zero balances. */
 "wallet.showZeroBalances" = "Afficher les soldes nuls";
 
@@ -1605,6 +1623,12 @@
 
 /* A title of the view shown over a dapps website that requests the user sign a message. */
 "wallet.signatureRequestTitle" = "Signature demandée";
+
+/* The label displayed in details for Sign Cardano Transaction Request details panel beside/above the Address index. */
+"wallet.signCardanoTxRequestDetailsAddressLabel" = "Adresse";
+
+/* The label displayed in details for Sign Cardano Transaction Request details panel beside/above the Token index. */
+"wallet.signCardanoTxRequestDetailsTokenLabel" = "Jeton";
 
 /* A description explains signed transaction will be sent to network by dapps and awaits confirmation. */
 "wallet.signedTransactionDescription" = "La transaction a été signée et va être envoyée au réseau par dapps en attendant la confirmation.";
@@ -1658,7 +1682,7 @@
 "wallet.siweNonceLabel" = "Nonce";
 
 /* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the origin. */
-"wallet.siweOriginLabel" = "Origine";
+"wallet.siweOriginLabel" = "Origin";
 
 /* The label displayed above the Sign In With Ethereum resources. */
 "wallet.siweResourcesLabel" = "Ressources";
@@ -1927,8 +1951,11 @@
 /* The title of the view shown over a dapps website that requests the user change the current network. */
 "wallet.switchNetworkTitle" = "Changer de réseau";
 
+/* The title above the testnets in onboarding network selection screen. */
+"wallet.testnets" = "Réseaux de test";
+
 /* A label appended after a certain dollar or percent change. Example: 'Up 1.4% Today' */
-"wallet.today" = "Aujourd’hui";
+"wallet.today" = "Aujourd'hui";
 
 /* A title that will be displayed on top of the text field for users to input the custom token address */
 "wallet.tokenAddress" = "Adresse du jeton";

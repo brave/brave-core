@@ -16,11 +16,17 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Afegeix adreça d'interès";
 
+/* Add a new item to the current list */
+"addButtonTitle" = "Afegeix";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "Afegeix a preferits";
 
 /* Cell title for add folder action */
 "AddFolderActionCellTitle" = "Carpeta nova";
+
+/* Settings item that opens instructions for adding Brave to the iOS dock. */
+"addToDockSettingsCell" = "Afegeix al Dock";
 
 /* Add to favorites share action. */
 "AddToFavorites" = "Afegeix a preferits";
@@ -69,6 +75,42 @@
 
 /* Settings autofill section title */
 "Autofill" = "Emplenament automàtic";
+
+/* Label for account when indicating that a domain has multiple accounts */
+"autofill.managePassword.multipleAccounts" = "Comptes";
+
+/* Alert message warning the user that deleting non-synced passwords will permanently remove them */
+"autofill.managePasswords.deleteCredentialConfirmMessage" = "Això eliminarà la contrasenya o les contrasenyes desades de %@ de la vostra cadena de sincronització i del vostre aparell.";
+
+/* Prompt title when deleting passwords */
+"autofill.managePasswords.deleteCredentialsAlertTitle" = "Estàs segur?";
+
+/* Label for the button used to delete the current login. */
+"autofill.managePasswords.deleteManagePasswordButtonTitle" = "Suprimeix";
+
+/* Title for the section header in the Manage Passwords list screen, that lists the saved sites */
+"autofill.managePasswords.headerTitle" = "S'ha desat";
+
+/* The message displayed on the manage passwords list screen, when there's at least one password, explain the feature */
+"autofill.managePasswords.instructions" = "Crea, desa i gestiona les teves contrasenyes per iniciar sessió fàcilment a llocs i aplicacions.";
+
+/* The header title displayed over the never saved passwords list */
+"autofill.managePasswords.neverSavedListHeaderTitle" = "Mai desades";
+
+/* Display text for the option to offer to save passwords */
+"autofill.managePasswords.offerToSavePasswords" = "Ofereix desar contrasenyes";
+
+/* Prompt that is diplayed in the search bar of the Manage Passwords list screen */
+"autofill.managePasswords.searchWebsitesPrompt" = "Cerca llocs web";
+
+/* Title for navigation bar of the Manage Passwords screen */
+"autofill.managePasswords.title" = "Gestiona les contrasenyes";
+
+/* Text to show when the origin of a managed password is not available */
+"autofill.managePasswords.UnknownDomainText" = "Desconegut";
+
+/* Settings autofill section title */
+"autofill.settings.title" = "Emplenament automàtic";
 
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "Pàgines AMP de redirecció automàtica";
@@ -3141,6 +3183,12 @@
 
 /* No comment provided by engineer. */
 "tabs.settings.privateTabsSettingsTitle" = "Pestanyes d'incògnit";
+
+/* The description of the toggle for users to allow the browser to remember its last browsing mode so it can re-launch in that mode when Keep Private Tabs is enabled. */
+"tabs.settings.rememberBrowsingModeDescription" = "Si el navegador estava en mode d'incògnit quan es va tancar per última vegada, s'obrirà en mode d'incògnit en tornar-lo a iniciar.";
+
+/* Toggle to launch the browser in private mode when Keep Private Tabs is enabled */
+"tabs.settings.rememberBrowsingModeTitle" = "Recorda el mode de navegació";
 
 /* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
 "TabToolbarAccessibilityLabel" = "Barra d'eines de navegació";

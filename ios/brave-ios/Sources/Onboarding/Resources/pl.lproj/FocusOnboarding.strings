@@ -1,3 +1,9 @@
+/* The subtitle of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenDescription" = "Dotknij i przytrzymaj ikonę Brave, a następnie przeciągnij ją do doku, aby uzyskać szybki dostęp.";
+
+/* The title of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenTitle" = "Dodaj Brave do doku";
+
 /* The title of the button that changes the screen to next */
 "focusOnboarding.continueButtonTitle" = "Kontynuuj";
 
@@ -25,18 +31,12 @@
 /* The description shown below the toggle for enabling privacy preserving analytics. This uses standard markdown syntax. The Learn More is a link and #p3a-learn-more is a URL fragment */
 "focusOnboarding.p3aToggleDescription" = "Możesz zrezygnować w dowolnym momencie w Ustawieniach w sekcji **Tarcze i prywatność**. [Dowiedz się więcej](#p3a-learn-more) o naszej analizie produktów z zachowaniem prywatności.";
 
-/* The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The "completely private & anonymous" snippet should be bold in all languages */
-"focusOnboarding.p3aToggleTitle" = "Dziel się **całkowicie prywatnie i anonimowo** uwagami na temat produktów.";
+/* The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The "private & anonymous" snippet should be bold in all languages */
+"focusOnboarding.p3aToggleTitle" = "Dziel się **prywatnymi i anonimowymi** uwagami na temat produktu.";
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "Rozpocznij przeglądanie";
 
 /* The title of the button that triggers navigation link to settings */
 "focusOnboarding.systemSettingsButtonTitle" = "Ustaw jako domyślną";
-
-/* The description of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorDescription" = "Oglądaj wideo i ciesz się mniejszą liczbą reklam i elementów śledzących.";
-
-/* The title of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorTitle" = "Zobacz, czym wyróżnia się Brave";
 

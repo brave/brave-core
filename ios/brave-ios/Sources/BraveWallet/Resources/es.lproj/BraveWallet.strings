@@ -811,6 +811,9 @@
 /* A title of a button which will a new view to display the error. */
 "wallet.failedTransactionViewErrorButtonTitle" = "Error de visualización";
 
+/* The title above the featured networks in onboarding network selection screen. */
+"wallet.featured" = "Destacado";
+
 /* A description of an Filecoin account, displayed in Accounts tab. */
 "wallet.filAccountDescription" = "Filecoin";
 
@@ -899,7 +902,7 @@
 "wallet.highToLowSortOption" = "De alto a bajo";
 
 /* A title above a text field that is used to enter a password */
-"wallet.importAccountOriginPasswordTitle" = "Contraseña original";
+"wallet.importAccountOriginPasswordTitle" = "Contraseña de Origin";
 
 /* A placeholder on a text box for entering the users private key/json data to import accounts */
 "wallet.importAccountPlaceholder" = "Introduce, pega o importa el archivo o JSON que contenga la cadena de tu clave privada.";
@@ -1204,6 +1207,15 @@
 /* The title of the button in the last step for user to create a new wallet. This will direct users to the wallet portfolio screen. */
 "wallet.onboardingCompletedButtonTitle" = "Ir a mi portafolio";
 
+/* The title of the continue button in onboarding network selection screen. '%lld' refers to a number (for example "Continue with 8 Networks") */
+"wallet.onboardingNetworkSelectionContinue" = "Continuar con %lld redes";
+
+/* The description of the view during wallet onboarding that allows user to select which networks they want to see. */
+"wallet.onboardingNetworkSelectionDescription" = "Elige qué blockchains usar en tu billetera.";
+
+/* The title of the view during wallet onboarding that allows user to select which networks they want to see. */
+"wallet.onboardingNetworkSelectionTitle" = "Redes compatibles";
+
 /* The subtitle of the last step of creating a new wallet. */
 "wallet.onbordingCompletedSubTitle" = "Ya puedes usar Cartera de Brave.";
 
@@ -1248,6 +1260,9 @@
 
 /* A title above a text field for inputting the per-gas tip limit in Gwei */
 "wallet.perGasTipLimit" = "Límite de propina por gas (GWEI)";
+
+/* The title above the popular networks in onboarding network selection screen. */
+"wallet.popular" = "Populares";
 
 /* The title of the empty state in Portfolio when no assets are shown. */
 "wallet.portfolioEmptyStateDescription" = "Haz un depósito o compra tokens para empezar. Si no ves los tokens de una cuenta importada, revisa la configuración de filtros y pantalla. Puede que haya que añadir los tokens desconocidos como activos personalizados.";
@@ -1585,6 +1600,9 @@
 /* A button title that will make a private key visible on the screen */
 "wallet.showPrivateKeyButtonTitle" = "Mostrar clave privada";
 
+/* The title beside the toggle in onboarding network selection screen that shows test networks. */
+"wallet.showTestnets" = "Mostrar redes de prueba";
+
 /* The title of a button that updates the filter to show tokens with zero balances. */
 "wallet.showZeroBalances" = "Mostrar balances equivalentes a cero";
 
@@ -1605,6 +1623,12 @@
 
 /* A title of the view shown over a dapps website that requests the user sign a message. */
 "wallet.signatureRequestTitle" = "Firma solicitada";
+
+/* The label displayed in details for Sign Cardano Transaction Request details panel beside/above the Address index. */
+"wallet.signCardanoTxRequestDetailsAddressLabel" = "Dirección";
+
+/* The label displayed in details for Sign Cardano Transaction Request details panel beside/above the Token index. */
+"wallet.signCardanoTxRequestDetailsTokenLabel" = "Token";
 
 /* A description explains signed transaction will be sent to network by dapps and awaits confirmation. */
 "wallet.signedTransactionDescription" = "Se ha firmado la transacción y se enviará a la red mediante aplicaciones descentralizadas; se encuentra ya a la espera de confirmación.";
@@ -1658,7 +1682,7 @@
 "wallet.siweNonceLabel" = "Nonce (valor de seguridad)";
 
 /* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the origin. */
-"wallet.siweOriginLabel" = "Orígen";
+"wallet.siweOriginLabel" = "Origin";
 
 /* The label displayed above the Sign In With Ethereum resources. */
 "wallet.siweResourcesLabel" = "Recursos";
@@ -1926,6 +1950,9 @@
 
 /* The title of the view shown over a dapps website that requests the user change the current network. */
 "wallet.switchNetworkTitle" = "Cambiar red";
+
+/* The title above the testnets in onboarding network selection screen. */
+"wallet.testnets" = "Redes de prueba";
 
 /* A label appended after a certain dollar or percent change. Example: 'Up 1.4% Today' */
 "wallet.today" = "Hoy";
