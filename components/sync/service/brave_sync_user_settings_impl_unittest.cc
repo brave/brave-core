@@ -11,6 +11,7 @@
 #include "components/saved_tab_groups/public/pref_names.h"
 #include "components/signin/public/base/signin_prefs.h"
 #include "components/signin/public/identity_manager/identity_manager.h"
+#include "components/sync/base/custom_passphrase_bootstrap_token.h"
 #include "components/sync/base/features.h"
 #include "components/sync/service/glue/sync_transport_data_prefs.h"
 #include "components/sync/service/sync_service_crypto.h"
@@ -56,9 +57,13 @@ class MockSyncServiceCryptoDelegate : public SyncServiceCrypto::Delegate {
               (const override));
   MOCK_METHOD(void,
               SetEncryptionBootstrapToken,
-              (const std::string&),
+              (const CustomPassphraseBootstrapToken&,
+               const os_crypt_async::Encryptor&),
               (override));
-  MOCK_METHOD(std::string, GetEncryptionBootstrapToken, (), (const override));
+  MOCK_METHOD(CustomPassphraseBootstrapToken,
+              GetEncryptionBootstrapToken,
+              (const os_crypt_async::Encryptor&),
+              (const override));
 };
 
 class MockDelegate : public SyncUserSettingsImpl::Delegate {
