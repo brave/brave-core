@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include <string_view>
+
 #include "brave/components/oblivious_http/oblivious_http_chunk_processor.h"
 #include "brave/components/oblivious_http/utils.h"
 #include "net/base/net_errors.h"
@@ -10,7 +12,7 @@
 
 namespace {
 
-constexpr char kChunkedObliviousHttpRequestMimeType[] =
+constexpr std::string_view kChunkedObliviousHttpRequestMimeType =
     "message/ohttp-chunked-req";
 
 }  // namespace
