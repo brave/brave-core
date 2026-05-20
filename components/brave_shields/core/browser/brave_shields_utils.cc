@@ -171,6 +171,13 @@ void SetShieldsMetadata(HostContentSettingsMap* map,
       base::Value(std::move(shields_metadata)));
 }
 
+// Returns a 64-bit persistent hash of |data| (two rounds of PersistentHash).
+uint64_t PersistentHashU64(base::span<const uint8_t> data) {
+  const uint32_t hash = base::PersistentHash(data);
+  return (static_cast<uint64_t>(hash) << 32) |
+         base::PersistentHash(base::byte_span_from_ref(hash));
+}
+
 base::Token CreateStableFarblingToken(const GURL& url) {
   const uint32_t high =
       base::PersistentHash(url.host()) + g_stable_farbling_tokens_seed - 1;
@@ -848,7 +855,9 @@ mojom::FarblingLevel GetFarblingLevel(HostContentSettingsMap* map,
   }
 }
 
-base::Token GetFarblingToken(HostContentSettingsMap* map, const GURL& url) {
+base::Token GetFarblingToken(HostContentSettingsMap* map,
+                             const GURL& url,
+                             base::span<const uint8_t> additional_entropy) {
   base::Token token;
   if (!url.SchemeIsHTTPOrHTTPS()) {
     return token;
@@ -871,7 +880,14 @@ base::Token GetFarblingToken(HostContentSettingsMap* map, const GURL& url) {
     SetShieldsMetadata(map, url, std::move(shields_metadata));
   }
 
-  return token;
+  if (additional_entropy.empty()) {
+    return token;
+  }
+
+  const uint64_t high = token.high() ^ PersistentHashU64(additional_entropy);
+  const uint64_t low =
+      token.low() ^ PersistentHashU64(base::byte_span_from_ref(high));
+  return base::Token(high, low);
 }
 
 bool IsDeveloperModeEnabled(PrefService* profile_state) {

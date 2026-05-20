@@ -56,6 +56,12 @@ TEST_F(ContainersStoragePartitionUtilsTest, IsContainersStoragePartition) {
           in_memory, test_case.partition_domain, test_case.partition_name);
       EXPECT_EQ(IsContainersStoragePartition(config),
                 test_case.expected_result);
+      if (test_case.expected_result) {
+        EXPECT_EQ(GetContainerIdFromStoragePartitionConfig(config),
+                  test_case.partition_name);
+      } else {
+        EXPECT_TRUE(GetContainerIdFromStoragePartitionConfig(config).empty());
+      }
     }
   }
 }

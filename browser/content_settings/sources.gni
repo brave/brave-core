@@ -3,10 +3,20 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/containers/buildflags/buildflags.gni")
+
 brave_browser_content_settings_deps = [
   "//brave/components/brave_shields/content/browser",
+  "//brave/components/containers/buildflags",
   "//components/user_prefs",
 ]
+
+if (enable_containers) {
+  brave_browser_content_settings_deps += [
+    "//brave/components/containers/content/browser",
+    "//brave/components/containers/core/common",
+  ]
+}
 
 # In upstream Chromium, extensions/common/url_pattern_set.h
 # belongs to //extensions/common which is a real target.

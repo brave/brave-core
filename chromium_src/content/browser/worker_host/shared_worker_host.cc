@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "content/browser/storage_partition_impl.h"
+
 #include <content/browser/worker_host/shared_worker_host.cc>
 
 namespace content {
@@ -11,9 +13,14 @@ void SharedWorkerHost::GetBraveShieldsSettings(
     const GURL& url,
     base::OnceCallback<void(brave_shields::mojom::ShieldsSettingsPtr)>
         callback) {
+  const StoragePartitionConfig* storage_partition_config = nullptr;
+  if (StoragePartitionImpl* storage_partition = GetStoragePartitionImpl()) {
+    storage_partition_config = &storage_partition->GetConfig();
+  }
   std::move(callback).Run(
       GetContentClient()->browser()->WorkerGetBraveShieldSettings(
-          url, GetProcessHost()->GetBrowserContext()));
+          url, GetProcessHost()->GetBrowserContext(),
+          storage_partition_config));
 }
 
 }  // namespace content

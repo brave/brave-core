@@ -21,6 +21,7 @@
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/renderer_configuration.mojom.h"
@@ -37,6 +38,11 @@
 #include "extensions/buildflags/buildflags.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/components/containers/content/browser/storage_partition_utils.h"
+#include "brave/components/containers/core/common/features.h"
+#endif
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
@@ -323,10 +329,18 @@ void BraveShieldsWebContentsObserver::SendShieldsSettings(
       HostContentSettingsMapFactory::GetForProfile(rfh->GetBrowserContext());
   const brave_shields::mojom::FarblingLevel farbling_level =
       brave_shields::GetFarblingLevel(host_content_settings_map, primary_url);
+  std::string additional_entropy;
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  if (base::FeatureList::IsEnabled(containers::features::kContainers)) {
+    additional_entropy = containers::GetContainerIdForWebContents(
+        navigation_handle->GetWebContents());
+  }
+#endif
   const base::Token farbling_token =
       farbling_level != brave_shields::mojom::FarblingLevel::OFF
-          ? brave_shields::GetFarblingToken(host_content_settings_map,
-                                            primary_url)
+          ? brave_shields::GetFarblingToken(
+                host_content_settings_map, primary_url,
+                base::as_byte_span(additional_entropy))
           : base::Token();
   PrefService* pref_service =
       user_prefs::UserPrefs::Get(rfh->GetBrowserContext());

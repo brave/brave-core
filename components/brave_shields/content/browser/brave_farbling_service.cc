@@ -21,14 +21,16 @@ BraveFarblingService::BraveFarblingService(
 
 BraveFarblingService::~BraveFarblingService() = default;
 
-bool BraveFarblingService::MakePseudoRandomGeneratorForURL(const GURL& url,
-                                                           FarblingPRNG* prng) {
+bool BraveFarblingService::MakePseudoRandomGeneratorForURL(
+    const GURL& url,
+    base::span<const uint8_t> additional_entropy,
+    FarblingPRNG* prng) {
   if (brave_shields::GetFarblingLevel(host_content_settings_map_, url) ==
       brave_shields::mojom::FarblingLevel::OFF) {
     return false;
   }
-  const base::Token farbling_token =
-      brave_shields::GetFarblingToken(host_content_settings_map_, url);
+  const base::Token farbling_token = brave_shields::GetFarblingToken(
+      host_content_settings_map_, url, additional_entropy);
   if (farbling_token.is_zero()) {
     return false;
   }

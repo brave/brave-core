@@ -50,6 +50,15 @@ std::optional<content::StoragePartitionConfig> MaybeInheritStoragePartition(
   return std::nullopt;
 }
 
+std::string_view GetContainerIdFromStoragePartitionConfig(
+    const content::StoragePartitionConfig& partition_config) {
+  CHECK(base::FeatureList::IsEnabled(features::kContainers));
+  if (!IsContainersStoragePartition(partition_config)) {
+    return std::string_view();
+  }
+  return partition_config.partition_name();
+}
+
 std::string GetContainerIdForWebContents(content::WebContents* web_contents) {
   CHECK(base::FeatureList::IsEnabled(features::kContainers));
   if (!web_contents) {
@@ -59,8 +68,9 @@ std::string GetContainerIdForWebContents(content::WebContents* web_contents) {
   const auto& config = web_contents->GetSiteInstance()
                            ->GetSecurityPrincipal()
                            .GetStoragePartitionConfig();
-  if (IsContainersStoragePartition(config)) {
-    return config.partition_name();
+  if (std::string_view id = GetContainerIdFromStoragePartitionConfig(config);
+      !id.empty()) {
+    return std::string(id);
   }
 
   const ContainersWebContentsUserData* user_data =

@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/containers/buildflags/buildflags.gni")
 import("//testing/test.gni")
 
 source_set("brave_shields") {
@@ -68,6 +69,15 @@ source_set("brave_shields_impl") {
     "//net",
     "//net:net_features",
   ]
+
+  deps += [ "//brave/components/containers/buildflags" ]
+
+  if (enable_containers) {
+    deps += [
+      "//brave/components/containers/content/browser",
+      "//brave/components/containers/core/common",
+    ]
+  }
 
   if (is_android) {
     sources += [

@@ -59,7 +59,14 @@
 
 namespace containers {
 
+namespace {
+
 constexpr char kTestContainerId[] = "test-container-id";
+
+constexpr char kFarblingPluginsStringScript[] =
+    "Array.from(navigator.plugins).map(p => p.name).join(',');";
+
+}  // namespace
 
 class ContainersBrowserTest : public InProcessBrowserTest {
  public:
@@ -264,6 +271,17 @@ class ContainersBrowserTest : public InProcessBrowserTest {
             .AppendASCII(containers::kContainersStoragePartitionDomain);
     return !base::PathExists(storage_path) ||
            base::IsDirectoryEmpty(storage_path);
+  }
+
+  content::WebContents* OpenUrlInContainerTab(const GURL& url,
+                                              const std::string& container_id) {
+    NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
+    params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+    params.storage_partition_config = content::StoragePartitionConfig::Create(
+        browser()->profile(), kContainersStoragePartitionDomain, container_id,
+        browser()->profile()->IsOffTheRecord());
+    ui_test_utils::NavigateToURL(&params);
+    return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
  protected:
@@ -1804,6 +1822,42 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   // The storage directory should not be empty because the container was
   // recreated.
   EXPECT_FALSE(IsContainersStorageDirectoryEmpty());
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       WebsiteFarblingRespectsContainerPartitions) {
+  const GURL url("https://a.test/simple.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  auto get_farbled_navigator_plugins = [](content::WebContents* web_contents) {
+    return content::EvalJs(web_contents, kFarblingPluginsStringScript)
+        .ExtractString();
+  };
+
+  const std::string plugins_default = get_farbled_navigator_plugins(
+      browser()->tab_strip_model()->GetActiveWebContents());
+
+  const std::string plugins_container_a_tab1 =
+      get_farbled_navigator_plugins(OpenUrlInContainerTab(url, "farbling-a"));
+  const std::string plugins_container_b =
+      get_farbled_navigator_plugins(OpenUrlInContainerTab(url, "farbling-b"));
+  const std::string plugins_container_a_tab2 =
+      get_farbled_navigator_plugins(OpenUrlInContainerTab(url, "farbling-a"));
+
+  EXPECT_FALSE(plugins_default.empty());
+  EXPECT_FALSE(plugins_container_a_tab1.empty());
+  EXPECT_FALSE(plugins_container_b.empty());
+  EXPECT_FALSE(plugins_container_a_tab2.empty());
+
+  // Default partition vs container partitions.
+  EXPECT_NE(plugins_default, plugins_container_a_tab1);
+  EXPECT_NE(plugins_default, plugins_container_b);
+
+  // Different container ids.
+  EXPECT_NE(plugins_container_a_tab1, plugins_container_b);
+
+  // Same container id across separate tabs.
+  EXPECT_EQ(plugins_container_a_tab1, plugins_container_a_tab2);
 }
 
 // Test suite to verify behavior when containers feature is disabled after

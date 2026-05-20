@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_BROWSER_BRAVE_FARBLING_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_BROWSER_BRAVE_FARBLING_SERVICE_H_
 
+#include "base/containers/span.h"
 #include "base/memory/raw_ptr.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "third_party/abseil-cpp/absl/random/random.h"
@@ -28,7 +29,10 @@ class BraveFarblingService : public KeyedService {
       HostContentSettingsMap* host_content_settings_map);
   ~BraveFarblingService() override;
 
-  bool MakePseudoRandomGeneratorForURL(const GURL& url, FarblingPRNG* prng);
+  bool MakePseudoRandomGeneratorForURL(
+      const GURL& url,
+      base::span<const uint8_t> additional_entropy,
+      FarblingPRNG* prng);
 
   static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 

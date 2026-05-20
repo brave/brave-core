@@ -29,6 +29,7 @@ namespace content {
 class BrowserContext;
 class NavigationThrottleRegistry;
 class RenderProcessHost;
+class StoragePartitionConfig;
 }  // namespace content
 
 namespace blink {
@@ -91,7 +92,8 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
 
   brave_shields::mojom::ShieldsSettingsPtr WorkerGetBraveShieldSettings(
       const GURL& url,
-      content::BrowserContext* browser_context) override;
+      content::BrowserContext* browser_context,
+      const content::StoragePartitionConfig* storage_partition_config) override;
 
   void RegisterBrowserInterfaceBindersForFrame(
       content::RenderFrameHost* render_frame_host,
