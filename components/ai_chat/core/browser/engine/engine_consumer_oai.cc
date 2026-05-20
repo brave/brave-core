@@ -80,8 +80,7 @@ bool EngineConsumerOAIRemote::RequiresClientSideTitleGeneration() const {
 
 void EngineConsumerOAIRemote::UpdateModelOptions(
     const mojom::ModelOptions& options) {
-  if (!options.is_custom_model_options() ||
-      !model_options_->is_custom_model_options()) {
+  if (!options.is_custom_model_options()) {
     return;
   }
   model_options_ = options.Clone();
