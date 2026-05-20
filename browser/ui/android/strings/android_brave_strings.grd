@@ -766,7 +766,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Block interruptions when you stream
       </message>
       <message name="IDS_WDP_TEXT" desc="Text for WDP text onboarding">
-        Opt into the Web Discovery Project to help grow the index and improve search results. <ph name="LEARN_MORE_START">&lt;learn_more&gt;</ph>Learn more.<ph name="LEARN_MORE_END">&lt;/learn_more&gt;</ph>
+        Opt into the Web Discovery Project to help grow the index and improve search results. <ph name="LEARN_MORE_START">&lt;learn_more&gt;</ph>Learn more<ph name="LEARN_MORE_END">&lt;/learn_more&gt;</ph>.
       </message>
       <message name="IDS_BRAVE_ONBOARDING_SPLASH_LOGO_DESCRIPTION" desc="Accessibility description for the onboarding splash logo">
         Brave logo
@@ -1486,7 +1486,7 @@ Are you sure you want to do this?
       </message>
       <message name="IDS_BRAVE_SHIELDS_AUTO_SHRED_APP_CLOSE_MODE_TEXT" desc="Shields menu auto shred app close mode item text.">
         App close
-      </message>   
+      </message>
       <message name="IDS_BRAVE_SHIELDS_AUTO_SHRED_APP_CLOSE_MODE_DESCRIPTION_TEXT" desc="Shields menu auto shred app close mode item description text.">
         Browsing data is automatically shredded when the Brave app is closed / restarted
       </message>
