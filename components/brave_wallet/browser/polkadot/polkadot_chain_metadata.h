@@ -37,13 +37,6 @@ class PolkadotChainMetadata {
   static std::optional<PolkadotChainMetadata> FromBytes(
       base::span<const uint8_t> metadata_bytes);
 
-  // Build metadata from a known relay/parachain name returned by system_chain.
-  // Returns std::nullopt for unknown names. The returned metadata has an
-  // unknown spec_version (set to 0); callers must populate spec_version from
-  // state_getRuntimeVersion before using it for version-sensitive operations.
-  static std::optional<PolkadotChainMetadata> FromChainName(
-      std::string_view chain_name);
-
   // Obtain a reference to the underlying opaque type so that it can be passed
   // to Rust routines.
   const CxxPolkadotChainMetadata& operator*() const;

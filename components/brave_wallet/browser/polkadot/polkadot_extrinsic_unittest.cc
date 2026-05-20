@@ -9,6 +9,7 @@
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key_sr25519.h"
 #include "brave/components/brave_wallet/browser/internal/polkadot_extrinsic.rs.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_test_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -787,8 +788,7 @@ TEST(PolkadotExtrinsics, EventsParsing) {
       "bf0be0352ca5bc12a8ac6cf0006e220e5c55bb03126890ad37ce9753f9b3e3db";
   ASSERT_TRUE(base::HexStringToSpan(sender_hex, sender));
 
-  auto chain_metadata =
-      PolkadotChainMetadata::FromChainName("Polkadot").value();
+  auto chain_metadata = PolkadotMetadataFromChainName("Polkadot").value();
 
   const uint32_t extrinsic_idx = 2;
 
@@ -848,8 +848,7 @@ TEST(PolkadotExtrinsics, EventsParsing_WithAccountCreation) {
       "2a27dd26f5f3fe4f48fc67cddb54a8cdb0f3c6e4b9c8cf751a59466771dc6144";
   ASSERT_TRUE(base::HexStringToSpan(sender_hex, sender));
 
-  auto chain_metadata =
-      PolkadotChainMetadata::FromChainName("Polkadot").value();
+  auto chain_metadata = PolkadotMetadataFromChainName("Polkadot").value();
 
   uint32_t extrinsic_idx = 2;
 
@@ -926,8 +925,7 @@ TEST(PolkadotExtrinsics, EventsParsing_FailedExtrinsic_ArithmeticUnderflow) {
       "d44c4639d57190aed08f053cac6db1c85221253e7353d484dba9caa663d86a5f";
   ASSERT_TRUE(base::HexStringToSpan(sender_hex, sender));
 
-  auto chain_metadata =
-      PolkadotChainMetadata::FromChainName("Polkadot").value();
+  auto chain_metadata = PolkadotMetadataFromChainName("Polkadot").value();
 
   uint32_t extrinsic_idx = 2;
 
@@ -986,8 +984,7 @@ TEST(PolkadotExtrinsics, EventsParsing_FailedExtrinsic_BelowMinimum) {
       "3c67dd0ea1126b09609ac341b4417251457f0fad467b8e1d3004209d4756ea2e";
   ASSERT_TRUE(base::HexStringToSpan(sender_hex, sender));
 
-  auto chain_metadata =
-      PolkadotChainMetadata::FromChainName("Polkadot").value();
+  auto chain_metadata = PolkadotMetadataFromChainName("Polkadot").value();
 
   uint32_t extrinsic_idx = 2;
 
@@ -1045,8 +1042,7 @@ TEST(PolkadotExtrinsics, EventsParsing_Error) {
 
   ASSERT_TRUE(base::HexStringToSpan(sender_hex, sender));
 
-  auto chain_metadata =
-      PolkadotChainMetadata::FromChainName("Polkadot").value();
+  auto chain_metadata = PolkadotMetadataFromChainName("Polkadot").value();
 
   uint32_t extrinsic_idx = 2;
 

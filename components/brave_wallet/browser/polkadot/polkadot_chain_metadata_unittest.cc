@@ -10,6 +10,7 @@
 #include "base/base_paths.h"
 #include "base/path_service.h"
 #include "base/test/values_test_util.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_test_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -57,7 +58,7 @@ TEST(PolkadotChainMetadataUnitTest, FromChainName) {
   expected_westend->ss58_prefix = 42;
   expected_westend->spec_version = 0;
   expected_westend->asset_tx_payment = false;
-  auto westend = PolkadotChainMetadata::FromChainName("Westend");
+  auto westend = PolkadotMetadataFromChainName("Westend");
   ASSERT_TRUE(westend);
   EXPECT_EQ(*westend, expected_westend);
 
@@ -71,8 +72,7 @@ TEST(PolkadotChainMetadataUnitTest, FromChainName) {
   expected_westend_asset_hub->ss58_prefix = 42;
   expected_westend_asset_hub->spec_version = 0;
   expected_westend_asset_hub->asset_tx_payment = true;
-  auto westend_asset_hub =
-      PolkadotChainMetadata::FromChainName("Westend Asset Hub");
+  auto westend_asset_hub = PolkadotMetadataFromChainName("Westend Asset Hub");
   ASSERT_TRUE(westend_asset_hub);
   EXPECT_EQ(*westend_asset_hub, expected_westend_asset_hub);
 
@@ -86,7 +86,7 @@ TEST(PolkadotChainMetadataUnitTest, FromChainName) {
   expected_polkadot->ss58_prefix = 0;
   expected_polkadot->spec_version = 0;
   expected_polkadot->asset_tx_payment = false;
-  auto polkadot = PolkadotChainMetadata::FromChainName("Polkadot");
+  auto polkadot = PolkadotMetadataFromChainName("Polkadot");
   ASSERT_TRUE(polkadot);
   EXPECT_EQ(*polkadot, expected_polkadot);
 
@@ -100,13 +100,12 @@ TEST(PolkadotChainMetadataUnitTest, FromChainName) {
   expected_polkadot_asset_hub->ss58_prefix = 0;
   expected_polkadot_asset_hub->spec_version = 0;
   expected_polkadot_asset_hub->asset_tx_payment = true;
-  auto polkadot_asset_hub =
-      PolkadotChainMetadata::FromChainName("Polkadot Asset Hub");
+  auto polkadot_asset_hub = PolkadotMetadataFromChainName("Polkadot Asset Hub");
   ASSERT_TRUE(polkadot_asset_hub);
   EXPECT_EQ(*polkadot_asset_hub, expected_polkadot_asset_hub);
 
-  EXPECT_FALSE(PolkadotChainMetadata::FromChainName(""));
-  EXPECT_FALSE(PolkadotChainMetadata::FromChainName("Unknown Chain"));
+  EXPECT_FALSE(PolkadotMetadataFromChainName(""));
+  EXPECT_FALSE(PolkadotMetadataFromChainName("Unknown Chain"));
 }
 
 TEST(PolkadotChainMetadataUnitTest, FromBytesInvalid) {
@@ -158,7 +157,7 @@ TEST(PolkadotChainMetadataUnitTest, ParseRealStateGetMetadataResponsePolkadot) {
   expected->asset_tx_payment = false;
   EXPECT_EQ(*metadata, expected);
 
-  auto metadata2 = PolkadotChainMetadata::FromChainName("Polkadot");
+  auto metadata2 = PolkadotMetadataFromChainName("Polkadot");
   ASSERT_TRUE(metadata2);
   PolkadotChainMetadata expected_from_name = expected;
   expected_from_name->spec_version = 0;
