@@ -745,7 +745,7 @@ public class BrowserViewController: UIViewController {
     tabManager.persistSessionOnBackground()
 
     if let tabId = tabManager.selectedTab?.id {
-      SessionTab.setSelected(tabId: tabId, synchronously: true)
+      SessionTab.setSelected(tabId: tabId)
     }
 
     Preferences.Privacy.lastSessionWindowId.value = windowId.uuidString
