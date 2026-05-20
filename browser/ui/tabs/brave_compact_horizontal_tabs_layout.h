@@ -38,10 +38,13 @@ inline constexpr int kTabstripToolbarOverlap = 8;
 //        smaller delta below so caption/new-tab controls stay centered.
 //   We satisfy (1) centrally via
 //   `GetBraveLayoutConstant(kTabstripToolbarOverlap)` and satisfy (2) via
-//   per-translation-unit `GetLayoutConstant` wrappers in chromium_src that
-//   redirect just the `kTabstripToolbarOverlap` cases to
-//   `tabs::GetHorizontalTabControlsDelta()` (see the wrappers in
-//   horizontal_tab_strip_region_view.cc and browser_frame_view_win.cc).
+//   a per-translation-unit `GetLayoutConstant` wrapper in chromium_src that
+//   redirects just the `kTabstripToolbarOverlap` case to
+//   `tabs::GetHorizontalTabControlsDelta()` (see the wrapper in
+//   horizontal_tab_strip_region_view.cc).
+//   Note: the analogous wrapper in browser_frame_view_win.cc does NOT use
+//   `GetHorizontalTabControlsDelta()` for Win caption buttons — it always
+//   returns the geometry value to correctly size the container height.
 inline constexpr int kTabStripControlsHeightDelta = -5;
 
 // `LayoutConstant::kTabStripHeight` (compact, non-touch). Keep in sync with
