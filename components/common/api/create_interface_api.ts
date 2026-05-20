@@ -180,7 +180,14 @@ export function createInterfaceApi<
     string,
     Function | Record<string, Function>
   >,
-  const RawEndpoints extends Record<string, EndpointDef<readonly any[], any>>,
+  // Use `EndpointDef<any, any>` (not `any[]`) so that specific endpoint
+  // definitions remain assignable under `strictFunctionTypes`. With `any[]`,
+  // mutation callbacks like `onMutate: (variables: [a, b]) => …` fail
+  // contravariance checks against `(variables: any[]) => …` because tuples
+  // are narrower than `any[]`. Switching to `any` makes the parameter slot
+  // bivariant and side-steps the variance issue without losing inference on
+  // the concrete `RawEndpoints` type below.
+  const RawEndpoints extends Record<string, EndpointDef<any, any>>,
   EventDefinitions extends Record<string, EventDef<any[], any>> = {},
 >(config: {
   /**

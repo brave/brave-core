@@ -476,6 +476,49 @@ describe('createInterfaceApi', () => {
     expect(mutationFn).toHaveBeenCalledTimes(1)
   })
 
+  it('accepts mutations defined via endpointsFor under strict function types', async () => {
+    // Regression: previously, the `RawEndpoints` index signature used
+    // `EndpointDef<any[], any>`, which made tuple-typed mutations like
+    // `MutationEndpointDefinition<[Uint8Array, string], …>` fail assignability
+    // under `strictFunctionTypes` because of contravariant `onMutate(variables: P)`
+    // callbacks. The signature now uses `EndpointDef<any, any>` to side-step
+    // that.
+    type UploadedFile = { name: string }
+    type MyInterface = {
+      processImageFile: (
+        fileData: number[],
+        filename: string,
+      ) => Promise<{ processedFile: UploadedFile | null }>
+      processPdfFile: (
+        fileData: number[],
+        filename: string,
+      ) => Promise<{ processedFile: UploadedFile | null }>
+    }
+    const impl: MyInterface = {
+      processImageFile: (_d, n) =>
+        Promise.resolve({ processedFile: { name: n } }),
+      processPdfFile: (_d, n) =>
+        Promise.resolve({ processedFile: { name: n } }),
+    }
+
+    const api = createInterfaceApi({
+      actions: {},
+      endpoints: {
+        ...endpointsFor(impl, {
+          processImageFile: {
+            mutationResponse: (result) => result.processedFile,
+          },
+          processPdfFile: {
+            mutationResponse: (result) => result.processedFile,
+          },
+        }),
+      },
+    })
+
+    const result = await api.processImageFile([[1, 2, 3], 'image.png'])
+    expect(result).toEqual({ name: 'image.png' })
+  })
+
   it('can create void mutations that have a parameter', async () => {
     const mutationFn = jest.fn((hi: string) => {
       return Promise.resolve()
