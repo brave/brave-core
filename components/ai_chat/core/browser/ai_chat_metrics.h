@@ -6,9 +6,13 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_AI_CHAT_METRICS_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_AI_CHAT_METRICS_H_
 
+#include <stddef.h>
+#include <stdint.h>
+
 #include <memory>
 #include <optional>
 #include <string>
+#include <string_view>
 
 #include "base/containers/flat_map.h"
 #include "base/functional/callback.h"
@@ -27,6 +31,13 @@
 
 class PrefRegistrySimple;
 class PrefService;
+namespace base {
+class Time;
+}  // namespace base
+namespace mojo {
+template <typename T>
+class PendingReceiver;
+}  // namespace mojo
 
 namespace ai_chat {
 

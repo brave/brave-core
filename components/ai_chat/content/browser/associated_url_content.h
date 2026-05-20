@@ -9,12 +9,18 @@
 #include <memory>
 #include <string>
 
+#include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
 #include "base/one_shot_event.h"
 #include "base/timer/timer.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "url/gurl.h"
+
+class GURL;
+namespace base {
+class OneShotEvent;
+}  // namespace base
 
 namespace content {
 class BrowserContext;

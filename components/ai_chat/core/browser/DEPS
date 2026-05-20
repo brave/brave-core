@@ -1,4 +1,6 @@
 include_rules = [
+  "+absl/container",
+  "+absl/hash",
   "+brave/net/base",
   "+cc/port",
   "+cc/task/core",
@@ -20,6 +22,7 @@ include_rules = [
   "+tensorflow_lite_support/cc/task/core/proto",
   "+tensorflow_lite_support/cc/task/processor/proto",
   "+tensorflow_lite_support/cc/task/text/proto",
+  "+third_party/protobuf/src/google/protobuf",
   "+third_party/re2/src/re2",
   "+third_party/skia/include",
   "+ui/base",

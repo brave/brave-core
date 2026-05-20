@@ -6,7 +6,11 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_TEST_UTILS_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_TEST_UTILS_H_
 
+#include <stddef.h>
+
+#include <string>
 #include <string_view>
+#include <utility>
 #include <vector>
 
 #include "base/containers/flat_map.h"
@@ -15,6 +19,11 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "url/gurl.h"
+
+class GURL;
+namespace base {
+class Location;
+}  // namespace base
 
 namespace ai_chat {
 

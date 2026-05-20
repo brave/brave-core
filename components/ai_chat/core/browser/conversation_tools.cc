@@ -5,13 +5,22 @@
 
 #include "brave/components/ai_chat/core/browser/conversation_tools.h"
 
+#include <functional>
+#include <optional>
 #include <string>
 #include <string_view>
+#include <utility>
+#include <variant>
+#include <vector>
 
+#include "absl/hash/hash.h"
 #include "base/feature_list.h"
+#include "base/functional/callback.h"
 #include "base/no_destructor.h"
+#include "base/values.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_input_properties.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
+#include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"

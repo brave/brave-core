@@ -5,9 +5,17 @@
 
 #include "brave/components/ai_chat/content/browser/pdf_text_helper.h"
 
+#include <stddef.h>
+#include <stdint.h>
+
+#include <string_view>
 #include <utility>
+#include <vector>
 
 #include "base/barrier_callback.h"
+#include "base/functional/bind.h"
+#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/types/fixed_array.h"

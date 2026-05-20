@@ -8,7 +8,6 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

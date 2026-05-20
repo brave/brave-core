@@ -25,6 +25,7 @@
 
 FORWARD_DECLARE_TEST(AIChatUIBrowserTest, PrintPreviewFallback);
 class AIChatUIBrowserTest;
+
 namespace api_request_helper {
 class APIRequestHelper;
 class APIRequestResult;

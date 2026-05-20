@@ -5,8 +5,11 @@
 
 #include "brave/components/ai_chat/core/browser/engine/conversation_api_v2_client.h"
 
+#include <functional>
 #include <optional>
+#include <ostream>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -15,12 +18,17 @@
 #include "base/containers/flat_map.h"
 #include "base/containers/map_util.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/logging.h"
+#include "base/memory/raw_ref.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/metrics/field_trial_params.h"
+#include "base/numerics/safe_conversions.h"
 #include "base/strings/strcat.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "base/time/time.h"
 #include "base/types/expected.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/engine/deep_research_parsing.h"
@@ -31,7 +39,6 @@
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/features.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_service_keys/brave_service_key_utils.h"
@@ -41,7 +48,7 @@
 #include "net/http/http_status_code.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
-#include "third_party/abseil-cpp/absl/functional/overload.h"
+#include "url/gurl.h"
 
 namespace ai_chat {
 

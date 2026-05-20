@@ -7,7 +7,10 @@
 
 #include <algorithm>
 #include <cstdint>
+#include <iterator>
 #include <memory>
+#include <optional>
+#include <ostream>
 #include <string>
 #include <utility>
 #include <vector>
@@ -16,15 +19,17 @@
 #include "base/barrier_closure.h"
 #include "base/check.h"
 #include "base/functional/bind.h"
-#include "base/functional/callback_forward.h"
+#include "base/location.h"
 #include "base/logging.h"
+#include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
-#include "base/strings/string_util.h"
+#include "base/numerics/safe_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/ai_chat/core/browser/associated_archive_content.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
+#include "url/gurl.h"
 
 namespace ai_chat {
 

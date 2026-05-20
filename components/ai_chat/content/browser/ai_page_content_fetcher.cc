@@ -5,13 +5,18 @@
 
 #include "brave/components/ai_chat/content/browser/ai_page_content_fetcher.h"
 
+#include <ostream>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "base/logging.h"
+#include "base/memory/raw_ref.h"
 #include "brave/components/ai_chat/content/browser/page_content_blocks.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "components/optimization_guide/content/browser/page_content_proto_provider.h"
 #include "content/public/browser/web_contents.h"
 #include "third_party/blink/public/mojom/content_extraction/ai_page_content.mojom.h"

@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -16,12 +17,13 @@
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_api_client.h"
+#include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
+#include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 
 template <class T>
 class scoped_refptr;
-
 class PrefService;
 
 namespace api_request_helper {
@@ -33,6 +35,7 @@ class SharedURLLoaderFactory;
 }  // namespace network
 
 namespace ai_chat {
+class ModelService;
 
 using api_request_helper::APIRequestResult;
 

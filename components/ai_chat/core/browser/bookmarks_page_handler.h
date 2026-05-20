@@ -6,11 +6,17 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_BOOKMARKS_PAGE_HANDLER_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_BOOKMARKS_PAGE_HANDLER_H_
 
+#include <vector>
+
 #include "base/memory/raw_ptr.h"
 #include "brave/components/ai_chat/core/common/mojom/bookmarks.mojom.h"
 #include "components/bookmarks/browser/bookmark_model.h"
-#include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
+
+namespace mojo {
+template <typename T>
+class PendingReceiver;
+}  // namespace mojo
 
 namespace bookmarks {
 class BookmarkModel;

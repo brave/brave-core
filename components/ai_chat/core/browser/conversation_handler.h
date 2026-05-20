@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_CONVERSATION_HANDLER_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_CONVERSATION_HANDLER_H_
 
+#include <stddef.h>
+
 #include <concepts>
 #include <cstdint>
 #include <memory>
@@ -45,6 +47,11 @@
 #include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 class AIChatUIBrowserTest;
+namespace base {
+template <typename Signature>
+class RepeatingCallback;
+}  // namespace base
+
 namespace mojo {
 template <typename Interface>
 class PendingRemote;

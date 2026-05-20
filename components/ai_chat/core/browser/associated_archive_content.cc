@@ -5,11 +5,14 @@
 
 #include "brave/components/ai_chat/core/browser/associated_archive_content.h"
 
+#include <ostream>
 #include <utility>
 
+#include "base/functional/callback.h"
 #include "base/logging.h"
 #include "base/strings/utf_ostream_operators.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
+#include "url/gurl.h"
 
 namespace ai_chat {
 

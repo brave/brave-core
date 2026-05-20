@@ -5,9 +5,17 @@
 
 #include "brave/components/ai_chat/content/browser/pdf_text_helper.h"
 
-#include <optional>
-#include <string>
+#include <stdint.h>
 
+#include <memory>
+#include <optional>
+#include <ostream>
+#include <string>
+#include <utility>
+#include <vector>
+
+#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "base/test/test_future.h"
 #include "components/pdf/browser/pdf_document_helper.h"
 #include "components/pdf/browser/pdf_document_helper_client.h"
@@ -17,6 +25,7 @@
 #include "pdf/mojom/pdf.mojom.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/gfx/geometry/point_f.h"
 
 namespace ai_chat {
 

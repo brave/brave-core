@@ -15,13 +15,17 @@
 #include "base/functional/callback.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/types/expected.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
+
+namespace base {
+template <typename T, typename E>
+class expected;
+}  // namespace base
 
 namespace api_request_helper {
 class APIRequestResult;

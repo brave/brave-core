@@ -6,19 +6,14 @@
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 
 #include <memory>
+#include <utility>
 
-#include "base/strings/string_util.h"
 #include "brave/components/ai_chat/content/browser/associated_web_contents_content.h"
-#include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
-#include "brave/components/ai_chat/content/browser/pdf_utils.h"
-#include "content/public/browser/browser_accessibility_state.h"
-#include "content/public/browser/browser_context.h"
-#include "content/public/browser/web_contents.h"
 #include "pdf/buildflags.h"
 
-#if BUILDFLAG(ENABLE_PDF)
-#include "components/pdf/browser/pdf_document_helper.h"
-#endif  // BUILDFLAG(ENABLE_PDF)
+namespace content {
+class WebContents;
+}  // namespace content
 
 namespace ai_chat {
 

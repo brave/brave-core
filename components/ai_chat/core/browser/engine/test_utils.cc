@@ -5,17 +5,20 @@
 
 #include "brave/components/ai_chat/core/browser/engine/test_utils.h"
 
+#include <algorithm>
 #include <optional>
 #include <utility>
 
 #include "base/json/string_escape.h"
-#include "base/numerics/clamped_math.h"
+#include "base/location.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/gurl.h"
+#include "url/origin.h"
 
 namespace ai_chat {
 

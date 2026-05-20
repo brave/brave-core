@@ -8,8 +8,11 @@
 
 #include <string>
 
-#include "base/values.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+
+namespace base {
+class DictValue;
+}  // namespace base
 
 namespace ai_chat {
 

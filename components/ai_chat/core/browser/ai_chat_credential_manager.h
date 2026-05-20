@@ -22,6 +22,7 @@
 #include "mojo/public/cpp/bindings/remote_set.h"
 
 class PrefService;
+
 namespace mojo {
 template <typename Interface>
 class PendingRemote;

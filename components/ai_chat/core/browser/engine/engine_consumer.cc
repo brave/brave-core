@@ -7,11 +7,13 @@
 
 #include <optional>
 #include <string>
+#include <utility>
 
 #include "base/base64.h"
 #include "base/json/json_reader.h"
-#include "base/strings/escape.h"
 #include "base/strings/strcat.h"
+#include "base/strings/string_util.h"
+#include "base/values.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "third_party/re2/src/re2/re2.h"

@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_OAI_MESSAGE_UTILS_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_OAI_MESSAGE_UTILS_H_
 
+#include <stdint.h>
+
 #include <optional>
 #include <string>
 #include <vector>
@@ -18,6 +20,10 @@
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 
 class PrefService;
+namespace base {
+template <typename Signature>
+class FunctionRef;
+}  // namespace base
 
 namespace ai_chat {
 

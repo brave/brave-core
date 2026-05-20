@@ -9,6 +9,7 @@
 #include <string>
 #include <string_view>
 
+#include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "url/gurl.h"
 

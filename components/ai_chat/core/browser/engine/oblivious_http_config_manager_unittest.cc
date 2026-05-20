@@ -5,13 +5,18 @@
 
 #include "brave/components/ai_chat/core/browser/engine/oblivious_http_config_manager.h"
 
+#include <list>
 #include <memory>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include "base/base64.h"
+#include "base/containers/flat_map.h"
 #include "base/json/values_util.h"
+#include "base/memory/raw_ref.h"
+#include "base/numerics/clamped_math.h"
 #include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
@@ -22,7 +27,9 @@
 #include "brave/components/api_request_helper/mock_api_request_helper.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/prefs/testing_pref_service.h"
+#include "net/base/net_errors.h"
 #include "net/http/http_status_code.h"
+#include "net/traffic_annotation/network_traffic_annotation.h"
 #include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"

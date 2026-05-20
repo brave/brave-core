@@ -7,13 +7,17 @@
 
 #include <algorithm>
 #include <iterator>
+#include <ostream>
+#include <string>
 #include <utility>
 #include <vector>
 
 #include "base/check.h"
+#include "base/functional/callback.h"
 #include "base/strings/utf_string_conversions.h"
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/bookmarks/browser/bookmark_node.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
 
 namespace ai_chat {
 

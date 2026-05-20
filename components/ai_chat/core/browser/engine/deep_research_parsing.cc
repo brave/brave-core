@@ -5,10 +5,17 @@
 
 #include "brave/components/ai_chat/core/browser/engine/deep_research_parsing.h"
 
+#include <stdint.h>
+
+#include <optional>
+#include <ostream>
+#include <string_view>
 #include <utility>
+#include <vector>
 
 #include "base/logging.h"
 #include "base/numerics/safe_conversions.h"
+#include "base/values.h"
 #include "url/gurl.h"
 
 namespace ai_chat {

@@ -5,17 +5,35 @@
 
 #include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
 
+#include <stddef.h>
+
+#include <algorithm>
+#include <functional>
+#include <iterator>
+#include <ostream>
+#include <string_view>
+#include <utility>
+
+#include "absl/hash/hash.h"
+#include "base/check.h"
 #include "base/containers/adapters.h"
+#include "base/containers/adapters_internal.h"
+#include "base/containers/flat_map.h"
 #include "base/containers/span.h"
+#include "base/functional/function_ref.h"
 #include "base/json/json_writer.h"
+#include "base/metrics/field_trial_params.h"
+#include "base/numerics/safe_conversions.h"
 #include "base/strings/escape.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
+#include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/prefs.h"
-#include "components/prefs/pref_service.h"
 #include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
+#include "url/gurl.h"
+#include "url/origin.h"
 
 namespace ai_chat {
 

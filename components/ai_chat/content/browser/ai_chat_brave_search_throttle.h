@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_AI_CHAT_BRAVE_SEARCH_THROTTLE_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_AI_CHAT_BRAVE_SEARCH_THROTTLE_H_
 
+#include <stdint.h>
+
 #include <optional>
 #include <string>
 
@@ -26,6 +28,7 @@ class WebContents;
 
 namespace content {
 struct PermissionResult;
+class NavigationThrottleRegistry;
 }  // namespace content
 
 class PrefService;

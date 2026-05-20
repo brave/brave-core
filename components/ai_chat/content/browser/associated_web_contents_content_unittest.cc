@@ -5,31 +5,46 @@
 
 #include "brave/components/ai_chat/content/browser/associated_web_contents_content.h"
 
+#include <functional>
+#include <initializer_list>
 #include <memory>
+#include <optional>
+#include <ostream>
 #include <string>
+#include <tuple>
 
+#include "base/functional/bind.h"
+#include "base/memory/raw_ref.h"
+#include "base/process/kill.h"
+#include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
 #include "base/test/test_future.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
+#include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
-#include "brave/components/ai_chat/core/browser/conversation_handler.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "components/favicon/content/content_favicon_driver.h"
 #include "components/favicon/core/test/mock_favicon_service.h"
 #include "components/pdf/common/constants.h"
-#include "content/public/browser/navigation_entry.h"
+#include "content/public/browser/navigation_controller.h"
+#include "content/public/browser/render_frame_host.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/test/navigation_simulator.h"
 #include "content/public/test/test_renderer_host.h"
 #include "content/public/test/web_contents_tester.h"
 #include "content/test/test_web_contents.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
+#include "mojo/public/cpp/system/message_pipe.h"
 #include "pdf/buildflags.h"
 #include "services/service_manager/public/cpp/interface_provider.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "third_party/blink/public/mojom/content_extraction/ai_page_content.mojom.h"
+#include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_PDF)
 #include "components/pdf/browser/pdf_document_helper.h"

@@ -6,20 +6,35 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_FULL_SCREENSHOTTER_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_FULL_SCREENSHOTTER_H_
 
+#include <stddef.h>
+#include <stdint.h>
+
 #include <memory>
 #include <queue>
 #include <string>
 #include <vector>
 
+#include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/types/expected.h"
 #include "components/paint_preview/browser/paint_preview_base_service.h"
 #include "components/paint_preview/public/paint_preview_compositor_service.h"
+#include "components/services/paint_preview_compositor/public/mojom/paint_preview_compositor.mojom.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/size.h"
+
+class SkBitmap;
+namespace gfx {
+class Rect;
+}  // namespace gfx
+namespace paint_preview {
+class PaintPreviewCompositorClient;
+class PaintPreviewCompositorService;
+struct CaptureResult;
+}  // namespace paint_preview
 
 namespace ai_chat {
 

@@ -13,12 +13,16 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
 #include "base/location.h"
 #include "base/logging.h"
+#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "base/one_shot_event.h"
 #include "base/strings/strcat.h"
+#include "base/time/time.h"
 #include "brave/brave_domains/service_domains.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/brave_search_responses.h"
@@ -28,6 +32,7 @@
 #include "net/base/url_util.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "url/gurl.h"
 #include "url/url_constants.h"
 
 namespace ai_chat {

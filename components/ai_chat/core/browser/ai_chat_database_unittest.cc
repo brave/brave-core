@@ -7,18 +7,22 @@
 
 #include <stdint.h>
 
+#include <initializer_list>
 #include <memory>
 #include <optional>
 #include <string>
 #include <utility>
 #include <vector>
 
+#include "base/base_paths.h"
 #include "base/check.h"
-#include "base/containers/flat_tree.h"
 #include "base/files/file_path.h"
 #include "base/files/scoped_temp_dir.h"
+#include "base/location.h"
+#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
+#include "base/numerics/clamped_math.h"
 #include "base/path_service.h"
-#include "base/run_loop.h"
 #include "base/strings/strcat.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
@@ -27,6 +31,7 @@
 #include "brave/components/ai_chat/core/browser/test_utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "components/os_crypt/async/browser/os_crypt_async.h"
 #include "components/os_crypt/async/browser/test_utils.h"
 #include "components/os_crypt/sync/os_crypt_mocker.h"
 #include "sql/init_status.h"
@@ -34,6 +39,7 @@
 #include "sql/test/test_helpers.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
+#include "url/gurl.h"
 
 namespace ai_chat {
 class AIChatDatabaseTest : public testing::Test,

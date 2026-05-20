@@ -5,18 +5,27 @@
 
 #include "brave/components/ai_chat/core/browser/engine/conversation_api_v2_client.h"
 
+#include <functional>
+#include <list>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <vector>
 
+#include "absl/hash/hash.h"
+#include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
-#include "base/json/json_writer.h"
+#include "base/functional/callback_tags.h"
+#include "base/memory/raw_ref.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/numerics/clamped_math.h"
 #include "base/run_loop.h"
-#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
+#include "base/time/time.h"
+#include "base/types/expected.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
@@ -24,11 +33,9 @@
 #include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
 #include "brave/components/ai_chat/core/browser/engine/test_utils.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
-#include "brave/components/ai_chat/core/common/features.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
-#include "brave/components/ai_chat/core/common/prefs.h"
+#include "brave/components/ai_chat/core/common/test_mojom_printers.h"
 #include "brave/components/ai_chat/core/common/test_utils.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/api_request_helper/mock_api_request_helper.h"
@@ -36,13 +43,17 @@
 #include "components/os_crypt/async/browser/os_crypt_async.h"
 #include "components/os_crypt/async/browser/test_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "net/base/net_errors.h"
 #include "net/http/http_request_headers.h"
 #include "net/http/http_status_code.h"
+#include "net/traffic_annotation/network_traffic_annotation.h"
 #include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
+#include "url/gurl.h"
+#include "url/url_constants.h"
 
 using ::testing::_;
 using ::testing::Sequence;

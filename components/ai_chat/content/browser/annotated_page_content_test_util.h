@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_ANNOTATED_PAGE_CONTENT_TEST_UTIL_H_
 
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "components/optimization_guide/proto/features/common_quality_data.pb.h"

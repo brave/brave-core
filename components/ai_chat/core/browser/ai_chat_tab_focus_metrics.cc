@@ -5,7 +5,20 @@
 
 #include "brave/components/ai_chat/core/browser/ai_chat_tab_focus_metrics.h"
 
+#include <stdint.h>
+
+#include <atomic>
+#include <iterator>
+#include <string_view>
+
+#include "base/functional/bind.h"
+#include "base/location.h"
+#include "base/memory/raw_ref.h"
+#include "base/metrics/histogram_base.h"
+#include "base/metrics/histogram_functions_internal_overloads.h"
 #include "base/metrics/histogram_macros.h"
+#include "base/numerics/clamped_math.h"
+#include "base/time/time.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"

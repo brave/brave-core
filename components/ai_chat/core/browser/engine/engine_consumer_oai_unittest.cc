@@ -5,17 +5,26 @@
 
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_oai.h"
 
+#include <functional>
+#include <initializer_list>
 #include <optional>
 #include <string>
 #include <string_view>
 #include <vector>
 
+#include "absl/hash/hash.h"
+#include "base/containers/flat_map.h"
+#include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
 #include "base/i18n/time_formatting.h"
 #include "base/json/json_writer.h"
 #include "base/json/string_escape.h"
+#include "base/location.h"
+#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
@@ -23,6 +32,7 @@
 #include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
+#include "base/types/expected.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
@@ -31,13 +41,11 @@
 #include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
 #include "brave/components/ai_chat/core/browser/engine/test_utils.h"
 #include "brave/components/ai_chat/core/browser/tools/mock_tool.h"
-#include "brave/components/ai_chat/core/browser/tools/tool_input_properties.h"
-#include "brave/components/ai_chat/core/browser/utils.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/customization_settings.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/prefs.h"
+#include "brave/components/ai_chat/core/common/test_mojom_printers.h"
 #include "brave/components/ai_chat/core/common/test_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/testing_pref_service.h"

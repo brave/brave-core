@@ -6,21 +6,29 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_ENGINE_CONSUMER_CONVERSATION_API_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ENGINE_ENGINE_CONSUMER_CONVERSATION_API_H_
 
+#include <stdint.h>
+
 #include <memory>
+#include <optional>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
+#include "base/functional/callback.h"
+#include "base/functional/callback_forward.h"
+#include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/conversation_api_client.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 
 template <class T>
 class scoped_refptr;
-
 class PrefService;
 
 namespace network {
@@ -30,6 +38,9 @@ class SharedURLLoaderFactory;
 namespace ai_chat {
 
 class AIChatCredentialManager;
+class ModelService;
+struct PageContent;
+
 namespace mojom {
 class LeoModelOptions;
 class ModelOptions;

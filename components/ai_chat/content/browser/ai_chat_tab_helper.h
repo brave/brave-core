@@ -8,11 +8,16 @@
 
 #include <memory>
 
+#include "base/check.h"
 #include "brave/components/ai_chat/content/browser/associated_web_contents_content.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
+
+namespace content {
+class WebContents;
+}  // namespace content
 
 namespace ai_chat {
 

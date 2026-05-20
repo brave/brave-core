@@ -5,8 +5,13 @@
 
 #include "brave/components/ai_chat/core/browser/engine/oai_serialization_utils.h"
 
+#include <optional>
+#include <string>
+#include <string_view>
+#include <vector>
+
+#include "base/containers/flat_map.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"

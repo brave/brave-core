@@ -6,14 +6,16 @@
 #include "brave/components/ai_chat/core/browser/engine/conversation_api_parsing.h"
 
 #include <string>
+#include <string_view>
 #include <utility>
+#include <variant>
 #include <vector>
 
 #include "base/notreached.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/engine/conversation_api_client.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "url/gurl.h"
 
 namespace ai_chat {
 
