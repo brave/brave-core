@@ -12,16 +12,21 @@ source_set("oblivious_http") {
   sources = [
     "oblivious_http_chunk_processor.cc",
     "oblivious_http_chunk_processor.h",
+    "utils.cc",
+    "utils.h",
   ]
 
   public_deps = [
-    "//brave/services/network/public/mojom",
     "//mojo/public/cpp/bindings",
     "//net",
     "//services/network/public/cpp",
+    "//services/network/public/mojom",
   ]
 
-  deps = [ "//base" ]
+  deps = [
+    "//base",
+    "//brave/components/brave_service_keys",
+  ]
 }
 
 source_set("unit_tests") {
