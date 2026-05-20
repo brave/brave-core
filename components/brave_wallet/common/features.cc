@@ -33,6 +33,8 @@ BASE_FEATURE(kBraveWalletZCashFeature,
 BASE_FEATURE(kBraveWalletPolkadotFeature,
              "BraveWalletPolkadot",
              base::FEATURE_DISABLED_BY_DEFAULT);
+const base::FeatureParam<bool> kPolkadotParachainsEnabled{
+    &kBraveWalletPolkadotFeature, "parachains_enabled", false};
 
 #if !defined(OFFICIAL_BUILD)
 BASE_FEATURE(kBraveWalletDebugFeature,

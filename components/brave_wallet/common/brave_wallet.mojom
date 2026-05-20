@@ -1556,7 +1556,11 @@ const string kZCashTestnet = "zcash_testnet";
 
 const string kPolkadotMainnet = "polkadot_mainnet";
 
+const string kPolkadotMainnetAssetHub = "polkadot_asset_hub";
+
 const string kPolkadotTestnet = "polkadot_testnet";
+
+const string kPolkadotTestnetAssetHub = "westend_asset_hub";
 
 // End of polkadot chains.
 const string kArbitrumNovaChainId = "0xa4ba";

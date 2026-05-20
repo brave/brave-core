@@ -26,6 +26,7 @@ BASE_DECLARE_FEATURE(kBraveWalletZCashFeature);
 extern const base::FeatureParam<bool> kZCashShieldedTransactionsEnabled;
 
 BASE_DECLARE_FEATURE(kBraveWalletPolkadotFeature);
+extern const base::FeatureParam<bool> kPolkadotParachainsEnabled;
 
 #if !defined(OFFICIAL_BUILD)
 BASE_DECLARE_FEATURE(kBraveWalletDebugFeature);

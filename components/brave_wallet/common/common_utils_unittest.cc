@@ -646,8 +646,16 @@ TEST(CommonUtils, GetSupportedKeyringsForKnownNetwork) {
                                                   mojom::kPolkadotMainnet),
               ElementsAreArray({mojom::KeyringId::kPolkadotMainnet,
                                 mojom::KeyringId::kPolkadotImport}));
+  EXPECT_THAT(GetSupportedKeyringsForKnownNetwork(
+                  mojom::CoinType::DOT, mojom::kPolkadotMainnetAssetHub),
+              ElementsAreArray({mojom::KeyringId::kPolkadotMainnet,
+                                mojom::KeyringId::kPolkadotImport}));
   EXPECT_THAT(GetSupportedKeyringsForKnownNetwork(mojom::CoinType::DOT,
                                                   mojom::kPolkadotTestnet),
+              ElementsAreArray({mojom::KeyringId::kPolkadotTestnet,
+                                mojom::KeyringId::kPolkadotImportTestnet}));
+  EXPECT_THAT(GetSupportedKeyringsForKnownNetwork(
+                  mojom::CoinType::DOT, mojom::kPolkadotTestnetAssetHub),
               ElementsAreArray({mojom::KeyringId::kPolkadotTestnet,
                                 mojom::KeyringId::kPolkadotImportTestnet}));
 
