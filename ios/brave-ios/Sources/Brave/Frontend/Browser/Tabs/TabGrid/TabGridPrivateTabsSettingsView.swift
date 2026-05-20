@@ -69,7 +69,7 @@ struct TabGridPrivateTabsSettings: View {
           Toggle(isOn: $rememberBrowsingMode.value) {
             Label {
               Text(Strings.TabsSettings.rememberBrowsingModeTitle)
-        .tint(Color(braveSystemName: .primitivePrimary40))
+                .tint(Color(braveSystemName: .primitivePrimary40))
               Text(Strings.TabsSettings.rememberBrowsingModeDescription)
                 .foregroundStyle(Color(braveSystemName: .textSecondary))
                 .font(.footnote)
@@ -86,7 +86,6 @@ struct TabGridPrivateTabsSettings: View {
             }
           }
           .tint(Color.accentColor)
-          .listRowBackground(Color(uiColor: .secondaryBraveGroupedBackground))
         }
 
         if let authenticationKind {

@@ -614,7 +614,7 @@ class TabManager: NSObject {
     saveTabOrder()
   }
 
-  private func saveTabOrder(synchronously: Bool = false) {
+  private func saveTabOrder() {
     if Preferences.Privacy.privateBrowsingOnly.value
       || (privateBrowsingManager.isPrivateBrowsing
         && !Preferences.Privacy.persistentPrivateBrowsing.value)
@@ -622,7 +622,7 @@ class TabManager: NSObject {
       return
     }
     let allTabIds = allTabs.compactMap { $0.id }
-    SessionTab.saveTabOrder(tabIds: allTabIds, synchronously: synchronously)
+    SessionTab.saveTabOrder(tabIds: allTabIds)
   }
 
   @MainActor func configureTab(
@@ -701,7 +701,7 @@ class TabManager: NSObject {
     }
   }
 
-  func saveAllTabs(synchronously: Bool = false) {
+  func saveAllTabs() {
     if Preferences.Privacy.privateBrowsingOnly.value
       || (privateBrowsingManager.isPrivateBrowsing
         && !Preferences.Privacy.persistentPrivateBrowsing.value)
@@ -711,40 +711,24 @@ class TabManager: NSObject {
 
     let tabs =
       Preferences.Privacy.persistentPrivateBrowsing.value ? allTabs : tabs(isPrivate: false)
-    if synchronously {
-      SessionTab.persistTabs(
-        windowId: windowId,
-        tabs: tabs.map {
-          (
-            $0.id,
-            $0.sessionData ?? Data(),
-            $0.title ?? "",
-            $0.visibleURL ?? TabManager.ntpInteralURL,
-            $0.isPrivate
-          )
-        },
-        synchronously: true
-      )
-    } else {
-      SessionTab.updateAll(
-        synchronously: false,
-        tabs: tabs.map {
-          (
-            $0.id,
-            $0.sessionData ?? Data(),
-            $0.title ?? "",
-            $0.visibleURL ?? TabManager.ntpInteralURL
-          )
-        }
-      )
-    }
+    SessionTab.persistTabs(
+      windowId: windowId,
+      tabs: tabs.map {
+        (
+          $0.id,
+          $0.sessionData ?? Data(),
+          $0.title ?? "",
+          $0.visibleURL ?? TabManager.ntpInteralURL,
+          $0.isPrivate
+        )
+      }
+    )
   }
 
   /// Persists tab session data and tab order when the app backgrounds.
   func persistSessionOnBackground() {
-    SessionWindow.createWindow(isSelected: true, uuid: windowId)
-    saveAllTabs(synchronously: true)
-    saveTabOrder(synchronously: true)
+    saveAllTabs()
+    saveTabOrder()
   }
 
   func saveTab(_ tab: some TabState, saveOrder: Bool = false) {
@@ -1359,8 +1343,9 @@ class TabManager: NSObject {
     }
   }
 
-  @MainActor private func resolveRestoredTabSelection(from savedTabs: [SessionTab]) -> (any TabState)?
-  {
+  @MainActor private func resolveRestoredTabSelection(
+    from savedTabs: [SessionTab]
+  ) -> (any TabState)? {
     let isPrivate = privateBrowsingManager.isPrivateBrowsing
 
     if let lastId = Preferences.Privacy.lastSelectedTabIdByWindow.value[windowId.uuidString]
