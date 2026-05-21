@@ -14,12 +14,14 @@
 #include "base/check_op.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "base/time/time.h"
 #include "base/uuid.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/net/base/url_util.h"
+#include "url/origin.h"
 
 namespace {
 

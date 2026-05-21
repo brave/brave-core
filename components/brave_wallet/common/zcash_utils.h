@@ -6,6 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_ZCASH_UTILS_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_ZCASH_UTILS_H_
 
+#include <stddef.h>
+#include <stdint.h>
+
 #include <array>
 #include <limits>
 #include <optional>
@@ -15,6 +18,7 @@
 
 #include "base/containers/span.h"
 #include "base/types/expected.h"
+#include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace brave_wallet {

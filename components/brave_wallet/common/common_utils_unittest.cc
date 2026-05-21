@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/common/common_utils.h"
 
+#include <stddef.h>
+
 #include "base/test/gtest_util.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_wallet/common/features.h"

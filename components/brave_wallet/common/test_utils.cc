@@ -5,10 +5,13 @@
 
 #include "brave/components/brave_wallet/common/test_utils.h"
 
+#include "base/containers/flat_map.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/values.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
+#include "url/gurl.h"
 
 namespace brave_wallet {
 

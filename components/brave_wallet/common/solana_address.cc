@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/common/solana_address.h"
 
+#include <stddef.h>
+
 #include <optional>
 
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"

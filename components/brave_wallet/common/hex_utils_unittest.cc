@@ -5,11 +5,13 @@
 
 #include "brave/components/brave_wallet/common/hex_utils.h"
 
+#include <array>
 #include <limits>
 #include <string_view>
 #include <vector>
 
 #include "base/containers/span.h"
+#include "base/strings/string_number_conversions.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {

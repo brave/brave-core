@@ -6,9 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_FIL_ADDRESS_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_FIL_ADDRESS_H_
 
+#include <stdint.h>
+
+#include <optional>
 #include <string>
 #include <vector>
 
+#include "base/containers/span.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace brave_wallet {

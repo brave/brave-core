@@ -6,9 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_ETH_SIGN_TYPED_DATA_HELPER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_ETH_SIGN_TYPED_DATA_HELPER_H_
 
+#include <stdint.h>
+
 #include <memory>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 

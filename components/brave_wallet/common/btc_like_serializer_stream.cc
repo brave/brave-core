@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/common/btc_like_serializer_stream.h"
 
+#include <utility>
+
 #include "base/containers/span.h"
 #include "base/numerics/safe_conversions.h"
 

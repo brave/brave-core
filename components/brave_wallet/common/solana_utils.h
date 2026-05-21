@@ -6,6 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_SOLANA_UTILS_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_SOLANA_UTILS_H_
 
+#include <stddef.h>
+#include <stdint.h>
+
 #include <optional>
 #include <string>
 #include <string_view>

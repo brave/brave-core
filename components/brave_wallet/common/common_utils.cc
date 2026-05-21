@@ -5,6 +5,9 @@
 
 #include "brave/components/brave_wallet/common/common_utils.h"
 
+#include <stddef.h>
+
+#include <ostream>
 #include <ranges>
 #include <utility>
 
@@ -12,13 +15,13 @@
 #include "base/check_op.h"
 #include "base/dcheck_is_on.h"
 #include "base/feature_list.h"
+#include "base/metrics/field_trial_params.h"
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/net/base/url_util.h"
-#include "net/base/url_util.h"
 
 namespace brave_wallet {
 

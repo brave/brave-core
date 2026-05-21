@@ -6,10 +6,10 @@
 #include "brave/components/brave_wallet/common/hash_utils.h"
 
 #include <array>
-#include <cstdint>
 #include <vector>
 
 #include "base/containers/span.h"
+#include "base/numerics/safe_conversions.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"

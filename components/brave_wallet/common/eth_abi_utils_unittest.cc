@@ -6,7 +6,9 @@
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 
 #include <algorithm>
+#include <initializer_list>
 #include <optional>
+#include <string_view>
 #include <utility>
 #include <vector>
 
