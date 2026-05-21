@@ -97,11 +97,11 @@ PACKAGE_DOWNLOAD_URL_BASE = (
 def _check_call(*command,
                 cwd=None,
                 capture_stdout: bool = False) -> str | None:
-    """Run *command* as a subprocess, logging the invocation and any stderr.
+    """Run *command* as a subprocess, logging the invocation.
 
-    Logs the full command string at INFO level before executing it.  If the
-    process exits with a non-zero return code, any captured stderr is logged
-    at WARNING level before the `CalledProcessError` is re-raised.
+    Logs the full command string at INFO level before executing it.  Stderr
+    is inherited from the parent process so subprocess output streams
+    directly to the terminal.
 
     Args:
         *command: The program and its arguments (passed as positional args,
@@ -121,17 +121,10 @@ def _check_call(*command,
     """
     logging.info(' >>>> %s', ' '.join(str(a) for a in command))
 
-    try:
-        result = subprocess.run(
-            command,
-            cwd=cwd,
-            check=True,
-            stdout=subprocess.PIPE if capture_stdout else None,
-            stderr=subprocess.PIPE)
-    except subprocess.CalledProcessError as e:
-        if e.stderr:
-            logging.warning(e.stderr.decode('utf-8', errors='replace').strip())
-        raise
+    result = subprocess.run(command,
+                            cwd=cwd,
+                            check=True,
+                            stdout=subprocess.PIPE if capture_stdout else None)
 
     if capture_stdout:
         return result.stdout.decode('utf-8', errors='replace')

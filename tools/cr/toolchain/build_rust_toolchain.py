@@ -69,6 +69,7 @@ import logging
 from pathlib import Path, PurePath
 import os
 import platform
+import re
 import shutil
 import subprocess
 import sys
@@ -414,12 +415,36 @@ class ToolchainBuilder:
                 'https://vhemnu34de4lf5cj6bx2wwshyy0egdxk.lambda-url.us-west-'
                 '2.on.aws/windows-hermetic-toolchain/')
 
+        if re.fullmatch(r'\d+\.\d+\.\d+\.\d+', ref):
+            # Chromium release tag (e.g. `150.0.7850.1`): fetch it as a tag so
+            # it lands at `refs/tags/<ref>` in the local repo.
+            _check_call('git',
+                        'fetch',
+                        '--no-tags',
+                        'origin',
+                        f'refs/tags/{ref}:refs/tags/{ref}',
+                        cwd=self.chromium_src)
+        else:
+            _check_call('git', 'fetch', 'origin', ref, cwd=self.chromium_src)
+
+        # We are doing a `git checkout --force` rather than just using
+        # `gclient sync -r {ref}`, as there is a an gclient bug that lurks
+        # around which is not clear if we are hitting on the window bot, so for
+        # the sake of preventing that to beging with, we do the checkout
+        # manually.
+        #
+        # For details see:
+        #   https://github.com/brave/brave-browser/issues/44921
+        _check_call('git',
+                    'checkout',
+                    '--force',
+                    'FETCH_HEAD',
+                    cwd=self.chromium_src)
+
         _check_call('gclient',
                     'sync',
                     '--force',
                     '-D',
-                    '-r',
-                    f'src@{ref}',
                     cwd=self.chromium_src)
         _check_call('git',
                     'log',
@@ -462,7 +487,6 @@ class ToolchainBuilder:
         self.chromium_src.parent.mkdir(parents=True, exist_ok=True)
         _check_call('fetch',
                     '--nohooks',
-                    '--nohistory',
                     'chromium',
                     cwd=self.chromium_src.parent)
 
