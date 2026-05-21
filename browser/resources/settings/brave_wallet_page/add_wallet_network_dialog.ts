@@ -29,12 +29,6 @@ export interface ExtendedNetworkInfo extends NetworkInfo {
 
 export type UrlType = 'rpc' | 'icon' | 'block';
 
-declare global {
-  interface Window {
-    testing: any;
-  }
-}
-
 export class SettingsBraveAddWalletNetworkDialogElement extends SettingsBraveAddWalletNetworkDialogElementBase {
   static get is() {
     return 'add-wallet-network-dialog'

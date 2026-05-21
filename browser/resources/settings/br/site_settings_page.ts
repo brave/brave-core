@@ -185,7 +185,7 @@ RegisterPolymerComponentReplacement(
             // </if>
           }
         }
-        (lists as any).shieldsBasic = [
+        ;(lists as unknown as {shieldsBasic: unknown[]}).shieldsBasic = [
           {
             route: routes.SITE_SETTINGS_SHIELDS_STATUS,
             id: ContentSettingsTypes.BRAVE_SHIELDS,

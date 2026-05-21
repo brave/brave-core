@@ -128,7 +128,7 @@ class BraveLeoPersonalization extends BraveLeoPersonalizationBase {
       })
   }
 
-  onModelSelectionChange_(e: any) {
+  onModelSelectionChange_(e: CustomEvent<{value: string}>) {
     this.browserProxy_.getSettingsHelper().setDefaultModelKey(e.detail.value)
   }
 
@@ -165,7 +165,7 @@ class BraveLeoPersonalization extends BraveLeoPersonalizationBase {
     router.navigateTo(router.getRoutes().BRAVE_LEO_CUSTOMIZATION);
   }
 
-  private onTabOrganizationModelChange_(e: any) {
+  private onTabOrganizationModelChange_(e: CustomEvent<{value: string}>) {
     this.setPrefValue(
       'brave.ai_chat.tab_organization_model_key',
       e.detail.value)
