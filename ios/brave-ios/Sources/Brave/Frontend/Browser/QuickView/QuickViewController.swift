@@ -133,7 +133,7 @@ class QuickViewController: UIViewController {
           url: url,
           tab: tab,
           domain: Domain.getOrCreate(forUrl: url, persistent: !tab.isPrivate),
-          isAdancedControlsEnabled: false
+          isAdvancedControlsEnabled: false
         ) { [weak self] action in
           guard let self else { return }
           switch action {

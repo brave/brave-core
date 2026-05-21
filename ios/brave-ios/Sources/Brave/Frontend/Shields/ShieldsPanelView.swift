@@ -38,14 +38,14 @@ struct ShieldsPanelView: View {
     url: URL,
     tab: some TabState,
     domain: Domain,
-    isAdancedControlsEnabled: Bool,
+    isAdvancedControlsEnabled: Bool,
     callback: @escaping (Action) -> Void
   ) {
     self.url = url
     self.tab = tab
     self.viewModel = ShieldsSettingsViewModel(
       tab: tab,
-      isAdancedControlsEnabled: isAdancedControlsEnabled
+      isAdvancedControlsEnabled: isAdvancedControlsEnabled
     )
     self.actionCallback = callback
     self.displayHost =
@@ -369,14 +369,14 @@ class ShieldsPanelViewController: UIHostingController<ShieldsPanelView>, Popover
     url: URL,
     tab: some TabState,
     domain: Domain,
-    isAdancedControlsEnabled: Bool = true,
+    isAdvancedControlsEnabled: Bool = true,
     callback: @escaping (ShieldsPanelView.Action) -> Void
   ) {
     let shieldsPanelView = ShieldsPanelView(
       url: url,
       tab: tab,
       domain: domain,
-      isAdancedControlsEnabled: isAdancedControlsEnabled,
+      isAdvancedControlsEnabled: isAdvancedControlsEnabled,
       callback: callback
     )
     self.shieldsPanelView = shieldsPanelView

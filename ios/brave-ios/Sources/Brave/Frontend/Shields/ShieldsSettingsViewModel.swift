@@ -62,7 +62,7 @@ class ShieldsSettingsViewModel: ObservableObject {
   /// If we are updating our state values, we don't want to assign to the domain preference.
   private var isUpdatingState: Bool = false
 
-  init(tab: some TabState, isAdancedControlsEnabled: Bool) {
+  init(tab: some TabState, isAdvancedControlsEnabled: Bool) {
     self.tab = tab
     self.shieldsEnabled =
       tab.braveShieldsHelper?.isBraveShieldsEnabled(for: tab.visibleURL)
@@ -98,7 +98,7 @@ class ShieldsSettingsViewModel: ObservableObject {
       self?.stats = tab?.contentBlocker?.stats ?? .init()
     }
 
-    self.advancedControlsEnabled = isAdancedControlsEnabled
+    self.advancedControlsEnabled = isAdvancedControlsEnabled
   }
 
   /// Update our properties value without affecting the Domain's value.

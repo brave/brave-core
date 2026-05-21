@@ -10,16 +10,6 @@ import SwiftUI
 import UIKit
 import Web
 
-struct InvisibleUIView: UIViewRepresentable {
-  let uiView = UIView()
-  func makeUIView(context: Context) -> UIView {
-    uiView.backgroundColor = .clear
-    return uiView
-  }
-  func updateUIView(_ uiView: UIView, context: Context) {
-  }
-}
-
 enum QuickViewActionButton {
   case shield
   case playlist
