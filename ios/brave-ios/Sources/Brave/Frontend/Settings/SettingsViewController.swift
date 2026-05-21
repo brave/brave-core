@@ -1167,7 +1167,8 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
         selection: { [unowned self] in
           self.navigationController?.pushViewController(
             NTPTableViewController(
-              rewards: rewards,
+              rewards: BraveRewards.isSupported(prefService: braveCore.profile.prefs)
+                ? rewards : nil,
               linkTapped: { [unowned self] request in
                 self.tabManager.addTabAndSelect(
                   request,

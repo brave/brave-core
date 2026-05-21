@@ -300,7 +300,8 @@ public class BrowserViewController: UIViewController {
     feedDataSource.historyAPI = profileController.historyAPI
     backgroundDataSource = .init(
       service: profileController.backgroundImagesService,
-      rewards: rewards,
+      rewards: BraveRewards.isSupported(prefService: profileController.profile.prefs)
+        ? rewards : nil,
       privateBrowsingManager: privateBrowsingManager
     )
 
