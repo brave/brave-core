@@ -1970,7 +1970,8 @@ public class BytecodeTest {
                         MonotonicObservableSupplier.class,
                         NonNullObservableSupplier.class,
                         OneshotSupplier.class,
-                        BottomBarHostManager.class));
+                        BottomBarHostManager.class,
+                        Supplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkToolbar",
