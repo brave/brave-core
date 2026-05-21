@@ -686,14 +686,16 @@ public class BravePrivacySettings extends PrivacySettings {
             UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                     .setBoolean(BravePref.GOOGLE_LOGIN_CONTROL_TYPE, (boolean) newValue);
         } else if (PREF_SOCIAL_BLOCKING_FACEBOOK.equals(key)) {
-            UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                    .setBoolean(BravePref.FB_EMBED_CONTROL_TYPE, (boolean) newValue);
+            BraveLocalState.get().setBoolean(BravePref.FB_EMBED_CONTROL_TYPE, (boolean) newValue);
+            BraveLocalState.commitPendingWrite();
         } else if (PREF_SOCIAL_BLOCKING_TWITTER.equals(key)) {
-            UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+            BraveLocalState.get()
                     .setBoolean(BravePref.TWITTER_EMBED_CONTROL_TYPE, (boolean) newValue);
+            BraveLocalState.commitPendingWrite();
         } else if (PREF_SOCIAL_BLOCKING_LINKEDIN.equals(key)) {
-            UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+            BraveLocalState.get()
                     .setBoolean(BravePref.LINKED_IN_EMBED_CONTROL_TYPE, (boolean) newValue);
+            BraveLocalState.commitPendingWrite();
         } else if (PREF_CLEAR_ON_EXIT.equals(key)) {
             preferencesManager.writeBoolean(
                     BravePreferenceKeys.BRAVE_CLEAR_ON_EXIT, (boolean) newValue);
@@ -918,18 +920,15 @@ public class BravePrivacySettings extends PrivacySettings {
         }
         if (mSocialBlockingFacebook != null) {
             mSocialBlockingFacebook.setChecked(
-                    UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                            .getBoolean(BravePref.FB_EMBED_CONTROL_TYPE));
+                    BraveLocalState.get().getBoolean(BravePref.FB_EMBED_CONTROL_TYPE));
         }
         if (mSocialBlockingTwitter != null) {
             mSocialBlockingTwitter.setChecked(
-                    UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                            .getBoolean(BravePref.TWITTER_EMBED_CONTROL_TYPE));
+                    BraveLocalState.get().getBoolean(BravePref.TWITTER_EMBED_CONTROL_TYPE));
         }
         if (mSocialBlockingLinkedin != null) {
             mSocialBlockingLinkedin.setChecked(
-                    UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                            .getBoolean(BravePref.LINKED_IN_EMBED_CONTROL_TYPE));
+                    BraveLocalState.get().getBoolean(BravePref.LINKED_IN_EMBED_CONTROL_TYPE));
         }
 
         if (mDeAmpPref != null) {
