@@ -31,6 +31,7 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
             Arrays.asList("talk.brave.com", "talk.bravesoftware.com", "talk.brave.software");
     private static final List<String> sYouTubeHosts =
             Arrays.asList("music.youtube.com", "www.youtube.com", "m.youtube.com", "youtube.com");
+    private static final List<String> sSpotifyHosts = Arrays.asList("open.spotify.com");
 
     public static boolean isBraveTalk(WebContents webContents) {
         if (webContents == null) {
@@ -72,6 +73,14 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
                 && sYouTubeHosts.contains(pageUrl.getHost());
     }
 
+    private boolean isSpotify(WebContents webContents) {
+        if (webContents == null) return false;
+        GURL pageUrl = webContents.getLastCommittedUrl();
+        return pageUrl.isValid()
+                && pageUrl.getScheme().equals(UrlConstants.HTTPS_SCHEME)
+                && sSpotifyHosts.contains(pageUrl.getHost());
+    }
+
     private boolean isBackgroundVideo(WebContents webContents) {
         // We check the command line switch rather than reading the preference directly because
         // this class is in the components layer and cannot access Profile or UserPrefs (chrome
@@ -82,7 +91,7 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
         // In C++ this switch is defined as switches::kDisableBackgroundMediaSuspend.
         boolean enabled =
                 CommandLine.getInstance().hasSwitch("disable-background-media-suspend")
-                        && isYouTube(webContents);
+                        && (isYouTube(webContents) || isSpotify(webContents));
         return enabled;
     }
 
