@@ -15,6 +15,7 @@ namespace psst {
        DOMString user_id;
        DOMString site_name;
        UserScriptTask[] tasks;
+       boolean? initial_execution;
     };
 
     dictionary PolicyTask {
@@ -24,8 +25,13 @@ namespace psst {
         DOMString? error_description;
     };
 
-    dictionary PolicyScriptResult {
+    dictionary PsstData {
         long progress;
         PolicyTask[] applied_tasks;
+    };
+
+    dictionary PolicyScriptResult {
+        DOMString? next_url;
+        PsstData psst;
     };
 };

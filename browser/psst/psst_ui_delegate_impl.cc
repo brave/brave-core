@@ -5,6 +5,7 @@
 
 #include "brave/browser/psst/psst_ui_delegate_impl.h"
 
+#include "base/strings/string_util.h"
 #include "brave/components/psst/common/pref_names.h"
 #include "brave/components/psst/common/psst_metadata_schema.h"
 #include "components/prefs/pref_service.h"
@@ -40,9 +41,24 @@ void PsstUiDelegateImpl::Show(
 
 void PsstUiDelegateImpl::UpdateTasks(
     long progress,
-    const std::vector<PolicyTask>& applied_tasks,
+    const std::vector<PolicyTask>& performed_tasks,
     const mojom::PsstStatus status) {
+  if (!ui_presenter_->IsDialogShown()) {
+    return;
+  }
+
   // Implementation for setting the current progress.
+  for (Observer& obs : observer_list_) {
+    if (performed_tasks.empty() && progress == 100) {
+      // Update common dialog status
+      obs.OnSetRequestStatus("", "");
+    } else {
+      // Update individual task statuses.
+      for (const PolicyTask& task : performed_tasks) {
+        obs.OnSetRequestStatus(task.uid, task.error_description);
+      }
+    }
+  }
 }
 
 std::optional<PsstWebsiteSettings> PsstUiDelegateImpl::GetPsstWebsiteSettings(
@@ -91,7 +107,7 @@ void PsstUiDelegateImpl::OnUserAcceptedPsstSettings(
       dialog_data_->user_id, std::move(perform_for_uids_list));
 
   if (apply_changes_callback_) {
-    std::move(apply_changes_callback_).Run();
+    std::move(apply_changes_callback_).Run(perform_for_uids);
   }
 }
 

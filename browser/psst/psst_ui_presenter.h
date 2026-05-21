@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_PSST_PSST_UI_PRESENTER_H_
 
 #include "base/functional/callback_forward.h"
+#include "url/origin.h"
 
 namespace psst {
 
