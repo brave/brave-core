@@ -186,7 +186,6 @@ export const publishers: BraveNews.Publishers = {
 export const feed: BraveNews.Feed = {
   hash: '123abc',
   featuredItem: {
-    promotedArticle: undefined,
     deal: undefined,
     article: {
       isDiscover: true,
@@ -214,7 +213,6 @@ export const feed: BraveNews.Feed = {
           'cardType': 0,
           'items': [
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -250,7 +248,6 @@ export const feed: BraveNews.Feed = {
           'cardType': 0,
           'items': [
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -286,7 +283,6 @@ export const feed: BraveNews.Feed = {
           'cardType': 1,
           'items': [
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -317,7 +313,6 @@ export const feed: BraveNews.Feed = {
               }
             },
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -353,7 +348,6 @@ export const feed: BraveNews.Feed = {
           'cardType': 2,
           'items': [
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -384,7 +378,6 @@ export const feed: BraveNews.Feed = {
               }
             },
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -415,7 +408,6 @@ export const feed: BraveNews.Feed = {
               }
             },
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -451,7 +443,6 @@ export const feed: BraveNews.Feed = {
           'cardType': 0,
           'items': [
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -487,7 +478,6 @@ export const feed: BraveNews.Feed = {
           'cardType': 0,
           'items': [
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -523,7 +513,6 @@ export const feed: BraveNews.Feed = {
           'cardType': 1,
           'items': [
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -554,7 +543,6 @@ export const feed: BraveNews.Feed = {
               }
             },
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -590,7 +578,6 @@ export const feed: BraveNews.Feed = {
           'cardType': 1,
           'items': [
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -621,7 +608,6 @@ export const feed: BraveNews.Feed = {
               }
             },
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -661,7 +647,6 @@ export const feed: BraveNews.Feed = {
           'cardType': 0,
           'items': [
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -697,7 +682,6 @@ export const feed: BraveNews.Feed = {
           'cardType': 0,
           'items': [
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -733,7 +717,6 @@ export const feed: BraveNews.Feed = {
           'cardType': 3,
           'items': [
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -764,7 +747,6 @@ export const feed: BraveNews.Feed = {
               }
             },
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -795,7 +777,6 @@ export const feed: BraveNews.Feed = {
               }
             },
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -831,7 +812,6 @@ export const feed: BraveNews.Feed = {
           'cardType': 1,
           'items': [
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -862,7 +842,6 @@ export const feed: BraveNews.Feed = {
               }
             },
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -898,7 +877,6 @@ export const feed: BraveNews.Feed = {
           'cardType': 0,
           'items': [
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -935,7 +913,6 @@ export const feed: BraveNews.Feed = {
           'items': [
             {
               article: undefined,
-              promotedArticle: undefined,
               deal: {
                 'data': {
                   'categoryName': 'Brave',
@@ -966,7 +943,6 @@ export const feed: BraveNews.Feed = {
             },
             {
               article: undefined,
-              promotedArticle: undefined,
               deal: {
                 'data': {
                   'categoryName': 'Brave',
@@ -997,7 +973,6 @@ export const feed: BraveNews.Feed = {
             },
             {
               article: undefined,
-              promotedArticle: undefined,
               deal: {
                 'data': {
                   'categoryName': 'Brave',
@@ -1032,7 +1007,6 @@ export const feed: BraveNews.Feed = {
           'cardType': 0,
           'items': [
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -1068,7 +1042,6 @@ export const feed: BraveNews.Feed = {
           'cardType': 1,
           'items': [
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -1099,7 +1072,6 @@ export const feed: BraveNews.Feed = {
               }
             },
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -1139,7 +1111,6 @@ export const feed: BraveNews.Feed = {
           'cardType': 0,
           'items': [
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -1175,7 +1146,6 @@ export const feed: BraveNews.Feed = {
           'cardType': 0,
           'items': [
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -1211,7 +1181,6 @@ export const feed: BraveNews.Feed = {
           'cardType': 1,
           'items': [
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -1242,7 +1211,6 @@ export const feed: BraveNews.Feed = {
               }
             },
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -1278,7 +1246,6 @@ export const feed: BraveNews.Feed = {
           'cardType': 2,
           'items': [
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -1309,7 +1276,6 @@ export const feed: BraveNews.Feed = {
               }
             },
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -1340,7 +1306,6 @@ export const feed: BraveNews.Feed = {
               }
             },
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -1376,7 +1341,6 @@ export const feed: BraveNews.Feed = {
           'cardType': 0,
           'items': [
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -1412,7 +1376,6 @@ export const feed: BraveNews.Feed = {
           'cardType': 0,
           'items': [
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -1448,7 +1411,6 @@ export const feed: BraveNews.Feed = {
           'cardType': 1,
           'items': [
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -1479,7 +1441,6 @@ export const feed: BraveNews.Feed = {
               }
             },
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -1515,7 +1476,6 @@ export const feed: BraveNews.Feed = {
           'cardType': 1,
           'items': [
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -1546,7 +1506,6 @@ export const feed: BraveNews.Feed = {
               }
             },
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -1586,7 +1545,6 @@ export const feed: BraveNews.Feed = {
           'cardType': 0,
           'items': [
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -1622,7 +1580,6 @@ export const feed: BraveNews.Feed = {
           'cardType': 0,
           'items': [
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -1658,7 +1615,6 @@ export const feed: BraveNews.Feed = {
           'cardType': 3,
           'items': [
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -1689,7 +1645,6 @@ export const feed: BraveNews.Feed = {
               }
             },
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -1720,7 +1675,6 @@ export const feed: BraveNews.Feed = {
               }
             },
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -1756,7 +1710,6 @@ export const feed: BraveNews.Feed = {
           'cardType': 1,
           'items': [
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -1787,7 +1740,6 @@ export const feed: BraveNews.Feed = {
               }
             },
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -1823,7 +1775,6 @@ export const feed: BraveNews.Feed = {
           'cardType': 0,
           'items': [
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -1860,7 +1811,6 @@ export const feed: BraveNews.Feed = {
           'items': [
             {
               article: undefined,
-              promotedArticle: undefined,
               deal: {
                 'data': {
                   'categoryName': 'Brave',
@@ -1891,7 +1841,6 @@ export const feed: BraveNews.Feed = {
             },
             {
               article: undefined,
-              promotedArticle: undefined,
               deal: {
                 'data': {
                   'categoryName': 'Brave',
@@ -1922,7 +1871,6 @@ export const feed: BraveNews.Feed = {
             },
             {
               article: undefined,
-              promotedArticle: undefined,
               deal: {
                 'data': {
                   'categoryName': 'Brave',
@@ -1957,7 +1905,6 @@ export const feed: BraveNews.Feed = {
           'cardType': 0,
           'items': [
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -1993,7 +1940,6 @@ export const feed: BraveNews.Feed = {
           'cardType': 1,
           'items': [
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,
@@ -2024,7 +1970,6 @@ export const feed: BraveNews.Feed = {
               }
             },
             {
-              promotedArticle: undefined,
               deal: undefined,
               article: {
                 isDiscover: true,

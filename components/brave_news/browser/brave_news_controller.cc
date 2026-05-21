@@ -579,20 +579,6 @@ void BraveNewsController::OnInteractionSessionStarted() {
   news_metrics_.RecordAtSessionStart();
 }
 
-void BraveNewsController::OnPromotedItemView(
-    const std::string& /*item_id*/,
-    const std::string& /*creative_instance_id*/) {
-  // TODO(https://github.com/brave/brave-browser/issues/50311): Remove Brave
-  // News promoted ads code.
-}
-
-void BraveNewsController::OnPromotedItemVisit(
-    const std::string& /*item_id*/,
-    const std::string& /*creative_instance_id*/) {
-  // TODO(https://github.com/brave/brave-browser/issues/50311): Remove Brave
-  // News promoted ads code.
-}
-
 void BraveNewsController::OnNewCardsViewed(uint16_t card_views) {
   DVLOG(1) << __FUNCTION__;
   news_metrics_.RecordTotalActionCount(p3a::ActionType::kCardView, card_views);

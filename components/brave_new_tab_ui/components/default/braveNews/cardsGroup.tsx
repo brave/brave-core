@@ -45,8 +45,6 @@ function getCard (props: Props, content: BraveNews.FeedPageItem) {
               onReadFeedItem={props.onReadFeedItem}
               onSetPublisherPref={props.onSetPublisherPref}
       />
-    case CardType.PROMOTED_ARTICLE:
-      return null
     case CardType.CATEGORY_GROUP:
       const categoryName = content.items[0]?.article?.data.categoryName
       if (!categoryName) {

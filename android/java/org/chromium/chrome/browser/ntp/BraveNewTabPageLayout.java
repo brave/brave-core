@@ -17,7 +17,6 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Point;
-import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.os.Looper;
@@ -109,7 +108,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
         implements ConnectionErrorHandler, OnBraveNtpListener {
     private static final String TAG = "BraveNewTabPage";
 
-    private static final int MINIMUM_VISIBLE_HEIGHT_THRESHOLD = 50;
     private static final int HOUR_MS = 3_600_000;
 
     private @Nullable ViewGroup mMvTilesContainerLayout;
@@ -154,16 +152,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     private @Nullable NTPImage mNtpImageGlobal;
     private @Nullable BraveNewsController mBraveNewsController;
 
-    private long mStartCardViewTime;
-    private long mEndCardViewTime;
-    private @Nullable String mCreativeInstanceId;
-    private @Nullable String mUuid;
-    // @TODO alex make an enum
-    private @Nullable String mCardType;
-    private int mItemPosition;
     private int mPrevVisibleNewsCardPosition = -1;
     private int mNewsSessionCardViews;
-    private @Nullable FeedItemsCard mVisibleCard;
     private String mFeedHash;
     private SharedPreferences.@Nullable OnSharedPreferenceChangeListener mPreferenceListener;
     private boolean mIsTopSitesEnabled;
@@ -484,25 +474,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                             }
                             mNewsFeedLastViewTime = nowMillis;
                             if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-                                mEndCardViewTime = System.currentTimeMillis();
-                                long timeDiff = mEndCardViewTime - mStartCardViewTime;
-                                // if viewed for more than 100 ms send the event
-                                if (timeDiff > BraveNewsUtils.BRAVE_NEWS_VIEWD_CARD_TIME) {
-                                    if (mVisibleCard != null && mCardType != null) {
-                                        // send viewed cards events
-                                        if (mCardType.equals("promo")) {
-                                            if (!TextUtils.isEmpty(mUuid)
-                                                    && !TextUtils.isEmpty(mCreativeInstanceId)) {
-                                                mVisibleCard.setViewStatSent(true);
-                                                if (mBraveNewsController != null) {
-                                                    mBraveNewsController.onPromotedItemView(
-                                                            mUuid, mCreativeInstanceId);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-
                                 int lastVisibleItemPosition =
                                         linearLayoutManager.findLastCompletelyVisibleItemPosition();
                                 if (mNewsItemsFeedCard != null
@@ -544,10 +515,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
 
                             if (newState == RecyclerView.SCROLL_STATE_IDLE
                                     || newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-                                mStartCardViewTime = System.currentTimeMillis();
-                                int lastVisibleItemPosition =
-                                        linearLayoutManager.findLastVisibleItemPosition();
-
                                 mFeedHash =
                                         ChromeSharedPreferences.getInstance()
                                                 .readString(
@@ -565,74 +532,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                                                     setNewContentChanges(true);
                                                 }
                                             });
-                                }
-
-                                Rect rvRect = new Rect();
-                                assertNonNull(mRecyclerView);
-                                mRecyclerView.getGlobalVisibleRect(rvRect);
-
-                                int visiblePercentage = 0;
-                                for (int viewPosition = firstVisibleItemPosition;
-                                        viewPosition <= lastVisibleItemPosition;
-                                        viewPosition++) {
-                                    Rect rowRect = new Rect();
-                                    if (linearLayoutManager.findViewByPosition(viewPosition)
-                                            != null) {
-                                        linearLayoutManager
-                                                .findViewByPosition(viewPosition)
-                                                .getGlobalVisibleRect(rowRect);
-
-                                        if (linearLayoutManager
-                                                        .findViewByPosition(viewPosition)
-                                                        .getHeight()
-                                                > 0) {
-                                            if (rowRect.bottom >= rvRect.bottom) {
-                                                int visibleHeightFirst =
-                                                        rvRect.bottom - rowRect.top;
-                                                visiblePercentage =
-                                                        (visibleHeightFirst * 100)
-                                                                / linearLayoutManager
-                                                                        .findViewByPosition(
-                                                                                viewPosition)
-                                                                        .getHeight();
-                                            } else {
-                                                int visibleHeightFirst =
-                                                        rowRect.bottom - rvRect.top;
-                                                visiblePercentage =
-                                                        (visibleHeightFirst * 100)
-                                                                / linearLayoutManager
-                                                                        .findViewByPosition(
-                                                                                viewPosition)
-                                                                        .getHeight();
-                                            }
-                                        }
-
-                                        if (visiblePercentage > 100) {
-                                            visiblePercentage = 100;
-                                        }
-                                    }
-
-                                    final int visiblePercentageFinal = visiblePercentage;
-
-                                    int newsFeedViewPosition = viewPosition - newsFeedPosition;
-                                    if (newsFeedViewPosition >= 0
-                                            && newsFeedViewPosition < mNewsItemsFeedCard.size()) {
-                                        if (visiblePercentageFinal
-                                                >= MINIMUM_VISIBLE_HEIGHT_THRESHOLD) {
-                                            mVisibleCard =
-                                                    mNewsItemsFeedCard.get(newsFeedViewPosition);
-                                            // get params for view PROMOTED_ARTICLE
-                                            if (mVisibleCard.getCardType()
-                                                    == CardType.PROMOTED_ARTICLE) {
-                                                mItemPosition = newsFeedViewPosition;
-                                                mCreativeInstanceId =
-                                                        BraveNewsUtils.getPromotionIdItem(
-                                                                mVisibleCard);
-                                                mUuid = mVisibleCard.getUuid();
-                                                mCardType = "promo";
-                                            }
-                                        }
-                                    }
                                 }
                             }
                         }

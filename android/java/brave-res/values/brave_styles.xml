@@ -570,24 +570,6 @@
         <item name="android:textColor">@color/news_text_color</item>
     </style>
 
-    <style name="BraveNewsPromotedArticleTitleText">
-        <item name="android:textSize">@dimen/brave_news_promoted_article_title_textsize</item>
-    </style>
-
-    <style name="BraveNewsPromotedArticleDescText">
-        <item name="android:textSize">@dimen/brave_news_promoted_article_desc_textsize</item>
-    </style>
-
-    <style name="BraveNewsPromotedArticlePromotedText">
-        <item name="android:textSize">@dimen/brave_news_promoted_article_promoted_textsize</item>
-        <item name="android:textColor">@color/news_text_color</item>
-    </style>
-
-    <style name="BraveNewsPromotedArticlePublisherText">
-        <item name="android:textSize">@dimen/brave_news_promoted_article_publisher_textsize</item>
-        <item name="android:textColor">@color/news_text_color</item>
-    </style>
-
     <style name="BraveNewsHeadlinePairedTitleTabletText">
         <item name="android:textSize">@dimen/brave_news_headline_paired_title_tablet_textsize</item>
     </style>

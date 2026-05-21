@@ -19,8 +19,7 @@ enum CardType {
   HEADLINE_PAIRED,
   CATEGORY_GROUP,
   PUBLISHER_GROUP,
-  DEALS,
-  PROMOTED_ARTICLE
+  DEALS
 };
 
 enum ClusterType {
@@ -49,11 +48,6 @@ struct Article {
   bool is_discover;
 };
 
-struct PromotedArticle {
-  FeedItemMetadata data;
-  string creative_instance_id;
-};
-
 struct Deal {
   FeedItemMetadata data;
   string offers_category;
@@ -61,7 +55,6 @@ struct Deal {
 
 union FeedItem {
   Article article;
-  PromotedArticle promoted_article;
   Deal deal;
 };
 
@@ -317,7 +310,4 @@ interface BraveNewsController {
   OnNewCardsViewed(uint16 card_views);
   OnCardVisited(uint32 depth);
   OnSidebarFilterUsage();
-
-  OnPromotedItemView(string item_id, string creative_instance_id);
-  OnPromotedItemVisit(string item_id, string creative_instance_id);
 };
