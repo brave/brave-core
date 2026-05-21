@@ -2207,16 +2207,19 @@ class Rebase(Task):
             ) == 'Windows' else 'true'
 
         try:
+            # `interactive=True` as we may need to open an editor if
+            # `EditorRecoverableFailure` is raised, so we can capture the pipes.
             terminal.run([
                 'git', 'rebase', '--interactive', '--autosquash',
                 '--empty=drop', '--onto', to_ref, from_ref, current_branch
             ],
-                         env=env)
+                         env=env,
+                         interactive=True)
             if recommit:
                 repository.brave.run_git('commit', '--amend', '--no-edit')
                 repository.brave.run_git('rebase', '--continue')
         except subprocess.CalledProcessError as e:
-            raise InvalidInputException(f'Rebase failed. {e.stderr}') from e
+            raise InvalidInputException('Rebase failed.') from e
 
 
 class Reassign(Task):
