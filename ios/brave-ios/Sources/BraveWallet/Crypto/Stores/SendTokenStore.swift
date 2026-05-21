@@ -623,7 +623,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
       let domain = sendAddress
       let address = await rpcService.snsGetSolAddr(domain: domain)
       guard !Task.isCancelled else { return }
-      guard let address else {
+      guard let address, !address.isEmpty else {
         addressError = .snsError(domain: sendAddress)
         return
       }
