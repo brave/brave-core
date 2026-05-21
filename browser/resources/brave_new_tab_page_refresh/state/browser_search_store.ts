@@ -207,7 +207,7 @@ export function createSearchStore() {
       if (searchEngine && searchEngine.keyword) {
         query = [searchEngine.keyword, query].join(' ')
       }
-      searchProxy.handler.queryAutocomplete(query, false)
+      searchProxy.handler.queryAutocomplete(query, false, query.length)
     },
 
     openAutocompleteMatch(index, event) {
