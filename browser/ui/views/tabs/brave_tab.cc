@@ -161,7 +161,7 @@ void BraveTab::RemovedFromWidget() {
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 void BraveTab::MaybeStartObservingFullscreenChanges() {
-  if (!small_accent_icon_view_ || fullscreen_observation_.IsObserving()) {
+  if (!small_accent_icon_view_ || fullscreen_subscription_) {
     return;
   }
 
@@ -182,11 +182,16 @@ void BraveTab::MaybeStartObservingFullscreenChanges() {
     return;
   }
 
-  fullscreen_observation_.Observe(fullscreen_controller);
+  // Observe changes to fullscreen state.
+  fullscreen_subscription_ =
+      browser->GetExclusiveAccessManager()
+          ->fullscreen_controller()
+          ->RegisterOnFullscreenStateChanged(base::BindRepeating(
+              &BraveTab::OnFullscreenStateChanged, base::Unretained(this)));
 }
 
 void BraveTab::StopObservingFullscreenChanges() {
-  fullscreen_observation_.Reset();
+  fullscreen_subscription_ = {};
 }
 
 void BraveTab::OnFullscreenStateChanged() {
