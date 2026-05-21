@@ -73,6 +73,9 @@ class ContainersService : public KeyedService {
   // Returns the list of user-editable containers.
   std::vector<mojom::ContainerPtr> GetContainers() const;
 
+  // Returns ids of containers that have been used in this profile.
+  std::vector<std::string> GetUsedContainerIds() const;
+
   // Whether the Containers controls (menus, management UI) should be shown.
   bool ShouldShowContainerControls() const;
 

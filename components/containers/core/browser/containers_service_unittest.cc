@@ -138,6 +138,14 @@ TEST_F(ContainersServiceTest, MarkContainerUsed_PersistsUnknownWhenNotSynced) {
                   kUnknownContainerBackgroundColor);
 }
 
+TEST_F(ContainersServiceTest, GetUsedContainerIds) {
+  EXPECT_TRUE(service_->GetUsedContainerIds().empty());
+
+  service_->MarkContainerUsed("used-id");
+
+  EXPECT_THAT(service_->GetUsedContainerIds(), testing::ElementsAre("used-id"));
+}
+
 TEST_F(ContainersServiceTest,
        MarkContainerUsed_DoesNotUpsertWhenAlreadyInUsedPrefs) {
   auto container = MakeContainer("used-id", "Local");

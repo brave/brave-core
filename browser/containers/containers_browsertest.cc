@@ -3,19 +3,26 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <algorithm>
+#include <string>
+#include <vector>
+
 #include "base/files/file_util.h"
 #include "base/test/run_until.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/browser/containers/containers_service_factory.h"
+#include "brave/browser/containers/used_container_storage_partitions.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
 #include "brave/components/containers/core/browser/containers_service.h"
+#include "brave/components/containers/core/browser/containers_test_utils.h"
 #include "brave/components/containers/core/browser/prefs.h"
 #include "brave/components/containers/core/browser/temporary_container.h"
 #include "brave/components/containers/core/common/features.h"
 #include "brave/components/containers/core/mojom/containers.mojom.h"
+#include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sessions/tab_restore_service_factory.h"
 #include "chrome/browser/ui/actions/chrome_action_id.h"
@@ -34,12 +41,14 @@
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/sessions/core/tab_restore_service.h"
 #include "components/tabs/public/tab_interface.h"
+#include "content/public/browser/browsing_data_remover.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/storage_partition_config.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/browsing_data_remover_test_util.h"
 #include "content/public/test/test_navigation_observer.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
@@ -282,6 +291,120 @@ class ContainersBrowserTest : public InProcessBrowserTest {
         browser()->profile()->IsOffTheRecord());
     ui_test_utils::NavigateToURL(&params);
     return browser()->tab_strip_model()->GetActiveWebContents();
+  }
+
+  struct PartitionSiteData {
+    std::string cookie_name;
+    std::string cookie_value;
+    std::string storage_key;
+    std::string storage_value;
+  };
+
+  void SetPartitionSiteData(content::WebContents* web_contents,
+                            const PartitionSiteData& data,
+                            const GURL& worker_url,
+                            const std::string& scope) {
+    ASSERT_TRUE(web_contents);
+    ASSERT_TRUE(content::ExecJs(
+        web_contents, SetCookieJS(data.cookie_name, data.cookie_value)));
+    ASSERT_TRUE(content::ExecJs(
+        web_contents, SetLocalStorageJS(data.storage_key, data.storage_value)));
+    ASSERT_TRUE(content::ExecJs(
+        web_contents,
+        SetSessionStorageJS(data.storage_key, data.storage_value)));
+    ASSERT_TRUE(content::ExecJs(
+        web_contents, RegisterServiceWorkerJS(worker_url.spec(), scope)));
+  }
+
+  void ExpectPartitionSiteDataPresent(content::WebContents* web_contents,
+                                      const PartitionSiteData& data,
+                                      const std::string& scope) {
+    ASSERT_TRUE(web_contents);
+    const std::string cookie_fragment =
+        base::StrCat({data.cookie_name, "=", data.cookie_value});
+    content::EvalJsResult cookies =
+        content::EvalJs(web_contents, GetCookiesJS());
+    ASSERT_TRUE(cookies.is_ok());
+    EXPECT_NE(std::string::npos, cookies.ExtractString().find(cookie_fragment));
+    EXPECT_EQ(
+        data.storage_value,
+        content::EvalJs(web_contents, GetLocalStorageJS(data.storage_key)));
+    EXPECT_EQ(
+        data.storage_value,
+        content::EvalJs(web_contents, GetSessionStorageJS(data.storage_key)));
+    EXPECT_EQ(
+        "registered",
+        content::EvalJs(web_contents, CheckServiceWorkerRegisteredJS(scope)));
+    EXPECT_EQ(1, content::EvalJs(web_contents,
+                                 GetServiceWorkerRegistrationCountJS()));
+  }
+
+  bool IsPartitionSiteDataCleared(content::WebContents* web_contents,
+                                  const PartitionSiteData& data,
+                                  const std::string& scope) {
+    if (!web_contents) {
+      return false;
+    }
+    const std::string cookie_fragment =
+        base::StrCat({data.cookie_name, "=", data.cookie_value});
+    content::EvalJsResult cookies =
+        content::EvalJs(web_contents, GetCookiesJS());
+    if (!cookies.is_ok() ||
+        cookies.ExtractString().find(cookie_fragment) != std::string::npos) {
+      return false;
+    }
+    if (content::EvalJs(web_contents, GetLocalStorageJS(data.storage_key)) !=
+        base::Value()) {
+      return false;
+    }
+    if (content::EvalJs(web_contents, GetSessionStorageJS(data.storage_key)) !=
+        base::Value()) {
+      return false;
+    }
+    if (content::EvalJs(web_contents, CheckServiceWorkerRegisteredJS(scope)) !=
+        "not_registered") {
+      return false;
+    }
+    return content::EvalJs(web_contents,
+                           GetServiceWorkerRegistrationCountJS()) == 0;
+  }
+
+  void ExpectPartitionSiteDataClearedEventually(
+      content::WebContents* web_contents,
+      const PartitionSiteData& data,
+      const std::string& scope) {
+    EXPECT_TRUE(base::test::RunUntil([&]() {
+      return IsPartitionSiteDataCleared(web_contents, data, scope);
+    }));
+  }
+
+  void RemoveSiteDataAndWait() {
+    content::BrowsingDataRemover* remover =
+        browser()->profile()->GetBrowsingDataRemover();
+    content::BrowsingDataRemoverCompletionObserver completion_observer(remover);
+    remover->RemoveAndReply(
+        base::Time(), base::Time::Max(),
+        chrome_browsing_data_remover::DATA_TYPE_SITE_DATA,
+        content::BrowsingDataRemover::ORIGIN_TYPE_UNPROTECTED_WEB,
+        &completion_observer);
+    completion_observer.BlockUntilCompletion();
+  }
+
+  void ExpectUsedContainerStoragePartitionConfigsMatch(
+      const std::vector<std::string>& expected_ids) {
+    Profile* profile = browser()->profile();
+    std::vector<content::StoragePartitionConfig> configs =
+        GetUsedContainerStoragePartitionConfigs(profile);
+    ASSERT_EQ(expected_ids.size(), configs.size());
+    for (const std::string& id : expected_ids) {
+      SCOPED_TRACE(id);
+      const content::StoragePartitionConfig expected =
+          content::StoragePartitionConfig::Create(
+              profile, kContainersStoragePartitionDomain, id,
+              profile->IsOffTheRecord());
+      EXPECT_TRUE(std::ranges::any_of(
+          configs, [&](const auto& config) { return config == expected; }));
+    }
   }
 
  protected:
@@ -1019,6 +1142,19 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   container_b->icon = containers::mojom::Icon::kShopping;
   container_b->background_color = SK_ColorGREEN;
 
+  // Synced but never opened; must not appear in used-partition enumeration.
+  auto container_unused = containers::mojom::Container::New();
+  container_unused->id = "container-unused";
+  container_unused->name = "Container Unused";
+  container_unused->icon = containers::mojom::Icon::kPersonal;
+  container_unused->background_color = SK_ColorGRAY;
+
+  std::vector<mojom::ContainerPtr> synced;
+  synced.push_back(container_a.Clone());
+  synced.push_back(container_b.Clone());
+  synced.push_back(container_unused.Clone());
+  SetContainersToPrefs(synced, *browser()->profile()->GetPrefs());
+
   brave::OpenUrlInContainer(browser(), url, container_a);
   EXPECT_EQ(2, browser()->tab_strip_model()->count());
 
@@ -1081,6 +1217,11 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   EXPECT_NE(config_a, config_b);
   EXPECT_EQ("container-a", config_a.partition_name());
   EXPECT_EQ("container-b", config_b.partition_name());
+
+  // GetUsedContainerStoragePartitionConfigs reflects ContainersService used
+  // ids only (opened containers), not every entry in the synced list.
+  ExpectUsedContainerStoragePartitionConfigsMatch(
+      {"container-a", "container-b"});
 }
 
 IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
@@ -1962,6 +2103,44 @@ IN_PROC_BROWSER_TEST_F(ContainersDisabledAfterRestoreBrowserTest,
   EXPECT_FALSE(local_storage_result.is_ok())
       << "Expected JS exception when accessing localStorage, but got: "
       << local_storage_result;
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       ClearContainerStorageOnSiteDataClear) {
+  const GURL url("https://a.test/containers/container_test.html");
+  const GURL worker_url("https://a.test/containers/container_worker.js");
+  const std::string scope = "https://a.test/containers/";
+
+  constexpr PartitionSiteData kDefaultData = {"default_cookie", "default_value",
+                                              "default_key", "default_value"};
+  constexpr PartitionSiteData kContainerData = {
+      "container_cookie", "container_value", "container_key",
+      "container_value"};
+
+  std::vector<mojom::ContainerPtr> synced;
+  synced.push_back(MakeContainer(kTestContainerId, "Test"));
+  SetContainersToPrefs(synced, *browser()->profile()->GetPrefs());
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  content::WebContents* default_web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  SetPartitionSiteData(default_web_contents, kDefaultData, worker_url, scope);
+  ExpectPartitionSiteDataPresent(default_web_contents, kDefaultData, scope);
+
+  content::WebContents* container_web_contents =
+      OpenUrlInContainerTab(url, kTestContainerId);
+  SetPartitionSiteData(container_web_contents, kContainerData, worker_url,
+                       scope);
+  ExpectPartitionSiteDataPresent(container_web_contents, kContainerData, scope);
+
+  RemoveSiteDataAndWait();
+
+  // Nested container-partition removes are started asynchronously (same as
+  // IWA).
+  ExpectPartitionSiteDataClearedEventually(default_web_contents, kDefaultData,
+                                           scope);
+  ExpectPartitionSiteDataClearedEventually(container_web_contents,
+                                           kContainerData, scope);
 }
 
 IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,

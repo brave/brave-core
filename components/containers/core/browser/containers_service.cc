@@ -87,6 +87,14 @@ std::vector<mojom::ContainerPtr> ContainersService::GetContainers() const {
   return GetContainersFromPrefs(*prefs_);
 }
 
+std::vector<std::string> ContainersService::GetUsedContainerIds() const {
+  std::vector<std::string> ids;
+  for (const auto& container : GetLocallyUsedContainersFromPrefs(*prefs_)) {
+    ids.push_back(container->id);
+  }
+  return ids;
+}
+
 bool ContainersService::ShouldShowContainerControls() const {
   return prefs_->GetBoolean(prefs::kContainersEnabled);
 }
