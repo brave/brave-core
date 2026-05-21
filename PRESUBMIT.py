@@ -718,7 +718,7 @@ def CheckJavaStyle(_original_check, input_api, output_api):
     local_path = os.path.join(input_api.PresubmitLocalPath(), 'brave')
     style_file = os.path.join(input_api.PresubmitLocalPath(), 'brave', 'tools',
                               'android', 'checkstyle', 'brave-style-5.0.xml')
-    violations = checkstyle.run_checkstyle(local_path, style_file, java_files)
+    violations = checkstyle.run_checkstyle(local_path, style_file, java_files)  # pylint: disable=no-member
     warnings = ['  ' + str(v) for v in violations if v.is_warning()]
     errors = ['  ' + str(v) for v in violations if v.is_error()]
 
