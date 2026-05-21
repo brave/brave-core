@@ -50,6 +50,14 @@ class SerpMetricsMigrationTest : public testing::Test {
   ~SerpMetricsMigrationTest() override = default;
 
   void SetUp() override {
+    // Advance to a specific time so tests have a predictable starting point
+    // to avoid MOCK_TIME starting near Unix epoch, where times serialize to
+    // 0.0 via `InSecondsFSinceUnixEpoch` and deserialize back as null rather
+    // than UnixEpoch, causing a DCHECK in `UTCMidnight`.
+    base::Time time;
+    CHECK(base::Time::FromUTCString("2050-01-04 12:35:56", &time));
+    task_environment_.AdvanceClock(time - base::Time::Now());
+
     local_state_.registry()->RegisterStringPref(kLastCheckYMD,
                                                 "");  // Never checked.
     local_state_.registry()->RegisterTimePref(
