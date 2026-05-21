@@ -159,4 +159,20 @@ if (is_android) {
       "//chrome/android/junit:chrome_junit_tests_helper",
     ]
   }
+
+  robolectric_library(
+      "brave_junit_tests_org.chromium.chrome.browser.quick_search_engines") {
+    resources_package = "org.chromium.brave.browser.quick_search_engines"
+    sources = [ "src/org/chromium/brave/browser/quick_search_engines/utils/QuickSearchEnginesUtilTest.java" ]
+
+    deps = [
+      "//brave/browser/quick_search_engines/android:java",
+      "//chrome/android/junit:chrome_junit_tests_helper",
+      "//chrome/browser/regional_capabilities/android:java",
+      "//chrome/browser/search_engines/android:java",
+      "//components/omnibox/common:features_java",
+      "//components/regional_capabilities/android:java",
+      "//components/search_engines/android:java",
+    ]
+  }
 }
