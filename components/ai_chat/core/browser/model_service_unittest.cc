@@ -29,6 +29,7 @@
 #include "components/os_crypt/async/browser/os_crypt_async.h"
 #include "components/os_crypt/async/browser/test_utils.h"
 #include "components/prefs/testing_pref_service.h"
+#include "services/network/public/cpp/network_context_getter.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
@@ -96,7 +97,8 @@ class ModelServiceTest : public ::testing::Test {
   ModelService* GetService() {
     if (!service_) {
       service_ =
-          std::make_unique<ModelService>(&pref_service_, os_crypt_async_.get());
+          std::make_unique<ModelService>(&pref_service_, os_crypt_async_.get(),
+                                         network::NetworkContextGetter());
       observer_->Observe(service_.get());
     }
     return service_.get();
@@ -625,8 +627,8 @@ class ModelServiceAsyncEncryptorTest : public ::testing::Test {
   // encryptor). Each input is `(model_request_name, api_key)`.
   void PreloadCustomModelsInPrefs(
       const std::vector<std::pair<std::string, std::string>>& models) {
-    auto service =
-        std::make_unique<ModelService>(&pref_service_, os_crypt_async_.get());
+    auto service = std::make_unique<ModelService>(
+        &pref_service_, os_crypt_async_.get(), network::NetworkContextGetter());
     // Wait for `OnModelListUpdated()` so the encryptor is ready before we
     // call `AddCustomModel()` — otherwise `EncryptAPIKey()` would persist
     // empty strings and the test subject would never see the real keys.
@@ -667,8 +669,8 @@ TEST_F(ModelServiceAsyncEncryptorTest,
       {"model-gamma", "key-gamma"},
   });
 
-  auto service =
-      std::make_unique<ModelService>(&pref_service_, os_crypt_async_.get());
+  auto service = std::make_unique<ModelService>(
+      &pref_service_, os_crypt_async_.get(), network::NetworkContextGetter());
 
   // Pre-encryptor: all three are present with empty api_keys.
   auto before = service->GetCustomModels();

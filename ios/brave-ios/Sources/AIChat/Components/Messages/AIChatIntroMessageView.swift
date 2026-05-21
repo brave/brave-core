@@ -119,7 +119,8 @@ struct AIChatIntroMessageView_Previews: PreviewProvider {
           videoSupport: false,
           supportedCapabilities: [NSNumber(value: AiChat.ConversationCapability.chat.rawValue)],
           isSuggestedModel: false,
-          isNearModel: false
+          isNearModel: false,
+          supportsPrivateInference: false
         )
     )
     .previewLayout(.sizeThatFits)

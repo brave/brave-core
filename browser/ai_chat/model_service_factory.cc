@@ -6,6 +6,7 @@
 #include "brave/browser/ai_chat/model_service_factory.h"
 
 #include "base/check.h"
+#include "base/functional/bind.h"
 #include "base/no_destructor.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -13,6 +14,7 @@
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
+#include "content/public/browser/storage_partition.h"
 
 namespace ai_chat {
 
@@ -44,8 +46,13 @@ ModelServiceFactory::~ModelServiceFactory() = default;
 std::unique_ptr<KeyedService>
 ModelServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  return std::make_unique<ModelService>(user_prefs::UserPrefs::Get(context),
-                                        g_browser_process->os_crypt_async());
+  return std::make_unique<ModelService>(
+      user_prefs::UserPrefs::Get(context), g_browser_process->os_crypt_async(),
+      base::BindRepeating(
+          [](content::BrowserContext* context) {
+            return context->GetDefaultStoragePartition()->GetNetworkContext();
+          },
+          context));
 }
 
 }  // namespace ai_chat

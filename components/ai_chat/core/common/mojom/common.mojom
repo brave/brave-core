@@ -676,6 +676,8 @@ struct Model {
   bool is_suggested_model;
   // Is a Near model
   bool is_near_model;
+  // Whether this model supports private inference (OHTTP-routed requests).
+  bool supports_private_inference = false;
 };
 
 // State required to show the conversations entries UI block

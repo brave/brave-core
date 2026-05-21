@@ -42,6 +42,7 @@
 #include "components/os_crypt/async/browser/os_crypt_async.h"
 #include "components/os_crypt/async/browser/test_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "services/network/public/cpp/network_context_getter.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -108,8 +109,8 @@ class EngineConsumerConversationAPIUnitTest : public testing::Test {
   void SetUp() override {
     prefs::RegisterProfilePrefs(prefs_.registry());
     ModelService::RegisterProfilePrefs(prefs_.registry());
-    model_service_ =
-        std::make_unique<ModelService>(&prefs_, os_crypt_async_.get());
+    model_service_ = std::make_unique<ModelService>(
+        &prefs_, os_crypt_async_.get(), network::NetworkContextGetter());
 
     auto options = mojom::LeoModelOptions::New();
     options->display_maker = "Test Maker";

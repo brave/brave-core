@@ -61,6 +61,7 @@
 #include "components/os_crypt/async/browser/test_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "mojo/public/cpp/bindings/receiver.h"
+#include "services/network/public/cpp/network_context_getter.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
@@ -244,7 +245,8 @@ class ConversationHandlerUnitTest : public testing::Test {
                                   std::move(premium_info));
         });
 
-    model_service_ = std::make_unique<ModelService>(&prefs_, os_crypt_.get());
+    model_service_ = std::make_unique<ModelService>(
+        &prefs_, os_crypt_.get(), network::NetworkContextGetter());
 
     ai_chat_service_ = std::make_unique<AIChatService>(
         model_service_.get(), nullptr /* tab_tracker_service */,

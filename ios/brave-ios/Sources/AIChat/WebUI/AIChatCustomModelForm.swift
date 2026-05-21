@@ -451,7 +451,8 @@ extension AiChat.Model {
       videoSupport: false,
       supportedCapabilities: [NSNumber(value: AiChat.ConversationCapability.chat.rawValue)],
       isSuggestedModel: false,
-      isNearModel: false
+      isNearModel: false,
+      supportsPrivateInference: false
     )
   }
 }
