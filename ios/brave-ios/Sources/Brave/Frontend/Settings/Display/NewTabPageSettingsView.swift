@@ -9,6 +9,7 @@ import Preferences
 import SwiftUI
 
 struct NewTabPageSettingsView: View {
+  var isSponsoredBackgroundsSupported: Bool
   var shouldShowSponsoredImagesAndVideosSetting: Bool
   var linkTapped: ((URLRequest) -> Void)?
 
@@ -25,7 +26,7 @@ struct NewTabPageSettingsView: View {
       Section {
         Toggle(Strings.NTP.settingsBackgroundImages, isOn: $backgroundImages.value)
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
-        if backgroundImages.value {
+        if backgroundImages.value, isSponsoredBackgroundsSupported {
           NavigationLink {
             BackgroundMediaTypePicker(
               shouldShowSponsoredImagesAndVideosSetting: shouldShowSponsoredImagesAndVideosSetting,
@@ -132,6 +133,7 @@ class NTPTableViewController: UIHostingController<NewTabPageSettingsView> {
   init(rewards: BraveRewards?, linkTapped: ((URLRequest) -> Void)?) {
     super.init(
       rootView: .init(
+        isSponsoredBackgroundsSupported: rewards != nil,
         shouldShowSponsoredImagesAndVideosSetting:
           rewards?.ads.shouldShowSponsoredImagesAndVideosSetting() == true,
         linkTapped: linkTapped
