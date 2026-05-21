@@ -121,7 +121,7 @@ class EngineConsumerOAIUnitTest : public testing::Test {
         mojom::ModelOptions::NewCustomModelOptions(std::move(options));
 
     engine_ = std::make_unique<EngineConsumerOAIRemote>(
-        *model_->options, nullptr,
+        model_->options.Clone(), nullptr,
         /*network_context_getter=*/network::NetworkContextGetter(),
         /*credential_manager=*/nullptr, /*model_service=*/nullptr,
         &pref_service_);
@@ -420,7 +420,7 @@ TEST_F(EngineConsumerOAIUnitTest,
 
   // Create a new engine with the new model.
   engine_ = std::make_unique<EngineConsumerOAIRemote>(
-      *model_->options, nullptr,
+      model_->options.Clone(), nullptr,
       /*network_context_getter=*/network::NetworkContextGetter(),
       /*credential_manager=*/nullptr, /*model_service=*/nullptr,
       &pref_service_);
@@ -667,8 +667,8 @@ TEST_F(EngineConsumerOAIUnitTest, ShouldCallSanitizeInputOnPageContent) {
   PageContent page_content_2("This is a video about The Mandalorian.", true);
 
   auto mock_engine_consumer = std::make_unique<MockOAIEngineConsumer>(
-      *model_->options, nullptr, network::NetworkContextGetter(), nullptr,
-      nullptr, &pref_service_);
+      model_->options.Clone(), nullptr, network::NetworkContextGetter(),
+      nullptr, nullptr, &pref_service_);
   mock_engine_consumer->SetAPIForTesting(std::make_unique<MockOAIAPIClient>());
 
   // Calling GenerateAssistantResponse should call SanitizeInput
@@ -863,7 +863,7 @@ TEST_F(EngineConsumerOAIUnitTest,
       mojom::ModelOptions::NewCustomModelOptions(std::move(options));
 
   engine_ = std::make_unique<EngineConsumerOAIRemote>(
-      *model_->options, nullptr,
+      model_->options.Clone(), nullptr,
       /*network_context_getter=*/network::NetworkContextGetter(),
       /*credential_manager=*/nullptr, /*model_service=*/nullptr,
       &pref_service_);

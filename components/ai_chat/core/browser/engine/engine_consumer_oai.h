@@ -40,7 +40,7 @@ using api_request_helper::APIRequestResult;
 class EngineConsumerOAIRemote : public EngineConsumer {
  public:
   EngineConsumerOAIRemote(
-      const mojom::ModelOptions& model_options,
+      mojom::ModelOptionsPtr model_options,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       network::NetworkContextGetter network_context_getter,
       AIChatCredentialManager* credential_manager,

@@ -1269,7 +1269,7 @@ std::unique_ptr<EngineConsumer> ModelService::GetEngineForModel(
   if (model->options->is_custom_model_options()) {
     DVLOG(1) << "Started AI engine: oai";
     engine = std::make_unique<EngineConsumerOAIRemote>(
-        *model->options, url_loader_factory, network_context_getter_,
+        model->options.Clone(), url_loader_factory, network_context_getter_,
         credential_manager, this, pref_service_);
   } else if (model->options->is_leo_model_options()) {
     if (features::IsAIChatConversationAPIV2Enabled()) {

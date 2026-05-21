@@ -50,14 +50,14 @@ bool HasCustomSystemPrompt(const mojom::ModelOptions& model_options) {
 }  // namespace
 
 EngineConsumerOAIRemote::EngineConsumerOAIRemote(
-    const mojom::ModelOptions& model_options,
+    mojom::ModelOptionsPtr model_options,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     network::NetworkContextGetter network_context_getter,
     AIChatCredentialManager* credential_manager,
     ModelService* model_service,
     PrefService* prefs)
     : EngineConsumer(model_service, prefs) {
-  model_options_ = model_options.Clone();
+  model_options_ = std::move(model_options);
   CHECK(model_options_->is_custom_model_options());
   max_associated_content_length_ =
       model_options_->get_custom_model_options()->max_associated_content_length;
