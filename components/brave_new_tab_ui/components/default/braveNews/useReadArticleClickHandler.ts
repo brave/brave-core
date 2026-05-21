@@ -12,7 +12,7 @@ export default function useReadArticleClickHandler (action: OnReadFeedItem, payl
     e.preventDefault()
     const shouldOpenInNewTab = detectShouldOpenInNewTab(e)
     action({ ...payloadData, openInNewTab: shouldOpenInNewTab })
-  }, [action, payloadData.item, payloadData.isPromoted])
+  }, [action, payloadData.item])
 }
 
 export function detectShouldOpenInNewTab (e: React.MouseEvent): boolean {

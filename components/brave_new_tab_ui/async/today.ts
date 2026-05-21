@@ -55,30 +55,8 @@ handler.on<Actions.ReadFeedItemPayload>(
   Actions.readFeedItem.getType(),
   async (store, payload) => {
     const state = store.getState() as ApplicationState
-    if (payload.isPromoted) {
-      const promotedArticle = payload.item.promotedArticle
-      if (!promotedArticle) {
-        console.error(
-          'Brave News: readFeedItem payload with invalid promoted article',
-          payload
-        )
-        return
-      }
-      if (!payload.promotedUUID) {
-        console.error(
-          'Brave News: invalid promotedUUID for readFeedItem',
-          payload
-        )
-        return
-      }
-      getBraveNewsController().onPromotedItemVisit(
-        payload.promotedUUID,
-        promotedArticle.creativeInstanceId
-      )
-    }
     const data =
       payload.item.article?.data ||
-      payload.item.promotedArticle?.data ||
       payload.item.deal?.data
     if (!data) {
       console.error(
@@ -101,23 +79,6 @@ handler.on<Actions.ReadFeedItemPayload>(
     } else {
       window.open(data.url.url, '_blank', 'noreferrer')
     }
-  }
-)
-
-handler.on<Actions.PromotedItemViewedPayload>(
-  Actions.promotedItemViewed.getType(),
-  async (store, payload) => {
-    if (!payload.item.promotedArticle) {
-      console.error(
-        'Brave News: promotedItemViewed invalid promoted article',
-        payload
-      )
-      return
-    }
-    getBraveNewsController().onPromotedItemView(
-      payload.uuid,
-      payload.item.promotedArticle.creativeInstanceId
-    )
   }
 )
 

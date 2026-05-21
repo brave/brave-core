@@ -213,7 +213,6 @@ export default function BraveNewsContent(props: Props) {
                   onReadFeedItem={props.onReadFeedItem}
                   onPeriodicCardViews={registerCardCountTriggerElement}
                   onSetPublisherPref={props.onSetPublisherPref}
-                  onPromotedItemViewed={props.onPromotedItemViewed}
                 />
               )
             })

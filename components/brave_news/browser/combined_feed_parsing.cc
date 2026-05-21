@@ -109,19 +109,7 @@ base::expected<mojom::FeedItemPtr, std::string> ParseFeedItem(
             ui::TimeFormat::Length::LENGTH_LONG, relative_time_delta));
   }
   // Detect type
-  if (feed_item.content_type == "brave_partner") {
-    if (!feed_item.creative_instance_id ||
-        feed_item.creative_instance_id->empty()) {
-      return base::unexpected(
-          base::StrCat({"Promoted item has empty creative_instance_id. url=",
-                        feed_item.url}));
-    }
-
-    auto item = mojom::PromotedArticle::New();
-    item->creative_instance_id = *feed_item.creative_instance_id;
-    item->data = std::move(metadata);
-    return mojom::FeedItem::NewPromotedArticle(std::move(item));
-  } else if (feed_item.content_type == "product") {
+  if (feed_item.content_type == "product") {
     auto item = mojom::Deal::New();
     if (feed_item.offers_category) {
       item->offers_category = *feed_item.offers_category;
