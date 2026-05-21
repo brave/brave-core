@@ -1261,9 +1261,9 @@ base::ReadUnicodeCharacter(
 
 <a id="CSA-070"></a>
 
-## ✅ Convert Rust FFI Types at the C++ Boundary; Avoid `CxxString`/`CxxVector`
+## ✅ Convert Rust FFI Types at the C++ Boundary; Prefer `rust::Str`/`rust::Slice` Over `CxxString`/`CxxVector`
 
-**`rust::Str`/`rust::String` should always be converted to `std::string_view`/`base::span` (or deep-copied to `std::string`) when passed into C++. Avoid `CxxString` and `CxxVector` for ownership transfer between Rust and C++.** Rust's `String`/`Vec` and C++'s `std::string`/`std::vector` use different allocators and memory layouts, so handing raw heap ownership across the boundary is unsafe — copy instead.
+**`rust::Str`/`rust::String` should always be converted to `std::string_view`/`base::span` (or deep-copied to `std::string`) when passed into C++. Prefer `rust::Str`/`rust::Slice` over `CxxString`/`CxxVector` for borrowed data.** Rust's `String`/`Vec` and C++'s `std::string`/`std::vector` use different allocators and memory layouts, so handing raw heap ownership across the boundary is unsafe — copy instead.
 
 ```cpp
 // ❌ WRONG - storing rust::String in C++ data structures or passing it
@@ -1291,6 +1291,14 @@ std::string owned(rust_str.data(), rust_str.size());  // C++ side
 // rust_string.to_string() / rust_string.to_owned()   // Rust side
 ```
 
-`CxxString`/`CxxVector` exist in `cxx` but should be avoided: they require pinning, can't be passed by value, and tempt code into sharing heap ownership across allocators. Prefer passing `rust::Str`/`rust::Slice` (borrowed) or deep-copying at the boundary.
+`CxxString`/`CxxVector` can't be passed by value across the FFI and `&mut`
+access requires `Pin<&mut CxxString>`, so for borrowed access prefer
+`rust::Str`/`rust::Slice` and deep-copy at the boundary when you need an
+owned copy. If you need to pass a large amount of data without copying,
+prefer `cxx::UniquePtr<T>`: C++ allocates the object via
+`std::make_unique<T>()` and hands ownership to a `cxx::UniquePtr<T>`, and
+when Rust drops the `UniquePtr`, `cxx` safely invokes the C++ allocator to
+delete it. This keeps allocation and deallocation on the same side of the
+boundary while still moving ownership across it.
 
 ---
