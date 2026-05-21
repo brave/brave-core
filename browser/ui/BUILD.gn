@@ -105,6 +105,10 @@ source_set("ui") {
     "//media",
   ]
 
+  if (is_mac) {
+    deps += [ "//chrome/browser:global_keyboard_shortcuts_mac" ]
+  }
+
   allow_circular_includes_from = brave_ui_allow_circular_includes_from
   deps += brave_ui_allow_circular_includes_from
 
