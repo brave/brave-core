@@ -8,8 +8,8 @@
 
 #include "chrome/browser/ui/tabs/split_tab_highlight_controller.h"
 
-#define UpdateSplitRatio(...)       \
-  UpdateSplitRatio(__VA_ARGS__);    \
+#define SetBackgroundRadii(...)     \
+  SetBackgroundRadii(__VA_ARGS__);  \
   virtual void ResetResizeArea() {} \
   friend class BraveMultiContentsView
 
@@ -48,6 +48,6 @@
 #undef ExecuteOnEachVisibleContentsView
 #undef OnWebContentsFocused
 #undef UpdateContentsBorderAndOverlay
-#undef UpdateSplitRatio
+#undef SetBackgroundRadii
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_MULTI_CONTENTS_VIEW_H_
