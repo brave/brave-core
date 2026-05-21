@@ -19,7 +19,9 @@ import * as BraveOriginMojom from '../brave_origin_settings.mojom-webui.js';
 // Expose BraveOriginHandler to window object for devtools console access
 function initializeBraveOriginHandler() {
   const handler = BraveOriginMojom.BraveOriginSettingsHandler.getRemote();
-  (window as any).BraveOriginHandler = handler;
+  (window as unknown as {
+    BraveOriginHandler: BraveOriginMojom.BraveOriginSettingsHandlerRemote
+  }).BraveOriginHandler = handler;
 }
 
 // Initialize when DOM is ready
@@ -147,7 +149,9 @@ const BraveClearSettingsMenuHighlightBehavior = {
         const latestDistance = calcDistance()
         if (latestDistance > distance) {
           if (menu) {
-            (menu as any).setSelectedPath_('')
+            (menu as unknown as {
+              setSelectedPath_(path: string): void
+            }).setSelectedPath_('')
           }
           stopObservingScroll()
         } else {

@@ -25,7 +25,8 @@ import {
   BraveClearBrowsingDataDialogBrowserProxyImpl
 } from './brave_clear_browsing_data_dialog_proxy.js'
 
-// Uses `const priv = this as any` to access private properties/methods from parent class
+// Casts `this` through `unknown` to access private properties/methods from
+// parent class.
 // @ts-ignore overrides private method from parent class
 export class BraveSettingsClearBrowsingDataDialogV2Element
   extends SettingsClearBrowsingDataDialogV2Element {
@@ -149,7 +150,11 @@ export class BraveSettingsClearBrowsingDataDialogV2Element
 
   // @ts-ignore override private method
   override setUpDataTypeOptionLists_() {
-    const priv = this as any
+    const priv = this as unknown as {
+      moreBrowsingDataTypeOptionsList_: BrowsingDataTypeOption[]
+      expandedBrowsingDataTypeOptionsList_: BrowsingDataTypeOption[]
+      updateCounterText_(prefName: string, label: string): void
+    }
     // @ts-ignore call private parent method
     super.setUpDataTypeOptionLists_()
 
@@ -178,7 +183,10 @@ export class BraveSettingsClearBrowsingDataDialogV2Element
 
   // <if expr="enable_ai_chat">
   private removeLeoAIFromList() {
-    const priv = this as any
+    const priv = this as unknown as {
+      expandedBrowsingDataTypeOptionsList_: BrowsingDataTypeOption[]
+      moreBrowsingDataTypeOptionsList_: BrowsingDataTypeOption[]
+    }
     const leoExpandedIndex = priv.expandedBrowsingDataTypeOptionsList_.map(
         (option: BrowsingDataTypeOption) => option.pref.key).indexOf(getDataTypePrefName(BrowsingDataType.BRAVE_AI_CHAT));
     if (leoExpandedIndex !== -1) {

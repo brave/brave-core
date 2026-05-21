@@ -14,6 +14,10 @@ import * as mojom from './brave_leo_assistant_browser_proxy.js'
 import { BaseMixin } from '../base_mixin.js'
 import { getTemplate } from './model_config_ui.html.js'
 
+// Leo control events forward their detail object as the event payload directly.
+type LeoInputEvent = { value: string; valueAsNumber?: number }
+type LeoToggleEvent = { checked: boolean }
+
 const ModelConfigUIBase = PrefsMixin(I18nMixin(BaseMixin(PolymerElement)))
 
 export class ModelConfigUI extends ModelConfigUIBase {
@@ -178,32 +182,32 @@ export class ModelConfigUI extends ModelConfigUIBase {
     this.fire('close')
   }
 
-  onModelLabelChange_(e: any) {
+  onModelLabelChange_(e: LeoInputEvent) {
     this.label = e.value
   }
 
-  onModelRequestNameChange_(e: any) {
+  onModelRequestNameChange_(e: LeoInputEvent) {
     this.modelRequestName = e.value
   }
 
-  onModelSystemPromptChange_(e: any) {
+  onModelSystemPromptChange_(e: LeoInputEvent) {
     this.modelSystemPrompt = e.value;
   }
 
-  onContextSizeChange_(e: any) {
-    this.contextSize = e.valueAsNumber
+  onContextSizeChange_(e: LeoInputEvent) {
+    this.contextSize = e.valueAsNumber!
   }
 
-  onModelServerEndpointChange_(e: any) {
+  onModelServerEndpointChange_(e: LeoInputEvent) {
     this.endpointUrl = e.value
     this.checkEndpointValidity_()
   }
 
-  onModelApiKeyChange_(e: any) {
+  onModelApiKeyChange_(e: LeoInputEvent) {
     this.apiKey = e.value
   }
 
-  constructTokenEstimateString_(e?: any) {
+  constructTokenEstimateString_(e?: LeoInputEvent) {
     let charsLength = 0
     let tokensLength = 0
 
@@ -222,11 +226,11 @@ export class ModelConfigUI extends ModelConfigUIBase {
     )
   }
 
-  onVisionSupportChanged_(e: any) {
+  onVisionSupportChanged_(e: LeoToggleEvent) {
     this.hasVisionSupport = e.checked
   }
 
-  onSupportsToolsChanged_(e: any) {
+  onSupportsToolsChanged_(e: LeoToggleEvent) {
     this.supportsTools = e.checked
   }
 
@@ -238,8 +242,12 @@ export class ModelConfigUI extends ModelConfigUIBase {
   private checkEndpointValidity_() {
     const url = this.endpointUrl.trim()
     if (url !== '') {
-      sendWithPromise('validateModelEndpoint', { url })
-        .then((response: any) => {
+      sendWithPromise<{
+        isValid: boolean
+        isValidAsPrivateEndpoint: boolean
+        isValidDueToPrivateIPsFeature: boolean
+      }>('validateModelEndpoint', { url })
+        .then((response) => {
           this.isUrlInvalid = !response.isValid
           this.isValidAsPrivateEndpoint = response.isValidAsPrivateEndpoint
           this.shouldShowUnsafeEndpointLabel =
