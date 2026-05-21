@@ -864,33 +864,70 @@ extension BraveWallet.SignDataUnion {
   var isWarningsNeeded: Bool {
     if cardanoSignData != nil { return true }
     if let ethSignTypedData {
-      let permitLikeTypes: [String] = [
-        "Permit",
-        "PermitSingle",
-        "PermitBatch",
-        "PermitTransferFrom",
-        "PermitWitnessTransferFrom",
-      ]
-      return permitLikeTypes.contains(ethSignTypedData.primaryType)
-        || ethSignTypedData.hasPermitShape
+      return ethSignTypedData.isPermitLike
     }
     return false
   }
 }
 
 extension BraveWallet.EthSignTypedData {
-  var hasPermitShape: Bool {
-    guard
-      let data = self.typesJson.data(using: .utf8),
-      let typeMap = try? JSONDecoder().decode([String: [[String: String]]].self, from: data),
-      let fields = typeMap[primaryType]
-    else { return false }
-    let fieldNames = Set(fields.compactMap { $0["name"] })
-    return fieldNames.contains("spender")
-      && (fieldNames.contains("value")
-        || fieldNames.contains("amount")
+  private static let permitLikePrimaryTypes: [String] = [
+    // ERC-2612 and DAI-style
+    "Permit",
+    // Uniswap Permit2 (AllowanceTransfer)
+    "PermitSingle",
+    "PermitBatch",
+    // Uniswap Permit2 (SignatureTransfer)
+    "PermitTransferFrom",
+    "PermitBatchTransferFrom",
+    "PermitWitnessTransferFrom",
+    "PermitBatchWitnessTransferFrom",
+    // EIP-3009 (USDC and for x402 support)
+    "TransferWithAuthorization",
+    "ReceiveWithAuthorization",
+    "CancelAuthorization",
+  ]
+
+  private struct TypedDataField: Decodable {
+    let name: String
+    let type: String
+  }
+
+  private static func fieldsMatchPermitShape(_ fields: [TypedDataField]) -> Bool {
+    let names = Set(fields.map(\.name))
+
+    let isPermitStyle =
+      names.contains("spender")
+      && (names.contains("value")
+        || names.contains("amount")
         || fields.contains(where: {
-          ["PermitDetails", "PermitDetails[]", "TokenPermissions"].contains($0["type"])
+          $0.type == "PermitDetails" || $0.type == "PermitDetails[]"
+            || $0.type == "TokenPermissions" || $0.type == "TokenPermissions[]"
         }))
+
+    let isDaiStyle =
+      names.contains("spender")
+      && names.contains("allowed")
+      && fields.contains(where: { $0.name == "allowed" && $0.type == "bool" })
+
+    let isAuthorizationStyle =
+      names.contains("from") && names.contains("to") && names.contains("value")
+      && names.contains("validAfter") && names.contains("validBefore")
+      && names.contains("nonce")
+
+    return isPermitStyle || isDaiStyle || isAuthorizationStyle
+  }
+
+  private var hasPermitShape: Bool {
+    guard let data = typesJson.data(using: .utf8),
+      let types = try? JSONDecoder().decode([String: [TypedDataField]].self, from: data)
+    else { return false }
+    return types.contains(where: { typeName, fields in
+      typeName != "EIP712Domain" && Self.fieldsMatchPermitShape(fields)
+    })
+  }
+
+  var isPermitLike: Bool {
+    Self.permitLikePrimaryTypes.contains(primaryType) || hasPermitShape
   }
 }
