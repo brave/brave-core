@@ -34,14 +34,43 @@ replace = 'RSYNC_FLAGS="--ignore-times --links $(if [[ ${EUID} -eq 0 ]]; then ec
 # script still fails even when one of the fixes is successful. The motivation
 # for this is that right now, we only want to know which of the fixes (if any)
 # can be successful. In a future change, only the effective fixes will be kept.
+# The new exit codes have the following meanings:
+#  90 mkdir of new versioned directory failed: read-only file system (EROFS).
+#  91 mkdir of new versioned directory failed: no space / quota (ENOSPC/EDQUOT).
+#  92 mkdir of new versioned directory failed: operation not permitted (EPERM,
+#     e.g. App Management gate on macOS 13+, or endpoint security software).
+#  93 mkdir of new versioned directory failed: permission denied (EACCES,
+#     e.g. POSIX ownership or ACL mismatch on the installed bundle).
+#  94 mkdir of new versioned directory failed: non-directory at path
+#     (EEXIST/ENOTDIR; stale entry or TOCTOU with another process).
+#  95 mkdir of new versioned directory failed: unclassified (see logged stderr).
+
 [[substitution]]
-description = 'Initialize variable debug_flags'
+description = 'Probe mkdir, classify the failure, initialize debug_flags'
 pattern = 'note "rsyncing versioned directory"'
 replace = '''note "rsyncing versioned directory"
     local debug_flags=0
     if [[ ! -d "${new_versioned_dir}" ]]; then
       debug_flags=1
-      mkdir -p "${new_versioned_dir}" && (( debug_flags |= 2 ))
+      local mkdir_stderr
+      if ! mkdir_stderr="$(mkdir -p "${new_versioned_dir}" 2>&1 1>/dev/null)"
+      then
+        case "${mkdir_stderr}" in
+          *"Read-only file system"*)
+            exit 90 ;;
+          *"No space left on device"*|*"Disc quota exceeded"*)
+            exit 91 ;;
+          *"Operation not permitted"*)
+            exit 92 ;;
+          *"Permission denied"*)
+            exit 93 ;;
+          *"File exists"*|*"Not a directory"*)
+            exit 94 ;;
+          *)
+            exit 95 ;;
+        esac
+      fi
+      debug_flags=$((debug_flags | 2))
       rm -rf "${new_versioned_dir}"
     fi'''
 
