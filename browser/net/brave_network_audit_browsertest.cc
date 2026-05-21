@@ -19,7 +19,7 @@
 #include "brave/browser/net/brave_network_audit_allowed_lists.h"
 #include "brave/browser/net/brave_network_audit_test_helper.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
-#include "chrome/browser/password_manager/profile_password_store_factory.h"
+#include "chrome/browser/password_manager/factories/profile_password_store_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/browser.h"
@@ -30,6 +30,7 @@
 #include "components/prefs/pref_service.h"
 #include "components/search_engines/template_url_service.h"
 #include "content/public/test/browser_test.h"
+#include "net/base/switches.h"
 #include "services/network/public/cpp/network_switches.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
@@ -102,8 +103,7 @@ class BraveNetworkAuditTest : public InProcessBrowserTest {
     audit_results_path_ =
         source_root_path.AppendASCII("network_audit_results.json");
 
-    command_line->AppendSwitchPath(network::switches::kLogNetLog,
-                                   net_log_path_);
+    command_line->AppendSwitchPath(net::switches::kLogNetLog, net_log_path_);
     command_line->AppendSwitchASCII(network::switches::kNetLogCaptureMode,
                                     "Everything");
   }

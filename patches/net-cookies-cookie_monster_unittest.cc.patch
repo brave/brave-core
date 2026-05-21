@@ -1,0 +1,19 @@
+diff --git a/net/cookies/cookie_monster_unittest.cc b/net/cookies/cookie_monster_unittest.cc
+index 3a5696f5f060e5aa98e31fc6be153181719368c7..738f366b4cf584a264723f730d0fb3439c4fb1f9 100644
+--- a/net/cookies/cookie_monster_unittest.cc
++++ b/net/cookies/cookie_monster_unittest.cc
+@@ -71,7 +71,7 @@
+ #include "url/third_party/mozilla/url_parse.h"
+ #include "url/url_constants.h"
+ 
+-namespace net {
++namespace net::chromium_impl {
+ 
+ using base::Time;
+ using CookieDeletionInfo = net::CookieDeletionInfo;
+@@ -8668,4 +8668,4 @@ TEST_F(CookieMonsterTest, RejectsHiddenHostHttpPrefix) {
+            EXCLUDE_AMBIGUOUS_SERIALIZATION}));
+ }
+ 
+-}  // namespace net
++}  // namespace net::chromium_impl

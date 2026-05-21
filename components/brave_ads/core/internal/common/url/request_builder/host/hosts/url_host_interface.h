@@ -14,7 +14,6 @@ class UrlHostInterface {
  public:
   virtual ~UrlHostInterface() = default;
 
-  // Returns the host URL.
   virtual std::string Get() const = 0;
 };
 

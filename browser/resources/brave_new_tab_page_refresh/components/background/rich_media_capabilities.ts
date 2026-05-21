@@ -26,8 +26,6 @@ interface SafeRectMessage {
 
 interface SearchMatchesMessage {
   type: 'richMediaSearchMatches'
-  // TODO(https://github.com/brave/brave-browser/issues/50424): This should be
-  // a type defined by the protocol.
   value: AutocompleteMatch[]
 }
 
@@ -37,6 +35,7 @@ export type RichMediaIncomingMessage =
   | SearchAutocompleteMessage
   | OpenSearchMessage
   | HideBraveSearchBoxMessage
+  | MakeBraveSearchDefaultMessage
 
 interface AdEventMessage {
   type: 'richMediaEvent'
@@ -57,6 +56,10 @@ interface HideBraveSearchBoxMessage {
   type: 'richMediaHideBraveSearchBox'
 }
 
+interface MakeBraveSearchDefaultMessage {
+  type: 'richMediaMakeBraveSearchDefault'
+}
+
 // The interface through which messages can be sent to a rich media background
 // frame.
 export interface RichMediaFrameHandle {
@@ -71,6 +74,7 @@ export interface RichMediaCapabilities {
   openBraveSearch: (pathAndQuery: string) => void
   queryBraveSearchAutocomplete: (query: string) => void
   hideBraveSearchBox: () => void
+  makeBraveSearchDefault: () => void
 }
 
 // Takes a raw incoming rich media message and executes the appropriate
@@ -108,6 +112,9 @@ export function readIncomingMessage(
       return data.value ? { type, value: String(data.value) } : null
     }
     case 'richMediaHideBraveSearchBox': {
+      return { type }
+    }
+    case 'richMediaMakeBraveSearchDefault': {
       return { type }
     }
   }
@@ -155,6 +162,10 @@ export function dispatchIncomingMessage(
     }
     case 'richMediaHideBraveSearchBox': {
       capabilities.hideBraveSearchBox()
+      break
+    }
+    case 'richMediaMakeBraveSearchDefault': {
+      capabilities.makeBraveSearchDefault()
       break
     }
   }

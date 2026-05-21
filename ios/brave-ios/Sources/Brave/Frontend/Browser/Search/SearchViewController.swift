@@ -6,6 +6,7 @@ import CoreData
 import Data
 import DesignSystem
 import Favicon
+import Growth
 import Preferences
 import Shared
 import Storage
@@ -857,6 +858,7 @@ public class SearchViewController: UIViewController, LoaderListener {
       RecentSearch.addItem(type: .website, text: localSearchQuery, websiteUrl: url.absoluteString)
     }
     searchDelegate?.searchViewController(self, didSelectURL: url)
+    recordQuickSearchActionP3A(option: .searchEngine(engine))
   }
 
   @objc func didClickSettingsButton() {
@@ -865,6 +867,7 @@ public class SearchViewController: UIViewController, LoaderListener {
 
   @objc func didClickLeoButton() {
     submitSearchQueryToAIChat()
+    recordQuickSearchActionP3A(option: .leo)
   }
 
   @objc func onShowMorePressed() {
@@ -1245,6 +1248,91 @@ extension SearchViewController: NSFetchedResultsControllerDelegate {
     _ controller: NSFetchedResultsController<NSFetchRequestResult>
   ) {
     updateAvailableOnYourDeviceItems()
+  }
+}
+
+// MARK: - P3A
+
+private enum QuickSearchP3AAnswer: Int, CaseIterable {
+  case leo = 1
+  case defaultEngine = 2
+  case google = 3
+  case youtube = 4
+  case bing = 5
+  case ecosia = 6
+  case duckduckgo = 7
+  case qwant = 8
+  case startpage = 9
+  case brave = 10
+  case other = 11
+}
+
+private enum P3AQuickSearchOption {
+  case leo
+  case searchEngine(OpenSearchEngine)
+}
+
+extension SearchViewController {
+  fileprivate func recordQuickSearchActionP3A(option: P3AQuickSearchOption) {
+    let answer: QuickSearchP3AAnswer
+    switch option {
+    case .leo:
+      answer = .leo
+    case .searchEngine(let engine):
+      if let engineID = engine.engineID, !engine.isCustomEngine {
+        let isDefaultEngine =
+          dataSource.searchEngines?.isEngineDefault(
+            engine,
+            type: dataSource.isPrivate ? .privateMode : .standard
+          ) ?? false
+        if isDefaultEngine {
+          answer = .defaultEngine
+        } else {
+          switch engineID {
+          case InitialSearchEngines.SearchEngineID.google.quickSearchP3AId:
+            answer = .google
+          case InitialSearchEngines.SearchEngineID.bing.quickSearchP3AId:
+            answer = .bing
+          case InitialSearchEngines.SearchEngineID.ecosia.quickSearchP3AId:
+            answer = .ecosia
+          case InitialSearchEngines.SearchEngineID.duckduckgo.quickSearchP3AId:
+            answer = .duckduckgo
+          case InitialSearchEngines.SearchEngineID.qwant.quickSearchP3AId:
+            answer = .qwant
+          case InitialSearchEngines.SearchEngineID.startpage.quickSearchP3AId:
+            answer = .startpage
+          case InitialSearchEngines.SearchEngineID.braveSearch.quickSearchP3AId:
+            answer = .brave
+          default:
+            answer = .other
+          }
+        }
+      } else if engine.isCustomEngine,
+        engine.shortName.caseInsensitiveCompare("Youtube") == .orderedSame
+      {
+        answer = .youtube
+      } else {
+        answer = .other
+      }
+    }
+    var storages = Dictionary(
+      uniqueKeysWithValues: QuickSearchP3AAnswer.allCases.map {
+        ($0, P3ATimedStorage<Int>.quickSearchMostUsedStorage(for: $0))
+      }
+    )
+    storages[answer]?.append(value: 1)
+    let maxCount = storages.values.map(\.combinedValue).max() ?? 0
+    let mostUsedAnswer =
+      storages[answer]?.combinedValue == maxCount
+      ? answer
+      : storages.max { $0.value.combinedValue < $1.value.combinedValue }?.key ?? answer
+    UmaHistogramEnumeration("Brave.Search.QuickMostUsedAction", sample: mostUsedAnswer)
+  }
+}
+
+extension P3ATimedStorage where Value == Int {
+  fileprivate static func quickSearchMostUsedStorage(for answer: QuickSearchP3AAnswer) -> Self {
+    .init(name: "quick-search-most-used-\(answer.rawValue)", lifetimeInDays: 7)
   }
 }
 

@@ -24,8 +24,12 @@ import {
   SignMessageResponse,
   TrezorGetAccountsResponse,
   SignTypedMessageResponsePayload,
+  GetDeviceNameResponsePayload,
 } from './trezor-messages'
-import { sendTrezorCommand, closeTrezorBridge } from './trezor-bridge-transport'
+import {
+  TrezorBridgeTransport,
+  closeTrezorBridge,
+} from './trezor-bridge-transport'
 import {
   AccountFromDevice,
   HardwareImportScheme,
@@ -36,6 +40,7 @@ import {
   HardwareOperationResultEthereumSignatureVRS,
   fromUntrustedEthereumSignatureBytes,
   fromUntrustedEthereumSignatureVRS,
+  HardwareOperationResultDeviceName,
 } from '../types'
 import { BridgeType, BridgeTypes } from '../untrusted_shared_types'
 import { Unsuccessful } from './trezor-connect-types'
@@ -43,6 +48,32 @@ import { TrezorKeyring } from '../interfaces'
 
 export default class TrezorBridgeKeyring implements TrezorKeyring {
   private unlocked: boolean = false
+  private readonly transport: TrezorBridgeTransport
+
+  constructor(transport: TrezorBridgeTransport) {
+    this.transport = transport
+  }
+
+  getDeviceName = async (): Promise<HardwareOperationResultDeviceName> => {
+    const data = await this.sendTrezorCommand<GetDeviceNameResponsePayload>({
+      id: TrezorCommand.GetDeviceName,
+      origin: window.origin,
+      command: TrezorCommand.GetDeviceName,
+    })
+    if (
+      data === TrezorErrorsCodes.BridgeNotReady
+      || data === TrezorErrorsCodes.CommandInProgress
+    ) {
+      return this.createErrorFromCode(data)
+    }
+    if (!data.payload.success) {
+      const response: Unsuccessful = data.payload as Unsuccessful
+      const error = response.payload?.error ?? ''
+      const code = response.payload?.code ?? ''
+      return { success: false, error, code }
+    }
+    return { success: true, deviceName: data.payload.deviceName }
+  }
 
   bridgeType = (): BridgeType => {
     return BridgeTypes.EthTrezor
@@ -53,7 +84,7 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
   }
 
   cancelOperation = async () => {
-    closeTrezorBridge()
+    closeTrezorBridge(this.transport)
   }
 
   unlock = async (): Promise<HardwareOperationResult> => {
@@ -260,7 +291,7 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
   private async sendTrezorCommand<T>(
     command: TrezorFrameCommand,
   ): Promise<T | TrezorErrorsCodes> {
-    return sendTrezorCommand<T>(command)
+    return this.transport.sendCommandToTrezorFrame<T>(command)
   }
 
   private prepareTransactionPayload = (
@@ -366,7 +397,14 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
         derivationPath: value.serializedPath,
       })
     }
-    return { success: true, accounts: [...accounts] }
+
+    const deviceName = await this.getDeviceName()
+
+    return {
+      success: true,
+      accounts: [...accounts],
+      deviceName: deviceName.success ? deviceName.deviceName : '',
+    }
   }
 
   private readonly createErrorFromCode = (

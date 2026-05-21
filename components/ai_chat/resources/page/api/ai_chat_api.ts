@@ -95,10 +95,13 @@ export default function createAIChatApi(
       }),
 
       ...endpointsFor(uiHandler, {
-        uploadFile: {
-          mutationResponse: (result) => result.uploadedFiles,
-        },
         processImageFile: {
+          mutationResponse: (result) => result.processedFile,
+        },
+        processPdfFile: {
+          mutationResponse: (result) => result.processedFile,
+        },
+        processTextFile: {
           mutationResponse: (result) => result.processedFile,
         },
         getPluralString: {
@@ -150,7 +153,10 @@ export default function createAIChatApi(
       >,
       uiHandler: uiHandler as Pick<
         Mojom.AIChatUIHandlerInterface,
-        VoidMethodKeys<Mojom.AIChatUIHandlerInterface>
+        | VoidMethodKeys<Mojom.AIChatUIHandlerInterface>
+        | `processTextFile`
+        | `processImageFile`
+        | `processPdfFile`
       >,
       metrics: metrics as Pick<
         Mojom.MetricsInterface,
@@ -187,10 +193,6 @@ export default function createAIChatApi(
           // We don't need to do any handling here, just pass through
           onNewDefaultConversation(contentId: number) {},
 
-          // TODO(https://github.com/brave/brave-browser/issues/52539): rename
-          // in mojom to `onAttachedFilesAreProcessing`.
-          onUploadFilesSelected() {},
-
           onChildFrameBound(parentPagePendingReceiver) {},
         },
         async (observer) => {
@@ -210,9 +212,9 @@ export default function createAIChatApi(
           // <if expr="is_ios">
           dismissMenus() {},
           // </if>
-          regenerateAnswerMenuIsOpen(isOpen) {},
           showSkillDialog(prompt) {},
-          showPremiumSuggestionForRegenerate(isVisible) {},
+          requestNewConversation() {},
+          handleResetError() {},
         },
         (observer) => {
           conversationEntriesFrameObserver = observer

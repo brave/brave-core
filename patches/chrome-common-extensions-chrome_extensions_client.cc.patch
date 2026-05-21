@@ -1,9 +1,9 @@
 diff --git a/chrome/common/extensions/chrome_extensions_client.cc b/chrome/common/extensions/chrome_extensions_client.cc
-index f2dc6bbfb60af6e0f1765fc7ceca1b62d02de6dd..81021669faa2aee118c63aa53c5ed3472438dcbd 100644
+index e725bce7908510252958b8eae3c49d9156d3ff3f..c5e159ad861cb96fa049c237513319ff438a888c 100644
 --- a/chrome/common/extensions/chrome_extensions_client.cc
 +++ b/chrome/common/extensions/chrome_extensions_client.cc
-@@ -14,6 +14,7 @@
- #include "base/metrics/histogram_macros.h"
+@@ -13,6 +13,7 @@
+ #include "base/files/file_path.h"
  #include "base/strings/string_util.h"
  #include "base/values.h"
 +#include "brave/common/extensions/brave_extensions_api_provider.h"

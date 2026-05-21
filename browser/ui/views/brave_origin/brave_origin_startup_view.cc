@@ -8,10 +8,14 @@
 #include <utility>
 
 #include "base/command_line.h"
+#include "base/files/file_path.h"
+#include "base/files/file_util.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
+#include "base/path_service.h"
 #include "base/strings/strcat.h"
 #include "base/task/sequenced_task_runner.h"
+#include "base/task/thread_pool.h"
 #include "brave/brave_domains/service_domains.h"
 #include "brave/browser/ui/webui/brave_origin_startup/brave_origin_startup_ui.h"
 #include "brave/components/brave_origin/pref_names.h"
@@ -20,6 +24,9 @@
 #include "chrome/browser/profiles/keep_alive/profile_keep_alive_types.h"
 #include "chrome/browser/profiles/keep_alive/scoped_profile_keep_alive.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/common/chrome_constants.h"
+#include "chrome/common/chrome_paths.h"
+#include "chrome/grit/chrome_unscaled_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/keep_alive_registry/keep_alive_types.h"
 #include "components/keep_alive_registry/scoped_keep_alive.h"
@@ -28,19 +35,24 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/common/content_switches.h"
+#include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/geometry/size.h"
 #include "ui/views/controls/webview/webview.h"
 #include "ui/views/widget/widget.h"
 #include "url/gurl.h"
 #include "url/url_constants.h"
 
+#if BUILDFLAG(IS_LINUX)
+#include "brave/components/brave_origin/switches.h"
+#endif
+
 namespace {
 
 constexpr int kDialogWidth = 540;
 #if BUILDFLAG(IS_LINUX)
-constexpr int kDialogHeight = 560;
+constexpr int kDialogHeight = 600;
 #else
-constexpr int kDialogHeight = 450;
+constexpr int kDialogHeight = 500;
 #endif
 
 BraveOriginStartupView* g_startup_view = nullptr;
@@ -83,6 +95,12 @@ bool BraveOriginStartupView::ShouldShowDialog(PrefService* local_state) {
   }
 
 #if BUILDFLAG(IS_LINUX)
+  if (base::CommandLine::ForCurrentProcess()->HasSwitch(
+          brave_origin::switches::kSkipOriginStartupDialog)) {
+    // Persist acceptance so future launches without the switch also skip
+    // the dialog.
+    local_state->SetBoolean(brave_origin::kOriginFreeTierAccepted, true);
+  }
   if (local_state->GetBoolean(brave_origin::kOriginFreeTierAccepted)) {
     return false;
   }
@@ -136,7 +154,7 @@ BraveOriginStartupView::BraveOriginStartupView(
                                             KeepAliveRestartOption::DISABLED)),
       delegate_(std::move(delegate)),
       on_complete_(std::move(on_complete)) {
-  SetHasWindowSizeControls(false);
+  SetHasWindowSizeControls(true);
   SetTitle(IDS_BRAVE_ORIGIN_STARTUP_TITLE);
 }
 
@@ -198,6 +216,11 @@ void BraveOriginStartupView::Init(Profile* profile) {
 
   web_view_ = std::make_unique<views::WebView>(profile);
 
+  // Sets the widget's minimum size to match the initial dialog dimensions, so
+  // users cannot resize below the designed layout. View::GetMinimumSize()
+  // defaults to GetPreferredSize() when no layout manager is set.
+  web_view_->SetPreferredSize(gfx::Size(kDialogWidth, kDialogHeight));
+
   // GetWebContents() creates the WebContents if it doesn't already exist.
   web_view_->GetWebContents()->SetDelegate(this);
   Observe(web_view_->web_contents());
@@ -217,6 +240,20 @@ void BraveOriginStartupView::Init(Profile* profile) {
 
 views::View* BraveOriginStartupView::GetContentsView() {
   return web_view_.get();
+}
+
+bool BraveOriginStartupView::ShouldShowWindowIcon() const {
+  return true;
+}
+
+ui::ImageModel BraveOriginStartupView::GetWindowAppIcon() {
+  ui::ResourceBundle& rb = ui::ResourceBundle::GetSharedInstance();
+  return ui::ImageModel::FromImageSkia(
+      *rb.GetImageSkiaNamed(IDR_PRODUCT_LOGO_128));
+}
+
+ui::ImageModel BraveOriginStartupView::GetWindowIcon() {
+  return GetWindowAppIcon();
 }
 
 void BraveOriginStartupView::WidgetIsZombie(views::Widget* widget) {
@@ -328,10 +365,23 @@ void BraveOriginStartupView::WindowClosing() {
                      std::move(keep_alive_), std::move(profile_keep_alive_)));
 
   if (!validated_ && delegate_) {
-    // Move delegate_ into the closure so it outlives `this` (which is deleted
-    // in WidgetIsZombie right after WindowClosing returns).
-    task_runner->PostTask(
-        FROM_HERE,
+    // Delete the first run sentinel that was created earlier in this process.
+    // Without this, the sentinel makes first_run::IsChromeFirstRun() return
+    // false on the next launch, so onboarding is skipped even though the user
+    // never actually entered the browser. Deleting it ensures the next launch
+    // (where the user enters a valid purchase ID) is treated as a fresh first
+    // run. The delete is posted to a worker thread because file I/O is not
+    // allowed on the UI thread, and AttemptExit is chained as the reply so it
+    // runs after the deletion completes. Move delegate_ into the closure so it
+    // outlives `this` (which is deleted in WidgetIsZombie right after
+    // WindowClosing returns).
+    base::FilePath sentinel_path =
+        base::PathService::CheckedGet(chrome::DIR_USER_DATA)
+            .Append(chrome::kFirstRunSentinel);
+    base::ThreadPool::PostTaskAndReply(
+        FROM_HERE, {base::MayBlock()},
+        base::BindOnce(base::IgnoreResult(&base::DeleteFile),
+                       std::move(sentinel_path)),
         base::BindOnce(
             [](std::unique_ptr<Delegate> delegate) { delegate->AttemptExit(); },
             std::move(delegate_)));

@@ -60,17 +60,13 @@ export default function ContextActionsAssistant(
         && modelToBeUsed?.options.leoModelOptions?.access
           === Mojom.ModelAccess.PREMIUM
       ) {
-        conversationContext.parentUiFrame?.showPremiumSuggestionForRegenerate(
-          true,
-        )
+        conversationContext.setShowPremiumSuggestionForRegenerate(true)
         return
       }
 
       // Reset the premium suggestion if the user regenerates with a
       // non-premium model.
-      conversationContext.parentUiFrame?.showPremiumSuggestionForRegenerate(
-        false,
-      )
+      conversationContext.setShowPremiumSuggestionForRegenerate(false)
       conversationContext.conversationHandler?.regenerateAnswer(
         props.turnUuid,
         selectedModelKey,
@@ -113,13 +109,9 @@ export default function ContextActionsAssistant(
     [conversationContext.allModels, isSummaryResponseTurn],
   )
 
-  const handleOpenCloseRegenerateAnswerMenu = React.useCallback(
-    (isOpen: boolean) => {
-      setIsRegenerateAnswerMenuOpen(isOpen)
-      conversationContext.parentUiFrame?.regenerateAnswerMenuIsOpen(isOpen)
-    },
-    [conversationContext],
-  )
+  const handleOpenCloseRegenerateAnswerMenu = (isOpen: boolean) => {
+    setIsRegenerateAnswerMenuOpen(isOpen)
+  }
 
   return (
     <div className={styles.actionsWrapper}>

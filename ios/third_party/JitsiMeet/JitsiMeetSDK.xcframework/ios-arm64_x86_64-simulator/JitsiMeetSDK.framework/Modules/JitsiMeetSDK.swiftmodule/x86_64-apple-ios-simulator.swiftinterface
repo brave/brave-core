@@ -1,7 +1,7 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 6.0.3 effective-5.10 (swiftlang-6.0.3.1.10 clang-1600.0.30.1)
-// swift-module-flags: -target x86_64-apple-ios15.1-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -enable-bare-slash-regex -module-name JitsiMeetSDK
-// swift-module-flags-ignorable: -no-verify-emitted-module-interface
+// swift-compiler-version: Apple Swift version 6.2.4 effective-5.10 (swiftlang-6.2.4.1.4 clang-1700.6.4.2)
+// swift-module-flags: -target x86_64-apple-ios15.1-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -module-name JitsiMeetSDK
+// swift-module-flags-ignorable: -no-verify-emitted-module-interface -formal-cxx-interoperability-mode=off -interface-compiler-version 6.2.4
 @_exported import JitsiMeetSDK
 import Swift
 import UIKit
@@ -33,9 +33,15 @@ public class PiPViewCoordinator {
   public var c: CoreFoundation.CGFloat
   weak public var delegate: (any JitsiMeetSDK.PiPViewCoordinatorDelegate)?
   public init(withView view: UIKit.UIView)
+  #if compiler(>=5.3) && $NonescapableTypes
   public func configureAsStickyView(withParentView parentView: UIKit.UIView? = nil)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   public func show(completion: JitsiMeetSDK.AnimationCompletion? = nil)
+  #endif
+  #if compiler(>=5.3) && $NonescapableTypes
   public func hide(completion: JitsiMeetSDK.AnimationCompletion? = nil)
+  #endif
   public func enterPictureInPicture()
   @objc public func exitPictureInPicture()
   public func resetBounds(bounds: CoreFoundation.CGRect)

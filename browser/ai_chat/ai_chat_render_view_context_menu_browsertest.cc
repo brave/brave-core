@@ -83,7 +83,10 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
 
   MOCK_METHOD(void, OnAPIRequestInProgress, (bool), (override));
 
-  MOCK_METHOD(void, OnAPIResponseError, (mojom::APIError), (override));
+  MOCK_METHOD(void,
+              OnAPIResponseError,
+              (mojom::APIError, mojom::APIErrorDetailsPtr),
+              (override));
 
   MOCK_METHOD(void,
               OnTaskStateChanged,
@@ -95,12 +98,6 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
               (const std::string& conversation_model_key,
                const std::string& default_model_key,
                std::vector<mojom::ModelPtr> all_models),
-              (override));
-
-  MOCK_METHOD(void,
-              OnSuggestedQuestionsChanged,
-              (const std::vector<std::string>&,
-               mojom::SuggestionGenerationStatus),
               (override));
 
   MOCK_METHOD(void,
@@ -183,12 +180,10 @@ class AIChatRenderViewContextMenuBrowserTest : public InProcessBrowserTest {
 
     RenderViewContextMenu::RegisterMenuShownCallbackForTesting(
         base::BindLambdaForTesting([&](RenderViewContextMenu* context_menu) {
-          auto* brave_context_menu =
-              static_cast<BraveRenderViewContextMenu*>(context_menu);
-          brave_context_menu->SetAIEngineForTesting(
+          context_menu->SetAIEngineForTesting(
               std::make_unique<MockEngineConsumer>());
           ai_engine = static_cast<MockEngineConsumer*>(
-              brave_context_menu->GetAIEngineForTesting());
+              context_menu->GetAIEngineForTesting());
           // Verify that rewrite is requested
           EXPECT_CALL(*ai_engine, GenerateRewriteSuggestion(_, _, _, _))
               .WillOnce(

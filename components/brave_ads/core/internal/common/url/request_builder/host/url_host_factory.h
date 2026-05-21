@@ -15,6 +15,11 @@ namespace brave_ads {
 
 class UrlHostFactory final {
  public:
+  // This class contains only static methods.
+  UrlHostFactory() = delete;
+  UrlHostFactory(const UrlHostFactory&) = delete;
+  UrlHostFactory& operator=(const UrlHostFactory&) = delete;
+
   static std::unique_ptr<UrlHostInterface> Build(UrlHostType type);
 };
 

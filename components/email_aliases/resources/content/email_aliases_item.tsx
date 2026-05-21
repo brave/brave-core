@@ -21,6 +21,10 @@ const AliasItemRow = styled(Row)`
   padding: ${spacing.l} ${spacing['2Xl']};
   border-top: ${color.divider.subtle} 1px solid;
   justify-content: space-between;
+
+  &:first-child {
+    border-top: transparent;
+  }
 `
 
 const AliasAnnotation = styled.div`

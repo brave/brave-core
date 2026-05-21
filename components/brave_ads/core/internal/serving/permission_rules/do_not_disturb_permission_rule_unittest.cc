@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/do_not_disturb_permission_rule.h"
 
-#include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/operating_system/operating_system_types.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -17,10 +17,10 @@ class BraveAdsDoNotDisturbPermissionRuleTest : public test::TestBase {};
 TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
        ShouldAllowWhileBrowserIsInactiveBetween6amAnd9pmOnAndroid) {
   // Arrange
-  test::MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
+  fake_operating_system_.SetType(OperatingSystemType::kAndroid);
 
-  NotifyBrowserDidResignActive();
-  NotifyBrowserDidEnterBackground();
+  ads_client_notifier_.NotifyBrowserDidResignActive();
+  ads_client_notifier_.NotifyBrowserDidEnterBackground();
 
   AdvanceClockToLocalMidnight();
 
@@ -53,10 +53,10 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
 TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
        ShouldAllowWhileBrowserIsActiveOnAndroid) {
   // Arrange
-  test::MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
+  fake_operating_system_.SetType(OperatingSystemType::kAndroid);
 
-  NotifyBrowserDidBecomeActive();
-  NotifyBrowserDidEnterForeground();
+  ads_client_notifier_.NotifyBrowserDidBecomeActive();
+  ads_client_notifier_.NotifyBrowserDidEnterForeground();
 
   AdvanceClockToLocalMidnight();
 
@@ -88,10 +88,10 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
 
 TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnIOS) {
   // Arrange
-  test::MockPlatformHelper(platform_helper_mock_, PlatformType::kIOS);
+  fake_operating_system_.SetType(OperatingSystemType::kIOS);
 
-  NotifyBrowserDidBecomeActive();
-  NotifyBrowserDidEnterForeground();
+  ads_client_notifier_.NotifyBrowserDidBecomeActive();
+  ads_client_notifier_.NotifyBrowserDidEnterForeground();
 
   AdvanceClockToLocalMidnight();
 
@@ -110,10 +110,10 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnIOS) {
 
 TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnMacOS) {
   // Arrange
-  test::MockPlatformHelper(platform_helper_mock_, PlatformType::kMacOS);
+  fake_operating_system_.SetType(OperatingSystemType::kMacOS);
 
-  NotifyBrowserDidBecomeActive();
-  NotifyBrowserDidEnterForeground();
+  ads_client_notifier_.NotifyBrowserDidBecomeActive();
+  ads_client_notifier_.NotifyBrowserDidEnterForeground();
 
   AdvanceClockToLocalMidnight();
 
@@ -132,10 +132,10 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnMacOS) {
 
 TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnWindows) {
   // Arrange
-  test::MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
+  fake_operating_system_.SetType(OperatingSystemType::kWindows);
 
-  NotifyBrowserDidBecomeActive();
-  NotifyBrowserDidEnterForeground();
+  ads_client_notifier_.NotifyBrowserDidBecomeActive();
+  ads_client_notifier_.NotifyBrowserDidEnterForeground();
 
   AdvanceClockToLocalMidnight();
 
@@ -154,10 +154,10 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnWindows) {
 
 TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnLinux) {
   // Arrange
-  test::MockPlatformHelper(platform_helper_mock_, PlatformType::kLinux);
+  fake_operating_system_.SetType(OperatingSystemType::kLinux);
 
-  NotifyBrowserDidBecomeActive();
-  NotifyBrowserDidEnterForeground();
+  ads_client_notifier_.NotifyBrowserDidBecomeActive();
+  ads_client_notifier_.NotifyBrowserDidEnterForeground();
 
   AdvanceClockToLocalMidnight();
 

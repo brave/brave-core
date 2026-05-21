@@ -73,6 +73,7 @@ class TransactionParserTests: XCTestCase {
   private let tokens: [BraveWallet.BlockchainToken] = [
     .previewToken, .previewDaiToken, .mockUSDCToken, .mockSolToken, .mockSpdToken,
     .mockSolanaNFTToken, .mockFilToken, .mockBTCToken, .mockZecToken, .mockAdaToken,
+    .mockMinToken,
   ]
   let assetRatios: [BraveWallet.AssetPrice] = [
     .init(
@@ -175,6 +176,16 @@ class TransactionParserTests: XCTestCase {
       source: .coingecko,
       percentageChange24h: "0"
     ),
+    .init(
+      coin: .ada,
+      chainId: BraveWallet.CardanoMainnet,
+      address: BraveWallet.BlockchainToken.mockMinToken.contractAddress,
+      price: "0.005",
+      vsCurrency: "usd",
+      cacheStatus: .hit,
+      source: .coingecko,
+      percentageChange24h: "0"
+    ),
   ]
 
   let mockSwapGasEstimation = BraveWallet.GasEstimation1559(
@@ -223,16 +234,14 @@ class TransactionParserTests: XCTestCase {
 
     let transactionData: BraveWallet.TxData1559 = .init(
       baseData: .init(
+        chainId: network.chainId,
         nonce: "1",
         gasPrice: "0x0",
         gasLimit: "0x5208",
         to: "0x0987654321098765432109876543210987654321",
         value: "0x1b667a56d488000",  // 0.1234
-        data: [],
-        signOnly: false,
-        signedTransaction: nil
+        data: []
       ),
-      chainId: network.chainId,
       maxPriorityFeePerGas: "0x59672ead",
       maxFeePerGas: "0x59672eb6"
     )
@@ -307,16 +316,14 @@ class TransactionParserTests: XCTestCase {
 
     let transactionData: BraveWallet.TxData1559 = .init(
       baseData: .init(
+        chainId: network.chainId,
         nonce: "1",
         gasPrice: "0x0",
         gasLimit: "0xca48",
         to: BraveWallet.BlockchainToken.previewDaiToken.contractAddress,
         value: "0x0",
-        data: [],
-        signOnly: false,
-        signedTransaction: nil
+        data: []
       ),
-      chainId: network.chainId,
       maxPriorityFeePerGas: "0x59672ead",
       maxFeePerGas: "0x59672eb6"
     )
@@ -374,16 +381,14 @@ class TransactionParserTests: XCTestCase {
 
     let transactionData: BraveWallet.TxData1559 = .init(
       baseData: .init(
+        chainId: network.chainId,
         nonce: "1",
         gasPrice: "0x0",
         gasLimit: "0x4be75",
         to: "0xDef1C0ded9bec7F1a1670819833240f027b25EfF",  // 0x exchange address
         value: "0x1b6951ef585a000",
-        data: [],
-        signOnly: false,
-        signedTransaction: nil
+        data: []
       ),
-      chainId: network.chainId,
       maxPriorityFeePerGas: "0x59682f00",
       maxFeePerGas: "0x59682f09"
     )
@@ -459,16 +464,14 @@ class TransactionParserTests: XCTestCase {
 
     let transactionData: BraveWallet.TxData1559 = .init(
       baseData: .init(
+        chainId: network.chainId,
         nonce: "1",
         gasPrice: "0x0",
         gasLimit: "0x4be75",
         to: "0xDef1C0ded9bec7F1a1670819833240f027b25EfF",  // 0x exchange address
         value: "0x0",
-        data: [],
-        signOnly: false,
-        signedTransaction: nil
+        data: []
       ),
-      chainId: network.chainId,
       maxPriorityFeePerGas: "0x59682f00",
       maxFeePerGas: "0x59682f09"
     )
@@ -544,16 +547,14 @@ class TransactionParserTests: XCTestCase {
 
     let transactionData: BraveWallet.TxData1559 = .init(
       baseData: .init(
+        chainId: network.chainId,
         nonce: "1",
         gasPrice: "0x0",
         gasLimit: "0xb53f",
         to: BraveWallet.BlockchainToken.previewDaiToken.contractAddress,
         value: "0x0",
-        data: [],
-        signOnly: false,
-        signedTransaction: nil
+        data: []
       ),
-      chainId: network.chainId,
       maxPriorityFeePerGas: "0x59682f00",
       maxFeePerGas: "0x59682f09"
     )
@@ -613,16 +614,14 @@ class TransactionParserTests: XCTestCase {
 
     let transactionData: BraveWallet.TxData1559 = .init(
       baseData: .init(
+        chainId: network.chainId,
         nonce: "1",
         gasPrice: "0x0",
         gasLimit: "0xb53f",
         to: BraveWallet.BlockchainToken.previewDaiToken.contractAddress,
         value: "0x0",
-        data: [],
-        signOnly: false,
-        signedTransaction: nil
+        data: []
       ),
-      chainId: network.chainId,
       maxPriorityFeePerGas: "0x59682f00",
       maxFeePerGas: "0x59682f09"
     )
@@ -683,16 +682,14 @@ class TransactionParserTests: XCTestCase {
 
     let transactionData: BraveWallet.TxData1559 = .init(
       baseData: .init(
+        chainId: network.chainId,
         nonce: "1",
         gasPrice: "0x0",
         gasLimit: "0x5208",
         to: BraveWallet.BlockchainToken.previewDaiToken.contractAddress,
         value: "0xde0b6b3a7640000",  // 1
-        data: [],
-        signOnly: false,
-        signedTransaction: nil
+        data: []
       ),
-      chainId: network.chainId,
       maxPriorityFeePerGas: "0x59672ead",
       maxFeePerGas: "0x59672eb6"
     )
@@ -1446,7 +1443,7 @@ class TransactionParserTests: XCTestCase {
 
   }
 
-  @MainActor func testCardanoSend() async {
+  @MainActor func testCardanoAdaSend() async {
     let network = BraveWallet.NetworkInfo.mockCardanoMainnet
     let mockFromAccount = accountInfos[8]
     let mockToAccountAddress = "addr1qx723u2c3tku3mlq720m0qrpass8ppppkfksmd3trxvsay7dd5"
@@ -1462,7 +1459,7 @@ class TransactionParserTests: XCTestCase {
     let transaction = mockTransaction(
       fromAccount: mockFromAccount,
       txDataUnion: .init(cardanoTxData: transactionData),
-      txType: .other,
+      txType: .cardanoSendLovelace,
       chainId: network.chainId,
       effectiveRecipient: mockToAccountAddress
     )
@@ -1480,6 +1477,91 @@ class TransactionParserTests: XCTestCase {
           fromValue: "1000000",
           fromAmount: "1",
           fromFiat: "$0.30",
+          fromTokenMetadata: nil,
+          gasFee: GasFee(
+            fee: "0.100000",
+            fiat: "$0.03"
+          )
+        )
+      )
+    )
+
+    guard
+      let parsedTransaction = TransactionParser.parseTransaction(
+        transaction: transaction,
+        allNetworks: [.mockMainnet, .mockPolygon, network],
+        accountInfos: accountInfos,
+        userAssets: tokens,
+        allTokens: tokens,
+        assetRatios: assetRatios,
+        nftMetadata: [:],
+        solEstimatedTxFee: nil,
+        currencyFormatter: currencyFormatter
+      )
+    else {
+      XCTFail("Failed to parse adaSend transaction")
+      return
+    }
+
+    XCTAssertEqual(
+      expectedParsedTransaction.fromAccountInfo.id,
+      parsedTransaction.fromAccountInfo.id
+    )
+    XCTAssertEqual(expectedParsedTransaction.namedFromAddress, parsedTransaction.namedFromAddress)
+    XCTAssertEqual(expectedParsedTransaction.toAddress, parsedTransaction.toAddress)
+    XCTAssertEqual(expectedParsedTransaction.networkSymbol, parsedTransaction.networkSymbol)
+
+    guard case .adaSend(let expectedDetails) = expectedParsedTransaction.details,
+      case .adaSend(let parsedDetails) = parsedTransaction.details
+    else {
+      XCTFail("Incorrectly parsed adaSend transaction")
+      return
+    }
+
+    XCTAssertEqual(expectedDetails.fromValue, parsedDetails.fromValue)
+    XCTAssertEqual(expectedDetails.fromAmount, parsedDetails.fromAmount)
+    XCTAssertEqual(expectedDetails.fromFiat, parsedDetails.fromFiat)
+    XCTAssertEqual(expectedDetails.gasFee, parsedDetails.gasFee)
+
+  }
+
+  @MainActor func testCardanoNonAdaSend() async {
+    let network = BraveWallet.NetworkInfo.mockCardanoMainnet
+    let mockFromAccount = accountInfos[8]
+    let mockToAccountAddress = "addr1qx723u2c3tku3mlq720m0qrpass8ppppkfksmd3trxvsay7dd5"
+
+    let transactionData: BraveWallet.CardanoTxData = .init(
+      to: mockToAccountAddress,
+      sendingLovelace: 1_000_001,
+      sendingToken: .init(
+        tokenIdHex: "29d222ce763455e3d7a09a665ce554f00ac89d2e99a1a83d267170c64d494e",
+        value: 2_000_000
+      ),
+      fee: 100_000,
+      inputs: [],
+      outputs: []
+    )
+    let transaction = mockTransaction(
+      fromAccount: mockFromAccount,
+      txDataUnion: .init(cardanoTxData: transactionData),
+      txType: .cardanoSendToken,
+      chainId: network.chainId,
+      effectiveRecipient: mockToAccountAddress
+    )
+
+    let expectedParsedTransaction = ParsedTransaction(
+      transaction: transaction,
+      namedFromAddress: mockFromAccount.name,
+      fromAccountInfo: mockFromAccount,
+      namedToAddress: "",
+      toAddress: mockToAccountAddress,
+      network: network,
+      details: .adaSend(
+        .init(
+          fromToken: .mockMinToken,
+          fromValue: "2000000",
+          fromAmount: "2",
+          fromFiat: "$0.01",
           fromTokenMetadata: nil,
           gasFee: GasFee(
             fee: "0.100000",

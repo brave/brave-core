@@ -403,7 +403,7 @@ class SolanaProviderScriptHandler: TabContentScript {
   @MainActor private func emitConnectEvent(tab: some TabState, publicKey: String) async {
     let script =
       "window.solana.emit('connect', new \(UserScriptManager.walletSolanaNameSpace).solanaWeb3.PublicKey('\(publicKey.htmlEntityEncodedString)'))"
-    try? await tab.evaluateJavaScript(
+    _ = try? await tab.evaluateJavaScript(
       functionName: script,
       contentWorld: .page,
       asFunction: false

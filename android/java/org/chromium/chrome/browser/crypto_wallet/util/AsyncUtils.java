@@ -21,7 +21,6 @@ import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TxService;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 public class AsyncUtils {
@@ -275,21 +274,6 @@ public class AsyncUtils {
         }
     }
 
-    public static class FetchPricesResponseContext extends SingleResponseBaseContext
-            implements Callback1<List<AssetPrice>> {
-        public List<AssetPrice> assetPrices;
-
-        public FetchPricesResponseContext(Runnable responseCompleteCallback) {
-            super(responseCompleteCallback);
-        }
-
-        @Override
-        public void call(List<AssetPrice> assetPrices) {
-            this.assetPrices = assetPrices;
-            super.fireResponseCompleteCallback();
-        }
-    }
-
     public static class GetNativeAssetsBalancesResponseContext extends SingleResponseBaseContext
             implements Callback2<Integer, HashMap<String, Double>> {
         public int coinType;
@@ -373,64 +357,6 @@ public class AsyncUtils {
                             + (((long) fee.computeUnits * fee.feePerComputeUnit)
                                     / BraveWalletConstants.MICRO_LAMPORTS_PER_LAMPORT);
             this.error = error;
-            this.errorMessage = errorMessage;
-            super.fireResponseCompleteCallback();
-        }
-    }
-
-    public static class GetP3ABalancesContext extends SingleResponseBaseContext
-            implements Callback1<HashMap<Integer, HashSet<String>>> {
-        public HashMap<Integer, HashSet<String>> activeAddresses;
-
-        public GetP3ABalancesContext(Runnable responseCompleteCallback) {
-            super(responseCompleteCallback);
-        }
-
-        @Override
-        public void call(HashMap<Integer, HashSet<String>> activeAddresses) {
-            this.activeAddresses = activeAddresses;
-            super.fireResponseCompleteCallback();
-        }
-    }
-
-    public abstract static class BaseGetNftMetadataContext extends SingleResponseBaseContext {
-        public BlockchainToken asset;
-        public String tokenMetadata;
-        public Integer errorCode;
-        public String errorMessage;
-
-        public BaseGetNftMetadataContext(Runnable responseCompleteCallback) {
-            super(responseCompleteCallback);
-        }
-    }
-
-    public static class GetNftSolanaMetadataContext extends BaseGetNftMetadataContext
-            implements JsonRpcService.GetSolTokenMetadata_Response {
-        public GetNftSolanaMetadataContext(Runnable responseCompleteCallback) {
-            super(responseCompleteCallback);
-        }
-
-        @Override
-        public void call(
-                String tokenUrl, String tokenMetadata, int errorCode, String errorMessage) {
-            this.tokenMetadata = tokenMetadata;
-            this.errorCode = errorCode;
-            this.errorMessage = errorMessage;
-            super.fireResponseCompleteCallback();
-        }
-    }
-
-    public static class GetNftErc721MetadataContext extends BaseGetNftMetadataContext
-            implements JsonRpcService.GetErc721Metadata_Response {
-        public GetNftErc721MetadataContext(Runnable responseCompleteCallback) {
-            super(responseCompleteCallback);
-        }
-
-        @Override
-        public void call(
-                String tokenUrl, String erc721Metadata, int errorCode, String errorMessage) {
-            this.tokenMetadata = erc721Metadata;
-            this.errorCode = errorCode;
             this.errorMessage = errorMessage;
             super.fireResponseCompleteCallback();
         }

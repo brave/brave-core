@@ -21,13 +21,12 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_prefetcher.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_util.h"
 #include "brave/components/brave_ads/core/public/ads.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "brave/components/brave_ads/core/public/ads_constants.h"
-#include "brave/components/brave_ads/core/public/flags/flags_util.h"
+#include "brave/components/brave_ads/core/public/command_line_switches/command_line_switches_util.h"
 #include "components/prefs/pref_service.h"
 #include "sql/database.h"
 #include "ui/base/page_transition_types.h"
@@ -42,22 +41,23 @@ constexpr char kAdsDatabaseFilename[] = "Ads.db";
 
 }  // namespace
 
-AdsServiceImplIOS::AdsServiceImplIOS(PrefService* prefs)
+AdsServiceImplIOS::AdsServiceImplIOS(PrefService& prefs)
     : AdsService(/*delegate=*/nullptr),
       prefs_(prefs),
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
-      ads_client_notifier_(std::make_unique<AdsClientNotifier>()),
-      new_tab_page_ad_prefetcher_(
-          std::make_unique<NewTabPageAdPrefetcher>(/*ads_service=*/*this)) {
-  CHECK(prefs_);
-}
+      ads_client_notifier_(std::make_unique<AdsClientNotifier>()) {}
 
 AdsServiceImplIOS::~AdsServiceImplIOS() = default;
 
 AdsClientNotifier* AdsServiceImplIOS::GetAdsClientNotifier() {
   return ads_client_notifier_.get();
+}
+
+bool AdsServiceImplIOS::IsIneligibleToStart() const {
+  // iOS has no eligibility gate; the service is never ineligible to start.
+  return false;
 }
 
 bool AdsServiceImplIOS::IsInitialized() const {
@@ -70,7 +70,7 @@ void AdsServiceImplIOS::InitializeAds(
     mojom::SysInfoPtr mojom_sys_info,
     mojom::BuildChannelInfoPtr mojom_build_channel,
     mojom::WalletInfoPtr mojom_wallet,
-    InitializeCallback callback) {
+    ResultCallback callback) {
   if (IsInitialized()) {
     return std::move(callback).Run(/*success=*/false);
   }
@@ -84,9 +84,11 @@ void AdsServiceImplIOS::InitializeAds(
   InitializeAds(std::move(callback));
 }
 
-void AdsServiceImplIOS::ShutdownAds(ShutdownCallback callback) {
+void AdsServiceImplIOS::ShutdownAds(ResultCallback callback) {
   if (!IsInitialized()) {
-    return std::move(callback).Run(/*success=*/false);
+    // Not initialized means already shut down, which is a success. Callers such
+    // as `ClearData` rely on this to proceed even when the service is idle.
+    return std::move(callback).Run(/*success=*/true);
   }
 
   ads_->Shutdown(base::BindOnce(&AdsServiceImplIOS::ShutdownAdsCallback,
@@ -107,7 +109,7 @@ void AdsServiceImplIOS::MaybeGetNotificationAd(
 void AdsServiceImplIOS::TriggerNotificationAdEvent(
     const std::string& placement_id,
     mojom::NotificationAdEventType mojom_ad_event_type,
-    TriggerAdEventCallback callback) {
+    ResultCallback callback) {
   if (!IsInitialized()) {
     return std::move(callback).Run(/*success*/ false);
   }
@@ -159,10 +161,8 @@ void AdsServiceImplIOS::OnNotificationAdClicked(
   NOTIMPLEMENTED() << "Not used on iOS.";
 }
 
-void AdsServiceImplIOS::ClearData(ClearDataCallback callback) {
+void AdsServiceImplIOS::ClearData(ResultCallback callback) {
   UMA_HISTOGRAM_BOOLEAN(kClearDataHistogramName, true);
-  prefs_->ClearPrefsWithPrefixSilently("brave.brave_ads");
-
   ShutdownAds(base::BindOnce(&AdsServiceImplIOS::ClearAdsData,
                              weak_ptr_factory_.GetWeakPtr(),
                              std::move(callback)));
@@ -199,34 +199,8 @@ void AdsServiceImplIOS::GetStatementOfAccounts(
   ads_->GetStatementOfAccounts(std::move(callback));
 }
 
-void AdsServiceImplIOS::PrefetchNewTabPageAd() {
-  if (!IsInitialized()) {
-    return;
-  }
-
-  new_tab_page_ad_prefetcher_->Prefetch();
-}
-
-mojom::NewTabPageAdInfoPtr AdsServiceImplIOS::MaybeGetPrefetchedNewTabPageAd() {
-  if (!IsInitialized()) {
-    return nullptr;
-  }
-
-  return new_tab_page_ad_prefetcher_->MaybeGetPrefetchedAd();
-}
-
-void AdsServiceImplIOS::OnFailedToPrefetchNewTabPageAd(
-    const std::string& /*placement_id*/,
-    const std::string& /*creative_instance_id*/) {
-  ResetNewTabPageAd();
-
-  PurgeOrphanedAdEventsForType(mojom::AdType::kNewTabPageAd,
-                               /*intentional*/ base::DoNothing());
-}
-
-void AdsServiceImplIOS::ParseAndSaveNewTabPageAds(
-    base::DictValue dict,
-    ParseAndSaveNewTabPageAdsCallback callback) {
+void AdsServiceImplIOS::ParseAndSaveNewTabPageAds(base::DictValue dict,
+                                                  ResultCallback callback) {
   if (task_queue_.should_queue()) {
     // TODO(https://github.com/brave/brave-browser/issues/44925): Transition
     // task queue to ads service layer. API calls are fired before the ads
@@ -237,13 +211,10 @@ void AdsServiceImplIOS::ParseAndSaveNewTabPageAds(
   }
 
   if (!IsInitialized()) {
-    return std::move(callback).Run(/*success*/ false);
+    return std::move(callback).Run(/*success=*/false);
   }
 
-  ads_->ParseAndSaveNewTabPageAds(
-      std::move(dict),
-      base::BindOnce(&AdsServiceImplIOS::OnParseAndSaveNewTabPageAdsCallback,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+  ads_->ParseAndSaveNewTabPageAds(std::move(dict), std::move(callback));
 }
 
 void AdsServiceImplIOS::MaybeServeNewTabPageAd(
@@ -265,7 +236,7 @@ void AdsServiceImplIOS::TriggerNewTabPageAdEvent(
     const std::string& creative_instance_id,
     mojom::NewTabPageAdMetricType mojom_ad_metric_type,
     mojom::NewTabPageAdEventType mojom_ad_event_type,
-    TriggerAdEventCallback callback) {
+    ResultCallback callback) {
   CHECK(mojom::IsKnownEnumValue(mojom_ad_event_type));
 
   if (!IsInitialized()) {
@@ -290,7 +261,7 @@ void AdsServiceImplIOS::MaybeGetSearchResultAd(
 void AdsServiceImplIOS::TriggerSearchResultAdEvent(
     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
     mojom::SearchResultAdEventType mojom_ad_event_type,
-    TriggerAdEventCallback callback) {
+    ResultCallback callback) {
   CHECK(mojom::IsKnownEnumValue(mojom_ad_event_type));
 
   if (!IsInitialized()) {
@@ -303,7 +274,7 @@ void AdsServiceImplIOS::TriggerSearchResultAdEvent(
 
 void AdsServiceImplIOS::PurgeOrphanedAdEventsForType(
     mojom::AdType mojom_ad_type,
-    PurgeOrphanedAdEventsForTypeCallback callback) {
+    ResultCallback callback) {
   CHECK(mojom::IsKnownEnumValue(mojom_ad_type));
 
   if (!IsInitialized()) {
@@ -324,7 +295,7 @@ void AdsServiceImplIOS::GetAdHistory(base::Time from_time,
 }
 
 void AdsServiceImplIOS::ToggleLikeAd(mojom::ReactionInfoPtr mojom_reaction,
-                                     ToggleReactionCallback callback) {
+                                     ResultCallback callback) {
   if (!IsInitialized()) {
     return std::move(callback).Run(/*success*/ false);
   }
@@ -333,7 +304,7 @@ void AdsServiceImplIOS::ToggleLikeAd(mojom::ReactionInfoPtr mojom_reaction,
 }
 
 void AdsServiceImplIOS::ToggleDislikeAd(mojom::ReactionInfoPtr mojom_reaction,
-                                        ToggleReactionCallback callback) {
+                                        ResultCallback callback) {
   if (!IsInitialized()) {
     return std::move(callback).Run(/*success*/ false);
   }
@@ -342,7 +313,7 @@ void AdsServiceImplIOS::ToggleDislikeAd(mojom::ReactionInfoPtr mojom_reaction,
 }
 
 void AdsServiceImplIOS::ToggleLikeSegment(mojom::ReactionInfoPtr mojom_reaction,
-                                          ToggleReactionCallback callback) {
+                                          ResultCallback callback) {
   if (!IsInitialized()) {
     return std::move(callback).Run(/*success*/ false);
   }
@@ -352,7 +323,7 @@ void AdsServiceImplIOS::ToggleLikeSegment(mojom::ReactionInfoPtr mojom_reaction,
 
 void AdsServiceImplIOS::ToggleDislikeSegment(
     mojom::ReactionInfoPtr mojom_reaction,
-    ToggleReactionCallback callback) {
+    ResultCallback callback) {
   if (!IsInitialized()) {
     return std::move(callback).Run(/*success*/ false);
   }
@@ -361,7 +332,7 @@ void AdsServiceImplIOS::ToggleDislikeSegment(
 }
 
 void AdsServiceImplIOS::ToggleSaveAd(mojom::ReactionInfoPtr mojom_reaction,
-                                     ToggleReactionCallback callback) {
+                                     ResultCallback callback) {
   if (!IsInitialized()) {
     return std::move(callback).Run(/*success*/ false);
   }
@@ -371,7 +342,7 @@ void AdsServiceImplIOS::ToggleSaveAd(mojom::ReactionInfoPtr mojom_reaction,
 
 void AdsServiceImplIOS::ToggleMarkAdAsInappropriate(
     mojom::ReactionInfoPtr mojom_reaction,
-    ToggleReactionCallback callback) {
+    ResultCallback callback) {
   if (!IsInitialized()) {
     return std::move(callback).Run(/*success*/ false);
   }
@@ -386,14 +357,6 @@ void AdsServiceImplIOS::NotifyTabTextContentDidChange(
     const std::string& text) {
   ads_client_notifier_->NotifyTabTextContentDidChange(tab_id, redirect_chain,
                                                       text);
-}
-
-void AdsServiceImplIOS::NotifyTabHtmlContentDidChange(
-    int32_t tab_id,
-    const std::vector<GURL>& redirect_chain,
-    const std::string& html) {
-  ads_client_notifier_->NotifyTabHtmlContentDidChange(tab_id, redirect_chain,
-                                                      html);
 }
 
 void AdsServiceImplIOS::NotifyTabDidStartPlayingMedia(int32_t tab_id) {
@@ -443,14 +406,12 @@ void AdsServiceImplIOS::NotifyDidSolveAdaptiveCaptcha() {
 ///////////////////////////////////////////////////////////////////////////////
 
 void AdsServiceImplIOS::Shutdown() {
-  ResetNewTabPageAd();
-
   NotifyDidShutdownAdsService();
 
   ads_.reset();
 }
 
-void AdsServiceImplIOS::InitializeAds(InitializeCallback callback) {
+void AdsServiceImplIOS::InitializeAds(ResultCallback callback) {
   CHECK(!IsInitialized());
 
   ads_ = Ads::CreateInstance(*ads_client_,
@@ -458,7 +419,7 @@ void AdsServiceImplIOS::InitializeAds(InitializeCallback callback) {
 
   ads_->SetSysInfo(mojom_sys_info_.Clone());
   ads_->SetBuildChannel(mojom_build_channel_.Clone());
-  ads_->SetFlags(BuildFlags());
+  ads_->SetCommandLineSwitches(BuildCommandLineSwitches());
 
   ads_->Initialize(
       mojom_wallet_.Clone(),
@@ -466,7 +427,7 @@ void AdsServiceImplIOS::InitializeAds(InitializeCallback callback) {
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void AdsServiceImplIOS::InitializeAdsCallback(InitializeCallback callback,
+void AdsServiceImplIOS::InitializeAdsCallback(ResultCallback callback,
                                               bool success) {
   if (!success) {
     Shutdown();
@@ -479,22 +440,25 @@ void AdsServiceImplIOS::InitializeAdsCallback(InitializeCallback callback,
   std::move(callback).Run(success);
 }
 
-void AdsServiceImplIOS::ShutdownAdsCallback(ShutdownCallback callback,
+void AdsServiceImplIOS::ShutdownAdsCallback(ResultCallback callback,
                                             bool success) {
   Shutdown();
 
   std::move(callback).Run(success);
 }
 
-void AdsServiceImplIOS::ClearAdsData(ClearDataCallback callback, bool success) {
+void AdsServiceImplIOS::ClearAdsData(ResultCallback callback, bool success) {
   if (!success) {
     return std::move(callback).Run(/*success=*/false);
   }
 
-  // Ensure the Brave Ads service is stopped before clearing data.
-  if (IsInitialized()) {
-    return std::move(callback).Run(/*success=*/false);
-  }
+  // `ShutdownAdsCallback` always calls `Shutdown` before invoking this callback
+  // with success, so `ads_` must be null by this point.
+  CHECK(!IsInitialized());
+
+  // Clear preferences only after confirming shutdown succeeded so the pref
+  // state and database are always cleared together or not at all.
+  prefs_->ClearPrefsWithPrefixSilently("brave.brave_ads");
 
   file_task_runner_->PostTaskAndReply(
       FROM_HERE,
@@ -503,47 +467,15 @@ void AdsServiceImplIOS::ClearAdsData(ClearDataCallback callback, bool success) {
             sql::Database::Delete(storage_path.Append(kAdsDatabaseFilename));
 
             base::DeleteFile(storage_path.Append(kClientJsonFilename));
-
-            base::DeleteFile(storage_path.Append(kConfirmationsJsonFilename));
           },
           storage_path_),
       base::BindOnce(&AdsServiceImplIOS::ClearAdsDataCallback,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void AdsServiceImplIOS::ClearAdsDataCallback(ClearDataCallback callback) {
+void AdsServiceImplIOS::ClearAdsDataCallback(ResultCallback callback) {
   NotifyDidClearAdsServiceData();
   InitializeAds(std::move(callback));
-}
-
-void AdsServiceImplIOS::RefetchNewTabPageAd() {
-  ResetNewTabPageAd();
-
-  PurgeOrphanedAdEventsForType(
-      mojom::AdType::kNewTabPageAd,
-      base::BindOnce(&AdsServiceImplIOS::RefetchNewTabPageAdCallback,
-                     weak_ptr_factory_.GetWeakPtr()));
-}
-
-void AdsServiceImplIOS::RefetchNewTabPageAdCallback(bool success) {
-  if (success) {
-    new_tab_page_ad_prefetcher_->Prefetch();
-  }
-}
-
-void AdsServiceImplIOS::ResetNewTabPageAd() {
-  new_tab_page_ad_prefetcher_ =
-      std::make_unique<NewTabPageAdPrefetcher>(/*ads_service=*/*this);
-}
-
-void AdsServiceImplIOS::OnParseAndSaveNewTabPageAdsCallback(
-    ParseAndSaveNewTabPageAdsCallback callback,
-    bool success) {
-  if (success) {
-    PrefetchNewTabPageAd();
-  }
-
-  std::move(callback).Run(success);
 }
 
 }  // namespace brave_ads

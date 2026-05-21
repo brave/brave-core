@@ -16,11 +16,17 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Könyvjelző hozzáadása";
 
+/* Add a new item to the current list */
+"addButtonTitle" = "Hozzáadás";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "Hozzáadás a kedvencekhez";
 
 /* Cell title for add folder action */
 "AddFolderActionCellTitle" = "Új mappa";
+
+/* Settings item that opens instructions for adding Brave to the iOS dock. */
+"addToDockSettingsCell" = "Hozzáadás a Dockhoz";
 
 /* Add to favorites share action. */
 "AddToFavorites" = "Hozzáadás a kedvencekhez";
@@ -66,6 +72,45 @@
 
 /* Username textbox in Authentication prompt */
 "AuthPromptAlertUsernamePlaceholderText" = "Felhasználónév";
+
+/* Settings autofill section title */
+"Autofill" = "Automatikus kitöltés";
+
+/* Label for account when indicating that a domain has multiple accounts */
+"autofill.managePassword.multipleAccounts" = "Fiókok";
+
+/* Alert message warning the user that deleting non-synced passwords will permanently remove them */
+"autofill.managePasswords.deleteCredentialConfirmMessage" = "Ez eltávolítja a(z) %@ mentett jelszavait a szinkronizált blokkláncról és az eszközéről.";
+
+/* Prompt title when deleting passwords */
+"autofill.managePasswords.deleteCredentialsAlertTitle" = "Biztos benne?";
+
+/* Label for the button used to delete the current login. */
+"autofill.managePasswords.deleteManagePasswordButtonTitle" = "Törlés";
+
+/* Title for the section header in the Manage Passwords list screen, that lists the saved sites */
+"autofill.managePasswords.headerTitle" = "Mentve";
+
+/* The message displayed on the manage passwords list screen, when there's at least one password, explain the feature */
+"autofill.managePasswords.instructions" = "Hozza létre, mentse és kezelje jelszavait, hogy egyszerűen bejelentkezhessen a webhelyekre és alkalmazásokba.";
+
+/* The header title displayed over the never saved passwords list */
+"autofill.managePasswords.neverSavedListHeaderTitle" = "Soha nem került mentésre";
+
+/* Display text for the option to offer to save passwords */
+"autofill.managePasswords.offerToSavePasswords" = "Jelszavak mentésének felajánlása";
+
+/* Prompt that is diplayed in the search bar of the Manage Passwords list screen */
+"autofill.managePasswords.searchWebsitesPrompt" = "Webhelyek keresése";
+
+/* Title for navigation bar of the Manage Passwords screen */
+"autofill.managePasswords.title" = "Jelszavak kezelése";
+
+/* Text to show when the origin of a managed password is not available */
+"autofill.managePasswords.UnknownDomainText" = "Ismeretlen";
+
+/* Settings autofill section title */
+"autofill.settings.title" = "Automatikus kitöltés";
 
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "AMP-oldalak automatikus átirányítása";
@@ -141,33 +186,6 @@
 
 /* Placeholder text for adding or editing a bookmark */
 "BookmarkUrlPlaceholderText" = "Cím";
-
-/* Title for the Brave Account section in settings */
-"BraveAccount" = "Brave fiók";
-
-/* Title shown when waiting for email verification */
-"BraveAccountAlmostThere" = "Szinte kész!";
-
-/* Detail text for the almost there title */
-"BraveAccountAlmostThereDetail" = "Egy megerősítő e-mail már útban van. Kattintson az e-mailben található gombra a fiók aktiválásához.";
-
-/* Button text to cancel Brave Account registration */
-"BraveAccountCancelRegistration" = "Regisztráció visszavonása";
-
-/* Title shown when user is logged in */
-"BraveAccountEmailAddress" = "E-mail cím";
-
-/* Button text to get started with Brave Account */
-"BraveAccountGetStarted" = "Első lépések";
-
-/* Button text to resend confirmation email */
-"BraveAccountResendConfirmationEmail" = "Megerősítő e-mail újraküldése";
-
-/* Detail text for the resend confirmation email button */
-"BraveAccountResendConfirmationEmailDetail" = "Nem látja az e-mailt? Ellenőrizze a levélszemét mappát, vagy kattintson a gombra a megerősítő e-mail újraküldéséhez.";
-
-/* Button text to sign out of Brave Account */
-"BraveAccountSignOut" = "Kijelentkezés";
 
 /* Button to show the brave panel */
 "BravePanel" = "Brave panel";
@@ -706,15 +724,6 @@
 /* Description for new folder popup */
 "EnterFolderName" = "Adja meg a mappa nevét";
 
-/* Shown in error pages to suggest a fix to the user. */
-"errorPageCantBeReachedTry" = "Próbálja meg újra beírni az URL-t, vagy nyisson meg egy keresőmotort és keressen rá az új URL-re.";
-
-/* Shown in error pages for files that can't be shown and need to be downloaded. */
-"ErrorPageOpenInSafariButtonTitle" = "Megnyitás Safariban";
-
-/* Shown in error pages on a button that will try to load the page again */
-"ErrorPageReloadButtonTitle" = "Újratöltés";
-
 /* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
 "ErrorPagesAdvancedErrorPinningDetails" = "A(z) %1$@ általában titkosítást használ adatai védelme érdekében. Amikor a Brave megpróbált csatlakozni a(z) %2$@ oldalhoz, az szokatlan és hibás hitelesítő adatokat küldött vissza. Ez olyankor fordulhat elő, ha egy hacker a(z) %3$@-nak adja ki magát, vagy egy wifi bejelentkezési képernyő megszakítja a kapcsolatot. Adatai továbbra is biztonságban vannak, mert a Brave leállította a kapcsolatot, mielőtt adatcsere történt volna.<br />Jelenleg nem keresheti fel a(z) %4$@ weboldalt, mert az tanúsítványrögzítést alkalmaz. A hálózati hibák és támadások általában átmenetiek, így az oldal később valószínűleg működni fog.";
 
@@ -1031,7 +1040,7 @@
 "nightMode.modeTitle" = "Mód";
 
 /* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
-"nightMode.sectionDescription" = "Az éjszakai mód a webhelyek megjelenését és a rendszer általános megjelenését is befolyásolja.";
+"nightMode.sectionDescription" = "Az éjszakai mód egyidejűleg érinti a webhelyek és az általános rendszer megjelenését.";
 
 /* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
 "nightMode.settingsDescription" = "Az éjszakai mód be- és kikapcsolása";
@@ -1063,11 +1072,8 @@
 /* No comment provided by engineer. */
 "ntp.hideSponsoredImages" = "Szponzorált képek elrejtése";
 
-/* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "A szponzorált képek egyedi hátterek, amelyek az új böngészőfülek megnyitásakor jelennek meg. Ezek engedélyezése támogatja a Brave küldetését.";
-
-/* The text label of image type learn more link */
-"ntp.imageTypeSelectionDescriptionLearnMore" = "Tudj meg többet";
+/* The text description of image type which is being used NTP. The text inside the square brackets should be translated and is a link */
+"ntp.imageTypeSelectionDescription" = "A szponzorált képek egyedi hátterek, amelyek az új böngészőfülek megnyitásakor jelennek meg. Ezek engedélyezése támogatja a Brave küldetését. [További információ](#learn-more)";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Tudjon meg többet a Brave-jutalmakról";
@@ -2368,9 +2374,6 @@
 /* Title of an action that allows user to perform a one-click web search for selected text */
 "SearchWithBrave" = "Keresés a Brave-vel";
 
-/* Settings security section title */
-"Security" = "Biztonság";
-
 /* No comment provided by engineer. */
 "sendButtonTitle" = "Küldés";
 
@@ -2733,6 +2736,9 @@
 
 /* Setting to show/hide the tabs bar */
 "ShowTabsBar" = "Lapsáv";
+
+/* Settings item for clearing site-specific settings and shields settings. */
+"SiteAndShieldsSettings" = "Webhely és pajzsok beállításai";
 
 /* No comment provided by engineer. */
 "SiteReportedBody" = "Köszönjük, hogy értesítette a Brave fejlesztőit arról, hogy valami hiba van az oldalon. Mindent megteszünk, hogy kijavítsuk!";
@@ -3178,6 +3184,12 @@
 /* No comment provided by engineer. */
 "tabs.settings.privateTabsSettingsTitle" = "Privát fülek";
 
+/* The description of the toggle for users to allow the browser to remember its last browsing mode so it can re-launch in that mode when Keep Private Tabs is enabled. */
+"tabs.settings.rememberBrowsingModeDescription" = "Ha a böngésző privát módban volt az utolsó bezáráskor, akkor újraindításkor privát módban fog megnyílni.";
+
+/* Toggle to launch the browser in private mode when Keep Private Tabs is enabled */
+"tabs.settings.rememberBrowsingModeTitle" = "Böngészési mód megjegyzése";
+
 /* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
 "TabToolbarAccessibilityLabel" = "Navigációs eszköztár";
 
@@ -3279,9 +3291,6 @@
 
 /* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
 "ThemesDisplayBrightness" = "Megjelenés";
-
-/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
-"ThemesDisplayBrightnessFooter" = "Ezeket a beállításokat a rendszer nem alkalmazza privát böngészési módban.";
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "Világos";

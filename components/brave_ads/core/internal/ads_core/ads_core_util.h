@@ -18,7 +18,7 @@ class TokenGeneratorInterface;
 
 // Provides methods for generating tokens for refilling and redeeming
 // confirmation tokens.
-const TokenGeneratorInterface* GetTokenGenerator();
+TokenGeneratorInterface* GetTokenGenerator();
 
 // Provides methods for managing user rewards, wallets, account statements, and
 // deposits.

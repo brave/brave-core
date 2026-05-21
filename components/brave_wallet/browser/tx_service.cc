@@ -11,66 +11,30 @@
 #include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/check_op.h"
-#include "base/notreached.h"
 #include "brave/components/brave_wallet/browser/account_resolver_delegate_impl.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_tx_manager.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_tx_manager.h"
 #include "brave/components/brave_wallet/browser/eth_tx_manager.h"
 #include "brave/components/brave_wallet/browser/fil_tx_manager.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_tx_manager.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_wallet_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/solana_tx_manager.h"
 #include "brave/components/brave_wallet/browser/tx_manager.h"
-#include "brave/components/brave_wallet/browser/tx_storage_delegate_impl.h"
+#include "brave/components/brave_wallet/browser/tx_storage.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_tx_manager.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/fil_address.h"
 #include "components/grit/brave_components_strings.h"
-#include "components/value_store/value_store_factory_impl.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/origin.h"
 
 namespace brave_wallet {
 
 namespace {
-
-std::string GetToAddressFromTxDataUnion(
-    const mojom::TxDataUnion& tx_data_union) {
-  if (tx_data_union.is_eth_tx_data_1559()) {
-    return tx_data_union.get_eth_tx_data_1559()->base_data->to;
-  }
-
-  if (tx_data_union.is_eth_tx_data()) {
-    return tx_data_union.get_eth_tx_data()->to;
-  }
-
-  if (tx_data_union.is_solana_tx_data()) {
-    return tx_data_union.get_solana_tx_data()->to_wallet_address;
-  }
-
-  if (tx_data_union.is_fil_tx_data()) {
-    return tx_data_union.get_fil_tx_data()->to;
-  }
-
-  if (tx_data_union.is_btc_tx_data()) {
-    return tx_data_union.get_btc_tx_data()->to;
-  }
-
-  if (tx_data_union.is_zec_tx_data()) {
-    return tx_data_union.get_zec_tx_data()->to;
-  }
-
-  if (tx_data_union.is_cardano_tx_data()) {
-    return tx_data_union.get_cardano_tx_data()->to;
-  }
-
-  if (tx_data_union.is_polkadot_tx_data()) {
-    return tx_data_union.get_polkadot_tx_data()->to;
-  }
-  NOTREACHED();
-}
 
 size_t CalculatePendingTxCount(
     const std::vector<mojom::TransactionInfoPtr>& result) {
@@ -92,24 +56,21 @@ TxService::TxService(JsonRpcService* json_rpc_service,
                      PolkadotWalletService* polkadot_wallet_service,
                      KeyringService& keyring_service,
                      PrefService* prefs,
-                     const base::FilePath& wallet_base_directory,
-                     scoped_refptr<base::SequencedTaskRunner> ui_task_runner)
-    : prefs_(prefs), json_rpc_service_(json_rpc_service), weak_factory_(this) {
-  store_factory_ = base::MakeRefCounted<value_store::ValueStoreFactoryImpl>(
-      wallet_base_directory);
-  delegate_ = std::make_unique<TxStorageDelegateImpl>(prefs, store_factory_,
-                                                      ui_task_runner);
+                     std::unique_ptr<TxStorage> tx_storage)
+    : prefs_(prefs),
+      json_rpc_service_(json_rpc_service),
+      tx_storage_(std::move(tx_storage)) {
   account_resolver_delegate_ =
       std::make_unique<AccountResolverDelegateImpl>(keyring_service);
 
   tx_manager_map_[mojom::CoinType::ETH] = std::unique_ptr<TxManager>(
-      new EthTxManager(*this, json_rpc_service, keyring_service, *delegate_,
+      new EthTxManager(*this, json_rpc_service, keyring_service, *tx_storage_,
                        *account_resolver_delegate_));
   tx_manager_map_[mojom::CoinType::SOL] = std::unique_ptr<TxManager>(
-      new SolanaTxManager(*this, json_rpc_service, keyring_service, *delegate_,
-                          *account_resolver_delegate_));
+      new SolanaTxManager(*this, json_rpc_service, keyring_service,
+                          *tx_storage_, *account_resolver_delegate_));
   tx_manager_map_[mojom::CoinType::FIL] = std::unique_ptr<TxManager>(
-      new FilTxManager(*this, json_rpc_service, keyring_service, *delegate_,
+      new FilTxManager(*this, json_rpc_service, keyring_service, *tx_storage_,
                        *account_resolver_delegate_));
   if (IsBitcoinEnabled()) {
     if (!bitcoin_wallet_service) {
@@ -117,7 +78,7 @@ TxService::TxService(JsonRpcService* json_rpc_service,
     } else {
       tx_manager_map_[mojom::CoinType::BTC] =
           std::make_unique<BitcoinTxManager>(*this, *bitcoin_wallet_service,
-                                             keyring_service, *delegate_,
+                                             keyring_service, *tx_storage_,
                                              *account_resolver_delegate_);
     }
   }
@@ -127,7 +88,7 @@ TxService::TxService(JsonRpcService* json_rpc_service,
       CHECK_IS_TEST();
     } else {
       tx_manager_map_[mojom::CoinType::ZEC] = std::make_unique<ZCashTxManager>(
-          *this, *zcash_wallet_service, keyring_service, *delegate_,
+          *this, *zcash_wallet_service, keyring_service, *tx_storage_,
           *account_resolver_delegate_);
     }
   }
@@ -138,7 +99,7 @@ TxService::TxService(JsonRpcService* json_rpc_service,
     } else {
       tx_manager_map_[mojom::CoinType::ADA] =
           std::make_unique<CardanoTxManager>(*this, *cardano_wallet_service,
-                                             keyring_service, *delegate_,
+                                             keyring_service, *tx_storage_,
                                              *account_resolver_delegate_);
     }
   }
@@ -148,9 +109,10 @@ TxService::TxService(JsonRpcService* json_rpc_service,
       CHECK_IS_TEST();
     } else {
       tx_manager_map_[mojom::CoinType::DOT] =
-          std::make_unique<PolkadotTxManager>(*this, *polkadot_wallet_service,
-                                              keyring_service, *delegate_,
-                                              *account_resolver_delegate_);
+          std::make_unique<PolkadotTxManager>(
+              *this, *polkadot_wallet_service,
+              polkadot_wallet_service->GetNetworkManager(), keyring_service,
+              *tx_storage_, *account_resolver_delegate_);
     }
   }
 }
@@ -217,64 +179,89 @@ void TxService::Bind(mojo::PendingReceiver<mojom::BtcTxManagerProxy> receiver) {
   btc_tx_manager_receivers_.Add(this, std::move(receiver));
 }
 
-void TxService::AddUnapprovedTransaction(
-    mojom::TxDataUnionPtr tx_data_union,
-    const std::string& chain_id,
+void TxService::AddUnapprovedEvmDappTransaction(
+    mojom::TxData1559Ptr tx_data_1559,
     mojom::AccountIdPtr from,
-    mojom::SwapInfoPtr swap_info,
-    AddUnapprovedTransactionCallback callback) {
-  CHECK_NE(from->coin, mojom::CoinType::ETH)
-      << "Wallet UI must use AddUnapprovedEvmTransaction";
-  CHECK_NE(from->coin, mojom::CoinType::BTC)
-      << "Wallet UI must use AddUnapprovedBitcoinTransaction";
-  CHECK_NE(from->coin, mojom::CoinType::ZEC)
-      << "Wallet UI must use AddUnapprovedZCashTransaction";
-  CHECK_NE(from->coin, mojom::CoinType::ADA)
-      << "Wallet UI must use AddUnapprovedCardanoTransaction";
-  AddUnapprovedTransactionWithOrigin(std::move(tx_data_union), chain_id,
-                                     std::move(from), std::move(swap_info),
-                                     std::nullopt, std::move(callback));
+    const url::Origin& origin,
+    bool sign_only,
+    AddUnapprovedEvmTransactionCallback callback) {
+  if (auto sender = account_resolver_delegate_->ResolveAddress(from);
+      sender &&
+      BlockchainRegistry::GetInstance()->IsRestrictedAddress(*sender)) {
+    std::move(callback).Run(false, "", WalletInternalErrorMessage());
+    return;
+  }
+
+  if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(
+          tx_data_1559->base_data->to)) {
+    std::move(callback).Run(false, "", WalletInternalErrorMessage());
+    return;
+  }
+
+  GetEthTxManager()->AddUnapprovedEvmDappTransaction(
+      std::move(tx_data_1559), std::move(from), origin, sign_only,
+      std::move(callback));
 }
 
-void TxService::AddUnapprovedTransactionWithOrigin(
-    mojom::TxDataUnionPtr tx_data_union,
+void TxService::AddUnapprovedEvmDappTransaction(
+    mojom::TxDataPtr tx_data,
+    mojom::AccountIdPtr from,
+    const url::Origin& origin,
+    bool sign_only,
+    AddUnapprovedEvmTransactionCallback callback) {
+  if (auto sender = account_resolver_delegate_->ResolveAddress(from);
+      sender &&
+      BlockchainRegistry::GetInstance()->IsRestrictedAddress(*sender)) {
+    std::move(callback).Run(false, "", WalletInternalErrorMessage());
+    return;
+  }
+
+  if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(tx_data->to)) {
+    std::move(callback).Run(false, "", WalletInternalErrorMessage());
+    return;
+  }
+
+  GetEthTxManager()->AddUnapprovedEvmDappTransaction(
+      std::move(tx_data), std::move(from), origin, sign_only,
+      std::move(callback));
+}
+
+void TxService::AddUnapprovedSolanaDappTransaction(
+    mojom::SolanaTxDataPtr solana_tx_data,
     const std::string& chain_id,
     mojom::AccountIdPtr from,
-    mojom::SwapInfoPtr swap_info,
-    const std::optional<url::Origin>& origin,
-    AddUnapprovedTransactionCallback callback) {
-  if (!account_resolver_delegate_->ValidateAccountId(from)) {
-    std::move(callback).Run(
-        false, "",
-        l10n_util::GetStringUTF8(IDS_WALLET_SEND_TRANSACTION_FROM_EMPTY));
+    const url::Origin& origin,
+    AddUnapprovedSolanaTransactionCallback callback) {
+  if (auto sender = account_resolver_delegate_->ResolveAddress(from);
+      sender &&
+      BlockchainRegistry::GetInstance()->IsRestrictedAddress(*sender)) {
+    std::move(callback).Run(false, "", WalletInternalErrorMessage());
     return;
   }
 
-  if (BlockchainRegistry::GetInstance()->IsOfacAddress(
-          GetToAddressFromTxDataUnion(*tx_data_union))) {
-    std::move(callback).Run(
-        false, "", l10n_util::GetStringUTF8(IDS_WALLET_OFAC_RESTRICTION));
+  if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(
+          solana_tx_data->to_wallet_address)) {
+    std::move(callback).Run(false, "", WalletInternalErrorMessage());
     return;
   }
 
-  auto coin_type = GetCoinTypeFromTxDataUnion(*tx_data_union);
-  GetTxManager(coin_type)->AddUnapprovedTransaction(
-      chain_id, std::move(tx_data_union), from, origin, std::move(swap_info),
+  GetSolanaTxManager()->AddUnapprovedSolanaTransaction(
+      chain_id, std::move(solana_tx_data), from, origin, nullptr,
       std::move(callback));
 }
 
 void TxService::AddUnapprovedEvmTransaction(
     mojom::NewEvmTransactionParamsPtr params,
     AddUnapprovedEvmTransactionCallback callback) {
-  AddUnapprovedEvmTransactionWithOrigin(std::move(params), std::nullopt,
-                                        std::move(callback));
-}
-
-void TxService::AddUnapprovedEvmTransactionWithOrigin(
-    mojom::NewEvmTransactionParamsPtr params,
-    const std::optional<url::Origin>& origin,
-    AddUnapprovedEvmTransactionCallback callback) {
   CHECK_EQ(params->from->coin, mojom::CoinType::ETH);
+
+  if (auto sender = account_resolver_delegate_->ResolveAddress(params->from);
+      sender &&
+      BlockchainRegistry::GetInstance()->IsRestrictedAddress(*sender)) {
+    std::move(callback).Run(false, "", WalletInternalErrorMessage());
+    return;
+  }
+
   if (!account_resolver_delegate_->ValidateAccountId(params->from)) {
     std::move(callback).Run(
         false, "",
@@ -282,14 +269,60 @@ void TxService::AddUnapprovedEvmTransactionWithOrigin(
     return;
   }
 
-  if (BlockchainRegistry::GetInstance()->IsOfacAddress(params->to)) {
-    std::move(callback).Run(
-        false, "", l10n_util::GetStringUTF8(IDS_WALLET_OFAC_RESTRICTION));
+  if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(params->to)) {
+    std::move(callback).Run(false, "", WalletInternalErrorMessage());
     return;
   }
 
-  GetEthTxManager()->AddUnapprovedEvmTransaction(std::move(params), origin,
+  GetEthTxManager()->AddUnapprovedEvmTransaction(std::move(params),
                                                  std::move(callback));
+}
+
+void TxService::AddUnapprovedSolanaTransaction(
+    mojom::SolanaTxDataPtr solana_tx_data,
+    const std::string& chain_id,
+    mojom::AccountIdPtr from,
+    mojom::SwapInfoPtr swap_info,
+    AddUnapprovedSolanaTransactionCallback callback) {
+  if (auto sender = account_resolver_delegate_->ResolveAddress(from);
+      sender &&
+      BlockchainRegistry::GetInstance()->IsRestrictedAddress(*sender)) {
+    std::move(callback).Run(false, "", WalletInternalErrorMessage());
+    return;
+  }
+
+  if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(
+          solana_tx_data->to_wallet_address)) {
+    std::move(callback).Run(false, "", WalletInternalErrorMessage());
+    return;
+  }
+
+  GetSolanaTxManager()->AddUnapprovedSolanaTransaction(
+      chain_id, std::move(solana_tx_data), from, std::nullopt,
+      std::move(swap_info), std::move(callback));
+}
+
+void TxService::AddUnapprovedFilecoinTransaction(
+    mojom::FilTxDataPtr fil_tx_data,
+    const std::string& chain_id,
+    mojom::AccountIdPtr from,
+    mojom::SwapInfoPtr swap_info,
+    AddUnapprovedFilecoinTransactionCallback callback) {
+  if (auto sender = account_resolver_delegate_->ResolveAddress(from);
+      sender &&
+      BlockchainRegistry::GetInstance()->IsRestrictedAddress(*sender)) {
+    std::move(callback).Run(false, "", WalletInternalErrorMessage());
+    return;
+  }
+
+  if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(fil_tx_data->to)) {
+    std::move(callback).Run(false, "", WalletInternalErrorMessage());
+    return;
+  }
+
+  GetFilTxManager()->AddUnapprovedFilecoinTransaction(
+      chain_id, std::move(fil_tx_data), from, std::nullopt,
+      std::move(swap_info), std::move(callback));
 }
 
 void TxService::AddUnapprovedBitcoinTransaction(
@@ -303,9 +336,8 @@ void TxService::AddUnapprovedBitcoinTransaction(
     return;
   }
 
-  if (BlockchainRegistry::GetInstance()->IsOfacAddress(params->to)) {
-    std::move(callback).Run(
-        false, "", l10n_util::GetStringUTF8(IDS_WALLET_OFAC_RESTRICTION));
+  if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(params->to)) {
+    std::move(callback).Run(false, "", WalletInternalErrorMessage());
     return;
   }
 
@@ -324,9 +356,8 @@ void TxService::AddUnapprovedZCashTransaction(
     return;
   }
 
-  if (BlockchainRegistry::GetInstance()->IsOfacAddress(params->to)) {
-    std::move(callback).Run(
-        false, "", l10n_util::GetStringUTF8(IDS_WALLET_OFAC_RESTRICTION));
+  if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(params->to)) {
+    std::move(callback).Run(false, "", WalletInternalErrorMessage());
     return;
   }
 
@@ -345,9 +376,8 @@ void TxService::AddUnapprovedCardanoTransaction(
     return;
   }
 
-  if (BlockchainRegistry::GetInstance()->IsOfacAddress(params->to)) {
-    std::move(callback).Run(
-        false, "", l10n_util::GetStringUTF8(IDS_WALLET_OFAC_RESTRICTION));
+  if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(params->to)) {
+    std::move(callback).Run(false, "", WalletInternalErrorMessage());
     return;
   }
 
@@ -366,9 +396,15 @@ void TxService::AddUnapprovedPolkadotTransaction(
     return;
   }
 
-  if (BlockchainRegistry::GetInstance()->IsOfacAddress(params->to)) {
-    std::move(callback).Run(
-        false, "", l10n_util::GetStringUTF8(IDS_WALLET_OFAC_RESTRICTION));
+  if (auto sender = account_resolver_delegate_->ResolveAddress(params->from);
+      sender &&
+      BlockchainRegistry::GetInstance()->IsRestrictedAddress(*sender)) {
+    std::move(callback).Run(false, "", WalletInternalErrorMessage());
+    return;
+  }
+
+  if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(params->to)) {
+    std::move(callback).Run(false, "", WalletInternalErrorMessage());
     return;
   }
 
@@ -400,6 +436,11 @@ mojom::TransactionInfoPtr TxService::GetTransactionInfoSync(
     mojom::CoinType coin_type,
     const std::string& tx_meta_id) {
   return GetTxManager(coin_type)->GetTransactionInfo(tx_meta_id);
+}
+
+std::optional<std::string> TxService::GetEthSignedTransaction(
+    const std::string& tx_meta_id) {
+  return GetEthTxManager()->GetSignedTransaction(tx_meta_id);
 }
 
 void TxService::GetAllTransactionInfo(
@@ -479,7 +520,7 @@ void TxService::OnUnapprovedTxUpdated(mojom::TransactionInfoPtr tx_info) {
 }
 
 void TxService::Reset() {
-  delegate_->Clear();
+  tx_storage_->Clear();
   for (auto const& service : tx_manager_map_) {
     service.second->Reset();
   }
@@ -686,8 +727,8 @@ void TxService::ProcessBtcHardwareSignature(
       tx_meta_id, std::move(hw_signature), std::move(callback));
 }
 
-TxStorageDelegate* TxService::GetDelegateForTesting() {
-  return delegate_.get();
+TxStorage* TxService::GetTxStorageForTesting() {
+  return tx_storage_.get();
 }
 
 }  // namespace brave_wallet

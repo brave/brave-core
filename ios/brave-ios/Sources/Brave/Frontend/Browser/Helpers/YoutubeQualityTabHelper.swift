@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveShared
 import BraveUI
 import Combine
@@ -28,14 +29,21 @@ extension TabDataValues {
 class YoutubeQualityTabHelper: NSObject, TabObserver {
   private var url: URL?
   private weak var tab: (any TabState)?
+  private let prefChangeRegistrar: PrefChangeRegistrar
 
-  public init(tab: (any TabState)?) {
+  public init(tab: some TabState) {
     self.tab = tab
-    self.url = tab?.visibleURL
+    self.url = tab.visibleURL
+    prefChangeRegistrar = .init(prefService: tab.profile.prefs)
+
     super.init()
 
-    tab?.addObserver(self)
+    tab.addObserver(self)
     self.observeReachability()
+
+    prefChangeRegistrar.addObserver(forPath: kYouTubeAutoQualityMode) { [weak self] _ in
+      self?.setHighQuality(networkStatus: Reachability.shared.status)
+    }
   }
 
   private func observeReachability() {
@@ -48,9 +56,13 @@ class YoutubeQualityTabHelper: NSObject, TabObserver {
     }
   }
 
-  func setHighQuality(networkStatus: Reachability.Status) {
-    let enabled = YoutubeQualityTabHelper.canEnableHighQuality(connectionStatus: networkStatus)
-    tab?.evaluateJavaScript(
+  private func setHighQuality(networkStatus: Reachability.Status) {
+    guard let tab else { return }
+    let enabled = YoutubeQualityTabHelper.canEnableHighQuality(
+      tab: tab,
+      connectionStatus: networkStatus
+    )
+    tab.evaluateJavaScript(
       functionName: "window.__firefox__.\(YoutubeQualityScriptHandler.setQuality)",
       args: [enabled ? YoutubeQualityScriptHandler.highestQuality : "'auto'"],
       contentWorld: YoutubeQualityScriptHandler.scriptSandbox,
@@ -59,10 +71,13 @@ class YoutubeQualityTabHelper: NSObject, TabObserver {
     )
   }
 
-  static func canEnableHighQuality(connectionStatus: Reachability.Status) -> Bool {
+  static func canEnableHighQuality(
+    tab: some TabState,
+    connectionStatus: Reachability.Status
+  ) -> Bool {
     guard
       let qualityPreference = YoutubeHighQualityPreference(
-        rawValue: Preferences.General.youtubeHighQuality.value
+        rawValue: tab.profile.prefs.integer(forPath: kYouTubeAutoQualityMode)
       )
     else {
       return false

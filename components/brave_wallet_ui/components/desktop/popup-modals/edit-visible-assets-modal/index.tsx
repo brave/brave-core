@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import { useLocation } from 'react-router-dom'
+import Button from '@brave/leo/react/button'
 
 // types
 import { BraveWallet, WalletRoutes } from '../../../../constants/types'
@@ -49,7 +50,6 @@ import {
   Row,
   Text,
   VerticalSpace,
-  LeoSquaredButton,
 } from '../../../shared/style'
 import { PaddedRow } from '../style'
 
@@ -396,7 +396,7 @@ export const EditVisibleAssetsModal = ({ onClose }: Props) => {
                       {getLocale('braveWalletDidntFindAssetInList')}
                     </Text>
                     <VerticalSpace space='16px' />
-                    <LeoSquaredButton
+                    <Button
                       onClick={
                         searchValue.toLowerCase().startsWith('0x')
                           ? onClickSuggestAdd
@@ -410,7 +410,7 @@ export const EditVisibleAssetsModal = ({ onClose }: Props) => {
                           {getLocale('braveWalletWatchlistAddCustomAsset')}
                         </AddButtonText>
                       </Row>
-                    </LeoSquaredButton>
+                    </Button>
                   </Column>
                 </EmptyStateWrapper>
               ) : (
@@ -434,16 +434,16 @@ export const EditVisibleAssetsModal = ({ onClose }: Props) => {
       )}
       {!showAddCustomToken && (
         <ButtonRow>
-          <LeoSquaredButton
+          <Button
             onClick={onClose}
             kind='outline'
           >
             {getLocale('braveWalletButtonCancel')}
-          </LeoSquaredButton>
+          </Button>
           <HorizontalSpace space='16px' />
-          <LeoSquaredButton onClick={onClickDone}>
+          <Button onClick={onClickDone}>
             {getLocale('braveWalletButtonSaveChanges')}
-          </LeoSquaredButton>
+          </Button>
         </ButtonRow>
       )}
     </PopupModal>

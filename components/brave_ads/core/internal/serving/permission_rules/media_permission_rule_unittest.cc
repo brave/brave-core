@@ -28,13 +28,13 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
   const base::test::ScopedFeatureList scoped_feature_list(
       kPermissionRulesFeature);
 
-  SimulateOpeningNewTab(/*tab_id=*/1,
-                        /*redirect_chain=*/{GURL("https://brave.com")},
-                        net::HTTP_OK);
+  tab_helper_.OpenTab(
+      /*tab_id=*/1,
+      /*redirect_chain=*/{GURL("https://brave.com")}, net::HTTP_OK);
 
-  NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
+  ads_client_notifier_.NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
 
-  NotifyTabDidStopPlayingMedia(/*tab_id=*/1);
+  ads_client_notifier_.NotifyTabDidStopPlayingMedia(/*tab_id=*/1);
 
   // Act & Assert
   EXPECT_TRUE(HasMediaPermission());
@@ -46,15 +46,15 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
   const base::test::ScopedFeatureList scoped_feature_list(
       kPermissionRulesFeature);
 
-  SimulateOpeningNewTab(/*tab_id=*/1,
-                        /*redirect_chain=*/{GURL("https://brave.com")},
-                        net::HTTP_OK);
+  tab_helper_.OpenTab(
+      /*tab_id=*/1,
+      /*redirect_chain=*/{GURL("https://brave.com")}, net::HTTP_OK);
 
-  NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
-  NotifyTabDidStartPlayingMedia(/*tab_id=*/2);
+  ads_client_notifier_.NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
+  ads_client_notifier_.NotifyTabDidStartPlayingMedia(/*tab_id=*/2);
 
-  NotifyTabDidStopPlayingMedia(/*tab_id=*/1);
-  NotifyTabDidStopPlayingMedia(/*tab_id=*/2);
+  ads_client_notifier_.NotifyTabDidStopPlayingMedia(/*tab_id=*/1);
+  ads_client_notifier_.NotifyTabDidStopPlayingMedia(/*tab_id=*/2);
 
   // Act & Assert
   EXPECT_TRUE(HasMediaPermission());
@@ -66,14 +66,14 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
   const base::test::ScopedFeatureList scoped_feature_list(
       kPermissionRulesFeature);
 
-  SimulateOpeningNewTab(/*tab_id=*/1,
-                        /*redirect_chain=*/{GURL("https://brave.com")},
-                        net::HTTP_OK);
+  tab_helper_.OpenTab(
+      /*tab_id=*/1,
+      /*redirect_chain=*/{GURL("https://brave.com")}, net::HTTP_OK);
 
-  NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
-  NotifyTabDidStartPlayingMedia(/*tab_id=*/2);
+  ads_client_notifier_.NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
+  ads_client_notifier_.NotifyTabDidStartPlayingMedia(/*tab_id=*/2);
 
-  NotifyTabDidStopPlayingMedia(/*tab_id=*/1);
+  ads_client_notifier_.NotifyTabDidStopPlayingMedia(/*tab_id=*/1);
 
   // Act & Assert
   EXPECT_TRUE(HasMediaPermission());
@@ -85,11 +85,11 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
   const base::test::ScopedFeatureList scoped_feature_list(
       kPermissionRulesFeature);
 
-  SimulateOpeningNewTab(/*tab_id=*/1,
-                        /*redirect_chain=*/{GURL("https://brave.com")},
-                        net::HTTP_OK);
+  tab_helper_.OpenTab(
+      /*tab_id=*/1,
+      /*redirect_chain=*/{GURL("https://brave.com")}, net::HTTP_OK);
 
-  NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
+  ads_client_notifier_.NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
 
   // Act & Assert
   EXPECT_FALSE(HasMediaPermission());
@@ -104,11 +104,11 @@ TEST_F(
       kPermissionRulesFeature,
       {{"should_only_serve_ads_if_media_is_not_playing", "false"}});
 
-  SimulateOpeningNewTab(/*tab_id=*/1,
-                        /*redirect_chain=*/{GURL("https://brave.com")},
-                        net::HTTP_OK);
+  tab_helper_.OpenTab(
+      /*tab_id=*/1,
+      /*redirect_chain=*/{GURL("https://brave.com")}, net::HTTP_OK);
 
-  NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
+  ads_client_notifier_.NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
 
   // Act & Assert
   EXPECT_TRUE(HasMediaPermission());
@@ -120,12 +120,12 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
   const base::test::ScopedFeatureList scoped_feature_list(
       kPermissionRulesFeature);
 
-  SimulateOpeningNewTab(/*tab_id=*/1,
-                        /*redirect_chain=*/{GURL("https://brave.com")},
-                        net::HTTP_OK);
+  tab_helper_.OpenTab(
+      /*tab_id=*/1,
+      /*redirect_chain=*/{GURL("https://brave.com")}, net::HTTP_OK);
 
-  NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
-  NotifyTabDidStartPlayingMedia(/*tab_id=*/2);
+  ads_client_notifier_.NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
+  ads_client_notifier_.NotifyTabDidStartPlayingMedia(/*tab_id=*/2);
 
   // Act & Assert
   EXPECT_FALSE(HasMediaPermission());
@@ -137,14 +137,14 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
   const base::test::ScopedFeatureList scoped_feature_list(
       kPermissionRulesFeature);
 
-  SimulateOpeningNewTab(/*tab_id=*/1,
-                        /*redirect_chain=*/{GURL("https://brave.com")},
-                        net::HTTP_OK);
+  tab_helper_.OpenTab(
+      /*tab_id=*/1,
+      /*redirect_chain=*/{GURL("https://brave.com")}, net::HTTP_OK);
 
-  NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
-  NotifyTabDidStartPlayingMedia(/*tab_id=*/2);
+  ads_client_notifier_.NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
+  ads_client_notifier_.NotifyTabDidStartPlayingMedia(/*tab_id=*/2);
 
-  NotifyTabDidStopPlayingMedia(/*tab_id=*/2);
+  ads_client_notifier_.NotifyTabDidStopPlayingMedia(/*tab_id=*/2);
 
   // Act & Assert
   EXPECT_FALSE(HasMediaPermission());

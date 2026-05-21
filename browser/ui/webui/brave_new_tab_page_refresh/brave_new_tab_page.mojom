@@ -166,6 +166,9 @@ interface NewTabPageHandler {
   // Opens a URL from the search box.
   OpenURLFromSearch(string url, EventDetails details) => ();
 
+  // Sets Brave Search as the user's default search engine.
+  SetDefaultSearchEngineAsBraveSearch() => ();
+
   // Records search box usage metrics.
   ReportSearchBoxHidden() => ();
   ReportSearchEngineUsage(int64 engine_prepopulate_id) => ();

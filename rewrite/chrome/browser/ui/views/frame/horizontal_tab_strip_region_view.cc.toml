@@ -7,4 +7,3 @@
 description = "Replace TabStrip construction with BraveTabStrip"
 pattern = "std::make_unique<TabStrip>"
 replace = "std::make_unique<BraveTabStrip>"
-count = 1

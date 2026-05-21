@@ -54,7 +54,7 @@ TEST_F(BraveFarblingServiceTest, PRNGKnownValues) {
   for (const auto& c : test_cases) {
     brave::FarblingPRNG prng;
     ASSERT_TRUE(farbling_service()->MakePseudoRandomGeneratorForURL(
-        std::get<0>(c), &prng));
+        std::get<0>(c), {}, &prng));
     EXPECT_EQ(prng(), std::get<1>(c));
   }
 }
@@ -67,7 +67,7 @@ TEST_F(BraveFarblingServiceTest, PRNGKnownValuesDifferentSeeds) {
   for (const auto& c : test_cases) {
     brave::FarblingPRNG prng;
     ASSERT_TRUE(farbling_service()->MakePseudoRandomGeneratorForURL(
-        std::get<0>(c), &prng));
+        std::get<0>(c), {}, &prng));
     EXPECT_EQ(prng(), std::get<1>(c));
   }
 }
@@ -85,9 +85,9 @@ TEST_F(BraveFarblingServiceTest, InvalidDomains) {
   for (const auto& url : test_cases) {
     brave::FarblingPRNG prng;
     EXPECT_FALSE(
-        farbling_service()->MakePseudoRandomGeneratorForURL(url, &prng));
+        farbling_service()->MakePseudoRandomGeneratorForURL(url, {}, &prng));
     EXPECT_FALSE(
-        farbling_service()->MakePseudoRandomGeneratorForURL(url, &prng));
+        farbling_service()->MakePseudoRandomGeneratorForURL(url, {}, &prng));
   }
 }
 
@@ -95,7 +95,8 @@ TEST_F(BraveFarblingServiceTest, ShieldsDown) {
   const GURL url("http://a.com");
   brave_shields::SetBraveShieldsEnabled(settings_map_.get(), false, url);
   brave::FarblingPRNG prng;
-  EXPECT_FALSE(farbling_service()->MakePseudoRandomGeneratorForURL(url, &prng));
+  EXPECT_FALSE(
+      farbling_service()->MakePseudoRandomGeneratorForURL(url, {}, &prng));
 }
 
 TEST_F(BraveFarblingServiceTest, FingerprintingAllowed) {
@@ -103,5 +104,6 @@ TEST_F(BraveFarblingServiceTest, FingerprintingAllowed) {
   brave_shields::SetFingerprintingControlType(
       settings_map_.get(), brave_shields::ControlType::ALLOW, url);
   brave::FarblingPRNG prng;
-  EXPECT_FALSE(farbling_service()->MakePseudoRandomGeneratorForURL(url, &prng));
+  EXPECT_FALSE(
+      farbling_service()->MakePseudoRandomGeneratorForURL(url, {}, &prng));
 }

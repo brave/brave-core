@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveStore
 import SwiftUI
 
 @propertyWrapper
@@ -27,19 +28,33 @@ struct OriginPolicyBooleanValue {
     }
     set {
       let key = instance[keyPath: storageKeyPath].key
-      instance.withMutation(keyPath: wrappedKeyPath) {
-        _ = instance.service.setPolicyValue(key, value: newValue)
+      let result = instance.withMutation(keyPath: wrappedKeyPath) {
+        instance.service.setPolicyValue(key, value: newValue)
+      }
+      if result {
+        withAnimation(.toast) {
+          instance.isRestartToastVisible = true
+        }
       }
     }
   }
 }
 
 @Observable
-class OriginSettingsViewModel {
-  let service: any BraveOriginService
-  init(service: any BraveOriginService) {
+public class OriginSettingsViewModel {
+  fileprivate let service: any BraveOriginService
+  private let storeSDK: BraveStoreSDK
+
+  public init(service: any BraveOriginService, storeSDK: BraveStoreSDK) {
     self.service = service
+    self.storeSDK = storeSDK
+
+    Task {
+      await updatePurchaseStatus()
+    }
   }
+
+  var isRestartToastVisible: Bool = false
 
   @ObservationIgnored
   @OriginPolicyBooleanValue(key: .rewardsDisabled)
@@ -72,4 +87,38 @@ class OriginSettingsViewModel {
   @ObservationIgnored
   @OriginPolicyBooleanValue(key: .vpnDisabled)
   var isVPNDisabled: Bool
+
+  @ObservationIgnored
+  @OriginPolicyBooleanValue(key: .playlistEnabled)
+  var isPlaylistEnabled: Bool
+
+  private(set) var isPuchaseLinkable: Bool = false
+
+  @MainActor
+  private func updatePurchaseStatus() async {
+    guard let transaction = await storeSDK.originPurchaseProduct?.latestTransaction else {
+      isPuchaseLinkable = false
+      return
+    }
+    isPuchaseLinkable =
+      switch transaction {
+      case .verified:
+        true
+      case .unverified:
+        false
+      }
+  }
+
+  /// Reset all of the policy values back to their defaults
+  func reset() {
+    self.isRewardsDisabled = true
+    self.isAIChatEnabled = false
+    self.isNewsDisabled = true
+    self.isP3AEnabled = false
+    self.isStatsPingEnabled = false
+    self.isTalkDisabled = true
+    self.isWalletDisabled = true
+    self.isVPNDisabled = true
+    self.isPlaylistEnabled = false
+  }
 }

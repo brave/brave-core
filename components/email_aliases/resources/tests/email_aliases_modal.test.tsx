@@ -59,7 +59,6 @@ describe('EmailAliasModal', () => {
       <EmailAliasModal
         editing={false}
         mainEmail={mockEmail}
-        aliasCount={0}
         onReturnToMain={mockOnReturnToMain}
         emailAliasesService={mockEmailAliasesService}
       />,
@@ -88,7 +87,6 @@ describe('EmailAliasModal', () => {
         editing={true}
         editAlias={mockEditAlias}
         mainEmail={mockEmail}
-        aliasCount={0}
         onReturnToMain={mockOnReturnToMain}
         emailAliasesService={mockEmailAliasesService}
       />,
@@ -158,7 +156,6 @@ describe('EmailAliasModal', () => {
       <EmailAliasModal
         editing={false}
         mainEmail={mockEmail}
-        aliasCount={0}
         onReturnToMain={mockOnReturnToMain}
         emailAliasesService={mockEmailAliasesService}
       />,
@@ -202,7 +199,6 @@ describe('EmailAliasModal', () => {
       <EmailAliasModal
         editing={false}
         mainEmail={mockEmail}
-        aliasCount={0}
         onReturnToMain={mockOnReturnToMain}
         emailAliasesService={mockEmailAliasesService}
       />,
@@ -228,24 +224,38 @@ describe('EmailAliasModal', () => {
     })
   })
 
-  it('shows limit reached message in bubble mode', async () => {
+  it('shows limit reached dialog in bubble mode without generating an alias', async () => {
+    const atLimitAliases: Alias[] = Array.from({ length: 5 }, (_, i) => ({
+      email: `alias-${i}@bravealias.com`,
+      note: undefined,
+      domains: undefined,
+    }))
+
     render(
       <EmailAliasModal
         editing={false}
         mainEmail={mockEmail}
-        aliasCount={5}
+        aliases={atLimitAliases}
         onReturnToMain={mockOnReturnToMain}
         emailAliasesService={mockEmailAliasesService}
         bubble={true}
       />,
     )
 
-    // Wait for limit check
     await waitFor(() => {
       expect(
-        screen.getByText(S.SETTINGS_EMAIL_ALIASES_BUBBLE_LIMIT_REACHED),
+        screen.getByText(S.SETTINGS_EMAIL_ALIASES_LIMIT_REACHED_ALERT_TITLE),
       ).toBeInTheDocument()
     })
+
+    expect(mockEmailAliasesService.generateAlias).not.toHaveBeenCalled()
+    expect(screen.getByText('alias-0@bravealias.com')).toBeInTheDocument()
+    expect(
+      screen.queryByText(S.SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_BUTTON),
+    ).not.toBeInTheDocument()
+    expect(
+      screen.getByText(S.SETTINGS_EMAIL_ALIASES_MANAGE_BUTTON),
+    ).toBeInTheDocument()
   })
 
   it('shows loading state while generating alias', async () => {
@@ -258,7 +268,6 @@ describe('EmailAliasModal', () => {
       <EmailAliasModal
         editing={false}
         mainEmail={mockEmail}
-        aliasCount={0}
         onReturnToMain={mockOnReturnToMain}
         emailAliasesService={mockEmailAliasesService}
       />,
@@ -299,7 +308,6 @@ describe('EmailAliasModal', () => {
       <EmailAliasModal
         editing={false}
         mainEmail={mockEmail}
-        aliasCount={0}
         onReturnToMain={mockOnReturnToMain}
         emailAliasesService={mockEmailAliasesService}
       />,
@@ -337,7 +345,6 @@ describe('EmailAliasModal', () => {
         editing={true}
         editAlias={mockEditAlias}
         mainEmail={mockEmail}
-        aliasCount={0}
         onReturnToMain={mockOnReturnToMain}
         emailAliasesService={mockEmailAliasesService}
       />,
@@ -400,7 +407,6 @@ describe('EmailAliasModal', () => {
           editing={isEditing}
           editAlias={alias}
           mainEmail={mockEmail}
-          aliasCount={0}
           onReturnToMain={mockOnReturnToMain}
           emailAliasesService={mockEmailAliasesService}
         />,
@@ -463,7 +469,6 @@ describe('EmailAliasModal', () => {
       <EmailAliasModal
         editing={false}
         mainEmail={mockEmail}
-        aliasCount={0}
         onReturnToMain={mockOnReturnToMain}
         emailAliasesService={mockEmailAliasesService}
         bubble={true}

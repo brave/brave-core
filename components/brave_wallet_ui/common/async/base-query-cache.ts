@@ -168,7 +168,7 @@ export class BaseQueryCache {
           visibleIdsByCoinType[coin] = []
           hiddenIdsByCoinType[coin] = []
 
-          networks.forEach(({ chainId, coin: networkCoin }) => {
+          networks.forEach(async ({ chainId, coin: networkCoin }) => {
             if (networkCoin !== coin) {
               return
             }
@@ -179,6 +179,7 @@ export class BaseQueryCache {
               })
               .toString()
 
+            // TODO(https://github.com/brave/brave-browser/issues/55218): Validate by keyring id instead of chain id.
             if (SupportedTestNetworks.includes(chainId)) {
               testnetIds.push(networkId)
             } else {

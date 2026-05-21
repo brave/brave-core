@@ -77,14 +77,12 @@ RegisterStyleOverride(
       #container {
         /* menu and content next to each other in the horizontal center */
       }
-      #left {
-        max-width: 250px;
+      #left{
+        flex:0 !important;
       }
       #main {
         margin: 0 var(--leo-spacing-m) var(--leo-spacing-m) 0;
-        height: calc(100% - 40px);
         background: var(--leo-color-page-background);
-        padding-bottom: var(--leo-spacing-2xl);
         border-radius: var(--leo-radius-xl) var(--leo-radius-m) var(--leo-radius-m) var(--leo-radius-xl);
         overflow: auto;
       }

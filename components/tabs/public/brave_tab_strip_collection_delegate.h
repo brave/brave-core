@@ -14,6 +14,10 @@ namespace split_tabs {
 class SplitTabVisualData;
 }  // namespace split_tabs
 
+namespace tree_tab {
+class TreeTabNodeId;
+}  // namespace tree_tab
+
 namespace tabs {
 
 class BraveTabStripCollection;
@@ -46,7 +50,15 @@ class BraveTabStripCollectionDelegate {
       size_t destination_index,
       std::optional<tab_groups::TabGroupId> new_group_id,
       bool new_pinned_state,
-      const TabCollection::TypeEnumSet retain_collection_types) const = 0;
+      const TabCollection::TypeEnumSet retain_collection_types) = 0;
+
+  // Inserts a tab collection (e.g. split or group) at a strip index. Used by
+  // TabStripModel when re-attaching detached collections after drag-and-drop.
+  virtual void InsertTabCollectionAt(
+      std::unique_ptr<TabCollection> collection,
+      int index,
+      bool pinned,
+      std::optional<tab_groups::TabGroupId> parent_group) {}
 
   // Handles CreateSplit when tabs are in different parent collections (e.g.
   // different tree nodes). Returns true if handled, false to use default path.
@@ -55,12 +67,17 @@ class BraveTabStripCollectionDelegate {
                            split_tabs::SplitTabVisualData visual_data) const;
   // When handling (e.g. tree tabs), can no-op to keep tabs in split so
   // RemoveTabAtIndexRecursive sees parent SPLIT instead of TREE_NODE.
-  virtual void Unsplit(split_tabs::SplitTabId split_id) {}
+  // returns true if handled, false to use default path.
+  virtual bool Unsplit(split_tabs::SplitTabId split_id);
 
   // Returns tab collection that should be added/removed from collection mapping
   // in TabStripCollection.
   virtual tabs::TabCollection* GetCollectionForMapping(
       tabs::TabCollection* root_collection);
+
+  // Returns tree tab node id for a group.
+  virtual const tree_tab::TreeTabNodeId* GetTreeTabNodeIdForGroup(
+      tab_groups::TabGroupId group_id) const;
 
  protected:
   base::PassKey<BraveTabStripCollectionDelegate> GetPassKey() const;

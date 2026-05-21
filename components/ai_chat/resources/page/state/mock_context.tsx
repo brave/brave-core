@@ -216,8 +216,9 @@ export function MockContext(props: MockContextProps) {
           ?? defaultConversationState.conversationUuid
         }
         updateSelectedConversationId={() => {}}
+        openMainConversation={() => {}}
         createNewConversation={() => {}}
-        isTabAssociated={false}
+        isMainConversation={false}
         {...conversationProps}
         overrides={conversationOverrides}
       >

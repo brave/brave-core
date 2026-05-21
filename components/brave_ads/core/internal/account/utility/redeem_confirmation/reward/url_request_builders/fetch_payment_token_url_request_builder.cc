@@ -11,6 +11,7 @@
 #include "base/check.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/url_request_builders/fetch_payment_token_url_request_builder_util.h"
+#include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_types.h"
 #include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "url/gurl.h"
@@ -36,8 +37,8 @@ mojom::UrlRequestInfoPtr FetchPaymentTokenUrlRequestBuilder::Build() {
 GURL FetchPaymentTokenUrlRequestBuilder::BuildUrl() const {
   const std::string url_host =
       confirmation_.ad_type == mojom::AdType::kSearchResultAd
-          ? GetAnonymousSearchUrlHost()
-          : GetAnonymousUrlHost();
+          ? GetUrlHost(UrlHostType::kAnonymousSearch)
+          : GetUrlHost(UrlHostType::kAnonymous);
 
   const std::string spec =
       url_host + BuildFetchPaymentTokenUrlPath(confirmation_.transaction_id);

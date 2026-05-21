@@ -11,14 +11,17 @@
 
 #include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
+#include "base/scoped_observation.h"
 #include "base/threading/sequence_bound.h"
 #include "base/types/expected.h"
 #include "base/types/optional_ref.h"
-#include "brave/components/brave_ads/core/internal/ml/ml_alias.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/text_processing.h"
+#include "brave/components/brave_ads/core/internal/ml/transformation/ml_types.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
 
 namespace brave_ads {
+
+class AdsClient;
 
 using ClassifyPageCallback =
     base::OnceCallback<void(base::optional_ref<const ml::PredictionMap>)>;
@@ -62,6 +65,9 @@ class TextClassificationResource final : public AdsClientNotifierObserver {
 
   std::optional<base::SequenceBound<ml::pipeline::TextProcessing>>
       text_processing_pipeline_;
+
+  base::ScopedObservation<AdsClient, AdsClientNotifierObserver>
+      ads_client_observation_{this};
 
   base::WeakPtrFactory<TextClassificationResource> weak_factory_{this};
 };

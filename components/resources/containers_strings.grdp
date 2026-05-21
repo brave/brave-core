@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <message name="IDS_CONTAINERS_DEFAULT_PERSONAL_NAME" desc="Default name for the Personal browsing container">
+    Personal
+  </message>
+  <message name="IDS_CONTAINERS_DEFAULT_WORK_NAME" desc="Default name for the Work browsing container">
+    Work
+  </message>
+  <message name="IDS_CONTAINERS_DEFAULT_SOCIAL_NAME" desc="Default name for the Social browsing container">
+    Social
+  </message>
+  <message name="IDS_CONTAINERS_DEFAULT_SCHOOL_NAME" desc="Default name for the School browsing container">
+    School
+  </message>
+</grit-part>

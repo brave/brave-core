@@ -62,4 +62,9 @@ void TabStripCollection::AddTabCollectionAtPosition(
   AddTabCollectionImpl(std::move(collection), position);
 }
 
+const tree_tab::TreeTabNodeId* TabStripCollection::GetTreeTabNodeIdForGroup(
+    tab_groups::TabGroupId group_id) const {
+  return nullptr;
+}
+
 }  // namespace tabs

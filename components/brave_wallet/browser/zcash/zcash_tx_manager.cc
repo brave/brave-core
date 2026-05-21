@@ -12,9 +12,7 @@
 #include <utility>
 
 #include "base/functional/bind.h"
-#include "base/logging.h"
 #include "base/notimplemented.h"
-#include "base/notreached.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_block_tracker.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_tx_meta.h"
@@ -30,10 +28,10 @@ ZCashTxManager::ZCashTxManager(
     TxService& tx_service,
     ZCashWalletService& zcash_wallet_service,
     KeyringService& keyring_service,
-    TxStorageDelegate& delegate,
+    TxStorage& tx_storage,
     AccountResolverDelegate& account_resolver_delegate)
     : TxManager(
-          std::make_unique<ZCashTxStateManager>(delegate,
+          std::make_unique<ZCashTxStateManager>(tx_storage,
                                                 account_resolver_delegate),
           std::make_unique<ZCashBlockTracker>(zcash_wallet_service.zcash_rpc()),
           tx_service,
@@ -47,16 +45,6 @@ ZCashTxManager::~ZCashTxManager() = default;
 void ZCashTxManager::OnLatestHeightUpdated(const std::string& chain_id,
                                            uint32_t latest_height) {
   UpdatePendingTransactions(chain_id);
-}
-
-void ZCashTxManager::AddUnapprovedTransaction(
-    const std::string& chain_id,
-    mojom::TxDataUnionPtr tx_data_union,
-    const mojom::AccountIdPtr& from,
-    const std::optional<url::Origin>& origin,
-    mojom::SwapInfoPtr swap_info,
-    AddUnapprovedTransactionCallback callback) {
-  NOTREACHED() << "AddUnapprovedZCashTransaction must be used";
 }
 
 void ZCashTxManager::AddUnapprovedZCashTransaction(
@@ -125,7 +113,7 @@ void ZCashTxManager::ContinueAddUnapprovedTransaction(
     const mojom::AccountIdPtr& from,
     const std::optional<url::Origin>& origin,
     mojom::SwapInfoPtr swap_info,
-    AddUnapprovedTransactionCallback callback,
+    AddUnapprovedZCashTransactionCallback callback,
     base::expected<ZCashTransaction, std::string> zcash_transaction) {
   if (!zcash_transaction.has_value()) {
     std::move(callback).Run(false, "", zcash_transaction.error());
@@ -154,7 +142,6 @@ void ZCashTxManager::ApproveTransaction(const std::string& tx_meta_id,
   std::unique_ptr<ZCashTxMeta> meta =
       GetZCashTxStateManager().GetZCashTx(tx_meta_id);
   if (!meta) {
-    LOG(ERROR) << "Transaction should be found";
     std::move(callback).Run(
         false,
         mojom::ProviderErrorUnion::NewZcashProviderError(
@@ -207,7 +194,6 @@ void ZCashTxManager::ContinueApproveTransaction(
   std::unique_ptr<ZCashTxMeta> meta =
       GetZCashTxStateManager().GetZCashTx(tx_meta_id);
   if (!meta) {
-    LOG(ERROR) << "Transaction should be found";
     std::move(callback).Run(
         false,
         mojom::ProviderErrorUnion::NewZcashProviderError(

@@ -33,7 +33,6 @@ export interface RewardsProps {
   declaredCountry: string
   needsBrowserUpgradeToServeAds: boolean
   balance?: number
-  externalWallet?: RewardsExtension.ExternalWallet
   externalWalletProviders?: string[]
   report?: NewTab.RewardsBalanceReport
   adsAccountStatement: NewTab.AdsAccountStatement
@@ -62,7 +61,7 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
   }
 
   const adsInfo = props.adsAccountStatement || null
-  const externalWallet = externalWalletFromExtensionData(props.externalWallet)
+  const externalWallet = externalWalletFromExtensionData(null)
 
   const providerPayoutStatus = () => {
     const { payoutStatus } = props.parameters
@@ -71,11 +70,6 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
     }
     const walletProvider = externalWallet ? externalWallet.provider : null
     return getProviderPayoutStatus(payoutStatus, walletProvider)
-  }
-
-  const openRewardsPanel = () => {
-    chrome.braveRewards.recordNTPPanelTrigger()
-    chrome.braveRewards.openRewardsPanel()
   }
 
   return (
@@ -101,8 +95,8 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
           showSelfCustodyInvite={false}
           isTermsOfServiceUpdateRequired={props.isTermsOfServiceUpdateRequired}
           publishersVisited={props.publishersVisitedCount || 0}
-          onEnableRewards={openRewardsPanel}
-          onSelectCountry={openRewardsPanel}
+          onEnableRewards={() => {}}
+          onSelectCountry={() => {}}
           onSelfCustodyInviteDismissed={props.onSelfCustodyInviteDismissed}
           onTermsOfServiceUpdateAccepted={props.onTermsOfServiceUpdateAccepted}
         />

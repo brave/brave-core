@@ -12,8 +12,6 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "components/keyed_service/core/keyed_service.h"
-#include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "url/gurl.h"
 
@@ -27,7 +25,7 @@ namespace brave_wallet {
 
 class BraveWalletService;
 
-class SimulationService : public KeyedService, public mojom::SimulationService {
+class SimulationService : public mojom::SimulationService {
  public:
   using APIRequestResult = api_request_helper::APIRequestResult;
 
@@ -38,7 +36,6 @@ class SimulationService : public KeyedService, public mojom::SimulationService {
   SimulationService(const SimulationService&) = delete;
   SimulationService& operator=(const SimulationService&) = delete;
 
-  mojo::PendingRemote<mojom::SimulationService> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::SimulationService> receiver);
 
   static GURL GetScanMessageURL(const std::string& chain_id,

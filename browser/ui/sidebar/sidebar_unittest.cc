@@ -16,6 +16,7 @@
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/sidebar/browser/constants.h"
@@ -259,9 +260,15 @@ TEST_F(SidebarModelTest, TopItemTest) {
 TEST(SidebarUtilTest, SidebarShowOptionsDefaultTest) {
   EXPECT_EQ(SidebarService::ShowSidebarOption::kShowNever,
             GetDefaultShowSidebarOption(version_info::Channel::STABLE));
-  EXPECT_EQ(SidebarService::ShowSidebarOption::kShowAlways,
+  constexpr auto kNonStableDefault =
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+      SidebarService::ShowSidebarOption::kShowNever;
+#else
+      SidebarService::ShowSidebarOption::kShowAlways;
+#endif
+  EXPECT_EQ(kNonStableDefault,
             GetDefaultShowSidebarOption(version_info::Channel::BETA));
-  EXPECT_EQ(SidebarService::ShowSidebarOption::kShowAlways,
+  EXPECT_EQ(kNonStableDefault,
             GetDefaultShowSidebarOption(version_info::Channel::CANARY));
 }
 

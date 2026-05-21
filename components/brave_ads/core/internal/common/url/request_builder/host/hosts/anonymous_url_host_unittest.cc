@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_types.h"
 #include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
@@ -17,21 +18,23 @@ class BraveAdsAnonymousUrlHostTest : public test::TestBase {};
 TEST_F(BraveAdsAnonymousUrlHostTest, GetProductionUrlHost) {
   // Arrange
   ASSERT_TRUE(GlobalState::HasInstance());
-  GlobalState::GetInstance()->Flags().environment_type =
+  GlobalState::GetInstance()->CommandLineSwitches().environment_type =
       mojom::EnvironmentType::kProduction;
 
   // Act & Assert
-  EXPECT_EQ("https://anonymous.ads.brave.com", GetAnonymousUrlHost());
+  EXPECT_EQ("https://anonymous.ads.brave.com",
+            GetUrlHost(UrlHostType::kAnonymous));
 }
 
 TEST_F(BraveAdsAnonymousUrlHostTest, GetStagingUrlHost) {
   // Arrange
   ASSERT_TRUE(GlobalState::HasInstance());
-  GlobalState::GetInstance()->Flags().environment_type =
+  GlobalState::GetInstance()->CommandLineSwitches().environment_type =
       mojom::EnvironmentType::kStaging;
 
   // Act & Assert
-  EXPECT_EQ("https://anonymous.ads.bravesoftware.com", GetAnonymousUrlHost());
+  EXPECT_EQ("https://anonymous.ads.bravesoftware.com",
+            GetUrlHost(UrlHostType::kAnonymous));
 }
 
 }  // namespace brave_ads

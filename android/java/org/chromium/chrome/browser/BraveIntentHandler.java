@@ -20,11 +20,14 @@ import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.searchwidget.SearchWidgetProvider;
 import org.chromium.content_public.browser.BrowserStartupController;
 
+import java.util.Locale;
 import java.util.concurrent.Callable;
 
 @NullMarked
 public class BraveIntentHandler {
     private static final String TAG = "BraveIntentHandler";
+
+    private static final String BRAVE_SCHEME = "brave";
 
     /** An extra to indicate that the intent was triggered from an app widget Leo button. */
     public static final String EXTRA_INVOKED_FROM_APP_WIDGET_LEO =
@@ -145,5 +148,23 @@ public class BraveIntentHandler {
     private static boolean isJavascriptSchemeOrInvalidUrl(String unused_url) {
         assert false;
         return false;
+    }
+
+    /**
+     * Bytecode-redirected from {@link IntentHandler#intentHasUnsafeInternalScheme}. Defers to the
+     * upstream check (which handles chrome://, chrome-native://, devtools://, distiller://,
+     * about://) and additionally blocks brave://, since it is a display alias for chrome:// and
+     * gets rewritten to chrome:// deeper in the navigation stack — too late to protect this guard.
+     */
+    public static boolean intentHasUnsafeInternalScheme(
+            @Nullable String scheme, @Nullable String url, Intent intent) {
+        if (BraveIntentHandlerInternal.intentHasUnsafeInternalScheme(scheme, url, intent)) {
+            return true;
+        }
+        return scheme != null
+                && BRAVE_SCHEME.equals(scheme.toLowerCase(Locale.US))
+                && (intent.hasCategory(Intent.CATEGORY_BROWSABLE)
+                        || intent.hasCategory(Intent.CATEGORY_DEFAULT)
+                        || intent.getCategories() == null);
     }
 }

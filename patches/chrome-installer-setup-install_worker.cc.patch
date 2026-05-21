@@ -1,16 +1,16 @@
 diff --git a/chrome/installer/setup/install_worker.cc b/chrome/installer/setup/install_worker.cc
-index 4ce4d015542292fc5563d9b8d13490fd1644c6aa..b38ef55d4b85d9b823af3521178654c4debe20ea 100644
+index feeca02961ebdec4f66112ab7cf530c3a539858f..e8f67a8586474ba01a46e03c37d2b5b7b396bee4 100644
 --- a/chrome/installer/setup/install_worker.cc
 +++ b/chrome/installer/setup/install_worker.cc
-@@ -106,6 +106,7 @@ void AddInstallerCopyTasks(const InstallParams& install_params,
-     install_list->AddCopyTreeWorkItem(setup_path, active_setup_exe, temp_path,
-                                       WorkItem::ALWAYS);
+@@ -107,6 +107,7 @@ void AddInstallerCopyTasks(const InstallParams& install_params,
+     base::FilePath active_setup_exe(installer_dir.Append(kActiveSetupExe));
+     install_list->AddCopyTreeWorkItem(setup_path, active_setup_exe, temp_path);
    }
 +  BRAVE_ADD_INSTALLER_COPY_TASKS
  }
  
  // A callback invoked by |work_item| that adds firewall rules for Chrome. Rules
-@@ -216,6 +217,7 @@ void AddChromeWorkItems(const InstallParams& install_params,
+@@ -217,6 +218,7 @@ void AddChromeWorkItems(const InstallParams& install_params,
          installer_state.GetInstallerDirectory(current_version));
      base::FilePath old_archive(
          old_installer_dir.Append(installer::kChromeArchive));

@@ -7,11 +7,11 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DIAGNOSTICS_DIAGNOSTIC_VALUE_UTIL_H_
 
 #include "base/values.h"
-#include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_alias.h"
+#include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_types.h"
 
 namespace brave_ads {
 
-base::ListValue DiagnosticsToValue(const DiagnosticMap& diagnostics);
+base::ListValue DiagnosticsToList(const DiagnosticMap& diagnostics);
 
 }  // namespace brave_ads
 

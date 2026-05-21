@@ -8,6 +8,7 @@
 #include <algorithm>
 
 #include "base/check.h"
+#include "base/containers/span.h"
 #include "base/strings/pattern.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_util_internal.h"
@@ -62,7 +63,7 @@ bool MatchUrlPattern(const GURL& url, const std::string& pattern) {
   return base::MatchPattern(url.spec(), escaped_pattern);
 }
 
-bool MatchUrlPattern(const std::vector<GURL>& redirect_chain,
+bool MatchUrlPattern(base::span<const GURL> redirect_chain,
                      const std::string& pattern) {
   if (pattern.empty()) {
     return false;
@@ -81,7 +82,7 @@ bool SameDomainOrHost(const GURL& lhs, const GURL& rhs) {
       lhs, rhs, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 }
 
-bool DomainOrHostExists(const std::vector<GURL>& redirect_chain,
+bool DomainOrHostExists(base::span<const GURL> redirect_chain,
                         const GURL& url) {
   return std::ranges::any_of(redirect_chain,
                              [&url](const GURL& redirect_chain_url) {

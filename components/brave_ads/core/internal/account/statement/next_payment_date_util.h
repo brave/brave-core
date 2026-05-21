@@ -6,16 +6,16 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_STATEMENT_NEXT_PAYMENT_DATE_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_STATEMENT_NEXT_PAYMENT_DATE_UTIL_H_
 
-#include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
+#include <optional>
 
-namespace base {
-class Time;
-}  // namespace base
+#include "base/time/time.h"
+#include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 
 namespace brave_ads {
 
-base::Time CalculateNextPaymentDate(base::Time next_payment_token_redemption_at,
-                                    const TransactionList& transactions);
+std::optional<base::Time> MaybeCalculateNextPaymentDate(
+    base::Time next_payment_token_redemption_at,
+    const TransactionList& transactions);
 
 }  // namespace brave_ads
 

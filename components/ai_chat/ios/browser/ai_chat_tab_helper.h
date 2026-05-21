@@ -8,15 +8,15 @@
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/core/browser/associated_content_driver.h"
-#include "ios/web/public/lazy_web_state_user_data.h"
 #include "ios/web/public/web_state_observer.h"
+#include "ios/web/public/web_state_user_data.h"
 
 @protocol AIChatAssociatedContentPageFetcher;
 
 namespace ai_chat {
 
 class AIChatTabHelper : public web::WebStateObserver,
-                        public web::LazyWebStateUserData<AIChatTabHelper>,
+                        public web::WebStateUserData<AIChatTabHelper>,
                         public AssociatedContentDriver {
  public:
   ~AIChatTabHelper() override;
@@ -37,7 +37,7 @@ class AIChatTabHelper : public web::WebStateObserver,
 
  private:
   explicit AIChatTabHelper(web::WebState* web_state);
-  friend class web::LazyWebStateUserData<AIChatTabHelper>;
+  friend class web::WebStateUserData<AIChatTabHelper>;
   __weak id<AIChatAssociatedContentPageFetcher> page_fetcher_ = nullptr;
 
   raw_ptr<web::WebState> web_state_ = nullptr;

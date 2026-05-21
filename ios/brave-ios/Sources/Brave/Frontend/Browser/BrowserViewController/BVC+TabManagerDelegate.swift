@@ -26,13 +26,20 @@ extension BrowserViewController: TabManagerDelegate {
     if tab.profile.prefs.isPlaylistAvailable {
       tab.playlist = .init(tab: tab)
     }
-    tab.youtubeQualityTabHelper = .init(tab: tab)
+    if !FeatureList.kUseProfileWebViewConfiguration.enabled {
+      tab.youtubeQualityTabHelper = .init(tab: tab)
+    }
     SnackBarTabHelper.create(for: tab)
     tab.braveUserAgentExceptions = braveCore.braveUserAgentExceptions
-    tab.translateHelper = .init(tab: tab, delegate: self)
+    if FeatureList.kUseProfileWebViewConfiguration.enabled {
+      tab.translate = .init(tab: tab, delegate: self)
+    } else {
+      tab.legacyTranslateHelper = .init(tab: tab, delegate: self)
+    }
     tab.pageMetadataHelper = .init(tab: tab)
     tab.faviconTabHelper = .init(tab: tab)
     tab.userActivityHelper = .init(tab: tab)
+    tab.print = .init(tab: tab, baseViewController: self)
     tab.forcePaste = .init(tab: tab)
     tab.aiChatWebUIHelper = .init(
       tab: tab,
@@ -68,6 +75,9 @@ extension BrowserViewController: TabManagerDelegate {
       },
       showOnboardingHandler: { [weak self] isNewWallet in
         self?.showOnboarding(isNewWallet)
+      },
+      openWalletHomeHandler: { [weak self] in
+        self?.openWalletHome()
       }
     )
     let braveShieldsHelper: BraveShieldsTabHelper = .init(
@@ -79,9 +89,37 @@ extension BrowserViewController: TabManagerDelegate {
     // we should add it as a policy decider at initialization.
     tab.addPolicyDecider(braveShieldsHelper)
     tab.logins = .init(tab: tab, passwordAPI: profileController.passwordAPI)
+    tab.nightMode = .init(tab: tab)
 
     if FeatureList.kUseProfileWebViewConfiguration.enabled {
       tab.readerMode = .init(tab: tab)
+    }
+
+    tab.braveTalk = .init(tab: tab, coordinator: braveTalkJitsiCoordinator)
+    tab.braveTalk?.onExitCall = { [weak self] in
+      guard let self = self else { return }
+      // When we close the call, redirect to Brave Talk home page if the selected tab is still the
+      // original talk URL
+      if let url = self.tabManager.selectedTab?.visibleURL,
+        let currentHost = url.host,
+        DomainUserScript.braveTalkHelper.associatedDomains.contains(currentHost)
+      {
+        var components = URLComponents()
+        components.host = currentHost
+        components.scheme = url.scheme
+        self.select(url: components.url!, isUserDefinedURLNavigation: false)
+      }
+    }
+
+    tab.braveSearch = .init(tab: tab, rewards: rewards, searchEngines: profile.searchEngines)
+    tab.braveSearch?.presentSearchResultClickedInfoBar = { [weak self] in
+      guard let self else { return }
+      let searchResultClickedInfobar = SearchResultAdClickedInfoBar(
+        onLinkPressed: { [weak self] url in
+          self?.tabManager.addTabAndSelect(URLRequest(url: url), isPrivate: false)
+        }
+      )
+      show(toast: searchResultClickedInfobar, duration: nil)
     }
   }
 
@@ -214,9 +252,9 @@ extension BrowserViewController: TabManagerDelegate {
     }
 
     if FeatureList.kBraveTranslateEnabled.enabled, let selectedTab = selected,
-      selectedTab.translateHelper != nil
+      selectedTab.legacyTranslateHelper != nil || selectedTab.translate != nil
     {
-      updateTranslateURLBar(tab: selectedTab, state: selectedTab.translationState ?? .unavailable)
+      updateTranslateURLBar(tab: selectedTab, state: selectedTab.translationState)
       updatePlaylistURLBar(
         tab: selectedTab,
         state: selectedTab.playlistItemState ?? .none,
@@ -326,7 +364,7 @@ extension BrowserViewController: TabManagerDelegate {
   }
 
   func hideToastsOnNavigationStartIfNeeded(_ tabManager: TabManager) {
-    if tabManager.selectedTab?.braveSearchResultAdManager == nil {
+    if tabManager.selectedTab?.braveSearch?.braveSearchResultAdManager == nil {
       searchResultAdClickedInfoBar?.dismiss(false)
       searchResultAdClickedInfoBar = nil
     }

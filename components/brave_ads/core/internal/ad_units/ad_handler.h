@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/core/internal/ad_units/new_tab_page_ad/new_tab_page_ad_handler.h"
 #include "brave/components/brave_ads/core/internal/ad_units/notification_ad/notification_ad_handler.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_handler.h"
-#include "brave/components/brave_ads/core/internal/catalog/catalog.h"
+#include "brave/components/brave_ads/core/internal/catalog/catalog_resource.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/subdivision.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_processor.h"
@@ -43,19 +43,18 @@ class AdHandler final : public ConversionsObserver, SiteVisitObserver {
 
   ~AdHandler() override;
 
-  void ParseAndSaveNewTabPageAds(base::DictValue dict,
-                                 ParseAndSaveNewTabPageAdsCallback callback);
+  void ParseAndSaveNewTabPageAds(base::DictValue dict, ResultCallback callback);
   void MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback);
   void TriggerNewTabPageAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
       mojom::NewTabPageAdEventType mojom_ad_event_type,
-      TriggerAdEventCallback callback);
+      ResultCallback callback);
 
   void TriggerNotificationAdEvent(
       const std::string& placement_id,
       mojom::NotificationAdEventType mojom_ad_event_type,
-      TriggerAdEventCallback callback);
+      ResultCallback callback);
 
   std::optional<mojom::CreativeSearchResultAdInfoPtr> MaybeGetSearchResultAd(
       const std::string& placement_id);
@@ -63,7 +62,7 @@ class AdHandler final : public ConversionsObserver, SiteVisitObserver {
   void TriggerSearchResultAdEvent(
       mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
       mojom::SearchResultAdEventType mojom_ad_event_type,
-      TriggerAdEventCallback callback);
+      ResultCallback callback);
 
  private:
   // ConversionsObserver:
@@ -81,7 +80,7 @@ class AdHandler final : public ConversionsObserver, SiteVisitObserver {
   void OnDidNotLandOnPage(int32_t tab_id, const AdInfo& ad) override;
   void OnCanceledPageLand(int32_t tab_id, const AdInfo& ad) override;
 
-  Catalog catalog_;
+  CatalogResource catalog_resource_;
 
   CreativeAdCache creative_ad_cache_;
 
@@ -95,6 +94,8 @@ class AdHandler final : public ConversionsObserver, SiteVisitObserver {
 
   SubdivisionTargeting subdivision_targeting_;
   Subdivision subdivision_;
+  base::ScopedObservation<Subdivision, SubdivisionObserver>
+      subdivision_observation_{&subdivision_targeting_};
 
   AntiTargetingResource anti_targeting_resource_;
 

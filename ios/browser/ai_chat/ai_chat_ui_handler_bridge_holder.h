@@ -6,7 +6,7 @@
 #ifndef BRAVE_IOS_BROWSER_AI_CHAT_AI_CHAT_UI_HANDLER_BRIDGE_HOLDER_H_
 #define BRAVE_IOS_BROWSER_AI_CHAT_AI_CHAT_UI_HANDLER_BRIDGE_HOLDER_H_
 
-#include "ios/web/public/lazy_web_state_user_data.h"
+#include "ios/web/public/web_state_user_data.h"
 
 @protocol AIChatUIHandlerBridge;
 
@@ -14,14 +14,14 @@ namespace ai_chat {
 
 // Some WebState user data that holds onto an AIChatUIHandlerBridge
 class UIHandlerBridgeHolder
-    : public web::LazyWebStateUserData<UIHandlerBridgeHolder> {
+    : public web::WebStateUserData<UIHandlerBridgeHolder> {
  public:
   void SetBridge(id<AIChatUIHandlerBridge> bridge) { bridge_ = bridge; }
   id<AIChatUIHandlerBridge> bridge() { return bridge_; }
 
  private:
   explicit UIHandlerBridgeHolder(web::WebState*);
-  friend class web::LazyWebStateUserData<UIHandlerBridgeHolder>;
+  friend class web::WebStateUserData<UIHandlerBridgeHolder>;
   __weak id<AIChatUIHandlerBridge> bridge_ = nullptr;
 };
 

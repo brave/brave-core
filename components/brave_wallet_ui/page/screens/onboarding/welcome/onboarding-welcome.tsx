@@ -13,15 +13,12 @@ import { PageSelectors } from '../../../selectors'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
-import {
-  useReportOnboardingActionMutation, //
-} from '../../../../common/slices/api.slice'
 
 // components
 import { WelcomeAction } from '../components/welcome_action/welcome_action'
 
 // routes
-import { BraveWallet, WalletRoutes } from '../../../../constants/types'
+import { WalletRoutes } from '../../../../constants/types'
 
 // Page API Proxy
 import getWalletPageApiProxy from '../../../../page/wallet_page_api_proxy'
@@ -56,9 +53,6 @@ export const OnboardingWelcome = () => {
   // selectors
   const isMobile = useSafeUISelector(UISelectors.isMobile)
 
-  // mutations
-  const [report] = useReportOnboardingActionMutation()
-
   const walletIcons = isMobile
     ? [
         'brave-icon-release-color',
@@ -79,10 +73,9 @@ export const OnboardingWelcome = () => {
   React.useEffect(() => {
     // start wallet setup
     if (!setupStillInProgress) {
-      report(BraveWallet.OnboardingAction.Shown)
       dispatch(WalletPageActions.walletSetupComplete(false))
     }
-  }, [setupStillInProgress, report, dispatch])
+  }, [setupStillInProgress, dispatch])
 
   return (
     <>

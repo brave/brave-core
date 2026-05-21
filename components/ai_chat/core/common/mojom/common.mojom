@@ -8,8 +8,48 @@ module ai_chat.mojom;
 import "mojo/public/mojom/base/time.mojom";
 import "url/mojom/url.mojom";
 
+enum PremiumStatus {
+  Unknown,
+  Inactive,
+  Active,
+  ActiveDisconnected,
+};
+
+struct PremiumInfo {
+  // How many credentials in the current batch are remaining
+  uint32 remaining_credential_count;
+
+  // When their next batch of credentials is active. If null, there is no
+  // next batch.
+  mojo_base.mojom.Time? next_active_at;
+};
+
 // Common types shared between ai_chat.mojom and untrusted_frame.mojom.
 // This file exists to break circular import dependencies between those files.
+
+enum APIError {
+  None,
+  InternalError,
+  ConnectionIssue,
+  RateLimitReached,
+  ContextLimitReached,
+  InvalidEndpointURL,
+  InvalidAPIKey,
+  ServiceOverloaded
+};
+
+// TODO(https://github.com/brave/brave-browser/issues/55518): Add APIError to this struct
+struct APIErrorDetails {
+  int32 status_code;
+  string error_type;
+};
+
+enum SuggestionGenerationStatus {
+  None,
+  CanGenerate,
+  IsGenerating,
+  HasGenerated,
+};
 
 enum CharacterType {
   HUMAN,
@@ -79,6 +119,16 @@ enum UploadedFileType {
   kImage = 0,
   kScreenshot,
   kPdf,
+  kText,
+};
+
+// This does not cover more specific data that the Service owns, such as the
+// conversation list, but does cover status of preferences and notices.
+struct ServiceState {
+  bool has_accepted_agreement;
+  bool is_storage_pref_enabled;
+  bool is_storage_notice_dismissed;
+  bool can_show_premium_prompt;
 };
 
 // Represents the content that is associated with a conversation.
@@ -108,6 +158,10 @@ struct UploadedFile {
   uint32 filesize;
   array<uint8> data;
   UploadedFileType type;
+  // Text extracted from PDF or text files via a background renderer. Null when
+  // extraction failed/timed out or not applicable. When present, the engine
+  // layer sends this text instead of raw file bytes.
+  string? extracted_text;
 };
 
 // An entry of an executed skill to be stored inside conversation entry
@@ -129,6 +183,13 @@ struct ImageContentBlock {
 };
 
 struct TextContentBlock {
+  string text;
+};
+
+// Content block for text extracted from an uploaded file (PDF or text file).
+// Server side handles this type specially to better support large file content
+// without hitting context limits.
+struct FileExtractedTextContentBlock {
   string text;
 };
 
@@ -229,6 +290,7 @@ struct SimpleRequestContentBlock {
 
 // Artifact generated from tool call
 struct ToolArtifact {
+  string? id;
   string type;
   string content_json;
 };
@@ -238,6 +300,7 @@ union ContentBlock {
   ImageContentBlock image_content_block;
   TextContentBlock text_content_block;
   FileContentBlock file_content_block;
+  FileExtractedTextContentBlock file_extracted_text_content_block;
 
   // Brave customized content blocks
   PageExcerptContentBlock page_excerpt_content_block;
@@ -556,6 +619,8 @@ struct LeoModelOptions {
   string name;
   // maker, for users
   string display_maker;
+  // description, for users
+  string description = "";
   // user-facing category
   ModelCategory category;
   // Which access level grants permission to use the model
@@ -596,6 +661,10 @@ struct Model {
   bool vision_support;
   // Model supports tool use
   bool supports_tools = false;
+  // whether accept audio as input
+  bool audio_support = false;
+  // whether accept video as input
+  bool video_support = false;
   // Conversation capabilities this model supports. Used to filter which models
   // are available for different conversation types (e.g. basic chat, content
   // agent, deep research).
@@ -607,6 +676,8 @@ struct Model {
   bool is_suggested_model;
   // Is a Near model
   bool is_near_model;
+  // Whether this model supports private inference (OHTTP-routed requests).
+  bool supports_private_inference = false;
 };
 
 // State required to show the conversations entries UI block
@@ -636,6 +707,13 @@ struct ConversationEntriesState {
   // Indicates the number of tokens that were trimmed from the conversation
   uint64 trimmed_tokens;
   array<ConversationCapability> conversation_capabilities;
-  // Whether a user is a premium user or not
-  bool is_premium_user;
+  // Suggested questions for the conversation
+  array<string> suggested_questions;
+  // Status of suggestion generation
+  SuggestionGenerationStatus suggestion_status;
+  // Current API error state
+  APIError current_error;
+  APIErrorDetails? current_error_details;
+  // Whether this is a temporary (non-persisted) conversation
+  bool is_temporary = false;
 };

@@ -23,6 +23,7 @@ use pki_types::{DnsName, InvalidDnsNameError};
 use super::{GeneralName, NameIterator};
 use crate::cert::Cert;
 use crate::error::{Error, InvalidNameContext};
+use crate::subject_name::Subtrees;
 
 pub(crate) fn verify_dns_names(reference: &DnsName<'_>, cert: &Cert<'_>) -> Result<(), Error> {
     let dns_name = untrusted::Input::from(reference.as_ref().as_bytes());
@@ -245,7 +246,7 @@ pub(super) fn presented_id_matches_reference_id(
 
     if !is_valid_dns_id(reference_dns_id, reference_dns_id_role, Wildcards::Deny) {
         return Err(match reference_dns_id_role {
-            IdRole::NameConstraint => Error::MalformedNameConstraint,
+            IdRole::NameConstraint(_) => Error::MalformedNameConstraint,
             _ => Error::MalformedDnsIdentifier,
         });
     }
@@ -256,7 +257,7 @@ pub(super) fn presented_id_matches_reference_id(
     match reference_dns_id_role {
         IdRole::Reference => (),
 
-        IdRole::NameConstraint if presented_dns_id.len() > reference_dns_id.len() => {
+        IdRole::NameConstraint(_) if presented_dns_id.len() > reference_dns_id.len() => {
             if reference_dns_id.is_empty() {
                 // An empty constraint matches everything.
                 return Ok(true);
@@ -305,13 +306,21 @@ pub(super) fn presented_id_matches_reference_id(
             }
         }
 
-        IdRole::NameConstraint => (),
+        IdRole::NameConstraint(_) => (),
 
         IdRole::Presented => unreachable!(),
     }
 
     // Only allow wildcard labels that consist only of '*'.
-    if presented.peek(b'*') {
+    //
+    // For permitted subtrees: ignore the wildcard label entirely; a wildcard SAN like
+    // `*.example.com` can expand to names (like `evil.example.com`) that fall outside the
+    // permitted subtree, so we must not treat it as contained.
+    //
+    // For excluded subtrees: we still expand the wildcard so that a SAN whose expansions could
+    // reach into an excluded subtree is rejected (see CVE-2025-61727).
+    if presented.peek(b'*') && reference_dns_id_role != IdRole::NameConstraint(Subtrees::Permitted)
+    {
         if presented.skip(1).is_err() {
             unreachable!();
         }
@@ -346,7 +355,7 @@ pub(super) fn presented_id_matches_reference_id(
     // Allow a relative presented DNS ID to match an absolute reference DNS ID,
     // unless we're matching a name constraint.
     if !reference.at_end() {
-        if reference_dns_id_role != IdRole::NameConstraint {
+        if !matches!(reference_dns_id_role, IdRole::NameConstraint(_)) {
             match reference.read_byte() {
                 Ok(b'.') => (),
                 _ => {
@@ -383,7 +392,7 @@ enum Wildcards {
 pub(super) enum IdRole {
     Reference,
     Presented,
-    NameConstraint,
+    NameConstraint(Subtrees),
 }
 
 // https://tools.ietf.org/html/rfc5280#section-4.2.1.6:
@@ -408,7 +417,7 @@ fn is_valid_dns_id(
 
     let mut input = untrusted::Reader::new(hostname);
 
-    if id_role == IdRole::NameConstraint && input.at_end() {
+    if matches!(id_role, IdRole::NameConstraint(_)) && input.at_end() {
         return true;
     }
 
@@ -467,7 +476,8 @@ fn is_valid_dns_id(
 
             Ok(b'.') => {
                 dot_count += 1;
-                if label_length == 0 && (id_role != IdRole::NameConstraint || !is_first_byte) {
+                let name_constrained = matches!(id_role, IdRole::NameConstraint(_));
+                if label_length == 0 && (!name_constrained || !is_first_byte) {
                     return false;
                 }
                 if label_ends_with_hyphen {
@@ -951,8 +961,10 @@ mod tests {
         // Presented IDs with wildcard
         (b"*.example.com", b".example.com", Ok(true)),
         (b"*.example.com", b"example.com", Ok(true)),
-        (b"*.example.com", b"www.example.com", Ok(true)),
-        (b"*.example.com", b"www.EXAMPLE.COM", Ok(true)),
+        // `*.example.com` expands to names like `evil.example.com` that are
+        // outside the subtree `www.example.com`, so it is not contained.
+        (b"*.example.com", b"www.example.com", Ok(false)),
+        (b"*.example.com", b"www.EXAMPLE.COM", Ok(false)),
         (b"*.example.com", b"www.axample.com", Ok(false)),
         (b"*.example.com", b".xample.com", Ok(false)),
         (b"*.example.com", b"xample.com", Ok(false)),
@@ -967,7 +979,7 @@ mod tests {
         for (presented, constraint, expected_result) in PRESENTED_MATCHES_CONSTRAINT {
             let actual_result = presented_id_matches_reference_id(
                 untrusted::Input::from(presented),
-                IdRole::NameConstraint,
+                IdRole::NameConstraint(Subtrees::Permitted),
                 untrusted::Input::from(constraint),
             );
             assert_eq!(
@@ -976,4 +988,72 @@ mod tests {
             );
         }
     }
+
+    #[test]
+    fn wildcard_san_not_contained_in_constraint() {
+        for (presented, constraint, expected_result) in WILDCARD_CONSTRAINT_CONTAINMENT {
+            let actual_result = presented_id_matches_reference_id(
+                untrusted::Input::from(presented),
+                IdRole::NameConstraint(Subtrees::Permitted),
+                untrusted::Input::from(constraint),
+            );
+            assert_eq!(
+                &actual_result, expected_result,
+                "presented_id_matches_constraint(\"{presented:?}\", \"{constraint:?}\")",
+            );
+        }
+    }
+
+    // Per RFC 5280 4.2.1.10, a permitted dNSName subtree `www.example.com`
+    // covers only names formed by prepending labels to `www.example.com`.
+    // A wildcard SAN `*.example.com` can expand to e.g. `evil.example.com`,
+    // which is outside that subtree, so it must not be considered contained.
+    // In contrast, `*.www.example.com` only expands to names inside the
+    // subtree and is correctly accepted.
+    #[expect(clippy::type_complexity)]
+    const WILDCARD_CONSTRAINT_CONTAINMENT: &[(&[u8], &[u8], Result<bool, Error>)] = &[
+        // Bug: `*.example.com` is broader than the permitted subtree
+        // `www.example.com` and must not satisfy the constraint.
+        (b"*.example.com", b"www.example.com", Ok(false)),
+        // Control: `*.www.example.com` stays within the subtree.
+        (b"*.www.example.com", b"www.example.com", Ok(true)),
+        // Further out-of-subtree wildcard SANs that must be rejected.
+        (b"*.example.com", b"a.b.example.com", Ok(false)),
+        (b"*.b.example.com", b"a.b.example.com", Ok(false)),
+    ];
+
+    // For excluded subtrees, a wildcard SAN must be treated as matching if
+    // any of its expansions could fall inside the excluded subtree
+    // (CVE-2025-61727). This is the opposite polarity from the containment
+    // test used for permitted subtrees.
+    #[test]
+    fn wildcard_san_could_match_excluded_subtree() {
+        for (presented, constraint, expected_result) in WILDCARD_EXCLUDED_INTERSECTION {
+            let actual_result = presented_id_matches_reference_id(
+                untrusted::Input::from(presented),
+                IdRole::NameConstraint(Subtrees::Excluded),
+                untrusted::Input::from(constraint),
+            );
+            assert_eq!(
+                &actual_result, expected_result,
+                "presented_id_matches_constraint(\"{presented:?}\", \"{constraint:?}\")",
+            );
+        }
+    }
+
+    #[expect(clippy::type_complexity)]
+    const WILDCARD_EXCLUDED_INTERSECTION: &[(&[u8], &[u8], Result<bool, Error>)] = &[
+        // All expansions of `*.example.com` fall under the excluded subtree.
+        (b"*.example.com", b"example.com", Ok(true)),
+        (b"*.example.com", b".example.com", Ok(true)),
+        // `*.example.com` can expand to `www.example.com`, which is inside
+        // the excluded subtree rooted at `www.example.com`.
+        (b"*.example.com", b"www.example.com", Ok(true)),
+        (b"*.example.com", b"www.EXAMPLE.COM", Ok(true)),
+        // The wildcard cannot reach two labels deep, so it does not
+        // intersect a more specific excluded subtree.
+        (b"*.example.com", b"a.b.example.com", Ok(false)),
+        // Disjoint parent labels never intersect.
+        (b"*.example.com", b"www.other.com", Ok(false)),
+    ];
 }

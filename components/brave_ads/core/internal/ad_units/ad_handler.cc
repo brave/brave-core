@@ -13,9 +13,7 @@
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/conversion_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/page_land_user_data.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/conversions/actions/conversion_action_types_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversion/conversion_info.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversion/conversion_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
@@ -34,26 +32,23 @@ AdHandler::AdHandler()
       search_result_ad_handler_(site_visit_) {
   conversions_observation_.Observe(&conversions_);
   site_visit_observation_.Observe(&site_visit_);
-  subdivision_.AddObserver(&subdivision_targeting_);
+  subdivision_observation_.Observe(&subdivision_);
 }
 
-AdHandler::~AdHandler() {
-  subdivision_.RemoveObserver(&subdivision_targeting_);
-}
+AdHandler::~AdHandler() = default;
 
 void AdHandler::TriggerNotificationAdEvent(
     const std::string& placement_id,
     mojom::NotificationAdEventType mojom_ad_event_type,
-    TriggerAdEventCallback callback) {
+    ResultCallback callback) {
   CHECK(!placement_id.empty());
 
   notification_ad_handler_.TriggerEvent(placement_id, mojom_ad_event_type,
                                         std::move(callback));
 }
 
-void AdHandler::ParseAndSaveNewTabPageAds(
-    base::DictValue dict,
-    ParseAndSaveNewTabPageAdsCallback callback) {
+void AdHandler::ParseAndSaveNewTabPageAds(base::DictValue dict,
+                                          ResultCallback callback) {
   new_tab_page_ad_handler_.ParseAndSave(std::move(dict), std::move(callback));
 }
 
@@ -66,7 +61,7 @@ void AdHandler::TriggerNewTabPageAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     mojom::NewTabPageAdEventType mojom_ad_event_type,
-    TriggerAdEventCallback callback) {
+    ResultCallback callback) {
   CHECK(!placement_id.empty());
 
   new_tab_page_ad_handler_.TriggerEvent(placement_id, creative_instance_id,
@@ -83,7 +78,7 @@ AdHandler::MaybeGetSearchResultAd(const std::string& placement_id) {
 void AdHandler::TriggerSearchResultAdEvent(
     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
     mojom::SearchResultAdEventType mojom_ad_event_type,
-    TriggerAdEventCallback callback) {
+    ResultCallback callback) {
   CHECK(mojom_creative_ad);
 
   if (mojom_ad_event_type ==
@@ -101,13 +96,12 @@ void AdHandler::TriggerSearchResultAdEvent(
 void AdHandler::OnDidConvertAd(const ConversionInfo& conversion) {
   CHECK(conversion.IsValid());
 
-  BLOG(1, "Converted " << ToString(conversion.action_type) << " "
-                       << ConversionTypeToString(conversion) << " for "
-                       << conversion.ad_type << " with creative instance id "
-                       << conversion.creative_instance_id
-                       << ", creative set id " << conversion.creative_set_id
-                       << ", campaign id " << conversion.campaign_id
-                       << " and advertiser id " << conversion.advertiser_id);
+  BLOG(1, "Conversion for "
+              << conversion.ad_type << " with creative instance id "
+              << conversion.creative_instance_id << ", creative set id "
+              << conversion.creative_set_id << ", campaign id "
+              << conversion.campaign_id << " and advertiser id "
+              << conversion.advertiser_id);
 
   DepositWithUserData(conversion.ad_type, mojom::ConfirmationType::kConversion,
                       conversion.campaign_id, conversion.creative_instance_id,

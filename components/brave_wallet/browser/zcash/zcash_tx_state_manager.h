@@ -15,11 +15,11 @@ namespace brave_wallet {
 
 class TxMeta;
 class ZCashTxMeta;
-class TxStorageDelegate;
+class TxStorage;
 
 class ZCashTxStateManager : public TxStateManager {
  public:
-  ZCashTxStateManager(TxStorageDelegate& delegate,
+  ZCashTxStateManager(TxStorage& tx_storage,
                       AccountResolverDelegate& account_resolver_delegate);
   ~ZCashTxStateManager() override;
   ZCashTxStateManager(const ZCashTxStateManager&) = delete;

@@ -7,7 +7,6 @@
 
 #include <string_view>
 
-#include "base/strings/strcat.h"
 #include "brave/browser/ui/webui/webcompat_reporter/webcompat_reporter_dialog.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -76,6 +75,7 @@ void ShowWebcompatReporter(Browser* browser) {
       web_contents, webcompat_reporter::UISource::kAppMenu);
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 void ShowBraveWallet(Browser* browser) {
   ShowSingletonTabOverwritingNTP(browser, GURL(kBraveUIWalletURL));
 }
@@ -84,20 +84,21 @@ void ShowBraveWalletOnboarding(Browser* browser) {
   ShowSingletonTabOverwritingNTP(browser, GURL(kBraveUIWalletOnboardingURL));
 }
 
+void ShowBraveWalletTxNotificationUrl(BrowserWindowInterface* browser,
+                                      GURL url) {
+  if (url.GetWithEmptyPath() != GURL(kBraveUIWalletURL)) {
+    return;
+  }
+  ShowSingletonTabOverwritingNTP(browser, url);
+}
+
 void ShowBraveWalletAccountCreation(Browser* browser,
                                     std::string_view coin_name) {
   ShowSingletonTabOverwritingNTP(
       browser,
       GURL(base::StrCat({kBraveUIWalletAccountCreationURL, coin_name})));
 }
-
-void ShowExtensionSettings(Browser* browser) {
-  ShowSingletonTabOverwritingNTP(browser, GURL(kExtensionSettingsURL));
-}
-
-void ShowWalletSettings(Browser* browser) {
-  ShowSingletonTabOverwritingNTP(browser, GURL(kWalletSettingsURL));
-}
+#endif
 
 void ShowAppsPage(Browser* browser) {
   ShowSingletonTabOverwritingNTP(browser, GURL(chrome::kChromeUIAppsURL));

@@ -19,6 +19,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/webcompat/core/common/features.h"
+#include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -79,8 +80,6 @@ ShieldsPanelUI::ShieldsPanelUI(content::WebUI* web_ui)
   content::URLDataSource::Add(profile_,
                               std::make_unique<ThemeSource>(profile_));
 
-  AddBackgroundColorToSource(source, web_ui->GetWebContents());
-
   if (base::FeatureList::IsEnabled(
           brave_shields::features::kShowUpdatedShieldsPanel)) {
     source->AddLocalizedStrings(webui::kBraveShieldsStrings);
@@ -90,6 +89,8 @@ ShieldsPanelUI::ShieldsPanelUI(content::WebUI* web_ui)
     webui::SetupWebUIDataSource(source, kBraveShieldsPanelGenerated,
                                 IDR_SHIELDS_PANEL_HTML);
   }
+
+  AddBackgroundColorToSource(source, web_ui->GetWebContents());
 }
 
 ShieldsPanelUI::~ShieldsPanelUI() = default;
@@ -112,8 +113,11 @@ void ShieldsPanelUI::CreatePanelHandler(
       std::move(panel_receiver), this, profile);
   auto* browser = webui::GetBrowserWindowInterface(web_ui()->GetWebContents());
   CHECK(browser);
+  auto* favicon_service = FaviconServiceFactory::GetForProfile(
+      profile, ServiceAccessType::EXPLICIT_ACCESS);
   data_handler_ = std::make_unique<ShieldsPanelDataHandler>(
-      std::move(data_handler_receiver), this, browser->GetTabStripModel());
+      std::move(data_handler_receiver), this, browser->GetTabStripModel(),
+      favicon_service);
 }
 
 ShieldsPanelUIConfig::ShieldsPanelUIConfig()

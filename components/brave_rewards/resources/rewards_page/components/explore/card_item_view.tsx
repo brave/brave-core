@@ -8,7 +8,11 @@ import * as React from 'react'
 import { UICardItem } from '../../lib/app_store'
 import { useAppActions } from '../../lib/app_context'
 import { NewTabLink } from '../../../shared/components/new_tab_link'
-import { sanitizeURL, faviconURL, cardImageURL } from './card_urls'
+import {
+  sanitizeURL,
+  faviconURL,
+  externalImageURL,
+} from '../../lib/external_url'
 
 interface Props {
   item: UICardItem
@@ -17,7 +21,7 @@ interface Props {
 export function CardItemView(props: Props) {
   const { item } = props
   const actions = useAppActions()
-  const thumbnail = cardImageURL(item.thumbnail)
+  const thumbnail = externalImageURL(item.thumbnail)
   return (
     <NewTabLink
       href={sanitizeURL(item.url)}

@@ -5,15 +5,17 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/notification_ads/notification_ad_event_handler.h"
 
+#include <string>
+
 #include "base/run_loop.h"
 #include "base/test/gmock_callback_support.h"
-#include "base/test/mock_callback.h"
-#include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
-#include "brave/components/brave_ads/core/internal/ad_units/notification_ad/notification_ad_test_util.h"
+#include "base/test/test_future.h"
+#include "brave/components/brave_ads/core/internal/ad_units/notification_ad/test/notification_ad_test_util.h"
+#include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/notification_ads/notification_ad_event_handler_delegate_mock.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/notification_ads/test/notification_ad_event_handler_delegate_mock.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 
@@ -30,16 +32,20 @@ class BraveAdsNotificationAdEventHandlerTest : public test::TestBase {
   }
 
   void FireEventAndVerifyExpectations(
-      const std::string& placement_id,
-      mojom::NotificationAdEventType mojom_ad_event_type,
-      bool should_fire_event) {
-    base::MockCallback<FireNotificationAdEventHandlerCallback> callback;
-    base::RunLoop run_loop(base::RunLoop::Type::kNestableTasksAllowed);
-    EXPECT_CALL(callback, Run(/*success=*/should_fire_event, placement_id,
-                              mojom_ad_event_type))
-        .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-    event_handler_.FireEvent(placement_id, mojom_ad_event_type, callback.Get());
-    run_loop.Run();
+      const std::string& expected_placement_id,
+      mojom::NotificationAdEventType expected_mojom_ad_event_type,
+      bool expected_success) {
+    base::test::TestFuture<bool, std::string, mojom::NotificationAdEventType>
+        test_future;
+    event_handler_.FireEvent(
+        expected_placement_id, expected_mojom_ad_event_type,
+        test_future.GetCallback<bool, const std::string&,
+                                mojom::NotificationAdEventType>());
+    const auto [success, placement_id, mojom_ad_event_type] =
+        test_future.Take();
+    EXPECT_EQ(expected_success, success);
+    EXPECT_EQ(expected_placement_id, placement_id);
+    EXPECT_EQ(expected_mojom_ad_event_type, mojom_ad_event_type);
   }
 
   NotificationAdEventHandler event_handler_;
@@ -49,7 +55,7 @@ class BraveAdsNotificationAdEventHandlerTest : public test::TestBase {
 TEST_F(BraveAdsNotificationAdEventHandlerTest, FireServedEvent) {
   // Arrange
   const NotificationAdInfo ad =
-      test::BuildAndSaveNotificationAd(/*should_generate_random_uuids=*/false);
+      test::BuildAndSaveNotificationAd(/*use_random_uuids=*/false);
 
   // Act & Assert
   base::RunLoop run_loop;
@@ -64,7 +70,7 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest, FireServedEvent) {
 TEST_F(BraveAdsNotificationAdEventHandlerTest, FireViewedEvent) {
   // Arrange
   const NotificationAdInfo ad =
-      test::BuildAndSaveNotificationAd(/*should_generate_random_uuids=*/false);
+      test::BuildAndSaveNotificationAd(/*use_random_uuids=*/false);
 
   // Act & Assert
   base::RunLoop run_loop;
@@ -79,10 +85,12 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest, FireViewedEvent) {
 TEST_F(BraveAdsNotificationAdEventHandlerTest, FireClickedEvent) {
   // Arrange
   const NotificationAdInfo ad =
-      test::BuildAndSaveNotificationAd(/*should_generate_random_uuids=*/false);
+      test::BuildAndSaveNotificationAd(/*use_random_uuids=*/false);
 
   // Act & Assert
   base::RunLoop run_loop;
+  ::testing::InSequence seq;
+  EXPECT_CALL(delegate_mock_, OnWillFireNotificationAdClickedEvent(ad));
   EXPECT_CALL(delegate_mock_, OnDidFireNotificationAdClickedEvent(ad))
       .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   FireEventAndVerifyExpectations(ad.placement_id,
@@ -91,10 +99,38 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest, FireClickedEvent) {
   run_loop.Run();
 }
 
+TEST_F(
+    BraveAdsNotificationAdEventHandlerTest,
+    ClickedEventNotifiesDelegateBeforeRecordingCompletesToEnsurePageLandIsRecorded) {
+  // Arrange
+  const NotificationAdInfo ad =
+      test::BuildAndSaveNotificationAd(/*use_random_uuids=*/false);
+
+  bool delegate_was_notified = false;
+  ::testing::InSequence seq;
+  EXPECT_CALL(delegate_mock_, OnWillFireNotificationAdClickedEvent(ad))
+      .WillOnce([&] { delegate_was_notified = true; });
+  EXPECT_CALL(delegate_mock_, OnDidFireNotificationAdClickedEvent(ad));
+
+  base::test::TestFuture<bool, std::string, mojom::NotificationAdEventType>
+      test_future;
+
+  // Act & Assert
+  event_handler_.FireEvent(
+      ad.placement_id, mojom::NotificationAdEventType::kClicked,
+      test_future.GetCallback<bool, const std::string&,
+                              mojom::NotificationAdEventType>());
+  EXPECT_TRUE(delegate_was_notified);
+  const auto [success, placement_id, mojom_ad_event_type] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_EQ(ad.placement_id, placement_id);
+  EXPECT_EQ(mojom::NotificationAdEventType::kClicked, mojom_ad_event_type);
+}
+
 TEST_F(BraveAdsNotificationAdEventHandlerTest, FireDismissedEvent) {
   // Arrange
   const NotificationAdInfo ad =
-      test::BuildAndSaveNotificationAd(/*should_generate_random_uuids=*/false);
+      test::BuildAndSaveNotificationAd(/*use_random_uuids=*/false);
 
   // Act & Assert
   base::RunLoop run_loop;
@@ -109,7 +145,7 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest, FireDismissedEvent) {
 TEST_F(BraveAdsNotificationAdEventHandlerTest, FireTimedOutEvent) {
   // Arrange
   const NotificationAdInfo ad =
-      test::BuildAndSaveNotificationAd(/*should_generate_random_uuids=*/false);
+      test::BuildAndSaveNotificationAd(/*use_random_uuids=*/false);
 
   // Act & Assert
   base::RunLoop run_loop;
@@ -125,7 +161,7 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest,
        DoNotFireEventIfMissingPlacementId) {
   // Arrange
   const NotificationAdInfo ad =
-      test::BuildAndSaveNotificationAd(/*should_generate_random_uuids=*/false);
+      test::BuildAndSaveNotificationAd(/*use_random_uuids=*/false);
 
   // Act & Assert
   base::RunLoop run_loop;

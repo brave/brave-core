@@ -20,6 +20,7 @@
 class HostContentSettingsMap;
 
 namespace brave_shields {
+class AdBlockBrowserTestHelper;
 class AdBlockComponentServiceManager;
 class AdBlockService;
 class FilterListCatalogEntry;
@@ -65,7 +66,6 @@ class AdBlockServiceTest : public PlatformBrowserTest {
   void InstallRegionalAdBlockComponent(const std::string& uuid,
                                        bool enable_list = true);
   void SetSubscriptionIntervals();
-  void WaitForAdBlockServiceThreads();
   void ShieldsDown(const GURL& url);
   void DisableAggressiveMode();
   void LoadDAT(base::FilePath path);
@@ -75,6 +75,9 @@ class AdBlockServiceTest : public PlatformBrowserTest {
   base::FilePath MakeFileInTempDir(const std::string& name,
                                    const std::string& contents);
   base::FilePath MakeTestDataCopy(const base::FilePath& source_location);
+
+  std::unique_ptr<brave_shields::AdBlockBrowserTestHelper>
+      ad_block_test_helper_;
 
   std::vector<std::unique_ptr<brave_shields::TestFiltersProvider>>
       source_providers_;

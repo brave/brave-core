@@ -3,24 +3,44 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveStrings
 import BraveWidgetsModels
 import DesignSystem
 import Foundation
+import OrderedCollections
 import Strings
 import UIKit
 
 extension WidgetShortcut {
-  static let eligibleButtonShortcuts: [WidgetShortcut] = [
-    .bookmarks,
-    .history,
-    .downloads,
-    .playlist,
-    .wallet,
-    .braveNews,
-    .braveLeo,
-    .askBrave,
-  ]
+  static func eligibleButtonShortcuts(
+    prefs: any PrefService,
+    isWalletAvailable: Bool
+  ) -> OrderedSet<WidgetShortcut> {
+    var options = OrderedSet<WidgetShortcut>([
+      .bookmarks,
+      .history,
+      .downloads,
+      .playlist,
+      .wallet,
+      .braveNews,
+      .braveLeo,
+      .askBrave,
+    ])
+    if !prefs.isPlaylistAvailable {
+      options.remove(.playlist)
+    }
+    if !prefs.isBraveNewsAvailable {
+      options.remove(.braveNews)
+    }
+    if !isWalletAvailable {
+      options.remove(.wallet)
+    }
+    if !AIChatUtils.isAIChatEnabled(for: prefs) {
+      options.remove(.braveLeo)
+    }
+    return options
+  }
 
   var displayString: String {
     switch self {

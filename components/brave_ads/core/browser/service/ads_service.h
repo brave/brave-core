@@ -11,7 +11,6 @@
 #include <string>
 #include <vector>
 
-#include "base/functional/callback_forward.h"
 #include "base/observer_list.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service_callback.h"
@@ -37,7 +36,7 @@ class AdsService : public KeyedService {
    public:
     virtual ~Delegate() = default;
 
-    virtual void MaybeInitNotificationHelper(base::OnceClosure callback) = 0;
+    virtual void MaybeInitNotificationHelper() = 0;
     virtual bool CanShowSystemNotificationsWhileBrowserIsBackgrounded() = 0;
     virtual bool DoesSupportSystemNotifications() = 0;
     virtual bool CanShowNotifications() = 0;
@@ -48,9 +47,8 @@ class AdsService : public KeyedService {
     virtual void SnoozeScheduledCaptcha() = 0;
     virtual void ShowNotificationAd(const std::string& id,
                                     const std::u16string& title,
-                                    const std::u16string& body,
-                                    bool is_custom) = 0;
-    virtual void CloseNotificationAd(const std::string& id, bool is_custom) = 0;
+                                    const std::u16string& body) = 0;
+    virtual void CloseNotificationAd(const std::string& id) = 0;
     virtual void OpenNewTabWithUrl(const GURL& url) = 0;
     virtual bool IsFullScreenMode() = 0;
     virtual std::string GetVariationsCountryCode() = 0;
@@ -68,7 +66,13 @@ class AdsService : public KeyedService {
   void AddObserver(AdsServiceObserver* observer);
   void RemoveObserver(AdsServiceObserver* observer);
 
-  // Returns true if a browser upgrade is required to serve ads.
+  // Returns `true` if the service is ineligible to start.
+  virtual bool IsIneligibleToStart() const = 0;
+
+  // Returns `true` if the service successfully initialized.
+  virtual bool IsInitialized() const = 0;
+
+  // Returns `true` if a browser upgrade is required to serve ads.
   virtual bool IsBrowserUpgradeRequiredToServeAds() const = 0;
 
   // Returns the maximum number of notification ads that can be served per hour.
@@ -87,7 +91,7 @@ class AdsService : public KeyedService {
 
   // Called to clear ads data. The callback takes one argument - `bool`
   // is set to `true` if successful otherwise `false`
-  virtual void ClearData(ClearDataCallback callback) = 0;
+  virtual void ClearData(ResultCallback callback) = 0;
 
   // Called to add an ads observer.
   virtual void AddBatAdsObserver(
@@ -108,23 +112,10 @@ class AdsService : public KeyedService {
   virtual void GetStatementOfAccounts(
       GetStatementOfAccountsCallback callback) = 0;
 
-  // Called to prefetch a new tab page ad.
-  virtual void PrefetchNewTabPageAd() = 0;
-
-  // Called to get the prefetched new tab page ad for display.
-  virtual mojom::NewTabPageAdInfoPtr MaybeGetPrefetchedNewTabPageAd() = 0;
-
-  // Called when failing to prefetch a new tab page ad for the specified
-  // `placement_id` and `creative_instance_id`.
-  virtual void OnFailedToPrefetchNewTabPageAd(
-      const std::string& placement_id,
-      const std::string& creative_instance_id) = 0;
-
   // Called to parse and save creative new tab page ads. The callback takes one
   // argument - `bool` is set to `true` if successful otherwise `false`.
-  virtual void ParseAndSaveNewTabPageAds(
-      base::DictValue dict,
-      ParseAndSaveNewTabPageAdsCallback callback) = 0;
+  virtual void ParseAndSaveNewTabPageAds(base::DictValue dict,
+                                         ResultCallback callback) = 0;
 
   // Called to serve a new tab page ad. The callback takes one argument -
   // `mojom::NewTabPageAdInfoPtr` containing the info for the ad.
@@ -144,7 +135,7 @@ class AdsService : public KeyedService {
       const std::string& creative_instance_id,
       mojom::NewTabPageAdMetricType mojom_ad_metric_type,
       mojom::NewTabPageAdEventType mojom_ad_event_type,
-      TriggerAdEventCallback callback) = 0;
+      ResultCallback callback) = 0;
 
   // Called to get the search result ad specified by `placement_id`. The
   // callback takes one argument - `mojom::CreativeSearchResultAdInfoPtr`
@@ -161,14 +152,13 @@ class AdsService : public KeyedService {
   virtual void TriggerSearchResultAdEvent(
       mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
       mojom::SearchResultAdEventType mojom_ad_event_type,
-      TriggerAdEventCallback callback) = 0;
+      ResultCallback callback) = 0;
 
   // Called to purge orphaned served ad events for the specified `mojom_ad_type`
   // before calling `MaybeServe*Ad`. The callback takes one argument - `bool` is
   // set to `true` if successful otherwise `false`.
-  virtual void PurgeOrphanedAdEventsForType(
-      mojom::AdType mojom_ad_type,
-      PurgeOrphanedAdEventsForTypeCallback callback) = 0;
+  virtual void PurgeOrphanedAdEventsForType(mojom::AdType mojom_ad_type,
+                                            ResultCallback callback) = 0;
 
   // Called to get ad history for the given date range in descending order. The
   // callback takes one argument - `base::ListValue` containing info of the
@@ -181,38 +171,38 @@ class AdsService : public KeyedService {
   // setting to the neutral state. The callback takes one argument - `bool` is
   // set to `true` if successful otherwise `false`.
   virtual void ToggleLikeAd(mojom::ReactionInfoPtr mojom_reaction,
-                            ToggleReactionCallback callback) = 0;
+                            ResultCallback callback) = 0;
 
   // Called to dislike an ad. This is a toggle, so calling it again returns the
   // setting to the neutral state. The callback takes one argument - `bool` is
   // set to `true` if successful otherwise `false`.
   virtual void ToggleDislikeAd(mojom::ReactionInfoPtr mojom_reaction,
-                               ToggleReactionCallback callback) = 0;
+                               ResultCallback callback) = 0;
 
   // Called to like a category. This is a toggle, so calling it again returns
   // the setting to the neutral state. The callback takes one argument - `bool`
   // is set to `true` if successful otherwise `false`.
   virtual void ToggleLikeSegment(mojom::ReactionInfoPtr mojom_reaction,
-                                 ToggleReactionCallback callback) = 0;
+                                 ResultCallback callback) = 0;
 
   // Called to dislike a category. This is a toggle, so calling it again
   // returns the setting to the neutral state. The callback takes one argument -
   // `bool` is set to `true` if successful otherwise `false`.
   virtual void ToggleDislikeSegment(mojom::ReactionInfoPtr mojom_reaction,
-                                    ToggleReactionCallback callback) = 0;
+                                    ResultCallback callback) = 0;
 
   // Called to save an ad for later viewing. This is a toggle, so calling it
   // again removes the ad from the saved list. The callback takes one argument -
   // `bool` is set to `true` if successful otherwise `false`.
-  virtual void ToggleSaveAd(mojom::ReactionInfoPtr reactimojom_reactionon,
-                            ToggleReactionCallback callback) = 0;
+  virtual void ToggleSaveAd(mojom::ReactionInfoPtr mojom_reaction,
+                            ResultCallback callback) = 0;
 
   // Called to mark an ad as inappropriate. This is a toggle, so calling it
   // again unmarks the ad. The callback takes one argument - `bool` is
   // set to `true` if successful otherwise `false`.
   virtual void ToggleMarkAdAsInappropriate(
       mojom::ReactionInfoPtr mojom_reaction,
-      ToggleReactionCallback callback) = 0;
+      ResultCallback callback) = 0;
 
   // Called when the page for `tab_id` has loaded and the content is available
   // for analysis. `redirect_chain` containing a list of redirect URLs that
@@ -223,16 +213,6 @@ class AdsService : public KeyedService {
       int32_t tab_id,
       const std::vector<GURL>& redirect_chain,
       const std::string& text) = 0;
-
-  // Called when the page for `tab_id` has loaded and the content is available
-  // for analysis. `redirect_chain` containing a list of redirect URLs that
-  // occurred on the way to the current page. The current page is the last one
-  // in the list (so even when there's no redirect, there should be one entry in
-  // the list). `html` containing the page content as HTML.
-  virtual void NotifyTabHtmlContentDidChange(
-      int32_t tab_id,
-      const std::vector<GURL>& redirect_chain,
-      const std::string& html) = 0;
 
   // Called when media starts playing on a browser tab for the specified
   // `tab_id`.

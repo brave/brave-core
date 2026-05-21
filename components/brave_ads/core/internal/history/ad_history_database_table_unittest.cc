@@ -7,17 +7,14 @@
 
 #include <vector>
 
-#include "base/run_loop.h"
-#include "base/test/gmock_callback_support.h"
-#include "base/test/mock_callback.h"
+#include "base/test/test_future.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
+#include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
-#include "brave/components/brave_ads/core/internal/history/ad_history_database_table_util.h"
-#include "brave/components/brave_ads/core/internal/history/ad_history_test_util.h"
+#include "brave/components/brave_ads/core/internal/history/ad_history_database_util.h"
+#include "brave/components/brave_ads/core/internal/history/test/ad_history_test_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_feature.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
 
@@ -53,21 +50,19 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest, Save) {
       mojom::AdType::kNotificationAd,
       {mojom::ConfirmationType::kViewedImpression,
        mojom::ConfirmationType::kClicked},
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
 
   // Act
   database::SaveAdHistory(ad_history);
 
   // Assert
-  base::MockCallback<GetAdHistoryCallback> callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback, Run(::testing::Optional(
-                            ::testing::UnorderedElementsAreArray(ad_history))))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+  base::test::TestFuture<std::optional<AdHistoryList>> test_future;
   database_table_.GetForDateRange(/*from_time=*/test::DistantPast(),
                                   /*to_time=*/test::DistantFuture(),
-                                  callback.Get());
-  run_loop.Run();
+                                  test_future.GetCallback());
+  EXPECT_THAT(
+      test_future.Take(),
+      ::testing::Optional(::testing::UnorderedElementsAreArray(ad_history)));
 }
 
 TEST_F(BraveAdsAdHistoryDatabaseTableTest, SaveEmpty) {
@@ -75,15 +70,11 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest, SaveEmpty) {
   database::SaveAdHistory({});
 
   // Assert
-  base::MockCallback<GetAdHistoryCallback> callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback,
-              Run(/*ad_history=*/::testing::Optional(::testing::IsEmpty())))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+  base::test::TestFuture<std::optional<AdHistoryList>> test_future;
   database_table_.GetForDateRange(/*from_time=*/test::DistantPast(),
                                   /*to_time=*/test::DistantFuture(),
-                                  callback.Get());
-  run_loop.Run();
+                                  test_future.GetCallback());
+  EXPECT_THAT(test_future.Take(), ::testing::Optional(::testing::IsEmpty()));
 }
 
 TEST_F(BraveAdsAdHistoryDatabaseTableTest, SaveInBatches) {
@@ -95,21 +86,19 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest, SaveInBatches) {
       {mojom::ConfirmationType::kViewedImpression,
        mojom::ConfirmationType::kClicked,
        mojom::ConfirmationType::kViewedImpression},
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
 
   // Act
   database::SaveAdHistory(ad_history);
 
   // Assert
-  base::MockCallback<GetAdHistoryCallback> callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback, Run(::testing::Optional(
-                            ::testing::UnorderedElementsAreArray(ad_history))))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+  base::test::TestFuture<std::optional<AdHistoryList>> test_future;
   database_table_.GetForDateRange(/*from_time=*/test::DistantPast(),
                                   /*to_time=*/test::DistantFuture(),
-                                  callback.Get());
-  run_loop.Run();
+                                  test_future.GetCallback());
+  EXPECT_THAT(
+      test_future.Take(),
+      ::testing::Optional(::testing::UnorderedElementsAreArray(ad_history)));
 }
 
 TEST_F(BraveAdsAdHistoryDatabaseTableTest, GetForDateRange) {
@@ -118,7 +107,7 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest, GetForDateRange) {
       mojom::AdType::kNotificationAd,
       {mojom::ConfirmationType::kViewedImpression,
        mojom::ConfirmationType::kClicked},
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   database::SaveAdHistory(ad_history_1);
 
   AdvanceClockBy(base::Days(2));
@@ -129,19 +118,16 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest, GetForDateRange) {
       mojom::AdType::kNotificationAd,
       {mojom::ConfirmationType::kViewedImpression,
        mojom::ConfirmationType::kClicked},
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   database::SaveAdHistory(ad_history_2);
 
   // Act & Assert
-  base::MockCallback<GetAdHistoryCallback> callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback,
-              Run(::testing::Optional(
-                  ::testing::UnorderedElementsAreArray(ad_history_2))))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+  base::test::TestFuture<std::optional<AdHistoryList>> test_future;
   database_table_.GetForDateRange(from_time, /*to_time=*/test::DistantFuture(),
-                                  callback.Get());
-  run_loop.Run();
+                                  test_future.GetCallback());
+  EXPECT_THAT(
+      test_future.Take(),
+      ::testing::Optional(::testing::UnorderedElementsAreArray(ad_history_2)));
 }
 
 TEST_F(BraveAdsAdHistoryDatabaseTableTest,
@@ -151,7 +137,7 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest,
       mojom::AdType::kNotificationAd,
       {mojom::ConfirmationType::kViewedImpression,
        mojom::ConfirmationType::kClicked},
-      /*should_generate_random_uuids=*/false);
+      /*use_random_uuids=*/false);
   database::SaveAdHistory(ad_history_1);
 
   AdvanceClockBy(base::Days(2));
@@ -162,20 +148,20 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest,
       mojom::AdType::kNotificationAd,
       {mojom::ConfirmationType::kViewedImpression,
        mojom::ConfirmationType::kClicked},
-      /*should_generate_random_uuids=*/false);
+      /*use_random_uuids=*/false);
   database::SaveAdHistory(ad_history_2);
 
   const AdHistoryList ad_history_3 = test::BuildAdHistoryForSamePlacement(
       mojom::AdType::kNotificationAd,
       {mojom::ConfirmationType::kViewedImpression},
-      /*should_generate_random_uuids=*/false);
+      /*use_random_uuids=*/false);
   database::SaveAdHistory(ad_history_3);
 
   const AdHistoryList ad_history_4 = test::BuildAdHistoryForSamePlacement(
       mojom::AdType::kNotificationAd,
       {mojom::ConfirmationType::kViewedImpression,
        mojom::ConfirmationType::kDismissed},
-      /*should_generate_random_uuids=*/false);
+      /*use_random_uuids=*/false);
   database::SaveAdHistory(ad_history_4);
 
   // Act & Assert
@@ -183,15 +169,12 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest,
       {ad_history_2, ad_history_3, ad_history_4});
   ASSERT_THAT(expected_ad_history, ::testing::SizeIs(3));
 
-  base::MockCallback<GetAdHistoryCallback> callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback,
-              Run(::testing::Optional(
-                  ::testing::UnorderedElementsAreArray(expected_ad_history))))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+  base::test::TestFuture<std::optional<AdHistoryList>> test_future;
   database_table_.GetHighestRankedPlacementsForDateRange(
-      from_time, /*to_time=*/test::DistantFuture(), callback.Get());
-  run_loop.Run();
+      from_time, /*to_time=*/test::DistantFuture(), test_future.GetCallback());
+  EXPECT_THAT(test_future.Take(),
+              ::testing::Optional(
+                  ::testing::UnorderedElementsAreArray(expected_ad_history)));
 }
 
 TEST_F(BraveAdsAdHistoryDatabaseTableTest, GetForCreativeInstanceId) {
@@ -200,18 +183,16 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest, GetForCreativeInstanceId) {
       mojom::AdType::kNotificationAd,
       {mojom::ConfirmationType::kViewedImpression,
        mojom::ConfirmationType::kClicked},
-      /*should_generate_random_uuids=*/false);
+      /*use_random_uuids=*/false);
   database::SaveAdHistory(ad_history);
 
   // Act & Assert
-  base::MockCallback<GetAdHistoryCallback> callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback, Run(::testing::Optional(
-                            ::testing::UnorderedElementsAreArray(ad_history))))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+  base::test::TestFuture<std::optional<AdHistoryList>> test_future;
   database_table_.GetForCreativeInstanceId(test::kCreativeInstanceId,
-                                           callback.Get());
-  run_loop.Run();
+                                           test_future.GetCallback());
+  EXPECT_THAT(
+      test_future.Take(),
+      ::testing::Optional(::testing::UnorderedElementsAreArray(ad_history)));
 }
 
 TEST_F(BraveAdsAdHistoryDatabaseTableTest,
@@ -221,18 +202,14 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest,
       mojom::AdType::kNotificationAd,
       {mojom::ConfirmationType::kViewedImpression,
        mojom::ConfirmationType::kClicked},
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   database::SaveAdHistory(ad_history);
 
   // Act & Assert
-  base::MockCallback<GetAdHistoryCallback> callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback,
-              Run(/*ad_history=*/::testing::Optional(::testing::IsEmpty())))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+  base::test::TestFuture<std::optional<AdHistoryList>> test_future;
   database_table_.GetForCreativeInstanceId(test::kCreativeInstanceId,
-                                           callback.Get());
-  run_loop.Run();
+                                           test_future.GetCallback());
+  EXPECT_THAT(test_future.Take(), ::testing::Optional(::testing::IsEmpty()));
 }
 
 TEST_F(BraveAdsAdHistoryDatabaseTableTest, PurgeExpired) {
@@ -241,7 +218,7 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest, PurgeExpired) {
       mojom::AdType::kNotificationAd,
       {mojom::ConfirmationType::kViewedImpression,
        mojom::ConfirmationType::kClicked},
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   database::SaveAdHistory(ad_history_1);
 
   AdvanceClockBy(kAdHistoryRetentionPeriod.Get());
@@ -250,27 +227,21 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest, PurgeExpired) {
       mojom::AdType::kNotificationAd,
       {mojom::ConfirmationType::kViewedImpression,
        mojom::ConfirmationType::kClicked},
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   database::SaveAdHistory(ad_history_2);
 
   // Act & Assert
-  base::MockCallback<ResultCallback> purge_expired_callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(purge_expired_callback, Run(/*success=*/true))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  database_table_.PurgeExpired(purge_expired_callback.Get());
-  run_loop.Run();
+  base::test::TestFuture<bool> test_future_purge;
+  database_table_.PurgeExpired(test_future_purge.GetCallback());
+  EXPECT_TRUE(test_future_purge.Get());
 
-  base::MockCallback<GetAdHistoryCallback> callback;
-  base::RunLoop run_loop2;
-  EXPECT_CALL(callback,
-              Run(::testing::Optional(
-                  ::testing::UnorderedElementsAreArray(ad_history_2))))
-      .WillOnce(base::test::RunOnceClosure(run_loop2.QuitClosure()));
+  base::test::TestFuture<std::optional<AdHistoryList>> test_future;
   database_table_.GetForDateRange(/*from_time=*/test::DistantPast(),
                                   /*to_time=*/test::DistantFuture(),
-                                  callback.Get());
-  run_loop2.Run();
+                                  test_future.GetCallback());
+  EXPECT_THAT(
+      test_future.Take(),
+      ::testing::Optional(::testing::UnorderedElementsAreArray(ad_history_2)));
 }
 
 TEST_F(BraveAdsAdHistoryDatabaseTableTest, DoNotPurgeOnTheCuspOfExpiration) {
@@ -279,33 +250,23 @@ TEST_F(BraveAdsAdHistoryDatabaseTableTest, DoNotPurgeOnTheCuspOfExpiration) {
       mojom::AdType::kNotificationAd,
       {mojom::ConfirmationType::kViewedImpression,
        mojom::ConfirmationType::kClicked},
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   database::SaveAdHistory(ad_history);
 
   AdvanceClockBy(kAdHistoryRetentionPeriod.Get() - base::Milliseconds(1));
 
   // Act & Assert
-  base::MockCallback<ResultCallback> purge_expired_callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(purge_expired_callback, Run(/*success=*/true))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  database_table_.PurgeExpired(purge_expired_callback.Get());
-  run_loop.Run();
+  base::test::TestFuture<bool> test_future_purge;
+  database_table_.PurgeExpired(test_future_purge.GetCallback());
+  EXPECT_TRUE(test_future_purge.Get());
 
-  base::MockCallback<GetAdHistoryCallback> callback;
-  base::RunLoop run_loop2;
-  EXPECT_CALL(callback, Run(::testing::Optional(
-                            ::testing::UnorderedElementsAreArray(ad_history))))
-      .WillOnce(base::test::RunOnceClosure(run_loop2.QuitClosure()));
+  base::test::TestFuture<std::optional<AdHistoryList>> test_future;
   database_table_.GetForDateRange(/*from_time=*/test::DistantPast(),
                                   /*to_time=*/test::DistantFuture(),
-                                  callback.Get());
-  run_loop2.Run();
-}
-
-TEST_F(BraveAdsAdHistoryDatabaseTableTest, GetTableName) {
-  // Act & Assert
-  EXPECT_EQ("ad_history", database_table_.GetTableName());
+                                  test_future.GetCallback());
+  EXPECT_THAT(
+      test_future.Take(),
+      ::testing::Optional(::testing::UnorderedElementsAreArray(ad_history)));
 }
 
 }  // namespace brave_ads

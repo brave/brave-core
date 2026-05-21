@@ -75,6 +75,12 @@ export function createAppStore(): AppStore {
         return 'full log'
       },
 
+      toggleVerboseLoggingAndRestart() {
+        store.update((state) => ({
+          verboseLoggingEnabled: !state.verboseLoggingEnabled,
+        }))
+      },
+
       loadContributions() {
         store.update({
           contributions: [

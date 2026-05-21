@@ -953,7 +953,7 @@ void SnsResolverTask::OnFetchNextRecord(APIRequestResult api_request_result) {
       GURL ipfs_resolved_url;
       GURL url = (cur_item.record == kSnsIpfsRecord &&
                   ipfs::TranslateIPFSURI(GURL(*registry_string),
-                                         &ipfs_resolved_url, false))
+                                         &ipfs_resolved_url, true))
                      ? ipfs_resolved_url
                      : GURL(*registry_string);
       if (url.is_valid()) {

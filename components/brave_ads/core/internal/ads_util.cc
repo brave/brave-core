@@ -5,8 +5,8 @@
 
 #include "brave/components/brave_ads/core/public/ads_util.h"
 
-#include "brave/components/brave_ads/core/internal/flags/environment/environment_command_line_switch_parser_util.h"
-#include "brave/components/brave_ads/core/internal/flags/flag_constants.h"
+#include "brave/components/brave_ads/core/internal/command_line_switches/command_line_switches_constants.h"
+#include "brave/components/brave_ads/core/internal/command_line_switches/environment/environment_command_line_switch_parser_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/common/locale/locale_util.h"
 #include "brave/components/l10n/common/ofac_sanction_util.h"

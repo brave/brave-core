@@ -18,15 +18,27 @@
       function checkVideoNode(node) {
         if (node.constructor.name == "HTMLVideoElement") {
           hookVideoFunctions();
+        } else if (node instanceof HTMLElement) {
+          // Some sites inject a container element that already has video
+          // descendants, so the video itself is never a direct added node.
+          node.querySelectorAll('video').forEach(function(video) {
+            video.addEventListener('pause', mediaPaused, false);
+            video.addEventListener('playing', videoStateChanged, false);
+            video.addEventListener('volumechange', videoStateChanged, false);
+          });
         }
+      }
+
+      function isPlayingVideoWithAudio(video) {
+        return !video.paused && !video.muted;
       }
 
       function mediaPaused() {
         sendMessage(false)
       }
 
-      function mediaPlaying() {
-        sendMessage(true)
+      function videoStateChanged(event) {
+        sendMessage(isPlayingVideoWithAudio(event.target))
       }
 
       function getVideoElements() {
@@ -36,7 +48,8 @@
       function hookVideoFunctions() {
         getVideoElements().forEach(function (item) {
           item.addEventListener('pause', mediaPaused, false);
-          item.addEventListener('playing', mediaPlaying, false);
+          item.addEventListener('playing', videoStateChanged, false);
+          item.addEventListener('volumechange', videoStateChanged, false);
         });
       }
 

@@ -7,6 +7,8 @@ import * as Mojom from '../../../common/mojom'
 import {
   createConversationTurnWithDefaults,
   getCompletionEvent,
+  getInlineSearchEvent,
+  getToolUseEvent,
   getWebSourcesEvent,
 } from '../../../common/test_data_utils'
 import useConversationEventClipboardCopyHandler from './use_conversation_event_clipboard_copy_handler'
@@ -28,7 +30,7 @@ describe('useConversationEventClipboardCopyHandler', () => {
         characterType: Mojom.CharacterType.HUMAN,
         text: 'Hello world',
       })
-      useConversationEventClipboardCopyHandler(entry)()
+      useConversationEventClipboardCopyHandler([entry])()
       expect(writeText).toHaveBeenCalledWith('Hello world')
     })
 
@@ -37,7 +39,7 @@ describe('useConversationEventClipboardCopyHandler', () => {
         characterType: Mojom.CharacterType.HUMAN,
         text: '',
       })
-      useConversationEventClipboardCopyHandler(entry)()
+      useConversationEventClipboardCopyHandler([entry])()
       expect(writeText).toHaveBeenCalledWith('')
     })
   })
@@ -48,7 +50,7 @@ describe('useConversationEventClipboardCopyHandler', () => {
         characterType: Mojom.CharacterType.ASSISTANT,
         events: undefined,
       })
-      useConversationEventClipboardCopyHandler(entry)()
+      useConversationEventClipboardCopyHandler([entry])()
       expect(writeText).not.toHaveBeenCalled()
     })
 
@@ -65,8 +67,60 @@ describe('useConversationEventClipboardCopyHandler', () => {
           ]),
         ],
       })
-      useConversationEventClipboardCopyHandler(entry)()
+      useConversationEventClipboardCopyHandler([entry])()
       expect(writeText).not.toHaveBeenCalled()
+    })
+
+    it('falls back to entry.text when there are only tool use events', () => {
+      const entry = createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        text: 'Result from code execution',
+        events: [
+          getToolUseEvent({
+            toolName: 'code_execution',
+            id: '1',
+            argumentsJson: '{}',
+          }),
+        ],
+      })
+      useConversationEventClipboardCopyHandler([entry])()
+      expect(writeText).toHaveBeenCalledWith('Result from code execution')
+    })
+
+    it('does not write to clipboard when there are only tool use events and no entry text', () => {
+      const entry = createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        text: '',
+        events: [
+          getToolUseEvent({
+            toolName: 'code_execution',
+            id: '1',
+            argumentsJson: '{}',
+          }),
+        ],
+      })
+      useConversationEventClipboardCopyHandler([entry])()
+      expect(writeText).not.toHaveBeenCalled()
+    })
+
+    it('aggregates completion text across a multi-turn group (e.g. code execution)', () => {
+      const toolTurn = createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        text: '',
+        events: [
+          getToolUseEvent({
+            toolName: 'code_execution',
+            id: '1',
+            argumentsJson: '{}',
+          }),
+        ],
+      })
+      const completionTurn = createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [getCompletionEvent('The result is 42')],
+      })
+      useConversationEventClipboardCopyHandler([toolTurn, completionTurn])()
+      expect(writeText).toHaveBeenCalledWith('The result is 42')
     })
 
     it('writes completion text to clipboard', () => {
@@ -74,20 +128,21 @@ describe('useConversationEventClipboardCopyHandler', () => {
         characterType: Mojom.CharacterType.ASSISTANT,
         events: [getCompletionEvent('Hello from assistant')],
       })
-      useConversationEventClipboardCopyHandler(entry)()
+      useConversationEventClipboardCopyHandler([entry])()
       expect(writeText).toHaveBeenCalledWith('Hello from assistant')
     })
 
-    it('uses the last completion event when there are multiple', () => {
+    it('concatenates completion events split by an inline-search event', () => {
       const entry = createConversationTurnWithDefaults({
         characterType: Mojom.CharacterType.ASSISTANT,
         events: [
-          getCompletionEvent('First completion'),
-          getCompletionEvent('Last completion'),
+          getCompletionEvent('Before search. '),
+          getInlineSearchEvent('q'),
+          getCompletionEvent('After search.'),
         ],
       })
-      useConversationEventClipboardCopyHandler(entry)()
-      expect(writeText).toHaveBeenCalledWith('Last completion')
+      useConversationEventClipboardCopyHandler([entry])()
+      expect(writeText).toHaveBeenCalledWith('Before search. After search.')
     })
 
     it('replaces citations with URLs from sources', () => {
@@ -109,9 +164,29 @@ describe('useConversationEventClipboardCopyHandler', () => {
           getCompletionEvent('See [1] and [2] for details'),
         ],
       })
-      useConversationEventClipboardCopyHandler(entry)()
+      useConversationEventClipboardCopyHandler([entry])()
       expect(writeText).toHaveBeenCalledWith(
         'See https://example.com and https://other.com for details',
+      )
+    })
+
+    it('does not replace bracket-number syntax inside code blocks', () => {
+      const entry = createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [
+          getWebSourcesEvent([
+            {
+              url: { url: 'https://example.com' },
+              title: 'Example',
+              faviconUrl: { url: '' },
+            },
+          ]),
+          getCompletionEvent('See [1].\n```js\nconst x = arr[1]\n```\nDone.'),
+        ],
+      })
+      useConversationEventClipboardCopyHandler([entry])()
+      expect(writeText).toHaveBeenCalledWith(
+        'See https://example.com.\n```js\nconst x = arr[1]\n```\nDone.',
       )
     })
 
@@ -122,7 +197,7 @@ describe('useConversationEventClipboardCopyHandler', () => {
           getCompletionEvent('Some text\n::search[query]{type=web}\nMore text'),
         ],
       })
-      useConversationEventClipboardCopyHandler(entry)()
+      useConversationEventClipboardCopyHandler([entry])()
       expect(writeText).toHaveBeenCalledWith('Some text\n\nMore text')
     })
 
@@ -135,7 +210,7 @@ describe('useConversationEventClipboardCopyHandler', () => {
           ),
         ],
       })
-      useConversationEventClipboardCopyHandler(entry)()
+      useConversationEventClipboardCopyHandler([entry])()
       expect(writeText).toHaveBeenCalledWith('\nBetween\n')
     })
 
@@ -153,7 +228,7 @@ describe('useConversationEventClipboardCopyHandler', () => {
           getCompletionEvent('See [1]\n::search[query]{type=web}\nDone'),
         ],
       })
-      useConversationEventClipboardCopyHandler(entry)()
+      useConversationEventClipboardCopyHandler([entry])()
       expect(writeText).toHaveBeenCalledWith('See https://example.com\n\nDone')
     })
   })

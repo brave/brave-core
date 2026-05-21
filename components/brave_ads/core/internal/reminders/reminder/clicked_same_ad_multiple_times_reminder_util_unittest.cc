@@ -6,13 +6,13 @@
 #include "brave/components/brave_ads/core/internal/reminders/reminder/clicked_same_ad_multiple_times_reminder_util.h"
 
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_type_test_util.h"
-#include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
-#include "brave/components/brave_ads/core/internal/ads_observer_mock.h"
-#include "brave/components/brave_ads/core/internal/ads_observer_test_util.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/test/confirmation_type_test_util.h"
+#include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
-#include "brave/components/brave_ads/core/internal/history/ad_history_test_util.h"
+#include "brave/components/brave_ads/core/internal/history/test/ad_history_test_util.h"
 #include "brave/components/brave_ads/core/internal/reminders/reminders_feature.h"
+#include "brave/components/brave_ads/core/internal/test/ads_observer_mock.h"
+#include "brave/components/brave_ads/core/internal/test/ads_observer_test_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
 
@@ -26,7 +26,7 @@ class BraveAdsClickedSameAdMultipleTimesReminderUtilTest
   void SetUp() override {
     test::TestBase::SetUp();
 
-    ads_observer_mock_ = test::MockAdsObserver();
+    ads_observer_mock_ = test::SetUpAdsObserverMock();
   }
 
   raw_ptr<AdsObserverMock> ads_observer_mock_ = nullptr;  // Not owned.
@@ -71,7 +71,7 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
       test::BuildConfirmationTypeForCountAndIntersperseOtherTypes(
           mojom::ConfirmationType::kClicked,
           /*count=*/kRemindUserIfClickingTheSameAdAfter.Get()),
-      /*should_generate_random_uuids=*/false);
+      /*use_random_uuids=*/false);
 
   // Act & Assert
   EXPECT_TRUE(DidUserClickTheSameAdMultipleTimes(test::kCreativeInstanceId,
@@ -88,7 +88,7 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
       test::BuildConfirmationTypeForCountAndIntersperseOtherTypes(
           mojom::ConfirmationType::kClicked,
           /*count=*/kRemindUserIfClickingTheSameAdAfter.Get() - 1),
-      /*should_generate_random_uuids=*/false);
+      /*use_random_uuids=*/false);
 
   // Act & Assert
   EXPECT_FALSE(DidUserClickTheSameAdMultipleTimes(test::kCreativeInstanceId,
@@ -105,7 +105,7 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
       test::BuildConfirmationTypeForCountAndIntersperseOtherTypes(
           mojom::ConfirmationType::kClicked,
           /*count=*/kRemindUserIfClickingTheSameAdAfter.Get() * 2),
-      /*should_generate_random_uuids=*/false);
+      /*use_random_uuids=*/false);
 
   // Act & Assert
   EXPECT_TRUE(DidUserClickTheSameAdMultipleTimes(test::kCreativeInstanceId,
@@ -122,7 +122,7 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
       test::BuildConfirmationTypeForCountAndIntersperseOtherTypes(
           mojom::ConfirmationType::kClicked,
           /*count=*/(kRemindUserIfClickingTheSameAdAfter.Get() * 2) - 1),
-      /*should_generate_random_uuids=*/false);
+      /*use_random_uuids=*/false);
 
   // Act & Assert
   EXPECT_FALSE(DidUserClickTheSameAdMultipleTimes(test::kCreativeInstanceId,
@@ -139,7 +139,7 @@ TEST_F(BraveAdsClickedSameAdMultipleTimesReminderUtilTest,
       test::BuildConfirmationTypeForCountAndIntersperseOtherTypes(
           mojom::ConfirmationType::kClicked,
           /*count=*/kRemindUserIfClickingTheSameAdAfter.Get()),
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
 
   // Act & Assert
   EXPECT_FALSE(DidUserClickTheSameAdMultipleTimes(test::kCreativeInstanceId,

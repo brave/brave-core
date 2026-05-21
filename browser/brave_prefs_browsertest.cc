@@ -14,7 +14,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/global_privacy_control/pref_names.h"
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
-#include "brave/components/query_filter/pref_names.h"
+#include "brave/components/query_filter/common/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/prefetch/pref_names.h"

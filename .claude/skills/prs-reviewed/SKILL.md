@@ -5,6 +5,7 @@ description:
   state, and links. Triggers on: prs reviewed, reviewed prs, review activity,
   what did I review, review history.'
 argument-hint: '<username> <num>d'
+disable-model-invocation: true
 ---
 
 # PRs Reviewed

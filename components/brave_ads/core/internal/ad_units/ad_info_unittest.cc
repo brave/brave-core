@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
 
-#include "brave/components/brave_ads/core/internal/ad_units/ad_test_util.h"
+#include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
@@ -18,7 +18,7 @@ class BraveAdsAdInfoTest : public test::TestBase {};
 TEST_F(BraveAdsAdInfoTest, IsValid) {
   // Arrange
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
-                                  /*should_generate_random_uuids=*/true);
+                                  /*use_random_uuids=*/true);
 
   // Act & Assert
   EXPECT_TRUE(ad.IsValid());

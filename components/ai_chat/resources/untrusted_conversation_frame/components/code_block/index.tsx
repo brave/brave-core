@@ -32,7 +32,7 @@ interface CodeBlockProps {
 
 function Inline(props: CodeInlineProps) {
   return (
-    <span className={styles.container}>
+    <span className={styles.inline}>
       <code>{props.code}</code>
     </span>
   )
@@ -50,7 +50,7 @@ function Block(props: CodeBlockProps) {
   }
 
   return (
-    <div className={styles.container}>
+    <div className={styles.blockRoot}>
       <div className={styles.toolbar}>
         <div className={styles.toolbarLabel}>{props.lang}</div>
         <Button
@@ -67,16 +67,18 @@ function Block(props: CodeBlockProps) {
           <div>{getLocale(S.CHAT_UI_COPY_BUTTON_LABEL)}</div>
         </Button>
       </div>
-      <SyntaxHighlighter
-        className={styles.codeBlock}
-        language={props.lang}
-        style={isDarkMode ? darkStyle : lightStyle}
-        wrapLines
-        wrapLongLines
-        codeTagProps={{ style: { wordBreak: 'break-word' } }}
-      >
-        {props.code}
-      </SyntaxHighlighter>
+      <div className={styles.codeBody}>
+        <SyntaxHighlighter
+          className={styles.codeBlock}
+          language={props.lang}
+          style={isDarkMode ? darkStyle : lightStyle}
+          wrapLines
+          wrapLongLines
+          codeTagProps={{ style: { wordBreak: 'break-word' } }}
+        >
+          {props.code}
+        </SyntaxHighlighter>
+      </div>
     </div>
   )
 }

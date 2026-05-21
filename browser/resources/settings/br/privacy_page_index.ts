@@ -143,8 +143,7 @@ RegisterPolymerTemplateModifications({
     // </if>
 
     // <if expr="enable_brave_wallet">
-    if (loadTimeData.getBoolean('isBraveWalletAllowed') &&
-        loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')) {
+    if (loadTimeData.getBoolean('isBraveWalletAllowed')) {
       viewManager.appendChild(html`
         <site-settings-ethereum-page
             id="${ContentSettingsTypes.ETHEREUM}"

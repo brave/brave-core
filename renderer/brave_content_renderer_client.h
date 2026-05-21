@@ -9,6 +9,7 @@
 #include <memory>
 
 #include "brave/components/brave_search/renderer/brave_search_service_worker_holder.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "chrome/renderer/chrome_content_renderer_client.h"
 #include "v8/include/v8.h"
 
@@ -46,12 +47,17 @@ class BraveContentRendererClient : public ChromeContentRendererClient {
       v8::Local<v8::Context> v8_context,
       int64_t service_worker_version_id,
       const GURL& service_worker_scope,
-      const GURL& script_url) override;
+      const GURL& script_url,
+      const blink::ServiceWorkerToken& service_worker_token) override;
   std::unique_ptr<blink::URLLoaderThrottleProvider>
   CreateURLLoaderThrottleProvider(
       blink::URLLoaderThrottleProviderType provider_type) override;
 
   bool IsOnionAllowed() const;
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  bool IsBraveWalletAvailable() const;
+#endif
 
  private:
   std::unique_ptr<BraveRenderThreadObserver> brave_observer_;

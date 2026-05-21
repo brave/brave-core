@@ -7,13 +7,12 @@
 
 #include <utility>
 
-#include "base/base64.h"
 #include "base/check.h"
+#include "base/check_is_test.h"
 #include "base/files/file_path.h"
 #include "base/logging.h"
 #include "base/strings/strcat.h"
 #include "build/build_config.h"
-#include "components/os_crypt/sync/os_crypt.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -123,43 +122,12 @@ std::string Prefs::GetSeedPath() {
   return kSyncV2Seed;
 }
 
-std::string Prefs::GetSeed(bool* failed_to_decrypt) const {
-  CHECK(failed_to_decrypt);
-  *failed_to_decrypt = true;
-
-  const auto& encoded_seed = pref_service_->GetString(kSyncV2Seed);
-  if (encoded_seed.empty()) {
-    *failed_to_decrypt = false;
-    return std::string();
-  }
-
-  std::string encrypted_seed;
-  if (!base::Base64Decode(encoded_seed, &encrypted_seed)) {
-    LOG(ERROR) << "base64 decode sync seed failure";
-    return std::string();
-  }
-
-  std::string seed;
-  if (!OSCrypt::DecryptString(encrypted_seed, &seed)) {
-    LOG(ERROR) << "Decrypt sync seed failure";
-    return std::string();
-  }
-
-  *failed_to_decrypt = false;
-  return seed;
+std::string Prefs::GetEncryptedSeed() const {
+  return pref_service_->GetString(kSyncV2Seed);
 }
 
-bool Prefs::SetSeed(const std::string& seed) {
-  DCHECK(!seed.empty());
-  std::string encrypted_seed;
-  if (!OSCrypt::EncryptString(seed, &encrypted_seed)) {
-    LOG(ERROR) << "Encrypt sync seed failure";
-    return false;
-  }
-  // String stored in prefs has to be UTF8 string so we use base64 to encode it.
-  pref_service_->SetString(kSyncV2Seed, base::Base64Encode(encrypted_seed));
-  SetSyncAccountDeletedNoticePending(false);
-  return true;
+void Prefs::SetEncryptedSeed(const std::string& encrypted_seed) {
+  return pref_service_->SetString(kSyncV2Seed, encrypted_seed);
 }
 
 bool Prefs::IsFailedDecryptSeedNoticeDismissed() const {
@@ -210,17 +178,20 @@ void Prefs::ClearLeaveChainDetails() {
 }
 
 // static
-size_t Prefs::GetLeaveChainDetailsMaxLenForTests() {
+size_t Prefs::GetLeaveChainDetailsMaxLenForTesting() {
+  CHECK_IS_TEST();
   return kLeaveChainDetailsMaxLen;
 }
 
 // static
-std::string Prefs::GetLeaveChainDetailsPathForTests() {
+std::string Prefs::GetLeaveChainDetailsPathForTesting() {
+  CHECK_IS_TEST();
   return kSyncLeaveChainDetails;
 }
 
-void Prefs::SetAddLeaveChainDetailBehaviourForTests(
+void Prefs::SetAddLeaveChainDetailBehaviourForTesting(
     AddLeaveChainDetailBehaviour add_leave_chain_detail_behaviour) {
+  CHECK_IS_TEST();
   add_leave_chain_detail_behaviour_ = add_leave_chain_detail_behaviour;
 }
 

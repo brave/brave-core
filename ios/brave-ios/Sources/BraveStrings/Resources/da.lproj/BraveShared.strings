@@ -16,11 +16,17 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Tilføj bogmærke";
 
+/* Add a new item to the current list */
+"addButtonTitle" = "Tilføj";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "Føj til foretrukne";
 
 /* Cell title for add folder action */
 "AddFolderActionCellTitle" = "Ny mappe";
+
+/* Settings item that opens instructions for adding Brave to the iOS dock. */
+"addToDockSettingsCell" = "Føj til Dock";
 
 /* Add to favorites share action. */
 "AddToFavorites" = "Føj til foretrukne";
@@ -66,6 +72,45 @@
 
 /* Username textbox in Authentication prompt */
 "AuthPromptAlertUsernamePlaceholderText" = "Brugernavn";
+
+/* Settings autofill section title */
+"Autofill" = "AutoFyld";
+
+/* Label for account when indicating that a domain has multiple accounts */
+"autofill.managePassword.multipleAccounts" = "Konti";
+
+/* Alert message warning the user that deleting non-synced passwords will permanently remove them */
+"autofill.managePasswords.deleteCredentialConfirmMessage" = "Dette vil fjerne de gemte adgangskoder for %@ fra din synkroniseringskæde og din enhed.";
+
+/* Prompt title when deleting passwords */
+"autofill.managePasswords.deleteCredentialsAlertTitle" = "Er du sikker?";
+
+/* Label for the button used to delete the current login. */
+"autofill.managePasswords.deleteManagePasswordButtonTitle" = "Slet";
+
+/* Title for the section header in the Manage Passwords list screen, that lists the saved sites */
+"autofill.managePasswords.headerTitle" = "Gemt";
+
+/* The message displayed on the manage passwords list screen, when there's at least one password, explain the feature */
+"autofill.managePasswords.instructions" = "Opret, gem og administrer dine adgangskoder for nemt at logge på websteder og apps.";
+
+/* The header title displayed over the never saved passwords list */
+"autofill.managePasswords.neverSavedListHeaderTitle" = "Aldrig gemt";
+
+/* Display text for the option to offer to save passwords */
+"autofill.managePasswords.offerToSavePasswords" = "Tilbyd at gemme adgangskoder";
+
+/* Prompt that is diplayed in the search bar of the Manage Passwords list screen */
+"autofill.managePasswords.searchWebsitesPrompt" = "Søg på websteder";
+
+/* Title for navigation bar of the Manage Passwords screen */
+"autofill.managePasswords.title" = "Administrer adgangskoder";
+
+/* Text to show when the origin of a managed password is not available */
+"autofill.managePasswords.UnknownDomainText" = "ukendt";
+
+/* Settings autofill section title */
+"autofill.settings.title" = "AutoFyld";
 
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "Automatisk omdirigering af AMP-sider";
@@ -141,33 +186,6 @@
 
 /* Placeholder text for adding or editing a bookmark */
 "BookmarkUrlPlaceholderText" = "Adresse";
-
-/* Title for the Brave Account section in settings */
-"BraveAccount" = "Brave-konto";
-
-/* Title shown when waiting for email verification */
-"BraveAccountAlmostThere" = "Næsten der!";
-
-/* Detail text for the almost there title */
-"BraveAccountAlmostThereDetail" = "En bekræftelses-e-mail er på vej. Klik på knappen i den e-mail for at aktivere din konto.";
-
-/* Button text to cancel Brave Account registration */
-"BraveAccountCancelRegistration" = "Annuller registrering";
-
-/* Title shown when user is logged in */
-"BraveAccountEmailAddress" = "E-mail-adresse";
-
-/* Button text to get started with Brave Account */
-"BraveAccountGetStarted" = "Kom godt i gang";
-
-/* Button text to resend confirmation email */
-"BraveAccountResendConfirmationEmail" = "Gensend bekræftelses-e-mail";
-
-/* Detail text for the resend confirmation email button */
-"BraveAccountResendConfirmationEmailDetail" = "Kan du ikke se e-mailen? Tjek din spam-mappe eller klik på knappen for at gensende bekræftelses-e-mailen.";
-
-/* Button text to sign out of Brave Account */
-"BraveAccountSignOut" = "Log ud";
 
 /* Button to show the brave panel */
 "BravePanel" = "Brave-panel";
@@ -706,15 +724,6 @@
 /* Description for new folder popup */
 "EnterFolderName" = "Indtast mappenavn";
 
-/* Shown in error pages to suggest a fix to the user. */
-"errorPageCantBeReachedTry" = "Prøv at indtaste URL'en igen, eller åbn en søgemaskine, og søg efter den nye URL.";
-
-/* Shown in error pages for files that can't be shown and need to be downloaded. */
-"ErrorPageOpenInSafariButtonTitle" = "Åbn i Safari";
-
-/* Shown in error pages on a button that will try to load the page again */
-"ErrorPageReloadButtonTitle" = "Genindlæs";
-
 /* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
 "ErrorPagesAdvancedErrorPinningDetails" = "%1$@ bruger normalt kryptering til at beskytte dine oplysninger. Da Brave forsøgte at oprette forbindelse til %2$@ denne gang, sendte hjemmesiden usædvanlige og forkerte legitimationsoplysninger tilbage. Dette kan ske, når en angriber forsøger at foregive at være %3$@, eller en wi-fi-loginskærm har afbrudt forbindelsen. Dine oplysninger er stadig sikre, fordi Brave stoppede forbindelsen, før nogen data blev udvekslet.<br />Du kan ikke besøge %4$@ lige nu, fordi webstedet bruger certifikatfastgørelse. Netværksfejl og angreb er normalt midlertidige, så denne side vil sandsynligvis fungere senere.";
 
@@ -1063,11 +1072,8 @@
 /* No comment provided by engineer. */
 "ntp.hideSponsoredImages" = "Skjul sponserede billeder";
 
-/* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "Sponsorerede billeder er brandede baggrunde, der vises i nyåbnede faner i browseren. Aktivering af disse sponsorerede billeder støtter Braves mission.";
-
-/* The text label of image type learn more link */
-"ntp.imageTypeSelectionDescriptionLearnMore" = "Flere oplysninger";
+/* The text description of image type which is being used NTP. The text inside the square brackets should be translated and is a link */
+"ntp.imageTypeSelectionDescription" = "Sponsorerede billeder er brandede baggrunde, der vises i nyåbnede faner i browseren. Aktivering af disse sponsorerede billeder støtter Braves mission. [Få mere at vide](#learn-more)";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Lær mere om Brave Rewards";
@@ -2368,9 +2374,6 @@
 /* Title of an action that allows user to perform a one-click web search for selected text */
 "SearchWithBrave" = "Søg med Brave";
 
-/* Settings security section title */
-"Security" = "Sikkerhed";
-
 /* No comment provided by engineer. */
 "sendButtonTitle" = "Send";
 
@@ -2733,6 +2736,9 @@
 
 /* Setting to show/hide the tabs bar */
 "ShowTabsBar" = "Fanebjælke";
+
+/* Settings item for clearing site-specific settings and shields settings. */
+"SiteAndShieldsSettings" = "Indstillinger for side og skjold";
 
 /* No comment provided by engineer. */
 "SiteReportedBody" = "Tak for at du har fortalt Braves udviklere om at der er fejl på siden. Vi vil gøre vores bedste for at ordne fejlen!";
@@ -3178,6 +3184,12 @@
 /* No comment provided by engineer. */
 "tabs.settings.privateTabsSettingsTitle" = "Private faner";
 
+/* The description of the toggle for users to allow the browser to remember its last browsing mode so it can re-launch in that mode when Keep Private Tabs is enabled. */
+"tabs.settings.rememberBrowsingModeDescription" = "Hvis browseren var i privat tilstand, da den sidst blev lukket, åbnes den i privat tilstand ved næste opstart.";
+
+/* Toggle to launch the browser in private mode when Keep Private Tabs is enabled */
+"tabs.settings.rememberBrowsingModeTitle" = "Husk browsingtilstand";
+
 /* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
 "TabToolbarAccessibilityLabel" = "Navigationsværktøjslinje";
 
@@ -3279,9 +3291,6 @@
 
 /* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
 "ThemesDisplayBrightness" = "Udseende";
-
-/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
-"ThemesDisplayBrightnessFooter" = "Disse indstillinger anvendes ikke i privat browsing-tilstand.";
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "Lys";

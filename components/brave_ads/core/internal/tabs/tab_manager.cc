@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 
 #include "base/check.h"
+#include "base/containers/span.h"
 #include "base/hash/hash.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -16,12 +17,10 @@
 namespace brave_ads {
 
 TabManager::TabManager() {
-  GetAdsClient().AddObserver(this);
+  ads_client_observation_.Observe(&GetAdsClient());
 }
 
-TabManager::~TabManager() {
-  GetAdsClient().RemoveObserver(this);
-}
+TabManager::~TabManager() = default;
 
 // static
 TabManager& TabManager::GetInstance() {
@@ -118,18 +117,10 @@ void TabManager::NotifyTabDidChange(const TabInfo& tab) {
 
 void TabManager::NotifyTextContentDidChange(
     int32_t tab_id,
-    const std::vector<GURL>& redirect_chain,
+    base::span<const GURL> redirect_chain,
     const std::string& text) {
   observers_.Notify(&TabManagerObserver::OnTextContentDidChange, tab_id,
                     redirect_chain, text);
-}
-
-void TabManager::NotifyHtmlContentDidChange(
-    int32_t tab_id,
-    const std::vector<GURL>& redirect_chain,
-    const std::string& html) {
-  observers_.Notify(&TabManagerObserver::OnHtmlContentDidChange, tab_id,
-                    redirect_chain, html);
 }
 
 void TabManager::NotifyDidCloseTab(int32_t tab_id) {
@@ -142,23 +133,6 @@ void TabManager::NotifyTabDidStartPlayingMedia(int32_t tab_id) {
 
 void TabManager::NotifyTabDidStopPlayingMedia(int32_t tab_id) {
   observers_.Notify(&TabManagerObserver::OnTabDidStopPlayingMedia, tab_id);
-}
-
-void TabManager::OnNotifyTabHtmlContentDidChange(
-    int32_t tab_id,
-    const std::vector<GURL>& redirect_chain,
-    const std::string& html) {
-  CHECK(!redirect_chain.empty());
-
-  const uint32_t hash = base::FastHash(html);
-  if (!html.empty() && hash == last_html_content_hash_) {
-    // No change.
-    return;
-  }
-  last_html_content_hash_ = hash;
-
-  BLOG(2, "Tab id " << tab_id << " HTML content changed");
-  NotifyHtmlContentDidChange(tab_id, redirect_chain, html);
 }
 
 void TabManager::OnNotifyTabTextContentDidChange(

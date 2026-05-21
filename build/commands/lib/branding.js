@@ -5,9 +5,9 @@
 
 import fs from 'fs-extra'
 import path from 'node:path'
-import config from './config.js'
+import config from './config.ts'
 import l10nUtil from './l10nUtil.js'
-import Log from './logging.js'
+import * as Log from './log.ts'
 import util from './util.js'
 
 const update = () => {
@@ -158,6 +158,22 @@ const update = () => {
         'product_logo_white.png',
       ),
     ])
+    fileMap.add([
+      path.join(
+        braveAppDir,
+        'theme',
+        scale,
+        productLogoSource,
+        'product_logo_16.png',
+      ),
+      path.join(
+        chromeComponentsDir,
+        'resources',
+        scale,
+        'chromium',
+        'favicon_product.png',
+      ),
+    ])
   }
   for (const branding of ['brave', 'brave_origin']) {
     fileMap.add([
@@ -181,6 +197,33 @@ const update = () => {
         'installer',
         'setup',
         `${branding}_behaviors.cc`,
+      ),
+    ])
+  }
+  // Replace omnibox product vector icons with the Brave or Brave Origin
+  // variant. These icons are used in places like the default browser infobar;
+  // upstream does not have a branding selector for them.
+  const omniboxIconsBranding = config.isBraveOriginBranded
+    ? 'brave_origin'
+    : 'brave'
+  for (const iconName of ['product.icon', 'product_chrome_refresh.icon']) {
+    fileMap.add([
+      path.join(
+        config.braveCoreDir,
+        'components',
+        'omnibox',
+        'browser',
+        'vector_icons',
+        omniboxIconsBranding,
+        iconName,
+      ),
+      path.join(
+        config.srcDir,
+        'components',
+        'omnibox',
+        'browser',
+        'vector_icons',
+        iconName,
       ),
     ])
   }

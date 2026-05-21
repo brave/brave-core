@@ -27,13 +27,15 @@
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/containers/buildflags/buildflags.h"
-#include "brave/components/email_aliases/features.h"
-#include "brave/components/playlist/core/common/features.h"
+#include "brave/components/email_aliases/buildflags/buildflags.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/version_info/version_info.h"
+#include "brave/components/web_discovery/buildflags/buildflags.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_generated_resources_webui_strings.h"
+#include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/media/router/media_router_feature.h"
 #include "chrome/browser/profiles/profile.h"
@@ -67,6 +69,14 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+#include "brave/components/email_aliases/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/core/common/features.h"
 #endif
 
 namespace settings {
@@ -174,11 +184,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
 
       {"braveGetStartedTitle", IDS_SETTINGS_BRAVE_GET_STARTED_TITLE},
       {"braveOriginTitle", IDS_SETTINGS_BRAVE_ORIGIN_TITLE},
-      {"braveOriginHeadingTitle", IDS_SETTINGS_BRAVE_ORIGIN_HEADING_TITLE},
-      {"braveOriginHeadingDescription1",
-       IDS_SETTINGS_BRAVE_ORIGIN_HEADING_DESCRIPTION1},
-      {"braveOriginHeadingDescription2",
-       IDS_SETTINGS_BRAVE_ORIGIN_HEADING_DESCRIPTION2},
       {"braveOriginSectionAdsTitle",
        IDS_SETTINGS_BRAVE_ORIGIN_ADS_SECTION_TITLE},
       {"braveOriginRewardsToggleTitle",
@@ -197,6 +202,10 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_BRAVE_ORIGIN_WAYBACK_MACHINE_TOGGLE_TITLE},
       {"braveOriginSpeedReaderToggleTitle",
        IDS_SETTINGS_BRAVE_ORIGIN_SPEED_READER_TOGGLE_TITLE},
+      {"braveOriginPlaylistToggleTitle",
+       IDS_SETTINGS_BRAVE_ORIGIN_PLAYLIST_TOGGLE_TITLE},
+      {"braveEmailAliasesToggleTitle",
+       IDS_SETTINGS_BRAVE_ORIGIN_EMAIL_ALIASES_TOGGLE_TITLE},
       {"braveOriginWebDiscoveryProjectToggleTitle",
        IDS_SETTINGS_BRAVE_ORIGIN_WEB_DISCOVERY_PROJECT_TOGGLE_TITLE},
       {"braveOriginP3AToggleTitle", IDS_SETTINGS_BRAVE_ORIGIN_P3A_TOGGLE_TITLE},
@@ -209,18 +218,21 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_BRAVE_ORIGIN_WALLET_TOGGLE_TITLE},
       {"braveOriginResetToDefaultsTitle",
        IDS_SETTINGS_BRAVE_ORIGIN_RESET_TO_DEFAULTS_TITLE},
+      {"braveOriginRestartNotice", IDS_SETTINGS_BRAVE_ORIGIN_RESTART_NOTICE},
       {"braveOriginOnboardingTitle",
        IDS_SETTINGS_BRAVE_ORIGIN_ONBOARDING_TITLE},
       {"braveOriginOnboardingHeadingTitle",
        IDS_SETTINGS_BRAVE_ORIGIN_ONBOARDING_HEADING_TITLE},
-      {"braveOriginOnboardingDescription1",
-       IDS_SETTINGS_BRAVE_ORIGIN_ONBOARDING_DESCRIPTION1},
-      {"braveOriginOnboardingDescription2",
-       IDS_SETTINGS_BRAVE_ORIGIN_ONBOARDING_DESCRIPTION2},
+      {"braveOriginOnboardingDescription",
+       IDS_SETTINGS_BRAVE_ORIGIN_ONBOARDING_DESCRIPTION},
       {"braveOriginOnboardingBuyNow",
        IDS_SETTINGS_BRAVE_ORIGIN_ONBOARDING_BUY_NOW},
       {"braveOriginOnboardingLearnMore",
        IDS_SETTINGS_BRAVE_ORIGIN_ONBOARDING_LEARN_MORE},
+#if BUILDFLAG(IS_LINUX)
+      {"braveOriginOnboardingProceedFree",
+       IDS_BRAVE_ORIGIN_STARTUP_LINUX_FREE_BUTTON},
+#endif
       {"siteSettingsShields", IDS_SETTINGS_SITE_SETTINGS_SHIELDS},
       {"siteSettingsShieldsStatus", IDS_SETTINGS_SITE_SETTINGS_SHIELDS_STATUS},
       {"siteSettingsShieldsUp", IDS_SETTINGS_SITE_SETTINGS_SHIELDS_UP},
@@ -293,6 +305,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_VERTICAL_TAB_EXPANDED_STATE_PER_WINDOW},
       {"appearanceSettingsTabsVerticalTabShowScrollbar",
        IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_VERTICAL_TAB_SHOW_SCROLLBAR},
+      {"appearanceSettingsTabsHorizontalScrollButtons",
+       IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_HORIZONTAL_SCROLL_BUTTONS},
       {"appearanceSettingsTabsVerticalTabOnRight",
        IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_VERTICAL_TAB_ON_RIGHT},
       {"appearanceSettingsTabsVerticalTabOnLeft",
@@ -303,6 +317,18 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_HOVER_MODE_CARD_WITH_PREVIEW},
       {"appearanceSettingsTabHoverModeTooltip",
        IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_HOVER_MODE_TOOLTIP},
+      {"appearanceSettingsTabMinWidthMode",
+       IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_MIN_WIDTH_MODE},
+      {"appearanceSettingsTabMinWidthMinimum",
+       IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_MIN_WIDTH_MINIMUM},
+      {"appearanceSettingsTabMinWidthMedium",
+       IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_MIN_WIDTH_MEDIUM},
+      {"appearanceSettingsTabMinWidthLarge",
+       IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_MIN_WIDTH_LARGE},
+      {"appearanceSettingsTabMinWidthFull",
+       IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_MIN_WIDTH_FULL},
+      {"appearanceSettingsScrollableHorizontalTabStrip",
+       IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_SCROLLABLE_HORIZONTAL_TAB_STRIP},
       {"appearanceSettingsSharedPinnedTab",
        IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_SHARED_PINNED_TAB},
       {"sideBar", IDS_SETTINGS_APPEARNCE_SETTINGS_SIDEBAR_PART_TITLE},
@@ -336,7 +362,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"showToolbarInFullScreen", IDS_SHOW_TOOLBAR_IN_FULL_SCREEN},
 #endif
   // Search settings
-#if BUILDFLAG(ENABLE_EXTENSIONS)
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY)
       {"braveWebDiscoveryLabel", IDS_SETTINGS_WEB_DISCOVERY_LABEL},
       {"braveWebDiscoverySubLabel", IDS_SETTINGS_WEB_DISCOVERY_SUBLABEL},
 #endif
@@ -598,6 +624,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"braveLeoModelSubtitle-chat-qwen", IDS_CHAT_UI_CHAT_QWEN_SUBTITLE},
       {"braveLeoModelSubtitle-chat-near-glm-5",
        IDS_CHAT_UI_CHAT_NEAR_GLM_5_SUBTITLE},
+      {"braveLeoModelSubtitle-chat-near-glm-5-1",
+       IDS_CHAT_UI_CHAT_NEAR_GLM_5_1_SUBTITLE},
       {"braveLeoModelSubtitle-chat-glm-4-7-flash",
        IDS_CHAT_UI_CHAT_GLM_4_7_FLASH_SUBTITLE},
       {"braveLeoModelSubtitle-chat-llama-4-maverick",
@@ -1105,6 +1133,12 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                              IDS_SETTINGS_LEO_ASSISTANT_TAB_ORGANIZATION_DESC,
                              kTabOrganizationLearnMoreURL));
 
+  html_source->AddString(
+      "braveLeoAssistantTabOrganizationModelDesc",
+      l10n_util::GetStringFUTF16(
+          IDS_SETTINGS_LEO_ASSISTANT_TAB_ORGANIZATION_MODEL_DESC,
+          kTabOrganizationLearnMoreURL));
+
   html_source->AddString("braveLeoAssistantTabOrganizationLearnMoreURL",
                          kTabOrganizationLearnMoreURL);
 
@@ -1112,7 +1146,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                           ai_chat::features::IsTabOrganizationEnabled());
 #endif
 
-#if BUILDFLAG(ENABLE_EXTENSIONS)
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY)
   html_source->AddString("webDiscoveryLearnMoreURL", kWebDiscoveryLearnMoreUrl);
 #endif
   html_source->AddString("speedreaderLearnMoreURL", kSpeedreaderLearnMoreUrl);
@@ -1224,10 +1258,12 @@ void BraveAddSyncStrings(content::WebUIDataSource* html_source) {
 }
 
 void BraveAddEmailAliasesStrings(content::WebUIDataSource* html_source) {
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   if (!email_aliases::features::IsEmailAliasesEnabled()) {
     return;
   }
   html_source->AddLocalizedStrings(webui::kEmailAliasesStrings);
+#endif
 }
 
 void BraveAddBraveAccountStrings(content::WebUIDataSource* html_source) {

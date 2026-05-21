@@ -23,7 +23,7 @@ export function QueryModeToggle(props: Props) {
   return (
     <SegmentedControl
       data-css-scope={style.scope}
-      data-test-id='query-mode-toggle'
+      data-testid='query-mode-toggle'
       size='small'
       value={props.queryMode}
       onChange={({ value }) => {
@@ -33,7 +33,7 @@ export function QueryModeToggle(props: Props) {
       <SegmentedControlItem
         value={'chat'}
         className={classnames('item', props.queryMode === 'chat' && 'selected')}
-        data-test-id='query-mode-toggle-chat'
+        data-testid='query-mode-toggle-chat'
       >
         <div
           className='icon'
@@ -56,7 +56,7 @@ export function QueryModeToggle(props: Props) {
           props.queryMode === 'search' && 'selected',
         )}
         value={'search'}
-        data-test-id='query-mode-toggle-search'
+        data-testid='query-mode-toggle-search'
       >
         <div
           className='icon'

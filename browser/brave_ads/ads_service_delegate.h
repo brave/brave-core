@@ -6,11 +6,9 @@
 #ifndef BRAVE_BROWSER_BRAVE_ADS_ADS_SERVICE_DELEGATE_H_
 #define BRAVE_BROWSER_BRAVE_ADS_ADS_SERVICE_DELEGATE_H_
 
-#include <memory>
 #include <string>
 
 #include "base/memory/raw_ptr.h"
-#include "base/memory/raw_ref.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 
 class GURL;
@@ -24,18 +22,14 @@ class BraveAdaptiveCaptchaService;
 
 namespace brave_ads {
 
-class NotificationAdPlatformBridge;
-
-// Singleton that owns all AdsService and associates them with Profiles.
-class AdsServiceDelegate : public AdsService::Delegate {
+// Browser-layer, platform-specific implementation of AdsService::Delegate.
+class AdsServiceDelegate final : public AdsService::Delegate {
  public:
-  explicit AdsServiceDelegate(
-      Profile& profile,
-      PrefService* local_state,
-      brave_adaptive_captcha::BraveAdaptiveCaptchaService&
-          adaptive_captcha_service,
-      std::unique_ptr<NotificationAdPlatformBridge>
-          notification_ad_platform_bridge);
+  // `adaptive_captcha_service` can be `nullptr` in tests.
+  AdsServiceDelegate(Profile& profile,
+                     PrefService& local_state,
+                     brave_adaptive_captcha::BraveAdaptiveCaptchaService*
+                         adaptive_captcha_service);
 
   AdsServiceDelegate(const AdsServiceDelegate&) = delete;
   AdsServiceDelegate& operator=(const AdsServiceDelegate&) = delete;
@@ -43,7 +37,7 @@ class AdsServiceDelegate : public AdsService::Delegate {
   ~AdsServiceDelegate() override;
 
   // AdsService::Delegate:
-  void MaybeInitNotificationHelper(base::OnceClosure callback) override;
+  void MaybeInitNotificationHelper() override;
   bool CanShowSystemNotificationsWhileBrowserIsBackgrounded() override;
   bool DoesSupportSystemNotifications() override;
   bool CanShowNotifications() override;
@@ -54,9 +48,8 @@ class AdsServiceDelegate : public AdsService::Delegate {
   void SnoozeScheduledCaptcha() override;
   void ShowNotificationAd(const std::string& id,
                           const std::u16string& title,
-                          const std::u16string& body,
-                          bool is_custom) override;
-  void CloseNotificationAd(const std::string& id, bool is_custom) override;
+                          const std::u16string& body) override;
+  void CloseNotificationAd(const std::string& id) override;
   void OpenNewTabWithUrl(const GURL& url) override;
   bool IsFullScreenMode() override;
   std::string GetVariationsCountryCode() override;
@@ -65,11 +58,9 @@ class AdsServiceDelegate : public AdsService::Delegate {
   NotificationDisplayService* GetNotificationDisplayService();
 
   const raw_ref<Profile> profile_;
-  const raw_ptr<PrefService> local_state_;  // Not owned.
-  const raw_ref<brave_adaptive_captcha::BraveAdaptiveCaptchaService>
-      adaptive_captcha_service_;
-  std::unique_ptr<NotificationAdPlatformBridge>
-      notification_ad_platform_bridge_;
+  const raw_ref<PrefService> local_state_;
+  const raw_ptr<brave_adaptive_captcha::BraveAdaptiveCaptchaService>
+      adaptive_captcha_service_;  // Not owned.
 };
 
 }  // namespace brave_ads

@@ -151,6 +151,7 @@ source_set("unit_tests") {
     "//brave/components/brave_rewards/core",
     "//brave/components/ntp_background_images/buildflags",
     "//brave/components/ntp_background_images/common",
+    "//components/country_codes",
     "//components/prefs:test_support",
     "//components/sync_preferences:test_support",
     "//testing/gmock",

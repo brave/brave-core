@@ -203,6 +203,8 @@ rust_static_library("rust_lib") {
   deps = [
     "//brave/third_party/rust/bech32/v0_9:lib",
     "//brave/third_party/rust/bls_signatures/v0_15:lib",
+    "//brave/third_party/rust/ciborium/v0_2:lib",
     "//brave/third_party/rust/curve25519_dalek/v4:lib",
+    "//third_party/rust/crc32fast/v1:lib",
   ]
 }

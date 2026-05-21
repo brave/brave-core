@@ -15,5 +15,6 @@ include_rules = [
   "+brave/components/debounce/core/common/features.h",
   "+brave/components/ntp_background_images/browser/features.h",
   "+brave/components/playlist/core/common/features.h",
+  "+brave/components/serp_metrics",
   "+brave/components/skus/common/features.h",
 ]

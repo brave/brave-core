@@ -59,6 +59,13 @@ import {
   useGetCombinedTokensListQuery,
 } from '../../../common/slices/api.slice.extra'
 import { useSwapTransactionParser } from '../../../common/hooks/use-swap-tx-parser'
+import {
+  useGate3SwapStatus, //
+} from '../../../page/screens/swap/hooks/useGate3SwapStatus'
+import {
+  errorTxTypes,
+  getGate3EffectiveStatus,
+} from '../../../utils/gate3-status-utils'
 
 // Components
 import { NftIcon } from '../../shared/nft-icon/nft-icon'
@@ -200,6 +207,25 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
     const { sourceToken, destinationToken, sourceAmount, destinationAmount } =
       useSwapTransactionParser(transaction)
 
+    // Gate3 swap status awareness
+    const isGate3Swap =
+      transaction.swapInfo && transaction.swapInfo.routeId !== ''
+    const { status: swapStatus } = useGate3SwapStatus(
+      isGate3Swap ? transaction : null,
+    )
+
+    const effectiveStatus = React.useMemo(() => {
+      if (
+        isGate3Swap
+        && swapStatus
+        && !errorTxTypes.includes(transaction.txStatus)
+      ) {
+        const mapped = getGate3EffectiveStatus(swapStatus.status)
+        return mapped?.status ?? transaction.txStatus
+      }
+      return transaction.txStatus
+    }, [isGate3Swap, swapStatus, transaction.txStatus])
+
     const [normalizedTransferredValue, transferredValueWei] =
       React.useMemo(() => {
         const { normalized, wei } = getTransactionTransferredValue({
@@ -316,9 +342,8 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
       : ''
     const isSolanaSwap = isSwap && isSolanaTx
     const showAmounts = !txToken?.isNft && !isSolanaSwap
-    const showTransactionStatus = !noneTxStatusDisplayTypes.includes(
-      transaction.txStatus,
-    )
+    const showTransactionStatus =
+      !noneTxStatusDisplayTypes.includes(effectiveStatus)
     const nativeAssetWasSent = sendToken && isNativeAsset(sendToken)
     const showNetworkIcon = txNetwork && (!nativeAssetWasSent || isSwapOrBridge)
 
@@ -412,11 +437,11 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
                   </>
                 )}
                 {showTransactionStatus && (
-                  <StatusBubble status={transaction.txStatus}>
+                  <StatusBubble status={effectiveStatus}>
                     {[
                       BraveWallet.TransactionStatus.Submitted,
                       BraveWallet.TransactionStatus.Unapproved,
-                    ].includes(transaction.txStatus) ? (
+                    ].includes(effectiveStatus) ? (
                       <LoadingIcon />
                     ) : (
                       <StatusIcon name='loading-spinner' />

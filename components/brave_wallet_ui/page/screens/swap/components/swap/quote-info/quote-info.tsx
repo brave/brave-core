@@ -5,8 +5,6 @@
 
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
-import { PluralStringProxyImpl } from 'chrome://resources/js/plural_string_proxy.js'
-import usePromise from '$web-common/usePromise'
 
 // Types
 import { BraveWallet } from '../../../../../../constants/types'
@@ -50,7 +48,6 @@ import {
   getTokenPriceFromRegistry,
   getPriceRequestsForTokens,
 } from '../../../../../../utils/pricing-utils'
-import { getLPIcon } from '../../../swap.utils'
 
 // Components
 import {
@@ -67,13 +64,13 @@ import {
   InfoIconTooltip, //
 } from '../../../../../../components/shared/info_icon_tooltip/info_icon_tooltip'
 import { Routes } from '../routes/routes'
+import { ProviderRoute } from '../provider_route'
 
 // Styled Components
 import {
   BraveFeeDiscounted,
   Bubble,
   Button,
-  LiquidityProviderIcon,
   Section,
   CaratDownIcon,
   FreeText,
@@ -87,7 +84,6 @@ import {
   Column,
   HorizontalSpace,
 } from '../../../../../../components/shared/style'
-import { BankIcon } from '../../shared-swap.styles'
 
 interface Props {
   fromToken: BraveWallet.BlockchainToken | undefined
@@ -373,26 +369,6 @@ export const QuoteInfo = (props: Props) => {
   ])
 
   const effectiveFeeAmount = braveFee && new Amount(braveFee.effectiveFeePct)
-  const firstStep =
-    selectedQuoteOption?.sources.find((source) =>
-      source.includedSteps?.some(
-        (step) => step.type === BraveWallet.LiFiStepType.kCross,
-      ),
-    ) || selectedQuoteOption?.sources[0]
-  const firstStepName = firstStep?.name ?? ''
-  const firstStepIcon = firstStep ? getLPIcon(firstStep) : ''
-  const additionalRoutesLength = selectedQuoteOption
-    ? selectedQuoteOption.sources.length - 1
-    : 0
-
-  const { result: exchangeStepsLocale } = usePromise(
-    async () =>
-      PluralStringProxyImpl.getInstance().getPluralString(
-        'braveWalletExchangeNamePlusSteps',
-        additionalRoutesLength,
-      ),
-    [additionalRoutesLength],
-  )
 
   return (
     <Column fullWidth={true}>
@@ -455,29 +431,14 @@ export const QuoteInfo = (props: Props) => {
       >
         {!showAdvancedInformation && selectedQuoteOption && (
           <Row justifyContent='space-between'>
-            <Row
-              width='unset'
-              gap='8px'
-            >
-              {firstStepIcon ? (
-                <LiquidityProviderIcon
-                  icon={firstStepIcon}
-                  size='16px'
-                />
-              ) : (
-                <BankIcon size='16px' />
-              )}
-              <Text
-                textSize='12px'
-                isBold={true}
-                textColor='primary'
-              >
-                {firstStepName}{' '}
-                {additionalRoutesLength !== 0
-                  ? `+ ${additionalRoutesLength}`
-                  : ''}
-              </Text>
-            </Row>
+            <ProviderRoute
+              provider={selectedQuoteOption.provider}
+              sourcesLength={
+                selectedQuoteOption.steps.length
+                || selectedQuoteOption.sources.length
+              }
+              textColor='primary'
+            />
             {txNetwork && (
               <Row
                 width='unset'
@@ -506,7 +467,7 @@ export const QuoteInfo = (props: Props) => {
 
         {showAdvancedInformation && (
           <>
-            {selectedQuoteOption && selectedQuoteOption.sources.length > 0 && (
+            {selectedQuoteOption && (
               <Column fullWidth={true}>
                 <Row justifyContent='space-between'>
                   <Text
@@ -520,23 +481,14 @@ export const QuoteInfo = (props: Props) => {
                     width='unset'
                     gap='8px'
                   >
-                    {firstStepIcon ? (
-                      <LiquidityProviderIcon
-                        icon={firstStepIcon}
-                        size='16px'
-                      />
-                    ) : (
-                      <BankIcon size='16px' />
-                    )}
-                    <Text
-                      textSize='12px'
-                      isBold={true}
+                    <ProviderRoute
+                      provider={selectedQuoteOption.provider}
+                      sourcesLength={
+                        selectedQuoteOption.steps.length
+                        || selectedQuoteOption.sources.length
+                      }
                       textColor='primary'
-                    >
-                      {additionalRoutesLength !== 0 && exchangeStepsLocale
-                        ? exchangeStepsLocale.replace('$1', firstStepName)
-                        : firstStepName}
-                    </Text>
+                    />
                     <Button onClick={() => setShowRoutes((prev) => !prev)}>
                       <CaratDownIcon isOpen={showRoutes} />
                     </Button>

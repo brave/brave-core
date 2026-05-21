@@ -80,6 +80,13 @@ COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kAIChatUserChoiceTool);
 COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kAIChatAgentProfile);
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatAgentProfileEnabled();
 
+// Enables optimization_guide-based page content extraction (AIPageContent) as
+// the default extraction method for AI Chat.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+BASE_DECLARE_FEATURE(kAIChatDetailedPageContentExtraction);
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+bool IsAIChatDetailedPageContentExtractionEnabled();
+
 // Enables global side panel for any window type (not only agentic)
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 BASE_DECLARE_FEATURE(kAIChatGlobalSidePanelEverywhere);

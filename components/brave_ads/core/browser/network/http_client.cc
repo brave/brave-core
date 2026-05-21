@@ -30,7 +30,7 @@
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
-#include "services/network/public/mojom/fetch_api.mojom-data-view.h"
+#include "services/network/public/mojom/fetch_api.mojom-shared.h"
 #include "services/network/public/mojom/network_context.mojom.h"
 #include "services/network/public/mojom/oblivious_http_request.mojom.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
@@ -238,17 +238,18 @@ void HttpClient::ObliviousHttpRequest(
                        std::move(callback));
   }
 
-  mojo::PendingRemote<network::mojom::ObliviousHttpClient> mojom_pending_remote;
+  mojo::PendingRemote<network::mojom::ObliviousHttpClient>
+      oblivious_http_client_pending_remote;
   mojo::MakeSelfOwnedReceiver(
       std::make_unique<ObliviousHttpClientImpl>(
           mojom_url_request->url,
           base::BindOnce(&HttpClient::ObliviousHttpRequestCallback,
                          weak_ptr_factory_.GetWeakPtr(), std::move(callback))),
-      mojom_pending_remote.InitWithNewPipeAndPassReceiver());
+      oblivious_http_client_pending_remote.InitWithNewPipeAndPassReceiver());
 
   mojom_network_context->GetViaObliviousHttp(
       BuildObliviousHttpRequest(relay_url, *key_config, mojom_url_request),
-      std::move(mojom_pending_remote));
+      std::move(oblivious_http_client_pending_remote));
 }
 
 void HttpClient::ObliviousHttpRequestCallback(

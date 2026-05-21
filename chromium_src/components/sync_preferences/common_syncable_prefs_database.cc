@@ -11,11 +11,15 @@
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/map_util.h"
 #include "brave/components/containers/buildflags/buildflags.h"
-#include "brave/components/email_aliases/pref_names.h"
+#include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "components/search_engines/search_engines_pref_names.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/components/containers/core/browser/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+#include "brave/components/email_aliases/pref_names.h"
 #endif
 
 namespace sync_preferences {
@@ -28,7 +32,9 @@ enum {
 #if BUILDFLAG(ENABLE_CONTAINERS)
   kContainersList = 1002,
 #endif
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   kEmailAliasesNotes = 1003,
+#endif
 };
 }  // namespace brave_syncable_prefs_ids
 
@@ -64,6 +70,7 @@ constexpr auto kBraveCommonSyncablePrefsAllowlist = base::MakeFixedFlatMap<
         },
     },
 #endif
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
     {
         email_aliases::prefs::kEmailAliasesNotes,
         {
@@ -73,6 +80,7 @@ constexpr auto kBraveCommonSyncablePrefsAllowlist = base::MakeFixedFlatMap<
             MergeBehavior::kNone,
         },
     },
+#endif
     // See //components/sync_preferences/README.md about adding new entries
     // here.
     //

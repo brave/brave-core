@@ -543,10 +543,10 @@ void SolanaProviderImpl::SignAndSendTransaction(
   tx.set_send_options(
       SolanaTransaction::SendOptions::FromValue(std::move(send_options)));
 
-  tx_service_->AddUnapprovedTransactionWithOrigin(
-      mojom::TxDataUnion::NewSolanaTxData(tx.ToSolanaTxData()),
+  tx_service_->AddUnapprovedSolanaDappTransaction(
+      tx.ToSolanaTxData(),
       json_rpc_service_->GetChainIdSync(mojom::CoinType::SOL, origin_),
-      account->account_id.Clone(), nullptr, origin_,
+      account->account_id.Clone(), origin_,
       base::BindOnce(&SolanaProviderImpl::OnAddUnapprovedTransaction,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }

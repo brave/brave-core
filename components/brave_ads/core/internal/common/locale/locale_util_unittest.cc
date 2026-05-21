@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/public/common/locale/locale_util.h"
 
-#include "brave/components/brave_ads/core/public/common/locale/scoped_locale_for_testing.h"
+#include "brave/components/brave_ads/core/internal/common/locale/test/fake_locale.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -14,7 +14,8 @@ namespace brave_ads {
 
 TEST(BraveAdsLocaleUtilTest, CurrentLanguageCode) {
   // Arrange
-  const test::ScopedCurrentLanguageCode scoped_current_language_code{"en"};
+  test::FakeLocale fake_locale;
+  fake_locale.SetLanguageCode("en");
 
   // Act & Assert
   EXPECT_EQ("en", CurrentLanguageCode());
@@ -22,7 +23,8 @@ TEST(BraveAdsLocaleUtilTest, CurrentLanguageCode) {
 
 TEST(BraveAdsLocaleUtilTest, CurrentCountryCode) {
   // Arrange
-  const test::ScopedCurrentCountryCode scoped_current_country_code{"KY"};
+  test::FakeLocale fake_locale;
+  fake_locale.SetCountryCode("KY");
 
   // Act & Assert
   EXPECT_EQ("KY", CurrentCountryCode());

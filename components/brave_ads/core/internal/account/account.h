@@ -12,6 +12,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
+#include "base/scoped_observation.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/account_observer.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_delegate.h"
@@ -23,6 +24,7 @@
 
 namespace brave_ads {
 
+class AdsClient;
 class Confirmations;
 struct TransactionInfo;
 
@@ -41,8 +43,7 @@ class Account final : public AdsClientNotifierObserver,
 
   bool IsUserRewardsSupported() const { return !!user_rewards_; }
 
-  void SetWallet(const std::string& payment_id,
-                 const std::string& recovery_seed_base64);
+  void SetWallet(std::optional<WalletInfo> wallet);
 
   void GetStatement(GetStatementOfAccountsCallback callback);
 
@@ -84,8 +85,6 @@ class Account final : public AdsClientNotifierObserver,
 
   void InitializeConfirmations();
 
-  bool HasWallet() const { return !!wallet_; }
-
   void MaybeInitializeUserRewards();
 
   void MaybeRefillConfirmationTokens();
@@ -117,6 +116,9 @@ class Account final : public AdsClientNotifierObserver,
   std::optional<WalletInfo> wallet_;
 
   std::unique_ptr<UserRewards> user_rewards_;
+
+  base::ScopedObservation<AdsClient, AdsClientNotifierObserver>
+      ads_client_observation_{this};
 
   base::WeakPtrFactory<Account> weak_factory_{this};
 };

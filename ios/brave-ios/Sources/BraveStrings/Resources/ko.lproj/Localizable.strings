@@ -127,6 +127,9 @@
 /* The error message when the App Store Receipt was not found in the Application Bundle */
 "storekitReceiptViewer.noReceiptFoundTitle" = "죄송합니다. App Store 영수증을 찾을 수 없습니다.";
 
+/* The title of the Brave Origin product */
+"storekitReceiptViewer.originPurchaseName" = "Brave Origin";
+
 /* The title of the label that shows the date when the product subscription was cancelled */
 "storekitReceiptViewer.receiptCancellationDate" = "취소 날짜";
 

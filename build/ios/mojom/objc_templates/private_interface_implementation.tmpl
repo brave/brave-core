@@ -1,3 +1,4 @@
+{%- from "interface_macros.tmpl" import result_or_response_callback_type -%}
 {%- macro objc_methods_impls(interface) -%}
 {%  for method in interface.methods %}
 {%-   set name = method|objc_method_name_formatter %}
@@ -12,16 +13,18 @@
 {%- endfor -%}
 {%- if method.response_parameters -%}
 {%- if method.parameters %} completion:{% endif -%}
-(void (^)(
-{%- for param in method.response_parameters -%}
-{%-   set nullable = param.kind|objc_argument_modifiers(inside_callback=True) -%}
-{%-   set type = "%s%s"|format(param.kind|objc_wrapper_type, " " + nullable if nullable) -%}
-{{type}} {{param.name|under_to_lower_camel}}
-{%- if not loop.last -%},{{" "}}{%- endif -%}
-{%- endfor -%}
-))completion
+(void (^){{ result_or_response_callback_type(method) }})completion
 {%- endif %} {
 {%- if method.response_parameters %}
+{%- if method.result_response %}
+  auto callback = ^({{method|cpp_result_callback_type}} result) {
+    if (result.has_value()) {
+      completion({{method.result_response.success_kind|cpp_to_objc_assign_kind("result.value()")}}, nil);
+    } else {
+      completion(nil, {{method.result_response.failure_kind|cpp_to_objc_assign_kind("result.error()")}});
+    }
+  };
+{%- else %}
   auto callback = ^(
 {%- for param in method.response_parameters -%}
 {{param.kind|expected_cpp_param_type}} {{param.name}}_arg
@@ -35,6 +38,7 @@
 {%- endfor -%}
     );
   };
+{%- endif %}
 {%- endif %}
   web::GetUIThreadTaskRunner({})->PostTask(FROM_HERE, base::BindOnce(^{
     self->_wrappedValue->{{method.name}}(

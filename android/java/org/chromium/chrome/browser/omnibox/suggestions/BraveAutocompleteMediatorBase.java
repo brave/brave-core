@@ -33,18 +33,43 @@ class BraveAutocompleteMediatorBase {
                         BraveReflectionUtil.getField(
                                 AutocompleteMediator.class, "mDataProvider", this);
 
-        if (dataProvider != null
-                && !dataProvider.isIncognito()
-                && context != null
-                && context instanceof BraveActivity) {
+        if (dataProvider != null && context != null && context instanceof BraveActivity) {
             MiscAndroidMetrics miscAndroidMetrics =
                     ((BraveActivity) context).getMiscAndroidMetrics();
             if (miscAndroidMetrics != null) {
-                boolean isNewTab = dataProvider.getNewTabPageDelegate().isCurrentlyVisible();
+                int type = suggestion.getType();
                 boolean isSearchQuery =
-                        suggestion.getType() == OmniboxSuggestionType.SEARCH_WHAT_YOU_TYPED
-                                || suggestion.getType() == OmniboxSuggestionType.SEARCH_SUGGEST;
-                miscAndroidMetrics.recordLocationBarChange(isNewTab, isSearchQuery);
+                        type == OmniboxSuggestionType.SEARCH_WHAT_YOU_TYPED
+                                || type == OmniboxSuggestionType.SEARCH_HISTORY
+                                || type == OmniboxSuggestionType.SEARCH_SUGGEST
+                                || type == OmniboxSuggestionType.SEARCH_SUGGEST_ENTITY
+                                || type == OmniboxSuggestionType.SEARCH_SUGGEST_TAIL
+                                || type == OmniboxSuggestionType.SEARCH_SUGGEST_PERSONALIZED
+                                || type == OmniboxSuggestionType.SEARCH_SUGGEST_PROFILE
+                                || type == OmniboxSuggestionType.SEARCH_OTHER_ENGINE;
+
+                if (!dataProvider.isIncognito()) {
+                    boolean isNewTab = dataProvider.getNewTabPageDelegate().isCurrentlyVisible();
+                    miscAndroidMetrics.recordLocationBarChange(isNewTab, isSearchQuery);
+                }
+
+                if (isSearchQuery) {
+                    boolean isSuggestion = type != OmniboxSuggestionType.SEARCH_WHAT_YOU_TYPED;
+                    miscAndroidMetrics.recordOmniboxSearchQuery(url.getSpec(), isSuggestion);
+                }
+
+                if (url.getScheme().startsWith("http")) {
+                    if (type == OmniboxSuggestionType.URL_WHAT_YOU_TYPED) {
+                        miscAndroidMetrics.recordOmniboxDirectNavigation();
+                    } else if (type == OmniboxSuggestionType.HISTORY_URL
+                            || type == OmniboxSuggestionType.HISTORY_TITLE
+                            || type == OmniboxSuggestionType.HISTORY_BODY
+                            || type == OmniboxSuggestionType.HISTORY_KEYWORD) {
+                        miscAndroidMetrics.recordOmniboxHistoryNavigation();
+                    } else if (type == OmniboxSuggestionType.BOOKMARK_TITLE) {
+                        miscAndroidMetrics.recordOmniboxBookmarkNavigation();
+                    }
+                }
             }
         }
 

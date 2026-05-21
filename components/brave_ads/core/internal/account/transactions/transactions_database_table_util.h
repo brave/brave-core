@@ -7,13 +7,13 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_TRANSACTIONS_TRANSACTIONS_DATABASE_TABLE_UTIL_H_
 
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
-namespace brave_ads::database {
+namespace brave_ads::database::table {
 
-void PurgeExpiredTransactions();
+TransactionInfo TransactionFromMojomRow(
+    const mojom::DBRowInfoPtr& mojom_db_row);
 
-void SaveTransactions(const TransactionList& transactions);
-
-}  // namespace brave_ads::database
+}  // namespace brave_ads::database::table
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_TRANSACTIONS_TRANSACTIONS_DATABASE_TABLE_UTIL_H_

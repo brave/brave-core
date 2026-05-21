@@ -365,6 +365,7 @@ provideStrings({
   braveWalletWalletPopupConnectedSites: 'Connected sites',
   braveWalletWalletPopupHideBalances: 'Balances',
   braveWalletWalletPopupShowGraph: 'Graph',
+  braveWalletDistribution: 'Distribution',
   braveWalletWalletNFTsTab: 'NFTs tab',
 
   // Backup Warning
@@ -442,10 +443,10 @@ provideStrings({
   braveWalletFilExportPrivateKeyFormatDescription:
     'NOTE: Private key is provided as a hex-encoded JSON that contains private '
     + 'key and protocol information. $1Learn more$1.',
-  braveWalletTestnetAccounts: 'Testnet accounts',
   braveWalletPolkadotImportJsonDescription:
     'Import using a JSON file exported from Polkadot.js or compatible wallets. '
     + 'Enter the password used to encrypt the export.',
+  braveWalletLookingForTestnetAccounts: 'Looking for Testnet accounts?',
 
   // Import Account
   braveWalletImportAccountDisclaimer:
@@ -459,6 +460,11 @@ provideStrings({
   braveWalletImportAccountUploadPlaceholder: 'No file chosen',
   braveWalletImportAccountError: 'Failed to import account, please try again.',
   braveWalletImportAccount: 'Import account',
+  braveWalletImportAccountPrivateKeyDescription:
+    'Copy private key for the account you want to import from another wallet.',
+  braveWalletImportAccountJsonFileDescription:
+    'Export private key from another wallet to a JSON file and upload here.',
+  braveWalletUploadJsonFile: 'Upload JSON file',
 
   // Connect Hardware Wallet
   braveWalletConnectHardwareTitle: 'Select your hardware wallet device',
@@ -668,8 +674,9 @@ provideStrings({
   braveWalletRoutes: 'Routes',
   braveWalletSwapOnNetworkViaExchange: 'Swap on $1 via $2',
   braveWalletBridgeFromNetworkToNetwork: 'Bridge from $1 to $2',
-  braveWalletExchangeNamePlusSteps: '$1 + $2 $3',
+  braveWalletExchangeNamePlusSteps: '$1 ($2 $3)',
   braveWalletExchangeViaProvider: '$1 via $2',
+  braveWalletSwapRouteToFromVia: '$1 ← $2 via',
   braveWalletSortBy: 'Sort by',
   braveWalletConfirmSwap: 'Confirm swap',
   braveWalletConfirmBridge: 'Confirm bridge',
@@ -713,6 +720,10 @@ provideStrings({
   braveWalletAccountName: 'Account name',
   braveWalletMinimumAmount: 'Minimum amount: $1',
   braveWalletMaximumAmount: 'Maximum amount: $1',
+  braveWalletAccountCreatedSuccessfully: 'Account created successfully',
+  braveWalletAccountImportedSuccessfully: 'Account imported successfully',
+  braveWalletHardwareWalletAccountConnectedSuccessfully:
+    'Hardware wallet account connected successfully',
 
   // Deposit Funds Screen
   braveWalletDepositFundsTitle: 'Deposit crypto',
@@ -909,10 +920,10 @@ provideStrings({
   braveWalletPermissionForever: 'Forever',
 
   // Connect Hardware Wallet Panel
-  braveWalletConnectHardwarePanelConnected: '$1 connected',
-  braveWalletConnectHardwarePanelDisconnected: '$1 disconnected',
-  braveWalletConnectHardwarePanelInstructions: 'Instructions',
-  braveWalletConnectHardwarePanelConnect: 'Connect your $1',
+  braveWalletConnectHardwarePanelConnected: '$1 is connected',
+  braveWalletConnectHardwarePanelDisconnected: '$1 is disconnected',
+  braveWalletConnectHardwarePanelInstructions: 'View instructions',
+  braveWalletConnectHardwarePanelConnect: 'Connect your $1 to continue',
   braveWalletConnectHardwarePanelConfirmation:
     'Hardware wallet requires transaction confirmation on device.',
   braveWalletConnectHardwarePanelOpenApp:
@@ -1238,6 +1249,7 @@ provideStrings({
   // Portfolio Filters
   braveWalletPortfolioFiltersTitle: 'Filters and display settings',
   braveWalletPortfolioNftsFiltersTitle: 'NFT display settings',
+  braveWalletPortfolioAssetsDistributionTitle: 'Assets distribution',
   braveWalletSortAssets: 'Sort assets',
   braveWalletSortAssetsDescription: 'Sort by fiat value or name',
   braveWalletHideSmallBalances: 'Hide small balances',
@@ -1382,6 +1394,13 @@ provideStrings({
   braveWalletMultiChain: 'Multi-chain & NFT support',
   braveWalletPerksBrowserNative: 'Browser-native, no risky extensions',
 
+  // Getting Started
+  braveWalletLetsGetStarted: "Let's get started",
+  braveWalletLetsGetStartedBuyCryptoDescription:
+    'Buy your first crypto with a credit or debit card',
+  braveWalletLetsGetStartedDepositCryptoDescription:
+    'Deposit crypto from another wallet or exchange',
+
   // Portfolio Asset More Popup
   braveWalletPortfolioTokenDetailsMenuLabel: 'Token details',
   braveWalletPortfolioViewOnExplorerMenuLabel: 'View on block explorer',
@@ -1404,8 +1423,8 @@ provideStrings({
     + 'by using the button below',
   braveWalletAssetNotFound: 'Asset not found',
 
-  // Request feature button
-  braveWalletRequestFeatureButtonText: 'Request feature',
+  // Report an issue button
+  braveWalletReportAnIssueButtonText: 'Report an issue',
 
   // Warnings
   braveWalletNonAsciiCharactersInMessageWarning:
@@ -1630,4 +1649,6 @@ provideStrings({
   braveWalletPageNotFoundDescription:
     'It may have moved to a different place or the URL may contain a typo.',
   braveWalletGoToPortfolio: 'Go to Portfolio',
+  braveWalletProcessTransactionErrorMessage:
+    "There was an error processing your transaction. In many cases, this means there isn't enough $1 to cover the network fee. Try a smaller amount instead.",
 })

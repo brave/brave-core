@@ -8,7 +8,7 @@
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
-#include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_test_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/notification_ads/test/creative_notification_ad_test_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -33,29 +33,24 @@ TEST_F(BraveAdsPriorityTest,
   CreativeNotificationAdList creative_ads;
 
   CreativeNotificationAdInfo creative_ad_1 =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*use_random_uuids=*/true);
   creative_ad_1.priority = 1;
   creative_ads.push_back(creative_ad_1);
 
   CreativeNotificationAdInfo creative_ad_2 =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*use_random_uuids=*/true);
   creative_ad_2.priority = 2;
   creative_ads.push_back(creative_ad_2);
 
   CreativeNotificationAdInfo creative_ad_3 =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*use_random_uuids=*/true);
   creative_ad_3.priority = 1;
   creative_ads.push_back(creative_ad_3);
 
   CreativeNotificationAdInfo creative_ad_4 =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*use_random_uuids=*/true);
   creative_ad_4.priority = 3;
   creative_ads.push_back(creative_ad_4);
-
-  CreativeNotificationAdInfo creative_ad_5 =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
-  creative_ad_5.priority = 0;
-  creative_ads.push_back(creative_ad_5);
 
   // Act
   const PrioritizedCreativeAdBuckets<CreativeNotificationAdList>
@@ -78,7 +73,7 @@ TEST_F(BraveAdsPriorityTest,
   CreativeNotificationAdList creative_ads;
 
   CreativeNotificationAdInfo creative_ad_1 =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*use_random_uuids=*/true);
   creative_ad_1.priority = 3;
   creative_ads.push_back(creative_ad_1);
 
@@ -93,25 +88,6 @@ TEST_F(BraveAdsPriorityTest,
           {/*priority*/ 3, {creative_ad_1}}};
   EXPECT_THAT(expected_prioritized_creative_ad_buckets,
               prioritized_creative_ad_buckets);
-}
-
-TEST_F(BraveAdsPriorityTest,
-       DoNotSortCreativeAdsIntoBucketsForZeroPriorityCreativeAd) {
-  // Arrange
-  CreativeNotificationAdList creative_ads;
-
-  CreativeNotificationAdInfo creative_ad_1 =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
-  creative_ad_1.priority = 0;
-  creative_ads.push_back(creative_ad_1);
-
-  // Act
-  const PrioritizedCreativeAdBuckets<CreativeNotificationAdList>
-      prioritized_creative_ad_buckets =
-          SortCreativeAdsIntoBucketsByPriority(creative_ads);
-
-  // Assert
-  EXPECT_THAT(prioritized_creative_ad_buckets, ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

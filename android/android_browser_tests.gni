@@ -69,7 +69,6 @@ if (enable_brave_wallet) {
     "//brave/browser/brave_wallet/solana_provider_browsertest.cc",
     "//brave/browser/brave_wallet/solana_provider_renderer_browsertest.cc",
     "//brave/browser/brave_wallet/wallet_watch_asset_browsertest.cc",
-    "//brave/browser/ui/webui/brave_wallet/wallet_panel_ui_browsertest.cc",
   ]
 }
 
@@ -82,7 +81,6 @@ android_test_exception_deps = [
   "//brave/browser/farbling:browser_tests",
   "//brave/browser/net:browser_tests",
   "//brave/browser/permissions:browser_tests",
-  "//brave/browser/psst:browser_tests",
   "//brave/browser/test:browser_tests",
   "//brave/browser/ui:browser_tests",
   "//brave/browser/ui/tabs/test:browser_tests",
@@ -152,6 +150,8 @@ android_only_test_deps = [
 ]
 
 if (enable_brave_wallet) {
-  android_only_test_deps +=
-      [ "//brave/components/brave_wallet/browser:test_support" ]
+  android_only_test_deps += [
+    "//brave/browser/ui/webui/brave_wallet/wallet_page",
+    "//brave/components/brave_wallet/browser:test_support",
+  ]
 }

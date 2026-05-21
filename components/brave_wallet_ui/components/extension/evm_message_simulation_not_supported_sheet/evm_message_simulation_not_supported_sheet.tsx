@@ -6,6 +6,7 @@
 import * as React from 'react'
 import Alert from '@brave/leo/react/alert'
 import * as leo from '@brave/leo/tokens/css/variables'
+import Button from '@brave/leo/react/button'
 
 // utils
 import { getLocale } from '../../../../common/locale'
@@ -14,7 +15,7 @@ import { getLocale } from '../../../../common/locale'
 import { BottomSheet } from '../../shared/bottom_sheet/bottom_sheet'
 
 // styles
-import { Column, LeoSquaredButton } from '../../shared/style'
+import { Column } from '../../shared/style'
 import {
   AlertTextContainer,
   FullWidthChildrenColumn,
@@ -81,13 +82,13 @@ export const EvmMessageSimulationNotSupportedSheet = () => {
             </Column>
           </Column>
         </Alert>
-        <LeoSquaredButton
+        <Button
           onClick={() => {
             setShowSheet(false)
           }}
         >
           {getLocale('braveWalletButtonClose')}
-        </LeoSquaredButton>
+        </Button>
       </FullWidthChildrenColumn>
     </BottomSheet>
   )

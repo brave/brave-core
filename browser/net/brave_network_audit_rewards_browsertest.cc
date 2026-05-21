@@ -21,6 +21,7 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
+#include "net/base/switches.h"
 #include "services/network/public/cpp/network_switches.h"
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_REWARDS));
@@ -84,8 +85,7 @@ class BraveRewardsNetworkAuditTest : public InProcessBrowserTest {
     audit_results_path_ =
         source_root_path.AppendASCII("network_audit_rewards_results.json");
 
-    command_line->AppendSwitchPath(network::switches::kLogNetLog,
-                                   net_log_path_);
+    command_line->AppendSwitchPath(net::switches::kLogNetLog, net_log_path_);
     command_line->AppendSwitchASCII(network::switches::kNetLogCaptureMode,
                                     "Everything");
   }

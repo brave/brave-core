@@ -17,20 +17,15 @@
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service_factory.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "content/public/browser/storage_partition.h"
-#include "extensions/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
-#endif
-
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-#include "brave/browser/brave_rewards/extension_rewards_service_observer.h"
-#include "extensions/browser/event_router_factory.h"
 #endif
 
 namespace brave_rewards {
@@ -61,9 +56,6 @@ RewardsServiceFactory::RewardsServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "RewardsService",
           BrowserContextDependencyManager::GetInstance()) {
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-  DependsOn(extensions::EventRouterFactory::GetInstance());
-#endif
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   DependsOn(brave_wallet::BraveWalletServiceFactory::GetInstance());
 #endif
@@ -72,12 +64,7 @@ RewardsServiceFactory::RewardsServiceFactory()
 std::unique_ptr<KeyedService>
 RewardsServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  std::unique_ptr<RewardsServiceObserver> extension_observer = nullptr;
   auto* profile = Profile::FromBrowserContext(context);
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-  extension_observer =
-      std::make_unique<ExtensionRewardsServiceObserver>(profile);
-#endif
 
   // BitmapFetcherServiceFactory has private ProfileKeyedServiceFactory so we
   // can't add `DependsOn` to ensure proper lifetime management.
@@ -111,14 +98,14 @@ RewardsServiceFactory::BuildServiceInstanceForBrowserContext(
           profile->GetPrefs(), profile->GetPath(),
           FaviconServiceFactory::GetForProfile(
               profile, ServiceAccessType::EXPLICIT_ACCESS),
-          request_image_callback, cancel_request_image_callback,
-          profile->GetDefaultStoragePartition()
+          g_browser_process->os_crypt_async(), request_image_callback,
+          cancel_request_image_callback, profile->GetDefaultStoragePartition()
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-              ,
+                                             ,
           brave_wallet::BraveWalletServiceFactory::GetServiceForContext(context)
 #endif
       );
-  rewards_service->Init(std::move(extension_observer));
+  rewards_service->Init();
   return rewards_service;
 }
 

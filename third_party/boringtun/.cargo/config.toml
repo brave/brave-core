@@ -1,0 +1,15 @@
+# Cargo configuration for the BoringTun vendored build.
+#
+# Build environment is isolated; the build never reads
+# or writes Chromium's shared Rust caches.
+
+[source.crates-io]
+replace-with = "vendored-sources"
+
+[source."git+https://github.com/cloudflare/boringtun.git?rev=cdf3b24558441ff4dc62bf5992484c5457a36760"]
+git = "https://github.com/cloudflare/boringtun.git"
+rev = "cdf3b24558441ff4dc62bf5992484c5457a36760"
+replace-with = "vendored-sources"
+
+[source.vendored-sources]
+directory = "vendor/"

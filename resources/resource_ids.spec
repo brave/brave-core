@@ -142,11 +142,11 @@
     "includes": [53620],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_wallet_swap_page/brave_wallet_swap_page.grd": {
-    "META": {"sizes": {"includes": [100]}},
+    "META": {"sizes": {"includes": [110]}},
     "includes": [53640],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_wallet_send_page/brave_wallet_send_page.grd": {
-    "META": {"sizes": {"includes": [50]}},
+    "META": {"sizes": {"includes": [60]}},
     "includes": [53660],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_wallet_deposit_page/brave_wallet_deposit_page.grd": {
@@ -219,7 +219,7 @@
     "includes": [53980],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/components/brave_account/resources/resources.grd": {
-    "META": {"sizes": {"includes": [40]}},
+    "META": {"sizes": {"includes": [45]}},
     "includes": [54000],
   },
   "brave/ios/web/test/test_resources.grd": {
@@ -256,13 +256,20 @@
     "META": {"sizes": {"includes": [20]}},
     "includes": [54120],
   },
+  "brave/components/psst/resources/brave_psst_static_resources.grd": {
+    "includes": [54140],
+  },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_psst_dialog/brave_psst_dialog.grd": {
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [54150],
+  },
   "<(SHARED_INTERMEDIATE_DIR)/brave/browser/resources/ai_chat_internal/ai_chat_internal_static_resources.grd": {
     "META": {"sizes": {"includes": [1]}},
-    "includes": [54150],
+    "includes": [54160],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-ai_chat_internal/ai_chat_internal.grd": {
     "META": {"sizes": {"includes": [20]}},
-    "includes": [54160],
+    "includes": [54170],
   },
   # WARNING: The IDs range is 2^16-1. Check
   # out/<BUILD_TYPE>/gen/brave/resources/brave_resource_ids for how much the

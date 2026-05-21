@@ -57,8 +57,7 @@ class CreativeSearchResultAdHandler final {
                                 bool should_trigger_creative_ad_viewed_events);
 
   void MaybeExtractCreativeAdPlacementIdsFromWebPageCallback(
-      mojo::Remote<blink::mojom::DocumentMetadata>
-          mojom_document_metadata_remote,
+      mojo::Remote<blink::mojom::DocumentMetadata> document_metadata_remote,
       ExtractCreativeAdPlacementIdsFromWebPageCallback callback,
       blink::mojom::WebPagePtr mojom_web_page);
 

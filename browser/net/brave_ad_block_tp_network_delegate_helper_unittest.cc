@@ -22,6 +22,7 @@
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_download_manager.h"
+#include "brave/components/brave_shields/content/test/ad_block_unit_test_helper.h"
 #include "brave/components/brave_shields/content/test/test_filters_provider.h"
 #include "brave/test/base/testing_brave_browser_process.h"
 #include "chrome/browser/net/system_network_context_manager.h"
@@ -120,6 +121,8 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
 
     TestingBraveBrowserProcess::GetGlobal()->SetAdBlockService(
         std::move(adblock_service));
+    brave_shields::SetupAdBlockServiceForTesting(
+        TestingBraveBrowserProcess::GetGlobal()->ad_block_service());
 
     host_resolver_ = std::make_unique<net::MockHostResolver>();
     resolver_wrapper_ = std::make_unique<network::HostResolver>(

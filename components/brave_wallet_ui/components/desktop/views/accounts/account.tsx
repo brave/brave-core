@@ -194,7 +194,7 @@ export const Account = () => {
   const dispatch = useAppDispatch()
 
   // queries
-  const { accounts } = useAccountsQuery()
+  const { accounts, hasData: hasAccountsData } = useAccountsQuery()
   const selectedAccount = React.useMemo(() => {
     return accounts.find(
       (account) =>
@@ -621,8 +621,11 @@ export const Account = () => {
     openOrPushRoute(WalletRoutes.FundWalletPageStart)
   }, [foundMeldBuyToken, openOrPushRoute, selectedAccount])
 
-  // redirect (asset not found)
   if (!selectedAccount) {
+    // Wait for the accounts to load before deciding the account is missing.
+    if (!hasAccountsData) {
+      return null
+    }
     return <Redirect to={WalletRoutes.Accounts} />
   }
 

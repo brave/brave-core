@@ -24,11 +24,11 @@ constexpr int kAdsEnabledInstallationHourBuckets[] = {0, 11, 23, 71};
 
 }  // namespace
 
-BraveStatsHelper::BraveStatsHelper(PrefService* local_state,
+BraveStatsHelper::BraveStatsHelper(PrefService& local_state,
                                    ProfileManager* profile_manager)
     : local_state_(local_state), profile_manager_(profile_manager) {
 #if !BUILDFLAG(IS_ANDROID)
-  last_used_profile_pref_change_registrar_.Init(local_state_);
+  last_used_profile_pref_change_registrar_.Init(&*local_state_);
   last_used_profile_pref_change_registrar_.Add(
       ::prefs::kProfileLastUsed,
       base::BindRepeating(&BraveStatsHelper::OnLastUsedProfileChanged,
@@ -153,7 +153,7 @@ void BraveStatsHelper::MaybeReportAdsInstallationTimeMetric(
 
   base::Time first_run = !testing_first_run_time_.is_null()
                              ? testing_first_run_time_
-                             : brave_stats::GetFirstRunTime(local_state_);
+                             : brave_stats::GetFirstRunTime(&*local_state_);
   int hours_from_first_run = (base::Time::Now() - first_run).InHours();
 
   p3a_utils::RecordToHistogramBucket(kAdsEnabledInstallationTimeHistogramName,

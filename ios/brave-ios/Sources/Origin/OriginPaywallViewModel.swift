@@ -29,18 +29,21 @@ public class OriginPaywallViewModel {
 
   var product: Product?
 
-  func purchase() async {
+  func purchase() async -> Bool {
     isStoreOperationActive = true
     defer { isStoreOperationActive = false }
 
     do {
-      try await store.purchase(product: .originPurchase)
+      if try await store.purchase(product: .originPurchase) {
+        return true
+      }
     } catch {
       isErrorPresented = true
     }
+    return false
   }
 
-  func restore() async {
+  func restore() async -> Bool {
     isStoreOperationActive = true
     defer { isStoreOperationActive = false }
 
@@ -51,7 +54,7 @@ public class OriginPaywallViewModel {
         return false
       }
       group.addTask {
-        return await self.store.restorePurchases()
+        return await self.store.restorePurchase(.originPurchase)
       }
       let result = await group.next() ?? false
       group.cancelAll()
@@ -60,5 +63,6 @@ public class OriginPaywallViewModel {
     if !success {
       isErrorPresented = true
     }
+    return success
   }
 }

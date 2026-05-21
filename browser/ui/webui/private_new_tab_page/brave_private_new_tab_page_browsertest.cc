@@ -81,7 +81,7 @@ class BravePrivateNewTabPageBrowserTest
   void SubmitInput(WebContents* web_contents) {
     OnDidStartNavigation observer(web_contents);
     SimulateMouseClickAtIdInIsolatedWorld(web_contents,
-                                          "[data-test-id=submit_button]");
+                                          "[data-testid=submit_button]");
     observer.Wait();
   }
 };

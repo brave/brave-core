@@ -28,7 +28,7 @@ enum ContributionProcessor {
   BRAVE_TOKENS = 1,
   UPHOLD = 2,
   BITFLYER = 4,
-  GEMINI = 5
+  GEMINI_DEPRECATED = 5
 };
 
 struct ContributionInfo {
@@ -193,7 +193,7 @@ enum PublisherStatus {
   NOT_VERIFIED = 0,
   UPHOLD_VERIFIED = 2,
   BITFLYER_VERIFIED = 3,
-  GEMINI_VERIFIED = 4,
+  GEMINI_VERIFIED_DEPRECATED = 4,
   WEB3_ENABLED = 5
 };
 

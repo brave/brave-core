@@ -18,8 +18,8 @@
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-#include "chrome/browser/ui/views/side_panel/side_panel_entry.h"
-#include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
+#include "chrome/browser/ui/side_panel/side_panel_entry.h"
+#include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #endif
 
 namespace brave_education {

@@ -10,6 +10,7 @@
 #include "brave/components/brave_origin/brave_origin_service.h"
 #include "brave/components/brave_origin/brave_origin_utils.h"
 #include "brave/components/brave_origin/buildflags/buildflags.h"
+#include "build/build_config.h"
 
 namespace brave_origin {
 
@@ -32,7 +33,7 @@ void BraveOriginSettingsHandlerImpl::IsBraveOriginUser(
 #if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
   std::move(callback).Run(true);
 #else
-  if (!brave_origin::IsBraveOriginEnabled()) {
+  if (!brave_origin::IsBraveOriginFeatureEnabled()) {
     std::move(callback).Run(false);
     return;
   }
@@ -45,7 +46,7 @@ void BraveOriginSettingsHandlerImpl::RefreshPurchaseState(
 #if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
   std::move(callback).Run(true);
 #else
-  if (!brave_origin::IsBraveOriginEnabled()) {
+  if (!brave_origin::IsBraveOriginFeatureEnabled()) {
     std::move(callback).Run(false);
     return;
   }
@@ -64,7 +65,7 @@ void BraveOriginSettingsHandlerImpl::IsPolicyControlledByBraveOrigin(
 void BraveOriginSettingsHandlerImpl::GetPolicyValue(
     const std::string& policy_key,
     GetPolicyValueCallback callback) {
-  if (!brave_origin::IsBraveOriginEnabled()) {
+  if (!brave_origin::IsBraveOriginPurchased()) {
     std::move(callback).Run(std::nullopt);
     return;
   }
@@ -77,13 +78,27 @@ void BraveOriginSettingsHandlerImpl::SetPolicyValue(
     const std::string& policy_key,
     bool value,
     SetPolicyValueCallback callback) {
-  if (!brave_origin::IsBraveOriginEnabled()) {
+  if (!brave_origin::IsBraveOriginPurchased()) {
     std::move(callback).Run(false);
     return;
   }
 
   bool success = brave_origin_service_->SetPolicyValue(policy_key, value);
   std::move(callback).Run(success);
+}
+
+void BraveOriginSettingsHandlerImpl::GetNeedsRestart(
+    GetNeedsRestartCallback callback) {
+  std::move(callback).Run(brave_origin_service_->NeedsRestart());
+}
+
+void BraveOriginSettingsHandlerImpl::ProceedFree(ProceedFreeCallback callback) {
+#if BUILDFLAG(IS_LINUX)
+  brave_origin_service_->AcceptFreeTier();
+  std::move(callback).Run(true);
+#else
+  std::move(callback).Run(false);
+#endif
 }
 
 }  // namespace brave_origin

@@ -16,5 +16,8 @@ public class BraveHubManagerImplClassAdapter extends BraveClassVisitor {
         super(visitor);
 
         redirectConstructor(sHubManagerImplClassName, sBraveHubManagerImplClassName);
+
+        deleteField(sBraveHubManagerImplClassName, "mEdgeToEdgeSupplier");
+        makeProtectedField(sHubManagerImplClassName, "mEdgeToEdgeSupplier");
     }
 }

@@ -52,7 +52,7 @@ class BraveVpnMetricsTest : public testing::Test {
     // BraveVpnMetrics::Delegate implementation
     bool is_purchased_user() const override { return is_purchased; }
 #if !BUILDFLAG(IS_ANDROID)
-    bool IsConnected() const override { return is_connected; }
+    bool is_connected_vpn() const override { return is_connected; }
 #endif
 
     bool is_purchased = true;

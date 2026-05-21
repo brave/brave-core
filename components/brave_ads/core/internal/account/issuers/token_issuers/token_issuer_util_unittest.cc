@@ -6,8 +6,8 @@
 #include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/token_issuer_util.h"
 
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
-#include "brave/components/brave_ads/core/internal/account/issuers/issuers_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/test/issuers_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 

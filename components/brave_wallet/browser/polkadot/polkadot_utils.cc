@@ -232,12 +232,12 @@ std::optional<std::string> EncodePrivateKeyForExport(
   return json_string;
 }
 
-std::optional<PolkadotAddress> ParsePolkadotAccount(const std::string& input,
-                                                    uint16_t ss58_prefix) {
+base::expected<PolkadotAddress, mojom::PolkadotValidationStatus>
+ParsePolkadotAccount(const std::string& input, uint16_t ss58_prefix) {
   auto ss58_address = Ss58Address::Decode(input);
   if (ss58_address) {
     if (ss58_address->prefix != ss58_prefix) {
-      return std::nullopt;
+      return base::unexpected(mojom::PolkadotValidationStatus::kInvalidPrefix);
     }
     return PolkadotAddress{ss58_address->public_key, ss58_prefix};
   }
@@ -248,7 +248,8 @@ std::optional<PolkadotAddress> ParsePolkadotAccount(const std::string& input,
   std::string_view str = input;
   str = base::RemovePrefix(str, "0x").value_or({});
   if (str.empty()) {
-    return std::nullopt;
+    return base::unexpected(
+        mojom::PolkadotValidationStatus::kInvalidAddressFormat);
   }
 
   std::array<uint8_t, kPolkadotSubstrateAccountIdSize> pubkey = {};
@@ -256,7 +257,8 @@ std::optional<PolkadotAddress> ParsePolkadotAccount(const std::string& input,
     return PolkadotAddress{pubkey, std::nullopt};
   }
 
-  return std::nullopt;
+  return base::unexpected(
+      mojom::PolkadotValidationStatus::kInvalidAddressFormat);
 }
 
 std::optional<std::string> PolkadotAddress::ToString() const {

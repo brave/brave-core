@@ -14,6 +14,7 @@ import FP
 import lxml.etree  # pylint: disable=import-error
 
 from lib.l10n.grd_string_replacements import (branding_replacements,
+                                              brave_strings_grd_replacements,
                                               default_replacements,
                                               fixup_replacements,
                                               main_text_only_replacements)
@@ -122,12 +123,29 @@ def braveify_grd_tree(source_xml_tree, branding_replacements_only):
         generate_braveified_node(elem, True, branding_replacements_only)
 
 
+def replace_strings_in_brave_strings_grd(source_xml_tree):
+    """Takes in a brave_strings.grd tree and replaces strings listed in
+    brave_strings_grd_replacements"""
+    for (message_id, text) in brave_strings_grd_replacements:
+        elem = next(
+            iter(source_xml_tree.xpath('.//message[@name=$id]',
+                                       id=message_id)), None)
+        assert elem is not None, (
+            f'String with name {message_id} listed in ' +
+            'brave_strings_grd_replacements was not found in ' +
+            'brave_strings.grd. If the string with this name was ' +
+            'removed upstream, update the replacements accordingly.')
+        elem.text = text
+
+
 def braveify_grd_in_place(source_string_path):
     """Takes in a grd file and replaces all messages and comments with Brave
        wording"""
     source_xml_tree = lxml.etree.parse(source_string_path)
-    braveify_grd_tree(source_xml_tree, False)
     print(f'Applying branding to {source_string_path}')
+    braveify_grd_tree(source_xml_tree, False)
+    if os.path.basename(source_string_path) == 'brave_strings.grd':
+        replace_strings_in_brave_strings_grd(source_xml_tree)
     write_xml_file_from_tree(source_string_path, source_xml_tree)
 
 

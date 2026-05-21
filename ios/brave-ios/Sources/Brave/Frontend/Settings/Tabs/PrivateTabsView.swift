@@ -17,6 +17,7 @@ struct PrivateTabsView: View {
   }
 
   @ObservedObject var privateBrowsingOnly = Preferences.Privacy.privateBrowsingOnly
+  @ObservedObject var persistentPrivateBrowsing = Preferences.Privacy.persistentPrivateBrowsing
   @ObservedObject var privateBrowsingLock = Preferences.Privacy.privateBrowsingLock
 
   var tabManager: TabManager?
@@ -63,23 +64,23 @@ struct PrivateTabsView: View {
 
   var body: some View {
     Form {
-      Section(
-        header: Text(Strings.TabsSettings.privateTabsSettingsTitle.uppercased()),
-        footer: privateBrowsingOnly.value
-          ? Text("") : Text(Strings.TabsSettings.persistentPrivateBrowsingDescription)
-      ) {
+      Section {
         if !privateBrowsingOnly.value {
-          OptionToggleView(
-            title: Strings.TabsSettings.persistentPrivateBrowsingTitle,
-            subtitle: nil,
-            option: Preferences.Privacy.persistentPrivateBrowsing
-          ) { newValue in
-            Task { @MainActor in
-              if newValue {
-                tabManager?.saveAllTabs()
-              } else {
-                tabManager?.removeAllTabsForPrivateMode(isPrivate: true, isActiveTabIncluded: true)
-              }
+          Toggle(isOn: $persistentPrivateBrowsing.value) {
+            VStack(alignment: .leading, spacing: 4) {
+              Text(Strings.TabsSettings.persistentPrivateBrowsingTitle)
+                .foregroundStyle(Color(braveSystemName: .textPrimary))
+              Text(Strings.TabsSettings.persistentPrivateBrowsingDescription)
+                .foregroundStyle(Color(braveSystemName: .textSecondary))
+                .font(.footnote)
+            }
+          }
+          .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+          .onChange(of: persistentPrivateBrowsing.value) { _, newValue in
+            if newValue {
+              tabManager?.saveAllTabs()
+            } else {
+              tabManager?.removeAllTabsForPrivateMode(isPrivate: true, isActiveTabIncluded: true)
             }
           }
         }
@@ -121,7 +122,8 @@ struct PrivateTabsView: View {
     }
     .navigationBarTitle(Strings.TabsSettings.privateTabsSettingsTitle)
     .navigationBarTitleDisplayMode(.inline)
-    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+    .scrollContentBackground(.hidden)
+    .background(Color(UIColor.braveGroupedBackground))
   }
 }
 

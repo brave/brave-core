@@ -60,7 +60,11 @@ function InputCheckbox(props: InputCheckboxProps) {
 }
 
 function HelpImprove() {
+  // <if expr="is_brave_origin_branded">
+  const [isMetricsReportingEnabled, setMetricsReportingEnabled] = React.useState(false)
+  // <else>
   const [isMetricsReportingEnabled, setMetricsReportingEnabled] = React.useState(true)
+  // </if>
   const [isP3AEnabled, setP3AEnabled] = React.useState(true)
   const [completeURLPromise] = React.useState(() => {
     return WelcomeBrowserProxyImpl.getInstance().getWelcomeCompleteURL()

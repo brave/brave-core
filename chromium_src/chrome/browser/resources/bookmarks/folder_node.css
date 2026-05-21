@@ -11,8 +11,8 @@
  * #css_wrapper_metadata_end */
 
 .cr-nav-menu-item {
-    border-end-end-radius: 0px !important;
-    border-start-end-radius: 0px !important;
+    border-end-end-radius: 0 !important;
+    border-start-end-radius: 0 !important;
     box-sizing: content-box !important;
 }
 

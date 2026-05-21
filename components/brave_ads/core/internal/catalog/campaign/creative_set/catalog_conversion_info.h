@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CATALOG_CAMPAIGN_CREATIVE_SET_CATALOG_CONVERSION_INFO_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CATALOG_CAMPAIGN_CREATIVE_SET_CATALOG_CONVERSION_INFO_H_
 
-#include <optional>
 #include <string>
 #include <vector>
 
@@ -29,7 +28,6 @@ struct CatalogConversionInfo final {
 
   std::string creative_set_id;
   std::string url_pattern;
-  std::optional<std::string> verifiable_advertiser_public_key_base64;
   base::TimeDelta observation_window;
   base::Time expire_at;
 };

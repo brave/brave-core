@@ -483,6 +483,10 @@
 <translation id="1518915449477235311">Želite li dopustiti web-lokaciji <ph name="URL"/> otvaranje pomoćnika Leo potpomognutog umjetnom inteligencijom (AI)?</translation>
 <translation id="4355784577209159847">Dozvoli upotrebu kolačića treće strane za starije izdanje prijave putem platforme Google</translation>
 <translation id="5770656036486891920"><ph name="URL"/> želi upotrebljavati kolačiće treće strane za starije prijave putem platforme Google</translation>
+<translation id="5582087890067572966">🎉 Sada zarađujete!</translation>
+<translation id="4364336119478610380">Zarađujete kad god se ovakva obavijest pojavi na vašem zaslonu. Ne morate klikati kako biste zarađivali nagrade.</translation>
+<translation id="5893017172751072752">Zarađujete kada se pojavi obavijest o značajci Brave Ads</translation>
+<translation id="3447730462826640312">Ne morate kliknuti kako biste zarađivali, ali kliknite ako ste zainteresirani!</translation>
 <translation id="2104347391516032700">Usluga nagrada BAT-ova</translation>
 <translation id="5939518447894949180">Ponovno postavi</translation>
 <translation id="3349204812119681938">Ponovno postavi nagrade Brave</translation>
@@ -1000,6 +1004,7 @@
 <translation id="2795015351889043417">Datoteka JSON</translation>
 <translation id="5468881191994555667">Odaberi datoteku</translation>
 <translation id="795667975304826397">Nema odabrane datoteke</translation>
+<translation id="6720675936326555106">Odabrana datoteka</translation>
 <translation id="5891811606602061966">Neuspješni uvoz računa. Pokušajte ponovno.</translation>
 <translation id="6566535583781706170">Uvezi račun</translation>
 <translation id="5051929972046200722">Odaberi uređaj hardverskog novčanika</translation>
@@ -1046,10 +1051,12 @@
 <translation id="2416098547200943834">NAPOMENA: privatni ključ pruža se kao heksadecimalno šifrirani JSON koji sadrži podatke o privatnom ključu i protokolu. <ph name="LINK_START"/>Saznajte više<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">NAPOMENA: privatni ključ mora se pružiti kao heksadecimalno šifrirani JSON koji sadrži podatke o privatnom ključu i protokolu. <ph name="LINK_START"/>Saznajte više<ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">NAPOMENA: Podržani su samo prošireni ključevi <ph name="FORMAT"/>.</translation>
+<translation id="6457746820359933716">Uvezite koristeći JSON datoteku izvezenu iz Polkadot.js-a ili kompatibilnih novčanika. Unesite lozinku koja se koristi za enkripciju izvoza.</translation>
 <translation id="9133762451347918196">Testnet računi</translation>
 <translation id="42126664696688958">Izvezi</translation>
 <translation id="1366855498335432549">Depozit</translation>
 <translation id="790104325876206743">Postavke računa</translation>
+<translation id="8856844353253421399">Posljednje ažuriranje: <ph name="TIME_AGO"/> prije</translation>
 <translation id="6322030314101903925">Nema dostupne imovine</translation>
 <translation id="836614343069504000">Uplatite ili kupite tokene da biste započeli. Ako ne vidite tokene uvezenog računa, provjerite postavke filtara i prikaza. Možda bude trebalo dodati nepoznate tokene kao prilagođenu imovinu.</translation>
 <translation id="2902856457593699108">Prikaži ključ</translation>
@@ -1168,10 +1175,10 @@
 <translation id="4324239559624557455">24 sata</translation>
 <translation id="9139452553033760558">1 tjedan</translation>
 <translation id="1658834457013045127">Zauvijek</translation>
-<translation id="6344138931392227467"><ph name="DEVICE_NAME"/> povezan</translation>
-<translation id="7051244143160304048"><ph name="DEVICE_NAME"/> odspojen</translation>
-<translation id="5317781812114905957">Upute</translation>
-<translation id="1178198982208000092">Poveži svoj <ph name="DEVICE_NAME"/></translation>
+<translation id="5571630233760536706"><ph name="DEVICE_NAME"/> je povezan</translation>
+<translation id="7058480232601314508"><ph name="DEVICE_NAME"/> je odspojen</translation>
+<translation id="434328838837168401">Pogledajte upute</translation>
+<translation id="6739517232898494646">Povežite <ph name="DEVICE_NAME"/> da biste nastavili</translation>
 <translation id="6941881257520473899">Za hardverski novčanik treba potvrda na uređaju.</translation>
 <translation id="2288190100157580461">Novčanikom hardvera zahtijeva se otvaranje aplikacije <ph name="NETWORK"/> na <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">poslano</translation>
@@ -1841,6 +1848,7 @@
 <translation id="8897189056319316783">Štit ZEC</translation>
 <translation id="508249542337194541">Ukloni zaštitu ZEC</translation>
 <translation id="3382275793825152362">Zaštitite sredstva</translation>
+<translation id="617149752238892649">Razotkrijte sredstva</translation>
 <translation id="8631765320256788981">Šaljete sredstva sa svog otvorenog računa na svoj zaštićeni račun.</translation>
 <translation id="3860364671495430495">Šaljete sredstva sa svog zaštićenog računa na svoj otvoreni račun.</translation>
 <translation id="7144878232160441200">Pokušaj ponovo</translation>
@@ -1891,6 +1899,7 @@
 <translation id="4150336849480030462">Prijenos tokena SPL s pridruženim stvaranjem računa tokena</translation>
 <translation id="2244921323472112851">Trenutno ne možemo pronaći stranicu koju tražite.</translation>
 <translation id="6277237872689140644">Možda se premjestila na drugo mjesto ili URL ima tipfeler.</translation>
+<translation id="1788572014530152502">Došlo je do greške pri obradi vaše transakcije. U većini slučajeva, to znači da nema dovoljno <ph name="SYMBOL"/> za pokrivanje mrežne naknade. Umjesto toga pokušajte s manjom količinom.</translation>
 <translation id="2737084171727561244">Idi na portfolio</translation>
 <translation id="3499452861061048987">Dodaj token</translation>
 <translation id="5046066249040287308">Uslužna operacija za novčanik Brave</translation>
@@ -2190,6 +2199,7 @@
     }</translation>
 <translation id="6961721183181597848">Kako vam danas mogu pomoći?</translation>
 <translation id="2966135729673253768">Zatraži komentar</translation>
+<translation id="5923170497201832190">Pomiči do dna kartice</translation>
 <translation id="6219262425964000211">Ovdje spustite datoteke</translation>
 <translation id="4313763911013851687">Ovdje stavite daototeke kako biste ih dodali u razgovor</translation>
 <translation id="4524675003624341892">Predložite pitanja...</translation>
@@ -2211,20 +2221,21 @@
 <translation id="999273441077650169">Model se dinamički mijenja kako bi koristio najbolji za zadatak.<ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
 <translation id="1238020084128916796">Pozdrav, ja sam Leo. Ja sam AI-pomoćnik preglednika Brave. Pokreće me model Llama 3.1 8B, koji je kreirala Meta za izvedbu i primjenu u raznim vrstama uporabe. Llama je smještena u Braveu putem naše vlastite sigurne infrastrukture.<ph name="LINK_BEFORE"/>Doznajte više<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">Pozdrav, ja sam Leo. Ja sam AI-pomoćnik preglednika Brave. Pokreće me model Qwen VL 30B, koji je kreirao Alibaba Cloud za izvedbu i primjenu u raznim vrstama uporabe. Qwen je smješten u Braveu putem naše vlastite sigurne infrastrukture.<ph name="LINK_BEFORE"/>Doznajte više<ph name="LINK_AFTER"/></translation>
-<translation id="6406961656408495869">Pozdrav, ja sam Leo. Ja sam AI-pomoćnik preglednika Brave. Pokreće me model DeepSeek V3.1, koji je kreirao DeepSeek za izvedbu i primjenu u raznim vrstama uporabe. DeepSeek V3.1 je smješten u Braveu putem njihove vlastite dokazano privatne i sigurne infrastrukture.<ph name="LINK_BEFORE"/>Doznajte više<ph name="LINK_AFTER"/></translation>
+<translation id="3812564134126884433">Pozdrav, ja sam Leo. Ja sam AI-pomoćnik preglednika Brave. Pokreće me model GLM-5, koji je kreirala Zhipu AI za izvedbu i primjenu u raznim vrstama uporabe. GLM-5 je smješten u NEAR-u putem njihove vlastite provjerive sigurne infrastrukture.<ph name="LINK_BEFORE"/>Doznajte više<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Bok, ja sam Leo. Ja sam AI asistent Bravea. Pokreće me Claude Instant, model koji je izradila tvrtka Anthropic za podršku konverzacijskim i zadacima obrade teksta. Claude Instant je ugošćen na Brave infrastrukturi.<ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Pozdrav, ja sam Leo. Zastupnik mi je Brave i pokreće me Claude Haiku, model koji je stvorio Anthropic za pokretanje zadataka razgovora i obrade teksta. Claude Haiku je smješten u Braveu putem naše vlastite sigurne infrastrukture.<ph name="LINK_BEFORE"/>Doznajte više<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Pozdrav, ja sam Leo. Zastupnik mi je Brave i pokreće me Claude Sonnet, model koji je stvorio Anthropic za pokretanje zadataka razgovora i obrade teksta. Claude Sonnet je smješten u Braveu putem naše vlastite sigurne infrastrukture.<ph name="LINK_BEFORE"/>Doznajte više<ph name="LINK_AFTER"/></translation>
-<translation id="1058830842518828124">Pozdrav, ja sam Leo. Ja sam AI-pomoćnik preglednika Brave. Pokreće me model Llama 4 Scout, koji je kreirala Meta za izvedbu i primjenu u raznim vrstama uporabe. Llama 4 Scout je smještena u Braveu putem naše vlastite sigurne infrastrukture.<ph name="LINK_BEFORE"/>Doznajte više<ph name="LINK_AFTER"/></translation>
 <translation id="6277330815126859513">Pozdrav, ja sam Leo. Ja sam AI-pomoćnik preglednika Brave. Pokreće me model Llama 4 Maverick, koji je kreirala Meta za izvedbu i primjenu u raznim vrstama uporabe. Llama 4 Maverick je smještena u Braveu putem naše vlastite sigurne infrastrukture.<ph name="LINK_BEFORE"/>Doznajte više<ph name="LINK_AFTER"/></translation>
 <translation id="5833148755396048122">Pozdrav, ja sam Leo. Ja sam AI-pomoćnik preglednika Brave. Pokreće me model GPT OSS 20B, koji je kreirao OpenAI za izvedbu i primjenu u raznim vrstama uporabe. GPT OSS 20B je smješten u Braveu putem naše vlastite sigurne infrastrukture.<ph name="LINK_BEFORE"/>Doznajte više<ph name="LINK_AFTER"/></translation>
 <translation id="5414593137581221307">Pozdrav, ja sam Leo. Ja sam AI-pomoćnik preglednika Brave. Pokreće me model GPT OSS 120B, koji je kreirao OpenAI za izvedbu i primjenu u raznim vrstama uporabe. GPT OSS 120B je smješten u Braveu putem naše vlastite sigurne infrastrukture.<ph name="LINK_BEFORE"/>Doznajte više<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Pozdrav, ja sam Leo. Ja sam AI-pomoćnik preglednika Brave. Pokreće me model Mistral Large, koji je kreirao Mistral za izvedbu i primjenu u raznim vrstama uporabe. Mistral Large je smješten u Braveu putem naše vlastite sigurne infrastrukture.<ph name="LINK_BEFORE"/>Doznajte više<ph name="LINK_AFTER"/></translation>
-<translation id="8947618429500471804">Pozdrav, ja sam Leo. Ja sam AI-pomoćnik preglednika Brave. Pokreće me model Pixtral Large, koji je kreirao Mistral za izvedbu i primjenu u raznim vrstama uporabe. Pixtral Large je smješten u Braveu putem naše vlastite sigurne infrastrukture.<ph name="LINK_BEFORE"/>Doznajte više<ph name="LINK_AFTER"/></translation>
 <translation id="4026902371301997261">Pozdrav, ja sam Leo. Ja sam AI-pomoćnik preglednika Brave. Pokreće me model Qwen 3 235B, koji je kreirao Alibaba Cloud za izvedbu i primjenu u raznim vrstama uporabe. Qwen 3 235B je smješten u Braveu putem naše vlastite sigurne infrastrukture.<ph name="LINK_BEFORE"/>Doznajte više<ph name="LINK_AFTER"/></translation>
-<translation id="768541432895104346">Pozdrav, ja sam Leo. Ja sam AI-pomoćnik preglednika Brave. Pokreće me model Deepseek V3.1, koji je kreirao Deepseek za izvedbu i primjenu u raznim vrstama uporabe. Deepseek V3.1 je smješten u Braveu putem naše vlastite sigurne infrastrukture.<ph name="LINK_BEFORE"/>Doznajte više<ph name="LINK_AFTER"/></translation>
+<translation id="8720758690351028307">Pozdrav, ja sam Leo. Ja sam AI-pomoćnik preglednika Brave. Pokreće me model Deepseek V3.2, koji je kreirao Deepseek za izvedbu i primjenu u raznim vrstama uporabe. Deepseek V3.2 je smješten u Braveu putem naše vlastite sigurne infrastrukture.<ph name="LINK_BEFORE"/>Doznajte više<ph name="LINK_AFTER"/></translation>
 <translation id="3767678495358551728">Pozdrav, ja sam Leo. Ja sam AI-pomoćnik preglednika Brave. Pokreće me model Qwen 3 Coder 480B, koji je kreirao Alibaba Cloud za izvedbu i primjenu u raznim vrstama uporabe. Qwen 3 Coder 480B je smješten u Braveu putem naše vlastite sigurne infrastrukture.<ph name="LINK_BEFORE"/>Doznajte više<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Pozdrav, ja sam Leo. Zastupnik mi je Brave i pokreće me Claude Opus, model koji je stvorio Anthropic za pokretanje zadataka razgovora i obrade teksta. Claude Opus je smješten u Braveu putem naše vlastite sigurne infrastrukture.<ph name="LINK_BEFORE"/>Doznajte više<ph name="LINK_AFTER"/></translation>
+<translation id="7238858567393403597">Pozdrav, ja sam Leo. Ja sam AI-pomoćnik preglednika Brave. Pokreće me model GLM-4-7-Flash, koji je kreirala Zhipu AI za izvedbu i primjenu u raznim vrstama uporabe. GLM-4-7-Flash je smješten u Braveu putem naše vlastite sigurne infrastrukture.<ph name="LINK_BEFORE"/>Doznajte više<ph name="LINK_AFTER"/></translation>
+<translation id="6983410749026920122">Pozdrav, ja sam Leo. Ja sam AI-pomoćnik preglednika Brave. Pokreće me model Kimi K2.5, koji je kreirao Moonshot AI za izvedbu i primjenu u raznim vrstama uporabe. Kimi K2.5 je smješten u Braveu putem naše vlastite sigurne infrastrukture.<ph name="LINK_BEFORE"/>Doznajte više<ph name="LINK_AFTER"/></translation>
+<translation id="2965634373697869601">Pozdrav, ja sam Leo. Ja sam AI-pomoćnik preglednika Brave. Pokreće me model Brave Ocelot, koji je kreirao Brave za sažimanje web stranica. Brave Ocelot je smješten u Braveu putem naše vlastite sigurne infrastrukture.<ph name="LINK_BEFORE"/>Doznajte više<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Lokalno</translation>
 <translation id="830868413617744215">Beta</translation>
@@ -2357,6 +2368,8 @@
 <translation id="7465032796278724624">Privatnost s provjerom uz NEAR AI TEE</translation>
 <translation id="8782867266498869301">Model se dinamički mijenja kako bi koristio najbolji za zadatak</translation>
 <translation id="3213834013136637671">Tražilica • Vizija</translation>
+<translation id="5276681919620506371">Tražilica • Alati</translation>
+<translation id="7434375176361995333">Sažetci • Brzo</translation>
 <translation id="3965507912994218570">Postavke pomoćnika Leo</translation>
 <translation id="3754337604877048671">Predstavljamo Leo AI</translation>
 <translation id="5295261408976371809">Vaš<ph name="TEXT_BEFORE"/>privatni<ph name="TEXT_AFTER"/> AI asistent ugrađen izravno u preglednik.</translation>
@@ -2412,6 +2425,8 @@
 <translation id="4572010449071015143">Započnite novi razgovor</translation>
 <translation id="345901077335355561">Vrati se na aktivni razgovor</translation>
 <translation id="6287023598025162715">Novi razgovor</translation>
+<translation id="7230502562132448519">Filtriraj razgovore</translation>
+<translation id="821070843380699990">Pokušajte s drugom tražilicom</translation>
 <translation id="7097822247923237815">Privremeno čavrljanje</translation>
 <translation id="7481750859362986254">Ovo se čavrljanje ne spremiti u vašoj povijesti ili koristiti za bilo kakva Leova prilagođavanja ili memorije.</translation>
 <translation id="4238305333951712482">Ažurirana memorija: <ph name="MEMORY_CONTENT"/></translation>
@@ -2449,6 +2464,21 @@
 <translation id="6338250692384725496">Izvršio kod u sandboxu kako bi ti pomogao s tvojom upitom</translation>
 <translation id="4379566111233326721">Kod:</translation>
 <translation id="3542130965673205258">Izlaz:</translation>
+<translation id="5382076391290708074">Pomicanje vaših kartica</translation>
+<translation id="3862123464576147769">Dozvola za to će poslati <ph name="URL_FORMAT_START"/>URL<ph name="URL_FORMAT_END"/> i <ph name="TITLE_FORMAT_START"/>Naziv<ph name="TITLE_FORMAT_END"/> svih vaših kartica i grupa kartica pregledniku Brave AI, te omogućiti Brave AI-u da ih premješta. Ova dozvola se primjenjuje samo na ovaj razgovor.</translation>
+<translation id="396165714586708444">Dubinsko istraživanje</translation>
+<translation id="577747221882855891">Pretraživanje: "<ph name="QUERY"/>"</translation>
+<translation id="5061713007774798338">Analiza <ph name="COUNT"/> izvora za "<ph name="QUERY"/>"</translation>
+<translation id="1202264349398113062">Obrada <ph name="COUNT"/> novih URL-ova za "<ph name="QUERY"/>"</translation>
+<translation id="6189479600023022289">Pronađeni <ph name="COUNT"/> URL-ovi za "<ph name="QUERY"/>"</translation>
+<translation id="5150674341374247355">Preuzimanje <ph name="FETCHED"/>/<ph name="TOTAL"/> URL-ova</translation>
+<translation id="1075606740174445363">Analizirani <ph name="COUNT"/> URL-ovi za "<ph name="QUERY"/>"</translation>
+<translation id="6220878652174655112">Pretraživanje <ph name="COUNT"/> upita</translation>
+<translation id="3571450204565012512">Analizirani <ph name="URL_COUNT"/> URL-ovi iz <ph name="QUERY_COUNT"/> pretraživanja</translation>
+<translation id="5733200563889491347">Istraživanje završeno</translation>
+<translation id="9164915383881032549"><ph name="MINUTES"/>m <ph name="SECONDS"/>s</translation>
+<translation id="6219719719991016422"><ph name="SECONDS"/>s</translation>
+<translation id="5067194014665306881">Greška istraživanja: <ph name="ERROR"/></translation>
 <translation id="3428245742224818842">AI pretraživanje</translation>
 <translation id="2854657728271352435">O profilu AI pretraživanja</translation>
 <translation id="2301685062527585986">Kako bi zaštitio vaše podatke, ovaj izolirani AI profil za pretraživanje onemogućuje pristup AI zastupniku vašem glavnom profilu pregledavanja, uz dopuštenja samo za posjet i interakciju sa stranicama prema potrebi. Možete povećati svoju produktivnost dajući mu zadatke i dopustiti mu da pretražuje umjesto vas.</translation>
@@ -2513,11 +2543,14 @@
 <translation id="7847477075635510673">Sakrij vijesti</translation>
 <translation id="9173319813356700250">VIJESTI</translation>
 <translation id="6543799171249004861">Autor fotografije <ph name="AUTHOR"/></translation>
+<translation id="2361906291514218784">Pomoćnik Leo potpomognut umjetnom inteligencijom (AI)</translation>
 <translation id="466214682712474574">Prijavite se na svoj <ph name="PROVIDER"/> račun kako biste vidjeli stanje</translation>
 <translation id="8332875111286275890">Prijavite se i pogledajte stanje</translation>
 <translation id="5430001801813715388">NAGRADE</translation>
+<translation id="988042349921505128">Tražilica i AI</translation>
 <translation id="2430295257226173518">Pitajte bilo što, pronađite sve…</translation>
 <translation id="167018310108390163">Prilagodi stranicu nove kartice</translation>
+<translation id="3500134717967948757">Prikaži Leo AI widget u novim karticama</translation>
 <translation id="6851426306697017546">Pokaži sat</translation>
 <translation id="4844370919312937270">Pokaži widget za pretragu u novim karticama</translation>
 <translation id="7328310113820087094">S <ph name="LINK_BEGIN"/>Brave Rewards<ph name="LINK_END"/>, možete zaraditi za gledanje oglasa na stranici nove kartice.</translation>
@@ -2546,8 +2579,15 @@
 <translation id="8458987127502506209">Omogući Štitove Brave</translation>
 <translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>Štitovi su PODIGNUTI<ph name="STATUS_AFTER"/> za ovu stranicu</translation>
 <translation id="2458631245058451506"><ph name="STATUS_BEFORE"/>Štitovi su SPUŠTENI<ph name="STATUS_AFTER"/> za ovu stranicu</translation>
+<translation id="8426214145426269584">Štitovi <ph name="UP_BEFORE"/>gore<ph name="UP_AFTER"/> za ovu stranicu</translation>
+<translation id="3325367578778625743">Štitovi <ph name="DOWN_BEFORE"/>dolje<ph name="DOWN_AFTER"/> za ovu stranicu</translation>
 <translation id="4724752924364329714">Ako se mrežno mjesto čini neispravno, pokušajte isključiti štitove.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Napomena: ovo može smanjiti Braveovu zaštitu privatnosti.<ph name="NOTE_AFTER"/></translation>
+<translation id="4329860807937715445">To može smanjiti Braveove zaštite privatnosti. <ph name="LINK_BEFORE"/>Doznajte više<ph name="LINK_AFTER"/></translation>
+<translation id="3889333301730272023"><ph name="BLOCK_COUNT"/> blokirani elementi za praćenje, oglasi i više</translation>
+<translation id="2275121279487164685">Elementi za praćenje i oglasi</translation>
+<translation id="4968268657895673116">Radi li ova stranica ispravno s omogućenim Štitovima?</translation>
+<translation id="5412004902081180614">Prijavi</translation>
 <translation id="3620004479054499575">Imate li problema s ovim stranicom?</translation>
 <translation id="9176447766421988172">Pokušavamo eksperiment za povećanje kompatibilnosti s mrežnim mjestima, pri kojem je omogućeno samo blokiranje oglasa. Upozorenje: isključuje sve zaštite privatnosti. Želite li ga isprobati? <ph name="LINK_BEFORE"/>Doznajte više<ph name="LINK_AFTER"/>.</translation>
 <translation id="5372101283158221516">Imajte na umu da za pojedinačna mrežna mjesta „pokvarena” zbog Braveove zaštite privatnosti možete isključiti štitove.</translation>
@@ -2562,9 +2602,12 @@
 <translation id="8377155647357436161">Blokirani elementi za praćenje, oglasi i više <ph name="LINK_BEFORE"/>Doznaj više<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Nije zaštićeno štitovima Brave <ph name="LINK_BEFORE"/>Saznajte više <ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Napredne kontrole</translation>
+<translation id="7939062555109487992">Napredne opcije</translation>
 <translation id="5799940914270080805">Mijenjanjem tih postavki mogu se rušiti mrežna mjesta.</translation>
 <translation id="9204041448536398473">Postavke globalnog štita</translation>
 <translation id="2108334320919763866">Zadane globalne postavke</translation>
+<translation id="1896472873031845605">Globalne postavke</translation>
+<translation id="8324318899000695659">Blokiraj elemente</translation>
 <translation id="7205939464631857223">Izbriši sve blokirane elemente</translation>
 <translation id="3440043456924990296">Postavkama upravlja organizacija</translation>
 <translation id="7053983685419859001">Blokiraj</translation>
@@ -2604,9 +2647,11 @@
 <translation id="3795015906457257780">Pregledavate ovo mrežno mjesto bez zaštite privatnosti preglednika Brave.</translation>
 <translation id="7194012750329511146">Štitovi Brave
 Blokirano <ph name="NUMBER"/> element/a/ata za praćenje, oglas/a i više</translation>
+<translation id="2900068182947574679">Skripte</translation>
 <translation id="4292121526390005808">Blokirane skripte</translation>
 <translation id="5046271170844958713">Dozvoljene skripte</translation>
 <translation id="199862531047218413">primijenjena zaštita protiv otiska prsta</translation>
+<translation id="896105002981074545">Zaštita od posebnog označivanja</translation>
 <translation id="5032505924781383272">Primijenjene zaštite ne znače nužno da ovo mrežno mjesto pokušava uzeti otisak Vašeg preglednika.</translation>
 <translation id="1905384713982899903">Blokirani otisci prstiju</translation>
 <translation id="314364527871618241">Dopušteni otisci prstiju</translation>
@@ -2619,6 +2664,7 @@ Blokirano <ph name="NUMBER"/> element/a/ata za praćenje, oglas/a i više</trans
 <translation id="542789539047208469">Informacije o web-mjestu</translation>
 <translation id="7586067492365979844">Brave Štitovi imaju novi dom i dizajn. Sada se integriraju s informacijama o mjestu za iskustvo u jednoj točki.</translation>
 <translation id="9114542678887529043">Brave Štitovi imaju novi dom i dizajn. Pristupite mu klikom na ikonu web-mjesta u traci adrese.</translation>
+<translation id="4242533952199664413">Otvorite postavke</translation>
 <translation id="6294662480095808915">Privatnost. Zadano.</translation>
 <translation id="4366423156486478559">Dobijte zaštitu Brave na svakoj poveznici na koju kliknete. Samo postavite Brave kao zadani preglednik i pretražujte. Privatno.</translation>
 <translation id="3830912418080848377">Uvezi postavke</translation>
@@ -2649,7 +2695,6 @@ Blokirano <ph name="NUMBER"/> element/a/ata za praćenje, oglas/a i više</trans
 <translation id="7207456302801184289">Dobro došli u preglednik Brave</translation>
 <translation id="4988030440045495002">Ultra tamna tema</translation>
 <translation id="2422927186524098759">Bočna traka</translation>
-<translation id="2361906291514218784">Pomoćnik Leo potpomognut umjetnom inteligencijom (AI)</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">Alatna traka</translation>
 <translation id="6225572914528673855">Adresna traka</translation>
@@ -2760,4 +2805,19 @@ Povežimo vas!</translation>
 <translation id="1602850501393095406">Kliknite ↑ da označite</translation>
 <translation id="8367705492654390392">Postavite bilo koje pitanje</translation>
 <translation id="8525248723479742219">Reproducirajte kasnije</translation>
+<translation id="2935698011275148880">Brave Origin</translation>
+<translation id="3983844925615091103">Dobrodošli u Brave Origin. Za nastavak, molimo kupite ili obnovite vašu Brave Origin kupnju.</translation>
+<translation id="4801175670604644729">Trebate aktivnu Brave Origin kupnju da biste koristili ovaj preglednik.</translation>
+<translation id="4144294274624829008">Obnovite Brave Origin kupnju</translation>
+<translation id="6080178356113101120">Kupite Brave Origin</translation>
+<translation id="1009496146858538651">Obnovite kupnju</translation>
+<translation id="3461564061600681423">Unesite ID kupnje da biste aktivirali vašu Brave Origin kupnju.</translation>
+<translation id="2036379724374431790">ID kupnje</translation>
+<translation id="4348430971280118761">Unesite ID kupnje</translation>
+<translation id="7451866456310404779">Provjerite ID kupnje</translation>
+<translation id="8853195592604941919">Provjera u tijeku… Ovo može potrajati minutu.</translation>
+<translation id="4633706444004110760">Hvala vam što ste instalirali Brave Origin, verziju preglednika za korisnike koji ne trebaju sve funkcije koje podržavaju Brave kao posao, ali i dalje žele privatnost koju samo Brave nudi. Korisnici Origin-a nastavit će imati pristup Braveovoj vodeću privatnost, adblock-u i brzini (putem Štitova), kao i redovitim ažuriranjima softvera, zakrpama Chromium-a i poboljšanjima sigurnosti i privatnosti. Origin će ukloniti većinu ostalih funkcija iz preglednika.</translation>
+<translation id="5816720995022674532">Origin je besplatan za korištenje na Linux uređajima, ali i dalje je <ph name="BEGIN_LINK"/>dostupan za kupnju<ph name="END_LINK"/> ako želite podržati Brave kao posao. Kupnjom biste takođe otključali mogućnost korištenja Origin-a na Android, iOS, macOS i Windows uređajima.</translation>
+<translation id="3065220545261045367">Podržite Brave kupnjom Origin-a</translation>
+<translation id="2069499076031488636">Nastavite s Origin-om besplatno na Linux-u</translation>
 </translationbundle>

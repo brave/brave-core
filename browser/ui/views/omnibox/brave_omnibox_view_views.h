@@ -8,7 +8,9 @@
 
 #include <optional>
 
+#include "base/functional/callback_forward.h"
 #include "base/gtest_prod_util.h"
+#include "base/memory/weak_ptr.h"
 #include "chrome/browser/ui/views/omnibox/omnibox_view_views.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 
@@ -18,7 +20,10 @@ class BraveOmniboxViewViews : public OmniboxViewViews {
   METADATA_HEADER(BraveOmniboxViewViews, OmniboxViewViews)
 
  public:
-  using OmniboxViewViews::OmniboxViewViews;
+  BraveOmniboxViewViews(bool popup_window_mode,
+                        OmniboxController* controller,
+                        LocationBarView* location_bar_view,
+                        const gfx::FontList& font_list);
 
   BraveOmniboxViewViews(const BraveOmniboxViewViews&) = delete;
   BraveOmniboxViewViews& operator=(const BraveOmniboxViewViews&) = delete;
@@ -49,7 +54,13 @@ class BraveOmniboxViewViews : public OmniboxViewViews {
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveOmniboxViewViewsTest, PasteAndSearchTest);
 
-  std::optional<std::u16string> GetClipboardTextForPasteAndSearch();
+  void GetClipboardTextForPasteAndSearch(
+      base::OnceCallback<void(std::u16string)> callback);
+  void OnClipboardTextForPasteAndSearchRetrieved(int command_id,
+                                                 int event_flags,
+                                                 std::u16string clipboard_text);
+
+  base::WeakPtrFactory<BraveOmniboxViewViews> weak_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_OMNIBOX_BRAVE_OMNIBOX_VIEW_VIEWS_H_

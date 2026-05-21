@@ -14,6 +14,7 @@
 #include <string_view>
 
 #include "base/containers/span.h"
+#include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/scrypt_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
@@ -54,8 +55,8 @@ struct PolkadotAddress {
 //
 // TODO(https://github.com/brave/brave-browser/issues/51544): Eventually migrate
 // off of `const std::string&`.
-std::optional<PolkadotAddress> ParsePolkadotAccount(const std::string& input,
-                                                    uint16_t ss58_prefix);
+base::expected<PolkadotAddress, mojom::PolkadotValidationStatus>
+ParsePolkadotAccount(const std::string& input, uint16_t ss58_prefix);
 
 // Encodes a Polkadot sr25519 private key for export in Polkadot.js JSON format.
 // Uses scrypt + xsalsa20-poly1305.

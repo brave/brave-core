@@ -6,16 +6,16 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_CREATIVE_ADS_DATABASE_TABLE_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_CREATIVE_ADS_DATABASE_TABLE_UTIL_H_
 
-#include <string>
-
-#include "brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/condition_matcher_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
 namespace brave_ads::database::table {
 
-std::string ConditionMatchersToString(
-    const ConditionMatcherMap& condition_matchers);
+CreativeAdInfo CreativeAdFromMojomRow(const mojom::DBRowInfoPtr& mojom_db_row);
 
-ConditionMatcherMap StringToConditionMatchers(const std::string& value);
+// Appends SQL actions to insert `creative_ads` into the `creative_ads` table.
+void InsertCreativeAds(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
+                       const CreativeAdList& creative_ads);
 
 }  // namespace brave_ads::database::table
 

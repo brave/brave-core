@@ -3,12 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import config from './config.js'
+import config from './config.ts'
 import util from './util.js'
 import path from 'node:path'
 import fs from 'fs-extra'
-import Log from './logging.js'
+import * as Log from './log.ts'
 import branding from './branding.js'
+import * as buildUtils from './buildUtils.ts'
 
 /**
  * Checks to make sure the src/chrome/VERSION matches brave-core's package.json version
@@ -39,6 +40,7 @@ const build = async (buildConfig = config.defaultBuildConfig, options = {}) => {
 
   util.touchOverriddenFiles()
   branding.update()
+  buildUtils.ensureVsFilesMount()
   await util.buildNativeRedirectCC()
 
   if (options.prepare_only) {

@@ -24,6 +24,7 @@ namespace base {
 class FilePath;
 }
 
+class AdBlockComponentFiltersProviderTest;
 class AdBlockServiceTest;
 class DebounceBrowserTest;
 
@@ -73,6 +74,7 @@ class AdBlockComponentFiltersProvider : public AdBlockFiltersProvider {
   bool IsInitialized() const override;
 
  private:
+  friend class ::AdBlockComponentFiltersProviderTest;
   friend class ::AdBlockServiceTest;
   friend class ::DebounceBrowserTest;
 

@@ -1,16 +1,16 @@
 diff --git a/third_party/blink/common/BUILD.gn b/third_party/blink/common/BUILD.gn
-index f56621d3f7602c4d002b2ce406099e09ddb6a4c5..4f0554fe0dc981687acb35bfe1fbeea9034a4360 100644
+index 490137f7fbc6aa160779fd6956a9ff92ff7b9e31..5d7e3f47fbcef489da3615d7b5b23832aafa1ac0 100644
 --- a/third_party/blink/common/BUILD.gn
 +++ b/third_party/blink/common/BUILD.gn
 @@ -353,6 +353,7 @@ source_set("common") {
-   # TODO(crbug.com/40031409): Fix code that adds exit-time destructors and
-   # enable the diagnostic by removing this line.
-   configs += [ "//build/config/compiler:no_exit_time_destructors" ]
+   if (is_chromeos || is_android || is_win || is_castos || is_fuchsia) {
+     defines = [ "ENABLE_PROTECTED_MEDIA_IDENTIFIER_PERMISSION" ]
+   }
 +  import("//brave/components/brave_wallet/sources.gni") deps += brave_blink_common_deps
  }
  
  test("blink_common_unittests") {
-@@ -499,6 +500,7 @@ source_set("common_unittests_sources") {
+@@ -500,6 +501,7 @@ source_set("common_unittests_sources") {
    # TODO(crbug.com/40031409): Fix code that adds exit-time destructors and
    # enable the diagnostic by removing this line.
    configs += [ "//build/config/compiler:no_exit_time_destructors" ]

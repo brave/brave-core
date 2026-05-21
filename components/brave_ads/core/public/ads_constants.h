@@ -20,10 +20,6 @@ inline constexpr char kDatabaseFilename[] = "database.sqlite";
 // from using JSON state to a more efficient data approach.
 inline constexpr char kClientJsonFilename[] = "client.json";
 
-// TODO(https://github.com/brave/brave-browser/issues/39795): Transition away
-// from using JSON state to a more efficient data approach.
-inline constexpr char kConfirmationsJsonFilename[] = "confirmations.json";
-
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_ADS_CONSTANTS_H_

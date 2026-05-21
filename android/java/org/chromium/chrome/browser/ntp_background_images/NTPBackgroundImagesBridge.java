@@ -5,11 +5,10 @@
 
 package org.chromium.chrome.browser.ntp_background_images;
 
-import androidx.annotation.Nullable;
-
 import org.jni_zero.CalledByNative;
 import org.jni_zero.NativeMethods;
 
+import org.chromium.base.Callback;
 import org.chromium.base.ObserverList;
 import org.chromium.base.ThreadUtils;
 import org.chromium.chrome.browser.ntp_background_images.model.BackgroundImage;
@@ -64,13 +63,13 @@ public class NTPBackgroundImagesBridge {
         return NTPBackgroundImagesBridgeJni.get().getInstance(profile);
     }
 
-    @Nullable
-    public NTPImage getCurrentWallpaper(boolean allowSponsoredImage) {
+    public void getCurrentWallpaper(boolean allowSponsoredImage, Callback<NTPImage> callback) {
         ThreadUtils.assertOnUiThread();
-        return NTPBackgroundImagesBridgeJni.get()
+        NTPBackgroundImagesBridgeJni.get()
                 .getCurrentWallpaper(
                         mNativeNTPBackgroundImagesBridge,
                         NTPBackgroundImagesBridge.this,
+                        callback,
                         allowSponsoredImage);
     }
 
@@ -127,9 +126,10 @@ public class NTPBackgroundImagesBridge {
     interface Natives {
         NTPBackgroundImagesBridge getInstance(Profile profile);
 
-        NTPImage getCurrentWallpaper(
+        void getCurrentWallpaper(
                 long nativeNTPBackgroundImagesBridge,
                 NTPBackgroundImagesBridge caller,
+                Callback<NTPImage> callback,
                 boolean allowSponsoredImage);
 
         void wallpaperLogoClicked(

@@ -52,16 +52,6 @@ class AdsClientNotifierObserver : public base::CheckedObserver {
       const std::vector<GURL>& redirect_chain,
       const std::string& text) {}
 
-  // Invoked when the page for `tab_id` has loaded and the content is available
-  // for analysis. `redirect_chain` containing a list of redirect URLs that
-  // occurred on the way to the current page. The current page is the last one
-  // in the list (so even when there's no redirect, there should be one entry in
-  // the list). `html` containing the page content as HTML.
-  virtual void OnNotifyTabHtmlContentDidChange(
-      int32_t tab_id,
-      const std::vector<GURL>& redirect_chain,
-      const std::string& html) {}
-
   // Invoked when media starts playing on a browser tab for the specified
   // `tab_id`.
   virtual void OnNotifyTabDidStartPlayingMedia(int32_t tab_id) {}

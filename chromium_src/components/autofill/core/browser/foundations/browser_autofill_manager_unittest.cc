@@ -24,8 +24,8 @@ TEST_F(BrowserAutofillManagerTest, Onion_MixedFormHttps) {
   // Test that we sent the right values to the external delegate.
   external_delegate()->CheckSuggestions(
       form.fields().back().global_id(),
-      {Suggestion(l10n_util::GetStringUTF8(IDS_AUTOFILL_WARNING_MIXED_FORM), "",
-                  Suggestion::Icon::kNoIcon,
+      {Suggestion(l10n_util::GetStringUTF16(IDS_AUTOFILL_WARNING_MIXED_FORM),
+                  u"", Suggestion::Icon::kNoIcon,
                   SuggestionType::kMixedFormMessage)});
 }
 
@@ -43,8 +43,8 @@ TEST_F(BrowserAutofillManagerTest, Onion_MixedFormHttp) {
   // Test that we sent the right values to the external delegate.
   external_delegate()->CheckSuggestions(
       form.fields().back().global_id(),
-      {Suggestion(l10n_util::GetStringUTF8(IDS_AUTOFILL_WARNING_MIXED_FORM), "",
-                  Suggestion::Icon::kNoIcon,
+      {Suggestion(l10n_util::GetStringUTF16(IDS_AUTOFILL_WARNING_MIXED_FORM),
+                  u"", Suggestion::Icon::kNoIcon,
                   SuggestionType::kMixedFormMessage)});
 }
 
@@ -62,8 +62,8 @@ TEST_F(BrowserAutofillManagerTest, Onion_MixedFormHttpSubdomain) {
   // Test that we sent the right values to the external delegate.
   external_delegate()->CheckSuggestions(
       form.fields().back().global_id(),
-      {Suggestion(l10n_util::GetStringUTF8(IDS_AUTOFILL_WARNING_MIXED_FORM), "",
-                  Suggestion::Icon::kNoIcon,
+      {Suggestion(l10n_util::GetStringUTF16(IDS_AUTOFILL_WARNING_MIXED_FORM),
+                  u"", Suggestion::Icon::kNoIcon,
                   SuggestionType::kMixedFormMessage)});
 }
 

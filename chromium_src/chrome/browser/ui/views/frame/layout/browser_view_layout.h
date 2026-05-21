@@ -12,18 +12,17 @@ class SidebarContainerView;
 // TODO(https://github.com/brave/brave-browser/issues/50488): There should be no
 // need to access these private members directly once the const-correctness
 // around these classes is resolved.
-#define ShouldDisplayVerticalTabs      \
-  UnUsed();                            \
+#define UpdateBubbles                  \
+  Unused();                            \
   friend class BraveBrowserViewLayout; \
-  bool ShouldDisplayVerticalTabs
+  void UpdateBubbles
 
 // Add new members to BrowserViewLayoutViews for Brave specific layout changes.
-#define top_container_separator                              \
-  top_container_separator;                                   \
-  raw_ptr<views::View> contents_background = nullptr;        \
-  raw_ptr<views::View> vertical_tab_strip_host = nullptr;    \
-  raw_ptr<SidebarContainerView> sidebar_container = nullptr; \
-  raw_ptr<views::View> sidebar_separator
+#define top_container_separator                           \
+  top_container_separator;                                \
+  raw_ptr<views::View> contents_background = nullptr;     \
+  raw_ptr<views::View> vertical_tab_strip_host = nullptr; \
+  raw_ptr<SidebarContainerView> sidebar_container
 
 // Add setters for the new members to BrowserViewLayout.
 #define set_side_panel_animation_content                                   \
@@ -36,15 +35,12 @@ class SidebarContainerView;
   void set_sidebar_container(SidebarContainerView* sidebar_container) {    \
     views_.sidebar_container = sidebar_container;                          \
   }                                                                        \
-  void set_sidebar_separator(views::View* sidebar_separator) {             \
-    views_.sidebar_separator = sidebar_separator;                          \
-  }                                                                        \
   void set_side_panel_animation_content
 
 #include <chrome/browser/ui/views/frame/layout/browser_view_layout.h>  // IWYU pragma: export
 
 #undef set_side_panel_animation_content
 #undef top_container_separator
-#undef ShouldDisplayVerticalTabs
+#undef UpdateBubbles
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_LAYOUT_BROWSER_VIEW_LAYOUT_H_

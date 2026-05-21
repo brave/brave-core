@@ -101,6 +101,7 @@ export interface CreatorBanner {
   title: string
   description: string
   background: string
+  logo: string
   web3URL: string
 }
 

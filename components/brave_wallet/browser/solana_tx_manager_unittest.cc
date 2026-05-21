@@ -38,6 +38,7 @@
 #include "brave/components/brave_wallet/browser/solana_tx_state_manager.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
+#include "brave/components/brave_wallet/browser/tx_storage.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
@@ -125,9 +126,9 @@ class SolanaTxManagerUnitTest : public testing::Test {
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     tx_service_ = std::make_unique<TxService>(
         json_rpc_service_.get(), nullptr, nullptr, nullptr, nullptr,
-        *keyring_service_, &prefs_, temp_dir_.GetPath(),
-        base::SequencedTaskRunner::GetCurrentDefault());
-    WaitForTxStorageDelegateInitialized(tx_service_->GetDelegateForTesting());
+        *keyring_service_, &prefs_,
+        CreateTxStorageForTest(temp_dir_.GetPath()));
+
     CreateWallet();
 
     sol_account_ = SolAccount(0);
@@ -409,12 +410,9 @@ class SolanaTxManagerUnitTest : public testing::Test {
                                 const mojom::AccountIdPtr& from,
                                 const std::optional<url::Origin>& origin,
                                 std::string* meta_id) {
-    auto tx_data_union =
-        mojom::TxDataUnion::NewSolanaTxData(std::move(solana_tx_data));
-
     base::RunLoop run_loop;
-    solana_tx_manager()->AddUnapprovedTransaction(
-        chain_id, std::move(tx_data_union), from, origin, nullptr,
+    solana_tx_manager()->AddUnapprovedSolanaTransaction(
+        chain_id, std::move(solana_tx_data), from, origin, nullptr,
         base::BindLambdaForTesting([&](bool success, const std::string& id,
                                        const std::string& err_message) {
           ASSERT_TRUE(success);
@@ -988,16 +986,64 @@ TEST_F(SolanaTxManagerUnitTest, CompressedNftTransferSendOptions) {
   EXPECT_FALSE(tx_meta4->tx()->send_options()->skip_preflight.value());
 }
 
-TEST_F(SolanaTxManagerUnitTest, OfacSanctionedToAddress) {
+TEST_F(SolanaTxManagerUnitTest, RestrictedToAddress) {
   const auto& from = sol_account();
-  const std::string ofac_sanctioned_to =
+  const std::string restricted_to =
       "FepMPR8vahkJ98Fr22VKbfHU4f4PTAyi18PDZN2NooPb";
-  auto* registry = BlockchainRegistry::GetInstance();
-  registry->UpdateOfacAddressesList({base::ToLowerASCII(ofac_sanctioned_to)});
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting scoped_restricted(
+      {base::ToLowerASCII(restricted_to)});
   TestMakeSystemProgramTransferTxData(
-      from, ofac_sanctioned_to, 10000000, nullptr,
-      mojom::SolanaProviderError::kInvalidParams,
-      l10n_util::GetStringUTF8(IDS_WALLET_OFAC_RESTRICTION), nullptr);
+      from, restricted_to, 10000000, nullptr,
+      mojom::SolanaProviderError::kInvalidParams, WalletInternalErrorMessage(),
+      nullptr);
+}
+
+TEST_F(SolanaTxManagerUnitTest, RestrictedFromAddress) {
+  const auto& from = sol_account();
+  const std::string to = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
+
+  const auto from_account_info = GetAccountUtils().EnsureSolAccount(0);
+
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting
+      scoped_from_restricted({base::ToLowerASCII(from_account_info->address)});
+
+  mojom::SolanaTxDataPtr solana_tx_data = nullptr;
+  TestMakeSystemProgramTransferTxData(from, to, 10000000, nullptr,
+                                      mojom::SolanaProviderError::kSuccess, "",
+                                      &solana_tx_data);
+  ASSERT_TRUE(solana_tx_data);
+
+  // AddUnapprovedSolanaTransaction should fail.
+  {
+    base::test::TestFuture<bool, const std::string&, const std::string&>
+        unapproved_future;
+
+    tx_service_->AddUnapprovedSolanaTransaction(
+        solana_tx_data.Clone(), mojom::kSolanaMainnet, from->Clone(), nullptr,
+        unapproved_future.GetCallback());
+
+    const auto& [success, tx_meta_id, err_str] = unapproved_future.Take();
+
+    EXPECT_FALSE(success);
+    EXPECT_TRUE(tx_meta_id.empty());
+    EXPECT_EQ(err_str, WalletInternalErrorMessage());
+  }
+
+  // AddUnapprovedSolanaDappTransaction should also fail.
+  {
+    base::test::TestFuture<bool, const std::string&, const std::string&>
+        unapproved_future;
+
+    tx_service_->AddUnapprovedSolanaDappTransaction(
+        solana_tx_data.Clone(), mojom::kSolanaMainnet, from->Clone(),
+        GetOrigin(), unapproved_future.GetCallback());
+
+    const auto& [success, tx_meta_id, err_str] = unapproved_future.Take();
+
+    EXPECT_FALSE(success);
+    EXPECT_TRUE(tx_meta_id.empty());
+    EXPECT_EQ(err_str, WalletInternalErrorMessage());
+  }
 }
 
 TEST_F(SolanaTxManagerUnitTest, WalletOrigin) {
@@ -1278,16 +1324,16 @@ TEST_P(TokenProgramTest, MakeTokenProgramTransferTxData) {
       "", 10000000, nullptr, mojom::SolanaProviderError::kInvalidParams,
       l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
 
-  // Test sending to OFAC Sanctioned address
-  const std::string ofac_sanctioned_to =
+  // Test sending to restricted address.
+  const std::string restricted_to =
       "FepMPR8vahkJ98Fr22VKbfHU4f4PTAyi18PDZN2NooPb";
-  auto* registry = BlockchainRegistry::GetInstance();
-  registry->UpdateOfacAddressesList({base::ToLowerASCII(ofac_sanctioned_to)});
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting
+      scoped_token_restricted({base::ToLowerASCII(restricted_to)});
   TestMakeTokenProgramTransferTxData(
       FROM_HERE, mojom::kSolanaMainnet, spl_token_mint_address,
-      from_wallet_address, ofac_sanctioned_to, 10000000,
+      from_wallet_address, restricted_to, 10000000,
       /*expected_tx_data=*/nullptr, mojom::SolanaProviderError::kInvalidParams,
-      l10n_util::GetStringUTF8(IDS_WALLET_OFAC_RESTRICTION));
+      WalletInternalErrorMessage());
 }
 
 INSTANTIATE_TEST_SUITE_P(TokenProgramTest,
@@ -2198,13 +2244,10 @@ TEST_F(SolanaTxManagerUnitTest, AddUnapprovedTransactionWithSwapInfo) {
       std::vector<mojom::SolanaMessageAddressTableLookupPtr>(), nullptr,
       nullptr, nullptr);
 
-  auto tx_data_union =
-      mojom::TxDataUnion::NewSolanaTxData(std::move(solana_tx_data));
-
   base::test::TestFuture<bool, const std::string&, const std::string&>
       add_tx_future;
-  solana_tx_manager()->AddUnapprovedTransaction(
-      mojom::kSolanaMainnet, std::move(tx_data_union), from_account,
+  solana_tx_manager()->AddUnapprovedSolanaTransaction(
+      mojom::kSolanaMainnet, std::move(solana_tx_data), from_account,
       GetOrigin(), swap_info.Clone(), add_tx_future.GetCallback());
   auto [success, tx_meta_id, error_message] = add_tx_future.Take();
   ASSERT_FALSE(tx_meta_id.empty());

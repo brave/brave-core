@@ -13,7 +13,6 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.shields.UrlSanitizerServiceFactory;
-import org.chromium.chrome.browser.tab.TabContextMenuItemDelegate;
 import org.chromium.components.embedder_support.contextmenu.ContextMenuItemDelegate;
 import org.chromium.components.embedder_support.contextmenu.ContextMenuNativeDelegate;
 import org.chromium.components.embedder_support.contextmenu.ContextMenuParams;
@@ -24,12 +23,12 @@ import java.util.function.Supplier;
 
 public class BraveChromeContextMenuPopulator extends ChromeContextMenuPopulator {
     // To be deleted via bytecode and super field to be used
-    private TabContextMenuItemDelegate mItemDelegate;
+    private ContextMenuItemDelegate mItemDelegate;
     // To be deleted via bytecode and super field to be used
     private ContextMenuParams mParams;
 
     public BraveChromeContextMenuPopulator(
-            TabContextMenuItemDelegate itemDelegate,
+            ContextMenuItemDelegate itemDelegate,
             Supplier<ShareDelegate> shareDelegate,
             List<CustomContentAction> customContentActions,
             @ContextMenuMode int mode,

@@ -91,7 +91,8 @@ class DetachedTabPrivacyHelper: TabPolicyDecider {
             for: pageData.mainFrameURL,
             shield: .fpProtection,
             considerAllShieldsOption: true
-          ) ?? true
+          ) ?? true,
+          isGPCEnabled: tab.profile.prefs.boolean(forPath: kGlobalPrivacyControlEnabled)
         ) ?? []
       tab.browserData?.setCustomUserScript(scripts: scriptTypes)
     }

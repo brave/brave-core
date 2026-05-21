@@ -17,7 +17,6 @@
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/browser/misc_metrics/page_metrics_tab_helper.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
-#include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/browser/serp_metrics/serp_metrics_tab_helper.h"
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -27,8 +26,7 @@
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
-#include "brave/components/playlist/content/browser/playlist_tab_helper.h"
-#include "brave/components/playlist/core/common/features.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/serp_metrics/serp_metrics_feature.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
@@ -60,6 +58,12 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 #include "brave/browser/brave_rewards/rewards_tab_helper.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/browser/playlist/playlist_service_factory.h"
+#include "brave/components/playlist/content/browser/playlist_tab_helper.h"
+#include "brave/components/playlist/core/browser/utils.h"
 #endif
 
 #if BUILDFLAG(IS_ANDROID)
@@ -103,7 +107,7 @@
 #include "brave/components/tor/tor_tab_helper.h"
 #endif
 
-#if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY)
 #include "brave/browser/web_discovery/web_discovery_tab_helper.h"
 #endif
 
@@ -210,7 +214,7 @@ void AttachTabHelpers(content::WebContents* web_contents) {
       web_contents);
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
-#if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY)
   web_discovery::WebDiscoveryTabHelper::MaybeCreateForWebContents(web_contents);
 #endif
 
@@ -246,7 +250,9 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   }
 #endif
 
-  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  if (playlist::IsPlaylistAllowed(
+          user_prefs::UserPrefs::Get(web_contents->GetBrowserContext()))) {
     if (auto* playlist_service =
             playlist::PlaylistServiceFactory::GetForBrowserContext(
                 web_contents->GetBrowserContext())) {
@@ -254,6 +260,7 @@ void AttachTabHelpers(content::WebContents* web_contents) {
                                                         playlist_service);
     }
   }
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 }
 
 void AttachPrivacySensitiveTabHelpers(content::WebContents* web_contents) {

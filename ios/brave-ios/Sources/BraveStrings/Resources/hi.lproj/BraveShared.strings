@@ -16,11 +16,17 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "बुकमार्क लगाएँ";
 
+/* Add a new item to the current list */
+"addButtonTitle" = "जोड़ें";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "पसंदीदा में जोड़ें";
 
 /* Cell title for add folder action */
 "AddFolderActionCellTitle" = "नया फ़ोल्डर";
+
+/* Settings item that opens instructions for adding Brave to the iOS dock. */
+"addToDockSettingsCell" = "डॉक में जोड़ें";
 
 /* Add to favorites share action. */
 "AddToFavorites" = "पसंदीदा में जोड़ें";
@@ -66,6 +72,45 @@
 
 /* Username textbox in Authentication prompt */
 "AuthPromptAlertUsernamePlaceholderText" = "उपयोगकर्ता नाम";
+
+/* Settings autofill section title */
+"Autofill" = "ऑटोमैटिक भरना";
+
+/* Label for account when indicating that a domain has multiple accounts */
+"autofill.managePassword.multipleAccounts" = "खाते";
+
+/* Alert message warning the user that deleting non-synced passwords will permanently remove them */
+"autofill.managePasswords.deleteCredentialConfirmMessage" = "यह %@ के लिए सहेजे गए पासवर्ड को आपकी सिंक चेन और आपके डिवाइस से हटा देगा।";
+
+/* Prompt title when deleting passwords */
+"autofill.managePasswords.deleteCredentialsAlertTitle" = "क्या आप आश्वस्त हैं?";
+
+/* Label for the button used to delete the current login. */
+"autofill.managePasswords.deleteManagePasswordButtonTitle" = "हटाएं";
+
+/* Title for the section header in the Manage Passwords list screen, that lists the saved sites */
+"autofill.managePasswords.headerTitle" = "सेव कर लिया गया है";
+
+/* The message displayed on the manage passwords list screen, when there's at least one password, explain the feature */
+"autofill.managePasswords.instructions" = "साइटों और ऐप्स में आसानी से साइन इन करने के लिए अपने पासवर्ड बनाएं, सेव करें और मैनेज करें।";
+
+/* The header title displayed over the never saved passwords list */
+"autofill.managePasswords.neverSavedListHeaderTitle" = "कभी नहीं सहेजा गया";
+
+/* Display text for the option to offer to save passwords */
+"autofill.managePasswords.offerToSavePasswords" = "पासवर्ड सेव करने का ऑफर दें";
+
+/* Prompt that is diplayed in the search bar of the Manage Passwords list screen */
+"autofill.managePasswords.searchWebsitesPrompt" = "वेबसाइट सर्च करें";
+
+/* Title for navigation bar of the Manage Passwords screen */
+"autofill.managePasswords.title" = "पासवर्ड मैनेज करें";
+
+/* Text to show when the origin of a managed password is not available */
+"autofill.managePasswords.UnknownDomainText" = "अज्ञात";
+
+/* Settings autofill section title */
+"autofill.settings.title" = "ऑटोमैटिक भरना";
 
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "AMP पेजों को अपने-आप रीडायइरेक्ट करें";
@@ -141,33 +186,6 @@
 
 /* Placeholder text for adding or editing a bookmark */
 "BookmarkUrlPlaceholderText" = "पता";
-
-/* Title for the Brave Account section in settings */
-"BraveAccount" = "Brave अकाउंट";
-
-/* Title shown when waiting for email verification */
-"BraveAccountAlmostThere" = "लगभग हो गया!";
-
-/* Detail text for the almost there title */
-"BraveAccountAlmostThereDetail" = "एक पुष्टि ईमेल रास्ते में है। अपने खाते को सक्रिय करने के लिए उस ईमेल में बटन पर क्लिक करें।";
-
-/* Button text to cancel Brave Account registration */
-"BraveAccountCancelRegistration" = "पंजीकरण रद्द करें";
-
-/* Title shown when user is logged in */
-"BraveAccountEmailAddress" = "ईमेल पता";
-
-/* Button text to get started with Brave Account */
-"BraveAccountGetStarted" = "आरंभ करें";
-
-/* Button text to resend confirmation email */
-"BraveAccountResendConfirmationEmail" = "पुष्टि ईमेल दोबारा भेजें";
-
-/* Detail text for the resend confirmation email button */
-"BraveAccountResendConfirmationEmailDetail" = "ईमेल नहीं दिख रहा? अपने स्पैम फ़ोल्डर की जांच करें या पुष्टि ईमेल को दोबारा भेजने के लिए बटन पर क्लिक करें।";
-
-/* Button text to sign out of Brave Account */
-"BraveAccountSignOut" = "साइन आउट करें";
 
 /* Button to show the brave panel */
 "BravePanel" = "Brave पैनल";
@@ -706,15 +724,6 @@
 /* Description for new folder popup */
 "EnterFolderName" = "फ़ोल्डर के नाम में बदलाव करें";
 
-/* Shown in error pages to suggest a fix to the user. */
-"errorPageCantBeReachedTry" = "URL को फिर से टाइप करने या सर्च इंजन खोलकर नया URL खोजने की कोशिश करें।";
-
-/* Shown in error pages for files that can't be shown and need to be downloaded. */
-"ErrorPageOpenInSafariButtonTitle" = "Safari में खोलें";
-
-/* Shown in error pages on a button that will try to load the page again */
-"ErrorPageReloadButtonTitle" = "फिर लोड करें";
-
 /* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
 "ErrorPagesAdvancedErrorPinningDetails" = "आम तौर पर, %1$@ आपकी जानकारी को सुरक्षित रखने के लिए एन्क्रिप्शन का इस्तेमाल करता है। जब Brave ने इस बार %2$@ से कनेक्ट करने की कोशिश की, तो वेबसाइट ने अजीब और गलत क्रेडेंशियल वापस भेजे। ऐसा तब हो सकता है, जब कोई हमलावर %3$@ की कोशिश कर रहा हो या वाई-फ़ाई साइन इन स्क्रीन ने कनेक्शन में रुकावट डाली हो। आपकी जानकारी अब भी सुरक्षित है, क्योंकि Brave ने किसी भी डेटा के एक्सचेंज होने से पहले कनेक्शन रोक दिया था।<br />आप अभी %4$@ पर नहीं जा सकते, क्योंकि वेबसाइट प्रमाणपत्र को पिन करती है। औम तौर पर, नेटवर्क की गड़बड़ियाँ और हमले अस्थायी होते हैं, इसलिए यह पेज शायद बाद में काम करेगा।";
 
@@ -1031,7 +1040,7 @@
 "nightMode.modeTitle" = "मोड";
 
 /* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
-"nightMode.sectionDescription" = "नाइड मोड से वेबसाइट और सामान्य सिस्टम का रंगरूप एक साथ बदल जाएगा।";
+"nightMode.sectionDescription" = "नाइट मोड वेबसाइट और सामान्य सिस्टम के रंगरूप को एक साथ प्रभावित करेगा।";
 
 /* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
 "nightMode.settingsDescription" = "नाइड मोड चालू/बंद करें";
@@ -1063,11 +1072,8 @@
 /* No comment provided by engineer. */
 "ntp.hideSponsoredImages" = "स्पांसर्ड इमेजों को छिपाएँ";
 
-/* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "स्पॉन्सर की गई इमेज ब्रैंडेड ब्रैकग्राउंड होती हैं, जो ब्राउज़र में नए खोले गए टैब में दिखती हैं। स्पॉन्सर की गई इन इमेज को चालू करने से, Brave के लक्ष्य का समर्थन होता है।";
-
-/* The text label of image type learn more link */
-"ntp.imageTypeSelectionDescriptionLearnMore" = "ज़्यादा जानें";
+/* The text description of image type which is being used NTP. The text inside the square brackets should be translated and is a link */
+"ntp.imageTypeSelectionDescription" = "स्पॉन्सर की गई इमेज ब्रैंडेड बैकग्राउंड होती हैं, जो ब्राउज़र में नए खोले गए टैब में दिखती हैं। इन स्पॉन्सर की गई इमेज को सक्षम करने से Brave के लक्ष्य का समर्थन होता है। [और जानें](#learn-more)";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Brave Rewards के बारे में ज़्यादा जानें";
@@ -2368,9 +2374,6 @@
 /* Title of an action that allows user to perform a one-click web search for selected text */
 "SearchWithBrave" = "Brave पर सर्च करें";
 
-/* Settings security section title */
-"Security" = "सुरक्षा";
-
 /* No comment provided by engineer. */
 "sendButtonTitle" = "भेजें";
 
@@ -2733,6 +2736,9 @@
 
 /* Setting to show/hide the tabs bar */
 "ShowTabsBar" = "टैब्स बार";
+
+/* Settings item for clearing site-specific settings and shields settings. */
+"SiteAndShieldsSettings" = "साइट और शील्ड सेटिंग";
 
 /* No comment provided by engineer. */
 "SiteReportedBody" = "इस साइट की समस्या के बारे में Brave के डेवलपर्स को बताने के लिए धन्यवाद। हम इसे ठीक करने की पूरी कोशिश करेंगे!";
@@ -3178,6 +3184,12 @@
 /* No comment provided by engineer. */
 "tabs.settings.privateTabsSettingsTitle" = "निजी टैब";
 
+/* The description of the toggle for users to allow the browser to remember its last browsing mode so it can re-launch in that mode when Keep Private Tabs is enabled. */
+"tabs.settings.rememberBrowsingModeDescription" = "अगर ब्राउज़र को आखिरी बार बंद करते समय वह प्राइवेट मोड में था, तो दोबारा लॉन्च होने पर वह प्राइवेट मोड में ही खुलेगा।";
+
+/* Toggle to launch the browser in private mode when Keep Private Tabs is enabled */
+"tabs.settings.rememberBrowsingModeTitle" = "ब्राउज़िंग मोड याद रखें";
+
 /* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
 "TabToolbarAccessibilityLabel" = "नेविगेशन टूलबार";
 
@@ -3279,9 +3291,6 @@
 
 /* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
 "ThemesDisplayBrightness" = "प्रकटन";
-
-/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
-"ThemesDisplayBrightnessFooter" = "ये सेटिंग प्राइवेट ब्राउज़िंग मोड पर लागू नहीं होतीं।";
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "मन्द";

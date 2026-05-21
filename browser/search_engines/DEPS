@@ -3,3 +3,9 @@ include_rules = [
   "+brave/android/java/org/chromium/chrome/browser/search_engines/jni_headers",
   "+brave/components/l10n/common/locale_util.h",
 ]
+
+specific_include_rules = {
+  "search_engine_provider_service_browsertest\.cc": [
+    "+brave/components/l10n/common/test/scoped_default_locale.h",
+  ],
+}

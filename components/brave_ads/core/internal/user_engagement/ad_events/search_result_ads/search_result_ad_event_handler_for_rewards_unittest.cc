@@ -9,22 +9,22 @@
 #include "base/check.h"
 #include "base/run_loop.h"
 #include "base/test/gmock_callback_support.h"
-#include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/test_future.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposit_info.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
-#include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_builder.h"
+#include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_info.h"
+#include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table.h"
-#include "brave/components/brave_ads/core/internal/creatives/search_result_ads/creative_search_result_ad_test_util.h"
-#include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules_test_util.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_test_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/search_result_ads/test/creative_search_result_ad_test_util.h"
+#include "brave/components/brave_ads/core/internal/serving/permission_rules/test/permission_rules_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/search_result_ads/search_result_ad_event_handler.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/search_result_ads/search_result_ad_event_handler_delegate_mock.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/search_result_ads/test/search_result_ad_event_handler_delegate_mock.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/test/ad_event_test_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/public/ad_units/search_result_ad/search_result_ad_feature.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -34,28 +34,23 @@ namespace {
 
 void VerifyDepositForCreativeInstanceIdExpectation(
     const std::string& creative_instance_id) {
-  base::MockCallback<database::table::GetDepositsCallback> callback;
-  base::RunLoop run_loop(base::RunLoop::Type::kNestableTasksAllowed);
-  EXPECT_CALL(callback, Run(/*success=*/::testing::_,
-                            /*deposit=*/::testing::Ne(std::nullopt)))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+  base::test::TestFuture<bool, std::optional<DepositInfo>> test_future;
   const database::table::Deposits database_table;
-  database_table.GetForCreativeInstanceId(creative_instance_id, callback.Get());
-  run_loop.Run();
+  database_table.GetForCreativeInstanceId(creative_instance_id,
+                                          test_future.GetCallback());
+  const auto [success, deposit] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_NE(deposit, std::nullopt);
 }
 
 void VerifyCreativeSetConversionExpectation(size_t expected_count) {
-  base::MockCallback<database::table::GetCreativeSetConversionsCallback>
-      callback;
-  base::RunLoop run_loop(base::RunLoop::Type::kNestableTasksAllowed);
-  EXPECT_CALL(
-      callback,
-      Run(/*success=*/::testing::_,
-          /*creative_set_conversions=*/::testing::SizeIs(expected_count)))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+  base::test::TestFuture<bool, CreativeSetConversionList> test_future;
   const database::table::CreativeSetConversions database_table;
-  database_table.GetUnexpired(callback.Get());
-  run_loop.Run();
+  database_table.GetUnexpired(
+      test_future.GetCallback<bool, const CreativeSetConversionList&>());
+  const auto [success, creative_set_conversions] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_THAT(creative_set_conversions, ::testing::SizeIs(expected_count));
 }
 
 }  // namespace
@@ -76,15 +71,16 @@ class BraveAdsSearchResultAdEventHandlerForRewardsTest : public test::TestBase {
       bool should_fire_event) {
     CHECK(mojom_creative_ad);
 
-    base::MockCallback<FireSearchResultAdEventHandlerCallback> callback;
-    base::RunLoop run_loop(base::RunLoop::Type::kNestableTasksAllowed);
-    EXPECT_CALL(callback,
-                Run(/*success=*/should_fire_event,
-                    mojom_creative_ad->placement_id, mojom_ad_event_type))
-        .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-    event_handler_.FireEvent(mojom_creative_ad.Clone(), mojom_ad_event_type,
-                             callback.Get());
-    run_loop.Run();
+    base::test::TestFuture<bool, std::string, mojom::SearchResultAdEventType>
+        test_future;
+    event_handler_.FireEvent(
+        mojom_creative_ad.Clone(), mojom_ad_event_type,
+        test_future.GetCallback<bool, const std::string&,
+                                mojom::SearchResultAdEventType>());
+    const auto [success, placement_id, ad_event_type] = test_future.Take();
+    EXPECT_EQ(should_fire_event, success);
+    EXPECT_EQ(mojom_creative_ad->placement_id, placement_id);
+    EXPECT_EQ(mojom_ad_event_type, ad_event_type);
 
     size_t expected_count = 0;
 
@@ -115,7 +111,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
 
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true);
+          /*use_random_uuids=*/true);
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
 
   // Act & Assert
@@ -135,7 +131,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
       kSearchResultAdFeature);
 
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
-      test::BuildCreativeSearchResultAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeSearchResultAd(/*use_random_uuids=*/true);
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
 
   // Act & Assert
@@ -156,7 +152,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
 
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true);
+          /*use_random_uuids=*/true);
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
   test::RecordAdEvent(ad, mojom::ConfirmationType::kServedImpression);
 
@@ -177,7 +173,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
       kSearchResultAdFeature);
 
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
-      test::BuildCreativeSearchResultAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeSearchResultAd(/*use_random_uuids=*/true);
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
   test::RecordAdEvent(ad, mojom::ConfirmationType::kServedImpression);
 
@@ -199,7 +195,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
 
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true);
+          /*use_random_uuids=*/true);
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
   test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
                             mojom::ConfirmationType::kViewedImpression});
@@ -224,7 +220,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
 
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true);
+          /*use_random_uuids=*/true);
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
 
   // Act & Assert
@@ -247,13 +243,15 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
 
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true);
+          /*use_random_uuids=*/true);
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
   test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
                             mojom::ConfirmationType::kViewedImpression});
 
   // Act & Assert
   base::RunLoop run_loop;
+  ::testing::InSequence seq;
+  EXPECT_CALL(delegate_mock_, OnWillFireSearchResultAdClickedEvent(ad));
   EXPECT_CALL(delegate_mock_, OnDidFireSearchResultAdClickedEvent(ad))
       .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   FireEventAndVerifyExpectations(mojom_creative_ad,
@@ -269,19 +267,55 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
       kSearchResultAdFeature);
 
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
-      test::BuildCreativeSearchResultAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeSearchResultAd(/*use_random_uuids=*/true);
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
   test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
                             mojom::ConfirmationType::kViewedImpression});
 
   // Act & Assert
   base::RunLoop run_loop;
+  ::testing::InSequence seq;
+  EXPECT_CALL(delegate_mock_, OnWillFireSearchResultAdClickedEvent(ad));
   EXPECT_CALL(delegate_mock_, OnDidFireSearchResultAdClickedEvent(ad))
       .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   FireEventAndVerifyExpectations(mojom_creative_ad,
                                  mojom::SearchResultAdEventType::kClicked,
                                  /*should_fire_event=*/true);
   run_loop.Run();
+}
+
+TEST_F(
+    BraveAdsSearchResultAdEventHandlerForRewardsTest,
+    ClickedEventNotifiesDelegateBeforeRecordingCompletesToEnsurePageLandIsRecorded) {
+  // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(
+      kSearchResultAdFeature);
+
+  const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
+      test::BuildCreativeSearchResultAd(/*use_random_uuids=*/true);
+  const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
+  test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
+                            mojom::ConfirmationType::kViewedImpression});
+
+  bool delegate_was_notified = false;
+  ::testing::InSequence seq;
+  EXPECT_CALL(delegate_mock_, OnWillFireSearchResultAdClickedEvent(ad))
+      .WillOnce([&] { delegate_was_notified = true; });
+  EXPECT_CALL(delegate_mock_, OnDidFireSearchResultAdClickedEvent(ad));
+
+  base::test::TestFuture<bool, std::string, mojom::SearchResultAdEventType>
+      test_future;
+
+  // Act & Assert
+  event_handler_.FireEvent(
+      mojom_creative_ad.Clone(), mojom::SearchResultAdEventType::kClicked,
+      test_future.GetCallback<bool, const std::string&,
+                              mojom::SearchResultAdEventType>());
+  const auto [success, placement_id, mojom_ad_event_type] = test_future.Take();
+  EXPECT_TRUE(delegate_was_notified);
+  EXPECT_TRUE(success);
+  EXPECT_EQ(mojom_creative_ad->placement_id, placement_id);
+  EXPECT_EQ(mojom::SearchResultAdEventType::kClicked, mojom_ad_event_type);
 }
 
 TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
@@ -292,7 +326,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
 
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true);
+          /*use_random_uuids=*/true);
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
   test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
                             mojom::ConfirmationType::kViewedImpression,
@@ -317,7 +351,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
 
   mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true);
+          /*use_random_uuids=*/true);
   mojom_creative_ad->placement_id = test::kMissingPlacementId;
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
 
@@ -341,7 +375,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
 
   mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true);
+          /*use_random_uuids=*/true);
   mojom_creative_ad->placement_id = test::kInvalidPlacementId;
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
 
@@ -365,7 +399,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
 
   mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true);
+          /*use_random_uuids=*/true);
   mojom_creative_ad->creative_instance_id = test::kInvalidCreativeInstanceId;
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
 
@@ -390,7 +424,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
 
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true);
+          /*use_random_uuids=*/true);
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
   test::RecordAdEvents(ad, mojom::ConfirmationType::kServedImpression,
                        kMaximumSearchResultAdsPerHour.Get() - 1);
@@ -416,7 +450,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
 
   mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true);
+          /*use_random_uuids=*/true);
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
   test::RecordAdEvents(ad, mojom::ConfirmationType::kServedImpression,
                        kMaximumSearchResultAdsPerHour.Get());
@@ -444,7 +478,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
 
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true);
+          /*use_random_uuids=*/true);
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
   test::RecordAdEvents(ad, mojom::ConfirmationType::kServedImpression,
                        kMaximumSearchResultAdsPerDay.Get() - 1);
@@ -470,7 +504,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerForRewardsTest,
 
   mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true);
+          /*use_random_uuids=*/true);
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
   test::RecordAdEvents(ad, mojom::ConfirmationType::kServedImpression,
                        kMaximumSearchResultAdsPerDay.Get());

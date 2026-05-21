@@ -1,0 +1,13 @@
+Name: tracing-attributes
+Short Name: tracing-attributes
+URL: https://github.com/tokio-rs/tracing
+Version: 0.1.31
+License: MIT
+
+Description:
+Transitive dependency of BoringTun, vendored under
+brave/third_party/boringtun/vendor/tracing-attributes.
+
+Local Modifications:
+None. Source vendored via `cargo vendor` from crates.io at the version
+pinned by brave/third_party/boringtun/Cargo.lock.

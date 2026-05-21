@@ -1,5 +1,5 @@
 diff --git a/chrome/android/chrome_public_apk_tmpl.gni b/chrome/android/chrome_public_apk_tmpl.gni
-index 6bd4fc5504337705757f4f1e8683e5bcb8d4043a..ac7a59523f4312b4ba17cfaca77e0522bb7a2c82 100644
+index db09b8848350a84260559005251d4bdd63d3a7df..2ef336aaf0ba742a9ab254ec6e1ead5bdf803d83 100644
 --- a/chrome/android/chrome_public_apk_tmpl.gni
 +++ b/chrome/android/chrome_public_apk_tmpl.gni
 @@ -291,6 +291,7 @@ template("chrome_common_apk_or_module_tmpl") {
@@ -10,7 +10,7 @@ index 6bd4fc5504337705757f4f1e8683e5bcb8d4043a..ac7a59523f4312b4ba17cfaca77e0522
  
      # Most of these, with the exception of resource_exclusion_exceptions,
      # are currently duplicated in system_webview_apk_tmpl.gni.
-@@ -315,6 +316,7 @@ template("chrome_common_apk_or_module_tmpl") {
+@@ -312,6 +313,7 @@ template("chrome_common_apk_or_module_tmpl") {
  
        proguard_enabled = true
        proguard_configs = [ "//chrome/android/proguard/main.flags" ]
@@ -18,7 +18,7 @@ index 6bd4fc5504337705757f4f1e8683e5bcb8d4043a..ac7a59523f4312b4ba17cfaca77e0522
        if (_is_test) {
          proguard_configs += [ "//chrome/android/proguard/apk_for_test.flags" ]
        }
-@@ -666,6 +668,7 @@ template("chrome_common_apk_or_module_tmpl") {
+@@ -684,6 +686,7 @@ template("chrome_common_apk_or_module_tmpl") {
                                   "version_code",
                                   "version_name",
                                 ])

@@ -11,7 +11,6 @@ import type { AnyAction } from 'redux'
 // types
 import {
   BraveWallet,
-  CommonNftMetadata,
   MeldCryptoCurrency,
   MeldFiatCurrency,
   MeldFilter,
@@ -542,7 +541,6 @@ export class MockedWalletApiProxy {
               value: '0',
             },
             jupiterTransaction: undefined,
-            lifiTransaction: undefined,
             gate3Route: undefined,
           },
           errorString: '',
@@ -560,7 +558,6 @@ export class MockedWalletApiProxy {
         response: {
           zeroExQuote: this.mockZeroExQuote,
           jupiterQuote: undefined,
-          lifiQuote: undefined,
           gate3Quote: undefined,
         },
         fees: {
@@ -686,27 +683,7 @@ export class MockedWalletApiProxy {
     },
   }
 
-  braveWalletP3A: InstanceType<typeof BraveWallet.BraveWalletP3AInterface> = {
-    reportOnboardingAction: (action) => {
-      console.log(`reporting onboarding action: ${action}`)
-    },
-    reportJSProvider: (providerType, coinType, allowProviderOverwrite) => {
-      console.log(
-        `reporting JS provider: ${JSON.stringify(
-          { providerType, coinType, allowProviderOverwrite },
-          undefined,
-          2,
-        )}`,
-      )
-    },
-    recordActiveWalletCount(count, coinType) {
-      // Follow up issue to fix test via https://github.com/brave/brave-browser/issues/43583
-      // console.log(`active wallet count: ${count} for ${coinType}`)
-    },
-    recordNFTGalleryView(nftCount) {
-      console.log(`viewing nft gallery with ${nftCount} nfts`)
-    },
-  }
+  braveWalletP3A: InstanceType<typeof BraveWallet.BraveWalletP3AInterface> = {}
 
   assetRatioService: Partial<
     InstanceType<typeof BraveWallet.AssetRatioServiceInterface>
@@ -1091,65 +1068,6 @@ export class MockedWalletApiProxy {
         errorMessage: '',
       }
     },
-    // NFT Metadata
-    getERC721Metadata: async (contract, tokenId, chainId) => {
-      const mockedMetadata = mockNFTMetadata.find(
-        (d) =>
-          new Amount(d.tokenID).toHex() === new Amount(tokenId).toHex()
-          && d.contractInformation.address === contract,
-      )
-      if (!mockedMetadata) {
-        return {
-          error: 1,
-          errorMessage: 'metadata not found',
-          tokenUrl: '',
-          response: '',
-        }
-      }
-      return {
-        error: 0,
-        errorMessage: '',
-        tokenUrl: mockedMetadata.contractInformation.logo,
-        response: JSON.stringify({
-          attributes: [
-            {
-              trait_type: 'mocked trait name',
-              value: '100%',
-            } as { trait_type: string; value: string },
-          ],
-          description: mockedMetadata.contractInformation.description,
-          image: mockedMetadata.imageURL,
-          name: mockedMetadata.contractInformation.name,
-        } as CommonNftMetadata),
-      }
-    },
-    getERC1155Metadata: async (contract, tokenId, chainId) => {
-      return this.jsonRpcService.getERC721Metadata!(contract, tokenId, chainId)
-    },
-    getSolTokenMetadata: async (chainId, tokenMintAddress) => {
-      const mockedMetadata =
-        mockNFTMetadata.find(
-          (d) =>
-            d.tokenID === tokenMintAddress
-            && d.contractInformation.address === tokenMintAddress,
-        ) || mockNFTMetadata[0]
-      return {
-        error: 0,
-        errorMessage: '',
-        tokenUrl: mockedMetadata.contractInformation.logo,
-        response: JSON.stringify({
-          attributes: [
-            {
-              trait_type: 'mocked trait name',
-              value: '100%',
-            } as { trait_type: string; value: string },
-          ],
-          description: mockedMetadata.contractInformation.description,
-          image: mockedMetadata.imageURL,
-          name: mockedMetadata.contractInformation.name,
-        } as CommonNftMetadata),
-      }
-    },
     getNftMetadatas: async (nftIdentifiers) => {
       const metadatas: BraveWallet.NftMetadata[] = nftIdentifiers.map((id) => {
         const mockedMetadata = mockNFTMetadata.find((d) => {
@@ -1458,6 +1376,67 @@ export class MockedWalletApiProxy {
       return {
         translatedUrl: url,
       }
+    },
+  }
+
+  polkadotWalletService: Partial<
+    InstanceType<typeof BraveWallet.PolkadotWalletServiceInterface>
+  > = {
+    getCompatibleNetworks: async (accountId) => {
+      const account = this.accountInfos.find(
+        (item) => item.accountId.uniqueKey === accountId.uniqueKey,
+      )
+      if (!account || account.accountId.coin !== BraveWallet.CoinType.DOT) {
+        return { networks: [] }
+      }
+
+      let chainId = ''
+      switch (account.accountId.keyringId) {
+        case BraveWallet.KeyringId.kPolkadotMainnet:
+        case BraveWallet.KeyringId.kPolkadotImport:
+          chainId = BraveWallet.POLKADOT_MAINNET
+          break
+        case BraveWallet.KeyringId.kPolkadotTestnet:
+        case BraveWallet.KeyringId.kPolkadotImportTestnet:
+          chainId = BraveWallet.POLKADOT_TESTNET
+          break
+        default:
+          break
+      }
+
+      if (!chainId) {
+        return { networks: [] }
+      }
+
+      return {
+        networks: this.networks.filter(
+          (network) =>
+            network.coin === BraveWallet.CoinType.DOT
+            && network.chainId === chainId,
+        ),
+      }
+    },
+    getAddress: async (accountId, chainId) => {
+      const account = this.accountInfos.find(
+        (item) => item.accountId.uniqueKey === accountId.uniqueKey,
+      )
+      if (!account || account.accountId.coin !== BraveWallet.CoinType.DOT) {
+        return { address: null, errorMessage: 'invalid account' }
+      }
+
+      const { networks } =
+        await this.polkadotWalletService.getCompatibleNetworks!(accountId)
+      const isCompatible = (networks ?? []).some(
+        (network) =>
+          network.chainId === chainId
+          && network.coin === BraveWallet.CoinType.DOT,
+      )
+
+      if (!isCompatible) {
+        return { address: null, errorMessage: 'incompatible network' }
+      }
+
+      return { address: account.address, errorMessage: null }
     },
   }
 

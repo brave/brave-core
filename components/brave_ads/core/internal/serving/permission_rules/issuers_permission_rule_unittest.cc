@@ -5,9 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/issuers_permission_rule.h"
 
-#include "brave/components/brave_ads/core/internal/account/issuers/issuers_test_util.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/test/issuers_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
-#include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
+#include "brave/components/brave_ads/core/internal/settings/test/settings_test_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 

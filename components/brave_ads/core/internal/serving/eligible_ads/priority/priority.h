@@ -23,11 +23,6 @@ PrioritizedCreativeAdBuckets<T> SortCreativeAdsIntoBucketsByPriority(
   PrioritizedCreativeAdBuckets<T> buckets;
 
   for (const auto& creative_ad : creative_ads) {
-    if (creative_ad.priority == 0) {
-      // Do not include ads with a priority of 0.
-      continue;
-    }
-
     buckets[creative_ad.priority].push_back(creative_ad);
   }
 

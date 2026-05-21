@@ -1,0 +1,14 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Brave doesn't expose a user-facing toggle for history semantic search
+# (it runs entirely on-device), so strip the "Manage your history search
+# setting" link from the IPH promo — it would navigate to a page we also
+# hide (see chromium_src/.../history_embeddings_utils.cc).
+
+[[substitution]]
+description = 'Remove the Manage-history-search-setting link from the history embeddings promo.'
+re_pattern = '\s*<a href="\$i18n\{historyEmbeddingsSettingsUrl\}"[\s\S]+?</a>'
+replace = ''

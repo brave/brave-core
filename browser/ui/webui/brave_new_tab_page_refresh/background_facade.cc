@@ -182,15 +182,23 @@ mojom::SelectedBackgroundPtr BackgroundFacade::GetSelectedBackground() {
   return background;
 }
 
-mojom::SponsoredImageBackgroundPtr
-BackgroundFacade::GetSponsoredImageBackground() {
+void BackgroundFacade::GetSponsoredImageBackground(
+    base::OnceCallback<void(mojom::SponsoredImageBackgroundPtr)> callback) {
   if (!view_counter_service_) {
-    return nullptr;
+    std::move(callback).Run(nullptr);
+    return;
   }
 
-  auto data = view_counter_service_->GetCurrentWallpaperForDisplay();
+  view_counter_service_->GetCurrentWallpaperForDisplay(
+      base::BindOnce(&BackgroundFacade::OnGetSponsoredImageBackground,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void BackgroundFacade::OnGetSponsoredImageBackground(
+    base::OnceCallback<void(mojom::SponsoredImageBackgroundPtr)> callback,
+    std::optional<base::DictValue> data) {
   if (!data) {
-    return nullptr;
+    return std::move(callback).Run(nullptr);
   }
 
   view_counter_service_->RegisterPageView();
@@ -202,7 +210,7 @@ BackgroundFacade::GetSponsoredImageBackground() {
         sponsored_image->metric_type);
   }
 
-  return sponsored_image;
+  std::move(callback).Run(std::move(sponsored_image));
 }
 
 void BackgroundFacade::SelectBackground(

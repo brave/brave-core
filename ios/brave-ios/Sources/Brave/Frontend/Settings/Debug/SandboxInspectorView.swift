@@ -142,7 +142,8 @@ struct SandboxInspectorView: View {
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
-    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+    .scrollContentBackground(.hidden)
+    .background(Color(UIColor.braveGroupedBackground))
     .navigationTitle("Sandbox Inspector")
     .navigationBarTitleDisplayMode(.inline)
     .onAppear(perform: getNodes)

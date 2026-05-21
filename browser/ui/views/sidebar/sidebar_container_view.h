@@ -13,12 +13,12 @@
 #include "base/timer/timer.h"
 #include "brave/browser/ui/sidebar/sidebar.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
-#include "brave/browser/ui/views/side_panel/side_panel.h"
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
+#include "chrome/browser/ui/side_panel/side_panel_entry_observer.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
+#include "chrome/browser/ui/views/side_panel/side_panel.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
-#include "chrome/browser/ui/views/side_panel/side_panel_entry_observer.h"
 #include "components/prefs/pref_member.h"
 #include "ui/events/event_observer.h"
 #include "ui/gfx/animation/slide_animation.h"
@@ -94,6 +94,7 @@ class SidebarContainerView : public sidebar::Sidebar,
   void SetSidebarShowOption(
       sidebar::SidebarService::ShowSidebarOption show_option) override;
   void UpdateSidebarItemsState() override;
+  void UpdateSidebarVisibility() override;
 
   // SidebarControlView::Delegate overrides:
   void MenuClosed() override;
@@ -138,13 +139,17 @@ class SidebarContainerView : public sidebar::Sidebar,
 
   class BrowserWindowEventObserver;
 
+  // Whether the show transition should slide in or snap immediately.
+  enum class AnimationStyle { kAnimated, kImmediate };
+
   void AddChildViews();
   void UpdateBackground();
   bool ShouldUseAnimation();
   void ShowSidebarControlView();
 
   // Show control view. panel's visibility depends on |show_side_panel|.
-  void ShowSidebar(bool show_side_panel);
+  void ShowSidebar(bool show_side_panel,
+                   AnimationStyle animation = AnimationStyle::kAnimated);
 
   // Show all (panel + control view).
   void ShowSidebarAll();
@@ -163,6 +168,7 @@ class SidebarContainerView : public sidebar::Sidebar,
   bool IsSidePanelShowing() const;
   bool ShouldForceShowSidebar() const;
   void UpdateToolbarButtonVisibility();
+  void UpdateToolbarButtonHighlight();
 
   // true when fullscreen is initiated by tab. (Ex, fullscreen mode in youtube)
   bool IsFullscreenByTab() const;

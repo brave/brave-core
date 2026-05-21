@@ -5,27 +5,29 @@
 
 #include "brave/components/brave_ads/core/internal/prefs/pref_path_util.h"
 
+#include <string_view>
+
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 
 namespace brave_ads {
 
-bool DoesMatchUserHasJoinedBraveRewardsPrefPath(const std::string& path) {
+bool DoesMatchUserHasJoinedBraveRewardsPrefPath(std::string_view path) {
   return path == brave_rewards::prefs::kEnabled;
 }
 
-bool DoesMatchUserHasOptedInToNewTabPageAdsPrefPath(const std::string& path) {
+bool DoesMatchUserHasOptedInToNewTabPageAdsPrefPath(std::string_view path) {
   return path == ntp_background_images::prefs::kNewTabPageShowBackgroundImage ||
          path == ntp_background_images::prefs::
                      kNewTabPageShowSponsoredImagesBackgroundImage;
 }
 
-bool DoesMatchUserHasOptedInToNotificationAdsPrefPath(const std::string& path) {
+bool DoesMatchUserHasOptedInToNotificationAdsPrefPath(std::string_view path) {
   return path == prefs::kOptedInToNotificationAds;
 }
 
-bool DoesMatchUserHasOptedInToSearchResultAdsPrefPath(const std::string& path) {
+bool DoesMatchUserHasOptedInToSearchResultAdsPrefPath(std::string_view path) {
   return path == prefs::kOptedInToSearchResultAds;
 }
 

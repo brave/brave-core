@@ -131,16 +131,12 @@
 <translation id="8184318863960255706">추가 정보</translation>
 <translation id="780301667611848630">아니요, 괜찮습니다.</translation>
 <translation id="1162706247109707219">확인을 클릭하면 Windows 10 이상으로 업데이트할 때까지 설치된 Brave에 매우 중요한 보안 픽스를 받지 못한다는 사실에 동의합니다. 이 경고는 다시 표시되지 않습니다.</translation>
-<translation id="9164786361657554526">확인을 클릭하면 macOS 10.15 이상으로 업데이트할 때까지 설치된 Brave에 매우 중요한 보안 픽스를 받지 못한다는 사실에 동의합니다. 이 경고는 다시 표시되지 않습니다.</translation>
+<translation id="2971591422768125177">확인을 클릭하면 macOS 10.15 이상으로 업데이트할 때까지 설치된 Brave에 매우 중요한 보안 픽스를 받지 못한다는 사실에 동의합니다. 이 경고는 다시 표시되지 않습니다.</translation>
 <translation id="6020553119523541665">이미 다른 창에 이 탭이 활성화되어 있음</translation>
 <translation id="4987392683074136770">이 탭을 클릭하면 콘텐츠를 이 창으로 가져옵니다.</translation>
 <translation id="8355523213948477234">분할 보기 메뉴 버튼</translation>
 <translation id="6040143037577758943">닫기</translation>
 <translation id="6665472986740899785">Brave 알림 광고</translation>
-<translation id="5582087890067572966">🎉 이제 적립됩니다!</translation>
-<translation id="4364336119478610380">이것과 같은 알림이 화면에 표시될 때는 계속 적립됩니다. 적립하기 위해 클릭할 필요가 없습니다.</translation>
-<translation id="5893017172751072752">Brave Ads 알림이 표시된다면 적립</translation>
-<translation id="3447730462826640312">적립하기 위해 클릭할 필요는 없지만 관심이 있다면 클릭해보세요!</translation>
 <translation id="5253166205743627564">프라이빗 광고를 클릭하여 Brave 검색을 지원해 주셔서 감사합니다. 빅테크 기업들과 달리 당사는 사용자의 개인정보를 보호하기 위해 광고 실적을 익명으로 평가합니다.</translation>
 <translation id="8748471354357836070">자세히 알아보기 / 옵트아웃 옵션</translation>
 <translation id="5927196110206824867">스폰서 배경 이미지는 독립적인 사용자 중심 웹을 구축하려는 Brave의 사명을 뒷받침합니다. 또한 빅 테크와 달리 광고 성과를 익명으로 측정하여 사용자의 개인 정보를 보호합니다.</translation>
@@ -323,6 +319,8 @@
 <translation id="8813509417421129632"><ph name="SITE"/>에 임베드된 페이지가 다음을 저장하려고 함</translation>
 <translation id="7700010743463174379">이 페이지가 다음을 저장하려고 함</translation>
 <translation id="6774238875569752630">이 페이지상에 임베드된 페이지가 다음을 저장하려고 함</translation>
+<translation id="1383876407941801731">검색</translation>
+<translation id="5496587651328244253">정리</translation>
 <translation id="1233913566967531780">탭 포커스</translation>
 <translation id="4034992002364254340">모든 관련 탭을 새 창에 모읍니다</translation>
 <translation id="8012125596344613514">추천 주제</translation>
@@ -335,11 +333,14 @@
 <translation id="7557539689487606886">프리미엄 가입</translation>
 <translation id="1035309871698658326">탭을 열면 비공개 탭이 아닌 모든 탭의 제목과 출처가 자동으로 레오로 전송되어 분류됩니다.</translation>
 <translation id="3435896845095436175">사용</translation>
+<translation id="9031526219709160683">Brave는 이 사이트의 개인 정보 보호 설정을 최적화하는 데 도움을 줄 수 있습니다. Brave의 제안을 검토하시겠습니까?</translation>
+<translation id="5739953050957336013">추천 검색어</translation>
 <translation id="9082792303833649978">이 설정은 관리자 또는 다른 Brave 정책에 의해 관리되고 있습니다.</translation>
 <translation id="1940221956626514677">도구 모음 사용자 지정</translation>
 <translation id="6501807887341963552">테마 및 색상</translation>
 <translation id="6724227215236550330">저장된 암호가 여기에 표시됩니다. 이 기기에서 <ph name="BRAND"/>(으)로 비밀번호를 가져오려면 <ph name="BEGIN_LINK"/>CSV 파일을 선택하세요.<ph name="END_LINK"/></translation>
 <translation id="3575561030014162610">이 기기에서 <ph name="BRAND"/>(으)로 암호를 가져오려면 CSV 파일을 선택하세요</translation>
+<translation id="8570228839666486945">온디바이스 AI</translation>
 <translation id="9156965752763025780">변경사항은 다음에 Brave을 다시 시작할 때 적용됩니다.</translation>
 <translation id="7179921470347911571">지금 다시 실행</translation>
 <translation id="1426410128494586442">예</translation>
@@ -390,8 +391,15 @@
 <translation id="2113977810652731515">카드</translation>
 <translation id="4096343215397759358">미리보기가 있는 카드</translation>
 <translation id="5297085818601043899">툴팁</translation>
+<translation id="1033676453210290920">최소 탭 너비</translation>
+<translation id="562967218762447012">최소 (기본값)</translation>
+<translation id="574392208103952083">보통</translation>
+<translation id="4209092469652827314">큼</translation>
+<translation id="2658845370685508484">전체 너비</translation>
+<translation id="1215972473274650670">스크롤 가능한 탭 스트립 사용</translation>
 <translation id="5219886318310413094">모든 창에 고정된 탭 표시</translation>
 <translation id="2396127686705429331">북마크 버튼 표시</translation>
+<translation id="443318149139185498">기본 메뉴 버튼에 윤곽선 로고 사용</translation>
 <translation id="2814998458708016836">넓은 주소 표시줄 사용</translation>
 <translation id="4749586705247636385">주요 콘텐츠 영역에 둥근 모서리 표시</translation>
 <translation id="4109670531935487117">주소 표시줄에 자동 완성 추천 표시</translation>
@@ -545,7 +553,7 @@
 <translation id="509873765238158442">마이크로소프트 리콜 차단</translation>
 <translation id="4763421121695677716">마이크로소프트 윈도우 컴퓨터의 리콜 기능이 열려 있는 Brave 탭의 스크린샷을 자동으로 찍지 못하도록 차단합니다.</translation>
 <translation id="1968895725257436430">데이터 수집</translation>
-<translation id="4846154056248462491">나갈 때</translation>
+<translation id="1700052872056357670">종료 시 데이터 지우기</translation>
 <translation id="216468847346280584">Brave Ads 데이터 지우기...</translation>
 <translation id="2808630562319398131">Brave 리워드 데이터 재설정...</translation>
 <translation id="6438096877646138757">닫으면 쿠키가 삭제되는 사이트</translation>
@@ -792,6 +800,7 @@
 <translation id="1529674267267221673">웹사이트에서 우클릭하면 나오는 컨텍스트 메뉴에 레오가 표시됩니다. 현재 웹페이지의 컨텍스트를 레오로 보낼 수 있습니다.</translation>
 <translation id="5226020406479918122">탭 포커스 모드</translation>
 <translation id="3705539672403311123">탭 검색 페이지의 탭 정리를 활성화합니다. 탭을 열면 비공개가 아닌 모든 탭의 제목과 출처가 자동으로 레오에 전송되어 분류됩니다. <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/></translation>
+<translation id="9049433973274198706">탭 포커스의 기본 모델</translation>
 <translation id="8172263161008556851">대화 내에 추천 프롬프트 표시</translation>
 <translation id="5781842473834867765">대화 기록 저장</translation>
 <translation id="1082960401708055995">대화 저장을 비활성화하면 이전에 저장된 모든 대화가 영구적으로 삭제됩니다. 이 작업은 번복할 수 없습니다.</translation>
@@ -815,6 +824,8 @@
 <translation id="6374563306438145841">API 키</translation>
 <translation id="3295756655687327124">비전 지원</translation>
 <translation id="1415432774589088566">이 모델이 이미지를 입력으로 사용하는 경우(예: llama 3.2b 비전)</translation>
+<translation id="5718897035062884425">도구 지원</translation>
+<translation id="2120046556683363911">이 모델이 함수 호출/도구 사용을 지원하는 경우</translation>
 <translation id="8008271349880309090">모델 선택 메뉴에 표시되는 모델의 이름</translation>
 <translation id="1355326130503900056">서버 측 프레임워크로의 요청에 표시되는 모델의 이름. 예: phi-3 (이 이름이 서버 측 프레임워크에서 기대하는 것과 정확하게 일치하지 않으면 통합이 작동하지 않음)</translation>
 <translation id="3213787232304349732">서버 측 프레임워크가 요청을 수신하는 URL입니다. 잘 모르겠으면 서버 측 프레임워크 문서를 확인하시기 바랍니다. 예를 들어, Ollama의 경우 항상 http://localhost:11434/v1/chat/completions입니다.</translation>

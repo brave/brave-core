@@ -9,12 +9,20 @@
 #include <optional>
 
 #include "base/functional/callback.h"
-#include "base/values.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
+
+namespace base {
+class DictValue;
+class ListValue;
+}  // namespace base
+
+// Callback types for the `AdsService` browser-layer interface. `AdsService`
+// bridges the browser to the `Ads` core interface. This header is always-built
+// and must not include headers that assert `ENABLE_BRAVE_ADS`.
 
 namespace brave_ads {
 
-using ClearDataCallback = base::OnceCallback<void(bool success)>;
+using ResultCallback = base::OnceCallback<void(bool success)>;
 
 using GetInternalsCallback =
     base::OnceCallback<void(std::optional<base::DictValue> internals)>;
@@ -25,27 +33,14 @@ using GetDiagnosticsCallback =
 using GetStatementOfAccountsCallback =
     base::OnceCallback<void(mojom::StatementInfoPtr mojom_statement)>;
 
-using ParseAndSaveNewTabPageAdsCallback =
-    base::OnceCallback<void(bool success)>;
 using MaybeServeMojomNewTabPageAdCallback =
     base::OnceCallback<void(mojom::NewTabPageAdInfoPtr ad)>;
 
 using MaybeGetSearchResultAdCallback = base::OnceCallback<void(
     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad)>;
 
-using TriggerAdEventCallback = base::OnceCallback<void(bool success)>;
-
-using PurgeOrphanedAdEventsForTypeCallback =
-    base::OnceCallback<void(bool success)>;
-
-// TODO(https://github.com/brave/brave-browser/issues/24595): Transition
-// GetAdHistory from base::Value to a mojom data structure.
 using GetAdHistoryForUICallback =
     base::OnceCallback<void(std::optional<base::ListValue> ad_history)>;
-
-using ToggleReactionCallback = base::OnceCallback<void(bool success)>;
-
-using ShutdownCallback = base::OnceCallback<void(bool success)>;
 
 }  // namespace brave_ads
 

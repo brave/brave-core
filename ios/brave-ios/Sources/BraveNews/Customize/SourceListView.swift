@@ -43,7 +43,8 @@ private struct SourceListView: View {
       }
     }
     .environment(\.defaultMinListRowHeight, 44)
-    .listBackgroundColor(Color(.braveGroupedBackground))
+    .scrollContentBackground(.hidden)
+    .background(Color(UIColor.braveGroupedBackground))
     .listStyle(.grouped)
     .navigationTitle(Strings.BraveNews.popularSourcesTitle)
     .navigationBarTitleDisplayMode(.inline)

@@ -53,7 +53,8 @@ struct AccountSelectionRootView: View {
         }
       }
     }
-    .listBackgroundColor(Color(uiColor: WalletV2Design.containerBackground))
+    .scrollContentBackground(.hidden)
+    .background(Color(uiColor: WalletV2Design.containerBackground))
     .navigationTitle(navigationTitle)
     .navigationBarTitleDisplayMode(.inline)
   }

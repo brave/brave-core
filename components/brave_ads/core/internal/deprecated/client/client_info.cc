@@ -33,7 +33,7 @@ ClientInfo& ClientInfo::operator=(ClientInfo&& other) noexcept = default;
 
 ClientInfo::~ClientInfo() = default;
 
-base::DictValue ClientInfo::ToValue() const {
+base::DictValue ClientInfo::ToDict() const {
   const base::TimeDelta time_window = kPurchaseIntentTimeWindow.Get();
 
   base::DictValue purchase_intent_signal_history_dict;
@@ -42,7 +42,7 @@ base::DictValue ClientInfo::ToValue() const {
     for (const auto& item : history) {
       const base::Time decay_signal_at = item.at + time_window;
       if (base::Time::Now() < decay_signal_at) {
-        list.Append(PurchaseIntentSignalHistoryToValue(item));
+        list.Append(PurchaseIntentSignalHistoryToDict(item));
       }
     }
 
@@ -73,7 +73,7 @@ base::DictValue ClientInfo::ToValue() const {
            std::move(probabilities_history_list));
 }
 
-bool ClientInfo::FromValue(const base::DictValue& dict) {
+bool ClientInfo::FromDict(const base::DictValue& dict) {
   if (const auto* const value = dict.FindDict("purchaseIntentSignalHistory")) {
     for (const auto [segment, history] : *value) {
       const auto* const items = history.GetIfList();
@@ -89,7 +89,7 @@ bool ClientInfo::FromValue(const base::DictValue& dict) {
         }
 
         histories.push_back(
-            PurchaseIntentSignalHistoryFromValue(item.GetDict()));
+            PurchaseIntentSignalHistoryFromDict(item.GetDict()));
       }
 
       purchase_intent_signal_history.emplace(segment, histories);
@@ -128,7 +128,10 @@ bool ClientInfo::FromValue(const base::DictValue& dict) {
           page_score = *page_score_value;
         } else if (const auto* const legacy_page_score_value =
                        dict.FindString("pageScore")) {
-          CHECK(base::StringToDouble(*legacy_page_score_value, &page_score));
+          if (!base::StringToDouble(*legacy_page_score_value, &page_score)) {
+            BLOG(0, "Failed to parse legacy pageScore from client state");
+            return false;
+          }
         }
 
         probabilities.insert({*segment, page_score});
@@ -145,7 +148,7 @@ std::string ClientInfo::ToJson() const {
   TRACE_EVENT(kTraceEventCategory, "ClientInfo::ToJson");
 
   std::string json;
-  CHECK(base::JSONWriter::Write(ToValue(), &json));
+  CHECK(base::JSONWriter::Write(ToDict(), &json));
   return json;
 }
 
@@ -159,7 +162,7 @@ bool ClientInfo::FromJson(const std::string& json) {
     return false;
   }
 
-  return FromValue(*dict);
+  return FromDict(*dict);
 }
 
 }  // namespace brave_ads

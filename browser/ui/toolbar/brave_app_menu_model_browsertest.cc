@@ -19,7 +19,7 @@
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
-#include "brave/components/email_aliases/features.h"
+#include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -41,6 +41,10 @@
 #include "brave/components/brave_vpn/common/features.h"
 #endif
 
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+#include "brave/components/email_aliases/features.h"
+#endif
+
 class BraveAppMenuModelBrowserTest : public InProcessBrowserTest {
  public:
   BraveAppMenuModelBrowserTest() {
@@ -58,7 +62,8 @@ class BraveAppMenuModelBrowserTest : public InProcessBrowserTest {
     auto target_state = purchased
                             ? brave_vpn::mojom::PurchasedState::PURCHASED
                             : brave_vpn::mojom::PurchasedState::NOT_PURCHASED;
-    service->SetPurchasedState(skus::GetDefaultEnvironment(), target_state);
+    service->SetPurchasedStateForTesting(skus::GetDefaultEnvironment(),
+                                         target_state);
     // Call explicitely to update vpn commands status because mojo works in
     // async way.
     static_cast<chrome::BraveBrowserCommandController*>(
@@ -430,6 +435,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuItemsHaveIcons) {
   CheckMenuIcons(&model, 1);
 }
 
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
 class BraveAppMenuModelBrowserTestForEmailAliases
     : public InProcessBrowserTest,
       public testing::WithParamInterface<bool> {
@@ -469,3 +475,4 @@ IN_PROC_BROWSER_TEST_P(BraveAppMenuModelBrowserTestForEmailAliases,
 INSTANTIATE_TEST_SUITE_P(All,
                          BraveAppMenuModelBrowserTestForEmailAliases,
                          testing::Bool());
+#endif  // BUILDFLAG(ENABLE_EMAIL_ALIASES)

@@ -25,6 +25,13 @@ public enum SecureContentState {
   case mixedContent
 }
 
+public enum MediaPlaybackState {
+  case none
+  case paused
+  case playing
+  case suspended
+}
+
 public class TabStateFactory {
   public struct CreateTabParams {
     public var id: UUID
@@ -61,6 +68,15 @@ public class TabStateFactory {
 public enum TabRestorationError: Error {
   /// The data was not valid
   case invalidData
+}
+
+/// Favicon related information for a current navigation
+public struct FaviconStatus {
+  /// The URL of the favicon which was used to load it off the web.
+  public var url: URL?
+  /// The favicon bitmap for the page. It is fetched asynchronously after the favicon URL is set,
+  /// so it is possible for `image` to be nil if the fetch hasn't completed
+  public var image: UIImage?
 }
 
 /// Core interface for interaction with the web
@@ -126,9 +142,8 @@ public protocol TabState: AnyObject {
   var visibleSecureContentState: SecureContentState { get }
   /// The certificiate assoicated with this page if one exists
   var serverTrust: SecTrust? { get }
-  /// The current pages favicon
-  // TODO: Should be get only, make favicon fetch logic internal (brave/brave-browser#45095)
-  var favicon: Favicon? { get set }
+  /// The current cached favicon for the realized tab
+  var faviconStatus: FaviconStatus? { get }
   /// The current URL loaded on the page, regardless of the navigation status or spoofing
   @available(iOS, deprecated, message: "Use `visibleURL` or `lastCommittedURL` instead")
   var url: URL? { get }
@@ -202,6 +217,8 @@ public protocol TabState: AnyObject {
   func takeSnapshot(rect: CGRect, handler: @escaping (UIImage?) -> Void)
   /// Creates a full page PDF of the web contents
   func createFullPagePDF() async throws -> Data?
+  /// Whether or not find in page is currently visible
+  var isFindNavigatorVisible: Bool { get }
   /// Presents the find in page interaction using the provided text as an initial search query
   func presentFindInteraction(with text: String)
   /// Dismisses any active find in page interactions
@@ -249,6 +266,10 @@ public protocol TabState: AnyObject {
   var viewScale: CGFloat { get set }
   /// Clears the back forward list of the WKWebView
   func clearBackForwardList()
+  /// Pauses playback of all media in the web view
+  func pauseAllMediaPlayback()
+  /// Requests the playback status of media in the web view.
+  func requestMediaPlaybackState() async -> MediaPlaybackState
 
   // MARK: - Chromium specific
   func updateScripts()

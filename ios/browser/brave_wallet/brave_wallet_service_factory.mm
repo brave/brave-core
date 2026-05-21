@@ -28,6 +28,7 @@ class BraveWalletServiceDelegateIos : public BraveWalletServiceDelegate {
     return wallet_base_directory_;
   }
   bool IsPrivateWindow() override { return is_private_window_; }
+  bool IsAutolockEnabled() override { return true; }
 
  protected:
   base::FilePath wallet_base_directory_;

@@ -10,8 +10,6 @@
 
 #define RendererContentSettingRules RendererContentSettingRules_ChromiumImpl
 
-#define kTpcdGrant kTpcdGrant, kRemoteList
-
 #define kNotificationAndroidProvider \
   kRemoteListProvider:               \
   return SettingSource::kRemoteList; \
@@ -20,7 +18,6 @@
 #include <components/content_settings/core/common/content_settings.h>  // IWYU pragma: export
 
 #undef kNotificationAndroidProvider
-#undef kTpcdGrant
 #undef RendererContentSettingRules
 
 struct RendererContentSettingRules

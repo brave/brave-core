@@ -60,6 +60,7 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/webui/brave_new_tab_page_refresh/new_tab_page_initializer.h"
 #include "brave/browser/ui/webui/welcome_page/brave_welcome_ui_prefs.h"
 #endif
 
@@ -139,8 +140,6 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
 #endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-  // Added 11/2022
-  profile_prefs->ClearPref(kDontAskEnableWebDiscovery);
   profile_prefs->ClearPref(kBraveSearchVisitCount);
 #endif
 
@@ -254,6 +253,12 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
   speedreader::MigrateObsoleteProfilePrefs(profile_prefs);
 #endif
 
+  // Added 2026-03
+#if !BUILDFLAG(IS_ANDROID)
+  brave_new_tab_page_refresh::NewTabPageInitializer::MigrateProfilePrefs(
+      profile_prefs);
+#endif
+
   // END_MIGRATE_OBSOLETE_PROFILE_PREFS
 }
 
@@ -293,7 +298,9 @@ void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
 #endif
   ntp_background_images::NTPBackgroundImagesService::
       MigrateObsoleteLocalStatePrefs(local_state);
-
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  brave_wallet::MigrateObsoleteLocalStatePrefs(local_state);
+#endif
   // END_MIGRATE_OBSOLETE_LOCAL_STATE_PREFS
 }
 

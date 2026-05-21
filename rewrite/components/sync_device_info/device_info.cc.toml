@@ -1,0 +1,25 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[[substitution]]
+description = '''Add `self_delete_support` to the ctor.
+
+This regex always adds the argument as the last one in the argument list. This
+is used to initialise `self_delete_support_`.
+'''
+re_pattern = '(DeviceInfo::DeviceInfo\(.*?)(\)\n\s+:)'
+re_flags = ['DOTALL']
+replace = '''\1,
+    SelfDeleteSupport self_delete_support\2'''
+
+[[substitution]]
+description = '''Initialize `self_delete_support_` in the constructor
+
+This always initialises `self_delete_support_` as the last field.
+'''
+re_pattern = '(DeviceInfo::DeviceInfo\(.*?)( \{\})'
+re_flags = ['DOTALL']
+replace = '''\1,
+      self_delete_support_(self_delete_support)\2'''

@@ -25,7 +25,7 @@ std::optional<int> ParsePing(const base::DictValue& dict) {
 
 std::optional<TokenIssuerList> ParseTokenIssuers(const base::DictValue& dict) {
   if (const auto* const list = dict.FindList(kIssuersKey)) {
-    return TokenIssuersFromValue(*list);
+    return MaybeBuildTokenIssuersFromList(*list);
   }
 
   return std::nullopt;

@@ -5,8 +5,6 @@
 
 #include "brave/components/time_period_storage/iso_weekly_storage.h"
 
-#include "base/time/clock.h"
-
 namespace {
 constexpr size_t kRecordPeriodDays = 14;
 }  // namespace
@@ -20,11 +18,11 @@ uint64_t ISOWeeklyStorage::GetLastISOWeekSum() const {
 }
 
 uint64_t ISOWeeklyStorage::GetCurrentISOWeekSum() const {
-  return GetPeriodSumInTimeRange(GetLastMondayTime(0), clock_->Now());
+  return GetPeriodSumInTimeRange(GetLastMondayTime(0), base::Time::Now());
 }
 
 base::Time ISOWeeklyStorage::GetLastMondayTime(int week_offset) const {
-  base::Time midnight = clock_->Now().LocalMidnight();
+  base::Time midnight = base::Time::Now().LocalMidnight();
   base::Time::Exploded exploded;
   midnight.LocalExplode(&exploded);
 

@@ -192,13 +192,17 @@ public class AppState {
 
     // Initialize BraveCore
     let braveCoreMain = BraveCoreMain(additionalSwitches: switches)
-    // `UserAgent.mobile` requires a feature flag, so it must be initialized after BraveCore
-    braveCoreMain.setUserAgent(UserAgent.mobile)
+    // UserAgentType requires a feature flag, so it must be initialized after BraveCore
+    let userAgentType = GetDefaultBraveIOSUserAgentType()
+    let isDefaultModeDesktop =
+      braveCoreMain.profileController?.defaultHostContentSettings.defaultPageMode == .desktop
+    braveCoreMain.setUserAgent(userAgentType.userAgentForMode(isMobile: !isDefaultModeDesktop))
     return braveCoreMain
   }
 
   private func setupCustomSchemeHandlers() {
     let responders: [(String, InternalSchemeResponse)] = [
+      (LegacyNTPHandler.path, LegacyNTPHandler()),
       (ReaderModeHandler.path, ReaderModeHandler()),
       (Web3DomainHandler.path, Web3DomainHandler()),
       (BlockedDomainHandler.path, BlockedDomainHandler()),

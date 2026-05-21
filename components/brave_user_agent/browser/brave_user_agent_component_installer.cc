@@ -5,25 +5,38 @@
 
 #include "brave/components/brave_user_agent/browser/brave_user_agent_component_installer.h"
 
+#include <stdint.h>
+
 #include <array>
 #include <memory>
 #include <string>
 #include <vector>
 
+#include "base/files/file_path.h"
 #include "base/functional/bind.h"
-#include "base/functional/callback.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_user_agent/browser/brave_user_agent_exceptions.h"
 #include "brave/components/brave_user_agent/common/features.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
-#include "crypto/sha2.h"
 
 using brave_component_updater::BraveOnDemandUpdater;
 
 namespace brave_user_agent {
 
 namespace {
+
+inline constexpr char kBraveUserAgentExceptionsComponentName[] =
+    "Brave User Agent Exceptions";
+inline constexpr char kBraveUserAgentExceptionsComponentId[] =
+    "nlpaeekllejnmhoonlpcefpfnpbajbpe";
+// This is the SHA-256 of the brave-user-agent component's public key.
+// Derived from crypto::SHA256.
+inline constexpr std::array<uint8_t, 32>
+    kBraveUserAgentExceptionsComponentPublicKeySHA256 = {
+        0xdb, 0xf0, 0x44, 0xab, 0xb4, 0x9d, 0xc7, 0xee, 0xdb, 0xf2, 0x45,
+        0xf5, 0xdf, 0x10, 0x91, 0xf4, 0xc0, 0x9c, 0x90, 0x92, 0x52, 0xa0,
+        0x93, 0xfa, 0xb2, 0x23, 0x06, 0xb1, 0x96, 0x3b, 0x41, 0x35};
 
 class BraveUserAgentComponentInstallerPolicy
     : public component_updater::ComponentInstallerPolicy {
@@ -53,20 +66,10 @@ class BraveUserAgentComponentInstallerPolicy
   std::string GetName() const override;
   update_client::InstallerAttributes GetInstallerAttributes() const override;
   bool IsBraveComponent() const override;
-
- private:
-  const std::string component_id_;
-  const std::string component_name_;
-  std::array<uint8_t, crypto::kSHA256Length> component_hash_;
 };
 
-BraveUserAgentComponentInstallerPolicy::BraveUserAgentComponentInstallerPolicy()
-    : component_id_(kBraveUserAgentExceptionsComponentId),
-      component_name_(kBraveUserAgentExceptionsComponentName) {
-  // Generate hash from public key.
-  component_hash_ =
-      crypto::SHA256Hash(kBraveUserAgentExceptionsComponentPublicKey);
-}
+BraveUserAgentComponentInstallerPolicy::
+    BraveUserAgentComponentInstallerPolicy() = default;
 
 BraveUserAgentComponentInstallerPolicy::
     ~BraveUserAgentComponentInstallerPolicy() = default;
@@ -104,16 +107,17 @@ bool BraveUserAgentComponentInstallerPolicy::VerifyInstallation(
 
 base::FilePath BraveUserAgentComponentInstallerPolicy::GetRelativeInstallDir()
     const {
-  return base::FilePath::FromUTF8Unsafe(component_id_);
+  return base::FilePath::FromUTF8Unsafe(kBraveUserAgentExceptionsComponentId);
 }
 
 void BraveUserAgentComponentInstallerPolicy::GetHash(
     std::vector<uint8_t>* hash) const {
-  hash->assign(component_hash_.begin(), component_hash_.end());
+  hash->assign(kBraveUserAgentExceptionsComponentPublicKeySHA256.begin(),
+               kBraveUserAgentExceptionsComponentPublicKeySHA256.end());
 }
 
 std::string BraveUserAgentComponentInstallerPolicy::GetName() const {
-  return component_name_;
+  return kBraveUserAgentExceptionsComponentName;
 }
 
 update_client::InstallerAttributes

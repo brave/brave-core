@@ -4,11 +4,19 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/containers/buildflags/buildflags.gni")
+import("//brave/components/email_aliases/buildflags/buildflags.gni")
 
-brave_common_syncable_prefs_database_public_deps =
-    [ "//brave/components/containers/buildflags" ]
+brave_common_syncable_prefs_database_public_deps = [
+  "//brave/components/containers/buildflags",
+  "//brave/components/email_aliases/buildflags",
+]
 
 if (enable_containers) {
   brave_common_syncable_prefs_database_public_deps +=
       [ "//brave/components/containers/core/browser" ]
+}
+
+if (enable_email_aliases) {
+  brave_common_syncable_prefs_database_public_deps +=
+      [ "//brave/components/email_aliases:service" ]
 }

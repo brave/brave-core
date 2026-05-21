@@ -371,8 +371,7 @@ bool NTPSponsoredImagesData::IsValid() const {
 
 const Creative* NTPSponsoredImagesData::GetCreativeByInstanceId(
     const std::string& creative_instance_id) const {
-  // TODO(https://github.com/brave/brave-browser/issues/49222):
-  // Use a map-based lookup for creatives to improve performance.
+  // O(n) is fine given the small number of campaigns and creatives.
   for (const Campaign& campaign : campaigns) {
     for (const Creative& creative : campaign.creatives) {
       if (creative.creative_instance_id == creative_instance_id) {

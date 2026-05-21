@@ -177,6 +177,84 @@ bool AIChatConversationUIBrowserTestBase::VerifyElementState(
   return result.ExtractBool();
 }
 
+bool AIChatConversationUIBrowserTestBase::VerifyConversationFrameElementText(
+    const std::string& test_id,
+    const std::string& expected_text,
+    base::Location location) {
+  return VerifyElementText(test_id, expected_text,
+                           GetConversationEntriesFrame(), location);
+}
+
+bool AIChatConversationUIBrowserTestBase::VerifyElementText(
+    const std::string& test_id,
+    const std::string& expected_text,
+    content::RenderFrameHost* frame,
+    base::Location location) {
+  if (!frame) {
+    frame = conversation_rfh_;
+  }
+  SCOPED_TRACE(testing::Message()
+               << "VerifyElementText: '" << test_id << "' expecting '"
+               << expected_text << "' called from " << location.file_name()
+               << ":" << location.line_number());
+  constexpr char kWaitForTextScript[] = R"(
+    new Promise((resolve) => {
+      const selector = `[data-testid=$1]`
+      const expected = $2
+      const timeoutMs = 10000
+
+      const matches = () => {
+        const el = document.querySelector(selector)
+        return !!el && (el.textContent || '').trim() === expected
+      }
+
+      if (matches()) {
+        resolve(true)
+        return
+      }
+
+      const start = Date.now()
+      const target = document.body || document.documentElement
+      if (!target) {
+        const interval = setInterval(() => {
+          if (matches()) {
+            clearInterval(interval)
+            resolve(true)
+          } else if (Date.now() - start > timeoutMs) {
+            clearInterval(interval)
+            resolve(false)
+          }
+        }, 100)
+        return
+      }
+
+      const observer = new MutationObserver(() => {
+        if (matches()) {
+          observer.disconnect()
+          resolve(true)
+        } else if (Date.now() - start > timeoutMs) {
+          observer.disconnect()
+          resolve(false)
+        }
+      })
+      observer.observe(target, {
+        childList: true,
+        subtree: true,
+        characterData: true,
+      })
+
+      setTimeout(() => {
+        observer.disconnect()
+        resolve(false)
+      }, timeoutMs)
+    })
+  )";
+
+  auto result = content::EvalJs(
+      frame, content::JsReplace(kWaitForTextScript, test_id, expected_text));
+  return result.ExtractBool();
+}
+
 bool AIChatConversationUIBrowserTestBase::ClickElement(
     const std::string& test_id,
     content::RenderFrameHost* frame) {
@@ -267,6 +345,13 @@ AIChatConversationUIBrowserTestBase::SetupMockGenerateAssistantResponse(
             MockGenerateCallbacks(std::move(data_cb), std::move(complete_cb)));
       });
   return future;
+}
+
+mojom::ToolUseEventPtr AIChatConversationUIBrowserTestBase::CreateToolUseEvent(
+    const std::string& tool_name,
+    const std::string& tool_id) {
+  return mojom::ToolUseEvent::New(tool_name, tool_id, "{}", std::nullopt,
+                                  std::nullopt, nullptr, false);
 }
 
 }  // namespace ai_chat

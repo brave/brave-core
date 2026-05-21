@@ -6,7 +6,7 @@
 import assert from 'node:assert'
 import path from 'node:path'
 import fs from 'fs-extra'
-import config from './config.js'
+import config from './config.ts'
 import util from './util.js'
 
 const start = (

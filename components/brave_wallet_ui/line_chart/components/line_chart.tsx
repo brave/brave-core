@@ -116,6 +116,7 @@ export function LineChart({
 
   const showAreaChart = viewBoxWidth > 0 && viewBoxHeight > 0
   const showLoadingOverlay = !showAreaChart || isLoading
+  const showAreaFill = !!priceData && priceData.length > 0 && !isDisabled
 
   // render
   return (
@@ -147,6 +148,50 @@ export function LineChart({
                   stopOpacity={0}
                 />
               </linearGradient>
+              <linearGradient
+                id='portfolioDotFadeGradient'
+                gradientUnits='objectBoundingBox'
+                x1='0'
+                y1='0'
+                x2='0'
+                y2='1'
+              >
+                <stop
+                  offset='0%'
+                  stopColor='white'
+                  stopOpacity={1}
+                />
+                <stop
+                  offset='100%'
+                  stopColor='white'
+                  stopOpacity={0}
+                />
+              </linearGradient>
+              <mask
+                id='portfolioDotFadeMask'
+                maskUnits='objectBoundingBox'
+                maskContentUnits='objectBoundingBox'
+              >
+                <rect
+                  width='1'
+                  height='1'
+                  fill='url(#portfolioDotFadeGradient)'
+                />
+              </mask>
+              <pattern
+                id='portfolioDotPattern'
+                width='4'
+                height='4'
+                patternUnits='userSpaceOnUse'
+              >
+                <circle
+                  cx='2'
+                  cy='2'
+                  r='1'
+                  fill={leo.color.text.interactive}
+                  fillOpacity={0.5}
+                />
+              </pattern>
             </defs>
             <YAxis
               hide={true}
@@ -187,19 +232,38 @@ export function LineChart({
               isAnimationActive={false}
               type='monotone'
               dataKey='close'
+              stroke='none'
+              fill={showAreaFill ? 'url(#portfolioGradient)' : 'none'}
+              activeDot={false}
+              zIndex={10}
+            />
+            <Area
+              isAnimationActive={false}
+              type='monotone'
+              dataKey='close'
+              stroke='none'
+              fill={showAreaFill ? 'url(#portfolioDotPattern)' : 'none'}
+              mask={showAreaFill ? 'url(#portfolioDotFadeMask)' : undefined}
+              activeDot={false}
+              zIndex={11}
+            />
+            <Area
+              isAnimationActive={false}
+              type='monotone'
+              dataKey='close'
               strokeWidth={2}
               stroke={leo.color.icon.interactive}
-              fill={
-                !priceData || priceData.length <= 0
-                  ? 'none'
-                  : 'url(#portfolioGradient)'
-              }
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              shapeRendering='geometricPrecision'
+              fill='none'
               activeDot={
                 <CustomReferenceDot
                   onUpdateYPosition={setActiveYPosition}
                   onUpdateXPosition={setActiveXPosition}
                 />
               }
+              zIndex={12}
             />
           </AreaChart>
         )}

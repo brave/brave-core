@@ -6,16 +6,16 @@
 #include "brave/components/serp_metrics/serp_metrics.h"
 
 #include <memory>
+#include <string>
 
-#include "absl/strings/str_format.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/serp_metrics/pref_names.h"
 #include "brave/components/serp_metrics/serp_metric_type.h"
 #include "brave/components/serp_metrics/serp_metrics_feature.h"
-#include "brave/components/time_period_storage/time_period_storage.h"
-#include "brave/components/time_period_storage/time_period_store.h"
+#include "brave/components/serp_metrics/test/fake_serp_metrics_time_period_store.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -23,53 +23,10 @@
 // Day numbering is relative to the start of the test: Day 0 is the first day,
 // Day 1 is the next day, and so on. "Today" always refers to the most recent
 // day. Daily usage pings are simulated at specific times to verify which
-// metrics are included or excluded based on the `kLastCheckYMD`. Usage pings
+// metrics are included or excluded based on `kLastReportedAt`. Usage pings
 // report metrics from yesterday as well as from the stale period.
 
 namespace serp_metrics {
-
-namespace {
-
-class FakeTimePeriodStore : public TimePeriodStore {
- public:
-  FakeTimePeriodStore() = default;
-
-  FakeTimePeriodStore(const FakeTimePeriodStore&) = delete;
-  FakeTimePeriodStore& operator=(const FakeTimePeriodStore&) = delete;
-
-  ~FakeTimePeriodStore() override = default;
-
-  const base::ListValue* Get() override { return &list_; }
-
-  void Set(base::ListValue list) override { list_ = std::move(list); }
-
-  void Clear() override { list_.clear(); }
-
- private:
-  base::ListValue list_;
-};
-
-TimePeriodStorages BuildFakeTimePeriodStorages() {
-  TimePeriodStorages time_period_storages;
-  time_period_storages.emplace(SerpMetricType::kBrave,
-                               std::make_unique<TimePeriodStorage>(
-                                   std::make_unique<FakeTimePeriodStore>(),
-                                   kSerpMetricsTimePeriodInDays.Get(),
-                                   /*should_offset_dst=*/false));
-  time_period_storages.emplace(SerpMetricType::kGoogle,
-                               std::make_unique<TimePeriodStorage>(
-                                   std::make_unique<FakeTimePeriodStore>(),
-                                   kSerpMetricsTimePeriodInDays.Get(),
-                                   /*should_offset_dst=*/false));
-  time_period_storages.emplace(SerpMetricType::kOther,
-                               std::make_unique<TimePeriodStorage>(
-                                   std::make_unique<FakeTimePeriodStore>(),
-                                   kSerpMetricsTimePeriodInDays.Get(),
-                                   /*should_offset_dst=*/false));
-  return time_period_storages;
-}
-
-}  // namespace
 
 class SerpMetricsTest : public testing::Test {
  public:
@@ -82,20 +39,15 @@ class SerpMetricsTest : public testing::Test {
     // previously sent metrics.
     local_state_.registry()->RegisterStringPref(kLastCheckYMD,
                                                 "");  // Never checked.
+    local_state_.registry()->RegisterTimePref(
+        prefs::kLastReportedAt,
+        /* Never reported */ base::Time());
 
     scoped_feature_list_.InitAndEnableFeatureWithParameters(
         kSerpMetricsFeature, {{"time_period_in_days", "7"}});
 
     serp_metrics_ = std::make_unique<SerpMetrics>(
-        &local_state_, BuildFakeTimePeriodStorages());
-  }
-
-  // Advances the clock to one millisecond shy of a brand new day.
-  void AdvanceClockToJustBeforeNextDay() {
-    const base::Time now = base::Time::Now();
-    const base::Time end_of_day =
-        now.LocalMidnight() + base::Days(1) - base::Milliseconds(1);
-    task_environment_.AdvanceClock(end_of_day - now);
+        &local_state_, test::FakeSerpMetricsTimePeriodStoreFactory());
   }
 
   // Advances the clock to the start of a brand new day.
@@ -109,15 +61,16 @@ class SerpMetricsTest : public testing::Test {
         base::Days(kSerpMetricsTimePeriodInDays.Get()));
   }
 
-  // Simulates sending the daily usage ping by updating `kLastCheckYMD`.
-  // Searches are reported by calendar day based on the last checked date.
-  void SimulateSendingDailyUsagePingAt(base::Time at) {
-    base::Time::Exploded now_exploded;
-    at.LocalExplode(&now_exploded);
-    local_state_.SetString(
-        kLastCheckYMD,
-        absl::StrFormat("%04d-%02d-%02d", now_exploded.year, now_exploded.month,
-                        now_exploded.day_of_month));
+  void AdvanceClockToNextUTCMidnight() {
+    const base::Time now = base::Time::Now();
+    task_environment_.AdvanceClock(now.UTCMidnight() + base::Days(1) - now);
+  }
+
+  // Advances the clock to one millisecond shy of the next UTC midnight.
+  void AdvanceClockToJustBeforeNextUTCMidnight() {
+    const base::Time now = base::Time::Now();
+    task_environment_.AdvanceClock(now.UTCMidnight() + base::Days(1) -
+                                   base::Milliseconds(1) - now);
   }
 
  protected:
@@ -277,7 +230,7 @@ TEST_F(SerpMetricsTest, SearchCountForYesterdayOnCuspOfDayRollover) {
   serp_metrics_->RecordSearch(SerpMetricType::kGoogle);
   serp_metrics_->RecordSearch(SerpMetricType::kOther);
 
-  AdvanceClockToJustBeforeNextDay();
+  AdvanceClockToJustBeforeNextUTCMidnight();
   EXPECT_EQ(1U,
             serp_metrics_->GetSearchCountForYesterday(SerpMetricType::kBrave));
   EXPECT_EQ(2U,
@@ -307,14 +260,14 @@ TEST_F(SerpMetricsTest, SearchCountForYesterdayWhenTodayHasNoRecordedSearches) {
 }
 
 TEST_F(SerpMetricsTest, DailyUsagePingIncludesYesterdayCounts) {
-  // Verifies that yesterday’s searches are included when the last daily usage
+  // Verifies that yesterday's searches are included when the last daily usage
   // ping was sent on the previous day.
 
   // Day 0: Yesterday
   serp_metrics_->RecordSearch(SerpMetricType::kBrave);
   serp_metrics_->RecordSearch(SerpMetricType::kGoogle);
   serp_metrics_->RecordSearch(SerpMetricType::kOther);
-  SimulateSendingDailyUsagePingAt(base::Time::Now());
+  local_state_.SetTime(prefs::kLastReportedAt, base::Time::Now());
   AdvanceClockToNextDay();
 
   // Day 1: Today
@@ -393,6 +346,18 @@ TEST_F(SerpMetricsTest, OtherSearchCountForStalePeriod) {
   EXPECT_EQ(2U, serp_metrics_->GetSearchCountForStalePeriod());
 }
 
+TEST_F(SerpMetricsTest, StaleCountIsZeroWhenNoSearchesPrecedeYesterday) {
+  // Day 0: Yesterday
+  serp_metrics_->RecordSearch(SerpMetricType::kBrave);
+  serp_metrics_->RecordSearch(SerpMetricType::kGoogle);
+  AdvanceClockToNextDay();
+
+  // Day 1: Today
+  serp_metrics_->RecordSearch(SerpMetricType::kOther);
+
+  EXPECT_EQ(0U, serp_metrics_->GetSearchCountForStalePeriod());
+}
+
 TEST_F(SerpMetricsTest, SearchCountForStalePeriodAcrossMultipleDays) {
   // Day 0: Stale
   serp_metrics_->RecordSearch(SerpMetricType::kBrave);
@@ -449,6 +414,27 @@ TEST_F(SerpMetricsTest, SearchCountsForYesterdayAndStalePeriod) {
   EXPECT_EQ(4U, serp_metrics_->GetSearchCountForStalePeriod());
 }
 
+TEST_F(SerpMetricsTest, SearchCountForStalePeriodOnCuspOfDayRollover) {
+  // Day 0: Stale
+  serp_metrics_->RecordSearch(SerpMetricType::kBrave);
+  serp_metrics_->RecordSearch(SerpMetricType::kGoogle);
+  serp_metrics_->RecordSearch(SerpMetricType::kOther);
+  AdvanceClockToNextDay();
+
+  // Day 1: Yesterday
+  serp_metrics_->RecordSearch(SerpMetricType::kBrave);
+  serp_metrics_->RecordSearch(SerpMetricType::kGoogle);
+  AdvanceClockToNextDay();
+
+  // Day 2: Today
+  serp_metrics_->RecordSearch(SerpMetricType::kBrave);
+  serp_metrics_->RecordSearch(SerpMetricType::kGoogle);
+  serp_metrics_->RecordSearch(SerpMetricType::kOther);
+
+  AdvanceClockToJustBeforeNextUTCMidnight();
+  EXPECT_EQ(3U, serp_metrics_->GetSearchCountForStalePeriod());
+}
+
 TEST_F(SerpMetricsTest, DoNotCountSearchesBeforeLastDailyUsagePingWasSent) {
   // Verifies that sending the daily usage ping updates the reporting cutoff
   // and prevents re-reporting older searches.
@@ -484,7 +470,7 @@ TEST_F(SerpMetricsTest, DoNotCountSearchesBeforeLastDailyUsagePingWasSent) {
 
   // First daily usage ping. Searches from Day 0 have already been reported.
   // Searches from Day 1, Day 2, and yesterday are counted.
-  SimulateSendingDailyUsagePingAt(first_daily_usage_ping_at);
+  local_state_.SetTime(prefs::kLastReportedAt, first_daily_usage_ping_at);
   EXPECT_EQ(1U,
             serp_metrics_->GetSearchCountForYesterday(SerpMetricType::kBrave));
   EXPECT_EQ(2U,
@@ -494,8 +480,8 @@ TEST_F(SerpMetricsTest, DoNotCountSearchesBeforeLastDailyUsagePingWasSent) {
   EXPECT_EQ(4U, serp_metrics_->GetSearchCountForStalePeriod());
 
   // Second daily usage ping. Searches from Day 1 and Day 2 have already been
-  // reported. Only yesterday’s searches are counted.
-  SimulateSendingDailyUsagePingAt(second_daily_usage_ping_at);
+  // reported. Only yesterday's searches are counted.
+  local_state_.SetTime(prefs::kLastReportedAt, second_daily_usage_ping_at);
   EXPECT_EQ(1U,
             serp_metrics_->GetSearchCountForYesterday(SerpMetricType::kBrave));
   EXPECT_EQ(2U,
@@ -504,15 +490,33 @@ TEST_F(SerpMetricsTest, DoNotCountSearchesBeforeLastDailyUsagePingWasSent) {
             serp_metrics_->GetSearchCountForYesterday(SerpMetricType::kOther));
   EXPECT_EQ(0U, serp_metrics_->GetSearchCountForStalePeriod());
 
-  // Final daily usage ping. Yesterday’s searches are already reported. We are
+  // Final daily usage ping. Yesterday's searches are already reported. We are
   // all caught up. Nothing else to include.
-  SimulateSendingDailyUsagePingAt(base::Time::Now());
+  local_state_.SetTime(prefs::kLastReportedAt, base::Time::Now());
   EXPECT_EQ(0U,
             serp_metrics_->GetSearchCountForYesterday(SerpMetricType::kBrave));
   EXPECT_EQ(0U,
             serp_metrics_->GetSearchCountForYesterday(SerpMetricType::kGoogle));
   EXPECT_EQ(0U,
             serp_metrics_->GetSearchCountForYesterday(SerpMetricType::kOther));
+  EXPECT_EQ(0U, serp_metrics_->GetSearchCountForStalePeriod());
+}
+
+TEST_F(SerpMetricsTest, DailyPingTodaySuppressesBothYesterdayAndStaleCounts) {
+  // Day 0: Stale (no searches)
+  serp_metrics_->RecordSearch(SerpMetricType::kBrave);
+  AdvanceClockToNextDay();
+
+  // Day 1: Yesterday
+  serp_metrics_->RecordSearch(SerpMetricType::kBrave);
+  serp_metrics_->RecordSearch(SerpMetricType::kBrave);
+  AdvanceClockToNextDay();
+
+  // Day 2: Today
+  local_state_.SetTime(prefs::kLastReportedAt, base::Time::Now());
+
+  EXPECT_EQ(0U,
+            serp_metrics_->GetSearchCountForYesterday(SerpMetricType::kBrave));
   EXPECT_EQ(0U, serp_metrics_->GetSearchCountForStalePeriod());
 }
 
@@ -545,7 +549,7 @@ TEST_F(SerpMetricsTest, CountAllSearchesIfDailyUsagePingWasNeverSent) {
   EXPECT_EQ(3U, serp_metrics_->GetSearchCountForStalePeriod());
 }
 
-TEST_F(SerpMetricsTest, CountAllSearchesIfLastCheckedDateIsInvalid) {
+TEST_F(SerpMetricsTest, DontCountSearchesIfLegacyDateIsUnparseable) {
   // Day 0: Stale
   serp_metrics_->RecordSearch(SerpMetricType::kBrave);
   AdvanceClockToNextDay();
@@ -565,13 +569,13 @@ TEST_F(SerpMetricsTest, CountAllSearchesIfLastCheckedDateIsInvalid) {
   serp_metrics_->RecordSearch(SerpMetricType::kBrave);
 
   local_state_.SetString(kLastCheckYMD, "invalid");
-  EXPECT_EQ(1U,
+  EXPECT_EQ(0U,
             serp_metrics_->GetSearchCountForYesterday(SerpMetricType::kBrave));
-  EXPECT_EQ(1U,
+  EXPECT_EQ(0U,
             serp_metrics_->GetSearchCountForYesterday(SerpMetricType::kGoogle));
-  EXPECT_EQ(1U,
+  EXPECT_EQ(0U,
             serp_metrics_->GetSearchCountForYesterday(SerpMetricType::kOther));
-  EXPECT_EQ(3U, serp_metrics_->GetSearchCountForStalePeriod());
+  EXPECT_EQ(0U, serp_metrics_->GetSearchCountForStalePeriod());
 }
 
 TEST_F(SerpMetricsTest, DoNotCountSearchesWhenLastCheckedDateIsInFuture) {
@@ -583,9 +587,10 @@ TEST_F(SerpMetricsTest, DoNotCountSearchesWhenLastCheckedDateIsInFuture) {
   // Day 1: Today
   serp_metrics_->RecordSearch(SerpMetricType::kOther);
 
-  SimulateSendingDailyUsagePingAt(
+  local_state_.SetTime(
+      prefs::kLastReportedAt,
       base::Time::Now() +
-      base::Days(365));  // Time travel for testing purposes only.
+          base::Days(365));  // Time travel for testing purposes only.
   EXPECT_EQ(0U,
             serp_metrics_->GetSearchCountForYesterday(SerpMetricType::kBrave));
   EXPECT_EQ(0U,
@@ -698,21 +703,17 @@ TEST_F(SerpMetricsTest, ClearHistoryWithNoSearchesRecorded) {
 }
 
 TEST_F(SerpMetricsTest, ClearHistoryDoesNotAffectDailyUsagePing) {
-  // Day 0: Stale
   serp_metrics_->RecordSearch(SerpMetricType::kBrave);
   AdvanceClockToNextDay();
 
-  // Day 1: Yesterday
-  serp_metrics_->RecordSearch(SerpMetricType::kBrave);
-  SimulateSendingDailyUsagePingAt(base::Time::Now());
+  const base::Time ping_time = base::Time::Now();
+  local_state_.SetTime(prefs::kLastReportedAt, ping_time);
   AdvanceClockToNextDay();
 
-  // Day 2: Today
   serp_metrics_->RecordSearch(SerpMetricType::kBrave);
 
   serp_metrics_->ClearHistory();
-  EXPECT_EQ(0U,
-            serp_metrics_->GetSearchCountForTesting(SerpMetricType::kBrave));
+  EXPECT_EQ(ping_time, local_state_.GetTime(prefs::kLastReportedAt));
 }
 
 TEST_F(SerpMetricsTest, ClearHistoryIsIdempotent) {
@@ -723,6 +724,145 @@ TEST_F(SerpMetricsTest, ClearHistoryIsIdempotent) {
   serp_metrics_->ClearHistory();
   EXPECT_EQ(0U,
             serp_metrics_->GetSearchCountForTesting(SerpMetricType::kOther));
+}
+
+TEST_F(SerpMetricsTest, SearchRecordedJustBeforeUTCMidnightCountsAsYesterday) {
+  // Day 0: Yesterday
+  AdvanceClockToJustBeforeNextUTCMidnight();
+  serp_metrics_->RecordSearch(SerpMetricType::kBrave);
+
+  // Day 1: Today
+  task_environment_.AdvanceClock(base::Milliseconds(1));
+
+  EXPECT_EQ(1U,
+            serp_metrics_->GetSearchCountForYesterday(SerpMetricType::kBrave));
+}
+
+TEST_F(SerpMetricsTest, SearchRecordedAtExactUTCMidnightCountsAsToday) {
+  // Day 0: Today
+  AdvanceClockToNextUTCMidnight();
+  serp_metrics_->RecordSearch(SerpMetricType::kBrave);
+
+  EXPECT_EQ(0U,
+            serp_metrics_->GetSearchCountForYesterday(SerpMetricType::kBrave));
+}
+
+TEST_F(SerpMetricsTest, SearchRecordedJustAfterUTCMidnightCountsAsToday) {
+  // Day 0: Today
+  AdvanceClockToNextUTCMidnight();
+  task_environment_.AdvanceClock(base::Milliseconds(1));
+  serp_metrics_->RecordSearch(SerpMetricType::kBrave);
+
+  EXPECT_EQ(0U,
+            serp_metrics_->GetSearchCountForYesterday(SerpMetricType::kBrave));
+}
+
+TEST_F(SerpMetricsTest, SearchRecordedAtMiddayCountsAsYesterdayAfterMidnight) {
+  // Day 0: Yesterday
+  task_environment_.AdvanceClock(base::Hours(12));
+  serp_metrics_->RecordSearch(SerpMetricType::kBrave);
+
+  // Day 1: Today
+  AdvanceClockToNextDay();
+
+  EXPECT_EQ(1U,
+            serp_metrics_->GetSearchCountForYesterday(SerpMetricType::kBrave));
+}
+
+TEST_F(SerpMetricsTest, SearchAtUTCMidnightEndsUpInYesterdayNotStale) {
+  // Day 0: Stale (no searches)
+  local_state_.SetTime(prefs::kLastReportedAt, base::Time::Now());
+  AdvanceClockToNextUTCMidnight();
+
+  // Day 1: Yesterday
+  serp_metrics_->RecordSearch(SerpMetricType::kBrave);
+  AdvanceClockToNextDay();
+
+  // Day 2: Today
+  EXPECT_EQ(1U,
+            serp_metrics_->GetSearchCountForYesterday(SerpMetricType::kBrave));
+  EXPECT_EQ(0U, serp_metrics_->GetSearchCountForStalePeriod());
+}
+
+TEST_F(SerpMetricsTest, SearchJustBeforeUTCMidnightEndsUpInStaleNotYesterday) {
+  // Day 0: Stale
+  AdvanceClockToJustBeforeNextUTCMidnight();
+  serp_metrics_->RecordSearch(SerpMetricType::kBrave);
+
+  // Day 1: Yesterday
+  task_environment_.AdvanceClock(base::Milliseconds(1));
+
+  // Day 2: Today
+  AdvanceClockToNextDay();
+
+  EXPECT_EQ(0U,
+            serp_metrics_->GetSearchCountForYesterday(SerpMetricType::kBrave));
+  EXPECT_EQ(1U, serp_metrics_->GetSearchCountForStalePeriod());
+}
+
+TEST_F(SerpMetricsTest, LastCheckedAtOnYesterdayMidnightYieldsZeroStale) {
+  // Day 0: Stale
+  serp_metrics_->RecordSearch(SerpMetricType::kBrave);
+  AdvanceClockToNextDay();
+
+  // Day 1: Yesterday
+  serp_metrics_->RecordSearch(SerpMetricType::kBrave);
+  local_state_.SetTime(prefs::kLastReportedAt, base::Time::Now());
+  AdvanceClockToNextDay();
+
+  // Day 2: Today
+  EXPECT_EQ(0U, serp_metrics_->GetSearchCountForStalePeriod());
+}
+
+TEST_F(SerpMetricsTest,
+       LastCheckedAtJustBeforeYesterdayMidnightYieldsOneStaleDay) {
+  // Day 0: Stale
+  serp_metrics_->RecordSearch(SerpMetricType::kBrave);
+  serp_metrics_->RecordSearch(SerpMetricType::kBrave);
+  AdvanceClockToNextDay();
+
+  // Day 1: Yesterday
+  serp_metrics_->RecordSearch(SerpMetricType::kBrave);
+  AdvanceClockToNextDay();
+
+  // Day 2: Today
+  const base::Time just_before_yesterday_midnight =
+      base::Time::Now().UTCMidnight() - base::Days(1) - base::Milliseconds(1);
+  local_state_.SetTime(prefs::kLastReportedAt, just_before_yesterday_midnight);
+
+  EXPECT_EQ(2U, serp_metrics_->GetSearchCountForStalePeriod());
+}
+
+TEST_F(SerpMetricsTest,
+       SearchRecordedOnDecember31UTCCountsAsYesterdayOnJanuary1) {
+  base::Time time;
+  ASSERT_TRUE(base::Time::FromUTCString("31 Dec 2049 12:34:56", &time));
+  task_environment_.AdvanceClock(time - base::Time::Now());
+
+  // Day 0: Yesterday
+  serp_metrics_->RecordSearch(SerpMetricType::kBrave);
+  AdvanceClockToNextDay();
+
+  // Day 1: Today
+  EXPECT_EQ(1U,
+            serp_metrics_->GetSearchCountForYesterday(SerpMetricType::kBrave));
+  EXPECT_EQ(0U, serp_metrics_->GetSearchCountForStalePeriod());
+}
+
+TEST_F(SerpMetricsTest,
+       SearchRecordedOnLeapDayUTCIsReportedAsYesterdayOnMarch1) {
+  base::Time time;
+  ASSERT_TRUE(base::Time::FromUTCString("29 Feb 2052 12:00:00", &time));
+  task_environment_.AdvanceClock(time - base::Time::Now());
+
+  // Day 0: Yesterday (leap day)
+  serp_metrics_->RecordSearch(SerpMetricType::kBrave);
+  AdvanceClockToNextUTCMidnight();
+
+  // Day 1: Today
+  EXPECT_EQ(1U,
+            serp_metrics_->GetSearchCountForYesterday(SerpMetricType::kBrave));
+  EXPECT_EQ(0U, serp_metrics_->GetSearchCountForStalePeriod());
 }
 
 }  // namespace serp_metrics

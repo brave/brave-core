@@ -48,7 +48,7 @@ class DatabaseManager final {
                       uint64_t trace_id);
 
   // Shutdowns the database.
-  void Shutdown(ShutdownCallback callback);
+  void Shutdown(ResultCallback callback);
 
  private:
   void CreateOrOpenCallback(
@@ -57,7 +57,7 @@ class DatabaseManager final {
   void OnRunTransactionCallback(
       RunDBTransactionCallback callback,
       mojom::DBTransactionResultInfoPtr mojom_db_transaction_result);
-  void OnShutdownCallback(ShutdownCallback callback, bool success);
+  void OnShutdownCallback(ResultCallback callback, bool success);
 
   // Create the database from scratch.
   void Create(ResultCallback callback);

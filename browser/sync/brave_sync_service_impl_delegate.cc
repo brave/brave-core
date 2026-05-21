@@ -63,6 +63,12 @@ void BraveSyncServiceImplDelegate::OnDeviceInfoChange() {
   // When our device was removed from the sync chain by some other device,
   // we don't seee it in devices list, we must reset sync in a proper way
   if (!found_local_device) {
+    // If encryptor isn't ready yet, we're still in early init — the empty
+    // device list comes from ClearMetadataIfStopped() during StopAndClear(),
+    // not from another device removing us from the chain.
+    if (!sync_service_impl_->has_encryptor()) {
+      return;
+    }
     // We can't call OnSelfDeviceInfoDeleted directly because we are on
     // remove device execution path, so posting task
     base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(

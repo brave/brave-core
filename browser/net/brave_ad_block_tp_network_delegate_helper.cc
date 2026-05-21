@@ -14,6 +14,7 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/feature_list.h"
+#include "base/functional/bind.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/notreached.h"
@@ -23,6 +24,7 @@
 #include "brave/browser/brave_shields/ad_block_pref_service_factory.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/browser/net/url_context.h"
+#include "brave/components/brave_shields/content/browser/ad_block_engine_wrapper.h"
 #include "brave/components/brave_shields/content/browser/ad_block_pref_service.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
@@ -88,8 +90,7 @@ void SetAdblockCnameHostResolverForTesting(
 }
 
 template <template <typename> class T>
-void UseCnameResult(scoped_refptr<base::SequencedTaskRunner> task_runner,
-                    const ResponseCallback& next_callback,
+void UseCnameResult(const ResponseCallback& next_callback,
                     T<BraveRequestInfo> ctx,
                     EngineFlags previous_result,
                     std::optional<std::string> cname);
@@ -104,12 +105,11 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
  public:
   AdblockCnameResolveHostClient(
       const ResponseCallback& next_callback,
-      scoped_refptr<base::SequencedTaskRunner> task_runner,
       T<BraveRequestInfo> ctx,
       EngineFlags previous_result) {
     DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-    cb_ = base::BindOnce(&UseCnameResult<T>, task_runner,
-                         std::move(next_callback), ctx, previous_result);
+    cb_ = base::BindOnce(&UseCnameResult<T>, std::move(next_callback), ctx,
+                         previous_result);
 
     const auto network_anonymization_key = ctx->network_anonymization_key();
 
@@ -200,7 +200,8 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
 ShouldBlockRequestResult ShouldBlockRequestOnTaskRunner(
     ShouldBlockRequestParams input,
     EngineFlags previous_result,
-    std::optional<GURL> canonical_url) {
+    std::optional<GURL> canonical_url,
+    brave_shields::AdBlockEngineWrapper* engine_wrapper) {
   ShouldBlockRequestResult result;
   result.engine_flags = previous_result;
 
@@ -222,12 +223,11 @@ ShouldBlockRequestResult ShouldBlockRequestOnTaskRunner(
       net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 
   SCOPED_UMA_HISTOGRAM_TIMER("Brave.Adblock.ShouldBlockRequest");
-  auto adblock_result =
-      g_brave_browser_process->ad_block_service()->ShouldStartRequest(
-          url_to_check, input.resource_type, source_host,
-          input.aggressive_blocking || force_aggressive,
-          previous_result.did_match_rule, previous_result.did_match_exception,
-          previous_result.did_match_important);
+  auto adblock_result = engine_wrapper->ShouldStartRequest(
+      url_to_check, input.resource_type, source_host,
+      input.aggressive_blocking || force_aggressive,
+      previous_result.did_match_rule, previous_result.did_match_exception,
+      previous_result.did_match_important);
 
   bool has_valid_rewritten_url = false;
   // Note that `rewritten_url` results should only be used for the
@@ -281,12 +281,10 @@ ShouldBlockRequestResult ShouldBlockRequestOnTaskRunner(
 }
 
 template <template <typename> class T>
-void OnShouldBlockRequestResult(
-    bool then_check_uncloaked,
-    scoped_refptr<base::SequencedTaskRunner> task_runner,
-    const ResponseCallback& next_callback,
-    T<BraveRequestInfo> ctx,
-    ShouldBlockRequestResult result) {
+void OnShouldBlockRequestResult(bool then_check_uncloaked,
+                                const ResponseCallback& next_callback,
+                                T<BraveRequestInfo> ctx,
+                                ShouldBlockRequestResult result) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   if (!ctx) {
     next_callback.Run();
@@ -303,16 +301,15 @@ void OnShouldBlockRequestResult(
         ctx->request_url(), ctx->render_frame_token(), brave_shields::kAds);
   } else if (then_check_uncloaked) {
     // This will be deleted by `AdblockCnameResolveHostClient::OnComplete`.
-    new AdblockCnameResolveHostClient<T>(std::move(next_callback), task_runner,
-                                         ctx, result.engine_flags);
+    new AdblockCnameResolveHostClient<T>(std::move(next_callback), ctx,
+                                         result.engine_flags);
     return;
   }
   next_callback.Run();
 }
 
 template <template <typename> class T>
-void UseCnameResult(scoped_refptr<base::SequencedTaskRunner> task_runner,
-                    const ResponseCallback& next_callback,
+void UseCnameResult(const ResponseCallback& next_callback,
                     T<BraveRequestInfo> ctx,
                     EngineFlags previous_result,
                     std::optional<std::string> cname) {
@@ -337,13 +334,12 @@ void UseCnameResult(scoped_refptr<base::SequencedTaskRunner> task_runner,
                                    ctx->method(),
                                    ctx->render_frame_token(),
                                    ctx->devtools_request_id()};
-    task_runner->PostTaskAndReplyWithResult(
-        FROM_HERE,
+    auto* ad_block_service = g_brave_browser_process->ad_block_service();
+    ad_block_service->AsyncCallAndReplyWithResult<ShouldBlockRequestResult>(
         base::BindOnce(&ShouldBlockRequestOnTaskRunner, std::move(input),
-                       previous_result,
-                       std::make_optional<GURL>(canonical_url)),
-        base::BindOnce(&OnShouldBlockRequestResult<T>, false, task_runner,
-                       next_callback, ctx));
+                       previous_result, std::move(canonical_url)),
+        base::BindOnce(&OnShouldBlockRequestResult<T>, false, next_callback,
+                       ctx));
   } else {
     next_callback.Run();
   }
@@ -406,9 +402,6 @@ void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
   DCHECK(!ctx->request_url().is_empty());
   DCHECK(!ctx->initiator_url().is_empty());
 
-  scoped_refptr<base::SequencedTaskRunner> task_runner =
-      g_brave_browser_process->ad_block_service()->GetTaskRunner();
-
   // DNS queries won't be routed through Tor or proxies, so we need to
   // skip requests in those contexts.
   // This could be reconsidered if there is a reliable way to route DoH traffic
@@ -436,12 +429,12 @@ void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
       ctx->initiator_url(),       ctx->request_url(), ctx->resource_type(),
       ctx->aggressive_blocking(), ctx->method(),      ctx->render_frame_token(),
       ctx->devtools_request_id()};
-  task_runner->PostTaskAndReplyWithResult(
-      FROM_HERE,
+  auto* ad_block_service = g_brave_browser_process->ad_block_service();
+  ad_block_service->AsyncCallAndReplyWithResult<ShouldBlockRequestResult>(
       base::BindOnce(&ShouldBlockRequestOnTaskRunner, std::move(input),
                      EngineFlags(), std::nullopt),
       base::BindOnce(&OnShouldBlockRequestResult<T>, should_check_uncloaked,
-                     task_runner, next_callback, ctx));
+                     next_callback, ctx));
 }
 
 template <template <typename> class T>

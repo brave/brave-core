@@ -13,8 +13,6 @@ protocol LoginInfoTableViewCellDelegate: AnyObject {
   /// TextField Related Actions/ Delegates
   func textFieldDidEndEditing(_ cell: LoginInfoTableViewCell)
   func shouldReturnAfterEditingTextField(_ cell: LoginInfoTableViewCell) -> Bool
-  /// Table Row Commands Related Actions (Copy - Open)
-  func canPerform(action: Selector, for cell: LoginInfoTableViewCell) -> Bool
   func didSelectOpenWebsite(_ cell: LoginInfoTableViewCell)
   func didSelectCopyWebsite(_ cell: LoginInfoTableViewCell, authenticationRequired: Bool)
   func didSelectReveal(_ cell: LoginInfoTableViewCell, completion: ((Bool) -> Void)?)
@@ -71,10 +69,6 @@ class LoginInfoTableViewCell: UITableViewCell, TableViewReusable {
     }
   }
 
-  override var canBecomeFirstResponder: Bool {
-    return true
-  }
-
   weak var delegate: LoginInfoTableViewCellDelegate?
 
   // MARK: Lifecycle
@@ -101,10 +95,6 @@ class LoginInfoTableViewCell: UITableViewCell, TableViewReusable {
       $0.returnKeyType = .default
       $0.isUserInteractionEnabled = false
     }
-  }
-
-  override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
-    return delegate?.canPerform(action: action, for: self) == true
   }
 
   // MARK: Internal
@@ -158,29 +148,6 @@ class LoginInfoTableViewCell: UITableViewCell, TableViewReusable {
     }
 
     setNeedsUpdateConstraints()
-  }
-}
-
-// MARK: MenuHelperInterface
-
-extension LoginInfoTableViewCell: MenuHelperInterface {
-
-  func menuHelperReveal() {
-    delegate?.didSelectReveal(self) { [weak self] status in
-      self?.displayDescriptionAsPassword = !status
-    }
-  }
-
-  func menuHelperSecure() {
-    displayDescriptionAsPassword = true
-  }
-
-  func menuHelperCopy() {
-    delegate?.didSelectCopyWebsite(self, authenticationRequired: displayDescriptionAsPassword)
-  }
-
-  func menuHelperOpenWebsite() {
-    delegate?.didSelectOpenWebsite(self)
   }
 }
 

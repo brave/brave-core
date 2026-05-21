@@ -41,12 +41,12 @@
 #endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-#include "chrome/browser/extensions/crx_installer.h"
 #include "chrome/browser/extensions/extension_install_prompt.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/common/extensions/extension_constants.h"
 #include "components/crx_file/crx_verifier.h"
 #include "extensions/browser/crx_file_info.h"
+#include "extensions/browser/crx_installer.h"
 #include "extensions/browser/extension_dialog_auto_confirm.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/browser/test_extension_registry_observer.h"

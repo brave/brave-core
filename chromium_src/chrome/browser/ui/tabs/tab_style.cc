@@ -5,6 +5,7 @@
 
 #include "chrome/browser/ui/tabs/tab_style.h"
 
+#include "brave/browser/ui/tabs/brave_compact_horizontal_tabs_layout.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/features.h"
 
@@ -47,6 +48,9 @@ class BraveTabStyle : public TabStyle {
   }
 
   int GetPinnedWidth(const bool is_split) const override {
+    if (!tabs::HorizontalTabsUpdateEnabled()) {
+      return TabStyle::GetPinnedWidth(is_split);
+    }
     // We can ignore |is_split| because we're always using same width.
     return tabs::GetHorizontalTabHeight() + tabs::kHorizontalTabInset * 2;
   }
@@ -58,7 +62,10 @@ class BraveTabStyle : public TabStyle {
     // The "drag handle extension" is the amount of space in DIP at the top of
     // inactive tabs where mouse clicks are treated as clicks in the "caption"
     // area, i.e. the draggable part of the window frame.
-    return 4;
+    if (tabs::ShouldUseCompactHorizontalTabsForNonTouchUI()) {
+      return tabs::compact_horizontal_tabs_layout::kDragHandleExtension;
+    }
+    return tabs::compact_horizontal_tabs_layout::kDragHandleExtensionDefault;
   }
 
   gfx::Size GetSeparatorSize() const override {

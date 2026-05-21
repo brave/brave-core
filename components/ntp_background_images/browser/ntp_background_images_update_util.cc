@@ -61,11 +61,6 @@ void CheckAndUpdateSponsoredImagesComponentCallback(
                  "data callback";
       break;
     }
-    case update_client::Error::MAX_VALUE: {
-      VLOG(6) << "NTP Sponsored Images component update failed due to unknown "
-                 "error";
-      break;
-    }
   }
 }
 

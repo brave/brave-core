@@ -12,6 +12,7 @@
 #include "brave/components/brave_ads/core/internal/database/database_table_interface.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
+#include "brave/components/brave_ads/core/public/history/ad_history_callback.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
 
 namespace brave_ads::database::table {
@@ -40,19 +41,12 @@ class AdHistory final : public TableInterface {
     batch_size_ = batch_size;
   }
 
-  std::string GetTableName() const override;
-
+  // TableInterface:
   void Create(const mojom::DBTransactionInfoPtr& mojom_db_transaction) override;
   void Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
                int to_version) override;
 
  private:
-  void Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
-              const AdHistoryList& ad_history) const;
-
-  std::string BuildInsertSql(const mojom::DBActionInfoPtr& mojom_db_action,
-                             const AdHistoryList& ad_history) const;
-
   int batch_size_;
 };
 

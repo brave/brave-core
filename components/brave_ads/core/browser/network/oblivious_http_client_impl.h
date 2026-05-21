@@ -8,12 +8,12 @@
 
 #include "brave/components/brave_ads/core/browser/network/http_client_callback.h"
 #include "services/network/public/mojom/oblivious_http_request.mojom.h"
-
-class GURL;
+#include "url/gurl.h"
 
 namespace brave_ads {
 
-class ObliviousHttpClientImpl : public network::mojom::ObliviousHttpClient {
+class ObliviousHttpClientImpl final
+    : public network::mojom::ObliviousHttpClient {
  public:
   ObliviousHttpClientImpl(GURL url, SendRequestCallback callback);
 
@@ -22,6 +22,7 @@ class ObliviousHttpClientImpl : public network::mojom::ObliviousHttpClient {
 
   ~ObliviousHttpClientImpl() override;
 
+  // network::mojom::ObliviousHttpClient:
   void OnCompleted(
       network::mojom::ObliviousHttpCompletionResultPtr response) override;
 

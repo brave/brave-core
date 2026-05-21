@@ -5,14 +5,13 @@
 
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions.h"
 
-#include "base/run_loop.h"
-#include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
+#include "base/test/test_future.h"
+#include "brave/components/brave_ads/core/internal/account/transactions/test/transactions_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
-#include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table_util.h"
-#include "brave/components/brave_ads/core/internal/account/transactions/transactions_test_util.h"
-#include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
+#include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_util.h"
+#include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
@@ -37,28 +36,25 @@ TEST_F(BraveAdsTransactionsTest, Add) {
                      add_transaction_callback.Get());
 
   // Assert
-  base::MockCallback<database::table::GetTransactionsCallback> callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback, Run(/*success=*/true, TransactionList{transaction}))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+  base::test::TestFuture<bool, TransactionList> test_future;
   const database::table::Transactions database_table;
-  database_table.GetForDateRange(/*from_time=*/test::DistantPast(),
-                                 /*to_time=*/test::DistantFuture(),
-                                 callback.Get());
-  run_loop.Run();
+  database_table.GetForDateRange(
+      /*from_time=*/test::DistantPast(),
+      /*to_time=*/test::DistantFuture(),
+      test_future.GetCallback<bool, const TransactionList&>());
+  const auto [success, transactions] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_THAT(transactions, ::testing::ElementsAre(transaction));
 }
 
 TEST_F(BraveAdsTransactionsTest, GetForDateRange) {
   // Arrange
-  TransactionList transactions;
-
   AdvanceClockTo(test::TimeFromString("31 August 2019"));
 
   const TransactionInfo transaction_1 = test::BuildUnreconciledTransaction(
       /*value=*/0.01, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kViewedImpression,
-      /*should_generate_random_uuids=*/true);
-  transactions.push_back(transaction_1);
+      /*use_random_uuids=*/true);
 
   AdvanceClockTo(
       test::TimeFromUTCString("11 September 2019"));  // A legendary moment.
@@ -66,27 +62,25 @@ TEST_F(BraveAdsTransactionsTest, GetForDateRange) {
   const TransactionInfo transaction_2 = test::BuildUnreconciledTransaction(
       /*value=*/0.0, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kDismissed,
-      /*should_generate_random_uuids=*/true);
-  transactions.push_back(transaction_2);
+      /*use_random_uuids=*/true);
 
   const TransactionInfo transaction_3 = test::BuildUnreconciledTransaction(
       /*value=*/0.0, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kClicked,
-      /*should_generate_random_uuids=*/true);
-  transactions.push_back(transaction_3);
+      /*use_random_uuids=*/true);
 
-  database::SaveTransactions(transactions);
+  database::SaveTransactions({transaction_1, transaction_2, transaction_3});
 
   // Act & Assert
-  base::MockCallback<GetTransactionsCallback> callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback, Run(/*success=*/true,
-                            TransactionList{transaction_2, transaction_3}))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  GetTransactionsForDateRange(/*from_time=*/test::Now(),
-                              /*to_time=*/test::DistantFuture(),
-                              callback.Get());
-  run_loop.Run();
+  base::test::TestFuture<bool, TransactionList> test_future;
+  GetTransactionsForDateRange(
+      /*from_time=*/test::Now(),
+      /*to_time=*/test::DistantFuture(),
+      test_future.GetCallback<bool, const TransactionList&>());
+  const auto [success, transactions] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_THAT(transactions,
+              ::testing::ElementsAre(transaction_2, transaction_3));
 }
 
 }  // namespace brave_ads

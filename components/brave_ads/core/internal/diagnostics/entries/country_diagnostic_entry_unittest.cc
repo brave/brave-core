@@ -7,7 +7,6 @@
 
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_entry_types.h"
-#include "brave/components/brave_ads/core/public/common/locale/scoped_locale_for_testing.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds.*
 
@@ -17,7 +16,7 @@ class BraveAdsCountryDiagnosticEntryTest : public test::TestBase {};
 
 TEST_F(BraveAdsCountryDiagnosticEntryTest, GetValue) {
   // Arrange
-  const test::ScopedCurrentCountryCode scoped_current_country_code{"KY"};
+  fake_locale_.SetCountryCode("KY");
 
   const CountryDiagnosticEntry diagnostic_entry;
 

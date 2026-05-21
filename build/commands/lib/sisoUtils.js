@@ -5,8 +5,8 @@
 
 'use strict'
 
-import Log from './logging.js'
-import config from './config.js'
+import * as Log from './log.ts'
+import config from './config.ts'
 import { isCI } from './ciDetect.ts'
 import fs from 'node:fs'
 import path from 'node:path'

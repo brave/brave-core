@@ -103,7 +103,7 @@ class TabCWVUIHandler: NSObject, BraveWebViewUIDelegate {
       completionHandler()
       return
     }
-    Task {
+    Task { @MainActor in
       await tab.delegate?.tab(tab, runJavaScriptAlertPanelWithMessage: message, pageURL: url)
       completionHandler()
     }
@@ -140,7 +140,7 @@ class TabCWVUIHandler: NSObject, BraveWebViewUIDelegate {
       completionHandler(nil)
       return
     }
-    Task {
+    Task { @MainActor in
       let result = await delegate.tab(
         tab,
         runJavaScriptConfirmPanelWithPrompt: prompt,
@@ -154,6 +154,27 @@ class TabCWVUIHandler: NSObject, BraveWebViewUIDelegate {
   func webView(_ webView: CWVWebView, buildEditMenuWith builder: any UIMenuBuilder) {
     guard let tab, let delegate = tab.delegate else { return }
     delegate.tab(tab, buildEditMenuWithBuilder: builder)
+  }
+
+  func webView(_ webView: CWVWebView, didLoad favIcons: [CWVFavicon]) {
+    guard let tab else { return }
+    let canditates = favIcons.map(WebFaviconCandidate.init)
+    for observer in tab.observers {
+      observer.tab(tab, didUpdateFaviconURLCandidates: canditates)
+    }
+  }
+
+  func webView(_ webView: CWVWebView, didUpdate faviconStatus: CWVFaviconStatus?) {
+    guard let tab else { return }
+    for observer in tab.observers {
+      observer.tabDidUpdateFaviconStatus(tab)
+    }
+  }
+}
+
+extension WebFaviconCandidate {
+  init(_ favicon: CWVFavicon) {
+    self.init(url: favicon.url, sizes: favicon.sizes.map(\.cgSizeValue))
   }
 }
 

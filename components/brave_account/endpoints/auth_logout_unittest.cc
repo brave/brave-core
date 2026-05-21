@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_account/endpoints/auth_logout.h"
 
+#include <optional>
+
 #include "base/no_destructor.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_account/endpoints/endpoint_test.h"
@@ -36,7 +38,6 @@ const AuthLogoutTestCase* Success() {
        .expected_response = {.net_error = net::OK,
                              .status_code = net::HTTP_NO_CONTENT,
                              .body = std::nullopt}});
-
   return kSuccess.get();
 }
 

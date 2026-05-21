@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_types.h"
 #include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
@@ -17,21 +18,22 @@ class BraveAdsStaticUrlHostTest : public test::TestBase {};
 TEST_F(BraveAdsStaticUrlHostTest, GetProductionUrlHost) {
   // Arrange
   ASSERT_TRUE(GlobalState::HasInstance());
-  GlobalState::GetInstance()->Flags().environment_type =
+  GlobalState::GetInstance()->CommandLineSwitches().environment_type =
       mojom::EnvironmentType::kProduction;
 
   // Act & Assert
-  EXPECT_EQ("https://static.ads.brave.com", GetStaticUrlHost());
+  EXPECT_EQ("https://static.ads.brave.com", GetUrlHost(UrlHostType::kStatic));
 }
 
 TEST_F(BraveAdsStaticUrlHostTest, GetStagingUrlHost) {
   // Arrange
   ASSERT_TRUE(GlobalState::HasInstance());
-  GlobalState::GetInstance()->Flags().environment_type =
+  GlobalState::GetInstance()->CommandLineSwitches().environment_type =
       mojom::EnvironmentType::kStaging;
 
   // Act & Assert
-  EXPECT_EQ("https://static.ads.bravesoftware.com", GetStaticUrlHost());
+  EXPECT_EQ("https://static.ads.bravesoftware.com",
+            GetUrlHost(UrlHostType::kStatic));
 }
 
 }  // namespace brave_ads

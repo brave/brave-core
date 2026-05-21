@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/ad_units/new_tab_page_ad/new_tab_page_ad_test_util.h"
+#include "brave/components/brave_ads/core/internal/ad_units/new_tab_page_ad/test/new_tab_page_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_type.h"
-#include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
+#include "brave/components/brave_ads/core/internal/settings/test/settings_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler_util.h"
@@ -47,7 +47,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerUtilForNonRewardsTest,
   // Arrange
   const NewTabPageAdInfo ad =
       test::BuildNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                              /*should_generate_random_uuids=*/true);
+                              /*use_random_uuids=*/true);
 
   AdEventList ad_events;
   const AdEventInfo ad_event =
@@ -65,7 +65,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerUtilForNonRewardsTest,
   // Arrange
   const NewTabPageAdInfo ad =
       test::BuildNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                              /*should_generate_random_uuids=*/true);
+                              /*use_random_uuids=*/true);
 
   AdEventList ad_events;
   const AdEventInfo ad_event_1 =
@@ -87,7 +87,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerUtilForNonRewardsTest,
   // Arrange
   const NewTabPageAdInfo ad =
       test::BuildNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                              /*should_generate_random_uuids=*/true);
+                              /*use_random_uuids=*/true);
 
   AdEventList ad_events;
   const AdEventInfo ad_event =
@@ -105,7 +105,7 @@ TEST_F(BraveAdsNewTabPageAdEventHandlerUtilForNonRewardsTest,
   // Arrange
   const NewTabPageAdInfo ad =
       test::BuildNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                              /*should_generate_random_uuids=*/true);
+                              /*use_random_uuids=*/true);
 
   AdEventList ad_events;
   const AdEventInfo ad_event_1 =

@@ -123,7 +123,8 @@ IN_PROC_BROWSER_TEST_F(BraveLocationBarViewBrowserTest,
   // Check promotion button is launched.
   GetTemplateURLService()->SetUserSelectedDefaultSearchProvider(
       &bing_template_url);
-  location_bar()->FocusLocation(true);
+  location_bar()->FocusLocation(/*is_user_initiated=*/true,
+                                /*clear_focus_if_failed=*/false);
   omnibox_view()->SetUserText(u"a");
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return controller()->IsPopupOpen(); }));
@@ -141,7 +142,8 @@ IN_PROC_BROWSER_TEST_F(BraveLocationBarViewBrowserTest,
       &brave_template_url);
 
   // Check button is not shown with brave search.
-  location_bar()->FocusLocation(true);
+  location_bar()->FocusLocation(/*is_user_initiated=*/true,
+                                /*clear_focus_if_failed=*/false);
   omnibox_view()->SetUserText(u"a");
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return controller()->IsPopupOpen(); }));
@@ -173,7 +175,8 @@ IN_PROC_BROWSER_TEST_F(BraveLocationBarViewBrowserTest,
   // Unset dismissed and simulate promotion button click.
   browser()->profile()->GetPrefs()->SetBoolean(
       brave_search_conversion::prefs::kDismissed, false);
-  location_bar()->FocusLocation(true);
+  location_bar()->FocusLocation(/*is_user_initiated=*/true,
+                                /*clear_focus_if_failed=*/false);
   omnibox_view()->SetUserText(search_term);
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return controller()->IsPopupOpen(); }));
@@ -195,6 +198,28 @@ IN_PROC_BROWSER_TEST_F(BraveLocationBarViewBrowserTest,
   // Check dismissed bit is set after user clicks button.
   EXPECT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(
       brave_search_conversion::prefs::kDismissed));
+}
+
+// After resizing the toolbar to a narrower width, every visible child of the
+// location bar must remain within the location bar's horizontal bounds.
+// This exercises the InvalidateLayout() fix in ResetLocationBarBounds() and
+// the additive GetMinimumSize() formula.
+IN_PROC_BROWSER_TEST_F(BraveLocationBarViewBrowserTest,
+                       ChildViewsStayWithinBoundsOnNarrowResize) {
+  auto toolbar_bounds = toolbar()->bounds();
+  toolbar_bounds.Inset(gfx::Insets::VH(0, toolbar_bounds.width() / 3));
+  toolbar()->SetBoundsRect(toolbar_bounds);
+
+  for (views::View* child : location_bar()->children()) {
+    // The FocusRing intentionally overflows its parent by 1px to draw the ring.
+    if (!child->GetVisible() || (child->GetClassName() == "FocusRing")) {
+      continue;
+    }
+    EXPECT_GE(child->bounds().x(), 0)
+        << child->GetClassName() << " overflows left edge";
+    EXPECT_LE(child->bounds().right(), location_bar()->width())
+        << child->GetClassName() << " overflows right edge";
+  }
 }
 
 class OmniboxViewObserver : public views::ViewObserver {

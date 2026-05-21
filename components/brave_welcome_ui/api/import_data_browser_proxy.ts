@@ -66,7 +66,7 @@ export interface ImportDataBrowserProxy {
 
 export class ImportDataBrowserProxyImpl implements ImportDataBrowserProxy {
   initializeImportDialog () {
-    return sendWithPromise('initializeImportDialog')
+    return sendWithPromise<BrowserProfile[]>('initializeImportDialog')
   }
 
   importData (

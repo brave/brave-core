@@ -42,7 +42,7 @@ class FaviconScriptHandler: NSObject, TabContentScript {
 
     Task { @MainActor in
       // Assign default favicon
-      tab.favicon = Favicon.default
+      tab.faviconTabHelper?.setFavicon(.default)
 
       guard let webView = message.webView,
         let url = webView.url
@@ -53,7 +53,9 @@ class FaviconScriptHandler: NSObject, TabContentScript {
       // The WebView has a valid URL
       // Attempt to fetch the favicon from cache
       let isPrivate = tab.isPrivate
-      tab.favicon = await FaviconFetcher.getIconFromCache(for: url) ?? Favicon.default
+      let favicon =
+        await FaviconFetcher.getIconFromCache(for: url) ?? Favicon.default
+      tab.faviconTabHelper?.setFavicon(favicon)
 
       // If this is an internal page, we don't fetch favicons for such pages from Brave-Core
       guard !InternalURL.isValid(url: url) else {
@@ -111,7 +113,7 @@ class FaviconScriptHandler: NSObject, TabContentScript {
         // We can only cache favicons for non-private tabs
         await FaviconFetcher.updateCache(favicon, for: url, persistent: !isPrivate)
 
-        tab.favicon = favicon
+        tab.faviconTabHelper?.setFavicon(favicon)
       }
     } else {
       if let iconUrl = iconUrl {
@@ -127,7 +129,7 @@ class FaviconScriptHandler: NSObject, TabContentScript {
         await FaviconFetcher.updateCache(favicon, for: url, persistent: true)
 
         guard let tab = tab else { return }
-        tab.favicon = favicon
+        tab.faviconTabHelper?.setFavicon(favicon)
       }
     }
   }

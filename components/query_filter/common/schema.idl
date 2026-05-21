@@ -1,0 +1,21 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+// Schema for the query filter, processed by the JSON compiler. Keep in sync with
+// adblock-lists/brave-lists/query-filter.json.
+// Please ensure any changes here are also reflected in the remote list, and vice versa.
+// Also note that, when you add new attributes to this schema, older clients will ignore the newer attributes.
+[generate_error_messages]
+namespace schema {
+  // The main rule object containing the various attributes needed to make a decision on filtering out a URL query parameter.
+  dictionary Rule {
+    // The list of domains (wildcard supported) to consider to remove the query params |params|.  
+    DOMString[] include;
+    // The list of domains (wildcard supported) on which NOT to exclude the query params |params|. 
+    DOMString[] exclude;
+    // The list of query parameters which are subjected to query filtering.
+    DOMString[] params;
+  };
+};

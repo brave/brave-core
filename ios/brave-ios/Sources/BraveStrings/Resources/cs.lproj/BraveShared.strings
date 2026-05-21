@@ -16,11 +16,17 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Přidat záložku";
 
+/* Add a new item to the current list */
+"addButtonTitle" = "Přidat";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "Přidat k oblíbeným";
 
 /* Cell title for add folder action */
 "AddFolderActionCellTitle" = "Nová složka";
+
+/* Settings item that opens instructions for adding Brave to the iOS dock. */
+"addToDockSettingsCell" = "Přidat do docku";
 
 /* Add to favorites share action. */
 "AddToFavorites" = "Přidat do oblíbených";
@@ -66,6 +72,45 @@
 
 /* Username textbox in Authentication prompt */
 "AuthPromptAlertUsernamePlaceholderText" = "Uživatelské jméno";
+
+/* Settings autofill section title */
+"Autofill" = "Automatické vyplňování";
+
+/* Label for account when indicating that a domain has multiple accounts */
+"autofill.managePassword.multipleAccounts" = "Účty";
+
+/* Alert message warning the user that deleting non-synced passwords will permanently remove them */
+"autofill.managePasswords.deleteCredentialConfirmMessage" = "Tímto odstraníte uložená hesla pro %@ ze synchronizace blockchainu a ze svého zařízení.";
+
+/* Prompt title when deleting passwords */
+"autofill.managePasswords.deleteCredentialsAlertTitle" = "Jste si jistí?";
+
+/* Label for the button used to delete the current login. */
+"autofill.managePasswords.deleteManagePasswordButtonTitle" = "Smazat";
+
+/* Title for the section header in the Manage Passwords list screen, that lists the saved sites */
+"autofill.managePasswords.headerTitle" = "Uloženo";
+
+/* The message displayed on the manage passwords list screen, when there's at least one password, explain the feature */
+"autofill.managePasswords.instructions" = "Vytvářejte, ukládejte a spravujte svá hesla pro snadné přihlašování na weby a do aplikací.";
+
+/* The header title displayed over the never saved passwords list */
+"autofill.managePasswords.neverSavedListHeaderTitle" = "Neuloženo";
+
+/* Display text for the option to offer to save passwords */
+"autofill.managePasswords.offerToSavePasswords" = "Nabízet ukládání hesel";
+
+/* Prompt that is diplayed in the search bar of the Manage Passwords list screen */
+"autofill.managePasswords.searchWebsitesPrompt" = "Vyhledat weby";
+
+/* Title for navigation bar of the Manage Passwords screen */
+"autofill.managePasswords.title" = "Spravovat hesla";
+
+/* Text to show when the origin of a managed password is not available */
+"autofill.managePasswords.UnknownDomainText" = "Unknown";
+
+/* Settings autofill section title */
+"autofill.settings.title" = "Automatické vyplňování";
 
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "Automatické přesměrování stránek AMP";
@@ -141,33 +186,6 @@
 
 /* Placeholder text for adding or editing a bookmark */
 "BookmarkUrlPlaceholderText" = "Adresa";
-
-/* Title for the Brave Account section in settings */
-"BraveAccount" = "Brave účet";
-
-/* Title shown when waiting for email verification */
-"BraveAccountAlmostThere" = "Skoro hotovo!";
-
-/* Detail text for the almost there title */
-"BraveAccountAlmostThereDetail" = "Potvrzovací e-mail je na cestě. Klikněte na tlačítko v tomto e-mailu a aktivujte svůj účet.";
-
-/* Button text to cancel Brave Account registration */
-"BraveAccountCancelRegistration" = "Zrušit registraci";
-
-/* Title shown when user is logged in */
-"BraveAccountEmailAddress" = "E-mailová adresa";
-
-/* Button text to get started with Brave Account */
-"BraveAccountGetStarted" = "Get Started";
-
-/* Button text to resend confirmation email */
-"BraveAccountResendConfirmationEmail" = "Znovu poslat potvrzovací e-mail";
-
-/* Detail text for the resend confirmation email button */
-"BraveAccountResendConfirmationEmailDetail" = "Nevidíte e-mail? Zkontrolujte složku spam nebo klikněte na tlačítko a znovu pošlete potvrzovací e-mail.";
-
-/* Button text to sign out of Brave Account */
-"BraveAccountSignOut" = "Odhlásit se";
 
 /* Button to show the brave panel */
 "BravePanel" = "Panel Brave";
@@ -706,15 +724,6 @@
 /* Description for new folder popup */
 "EnterFolderName" = "Zadejte název složky";
 
-/* Shown in error pages to suggest a fix to the user. */
-"errorPageCantBeReachedTry" = "Zkuste znovu zadat adresu URL nebo otevřít vyhledávač a vyhledat novou adresu URL.";
-
-/* Shown in error pages for files that can't be shown and need to be downloaded. */
-"ErrorPageOpenInSafariButtonTitle" = "Otevřít v Safari";
-
-/* Shown in error pages on a button that will try to load the page again */
-"ErrorPageReloadButtonTitle" = "Načíst znovu";
-
 /* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
 "ErrorPagesAdvancedErrorPinningDetails" = "%1$@ obvykle používá šifrování k ochraně vašich informací. Když se Brave tentokrát pokusil připojit k %2$@, web poslal zpět neobvyklé a nesprávné přihlašovací údaje. K tomu může dojít, když se útočník snaží předstírat, že je %3$@, nebo když přihlašovací obrazovka pro Wi-Fi přerušila připojení. Vaše informace jsou stále zabezpečené, protože Brave ukončil připojení před výměnou jakýchkoli dat. <br />Právě teď nemůžete navštívit %4$@, protože webová stránka používá připnutí certifikátů. Síťové chyby a útoky jsou obvykle dočasné, takže tato stránka bude pravděpodobně fungovat později.";
 
@@ -1063,11 +1072,8 @@
 /* No comment provided by engineer. */
 "ntp.hideSponsoredImages" = "Skrýt sponzorované obrázky";
 
-/* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "Sponzorované obrázky jsou značková pozadí, která se zobrazují v nově otevřených kartách v prohlížeči. Povolení těchto sponzorovaných obrázků podporuje poslání společnosti Brave.";
-
-/* The text label of image type learn more link */
-"ntp.imageTypeSelectionDescriptionLearnMore" = "Zjistěte více.";
+/* The text description of image type which is being used NTP. The text inside the square brackets should be translated and is a link */
+"ntp.imageTypeSelectionDescription" = "Sponzorované obrázky jsou značková pozadí, která se zobrazují v nově otevřených kartách v prohlížeči. Povolení těchto sponzorovaných obrázků podporuje poslání společnosti Brave. [Další informace](#learn-more)";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Další informace o odměnách Brave";
@@ -2368,9 +2374,6 @@
 /* Title of an action that allows user to perform a one-click web search for selected text */
 "SearchWithBrave" = "Hledat vyhledávací službou Brave";
 
-/* Settings security section title */
-"Security" = "Zabezpečení";
-
 /* No comment provided by engineer. */
 "sendButtonTitle" = "Odeslat";
 
@@ -2733,6 +2736,9 @@
 
 /* Setting to show/hide the tabs bar */
 "ShowTabsBar" = "Panel karet";
+
+/* Settings item for clearing site-specific settings and shields settings. */
+"SiteAndShieldsSettings" = "Nastavení webů a štítů";
 
 /* No comment provided by engineer. */
 "SiteReportedBody" = "Díky, že jste vývojářům Brave dali vědět, že tyto stránky vykazují nějakou chybu. Budeme se usilovně snažit ji opravit!";
@@ -3178,6 +3184,12 @@
 /* No comment provided by engineer. */
 "tabs.settings.privateTabsSettingsTitle" = "Soukromé karty";
 
+/* The description of the toggle for users to allow the browser to remember its last browsing mode so it can re-launch in that mode when Keep Private Tabs is enabled. */
+"tabs.settings.rememberBrowsingModeDescription" = "Pokud byl prohlížeč při posledním zavření v anonymním režimu, otevře se v anonymním režimu i při dalším spuštění.";
+
+/* Toggle to launch the browser in private mode when Keep Private Tabs is enabled */
+"tabs.settings.rememberBrowsingModeTitle" = "Zapamatovat režim prohlížení";
+
 /* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
 "TabToolbarAccessibilityLabel" = "Navigační panel nástrojů";
 
@@ -3279,9 +3291,6 @@
 
 /* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
 "ThemesDisplayBrightness" = "Vzhled";
-
-/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
-"ThemesDisplayBrightnessFooter" = "Tato nastavení se nepoužívají v režimu soukromého prohlížení.";
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "Světlé";

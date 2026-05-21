@@ -145,7 +145,8 @@ struct DappsSettings: View {
       }
     }
     .listStyle(InsetGroupedListStyle())
-    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+    .scrollContentBackground(.hidden)
+    .background(Color(UIColor.braveGroupedBackground))
     .navigationTitle(
       String.localizedStringWithFormat(Strings.Wallet.dappsSettingsNavTitle, coin.localizedTitle)
     )
@@ -297,7 +298,8 @@ private struct SiteConnectionDetailView: View {
       }
     }
     .listStyle(.insetGrouped)
-    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+    .scrollContentBackground(.hidden)
+    .background(Color(UIColor.braveGroupedBackground))
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {
       ToolbarItem(placement: .principal) {

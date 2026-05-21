@@ -5,12 +5,17 @@
 
 #include "chrome/browser/ui/views/page_action/page_action_view.h"
 
+#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/views/page_action/page_action_view_params.h"
+#include "chrome/browser/ui/views/page_action/test_support/mock_page_action_controller.h"
 #include "chrome/browser/ui/views/page_action/test_support/mock_page_action_model.h"
 #include "chrome/test/views/chrome_views_test_base.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/events/event.h"
+#include "ui/views/style/platform_style.h"
 #include "ui/views/test/views_test_utils.h"
+#include "ui/views/view_class_properties.h"
 
 namespace page_actions {
 
@@ -87,6 +92,7 @@ class PageActionViewTest : public ChromeViewsTestBase {
   PageActionView* page_action_view() { return page_action_view_.get(); }
   MockPageActionModel* model() { return &mock_model_; }
   actions::ActionItem* action_item() { return action_item_.get(); }
+  views::Widget* test_widget() { return widget_.get(); }
 
  protected:
   testing::NiceMock<MockIconLabelViewDelegate> icon_label_view_delegate_;
@@ -142,14 +148,122 @@ TEST_F(PageActionViewTest, AlwaysShowsLabelEnsuresLabelWidth) {
 
   testing::Mock::VerifyAndClearExpectations(model());
 
-  // 2. Verify the behavior when GetAlwaysShowLabel() is true. In this case,
-  // host's proposed width will be at bounded width, which is wider than the
-  // minimum width. This will make the label visible.
+  // 2. When GetAlwaysShowLabel() is true, the host uses the full expanded chip
+  // width even when the parent passes a tighter horizontal bound.
   EXPECT_CALL(*model(), GetAlwaysShowLabel()).WillRepeatedly(Return(true));
 
   proposed_layout = page_action_view()->CalculateProposedLayout(
       views::SizeBounds(bounded_width, preferred_label_size.height()));
-  EXPECT_EQ(proposed_layout.host_size.width(), bounded_width);
+  EXPECT_EQ(proposed_layout.host_size.width(), preferred_label_size.width());
+}
+
+// When a custom chip foreground is set, inactive-window styling should not map
+// the visual state to disabled (LabelButton::GetVisualState()).
+TEST_F(PageActionViewTest, OverrideForegroundSkipsInactiveDisabledVisual) {
+  if (!views::PlatformStyle::kInactiveWidgetControlsAppearDisabled) {
+    GTEST_SKIP();
+  }
+
+  EXPECT_CALL(*model(), GetOverrideForegroundColor())
+      .WillRepeatedly(Return(std::optional<SkColor>(SK_ColorWHITE)));
+  page_action_view()->OnPageActionModelChanged(*model());
+
+  test_widget()->Deactivate();
+
+  EXPECT_EQ(page_action_view()->GetVisualState(),
+            page_action_view()->GetState());
+}
+
+TEST_F(PageActionViewTest, OverrideHeightIgnoreSizeBounds) {
+  constexpr int kOverrideHeight = 10;
+  EXPECT_CALL(*model(), GetOverrideHeight())
+      .WillRepeatedly(Return((kOverrideHeight)));
+
+  page_action_view()->OnPageActionModelVisualRefresh(model());
+
+  auto proposed_layout =
+      page_action_view()->CalculateProposedLayout(views::SizeBounds(400, 100));
+  EXPECT_GE(proposed_layout.host_size.height(), kOverrideHeight);
+
+  // When the height is set, the view's cross-axis alignment should be centered.
+  EXPECT_EQ(*page_action_view()->GetProperty(views::kCrossAxisAlignmentKey),
+            views::LayoutAlignment::kCenter);
+}
+
+TEST_F(PageActionViewTest, OverrideTriggerableEventUsesCallback) {
+  EXPECT_CALL(*model(), GetOverrideTriggerableEvent())
+      .WillRepeatedly(Return(ui::EF_RIGHT_MOUSE_BUTTON));
+
+  ui::MouseEvent left_press(ui::EventType::kMousePressed, gfx::Point(5, 5),
+                            gfx::Point(5, 5), base::TimeTicks::Now(),
+                            ui::EF_LEFT_MOUSE_BUTTON, ui::EF_LEFT_MOUSE_BUTTON);
+  ui::MouseEvent right_press(ui::EventType::kMousePressed, gfx::Point(5, 5),
+                             gfx::Point(5, 5), base::TimeTicks::Now(),
+                             ui::EF_RIGHT_MOUSE_BUTTON,
+                             ui::EF_RIGHT_MOUSE_BUTTON);
+  page_action_view()->OnPageActionModelChanged(*model());
+
+  EXPECT_FALSE(page_action_view()->IsTriggerableEvent(left_press));
+  EXPECT_TRUE(page_action_view()->IsTriggerableEvent(right_press));
+  testing::Mock::VerifyAndClearExpectations(model());
+
+  EXPECT_CALL(*model(), GetOverrideTriggerableEvent())
+      .WillRepeatedly(Return(std::nullopt));
+  page_action_view()->OnPageActionModelChanged(*model());
+
+  EXPECT_TRUE(page_action_view()->IsTriggerableEvent(left_press));
+  EXPECT_FALSE(page_action_view()->IsTriggerableEvent(right_press));
+  testing::Mock::VerifyAndClearExpectations(model());
+}
+
+TEST_F(PageActionViewTest, UseTonalColorsWhenExpanded) {
+  EXPECT_FALSE(page_action_view()->GetUseTonalColorsWhenExpanded());
+
+  page_action_view()->OnPageActionModelChanged(*model());
+
+  ASSERT_TRUE(page_action_view()->GetVisible());
+  ASSERT_TRUE(page_action_view()->IsChipVisible());
+
+  // Upstream uses tonal color for bg/fg colors but we don't use it.
+  const SkColor expected_color =
+      page_action_view()->GetColorProvider()->GetColor(
+          kColorOmniboxIconForeground);
+  EXPECT_EQ(page_action_view()->GetCurrentTextColor(), expected_color);
+
+  ASSERT_NE(page_action_view()->GetBackground(), nullptr);
+  EXPECT_EQ(page_action_view()->GetBackground()->color(),
+            page_action_view()->GetColorProvider()->GetColor(
+                kColorOmniboxIconBackground));
+
+  EXPECT_CALL(*model(), ShouldShowSuggestionChip())
+      .WillRepeatedly(Return(false));
+  page_action_view()->OnPageActionModelChanged(*model());
+
+  EXPECT_EQ(page_action_view()->GetBackground(), nullptr);
+}
+
+TEST_F(PageActionViewTest, DefaultBackgroundColorIsTransparent) {
+  EXPECT_CALL(*model(), GetOverrideBackgroundColor())
+      .WillRepeatedly(Return(std::nullopt));
+
+  page_action_view()->OnPageActionModelChanged(*model());
+
+  ASSERT_TRUE(page_action_view()->GetVisible());
+  ASSERT_TRUE(page_action_view()->IsChipVisible());
+
+  EXPECT_EQ(page_action_view()->GetBackgroundColor(), SK_ColorTRANSPARENT);
+}
+
+TEST_F(PageActionViewTest, OverrideBackgroundColorReturnsModelValue) {
+  EXPECT_CALL(*model(), GetOverrideBackgroundColor())
+      .WillRepeatedly(Return(std::optional<SkColor>(SK_ColorRED)));
+
+  page_action_view()->OnPageActionModelChanged(*model());
+
+  ASSERT_TRUE(page_action_view()->GetVisible());
+  ASSERT_TRUE(page_action_view()->IsChipVisible());
+
+  EXPECT_EQ(page_action_view()->GetBackgroundColor(), SK_ColorRED);
 }
 
 }  // namespace page_actions

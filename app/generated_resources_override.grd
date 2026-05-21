@@ -95,9 +95,6 @@ are declared in tools/grit/grit_args.gni.
 
       <part file="bookmarks_strings_override.grdp" />
 
-      <if expr="enable_glic">
-        </if>
-
       <part file="profiles_strings_override.grdp" />
 
       <if expr="is_chromeos">
@@ -265,6 +262,10 @@ are declared in tools/grit/grit_args.gni.
         </if>
       <if expr="use_titlecase">
         </if>
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="use_titlecase">
+        </if>
 
       <if expr="is_chromeos">
         </if>
@@ -408,6 +409,11 @@ are declared in tools/grit/grit_args.gni.
       <if expr="is_win or is_linux or is_chromeos">
         </if>
 
+      <if expr="not use_titlecase">
+      </if>
+    <if expr="use_titlecase">
+      </if>
+
       <if expr="toolkit_views">
         </if>
 
@@ -480,10 +486,6 @@ are declared in tools/grit/grit_args.gni.
 
       <if expr="is_chromeos">
         </if>
-      <if expr="reven">
-        </if>
-      <if expr="not reven">
-        </if>
       <if expr="is_chromeos">
         </if>
 
@@ -499,6 +501,10 @@ are declared in tools/grit/grit_args.gni.
           </if>
         <if expr="is_macosx">
           </if>
+
+        <if expr="is_android">
+          </if>
+
         </if>
 
       <if expr="not is_android">
@@ -517,9 +523,6 @@ are declared in tools/grit/grit_args.gni.
           </if>
       </if>
 
-      <message name="IDS_EXTENSION_WEB_STORE_TITLE" desc="Text for the Web Store">
-        Web Store
-      </message>
       <message name="IDS_EXTENSIONS_ADDED_WITHOUT_KNOWLEDGE" desc="Text shown in the extensions settings for items that might have been forcefully added to Brave without the user's knowledge">
         This extension is not listed in the <ph name="IDS_EXTENSION_WEB_STORE_TITLE">$1<ex>Web Store</ex></ph> and may have been added without your knowledge.
       </message>
@@ -653,19 +656,15 @@ are declared in tools/grit/grit_args.gni.
         </if>
       <if expr="not use_titlecase">
         </if>
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="enable_extensions_core">
+      </if>
       <if expr="is_macosx">
         </if>
       <if expr="use_titlecase">
-        <then>
-          </then>
-        <else>
-          </else>
-      </if>
-      <if expr="use_titlecase">
-        </if>
-      <if expr="not use_titlecase">
-        </if>
-      <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
         </if>
@@ -681,6 +680,10 @@ are declared in tools/grit/grit_args.gni.
         <else>
           </else>
       </if>
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
       <if expr="not is_android">
         </if>
 
@@ -694,6 +697,10 @@ are declared in tools/grit/grit_args.gni.
       </if>
 
       <if expr="not is_android">
+        <if expr="use_titlecase">
+          </if>
+        <if expr="not use_titlecase">
+          </if>
         </if>
 
       <if expr="not is_android">
@@ -850,12 +857,17 @@ are declared in tools/grit/grit_args.gni.
       <if expr="use_titlecase">
         </if>
 
+      <if expr="is_macosx">
+        </if>
+      <if expr="not is_macosx">
+        </if>
       <if expr="use_titlecase">
         <then>
           </then>
         <else>
           </else>
       </if>
+
       <if expr="not use_titlecase">
         </if>
       <if expr="use_titlecase">
@@ -867,26 +879,19 @@ are declared in tools/grit/grit_args.gni.
         </if>
 
         <if expr="use_titlecase">
+          </if>
+        <if expr="not use_titlecase">
+          </if>
+
+      <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
         </if>
 
       <if expr="not use_titlecase">
-        <message name="IDS_TAB_GROUP_HEADER_CXMENU_PIN_GROUP" desc="The label of the saved tab group button context menu item to pin a gruop">
-          Pin group to bookmarks
-        </message>
-        <message name="IDS_TAB_GROUP_HEADER_CXMENU_UNPIN_GROUP" desc="The label of the saved tab group button context menu item to unpin a gruop">
-          Unpin group from bookmarks
-        </message>
         </if>
 
       <if expr="use_titlecase">
-        <message name="IDS_TAB_GROUP_HEADER_CXMENU_PIN_GROUP" desc="The label of the saved tab group button context menu item to pin a gruop">
-          Pin Group to Bookmarks
-        </message>
-        <message name="IDS_TAB_GROUP_HEADER_CXMENU_UNPIN_GROUP" desc="The label of the saved tab group button context menu item to unpin a gruop">
-          Unpin Group from Bookmarks
-        </message>
         </if>
 
     <if expr="use_titlecase">
@@ -1122,9 +1127,6 @@ are declared in tools/grit/grit_args.gni.
         <message name="IDS_NEW_INCOGNITO_WINDOW_MAC" desc="The Mac menu item for opening a new Private window in the file menu.">
           New Private Window
         </message>
-        <message name="IDS_BOOKMARK_BAR_ALWAYS_SHOW_MAC" desc="The Mac menu item for having bookmark bar always visible in the view menu.">
-          Always Show Bookmarks
-        </message>
         </if> <if expr="is_posix and not is_macosx">
         </if>
 
@@ -1173,9 +1175,6 @@ are declared in tools/grit/grit_args.gni.
         </if>
 
       <if expr="is_chromeos">
-        <message name="IDS_APP_LIST_NEW_INCOGNITO_WINDOW" desc="The text label of the New Private window menu item">
-          New Private window
-        </message>
         </if>
 
       <if expr="toolkit_views">
@@ -1373,7 +1372,7 @@ are declared in tools/grit/grit_args.gni.
   <if expr="is_chromeos">
       </if>
 
-    <if expr="enable_glic and enable_pdf">
+    <if expr="enable_pdf">
       </if>
 
     <if expr="is_win">
@@ -1384,6 +1383,9 @@ are declared in tools/grit/grit_args.gni.
 
     <if expr="is_linux or is_macosx or is_win">
       </if>
-  </messages>
+    <if expr="not is_android">
+      </if>
+
+    </messages>
 </release>
 </grit>

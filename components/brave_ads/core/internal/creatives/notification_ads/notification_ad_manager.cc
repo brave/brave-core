@@ -12,6 +12,7 @@
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
+#include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_value_util.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
@@ -70,7 +71,7 @@ void NotificationAdManager::Add(const NotificationAdInfo& ad) {
   }
 #endif  // BUILDFLAG(IS_ANDROID)
 
-  SetProfileListPref(prefs::kNotificationAds, NotificationAdsToValue(ads_));
+  SetProfileListPref(prefs::kNotificationAds, NotificationAdsToList(ads_));
 }
 
 void NotificationAdManager::Remove(const std::string& placement_id,
@@ -89,7 +90,7 @@ void NotificationAdManager::Remove(const std::string& placement_id,
 
   ads_.erase(iter);
 
-  SetProfileListPref(prefs::kNotificationAds, NotificationAdsToValue(ads_));
+  SetProfileListPref(prefs::kNotificationAds, NotificationAdsToList(ads_));
 }
 
 void NotificationAdManager::RemoveAll(bool should_close) {
@@ -102,7 +103,7 @@ void NotificationAdManager::RemoveAll(bool should_close) {
   ads_.clear();
   ads_.shrink_to_fit();
 
-  SetProfileListPref(prefs::kNotificationAds, NotificationAdsToValue(ads_));
+  SetProfileListPref(prefs::kNotificationAds, NotificationAdsToList(ads_));
 }
 
 bool NotificationAdManager::Exists(const std::string& placement_id) const {
@@ -115,12 +116,16 @@ bool NotificationAdManager::Exists(const std::string& placement_id) const {
 ///////////////////////////////////////////////////////////////////////////////
 
 void NotificationAdManager::Initialize() {
+  if (!UserHasOptedInToNotificationAds()) {
+    return;
+  }
+
   std::optional<base::ListValue> list =
       GetProfileListPref(prefs::kNotificationAds);
   if (!list) {
     return;
   }
-  ads_ = NotificationAdsFromValue(*list);
+  ads_ = NotificationAdsFromList(*list);
 
   MaybeRemoveAll();
 }

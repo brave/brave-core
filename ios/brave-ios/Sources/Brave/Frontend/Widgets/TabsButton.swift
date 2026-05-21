@@ -82,6 +82,9 @@ class TabsButton: UIButton {
       $0.center.equalToSuperview()
       $0.size.equalTo(metrics.scaledValue(for: 20, compatibleWith: toolbarTraitCollection))
     }
+    let scaledBorderStrokeWidth = metrics.scaledValue(for: TabsButtonUX.borderStrokeWidth)
+    borderView.layer.borderWidth = min(scaledBorderStrokeWidth, 2.0)
+
     countLabel.font = .systemFont(
       ofSize: UIFont.preferredFont(forTextStyle: .caption2, compatibleWith: toolbarTraitCollection)
         .pointSize,

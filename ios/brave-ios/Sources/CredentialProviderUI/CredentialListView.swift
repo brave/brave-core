@@ -159,7 +159,8 @@ public struct CredentialListView: View {
         prompt: Text(Strings.CredentialProvider.searchBarPrompt)
       )
       .listStyle(.insetGrouped)
-      .listBackgroundColor(Color(uiColor: .braveGroupedBackground))
+      .scrollContentBackground(.hidden)
+      .background(Color(uiColor: .braveGroupedBackground))
       .toolbar {
         ToolbarItemGroup(placement: .cancellationAction) {
           Button(Strings.CredentialProvider.cancelButtonTitle) {

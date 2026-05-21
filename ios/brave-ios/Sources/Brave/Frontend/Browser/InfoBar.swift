@@ -19,22 +19,19 @@ private struct InfoBarUX {
 }
 
 class InfoBar: Toast, UITextViewDelegate {
-  let tabManager: TabManager
   let labelText: String
   let linkText: String
   let linkUrl: String
-  let onLinkPressed: (() -> Void)?
+  let onLinkPressed: ((URL) -> Void)?
   let onClosePressed: (() -> Void)?
 
   init(
-    tabManager: TabManager,
     labelText: String,
     linkText: String,
     linkUrl: String,
-    onLinkPressed: (() -> Void)? = nil,
+    onLinkPressed: ((URL) -> Void)? = nil,
     onClosePressed: (() -> Void)? = nil
   ) {
-    self.tabManager = tabManager
     self.labelText = labelText
     self.linkText = linkText
     self.linkUrl = linkUrl
@@ -140,11 +137,7 @@ class InfoBar: Toast, UITextViewDelegate {
     in characterRange: NSRange,
     interaction: UITextItemInteraction
   ) -> Bool {
-    self.onLinkPressed?()
-    self.tabManager.addTabAndSelect(
-      URLRequest(url: URL(string: self.linkUrl)!),
-      isPrivate: false
-    )
+    self.onLinkPressed?(url)
     dismiss(true)
     return false
   }

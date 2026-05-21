@@ -30,6 +30,8 @@
 #include "chrome/browser/ui/exclusive_access/exclusive_access_bubble_type.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_context.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
+#include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
+#include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/tab_modal_confirm_dialog.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -43,7 +45,6 @@
 #include "chrome/browser/ui/views/frame/scrim_view.h"
 #include "chrome/browser/ui/views/frame/top_container_view.h"
 #include "chrome/browser/ui/views/infobars/infobar_container_view.h"
-#include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
@@ -56,6 +57,11 @@
 #include "ui/views/view_class_properties.h"
 #include "ui/views/widget/widget.h"
 #include "ui/views/widget/widget_delegate.h"
+
+#if BUILDFLAG(IS_MAC)
+#include "base/mac/mac_util.h"
+#include "chrome/browser/ui/fullscreen_util_mac.h"
+#endif  // BUILDFLAG(IS_MAC)
 
 using views::ShapeContextTokensOverride::kRoundedCornersBorderRadius;
 using views::ShapeContextTokensOverride::
@@ -387,6 +393,14 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
 // Test 2: Rounded corners in split tab mode
 IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
                        RoundedCornersWithSplitTabTest) {
+#if BUILDFLAG(IS_MAC)
+  // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
+  // unexpected test timeout failures are resolved.
+  if (base::mac::MacOSMajorVersion() == 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  }
+#endif
+
   auto* panel_ui = browser()->GetFeatures().side_panel_ui();
   panel_ui->Toggle();
   RunScheduledLayouts();
@@ -424,6 +438,14 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
 // Test 3: Rounded corners after exiting split tab mode
 IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
                        RoundedCornersAfterExitingSplitTabTest) {
+#if BUILDFLAG(IS_MAC)
+  // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
+  // unexpected test timeout failures are resolved.
+  if (base::mac::MacOSMajorVersion() == 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  }
+#endif
+
   auto* panel_ui = browser()->GetFeatures().side_panel_ui();
   panel_ui->Toggle();
   RunScheduledLayouts();
@@ -557,6 +579,43 @@ INSTANTIATE_TEST_SUITE_P(
     /* no prefix */,
     BraveBrowserViewWithRoundedCornersTest,
     testing::Bool());
+
+IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
+                       BoundingBoxStableWithSidePanelTest) {
+  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* brave_view = brave_browser_view();
+
+  // Get bounds with panel closed.
+  auto bounds_panel_closed =
+      brave_view->GetBoundingBoxInScreenForMouseOverHandling();
+
+  // Bounds should span the full browser width.
+  EXPECT_EQ(browser_view()->width(), bounds_panel_closed.width());
+
+  // Bounds should start at the bottom of the top container.
+  EXPECT_EQ(browser_view()->top_container()->GetBoundsInScreen().bottom(),
+            bounds_panel_closed.y());
+
+  // Bounds should extend to the bottom of the browser window.
+  EXPECT_EQ(brave_view->GetBoundsInScreen().bottom(),
+            bounds_panel_closed.bottom());
+
+  // Open the side panel.
+  panel_ui->Toggle();
+  RunScheduledLayouts();
+
+  // Bounds should be unchanged after opening the side panel.
+  EXPECT_EQ(bounds_panel_closed,
+            brave_view->GetBoundingBoxInScreenForMouseOverHandling());
+
+  // Close the side panel.
+  panel_ui->Toggle();
+  RunScheduledLayouts();
+
+  // Bounds should be unchanged after closing the side panel.
+  EXPECT_EQ(bounds_panel_closed,
+            brave_view->GetBoundingBoxInScreenForMouseOverHandling());
+}
 
 // MacOS does not need views window scrim. We use sheet to show window modals
 // (-[NSWindow beginSheet:]), which natively draws a scrim since macOS 11.
@@ -727,5 +786,38 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
   brave::ToggleVerticalTabStrip(browser_with_vertical_at_startup);
   view_with_vertical_at_startup->DeprecatedLayoutImmediately();
   EXPECT_FALSE(view_with_vertical_at_startup->UsesImmersiveFullscreenMode());
+}
+
+// Regression test: when a browser starts with horizontal tabs and the user
+// switches to vertical tabs at runtime, fullscreen_toolbar_controller_ in the
+// base BrowserFrameViewMac is nil (it was skipped at construction because
+// UsesImmersiveFullscreenMode() returned true then). Messaging nil returns 0
+// which equals TOOLBAR_PRESENT, so without the fix ShouldHideTopUIInFullscreen
+// would return false during tab-fullscreen, leaving the toolbar visible.
+IN_PROC_BROWSER_TEST_F(
+    BraveBrowserViewTest,
+    ShouldHideTopUIInTabFullscreenAfterVerticalTabsEnabledAtRuntime) {
+  // Verify the precondition that triggers the bug: horizontal tabs at startup
+  // means immersive mode is on (and fullscreen_toolbar_controller_ is nil).
+  ASSERT_FALSE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
+  ASSERT_TRUE(brave_browser_view()->UsesImmersiveFullscreenMode());
+
+  // Switch to vertical tabs at runtime.
+  ToggleVerticalTabStrip();
+  ASSERT_TRUE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
+  ASSERT_FALSE(brave_browser_view()->UsesImmersiveFullscreenMode());
+
+  // Fake tab (content) fullscreen without triggering any OS fullscreen
+  // transition — IsWindowFullscreenForTabOrPending() becomes true immediately.
+  auto* fullscreen_controller = browser()
+                                    ->GetFeatures()
+                                    .exclusive_access_manager()
+                                    ->fullscreen_controller();
+  fullscreen_controller->set_is_tab_fullscreen_for_testing(true);
+  ASSERT_TRUE(fullscreen_utils::IsInContentFullscreen(browser()));
+
+  // The frame view must report that top UI should be hidden during tab
+  // fullscreen, even though fullscreen_toolbar_controller_ is nil.
+  EXPECT_TRUE(browser_non_client_frame_view()->ShouldHideTopUIInFullscreen());
 }
 #endif  // BUILDFLAG(IS_MAC)

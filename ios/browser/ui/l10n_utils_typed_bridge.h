@@ -30,6 +30,11 @@ NS_ASSUME_NONNULL_BEGIN
                                   argument:(NSString*)argument
     NS_SWIFT_NAME(formatString(messageId:argument:));
 
++ (NSString*)formatStringForMessageIDTyped:(MessageIDTyped)messageID
+                                 argument1:(NSString*)argument1
+                                 argument2:(NSString*)argument2
+    NS_SWIFT_NAME(formatString(messageId:argument1:argument2:));
+
 + (NSString*)pluralStringForMessageIDTyped:(MessageIDTyped)messageID
                                     number:(NSInteger)number
     NS_SWIFT_NAME(pluralString(messageId:number:));

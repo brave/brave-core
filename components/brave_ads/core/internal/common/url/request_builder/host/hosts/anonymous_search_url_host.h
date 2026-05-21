@@ -14,6 +14,7 @@ namespace brave_ads {
 
 class AnonymousSearchUrlHost final : public UrlHostInterface {
  public:
+  // UrlHostInterface:
   std::string Get() const override;
 };
 

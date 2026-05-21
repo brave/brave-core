@@ -1,0 +1,243 @@
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/browser/ui/webui/brave_wallet/wallet_panel/wallet_panel_ui.h"
+
+#include <string>
+#include <utility>
+
+#include "base/check.h"
+#include "base/command_line.h"
+#include "base/strings/strcat.h"
+#include "base/strings/string_util.h"
+#include "brave/browser/brave_wallet/blockchain_images_source.h"
+#include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/browser/blockchain_registry.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet_panel/resources/grit/brave_wallet_panel_generated_map.h"
+#include "brave/components/constants/webui_url_constants.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/webui/favicon_source.h"
+#include "chrome/browser/ui/webui/plural_string_handler.h"
+#include "chrome/browser/ui/webui/sanitized_image/sanitized_image_source.h"
+#include "chrome/browser/ui/webui/theme_source.h"
+#include "chrome/browser/ui/webui/webui_embedding_context.h"
+#include "components/favicon_base/favicon_url_parser.h"
+#include "components/grit/brave_components_resources.h"
+#include "components/grit/brave_components_strings.h"
+#include "content/public/browser/web_contents.h"
+#include "content/public/browser/web_ui.h"
+#include "content/public/browser/web_ui_data_source.h"
+#include "content/public/common/url_constants.h"
+#include "ui/base/l10n/l10n_util.h"
+#include "ui/base/webui/web_ui_util.h"
+#include "ui/webui/webui_util.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/browser/brave_ads/ads_service_factory.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
+#include "brave/browser/brave_rewards/rewards_util.h"
+#include "brave/browser/ui/webui/brave_rewards/rewards_page_handler.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
+
+WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
+    : TopChromeWebUIController(web_ui,
+                               true /* Needed for webui browser tests */) {
+  auto* profile = Profile::FromWebUI(web_ui);
+  content::WebUIDataSource* source =
+      content::WebUIDataSource::CreateAndAdd(profile, kWalletPanelHost);
+  web_ui->AddRequestableScheme(content::kChromeUIUntrustedScheme);
+  for (const auto& str : brave_wallet::kLocalizedStrings) {
+    std::u16string l10n_str = l10n_util::GetStringUTF16(str.id);
+    source->AddString(str.name, l10n_str);
+  }
+  auto plural_string_handler = std::make_unique<PluralStringHandler>();
+  plural_string_handler->AddLocalizedString(
+      "braveWalletExchangeNamePlusSteps",
+      IDS_BRAVE_WALLET_EXCHANGE_NAME_PLUS_STEPS);
+  plural_string_handler->AddLocalizedString(
+      "braveWalletPendingTransactions", IDS_BRAVE_WALLET_PENDING_TRANSACTIONS);
+  plural_string_handler->AddLocalizedString(
+      "braveWalletHardwareWalletAccountConnectedSuccessfully",
+      IDS_BRAVE_WALLET_HARDWARE_WALLET_ACCOUNT_CONNECTED_SUCCESSFULLY);
+  web_ui->AddMessageHandler(std::move(plural_string_handler));
+  webui::SetupWebUIDataSource(source, base::span(kBraveWalletPanelGenerated),
+                              IDR_WALLET_PANEL_HTML);
+  source->AddString("braveWalletLedgerBridgeUrl", kUntrustedLedgerURL);
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::FrameSrc,
+      base::JoinString({"frame-src", kUntrustedTrezorURL, kUntrustedLedgerURL,
+                        kUntrustedLineChartURL, kUntrustedNftURL,
+                        base::StrCat({kUntrustedMarketURL, ";"})},
+                       " "));
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::StyleSrc,
+      "style-src 'self' 'unsafe-inline' chrome://resources chrome://theme;");
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::ImgSrc,
+      base::JoinString(
+          {"img-src", "'self'", "chrome://resources",
+           "chrome://erc-token-images", "chrome://favicon2", "chrome://image",
+           "https://assets.cgproxy.brave.com", base::StrCat({"data:", ";"})},
+          " "));
+  source->AddString("braveWalletTrezorBridgeUrl", kUntrustedTrezorURL);
+  source->AddString("braveWalletNftBridgeUrl", kUntrustedNftURL);
+  source->AddString("braveWalletLineChartBridgeUrl", kUntrustedLineChartURL);
+  source->AddString("braveWalletMarketUiBridgeUrl", kUntrustedMarketURL);
+  source->AddBoolean("isMobile", false);
+  source->AddBoolean("isIOS", false);
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+  source->AddBoolean("rewardsFeatureEnabled",
+                     brave_rewards::IsSupportedForProfile(profile));
+#else
+  source->AddBoolean("rewardsFeatureEnabled", false);
+#endif
+  source->AddBoolean("walletDebug", brave_wallet::IsWalletDebugEnabled());
+
+  content::URLDataSource::Add(profile,
+                              std::make_unique<SanitizedImageSource>(profile));
+  content::URLDataSource::Add(profile, std::make_unique<ThemeSource>(profile));
+  content::URLDataSource::Add(
+      profile, std::make_unique<FaviconSource>(
+                   profile, chrome::FaviconUrlFormat::kFavicon2));
+  content::URLDataSource::Add(
+      profile, std::make_unique<brave_wallet::BlockchainImagesSource>(profile));
+
+  // TODO(https://github.com/brave/brave-browser/issues/55074) should be set
+  // externally.
+  BrowserWindowInterface* const bwi =
+      GetLastActiveBrowserWindowInterfaceWithAnyProfile();
+  CHECK(bwi);
+  active_web_contents_ = bwi->GetTabStripModel()->GetActiveWebContents();
+}
+
+WalletPanelUI::~WalletPanelUI() = default;
+
+WEB_UI_CONTROLLER_TYPE_IMPL(WalletPanelUI)
+
+void WalletPanelUI::BindInterface(
+    mojo::PendingReceiver<brave_wallet::mojom::PanelHandlerFactory> receiver) {
+  panel_factory_receiver_.reset();
+  panel_factory_receiver_.Bind(std::move(receiver));
+}
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+void WalletPanelUI::BindInterface(
+    mojo::PendingReceiver<brave_rewards::mojom::RewardsPageHandler> receiver) {
+  auto* profile = Profile::FromWebUI(web_ui());
+  CHECK(profile);
+
+  rewards_handler_ = std::make_unique<brave_rewards::RewardsPageHandler>(
+      std::move(receiver), nullptr,
+      brave_rewards::RewardsServiceFactory::GetForProfile(profile),
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+      brave_ads::AdsServiceFactory::GetForProfile(profile),
+#else
+      nullptr,
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
+      nullptr, profile->GetPrefs());
+}
+#endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
+
+void WalletPanelUI::CreatePanelHandler(
+    mojo::PendingReceiver<brave_wallet::mojom::PanelHandler> panel_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::WalletHandler> wallet_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::JsonRpcService>
+        json_rpc_service_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::BitcoinWalletService>
+        bitcoin_wallet_service_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::PolkadotWalletService>
+        polkadot_wallet_service,
+    mojo::PendingReceiver<brave_wallet::mojom::ZCashWalletService>
+        zcash_wallet_service_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::CardanoWalletService>
+        cardano_wallet_service_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::SwapService>
+        swap_service_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::SimulationService>
+        simulation_service_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::AssetRatioService>
+        asset_ratio_service_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::KeyringService>
+        keyring_service_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::BlockchainRegistry>
+        blockchain_registry_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::TxService> tx_service_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::EthTxManagerProxy>
+        eth_tx_manager_proxy_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::SolanaTxManagerProxy>
+        solana_tx_manager_proxy_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::FilTxManagerProxy>
+        filecoin_tx_manager_proxy_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::BtcTxManagerProxy>
+        bitcoin_tx_manager_proxy_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::BraveWalletService>
+        brave_wallet_service_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::BraveWalletP3A>
+        brave_wallet_p3a_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::IpfsService>
+        brave_wallet_ipfs_service_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::MeldIntegrationService>
+        meld_integration_service) {
+  auto* profile = Profile::FromWebUI(web_ui());
+  CHECK(profile);
+
+  panel_handler_ = std::make_unique<WalletPanelHandler>(
+      std::move(panel_receiver), this, active_web_contents_);
+
+  if (auto* wallet_service =
+          brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
+              profile)) {
+    wallet_handler_ = std::make_unique<brave_wallet::WalletHandler>(
+        std::move(wallet_receiver), wallet_service);
+    wallet_service->Bind(std::move(brave_wallet_service_receiver));
+    wallet_service->Bind(std::move(json_rpc_service_receiver));
+    wallet_service->Bind(std::move(bitcoin_wallet_service_receiver));
+    wallet_service->Bind(std::move(polkadot_wallet_service));
+    wallet_service->Bind(std::move(zcash_wallet_service_receiver));
+    wallet_service->Bind(std::move(cardano_wallet_service_receiver));
+    wallet_service->Bind(std::move(keyring_service_receiver));
+    wallet_service->Bind(std::move(tx_service_receiver));
+    wallet_service->Bind(std::move(eth_tx_manager_proxy_receiver));
+    wallet_service->Bind(std::move(solana_tx_manager_proxy_receiver));
+    wallet_service->Bind(std::move(filecoin_tx_manager_proxy_receiver));
+    wallet_service->Bind(std::move(bitcoin_tx_manager_proxy_receiver));
+    wallet_service->Bind(std::move(brave_wallet_p3a_receiver));
+    wallet_service->Bind(std::move(asset_ratio_service_receiver));
+    wallet_service->Bind(std::move(swap_service_receiver));
+    wallet_service->Bind(std::move(simulation_service_receiver));
+    wallet_service->Bind(std::move(meld_integration_service));
+    wallet_service->Bind(std::move(brave_wallet_ipfs_service_receiver));
+  }
+
+  auto* blockchain_registry = brave_wallet::BlockchainRegistry::GetInstance();
+  if (blockchain_registry) {
+    blockchain_registry->Bind(std::move(blockchain_registry_receiver));
+  }
+}
+
+WalletPanelUIConfig::WalletPanelUIConfig()
+    : DefaultTopChromeWebUIConfig(content::kChromeUIScheme, kWalletPanelHost) {}
+
+bool WalletPanelUIConfig::IsWebUIEnabled(
+    content::BrowserContext* browser_context) {
+  return brave_wallet::IsAllowedForContext(browser_context);
+}
+
+bool WalletPanelUIConfig::ShouldAutoResizeHost() {
+  return true;
+}

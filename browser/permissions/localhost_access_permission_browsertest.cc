@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include <memory>
+
 #include "base/containers/fixed_flat_set.h"
 #include "base/containers/flat_set.h"
 #include "base/memory/raw_ptr.h"
@@ -10,6 +12,7 @@
 #include "base/strings/strcat.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/brave_shields/ad_block_browser_test_helper.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/content/test/test_filters_provider.h"
@@ -104,12 +107,6 @@ class LocalhostAccessBrowserTest
         browser()->tab_strip_model()->GetActiveWebContents());
   }
 
-  void WaitForAdBlockServiceThreads() {
-    auto tr_helper = base::MakeRefCounted<base::ThreadTestHelper>(
-        g_brave_browser_process->local_data_files_service()->GetTaskRunner());
-    ASSERT_TRUE(tr_helper->Run());
-  }
-
   void SetUpCommandLine(base::CommandLine* command_line) override {
     InProcessBrowserTest::SetUpCommandLine(command_line);
     mock_cert_verifier_.SetUpCommandLine(command_line);
@@ -124,6 +121,8 @@ class LocalhostAccessBrowserTest
     InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
     mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
     current_browser_ = InProcessBrowserTest::browser();
+    ad_block_test_helper_ =
+        std::make_unique<brave_shields::AdBlockBrowserTestHelper>();
   }
 
   void TearDownInProcessBrowserTestFixture() override {
@@ -131,7 +130,11 @@ class LocalhostAccessBrowserTest
     InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
   }
 
-  void TearDownOnMainThread() override { prompt_factory_.reset(); }
+  void TearDownOnMainThread() override {
+    ad_block_test_helper_.reset();
+    prompt_factory_.reset();
+    InProcessBrowserTest::TearDownOnMainThread();
+  }
 
   permissions::MockPermissionPromptFactory* prompt_factory() {
     return prompt_factory_.get();
@@ -157,7 +160,7 @@ class LocalhostAccessBrowserTest
     brave_shields::AdBlockService* ad_block_service =
         g_brave_browser_process->ad_block_service();
     source_provider_->RegisterAsSourceProvider(ad_block_service);
-    WaitForAdBlockServiceThreads();
+    ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
   }
 
   void InsertImage(const std::string& src, const bool expected) {
@@ -312,6 +315,8 @@ class LocalhostAccessBrowserTest
   std::unique_ptr<brave_shields::TestFiltersProvider> source_provider_;
 
  private:
+  std::unique_ptr<brave_shields::AdBlockBrowserTestHelper>
+      ad_block_test_helper_;
   std::unique_ptr<permissions::MockPermissionPromptFactory> prompt_factory_;
 };
 

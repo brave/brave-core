@@ -5,7 +5,6 @@
 
 import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
-import("//extensions/buildflags/buildflags.gni")
 import("//testing/test.gni")
 
 assert(enable_brave_rewards)
@@ -47,6 +46,7 @@ source_set("brave_rewards_impl") {
     "//brave/components/brave_rewards/core:features",
     "//brave/components/brave_rewards/resources/creator_detection:creator_detection_generated_grit",
     "//brave/components/brave_wallet/common/buildflags",
+    "//chrome/browser:browser_process",
     "//chrome/browser/bitmap_fetcher",
     "//chrome/browser/favicon",
     "//chrome/browser/profiles",
@@ -54,20 +54,10 @@ source_set("brave_rewards_impl") {
     "//components/keyed_service/content",
     "//components/prefs",
     "//components/sessions",
-    "//extensions/buildflags",
   ]
 
   if (enable_brave_wallet) {
     deps += [ "//brave/browser/brave_wallet" ]
-  }
-
-  if (enable_extensions) {
-    sources += [
-      "extension_rewards_service_observer.cc",
-      "extension_rewards_service_observer.h",
-    ]
-
-    deps += [ "//extensions/browser" ]
   }
 }
 

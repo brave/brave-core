@@ -8,14 +8,13 @@
 #include "base/test/mock_callback.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
-#include "brave/components/brave_ads/core/internal/catalog/catalog_test_constants.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_util.h"
-#include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
+#include "brave/components/brave_ads/core/internal/catalog/test/catalog_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_environment_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/last_unidle_time_diagnostic_entry_util.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
-#include "brave/components/brave_ads/core/public/common/locale/scoped_locale_for_testing.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds.*
 
@@ -25,10 +24,9 @@ class BraveAdsDiagnosticManagerTest : public test::TestBase {};
 
 TEST_F(BraveAdsDiagnosticManagerTest, DiagnosticManager) {
   // Arrange
-  test::MockDeviceId();
+  test::SetUpDeviceId();
 
-  const test::ScopedCurrentLanguageCode scoped_current_language_code{"en"};
-  const test::ScopedCurrentCountryCode scoped_current_country_code{"KY"};
+  fake_locale_.SetCountryCode("KY");
 
   AdvanceClockTo(test::TimeFromString("Wed, 18 Nov 1970 12:34:56"));
 

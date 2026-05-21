@@ -483,6 +483,10 @@
 <translation id="1518915449477235311">Izinkan <ph name="URL"/> untuk membuka percakapan AI Leo di Brave?</translation>
 <translation id="4355784577209159847">Mengizinkan kuki pihak ketiga untuk Masuk Google lama</translation>
 <translation id="5770656036486891920"><ph name="URL"/> ingin menggunakan kuki pihak ketiga untuk Masuk ke Google lama</translation>
+<translation id="5582087890067572966">🎉 Anda kini memperoleh pendapatan!</translation>
+<translation id="4364336119478610380">Anda memperoleh pendapatan setiap kali notifikasi seperti ini muncul di layar Anda. Anda tidak perlu mengeklik untuk memperoleh pendapatan.</translation>
+<translation id="5893017172751072752">Anda memperoleh pendapatan ketika notifikasi Iklan Brave muncul</translation>
+<translation id="3447730462826640312">Anda tidak perlu mengeklik untuk memperoleh pendapatan, namun silakan klik jika Anda tertarik!</translation>
 <translation id="2104347391516032700">Layanan Imbalan BAT</translation>
 <translation id="5939518447894949180">Setel ulang</translation>
 <translation id="3349204812119681938">Setel Ulang Brave Rewards</translation>
@@ -996,6 +1000,7 @@
 <translation id="2795015351889043417">Berkas JSON</translation>
 <translation id="5468881191994555667">Pilih berkas</translation>
 <translation id="795667975304826397">Tidak ada berkas yang dipilih</translation>
+<translation id="6720675936326555106">Berkas yang dipilih</translation>
 <translation id="5891811606602061966">Gagal mengimpor akun, silakan coba lagi.</translation>
 <translation id="6566535583781706170">Impor akun</translation>
 <translation id="5051929972046200722">Pilih perangkat dompet peranti keras Anda</translation>
@@ -1042,10 +1047,12 @@
 <translation id="2416098547200943834">CATATAN: Kunci privat diberikan sebagai JSON dikodekan-hex yang berisi kunci privat dan informasi protokol. <ph name="LINK_START"/>Pelajari lebih lanjut<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">CATATAN: Kunci privat harus diberikan sebagai JSON dikodekan-hex yang berisi kunci privat dan informasi protokol. <ph name="LINK_START"/>Pelajari lebih lanjut<ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">CATATAN: Hanya kunci diperpanjang <ph name="FORMAT"/> yang didukung.</translation>
+<translation id="6457746820359933716">Impor menggunakan file JSON yang diekspor dari Polkadot.js atau dompet kompatibel. Masukkan kata sandi yang digunakan untuk mengenkripsi ekspor.</translation>
 <translation id="9133762451347918196">Akun testnet</translation>
 <translation id="42126664696688958">Ekspor</translation>
 <translation id="1366855498335432549">Deposit</translation>
 <translation id="790104325876206743">Pengaturan akun</translation>
+<translation id="8856844353253421399">Terakhir diperbarui <ph name="TIME_AGO"/> yang lalu</translation>
 <translation id="6322030314101903925">Tidak ada aset yang tersedia</translation>
 <translation id="836614343069504000">Setorkan atau beli token untuk memulai. Jika Anda tidak melihat token dari akun yang diimpor, periksalah filter dan pengaturan tampilan. Token yang tidak diketahui mungkin perlu ditambahkan sebagai aset khusus.</translation>
 <translation id="2902856457593699108">Tunjukkan kunci</translation>
@@ -1164,10 +1171,10 @@
 <translation id="4324239559624557455">Selama 24 jam</translation>
 <translation id="9139452553033760558">Selama 1 minggu</translation>
 <translation id="1658834457013045127">Selamanya</translation>
-<translation id="6344138931392227467"><ph name="DEVICE_NAME"/> terkoneksi</translation>
-<translation id="7051244143160304048"><ph name="DEVICE_NAME"/> terputus</translation>
-<translation id="5317781812114905957">Instruksi</translation>
-<translation id="1178198982208000092">Hubungkan <ph name="DEVICE_NAME"/> Anda</translation>
+<translation id="5571630233760536706"><ph name="DEVICE_NAME"/> terkoneksi</translation>
+<translation id="7058480232601314508"><ph name="DEVICE_NAME"/> terputus</translation>
+<translation id="434328838837168401">Lihat instruksi</translation>
+<translation id="6739517232898494646">Hubungkan <ph name="DEVICE_NAME"/> Anda untuk melanjutkan</translation>
 <translation id="6941881257520473899">Dompet perangkat keras memerlukan konfirmasi pada perangkat.</translation>
 <translation id="2288190100157580461">Dompet perangkat keras memerlukan Aplikasi <ph name="NETWORK"/> dibuka di <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">dikirim</translation>
@@ -1837,6 +1844,7 @@
 <translation id="8897189056319316783">Melindungi ZEC</translation>
 <translation id="508249542337194541">Buka perisai ZEC</translation>
 <translation id="3382275793825152362">Lindungi dana</translation>
+<translation id="617149752238892649">Lindungi dana</translation>
 <translation id="8631765320256788981">Anda mengirimkan dana dari akun transparan ke akun terlindung.</translation>
 <translation id="3860364671495430495">Anda mengirimkan dana dari akun terlindung Anda ke akun transparan Anda.</translation>
 <translation id="7144878232160441200">Coba Lagi</translation>
@@ -1887,6 +1895,7 @@
 <translation id="4150336849480030462">Transfer Token SPL Dengan Pembuatan Akun Token Terkait</translation>
 <translation id="2244921323472112851">Kami tidak dapat menemukan halaman yang Anda cari saat ini.</translation>
 <translation id="6277237872689140644">Halaman mungkin telah dipindahkan ke tempat lain atau URL mungkin mengandung kesalahan ketik.</translation>
+<translation id="1788572014530152502">Terjadi kesalahan memproses transaksi Anda. Dalam banyak kasus, ini berarti tidak ada cukup <ph name="SYMBOL"/> untuk menutupi biaya jaringan. Coba jumlah yang lebih kecil.</translation>
 <translation id="2737084171727561244">Buka Portofolio</translation>
 <translation id="3499452861061048987">Tambahkan token</translation>
 <translation id="5046066249040287308">Layanan Utilitas Dompet Brave</translation>
@@ -2186,6 +2195,7 @@
     }</translation>
 <translation id="6961721183181597848">Ada yang bisa dibantu hari ini?</translation>
 <translation id="2966135729673253768">Tanyakan tindak lanjut</translation>
+<translation id="5923170497201832190">Gulirkan tab ke posisi terbawah</translation>
 <translation id="6219262425964000211">Lepaskan file di sini</translation>
 <translation id="4313763911013851687">Lepaskan file di sini untuk ditambahkan ke percakapan</translation>
 <translation id="4524675003624341892">Usulkan pertanyaan...</translation>
@@ -2207,20 +2217,21 @@
 <translation id="999273441077650169">Model berubah secara dinamis untuk menggunakan yang terbaik untuk tugas tersebut.<ph name="LINK_BEFORE"/>Pelajari selengkapnya<ph name="LINK_AFTER"/></translation>
 <translation id="1238020084128916796">Hai, saya Leo. Saya adalah asisten AI oleh Brave. Saya didukung oleh Llama 3.1 8B, model yang diciptakan oleh Meta agar berfungsi dengan baik dan dapat diterapkan untuk banyak kasus penggunaan. Llama dihost oleh Brave dalam infrastruktur kami yang aman.<ph name="LINK_BEFORE"/>Pelajari selengkapnya<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">Hai, saya Leo. Saya adalah asisten AI oleh Brave. Saya didukung oleh Qwen VL 30B, model yang diciptakan oleh Alibaba Cloud agar berfungsi dengan baik dan dapat diterapkan untuk banyak kasus penggunaan. Qwen dihost oleh Brave dalam infrastruktur kami yang aman.<ph name="LINK_BEFORE"/>Pelajari selengkapnya<ph name="LINK_AFTER"/></translation>
-<translation id="6406961656408495869">Hai, saya Leo. Saya adalah asisten AI oleh Brave. Saya didukung oleh DeepSeek V3.1, model yang diciptakan oleh DeepSeek agar berfungsi dengan baik dan dapat diterapkan untuk banyak kasus penggunaan. DeepSeek V3.1 dihost oleh NEAR melalui infrastruktur pribadi aman yang dapat diverifikasi.<ph name="LINK_BEFORE"/>Pelajari selengkapnya<ph name="LINK_AFTER"/></translation>
+<translation id="3812564134126884433">Hai, saya Leo. Saya adalah asisten AI oleh Brave. Saya didukung oleh GLM-5, model yang diciptakan oleh Zhipu AI agar berfungsi dengan baik dan dapat diterapkan untuk banyak kasus penggunaan. GLM-5 dihost oleh NEAR melalui infrastruktur pribadi aman yang dapat diverifikasi.<ph name="LINK_BEFORE"/>Pelajari selengkapnya<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Hai, saya Leo. Saya asisten AI dari Brave. Saya didukung oleh Claude Instant, sebuah model dari Anthropic untuk percakapan dan pemrosesan teks. Claude Instant dihosting Brave melalui infrastruktur aman kami sendiri.<ph name="LINK_BEFORE"/>Pelajari lebih lanjut<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Hai, saya Leo. Saya adalah asisten AI oleh Brave. Saya didukung oleh Claude Haiku, model yang diciptakan oleh Anthropic untuk menangani tugas-tugas pemrosesan percakapan dan teks. Claude Haiku dihost oleh Brave dalam infrastruktur kami yang aman.<ph name="LINK_BEFORE"/>Pelajari selengkapnya<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Hai, saya Leo. Saya adalah asisten AI oleh Brave. Saya didukung oleh Claude Sonnet, model yang diciptakan oleh Anthropic untuk menangani tugas-tugas pemrosesan percakapan dan teks. Claude Sonnet dihost oleh Brave dalam infrastruktur kami yang aman.<ph name="LINK_BEFORE"/>Pelajari selengkapnya<ph name="LINK_AFTER"/></translation>
-<translation id="1058830842518828124">Hai, saya Leo. Saya adalah asisten AI oleh Brave. Saya didukung oleh Llama 4 Scout, model yang diciptakan oleh Meta agar berfungsi dengan baik dan dapat diterapkan untuk banyak kasus penggunaan. Llama 4 Scout dihost oleh Brave dalam infrastruktur kami yang aman.<ph name="LINK_BEFORE"/>Pelajari selengkapnya<ph name="LINK_AFTER"/></translation>
 <translation id="6277330815126859513">Hai, saya Leo. Saya adalah asisten AI oleh Brave. Saya didukung oleh Llama 4 Maverick, model yang diciptakan oleh Meta agar berfungsi dengan baik dan dapat diterapkan untuk banyak kasus penggunaan. Llama 4 Maverick dihost oleh Brave dalam infrastruktur kami yang aman.<ph name="LINK_BEFORE"/>Pelajari selengkapnya<ph name="LINK_AFTER"/></translation>
 <translation id="5833148755396048122">Hai, saya Leo. Saya adalah asisten AI oleh Brave. Saya didukung oleh GPT OSS 20B, model yang diciptakan oleh OpenAI agar berfungsi dengan baik dan dapat diterapkan untuk banyak kasus penggunaan. GPT OSS 20B dihost oleh Brave dalam infrastruktur kami yang aman.<ph name="LINK_BEFORE"/>Pelajari selengkapnya<ph name="LINK_AFTER"/></translation>
 <translation id="5414593137581221307">Hai, saya Leo. Saya adalah asisten AI oleh Brave. Saya didukung oleh GPT OSS 120B, model yang diciptakan oleh OpenAI agar berfungsi dengan baik dan dapat diterapkan untuk banyak kasus penggunaan. GPT OSS 120B dihost oleh Brave dalam infrastruktur kami yang aman.<ph name="LINK_BEFORE"/>Pelajari selengkapnya<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Hai, saya Leo. Saya adalah asisten AI oleh Brave. Saya didukung oleh Mistral Large, model yang diciptakan oleh Mistral agar berfungsi dengan baik dan dapat diterapkan untuk banyak kasus penggunaan. Mistral Large dihost oleh Brave dalam infrastruktur kami yang aman.<ph name="LINK_BEFORE"/>Pelajari selengkapnya<ph name="LINK_AFTER"/></translation>
-<translation id="8947618429500471804">Hai, saya Leo. Saya adalah asisten AI oleh Brave. Saya didukung oleh Pixtral Large, model yang diciptakan oleh Mistral agar berfungsi dengan baik dan dapat diterapkan untuk banyak kasus penggunaan. Pixtral Large dihost oleh Brave dalam infrastruktur kami yang aman.<ph name="LINK_BEFORE"/>Pelajari selengkapnya<ph name="LINK_AFTER"/></translation>
 <translation id="4026902371301997261">Hai, saya Leo. Saya adalah asisten AI oleh Brave. Saya didukung oleh Qwen 3 235B, model yang diciptakan oleh Alibaba Cloud agar berfungsi dengan baik dan dapat diterapkan untuk banyak kasus penggunaan. Qwen 3 235B dihost oleh Brave dalam infrastruktur kami yang aman.<ph name="LINK_BEFORE"/>Pelajari selengkapnya<ph name="LINK_AFTER"/></translation>
-<translation id="768541432895104346">Hai, saya Leo. Saya adalah asisten AI oleh Brave. Saya didukung oleh Deepseek V3.1, model yang diciptakan oleh Deepseek agar berfungsi dengan baik dan dapat diterapkan untuk banyak kasus penggunaan. Deepseek V3.1 dihost oleh Brave dalam infrastruktur kami yang aman.<ph name="LINK_BEFORE"/>Pelajari selengkapnya<ph name="LINK_AFTER"/></translation>
+<translation id="8720758690351028307">Hai, saya Leo. Saya adalah asisten AI oleh Brave. Saya didukung oleh Deepseek V3.2, model yang diciptakan oleh Deepseek agar berfungsi dengan baik dan dapat diterapkan untuk banyak kasus penggunaan. Deepseek V3.2 dihost oleh Brave dalam infrastruktur kami yang aman.<ph name="LINK_BEFORE"/>Pelajari selengkapnya<ph name="LINK_AFTER"/></translation>
 <translation id="3767678495358551728">Hai, saya Leo. Saya adalah asisten AI oleh Brave. Saya didukung oleh Qwen 3 Coder 480B, model yang diciptakan oleh Alibaba Cloud agar berfungsi dengan baik dan dapat diterapkan untuk banyak kasus penggunaan. Qwen 3 Coder 480B dihost oleh Brave dalam infrastruktur kami yang aman.<ph name="LINK_BEFORE"/>Pelajari selengkapnya<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Hai, saya Leo. Saya adalah asisten AI oleh Brave. Saya didukung oleh Claude Opus, model yang diciptakan oleh Anthropic untuk menangani tugas-tugas pemrosesan percakapan dan teks. Claude Opus dihost oleh Brave dalam infrastruktur kami yang aman.<ph name="LINK_BEFORE"/>Pelajari selengkapnya<ph name="LINK_AFTER"/></translation>
+<translation id="7238858567393403597">Hai, saya Leo. Saya adalah asisten AI oleh Brave. Saya didukung oleh GLM-4-7-Flash, model yang diciptakan oleh Zhipu AI agar berfungsi dengan baik dan dapat diterapkan untuk banyak kasus penggunaan. GLM-4-7-Flash dihost oleh Brave dalam infrastruktur kami yang aman.<ph name="LINK_BEFORE"/>Pelajari selengkapnya<ph name="LINK_AFTER"/></translation>
+<translation id="6983410749026920122">Hai, saya Leo. Saya adalah asisten AI oleh Brave. Saya didukung oleh Kimi K2.5, model yang diciptakan oleh Moonshot AI agar berfungsi dengan baik dan dapat diterapkan untuk banyak kasus penggunaan. Kimi K2.5 dihost oleh Brave dalam infrastruktur kami yang aman.<ph name="LINK_BEFORE"/>Pelajari selengkapnya<ph name="LINK_AFTER"/></translation>
+<translation id="2965634373697869601">Hai, saya Leo. Saya adalah asisten AI oleh Brave. Saya didukung oleh Brave Ocelot, model yang diciptakan oleh Brave untuk merangkum halaman web. Brave Ocelot dihost oleh Brave dalam infrastruktur kami yang aman.<ph name="LINK_BEFORE"/>Pelajari selengkapnya<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Lokal</translation>
 <translation id="830868413617744215">Beta</translation>
@@ -2353,6 +2364,8 @@
 <translation id="7465032796278724624">Privasi Terbukti Dengan NEAR AI TEE</translation>
 <translation id="8782867266498869301">Model berubah secara dinamis untuk menggunakan yang terbaik untuk tugas tersebut</translation>
 <translation id="3213834013136637671">Penelusuran • Penglihatan</translation>
+<translation id="5276681919620506371">Penelusuran • Alat</translation>
+<translation id="7434375176361995333">Ringkasan • Cepat</translation>
 <translation id="3965507912994218570">Pengaturan Leo</translation>
 <translation id="3754337604877048671">Perkenalkan Leo AI</translation>
 <translation id="5295261408976371809">Asisten AI <ph name="TEXT_BEFORE"/>pribadi<ph name="TEXT_AFTER"/> Anda, langsung di dalam peramban.</translation>
@@ -2408,6 +2421,8 @@
 <translation id="4572010449071015143">Memulai percakapan baru</translation>
 <translation id="345901077335355561">Kembali ke percakapan aktif</translation>
 <translation id="6287023598025162715">Percakapan baru</translation>
+<translation id="7230502562132448519">Filter percakapan</translation>
+<translation id="821070843380699990">Coba pencarian lain</translation>
 <translation id="7097822247923237815">Obrolan sementara</translation>
 <translation id="7481750859362986254">Obrolan ini tidak akan disimpan ke riwayat Anda atau menggunakan kustomisasi atau memori Leo.</translation>
 <translation id="4238305333951712482">Memori diperbarui: <ph name="MEMORY_CONTENT"/></translation>
@@ -2445,6 +2460,21 @@
 <translation id="6338250692384725496">Menjalankan kode dalam sandbox untuk membantu pertanyaan Anda</translation>
 <translation id="4379566111233326721">Kode:</translation>
 <translation id="3542130965673205258">Keluaran:</translation>
+<translation id="5382076391290708074">Memindahkan tab Anda</translation>
+<translation id="3862123464576147769">Mengizinkan ini akan mengirimkan <ph name="URL_FORMAT_START"/>URL<ph name="URL_FORMAT_END"/> dan <ph name="TITLE_FORMAT_START"/>Judul<ph name="TITLE_FORMAT_END"/> semua Tab dan Kelompok Tab Anda ke Brave AI, dan memungkinkan Brave AI untuk memindahkannya. Izin ini hanya berlaku untuk percakapan ini.</translation>
+<translation id="396165714586708444">Penelitian Mendalam</translation>
+<translation id="577747221882855891">Mencari: "<ph name="QUERY"/>"</translation>
+<translation id="5061713007774798338">Menganalisis <ph name="COUNT"/> sumber untuk "<ph name="QUERY"/>"</translation>
+<translation id="1202264349398113062">Memproses <ph name="COUNT"/> URL baru untuk "<ph name="QUERY"/>"</translation>
+<translation id="6189479600023022289">Menemukan <ph name="COUNT"/> URL untuk "<ph name="QUERY"/>"</translation>
+<translation id="5150674341374247355">Mengambil <ph name="FETCHED"/>/<ph name="TOTAL"/> URL</translation>
+<translation id="1075606740174445363">Dianalisis <ph name="COUNT"/> URL untuk "<ph name="QUERY"/>"</translation>
+<translation id="6220878652174655112">Mencari <ph name="COUNT"/> kueri</translation>
+<translation id="3571450204565012512">Dianalisis <ph name="URL_COUNT"/> URL dari <ph name="QUERY_COUNT"/> pencarian</translation>
+<translation id="5733200563889491347">Penelitian selesai</translation>
+<translation id="9164915383881032549"><ph name="MINUTES"/>m <ph name="SECONDS"/>d</translation>
+<translation id="6219719719991016422"><ph name="SECONDS"/>d</translation>
+<translation id="5067194014665306881">Kesalahan penelitian: <ph name="ERROR"/></translation>
 <translation id="3428245742224818842">Penjelajahan AI</translation>
 <translation id="2854657728271352435">Tentang profil penjelajahan AI</translation>
 <translation id="2301685062527585986">Untuk melindungi data Anda, profil penjelajahan AI yang terisolasi ini memastikan agen AI tidak memiliki akses ke profil penjelajahan utama Anda, dengan izin hanya untuk mengunjungi dan berinteraksi dengan situs bila diperlukan. Anda dapat meningkatkan produktivitas dengan memberinya tugas dan membiarkannya menjelajah untuk Anda.</translation>
@@ -2509,11 +2539,14 @@
 <translation id="7847477075635510673">Sembunyikan Berita</translation>
 <translation id="9173319813356700250">BERITA</translation>
 <translation id="6543799171249004861">Foto oleh <ph name="AUTHOR"/></translation>
+<translation id="2361906291514218784">AI Leo</translation>
 <translation id="466214682712474574">Login ke akun <ph name="PROVIDER"/> untuk melihat saldo Anda</translation>
 <translation id="8332875111286275890">Login untuk melihat saldo Anda</translation>
 <translation id="5430001801813715388">REWARDS</translation>
+<translation id="988042349921505128">Penelusuran dan AI</translation>
 <translation id="2430295257226173518">Tanya apa saja, cari apa saja…</translation>
 <translation id="167018310108390163">Kustomisasi Halaman Tab Baru</translation>
+<translation id="3500134717967948757">Tampilkan widget Leo AI di tab baru</translation>
 <translation id="6851426306697017546">Tampilkan jam</translation>
 <translation id="4844370919312937270">Tampilkan widget penelusuran di tab baru</translation>
 <translation id="7328310113820087094">Dengan <ph name="LINK_BEGIN"/>Brave Rewards<ph name="LINK_END"/>, Anda bisa dapat penghasilan dengan melihat iklan di halaman tab baru.</translation>
@@ -2542,8 +2575,15 @@
 <translation id="8458987127502506209">Aktifkan Brave Shield</translation>
 <translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>Perisai sedang AKTIF<ph name="STATUS_AFTER"/> untuk situs ini</translation>
 <translation id="2458631245058451506"><ph name="STATUS_BEFORE"/>Perisai sedang NONAKTIF<ph name="STATUS_AFTER"/> untuk situs ini</translation>
+<translation id="8426214145426269584"><ph name="UP_BEFORE"/>Perisai aktif<ph name="UP_AFTER"/> untuk situs ini</translation>
+<translation id="3325367578778625743"><ph name="DOWN_BEFORE"/>Perisai nonaktif<ph name="DOWN_AFTER"/> untuk situs ini</translation>
 <translation id="4724752924364329714">Jika situs ini tampaknya rusak, coba Shields down.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Catatan: hal ini dapat mengurangi perlindungan privasi Brave.<ph name="NOTE_AFTER"/></translation>
+<translation id="4329860807937715445">Ini mungkin mengurangi perlindungan privasi Brave. <ph name="LINK_BEFORE"/>Pelajari selengkapnya<ph name="LINK_AFTER"/></translation>
+<translation id="3889333301730272023"><ph name="BLOCK_COUNT"/> pelacak, iklan, dan lainnya diblokir</translation>
+<translation id="2275121279487164685">Pelacak dan iklan</translation>
+<translation id="4968268657895673116">Apakah situs ini tidak berfungsi dengan baik saat Perisai aktif?</translation>
+<translation id="5412004902081180614">Laporkan</translation>
 <translation id="3620004479054499575">Apakah Anda mengalami masalah dengan situs ini?</translation>
 <translation id="9176447766421988172">Kami mencoba eksperimen untuk meningkatkan kompatibilitas situs web, di mana kami hanya mengaktifkan pemblokiran iklan. Peringatan: menghapus semua perlindungan privasi. Ingin mencobanya? <ph name="LINK_BEFORE"/>Pelajari lebih lanjut<ph name="LINK_AFTER"/>.</translation>
 <translation id="5372101283158221516">Harap diperhatikan bahwa untuk situs web individual yang dilanggar oleh perlindungan privasi Brave, Anda dapat mengatur Perisai ke TURUN.</translation>
@@ -2558,9 +2598,12 @@
 <translation id="8377155647357436161">Pelacak, iklan, dan lebih banyak pemblokiran <ph name="LINK_BEFORE"/>Pelajari lebih lanjut<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Tidak dilindungi oleh Pelindung Brave <ph name="LINK_BEFORE"/>Pelajari lebih lanjut<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Kontrol lanjutan</translation>
+<translation id="7939062555109487992">Opsi lanjutan</translation>
 <translation id="5799940914270080805">Mengubah pengaturan ini dapat merusak situs.</translation>
 <translation id="9204041448536398473">Pengaturan Shield Global</translation>
 <translation id="2108334320919763866">Bawaan global</translation>
+<translation id="1896472873031845605">Pengaturan Global</translation>
+<translation id="8324318899000695659">Blokir elemen</translation>
 <translation id="7205939464631857223">Hapus semua elemen yang diblokir</translation>
 <translation id="3440043456924990296">Pengaturan yang dikelola organisasi</translation>
 <translation id="7053983685419859001">Blokir</translation>
@@ -2600,9 +2643,11 @@
 <translation id="3795015906457257780">Anda melihat situs ini tanpa perlindungan privasi Brave.</translation>
 <translation id="7194012750329511146">Perisai Brave
 <ph name="NUMBER"/> Pelacak, iklan, dan banyak lagi telah diblokir</translation>
+<translation id="2900068182947574679">Skrip</translation>
 <translation id="4292121526390005808">Skrip diblokir</translation>
 <translation id="5046271170844958713">Skrip yang diizinkan</translation>
 <translation id="199862531047218413">perlindungan anti-sidik jari diterapkan</translation>
+<translation id="896105002981074545">Perlindungan fingerprinting</translation>
 <translation id="5032505924781383272">Perlindungan yang diterapkan tidak selalu menunjukkan bahwa halaman web ini mencoba untuk membuat sidik jari peramban Anda.</translation>
 <translation id="1905384713982899903">Sidik jari yang diblokir</translation>
 <translation id="314364527871618241">Sidik jari yang diizinkan</translation>
@@ -2615,6 +2660,7 @@
 <translation id="542789539047208469">Info Situs</translation>
 <translation id="7586067492365979844">Brave Perisai memiliki rumah dan desain baru. Sekarang terintegrasi dengan informasi situs untuk pengalaman satu atap.</translation>
 <translation id="9114542678887529043">Brave Perisai memiliki rumah dan desain baru. Akses dengan mengklik ikon situs di bilah alamat.</translation>
+<translation id="4242533952199664413">Buka setelan</translation>
 <translation id="6294662480095808915">Privasi. Secara Bawaan.</translation>
 <translation id="4366423156486478559">Dapatkan perlindungan Brave pada setiap tautan yang Anda klik. Cukup tetapkan Brave sebagai bawaan dan menjelajahlah. Secara privat.</translation>
 <translation id="3830912418080848377">Impor Pengaturan</translation>
@@ -2645,7 +2691,6 @@
 <translation id="7207456302801184289">Selamat Datang di Brave</translation>
 <translation id="4988030440045495002">Tema ultra gelap</translation>
 <translation id="2422927186524098759">Bilah Sisi</translation>
-<translation id="2361906291514218784">AI Leo</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">Bilah Alat</translation>
 <translation id="6225572914528673855">Bilah alamat</translation>
@@ -2756,4 +2801,19 @@ Mari kita buat Anda terhubung!</translation>
 <translation id="1602850501393095406">Tekan ↑ untuk menyoroti</translation>
 <translation id="8367705492654390392">Tanya apa saja</translation>
 <translation id="8525248723479742219">Putar Nanti</translation>
+<translation id="2935698011275148880">Asal Berani</translation>
+<translation id="3983844925615091103">Selamat datang di Brave Origin. Untuk melanjutkan, harap beli atau pulihkan pembelian Brave Origin Anda.</translation>
+<translation id="4801175670604644729">Anda memerlukan pembelian Brave Origin yang aktif untuk menggunakan browser ini.</translation>
+<translation id="4144294274624829008">Pulihkan pembelian Brave Origin</translation>
+<translation id="6080178356113101120">Beli Brave Origin</translation>
+<translation id="1009496146858538651">Pulihkan Pembelian</translation>
+<translation id="3461564061600681423">Masukkan ID pembelian Anda untuk mengaktifkan pembelian Brave Origin Anda.</translation>
+<translation id="2036379724374431790">ID Pembelian</translation>
+<translation id="4348430971280118761">Masukkan ID pembelian Anda</translation>
+<translation id="7451866456310404779">Verifikasi ID pembelian</translation>
+<translation id="8853195592604941919">Memverifikasi… Ini mungkin memakan waktu satu menit.</translation>
+<translation id="4633706444004110760">Terima kasih telah menginstal Brave Origin, versi browser untuk pengguna yang tidak memerlukan semua fitur yang mendukung Brave sebagai bisnis, tetapi masih menginginkan privasi yang hanya Brave tawarkan. Pengguna Origin akan terus mendapatkan keuntungan dari privasi terdepan industri Brave, adblock, dan kecepatan (melalui Shields), serta pembaruan perangkat lunak rutin, patch Chromium, dan peningkatan keamanan dan privasi. Origin akan menghapus sebagian besar fitur lainnya dari browser.</translation>
+<translation id="5816720995022674532">Origin gratis digunakan di perangkat Linux, tetapi masih <ph name="BEGIN_LINK"/>tersedia untuk dibeli<ph name="END_LINK"/> jika Anda ingin mendukung Brave sebagai bisnis. Pembelian juga akan membuka kemampuan untuk menggunakan Origin di perangkat Android, iOS, macOS, dan Windows.</translation>
+<translation id="3065220545261045367">Dukung Brave dengan membeli Origin</translation>
+<translation id="2069499076031488636">Lanjutkan dengan Origin gratis di Linux</translation>
 </translationbundle>

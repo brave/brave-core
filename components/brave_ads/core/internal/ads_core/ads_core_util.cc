@@ -22,7 +22,7 @@ AdsCore& GetAdsCore() {
 
 }  // namespace
 
-const TokenGeneratorInterface* GetTokenGenerator() {
+TokenGeneratorInterface* GetTokenGenerator() {
   return GetAdsCore().GetTokenGenerator();
 }
 

@@ -9,11 +9,11 @@
 
 #include "base/json/values_util.h"
 #include "base/values.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/internal/ad_units/ad_type.h"
 #include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_value_util_internal.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/reactions/reactions.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
 
 namespace brave_ads {
@@ -48,7 +48,7 @@ constexpr std::string_view kLikeSegmentReactionTypeKey = "optAction";
 
 }  // namespace
 
-AdHistoryItemInfo AdHistoryItemFromValue(const base::DictValue& dict) {
+AdHistoryItemInfo AdHistoryItemFromDict(const base::DictValue& dict) {
   AdHistoryItemInfo ad_history_item;
 
   ParseCreatedAt(dict, ad_history_item);
@@ -58,7 +58,7 @@ AdHistoryItemInfo AdHistoryItemFromValue(const base::DictValue& dict) {
   return ad_history_item;
 }
 
-base::DictValue AdHistoryItemToValue(const AdHistoryItemInfo& ad_history_item) {
+base::DictValue AdHistoryItemToDict(const AdHistoryItemInfo& ad_history_item) {
   return base::DictValue()
       .Set(kCreatedAtKey, base::TimeToValue(ad_history_item.created_at))
       .Set(kAdContentKey,

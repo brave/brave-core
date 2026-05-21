@@ -36,6 +36,7 @@ source_set("unit_tests") {
     "//base",
     "//base/test:test_support",
     "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/brave_origin/buildflags",
     "//brave/components/brave_search_conversion",
     "//brave/components/constants",
     "//brave/components/l10n/common:test_support",

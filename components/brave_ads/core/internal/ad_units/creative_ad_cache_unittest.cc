@@ -7,9 +7,9 @@
 
 #include <memory>
 
-#include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
+#include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
-#include "brave/components/brave_ads/core/internal/creatives/search_result_ads/creative_search_result_ad_test_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/search_result_ads/test/creative_search_result_ad_test_util.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -32,11 +32,11 @@ TEST_F(BraveAdsCreativeAdCacheTest, AddCreativeAd) {
   // Arrange
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true);
+          /*use_random_uuids=*/true);
 
-  SimulateOpeningNewTab(/*tab_id=*/1,
-                        /*redirect_chain=*/{GURL("https://brave.com")},
-                        net::HTTP_OK);
+  tab_helper_.OpenTab(
+      /*tab_id=*/1,
+      /*redirect_chain=*/{GURL("https://brave.com")}, net::HTTP_OK);
 
   // Act
   creative_ad_cache_->MaybeAdd(test::kPlacementId, mojom_creative_ad->Clone());
@@ -49,9 +49,9 @@ TEST_F(BraveAdsCreativeAdCacheTest, AddCreativeAd) {
 
 TEST_F(BraveAdsCreativeAdCacheTest, DoNotAddCreativeAd) {
   // Arrange
-  SimulateOpeningNewTab(/*tab_id=*/1,
-                        /*redirect_chain=*/{GURL("https://brave.com")},
-                        net::HTTP_OK);
+  tab_helper_.OpenTab(
+      /*tab_id=*/1,
+      /*redirect_chain=*/{GURL("https://brave.com")}, net::HTTP_OK);
 
   // Act
   creative_ad_cache_->MaybeAdd(test::kPlacementId,
@@ -65,9 +65,9 @@ TEST_F(BraveAdsCreativeAdCacheTest, DoNotAddCreativeAd) {
 
 TEST_F(BraveAdsCreativeAdCacheTest, DoNotAddInvalidCreativeAd) {
   // Arrange
-  SimulateOpeningNewTab(/*tab_id=*/1,
-                        /*redirect_chain=*/{GURL("https://brave.com")},
-                        net::HTTP_OK);
+  tab_helper_.OpenTab(
+      /*tab_id=*/1,
+      /*redirect_chain=*/{GURL("https://brave.com")}, net::HTTP_OK);
 
   CreativeAdVariant creative_ad_variant;
 
@@ -85,7 +85,7 @@ TEST_F(BraveAdsCreativeAdCacheTest, DoNotAddCreativeAdForOccludedTab) {
   // Arrange
   CreativeAdVariant creative_ad_variant(
       test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true));
+          /*use_random_uuids=*/true));
 
   // Act
   creative_ad_cache_->MaybeAdd(test::kPlacementId,
@@ -101,7 +101,7 @@ TEST_F(BraveAdsCreativeAdCacheTest, DoNotGetCreativeAdForMissingPlacementId) {
   // Arrange
   CreativeAdVariant creative_ad_variant(
       test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true));
+          /*use_random_uuids=*/true));
 
   // Act
   creative_ad_cache_->MaybeAdd(test::kPlacementId,
@@ -117,17 +117,17 @@ TEST_F(BraveAdsCreativeAdCacheTest, GetCreativeAdsAcrossMultipleTabs) {
   // Arrange
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true);
+          /*use_random_uuids=*/true);
 
   // Act
-  SimulateOpeningNewTab(/*tab_id=*/1,
-                        /*redirect_chain=*/{GURL("https://brave.com")},
-                        net::HTTP_OK);
+  tab_helper_.OpenTab(
+      /*tab_id=*/1,
+      /*redirect_chain=*/{GURL("https://brave.com")}, net::HTTP_OK);
   creative_ad_cache_->MaybeAdd(test::kPlacementId, mojom_creative_ad->Clone());
 
-  SimulateOpeningNewTab(/*tab_id=*/2,
-                        /*redirect_chain=*/{GURL("https://brave.com")},
-                        net::HTTP_OK);
+  tab_helper_.OpenTab(
+      /*tab_id=*/2,
+      /*redirect_chain=*/{GURL("https://brave.com")}, net::HTTP_OK);
   creative_ad_cache_->MaybeAdd(test::kAnotherPlacementId,
                                mojom_creative_ad->Clone());
 
@@ -144,21 +144,21 @@ TEST_F(BraveAdsCreativeAdCacheTest, PurgePlacementsOnTabDidClose) {
   // Arrange
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true);
+          /*use_random_uuids=*/true);
 
-  SimulateOpeningNewTab(/*tab_id=*/1,
-                        /*redirect_chain=*/{GURL("https://brave.com")},
-                        net::HTTP_OK);
+  tab_helper_.OpenTab(
+      /*tab_id=*/1,
+      /*redirect_chain=*/{GURL("https://brave.com")}, net::HTTP_OK);
   creative_ad_cache_->MaybeAdd(test::kPlacementId, mojom_creative_ad->Clone());
 
-  SimulateOpeningNewTab(/*tab_id=*/2,
-                        /*redirect_chain=*/{GURL("https://brave.com")},
-                        net::HTTP_OK);
+  tab_helper_.OpenTab(
+      /*tab_id=*/2,
+      /*redirect_chain=*/{GURL("https://brave.com")}, net::HTTP_OK);
   creative_ad_cache_->MaybeAdd(test::kAnotherPlacementId,
                                mojom_creative_ad->Clone());
 
   // Act
-  SimulateClosingTab(/*tab_id=*/2);
+  tab_helper_.CloseTab(/*tab_id=*/2);
 
   // Assert
   EXPECT_EQ(mojom_creative_ad,

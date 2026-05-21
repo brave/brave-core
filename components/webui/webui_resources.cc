@@ -203,7 +203,6 @@ base::span<const webui::LocalizedString> GetWebUILocalizedStrings(
                {"braveNewsStatusFetching", IDS_BRAVE_NEWS_STATUS_FETCHING},
                {"braveNewsActionRefresh", IDS_BRAVE_NEWS_ACTION_REFRESH},
                {"braveNewsPromoted", IDS_BRAVE_NEWS_PROMOTED},
-               {"braveNewsDisplayAdLabel", IDS_BRAVE_NEWS_DISPLAY_AD_LABEL},
 
                {"addWidget", IDS_BRAVE_NEW_TAB_WIDGET_ADD},
                {"hideWidget", IDS_BRAVE_NEW_TAB_WIDGET_HIDE},
@@ -549,7 +548,6 @@ base::span<const webui::LocalizedString> GetWebUILocalizedStrings(
                {"processorBraveTokens", IDS_BRAVE_UI_PROCESSOR_BRAVE_TOKENS},
                {"processorUphold", IDS_BRAVE_UI_PROCESSOR_UPHOLD},
                {"processorBitflyer", IDS_BRAVE_UI_PROCESSOR_BITFLYER},
-               {"processorGemini", IDS_BRAVE_UI_PROCESSOR_GEMINI},
                {"recurring", IDS_BRAVE_UI_RECURRING},
                {"recurringDonations", IDS_BRAVE_UI_RECURRING_DONATIONS},
                {"relaunch", IDS_BRAVE_UI_RELAUNCH},
@@ -802,7 +800,6 @@ base::span<const webui::LocalizedString> GetWebUILocalizedStrings(
                {"processorBraveTokens", IDS_BRAVE_UI_PROCESSOR_BRAVE_TOKENS},
                {"processorUphold", IDS_BRAVE_UI_PROCESSOR_UPHOLD},
                {"processorBitflyer", IDS_BRAVE_UI_PROCESSOR_BITFLYER},
-               {"processorGemini", IDS_BRAVE_UI_PROCESSOR_GEMINI},
                {"processorZebPay", IDS_BRAVE_UI_PROCESSOR_ZEBPAY},
                {"processorSolana", IDS_BRAVE_UI_PROCESSOR_SOLANA},
                {"refreshButton", IDS_BRAVE_REWARDS_INTERNALS_REFRESH_BUTTON},

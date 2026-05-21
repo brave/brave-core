@@ -16,6 +16,8 @@ static_library("browser") {
     "brave_vpn_service_delegate.h",
     "brave_vpn_service_helper.cc",
     "brave_vpn_service_helper.h",
+    "brave_vpn_service_impl.cc",
+    "brave_vpn_service_impl.h",
     "brave_vpn_service_observer.cc",
     "brave_vpn_service_observer.h",
   ]
@@ -52,6 +54,7 @@ source_set("unit_tests") {
 
   sources = [
     "brave_vpn_metrics_unittest.cc",
+    "brave_vpn_service_impl_unittest.cc",
     "brave_vpn_service_unittest.cc",
   ]
 

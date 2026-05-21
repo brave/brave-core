@@ -1,0 +1,14 @@
+Name: hex
+Short Name: hex
+URL: https://github.com/KokaKiwi/rust-hex
+Version: 0.4.3
+License: MIT OR Apache-2.0
+License File: LICENSE-MIT
+
+Description:
+Transitive dependency of BoringTun, vendored under
+brave/third_party/boringtun/vendor/hex.
+
+Local Modifications:
+None. Source vendored via `cargo vendor` from crates.io at the version
+pinned by brave/third_party/boringtun/Cargo.lock.

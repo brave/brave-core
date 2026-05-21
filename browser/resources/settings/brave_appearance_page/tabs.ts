@@ -34,6 +34,41 @@ export class SettingsBraveAppearanceTabsElement extends SettingsBraveAppearanceT
 
   static get properties() {
     return {
+      tabMinWidthSelectionAliases_: {
+        readOnly: true,
+        type: Object,
+        value() {
+          return {'0': '1'}
+        },
+      },
+      tabMinWidthModes_: {
+        readOnly: true,
+        type: Array,
+        value() {
+          return [
+            {
+              value: 0,
+              hidden: true,
+            },
+            {
+              value: 1,
+              name: loadTimeData.getString('appearanceSettingsTabMinWidthMinimum'),
+            },
+            {
+              value: 2,
+              name: loadTimeData.getString('appearanceSettingsTabMinWidthMedium'),
+            },
+            {
+              value: 3,
+              name: loadTimeData.getString('appearanceSettingsTabMinWidthLarge'),
+            },
+            {
+              value: 4,
+              name: loadTimeData.getString('appearanceSettingsTabMinWidthFull'),
+            },
+          ]
+        },
+      },
       tabTooltipModes_: {
         readyOnly: true,
         type: Array,
@@ -62,13 +97,19 @@ export class SettingsBraveAppearanceTabsElement extends SettingsBraveAppearanceT
     }
   }
 
+  declare private tabMinWidthSelectionAliases_: Record<string, string>
+  declare private tabMinWidthModes_: Array<{
+    value: number,
+    name: string,
+    hidden?: boolean,
+  }>
   declare private tabTooltipModes_:
       Array<{value: number, name: string}>
   declare private verticalTabsToggleEnabled_: boolean
 
   override connectedCallback() {
     super.connectedCallback()
-    sendWithPromise('getIsVerticalTabsToggleEnabled').then(
+    sendWithPromise<boolean>('getIsVerticalTabsToggleEnabled').then(
         (enabled: boolean) => { this.verticalTabsToggleEnabled_ = enabled })
     this.addWebUiListener(
         'vertical-tabs-toggle-enabled-changed',
@@ -90,6 +131,10 @@ export class SettingsBraveAppearanceTabsElement extends SettingsBraveAppearanceT
 
   private isHideVerticalTabCompletelyFlagEnabled() {
     return loadTimeData.getBoolean('isHideVerticalTabCompletelyFlagEnabled');
+  }
+
+  private isScrollableHorizontalTabStripFlagEnabled() {
+    return loadTimeData.getBoolean('isScrollableHorizontalTabStripEnabled');
   }
 }
 

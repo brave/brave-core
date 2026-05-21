@@ -529,7 +529,10 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
     private void setUpMainLayout() {
         if (mContext == null) return;
 
-        String favIconURL = mBraveRewardsNativeWorker.getPublisherFavIconURL(mTabId);
+        String favIconURL =
+                mBraveRewardsNativeWorker != null
+                        ? mBraveRewardsNativeWorker.getPublisherFavIconURL(mTabId)
+                        : "";
         Tab currentActiveTab = mIconFetcher.getTab();
         String url = currentActiveTab.getUrl().getSpec();
         final String favicon_url = favIconURL.isEmpty() ? url : favIconURL;

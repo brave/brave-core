@@ -1,0 +1,116 @@
+[package]
+name        = "nix"
+description = "Rust friendly bindings to *nix APIs"
+edition     = "2018"
+version     = "0.25.1"
+rust-version = "1.46"
+authors     = ["The nix-rust Project Developers"]
+repository  = "https://github.com/nix-rust/nix"
+license     = "MIT"
+categories  = ["os::unix-apis"]
+include = ["src/**/*", "test/**/*", "LICENSE", "README.md", "CHANGELOG.md"]
+
+[package.metadata.docs.rs]
+rustdoc-args = ["--cfg", "docsrs"]
+targets = [
+  "x86_64-unknown-linux-gnu",
+  "aarch64-linux-android",
+  "x86_64-apple-darwin",
+  "aarch64-apple-ios",
+  "x86_64-unknown-freebsd",
+  "x86_64-unknown-openbsd",
+  "x86_64-unknown-netbsd",
+  "x86_64-unknown-dragonfly",
+  "x86_64-fuchsia",
+  "x86_64-unknown-redox",
+  "x86_64-unknown-illumos"
+]
+
+[dependencies]
+libc = { version = "0.2.127", features = [ "extra_traits" ] }
+bitflags = "1.1"
+cfg-if = "1.0"
+pin-utils = { version = "0.1.0", optional = true }
+
+[target.'cfg(not(target_os = "redox"))'.dependencies]
+memoffset = { version = "0.6.3", optional = true }
+
+[build-dependencies]
+autocfg = "1.1.0"
+
+[features]
+default = [
+  "acct", "aio", "dir", "env", "event", "feature", "fs",
+  "hostname", "inotify", "ioctl", "kmod", "mman", "mount", "mqueue",
+  "net", "personality", "poll", "process", "pthread", "ptrace", "quota",
+  "reboot", "resource", "sched", "signal", "socket", "term", "time",
+  "ucontext", "uio", "user", "zerocopy",
+]
+
+acct = []
+aio = ["pin-utils"]
+dir = ["fs"]
+env = []
+event = []
+feature = []
+fs = []
+hostname = []
+inotify = []
+ioctl = []
+kmod = []
+mman = []
+mount = ["uio"]
+mqueue = ["fs"]
+net = ["socket"]
+personality = []
+poll = []
+pthread = []
+ptrace = ["process"]
+quota = []
+process = []
+reboot = []
+resource = []
+sched = ["process"]
+signal = ["process"]
+socket = ["memoffset"]
+term = []
+time = []
+ucontext = ["signal"]
+uio = []
+user = ["feature"]
+zerocopy = ["fs", "uio"]
+
+[dev-dependencies]
+assert-impl = "0.1"
+lazy_static = "1.4"
+parking_lot = "0.11.2"
+rand = "0.8"
+tempfile = "3.3.0"
+semver = "1.0.7"
+
+[target.'cfg(any(target_os = "android", target_os = "linux"))'.dev-dependencies]
+caps = "0.5.3"
+
+[target.'cfg(target_os = "freebsd")'.dev-dependencies]
+sysctl = "0.4"
+
+[[test]]
+name = "test"
+path = "test/test.rs"
+
+[[test]]
+name = "test-aio-drop"
+path = "test/sys/test_aio_drop.rs"
+
+[[test]]
+name = "test-clearenv"
+path = "test/test_clearenv.rs"
+
+[[test]]
+name = "test-mount"
+path = "test/test_mount.rs"
+harness = false
+
+[[test]]
+name = "test-ptymaster-drop"
+path = "test/test_ptymaster_drop.rs"

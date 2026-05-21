@@ -100,6 +100,10 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
   source->AddBoolean("isAIChatAgentProfileFeatureEnabled",
                      ai_chat::features::IsAIChatAgentProfileEnabled());
   source->AddBoolean("isAIChatAgentProfile", profile_->IsAIChatAgent());
+  source->AddBoolean(
+      "isGlobalPanel",
+      ai_chat::features::IsAIChatGlobalSidePanelEverywhereEnabled() ||
+          profile_->IsAIChatAgent());
 
   web_ui->AddRequestableScheme(content::kChromeUIUntrustedScheme);
   source->OverrideContentSecurityPolicy(
@@ -164,7 +168,12 @@ void AIChatUI::BindInterface(
     web_contents = nullptr;
   }
   page_handler_ = std::make_unique<ai_chat::AIChatUIPageHandler>(
-      web_ui()->GetWebContents(), web_contents, profile_, std::move(receiver));
+      web_ui()->GetWebContents(), web_contents, profile_, std::move(receiver)
+#if !BUILDFLAG(IS_ANDROID)
+                                                              ,
+      browser ? browser->tab_strip_model() : nullptr
+#endif
+  );
 }
 
 void AIChatUI::BindInterface(

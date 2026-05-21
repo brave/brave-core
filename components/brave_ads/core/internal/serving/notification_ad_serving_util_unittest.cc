@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving_util.h"
 
-#include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/operating_system/operating_system_types.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 
@@ -18,7 +18,7 @@ class BraveAdsNotificationAdServingUtilTest : public test::TestBase {};
 TEST_F(BraveAdsNotificationAdServingUtilTest,
        ShouldServeAdsAtRegularIntervalsOnIOS) {
   // Arrange
-  test::MockPlatformHelper(platform_helper_mock_, PlatformType::kIOS);
+  fake_operating_system_.SetType(OperatingSystemType::kIOS);
 
   // Act & Assert
   EXPECT_TRUE(ShouldServeAdsAtRegularIntervals());
@@ -27,7 +27,7 @@ TEST_F(BraveAdsNotificationAdServingUtilTest,
 TEST_F(BraveAdsNotificationAdServingUtilTest,
        ShouldServeAdsAtRegularIntervalsOnAndroid) {
   // Arrange
-  test::MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
+  fake_operating_system_.SetType(OperatingSystemType::kAndroid);
 
   // Act & Assert
   EXPECT_TRUE(ShouldServeAdsAtRegularIntervals());
@@ -36,7 +36,7 @@ TEST_F(BraveAdsNotificationAdServingUtilTest,
 TEST_F(BraveAdsNotificationAdServingUtilTest,
        ShouldNotServeAdsAtRegularIntervalsOnMacOS) {
   // Arrange
-  test::MockPlatformHelper(platform_helper_mock_, PlatformType::kMacOS);
+  fake_operating_system_.SetType(OperatingSystemType::kMacOS);
 
   // Act & Assert
   EXPECT_FALSE(ShouldServeAdsAtRegularIntervals());
@@ -45,7 +45,7 @@ TEST_F(BraveAdsNotificationAdServingUtilTest,
 TEST_F(BraveAdsNotificationAdServingUtilTest,
        ShouldNotServeAdsAtRegularIntervalsOnWindows) {
   // Arrange
-  test::MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
+  fake_operating_system_.SetType(OperatingSystemType::kWindows);
 
   // Act & Assert
   EXPECT_FALSE(ShouldServeAdsAtRegularIntervals());
@@ -54,7 +54,7 @@ TEST_F(BraveAdsNotificationAdServingUtilTest,
 TEST_F(BraveAdsNotificationAdServingUtilTest,
        ShouldNotServeAdsAtRegularIntervalsOnLinux) {
   // Arrange
-  test::MockPlatformHelper(platform_helper_mock_, PlatformType::kLinux);
+  fake_operating_system_.SetType(OperatingSystemType::kLinux);
 
   // Act & Assert
   EXPECT_FALSE(ShouldServeAdsAtRegularIntervals());

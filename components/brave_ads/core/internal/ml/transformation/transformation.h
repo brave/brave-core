@@ -7,8 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_TRANSFORMATION_TRANSFORMATION_H_
 
 #include <memory>
-
-#include "brave/components/brave_ads/core/internal/ml/transformation/transformation_types.h"
+#include <vector>
 
 namespace brave_ads::ml {
 
@@ -16,18 +15,14 @@ class Data;
 
 class Transformation {
  public:
-  explicit Transformation(TransformationType type);
-
   virtual ~Transformation();
-
-  TransformationType GetType() const;
 
   virtual std::unique_ptr<Data> Apply(
       const std::unique_ptr<Data>& input_data) const = 0;
-
- protected:
-  const TransformationType type_;
 };
+
+using TransformationPtr = std::unique_ptr<Transformation>;
+using TransformationVector = std::vector<TransformationPtr>;
 
 }  // namespace brave_ads::ml
 

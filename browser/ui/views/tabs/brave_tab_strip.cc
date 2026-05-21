@@ -13,6 +13,7 @@
 #include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/check_op.h"
+#include "base/feature_list.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service.h"
@@ -40,6 +41,7 @@
 #include "chrome/browser/ui/views/tabs/tab_slot_view.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_observer.h"
+#include "components/prefs/pref_service.h"
 #include "components/tab_groups/tab_group_id.h"
 #include "components/tabs/public/tab_group.h"
 #include "content/public/browser/web_contents.h"
@@ -52,12 +54,14 @@
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/color_utils.h"
 #include "ui/views/layout/flex_layout.h"
+#include "ui/views/view_utils.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/browser/containers/containers_service_factory.h"
 #include "brave/browser/ui/containers/container_model.h"
 #include "brave/browser/ui/containers/containers_icon_generator.h"
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
+#include "brave/components/containers/core/browser/temporary_container.h"
 #include "brave/components/containers/core/common/features.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
@@ -74,6 +78,19 @@ BraveTabStrip::BraveTabStrip(
   middle_click_close_tab_enabled_.Init(
       brave_tabs::kMiddleClickCloseTabEnabled,
       controller_->GetBrowserWindowInterface()->GetProfile()->GetPrefs());
+  tab_min_width_mode_.Init(
+      brave_tabs::kTabMinWidthMode,
+      controller_->GetBrowserWindowInterface()->GetProfile()->GetPrefs(),
+      base::BindRepeating(&BraveTabStrip::OnTabMinWidthModePrefChanged,
+                          base::Unretained(this)));
+  if (base::FeatureList::IsEnabled(tabs::kBraveScrollableTabStrip)) {
+    scrollable_horizontal_tab_strip_.Init(
+        brave_tabs::kScrollableHorizontalTabStrip,
+        controller_->GetBrowserWindowInterface()->GetProfile()->GetPrefs(),
+        base::BindRepeating(
+            &BraveTabStrip::OnScrollableHorizontalTabStripPrefChanged,
+            base::Unretained(this)));
+  }
 }
 
 BraveTabStrip::~BraveTabStrip() = default;
@@ -133,19 +150,42 @@ bool BraveTabStrip::IsVerticalTabsAnimatingButNotFinalState() const {
 }
 
 bool BraveTabStrip::CanPaintThrobberToLayer() const {
-  if (!ShouldShowVerticalTabs() &&
-      !base::FeatureList::IsEnabled(tabs::kBraveScrollableTabStrip)) {
-    return TabStrip::CanPaintThrobberToLayer();
+  if (static_cast<BraveTabContainer*>(tab_container_)->GetScrollDirection()) {
+    // Don't allow throbber to be painted to layer. When tabs are scrollable,
+    // a tab could be out of the viewport. Otherwise, throbber would be
+    // painted even when the tab is not in the viewport.
+    return false;
   }
 
-  // Don't allow throbber to be painted to layer. When tabs are scrollable,
-  // a tab could be out of the viewport. Otherwise, throbber would be
-  // painted even when the tab is not in the viewport.
-  return false;
+  return TabStrip::CanPaintThrobberToLayer();
 }
 
 bool BraveTabStrip::CanCloseTabViaMiddleButtonClick() const {
   return *middle_click_close_tab_enabled_;
+}
+
+void BraveTabStrip::AddTabToGroup(std::optional<tab_groups::TabGroupId> group,
+                                  int model_index) {
+  TabStrip::AddTabToGroup(group, model_index);
+
+  if (!base::FeatureList::IsEnabled(tabs::kBraveTreeTab)) {
+    return;
+  }
+
+  std::optional<tree_tab::TreeTabNodeId> node_id;
+  if (group.has_value()) {
+    auto* brave_controller =
+        static_cast<BraveBrowserTabStripController*>(controller());
+    if (const auto* id = brave_controller->GetTreeTabNodeIdForGroup(*group)) {
+      node_id = *id;
+    }
+  }
+  tab_at(model_index)->set_tree_tab_node(node_id);
+}
+
+void BraveTabStrip::OnTabPinnedStateChanged(int model_index, bool is_pinned) {
+  TabStrip::OnTabPinnedStateChanged(model_index, is_pinned);
+  OnPinnedStateChanged(model_index, is_pinned);
 }
 
 void BraveTabStrip::ShowHover(Tab* tab, TabStyle::ShowHoverStyle style) {
@@ -159,12 +199,13 @@ void BraveTabStrip::HideHover(Tab* tab, TabStyle::HideHoverStyle style) {
   tab->HideHover(style);
 }
 
-void BraveTabStrip::UpdateHoverCard(Tab* tab, HoverCardUpdateType update_type) {
+void BraveTabStrip::UpdateHoverCard(HoverCardAnchorTarget* anchor_target,
+                                    HoverCardUpdateType update_type) {
   if (brave_tabs::AreTooltipsEnabled(
           controller_->GetBrowserWindowInterface()->GetProfile()->GetPrefs())) {
     return;
   }
-  TabStrip::UpdateHoverCard(tab, update_type);
+  TabStrip::UpdateHoverCard(anchor_target, update_type);
 }
 
 void BraveTabStrip::MaybeStartDrag(TabSlotView* source,
@@ -209,6 +250,13 @@ void BraveTabStrip::MaybeStartDrag(TabSlotView* source,
 void BraveTabStrip::AddedToWidget() {
   TabStrip::AddedToWidget();
 
+  // When Chromium's upstream vertical tabs feature is active,
+  // TabStrip::Initialize() is never called so tab_container_ remains null.
+  // Skip UpdateOrientation() to avoid crashing when accessing it.
+  if (!tabs::utils::SupportsBraveVerticalTabs(GetBrowserWindowInterface())) {
+    return;
+  }
+
   if (BrowserView::GetBrowserViewForBrowser(GetBrowserWindowInterface())) {
     UpdateOrientation();
   } else {
@@ -229,7 +277,7 @@ int BraveTabStrip::GetTreeHeight(const tree_tab::TreeTabNodeId& id) const {
       ->GetTreeHeight(id);
 }
 
-const tabs::TreeTabNode& BraveTabStrip::GetTreeTabNode(
+const tabs::TreeTabNode* BraveTabStrip::GetTreeTabNode(
     const tree_tab::TreeTabNodeId& id) const {
   return static_cast<BraveBrowserTabStripController*>(controller_.get())
       ->GetTreeTabNode(id);
@@ -270,6 +318,10 @@ bool BraveTabStrip::ShouldShowPinnedTabsInGrid() const {
 }
 
 void BraveTabStrip::UpdateOrientation() {
+  // Callers must guard against unsupported configurations (e.g. upstream
+  // vertical tabs where tab_container_ is null).
+  CHECK(tabs::utils::SupportsBraveVerticalTabs(GetBrowserWindowInterface()));
+
   const bool using_vertical_tabs = ShouldShowVerticalTabs();
   auto* browser = GetBrowserWindowInterface();
   DCHECK(browser);
@@ -290,8 +342,6 @@ void BraveTabStrip::UpdateOrientation() {
   } else {
     SetAvailableWidthCallback(base::NullCallback());
   }
-
-  hover_card_controller_->SetIsVerticalTabs(using_vertical_tabs);
 
   if (const auto active_index = GetActiveIndex(); active_index) {
     // In order to update shadow state, call ActiveStateChanged().
@@ -315,8 +365,40 @@ void BraveTabStrip::OnAlwaysHideCloseButtonPrefChanged() {
   }
 }
 
+void BraveTabStrip::OnTabMinWidthModePrefChanged() {
+  InvalidateTabContainerLayout();
+}
+
+void BraveTabStrip::OnScrollableHorizontalTabStripPrefChanged() {
+  InvalidateTabContainerLayout();
+}
+
+brave_tabs::TabMinWidthMode BraveTabStrip::GetTabMinWidthMode() const {
+  const PrefService* prefs =
+      controller_->GetBrowserWindowInterface()->GetProfile()->GetPrefs();
+  if (!brave_tabs::IsScrollableHorizontalTabStripEnabled(prefs)) {
+    return brave_tabs::TabMinWidthMode::kDefault;
+  }
+  return static_cast<brave_tabs::TabMinWidthMode>(
+      tab_min_width_mode_.GetValue());
+}
+
+bool BraveTabStrip::IsHorizontalScrollingEnabled() const {
+  return brave_tabs::IsScrollableHorizontalTabStripEnabled(
+      controller_->GetBrowserWindowInterface()->GetProfile()->GetPrefs());
+}
+
 TabContainer* BraveTabStrip::GetTabContainerForTesting() {
   return tab_container_.get();  // IN-TEST
+}
+
+BraveTabContainer* BraveTabStrip::GetBraveTabContainer() {
+  return views::AsViewClass<BraveTabContainer>(tab_container_.get());
+}
+
+void BraveTabStrip::InvalidateTabContainerLayout() {
+  tab_container_->InvalidateIdealBounds();
+  tab_container_->InvalidateLayout();
 }
 
 bool BraveTabStrip::ShouldPaintTabAccent(const Tab* tab) const {
@@ -371,9 +453,15 @@ ui::ImageModel BraveTabStrip::GetTabAccentIcon(const Tab* tab) const {
     return ui::ImageModel();
   }
 
-  auto& icon =
-      containers::GetVectorIconFromIconType(container_model->container()->icon);
-  return ui::ImageModel::FromVectorIcon(icon, accent_colors->icon_color, 16);
+  const auto& container = container_model->container();
+  auto* widget = GetWidget();
+  const float scale_factor =
+      widget ? widget->GetCompositor()->device_scale_factor() : 1.0f;
+
+  return ui::ImageModel::FromImageSkia(
+      containers::GenerateContainerForegroundIcon(
+          container->id, container->icon, 16, scale_factor,
+          accent_colors->icon_color));
 #else
   return ui::ImageModel();
 #endif
@@ -426,6 +514,20 @@ BraveTabStrip::GetContainerModelForTab(const Tab* tab) const {
                                               scale_factor);
 }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
+void BraveTabStrip::OnPinnedStateChanged(int model_index,
+                                         bool new_pinned_state) {
+  if (!base::FeatureList::IsEnabled(tabs::kBraveTreeTab)) {
+    return;
+  }
+
+  // In case moving a tab from a group to pinned, we need to clear the
+  // tree-tab-node UI state. There is no dedicated notification when pinning
+  // from a group.
+  if (new_pinned_state) {
+    tab_at(model_index)->set_tree_tab_node(std::nullopt);
+  }
+}
 
 BEGIN_METADATA(BraveTabStrip)
 END_METADATA

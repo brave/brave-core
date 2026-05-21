@@ -13,6 +13,7 @@
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/p3a/pref_names.h"
 #include "brave/components/playlist/core/common/pref_names.h"
 #include "build/build_config.h"
@@ -25,6 +26,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+#include "brave/components/email_aliases/pref_names.h"
 #endif
 
 namespace policy {
@@ -79,6 +84,13 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
         playlist::kPlaylistEnabledPref,
         base::Value::Type::BOOLEAN,
     },
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+    {
+        policy::key::kEmailAliasesEnabled,
+        email_aliases::prefs::kEmailAliasesEnabled,
+        base::Value::Type::BOOLEAN,
+    },
+#endif
 };
 
 }  // namespace policy

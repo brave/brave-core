@@ -16,21 +16,18 @@
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/page_land/page_land_info.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit_feature.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit_util.h"
 #include "brave/components/brave_ads/core/public/common/url/url_util.h"
-#include "brave/components/brave_ads/core/public/user_engagement/site_visit/site_visit_feature.h"
 
 namespace brave_ads {
 
 SiteVisit::SiteVisit() {
-  BrowserManager::GetInstance().AddObserver(this);
-  TabManager::GetInstance().AddObserver(this);
+  browser_manager_observation_.Observe(&BrowserManager::GetInstance());
+  tab_manager_observation_.Observe(&TabManager::GetInstance());
 }
 
-SiteVisit::~SiteVisit() {
-  BrowserManager::GetInstance().RemoveObserver(this);
-  TabManager::GetInstance().RemoveObserver(this);
-}
+SiteVisit::~SiteVisit() = default;
 
 void SiteVisit::AddObserver(SiteVisitObserver* const observer) {
   CHECK(observer);

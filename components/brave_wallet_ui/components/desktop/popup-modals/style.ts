@@ -32,7 +32,7 @@ export const Modal = styled.div<{
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   min-width: ${(p) => (p.width ? p.width : '580px')};
   max-width: ${(p) => (p.width ? p.width : '580px')};
   max-height: 90vh;
@@ -61,14 +61,22 @@ export const ModalContent = styled(Column)`
 export const Header = styled.div<{
   headerPaddingVertical?: string
   headerPaddingHorizontal?: string
+  headerPaddingMobile?: string
 }>`
   --vertical-padding: ${(p) => p.headerPaddingVertical ?? '20px'};
   --horizontal-padding: ${(p) => p.headerPaddingHorizontal ?? '20px'};
+  --padding: var(--vertical-padding) var(--horizontal-padding);
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    --padding: ${(p) =>
+      p.headerPaddingMobile
+        ? p.headerPaddingMobile
+        : 'var(--vertical-padding) var(--horizontal-padding)'};
+  }
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-direction: row;
-  padding: var(--vertical-padding) var(--horizontal-padding);
+  padding: var(--padding);
   width: 100%;
 `
 
@@ -95,13 +103,6 @@ export const HeaderButton = styled(WalletButton)`
 
 export const CloseIcon = styled(Icon).attrs({
   name: 'close',
-})`
-  --leo-icon-size: 24px;
-  color: ${leo.color.icon.default};
-`
-
-export const BackIcon = styled(Icon).attrs({
-  name: 'arrow-left',
 })`
   --leo-icon-size: 24px;
   color: ${leo.color.icon.default};

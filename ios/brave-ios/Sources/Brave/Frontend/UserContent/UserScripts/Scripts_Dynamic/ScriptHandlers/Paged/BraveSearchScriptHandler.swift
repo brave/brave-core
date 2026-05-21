@@ -83,7 +83,8 @@ class BraveSearchScriptHandler: TabContentScript {
     }
 
     guard let data = try? JSONSerialization.data(withJSONObject: message.body, options: []),
-      let method = try? JSONDecoder().decode(MethodModel.self, from: data).methodId
+      let method = try? JSONDecoder().decode(MethodModel.self, from: data).methodId,
+      let helper = tab.braveSearch
     else {
       Logger.module.error("Failed to retrieve method id")
       replyHandler(nil, nil)
@@ -92,46 +93,13 @@ class BraveSearchScriptHandler: TabContentScript {
 
     switch method {
     case Method.canSetBraveSearchAsDefault.rawValue:
-      handleCanSetBraveSearchAsDefault(tab: tab, replyHandler: replyHandler)
+      let canSetBraveSearchAsDefault = helper.checkCanSetBraveSearchAsDefault()
+      replyHandler(canSetBraveSearchAsDefault, nil)
     case Method.setBraveSearchDefault.rawValue:
-      handleSetBraveSearchDefault(replyHandler: replyHandler)
+      helper.setBraveSearchAsDefault()
+      replyHandler(nil, nil)
     default:
       break
     }
-  }
-
-  private func handleCanSetBraveSearchAsDefault(
-    tab: some TabState,
-    replyHandler: (Any?, String?) -> Void
-  ) {
-    if tab.isPrivate == true {
-      Logger.module.debug("Private mode detected, skipping setting Brave Search as a default")
-      replyHandler(false, nil)
-      return
-    }
-
-    let maximumPromptCount = Preferences.Search.braveSearchDefaultBrowserPromptCount
-    if Self.canSetAsDefaultCounter >= maxCountOfDefaultBrowserPromptsPerSession
-      || maximumPromptCount.value >= maxCountOfDefaultBrowserPromptsTotal
-    {
-      Logger.module.debug("Maximum number of tries of Brave Search website prompts reached")
-      replyHandler(false, nil)
-      return
-    }
-
-    Self.canSetAsDefaultCounter += 1
-    maximumPromptCount.value += 1
-
-    let defaultEngine = profile.searchEngines.defaultEngine(forType: .standard)?.shortName
-    let canSetAsDefault = defaultEngine != OpenSearchEngine.EngineNames.brave
-    replyHandler(canSetAsDefault, nil)
-  }
-
-  private func handleSetBraveSearchDefault(replyHandler: (Any?, String?) -> Void) {
-    profile.searchEngines.updateDefaultEngine(
-      OpenSearchEngine.EngineNames.brave,
-      forType: .standard
-    )
-    replyHandler(nil, nil)
   }
 }

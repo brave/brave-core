@@ -1,0 +1,13 @@
+Name: ip_network
+Short Name: ip_network
+URL: https://github.com/JakubOnderka/ip_network
+Version: 0.4.1
+License: BSD-2-Clause
+
+Description:
+Transitive dependency of BoringTun, vendored under
+brave/third_party/boringtun/vendor/ip_network.
+
+Local Modifications:
+None. Source vendored via `cargo vendor` from crates.io at the version
+pinned by brave/third_party/boringtun/Cargo.lock.

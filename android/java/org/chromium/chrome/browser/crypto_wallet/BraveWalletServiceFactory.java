@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.crypto_wallet;
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
 
+import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BraveWalletP3a;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.EthTxManagerProxy;
@@ -98,6 +99,18 @@ public class BraveWalletServiceFactory {
         return txService;
     }
 
+    public AssetRatioService getAssetRatioService(ConnectionErrorHandler connectionErrorHandler) {
+        Profile profile = Utils.getProfile(false); // always use regular profile
+        long nativeHandle =
+                BraveWalletServiceFactoryJni.get().getInterfaceToAssetRatioService(profile);
+        MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
+        AssetRatioService assetRatioService = AssetRatioService.MANAGER.attachProxy(handle, 0);
+        Handler handler = ((Interface.Proxy) assetRatioService).getProxyHandler();
+        handler.setErrorHandler(connectionErrorHandler);
+
+        return assetRatioService;
+    }
+
     public EthTxManagerProxy getEthTxManagerProxy(ConnectionErrorHandler connectionErrorHandler) {
         Profile profile = Utils.getProfile(false); // always use regular profile
         long nativeHandle =
@@ -139,6 +152,8 @@ public class BraveWalletServiceFactory {
         long getInterfaceToKeyringService(Profile profile);
 
         long getInterfaceToTxService(Profile profile);
+
+        long getInterfaceToAssetRatioService(Profile profile);
 
         long getInterfaceToEthTxManagerProxy(Profile profile);
 

@@ -63,7 +63,9 @@ struct PlaylistContentView: View {
         // FIXME: Move this into PlayerModel
         playerModel.makeItemQueue(selectedItemID: newValue)
         if selectedItemID == newValue {
-          // Already selected, restart it (based on prior behaviour)
+          // Re-tap on the same item. Rewind to the start and play; `play()` re-prepares the asset if
+          // a previous prepare left the player empty (e.g. cache missing and resolution failed, but the user
+          // has since tapped "Save offline data").
           Task {
             await playerModel.seek(to: 0, accurately: true)
             playerModel.play()
@@ -247,7 +249,7 @@ struct PlaylistContentView: View {
       .environment(\.colorScheme, .dark)
       .preferredColorScheme(.dark)
     }
-    .onChange(of: selectedItemID) { newValue in
+    .onChange(of: selectedItemID) { _, newValue in
       if newValue == nil {
         withAnimation(.snappy) {
           selectedDetent = .anchor(.emptyPlaylistContent)
@@ -257,7 +259,7 @@ struct PlaylistContentView: View {
         return
       }
     }
-    .onChange(of: Array(folders)) { newValue in
+    .onChange(of: Array(folders)) { _, newValue in
       if !newValue.map(\.id).contains(selectedFolderID) {
         // Reset the selected folder if the user deletes the folder they had selected
         playerModel.selectedFolderID = PlaylistFolder.savedFolderUUID

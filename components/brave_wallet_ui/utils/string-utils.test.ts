@@ -10,6 +10,7 @@ import {
 import {
   isRemoteImageURL,
   isValidIconExtension,
+  sanitizeImageURL,
   formatAsDouble,
   hasUnicode,
   padWithLeadingZeros,
@@ -43,6 +44,30 @@ describe('Checking URL is remote image or not', () => {
 
   test('undefined input should return undefined', () => {
     expect(isRemoteImageURL(undefined)).toEqual(undefined)
+  })
+})
+
+describe('sanitizeImageURL', () => {
+  test('HTTPS URL should be wrapped in chrome://image proxy', () => {
+    expect(sanitizeImageURL('https://example.com/logo.png')).toEqual(
+      'chrome://image?url=https%3A%2F%2Fexample.com%2Flogo.png&staticEncode=true',
+    )
+  })
+
+  test('HTTP URL should be wrapped in chrome://image proxy', () => {
+    expect(sanitizeImageURL('http://example.com/logo.png')).toEqual(
+      'chrome://image?url=http%3A%2F%2Fexample.com%2Flogo.png&staticEncode=true',
+    )
+  })
+
+  test('local path should be returned unchanged', () => {
+    expect(sanitizeImageURL('bat.png')).toEqual('bat.png')
+  })
+
+  test('chrome:// URL should be returned unchanged', () => {
+    expect(sanitizeImageURL('chrome://erc-token-images/bat.png')).toEqual(
+      'chrome://erc-token-images/bat.png',
+    )
   })
 })
 

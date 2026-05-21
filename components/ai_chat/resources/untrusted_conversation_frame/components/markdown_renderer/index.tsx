@@ -22,6 +22,7 @@ import {
   directiveComponents,
   remarkDirectives,
 } from './remark_directives'
+import { remarkColor, ColorChip } from './remark_color'
 
 const CodeBlock = React.lazy(async () => ({
   default: (await import('../code_block')).default.Block,
@@ -74,6 +75,9 @@ const allowedElements = [
 
   // Directives
   ...ALLOWED_DIRECTIVES,
+
+  // Color chips
+  'colorchip',
 ]
 
 interface CursorDecoratorProps {
@@ -265,7 +269,12 @@ interface MarkdownRendererProps {
 }
 
 // Module-level constant so the array reference is stable across all renders.
-const REMARK_PLUGINS = [remarkGfm, remarkDirective, remarkDirectives]
+const REMARK_PLUGINS = [
+  remarkGfm,
+  remarkDirective,
+  remarkDirectives,
+  remarkColor,
+]
 
 export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
   const lastElementRef = React.useRef<HastElement | undefined>()
@@ -340,6 +349,7 @@ export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
           disableLinkRestrictions={disableLinkRestrictionsRef.current}
         />
       ),
+      colorchip: ColorChip,
       ...buildTableRenderer(),
       ...directiveComponents,
     }),

@@ -5,6 +5,15 @@
 ## why the filter is required and create an associated tracking issue.
 ##
 
+# This Chromium test fails consistently on Windows ASAN nightly builds.
+# The test creates an HTTPS embedded test server and expects
+# SanitizedImageSource (browser-process URL loader) to download an image from
+# it via chrome://image. The download fails, likely due to cert trust issues in
+# the browser-process network path under ASAN. Stable upstream (0.3% flake
+# rate). Brave does not modify SanitizedImageSource or ImageNavigationThrottle.
+# https://github.com/brave/brave-browser/issues/54041
+-ImageNavigationThrottleTest.SubresourceLoadSucceeds
+
 # This test fails because the product name is Brave instead of Chromium -
 # hardcoded in the test.
 -CrashClientUploadInfoTest.GetClientProductInfo
@@ -17,19 +26,13 @@
 -StartupBrowserCreatorTriggeredResetTest.TestMultiProfile
 
 # These tests fail on CI but pass locally
+-AiDataKeyedServiceBrowserTest.TabInnerText
 -All/CookieSettingsTest.AllowCookiesUsingExceptions/0
 -All/CookieSettingsTest.AllowCookiesUsingExceptions/2
 -All/CookieSettingsTest.AllowCookiesUsingExceptions/5
--AiDataKeyedServiceBrowserTest.TabInnerText
--AutofillContextMenuManagerFeedbackUIBrowserTest.DisplaysFeedbackDialogUI
 -AutomationApiTest.*
--AutomationApiTestWithLanguageDetection.DetectedLanguage
 -ManifestUpdateManagerBrowserTest.UninstallDialogCancelStillShowsAppUpdateDialog
--ExtensionUninstallDialogViewBrowserTest.WebAppWindowAshCrash
 -SaveDesktopSnapshotTest.SaveDesktopSnapshot
--TabHoverCardBubbleViewDialogBrowserTest.InvokeUi_tab_hover_card
--WebAppFrameToolbarBrowserTest_OriginText.OutOfScopeBarShown/*
--WebAppFrameToolbarBrowserTest_OriginText.ThemeColorChange/0
 
 # Flaky Chromium test - resize event fires during print preview due to Brave UI
 # layout (sidebar, vertical tabs, side panel). Chromium also disables this on
@@ -37,27 +40,34 @@
 # https://github.com/brave/brave-browser/issues/52475
 -PrintBrowserTest.NoResizeEvent
 
+# Flaky Chromium test - PageLoadMetricsTestWaiter times out waiting for layout
+# shift IPC from renderer. Chromium disables all LayoutInstabilityTest.* on all
+# platforms in CFT filter files (win, mac, linux). Already disabled on Linux
+# with wildcard. Upstream is stable (0.3% flake rate, LUCI Analysis) but
+# Chromium still disables in CFT. Brave has no chromium_src overrides for the
+# layout shift metrics pipeline.
+# https://github.com/brave/brave-browser/issues/53785
+-LayoutInstabilityTest.*
+
+# Flaky Chromium test - Brave's cosmetic filters inject MutationObserver and
+# setInterval(500ms) polling on all pages, preventing Blink's IdlenessDetector
+# from reaching the 500ms quiet window needed for NetworkBecameIdle. The Paint
+# test fails at EnsureHistogramsRecorded for the network/main-thread idle
+# metric. Same root cause as the disabled NetworkAndMainThreadIdleDelayed
+# (Linux) and NetworkAndMainThreadIdle (Linux, PR #35281). Upstream flake rate
+# 3.8% (LUCI Analysis, 30 days).
+# https://github.com/brave/brave-browser/issues/54186
+-PageStabilityMetricsTest.Paint
+
 # These tests are flaky both on CI and locally
 -CmdLineURLIncognitoBasicTestFeatureDisabled/LaunchNavigationBrowserBasicTest.CmdLineLaunch/0
 -CmdLineURLIncognitoBasicTestFeatureEnabled/LaunchNavigationBrowserBasicTest.CmdLineLaunch/0
--PersistentBackground/ExtensionWebRequestApiTestWithContextType.WebRequestRedirectsWorkers/BackgroundResourceFetchDisabled
--PersistentBackground/ExtensionWebRequestApiTestWithContextType.WebRequestRedirectsWorkers/BackgroundResourceFetchEnabled
--ServiceWorker/ExtensionWebRequestApiTestWithContextType.WebRequestRedirectsWorkers/BackgroundResourceFetchDisabled
--ServiceWorker/ExtensionWebRequestApiTestWithContextType.WebRequestRedirectsWorkers/BackgroundResourceFetchEnabled
-
-# This test fails because we modify the Profile Picker UI to skip the initial
-# screen and the tests ends up creating 2 profiles instead of the intended one.
--ProfilePickerLocalProfileCreationDialogBrowserTest.CancelLocalProfileCreation
-
-# This test fails because we force StartupTabProviderImpl::CanShowWelcome to
-# always return true.
--StartupBrowserCreatorWelcomeBackTest.WelcomeBackStandardNoPolicy/UsingForYouFre
+-UpdateMetricsProviderBrowserTest.RunInBackground
 
 # These tests fail on CI but passes locally
 -All/PrintCompositorDocumentDataTypeBrowserTest.WindowDotPrint/Xps
 -AppMenuBrowserTest.*
 -LiveCaptionUnavailabilityNotifierTest.CaptionBubbleDestroyed
--SoftNavigationTabRestoreTest.SoftNavigationToRestoredTab
 
 # These tests fail in Release due to resource being optimized out.
 # Check failed: !data->empty(). Unable to find resource: 10679. If this happens
@@ -70,7 +80,6 @@
 # These tests fail because we override colors.
 -NativeChromeColorMixerWinBrowserTest.AccentColorAvailableWithFrameColorDisabled
 -NativeChromeColorMixerWinBrowserTest.HeaderColorsFollowAccentColor
--NativeChromeColorMixerWinBrowserTest.NativeThemeForWebWithAccentColor
 
 # These tests fail because in Release we set GOOGLE_CHROME_BRANDING in
 # extensions/browser/install_verifier.cc (on Win and Mac), which causes
@@ -82,11 +91,6 @@
 # These tests fail upstream when DCHECKs are enabled.
 -PenIdBrowserTest.*
 
-# These require further investigation, they began failing with CR141
--CDM_10/ECKEncryptedMediaTest.VerifyCdmHostTest/0
--CDM_11/ECKEncryptedMediaTest.VerifyCdmHostTest/0
--CDM_12/ECKEncryptedMediaTest.VerifyCdmHostTest/0
-
 # This test relies on command line switches for watermark opacity that only work
 # on non-STABLE, non-BETA channels. On Windows, OFFICIAL builds use
 # ScopedInstallDetails with default index 0 (STABLE), causing GetChannel() to
@@ -94,10 +98,7 @@
 -WatermarkSettingsCommandLineBrowserTest.GetColors
 
 # Tests below this point have not been diagnosed or had issues created yet.
--All/ExternallyManagedBrowserTestWithPrefMigrationRead.ReinstallPolicyAppWithLocallyInstalledApp/1
 -All/PDFPluginDisabledTest.*
--All/WebAppOfflinePageTest.WebAppOfflinePageIsDisplayed/*
--All/WebAppOfflinePageTest.WebAppOfflineWithEmptyServiceWorker/*
 -AllowCurrentProfile_DifferentUserSignedInDefaultProfile/ExistingWinBrowserProfilesSigninUtilTest.*
 -AllowCurrentProfile_NoUserSignedIn/ExistingWinBrowserProfilesSigninUtilTest.*
 -AllowCurrentProfile_SameUserSignedIn/ExistingWinBrowserProfilesSigninUtilTest.*
@@ -105,13 +106,13 @@
 -AllowProfileWithPrimaryAccount_SameUser/ExistingWinBrowserSigninUtilTest.*
 -AllowSubsequentRun/ExistingWinBrowserSigninUtilTest.*
 -BrowserRootViewBrowserTest.*
+-CRLSetBrowserTest.*
+-CRLSetInterceptionBrowserTest.*
 -ChromeMojoProxyResolverWinBrowserTest.*
 -ChromeSecurityExploitBrowserTest.*
 -ChromeTracingDelegateBrowserTest.NewIncognitoSessionBlockingTraceFinalization
 -ContentAnalysisDialogPlainTests.*
 -CredentialProviderSigninDialogWinIntegrationDialogDisplayTest.*
--CRLSetBrowserTest.*
--CRLSetInterceptionBrowserTest.*
 -DisallowCurrentProfile_CredProviderUsedDefaultProfile/ExistingWinBrowserProfilesSigninUtilTest.*
 -DisallowCurrentProfile_DifferentUserSignedIn/ExistingWinBrowserProfilesSigninUtilTest.*
 -DisallowCurrentProfile_SameUserSignedInDefaultProfile/ExistingWinBrowserProfilesSigninUtilTest.*
@@ -119,68 +120,47 @@
 -EdgeImporterBrowserTest.EdgeImporter
 -Enabled/NetworkServiceSandboxEnabledTest.IsRespected/0
 -Enabled/RendererAppContainerEnabledTest.IsRespected/0
--ExtensionInstalledBubbleViewsBrowserTest.*
--FencedFrameFileSystemAccessBrowserTest/FencedFrameFileSystemAccessBrowserTest.*
 -IEImporterBrowserTest.*
 -ImageWriterUtilityClientTest.*
 -InfoBarUiTest.*
 -InstanceIDApiTest.*
--IsolatedAppBrowserServiceWorkerPushTest.ServiceWorkerPartitionedWhenWakingUpDuetoPushNotification
 -KnownInterceptionDisclosureUITest.*
 -LocalePolicyTest.*
--MediaSessionPictureInPictureWindowControllerBrowserTest.*
 -NetErrorTabHelperWithFencedFrameTest.*
--NotificationHelperLaunchesChrome.ChromeLaunchTest
 -NotSet/RendererAppContainerEnabledTest.IsRespected/0
 -OnlyAllowProfileWithNoPrimaryAccount/ExistingWinBrowserSigninUtilTest.*
--OutOfMemoryReporterPrerenderBrowserTest.*
+-PWAMixedContentBrowserTestWithAutoupgradesDisabled.MixedContentReparentWebContentsIntoAppBrowser
 -PaymentRequestContactInfoEditorTest.*
 -PaymentRequestPaymentResponseAllContactDetailsTest.*
 -PaymentRequestShippingOptionViewControllerTest.*
 -PaymentRequestShowPromiseTest.*
--PdfToEmfConverterBrowserTest.*
 -PictureInPictureLazyBackgroundPageApiTest.*
 -PictureInPicturePixelComparisonBrowserTest.*
--PictureInPictureWindowControllerBrowserTest.*
 -PictureInPictureWindowControllerFencedFrameBrowserTest.*
 -PictureInPictureWindowControllerPrerenderBrowserTest.*
 -ProfileMainNetworkContext/NetworkContextConfigurationBrowserTest.*
 -ProfileShortcutManagerBrowserTest.*
 -PushMessagingBrowserTestWithAbusiveOriginPermissionRevocation.OriginIsNotOnSafeBrowsingBlockingList
 -PushMessagingBrowserTestWithAbusiveOriginPermissionRevocation.PushEventPermissionRevoked
--PushMessagingBrowserTestWithNotificationTriggersEnabled.PushEventIgnoresScheduledNotificationsForEnforcement
 -PushMessagingDisallowSenderIdsBrowserTest.SubscriptionWithSenderIdFails
--PushSubscriptionChangeEventTest.FiredAfterPermissionRevoked
--PushSubscriptionChangeEventTest.OnInvalidation
--PushSubscriptionChangeEventTest.PushSubscriptionChangeEventSuccess
 -PushSubscriptionWithExpirationTimeTest.GetSubscriptionWithExpirationTime
 -PushSubscriptionWithExpirationTimeTest.SubscribeGetSubscriptionWithExpirationTime
 -PushSubscriptionWithoutExpirationTimeTest.SubscribeDocumentExpirationTimeNull
--PWAMixedContentBrowserTestWithAutoupgradesDisabled.MixedContentReparentWebContentsIntoAppBrowser
+-SSLUIMITMSoftwareEnabledTest.*
 -SaveCardBubbleViewsFullFormBrowserTest.*
--SaveCardBubbleViewsFullFormBrowserTestForManageCard.Local_ClickingIconShowsManageCards
--SaveCardBubbleViewsFullFormBrowserTestForManageCard.Local_ClickingSaveClosesBubble
--SaveCardBubbleViewsFullFormBrowserTestForManageCard.Local_ManageCardsDoneButtonClosesBubble
 -ScriptingAPITest.*
--ServiceWorker/ExtensionI18nTest.*
 -ServiceWorker/ExtensionManagementApiTest.*
 -ServiceWorkerPushMessagingTest.OnPush
--SigninUtilWinBrowserTest5/SigninUtilWinBrowserTest.*
 -SigninUtilWinBrowserTest5/SigninUtilWinBrowserTestWithParams.FixReauth/0
 -SigninUtilWinBrowserTest5/SigninUtilWinBrowserTestWithParams.Run/0
--SigninUtilWinBrowserTest6/SigninUtilWinBrowserTest.*
 -SigninUtilWinBrowserTest6/SigninUtilWinBrowserTestWithParams.FixReauth/0
 -SigninUtilWinBrowserTest6/SigninUtilWinBrowserTestWithParams.Run/0
 -SigninUtilWinNoStartingWindowBrowserTest.FRESigninFlow
 -SpellcheckServiceBrowserTest.*
--SSLUIMITMSoftwareEnabledTest.*
 -StartupBrowserCreatorCorruptProfileTest.*
 -StartupMetricsTest.*
 -StatusBubbleViewsTest.*
 -TabSearchBubbleHostBrowserTest.*
--WebAppBrowserTest_FileHandler.RegKeysFileExtension
--WebAppGlassBrowserFrameViewTest.*
--WebAppIntegrationBrowserTestWin.*
 -WebAppTagWebAppTest.TabNavigatedAwayNotWebAppTask
 -WebAppTagWebAppTest.WebAppTaskCreatedForStandalone
 -WebAppTagWebAppTest.WebAppTaskCreatedForTab
@@ -200,3 +180,29 @@
 # (kBraveBlockScreenFingerprinting) by default on desktop, which modifies
 # screen dimension values returned to web content.
 -ScreenDetailsTest.FullscreenSize
+
+# https://github.com/brave/brave-browser/issues/53717
+# Flaky upstream test. ManifestSilentUpdateCommand queues a background
+# GetData() task whose FinishAndStartNextTask cleanup may still be pending when
+# HasCurrent() is asserted. Upstream flake rate 0.6% (LUCI Analysis, 30 days).
+# No Brave modifications to installable manager code path.
+-InstallableManagerBrowserTest.CheckWebapp
+
+# Chromium test: intermittent browser startup timeout on Windows CI.
+# Upstream flake rate: 0.3% (stable). Brave-specific startup overhead
+# (AiChat, NTP images, stats, shields) extends initialization time,
+# triggering RunLoop timeout in ProxyRunTestOnMainThreadLoop under high
+# parallelism (32 jobs). Test itself is trivially simple (creates a context
+# menu and checks a menu item) — failure occurs before test body runs.
+# Brave modifies render_view_context_menu via chromium_src but only adds
+# menu items, unrelated to startup timing. Not disabled upstream.
+# https://github.com/brave/brave-browser/issues/54114
+-All/ContextMenuBrowserTest.CopyLinkTextTouchTextOnly/LinkPreviewDisabled
+
+# Intermittent failure: after crash recovery + reload, IsShowing() returns false.
+# Known upstream flake (1.7% flake rate over 30 days per LUCI Analysis).
+# LUCI data is aggregated across all configs, so using windows-wide filter.
+# Chromium test - no Brave modifications in crash recovery or view visibility paths.
+# The related ReloadCacheRevalidate variant is already DISABLED upstream.
+# https://github.com/brave/brave-browser/issues/53995
+-CrashRecoveryBrowserTest.Reload

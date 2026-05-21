@@ -8,9 +8,12 @@
 
 #include "base/feature_list.h"
 
+class PrefService;
+
 namespace brave_account::features {
 
 bool IsBraveAccountEnabled();
+bool IsBraveAccountEnabledForProfile(const PrefService& pref_service);
 
 const base::Feature& BraveAccountFeatureForTesting();
 

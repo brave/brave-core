@@ -104,13 +104,11 @@ class BraveVpnButtonUnitTest : public testing::Test {
   bool DoesButtonHaveConnectedState() const { return button_->is_connected_; }
 
   void SetPurchasedState(const std::string& env, mojom::PurchasedState state) {
-    button_->service_->SetPurchasedState(env, state);
+    button_->service_->SetPurchasedStateForTesting(env, state);
   }
 
   void SetConnectionState(mojom::ConnectionState state) {
-    ASSERT_TRUE(button_->service_->connection_manager_->connection_api_impl_);
-    button_->service_->connection_manager_->connection_api_impl_
-        ->SetConnectionStateForTesting(state);
+    button_->service_->SetConnectionStateForTesting(state);
   }
 
   bool IsOsVpnConnected() const {

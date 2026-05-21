@@ -8,7 +8,10 @@
 #include <array>
 #include <string_view>
 
+#include "base/strings/string_util.h"
+#include "base/test/bind.h"
 #include "brave/components/brave_wallet/browser/bip39.h"
+#include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_keyring.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -26,14 +29,14 @@ constexpr char kDevPhrase[] =
 // Expected SS58 addresses for kDevPhrase, matching PolkadotKeyring test
 // vectors. Mainnet (prefix 0).
 constexpr const char kMainnetAddress0[] =
-    "14YLzDFZTwnkcJkFij4Km7g5LdkLqKHy47xYGPN6HsLJpfnb";
+    "12bzRJfh7arnnfPPUZHeJUaE62QLEwhK48QnH9LXeK2m1iZU";
 constexpr const char kMainnetAddress1[] =
-    "14QspRnocdHvoDfFnGvvYwskrsSWG8nneJ2BAQ2oSMcsQUxB";
+    "1yMmfLti1k3huRQM2c47WugwonQMqTvQ2GUFxnU7Pcs7xPo";
 // Testnet (prefix 42).
 constexpr const char kTestnetAddress0[] =
-    "5HGiBcFgEBMgT6GEuo9SA98sBnGgwHtPKDXiUukT6aqCrKEx";
+    "5DfhGyQdFobKM8NsWvEeAKk5EQQgYe9AydgJ7rMB6E1EqRzV";
 constexpr const char kTestnetAddress1[] =
-    "5CofVLAGjwvdGXvBiP6ddtZYMVbhT5Xke8ZrshUpj2ZXAnND";
+    "5D34dL5prEUaGNQtPPZ3yN5Y6BnkfXunKXXz6fo7ZJbLwRRH";
 
 bool IsAddressAllowed(const std::string&) {
   return true;
@@ -45,19 +48,27 @@ PolkadotKeyring MakePolkadotKeyring(mojom::KeyringId keyring) {
                          base::BindRepeating(IsAddressAllowed));
 }
 
+PolkadotImportKeyring MakePolkadotImportKeyring(mojom::KeyringId keyring_id) {
+  return PolkadotImportKeyring(keyring_id,
+                               base::BindRepeating(IsAddressAllowed));
+}
+
 }  // namespace
 
 TEST(PolkadotImportKeyringTest, AddAccountAndGetAddress) {
   // Mainnet: import keyring must produce same addresses as HD keyring.
   {
     auto hd_keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotMainnet);
-    PolkadotImportKeyring import_keyring(mojom::KeyringId::kPolkadotImport);
+    auto import_keyring =
+        MakePolkadotImportKeyring(mojom::KeyringId::kPolkadotImport);
 
+    ASSERT_TRUE(hd_keyring.AddNewHDAccount(0));
     ASSERT_TRUE(
         import_keyring.AddAccount(0, hd_keyring.GetPkcs8KeyForTesting(0)));
     EXPECT_EQ(import_keyring.GetAccountAddress(0).value(), kMainnetAddress0);
     EXPECT_EQ(import_keyring.GetAddress(0, 0u).value(), kMainnetAddress0);
 
+    ASSERT_TRUE(hd_keyring.AddNewHDAccount(1));
     ASSERT_TRUE(
         import_keyring.AddAccount(1, hd_keyring.GetPkcs8KeyForTesting(1)));
     EXPECT_EQ(import_keyring.GetAccountAddress(1).value(), kMainnetAddress1);
@@ -67,14 +78,16 @@ TEST(PolkadotImportKeyringTest, AddAccountAndGetAddress) {
   // Testnet: import keyring must produce same addresses as HD keyring.
   {
     auto hd_keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotTestnet);
-    PolkadotImportKeyring import_keyring(
-        mojom::KeyringId::kPolkadotImportTestnet);
+    auto import_keyring =
+        MakePolkadotImportKeyring(mojom::KeyringId::kPolkadotImportTestnet);
 
+    ASSERT_TRUE(hd_keyring.AddNewHDAccount(0));
     ASSERT_TRUE(
         import_keyring.AddAccount(0, hd_keyring.GetPkcs8KeyForTesting(0)));
     EXPECT_EQ(import_keyring.GetAccountAddress(0).value(), kTestnetAddress0);
     EXPECT_EQ(import_keyring.GetAddress(0, 42u).value(), kTestnetAddress0);
 
+    ASSERT_TRUE(hd_keyring.AddNewHDAccount(1));
     EXPECT_TRUE(
         import_keyring.AddAccount(1, hd_keyring.GetPkcs8KeyForTesting(1)));
     EXPECT_EQ(import_keyring.GetAccountAddress(1).value(), kTestnetAddress1);
@@ -84,9 +97,10 @@ TEST(PolkadotImportKeyringTest, AddAccountAndGetAddress) {
 
 TEST(PolkadotImportKeyringTest, AddAccountFails) {
   auto hd_keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotMainnet);
+  ASSERT_TRUE(hd_keyring.AddNewHDAccount(0));
   auto pkcs8 = hd_keyring.GetPkcs8KeyForTesting(0);
 
-  PolkadotImportKeyring keyring(mojom::KeyringId::kPolkadotImport);
+  auto keyring = MakePolkadotImportKeyring(mojom::KeyringId::kPolkadotImport);
   ASSERT_TRUE(keyring.AddAccount(0, pkcs8));
   EXPECT_FALSE(keyring.AddAccount(0, pkcs8));
 
@@ -96,9 +110,10 @@ TEST(PolkadotImportKeyringTest, AddAccountFails) {
 
 TEST(PolkadotImportKeyringTest, RemoveAccount) {
   auto hd_keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotMainnet);
+  ASSERT_TRUE(hd_keyring.AddNewHDAccount(0));
   auto pkcs8 = hd_keyring.GetPkcs8KeyForTesting(0);
 
-  PolkadotImportKeyring keyring(mojom::KeyringId::kPolkadotImport);
+  auto keyring = MakePolkadotImportKeyring(mojom::KeyringId::kPolkadotImport);
   ASSERT_TRUE(keyring.AddAccount(0, pkcs8));
   EXPECT_TRUE(keyring.GetAddress(0, kSubstratePrefix).has_value());
 
@@ -110,9 +125,11 @@ TEST(PolkadotImportKeyringTest, RemoveAccount) {
 
 TEST(PolkadotImportKeyringTest, GetPublicKey) {
   auto hd_keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotMainnet);
+  ASSERT_TRUE(hd_keyring.AddNewHDAccount(0));
   auto pkcs8 = hd_keyring.GetPkcs8KeyForTesting(0);
 
-  PolkadotImportKeyring import_keyring(mojom::KeyringId::kPolkadotImport);
+  auto import_keyring =
+      MakePolkadotImportKeyring(mojom::KeyringId::kPolkadotImport);
   ASSERT_TRUE(import_keyring.AddAccount(0, pkcs8));
 
   auto hd_pubkey = hd_keyring.GetPublicKey(0);
@@ -125,9 +142,11 @@ TEST(PolkadotImportKeyringTest, GetPublicKey) {
 
 TEST(PolkadotImportKeyringTest, SignMessage) {
   auto hd_keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotMainnet);
+  ASSERT_TRUE(hd_keyring.AddNewHDAccount(0));
   auto pkcs8 = hd_keyring.GetPkcs8KeyForTesting(0);
 
-  PolkadotImportKeyring import_keyring(mojom::KeyringId::kPolkadotImport);
+  auto import_keyring =
+      MakePolkadotImportKeyring(mojom::KeyringId::kPolkadotImport);
   ASSERT_TRUE(import_keyring.AddAccount(0, pkcs8));
 
   auto message = base::byte_span_from_cstring("hello, polkadot import");
@@ -140,12 +159,14 @@ TEST(PolkadotImportKeyringTest, SignMessage) {
 
 TEST(PolkadotImportKeyringTest, EncodePrivateKeyForExportRoundtrip) {
   auto hd_keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotMainnet);
+  ASSERT_TRUE(hd_keyring.AddNewHDAccount(0));
   auto pkcs8 = hd_keyring.GetPkcs8KeyForTesting(0);
 
-  PolkadotImportKeyring import_keyring(mojom::KeyringId::kPolkadotImport);
+  auto import_keyring =
+      MakePolkadotImportKeyring(mojom::KeyringId::kPolkadotImport);
   ASSERT_TRUE(import_keyring.AddAccount(0, pkcs8));
 
-  const std::string kPassword = "export_password_123";
+  static constexpr char kPassword[] = "export_password_123";
   auto encoded = import_keyring.EncodePrivateKeyForExport(0, kPassword);
   ASSERT_TRUE(encoded.has_value());
 
@@ -156,17 +177,54 @@ TEST(PolkadotImportKeyringTest, EncodePrivateKeyForExportRoundtrip) {
 
 TEST(PolkadotImportKeyringTest,
      EncodePrivateKeyForExportFailsForMissingAccount) {
-  PolkadotImportKeyring keyring(mojom::KeyringId::kPolkadotImport);
+  auto keyring = MakePolkadotImportKeyring(mojom::KeyringId::kPolkadotImport);
   EXPECT_FALSE(keyring.EncodePrivateKeyForExport(0, "password").has_value());
 }
 
 TEST(PolkadotImportKeyringTest, IsTestnet) {
-  PolkadotImportKeyring mainnet_keyring(mojom::KeyringId::kPolkadotImport);
+  auto mainnet_keyring =
+      MakePolkadotImportKeyring(mojom::KeyringId::kPolkadotImport);
   EXPECT_FALSE(mainnet_keyring.IsTestnet());
 
-  PolkadotImportKeyring testnet_keyring(
-      mojom::KeyringId::kPolkadotImportTestnet);
+  auto testnet_keyring =
+      MakePolkadotImportKeyring(mojom::KeyringId::kPolkadotImportTestnet);
   EXPECT_TRUE(testnet_keyring.IsTestnet());
+}
+
+TEST(PolkadotImportKeyringTest, AddAccount_RestrictedAddress) {
+  auto* registry = BlockchainRegistry::GetInstance();
+  CHECK(registry);
+
+  auto hd_keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotMainnet);
+
+  ASSERT_TRUE(hd_keyring.AddNewHDAccount(0));
+  ASSERT_TRUE(hd_keyring.AddNewHDAccount(1));
+
+  auto pkcs8_key = hd_keyring.GetPkcs8KeyForTesting(0);
+  auto pkcs8_key1 = hd_keyring.GetPkcs8KeyForTesting(1);
+
+  PolkadotImportKeyring import_keyring(
+      mojom::KeyringId::kPolkadotImport,
+      base::BindLambdaForTesting([=](const std::string& address) {
+        return !registry->IsRestrictedAddress(address);
+      }));
+
+  // Add an account to get its address.
+  ASSERT_TRUE(import_keyring.AddAccount(0, pkcs8_key));
+
+  auto address = import_keyring.GetAccountAddress(0);
+  ASSERT_TRUE(address);
+  const auto address_to_restrict = *address;
+
+  // Add address to restricted list.
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting scoped_restricted(
+      {base::ToLowerASCII(address_to_restrict)});
+
+  ASSERT_TRUE(import_keyring.RemoveAccount(0));
+
+  EXPECT_FALSE(import_keyring.AddAccount(0, pkcs8_key));
+  EXPECT_FALSE(import_keyring.RemoveAccount(0));
+  EXPECT_TRUE(import_keyring.AddAccount(1, pkcs8_key1));
 }
 
 }  // namespace brave_wallet

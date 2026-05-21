@@ -115,7 +115,7 @@ std::optional<TokenIssuerPublicKeyMap> ParseTokenIssuerPublicKeys(
 
 }  // namespace
 
-base::ListValue TokenIssuersToValue(const TokenIssuerList& token_issuers) {
+base::ListValue TokenIssuersToList(const TokenIssuerList& token_issuers) {
   base::ListValue list;
 
   for (const auto& token_issuer : token_issuers) {
@@ -143,7 +143,7 @@ base::ListValue TokenIssuersToValue(const TokenIssuerList& token_issuers) {
   return list;
 }
 
-std::optional<TokenIssuerList> TokenIssuersFromValue(
+std::optional<TokenIssuerList> MaybeBuildTokenIssuersFromList(
     const base::ListValue& list) {
   TokenIssuerList token_issuers;
   token_issuers.reserve(list.size());

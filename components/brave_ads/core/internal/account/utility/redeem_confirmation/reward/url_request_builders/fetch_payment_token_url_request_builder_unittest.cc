@@ -7,10 +7,10 @@
 
 #include <optional>
 
-#include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_util.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_test_util.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/token_generator_test_util.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/reward/test/reward_confirmation_test_util.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/test/confirmation_tokens_test_util.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/test/token_generator_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "url/gurl.h"
 
@@ -26,7 +26,7 @@ TEST_F(BraveAdsFetchPaymentTokenUrlRequestBuilderTest, BuildUrl) {
   test::RefillConfirmationTokens(/*count=*/1);
 
   std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   FetchPaymentTokenUrlRequestBuilder url_request_builder(*confirmation);

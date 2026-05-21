@@ -20,6 +20,7 @@ namespace regional_capabilities {
 class RegionalCapabilitiesService;
 }
 
+class PrefService;
 class Profile;
 
 namespace brave_new_tab_page_refresh {
@@ -41,6 +42,9 @@ class NewTabPageInitializer {
 
   void Initialize();
 
+  // Migrates profile prefs associated with the NTP.
+  static void MigrateProfilePrefs(PrefService* prefs);
+
  private:
   Profile* GetProfile();
 
@@ -52,7 +56,6 @@ class NewTabPageInitializer {
   void AddFaviconDataSource();
   void AddCustomImageDataSource();
   void AddSanitizedImageDataSource();
-  void MaybeMigrateHideAllWidgetsPref();
 
   raw_ref<content::WebUI> web_ui_;
   raw_ptr<content::WebUIDataSource> source_ = nullptr;

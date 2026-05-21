@@ -22,22 +22,26 @@ REPO_ID = 'brave/leo'
 NALA_REPO = f'https://github.com/{REPO_ID}'
 nala_clone_dir = tempfile.mkdtemp()
 
+SF_SYMBOLS_REPO_ID = 'brave/leo-sf-symbols'
+SF_SYMBOLS_REPO = f'https://github.com/{SF_SYMBOLS_REPO_ID}'
+sf_symbols_clone_dir = tempfile.mkdtemp()
+
 
 class Commit:
     """
-    Represents a commit in the Nala repository. This also handles updating
-    links based on Github PR numbers to a full link so they work from the
-    brave-core repo.
+    Represents a commit in a repository. This also handles updating links based
+    on Github PR numbers to a full link so they work from the brave-core repo.
     """
 
-    def __init__(self, log_line):
+    def __init__(self, log_line, repo_url=NALA_REPO):
         parts = log_line.split(' ', 1)
         self.sha = parts[0]
         self.message = parts[1]
+        self.repo_url = repo_url
 
     def __str__(self):
         # Update the PR links to point to the repo
-        return re.sub(r'\((#(\d+))\)$', rf'([\1]({NALA_REPO}/pull/\2))',
+        return re.sub(r'\((#(\d+))\)$', rf'([\1]({self.repo_url}/pull/\2))',
                       self.message)
 
     def __repr__(self):
@@ -57,20 +61,18 @@ def parse_args():
     return parser.parse_args()
 
 
-def clone_nala():
-    """Clones the Nala repository to a temporary directory."""
-    subprocess.run([
-        'git', 'clone', NALA_REPO + '.git', nala_clone_dir, '--filter',
-        'blob:none'
-    ],
-                   check=True)
+def clone_repo(url, clone_dir):
+    """Clones a repository to the given directory."""
+    subprocess.run(
+        ['git', 'clone', url + '.git', clone_dir, '--filter', 'blob:none'],
+        check=True)
 
 
-def get_full_sha(target):
-    """Gets the full sha of a commit, tag or branch."""
+def get_full_sha(target, clone_dir):
+    """Gets the full sha of a commit, tag or branch in the given clone."""
     cwd = os.getcwd()
     try:
-        os.chdir(nala_clone_dir)
+        os.chdir(clone_dir)
         return subprocess.run(
             ['git', 'rev-parse', target], check=True,
             capture_output=True).stdout.decode('utf-8').strip()
@@ -85,14 +87,21 @@ def get_nala_current_sha():
     return package_json['dependencies']['@brave/leo'].split('#')[1]
 
 
-def get_changes(old_sha, new_sha):
+def get_sf_symbols_current_sha():
+    """Gets the current sha of leo-sf-symbols from the package.json file."""
+    with open('package.json', 'r') as f:
+        package_json = json.load(f)
+    return package_json['dependencies']['@brave/leo-sf-symbols'].split('#')[1]
+
+
+def get_changes(old_sha, new_sha, clone_dir, repo_url=NALA_REPO):
     """
-    Gets the commits between two shas in the Nala repository.
+    Gets the commits between two shas in a repository.
     Returns a list of Commit objects.
     """
     cwd = os.getcwd()
     try:
-        os.chdir(nala_clone_dir)
+        os.chdir(clone_dir)
         result = subprocess.run([
             'git', 'log', '--oneline', '--no-decorate',
             f'{old_sha}...{new_sha}'
@@ -100,7 +109,7 @@ def get_changes(old_sha, new_sha):
                                 check=True,
                                 capture_output=True)
         commits = result.stdout.decode('utf-8').split('\n')
-        return [Commit(commit) for commit in commits if commit]
+        return [Commit(commit, repo_url) for commit in commits if commit]
     finally:
         os.chdir(cwd)
 
@@ -108,26 +117,32 @@ def get_changes(old_sha, new_sha):
 def bump_nala(target):
     """
     Bumps Nala to a new version and commits the changes (with a commit message
-    listing all the changes that landed in Nala since the last bump).
+    listing all the changes that landed in Nala since the last bump). Also
+    installs the latest leo-sf-symbols commit.
     """
     old_sha = get_nala_current_sha()
 
-    clone_nala()
+    clone_repo(NALA_REPO, nala_clone_dir)
+    clone_repo(SF_SYMBOLS_REPO, sf_symbols_clone_dir)
 
-    new_sha = get_full_sha(target)
+    new_sha = get_full_sha(target, nala_clone_dir)
+    new_sf_symbols_sha = get_full_sha('main', sf_symbols_clone_dir)
 
     if old_sha == new_sha:
         print(f"Nala is already at {target}. Nothing to do.")
         return
 
-    changes = get_changes(old_sha, new_sha)
+    changes = get_changes(old_sha, new_sha, nala_clone_dir)
     changes_text = "\n".join(map(lambda x: f'- {x}', changes))
     commit_message = f"""[Nala]: Bump version to {target}
 
 Changes {NALA_REPO}/compare/{old_sha}...{new_sha}
 {changes_text}"""
 
-    subprocess.run(['npm', 'install', f'github:{REPO_ID}#{new_sha}'],
+    subprocess.run([
+        'npm', 'install', f'github:{REPO_ID}#{new_sha}',
+        f'github:{SF_SYMBOLS_REPO_ID}#{new_sf_symbols_sha}'
+    ],
                    check=True)
     subprocess.run([
         'git', 'commit', 'package.json', 'package-lock.json', '-m',

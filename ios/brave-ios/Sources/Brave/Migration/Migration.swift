@@ -27,6 +27,9 @@ public class BraveProfileMigrations {
     migrateBlockPopupsPreferences()
     migrateSyncPasswordsDefault()
     migrateShieldsToContentSettings()
+    migrateYouTubeQualityPreference()
+    migrateGPCPreference()
+    migrateMediaBackgroundingPreference()
   }
 
   private func migrateDefaultUserAgentPreferences() {
@@ -99,6 +102,30 @@ public class BraveProfileMigrations {
     Preferences.Chromium.syncPasswordsEnabled.value = false
     Preferences.Migration.syncPasswordsEnabledByDefault.value = true
   }
+
+  private func migrateYouTubeQualityPreference() {
+    Preferences.DeprecatedPreferences.youtubeHighQuality.migrate { value in
+      let value = DeprecatedYoutubeHighQualityPreference(rawValue: value)
+      if value != .off {
+        profileController.profile.prefs.set(
+          value == .on ? 1 : 2,
+          forPath: kYouTubeAutoQualityMode
+        )
+      }
+    }
+  }
+
+  private func migrateGPCPreference() {
+    Preferences.DeprecatedPreferences.enableGPC.migrate { value in
+      profileController.profile.prefs.set(value, forPath: kGlobalPrivacyControlEnabled)
+    }
+  }
+
+  private func migrateMediaBackgroundingPreference() {
+    Preferences.DeprecatedPreferences.mediaAutoBackgrounding.migrate { value in
+      profileController.profile.prefs.set(value, forPath: kMediaBackgroundingEnabled)
+    }
+  }
 }
 
 public class BraveLocalStateMigration {
@@ -109,12 +136,26 @@ public class BraveLocalStateMigration {
 
   public func launchMigrations() {
     migrateDAUPingPreference()
+    migrateDAULastLaunchInfoPreference()
     migrateAdsPreferences()
   }
 
   private func migrateDAUPingPreference() {
     Preferences.DeprecatedPreferences.sendUsagePing.migrate { value in
       localState.set(value, forPath: kStatsReportingEnabledPrefName)
+    }
+  }
+
+  private func migrateDAULastLaunchInfoPreference() {
+    Preferences.DeprecatedPreferences.lastLaunchInfo.migrate { value in
+      guard let lastPingTimestamp = value?.first else { return }
+
+      if !Preferences.DAU.firstPingParam.isValueStored {
+        Preferences.DAU.firstPingParam.value = false
+      }
+
+      let date = Date(timeIntervalSince1970: TimeInterval(lastPingTimestamp))
+      localState.set(DAU.dateFormatter.string(from: date), forPath: kLastCheckYMDPrefName)
     }
   }
 
@@ -264,9 +305,21 @@ extension Migration {
   }
 }
 
+private enum DeprecatedYoutubeHighQualityPreference: String {
+  case wifi
+  case on
+  case off
+}
+
 extension Preferences {
   fileprivate final class DeprecatedPreferences {
     static let sendUsagePing = Option<Bool>(key: "dau.send-usage-ping", default: true)
+
+    /// Superseded by `brave.stats.last_ping_date` in local state.
+    static let lastLaunchInfo = Option<[Int]?>(
+      key: "dau.last-launch-info",
+      default: nil
+    )
 
     static let blockAdsAndTracking = Option<Bool>(
       key: "shields.block-ads-and-tracking",
@@ -300,6 +353,24 @@ extension Preferences {
 
     /// Whether or not to block popups from websites automaticaly
     static let blockPopups = Option<Bool>(key: "general.block-popups", default: true)
+
+    /// Controls whether or not youtube videos should play with the highest quality by default
+    static let youtubeHighQuality = Option<String>(
+      key: "general.youtube-high-quality",
+      default: DeprecatedYoutubeHighQualityPreference.off.rawValue
+    )
+
+    /// A boolean value inidicating if GPC is enabled
+    public static var enableGPC = Preferences.Option<Bool>(
+      key: "shields.enable-gpc",
+      default: true
+    )
+
+    /// Controls whether or not media should continue playing in the background
+    static let mediaAutoBackgrounding = Option<Bool>(
+      key: "general.media-auto-backgrounding",
+      default: false
+    )
   }
 
   /// Migration preferences
@@ -446,7 +517,6 @@ extension Preferences {
     migrate(key: "braveAdblockUseRegional", to: Preferences.Shields.useRegionAdBlock)
 
     // DAU
-    migrate(key: "dau_stat", to: Preferences.DAU.lastLaunchInfo)
     migrate(key: "week_of_installation", to: Preferences.DAU.weekOfInstallation)
 
     // URP
@@ -462,9 +532,6 @@ extension Preferences {
     migrate(key: "fp_protection", to: Preferences.BlockStats.fingerprintingCount)
     migrate(key: "safebrowsing", to: Preferences.BlockStats.phishingCount)
 
-    // On 1.6 lastLaunchInfo is used to check if it's first app launch or not.
-    // This needs to be translated to our new preference.
-    Preferences.General.isFirstLaunch.value = Preferences.DAU.lastLaunchInfo.value == nil
     Preferences.Migration.completed.value = true
   }
 
@@ -569,7 +636,8 @@ extension Preferences {
       return
     }
 
-    Preferences.General.youtubeHighQuality.value = YoutubeHighQualityPreference.off.rawValue
+    Preferences.DeprecatedPreferences.youtubeHighQuality.value =
+      DeprecatedYoutubeHighQualityPreference.off.rawValue
     Migration.youtubeHighQualityDefault.value = true
   }
 }

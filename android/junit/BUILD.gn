@@ -29,6 +29,7 @@ if (is_android) {
     sources = [
       "src/org/chromium/chrome/browser/tabbed_mode/BraveTabbedAdaptiveToolbarBehaviorTest.java",
       "src/org/chromium/chrome/browser/tabbed_mode/BraveTabbedAppMenuPropertiesDelegateUnitTest.java",
+      "src/org/chromium/chrome/browser/tabbed_mode/BraveTabbedNavigationBarColorControllerBaseTest.java",
     ]
 
     deps = [
@@ -84,6 +85,13 @@ if (is_android) {
     deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
   }
 
+  robolectric_library(
+      "brave_junit_tests_org.chromium.chrome.browser.brave_origin") {
+    sources = [ "src/org/chromium/chrome/browser/brave_origin/BraveOriginDeepLinkHandlerTest.java" ]
+
+    deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
+  }
+
   robolectric_library("brave_junit_tests_org.chromium.chrome.browser") {
     sources =
         [ "src/org/chromium/chrome/browser/BraveIntentHandlerUnitTest.java" ]
@@ -105,8 +113,8 @@ if (is_android) {
     sources = [ "src/org/chromium/chrome/browser/rate/BraveAskPlayStoreRatingDialogTest.java" ]
 
     deps = [
-      "//brave/third_party/android_deps:com_google_android_play_review_java",
       "//chrome/android/junit:chrome_junit_tests_helper",
+      "//third_party/android_deps:com_google_android_play_review_java",
     ]
   }
 
@@ -137,5 +145,31 @@ if (is_android) {
     sources = [ "src/org/chromium/chrome/browser/tasks/BraveReturnToChromeUtilUnitTest.java" ]
 
     deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
+  }
+
+  robolectric_library("brave_junit_tests_org.chromium.chrome.browser.ui") {
+    sources = [ "src/org/chromium/chrome/browser/ui/system/BraveStatusBarColorControllerUnitTest.java" ]
+
+    deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
+  }
+
+  robolectric_library(
+      "brave_junit_tests_org.chromium.chrome.browser.autofill") {
+    sources = [
+      "src/org/chromium/chrome/browser/autofill/BraveAutofillServiceImplUnitTest.java",
+      "src/org/chromium/chrome/browser/autofill/BraveAutofillViewStructureParserUnitTest.java",
+    ]
+
+    deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
+  }
+
+  robolectric_library(
+      "brave_junit_tests_org.chromium.chrome.browser.custom_search_engines") {
+    sources = [ "src/org/chromium/brave/browser/custom_search_engines/CustomSearchEnginesManagerTest.java" ]
+
+    deps = [
+      "//brave/browser/custom_search_engines/android:java",
+      "//chrome/android/junit:chrome_junit_tests_helper",
+    ]
   }
 }

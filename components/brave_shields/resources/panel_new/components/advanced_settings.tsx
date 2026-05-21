@@ -11,7 +11,6 @@ import Toggle from '@brave/leo/react/toggle'
 
 import { useShieldsApi } from '../api/shields_api_context'
 import { StringKey, getString } from './strings'
-import { OpenTabLink } from './open_tab_link'
 
 import {
   AdBlockMode,
@@ -107,6 +106,7 @@ function AdBlockControl(props: { showDetails: () => void }) {
         isDisabled={adsBlocked <= 0}
         kind='plain-faint'
         fab
+        aria-label={getString('BRAVE_SHIELDS_VIEW_DETAILS')}
       >
         <Icon name='carat-right' />
       </Button>
@@ -190,6 +190,9 @@ function BlockScriptsControls(props: { showDetails: () => void }) {
     && overrideSource !== ContentSettingSource.kUser
     && overrideSource !== ContentSettingSource.kNone
 
+  const detailsEnabled =
+    isNoscriptEnabled && hasBlockedOrAllowed && !scriptsBlockedEnforced
+
   return (
     <div>
       <Icon name='code' />
@@ -216,11 +219,10 @@ function BlockScriptsControls(props: { showDetails: () => void }) {
       </div>
       <Button
         onClick={props.showDetails}
-        isDisabled={
-          !isNoscriptEnabled || !hasBlockedOrAllowed || scriptsBlockedEnforced
-        }
+        isDisabled={!detailsEnabled}
         kind='plain-faint'
         fab
+        aria-label={getString('BRAVE_SHIELDS_VIEW_DETAILS')}
       >
         <Icon name='carat-right' />
       </Button>
@@ -308,6 +310,7 @@ function FingerprintingControls(props: { showDetails: () => void }) {
         }
         kind='plain-faint'
         fab
+        aria-label={getString('BRAVE_SHIELDS_VIEW_DETAILS')}
       >
         <Icon name='carat-right' />
       </Button>
@@ -347,9 +350,7 @@ function CookieBlockControls() {
           {getString('BRAVE_SHIELDS_COOKIES_ALLOWED_ALL')}
         </leo-option>
       </Dropdown>
-      <OpenTabLink url='chrome://settings/shields'>
-        <Icon name='launch' />
-      </OpenTabLink>
+      <div />
     </div>
   )
 }
@@ -374,7 +375,7 @@ function ForgetFirstPartyStorageControls() {
 
   return (
     <div>
-      <Icon name='eye-off' />
+      <Icon name='broom' />
       <div className='toggle'>
         {getString('BRAVE_SHIELDS_FORGET_FIRST_PARTY_STORAGE_LABEL')}
         <Toggle
@@ -408,9 +409,7 @@ function BlockElementsControls() {
           {getString('BRAVE_SHIELDS_SHOW_ALL_BLOCKED_ELEMENTS')}
         </button>
       </div>
-      <OpenTabLink url='chrome://settings/shields'>
-        <Icon name='launch' />
-      </OpenTabLink>
+      <div />
     </div>
   )
 }

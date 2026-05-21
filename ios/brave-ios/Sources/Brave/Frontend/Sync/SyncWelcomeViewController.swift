@@ -464,7 +464,7 @@ extension SyncWelcomeViewController: SyncPairControllerDelegate {
             )
             present(alert, animated: true, completion: nil)
           case .blocked:
-            // Devices 10 and more - add alert to block and prevent sync
+            // Devices 50 and more - add alert to block and prevent sync
             let alert = UIAlertController(
               title: Strings.genericErrorTitle,
               message: Strings.Sync.maximumDeviceReachedErrorDescription,
@@ -510,9 +510,9 @@ extension SyncWelcomeViewController: SyncPairControllerDelegate {
     switch devices.count {
     case 1...4:
       deviceLimitLevel = .safe
-    case 5...9:
+    case 5..<50:
       deviceLimitLevel = .approvalNeeded
-    case 10...:
+    case 50...:
       deviceLimitLevel = .blocked
     default:
       Logger.module.error("\(DeviceRetriavalError.deviceNumberError.errorDescription)")

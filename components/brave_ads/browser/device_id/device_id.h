@@ -10,6 +10,11 @@
 
 #include "base/functional/callback.h"
 
+namespace base {
+template <typename Signature>
+class OnceCallback;
+}  // namespace base
+
 namespace brave_ads {
 
 using DeviceIdCallback = base::OnceCallback<void(std::string device_id)>;

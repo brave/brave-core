@@ -14,7 +14,6 @@ import {
   Row,
   Text, //
 } from '../../../../../../components/shared/style'
-import { LPIcon } from '../../shared-swap.styles'
 
 export const Bubble = styled(Row)`
   border-radius: 4px;
@@ -26,10 +25,6 @@ export const FreeText = styled(Text)`
   line-height: 10px;
   color: ${leo.color.green[60]};
   font-weight: 700;
-`
-
-export const LiquidityProviderIcon = styled(LPIcon)`
-  border-radius: none;
 `
 
 export const BraveFeeDiscounted = styled(Text)`

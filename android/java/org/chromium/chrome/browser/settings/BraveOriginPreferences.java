@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.text.HtmlCompat;
 import androidx.preference.Preference;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -27,6 +28,7 @@ import org.chromium.brave_origin.mojom.BraveOriginSettingsHandler;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.billing.LinkSubscriptionUtils;
@@ -63,12 +65,21 @@ public class BraveOriginPreferences extends BravePreferenceFragment
     private static final String PREF_WEB_DISCOVERY_PROJECT_SWITCH = "web_discovery_project_switch";
     private static final String PREF_RESET_TO_DEFAULTS = "reset_to_defaults";
     private static final String PREF_LINK_PURCHASE = "link_purchase";
+    private static final String PREF_PURCHASE_SECTION = "origin_purchase_section";
     private static final String PREF_BRAVE_ORIGIN = "brave_origin";
 
     private final SettableMonotonicObservableSupplier<String> mPageTitle =
             ObservableSuppliers.createMonotonic();
     @Nullable private BraveOriginSettingsHandler mBraveOriginSettingsHandler;
     @Nullable private Snackbar mRestartSnackbar;
+
+    /** Whether we are in the post-purchase "fetching credentials" state. */
+    private boolean mIsFetchingCredentials;
+
+    /** References to the fetching/restart containers in the snackbar for toggling visibility. */
+    @Nullable private View mFetchingContainer;
+
+    @Nullable private View mRestartContainer;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -86,7 +97,8 @@ public class BraveOriginPreferences extends BravePreferenceFragment
         // Set up toggle preferences
         setupTogglePreference(PREF_REWARDS_SWITCH);
         setupTogglePreference(PREF_PRIVACY_PRESERVING_ANALYTICS_SWITCH);
-        if (ChromeFeatureList.isEnabled(BraveFeatureList.EMAIL_ALIASES)) {
+        if (BraveConfig.ENABLE_EMAIL_ALIASES
+                && ChromeFeatureList.isEnabled(BraveFeatureList.EMAIL_ALIASES)) {
             setupTogglePreference(PREF_EMAIL_ALIASES_SWITCH);
         } else {
             ChromeSwitchPreference emailAliasesPref =
@@ -114,6 +126,20 @@ public class BraveOriginPreferences extends BravePreferenceFragment
 
         Preference linkPurchase = findPreference(PREF_LINK_PURCHASE);
         if (linkPurchase != null) {
+            // "Link Purchase" is only relevant when there's a Play Store purchase
+            // that hasn't been linked to a Brave account yet. For desktop purchases
+            // there's no Play Store receipt to link.
+            boolean hasPlayStorePurchase =
+                    BraveOriginSubscriptionPrefs.getIsSubscriptionActive(profile);
+            boolean isLinked = BraveOriginSubscriptionPrefs.isSubscriptionLinked(profile);
+            boolean showLink = hasPlayStorePurchase && !isLinked;
+            linkPurchase.setVisible(showLink);
+
+            Preference purchaseSection = findPreference(PREF_PURCHASE_SECTION);
+            if (purchaseSection != null) {
+                purchaseSection.setVisible(showLink);
+            }
+
             linkPurchase.setOnPreferenceClickListener(
                     preference -> {
                         TabUtils.openURLWithBraveActivity(
@@ -122,14 +148,46 @@ public class BraveOriginPreferences extends BravePreferenceFragment
                         return true;
                     });
         }
+
+        // Check if we are in the post-purchase state (credentials being fetched)
+        if (BraveOriginSubscriptionPrefs.isFetchingCredentials(profile)) {
+            mIsFetchingCredentials = true;
+            setAllPreferencesEnabled(false);
+
+            BraveOriginSubscriptionPrefs.setCredentialsFetchedCallback(
+                    (success) -> {
+                        mIsFetchingCredentials = false;
+                        if (success) {
+                            setAllPreferencesEnabled(true);
+                            transitionSnackbarToRestart();
+                        } else {
+                            // Close the preferences screen on failure
+                            dismissRestartSnackbar();
+                            if (getActivity() != null) {
+                                getActivity().finish();
+                            }
+                        }
+                    },
+                    profile);
+        }
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (mIsFetchingCredentials) {
+            showFetchingSnackbar();
+        }
     }
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
+        if (mIsFetchingCredentials) {
+            return false;
+        }
         String key = preference.getKey();
         boolean isEnabled = (Boolean) newValue;
 
-        updateToggleDescription(preference, isEnabled);
         String policyKey = getPolicyKeyForPreference(key);
         if (policyKey == null || mBraveOriginSettingsHandler == null) {
             return false;
@@ -144,9 +202,8 @@ public class BraveOriginPreferences extends BravePreferenceFragment
                 (success) -> {
                     if (!success) {
                         Log.e(TAG, "Failed to set policy value for " + policyKey);
-                    } else {
-                        showRestartSnackbar();
                     }
+                    showRestartSnackbar();
                 });
         return true;
     }
@@ -160,6 +217,10 @@ public class BraveOriginPreferences extends BravePreferenceFragment
      * Shows a custom snackbar prompting the user to restart the browser after toggling a feature.
      */
     private void showRestartSnackbar() {
+        // Don't replace the fetching snackbar while credentials are loading
+        if (mIsFetchingCredentials) {
+            return;
+        }
         // Don't show another snackbar if one is already visible
         if (mRestartSnackbar != null && mRestartSnackbar.isShown()) {
             return;
@@ -208,6 +269,113 @@ public class BraveOriginPreferences extends BravePreferenceFragment
     }
 
     /**
+     * Enables or disables all toggle and clickable preferences.
+     *
+     * @param enabled Whether to enable preferences
+     */
+    private void setAllPreferencesEnabled(boolean enabled) {
+        String[] allKeys = {
+            PREF_REWARDS_SWITCH,
+            PREF_PRIVACY_PRESERVING_ANALYTICS_SWITCH,
+            PREF_EMAIL_ALIASES_SWITCH,
+            PREF_LEO_AI_SWITCH,
+            PREF_NEWS_SWITCH,
+            PREF_STATISTICS_REPORTING_SWITCH,
+            PREF_VPN_SWITCH,
+            PREF_WALLET_SWITCH,
+            PREF_WEB_DISCOVERY_PROJECT_SWITCH,
+            PREF_RESET_TO_DEFAULTS,
+            PREF_LINK_PURCHASE,
+        };
+
+        for (String key : allKeys) {
+            Preference pref = findPreference(key);
+            if (pref != null) {
+                pref.setEnabled(enabled);
+            }
+        }
+    }
+
+    /**
+     * Shows the snackbar in the "fetching credentials" state with a spinner and "Disabling
+     * features" text instead of the "Restart now" button.
+     */
+    private void showFetchingSnackbar() {
+        View view = getView();
+        if (view == null) {
+            return;
+        }
+
+        mRestartSnackbar = Snackbar.make(view, "", Snackbar.LENGTH_INDEFINITE);
+        Snackbar.SnackbarLayout snackbarLayout =
+                (Snackbar.SnackbarLayout) mRestartSnackbar.getView();
+
+        snackbarLayout.removeAllViews();
+        snackbarLayout.setPadding(0, 0, 0, 0);
+        snackbarLayout.setBackground(null);
+
+        View customView =
+                LayoutInflater.from(requireContext())
+                        .inflate(R.layout.origin_restart_snackbar, null);
+
+        // Use the post-purchase message (contains <b> tags for "Restart now")
+        TextView messageView = customView.findViewById(R.id.snackbar_message);
+        messageView.setText(
+                HtmlCompat.fromHtml(
+                        getString(R.string.origin_changing_brave_features_message_post_purchase),
+                        HtmlCompat.FROM_HTML_MODE_COMPACT));
+
+        // Show the fetching container, hide the restart container
+        mFetchingContainer = customView.findViewById(R.id.snackbar_fetching_container);
+        mRestartContainer = customView.findViewById(R.id.snackbar_restart_container);
+        mFetchingContainer.setVisibility(View.VISIBLE);
+        mRestartContainer.setVisibility(View.GONE);
+
+        // Set up fetching-state close button
+        ImageButton fetchingCloseButton = customView.findViewById(R.id.snackbar_fetching_close);
+        fetchingCloseButton.setOnClickListener(v -> dismissRestartSnackbar());
+
+        // Wire up the restart container buttons for when we transition
+        TextView actionButton = customView.findViewById(R.id.snackbar_action);
+        actionButton.setOnClickListener(
+                v -> {
+                    dismissRestartSnackbar();
+                    BraveRelaunchUtils.restart();
+                });
+
+        ImageButton closeButton = customView.findViewById(R.id.snackbar_close);
+        closeButton.setOnClickListener(v -> dismissRestartSnackbar());
+
+        snackbarLayout.addView(customView, 0);
+        mRestartSnackbar.show();
+    }
+
+    /**
+     * Transitions the snackbar from the "fetching" spinner state to the "Restart now" button state.
+     */
+    private void transitionSnackbarToRestart() {
+        if (mRestartSnackbar == null || !mRestartSnackbar.isShown()) {
+            showRestartSnackbar();
+            return;
+        }
+
+        // Switch message to the standard text
+        Snackbar.SnackbarLayout snackbarLayout =
+                (Snackbar.SnackbarLayout) mRestartSnackbar.getView();
+        TextView messageView = snackbarLayout.findViewById(R.id.snackbar_message);
+        if (messageView != null) {
+            messageView.setText(R.string.origin_changing_brave_features_message);
+        }
+
+        if (mFetchingContainer != null) {
+            mFetchingContainer.setVisibility(View.GONE);
+        }
+        if (mRestartContainer != null) {
+            mRestartContainer.setVisibility(View.VISIBLE);
+        }
+    }
+
+    /**
      * Sets up a toggle preference with listener and initial state. Also initializes the preference
      * value from the policy service if available.
      *
@@ -220,7 +388,6 @@ public class BraveOriginPreferences extends BravePreferenceFragment
             return;
         }
         preference.setOnPreferenceChangeListener(this);
-        updateToggleDescription(preference, preference.isChecked());
 
         // Initialize from policy service if available
         String policyKey = getPolicyKeyForPreference(key);
@@ -238,7 +405,6 @@ public class BraveOriginPreferences extends BravePreferenceFragment
                                         ? !value
                                         : value;
                         preference.setChecked(checkedValue);
-                        updateToggleDescription(preference, checkedValue);
                     }
                 });
     }
@@ -316,7 +482,6 @@ public class BraveOriginPreferences extends BravePreferenceFragment
                 continue;
             }
             pref.setChecked(false);
-            updateToggleDescription(pref, false);
             anyChanged = true;
 
             String policyKey = getPolicyKeyForPreference(key);
@@ -335,22 +500,6 @@ public class BraveOriginPreferences extends BravePreferenceFragment
 
         if (anyChanged) {
             showRestartSnackbar();
-        }
-    }
-
-    /**
-     * Updates the description of a toggle preference based on its enabled state. Shows "This
-     * feature is enabled because you opted into it" when enabled, removes the description when
-     * disabled.
-     *
-     * @param preference The preference to update
-     * @param isEnabled Whether the toggle is enabled
-     */
-    private void updateToggleDescription(Preference preference, boolean isEnabled) {
-        if (isEnabled) {
-            preference.setSummary(R.string.origin_toggle_enabled_description);
-        } else {
-            preference.setSummary(null);
         }
     }
 
@@ -380,7 +529,8 @@ public class BraveOriginPreferences extends BravePreferenceFragment
                     }
                     // origin_description is an informational widget with no title; exclude it.
                     indexData.removeEntryForKey(frag, "origin_description");
-                    if (!ChromeFeatureList.isEnabled(BraveFeatureList.EMAIL_ALIASES)) {
+                    if (!BraveConfig.ENABLE_EMAIL_ALIASES
+                            || !ChromeFeatureList.isEnabled(BraveFeatureList.EMAIL_ALIASES)) {
                         indexData.removeEntryForKey(frag, PREF_EMAIL_ALIASES_SWITCH);
                     }
                 }
@@ -389,6 +539,7 @@ public class BraveOriginPreferences extends BravePreferenceFragment
     @Override
     public void onDestroy() {
         dismissRestartSnackbar();
+        BraveOriginSubscriptionPrefs.setCredentialsFetchedCallback(null, null);
         super.onDestroy();
         if (mBraveOriginSettingsHandler != null) {
             mBraveOriginSettingsHandler.close();

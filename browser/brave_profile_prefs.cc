@@ -40,7 +40,6 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/common/pref_names.h"
 #include "brave/components/debounce/core/browser/debounce_service.h"
-#include "brave/components/email_aliases/email_aliases_service.h"
 #include "brave/components/global_privacy_control/pref_names.h"
 #include "brave/components/ipfs/ipfs_prefs.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
@@ -48,7 +47,7 @@
 #include "brave/components/ntp_background_images/common/view_counter_pref_registry.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/psst/buildflags/buildflags.h"
-#include "brave/components/query_filter/pref_names.h"
+#include "brave/components/query_filter/common/pref_names.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/serp_metrics/pref_names.h"
@@ -190,11 +189,6 @@ void OverrideDefaultPrefValues(user_prefs::PrefRegistrySyncable* registry) {
                                 base::Value(false));
   registry->SetDefaultPrefValue(feed::prefs::kEnableSnippetsByDse,
                                 base::Value(false));
-
-  // Explicitly disable safe browsing extended reporting by default in case they
-  // change it in upstream.
-  registry->SetDefaultPrefValue(prefs::kSafeBrowsingScoutReportingEnabled,
-                                base::Value(false));
 #else
   // Turn on most visited mode on NTP by default.
   // We can turn customization mode on when we have add-shortcut feature.
@@ -221,6 +215,11 @@ void OverrideDefaultPrefValues(user_prefs::PrefRegistrySyncable* registry) {
   // Disable safebrowsing reporting
   registry->SetDefaultPrefValue(
       prefs::kSafeBrowsingExtendedReportingOptInAllowed, base::Value(false));
+
+  // Explicitly disable safe browsing extended reporting by default in case they
+  // change it in upstream.
+  registry->SetDefaultPrefValue(prefs::kSafeBrowsingScoutReportingEnabled,
+                                base::Value(false));
 
 #if defined(TOOLKIT_VIEWS)
   // Disable side search by default.
@@ -295,8 +294,6 @@ void RegisterProfilePrefsForMigration(
 #endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-  // Added 11/2022
-  registry->RegisterBooleanPref(kDontAskEnableWebDiscovery, false);
   registry->RegisterIntegerPref(kBraveSearchVisitCount, 0);
 #endif
 
@@ -382,6 +379,9 @@ void RegisterProfilePrefsForMigration(
   // Added 2026-03
   registry->RegisterDictionaryPref(
       serp_metrics::prefs::kDeprecatedSerpMetricsTimePeriodStorage);
+
+  // Added 2026-03
+  registry->RegisterBooleanPref(kNewTabPageHideAllWidgets, false);
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
@@ -466,7 +466,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterStringPref(kNewTabPageClockFormat, "");
   registry->RegisterBooleanPref(kNewTabPageShowStats, true);
   registry->RegisterBooleanPref(kNewTabPageShowRewards, true);
-  registry->RegisterBooleanPref(kNewTabPageHideAllWidgets, false);
 
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
   registry->RegisterBooleanPref(brave_talk::prefs::kNewTabPageShowBraveTalk,
@@ -512,7 +511,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
       prefs::kBraveDefaultSearchVersion,
       TemplateURLPrepopulateData::kBraveCurrentDataVersion);
 
-#if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY)
   registry->RegisterBooleanPref(kWebDiscoveryEnabled, false);
   registry->RegisterDictionaryPref(kWebDiscoveryCTAState);
 #endif
@@ -585,12 +584,13 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   web_discovery::WebDiscoveryService::RegisterProfilePrefs(registry);
 #endif
 
-  email_aliases::EmailAliasesService::RegisterProfilePrefs(registry);
-
 #if defined(TOOLKIT_VIEWS)
   registry->RegisterBooleanPref(prefs::kPinShareMenuButton, true);
   registry->RegisterBooleanPref(prefs::kPinPwaInstallButton, true);
 #endif  // defined(TOOLKIT_VIEWS)
+
+  registry->RegisterBooleanPref(
+      brave_shields::prefs::kShredBrowsingHistoryEnabled, false);
 
   OverrideDefaultPrefValues(registry);
 }

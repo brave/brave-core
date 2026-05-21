@@ -27,6 +27,7 @@ Output: JSON with "prs" array and "summary" stats.
 
 import json
 import os
+import re
 import subprocess
 import sys
 from datetime import datetime, timedelta, timezone
@@ -43,6 +44,8 @@ ORG_MEMBERS_PATH = os.environ.get(
 )
 SKIP_PREFIXES = ["CI run for", "Backport", "Update l10n"]
 SKIP_CONTAINS = ["uplift to", "Just to test CI"]
+# Pattern for version branches like "1.90.x"
+VERSION_BRANCH_RE = r"^\d+\.\d+\.x$"
 
 
 def parse_args():
@@ -102,8 +105,8 @@ def has_any_approval(pr):
 
 def fetch_single_pr(pr_number):
     fields = ("number,title,updatedAt,author,isDraft,"
-              "headRefOid,reviewDecision,latestReviews,"
-              "reviewRequests")
+              "headRefOid,baseRefName,reviewDecision,"
+              "latestReviews,reviewRequests")
     result = subprocess.run(
         [
             "gh",
@@ -140,8 +143,8 @@ def fetch_prs(mode, _days, page, pr_number, state):
         return fetch_single_pr(pr_number)
 
     fields = ("number,title,updatedAt,author,isDraft,"
-              "headRefOid,reviewDecision,latestReviews,"
-              "reviewRequests")
+              "headRefOid,baseRefName,reviewDecision,"
+              "latestReviews,reviewRequests")
     base_cmd = [
         "gh",
         "pr",
@@ -188,6 +191,11 @@ def load_cache():
         return {}
 
 
+def save_cache(cache):
+    with open(CACHE_PATH, "w") as f:
+        json.dump(cache, f, indent=2)
+
+
 def load_org_members():
     """Load Brave org member logins from the cached file."""
     if not os.path.isfile(ORG_MEMBERS_PATH):
@@ -199,6 +207,11 @@ def load_org_members():
         sys.exit(1)
     with open(ORG_MEMBERS_PATH) as f:
         return set(line.strip() for line in f if line.strip())
+
+
+def is_version_branch(branch_name):
+    """Check if a branch name is a version branch (e.g., 1.90.x)."""
+    return bool(re.match(VERSION_BRANCH_RE, branch_name or ""))
 
 
 def should_skip_title(title):
@@ -233,10 +246,13 @@ def filter_prs(prs, mode, days, cache, org_members, reviewer_priority=None):
 
     to_review = []
     cached_prs = []
+    uplift_prs = []
     skipped_filtered = 0
     skipped_cached = 0
     skipped_approved = 0
     skipped_external = 0
+    skipped_uplift = 0
+    cache_dirty = False
 
     for pr in prs:
         if pr.get("isDraft"):
@@ -245,6 +261,12 @@ def filter_prs(prs, mode, days, cache, org_members, reviewer_priority=None):
 
         if should_skip_title(pr.get("title", "")):
             skipped_filtered += 1
+            continue
+
+        # Skip PRs targeting version branches (uplifts)
+        if is_version_branch(pr.get("baseRefName", "")):
+            skipped_uplift += 1
+            uplift_prs.append(pr)
             continue
 
         # Skip PRs from external contributors (non-org members)
@@ -269,13 +291,25 @@ def filter_prs(prs, mode, days, cache, org_members, reviewer_priority=None):
                     continue
 
         pr_num = str(pr["number"])
-
-        # Bot previously approved this PR — don't come back
-        if pr_num in approved:
-            skipped_approved += 1
-            continue
-
         head_sha = pr.get("headRefOid", "")
+
+        # Bot previously approved this PR — don't come back UNLESS the bot
+        # has been explicitly re-requested as a reviewer AND new commits have
+        # landed since the prior review. In that case the prior approval is
+        # stale and must be cleared so the bot can re-approve if appropriate.
+        if pr_num in approved:
+            is_rerequest_on_new_sha = (reviewer_priority
+                                       and is_requested_reviewer(
+                                           pr, reviewer_priority)
+                                       and cache.get(pr_num) != head_sha)
+            if is_rerequest_on_new_sha:
+                approved.discard(pr_num)
+                cache["_approved"] = sorted(approved)
+                cache_dirty = True
+            else:
+                skipped_approved += 1
+                continue
+
         if cache.get(pr_num) == head_sha:
             # If the bot is a requested reviewer, force a full re-review
             # even if the SHA hasn't changed (explicit re-request)
@@ -289,13 +323,18 @@ def filter_prs(prs, mode, days, cache, org_members, reviewer_priority=None):
 
         to_review.append(pr)
 
+    if cache_dirty:
+        save_cache(cache)
+
     return (
         to_review,
         cached_prs,
+        uplift_prs,
         skipped_filtered,
         skipped_cached,
         skipped_approved,
         skipped_external,
+        skipped_uplift,
     )
 
 
@@ -310,19 +349,23 @@ def main():
         # Skip all filtering for single PR review
         to_review = prs
         cached_prs = []
+        uplift_prs = []
         skipped_filtered = 0
         skipped_cached = 0
         skipped_approved = 0
         skipped_external = 0
+        skipped_uplift = 0
     else:
         cache = load_cache()
         (
             to_review,
             cached_prs,
+            uplift_prs,
             skipped_filtered,
             skipped_cached,
             skipped_approved,
             skipped_external,
+            skipped_uplift,
         ) = filter_prs(prs, mode, days, cache, org_members, reviewer_priority)
 
     # Sort PRs so those requesting review from the priority user come first
@@ -357,6 +400,7 @@ def main():
     output = {
         "prs": [pr_entry(pr) for pr in to_review],
         "cached_prs": [pr_entry(pr) for pr in cached_prs],
+        "uplift_prs": [pr_entry(pr) for pr in uplift_prs],
         "summary": {
             "total_fetched": len(prs),
             "to_review": len(to_review),
@@ -365,6 +409,7 @@ def main():
             "skipped_cached": skipped_cached,
             "skipped_approved": skipped_approved,
             "skipped_external": skipped_external,
+            "skipped_uplift": skipped_uplift,
             "skipped_max_prs": skipped_max_prs,
         },
     }

@@ -9,18 +9,15 @@ namespace history {
 
 BraveHistoryDataTypeController::BraveHistoryDataTypeController(
     syncer::SyncService* sync_service,
-    signin::IdentityManager* identity_manager,
     HistoryService* history_service,
     PrefService* pref_service)
-    : HistoryDataTypeController(sync_service,
-                                identity_manager,
-                                history_service,
-                                pref_service) {}
+    : HistoryDataTypeController(sync_service, history_service, pref_service) {}
 
 BraveHistoryDataTypeController::~BraveHistoryDataTypeController() = default;
 
 syncer::DataTypeController::PreconditionState
-BraveHistoryDataTypeController::GetPreconditionState() const {
+BraveHistoryDataTypeController::GetPreconditionState(
+    const PreconditionContext& context) const {
   return PreconditionState::kPreconditionsMet;
 }
 

@@ -529,25 +529,6 @@ Topic& operator=(Topic&&) noexcept = default;
 
 ---
 
-<a id="CSA-030"></a>
-
-## ✅ Use References for Non-Nullable Parameters; `raw_ref` for Stored References
-
-**When a function parameter cannot be null, use a reference (`T&`) instead of a pointer (`T*`).** For stored member references that cannot be null, use `raw_ref<T>`.
-
-```cpp
-// ❌ WRONG - pointer suggests nullability
-NetworkClient(PrefService* pref_service);
-
-// ✅ CORRECT - reference communicates non-null requirement
-NetworkClient(PrefService& pref_service);
-
-// For stored references:
-raw_ref<PrefService> pref_service_;  // not raw_ptr
-```
-
----
-
 <a id="CSA-031"></a>
 
 ## ❌ Avoid `std::optional<T>&` References
@@ -940,17 +921,25 @@ EXPECT_THAT(dict, base::test::DictHasValue("name", "test"));
 
 ## ✅ Workaround Code Must Have Tracking Issues
 
-**Any workaround or hack code must reference a tracking issue with a `TODO(issue-url)` comment** explaining when and why it can be removed. Workarounds without tracking issues become permanent technical debt.
+**Any temporary workaround or hack code must reference a tracking issue with a `TODO(https://github.com/brave/brave-browser/issues/<id>)` comment** explaining when and why it can be removed. Workarounds without tracking issues become permanent technical debt.
+
+**This rule does NOT apply to permanent design decisions.** If a comment explains why an alternative API or approach was not used due to a known limitation, and the current code is the intended long-term solution (not something to revisit later), it is not a workaround -- it is a design rationale comment and does not need a tracking issue.
 
 ```cpp
 // ❌ WRONG - unexplained workaround
 // HACK: skip validation for now
 if (ShouldSkipValidation()) return;
 
-// ✅ CORRECT - tracked workaround
-// TODO(https://github.com/nicira/nicira/issues/123): Remove this
-// workaround once upstream fixes the validation race condition.
+// ✅ CORRECT - tracked workaround with TODO
+// TODO(https://github.com/brave/brave-browser/issues/12345): Remove
+// this workaround once upstream fixes the validation race condition.
 if (ShouldSkipValidation()) return;
+
+// ✅ ALSO CORRECT - permanent design decision, no TODO needed
+// FooApi::Connect() relies on the receiver sending Ack messages,
+// but the JS bindings don't implement this protocol. Use an explicit
+// timer instead.
+base::OneShotTimer idle_timer_;
 ```
 
 ---

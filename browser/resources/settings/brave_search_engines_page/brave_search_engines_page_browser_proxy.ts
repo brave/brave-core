@@ -12,7 +12,7 @@ export interface BraveSearchEnginesPageBrowserProxy {
 
 export class BraveSearchEnginesPageBrowserProxyImpl implements BraveSearchEnginesPageBrowserProxy {
   getPrivateSearchEnginesList() {
-    return sendWithPromise('getPrivateSearchEnginesList')
+    return sendWithPromise<any[]>('getPrivateSearchEnginesList')
   }
   setDefaultPrivateSearchEngine(modelIndex: number) {
     chrome.send('setDefaultPrivateSearchEngine', [modelIndex])

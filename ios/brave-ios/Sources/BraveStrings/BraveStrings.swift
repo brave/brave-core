@@ -2081,6 +2081,14 @@ extension Strings {
       value: "Set as Default Browser",
       comment: "Settings item to set the Brave as a default browser on the iOS device."
     )
+  public static let addToDockSettingsCell =
+    NSLocalizedString(
+      "addToDockSettingsCell",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Add to Dock",
+      comment: "Settings item that opens instructions for adding Brave to the iOS dock."
+    )
   public static let setDefaultBrowserCalloutTitle =
     NSLocalizedString(
       "setDefaultBrowserCalloutTitle",
@@ -2710,7 +2718,7 @@ extension Strings {
     comment: "Settings item for clearing passwords and login data"
   )
   public static let siteAndShieldsSettings = NSLocalizedString(
-    "SavedLogins",
+    "SiteAndShieldsSettings",
     tableName: "BraveShared",
     bundle: .module,
     value: "Site and Shields Settings",
@@ -5663,6 +5671,14 @@ extension Strings {
         comment: "The title of the product subscription the user purchased (Yearly subscription)"
       )
 
+    public static let originPurchaseName =
+      NSLocalizedString(
+        "storekitReceiptViewer.originPurchaseName",
+        bundle: .module,
+        value: "Brave Origin",
+        comment: "The title of the Brave Origin product"
+      )
+
     public static let receiptViewerTitle =
       NSLocalizedString(
         "storekitReceiptViewer.receiptViewerTitle",
@@ -6426,6 +6442,23 @@ extension Strings {
         value:
           "Keep private browsing tabs open when you close the app, ensuring private browsing sessions continue seamlessly.",
         comment: ""
+      )
+    public static let rememberBrowsingModeTitle =
+      NSLocalizedString(
+        "tabs.settings.rememberBrowsingModeTitle",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Remember Browsing Mode",
+        comment: "Toggle to launch the browser in private mode when Keep Private Tabs is enabled"
+      )
+    public static let rememberBrowsingModeDescription =
+      NSLocalizedString(
+        "tabs.settings.rememberBrowsingModeDescription",
+        tableName: "BraveShared",
+        bundle: .module,
+        value:
+          "If browser was in private mode when last closed, it will open in private mode on re-launch.",
+        comment: "The description of the toggle for users to allow the browser to remember its last browsing mode so it can re-launch in that mode when Keep Private Tabs is enabled."
       )
     public static let autoOpenKeyboardTitle = NSLocalizedString(
       "tabs.settings.autoOpenKeyboardTitle",
@@ -7755,61 +7788,6 @@ extension Strings {
       value: "on %@",
       comment: "This is a suffix statement. example: SomeChannel on Twitter"
     )
-    public static let braveTalkRewardsOptInTitle =
-      NSLocalizedString(
-        "rewards.braveTalkRewardsOptInTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "To start a free call, turn on Brave Rewards",
-        comment: "Title for Brave Talk rewards opt-in screen"
-      )
-
-    public static let braveTalkRewardsOptInBody =
-      NSLocalizedString(
-        "rewards.braveTalkRewardsOptInBody",
-        tableName: "BraveShared",
-        bundle: .module,
-        value:
-          "With Brave Rewards, you can view privacy-preserving ads from the Brave Ads network. No trackers. No slowdowns. And your data stays totally safe.",
-        comment: "Body for Brave Talk rewards opt-in screen"
-      )
-
-    public static let braveTalkRewardsOptInButtonTitle =
-      NSLocalizedString(
-        "rewards.braveTalkRewardsOptInButtonTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Turn on Rewards",
-        comment: "Title for Brave Talk rewards opt-in screen button"
-      )
-
-    public static let braveTalkRewardsOptInDisclaimer =
-      NSLocalizedString(
-        "rewards.optInDisclaimer",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "By clicking, you agree to the %@ and %@. Disable any time in Settings.",
-        comment:
-          "The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...'"
-      )
-
-    public static let braveTalkRewardsOptInSuccessTitle =
-      NSLocalizedString(
-        "rewards.braveTalkRewardsOptInSuccessTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "You can now start a free call",
-        comment: "Title for successful Brave Talk rewards opt-in"
-      )
-
-    public static let braveTalkRewardsOptInSuccessBody =
-      NSLocalizedString(
-        "rewards.braveTalkRewardsOptInSuccessBody",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Click anywhere on the screen to continue to Brave Talk.",
-        comment: "Body for successful Brave Talk rewards opt-in"
-      )
   }
 }
 
@@ -9453,4 +9431,88 @@ extension Strings {
         "Label for account when indicating that a domain has multiple accounts"
     )
   }
+}
+
+// MARK: - QuickView
+extension Strings {
+  public static let quickViewShieldAccessibilityLabel = NSLocalizedString(
+    "quickview.shield.accessibility.label",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Shield",
+    comment:
+      "Accessibility text for an icon button which will open shield screen in QuickView mode."
+  )
+
+  public static let quickViewPlaylistAccessibilityLabel = NSLocalizedString(
+    "quickview.playlist.accessibility.label",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Add to Playlist",
+    comment:
+      "Accessibility text for an icon button which will add media source to Playlist in QuickView mode."
+  )
+
+  public static let quickViewReaderModeAccessibilityLabel = NSLocalizedString(
+    "quickview.reader.mode.accessibility.label",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Enable Reader Mode",
+    comment:
+      "Accessibility text for an icon button which will enable reader mode for the current page in QuickView mode."
+  )
+
+  public static let quickViewTranslateAccessibilityLabel = NSLocalizedString(
+    "quickview.translate.accessibility.label",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Enable Translate",
+    comment:
+      "Accessibility text for an icon button which will translate the current page in QuickView mode."
+  )
+
+  public static let quickViewRefreshAccessibilityLabel = NSLocalizedString(
+    "quickview.refresh.accessibility.label",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Refresh",
+    comment:
+      "Accessibility text for an icon button which will refresh the current page in QuickView mode."
+  )
+
+  public static let quickViewBackAccessibilityLabel = NSLocalizedString(
+    "quickview.back.accessibility.label",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Previous Page",
+    comment:
+      "Accessibility text for an icon button which will go back to the previous page in QuickView mode."
+  )
+
+  public static let quickViewForwardAccessibilityLabel = NSLocalizedString(
+    "quickview.forward.accessibility.label",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Next Page",
+    comment:
+      "Accessibility text for an icon button which will go forward to the next page in QuickView mode."
+  )
+
+  public static let quickViewShareAccessibilityLabel = NSLocalizedString(
+    "quickview.share.accessibility.label",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Share",
+    comment:
+      "Accessibility text for an icon button which will share the current page in QuickView mode."
+  )
+
+  public static let quickViewOpenTabAccessibilityLabel = NSLocalizedString(
+    "quickview.open.tab.accessibility.label",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Open in tab",
+    comment:
+      "Accessibility text for an icon button which will exit QuickView mode and open the current page in a regular tab."
+  )
 }

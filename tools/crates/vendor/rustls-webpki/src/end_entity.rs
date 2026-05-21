@@ -180,10 +180,11 @@ impl<'a> Deref for EndEntityCert<'a> {
 #[cfg(feature = "alloc")]
 #[cfg(test)]
 mod tests {
+    use alloc::string::ToString;
+
     use super::*;
     use crate::test_utils;
     use crate::test_utils::RCGEN_SIGNATURE_ALG;
-    use std::prelude::v1::*;
 
     // This test reproduces https://github.com/rustls/webpki/issues/167 --- an
     // end-entity cert where the common name is a `PrintableString` rather than

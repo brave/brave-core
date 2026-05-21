@@ -11,8 +11,4 @@ BASE_FEATURE(kNotificationAdFeature,
              "NotificationAds",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
-BASE_FEATURE(kAllowedToFallbackToCustomNotificationAdFeature,
-             "AllowedToFallbackToCustomNotificationAd",
-             base::FEATURE_ENABLED_BY_DEFAULT);
-
 }  // namespace brave_ads

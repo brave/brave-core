@@ -74,11 +74,7 @@ public class AnyTabState: TabState {
 
   public var visibleSecureContentState: SecureContentState { tab.visibleSecureContentState }
   public var serverTrust: SecTrust? { tab.serverTrust }
-  public var favicon: Favicon? {
-    get { tab.favicon }
-    set { tab.favicon = newValue }
-  }
-
+  public var faviconStatus: FaviconStatus? { tab.faviconStatus }
   public var url: URL? { tab.url }
   public var visibleURL: URL? { tab.visibleURL }
   public var lastCommittedURL: URL? { tab.lastCommittedURL }
@@ -170,6 +166,10 @@ public class AnyTabState: TabState {
     try await tab.createFullPagePDF()
   }
 
+  public var isFindNavigatorVisible: Bool {
+    tab.isFindNavigatorVisible
+  }
+
   public func presentFindInteraction(with text: String) {
     tab.presentFindInteraction(with: text)
   }
@@ -205,6 +205,14 @@ public class AnyTabState: TabState {
 
   public func clearBackForwardList() {
     tab.clearBackForwardList()
+  }
+
+  public func pauseAllMediaPlayback() {
+    tab.pauseAllMediaPlayback()
+  }
+
+  public func requestMediaPlaybackState() async -> MediaPlaybackState {
+    await tab.requestMediaPlaybackState()
   }
 
   public func updateScripts() {

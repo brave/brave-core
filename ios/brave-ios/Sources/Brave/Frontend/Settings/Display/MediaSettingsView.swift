@@ -10,13 +10,20 @@ import Preferences
 import SwiftUI
 
 struct MediaSettingsView: View {
-  @ObservedObject var enableBackgroundAudio = Preferences.General.mediaAutoBackgrounding
+  @Bindable var enableBackgroundAudio: PrefBackedBoolean
   @ObservedObject var keepYouTubeInBrave = Preferences.General.keepYouTubeInBrave
   @ObservedObject var filterListStorage = FilterListStorage.shared
 
   @State var youtubeRecommendationsBlocking = false
   @State var youtubeDistractingElementsBlocking = false
   @State var youtubeShortsBlocking = false
+
+  var prefs: any PrefService
+
+  init(prefs: any PrefService) {
+    self.prefs = prefs
+    enableBackgroundAudio = .init(prefs: prefs, key: kMediaBackgroundingEnabled)
+  }
 
   var body: some View {
     Form {
@@ -33,7 +40,7 @@ struct MediaSettingsView: View {
           Text(Strings.Settings.openYouTubeInBrave)
         }
         .toggleStyle(SwitchToggleStyle(tint: .accentColor))
-        NavigationLink(destination: QualitySettingsView()) {
+        NavigationLink(destination: QualitySettingsView(prefs: prefs)) {
           VStack(alignment: .leading) {
             Text(Strings.Settings.highestQualityPlayback)
             Text(Strings.Settings.highestQualityPlaybackDetail)
@@ -129,14 +136,18 @@ struct MediaSettingsView: View {
 
 private struct QualitySettingsView: View {
   @Environment(\.presentationMode) @Binding var presentationMode
-  @ObservedObject var qualityOption = Preferences.General.youtubeHighQuality
+
+  var prefs: any PrefService
 
   var body: some View {
     Form {
       Section(header: Text(Strings.Settings.qualitySettings)) {
         Button(
           action: {
-            qualityOption.value = YoutubeHighQualityPreference.on.rawValue
+            prefs.set(
+              YoutubeHighQualityPreference.on.rawValue,
+              forPath: kYouTubeAutoQualityMode
+            )
             presentationMode.dismiss()
           },
           label: {
@@ -146,7 +157,10 @@ private struct QualitySettingsView: View {
 
         Button(
           action: {
-            qualityOption.value = YoutubeHighQualityPreference.wifi.rawValue
+            prefs.set(
+              YoutubeHighQualityPreference.wifi.rawValue,
+              forPath: kYouTubeAutoQualityMode
+            )
             presentationMode.dismiss()
           },
           label: {
@@ -156,7 +170,10 @@ private struct QualitySettingsView: View {
 
         Button(
           action: {
-            qualityOption.value = YoutubeHighQualityPreference.off.rawValue
+            prefs.set(
+              YoutubeHighQualityPreference.off.rawValue,
+              forPath: kYouTubeAutoQualityMode
+            )
             presentationMode.dismiss()
           },
           label: {
@@ -175,17 +192,17 @@ private struct QualitySettingsView: View {
       Text(preference.displayString)
         .foregroundColor(Color(.braveLabel))
       Spacer()
-      if Preferences.General.youtubeHighQuality.value == preference.rawValue {
+      if prefs.integer(forPath: kYouTubeAutoQualityMode) == preference.rawValue {
         Image(braveSystemName: "leo.check.normal")
       }
     }
   }
 }
 
-enum YoutubeHighQualityPreference: String, CaseIterable {
-  case wifi
-  case on
+enum YoutubeHighQualityPreference: Int, CaseIterable {
   case off
+  case on
+  case wifi
 }
 
 extension YoutubeHighQualityPreference: RepresentableOptionType {
@@ -197,11 +214,3 @@ extension YoutubeHighQualityPreference: RepresentableOptionType {
     }
   }
 }
-
-#if DEBUG
-struct MediaSettingsView_Previews: PreviewProvider {
-  static var previews: some View {
-    MediaSettingsView()
-  }
-}
-#endif

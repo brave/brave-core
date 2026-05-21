@@ -6,6 +6,7 @@
 use bech32::Error as Bech32Error;
 use bech32::FromBase32;
 use bls_signatures::Serialize;
+use ciborium::{de::from_reader, Value as CborValue};
 use core::fmt;
 use ffi::Bech32DecodeVariant;
 
@@ -79,6 +80,8 @@ mod ffi {
 
         fn bls_private_key_to_public_key(private_key: &[u8]) -> Vec<u8>;
         fn bls_sign_message(private_key: &[u8], message_cid: &[u8]) -> Vec<u8>;
+
+        fn validate_byron_address(bytes: &[u8]) -> bool;
     }
 }
 
@@ -178,4 +181,106 @@ fn bls_sign_message(private_key: &[u8], message_cid: &[u8]) -> Vec<u8> {
         Ok(sk) => sk.sign(&message_cid).as_bytes().to_vec(),
         Err(_) => vec![],
     };
+}
+
+const BYRON_ADDRESS_ROOT_SIZE: usize = 28;
+const BYRON_CBOR_TAG_EMBEDDED: u64 = 24;
+
+/// Validates raw bytes of a Byron address per the CDDL spec.
+///
+/// Expects the raw bytes obtained after Base58-decoding a Byron address string.
+/// Checks CBOR structure, CRC32 integrity, payload shape (28-byte root,
+/// attributes map, address type 0 or 2).
+/// https://raw.githubusercontent.com/cardano-foundation/CIPs/master/CIP-0019/CIP-0019-byron-addresses.cddl
+/// reference implementation: https://github.com/cardano-foundation/CIPs/blob/master/CIP-0019/CIP-0019-byron-addresses.cddl#L33
+pub fn validate_byron_address(bytes: &[u8]) -> bool {
+    validate_byron_address_impl(bytes).is_ok()
+}
+
+fn validate_byron_address_impl(bytes: &[u8]) -> Result<(), ()> {
+    let cbor: CborValue = from_reader(bytes).map_err(|_| ())?;
+
+    let arr = match &cbor {
+        CborValue::Array(a) if a.len() == 2 => a,
+        _ => Err(())?,
+    };
+
+    let payload_encoded = match &arr[0] {
+        CborValue::Tag(BYRON_CBOR_TAG_EMBEDDED, inner) => match inner.as_ref() {
+            CborValue::Bytes(b) => b,
+            _ => Err(())?,
+        },
+        _ => Err(())?,
+    };
+
+    let stored_crc = match &arr[1] {
+        CborValue::Integer(i) => {
+            let v: u64 = (*i).try_into().map_err(|_| ())?;
+            v as u32
+        }
+        _ => Err(())?,
+    };
+
+    // CRC32 of the BYRON_ADDRESS_PAYLOAD must match BYRON_ADDRESS last item.
+    let mut h = crc32fast::Hasher::new();
+    h.update(payload_encoded);
+    if h.finalize() != stored_crc {
+        Err(())?
+    }
+
+    let payload: CborValue = from_reader(payload_encoded.as_slice()).map_err(|_| ())?;
+    // BYRON_ADDRESS_PAYLOAD is an array of 3 elements.
+    let payload_arr = match &payload {
+        CborValue::Array(a) if a.len() == 3 => a,
+        _ => Err(())?,
+    };
+
+    // 0-element is 28 bytes hash.
+    match &payload_arr[0] {
+        CborValue::Bytes(b) if b.len() == BYRON_ADDRESS_ROOT_SIZE => {}
+        _ => Err(())?,
+    }
+
+    // 1-element is BYRON_ADDRESS_ATTRIBUTES.
+    let attrs = match &payload_arr[1] {
+        CborValue::Map(m) => m.as_slice(),
+        _ => Err(())?,
+    };
+    validate_byron_address_attributes(attrs)?;
+
+    // 2-element is either 0 or 2 integer.
+    let addr_type: u64 = match &payload_arr[2] {
+        CborValue::Integer(i) => (*i).try_into().map_err(|_| ())?,
+        _ => Err(())?,
+    };
+    if addr_type != 0 && addr_type != 2 {
+        Err(())?
+    }
+
+    Ok(())
+}
+
+/// Validates BYRON_ADDRESS_ATTRIBUTES map: only keys 1 and 2 allowed.
+/// Key 1: <<bytes .cbor BYRON_DERIVATION_PATH_CIPHERTEXT>> (inner CBOR =
+/// bytes.size 28)
+/// Key 2: <<uint32>> (inner CBOR = uint32)
+fn validate_byron_address_attributes(attrs: &[(CborValue, CborValue)]) -> Result<(), ()> {
+    for (k, v) in attrs {
+        let key_u64: u64 = match k {
+            CborValue::Integer(i) => (*i).try_into().map_err(|_| ())?,
+            _ => Err(())?,
+        };
+        let inner: CborValue = match v {
+            CborValue::Bytes(b) => from_reader(b.as_slice()).map_err(|_| ())?,
+            _ => Err(())?,
+        };
+        match (key_u64, &inner) {
+            (1, CborValue::Bytes(b)) if b.len() == BYRON_ADDRESS_ROOT_SIZE => {}
+            (2, CborValue::Integer(i)) => {
+                let _: u32 = (*i).try_into().map_err(|_| ())?;
+            }
+            _ => Err(())?,
+        }
+    }
+    Ok(())
 }

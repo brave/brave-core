@@ -12,6 +12,8 @@
 #include "base/location.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_database_table.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_tokens_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
@@ -81,6 +83,9 @@ void MigrateToV53(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   DropTable(mojom_db_transaction, "creative_promoted_content_ads");
 }
 
+// Handles database-wide migrations and migrations for tables that no longer
+// exist. Per-table schema migrations are handled in each table's own `Migrate`
+// method.
 void Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
              int to_version) {
   CHECK(mojom_db_transaction);
@@ -113,6 +118,12 @@ void MigrateToVersion(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
 
   table::ConfirmationQueue confirmation_queue_database_table;
   confirmation_queue_database_table.Migrate(mojom_db_transaction, to_version);
+
+  table::ConfirmationTokens confirmation_tokens_database_table;
+  confirmation_tokens_database_table.Migrate(mojom_db_transaction, to_version);
+
+  table::PaymentTokens payment_tokens_database_table;
+  payment_tokens_database_table.Migrate(mojom_db_transaction, to_version);
 
   table::AdEvents ad_events_database_table;
   ad_events_database_table.Migrate(mojom_db_transaction, to_version);

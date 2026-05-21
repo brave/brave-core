@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ACCOUNT_MOCK_BRAVE_ACCOUNT_AUTHENTICATION_H_
 #define BRAVE_COMPONENTS_BRAVE_ACCOUNT_MOCK_BRAVE_ACCOUNT_AUTHENTICATION_H_
 
-#include <optional>
 #include <string>
 
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
@@ -22,8 +21,13 @@ class MockBraveAccountAuthentication : public mojom::Authentication {
   ~MockBraveAccountAuthentication() override;
 
   MOCK_METHOD(void,
+              AddObserver,
+              (mojo::PendingRemote<mojom::AuthenticationObserver> observer),
+              (override));
+
+  MOCK_METHOD(void,
               RegisterInitialize,
-              (std::optional<mojom::Service> initiating_service,
+              (mojom::Service initiating_service,
                const std::string& email,
                const std::string& blinded_message,
                RegisterInitializeCallback callback),
@@ -37,6 +41,11 @@ class MockBraveAccountAuthentication : public mojom::Authentication {
               (override));
 
   MOCK_METHOD(void,
+              RegisterVerify,
+              (const std::string& code, RegisterVerifyCallback callback),
+              (override));
+
+  MOCK_METHOD(void,
               ResendConfirmationEmail,
               (ResendConfirmationEmailCallback callback),
               (override));
@@ -45,7 +54,7 @@ class MockBraveAccountAuthentication : public mojom::Authentication {
 
   MOCK_METHOD(void,
               LoginInitialize,
-              (std::optional<mojom::Service> initiating_service,
+              (mojom::Service initiating_service,
                const std::string& email,
                const std::string& serialized_ke1,
                LoginInitializeCallback callback),

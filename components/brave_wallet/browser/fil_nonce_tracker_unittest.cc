@@ -18,7 +18,7 @@
 #include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
-#include "brave/components/brave_wallet/browser/tx_storage_delegate_impl.h"
+#include "brave/components/brave_wallet/browser/tx_storage.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -97,10 +97,9 @@ class FilNonceTrackerUnitTest : public testing::Test {
 
 TEST_F(FilNonceTrackerUnitTest, GetNonce) {
   base::ScopedTempDir temp_dir;
-  scoped_refptr<value_store::TestValueStoreFactory> factory =
-      GetTestValueStoreFactory(temp_dir);
-  std::unique_ptr<TxStorageDelegateImpl> delegate =
-      GetTxStorageDelegateForTest(GetPrefs(), factory);
+  CHECK(temp_dir.CreateUniqueTempDir());
+  std::unique_ptr<TxStorage> delegate =
+      CreateTxStorageForTest(temp_dir.GetPath());
   auto account_resolver_delegate =
       std::make_unique<AccountResolverDelegateForTest>();
   FilTxStateManager tx_state_manager(*delegate, *account_resolver_delegate);

@@ -322,7 +322,7 @@ export const ConnectionSection = (props: Props) => {
             <SelectButton
               disabled={!canChangeNetwork}
               onClick={onClickNetwork}
-              data-test-id={
+              data-testid={
                 coin === BraveWallet.CoinType.ETH ? 'select-network-button' : ''
               }
             >

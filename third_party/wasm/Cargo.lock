@@ -188,10 +188,12 @@ dependencies = [
 name = "candle_embedding_gemma"
 version = "0.1.0"
 dependencies = [
+ "bytemuck",
  "candle-core",
  "candle-nn",
  "console_error_panic_hook",
  "getrandom 0.2.15",
+ "half",
  "safetensors",
  "serde",
  "serde_json",

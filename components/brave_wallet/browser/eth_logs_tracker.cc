@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/logging.h"
 
 namespace brave_wallet {
 
@@ -71,8 +70,6 @@ void EthLogsTracker::OnGetLogs(const std::string& subscription,
     for (auto& observer : observers_) {
       observer.OnLogsReceived(subscription, rawlogs.Clone());
     }
-  } else {
-    LOG(ERROR) << "OnGetLogs failed";
   }
 }
 

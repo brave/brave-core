@@ -12,8 +12,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/check_op.h"
-#include "base/logging.h"
 #include "base/notimplemented.h"
 #include "brave/components/brave_wallet/browser/account_resolver_delegate.h"
 #include "brave/components/brave_wallet/browser/fil_block_tracker.h"
@@ -32,9 +30,9 @@ namespace brave_wallet {
 FilTxManager::FilTxManager(TxService& tx_service,
                            JsonRpcService* json_rpc_service,
                            KeyringService& keyring_service,
-                           TxStorageDelegate& delegate,
+                           TxStorage& tx_storage,
                            AccountResolverDelegate& account_resolver_delegate)
-    : TxManager(std::make_unique<FilTxStateManager>(delegate,
+    : TxManager(std::make_unique<FilTxStateManager>(tx_storage,
                                                     account_resolver_delegate),
                 std::make_unique<FilBlockTracker>(json_rpc_service),
                 tx_service,
@@ -49,11 +47,12 @@ FilTxManager::~FilTxManager() {
   GetFilBlockTracker().RemoveObserver(this);
 }
 
-void FilTxManager::GetEstimatedGas(const std::string& chain_id,
-                                   const mojom::AccountIdPtr& from,
-                                   const std::optional<url::Origin>& origin,
-                                   std::unique_ptr<FilTransaction> tx,
-                                   AddUnapprovedTransactionCallback callback) {
+void FilTxManager::GetEstimatedGas(
+    const std::string& chain_id,
+    const mojom::AccountIdPtr& from,
+    const std::optional<url::Origin>& origin,
+    std::unique_ptr<FilTransaction> tx,
+    AddUnapprovedFilecoinTransactionCallback callback) {
   const std::string gas_premium = tx->gas_premium();
   const std::string gas_fee_cap = tx->gas_fee_cap();
   auto gas_limit = tx->gas_limit();
@@ -74,7 +73,7 @@ void FilTxManager::ContinueAddUnapprovedTransaction(
     const mojom::AccountIdPtr& from,
     const std::optional<url::Origin>& origin,
     std::unique_ptr<FilTransaction> tx,
-    AddUnapprovedTransactionCallback callback,
+    AddUnapprovedFilecoinTransactionCallback callback,
     const std::string& gas_premium,
     const std::string& gas_fee_cap,
     int64_t gas_limit,
@@ -104,17 +103,15 @@ void FilTxManager::ContinueAddUnapprovedTransaction(
   std::move(callback).Run(true, meta.id(), "");
 }
 
-void FilTxManager::AddUnapprovedTransaction(
+void FilTxManager::AddUnapprovedFilecoinTransaction(
     const std::string& chain_id,
-    mojom::TxDataUnionPtr tx_data_union,
+    mojom::FilTxDataPtr fil_tx_data,
     const mojom::AccountIdPtr& from,
     const std::optional<url::Origin>& origin,
     mojom::SwapInfoPtr swap_info,
-    AddUnapprovedTransactionCallback callback) {
-  DCHECK(tx_data_union->is_fil_tx_data());
+    AddUnapprovedFilecoinTransactionCallback callback) {
   const bool is_mainnet = chain_id == mojom::kFilecoinMainnet;
-  auto tx =
-      FilTransaction::FromTxData(is_mainnet, tx_data_union->get_fil_tx_data());
+  auto tx = FilTransaction::FromTxData(is_mainnet, fil_tx_data);
   if (!tx) {
     std::move(callback).Run(
         false, "",
@@ -147,7 +144,6 @@ void FilTxManager::ApproveTransaction(const std::string& tx_meta_id,
                                       ApproveTransactionCallback callback) {
   std::unique_ptr<FilTxMeta> meta = GetFilTxStateManager().GetFilTx(tx_meta_id);
   if (!meta) {
-    LOG(ERROR) << "Transaction should be found";
     std::move(callback).Run(
         false,
         mojom::ProviderErrorUnion::NewFilecoinProviderError(
@@ -176,7 +172,6 @@ void FilTxManager::OnGetNextNonce(std::unique_ptr<FilTxMeta> meta,
   if (!success) {
     meta->set_status(mojom::TransactionStatus::Error);
     tx_state_manager().AddOrUpdateTx(*meta);
-    LOG(ERROR) << "GetNextNonce failed";
     std::move(callback).Run(
         false,
         mojom::ProviderErrorUnion::NewFilecoinProviderError(
@@ -285,7 +280,6 @@ void FilTxManager::GetFilTransactionMessageToSign(
     GetFilTransactionMessageToSignCallback callback) {
   std::unique_ptr<FilTxMeta> meta = GetFilTxStateManager().GetFilTx(tx_meta_id);
   if (!meta || !meta->tx()) {
-    VLOG(1) << __FUNCTION__ << "No transaction found with id:" << tx_meta_id;
     std::move(callback).Run(std::nullopt);
     return;
   }

@@ -1,3 +1,9 @@
+/* The subtitle of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenDescription" = "Brave आइकन को टच करके पकड़ें, फिर त्वरित पहुंच के लिए इसे अपने डॉक में खींचें।";
+
+/* The title of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenTitle" = "Brave को अपने डॉक में जोड़ें";
+
 /* The title of the button that changes the screen to next */
 "focusOnboarding.continueButtonTitle" = "जारी रखें";
 
@@ -25,18 +31,12 @@
 /* The description shown below the toggle for enabling privacy preserving analytics. This uses standard markdown syntax. The Learn More is a link and #p3a-learn-more is a URL fragment */
 "focusOnboarding.p3aToggleDescription" = "आप **Shields और प्राइवेसी** में जाकर सेटिंग में कभी भी ऑप्ट-आउट कर सकते हैं। अपनी प्राइवेसी संरक्षण प्रोडक्ट अनलिटिक्स के बारे में [ज़्यादा जानें](#p3a-learn-more)।";
 
-/* The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The "completely private & anonymous" snippet should be bold in all languages */
-"focusOnboarding.p3aToggleTitle" = "प्रोडक्ट की **पूरी तरह प्राइवेट & अनाम** इनसाइट्स शेयर करें।";
+/* The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The "private & anonymous" snippet should be bold in all languages */
+"focusOnboarding.p3aToggleTitle" = "**प्राइवेट और अनाम** प्रोडक्ट की इनसाइट्स शेयर करें।";
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "ब्राउज़ करना शुरू करें";
 
 /* The title of the button that triggers navigation link to settings */
 "focusOnboarding.systemSettingsButtonTitle" = "डिफ़ॉल्ट सेट करें";
-
-/* The description of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorDescription" = "स्ट्रीम करना शुरू करें और कम ऐड्स & ट्रैकर्स का आनंद लें।";
-
-/* The title of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorTitle" = "Brave का कमाल देखें";
 

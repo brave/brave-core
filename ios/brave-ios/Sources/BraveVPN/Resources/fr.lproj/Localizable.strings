@@ -311,7 +311,7 @@
 "vpn.vpnConfigGenericErrorTitle" = "Erreur";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Le VPN Brave nécessite l’installation d’un profil VPN sur votre appareil pour fonctionner. ";
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Le VPN Brave nécessite l'installation d'un profil VPN sur votre appareil pour fonctionner. ";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "Autorisation refusée";

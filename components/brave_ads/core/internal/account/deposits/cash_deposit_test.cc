@@ -5,11 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/account/deposits/cash_deposit.h"
 
-#include "base/run_loop.h"
-#include "base/test/gmock_callback_support.h"
-#include "base/test/mock_callback.h"
-#include "brave/components/brave_ads/core/internal/account/deposits/deposit_interface.h"
-#include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
+#include "base/test/run_until.h"
+#include "base/test/test_future.h"
+#include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
@@ -20,9 +18,11 @@
 namespace brave_ads {
 
 class BraveAdsCashDepositIntegrationTest : public test::TestBase {
- protected:
-  void SetUp() override { test::TestBase::SetUp(/*is_integration_test=*/true); }
+ public:
+  BraveAdsCashDepositIntegrationTest()
+      : test::TestBase(/*is_integration_test=*/true) {}
 
+ protected:
   void SetUpMocks() override {
     const test::URLResponseMap url_responses = {
         {BuildCatalogUrlPath(),
@@ -36,12 +36,16 @@ TEST_F(BraveAdsCashDepositIntegrationTest, GetValue) {
   CashDeposit deposit;
 
   // Act & Assert
-  base::MockCallback<GetDepositCallback> callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback, Run(/*success=*/true, test::kValue))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  deposit.GetValue(test::kCreativeInstanceId, callback.Get());
-  run_loop.Run();
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    base::test::TestFuture<bool, double> test_future;
+    deposit.GetValue(test::kCreativeInstanceId, test_future.GetCallback());
+    const auto [success, value] = test_future.Take();
+    if (!success) {
+      return false;
+    }
+    EXPECT_DOUBLE_EQ(test::kValue, value);
+    return true;
+  }));
 }
 
 TEST_F(BraveAdsCashDepositIntegrationTest,
@@ -50,12 +54,11 @@ TEST_F(BraveAdsCashDepositIntegrationTest,
   CashDeposit deposit;
 
   // Act & Assert
-  base::MockCallback<GetDepositCallback> callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback, Run(/*success=*/false, /*value=*/0.0))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  deposit.GetValue(test::kMissingCreativeInstanceId, callback.Get());
-  run_loop.Run();
+  base::test::TestFuture<bool, double> test_future;
+  deposit.GetValue(test::kMissingCreativeInstanceId, test_future.GetCallback());
+  const auto [success, value] = test_future.Take();
+  EXPECT_FALSE(success);
+  EXPECT_DOUBLE_EQ(0.0, value);
 }
 
 }  // namespace brave_ads

@@ -87,15 +87,6 @@ void GetPublisherStatusFromMessage(
         return;
       }
     }
-    if (wallet.has_gemini_wallet()) {
-      auto& gemini = wallet.gemini_wallet();
-      if (gemini.wallet_state() == publishers_pb::GEMINI_ACCOUNT_KYC &&
-          !gemini.address().empty()) {
-        info->status = mojom::PublisherStatus::GEMINI_VERIFIED;
-        info->address = gemini.address();
-        return;
-      }
-    }
   }
   if (!response.site_banner_details().web3_url().empty()) {
     info->status = mojom::PublisherStatus::WEB3_ENABLED;
@@ -220,7 +211,7 @@ void GetPublisher::Request(const std::string& publisher_key,
   request->load_flags = net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE;
 
   engine_->Get<URLLoader>().Load(
-      std::move(request), URLLoader::LogLevel::kDetailed,
+      std::move(request), URLLoader::LogLevel::kBasic,
       base::BindOnce(&GetPublisher::OnRequest, base::Unretained(this),
                      publisher_key, std::move(callback)));
 }

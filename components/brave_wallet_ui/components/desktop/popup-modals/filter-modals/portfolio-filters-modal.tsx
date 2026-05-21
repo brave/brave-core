@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import { useLocation } from 'react-router'
+import Button from '@brave/leo/react/button'
 
 // Types
 import { WalletRoutes } from '../../../../constants/types'
@@ -60,7 +61,6 @@ import {
   VerticalSpacer,
   ScrollableColumn,
   HorizontalSpace,
-  LeoSquaredButton,
 } from '../../../shared/style'
 import { ContentWrapper, ButtonRow } from './portfolio-filters-modal.style'
 
@@ -297,16 +297,16 @@ export const PortfolioFiltersModal = ({ onClose, onSave }: Props) => {
       </ScrollableColumn>
 
       <ButtonRow>
-        <LeoSquaredButton
+        <Button
           onClick={onClose}
           kind='outline'
         >
           {getLocale('braveWalletButtonCancel')}
-        </LeoSquaredButton>
+        </Button>
         <HorizontalSpace space='16px' />
-        <LeoSquaredButton onClick={onSaveChanges}>
+        <Button onClick={onSaveChanges}>
           {getLocale('braveWalletButtonSaveChanges')}
-        </LeoSquaredButton>
+        </Button>
       </ButtonRow>
     </PopupModal>
   )

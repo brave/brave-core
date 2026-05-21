@@ -136,12 +136,6 @@ SimulationService::SimulationService(
 
 SimulationService::~SimulationService() = default;
 
-mojo::PendingRemote<mojom::SimulationService> SimulationService::MakeRemote() {
-  mojo::PendingRemote<mojom::SimulationService> remote;
-  receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
-  return remote;
-}
-
 void SimulationService::Bind(
     mojo::PendingReceiver<mojom::SimulationService> receiver) {
   receivers_.Add(this, std::move(receiver));

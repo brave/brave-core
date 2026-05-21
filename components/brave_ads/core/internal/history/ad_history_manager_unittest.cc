@@ -5,17 +5,19 @@
 
 #include "brave/components/brave_ads/core/internal/history/ad_history_manager.h"
 
+#include "base/scoped_observation.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_info.h"
-#include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_test_util.h"
+#include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/test/search_result_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
-#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/new_tab_page_ad_builder.h"
-#include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_test_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/test/creative_new_tab_page_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
+#include "brave/components/brave_ads/core/internal/creatives/notification_ads/test/creative_notification_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_builder_util.h"
-#include "brave/components/brave_ads/core/internal/history/ad_history_manager_observer_mock.h"
-#include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
+#include "brave/components/brave_ads/core/internal/history/ad_history_manager_observer.h"
+#include "brave/components/brave_ads/core/internal/history/test/ad_history_manager_observer_mock.h"
+#include "brave/components/brave_ads/core/internal/settings/test/settings_test_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
@@ -30,24 +32,18 @@ class BraveAdsAdHistoryManagerTest : public test::TestBase {
   void SetUp() override {
     test::TestBase::SetUp();
 
-    AdHistoryManager::GetInstance().AddObserver(
-        &history_manager_observer_mock_);
-  }
-
-  void TearDown() override {
-    AdHistoryManager::GetInstance().RemoveObserver(
-        &history_manager_observer_mock_);
-
-    test::TestBase::TearDown();
+    observation_.Observe(&AdHistoryManager::GetInstance());
   }
 
   AdHistoryManagerObserverMock history_manager_observer_mock_;
+  base::ScopedObservation<AdHistoryManager, AdHistoryManagerObserver>
+      observation_{&history_manager_observer_mock_};
 };
 
 TEST_F(BraveAdsAdHistoryManagerTest, AddNotificationAdHistory) {
   // Arrange
   const CreativeNotificationAdInfo creative_ad =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*use_random_uuids=*/true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
   // Act & Assert
@@ -65,7 +61,7 @@ TEST_F(BraveAdsAdHistoryManagerTest,
   test::DisableBraveRewards();
 
   const CreativeNotificationAdInfo creative_ad =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*use_random_uuids=*/true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
   // Act & Assert
@@ -78,7 +74,7 @@ TEST_F(BraveAdsAdHistoryManagerTest, AddNewTabPageAdHistory) {
   // Arrange
   const CreativeNewTabPageAdInfo creative_ad =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   const NewTabPageAdInfo ad = BuildNewTabPageAd(creative_ad);
 
   // Act & Assert
@@ -97,7 +93,7 @@ TEST_F(BraveAdsAdHistoryManagerTest,
 
   const CreativeNewTabPageAdInfo creative_ad =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*should_generate_random_uuids=*/true);
+                                      /*use_random_uuids=*/true);
   const NewTabPageAdInfo ad = BuildNewTabPageAd(creative_ad);
 
   // Act & Assert
@@ -109,7 +105,7 @@ TEST_F(BraveAdsAdHistoryManagerTest,
 TEST_F(BraveAdsAdHistoryManagerTest, AddSearchResultAdHistory) {
   // Arrange
   const SearchResultAdInfo ad =
-      test::BuildSearchResultAd(/*should_generate_random_uuids=*/true);
+      test::BuildSearchResultAd(/*use_random_uuids=*/true);
 
   // Act & Assert
   const AdHistoryItemInfo expected_ad_history_item =
@@ -127,7 +123,7 @@ TEST_F(BraveAdsAdHistoryManagerTest,
   test::DisableBraveRewards();
 
   const SearchResultAdInfo ad =
-      test::BuildSearchResultAd(/*should_generate_random_uuids=*/true);
+      test::BuildSearchResultAd(/*use_random_uuids=*/true);
 
   // Act & Assert
   EXPECT_CALL(history_manager_observer_mock_, OnDidAddAdHistoryItem).Times(0);

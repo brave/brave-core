@@ -32,7 +32,7 @@ TEST_F(VariationsServiceTest,
 }
 
 TEST_F(VariationsServiceTest,
-       DoNotSetVariationsCountryWithNotModifiedResponseOnSubsequentFetch) {
+       SetVariationsCountryWithNotModifiedResponseOnSubsequentFetch) {
   VariationsService::EnableFetchForTesting();
 
   TestVariationsService service(
@@ -66,7 +66,7 @@ TEST_F(VariationsServiceTest,
 
   service.DoActualFetch();
 
-  EXPECT_EQ(prefs_.GetString(prefs::kVariationsCountry), "FOO");
+  EXPECT_EQ(prefs_.GetString(prefs::kVariationsCountry), "BAR");
 }
 
 TEST_F(VariationsServiceTest,

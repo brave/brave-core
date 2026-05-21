@@ -1,20 +1,41 @@
 /* A section header title for ads-related settings */
 "adsHeader" = "広告";
 
+/* A title asking if the user already purchased on brave.com */
+"alreadyPurchasedTitle" = "brave.comで購入済みですか？";
+
 /* A section header title for analytics-related settings */
 "analyticsHeader" = "アナリティクス";
 
+/* A button label to purchase Brave Origin */
+"buyNowButton" = "今すぐ購入";
+
+/* A note that indicates a feature is enabled */
+"enabledFeatureNote" = "この機能は、あなたがオプトインしたため有効になっています。";
+
 /* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
-"featuresFooter" = "Brave Originはサブスクリプションベースのサービスで、Braveの事業を支える収益生成機能を無効にできます。Brave Originのサブスクライバーは、Brave Shieldsを介して、業界をリードするプライバシー、アドブロック、スピードの他、定期的なソフトウェアアップデート、Chromiumパッチ、セキュリティとプライバシーの改善から継続してメリットを受けることができます。さらに、Brave Leo、News、Rewards、ウォレット、VPN、Web3ドメインなどの機能を無効にするオプションもアンロックされます。\n\nサブスクライバーには、ブラウザの設定メニューに新しいコントロールパネルが表示されます。既存の機能と、今後リリースされる新しい機能がここに表示され、デフォルトではオフになっています。\n\n**注：Brave Originは現在使用しているブラウザ機能を無効にしないため、Brave Search機能やBrave Search広告には影響しません。**";
+"featuresFooter" = "Brave Originは、Braveの事業を支える収益生成機能を簡単に無効にできるBraveブラウザのバージョンです。Brave Originユーザーは、Brave Shieldsを介して、業界をリードするプライバシー、アドブロック、スピードの他、定期的なソフトウェアアップデート、Chromiumパッチ、セキュリティとプライバシーの改善から継続してメリットを受けることができます。さらに、Brave Leo、Rewards、ウォレット、VPN、Web3ドメインなどの機能を無効にするオプションもアンロックされます。\n\n購入後、ユーザーにはブラウザの設定メニューに新しいコントロールパネルが表示されます。既存の機能と、今後リリースされる新しい機能がここに表示され、デフォルトではオフになっています。\n\n**注：Brave Originは現在使用しているブラウザ機能を無効にしないため、Brave Search機能やBrave Search広告には影響しません。**";
 
 /* A section header title that is shown over a list of Brave specific features */
 "featuresHeader" = "機能";
 
+/* A button label to get a login code for users who purchased on brave.com */
+"getLoginCodeButton" = "ログインコードを取得";
+
 /* A toggle label for Brave Leo AI feature */
 "leoAILabel" = "Leo AI";
 
+/* A button title that when triggered will allow a user to link their App Store purchase with Brave Account */
+"linkPurchase" = "購入情報をBraveアカウントにリンク";
+
 /* A toggle label for Brave News feature */
 "newsLabel" = "News";
+
+/* A label indicating this is a one-time purchase product */
+"oneTimePurchaseLabel" = "一度きりの購入";
+
+/* A description of Brave Origin displayed on the paywall screen. This text contains Markdown formatting, the stars represent markdown and the same paragraphs should be also be bolded when translated. */
+"paywallDescription" = "**Braveをサポートしながらブラウザをカスタマイズ**\n\nBrave Originは、Braveの事業を支えるすべての機能を必要としないものの、Braveだけが提供するプライバシーを引き続き利用したいユーザー向けの有料版ブラウザです。Brave Originユーザーは、Brave Shieldsを介して、業界をリードするプライバシー、アドブロック、スピードの他、定期的なソフトウェアアップデート、Chromiumパッチ、セキュリティとプライバシーの改善から継続してメリットを受けることができます。さらに、AI、Rewards、ウォレット、VPN、Web3ドメインなどの機能を無効にするオプションもアンロックされます。\n\n**Brave Originは一度限りの購入でご利用いただけます。モバイル (AndroidおよびiOS) とデスクトップでは、Originは既存のリリースバージョンへのアップグレードとして購入できます。** デスクトップでは、Originは独立したスタンドアロンアプリとしてもご利用いただけます。アップグレードとして購入する場合でも、別のアプリとして購入する場合でも、Originユーザーには設定メニューに新しいコントロールパネルが表示されます。既存の機能と、今後リリースされる新しい機能がここに表示され、デフォルトではオフになっています。*\n\n* 既存のBraveバージョンへのアップグレードとしてOriginを購入した場合、Originは現在使用しているブラウザ機能を無効にしません。アップグレード版とスタンドアロン版のどちらも、OriginはBrave Search機能やBrave Search広告には影響しません。";
 
 /* A toggle label for Brave Playlist feature */
 "playlistLabel" = "Playlist";
@@ -22,8 +43,26 @@
 /* A toggle label for privacy preserving analytics feature */
 "privacyPreservingAnalyticsLabel" = "プライバシー保護分析";
 
+/* A title asking if the user has a promo code */
+"promoCodeTitle" = "プロモコードをお持ちですか？";
+
+/* An error message displayed when a purchase fails */
+"purchaseErrorMessage" = "購入を完了できません。再度お試しいただくか、Appleでお支払い内容をご確認の上、再度お試しください。";
+
+/* The footer shown below the Purchase section of the settings page */
+"purchaseSectionFooter" = "App Storeで購入した商品をBraveアカウントにリンクさせると、他のデバイスでBrave Originを利用できます。";
+
+/* The header shown below the Purchase section of the settings page */
+"purchaseSectionHeader" = "購入";
+
+/* A button label to redeem a promo code */
+"redeemPromoCodeButton" = "プロモコードを使う";
+
 /* A button label to reset all Origin settings to their default values */
 "resetToDefaultsButton" = "デフォルトにリセット";
+
+/* A button label to restore previous purchases */
+"restoreButton" = "復元";
 
 /* A toggle label for Brave Rewards feature */
 "rewardsLabel" = "リワード";
@@ -33,6 +72,21 @@
 
 /* A toggle label for Brave Talk feature */
 "talkLabel" = "Talk";
+
+/* An upsell point about maintaining core features like adblock, privacy, and speed */
+"upsellCoreFeatures" = "アドブロック、プライバシー、 & スピードを維持";
+
+/* An upsell point about minimal browser UI */
+"upsellMinimalUI" = "シールドを中心とした最小限のブラウザUI";
+
+/* An upsell point about the one-time purchase model */
+"upsellOneTimePurchase" = "ワンタイム購入、追加のサブスクリプション料金なし";
+
+/* An upsell point about supporting Brave's mission and open-source work */
+"upsellSupportMission" = "私たちのミッションと& オープンソースをサポートください";
+
+/* A button title that when triggered will allow a user to view their App Store receipt */
+"viewAppStoreReceipt" = "App Storeのレシートを見る";
 
 /* A toggle label for Brave VPN feature */
 "vpnLabel" = "VPN";

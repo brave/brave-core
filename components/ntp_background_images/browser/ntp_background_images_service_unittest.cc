@@ -12,6 +12,7 @@
 #include "base/test/task_environment.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
+#include "brave/components/ntp_background_images/browser/sponsored_images_component_data.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "build/build_config.h"
 #include "components/prefs/testing_pref_service.h"
@@ -360,10 +361,32 @@ class NTPBackgroundImagesServiceForTesting : public NTPBackgroundImagesService {
     background_images_component_started = true;
   }
 
+  std::string GetCountryCode() const override { return "US"; }
+
+  void OnSponsoredComponentReady(
+      const base::FilePath& /*installed_dir*/) override {
+    NTPBackgroundImagesService::OnGetSponsoredComponentJsonData(
+        cached_json_for_testing_);
+  }
+
+  // Pre-sets the already-loaded state so tests can call
+  // RegisterSponsoredImagesComponent and exercise the replay path.
+  void SetSponsoredImagesLoadedForTesting(const std::string& component_id,
+                                          const std::string& json) {
+    cached_json_for_testing_ = json;
+    sponsored_images_component_id_ = component_id;
+    // Use a non-empty sentinel so the replay path triggers.
+    sponsored_images_installed_dir_ = base::FilePath(FILE_PATH_LITERAL("fake"));
+    NTPBackgroundImagesService::OnGetSponsoredComponentJsonData(json);
+  }
+
   bool sponsored_images_component_started = false;
   bool background_images_component_started = false;
   bool mapping_table_requested = false;
   bool referral_promo_code_change_monitored = false;
+
+ private:
+  std::string cached_json_for_testing_;
 };
 
 class NTPBackgroundImagesServiceTest : public testing::Test {
@@ -677,6 +700,31 @@ TEST_F(NTPBackgroundImagesServiceTest, SponsoredImageWithMissingImageUrlTest) {
   EXPECT_THAT(observer_.sponsored_images_data->campaigns, ::testing::IsEmpty());
   EXPECT_THAT(service_->sponsored_images_data_->campaigns,
               ::testing::IsEmpty());
+}
+
+TEST_F(NTPBackgroundImagesServiceTest,
+       ReplaysNotificationForProfilesOpenedAfterInitialLoad) {
+  Init();
+
+  const std::optional<SponsoredImagesComponentInfo> component_info =
+      GetSponsoredImagesComponent("US");
+  ASSERT_TRUE(component_info.has_value());
+
+  service_->SetSponsoredImagesLoadedForTesting(std::string(component_info->id),
+                                               kTestSponsoredImages);
+  ASSERT_TRUE(observer_.on_sponsored_images_updated);
+
+  // Simulate a second profile opening after the component was already loaded.
+  ObserverMock second_observer;
+  service_->AddObserver(&second_observer);
+  ASSERT_FALSE(second_observer.on_sponsored_images_updated);
+
+  service_->RegisterSponsoredImagesComponent();
+
+  EXPECT_TRUE(second_observer.on_sponsored_images_updated);
+  EXPECT_NE(nullptr, second_observer.sponsored_images_data);
+
+  service_->RemoveObserver(&second_observer);
 }
 
 }  // namespace ntp_background_images

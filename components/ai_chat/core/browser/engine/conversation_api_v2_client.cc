@@ -19,6 +19,7 @@
 #include "base/json/json_writer.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/strings/strcat.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/types/expected.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
@@ -99,6 +100,8 @@ std::string_view GetContentBlockTypeString(
       return "image_url";
     case mojom::ContentBlock::Tag::kFileContentBlock:
       return "file";
+    case mojom::ContentBlock::Tag::kFileExtractedTextContentBlock:
+      return "brave-file-extracted-text";
     case mojom::ContentBlock::Tag::kPageExcerptContentBlock:
       return "brave-page-excerpt";
     case mojom::ContentBlock::Tag::kPageTextContentBlock:
@@ -127,6 +130,17 @@ std::string_view GetContentBlockTypeString(
     case mojom::ContentBlock::Tag::kWebSourcesContentBlock:
       return "brave-chat.webSources";
   }
+}
+
+std::string ParseErrorCode(const base::Value& body) {
+  if (body.is_dict()) {
+    if (auto* error_dict = body.GetDict().FindDict("error")) {
+      if (auto* type_str = error_dict->FindString("type")) {
+        return *type_str;
+      }
+    }
+  }
+  return std::string();
 }
 
 }  // namespace
@@ -187,6 +201,11 @@ base::ListValue ConversationAPIV2Client::SerializeOAIMessages(
               "file", FileContentBlockToDict(*block->get_file_content_block()));
           break;
         }
+
+        case mojom::ContentBlock::Tag::kFileExtractedTextContentBlock:
+          content_block_dict.Set(
+              "content", block->get_file_extracted_text_content_block()->text);
+          break;
 
         case mojom::ContentBlock::Tag::kChangeToneContentBlock: {
           const auto& tone = block->get_change_tone_content_block();
@@ -389,21 +408,13 @@ void ConversationAPIV2Client::PerformRequestWithCredentials(
       std::move(messages), std::move(oai_tool_definitions), preferred_tool_name,
       conversation_capabilities, model_name, is_sse_enabled);
 
-  base::flat_map<std::string, std::string> headers;
+  auto headers = GetBraveHeaders(credential);
   const auto digest_header = brave_service_keys::GetDigestHeader(request_body);
   headers.emplace(digest_header.first, digest_header.second);
-  auto result = brave_service_keys::GetAuthorizationHeader(
+  auto auth_header = brave_service_keys::GetAuthorizationHeader(
       BUILDFLAG(SERVICE_KEY_AICHAT), headers, api_url,
       net::HttpRequestHeaders::kPostMethod, {"digest"});
-  headers.emplace(result.first, result.second);
-
-  if (premium_enabled) {
-    // Add Leo premium SKU credential as a Cookie header.
-    std::string cookie_header_value =
-        "__Secure-sku#brave-leo-premium=" + credential->credential;
-    headers.emplace("Cookie", cookie_header_value);
-  }
-  headers.emplace("x-brave-key", BUILDFLAG(BRAVE_SERVICES_KEY));
+  headers.emplace(auth_header.first, auth_header.second);
   headers.emplace("Accept", "text/event-stream");
 
   if (is_sse_enabled) {
@@ -483,7 +494,12 @@ void ConversationAPIV2Client::OnQueryCompleted(
     error = mojom::APIError::ConnectionIssue;
   }
 
-  std::move(callback).Run(base::unexpected(std::move(error)));
+  auto details =
+      mojom::APIErrorDetails::New(static_cast<int32_t>(result.response_code()),
+                                  ParseErrorCode(result.value_body()));
+
+  std::move(callback).Run(
+      base::unexpected(EngineConsumer::Error(error, std::move(details))));
 }
 
 void ConversationAPIV2Client::OnQueryDataReceived(

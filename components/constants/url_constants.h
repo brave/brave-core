@@ -30,10 +30,6 @@ inline constexpr char kBraveSearchHost[] = "search.brave.com";
 inline constexpr char kWidevineLearnMoreUrl[] =
     "https://support.brave.app/hc/en-us/articles/"
     "360023851591-How-do-I-view-DRM-protected-content-";
-inline constexpr char kDevChannelDeprecationLearnMoreUrl[] =
-    "https://support.brave.app/hc/en-us/articles/"
-    "17924707453581-How-do-I-migrate-my-Brave-Dev-data-to-another-channel-"
-    "Nightly-Beta-Release-";
 
 inline constexpr char kDownloadBraveUrl[] = "https://www.brave.com/download";
 inline constexpr char kAIChatAboutUrl[] = "https://brave.com/leo/";

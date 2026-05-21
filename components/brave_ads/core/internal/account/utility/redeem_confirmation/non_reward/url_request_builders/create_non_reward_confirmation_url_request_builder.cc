@@ -12,6 +12,7 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/payload/confirmation_payload_json_writer.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/non_reward/url_request_builders/create_non_reward_confirmation_url_request_builder_util.h"
+#include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_types.h"
 #include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "url/gurl.h"
@@ -49,8 +50,8 @@ mojom::UrlRequestInfoPtr CreateNonRewardConfirmationUrlRequestBuilder::Build() {
 GURL CreateNonRewardConfirmationUrlRequestBuilder::BuildUrl() const {
   const std::string url_host =
       confirmation_.ad_type == mojom::AdType::kSearchResultAd
-          ? GetAnonymousSearchUrlHost()
-          : GetAnonymousUrlHost();
+          ? GetUrlHost(UrlHostType::kAnonymousSearch)
+          : GetUrlHost(UrlHostType::kAnonymous);
 
   const std::string spec = url_host + BuildCreateNonRewardConfirmationUrlPath(
                                           confirmation_.transaction_id);

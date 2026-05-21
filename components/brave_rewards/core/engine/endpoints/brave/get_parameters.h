@@ -33,10 +33,6 @@
 //       "allow": ["JP"],
 //       "block": []
 //     },
-//     "gemini": {
-//       "allow": ["AU", "AT", "BE", "CA", "CO", "DK", "FI", "HK", "IE", "IT", "NL", "NO", "PT", "SG", "ES", "SE", "GB", "US"],  // NOLINT
-//       "block": []
-//     },
 //     "uphold": {
 //       "allow": ["AU", "AT", "BE", "CO", "DK", "FI", "HK", "IE", "IT", "NL", "NO", "PT", "SG", "ES", "SE", "GB", "US"],  // NOLINT
 //       "block": []
@@ -44,7 +40,6 @@
 //   },
 //   "payoutStatus": {
 //     "bitflyer": "complete",
-//     "gemini": "complete",
 //     "unverified": "complete",
 //     "uphold": "complete"
 //   },

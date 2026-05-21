@@ -13,6 +13,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
+#include "brave/components/containers/core/browser/pref_names.h"
 #include "brave/components/containers/core/browser/prefs.h"
 #include "brave/components/containers/core/browser/prefs_registration.h"
 #include "brave/components/containers/core/common/features.h"
@@ -53,10 +54,14 @@ class MockContainersSettingsObserver : public mojom::ContainersSettingsUI {
   }
 
   MockContainersSettingsObserver* operator->() {
+    FlushForTesting();
+    return this;
+  }
+
+  void FlushForTesting() {
     if (receiver_.is_bound()) {
       receiver_.FlushForTesting();
     }
-    return this;
   }
 
   void OnContainersChanged(
@@ -65,16 +70,28 @@ class MockContainersSettingsObserver : public mojom::ContainersSettingsUI {
     containers_changed_count_++;
   }
 
+  void OnContainersEnabledChanged(bool enabled) override {
+    last_containers_enabled_ = enabled;
+    containers_enabled_changed_count_++;
+  }
+
   const std::vector<mojom::ContainerPtr>& last_containers() const {
     return last_containers_;
   }
 
   int containers_changed_count() const { return containers_changed_count_; }
 
+  bool last_containers_enabled() const { return last_containers_enabled_; }
+  int containers_enabled_changed_count() const {
+    return containers_enabled_changed_count_;
+  }
+
  private:
   mojo::Receiver<mojom::ContainersSettingsUI> receiver_{this};
   std::vector<mojom::ContainerPtr> last_containers_;
   int containers_changed_count_ = 0;
+  bool last_containers_enabled_ = false;
+  int containers_enabled_changed_count_ = 0;
 };
 
 }  // namespace
@@ -84,6 +101,8 @@ class ContainersSettingsHandlerTest : public testing::Test {
   void SetUp() override {
     feature_list_.InitAndEnableFeature(features::kContainers);
     RegisterProfilePrefs(prefs_.registry());
+    // Remove default containers from prefs for this test suite.
+    prefs_.SetList(prefs::kContainersList, base::ListValue());
 
     handler_ = std::make_unique<ContainersSettingsHandler>(&prefs_);
     handler_->BindUI(mock_observer_.BindAndGetRemote());
@@ -358,6 +377,27 @@ TEST_F(ContainersSettingsHandlerTest, ExternalContainerChanges) {
   ASSERT_EQ(1u, mock_observer_->last_containers().size());
   EXPECT_EQ("test-id", mock_observer_->last_containers()[0]->id);
   EXPECT_EQ("Test Container", mock_observer_->last_containers()[0]->name);
+}
+
+TEST_F(ContainersSettingsHandlerTest, ContainersEnabledGetSetAndObserver) {
+  base::test::TestFuture<bool> enabled_future;
+  handler_->GetContainersEnabled(enabled_future.GetCallback());
+  EXPECT_TRUE(enabled_future.Take());
+  EXPECT_EQ(0, mock_observer_->containers_enabled_changed_count());
+
+  handler_->SetContainersEnabled(false);
+  mock_observer_->FlushForTesting();
+  EXPECT_EQ(1, mock_observer_->containers_enabled_changed_count());
+  EXPECT_FALSE(mock_observer_->last_containers_enabled());
+
+  base::test::TestFuture<bool> enabled_future2;
+  handler_->GetContainersEnabled(enabled_future2.GetCallback());
+  EXPECT_FALSE(enabled_future2.Take());
+
+  prefs_.SetBoolean(prefs::kContainersEnabled, true);
+  mock_observer_->FlushForTesting();
+  EXPECT_EQ(2, mock_observer_->containers_enabled_changed_count());
+  EXPECT_TRUE(mock_observer_->last_containers_enabled());
 }
 
 }  // namespace containers

@@ -22,6 +22,7 @@ import {
 
 interface MessageHandlerOptions {
   destinationUrl?: string
+  onMakeBraveSearchDefault: () => void
 }
 
 // Returns a callback that will handle messages received from the rich media
@@ -30,7 +31,7 @@ export function useRichMediaMessageHandler(
   frameHandle: RichMediaFrameHandle | undefined,
   options: MessageHandlerOptions,
 ) {
-  const { destinationUrl } = options
+  const { destinationUrl, onMakeBraveSearchDefault } = options
   const actions = useBackgroundActions()
   const searchActions = useSearchActions()
   const queryAutocomplete = useBraveSearchAutocomplete(frameHandle)
@@ -55,9 +56,12 @@ export function useRichMediaMessageHandler(
         hideBraveSearchBox() {
           searchActions.setSearchBoxSuppressed(true)
         },
+        makeBraveSearchDefault() {
+          onMakeBraveSearchDefault()
+        },
       })
     },
-    [destinationUrl, frameHandle],
+    [destinationUrl, onMakeBraveSearchDefault, frameHandle],
   )
 }
 

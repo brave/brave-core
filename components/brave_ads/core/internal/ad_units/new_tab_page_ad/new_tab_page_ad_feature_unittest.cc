@@ -16,12 +16,6 @@ TEST(BraveAdsNewTabPageAdFeatureTest, IsEnabled) {
   EXPECT_TRUE(base::FeatureList::IsEnabled(kNewTabPageAdFeature));
 }
 
-TEST(BraveAdsNewTabPageAdFeatureTest,
-     ShouldFrequencyCapNewTabPageAdsForNonRewards) {
-  // Act & Assert
-  EXPECT_TRUE(kShouldFrequencyCapNewTabPageAdsForNonRewards.Get());
-}
-
 TEST(BraveAdsNewTabPageAdFeatureTest, MaximumNewTabPageAdsPerHour) {
   // Act & Assert
   EXPECT_EQ(4U, kMaximumNewTabPageAdsPerHour.Get());

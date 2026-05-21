@@ -12,10 +12,10 @@
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_interface.h"
+#include "brave/components/brave_ads/core/internal/ads_initializer.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads.h"
-#include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/common/functional/once_closure_task_queue.h"
 
 namespace base {
@@ -44,13 +44,14 @@ class AdsImpl final : public Ads {
 
   void SetSysInfo(mojom::SysInfoPtr mojom_sys_info) override;
   void SetBuildChannel(mojom::BuildChannelInfoPtr mojom_build_channel) override;
-  void SetFlags(mojom::FlagsPtr mojom_flags) override;
+  void SetCommandLineSwitches(
+      mojom::CommandLineSwitchesPtr mojom_command_line_switches) override;
   void SetContentSettings(
       mojom::ContentSettingsPtr mojom_content_settings) override;
 
   void Initialize(mojom::WalletInfoPtr mojom_wallet,
-                  InitializeCallback callback) override;
-  void Shutdown(ShutdownCallback callback) override;
+                  ResultCallback callback) override;
+  void Shutdown(ResultCallback callback) override;
 
   void GetInternals(GetInternalsCallback callback) override;
 
@@ -60,88 +61,59 @@ class AdsImpl final : public Ads {
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 
-  void ParseAndSaveNewTabPageAds(
-      base::DictValue dict,
-      ParseAndSaveNewTabPageAdsCallback callback) override;
+  void ParseAndSaveNewTabPageAds(base::DictValue dict,
+                                 ResultCallback callback) override;
   void MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) override;
   void TriggerNewTabPageAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
       mojom::NewTabPageAdMetricType mojom_ad_metric_type,
       mojom::NewTabPageAdEventType mojom_ad_event_type,
-      TriggerAdEventCallback callback) override;
+      ResultCallback callback) override;
 
   void MaybeGetNotificationAd(const std::string& placement_id,
                               MaybeGetNotificationAdCallback callback) override;
   void TriggerNotificationAdEvent(
       const std::string& placement_id,
       mojom::NotificationAdEventType mojom_ad_event_type,
-      TriggerAdEventCallback callback) override;
+      ResultCallback callback) override;
 
   void MaybeGetSearchResultAd(const std::string& placement_id,
                               MaybeGetSearchResultAdCallback callback) override;
   void TriggerSearchResultAdEvent(
       mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
       mojom::SearchResultAdEventType mojom_ad_event_type,
-      TriggerAdEventCallback callback) override;
+      ResultCallback callback) override;
 
-  void PurgeOrphanedAdEventsForType(
-      mojom::AdType mojom_ad_type,
-      PurgeOrphanedAdEventsForTypeCallback callback) override;
+  void PurgeOrphanedAdEventsForType(mojom::AdType mojom_ad_type,
+                                    ResultCallback callback) override;
 
   void GetAdHistory(base::Time from_time,
                     base::Time to_time,
                     GetAdHistoryForUICallback callback) override;
 
   void ToggleLikeAd(mojom::ReactionInfoPtr mojom_reaction,
-                    ToggleReactionCallback callback) override;
+                    ResultCallback callback) override;
   void ToggleDislikeAd(mojom::ReactionInfoPtr mojom_reaction,
-                       ToggleReactionCallback callback) override;
+                       ResultCallback callback) override;
   void ToggleLikeSegment(mojom::ReactionInfoPtr mojom_reaction,
-                         ToggleReactionCallback callback) override;
+                         ResultCallback callback) override;
   void ToggleDislikeSegment(mojom::ReactionInfoPtr mojom_reaction,
-                            ToggleReactionCallback callback) override;
+                            ResultCallback callback) override;
   void ToggleSaveAd(mojom::ReactionInfoPtr mojom_reaction,
-                    ToggleReactionCallback callback) override;
+                    ResultCallback callback) override;
   void ToggleMarkAdAsInappropriate(mojom::ReactionInfoPtr mojom_reaction,
-                                   ToggleReactionCallback callback) override;
+                                   ResultCallback callback) override;
 
  private:
-  void CreateOrOpenDatabase(mojom::WalletInfoPtr mojom_wallet,
-                            InitializeCallback callback);
-  void CreateOrOpenDatabaseCallback(mojom::WalletInfoPtr mojom_wallet,
-                                    InitializeCallback callback,
-                                    bool success);
+  void InitializeCallback(ResultCallback callback, bool success);
 
-  void MigrateStateCallback(mojom::WalletInfoPtr mojom_wallet,
-                            InitializeCallback callback,
-                            bool success);
-
-  void FailedToInitialize(InitializeCallback callback);
-  void SuccessfullyInitialized(mojom::WalletInfoPtr mojom_wallet,
-                               InitializeCallback callback);
-
-  // TODO(https://github.com/brave/brave-browser/issues/39795): Transition away
-  // from using JSON state to a more efficient data approach.
-  void MigrateClientStateCallback(mojom::WalletInfoPtr mojom_wallet,
-                                  InitializeCallback callback,
-                                  bool success);
-  void LoadClientStateCallback(mojom::WalletInfoPtr mojom_wallet,
-                               InitializeCallback callback,
-                               bool success);
-  void MigrateConfirmationStateCallback(mojom::WalletInfoPtr mojom_wallet,
-                                        InitializeCallback callback,
-                                        bool success);
-  void LoadConfirmationStateCallback(mojom::WalletInfoPtr mojom_wallet,
-                                     InitializeCallback callback,
-                                     bool success);
-
-  bool is_initialized_ = false;
-
-  // TODO(https://github.com/brave/brave-browser/issues/37622): Deprecate global
-  // state.
+  // TODO(https://github.com/brave/brave-browser/issues/37622): Deprecate
+  // `GlobalState`.
   GlobalState global_state_;
 
+  bool is_initialized_ = false;
+  AdsInitializer ads_initializer_;
   OnceClosureTaskQueue task_queue_;
 
   // Handles database maintenance tasks, such as purging.

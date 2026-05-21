@@ -15,8 +15,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/memory/weak_ptr.h"
-#include "base/observer_list_types.h"
 #include "base/sequence_checker.h"
 #include "base/values.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
@@ -41,8 +39,6 @@ class AdBlockEngine {
   AdBlockEngine(const AdBlockEngine&) = delete;
   AdBlockEngine& operator=(const AdBlockEngine&) = delete;
   ~AdBlockEngine();
-
-  bool IsDefaultEngine() { return is_default_engine_; }
 
   adblock::BlockerResult ShouldStartRequest(
       const GURL& url,
@@ -69,32 +65,24 @@ class AdBlockEngine {
       const std::vector<std::string>& ids,
       const std::vector<std::string>& exceptions);
 
-  void Load(bool deserialize,
+  bool Load(bool deserialize,
             const DATFileDataBuffer& dat_buf,
             const adblock::BraveCoreResourceStorage& storage);
-  void Load(rust::Box<adblock::FilterSet> filter_set,
+  bool Load(rust::Box<adblock::FilterSet> filter_set,
             const adblock::BraveCoreResourceStorage& storage);
 
-  class TestObserver : public base::CheckedObserver {
-   public:
-    virtual void OnEngineUpdated() = 0;
-  };
-
-  void AddObserverForTest(TestObserver* observer);
-  void RemoveObserverForTest();
-
-  base::WeakPtr<AdBlockEngine> AsWeakPtr();
+  DATFileDataBuffer Serialize();
 
  protected:
   void AddKnownTagsToAdBlockInstance();
   void UpdateAdBlockClient(rust::Box<adblock::Engine> ad_block_client,
                            const adblock::BraveCoreResourceStorage& storage);
 
-  void OnFilterSetLoaded(rust::Box<adblock::FilterSet> filter_set,
+  bool OnFilterSetLoaded(rust::Box<adblock::FilterSet> filter_set,
                          const adblock::BraveCoreResourceStorage& storage);
-  void OnListSourceLoaded(const DATFileDataBuffer& filters,
+  bool OnListSourceLoaded(const DATFileDataBuffer& filters,
                           const adblock::BraveCoreResourceStorage& storage);
-  void OnDATLoaded(const DATFileDataBuffer& dat_buf,
+  bool OnDATLoaded(const DATFileDataBuffer& dat_buf,
                    const adblock::BraveCoreResourceStorage& storage);
 
   rust::Box<adblock::Engine> ad_block_client_
@@ -110,12 +98,9 @@ class AdBlockEngine {
   std::optional<adblock::RegexManagerDiscardPolicy> regex_discard_policy_
       GUARDED_BY_CONTEXT(sequence_checker_);
 
-  raw_ptr<TestObserver> test_observer_ = nullptr;
-
   bool is_default_engine_;
 
   SEQUENCE_CHECKER(sequence_checker_);
-  base::WeakPtrFactory<AdBlockEngine> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_shields

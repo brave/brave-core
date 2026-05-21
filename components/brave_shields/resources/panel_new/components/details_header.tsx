@@ -8,6 +8,7 @@ import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 
 import { useShieldsApi } from '../api/shields_api_context'
+import { getString } from './strings'
 
 import { style } from './details_header.style'
 
@@ -30,15 +31,20 @@ export function DetailsHeader(props: Props) {
           kind='plain-faint'
           fab
           size='medium'
+          aria-label={getString('BRAVE_SHIELDS_GO_BACK')}
         >
           <Icon name='arrow-left' />
         </Button>
         <div className='text'>
           <h4>{props.title}</h4>
-          <div className='host overflow-ellipsis-start'>{host}</div>
+          <div className='host overflow-ellipsis-start'>
+            {'\u2068'}
+            {host}
+            {'\u2069'}
+          </div>
+          {props.children}
         </div>
       </div>
-      {props.children}
     </div>
   )
 }

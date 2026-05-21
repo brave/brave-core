@@ -54,9 +54,6 @@ specific_include_rules = {
     "+content",
     "!brave/components/constants/brave_paths.h",
   ],
-  ".*test.*\.cc": [
-    "!brave/components/l10n/common/test/scoped_default_locale.h",
-  ],
   # brave_paths.h overrides
   ".*browsertest.*\.cc": [
     # browser tests that are still in components can use brave_paths because

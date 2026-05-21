@@ -133,6 +133,12 @@ extension TabStateImpl {
     }
   }
 
+  func didCommitSameDocumentNavigation() {
+    observers.forEach {
+      $0.tabDidCommitSameDocumentNavigation(self)
+    }
+  }
+
   func didRedirectNavigation() {
     observers.forEach {
       $0.tabDidRedirectNavigation(self)
@@ -154,6 +160,12 @@ extension TabStateImpl {
   func renderProcessTerminated() {
     observers.forEach {
       $0.tabRenderProcessDidTerminate(self)
+    }
+  }
+
+  func frameDidBecomeAvailable(frame: WebFrame) {
+    observers.forEach {
+      $0.tab(self, frameDidBecomeAvailable: frame)
     }
   }
 }

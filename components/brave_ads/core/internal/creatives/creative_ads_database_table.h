@@ -22,23 +22,17 @@ using GetCreativeAdCallback =
 
 class CreativeAds final : public TableInterface {
  public:
-  void Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
-              const CreativeAdList& creative_ads);
-
   void GetForCreativeInstanceId(const std::string& creative_instance_id,
                                 GetCreativeAdCallback callback) const;
 
-  std::string GetTableName() const override;
-
+  // TableInterface:
   void Create(const mojom::DBTransactionInfoPtr& mojom_db_transaction) override;
   void Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
                int to_version) override;
 
  private:
   void MigrateToV48(const mojom::DBTransactionInfoPtr& mojom_db_transaction);
-
-  std::string BuildInsertSql(const mojom::DBActionInfoPtr& mojom_db_action,
-                             const CreativeAdList& creative_ads) const;
+  void MigrateToV54(const mojom::DBTransactionInfoPtr& mojom_db_transaction);
 };
 
 }  // namespace brave_ads::database::table

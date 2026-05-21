@@ -440,7 +440,8 @@ struct NetworkDetailsView: View {
         }
       }
     }
-    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+    .scrollContentBackground(.hidden)
+    .background(Color(UIColor.braveGroupedBackground))
     .navigationBarTitle(navigationTitle)
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {

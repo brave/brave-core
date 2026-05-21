@@ -17,6 +17,7 @@ import {
   useCurrentBackground,
   useBackgroundActions,
 } from '../../context/background_context'
+import { useNewTabState } from '../../context/new_tab_context'
 
 import { style } from './background_caption.style'
 
@@ -62,6 +63,9 @@ interface SponsoredBackgroundLogoProps {
 
 function SponsoredBackgroundLogo(props: SponsoredBackgroundLogoProps) {
   const actions = useBackgroundActions()
+  const centerNttCtaButtonFeatureEnabled = useNewTabState(
+    (s) => s.centerNttCtaButtonFeatureEnabled,
+  )
   const { logo } = props.background
   if (!logo || !logo.imageUrl) {
     return null
@@ -69,8 +73,13 @@ function SponsoredBackgroundLogo(props: SponsoredBackgroundLogoProps) {
   return (
     <Link
       url={logo.destinationUrl}
-      className='sponsored-logo'
+      className={
+        centerNttCtaButtonFeatureEnabled
+          ? 'sponsored-logo centered-ntt-cta-button'
+          : 'sponsored-logo'
+      }
       onClick={() => actions.notifySponsoredImageLogoClicked()}
+      onContextMenu={(e) => e.preventDefault()}
     >
       <Icon name='launch' />
       <img

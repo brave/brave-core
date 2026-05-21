@@ -15,12 +15,6 @@ BASE_FEATURE(kBraveRewards, base::FEATURE_ENABLED_BY_DEFAULT);
 #endif
 #endif  // BUILDFLAG(IS_ANDROID)
 
-#if BUILDFLAG(ENABLE_GEMINI_WALLET)
-BASE_FEATURE(kGeminiFeature,
-             "BraveRewardsGemini",
-             base::FEATURE_ENABLED_BY_DEFAULT);
-#endif
-
 BASE_FEATURE(kVerboseLoggingFeature,
              "BraveRewardsVerboseLogging",
              base::FEATURE_DISABLED_BY_DEFAULT);

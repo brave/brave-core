@@ -6,11 +6,13 @@
 #include "brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/prefs/condition_matcher_pref_util.h"
 
 #include "base/containers/span.h"
+#include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/local_state_pref_registry_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/profile_pref_registry_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -70,8 +72,8 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest,
 
 TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetVirtualPrefValueAsString) {
   // Arrange
-  base::DictValue virtual_prefs;
-  virtual_prefs.Set("[virtual]:foo", 42);
+  const base::DictValue virtual_prefs =
+      base::DictValue().Set("[virtual]:foo", 42);
 
   // Act & Assert
   EXPECT_EQ("42", MaybeGetPrefValueAsString(virtual_prefs, "[virtual]:foo"));
@@ -90,8 +92,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest,
 TEST_F(BraveAdsConditionMatcherPrefUtilTest,
        DoNotGetBinaryVirtualPrefValueAsString) {
   // Arrange
-  base::DictValue virtual_prefs;
-  virtual_prefs.Set(
+  const base::DictValue virtual_prefs = base::DictValue().Set(
       "[virtual]:foo",
       base::Value(base::span<const uint8_t>({0x48, 0x65, 0x6C, 0x6C, 0x6F})));
 
@@ -107,6 +108,35 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest,
   // Act & Assert
   EXPECT_FALSE(
       MaybeGetPrefValueAsString(GetAdsClient().GetVirtualPrefs(), "list"));
+}
+
+TEST_F(
+    BraveAdsConditionMatcherPrefUtilTest,
+    GetListProfilePrefValueAsStringWithTimePeriodStorageKeywordPathComponent) {
+  // Arrange
+  test::RegisterProfileListPref(
+      "list",
+      base::ListValue()
+          .Append(base::DictValue()
+                      .Set("day", test::Now().InSecondsFSinceUnixEpoch())
+                      .Set("value", 3.0))
+          .Append(base::DictValue()
+                      .Set("day", test::Now().InSecondsFSinceUnixEpoch())
+                      .Set("value", 5.0)));
+
+  // Act & Assert
+  EXPECT_EQ("8", MaybeGetPrefValueAsString(GetAdsClient().GetVirtualPrefs(),
+                                           "list|time_period_storage"));
+}
+
+TEST_F(BraveAdsConditionMatcherPrefUtilTest,
+       DoNotGetListProfilePrefValueAsStringWithUnknownKeywordPathComponent) {
+  // Arrange
+  test::RegisterProfileListPref("list", base::ListValue().Append("foo"));
+
+  // Act & Assert
+  EXPECT_FALSE(MaybeGetPrefValueAsString(GetAdsClient().GetVirtualPrefs(),
+                                         "list|invalid"));
 }
 
 TEST_F(BraveAdsConditionMatcherPrefUtilTest, DoNotGetUnknownPrefValueAsString) {

@@ -6,7 +6,7 @@
 #include "brave/ios/browser/api/query_filter/utils.h"
 
 #include "base/strings/sys_string_conversions.h"
-#include "brave/components/query_filter/utils.h"
+#include "brave/components/query_filter/browser/utils.h"
 #import "net/base/apple/url_conversions.h"
 #include "url/gurl.h"
 

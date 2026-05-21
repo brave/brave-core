@@ -6,10 +6,10 @@
 // Check environment before doing anything.
 import '../lib/checkEnvironment.js'
 
-import program from 'commander'
+import { program, Argument, Option } from 'commander'
 import path from 'node:path'
 import fs from 'fs-extra'
-import config from '../lib/config.js'
+import config from '../lib/config.ts'
 import util from '../lib/util.js'
 import build from '../lib/build.js'
 import buildChromiumRelease from '../lib/buildChromiumRelease.js'
@@ -48,6 +48,18 @@ function parseInteger(string) {
 
 const parsedArgs = program.parseOptions(process.argv)
 
+function createBuildConfigArgument() {
+  // Build config argument that's valid only if it's not an option.
+  return new Argument('[build_config]', 'build configuration').argParser(
+    (value) => {
+      if (value.startsWith('-')) {
+        return undefined
+      }
+      return value
+    },
+  )
+}
+
 // @ts-ignore
 program.version(process.env.npm_package_version)
 
@@ -70,7 +82,7 @@ program
     'target environment (device, catalyst, simulator)',
   )
   .option('--checkdeps_only', 'only run checkdeps')
-  .arguments('[build_config]')
+  .addArgument(createBuildConfigArgument())
   .action(gnCheck)
 
 program
@@ -79,7 +91,7 @@ program
     '--print-patch-failures-in-json',
     'Emits a JSON structure with a list of patch files that failed to apply',
   )
-  .arguments('[build_config]')
+  .addArgument(createBuildConfigArgument())
   .action(applyPatches)
 
 program
@@ -88,24 +100,30 @@ program
     '--symlink_dir <symlink_dir>',
     'symlink that points to the actual build directory',
   )
-  .option(
-    '--target_os <target_os_type>',
-    'target OS type',
-    /^(host_os|ios|android)$/i,
+  .addOption(
+    new Option('--target_os <target_os_type>', 'target OS type').choices([
+      'host_os',
+      'ios',
+      'android',
+    ]),
   )
-  .option(
-    '--target_arch <target_arch>',
-    'target architecture',
-    /^(host_cpu|x64|arm64|x86)$/i,
+  .addOption(
+    new Option('--target_arch <target_arch>', 'target architecture').choices([
+      'host_cpu',
+      'x64',
+      'arm64',
+      'x86',
+    ]),
   )
-  .option(
-    '--target_environment <target_environment>',
-    'target environment (device, catalyst, simulator)',
-    /^(device|catalyst|simulator)$/i,
+  .addOption(
+    new Option(
+      '--target_environment <target_environment>',
+      'target environment',
+    ).choices(['device', 'catalyst', 'simulator']),
   )
-  .arguments('[build_config]')
-  .action(async (buildConfig = config.defaultBuildConfig, options = {}) => {
-    config.buildConfig = buildConfig
+  .addArgument(createBuildConfigArgument())
+  .action(async (buildConfig, options) => {
+    config.buildConfig = buildConfig || config.defaultBuildConfig
     if (options.target_os === 'host_os') {
       delete options.target_os
     }
@@ -118,6 +136,10 @@ program
     // ignore use_no_gn_gen when updating the symlink
     delete config.use_no_gn_gen
     const currentLink = options.symlink_dir
+    if (!currentLink) {
+      console.error('Symlink directory is required')
+      process.exit(1)
+    }
     if (
       !path.isAbsolute(currentLink)
       && !path.relative(currentLink, config.srcDir).startsWith('..')
@@ -147,10 +169,10 @@ program
     '--build_sparkle',
     'Build the Sparkle macOS update framework from source',
   )
-  .option(
-    '--channel <target_channel>',
-    'target channel to build',
-    /^(beta|dev|nightly|release)$/i,
+  .addOption(
+    new Option('--channel <target_channel>', 'target channel to build').choices(
+      ['beta', 'dev', 'nightly', 'release'],
+    ),
   )
   .option('--force_gn_gen', 'always run gn gen')
   .option(
@@ -231,7 +253,7 @@ program
     'PKCS11 provider configuration file path',
   )
   .option('--pkcs11-alias <alias>', 'PKCS11 key alias')
-  .arguments('[build_config]')
+  .addArgument(createBuildConfigArgument())
   .action(build)
 
 program
@@ -263,8 +285,9 @@ program
 program
   .command('start')
   .allowUnknownOption(true)
+  .allowExcessArguments(true)
   .option('-C <build_dir>', 'build config (out/Debug, out/Release')
-  .option('--v [log_level]', 'set log level to [log_level]', parseInteger, '0')
+  .option('--v [log_level]', 'set log level to [log_level]', parseInteger, 0)
   .option('--vmodule [modules]', 'verbose log from specific modules')
   .option(
     '--user_data_dir_name [base_name]',
@@ -277,21 +300,21 @@ program
     'disable loading the Brave Rewards extension',
   )
   .option('--disable_pdfjs_extension', 'disable loading the PDFJS extension')
-  .option(
-    '--ui_mode <ui_mode>',
-    'which built-in ui appearance mode to use',
-    /^(dark|light)$/i,
+  .addOption(
+    new Option(
+      '--ui_mode <ui_mode>',
+      'which built-in ui appearance mode to use',
+    ).choices(['dark', 'light']),
   )
   .option(
     '--show_component_extensions',
     'show component extensions in chrome://extensions',
   )
   .option('--enable_brave_update', 'enable brave update')
-  .option(
-    '--channel <target_channel>',
-    'target channel to start',
-    /^(beta|dev|nightly|release)$/i,
-    'release',
+  .addOption(
+    new Option('--channel <target_channel>', 'target channel to start').choices(
+      ['beta', 'dev', 'nightly', 'release'],
+    ),
   )
   .option('--official_build <official_build>', 'force official build settings')
   // See https://github.com/brave/brave-browser/wiki/Rewards#flags for more information
@@ -306,7 +329,7 @@ program
     '--output_path [pathname]',
     'use the Brave binary located at [pathname]',
   )
-  .arguments('[build_config]')
+  .addArgument(createBuildConfigArgument())
   .action(start.bind(null, parsedArgs.unknown))
 
 program
@@ -360,8 +383,9 @@ program
 program
   .command('test <suite>')
   .allowUnknownOption(true)
+  .allowExcessArguments(true)
   .option('-C <build_dir>', 'build config (out/Debug, out/Release')
-  .option('--v [log_level]', 'set log level to [log_level]', parseInteger, '0')
+  .option('--v [log_level]', 'set log level to [log_level]', parseInteger, 0)
   .option('--vmodule [modules]', 'verbose log from specific modules')
   .option('--filter <filter>', 'set test filter')
   .option(
@@ -383,7 +407,7 @@ program
     '--test_launcher_jobs <test_launcher_jobs>',
     'Number of jobs to launch',
     parseInteger,
-    '4',
+    4,
   )
   .option('--target_os <target_os>', 'target OS')
   .option('--target_arch <target_arch>', 'target architecture')
@@ -399,7 +423,7 @@ program
   .option(
     '--android_test_emulator_name <emulator_name',
     'set name of the Android emulator for tests',
-    'android_33_google_atd_x64',
+    'android_33_google_apis_x64',
   )
   .option(
     '--use_remoteexec [arg]',
@@ -427,7 +451,7 @@ program
     '26.2',
   ) // should match ios_deployment_target
   .option('--offline', 'use offline mode for RBE')
-  .arguments('[build_config]')
+  .addArgument(createBuildConfigArgument())
   .action(test.bind(null, parsedArgs.unknown))
 
 program.command('mass_rename').action(util.massRename)
@@ -445,6 +469,7 @@ program
 program
   .command('run_fuzzer <suite>')
   .allowUnknownOption(true)
+  .allowExcessArguments(true)
   .action(runFuzzer.bind(null, parsedArgs.unknown))
 
 program
@@ -452,15 +477,17 @@ program
   .option('--target_os <target_os>', 'target OS')
   .option('--target_arch <target_arch>', 'target architecture')
   .allowUnknownOption(true)
+  .allowExcessArguments(true)
   .description('Call npm run perf_tests -- --more-help for detailed help')
   .action(perfTests.runPerfTests.bind(null, parsedArgs.unknown))
 
 program
   .command('gen_gradle')
   .allowUnknownOption(true)
+  .allowExcessArguments(true)
   .option('-C <build_dir>', 'build config (out/Debug, out/Release)')
   .option('--target_arch <target_arch>', 'target architecture')
-  .arguments('[build_config]')
+  .addArgument(createBuildConfigArgument())
   .action(genGradle.bind(null, parsedArgs.unknown))
 
 program.command('docs').action(util.launchDocs)

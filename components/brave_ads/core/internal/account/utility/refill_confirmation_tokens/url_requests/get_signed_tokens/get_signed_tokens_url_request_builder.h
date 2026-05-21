@@ -21,14 +21,15 @@ class GetSignedTokensUrlRequestBuilder final
  public:
   GetSignedTokensUrlRequestBuilder(WalletInfo wallet, std::string nonce);
 
+  // UrlRequestBuilderInterface:
   mojom::UrlRequestInfoPtr Build() override;
 
  private:
   GURL BuildUrl() const;
 
-  WalletInfo wallet_;
+  const WalletInfo wallet_;
 
-  std::string nonce_;
+  const std::string nonce_;
 };
 
 }  // namespace brave_ads

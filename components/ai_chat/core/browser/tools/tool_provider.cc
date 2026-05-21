@@ -5,11 +5,20 @@
 
 #include "brave/components/ai_chat/core/browser/tools/tool_provider.h"
 
+#include <utility>
+
+#include "base/functional/callback.h"
+
 namespace ai_chat {
 
 ToolProvider::ToolProvider() = default;
 
 ToolProvider::~ToolProvider() = default;
+
+void ToolProvider::UpdateToolsForNewGenerationLoop(
+    base::OnceClosure on_updated) {
+  std::move(on_updated).Run();
+}
 
 bool ToolProvider::IsPausedByUser() {
   return false;

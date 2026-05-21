@@ -12,7 +12,9 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/span.h"
 #include "base/observer_list.h"
+#include "base/scoped_observation.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
@@ -20,6 +22,8 @@
 class GURL;
 
 namespace brave_ads {
+
+class AdsClient;
 
 class TabManager final : public AdsClientNotifierObserver {
  public:
@@ -52,11 +56,8 @@ class TabManager final : public AdsClientNotifierObserver {
   void NotifyTabDidLoad(const TabInfo& tab, int http_status_code);
   void NotifyDidOpenNewTab(const TabInfo& tab);
   void NotifyTextContentDidChange(int32_t tab_id,
-                                  const std::vector<GURL>& redirect_chain,
+                                  base::span<const GURL> redirect_chain,
                                   const std::string& text);
-  void NotifyHtmlContentDidChange(int32_t tab_id,
-                                  const std::vector<GURL>& redirect_chain,
-                                  const std::string& html);
   void NotifyDidCloseTab(int32_t tab_id);
   void NotifyTabDidStartPlayingMedia(int32_t tab_id);
   void NotifyTabDidStopPlayingMedia(int32_t tab_id);
@@ -65,9 +66,6 @@ class TabManager final : public AdsClientNotifierObserver {
   void OnNotifyTabTextContentDidChange(int32_t tab_id,
                                        const std::vector<GURL>& redirect_chain,
                                        const std::string& text) override;
-  void OnNotifyTabHtmlContentDidChange(int32_t tab_id,
-                                       const std::vector<GURL>& redirect_chain,
-                                       const std::string& html) override;
   void OnNotifyTabDidStartPlayingMedia(int32_t tab_id) override;
   void OnNotifyTabDidStopPlayingMedia(int32_t tab_id) override;
   void OnNotifyTabDidChange(int32_t tab_id,
@@ -80,12 +78,14 @@ class TabManager final : public AdsClientNotifierObserver {
 
   base::ObserverList<TabManagerObserver> observers_;
 
+  base::ScopedObservation<AdsClient, AdsClientNotifierObserver>
+      ads_client_observation_{this};
+
   std::optional<int32_t> visible_tab_id_;
 
   std::map</*tab_id*/ int32_t, TabInfo> tabs_;
 
   uint32_t last_text_content_hash_ = 0;
-  uint32_t last_html_content_hash_ = 0;
 };
 
 }  // namespace brave_ads

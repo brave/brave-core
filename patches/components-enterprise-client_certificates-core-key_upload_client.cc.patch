@@ -1,0 +1,12 @@
+diff --git a/components/enterprise/client_certificates/core/key_upload_client.cc b/components/enterprise/client_certificates/core/key_upload_client.cc
+index 3f63b1ccbecd60fbeadb03e212e5c5207d762528..ffe788d6d6cdc2bf2c6b164d7e4187a59121829f 100644
+--- a/components/enterprise/client_certificates/core/key_upload_client.cc
++++ b/components/enterprise/client_certificates/core/key_upload_client.cc
+@@ -51,6 +51,7 @@ BPKUR::KeyType AlgorithmToType(
+     case crypto::SignatureVerifier::RSA_PSS_SHA256:
+       return BPKUR::RSA_KEY;
+     case crypto::SignatureVerifier::ECDSA_SHA256:
++    case crypto::SignatureVerifier::ECDSA_SHA384:
+       return BPKUR::EC_KEY;
+   }
+ }

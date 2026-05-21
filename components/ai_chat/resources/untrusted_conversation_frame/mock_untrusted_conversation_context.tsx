@@ -12,7 +12,9 @@ import {
   createMockUntrustedConversationHandler,
   createMockUntrustedUIHandler,
   createMockParentUIFrame,
+  createMockUntrustedService,
   defaultConversationEntriesState,
+  defaultServiceState,
 } from './api/mock_interfaces'
 import {
   UntrustedConversationContext,
@@ -26,11 +28,13 @@ export interface MockContextProps {
   conversationHandler?: Partial<Mojom.UntrustedConversationHandlerInterface>
   uiHandler?: Partial<Mojom.UntrustedUIHandlerInterface>
   parentUIFrame?: Partial<Mojom.ParentUIFrameInterface>
+  service?: Partial<Mojom.UntrustedServiceInterface>
 
   // Initial state for data endpoints
   initialState?: {
     conversationEntriesState?: Partial<Mojom.ConversationEntriesState>
     conversationHistory?: Mojom.ConversationTurn[]
+    serviceState?: Partial<Mojom.ServiceState>
   }
 
   // Context-level overrides (for things computed in the provider hook)
@@ -84,6 +88,7 @@ const MockContext = React.forwardRef<MockContextRef, MockContextProps>(
       conversationHandler,
       uiHandler,
       parentUIFrame,
+      service,
       initialState = {},
       overrides,
       deps = [],
@@ -94,11 +99,13 @@ const MockContext = React.forwardRef<MockContextRef, MockContextProps>(
         createMockUntrustedConversationHandler(conversationHandler)
       const mockUIHandler = createMockUntrustedUIHandler(uiHandler)
       const mockParentUIFrame = createMockParentUIFrame(parentUIFrame)
+      const mockService = createMockUntrustedService(service)
 
       return createUntrustedConversationApi(
         mockConversationHandler,
         mockUIHandler,
         mockParentUIFrame,
+        mockService,
       )
     })
 
@@ -124,11 +131,19 @@ const MockContext = React.forwardRef<MockContextRef, MockContextProps>(
           initialState.conversationHistory,
         )
       }
+
+      if (initialState.serviceState) {
+        untrustedApi.api.serviceState.update({
+          ...defaultServiceState,
+          ...initialState.serviceState,
+        })
+      }
     }, [
       // eslint-disable-next-line react-hooks/exhaustive-deps
       ...deps,
       initialState.conversationEntriesState,
       initialState.conversationHistory,
+      initialState.serviceState,
       untrustedApi.api,
     ])
 

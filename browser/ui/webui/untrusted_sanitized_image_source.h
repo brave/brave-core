@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "chrome/browser/ui/webui/sanitized_image_source.h"
+#include "chrome/browser/ui/webui/sanitized_image/sanitized_image_source.h"
 #include "content/public/browser/web_contents.h"
 #include "url/gurl.h"
 

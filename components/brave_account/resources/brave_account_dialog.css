@@ -21,7 +21,7 @@
   align-items: center;
   display: flex;
   flex-direction: column;
-  padding: 0px 0px var(--logo-height);
+  padding: 0 0 var(--logo-height);
 }
 
 .navigation-buttons {
@@ -36,9 +36,9 @@
 }
 
 leo-button[size='tiny'] {
-  --leo-button-padding: 0px;
+  --leo-button-padding: 0;
   flex: none;
-  margin: var(--leo-spacing-l) var(--leo-spacing-l) 0px var(--leo-spacing-l);
+  margin: var(--leo-spacing-l) var(--leo-spacing-l) 0 var(--leo-spacing-l);
 }
 
 leo-icon {
@@ -59,14 +59,14 @@ leo-icon {
 }
 
 .body {
-  padding: 0px var(--leo-spacing-2xl) var(--leo-spacing-2xl)
+  padding: 0 var(--leo-spacing-2xl) var(--leo-spacing-2xl)
     var(--leo-spacing-2xl);
 }
 
 @media (min-width: 500px) {
   .body {
     box-sizing: border-box;
-    margin: 0px auto;
+    margin: 0 auto;
     width: 500px;
   }
 }
@@ -76,7 +76,7 @@ leo-icon {
   display: flex;
   flex-direction: column;
   gap: var(--leo-spacing-m);
-  margin: 0px 0px var(--leo-spacing-3xl);
+  margin: 0 0 var(--leo-spacing-3xl);
 }
 
 .title {
@@ -91,7 +91,7 @@ leo-icon {
   display: flex;
   flex-direction: column;
   gap: var(--leo-spacing-2xl);
-  margin: 0px 0px var(--leo-spacing-2xl);
+  margin: 0 0 var(--leo-spacing-2xl);
 }
 
 .action-buttons {
@@ -108,7 +108,7 @@ leo-icon {
 @media (min-width: 500px) {
   :host ::slotted([slot='footer']) {
     box-sizing: border-box;
-    margin: 0px auto;
+    margin: 0 auto;
     width: 500px;
   }
 }

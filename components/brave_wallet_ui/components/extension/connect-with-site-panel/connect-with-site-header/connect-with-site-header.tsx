@@ -26,6 +26,7 @@ import {
   TitleWrapper,
   SiteName,
   SiteURL,
+  SiteURLCentered,
   MessageBox,
   InfoIcon,
   BackButton,
@@ -88,33 +89,42 @@ export const ConnectWithSiteHeader = (props: Props) => {
           alignItems='flex-start'
         >
           {isReadyToConnect && (
-            <Row
-              justifyContent='center'
-              marginBottom={18}
+            <Column
+              width='100%'
+              margin='0px 0px 18px 0px'
+              gap='8px'
             >
-              <Tooltip
-                isAddress={true}
-                minWidth={120}
-                maxWidth={120}
-                text={address}
-              >
-                <AccountCircle orb={orb} />
-              </Tooltip>
-              <GradientLine>
-                <LinkIconCircle>
-                  <LinkIcon name='link-normal' />
-                </LinkIconCircle>
-              </GradientLine>
-              <Tooltip text={originInfo.eTldPlusOne}>
-                <FavIcon
-                  src={`chrome://favicon2?size=64&pageUrl=${encodeURIComponent(
-                    originInfo.originSpec,
-                  )}`}
-                  isReadyToConnect={isReadyToConnect}
+              <Row justifyContent='center'>
+                <Tooltip
+                  isAddress={true}
+                  minWidth={120}
+                  maxWidth={120}
+                  text={address}
+                >
+                  <AccountCircle orb={orb} />
+                </Tooltip>
+                <GradientLine>
+                  <LinkIconCircle>
+                    <LinkIcon name='link-normal' />
+                  </LinkIconCircle>
+                </GradientLine>
+                <Tooltip text={originInfo.eTldPlusOne}>
+                  <FavIcon
+                    src={`chrome://favicon2?size=64&pageUrl=${encodeURIComponent(
+                      originInfo.originSpec,
+                    )}`}
+                    isReadyToConnect={isReadyToConnect}
+                  />
+                  {isDAppVerified && <VerifiedIcon />}
+                </Tooltip>
+              </Row>
+              <SiteURLCentered>
+                <CreateSiteOrigin
+                  originSpec={originInfo.originSpec}
+                  eTldPlusOne={originInfo.eTldPlusOne}
                 />
-                {isDAppVerified && <VerifiedIcon />}
-              </Tooltip>
-            </Row>
+              </SiteURLCentered>
+            </Column>
           )}
 
           {!isReadyToConnect && (

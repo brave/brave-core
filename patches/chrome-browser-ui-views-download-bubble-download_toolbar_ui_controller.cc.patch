@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/ui/views/download/bubble/download_toolbar_ui_controller.cc b/chrome/browser/ui/views/download/bubble/download_toolbar_ui_controller.cc
+index 2a37f9974008e4f2e59c53619ca5142daea6bbe9..bb6a9d51a3f9d61f6d82d3eeeede84ef312b0d8f 100644
+--- a/chrome/browser/ui/views/download/bubble/download_toolbar_ui_controller.cc
++++ b/chrome/browser/ui/views/download/bubble/download_toolbar_ui_controller.cc
+@@ -674,6 +674,7 @@ void DownloadToolbarUIController::UpdateIcon() {
+   }
+   action_item_->SetProperty(kActionItemUnderlineIndicatorKey, is_icon_active);
+ 
++  icon_color = GetIconColor(state_, active_, browser_view_->GetColorProvider());
+   action_item_->SetImage(ui::ImageModel::FromVectorIcon(*new_icon, icon_color));
+ 
+   // Update the toolbar button's tooltip.
+@@ -723,6 +724,7 @@ void DownloadToolbarUIController::UpdateIcon() {
+     return;
+   }
+   progress_ring->SetDownloading(progress_info_.progress_percentage);
++  UpdateIcon_BraveImpl(browser_view_, action_item_);
+ }
+ 
+ void DownloadToolbarUIController::OpenPrimaryDialog() {

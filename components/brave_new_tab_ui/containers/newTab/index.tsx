@@ -14,7 +14,7 @@ import {
   BraveTalkWidget as BraveTalk, Clock, EditTopSite, OverrideReadabilityColor, RewardsWidget as Rewards, SearchPromotion, VPNWidget
 } from '../../components/default'
 import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo'
-import BraveNews, { GetDisplayAdContent } from '../../components/default/braveNews'
+import BraveNews from '../../components/default/braveNews'
 import FooterInfo from '../../components/default/footer/footer'
 import * as Page from '../../components/default/page'
 import TopSitesGrid from './gridSites'
@@ -60,7 +60,6 @@ interface Props {
   todayData: BraveNewsState
   braveVPNData: BraveVPNState
   actions: NewTabActions
-  getBraveNewsDisplayAd: GetDisplayAdContent
   saveShowBackgroundImage: (value: boolean) => void
   saveShowRewards: (value: boolean) => void
   saveShowBraveTalk: (value: boolean) => void
@@ -379,10 +378,6 @@ class NewTabPage extends React.Component<Props, State> {
     )
   }
 
-  startRewards = () => {
-    chrome.braveRewards.openRewardsPanel()
-  }
-
   dismissBrandedWallpaperNotification = (isUserAction: boolean) => {
     this.props.actions.dismissBrandedWallpaperNotification(isUserAction)
   }
@@ -576,7 +571,7 @@ class NewTabPage extends React.Component<Props, State> {
             </style.rewardsMenuIcon>
           )
         },
-        onClick: () => { chrome.braveRewards.openRewardsPanel() }
+        onClick: () => {}
       },
       {
         label: 'rewardsSettings',
@@ -590,14 +585,6 @@ class NewTabPage extends React.Component<Props, State> {
         onClick: () => { window.open('chrome://rewards', '_blank', 'noopener') }
       }
     ]
-
-    const onSelfCustodyInviteDismissed = () => {
-      chrome.braveRewards.dismissSelfCustodyInvite()
-    }
-
-    const onTosUpdateAccepted = () => {
-      chrome.braveRewards.acceptTermsOfServiceUpdate()
-    }
 
     return (
       <Rewards
@@ -616,8 +603,8 @@ class NewTabPage extends React.Component<Props, State> {
         onShowContent={this.setForegroundStackWidget.bind(this, 'rewards')}
         onDismissNotification={this.dismissNotification}
         customMenuItems={customMenuItems}
-        onSelfCustodyInviteDismissed={onSelfCustodyInviteDismissed}
-        onTermsOfServiceUpdateAccepted={onTosUpdateAccepted}
+        onSelfCustodyInviteDismissed={() => {}}
+        onTermsOfServiceUpdateAccepted={() => {}}
       />
     )
   }
@@ -849,7 +836,6 @@ class NewTabPage extends React.Component<Props, State> {
         <BraveNews
           feed={this.props.todayData.feed}
           articleToScrollTo={this.props.todayData.articleScrollTo}
-          displayAdToScrollTo={this.props.todayData.displayAdToScrollTo}
           displayedPageCount={this.props.todayData.currentPageIndex}
           publishers={this.props.todayData.publishers}
           isFetching={this.props.todayData.isFetching === true}
@@ -866,9 +852,6 @@ class NewTabPage extends React.Component<Props, State> {
           onPromotedItemViewed={this.props.actions.today.promotedItemViewed}
           onSetPublisherPref={this.props.actions.today.setPublisherPref}
           onCheckForUpdate={this.props.actions.today.checkForUpdate}
-          onViewedDisplayAd={this.props.actions.today.displayAdViewed}
-          onVisitDisplayAd={this.props.actions.today.visitDisplayAd}
-          getDisplayAd={this.props.getBraveNewsDisplayAd}
         />
         }
         <Settings
@@ -900,7 +883,7 @@ class NewTabPage extends React.Component<Props, State> {
           cardsHidden={this.allWidgetsHidden()}
           toggleCards={this.props.saveSetAllStackWidgets}
           newTabData={this.props.newTabData}
-          onEnableRewards={this.startRewards}
+          onEnableRewards={() => {}}
         />
         {
           showEditTopSite

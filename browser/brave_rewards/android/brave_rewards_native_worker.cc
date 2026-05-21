@@ -43,15 +43,16 @@
 namespace chrome {
 namespace android {
 
-BraveRewardsNativeWorker::BraveRewardsNativeWorker(JNIEnv* env,
-    const base::android::JavaRef<jobject>& obj):
-    weak_java_brave_rewards_native_worker_(env, obj),
-    weak_factory_(this) {
+BraveRewardsNativeWorker::BraveRewardsNativeWorker(
+    JNIEnv* env,
+    const base::android::JavaRef<jobject>& obj,
+    Profile& profile)
+    : weak_java_brave_rewards_native_worker_(env, obj), weak_factory_(this) {
   Java_BraveRewardsNativeWorker_setNativePtr(env, obj,
     reinterpret_cast<intptr_t>(this));
 
   brave_rewards_service_ = brave_rewards::RewardsServiceFactory::GetForProfile(
-      ProfileManager::GetActiveUserProfile()->GetOriginalProfile());
+      profile.GetOriginalProfile());
   if (brave_rewards_service_) {
     rewards_service_observation_.Observe(brave_rewards_service_);
 
@@ -70,14 +71,21 @@ void BraveRewardsNativeWorker::Destroy(JNIEnv* env) {
 }
 
 bool BraveRewardsNativeWorker::IsSupported(JNIEnv* env) {
-  return brave_rewards::IsSupported(
-      ProfileManager::GetActiveUserProfile()->GetOriginalProfile()->GetPrefs(),
-      brave_rewards::IsSupportedOptions::kNone);
+  Profile* profile = ProfileManager::GetActiveUserProfile();
+  if (!profile) {
+    return false;
+  }
+  return brave_rewards::IsSupported(profile->GetOriginalProfile()->GetPrefs(),
+                                    brave_rewards::IsSupportedOptions::kNone);
 }
 
 bool BraveRewardsNativeWorker::IsSupportedSkipRegionCheck(JNIEnv* env) {
+  Profile* profile = ProfileManager::GetActiveUserProfile();
+  if (!profile) {
+    return false;
+  }
   return brave_rewards::IsSupported(
-      ProfileManager::GetActiveUserProfile()->GetOriginalProfile()->GetPrefs(),
+      profile->GetOriginalProfile()->GetPrefs(),
       brave_rewards::IsSupportedOptions::kSkipRegionCheck);
 }
 
@@ -98,10 +106,12 @@ std::string BraveRewardsNativeWorker::StringifyResult(
 }
 
 bool BraveRewardsNativeWorker::IsRewardsEnabled(JNIEnv* env) {
-  return ProfileManager::GetActiveUserProfile()
-      ->GetOriginalProfile()
-      ->GetPrefs()
-      ->GetBoolean(brave_rewards::prefs::kEnabled);
+  Profile* profile = ProfileManager::GetActiveUserProfile();
+  if (!profile) {
+    return false;
+  }
+  return profile->GetOriginalProfile()->GetPrefs()->GetBoolean(
+      brave_rewards::prefs::kEnabled);
 }
 
 bool BraveRewardsNativeWorker::ShouldShowSelfCustodyInvite(JNIEnv* env) {
@@ -943,7 +953,16 @@ void BraveRewardsNativeWorker::RecordPanelTrigger(JNIEnv* env) {
 static void JNI_BraveRewardsNativeWorker_Init(
     JNIEnv* env,
     const base::android::JavaRef<jobject>& jcaller) {
-  new BraveRewardsNativeWorker(env, jcaller);
+  // Profile may be null when the process is started by AlarmManager for a
+  // retention notification before the browser is fully initialized. In this
+  // case we skip creating the native object, which leaves the Java native
+  // pointer at 0 and causes getInstance() to reset the singleton so it can
+  // be re-created on the next call.
+  Profile* profile = ProfileManager::GetActiveUserProfile();
+  if (!profile) {
+    return;
+  }
+  new BraveRewardsNativeWorker(env, jcaller, *profile);
 }
 
 }  // namespace android

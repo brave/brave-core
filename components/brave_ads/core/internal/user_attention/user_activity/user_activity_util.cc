@@ -29,7 +29,6 @@ base::TimeDelta GetTimeSinceLastUserActivityEvent(
     UserActivityEventType event_type) {
   const auto iter = std::ranges::find(base::Reversed(events), event_type,
                                       &UserActivityEventInfo::type);
-
   if (iter == events.crend()) {
     return {};
   }

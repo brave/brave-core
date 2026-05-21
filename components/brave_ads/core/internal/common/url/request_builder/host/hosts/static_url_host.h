@@ -14,6 +14,7 @@ namespace brave_ads {
 
 class StaticUrlHost final : public UrlHostInterface {
  public:
+  // UrlHostInterface:
   std::string Get() const override;
 };
 

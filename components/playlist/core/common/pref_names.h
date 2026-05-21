@@ -6,6 +6,10 @@
 #ifndef BRAVE_COMPONENTS_PLAYLIST_CORE_COMMON_PREF_NAMES_H_
 #define BRAVE_COMPONENTS_PLAYLIST_CORE_COMMON_PREF_NAMES_H_
 
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
+
+static_assert(BUILDFLAG(ENABLE_PLAYLIST));
+
 namespace playlist {
 
 // A boolean preference indicates whether playlist feature is enabled or not by

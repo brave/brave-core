@@ -100,11 +100,8 @@ public class NTPDataSource {
       && !privateBrowsingManager.isPrivateBrowsing
   }
 
-  func getSponsoredMediaBackground() -> NTPWallpaper? {
+  func getSponsoredMediaBackground(for newTabPageAd: NewTabPageAd) -> NTPWallpaper? {
     guard let sponsoredImageData = service.sponsoredImageData
-    else { return nil }
-
-    guard let newTabPageAd = rewards?.ads.maybeGetPrefetchedNewTabPageAd()
     else { return nil }
 
     let isSponsoredVideoAllowed =
@@ -125,10 +122,6 @@ public class NTPDataSource {
       }
     }
 
-    rewards?.ads.onFailedToPrefetchNewTabPageAd(
-      placementId: newTabPageAd.placementID,
-      creativeInstanceId: newTabPageAd.creativeInstanceID
-    )
     return nil
   }
 
@@ -174,25 +167,26 @@ public class NTPDataSource {
     return backgroundSet[safe: backgroundIndex]
   }
 
-  func newBackground() -> NTPWallpaper? {
-    if !Preferences.NewTabPage.backgroundImages.value { return nil }
-
-    var background: NTPWallpaper? = nil
-
-    if shouldAttemptSponsoredMedia() {
-      background = getSponsoredMediaBackground()
-    }
-
-    if background == nil {
-      background = getImageBackground()
-    }
+  func newBackground(completion: @escaping (NTPWallpaper?) -> Void) {
+    if !Preferences.NewTabPage.backgroundImages.value { return completion(nil) }
 
     // Force back to `0` if at end
     Preferences.NewTabPage.backgroundRotationCounter.value %= service.countToBrandedWallpaper
     // Increment regardless, this is a counter, not an index, so smallest should be `1`
     Preferences.NewTabPage.backgroundRotationCounter.value += 1
 
-    return background
+    if shouldAttemptSponsoredMedia(), let rewards {
+      rewards.ads.maybeServeNewTabPageAd { [weak self] newTabPageAd in
+        guard let self else { return completion(nil) }
+        if let newTabPageAd, let background = getSponsoredMediaBackground(for: newTabPageAd) {
+          completion(background)
+        } else {
+          completion(getImageBackground())
+        }
+      }
+    } else {
+      completion(getImageBackground())
+    }
   }
 }
 

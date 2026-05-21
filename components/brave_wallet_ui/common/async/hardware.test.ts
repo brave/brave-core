@@ -334,6 +334,7 @@ const signTransactionWithTrezor = (args: {
   mockSignature?: BraveWallet.EthereumSignatureVRS
   mockHardwareOperationError?: HardwareOperationError
   processHardwareSignatureResult?: boolean
+  nonce?: string
 }) => {
   const txInfo = getMockedTransactionInfo()
   const expectedPath = 'path'
@@ -346,7 +347,7 @@ const signTransactionWithTrezor = (args: {
   const apiProxy = getMockedProxyServices({
     expectedChainId: txInfo.chainId,
     expectedId: txInfo.id,
-    nonce: '0x03',
+    nonce: args.nonce ?? '0x03',
     expectedEthereumSignatureVRS: args.mockSignature,
     processHardwareSignatureResult: args.processHardwareSignatureResult,
   })
@@ -401,19 +402,11 @@ test('sign Ledger transaction, approved, processed', () => {
   ).resolves.toStrictEqual({ success: true })
 })
 
-test('sign Trezor transaction, approve failed', () => {
-  const txInfo = getMockedTransactionInfo()
-  const apiProxy = getMockedProxyServices({
-    expectedChainId: txInfo.chainId,
-    expectedId: txInfo.id,
-    nonce: '',
-  })
+test('sign Trezor transaction, approve failed', async () => {
   return expect(
-    signTrezorTransaction(
-      apiProxy as unknown as WalletApiProxy,
-      'path',
-      txInfo,
-    ),
+    signTransactionWithTrezor({
+      nonce: '',
+    }),
   ).resolves.toStrictEqual(
     hardwareTransactionErrorResponse('braveWalletApproveTransactionError'),
   )

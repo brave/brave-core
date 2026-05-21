@@ -17,7 +17,7 @@ deps = {
   },
   "vendor/bat-native-tweetnacl": "https://github.com/brave-intl/bat-native-tweetnacl.git@8b424ccf29957fe01c88c36076fd32006a357887",
   "vendor/gn-project-generators": "https://github.com/brave/gn-project-generators.git@b76e14b162aa0ce40f11920ec94bfc12da29e5d0",
-  "vendor/web-discovery-project": "https://github.com/brave/web-discovery-project@20d0d484e5bdbac1f1f4eca00422b4b5b2cf9fae",
+  "vendor/web-discovery-project": "https://github.com/brave/web-discovery-project@b36426be065fbba19b3a5231b97b436e9c980b60",
   "third_party/bip39wally-core-native": "https://github.com/brave-intl/bat-native-bip39wally-core.git@547a7810333d821e29b8f55126aba031aa0d5fcd",
   "third_party/ethash/src": "https://github.com/chfast/ethash.git@e4a15c3d76dc09392c7efd3e30d84ee3b871e9ce",
   "third_party/bitcoin-core/src": "https://github.com/bitcoin/bitcoin.git@8105bce5b384c72cf08b25b7c5343622754e7337", # v25.0
@@ -127,6 +127,14 @@ hooks = [
     'action': ['vpython3', 'build/download_dep.py',
                'brave-vpn-wireguard-dlls/brave-vpn-wireguard-tunnel-dlls-v0.5.3.zip',
                '//brave/third_party/brave-vpn-wireguard-tunnel-dlls'],
+  },
+  {
+    'name': 'download_wintun',
+    'pattern': '.',
+    'condition': 'checkout_win',
+    'action': ['vpython3', 'build/win/download_wintun.py',
+               'wintun/wintun-0.14.1.zip', '//brave/third_party/wintun',
+               '07c256185d6ee3652e09fa55c0b673e2624b565e02c4b9091c79ca7d2f24ef51'],
   },
   {
     # Install Web Discovery Project dependencies for Windows, Linux, and macOS

@@ -6,6 +6,8 @@
 import * as React from 'react'
 import * as crypto from 'crypto'
 import { assert, assertNotReached } from 'chrome://resources/js/assert.js'
+import { showAlert } from '@brave/leo/react/alertCenter'
+import { PluralStringProxyImpl } from 'chrome://resources/js/plural_string_proxy.js'
 
 // utils
 import { getLocale } from '../../../../common/locale'
@@ -188,6 +190,7 @@ export const HardwareWalletConnect = ({
     React.useState<boolean>(false)
   const hideAuthorizeDevice = () => setShowAuthorizeDevice(false)
   const [totalNumberOfAccounts, setTotalNumberOfAccounts] = React.useState(0)
+  const [deviceName, setDeviceName] = React.useState<string>('')
 
   const currentHardwareImportScheme: HardwareImportScheme =
     findHardwareImportScheme(currentDerivationScheme)
@@ -267,6 +270,7 @@ export const HardwareWalletConnect = ({
       }
       setIsLoadingAccounts(false)
       setShowAccountsList(result.success)
+      setDeviceName(result.success ? result.deviceName : '')
 
       if (result.success) {
         setAccounts((prev) =>
@@ -310,11 +314,27 @@ export const HardwareWalletConnect = ({
         keyringId: currentHardwareImportScheme.keyringId,
       }))
 
+    if (hwAccounts.length === 0) {
+      return
+    }
+
     try {
       await importHardwareAccounts({
         coin: currentHardwareImportScheme.coin,
         accounts: hwAccounts,
       }).unwrap()
+
+      const successMessage =
+        await PluralStringProxyImpl.getInstance().getPluralString(
+          'braveWalletHardwareWalletAccountConnectedSuccessfully',
+          hwAccounts.length,
+        )
+
+      showAlert({
+        type: 'success',
+        content: successMessage,
+        actions: [],
+      })
       onSuccess()
     } catch (error) {
       console.log(error)
@@ -394,6 +414,7 @@ export const HardwareWalletConnect = ({
     return (
       <HardwareWalletAccountsList
         currentHardwareImportScheme={currentHardwareImportScheme}
+        deviceName={deviceName}
         supportedSchemes={supportedSchemes}
         setHardwareImportScheme={setHardwareImportScheme}
         accounts={accounts}

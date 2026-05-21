@@ -34,7 +34,10 @@ export function MaybeAdBlockOnlyNotice() {
         <div>{getString('BRAVE_SHIELDS_AD_BLOCK_ONLY_MODE_ENABLE_TITLE')}</div>
         <p>{getString('BRAVE_SHIELDS_AD_BLOCK_ONLY_MODE_ENABLE_DESC')}</p>
       </div>
-      <OpenTabLink url='chrome://settings/shields'>
+      <OpenTabLink
+        url='chrome://settings/shields'
+        aria-label={getString('BRAVE_SHIELDS_OPEN_SETTINGS')}
+      >
         <Icon name='launch' />
       </OpenTabLink>
     </div>

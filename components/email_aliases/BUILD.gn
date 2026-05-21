@@ -4,8 +4,11 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/build/buildflag_header_with_env_config.gni")
+import("//brave/components/email_aliases/buildflags/buildflags.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 import("//tools/json_schema_compiler/json_schema_api.gni")
+
+assert(enable_email_aliases)
 
 mojom_component("mojom") {
   output_prefix = "email_aliases_mojom"
@@ -24,10 +27,19 @@ generated_types("email_aliases_api_types") {
   root_namespace = "email_aliases"
 }
 
+source_set("pref_names") {
+  sources = [ "pref_names.h" ]
+}
+
 static_library("features") {
   sources = [
     "features.cc",
     "features.h",
+  ]
+
+  deps = [
+    ":pref_names",
+    "//components/prefs",
   ]
 
   public_deps = [ "//base" ]
@@ -42,14 +54,15 @@ static_library("service") {
     "email_aliases_notes.h",
     "email_aliases_service.cc",
     "email_aliases_service.h",
-    "pref_names.h",
   ]
   deps = [
     ":email_aliases_api_types",
     ":mojom",
+    ":pref_names",
     "//base",
     "//brave/brave_domains",
     "//brave/components/brave_account",
+    "//brave/components/brave_account:internal",
     "//brave/components/brave_account/endpoint_client",
     "//brave/components/brave_account/mojom",
     "//brave/components/constants",
@@ -74,10 +87,14 @@ source_set("test_utils") {
   ]
 
   deps = [
+    ":email_aliases_api_types",
     ":service",
     "//base/test:test_support",
+    "//brave/components/brave_account/endpoint_client",
     "//brave/components/email_aliases:mojom",
     "//mojo/public/cpp/bindings",
+    "//testing/gtest",
+    "//url",
   ]
 }
 
@@ -89,6 +106,7 @@ source_set("unit_tests") {
   ]
   deps = [
     ":features",
+    ":pref_names",
     ":service",
     ":test_utils",
     "//base/test:test_support",

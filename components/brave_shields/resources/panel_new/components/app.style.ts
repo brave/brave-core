@@ -24,6 +24,7 @@ style.passthrough.css`
   & {
     font: ${font.default.regular};
     color: ${color.text.primary};
+    color-scheme: light dark;
   }
 
   p {
@@ -91,8 +92,13 @@ style.passthrough.css`
     > .scrollable {
       overflow-y: auto;
       flex: 1 1 auto;
+
+      /* Remove the gap between the scrollable area and siblings */
       margin-top: -8px;
-      margin-bottom: -8px;
+
+      + * {
+        margin-top: -8px;
+      }
     }
   }
 
@@ -100,6 +106,7 @@ style.passthrough.css`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    unicode-bidi: isolate;
 
     &:dir(ltr) {
       direction: rtl;

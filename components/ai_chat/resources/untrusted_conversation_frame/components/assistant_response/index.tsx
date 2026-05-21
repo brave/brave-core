@@ -4,9 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import ProgressRing from '@brave/leo/react/progressRing'
-import Icon from '@brave/leo/react/icon'
-import { getLocale, formatLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import MarkdownRenderer from '../markdown_renderer'
@@ -33,52 +30,6 @@ interface BaseProps {
   // Only these urls should be rendered as links
   allowedLinks: string[]
   isLeoModel: boolean
-}
-
-function SearchSummary(props: { searchQueries: string[] }) {
-  const context = useUntrustedConversationContext()
-
-  const handleOpenSearchQuery = React.useCallback(
-    (e: React.MouseEvent, query: string) => {
-      e.preventDefault()
-      context.uiHandler?.openSearchURL(query)
-    },
-    [],
-  )
-
-  const handleLearnMore = () => {
-    context.uiHandler?.openLearnMoreAboutBraveSearchWithLeo()
-  }
-
-  const message = formatLocale(S.CHAT_UI_SEARCH_QUERIES, {
-    $1: props.searchQueries.map((query, i, a) => (
-      <React.Fragment key={i}>
-        "
-        <button
-          className={styles.searchQueryLink}
-          onClick={(e) => handleOpenSearchQuery(e, query)}
-        >
-          {query}
-        </button>
-        "{i < a.length - 1 ? ', ' : null}
-      </React.Fragment>
-    )),
-  })
-
-  return (
-    <div className={styles.searchSummary}>
-      <Icon name='brave-icon-search-color' />
-      <span data-test-id='search-summary'>
-        {message}{' '}
-        <button
-          className={styles.searchLearnMoreLink}
-          onClick={handleLearnMore}
-        >
-          {getLocale(S.CHAT_UI_LEARN_MORE)}
-        </button>
-      </span>
-    </div>
-  )
 }
 
 function AssistantEvent(
@@ -118,18 +69,7 @@ function AssistantEvent(
       />
     )
   }
-  if (
-    props.event.searchStatusEvent
-    && props.isEntryInProgress
-    && !props.hasCompletionStarted
-  ) {
-    return (
-      <div className={styles.actionInProgress}>
-        <ProgressRing />
-        Improving answer with Brave Search…
-      </div>
-    )
-  }
+
   if (props.event.toolUseEvent) {
     if (props.event.toolUseEvent.toolName === Mojom.MEMORY_STORAGE_TOOL_NAME) {
       return <MemoryToolEvent toolUseEvent={props.event.toolUseEvent} />
@@ -142,14 +82,6 @@ function AssistantEvent(
       />
     )
   }
-
-  // TODO(petemill): Consider displaying in-progress queries if the API
-  // timing improves (or worsens for the completion events).
-  // if (event.searchQueriesEvent && props.isEntryInProgress) {
-  //   return (<>
-  //     {event.searchQueriesEvent.searchQueries.map(query => <div className={styles.searchQuery}>Searching for <span className={styles.searchLink}><Icon name="brave-icon-search-color" /><Link href='#'>{query}</Link></span></div>)}
-  //   </>)
-  // }
 
   // Unknown events should be ignored
   return null
@@ -169,9 +101,6 @@ export default function AssistantResponse(props: AssistantResponseProps) {
   const allRichResults = props.events.flatMap(
     (event) => event.sourcesEvent?.richResults?.filter((r) => !!r) ?? [],
   )
-  const allSearchQueries = props.events.flatMap(
-    (event) => event.searchQueriesEvent?.searchQueries ?? [],
-  )
 
   const deepResearch = React.useMemo(
     () => extractDeepResearchEvents(props.events),
@@ -184,53 +113,54 @@ export default function AssistantResponse(props: AssistantResponseProps) {
 
   return (
     <AssistantResponseContextProvider events={props.events}>
-      {allRichResults.map((r) => (
-        <RichSearchWidget
-          key={r}
-          jsonData={r}
-        />
-      ))}
+      <div className={styles.assistantResponse}>
+        {allRichResults.map((r) => (
+          <RichSearchWidget
+            key={r}
+            jsonData={r}
+          />
+        ))}
 
-      {props.events?.map((event, i) => (
-        <AssistantEvent
-          key={i}
-          event={event}
-          hasCompletionStarted={hasCompletionStarted}
-          isEntryInProgress={props.isEntryInProgress}
-          isEntryInteractivityAllowed={props.isEntryInteractivityAllowed}
-          allowedLinks={props.allowedLinks}
-          isLeoModel={props.isLeoModel}
-        />
-      ))}
+        {props.events?.map((event, i) => (
+          <AssistantEvent
+            key={i}
+            event={event}
+            hasCompletionStarted={hasCompletionStarted}
+            isEntryInProgress={props.isEntryInProgress}
+            isEntryInteractivityAllowed={props.isEntryInteractivityAllowed}
+            allowedLinks={props.allowedLinks}
+            isLeoModel={props.isLeoModel}
+          />
+        ))}
 
-      {/* Render deep research progress while research is active.
+        {/* Render deep research progress while research is active.
           Hide once the synthesis answer starts streaming in. Keep visible
           during the synthesis phase (after completeEvent but before the
           final completionEvent arrives), ignoring any pre-tool completion
           text the LLM may have emitted before calling deep_research. */}
-      {deepResearch.hasDeepResearchEvents
-        && props.isEntryInProgress
-        && !deepResearch.hasSynthesisCompletion && (
-          <DeepResearchEvent
-            deepResearch={deepResearch}
-            isActive={props.isEntryInProgress}
-          />
-        )}
+        {deepResearch.hasDeepResearchEvents
+          && props.isEntryInProgress
+          && !deepResearch.hasSynthesisCompletion && (
+            <DeepResearchEvent
+              deepResearch={deepResearch}
+              isActive={props.isEntryInProgress}
+            />
+          )}
 
-      {!props.isEntryInProgress && allSources.length > 0 && (
-        <WebSourcesEvent sources={allSources} />
-      )}
-      {props.toolArtifacts
-        ?.filter((artifact) => artifact.type === Mojom.LINE_CHART_ARTIFACT_TYPE)
-        .map((artifact, i) => (
-          <Chart
-            key={i}
-            artifact={artifact}
-          />
-        ))}
-      {!props.isEntryInProgress && allSearchQueries.length > 0 && (
-        <SearchSummary searchQueries={allSearchQueries} />
-      )}
+        {!props.isEntryInProgress && allSources.length > 0 && (
+          <WebSourcesEvent sources={allSources} />
+        )}
+        {props.toolArtifacts
+          ?.filter(
+            (artifact) => artifact.type === Mojom.LINE_CHART_ARTIFACT_TYPE,
+          )
+          .map((artifact, i) => (
+            <Chart
+              key={i}
+              artifact={artifact}
+            />
+          ))}
+      </div>
     </AssistantResponseContextProvider>
   )
 }

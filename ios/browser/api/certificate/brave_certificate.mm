@@ -112,8 +112,8 @@
   _issuerName = [[BraveCertificateRDNSequence alloc]
       initWithBERName:extended_cert_->tbs().issuer_tlv
              uniqueId:issuer_unique_id];
-  _serialNumber = base::SysUTF8ToNSString(base::HexEncode(
-      serial_number_string.data(), serial_number_string.size()));
+  _serialNumber =
+      base::SysUTF8ToNSString(base::HexEncode(serial_number_string));
   _version = static_cast<std::int32_t>(extended_cert_->tbs().version) +
              1;  // version + 1
   _signature = [[BraveCertificateSignature alloc]

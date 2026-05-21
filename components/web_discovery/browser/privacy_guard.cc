@@ -170,7 +170,7 @@ GURL GeneratePrivateSearchURL(const GURL& original_url,
                               const std::string& query,
                               const PatternsURLDetails& matching_url_details) {
   url::RawCanonOutputT<char> query_encoded;
-  url::EncodeURIComponent(query, &query_encoded);
+  url::EncodeUriComponent(query, &query_encoded);
   std::string query_encoded_str(query_encoded.view());
   base::ReplaceSubstringsAfterOffset(&query_encoded_str, 0, "%20", "+");
 

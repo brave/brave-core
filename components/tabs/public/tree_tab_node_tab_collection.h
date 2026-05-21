@@ -72,6 +72,14 @@ class TreeTabNodeTabCollection : public tabs::TabCollection {
       base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_remove,
       base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_move);
 
+  // Overload that wraps a TabGroupTabCollection as the current value of this
+  // tree node. Used when creating a tab group in tree tab mode.
+  TreeTabNodeTabCollection(
+      const tree_tab::TreeTabNodeId& tree_tab_node_id,
+      std::unique_ptr<tabs::TabGroupTabCollection> current_collection,
+      base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_remove,
+      base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_move);
+
   ~TreeTabNodeTabCollection() override;
 
   TreeTabNode& node() { return *node_; }
@@ -102,6 +110,8 @@ class TreeTabNodeTabCollection : public tabs::TabCollection {
 
   // TabCollection:
   void OnReparented(TabCollection* new_parent) override;
+  [[nodiscard]] std::unique_ptr<TabCollection> MaybeRemoveCollection(
+      TabCollection* collection) override;
 
   CurrentValueType current_value_type() const { return current_value_type_; }
 

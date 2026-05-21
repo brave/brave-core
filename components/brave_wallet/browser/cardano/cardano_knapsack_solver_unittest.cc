@@ -39,15 +39,9 @@ class CardanoKnapsackSolverUnitTest : public testing::Test {
 
  protected:
   TxBuilderParms MakeTxBuilderParams(uint64_t amount) {
-    TxBuilderParms builder_params;
+    TxBuilderParms builder_params(GetSendToAddress(), GetChangeAddress());
     builder_params.amount = amount;
     builder_params.sending_max_amount = false;
-    builder_params.send_to_address = *CardanoAddress::FromString(
-        keyring_
-            .GetAddress(
-                1, mojom::CardanoKeyId(mojom::CardanoKeyRole::kExternal, 123))
-            ->address_string);
-    builder_params.change_address = GetChangeAddress();
     builder_params.epoch_parameters = latest_epoch_parameters();
     builder_params.invalid_after = 12345;
 
@@ -68,8 +62,7 @@ class CardanoKnapsackSolverUnitTest : public testing::Test {
                                           mojom::CardanoKeyRole::kExternal, 0))
                        ->address_string;
 
-    CardanoTransaction::TxInput tx_input;
-    tx_input.utxo_address = *CardanoAddress::FromString(address);
+    CardanoTransaction::TxInput tx_input(*CardanoAddress::FromString(address));
     tx_input.utxo_outpoint.txid =
         crypto::hash::Sha256(base::byte_span_from_ref(id));
     tx_input.utxo_outpoint.index = tx_input.utxo_outpoint.txid[0];
@@ -89,6 +82,14 @@ class CardanoKnapsackSolverUnitTest : public testing::Test {
         .coins_per_utxo_size = coins_per_utxo_size()};
   }
   uint32_t dust_change_threshold() const { return 969750; }
+
+  CardanoAddress GetSendToAddress() {
+    return *CardanoAddress::FromString(
+        keyring_
+            .GetAddress(
+                1, mojom::CardanoKeyId(mojom::CardanoKeyRole::kExternal, 123))
+            ->address_string);
+  }
 
   CardanoAddress GetChangeAddress() {
     return *CardanoAddress::FromString(

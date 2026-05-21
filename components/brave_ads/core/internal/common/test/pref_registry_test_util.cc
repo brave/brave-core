@@ -60,14 +60,13 @@ void RegisterProfilePrefs() {
   RegisterProfileListPref(prefs::kSaveAds);
   RegisterProfileListPref(prefs::kMarkedAsInappropriate);
 
-  RegisterProfileBooleanPref(prefs::kHasMigratedState, true);
   RegisterProfileBooleanPref(prefs::kHasMigratedClientState, true);
-  RegisterProfileBooleanPref(prefs::kHasMigratedConfirmationState, true);
 
   RegisterProfileStringPref(prefs::kBrowserVersionNumber, "");
 
   // Rewards prefs.
   RegisterProfileBooleanPref(brave_rewards::prefs::kEnabled, true);
+  RegisterProfileBooleanPref(brave_rewards::prefs::kDisabledByPolicy, false);
   RegisterProfileStringPref(brave_rewards::prefs::kExternalWalletType,
                             "connected");
 

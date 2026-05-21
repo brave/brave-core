@@ -48,15 +48,14 @@ const createTransport = (
   Object.defineProperty(iframe.contentWindow, 'origin', {
     value: targetUrl,
   })
-  const transport = new TrezorBridgeTransport(targetUrl)
-  transport['bridge'] = iframe
-  return transport
+  return new TrezorBridgeTransport(targetUrl, iframe)
 }
 
 test('constructor', () => {
-  const transport = new TrezorBridgeTransport(kTrezorBridgeUrl)
+  const iframe = document.createElement('iframe')
+  const transport = new TrezorBridgeTransport(kTrezorBridgeUrl, iframe)
 
-  expect(transport['frameId']).toBeDefined()
+  expect(transport['bridge']).toBe(iframe)
   expect(transport['bridgeFrameUrl']).toEqual(kTrezorBridgeUrl)
   expect(transport['handlers'].size).toEqual(0)
 })

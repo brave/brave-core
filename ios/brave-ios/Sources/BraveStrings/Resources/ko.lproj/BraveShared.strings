@@ -16,11 +16,17 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "북마크 추가";
 
+/* Add a new item to the current list */
+"addButtonTitle" = "추가";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "즐겨찾기에 추가";
 
 /* Cell title for add folder action */
 "AddFolderActionCellTitle" = "새 폴더";
+
+/* Settings item that opens instructions for adding Brave to the iOS dock. */
+"addToDockSettingsCell" = "Dock에 추가";
 
 /* Add to favorites share action. */
 "AddToFavorites" = "즐겨찾기에 추가";
@@ -66,6 +72,45 @@
 
 /* Username textbox in Authentication prompt */
 "AuthPromptAlertUsernamePlaceholderText" = "사용자 이름";
+
+/* Settings autofill section title */
+"Autofill" = "자동 완성";
+
+/* Label for account when indicating that a domain has multiple accounts */
+"autofill.managePassword.multipleAccounts" = "계정";
+
+/* Alert message warning the user that deleting non-synced passwords will permanently remove them */
+"autofill.managePasswords.deleteCredentialConfirmMessage" = "이렇게 하면 %@의 저장된 비밀번호가 동기화 체인 및 기기에서 제거됩니다.";
+
+/* Prompt title when deleting passwords */
+"autofill.managePasswords.deleteCredentialsAlertTitle" = "계속하시겠습니까?";
+
+/* Label for the button used to delete the current login. */
+"autofill.managePasswords.deleteManagePasswordButtonTitle" = "삭제";
+
+/* Title for the section header in the Manage Passwords list screen, that lists the saved sites */
+"autofill.managePasswords.headerTitle" = "저장됨";
+
+/* The message displayed on the manage passwords list screen, when there's at least one password, explain the feature */
+"autofill.managePasswords.instructions" = "비밀번호를 생성, 저장 및 관리하여 사이트 및 앱에 쉽게 로그인하세요.";
+
+/* The header title displayed over the never saved passwords list */
+"autofill.managePasswords.neverSavedListHeaderTitle" = "저장되지 않음";
+
+/* Display text for the option to offer to save passwords */
+"autofill.managePasswords.offerToSavePasswords" = "비밀번호 저장 제안";
+
+/* Prompt that is diplayed in the search bar of the Manage Passwords list screen */
+"autofill.managePasswords.searchWebsitesPrompt" = "웹사이트 검색";
+
+/* Title for navigation bar of the Manage Passwords screen */
+"autofill.managePasswords.title" = "비밀번호 관리";
+
+/* Text to show when the origin of a managed password is not available */
+"autofill.managePasswords.UnknownDomainText" = "알 수 없음";
+
+/* Settings autofill section title */
+"autofill.settings.title" = "자동 완성";
 
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "AMP 페이지 자동 리디렉션";
@@ -141,33 +186,6 @@
 
 /* Placeholder text for adding or editing a bookmark */
 "BookmarkUrlPlaceholderText" = "주소";
-
-/* Title for the Brave Account section in settings */
-"BraveAccount" = "Brave 계정";
-
-/* Title shown when waiting for email verification */
-"BraveAccountAlmostThere" = "거의 다 왔어요!";
-
-/* Detail text for the almost there title */
-"BraveAccountAlmostThereDetail" = "확인 이메일이 곧 전송됩니다. 해당 이메일의 버튼을 클릭하여 계정을 활성화하세요.";
-
-/* Button text to cancel Brave Account registration */
-"BraveAccountCancelRegistration" = "등록 취소";
-
-/* Title shown when user is logged in */
-"BraveAccountEmailAddress" = "이메일 주소";
-
-/* Button text to get started with Brave Account */
-"BraveAccountGetStarted" = "시작하기";
-
-/* Button text to resend confirmation email */
-"BraveAccountResendConfirmationEmail" = "확인 이메일 다시 보내기";
-
-/* Detail text for the resend confirmation email button */
-"BraveAccountResendConfirmationEmailDetail" = "이메일을 받지 못하셨나요? 스팸 폴더를 확인하거나 버튼을 클릭하여 확인 이메일을 다시 보내세요.";
-
-/* Button text to sign out of Brave Account */
-"BraveAccountSignOut" = "로그아웃";
 
 /* Button to show the brave panel */
 "BravePanel" = "Brave 패널";
@@ -706,15 +724,6 @@
 /* Description for new folder popup */
 "EnterFolderName" = "폴더 이름 입력";
 
-/* Shown in error pages to suggest a fix to the user. */
-"errorPageCantBeReachedTry" = "URL을 다시 입력해보거나 검색 엔진을 열고 새 URL을 검색하세요.";
-
-/* Shown in error pages for files that can't be shown and need to be downloaded. */
-"ErrorPageOpenInSafariButtonTitle" = "Safari에서 열기";
-
-/* Shown in error pages on a button that will try to load the page again */
-"ErrorPageReloadButtonTitle" = "다시 로드";
-
 /* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
 "ErrorPagesAdvancedErrorPinningDetails" = "%1$@에서는 보통 암호화를 사용하여 사용자의 정보를 보호합니다. 이번에 Brave가 %2$@에 연결을 시도할 때 웹사이트가 비정상적이고 정확하지 않은 자격증명을 보냈습니다. 이는 공격자가 %3$@임을 가장하려고 시도하거나 Wi-Fi 로그인 화면이 연결을 방해할 때 주로 발생합니다. 정보 교환이 시작되기 전에 Brave가 연결을 중단했으므로 귀하의 정보는 안전합니다.<br />%4$@ 웹사이트가 인증서 피닝을 사용하기 때문에 지금은 이 사이트를 방문하실 수 없습니다. 이는 네트워크 오류나 공격에 의한 일시적 상태일 수 있으며, 일반적으로 잠시 후에는 이 페이지가 다시 작동할 수 있습니다.";
 
@@ -1031,7 +1040,7 @@
 "nightMode.modeTitle" = "모드";
 
 /* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
-"nightMode.sectionDescription" = "야간 모드 이용 시 웹사이트 비주얼과 일반적인 시스템 비주얼이 동시에 변경됩니다.";
+"nightMode.sectionDescription" = "야간 모드를 이용하면 웹사이트 모양과 일반 시스템 모양이 동시에 변경됩니다.";
 
 /* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
 "nightMode.settingsDescription" = "야간 모드 켜기/끄기";
@@ -1063,11 +1072,8 @@
 /* No comment provided by engineer. */
 "ntp.hideSponsoredImages" = "스폰서 이미지 숨기기";
 
-/* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "스폰서 이미지는 브라우저에서 새로 여는 탭에 표시되는 브랜드 배경입니다. 이러한 스폰서 이미지를 활성화하면 Brave가 사명을 수행하는 데 도움이 됩니다.";
-
-/* The text label of image type learn more link */
-"ntp.imageTypeSelectionDescriptionLearnMore" = "자세히 알아보기";
+/* The text description of image type which is being used NTP. The text inside the square brackets should be translated and is a link */
+"ntp.imageTypeSelectionDescription" = "스폰서 이미지는 브라우저에서 새로 여는 탭에 표시되는 브랜드 배경입니다. 이러한 스폰서 이미지를 활성화하면 Brave의 사명을 지원할 수 있습니다. [자세히 알아보기](#learn-more)";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Brave Rewards 자세히 알아보기";
@@ -2368,9 +2374,6 @@
 /* Title of an action that allows user to perform a one-click web search for selected text */
 "SearchWithBrave" = "Brave로 검색";
 
-/* Settings security section title */
-"Security" = "보안";
-
 /* No comment provided by engineer. */
 "sendButtonTitle" = "전송";
 
@@ -2733,6 +2736,9 @@
 
 /* Setting to show/hide the tabs bar */
 "ShowTabsBar" = "탭 바";
+
+/* Settings item for clearing site-specific settings and shields settings. */
+"SiteAndShieldsSettings" = "사이트 및 방패 설정";
 
 /* No comment provided by engineer. */
 "SiteReportedBody" = "이 사이트에 문제가 있다는 것을 Brave (브레이브) 개발자에게 알려 주셔서 감사합니다. 최선을 다해 문제를 해결하겠습니다!";
@@ -3178,6 +3184,12 @@
 /* No comment provided by engineer. */
 "tabs.settings.privateTabsSettingsTitle" = "비공개 탭";
 
+/* The description of the toggle for users to allow the browser to remember its last browsing mode so it can re-launch in that mode when Keep Private Tabs is enabled. */
+"tabs.settings.rememberBrowsingModeDescription" = "브라우저가 마지막으로 종료될 때 비공개 모드였다면, 다시 실행 시 비공개 모드로 열립니다.";
+
+/* Toggle to launch the browser in private mode when Keep Private Tabs is enabled */
+"tabs.settings.rememberBrowsingModeTitle" = "브라우징 모드 기억하기";
+
 /* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
 "TabToolbarAccessibilityLabel" = "탐색 도구 모음";
 
@@ -3279,9 +3291,6 @@
 
 /* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
 "ThemesDisplayBrightness" = "모양";
-
-/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
-"ThemesDisplayBrightnessFooter" = "이 설정은 비공개 브라우징 모드에는 적용되지 않습니다.";
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "라이트";

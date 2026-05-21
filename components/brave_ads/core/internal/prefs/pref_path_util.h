@@ -6,17 +6,17 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PREFS_PREF_PATH_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PREFS_PREF_PATH_UTIL_H_
 
-#include <string>
+#include <string_view>
 
 namespace brave_ads {
 
-bool DoesMatchUserHasJoinedBraveRewardsPrefPath(const std::string& path);
+bool DoesMatchUserHasJoinedBraveRewardsPrefPath(std::string_view path);
 
-bool DoesMatchUserHasOptedInToNewTabPageAdsPrefPath(const std::string& path);
+bool DoesMatchUserHasOptedInToNewTabPageAdsPrefPath(std::string_view path);
 
-bool DoesMatchUserHasOptedInToNotificationAdsPrefPath(const std::string& path);
+bool DoesMatchUserHasOptedInToNotificationAdsPrefPath(std::string_view path);
 
-bool DoesMatchUserHasOptedInToSearchResultAdsPrefPath(const std::string& path);
+bool DoesMatchUserHasOptedInToSearchResultAdsPrefPath(std::string_view path);
 
 }  // namespace brave_ads
 

@@ -132,12 +132,6 @@ extension Preferences {
       }
     }
 
-    /// A boolean value inidicating if GPC is enabled
-    public static var enableGPC = Preferences.Option<Bool>(
-      key: "shields.enable-gpc",
-      default: true
-    )
-
     /// If Shred should also shred from user's history.
     public static var shredHistoryItems = Preferences.Option<Bool>(
       key: "shields.shred-history-items",

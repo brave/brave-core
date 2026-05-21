@@ -17,7 +17,25 @@ Mocks should be set up in `SetUpMocks`, `TEST_F`, or `TEST_P`. Avoid setting up 
 
 `test::TestBase`, inherited from `::testing::Test`, is not copyable.
 
-Refer to `*_test_util.h`, `*_test_helper.h`, `*_test_constants.h`, and `*_test_types.h` for support in efficiently creating and structuring unit tests.
+Refer to `*_test_util.h`, `*_test_helper.h`, and `*_test_constants.h` for support in efficiently creating and structuring unit tests.
+
+## Timezone-Sensitive Tests
+
+Tests that depend on local-time behavior (month boundaries, midnight calculations, etc.) must use `test::ScopedTimezoneForTesting` to pin the timezone; otherwise tests may fail or produce incorrect results in other timezones. Use `::testing::WithParamInterface<std::string>` to parameterize over a representative set of IANA time zone IDs, e.g.,
+
+    class BraveAdsFooTimezoneTest
+        : public test::TestBase,
+          public ::testing::WithParamInterface<std::string_view> {
+     protected:
+      const test::ScopedTimezoneForTesting scoped_timezone_{GetParam()};
+    };
+
+    INSTANTIATE_TEST_SUITE_P(BraveAdsTimezones,
+                             BraveAdsFooTimezoneTest,
+                             test::kTimezones,
+                             test::TimezoneTestParamName);
+
+`ScopedTimezoneForTesting` sets both ICU and libc timezones to ensure consistent local time conversion across platforms. See [scoped_timezone_for_testing.h](scoped_timezone_for_testing.h). `test::kTimezones` and `test::TimezoneTestParamName` provide the shared timezone set and name sanitizer. See [timezone_test_util.h](timezone_test_util.h).
 
 ## Mocking Task Environment
 
@@ -107,7 +125,7 @@ Inline or text file responses can contain `<time:period>` tags for mocking times
 
     test::MockUrlResponses(ads_client_mock_, url_responses);
 
-`distant_past` is equivalent to `base::Time() + base::Microseconds(1)` and `distant_future` is defined as `Tuesday, 19 January 2038 03:14:07` in UTC.
+`distant_past` is equivalent to `base::Time() + base::Milliseconds(1)` and `distant_future` is defined as `Tuesday, 19 January 2038 03:14:07` in UTC.
 
 You can add one or more responses per request. These will be returned in the given order and will wrap back to the first response after reaching the last, i.e.,
 
@@ -133,23 +151,26 @@ You can add one or more responses per request. These will be returned in the giv
 
     test::MockUrlResponses(ads_client_mock_, url_responses);
 
-## Mocking Client
+## Test Environment Defaults
 
-| mock  | type  | default  | example  |
+| setting  | type  | default  | example  |
 |---|---|---|---|
-| Device identifier  | string  | `21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e`  | `test::MockDeviceId();`  |
-| Platform  | `kWindows`, `kMacOS`, `kLinux`, `kAndroid` or `kIOS`  | `kWindows`  | `test::MockPlatformHelper(platform_helper_mock_, PlatformType::kMacOS);`  |
-| Build channel  | `kRelease`, `kBeta` or `kNightly`  | `kRelease`  | `test::MockBuildChannel(test::BuildChannelType::kNightly);`  |
-| JavaScript content setting  | boolean  | `true`  | `test::MockAllowJavaScript(false);`  |
+| Browser version number  | string  | `1.2.3.4`  | `fake_browser_version_.SetNumber("2.0.0.0");` — see [`fake_browser_version.h`](../application_state/test/fake_browser_version.h)  |
+| Device identifier  | string  | `21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e`  | `test::SetUpDeviceId();`  |
+| Language code  | string (ISO 639-1)  | `en`  | `fake_locale_.SetLanguageCode("fr");`  |
+| Country code  | string (ISO 3166-1)  | `US`  | `fake_locale_.SetCountryCode("FR");`  |
+| Operating system  | `kWindows`, `kMacOS`, `kLinux`, `kAndroid` or `kIOS`  | `kWindows`  | `fake_operating_system_.SetType(OperatingSystemType::kMacOS);`  |
+| Build channel  | `kRelease`, `kBeta` or `kNightly`  | `kRelease`  | `test::SetUpBuildChannel(test::BuildChannelType::kNightly);`  |
+| JavaScript content setting  | boolean  | `true`  | `test::SetUpAllowJavaScript(false);`  |
 | Is network connection available  | boolean  | `true`  | `test::MockIsNetworkConnectionAvailable(ads_client_mock_, false);`  |
 | Is browser active  | boolean  | `true`  | `test::MockIsBrowserActive(ads_client_mock_, false);`  |
 | Is browser in full-screen mode  | boolean  | `false`  | `test::MockIsBrowserInFullScreenMode(ads_client_mock_, true);`  |
-| Can show notification ads  | boolean  | `true`  | `MockCanShowNotificationAds(ads_client_mock_, false);`  |
-| Can show notification ads while browser is backgrounded  | boolean  | `true`  | `test::MockCanShowNotificationAdsWhileBrowserIsBackgrounded(ads_client_mock_, false);`  |
+| Can show notification ads  | boolean  | `true`  | `test::MockCanShowNotificationAds(ads_client_mock_, false);`  |
+| Can show notification ads while browser is backgrounded  | boolean  | `false`  | `test::MockCanShowNotificationAdsWhileBrowserIsBackgrounded(ads_client_mock_, true);`  |
 | Site history  | vector\<GURL>  |  | `test::MockGetSiteHistory(ads_client_mock_, {GURL("https://foo.com"), GURL("https://bar.com")});`  |
 | URL response  | URLResponseMap  |  | See [mocking server responses](#mocking-url-responses).  |
 
-See [mock_test_util.h](./mock_test_util.h), [test_constants.h](./test_constants.h), and [test_types.h](./test_types.h).
+See [test_environment_util.h](./test_environment_util.h), [mock_test_util.h](./mock_test_util.h), and [test_constants.h](./test_constants.h).
 
 # Integration Testing
 

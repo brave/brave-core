@@ -20,9 +20,9 @@
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/per_day_exclusion_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/per_month_exclusion_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/per_week_exclusion_rule.h"
-#include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/split_test_exclusion_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/subdivision_targeting_exclusion_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/total_max_exclusion_rule.h"
+#include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/zero_priority_exclusion_rule.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 
@@ -61,8 +61,6 @@ ExclusionRulesBase::ExclusionRulesBase(
   exclusion_rules_.push_back(std::make_unique<AntiTargetingExclusionRule>(
       anti_targeting_resource, site_history));
 
-  exclusion_rules_.push_back(std::make_unique<SplitTestExclusionRule>());
-
   exclusion_rules_.push_back(std::make_unique<DislikeExclusionRule>());
 
   exclusion_rules_.push_back(std::make_unique<DislikeSegmentExclusionRule>());
@@ -71,6 +69,8 @@ ExclusionRulesBase::ExclusionRulesBase(
       std::make_unique<MarkedAsInappropriateExclusionRule>());
 
   exclusion_rules_.push_back(std::make_unique<CommandLineExclusionRule>());
+
+  exclusion_rules_.push_back(std::make_unique<ZeroPriorityExclusionRule>());
 }
 
 ExclusionRulesBase::~ExclusionRulesBase() = default;
@@ -81,13 +81,14 @@ bool ExclusionRulesBase::ShouldExcludeCreativeAd(
     return true;
   }
 
-  return std::ranges::any_of(exclusion_rules_, [&](const auto& exclusion_rule) {
-    if (!exclusion_rule->ShouldInclude(creative_ad)) {
-      Cache(exclusion_rule->GetCacheKey(creative_ad));
-      return true;
-    }
-    return false;
-  });
+  return std::ranges::any_of(
+      exclusion_rules_, [this, &creative_ad](const auto& exclusion_rule) {
+        if (!exclusion_rule->ShouldInclude(creative_ad)) {
+          Cache(exclusion_rule->GetCacheKey(creative_ad));
+          return true;
+        }
+        return false;
+      });
 }
 
 ///////////////////////////////////////////////////////////////////////////////

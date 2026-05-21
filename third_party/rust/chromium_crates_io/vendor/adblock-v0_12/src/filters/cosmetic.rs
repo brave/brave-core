@@ -224,16 +224,14 @@ impl CosmeticFilter {
 
         let mut any_unsupported = false;
         for (location_type, location) in Self::locations_before_sharp(line, sharp_index) {
-            let mut hostname = String::new();
-            if location.is_ascii() {
-                hostname.push_str(location);
+            let hash = if location.is_ascii() {
+                crate::utils::fast_hash(location)
             } else {
                 match idna::domain_to_ascii(location) {
-                    Ok(x) if !x.is_empty() => hostname.push_str(&x),
+                    Ok(x) if !x.is_empty() => crate::utils::fast_hash(&x),
                     _ => return Err(CosmeticFilterError::PunycodeError),
                 }
-            }
-            let hash = crate::utils::fast_hash(&hostname);
+            };
             match location_type {
                 CosmeticFilterLocationType::NotEntity => not_entities_vec.push(hash),
                 CosmeticFilterLocationType::NotHostname => not_hostnames_vec.push(hash),
@@ -621,10 +619,10 @@ mod css_validation {
         selector: &str,
         accept_abp_selectors: bool,
     ) -> Result<Vec<CosmeticFilterOperator>, CosmeticFilterError> {
-        use once_cell::sync::Lazy;
         use regex::Regex;
-        static RE_SIMPLE_SELECTOR: Lazy<Regex> =
-            Lazy::new(|| Regex::new(r"^[#.]?[A-Za-z_][\w-]*$").unwrap());
+        use std::sync::LazyLock;
+        static RE_SIMPLE_SELECTOR: LazyLock<Regex> =
+            LazyLock::new(|| Regex::new(r"^[#.]?[A-Za-z_][\w-]*$").unwrap());
 
         if RE_SIMPLE_SELECTOR.is_match(selector) {
             return Ok(vec![CosmeticFilterOperator::CssSelector(
@@ -832,13 +830,16 @@ mod css_validation {
     }
 
     pub fn is_valid_css_style(style: &str) -> bool {
-        if style.contains('\\') {
-            return false;
-        }
-        if style.contains("url(") {
-            return false;
-        }
-        if style.contains("/*") {
+        use regex::{Regex, RegexBuilder};
+        use std::sync::LazyLock;
+        static RE_INVALID_DIRECTIVE: LazyLock<Regex> = LazyLock::new(|| {
+            RegexBuilder::new(r"image-set\(|url\(|\\|\/\*")
+                .case_insensitive(true)
+                .build()
+                .unwrap()
+        });
+
+        if RE_INVALID_DIRECTIVE.is_match(style) {
             return false;
         }
         true

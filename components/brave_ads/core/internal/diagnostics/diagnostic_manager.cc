@@ -50,7 +50,7 @@ void DiagnosticManager::SetEntry(
 }
 
 void DiagnosticManager::GetDiagnostics(GetDiagnosticsCallback callback) const {
-  std::move(callback).Run(DiagnosticsToValue(diagnostics_));
+  std::move(callback).Run(DiagnosticsToList(diagnostics_));
 }
 
 }  // namespace brave_ads

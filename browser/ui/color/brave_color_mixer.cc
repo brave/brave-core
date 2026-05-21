@@ -790,7 +790,8 @@ void AddBraveOmniboxColorMixer(ui::ColorProvider* provider,
   }
 
   if (!key.custom_theme) {
-    mixer[kColorToolbarContentAreaSeparator] = {SK_ColorTRANSPARENT};
+    mixer[kColorToolbarContentAreaSeparator] = {
+        postprocessing_mixer.GetResultColor(kColorToolbar)};
   }
 #endif  // defined(TOOLKIT_VIEWS)
 }

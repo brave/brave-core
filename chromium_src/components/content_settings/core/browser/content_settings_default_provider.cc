@@ -20,8 +20,7 @@
 #define BRAVE_DISCARD_OR_MIGRATE_OBSOLETE_PREFERENCES
 #endif
 
-#define GetValue(...)                                  \
-  GetValue(__VA_ARGS__);                               \
+#define BRAVE_DEFAULT_PROVIDER_READ_FROM_PREF          \
   if (IsBraveValidDefaultValue(content_type, value)) { \
     return value.Clone();                              \
   }
@@ -37,6 +36,5 @@ bool IsBraveValidDefaultValue(ContentSettingsType content_type,
 }  // namespace
 
 #include <components/content_settings/core/browser/content_settings_default_provider.cc>
-
+#undef BRAVE_DEFAULT_PROVIDER_READ_FROM_PREF
 #undef BRAVE_DISCARD_OR_MIGRATE_OBSOLETE_PREFERENCES
-#undef GetValue

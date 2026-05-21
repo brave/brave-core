@@ -53,6 +53,10 @@ export function extractAllowedLinksFromTurn(
   )
 }
 
+// Strips inline `::search[...]{type=...}` directives, which render as widgets
+// in the UI and aren't useful in copied text.
+export const inlineSearchRegex = /^::search\[.+?\]\{type=\w+?\}$/gm
+
 /**
  * Formats a conversation history into a string suitable for clipboard copy.
  * Each turn is labeled with a localized "You" for human messages and "Leo AI"
@@ -74,16 +78,20 @@ export function formatConversationForClipboard(
 
       // For assistant entries, get the completion text from events if available
       if (turn.characterType === Mojom.CharacterType.ASSISTANT) {
-        const completionEvent = turn.events?.find(
-          (event) => event.completionEvent,
-        )
-        if (completionEvent?.completionEvent?.completion) {
-          text = completionEvent.completionEvent.completion
+        // Concatenate ALL completion events. An inline-search event between
+        // streaming chunks splits the completion stream into multiple events
+        // (the C++ merge logic only merges adjacent completion events), so
+        // taking only one truncates the response mid-stream.
+        const completionTexts = (turn.events ?? [])
+          .filter((event) => event.completionEvent)
+          .map((event) => event.completionEvent!.completion)
+        if (completionTexts.length > 0) {
+          text = completionTexts.join('')
         }
 
-        // Extract allowedLinks and replace citations with URLs
         const allowedLinks = extractAllowedLinksFromTurn(turn.events)
         text = replaceCitationsWithUrls(text, allowedLinks)
+        text = text.replaceAll(inlineSearchRegex, '')
       }
 
       return `${label}: ${text}`
@@ -151,15 +159,20 @@ export function getImageFiles(
 }
 
 /**
- * Filters uploaded files to only include documents
+ * Filters uploaded files to only include PDFs without extracted text.
+ * These are PDFs that will be sent as raw file bytes and are subject
+ * to MAX_DOCUMENTS and MAX_DOCUMENT_SIZE_BYTES limits.
  *
  * @param files - The array of uploaded files to filter
- * @returns Filtered array containing only document files
+ * @returns Filtered array containing only raw PDFs (without extracted
+ *   text), or undefined if input is undefined
  */
-export function getDocumentFiles(
+export function getRawDocumentFiles(
   files?: readonly Mojom.UploadedFile[],
 ): Mojom.UploadedFile[] | undefined {
-  return files?.filter((file) => file.type === Mojom.UploadedFileType.kPdf)
+  return files?.filter(
+    (file) => file.type === Mojom.UploadedFileType.kPdf && !file.extractedText,
+  )
 }
 
 /**
@@ -176,27 +189,30 @@ export function shouldDisableAttachmentsButton(
     0,
   )
 
-  const totalUploadedDocuments = conversationHistory.reduce(
+  // Only count PDFs without extracted text toward the document limit,
+  // since PDFs with extracted text are sent as text and bypass the
+  // raw file upload limits.
+  const totalUploadedRawDocuments = conversationHistory.reduce(
     (total, turn) =>
-      total + (getDocumentFiles(turn.uploadedFiles)?.length || 0),
+      total + (getRawDocumentFiles(turn.uploadedFiles)?.length || 0),
     0,
   )
 
   return (
     totalUploadedImages >= Mojom.MAX_IMAGES
-    || totalUploadedDocuments >= Mojom.MAX_DOCUMENTS
+    || totalUploadedRawDocuments >= Mojom.MAX_DOCUMENTS
   )
 }
 
 /**
- * Process uploaded files with limits to different types
+ * Attach uploaded files with limits to different types
  *
  * @param files - The uploaded file to be processed
  * @param conversationHistory - The current conversation history
  * @param currentPendingFiles - The current files in the staging area
  * @returns The files the user can upload after checking limits
  */
-export const processUploadedFilesWithLimits = (
+export const attachUploadedFilesWithLimits = (
   files: readonly Mojom.UploadedFile[],
   conversationHistory: readonly Mojom.ConversationTurn[],
   currentPendingFiles: readonly Mojom.UploadedFile[],
@@ -206,27 +222,31 @@ export const processUploadedFilesWithLimits = (
     (total, turn) => total + (getImageFiles(turn.uploadedFiles)?.length || 0),
     0,
   )
-  const totalUploadedDocuments = conversationHistory.reduce(
+  // Only count PDFs without extracted text toward the document limit,
+  // since PDFs with extracted text are sent as text and bypass the
+  // raw file upload limits.
+  const totalUploadedRawDocuments = conversationHistory.reduce(
     (total, turn) =>
-      total + (getDocumentFiles(turn.uploadedFiles)?.length || 0),
+      total + (getRawDocumentFiles(turn.uploadedFiles)?.length || 0),
     0,
   )
 
   // Calculate current pending files by type
   const currentPendingImages = getImageFiles(currentPendingFiles)?.length || 0
-  const currentPendingDocuments =
-    getDocumentFiles(currentPendingFiles)?.length || 0
+  const currentPendingRawDocuments =
+    getRawDocumentFiles(currentPendingFiles)?.length || 0
 
   // Track current counts for each type
   let currentImages = 0
-  let currentDocuments = 0
+  let currentRawDocuments = 0
   // Process files in original order while respecting limits
   const newFiles: Mojom.UploadedFile[] = []
   for (const file of files) {
     const isImage =
       file.type === Mojom.UploadedFileType.kImage
       || file.type === Mojom.UploadedFileType.kScreenshot
-    const isDocument = file.type === Mojom.UploadedFileType.kPdf
+    const isPdf = file.type === Mojom.UploadedFileType.kPdf
+    const isText = file.type === Mojom.UploadedFileType.kText
     if (isImage) {
       const maxNewImages =
         Mojom.MAX_IMAGES - totalUploadedImages - currentPendingImages
@@ -234,17 +254,29 @@ export const processUploadedFilesWithLimits = (
         newFiles.push(file)
         currentImages++
       }
-    } else if (isDocument) {
-      const maxNewDocuments =
-        Mojom.MAX_DOCUMENTS - totalUploadedDocuments - currentPendingDocuments
-      const fileSize = Number(file.filesize)
-      if (
-        currentDocuments < maxNewDocuments
-        && fileSize <= Mojom.MAX_DOCUMENT_SIZE_BYTES
-      ) {
+    } else if (isPdf) {
+      const hasExtractedText = !!file.extractedText
+      if (hasExtractedText) {
+        // PDFs with extracted text bypass raw file limits
         newFiles.push(file)
-        currentDocuments++
+      } else {
+        // Raw PDFs are subject to count and size limits
+        const maxNewRawDocuments =
+          Mojom.MAX_DOCUMENTS
+          - totalUploadedRawDocuments
+          - currentPendingRawDocuments
+        const fileSize = Number(file.filesize)
+        if (
+          currentRawDocuments < maxNewRawDocuments
+          && fileSize <= Mojom.MAX_DOCUMENT_SIZE_BYTES
+        ) {
+          newFiles.push(file)
+          currentRawDocuments++
+        }
       }
+    } else if (isText) {
+      // Text files are not subject to document count/size limits
+      newFiles.push(file)
     }
   }
 

@@ -34,16 +34,24 @@ class BraveTabHoverCardController;
       const override;                                                        \
   ui::ImageModel GetTabAccentIcon(const Tab* tab) const override;            \
   int GetTreeHeight(const tree_tab::TreeTabNodeId& id) const override;       \
-  const tabs::TreeTabNode& GetTreeTabNode(const tree_tab::TreeTabNodeId& id) \
+  const tabs::TreeTabNode* GetTreeTabNode(const tree_tab::TreeTabNodeId& id) \
       const override;                                                        \
   void SetTreeTabNodeCollapsed(const tree_tab::TreeTabNodeId& id,            \
                                bool collapsed) override {}                   \
   bool IsInCollapsedTreeTabNode(const tree_tab::TreeTabNodeId& id)           \
       const override;                                                        \
+  brave_tabs::TabMinWidthMode GetTabMinWidthMode() const override;           \
+  bool IsHorizontalScrollingEnabled() const override;                        \
   virtual TabDragContext* GetDragContext
 
 #define TabHoverCardController BraveTabHoverCardController
+#define AddTabToGroup virtual AddTabToGroup
+#define MoveTab virtual MoveTab
+#define OnTabPinnedStateChanged virtual OnTabPinnedStateChanged
 #include <chrome/browser/ui/views/tabs/tab_strip.h>  // IWYU pragma: export
+#undef OnTabPinnedStateChanged
+#undef MoveTab
+#undef AddTabToGroup
 #undef TabHoverCardController
 #undef GetDragContext
 #undef UpdateHoverCard

@@ -15,6 +15,7 @@ struct NotificationAdInfo;
 class NotificationAdEventServed final
     : public AdEventInterface<NotificationAdInfo> {
  public:
+  // AdEventInterface:
   void FireEvent(const NotificationAdInfo& ad,
                  ResultCallback callback) override;
 };

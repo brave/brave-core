@@ -25,10 +25,13 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
+#include "base/time/time.h"
+#include "brave/components/brave_wallet/browser/account_discovery_manager.h"
 #include "brave/components/brave_wallet/browser/bip39.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_hd_keyring.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h"
@@ -42,11 +45,14 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service_migrations.h"
 #include "brave/components/brave_wallet/browser/keyring_service_prefs.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_import_keyring.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_keyring.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/dev_buildflags.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -117,6 +123,13 @@ std::string GenerateBtcImportPayload(std::string_view private_key_hex) {
 
   CHECK_EQ(span_writer.remaining(), 0u);
   return Base58EncodeWithCheck(buf);
+}
+
+void WaitForPostedTask() {
+  base::RunLoop run_loop;
+  base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, run_loop.QuitClosure());
+  run_loop.Run();
 }
 
 }  // namespace
@@ -349,6 +362,18 @@ class KeyringServiceUnitTest : public testing::Test {
         }));
     run_loop.Run();
     return result;
+  }
+
+  static mojom::AccountInfoPtr ImportPolkadotAccount(
+      KeyringService* service,
+      const std::string& account_name,
+      const std::string& json_export,
+      const std::string& password,
+      const std::string& network) {
+    base::test::TestFuture<mojom::AccountInfoPtr> test_future;
+    service->ImportPolkadotAccount(account_name, json_export, password, network,
+                                   test_future.GetCallback());
+    return test_future.Take();
   }
 
   static mojom::AccountInfoPtr ImportEthereumAccountFromJson(
@@ -755,6 +780,9 @@ TEST_F(KeyringServiceUnitTest, Reset) {
   EXPECT_TRUE(GetPrefs()->HasPrefPath(kBraveWalletLegacyEthSeedFormat));
 
   EXPECT_CALL(observer, WalletReset());
+  base::MockCallback<base::RepeatingClosure> wallet_reset_callback;
+  EXPECT_CALL(wallet_reset_callback, Run).Times(1);
+  service.set_wallet_reset_cb(wallet_reset_callback.Get());
   service.Reset();
   EXPECT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletKeyrings));
   EXPECT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletEncryptorSalt));
@@ -807,12 +835,12 @@ TEST_F(KeyringServiceUnitTest, AccountMetasForKeyring_PolkadotEnabled) {
   [
     {
         "account_index" : "0",
-        "account_address": "158HHeYTmEXMiMM1XufQt5bEe2CTia3EcVcfrpYBYcXA6bdb",
+        "account_address": "1UC3h7uQVraXVhGhfPqmk6F7syCLrxMSVbJBuQqW7R8SHdK",
         "account_name": "PolkadotAcc1"
     },
     {
         "account_index" : "1",
-        "account_address": "16HxitzrPKoiCgUdhhMvuJBsxTa3W7hEKFhet1LD6vkk4CRb",
+        "account_address": "15YL2X3M7ovYs7moKsdp4GiLxuKHf3gPjFjZryLZSE7oTmX4",
         "account_name": "PolkadotAcc2"
     }
   ]
@@ -2032,6 +2060,7 @@ TEST_F(KeyringServiceUnitTest, HardwareAccounts) {
 
 TEST_F(KeyringServiceUnitTest, AutoLock) {
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+  service.SetAutolockEnabled(true);
   std::optional<std::string> mnemonic = CreateWallet(&service, "brave");
   ASSERT_TRUE(mnemonic.has_value());
   ASSERT_FALSE(service.IsLockedSync());
@@ -2095,6 +2124,7 @@ TEST_F(KeyringServiceUnitTest, AutoLock) {
 
 TEST_F(KeyringServiceUnitTest, NotifyUserInteraction) {
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+  service.SetAutolockEnabled(true);
   ASSERT_TRUE(CreateWallet(&service, "brave"));
   ASSERT_FALSE(service.IsLockedSync());
 
@@ -2229,77 +2259,75 @@ TEST_F(KeyringServiceUnitTest, SelectHardwareAccount) {
   ASSERT_EQ(service.GetSelectedWalletAccount(), imported.front());
 }
 
-TEST_F(KeyringServiceUnitTest, AddHardwareAccounts_OfacSanctionedAddress) {
+TEST_F(KeyringServiceUnitTest, AddHardwareAccounts_RestrictedAddress) {
   KeyringService keyring_service(json_rpc_service(), GetPrefs(),
                                  GetLocalState());
   AccountUtils(&keyring_service)
       .CreateWallet(kMnemonicDivideCruise, kPasswordBrave);
 
-  auto* registry = BlockchainRegistry::GetInstance();
-  CHECK(registry);
-
-  const std::string ofac_eth_address =
+  const std::string restricted_eth_address =
       "0xb9ef770b6a5e12e45983c5d80545258aa38f3b78";
-  const std::string ofac_sol_address =
+  const std::string restricted_sol_address =
       "FepMPR8vahkJ98Fr22VKbfHU4f4PTAyi18PDZN2NooPb";
-  const std::string ofac_fil_address =
+  const std::string restricted_fil_address =
       "f1abjxfbp274xpdqcpuaykwkfb43omjotacm2p3za";
-  const std::string ofac_dot_address =
+  const std::string restricted_dot_address =
       "14E5nqKAp3oAJcmzgZhUD2RcptBeUBScxKHgJKU4HPNcKVf3";
   const std::string valid_eth_address =
       "0x1111111111111111111111111111111111111111";
 
-  // Update OFAC list with sanctioned addresses
-  registry->UpdateOfacAddressesList({
-      base::ToLowerASCII(ofac_eth_address),
-      base::ToLowerASCII(ofac_sol_address),
-      base::ToLowerASCII(ofac_fil_address),
-      base::ToLowerASCII(ofac_dot_address),
+  // Update restricted list with restricted addresses
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting scoped_hw_restricted({
+      base::ToLowerASCII(restricted_eth_address),
+      base::ToLowerASCII(restricted_sol_address),
+      base::ToLowerASCII(restricted_fil_address),
+      base::ToLowerASCII(restricted_dot_address),
   });
 
-  // Test: Ethereum OFAC address should be rejected
+  // Test: Ethereum restricted address should be rejected
   {
     std::vector<mojom::HardwareWalletAccountPtr> accounts;
     accounts.push_back(mojom::HardwareWalletAccount::New(
-        ofac_eth_address, "m/44'/60'/0'/0/0", "OFAC ETH",
+        restricted_eth_address, "m/44'/60'/0'/0/0", "Restricted ETH",
         mojom::HardwareVendor::kLedger, "device1", mojom::KeyringId::kDefault));
     auto result = keyring_service.AddHardwareAccountsSync(std::move(accounts));
     EXPECT_TRUE(result.empty())
-        << "OFAC sanctioned Ethereum address should be rejected";
+        << "Restricted Ethereum address should be rejected";
   }
 
-  // Test: Solana OFAC address should be rejected
+  // Test: Solana restricted address should be rejected
   {
     std::vector<mojom::HardwareWalletAccountPtr> accounts;
     accounts.push_back(mojom::HardwareWalletAccount::New(
-        ofac_sol_address, "m/44'/501'/0'/0'", "OFAC SOL",
+        restricted_sol_address, "m/44'/501'/0'/0'", "Restricted SOL",
         mojom::HardwareVendor::kLedger, "device1", mojom::KeyringId::kSolana));
     auto result = keyring_service.AddHardwareAccountsSync(std::move(accounts));
     EXPECT_TRUE(result.empty())
-        << "OFAC sanctioned Solana address should be rejected";
+        << "Restricted Solana address should be rejected";
   }
 
-  // Test: Filecoin OFAC address should be rejected
+  // Test: Filecoin restricted address should be rejected
   {
     std::vector<mojom::HardwareWalletAccountPtr> accounts;
     accounts.push_back(mojom::HardwareWalletAccount::New(
-        ofac_fil_address, "m/44'/461'/0'/0/0", "OFAC FIL",
+        restricted_fil_address, "m/44'/461'/0'/0/0", "Restricted FIL",
         mojom::HardwareVendor::kLedger, "device1",
         mojom::KeyringId::kFilecoin));
     auto result = keyring_service.AddHardwareAccountsSync(std::move(accounts));
     EXPECT_TRUE(result.empty())
-        << "OFAC sanctioned Filecoin address should be rejected";
+        << "Restricted Filecoin address should be rejected";
   }
 
-  // Test: Polkadot OFAC address should be rejected
+  // Test: Polkadot restricted address should be rejected
   {
     std::vector<mojom::HardwareWalletAccountPtr> accounts;
     accounts.push_back(mojom::HardwareWalletAccount::New(
-        ofac_dot_address, "//0", "OFAC DOT", mojom::HardwareVendor::kLedger,
-        "device1", mojom::KeyringId::kPolkadotMainnet));
+        restricted_dot_address, "//0", "Restricted DOT",
+        mojom::HardwareVendor::kLedger, "device1",
+        mojom::KeyringId::kPolkadotMainnet));
     auto result = keyring_service.AddHardwareAccountsSync(std::move(accounts));
     EXPECT_TRUE(result.empty())
-        << "OFAC sanctioned Polkadot address should be rejected";
+        << "Restricted Polkadot address should be rejected";
   }
 
   // Test: Valid Ethereum address should be accepted
@@ -2313,11 +2341,12 @@ TEST_F(KeyringServiceUnitTest, AddHardwareAccounts_OfacSanctionedAddress) {
     EXPECT_EQ(result[0]->address, valid_eth_address);
   }
 
-  // Test: Mixed accounts - one OFAC, one valid (OFAC should be filtered out)
+  // Test: Mixed accounts - one restricted, one valid (restricted should be
+  // filtered out)
   {
     std::vector<mojom::HardwareWalletAccountPtr> accounts;
     accounts.push_back(mojom::HardwareWalletAccount::New(
-        ofac_eth_address, "m/44'/60'/0'/0/0", "OFAC ETH",
+        restricted_eth_address, "m/44'/60'/0'/0/0", "Restricted ETH",
         mojom::HardwareVendor::kLedger, "device1", mojom::KeyringId::kDefault));
     accounts.push_back(mojom::HardwareWalletAccount::New(
         valid_eth_address, "m/44'/60'/1'/0/0", "Valid ETH",
@@ -2326,56 +2355,50 @@ TEST_F(KeyringServiceUnitTest, AddHardwareAccounts_OfacSanctionedAddress) {
     EXPECT_EQ(result.size(), 1u) << "Only valid address should be added";
     EXPECT_EQ(result[0]->address, valid_eth_address);
   }
-
-  // Clear OFAC list
-  registry->UpdateOfacAddressesList({});
 }
 
-TEST_F(KeyringServiceUnitTest, ImportEthereumAccount_OfacSanctionedAddress) {
+TEST_F(KeyringServiceUnitTest, ImportEthereumAccount_RestrictedAddress) {
   KeyringService keyring_service(json_rpc_service(), GetPrefs(),
                                  GetLocalState());
   ASSERT_TRUE(CreateWallet(&keyring_service, "brave"));
-
-  auto* registry = BlockchainRegistry::GetInstance();
 
   // Use a known private key that generates a known address from existing tests.
   const std::string known_private_key =
       "d118a12a1e3b595d7d9e5599370df4ddc58d246a3ae4a795597e50eb6a32afb5";
 
-  // First, import to get the actual address, then add it to OFAC list.
+  // First, import to get the actual address, then add it to restricted list.
   auto first_import = ImportEthereumAccount(&keyring_service, "Test Account",
                                             known_private_key);
   ASSERT_TRUE(first_import);
-  const std::string address_to_sanction = first_import->address;
+  const std::string address_to_restrict = first_import->address;
 
   // Remove the account first.
   EXPECT_TRUE(RemoveAccount(&keyring_service, first_import->account_id.Clone(),
                             "brave"));
 
-  // Update OFAC list with the address.
-  registry->UpdateOfacAddressesList({base::ToLowerASCII(address_to_sanction)});
+  // Update restricted list with the address.
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting
+      scoped_eth_import_restricted({base::ToLowerASCII(address_to_restrict)});
 
-  // Test: Import with OFAC sanctioned address should fail.
-  auto result = ImportEthereumAccount(&keyring_service, "OFAC Account",
+  // Test: Import with Restricted address should fail.
+  auto result = ImportEthereumAccount(&keyring_service, "Restricted Account",
                                       known_private_key);
-  EXPECT_FALSE(result) << "OFAC sanctioned Ethereum address should be rejected";
+  EXPECT_FALSE(result) << "Restricted Ethereum address should be rejected";
 
-  // Test: Import with different private key (non-OFAC address) should succeed.
+  // Test: Import with different private key (non-restricted address) should
+  // succeed.
   const std::string valid_private_key =
       "cca1e9643efc5468789366e4fb682dba57f2e97540981095bc6d9a962309d912";
   auto valid_result = ImportEthereumAccount(&keyring_service, "Valid Account",
                                             valid_private_key);
-  EXPECT_TRUE(valid_result) << "Non-OFAC Ethereum address should be accepted";
-
-  registry->UpdateOfacAddressesList({});
+  EXPECT_TRUE(valid_result)
+      << "Non-restricted Ethereum address should be accepted";
 }
 
-TEST_F(KeyringServiceUnitTest, ImportSolanaAccount_OfacSanctionedAddress) {
+TEST_F(KeyringServiceUnitTest, ImportSolanaAccount_RestrictedAddress) {
   KeyringService keyring_service(json_rpc_service(), GetPrefs(),
                                  GetLocalState());
   ASSERT_TRUE(CreateWallet(&keyring_service, "brave"));
-
-  auto* registry = BlockchainRegistry::GetInstance();
 
   // Use a known private key from existing tests.
   const std::string known_private_key =
@@ -2384,35 +2407,33 @@ TEST_F(KeyringServiceUnitTest, ImportSolanaAccount_OfacSanctionedAddress) {
   const std::string known_address =
       "C5ukMV73nk32h52MjxtnZXTrrr7rupD9CTDDRnYYDRYQ";
 
-  // First, import to get the actual address, then add it to OFAC list.
+  // First, import to get the actual address, then add it to restricted list.
   auto first_import =
       ImportSolanaAccount(&keyring_service, "Test Account", known_private_key);
   ASSERT_TRUE(first_import);
-  const std::string address_to_sanction = first_import->address;
+  const std::string address_to_restrict = first_import->address;
 
   // Remove the account first.
   EXPECT_TRUE(RemoveAccount(&keyring_service, first_import->account_id.Clone(),
                             "brave"));
 
-  // Update OFAC list with the address
-  registry->UpdateOfacAddressesList({base::ToLowerASCII(address_to_sanction)});
+  // Update restricted list with the address
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting
+      scoped_sol_import_restricted({base::ToLowerASCII(address_to_restrict)});
 
-  // Test: Import with OFAC sanctioned address should fail
-  auto result =
-      ImportSolanaAccount(&keyring_service, "OFAC Account", known_private_key);
-  EXPECT_FALSE(result) << "OFAC sanctioned Solana address should be rejected";
-
-  // Clear OFAC list
-  registry->UpdateOfacAddressesList({});
+  // Test: Import with Restricted address should fail
+  auto result = ImportSolanaAccount(&keyring_service, "Restricted Account",
+                                    known_private_key);
+  EXPECT_FALSE(result) << "Restricted Solana address should be rejected";
 }
 
-TEST_F(KeyringServiceUnitTest, ImportFilecoinAccount_OfacSanctionedAddress) {
+TEST_F(KeyringServiceUnitTest, ImportFilecoinAccount_RestrictedAddress) {
   KeyringService keyring_service(json_rpc_service(), GetPrefs(),
                                  GetLocalState());
   ASSERT_TRUE(CreateWallet(&keyring_service, "brave"));
 
-  auto* registry = BlockchainRegistry::GetInstance();
-  const std::string ofac_address = "f1abjxfbp274xpdqcpuaykwkfb43omjotacm2p3za";
+  const std::string restricted_address =
+      "f1abjxfbp274xpdqcpuaykwkfb43omjotacm2p3za";
 
   // Use a known private key from existing tests (Filecoin testnet SECP256K1).
   const std::string known_private_key =
@@ -2421,32 +2442,74 @@ TEST_F(KeyringServiceUnitTest, ImportFilecoinAccount_OfacSanctionedAddress) {
       "58533535794b383d227d";
   const std::string known_address = "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q";
 
-  // First, import to get the actual address, then add it to OFAC list.
+  // First, import to get the actual address, then add it to restricted list.
   auto first_import =
       ImportFilecoinAccount(&keyring_service, "Test Account", known_private_key,
                             mojom::kFilecoinTestnet);
   ASSERT_TRUE(first_import);
-  const std::string address_to_sanction = first_import->address;
+  const std::string address_to_restrict = first_import->address;
 
   // Remove the account first.
   EXPECT_TRUE(RemoveAccount(&keyring_service, first_import->account_id.Clone(),
                             "brave"));
 
-  // Update OFAC list with the address.
-  registry->UpdateOfacAddressesList({base::ToLowerASCII(address_to_sanction)});
+  // Update restricted list with the address.
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting
+      scoped_fil_import_restricted({base::ToLowerASCII(address_to_restrict)});
 
-  // Test: Import with OFAC sanctioned address should fail
+  // Test: Import with Restricted address should fail
   auto result =
-      ImportFilecoinAccount(&keyring_service, "OFAC Account", known_private_key,
-                            mojom::kFilecoinTestnet);
-  EXPECT_FALSE(result) << "OFAC sanctioned Filecoin address should be rejected";
+      ImportFilecoinAccount(&keyring_service, "Restricted Account",
+                            known_private_key, mojom::kFilecoinTestnet);
+  EXPECT_FALSE(result) << "Restricted Filecoin address should be rejected";
+}
 
-  // Test: Import with different network (mainnet) should work if address is
-  // different or use a different private key for a valid import For this test,
-  // we verify the OFAC check works for the testnet address
+TEST_F(KeyringServiceUnitTest, ImportPolkadotAccount_RestrictedAddress) {
+  base::test::ScopedFeatureList feature_list{
+      features::kBraveWalletPolkadotFeature};
 
-  // Clear OFAC list
-  registry->UpdateOfacAddressesList({});
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+  ASSERT_TRUE(CreateWallet(&service, "brave"));
+
+  auto hd_account =
+      AddAccount(&service, mojom::CoinType::DOT,
+                 mojom::KeyringId::kPolkadotMainnet, "Polkadot HD Account");
+  ASSERT_TRUE(hd_account);
+
+  TestFuture<const std::optional<std::string>&> export_future;
+  service.EncodePolkadotKeyForExport(hd_account->account_id.Clone(),
+                                     kPasswordBrave, "export_pwd",
+                                     export_future.GetCallback());
+  auto json_export = export_future.Get();
+  ASSERT_TRUE(json_export);
+
+  auto first_import =
+      ImportPolkadotAccount(&service, "Imported Polkadot", *json_export,
+                            "export_pwd", mojom::kPolkadotMainnet);
+
+  ASSERT_TRUE(first_import);
+
+  auto* keyring = service.GetKeyring<PolkadotImportKeyring>(
+      mojom::KeyringId::kPolkadotImport);
+  ASSERT_TRUE(keyring);
+
+  const auto address_to_restrict =
+      keyring->GetAccountAddress(first_import->account_id->account_index);
+  ASSERT_TRUE(address_to_restrict.has_value());
+  EXPECT_FALSE(address_to_restrict->empty());
+
+  // Remove the account first.
+  EXPECT_TRUE(RemoveAccount(&service, first_import->account_id.Clone(),
+                            kPasswordBrave));
+
+  // Update restricted list with the address.
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting
+      scoped_dot_import_restricted({base::ToLowerASCII(*address_to_restrict)});
+
+  auto result =
+      ImportPolkadotAccount(&service, "Imported Polkadot", *json_export,
+                            "export_pwd", mojom::kPolkadotMainnet);
+  EXPECT_FALSE(result);
 }
 
 TEST_F(KeyringServiceUnitTest, CreateDefaultAccountsForSelectedNetworks) {
@@ -2490,11 +2553,10 @@ TEST_F(KeyringServiceUnitTest, CreateDefaultAccountsForSelectedNetworks) {
   }
 }
 
-TEST_F(KeyringServiceUnitTest, AddHDAccountForKeyring_OfacSanctionedAddress) {
+TEST_F(KeyringServiceUnitTest, AddHDAccountForKeyring_RestrictedAddress) {
   base::test::ScopedFeatureList feature_list{
       features::kBraveWalletPolkadotFeature};
-  auto* registry = BlockchainRegistry::GetInstance();
-  registry->UpdateOfacAddressesList(
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting scoped_hd_restricted(
       {base::ToLowerASCII("0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db"),
        base::ToLowerASCII("BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8"),
        base::ToLowerASCII("f1qjidlytseoouzfhsgzczf3ettbhuaezorczeava"),
@@ -2510,19 +2572,18 @@ TEST_F(KeyringServiceUnitTest, AddHDAccountForKeyring_OfacSanctionedAddress) {
                           mojom::KeyringId::kFilecoin, "Account 1"));
   EXPECT_FALSE(AddAccount(&service, mojom::CoinType::DOT,
                           mojom::KeyringId::kPolkadotMainnet, "Account 1"));
-
-  registry->UpdateOfacAddressesList({});
 }
 
 TEST_F(KeyringServiceUnitTest,
-       CreateDefaultAccountsForSelectedNetworks_OfacSanctionedAddress) {
+       CreateDefaultAccountsForSelectedNetworks_RestrictedAddress) {
   base::test::ScopedFeatureList feature_list{
       features::kBraveWalletPolkadotFeature};
 
-  auto* registry = BlockchainRegistry::GetInstance();
-  registry->UpdateOfacAddressesList(
-      {base::ToLowerASCII("f1qjidlytseoouzfhsgzczf3ettbhuaezorczeava"),
-       base::ToLowerASCII("158HHeYTmEXMiMM1XufQt5bEe2CTia3EcVcfrpYBYcXA6bdb")});
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting
+      scoped_default_restricted(
+          {base::ToLowerASCII("f1qjidlytseoouzfhsgzczf3ettbhuaezorczeava"),
+           base::ToLowerASCII(
+               "158HHeYTmEXMiMM1XufQt5bEe2CTia3EcVcfrpYBYcXA6bdb")});
 
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
@@ -2558,8 +2619,6 @@ TEST_F(KeyringServiceUnitTest,
   EXPECT_TRUE(service.GetAllAccountInfos().empty());
   EXPECT_CALL(observer, WalletReset());
   observer.WaitAndVerify();
-
-  registry->UpdateOfacAddressesList({});
 }
 
 TEST_F(KeyringServiceUnitTest, SetSelectedAccount_CardanoEnabled) {
@@ -3470,6 +3529,37 @@ TEST_F(KeyringServiceUnitTest, ImportPolkadotAccountTestnet_Error) {
                                                  mojom::kMainnetChainId));
 }
 
+TEST_F(KeyringServiceUnitTest, ImportPolkadotAccount_NonRelayNetwork) {
+  base::test::ScopedFeatureList feature_list{
+      features::kBraveWalletPolkadotFeature};
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+
+  ASSERT_TRUE(CreateWallet(&service, kPasswordBrave));
+
+  auto hd_account =
+      AddAccount(&service, mojom::CoinType::DOT,
+                 mojom::KeyringId::kPolkadotMainnet, "Polkadot HD Account");
+  ASSERT_TRUE(hd_account);
+
+  TestFuture<const std::optional<std::string>&> export_future;
+  service.EncodePolkadotKeyForExport(hd_account->account_id.Clone(),
+                                     kPasswordBrave, "export_pwd",
+                                     export_future.GetCallback());
+  auto json_export = export_future.Get();
+  ASSERT_TRUE(json_export.has_value()) << "Need JSON export to test import";
+
+  // Import requires a Polkadot relay network.
+  auto imported = service.ImportPolkadotAccountSync(
+      "Imported Polkadot", *json_export, "export_pwd", "custom_dot_chain");
+  EXPECT_FALSE(imported);
+
+  auto dot_accounts = std::ranges::count_if(
+      service.GetAllAccountsSync()->accounts, [](const auto& acc) {
+        return acc->account_id->coin == mojom::CoinType::DOT;
+      });
+  EXPECT_EQ(dot_accounts, 1u) << "Only the original HD account should exist";
+}
+
 TEST_F(KeyringServiceUnitTest, ImportPolkadotAccountFails_WrongPassword) {
   base::test::ScopedFeatureList feature_list{
       features::kBraveWalletPolkadotFeature};
@@ -4292,13 +4382,23 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, RestoreWalletTwice) {
   requested_addresses.clear();
 
   first_restore = false;
+  auto account_discovery_manager_ptr =
+      brave_wallet_service.account_discovery_manager()->GetWeakPtrForTesting();
+  EXPECT_TRUE(account_discovery_manager_ptr);
   service.Reset();
+
+  // Reset immediately resets account discovery.
+  EXPECT_FALSE(brave_wallet_service.account_discovery_manager());
+  EXPECT_FALSE(account_discovery_manager_ptr);
 
   NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
 
   EXPECT_CALL(observer, AccountsChanged()).Times(2);  // Accounts 3 and 10.
-  EXPECT_TRUE(RestoreWallet(&service, saved_mnemonic(), "brave1", false));
+  EXPECT_CALL(observer, WalletRestored()).Times(1);
+  EXPECT_TRUE(service.RestoreWalletSync(saved_mnemonic(), "brave1", false));
   observer.WaitAndVerify();
+  // New account discovery starts.
+  EXPECT_TRUE(brave_wallet_service.account_discovery_manager());
 
   std::vector<mojom::AccountInfoPtr> account_infos =
       service.GetAccountInfosForKeyring(mojom::KeyringId::kDefault);
@@ -4414,39 +4514,62 @@ TEST_F(KeyringServiceUnitTest, AccountsAdded) {
   observer.WaitAndVerify();
 }
 
-#if !defined(OFFICIAL_BUILD)
 TEST_F(KeyringServiceUnitTest, DevWalletPassword) {
   base::CommandLine* cmdline = base::CommandLine::ForCurrentProcess();
+  constexpr char kSwitchName[] = "dev-wallet-password";
 
   // Setup wallet.
   {
     KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+    service.SetAutolockEnabled(true);
     CreateWallet(&service, "some_password");
   }
 
   // Locked on start by default.
   {
     KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+    service.SetAutolockEnabled(true);
+    WaitForPostedTask();
     EXPECT_TRUE(service.IsLockedSync());
   }
 
-  // Unlocked on start with right password.
+  // Unlocked on start with right password. Autolock by inactivity still works.
   {
-    cmdline->AppendSwitchASCII(switches::kDevWalletPassword, "some_password");
+    cmdline->AppendSwitchASCII(kSwitchName, "some_password");
     KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+    service.SetAutolockEnabled(true);
+    WaitForPostedTask();
+
+#if !BUILDFLAG(ENABLE_BRAVE_WALLET_DEV_CMD_LINE_UNLOCK)
+    // `--dev-wallet-password` is noop without buildflag, so wallet stays
+    // locked.
+    EXPECT_TRUE(service.IsLockedSync());
+    // Able to unlock.
+    EXPECT_TRUE(Unlock(&service, "some_password"));
+#endif
+
+    // Wallet gets unlocked.
     EXPECT_FALSE(service.IsLockedSync());
-    cmdline->RemoveSwitch(switches::kDevWalletPassword);
+
+    // Still unlocked after 1 minute, but eventually locks by inactivity
+    // timeout.
+    task_environment_.FastForwardBy(base::Minutes(1));
+    EXPECT_FALSE(service.IsLockedSync());
+    ASSERT_TRUE(base::test::RunUntil([&]() { return service.IsLockedSync(); }));
+
+    cmdline->RemoveSwitch(kSwitchName);
   }
 
   // Locked on start with wrong password.
   {
-    cmdline->AppendSwitchASCII(switches::kDevWalletPassword, "wrong_password");
+    cmdline->AppendSwitchASCII(kSwitchName, "wrong_password");
     KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+    service.SetAutolockEnabled(true);
+    WaitForPostedTask();
     EXPECT_TRUE(service.IsLockedSync());
-    cmdline->RemoveSwitch(switches::kDevWalletPassword);
+    cmdline->RemoveSwitch(kSwitchName);
   }
 }
-#endif  // !defined(OFFICIAL_BUILD)
 
 TEST_F(KeyringServiceUnitTest, GetBitcoinAddresses) {
   // TODO(apaymyshev): update existing tests above to also cover Bitcoin

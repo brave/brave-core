@@ -59,7 +59,6 @@ class BraveWalletHandler : public settings::SettingsPageUIHandler {
   void SetWalletInPrivateWindowsEnabled(const base::ListValue& args);
   void GetWalletInPrivateWindowsEnabled(const base::ListValue& args);
   void GetWeb3ProviderList(const base::ListValue& args);
-  void IsNativeWalletEnabled(const base::ListValue& args);
 
   PrefService* GetPrefs();
   brave_wallet::NetworkManager* GetNetworkManager();

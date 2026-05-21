@@ -146,7 +146,7 @@ export function RewardsOptIn (props: Props) {
           <button
             onClick={onContinueClick}
             disabled={!countryCode || processing}
-            data-test-id='select-country-button'
+            data-testid='select-country-button'
           >
             {processing ? <LoadingIcon /> : getString('onboardingContinue')}
           </button>
@@ -169,7 +169,7 @@ export function RewardsOptIn (props: Props) {
         {getString('onboardingEarnText')}
       </style.optInText>
       <style.mainAction>
-        <button onClick={onEnableClick} data-test-id='opt-in-button'>
+        <button onClick={onEnableClick} data-testid='opt-in-button'>
           {getString('onboardingStartUsingRewards')}
         </button>
       </style.mainAction>

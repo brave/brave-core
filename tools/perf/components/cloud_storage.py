@@ -10,6 +10,8 @@ import components.perf_test_utils as perf_test_utils
 import components.path_util as path_util
 
 with path_util.SysPath(path_util.GetDepotToolsDir()):
+  # pytype: disable=import-error
+  # pylint: disable=import-error
   from download_from_google_storage import get_sha1
 
 _CLOUD_BUCKET = 'brave-perf-data'

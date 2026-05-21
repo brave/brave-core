@@ -16,12 +16,12 @@ namespace brave_ads {
 
 struct NotificationAdInfo;
 
-base::DictValue NotificationAdToValue(const NotificationAdInfo& ad);
-base::ListValue NotificationAdsToValue(
+base::DictValue NotificationAdToDict(const NotificationAdInfo& ad);
+base::ListValue NotificationAdsToList(
     const base::circular_deque<NotificationAdInfo>& ads);
 
-NotificationAdInfo NotificationAdFromValue(const base::DictValue& dict);
-base::circular_deque<NotificationAdInfo> NotificationAdsFromValue(
+NotificationAdInfo NotificationAdFromDict(const base::DictValue& dict);
+base::circular_deque<NotificationAdInfo> NotificationAdsFromList(
     const base::ListValue& list);
 
 }  // namespace brave_ads

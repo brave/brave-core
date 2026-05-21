@@ -24,6 +24,7 @@
 #include "services/network/public/cpp/network_switches.h"
 #include "ui/base/clipboard/clipboard.h"
 #include "ui/base/clipboard/scoped_clipboard_writer.h"
+#include "ui/base/clipboard/test/clipboard_test_util.h"
 
 namespace {
 
@@ -127,8 +128,9 @@ class URLSanitizerTestBase : public InProcessBrowserTest {
   void WaitClipboardEmpty() {
     std::string text_from_clipboard;
     while (text_from_clipboard != "empty") {
-      ui::Clipboard::GetForCurrentThread()->ReadAsciiText(
-          ui::ClipboardBuffer::kCopyPaste, nullptr, &text_from_clipboard);
+      text_from_clipboard = ui::clipboard_test_util::ReadAsciiText(
+          ui::Clipboard::GetForCurrentThread(), ui::ClipboardBuffer::kCopyPaste,
+          nullptr);
       NonBlockingDelay(base::Microseconds(10));
     }
   }
@@ -136,8 +138,9 @@ class URLSanitizerTestBase : public InProcessBrowserTest {
   std::string WaitClipboard() {
     std::string text_from_clipboard = "empty";
     while (text_from_clipboard == "empty") {
-      ui::Clipboard::GetForCurrentThread()->ReadAsciiText(
-          ui::ClipboardBuffer::kCopyPaste, nullptr, &text_from_clipboard);
+      text_from_clipboard = ui::clipboard_test_util::ReadAsciiText(
+          ui::Clipboard::GetForCurrentThread(), ui::ClipboardBuffer::kCopyPaste,
+          nullptr);
       NonBlockingDelay(base::Microseconds(10));
     }
     return text_from_clipboard;

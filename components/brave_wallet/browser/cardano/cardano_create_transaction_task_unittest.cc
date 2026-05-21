@@ -120,6 +120,55 @@ TEST_F(CardanoCreateTransactionTaskUnitTest, FixedAmount) {
       tx, latest_epoch_parameters()));
 }
 
+TEST_F(CardanoCreateTransactionTaskUnitTest, FixedAmount_ByronAddress) {
+  CardanoCreateTransactionTask task(
+      *cardano_wallet_service_, account_id(),
+      *CardanoAddress::FromString(
+          "Ae2tdPwUPEZFRbyhz3cpfC2CumGzNkFBN2L42rcUc2yjQpEkxDbkPodpMAi"),
+      1000000, false, std::nullopt);
+
+  TestFuture<base::expected<CardanoTransaction, std::string>> tx_future;
+  task.Start(tx_future.GetCallback());
+
+  auto tx = tx_future.Take().value();
+  EXPECT_EQ(tx.TargetOutput()->amount, 1000000u);
+  EXPECT_EQ(tx.ChangeOutput()->amount, 5832211u);
+  EXPECT_EQ(tx.fee(), 167789u);
+  EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(
+      tx, latest_epoch_parameters()));
+}
+
+TEST_F(CardanoCreateTransactionTaskUnitTest, FixedAmount_EnterpriseAddress) {
+  CardanoCreateTransactionTask task(
+      *cardano_wallet_service_, account_id(),
+      *CardanoAddress::FromString(
+          "addr1vx2fxv2umyhttkxyxp8x0dlpdt3k6cwng5pxj3jhsydzers66hrl8"),
+      1000000, false, std::nullopt);
+
+  TestFuture<base::expected<CardanoTransaction, std::string>> tx_future;
+  task.Start(tx_future.GetCallback());
+
+  auto tx = tx_future.Take().value();
+  EXPECT_EQ(tx.TargetOutput()->amount, 1000000u);
+  EXPECT_EQ(tx.ChangeOutput()->amount, 5832827u);
+  EXPECT_EQ(tx.fee(), 167173u);
+  EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(
+      tx, latest_epoch_parameters()));
+}
+
+TEST_F(CardanoCreateTransactionTaskUnitTest, FixedAmount_StakeAddress) {
+  CardanoCreateTransactionTask task(
+      *cardano_wallet_service_, account_id(),
+      *CardanoAddress::FromString(
+          "stake1uyehkck0lajq8gr28t9uxnuvgcqrc6070x3k9r8048z8y5gh6ffgw"),
+      1000000, false, std::nullopt);
+
+  TestFuture<base::expected<CardanoTransaction, std::string>> tx_future;
+  task.Start(tx_future.GetCallback());
+
+  EXPECT_EQ(tx_future.Take().error(), WalletInternalErrorMessage());
+}
+
 TEST_F(CardanoCreateTransactionTaskUnitTest, SendAmountIsTooLow) {
   // 969750 = 4310 * (160 + 65)
   // 4310 is min utxo value per byte, from protocol parameters.

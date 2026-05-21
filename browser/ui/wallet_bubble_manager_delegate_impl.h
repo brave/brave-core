@@ -7,7 +7,6 @@
 #define BRAVE_BROWSER_UI_WALLET_BUBBLE_MANAGER_DELEGATE_IMPL_H_
 
 #include <memory>
-#include <vector>
 
 #include "base/memory/raw_ptr.h"
 #include "brave/browser/ui/brave_wallet/wallet_bubble_manager_delegate.h"
@@ -32,11 +31,10 @@ class WalletBubbleManagerDelegateImpl : public WalletBubbleManagerDelegate {
   bool IsShowingBubble() override;
   bool IsBubbleClosedForTesting() override;
   content::WebContents* GetWebContentsForTesting() override;
-  const std::vector<int32_t>& GetPopupIdsForTesting() override;
 
  private:
+  // `this` never outlives `web_contents_` instance.
   raw_ptr<content::WebContents> web_contents_ = nullptr;
-  GURL webui_url_;
   std::unique_ptr<WalletWebUIBubbleManager> webui_bubble_manager_;
 };
 

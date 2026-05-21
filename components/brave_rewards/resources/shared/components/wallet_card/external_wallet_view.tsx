@@ -39,7 +39,7 @@ export function ExternalWalletView (props: Props) {
       return (
         <style.verifyWallet>
           <button
-            data-test-id='verify-rewards-button'
+            data-testid='verify-rewards-button'
             className='connect'
             onClick={actionHandler('verify')}
           >
@@ -57,7 +57,7 @@ export function ExternalWalletView (props: Props) {
     return (
       <style.bubbleAction>
         <button onClick={toggleBubble} className={showBubble ? 'pressed' : ''}>
-          <style.buttonText data-test-id='external-wallet-status-text'>
+          <style.buttonText data-testid='external-wallet-status-text'>
             {
               getString(!externalWallet.authenticated
                 ? 'walletDisconnected'

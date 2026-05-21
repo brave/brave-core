@@ -134,7 +134,6 @@ class NTPBackgroundImagesService {
       AllowNewTabTakeoverWithImageIfJavaScriptContentSettingIsSetToBlocked);
   FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, ModelTest);
 
-  void OnSponsoredComponentReady(const base::FilePath& installed_dir);
   void OnGetSponsoredComponentJsonData(const std::string& json_string);
   void OnComponentReady(const base::FilePath& installed_dir);
   void OnGetComponentJsonData(const std::string& json_string);
@@ -145,6 +144,8 @@ class NTPBackgroundImagesService {
 
   // virtual for test.
   virtual void RegisterBackgroundImagesComponent();
+  virtual std::string GetCountryCode() const;
+  virtual void OnSponsoredComponentReady(const base::FilePath& installed_dir);
 
   std::optional<base::Time> last_updated_at_;
 

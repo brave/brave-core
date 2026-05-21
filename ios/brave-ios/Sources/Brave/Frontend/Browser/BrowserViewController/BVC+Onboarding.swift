@@ -33,82 +33,10 @@ extension BrowserViewController {
       Preferences.DebugFlag.skipNTPCallouts != true
     {
 
-      if !Preferences.FullScreenCallout.omniboxCalloutCompleted.value,
-        Preferences.Onboarding.isNewRetentionUser.value == true
-      {
-        presentOmniBoxOnboarding()
-      }
-
       if !Preferences.FullScreenCallout.ntpCalloutCompleted.value {
         showPrivacyReportsOnboardingIfNeeded()
       }
     }
-  }
-
-  private func presentOmniBoxOnboarding() {
-    // If a controller is already presented (such as menu), do not show onboarding
-    guard presentedViewController == nil else {
-      return
-    }
-
-    // Don't show onboarding if we're in overlay mode or no longer on an NTP
-    guard !topToolbar.inOverlayMode,
-      activeNewTabPageViewController != nil,
-      topToolbar.currentURL == nil
-    else { return }
-
-    var controller: UIViewController & PopoverContentComponent
-
-    if Preferences.FocusOnboarding.urlBarIndicatorShowBeShown.value {
-      Preferences.FocusOnboarding.urlBarIndicatorShowBeShown.reset()
-
-      controller = FocusNTPOnboardingViewController().then {
-        $0.setText(
-          title: Strings.FocusOnboarding.urlBarIndicatorTitle,
-          details: Strings.FocusOnboarding.urlBarIndicatorDescription
-        )
-      }
-
-      presentFavouriteURLBarPopover(
-        controller: controller,
-        onDismiss: { [weak self] in
-          guard let self = self else { return }
-          self.triggerPromotedInAppPurchase(savedPayment: self.iapObserver.savedPayment)
-        }
-      )
-    }
-
-    func presentFavouriteURLBarPopover(
-      controller: UIViewController & PopoverContentComponent,
-      onDismiss: @escaping () -> Void
-    ) {
-      // Double-check that we're still on the NTP and not in overlay mode before presenting
-      guard !topToolbar.inOverlayMode,
-        let info = activeNewTabPageViewController?.onboardingYouTubeFavoriteInfo,
-        let cellSuperview = info.cell.superview
-      else { return }
-      let frame = view.convert(info.cell.frame, from: cellSuperview)
-      presentPopoverContent(
-        using: controller,
-        with: frame,
-        arrowDistance: -10,
-        lineWidth: 0,
-        cornerRadius: topToolbar.locationContainer.layer.cornerRadius,
-        didDismiss: {
-          Preferences.FullScreenCallout.omniboxCalloutCompleted.value = true
-          Preferences.AppState.shouldDeferPromotedPurchase.value = false
-
-          onDismiss()
-        },
-        didClickBorderedArea: { [unowned self] in
-          Preferences.FullScreenCallout.omniboxCalloutCompleted.value = true
-          Preferences.AppState.shouldDeferPromotedPurchase.value = false
-
-          self.handleFavoriteAction(favorite: info.favorite, action: .opened())
-        }
-      )
-    }
-
   }
 
   private func triggerPromotedInAppPurchase(savedPayment: SKPayment?) {
@@ -300,7 +228,10 @@ extension BrowserViewController {
     // Check if user is already default before showing onboarding
     let isDefault = defaultBrowserHelper.status == .defaulted
 
-    var steps: [any OnboardingStep] = [.blockInterruptions]
+    var steps: [any OnboardingStep] =
+      AddToDockEligibility.isEligible
+      ? [.addToDock, .blockInterruptions]
+      : [.blockInterruptions]
     if !isDefault {
       steps.insert(.defaultBrowsing, at: 0)
     }

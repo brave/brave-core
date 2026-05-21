@@ -16,6 +16,7 @@
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "components/os_crypt/async/browser/test_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "services/network/public/cpp/network_context_getter.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
@@ -58,7 +59,8 @@ class AssociatedContentManagerUnitTest : public testing::Test {
         base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
             &url_loader_factory_);
 
-    model_service_ = std::make_unique<ModelService>(&prefs_);
+    model_service_ = std::make_unique<ModelService>(
+        &prefs_, os_crypt_.get(), network::NetworkContextGetter());
 
     ai_chat_service_ = std::make_unique<AIChatService>(
         model_service_.get(), nullptr /* tab_tracker_service */,
@@ -81,20 +83,17 @@ class AssociatedContentManagerUnitTest : public testing::Test {
         std::make_unique<NiceMock<MockEngineConsumer>>());
   }
 
-  void TearDown() override { ai_chat_service_.reset(); }
-
  protected:
   base::test::TaskEnvironment task_environment_;
-  AIChatFeedbackAPI feedback_api_;
-  std::unique_ptr<AIChatService> ai_chat_service_;
-  std::unique_ptr<ModelService> model_service_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   sync_preferences::TestingPrefServiceSyncable local_state_;
   std::unique_ptr<os_crypt_async::OSCryptAsync> os_crypt_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
+  AIChatFeedbackAPI feedback_api_;
+  std::unique_ptr<ModelService> model_service_;
+  std::unique_ptr<AIChatService> ai_chat_service_;
   mojom::ConversationPtr conversation_;
-
   std::unique_ptr<ConversationHandler> conversation_handler_;
 
  private:
@@ -323,17 +322,9 @@ TEST_F(AssociatedContentManagerUnitTest,
   ASSERT_EQ(1u, associated_content.size());
   EXPECT_FALSE(associated_content[0]->conversation_turn_uuid.has_value());
 
-#if DCHECK_IS_ON()
-  // This will only crash if DCHECK is on.
-  EXPECT_DEATH_IF_SUPPORTED(conversation_handler_->associated_content_manager()
-                                ->GetCachedContentsMap(),
-                            "");
-#else
-  // If DCHECK is off, the map should be empty.
   auto contents_map = conversation_handler_->associated_content_manager()
                           ->GetCachedContentsMap();
   EXPECT_TRUE(contents_map.empty());
-#endif
 }
 
 TEST_F(AssociatedContentManagerUnitTest, GetCachedContentsMap_MultipleContent) {

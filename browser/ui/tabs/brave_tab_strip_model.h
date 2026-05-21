@@ -60,6 +60,11 @@ class BraveTabStripModel : public TabStripModel {
   void SetTreeTabNodeCollapsed(const tree_tab::TreeTabNodeId& id,
                                bool collapsed);
 
+  // Returns the tree tab node id wrapping the given group, or nullptr if the
+  // group is not wrapped in a tree node (e.g. tree tabs off).
+  const tree_tab::TreeTabNodeId* GetTreeTabNodeIdForGroup(
+      tab_groups::TabGroupId group_id) const;
+
   // TabStripModel:
   void SelectRelativeTab(TabRelativeDirection direction,
                          TabStripUserGestureDetails detail) override;
@@ -80,6 +85,8 @@ class BraveTabStripModel : public TabStripModel {
 
   tabs::TabStripCollection& GetTabStripCollectionForTesting();
 
+  void SetSplitPinnedImplForTesting(split_tabs::SplitTabId split, bool pinned);
+
   // List of tab indexes sorted by most recently used
   std::vector<int> mru_cycle_list_;
 
@@ -91,6 +98,8 @@ class BraveTabStripModel : public TabStripModel {
   // this will be null.
   std::unique_ptr<TreeTabModel> tree_tab_model_;
 
+  // Note that we wrapped the subscriptions in a unique_ptr so that we can reset
+  // them when the tree tabs are flattened.
   std::unique_ptr<base::CallbackListSubscription>
       tree_tab_node_created_subscription_;
   std::unique_ptr<base::CallbackListSubscription>

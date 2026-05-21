@@ -1061,26 +1061,6 @@ constexpr base::TimeDelta kAnimationDuration = base::Milliseconds(200);
 
 ---
 
-<a id="CS-064"></a>
-
-## ✅ Prefer `const` for Local Variables Where Possible
-
-**Mark local variables `const` when they are not modified after initialization.** This communicates intent, prevents accidental mutation, and can enable compiler optimizations.
-
-```cpp
-// ❌ WRONG - mutable but never modified
-size_t index = items.size() - 1;
-auto result = DoComputation(index);
-
-// ✅ CORRECT - const communicates intent
-const size_t index = items.size() - 1;
-const auto result = DoComputation(index);
-```
-
-This is a preference, not a hard rule — always prefix with `nit:` and do not insist if the developer declines.
-
----
-
 <a id="CS-066"></a>
 
 ## ❌ Don't Commit Commented-Out Code
@@ -1159,3 +1139,40 @@ base::debug::ScopedCrashKeyString scoped_key(crash_key, state);
 ```
 
 See [Chromium C++ style guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md).
+
+---
+
+<a id="CS-070"></a>
+
+## ✅ Use `*.mojom-forward.h` in Headers When Only Forward Declarations Are Needed
+
+**When a header only references mojom types as pointers, references, or function parameters, include the auto-generated `*.mojom-forward.h` instead of the full `*.mojom.h` bindings.** The forward header declares all types from the mojom file without pulling in the full bindings, which reduces compile times and transitive dependencies. Move the full `*.mojom.h` include to the `.cc` file where the types are actually used.
+
+```cpp
+// ❌ WRONG - full mojom bindings in header for forward-declared usage only
+// prefs_registration.h
+#include "brave/components/containers/core/mojom/containers.mojom.h"
+
+namespace containers {
+void RegisterProfilePrefs(
+    user_prefs::PrefRegistrySyncable* registry,
+    const std::vector<mojom::ContainerPtr>& default_containers);
+}
+
+// ✅ CORRECT - forward header in .h, full include in .cc
+// prefs_registration.h
+#include "brave/components/containers/core/mojom/containers.mojom-forward.h"
+
+namespace containers {
+void RegisterProfilePrefs(
+    user_prefs::PrefRegistrySyncable* registry,
+    const std::vector<mojom::ContainerPtr>& default_containers);
+}
+
+// prefs_registration.cc
+#include "brave/components/containers/core/mojom/containers.mojom.h"
+```
+
+This is a mojom-specific application of [CS-014](#CS-014). The `*.mojom-forward.h` is auto-generated alongside the full bindings — every mojom target produces it.
+
+---

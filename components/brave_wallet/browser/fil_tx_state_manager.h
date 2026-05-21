@@ -14,12 +14,12 @@
 namespace brave_wallet {
 
 class TxMeta;
-class TxStorageDelegate;
+class TxStorage;
 class FilTxMeta;
 
 class FilTxStateManager : public TxStateManager {
  public:
-  FilTxStateManager(TxStorageDelegate& delegate,
+  FilTxStateManager(TxStorage& tx_storage,
                     AccountResolverDelegate& account_resolver_delegate);
   ~FilTxStateManager() override;
   FilTxStateManager(const FilTxStateManager&) = delete;

@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import Data
 import Foundation
 import Shared
@@ -16,7 +17,6 @@ import os.log
 class URLPartinessScriptHandler: TabContentScript {
   struct PartinessDTO: Decodable {
     struct PartinessDTOData: Decodable, Hashable {
-      let windowOrigin: String
       let urls: [String]
     }
 
@@ -46,7 +46,7 @@ class URLPartinessScriptHandler: TabContentScript {
       let dto = try JSONDecoder().decode(PartinessDTO.self, from: data)
       var results: [String: Bool] = [:]
 
-      guard let frameURL = NSURL(idnString: dto.data.windowOrigin) as URL? else {
+      guard let frameURL = URLOrigin(wkSecurityOrigin: message.frameInfo.securityOrigin).url else {
         // Since we can't create a url from the source,
         // we will assume they are all 3rd party
         for urlString in dto.data.urls {

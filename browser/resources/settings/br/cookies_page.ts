@@ -15,24 +15,13 @@ import { SettingsCookiesPageElement } from '../privacy_page/cookies_page.js'
 
 RegisterPolymerTemplateModifications({
   'settings-cookies-page': (templateContent) => {
-    const isNot3pcdRedesignEnabledTemplate = templateContent.
-      querySelector(
-        'template[if*="!is3pcdRedesignEnabled_"]'
-      )
-    if (!isNot3pcdRedesignEnabledTemplate) {
+    const generalControls = templateContent.getElementById('generalControls')
+    if (!generalControls) {
       console.error(
-        '[Brave Settings Overrides] Could not find template with ' +
-        'if*=!is3pcdRedesignEnabledTemplate on cookies page.')
+        '[Brave Settings Overrides] Could not find generalControls id ' +
+        'on cookies page.')
     } else {
-      const generalControls = isNot3pcdRedesignEnabledTemplate.content.
-          getElementById('generalControls')
-      if (!generalControls) {
-        console.error(
-          '[Brave Settings Overrides] Could not find generalControls id ' +
-          'on cookies page.')
-      } else {
-        generalControls.setAttribute('hidden', 'true')
-      }
+      generalControls.setAttribute('hidden', 'true')
     }
     const additionalProtections = templateContent.
       getElementById('additionalProtections')

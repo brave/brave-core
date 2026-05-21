@@ -83,6 +83,22 @@ extension Strings {
       comment: "The subtitle of the screen that requests user to set Brave as default"
     )
 
+    public static let addToDockScreenTitle = NSLocalizedString(
+      "focusOnboarding.addToDockScreenTitle",
+      tableName: "FocusOnboarding",
+      bundle: .module,
+      value: "Add Brave to Your Dock",
+      comment: "The title of the screen that explains how to add Brave to the iOS dock"
+    )
+
+    public static let addToDockScreenDescription = NSLocalizedString(
+      "focusOnboarding.addToDockScreenDescription",
+      tableName: "FocusOnboarding",
+      bundle: .module,
+      value: "Touch and hold the Brave icon, then drag it into your dock for quick access.",
+      comment: "The subtitle of the screen that explains how to add Brave to the iOS dock"
+    )
+
     public static let systemSettingsButtonTitle = NSLocalizedString(
       "focusOnboarding.systemSettingsButtonTitle",
       tableName: "FocusOnboarding",
@@ -105,22 +121,6 @@ extension Strings {
       bundle: .module,
       value: "Not Now",
       comment: "The title of the button that closes the default browser full screen callout"
-    )
-
-    public static let urlBarIndicatorTitle = NSLocalizedString(
-      "focusOnboarding.urlBarIndicatorTitle",
-      tableName: "FocusOnboarding",
-      bundle: .module,
-      value: "See the Brave difference",
-      comment: "The title of the popup which points to URL Bar after onboarding"
-    )
-
-    public static let urlBarIndicatorDescription = NSLocalizedString(
-      "focusOnboarding.urlBarIndicatorDescription",
-      tableName: "FocusOnboarding",
-      bundle: .module,
-      value: "Start streaming and enjoy fewer ads & trackers.",
-      comment: "The description of the popup which points to URL Bar after onboarding"
     )
   }
 }

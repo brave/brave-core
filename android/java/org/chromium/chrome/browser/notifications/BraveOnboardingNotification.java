@@ -18,7 +18,6 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.dialogs.BraveAdsNotificationDialog;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationPublisher;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
 import org.chromium.components.browser_ui.notifications.NotificationManagerProxyImpl;
@@ -38,22 +37,9 @@ public class BraveOnboardingNotification extends BroadcastReceiver {
     private static final String BRAVE_ONBOARDING_ORIGIN_DE = "https://brave.com/de/my-first-ad/";
     private static final String BRAVE_ONBOARDING_ORIGIN_FR = "https://brave.com/fr/my-first-ad/";
     public static final String DEEP_LINK = "deep_link";
-    public static final String USE_CUSTOM_NOTIFICATION = "use_custom_notification";
 
     private static final String COUNTRY_CODE_DE = "de_DE";
     private static final String COUNTRY_CODE_FR = "fr_FR";
-
-    public static void showOnboardingDialog() {
-        try {
-            BraveActivity braveActivity = BraveActivity.getBraveActivity();
-            BraveAdsNotificationDialog.showNotificationAd(braveActivity,
-                    BRAVE_ONBOARDING_NOTIFICATION_TAG, getNotificationUrl(),
-                    braveActivity.getString(R.string.brave_ui_brave_rewards),
-                    braveActivity.getString(R.string.this_is_your_first_ad));
-        } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "showOnboardingDialog " + e);
-        }
-    }
 
     public static void showOnboardingNotification() {
         Context context = ContextUtils.getApplicationContext();
@@ -98,11 +84,7 @@ public class BraveOnboardingNotification extends BroadcastReceiver {
                 launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(launchIntent);
             } else {
-                if (intent.getBooleanExtra(USE_CUSTOM_NOTIFICATION, false)) {
-                    showOnboardingDialog();
-                } else {
-                    showOnboardingNotification();
-                }
+                showOnboardingNotification();
                 braveActivity.hideRewardsOnboardingIcon();
             }
         } catch (BraveActivity.BraveActivityNotFoundException e) {

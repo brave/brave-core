@@ -142,8 +142,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
         mWalletOnboardingPagerAdapter =
-                new WalletOnboardingPagerAdapter(
-                        this, mBraveWalletP3A, mRestartSetupAction, mRestartRestoreAction);
+                new WalletOnboardingPagerAdapter(this, mRestartSetupAction, mRestartRestoreAction);
         mCryptoWalletOnboardingViewPager.setAdapter(mWalletOnboardingPagerAdapter);
 
         if (Utils.shouldShowCryptoOnboarding()) {

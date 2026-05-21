@@ -17,7 +17,7 @@ export function MainButton (props: Props) {
     <style.root>
       <button
         onClick={props.onClick}
-        data-test-id='rewards-onboarding-main-button'
+        data-testid='rewards-onboarding-main-button'
         disabled={props.disabled}
       >
         {props.children}

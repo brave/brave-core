@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving_util.h"
-#include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules_test_util.h"
+#include "brave/components/brave_ads/core/internal/serving/permission_rules/test/permission_rules_test_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads.h"
 #include "net/http/http_status_code.h"
@@ -24,9 +24,11 @@
 namespace brave_ads {
 
 class BraveAdsNotificationAdIntegrationTest : public test::TestBase {
- protected:
-  void SetUp() override { test::TestBase::SetUp(/*is_integration_test=*/true); }
+ public:
+  BraveAdsNotificationAdIntegrationTest()
+      : test::TestBase(/*is_integration_test=*/true) {}
 
+ protected:
   void SetUpMocks() override {
     const test::URLResponseMap url_responses = {
         {BuildCatalogUrlPath(),
@@ -35,9 +37,9 @@ class BraveAdsNotificationAdIntegrationTest : public test::TestBase {
     test::MockUrlResponses(ads_client_mock_, url_responses);
   }
 
-  void ServeAd() {
-    NotifyUserDidBecomeActive(/*idle_time=*/base::TimeDelta::Min(),
-                              /*screen_was_locked=*/false);
+  void SimulateOpportunityToServeAd() {
+    ads_client_notifier_.NotifyUserDidBecomeActive(
+        /*idle_time=*/base::TimeDelta::Min(), /*screen_was_locked=*/false);
   }
 };
 
@@ -53,7 +55,7 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, ServeAd) {
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd)
       .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
 
-  ServeAd();
+  SimulateOpportunityToServeAd();
   run_loop.Run();
 }
 
@@ -66,7 +68,7 @@ TEST_F(BraveAdsNotificationAdIntegrationTest,
   // Act & Assert
   EXPECT_CALL(ads_client_mock_, ShowNotificationAd).Times(0);
 
-  ServeAd();
+  SimulateOpportunityToServeAd();
 }
 
 TEST_F(BraveAdsNotificationAdIntegrationTest,
@@ -93,7 +95,7 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerViewedEvent) {
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
 
         // Act & Assert
-        base::MockCallback<TriggerAdEventCallback> callback;
+        base::MockCallback<ResultCallback> callback;
         base::RunLoop ad_event_run_loop(
             base::RunLoop::Type::kNestableTasksAllowed);
         EXPECT_CALL(callback, Run(/*success=*/true))
@@ -109,7 +111,7 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerViewedEvent) {
         run_loop.Quit();
       });
 
-  ServeAd();
+  SimulateOpportunityToServeAd();
   run_loop.Run();
 }
 
@@ -130,7 +132,7 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerClickedEvent) {
         EXPECT_CALL(ads_client_mock_, CloseNotificationAd(ad.placement_id))
             .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
 
-        base::MockCallback<TriggerAdEventCallback> callback;
+        base::MockCallback<ResultCallback> callback;
         base::RunLoop ad_event_run_loop(
             base::RunLoop::Type::kNestableTasksAllowed);
         EXPECT_CALL(callback, Run(/*success=*/true))
@@ -146,7 +148,7 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerClickedEvent) {
         run_loop.Quit();
       });
 
-  ServeAd();
+  SimulateOpportunityToServeAd();
   run_loop.Run();
 }
 
@@ -164,7 +166,7 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerDismissedEvent) {
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
 
         // Act & Assert
-        base::MockCallback<TriggerAdEventCallback> callback;
+        base::MockCallback<ResultCallback> callback;
         base::RunLoop ad_event_run_loop(
             base::RunLoop::Type::kNestableTasksAllowed);
         EXPECT_CALL(callback, Run(/*success=*/true))
@@ -180,7 +182,7 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerDismissedEvent) {
         run_loop.Quit();
       });
 
-  ServeAd();
+  SimulateOpportunityToServeAd();
   run_loop.Run();
 }
 
@@ -198,7 +200,7 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerTimedOutEvent) {
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
 
         // Act & Assert
-        base::MockCallback<TriggerAdEventCallback> callback;
+        base::MockCallback<ResultCallback> callback;
         base::RunLoop ad_event_run_loop(
             base::RunLoop::Type::kNestableTasksAllowed);
         EXPECT_CALL(callback, Run(/*success=*/true))
@@ -214,7 +216,7 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerTimedOutEvent) {
         run_loop.Quit();
       });
 
-  ServeAd();
+  SimulateOpportunityToServeAd();
   run_loop.Run();
 }
 

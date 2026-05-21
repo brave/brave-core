@@ -25,7 +25,7 @@ class SigningKey;
 // A `BatchDLEQProof` is a proof of the equivalence of the discrete logarithm
 // between a common pair of points and one or more other pairs of points.
 
-class BatchDLEQProof {
+class BatchDLEQProof final {
  public:
   BatchDLEQProof();
   explicit BatchDLEQProof(const std::string& batch_dleq_proof_base64);

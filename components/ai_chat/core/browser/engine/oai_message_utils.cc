@@ -310,6 +310,7 @@ std::vector<OAIMessage> BuildOAIMessages(
       std::vector<mojom::ContentBlockPtr> uploaded_images_content_blocks;
       std::vector<mojom::ContentBlockPtr> screenshots_content_blocks;
       std::vector<mojom::ContentBlockPtr> uploaded_pdfs_content_blocks;
+      std::vector<mojom::ContentBlockPtr> uploaded_text_files_content_blocks;
 
       uploaded_images_content_blocks.push_back(
           mojom::ContentBlock::NewTextContentBlock(mojom::TextContentBlock::New(
@@ -320,6 +321,9 @@ std::vector<OAIMessage> BuildOAIMessages(
       uploaded_pdfs_content_blocks.push_back(
           mojom::ContentBlock::NewTextContentBlock(mojom::TextContentBlock::New(
               "These PDFs are uploaded by the user")));
+      uploaded_text_files_content_blocks.push_back(
+          mojom::ContentBlock::NewTextContentBlock(mojom::TextContentBlock::New(
+              "These text files are uploaded by the user")));
 
       for (const auto& uploaded_file : *message->uploaded_files) {
         if (uploaded_file->type == mojom::UploadedFileType::kImage ||
@@ -333,13 +337,39 @@ std::vector<OAIMessage> BuildOAIMessages(
             screenshots_content_blocks.push_back(std::move(image));
           }
         } else if (uploaded_file->type == mojom::UploadedFileType::kPdf) {
-          uploaded_pdfs_content_blocks.push_back(
-              mojom::ContentBlock::NewFileContentBlock(
-                  mojom::FileContentBlock::New(
-                      GURL(EngineConsumer::GetPdfDataURL(uploaded_file->data)),
-                      uploaded_file->filename.empty()
-                          ? "uploaded.pdf"
-                          : uploaded_file->filename)));
+          std::string pdf_filename = uploaded_file->filename.empty()
+                                         ? "uploaded.pdf"
+                                         : uploaded_file->filename;
+          if (uploaded_file->extracted_text.has_value() &&
+              !uploaded_file->extracted_text->empty()) {
+            // Prefer extracted text — works with all models including
+            // local LLMs that cannot process raw PDF bytes.
+            uploaded_pdfs_content_blocks.push_back(
+                mojom::ContentBlock::NewFileExtractedTextContentBlock(
+                    mojom::FileExtractedTextContentBlock::New(
+                        "[PDF: " + pdf_filename + "]\n" +
+                        *uploaded_file->extracted_text)));
+          } else {
+            // Fall back to raw PDF bytes when no text was extracted.
+            uploaded_pdfs_content_blocks.push_back(
+                mojom::ContentBlock::NewFileContentBlock(
+                    mojom::FileContentBlock::New(
+                        GURL(
+                            EngineConsumer::GetPdfDataURL(uploaded_file->data)),
+                        pdf_filename)));
+          }
+        } else if (uploaded_file->type == mojom::UploadedFileType::kText) {
+          std::string text_filename = uploaded_file->filename.empty()
+                                          ? "uploaded.txt"
+                                          : uploaded_file->filename;
+          if (uploaded_file->extracted_text.has_value() &&
+              !uploaded_file->extracted_text->empty()) {
+            uploaded_text_files_content_blocks.push_back(
+                mojom::ContentBlock::NewFileExtractedTextContentBlock(
+                    mojom::FileExtractedTextContentBlock::New(
+                        "[File: " + text_filename + "]\n" +
+                        *uploaded_file->extracted_text)));
+          }
         }
       }
 
@@ -362,6 +392,13 @@ std::vector<OAIMessage> BuildOAIMessages(
             oai_message.content.end(),
             std::make_move_iterator(uploaded_pdfs_content_blocks.begin()),
             std::make_move_iterator(uploaded_pdfs_content_blocks.end()));
+      }
+
+      if (uploaded_text_files_content_blocks.size() > 1) {
+        oai_message.content.insert(
+            oai_message.content.end(),
+            std::make_move_iterator(uploaded_text_files_content_blocks.begin()),
+            std::make_move_iterator(uploaded_text_files_content_blocks.end()));
       }
     }
 
@@ -580,14 +617,26 @@ BuildOAIGenerateConversationTitleMessages(
         mojom::PageExcerptContentBlock::New(*first_turn->selected_text)));
   }
 
-  // Add a message for title generation.
-  // Use first assistant response as the content if files are uploaded (image,
-  // PDF), otherwise use the first human turn text.
+  // Use the first assistant response when it's non-empty as the title source
+  // when the user uploaded files (image, PDF) since it contains more useful
+  // context for title generation.
+  const bool use_assistant_text = first_turn->uploaded_files &&
+                                  !first_turn->uploaded_files->empty() &&
+                                  !assistant_turn->text.empty();
+  std::string title_text = use_assistant_text
+                               ? assistant_turn->text
+                               : EngineConsumer::GetPromptForEntry(first_turn);
+
+  // Withdraw the request entirely if we have nothing to summarize. Sending an
+  // empty title block wastes a server round-trip and cannot produce a useful
+  // title. Title errors are silently dropped in OnTitleGenerated, so the
+  // conversation simply keeps its placeholder title.
+  if (title_text.empty()) {
+    return std::nullopt;
+  }
+
   msg.content.push_back(mojom::ContentBlock::NewRequestTitleContentBlock(
-      mojom::RequestTitleContentBlock::New(
-          first_turn->uploaded_files
-              ? assistant_turn->text
-              : EngineConsumer::GetPromptForEntry(first_turn))));
+      mojom::RequestTitleContentBlock::New(std::move(title_text))));
 
   messages.push_back(std::move(msg));
   return messages;

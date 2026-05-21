@@ -1,0 +1,9 @@
+Name: crc32fast
+URL: https://crates.io/crates/crc32fast
+Version: 1.5.0
+License: Apache-2.0
+License File:
+Shipped: yes
+Security Critical: yes
+
+Description: Fast, SIMD-accelerated CRC32 (IEEE) checksum computation

@@ -1,0 +1,12 @@
+diff --git a/tools/json_schema_compiler/test/converted_schemas/developer_private.idl b/tools/json_schema_compiler/test/converted_schemas/developer_private.idl
+index 29ebd9733a2e7d2dcbe42abae3270e3ba59b4a12..db929dc26c98a182f4c43e4f134867755286b10a 100644
+--- a/tools/json_schema_compiler/test/converted_schemas/developer_private.idl
++++ b/tools/json_schema_compiler/test/converted_schemas/developer_private.idl
+@@ -229,6 +229,7 @@ namespace developerPrivate {
+     AccessModifier incognitoAccess;
+     AccessModifier userScriptsAccess;
+     boolean incognitoAccessPendingChange;
++    boolean isSplitMode;
+     DOMString[] installWarnings;
+     boolean isCommandRegistrationHandledExternally;
+     DOMString? launchUrl;

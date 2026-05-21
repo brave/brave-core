@@ -12,12 +12,10 @@
 namespace brave_ads {
 
 Studies::Studies() {
-  GetAdsClient().AddObserver(this);
+  ads_client_observation_.Observe(&GetAdsClient());
 }
 
-Studies::~Studies() {
-  GetAdsClient().RemoveObserver(this);
-}
+Studies::~Studies() = default;
 
 ///////////////////////////////////////////////////////////////////////////////
 

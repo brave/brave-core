@@ -9,10 +9,13 @@
 #include <optional>
 #include <string>
 
+#include "base/scoped_observation.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/subdivision_observer.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
 
 namespace brave_ads {
+
+class AdsClient;
 
 class SubdivisionTargeting final : public AdsClientNotifierObserver,
                                    public SubdivisionObserver {
@@ -62,6 +65,9 @@ class SubdivisionTargeting final : public AdsClientNotifierObserver,
 
   // SubdivisionObserver:
   void OnDidUpdateSubdivision(const std::string& subdivision) override;
+
+  base::ScopedObservation<AdsClient, AdsClientNotifierObserver>
+      ads_client_observation_{this};
 
   mutable std::optional<std::string> auto_detected_subdivision_;
   mutable std::optional<std::string> user_selected_subdivision_;

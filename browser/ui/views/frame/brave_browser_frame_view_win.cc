@@ -5,17 +5,19 @@
 
 #include "brave/browser/ui/views/frame/brave_browser_frame_view_win.h"
 
-#include "base/check.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 #include "brave/browser/ui/views/frame/brave_window_frame_graphic.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/frame/browser_caption_button_container_win.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/win/titlebar_config.h"
 #include "ui/base/hit_test.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/compositor/layer.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/rect.h"
@@ -116,7 +118,10 @@ int BraveBrowserFrameViewWin::NonClientHitTest(const gfx::Point& point) {
     }
   }
 
-  if (auto overridden_result = brave::NonClientHitTest(GetBrowserView(), point);
+  auto* browser = GetBrowserView()->browser();
+  if (auto overridden_result = browser->browser_window_features()
+                                   ->brave_non_client_hit_test_helper()
+                                   ->NonClientHitTest(GetBrowserView(), point);
       overridden_result != HTNOWHERE) {
     return overridden_result;
   }
@@ -155,4 +160,11 @@ void BraveBrowserFrameViewWin::LayoutCaptionButtons() {
             ? 0
             : width() - caption_button_container_->width());
   }
+
+  // See the comment in BraveOpaqueBrowserFrameView::Layout().
+  static_cast<BraveToolbarView*>(GetBrowserView()->toolbar())
+      ->UpdateHorizontalPadding();
 }
+
+BEGIN_METADATA(BraveBrowserFrameViewWin)
+END_METADATA

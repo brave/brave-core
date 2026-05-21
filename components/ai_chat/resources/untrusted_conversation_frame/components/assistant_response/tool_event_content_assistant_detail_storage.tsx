@@ -4,12 +4,11 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { getLocale } from '$web-common/locale'
 import type { ToolComponent, ToolUseContent } from './tool_event'
 
 const ToolEventContentAssistantDetailStorage: ToolComponent = (props) => {
   const content: ToolUseContent = {
-    toolLabel: getLocale(S.CHAT_UI_TOOL_LABEL_ASSISTANT_DETAIL_STORAGE),
+    toolLabel: props.content.toolLabel,
     expandedContent: null,
   }
 

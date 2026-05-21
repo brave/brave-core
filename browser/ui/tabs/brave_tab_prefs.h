@@ -33,6 +33,11 @@ inline constexpr char kVerticalTabsOnRight[] =
     "brave.tabs.vertical_tabs_on_right";
 inline constexpr char kVerticalTabsShowScrollbar[] =
     "brave.tabs.vertical_tabs_show_scrollbar";
+// When tabs::kBraveScrollableTabStrip is on: toggles visibility of the
+// horizontal tab strip scroll buttons only (wheel/trackpad overflow scrolling
+// is unchanged).
+inline constexpr char kShowHorizontalTabScrollButtons[] =
+    "brave.tabs.show_horizontal_tab_scroll_buttons";
 inline constexpr char kTreeTabsEnabled[] = "brave.tabs.tree_tabs_enabled";
 
 inline constexpr char kSharedPinnedTab[] = "brave.tabs.shared_pinned_tab";
@@ -43,11 +48,32 @@ inline constexpr char kAlwaysHideTabCloseButton[] =
 inline constexpr char kMiddleClickCloseTabEnabled[] =
     "brave.tabs.middle_click_close_tab_enabled";
 
+inline constexpr char kTabMinWidthMode[] = "brave.tabs.min_width_mode";
+
+// When true (and kBraveScrollableTabStrip is enabled), the horizontal tab strip
+// scrolls when there are more tabs than fit. When false, tabs shrink instead.
+inline constexpr char kScrollableHorizontalTabStrip[] =
+    "brave.tabs.scrollable_horizontal_tab_strip";
+
+// Integer values stored in prefs; stable for migration. kDefault is reserved so
+// the product default can change without migrating explicit user choices.
+enum class TabMinWidthMode {
+  kDefault = 0,
+  kMinimum = 1,
+  kMedium = 2,
+  kLarge = 3,
+  kFull = 4,
+};
+
 void RegisterBraveProfilePrefs(PrefRegistrySimple* registry);
 void MigrateBraveProfilePrefs(PrefService* prefs);
 
 bool AreTooltipsEnabled(PrefService* prefs);
 bool AreCardPreviewsEnabled(PrefService* prefs);
+
+// True when the scrollable horizontal tab strip feature flag is enabled and the
+// user pref to use it is on.
+bool IsScrollableHorizontalTabStripEnabled(const PrefService* prefs);
 
 }  // namespace brave_tabs
 

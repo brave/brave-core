@@ -5,6 +5,7 @@
 
 #include "brave/components/email_aliases/email_aliases_service.h"
 
+#include <optional>
 #include <string>
 #include <utility>
 #include <variant>
@@ -49,9 +50,9 @@ class AliasObserver : public mojom::EmailAliasesServiceObserver {
  public:
   void OnAuthStateChanged(mojom::AuthStatePtr) override {}
 
-  void OnAliasesUpdated(std::vector<mojom::AliasPtr> aliases) override {
+  void OnAliasesUpdated(mojom::AliasesUpdatePtr update) override {
     ++alias_updates;
-    last_aliases = std::move(aliases);
+    last_update_ = std::move(update);
   }
 
   bool WaitForAliasUpdateCount(size_t count) {
@@ -66,13 +67,16 @@ class AliasObserver : public mojom::EmailAliasesServiceObserver {
 
   size_t alias_update_count() const { return alias_updates; }
 
-  const std::vector<mojom::AliasPtr>& get_last_aliases() const {
-    return last_aliases;
+  const mojom::AliasesUpdatePtr& last_update() const { return last_update_; }
+
+  void ResetForTesting() {
+    alias_updates = 0;
+    last_update_.reset();
   }
 
  private:
   size_t alias_updates = 0;
-  std::vector<mojom::AliasPtr> last_aliases;
+  mojom::AliasesUpdatePtr last_update_;
   mojo::Receiver<mojom::EmailAliasesServiceObserver> receiver{this};
 };
 
@@ -170,9 +174,14 @@ class EmailAliasesAPITest : public ::testing::Test {
     email_aliases::test::AuthStateObserver::Setup(service_.get(), true);
     service_->GetAuth()->SetAuthEmailForTesting("test@login.com");
 
+    // Default list response so AddObserver's initial refresh does not notify an
+    // error
+    AddRefreshResponseFor();
+
     mojo::PendingRemote<mojom::EmailAliasesServiceObserver> remote;
     observer_.BindReceiver(remote.InitWithNewPipeAndPassReceiver());
     service_->AddObserver(std::move(remote));
+    observer_.ResetForTesting();
   }
 
   base::test::ScopedFeatureList brave_account_feature_list_{
@@ -370,12 +379,17 @@ TEST_F(EmailAliasesAPITest, RefreshAliases_Notifies_OnValidResponse) {
           "\"status\":\"active\"}] }",
       "note");
   ASSERT_TRUE(result_out.has_value());
-  ASSERT_FALSE(observer_.get_last_aliases().empty());
-  EXPECT_EQ(observer_.get_last_aliases()[0]->email, alias_email);
-  EXPECT_EQ(observer_.get_last_aliases()[0]->note, "note");
+  ASSERT_TRUE(observer_.last_update());
+  ASSERT_EQ(observer_.last_update()->which(),
+            mojom::AliasesUpdate::Tag::kAliases);
+  const auto& aliases = observer_.last_update()->get_aliases();
+  ASSERT_FALSE(aliases.empty());
+  EXPECT_EQ(aliases[0]->email, alias_email);
+  EXPECT_EQ(aliases[0]->note, "note");
 }
 
-TEST_F(EmailAliasesAPITest, RefreshAliases_DoesNotNotify_OnErrorOrInvalidJson) {
+TEST_F(EmailAliasesAPITest,
+       RefreshAliases_NotifiesWithError_OnErrorOrInvalidJson) {
   auto result_out =
       CallUpdateAliasWith("alias@example.com",
                           /*put_body=*/R"({"message":"updated"})",
@@ -383,7 +397,11 @@ TEST_F(EmailAliasesAPITest, RefreshAliases_DoesNotNotify_OnErrorOrInvalidJson) {
                           /*note=*/std::nullopt,
                           /*wait_for_update=*/false);
   ASSERT_TRUE(result_out.has_value());
-  EXPECT_EQ(observer_.alias_update_count(), 0u);
+  EXPECT_EQ(observer_.alias_update_count(), 2u);
+  ASSERT_TRUE(observer_.last_update());
+  ASSERT_EQ(observer_.last_update()->which(),
+            mojom::AliasesUpdate::Tag::kError);
+  EXPECT_FALSE(observer_.last_update()->get_error().empty());
 }
 
 TEST_F(EmailAliasesAPITest, ApiFetch_AttachesAuthTokenAndAPIKeyHeaders) {

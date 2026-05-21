@@ -6,10 +6,13 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_UTILS_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_UTILS_H_
 
+#include <optional>
 #include <string>
 #include <string_view>
 
+#include "base/containers/flat_map.h"
 #include "base/functional/callback_forward.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
@@ -53,6 +56,11 @@ EngineConsumer::GenerationDataCallback BindParseRewriteReceivedData(
 SkBitmap ScaleDownBitmap(const SkBitmap& bitmap);
 
 GURL GetEndpointUrl(bool premium, const std::string& path);
+
+// Builds the standard Brave AI Chat relay request headers: the Leo premium SKU
+// Cookie header (when |credential| is provided) and the x-brave-key header.
+base::flat_map<std::string, std::string> GetBraveHeaders(
+    std::optional<CredentialCacheEntry> credential);
 
 }  // namespace ai_chat
 

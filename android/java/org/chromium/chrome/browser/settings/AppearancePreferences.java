@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.settings;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.preference.Preference;
@@ -21,6 +22,7 @@ import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.BraveRewardsPolicy;
 import org.chromium.chrome.browser.appearance.settings.AppearanceSettingsFragment;
+import org.chromium.chrome.browser.bookmarks.bar.BookmarkBarUtils;
 import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.multiwindow.BraveMultiWindowDialogFragment;
@@ -29,6 +31,8 @@ import org.chromium.chrome.browser.multiwindow.MultiInstanceManager.PersistedIns
 import org.chromium.chrome.browser.multiwindow.MultiWindowUtils;
 import org.chromium.chrome.browser.ntp.NtpUtil;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
+import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.settings.search.ChromeBaseSearchIndexProvider;
 import org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities;
 import org.chromium.chrome.browser.toolbar.ToolbarPositionController;
 import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarButtonVariant;
@@ -39,22 +43,26 @@ import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.settings.AddressBarSettingsFragment;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.components.browser_ui.settings.search.PreferenceParser;
+import org.chromium.components.browser_ui.settings.search.SearchIndexProvider;
+import org.chromium.components.browser_ui.settings.search.SettingsIndexData;
 import org.chromium.ui.base.DeviceFormFactor;
+
+import java.util.Map;
 
 public class AppearancePreferences extends AppearanceSettingsFragment
         implements Preference.OnPreferenceChangeListener, BraveRewardsObserver {
-    public static final String PREF_HIDE_BRAVE_REWARDS_ICON = "hide_brave_rewards_icon";
-    public static final String PREF_HIDE_BRAVE_REWARDS_ICON_MIGRATION =
-            "hide_brave_rewards_icon_migration";
     public static final String PREF_SHOW_BRAVE_REWARDS_ICON = "show_brave_rewards_icon";
-    public static final String PREF_ADS_SWITCH = "ads_switch";
-    public static final String PREF_BRAVE_NIGHT_MODE_ENABLED = "brave_night_mode_enabled_key";
-    public static final String PREF_BRAVE_DISABLE_SHARING_HUB = "brave_disable_sharing_hub";
-    public static final String PREF_BRAVE_ENABLE_TAB_GROUPS = "brave_enable_tab_groups";
-    public static final String PREF_ENABLE_MULTI_WINDOWS = "enable_multi_windows";
-    public static final String PREF_SHOW_UNDO_WHEN_TABS_CLOSED = "show_undo_when_tabs_closed";
     public static final String PREF_ADDRESS_BAR = "address_bar";
-    private static final String PREF_BRAVE_CUSTOMIZE_MENU = "brave_customize_menu";
+    /* package */ static final String PREF_ADS_SWITCH = "ads_switch";
+    /* package */ static final String PREF_BRAVE_NIGHT_MODE_ENABLED =
+            "brave_night_mode_enabled_key";
+    /* package */ static final String PREF_BRAVE_DISABLE_SHARING_HUB = "brave_disable_sharing_hub";
+    /* package */ static final String PREF_BRAVE_ENABLE_TAB_GROUPS = "brave_enable_tab_groups";
+    /* package */ static final String PREF_ENABLE_MULTI_WINDOWS = "enable_multi_windows";
+    /* package */ static final String PREF_SHOW_UNDO_WHEN_TABS_CLOSED =
+            "show_undo_when_tabs_closed";
+    /* package */ static final String PREF_BRAVE_CUSTOMIZE_MENU = "brave_customize_menu";
 
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
 
@@ -88,10 +96,7 @@ public class AppearancePreferences extends AppearanceSettingsFragment
             removePreferenceIfPresent(PREF_ADDRESS_BAR);
         }
 
-        // Correct the order of the preferences.
-        setPreferenceOrder(AppearanceSettingsFragment.PREF_UI_THEME, 0);
-        setPreferenceOrder(PREF_BRAVE_CUSTOMIZE_MENU, 1);
-        setPreferenceOrder(PREF_ADDRESS_BAR, 2);
+        applyOrdering();
     }
 
     private void removePreferenceIfPresent(String key) {
@@ -274,15 +279,14 @@ public class AppearancePreferences extends AppearanceSettingsFragment
                     .writeBoolean(BravePreferenceKeys.BRAVE_TAB_GROUPS_ENABLED, (boolean) newValue);
         } else if (PREF_ENABLE_MULTI_WINDOWS.equals(key)) {
             if (!(boolean) newValue) {
-                if (MultiWindowUtils.getInstanceCountWithFallback(PersistedInstanceType.ACTIVE)
-                        > 1) {
+                if (MultiWindowUtils.getInstanceCount(PersistedInstanceType.ACTIVE) > 1) {
                     BraveMultiWindowDialogFragment dialogFragment =
                             BraveMultiWindowDialogFragment.newInstance();
                     BraveMultiWindowDialogFragment.DismissListener dismissListener =
                             new BraveMultiWindowDialogFragment.DismissListener() {
                                 @Override
                                 public void onDismiss() {
-                                    if (MultiWindowUtils.getInstanceCountWithFallback(
+                                    if (MultiWindowUtils.getInstanceCount(
                                                     PersistedInstanceType.ACTIVE)
                                             == 1) {
                                         if (preference instanceof ChromeSwitchPreference) {
@@ -352,6 +356,24 @@ public class AppearancePreferences extends AppearanceSettingsFragment
         }
     }
 
+    // Both XMLs (upstream and brave) independently assign sequential order values starting from 0,
+    // causing collisions. Setting all preferences to explicit unique values prevents alphabetical
+    // tie-breaking, which would otherwise produce language-dependent ordering.
+    private void applyOrdering() {
+        setPreferenceOrder(AppearanceSettingsFragment.PREF_UI_THEME, 0);
+        setPreferenceOrder(PREF_BRAVE_CUSTOMIZE_MENU, 1);
+        setPreferenceOrder(AppearanceSettingsFragment.PREF_TOOLBAR_SHORTCUT, 2);
+        setPreferenceOrder(PREF_ADDRESS_BAR, 3);
+        setPreferenceOrder(BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY, 4);
+        setPreferenceOrder(PREF_SHOW_BRAVE_REWARDS_ICON, 5);
+        setPreferenceOrder(PREF_ADS_SWITCH, 6);
+        setPreferenceOrder(PREF_BRAVE_NIGHT_MODE_ENABLED, 7);
+        setPreferenceOrder(PREF_BRAVE_DISABLE_SHARING_HUB, 8);
+        setPreferenceOrder(PREF_BRAVE_ENABLE_TAB_GROUPS, 9);
+        setPreferenceOrder(PREF_ENABLE_MULTI_WINDOWS, 10);
+        setPreferenceOrder(PREF_SHOW_UNDO_WHEN_TABS_CLOSED, 11);
+    }
+
     private void setPreferenceOrder(String key, int order) {
         Preference preference = findPreference(key);
         if (preference != null) {
@@ -393,4 +415,55 @@ public class AppearancePreferences extends AppearanceSettingsFragment
             AdaptiveToolbarPrefs.saveToolbarButtonManualOverride(defaultVariant);
         }
     }
+
+    public static final ChromeBaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
+            new ChromeBaseSearchIndexProvider(
+                    AppearancePreferences.class.getName(), R.xml.appearance_preferences) {
+
+                @Override
+                public void initPreferenceXml(
+                        Context context,
+                        Profile profile,
+                        SettingsIndexData indexData,
+                        Map<String, SearchIndexProvider> providerMap) {
+                    super.initPreferenceXml(context, profile, indexData, providerMap);
+                    PreferenceParser.parseAndPopulate(
+                            context,
+                            R.xml.brave_appearance_preferences,
+                            indexData,
+                            AppearancePreferences.class.getName(),
+                            new Bundle(),
+                            providerMap);
+                }
+
+                @Override
+                public void updateDynamicPreferences(
+                        Context context, SettingsIndexData indexData, Profile profile) {
+                    String frag = AppearancePreferences.class.getName();
+                    AppearanceSettingsFragment.shouldShowToolbarShortcutPrefAsync(
+                            context,
+                            profile,
+                            (shouldShow) -> {
+                                if (!shouldShow) {
+                                    indexData.removeEntryForKey(
+                                            frag, AppearanceSettingsFragment.PREF_TOOLBAR_SHORTCUT);
+                                    indexData.resolveIndex();
+                                }
+                            });
+                    if (!BookmarkBarUtils.isDeviceBookmarkBarCompatible(context)) {
+                        indexData.removeEntryForKey(
+                                frag, AppearanceSettingsFragment.PREF_BOOKMARK_BAR);
+                    }
+
+                    if (BraveRewardsPolicy.isDisabledByPolicy(profile)) {
+                        indexData.removeEntryForKey(frag, PREF_SHOW_BRAVE_REWARDS_ICON);
+                        indexData.removeEntryForKey(frag, PREF_ADS_SWITCH);
+                    }
+
+                    if (!ToolbarPositionController.isToolbarPositionCustomizationEnabled(
+                            context, false)) {
+                        indexData.removeEntryForKey(frag, PREF_ADDRESS_BAR);
+                    }
+                }
+            };
 }

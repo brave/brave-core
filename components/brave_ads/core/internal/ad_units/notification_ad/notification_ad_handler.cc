@@ -29,7 +29,7 @@ namespace brave_ads {
 
 namespace {
 
-void FireEventCallback(TriggerAdEventCallback callback,
+void FireEventCallback(ResultCallback callback,
                        bool success,
                        const std::string& /*placement_id*/,
                        mojom::NotificationAdEventType /*mojom_ad_event_type*/) {
@@ -50,16 +50,13 @@ NotificationAdHandler::NotificationAdHandler(
     const AntiTargetingResource& anti_targeting_resource)
     : site_visit_(site_visit),
       serving_(subdivision_targeting, anti_targeting_resource) {
-  GetAdsClient().AddObserver(this);
-  BrowserManager::GetInstance().AddObserver(this);
+  ads_client_observation_.Observe(&GetAdsClient());
+  browser_manager_observation_.Observe(&BrowserManager::GetInstance());
   event_handler_.SetDelegate(this);
   serving_.SetDelegate(this);
 }
 
-NotificationAdHandler::~NotificationAdHandler() {
-  GetAdsClient().RemoveObserver(this);
-  BrowserManager::GetInstance().RemoveObserver(this);
-}
+NotificationAdHandler::~NotificationAdHandler() = default;
 
 void NotificationAdHandler::MaybeServeAtRegularIntervals() {
   if (!CanServeAtRegularIntervals()) {
@@ -76,7 +73,7 @@ void NotificationAdHandler::MaybeServeAtRegularIntervals() {
 void NotificationAdHandler::TriggerEvent(
     const std::string& placement_id,
     mojom::NotificationAdEventType mojom_ad_event_type,
-    TriggerAdEventCallback callback) {
+    ResultCallback callback) {
   CHECK_NE(mojom::NotificationAdEventType::kServedImpression,
            mojom_ad_event_type)
       << "Should not be called with kServedImpression as this event is handled "
@@ -102,7 +99,7 @@ void NotificationAdHandler::TriggerEvent(
 ///////////////////////////////////////////////////////////////////////////////
 
 void NotificationAdHandler::FireServedEventCallback(
-    TriggerAdEventCallback callback,
+    ResultCallback callback,
     bool success,
     const std::string& placement_id,
     mojom::NotificationAdEventType /*mojom_ad_event_type*/) {
@@ -196,6 +193,14 @@ void NotificationAdHandler::OnDidFireNotificationAdViewedEvent(
           ad.creative_instance_id, ad.segment);
 }
 
+void NotificationAdHandler::OnWillFireNotificationAdClickedEvent(
+    const NotificationAdInfo& ad) {
+  // Must be set before `RecordAdEvent` completes so that if a page navigation
+  // commits during the write, `SiteVisit::MaybeLandOnPage` can record the
+  // page land for this ad.
+  site_visit_->set_last_clicked_ad(ad);
+}
+
 void NotificationAdHandler::OnDidFireNotificationAdClickedEvent(
     const NotificationAdInfo& ad) {
   BLOG(3, "Clicked notification ad with placement id "
@@ -204,8 +209,6 @@ void NotificationAdHandler::OnDidFireNotificationAdClickedEvent(
 
   NotificationAdManager::GetInstance().Remove(ad.placement_id,
                                               /*should_close=*/true);
-
-  site_visit_->set_last_clicked_ad(ad);
 
   AdHistoryManager::GetInstance().Add(ad, mojom::ConfirmationType::kClicked);
 

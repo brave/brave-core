@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/command_line_exclusion_rule.h"
 
-#include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
+#include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
@@ -21,7 +21,7 @@ class BraveAdsCommandLineExclusionRuleTest : public test::TestBase {
 
 TEST_F(BraveAdsCommandLineExclusionRuleTest, ShouldIncludeCreativeInstance) {
   // Arrange
-  GlobalState::GetInstance()->Flags().ads_uuids = {
+  GlobalState::GetInstance()->CommandLineSwitches().ads_uuids = {
       {test::kCreativeInstanceId, true},
   };
 
@@ -34,7 +34,7 @@ TEST_F(BraveAdsCommandLineExclusionRuleTest, ShouldIncludeCreativeInstance) {
 
 TEST_F(BraveAdsCommandLineExclusionRuleTest, ShouldExcludeCreativeInstance) {
   // Arrange
-  GlobalState::GetInstance()->Flags().ads_uuids = {
+  GlobalState::GetInstance()->CommandLineSwitches().ads_uuids = {
       {test::kAnotherCreativeInstanceId, true},
   };
 
@@ -47,7 +47,7 @@ TEST_F(BraveAdsCommandLineExclusionRuleTest, ShouldExcludeCreativeInstance) {
 
 TEST_F(BraveAdsCommandLineExclusionRuleTest, ShouldIncludeCreativeSet) {
   // Arrange
-  GlobalState::GetInstance()->Flags().ads_uuids = {
+  GlobalState::GetInstance()->CommandLineSwitches().ads_uuids = {
       {test::kCreativeSetId, true},
   };
 
@@ -60,7 +60,7 @@ TEST_F(BraveAdsCommandLineExclusionRuleTest, ShouldIncludeCreativeSet) {
 
 TEST_F(BraveAdsCommandLineExclusionRuleTest, ShouldExcludeCreativeSet) {
   // Arrange
-  GlobalState::GetInstance()->Flags().ads_uuids = {
+  GlobalState::GetInstance()->CommandLineSwitches().ads_uuids = {
       {test::kAnotherCreativeSetId, true},
   };
 
@@ -73,7 +73,7 @@ TEST_F(BraveAdsCommandLineExclusionRuleTest, ShouldExcludeCreativeSet) {
 
 TEST_F(BraveAdsCommandLineExclusionRuleTest, ShouldIncludeCampaign) {
   // Arrange
-  GlobalState::GetInstance()->Flags().ads_uuids = {
+  GlobalState::GetInstance()->CommandLineSwitches().ads_uuids = {
       {test::kCampaignId, true},
   };
 
@@ -86,7 +86,7 @@ TEST_F(BraveAdsCommandLineExclusionRuleTest, ShouldIncludeCampaign) {
 
 TEST_F(BraveAdsCommandLineExclusionRuleTest, ShouldExcludeCampaign) {
   // Arrange
-  GlobalState::GetInstance()->Flags().ads_uuids = {
+  GlobalState::GetInstance()->CommandLineSwitches().ads_uuids = {
       {test::kAnotherCampaignId, true},
   };
 
@@ -99,7 +99,7 @@ TEST_F(BraveAdsCommandLineExclusionRuleTest, ShouldExcludeCampaign) {
 
 TEST_F(BraveAdsCommandLineExclusionRuleTest, ShouldIncludeAdvertiser) {
   // Arrange
-  GlobalState::GetInstance()->Flags().ads_uuids = {
+  GlobalState::GetInstance()->CommandLineSwitches().ads_uuids = {
       {test::kAdvertiserId, true},
   };
 
@@ -112,7 +112,7 @@ TEST_F(BraveAdsCommandLineExclusionRuleTest, ShouldIncludeAdvertiser) {
 
 TEST_F(BraveAdsCommandLineExclusionRuleTest, ShouldExcludeAdvertiser) {
   // Arrange
-  GlobalState::GetInstance()->Flags().ads_uuids = {
+  GlobalState::GetInstance()->CommandLineSwitches().ads_uuids = {
       {test::kAnotherAdvertiserId, true},
   };
 

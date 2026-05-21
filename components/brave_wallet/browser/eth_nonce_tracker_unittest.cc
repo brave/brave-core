@@ -21,7 +21,7 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_meta.h"
-#include "brave/components/brave_wallet/browser/tx_storage_delegate_impl.h"
+#include "brave/components/brave_wallet/browser/tx_storage.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -104,13 +104,11 @@ class EthNonceTrackerUnitTest : public testing::Test {
 
 TEST_F(EthNonceTrackerUnitTest, GetNonce) {
   base::ScopedTempDir temp_dir;
-  scoped_refptr<value_store::TestValueStoreFactory> factory =
-      GetTestValueStoreFactory(temp_dir);
-  std::unique_ptr<TxStorageDelegateImpl> delegate =
-      GetTxStorageDelegateForTest(GetPrefs(), factory);
+  CHECK(temp_dir.CreateUniqueTempDir());
+  auto tx_storage = CreateTxStorageForTest(temp_dir.GetPath());
   auto account_resolver_delegate =
       std::make_unique<AccountResolverDelegateForTest>();
-  EthTxStateManager tx_state_manager(*delegate, *account_resolver_delegate);
+  EthTxStateManager tx_state_manager(*tx_storage, *account_resolver_delegate);
   EthNonceTracker nonce_tracker(&tx_state_manager, json_rpc_service());
 
   SetTransactionCount(2);

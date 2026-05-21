@@ -109,16 +109,6 @@ export const BackButtonWrapper = styled.div`
   justify-content: flex-start;
   align-items: center;
   width: 100%;
-
-  & leo-button {
-    flex-grow: 0;
-    width: 36px;
-    min-height: 36px;
-    border: 1px solid ${leo.color.divider.interactive};
-    background: ${leo.color.container.background};
-    border-radius: ${leo.spacing.m};
-    cursor: pointer;
-  }
 `
 
 export const BackButtonIcon = styled(Icon).attrs({

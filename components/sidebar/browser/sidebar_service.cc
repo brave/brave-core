@@ -26,7 +26,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/locale_util.h"
-#include "brave/components/playlist/core/common/features.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/sidebar/browser/constants.h"
 #include "brave/components/sidebar/browser/pref_names.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
@@ -44,11 +44,18 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/core/browser/utils.h"
+#include "brave/components/playlist/core/common/pref_names.h"
+#endif
 
 namespace sidebar {
 
@@ -130,6 +137,25 @@ SidebarService::SidebarService(
       kSidebarShowOption,
       base::BindRepeating(&SidebarService::OnPreferenceChanged,
                           base::Unretained(this)));
+
+  // Watch for policy pref changes that affect built-in item visibility.
+#if BUILDFLAG(ENABLE_AI_CHAT) || BUILDFLAG(ENABLE_BRAVE_TALK) || \
+    BUILDFLAG(ENABLE_BRAVE_WALLET) || BUILDFLAG(ENABLE_PLAYLIST)
+  auto cb = base::BindRepeating(&SidebarService::OnBuiltInItemPolicyChanged,
+                                base::Unretained(this));
+#endif
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  pref_change_registrar_.Add(ai_chat::prefs::kEnabledByPolicy, cb);
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+  pref_change_registrar_.Add(brave_talk::prefs::kDisabledByPolicy, cb);
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  pref_change_registrar_.Add(brave_wallet::kBraveWalletDisabledByPolicy, cb);
+#endif
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  pref_change_registrar_.Add(playlist::kPlaylistEnabledPref, cb);
+#endif
 }
 
 SidebarService::~SidebarService() = default;
@@ -309,6 +335,20 @@ void SidebarService::AddItem(const SidebarItem& item) {
   UpdateSidebarItemsToPrefStore();
 }
 
+void SidebarService::RefreshBuiltInItems() {
+  // Iterate in reverse so removing doesn't invalidate indices.
+  for (int i = static_cast<int>(items_.size()) - 1; i >= 0; --i) {
+    const auto& item = items_[i];
+    if (!item.is_built_in_type()) {
+      continue;
+    }
+    auto refreshed = GetBuiltInItemForType(item.built_in_item_type);
+    if (refreshed.built_in_item_type == SidebarItem::BuiltInItemType::kNone) {
+      RemoveItemAt(i);
+    }
+  }
+}
+
 void SidebarService::RemoveItemAt(int index) {
   const SidebarItem removed_item = items_[index];
 
@@ -464,7 +504,10 @@ std::optional<SidebarItem> SidebarService::GetDefaultPanelItem() const {
 #endif
       SidebarItem::BuiltInItemType::kReadingList,
       SidebarItem::BuiltInItemType::kBookmarks,
-      SidebarItem::BuiltInItemType::kPlaylist};
+#if BUILDFLAG(ENABLE_PLAYLIST)
+      SidebarItem::BuiltInItemType::kPlaylist,
+#endif
+  };
 
   std::optional<SidebarItem> default_item;
   for (const auto& type : kPreferredPanelOrder) {
@@ -663,8 +706,9 @@ SidebarItem SidebarService::GetBuiltInItemForType(
         return SidebarItem();
       }
     }
+#if BUILDFLAG(ENABLE_PLAYLIST)
     case SidebarItem::BuiltInItemType::kPlaylist: {
-      if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
+      if (playlist::IsPlaylistAllowed(prefs_)) {
         return SidebarItem::Create(
             GURL(kPlaylistURL),
             l10n_util::GetStringUTF16(IDS_SIDEBAR_PLAYLIST_ITEM_TITLE),
@@ -675,6 +719,7 @@ SidebarItem SidebarService::GetBuiltInItemForType(
 
       return SidebarItem();
     }
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 #if BUILDFLAG(ENABLE_AI_CHAT)
     case SidebarItem::BuiltInItemType::kChatUI: {
       if (ai_chat::IsAIChatEnabled(prefs_)) {
@@ -690,6 +735,10 @@ SidebarItem SidebarService::GetBuiltInItemForType(
       break;
   }
   NOTREACHED();
+}
+
+void SidebarService::OnBuiltInItemPolicyChanged(const std::string& /*name*/) {
+  RefreshBuiltInItems();
 }
 
 void SidebarService::OnPreferenceChanged(const std::string& pref_name) {

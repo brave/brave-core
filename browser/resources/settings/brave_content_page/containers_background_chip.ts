@@ -17,13 +17,6 @@ export class SettingsBraveContentContainersBackgroundChipElement extends CrLitEl
     return 'settings-brave-content-containers-background-chip'
   }
 
-  static override get properties() {
-    return {
-      selected: { type: Boolean },
-      backgroundColor: { type: String },
-    }
-  }
-
   static override get styles() {
     return getCss()
   }
@@ -32,10 +25,16 @@ export class SettingsBraveContentContainersBackgroundChipElement extends CrLitEl
     return getHtml.bind(this)()
   }
 
+  static override get properties() {
+    return {
+      selected: {type: Boolean}, backgroundColor: {type: String},
+    }
+  }
+
   accessor selected: boolean = false
   accessor backgroundColor: string = 'magenta' // Debug color that should never be visible
 
-  handleChipClick_() {
+  onChipClick_() {
     const event: ColorSelectedEvent = new CustomEvent('background-selected', {
       bubbles: true,
       composed: true,

@@ -9,6 +9,13 @@ import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import getAPIProxy from '../../../../common/async/bridge'
 
+// Selectors
+import { useSafeUISelector } from '../../../../common/hooks/use-safe-selector'
+import { UISelectors } from '../../../../common/selectors'
+
+// Page API Proxy
+import getWalletPageApiProxy from '../../../../page/wallet_page_api_proxy'
+
 // Hooks
 import {
   useStartShieldSyncMutation,
@@ -38,6 +45,9 @@ interface Props {
 
 export const ZCashSyncModal = (props: Props) => {
   const { account, onClose } = props
+
+  // Selector
+  const isIOS = useSafeUISelector(UISelectors.isIOS)
 
   // Mutations
   const [startShieldSync] = useStartShieldSyncMutation()
@@ -244,9 +254,13 @@ export const ZCashSyncModal = (props: Props) => {
             <Row justifyContent='center'>
               <div>
                 <Button
-                  onClick={() =>
-                    openWalletRouteTab(WalletRoutes.PortfolioAssets)
-                  }
+                  onClick={() => {
+                    if (isIOS) {
+                      getWalletPageApiProxy().pageHandler.openWalletHome()
+                    } else {
+                      openWalletRouteTab(WalletRoutes.PortfolioAssets)
+                    }
+                  }}
                 >
                   <Icon
                     name='launch'

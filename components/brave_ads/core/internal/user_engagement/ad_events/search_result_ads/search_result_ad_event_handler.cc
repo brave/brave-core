@@ -199,6 +199,12 @@ void SearchResultAdEventHandler::FireEvent(
     const SearchResultAdInfo& ad,
     mojom::SearchResultAdEventType mojom_ad_event_type,
     FireSearchResultAdEventHandlerCallback callback) const {
+  if (mojom_ad_event_type == mojom::SearchResultAdEventType::kClicked) {
+    // `RecordAdEvent` is asynchronous. Notifying the delegate before the write
+    // ensures `last_clicked_ad` is set before any page navigation commits.
+    NotifyWillFireSearchResultAdClickedEvent(ad);
+  }
+
   const auto ad_event = SearchResultAdEventFactory::Build(mojom_ad_event_type);
   ad_event->FireEvent(
       ad, base::BindOnce(&SearchResultAdEventHandler::FireEventCallback,
@@ -241,6 +247,13 @@ void SearchResultAdEventHandler::FailedToFireEvent(
 
   std::move(callback).Run(/*success=*/false, ad.placement_id,
                           mojom_ad_event_type);
+}
+
+void SearchResultAdEventHandler::NotifyWillFireSearchResultAdClickedEvent(
+    const SearchResultAdInfo& ad) const {
+  if (delegate_) {
+    delegate_->OnWillFireSearchResultAdClickedEvent(ad);
+  }
 }
 
 void SearchResultAdEventHandler::NotifyDidFireSearchResultAdEvent(

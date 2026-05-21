@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/containers/span.h"
+#include "crypto/process_bound_string.h"
 
 namespace brave_rewards::internal {
 
@@ -17,6 +18,8 @@ namespace brave_rewards::internal {
 // "recovery seed", typically stored with the user's browser profile.
 class Signer {
  public:
+  using SecretKey = std::vector<uint8_t, crypto::SecureAllocator<uint8_t>>;
+
   // Returns a `Signer` derived from the specified recovery seed. If the
   // recovery seed is invalid (e.g. the length of the seed is incorrect), a
   // `nullopt` is returned.
@@ -31,17 +34,17 @@ class Signer {
   Signer(const Signer&);
   Signer& operator=(const Signer&);
 
-  const std::vector<uint8_t> public_key() const { return public_key_; }
-  const std::vector<uint8_t> secret_key() const { return secret_key_; }
+  const std::vector<uint8_t>& public_key() const { return public_key_; }
+  const SecretKey& secret_key() const { return secret_key_; }
 
   // Signs the specified message using the signer's secret key.
   std::vector<uint8_t> SignMessage(base::span<const uint8_t> message);
 
  private:
-  Signer(std::vector<uint8_t> public_key, std::vector<uint8_t> secret_key);
+  Signer(std::vector<uint8_t> public_key, SecretKey secret_key);
 
   std::vector<uint8_t> public_key_;
-  std::vector<uint8_t> secret_key_;
+  SecretKey secret_key_;
 };
 
 }  // namespace brave_rewards::internal

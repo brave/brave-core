@@ -16,6 +16,8 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterDictionaryPref(kBraveOriginPolicies);
   // Whether the user has validated their Brave Origin purchase at startup.
   registry->RegisterBooleanPref(kOriginPurchaseValidated, false);
+  // Whether Origin policies were enforced in the previous session.
+  registry->RegisterBooleanPref(kOriginPoliciesWereEnforced, false);
 #if BUILDFLAG(IS_LINUX)
   // Whether the user accepted the Linux free tier without purchasing.
   registry->RegisterBooleanPref(kOriginFreeTierAccepted, false);

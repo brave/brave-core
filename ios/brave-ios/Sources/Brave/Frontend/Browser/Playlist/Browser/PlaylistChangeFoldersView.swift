@@ -95,7 +95,7 @@ struct PlaylistChangeFoldersView: View {
         .buttonStyle(BraveOutlineButtonStyle(size: .normal))
       }
     }
-    .onChange(of: selectedFolderID) { newValue in
+    .onChange(of: selectedFolderID) { _, newValue in
       guard let folder = folders.first(where: { $0.id == newValue }) else { return }
       PlaylistItem.moveItems(items: [item.objectID], to: folder.uuid)
     }

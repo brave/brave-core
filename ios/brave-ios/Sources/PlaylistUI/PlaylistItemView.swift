@@ -133,7 +133,7 @@ struct LeoPlayingSoundView: View {
           randomizeBarHeights()
         }
       }
-      .onChange(of: isAnimating) { newValue in
+      .onChange(of: isAnimating) { _, newValue in
         if newValue {
           randomizeBarHeights()
         } else {

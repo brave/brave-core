@@ -1,17 +1,15 @@
-/* Copyright 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_TIME_PERIOD_STORAGE_WEEKLY_EVENT_STORAGE_H_
 #define BRAVE_COMPONENTS_TIME_PERIOD_STORAGE_WEEKLY_EVENT_STORAGE_H_
 
 #include <list>
-#include <memory>
 #include <optional>
 
 #include "base/memory/raw_ref.h"
-#include "base/time/clock.h"
 #include "base/time/time.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -29,12 +27,6 @@
 class WeeklyEventStorage {
  public:
   WeeklyEventStorage(PrefService* prefs, const char* pref_name);
-
-  // Accept an explicit clock so tests can manipulate the passage of time.
-  WeeklyEventStorage(PrefService* prefs,
-                     const char* pref_name,
-                     std::unique_ptr<base::Clock> clock);
-
   ~WeeklyEventStorage();
 
   WeeklyEventStorage(const WeeklyEventStorage&) = delete;
@@ -61,7 +53,6 @@ class WeeklyEventStorage {
 
   const raw_ref<PrefService> prefs_;
   const char* pref_name_ = nullptr;
-  std::unique_ptr<base::Clock> clock_;
 
   std::list<Event> events_;
 };

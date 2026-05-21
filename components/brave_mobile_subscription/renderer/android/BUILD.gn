@@ -17,6 +17,8 @@ source_set("android") {
     "//base",
     "//brave/components/ai_chat/core/common",
     "//brave/components/ai_chat/core/common/mojom",
+    "//brave/components/brave_origin:features",
+    "//brave/components/brave_origin/mojom",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/skus/renderer",
     "//brave/gin:converter_specializations",
@@ -47,6 +49,7 @@ source_set("browser_tests") {
   deps = [
     "//brave/components/ai_chat/core/common",
     "//brave/components/brave_mobile_subscription/renderer/android",
+    "//brave/components/brave_origin:features",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/skus/common",
     "//chrome/common",

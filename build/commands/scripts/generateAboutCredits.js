@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import build from '../lib/build.js'
-import config from '../lib/config.js'
+import config from '../lib/config.ts'
 
 build(config.defaultBuildConfig, {
   C: 'generate_about_credits',

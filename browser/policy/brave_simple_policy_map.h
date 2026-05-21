@@ -18,11 +18,12 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/common/pref_names.h"
 #include "brave/components/debounce/core/common/pref_names.h"
+#include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/global_privacy_control/pref_names.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/p3a/pref_names.h"
-#include "brave/components/playlist/core/common/pref_names.h"
-#include "brave/components/query_filter/pref_names.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
+#include "brave/components/query_filter/common/pref_names.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
@@ -65,6 +66,14 @@
 #include "brave/components/brave_talk/pref_names.h"
 #endif
 
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/core/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+#include "brave/components/email_aliases/pref_names.h"
+#endif
+
 namespace policy {
 
 inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
@@ -96,10 +105,14 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
      base::Value::Type::BOOLEAN},
     {policy::key::kBraveStatsPingEnabled, kStatsReportingEnabled,
      base::Value::Type::BOOLEAN},
+#if BUILDFLAG(ENABLE_PLAYLIST)
     {policy::key::kBravePlaylistEnabled, playlist::kPlaylistEnabledPref,
      base::Value::Type::BOOLEAN},
+#endif
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY)
     {policy::key::kBraveWebDiscoveryEnabled, kWebDiscoveryEnabled,
      base::Value::Type::BOOLEAN},
+#endif
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
     {policy::key::kBraveNewsDisabled,
      brave_news::prefs::kBraveNewsDisabledByPolicy, base::Value::Type::BOOLEAN},
@@ -120,6 +133,10 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
     {policy::key::kIPFSEnabled, ipfs::prefs::kIPFSEnabledByPolicy,
      base::Value::Type::BOOLEAN},
 #endif  // BUILDFLAG(DEPRECATE_IPFS)
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+    {policy::key::kEmailAliasesEnabled,
+     email_aliases::prefs::kEmailAliasesEnabled, base::Value::Type::BOOLEAN},
+#endif
     {policy::key::kBraveReduceLanguageEnabled,
      brave_shields::prefs::kReduceLanguageEnabled, base::Value::Type::BOOLEAN},
     {policy::key::kBraveDeAmpEnabled, de_amp::kDeAmpPrefEnabled,

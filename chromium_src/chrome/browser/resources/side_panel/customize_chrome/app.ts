@@ -5,14 +5,18 @@
 
 import { CustomizeChromeApiProxy } from './customize_chrome_api_proxy.js'
 
-import { CrLitElement, html, css, type CSSResultGroup } from '//resources/lit/v3_0/lit.rollup.js'
+import { CrLitElement, html, css } from '//resources/lit/v3_0/lit.rollup.js'
+import type { CSSResultGroup } from '//resources/lit/v3_0/lit.rollup.js'
 import { loadTimeData } from '//resources/js/load_time_data.js'
 import { I18nMixinLit } from '//resources/cr_elements/i18n_mixin_lit.js'
 import { CustomizeColorSchemeModeBrowserProxy } from '//resources/cr_components/customize_color_scheme_mode/browser_proxy.js'
 
 export * from './app-chromium.js'
 
-class ClosePanelButton extends CrLitElement {
+// Suppressing `CrLitElement` linting errors that require the name of the class
+// to match the name of the source, as this is an override.
+// eslint-disable-next-line
+class ClosePanelButtonElement extends CrLitElement {
   static get is() {
     return 'close-panel-button'
   }
@@ -34,27 +38,21 @@ class ClosePanelButton extends CrLitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'close-panel-button': ClosePanelButton
+    'close-panel-button': ClosePanelButtonElement
   }
 }
 
-customElements.define(ClosePanelButton.is, ClosePanelButton)
+customElements.define(ClosePanelButtonElement.is, ClosePanelButtonElement)
 
 // A component to toggle the "Darker theme" setting in the Customize Chrome side panel.
-class DarkerThemeToggle extends I18nMixinLit(CrLitElement) {
+
+// Suppressing `CrLitElement` linting errors that require the name of the class
+// to match the name of the source, as this is an override.
+// eslint-disable-next-line
+class DarkerThemeToggleElement extends I18nMixinLit(CrLitElement) {
   static get is() {
     return 'brave-darker-theme-toggle'
   }
-
-  static override get properties() {
-    return {
-      usingDarkerTheme_: { type: Boolean },
-    }
-  }
-
-  private setColorSchemeModeListenerId_: number | null = null
-
-  private accessor usingDarkerTheme_ = false
 
   static override get styles(): CSSResultGroup {
     return css`
@@ -79,6 +77,30 @@ class DarkerThemeToggle extends I18nMixinLit(CrLitElement) {
       }
     `
   }
+
+  override render() {
+    return html`
+      <div id="darker-theme-toggle-container">
+        <leo-icon name="theme-darker"></leo-icon>
+        <span>${this.i18n('CUSTOMIZE_CHROME_DARKER_THEME_TOGGLE_LABEL')}</span>
+        <!-- Use cr-toggle instead of leo-toggle in order to inherit style -->
+        <cr-toggle
+          .checked="${this.usingDarkerTheme_}"
+          @change="${this.onDarkerThemeToggleChange}"
+        ></cr-toggle>
+      </div>
+    `
+  }
+
+  static override get properties() {
+    return {
+      usingDarkerTheme_: { type: Boolean },
+    }
+  }
+
+  private setColorSchemeModeListenerId_: number | null = null
+
+  private accessor usingDarkerTheme_ = false
 
   override connectedCallback() {
     super.connectedCallback()
@@ -112,20 +134,6 @@ class DarkerThemeToggle extends I18nMixinLit(CrLitElement) {
     super.disconnectedCallback()
   }
 
-  override render() {
-    return html`
-      <div id="darker-theme-toggle-container">
-        <leo-icon name="theme-darker"></leo-icon>
-        <span>${this.i18n('CUSTOMIZE_CHROME_DARKER_THEME_TOGGLE_LABEL')}</span>
-        <!-- Use cr-toggle instead of leo-toggle in order to inherit style -->
-        <cr-toggle
-          .checked="${this.usingDarkerTheme_}"
-          @change="${this.onDarkerThemeToggleChange}"
-        ></cr-toggle>
-      </div>
-    `
-  }
-
   private onDarkerThemeToggleChange() {
     CustomizeChromeApiProxy.getInstance().handler.setUseDarkerTheme(
       !this.usingDarkerTheme_
@@ -135,8 +143,8 @@ class DarkerThemeToggle extends I18nMixinLit(CrLitElement) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'brave-darker-theme-toggle': DarkerThemeToggle
+    'brave-darker-theme-toggle': DarkerThemeToggleElement
   }
 }
 
-customElements.define(DarkerThemeToggle.is, DarkerThemeToggle)
+customElements.define(DarkerThemeToggleElement.is, DarkerThemeToggleElement)

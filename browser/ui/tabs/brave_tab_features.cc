@@ -14,11 +14,13 @@
 #include "brave/browser/ui/side_panel/brave_side_panel_utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/side_panel/side_panel_registry.h"
 #include "chrome/browser/ui/tabs/public/tab_features.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/tabs/public/tab_interface.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/browser/containers/container_tab_tracker.h"
 #include "brave/browser/ui/views/page_action/partitioned_storage_page_action_controller.h"
 #include "brave/components/containers/core/common/features.h"
 #endif
@@ -31,6 +33,7 @@
 #if BUILDFLAG(ENABLE_PSST)
 #include "brave/browser/psst/psst_settings_service_factory.h"
 #include "brave/browser/psst/psst_ui_delegate_impl.h"
+#include "brave/browser/psst/psst_ui_desktop_presenter.h"
 #include "brave/components/psst/browser/content/psst_tab_web_contents_observer.h"
 #include "brave/components/psst/common/features.h"
 #endif
@@ -49,8 +52,9 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
   TabFeatures::Init(tab, profile);
 
   // Expect upstream's Init to create the registry.
-  CHECK(side_panel_registry());
-  brave::RegisterContextualSidePanel(side_panel_registry(), tab.GetContents());
+  auto* side_panel_registry = SidePanelRegistry::From(&tab);
+  CHECK(side_panel_registry);
+  brave::RegisterContextualSidePanel(side_panel_registry, tab.GetContents());
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   if (ai_chat::IsAllowedForContext(profile)) {
@@ -65,22 +69,27 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
         psst::PsstTabWebContentsObserver::MaybeCreateForWebContents(
             tab.GetContents(), profile,
             std::make_unique<psst::PsstUiDelegateImpl>(
-                PsstSettingsServiceFactory::GetForProfile(profile)),
+                PsstSettingsServiceFactory::GetForProfile(profile),
+                profile->GetPrefs(),
+                std::make_unique<psst::PsstUiDesktopPresenter>(
+                    tab.GetContents()->GetWeakPtr())),
             profile->GetPrefs(), ISOLATED_WORLD_ID_BRAVE_INTERNAL);
   }
 #endif
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
-  if (page_action_controller() &&
-      base::FeatureList::IsEnabled(containers::features::kContainers)) {
-    // In case of features::kPageActionsMigration is disabled, this controller
-    // can be null. The feature is enabled by default. So note that we don't
-    // show the partitioned storage page action when the features is disabled
-    // by users.
-    partitioned_storage_page_action_controller_ =
-        std::make_unique<page_actions::PartitionedStoragePageActionController>(
-            tab, *page_action_controller());
-    partitioned_storage_page_action_controller_->Init();
+  if (base::FeatureList::IsEnabled(containers::features::kContainers)) {
+    container_tab_tracker_ = containers::ContainerTabTracker::MaybeCreate(tab);
+    if (page_action_controller()) {
+      // In case of features::kPageActionsMigration is disabled, this controller
+      // can be null. The feature is enabled by default. So note that we don't
+      // show the partitioned storage page action when the features is disabled
+      // by users.
+      partitioned_storage_page_action_controller_ = std::make_unique<
+          page_actions::PartitionedStoragePageActionController>(
+          tab, *page_action_controller());
+      partitioned_storage_page_action_controller_->Init();
+    }
   }
 #endif
 }

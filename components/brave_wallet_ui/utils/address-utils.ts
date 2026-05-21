@@ -56,6 +56,9 @@ export function isValidCardanoAddress(
   value: string,
   testnet: boolean,
 ): boolean {
+  if (/^[1-9A-HJ-NP-Za-km-z]{35,120}$/.test(value)) {
+    return true
+  }
   if (testnet) {
     return /^addr_test1[a-zA-HJ-NP-Z0-9]*$/.test(value)
   } else {

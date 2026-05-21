@@ -28,6 +28,10 @@ BASE_DECLARE_FEATURE(kBraveVerticalTabScrollBar);
 
 BASE_DECLARE_FEATURE(kBraveVerticalTabHideCompletely);
 
+// When enabled, the vertical tab strip is embedded under BrowserView instead of
+// wrapped in a separate child Widget (see VerticalTabStripWidgetDelegateView).
+BASE_DECLARE_FEATURE(kBraveVerticalTabStripEmbedded);
+
 BASE_DECLARE_FEATURE(kBraveTreeTab);
 
 BASE_DECLARE_FEATURE(kBraveScrollableTabStrip);

@@ -107,7 +107,7 @@ struct SlippageGrid: View {
         .accessibilityAddTraits(isSelected ? .isSelected : [])
       }
       TextField("%", text: $input)
-        .onChange(of: input) { value in
+        .onChange(of: input) { _, value in
           guard let intValue = Int(value) else {
             customSlippage = nil
             return
@@ -242,9 +242,6 @@ struct SwapCryptoView: View {
 
   /// The DEX Aggregator for the current network.
   var dexAggregator: DEXAggregator {
-    // TODO(stephenheaps): We may need to remove and/or update
-    // this disclaimer to include LiFi description & privacy
-    // policy https://github.com/brave/brave-browser/issues/36436
     networkStore.defaultSelectedChain.coin == .sol ? .jupiter : .zeroX
   }
 
@@ -611,7 +608,8 @@ struct SwapCryptoView: View {
           unsupportedSwapChainSection
         }
       }
-      .listBackgroundColor(Color(.braveGroupedBackground))
+      .scrollContentBackground(.hidden)
+      .background(Color(UIColor.braveGroupedBackground))
       .environment(\.defaultMinListHeaderHeight, 0)
       .environment(\.defaultMinListRowHeight, 0)
       .navigationTitle(Strings.Wallet.swap)

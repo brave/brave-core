@@ -5,7 +5,7 @@
 
 import fs from 'fs-extra'
 import path from 'node:path'
-import Config from './config.js'
+import Config from './config.ts'
 
 /**
  * Generates a tsconfig.json file in the gen/ directory

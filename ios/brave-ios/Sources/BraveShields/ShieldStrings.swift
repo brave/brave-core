@@ -388,6 +388,15 @@ extension Strings.Shields {
     comment: "An option setting for never automatically shreding site data"
   )
 
+  /// The description for never automatically shreding site data
+  public static let shredNeverDescription = NSLocalizedString(
+    "ShredNeverDescription",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Browsing data is never shred automatically",
+    comment: "The description for never automatically shreding site data"
+  )
+
   /// An option setting for shredding when the site is closed
   public static let shredOnSiteTabsClosed = NSLocalizedString(
     "ShredOnSiteTabsClosed",
@@ -397,6 +406,15 @@ extension Strings.Shields {
     comment: "An option setting for automatically shredding when the site is closed"
   )
 
+  /// The description for shredding when the site is closed
+  public static let shredOnSiteTabsClosedDescription = NSLocalizedString(
+    "ShredOnSiteTabsClosedDescription",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Browsing data is automatically shredded when all tabs open to a site are closed",
+    comment: "The description for shredding when the site is closed"
+  )
+
   /// An option setting for shredding when the app is closed
   public static let shredOnAppClose = NSLocalizedString(
     "ShredOnAppClose",
@@ -404,6 +422,24 @@ extension Strings.Shields {
     bundle: .module,
     value: "App Close",
     comment: "An option setting for automatically shredding only when the app is closed"
+  )
+
+  /// The description for shredding when the app is closed
+  public static let shredOnAppCloseDescription = NSLocalizedString(
+    "ShredOnAppCloseDescription",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Browsing data is automatically shredded when the Brave app is closed / restarted",
+    comment: "The description for shredding when the app is closed"
+  )
+
+  /// The title for the auto shred section in settings
+  public static let autoShredSectionTitle = NSLocalizedString(
+    "AutoShredSectionTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Automatically Shred Browsing Data",
+    comment: "The description for shredding when the app is closed"
   )
 
   /// A title for a confirmation window that appears when a user clicks on 'Shred Data'

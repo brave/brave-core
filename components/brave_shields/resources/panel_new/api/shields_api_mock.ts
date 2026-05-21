@@ -97,6 +97,10 @@ function createMockDataHandler(): Closable<DataHandlerInterface> {
     resetBlockedElements() {},
     openWebCompatWindow() {},
     updateFavicon() {},
+
+    isResourceFaviconAvailable(url) {
+      return Promise.resolve({ isAvailable: true })
+    },
   })
 }
 

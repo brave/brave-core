@@ -1,0 +1,13 @@
+Name: ip_network_table
+Short Name: ip_network_table
+URL: https://github.com/JakubOnderka/ip_network_table
+Version: 0.2.0
+License: BSD-2-Clause
+
+Description:
+Transitive dependency of BoringTun, vendored under
+brave/third_party/boringtun/vendor/ip_network_table.
+
+Local Modifications:
+None. Source vendored via `cargo vendor` from crates.io at the version
+pinned by brave/third_party/boringtun/Cargo.lock.

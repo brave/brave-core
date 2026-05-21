@@ -1,0 +1,14 @@
+Name: syn
+Short Name: syn
+URL: https://github.com/dtolnay/syn
+Version: 2.0.117
+License: MIT OR Apache-2.0
+License File: LICENSE-MIT
+
+Description:
+Transitive dependency of BoringTun, vendored under
+brave/third_party/boringtun/vendor/syn.
+
+Local Modifications:
+None. Source vendored via `cargo vendor` from crates.io at the version
+pinned by brave/third_party/boringtun/Cargo.lock.

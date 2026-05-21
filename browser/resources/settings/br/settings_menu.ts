@@ -64,7 +64,6 @@ RegisterStyleOverride(
         top: var(--brave-settings-menu-margin-v);
         margin: 0 !important;
         min-width: 172px;
-        max-width: 250px;
         overflow-y: auto;
         padding: 12px 24px !important;
       }
@@ -89,6 +88,10 @@ RegisterStyleOverride(
 
         color: var(--leo-color-text-interactive) !important;
         background: transparent !important;
+      }
+
+      .cr-nav-menu-item:focus {
+        outline: none !important;
       }
 
       .cr-nav-menu-item cr-ripple {

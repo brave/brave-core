@@ -37,11 +37,15 @@ export const NetworkInfoBox = styled(Column)`
 export const NetworkInfoLabel = styled(Text)`
   font: ${leo.font.small.regular};
   letter-spacing: ${leo.typography.letterSpacing.small};
+  word-break: break-all;
+  text-align: left;
 `
 
 export const NetworkInfoText = styled(Text)`
   font: ${leo.font.default.semibold};
   letter-spacing: ${leo.typography.letterSpacing.default};
+  word-break: break-all;
+  text-align: left;
 `
 
 export const DividerWrapper = styled(Row)`

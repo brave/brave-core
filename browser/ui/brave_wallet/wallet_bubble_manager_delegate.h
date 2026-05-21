@@ -6,10 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_BRAVE_WALLET_WALLET_BUBBLE_MANAGER_DELEGATE_H_
 #define BRAVE_BROWSER_UI_BRAVE_WALLET_WALLET_BUBBLE_MANAGER_DELEGATE_H_
 
-#include <stdint.h>
-
 #include <memory>
-#include <vector>
 
 class GURL;
 
@@ -36,7 +33,6 @@ class WalletBubbleManagerDelegate {
   virtual bool IsShowingBubble() = 0;
   virtual bool IsBubbleClosedForTesting() = 0;
   virtual content::WebContents* GetWebContentsForTesting() = 0;
-  virtual const std::vector<int32_t>& GetPopupIdsForTesting() = 0;
 
  protected:
   WalletBubbleManagerDelegate() = default;

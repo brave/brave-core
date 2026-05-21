@@ -15,7 +15,6 @@
 #include "url/gurl.h"
 
 class Browser;
-class Profile;
 
 namespace brave_rewards::test_util {
 
@@ -29,8 +28,6 @@ GURL GetNewTabUrl();
 
 void StartProcess(RewardsServiceImpl* rewards_service);
 
-void StartProcessWithConnectedUser(Profile* profile);
-
 GURL GetUrl(net::EmbeddedTestServer* https_server,
             const std::string& publisher_key,
             const std::string& path = "");
@@ -40,8 +37,6 @@ void ActivateTabAtIndex(Browser* browser, const int index);
 std::string BalanceDoubleToString(double amount);
 
 std::string GetUpholdExternalAddress();
-
-std::string GetGeminiExternalAddress();
 
 void NavigateToPublisherPage(Browser* browser,
                              net::EmbeddedTestServer* https_server,
@@ -60,8 +55,6 @@ void CreateRewardsWallet(RewardsServiceImpl* rewards_service,
                          const std::string& country = "US");
 
 void SetOnboardingBypassed(Browser* browser, bool bypassed = true);
-
-std::optional<std::string> EncryptPrefString(const std::string& value);
 
 }  // namespace brave_rewards::test_util
 

@@ -36,6 +36,19 @@ class MockPageActionModel : public MockPageActionModel_Chromium {
               (),
               (const, override));
   MOCK_METHOD(bool, GetAlwaysShowLabel, (), (const, override));
+  MOCK_METHOD(void,
+              SetOverrideHeight,
+              (base::PassKey<PageActionController>, std::optional<int>),
+              (override));
+  MOCK_METHOD(std::optional<int>, GetOverrideHeight, (), (const, override));
+  MOCK_METHOD(void,
+              SetOverrideTriggerableEvent,
+              (base::PassKey<PageActionController>, std::optional<int>),
+              (override));
+  MOCK_METHOD(std::optional<int>,
+              GetOverrideTriggerableEvent,
+              (),
+              (const, override));
 };
 
 }  // namespace page_actions

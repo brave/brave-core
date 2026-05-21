@@ -16,15 +16,7 @@
   const gfx::VectorIcon& GetVectorTouchIcon() const;  \
   virtual void SetHighlight
 
-#define kDefaultIconSize \
-  kDefaultIconSize = 20; \
-  static constexpr int kDefaultIconSize_UnUsed
-#define kDefaultIconSizeChromeRefresh \
-  kDefaultIconSizeChromeRefresh = 20; \
-  static constexpr int kDefaultIconSizeChromeRefresh_UnUsed
 #include <chrome/browser/ui/views/toolbar/toolbar_button.h>  // IWYU pragma: export
-#undef kDefaultIconSizeChromeRefresh
-#undef kDefaultIconSize
 #undef SetHighlight
 #undef ToolbarButton
 

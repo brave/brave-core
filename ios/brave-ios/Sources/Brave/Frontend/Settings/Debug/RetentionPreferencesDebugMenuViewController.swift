@@ -108,7 +108,11 @@ private struct OnboardingRepresentable: UIViewControllerRepresentable {
       p3aUtils: p3aUtilities,
       attributionManager: attributionManager
     )
-    var steps: [any OnboardingStep] = [.defaultBrowsing, .blockInterruptions]
+    var steps: [any OnboardingStep] = [.defaultBrowsing]
+    if AddToDockEligibility.isEligible {
+      steps.append(.addToDock)
+    }
+    steps.append(.blockInterruptions)
     if !p3aUtilities.isP3APreferenceManaged {
       steps.append(.p3aOptIn)
     }

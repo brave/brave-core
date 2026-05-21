@@ -6,6 +6,8 @@
 import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 
+assert(enable_playlist)
+
 source_set("browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
@@ -24,7 +26,7 @@ source_set("browser_tests") {
       "playlist_browsertest.cc",
     ]
 
-    deps += [ "//brave/browser/ui/sidebar" ]
+    deps += [ "//brave/browser/ui/sidebar:sidebar_impl" ]
   }
 
   deps += [
@@ -44,9 +46,11 @@ source_set("browser_tests") {
 
   if (is_android) {
     deps += [ "//chrome/test:test_support_ui_android" ]
-  } else {
+  } else {  # !is_android
     deps += [
       "//chrome/browser/ui/browser_window",
+      "//chrome/browser/ui/side_panel",
+      "//chrome/browser/ui/side_panel:side_panel_views_dependent",
       "//chrome/test:test_support_ui",
     ]
   }

@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-index d9b6b3fe661d038cabe3675471c09f57341eb177..954dbe6b9aca2ec138954d5e69a96796fecbd9c2 100644
+index b8a50b3999318cdab31d7b285976a95c7ea88740..e4f085d55b5e2cf9d68937c62243271aa14d117c 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-@@ -64,7 +64,7 @@ import org.chromium.chrome.browser.ui.signin.SignOutCoordinator;
+@@ -63,7 +63,7 @@ import org.chromium.chrome.browser.ui.signin.SignOutCoordinator;
  import org.chromium.chrome.browser.ui.signin.SigninUtils;
  import org.chromium.chrome.browser.ui.signin.SignoutButtonPreference;
  import org.chromium.chrome.browser.ui.signin.history_sync.HistorySyncHelper;
@@ -11,7 +11,7 @@ index d9b6b3fe661d038cabe3675471c09f57341eb177..954dbe6b9aca2ec138954d5e69a96796
  import org.chromium.components.browser_ui.settings.ChromeBasePreference;
  import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
  import org.chromium.components.browser_ui.settings.SettingsUtils;
-@@ -626,6 +626,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
+@@ -622,6 +622,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
       */
      private void updateSyncPreferences() {
          String signedInAccountName =

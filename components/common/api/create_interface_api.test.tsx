@@ -11,6 +11,7 @@ import {
   event,
   clearAllDataForTesting,
 } from './create_interface_api'
+import { endpointsFor } from './endpoints_for'
 
 describe('createInterfaceApi', () => {
   // Clear the shared QueryClient between tests to avoid cache pollution
@@ -203,13 +204,23 @@ describe('createInterfaceApi', () => {
       endpoints: {
         myData: state({
           myValue: 'initial',
+          myOtherValue: 2,
         }),
       },
     })
 
-    expect(api.myData.current()).toEqual({ myValue: 'initial' })
+    expect(api.myData.current()).toEqual({
+      myValue: 'initial',
+      myOtherValue: 2,
+    })
+
+    // Partial updates do not remove other placeholder properties
     api.myData.update({ myValue: 'updated' })
-    expect(api.myData.current()).toEqual({ myValue: 'updated' })
+
+    expect(api.myData.current()).toEqual({
+      myValue: 'updated',
+      myOtherValue: 2,
+    })
   })
 
   it('creates a hook that returns the query data', async () => {
@@ -465,6 +476,49 @@ describe('createInterfaceApi', () => {
     expect(mutationFn).toHaveBeenCalledTimes(1)
   })
 
+  it('accepts mutations defined via endpointsFor under strict function types', async () => {
+    // Regression: previously, the `RawEndpoints` index signature used
+    // `EndpointDef<any[], any>`, which made tuple-typed mutations like
+    // `MutationEndpointDefinition<[Uint8Array, string], …>` fail assignability
+    // under `strictFunctionTypes` because of contravariant `onMutate(variables: P)`
+    // callbacks. The signature now uses `EndpointDef<any, any>` to side-step
+    // that.
+    type UploadedFile = { name: string }
+    type MyInterface = {
+      processImageFile: (
+        fileData: number[],
+        filename: string,
+      ) => Promise<{ processedFile: UploadedFile | null }>
+      processPdfFile: (
+        fileData: number[],
+        filename: string,
+      ) => Promise<{ processedFile: UploadedFile | null }>
+    }
+    const impl: MyInterface = {
+      processImageFile: (_d, n) =>
+        Promise.resolve({ processedFile: { name: n } }),
+      processPdfFile: (_d, n) =>
+        Promise.resolve({ processedFile: { name: n } }),
+    }
+
+    const api = createInterfaceApi({
+      actions: {},
+      endpoints: {
+        ...endpointsFor(impl, {
+          processImageFile: {
+            mutationResponse: (result) => result.processedFile,
+          },
+          processPdfFile: {
+            mutationResponse: (result) => result.processedFile,
+          },
+        }),
+      },
+    })
+
+    const result = await api.processImageFile([[1, 2, 3], 'image.png'])
+    expect(result).toEqual({ name: 'image.png' })
+  })
+
   it('can create void mutations that have a parameter', async () => {
     const mutationFn = jest.fn((hi: string) => {
       return Promise.resolve()
@@ -520,6 +574,68 @@ describe('createInterfaceApi', () => {
     expect(doSomething).toHaveBeenCalledWith('4')
     expect(doSomething).toHaveBeenCalledTimes(1)
     expect(api.moreThings.doAnotherThing()).toBeUndefined()
+  })
+
+  it('update does not prevent in-progress fetch', async () => {
+    // We need to wrap with endpointsFor in this test only so that
+    // prefetchWithArgs doesn't interfere with the QArgs type inference.
+    type MyInterface = {
+      getData(): Promise<{ id: string; anotherProperty: string }>
+    }
+
+    let allowGetDataToResolve = (_?: unknown) => {}
+
+    const getDataObserver = jest.fn()
+
+    const impl: MyInterface = {
+      getData: async () => {
+        getDataObserver()
+        await new Promise((resolve) => (allowGetDataToResolve = resolve))
+        return Promise.resolve({ id: '1', anotherProperty: 'fetched' })
+      },
+    }
+
+    const api = createInterfaceApi({
+      actions: {},
+      endpoints: endpointsFor(impl, {
+        getData: {
+          response: (result) => result,
+          prefetchWithArgs: [],
+          placeholderData: {
+            id: '0',
+            anotherProperty: 'placeholder',
+          },
+        },
+      }),
+    })
+
+    // prefetch has happened
+    expect(getDataObserver).toHaveBeenCalled()
+
+    // initially placeholder data
+    expect(api.getData.current()).not.toBeUndefined()
+    expect(api.getData.current()).toEqual({
+      id: '0',
+      anotherProperty: 'placeholder',
+    })
+
+    // make a partial update
+    api.getData.update({ anotherProperty: 'update' })
+
+    // verify other properties still intact
+    expect(api.getData.current()).toEqual({
+      id: '0',
+      anotherProperty: 'update',
+    })
+
+    // when initial fetch returns, it replaces the update
+    allowGetDataToResolve()
+    await new Promise((resolve) => setTimeout(resolve, 0))
+
+    expect(api.getData.current()).toEqual({
+      id: '1',
+      anotherProperty: 'fetched',
+    })
   })
 
   it('updates the query cache when update is called', async () => {

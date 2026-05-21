@@ -1,0 +1,13 @@
+diff --git a/net/device_bound_sessions/session_binding_utils.cc b/net/device_bound_sessions/session_binding_utils.cc
+index 4f0208149c2a8bb3c0a24ec4490cfc0136c4ec58..6902cbe9e3aea74f92a8d8f8f74952029ef45e23 100644
+--- a/net/device_bound_sessions/session_binding_utils.cc
++++ b/net/device_bound_sessions/session_binding_utils.cc
+@@ -42,6 +42,8 @@ std::string SignatureAlgorithmToString(
+       return "PS256";
+     case crypto::SignatureVerifier::RSA_PKCS1_SHA1:
+       return "RS1";
++    case crypto::SignatureVerifier::ECDSA_SHA384:
++      return "SHA384";
+   }
+ }
+ 

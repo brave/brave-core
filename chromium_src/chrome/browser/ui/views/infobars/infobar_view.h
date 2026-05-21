@@ -12,7 +12,6 @@
 
 #define CloseButtonPressed              \
   CloseButtonPressed_Unused() {}        \
-  friend class BraveConfirmInfoBar;     \
   friend class WebDiscoveryInfoBarView; \
   virtual void CloseButtonPressed
 

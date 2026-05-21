@@ -22,6 +22,7 @@
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/animation/slide_animation.h"
 #include "ui/gfx/font_list.h"
+#include "ui/gfx/geometry/rounded_corners_f.h"
 #include "ui/gfx/image/image.h"
 #include "ui/gfx/image/image_skia.h"
 #include "ui/gfx/image/image_util.h"
@@ -240,8 +241,10 @@ void PromotionButtonView::SetupShadow() {
       .blur_radius = radius,
       .shadow_color = cp->GetColor(kColorSearchConversionButtonShadow2)};
 
-  shadow1_ = std::make_unique<ViewShadow>(this, radius, shadow_config1);
-  shadow2_ = std::make_unique<ViewShadow>(this, radius, shadow_config2);
+  shadow1_ = std::make_unique<ViewShadow>(this, gfx::RoundedCornersF(radius),
+                                          shadow_config1);
+  shadow2_ = std::make_unique<ViewShadow>(this, gfx::RoundedCornersF(radius),
+                                          shadow_config2);
 }
 
 void PromotionButtonView::UpdateShadow() {

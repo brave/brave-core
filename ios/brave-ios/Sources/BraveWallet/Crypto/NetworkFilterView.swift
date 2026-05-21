@@ -8,13 +8,6 @@ import BraveShared
 import Preferences
 import SwiftUI
 
-struct Selectable<T: Identifiable & Equatable>: Equatable, Identifiable {
-  let isSelected: Bool
-  let model: T
-
-  var id: T.ID { model.id }
-}
-
 struct NetworkFilterView: View {
 
   @State var networks: [Selectable<BraveWallet.NetworkInfo>]
@@ -71,7 +64,7 @@ struct NetworkFilterView: View {
         }
       }
     }
-    .onChange(of: networks) { networks in
+    .onChange(of: networks) { _, networks in
       if !requiresSave {
         // No save button, so call saveAction when updating selections
         saveAction(networks)

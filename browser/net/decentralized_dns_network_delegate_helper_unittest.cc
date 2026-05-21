@@ -10,12 +10,14 @@
 #include "base/functional/callback_helpers.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
+#include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/values.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/net/features.h"
 #include "brave/browser/net/url_context.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service_test_utils.h"
@@ -28,6 +30,7 @@
 #include "brave/components/decentralized_dns/core/pref_names.h"
 #include "brave/components/decentralized_dns/core/utils.h"
 #include "build/build_config.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/prefs/testing_pref_service.h"
@@ -77,6 +80,20 @@ class DecentralizedDnsNetworkDelegateHelperTest : public testing::Test {
 
   void SetUp() override {
     profile_ = std::make_unique<TestingProfile>();
+
+    // BraveWalletService is nullptr in tests by default, so we have to create
+    // it manually.
+    DCHECK(g_browser_process->local_state());
+    brave_wallet::BraveWalletServiceFactory::GetInstance()->SetTestingFactory(
+        browser_context(),
+        base::BindLambdaForTesting([&](content::BrowserContext* context)
+                                       -> std::unique_ptr<KeyedService> {
+          return std::make_unique<brave_wallet::BraveWalletService>(
+              test_url_loader_factory_.GetSafeWeakWrapper(),
+              brave_wallet::BraveWalletServiceDelegate::Create(context),
+              user_prefs::UserPrefs::Get(context),
+              g_browser_process->local_state());
+        }));
 
     shared_url_loader_factory_ =
         base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
@@ -195,14 +212,21 @@ TYPED_TEST(DecentralizedDnsNetworkDelegateHelperTest,
     const char* url;
     bool is_valid;
   } test_cases[] = {
-      {"https://brave.888", false},
+      {"https://brave.888", false},  //
+      {"https://brave.agent", true},
+      {"https://brave.ai4", true},
       {"https://brave.altimist", true},
+      {"https://brave.amped", true},
       {"https://brave.anime", true},
+      {"https://brave.anyone", true},
+      {"https://brave.arculus", true},
       {"https://brave.ask", true},
+      {"https://brave.ath", true},
       {"https://brave.austin", true},
       {"https://brave.bald", true},
       {"https://brave.basenji", true},
       {"https://brave.bay", true},
+      {"https://brave.bch", true},
       {"https://brave.benji", true},
       {"https://brave.binanceus", true},
       {"https://brave.bitcoin", true},
@@ -211,65 +235,99 @@ TYPED_TEST(DecentralizedDnsNetworkDelegateHelperTest,
       {"https://brave.blockchain", true},
       {"https://brave.boomer", true},
       {"https://brave.brave", true},
+      {"https://brave.bunni", true},
       {"https://brave.calicoin", true},
+      {"https://brave.carbon", true},
       {"https://brave.caw", true},
+      {"https://brave.cgai", true},
+      {"https://brave.chip", true},
       {"https://brave.chomp", true},
       {"https://brave.clay", true},
       {"https://brave.coin", false},
+      {"https://brave.collect", true},
       {"https://brave.crypto", true},
       {"https://brave.dao", true},
+      {"https://brave.dejay", true},
+      {"https://brave.depin", true},
+      {"https://brave.derad", true},
       {"https://brave.dfz", true},
+      {"https://brave.digibyte", true},
       {"https://brave.doga", true},
       {"https://brave.donut", true},
       {"https://brave.dream", true},
+      {"https://brave.dsci", true},
       {"https://brave.emir", true},
       {"https://brave.ethermail", true},
       {"https://brave.farms", true},
+      {"https://brave.goblin", true},
+      {"https://brave.gotchi", true},
       {"https://brave.grow", true},
       {"https://brave.her", true},
+      {"https://brave.hub", true},
+      {"https://brave.imtoken", true},
       {"https://brave.kingdom", true},
       {"https://brave.klever", true},
       {"https://brave.kresus", true},
       {"https://brave.kryptic", true},
+      {"https://brave.learn", true},
       {"https://brave.lfg", true},
       {"https://brave.ltc", true},
+      {"https://brave.lunar", true},
       {"https://brave.manga", true},
+      {"https://brave.marketer", true},
       {"https://brave.metropolis", true},
       {"https://brave.miku", true},
       {"https://brave.ministry", true},
+      {"https://brave.mobix", true},
       {"https://brave.moon", true},
+      {"https://brave.mooncat", true},
       {"https://brave.mumu", true},
+      {"https://brave.mycircle", true},
       {"https://brave.nft", true},
       {"https://brave.nibi", true},
       {"https://brave.npc", true},
+      {"https://brave.ohm", true},
       {"https://brave.onchain", true},
+      {"https://brave.pack", true},
       {"https://brave.pastor", true},
+      {"https://brave.pbdx", true},
+      {"https://brave.pendle", true},
+      {"https://brave.pilot", true},
       {"https://brave.podcast", true},
       {"https://brave.pog", true},
+      {"https://brave.pokt", true},
       {"https://brave.polygon", true},
+      {"https://brave.presearch", true},
       {"https://brave.privacy", true},
       {"https://brave.propykeys", true},
       {"https://brave.pudgy", true},
+      {"https://brave.pundi", true},
       {"https://brave.quantum", true},
       {"https://brave.rad", true},
       {"https://brave.raiin", true},
       {"https://brave.secret", true},
       {"https://brave.smobler", true},
       {"https://brave.south", true},
+      {"https://brave.spend", true},
       {"https://brave.stepn", true},
+      {"https://brave.supernova", true},
       {"https://brave.tball", true},
       {"https://brave.tea", true},
       {"https://brave.tribe", true},
+      {"https://brave.twin", true},
       {"https://brave.u", true},
       {"https://brave.ubu", true},
       {"https://brave.unstoppable", true},
       {"https://brave.wallet", true},
+      {"https://brave.web3", true},
       {"https://brave.wifi", true},
       {"https://brave.witg", true},
       {"https://brave.wrkx", true},
       {"https://brave.x", true},
       {"https://brave.xec", true},
       {"https://brave.xmr", true},
+      {"https://brave.xyo", true},
+      {"https://brave.zano", true},
       {"https://brave.zil", true},
       {"https://brave", false},
       {"https://brave.com", false},
@@ -391,9 +449,10 @@ TYPED_TEST(DecentralizedDnsNetworkDelegateHelperTest,
            ""}),
       net::HTTP_OK);
   this->task_environment_.RunUntilIdle();
-  EXPECT_EQ(
-      brave_request_info->new_url_spec(),
-      "https://ipfs.io/ipfs/QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR");
+  EXPECT_EQ(brave_request_info->new_url_spec(),
+            "https://"
+            "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi.ipfs."
+            "inbrowser.link/");
 }
 
 TYPED_TEST(DecentralizedDnsNetworkDelegateHelperTest, EnsRedirectWork) {
@@ -438,8 +497,9 @@ TYPED_TEST(DecentralizedDnsNetworkDelegateHelperTest, EnsRedirectWork) {
       base::DoNothing(), brave_request_info, content_hash, false,
       brave_wallet::mojom::ProviderError::kSuccess, "");
   EXPECT_EQ(brave_request_info->new_url_spec(),
-            "https://ipfs.io/ipfs/"
-            "bafybeibd4ala53bs26dvygofvr6ahpa7gbw4eyaibvrbivf4l5rr44yqu4");
+            "https://"
+            "bafybeibd4ala53bs26dvygofvr6ahpa7gbw4eyaibvrbivf4l5rr44yqu4.ipfs."
+            "inbrowser.link/");
 
   EXPECT_FALSE(brave_request_info->pending_error().has_value());
 }

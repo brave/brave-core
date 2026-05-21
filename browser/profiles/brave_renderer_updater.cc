@@ -14,8 +14,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/browser/de_amp_util.h"
 #include "brave/components/de_amp/common/pref_names.h"
-#include "brave/components/playlist/core/common/features.h"
-#include "brave/components/playlist/core/common/pref_names.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/render_process_host.h"
@@ -38,6 +37,11 @@
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "extensions/browser/extension_registry.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/core/common/features.h"
+#include "brave/components/playlist/core/common/pref_names.h"
 #endif
 
 BraveRendererUpdater::BraveRendererUpdater(
@@ -117,10 +121,12 @@ BraveRendererUpdater::BraveRendererUpdater(
   }
 #endif
 
+#if BUILDFLAG(ENABLE_PLAYLIST)
   pref_change_registrar_.Add(
       playlist::kPlaylistEnabledPref,
       base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
                           base::Unretained(this)));
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 }
 
 BraveRendererUpdater::~BraveRendererUpdater() = default;
@@ -130,10 +136,15 @@ void BraveRendererUpdater::InitializeRenderer(
   auto renderer_configuration = GetRendererConfiguration(render_process_host);
   Profile* profile =
       Profile::FromBrowserContext(render_process_host->GetBrowserContext());
+
+  bool is_brave_wallet_available = false;
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   is_wallet_allowed_for_context_ = brave_wallet::IsAllowedForContext(profile);
+  is_brave_wallet_available = is_wallet_allowed_for_context_;
 #endif
-  renderer_configuration->SetInitialConfiguration(profile->IsTor());
+
+  renderer_configuration->SetInitialConfiguration(profile->IsTor(),
+                                                  is_brave_wallet_available);
   UpdateRenderer(&renderer_configuration);
 }
 
@@ -269,9 +280,13 @@ void BraveRendererUpdater::UpdateRenderer(
   }
 #endif
 
+#if BUILDFLAG(ENABLE_PLAYLIST)
   const bool playlist_enabled =
       base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
       pref_service->GetBoolean(playlist::kPlaylistEnabledPref);
+#else
+  const bool playlist_enabled = false;
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
   auto params = brave::mojom::DynamicParams::New();
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)

@@ -26,9 +26,15 @@
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/global_routing_id.h"
 #include "content/public/browser/web_contents.h"
+#include "url/gurl.h"
 
+// TODO(https://github.com/brave/brave-browser/issues/55073): Fix nogncheck by
+// splitting this tab helper.
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/brave_wallet/wallet_bubble_manager_delegate.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"  // nogncheck
+#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"  // nogncheck
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #endif
 
 namespace brave_wallet {
@@ -41,6 +47,15 @@ std::unique_ptr<BraveWalletProviderDelegate> CreateDelegate(
   return std::make_unique<BraveWalletProviderDelegateImpl>(web_contents,
                                                            host_id);
 }
+
+#if !BUILDFLAG(IS_ANDROID)
+bool IsWebContentsActive(content::WebContents& web_contents) {
+  if (auto* bwi = GetLastActiveBrowserWindowInterfaceWithAnyProfile()) {
+    return bwi->GetTabStripModel()->GetActiveWebContents() == &web_contents;
+  }
+  return false;
+}
+#endif
 
 }  // namespace
 
@@ -192,6 +207,22 @@ void BraveWalletTabHelper::ClearSolanaConnectedAccounts(
 }
 
 #if !BUILDFLAG(IS_ANDROID)
+void BraveWalletTabHelper::ShowBubbleImpl(GURL url) {
+  wallet_bubble_manager_delegate_ =
+      WalletBubbleManagerDelegate::MaybeCreate(&GetWebContents(), url);
+  if (!wallet_bubble_manager_delegate_) {
+    return;
+  }
+  // Suppress request if not from active web_contents.
+  if (!IsWebContentsActive(GetWebContents())) {
+    return;
+  }
+  wallet_bubble_manager_delegate_->ShowBubble();
+  if (show_bubble_callback_for_testing_) {
+    std::move(show_bubble_callback_for_testing_).Run();
+  }
+}
+
 void BraveWalletTabHelper::ShowBubble() {
   if (skip_delegate_for_testing_) {
     is_showing_bubble_for_testing_ = true;
@@ -201,15 +232,8 @@ void BraveWalletTabHelper::ShowBubble() {
   if (!bubble_url.is_valid()) {
     return;
   }
-  wallet_bubble_manager_delegate_ =
-      WalletBubbleManagerDelegate::MaybeCreate(&GetWebContents(), bubble_url);
-  if (!wallet_bubble_manager_delegate_) {
-    return;
-  }
-  wallet_bubble_manager_delegate_->ShowBubble();
-  if (show_bubble_callback_for_testing_) {
-    std::move(show_bubble_callback_for_testing_).Run();
-  }
+
+  ShowBubbleImpl(bubble_url);
 }
 
 void BraveWalletTabHelper::ShowApproveWalletBubble() {
@@ -219,12 +243,8 @@ void BraveWalletTabHelper::ShowApproveWalletBubble() {
   if (IsShowingBubble()) {
     return;
   }
-  wallet_bubble_manager_delegate_ = WalletBubbleManagerDelegate::MaybeCreate(
-      &GetWebContents(), GetApproveBubbleURL());
-  if (!wallet_bubble_manager_delegate_) {
-    return;
-  }
-  wallet_bubble_manager_delegate_->ShowBubble();
+
+  ShowBubbleImpl(GetApproveBubbleURL());
 }
 
 void BraveWalletTabHelper::CloseBubble() {
@@ -296,10 +316,6 @@ GURL BraveWalletTabHelper::GetBubbleURL() {
 
 content::WebContents* BraveWalletTabHelper::GetBubbleWebContentsForTesting() {
   return wallet_bubble_manager_delegate_->GetWebContentsForTesting();
-}
-
-const std::vector<int32_t>& BraveWalletTabHelper::GetPopupIdsForTesting() {
-  return wallet_bubble_manager_delegate_->GetPopupIdsForTesting();
 }
 
 GURL BraveWalletTabHelper::GetApproveBubbleURL() {

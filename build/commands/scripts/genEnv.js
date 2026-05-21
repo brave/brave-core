@@ -5,7 +5,7 @@
 
 'use strict'
 
-import config from '../lib/config.js'
+import config from '../lib/config.ts'
 
 // Helper to convert an environment variable value into a string.
 function envValToString(envVal) {

@@ -51,13 +51,14 @@ class ContainerModel {
 };
 
 // Builds ContainerModels from prefs; shared by menu model, tab strip, etc.
-std::vector<ContainerModel> GetContainerModels(const ContainersService& service,
-                                               float scale_factor);
+// `runtime_container_ids` is a set of container IDs that are currently in use.
+std::vector<ContainerModel> GetContainerModels(
+    const ContainersService& service,
+    const base::flat_set<std::string>& runtime_container_ids,
+    float scale_factor);
 
 // Resolves a runtime container model using synced pref. Falls back to an
 // unknown model when the container is not found.
-// TODO(https://github.com/brave/brave-browser/issues/53604): Will fallback to
-// local used-containers cache.
 ContainerModel GetRuntimeContainerModel(const ContainersService& service,
                                         std::string_view id,
                                         float scale_factor);

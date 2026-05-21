@@ -19,12 +19,13 @@ class FetchPaymentTokenUrlRequestBuilder final
  public:
   explicit FetchPaymentTokenUrlRequestBuilder(ConfirmationInfo confirmation);
 
+  // UrlRequestBuilderInterface:
   mojom::UrlRequestInfoPtr Build() override;
 
  private:
   GURL BuildUrl() const;
 
-  ConfirmationInfo confirmation_;
+  const ConfirmationInfo confirmation_;
 };
 
 }  // namespace brave_ads

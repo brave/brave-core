@@ -10,6 +10,7 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/debug/crash_logging.h"
+#include "base/files/file_path.h"
 #include "base/functional/bind.h"
 #include "base/notreached.h"
 #include "base/task/task_traits.h"
@@ -84,7 +85,7 @@ void DatabaseManager::RunTransaction(
                            weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void DatabaseManager::Shutdown(ShutdownCallback callback) {
+void DatabaseManager::Shutdown(ResultCallback callback) {
   CHECK(callback);
 
   // Wrap `callback` with `DatabaseManager::OnShutdownCallback` to ensure it's
@@ -138,7 +139,7 @@ void DatabaseManager::OnRunTransactionCallback(
   std::move(callback).Run(std::move(mojom_db_transaction_result));
 }
 
-void DatabaseManager::OnShutdownCallback(ShutdownCallback callback,
+void DatabaseManager::OnShutdownCallback(ResultCallback callback,
                                          bool success) {
   CHECK(callback);
   std::move(callback).Run(success);
@@ -228,6 +229,8 @@ void DatabaseManager::MigrateFromVersionCallback(int from_version,
   const int to_version = database::kVersionNumber;
 
   if (!success) {
+    // Upload a non-fatal crash report so migration failures are visible in
+    // Backtrace without crashing the browser.
     SCOPED_CRASH_KEY_NUMBER("BraveAds", "from_sqlite_schema_version",
                             from_version);
     SCOPED_CRASH_KEY_NUMBER("BraveAds", "to_sqlite_schema_version", to_version);

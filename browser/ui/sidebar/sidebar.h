@@ -19,6 +19,11 @@ class Sidebar {
   // Update sidebar item's UI state.
   virtual void UpdateSidebarItemsState() = 0;
 
+  // Re-evaluate sidebar visibility from the current pinned state and show
+  // option, and sync the toolbar button highlight to the pinned state.
+  // Called when the controller's pinned state toggles (V2 only).
+  virtual void UpdateSidebarVisibility() = 0;
+
  protected:
   virtual ~Sidebar() {}
 };

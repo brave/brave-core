@@ -21,8 +21,12 @@ class BraveLocationBarView;
   ShouldShowLabel() const; \
   virtual bool ShouldAlwaysShowLabel()
 
+// Make GetSizeForLabelWidth virtual
+#define GetSizeForLabelWidth virtual GetSizeForLabelWidth
+
 #include <chrome/browser/ui/views/location_bar/icon_label_bubble_view.h>  // IWYU pragma: export
 
+#undef GetSizeForLabelWidth
 #undef ShouldShowLabel
 #undef UpdateLabelColors
 

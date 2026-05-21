@@ -28,7 +28,7 @@ struct BuyTokenView: View {
 
   @ViewBuilder private var accountPickerView: some View {
     Menu {
-      if let account = buyTokenStore.selectedAccount {
+      if buyTokenStore.selectedAccount != nil {
         Text(buyTokenStore.selectedAccountAddress.zwspOutput)
       }
       Button {
@@ -218,7 +218,8 @@ struct BuyTokenView: View {
       }
       .environment(\.defaultMinListHeaderHeight, 0)
       .environment(\.defaultMinListRowHeight, 0)
-      .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+      .scrollContentBackground(.hidden)
+      .background(Color(UIColor.braveGroupedBackground))
       .navigationTitle(Strings.Wallet.buy)
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
@@ -320,7 +321,7 @@ struct BuyTokenView: View {
                 .font(.callout)
                 .foregroundColor(Color(braveSystemName: .textPrimary))
               HStack(spacing: 8) {
-                LegalCheckbox(isChecked: $hasReadAgreementBoxChecked)
+                WalletCheckbox(isChecked: $hasReadAgreementBoxChecked)
                   .font(.title2)
                 Text(
                   LocalizedStringKey(

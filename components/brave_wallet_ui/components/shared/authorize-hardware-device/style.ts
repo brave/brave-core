@@ -6,5 +6,9 @@
 import styled from 'styled-components'
 
 export const StyledIFrame = styled.iframe`
-  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-height: 44px;
 `

@@ -11,7 +11,6 @@
 #include "brave/components/brave_rewards/core/engine/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/engine/database/database.h"
 #include "brave/components/brave_rewards/core/engine/endpoints/brave/get_ui_cards.h"
-#include "brave/components/brave_rewards/core/engine/gemini/gemini.h"
 #include "brave/components/brave_rewards/core/engine/global_constants.h"
 #include "brave/components/brave_rewards/core/engine/initialization_manager.h"
 #include "brave/components/brave_rewards/core/engine/parameters/rewards_parameters_provider.h"
@@ -42,7 +41,6 @@ RewardsEngine::RewardsEngine(
       wallet_(std::make_unique<wallet::Wallet>(*this)),
       database_(std::make_unique<database::Database>(*this)),
       bitflyer_(std::make_unique<bitflyer::Bitflyer>(*this)),
-      gemini_(std::make_unique<gemini::Gemini>(*this)),
       uphold_(std::make_unique<uphold::Uphold>(*this)),
       zebpay_(std::make_unique<zebpay::ZebPay>(*this)) {
   DCHECK(base::ThreadPoolInstance::Get());
@@ -458,9 +456,6 @@ wallet_provider::WalletProvider* RewardsEngine::GetExternalWalletProvider(
     const std::string& wallet_type) {
   if (wallet_type == constant::kWalletBitflyer) {
     return bitflyer_.get();
-  }
-  if (wallet_type == constant::kWalletGemini) {
-    return gemini_.get();
   }
   if (wallet_type == constant::kWalletUphold) {
     return uphold_.get();

@@ -23,9 +23,11 @@
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/p3a/features.h"
 #include "brave/components/playlist/core/common/features.h"
+#include "brave/components/serp_metrics/serp_metrics_feature.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/ios/browser/api/translate/features.h"
 #include "brave/ios/browser/ui/commerce/features.h"
+#include "brave/ios/browser/ui/quick_view/features.h"
 #include "brave/ios/browser/ui/web_view/features.h"
 #import "build/blink_buildflags.h"
 #include "build/build_config.h"
@@ -283,31 +285,10 @@
       initWithFeature:&brave_shields::features::kCosmeticFilteringSyncLoad];
 }
 
-#if BUILDFLAG(ENABLE_GEMINI_WALLET)
-+ (Feature*)kGeminiFeature {
-  return [[Feature alloc] initWithFeature:&kGeminiFeature];
-}
-#else
-+ (Feature*)kGeminiFeature {
-  return nil;
-}
-#endif
-
 + (Feature*)kNTP {
   return [[Feature alloc]
       initWithFeature:&brave_search_conversion::features::kNTP];
 }
-
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-+ (Feature*)kNativeBraveWalletFeature {
-  return [[Feature alloc]
-      initWithFeature:&brave_wallet::features::kNativeBraveWalletFeature];
-}
-#else
-+ (nullable Feature*)kNativeBraveWalletFeature {
-  return nil;
-}
-#endif
 
 + (Feature*)kSkusFeature {
   return [[Feature alloc] initWithFeature:&skus::features::kSkusFeature];
@@ -345,6 +326,12 @@
 + (Feature*)kUseBraveUserAgent {
   return [[Feature alloc]
       initWithFeature:&brave_user_agent::features::kUseBraveUserAgent];
+}
+
++ (Feature*)kShouldCancelRequestsForUserAgentChange {
+  return [[Feature alloc]
+      initWithFeature:&brave_user_agent::features::
+                          kShouldCancelRequestsForUserAgentChange];
 }
 
 + (Feature*)kUseProfileWebViewConfiguration {
@@ -400,5 +387,13 @@
 + (Feature*)kUseChromiumWebViewsAutofill {
   return [[Feature alloc]
       initWithFeature:&brave::features::kUseChromiumWebViewsAutofill];
+}
+
++ (Feature*)kQuickViewEnabled {
+  return [[Feature alloc] initWithFeature:&brave::features::kQuickViewEnabled];
+}
+
++ (Feature*)kSerpMetricsFeature {
+  return [[Feature alloc] initWithFeature:&serp_metrics::kSerpMetricsFeature];
 }
 @end

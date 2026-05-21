@@ -169,7 +169,8 @@ public struct NewSiteConnectionView: View {
         }
       }
       .listStyle(InsetGroupedListStyle())
-      .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+      .scrollContentBackground(.hidden)
+      .background(Color(UIColor.braveGroupedBackground))
       .navigationBarTitleDisplayMode(.inline)
       .navigationTitle(Strings.Wallet.newSiteConnectScreenTitle)
       .toolbar {
@@ -255,7 +256,8 @@ public struct NewSiteConnectionView: View {
       }
     }
     .listStyle(InsetGroupedListStyle())
-    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+    .scrollContentBackground(.hidden)
+    .background(Color(UIColor.braveGroupedBackground))
     .navigationTitle(Strings.Wallet.newSiteConnectScreenTitle)
     .navigationBarTitleDisplayMode(.inline)
   }

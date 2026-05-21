@@ -265,4 +265,9 @@ void AccountDiscoveryManager::OnBitcoinDiscoverAccountsDone(
   DiscoverBitcoinAccount(keyring_id, account_index + 1);
 }
 
+base::WeakPtr<AccountDiscoveryManager>
+AccountDiscoveryManager::GetWeakPtrForTesting() {
+  return weak_ptr_factory_.GetWeakPtr();
+}
+
 }  // namespace brave_wallet

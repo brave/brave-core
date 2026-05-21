@@ -11,6 +11,7 @@
 #define GetExtraInfobarOffset()                                         \
   GetExtraInfobarOffset() const override;                               \
   bool ShouldShowVerticalTabs() const override;                         \
+  bool ShouldShowWindowTitleForVerticalTabs() const override;           \
   bool IsVerticalTabOnRight() const override;                           \
   bool ShouldUseBraveWebViewRoundedCornersForContents() const override; \
   int GetRoundedCornersWebViewMargin() const override;                  \

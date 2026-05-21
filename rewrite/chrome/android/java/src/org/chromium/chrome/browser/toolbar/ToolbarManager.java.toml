@@ -9,4 +9,3 @@
 description = 'Remove NTP check from toolbar longpress condition'
 re_pattern = '(private boolean shouldSuppressToolbarLongPress\(\)[\s\S]+?)\|\| \(getNewTabPageForCurrentTab\(\) != null\);'
 replace = '\1;'
-count = 1

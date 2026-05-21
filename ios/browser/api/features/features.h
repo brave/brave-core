@@ -67,10 +67,7 @@ OBJC_EXPORT
     Feature* kCosmeticFilteringExtraPerfMetrics;
 @property(class, nonatomic, readonly) Feature* kCosmeticFilteringJsPerformance;
 @property(class, nonatomic, readonly) Feature* kCosmeticFilteringSyncLoad;
-@property(class, nonatomic, readonly, nullable) Feature* kGeminiFeature;
 @property(class, nonatomic, readonly) Feature* kNTP;
-@property(class, nonatomic, readonly, nullable)
-    Feature* kNativeBraveWalletFeature;
 @property(class, nonatomic, readonly) Feature* kSkusFeature;
 @property(class, nonatomic, readonly) Feature* kUseDevUpdaterUrl;
 @property(class, nonatomic, readonly) Feature* kVerboseLoggingFeature;
@@ -79,6 +76,8 @@ OBJC_EXPORT
 @property(class, nonatomic, readonly) Feature* kBraveTranslateEnabled;
 @property(class, nonatomic, readonly) Feature* kBraveAppleTranslateEnabled;
 @property(class, nonatomic, readonly) Feature* kUseBraveUserAgent;
+@property(class, nonatomic, readonly)
+    Feature* kShouldCancelRequestsForUserAgentChange;
 @property(class, nonatomic, readonly) Feature* kUseProfileWebViewConfiguration;
 @property(class, nonatomic, readonly) Feature* kBraveAllowExternalPurchaseLinks;
 @property(class, nonatomic, readonly, nullable) Feature* kBraveWalletWebUIIOS;
@@ -92,6 +91,8 @@ OBJC_EXPORT
 @property(class, nonatomic, readonly, nullable)
     Feature* kBraveWalletCardanoEnabled;
 @property(class, nonatomic, readonly) Feature* kUseChromiumWebViewsAutofill;
+@property(class, nonatomic, readonly) Feature* kQuickViewEnabled;
+@property(class, nonatomic, readonly) Feature* kSerpMetricsFeature;
 @end
 
 NS_ASSUME_NONNULL_END

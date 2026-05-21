@@ -43,7 +43,8 @@ def CheckLeoVariables(input_api, output_api):
     try:
         parts = [
             brave_node.PathInNodeModules('@brave', 'leo', 'src', 'scripts',
-                                         'audit-tokens.js')
+                                         'audit-tokens.js'), '--ignore',
+            '.storybook-out'
         ]
         brave_node.RunNode(parts, include_command_in_error=False)
         return []
@@ -51,11 +52,89 @@ def CheckLeoVariables(input_api, output_api):
         return [output_api.PresubmitError(str(err))]
 
 
+def CheckTypeScriptSuppressionsHaveReasons(input_api, output_api):
+    """Checks that @ts-ignore/@ts-expect-error have reasons.
+
+    This check looks for TypeScript suppression annotations (@ts-ignore and
+    @ts-expect-error) are provided with a reason, and if not a warning is
+    emitted.
+
+    This chek also emits an educational warning for uses of @ts-ignore
+    even when a reason is provided, to raise awareness of the differences
+    between @ts-ignore and @ts-expect-error, and help developers choose the
+    right one for their use case. This education warning is only emitted for
+    @ts-ignore, because @ts-ignore has a broader scope than @ts-expect-error.
+    """
+    files_to_check = (
+        r'.+\.js$',
+        r'.+\.ts$',
+        r'.+\.tsx$',
+    )
+    file_filter = lambda f: input_api.FilterSourceFile(
+        f,
+        files_to_check=files_to_check,
+        files_to_skip=input_api.DEFAULT_FILES_TO_SKIP)
+
+    # Match suppression annotations not followed by any non-whitespace reason.
+    missing_reason_pattern = input_api.re.compile(
+        r'//\s*@ts-(ignore|expect-error)(?!-)\s*$')
+    ts_ignore_pattern = input_api.re.compile(r'//\s*@ts-ignore(?!-)\b')
+
+    missing_reason_problems = []
+    ts_ignore_with_reason_items = []
+    for f in input_api.AffectedFiles(file_filter=file_filter,
+                                     include_deletes=False):
+        for line_num, line in f.ChangedContents():
+            line_item = f'{f.LocalPath()}:{line_num}: {line.strip()}'
+            if missing_reason_pattern.search(line):
+                missing_reason_problems.append(line_item)
+                continue
+
+            # Emit educational guidance for @ts-ignore only when a reason
+            # exists.
+            if ts_ignore_pattern.search(line):
+                ts_ignore_with_reason_items.append(line_item)
+
+    results = []
+    if missing_reason_problems:
+        results.append(
+            output_api.PresubmitPromptWarning(
+                'TypeScript suppression annotations (@ts-ignore, '
+                '@ts-expect-error) must be followed by a '
+                'reason explaining the suppression.\n'
+                'Example: // @ts-expect-error: This will be fixed in v148.',
+                items=missing_reason_problems,
+                long_text=(
+                    'Prefer @ts-expect-error over @ts-ignore when the '
+                    'suppression is intended to be temporary, or when you '
+                    'want TypeScript to alert you if the suppression is no '
+                    'longer needed.\n'
+                    'If you intend to remove the suppression and fix the '
+                    'underlying issue later, add a TODO comment line to track '
+                    'follow-up work.\n')))
+
+    if ts_ignore_with_reason_items:
+        results.append(
+            output_api.PresubmitPromptWarning(
+                'Educational guideline for @ts-ignore usage.',
+                items=ts_ignore_with_reason_items,
+                long_text=(
+                    '@ts-ignore always suppresses the error even if it '
+                    'disappears later, whilst @ts-expect-error provides an '
+                    'alert if no error occurs. Therefore, @ts-expect-error is '
+                    'often a better fit for temporary suppressions, or even '
+                    'for permanent suppression where it is important to be '
+                    'aware about changes on the underlying assumptions that '
+                    'made the suppression necessary. The use of @ts-ignore is '
+                    'allowed when appropriate though.')))
+
+    return results
+
 # Check and fix formatting issues (supports --fix).
 def CheckPatchFormatted(input_api, output_api):
     cmd = [
         brave_chromium_utils.wspath(
-            '//brave/build/commands/scripts/format.js'), '--presubmit'
+            '//brave/build/commands/scripts/format.ts'), '--presubmit'
     ]
     if input_api.PRESUBMIT_ALL_BRAVE:
         cmd.append('--all-files')
@@ -394,6 +473,30 @@ def CheckPlasterFiles(input_api, output_api):
     ])
 
 
+def CheckJson5ParseErrors(input_api, output_api):
+    """Check that .json5 files parse without syntax errors.
+
+    Upstream `CheckParseErrors` covers `.idl` and `.json` but not `.json5`.
+    `json5.loads` natively accepts `//` and `/* */` comments, trailing
+    commas, and unquoted keys, so no comment-stripping pre-pass is needed.
+    """
+    import json5
+
+    def _is_json5(affected_file):
+        return affected_file.LocalPath().endswith('.json5')
+
+    results = []
+    for affected_file in input_api.AffectedFiles(file_filter=_is_json5,
+                                                 include_deletes=False):
+        try:
+            json5.loads(input_api.ReadFile(affected_file))
+        except ValueError as e:
+            results.append(
+                output_api.PresubmitError(
+                    f'{affected_file.LocalPath()} could not be parsed: {e}'))
+    return results
+
+
 # DON'T ADD NEW BRAVE CHECKS AFTER THIS LINE.
 #
 # This call inlines Chromium checks into current scope from src/PRESUBMIT.py. We
@@ -593,8 +696,15 @@ def CheckJavaStyle(_original_check, input_api, output_api):
             for f in input_api.AffectedFiles()):
         return []
 
-    # Android toolchain is only available on Linux.
-    if not sys.platform.startswith('linux'):
+    # Allow the check on Linux and macOS.
+    if not sys.platform.startswith(('linux', 'darwin')):
+        return []
+
+    # The JDK may not be available on macOS CI (upstream only checks it out on
+    # Linux/Android). Silently skip when the binary is missing.
+    jdk_java = os.path.join(input_api.PresubmitLocalPath(), 'third_party',
+                            'jdk', 'current', 'bin', 'java')
+    if not os.path.isfile(jdk_java):
         return []
 
     with brave_chromium_utils.sys_path('//tools/android/checkstyle'):

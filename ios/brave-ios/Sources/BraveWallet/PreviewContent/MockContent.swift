@@ -241,6 +241,27 @@ extension BraveWallet.BlockchainToken {
     coin: .ada,
     isShielded: false
   )
+
+  static let mockMinToken: BraveWallet.BlockchainToken = .init(
+    contractAddress: "29d222ce763455e3d7a09a665ce554f00ac89d2e99a1a83d267170c64d494e",
+    name: "Minswap",
+    logo: "",
+    isCompressed: false,
+    isErc20: false,
+    isErc721: false,
+    isErc1155: false,
+    splTokenProgram: .unsupported,
+    isNft: false,
+    isSpam: false,
+    symbol: "MIN",
+    decimals: 6,
+    visible: false,
+    tokenId: "",
+    coingeckoId: "",
+    chainId: BraveWallet.CardanoMainnet,
+    coin: .ada,
+    isShielded: false
+  )
 }
 
 extension BraveWallet.AccountInfo {
@@ -270,16 +291,14 @@ extension BraveWallet.TransactionInfo {
       txDataUnion: .init(
         ethTxData1559: .init(
           baseData: .init(
+            chainId: BraveWallet.MainnetChainId,
             nonce: "0x6",
             gasPrice: "0x0",
             gasLimit: "0x5208",
             to: "0x3f2116ef98fcab1a9c3c2d8988e0064ab59acfca",
             value: "0x2386f26fc10000",
-            data: [],
-            signOnly: false,
-            signedTransaction: nil
+            data: []
           ),
-          chainId: BraveWallet.MainnetChainId,
           maxPriorityFeePerGas: "0x2540be400",
           maxFeePerGas: "0x25b7f3d400"
         )
@@ -307,6 +326,7 @@ extension BraveWallet.TransactionInfo {
       txDataUnion: .init(
         ethTxData1559: .init(
           baseData: .init(
+            chainId: BraveWallet.MainnetChainId,
             nonce: "0x5",
             gasPrice: "0x0",
             gasLimit: "0x520ca",
@@ -315,11 +335,8 @@ extension BraveWallet.TransactionInfo {
             data: _transactionBase64ToData(
 
               "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"
-            ),
-            signOnly: false,
-            signedTransaction: nil
+            )
           ),
-          chainId: BraveWallet.MainnetChainId,
           maxPriorityFeePerGas: "0x77359400",
           maxFeePerGas: "0x39bdf3b000"
         )
@@ -359,6 +376,7 @@ extension BraveWallet.TransactionInfo {
       txDataUnion: .init(
         ethTxData1559: .init(
           baseData: .init(
+            chainId: BraveWallet.MainnetChainId,
             nonce: "0x5",
             gasPrice: "0x0",
             gasLimit: "0x520ca",
@@ -366,11 +384,8 @@ extension BraveWallet.TransactionInfo {
             value: "0x0",
             data: _transactionBase64ToData(
               "CV6nswAAAAAAAAAAAAAAAOWSQnoK7Okt4+3uHxjgFXwFhhVk//////////////////////////////////////////8="
-            ),
-            signOnly: false,
-            signedTransaction: nil
+            )
           ),
-          chainId: BraveWallet.MainnetChainId,
           maxPriorityFeePerGas: "0x77359400",
           maxFeePerGas: "0x39bdf3b000"
         )
@@ -402,6 +417,7 @@ extension BraveWallet.TransactionInfo {
       txDataUnion: .init(
         ethTxData1559: .init(
           baseData: .init(
+            chainId: BraveWallet.MainnetChainId,
             nonce: "0x5",
             gasPrice: "0xa06907542",
             gasLimit: "0x12e61",
@@ -409,11 +425,8 @@ extension BraveWallet.TransactionInfo {
             value: "0x0",
             data: _transactionBase64ToData(
               "CV6nswAAAAAAAAAAAAAAAOWSQnoK7Okt4+3uHxjgFXwFhhVk//////////////////////////////////////////8="
-            ),
-            signOnly: false,
-            signedTransaction: nil
+            )
           ),
-          chainId: BraveWallet.MainnetChainId,
           maxPriorityFeePerGas: "",
           maxFeePerGas: ""
         )
@@ -763,55 +776,6 @@ extension BraveWallet.ZeroExQuote {
     sellToken: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",  // ETH
     totalNetworkFee: "2034668056550000",
     allowanceTarget: "0x0000000000000000000000000000000000000000"
-  )
-}
-
-extension BraveWallet.LiFiQuote {
-  /// Price quote for 1 ETH to USDC (sell amount entered)
-  static let mockOneETHtoUSDCQuote: BraveWallet.LiFiQuote = .init(
-    routes: [
-      .init(
-        id: "route.1",
-        uniqueId: "allbridge",
-        from: .previewToken,
-        fromAmount: "1000000000000000000",
-        fromAddress: BraveWallet.AccountInfo.mockEthAccount.address,
-        to: .mockUSDCToken,
-        toAmount: "3537722948",
-        toAmountMin: "",
-        toAddress: BraveWallet.AccountInfo.mockEthAccount.address,
-        steps: [
-          .init(
-            id: "step.1",
-            type: .liFi,
-            tool: "1inch",
-            toolDetails: .init(key: "", name: "", logo: ""),
-            action: .init(),
-            estimate: .init(
-              tool: "1inch",
-              fromAmount: "1000000000000000000",
-              toAmount: "3537722948",
-              toAmountMin: "3520034333",
-              approvalAddress: "0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE",
-              executionDuration: "30",
-              feeCosts: nil,
-              gasCosts: [
-                .init(
-                  type: "SEND",
-                  estimate: "386779",
-                  limit: "729779",
-                  amount: "15403648617462374",
-                  token: .previewToken
-                )
-              ]
-            ),
-            integrator: nil,
-            includedSteps: nil
-          )
-        ],
-        tags: []
-      )
-    ]
   )
 }
 

@@ -1,0 +1,20 @@
+[package]
+name = "ip_network_table-deps-treebitmap"
+version = "0.5.0"
+authors = ["Hroi Sigurdsson <hroi@asdf.dk>", "Jakub Onderka <ahoj@jakubonderka.cz>"]
+description = "Forked version of fast IPv4/IPv6 lookup trie."
+license = "MIT"
+repository = "https://github.com/JakubOnderka/treebitmap"
+documentation = "https://docs.rs/ip_network_table-deps-treebitmap/"
+readme = "README.md"
+keywords = ["ip", "networking", "trie", "cidr"]
+categories = ["data-structures", "network-programming"]
+
+[dev-dependencies]
+rand = "0.7.2"
+
+[badges]
+travis-ci = { repository = "JakubOnderka/treebitmap" }
+
+[features]
+alloc = []

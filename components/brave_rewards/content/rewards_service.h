@@ -223,8 +223,7 @@ class RewardsService : public KeyedService {
       const std::string& wallet_type,
       BeginExternalWalletLoginCallback callback) = 0;
 
-  // Connects Rewards with a custodial wallet service (e.g. bitFlyer, Gemini,
-  // Uphold).
+  // Connects Rewards with a custodial wallet service (e.g. bitFlyer, Uphold).
   // |path| is the authorization URL's path
   // |query| is the authorization URL's query
   virtual void ConnectExternalWallet(const std::string& path,

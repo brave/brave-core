@@ -22,9 +22,9 @@ export const Button = styled(WalletButton)<{
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  width: 48px;
-  height: 48px;
-  border-radius: 16px;
+  width: 44px;
+  height: 44px;
+  border-radius: ${leo.radius.full};
   outline: none;
   border: none;
   background: none;
@@ -34,7 +34,7 @@ export const Button = styled(WalletButton)<{
 `
 
 export const ButtonIcon = styled(Icon)`
-  --leo-icon-size: 24px;
+  --leo-icon-size: 20px;
   color: ${leo.color.white};
   @media (prefers-color-scheme: dark) {
     color: ${leo.color.schemes.onPrimary};

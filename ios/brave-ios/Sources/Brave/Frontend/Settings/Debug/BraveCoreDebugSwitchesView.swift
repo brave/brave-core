@@ -35,8 +35,6 @@ extension BraveCoreSwitchKey {
       return "Json Upload Server URL"
     case .enableFeatures:
       return "Enable Features"
-    case .p3aWalletCountTestNetworks:
-      return "Brave Wallet Count Test Networks"
     case .useDevGoUpdater:
       return "Use staging CRX components"
     case .servicesEnvironment:
@@ -50,7 +48,6 @@ extension BraveCoreSwitchKey {
     switch self {
     case .p3aDoNotRandomizeUploadInterval,
       .p3aIgnoreServerErrors,
-      .p3aWalletCountTestNetworks,
       .useDevGoUpdater:
       return true
     default:
@@ -59,9 +56,6 @@ extension BraveCoreSwitchKey {
   }
 
   static let enableFeatures: Self = .init(rawValue: "enable-features")
-  static let p3aWalletCountTestNetworks: Self = .init(
-    rawValue: BraveWallet.P3aCountTestNetworksSwitch
-  )
 }
 
 private enum BraveServicesEnvironment: String, CaseIterable {
@@ -94,7 +88,8 @@ private struct BasicStringInputView: View {
       }
     }
     .listStyle(.insetGrouped)
-    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+    .scrollContentBackground(.hidden)
+    .background(Color(UIColor.braveGroupedBackground))
     .navigationTitle(coreSwitch.displayString)
     .onAppear {
       // SwiftUI bug, has to wait a bit
@@ -147,7 +142,8 @@ private struct BasicPickerInputView: View {
       .pickerStyle(.inline)
     }
     .listStyle(.insetGrouped)
-    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+    .scrollContentBackground(.hidden)
+    .background(Color(UIColor.braveGroupedBackground))
     .navigationTitle(coreSwitch.displayString)
     .onAppear {
       // SwiftUI bug, has to wait a bit
@@ -215,7 +211,8 @@ private struct CustomSwitchInputView: View {
       }
     }
     .listStyle(.insetGrouped)
-    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+    .scrollContentBackground(.hidden)
+    .background(Color(UIColor.braveGroupedBackground))
     .navigationTitle("Custom Switch")
     .onAppear {
       // SwiftUI bug, has to wait a bit
@@ -416,7 +413,6 @@ struct BraveCoreDebugSwitchesView: View {
           } label: {
             SwitchContainer(.p3aExpressRotationIntervalSeconds)
           }
-          SwitchContainer(.p3aWalletCountTestNetworks)
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
       } header: {
@@ -482,7 +478,8 @@ struct BraveCoreDebugSwitchesView: View {
       }
     }
     .listStyle(.insetGrouped)
-    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+    .scrollContentBackground(.hidden)
+    .background(Color(UIColor.braveGroupedBackground))
     .navigationBarTitle("BraveCore Switches")
   }
 }

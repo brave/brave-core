@@ -197,7 +197,8 @@ public struct BraveNewsDebugSettingsView: View {
       }
     }
     .listStyle(.insetGrouped)
-    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+    .scrollContentBackground(.hidden)
+    .background(Color(UIColor.braveGroupedBackground))
     .navigationTitle("Brave News QA Settings")
     .navigationBarTitleDisplayMode(.inline)
     .animation(.default, value: fileList)
@@ -210,10 +211,10 @@ public struct BraveNewsDebugSettingsView: View {
         }
       }
     }
-    .onChange(of: environment) { _ in
+    .onChange(of: environment) { _, _ in
       feedDataSource.environment = environment
     }
-    .onChange(of: localeOverride) { locale in
+    .onChange(of: localeOverride) { _, locale in
       Preferences.BraveNews.selectedLocale.value = locale
       feedDataSource.selectedLocale = locale
     }

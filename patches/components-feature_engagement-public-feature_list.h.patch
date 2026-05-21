@@ -1,20 +1,20 @@
 diff --git a/components/feature_engagement/public/feature_list.h b/components/feature_engagement/public/feature_list.h
-index 67c7f37d9466bc1583ad4aaed391670645ecc100..74ffa5cf623a396595a4266a1b456c635e34b051 100644
+index 9226cd25d0b03ffd1b806a14ae6e3568e201aece..0ab999b748dfbc6fabc16a9388b44e2cb41c6a74 100644
 --- a/components/feature_engagement/public/feature_list.h
 +++ b/components/feature_engagement/public/feature_list.h
-@@ -562,6 +562,7 @@ DEFINE_VARIATION_PARAM(kIPHiOSLensPromoDesktopFeature,
- DEFINE_VARIATION_PARAM(kIPHiOSEnhancedBrowsingDesktopFeature,
-                        "IPH_iOSEnhancedBrowsingDesktop");
+@@ -580,6 +580,7 @@ DEFINE_VARIATION_PARAM(kIPHiOSTabGroupsDesktopFeature,
+ DEFINE_VARIATION_PARAM(kIPHiOSPriceTrackingDesktopFeature,
+                        "IPH_iOSPriceTrackingDesktop");
  #endif  // !BUILDFLAG(IS_ANDROID)
 +BRAVE_FEATURE_ENGAGEMENT_VARIATION_PARAMS
  
  #if !BUILDFLAG(IS_IOS)
  DEFINE_VARIATION_PARAM(kIPHResumptionRailFeature, "IPH_ResumptionRail");
-@@ -572,6 +573,7 @@ DEFINE_VARIATION_PARAM(kIPHResumptionRailFeature, "IPH_ResumptionRail");
- // are possible to enable on their own in demo mode.
+@@ -591,6 +592,7 @@ DEFINE_VARIATION_PARAM(kIPHResumptionRailFeature, "IPH_ResumptionRail");
  inline constexpr flags_ui::FeatureEntry::FeatureVariation
      kIPHDemoModeChoiceVariations[] = {
+ // clang-format off
 +        BRAVE_FEATURE_ENGAGEMENT_VARIATION_ENTRIES
  #if BUILDFLAG(IS_ANDROID)
-         VARIATION_ENTRY(kIPHAccountSettingsHistorySync),
-         VARIATION_ENTRY(
+ // keep-sorted start case=no
+ // VARIATION_ENTRY_ANDROID_START

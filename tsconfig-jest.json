@@ -1,6 +1,7 @@
 {
   "extends": "./tsconfig",
   "compilerOptions": {
+    "isolatedModules": true,
     "module": "ESNext",
     "target": "ESNext",
     "esModuleInterop": true,

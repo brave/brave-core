@@ -31,6 +31,8 @@ class VirtualPrefProviderDelegateIOS : public VirtualPrefProvider::Delegate {
 
   std::string GetDefaultSearchEngineName() const override;
 
+  base::DictValue GetSerpMetrics() const override;
+
  private:
   const raw_ref<ProfileIOS> profile_;
 };

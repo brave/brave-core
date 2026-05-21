@@ -8,7 +8,7 @@
 
 #include <optional>
 
-#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "components/search_engines/search_engine_type.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
@@ -26,8 +26,6 @@ class SerpMetricsTabHelper final
     : public content::WebContentsObserver,
       public content::WebContentsUserData<SerpMetricsTabHelper> {
  public:
-  explicit SerpMetricsTabHelper(content::WebContents*);
-
   SerpMetricsTabHelper(const SerpMetricsTabHelper&) = delete;
   SerpMetricsTabHelper& operator=(const SerpMetricsTabHelper&) = delete;
 
@@ -38,6 +36,8 @@ class SerpMetricsTabHelper final
  private:
   friend class content::WebContentsUserData<SerpMetricsTabHelper>;
 
+  SerpMetricsTabHelper(content::WebContents*, SerpMetrics& serp_metrics);
+
   bool IsSameSerpAsLastRecorded(const GURL& url) const;
 
   void MaybeClassifyAndRecordSearchEngineForUrl(const GURL& url);
@@ -47,7 +47,7 @@ class SerpMetricsTabHelper final
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
 
-  raw_ptr<SerpMetrics> serp_metrics_ = nullptr;  // Not owned.
+  const raw_ref<SerpMetrics> serp_metrics_;
 
   std::optional<GURL> last_recorded_serp_url_;
 

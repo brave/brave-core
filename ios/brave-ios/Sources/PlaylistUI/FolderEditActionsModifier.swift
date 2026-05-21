@@ -19,7 +19,7 @@ private struct FolderEditActionsModifier: ViewModifier {
 
   func body(content: Content) -> some View {
     content
-      .onChange(of: isRenamePlaylistAlertPresented) { newValue in
+      .onChange(of: isRenamePlaylistAlertPresented) { _, newValue in
         if newValue {
           renameText = folder?.title ?? ""
         } else {

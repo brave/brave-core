@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/internal/common/resources/flat/text_classification_linear_model_generated.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
-#include "brave/components/brave_ads/core/internal/ml/pipeline/linear_pipeline_test_util.h"
+#include "brave/components/brave_ads/core/internal/ml/pipeline/test/linear_pipeline_test_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 

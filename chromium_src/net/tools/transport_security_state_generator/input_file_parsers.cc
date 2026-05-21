@@ -550,9 +550,9 @@ bool ParseCertificatesFile(std::string_view certs_input,
                            Pinsets* pinsets,
                            base::Time* timestamp) {
   constexpr std::string_view brave_certs = R"brave_certs(
-# Last updated: Wed Mar 18 14:45:42 2026
+# Last updated: Tue May 19 17:13:23 2026
 PinsListTimestamp
-1773859542
+1779225203
 
 # =====BEGIN BRAVE ROOTS ASC=====
 #From https://www.amazontrust.com/repository/
@@ -1267,18 +1267,19 @@ csOPNIXeJm1YsnJyxUGvKRWjOn+vC9k1SXilnnwhcIs9Pp9e5bckYAnB79VJXN/L
 bool ParseJSON(std::string_view hsts_json,
                std::string_view pins_json,
                TransportSecurityStateEntries* entries,
+               PinEntries* pin_entries,
                Pinsets* pinsets) {
   Pinsets chromium_pinsets;
+  PinEntries chromium_pin_entries;
   TransportSecurityStateEntries chromium_entries;
   if (!ParseJSON_ChromiumImpl(hsts_json, pins_json, &chromium_entries,
-                              &chromium_pinsets)) {
+                              &chromium_pin_entries, &chromium_pinsets)) {
     return false;
   }
 
   for (auto& entry : chromium_entries) {
     // Google has asked us not to include the pins that ship with Chrome,
     // but we do want the preloaded HSTS entries.
-    entry->pinset = "";
     if (!entry->force_https) {
       continue;
     }
@@ -1287,7 +1288,7 @@ bool ParseJSON(std::string_view hsts_json,
   }
 
   return ParseJSON_ChromiumImpl(kBraveHstsJson, kBravePinsJson, entries,
-                                pinsets);
+                                pin_entries, pinsets);
 }
 
 }  // namespace net::transport_security_state

@@ -5,9 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table.h"
 
-#include "base/run_loop.h"
-#include "base/test/gmock_callback_support.h"
-#include "base/test/mock_callback.h"
+#include "base/test/run_until.h"
+#include "base/test/test_future.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
@@ -18,9 +17,11 @@
 namespace brave_ads {
 
 class BraveAdsConversionsDatabaseTableIntegrationTest : public test::TestBase {
- protected:
-  void SetUp() override { test::TestBase::SetUp(/*is_integration_test=*/true); }
+ public:
+  BraveAdsConversionsDatabaseTableIntegrationTest()
+      : test::TestBase(/*is_integration_test=*/true) {}
 
+ protected:
   void SetUpMocks() override {
     const test::URLResponseMap url_responses = {
         {BuildCatalogUrlPath(),
@@ -35,14 +36,17 @@ TEST_F(BraveAdsConversionsDatabaseTableIntegrationTest,
   const database::table::CreativeSetConversions database_table;
 
   // Act & Assert
-  base::MockCallback<database::table::GetCreativeSetConversionsCallback>
-      callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback, Run(/*success=*/true,
-                            /*creative_set_conversions=*/::testing::SizeIs(2)))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  database_table.GetUnexpired(callback.Get());
-  run_loop.Run();
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    base::test::TestFuture<bool, CreativeSetConversionList> test_future;
+    database_table.GetUnexpired(
+        test_future.GetCallback<bool, const CreativeSetConversionList&>());
+    const auto [success, creative_set_conversions] = test_future.Take();
+    if (!success || creative_set_conversions.empty()) {
+      return false;
+    }
+    EXPECT_THAT(creative_set_conversions, ::testing::SizeIs(2));
+    return true;
+  }));
 }
 
 }  // namespace brave_ads

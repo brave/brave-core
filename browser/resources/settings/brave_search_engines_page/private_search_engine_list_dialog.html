@@ -43,7 +43,7 @@
     font: var(--leo-font-x-small-regular);
   }
 
-  site-favicon {
+  settings-search-engine-icon {
     --site-favicon-border-radius: 4px;
     --site-favicon-height: var(--icon-size);
     --site-favicon-width: var(--icon-size);
@@ -86,10 +86,8 @@
       <cr-radio-group selected="{{selectedEngineId_}}">
         <cr-radio-button class="label-first" name="[[promotedEngine_.id]]">
           <div class="search-engine">
-            <site-favicon favicon-url="[[promotedEngine_.iconURL]]"
-                url="[[promotedEngine_.url]]"
-                icon-path="[[promotedEngine_.iconPath]]">
-            </site-favicon>
+            <settings-search-engine-icon engine="[[promotedEngine_]]">
+            </settings-search-engine-icon>
             <div id="name-description">
               [[promotedEngine_.name]]
               <div id="description">
@@ -110,9 +108,8 @@
         <cr-radio-button class="label-first" name="[[item.id]]"
                          hidden="[[isPromotedEngine_(item)]]">
           <div class="search-engine">
-            <site-favicon favicon-url="[[item.iconURL]]" url="[[item.url]]"
-                 icon-path="[[item.iconPath]]">
-            </site-favicon>
+            <settings-search-engine-icon engine="[[item]]">
+            </settings-search-engine-icon>
             [[item.name]]
           </div>
         </cr-radio-button>

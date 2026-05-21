@@ -5,11 +5,15 @@
 
 #include "brave/ios/browser/api/brave_stats/brave_stats.h"
 
+#include "base/check.h"
 #include "base/memory/raw_ptr.h"
 #include "base/strings/sys_string_conversions.h"
+#include "base/time/time.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/brave_stats/browser/buildflags.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/serp_metrics/pref_names.h"
 #include "brave/components/webcompat_reporter/buildflags/buildflags.h"
 #include "components/prefs/pref_service.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
@@ -50,6 +54,38 @@ NSString* const kWebcompatReportEndpoint =
 
 - (BOOL)isNotificationAdsEnabled {
   return _profilePrefs->GetBoolean(brave_ads::prefs::kOptedInToNotificationAds);
+}
+
+- (nullable NSDate*)lastPingDate {
+  const std::string ymd = _localPrefs->GetString(kLastCheckYMD);
+  if (ymd.empty()) {
+    return nil;
+  }
+  // Daily usage pings on iOS use UTC for the date boundary.
+  std::optional<base::Time> time =
+      brave_stats::GetYMDAsDate(ymd, /*use_utc=*/true);
+  if (!time) {
+    // If we can't parse the last daily usage ping date, reset it to today to
+    // avoid double reporting of previous daily usage pings data.
+    const std::string ymd_today =
+        brave_stats::GetDateAsYMD(base::Time::Now(), /*use_utc=*/true);
+    _localPrefs->SetString(kLastCheckYMD, ymd_today);
+    time = brave_stats::GetYMDAsDate(ymd_today, /*use_utc=*/true);
+    CHECK(time);
+  }
+  return time->ToNSDate();
+}
+
+- (void)setLastPingDate:(NSDate*)date {
+  if (!date) {
+    _localPrefs->SetString(kLastCheckYMD, std::string());
+    return;
+  }
+  // Daily usage pings on iOS use UTC for the date boundary.
+  _localPrefs->SetString(kLastCheckYMD,
+                         brave_stats::GetDateAsYMD(base::Time::FromNSDate(date),
+                                                   /*use_utc=*/true));
+  _localPrefs->SetTime(serp_metrics::prefs::kLastReportedAt, base::Time::Now());
 }
 
 @end

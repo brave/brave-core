@@ -263,7 +263,7 @@ struct HistoryView: View {
         prompt: Strings.History.historySearchBarTitle
       )
     }
-    .onChange(of: searchText) { searchText in
+    .onChange(of: searchText) { _, searchText in
       self.timer?.invalidate()
       self.timer = Timer.scheduledTimer(
         withTimeInterval: 0.1,

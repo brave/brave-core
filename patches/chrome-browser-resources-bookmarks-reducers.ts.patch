@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/bookmarks/reducers.ts b/chrome/browser/resources/bookmarks/reducers.ts
-index 72fe9c12d54a93fbad7114e875768e1ba2232cea..1d83343e5e4537a45780e307810452d19edcaec8 100644
+index 7e4e55e64172840f1cb43febceb5d540f5968f31..7f1c92067b6c731d64ff589556c4024bcb915e62 100644
 --- a/chrome/browser/resources/bookmarks/reducers.ts
 +++ b/chrome/browser/resources/bookmarks/reducers.ts
 @@ -194,6 +194,9 @@ function editBookmark(nodes: NodeMap, action: EditBookmarkAction): NodeMap {
@@ -12,7 +12,7 @@ index 72fe9c12d54a93fbad7114e875768e1ba2232cea..1d83343e5e4537a45780e307810452d1
  
    // Change node's parent.
    nodeModifications[id] =
-@@ -429,7 +432,7 @@ export function updateFolderOpenState(
+@@ -437,7 +440,7 @@ export function updateFolderOpenState(
            folderOpenState, nodes[(action as SelectFolderAction).id]!.parentId!,
            nodes);
      case 'move-bookmark':

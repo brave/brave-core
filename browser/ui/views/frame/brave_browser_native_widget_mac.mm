@@ -5,8 +5,11 @@
 
 #include "brave/browser/ui/views/frame/brave_browser_native_widget_mac.h"
 
+#include <algorithm>
+
 #include "base/feature_list.h"
 #include "brave/app/brave_command_ids.h"
+#include "brave/browser/ui/tabs/brave_compact_horizontal_tabs_layout.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/profiles/profile.h"
@@ -46,6 +49,22 @@ void BraveBrowserNativeWidgetMac::GetWindowFrameTitlebarHeight(
 
   BrowserNativeWidgetMac::GetWindowFrameTitlebarHeight(override_titlebar_height,
                                                        titlebar_height);
+
+  // In compact horizontal tabs mode, shrink the titlebar height that AppKit
+  // sees so the traffic light cluster (auto-centered by NSThemeFrame because
+  // `-[BrowserWindowFrame _shouldCenterTrafficLights]` returns YES) shifts up
+  // toward the top of the shorter compact tab strip + toolbar row. Halving
+  // this delta is what AppKit translates into vertical movement: subtracting
+  // 16 DIP centres the lights ~8 DIP higher. This mirrors Helium's
+  // `layout-constants.patch` (imputnet/helium @ b6e5b77e), which achieves the
+  // same effect by shrinking the row rather than overriding the AppKit
+  // private API for the buttons themselves.
+  if (*override_titlebar_height &&
+      tabs::ShouldUseCompactHorizontalTabsForNonTouchUI()) {
+    constexpr float kCompactTitlebarShrinkDip = 8.0f;
+    *titlebar_height =
+        std::max(0.0f, *titlebar_height - kCompactTitlebarShrinkDip);
+  }
 }
 
 void BraveBrowserNativeWidgetMac::ValidateUserInterfaceItem(

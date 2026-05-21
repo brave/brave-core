@@ -34,6 +34,7 @@ import org.chromium.base.metrics.RecordHistogram;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.ObservableSuppliers;
 import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
+import org.chromium.build.annotations.EnsuresNonNull;
 import org.chromium.build.annotations.Initializer;
 import org.chromium.build.annotations.MonotonicNonNull;
 import org.chromium.build.annotations.NullMarked;
@@ -47,6 +48,7 @@ import org.chromium.chrome.browser.settings.ChromeBaseSettingsFragment;
 import org.chromium.chrome.browser.settings.ChromeManagedPreferenceDelegate;
 import org.chromium.chrome.browser.settings.MainSettings;
 import org.chromium.chrome.browser.settings.search.ChromeBaseSearchIndexProvider;
+import org.chromium.chrome.browser.ui.favicon.FaviconHelper;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SearchUtils;
 import org.chromium.components.browser_ui.settings.SearchViewProvider;
@@ -109,13 +111,14 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
     private boolean mNoPasswords;
     private boolean mNoPasswordExceptions;
 
-    private /*@Nullable*/ MenuItem mHelpItem;
     private /*@Nullable*/ MenuItem mSearchItem;
 
     private @Nullable String mSearchQuery;
     private @Nullable Preference mLinkPref;
     private /*@Nullable*/ Menu mMenu;
     private @Nullable Preference mExportPasswordsPreference;
+    private @MonotonicNonNull FaviconHelper mFaviconHelper;
+    private @MonotonicNonNull FaviconHelper.DefaultFaviconHelper mDefaultFaviconHelper;
 
     private @ManagePasswordsReferrer int mManagePasswordsReferrer;
     private final SettableMonotonicObservableSupplier<String> mPageTitle =
@@ -134,6 +137,7 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
     }
 
     @Override
+    @EnsuresNonNull({"mFaviconHelper", "mDefaultFaviconHelper"})
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
         mExportFlow.onCreate(
                 savedInstanceState,
@@ -189,6 +193,9 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
                     }
                 });
         mPageTitle.set(getString(R.string.password_manager_settings_title));
+
+        mFaviconHelper = new FaviconHelper();
+        mDefaultFaviconHelper = new FaviconHelper.DefaultFaviconHelper();
 
         // Load preferences from XML instead of creating programmatically
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_password_settings_preferences);
@@ -330,7 +337,6 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
         menu.findItem(R.id.export_passwords).setVisible(false);
         mSearchItem = menu.findItem(R.id.menu_id_search);
         mSearchItem.setVisible(true);
-        mHelpItem = menu.findItem(R.id.menu_id_targeted_help);
         SearchUtils.initializeSearchView(
                 mSearchItem,
                 mSearchQuery,
@@ -347,14 +353,8 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
         if (SearchUtils.handleSearchNavigation(item, mSearchItem, mSearchQuery, getActivity())) {
             filterPasswords(null);
-            return true;
-        }
-        if (id == R.id.menu_id_targeted_help) {
-            getHelpAndFeedbackLauncher()
-                    .show(getActivity(), getString(R.string.help_context_passwords), null);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -362,10 +362,6 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
 
     private void filterPasswords(@Nullable String query) {
         mSearchQuery = query;
-        mHelpItem.setShowAsAction(
-                mSearchQuery == null
-                        ? MenuItem.SHOW_AS_ACTION_IF_ROOM
-                        : MenuItem.SHOW_AS_ACTION_NEVER);
         rebuildPasswordLists();
     }
 
@@ -540,7 +536,13 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
             if (shouldBeFiltered(url, name)) {
                 continue; // The current password won't show with the active filter, try the next.
             }
-            Preference preference = new Preference(getStyledContext());
+            PasswordEntryPreference preference =
+                    new PasswordEntryPreference(
+                            getStyledContext(),
+                            saved.getOriginUrl(),
+                            assumeNonNull(mFaviconHelper),
+                            assumeNonNull(mDefaultFaviconHelper),
+                            getProfile());
             preference.setTitle(url);
             preference.setOnPreferenceClickListener(this);
             preference.setSummary(name);
@@ -563,6 +565,9 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
                 displayPasswordNoResultScreenMessage();
             }
         }
+        // Notify SettingsActivity so it recalculates the containment decoration range to include
+        // all dynamically-added password items.
+        notifyPreferencesUpdated();
     }
 
     /**
@@ -619,6 +624,7 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
             args.putInt(PASSWORD_LIST_ID, i);
             profileCategory.addPreference(preference);
         }
+        notifyPreferencesUpdated();
     }
 
     @Override
@@ -671,6 +677,7 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
         // by the system.
         if (getActivity().isFinishing()) {
             PasswordManagerHandlerProvider.getForProfile(getProfile()).removeObserver(this);
+            assumeNonNull(mFaviconHelper).destroy();
         }
     }
 

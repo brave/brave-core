@@ -22,6 +22,9 @@ class TabDataWebContentsObserver;
 #endif
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
+namespace containers {
+class ContainerTabTracker;
+}
 namespace page_actions {
 class PartitionedStoragePageActionController;
 }
@@ -51,6 +54,13 @@ class BraveTabFeatures : public TabFeatures {
   }
 #endif
 
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  page_actions::PartitionedStoragePageActionController*
+  partitioned_storage_page_action_controller() {
+    return partitioned_storage_page_action_controller_.get();
+  }
+#endif
+
  private:
 #if BUILDFLAG(ENABLE_AI_CHAT)
   std::unique_ptr<ai_chat::TabDataWebContentsObserver> tab_data_observer_;
@@ -59,6 +69,7 @@ class BraveTabFeatures : public TabFeatures {
   std::unique_ptr<psst::PsstTabWebContentsObserver> psst_web_contents_observer_;
 #endif
 #if BUILDFLAG(ENABLE_CONTAINERS)
+  std::unique_ptr<containers::ContainerTabTracker> container_tab_tracker_;
   std::unique_ptr<page_actions::PartitionedStoragePageActionController>
       partitioned_storage_page_action_controller_;
 #endif

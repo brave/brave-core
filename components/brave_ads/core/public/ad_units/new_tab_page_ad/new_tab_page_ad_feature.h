@@ -20,11 +20,6 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kNewTabPageAdFeature);
 
-// Set to `true` to support frequency capping; otherwise, no capping.
-inline constexpr base::FeatureParam<bool>
-    kShouldFrequencyCapNewTabPageAdsForNonRewards{
-        &kNewTabPageAdFeature, "should_frequency_cap_for_non_rewards", true};
-
 // Set to 0 to never cap.
 inline constexpr base::FeatureParam<size_t> kMaximumNewTabPageAdsPerHour{
     &kNewTabPageAdFeature, "maximum_ads_per_hour", 4};

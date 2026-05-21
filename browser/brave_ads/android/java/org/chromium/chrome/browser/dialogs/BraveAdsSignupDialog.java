@@ -89,8 +89,8 @@ public class BraveAdsSignupDialog {
     }
 
     @CalledByNative
-    public static void enqueueOnboardingNotificationNative(boolean useCustomNotifications) {
-        enqueueOnboardingNotification(ContextUtils.getApplicationContext(), useCustomNotifications);
+    public static void enqueueOnboardingNotificationNative() {
+        enqueueOnboardingNotification(ContextUtils.getApplicationContext());
     }
 
     @CalledByNative
@@ -98,13 +98,17 @@ public class BraveAdsSignupDialog {
         return AppearancePreferences.getPrefAdsInBackgroundEnabled();
     }
 
-    private static void enqueueOnboardingNotification(Context context, boolean useCustomNotification) {
-        if(!OnboardingPrefManager.getInstance().isOnboardingNotificationShown()) {
+    private static void enqueueOnboardingNotification(Context context) {
+        if (!OnboardingPrefManager.getInstance().isOnboardingNotificationShown()) {
             AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(context, BraveOnboardingNotification.class);
-            intent.putExtra(BraveOnboardingNotification.USE_CUSTOM_NOTIFICATION, useCustomNotification);
-            am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + MOMENT_LATER,
-                    PendingIntent.getBroadcast(context, 0, intent,
+            am.set(
+                    AlarmManager.RTC_WAKEUP,
+                    System.currentTimeMillis() + MOMENT_LATER,
+                    PendingIntent.getBroadcast(
+                            context,
+                            0,
+                            intent,
                             PendingIntent.FLAG_UPDATE_CURRENT
                                     | IntentUtils.getPendingIntentMutabilityFlag(true)));
         }

@@ -112,20 +112,6 @@ void AdsClientNotifier::NotifyTabTextContentDidChange(
                     tab_id, redirect_chain, text);
 }
 
-void AdsClientNotifier::NotifyTabHtmlContentDidChange(
-    int32_t tab_id,
-    const std::vector<GURL>& redirect_chain,
-    const std::string& html) {
-  if (task_queue_->should_queue()) {
-    return task_queue_->Add(base::BindOnce(
-        &AdsClientNotifier::NotifyTabHtmlContentDidChange,
-        weak_factory_.GetWeakPtr(), tab_id, redirect_chain, html));
-  }
-
-  observers_.Notify(&AdsClientNotifierObserver::OnNotifyTabHtmlContentDidChange,
-                    tab_id, redirect_chain, html);
-}
-
 void AdsClientNotifier::NotifyTabDidStartPlayingMedia(int32_t tab_id) {
   if (task_queue_->should_queue()) {
     return task_queue_->Add(

@@ -15,7 +15,7 @@
 #include "url/gurl.h"
 
 class Browser;
-class BrowserListObserver;
+class BrowserCollectionObserver;
 
 namespace url {
 class Origin;
@@ -34,6 +34,8 @@ class TorProfileManager : public ProfileObserver {
   // Close all Tor windows for all tor profiles
   void CloseAllTorWindows();
 
+  void Shutdown();
+
  private:
   friend class base::NoDestructor<TorProfileManager>;
   TorProfileManager();
@@ -46,7 +48,7 @@ class TorProfileManager : public ProfileObserver {
 
   // One regular profile can only have one tor profile
   base::flat_map<std::string, Profile*> tor_profiles_;
-  std::unique_ptr<BrowserListObserver> browser_list_observer_;
+  std::unique_ptr<BrowserCollectionObserver> browser_collection_observer_;
 
   TorProfileManager(const TorProfileManager&) = delete;
   TorProfileManager& operator=(const TorProfileManager&) = delete;

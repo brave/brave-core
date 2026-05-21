@@ -76,6 +76,7 @@ class NewTabPageAdEventHandler final : public NewTabPageAdEventHandlerDelegate {
                          mojom::NewTabPageAdEventType mojom_ad_event_type,
                          FireNewTabPageAdEventHandlerCallback callback) const;
 
+  void NotifyWillFireNewTabPageAdClickedEvent(const NewTabPageAdInfo& ad) const;
   void NotifyDidFireNewTabPageAdEvent(
       const NewTabPageAdInfo& ad,
       mojom::NewTabPageAdEventType mojom_ad_event_type) const;

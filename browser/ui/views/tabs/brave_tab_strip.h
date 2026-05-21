@@ -12,12 +12,15 @@
 #include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/containers/buildflags/buildflags.h"
+#include "chrome/browser/ui/tabs/tab_data.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
+#include "components/prefs/pref_member.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/browser/ui/containers/container_model.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
+class BraveTabContainer;
 class BraveVerticalTabStripRegionView;
 class Tab;
 class BraveTabStrip : public TabStrip {
@@ -34,17 +37,22 @@ class BraveTabStrip : public TabStrip {
 
   TabContainer* GetTabContainerForTesting();
 
+  BraveTabContainer* GetBraveTabContainer();
+
+  void InvalidateTabContainerLayout();
+
   // TabStrip:
   void ShowHover(Tab* tab, TabStyle::ShowHoverStyle style) override;
   void HideHover(Tab* tab, TabStyle::HideHoverStyle style) override;
-  void UpdateHoverCard(Tab* tab, HoverCardUpdateType update_type) override;
+  void UpdateHoverCard(HoverCardAnchorTarget* anchor_target,
+                       HoverCardUpdateType update_type) override;
   void MaybeStartDrag(TabSlotView* source,
                       const ui::LocatedEvent& event,
                       ui::ListSelectionModel original_selection) override;
   void AddedToWidget() override;
   bool ShouldAlwaysHideCloseButton() const override;
   int GetTreeHeight(const tree_tab::TreeTabNodeId& id) const override;
-  const tabs::TreeTabNode& GetTreeTabNode(
+  const tabs::TreeTabNode* GetTreeTabNode(
       const tree_tab::TreeTabNodeId& id) const override;
   void SetTreeTabNodeCollapsed(const tree_tab::TreeTabNodeId& id,
                                bool collapsed) override;
@@ -54,12 +62,17 @@ class BraveTabStrip : public TabStrip {
   bool IsVerticalTabsAnimatingButNotFinalState() const override;
   bool CanPaintThrobberToLayer() const override;
   bool CanCloseTabViaMiddleButtonClick() const override;
+  void AddTabToGroup(std::optional<tab_groups::TabGroupId> group,
+                     int model_index) override;
+  void OnTabPinnedStateChanged(int model_index, bool is_pinned) override;
 
   // TabSlotController:
   bool ShouldPaintTabAccent(const Tab* tab) const override;
   std::optional<TabAccentColors> GetTabAccentColors(
       const Tab* tab) const override;
   ui::ImageModel GetTabAccentIcon(const Tab* tab) const override;
+  brave_tabs::TabMinWidthMode GetTabMinWidthMode() const override;
+  bool IsHorizontalScrollingEnabled() const override;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ScrollBarMode);
@@ -100,9 +113,17 @@ class BraveTabStrip : public TabStrip {
   BraveVerticalTabStripRegionView* GetVerticalTabStripRegionView() const;
 
   void OnAlwaysHideCloseButtonPrefChanged();
+  void OnTabMinWidthModePrefChanged();
+  void OnScrollableHorizontalTabStripPrefChanged();
+
+  // Clears tree-tab-node UI state when a tab becomes pinned. There is no
+  // dedicated notification when pinning from a group.
+  void OnPinnedStateChanged(int model_index, bool new_pinned_state);
 
   BooleanPrefMember always_hide_close_button_;
   BooleanPrefMember middle_click_close_tab_enabled_;
+  BooleanPrefMember scrollable_horizontal_tab_strip_;
+  IntegerPrefMember tab_min_width_mode_;
 
   base::WeakPtrFactory<BraveTabStrip> weak_factory_{this};
 };

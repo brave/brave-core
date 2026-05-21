@@ -185,7 +185,7 @@ extension Preferences {
   }
 }
 
-extension BraveWallet.ResolveMethod: Identifiable, CaseIterable {
+extension BraveWallet.ResolveMethod: @retroactive Identifiable, @retroactive CaseIterable {
   public static var allCases: [BraveWallet.ResolveMethod] = [.ask, .enabled, .disabled]
 
   public var id: Int { rawValue }

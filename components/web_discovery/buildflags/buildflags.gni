@@ -4,8 +4,14 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/brave_origin/buildflags/buildflags.gni")
+import("//extensions/buildflags/buildflags.gni")
 
 declare_args() {
   enable_web_discovery_native =
       (is_win || is_mac || is_linux || is_android) && !is_brave_origin_branded
+}
+
+declare_args() {
+  enable_web_discovery = (enable_web_discovery_native || enable_extensions) &&
+                         !is_brave_origin_branded
 }

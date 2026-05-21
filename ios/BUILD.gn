@@ -89,8 +89,7 @@ brave_core_public_headers = [
   "//brave/ios/browser/ai_chat/ai_chat_utils.h",
   "//brave/ios/browser/ai_chat/ai_chat_settings_helper.h",
   "//brave/ios/browser/ai_chat/ai_chat_ui_handler_bridge.h",
-  "//brave/ios/browser/brave_account/brave_account_authentication_bridge.h",
-  "//brave/ios/browser/brave_account/brave_account_authentication_bridge_impl.h",
+  "//brave/ios/browser/brave_account/brave_account_authentication_provider.h",
   "//brave/ios/browser/brave_account/brave_account_constants_bridge.h",
   "//brave/ios/browser/brave_account/brave_account_feature_bridge.h",
   "//brave/ios/browser/brave_origin/brave_origin_service_bridge.h",
@@ -121,11 +120,20 @@ brave_core_public_headers = [
   "//brave/ios/browser/safari_data_import/safari_data_import_client_delegate.h",
   "//brave/ios/browser/safari_data_import/safari_data_importer_bridge.h",
   "//brave/ios/browser/safari_data_import/safari_data_importer_coordinator.h",
+  "//brave/ios/browser/serp_metrics/serp_metrics_bridge.h",
+  "//brave/ios/browser/serp_metrics/serp_metrics_service_factory_bridge.h",
   "//brave/ios/browser/playlist/playlist_pref_names_bridge.h",
   "//brave/ios/browser/ui/l10n_utils_typed_bridge.h",
   "//ui/base/l10n/l10n_util_mac_bridge.h",
+  "$root_gen_dir/brave/components/brave_account/mojom/brave_account.mojom.objc.h",
   "$root_gen_dir/components/grit/brave_components_swift_strings.h",
   "//brave/ios/browser/web/logins/logins_tab_helper_bridge.h",
+  "//brave/ios/browser/brave_talk/brave_talk_tab_helper_bridge.h",
+  "//brave/ios/browser/brave_search/brave_search_make_default_tab_helper_bridge.h",
+  "//ios/chrome/browser/web/model/print/print_handler.h",
+  "//brave/ios/browser/youtube/youtube_pref_names_bridge.h",
+  "//brave/ios/browser/global_privacy_control/gpc_pref_names_bridge.h",
+  "//brave/ios/browser/shared/prefs/shared_pref_names_bridge.h",
 ]
 
 brave_core_public_headers += ads_public_headers
@@ -223,6 +231,7 @@ ios_framework_bundle("brave_core_ios_framework") {
   deps = [
     ":brave_core_plist",
     ":brave_core_umbrella_header",
+    "//brave/components/brave_account/mojom:mojom_objc",
     "//brave/components/resources:strings",
     "//brave/ios/app",
     "//brave/ios/browser/ui",

@@ -19,6 +19,7 @@
 #include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/brave_search_conversion/utils.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/web_discovery/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
@@ -217,7 +218,7 @@ SearchEngineTracker::SearchEngineTracker(
       base::BindRepeating(&SearchEngineTracker::RecordRewardsWalletConnected,
                           base::Unretained(this)));
 
-#if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY)
   RecordWebDiscoveryEnabledP3A();
   pref_change_registrar_.Add(
       kWebDiscoveryEnabled,
@@ -263,7 +264,7 @@ void SearchEngineTracker::OnTemplateURLServiceChanged() {
         brave_search_conversion::p3a::RecordDefaultEngineChurn(local_state_);
       }
 
-#if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY)
       // Update web discovery default engine metric when search engine changes
       RecordWebDiscoveryEnabledP3A();
 #endif
@@ -272,7 +273,7 @@ void SearchEngineTracker::OnTemplateURLServiceChanged() {
   }
 }
 
-#if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY)
 void SearchEngineTracker::RecordWebDiscoveryEnabledP3A() {
   bool enabled = profile_prefs_->GetBoolean(kWebDiscoveryEnabled);
   UMA_HISTOGRAM_BOOLEAN(kWebDiscoveryEnabledMetric, enabled);

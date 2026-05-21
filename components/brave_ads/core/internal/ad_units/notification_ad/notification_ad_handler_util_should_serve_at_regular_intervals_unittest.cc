@@ -8,7 +8,7 @@
 #include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/profile_pref_value_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
-#include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
+#include "brave/components/brave_ads/core/internal/settings/test/settings_test_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -76,7 +76,7 @@ TEST_P(BraveAdsNotificationAdHandlerUtilShouldServeAtRegularIntervalsTest,
        NotificationAdHandler) {
   // Arrange
   if (GetParam().should_browser_enter_foreground) {
-    NotifyBrowserDidEnterForeground();
+    ads_client_notifier_.NotifyBrowserDidEnterForeground();
   }
 
   // Act & Assert

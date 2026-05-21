@@ -6,9 +6,11 @@
 package org.chromium.chrome.browser.settings;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.preference.PreferenceViewHolder;
@@ -43,6 +45,10 @@ public class BraveAccountPreference extends ChromeBasePreference {
     public void onBindViewHolder(PreferenceViewHolder holder) {
         super.onBindViewHolder(holder);
 
+        if (holder.findViewById(android.R.id.icon) instanceof ImageView imageView) {
+            setTintFromRes(imageView, mTitleTextColorResId);
+        }
+
         if (holder.findViewById(android.R.id.title) instanceof TextView titleView) {
             if (!isSelectable()) {
                 // Restore the default primary text color when the preference is non-selectable.
@@ -75,6 +81,12 @@ public class BraveAccountPreference extends ChromeBasePreference {
     private void setColorFromRes(TextView textView, int colorResId) {
         if (colorResId != 0) {
             textView.setTextColor(getContext().getColor(colorResId));
+        }
+    }
+
+    private void setTintFromRes(ImageView imageView, int colorResId) {
+        if (colorResId != 0) {
+            imageView.setImageTintList(ColorStateList.valueOf(getContext().getColor(colorResId)));
         }
     }
 }

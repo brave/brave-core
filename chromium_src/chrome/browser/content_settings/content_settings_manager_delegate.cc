@@ -3,12 +3,23 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <string>
+#include <string_view>
+
 #include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom-shared.h"
+#include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "components/user_prefs/user_prefs.h"
+#include "content/public/browser/web_contents.h"
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "base/feature_list.h"
+#include "brave/components/containers/content/browser/storage_partition_utils.h"
+#include "brave/components/containers/core/common/features.h"
+#endif
 
 #include <chrome/browser/content_settings/content_settings_manager_delegate.cc>
 
@@ -45,11 +56,21 @@ brave_shields::mojom::ShieldsSettingsPtr GetBraveShieldsSettingsOnUI(
       brave_shields::GetFarblingLevel(
           HostContentSettingsMapFactory::GetForProfile(browser_context),
           top_frame_url);
+  std::string additional_entropy;
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  if (base::FeatureList::IsEnabled(containers::features::kContainers)) {
+    if (content::WebContents* web_contents =
+            content::WebContents::FromRenderFrameHost(top_frame_rfh)) {
+      additional_entropy =
+          containers::GetContainerIdForWebContents(web_contents);
+    }
+  }
+#endif
   const base::Token farbling_token =
       farbling_level != brave_shields::mojom::FarblingLevel::OFF
           ? brave_shields::GetFarblingToken(
                 HostContentSettingsMapFactory::GetForProfile(browser_context),
-                top_frame_url)
+                top_frame_url, base::as_byte_span(additional_entropy))
           : base::Token();
   PrefService* pref_service = user_prefs::UserPrefs::Get(browser_context);
 

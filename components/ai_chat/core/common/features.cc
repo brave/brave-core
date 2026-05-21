@@ -77,6 +77,14 @@ bool IsAIChatAgentProfileEnabled() {
 #endif
 }
 
+BASE_FEATURE(kAIChatDetailedPageContentExtraction,
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
+bool IsAIChatDetailedPageContentExtractionEnabled() {
+  return base::FeatureList::IsEnabled(
+      features::kAIChatDetailedPageContentExtraction);
+}
+
 BASE_FEATURE(kAIChatGlobalSidePanelEverywhere,
              base::FEATURE_DISABLED_BY_DEFAULT);
 
@@ -153,7 +161,7 @@ bool IsBraveSummaryModelEnabled() {
 
 BASE_FEATURE(kRichSearchWidgets, base::FEATURE_ENABLED_BY_DEFAULT);
 
-BASE_FEATURE(kAIChatConversationAPIV2, base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kAIChatConversationAPIV2, base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool IsAIChatConversationAPIV2Enabled() {
   return base::FeatureList::IsEnabled(features::kAIChatConversationAPIV2);
@@ -175,14 +183,14 @@ bool IsCodeExecutionToolEnabled() {
 }
 
 #if BUILDFLAG(IS_IOS)
-BASE_FEATURE(kAIChatWebUIEnabled, base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kAIChatWebUIEnabled, base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool IsAIChatWebUIEnabled() {
   return base::FeatureList::IsEnabled(kAIChatWebUIEnabled);
 }
 #endif
 
-BASE_FEATURE(kShowAIChatInputOnNewTabPage, base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kShowAIChatInputOnNewTabPage, base::FEATURE_DISABLED_BY_DEFAULT);
 
 bool IsShowAIChatInputOnNewTabPageEnabled() {
   return base::FeatureList::IsEnabled(features::kShowAIChatInputOnNewTabPage);

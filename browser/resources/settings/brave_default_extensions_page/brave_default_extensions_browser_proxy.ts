@@ -37,11 +37,11 @@ export class BraveDefaultExtensionsBrowserProxyImpl implements BraveDefaultExten
   }
 
   isWidevineEnabled() {
-    return sendWithPromise('isWidevineEnabled')
+    return sendWithPromise<boolean>('isWidevineEnabled')
   }
 
   getRestartNeeded() {
-    return sendWithPromise('getRestartNeeded')
+    return sendWithPromise<boolean>('getRestartNeeded')
   }
 
   wasSignInEnabledAtStartup() {
@@ -53,15 +53,15 @@ export class BraveDefaultExtensionsBrowserProxyImpl implements BraveDefaultExten
   }
 
   getExtensionsManifestV2() {
-    return sendWithPromise('getExtensionsManifestV2')
+    return sendWithPromise<ExtensionV2[]>('getExtensionsManifestV2')
   }
 
   enableExtensionManifestV2(id: string, enabled: boolean) {
-    return sendWithPromise('enableExtensionManifestV2', id, enabled)
+    return sendWithPromise<boolean>('enableExtensionManifestV2', id, enabled)
   }
 
   removeExtensionManifestV2(id:string) {
-    return sendWithPromise('removeExtensionManifestV2', id)
+    return sendWithPromise<boolean>('removeExtensionManifestV2', id)
   }
 
   static getInstance(): BraveDefaultExtensionsBrowserProxy {

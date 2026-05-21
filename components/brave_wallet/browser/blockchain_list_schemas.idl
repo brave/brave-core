@@ -167,7 +167,7 @@ namespace blockchain_lists {
     OnRampCurrency[] currencies;
   };
 
-  dictionary OfacAddressesList {
+  dictionary RestrictedAddressesList {
     DOMString[] addresses;
   };
 

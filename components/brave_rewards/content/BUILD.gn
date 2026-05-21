@@ -34,12 +34,13 @@ static_library("content") {
 
   deps = [
     "//base",
-    "//brave/brave_domains:constants",
+    "//brave/brave_domains:urls",
     "//brave/components/api_request_helper",
     "//brave/components/brave_ads/buildflags",
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_rewards/core:features",
     "//brave/components/brave_rewards/core/buildflags",
+    "//brave/components/brave_rewards/core/buildflags:endpoint_buildflags",
     "//brave/components/brave_rewards/core/engine",
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/ntp_background_images/common",
@@ -50,7 +51,7 @@ static_library("content") {
     "//brave/components/time_period_storage",
     "//components/country_codes",
     "//components/favicon/core",
-    "//components/os_crypt/sync",
+    "//components/os_crypt/async/browser",
     "//components/prefs",
     "//components/regional_capabilities",
     "//components/sessions",
@@ -111,11 +112,7 @@ source_set("testutil") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [
-    "rewards_protocol_navigation_throttle_unittest.cc",
-    "rewards_service_impl_jp_unittest.cc",
-    "rewards_service_impl_unittest.cc",
-  ]
+  sources = [ "rewards_protocol_navigation_throttle_unittest.cc" ]
 
   deps = [
     ":content",

@@ -5,6 +5,7 @@ description:
   uses WIPE_WORKSPACE for build/infra failures. Triggers on: make ci green,
   retry ci, rerun ci, fix ci, re-run failed jobs, retrigger ci.'
 argument-hint: '<pr-number> [--dry-run]'
+disable-model-invocation: true
 ---
 
 # Make CI Green

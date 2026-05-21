@@ -29,8 +29,6 @@ TEST(RewardsContributionUtilTest, GetProcessor) {
             GetProcessor(constant::kWalletUphold));
   ASSERT_EQ(mojom::ContributionProcessor::BITFLYER,
             GetProcessor(constant::kWalletBitflyer));
-  ASSERT_EQ(mojom::ContributionProcessor::GEMINI,
-            GetProcessor(constant::kWalletGemini));
   ASSERT_EQ(mojom::ContributionProcessor::NONE, GetProcessor("random-data"));
 }
 
@@ -39,9 +37,7 @@ TEST(RewardsContributionUtilTest, GetNextProcessor) {
             GetNextProcessor(constant::kWalletUnBlinded));
   ASSERT_EQ(constant::kWalletBitflyer,
             GetNextProcessor(constant::kWalletUphold));
-  ASSERT_EQ(constant::kWalletGemini,
-            GetNextProcessor(constant::kWalletBitflyer));
-  ASSERT_EQ("", GetNextProcessor(constant::kWalletGemini));
+  ASSERT_EQ("", GetNextProcessor(constant::kWalletBitflyer));
   ASSERT_EQ(constant::kWalletUnBlinded, GetNextProcessor("random-data"));
 }
 

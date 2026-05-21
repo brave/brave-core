@@ -13,6 +13,7 @@ namespace brave_ads {
 
 class DeviceIdImpl final : public DeviceId {
  public:
+  // DeviceId:
   void GetDeviceId(DeviceIdCallback callback) override;
 
   // On some platforms, part of the machine ID is the MAC address. This function

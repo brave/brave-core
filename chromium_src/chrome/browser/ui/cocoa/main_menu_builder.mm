@@ -21,6 +21,8 @@ constexpr int kHelpMacResourceId = IDS_HELP_MAC;
 constexpr int kMediaRouterMenuItemTitleResourceId =
     IDS_MEDIA_ROUTER_MENU_ITEM_TITLE;
 constexpr int kShowGoogleLensShortcut = IDC_SHOW_GOOGLE_LENS_SHORTCUT;
+constexpr int kShowAIModeOmniboxButton = IDC_SHOW_AI_MODE_OMNIBOX_BUTTON;
+constexpr int kShowSearchTools = IDC_SHOW_SEARCH_TOOLS;
 }  // namespace
 
 // Insert "New Private Window with Tor" in "File" menu
@@ -33,10 +35,10 @@ constexpr int kShowGoogleLensShortcut = IDC_SHOW_GOOGLE_LENS_SHORTCUT;
 
 // Insert "Report Broken Site" in "Help" menu
 #undef IDS_HELP_MAC
-#define IDS_HELP_MAC                                    \
-  IDS_REPORT_BROKEN_SITE_MAC)                           \
-        .command_id(IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER), \
-  Item(kHelpMacResourceId
+#define IDS_HELP_MAC                                     \
+  IDS_REPORT_BROKEN_SITE_MAC)                            \
+        .command_id(IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER)); \
+  items.push_back(Item(kHelpMacResourceId
 
 #undef IDS_PASTE_MAC
 #define IDS_PASTE_MAC IDS_COPY_CLEAN_LINK) \
@@ -66,8 +68,20 @@ IDS_IDC_COMMANDER).command_id(IDC_COMMANDER)                     \
 #define IDC_SHOW_GOOGLE_LENS_SHORTCUT \
   kShowGoogleLensShortcut).remove_if(true
 
+// Remove "Always Show AI Mode"
+#undef IDC_SHOW_AI_MODE_OMNIBOX_BUTTON
+#define IDC_SHOW_AI_MODE_OMNIBOX_BUTTON \
+  kShowAIModeOmniboxButton).remove_if(true
+
+// Remove "Show Search Shortcuts"
+#undef IDC_SHOW_SEARCH_TOOLS
+#define IDC_SHOW_SEARCH_TOOLS \
+  kShowSearchTools).remove_if(true
+
 #include <chrome/browser/ui/cocoa/main_menu_builder.mm>
 
+#undef IDC_SHOW_SEARCH_TOOLS
+#undef IDC_SHOW_AI_MODE_OMNIBOX_BUTTON
 #undef IDC_SHOW_GOOGLE_LENS_SHORTCUT
 #undef IDS_MEDIA_ROUTER_MENU_ITEM_TITLE
 #undef IDS_MUTE_SITE_MAC

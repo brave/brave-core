@@ -13,6 +13,11 @@
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "sql/statement.h"
 
+namespace base {
+class Time;
+class TimeDelta;
+}  // namespace base
+
 namespace brave_ads::database {
 
 std::string BuildBindColumnPlaceholder(size_t column_count);

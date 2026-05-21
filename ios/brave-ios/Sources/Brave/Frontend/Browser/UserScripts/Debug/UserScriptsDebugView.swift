@@ -35,9 +35,6 @@ struct UserScriptsDebugView: View {
   private var trackingProtectionStats = Preferences.UserScript.trackingProtectionStats
 
   @ObservedObject
-  private var readyState = Preferences.UserScript.readyState
-
-  @ObservedObject
   private var ethereumProvider = Preferences.UserScript.ethereumProvider
 
   @ObservedObject
@@ -77,8 +74,6 @@ struct UserScriptsDebugView: View {
         Toggle("Request Blocking", isOn: $requestBlocking.value)
 
         Toggle("Tracking Protection Stats", isOn: $trackingProtectionStats.value)
-
-        Toggle("Ready State", isOn: $readyState.value)
 
         Toggle("Ethereum Provider", isOn: $ethereumProvider.value)
 

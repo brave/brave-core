@@ -453,28 +453,6 @@ window.__firefox__.includeOnce("Playlist", function($) {
           return 0.0;
         }
       });
-
-      Object.defineProperty(window.__firefox__, '$<stopMediaPlayback>', {
-          enumerable: false,
-          configurable: false,
-          writable: false,
-          value:
-          function(token) {
-            if (token != SECURITY_TOKEN) {
-              return;
-            }
-
-            for (element of getAllVideoElements()) {
-              element.pause();
-            }
-
-            for (element of getAllAudioElements()) {
-              element.pause();
-            }
-
-            return 0.0;
-          }
-      });
   }
 
   // MARK: -----------------------------

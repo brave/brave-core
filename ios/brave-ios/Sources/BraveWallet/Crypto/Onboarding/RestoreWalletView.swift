@@ -13,6 +13,7 @@ import struct Shared.AppConstants
 
 struct RestoreWalletView: View {
   @ObservedObject var keyringStore: KeyringStore
+  let setupSelections: OnboardingSetupSelections
   // Used to dismiss all of Wallet
   let dismissAction: () -> Void
 
@@ -193,21 +194,7 @@ struct RestoreWalletView: View {
         .padding(.horizontal, 16)
         Button {
           if let newPassword, !newPassword.isEmpty {
-            keyringStore.restoreWallet(
-              words: recoveryWords,
-              password: newPassword,
-              isLegacyEthSeedFormat: isLegacyEthSeedFormat
-            ) { isMnemonicValid in
-              if isMnemonicValid {
-                isShowingPhraseError = false
-                keyringStore.resetKeychainStoredPassword()
-                if keyringStore.isOnboardingVisible {
-                  Preferences.Wallet.isOnboardingCompleted.value = true
-                }
-              } else {
-                isShowingPhraseError = true
-              }
-            }
+            restoreWallet(newPassword)
           } else {
             isShowingCreateNewPassword = true
           }
@@ -220,8 +207,8 @@ struct RestoreWalletView: View {
       }
     }
     .padding()
-    .onChange(of: recoveryWords) { [recoveryWords] newValue in
-      handleRecoveryWordsChanged(oldValue: recoveryWords, newValue: newValue)
+    .onChange(of: recoveryWords) { oldValue, newValue in
+      handleRecoveryWordsChanged(oldValue: oldValue, newValue: newValue)
     }
     .navigationBarBackButtonHidden(isShowingCreatingWallet)
     .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -248,7 +235,7 @@ struct RestoreWalletView: View {
       NavigationView {
         CreateWalletView(
           keyringStore: keyringStore,
-          setupOption: .restore,
+          setupSelections: setupSelections,
           onValidPasswordEntered: restoreWallet,
           dismissAction: dismissAction
         )
@@ -262,9 +249,6 @@ struct RestoreWalletView: View {
       }
     }
     .transparentUnlessScrolledNavigationAppearance()
-    .onAppear {
-      keyringStore.reportP3AOnboarding(action: .startRestore)
-    }
   }
 
   private func resignFirstResponder() {
@@ -277,14 +261,16 @@ struct RestoreWalletView: View {
   }
 
   private func restoreWallet(_ password: String) {
-    newPassword = password
-    isShowingCreateNewPassword = false
-    keyringStore.restoreWallet(
-      words: recoveryWords,
-      password: password,
-      isLegacyEthSeedFormat: isLegacyEthSeedFormat
-    ) { success in
-      if success {
+    Task { @MainActor in
+      newPassword = password
+      isShowingCreateNewPassword = false
+      let isMnemonicValid = await keyringStore.restoreWallet(
+        words: recoveryWords,
+        password: password,
+        isLegacyEthSeedFormat: isLegacyEthSeedFormat,
+        networks: setupSelections.networks
+      )
+      if isMnemonicValid {
         isShowingPhraseError = false
         keyringStore.resetKeychainStoredPassword()
         if keyringStore.isOnboardingVisible {
@@ -304,6 +290,7 @@ struct RestoreWalletView_Previews: PreviewProvider {
     NavigationView {
       RestoreWalletView(
         keyringStore: .previewStore,
+        setupSelections: .init(setupOption: .new, networks: []),
         dismissAction: {}
       )
     }

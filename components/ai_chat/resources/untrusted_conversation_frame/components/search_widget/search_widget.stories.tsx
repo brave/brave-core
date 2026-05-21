@@ -8,7 +8,7 @@ import SearchWidget from './search_widget'
 import * as searchResults from './storybook-data/searchResults.json'
 
 const meta: Meta<typeof SearchWidget> = {
-  title: 'Chat/SearchWidget',
+  title: 'AI Chat/SearchWidget',
   component: SearchWidget,
 }
 

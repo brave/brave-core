@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/history/synced_device_manager.ts b/chrome/browser/resources/history/synced_device_manager.ts
-index f5e26215336bcd3b2d8213977a103e87bfbfc154..c6df1ad0d67d5199dd0999aced78a711fd5e187b 100644
+index 0503ed72100275e44e98bbdd460695ffe61061cf..a253ed6e96b20fd50fb61af4fb5cd7f505e7ae6b 100644
 --- a/chrome/browser/resources/history/synced_device_manager.ts
 +++ b/chrome/browser/resources/history/synced_device_manager.ts
-@@ -443,10 +443,10 @@ export class HistorySyncedDeviceManagerElement extends
+@@ -442,10 +442,10 @@ export class HistorySyncedDeviceManagerElement extends
          return;
        }
      } else if (this.isSignInState_(HistorySignInState.SIGNED_OUT)) {

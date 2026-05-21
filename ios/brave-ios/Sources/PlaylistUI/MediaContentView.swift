@@ -58,13 +58,13 @@ struct MediaContentView: View {
         .ignoresSafeArea()
         .allowsHitTesting(false)
     }
-    .onChange(of: isFullScreen) { newValue in
+    .onChange(of: isFullScreen) { _, newValue in
       handleFullScreenOrientationChanges(
         expectedFullScreen: newValue,
         expectedOrientation: interfaceOrientation
       )
     }
-    .onChange(of: interfaceOrientation) { newValue in
+    .onChange(of: interfaceOrientation) { _, newValue in
       handleFullScreenOrientationChanges(
         expectedFullScreen: isFullScreen,
         expectedOrientation: newValue
@@ -161,7 +161,7 @@ extension MediaContentView {
         isScrubbing: $isScrubbing
       )
       .tint(Color(braveSystemName: .iconInteractive))
-      .onChange(of: isScrubbing) { newValue in
+      .onChange(of: isScrubbing) { _, newValue in
         if newValue {
           resumePlayingAfterScrub = model.isPlaying
           model.pause()

@@ -28,7 +28,7 @@ struct DynamicParams {
 // Configures the renderer.
 interface BraveRendererConfiguration {
   // Configures the renderer with settings that won't change.
-  SetInitialConfiguration(bool is_tor_process);
+  SetInitialConfiguration(bool is_tor_process, bool is_brave_wallet_available);
   // Update renderer configuration with settings that can change.
   SetConfiguration(DynamicParams params);
 };

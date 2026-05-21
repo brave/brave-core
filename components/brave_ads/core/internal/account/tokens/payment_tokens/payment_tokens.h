@@ -6,9 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_TOKENS_PAYMENT_TOKENS_PAYMENT_TOKENS_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_TOKENS_PAYMENT_TOKENS_PAYMENT_TOKENS_H_
 
-#include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_info.h"
-
 #include <cstddef>
+
+#include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_info.h"
 
 namespace brave_ads {
 
@@ -21,18 +21,15 @@ class PaymentTokens final {
 
   ~PaymentTokens();
 
-  const PaymentTokenInfo& GetToken() const;
   const PaymentTokenList& GetAllTokens() const;
 
   void SetTokens(const PaymentTokenList& payment_tokens);
 
   void AddTokens(const PaymentTokenList& payment_tokens);
 
-  bool RemoveToken(const PaymentTokenInfo& payment_token);
   void RemoveTokens(const PaymentTokenList& payment_tokens);
-  void RemoveAllTokens();
 
-  bool TokenExists(const PaymentTokenInfo& payment_token);
+  bool TokenExists(const PaymentTokenInfo& payment_token) const;
 
   size_t Count() const;
 

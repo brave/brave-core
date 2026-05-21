@@ -28,6 +28,7 @@
   width: 100%;
   border: 1px solid var(--leo-color-divider-subtle);
   border-radius: var(--leo-radius-m);
+  margin-top: calc(var(--cr-section-padding) / 2);
   margin-bottom: calc(var(--cr-section-padding) / 2);
 }
 
@@ -48,7 +49,7 @@
   align-items: center;
   max-width: calc(100% - 90px);
   gap: var(--leo-spacing-xl);
-  font:var(--leo-font-default-regular);
+  font: var(--leo-font-default-regular);
 }
 
 .container .icon-and-label settings-brave-content-containers-icon {
@@ -75,7 +76,17 @@
   gap: var(--leo-spacing-xl);
 }
 
-.name-section cr-input{
+.name-section cr-input {
+  --cr-input-background-color: transparent;
+  --cr-input-border: 1px solid var(--leo-color-divider-subtle);
+  /* Default cr-input uses 8px 8px 0 0 (top-only). Single value rounds all
+     corners. */
+  --cr-input-border-radius: var(--leo-radius-m);
+
+  /* Avoid a second bottom line on top of the full border. This doesn't
+     highlight the focus highlight. */
+  --cr-input-border-bottom: none;
+
   height: 44px;
   margin-block: var(--leo-spacing-m);
 }
@@ -91,4 +102,12 @@
   width: 30px;
   height: 30px;
   cursor: pointer;
+}
+
+.name-char-counter {
+  min-width: fit-content;
+}
+
+.containers-add-row {
+  padding-block-end: calc(var(--cr-section-padding) / 2);
 }

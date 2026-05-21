@@ -7,8 +7,10 @@
 
 #include <cstdint>
 
+#include "base/scoped_observation.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/ads_client/ads_client_notifier_observer_mock.h"
+#include "brave/components/brave_ads/core/internal/ads_client/test/ads_client_notifier_observer_mock.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
 #include "net/http/http_status_code.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -27,7 +29,6 @@ constexpr char kPaymentId[] = "PaymentId";
 constexpr char kRecoverySeed[] = "RecoverySeed";
 constexpr char kRedirectChainUrl[] = "https://brave.com";
 constexpr char kText[] = "Text";
-constexpr char kHtml[] = "HTML";
 
 constexpr int32_t kTabId = 1;
 constexpr bool kIsNewNavigation = true;
@@ -43,13 +44,7 @@ constexpr bool kScreenWasLocked = true;
 
 class BraveAdsAdsClientNotifierTest : public ::testing::Test {
  protected:
-  void SetUp() override {
-    ads_client_notifier_.AddObserver(&ads_client_notifier_observer_mock_);
-  }
-
-  void TearDown() override {
-    ads_client_notifier_.RemoveObserver(&ads_client_notifier_observer_mock_);
-  }
+  void SetUp() override { observation_.Observe(&ads_client_notifier_); }
 
   void FireAdsClientNotifiers() {
     ads_client_notifier_.NotifyDidInitializeAds();
@@ -65,8 +60,6 @@ class BraveAdsAdsClientNotifierTest : public ::testing::Test {
 
     ads_client_notifier_.NotifyTabTextContentDidChange(
         kTabId, {GURL(kRedirectChainUrl)}, kText);
-    ads_client_notifier_.NotifyTabHtmlContentDidChange(
-        kTabId, {GURL(kRedirectChainUrl)}, kHtml);
     ads_client_notifier_.NotifyTabDidStartPlayingMedia(kTabId);
     ads_client_notifier_.NotifyTabDidStopPlayingMedia(kTabId);
     ads_client_notifier_.NotifyTabDidChange(kTabId, {GURL(kRedirectChainUrl)},
@@ -112,11 +105,6 @@ class BraveAdsAdsClientNotifierTest : public ::testing::Test {
         ads_client_notifier_observer_mock_,
         OnNotifyTabTextContentDidChange(
             kTabId, ::testing::ElementsAre(GURL(kRedirectChainUrl)), kText))
-        .Times(expected_call_count);
-    EXPECT_CALL(
-        ads_client_notifier_observer_mock_,
-        OnNotifyTabHtmlContentDidChange(
-            kTabId, ::testing::ElementsAre(GURL(kRedirectChainUrl)), kHtml))
         .Times(expected_call_count);
     EXPECT_CALL(ads_client_notifier_observer_mock_,
                 OnNotifyTabDidStartPlayingMedia(kTabId))
@@ -170,6 +158,8 @@ class BraveAdsAdsClientNotifierTest : public ::testing::Test {
 
   ::testing::StrictMock<AdsClientNotifierObserverMock>
       ads_client_notifier_observer_mock_;
+  base::ScopedObservation<AdsClientNotifier, AdsClientNotifierObserver>
+      observation_{&ads_client_notifier_observer_mock_};
 };
 
 TEST_F(BraveAdsAdsClientNotifierTest, FireQueuedAdsClientNotifications) {

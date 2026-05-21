@@ -10,6 +10,7 @@ export const IGNORE_EXTERNAL_LINK_WARNING_KEY = 'IGNORE_EXTERNAL_LINK_WARNING'
 const modelIcons = {
   'chat-automatic': 'product-brave-leo',
   'chat-near-glm-5': 'zai-color',
+  'chat-near-glm-5-1': 'zai-color',
   'chat-claude-instant': 'anthropic-color',
   'chat-claude-haiku': 'anthropic-color',
   'chat-claude-sonnet': 'anthropic-color',
@@ -45,3 +46,15 @@ export const AUTOMATIC_MODEL_KEY = 'chat-automatic'
 export const BRAVE_SUMMARY_MODEL_KEY = 'chat-brave-summary'
 
 export const NEAR_AI_LEARN_MORE_URL = 'https://brave.com/blog/browser-ai-tee/'
+
+// Keep in sync with kLeoBraveSearchSupportUrl in components/ai_chat/core/browser/constants.h
+export const LEO_BRAVE_SEARCH_SUPPORT_URL =
+  'https://support.brave.app/hc/en-us/articles/'
+  + '27586048343309-How-does-Leo-get-current-information'
+
+/** Same destination as UntrustedUIHandler::OpenSearchURL in the browser process. */
+export function getBraveSearchUrlForQuery(query: string): string {
+  const url = new URL('https://search.brave.com/search')
+  url.searchParams.set('q', query)
+  return url.toString()
+}

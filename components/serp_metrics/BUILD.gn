@@ -9,25 +9,33 @@ static_library("serp_metrics") {
     "serp_classifier_utils.h",
     "serp_metric_type.h",
     "serp_metrics.h",
+    "serp_metrics_service.h",
   ]
 
   sources = [
     "serp_classifier.cc",
     "serp_classifier_utils.cc",
     "serp_metrics.cc",
+    "serp_metrics_migration.cc",
+    "serp_metrics_migration.h",
+    "serp_metrics_service.cc",
   ]
 
   public_deps = [
     "//base",
-    "//brave/components/time_period_storage",
+    "//brave/components/serp_metrics/time_period_storage",
+    "//components/keyed_service/core",
     "//url",
   ]
 
   deps = [
     ":features",
+    ":prefs",
     "//brave/components/constants",
     "//components/prefs",
+    "//components/regional_capabilities",
     "//components/search_engines",
+    "//net",
   ]
 }
 
@@ -43,26 +51,52 @@ source_set("prefs") {
   public = [ "pref_names.h" ]
 }
 
+source_set("test_support") {
+  testonly = true
+
+  public = [
+    "test/fake_serp_metrics_time_period_store.h",
+    "test/timezone_test_util.h",
+  ]
+
+  sources = [ "test/fake_serp_metrics_time_period_store.cc" ]
+
+  deps = [
+    "//base",
+    "//brave/components/serp_metrics/time_period_storage",
+    "//testing/gtest",
+  ]
+}
+
 source_set("unit_tests") {
   testonly = true
 
   sources = [
     "serp_classifier_unittest.cc",
     "serp_classifier_utils_unittest.cc",
+    "serp_metrics_last_reported_at_pref_migration_unittest.cc",
+    "serp_metrics_timezone_unittest.cc",
+    "serp_metrics_travel_unittest.cc",
     "serp_metrics_unittest.cc",
   ]
 
   deps = [
     ":features",
+    ":prefs",
     ":serp_metrics",
+    ":test_support",
     "//base",
     "//base/test:test_support",
     "//brave/components/constants",
     "//brave/components/search_engines",
+    "//brave/components/serp_metrics/time_period_storage:test_support",
+    "//brave/components/serp_metrics/time_period_storage:unit_tests",
     "//components/prefs",
     "//components/prefs:test_support",
+    "//components/regional_capabilities",
     "//components/search_engines",
     "//components/search_engines:test_support",
+    "//net",
     "//testing/gtest",
     "//third_party/abseil-cpp:absl",
     "//url",

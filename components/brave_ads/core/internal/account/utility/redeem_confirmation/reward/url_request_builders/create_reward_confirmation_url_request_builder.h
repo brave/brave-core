@@ -22,6 +22,7 @@ class CreateRewardConfirmationUrlRequestBuilder final
   explicit CreateRewardConfirmationUrlRequestBuilder(
       ConfirmationInfo confirmation);
 
+  // UrlRequestBuilderInterface:
   mojom::UrlRequestInfoPtr Build() override;
 
  private:
@@ -29,7 +30,7 @@ class CreateRewardConfirmationUrlRequestBuilder final
 
   std::string BuildBody() const;
 
-  ConfirmationInfo confirmation_;
+  const ConfirmationInfo confirmation_;
 };
 
 }  // namespace brave_ads

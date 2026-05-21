@@ -46,7 +46,7 @@ export function RewardsSummary (props: Props) {
     return (
       <tr>
         <td>{getString(message)}</td>
-        <td className='amount' data-test-id={`rewards-summary-${key}`}>
+        <td className='amount' data-testid={`rewards-summary-${key}`}>
           <TokenAmount
             minimumFractionDigits={2}
             amount={amount}

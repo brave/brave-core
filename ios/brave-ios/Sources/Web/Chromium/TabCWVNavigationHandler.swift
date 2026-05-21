@@ -51,8 +51,7 @@ class TabCWVNavigationHandler: NSObject, BraveWebViewNavigationDelegate {
       let resolvedCredential = await delegate.tab(
         tab,
         didRequestHTTPAuthFor: protectionSpace,
-        proposedCredential: proposedCredential,
-        previousFailureCount: 0
+        proposedCredential: proposedCredential
       )
       handler(resolvedCredential?.user, resolvedCredential?.password)
     }
@@ -122,6 +121,10 @@ class TabCWVNavigationHandler: NSObject, BraveWebViewNavigationDelegate {
     tab.didCommitNavigation()
   }
 
+  func webViewDidCommitSameDocumentNavigation(_ webView: CWVWebView) {
+    tab?.didCommitSameDocumentNavigation()
+  }
+
   public func webViewDidRedirectNavigation(_ webView: CWVWebView) {
     guard let tab else { return }
     if let url = webView.visibleURL {
@@ -169,5 +172,16 @@ class TabCWVNavigationHandler: NSObject, BraveWebViewNavigationDelegate {
       }
     )
     tab.downloadDelegate?.tab(tab, didCreateDownload: pendingDownload)
+  }
+
+  func webView(_ webView: CWVWebView, frameDidBecomeAvailable frame: BraveWebFrame) {
+    tab?.frameDidBecomeAvailable(
+      frame: .init(
+        frameID: frame.frameID,
+        isMainFrame: frame.isMainFrame,
+        originURL: frame.securityOrigin.url,
+        url: frame.url
+      )
+    )
   }
 }

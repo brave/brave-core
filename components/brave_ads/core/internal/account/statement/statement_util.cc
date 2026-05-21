@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <iterator>
+#include <optional>
 
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/statement/ads_received_util.h"
@@ -36,14 +37,13 @@ TransactionList FilterTransactionsForEstimatedEarnings(
 
 }  // namespace
 
-base::Time GetNextPaymentDate(const TransactionList& transactions) {
+std::optional<base::Time> MaybeGetNextPaymentDate(
+    const TransactionList& transactions) {
   const base::Time next_payment_token_redemption_at =
       GetProfileTimePref(prefs::kNextPaymentTokenRedemptionAt);
 
-  const base::Time next_payment_date =
-      CalculateNextPaymentDate(next_payment_token_redemption_at, transactions);
-
-  return next_payment_date;
+  return MaybeCalculateNextPaymentDate(next_payment_token_redemption_at,
+                                       transactions);
 }
 
 std::pair<double, double> GetEstimatedEarningsForThisMonth(

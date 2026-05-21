@@ -10,6 +10,7 @@
 #define GetExtraInfobarOffset()                                            \
   GetExtraInfobarOffset() const = 0;                                       \
   virtual bool ShouldShowVerticalTabs() const = 0;                         \
+  virtual bool ShouldShowWindowTitleForVerticalTabs() const = 0;           \
   virtual bool IsVerticalTabOnRight() const = 0;                           \
   virtual bool ShouldUseBraveWebViewRoundedCornersForContents() const = 0; \
   virtual int GetRoundedCornersWebViewMargin() const = 0;                  \

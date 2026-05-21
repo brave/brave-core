@@ -14,7 +14,7 @@ import LeoSegmentedControl, {
 import ClipboardIcon from '../../../../assets/svg-icons/copy-to-clipboard-icon.svg'
 
 // Shared Styles
-import { WalletButton, Row } from '../../../shared/style'
+import { WalletButton, Row, Column } from '../../../shared/style'
 import {
   layoutPanelWidth, //
 } from '../../wallet-page-wrapper/wallet-page-wrapper.style'
@@ -90,14 +90,8 @@ export const CopyIcon = styled.div`
   margin-left: 10px;
 `
 
-export const PrivateKeyWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  width: 100%;
-  height: 100%;
-  width: 250px;
+export const PrivateKeyWrapper = styled(Column)`
+  max-width: 350px;
 `
 
 export const PrivateKeyBubble = styled(WalletButton)`
@@ -108,7 +102,7 @@ export const PrivateKeyBubble = styled(WalletButton)`
   flex-direction: row;
   background-color: ${(p) => p.theme.color.background01};
   padding: 5px 10px;
-  max-width: 240px;
+  max-width: 350px;
   height: auto;
   border-radius: 4px;
   margin: 0px;

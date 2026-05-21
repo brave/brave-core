@@ -119,7 +119,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest,
                        DomainReliabilityServiceDisabled) {
   EXPECT_TRUE(base::CommandLine::ForCurrentProcess()->HasSwitch(
       switches::kDisableDomainReliability));
-  EXPECT_FALSE(domain_reliability::ShouldCreateService());
+  EXPECT_FALSE(domain_reliability::ShouldCreateService(nullptr));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest,

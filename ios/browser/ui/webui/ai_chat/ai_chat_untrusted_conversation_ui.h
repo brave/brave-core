@@ -13,6 +13,8 @@
 #include "ios/web/public/webui/web_ui_ios_controller.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 
+class ProfileIOS;
+
 namespace web {
 class WebUIIOS;
 }
@@ -32,9 +34,12 @@ class AIChatUntrustedConversationUI : public web::WebUIIOSController {
 
   void BindInterfaceUntrustedUIHandler(
       mojo::PendingReceiver<ai_chat::mojom::UntrustedUIHandler> receiver);
+  void BindInterfaceUntrustedService(
+      mojo::PendingReceiver<ai_chat::mojom::UntrustedService> receiver);
 
  private:
   std::unique_ptr<ai_chat::mojom::UntrustedUIHandler> ui_handler_;
+  raw_ptr<ProfileIOS> profile_ = nullptr;
 };
 
 #endif  // BRAVE_IOS_BROWSER_UI_WEBUI_AI_CHAT_AI_CHAT_UNTRUSTED_CONVERSATION_UI_H_

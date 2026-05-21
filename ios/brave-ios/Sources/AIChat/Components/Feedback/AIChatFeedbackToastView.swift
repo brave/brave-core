@@ -33,7 +33,7 @@ private struct AIChatFeedbackToastModifier: ViewModifier {
         }
         .animation(.spring(), value: toastType)
       }
-      .onChange(of: toastType) { toastType in
+      .onChange(of: toastType) { _, toastType in
         if toastType != .none {
           show()
         }

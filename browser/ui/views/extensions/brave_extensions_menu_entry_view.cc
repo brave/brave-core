@@ -14,11 +14,13 @@ BraveExtensionsMenuEntryView::BraveExtensionsMenuEntryView(
     Browser* browser,
     bool is_enterprise,
     ToolbarActionViewModel* view_model,
+    views::Button::PressedCallback action_button_callback,
     base::RepeatingCallback<void(bool)> site_access_toggle_callback,
     views::Button::PressedCallback site_permissions_button_callback)
     : ExtensionsMenuEntryView(browser,
                               is_enterprise,
                               view_model,
+                              std::move(action_button_callback),
                               std::move(site_access_toggle_callback),
                               std::move(site_permissions_button_callback)) {
   views::InstallRoundRectHighlightPathGenerator(site_permissions_button_,

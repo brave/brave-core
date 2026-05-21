@@ -142,7 +142,7 @@ void BraveVpnMetrics::ReportVPNConnectedDuration() {
   }
 
 #if !BUILDFLAG(IS_ANDROID)
-  if (delegate_->IsConnected() && uptime_monitor_->IsInUse()) {
+  if (delegate_->is_connected_vpn() && uptime_monitor_->IsInUse()) {
     RecordVPNConnectedInterval();
   }
 #endif

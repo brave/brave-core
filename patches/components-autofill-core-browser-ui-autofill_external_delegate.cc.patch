@@ -1,0 +1,12 @@
+diff --git a/components/autofill/core/browser/ui/autofill_external_delegate.cc b/components/autofill/core/browser/ui/autofill_external_delegate.cc
+index f48d4a2d063979c66ddf955f089cd5b50a5a3aca..a79be1596c79efa8a1946bcb780f9be0c619fedd 100644
+--- a/components/autofill/core/browser/ui/autofill_external_delegate.cc
++++ b/components/autofill/core/browser/ui/autofill_external_delegate.cc
+@@ -359,6 +359,7 @@ void AutofillExternalDelegate::AttemptToDisplayAutofillSuggestions(
+   // updated to match.
+   InsertDataListValues(suggestions);
+ 
++  BRAVE_AUTOFILL_EXTERNAL_DELEGATE_ATTEMPT_TO_DISPLAY_AUTOFILL_SUGGESTIONS
+   // TODO(crbug.com/362630793): Try to eliminate this state. The controller
+   // should be the one that knows about what suggestions were shown and passes
+   // it on, not AED.

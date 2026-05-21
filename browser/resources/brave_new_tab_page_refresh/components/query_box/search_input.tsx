@@ -32,7 +32,7 @@ export function SearchInput(props: Props) {
   return (
     <div
       data-css-scope={style.scope}
-      data-test-id='ntp-search-input'
+      data-testid='ntp-search-input'
     >
       <input
         ref={inputRef}

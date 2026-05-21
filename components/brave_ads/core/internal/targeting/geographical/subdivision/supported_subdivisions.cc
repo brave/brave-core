@@ -9,21 +9,6 @@
 
 namespace brave_ads {
 
-namespace {
-
-base::ListValue ToValue(const SubdivisionMap& subdivisions) {
-  base::ListValue list;
-
-  for (const auto& [subdivision, name] : subdivisions) {
-    list.Append(
-        base::DictValue().Set("subdivision", subdivision).Set("name", name));
-  }
-
-  return list;
-}
-
-}  // namespace
-
 const SupportedSubdivisionMap& GetSupportedSubdivisions() {
   // Format: { ISO Country Code, { ISO country subdivisions as defined in ISO
   // 3166-2 https://en.wikipedia.org/wiki/ISO_3166-2, ... } }.
@@ -73,20 +58,6 @@ const SupportedSubdivisionMap& GetSupportedSubdivisions() {
              {"CA-YT", "Yukon"}}}});
 
   return *kSupportedSubdivisions;
-}
-
-base::ListValue GetSupportedSubdivisionsAsValueList(
-    const std::string& country_code) {
-  const auto& supported_subdivisions = GetSupportedSubdivisions();
-
-  const auto iter = supported_subdivisions.find(country_code);
-  if (iter == supported_subdivisions.cend()) {
-    return {};
-  }
-
-  const auto& [_, subdivisions] = *iter;
-
-  return ToValue(subdivisions);
 }
 
 }  // namespace brave_ads

@@ -10,20 +10,20 @@
 #include "base/run_loop.h"
 #include "base/test/gmock_callback_support.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
-#include "brave/components/brave_ads/core/internal/account/confirmations/non_reward/non_reward_confirmation_test_util.h"
-#include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_delegate_mock.h"
-#include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_test_util.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/non_reward/test/non_reward_confirmation_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_util.h"
-#include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_test_util.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/test/confirmation_queue_item_test_util.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/queue/test/confirmation_queue_delegate_mock.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_util.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_test_util.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/token_generator_test_util.h"
-#include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/non_reward/redeem_non_reward_confirmation_test_util.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/reward/test/reward_confirmation_test_util.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/test/confirmation_tokens_test_util.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/test/token_generator_test_util.h"
+#include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/non_reward/test/redeem_non_reward_confirmation_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/non_reward/url_request_builders/create_non_reward_confirmation_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
-#include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
+#include "brave/components/brave_ads/core/internal/settings/test/settings_test_util.h"
 #include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -53,7 +53,7 @@ TEST_F(BraveAdsConfirmationQueueTest, AddNonRewardConfirmation) {
   test::DisableBraveRewards();
 
   std::optional<ConfirmationInfo> confirmation =
-      test::BuildNonRewardConfirmation(/*should_generate_random_uuids=*/false);
+      test::BuildNonRewardConfirmation(/*use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   base::RunLoop run_loop_add;
@@ -86,7 +86,7 @@ TEST_F(BraveAdsConfirmationQueueTest, AddRewardConfirmation) {
   test::RefillConfirmationTokens(/*count=*/1);
 
   std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   base::RunLoop run_loop_add;
@@ -122,7 +122,7 @@ TEST_F(BraveAdsConfirmationQueueTest, ProcessNonRewardConfirmation) {
   test::DisableBraveRewards();
 
   std::optional<ConfirmationInfo> confirmation =
-      test::BuildNonRewardConfirmation(/*should_generate_random_uuids=*/false);
+      test::BuildNonRewardConfirmation(/*use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   const test::URLResponseMap url_responses = {
@@ -168,7 +168,7 @@ TEST_F(BraveAdsConfirmationQueueTest, ProcessMultipleNonRewardConfirmations) {
   test::DisableBraveRewards();
 
   std::optional<ConfirmationInfo> confirmation_1 =
-      test::BuildNonRewardConfirmation(/*should_generate_random_uuids=*/true);
+      test::BuildNonRewardConfirmation(/*use_random_uuids=*/true);
   ASSERT_TRUE(confirmation_1);
   {
     base::RunLoop run_loop_add_1;
@@ -194,7 +194,7 @@ TEST_F(BraveAdsConfirmationQueueTest, ProcessMultipleNonRewardConfirmations) {
   const ScopedDelayBeforeProcessingConfirmationQueueItemForTesting
       scoped_delay_before_processing_confirmation_queue_item(base::Minutes(21));
   std::optional<ConfirmationInfo> confirmation_2 =
-      test::BuildNonRewardConfirmation(/*should_generate_random_uuids=*/true);
+      test::BuildNonRewardConfirmation(/*use_random_uuids=*/true);
   ASSERT_TRUE(confirmation_2);
   {
     base::RunLoop run_loop_add_2;

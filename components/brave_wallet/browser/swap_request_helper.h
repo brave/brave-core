@@ -18,14 +18,6 @@ std::optional<std::string> EncodeTransactionParams(
     const mojom::JupiterTransactionParams& params);
 }  // namespace jupiter
 
-namespace lifi {
-std::optional<std::string> EncodeQuoteParams(
-    mojom::SwapQuoteParamsPtr params,
-    const std::optional<std::string>& fee_param);
-
-std::optional<std::string> EncodeTransactionParams(mojom::LiFiStepPtr step);
-}  // namespace lifi
-
 namespace gate3 {
 // Encode swap quote parameters into JSON format for Gate3 API quote requests.
 // Return the encoded JSON string on success, or std::nullopt if encoding

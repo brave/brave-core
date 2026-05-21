@@ -1,36 +1,38 @@
 diff --git a/chrome/browser/ui/views/page_action/page_action_controller.h b/chrome/browser/ui/views/page_action/page_action_controller.h
-index 0cc8990928974cb418729eeba1320a560ade336e..284ac8c8d29ef0cf1874e5afe695c452bc294250 100644
+index 730b49f9a3e8a9d10c3ba1357a0d8d1172e170d5..b9a3a2b3954970dff373c4da5c44cf871a84879c 100644
 --- a/chrome/browser/ui/views/page_action/page_action_controller.h
 +++ b/chrome/browser/ui/views/page_action/page_action_controller.h
-@@ -107,6 +107,17 @@ class PageActionController {
+@@ -275,6 +275,7 @@ class PageActionController {
+   virtual void DecrementActivityCounter(actions::ActionId action_id) = 0;
+ };
+ 
++namespace chromium_impl {
+ class PageActionControllerImpl : public PageActionController,
+                                  public PinnedToolbarActionsModel::Observer {
   public:
-   virtual ~PageActionController() = default;
+@@ -350,6 +351,7 @@ class PageActionControllerImpl : public PageActionController,
+   void OnActionsChanged() override;
  
-+  // Force the label to be shown regardless of the available space
-+  virtual void SetAlwaysShowLabel(actions::ActionId action_id,
-+                                  bool always_show) = 0;
-+
-+  // Override the colors of the chip
-+  virtual void OverrideChipColors(
-+      actions::ActionId action_id,
-+      std::optional<SkColor> override_background_color,
-+      std::optional<SkColor> override_foreground_color) = 0;
-+  virtual void ClearOverrideChipColors(actions::ActionId action_id) = 0;
-+
-   // Requests that the page action be shown or hidden.
-   virtual void Show(actions::ActionId action_id) = 0;
-   virtual void Hide(actions::ActionId action_id) = 0;
-@@ -221,6 +232,13 @@ class PageActionControllerImpl : public PageActionController,
-   PageActionControllerImpl& operator=(const PageActionControllerImpl&) = delete;
-   ~PageActionControllerImpl() override;
+  private:
++  friend class ::page_actions::PageActionControllerImpl;
+   using PageActionModelsMap =
+       std::map<actions::ActionId, std::unique_ptr<PageActionModelInterface>>;
+   using PageActionMetricsRecordersMap =
+@@ -379,7 +381,7 @@ class PageActionControllerImpl : public PageActionController,
+   void ActionItemChanged(const actions::ActionItem* action_item);
+   void PinnedActionsModelChanged();
  
-+  void SetAlwaysShowLabel(actions::ActionId action_id,
-+                          bool always_show) override;
-+  void OverrideChipColors(actions::ActionId action_id,
-+      std::optional<SkColor> override_background_color,
-+      std::optional<SkColor> override_foreground_color) override;
-+  void ClearOverrideChipColors(actions::ActionId action_id) override;
+-  std::unique_ptr<PageActionModelInterface> CreateModel(
++  virtual std::unique_ptr<PageActionModelInterface> CreateModel(
+       actions::ActionId action_id,
+       bool is_ephemeral);
+ 
+@@ -446,6 +448,8 @@ class PageActionControllerImpl : public PageActionController,
+ 
+   base::WeakPtrFactory<PageActionControllerImpl> weak_factory_{this};
+ };
++}  // namespace chromium_impl
 +
-   void Initialize(
-       tabs::TabInterface& tab_interface,
-       const std::vector<actions::ActionId>& action_ids,
+ 
+ }  // namespace page_actions
+ 

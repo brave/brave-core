@@ -11,13 +11,7 @@
 
 class PrefService;
 
-namespace signin {
-// class AccountManagedStatusFinder;
-class IdentityManager;
-}  // namespace signin
-
 namespace syncer {
-// class DataTypeStoreService;
 class SyncService;
 }  // namespace syncer
 
@@ -28,7 +22,6 @@ class HistoryService;
 class BraveHistoryDataTypeController : public HistoryDataTypeController {
  public:
   BraveHistoryDataTypeController(syncer::SyncService* sync_service,
-                                 signin::IdentityManager* identity_manager,
                                  HistoryService* history_service,
                                  PrefService* pref_service);
 
@@ -40,7 +33,8 @@ class BraveHistoryDataTypeController : public HistoryDataTypeController {
   ~BraveHistoryDataTypeController() override;
 
   // syncer::DataTypeController implementation.
-  PreconditionState GetPreconditionState() const override;
+  PreconditionState GetPreconditionState(
+      const PreconditionContext& context) const override;
 };
 
 }  // namespace history

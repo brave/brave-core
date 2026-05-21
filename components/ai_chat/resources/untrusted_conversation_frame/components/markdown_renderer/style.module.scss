@@ -262,6 +262,35 @@
   }
 }
 
+.colorChip {
+  position: relative;
+  display: inline-block;
+  padding: 1px 5px;
+  border-radius: var(--leo-radius-m);
+  font-family: monospace;
+  vertical-align: middle;
+  white-space: nowrap;
+  cursor: pointer;
+
+  .copyIcon {
+    --leo-icon-size: 12px;
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: opacity 100ms ease;
+    padding: 2px;
+    background: var(--leo-color-page-background);
+    color: var(--leo-color-text-primary);
+    border-radius: var(--leo-radius-xs);
+  }
+
+  &:hover .copyIcon {
+    opacity: 1;
+  }
+}
+
 .citation {
   appearance: none;
   background: none;

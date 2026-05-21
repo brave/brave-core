@@ -15,6 +15,7 @@ struct NewTabPageAdInfo;
 class NewTabPageAdEventClicked final
     : public AdEventInterface<NewTabPageAdInfo> {
  public:
+  // AdEventInterface:
   void FireEvent(const NewTabPageAdInfo& ad, ResultCallback callback) override;
 };
 

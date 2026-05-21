@@ -7,10 +7,10 @@
 
 #include <cstddef>
 
-#include "brave/components/brave_ads/core/internal/ad_units/ad_test_util.h"
+#include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
-#include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
+#include "brave/components/brave_ads/core/internal/settings/test/settings_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
@@ -32,7 +32,7 @@ TEST_F(BraveAdsConversionsUtilInternalTest,
     const auto mojom_ad_type = static_cast<mojom::AdType>(i);
 
     const AdInfo ad = test::BuildAd(mojom_ad_type,
-                                    /*should_generate_random_uuids=*/false);
+                                    /*use_random_uuids=*/false);
 
     for (size_t j = 0;
          j < static_cast<size_t>(mojom::ConfirmationType::kMaxValue); ++j) {
@@ -55,7 +55,7 @@ TEST_F(BraveAdsConversionsUtilInternalTest,
     const auto mojom_ad_type = static_cast<mojom::AdType>(i);
 
     const AdInfo ad = test::BuildAd(mojom_ad_type,
-                                    /*should_generate_random_uuids=*/false);
+                                    /*use_random_uuids=*/false);
 
     for (size_t j = 0;
          j < static_cast<size_t>(mojom::ConfirmationType::kMaxValue); ++j) {

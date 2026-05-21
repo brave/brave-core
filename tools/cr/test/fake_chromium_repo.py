@@ -3,18 +3,26 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+from __future__ import annotations
+
 from pathlib import Path
-from typing import List, Dict
 import json
+import os
+import platform
 import shutil
+import stat
 import subprocess
 import tempfile
+
+import vpython_utils
 
 CHROME_VERSION_TEMPLATE: str = """MAJOR={major}
 MINOR={minor}
 BUILD={build}
 PATCH={patch}
 """
+
+BRAVE_ROOT_FROM_FILE = Path(__file__).resolve().parents[3]
 
 class FakeChromiumRepo:
     """A fake Chromium repository for testing purposes."""
@@ -27,12 +35,50 @@ class FakeChromiumRepo:
         """
         self.temp_dir: tempfile.TemporaryDirectory = (
             tempfile.TemporaryDirectory())
-        self.base_path: Path = Path(self.temp_dir.name) / 'workspace'
+        # Resolve the temp dir so derived paths are symlink-canonical. On
+        # macOS, tempfile returns paths under /var/folders/..., but /var is a
+        # symlink to /private/var; without resolving here, equality checks
+        # against `Repository.root.resolve()` (which follows the symlink) fail.
+        self.base_path: Path = Path(self.temp_dir.name).resolve() / 'workspace'
         self._init_repo(self.chromium)
 
         # Set a brave repository under src/.
         self._init_repo(self.brave)
         self.brave_patches.mkdir(parents=True, exist_ok=True)
+        self._original_cwd: Path | None = None
+
+    def setup(self) -> None:
+        """Creates chromium_src/ and rewrite/, then chdirs into the brave repo.
+
+        Pair with `cleanup()` to restore the original cwd. Must be called
+        before any tools/cr code that resolves the brave-core root against
+        cwd.
+        """
+        (self.brave / 'chromium_src').mkdir(exist_ok=True)
+        (self.brave / 'rewrite').mkdir(exist_ok=True)
+        (self.brave / 'patches').mkdir(exist_ok=True)
+
+        self.install_vpython3_shim()
+
+        # `FakeChromiumRepo` will change the current directory to a mirro path
+        # inside the fake brave repo, relative to the cwd in brave-core when
+        # launched. This is intentional, although it means that tests run from
+        # different cwds will see different relatative paths for brave-core
+        # root, and chromium root. This should always work, as none of the code
+        # under tools/cr should be calling `chdir`, and it allows us to check
+        # that code works correctly no matter from where it was launched.
+        self._original_cwd = Path.cwd()
+        brave_root = BRAVE_ROOT_FROM_FILE
+        original_cwd = self._original_cwd.resolve()
+        try:
+            rel_from_brave = original_cwd.relative_to(brave_root)
+        except ValueError:
+            raise ValueError(
+                'FakeChromiumRepo.setup() must be called from within the '
+                f'brave-core tree ({brave_root}).') from None
+        fake_cwd = self.brave / rel_from_brave
+        fake_cwd.mkdir(parents=True, exist_ok=True)
+        os.chdir(fake_cwd)
 
     @property
     def chromium(self) -> Path:
@@ -55,7 +101,7 @@ class FakeChromiumRepo:
         return self.base_path / 'remote'
 
     def _run_git_command(self,
-                         command: List[str],
+                         command: list[str],
                          cwd: Path,
                          strip: bool = True) -> str:
         """Runs a git command in the specified directory and returns the stdout.
@@ -90,6 +136,8 @@ class FakeChromiumRepo:
         self._run_git_command(['add', 'README.md'], path)
         self._run_git_command(['config', 'user.name', 'Fake User'], path)
         self._run_git_command(['config', 'user.email', 'fake@brave.com'], path)
+        # Prevent background gc from writing to objects/pack/ during cleanup.
+        self._run_git_command(['config', 'gc.auto', '0'], path)
         self._run_git_command(['commit', '-m', 'Initial commit'], path)
 
     def create_brave_remote(self) -> None:
@@ -131,6 +179,34 @@ class FakeChromiumRepo:
              str(dep_path), relative_path], self.chromium)
         self._run_git_command(
             ['commit', '-m', f'Add submodule {relative_path}'], self.chromium)
+
+    def install_vpython3_shim(self) -> Path | None:
+        """Populates `chromium/third_party/depot_tools/vpython3` for tests.
+
+        No-op when `vpython_utils.is_found_in_path_variable()` reports that
+        `VPYTHON3_PATH` resolves via `$PATH` at invocation time: the alias
+        body and subprocesses then never reach the chromium-bundled
+        location, so the shim is unnecessary.
+
+        Otherwise installs a shim at the bundled location pointing at
+        whatever `vpython_utils.VPYTHON3_PATH` already resolved to (which,
+        in this branch, is always an absolute path). POSIX uses a symlink;
+        Windows writes a `.bat` shim because symlinks there need elevated
+        privileges.
+        """
+        if vpython_utils.is_found_in_path_variable():
+            return None
+        depot_tools = self.chromium / 'third_party' / 'depot_tools'
+        depot_tools.mkdir(parents=True, exist_ok=True)
+        if platform.system() == 'Windows':
+            shim = depot_tools / 'vpython3.bat'
+            shim.write_text('@echo off\r\nvpython3 %*\r\n', encoding='utf-8')
+            shim.chmod(shim.stat().st_mode | stat.S_IXUSR | stat.S_IXGRP
+                       | stat.S_IXOTH)
+        else:
+            shim = depot_tools / 'vpython3'
+            shim.symlink_to(vpython_utils.VPYTHON3_PATH)
+        return shim
 
     def add_tag(self, version: str) -> None:
         """Adds a git tag to the repository.
@@ -318,7 +394,7 @@ class FakeChromiumRepo:
                     self.brave)
 
 
-    def run_apply_patches(self) -> List[Dict]:
+    def run_apply_patches(self) -> list[dict]:
         """Similar to `npm run apply_patches`.
 
         This method applies patches for all modified files in Chromium and its
@@ -379,4 +455,21 @@ class FakeChromiumRepo:
 
     def cleanup(self) -> None:
         """Cleans up the temporary directory used for the fake repository."""
-        self.temp_dir.cleanup()
+        if self._original_cwd is not None:
+            os.chdir(self._original_cwd)
+            self._original_cwd = None
+        try:
+            self.temp_dir.cleanup()
+        except OSError:
+            print(f'Failed to clean up temp dir: {self.temp_dir.name}')
+            for dirpath, dirnames, filenames in os.walk(self.temp_dir.name):
+                for name in dirnames + filenames:
+                    full = os.path.join(dirpath, name)
+                    try:
+                        file_stat = os.stat(full)
+                        writable = os.access(full, os.W_OK)
+                        print(f'  {oct(file_stat.st_mode)} '
+                              f'{"rw" if writable else "ro"} {full}')
+                    except OSError as stat_err:
+                        print(f'  <stat error: {stat_err}> {full}')
+            raise

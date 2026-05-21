@@ -105,7 +105,11 @@ extension BrowserViewController {
           callback: { [weak self] in
             guard let self = self, let tab = tab else { return }
 
-            if let translateHelper = tab.translateHelper {
+            if let translateTabHelper = tab.translate {
+              translateTabHelper.toggleTranslation()
+            }
+
+            if let translateHelper = tab.legacyTranslateHelper {
               translateHelper.presentUI(on: self)
 
               if tab.translationState == .active {
@@ -310,9 +314,7 @@ extension BrowserViewController {
     }
 
     // Display Certificate Activity
-    if let tabURL = tabManager.selectedTab?.visibleURL,
-      tabManager.selectedTab?.serverTrust != nil
-    {
+    if tabManager.selectedTab?.serverTrust != nil {
       activities.append(
         BasicMenuActivity(
           activityType: .displaySecurityCertificate

@@ -65,7 +65,6 @@ export const defaultState: NewTab.State = {
       maxEarningsLastMonth: 0
     },
     balance: undefined,
-    externalWallet: undefined,
     externalWalletProviders: [],
     dismissedNotifications: [],
     rewardsEnabled: false,

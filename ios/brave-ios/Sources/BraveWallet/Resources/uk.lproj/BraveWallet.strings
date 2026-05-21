@@ -319,6 +319,9 @@
 /* The title of the rank of this coin from market. */
 "wallet.coinMarketRank" = "Рейтинг";
 
+/* One of the coin types for users to create an account to store ADA assets */
+"wallet.coinTypeAda" = "Cardano";
+
 /* One of the coin types for users to create an account to store BTC assets */
 "wallet.coinTypeBitcoin" = "Bitcoin";
 
@@ -808,6 +811,9 @@
 /* A title of a button which will a new view to display the error. */
 "wallet.failedTransactionViewErrorButtonTitle" = "Переглянути помилку";
 
+/* The title above the featured networks in onboarding network selection screen. */
+"wallet.featured" = "Обрані";
+
 /* A description of an Filecoin account, displayed in Accounts tab. */
 "wallet.filAccountDescription" = "Filecoin";
 
@@ -896,7 +902,7 @@
 "wallet.highToLowSortOption" = "Від високої до низької";
 
 /* A title above a text field that is used to enter a password */
-"wallet.importAccountOriginPasswordTitle" = "Оригінальний пароль";
+"wallet.importAccountOriginPasswordTitle" = "Пароль для Origin";
 
 /* A placeholder on a text box for entering the users private key/json data to import accounts */
 "wallet.importAccountPlaceholder" = "Уведіть, вставте або імпортуйте дані щодо закритого ключа чи JSON.";
@@ -1201,6 +1207,15 @@
 /* The title of the button in the last step for user to create a new wallet. This will direct users to the wallet portfolio screen. */
 "wallet.onboardingCompletedButtonTitle" = "Перейти в мій портфель";
 
+/* The title of the continue button in onboarding network selection screen. '%lld' refers to a number (for example "Continue with 8 Networks") */
+"wallet.onboardingNetworkSelectionContinue" = "Продовжити з %lld мережами";
+
+/* The description of the view during wallet onboarding that allows user to select which networks they want to see. */
+"wallet.onboardingNetworkSelectionDescription" = "Виберіть, які блокчейни використовувати у вашому гаманці.";
+
+/* The title of the view during wallet onboarding that allows user to select which networks they want to see. */
+"wallet.onboardingNetworkSelectionTitle" = "Підтримувані мережі";
+
 /* The subtitle of the last step of creating a new wallet. */
 "wallet.onbordingCompletedSubTitle" = "Гаманець Brave готовий до використання.";
 
@@ -1245,6 +1260,9 @@
 
 /* A title above a text field for inputting the per-gas tip limit in Gwei */
 "wallet.perGasTipLimit" = "Ліміт чайових за газ (Gwei)";
+
+/* The title above the popular networks in onboarding network selection screen. */
+"wallet.popular" = "Популярне";
 
 /* The title of the empty state in Portfolio when no assets are shown. */
 "wallet.portfolioEmptyStateDescription" = "Унесіть або придбайте токени, щоб почати роботу. Якщо ви не бачите токенів з імпортованого рахунку, перевірте фільтри й налаштування відображення. Може знадобитися додати невідомі токени як користувацькі активи.";
@@ -1570,6 +1588,9 @@
 /* The title displayed on the 'setup crypto' onboarding screen */
 "wallet.setupCryptoTitle" = "Розроблено для браузеру.\nСамостійний контроль.\nІ багатомережність.";
 
+/* A button title to confirm a shield ZEC transaction. It is shown below details about a given transaction. */
+"wallet.shieldZEC" = "Щит ZEC";
+
 /* The description label of the filter option that hides the network logo on NFTs displayed in the grid. Used in NFT filters and display settings. */
 "wallet.showNFTNetworkLogoDescription" = "Показувати логотип мережі на NFT";
 
@@ -1578,6 +1599,9 @@
 
 /* A button title that will make a private key visible on the screen */
 "wallet.showPrivateKeyButtonTitle" = "Показати закритий ключ";
+
+/* The title beside the toggle in onboarding network selection screen that shows test networks. */
+"wallet.showTestnets" = "Показувати тестові мережі";
 
 /* The title of a button that updates the filter to show tokens with zero balances. */
 "wallet.showZeroBalances" = "Показати нульові баланси";
@@ -1599,6 +1623,12 @@
 
 /* A title of the view shown over a dapps website that requests the user sign a message. */
 "wallet.signatureRequestTitle" = "Потрібен підпис";
+
+/* The label displayed in details for Sign Cardano Transaction Request details panel beside/above the Address index. */
+"wallet.signCardanoTxRequestDetailsAddressLabel" = "Адреса";
+
+/* The label displayed in details for Sign Cardano Transaction Request details panel beside/above the Token index. */
+"wallet.signCardanoTxRequestDetailsTokenLabel" = "Токен";
 
 /* A description explains signed transaction will be sent to network by dapps and awaits confirmation. */
 "wallet.signedTransactionDescription" = "Транзакцію підписано, буде надіслано в мережу через децентралізовані програми для очікування на підтвердження.";
@@ -1652,7 +1682,7 @@
 "wallet.siweNonceLabel" = "Нонс";
 
 /* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the origin. */
-"wallet.siweOriginLabel" = "Походження";
+"wallet.siweOriginLabel" = "Origin";
 
 /* The label displayed above the Sign In With Ethereum resources. */
 "wallet.siweResourcesLabel" = "Ресурси";
@@ -1921,6 +1951,9 @@
 /* The title of the view shown over a dapps website that requests the user change the current network. */
 "wallet.switchNetworkTitle" = "Перемикання мережі";
 
+/* The title above the testnets in onboarding network selection screen. */
+"wallet.testnets" = "Тестові мережі";
+
 /* A label appended after a certain dollar or percent change. Example: 'Up 1.4% Today' */
 "wallet.today" = "Сьогодні";
 
@@ -2173,6 +2206,9 @@
 /* The title displayed on the unlock wallet screen */
 "wallet.unlockWalletDescription" = "Уведіть пароль, щоб розблокувати гаманець";
 
+/* A button title to confirm an unshield ZEC transaction. It is shown below details about a given transaction. */
+"wallet.unshieldZEC" = "Розблокувати ZEC";
+
 /* The description displayed below the token name on each row for the user assets. The first '%@' will be the token symbol, and the second '%@' will be the token's network name. */
 "wallet.userAssetSymbolNetwork" = "%1$@ на %2$@";
 
@@ -2257,11 +2293,17 @@
 /* The title for the options to resolve Solana Name service domain names. */
 "wallet.web3DomainOptionsTitle" = "Обробка запитів на пошук доменних імен Solana Name Service (SNS)";
 
+/* The title for the entry displaying the preferred option to allow web3 sites to access the Cardano provider API. */
+"wallet.web3PreferencesAllowCardanoProviderAccess" = "Сайти можуть запитувати доступ до вашого гаманця Cardano";
+
 /* The title for the entry displaying the preferred option to allow web3 sites to access the Ethereum provider API. */
 "wallet.web3PreferencesAllowEthProviderAccess" = "Сайти можуть запитувати доступ до вашого гаманця Ethereum";
 
 /* The title for the entry displaying the preferred option to allow web3 sites to access the Solana provider API. */
 "wallet.web3PreferencesAllowSolProviderAccess" = "Сайти можуть запитувати доступ до вашого гаманця Solana";
+
+/* The title for the entry displaying the current preferred default Cardano wallet is. */
+"wallet.web3PreferencesDefaultCardanoWallet" = "Типовий гаманець Cardano";
 
 /* The title for the entry displaying the current preferred default Ethereum wallet is. */
 "wallet.web3PreferencesDefaultEthWallet" = "Гаманець Ethereum за замовчуванням";

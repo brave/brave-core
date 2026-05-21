@@ -7,44 +7,29 @@ use ffi::CxxPolkadotDecodeUnsignedTransfer;
 use parity_scale_codec::{Compact, Decode, Encode};
 use std::fmt;
 
+mod polkadot_chain_metadata;
+
 const SIGNED_EXTRINSIC: u8 = 0x80;
 const EXTRINSIC_VERSION: u8 = 0x04;
 const MULTIADDRESS_TYPE: u8 = 0x00;
 const SR25519_SIGNATURE: u8 = 0x01;
 const PERIOD: u32 = 64;
 
-// "Balances" pallet lives at index 4:
-// https://github.com/polkadot-js/api/blob/f45dfc72ec320cab7d69f08010c9921d2a21065f/packages/types-support/src/metadata/v15/kusama-json.json#L921
-// https://github.com/paritytech/polkadot-sdk/blob/69f210b33fce91b23570f3bda64f8e3deff04843/polkadot/runtime/westend/src/lib.rs#L1853-L1854
-const POLKADOT_TESTNET: CxxPolkadotChainMetadata = CxxPolkadotChainMetadata {
-    balances_pallet_index: 4,
-    transfer_allow_death_call_index: 0,
-    ss58_prefix: 42,
-};
+const PHASE_APPLY_EXTRINSIC: u8 = 0;
 
-// "Balances" pallet lives at index 10:
-// https://github.com/polkadot-js/api/blob/f45dfc72ec320cab7d69f08010c9921d2a21065f/packages/types-support/src/metadata/v15/asset-hub-kusama-json.json#L969
-const POLKADOT_ASSET_HUB_TESTNET: CxxPolkadotChainMetadata = CxxPolkadotChainMetadata {
-    balances_pallet_index: 10,
-    transfer_allow_death_call_index: 0,
-    ss58_prefix: 42,
-};
+const WITHDRAW_VARIANT_INDEX: u8 = 0x08;
 
-// "Balances" pallet lives at index 5:
-// https://github.com/polkadot-js/api/blob/f45dfc72ec320cab7d69f08010c9921d2a21065f/packages/types-support/src/metadata/v15/polkadot-json.json#L1096
-const POLKADOT_MAINNET: CxxPolkadotChainMetadata = CxxPolkadotChainMetadata {
-    balances_pallet_index: 5,
-    transfer_allow_death_call_index: 0,
-    ss58_prefix: 0,
-};
+// transactionpayment(TransactionFeePaid)
+const TRANSACTION_FEE_PAID_VARIANT_INDEX: u8 = 0x00;
 
-// "Balances" pallet lives at index 10:
-// https://github.com/polkadot-js/api/blob/f45dfc72ec320cab7d69f08010c9921d2a21065f/packages/types-support/src/metadata/v15/asset-hub-polkadot-json.json#L969
-const POLKADOT_ASSET_HUB_MAINNET: CxxPolkadotChainMetadata = CxxPolkadotChainMetadata {
-    balances_pallet_index: 10,
-    transfer_allow_death_call_index: 0,
-    ss58_prefix: 0,
-};
+// system(ExtrinsicSuccess | ExtrinsicFailed)
+const EXTRINSIC_SUCCESS_VARIANT_INDEX: u8 = 0x00;
+const EXTRINSIC_FAILED_VARIANT_INDEX: u8 = 0x01;
+
+// Default to reaping the account when invoking transfer_all. This means that we
+// will transfer all available DOT instead of leaving the account with the
+// existential deposit.
+const TRANSFER_ALL_KEEP_ALIVE: bool = false;
 
 const UNSIGNED_TRANSFER_ALLOW_DEATH_MIN_LEN: usize = 1  /* extrinsic version */
                                                    + 1  /* pallet index */
@@ -62,18 +47,21 @@ mod ffi {
         pub send_amount_bytes: [u8; 16],
     }
 
+    #[derive(Clone, Copy, PartialEq)]
+    pub struct CxxPolkadotChainMetadata {
+        pub system_pallet_index: u8,
+        pub balances_pallet_index: u8,
+        pub transaction_payment_pallet_index: u8,
+        pub transfer_allow_death_call_index: u8,
+        pub transfer_keep_alive_call_index: u8,
+        pub transfer_all_call_index: u8,
+        pub ss58_prefix: u16,
+        pub spec_version: u32,
+        pub asset_tx_payment: bool,
+    }
+
     extern "Rust" {
-        type CxxPolkadotChainMetadata;
-        type CxxPolkadotChainMetadataResult;
-
         fn compact_scale_encode_u32(x: u32) -> Vec<u8>;
-
-        fn get_ss58_prefix(chain_metadata: &CxxPolkadotChainMetadata) -> u16;
-        fn clone_metadata(self: &CxxPolkadotChainMetadata) -> Box<CxxPolkadotChainMetadata>;
-
-        fn is_ok(self: &CxxPolkadotChainMetadataResult) -> bool;
-        fn error_message(self: &CxxPolkadotChainMetadataResult) -> String;
-        fn unwrap(self: &mut CxxPolkadotChainMetadataResult) -> Box<CxxPolkadotChainMetadata>;
 
         type CxxPolkadotDecodeUnsignedTransferResult;
 
@@ -82,8 +70,6 @@ mod ffi {
         fn unwrap(
             self: &mut CxxPolkadotDecodeUnsignedTransferResult,
         ) -> Box<CxxPolkadotDecodeUnsignedTransfer>;
-
-        fn make_chain_metadata(chain_name: &str) -> Box<CxxPolkadotChainMetadataResult>;
 
         fn encode_unsigned_transfer_allow_death(
             chain_metadata: &CxxPolkadotChainMetadata,
@@ -102,6 +88,7 @@ mod ffi {
             chain_metadata: &CxxPolkadotChainMetadata,
             sender_nonce: u32,
             send_amount_bytes: &[u8; 16],
+            transfer_all: bool,
             recipient: &[u8; 32],
             spec_version: u32,
             transaction_version: u32,
@@ -115,14 +102,25 @@ mod ffi {
             sender_pubkey: &[u8; 32],
             recipient_pubkey: &[u8; 32],
             send_amount_bytes: &[u8; 16],
+            transfer_all: bool,
             signature: &[u8; 64],
             block_number: u32,
             sender_nonce: u32,
         ) -> Vec<u8>;
 
         fn parse_fee_info(input: &[u8], fee_bytes: &mut [u8; 16]) -> bool;
+
+        fn was_extrinsic_successful(
+            events: &[u8],
+            extrinsic_idx: u32,
+            sender: &[u8; 32],
+            chain_metadata: &CxxPolkadotChainMetadata,
+            actual_fee: &mut [u8; 16],
+        ) -> bool;
     }
 }
+
+pub(crate) use ffi::CxxPolkadotChainMetadata;
 
 #[macro_export]
 macro_rules! impl_result {
@@ -157,8 +155,6 @@ macro_rules! impl_result {
 pub enum Error {
     /// The Result has already been unwrapped.
     AlreadyUnwrapped,
-    /// The supplied chain name did not match our hard-coded whitelist.
-    ChainNameNotFound,
     /// Invalid SCALE value found.
     InvalidScale,
     /// Invalid metadata such as the wrong pallet index or call index.
@@ -170,9 +166,6 @@ pub enum Error {
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            Error::ChainNameNotFound => {
-                write!(f, "The supplied chain spec name did not match the whitelist.")
-            }
             Error::AlreadyUnwrapped => write!(f, "Already unwrapped."),
             Error::InvalidScale => write!(f, "Invalid SCALE-encoded bytes were found."),
             Error::InvalidMetadata => write!(f, "Invalid chain metadata was encountered."),
@@ -181,37 +174,7 @@ impl fmt::Display for Error {
     }
 }
 
-#[derive(Clone, Copy)]
-struct CxxPolkadotChainMetadata {
-    balances_pallet_index: u8,
-    transfer_allow_death_call_index: u8,
-    ss58_prefix: u16,
-}
-
-fn get_ss58_prefix(chain_metadata: &CxxPolkadotChainMetadata) -> u16 {
-    chain_metadata.ss58_prefix
-}
-
-impl CxxPolkadotChainMetadata {
-    fn clone_metadata(self: &CxxPolkadotChainMetadata) -> Box<CxxPolkadotChainMetadata> {
-        Box::new(*self)
-    }
-}
-
-impl_result!(CxxPolkadotChainMetadata, CxxPolkadotChainMetadataResult);
 impl_result!(CxxPolkadotDecodeUnsignedTransfer, CxxPolkadotDecodeUnsignedTransferResult);
-
-fn make_chain_metadata(chain_name: &str) -> Box<CxxPolkadotChainMetadataResult> {
-    let metadata = match chain_name {
-        "Westend" => Ok(POLKADOT_TESTNET),
-        "Westend Asset Hub" => Ok(POLKADOT_ASSET_HUB_TESTNET),
-        "Polkadot Asset Hub" => Ok(POLKADOT_ASSET_HUB_MAINNET),
-        "Polkadot" => Ok(POLKADOT_MAINNET),
-        _ => Err(Error::ChainNameNotFound),
-    };
-
-    Box::new(CxxPolkadotChainMetadataResult(metadata))
-}
 
 fn encode_unsigned_transfer_allow_death(
     chain_metadata: &CxxPolkadotChainMetadata,
@@ -332,6 +295,24 @@ fn scale_encode_mortality(number: u32, mut period: u32) -> [u8; 2] {
     [(encoded & 0xff) as u8, (encoded >> 8) as u8]
 }
 
+fn append_extra(buf: &mut Vec<u8>, asset_tx_payment: bool) {
+    // The asset_id is hard-coded to zero here as we only support paying transaction
+    // fees via the chain's native token (DOT) for our initial first pass.
+
+    if asset_tx_payment {
+        buf.extend_from_slice(&[
+            0x00, /* tip */
+            0x00, /* asset_id */
+            0x00, /* mode (disable metadata hash verification) */
+        ]);
+    } else {
+        buf.extend_from_slice(&[
+            0x00, /* tip */
+            0x00, /* mode (disable metadata hash verification) */
+        ]);
+    }
+}
+
 /// The definition for the extrinsic signature can be found here:
 /// https://spec.polkadot.network/id-extrinsics#defn-extrinsic-signature
 ///
@@ -361,6 +342,7 @@ fn generate_extrinsic_signature_payload(
     chain_metadata: &CxxPolkadotChainMetadata,
     sender_nonce: u32,
     send_amount_bytes: &[u8; 16],
+    transfer_all: bool,
     recipient: &[u8; 32],
     spec_version: u32,
     transaction_version: u32,
@@ -368,29 +350,37 @@ fn generate_extrinsic_signature_payload(
     genesis_hash: &[u8; 32],
     block_hash: &[u8; 32],
 ) -> Vec<u8> {
-    let CxxPolkadotChainMetadata { balances_pallet_index, transfer_allow_death_call_index, .. } =
-        chain_metadata;
+    let CxxPolkadotChainMetadata {
+        balances_pallet_index,
+        transfer_keep_alive_call_index,
+        transfer_all_call_index,
+        ..
+    } = chain_metadata;
 
     let mut buf = Vec::<u8>::with_capacity(256);
+
+    let call_idx =
+        if transfer_all { transfer_all_call_index } else { transfer_keep_alive_call_index };
 
     buf.extend_from_slice(&[
         /* Write module indicator, M_i. */
         *balances_pallet_index,
         /* Write function indicator (call index + call parameters). */
-        *transfer_allow_death_call_index,
+        *call_idx,
         MULTIADDRESS_TYPE,
     ]);
 
     buf.extend_from_slice(recipient);
-    Compact(u128::from_le_bytes(*send_amount_bytes)).encode_to(&mut buf);
+    if transfer_all {
+        TRANSFER_ALL_KEEP_ALIVE.encode_to(&mut buf);
+    } else {
+        Compact(u128::from_le_bytes(*send_amount_bytes)).encode_to(&mut buf);
+    }
 
     // Write extra data, E.
     buf.extend_from_slice(&scale_encode_mortality(block_number, PERIOD));
     Compact(sender_nonce).encode_to(&mut buf);
-    buf.extend_from_slice(&[
-        0x00, /* tip */
-        0x00, /* mode (disable metadata hash verification) */
-    ]);
+    append_extra(&mut buf, chain_metadata.asset_tx_payment);
 
     // Write R_v.
     buf.extend_from_slice(&spec_version.to_le_bytes());
@@ -426,12 +416,17 @@ fn make_signed_extrinsic(
     sender_pubkey: &[u8; 32],
     recipient_pubkey: &[u8; 32],
     send_amount_bytes: &[u8; 16],
+    transfer_all: bool,
     signature: &[u8; 64],
     block_number: u32,
     sender_nonce: u32,
 ) -> Vec<u8> {
-    let CxxPolkadotChainMetadata { balances_pallet_index, transfer_allow_death_call_index, .. } =
-        chain_metadata;
+    let CxxPolkadotChainMetadata {
+        balances_pallet_index,
+        transfer_keep_alive_call_index,
+        transfer_all_call_index,
+        ..
+    } = chain_metadata;
 
     let mut buf = Vec::<u8>::with_capacity(512);
 
@@ -441,17 +436,19 @@ fn make_signed_extrinsic(
     buf.extend_from_slice(signature);
     buf.extend_from_slice(&scale_encode_mortality(block_number, PERIOD));
     Compact(sender_nonce).encode_to(&mut buf);
-    buf.extend_from_slice(&[0x00 /* tip */, 0x00 /* mode */]);
+    append_extra(&mut buf, chain_metadata.asset_tx_payment);
 
-    buf.extend_from_slice(&[
-        *balances_pallet_index,
-        *transfer_allow_death_call_index,
-        MULTIADDRESS_TYPE,
-    ]);
+    let call_idx =
+        if transfer_all { transfer_all_call_index } else { transfer_keep_alive_call_index };
 
+    buf.extend_from_slice(&[*balances_pallet_index, *call_idx, MULTIADDRESS_TYPE]);
     buf.extend_from_slice(recipient_pubkey);
 
-    Compact(u128::from_le_bytes(*send_amount_bytes)).encode_to(&mut buf);
+    if transfer_all {
+        TRANSFER_ALL_KEEP_ALIVE.encode_to(&mut buf);
+    } else {
+        Compact(u128::from_le_bytes(*send_amount_bytes)).encode_to(&mut buf);
+    }
 
     Compact(buf.len() as u64).using_encoded(|encoded_len| {
         buf.splice(0..0, encoded_len.iter().copied());
@@ -510,4 +507,161 @@ fn parse_fee_info(input: &[u8], fee_bytes: &mut [u8; 16]) -> bool {
 
 fn compact_scale_encode_u32(x: u32) -> Vec<u8> {
     Compact(x).encode()
+}
+
+fn was_extrinsic_successful(
+    events: &[u8],
+    extrinsic_idx: u32,
+    sender: &[u8; 32],
+    chain_metadata: &CxxPolkadotChainMetadata,
+    actual_fee: &mut [u8; 16],
+) -> bool {
+    /*
+        For a send transaction, a simplified event flow looks roughly like this:
+
+            ┌─────────────────────────────────┐
+            │        balances(Withdraw)       │
+            └─────────────────────────────────┘
+                      │              │
+                [success]          [error]
+                      │              │
+                      ▼              │
+            ┌──────────────────────┐ │
+            │  balances(Transfer)  │ │
+            └──────────────────────┘ │
+                      │              │
+                      └──────┬───────┘
+                             │
+                             ▼
+            ┌───────────────────────────────────┐
+            │        balances(Deposit), ...     │
+            └───────────────────────────────────┘
+                             │
+                             ▼
+            ┌──────────────────────────────────────────┐
+            │ transactionpayment(TransactionFeePaid)   │
+            └──────────────────────────────────────────┘
+                             │
+                    ┌────────┴──────────────────────┐
+                    │                               │
+                    ▼                               ▼
+            ┌──────────────────────────┐ ┌─────────────────────────┐
+            │ system(ExtrinsicSuccess) │ │ system(ExtrinsicFailed) │
+            └──────────────────────────┘ └─────────────────────────┘
+    */
+
+    // But in general, it seems like the events flow can become quite complex:
+    // https://polkadot.subscan.io/extrinsic/30123219-2
+    // The thing to note is that the extrinsic always ends with the same two
+    // events, the fee was paid and the system gave the extrinsic a final status.
+    //
+    // In Polkadot, an event is defined as: {phase, event, topics}
+    // https://github.com/polkadot-js/api/blob/eb34741c871ca8d029a9706ae989ba8ce865db0f/packages/types-support/src/metadata/v15/polkadot-types.json#L519-L542
+    //
+    // Because the events are a massive binary blob that rely on quite a bit of
+    // Polkadot runtime metadata to fully parse, we just probe for the two events
+    // for our extrinsic that we care about: the transaction fee paid and the final
+    // status. We can theoretically probe for everything such as who the fee was
+    // paid out to but it isn't strictly required for our current needs.
+
+    // We first probe for the balances(Withdraw) event, so that we can use the
+    // withdrawn fee as a sanity check when we probe for our TransactionFeePaid
+    // event later on.
+    let mut withdraw_needle = [0_u8; 39];
+    withdraw_needle[0] = PHASE_APPLY_EXTRINSIC;
+    withdraw_needle[1..5].copy_from_slice(&extrinsic_idx.to_le_bytes());
+    withdraw_needle[5] = chain_metadata.balances_pallet_index;
+    withdraw_needle[6] = WITHDRAW_VARIANT_INDEX;
+    withdraw_needle[7..39].copy_from_slice(sender);
+
+    // Use `rfind` here because extrinsic blobs can be huge, and our events are
+    // typically found at the end of the events blob.
+    let mut events = events;
+    let Some(needle_idx) = memchr::memmem::rfind(events, &withdraw_needle) else {
+        return false;
+    };
+
+    events = &events[needle_idx + withdraw_needle.len()..];
+
+    let Ok(withdrawn_fee) = next_n_bytes(&mut events, 16) else {
+        return false;
+    };
+
+    let Ok(topics) = next_n_bytes(&mut events, 1) else {
+        return false;
+    };
+
+    if topics[0] != 0 {
+        return false;
+    };
+
+    // Look for the remainining two events we need,
+    // transactionpayment(TransactionFeePaid) and system(ExtrinsicSuccess |
+    // ExtrinsicFailed)
+    let mut transaction_fee_paid_needle = [0_u8; 39];
+    transaction_fee_paid_needle[0] = PHASE_APPLY_EXTRINSIC;
+    transaction_fee_paid_needle[1..5].copy_from_slice(&extrinsic_idx.to_le_bytes());
+    transaction_fee_paid_needle[5] = chain_metadata.transaction_payment_pallet_index;
+    transaction_fee_paid_needle[6] = TRANSACTION_FEE_PAID_VARIANT_INDEX;
+    transaction_fee_paid_needle[7..39].copy_from_slice(sender);
+
+    // Use `find` here because we've located the start of our event sequence above.
+    let Some(needle_idx) = memchr::memmem::find(events, &transaction_fee_paid_needle) else {
+        return false;
+    };
+
+    events = &events[needle_idx + transaction_fee_paid_needle.len()..];
+    let Ok(fee) = next_n_bytes(&mut events, 16) else {
+        return false;
+    };
+
+    // If our fees don't match here, we can consider the events blob invalid.
+    if withdrawn_fee != fee {
+        return false;
+    }
+
+    let Ok(_tip) = next_n_bytes(&mut events, 16) else {
+        return false;
+    };
+
+    let Ok(topics) = next_n_bytes(&mut events, 1) else {
+        return false;
+    };
+
+    if topics[0] != 0 {
+        return false;
+    };
+
+    let Ok(phase) = next_n_bytes(&mut events, 1) else {
+        return false;
+    };
+
+    if phase[0] != PHASE_APPLY_EXTRINSIC {
+        return false;
+    }
+
+    let Ok(idx) = next_n_bytes(&mut events, 4) else {
+        return false;
+    };
+
+    if idx != &extrinsic_idx.to_le_bytes() {
+        return false;
+    }
+
+    let Ok(call_index) = next_n_bytes(&mut events, 2) else {
+        return false;
+    };
+
+    if call_index[0] != chain_metadata.system_pallet_index {
+        return false;
+    };
+
+    if call_index[1] != EXTRINSIC_SUCCESS_VARIANT_INDEX
+        && call_index[1] != EXTRINSIC_FAILED_VARIANT_INDEX
+    {
+        return false;
+    };
+
+    actual_fee.copy_from_slice(fee);
+    call_index[1] == EXTRINSIC_SUCCESS_VARIANT_INDEX
 }

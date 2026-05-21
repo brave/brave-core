@@ -27,15 +27,26 @@ import java.util.Arrays;
 /** Helper functions used in various password settings test suites. */
 class PasswordSettingsTestHelper {
     static final SavedPasswordEntry ZEUS_ON_EARTH =
-            new SavedPasswordEntry("http://www.phoenicia.gr", "Zeus", "Europa");
+            new SavedPasswordEntry(
+                    "http://www.phoenicia.gr", "http://www.phoenicia.gr", "Zeus", "Europa");
     static final SavedPasswordEntry ARES_AT_OLYMP =
-            new SavedPasswordEntry("https://1-of-12.olymp.gr", "Ares", "God-o'w@r");
+            new SavedPasswordEntry(
+                    "https://1-of-12.olymp.gr", "https://1-of-12.olymp.gr", "Ares", "God-o'w@r");
     static final SavedPasswordEntry PHOBOS_AT_OLYMP =
-            new SavedPasswordEntry("https://visitor.olymp.gr", "Phobos-son-of-ares", "G0d0fF34r");
+            new SavedPasswordEntry(
+                    "https://visitor.olymp.gr",
+                    "https://visitor.olymp.gr",
+                    "Phobos-son-of-ares",
+                    "G0d0fF34r");
     static final SavedPasswordEntry DEIMOS_AT_OLYMP =
-            new SavedPasswordEntry("https://visitor.olymp.gr", "Deimops-Ares-son", "G0d0fT3rr0r");
+            new SavedPasswordEntry(
+                    "https://visitor.olymp.gr",
+                    "https://visitor.olymp.gr",
+                    "Deimops-Ares-son",
+                    "G0d0fT3rr0r");
     static final SavedPasswordEntry HADES_AT_UNDERWORLD =
-            new SavedPasswordEntry("https://underworld.gr", "", "C3rb3rus");
+            new SavedPasswordEntry(
+                    "https://underworld.gr", "https://underworld.gr", "", "C3rb3rus");
     static final SavedPasswordEntry[] GREEK_GODS = {
         ZEUS_ON_EARTH, ARES_AT_OLYMP, PHOBOS_AT_OLYMP, DEIMOS_AT_OLYMP, HADES_AT_UNDERWORLD,
     };

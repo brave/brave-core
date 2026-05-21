@@ -122,7 +122,8 @@ struct PageZoomSettingsView: View {
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
     }
-    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+    .scrollContentBackground(.hidden)
+    .background(Color(UIColor.braveGroupedBackground))
     .navigationBarTitleDisplayMode(.inline)
     .listStyle(.insetGrouped)
   }

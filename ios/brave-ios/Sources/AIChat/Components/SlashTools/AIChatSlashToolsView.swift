@@ -8,7 +8,7 @@ import BraveUI
 import DesignSystem
 import SwiftUI
 
-extension AiChat.ActionGroup: Identifiable {
+extension AiChat.ActionGroup: @retroactive Identifiable {
   public var id: String {
     self.category
   }
@@ -197,7 +197,7 @@ struct AIChatSlashToolsView: View {
             .onAppear {
               contentSize = proxy.size
             }
-            .onChange(of: proxy.size) { size in
+            .onChange(of: proxy.size) { _, size in
               contentSize = size
             }
         }

@@ -57,20 +57,20 @@ void CreativeSearchResultAdHandler::
         ExtractCreativeAdPlacementIdsFromWebPageCallback callback) {
   CHECK(render_frame_host);
 
-  mojo::Remote<blink::mojom::DocumentMetadata> mojom_document_metadata_remote;
+  mojo::Remote<blink::mojom::DocumentMetadata> document_metadata_remote;
   render_frame_host->GetRemoteInterfaces()->GetInterface(
-      mojom_document_metadata_remote.BindNewPipeAndPassReceiver());
-  CHECK(mojom_document_metadata_remote.is_bound());
+      document_metadata_remote.BindNewPipeAndPassReceiver());
+  CHECK(document_metadata_remote.is_bound());
 
-  blink::mojom::DocumentMetadata* const raw_mojom_document_metadata =
-      mojom_document_metadata_remote.get();
-  CHECK(raw_mojom_document_metadata);
+  blink::mojom::DocumentMetadata* const raw_document_metadata =
+      document_metadata_remote.get();
+  CHECK(raw_document_metadata);
 
-  raw_mojom_document_metadata->GetEntities(base::BindOnce(
-      &CreativeSearchResultAdHandler::
-          MaybeExtractCreativeAdPlacementIdsFromWebPageCallback,
-      weak_factory_.GetWeakPtr(), std::move(mojom_document_metadata_remote),
-      std::move(callback)));
+  raw_document_metadata->GetEntities(
+      base::BindOnce(&CreativeSearchResultAdHandler::
+                         MaybeExtractCreativeAdPlacementIdsFromWebPageCallback,
+                     weak_factory_.GetWeakPtr(),
+                     std::move(document_metadata_remote), std::move(callback)));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -78,7 +78,7 @@ void CreativeSearchResultAdHandler::
 void CreativeSearchResultAdHandler::
     MaybeExtractCreativeAdPlacementIdsFromWebPageCallback(
         mojo::Remote<
-            blink::mojom::DocumentMetadata> /*mojom_document_metadata_remote*/,
+            blink::mojom::DocumentMetadata> /*document_metadata_remote*/,
         ExtractCreativeAdPlacementIdsFromWebPageCallback callback,
         blink::mojom::WebPagePtr mojom_web_page) {
   if (!mojom_web_page) {

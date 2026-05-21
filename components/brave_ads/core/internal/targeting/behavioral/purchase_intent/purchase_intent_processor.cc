@@ -31,12 +31,10 @@ constexpr int kDefaultFunnelKeyphraseWeightForSearchQuery = 1;
 PurchaseIntentProcessor::PurchaseIntentProcessor(
     PurchaseIntentResource& resource)
     : resource_(resource) {
-  TabManager::GetInstance().AddObserver(this);
+  tab_manager_observation_.Observe(&TabManager::GetInstance());
 }
 
-PurchaseIntentProcessor::~PurchaseIntentProcessor() {
-  TabManager::GetInstance().RemoveObserver(this);
-}
+PurchaseIntentProcessor::~PurchaseIntentProcessor() = default;
 
 void PurchaseIntentProcessor::Process(const GURL& url) {
   if (!resource_->IsLoaded()) {

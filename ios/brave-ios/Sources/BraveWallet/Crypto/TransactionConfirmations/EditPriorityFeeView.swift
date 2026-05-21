@@ -160,9 +160,9 @@ struct EditPriorityFeeView: View {
   private var isSaveButtonDisabled: Bool {
     if case .custom = gasFeeKind {
       // Validate data
-      guard let gasLimitValue = BDouble(gasLimit), gasLimitValue > 0,
+      guard let gasLimitValue = BDouble(gasLimit), gasLimitValue > 0.0,
         let basePrice = BDouble(baseInGwei),
-        let maxTipValue = BDouble(maximumTipPrice), maxTipValue > 0,
+        let maxTipValue = BDouble(maximumTipPrice), maxTipValue > 0.0,
         let maxFeeValue = BDouble(maximumGasPrice), maxFeeValue > basePrice
       else {
         return true
@@ -282,7 +282,8 @@ struct EditPriorityFeeView: View {
       }
     }
     .listStyle(InsetGroupedListStyle())
-    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+    .scrollContentBackground(.hidden)
+    .background(Color(UIColor.braveGroupedBackground))
     .navigationBarTitleDisplayMode(.inline)
     .navigationTitle(Strings.Wallet.maxPriorityFeeTitle)
     .alert(isPresented: $isShowingAlert) {

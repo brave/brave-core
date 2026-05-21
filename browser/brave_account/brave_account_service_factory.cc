@@ -7,6 +7,7 @@
 
 #include "brave/components/brave_account/brave_account_service.h"
 #include "brave/components/brave_account/features.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
@@ -49,7 +50,8 @@ BraveAccountServiceFactory::BuildServiceInstanceForBrowserContext(
   return std::make_unique<BraveAccountService>(
       Profile::FromBrowserContext(context)->GetPrefs(),
       context->GetDefaultStoragePartition()
-          ->GetURLLoaderFactoryForBrowserProcess());
+          ->GetURLLoaderFactoryForBrowserProcess(),
+      g_browser_process->os_crypt_async());
 }
 
 }  // namespace brave_account

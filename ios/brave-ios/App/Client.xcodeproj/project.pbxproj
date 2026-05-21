@@ -450,6 +450,12 @@
 		7D7193F52CFE43830015D31D /* th */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = th; path = th.lproj/Localizable.strings; sourceTree = "<group>"; };
 		7D7193F62CFE43830015D31D /* th */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = th; path = SupportingFiles/th.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		7D7193F72CFE43830015D31D /* th */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = th; path = Shortcuts/th.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
+		7D78609B2FA2742100C53064 /* sl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sl; path = Shortcuts/sl.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
+		7D78609C2FA2742200C53064 /* sl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sl; path = sl.lproj/BraveWidgets.strings; sourceTree = "<group>"; };
+		7D78609D2FA2747B00C53064 /* sl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sl; path = sl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		7D78609E2FA2748B00C53064 /* sl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sl; path = sl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		7D78609F2FA274A400C53064 /* sl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sl; path = sl.lproj/Localizable.strings; sourceTree = "<group>"; };
+		7D7860A02FA274ED00C53064 /* sl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sl; path = SupportingFiles/sl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		7D7AC2862CFE428400F815E0 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/BraveWidgets.strings; sourceTree = "<group>"; };
 		7D7AC2872CFE428400F815E0 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/Localizable.strings; sourceTree = "<group>"; };
 		7D7AC2882CFE428400F815E0 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = SupportingFiles/he.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -1202,6 +1208,7 @@
 				bg,
 				hi,
 				sr,
+				sl,
 			);
 			mainGroup = F84B21B51A090F8100AAB793;
 			packageReferences = (
@@ -1487,6 +1494,7 @@
 				7DF818892E7B99F300CDB912 /* bg */,
 				7DBFC98B2E7B9A5200043B44 /* hi */,
 				7D26976C2E7B9AE30058A3DF /* sr */,
+				7D78609B2FA2742100C53064 /* sl */,
 			);
 			name = BrowserIntents.intentdefinition;
 			sourceTree = "<group>";
@@ -1533,6 +1541,7 @@
 				7DF818872E7B99F300CDB912 /* bg */,
 				7DBFC9892E7B9A5200043B44 /* hi */,
 				7D26976A2E7B9AE20058A3DF /* sr */,
+				7D78609F2FA274A400C53064 /* sl */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -1580,6 +1589,7 @@
 				7DF818882E7B99F300CDB912 /* bg */,
 				7DBFC98A2E7B9A5200043B44 /* hi */,
 				7D26976B2E7B9AE20058A3DF /* sr */,
+				7D7860A02FA274ED00C53064 /* sl */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -1627,6 +1637,7 @@
 				7D5F771C2E84462F00B010AF /* hi */,
 				7D5F771D2E84464400B010AF /* bg */,
 				7D5F771E2E84466A00B010AF /* sr */,
+				7D78609D2FA2747B00C53064 /* sl */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -1674,6 +1685,7 @@
 				7D5F771F2E84467F00B010AF /* bg */,
 				7D5F77202E84468F00B010AF /* hi */,
 				7D5F77212E84473600B010AF /* sr */,
+				7D78609E2FA2748B00C53064 /* sl */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -1721,6 +1733,7 @@
 				7DF818862E7B99F300CDB912 /* bg */,
 				7DBFC9882E7B9A5200043B44 /* hi */,
 				7D2697692E7B9AE20058A3DF /* sr */,
+				7D78609C2FA2742200C53064 /* sl */,
 			);
 			name = BraveWidgets.intentdefinition;
 			sourceTree = "<group>";

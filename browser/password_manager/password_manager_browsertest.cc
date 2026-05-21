@@ -5,7 +5,7 @@
 
 #include "base/memory/scoped_refptr.h"
 #include "base/test/bind.h"
-#include "chrome/browser/password_manager/profile_password_store_factory.h"
+#include "chrome/browser/password_manager/factories/profile_password_store_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/common/webui_url_constants.h"

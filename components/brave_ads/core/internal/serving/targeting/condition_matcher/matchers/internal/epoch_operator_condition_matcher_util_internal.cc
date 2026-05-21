@@ -9,8 +9,6 @@
 #include <limits>
 #include <string>
 
-#include "base/check.h"
-#include "base/strings/pattern.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -21,10 +19,7 @@ namespace {
 constexpr int32_t kMaxUnixEpochTimestamp = std::numeric_limits<int32_t>::max();
 }  // namespace
 
-std::optional<int> ParseDays(std::string_view condition) {
-  CHECK(base::MatchPattern(condition,
-                           kEpochOperatorConditionMatcherPrefixPattern));
-
+std::optional<int> MaybeParseDays(std::string_view condition) {
   const size_t pos = condition.find(':');
   if (pos == std::string_view::npos || pos + 1 >= condition.size()) {
     // Malformed operator.
@@ -72,7 +67,7 @@ base::TimeDelta TimeDeltaSinceEpoch(int64_t timestamp) {
          base::Time::FromSecondsSinceUnixEpoch(static_cast<double>(timestamp));
 }
 
-std::optional<base::TimeDelta> ParseTimeDelta(std::string_view value) {
+std::optional<base::TimeDelta> MaybeParseTimeDelta(std::string_view value) {
   double timestamp;
   if (base::StringToDouble(value, &timestamp)) {
     return TimeDeltaSinceEpoch(static_cast<int64_t>(timestamp));

@@ -6,6 +6,7 @@
 import * as React from 'react'
 import { Redirect, useHistory, useParams } from 'react-router'
 import { skipToken } from '@reduxjs/toolkit/query/react'
+import Button from '@brave/leo/react/button'
 
 // redux
 import { useAppDispatch } from '../../../../common/hooks/use-redux'
@@ -83,7 +84,7 @@ import {
 import { useRoute } from '../../../../common/hooks/use_route'
 
 // Styled Components
-import { Row, Column, LeoSquaredButton } from '../../../shared/style'
+import { Row, Column } from '../../../shared/style'
 import { Skeleton } from '../../../shared/loading-skeleton/styles'
 import {
   WalletPageWrapper, //
@@ -397,16 +398,16 @@ export const MarketAsset = () => {
           <ButtonRow>
             {foundMeldBuyToken && (
               <div>
-                <LeoSquaredButton onClick={onSelectBuy}>
+                <Button onClick={onSelectBuy}>
                   {getLocale('braveWalletBuy')}
-                </LeoSquaredButton>
+                </Button>
               </div>
             )}
             {isSelectedAssetDepositSupported && (
               <div>
-                <LeoSquaredButton onClick={onSelectDeposit}>
+                <Button onClick={onSelectDeposit}>
                   {getLocale('braveWalletAccountsDeposit')}
-                </LeoSquaredButton>
+                </Button>
               </div>
             )}
           </ButtonRow>

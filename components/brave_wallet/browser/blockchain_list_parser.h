@@ -41,7 +41,7 @@ std::string GetTokenListKey(mojom::CoinType coin, const std::string& chain_id);
 bool ParseChainList(const std::string& json, ChainList* chain_list);
 std::optional<DappListMap> ParseDappLists(const std::string& json);
 std::optional<CoingeckoIdsMap> ParseCoingeckoIdsMap(const std::string& json);
-std::optional<std::vector<std::string>> ParseOfacAddressesList(
+std::optional<std::vector<std::string>> ParseRestrictedAddressesList(
     const std::string& json);
 }  // namespace brave_wallet
 

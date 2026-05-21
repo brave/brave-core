@@ -133,16 +133,12 @@ To lahko spremenite tudi pozneje na <ph name="SETTINGS_EXTENIONS_LINK"/>.</trans
 <translation id="8184318863960255706">Več informacij</translation>
 <translation id="780301667611848630">Ne, hvala</translation>
 <translation id="1162706247109707219">S klikom na V redu potrjujete, da na vaši namestitev Brave NE bo prihajalo do kritičnih varnostnih popravkov, dokler ne preidete na Windows 10 ali novejšo različico. To opozorilo NE bo več prikazano.</translation>
-<translation id="9164786361657554526">S klikom na V redu potrjujete, da na vaši namestitev Brave NE bo prihajalo do kritičnih varnostnih popravkov, dokler ne preidete na macOS 10.15 ali novejšo različico. To opozorilo NE bo več prikazano.</translation>
+<translation id="2971591422768125177">S klikom na V redu potrjujete, da na vaši namestitev Brave NE bo prihajalo do kritičnih varnostnih popravkov, dokler ne preidete na macOS 10.15 ali novejšo različico. To opozorilo NE bo več prikazano.</translation>
 <translation id="6020553119523541665">Ta zavihek je dejaven v drugem oknu</translation>
 <translation id="4987392683074136770">S klikom na ta zavihek boste njegovo vsebino prenesli na to okno</translation>
 <translation id="8355523213948477234">Gumb za razdeljen pogled menija</translation>
 <translation id="6040143037577758943">Zapri</translation>
 <translation id="6665472986740899785">Oglasi Brave</translation>
-<translation id="5582087890067572966">🎉 Zdaj služite!</translation>
-<translation id="4364336119478610380">Služite vsakič, ko se na vašem zaslonu prikaže takšno obvestilo. Za zaslužek vam ni treba klikati.</translation>
-<translation id="5893017172751072752">Služite, ko se prikaže obvestilo Brave Ads</translation>
-<translation id="3447730462826640312">Za zaslužek vam ni treba klikati, kliknite pa, če vas zanima!</translation>
 <translation id="5253166205743627564">Hvala, ker s klikom na zasebni oglas podpirate Brave Search. V nasprotju z velikimi tehnološkimi podjetji merimo uspešnost oglasov anonimno, da bi ohranili vašo zasebnost.</translation>
 <translation id="8748471354357836070">Več informacij/možnosti odjave</translation>
 <translation id="5927196110206824867">Sponzorirane slike v ozadju podpirajo poslanstvo družbe Brave, da gradi neodvisen in uporabniku prijazen splet. V nasprotju z velikimi tehnološkimi podjetji merimo uspešnost oglasov anonimno, da bi ohranili vašo zasebnost.</translation>
@@ -326,6 +322,8 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="8813509417421129632">Vdelana stran na <ph name="SITE"/> se želi shraniti</translation>
 <translation id="7700010743463174379">Ta stran se želi shraniti</translation>
 <translation id="6774238875569752630">Vdelana stran na tej strani se želi shraniti</translation>
+<translation id="1383876407941801731">Išči</translation>
+<translation id="5496587651328244253">Organiziraj</translation>
 <translation id="1233913566967531780">Fokus zavihka</translation>
 <translation id="4034992002364254340">Zberite vse povezane zavihke v novo okno</translation>
 <translation id="8012125596344613514">Predlagane teme</translation>
@@ -338,11 +336,14 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="7557539689487606886">Pojdi na Premium</translation>
 <translation id="1035309871698658326">Ko jo odprete, bo Leu samodejno poslala naslove in izvor vseh zavihkov, ki niso zasebni, da jih razvrsti.</translation>
 <translation id="3435896845095436175">Omogoči</translation>
+<translation id="9031526219709160683">Brave vam lahko pomaga optimizirati nastavitve zasebnosti te strani. Želite pregledati predloge Brave?</translation>
+<translation id="5739953050957336013">Predlogi iskanja</translation>
 <translation id="9082792303833649978">To nastavitev upravlja vaš skrbnik ali drug Brave pravilnik.</translation>
 <translation id="1940221956626514677">Prilagodi orodno vrstico</translation>
 <translation id="6501807887341963552">Tema in barve</translation>
 <translation id="6724227215236550330">Tu se prikažejo shranjena gesla. Če želite uvoziti gesla <ph name="BRAND"/> v to napravo, <ph name="BEGIN_LINK"/> izberite datoteko CSV<ph name="END_LINK"/></translation>
 <translation id="3575561030014162610">Če želite uvoziti gesla <ph name="BRAND"/> v tej napravi, izberite datoteko CSV.</translation>
+<translation id="8570228839666486945">Umetna inteligenca na napravi</translation>
 <translation id="9156965752763025780">Spremembe bodo začele veljati ob naslednjem zagonu Bravea.</translation>
 <translation id="7179921470347911571">Znova zaženite zdaj</translation>
 <translation id="1426410128494586442">Da</translation>
@@ -393,8 +394,15 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="2113977810652731515">Kartica</translation>
 <translation id="4096343215397759358">Kartica s predogledom</translation>
 <translation id="5297085818601043899">Opis orodja</translation>
+<translation id="1033676453210290920">Najmanjša širina zavihka</translation>
+<translation id="562967218762447012">Najmanjša (privzeto)</translation>
+<translation id="574392208103952083">Srednje</translation>
+<translation id="4209092469652827314">Velika</translation>
+<translation id="2658845370685508484">Polna širina</translation>
+<translation id="1215972473274650670">Uporabi drsni trak zavihkov</translation>
 <translation id="5219886318310413094">Pripete zavihke prikaži v vseh oknih</translation>
 <translation id="2396127686705429331">Prikaži gumb za zaznamke</translation>
+<translation id="443318149139185498">Uporabi logo obrisane črte na gumbu glavnega menija</translation>
 <translation id="2814998458708016836">Uporabi široko naslovno vrstico</translation>
 <translation id="4749586705247636385">Prikaži zaobljene vogale na glavnih področjih vsebine</translation>
 <translation id="4109670531935487117">Prikaz predlogov za samodejno dokončanje v naslovni vrstici</translation>
@@ -548,7 +556,7 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="509873765238158442">Blokiraj Microsoft Recall</translation>
 <translation id="4763421121695677716">Preprečite, da bi funkcija Recall v računalnikih Microsoft Windows samodejno naredila posnetke zaslona vseh odprtih zavihkov brskalnika Brave.</translation>
 <translation id="1968895725257436430">Zbiranje podatkov</translation>
-<translation id="4846154056248462491">Ob izhodu</translation>
+<translation id="1700052872056357670">Izbriši podatke ob odhodu</translation>
 <translation id="216468847346280584">Počisti podatke oglasov Brave ...</translation>
 <translation id="2808630562319398131">Ponastavi podatke Brave Rewards ...</translation>
 <translation id="6438096877646138757">Spletna mesta, ki izbrišejo piškotke, ko jih zaprete</translation>
@@ -795,6 +803,7 @@ ponovno uporabo sinhronizacije, boste morali ustvariti nov račun in posamično 
 <translation id="1529674267267221673">Leo se prikaže v kontekstnem meniju, ko z desno tipko miške kliknete na spletno mesto. To bo v program Leo poslalo kontekst iz trenutne spletne strani.</translation>
 <translation id="5226020406479918122">Način fokus zavihka</translation>
 <translation id="3705539672403311123">Omogočite organizacijo zavihkov na strani Iskanje zavihkov. Ko jo odprete, bo Leu samodejno poslala naslove in izvore vseh zavihkov, ki niso zasebni, da jih razvrsti. <ph name="BEGIN_LINK"/>Več informacij<ph name="END_LINK"/></translation>
+<translation id="9049433973274198706">Privzeti model za novo zavihko</translation>
 <translation id="8172263161008556851">Pokaži predlagane pozive v pogovoru</translation>
 <translation id="5781842473834867765">Shrani mojo zgodovino pogovorov</translation>
 <translation id="1082960401708055995">Če onemogočite shranjevanje pogovorov, se trajno izbrišejo vsi predhodno shranjeni pogovori. Tega dejanja ni mogoče preklicati.</translation>
@@ -818,6 +827,8 @@ ponovno uporabo sinhronizacije, boste morali ustvariti nov račun in posamično 
 <translation id="6374563306438145841">Ključ API</translation>
 <translation id="3295756655687327124">Podpora za obdelavo slik</translation>
 <translation id="1415432774589088566">Če ta model sprejema slike kot vnos, npr. llama 3.2b vision</translation>
+<translation id="5718897035062884425">Podpora za orodja</translation>
+<translation id="2120046556683363911">Če ta model podpira klic funkcije / uporabo orodja</translation>
 <translation id="8008271349880309090">Ime modela, kot bo prikazano v meniju za izbiro modela</translation>
 <translation id="1355326130503900056">Ime modela, kot bi moralo biti prikazano v zahtevi za strežno ogrodje, tj. phi-3 (upoštevajte, da integracija ne bo delovala, če se to ime ne ujema natančno s pričakovanji strežnega ogrodja)</translation>
 <translation id="3213787232304349732">URL, kjer vaše strežno ogrodje posluša zahteve. Če niste prepričani, preverite dokumentacijo strežnega ogrodja. Za npr. Ollamo je to vedno http://localhost:11434/v1/chat/completions</translation>

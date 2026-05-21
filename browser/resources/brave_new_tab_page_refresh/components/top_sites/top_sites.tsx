@@ -28,8 +28,6 @@ export function TopSites() {
   const listKind = useTopSitesState((s) => s.topSitesListKind)
   const topSites = useTopSitesState((s) => s.topSites)
 
-  // TODO(https://github.com/brave/brave-browser/issues/45697): Use a pref to
-  // persist the expanded state.
   const [expanded, setExpanded] = usePersistedJSON(
     'ntp-top-sites-expanded',
     Boolean,

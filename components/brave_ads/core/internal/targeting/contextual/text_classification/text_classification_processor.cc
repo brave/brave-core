@@ -8,6 +8,7 @@
 #include <algorithm>
 
 #include "base/check.h"
+#include "base/containers/span.h"
 #include "base/functional/bind.h"
 #include "base/trace_event/trace_event.h"
 #include "base/trace_event/trace_id_helper.h"
@@ -41,12 +42,10 @@ std::string GetTopSegmentFromPageProbabilities(
 TextClassificationProcessor::TextClassificationProcessor(
     TextClassificationResource& resource)
     : resource_(resource) {
-  TabManager::GetInstance().AddObserver(this);
+  tab_manager_observation_.Observe(&TabManager::GetInstance());
 }
 
-TextClassificationProcessor::~TextClassificationProcessor() {
-  TabManager::GetInstance().RemoveObserver(this);
-}
+TextClassificationProcessor::~TextClassificationProcessor() = default;
 
 void TextClassificationProcessor::Process(const std::string& text) {
   if (resource_->IsLoaded()) {
@@ -89,7 +88,7 @@ void TextClassificationProcessor::ClassifyPageCallback(
 
 void TextClassificationProcessor::OnTextContentDidChange(
     int32_t /*tab_id*/,
-    const std::vector<GURL>& redirect_chain,
+    base::span<const GURL> redirect_chain,
     const std::string& text) {
   CHECK(!redirect_chain.empty());
 

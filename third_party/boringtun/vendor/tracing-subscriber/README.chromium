@@ -1,0 +1,13 @@
+Name: tracing-subscriber
+Short Name: tracing-subscriber
+URL: https://github.com/tokio-rs/tracing
+Version: 0.3.23
+License: MIT
+
+Description:
+Transitive dependency of BoringTun, vendored under
+brave/third_party/boringtun/vendor/tracing-subscriber.
+
+Local Modifications:
+None. Source vendored via `cargo vendor` from crates.io at the version
+pinned by brave/third_party/boringtun/Cargo.lock.

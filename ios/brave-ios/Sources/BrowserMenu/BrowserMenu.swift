@@ -425,6 +425,10 @@ private struct MenuRowButtonStyle: ButtonStyle {
       .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
       .contentShape(.rect)
       .hoverEffect()
+      // Second `contentShape` here is to re-assert the boundaries of the custom ButtonStyle, as the
+      // `hoverEffect` modifier seems to break this on iPad and re-adds the standard increased
+      // Button-hit test slop
+      .contentShape(.rect)
       .background(
         Color(braveSystemName: .iosBrowserContainerHighlightIos)
           .opacity(configuration.isPressed ? 1 : 0)

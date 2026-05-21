@@ -113,7 +113,8 @@ struct AccountDetailsView: View {
         }
       }
       .listStyle(InsetGroupedListStyle())
-      .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+      .scrollContentBackground(.hidden)
+      .background(Color(UIColor.braveGroupedBackground))
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItemGroup(placement: .cancellationAction) {

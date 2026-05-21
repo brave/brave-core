@@ -32,7 +32,7 @@ ClientStateManager& ClientStateManager::GetInstance() {
   return GlobalState::GetInstance()->GetClientStateManager();
 }
 
-void ClientStateManager::LoadState(InitializeCallback callback) {
+void ClientStateManager::LoadState(ResultCallback callback) {
   BLOG(3, "Loading client state");
 
   GetAdsClient().Load(
@@ -109,25 +109,25 @@ void ClientStateManager::SaveState() {
                       }));
 }
 
-void ClientStateManager::LoadCallback(InitializeCallback callback,
+void ClientStateManager::LoadCallback(ResultCallback callback,
                                       const std::optional<std::string>& json) {
+  CHECK(!is_initialized_);
+  is_initialized_ = true;
+
   if (!json) {
     BLOG(3, "Client state does not exist, creating default state");
 
-    is_initialized_ = true;
+    client_ = {};
+
+    SaveState();
+  } else if (!FromJson(*json)) {
+    BLOG(0, "Failed to parse client state, resetting to default state");
+
     client_ = {};
 
     SaveState();
   } else {
-    if (!FromJson(*json)) {
-      BLOG(0, "Failed to parse client state: " << *json);
-
-      return std::move(callback).Run(/*success=*/false);
-    }
-
     BLOG(3, "Successfully loaded client state");
-
-    is_initialized_ = true;
   }
 
   std::move(callback).Run(/*success=*/true);

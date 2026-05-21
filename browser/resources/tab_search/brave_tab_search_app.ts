@@ -46,10 +46,8 @@ export class BraveTabSearchAppElement extends CrLitElement {
   private listenerIds_: number[] = []
   private visibilityChangedListener_ = () => {
     if (document.visibilityState === 'visible') {
-      // Signal readiness so the bubble becomes visible when
-      // re-opened. On cr147 this maps to maybeShowUi() which
-      // doesn't exist on the current upstream proxy yet.
-      TabSearchApiProxyImpl.getInstance().notifySearchUiReadyToShow()
+      // Signal readiness so the bubble becomes visible when re-opened.
+      TabSearchApiProxyImpl.getInstance().maybeShowUi()
     }
   }
 

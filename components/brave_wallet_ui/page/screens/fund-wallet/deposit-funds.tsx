@@ -7,6 +7,7 @@ import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 import { Redirect, Route, Switch, useHistory, useParams } from 'react-router'
 import SegmentedControlItem from '@brave/leo/react/segmentedControlItem'
+import Button from '@brave/leo/react/button'
 
 // Selectors
 import {
@@ -66,7 +67,6 @@ import {
   HorizontalSpace,
   LoadingIcon,
   Row,
-  LeoSquaredButton,
   LoadingRing,
 } from '../../../components/shared/style'
 import { Description, Title } from '../onboarding/onboarding.style'
@@ -484,7 +484,7 @@ function AssetSelection() {
         width='unset'
         padding='20px 0px 0px 0px'
       >
-        <LeoSquaredButton
+        <Button
           onClick={nextStep}
           isDisabled={!isNextStepEnabled}
           size={isMobileOrPanel ? 'medium' : 'large'}
@@ -492,7 +492,7 @@ function AssetSelection() {
           {selectedAsset
             ? getLocale('braveWalletButtonContinue')
             : getLocale('braveWalletBuySelectAsset')}
-        </LeoSquaredButton>
+        </Button>
       </Row>
     </>
   )

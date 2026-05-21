@@ -9,7 +9,9 @@
 
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/map_util.h"
+#include "base/functional/callback.h"
 #include "base/no_destructor.h"
+#include "base/notimplemented.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_origin/brave_origin_policy_manager.h"
@@ -18,7 +20,9 @@
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/p3a/pref_names.h"
+#include "brave/components/playlist/core/common/pref_names.h"
 #include "brave/ios/browser/policy/brave_simple_policy_map_ios.h"
 #include "brave/ios/browser/skus/skus_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -48,9 +52,33 @@
 #include "brave/components/brave_news/common/pref_names.h"
 #endif
 
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+#include "brave/components/email_aliases/pref_names.h"
+#endif
+
 namespace brave_origin {
 
 namespace {
+
+// iOS delegate for BraveOriginService. Provides SKU service access but does
+// not open settings (no equivalent UI surface on iOS).
+class BraveOriginDelegateIOS : public BraveOriginService::Delegate {
+ public:
+  using SkusServiceGetter =
+      base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>;
+
+  explicit BraveOriginDelegateIOS(SkusServiceGetter skus_service_getter)
+      : skus_service_getter_(std::move(skus_service_getter)) {}
+
+  void OpenOriginSettings() override { NOTIMPLEMENTED(); }
+
+  mojo::PendingRemote<skus::mojom::SkusService> GetSkusService() override {
+    return skus_service_getter_.Run();
+  }
+
+ private:
+  SkusServiceGetter skus_service_getter_;
+};
 
 // Define BraveOrigin-specific metadata for browser-level prefs
 constexpr auto kBraveOriginBrowserMetadata =
@@ -117,6 +145,20 @@ constexpr auto kBraveOriginProfileMetadata =
              true,
              /*user_settable=*/false)},
 #endif
+
+        // Playlist preferences
+        {playlist::kPlaylistEnabledPref,
+         BraveOriginServiceFactory::BraveOriginPrefMetadata(
+             false,
+             /*user_settable=*/false)},
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+        // Email Aliases preferences
+        {email_aliases::prefs::kEmailAliasesEnabled,
+         BraveOriginServiceFactory::BraveOriginPrefMetadata(
+             false,
+             /*user_settable=*/false)},
+#endif
     });
 
 }  // namespace
@@ -163,7 +205,7 @@ BraveOriginServiceFactory::BuildServiceInstanceFor(ProfileIOS* profile) const {
       user_prefs::UserPrefs::Get(profile), profile_id,
       profile->GetPolicyConnector()->GetPolicyService(),
       GetApplicationContext()->GetBrowserPolicyConnector()->GetPolicyService(),
-      std::move(skus_service_getter));
+      std::make_unique<BraveOriginDelegateIOS>(std::move(skus_service_getter)));
 }
 
 // static

@@ -103,11 +103,17 @@ BraveAdaptiveCaptchaServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   auto url_loader_factory = context->GetDefaultStoragePartition()
                                 ->GetURLLoaderFactoryForBrowserProcess();
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+  auto* rewards_service = brave_rewards::RewardsServiceFactory::GetForProfile(
+      Profile::FromBrowserContext(context));
+  if (!rewards_service) {
+    return nullptr;
+  }
+#endif
   return std::make_unique<BraveAdaptiveCaptchaService>(
       user_prefs::UserPrefs::Get(context), std::move(url_loader_factory),
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
-      brave_rewards::RewardsServiceFactory::GetForProfile(
-          Profile::FromBrowserContext(context)),
+      rewards_service,
 #endif
       std::make_unique<CaptchaDelegate>(context));
 }

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/location_bar/location_icon_view.cc b/chrome/browser/ui/views/location_bar/location_icon_view.cc
-index 183afb4d5e8e50a0d2f8599d51a83ae50bc284a6..b057a5cdaad3f2edf7bfaf363fff7e3266bd8122 100644
+index a47529da1a23cc7851a7d940dfa5b9c15545eb0e..521722f19dd1f19e22d8ff395794d2ea6c6bc32e 100644
 --- a/chrome/browser/ui/views/location_bar/location_icon_view.cc
 +++ b/chrome/browser/ui/views/location_bar/location_icon_view.cc
-@@ -352,6 +352,7 @@ void LocationIconView::UpdateBackground() {
+@@ -297,6 +297,7 @@ void LocationIconView::UpdateBackground() {
  
    SetBackgroundColor(GetColorProvider()->GetColor(id));
  

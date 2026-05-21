@@ -13,10 +13,9 @@ import * as leo from '@brave/leo/tokens/css/variables'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
-import { BraveWallet, WalletRoutes } from '../../../../constants/types'
+import { WalletRoutes } from '../../../../constants/types'
 import {
   useGetWalletsToImportQuery,
-  useReportOnboardingActionMutation,
   useRestoreWalletMutation,
   useSetAutoLockMinutesMutation,
 } from '../../../../common/slices/api.slice'
@@ -61,7 +60,6 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
   // mutations
   const [restoreWalletFromSeed, { isLoading: isCreatingWallet }] =
     useRestoreWalletMutation()
-  const [report] = useReportOnboardingActionMutation()
   const [setAutoLockMinutes] = useSetAutoLockMinutesMutation()
 
   // routing
@@ -201,13 +199,6 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
       return await restoreWallet()
     }
   }, [currentStep, isPasswordValid, restoreWallet])
-
-  // effects
-  React.useEffect(() => {
-    if (currentStep === 'password') {
-      report(BraveWallet.OnboardingAction.LegalAndPassword)
-    }
-  }, [report, currentStep])
 
   // render
   if (isCreatingWallet) {

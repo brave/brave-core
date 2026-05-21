@@ -6,7 +6,11 @@
 #include "brave/browser/brave_ads/virtual_pref_provider_delegate.h"
 
 #include "base/strings/utf_string_conversions.h"
+#include "base/values.h"
 #include "base/version_info/channel.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/profiles/profile_attributes_entry.h"
+#include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/browser/search_engines/template_url_prepopulate_data_resolver_factory.h"
 #include "chrome/common/channel_info.h"
 #include "components/search_engines/template_url_data.h"
@@ -15,8 +19,11 @@
 
 namespace brave_ads {
 
-VirtualPrefProviderDelegate::VirtualPrefProviderDelegate(Profile& profile)
-    : profile_(profile) {}
+VirtualPrefProviderDelegate::VirtualPrefProviderDelegate(
+    Profile& profile,
+    ProfileAttributesStorage& profile_attributes_storage)
+    : profile_(profile),
+      profile_attributes_storage_(profile_attributes_storage) {}
 
 VirtualPrefProviderDelegate::~VirtualPrefProviderDelegate() = default;
 
@@ -31,6 +38,23 @@ std::string VirtualPrefProviderDelegate::GetDefaultSearchEngineName() const {
   const std::u16string& default_search_engine_name =
       template_url_data ? template_url_data->short_name() : u"";
   return base::UTF16ToUTF8(default_search_engine_name);
+}
+
+base::DictValue VirtualPrefProviderDelegate::GetSerpMetrics() const {
+  const ProfileAttributesEntry* const profile_attributes_entry =
+      profile_attributes_storage_->GetProfileAttributesWithPath(
+          profile_->GetPath());
+  if (!profile_attributes_entry) {
+    return {};
+  }
+
+  const base::DictValue* const serp_metrics =
+      profile_attributes_entry->GetSerpMetrics();
+  if (!serp_metrics) {
+    return {};
+  }
+
+  return serp_metrics->Clone();
 }
 
 }  // namespace brave_ads

@@ -9,6 +9,7 @@
 #include <cstddef>
 #include <string>
 
+#include "base/scoped_observation.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_info.h"
@@ -22,6 +23,7 @@
 
 namespace brave_ads {
 
+class AdsClient;
 struct IssuersInfo;
 
 class UserRewards final : public AdsClientNotifierObserver,
@@ -66,9 +68,12 @@ class UserRewards final : public AdsClientNotifierObserver,
   RefillConfirmationTokens refill_confirmation_tokens_;
   RedeemPaymentTokens redeem_payment_tokens_;
 
-  WalletInfo wallet_;
+  const WalletInfo wallet_;
 
   const database::table::Transactions transactions_database_table_;
+
+  base::ScopedObservation<AdsClient, AdsClientNotifierObserver>
+      ads_client_observation_{this};
 };
 
 }  // namespace brave_ads

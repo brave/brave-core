@@ -33,6 +33,7 @@
 #include "brave/components/constants/network_constants.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/misc_metrics/general_browser_usage.h"
+#include "brave/components/serp_metrics/pref_names.h"
 #include "brave/components/serp_metrics/serp_metrics_feature.h"
 #include "brave/components/version_info/version_info.h"
 #include "chrome/browser/browser_process.h"
@@ -172,7 +173,7 @@ BraveStatsUpdater::BraveStatsUpdater(PrefService* pref_service,
           GetFirstRunTime(pref_service));
 
   if (profile_manager != nullptr) {
-    g_browser_process->profile_manager()->AddObserver(this);
+    profile_manager_->AddObserver(this);
   }
 
   Start();
@@ -180,7 +181,7 @@ BraveStatsUpdater::BraveStatsUpdater(PrefService* pref_service,
 
 BraveStatsUpdater::~BraveStatsUpdater() {
   if (profile_manager_ != nullptr) {
-    g_browser_process->profile_manager()->RemoveObserver(this);
+    profile_manager_->RemoveObserver(this);
   }
 }
 
@@ -295,15 +296,14 @@ void BraveStatsUpdater::OnProfileAdded(Profile* profile) {
   CHECK(profile);
 
   general_browser_usage_p3a_->ReportProfileCount(
-      g_browser_process->profile_manager()->GetNumberOfProfiles());
+      profile_manager_->GetNumberOfProfiles());
 
-  MaybeMigrateSerpMetricsToProfileAttributes(
-      g_browser_process->profile_manager(), *profile);
+  MaybeMigrateSerpMetricsToProfileAttributes(profile_manager_, *profile);
 }
 
 void BraveStatsUpdater::QueueServerPing() {
   const bool referrals_initialized = IsReferralInitialized();
-  int num_closures = 0;
+  size_t num_closures = 0;
 
   // Note: We don't have the callbacks here because otherwise there is a race
   // condition whereby the callback completes before the barrier has been
@@ -379,6 +379,8 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterIntegerPref(kLastCheckMonth, 0);
   registry->RegisterStringPref(kLastCheckYMD, std::string());
   registry->RegisterStringPref(kWeekOfInstallation, std::string());
+  registry->RegisterTimePref(serp_metrics::prefs::kLastReportedAt,
+                             base::Time());
 }
 
 void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {

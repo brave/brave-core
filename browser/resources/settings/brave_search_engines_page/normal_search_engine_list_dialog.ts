@@ -8,6 +8,7 @@ import 'chrome://resources/cr_elements/cr_radio_button/cr_radio_button.js'
 import 'chrome://resources/cr_elements/cr_radio_group/cr_radio_group.js'
 import 'chrome://resources/cr_elements/cr_shared_style.css.js'
 import 'chrome://resources/cr_elements/cr_shared_vars.css.js'
+import '../search_page/search_engine_icon.js';
 import '../settings_shared.css.js'
 import '../site_favicon.js'
 
@@ -112,7 +113,7 @@ export class SettingsNormalSearchEngineListDialogElement extends
     assert(searchEngine)
 
     this.browserProxy_.setDefaultSearchEngine(
-      searchEngine.modelIndex, ChoiceMadeLocation.SEARCH_SETTINGS,
+      searchEngine.id, ChoiceMadeLocation.SEARCH_SETTINGS,
       this.saveGuestChoice_)
 
     this.dispatchEvent(new CustomEvent('search-engine-changed', {

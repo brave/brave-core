@@ -8,11 +8,13 @@
 
 #include <cstdint>
 #include <memory>
+#include <optional>
 
 #include "base/check_op.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
+#include "brave/components/brave_ads/core/internal/serving/eligible_ads/round_robin/creative_ad_round_robin.h"
 #include "brave/components/brave_ads/core/internal/serving/new_tab_page_ad_serving_delegate.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
@@ -47,27 +49,19 @@ class NewTabPageAdServing final {
 
   bool CanServeAd(const AdEventList& ad_events) const;
 
-  void GetAdEvents(MaybeServeNewTabPageAdCallback callback);
-  void GetAdEventsCallback(MaybeServeNewTabPageAdCallback callback,
-                           bool success,
-                           const AdEventList& ad_events);
+  void GetAdEvents();
+  void GetAdEventsCallback(bool success, const AdEventList& ad_events);
 
-  void GetUserModel(MaybeServeNewTabPageAdCallback callback);
-  void GetUserModelCallback(MaybeServeNewTabPageAdCallback callback,
-                            uint64_t trace_id,
-                            UserModelInfo user_model) const;
+  void GetUserModel();
+  void GetUserModelCallback(uint64_t trace_id, UserModelInfo user_model);
 
-  void GetEligibleAds(MaybeServeNewTabPageAdCallback callback,
-                      UserModelInfo user_model) const;
-  void GetEligibleAdsCallback(MaybeServeNewTabPageAdCallback callback,
-                              uint64_t trace_id,
-                              CreativeNewTabPageAdList creative_ads) const;
+  void GetEligibleAds(UserModelInfo user_model);
+  void GetEligibleAdsCallback(uint64_t trace_id,
+                              CreativeNewTabPageAdList creative_ads);
 
-  void ServeAd(const NewTabPageAdInfo& ad,
-               MaybeServeNewTabPageAdCallback callback) const;
-  void SuccessfullyServedAd(const NewTabPageAdInfo& ad,
-                            MaybeServeNewTabPageAdCallback callback) const;
-  void FailedToServeAd(MaybeServeNewTabPageAdCallback callback) const;
+  void ServeAd(const NewTabPageAdInfo& ad);
+  void SuccessfullyServedAd(const NewTabPageAdInfo& ad);
+  void FailedToServeAd();
 
   void NotifyOpportunityAroseToServeNewTabPageAd() const;
   void NotifyDidServeNewTabPageAd(const NewTabPageAdInfo& ad) const;
@@ -75,8 +69,17 @@ class NewTabPageAdServing final {
 
   raw_ptr<NewTabPageAdServingDelegate> delegate_ = nullptr;  // Not owned.
 
+  CreativeAdRoundRobin creative_ad_round_robin_;
+
   std::unique_ptr<EligibleNewTabPageAdsBase> eligible_ads_;
 
+  // Holds the callback for the in-flight serve request. A new call to
+  // `MaybeServeAd` while a pipeline is running cancels the old pipeline and
+  // fails the superseded callback before starting a fresh one.
+  std::optional<MaybeServeNewTabPageAdCallback> pending_serve_ad_callback_;
+
+  // Invalidated on each new `MaybeServeAd` call to cancel any in-flight
+  // pipeline before starting a fresh one.
   base::WeakPtrFactory<NewTabPageAdServing> weak_factory_{this};
 };
 

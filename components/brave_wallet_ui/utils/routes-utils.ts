@@ -18,21 +18,40 @@ import { LOCAL_STORAGE_KEYS } from '../common/constants/local-storage-keys'
 import { SUPPORT_LINKS } from '../common/constants/support_links'
 
 /**
+ * Returns the pathname portion of a wallet location string built as
+ * `pathname + search + hash` (see `useLocation` in the page container).
+ */
+export function getWalletLocationPathname(locationKey: string): string {
+  const queryIndex = locationKey.indexOf('?')
+  const hashIndex = locationKey.indexOf('#')
+  let end = locationKey.length
+  if (queryIndex !== -1) {
+    end = Math.min(end, queryIndex)
+  }
+  if (hashIndex !== -1) {
+    end = Math.min(end, hashIndex)
+  }
+  return locationKey.slice(0, end)
+}
+
+/**
  * Checks the provided route against a list of routes that we are OK with the
- * wallet opening to when the app is unlocked or when the panel is re-opened
+ * wallet opening to when the app is unlocked or when the panel is re-opened.
+ * `route` may include `search` and `hash` (e.g. saved session location).
  */
 export function isPersistableSessionRoute(
   route?: string,
   isPanel?: boolean,
-): route is WalletRoutes {
+): boolean {
   if (!route) {
     return false
   }
+  const routePath = getWalletLocationPathname(route)
   const isPersistableInPanel =
     /**
      * Insure that the Accounts route is an exact match.
      */
-    route === WalletRoutes.Accounts
+    routePath === WalletRoutes.Accounts
     /**
      * or allow if it includes a trailing slash which is followed
      * by an accountId query param.
@@ -46,7 +65,7 @@ export function isPersistableSessionRoute(
     /**
      * Insure that the Deposit Funds route is an exact match.
      */
-    || route === WalletRoutes.DepositFundsPageStart
+    || routePath === WalletRoutes.DepositFundsPageStart
     /**
      * or allow if it includes a trailing slash which is followed
      * by a currencyCode query param.
@@ -60,7 +79,7 @@ export function isPersistableSessionRoute(
     /**
      * Insure that the Portfolio Assets route is an exact match.
      */
-    || route === WalletRoutes.PortfolioAssets
+    || routePath === WalletRoutes.PortfolioAssets
     /**
      * or allow if it includes a trailing slash which is followed
      * by a tokenId query param.
@@ -69,7 +88,7 @@ export function isPersistableSessionRoute(
     /**
      * Insure that the Portfolio NFTs route is an exact match.
      */
-    || route === WalletRoutes.PortfolioNFTs
+    || routePath === WalletRoutes.PortfolioNFTs
     /**
      * or allow if it includes a trailing slash which is followed
      * by a tokenId query param.
@@ -83,7 +102,7 @@ export function isPersistableSessionRoute(
     /**
      * Insure that the Market route is an exact match.
      */
-    || route === WalletRoutes.Market
+    || routePath === WalletRoutes.Market
     /**
      * or allow if it includes a trailing slash which is followed
      * by a tokenId query param.
@@ -97,7 +116,7 @@ export function isPersistableSessionRoute(
     /**
      * Insure that the Connections route is an exact match.
      */
-    || route === WalletRoutes.Connections
+    || routePath === WalletRoutes.Connections
     /**
      * NFT Collections route uses a query param to determine the
      * collectionName and can not be exact matched.
@@ -126,9 +145,7 @@ export function isPersistableSessionRoute(
   )
 }
 
-export function getInitialSessionRoute(
-  isPanel?: boolean,
-): WalletRoutes | undefined {
+export function getInitialSessionRoute(isPanel?: boolean): string | undefined {
   const route =
     window.localStorage.getItem(LOCAL_STORAGE_KEYS.SAVED_SESSION_ROUTE) || ''
   return isPersistableSessionRoute(route, isPanel) ? route : undefined

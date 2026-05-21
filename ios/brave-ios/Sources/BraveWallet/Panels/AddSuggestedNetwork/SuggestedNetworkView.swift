@@ -222,7 +222,8 @@ struct SuggestedNetworkView: View {
       .accessibility(hidden: sizeCategory.isAccessibilityCategory)
     }
     .listStyle(InsetGroupedListStyle())
-    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+    .scrollContentBackground(.hidden)
+    .background(Color(UIColor.braveGroupedBackground))
     .navigationTitle(navigationTitle)
     .navigationBarTitleDisplayMode(.inline)
     .overlay(

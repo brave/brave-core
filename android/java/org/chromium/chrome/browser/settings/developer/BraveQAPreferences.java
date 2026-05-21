@@ -250,20 +250,29 @@ public class BraveQAPreferences extends BravePreferenceFragment
 
     @Override
     public void onStart() {
-        BraveRewardsNativeWorker.getInstance().addObserver(this);
+        BraveRewardsNativeWorker worker = BraveRewardsNativeWorker.getInstance();
+        if (worker != null) {
+            worker.addObserver(this);
+        }
         super.onStart();
     }
 
     @Override
     public void onStop() {
-        BraveRewardsNativeWorker.getInstance().removeObserver(this);
+        BraveRewardsNativeWorker worker = BraveRewardsNativeWorker.getInstance();
+        if (worker != null) {
+            worker.removeObserver(this);
+        }
         super.onStop();
     }
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (PREF_USE_REWARDS_STAGING_SERVER.equals(preference.getKey())) {
-            BraveRewardsNativeWorker.getInstance().resetTheWholeState();
+            BraveRewardsNativeWorker worker = BraveRewardsNativeWorker.getInstance();
+            if (worker != null) {
+                worker.resetTheWholeState();
+            }
             mUseRewardsStagingServer = (boolean) newValue;
             mMaximizeAdsNumber.setEnabled((boolean) newValue);
             enableMaximumAdsNumber(((boolean) newValue) && mMaximizeAdsNumber.isChecked());
@@ -350,19 +359,23 @@ public class BraveQAPreferences extends BravePreferenceFragment
     }
 
     private void enableMaximumAdsNumber(boolean enable) {
+        BraveRewardsNativeWorker worker = BraveRewardsNativeWorker.getInstance();
+        if (worker == null) {
+            return;
+        }
         if (enable) {
             // Save current values
-            int adsPerHour = BraveRewardsNativeWorker.getInstance().getAdsPerHour();
+            int adsPerHour = worker.getAdsPerHour();
             ChromeSharedPreferences.getInstance().writeInt(QA_ADS_PER_HOUR, adsPerHour);
             // Set max value
-            BraveRewardsNativeWorker.getInstance().setAdsPerHour(MAX_ADS);
+            worker.setAdsPerHour(MAX_ADS);
             return;
         }
         // Set saved values
         int adsPerHour =
                 ChromeSharedPreferences.getInstance()
                         .readInt(QA_ADS_PER_HOUR, DEFAULT_ADS_PER_HOUR);
-        BraveRewardsNativeWorker.getInstance().setAdsPerHour(adsPerHour);
+        worker.setAdsPerHour(adsPerHour);
     }
 
     @Override

@@ -38,10 +38,12 @@ BraveComponentLoader::BraveComponentLoader(Profile* profile)
       profile_(profile),
       profile_prefs_(profile->GetPrefs()) {
   pref_change_registrar_.Init(profile_prefs_);
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY)
   pref_change_registrar_.Add(
       kWebDiscoveryEnabled,
       base::BindRepeating(&BraveComponentLoader::UpdateBraveExtension,
                           base::Unretained(this)));
+#endif
 }
 
 BraveComponentLoader::~BraveComponentLoader() = default;
@@ -53,12 +55,16 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
 }
 
 bool BraveComponentLoader::UseBraveExtensionBackgroundPage() {
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY)
   bool native_enabled = false;
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
   native_enabled = base::FeatureList::IsEnabled(
       web_discovery::features::kBraveWebDiscoveryNative);
 #endif
   return !native_enabled && profile_prefs_->GetBoolean(kWebDiscoveryEnabled);
+#else
+  return false;
+#endif  // BUILDFLAG(ENABLE_WEB_DISCOVERY)
 }
 
 void BraveComponentLoader::UpdateBraveExtension() {

@@ -37,9 +37,6 @@ interface BatAdsClientNotifier {
   NotifyTabTextContentDidChange(int32 tab_id,
                                 array<url.mojom.Url> redirect_chain,
                                 mojo_base.mojom.BigString text);
-  NotifyTabHtmlContentDidChange(int32 tab_id,
-                                array<url.mojom.Url> redirect_chain,
-                                mojo_base.mojom.BigString html);
   NotifyTabDidStartPlayingMedia(int32 tab_id);
   NotifyTabDidStopPlayingMedia(int32 tab_id);
   NotifyTabDidChange(int32 tab_id,
@@ -91,6 +88,7 @@ interface BatAdsClient {
 
   Save(string name, string value) => (bool success);
   Load(string name) => (string? value);
+  Remove(string name) => (bool success);
 
   LoadResourceComponent(string id, int32 version) =>
       (mojo_base.mojom.File? file);
@@ -140,7 +138,8 @@ interface BatAds {
 
   SetSysInfo(brave_ads.mojom.SysInfo mojom_sys_info);
   SetBuildChannel(brave_ads.mojom.BuildChannelInfo mojom_build_channel);
-  SetFlags(brave_ads.mojom.Flags mojom_flags);
+  SetCommandLineSwitches(
+      brave_ads.mojom.CommandLineSwitches mojom_command_line_switches);
   SetContentSettings(brave_ads.mojom.ContentSettings mojom_content_settings);
 
   Initialize(brave_ads.mojom.WalletInfo? mojom_wallet) => (bool success);

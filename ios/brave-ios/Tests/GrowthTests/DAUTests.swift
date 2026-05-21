@@ -2,6 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import Preferences
 import Shared
 import XCTest
@@ -10,19 +11,77 @@ import XCTest
 
 extension DAU {
   fileprivate convenience init() {
-    self.init(braveCoreStats: nil)
+    self.init(braveCoreStats: nil, serpMetrics: nil)
   }
 }
 
+private class SerpMetricsMock: NSObject, SerpMetrics {
+  let braveSearchCountForYesterday: Int
+  let googleSearchCountForYesterday: Int
+  let otherSearchCountForYesterday: Int
+  let searchCountForStalePeriod: Int
+
+  init(
+    braveSearchCountForYesterday: Int,
+    googleSearchCountForYesterday: Int,
+    otherSearchCountForYesterday: Int,
+    searchCountForStalePeriod: Int
+  ) {
+    self.braveSearchCountForYesterday = braveSearchCountForYesterday
+    self.googleSearchCountForYesterday = googleSearchCountForYesterday
+    self.otherSearchCountForYesterday = otherSearchCountForYesterday
+    self.searchCountForStalePeriod = searchCountForStalePeriod
+  }
+
+  func clearHistory() {}
+}
+
+private class BraveCoreStatsMock: BraveCoreStats {
+  var isStatsReportingEnabled: Bool = true
+  var isNotificationAdsEnabled: Bool = false
+  var lastPingDate: Date? = nil
+}
+
+private class MockURLProtocol: URLProtocol {
+  static var error: Error?
+  static var onComplete: (() -> Void)?
+
+  override func startLoading() {
+    if let error = MockURLProtocol.error {
+      client?.urlProtocol(self, didFailWithError: error)
+    } else {
+      client?.urlProtocol(
+        self,
+        didReceive: HTTPURLResponse(
+          url: request.url!,
+          statusCode: 200,
+          httpVersion: nil,
+          headerFields: nil
+        )!,
+        cacheStoragePolicy: .notAllowed
+      )
+      client?.urlProtocolDidFinishLoading(self)
+    }
+    MockURLProtocol.onComplete?()
+  }
+  override class func canInit(with request: URLRequest) -> Bool { true }
+  override class func canonicalRequest(for request: URLRequest) -> URLRequest { request }
+  override func stopLoading() {}
+}
+
 class DAUTests: XCTestCase {
+
+  var lastKnownPingDate: Date? = nil
 
   override func setUp() {
     super.setUp()
 
     Preferences.DAU.weekOfInstallation.reset()
-    Preferences.DAU.lastLaunchInfo.reset()
     Preferences.DAU.firstPingParam.reset()
     Preferences.DAU.installationDate.reset()
+
+    MockURLProtocol.error = nil
+    MockURLProtocol.onComplete = nil
   }
 
   // 7-7-07 at 12noon GMT
@@ -169,13 +228,14 @@ class DAUTests: XCTestCase {
   }
 
   func testStatParamsInvalidInputs() {
-    XCTAssertNil(dau.dauStatParams(for: date, dauStat: nil, firstPing: false, channel: .beta))
-    XCTAssertNil(dau.dauStatParams(for: date, dauStat: nil, firstPing: false, channel: .release))
-    XCTAssertNil(dau.dauStatParams(for: date, dauStat: [], firstPing: false, channel: .beta))
+    XCTAssertNil(dau.dauStatParams(for: date, lastPingDate: nil, firstPing: false, channel: .beta))
+    XCTAssertNil(
+      dau.dauStatParams(for: date, lastPingDate: nil, firstPing: false, channel: .release)
+    )
   }
 
   func testFirstLaunch() {
-    XCTAssertNil(Preferences.DAU.lastLaunchInfo.value)
+    XCTAssertNil(lastKnownPingDate)
     XCTAssertNil(Preferences.DAU.weekOfInstallation.value)
     XCTAssert(Preferences.DAU.firstPingParam.value)
 
@@ -195,7 +255,7 @@ class DAUTests: XCTestCase {
     )
 
     XCTAssertNotNil(firstLaunch)
-    XCTAssertNotNil(Preferences.DAU.lastLaunchInfo.value)
+    XCTAssertNotNil(lastKnownPingDate)
     XCTAssertNotNil(Preferences.DAU.weekOfInstallation.value)
     XCTAssertFalse(Preferences.DAU.firstPingParam.value)
 
@@ -238,25 +298,22 @@ class DAUTests: XCTestCase {
   func testTwoPingsSameDay() {
     let date = dateFrom(string: "2017-11-20")
 
-    XCTAssertNil(Preferences.DAU.lastLaunchInfo.value)
+    XCTAssertNil(lastKnownPingDate)
     XCTAssertNil(Preferences.DAU.weekOfInstallation.value)
 
-    // Acting like a first launch so preferences are going to be set up
-    let dauFirstLaunch = DAU()
-    let params = dauFirstLaunch.paramsAndPrefsSetup(for: date)
+    // Acting like a first launch so preferences are going to be set up.
+    let params = DAU().paramsAndPrefsSetup(for: date, lastPingDate: nil)
 
-    // These preferences should be set only after a successful ping.
-    XCTAssertNil(Preferences.DAU.lastLaunchInfo.value)
+    // These value should be set only after a successful ping.
+    XCTAssertNil(lastKnownPingDate)
 
     simulatePing(params: params)
 
-    let dauSecondLaunch = DAU()
-
-    XCTAssertNotNil(Preferences.DAU.lastLaunchInfo.value)
+    XCTAssertNotNil(lastKnownPingDate)
     XCTAssertNotNil(Preferences.DAU.weekOfInstallation.value)
 
     // Second launch on the same day
-    let params2 = dauSecondLaunch.paramsAndPrefsSetup(for: date)
+    let params2 = DAU().paramsAndPrefsSetup(for: date, lastPingDate: lastKnownPingDate)
 
     XCTAssertNil(params2)
   }
@@ -307,7 +364,7 @@ class DAUTests: XCTestCase {
 
   func testNonDefaultWoiDefaultConstructor() {
     let dauFirstLaunch = DAU()
-    let params = dauFirstLaunch.paramsAndPrefsSetup(for: date)
+    let params = dauFirstLaunch.paramsAndPrefsSetup(for: date, lastPingDate: nil)
     XCTAssertFalse(
       params!.queryParams.contains(URLQueryItem(name: "woi", value: DAU.defaultWoiDate))
     )
@@ -316,12 +373,11 @@ class DAUTests: XCTestCase {
   func testNotFirstLaunchSetDau() {
     let date = dateFrom(string: "2017-11-20")
 
-    XCTAssertNil(Preferences.DAU.lastLaunchInfo.value)
+    XCTAssertNil(lastKnownPingDate)
     XCTAssertNil(Preferences.DAU.weekOfInstallation.value)
 
-    // Acting like a first launch so preferences are going to be set up
-    let dauFirstLaunch = DAU()
-    let params = dauFirstLaunch.paramsAndPrefsSetup(for: date)
+    // Acting like a first launch so preferences are going to be set up.
+    let params = DAU().paramsAndPrefsSetup(for: date, lastPingDate: nil)
 
     simulatePing(params: params)
 
@@ -464,17 +520,90 @@ class DAUTests: XCTestCase {
     for (storedValue, fixedValue) in testValues {
       Preferences.DAU.weekOfInstallation.value = storedValue
       // Fetching params will trigger migration
-      let params = dau.paramsAndPrefsSetup(for: Date())
+      let params = dau.paramsAndPrefsSetup(for: Date(), lastPingDate: nil)
       XCTAssertEqual(try XCTUnwrap(Preferences.DAU.weekOfInstallation.value), fixedValue)
       Preferences.DAU.weekOfInstallation.reset()
     }
+  }
+
+  func testSerpMetricsParamValues() {
+    let serpMetrics = SerpMetricsMock(
+      braveSearchCountForYesterday: 1,
+      googleSearchCountForYesterday: 2,
+      otherSearchCountForYesterday: 3,
+      searchCountForStalePeriod: 4
+    )
+    let dau = DAU(braveCoreStats: nil, serpMetrics: serpMetrics)
+    let date = dateFrom(string: "2026-01-02")
+    Preferences.DAU.installationDate.value = date
+
+    let params = dau.paramsAndPrefsSetup(for: date, lastPingDate: nil)!
+
+    XCTAssert(params.queryParams.contains(URLQueryItem(name: "braveSearch", value: "1")))
+    XCTAssert(params.queryParams.contains(URLQueryItem(name: "googleSearch", value: "2")))
+    XCTAssert(params.queryParams.contains(URLQueryItem(name: "otherSearch", value: "3")))
+    XCTAssert(params.queryParams.contains(URLQueryItem(name: "staleSearch", value: "4")))
+  }
+
+  func testSerpMetricsParamsNotIncludedWhenSerpMetricsIsNil() {
+    let dau = DAU(braveCoreStats: nil, serpMetrics: nil)
+    let date = dateFrom(string: "2026-01-02")
+    Preferences.DAU.installationDate.value = date
+
+    let params = dau.paramsAndPrefsSetup(for: date, lastPingDate: nil)!
+
+    XCTAssertFalse(params.queryParams.contains(where: { $0.name == "braveSearch" }))
+    XCTAssertFalse(params.queryParams.contains(where: { $0.name == "googleSearch" }))
+    XCTAssertFalse(params.queryParams.contains(where: { $0.name == "otherSearch" }))
+    XCTAssertFalse(params.queryParams.contains(where: { $0.name == "staleSearch" }))
+  }
+
+  func testSuccessfulPingSetsLastPingDateAndFirstPingParam() {
+    URLProtocol.registerClass(MockURLProtocol.self)
+    defer { URLProtocol.unregisterClass(MockURLProtocol.self) }
+
+    let mockStats = BraveCoreStatsMock()
+    Preferences.DAU.installationDate.value = Date()
+    let dau = DAU(braveCoreStats: mockStats, serpMetrics: nil)
+
+    dau.sendPingToServer()
+
+    expectation(
+      for: NSPredicate { _, _ in
+        !Preferences.DAU.firstPingParam.value && mockStats.lastPingDate != nil
+      },
+      evaluatedWith: nil
+    )
+    waitForExpectations(timeout: 2)
+
+    XCTAssertFalse(Preferences.DAU.firstPingParam.value)
+    XCTAssertNotNil(mockStats.lastPingDate)
+  }
+
+  func testFailedPingDoesNotSetLastPingDateOrFirstPingParam() {
+    URLProtocol.registerClass(MockURLProtocol.self)
+    defer { URLProtocol.unregisterClass(MockURLProtocol.self) }
+
+    MockURLProtocol.error = URLError(.notConnectedToInternet)
+    let networkFailed = expectation(description: "network failed")
+    MockURLProtocol.onComplete = { networkFailed.fulfill() }
+
+    let mockStats = BraveCoreStatsMock()
+    Preferences.DAU.installationDate.value = Date()
+    let dau = DAU(braveCoreStats: mockStats, serpMetrics: nil)
+
+    dau.sendPingToServer()
+    waitForExpectations(timeout: 2)
+
+    XCTAssertTrue(Preferences.DAU.firstPingParam.value)
+    XCTAssertNil(mockStats.lastPingDate)
   }
 
   // No longer valid outside of a hosted app
   // TODO: Refactor DAU to not reach out to Info.plist
   //  func testAPIKeyHeader() throws {
   //    let dau = DAU()
-  //    let headers = try XCTUnwrap(dau.paramsAndPrefsSetup(for: date)).headers
+  //    let headers = try XCTUnwrap(dau.paramsAndPrefsSetup(for: date, lastPingDate: nil)).headers
   //    XCTAssertEqual(headers["x-brave-api-key"], "key")
   //  }
 
@@ -511,8 +640,7 @@ class DAUTests: XCTestCase {
   ) -> DAU.ParamsAndPrefs? {
 
     let date = dateFrom(string: dateString, format: dateFormat)
-    let dau = DAU()
-    let params = dau.paramsAndPrefsSetup(for: date)
+    let params = DAU().paramsAndPrefsSetup(for: date, lastPingDate: lastKnownPingDate)
 
     // All dau stats equal false means no ping is send to server
     if daily == false && weekly == false && monthly == false {
@@ -541,10 +669,13 @@ class DAUTests: XCTestCase {
   }
 
   /// This actually simulates business logic that's done after a successful ping.
+  /// The date is round-tripped through DAU.dateFormatter to match production behavior where
+  /// `lastPingDate` is reconstructed from a YYYY-MM-DD string.
   private func simulatePing(firstPing: Bool = false, params: DAU.ParamsAndPrefs?) {
     Preferences.DAU.firstPingParam.value = firstPing
-
-    Preferences.DAU.lastLaunchInfo.value = params!.lastLaunchInfoPreference
+    lastKnownPingDate = params.flatMap {
+      DAU.dateFormatter.date(from: DAU.dateFormatter.string(from: $0.date))
+    }
   }
 
   private var appVersion: String {

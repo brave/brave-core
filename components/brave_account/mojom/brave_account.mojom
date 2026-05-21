@@ -5,6 +5,43 @@
 
 module brave_account.mojom;
 
+// These enum values are persisted to Preferences. Never reorder, repurpose,
+// or recycle a value — only append new ones with the next unused number.
+// When removing an enumerator, leave its number reserved as a comment.
+enum LoggedOutVerificationIntent {
+  kRegistration  = 0,
+  kResetPassword = 1,
+};
+
+// These enum values are persisted to Preferences. Never reorder, repurpose,
+// or recycle a value — only append new ones with the next unused number.
+// When removing an enumerator, leave its number reserved as a comment.
+enum LoggedInVerificationIntent {
+  kChangePassword = 0,
+};
+
+struct LoggedOutVerification {
+  LoggedOutVerificationIntent intent;
+};
+
+struct LoggedInVerification {
+  LoggedInVerificationIntent intent;
+};
+
+struct LoggedOutState {
+  LoggedOutVerification? verification;
+};
+
+struct LoggedInState {
+  string email;
+  LoggedInVerification? verification;
+};
+
+union AccountState {
+  LoggedOutState logged_out;
+  LoggedInState logged_in;
+};
+
 struct RegisterInitializeResult {
   // Verification token from the backend, locally encrypted with OSCrypt.
   string encryptedVerificationToken;
@@ -16,31 +53,65 @@ struct RegisterFinalizeResult {
   // Currently empty, serves as a placeholder for success.
 };
 
-enum RegisterErrorCode {
-  // Client-side errors:
-  kOpaqueError                       = -3,
-  kVerificationTokenEncryptionFailed = -2,
-  kVerificationTokenDecryptionFailed = -1,
-  // Server-side errors:
-  kMiscServerError                   = 0,
-  // /v2/accounts/password/init:
-  // - internal:
-  kNewAccountEmailRequired           = 11005,
-  kIntentNotAllowed                  = 13003,
-  // - user-facing:
-  kTooManyVerifications              = 13001,
-  kAccountExists                     = 13004,
-  kEmailDomainNotSupported           = 13006,
-  // /v2/accounts/password/finalize:
-  // - internal:
-  kInterimPasswordStateNotFound      = 14001,
-  kInterimPasswordStateExpired       = 14002,
-  // - user-facing: -
+struct RegisterVerifyResult {
+  // Currently empty, serves as a placeholder for success.
 };
 
-struct RegisterError {
-  uint32? statusCode;
-  RegisterErrorCode? errorCode;
+enum RegisterClientErrorCode {
+  kUnexpected,
+  kOpaqueError,
+  kVerificationTokenEncryptionFailed,
+  kVerificationTokenDecryptionFailed,
+  kNoRegistrationInProgress,
+  kAuthenticationTokenEncryptionFailed,
+};
+
+struct RegisterClientError {
+  RegisterClientErrorCode error_code;
+};
+
+enum RegisterServerErrorCode {
+  // Sentinel: server returned a malformed response
+  // (e.g. success body missing required fields).
+  kInvalidResponse                                    = -1,
+  // Sentinel: server returned "code": null in the JSON body.
+  kNull                                               = 0,
+  // Sentinel: server returned an unrecognized "code" in the JSON body.
+  kUnknown                                            = 1,
+  // /v2/accounts/password/init:
+  // - internal:
+  kNewAccountEmailRequired                            = 11005,
+  kIntentNotAllowed                                   = 13003,
+  // - user-facing:
+  kTooManyVerifications                               = 13001,
+  kAccountExists                                      = 13004,
+  kEmailDomainNotSupported                            = 13006,
+  kRegistrationVerificationAlreadyPendingForThisEmail = 13012,
+  // /v2/accounts/password/finalize:
+  // - internal:
+  kInterimPasswordStateNotFound                       = 14001,
+  kInterimPasswordStateExpired                        = 14002,
+  // - user-facing: -
+  // /v2/verify/complete:
+  // - internal:
+  kEmailAlreadyVerified                               = 13009,
+  // - user-facing:
+  kVerificationNotFoundOrInvalidIdOrCode              = 13002,
+  kMaximumCodeVerificationAttemptsExceeded            = 13010,
+  kInvalidVerificationCode                            = 13011,
+};
+
+struct RegisterServerError {
+  // < 0: network error code (net_error_list.h)
+  // >= 0: HTTP status code (http_status_code_list.h) if available,
+  //       otherwise net::OK
+  int32 net_error_or_http_status;
+  RegisterServerErrorCode error_code;
+};
+
+union RegisterError {
+  RegisterClientError client_error;
+  RegisterServerError server_error;
 };
 
 struct LoginInitializeResult {
@@ -54,64 +125,105 @@ struct LoginFinalizeResult {
   // Currently empty, serves as a placeholder for success.
 };
 
-enum LoginErrorCode {
-  // Client-side errors:
-  kOpaqueError                         = -4,
-  kLoginTokenEncryptionFailed          = -3,
-  kLoginTokenDecryptionFailed          = -2,
-  kAuthenticationTokenEncryptionFailed = -1,
-  // Server-side errors:
-  kMiscServerError                     = 0,
+enum LoginClientErrorCode {
+  kUnexpected,
+  kInvalidLoginError,
+  kOpaqueError,
+  kLoginTokenEncryptionFailed,
+  kLoginTokenDecryptionFailed,
+  kAuthenticationTokenEncryptionFailed,
+};
+
+struct LoginClientError {
+  LoginClientErrorCode error_code;
+};
+
+enum LoginServerErrorCode {
+  // Sentinel: server returned a malformed response
+  // (e.g. success body missing required fields).
+  kInvalidResponse                = -1,
+  // Sentinel: server returned "code": null in the JSON body.
+  kNull                           = 0,
+  // Sentinel: server returned an unrecognized "code" in the JSON body.
+  kUnknown                        = 1,
   // /v2/auth/login/init:
-  // - internal:
-  kEmailNotVerified                    = 11003,
-  // - user-facing: -
+  // - internal: -
+  // - user-facing:
+  kEmailNotVerified               = 11003,
   // /v2/auth/login/finalize:
   // - internal:
-  kInterimPasswordStateNotFound        = 14001,
-  kInterimPasswordStateHasExpired      = 14002,
-  kInterimPasswordStateMismatch        = 14009,
+  kInterimPasswordStateNotFound   = 14001,
+  kInterimPasswordStateHasExpired = 14002,
+  kInterimPasswordStateMismatch   = 14009,
   // - user-facing: -
   // common for both endpoints:
   // - internal:
-  kIncorrectCredentials                = 14004,
+  kIncorrectCredentials           = 14004,
   // - user-facing:
-  kIncorrectEmail                      = 14005,
-  kIncorrectPassword                   = 14006,
+  kIncorrectEmail                 = 14005,
+  kIncorrectPassword              = 14006,
 };
 
-struct LoginError {
-  uint32? statusCode;
-  LoginErrorCode? errorCode;
+struct LoginServerError {
+  // < 0: network error code (net_error_list.h)
+  // >= 0: HTTP status code (http_status_code_list.h) if available,
+  //       otherwise net::OK
+  int32 net_error_or_http_status;
+  LoginServerErrorCode error_code;
+};
+
+union LoginError {
+  LoginClientError client_error;
+  LoginServerError server_error;
 };
 
 struct ResendConfirmationEmailResult {
   // Currently empty, serves as a placeholder for success.
 };
 
-enum ResendConfirmationEmailErrorCode {
-  // Client-side errors:
-  kUserNotInTheVerificationState     = -2,
-  kVerificationTokenDecryptionFailed = -1,
-  // Server-side errors (/v2/verify/resend):
-  kMiscServerError                   = 0,
-  kMaximumEmailSendAttemptsExceeded  = 13008,
-  kEmailAlreadyVerified              = 13009,
+enum ResendConfirmationEmailClientErrorCode {
+  kUnexpected,
+  kNoRegistrationInProgress,
+  kVerificationTokenDecryptionFailed,
 };
 
-struct ResendConfirmationEmailError {
-  // null: client-side error
+struct ResendConfirmationEmailClientError {
+  ResendConfirmationEmailClientErrorCode error_code;
+};
+
+enum ResendConfirmationEmailServerErrorCode {
+  // Sentinel: server returned a malformed response
+  // (e.g. success body missing required fields).
+  kInvalidResponse                  = -1,
+  // Sentinel: server returned "code": null in the JSON body.
+  kNull                             = 0,
+  // Sentinel: server returned an unrecognized "code" in the JSON body.
+  kUnknown                          = 1,
+  // /v2/verify/resend:
+  // - internal: -
+  // - user-facing:
+  kMaximumEmailSendAttemptsExceeded = 13008,
+  kEmailAlreadyVerified             = 13009,
+};
+
+struct ResendConfirmationEmailServerError {
   // < 0: network error code (net_error_list.h)
   // >= 0: HTTP status code (http_status_code_list.h) if available,
   //       otherwise net::OK
-  int32? netErrorOrHttpStatus;
-  ResendConfirmationEmailErrorCode? errorCode;
+  int32 net_error_or_http_status;
+  ResendConfirmationEmailServerErrorCode error_code;
+};
+
+union ResendConfirmationEmailError {
+  ResendConfirmationEmailClientError client_error;
+  ResendConfirmationEmailServerError server_error;
 };
 
 // Services that depend on Brave Account.
 // Note: do not assign explicit values to enumerators,
 // as kMaxValue is used to validate that all services are handled.
 enum Service {
+  kAccounts,
   kEmailAliases,
   kPremium,
   kSync,
@@ -124,29 +236,56 @@ struct GetServiceTokenResult {
   string serviceToken;
 };
 
-enum GetServiceTokenErrorCode {
-  // Client-side errors:
-  kUserNotLoggedIn                     = -4,
-  kAuthenticationTokenDecryptionFailed = -3,
-  kAuthenticationSessionChanged        = -2,
-  kServiceTokenEncryptionFailed        = -1,
-  // Server-side errors (/v2/auth/service_token):
-  kMiscServerError                     = 0,
-  kEmailDomainNotSupported             = 13006,
-  kIncorrectCredentials                = 14004,
-  kInvalidTokenAudience                = 14007,
+enum GetServiceTokenClientErrorCode {
+  kUnexpected,
+  kUserNotLoggedIn,
+  kAuthenticationTokenDecryptionFailed,
+  kAuthenticationSessionChanged,
+  kServiceTokenEncryptionFailed,
 };
 
-struct GetServiceTokenError {
-  // null: client-side error
+struct GetServiceTokenClientError {
+  GetServiceTokenClientErrorCode error_code;
+};
+
+enum GetServiceTokenServerErrorCode {
+  // Sentinel: server returned a malformed response
+  // (e.g. success body missing required fields).
+  kInvalidResponse         = -1,
+  // Sentinel: server returned "code": null in the JSON body.
+  kNull                    = 0,
+  // Sentinel: server returned an unrecognized "code" in the JSON body.
+  kUnknown                 = 1,
+  // /v2/auth/service_token:
+  // - internal:
+  kEmailDomainNotSupported = 13006,
+  kIncorrectCredentials    = 14004,
+  kInvalidTokenAudience    = 14007,
+  // - user-facing: -
+};
+
+struct GetServiceTokenServerError {
   // < 0: network error code (net_error_list.h)
   // >= 0: HTTP status code (http_status_code_list.h) if available,
   //       otherwise net::OK
-  int32? netErrorOrHttpStatus;
-  GetServiceTokenErrorCode? errorCode;
+  int32 net_error_or_http_status;
+  GetServiceTokenServerErrorCode error_code;
+};
+
+union GetServiceTokenError {
+  GetServiceTokenClientError client_error;
+  GetServiceTokenServerError server_error;
+};
+
+interface AuthenticationObserver {
+  // Notified immediately upon registration with the current state,
+  // and whenever the account state changes thereafter.
+  OnAccountStateChanged(AccountState state);
 };
 
 interface Authentication {
+  AddObserver(pending_remote<AuthenticationObserver> observer);
+
   // First step of the registration process.
   // `initiatingService`: the service that
   //                      initiated the registration process
@@ -156,7 +295,7 @@ interface Authentication {
   //                   to be sent to the server.
   // Returns `RegisterInitializeResult` on success, or
   //         `RegisterError` on failure.
-  RegisterInitialize(Service? initiatingService,
+  RegisterInitialize(Service initiatingService,
                      string email,
                      string blindedMessage)
     => result<RegisterInitializeResult, RegisterError>;
@@ -173,6 +312,14 @@ interface Authentication {
   //         `RegisterError` on failure.
   RegisterFinalize(string encryptedVerificationToken, string serializedRecord)
     => result<RegisterFinalizeResult, RegisterError>;
+
+  // Third step of the registration process.
+  // `code`: verification code sent to the user's email address,
+  //         required to verify the email and complete the registration.
+  // Returns `RegisterVerifyResult` on success, or
+  //         `RegisterError` on failure.
+  RegisterVerify(string code)
+    => result<RegisterVerifyResult, RegisterError>;
 
   // Resends the confirmation email to the user during the registration process.
   // Returns `ResendConfirmationEmailResult` on success, or
@@ -192,7 +339,7 @@ interface Authentication {
   //                  to be sent to the server.
   // Returns `LoginInitializeResult` on success, or
   //         `LoginError` on failure.
-  LoginInitialize(Service? initiatingService,
+  LoginInitialize(Service initiatingService,
                   string email,
                   string serializedKE1)
     => result<LoginInitializeResult, LoginError>;

@@ -16,8 +16,6 @@ import androidx.lifecycle.ViewModelStoreOwner;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import org.chromium.brave_wallet.mojom.BraveWalletP3a;
-import org.chromium.brave_wallet.mojom.OnboardingAction;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.fragments.BaseWalletNextPageFragment;
 import org.chromium.chrome.browser.crypto_wallet.model.OnboardingViewModel;
@@ -84,11 +82,6 @@ public abstract class BaseOnboardingWalletFragment extends BaseWalletNextPageFra
         if (skip != null) {
             skip.setOnClickListener(
                     v -> {
-                        BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
-                        if (braveWalletP3A != null && isOnboarding) {
-                            braveWalletP3A.reportOnboardingAction(
-                                    OnboardingAction.COMPLETE_RECOVERY_SKIPPED);
-                        }
                         if (isOnboarding) {
                             if (mOnNextPage != null) {
                                 // Show confirmation screen

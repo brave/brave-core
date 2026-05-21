@@ -9,13 +9,17 @@
 
 #include "base/check_is_test.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
-#include "brave/components/playlist/core/common/features.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sharing_hub/sharing_hub_features.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_params.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/core/browser/utils.h"
+#endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/components/speedreader/common/features.h"
@@ -41,18 +45,19 @@ PageActionIconParams& ModifyIconParamsForBrave(PageActionIconParams& params) {
       brave::kWaybackMachineActionIconType);
 #endif
 
-  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
-    // Browser could be null if the location bar was created for
-    // PresentationReceiverWindowView.
-    if (params.browser && params.browser->is_type_normal() &&
-        !params.browser->profile()->IsOffTheRecord()) {
-      // Insert Playlist action before sharing hub or at the end of the vector.
-      params.types_enabled.insert(
-          std::ranges::find(params.types_enabled,
-                            PageActionIconType::kSharingHub),
-          brave::kPlaylistPageActionIconType);
-    }
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  // Browser could be null if the location bar was created for
+  // PresentationReceiverWindowView.
+  if (params.browser && params.browser->is_type_normal() &&
+      !params.browser->profile()->IsOffTheRecord() &&
+      playlist::IsPlaylistAllowed(params.browser->profile()->GetPrefs())) {
+    // Insert Playlist action before sharing hub or at the end of the vector.
+    params.types_enabled.insert(
+        std::ranges::find(params.types_enabled,
+                          PageActionIconType::kSharingHub),
+        brave::kPlaylistPageActionIconType);
   }
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   if (base::FeatureList::IsEnabled(

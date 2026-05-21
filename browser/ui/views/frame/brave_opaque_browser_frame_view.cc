@@ -72,7 +72,11 @@ int BraveOpaqueBrowserFrameView::NonClientHitTest(const gfx::Point& point) {
     }
   }
 
-  if (auto res = brave::NonClientHitTest(GetBrowserView(), point);
+  if (auto res = GetBrowserView()
+                     ->browser()
+                     ->browser_window_features()
+                     ->brave_non_client_hit_test_helper()
+                     ->NonClientHitTest(GetBrowserView(), point);
       res != HTNOWHERE) {
     return res;
   }
@@ -112,6 +116,18 @@ void BraveOpaqueBrowserFrameView::
 
   // Notify toolbar view that caption button's width changed so that it can
   // make space for caption buttons.
+  static_cast<BraveToolbarView*>(GetBrowserView()->toolbar())
+      ->UpdateHorizontalPadding();
+}
+
+void BraveOpaqueBrowserFrameView::Layout(PassKey key) {
+  LayoutSuperclass<OpaqueBrowserFrameView>(this);
+
+  // Why frame view should ask toolbar's padding update?
+  // This kind of exclusion should be handled by BrowserViewLayout.
+  // BraveBrowserFrameViewLinuxNative::Layout() does same thing.
+  // TODO(https://github.com/brave/brave-browser/issues/55209):
+  // Investigate what's happening.
   static_cast<BraveToolbarView*>(GetBrowserView()->toolbar())
       ->UpdateHorizontalPadding();
 }

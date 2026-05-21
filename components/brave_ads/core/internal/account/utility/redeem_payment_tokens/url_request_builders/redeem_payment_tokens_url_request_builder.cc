@@ -12,10 +12,11 @@
 #include "base/check.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_util.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/credential_builder.h"
+#include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_types.h"
 #include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -59,7 +60,7 @@ mojom::UrlRequestInfoPtr RedeemPaymentTokensUrlRequestBuilder::Build() {
 GURL RedeemPaymentTokensUrlRequestBuilder::BuildUrl() const {
   const std::string spec = base::ReplaceStringPlaceholders(
       "$1/v3/confirmation/payment/$2",
-      {GetNonAnonymousUrlHost(), wallet_.payment_id}, nullptr);
+      {GetUrlHost(UrlHostType::kNonAnonymous), wallet_.payment_id}, nullptr);
   return GURL(spec);
 }
 

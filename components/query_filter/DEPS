@@ -1,1 +1,0 @@
-include_rules = [ "+third_party/re2/src/re2/re2.h" ]

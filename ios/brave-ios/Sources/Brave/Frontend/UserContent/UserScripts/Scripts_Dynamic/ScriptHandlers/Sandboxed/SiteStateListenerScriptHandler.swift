@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveShields
 import Foundation
 import Shared
@@ -11,14 +12,6 @@ import WebKit
 import os.log
 
 class SiteStateListenerScriptHandler: TabContentScript {
-  struct MessageDTO: Decodable {
-    struct MessageDTOData: Decodable, Hashable {
-      let windowURL: String
-      let windowOriginURL: String
-    }
-
-    let data: MessageDTOData
-  }
 
   static let scriptName = "SiteStateListenerScript"
   static let scriptId = UUID().uuidString
@@ -53,69 +46,61 @@ class SiteStateListenerScriptHandler: TabContentScript {
       return
     }
 
-    do {
-      let data = try JSONSerialization.data(withJSONObject: message.body)
-      let dto = try JSONDecoder().decode(MessageDTO.self, from: data)
+    guard let frameURL = URLOrigin(wkSecurityOrigin: message.frameInfo.securityOrigin).url else {
+      return
+    }
 
-      guard let frameURL = URL(string: dto.data.windowOriginURL) else {
-        return
-      }
-
-      Task { @MainActor in
-        if let pageData = tab.currentPageData {
-          guard let braveShieldsHelper = tab.braveShieldsHelper,
-            case let shieldLevel = braveShieldsHelper.shieldLevel(
-              for: pageData.mainFrameURL,
-              considerAllShieldsOption: true
-            ),
-            shieldLevel.isEnabled,
-            pageData.mainFrameURL.isWebPage(includeDataURIs: false)
-          else {
-            return
-          }
-
-          let models = await AdBlockGroupsManager.shared.cosmeticFilterModels(
-            forFrameURL: frameURL,
-            isAdBlockEnabled: shieldLevel.isEnabled
-          )
-
-          var cachedStandardSelectors: Set<String> = .init()
-          var cachedAggressiveSelectors: Set<String> = .init()
-          if let url = tab.visibleURL,
-            let (standard, aggressive) = tab.contentBlocker?.cachedSelectors(for: url)
-          {
-            cachedStandardSelectors = standard
-            cachedAggressiveSelectors = aggressive
-          }
-          let setup = UserScriptType.ContentCosmeticSetup.makeSetup(
-            from: models,
-            isAggressive: shieldLevel.isAggressive,
-            cachedStandardSelectors: cachedStandardSelectors,
-            cachedAggressiveSelectors: cachedAggressiveSelectors
-          )
-
-          // Join the procedural actions
-          // Note: they can't be part of `UserScriptType.ContentCosmeticSetup`
-          // As this is encoded and therefore the JSON will be escaped
-          var proceduralActions: Set<String> = []
-          for modelTuple in models {
-            proceduralActions = proceduralActions.union(modelTuple.model.proceduralActions)
-          }
-          let script = try ScriptFactory.shared.makeScript(
-            for: .contentCosmetic(setup, proceduralActions: proceduralActions)
-          )
-
-          try await tab.evaluateJavaScript(
-            functionName: script.source,
-            frame: message.frameInfo,
-            contentWorld: CosmeticFiltersScriptHandler.scriptSandbox,
-            asFunction: false
-          )
+    Task { @MainActor in
+      if let pageData = tab.currentPageData {
+        guard let braveShieldsHelper = tab.braveShieldsHelper,
+          case let shieldLevel = braveShieldsHelper.shieldLevel(
+            for: pageData.mainFrameURL,
+            considerAllShieldsOption: true
+          ),
+          shieldLevel.isEnabled,
+          pageData.mainFrameURL.isWebPage(includeDataURIs: false)
+        else {
+          return
         }
+
+        let models = await AdBlockGroupsManager.shared.cosmeticFilterModels(
+          forFrameURL: frameURL,
+          isAdBlockEnabled: shieldLevel.isEnabled
+        )
+
+        var cachedStandardSelectors: Set<String> = .init()
+        var cachedAggressiveSelectors: Set<String> = .init()
+        if let url = tab.visibleURL,
+          let (standard, aggressive) = tab.contentBlocker?.cachedSelectors(for: url)
+        {
+          cachedStandardSelectors = standard
+          cachedAggressiveSelectors = aggressive
+        }
+        let setup = UserScriptType.ContentCosmeticSetup.makeSetup(
+          from: models,
+          isAggressive: shieldLevel.isAggressive,
+          cachedStandardSelectors: cachedStandardSelectors,
+          cachedAggressiveSelectors: cachedAggressiveSelectors
+        )
+
+        // Join the procedural actions
+        // Note: they can't be part of `UserScriptType.ContentCosmeticSetup`
+        // As this is encoded and therefore the JSON will be escaped
+        var proceduralActions: Set<String> = []
+        for modelTuple in models {
+          proceduralActions = proceduralActions.union(modelTuple.model.proceduralActions)
+        }
+        let script = try ScriptFactory.shared.makeScript(
+          for: .contentCosmetic(setup, proceduralActions: proceduralActions)
+        )
+
+        try await tab.evaluateJavaScript(
+          functionName: script.source,
+          frame: message.frameInfo,
+          contentWorld: CosmeticFiltersScriptHandler.scriptSandbox,
+          asFunction: false
+        )
       }
-    } catch {
-      assertionFailure("Invalid type of message. Fix the `SiteStateListenerScript.js` script")
-      Logger.module.error("\(error.localizedDescription)")
     }
   }
 }

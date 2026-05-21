@@ -261,7 +261,7 @@ DecodedZCashTransparentAddress& DecodedZCashTransparentAddress::operator=(
 base::DictValue OrchardOutput::ToValue() const {
   base::DictValue dict;
 
-  dict.Set("address", base::HexEncode(addr.data(), addr.size()));
+  dict.Set("address", base::HexEncode(addr));
   dict.Set("amount", base::NumberToString(value));
   if (memo) {
     dict.Set("memo", base::HexEncode(memo.value()));

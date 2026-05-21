@@ -9,9 +9,11 @@
 #include <string>
 
 #include "base/check.h"
+#include "base/functional/bind.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/net/url_context.h"
+#include "brave/components/brave_shields/content/browser/ad_block_engine_wrapper.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/ad_block_service_helper.h"
 #include "content/public/browser/browser_thread.h"
@@ -25,7 +27,8 @@ std::optional<std::string> GetCspDirectivesOnTaskRunner(
     const GURL& initiator_url,
     const GURL& request_url,
     blink::mojom::ResourceType resource_type,
-    std::optional<std::string> original_csp) {
+    std::optional<std::string> original_csp,
+    brave_shields::AdBlockEngineWrapper* engine_wrapper) {
   std::string source_host;
   if (initiator_url.is_valid() && !initiator_url.host().empty()) {
     source_host = initiator_url.host();
@@ -39,8 +42,7 @@ std::optional<std::string> GetCspDirectivesOnTaskRunner(
   }
 
   std::optional<std::string> csp_directives =
-      g_brave_browser_process->ad_block_service()->GetCspDirectives(
-          request_url, resource_type, source_host);
+      engine_wrapper->GetCspDirectives(request_url, resource_type, source_host);
 
   brave_shields::MergeCspDirectiveInto(original_csp, &csp_directives);
   return csp_directives;
@@ -90,15 +92,13 @@ int OnHeadersReceived_AdBlockCspWork(
 
     (*override_response_headers)->RemoveHeader("Content-Security-Policy");
 
-    g_brave_browser_process->ad_block_service()
-        ->GetTaskRunner()
-        ->PostTaskAndReplyWithResult(
-            FROM_HERE,
-            base::BindOnce(&GetCspDirectivesOnTaskRunner, ctx->initiator_url(),
-                           ctx->request_url(), ctx->resource_type(),
-                           original_csp),
-            base::BindOnce(&OnReceiveCspDirectives, next_callback,
-                           *override_response_headers));
+    auto* ad_block_service = g_brave_browser_process->ad_block_service();
+    ad_block_service->AsyncCallAndReplyWithResult<std::optional<std::string>>(
+        base::BindOnce(&GetCspDirectivesOnTaskRunner, ctx->initiator_url(),
+                       ctx->request_url(), ctx->resource_type(),
+                       std::move(original_csp)),
+        base::BindOnce(&OnReceiveCspDirectives, next_callback,
+                       *override_response_headers));
     return net::ERR_IO_PENDING;
   }
 

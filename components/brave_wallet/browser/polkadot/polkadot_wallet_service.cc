@@ -5,42 +5,34 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_wallet_service.h"
 
+#include <algorithm>
+
+#include "base/check.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/types/optional_ref.h"
+#include "base/strings/string_util.h"
+#include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/encoding_utils.h"
 
 namespace brave_wallet {
-namespace {
-
-base::expected<PolkadotChainMetadata, std::string> ParseChainMetadataReponse(
-    base::optional_ref<const std::string> chain_name,
-    base::optional_ref<const std::string> err_str) {
-  if (err_str) {
-    return base::unexpected(*err_str);
-  }
-
-  CHECK(chain_name);
-  auto chain_metadata = PolkadotChainMetadata::FromChainName(*chain_name);
-  if (!chain_metadata) {
-    return base::unexpected(
-        "Failed to parse metadata for the provided chain spec.");
-  }
-
-  return base::ok(std::move(*chain_metadata));
-}
-
-}  // namespace
 
 PolkadotWalletService::PolkadotWalletService(
     KeyringService& keyring_service,
     NetworkManager& network_manager,
+    ::PrefService& profile_prefs,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : keyring_service_(keyring_service),
-      polkadot_substrate_rpc_(network_manager, std::move(url_loader_factory)) {
+      network_manager_(network_manager),
+      polkadot_substrate_rpc_(network_manager, std::move(url_loader_factory)),
+      chain_metadata_prefs_(profile_prefs),
+      metadata_provider_(network_manager,
+                         chain_metadata_prefs_,
+                         polkadot_substrate_rpc_) {
   keyring_service_->AddObserver(
-      keyring_service_observer_receiver_.BindNewPipeAndPassRemote());
+      keyring_observer_receiver_.BindNewPipeAndPassRemote());
 }
 
 PolkadotWalletService::~PolkadotWalletService() = default;
@@ -48,25 +40,14 @@ PolkadotWalletService::~PolkadotWalletService() = default;
 void PolkadotWalletService::GetChainMetadata(
     std::string_view chain_id,
     GetChainMetadataCallback callback) {
-  CHECK(IsPolkadotNetwork(chain_id));
-
-  if (chain_id == mojom::kPolkadotTestnet) {
-    if (testnet_chain_metadata_) {
-      return std::move(callback).Run(*testnet_chain_metadata_);
-    } else {
-      // Testnet chain metadata isn't ready yet, defer execution of the
-      // callback.
-      testnet_chain_metadata_callbacks_.push_back(std::move(callback));
-    }
-  } else if (chain_id == mojom::kPolkadotMainnet) {
-    if (mainnet_chain_metadata_) {
-      return std::move(callback).Run(*mainnet_chain_metadata_);
-    } else {
-      // Mainnet chain metadata isn't ready yet, defer execution of the
-      // callback.
-      mainnet_chain_metadata_callbacks_.push_back(std::move(callback));
-    }
+  if (!network_manager_->IsPolkadotChain(chain_id)) {
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE,
+        base::BindOnce(std::move(callback),
+                       base::unexpected(WalletInternalErrorMessage())));
+    return;
   }
+  metadata_provider_.GetChainMetadata(chain_id, std::move(callback));
 }
 
 void PolkadotWalletService::Bind(
@@ -78,6 +59,14 @@ void PolkadotWalletService::Reset() {
   weak_ptr_factory_.InvalidateWeakPtrs();
 }
 
+void PolkadotWalletService::Unlocked() {
+  metadata_provider_.Init();
+}
+
+NetworkManager& PolkadotWalletService::GetNetworkManager() {
+  return *network_manager_;
+}
+
 PolkadotSubstrateRpc* PolkadotWalletService::GetPolkadotRpc() {
   return &polkadot_substrate_rpc_;
 }
@@ -87,6 +76,69 @@ void PolkadotWalletService::GetNetworkName(mojom::AccountIdPtr account_id,
   std::string chain_id = GetNetworkForPolkadotAccount(account_id);
   polkadot_substrate_rpc_.GetChainName(std::move(chain_id),
                                        std::move(callback));
+}
+
+void PolkadotWalletService::GetCompatibleNetworks(
+    mojom::AccountIdPtr account_id,
+    GetCompatibleNetworksCallback callback) {
+  if (!account_id || account_id->coin != mojom::CoinType::DOT ||
+      !IsPolkadotKeyring(account_id->keyring_id)) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  const auto hidden_networks =
+      network_manager_->GetHiddenNetworks(mojom::CoinType::DOT);
+
+  std::vector<mojom::NetworkInfoPtr> compatible_networks;
+  for (auto& network_info : network_manager_->GetAllChains()) {
+    if (network_info->coin != mojom::CoinType::DOT) {
+      continue;
+    }
+
+    if (std::ranges::contains(network_info->supported_keyrings,
+                              account_id->keyring_id) &&
+        !std::ranges::contains(hidden_networks,
+                               base::ToLowerASCII(network_info->chain_id))) {
+      compatible_networks.push_back(std::move(network_info));
+    }
+  }
+
+  std::move(callback).Run(std::move(compatible_networks));
+}
+
+void PolkadotWalletService::GetAddress(mojom::AccountIdPtr account_id,
+                                       const std::string& chain_id,
+                                       GetAddressCallback callback) {
+  if (!account_id || account_id->coin != mojom::CoinType::DOT ||
+      !IsPolkadotKeyring(account_id->keyring_id)) {
+    std::move(callback).Run(std::nullopt, WalletInternalErrorMessage());
+    return;
+  }
+
+  auto network = network_manager_->GetChain(chain_id, mojom::CoinType::DOT);
+  if (!network) {
+    std::move(callback).Run(std::nullopt, WalletInternalErrorMessage());
+    return;
+  }
+
+  if (!std::ranges::contains(network->supported_keyrings,
+                             account_id->keyring_id)) {
+    std::move(callback).Run(std::nullopt, WalletInternalErrorMessage());
+    return;
+  }
+
+  auto pubkey = keyring_service_->GetPolkadotPubKey(account_id);
+  if (!pubkey) {
+    std::move(callback).Run(std::nullopt, WalletInternalErrorMessage());
+    return;
+  }
+
+  metadata_provider_.GetChainMetadata(
+      chain_id,
+      base::BindOnce(&PolkadotWalletService::OnGetChainMetadataForAddress,
+                     weak_ptr_factory_.GetWeakPtr(), *pubkey,
+                     std::move(callback)));
 }
 
 void PolkadotWalletService::GetAccountBalance(
@@ -102,54 +154,29 @@ void PolkadotWalletService::GetAccountBalance(
                                             std::move(callback));
 }
 
-void PolkadotWalletService::Unlocked() {
-  InitializeChainMetadata();
-}
-
-void PolkadotWalletService::InitializeChainMetadata() {
-  if (testnet_chain_metadata_ && mainnet_chain_metadata_) {
+void PolkadotWalletService::ValidateAddressForTransaction(
+    const std::string& chain_id,
+    const std::string& address,
+    ValidateAddressForTransactionCallback callback) {
+  auto network = network_manager_->GetChain(chain_id, mojom::CoinType::DOT);
+  if (!network) {
+    std::move(callback).Run(
+        mojom::PolkadotValidationStatus::kInvalidAddressFormat);
     return;
   }
 
-  polkadot_substrate_rpc_.GetChainName(
-      mojom::kPolkadotTestnet,
-      base::BindOnce(&PolkadotWalletService::OnInitializeChainMetadata,
-                     weak_ptr_factory_.GetWeakPtr(), mojom::kPolkadotTestnet));
-
-  polkadot_substrate_rpc_.GetChainName(
-      mojom::kPolkadotMainnet,
-      base::BindOnce(&PolkadotWalletService::OnInitializeChainMetadata,
-                     weak_ptr_factory_.GetWeakPtr(), mojom::kPolkadotMainnet));
-}
-
-void PolkadotWalletService::OnInitializeChainMetadata(
-    std::string_view chain_id,
-    const std::optional<std::string>& chain_name,
-    const std::optional<std::string>& err_str) {
-  CHECK(IsPolkadotNetwork(chain_id));
-
-  if (chain_id == mojom::kPolkadotTestnet) {
-    testnet_chain_metadata_ = ParseChainMetadataReponse(chain_name, err_str);
-    for (auto& callback : testnet_chain_metadata_callbacks_) {
-      std::move(callback).Run(*testnet_chain_metadata_);
-    }
-    testnet_chain_metadata_callbacks_.clear();
-  }
-
-  if (chain_id == mojom::kPolkadotMainnet) {
-    mainnet_chain_metadata_ = ParseChainMetadataReponse(chain_name, err_str);
-    for (auto& callback : mainnet_chain_metadata_callbacks_) {
-      std::move(callback).Run(*mainnet_chain_metadata_);
-    }
-    mainnet_chain_metadata_callbacks_.clear();
-  }
+  metadata_provider_.GetChainMetadata(
+      chain_id,
+      base::BindOnce(
+          &PolkadotWalletService::OnGetChainMetadataForValidateAddress,
+          weak_ptr_factory_.GetWeakPtr(), address, std::move(callback)));
 }
 
 void PolkadotWalletService::GenerateSignedTransferExtrinsicImpl(
     std::string chain_id,
     mojom::AccountIdPtr account_id,
     bool use_dummy_signature,
-    uint128_t send_amount,
+    std::variant<uint128_t, TransferAll> transfer_amount,
     base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
     GenerateSignedTransferExtrinsicCallback callback) {
   auto pubkey = keyring_service_->GetPolkadotPubKey(account_id);
@@ -160,7 +187,7 @@ void PolkadotWalletService::GenerateSignedTransferExtrinsicImpl(
 
   auto transaction_state = std::make_unique<PolkadotSignedTransferTask>(
       *this, *keyring_service_, std::move(account_id), std::move(chain_id),
-      use_dummy_signature, send_amount, *pubkey, recipient);
+      use_dummy_signature, std::move(transfer_amount), *pubkey, recipient);
 
   auto& transaction = *transaction_state;
 
@@ -176,12 +203,12 @@ void PolkadotWalletService::GenerateSignedTransferExtrinsicImpl(
 void PolkadotWalletService::GenerateSignedTransferExtrinsic(
     std::string chain_id,
     mojom::AccountIdPtr account_id,
-    uint128_t send_amount,
+    std::variant<uint128_t, TransferAll> transfer_amount,
     base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
     GenerateSignedTransferExtrinsicCallback callback) {
-  GenerateSignedTransferExtrinsicImpl(std::move(chain_id),
-                                      std::move(account_id), false, send_amount,
-                                      recipient, std::move(callback));
+  GenerateSignedTransferExtrinsicImpl(
+      std::move(chain_id), std::move(account_id), false,
+      std::move(transfer_amount), recipient, std::move(callback));
 }
 
 void PolkadotWalletService::OnGenerateSignedTransferExtrinsic(
@@ -195,14 +222,18 @@ void PolkadotWalletService::OnGenerateSignedTransferExtrinsic(
 void PolkadotWalletService::SignAndSendTransaction(
     std::string chain_id,
     mojom::AccountIdPtr account_id,
-    uint128_t send_amount,
+    std::variant<uint128_t, TransferAll> transfer_amount,
     base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
     SignAndSendTransactionCallback callback) {
   GenerateSignedTransferExtrinsic(
-      chain_id, std::move(account_id), send_amount, recipient,
+      chain_id, std::move(account_id), std::move(transfer_amount), recipient,
       base::BindOnce(&PolkadotWalletService::OnGenerateSignedTransfer,
                      weak_ptr_factory_.GetWeakPtr(), chain_id,
                      std::move(callback)));
+}
+
+bool PolkadotWalletService::IsPolkadotChain(std::string_view chain_id) {
+  return network_manager_->IsPolkadotChain(chain_id);
 }
 
 void PolkadotWalletService::OnGenerateSignedTransfer(
@@ -240,11 +271,12 @@ void PolkadotWalletService::OnSubmitSignedExtrinsic(
 void PolkadotWalletService::GetFeeEstimate(
     std::string chain_id,
     mojom::AccountIdPtr account_id,
-    uint128_t send_amount,
+    std::variant<uint128_t, TransferAll> transfer_amount,
     base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
     GetFeeEstimateCallback callback) {
   GenerateSignedTransferExtrinsicImpl(
-      chain_id, std::move(account_id), true, send_amount, recipient,
+      chain_id, std::move(account_id), true, std::move(transfer_amount),
+      recipient,
       base::BindOnce(&PolkadotWalletService::OnGenerateTransferForFee,
                      weak_ptr_factory_.GetWeakPtr(), chain_id,
                      std::move(callback)));
@@ -269,6 +301,47 @@ void PolkadotWalletService::OnEstimatedFee(
     GetFeeEstimateCallback callback,
     base::expected<uint128_t, std::string> partial_fee) {
   std::move(callback).Run(std::move(partial_fee));
+}
+
+void PolkadotWalletService::OnGetChainMetadataForValidateAddress(
+    const std::string& address,
+    ValidateAddressForTransactionCallback callback,
+    base::expected<PolkadotChainMetadata, std::string> metadata) {
+  if (!metadata.has_value()) {
+    std::move(callback).Run(
+        mojom::PolkadotValidationStatus::kFailedToFetchMetadata);
+    return;
+  }
+
+  auto parsed_address =
+      ParsePolkadotAccount(address, metadata->GetSs58Prefix());
+  if (!parsed_address.has_value()) {
+    std::move(callback).Run(parsed_address.error());
+    return;
+  }
+
+  std::move(callback).Run(mojom::PolkadotValidationStatus::kNoError);
+}
+
+void PolkadotWalletService::OnGetChainMetadataForAddress(
+    std::array<uint8_t, kPolkadotSubstrateAccountIdSize> pubkey,
+    GetAddressCallback callback,
+    base::expected<PolkadotChainMetadata, std::string> metadata) {
+  if (!metadata.has_value()) {
+    std::move(callback).Run(std::nullopt, WalletInternalErrorMessage());
+    return;
+  }
+
+  PolkadotAddress polkadot_address;
+  polkadot_address.pubkey = pubkey;
+  polkadot_address.ss58_prefix = metadata->GetSs58Prefix();
+  auto address = polkadot_address.ToString();
+  if (!address) {
+    std::move(callback).Run(std::nullopt, WalletInternalErrorMessage());
+    return;
+  }
+
+  std::move(callback).Run(std::move(*address), std::nullopt);
 }
 
 }  // namespace brave_wallet

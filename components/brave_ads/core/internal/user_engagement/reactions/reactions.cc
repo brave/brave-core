@@ -23,8 +23,20 @@ Reactions::Reactions() {
 
 Reactions::~Reactions() = default;
 
+void Reactions::AddObserver(ReactionsObserver* const observer) {
+  CHECK(observer);
+
+  observers_.AddObserver(observer);
+}
+
+void Reactions::RemoveObserver(ReactionsObserver* const observer) {
+  CHECK(observer);
+
+  observers_.RemoveObserver(observer);
+}
+
 void Reactions::ToggleLikeAd(mojom::ReactionInfoPtr mojom_reaction,
-                             ToggleReactionCallback callback) {
+                             ResultCallback callback) {
   if (!mojom_reaction) {
     return std::move(callback).Run(/*success=*/false);
   }
@@ -55,7 +67,7 @@ void Reactions::ToggleLikeAd(mojom::ReactionInfoPtr mojom_reaction,
 }
 
 void Reactions::ToggleDislikeAd(mojom::ReactionInfoPtr mojom_reaction,
-                                ToggleReactionCallback callback) {
+                                ResultCallback callback) {
   if (!mojom_reaction) {
     return std::move(callback).Run(/*success=*/false);
   }
@@ -97,7 +109,7 @@ mojom::ReactionType Reactions::AdReactionTypeForId(
 }
 
 void Reactions::ToggleLikeSegment(mojom::ReactionInfoPtr mojom_reaction,
-                                  ToggleReactionCallback callback) {
+                                  ResultCallback callback) {
   if (!mojom_reaction) {
     return std::move(callback).Run(/*success=*/false);
   }
@@ -125,7 +137,7 @@ void Reactions::ToggleLikeSegment(mojom::ReactionInfoPtr mojom_reaction,
 }
 
 void Reactions::ToggleDislikeSegment(mojom::ReactionInfoPtr mojom_reaction,
-                                     ToggleReactionCallback callback) {
+                                     ResultCallback callback) {
   if (!mojom_reaction) {
     return std::move(callback).Run(/*success=*/false);
   }
@@ -163,7 +175,7 @@ mojom::ReactionType Reactions::SegmentReactionTypeForId(
 }
 
 void Reactions::ToggleSaveAd(mojom::ReactionInfoPtr mojom_reaction,
-                             ToggleReactionCallback callback) {
+                             ResultCallback callback) {
   if (!mojom_reaction) {
     return std::move(callback).Run(/*success=*/false);
   }
@@ -193,7 +205,7 @@ bool Reactions::IsAdSaved(const std::string& creative_instance_id) const {
 
 void Reactions::ToggleMarkAdAsInappropriate(
     mojom::ReactionInfoPtr mojom_reaction,
-    ToggleReactionCallback callback) {
+    ResultCallback callback) {
   if (!mojom_reaction) {
     return std::move(callback).Run(/*success=*/false);
   }
@@ -208,7 +220,7 @@ void Reactions::ToggleMarkAdAsInappropriate(
                      ReactionSetToList(marked_as_inappropriate_));
 
   if (inserted) {
-    NotifyDidToggleSaveAd(mojom_reaction->creative_set_id);
+    NotifyDidToggleMarkAdAsInappropriate(mojom_reaction->creative_set_id);
 
     Deposit(mojom_reaction->mojom_ad_type,
             mojom::ConfirmationType::kMarkAdAsInappropriate,

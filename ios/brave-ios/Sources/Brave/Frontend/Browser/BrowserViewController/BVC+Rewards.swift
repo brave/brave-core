@@ -150,7 +150,7 @@ extension TabBrowserData {
       return
     }
 
-    if tab.displayFavicon == nil {
+    if tab.faviconTabHelper?.displayFavicon == nil {
       adsRewardsLog.warning("No favicon found in \(self) to report to rewards panel")
     }
 

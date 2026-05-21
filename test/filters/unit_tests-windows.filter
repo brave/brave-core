@@ -18,18 +18,16 @@
 # this happens in a browser test running on Windows, it may be that dead-code
 # elimination stripped out the code that uses the resource, causing the resource
 # to be stripped out because the resource is not used by chrome.dll"
--BrowserFeaturePromoController2xStringSubstitutionTest.BodyTextSubstitution_MultipleStrings/V20
--BrowserFeaturePromoController2xStringSubstitutionTest.BodyTextSubstitution_MultipleStrings/V25
--BrowserFeaturePromoController2xStringSubstitutionTest.ScreenreaderTextSubstitution_MultipleStrings/V20
--BrowserFeaturePromoController2xStringSubstitutionTest.ScreenreaderTextSubstitution_MultipleStrings/V25
--BrowserFeaturePromoController2xStringSubstitutionTest.TitleTextSubstitution_MultipleStrings/V20
--BrowserFeaturePromoController2xStringSubstitutionTest.TitleTextSubstitution_MultipleStrings/V25
 -DesktopMediaPickerViewsSingleTabPaneTest.AccessibleProperties
 
+# Upstream flake: 1.0% flake rate over 30 days per LUCI Analysis (182K verdicts).
+# FindNewCheckTime() can schedule past Now()+interval due to timezone-dependent
+# LocalMidnight() boundary. Already filtered on Linux.
+# https://github.com/brave/brave-browser/issues/54960
+-PasswordStatusCheckServiceBaseTest.PrefInitialized
+
 # Tests below this point have not been diagnosed or had issues created yet.
--All/AppMenuIconControllerTest.UpgradeNotification/2
--All/AppMenuIconControllerTest.UpgradeNotification/3
--EnterpriseReportingPrivateG\etContextInfoOSFirewallTest.*
+-EnterpriseReportingPrivateGetContextInfoOSFirewallTest.*
 -ExtensionServiceTest.*
 -LayoutProviderTest.*
 -PlatformStateStoreWinTest.*

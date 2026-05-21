@@ -13,6 +13,7 @@ import {
   HardwareOperationResultSolanaSignature,
   HardwareOperationResultFilecoinSignature,
   HardwareOperationResultBitcoinSignature,
+  HardwareOperationResultDeviceName,
 } from './types'
 import { BridgeType } from './untrusted_shared_types'
 
@@ -27,6 +28,7 @@ export abstract class HardwareKeyring {
 }
 
 export abstract class TrezorKeyring extends HardwareKeyring {
+  abstract getDeviceName(): Promise<HardwareOperationResultDeviceName>
   abstract signTransaction(
     path: string,
     txid: string,

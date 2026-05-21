@@ -8,7 +8,9 @@
 
 #include <optional>
 #include <string>
+#include <string_view>
 
+#include "base/compiler_specific.h"
 #include "base/component_export.h"
 #include "base/types/optional_ref.h"
 
@@ -47,10 +49,18 @@ std::optional<content::StoragePartitionConfig> MaybeInheritStoragePartition(
     base::optional_ref<const content::StoragePartitionConfig>
         storage_partition_config);
 
-// Gets the storage partition config from |web_contents|, checks internally if
-// it is a Containers storage partition, and returns the container ID if so.
-// Returns an empty string if |web_contents| is null, or if the tab is not in
-// a Containers storage partition.
+// Returns partition_name() when |partition_config| is a Containers storage
+// partition; otherwise an empty view. The view is only valid for the lifetime
+// of data owned by |partition_config|.
+COMPONENT_EXPORT(CONTAINERS_CONTENT_BROWSER)
+std::string_view GetContainerIdFromStoragePartitionConfig(
+    const content::StoragePartitionConfig& partition_config LIFETIME_BOUND);
+
+// Returns the container ID for |web_contents|: first from SiteInstance when it
+// identifies a Containers storage partition; otherwise from WebContentsUserData
+// attached after tab discard when the stub WebContents does not yet have the
+// correct SiteInstance. Returns an empty string if |web_contents| is null, or
+// if neither source yields a valid Containers partition.
 COMPONENT_EXPORT(CONTAINERS_CONTENT_BROWSER)
 std::string GetContainerIdForWebContents(content::WebContents* web_contents);
 

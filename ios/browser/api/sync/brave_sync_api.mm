@@ -21,7 +21,6 @@
 #include "brave/components/brave_sync/crypto/crypto.h"
 #include "brave/components/brave_sync/qr_code_validator.h"
 #include "brave/components/brave_sync/time_limited_words.h"
-#include "brave/components/sync_device_info/brave_device_info.h"
 #include "brave/ios/browser/api/sync/brave_sync_worker.h"
 #include "components/sync/engine/sync_protocol_error.h"
 #include "components/sync/service/sync_service.h"
@@ -282,7 +281,7 @@ BraveSyncAPIWordsValidationStatus const
 
   // QR code version 3 can only carry 84 bytes so we hex encode 32 bytes
   // seed then we will have 64 bytes input data
-  const std::string sync_code_hex = base::HexEncode(seed.data(), seed.size());
+  const std::string sync_code_hex = base::HexEncode(seed);
 
   NSData* sync_code_data = [base::SysUTF8ToNSString(sync_code_hex.c_str())
       dataUsingEncoding:NSUTF8StringEncoding];  // NSISOLatin1StringEncoding
@@ -321,7 +320,9 @@ BraveSyncAPIWordsValidationStatus const
         local_device_info && local_device_info->guid() == device->guid();
     device_value.Set("isCurrentDevice", is_current_device);
     device_value.Set("guid", device->guid());
-    device_value.Set("supportsSelfDelete", device->is_self_delete_supported());
+    device_value.Set(
+        "supportsSelfDelete",
+        device->self_delete_support() == syncer::SelfDeleteSupport::kSupported);
     device_list_value.Append(base::Value(std::move(device_value)));
   }
 

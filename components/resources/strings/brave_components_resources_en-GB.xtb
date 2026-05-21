@@ -483,6 +483,10 @@
 <translation id="1518915449477235311">Allow <ph name="URL"/> to open Leo AI conversations in Brave?</translation>
 <translation id="4355784577209159847">Allow use of third-party cookies for legacy Google sign-in</translation>
 <translation id="5770656036486891920"><ph name="URL"/> wants to use third-party cookies for legacy Google sign-in</translation>
+<translation id="5582087890067572966">🎉 You're now earning!</translation>
+<translation id="4364336119478610380">You earn whenever a notification like this appears on your screen. You don't need to click to earn.</translation>
+<translation id="5893017172751072752">You earn when a Brave Ads notification appears</translation>
+<translation id="3447730462826640312">You don't need to click to earn, but do click if you're interested!</translation>
 <translation id="2104347391516032700">Bat Rewards Service</translation>
 <translation id="5939518447894949180">Reset</translation>
 <translation id="3349204812119681938">Reset Brave Rewards</translation>
@@ -996,6 +1000,7 @@
 <translation id="2795015351889043417">JSON file</translation>
 <translation id="5468881191994555667">Choose file</translation>
 <translation id="795667975304826397">No file chosen</translation>
+<translation id="6720675936326555106">Selected file</translation>
 <translation id="5891811606602061966">Failed to import account, please try again.</translation>
 <translation id="6566535583781706170">Import account</translation>
 <translation id="5051929972046200722">Select your hardware wallet device</translation>
@@ -1042,10 +1047,12 @@
 <translation id="2416098547200943834">NOTE: private key is provided as a hex-encoded JSON that contains private key and protocol information. <ph name="LINK_START"/>Learn more<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">NOTE: private key must be provided as a hex-encoded JSON that contains private key and protocol information. <ph name="LINK_START"/>Learn more<ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">NOTE: Only <ph name="FORMAT"/> extended keys are supported.</translation>
+<translation id="6457746820359933716">Import using a JSON file exported from Polkadot.js or compatible wallets. Enter the password used to encrypt the export.</translation>
 <translation id="9133762451347918196">Testnet accounts</translation>
 <translation id="42126664696688958">Export</translation>
 <translation id="1366855498335432549">Deposit</translation>
 <translation id="790104325876206743">Account settings</translation>
+<translation id="8856844353253421399">Last updated <ph name="TIME_AGO"/> ago</translation>
 <translation id="6322030314101903925">No available assets</translation>
 <translation id="836614343069504000">Deposit or purchase tokens to get started. If you don't see tokens from an imported account, check the filters and display settings. Unknown tokens may need to be added as custom assets.</translation>
 <translation id="2902856457593699108">Show key</translation>
@@ -1164,10 +1171,10 @@
 <translation id="4324239559624557455">For 24 hours</translation>
 <translation id="9139452553033760558">For 1 week</translation>
 <translation id="1658834457013045127">Forever</translation>
-<translation id="6344138931392227467"><ph name="DEVICE_NAME"/> connected</translation>
-<translation id="7051244143160304048"><ph name="DEVICE_NAME"/> disconnected</translation>
-<translation id="5317781812114905957">Instructions</translation>
-<translation id="1178198982208000092">Connect your <ph name="DEVICE_NAME"/></translation>
+<translation id="5571630233760536706"><ph name="DEVICE_NAME"/> is connected</translation>
+<translation id="7058480232601314508"><ph name="DEVICE_NAME"/> is disconnected</translation>
+<translation id="434328838837168401">View instructions</translation>
+<translation id="6739517232898494646">Connect your <ph name="DEVICE_NAME"/> to continue</translation>
 <translation id="6941881257520473899">Hardware wallet requires confirmation on device.</translation>
 <translation id="2288190100157580461">Hardware wallet requires <ph name="NETWORK"/> App opened on <ph name="DEVICE_NAME"/></translation>
 <translation id="8687869982094542529">sent</translation>
@@ -1837,6 +1844,7 @@
 <translation id="8897189056319316783">Shield ZEC</translation>
 <translation id="508249542337194541">Unshield ZEC</translation>
 <translation id="3382275793825152362">Shield funds</translation>
+<translation id="617149752238892649">Unshield funds</translation>
 <translation id="8631765320256788981">You are sending funds from your transparent account to your shielded account.</translation>
 <translation id="3860364671495430495">You are sending funds from your shielded account to your transparent account.</translation>
 <translation id="7144878232160441200">Retry</translation>
@@ -1887,6 +1895,7 @@
 <translation id="4150336849480030462">SPL token transfer with associated token account creation</translation>
 <translation id="2244921323472112851">We can’t find the page you’re looking for right now.</translation>
 <translation id="6277237872689140644">It may have moved to a different place or the URL may contain a typo.</translation>
+<translation id="1788572014530152502">There was an error processing your transaction. In many cases, this means there isn't enough <ph name="SYMBOL"/> to cover the network fee. Try a smaller amount instead.</translation>
 <translation id="2737084171727561244">Go to Portfolio</translation>
 <translation id="3499452861061048987">Add token</translation>
 <translation id="5046066249040287308">Brave Wallet utility service</translation>
@@ -2186,6 +2195,7 @@
     }</translation>
 <translation id="6961721183181597848">How can I help you today?</translation>
 <translation id="2966135729673253768">Ask follow up</translation>
+<translation id="5923170497201832190">Scroll to bottom</translation>
 <translation id="6219262425964000211">Drop files here</translation>
 <translation id="4313763911013851687">Drop any files here to add them to the conversation</translation>
 <translation id="4524675003624341892">Suggest questions …</translation>
@@ -2207,20 +2217,21 @@
 <translation id="999273441077650169">Model changes dynamically to use the best one for the task.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="1238020084128916796">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Llama 3.1 8B, a model created by Meta to be performant and applicable to many use cases. Llama is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Qwen VL 30B, a model created by Alibaba Cloud to be performant and applicable to many use cases. Qwen is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
-<translation id="6406961656408495869">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by DeepSeek V3.1, a model created by DeepSeek to be performant and applicable to many use cases. DeepSeek V3.1 is NEAR-hosted through their own verifiably private secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
+<translation id="3812564134126884433">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by GLM-5, a model created by Zhipu AI to be performant and applicable to many use cases. GLM-5 is NEAR-hosted through their own verifiably private secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Claude Instant, a model created by Anthropic to power conversational and text processing tasks. Claude Instant is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Claude Haiku, a model created by Anthropic to power conversational and text processing tasks. Claude Haiku is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Claude Sonnet, a model created by Anthropic to power conversational and text processing tasks. Claude Sonnet is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
-<translation id="1058830842518828124">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Llama 4 Scout, a model created by Meta to be performant and applicable to many use cases. Llama 4 Scout is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="6277330815126859513">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Llama 4 Maverick, a model created by Meta to be performant and applicable to many use cases. Llama 4 Maverick is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="5833148755396048122">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by GPT OSS 20B, a model created by OpenAI to be performant and applicable to many use cases. GPT OSS 20B is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="5414593137581221307">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by GPT OSS 120B, a model created by OpenAI to be performant and applicable to many use cases. GPT OSS 120B is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Mistral Large, a model created by Mistral to be performant and applicable to many use cases. Mistral Large is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
-<translation id="8947618429500471804">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Pixtral Large, a model created by Mistral to be performant and applicable to many use cases. Pixtral Large is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="4026902371301997261">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Qwen 3 235B, a model created by Alibaba Cloud to be performant and applicable to many use cases. Qwen 3 235B is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
-<translation id="768541432895104346">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Deepseek V3.1, a model created by Deepseek to be performant and applicable to many use cases. Deepseek V3.1 is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
+<translation id="8720758690351028307">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Deepseek V3.2, a model created by Deepseek to be performant and applicable to many use cases. Deepseek V3.2 is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="3767678495358551728">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Qwen 3 Coder 480B, a model created by Alibaba Cloud to be performant and applicable to many use cases. Qwen 3 Coder 480B is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Claude Opus, a model created by Anthropic to power conversational and text processing tasks. Claude Opus is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
+<translation id="7238858567393403597">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by GLM-4-7-Flash, a model created by Zhipu AI to be performant and applicable to many use cases. GLM-4-7-Flash is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
+<translation id="6983410749026920122">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Kimi K2.5, a model created by Moonshot AI to be performant and applicable to many use cases. Kimi K2.5 is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
+<translation id="2965634373697869601">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Brave Ocelot, a model created by Brave to summarise web pages. Brave Ocelot is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Local</translation>
 <translation id="830868413617744215">Beta</translation>
@@ -2353,6 +2364,8 @@
 <translation id="7465032796278724624">Verifiably Private With NEAR AI TEE</translation>
 <translation id="8782867266498869301">Model changes dynamically to use the best one for the task</translation>
 <translation id="3213834013136637671">Search • Vision</translation>
+<translation id="5276681919620506371">Search • Tools</translation>
+<translation id="7434375176361995333">Summaries • Fast</translation>
 <translation id="3965507912994218570">Leo settings</translation>
 <translation id="3754337604877048671">Introducing Leo AI</translation>
 <translation id="5295261408976371809">Your <ph name="TEXT_BEFORE"/>private<ph name="TEXT_AFTER"/> AI assistant, built right into the browser.</translation>
@@ -2408,6 +2421,8 @@
 <translation id="4572010449071015143">Start new conversation</translation>
 <translation id="345901077335355561">Go back to the active conversation</translation>
 <translation id="6287023598025162715">New conversation</translation>
+<translation id="7230502562132448519">Filter conversations</translation>
+<translation id="821070843380699990">Please try a different query</translation>
 <translation id="7097822247923237815">Temporary chat</translation>
 <translation id="7481750859362986254">This chat won't be saved into your history or use any of Leo's customisation or memories.</translation>
 <translation id="4238305333951712482">Memory updated: <ph name="MEMORY_CONTENT"/></translation>
@@ -2445,6 +2460,21 @@
 <translation id="6338250692384725496">Executed code in sandbox to help with your query</translation>
 <translation id="4379566111233326721">Code:</translation>
 <translation id="3542130965673205258">Output:</translation>
+<translation id="5382076391290708074">Moving your tabs around</translation>
+<translation id="3862123464576147769">Allowing this will send the <ph name="URL_FORMAT_START"/>URL<ph name="URL_FORMAT_END"/> and <ph name="TITLE_FORMAT_START"/>Title<ph name="TITLE_FORMAT_END"/> of all your Tabs and Tab Groups to Brave AI, and allow Brave AI to move them around. This permission applies only to this conversation.</translation>
+<translation id="396165714586708444">Deep Research</translation>
+<translation id="577747221882855891">Searching: "<ph name="QUERY"/>"</translation>
+<translation id="5061713007774798338">Analysing <ph name="COUNT"/> sources for "<ph name="QUERY"/>"</translation>
+<translation id="1202264349398113062">Processing <ph name="COUNT"/> new URLs for "<ph name="QUERY"/>"</translation>
+<translation id="6189479600023022289">Found <ph name="COUNT"/> URLs for "<ph name="QUERY"/>"</translation>
+<translation id="5150674341374247355">Fetching <ph name="FETCHED"/>/​<ph name="TOTAL"/> URLs</translation>
+<translation id="1075606740174445363">Analysed <ph name="COUNT"/> URLs for "<ph name="QUERY"/>"</translation>
+<translation id="6220878652174655112">Searching <ph name="COUNT"/> queries</translation>
+<translation id="3571450204565012512">Analysed <ph name="URL_COUNT"/> URLs from <ph name="QUERY_COUNT"/> searches</translation>
+<translation id="5733200563889491347">Research complete</translation>
+<translation id="9164915383881032549"><ph name="MINUTES"/>m <ph name="SECONDS"/>s</translation>
+<translation id="6219719719991016422"><ph name="SECONDS"/>s</translation>
+<translation id="5067194014665306881">Research error: <ph name="ERROR"/></translation>
 <translation id="3428245742224818842">AI browsing</translation>
 <translation id="2854657728271352435">About the AI browsing profile</translation>
 <translation id="2301685062527585986">To protect your data, this isolated AI browsing profile ensures the AI agent has no access to your main browsing profile, with permissions only to visit and interact with sites as needed. You can boost your productivity by giving it tasks and letting it browse for you.</translation>
@@ -2509,11 +2539,14 @@
 <translation id="7847477075635510673">Hide News</translation>
 <translation id="9173319813356700250">NEWS</translation>
 <translation id="6543799171249004861">Photo by <ph name="AUTHOR"/></translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="466214682712474574">Log in to your <ph name="PROVIDER"/> account to see your balance</translation>
 <translation id="8332875111286275890">Log in to see your balance</translation>
 <translation id="5430001801813715388">REWARDS</translation>
+<translation id="988042349921505128">Search and AI</translation>
 <translation id="2430295257226173518">Ask anything, find anything…</translation>
 <translation id="167018310108390163">Customise New Tab Page</translation>
+<translation id="3500134717967948757">Show Leo AI widget in new tabs</translation>
 <translation id="6851426306697017546">Show clock</translation>
 <translation id="4844370919312937270">Show search widget in new tabs</translation>
 <translation id="7328310113820087094">With <ph name="LINK_BEGIN"/>Brave Rewards<ph name="LINK_END"/>, you can earn for seeing new tab page ads.</translation>
@@ -2542,8 +2575,15 @@
 <translation id="8458987127502506209">Enable Brave Shields</translation>
 <translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>Shields are UP<ph name="STATUS_AFTER"/> for this site</translation>
 <translation id="2458631245058451506"><ph name="STATUS_BEFORE"/>Shields are DOWN<ph name="STATUS_AFTER"/> for this site</translation>
+<translation id="8426214145426269584">Shields <ph name="UP_BEFORE"/>up<ph name="UP_AFTER"/> for this site</translation>
+<translation id="3325367578778625743">Shields <ph name="DOWN_BEFORE"/>down<ph name="DOWN_AFTER"/> for this site</translation>
 <translation id="4724752924364329714">If this site seems broken, try Shields down.</translation>
 <translation id="3992385019509961907"><ph name="NOTE_BEFORE"/>Note: this may reduce Brave's privacy protections.<ph name="NOTE_AFTER"/></translation>
+<translation id="4329860807937715445">This may reduce Brave's privacy protections. <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
+<translation id="3889333301730272023"><ph name="BLOCK_COUNT"/> trackers, ads and more blocked</translation>
+<translation id="2275121279487164685">Trackers and ads</translation>
+<translation id="4968268657895673116">Is this site not working correctly with Shields up?</translation>
+<translation id="5412004902081180614">Report</translation>
 <translation id="3620004479054499575">Are you experiencing issues with this site?</translation>
 <translation id="9176447766421988172">We're trying out an experiment to increase website compatibility, where we keep only ad blocking enabled. Warning: removes all privacy protections. Do you want to try it out? <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/>.</translation>
 <translation id="5372101283158221516">Please note that for individual websites broken by Brave's privacy protections, you can set Shields to DOWN.</translation>
@@ -2558,9 +2598,12 @@
 <translation id="8377155647357436161">Trackers, ads and more blocked <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Not protected by Brave Shields <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">Advanced controls</translation>
+<translation id="7939062555109487992">Advanced options</translation>
 <translation id="5799940914270080805">Changing these settings might break sites.</translation>
 <translation id="9204041448536398473">Global Shield settings</translation>
 <translation id="2108334320919763866">Global defaults</translation>
+<translation id="1896472873031845605">Global Settings</translation>
+<translation id="8324318899000695659">Block elements</translation>
 <translation id="7205939464631857223">Clear all blocked elements</translation>
 <translation id="3440043456924990296">Settings managed by organisation</translation>
 <translation id="7053983685419859001">Block</translation>
@@ -2600,9 +2643,11 @@
 <translation id="3795015906457257780">You are viewing this site without Brave's privacy protections.</translation>
 <translation id="7194012750329511146">Brave Shields
 <ph name="NUMBER"/> Trackers, ads and more blocked</translation>
+<translation id="2900068182947574679">Scripts</translation>
 <translation id="4292121526390005808">Blocked scripts</translation>
 <translation id="5046271170844958713">Allowed scripts</translation>
 <translation id="199862531047218413">anti-fingerprinting protections applied</translation>
+<translation id="896105002981074545">Fingerprinting protections</translation>
 <translation id="5032505924781383272">Applied protections do not necessarily indicate that this web page is attempting to fingerprint your browser.</translation>
 <translation id="1905384713982899903">Blocked fingerprints</translation>
 <translation id="314364527871618241">Allowed fingerprints</translation>
@@ -2615,6 +2660,7 @@
 <translation id="542789539047208469">Site Info</translation>
 <translation id="7586067492365979844">Brave Shields has a new home and design. It now integrates with site information for a one-stop experience.</translation>
 <translation id="9114542678887529043">Brave Shields has a new home and design. Access it by clicking the site icon in the address bar.</translation>
+<translation id="4242533952199664413">Open settings</translation>
 <translation id="6294662480095808915">Privacy. By default.</translation>
 <translation id="4366423156486478559">Get Brave protection on every link you click. Just set Brave as default and browse. Privately.</translation>
 <translation id="3830912418080848377">Import Settings</translation>
@@ -2645,7 +2691,6 @@
 <translation id="7207456302801184289">Welcome to Brave</translation>
 <translation id="4988030440045495002">Ultra dark theme</translation>
 <translation id="2422927186524098759">Sidebar</translation>
-<translation id="2361906291514218784">Leo AI</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">Toolbar</translation>
 <translation id="6225572914528673855">Address bar</translation>
@@ -2756,4 +2801,19 @@ Let's get you connected!</translation>
 <translation id="1602850501393095406">Press ↑ to highlight</translation>
 <translation id="8367705492654390392">Ask anything</translation>
 <translation id="8525248723479742219">Play later</translation>
+<translation id="2935698011275148880">Brave Origin</translation>
+<translation id="3983844925615091103">Welcome to Brave Origin. To continue, please buy or restore your Brave Origin purchase.</translation>
+<translation id="4801175670604644729">You need an active Brave Origin purchase to use this browser.</translation>
+<translation id="4144294274624829008">Restore Brave Origin purchase</translation>
+<translation id="6080178356113101120">Buy Brave Origin</translation>
+<translation id="1009496146858538651">Restore Purchase</translation>
+<translation id="3461564061600681423">Enter your purchase ID to activate your Brave Origin purchase.</translation>
+<translation id="2036379724374431790">Purchase ID</translation>
+<translation id="4348430971280118761">Enter your purchase ID</translation>
+<translation id="7451866456310404779">Verify purchase ID</translation>
+<translation id="8853195592604941919">Verifying… This may take a minute.</translation>
+<translation id="4633706444004110760">Thanks for installing Brave Origin, a version of the browser for users who don't need all the features that support Brave as a business, but still want the privacy that only Brave offers. Origin users will continue to benefit from Brave's industry-leading privacy, adblock, and speed (via Shields), as well as regular software updates, Chromium patches, and security and privacy improvements. Origin will remove most other features from the browser.</translation>
+<translation id="5816720995022674532">Origin is free to use on Linux devices, but still <ph name="BEGIN_LINK"/>available for purchase<ph name="END_LINK"/> if you'd like to support Brave as a business. Purchasing would also unlock the ability to use Origin on Android, iOS, macOS, and Windows devices.</translation>
+<translation id="3065220545261045367">Support Brave by purchasing Origin</translation>
+<translation id="2069499076031488636">Proceed with Origin for free on Linux</translation>
 </translationbundle>

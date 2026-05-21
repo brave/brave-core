@@ -1,6 +1,7 @@
 ---
 name: pr
 description: Create a pull request for the current branch using `gh`.
+disable-model-invocation: true
 ---
 
 # Create Pull Request

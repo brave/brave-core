@@ -5,6 +5,7 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import Input from '@brave/leo/react/input'
+import Button from '@brave/leo/react/button'
 
 // Slices
 import {
@@ -33,7 +34,7 @@ import {
   AdvancedSettingsButton,
   CollapseIcon,
 } from './shield_zcash_account.style'
-import { Column, Text, Row, LeoSquaredButton } from '../../../shared/style'
+import { Column, Text, Row } from '../../../shared/style'
 
 const MIN_ACCOUNT_BIRTHDAY_BLOCK = 1687104
 
@@ -220,18 +221,18 @@ export const ShieldZCashAccountModal = (props: Props) => {
         gap='16px'
         padding='32px'
       >
-        <LeoSquaredButton
+        <Button
           onClick={onClose}
           kind='outline'
         >
           {getLocale('braveWalletButtonCancel')}
-        </LeoSquaredButton>
-        <LeoSquaredButton
+        </Button>
+        <Button
           onClick={onShieldAccount}
           isDisabled={isShielding || invalidBirthdayBlock}
         >
           {getLocale('braveWalletShieldAccount')}
-        </LeoSquaredButton>
+        </Button>
       </Row>
     </PopupModal>
   )

@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import Alert from '@brave/leo/react/alert'
+import Button from '@brave/leo/react/button'
 
 // utils
 import { getLocale } from '../../../../common/locale'
@@ -14,7 +15,7 @@ import { openTab } from '../../../utils/routes-utils'
 import { BottomSheet } from '../../shared/bottom_sheet/bottom_sheet'
 
 // styles
-import { Column, LeoSquaredButton } from '../../shared/style'
+import { Column } from '../../shared/style'
 import {
   AlertTextContainer,
   FullWidthChildrenColumn,
@@ -61,13 +62,13 @@ export const TransactionSimulationNotSupportedSheet = () => {
             </SeeAvailableNetworksLink>
           </Column>
         </Alert>
-        <LeoSquaredButton
+        <Button
           onClick={() => {
             setShowSheet(false)
           }}
         >
           {getLocale('braveWalletButtonClose')}
-        </LeoSquaredButton>
+        </Button>
       </FullWidthChildrenColumn>
     </BottomSheet>
   )

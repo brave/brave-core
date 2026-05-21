@@ -39,9 +39,10 @@ export function MainCard() {
     }
     return (
       <div className='block-info'>
-        <div className='items'></div>
-        <div className='count'>{trackersAndAdsBlocked}</div>
-        <span>{getString('BRAVE_SHIELDS_TRACKERS_ADS_BLOCKED')}</span>
+        <div className='blocked-items' />
+        {formatString(getString('BRAVE_SHIELDS_TRACKERS_ADS_BLOCKED'), {
+          $1: () => <div className='count'>{trackersAndAdsBlocked}</div>,
+        })}
       </div>
     )
   }
@@ -61,7 +62,14 @@ export function MainCard() {
           )}
         </div>
         <div className='site-text'>
-          <h3 className='overflow-ellipsis-start'>{siteHost}</h3>
+          <h3
+            className='overflow-ellipsis-start'
+            title={siteHost}
+          >
+            {'\u2068'}
+            {siteHost}
+            {'\u2069'}
+          </h3>
           <div className='shields-status'>
             {formatString(
               shieldsEnabled

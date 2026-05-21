@@ -19,6 +19,7 @@ OBJC_EXPORT BraveOriginPolicyKey const BraveOriginPolicyKeyNewsDisabled;
 OBJC_EXPORT BraveOriginPolicyKey const BraveOriginPolicyKeyVPNDisabled;
 OBJC_EXPORT BraveOriginPolicyKey const BraveOriginPolicyKeyP3AEnabled;
 OBJC_EXPORT BraveOriginPolicyKey const BraveOriginPolicyKeyStatsPingEnabled;
+OBJC_EXPORT BraveOriginPolicyKey const BraveOriginPolicyKeyPlaylistEnabled;
 
 NS_SWIFT_NAME(BraveOriginService)
 @protocol BraveOriginServiceBridge

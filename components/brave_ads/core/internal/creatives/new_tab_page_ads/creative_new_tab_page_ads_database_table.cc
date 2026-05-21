@@ -28,11 +28,9 @@
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ads_database_table_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_type_util.h"
-#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_table_util.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
-#include "brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/condition_matcher_util.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-data-view.h"
-#include "url/gurl.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads::database::table {
 
@@ -60,7 +58,6 @@ void BindColumnTypes(const mojom::DBActionInfoPtr& mojom_db_action) {
       mojom::DBBindColumnType::kInt,     // per_month
       mojom::DBBindColumnType::kInt,     // total_max
       mojom::DBBindColumnType::kDouble,  // value
-      mojom::DBBindColumnType::kString,  // split_test_group
       mojom::DBBindColumnType::kString,  // condition_matchers
       mojom::DBBindColumnType::kString,  // segment
       mojom::DBBindColumnType::kString,  // geo_target
@@ -99,48 +96,6 @@ size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
   return row_count;
 }
 
-CreativeNewTabPageAdInfo FromMojomRow(const mojom::DBRowInfoPtr& mojom_db_row) {
-  CHECK(mojom_db_row);
-
-  CreativeNewTabPageAdInfo creative_ad;
-
-  creative_ad.creative_instance_id = ColumnString(mojom_db_row, 0);
-  creative_ad.creative_set_id = ColumnString(mojom_db_row, 1);
-  creative_ad.campaign_id = ColumnString(mojom_db_row, 2);
-  creative_ad.metric_type =
-      ToMojomNewTabPageAdMetricType(ColumnString(mojom_db_row, 3))
-          .value_or(mojom::NewTabPageAdMetricType::kUndefined);
-  creative_ad.start_at = ColumnTime(mojom_db_row, 4);
-  creative_ad.end_at = ColumnTime(mojom_db_row, 5);
-  creative_ad.daily_cap = ColumnInt(mojom_db_row, 6);
-  creative_ad.advertiser_id = ColumnString(mojom_db_row, 7);
-  creative_ad.priority = ColumnInt(mojom_db_row, 8);
-  creative_ad.per_day = ColumnInt(mojom_db_row, 9);
-  creative_ad.per_week = ColumnInt(mojom_db_row, 10);
-  creative_ad.per_month = ColumnInt(mojom_db_row, 11);
-  creative_ad.total_max = ColumnInt(mojom_db_row, 12);
-  creative_ad.value = ColumnDouble(mojom_db_row, 13);
-  creative_ad.split_test_group = ColumnString(mojom_db_row, 14);
-  creative_ad.condition_matchers =
-      StringToConditionMatchers(ColumnString(mojom_db_row, 15));
-  creative_ad.segment = ColumnString(mojom_db_row, 16);
-  creative_ad.geo_targets.insert(ColumnString(mojom_db_row, 17));
-  creative_ad.target_url = GURL(ColumnString(mojom_db_row, 18));
-  creative_ad.wallpaper_type =
-      ToCreativeNewTabPageAdWallpaperType(ColumnString(mojom_db_row, 19));
-  creative_ad.company_name = ColumnString(mojom_db_row, 20);
-  creative_ad.alt = ColumnString(mojom_db_row, 21);
-  creative_ad.pass_through_rate = ColumnDouble(mojom_db_row, 22);
-
-  CreativeDaypartInfo daypart;
-  daypart.days_of_week = ColumnString(mojom_db_row, 23);
-  daypart.start_minute = ColumnInt(mojom_db_row, 24);
-  daypart.end_minute = ColumnInt(mojom_db_row, 25);
-  creative_ad.dayparts.insert(daypart);
-
-  return creative_ad;
-}
-
 CreativeNewTabPageAdList GetCreativeAdsFromResponse(
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
   CHECK(mojom_db_transaction_result);
@@ -150,7 +105,8 @@ CreativeNewTabPageAdList GetCreativeAdsFromResponse(
 
   for (const auto& mojom_db_row :
        mojom_db_transaction_result->rows_union->get_rows()) {
-    const CreativeNewTabPageAdInfo creative_ad = FromMojomRow(mojom_db_row);
+    const CreativeNewTabPageAdInfo creative_ad =
+        CreativeNewTabPageAdFromMojomRow(mojom_db_row);
 
     std::string uuid = creative_ad.creative_instance_id + creative_ad.segment;
     const auto [iter, inserted] =
@@ -231,6 +187,44 @@ void GetForActiveCampaignsCallback(
 
 std::string IsRichMediaAllowed() {
   return IsJavaScriptAllowed() ? "1" : "0";
+}
+
+std::string BuildInsertSql(const mojom::DBActionInfoPtr& mojom_db_action,
+                           const CreativeNewTabPageAdList& creative_ads) {
+  CHECK(mojom_db_action);
+  CHECK(!creative_ads.empty());
+
+  const size_t row_count = BindColumns(mojom_db_action, creative_ads);
+
+  return base::ReplaceStringPlaceholders(
+      R"(
+          INSERT INTO $1 (
+            creative_instance_id,
+            creative_set_id,
+            campaign_id,
+            type,
+            company_name,
+            alt
+          ) VALUES $2)",
+      {kTableName, BuildBindColumnPlaceholders(/*column_count=*/6, row_count)},
+      nullptr);
+}
+
+void Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
+            const CreativeNewTabPageAdList& creative_ads) {
+  CHECK(mojom_db_transaction);
+
+  if (creative_ads.empty()) {
+    return;
+  }
+
+  InsertCreativeAds(mojom_db_transaction,
+                    CreativeAdList(creative_ads.cbegin(), creative_ads.cend()));
+
+  mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
+  mojom_db_action->type = mojom::DBActionInfo::Type::kExecuteWithBindings;
+  mojom_db_action->sql = BuildInsertSql(mojom_db_action, creative_ads);
+  mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 }
 
 }  // namespace
@@ -351,7 +345,6 @@ void CreativeNewTabPageAds::GetForCreativeInstanceId(
             creative_ads.per_month,
             creative_ads.total_max,
             creative_ads.value,
-            creative_ads.split_test_group,
             creative_ads.condition_matchers,
             segments.segment,
             geo_targets.geo_target,
@@ -373,7 +366,7 @@ void CreativeNewTabPageAds::GetForCreativeInstanceId(
           WHERE
             creative_new_tab_page_ad.creative_instance_id = '$2'
             AND ($3 OR creative_new_tab_page_ad.type != 'richMedia'))",
-      {GetTableName(), creative_instance_id, IsRichMediaAllowed()}, nullptr);
+      {kTableName, creative_instance_id, IsRichMediaAllowed()}, nullptr);
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
@@ -411,7 +404,6 @@ void CreativeNewTabPageAds::GetForSegments(
             creative_ads.per_month,
             creative_ads.total_max,
             creative_ads.value,
-            creative_ads.split_test_group,
             creative_ads.condition_matchers,
             segments.segment,
             geo_targets.geo_target,
@@ -434,8 +426,7 @@ void CreativeNewTabPageAds::GetForSegments(
             segments.segment IN $2
             AND $3 BETWEEN campaigns.start_at AND campaigns.end_at
             AND ($4 OR creative_new_tab_page_ad.type != 'richMedia'))",
-      {GetTableName(),
-       BuildBindColumnPlaceholder(/*column_count=*/segments.size()),
+      {kTableName, BuildBindColumnPlaceholder(/*column_count=*/segments.size()),
        TimeToSqlValueAsString(base::Time::Now()), IsRichMediaAllowed()},
       nullptr);
   BindColumnTypes(mojom_db_action);
@@ -475,7 +466,6 @@ void CreativeNewTabPageAds::GetForActiveCampaigns(
             creative_ads.per_month,
             creative_ads.total_max,
             creative_ads.value,
-            creative_ads.split_test_group,
             creative_ads.condition_matchers,
             segments.segment,
             geo_targets.geo_target,
@@ -497,7 +487,7 @@ void CreativeNewTabPageAds::GetForActiveCampaigns(
           WHERE
             $2 BETWEEN campaigns.start_at AND campaigns.end_at
             AND ($3 OR creative_new_tab_page_ad.type != 'richMedia'))",
-      {GetTableName(), TimeToSqlValueAsString(base::Time::Now()),
+      {kTableName, TimeToSqlValueAsString(base::Time::Now()),
        IsRichMediaAllowed()},
       nullptr);
   BindColumnTypes(mojom_db_action);
@@ -506,10 +496,6 @@ void CreativeNewTabPageAds::GetForActiveCampaigns(
   RunTransaction(
       FROM_HERE, std::move(mojom_db_transaction),
       base::BindOnce(&GetForActiveCampaignsCallback, std::move(callback)));
-}
-
-std::string CreativeNewTabPageAds::GetTableName() const {
-  return kTableName;
 }
 
 void CreativeNewTabPageAds::Create(
@@ -605,48 +591,6 @@ void CreativeNewTabPageAds::MigrateToV49(
 
   RenameTable(mojom_db_transaction, "creative_new_tab_page_ads_temp",
               "creative_new_tab_page_ads");
-}
-
-void CreativeNewTabPageAds::Insert(
-    const mojom::DBTransactionInfoPtr& mojom_db_transaction,
-    const CreativeNewTabPageAdList& creative_ads) {
-  CHECK(mojom_db_transaction);
-
-  if (creative_ads.empty()) {
-    return;
-  }
-
-  creative_ads_database_table_.Insert(
-      mojom_db_transaction,
-      CreativeAdList(creative_ads.cbegin(), creative_ads.cend()));
-
-  mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
-  mojom_db_action->type = mojom::DBActionInfo::Type::kExecuteWithBindings;
-  mojom_db_action->sql = BuildInsertSql(mojom_db_action, creative_ads);
-  mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
-}
-
-std::string CreativeNewTabPageAds::BuildInsertSql(
-    const mojom::DBActionInfoPtr& mojom_db_action,
-    const CreativeNewTabPageAdList& creative_ads) const {
-  CHECK(mojom_db_action);
-  CHECK(!creative_ads.empty());
-
-  const size_t row_count = BindColumns(mojom_db_action, creative_ads);
-
-  return base::ReplaceStringPlaceholders(
-      R"(
-          INSERT INTO $1 (
-            creative_instance_id,
-            creative_set_id,
-            campaign_id,
-            type,
-            company_name,
-            alt
-          ) VALUES $2)",
-      {GetTableName(),
-       BuildBindColumnPlaceholders(/*column_count=*/6, row_count)},
-      nullptr);
 }
 
 }  // namespace brave_ads::database::table

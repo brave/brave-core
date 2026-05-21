@@ -6,17 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_CONVERSIONS_CONVERSION_CONVERSION_BUILDER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_CONVERSIONS_CONVERSION_CONVERSION_BUILDER_H_
 
-#include <optional>
-
 namespace brave_ads {
 
 struct AdEventInfo;
 struct ConversionInfo;
-struct VerifiableConversionInfo;
 
-ConversionInfo BuildConversion(
-    const AdEventInfo& ad_event,
-    std::optional<VerifiableConversionInfo> verifiable_conversion);
+ConversionInfo BuildConversion(const AdEventInfo& ad_event);
 
 }  // namespace brave_ads
 

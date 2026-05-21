@@ -12,8 +12,8 @@
 #include "base/json/json_reader.h"
 #include "base/values.h"
 #include "base/version_info/version_info.h"
-#include "brave/components/brave_ads/core/browser/virtual_pref/virtual_pref_provider_util.h"
 #include "brave/components/brave_ads/core/public/common/locale/locale_util.h"
+#include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/skus/browser/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -87,18 +87,16 @@ base::DictValue ParseSkuOrders(const base::DictValue& dict) {
   return orders;
 }
 
-base::DictValue GetSkus(PrefService* local_state) {
-  CHECK(local_state);
-
+base::DictValue GetSkus(const PrefService& local_state) {
   base::DictValue skus;
 
-  if (!local_state->FindPreference(skus::prefs::kSkusState)) {
+  if (!local_state.FindPreference(skus::prefs::kSkusState)) {
     // No SKUs in local state.
     return skus;
   }
 
   const base::DictValue& skus_state =
-      local_state->GetDict(skus::prefs::kSkusState);
+      local_state.GetDict(skus::prefs::kSkusState);
   for (const auto [environment, value] : skus_state) {
     if (!environment.starts_with(kSkuEnvironmentPrefix)) {
       continue;
@@ -123,21 +121,20 @@ base::DictValue GetSkus(PrefService* local_state) {
   return skus;
 }
 
-bool IsSurveyPanelist(PrefService* prefs) {
-  CHECK(prefs);
-
-  return prefs->GetBoolean(
+bool IsSurveyPanelist(const PrefService& prefs) {
+  if (prefs.GetBoolean(brave_rewards::prefs::kDisabledByPolicy)) {
+    return false;
+  }
+  return prefs.GetBoolean(
       ntp_background_images::prefs::kNewTabPageSponsoredImagesSurveyPanelist);
 }
 
 }  // namespace
 
-VirtualPrefProvider::VirtualPrefProvider(PrefService* prefs,
-                                         PrefService* local_state,
+VirtualPrefProvider::VirtualPrefProvider(PrefService& prefs,
+                                         PrefService& local_state,
                                          std::unique_ptr<Delegate> delegate)
     : prefs_(prefs), local_state_(local_state), delegate_(std::move(delegate)) {
-  CHECK(prefs_);
-  CHECK(local_state_);
   CHECK(delegate_);
 }
 
@@ -148,22 +145,19 @@ base::DictValue VirtualPrefProvider::GetPrefs() const {
       .Set("[virtual]:browser",
            base::DictValue()
                .Set("build_channel", delegate_->GetChannel())
-               .Set("version", version_info::GetVersionNumber())
-               .Set("major_version", GetMajorVersion())
-               .Set("minor_version", GetMinorVersion())
-               .Set("build_version", GetBuildVersion())
-               .Set("patch_version", GetPatchVersion()))
+               .Set("version", version_info::GetVersionNumber()))
       .Set("[virtual]:operating_system",
            base::DictValue()
                .Set("locale", base::DictValue()
                                   .Set("language", CurrentLanguageCode())
                                   .Set("region", CurrentCountryCode()))
                .Set("name", version_info::GetOSType()))
-      .Set("[virtual]:is_survey_panelist", IsSurveyPanelist(prefs_))
+      .Set("[virtual]:is_survey_panelist", IsSurveyPanelist(*prefs_))
       .Set("[virtual]:search_engine",
            base::DictValue().Set("default_name",
                                  delegate_->GetDefaultSearchEngineName()))
-      .Set("[virtual]:skus", GetSkus(local_state_));
+      .Set("[virtual]:serp_metrics", delegate_->GetSerpMetrics())
+      .Set("[virtual]:skus", GetSkus(*local_state_));
 }
 
 }  // namespace brave_ads

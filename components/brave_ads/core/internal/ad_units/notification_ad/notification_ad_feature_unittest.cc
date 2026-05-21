@@ -37,9 +37,4 @@ TEST(BraveAdsNotificationAdFeatureTest, MaximumNotificationAdsPerDay) {
   EXPECT_EQ(100U, kMaximumNotificationAdsPerDay.Get());
 }
 
-TEST(BraveAdsNotificationAdFeatureTest, CanFallbackToCustomNotificationAds) {
-  // Act & Assert
-  EXPECT_FALSE(kCanFallbackToCustomNotificationAds.Get());
-}
-
 }  // namespace brave_ads

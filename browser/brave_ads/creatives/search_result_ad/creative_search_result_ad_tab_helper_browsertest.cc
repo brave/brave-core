@@ -15,7 +15,7 @@
 #include "base/time/time.h"
 #include "base/types/optional_util.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
-#include "brave/components/brave_ads/core/browser/service/ads_service_mock.h"
+#include "brave/components/brave_ads/core/browser/service/test/ads_service_mock.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"
@@ -114,10 +114,6 @@ mojom::CreativeSearchResultAdInfoPtr GenerateCreativeSearchResultAd(
   auto mojom_conversion = mojom::CreativeSetConversionInfo::New();
   mojom_conversion->url_pattern =
       base::StrCat({"data-conversion-url-pattern-value", index});
-  if (ad_index == 1) {
-    mojom_conversion->verifiable_advertiser_public_key_base64 =
-        base::StrCat({"data-conversion-advertiser-public-key-value", index});
-  }
   mojom_conversion->observation_window = base::Days(ad_index);
   mojom_creative_ad->creative_set_conversion = std::move(mojom_conversion);
 
@@ -248,7 +244,7 @@ class SampleBraveAdsCreativeSearchResultAdTabHelperTest
             [&run_loop1, &run_loop2](
                 mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
                 mojom::SearchResultAdEventType /*mojom_ad_event_type*/,
-                TriggerAdEventCallback /*callback*/) {
+                ResultCallback /*callback*/) {
               ASSERT_TRUE(mojom_creative_ad);
 
               EXPECT_EQ(mojom_creative_ad,
@@ -296,7 +292,7 @@ IN_PROC_BROWSER_TEST_F(SampleBraveAdsCreativeSearchResultAdTabHelperTest,
       .WillOnce([&run_loop](
                     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
                     mojom::SearchResultAdEventType mojom_ad_event_type,
-                    TriggerAdEventCallback /*callback*/) {
+                    ResultCallback /*callback*/) {
         EXPECT_EQ(mojom_ad_event_type,
                   mojom::SearchResultAdEventType::kClicked);
 
@@ -325,7 +321,7 @@ IN_PROC_BROWSER_TEST_F(SampleBraveAdsCreativeSearchResultAdTabHelperTest,
       .WillOnce([&run_loop](
                     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
                     mojom::SearchResultAdEventType mojom_ad_event_type,
-                    TriggerAdEventCallback /*callback*/) {
+                    ResultCallback /*callback*/) {
         EXPECT_EQ(mojom_ad_event_type,
                   mojom::SearchResultAdEventType::kClicked);
 
@@ -367,7 +363,7 @@ IN_PROC_BROWSER_TEST_F(SampleBraveAdsCreativeSearchResultAdTabHelperTest,
       .WillOnce([&run_loop](
                     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
                     mojom::SearchResultAdEventType mojom_ad_event_type,
-                    TriggerAdEventCallback /*callback*/) {
+                    ResultCallback /*callback*/) {
         EXPECT_EQ(mojom_ad_event_type,
                   mojom::SearchResultAdEventType::kClicked);
 
@@ -407,7 +403,7 @@ IN_PROC_BROWSER_TEST_F(SampleBraveAdsCreativeSearchResultAdTabHelperTest,
       .WillOnce([&run_loop](
                     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
                     mojom::SearchResultAdEventType mojom_ad_event_type,
-                    TriggerAdEventCallback /*callback*/) {
+                    ResultCallback /*callback*/) {
         EXPECT_EQ(mojom_ad_event_type,
                   mojom::SearchResultAdEventType::kClicked);
 

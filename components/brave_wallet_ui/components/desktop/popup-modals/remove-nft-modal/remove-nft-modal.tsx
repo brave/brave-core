@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
+import Button from '@brave/leo/react/button'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
@@ -21,7 +22,6 @@ import {
   Header,
   StyledWrapper,
 } from './remove-nft-modal.styles'
-import { LeoSquaredButton } from '../../../shared/style'
 
 interface Props {
   onConfirm: () => void
@@ -44,15 +44,15 @@ export const RemoveNftModal = ({ onConfirm, onCancel }: Props) => {
           {getLocale('braveWalletRemoveNftModalDescription')}
         </Description>
         <ButtonRow>
-          <LeoSquaredButton
+          <Button
             onClick={onCancel}
             kind='outline'
           >
             {getLocale('braveWalletRemoveNftModalCancel')}
-          </LeoSquaredButton>
-          <LeoSquaredButton onClick={onConfirm}>
+          </Button>
+          <Button onClick={onConfirm}>
             {getLocale('braveWalletRemoveNftModalConfirm')}
-          </LeoSquaredButton>
+          </Button>
         </ButtonRow>
       </StyledWrapper>
     </PopupModal>

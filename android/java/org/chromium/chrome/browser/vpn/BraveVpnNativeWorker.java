@@ -176,6 +176,10 @@ public class BraveVpnNativeWorker {
         return BraveVpnNativeWorkerJni.get().isPurchasedUser(mNativeBraveVpnNativeWorker);
     }
 
+    public boolean isSupportedRegion() {
+        return BraveVpnNativeWorkerJni.get().isSupportedRegion(mNativeBraveVpnNativeWorker);
+    }
+
     public void getSubscriberCredentialV12() {
         BraveVpnNativeWorkerJni.get().getSubscriberCredentialV12(mNativeBraveVpnNativeWorker);
     }
@@ -238,6 +242,8 @@ public class BraveVpnNativeWorker {
         void reloadPurchasedState(long nativeBraveVpnNativeWorker);
 
         boolean isPurchasedUser(long nativeBraveVpnNativeWorker);
+
+        boolean isSupportedRegion(long nativeBraveVpnNativeWorker);
 
         void getSubscriberCredentialV12(long nativeBraveVpnNativeWorker);
 

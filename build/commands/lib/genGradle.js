@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import config from './config.js'
+import config from './config.ts'
 import util from './util.js'
-import Log from './logging.js'
+import * as Log from './log.ts'
 
 const genGradle = (
   passthroughArgs,

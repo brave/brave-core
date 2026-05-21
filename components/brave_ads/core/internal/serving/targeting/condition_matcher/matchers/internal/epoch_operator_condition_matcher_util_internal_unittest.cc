@@ -18,35 +18,35 @@ class BraveAdsOperatorConditionMatcherUtilInternalTest : public test::TestBase {
 TEST_F(BraveAdsOperatorConditionMatcherUtilInternalTest,
        DoNotParseNegativeDays) {
   // Act & Assert
-  EXPECT_FALSE(ParseDays("[T=]:-1"));
+  EXPECT_FALSE(MaybeParseDays("[T=]:-1"));
 }
 
 TEST_F(BraveAdsOperatorConditionMatcherUtilInternalTest, ParseDayZero) {
   // Act & Assert
-  EXPECT_EQ(0, ParseDays("[T=]:0"));
+  EXPECT_EQ(0, MaybeParseDays("[T=]:0"));
 }
 
-TEST_F(BraveAdsOperatorConditionMatcherUtilInternalTest, ParseDays) {
+TEST_F(BraveAdsOperatorConditionMatcherUtilInternalTest, MaybeParseDays) {
   // Act & Assert
-  EXPECT_EQ(7, ParseDays("[T=]:7"));
+  EXPECT_EQ(7, MaybeParseDays("[T=]:7"));
 }
 
 TEST_F(BraveAdsOperatorConditionMatcherUtilInternalTest,
        DoNotParseNonIntegerDays) {
   // Act & Assert
-  EXPECT_FALSE(ParseDays("[T=]:1.5"));
+  EXPECT_FALSE(MaybeParseDays("[T=]:1.5"));
 }
 
 TEST_F(BraveAdsOperatorConditionMatcherUtilInternalTest,
        DoNotParseMalformedDays) {
   // Act & Assert
-  EXPECT_FALSE(ParseDays("[T=]: 7 "));
+  EXPECT_FALSE(MaybeParseDays("[T=]: 7 "));
 }
 
 TEST_F(BraveAdsOperatorConditionMatcherUtilInternalTest,
        DoNotParseInvalidDays) {
   // Act & Assert
-  EXPECT_FALSE(ParseDays("[T=]:seven"));
+  EXPECT_FALSE(MaybeParseDays("[T=]:seven"));
 }
 
 TEST_F(BraveAdsOperatorConditionMatcherUtilInternalTest, IsUnixEpochTimestamp) {
@@ -101,9 +101,9 @@ TEST_F(BraveAdsOperatorConditionMatcherUtilInternalTest,
   AdvanceClockTo(test::TimeFromUTCString("3 October 2024"));
 
   // Act & Assert
-  EXPECT_EQ(
-      base::Days(2),
-      ParseTimeDelta("13372214400000000" /*1st October 2024 00:00:00 UTC*/));
+  EXPECT_EQ(base::Days(2),
+            MaybeParseTimeDelta(
+                "13372214400000000" /*1st October 2024 00:00:00 UTC*/));
 }
 
 TEST_F(BraveAdsOperatorConditionMatcherUtilInternalTest,
@@ -112,9 +112,9 @@ TEST_F(BraveAdsOperatorConditionMatcherUtilInternalTest,
   AdvanceClockTo(test::TimeFromUTCString("3 October 2024"));
 
   // Act & Assert
-  EXPECT_EQ(
-      base::Days(2),
-      ParseTimeDelta("1727740800.3237710" /*1st October 2024 00:00:00 UTC*/));
+  EXPECT_EQ(base::Days(2),
+            MaybeParseTimeDelta(
+                "1727740800.3237710" /*1st October 2024 00:00:00 UTC*/));
 }
 
 TEST_F(BraveAdsOperatorConditionMatcherUtilInternalTest,
@@ -123,8 +123,8 @@ TEST_F(BraveAdsOperatorConditionMatcherUtilInternalTest,
   AdvanceClockTo(test::TimeFromUTCString("3 October 2024"));
 
   // Act & Assert
-  EXPECT_EQ(base::Days(2),
-            ParseTimeDelta("1727740800" /*1st October 2024 00:00:00 UTC*/));
+  EXPECT_EQ(base::Days(2), MaybeParseTimeDelta(
+                               "1727740800" /*1st October 2024 00:00:00 UTC*/));
 }
 
 TEST_F(BraveAdsOperatorConditionMatcherUtilInternalTest,
@@ -133,38 +133,39 @@ TEST_F(BraveAdsOperatorConditionMatcherUtilInternalTest,
   AdvanceClockTo(test::TimeFromUTCString("3 October 2024"));
 
   // Act & Assert
+  EXPECT_EQ(base::Days(2),
+            MaybeParseTimeDelta(
+                "2024-10-01T00:00:00Z" /*1st October 2024 00:00:00 UTC*/));
   EXPECT_EQ(
       base::Days(2),
-      ParseTimeDelta("2024-10-01T00:00:00Z" /*1st October 2024 00:00:00 UTC*/));
-  EXPECT_EQ(
-      base::Days(2),
-      ParseTimeDelta(
+      MaybeParseTimeDelta(
           "2024-10-01T00:00:00.000000Z" /*1st October 2024 00:00:00 UTC*/));
+  EXPECT_EQ(base::Days(2),
+            MaybeParseTimeDelta(
+                "2024-10-01T00:00:00" /*1st October 2024 00:00:00 UTC*/));
   EXPECT_EQ(
       base::Days(2),
-      ParseTimeDelta("2024-10-01T00:00:00" /*1st October 2024 00:00:00 UTC*/));
-  EXPECT_EQ(
-      base::Days(2),
-      ParseTimeDelta(
+      MaybeParseTimeDelta(
           "2024-10-01T00:00:00.000000" /*1st October 2024 00:00:00 UTC*/));
   EXPECT_EQ(base::Days(2),
-            ParseTimeDelta(
+            MaybeParseTimeDelta(
                 "2024-09-30T19:00:00-05:00" /*1st October 2024 00:00:00 UTC*/));
+  EXPECT_EQ(base::Days(2),
+            MaybeParseTimeDelta(
+                "1 Oct 2024 00:00:00" /*1st October 2024 00:00:00 UTC*/));
   EXPECT_EQ(
       base::Days(2),
-      ParseTimeDelta("1 Oct 2024 00:00:00" /*1st October 2024 00:00:00 UTC*/));
-  EXPECT_EQ(
-      base::Days(2),
-      ParseTimeDelta(
+      MaybeParseTimeDelta(
           "1 Oct 2024 00:00:00.000000" /*1st October 2024 00:00:00 UTC*/));
   EXPECT_EQ(base::Days(2),
-            ParseTimeDelta(
+            MaybeParseTimeDelta(
                 "30 Sept 2024 19:00:00 EST" /*1st October 2024 00:00:00 UTC*/));
 }
 
-TEST_F(BraveAdsOperatorConditionMatcherUtilInternalTest, DoNotParseTimeDelta) {
+TEST_F(BraveAdsOperatorConditionMatcherUtilInternalTest,
+       DoNotMaybeParseTimeDelta) {
   // Act & Assert
-  EXPECT_FALSE(ParseTimeDelta("broken time"));
+  EXPECT_FALSE(MaybeParseTimeDelta("broken time"));
 }
 
 }  // namespace brave_ads

@@ -5,16 +5,37 @@
 
 package org.chromium.chrome.browser.identity_disc;
 
-import android.content.Context;
+import android.app.Activity;
 
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
+import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
+import org.chromium.components.browser_ui.device_lock.DeviceLockActivityLauncher;
+import org.chromium.ui.base.ActivityResultTracker;
+import org.chromium.ui.base.WindowAndroid;
+import org.chromium.ui.modaldialog.ModalDialogManager;
 
 /** Brave's implementation for IdentityDiscController. */
 public class BraveIdentityDiscController extends IdentityDiscController {
     public BraveIdentityDiscController(
-            Context context, MonotonicObservableSupplier<Profile> profileSupplier) {
-        super(context, profileSupplier);
+            Activity activity,
+            WindowAndroid windowAndroid,
+            ActivityResultTracker activityResultTracker,
+            DeviceLockActivityLauncher deviceLockActivityLauncher,
+            MonotonicObservableSupplier<Profile> profileSupplier,
+            BottomSheetController bottomSheetController,
+            ModalDialogManager modalDialogManager,
+            SnackbarManager snackbarManager) {
+        super(
+                activity,
+                windowAndroid,
+                activityResultTracker,
+                deviceLockActivityLauncher,
+                profileSupplier,
+                bottomSheetController,
+                modalDialogManager,
+                snackbarManager);
     }
 
     /*

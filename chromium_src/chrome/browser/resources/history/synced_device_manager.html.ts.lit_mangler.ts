@@ -7,13 +7,13 @@ import { mangle } from 'lit_mangler'
 
 mangle(
   (element) => {
-    const signInGuide = element.querySelector('#sign-in-guide')
+    const signInGuide = element.querySelector('#signInGuide')
     if (!signInGuide) {
       throw new Error(
-        '[Brave History] Could not find #sign-in-guide. Has upstream changed?',
+        '[Brave History] Could not find #signInGuide. Has upstream changed?',
       )
     }
-    signInGuide.remove()
+    signInGuide.setAttribute('style', 'display: none')
   },
-  (literal) => literal.text.includes('id="sign-in-guide"'),
+  (literal) => literal.text.includes('id="signInGuide"'),
 )

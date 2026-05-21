@@ -81,7 +81,14 @@ export default class BitcoinLedgerBridgeKeyring
         derivationPath: path,
       })
     }
-    return { success: true, accounts: accounts }
+
+    const deviceName = await this.getDeviceName()
+
+    return {
+      success: true,
+      accounts,
+      deviceName: deviceName.success ? deviceName.deviceName : '',
+    }
   }
 
   signTransaction = async (

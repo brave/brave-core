@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <vector>
 
+#include "base/functional/callback_forward.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 
@@ -44,12 +45,12 @@ class ToolProvider {
   // should only maintain state within the tool loop of a single set of
   // responses. For example a TODO tool would only be applicable during 1 task,
   // but not a whole conversation.
-  virtual void OnNewGenerationLoop() {}
+  virtual void UpdateToolsForNewGenerationLoop(base::OnceClosure on_updated);
 
   // A response has been completed with no more tool use requests to handle.
-  // Future requests might be made in a new loop (after `OnNewGenerationLoop` is
-  // called). This is a good opportunity to hand over any control back to the
-  // user.
+  // Future requests might be made in a new loop (after
+  // `UpdateToolsForNewGenerationLoop` is called). This is a good opportunity to
+  // hand over any control back to the user.
   virtual void OnGenerationCompleteWithNoToolsToHandle() {}
 
   // A task can be interrupted by the user by some external means that the
@@ -75,13 +76,12 @@ class ToolProvider {
 
   // Returns the list of tools available for the conversation.
   // The returned pointers *should* be valid as long as the ToolProvider exists
-  // until either the ToolProvider is destroyed, or `OnNewGenerationLoop` is
-  // called. Implementors should aim to not destroy any tools outside of
-  // `OnNewGenerationLoop`, so that Tools don't go away mid-loop and leave
-  // conversations hanging waiting for a response or not finding a tool that's
-  // been requested.
-  // Note: any filtering conditions required by ToolProviders can be added as
-  // params here.
+  // until either the ToolProvider is destroyed, or
+  // `UpdateToolsForNewGenerationLoop` is called. Implementors should aim to not
+  // destroy any tools outside of `UpdateToolsForNewGenerationLoop`, so that
+  // Tools don't go away mid-loop and leave conversations hanging waiting for a
+  // response or not finding a tool that's been requested. Note: any filtering
+  // conditions required by ToolProviders can be added as params here.
   virtual std::vector<base::WeakPtr<Tool>> GetTools() = 0;
 
   // User has requested to pause any tasks including any currently executing
@@ -94,8 +94,8 @@ class ToolProvider {
   virtual void ResumeAllTasks() {}
 
   // Attempts to stops all current tasks started by Tools from this
-  // ToolProvider. Tasks will not be resumed unless OnNewGenerationLoop is
-  // called.
+  // ToolProvider. Tasks will not be resumed unless
+  // UpdateToolsForNewGenerationLoop is called.
   virtual void StopAllTasks() {}
 
  protected:

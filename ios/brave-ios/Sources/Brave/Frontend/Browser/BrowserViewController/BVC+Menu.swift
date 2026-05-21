@@ -332,11 +332,11 @@ extension BrowserViewController {
   }
 
   private var vpnMenuAction: Action {
-    func alertForExpiredState() -> UIAlertController? {
-      if !BraveSkusManager.keepShowingSessionExpiredState {
+    let alertForExpiredState: () -> UIAlertController? = { [unowned self] in
+      if !BraveVPN.isSkusCredentialSessionExpired {
         return nil
       }
-      return BraveSkusManager.sessionExpiredStateAlert(loginCallback: { _ in
+      return vpnSessionExpiredStateAlert(loginCallback: { _ in
         self.openURLInNewTab(
           .brave.account,
           isPrivate: self.privateBrowsingManager.isPrivateBrowsing,
@@ -474,7 +474,10 @@ extension BrowserViewController {
               tabManager: self.tabManager,
               toolbarUrlActionsDelegate: self,
               dismiss: { [weak self] in self?.dismiss(animated: true) },
-              askForAuthentication: self.askForLocalAuthentication
+              askForAuthentication: self.askForLocalAuthentication,
+              serpMetrics: SerpMetricsServiceFactory.get(
+                profile: self.profileController.profile
+              )
             )
           )
         )

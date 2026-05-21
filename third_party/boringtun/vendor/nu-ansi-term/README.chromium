@@ -1,0 +1,13 @@
+Name: nu-ansi-term
+Short Name: nu-ansi-term
+URL: https://github.com/nushell/nu-ansi-term
+Version: 0.50.3
+License: MIT
+
+Description:
+Transitive dependency of BoringTun, vendored under
+brave/third_party/boringtun/vendor/nu-ansi-term.
+
+Local Modifications:
+None. Source vendored via `cargo vendor` from crates.io at the version
+pinned by brave/third_party/boringtun/Cargo.lock.

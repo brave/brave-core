@@ -17,6 +17,9 @@ class TimeDelta;
 
 namespace brave_ads {
 
+// A one-shot timer backed by `base::WallClockTimer`, so it fires correctly even
+// if `TimeTicks` freeze during system suspend. `StartWithPrivacy` randomizes
+// the delay for privacy.
 class Timer final {
  public:
   Timer();

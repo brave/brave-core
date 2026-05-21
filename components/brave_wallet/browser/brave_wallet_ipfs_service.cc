@@ -19,12 +19,6 @@ BraveWalletIpfsService::BraveWalletIpfsService(PrefService* pref_service)
 
 BraveWalletIpfsService::~BraveWalletIpfsService() = default;
 
-mojo::PendingRemote<mojom::IpfsService> BraveWalletIpfsService::MakeRemote() {
-  mojo::PendingRemote<mojom::IpfsService> remote;
-  receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
-  return remote;
-}
-
 void BraveWalletIpfsService::Bind(
     mojo::PendingReceiver<mojom::IpfsService> receiver) {
   receivers_.Add(this, std::move(receiver));
@@ -34,8 +28,7 @@ void BraveWalletIpfsService::TranslateToGatewayURL(
     const std::string& url,
     TranslateToGatewayURLCallback callback) {
   GURL new_url;
-  if (ipfs::TranslateIPFSURI(GURL(url), &new_url,
-                             false)) {
+  if (ipfs::TranslateIPFSURI(GURL(url), &new_url, false)) {
     std::move(callback).Run(new_url.spec());
   } else {
     std::move(callback).Run(std::nullopt);

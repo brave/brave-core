@@ -64,11 +64,13 @@ class Widget;
 }  // namespace views
 
 class BraveBrowser;
+class BraveShieldsToolbarButton;
 class BraveHelpBubbleHostView;
 class BraveMultiContentsView;
 class ContentsLayoutManager;
 class SidebarContainerView;
 class SidePanelEntry;
+class TabStripPlacementCoordinator;
 class VerticalTabStripWidgetDelegateView;
 class ViewShadow;
 
@@ -125,7 +127,6 @@ class BraveBrowserView : public BrowserView,
 #endif
   bool GetTabStripVisible() const override;
   bool ShouldShowWindowTitle() const override;
-  void OnThemeChanged() override;
   void OnActiveTabChanged(content::WebContents* old_contents,
                           content::WebContents* new_contents,
                           int index,
@@ -167,6 +168,16 @@ class BraveBrowserView : public BrowserView,
   SidebarContainerView* sidebar_container_view() {
     return sidebar_container_view_;
   }
+
+  TabStripPlacementCoordinator* tab_strip_placement_coordinator() {
+    return tab_strip_placement_.get();
+  }
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  // Returns the PWA Shields toolbar button, if it exists. Note that this
+  // returns valid pointer only when it's web app browser.
+  BraveShieldsToolbarButton* GetPwaShieldsToolbarButton();
+#endif
 
  private:
   class TabCyclingEventHandler;
@@ -240,6 +251,13 @@ class BraveBrowserView : public BrowserView,
   BraveBrowser* GetBraveBrowser() const;
   void UpdateWebViewRoundedCorners();
 
+  // FindBarHost is anchored to |find_bar_host_view_|; it must remain the last
+  // child of BrowserView for correct z-order. Call when a child is added after
+  // the ctor reorder (e.g. embedded vertical tab strip in AddedToWidget()).
+  // |find_bar_host_view_| must exist (BrowserView creates it before this
+  // class's ctor body runs).
+  void EnsureFindBarHostViewIsLastChild();
+
   sidebar::Sidebar* InitSidebar() override;
   void ToggleSidebar() override;
   bool HasSelectedURL() const override;
@@ -258,12 +276,12 @@ class BraveBrowserView : public BrowserView,
     return top_container_separator_;
   }
 
+  std::unique_ptr<TabStripPlacementCoordinator> tab_strip_placement_;
   std::unique_ptr<views::Widget> vertical_tab_strip_widget_;
 
   bool closing_confirm_dialog_activated_ = false;
   raw_ptr<BraveHelpBubbleHostView> brave_help_bubble_host_view_ = nullptr;
   raw_ptr<SidebarContainerView> sidebar_container_view_ = nullptr;
-  raw_ptr<views::View> sidebar_separator_view_ = nullptr;
   raw_ptr<views::View> contents_background_view_ = nullptr;
   raw_ptr<views::View> vertical_tab_strip_host_view_ = nullptr;
   raw_ptr<VerticalTabStripWidgetDelegateView, DanglingUntriaged>

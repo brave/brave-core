@@ -10,5 +10,8 @@ brave_browser_hub_internal_java_sources = [
   "//brave/browser/hub/internal/android/java/src/org/chromium/chrome/browser/hub/BraveHubToolbarView.java",
 ]
 
-brave_browser_hub_internal_java_deps =
-    [ "//brave/browser/brave_shields/android:java" ]
+brave_browser_hub_internal_java_deps = [
+  "//base:base_shared_preferences_java",
+  "//brave/browser/brave_shields/android:java",
+  "//chrome/browser/preferences:java",
+]

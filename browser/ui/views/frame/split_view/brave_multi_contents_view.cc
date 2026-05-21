@@ -47,7 +47,7 @@ void BraveMultiContentsView::UseContentsContainerViewForWebPanel() {
         AddChildView(std::make_unique<BraveContentsContainerView>(
             browser_view_, /*for_web_panel*/ true));
     contents_container_view_for_web_panel_->SetVisible(false);
-    web_contents_focused_subscriptions_.push_back(
+    contents_focused_subscriptions_.push_back(
         contents_container_view_for_web_panel_->contents_view()
             ->AddWebContentsFocusedCallback(base::BindRepeating(
                 &BraveMultiContentsView::OnWebContentsFocused,

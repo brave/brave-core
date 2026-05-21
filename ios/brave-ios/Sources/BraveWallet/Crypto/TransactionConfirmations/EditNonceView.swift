@@ -54,7 +54,8 @@ struct EditNonceView: View {
       }
     }
     .listStyle(InsetGroupedListStyle())
-    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+    .scrollContentBackground(.hidden)
+    .background(Color(UIColor.braveGroupedBackground))
     .navigationBarTitleDisplayMode(.inline)
     .navigationTitle(Strings.Wallet.advancedSettingsTransaction)
     .alert(isPresented: $isShowingAlert) {

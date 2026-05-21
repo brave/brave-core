@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/flat_set.h"
 #include "base/memory/raw_ref.h"
 #include "brave/browser/ui/containers/container_model.h"
 #include "brave/components/containers/core/mojom/containers.mojom.h"
@@ -36,6 +37,8 @@ class ContainersMenuModel : public ui::SimpleMenuModel,
     virtual ~Delegate() = default;
 
     virtual void OnContainerSelected(const mojom::ContainerPtr& container) = 0;
+    virtual void OnNoContainerSelected() = 0;
+    virtual void OnNewTemporaryContainerSelected() = 0;
     virtual base::flat_set<std::string> GetCurrentContainerIds() = 0;
     virtual Browser* GetBrowserToOpenSettings() = 0;
     virtual float GetScaleFactor() = 0;
@@ -54,6 +57,7 @@ class ContainersMenuModel : public ui::SimpleMenuModel,
 
   ContainersMenuModel(Delegate& delegate, std::vector<ContainerModel> items);
 
+  void BuildMenuItems();
   void OpenContainerSettingsPage();
   void ContainerSelected(int command_id);
 
@@ -61,8 +65,8 @@ class ContainersMenuModel : public ui::SimpleMenuModel,
   int ItemIndexToCommandId(int item_index) const;
 
   base::raw_ref<Delegate> delegate_;
-  std::vector<ContainerModel> items_;
   base::flat_set<std::string> current_container_ids_;
+  std::vector<ContainerModel> items_;
 };
 
 }  // namespace containers

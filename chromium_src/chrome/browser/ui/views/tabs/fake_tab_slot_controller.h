@@ -48,7 +48,7 @@
 #define ShiftGroupRight(...)                                                 \
   ShiftGroupRight_Unused();                                                  \
   int GetTreeHeight(const tree_tab::TreeTabNodeId& id) const override;       \
-  const tabs::TreeTabNode& GetTreeTabNode(const tree_tab::TreeTabNodeId& id) \
+  const tabs::TreeTabNode* GetTreeTabNode(const tree_tab::TreeTabNodeId& id) \
       const override;                                                        \
   void SetTreeTabNodeCollapsed(const tree_tab::TreeTabNodeId& id,            \
                                bool collapsed) override;                     \
@@ -56,8 +56,28 @@
       const override;                                                        \
   void ShiftGroupRight(__VA_ARGS__)
 
+// Brave: test-controlled tab minimum width mode (brave_tabs::TabMinWidthMode).
+#define GetStrokeThickness()                                       \
+  GetStrokeThickness() const override;                             \
+                                                                   \
+ private:                                                          \
+  brave_tabs::TabMinWidthMode tab_min_width_mode_ =                \
+      brave_tabs::TabMinWidthMode::kDefault;                       \
+  bool horizontal_scrolling_enabled_ = false;                      \
+                                                                   \
+ public:                                                           \
+  void set_tab_min_width_mode(brave_tabs::TabMinWidthMode mode) {  \
+    tab_min_width_mode_ = mode;                                    \
+  }                                                                \
+  void set_horizontal_scrolling_enabled(bool enabled) {            \
+    horizontal_scrolling_enabled_ = enabled;                       \
+  }                                                                \
+  brave_tabs::TabMinWidthMode GetTabMinWidthMode() const override; \
+  bool IsHorizontalScrollingEnabled()
+
 #include <chrome/browser/ui/views/tabs/fake_tab_slot_controller.h>  // IWYU pragma: export
 
+#undef GetStrokeThickness
 #undef ShiftGroupRight
 #undef CanPaintThrobberToLayer
 #undef EndDrag

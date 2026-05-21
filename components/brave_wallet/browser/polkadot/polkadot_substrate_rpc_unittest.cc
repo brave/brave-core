@@ -6,9 +6,11 @@
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc.h"
 
 #include "base/test/bind.h"
+#include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -119,6 +121,41 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetChainName) {
   std::tie(network_name, error) = future.Take();
   EXPECT_EQ(network_name, std::nullopt);
   EXPECT_EQ(error, WalletInternalErrorMessage());
+}
+
+TEST_F(PolkadotSubstrateRpcUnitTest, BraveServicesKey) {
+  base::MockCallback<PolkadotSubstrateRpc::GetChainNameCallback> callback;
+
+  // A user-configured (non-Brave-proxy) RPC endpoint must not receive the
+  // services key.
+  network_manager_->SetNetworkURLForTesting(
+      mojom::kPolkadotTestnet, GURL("https://polkadot-test.example.com/"));
+  polkadot_substrate_rpc_->GetChainName(mojom::kPolkadotTestnet,
+                                        callback.Get());
+  ASSERT_EQ(url_loader_factory_.pending_requests()->size(), 1u);
+  EXPECT_FALSE(
+      url_loader_factory_.pending_requests()->front().request.headers.GetHeader(
+          kBraveServicesKeyHeader));
+
+  url_loader_factory_.pending_requests()->clear();
+
+  // The default Brave wallet proxy URLs must receive the services key.
+  network_manager_->SetNetworkURLForTesting(mojom::kPolkadotTestnet, GURL());
+  polkadot_substrate_rpc_->GetChainName(mojom::kPolkadotTestnet,
+                                        callback.Get());
+  ASSERT_EQ(url_loader_factory_.pending_requests()->size(), 1u);
+  EXPECT_TRUE(
+      url_loader_factory_.pending_requests()->front().request.headers.GetHeader(
+          kBraveServicesKeyHeader));
+
+  url_loader_factory_.pending_requests()->clear();
+
+  polkadot_substrate_rpc_->GetChainName(mojom::kPolkadotMainnet,
+                                        callback.Get());
+  ASSERT_EQ(url_loader_factory_.pending_requests()->size(), 1u);
+  EXPECT_TRUE(
+      url_loader_factory_.pending_requests()->front().request.headers.GetHeader(
+          kBraveServicesKeyHeader));
 }
 
 TEST_F(PolkadotSubstrateRpcUnitTest, GetAccountBalance) {
@@ -1941,7 +1978,8 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetMetadata) {
 
   EXPECT_EQ(testnet_url, "https://polkadot-westend.wallet.brave.com/");
 
-  base::test::TestFuture<base::expected<std::string, std::string>> future;
+  base::test::TestFuture<base::expected<std::vector<uint8_t>, std::string>>
+      future;
 
   {
     // Successful RPC call (nullary).
@@ -1973,7 +2011,10 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetMetadata) {
 
     auto metadata = future.Take();
     ASSERT_TRUE(metadata.has_value());
-    EXPECT_EQ(*metadata, "0x6d65746164617461");
+    std::vector<uint8_t> expected_bytes;
+    ASSERT_TRUE(
+        PrefixedHexStringToBytes("0x6d65746164617461", &expected_bytes));
+    EXPECT_EQ(*metadata, expected_bytes);
   }
 
   {

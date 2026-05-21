@@ -14,6 +14,11 @@ class ScopedPacingRandomNumberSetterForTesting final {
  public:
   explicit ScopedPacingRandomNumberSetterForTesting(double number);
 
+  ScopedPacingRandomNumberSetterForTesting(
+      const ScopedPacingRandomNumberSetterForTesting&) = delete;
+  ScopedPacingRandomNumberSetterForTesting& operator=(
+      const ScopedPacingRandomNumberSetterForTesting&) = delete;
+
   ~ScopedPacingRandomNumberSetterForTesting();
 };
 

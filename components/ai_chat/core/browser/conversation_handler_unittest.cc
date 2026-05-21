@@ -61,6 +61,7 @@
 #include "components/os_crypt/async/browser/test_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "mojo/public/cpp/bindings/receiver.h"
+#include "services/network/public/cpp/network_context_getter.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
@@ -90,12 +91,17 @@ class MockAIChatCredentialManager : public AIChatCredentialManager {
               (override));
 };
 
+// TODO(https://github.com/brave/brave-browser/issues/55381): Use
+// MockToolProvider from mock_tool_provider.h.
 class MockToolProvider : public ToolProvider {
  public:
   MockToolProvider() = default;
   ~MockToolProvider() override = default;
 
-  MOCK_METHOD(void, OnNewGenerationLoop, (), (override));
+  MOCK_METHOD(void,
+              UpdateToolsForNewGenerationLoop,
+              (base::OnceClosure),
+              (override));
   MOCK_METHOD(void, OnGenerationCompleteWithNoToolsToHandle, (), (override));
   MOCK_METHOD(std::vector<base::WeakPtr<Tool>>, GetTools, (), (override));
   MOCK_METHOD(void, StopAllTasks, (), (override));
@@ -138,7 +144,10 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
 
   MOCK_METHOD(void, OnAPIRequestInProgress, (bool), (override));
 
-  MOCK_METHOD(void, OnAPIResponseError, (mojom::APIError), (override));
+  MOCK_METHOD(void,
+              OnAPIResponseError,
+              (mojom::APIError, mojom::APIErrorDetailsPtr),
+              (override));
 
   MOCK_METHOD(void,
               OnTaskStateChanged,
@@ -152,11 +161,13 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
                std::vector<mojom::ModelPtr> all_models),
               (override));
 
+#if BUILDFLAG(IS_IOS)
   MOCK_METHOD(void,
               OnSuggestedQuestionsChanged,
               (const std::vector<std::string>&,
                mojom::SuggestionGenerationStatus),
               (override));
+#endif
 
   MOCK_METHOD(void,
               OnAssociatedContentInfoChanged,
@@ -234,7 +245,8 @@ class ConversationHandlerUnitTest : public testing::Test {
                                   std::move(premium_info));
         });
 
-    model_service_ = std::make_unique<ModelService>(&prefs_);
+    model_service_ = std::make_unique<ModelService>(
+        &prefs_, os_crypt_.get(), network::NetworkContextGetter());
 
     ai_chat_service_ = std::make_unique<AIChatService>(
         model_service_.get(), nullptr /* tab_tracker_service */,
@@ -265,6 +277,10 @@ class ConversationHandlerUnitTest : public testing::Test {
       return std::vector<base::WeakPtr<Tool>>();
     });
 
+    // Invoke the callback immediately by default
+    ON_CALL(*mock_tool_provider_, UpdateToolsForNewGenerationLoop)
+        .WillByDefault([](base::OnceClosure cb) { std::move(cb).Run(); });
+
     conversation_handler_->SetEngineForTesting(
         std::make_unique<NiceMock<MockEngineConsumer>>());
 
@@ -286,11 +302,6 @@ class ConversationHandlerUnitTest : public testing::Test {
   void EmulateUserOptedIn() { ::ai_chat::SetUserOptedIn(&prefs_, true); }
 
   void EmulateUserOptedOut() { ::ai_chat::SetUserOptedIn(&prefs_, false); }
-
-  void TearDown() override {
-    mock_tool_provider_ = nullptr;
-    ai_chat_service_.reset();
-  }
 
   void SetAssociatedContentStagedEntries(bool empty = false,
                                          bool multi = false) {
@@ -359,18 +370,18 @@ class ConversationHandlerUnitTest : public testing::Test {
 
  protected:
   base::test::TaskEnvironment task_environment_;
-  std::unique_ptr<AIChatService> ai_chat_service_;
-  std::unique_ptr<ModelService> model_service_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   sync_preferences::TestingPrefServiceSyncable local_state_;
   std::unique_ptr<os_crypt_async::OSCryptAsync> os_crypt_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
-  std::unique_ptr<NiceMock<MockAssociatedContent>> associated_content_;
-  mojom::ConversationPtr conversation_;
-  raw_ptr<MockToolProvider> mock_tool_provider_;
-  std::unique_ptr<ConversationHandler> conversation_handler_;
+  std::unique_ptr<ModelService> model_service_;
+  std::unique_ptr<AIChatService> ai_chat_service_;
   std::unique_ptr<NiceMock<MockAIChatFeedbackAPI>> mock_feedback_api_;
+  mojom::ConversationPtr conversation_;
+  std::unique_ptr<NiceMock<MockAssociatedContent>> associated_content_;
+  std::unique_ptr<ConversationHandler> conversation_handler_;
+  raw_ptr<MockToolProvider> mock_tool_provider_;
   bool is_opted_in_ = true;
   bool has_associated_content_ = true;
 
@@ -444,8 +455,10 @@ MATCHER_P(TurnEq, expected_turn, "") {
          arg->model_key == expected_turn->model_key;
 }
 
-TEST_F(ConversationHandlerUnitTest, GetState) {
+TEST_F(ConversationHandlerUnitTest, State) {
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  NiceMock<MockUntrustedConversationHandlerClient> entries_client(
+      conversation_handler_.get());
   for (bool should_send_content : {false, true}) {
     SCOPED_TRACE(testing::Message()
                  << "should_send_content: " << should_send_content);
@@ -468,22 +481,26 @@ TEST_F(ConversationHandlerUnitTest, GetState) {
                     model_service_->GetModels().size());
           EXPECT_EQ(state->current_model_key,
                     model_service_->GetDefaultModelKey());
-          if (should_send_content) {
-            EXPECT_THAT(state->suggested_questions,
-                        testing::ElementsAre(l10n_util::GetStringUTF8(
-                            IDS_CHAT_UI_SUMMARIZE_PAGE)));
-          } else {
-            EXPECT_EQ(4u, state->suggested_questions.size());
-          }
-          EXPECT_EQ(state->suggestion_status,
-                    should_send_content
-                        ? mojom::SuggestionGenerationStatus::CanGenerate
-                        : mojom::SuggestionGenerationStatus::None);
           EXPECT_NE(state->associated_content.empty(), should_send_content);
           EXPECT_EQ(state->error, mojom::APIError::None);
           run_loop.Quit();
         }));
     run_loop.Run();
+
+    auto entries_state =
+        conversation_handler_->GetStateForConversationEntriesForTesting();
+
+    if (should_send_content) {
+      EXPECT_THAT(entries_state->suggested_questions,
+                  testing::ElementsAre(
+                      l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE)));
+    } else {
+      EXPECT_EQ(4u, entries_state->suggested_questions.size());
+    }
+    EXPECT_EQ(entries_state->suggestion_status,
+              should_send_content
+                  ? mojom::SuggestionGenerationStatus::CanGenerate
+                  : mojom::SuggestionGenerationStatus::None);
   }
 }
 
@@ -1348,8 +1365,8 @@ TEST_F(ConversationHandlerUnitTest, MAYBE_ModifyConversation) {
   observer.Observe(conversation_handler_.get());
 
   // Make a first edit
-  conversation_handler_->ModifyConversation(history[0]->uuid.value(),
-                                            "prompt2");
+  conversation_handler_->ModifyConversation(history[0]->uuid.value(), "prompt2",
+                                            std::nullopt);
   testing::Mock::VerifyAndClearExpectations(&observer);
 
   // Create the entries events in the way we're expecting to look
@@ -1398,7 +1415,7 @@ TEST_F(ConversationHandlerUnitTest, MAYBE_ModifyConversation) {
                   "chat-basic" /* model_key */)))));
 
   conversation_handler_->ModifyConversation(
-      conversation_history[0]->uuid.value(), "prompt3");
+      conversation_history[0]->uuid.value(), "prompt3", std::nullopt);
 
   auto second_edit_expected_history = CloneHistory(first_edit_expected_history);
   auto second_edit = first_edit->Clone();
@@ -1421,7 +1438,7 @@ TEST_F(ConversationHandlerUnitTest, MAYBE_ModifyConversation) {
   EXPECT_CALL(*engine, GenerateAssistantResponse(_, _, _, _, _, _, _, _))
       .Times(0);
   conversation_handler_->ModifyConversation(
-      conversation_history[1]->uuid.value(), " answer2 ");
+      conversation_history[1]->uuid.value(), " answer2 ", std::nullopt);
 
   auto third_edit_expected_history = CloneHistory(second_edit_expected_history);
 
@@ -2138,6 +2155,7 @@ TEST_F(ConversationHandlerUnitTest, GenerateQuestions) {
 
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
   testing::Sequence s;
+#if BUILDFLAG(IS_IOS)
   EXPECT_CALL(client, OnSuggestedQuestionsChanged(
                           testing::ElementsAre(initial_question),
                           mojom::SuggestionGenerationStatus::IsGenerating))
@@ -2148,6 +2166,30 @@ TEST_F(ConversationHandlerUnitTest, GenerateQuestions) {
                           mojom::SuggestionGenerationStatus::HasGenerated))
       .Times(testing::AtLeast(1))
       .InSequence(s);
+#endif
+
+  testing::Sequence entries_status_sequence;
+  testing::NiceMock<MockUntrustedConversationHandlerClient> entries_observer(
+      conversation_handler_.get());
+  EXPECT_CALL(
+      entries_observer,
+      OnEntriesUIStateChanged(testing::Pointee(testing::AllOf(
+          testing::Field(&mojom::ConversationEntriesState::suggested_questions,
+                         testing::ElementsAre(initial_question)),
+          testing::Field(&mojom::ConversationEntriesState::suggestion_status,
+                         mojom::SuggestionGenerationStatus::IsGenerating)))))
+      .Times(testing::AtLeast(1))
+      .InSequence(entries_status_sequence);
+  EXPECT_CALL(
+      entries_observer,
+      OnEntriesUIStateChanged(testing::Pointee(testing::AllOf(
+          testing::Field(&mojom::ConversationEntriesState::suggested_questions,
+                         testing::ContainerEq(expected_results)),
+          testing::Field(&mojom::ConversationEntriesState::suggestion_status,
+                         mojom::SuggestionGenerationStatus::HasGenerated)))))
+      .Times(testing::AtLeast(1))
+      .InSequence(entries_status_sequence);
+
   conversation_handler_->GenerateQuestions();
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&client);
@@ -2260,9 +2302,10 @@ TEST_F(ConversationHandlerUnitTest, GenerateQuestions_DisableSendPageContent) {
       conversation_handler_->GetEngineForTesting());
   EXPECT_CALL(*engine, GenerateQuestionSuggestions(_, _)).Times(0);
 
-  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  NiceMock<MockUntrustedConversationHandlerClient> client(
+      conversation_handler_.get());
   testing::Sequence s;
-  EXPECT_CALL(client, OnSuggestedQuestionsChanged(_, _)).Times(0);
+  EXPECT_CALL(client, OnEntriesUIStateChanged).Times(0);
   conversation_handler_->GenerateQuestions();
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&client);
@@ -2276,9 +2319,10 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent, GenerateQuestions) {
       conversation_handler_->GetEngineForTesting());
   EXPECT_CALL(*engine, GenerateQuestionSuggestions(_, _)).Times(0);
 
-  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  NiceMock<MockUntrustedConversationHandlerClient> client(
+      conversation_handler_.get());
   testing::Sequence s;
-  EXPECT_CALL(client, OnSuggestedQuestionsChanged(_, _)).Times(0);
+  EXPECT_CALL(client, OnEntriesUIStateChanged).Times(0);
   conversation_handler_->GenerateQuestions();
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&client);
@@ -3032,6 +3076,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_ArtifactStoredInHistory) {
   // Verify that artifacts returned by a tool are stored in the tool event
   // in the conversation history.
   static constexpr char kOutputText[] = "Tool output text";
+  static constexpr char kArtifactId[] = "test-artifact-id";
   static constexpr char kArtifactType[] = "code";
   static constexpr char kArtifactContentJson[] = "{\"lang\":\"js\"}";
 
@@ -3080,8 +3125,8 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_ArtifactStoredInHistory) {
         content.push_back(mojom::ContentBlock::NewTextContentBlock(
             mojom::TextContentBlock::New(kOutputText)));
         std::vector<mojom::ToolArtifactPtr> artifacts;
-        artifacts.push_back(
-            mojom::ToolArtifact::New(kArtifactType, kArtifactContentJson));
+        artifacts.push_back(mojom::ToolArtifact::New(kArtifactId, kArtifactType,
+                                                     kArtifactContentJson));
         std::move(callback).Run(std::move(content), std::move(artifacts));
       }));
 
@@ -3129,6 +3174,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_ArtifactStoredInHistory) {
   // Artifacts should be stored in the tool event
   ASSERT_TRUE(tool_event->artifacts.has_value());
   ASSERT_EQ(tool_event->artifacts->size(), 1u);
+  EXPECT_EQ(tool_event->artifacts->at(0)->id, kArtifactId);
   EXPECT_EQ(tool_event->artifacts->at(0)->type, kArtifactType);
   EXPECT_EQ(tool_event->artifacts->at(0)->content_json, kArtifactContentJson);
 }
@@ -3405,6 +3451,128 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolsCalled) {
                       mojom::TextContentBlock::New("Result from tool2")));
 }
 
+TEST_F(ConversationHandlerUnitTest, ToolUseEvents_DuplicateToolIds) {
+  // Regression test for https://github.com/brave/brave-browser/issues/55438:
+  // an assistant response that contained two tool_use events
+  // sharing the same `id` could cause infinite synchronous recursion through
+  // MaybeRespondToNextToolUseRequest -> RespondToToolUseRequest. The lookup
+  // helper GetToolUseEventForLastResponse returned the first event matching
+  // the id, so both completions resolved to the same event, the second
+  // event's output was never assigned, and the next iteration kept
+  // re-dispatching the same pending tool.
+  //
+  // The fix drops duplicate-id tool_use events at insertion time.
+  conversation_handler_->associated_content_manager()->ClearContent();
+  auto* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  auto tool = std::make_unique<NiceMock<MockTool>>("shared_tool", "Shared");
+  tool->set_requires_user_interaction_before_handling(false);
+
+  ON_CALL(*mock_tool_provider_, GetTools()).WillByDefault([&]() {
+    std::vector<base::WeakPtr<Tool>> tools;
+    tools.push_back(tool->GetWeakPtr());
+    return tools;
+  });
+
+  int use_tool_call_count = 0;
+  ON_CALL(*tool, UseTool(_, _))
+      .WillByDefault(
+          [&](const std::string& input_json, Tool::UseToolCallback callback) {
+            ++use_tool_call_count;
+            std::vector<mojom::ContentBlockPtr> result;
+            result.push_back(mojom::ContentBlock::NewTextContentBlock(
+                mojom::TextContentBlock::New("Result for " + input_json)));
+            std::move(callback).Run(std::move(result), {});
+          });
+
+  testing::Sequence seq;
+  // First engine response: emit two tool_use events that share the same id.
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .InSequence(seq)
+      .WillOnce(testing::DoAll(
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewToolUseEvent(
+                        mojom::ToolUseEvent::New("shared_tool", "duplicate_id",
+                                                 "{\"call\":\"first\"}",
+                                                 std::nullopt, std::nullopt,
+                                                 nullptr, false)),
+                    std::nullopt));
+              }),
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewToolUseEvent(
+                        mojom::ToolUseEvent::New("shared_tool", "duplicate_id",
+                                                 "{\"call\":\"second\"}",
+                                                 std::nullopt, std::nullopt,
+                                                 nullptr, false)),
+                    std::nullopt));
+              }),
+          testing::WithArg<7>(
+              [](EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("")),
+                        std::nullopt)));
+              })));
+
+  // After the surviving tool completes, post-tool generation runs.
+  base::RunLoop run_loop;
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .InSequence(seq)
+      .WillOnce(testing::DoAll(
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("Final response")),
+                    std::nullopt));
+              }),
+          testing::WithArg<7>(
+              [&](EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("")),
+                        std::nullopt)));
+                run_loop.Quit();
+              })));
+
+  conversation_handler_->SubmitHumanConversationEntry("call the tool",
+                                                      std::nullopt);
+  run_loop.Run();
+
+  // Tool should be invoked exactly once: for the surviving (first) event.
+  // Higher counts indicate that duplicate ids re-dispatched the same pending
+  // event.
+  EXPECT_EQ(use_tool_call_count, 1);
+
+  const auto& history = conversation_handler_->GetConversationHistory();
+  // human + assistant with the surviving tool_use + assistant with final
+  // response.
+  ASSERT_EQ(history.size(), 3u);
+  auto& assistant_entry = history[1];
+  ASSERT_TRUE(assistant_entry->events.has_value());
+  auto& events = assistant_entry->events.value();
+  // The duplicate-id event is dropped at insertion time.
+  ASSERT_EQ(events.size(), 1u);
+
+  ASSERT_TRUE(events[0]->is_tool_use_event());
+  auto& tool_use = events[0]->get_tool_use_event();
+  EXPECT_EQ(tool_use->id, "duplicate_id");
+  EXPECT_EQ(tool_use->arguments_json, "{\"call\":\"first\"}");
+  ASSERT_TRUE(tool_use->output.has_value());
+  ASSERT_EQ(tool_use->output->size(), 1u);
+  EXPECT_EQ(tool_use->output->at(0)->get_text_content_block()->text,
+            "Result for {\"call\":\"first\"}");
+
+  EXPECT_EQ(history.back()->text, "Final response");
+}
+
 TEST_F(ConversationHandlerUnitTest,
        ToolUseEvents_RequiresUserInteractionBeforeHandling) {
   conversation_handler_->associated_content_manager()->ClearContent();
@@ -3448,10 +3616,6 @@ TEST_F(ConversationHandlerUnitTest,
                 first_generation_loop.Quit();
               })));
 
-  // Tool should not be called since there is no explicit call via user
-  // interaction.
-  EXPECT_CALL(*tool1, UseTool).Times(0);
-
   // When the user instead decides to send a new human entry, before the tool
   // use request is handled, the tool use request should be discarded.
   base::RunLoop second_generation_loop;
@@ -3479,6 +3643,13 @@ TEST_F(ConversationHandlerUnitTest,
   conversation_handler_->SubmitHumanConversationEntry("First question",
                                                       std::nullopt);
   first_generation_loop.Run();
+
+  // Tool should not be called since there is no explicit call via user
+  // interaction.
+  EXPECT_CALL(*tool1, UseTool).Times(0);
+
+  // State should not be running, since we're waiting
+  EXPECT_EQ(GetState()->tool_use_task_state, mojom::TaskState::kNone);
 
   // Verify the tool use event exists and has no output
   const auto& history_before = conversation_handler_->GetConversationHistory();
@@ -3539,9 +3710,10 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolIterations) {
 
   // Expect our tool provider will be informed of the new generation loop
   // starting when the initial message is submitted.
-  EXPECT_CALL(*mock_tool_provider_, OnNewGenerationLoop)
+  EXPECT_CALL(*mock_tool_provider_, UpdateToolsForNewGenerationLoop)
       .Times(1)
-      .InSequence(seq);
+      .InSequence(seq)
+      .WillOnce([](base::OnceClosure cb) { std::move(cb).Run(); });
 
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .InSequence(seq)
@@ -3675,6 +3847,51 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolIterations) {
 
   // Final response should be present
   EXPECT_EQ(history.back()->text, "Final response after tools");
+}
+
+// Verifies that generation is deferred until UpdateToolsForNewGenerationLoop
+// invokes its callback. This tests the async contract added so that providers
+// can do async work (e.g. fetching available tools) before generation starts.
+TEST_F(ConversationHandlerUnitTest,
+       UpdateToolsForNewGenerationLoop_DeferredGeneration) {
+  conversation_handler_->associated_content_manager()->ClearContent();
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  // Simulate async provider work by posting the callback as a task, so it is
+  // not invoked synchronously.
+  EXPECT_CALL(*mock_tool_provider_, UpdateToolsForNewGenerationLoop)
+      .WillOnce([](base::OnceClosure cb) {
+        base::SequencedTaskRunner::GetCurrentDefault()->PostTask(FROM_HERE,
+                                                                 std::move(cb));
+      });
+
+  bool generation_started = false;
+  base::RunLoop run_loop;
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .Times(1)
+      .WillOnce(testing::DoAll(
+          testing::InvokeWithoutArgs([&] { generation_started = true; }),
+          testing::WithArg<7>(
+              [&](EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("response")),
+                        std::nullopt)));
+                run_loop.Quit();
+              })));
+
+  conversation_handler_->SubmitHumanConversationEntry("hello", std::nullopt);
+
+  // The callback should not have been invoked yet, so generation should not
+  // have started.
+  EXPECT_FALSE(generation_started);
+
+  // Pumping the run loop delivers the posted task, fires the callback, and
+  // generation proceeds and completes.
+  run_loop.Run();
+  EXPECT_TRUE(generation_started);
 }
 
 TEST_F(ConversationHandlerUnitTest, ToolUseEvents_ToolNotFound) {
@@ -4185,7 +4402,8 @@ TEST_F(ConversationHandlerUnitTest,
   for (size_t i = 0; i < total_screenshots; ++i) {
     mock_screenshots.push_back(mojom::UploadedFile::New(
         absl::StrFormat("screenshot_%zu.png", i), 1024,
-        std::vector<uint8_t>(1024, 0), mojom::UploadedFileType::kScreenshot));
+        std::vector<uint8_t>(1024, 0), mojom::UploadedFileType::kScreenshot,
+        std::nullopt));
   }
 
   // Mock GetScreenshots to return screenshots that exceed MAX_IMAGES
@@ -4273,7 +4491,8 @@ TEST_F(ConversationHandlerUnitTest,
   for (size_t i = 0; i < total_screenshots; ++i) {
     mock_screenshots.push_back(mojom::UploadedFile::New(
         absl::StrFormat("screenshot_%zu.png", i), 1024,
-        std::vector<uint8_t>(1024, 0), mojom::UploadedFileType::kScreenshot));
+        std::vector<uint8_t>(1024, 0), mojom::UploadedFileType::kScreenshot,
+        std::nullopt));
   }
 
   // Mock GetScreenshots to return screenshots under MAX_IMAGES
@@ -4368,7 +4587,8 @@ TEST_F(ConversationHandlerUnitTest,
   for (size_t i = 0; i < total_screenshots; ++i) {
     screenshots.push_back(mojom::UploadedFile::New(
         absl::StrFormat("screenshot_%zu.png", i), 1024,
-        std::vector<uint8_t>(1024, 0), mojom::UploadedFileType::kScreenshot));
+        std::vector<uint8_t>(1024, 0), mojom::UploadedFileType::kScreenshot,
+        std::nullopt));
   }
 
   // Create mock clients
@@ -4792,8 +5012,8 @@ TEST_F(ConversationHandlerUnitTest,
             run_loop.QuitWhenIdle();
           }));
 
-  conversation_handler_->SubmitHumanConversationEntryWithSkill("/playlist 2000",
-                                                               skill_id);
+  conversation_handler_->SubmitHumanConversationEntryWithSkill(
+      "/playlist 2000", skill_id, std::nullopt);
 
   run_loop.Run();
 
@@ -4837,7 +5057,7 @@ TEST_F(ConversationHandlerUnitTest,
           }));
 
   conversation_handler_->SubmitHumanConversationEntryWithSkill(
-      "Test input", "invalid-mode-id");
+      "Test input", "invalid-mode-id", std::nullopt);
 
   run_loop.Run();
 
@@ -4877,8 +5097,8 @@ TEST_F(ConversationHandlerUnitTest,
         run_loop.Quit();
       })));
 
-  conversation_handler_->SubmitHumanConversationEntryWithSkill("Test input",
-                                                               skill_id);
+  conversation_handler_->SubmitHumanConversationEntryWithSkill(
+      "Test input", skill_id, std::nullopt);
 
   run_loop.Run();
 }
@@ -4917,13 +5137,219 @@ TEST_F(ConversationHandlerUnitTest,
             run_loop.QuitWhenIdle();
           }));
 
-  conversation_handler_->SubmitHumanConversationEntryWithSkill("Test input",
-                                                               skill_id);
+  conversation_handler_->SubmitHumanConversationEntryWithSkill(
+      "Test input", skill_id, std::nullopt);
 
   run_loop.Run();
 
   // Verify model remained the same
   EXPECT_EQ(conversation_handler_->GetCurrentModel().key, current_model);
+}
+
+struct SkillImageUploadScenario {
+  const char* test_name;
+  const char* starting_model;
+  std::optional<const char*> skill_pinned_model;
+  const char* expected_final_model_key;
+  bool expects_model_change_during_submit;
+};
+
+class ConversationHandlerSkillImageUploadTest
+    : public ConversationHandlerUnitTest,
+      public testing::WithParamInterface<SkillImageUploadScenario> {};
+
+// Covers model resolution and file plumbing when a skill submission carries
+// an image attachment. Each case starts on a specific model and may have a
+// pinned skill model; the test asserts the final model key and whether a
+// ChangeModel call fired during submit.
+TEST_P(ConversationHandlerSkillImageUploadTest, ResolvesModelAndPlumbsImage) {
+  const auto& test_params = GetParam();
+  conversation_handler_->associated_content_manager()->ClearContent();
+
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+
+  // Force a deterministic starting model.
+  base::RunLoop setup_loop;
+  EXPECT_CALL(client, OnModelDataChanged)
+      .WillOnce(testing::InvokeWithoutArgs(&setup_loop, &base::RunLoop::Quit));
+  conversation_handler_->ChangeModel(test_params.starting_model);
+  setup_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(&client);
+  conversation_handler_->SetEngineForTesting(
+      std::make_unique<NiceMock<MockEngineConsumer>>());
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  // Add a skill to prefs
+  std::optional<std::string> pinned;
+  if (test_params.skill_pinned_model) {
+    pinned = std::string(*test_params.skill_pinned_model);
+  }
+  prefs::AddSkillToPrefs("describe", "Describe what you see in this image",
+                         pinned, prefs_);
+  auto skills = prefs::GetSkillsFromPrefs(prefs_);
+  ASSERT_EQ(skills.size(), 1u);
+  std::string skill_id = skills[0]->id;
+
+  base::RunLoop run_loop;
+
+  // Model change notification expectations during submit.
+  EXPECT_CALL(client, OnModelDataChanged)
+      .Times(test_params.expects_model_change_during_submit ? 1 : 0);
+
+  // Mock successful response. AtMost(1) because a ChangeModel inside submit
+  // replaces the mock engine, in which case the original mock never fires
+  // (see VisionModelSwitchOnScreenshots for the same pattern).
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .Times(testing::AtMost(1))
+      .WillRepeatedly(testing::WithArg<7>(
+          [](EngineConsumer::GenerationCompletedCallback callback) {
+            std::move(callback).Run(EngineConsumer::GenerationResultData(
+                mojom::ConversationEntryEvent::NewCompletionEvent(
+                    mojom::CompletionEvent::New("I see a photo")),
+                std::nullopt));
+          }));
+
+  // Quit once submission has reached the engine-call stage: by then the
+  // human turn is in history and any expected model changes have fired.
+  // Engine-independent so it works whether or not ChangeModel replaced the
+  // engine mid-flight.
+  EXPECT_CALL(client, OnAPIRequestInProgress(true))
+      .WillOnce(
+          testing::InvokeWithoutArgs(&run_loop, &base::RunLoop::QuitWhenIdle));
+  EXPECT_CALL(client, OnAPIRequestInProgress(false))
+      .Times(testing::AnyNumber());
+
+  // Create uploaded files with an image
+  auto uploaded_files = std::make_optional(
+      CreateSampleUploadedFiles(1, mojom::UploadedFileType::kImage));
+
+  conversation_handler_->SubmitHumanConversationEntryWithSkill(
+      "/describe photo", skill_id, std::move(uploaded_files));
+
+  run_loop.Run();
+
+  // Verify final model resolution and that vision support is guaranteed.
+  EXPECT_EQ(conversation_handler_->GetCurrentModel().key,
+            test_params.expected_final_model_key);
+  EXPECT_TRUE(conversation_handler_->GetCurrentModel().vision_support);
+
+  // Verify conversation history contains both skill data and uploaded files.
+  // When ChangeModel replaces the engine mid-submit, the assistant turn
+  // never completes, so only the human turn is present in those cases.
+  const auto& history = conversation_handler_->GetConversationHistory();
+  const size_t expected_size =
+      test_params.expects_model_change_during_submit ? 1u : 2u;
+  EXPECT_EQ(history.size(), expected_size);
+  EXPECT_EQ(history[0]->text, "/describe photo");
+  ASSERT_TRUE(history[0]->skill);
+  EXPECT_EQ(history[0]->skill->shortcut, "describe");
+  EXPECT_EQ(history[0]->skill->prompt, "Describe what you see in this image");
+  ASSERT_TRUE(history[0]->uploaded_files);
+  EXPECT_EQ(history[0]->uploaded_files->size(), 1u);
+  EXPECT_EQ(history[0]->uploaded_files->at(0)->type,
+            mojom::UploadedFileType::kImage);
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    All,
+    ConversationHandlerSkillImageUploadTest,
+    testing::Values(
+        // Unmodeled skill + image, starting non-vision: switch to vision.
+        SkillImageUploadScenario{"UnmodeledFromNonVision", "chat-basic",
+                                 std::nullopt, kClaudeHaikuModelKey, true},
+        // Unmodeled skill + image, already on vision: no switch.
+        SkillImageUploadScenario{"UnmodeledFromVision", kClaudeHaikuModelKey,
+                                 std::nullopt, kClaudeHaikuModelKey, false},
+        // Pinned non-vision + image, on vision: vision wins, no switch
+        // (validates the no-double-switch path).
+        SkillImageUploadScenario{"PinnedNonVisionFromVision",
+                                 kClaudeHaikuModelKey, "chat-basic",
+                                 kClaudeHaikuModelKey, false},
+        // Pinned non-vision + image, on non-vision: switch once to vision
+        // (NOT to the pinned non-vision model).
+        SkillImageUploadScenario{"PinnedNonVisionFromNonVision", "chat-basic",
+                                 "chat-basic", kClaudeHaikuModelKey, true},
+        // Pinned vision equals current + image: no switch.
+        SkillImageUploadScenario{"PinnedVisionEqualsCurrent",
+                                 kClaudeHaikuModelKey, kClaudeHaikuModelKey,
+                                 kClaudeHaikuModelKey, false},
+        // Pinned vision different from current + image: switch to pin once.
+        SkillImageUploadScenario{"PinnedVisionDifferentFromCurrent",
+                                 "chat-basic", kClaudeHaikuModelKey,
+                                 kClaudeHaikuModelKey, true}),
+    [](const testing::TestParamInfo<SkillImageUploadScenario>& info) {
+      return std::string(info.param.test_name);
+    });
+
+TEST_F(ConversationHandlerUnitTest,
+       SubmitHumanConversationEntryWithSkill_PdfFileNoVisionSwitch) {
+  // Non-image uploads (e.g. PDFs) should be plumbed through to the turn but
+  // must not trigger a vision auto-switch even when starting on a non-vision
+  // model.
+  conversation_handler_->associated_content_manager()->ClearContent();
+
+  base::RunLoop loop_for_change_model;
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  EXPECT_CALL(client, OnModelDataChanged)
+      .WillOnce(testing::InvokeWithoutArgs(&loop_for_change_model,
+                                           &base::RunLoop::Quit));
+  conversation_handler_->ChangeModel("chat-basic");
+  loop_for_change_model.Run();
+  testing::Mock::VerifyAndClearExpectations(&client);
+  conversation_handler_->SetEngineForTesting(
+      std::make_unique<NiceMock<MockEngineConsumer>>());
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+  ASSERT_FALSE(conversation_handler_->GetCurrentModel().vision_support);
+
+  // Add a skill to prefs
+  prefs::AddSkillToPrefs("summarize", "Summarize the attached document",
+                         std::nullopt /* model */, prefs_);
+  auto skills = prefs::GetSkillsFromPrefs(prefs_);
+  ASSERT_EQ(skills.size(), 1u);
+  std::string skill_id = skills[0]->id;
+
+  base::RunLoop run_loop;
+
+  // Model must not change for a non-image upload.
+  EXPECT_CALL(client, OnModelDataChanged).Times(0);
+
+  // Mock successful response
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(testing::WithArg<7>(
+          [&run_loop](EngineConsumer::GenerationCompletedCallback callback) {
+            std::move(callback).Run(EngineConsumer::GenerationResultData(
+                mojom::ConversationEntryEvent::NewCompletionEvent(
+                    mojom::CompletionEvent::New("Summary")),
+                std::nullopt));
+            run_loop.QuitWhenIdle();
+          }));
+
+  // Create uploaded files with a PDF
+  auto uploaded_files = std::make_optional(
+      CreateSampleUploadedFiles(1, mojom::UploadedFileType::kPdf));
+
+  conversation_handler_->SubmitHumanConversationEntryWithSkill(
+      "/summarize report", skill_id, std::move(uploaded_files));
+
+  run_loop.Run();
+
+  // Model stayed put — no vision switch for non-image uploads.
+  EXPECT_EQ(conversation_handler_->GetCurrentModel().key, "chat-basic");
+  EXPECT_FALSE(conversation_handler_->GetCurrentModel().vision_support);
+
+  // Verify conversation history contains both skill data and uploaded files
+  const auto& history = conversation_handler_->GetConversationHistory();
+  EXPECT_EQ(history.size(), 2u);
+  EXPECT_EQ(history[0]->text, "/summarize report");
+  ASSERT_TRUE(history[0]->skill);
+  EXPECT_EQ(history[0]->skill->shortcut, "summarize");
+  EXPECT_EQ(history[0]->skill->prompt, "Summarize the attached document");
+  ASSERT_TRUE(history[0]->uploaded_files);
+  EXPECT_EQ(history[0]->uploaded_files->size(), 1u);
+  EXPECT_EQ(history[0]->uploaded_files->at(0)->type,
+            mojom::UploadedFileType::kPdf);
 }
 
 TEST_F(ConversationHandlerUnitTest, PermissionChallenge) {
@@ -6112,7 +6538,7 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
     ConversationCapabilitySet expected_capabilities;
   };
 
-  const std::vector<TestCase> test_cases = {
+  const std::vector<TestCase> test_paramss = {
       {
           "Chat",
           /*is_content_agent_allowed=*/false,
@@ -6143,18 +6569,18 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
       },
   };
 
-  for (const auto& test_case : test_cases) {
-    SCOPED_TRACE(test_case.name);
+  for (const auto& test_params : test_paramss) {
+    SCOPED_TRACE(test_params.name);
 
     base::test::ScopedFeatureList feature_list;
-    if (test_case.deep_research_enabled) {
+    if (test_params.deep_research_enabled) {
       feature_list.InitAndEnableFeature(features::kAIChatDeepResearch);
     } else {
       feature_list.InitAndDisableFeature(features::kAIChatDeepResearch);
     }
 
     ai_chat_service_->SetIsContentAgentAllowed(
-        test_case.is_content_agent_allowed);
+        test_params.is_content_agent_allowed);
 
     mock_tool_provider_ = nullptr;
     std::vector<std::unique_ptr<ToolProvider>> tool_providers;
@@ -6169,6 +6595,8 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
     ON_CALL(*mock_tool_provider_, GetTools()).WillByDefault([]() {
       return std::vector<base::WeakPtr<Tool>>();
     });
+    ON_CALL(*mock_tool_provider_, UpdateToolsForNewGenerationLoop)
+        .WillByDefault([](base::OnceClosure cb) { std::move(cb).Run(); });
     conversation_handler_->SetEngineForTesting(
         std::make_unique<NiceMock<MockEngineConsumer>>());
     EmulateUserOptedIn();
@@ -6177,10 +6605,10 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
         conversation_handler_->GetEngineForTesting());
 
     base::RunLoop run_loop;
-    EXPECT_CALL(
-        *engine,
-        GenerateAssistantResponse(
-            _, _, _, _, _, testing::Eq(test_case.expected_capabilities), _, _))
+    EXPECT_CALL(*engine,
+                GenerateAssistantResponse(
+                    _, _, _, _, _,
+                    testing::Eq(test_params.expected_capabilities), _, _))
         .WillOnce(testing::WithArg<7>(
             [&run_loop](EngineConsumer::GenerationCompletedCallback callback) {
               std::move(callback).Run(

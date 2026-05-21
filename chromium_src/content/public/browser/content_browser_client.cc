@@ -31,7 +31,8 @@ ContentBrowserClient::GetEphemeralStorageToken(
 brave_shields::mojom::ShieldsSettingsPtr
 ContentBrowserClient::WorkerGetBraveShieldSettings(
     const GURL& url,
-    BrowserContext* browser_context) {
+    BrowserContext* browser_context,
+    const StoragePartitionConfig* storage_partition_config) {
   // BraveContentBrowserClient should implement this. It's possible this is
   // reached somehow, add dumps to see if it's true.
   base::debug::DumpWithoutCrashing();

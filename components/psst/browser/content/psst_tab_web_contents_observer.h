@@ -33,8 +33,7 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
   using InjectScriptCallback = base::RepeatingCallback<void(
       const std::string&,
       PsstTabWebContentsObserver::InsertScriptInPageCallback)>;
-  using ConsentCallback =
-      base::OnceCallback<void(const base::ListValue disabled_checks)>;
+  using ConsentCallback = base::OnceCallback<void()>;
 
   // Delegate interface for UI-related actions. This class is responsible for
   // facilitating communication with the consent dialog, ensuring that the UI
@@ -43,8 +42,9 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
    public:
     virtual ~PsstUiDelegate() = default;
     // Show the consent dialog to the user with the provided data.
-    virtual void Show(const url::Origin& origin,
+    virtual void Show(url::Origin origin,
                       PsstWebsiteSettings dialog_data,
+                      std::optional<UserScriptResult> user_script_result,
                       ConsentCallback apply_changes_callback) = 0;
     // Update the UI state based on the applied tasks and progress.
     virtual void UpdateTasks(long progress,
@@ -68,6 +68,9 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
   PsstTabWebContentsObserver& operator=(const PsstTabWebContentsObserver&) =
       delete;
 
+  PsstUiDelegate* GetPsstUiDelegate() const;
+  base::WeakPtr<PsstTabWebContentsObserver> AsWeakPtr();
+
  private:
   friend class PsstTabWebContentsObserverUnitTestBase;
 
@@ -83,6 +86,8 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
   void OnUserScriptResult(int id,
                           std::unique_ptr<MatchedRule> rule,
                           base::Value script_result);
+  void OnUserAcceptedPsstSettings(int id,
+                                  const std::string& policy_script_with_params);
   void OnPolicyScriptResult(int nav_entry_id, base::Value script_result);
   void RunWithTimeout(const int last_committed_entry_id,
                       const std::string& script,

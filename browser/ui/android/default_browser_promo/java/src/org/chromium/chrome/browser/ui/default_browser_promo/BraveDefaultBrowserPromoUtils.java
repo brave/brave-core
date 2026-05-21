@@ -21,7 +21,10 @@ public class BraveDefaultBrowserPromoUtils extends DefaultBrowserPromoUtils {
 
     @Override
     public boolean prepareLaunchPromoIfNeeded(
-            Activity activity, WindowAndroid windowAndroid, Tracker tracker) {
+            Activity activity,
+            WindowAndroid windowAndroid,
+            Tracker tracker,
+            @DefaultBrowserPromoUtils.DefaultBrowserPromoEntryPoint int source) {
         return false;
     }
 }

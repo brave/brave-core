@@ -69,7 +69,7 @@ class BackForwardTableViewCell: UITableViewCell {
   var site: Site? {
     didSet {
       if let s = site {
-        if InternalURL.isValid(url: s.tileURL) {
+        if InternalURL.isValid(url: s.tileURL) || s.tileURL.isNewTabURL {
           faviconView.backgroundColor = .white
           faviconView.image = UIImage(sharedNamed: "brave.logo")
         } else {

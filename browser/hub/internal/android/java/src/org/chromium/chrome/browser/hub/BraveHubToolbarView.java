@@ -10,14 +10,15 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
-import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.brave_shields.FirstPartyStorageCleanerInterface;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.toolbar.settings.AddressBarPreference;
 
 /**
@@ -82,11 +83,26 @@ public class BraveHubToolbarView extends HubToolbarView {
     private void updateButtonsVisibility() {
         boolean shouldHideButtons =
                 AddressBarPreference.isToolbarConfiguredToShowOnTop()
-                        && ContextUtils.getAppSharedPreferences()
-                                .getBoolean(BravePreferenceKeys.BRAVE_IS_MENU_FROM_BOTTOM, true);
+                        && ChromeSharedPreferences.getInstance()
+                                .readBoolean(BravePreferenceKeys.BRAVE_IS_MENU_FROM_BOTTOM, true);
 
-        mActionButton.setVisibility(shouldHideButtons ? View.INVISIBLE : View.VISIBLE);
-        mMenuButton.setVisibility(shouldHideButtons ? View.INVISIBLE : View.VISIBLE);
+        mActionButton.setVisibility(shouldHideButtons ? View.GONE : View.VISIBLE);
+        mMenuButton.setVisibility(shouldHideButtons ? View.GONE : View.VISIBLE);
+
+        // When the menu button is GONE the shred button becomes the rightmost child of
+        // menu_button_container; give it an end margin matching the toolbar's start
+        // inset so the shred icon doesn't sit flush against the screen edge.
+        if (shouldHideButtons) {
+            ViewGroup.MarginLayoutParams shredLp =
+                    (ViewGroup.MarginLayoutParams) mShredButton.getLayoutParams();
+            int endMargin =
+                    getResources()
+                            .getDimensionPixelSize(R.dimen.hub_toolbar_action_button_start_margin);
+            if (shredLp.getMarginEnd() != endMargin) {
+                shredLp.setMarginEnd(endMargin);
+                mShredButton.setLayoutParams(shredLp);
+            }
+        }
 
         final boolean shouldShowShredButton =
                 ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHRED);

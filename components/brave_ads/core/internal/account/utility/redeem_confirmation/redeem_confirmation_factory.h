@@ -15,6 +15,12 @@ struct ConfirmationInfo;
 
 class RedeemConfirmationFactory final {
  public:
+  // This class contains only static methods.
+  RedeemConfirmationFactory() = delete;
+  RedeemConfirmationFactory(const RedeemConfirmationFactory&) = delete;
+  RedeemConfirmationFactory& operator=(const RedeemConfirmationFactory&) =
+      delete;
+
   static void BuildAndRedeemConfirmation(
       base::WeakPtr<RedeemConfirmationDelegate> delegate,
       const ConfirmationInfo& confirmation);

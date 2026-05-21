@@ -64,6 +64,7 @@ struct TabGridPrivateTabsSettings: View {
         }
         .tint(Color.accentColor)
         .listRowBackground(Color(uiColor: .secondaryBraveGroupedBackground))
+
         if let authenticationKind {
           Toggle(isOn: privateBrowsingLockBinding) {
             Label {

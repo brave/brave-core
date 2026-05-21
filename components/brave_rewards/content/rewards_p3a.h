@@ -28,7 +28,7 @@ inline constexpr char kRecurringTipHistogramName[] =
 inline constexpr char kAutoContributionsStateHistogramName[] =
     "Brave.Rewards.AutoContributionsState.3";
 inline constexpr char kAdTypesEnabledHistogramName[] =
-    "Brave.Rewards.AdTypesEnabled.2";
+    "Brave.Rewards.AdTypesEnabled";
 inline constexpr char kSearchResultAdsOptinHistogramName[] =
     "Brave.Rewards.SearchResultAdsOptin";
 inline constexpr char kAdsHistoryViewHistogramName[] =

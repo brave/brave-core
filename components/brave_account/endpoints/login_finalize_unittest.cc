@@ -10,6 +10,7 @@
 #include "base/no_destructor.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_account/endpoints/endpoint_test.h"
+#include "net/base/net_errors.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -37,7 +38,6 @@ const LoginFinalizeTestCase* Success() {
              body.email = "email";
              return body;
            }()}});
-
   return kSuccess.get();
 }
 
@@ -53,7 +53,7 @@ const LoginFinalizeTestCase* Success() {
 //   - { "code": 14005, "error": "incorrect email", "status": 401 }
 //   - { "code": 14006, "error": "incorrect password", "status": 401 }
 // - HTTP 5XX:
-//   - { "code": 0, "error": "Internal Server Error", "status": <5xx> }
+//   - { "code": null, "error": "Internal Server Error", "status": <5xx> }
 // clang-format on
 const LoginFinalizeTestCase* ApplicationJsonErrorCodeIsNull() {
   static const base::NoDestructor<LoginFinalizeTestCase>

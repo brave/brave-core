@@ -19,7 +19,6 @@
 #include "base/json/values_util.h"
 #include "base/numerics/clamped_math.h"
 #include "base/strings/string_util.h"
-#include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
 #include "base/value_iterators.h"
 #include "base/values.h"
@@ -242,7 +241,8 @@ void AIChatCredentialManager::OnGetPremiumStatus(
         callback,
     mojom::PremiumStatus status,
     mojom::PremiumInfoPtr info) {
-  if (status != mojom::PremiumStatus::Active) {
+  if (status != mojom::PremiumStatus::Active &&
+      status != mojom::PremiumStatus::ActiveDisconnected) {
     std::move(callback).Run(std::nullopt);
     return;
   }
@@ -295,10 +295,8 @@ void AIChatCredentialManager::OnPrepareCredentialsPresentation(
   // Credential value received needs to be URL decoded.
   // That leaves us with a Base64 encoded JSON blob which is the credential.
   const std::string encoded_credential = credential_cookie.Value();
-  url::RawCanonOutputT<char16_t> unescaped;
-  url::DecodeURLEscapeSequences(
-      encoded_credential, url::DecodeURLMode::kUTF8OrIsomorphic, &unescaped);
-  std::string credential = base::UTF16ToUTF8(unescaped.view());
+  std::string credential = url::DecodeUrlEscapeSequences(
+      encoded_credential, url::DecodeUrlMode::kUtf8OrIsomorphic);
   if (credential.empty()) {
     // Not purchased.
     std::move(callback).Run(std::nullopt);

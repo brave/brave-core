@@ -14,6 +14,7 @@ struct PrivacyReportsView: View {
   let lastVPNAlerts: [BraveVPNAlert]?
 
   private(set) var isPrivateBrowsing: Bool
+  var isOriginPurchased: Bool
   var onDismiss: (() -> Void)?
   var openPrivacyReportsUrl: (() -> Void)?
 
@@ -82,7 +83,7 @@ struct PrivacyReportsView: View {
       ScrollView(.vertical) {
         VStack(alignment: .leading, spacing: 16) {
 
-          if showNotificationPermissionCallout.value && correctAuthStatus {
+          if showNotificationPermissionCallout.value && correctAuthStatus && !isOriginPurchased {
             NotificationCalloutView()
           }
 
@@ -146,9 +147,11 @@ struct PrivacyReports_Previews: PreviewProvider {
   static var previews: some View {
 
     Group {
-      PrivacyReportsView(lastVPNAlerts: nil, isPrivateBrowsing: false)
+      PrivacyReportsView(lastVPNAlerts: nil, isPrivateBrowsing: false, isOriginPurchased: false)
 
-      PrivacyReportsView(lastVPNAlerts: nil, isPrivateBrowsing: false)
+      PrivacyReportsView(lastVPNAlerts: nil, isPrivateBrowsing: false, isOriginPurchased: true)
+
+      PrivacyReportsView(lastVPNAlerts: nil, isPrivateBrowsing: false, isOriginPurchased: false)
         .preferredColorScheme(.dark)
     }
   }

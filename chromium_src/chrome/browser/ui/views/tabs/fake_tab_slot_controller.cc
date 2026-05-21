@@ -41,9 +41,9 @@ int FakeTabSlotController::GetTreeHeight(
   return 0;
 }
 
-const tabs::TreeTabNode& FakeTabSlotController::GetTreeTabNode(
+const tabs::TreeTabNode* FakeTabSlotController::GetTreeTabNode(
     const tree_tab::TreeTabNodeId& id) const {
-  return tabs::TreeTabNode::GetEmptyTreeTabNode();
+  return nullptr;
 }
 
 void FakeTabSlotController::SetTreeTabNodeCollapsed(
@@ -53,4 +53,12 @@ void FakeTabSlotController::SetTreeTabNodeCollapsed(
 bool FakeTabSlotController::IsInCollapsedTreeTabNode(
     const tree_tab::TreeTabNodeId& id) const {
   return false;
+}
+
+brave_tabs::TabMinWidthMode FakeTabSlotController::GetTabMinWidthMode() const {
+  return tab_min_width_mode_;
+}
+
+bool FakeTabSlotController::IsHorizontalScrollingEnabled() const {
+  return horizontal_scrolling_enabled_;
 }

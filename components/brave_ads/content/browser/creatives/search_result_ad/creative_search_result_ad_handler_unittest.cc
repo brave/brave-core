@@ -13,9 +13,9 @@
 #include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_constants.h"
 #include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_mojom_web_page_entities_extractor.h"
-#include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_mojom_web_page_entities_test_util.h"
 #include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_test_constants.h"
-#include "brave/components/brave_ads/core/browser/service/ads_service_mock.h"
+#include "brave/components/brave_ads/content/browser/creatives/search_result_ad/test/creative_search_result_ad_mojom_web_page_entities_test_util.h"
+#include "brave/components/brave_ads/core/browser/service/test/ads_service_mock.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -113,11 +113,11 @@ TEST_F(BraveAdsCreativeSearchResultAdHandlerTest,
   ASSERT_TRUE(mojom_web_page);
 
   // Act & Assert
-  EXPECT_CALL(
-      ads_service_mock_,
-      TriggerSearchResultAdEvent(
-          ::testing::_, mojom::SearchResultAdEventType::kViewedImpression,
-          ::testing::_))
+  EXPECT_CALL(ads_service_mock_,
+              TriggerSearchResultAdEvent(
+                  /*mojom_creative_ad=*/::testing::_,
+                  mojom::SearchResultAdEventType::kViewedImpression,
+                  /*callback=*/::testing::_))
       .Times(0);
 
   SimulateMaybeExtractCreativeAdPlacementIdsFromWebPageCallback(
@@ -134,11 +134,11 @@ TEST_F(BraveAdsCreativeSearchResultAdHandlerTest,
   ASSERT_TRUE(creative_search_result_ad_handler);
 
   // Act & Assert
-  EXPECT_CALL(
-      ads_service_mock_,
-      TriggerSearchResultAdEvent(
-          ::testing::_, mojom::SearchResultAdEventType::kViewedImpression,
-          ::testing::_))
+  EXPECT_CALL(ads_service_mock_,
+              TriggerSearchResultAdEvent(
+                  /*mojom_creative_ad=*/::testing::_,
+                  mojom::SearchResultAdEventType::kViewedImpression,
+                  /*callback=*/::testing::_))
       .Times(0);
 
   SimulateMaybeExtractCreativeAdPlacementIdsFromWebPageCallback(
@@ -155,11 +155,11 @@ TEST_F(BraveAdsCreativeSearchResultAdHandlerTest,
   ASSERT_TRUE(creative_search_result_ad_handler);
 
   // Act & Assert
-  EXPECT_CALL(
-      ads_service_mock_,
-      TriggerSearchResultAdEvent(
-          ::testing::_, mojom::SearchResultAdEventType::kViewedImpression,
-          ::testing::_))
+  EXPECT_CALL(ads_service_mock_,
+              TriggerSearchResultAdEvent(
+                  /*mojom_creative_ad=*/::testing::_,
+                  mojom::SearchResultAdEventType::kViewedImpression,
+                  /*callback=*/::testing::_))
       .Times(0);
 
   SimulateMaybeExtractCreativeAdPlacementIdsFromWebPageCallback(
@@ -176,11 +176,11 @@ TEST_F(BraveAdsCreativeSearchResultAdHandlerTest,
   ASSERT_TRUE(creative_search_result_ad_handler);
 
   // Act & Assert
-  EXPECT_CALL(
-      ads_service_mock_,
-      TriggerSearchResultAdEvent(
-          ::testing::_, mojom::SearchResultAdEventType::kViewedImpression,
-          ::testing::_))
+  EXPECT_CALL(ads_service_mock_,
+              TriggerSearchResultAdEvent(
+                  /*mojom_creative_ad=*/::testing::_,
+                  mojom::SearchResultAdEventType::kViewedImpression,
+                  /*callback=*/::testing::_))
       .Times(0);
 
   SimulateMaybeExtractCreativeAdPlacementIdsFromWebPageCallback(
@@ -199,14 +199,14 @@ TEST_F(BraveAdsCreativeSearchResultAdHandlerTest,
   ASSERT_TRUE(creative_search_result_ad_handler);
 
   // Act & Assert
-  EXPECT_CALL(
-      ads_service_mock_,
-      TriggerSearchResultAdEvent(
-          ::testing::_, mojom::SearchResultAdEventType::kViewedImpression,
-          ::testing::_))
+  EXPECT_CALL(ads_service_mock_,
+              TriggerSearchResultAdEvent(
+                  /*mojom_creative_ad=*/::testing::_,
+                  mojom::SearchResultAdEventType::kViewedImpression,
+                  /*callback=*/::testing::_))
       .WillOnce([](mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
                    mojom::SearchResultAdEventType /*mojom_ad_event_type*/,
-                   TriggerAdEventCallback /*callback*/) {
+                   ResultCallback /*callback*/) {
         EXPECT_FALSE(mojom_creative_ad->creative_set_conversion);
       });
 
@@ -230,15 +230,15 @@ TEST_F(BraveAdsCreativeSearchResultAdHandlerTest, TriggerAdViewedEvent) {
   ASSERT_TRUE(mojom_web_page);
 
   // Act & Assert
-  EXPECT_CALL(
-      ads_service_mock_,
-      TriggerSearchResultAdEvent(
-          ::testing::_, mojom::SearchResultAdEventType::kViewedImpression,
-          ::testing::_))
+  EXPECT_CALL(ads_service_mock_,
+              TriggerSearchResultAdEvent(
+                  /*mojom_creative_ad=*/::testing::_,
+                  mojom::SearchResultAdEventType::kViewedImpression,
+                  /*callback=*/::testing::_))
       .WillOnce([&mojom_web_page](
                     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
                     mojom::SearchResultAdEventType /*mojom_ad_event_type*/,
-                    TriggerAdEventCallback /*callback*/) {
+                    ResultCallback /*callback*/) {
         const std::vector<mojom::CreativeSearchResultAdInfoPtr>
             creative_search_result_ads =
                 ExtractCreativeSearchResultAdsFromMojomWebPageEntities(
@@ -270,15 +270,15 @@ TEST_F(BraveAdsCreativeSearchResultAdHandlerTest,
   ASSERT_TRUE(mojom_web_page);
 
   // Act & Assert
-  EXPECT_CALL(
-      ads_service_mock_,
-      TriggerSearchResultAdEvent(
-          ::testing::_, mojom::SearchResultAdEventType::kViewedImpression,
-          ::testing::_))
+  EXPECT_CALL(ads_service_mock_,
+              TriggerSearchResultAdEvent(
+                  /*mojom_creative_ad=*/::testing::_,
+                  mojom::SearchResultAdEventType::kViewedImpression,
+                  /*callback=*/::testing::_))
       .WillOnce([&mojom_web_page](
                     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
                     mojom::SearchResultAdEventType /*mojom_ad_event_type*/,
-                    TriggerAdEventCallback /*callback*/) {
+                    ResultCallback /*callback*/) {
         const std::vector<mojom::CreativeSearchResultAdInfoPtr>
             creative_search_result_ads =
                 ExtractCreativeSearchResultAdsFromMojomWebPageEntities(

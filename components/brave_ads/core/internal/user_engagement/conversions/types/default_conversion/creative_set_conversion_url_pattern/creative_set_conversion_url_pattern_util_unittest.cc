@@ -5,12 +5,12 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/default_conversion/creative_set_conversion_url_pattern/creative_set_conversion_url_pattern_util.h"
 
-#include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
+#include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
-#include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_test_util.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_test_constants.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_test_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/test/creative_set_conversion_test_util.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/test/conversions_test_constants.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/test/conversions_test_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -29,6 +29,19 @@ TEST_F(BraveAdsCreativeConversionSetUrlPatternUtilTest,
 
   // Act & Assert
   EXPECT_TRUE(DoesCreativeSetConversionUrlPatternMatchRedirectChain(
+      creative_set_conversion, test::BuildDefaultConversionRedirectChain()));
+}
+
+TEST_F(BraveAdsCreativeConversionSetUrlPatternUtilTest,
+       DoesEmptyCreativeSetConversionUrlPatternNotMatchRedirectChain) {
+  // Arrange
+  const CreativeSetConversionInfo creative_set_conversion =
+      test::BuildCreativeSetConversion(test::kCreativeSetId,
+                                       /*url_pattern=*/"",
+                                       /*observation_window=*/base::Days(3));
+
+  // Act & Assert
+  EXPECT_FALSE(DoesCreativeSetConversionUrlPatternMatchRedirectChain(
       creative_set_conversion, test::BuildDefaultConversionRedirectChain()));
 }
 

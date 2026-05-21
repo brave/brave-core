@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_token_info.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_test_util.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/test/confirmation_tokens_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -76,19 +76,6 @@ TEST_F(BraveAdsConfirmationTokenUtilTest, ConfirmationTokenCount) {
 
   // Act & Assert
   EXPECT_EQ(3U, ConfirmationTokenCount());
-}
-
-TEST_F(BraveAdsConfirmationTokenUtilTest, IsValid) {
-  // Act & Assert
-  EXPECT_TRUE(IsValid(test::BuildConfirmationToken()));
-}
-
-TEST_F(BraveAdsConfirmationTokenUtilTest, IsNotValid) {
-  // Arrange
-  const ConfirmationTokenInfo confirmation_token;
-
-  // Act & Assert
-  EXPECT_FALSE(IsValid(confirmation_token));
 }
 
 }  // namespace brave_ads

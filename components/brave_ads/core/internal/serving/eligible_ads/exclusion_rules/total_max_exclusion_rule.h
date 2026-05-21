@@ -30,7 +30,7 @@ class TotalMaxExclusionRule final
   bool ShouldInclude(const CreativeAdInfo& creative_ad) const override;
 
  private:
-  AdEventList ad_events_;
+  const AdEventList ad_events_;
 };
 
 }  // namespace brave_ads

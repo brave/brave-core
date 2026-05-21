@@ -9,6 +9,7 @@
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/content_settings/core/common/content_settings_util.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
@@ -26,7 +27,9 @@ BraveShieldsSettingsService::BraveShieldsSettingsService(
     PrefService* profile_prefs)
     : host_content_settings_map_(host_content_settings_map),
       local_state_(local_state),
-      profile_prefs_(profile_prefs) {}
+      profile_prefs_(profile_prefs) {
+  CHECK(profile_prefs_);
+}
 
 BraveShieldsSettingsService::~BraveShieldsSettingsService() = default;
 
@@ -227,6 +230,8 @@ void BraveShieldsSettingsService::SetAutoShredMode(mojom::AutoShredMode mode,
   host_content_settings_map_->SetWebsiteSettingCustomScope(
       primary_pattern, ContentSettingsPattern::Wildcard(),
       AutoShredSetting::kContentSettingsType, AutoShredSetting::ToValue(mode));
+
+  ReportAutoShredSettingsP3A(*host_content_settings_map_);
 }
 
 mojom::AutoShredMode BraveShieldsSettingsService::GetAutoShredMode(
@@ -236,37 +241,6 @@ mojom::AutoShredMode BraveShieldsSettingsService::GetAutoShredMode(
   return AutoShredSetting::FromValue(
       host_content_settings_map_->GetWebsiteSetting(
           url, GURL(), AutoShredSetting::kContentSettingsType));
-}
-
-std::vector<std::string>
-BraveShieldsSettingsService::GetEphemeralDomainsForAutoShredMode(
-    mojom::AutoShredMode mode) {
-  CHECK(base::FeatureList::IsEnabled(
-      brave_shields::features::kBraveShredFeature));
-  std::vector<std::string> result;
-
-  ContentSettingsForOneType all_auto_shred_settings =
-      host_content_settings_map_->GetSettingsForOneType(
-          AutoShredSetting::kContentSettingsType);
-
-  for (const auto& setting : all_auto_shred_settings) {
-    if (!setting.primary_pattern.IsValid()) {
-      continue;
-    }
-
-    auto setting_mode = AutoShredSetting::FromValue(setting.setting_value);
-    if (setting_mode != mode) {
-      continue;
-    }
-
-    GURL pattern_url(setting.primary_pattern.ToRepresentativeUrl());
-    if (pattern_url.is_valid() &&
-        !IsShieldsDisabledOnAnyHostMatchingDomainOf(pattern_url)) {
-      result.push_back(net::URLToEphemeralStorageDomain(pattern_url));
-    }
-  }
-
-  return result;
 }
 
 bool BraveShieldsSettingsService::IsJsBlockingEnforced(const GURL& url) {
@@ -330,6 +304,14 @@ bool BraveShieldsSettingsService::IsShieldsDisabledOnAnyHostMatchingDomainOf(
   }
 
   return false;
+}
+
+void BraveShieldsSettingsService::SetShredBrowsingHistory(bool value) {
+  profile_prefs_->SetBoolean(prefs::kShredBrowsingHistoryEnabled, value);
+}
+
+bool BraveShieldsSettingsService::IsShredBrowsingHistoryEnabled() {
+  return profile_prefs_->GetBoolean(prefs::kShredBrowsingHistoryEnabled);
 }
 
 }  // namespace brave_shields

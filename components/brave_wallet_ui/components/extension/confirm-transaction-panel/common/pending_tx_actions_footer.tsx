@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import Button from '@brave/leo/react/button'
 
 // Hooks
 import {
@@ -25,7 +26,7 @@ import {
 import { TransactionWarnings } from './tx_warnings'
 
 // Styled components
-import { LeoSquaredButton, Row } from '../../../shared/style'
+import { Row } from '../../../shared/style'
 import { QueueStepButton } from './style'
 import {
   FooterButtonRow,
@@ -139,7 +140,7 @@ export function PendingTransactionActionsFooter({
   const { confirmButton, rejectButton } = React.useMemo(() => {
     return {
       confirmButton: (
-        <LeoSquaredButton
+        <Button
           kind={hasWarnings ? 'outline' : 'filled'}
           onClick={onClickConfirmTransaction}
           disabled={isConfirmButtonDisabledOrSubmitting}
@@ -153,17 +154,17 @@ export function PendingTransactionActionsFooter({
               : isUnshieldingFunds
                 ? getLocale('braveWalletUnshieldZEC')
                 : getLocale('braveWalletAllowSpendConfirmButton')}
-        </LeoSquaredButton>
+        </Button>
       ),
       rejectButton: (
-        <LeoSquaredButton
+        <Button
           kind={hasWarnings ? 'filled' : 'outline'}
           onClick={onReject}
           disabled={isTransactionConfirmedOrSubmitting}
           isDisabled={isTransactionConfirmedOrSubmitting}
         >
           {getLocale('braveWalletAllowSpendRejectButton')}
-        </LeoSquaredButton>
+        </Button>
       ),
     }
   }, [

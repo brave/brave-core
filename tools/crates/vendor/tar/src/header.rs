@@ -7,7 +7,6 @@ use std::borrow::Cow;
 use std::fmt;
 use std::fs;
 use std::io;
-use std::iter;
 use std::iter::{once, repeat};
 use std::mem;
 use std::path::{Component, Path, PathBuf};
@@ -22,7 +21,7 @@ use crate::EntryType;
 /// This value, chosen after careful deliberation, corresponds to _Jul 23, 2006_,
 /// which is the date of the first commit for what would become Rust.
 #[cfg(all(any(unix, windows), not(target_arch = "wasm32")))]
-const DETERMINISTIC_TIMESTAMP: u64 = 1153704088;
+pub const DETERMINISTIC_TIMESTAMP: u64 = 1153704088;
 
 pub(crate) const BLOCK_SIZE: u64 = 512;
 
@@ -124,7 +123,7 @@ pub struct GnuHeader {
     pub pad: [u8; 17],
 }
 
-/// Description of the header of a spare entry.
+/// Description of the header of a sparse entry.
 ///
 /// Specifies the offset/number of bytes of a chunk of data in octal.
 #[repr(C)]
@@ -351,7 +350,7 @@ impl Header {
     ///
     /// Note that this function will convert any `\` characters to directory
     /// separators.
-    pub fn path(&self) -> io::Result<Cow<Path>> {
+    pub fn path(&self) -> io::Result<Cow<'_, Path>> {
         bytes2path(self.path_bytes())
     }
 
@@ -362,7 +361,7 @@ impl Header {
     ///
     /// Note that this function will convert any `\` characters to directory
     /// separators.
-    pub fn path_bytes(&self) -> Cow<[u8]> {
+    pub fn path_bytes(&self) -> Cow<'_, [u8]> {
         if let Some(ustar) = self.as_ustar() {
             ustar.path_bytes()
         } else {
@@ -426,7 +425,7 @@ impl Header {
     ///
     /// Note that this function will convert any `\` characters to directory
     /// separators.
-    pub fn link_name(&self) -> io::Result<Option<Cow<Path>>> {
+    pub fn link_name(&self) -> io::Result<Option<Cow<'_, Path>>> {
         match self.link_name_bytes() {
             Some(bytes) => bytes2path(bytes).map(Some),
             None => Ok(None),
@@ -440,7 +439,7 @@ impl Header {
     ///
     /// Note that this function will convert any `\` characters to directory
     /// separators.
-    pub fn link_name_bytes(&self) -> Option<Cow<[u8]>> {
+    pub fn link_name_bytes(&self) -> Option<Cow<'_, [u8]>> {
         let old = self.as_old();
         if old.linkname[0] != 0 {
             Some(Cow::Borrowed(truncate(&old.linkname)))
@@ -505,14 +504,12 @@ impl Header {
     ///
     /// May return an error if the field is corrupted.
     pub fn uid(&self) -> io::Result<u64> {
-        num_field_wrapper_from(&self.as_old().uid)
-            .map(|u| u as u64)
-            .map_err(|err| {
-                io::Error::new(
-                    err.kind(),
-                    format!("{} when getting uid for {}", err, self.path_lossy()),
-                )
-            })
+        num_field_wrapper_from(&self.as_old().uid).map_err(|err| {
+            io::Error::new(
+                err.kind(),
+                format!("{} when getting uid for {}", err, self.path_lossy()),
+            )
+        })
     }
 
     /// Encodes the `uid` provided into this header.
@@ -522,14 +519,12 @@ impl Header {
 
     /// Returns the value of the group's user ID field
     pub fn gid(&self) -> io::Result<u64> {
-        num_field_wrapper_from(&self.as_old().gid)
-            .map(|u| u as u64)
-            .map_err(|err| {
-                io::Error::new(
-                    err.kind(),
-                    format!("{} when getting gid for {}", err, self.path_lossy()),
-                )
-            })
+        num_field_wrapper_from(&self.as_old().gid).map_err(|err| {
+            io::Error::new(
+                err.kind(),
+                format!("{} when getting gid for {}", err, self.path_lossy()),
+            )
+        })
     }
 
     /// Encodes the `gid` provided into this header.
@@ -744,7 +739,7 @@ impl Header {
         let len = old.cksum.len();
         self.bytes[0..offset]
             .iter()
-            .chain(iter::repeat(&b' ').take(len))
+            .chain(repeat(&b' ').take(len))
             .chain(&self.bytes[offset + len..])
             .fold(0, |a, b| a + (*b as u32))
     }
@@ -780,7 +775,7 @@ impl Header {
                 self.set_mtime(meta.mtime() as u64);
                 self.set_uid(meta.uid() as u64);
                 self.set_gid(meta.gid() as u64);
-                self.set_mode(meta.mode() as u32);
+                self.set_mode(meta.mode());
             }
             HeaderMode::Deterministic => {
                 // We could in theory set the mtime to zero here, but not all tools seem to behave
@@ -977,7 +972,7 @@ impl fmt::Debug for OldHeader {
 
 impl UstarHeader {
     /// See `Header::path_bytes`
-    pub fn path_bytes(&self) -> Cow<[u8]> {
+    pub fn path_bytes(&self) -> Cow<'_, [u8]> {
         if self.prefix[0] == 0 && !self.name.contains(&b'\\') {
             Cow::Borrowed(truncate(&self.name))
         } else {
@@ -1545,7 +1540,7 @@ fn truncate(slice: &[u8]) -> &[u8] {
 fn copy_into(slot: &mut [u8], bytes: &[u8]) -> io::Result<()> {
     if bytes.len() > slot.len() {
         Err(other("provided value is too long"))
-    } else if bytes.iter().any(|b| *b == 0) {
+    } else if bytes.contains(&0) {
         Err(other("provided value contains a nul byte"))
     } else {
         for (slot, val) in slot.iter_mut().zip(bytes.iter().chain(Some(&0))) {
@@ -1591,7 +1586,7 @@ fn copy_path_into_inner(
                 return Err(other("path component in archive cannot contain `/`"));
             }
         }
-        copy(&mut slot, &*bytes)?;
+        copy(&mut slot, &bytes)?;
         if &*bytes != b"/" {
             needs_slash = true;
         }
@@ -1601,13 +1596,13 @@ fn copy_path_into_inner(
         return Err(other("paths in archives must have at least one component"));
     }
     if ends_with_slash(path) {
-        copy(&mut slot, &[b'/'])?;
+        copy(&mut slot, b"/")?;
     }
     return Ok(());
 
     fn copy(slot: &mut &mut [u8], bytes: &[u8]) -> io::Result<()> {
-        copy_into(*slot, bytes)?;
-        let tmp = mem::replace(slot, &mut []);
+        copy_into(slot, bytes)?;
+        let tmp = mem::take(slot);
         *slot = &mut tmp[bytes.len()..];
         Ok(())
     }
@@ -1652,11 +1647,11 @@ fn ends_with_slash(p: &Path) -> bool {
 
 #[cfg(all(unix, not(target_arch = "wasm32")))]
 fn ends_with_slash(p: &Path) -> bool {
-    p.as_os_str().as_bytes().ends_with(&[b'/'])
+    p.as_os_str().as_bytes().ends_with(b"/")
 }
 
 #[cfg(any(windows, target_arch = "wasm32"))]
-pub fn path2bytes(p: &Path) -> io::Result<Cow<[u8]>> {
+pub fn path2bytes(p: &Path) -> io::Result<Cow<'_, [u8]>> {
     p.as_os_str()
         .to_str()
         .map(|s| s.as_bytes())
@@ -1679,8 +1674,8 @@ pub fn path2bytes(p: &Path) -> io::Result<Cow<[u8]>> {
 
 #[cfg(all(unix, not(target_arch = "wasm32")))]
 /// On unix this will never fail
-pub fn path2bytes(p: &Path) -> io::Result<Cow<[u8]>> {
-    Ok(p.as_os_str().as_bytes()).map(Cow::Borrowed)
+pub fn path2bytes(p: &Path) -> io::Result<Cow<'_, [u8]>> {
+    Ok(Cow::Borrowed(p.as_os_str().as_bytes()))
 }
 
 #[cfg(windows)]

@@ -17,6 +17,7 @@
 #include "base/time/time.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/sidebar/buildflags/buildflags.h"
 #include "brave/browser/ui/sidebar/features.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
@@ -27,13 +28,12 @@
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/layout/brave_browser_view_tabbed_layout_impl.h"
-#include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
-#include "brave/browser/ui/views/side_panel/side_panel.h"
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/browser/ui/views/toolbar/side_panel_button.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window.h"
@@ -43,13 +43,13 @@
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_within_tab_helper.h"
+#include "chrome/browser/ui/side_panel/side_panel_entry.h"
+#include "chrome/browser/ui/side_panel/side_panel_registry.h"
+#include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/tabs/features.h"
-#include "chrome/browser/ui/tabs/public/tab_features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
-#include "chrome/browser/ui/views/side_panel/side_panel_entry.h"
-#include "chrome/browser/ui/views/side_panel/side_panel_registry.h"
-#include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
+#include "chrome/browser/ui/views/side_panel/side_panel.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "components/grit/brave_components_strings.h"
@@ -69,6 +69,10 @@
 #include "ui/views/view_class_properties.h"
 #include "ui/views/view_utils.h"
 #include "ui/views/widget/widget.h"
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
+#endif
 
 namespace {
 
@@ -187,9 +191,11 @@ void SidebarContainerView::SetSidebarOnLeft(bool sidebar_on_left) {
 
   if (!base::FeatureList::IsEnabled(sidebar::features::kSidebarV2)) {
     CHECK(side_panel_);
+#if !BUILDFLAG(ENABLE_SIDEBAR_V2)
     side_panel_->SetHorizontalAlignment(
         sidebar_on_left ? SidePanel::HorizontalAlignment::kLeft
                         : SidePanel::HorizontalAlignment::kRight);
+#endif
   }
 }
 
@@ -248,6 +254,9 @@ void SidebarContainerView::WillShowSidePanel() {
 bool SidebarContainerView::IsFullscreenForCurrentEntry() const {
   CHECK(!base::FeatureList::IsEnabled(sidebar::features::kSidebarV2));
 
+#if !BUILDFLAG(ENABLE_PLAYLIST)
+  return false;
+#else
   // For now, we only supports fullscreen from playlist.
   if (side_panel_coordinator_->GetCurrentEntryId(
           SidePanelEntry::PanelType::kContent) != SidePanelEntryId::kPlaylist) {
@@ -276,6 +285,7 @@ bool SidebarContainerView::IsFullscreenForCurrentEntry() const {
   }
 
   return false;
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 }
 
 void SidebarContainerView::UpdateBorder() {
@@ -288,14 +298,12 @@ void SidebarContainerView::SetSidebarShowOption(ShowSidebarOption show_option) {
   show_sidebar_option_ = show_option;
 
   if (base::FeatureList::IsEnabled(sidebar::features::kSidebarV2)) {
-    // When panel is visible, option change doesn't affect current UI status.
-    if (IsSidePanelShowing()) {
-      return;
-    }
+    // Toolbar button visibility depends on show options.
+    UpdateToolbarButtonVisibility();
 
     if (show_sidebar_option_ == ShowSidebarOption::kShowAlways) {
       if (!IsSidebarVisible()) {
-        ShowSidebarControlView();
+        ShowSidebar(false, AnimationStyle::kImmediate);
       }
       return;
     }
@@ -336,6 +344,23 @@ void SidebarContainerView::SetSidebarShowOption(ShowSidebarOption show_option) {
 void SidebarContainerView::UpdateSidebarItemsState() {
   // control view has items.
   sidebar_control_view_->Update();
+}
+
+void SidebarContainerView::UpdateSidebarVisibility() {
+#if BUILDFLAG(ENABLE_SIDEBAR_V2)
+  UpdateToolbarButtonHighlight();
+
+  // Pinning is an explicit user gesture, not a hover — snap to visible
+  // without animation, mirroring kShowAlways above. Otherwise, fall through
+  // and follow the current show option.
+  if (browser_->GetFeatures().sidebar_controller()->sidebar_pinned()) {
+    ShowSidebar(false, AnimationStyle::kImmediate);
+  } else {
+    // Refresh sidebar visibility with current show option.
+    SetSidebarShowOption(
+        GetSidebarService(GetBraveBrowser())->GetSidebarShowOption());
+  }
+#endif
 }
 
 void SidebarContainerView::MenuClosed() {
@@ -487,10 +512,15 @@ bool SidebarContainerView::IsSidePanelShowing() const {
 }
 
 bool SidebarContainerView::ShouldForceShowSidebar() const {
+#if BUILDFLAG(ENABLE_SIDEBAR_V2)
+  // In V2, don't hide sidebar when it's pinned.
+  return browser_->GetFeatures().sidebar_controller()->sidebar_pinned() ||
+#else
   // It is more reliable to check whether coordinator has current entry rather
   // than checking if side_panel_ is visible.
   return side_panel_coordinator_->GetCurrentEntryId(
              SidePanelEntry::PanelType::kContent) ||
+#endif
          sidebar_control_view_->IsItemReorderingInProgress() ||
          sidebar_control_view_->IsBubbleWidgetVisible();
 }
@@ -544,7 +574,9 @@ void SidebarContainerView::AnimationEnded(const gfx::Animation* animation) {
     return;
   }
 
+#if !BUILDFLAG(ENABLE_SIDEBAR_V2)
   side_panel_->set_fixed_contents_width(std::nullopt);
+#endif
 
   PreferredSizeChanged();
 
@@ -616,7 +648,8 @@ void SidebarContainerView::ShowSidebarControlView() {
   ShowSidebar(false);
 }
 
-void SidebarContainerView::ShowSidebar(bool show_side_panel) {
+void SidebarContainerView::ShowSidebar(bool show_side_panel,
+                                       AnimationStyle animation) {
   DVLOG(1) << __func__ << ": show panel: " << show_side_panel;
 
   if (base::FeatureList::IsEnabled(sidebar::features::kSidebarV2)) {
@@ -634,7 +667,7 @@ void SidebarContainerView::ShowSidebar(bool show_side_panel) {
 
     sidebar_control_view_->SetVisible(true);
 
-    if (ShouldUseAnimation()) {
+    if (ShouldUseAnimation() && animation == AnimationStyle::kAnimated) {
       width_animation_.Show();
     } else {
       PreferredSizeChanged();
@@ -713,9 +746,11 @@ void SidebarContainerView::ShowSidebar(bool show_side_panel) {
               ->GetIdealSideBarWidth();
       animation_end_width_ =
           std::min(animation_end_width_, target_sidebar_width);
+#if !BUILDFLAG(ENABLE_SIDEBAR_V2)
       side_panel_->set_fixed_contents_width(
           animation_end_width_ -
           sidebar_control_view_->GetPreferredSize().width());
+#endif
     }
 
     width_animation_.Show();
@@ -797,7 +832,9 @@ void SidebarContainerView::HideSidebar(bool hide_sidebar_control) {
     DVLOG(1) << __func__ << ": hide with animation";
 
     if (side_panel_->GetVisible()) {
+#if !BUILDFLAG(ENABLE_SIDEBAR_V2)
       side_panel_->set_fixed_contents_width(side_panel_->width());
+#endif
     }
 
     width_animation_.Hide();
@@ -852,18 +889,49 @@ bool SidebarContainerView::ShouldUseAnimation() {
 }
 
 void SidebarContainerView::UpdateToolbarButtonVisibility() {
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
+  // BraveToolbarView and SidebarContainerView are sibling children of
+  // BrowserView; their construction/destruction order is not strictly
+  // coordinated, so the toolbar pointer (or its side_panel_button child) may
+  // be null during early init or window teardown when this is invoked from
+  // pref/observer callbacks.
+  auto* brave_toolbar = static_cast<BraveToolbarView*>(browser_view->toolbar());
+  if (!brave_toolbar) {
+    return;
+  }
+#if BUILDFLAG(ENABLE_SIDEBAR_V2)
+  // In V2, we hide button when show always as pinning doesn't make sense
+  // when always visible.
+  if (auto* button = brave_toolbar->side_panel_button()) {
+    button->SetVisible(show_side_panel_button_.GetValue() &&
+                       show_sidebar_option_ != ShowSidebarOption::kShowAlways);
+  }
+  UpdateToolbarButtonHighlight();
+#else
   // Coordinate sidebar toolbar button visibility based on
   // whether there are any sibar items with a sidepanel.
   // This is similar to how chromium's side_panel_coordinator View
   // also has some control on the toolbar button.
   auto has_panel_item =
       GetSidebarService(GetBraveBrowser())->GetDefaultPanelItem().has_value();
-  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
-  auto* brave_toolbar = static_cast<BraveToolbarView*>(browser_view->toolbar());
   if (brave_toolbar && brave_toolbar->side_panel_button()) {
     brave_toolbar->side_panel_button()->SetVisible(
         has_panel_item && show_side_panel_button_.GetValue());
   }
+#endif
+}
+
+void SidebarContainerView::UpdateToolbarButtonHighlight() {
+#if BUILDFLAG(ENABLE_SIDEBAR_V2)
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
+  // See UpdateToolbarButtonVisibility() for why brave_toolbar /
+  // side_panel_button() may be null here.
+  auto* brave_toolbar = static_cast<BraveToolbarView*>(browser_view->toolbar());
+  if (brave_toolbar && brave_toolbar->side_panel_button()) {
+    brave_toolbar->side_panel_button()->SetHighlighted(
+        browser_->GetFeatures().sidebar_controller()->sidebar_pinned());
+  }
+#endif
 }
 
 void SidebarContainerView::StartBrowserWindowEventMonitoring() {
@@ -967,12 +1035,7 @@ void SidebarContainerView::OnTabWillBeRemoved(tabs::TabInterface* tab,
                                               int index) {
   CHECK(!base::FeatureList::IsEnabled(sidebar::features::kSidebarV2));
 
-  // At this time, we can stop observing as TabFeatures is available.
-  if (!tab->GetTabFeatures()) {
-    return;
-  }
-
-  auto* registry = tab->GetTabFeatures()->side_panel_registry();
+  auto* registry = SidePanelRegistry::From(tab);
   if (!registry) {
     return;
   }
@@ -1035,11 +1098,8 @@ void SidebarContainerView::StartObservingContextualSidePanelEntry(
   CHECK(!base::FeatureList::IsEnabled(sidebar::features::kSidebarV2));
 
   auto* tab = tabs::TabInterface::GetFromContents(contents);
-  if (!tab->GetTabFeatures()) {
-    return;
-  }
 
-  auto* registry = tab->GetTabFeatures()->side_panel_registry();
+  auto* registry = SidePanelRegistry::From(tab);
   if (!registry) {
     return;
   }

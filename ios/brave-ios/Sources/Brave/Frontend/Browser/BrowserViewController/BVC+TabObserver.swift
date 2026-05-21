@@ -98,9 +98,6 @@ extension BrowserViewController: TabObserver {
     tab.redirectSourceURL = nil
     tab.isInternalRedirect = false
 
-    // Need to evaluate Night mode script injection after url is set inside the Tab
-    tab.nightMode = Preferences.General.nightModeEnabled.value
-
     // Dismiss any alerts that are showing on page navigation.
     if let alert = tab.shownPromptAlert {
       alert.dismiss(animated: false)
@@ -170,6 +167,17 @@ extension BrowserViewController: TabObserver {
     updateBackForwardActionStatus(for: tab)
   }
 
+  public func tabDidCommitSameDocumentNavigation(_ tab: some TabState) {
+    tab.browserData?.resetExternalAlertProperties()
+
+    if !Preferences.Privacy.privateBrowsingOnly.value,
+      !tab.isPrivate || Preferences.Privacy.persistentPrivateBrowsing.value
+    {
+      tabManager.preserveScreenshot(for: tab)
+      tabManager.saveTab(tab)
+    }
+  }
+
   public func tabDidFinishNavigation(_ tab: some TabState) {
     if !Preferences.Privacy.privateBrowsingOnly.value
       && (!tab.isPrivate || Preferences.Privacy.persistentPrivateBrowsing.value)
@@ -183,21 +191,6 @@ extension BrowserViewController: TabObserver {
       Task { @MainActor in
         await BraveSkusAccountLink.injectLocalStorage(tab: tab)
       }
-    }
-
-    // Second attempt to inject results to the BraveSearch.
-    // This will be called if we got fallback results faster than
-    // the page navigation.
-    if let braveSearchManager = tab.braveSearchManager {
-      // Fallback results are ready before navigation finished,
-      // they must be injected here.
-      if !braveSearchManager.fallbackQueryResultsPending {
-        tab.injectResults()
-      }
-    } else {
-      // If not applicable, null results must be injected regardless.
-      // The website waits on us until this is called with either results or null.
-      tab.injectResults()
     }
 
     navigateInTab(tab: tab)
@@ -393,6 +386,27 @@ extension BrowserViewController: TabObserver {
       updateStatusBarOverlayColor()
     }
   }
+
+  public func tab(_ tab: some TabState, frameDidBecomeAvailable frame: WebFrame) {
+    // when user taps back button to go back to the previous page from an activated
+    // reader mode page, most of the `TabObserver` methods are fired before
+    // web main frame is ready,
+    // For this case, we need to check readability after main frame did became available
+    guard FeatureList.kUseProfileWebViewConfiguration.enabled,
+      frame.isMainFrame,
+      let readerMode = tab.readerMode,
+      let url = tab.visibleURL,
+      !url.isNewTabURL,
+      !InternalURL.isValid(url: url) || url.isInternalURL(for: .readermode),
+      !url.isFileURL
+    else { return }
+    Task {
+      await readerMode.checkReadability()
+      if tabManager.selectedTab === tab {
+        topToolbar.updateReaderModeState(readerMode.state)
+      }
+    }
+  }
 }
 
 extension BrowserViewController {
@@ -407,7 +421,6 @@ extension BrowserViewController {
       BraveSearchScriptHandler(profile: profile, rewards: rewards),
       ResourceDownloadScriptHandler(),
       AdsMediaReportingScriptHandler(),
-      ReadyStateScriptHandler(),
       DeAmpScriptHandler(),
       SiteStateListenerScriptHandler(),
       CosmeticFiltersScriptHandler(),
@@ -425,20 +438,12 @@ extension BrowserViewController {
 
     if tab.profile.prefs.isPlaylistAvailable {
       injectedScripts.append(contentsOf: [
-        PlaylistScriptHandler(tab: tab),
-        PlaylistFolderSharingScriptHandler(),
+        PlaylistScriptHandler(tab: tab)
       ])
     }
 
     if tab.profile.prefs.isBraveTalkAvailable {
-      injectedScripts.append(
-        BraveTalkScriptHandler(
-          rewards: rewards,
-          launchNativeBraveTalk: { [weak self] tab, room, token in
-            self?.launchNativeBraveTalk(tab: tab, room: room, token: token)
-          }
-        )
-      )
+      injectedScripts.append(BraveTalkScriptHandler())
     }
 
     if profileController.braveWalletAPI.isAllowed {
@@ -487,8 +492,6 @@ extension BrowserViewController {
     (tab.browserData?.getContentScript(name: PlaylistScriptHandler.scriptName)
       as? PlaylistScriptHandler)?
       .delegate = self
-    (tab.browserData?.getContentScript(name: PlaylistFolderSharingScriptHandler.scriptName)
-      as? PlaylistFolderSharingScriptHandler)?.delegate = self
     (tab.browserData?.getContentScript(name: Web3NameServiceScriptHandler.scriptName)
       as? Web3NameServiceScriptHandler)?.delegate = self
   }

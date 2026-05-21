@@ -57,50 +57,8 @@ BackgroundWebContentsImpl::~BackgroundWebContentsImpl() {
   }
 }
 
-// content::WebContentsDelegate:
-
 void BackgroundWebContentsImpl::CloseContents(content::WebContents* source) {
   NotifyDestroyed(DestroyReason::kClose);
-}
-
-bool BackgroundWebContentsImpl::ShouldSuppressDialogs(
-    content::WebContents* source) {
-  return true;
-}
-
-void BackgroundWebContentsImpl::CanDownload(
-    const GURL& url,
-    const std::string& request_method,
-    base::OnceCallback<void(bool)> callback) {
-  std::move(callback).Run(false);
-}
-
-bool BackgroundWebContentsImpl::IsWebContentsCreationOverridden(
-    content::RenderFrameHost* opener,
-    content::SiteInstance* source_site_instance,
-    content::mojom::WindowContainerType window_container_type,
-    const GURL& opener_url,
-    const std::string& frame_name,
-    const GURL& target_url) {
-  return true;
-}
-
-bool BackgroundWebContentsImpl::CanEnterFullscreenModeForTab(
-    content::RenderFrameHost* requesting_frame) {
-  return false;
-}
-
-bool BackgroundWebContentsImpl::CanDragEnter(
-    content::WebContents* source,
-    const content::DropData& data,
-    blink::DragOperationsMask operations_allowed) {
-  return false;
-}
-
-void BackgroundWebContentsImpl::RequestKeyboardLock(
-    content::WebContents* web_contents,
-    bool esc_key_locked) {
-  web_contents->GotResponseToKeyboardLockRequest(false);
 }
 
 // content::WebContentsObserver:

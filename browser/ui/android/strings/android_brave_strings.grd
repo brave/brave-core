@@ -753,23 +753,11 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
 
       <!-- Onboarding strings -->
-      <message name="IDS_PRIVACY_ONBOARDING" desc="Text for privacy onboarding">
-        Privacy. Made simple.
-      </message>
-      <message name="IDS_ONBOARDING_SET_DEFAULT" desc="Text for set default onboarding">
-        With Brave as default, every link you tap opens with Brave's privacy protections.
-      </message>
       <message name="IDS_P3A_TITLE" desc="Text for p3a title onboarding">
         Help make Brave better
       </message>
         <message name="IDS_P3A_SUBTITLE" desc="Text for p3a subtitle onboarding">
         Let us know which features you're enjoying the most.
-      </message>
-      <message name="IDS_P3A_CRASH" desc="Text for p3a crash onboarding">
-        Send diagnostic reports if you experience a crash or freeze.
-      </message>
-      <message name="IDS_P3A_INSIGHTS" desc="Text for p3a insights onboarding">
-        Share private and anonymous product insights about what features are being used by Brave's users.
       </message>
       <message name="IDS_WDP_TITLE" desc="Text for WDP title onboarding">
         Help Brave Search grow
@@ -778,24 +766,9 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Block interruptions when you stream
       </message>
       <message name="IDS_WDP_TEXT" desc="Text for WDP text onboarding">
-        Opt into the Web Discovery Project to help grow the index and improve search results. <ph name="LEARN_MORE_START">&lt;learn_more&gt;</ph>Learn more.<ph name="LEARN_MORE_END">&lt;/learn_more&gt;</ph>
+        Opt into the Web Discovery Project to help grow the index and improve search results. <ph name="LEARN_MORE_START">&lt;learn_more&gt;</ph>Learn more<ph name="LEARN_MORE_END">&lt;/learn_more&gt;</ph>.
       </message>
       <message name="IDS_BRAVE_ONBOARDING_SPLASH_LOGO_DESCRIPTION" desc="Accessibility description for the onboarding splash logo">
-        Brave logo
-      </message>
-      <message name="IDS_BRAVE_ONBOARDING_BACKGROUND_DESCRIPTION" desc="Accessibility description for the onboarding background image">
-        Onboarding background
-      </message>
-      <message name="IDS_BRAVE_ONBOARDING_TOP_LEAF_DESCRIPTION" desc="Accessibility description for the onboarding top leaf decoration">
-        Top leaf decoration
-      </message>
-      <message name="IDS_BRAVE_ONBOARDING_BOTTOM_LEAF_DESCRIPTION" desc="Accessibility description for the onboarding bottom leaf decoration">
-        Bottom leaf decoration
-      </message>
-      <message name="IDS_BRAVE_ONBOARDING_ARROW_DOWN_DESCRIPTION" desc="Accessibility description for the onboarding down arrow">
-        Scroll down
-      </message>
-      <message name="IDS_BRAVE_ONBOARDING_LOGO_DESCRIPTION" desc="Accessibility description for the onboarding Brave logo">
         Brave logo
       </message>
       <message name="IDS_BRAVE_ONBOARDING_HELP_BRAVE_SEARCH_ILLUSTRATION_DESCRIPTION" desc="Accessibility description for the help Brave Search onboarding illustration">
@@ -842,9 +815,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
       <message name="IDS_SKIP" desc="Text for skip button in onboarding">
         Skip
-      </message>
-      <message name="IDS_LEARN_MORE_ONBOARDING" desc="Text for learn more button onboarding">
-        Learn more
       </message>
       <message name="IDS_TROUBLESHOOTING_ONBOARDING" desc="Text for trouble shooting page for onboarding">
         Troubleshooting onboarding
@@ -1275,7 +1245,7 @@ Are you sure you want to do this?
         Browsing visibility
       </message>
       <message name="IDS_BRAVE_NEW_TAB_PRIVATE_VISIBILITY_DESCRIPTION" desc="Browsing visibility description shown when a user opens a private tab explaining private mode">
-        Note that, even in private windows, your browsing activity may still be visible to your ISP, network observers, or your employer (if you're using a work device/network).
+        Note that—even in private windows—your browsing activity may still be visible to your ISP, network observers, or your employer (if you're using a work machine/network).
       </message>
       <message name="IDS_BRAVE_NEW_TAB_PRIVATE_VPN" desc="VPN title shown when a user opens a private tab explaining private mode">
         Brave VPN
@@ -1505,12 +1475,33 @@ Are you sure you want to do this?
       <message name="IDS_BRAVE_SHIELDS_AUTO_SHRED_NEVER_MODE_TEXT" desc="Shields menu auto shred never mode item text.">
         Never
       </message>
+      <message name="IDS_BRAVE_SHIELDS_AUTO_SHRED_NEVER_MODE_DESCRIPTION_TEXT" desc="Shields menu auto shred never mode item description text.">
+        Browsing data is never shredded automatically
+      </message>
       <message name="IDS_BRAVE_SHIELDS_AUTO_SHRED_SITE_TAB_CLOSED_MODE_TEXT" desc="Shields menu auto shred site tab closed mode item text.">
         Site tab closed
       </message>
+      <message name="IDS_BRAVE_SHIELDS_AUTO_SHRED_SITE_TAB_CLOSED_MODE_DESCRIPTION_TEXT" desc="Shields menu auto shred site tab closed mode item description text.">
+        Browsing data is automatically shredded when all tabs open to a site are closed
+      </message>
       <message name="IDS_BRAVE_SHIELDS_AUTO_SHRED_APP_CLOSE_MODE_TEXT" desc="Shields menu auto shred app close mode item text.">
         App close
-      </message>   
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_AUTO_SHRED_APP_CLOSE_MODE_DESCRIPTION_TEXT" desc="Shields menu auto shred app close mode item description text.">
+        Browsing data is automatically shredded when the Brave app is closed / restarted
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_SHRED_SETTINGS_TEXT" desc="Shred site's data settings item text.">
+        Shred
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_SHRED_SETTINGS_DESCRIPTION_TEXT" desc="Shred site's data settings item description.">
+        Update Auto Shred and adjust what data is shredded
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_SHRED_SETTINGS_CATEGORY_TEXT" desc="Shred site's data settings category text.">
+        Automatically shred browsing data
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_SHRED_REMOVES_HISTORY_TEXT" desc="Shred removes history toggle title text.">
+        Shred browsing history
+      </message>
       <message name="IDS_REPORT_BROKEN_SITE_TEXT" desc="Shields text for broken text warning message.">
         Report a broken site
       </message>
@@ -3246,7 +3237,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Leo AI
     </message>
     <message name="IDS_MENU_ORIGIN" desc="Brave Origin settings menu item text">
-      Origin
+      Brave Origin
     </message>
     <message name="IDS_ORIGIN_REWARDS_TOGGLE" desc="Brave Origin rewards toggle title">
       Rewards
@@ -3258,7 +3249,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Email aliases
     </message>
     <message name="IDS_ORIGIN_LEO_AI_TOGGLE" desc="Brave Origin Leo AI toggle title">
-      AI
+      Leo AI
     </message>
     <message name="IDS_ORIGIN_NEWS_TOGGLE" desc="Brave Origin News toggle title">
       News
@@ -3278,17 +3269,11 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_ORIGIN_RESET_TO_DEFAULTS" desc="Brave Origin reset to defaults preference title">
       Reset to defaults
     </message>
-    <message name="IDS_ORIGIN_TOGGLE_ENABLED_DESCRIPTION" desc="Description shown when a toggle is enabled in Brave Origin settings">
-      This feature is enabled because you opted into it
-    </message>
     <message name="IDS_ORIGIN_DESCRIPTION_TITLE" desc="Brave Origin description title">
       Customize your browser while still supporting Brave
     </message>
     <message name="IDS_ORIGIN_DESCRIPTION_BODY" desc="Brave Origin description body text">
-      Brave Origin is a paid version of the browser for users who don't need all the features that support Brave as a business, but still want the privacy that only Brave offers. Origin users will continue to benefit from our industry-leading privacy, adblock, and speed (via Shields), as well as regular software updates, Chromium patches, and security and privacy improvements. Origin will remove most other features from the browser.
-    </message>
-    <message name="IDS_ORIGIN_DESCRIPTION_NOTE" desc="Brave Origin description note about Search Premium">
-      Note that a Brave Origin purchase will also include access to Brave Search Premium, as Origin will remove ads from the Brave Search results page.
+      Brave Origin is a paid version of the browser for users who don't need all the features that support Brave as a business, but still want the privacy that only Brave offers. Origin users will continue to benefit from our industry-leading privacy, adblock, and speed (via Shields), as well as regular software updates, Chromium patches, and security and privacy improvements.
     </message>
     <message name="IDS_ORIGIN_CHANGING_BRAVE_FEATURES_TITLE" desc="Title for the snackbar shown when toggling a Brave Origin feature">
       Changing Brave features
@@ -3298,6 +3283,12 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_ORIGIN_RESTART_NOW" desc="Action button text on the Brave Origin restart snackbar">
       Restart now
+    </message>
+    <message name="IDS_ORIGIN_DISABLING_FEATURES" desc="Text shown in the snackbar while Origin credentials are being fetched after purchase, indicating features are being disabled">
+      Disabling features
+    </message>
+    <message name="IDS_ORIGIN_CHANGING_BRAVE_FEATURES_MESSAGE_POST_PURCHASE" desc="Message for the snackbar shown right after Origin purchase while credentials are being fetched">
+      Enabling or disabling a Brave feature requires a browser restart to apply changes. Please tap <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Restart now<ph name="END_BOLD">&lt;/b&gt;</ph> once Brave Origin has finished updating.
     </message>
     <message name="IDS_ORIGIN_RESET_DIALOG_MESSAGE" desc="Confirmation message shown when the user taps Reset to defaults in Brave Origin settings">
       Are you sure you want to reset all settings to default?
@@ -3712,7 +3703,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Mobile bookmarks
     </message>
     <message name="IDS_BRAVE_ORIGIN_PREMIUM" desc="Title for Origin Premium">
-      Origin
+      Brave Origin
     </message>
     <message name="IDS_ORIGIN_BUY_NOW" desc="Buy now button for Brave Origin one-time purchase">
       Buy now
@@ -3727,13 +3718,13 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Maintain core adblock, privacy, &amp; speed
     </message>
     <message name="IDS_ORIGIN_PAYWALL_TEXT_4" desc="Brave Origin paywall text">
-      One-time purchase, no additional subscription cost
+      One-time purchase can be activated multiple times across all your devices
     </message>
     <message name="IDS_ORIGIN_ONE_TIME_PURCHASE" desc="Brave Origin one-time purchase plan label">
-      One Time Purchase
+      One-time purchase
     </message>
-    <message name="IDS_ORIGIN_GET_LOGIN_CODE" desc="Brave Origin get login code button text">
-      Get a login code
+    <message name="IDS_ORIGIN_GET_LOGIN_CODE" desc="Brave Origin Verify Brave Origin purchase button text">
+      Verify Brave Origin purchase
     </message>
     <!-- Password Manager backport -->
     <message name="IDS_PASSWORD_SETTINGS_SAVE_PASSWORDS" desc="Title for the checkbox toggling whether passwords are saved or not. [CHAR_LIMIT=32]">
@@ -3895,6 +3886,71 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_PASSWORD_ENTRY_VIEW_SET_SCREEN_LOCK" desc="Text prompting user to set up screen lock on their device in order to view passwords">
       To view passwords, first set a screen lock on your device
+    </message>
+
+    <!-- Custom search engines (browser/custom_search_engines) -->
+    <message name="IDS_CUSTOM_SEARCH_ENGINES" desc="Search engines category title for custom search engines">
+      Custom search engines
+    </message>
+    <message name="IDS_ADD_CUSTOM_SEARCH_ENGINE" desc="Title of the add custom search engine">
+      Add a custom search engine
+    </message>
+    <message name="IDS_EDIT_CUSTOM_SEARCH_ENGINE" desc="Title of the edit custom search engine">
+      Edit custom search engine
+    </message>
+    <message name="IDS_ADD_CUSTOM_SEARCH_ENGINE_TITLE" desc="Add custom search engine title">
+      Title
+    </message>
+    <message name="IDS_ADD_CUSTOM_SEARCH_ENGINE_TITLE_HINT" desc="Add serach engine title edittext hint">
+      Enter the name of the search engine
+    </message>
+    <message name="IDS_ADD_CUSTOM_SEARCH_ENGINE_URL" desc="Add custom search engine url">
+      URL
+    </message>
+    <message name="IDS_ADD_CUSTOM_SEARCH_ENGINE_URL_HINT" desc="Add custom search engine url hint" translateable="false">
+      https://
+    </message>
+    <message name="IDS_ADD_SEARCH_ENGINE" desc="Add search engine button text">
+      Add search engine
+    </message>
+    <message name="IDS_ADD_CUSTOM_SEARCH_ENGINE_TEXT1" desc="Add custom search engine text1">
+      Write the search url and replace the query with <ph name="SPECIAL_SYMBOL">%s</ph>.
+    </message>
+    <message name="IDS_ADD_CUSTOM_SEARCH_ENGINE_TEXT2" desc="Add custom search engine text2">
+      For example: https://youtube.com/search?q=<ph name="SPECIAL_SYMBOL">%s</ph>.
+    </message>
+    <message name="IDS_ADD_CUSTOM_SEARCH_ENGINE_URL_ERROR" desc="Add custom search engine empty url text">
+      URL is invalid.
+    </message>
+    <message name="IDS_ADD_CUSTOM_SEARCH_ENGINE_TITLE_ERROR" desc="Add custom search engine invalid title error">
+      Title can only contain letters, numbers and spaces.
+    </message>
+    <message name="IDS_SEARCH_ENGINE_ALREADY_EXISTS_ERROR" desc="Search engine already exists text">
+      Search engine with this keyword already exists.
+    </message>
+    <message name="IDS_FAILED_TO_ADD_SEARCH_ENGINE" desc="Failed to add search engine text">
+      Failed to add search engine.
+    </message>
+    <message name="IDS_FAILED_TO_UPDATE_SEARCH_ENGINE" desc="Failed to update search engine text">
+      Failed to update search engine.
+    </message>
+    <message name="IDS_FAILED_TO_DELETE_SEARCH_ENGINE" desc="Failed to delete search engine text">
+      Failed to delete search engine. The search engine you're trying to delete may be set as the default one.
+    </message>
+    <message name="IDS_DELETE_CUSTOM_SEARCH_ENGINE_TITLE" desc="Delete custom search engine title">
+      Delete custom search engine
+    </message>
+    <message name="IDS_DELETE_CUSTOM_SEARCH_ENGINE_TEXT" desc="Delete custom search engine text">
+      Are you sure you want to delete ”<ph name="SEARCH_ENGINE_NAME">%s</ph>”? This action cannot be undone.
+    </message>
+    <message name="IDS_DELETE_ACTION_TEXT" desc="Delete action text">
+      Delete
+    </message>
+    <message name="IDS_CANCEL_ACTION_TEXT" desc="Cancel action text">
+      Cancel
+    </message>
+    <message name="IDS_SAVE_CHANGES_ACTION_TEXT" desc="Save changes action text">
+      Save changes
     </message>
   </messages>
   </release>

@@ -6,17 +6,12 @@
 #ifndef BRAVE_BROWSER_BRAVE_WALLET_BLOCKCHAIN_IMAGES_SOURCE_H_
 #define BRAVE_BROWSER_BRAVE_WALLET_BLOCKCHAIN_IMAGES_SOURCE_H_
 
-#include <optional>
 #include <string>
 
-#include "base/gtest_prod_util.h"
-#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/browser/blockchain_images_source_base.h"
 #include "content/public/browser/url_data_source.h"
 
-namespace base {
-class FilePath;
-}  // namespace base
+class Profile;
 
 namespace brave_wallet {
 
@@ -24,7 +19,7 @@ namespace brave_wallet {
 class BlockchainImagesSource : public content::URLDataSource,
                                public BlockchainImagesSourceBase {
  public:
-  explicit BlockchainImagesSource(const base::FilePath& base_path);
+  explicit BlockchainImagesSource(Profile* profile);
 
  private:
   // content::URLDataSource overrides:

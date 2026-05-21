@@ -105,10 +105,16 @@ class CacheClearable: Clearable {
 class HistoryClearable: Clearable {
   let historyAPI: BraveHistoryAPI
   let httpsUpgradeService: HttpsUpgradeService?
+  private let serpMetrics: (any SerpMetrics)?
 
-  init(historyAPI: BraveHistoryAPI, httpsUpgradeService: HttpsUpgradeService?) {
+  init(
+    historyAPI: BraveHistoryAPI,
+    httpsUpgradeService: HttpsUpgradeService?,
+    serpMetrics: (any SerpMetrics)?
+  ) {
     self.historyAPI = historyAPI
     self.httpsUpgradeService = httpsUpgradeService
+    self.serpMetrics = serpMetrics
   }
 
   var label: String {
@@ -119,6 +125,7 @@ class HistoryClearable: Clearable {
     return await withCheckedContinuation { continuation in
       self.historyAPI.deleteAll {
         self.httpsUpgradeService?.clearAllowlist(fromStart: .distantPast, end: .distantFuture)
+        self.serpMetrics?.clearHistory()
         NotificationCenter.default.post(name: .privateDataClearedHistory, object: nil)
         continuation.resume()
       }

@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/full_screen_mode_permission_rule.h"
 
 #include "base/test/scoped_feature_list.h"
+#include "brave/components/brave_ads/core/internal/common/operating_system/operating_system_types.h"
 #include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rule_feature.h"
@@ -29,7 +30,7 @@ TEST_F(BraveAdsFullScreenModePermissionRuleTest, ShouldAlwaysAllowOnAndroid) {
   const base::test::ScopedFeatureList scoped_feature_list(
       kPermissionRulesFeature);
 
-  test::MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
+  fake_operating_system_.SetType(OperatingSystemType::kAndroid);
 
   test::MockIsBrowserInFullScreenMode(ads_client_mock_, true);
 
@@ -42,7 +43,7 @@ TEST_F(BraveAdsFullScreenModePermissionRuleTest, ShouldAlwaysAllowOnIOS) {
   const base::test::ScopedFeatureList scoped_feature_list(
       kPermissionRulesFeature);
 
-  test::MockPlatformHelper(platform_helper_mock_, PlatformType::kIOS);
+  fake_operating_system_.SetType(OperatingSystemType::kIOS);
 
   test::MockIsBrowserInFullScreenMode(ads_client_mock_, true);
 

@@ -12,7 +12,6 @@
 #include "base/functional/bind.h"
 #include "base/no_destructor.h"
 #include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
-#include "brave/browser/brave_ads/ad_units/notification_ad/notification_ad_platform_bridge.h"
 #include "brave/browser/brave_ads/ads_service_delegate.h"
 #include "brave/browser/brave_ads/device_id/device_id_impl.h"
 #include "brave/browser/brave_ads/services/bat_ads_service_factory_impl.h"
@@ -23,15 +22,18 @@
 #include "brave/components/brave_ads/browser/ads_service_impl.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/public/ads_util.h"
+#include "brave/components/brave_policy/policy_initialization_waiter.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
-#include "brave/components/brave_rewards/core/rewards_util.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/notifications/notification_display_service.h"
 #include "chrome/browser/notifications/notification_display_service_factory.h"
+#include "chrome/browser/policy/profile_policy_connector.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/profiles/profile_manager.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
+#include "components/policy/core/common/policy_service.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
 #include "services/network/public/cpp/network_context_getter.h"
@@ -58,10 +60,6 @@ network::mojom::NetworkContext* GetNetworkContextForProfile(
 // static
 AdsService* AdsServiceFactory::GetForProfile(Profile* profile) {
   if (!profile->IsRegularProfile()) {
-    return nullptr;
-  }
-
-  if (!brave_rewards::IsSupported(profile->GetPrefs())) {
     return nullptr;
   }
 
@@ -113,11 +111,17 @@ AdsServiceFactory::BuildServiceInstanceForBrowserContext(
   auto* brave_adaptive_captcha_service =
       brave_adaptive_captcha::BraveAdaptiveCaptchaServiceFactory::GetForProfile(
           profile);
-  CHECK(brave_adaptive_captcha_service);
+
+  policy::PolicyService* policy_service = nullptr;
+  if (auto* policy_connector = profile->GetProfilePolicyConnector()) {
+    policy_service = policy_connector->policy_service();
+  }
+  auto policy_initialization_waiter =
+      std::make_unique<brave_policy::PolicyInitializationWaiter>(
+          policy_service);
 
   auto delegate = std::make_unique<AdsServiceDelegate>(
-      *profile, local_state, *brave_adaptive_captcha_service,
-      std::make_unique<NotificationAdPlatformBridge>(*profile));
+      *profile, *local_state, brave_adaptive_captcha_service);
 
   auto* history_service = HistoryServiceFactory::GetForProfile(
       profile, ServiceAccessType::EXPLICIT_ACCESS);
@@ -136,9 +140,14 @@ AdsServiceFactory::BuildServiceInstanceForBrowserContext(
       base::BindRepeating(&GetNetworkContextForProfile, context),
       /*use_ohttp_staging=*/IsStagingEnvironment(*prefs));
 
+  ProfileManager* const profile_manager = g_browser_process->profile_manager();
+  CHECK(profile_manager);
+
   return std::make_unique<AdsServiceImpl>(
-      std::move(delegate), prefs, local_state, std::move(http_client),
-      std::make_unique<VirtualPrefProviderDelegate>(*profile),
+      std::move(delegate), *prefs, *local_state,
+      std::move(policy_initialization_waiter), std::move(http_client),
+      std::make_unique<VirtualPrefProviderDelegate>(
+          *profile, profile_manager->GetProfileAttributesStorage()),
       brave::GetChannelName(), profile->GetPath(), CreateAdsTooltipsDelegate(),
       std::make_unique<DeviceIdImpl>(),
       std::make_unique<BatAdsServiceFactoryImpl>(),

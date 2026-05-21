@@ -16,8 +16,11 @@ import { loadTimeData } from '../i18n_setup.js'
 import { routes } from '../route.js'
 import { Router } from '../router.js'
 import type { Route } from '../router.js'
+
+// <if expr="enable_email_aliases">
 import '../email_aliases_page/email_aliases_page.js'
 import { EmailAliasesStrings } from '../brave_components_webui_strings.js'
+// </if>
 
 RegisterPolymerComponentReplacement(
   'settings-autofill-page', BraveSettingsAutofillPageElement
@@ -56,6 +59,7 @@ RegisterPolymerTemplateModifications({
         </settings-toggle-button>
       `)
 
+    // <if expr="enable_email_aliases">
     // Add a link-row style item (like Password Manager / Payment methods)
     // that navigates to the Email Aliases subpage when the feature is enabled.
     if (loadTimeData.getBoolean('isEmailAliasesEnabled')) {
@@ -78,7 +82,9 @@ RegisterPolymerTemplateModifications({
         controlsDiv.insertBefore(linkRow, paymentsAnchor)
       }
     }
+    // </if>
   },
+  // <if expr="enable_email_aliases">
   'settings-autofill-page-index': (templateContent) => {
     if (!loadTimeData.getBoolean('isEmailAliasesEnabled')) {
       return
@@ -94,8 +100,10 @@ RegisterPolymerTemplateModifications({
       </settings-email-aliases-page>
     `)
   }
+  // </if>
 })
 
+// <if expr="enable_email_aliases">
 if (loadTimeData.getBoolean('isEmailAliasesEnabled')) {
   RegisterPolymerPrototypeModification({
     'settings-autofill-page': (prototype) => {
@@ -118,3 +126,4 @@ if (loadTimeData.getBoolean('isEmailAliasesEnabled')) {
     }
   })
 }
+// </if>

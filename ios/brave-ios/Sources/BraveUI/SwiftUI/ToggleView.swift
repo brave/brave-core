@@ -32,7 +32,7 @@ public struct ToggleView: View {
     }
     .listRowBackground(Color(.secondaryBraveGroupedBackground))
     .toggleStyle(SwitchToggleStyle(tint: .accentColor))
-    .onChange(of: toggle) { newValue in
+    .onChange(of: toggle) { _, newValue in
       onChange?(newValue)
     }
   }

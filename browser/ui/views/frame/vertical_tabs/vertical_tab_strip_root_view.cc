@@ -10,6 +10,7 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/controls/webview/webview.h"
 #include "ui/views/view_utils.h"
+#include "ui/views/widget/widget.h"
 
 VerticalTabStripRootView::VerticalTabStripRootView(BrowserView* browser_view,
                                                    views::Widget* widget)

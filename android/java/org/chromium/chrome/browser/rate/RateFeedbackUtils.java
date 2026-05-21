@@ -95,15 +95,17 @@ public class RateFeedbackUtils {
             jsonParam.put("app_version", appVersion);
 
             OutputStream outputStream = urlConnection.getOutputStream();
-            byte[] input = jsonParam.toString().getBytes(StandardCharsets.UTF_8.name());
+            byte[] input = jsonParam.toString().getBytes(StandardCharsets.UTF_8);
             outputStream.write(input, 0, input.length);
             outputStream.flush();
             outputStream.close();
 
             int HttpResult = urlConnection.getResponseCode();
             if (HttpResult == HttpURLConnection.HTTP_OK) {
-                BufferedReader br = new BufferedReader(new InputStreamReader(
-                        urlConnection.getInputStream(), StandardCharsets.UTF_8.name()));
+                BufferedReader br =
+                        new BufferedReader(
+                                new InputStreamReader(
+                                        urlConnection.getInputStream(), StandardCharsets.UTF_8));
                 String line = null;
                 while ((line = br.readLine()) != null) {
                     sb.append(line + "\n");

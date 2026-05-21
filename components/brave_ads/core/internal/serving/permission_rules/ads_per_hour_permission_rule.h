@@ -7,16 +7,13 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_PERMISSION_RULES_ADS_PER_HOUR_PERMISSION_RULE_H_
 
 #include <cstddef>
-#include <vector>
 
-namespace base {
-class Time;
-}  // namespace base
+#include "base/containers/span.h"
+#include "base/time/time.h"
 
 namespace brave_ads {
 
-bool HasAdsPerHourPermission(const std::vector<base::Time>& history,
-                             size_t cap);
+bool HasAdsPerHourPermission(base::span<const base::Time> history, size_t cap);
 
 }  // namespace brave_ads
 

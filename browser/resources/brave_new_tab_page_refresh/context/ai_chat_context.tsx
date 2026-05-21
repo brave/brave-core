@@ -26,8 +26,9 @@ export default function AIChatContextsProvider(props: {
       ...conversationBindings,
       selectedConversationId: undefined,
       updateSelectedConversationId: () => {},
+      openMainConversation: () => {},
       createNewConversation: () => {},
-      isTabAssociated: false,
+      isMainConversation: false,
     }
   }, [])
 

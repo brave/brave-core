@@ -35,7 +35,7 @@ class ObliviousHttpKeyConfig;
 // Sends network requests, supporting both standard HTTP and Oblivious HTTP
 // (OHTTP). Standard HTTP requests are issued via SimpleURLLoader, while OHTTP
 // requests are routed through the network service’s OHTTP implementation.
-class HttpClient {
+class HttpClient final {
  public:
   HttpClient(PrefService& local_state,
              scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,

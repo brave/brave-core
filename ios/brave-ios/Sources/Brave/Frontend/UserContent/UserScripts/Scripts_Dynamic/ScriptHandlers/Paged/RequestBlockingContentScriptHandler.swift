@@ -17,7 +17,6 @@ class RequestBlockingContentScriptHandler: TabContentScript {
     struct RequestBlockingDTOData: Decodable, Hashable {
       let resourceType: AdblockEngine.ResourceType
       let resourceURL: String
-      let windowOrigin: String
     }
 
     let securityToken: String
@@ -67,8 +66,9 @@ class RequestBlockingContentScriptHandler: TabContentScript {
 
       // Because javascript urls allow some characters that `URL` does not,
       // we use `NSURL(idnString: String)` to parse them
-      guard let requestURL = NSURL(idnString: dto.data.resourceURL) as URL? else { return }
-      guard let windowOriginURL = NSURL(idnString: dto.data.windowOrigin) as URL? else { return }
+      guard let requestURL = NSURL(idnString: dto.data.resourceURL) as URL?,
+        let windowOriginURL = URLOrigin(wkSecurityOrigin: message.frameInfo.securityOrigin).url
+      else { return }
       let isPrivateBrowsing = tab.isPrivate
 
       Task { @MainActor in
@@ -85,12 +85,14 @@ class RequestBlockingContentScriptHandler: TabContentScript {
 
         // Ensure we check that the stats we're tracking is still for the same page
         // Some web pages (like youtube) like to rewrite their main frame urls
-        // so we check the source etld+1 agains the tab url etld+1
+        // so we check the source etld+1 against the tab url etld+1
         // For subframes which may use different etld+1 than the main frame (example `reddit.com` and `redditmedia.com`)
         // We simply check the known subframeURLs on this page.
-        guard
-          tab.visibleURL?.baseDomain == windowOriginURL.baseDomain
-            || tab.currentPageData?.allSubframeURLs.contains(windowOriginURL) == true
+        let subframeBaseDomains = (tab.currentPageData?.allSubframeURLs ?? [])
+          .compactMap(\.baseDomain)
+        guard let windowOriginURLBaseDomain = windowOriginURL.baseDomain,
+          tab.visibleURL?.baseDomain == windowOriginURLBaseDomain
+            || subframeBaseDomains.contains(windowOriginURLBaseDomain) == true
         else {
           replyHandler(shouldBlock, nil)
           return

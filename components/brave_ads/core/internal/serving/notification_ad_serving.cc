@@ -42,13 +42,12 @@ NotificationAdServing::NotificationAdServing(
     const AntiTargetingResource& anti_targeting_resource) {
   eligible_ads_ = EligibleNotificationAdsFactory::Build(
       kNotificationAdServingVersion.Get(), subdivision_targeting,
-      anti_targeting_resource);
+      anti_targeting_resource, creative_ad_round_robin_);
 
-  GetAdsClient().AddObserver(this);
+  ads_client_observation_.Observe(&GetAdsClient());
 }
 
 NotificationAdServing::~NotificationAdServing() {
-  GetAdsClient().RemoveObserver(this);
   delegate_ = nullptr;
 }
 
@@ -226,6 +225,8 @@ void NotificationAdServing::ServeAd(const NotificationAdInfo& ad) {
     BLOG(0, "Notification ad not served: Invalid ad");
     return FailedToServeAd();
   }
+
+  creative_ad_round_robin_.MarkAsServed(ad);
 
   eligible_ads_->SetLastServedAd(ad);
 

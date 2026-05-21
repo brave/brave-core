@@ -13,5 +13,5 @@ android_library("base_java") {
     "//third_party/androidx:androidx_annotation_annotation_jvm_java",
     "//ui/android:ui_no_recycler_view_java",
   ]
-  resources_package = "org.chromium.ui"
+  resources_package = "org.chromium.ui.brave"
 }

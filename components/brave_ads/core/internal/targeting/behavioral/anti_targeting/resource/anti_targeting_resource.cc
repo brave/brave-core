@@ -39,12 +39,10 @@ bool DoesRequireResource() {
 }  // namespace
 
 AntiTargetingResource::AntiTargetingResource() {
-  GetAdsClient().AddObserver(this);
+  ads_client_observation_.Observe(&GetAdsClient());
 }
 
-AntiTargetingResource::~AntiTargetingResource() {
-  GetAdsClient().RemoveObserver(this);
-}
+AntiTargetingResource::~AntiTargetingResource() = default;
 
 AntiTargetingSiteList AntiTargetingResource::GetSites(
     const std::string& creative_set_id) const {

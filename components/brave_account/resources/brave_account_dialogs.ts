@@ -3,9 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import {
+  AccountState,
+  AccountStateFieldTags,
+  whichAccountState,
+} from './brave_account.mojom-webui.js'
+import { assert } from '//resources/js/assert.js'
 import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
-// <if expr="not is_android and not is_ios">
 import { EventTracker } from '//resources/js/event_tracker.js'
+// <if expr="not is_android and not is_ios">
 import { hasKeyModifiers } from '//resources/js/util.js'
 // </if>
 
@@ -14,13 +20,10 @@ import {
   BraveAccountBrowserProxyImpl,
 } from './brave_account_browser_proxy.js'
 import { getHtml } from './brave_account_dialogs.html.js'
-import { Error } from './brave_account_common.js'
 
-export type Dialog =
-  | { type: 'CREATE' | 'ENTRY' | 'FORGOT_PASSWORD' | 'SIGN_IN' }
-  | { type: 'ERROR'; error: Error }
+export type Dialog = 'CREATE' | 'ENTRY' | 'FORGOT_PASSWORD' | 'OTP' | 'SIGN_IN'
 
-export class BraveAccountDialogs extends CrLitElement {
+export class BraveAccountDialogsElement extends CrLitElement {
   static get is() {
     return 'brave-account-dialogs'
   }
@@ -31,16 +34,14 @@ export class BraveAccountDialogs extends CrLitElement {
 
   static override get properties() {
     return {
-      dialog: { type: Object },
+      dialog: { type: String },
       isCapsLockOn: { type: Boolean, state: true },
     }
   }
 
   protected onBackButtonClicked() {
-    this.dialog =
-      this.dialog.type === 'FORGOT_PASSWORD'
-        ? { type: 'SIGN_IN' }
-        : { type: 'ENTRY' }
+    assert(this.dialog)
+    this.dialog = this.dialog === 'FORGOT_PASSWORD' ? 'SIGN_IN' : 'ENTRY'
   }
 
   protected onCloseDialog() {
@@ -50,21 +51,55 @@ export class BraveAccountDialogs extends CrLitElement {
   private browserProxy: BraveAccountBrowserProxy =
     BraveAccountBrowserProxyImpl.getInstance()
 
-  protected accessor dialog: Dialog = { type: 'ENTRY' }
+  protected accessor dialog: Dialog | undefined = undefined
   protected accessor isCapsLockOn: boolean = false
 
-  // <if expr="not is_android and not is_ios">
+  private accountStateListenerId: number | null = null
+  private eventTracker = new EventTracker()
+
   override connectedCallback() {
     super.connectedCallback()
+
+    this.eventTracker.add(this, 'back-button-clicked', this.onBackButtonClicked)
+    this.eventTracker.add(this, 'close-dialog', this.onCloseDialog)
+    // <if expr="not is_android and not is_ios">
     this.eventTracker.add(document, 'keydown', this.onKeyDown)
     this.eventTracker.add(document, 'keyup', this.onKeyUp)
+    // </if>
+
+    // Handle account state changes.
+    // LOGGED_OUT (no verification): show the ENTRY dialog
+    // LOGGED_OUT (with verification): show the OTP dialog
+    // LOGGED_IN: close the native dialog
+    // Since account state is profile-wide, this automatically updates dialogs
+    // across all tabs.
+    this.accountStateListenerId =
+      this.browserProxy.authenticationObserverCallbackRouter.onAccountStateChanged.addListener(
+        (state: AccountState) => {
+          switch (whichAccountState(state)) {
+            case AccountStateFieldTags.LOGGED_OUT:
+              this.dialog = state.loggedOut!.verification ? 'OTP' : 'ENTRY'
+              break
+            case AccountStateFieldTags.LOGGED_IN:
+              this.onCloseDialog()
+              break
+          }
+        },
+      )
   }
 
   override disconnectedCallback() {
     super.disconnectedCallback()
+
+    assert(this.accountStateListenerId)
+    this.browserProxy.authenticationObserverCallbackRouter.removeListener(
+      this.accountStateListenerId,
+    )
+
     this.eventTracker.removeAll()
   }
 
+  // <if expr="not is_android and not is_ios">
   private onKeyDown = (e: KeyboardEvent) => {
     this.isCapsLockOn = e.getModifierState('CapsLock')
 
@@ -90,18 +125,6 @@ export class BraveAccountDialogs extends CrLitElement {
         }
         break
       }
-      // Navigates back (unless in an input field).
-      case 'Backspace': {
-        const isInInput = e
-          .composedPath()
-          .some((el) => (el as HTMLElement).tagName === 'LEO-INPUT')
-
-        if (!isInInput) {
-          this.onBackButtonClicked()
-          e.preventDefault()
-        }
-        break
-      }
       // Closes the dialog.
       case 'Escape':
         this.onCloseDialog()
@@ -113,15 +136,13 @@ export class BraveAccountDialogs extends CrLitElement {
   private onKeyUp = (e: KeyboardEvent) => {
     this.isCapsLockOn = e.getModifierState('CapsLock')
   }
-
-  private eventTracker = new EventTracker()
   // </if>
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    'brave-account-dialogs': BraveAccountDialogs
+    'brave-account-dialogs': BraveAccountDialogsElement
   }
 }
 
-customElements.define(BraveAccountDialogs.is, BraveAccountDialogs)
+customElements.define(BraveAccountDialogsElement.is, BraveAccountDialogsElement)

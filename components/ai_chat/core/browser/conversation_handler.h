@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_CONVERSATION_HANDLER_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_CONVERSATION_HANDLER_H_
 
+#include <concepts>
 #include <cstdint>
 #include <memory>
 #include <optional>
@@ -35,6 +36,7 @@
 #include "brave/components/ai_chat/core/browser/tools/tool_provider.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -202,12 +204,16 @@ class ConversationHandler : public mojom::ConversationHandler,
       mojom::ActionType action_type) override;
   void SubmitHumanConversationEntryWithSkill(
       const std::string& input,
-      const std::string& skill_id) override;
-  void ModifyConversation(const std::string& entry_uuid,
-                          const std::string& new_text) override;
+      const std::string& skill_id,
+      std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files)
+      override;
+  void ModifyConversation(
+      const std::string& entry_uuid,
+      const std::string& new_text,
+      const std::optional<std::string>& skill_shortcut) override;
   void RegenerateAnswer(const std::string& turn_uuid,
                         const std::string& model_key) override;
-  void SubmitSummarizationRequest() override;
+  void SubmitSummarizationRequest();
   void SubmitSuggestion(const std::string& suggestion_title) override;
   const std::vector<Suggestion>& GetSuggestedQuestionsForTest() const;
   void SetSuggestedQuestionForTest(std::string title, std::string prompt);
@@ -215,7 +221,6 @@ class ConversationHandler : public mojom::ConversationHandler,
   void GetAssociatedContentInfo(
       GetAssociatedContentInfoCallback callback) override;
   void RetryAPIRequest() override;
-  void GetAPIResponseError(GetAPIResponseErrorCallback callback) override;
   void ClearErrorAndGetFailedMessage(
       ClearErrorAndGetFailedMessageCallback callback) override;
   void StopGenerationAndMaybeGetHumanEntry(
@@ -238,6 +243,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   void GetScreenshots(GetScreenshotsCallback callback) override;
 
   // mojom::UntrustedConversationHandler
+  void SwitchToNonPremiumModel() override;
   void RespondToToolUseRequest(
       const std::string& tool_id,
       std::vector<mojom::ContentBlockPtr> output_json,
@@ -275,6 +281,18 @@ class ConversationHandler : public mojom::ConversationHandler,
     return tool_providers_[0].get();
   }
 
+  // Adds an extra tool provider to this conversation. Returns the added
+  // provider; ownership stays with this ConversationHandler and the pointer
+  // is valid for the conversation's lifetime.
+  template <typename T>
+    requires(std::derived_from<T, ToolProvider>)
+  T* AddToolProviderForTesting(std::unique_ptr<T> tool_provider) {
+    T* raw = tool_provider.get();
+    tool_provider->AddObserver(this);
+    tool_providers_.push_back(std::move(tool_provider));
+    return raw;
+  }
+
   void SetChatHistoryForTesting(
       std::vector<mojom::ConversationTurnPtr> history) {
     chat_history_ = std::move(history);
@@ -296,6 +314,11 @@ class ConversationHandler : public mojom::ConversationHandler,
   }
 
   std::vector<base::WeakPtr<Tool>> GetToolsForTesting() { return GetTools(); }
+
+  mojom::ConversationEntriesStatePtr
+  GetStateForConversationEntriesForTesting() {
+    return GetStateForConversationEntries();
+  }
 
  protected:
   // ModelService::Observer
@@ -340,7 +363,7 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   // Setup tools for the conversation. When a new user message is added, we
   // can reset some of the state of the tools, ready for the next loop.
-  void InitToolsForNewGenerationLoop();
+  void InitToolsForNewGenerationLoop(base::OnceClosure on_updated);
 
   mojom::ConversationEntriesStatePtr GetStateForConversationEntries();
   void AddToConversationHistory(mojom::ConversationTurnPtr turn);
@@ -352,7 +375,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   // send the results to the engine and wait for the next response for the loop.
   void PerformPostToolAssistantGeneration();
 
-  void SetAPIError(const mojom::APIError& error);
+  void SetAPIError(EngineConsumer::Error error);
   void UpdateOrCreateLastAssistantEntry(
       EngineConsumer::GenerationResultData result);
   void MaybeSeedOrClearSuggestions();
@@ -408,9 +431,19 @@ class ConversationHandler : public mojom::ConversationHandler,
   // the current conversation state.
   std::vector<base::WeakPtr<Tool>> GetTools();
 
-  // Helper method to switch to vision model if needed
-  void MaybeSwitchToVisionModel(
-      const std::optional<std::vector<mojom::UploadedFilePtr>>& uploaded_files);
+  // Returns `model_key` if its model supports vision; otherwise returns the
+  // freemium/premium vision-default model key.
+  std::string GetVisionCapableModelKey(const std::string& model_key) const;
+
+  // Resolves the model to use for an upcoming submission and switches to it
+  // at most once. The intended starting key (e.g. a skill's pinned model) is
+  // used as-is unless an image or screenshot is attached and the starting
+  // model lacks vision support — in which case the freemium/premium vision
+  // default is used. When `intended_model_key` is unset, the conversation's
+  // persisted model is the starting point.
+  void MaybeSwitchModelForSubmission(
+      const std::optional<std::vector<mojom::UploadedFilePtr>>& uploaded_files,
+      const std::optional<std::string>& intended_model_key = std::nullopt);
 
   std::unique_ptr<AssociatedContentManager> associated_content_manager_;
 
@@ -451,7 +484,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   bool is_print_preview_fallback_requested_ = false;
 
   std::unique_ptr<EngineConsumer> engine_ = nullptr;
-  mojom::APIError current_error_ = mojom::APIError::None;
+  EngineConsumer::Error current_error_;
 
   // Tool providers for this conversation. This allows those providers or their
   // tools to optionally store state that is only for this conversation. If they
@@ -476,10 +509,10 @@ class ConversationHandler : public mojom::ConversationHandler,
   // close. Therefore, these are not guaranteed to be active.
   std::set<int32_t> task_tab_ids_;
 
-  raw_ptr<AIChatService, DanglingUntriaged> ai_chat_service_;
+  raw_ptr<AIChatService> ai_chat_service_;
   raw_ptr<ModelService> model_service_;
-  raw_ptr<AIChatCredentialManager, DanglingUntriaged> credential_manager_;
-  raw_ptr<AIChatFeedbackAPI, DanglingUntriaged> feedback_api_;
+  raw_ptr<AIChatCredentialManager> credential_manager_;
+  raw_ptr<AIChatFeedbackAPI> feedback_api_;
   raw_ptr<PrefService> prefs_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 

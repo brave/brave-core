@@ -65,6 +65,8 @@ static_library("browser") {
     "engine/oai_parsing.h",
     "engine/oai_serialization_utils.cc",
     "engine/oai_serialization_utils.h",
+    "engine/oblivious_http_config_manager.cc",
+    "engine/oblivious_http_config_manager.h",
     "history_ui_handler.cc",
     "history_ui_handler.h",
     "model_service.cc",
@@ -75,6 +77,8 @@ static_library("browser") {
     "skills_metrics.h",
     "tab_tracker_service.cc",
     "tab_tracker_service.h",
+    "tools/bignumber_code_plugin.cc",
+    "tools/bignumber_code_plugin.h",
     "tools/chart_code_plugin.cc",
     "tools/chart_code_plugin.h",
     "tools/code_plugin.cc",
@@ -102,7 +106,10 @@ static_library("browser") {
     ]
   }
 
-  public_deps = [ "//base" ]
+  public_deps = [
+    "//base",
+    "//components/os_crypt/async/common",
+  ]
 
   deps = [
     ":generated_brave_search_responses",
@@ -117,6 +124,7 @@ static_library("browser") {
     "//brave/components/constants",
     "//brave/components/l10n/common",
     "//brave/components/p3a_utils",
+    "//brave/components/resources:static_resources_grit",
     "//brave/components/resources:strings_grit",
     "//brave/components/sidebar/common",
     "//brave/components/skus/common:mojom",
@@ -127,8 +135,6 @@ static_library("browser") {
     "//components/history/core/browser",
     "//components/keyed_service/core",
     "//components/os_crypt/async/browser",
-    "//components/os_crypt/async/common",
-    "//components/os_crypt/sync",
     "//components/prefs",
     "//components/update_client",
     "//components/user_prefs",
@@ -173,6 +179,7 @@ source_set("unit_tests") {
     "engine/oai_message_utils_unittest.cc",
     "engine/oai_parsing_unittest.cc",
     "engine/oai_serialization_utils_unittest.cc",
+    "engine/oblivious_http_config_manager_unittest.cc",
     "engine/test_utils.cc",
     "engine/test_utils.h",
     "history_ui_handler_unittest.cc",
@@ -243,6 +250,8 @@ source_set("test_support") {
     "test_utils.h",
     "tools/mock_tool.cc",
     "tools/mock_tool.h",
+    "tools/mock_tool_provider.cc",
+    "tools/mock_tool_provider.h",
   ]
 
   deps = [

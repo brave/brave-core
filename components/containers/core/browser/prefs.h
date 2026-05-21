@@ -9,6 +9,7 @@
 #include <string_view>
 #include <vector>
 
+#include "base/values.h"
 #include "brave/components/containers/core/mojom/containers.mojom-forward.h"
 
 class PrefService;
@@ -27,6 +28,31 @@ mojom::ContainerPtr GetContainerFromPrefs(const PrefService& prefs,
 // Stores the provided list of containers in preferences.
 void SetContainersToPrefs(const std::vector<mojom::ContainerPtr>& containers,
                           PrefService& prefs);
+
+// Returns the list of locally used containers.
+std::vector<mojom::ContainerPtr> GetLocallyUsedContainersFromPrefs(
+    const PrefService& prefs);
+
+// Returns the locally used container snapshot with `id`, or a null
+// mojom::ContainerPtr if it is not present.
+mojom::ContainerPtr GetLocallyUsedContainerFromPrefs(const PrefService& prefs,
+                                                     std::string_view id);
+
+// Upserts a locally used container snapshot.
+void SetLocallyUsedContainerToPrefs(const mojom::ContainerPtr& container,
+                                    PrefService& prefs);
+
+// Returns true if a locally used container snapshot is present.
+bool HasLocallyUsedContainerInPrefs(const PrefService& prefs,
+                                    std::string_view id);
+
+// Removes a locally used container snapshot.
+void RemoveLocallyUsedContainerFromPrefs(std::string_view id,
+                                         PrefService& prefs);
+
+// Converts a list of containers to a base::ListValue.
+base::ListValue ConvertContainersToListValue(
+    const std::vector<mojom::ContainerPtr>& containers);
 
 }  // namespace containers
 

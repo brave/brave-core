@@ -24,7 +24,6 @@
 #include "brave/components/brave_sync/sync_service_impl_helper.h"
 #include "brave/components/brave_sync/time_limited_words.h"
 #include "brave/components/sync/service/brave_sync_service_impl.h"
-#include "brave/components/sync_device_info/brave_device_info.h"
 #include "components/sync/engine/sync_protocol_error.h"
 #include "components/sync/service/sync_service.h"
 #include "components/sync/service/sync_service_impl.h"
@@ -122,14 +121,14 @@ const syncer::DeviceInfo* BraveSyncWorker::GetLocalDeviceInfo() {
       ->GetLocalDeviceInfo();
 }
 
-std::vector<std::unique_ptr<syncer::BraveDeviceInfo>>
+std::vector<std::unique_ptr<syncer::DeviceInfo>>
 BraveSyncWorker::GetDeviceList() {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   auto* device_info_service =
       DeviceInfoSyncServiceFactory::GetForProfile(profile_);
 
   if (!device_info_service) {
-    return std::vector<std::unique_ptr<syncer::BraveDeviceInfo>>();
+    return std::vector<std::unique_ptr<syncer::DeviceInfo>>();
   }
 
   syncer::DeviceInfoTracker* tracker =
@@ -207,7 +206,7 @@ std::string BraveSyncWorker::GetHexSeedFromSyncCode(
   if (brave_sync::crypto::PassphraseToBytes32(code_words, &bytes)) {
     DCHECK_EQ(bytes.size(), SEED_BYTES_COUNT);
     if (bytes.size() == SEED_BYTES_COUNT) {
-      sync_code_hex = base::HexEncode(&bytes.at(0), bytes.size());
+      sync_code_hex = base::HexEncode(bytes);
     } else {
       LOG(ERROR) << "wrong seed bytes " << bytes.size();
     }
@@ -287,8 +286,7 @@ bool BraveSyncWorker::SetSetupComplete() {
   }
 
   if (!sync_service->GetUserSettings()->IsInitialSyncFeatureSetupComplete()) {
-    sync_service->GetUserSettings()->SetInitialSyncFeatureSetupComplete(
-        syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
+    sync_service->GetUserSettings()->SetInitialSyncFeatureSetupComplete();
   }
 
   return true;

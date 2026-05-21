@@ -18,5 +18,8 @@ public class BraveTabbedRootUiCoordinatorClassAdapter extends BraveClassVisitor 
 
         redirectConstructor(
                 sTabbedRootUiCoordinatorClassName, sBraveTabbedRootUiCoordinatorClassName);
+
+        deleteField(sBraveTabbedRootUiCoordinatorClassName, "mAdvancedProtectionCoordinator");
+        makeProtectedField(sTabbedRootUiCoordinatorClassName, "mAdvancedProtectionCoordinator");
     }
 }

@@ -38,7 +38,7 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
         trigger:
           "Triggered by uses of the native Brave wallet."
         data:
-          "0x and Jupiter API response bodies."
+          "gate3, 0x, and Jupiter API response bodies."
         destination: WEBSITE
       }
       policy {
@@ -272,12 +272,6 @@ SwapService::SwapService(
 
 SwapService::~SwapService() = default;
 
-mojo::PendingRemote<mojom::SwapService> SwapService::MakeRemote() {
-  mojo::PendingRemote<mojom::SwapService> remote;
-  receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
-  return remote;
-}
-
 void SwapService::Bind(mojo::PendingReceiver<mojom::SwapService> receiver) {
   receivers_.Add(this, std::move(receiver));
 }
@@ -314,29 +308,14 @@ GURL SwapService::GetJupiterTransactionURL(const std::string& chain_id) {
 }
 
 // static
-GURL SwapService::GetLiFiQuoteURL() {
-  return GURL(kLiFiBaseAPIURL).Resolve("/v1/advanced/routes");
-}
-
-// static
-GURL SwapService::GetLiFiTransactionURL() {
-  return GURL(kLiFiBaseAPIURL).Resolve("/v1/advanced/stepTransaction");
-}
-
-// static
-GURL SwapService::GetLiFiStatusURL(const std::string& tx_hash) {
-  return GURL(kLiFiBaseAPIURL).Resolve("/v1/status?txHash=" + tx_hash);
-}
-
-// static
 GURL SwapService::GetGate3QuoteURL(bool is_firm) {
-  return GURL(kGate3URL).Resolve(is_firm ? "/api/swap/v1/quote/firm"
-                                         : "/api/swap/v1/quote/indicative");
+  return GetGate3URL().Resolve(is_firm ? "/api/swap/v1/quote/firm"
+                                       : "/api/swap/v1/quote/indicative");
 }
 
 // static
 GURL SwapService::GetGate3StatusURL() {
-  return GURL(kGate3URL).Resolve("/api/swap/v1/status");
+  return GetGate3URL().Resolve("/api/swap/v1/status");
 }
 
 void SwapService::IsSwapSupported(const std::string& chain_id,
@@ -350,38 +329,18 @@ void SwapService::IsSwapSupported(const std::string& chain_id,
 
 // Method to fetch a quote for a swap or a bridge transaction.
 //
-// If the provider is set to kAuto, the method will attempt to fetch a quote
-// based on the following priority:
-//   P1. LiFi, Jupiter
-//   P2. 0x, Near Intents
-//   P3. Squid
+// Legacy direct-API providers (kJupiterLegacy, kZeroExLegacy) bypass gate3 and
+// hit the upstream API directly; everything else (including kAuto) is
+// dispatched to gate3, which validates provider/chain compatibility and
+// returns a Gate3SwapError when the request can't be served.
 void SwapService::GetQuote(mojom::SwapQuoteParamsPtr params,
                            GetQuoteCallback callback) {
   auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString, "");
 
-  auto has_zero_ex_support = params->from_chain_id == params->to_chain_id &&
-                             IsNetworkSupportedByZeroEx(params->from_chain_id);
-  auto has_jupiter_support = params->from_chain_id == params->to_chain_id &&
-                             IsNetworkSupportedByJupiter(params->from_chain_id);
-  auto has_lifi_support = IsNetworkSupportedByLiFi(params->from_chain_id) &&
-                          IsNetworkSupportedByLiFi(params->to_chain_id) &&
-                          // LiFi does not support ExactOut swaps.
-                          !params->from_amount.empty();
-  auto has_squid_support = IsNetworkSupportedBySquid(params->from_chain_id) &&
-                           IsNetworkSupportedBySquid(params->to_chain_id);
-
-  // Near Intents support criteria:
-  // - From and to chains must be supported
-  // - One of the amounts must be empty but not both
-  auto has_near_intents_support =
-      IsNetworkSupportedByNearIntents(params->from_chain_id) &&
-      IsNetworkSupportedByNearIntents(params->to_chain_id) &&
-      (params->from_amount.empty() != params->to_amount.empty());
-
-  // If the provider is set to Auto, Solana swaps are served via Jupiter.
-  if ((params->provider == mojom::SwapProvider::kJupiter ||
-       params->provider == mojom::SwapProvider::kAuto) &&
-      has_jupiter_support) {
+  // Legacy Jupiter API (for iOS).
+  if (params->provider == mojom::SwapProvider::kJupiterLegacy &&
+      params->from_chain_id == params->to_chain_id &&
+      IsNetworkSupportedByJupiter(params->from_chain_id)) {
     auto swap_fee = GetZeroSwapFee();
     auto fee_param = swap_fee->fee_param;
 
@@ -397,36 +356,10 @@ void SwapService::GetQuote(mojom::SwapQuoteParamsPtr params,
     return;
   }
 
-  // EVM swaps are served via LiFi if the provider is set to kLiFi or kAuto.
-  if ((params->provider == mojom::SwapProvider::kLiFi ||
-       params->provider == mojom::SwapProvider::kAuto) &&
-      has_lifi_support) {
-    auto swap_fee = GetZeroSwapFee();
-    auto fee_param = swap_fee->fee_param;
-
-    auto encoded_params = lifi::EncodeQuoteParams(std::move(params), fee_param);
-    if (!encoded_params) {
-      std::move(callback).Run(
-          nullptr, nullptr, nullptr,
-          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
-      return;
-    }
-
-    auto internal_callback = base::BindOnce(
-        &SwapService::OnGetLiFiQuote, weak_ptr_factory_.GetWeakPtr(),
-        std::move(swap_fee), std::move(callback));
-
-    api_request_helper_.Request(
-        net::HttpRequestHeaders::kPostMethod, GetLiFiQuoteURL(),
-        *encoded_params, "application/json", std::move(internal_callback),
-        GetHeaders(), {}, std::move(conversion_callback));
-    return;
-  }
-
-  // EVM swaps are served via 0x only if the provider is set to kZeroEx.
-  if ((params->provider == mojom::SwapProvider::kZeroEx ||
-       params->provider == mojom::SwapProvider::kAuto) &&
-      has_zero_ex_support) {
+  // Legacy 0x API (for iOS).
+  if (params->provider == mojom::SwapProvider::kZeroExLegacy &&
+      params->from_chain_id == params->to_chain_id &&
+      IsNetworkSupportedByZeroEx(params->from_chain_id)) {
     auto swap_fee = GetZeroSwapFee();
     auto fee_param = swap_fee->fee_param;
 
@@ -443,29 +376,9 @@ void SwapService::GetQuote(mojom::SwapQuoteParamsPtr params,
     return;
   }
 
-  if ((params->provider == mojom::SwapProvider::kNearIntents ||
-       params->provider == mojom::SwapProvider::kAuto) &&
-      has_near_intents_support) {
-    params->provider = mojom::SwapProvider::kNearIntents;
-    HandleGate3Quote(std::move(params), std::move(callback),
-                     std::move(conversion_callback), api_request_helper_,
-                     weak_ptr_factory_.GetWeakPtr());
-    return;
-  }
-
-  if ((params->provider == mojom::SwapProvider::kSquid ||
-       params->provider == mojom::SwapProvider::kAuto) &&
-      has_squid_support) {
-    params->provider = mojom::SwapProvider::kSquid;
-    HandleGate3Quote(std::move(params), std::move(callback),
-                     std::move(conversion_callback), api_request_helper_,
-                     weak_ptr_factory_.GetWeakPtr());
-    return;
-  }
-
-  std::move(callback).Run(
-      nullptr, nullptr, nullptr,
-      l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_UNSUPPORTED_NETWORK));
+  HandleGate3Quote(std::move(params), std::move(callback),
+                   std::move(conversion_callback), api_request_helper_,
+                   weak_ptr_factory_.GetWeakPtr());
 }
 
 void SwapService::OnGetZeroExQuote(const std::string& chain_id,
@@ -539,45 +452,6 @@ void SwapService::OnGetJupiterQuote(mojom::SwapFeesPtr swap_fee,
   }
 }
 
-void SwapService::OnGetLiFiQuote(mojom::SwapFeesPtr swap_fee,
-                                 GetQuoteCallback callback,
-                                 APIRequestResult api_request_result) {
-  if (!api_request_result.Is2XXResponseCode()) {
-    if (auto error_response =
-            lifi::ParseErrorResponse(api_request_result.value_body())) {
-      std::move(callback).Run(
-          nullptr, nullptr,
-          mojom::SwapErrorUnion::NewLifiError(std::move(error_response)), "");
-    } else {
-      std::move(callback).Run(
-          nullptr, nullptr, nullptr,
-          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
-    }
-    return;
-  }
-
-  if (auto quote = lifi::ParseQuoteResponse(api_request_result.value_body())) {
-    if (quote->routes.empty()) {
-      auto error_response = mojom::LiFiError::New();
-      error_response->code = mojom::LiFiErrorCode::kNotFoundError;
-      error_response->message =
-          l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_NO_ROUTES_FOUND);
-
-      std::move(callback).Run(
-          nullptr, nullptr,
-          mojom::SwapErrorUnion::NewLifiError(std::move(error_response)), "");
-      return;
-    }
-
-    std::move(callback).Run(
-        mojom::SwapQuoteUnion::NewLifiQuote(std::move(quote)),
-        std::move(swap_fee), nullptr, "");
-  } else {
-    std::move(callback).Run(nullptr, nullptr, nullptr,
-                            l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
-  }
-}
-
 void SwapService::OnGetGate3Quote(GetQuoteCallback callback,
                                   APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
@@ -643,30 +517,6 @@ void SwapService::GetTransaction(mojom::SwapTransactionParamsUnionPtr params,
     api_request_helper_.Request(
         net::HttpRequestHeaders::kPostMethod,
         GetJupiterTransactionURL(jupiter_transaction_params->chain_id),
-        *encoded_params, "application/json", std::move(internal_callback),
-        GetHeaders(), {}, std::move(conversion_callback));
-
-    return;
-  }
-
-  if (params->is_lifi_transaction_params()) {
-    auto& lifi_transaction_params = params->get_lifi_transaction_params();
-
-    auto encoded_params =
-        lifi::EncodeTransactionParams(std::move(lifi_transaction_params));
-    if (!encoded_params) {
-      std::move(callback).Run(
-          nullptr, nullptr,
-          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
-      return;
-    }
-
-    auto internal_callback =
-        base::BindOnce(&SwapService::OnGetLiFiTransaction,
-                       weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-
-    api_request_helper_.Request(
-        net::HttpRequestHeaders::kPostMethod, GetLiFiTransactionURL(),
         *encoded_params, "application/json", std::move(internal_callback),
         GetHeaders(), {}, std::move(conversion_callback));
 
@@ -759,33 +609,6 @@ void SwapService::OnGetJupiterTransaction(GetTransactionCallback callback,
   }
 }
 
-void SwapService::OnGetLiFiTransaction(GetTransactionCallback callback,
-                                       APIRequestResult api_request_result) {
-  if (!api_request_result.Is2XXResponseCode()) {
-    if (auto error_response =
-            lifi::ParseErrorResponse(api_request_result.value_body())) {
-      std::move(callback).Run(
-          nullptr,
-          mojom::SwapErrorUnion::NewLifiError(std::move(error_response)), "");
-    } else {
-      std::move(callback).Run(
-          nullptr, nullptr, l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
-    }
-
-    return;
-  }
-
-  if (auto transaction =
-          lifi::ParseTransactionResponse(api_request_result.value_body())) {
-    std::move(callback).Run(
-        mojom::SwapTransactionUnion::NewLifiTransaction(std::move(transaction)),
-        nullptr, "");
-  } else {
-    std::move(callback).Run(nullptr, nullptr,
-                            l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
-  }
-}
-
 void SwapService::OnGetGate3Transaction(GetTransactionCallback callback,
                                         APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
@@ -844,19 +667,6 @@ void SwapService::GetStatus(mojom::Gate3SwapStatusParamsPtr params,
                               GetHeaders(), {}, std::move(conversion_callback));
 }
 
-void SwapService::GetLiFiStatus(const std::string& tx_hash,
-                                GetLiFiStatusCallback callback) {
-  auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString, "");
-  auto internal_callback =
-      base::BindOnce(&SwapService::OnGetLiFiStatus,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-
-  api_request_helper_.Request(net::HttpRequestHeaders::kGetMethod,
-                              GetLiFiStatusURL(tx_hash), "", "",
-                              std::move(internal_callback), GetHeaders(), {},
-                              std::move(conversion_callback));
-}
-
 void SwapService::OnGetStatus(GetStatusCallback callback,
                               APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
@@ -873,31 +683,6 @@ void SwapService::OnGetStatus(GetStatusCallback callback,
 
   if (auto status =
           gate3::ParseStatusResponse(api_request_result.value_body())) {
-    std::move(callback).Run(std::move(status), nullptr, "");
-    return;
-  } else {
-    std::move(callback).Run(nullptr, nullptr,
-                            l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
-    return;
-  }
-}
-
-void SwapService::OnGetLiFiStatus(GetLiFiStatusCallback callback,
-                                  APIRequestResult api_request_result) {
-  if (!api_request_result.Is2XXResponseCode()) {
-    if (auto error_response =
-            lifi::ParseErrorResponse(api_request_result.value_body())) {
-      std::move(callback).Run(nullptr, std::move(error_response), "");
-      return;
-    } else {
-      std::move(callback).Run(
-          nullptr, nullptr, l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
-      return;
-    }
-  }
-
-  if (auto status =
-          lifi::ParseStatusResponse(api_request_result.value_body())) {
     std::move(callback).Run(std::move(status), nullptr, "");
     return;
   } else {

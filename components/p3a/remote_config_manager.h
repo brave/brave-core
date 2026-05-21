@@ -57,6 +57,7 @@ class RemoteConfigManager {
 
   base::flat_map<std::string, MetricConfig> metric_configs_;
   base::flat_set<std::string> activation_metric_names_;
+  base::flat_set<std::string> custom_attribute_names_;
 
   bool is_loaded_ = false;
 

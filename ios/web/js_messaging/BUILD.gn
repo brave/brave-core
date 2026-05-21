@@ -1,0 +1,44 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//ios/web/public/js_messaging/compile_ts.gni")
+import("//ios/web/public/js_messaging/optimize_js.gni")
+
+source_set("js_messaging") {
+  sources = [
+    "safe_builtins_javascript_feature.h",
+    "safe_builtins_javascript_feature.mm",
+  ]
+  deps = [ ":safe_builtins_js" ]
+  public_deps = [ "//ios/web/public/js_messaging" ]
+}
+
+source_set("unittests") {
+  testonly = true
+  sources = [ "safe_builtins_javascript_test.mm" ]
+  deps = [
+    ":safe_builtins_js",
+    "//base",
+    "//base/test:test_support",
+    "//ios/web/public/test:javascript_test",
+    "//ios/web/public/test:util",
+    "//testing/gtest",
+    "//url",
+  ]
+}
+
+compile_ts("safe_builtins") {
+  sources = [ "resources/safe_builtins.ts" ]
+}
+
+optimize_js("safe_builtins_js") {
+  _script = filter_include(get_target_outputs(":safe_builtins"),
+                           [ "*safe_builtins.js" ])
+  primary_script = _script[0]
+  sources = _script
+  output_name = "safe_builtins"
+
+  deps = [ ":safe_builtins" ]
+}

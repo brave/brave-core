@@ -5,7 +5,8 @@
 
 import '//resources/brave/leo.bundle.js'
 
-import {CrLitElement, css, type CSSResultGroup} from '//resources/lit/v3_0/lit.rollup.js';
+import {CrLitElement, css} from '//resources/lit/v3_0/lit.rollup.js';
+import type {CSSResultGroup} from '//resources/lit/v3_0/lit.rollup.js';
 
 import {getHtml} from './cr_toggle.html.js';
 
@@ -64,7 +65,7 @@ export class CrToggleElement extends CrLitElement {
     // with 2-way bindings on the `checked` attribute are updated first.
     await this.updateComplete
 
-    this.dispatchEvent(new CustomEvent('change', { bubbles: true, composed: true, detail: this.checked }))
+    this.fire('change', this.checked)
   }
 }
 

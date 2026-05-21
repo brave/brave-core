@@ -88,7 +88,8 @@ struct CredentialDetailView: View {
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .foregroundColor(Color(braveSystemName: .textPrimary))
-    .listBackgroundColor(Color(.braveGroupedBackground))
+    .scrollContentBackground(.hidden)
+    .background(Color(UIColor.braveGroupedBackground))
     .toolbar {
       ToolbarItemGroup(placement: .confirmationAction) {
         Button {

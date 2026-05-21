@@ -150,7 +150,7 @@ struct PlayerView: View {
           }
         }
     }
-    .onChange(of: isFullScreen) { newValue in
+    .onChange(of: isFullScreen) { _, newValue in
       // Delay showing controls until the animation to present full screen is done, unfortunately
       // there's no way of determining that in SwiftUI, so will just have to wait an arbitrary
       // amount of time.
@@ -161,7 +161,7 @@ struct PlayerView: View {
         hideControlsAfterDelay()
       }
     }
-    .onChange(of: isTouchingInlineControls) { newValue in
+    .onChange(of: isTouchingInlineControls) { _, newValue in
       if !isControlsVisible {
         return
       }

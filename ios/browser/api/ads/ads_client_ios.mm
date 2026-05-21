@@ -72,7 +72,7 @@ void AdsClientIOS::UrlRequest(
 
 void AdsClientIOS::Save(const std::string& name,
                         const std::string& value,
-                        brave_ads::SaveCallback callback) {
+                        brave_ads::ResultCallback callback) {
   [bridge_ save:name value:value callback:std::move(callback)];
 }
 
@@ -90,6 +90,11 @@ void AdsClientIOS::GetSiteHistory(int max_count,
   [bridge_ getSiteHistory:max_count
                   forDays:days_ago
                  callback:std::move(callback)];
+}
+
+void AdsClientIOS::Remove(const std::string& name,
+                          brave_ads::ResultCallback callback) {
+  [bridge_ remove:name callback:std::move(callback)];
 }
 
 void AdsClientIOS::Load(const std::string& name,

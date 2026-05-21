@@ -59,12 +59,29 @@ export function getWebSourcesEvent(
   }
 }
 
+export function getSearchStatusEvent(): Mojom.ConversationEntryEvent {
+  return {
+    ...eventTemplate,
+    searchStatusEvent: { isSearching: true },
+  }
+}
+
 export function getSearchQueriesEvent(
   queries: string[],
 ): Mojom.ConversationEntryEvent {
   return {
     ...eventTemplate,
     searchQueriesEvent: { searchQueries: queries },
+  }
+}
+
+export function getInlineSearchEvent(
+  query: string,
+  resultsJson: string = '[]',
+): Mojom.ConversationEntryEvent {
+  return {
+    ...eventTemplate,
+    inlineSearchEvent: { query, resultsJson },
   }
 }
 

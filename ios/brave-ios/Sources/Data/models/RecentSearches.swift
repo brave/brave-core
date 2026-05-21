@@ -108,6 +108,37 @@ final public class RecentSearch: NSManagedObject, CRUD {
     )
   }
 
+  /// Removes the `RecentSearch` objects whose url belongs to one of the `baseDomains` provided.
+  public class func remove(baseDomains: Set<String>) {
+    DataController.perform { context in
+      // Filter down CoreData db as much as we can
+      let predicates = baseDomains.map { baseDomain in
+        NSPredicate(format: "websiteUrl CONTAINS[c] %@", baseDomain)
+      }
+      let predicate = NSCompoundPredicate(orPredicateWithSubpredicates: predicates)
+      guard let itemsContainingBaseDomains = self.all(where: predicate, context: context) else {
+        return
+      }
+      // Above we filter for RecentSearch items where the websiteUrl contains
+      // the baseDomain, but this does not verify it's the actual domain (ex.
+      // could be in a query param). Verify each item's eTLD matches before
+      // we remove from RecentSearch.
+      for recentSearchItem in itemsContainingBaseDomains {
+        // validate baseDomain matches
+        guard let websiteUrlString = recentSearchItem.websiteUrl,
+          let url = URL(string: websiteUrlString),
+          let baseDomain = url.baseDomain,
+          baseDomains.contains(baseDomain)
+        else {
+          // eTLD of the url does not match
+          continue
+        }
+        // eTLD matches
+        recentSearchItem.delete(context: .existing(context))
+      }
+    }
+  }
+
   public static func removeAll() {
     RecentSearch.deleteAll()
   }

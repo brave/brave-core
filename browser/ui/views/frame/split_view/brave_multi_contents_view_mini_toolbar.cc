@@ -52,7 +52,7 @@ BraveMultiContentsViewMiniToolbar::~BraveMultiContentsViewMiniToolbar() =
     default;
 
 void BraveMultiContentsViewMiniToolbar::HideMenuButton() {
-  image_button_->SetVisible(false);
+  close_button_->SetVisible(false);
 }
 
 void BraveMultiContentsViewMiniToolbar::UpdateState(bool is_active,

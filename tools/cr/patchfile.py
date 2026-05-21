@@ -3,14 +3,16 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-from dataclasses import dataclass, field, replace
+from __future__ import annotations
+
+from dataclasses import dataclass, field
 from enum import Enum, auto
 import logging
-from pathlib import PurePath, Path
+from pathlib import Path
 import re
 import subprocess
-from typing import Optional, NamedTuple
 
+from plaster import PlasterFile, PLASTER_FILES_PATH
 from repository import Repository
 import repository
 
@@ -26,34 +28,37 @@ class Patchfile:
 
     # A patch's path and file name, from `patchPath`.
     # e.g. "patchPath":"patches/build-android-gyp-dex.py.patch"
-    path: PurePath
+    path: Path
 
-    # This field holds the name of the source file as provided by
-    # `update_patches`, which is not a primary source.
-    # e.g. "path":"build/android/gyp/dex.py"
-    provided_source: Optional[str] = field(default=None)
-
-    # This field holds the most reliable resolution to the source file name,
-    # as its value is assigned from a git operation.
-    source_from_git: Optional[str] = field(default=None)
+    # The source file this patch targets, relative to the patch's repository.
+    # e.g. "build/android/gyp/dex.py"
+    source: Path = field(init=False)
 
     # The repository the patch file is targeting to patch.
     repository: Repository = field(init=False)
+
+    # Path to the plaster (.toml) file for this patch, expressed via
+    # `PLASTER_FILES_PATH` (i.e. cwd-relative, the same shape every other
+    # path in tools/cr uses).
+    plaster: Path | None = field(init=False)
 
     def __post_init__(self):
         object.__setattr__(self, 'repository',
                            self.get_repository_from_patch_name())
 
-        if (not self.repository.is_chromium and self.provided_source
-                and self.provided_source.startswith(
-                    self.repository.relative_to_chromium.as_posix())):
-            # The report produced by `apply_patches` provides the source as a
-            # full path relative to chromium's src/ directory, therefore it is
-            # necessary to strip the repository path from the source path.
-            object.__setattr__(
-                self, 'provided_source',
-                PurePath(self.provided_source).relative_to(
-                    self.repository.relative_to_chromium).as_posix())
+        sources = self.repository.get_patch_stats(self.path_from_repo())
+        if len(sources) != 1:
+            raise ValueError(
+                f'Expected exactly one source for {self.path}, got {sources}.')
+        object.__setattr__(self, 'source', sources[0])
+
+        plaster = None
+        if self.repository.is_chromium:
+            candidate = (PLASTER_FILES_PATH / self.source.parent /
+                         (self.source.name + '.toml'))
+            if candidate.exists():
+                plaster = candidate
+        object.__setattr__(self, 'plaster', plaster)
 
     def get_repository_from_patch_name(self) -> Repository:
         """Gets the repository for the patch file.
@@ -68,7 +73,7 @@ class Patchfile:
 
         # Drops `patches/` at the beginning and the filename at the end.
         return Repository(
-            repository.CHROMIUM_SRC_PATH.joinpath(*self.path.parts[1:-1]))
+            repository.chromium.root.joinpath(*self.path.parts[1:-1]))
 
     class ApplyStatus(Enum):
         """The result of applying the patch.
@@ -86,14 +91,11 @@ class Patchfile:
         # The patch failed as broken.
         BROKEN = auto()
 
-    class ApplyResult(NamedTuple):
-        """The result of applying the patch.
-        """
-        # The status of the patch operation
-        status: "ApplyStatus"
+        # The patch failed but plaster successfully resolved it.
+        PLASTER_FIXED = auto()
 
-        # A copy of the patch file data, with updated information.
-        patch: Optional["Patchfile"]
+        # The patch failed and plaster was unable to resolve it.
+        PLASTER_BROKEN = auto()
 
     @dataclass
     class SourceStatus:
@@ -107,7 +109,12 @@ class Patchfile:
         commit_details: str
 
         # The name the source may have been renamed to.
-        renamed_to: Optional[str] = None
+        renamed_to: str | None = None
+
+    @property
+    def has_plaster(self) -> bool:
+        """Whether this patch has an associated plaster file."""
+        return self.plaster is not None
 
     def source_name_from_patch_naming(self) -> str:
         """Source file name according to the patch file name.
@@ -122,68 +129,34 @@ class Patchfile:
         """
         return self.path.name[:-len(".patch")].replace('-', '/')
 
-    def source(self) -> PurePath:
-        """The source file name for the patch file.
-
-        Tries to use the most reliable source file name, going from git, to the
-        one provide by `apply_patches`, to finally deducing from the name.
-        """
-        if self.source_from_git is not None:
-            return self.source_from_git
-        if self.provided_source is not None:
-            return self.provided_source
-        return self.source_name_from_patch_naming()
-
-    def source_from_brave(self) -> PurePath:
+    def source_from_brave(self) -> Path:
         """The source file path relative to the `brave/` directory.
         """
-        return self.repository.from_brave() / self.source()
+        return self.repository.from_brave() / self.source
 
-    def path_from_repo(self) -> PurePath:
+    def path_from_repo(self) -> Path:
         """The patch path relative to the repository source belongs.
         """
         return self.repository.to_brave() / self.path
 
-    def apply(self) -> ApplyResult:
+    def apply(self) -> ApplyStatus:
         """Applies the patch file with `git apply --3way`.
-
-        This function applies the patch file with `git apply --3way` to the
-        repository, and it returns the status of the operation.
-
-        Returns:
-            The result of the patch application, and an updated patch instance
-            with the source file name, if any is provided by git.
         """
-
         try:
             self.repository.run_git('apply', '--3way', '--ignore-space-change',
                                     '--ignore-whitespace',
                                     self.path_from_repo().as_posix())
-            return self.ApplyResult(status=self.ApplyStatus.CLEAN, patch=None)
+            return self.ApplyStatus.CLEAN
         except subprocess.CalledProcessError as e:
-            # If the process fails, we need to collect the files that failed to
-            # apply for manual conflict resolution.
             if 'with conflicts' in e.stderr:
-                # Output in this case should look like:
-                #   Applied patch to 'build/android/gyp/dex.py' with conflicts.
-                #   U build/android/gyp/dex.py
-                # Find the line starting with 'U ' to get the conflicted file
-                # path from.
-                conflict_line = next(
-                    (line for line in e.stderr.strip().splitlines()
-                     if line.startswith('U ')), None)
-                if conflict_line:
-                    conflicted_file = conflict_line.split()[-1]
-                else:
-                    raise NotImplementedError(
-                        'Could not find conflicted file in error '
-                        f'output: {e.stderr}') from e
-                return self.ApplyResult(status=self.ApplyStatus.CONFLICT,
-                                        patch=replace(
-                                            self,
-                                            source_from_git=conflicted_file))
-            if e.stderr.startswith('error:'):
-                [_, reason] = e.stderr.strip().split(': ', 1)
+                if self.has_plaster:
+                    return self.plaster_apply()
+                return self.ApplyStatus.CONFLICT
+            error_line = next(
+                (l for l in e.stderr.splitlines() if l.startswith('error:')),
+                None)
+            if error_line is not None:
+                [_, reason] = error_line.strip().split(': ', 1)
 
                 if 'does not exist in index' in reason:
                     # This type of detection could occur in certain cases when
@@ -192,15 +165,7 @@ class Patchfile:
                     #
                     # It is also of notice that this error can also occur when
                     # `apply` is run twice for the same patch with conflicts.
-                    logging.warning(
-                        'Patch with missing file detected during --3way apply,'
-                        ' which may indicate a bad sync state before starting '
-                        'to upgrade. %s', self.path)
-                    return self.ApplyResult(
-                        status=self.ApplyStatus.DELETED,
-                        patch=replace(self,
-                                      source_from_git=reason.split(': ',
-                                                                   2)[0]))
+                    return self.ApplyStatus.DELETED
                 if ('No such file or directory' in reason
                         and self.path.as_posix() in reason):
                     # This should never occur as it indicates that the patch
@@ -218,31 +183,35 @@ class Patchfile:
                         'Patch being flagged as broken, but with unexpected '
                         'reason: %s %s', self.path, reason)
 
-                return self.ApplyResult(status=self.ApplyStatus.BROKEN,
-                                        patch=None)
+                if self.has_plaster:
+                    return self.plaster_apply()
+                return self.ApplyStatus.BROKEN
 
+        # We should not reach this point. Failures to apply that fail like this
+        # must be investigated with `--verbose`, and fixed.
         raise NotImplementedError()
 
-    def fetch_source_from_git(self) -> "Patchfile":
-        """Gets the source file name from git.
+    def plaster_apply(self) -> ApplyStatus:
+        """Attempts to apply the associated plaster file.
 
-        This function uses git to get the source file name for the patch file,
-        but only if such name has not been retrieved yet from git.
-
-        Returns:
-            A patch instance with the source file name from git.
+        Returns PLASTER_FIXED on success, PLASTER_BROKEN on any failure.
         """
+        if not self.has_plaster:
+            raise NotImplementedError(f'No plaster file for {self.path}.')
 
-        if self.source_from_git is not None:
-            return self
-
-        # The command below has an output similar to:
-        # 8	0  base/some_file.cc
-        return replace(
-            self,
-            source_from_git=self.repository.run_git(
-                'apply', '--numstat', '-z',
-                self.path_from_repo().as_posix()).strip().split()[2][:-1])
+        try:
+            # A failed --3way apply leaves the file in unmerged conflict state
+            # in the index, which causes `git diff` inside PlasterFile.apply()
+            # to produce a combined diff --cc instead of a normal unified diff.
+            # Checking out HEAD resolves the index conflict first.
+            self.repository.run_git('checkout', 'HEAD', '--',
+                                    self.source.as_posix())
+            PlasterFile(self.plaster).apply()
+            return self.ApplyStatus.PLASTER_FIXED
+        # TODO(https://github.com/brave/brave-browser/issues/55370): Eventually
+        # we should better constrain this to only catch plaster exceptions.
+        except Exception:
+            return self.ApplyStatus.PLASTER_BROKEN
 
     def get_last_commit_for_source(self) -> str:
         """Gets the last commit where the source file was mentioned.
@@ -255,7 +224,7 @@ class Patchfile:
             The commit hash with the last mention for the source.
         """
         return self.repository.run_git('log', '--full-history', '--pretty=%h',
-                                       '-1', '--', self.source())
+                                       '-1', '--', self.source.as_posix())
 
     def get_source_removal_status(self, commit: str) -> SourceStatus:
         """Gets the status of the source file in a given commit.
@@ -294,7 +263,8 @@ class Patchfile:
 
         # let's look for the line about the source we care about.
         status_line = next(
-            (s for s in all_status.splitlines() if str(self.source()) in s),
+            (s
+             for s in all_status.splitlines() if self.source.as_posix() in s),
             None)
         status_code = status_line[0]
 

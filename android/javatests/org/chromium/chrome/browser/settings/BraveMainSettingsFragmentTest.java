@@ -193,7 +193,7 @@ public class BraveMainSettingsFragmentTest {
                         // check
                         + "INDEX_DATA_PROVIDER.updateDynamicPreferences"
                         + " to exclude new from indexing.",
-                34,
+                35,
                 nonVpnCount);
     }
 

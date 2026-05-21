@@ -189,7 +189,7 @@ struct AssetSearchView: View {
         }
       }
     }
-    .onChange(of: networkStore.allChains) { allChains in
+    .onChange(of: networkStore.allChains) { _, allChains in
       self.networkFilters = allChains.map { network in
         let existingSelectionValue = self.networkFilters.first(where: {
           $0.model.chainId == network.chainId

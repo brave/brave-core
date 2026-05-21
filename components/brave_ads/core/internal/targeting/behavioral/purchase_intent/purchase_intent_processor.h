@@ -12,15 +12,17 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
+#include "base/scoped_observation.h"
+#include "brave/components/brave_ads/core/internal/segments/segment_types.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
-#include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/keyphrase/purchase_intent_keyphrase_alias.h"
+#include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/keyphrase/purchase_intent_keyphrase_types.h"
 
 class GURL;
 
 namespace brave_ads {
 
 class PurchaseIntentResource;
+class TabManager;
 struct PurchaseIntentFunnelInfo;
 struct PurchaseIntentSignalInfo;
 struct TabInfo;
@@ -58,6 +60,9 @@ class PurchaseIntentProcessor final : public TabManagerObserver {
   void OnDidOpenNewTab(const TabInfo& tab) override;
   void OnTabDidChange(const TabInfo& tab) override;
   void OnDidCloseTab(int32_t tab_id) override;
+
+  base::ScopedObservation<TabManager, TabManagerObserver>
+      tab_manager_observation_{this};
 
   std::map</*tab_id*/ int32_t, GURL> tabs_;
 

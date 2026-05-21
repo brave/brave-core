@@ -3,7 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-.container {
+.inline,
+.blockRoot {
   overflow: auto;
   background: var(--leo-color-page-background);
   border: 1px solid var(--leo-color-divider-subtle);
@@ -26,8 +27,33 @@
   font-size: inherit;
 }
 
+.blockRoot {
+  // No overflow on this shell so the toolbar can use `position: sticky` against
+  // the conversation scroller.
+  overflow: visible;
+  // Omit the top segment here so it can live on `.toolbar` (sticky). That way
+  // the top edge stays visible when the shell scrolls under the chat.
+  border-top-width: 0;
+  pre {
+    white-space: pre-wrap;
+    margin: 0;
+    border-radius: 0 0 8px 8px;
+  }
+}
+
+.codeBody {
+  min-width: 0;
+  overflow-x: auto;
+}
+
 .toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 1;
   background: var(--leo-color-page-background);
+  border-top: 1px solid var(--leo-color-divider-subtle);
+  border-bottom: 1px solid var(--leo-color-divider-subtle);
+  border-radius: 8px 8px 0 0;
   padding: var(--leo-spacing-m) var(--leo-spacing-m) var(--leo-spacing-m)
     var(--leo-spacing-xl);
   display: flex;

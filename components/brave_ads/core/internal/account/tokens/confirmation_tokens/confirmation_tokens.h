@@ -6,9 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_TOKENS_CONFIRMATION_TOKENS_CONFIRMATION_TOKENS_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_TOKENS_CONFIRMATION_TOKENS_CONFIRMATION_TOKENS_H_
 
-#include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_token_info.h"
-
 #include <cstddef>
+
+#include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_token_info.h"
 
 namespace brave_ads {
 
@@ -29,8 +29,6 @@ class ConfirmationTokens final {
   void Add(const ConfirmationTokenList& confirmation_tokens);
 
   bool Remove(const ConfirmationTokenInfo& confirmation_token);
-  void Remove(const ConfirmationTokenList& confirmation_tokens);
-  void RemoveAll();
 
   bool Exists(const ConfirmationTokenInfo& confirmation_token) const;
 

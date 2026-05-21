@@ -5,9 +5,7 @@
 
 #include <cstddef>
 
-#include "base/run_loop.h"
-#include "base/test/gmock_callback_support.h"
-#include "base/test/mock_callback.h"
+#include "base/test/test_future.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_info.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
@@ -15,8 +13,8 @@
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_builder.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
-#include "brave/components/brave_ads/core/internal/creatives/search_result_ads/creative_search_result_ad_test_util.h"
-#include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/search_result_ads/test/creative_search_result_ad_test_util.h"
+#include "brave/components/brave_ads/core/internal/settings/test/settings_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/search_result_ads/search_result_ad_event_handler_util.h"
 
@@ -42,7 +40,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerUtilForNonRewardsTest,
   // Arrange
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true);
+          /*use_random_uuids=*/true);
 
   // Act
   MaybeBuildAndSaveCreativeSetConversion(
@@ -53,15 +51,13 @@ TEST_F(BraveAdsSearchResultAdEventHandlerUtilForNonRewardsTest,
       FromMojomMaybeBuildCreativeSetConversion(mojom_creative_ad);
   ASSERT_TRUE(creative_set_conversion);
 
-  base::MockCallback<database::table::GetCreativeSetConversionsCallback>
-      callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback,
-              Run(/*success=*/true,
-                  CreativeSetConversionList{*creative_set_conversion}))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  creative_set_conversions_database_table_.GetUnexpired(callback.Get());
-  run_loop.Run();
+  base::test::TestFuture<bool, CreativeSetConversionList> test_future;
+  creative_set_conversions_database_table_.GetUnexpired(
+      test_future.GetCallback<bool, const CreativeSetConversionList&>());
+  const auto [success, creative_set_conversions] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_THAT(creative_set_conversions,
+              ::testing::ElementsAre(*creative_set_conversion));
 }
 
 TEST_F(BraveAdsSearchResultAdEventHandlerUtilForNonRewardsTest,
@@ -69,7 +65,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerUtilForNonRewardsTest,
   // Arrange
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true);
+          /*use_random_uuids=*/true);
 
   // Act
   for (size_t i = 0;
@@ -84,33 +80,31 @@ TEST_F(BraveAdsSearchResultAdEventHandlerUtilForNonRewardsTest,
   }
 
   // Assert
-  base::MockCallback<database::table::GetCreativeSetConversionsCallback>
-      callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback, Run(/*success=*/true, ::testing::IsEmpty()))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  creative_set_conversions_database_table_.GetUnexpired(callback.Get());
-  run_loop.Run();
+  base::test::TestFuture<bool, CreativeSetConversionList> test_future;
+  creative_set_conversions_database_table_.GetUnexpired(
+      test_future.GetCallback<bool, const CreativeSetConversionList&>());
+  const auto [success, creative_set_conversions] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_THAT(creative_set_conversions, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsSearchResultAdEventHandlerUtilForNonRewardsTest,
        DoNotSaveCreativeSetConversionForClickedEventWithoutConversion) {
   // Arrange
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
-      test::BuildCreativeSearchResultAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeSearchResultAd(/*use_random_uuids=*/true);
 
   // Act
   MaybeBuildAndSaveCreativeSetConversion(
       mojom_creative_ad, mojom::SearchResultAdEventType::kClicked);
 
   // Assert
-  base::MockCallback<database::table::GetCreativeSetConversionsCallback>
-      callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback, Run(/*success=*/true, ::testing::IsEmpty()))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  creative_set_conversions_database_table_.GetUnexpired(callback.Get());
-  run_loop.Run();
+  base::test::TestFuture<bool, CreativeSetConversionList> test_future;
+  creative_set_conversions_database_table_.GetUnexpired(
+      test_future.GetCallback<bool, const CreativeSetConversionList&>());
+  const auto [success, creative_set_conversions] = test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_THAT(creative_set_conversions, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsSearchResultAdEventHandlerUtilForNonRewardsTest,
@@ -118,7 +112,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerUtilForNonRewardsTest,
   // Arrange
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true);
+          /*use_random_uuids=*/true);
 
   // Act & Assert
   EXPECT_FALSE(IsAllowedToFireAdEvent(
@@ -129,7 +123,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerUtilForNonRewardsTest,
        NotAllowedToFireViewedEventWithoutConversion) {
   // Arrange
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
-      test::BuildCreativeSearchResultAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeSearchResultAd(/*use_random_uuids=*/true);
 
   // Act & Assert
   EXPECT_FALSE(IsAllowedToFireAdEvent(
@@ -141,7 +135,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerUtilForNonRewardsTest,
   // Arrange
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true);
+          /*use_random_uuids=*/true);
 
   // Act & Assert
   for (size_t i = 0;
@@ -160,7 +154,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerUtilForNonRewardsTest,
        NotAllowedToFireClickedEventWithoutConversion) {
   // Arrange
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
-      test::BuildCreativeSearchResultAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeSearchResultAd(/*use_random_uuids=*/true);
 
   // Act & Assert
   EXPECT_FALSE(IsAllowedToFireAdEvent(
@@ -172,7 +166,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerUtilForNonRewardsTest,
   // Arrange
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true);
+          /*use_random_uuids=*/true);
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
 
   AdEventList ad_events;
@@ -191,7 +185,7 @@ TEST_F(BraveAdsSearchResultAdEventHandlerUtilForNonRewardsTest,
   // Arrange
   const mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       test::BuildCreativeSearchResultAdWithConversion(
-          /*should_generate_random_uuids=*/true);
+          /*use_random_uuids=*/true);
   const SearchResultAdInfo ad = FromMojomBuildSearchResultAd(mojom_creative_ad);
 
   AdEventList ad_events;

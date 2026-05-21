@@ -8,6 +8,7 @@ import BraveWidgetsModels
 import Combine
 import Data
 import DesignSystem
+import OrderedCollections
 import Preferences
 import Shared
 import SnapKit
@@ -32,6 +33,9 @@ protocol TopToolbarDelegate: AnyObject {
   // Returns either (search query, true) or (url, false).
   func topToolbarDisplayTextForURL(_ url: URL?) -> (String?, Bool)
   func topToolbarDidBeginDragInteraction(_ topToolbar: TopToolbarView)
+  func topToolbarAvailableShortcutButtons(
+    _ topToolbar: TopToolbarView
+  ) -> OrderedSet<WidgetShortcut>
   func topToolbarDidTapShortcutButton(_ topToolbar: TopToolbarView)
   func topToolbarDidTapBraveShieldsButton(_ topToolbar: TopToolbarView)
   func topToolbarDidTapBraveRewardsButton(_ topToolbar: TopToolbarView)
@@ -68,7 +72,12 @@ class TopToolbarView: UIView, ToolbarProtocol {
 
   var helper: ToolbarHelper?
 
-  weak var delegate: TopToolbarDelegate?
+  weak var delegate: TopToolbarDelegate? {
+    didSet {
+      guard delegate !== oldValue else { return }
+      updateViewsForOverlayModeAndToolbarChanges()
+    }
+  }
   weak var tabToolbarDelegate: ToolbarDelegate?
 
   private var cancellables: Set<AnyCancellable> = []
@@ -166,10 +175,15 @@ class TopToolbarView: UIView, ToolbarProtocol {
       $0.size.greaterThanOrEqualTo(32)
     }
     $0.menu = .init(children: [
-      UIDeferredMenuElement.uncached { handler in
+      UIDeferredMenuElement.uncached { [weak self] handler in
+        guard let self, let availableShortcuts = delegate?.topToolbarAvailableShortcutButtons(self)
+        else {
+          handler([])
+          return
+        }
         let options = UIMenu(
           options: [.singleSelection, .displayInline],
-          children: WidgetShortcut.eligibleButtonShortcuts.map { shortcut in
+          children: availableShortcuts.map { shortcut in
             UIAction(
               title: shortcut.displayString,
               image: shortcut.image,
@@ -808,7 +822,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
     delegate?.topToolbarDidLeaveOverlayMode(self)
   }
 
-  private func updateViewsForOverlayModeAndToolbarChanges() {
+  func updateViewsForOverlayModeAndToolbarChanges() {
     cancelButton.stackViewAnimationSafeIsHidden = !inOverlayMode
     backButton.stackViewAnimationSafeIsHidden = toolbarIsShowing || inOverlayMode
     forwardButton.stackViewAnimationSafeIsHidden = toolbarIsShowing || inOverlayMode
@@ -817,9 +831,15 @@ class TopToolbarView: UIView, ToolbarProtocol {
     locationView.contentView.stackViewAnimationSafeIsHidden = inOverlayMode
     shieldsRewardsStack.stackViewAnimationSafeIsHidden = inOverlayMode
 
-    let selectedShortcut: WidgetShortcut? = Preferences.General.toolbarShortcutButton.value.flatMap(
-      WidgetShortcut.init
-    )
+    let selectedShortcut: WidgetShortcut? = {
+      let shortcut = Preferences.General.toolbarShortcutButton.value.flatMap(WidgetShortcut.init)
+      if let delegate, let shortcut,
+        !delegate.topToolbarAvailableShortcutButtons(self).contains(shortcut)
+      {
+        return nil
+      }
+      return shortcut
+    }()
     shortcutButton.stackViewAnimationSafeIsHidden = selectedShortcut != nil ? inOverlayMode : true
     if let selectedShortcut {
       shortcutButton.setImage(selectedShortcut.image, for: .normal)

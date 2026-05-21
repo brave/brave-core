@@ -12,10 +12,12 @@
 #include <utility>
 #include <vector>
 
+#include "base/barrier_callback.h"
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/task/thread_pool.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/brave_tab_helpers.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
@@ -24,6 +26,7 @@
 #include "brave/components/ai_chat/content/browser/associated_url_content.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/ai_chat_urls.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -33,7 +36,6 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/chrome_select_file_policy.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "components/favicon/core/favicon_service.h"
 #include "components/grit/brave_components_webui_strings.h"
@@ -45,8 +47,14 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/common/url_constants.h"
+#include "printing/printing_utils.h"
+#include "services/data_decoder/public/cpp/decode_image.h"
+#include "services/data_decoder/public/mojom/image_decoder.mojom.h"
+#include "third_party/skia/include/core/SkBitmap.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/page_transition_types.h"
+#include "ui/gfx/codec/png_codec.h"
+#include "ui/gfx/geometry/size.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "base/notimplemented.h"
@@ -57,6 +65,8 @@
 #else
 #include "chrome/browser/ui/browser_navigator.h"
 #include "chrome/browser/ui/chrome_pages.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
@@ -143,6 +153,34 @@ content::WebContents* GetWebContentsFromTabId(int32_t tab_id) {
   return contents;
 }
 
+void OnImageDecoded(
+    base::OnceCallback<void(std::optional<std::vector<uint8_t>>)> callback,
+    const SkBitmap& decoded_bitmap) {
+  if (decoded_bitmap.drawsNothing()) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+  auto encode_image = base::BindOnce(
+      [](const SkBitmap& decoded_bitmap) {
+        return gfx::PNGCodec::EncodeBGRASkBitmap(
+            ScaleDownBitmap(decoded_bitmap), false);
+      },
+      decoded_bitmap);
+  base::ThreadPool::PostTaskAndReplyWithResult(FROM_HERE, {base::MayBlock()},
+                                               std::move(encode_image),
+                                               std::move(callback));
+}
+
+void ProcessImageData(
+    data_decoder::DataDecoder* data_decoder,
+    const std::vector<uint8_t>& image_data,
+    base::OnceCallback<void(std::optional<std::vector<uint8_t>>)> callback) {
+  data_decoder::DecodeImage(
+      data_decoder, image_data, data_decoder::mojom::ImageCodec::kDefault, true,
+      data_decoder::kDefaultMaxSizeInBytes, gfx::Size(),
+      base::BindOnce(&OnImageDecoded, std::move(callback)));
+}
+
 }  // namespace
 
 using mojom::CharacterType;
@@ -159,7 +197,12 @@ AIChatUIPageHandler::AIChatUIPageHandler(
     content::WebContents* owner_web_contents,
     content::WebContents* chat_context_web_contents,
     Profile* profile,
-    mojo::PendingReceiver<ai_chat::mojom::AIChatUIHandler> receiver)
+    mojo::PendingReceiver<ai_chat::mojom::AIChatUIHandler> receiver
+#if !BUILDFLAG(IS_ANDROID)
+    ,
+    TabStripModel* tab_strip_model
+#endif
+    )
     : owner_web_contents_(owner_web_contents),
       profile_(profile),
       receiver_(this, std::move(receiver)),
@@ -189,6 +232,12 @@ AIChatUIPageHandler::AIChatUIPageHandler(
     chat_context_observer_ =
         std::make_unique<ChatContextObserver>(chat_context_web_contents, *this);
   }
+#if !BUILDFLAG(IS_ANDROID)
+  if (!is_standalone && tab_strip_model &&
+      features::IsAIChatGlobalSidePanelEverywhereEnabled()) {
+    tab_strip_model->AddObserver(this);
+  }
+#endif
 }
 
 AIChatUIPageHandler::~AIChatUIPageHandler() = default;
@@ -206,26 +255,11 @@ void AIChatUIPageHandler::ShowSoftKeyboard() {
 #endif
 }
 
-void AIChatUIPageHandler::UploadFile(bool use_media_capture,
-                                     UploadFileCallback callback) {
-  if (!upload_file_helper_) {
-    upload_file_helper_ =
-        std::make_unique<UploadFileHelper>(owner_web_contents_, profile_);
-    upload_file_helper_observation_.Observe(upload_file_helper_.get());
-  }
-  upload_file_helper_->UploadFile(
-      std::make_unique<ChromeSelectFilePolicy>(owner_web_contents_),
-#if BUILDFLAG(IS_ANDROID)
-      use_media_capture,
-#endif
-      std::move(callback));
-}
-
 void AIChatUIPageHandler::ProcessImageFile(
     const std::vector<uint8_t>& file_data,
     const std::string& filename,
     ProcessImageFileCallback callback) {
-  UploadFileHelper::ProcessImageData(
+  ProcessImageData(
       &data_decoder_, file_data,
       base::BindOnce(
           [](const std::string& filename, ProcessImageFileCallback callback,
@@ -236,10 +270,86 @@ void AIChatUIPageHandler::ProcessImageFile(
             }
             auto uploaded_file = ai_chat::mojom::UploadedFile::New(
                 filename, processed_data->size(), *processed_data,
-                ai_chat::mojom::UploadedFileType::kImage);
+                ai_chat::mojom::UploadedFileType::kImage, std::nullopt);
             std::move(callback).Run(std::move(uploaded_file));
           },
           filename, std::move(callback)));
+}
+
+void AIChatUIPageHandler::ProcessTextFile(const std::vector<uint8_t>& file_data,
+                                          const std::string& filename,
+                                          ProcessTextFileCallback callback) {
+#if !BUILDFLAG(IS_ANDROID)
+  const auto extension = base::FilePath::FromUTF8Unsafe(filename).Extension();
+  ExtractAndProcessFile(
+      std::make_unique<TextFileExtractor>(), file_data,
+      extension.size() > 1 ? extension.substr(1) : FILE_PATH_LITERAL("txt"),
+      filename, mojom::UploadedFileType::kText, std::move(callback));
+#else
+  // Android does not support background text extraction via view-source:.
+  std::move(callback).Run(nullptr);
+#endif
+}
+
+void AIChatUIPageHandler::ProcessPdfFile(const std::vector<uint8_t>& file_data,
+                                         const std::string& filename,
+                                         ProcessPdfFileCallback callback) {
+#if BUILDFLAG(ENABLE_PDF)
+  if (!printing::LooksLikePdf(file_data)) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
+
+  ExtractAndProcessFile(std::make_unique<PdfTextExtractor>(), file_data,
+                        FILE_PATH_LITERAL("pdf"), filename,
+                        mojom::UploadedFileType::kPdf, std::move(callback));
+#else
+  auto uploaded_file = ai_chat::mojom::UploadedFile::New(
+      filename, file_data.size(), file_data,
+      ai_chat::mojom::UploadedFileType::kPdf, std::nullopt);
+  std::move(callback).Run(std::move(uploaded_file));
+#endif  // BUILDFLAG(ENABLE_PDF)
+}
+
+void AIChatUIPageHandler::ExtractAndProcessFile(
+    std::unique_ptr<FileTextExtractorBase> extractor,
+    const std::vector<uint8_t>& file_data,
+    const base::FilePath::StringType& extension,
+    const std::string& filename,
+    mojom::UploadedFileType file_type,
+    base::OnceCallback<void(mojom::UploadedFilePtr)> callback) {
+  auto* extractor_ptr = extractor.get();
+  extractors_.push_back(std::move(extractor));
+  auto response_data = std::vector<uint8_t>(file_data);
+  extractor_ptr->ExtractText(
+      profile_, std::vector<uint8_t>(file_data), extension,
+      base::BindOnce(&AIChatUIPageHandler::OnFileExtracted,
+                     weak_ptr_factory_.GetWeakPtr(), extractor_ptr, filename,
+                     std::move(response_data), file_type, std::move(callback)));
+}
+
+void AIChatUIPageHandler::OnFileExtracted(
+    FileTextExtractorBase* extractor_ptr,
+    std::string filename,
+    std::vector<uint8_t> file_data,
+    mojom::UploadedFileType file_type,
+    base::OnceCallback<void(mojom::UploadedFilePtr)> callback,
+    std::optional<std::string> extracted_text) {
+  std::erase_if(extractors_, [extractor_ptr](const auto& e) {
+    return e.get() == extractor_ptr;
+  });
+  // Text extraction failure means the file is not text-renderable (e.g.
+  // binary). Return null so the frontend does not attach it.
+  if (!extracted_text.has_value() &&
+      file_type == mojom::UploadedFileType::kText) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
+  auto file_size = file_data.size();
+  auto uploaded_file = ai_chat::mojom::UploadedFile::New(
+      std::move(filename), file_size, std::move(file_data), file_type,
+      std::move(extracted_text));
+  std::move(callback).Run(std::move(uploaded_file));
 }
 
 void AIChatUIPageHandler::GetPluralString(const std::string& key,
@@ -348,8 +458,67 @@ void AIChatUIPageHandler::HandleWebContentsDestroyed() {
   chat_context_observer_.reset();
 }
 
+#if !BUILDFLAG(IS_ANDROID)
+void AIChatUIPageHandler::OnTabStripModelChanged(
+    TabStripModel* tab_strip_model,
+    const TabStripModelChange& change,
+    const TabStripSelectionChange& selection) {
+  if (!selection.active_tab_changed() ||
+      !features::IsAIChatGlobalSidePanelEverywhereEnabled()) {
+    return;
+  }
+
+  // Unobserve the old tab.
+  associated_content_delegate_observation_.Reset();
+  chat_context_observer_.reset();
+  active_chat_tab_helper_ = nullptr;
+
+  auto* new_contents = selection.new_contents.get();
+  if (new_contents) {
+    // Note: We treat not being allowed to associate the content the same as not
+    // having content.
+    auto* active_chat_tab_helper =
+        ai_chat::AIChatTabHelper::FromWebContents(new_contents);
+    if (active_chat_tab_helper &&
+        ai_chat::CanAssociateContent(
+            &active_chat_tab_helper->web_contents_content())) {
+      active_chat_tab_helper_ = active_chat_tab_helper;
+      associated_content_delegate_observation_.Observe(
+          &active_chat_tab_helper_->web_contents_content());
+      chat_context_observer_ =
+          std::make_unique<ChatContextObserver>(new_contents, *this);
+    }
+  }
+
+  // Always notify the frontend of the new default tab content ID so that the
+  // attachments menu knows which tab is current (defaultTabContentId).
+  if (!chat_ui_.is_bound()) {
+    return;
+  }
+  NotifyNewDefaultConversation();
+}
+#endif
+
+void AIChatUIPageHandler::OnNewPage(AssociatedContentDelegate* delegate) {
+  if (!features::IsAIChatGlobalSidePanelEverywhereEnabled() ||
+      !active_chat_tab_helper_) {
+    return;
+  }
+  // By the time OnNewPage fires, AssociatedContentManager::OnRequestArchive
+  // has already run and set_uuid has been updated for the new page. Notify the
+  // frontend so it can detach the old content and attach the new page's
+  // content.
+  if (!chat_ui_.is_bound()) {
+    return;
+  }
+  NotifyNewDefaultConversation();
+}
+
 void AIChatUIPageHandler::OnRequestArchive(
     AssociatedContentDelegate* delegate) {
+  if (features::IsAIChatGlobalSidePanelEverywhereEnabled()) {
+    return;
+  }
   // This is only applicable to content-adjacent UI, e.g. SidePanel on Desktop
   // where it would like to remain associated with the Tab and move away from
   // Conversations of previous navigations. That doens't apply to the standalone
@@ -360,18 +529,7 @@ void AIChatUIPageHandler::OnRequestArchive(
   if (!chat_ui_.is_bound()) {
     return;
   }
-  chat_ui_->OnNewDefaultConversation(
-      active_chat_tab_helper_
-          ? std::make_optional(
-                active_chat_tab_helper_->web_contents_content().content_id())
-          : std::nullopt);
-}
-
-void AIChatUIPageHandler::OnFilesSelected() {
-  if (!chat_ui_.is_bound()) {
-    return;
-  }
-  chat_ui_->OnUploadFilesSelected();
+  NotifyNewDefaultConversation();
 }
 
 void AIChatUIPageHandler::CloseUI() {
@@ -394,8 +552,14 @@ void AIChatUIPageHandler::SetChatUI(mojo::PendingRemote<mojom::ChatUI> chat_ui,
 #endif
   );
 
+  NotifyNewDefaultConversation();
+}
+
+void AIChatUIPageHandler::NotifyNewDefaultConversation() {
   chat_ui_->OnNewDefaultConversation(
-      active_chat_tab_helper_
+      active_chat_tab_helper_ &&
+              ai_chat::CanAssociateContent(
+                  &active_chat_tab_helper_->web_contents_content())
           ? std::make_optional(
                 active_chat_tab_helper_->web_contents_content().content_id())
           : std::nullopt);
@@ -404,20 +568,28 @@ void AIChatUIPageHandler::SetChatUI(mojo::PendingRemote<mojom::ChatUI> chat_ui,
 void AIChatUIPageHandler::BindRelatedConversation(
     mojo::PendingReceiver<mojom::ConversationHandler> receiver,
     mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler) {
-  // For global panel, don't recall conversations by their associated tab
+  ConversationHandler* conversation;
   if (!active_chat_tab_helper_ || !conversations_are_content_associated_) {
-    ConversationHandler* conversation =
+    conversation = AIChatServiceFactory::GetForBrowserContext(profile_)
+                       ->CreateConversation();
+    // For global panel, associate the current tab's content synchronously so
+    // GetState() on the frontend returns it already populated. Tab switches
+    // are handled by the frontend via AssociateTab/DisassociateContent.
+    if (active_chat_tab_helper_) {
+      conversation->associated_content_manager()->AddContent(
+          &active_chat_tab_helper_->web_contents_content());
+    }
+  } else {
+    // GetOrCreateConversationHandlerForContent ensures the side panel binds to
+    // the same conversation already tied to this content_id. For example, if we
+    // create a new conversation via the context menu, we want to make sure we
+    // load it here.
+    conversation =
         AIChatServiceFactory::GetForBrowserContext(profile_)
-            ->CreateConversation();
-    conversation->Bind(std::move(receiver), std::move(conversation_ui_handler));
-    return;
+            ->GetOrCreateConversationHandlerForContent(
+                active_chat_tab_helper_->web_contents_content().content_id(),
+                active_chat_tab_helper_->web_contents_content().GetWeakPtr());
   }
-
-  ConversationHandler* conversation =
-      AIChatServiceFactory::GetForBrowserContext(profile_)
-          ->GetOrCreateConversationHandlerForContent(
-              active_chat_tab_helper_->web_contents_content().content_id(),
-              active_chat_tab_helper_->web_contents_content().GetWeakPtr());
 
   conversation->Bind(std::move(receiver), std::move(conversation_ui_handler));
 }
@@ -471,8 +643,6 @@ void AIChatUIPageHandler::NewConversation(
     mojo::PendingReceiver<mojom::ConversationHandler> receiver,
     mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler) {
   ConversationHandler* conversation;
-  // For standalone or global panel, don't recall conversations by their
-  // associated tab.
   if (active_chat_tab_helper_ && conversations_are_content_associated_) {
     conversation =
         AIChatServiceFactory::GetForBrowserContext(profile_)
@@ -482,6 +652,14 @@ void AIChatUIPageHandler::NewConversation(
   } else {
     conversation = AIChatServiceFactory::GetForBrowserContext(profile_)
                        ->CreateConversation();
+    // For global panel, associate the current tab's content synchronously so
+    // GetState() on the frontend returns it already populated.
+    if (active_chat_tab_helper_ &&
+        ai_chat::CanAssociateContent(
+            &active_chat_tab_helper_->web_contents_content())) {
+      conversation->associated_content_manager()->AddContent(
+          &active_chat_tab_helper_->web_contents_content());
+    }
   }
 
   conversation->Bind(std::move(receiver), std::move(conversation_ui_handler));

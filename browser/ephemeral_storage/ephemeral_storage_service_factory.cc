@@ -11,15 +11,39 @@
 #include "base/no_destructor.h"
 #include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/ephemeral_storage/brave_ephemeral_storage_service_delegate.h"
+#include "brave/browser/ephemeral_storage/browsing_history_cleaner.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_pref_names.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
+#include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/sync/sync_service_factory.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "net/base/features.h"
+
+namespace {
+
+std::unique_ptr<ephemeral_storage::BrowsingHistoryCleaner>
+CreateBrowsingHistoryCleanerForProfile(Profile* profile) {
+  if (!profile || profile->IsOffTheRecord()) {
+    return nullptr;
+  }
+  auto* history_service = HistoryServiceFactory::GetForProfile(
+      profile, ServiceAccessType::EXPLICIT_ACCESS);
+  auto* sync_service = SyncServiceFactory::GetForProfile(profile);
+
+  if (!history_service || !sync_service) {
+    return nullptr;
+  }
+
+  return std::make_unique<ephemeral_storage::BrowsingHistoryCleaner>(
+      profile, history_service, sync_service);
+}
+
+}  // namespace
 
 // static
 EphemeralStorageServiceFactory* EphemeralStorageServiceFactory::GetInstance() {
@@ -42,6 +66,8 @@ EphemeralStorageServiceFactory::EphemeralStorageServiceFactory()
   DependsOn(HostContentSettingsMapFactory::GetInstance());
   DependsOn(CookieSettingsFactory::GetInstance());
   DependsOn(BraveShieldsSettingsServiceFactory::GetInstance());
+  DependsOn(HistoryServiceFactory::GetInstance());
+  DependsOn(SyncServiceFactory::GetInstance());
 }
 
 EphemeralStorageServiceFactory::~EphemeralStorageServiceFactory() = default;
@@ -75,7 +101,8 @@ EphemeralStorageServiceFactory::BuildServiceInstanceForBrowserContext(
       std::make_unique<ephemeral_storage::BraveEphemeralStorageServiceDelegate>(
           context, host_content_settings_map,
           CookieSettingsFactory::GetForProfile(profile),
-          BraveShieldsSettingsServiceFactory::GetForProfile(profile)));
+          BraveShieldsSettingsServiceFactory::GetForProfile(profile),
+          CreateBrowsingHistoryCleanerForProfile(profile)));
 }
 
 content::BrowserContext* EphemeralStorageServiceFactory::GetBrowserContextToUse(

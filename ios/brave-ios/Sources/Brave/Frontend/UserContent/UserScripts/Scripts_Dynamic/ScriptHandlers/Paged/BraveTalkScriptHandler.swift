@@ -13,18 +13,7 @@ import WebKit
 import os.log
 
 class BraveTalkScriptHandler: TabContentScript {
-  private weak var rewards: BraveRewards?
-  private let launchNativeBraveTalk:
-    (_ tab: (any TabState)?, _ room: String, _ token: String) -> Void
-
-  required init(
-    rewards: BraveRewards,
-    launchNativeBraveTalk: @escaping (_ tab: (any TabState)?, _ room: String, _ token: String) ->
-      Void
-  ) {
-    self.rewards = rewards
-    self.launchNativeBraveTalk = launchNativeBraveTalk
-  }
+  init() {}
 
   static let scriptName = "BraveTalkScript"
   static let scriptId = UUID().uuidString
@@ -109,7 +98,7 @@ class BraveTalkScriptHandler: TabContentScript {
       else {
         return
       }
-      launchNativeBraveTalk(tab, room, jwt)
+      tab.braveTalk?.launchBraveTalk(withRoom: room, jwtKey: jwt)
       replyHandler(nil, nil)
     }
   }

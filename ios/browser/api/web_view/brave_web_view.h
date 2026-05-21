@@ -17,6 +17,8 @@
 #import "cwv_web_view.h"             // NOLINT
 #import "cwv_web_view_extras.h"      // NOLINT
 
+@class BraveWebFrame;
+
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol AIChatUIHandlerBridge;
@@ -24,6 +26,9 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol AIChatAssociatedContentPageFetcher;
 @protocol ProfileBridge;
 @protocol LoginsTabHelperBridge;
+@protocol BraveTalkTabHelperBridge;
+@protocol BraveSearchMakeDefaultTabHelperBridge;
+@protocol PrintHandler;
 
 typedef void (^ResetConfigurationCallback)(id<ProfileBridge>,
                                            WKWebViewConfiguration*);
@@ -79,6 +84,13 @@ CWV_EXPORT
         (BraveNavigationAction*)navigationAction
                          decisionHandler:(void (^)(CWVNavigationActionPolicy))
                                              decisionHandler;
+/// Noifies the delegate that a navigation did commit on the same document
+/// (reference fragment navigations, pushState/replaceState, same document
+/// history navigation)
+- (void)webViewDidCommitSameDocumentNavigation:(CWVWebView*)webView;
+/// Notifies the delegate one web frame has become available
+- (void)webView:(CWVWebView*)webView
+    frameDidBecomeAvailable:(BraveWebFrame*)frame;
 
 @end
 
@@ -97,6 +109,9 @@ CWV_EXPORT
 /// on the page.
 - (void)webView:(CWVWebView*)webView
     buildEditMenuWithBuilder:(id<UIMenuBuilder>)builder;
+/// Called when the favicon driver updates the web views favicon status
+- (void)webView:(CWVWebView*)webView
+    didUpdateFaviconStatus:(nullable CWVFaviconStatus*)faviconStatus;
 @end
 
 /// A CWVWebView with Chrome tab helpers attached and the ability to handle
@@ -194,6 +209,33 @@ CWV_EXPORT
 - (void)setReaderModeTheme:(NSString*)theme
                   fontType:(NSString*)fontType
                   fontSize:(NSInteger)fontSize;
+@end
+
+CWV_EXPORT
+@interface BraveWebView (BraveSearchAdResults)
+// Fetches search result ad creatives from the current page and returns them
+// as a JSON string, or nil if none could be retrieved.
+- (void)fetchSearchAdCreatives:
+    (void (^)(NSString* _Nullable json))completionHandler;
+@end
+
+CWV_EXPORT
+@interface BraveWebView (BraveTalk)
+/// A bridge for handling Brave Talk tab features
+- (void)setBraveTalkHelper:(id<BraveTalkTabHelperBridge>)braveTalkHelper;
+@end
+
+CWV_EXPORT
+@interface BraveWebView (BraveSearchHelper)
+/// A bridge for handling Brave Search helper script messages
+@property(nonatomic, weak, nullable) id<BraveSearchMakeDefaultTabHelperBridge>
+    braveSearchHelper;
+@end
+
+CWV_EXPORT
+@interface BraveWebView (Print)
+/// A bridge for handling window.print script messages
+- (void)setPrintHandler:(id<PrintHandler>)printHandler;
 @end
 
 NS_ASSUME_NONNULL_END

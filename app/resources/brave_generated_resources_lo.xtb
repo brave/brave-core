@@ -131,16 +131,12 @@
 <translation id="8184318863960255706">ຂໍ້ມູນເພີ່ມເຕີມ</translation>
 <translation id="780301667611848630">ບໍ່ເປັນຫຍັງ ຂອບໃຈ</translation>
 <translation id="1162706247109707219">ໂດຍການກົດ OK, ທ່າCommasຢ່າງມາດເຜີຊິຄຳຫມາມືມຕານຂັດຂ້ອງພາຍໃນສາງຕອນໃນຮູບເປັນ້ຮູບເປັນແລະພາຍນໍໄວ້ກວດ</translation>
-<translation id="9164786361657554526">ໂດຍການກົດ OK, ທ່ານຊະນົກລຸ່ມຕາຍກໍາມາດໂທວາໄດໄດໃນໂອໂຜຫມື່ນໄລ້ 15 ຫລືດັດຊື່ມາດເດຸ...ແລູາໄດເວກດັງບໍເດິດໃໝ່</translation>
+<translation id="2971591422768125177">ໂດຍການກົດ OK, ທ່ານຊະນົກລຸ່ມຕາຍກໍາມາດໂທວາໄດໄດໃນໂອໂຜຫມື່ນໄລ້ 15 ຫລືດັດຊື່ມາດເດຸ...ແລູາໄດເວກດັງບໍເດິດໃໝ່</translation>
 <translation id="6020553119523541665">ແທບນີ້ແມ່ນກຳລັງເຜຜູ້ອີກນາມ</translation>
 <translation id="4987392683074136770">ກາລັງກົດກັບແທບນີ້ຈະເວິ່ນໄປໂມ່ນສານການຕອນ</translation>
 <translation id="8355523213948477234">ບຸດເມນູການແບ່ງເວິໆ</translation>
 <translation id="6040143037577758943">ປິດ</translation>
 <translation id="6665472986740899785">Brave Notification Ad</translation>
-<translation id="5582087890067572966">🎉 ທ່ານດຽຄາເງຣານ!</translation>
-<translation id="4364336119478610380">ທ່ານຄົນໃດກໍານົດດຽງຢູ່ຕໍ່ຈໍຈະດີອົບຮ້ອງດຽດັແອດລກ</translation>
-<translation id="5893017172751072752">ທ່ານໄດ້ພົບເງນກົມຢາກ Brave Ads ຕົວ Policyshal</translation>
-<translation id="3447730462826640312">ບໍ່ຈໍາປ່ອນ</translation>
 <translation id="5253166205743627564">ຂອບ​ໃຈ​ທີ່​ສະ​ໜັບ​ສະ​ນຸນ Brave Search ໂດຍ​ການ​ຄິກ​ໂຄສະນາ​ສ່ວນຕົວ. ບໍ່ ​ເຫມືອນ​ບ໋ອກ ທ່ານ​ໄດ້​ເຫັນ Brave ຈະ​ວັດ​ຜົນ​ໂຄສະນາ​ແບບ​ບໍ່​ລະ​ບຸຕົວ​ຕົນ​ເພື່ອ​ຮັກ​ສາ​ຄວາມ​ເປັນ​ສ່ວນ​ຕົວ​ຂອງ​ທ່ານ.</translation>
 <translation id="8748471354357836070">ຮຽນ​ຮູ້​ເພີ່ມ​ເຕີມ / ການເລືອກຖອຍຫຼັງ</translation>
 <translation id="5927196110206824867">ຮູບໃດທີ່ເປັນສິນ຦ຍານທີ່ດັງຄັ້ງໃຫຍ່</translation>
@@ -322,6 +318,8 @@
 <translation id="8813509417421129632">ໜ້າເຊື່ອມທີ່ຝັງໄວ້ທີ່ <ph name="SITE"/> ຕ້ອງການບັນທຶກ</translation>
 <translation id="7700010743463174379">ໜ້ານີ້ຕ້ອງການບັນທຶກ</translation>
 <translation id="6774238875569752630">ໜ້າທີ່ຝັງໄວ້ຢູ່ໜ້ານີ້ຕ້ອງການບັນທຶກ</translation>
+<translation id="1383876407941801731">ຄົ້ນຫາ</translation>
+<translation id="5496587651328244253">ຈັດເລียງ</translation>
 <translation id="1233913566967531780">ໂ້ລມມາຫົວລາດ</translation>
 <translation id="4034992002364254340">ລວມແທັບທີ່ກ່ຽວຂ້ອງທັງຫມົດເຂົ້າໃນຫ້ອງໃໝ່</translation>
 <translation id="8012125596344613514">ເເນະນໍາເຫົາການເອ່ຍ</translation>
@@ -334,11 +332,14 @@
 <translation id="7557539689487606886">ອັບເກຣດເປັນ Premium</translation>
 <translation id="1035309871698658326">ເມື່ອເປີດແລ້ວ, ນີ້ຈະສົ່ງຫົວຂໍ້ ແລະ ຕົ້ນກຳເນີດຂອງແຖບທີ່ບໍ່ແມ່ນສ່ວນຕົວທັງໝົດໄປຫາ Leo ໂດຍອັດຕະໂນມັດເພື່ອຈັດປະເພດພວກມັນ.</translation>
 <translation id="3435896845095436175">ເປີດໃຊ້ງານ</translation>
+<translation id="9031526219709160683">ກະທັດລາວໂອ Brave ສາມາດຊ່ວຍທ່ານໃຫ້ໄດ້ສະັກ​ວາດຕັ້ງຄ່າກາຍເປັນສ່ວນຕົວຂອງ​ໂຣກ​ເວ​ບໄຊ​ທ​ໄ​ທ​ນີ້. ທ່ານຕ້ອງການ​ທົ່ວ​ລຽ​ມ​ຂໍ້ສະເໜີອື່ນໆ​ຂອງ Brave ບໍ?</translation>
+<translation id="5739953050957336013">ທົ່ວ​ລຽ​ມ​ຂໍ້ສະເໜີ</translation>
 <translation id="9082792303833649978">ການຕັ້ງຄ່ານີ້ຖືກຄວບຄຸມໂດຍຜູ້ບໍລິຫານຂອງທ່ານ ຫຼືໂດຍນະໂຍບາຍຂອງ Brave ອື່ນໆ</translation>
 <translation id="1940221956626514677">ປັບແຕ່ງຫນ້າຕ່າງ</translation>
 <translation id="6501807887341963552">ຊຳນຳແລະສີຖ່ານ</translation>
 <translation id="6724227215236550330">ລະຫັດຜ່ານທີ່ຖືກບັນທຶກໄວ້ຈະສະແດງຢູ່ບ່ອນນີ້. ຫາກຕ້ອງການນຳເຂົ້າລະຫັດຜ່ານໄປ <ph name="BRAND"/> ໃນອຸປະກອນນີ້, ໃຫ້ເລືອກ <ph name="BEGIN_LINK"/> ເລືອກຟາຍ CVS<ph name="END_LINK"/></translation>
 <translation id="3575561030014162610">ຫາກຕ້ອງການນຳເຂົ້າລະຫັດຜ່ານໄປ <ph name="BRAND"/> ໃນອຸປະກອນນີ້, ໃຫ້ເລືອກຟາຍ CVS</translation>
+<translation id="8570228839666486945">AI ໃນອຸປະກອນ</translation>
 <translation id="9156965752763025780">ການປ່ຽນແປງຂອງທ່ານຈະມີຜົນໃນຄັ້ງຕໍ່ໄປທີ່ທ່ານເປີດໃຊ້ງານ Brave   ໃໝ່.</translation>
 <translation id="7179921470347911571">ເປີດໃໝ່ດຽວນີ້</translation>
 <translation id="1426410128494586442">ແມ່ນ</translation>
@@ -389,8 +390,15 @@
 <translation id="2113977810652731515">ກາດ</translation>
 <translation id="4096343215397759358">ກາດທີ່ມີສນີສານ</translation>
 <translation id="5297085818601043899">ຂໍ້ຄວາມແນະນຳ</translation>
+<translation id="1033676453210290920">ຄວາມກວ້າງຂອງແຖບຕໍ່າສຸດ</translation>
+<translation id="562967218762447012">ຈໍານວນຂັ້ນຕ່ໍາ (ເລີ່ມຕົ້ນ)</translation>
+<translation id="574392208103952083">ປານກາງ</translation>
+<translation id="4209092469652827314">ຂະຫນາດໃຫຍ່</translation>
+<translation id="2658845370685508484">ຄວາມກວ້າງເຕັມ</translation>
+<translation id="1215972473274650670">ໃຊ້ແຖບແນວນອນທີ່ສາມາດເລື່ອນໄດ້</translation>
 <translation id="5219886318310413094">ສະແດງແຖບຕິດໜຶ່ງໃນເວັບທຸກໜ້າຕ່າງ</translation>
 <translation id="2396127686705429331">ສະແດງປຸ່ມບັນທອງເປັນທີ່ຈົດເປົ້າເເມ່ກ</translation>
+<translation id="443318149139185498">ໃຊ້ໂລໂກ້ຮູບວາດເສັ້ນໂຄງເທິງປຸ່ມເມນູຕົ້ນຕໍ່</translation>
 <translation id="2814998458708016836">ໃຊ້ແຖບ transcription</translation>
 <translation id="4749586705247636385">ສະແດງມຸມຄອບໂດຍມີຄວາມໂຄ້ງໃນບ່ອນເນື້ອຫາຫຼັກ</translation>
 <translation id="4109670531935487117">ສະແດງຄຳແນະນຳອັດຕະໂນມັດໃນແຖບທີ່ຢູ່</translation>
@@ -544,7 +552,7 @@
 <translation id="509873765238158442">ບລັອກ Microsoft Recall</translation>
 <translation id="4763421121695677716">ບລັອກຄຸນສົມບັດ Recall ບນຄອມພິວເຕີ Microsoft Windows ຕໍ່າບັບເຊັນເລີຂ້າມຫາບາບີ</translation>
 <translation id="1968895725257436430">ການເກັບຂໍ້ມູນ</translation>
-<translation id="4846154056248462491">ເມື່ອອອກ</translation>
+<translation id="1700052872056357670">ລຶບຂໍ້ມູນເມື່ອອອກ</translation>
 <translation id="216468847346280584">ລ້າງຂໍ້ມູນຂອງ Brave Ads...</translation>
 <translation id="2808630562319398131">ຕັ້ງຄ່າຂໍ້ມູນ Brave Rewards ໃໝ່...</translation>
 <translation id="6438096877646138757">ເວັບໄຊທ໌ທີ່ລ້າງ Cookie ເມື່ອທ່ານປິດ</translation>
@@ -786,6 +794,7 @@
 <translation id="1529674267267221673">Leo ຈະປາກົດໃນ context menu ເມື່ອທ່ານກົດຂວາເວັບໄຊທ໌. ນີ້ຈະສົ່ງ context ຈາກໜ້າເວັບປະຈຸບັນໄປໃຫ້ Leo.</translation>
 <translation id="5226020406479918122">ໂ່່ນເມືອງໂໝດຟັງເປີ</translation>
 <translation id="3705539672403311123">ເປີດໃຊ້ການຈັດລຽງແທບໃນໜ້າຄົ້ນຫາແທບ. ເມື່ອເປີດ, ລະບົບຈະສົ່ງຊື່ເລື່ອງແລະທີ່ມາຂອງແທບທັງໝົດ (ທີ່ບໍ່ແມ່ນແທບສ່ວນຕົວ) ໃຫ້ກັບ Leo ສໍາລັບຈັດໝວດ. <ph name="BEGIN_LINK"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="END_LINK"/></translation>
+<translation id="9049433973274198706">ໂມເດວເລີ່ມຕົ້ນສຳລັບບຸmaurice ກຸນ້ອມປະເຕັກ</translation>
 <translation id="8172263161008556851">ສະແດງການສະແນະນຳໃນການສົນທະນາ</translation>
 <translation id="5781842473834867765">ບັນທຶກປະຫວັດການສົນທະນາຂອງຂ້ອຍ</translation>
 <translation id="1082960401708055995">ການປິດການພັກອາໄັງລາຍການຕ້ອງການລົບການສະຫມຸນຄຸ່ນຂ້າງຫນ້າທີ່ຖືກພັກອາໄັງລາຍການທັງໝົດ. ກອດນີ້ບໍ່ສາມາດກັນຄືນໄດ້.</translation>
@@ -809,6 +818,8 @@
 <translation id="6374563306438145841">API Key</translation>
 <translation id="3295756655687327124">ຕາມເທ</translation>
 <translation id="1415432774589088566">ເປີນເອື້ອ</translation>
+<translation id="5718897035062884425">ການສະໜອງການຊ່ວຍເຫລືອເຄື່ອງມື</translation>
+<translation id="2120046556683363911">ຖ້າຮູບແບບນີ້ຮອງຮັບການເອີ້ນໃຊ້ຟັງຊັນ / ການໃຊ້ເຄື່ອງມື</translation>
 <translation id="8008271349880309090">ຊື່ຂອງແບບຄື່ນມາທີ່ຈະປາກົດໃນ menu ການເລືອກແບບ</translation>
 <translation id="1355326130503900056">ຊື່ຂອງແບບຄື່ນມາທີ່ຄວນຈະປາກົດໃນຄຳຮ້ອງໄດ້ເຖິງຟຣາມວເວີກ, ຕົວຢ່າງ: phi-3 (ໝາຍເຫດວ່າຫາກຊື່ນີ້ບໍ່ຕົງກັນກັບຄຳຄາດຫວັງຂອງຟຣາມວເວີກ, ການຫຼາຍເຫຼື່ອງຈະບໍ່ໄດ້)</translation>
 <translation id="3213787232304349732">ທີ່ຢູ່ URL ທີ່ຟາງປະລຸກການຮັບຟັງກວ່າຄຳຮ້ອງຂໍ. ຖ້າທ່ານບໍ່ທັດນີ່, ກວດສອບປະລຸກການຮັບຟັງຂໍ້ມູນທີ່ມີ. ຟາຍອງຕົວຢ່າງຂອງວິທີນີ້ ແມ່ນ http://localhost:11434/v1/chat/completions</translation>

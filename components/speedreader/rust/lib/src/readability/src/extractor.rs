@@ -278,8 +278,8 @@ pub fn extract_dom(
         }
     }
 
-    // Calls html5ever::serialize() with IncludeNode for us.
-    let mut content: String = match top_candidate.as_element() {
+    // Build body element.
+    let body_handle: Handle = match top_candidate.as_element() {
         Some(x) if x.name.local != local_name!("body") => {
             let name = QualName::new(None, ns!(), local_name!("body"));
             let body = dom.create_element(name, vec![], ElementFlags::default());
@@ -290,52 +290,49 @@ pub fn extract_dom(
             dom.append(&main, NodeOrText::AppendNode(article));
             dom.append(&body, NodeOrText::AppendNode(main));
 
-            // Our CSS formats based on id="article".
             dom::set_attr("id", "article", body.clone(), true);
             dom::set_attr("hidden", "true", body.clone(), true);
-            body.to_string()
+            body
         }
-        _ => top_candidate.to_string(),
+        _ => top_candidate.clone(),
     };
 
-    let mut content_head = String::default();
-
+    // Build head element and append title, charset, preserved nodes
+    let head_name = QualName::new(None, ns!(), local_name!("head"));
+    let head = dom.create_element(head_name, vec![], ElementFlags::default());
     if !meta.title.is_empty() {
-        let title_blob = format!("<title>{}</title>", &meta.title);
-        content_head += &title_blob;
+        let title_elem = dom::create_element_simple(dom, "title", "", Some(&meta.title));
+        dom.append(&head, NodeOrText::AppendNode(title_elem));
     }
-
     if let Some(ref charset) = meta.charset {
         // Since we strip out the entire head, we need to include charset if one
         // was provided. Otherwise the browser will use the default encoding,
         // and surprisingly it's not utf-8 ;)
-        content_head += &charset.to_string();
+        dom.append(&head, NodeOrText::AppendNode(charset.clone()));
+    }
+    for node in meta.preserved_elements.iter() {
+        dom.append(&head, NodeOrText::AppendNode(node.clone()));
     }
 
-    if !meta.preserved_elements.is_empty() {
-        for node in meta.preserved_elements.iter() {
-            content_head += &node.to_string();
-        }
+    // Compose html element.
+    let html_name = QualName::new(None, ns!(), local_name!("html"));
+    let html = dom.create_element(html_name, vec![], ElementFlags::default());
+    if let Some(theme) = theme {
+        dom::set_attr("data-theme", theme, html.clone(), true);
     }
-
-    content = content_head + &content;
-
-    if theme.is_some() || font_family.is_some() || font_size.is_some() || column_width.is_some() {
-        let mut header: String = String::from("<html");
-        if let Some(theme) = theme {
-            header += &format!(" data-theme=\"{}\"", theme);
-        }
-        if let Some(font_family) = font_family {
-            header += &format!(" data-font-family=\"{}\"", font_family);
-        }
-        if let Some(font_size) = font_size {
-            header += &format!(" data-font-size=\"{}\"", font_size);
-        }
-        if let Some(column_width) = column_width {
-            header += &format!(" data-column-width=\"{}\"", column_width);
-        }
-        content = header + ">" + &content + "</html>";
+    if let Some(font_family) = font_family {
+        dom::set_attr("data-font-family", font_family, html.clone(), true);
     }
+    if let Some(font_size) = font_size {
+        dom::set_attr("data-font-size", font_size, html.clone(), true);
+    }
+    if let Some(column_width) = column_width {
+        dom::set_attr("data-column-width", column_width, html.clone(), true);
+    }
+    dom.append(&html, NodeOrText::AppendNode(head));
+    dom.append(&html, NodeOrText::AppendNode(body_handle));
+
+    let content = html.to_string();
 
     Ok(Product { meta, content })
 }

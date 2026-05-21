@@ -21,11 +21,14 @@
 #include "base/strings/utf_ostream_operators.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/types/fixed_array.h"
+#include "base/uuid.h"
+#include "brave/components/ai_chat/content/browser/ai_page_content_fetcher.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
 #include "brave/components/ai_chat/content/browser/pdf_utils.h"
 #include "brave/components/ai_chat/core/browser/associated_content_driver.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
@@ -39,15 +42,37 @@
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
+#include "mojo/public/cpp/bindings/callback_helpers.h"
 #include "pdf/buildflags.h"
+#include "services/service_manager/public/cpp/interface_provider.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "third_party/blink/public/common/permissions/permission_utils.h"
 
 #if BUILDFLAG(ENABLE_PDF)
+#include "brave/components/ai_chat/content/browser/pdf_text_helper.h"
 #include "components/pdf/browser/pdf_document_helper.h"
 #endif  // BUILDFLAG(ENABLE_PDF)
 
 namespace ai_chat {
+
+namespace {
+
+void ExtractTextFromAIPageContentNode(
+    const blink::mojom::AIPageContentNode& node,
+    std::string& out) {
+  const auto& attrs = node.content_attributes;
+  if (attrs && attrs->text_info && !attrs->text_info->text_content.empty()) {
+    if (!out.empty()) {
+      out.append("\n");
+    }
+    out.append(attrs->text_info->text_content);
+  }
+  for (const auto& child : node.children_nodes) {
+    ExtractTextFromAIPageContentNode(*child, out);
+  }
+}
+
+}  // namespace
 
 AssociatedWebContentsContent::AssociatedWebContentsContent(
     content::WebContents* web_contents,
@@ -58,9 +83,14 @@ AssociatedWebContentsContent::AssociatedWebContentsContent(
                                   ->GetDefaultStoragePartition()
                                   ->GetURLLoaderFactoryForBrowserProcess()),
       print_preview_extraction_delegate_(
-          std::move(print_preview_extraction_delegate)),
-      page_content_fetcher_delegate_(
-          std::make_unique<PageContentFetcher>(web_contents)) {
+          std::move(print_preview_extraction_delegate)) {
+  if (features::IsAIChatDetailedPageContentExtractionEnabled()) {
+    page_content_fetcher_delegate_ =
+        std::make_unique<AIPageContentFetcher>(web_contents);
+  } else {
+    page_content_fetcher_delegate_ =
+        std::make_unique<PageContentFetcher>(web_contents);
+  }
   previous_page_title_ = web_contents->GetTitle();
 }
 
@@ -187,6 +217,14 @@ void AssociatedWebContentsContent::OnFetchPageContentComplete(
     SetPendingGetContentCallback(std::move(callback));
     return;
   }
+  // If content is still empty after page load, try AIPageContentAgent as a
+  // fallback. It uses layout tree walking which may succeed where AX
+  // tree-based extraction fails.
+  if (content.empty() && !is_video && is_page_loaded_) {
+    DVLOG(1) << "page content empty, trying AIPageContentAgent fallback";
+    FetchPageContentFromAIPageContentAgent(std::move(callback));
+    return;
+  }
   std::move(callback).Run(std::move(content), is_video,
                           std::move(invalidation_token));
 }
@@ -207,6 +245,13 @@ void AssociatedWebContentsContent::OnNewPage(int64_t navigation_id) {
   if (pending_get_page_content_callback_) {
     std::move(pending_get_page_content_callback_).Run("", false, "");
   }
+
+  // Note: A new page needs a new UUID.
+  set_uuid(base::Uuid::GenerateRandomV4().AsLowercaseString());
+
+  // Notify observers now that url, title, and uuid are all set for the new
+  // page. This fires after OnRequestArchive has completed for all observers.
+  NotifyNewPage();
 }
 
 void AssociatedWebContentsContent::MaybeSameDocumentIsNewPage() {
@@ -226,67 +271,56 @@ void AssociatedWebContentsContent::MaybeSameDocumentIsNewPage() {
 #if BUILDFLAG(ENABLE_PDF)
 void AssociatedWebContentsContent::OnPDFDocumentLoadComplete(
     FetchPageContentCallback callback) {
-  auto* pdf_helper =
-      pdf::PDFDocumentHelper::MaybeGetForWebContents(web_contents());
-  if (!pdf_helper) {
-    std::move(callback).Run("", false, "");
-    return;
-  }
-
-  // Fetch zero PDF bytes to just receive the total page count.
-  pdf_helper->GetPdfBytes(
-      /*size_limit=*/0,
-      base::BindOnce(&AssociatedWebContentsContent::OnGetPDFPageCount,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
-}
-
-void AssociatedWebContentsContent::OnGetPDFPageCount(
-    FetchPageContentCallback callback,
-    pdf::mojom::PdfListener::GetPdfBytesStatus status,
-    const std::vector<uint8_t>& bytes,
-    uint32_t page_count) {
-  auto* pdf_helper =
-      pdf::PDFDocumentHelper::MaybeGetForWebContents(web_contents());
-  if (status == pdf::mojom::PdfListener::GetPdfBytesStatus::kFailed ||
-      !pdf_helper) {
-    std::move(callback).Run("", false, "");
-    return;
-  }
-
-  // Create a barrier callback that will be called when all pages are received
-  auto barrier_callback = base::BarrierCallback<std::pair<size_t, std::string>>(
-      page_count,
-      base::BindOnce(&AssociatedWebContentsContent::OnAllPDFPagesTextReceived,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
-
-  for (size_t i = 0; i < page_count; ++i) {
-    pdf_helper->GetPageText(
-        i, base::BindOnce(
-               [](base::OnceCallback<void(std::pair<size_t, std::string>)>
-                      barrier_callback,
-                  size_t page_index, const std::u16string& page_text) {
-                 // Convert to UTF8 immediately and include page index
-                 std::move(barrier_callback)
-                     .Run(std::make_pair(page_index,
-                                         base::UTF16ToUTF8(page_text)));
-               },
-               barrier_callback, i));
-  }
-}
-
-void AssociatedWebContentsContent::OnAllPDFPagesTextReceived(
-    FetchPageContentCallback callback,
-    const std::vector<std::pair<size_t, std::string>>& page_texts) {
-  base::FixedArray<std::string_view> ordered_texts(page_texts.size());
-
-  // Insert texts at their correct indices
-  for (const auto& [index, text] : page_texts) {
-    ordered_texts[index] = text;
-  }
-
-  std::move(callback).Run(base::JoinString(ordered_texts, "\n"), false, "");
+  ExtractTextFromLoadedPdf(
+      web_contents(),
+      base::BindOnce(
+          [](FetchPageContentCallback cb, std::optional<std::string> result) {
+            std::move(cb).Run(result.value_or(""), false, "");
+          },
+          std::move(callback)));
 }
 #endif  // BUILDFLAG(ENABLE_PDF)
+
+void AssociatedWebContentsContent::FetchPageContentFromAIPageContentAgent(
+    FetchPageContentCallback callback) {
+  content::RenderFrameHost* rfh = web_contents()->GetPrimaryMainFrame();
+  if (!rfh || !rfh->IsRenderFrameLive()) {
+    std::move(callback).Run("", false, "");
+    return;
+  }
+
+  ai_page_content_agent_.reset();
+  rfh->GetRemoteInterfaces()->GetInterface(
+      ai_page_content_agent_.BindNewPipeAndPassReceiver());
+
+  auto options = blink::mojom::AIPageContentOptions::New();
+  options->mode = blink::mojom::AIPageContentMode::kDefault;
+  options->on_critical_path = true;
+
+  ai_page_content_agent_->GetAIPageContent(
+      std::move(options),
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+          base::BindOnce(&AssociatedWebContentsContent::OnAIPageContentResult,
+                         weak_ptr_factory_.GetWeakPtr(), std::move(callback)),
+          nullptr));
+}
+
+void AssociatedWebContentsContent::OnAIPageContentResult(
+    FetchPageContentCallback callback,
+    blink::mojom::AIPageContentPtr result) {
+  ai_page_content_agent_.reset();
+
+  std::string content;
+  if (result) {
+    ExtractTextFromAIPageContentNode(*result->root_node, content);
+    base::TrimWhitespaceASCII(content, base::TRIM_ALL, &content);
+  }
+
+  DVLOG(1) << "AIPageContentAgent fallback "
+           << (content.empty() ? "returned empty" : "succeeded");
+  DVLOG(2) << "AIPageContentAgent extracted content: " << content;
+  std::move(callback).Run(std::move(content), false, "");
+}
 
 void AssociatedWebContentsContent::GetSearchSummarizerKey(
     GetSearchSummarizerKeyCallback callback) {
@@ -348,7 +382,7 @@ void AssociatedWebContentsContent::OnScreenshotsCaptured(
           absl::StrFormat("%s%i.png", mojom::kFullPageScreenshotPrefix,
                           screenshot_index++),
           screenshot_size, std::move(screenshot),
-          mojom::UploadedFileType::kScreenshot));
+          mojom::UploadedFileType::kScreenshot, std::nullopt));
     }
     std::move(callback).Run(std::move(screenshots));
   } else {

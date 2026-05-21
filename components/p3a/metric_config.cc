@@ -30,6 +30,7 @@ constexpr auto kMetricAttributeMap =
         {"dtoa", MetricAttribute::kDateOfActivation},
         {"woa", MetricAttribute::kWeekOfActivation},
         {"is_browser_default", MetricAttribute::kIsBrowserDefault},
+        {"custom_attribute", MetricAttribute::kCustomAttribute},
     });
 
 bool GetMetricAttribute(const base::Value* value,
@@ -61,44 +62,30 @@ bool GetMetricLogType(const base::Value* value,
   return true;
 }
 
-bool GetMetricAttributes(const base::Value* value,
-                         std::optional<MetricAttributes>* field) {
+template <size_t N>
+bool GetMetricAttributes(
+    const base::Value* value,
+    std::optional<std::array<std::optional<MetricAttribute>, N>>* field) {
   if (!value || !value->is_list()) {
     return false;
   }
 
-  const auto& list = value->GetList();
-
-  MetricAttributes attributes;
-
-  for (size_t i = 0; i < list.size() && i < attributes.size(); i++) {
-    if (!GetMetricAttribute(&list[i], &attributes[i])) {
-      return false;
+  std::array<std::optional<MetricAttribute>, N> attributes;
+  size_t attr_idx = 0;
+  for (const auto& item : value->GetList()) {
+    if (attr_idx >= N) {
+      break;
     }
+    if (!GetMetricAttribute(&item, &attributes[attr_idx])) {
+      // Gracefully ignore unknown attributes.
+      // Do not increment attr_idx++, otherwise we'll have a nullopt
+      // in the middle of the array.
+      continue;
+    }
+    attr_idx++;
   }
 
   *field = attributes;
-  return true;
-}
-
-bool GetAppendAttributes(const base::Value* value,
-                         std::optional<MetricAttributesToAppend>* field) {
-  if (!value || !value->is_list()) {
-    return false;
-  }
-
-  const auto& list = value->GetList();
-
-  MetricAttributesToAppend attributes;
-
-  for (size_t i = 0; i < list.size() && i < attributes.size(); i++) {
-    if (!GetMetricAttribute(&list[i], &attributes[i])) {
-      return false;
-    }
-  }
-
-  *field = attributes;
-
   return true;
 }
 
@@ -117,6 +104,27 @@ bool GetOptionalBool(const base::Value* value, std::optional<bool>* field) {
     return false;
   }
   *field = value->GetBool();
+  return true;
+}
+
+bool GetCustomAttributes(const base::Value* value,
+                         std::optional<RemoteCustomAttributes>* field) {
+  if (!value || !value->is_list()) {
+    return false;
+  }
+
+  const auto& list = value->GetList();
+
+  RemoteCustomAttributes attributes;
+
+  for (size_t i = 0; i < list.size() && i < attributes.size(); i++) {
+    if (!list[i].is_string()) {
+      return false;
+    }
+    attributes[i] = list[i].GetString();
+  }
+
+  *field = attributes;
   return true;
 }
 
@@ -139,10 +147,11 @@ void RemoteMetricConfig::RegisterJSONConverter(
       "disable_country_strip", &RemoteMetricConfig::disable_country_strip,
       &GetOptionalBool);
   converter->RegisterCustomValueField(
-      "attributes", &RemoteMetricConfig::attributes, &GetMetricAttributes);
-  converter->RegisterCustomValueField("append_attributes",
-                                      &RemoteMetricConfig::append_attributes,
-                                      &GetAppendAttributes);
+      "attributes", &RemoteMetricConfig::attributes,
+      &GetMetricAttributes<std::tuple_size_v<MetricAttributes>>);
+  converter->RegisterCustomValueField(
+      "append_attributes", &RemoteMetricConfig::append_attributes,
+      &GetMetricAttributes<std::tuple_size_v<MetricAttributesToAppend>>);
   converter->RegisterCustomValueField(
       "record_activation_date", &RemoteMetricConfig::record_activation_date,
       &GetOptionalBool);
@@ -151,6 +160,9 @@ void RemoteMetricConfig::RegisterJSONConverter(
       &GetOptionalString);
   converter->RegisterCustomValueField("cadence", &RemoteMetricConfig::cadence,
                                       &GetMetricLogType);
+  converter->RegisterCustomValueField("custom_attributes",
+                                      &RemoteMetricConfig::custom_attributes,
+                                      &GetCustomAttributes);
 }
 
 }  // namespace p3a

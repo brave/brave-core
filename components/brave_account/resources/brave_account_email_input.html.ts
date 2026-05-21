@@ -4,44 +4,60 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { html } from '//resources/lit/v3_0/lit.rollup.js'
+import { loadTimeData } from '//resources/js/load_time_data.js'
 
-import { BraveAccountEmailInputElement } from './brave_account_email_input.js'
-
-// Maximum email address length according to this RFC3696 errata:
-// https://www.rfc-editor.org/errata/eid1690.
-// While maxlength is based on UTF-16 code units (where surrogate pairs count as
-// 2 code units), type="email"'s built-in validation filters out non-ASCII
-// characters, so maxlength="254" effectively means 254 ASCII characters/254
-// bytes. Platform behaviors: desktop and iOS invalidate the value if non-ASCII
-// is typed, while Android prevents typing non-ASCII entirely.
-const MAX_EMAIL_LENGTH = 254
+import { freezeWhen } from './brave_account_common.js'
+import { BraveAccountStrings } from './brave_components_webui_strings.js'
+import {
+  BraveAccountEmailInputElement,
+  MAX_EMAIL_LENGTH,
+} from './brave_account_email_input.js'
 
 export function getHtml(this: BraveAccountEmailInputElement) {
   return html`<!--_html_template_start_-->
     <leo-input
       maxlength=${MAX_EMAIL_LENGTH}
       placeholder="$i18n{BRAVE_ACCOUNT_EMAIL_INPUT_PLACEHOLDER}"
-      required
-      showErrors=${this.blockBraveAlias}
+      showErrors
       type="email"
       @input=${this.onInput}
     >
-      <div class="label ${this.shouldStyleAsError ? 'error' : ''}">
+      <div class="label ${this.severity}">
         $i18n{BRAVE_ACCOUNT_EMAIL_INPUT_LABEL}
       </div>
       <div
-        class="dropdown ${this.blockBraveAlias && this.isBraveAlias
-          ? 'visible'
-          : ''}"
+        class="dropdown ${this.shouldShowDropdown ? 'visible' : ''}"
         slot="errors"
       >
-        <div
-          class="dropdown-content"
-          id="brave-alias-dropdown"
-        >
-          <leo-icon name="warning-triangle-filled"></leo-icon>
-          <div>$i18n{BRAVE_ACCOUNT_EMAIL_INPUT_ERROR_MESSAGE}</div>
-        </div>
+        <!-- Note: .dropdown-content is included in each branch (rather than
+             wrapping the entire ternary) to ensure the fadeIn animation triggers
+             on content changes. When Lit replaces one branch with another, it
+             removes the old .dropdown-content and inserts a new one, causing the
+             animation to run.
+
+             freezeWhen directive freezes the previous content while the dropdown
+             is collapsing, preventing flashes during animation. -->
+        ${freezeWhen(
+          !this.shouldShowDropdown,
+          this.blockBraveAlias && this.isBraveAlias
+            ? html`
+                <div class="dropdown-content">
+                  <leo-icon name="warning-triangle-filled"></leo-icon>
+                  <div>$i18n{BRAVE_ACCOUNT_EMAIL_INPUT_ERROR_MESSAGE}</div>
+                </div>
+              `
+            : html`
+                <div class="dropdown-content">
+                  <leo-icon name="warning-circle-filled"></leo-icon>
+                  <div>
+                    ${loadTimeData.getStringF(
+                      BraveAccountStrings.BRAVE_ACCOUNT_EMAIL_INPUT_DID_YOU_MEAN,
+                      this.suggestion,
+                    )}
+                  </div>
+                </div>
+              `,
+        )}
       </div>
     </leo-input>
     <!--_html_template_end_-->`

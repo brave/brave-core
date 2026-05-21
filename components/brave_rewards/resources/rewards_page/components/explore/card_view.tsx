@@ -9,7 +9,7 @@ import { UICard } from '../../lib/app_store'
 import { useAppActions } from '../../lib/app_context'
 import { CardItemView } from './card_item_view'
 import { NewTabLink } from '../../../shared/components/new_tab_link'
-import { sanitizeURL, cardImageURL } from './card_urls'
+import { sanitizeURL, externalImageURL } from '../../lib/external_url'
 
 import { style } from './card_view.style'
 
@@ -53,7 +53,7 @@ export function CardView(props: Props) {
           href={sanitizeURL(card.banner.url)}
           onClick={() => actions.recordOfferClick()}
         >
-          <img src={cardImageURL(card.banner.image)} />
+          <img src={externalImageURL(card.banner.image)} />
         </NewTabLink>
       )}
       <section>

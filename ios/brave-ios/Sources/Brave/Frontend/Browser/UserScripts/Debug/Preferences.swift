@@ -56,12 +56,6 @@ extension Preferences {
         default: true
       )
 
-    public static let readyState =
-      Option<Bool>(
-        key: "userscript.preferences.\(UserScriptManager.ScriptType.readyStateHelper.rawValue)",
-        default: true
-      )
-
     public static let ethereumProvider =
       Option<Bool>(
         key: "userscript.preferences.\(UserScriptManager.ScriptType.ethereumProvider.rawValue)",

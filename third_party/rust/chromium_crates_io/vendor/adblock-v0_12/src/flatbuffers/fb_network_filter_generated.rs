@@ -29,7 +29,7 @@ pub mod fb {
         #[inline]
         unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
             Self {
-                _tab: flatbuffers::Table::new(buf, loc),
+                _tab: unsafe { flatbuffers::Table::new(buf, loc) },
             }
         }
     }
@@ -441,7 +441,7 @@ pub mod fb {
         #[inline]
         unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
             Self {
-                _tab: flatbuffers::Table::new(buf, loc),
+                _tab: unsafe { flatbuffers::Table::new(buf, loc) },
             }
         }
     }
@@ -672,7 +672,7 @@ pub mod fb {
         #[inline]
         unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
             Self {
-                _tab: flatbuffers::Table::new(buf, loc),
+                _tab: unsafe { flatbuffers::Table::new(buf, loc) },
             }
         }
     }
@@ -999,7 +999,7 @@ pub mod fb {
         #[inline]
         unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
             Self {
-                _tab: flatbuffers::Table::new(buf, loc),
+                _tab: unsafe { flatbuffers::Table::new(buf, loc) },
             }
         }
     }
@@ -1158,7 +1158,7 @@ pub mod fb {
         #[inline]
         unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
             Self {
-                _tab: flatbuffers::Table::new(buf, loc),
+                _tab: unsafe { flatbuffers::Table::new(buf, loc) },
             }
         }
     }
@@ -2065,7 +2065,7 @@ pub mod fb {
         #[inline]
         unsafe fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
             Self {
-                _tab: flatbuffers::Table::new(buf, loc),
+                _tab: unsafe { flatbuffers::Table::new(buf, loc) },
             }
         }
     }
@@ -2383,14 +2383,14 @@ pub mod fb {
     /// # Safety
     /// Callers must trust the given bytes do indeed contain a valid `Engine`.
     pub unsafe fn root_as_engine_unchecked(buf: &[u8]) -> Engine {
-        flatbuffers::root_unchecked::<Engine>(buf)
+        unsafe { flatbuffers::root_unchecked::<Engine>(buf) }
     }
     #[inline]
     /// Assumes, without verification, that a buffer of bytes contains a size prefixed Engine and returns it.
     /// # Safety
     /// Callers must trust the given bytes do indeed contain a valid size prefixed `Engine`.
     pub unsafe fn size_prefixed_root_as_engine_unchecked(buf: &[u8]) -> Engine {
-        flatbuffers::size_prefixed_root_unchecked::<Engine>(buf)
+        unsafe { flatbuffers::size_prefixed_root_unchecked::<Engine>(buf) }
     }
     #[inline]
     pub fn finish_engine_buffer<'a, 'b, A: flatbuffers::Allocator + 'a>(

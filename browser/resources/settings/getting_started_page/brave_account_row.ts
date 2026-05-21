@@ -3,25 +3,33 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import '//resources/cr_components/localized_link/localized_link.js'
+import { assert } from '//resources/js/assert.js'
 import { CrLitElement, PropertyValues } from '//resources/lit/v3_0/lit.rollup.js'
+import { html, nothing } from '//resources/lit/v3_0/lit.rollup.js'
 import { I18nMixinLit } from '//resources/cr_elements/i18n_mixin_lit.js'
 // @ts-expect-error
 import { leoShowAlert } from '//resources/brave/leo.bundle.js'
 
-import { AccountState, AccountStateFieldTags, whichAccountState } from '../brave_account_row.mojom-webui.js'
 import {
   BraveAccountBrowserProxy,
   BraveAccountBrowserProxyImpl
 } from './brave_account_browser_proxy.js'
 import { BraveAccountSettingsStrings } from '../brave_components_webui_strings.js'
 import {
+  AccountState,
+  AccountStateFieldTags,
+  ResendConfirmationEmailClientErrorCode,
   ResendConfirmationEmailError,
-  ResendConfirmationEmailErrorCode,
+  ResendConfirmationEmailErrorFieldTags,
+  ResendConfirmationEmailServerErrorCode,
+  whichAccountState,
+  whichResendConfirmationEmailError,
 } from '../brave_account.mojom-webui.js'
 import { getCss } from './brave_account_row.css.js'
 import { getHtml } from './brave_account_row.html.js'
 
-export class SettingsBraveAccountRow extends I18nMixinLit(CrLitElement) {
+export class SettingsBraveAccountRowElement extends I18nMixinLit(CrLitElement) {
   static get is() {
     return 'settings-brave-account-row'
   }
@@ -45,21 +53,29 @@ export class SettingsBraveAccountRow extends I18nMixinLit(CrLitElement) {
   protected accessor state: AccountState | undefined = undefined
 
   private browserProxy: BraveAccountBrowserProxy =
-    BraveAccountBrowserProxyImpl.getInstance()
+    new BraveAccountBrowserProxyImpl()
   private isResendingConfirmationEmail = false
   private measure?: (text: string) => number
   private resizeObserver?: ResizeObserver
+  private accountStateListenerId: number | null = null
 
   override connectedCallback() {
     super.connectedCallback()
 
-    this.loadInitialState()
-    this.browserProxy.rowClientCallbackRouter.updateState.addListener(
-      (state: AccountState) => { this.state = state; });
+    this.accountStateListenerId =
+      this.browserProxy.authenticationObserverCallbackRouter
+        .onAccountStateChanged
+        .addListener((state: AccountState) => {
+          this.state = state
+        })
   }
 
   override disconnectedCallback() {
     super.disconnectedCallback()
+
+    assert(this.accountStateListenerId)
+    this.browserProxy.authenticationObserverCallbackRouter.removeListener(
+      this.accountStateListenerId)
 
     this.cleanUpEmailTruncation()
   }
@@ -76,7 +92,8 @@ export class SettingsBraveAccountRow extends I18nMixinLit(CrLitElement) {
     this.browserProxy.authentication.logOut()
   }
 
-  protected async onResendConfirmationEmailLinkClicked(e: CustomEvent) {
+  protected async onResendConfirmationEmailLinkClicked(
+        e: CustomEvent<{event: Event}>) {
     e.detail.event.preventDefault()
 
     if (this.isResendingConfirmationEmail) return
@@ -91,7 +108,11 @@ export class SettingsBraveAccountRow extends I18nMixinLit(CrLitElement) {
         error = e as ResendConfirmationEmailError
       } else {
         console.error('Unexpected error:', e)
-        error = { netErrorOrHttpStatus: null, errorCode: null }
+        error = {
+          clientError: {
+            errorCode: ResendConfirmationEmailClientErrorCode.kUnexpected,
+          },
+        }
       }
     }
 
@@ -116,55 +137,151 @@ export class SettingsBraveAccountRow extends I18nMixinLit(CrLitElement) {
     this.browserProxy.authentication.cancelRegistration()
   }
 
-  protected onGetStartedButtonClicked() {
+  protected openBraveAccountDialog() {
     this.browserProxy.rowHandler.openDialog(this.initiatingServiceName)
   }
 
-  private async loadInitialState() {
-    const { state } = await this.browserProxy.rowHandler.getAccountState()
-    this.state = state
+  protected createFirstRow(
+    title: string,
+    descriptions: (string | ReturnType<typeof html>)[],
+    button?: ReturnType<typeof html>
+  ) {
+    return html`
+      <div class="first-row">
+        <div class="circle">
+          <leo-icon name="social-brave-release-favicon-fullheight-color">
+          </leo-icon>
+        </div>
+        <div class="title-and-description">
+          <div class="title">${title}</div>
+          ${descriptions.map(
+            desc => html`<div class="description">${desc}</div>`)}
+        </div>
+        ${button || nothing}
+      </div>
+    `
   }
 
-  private getErrorMessage(details: ResendConfirmationEmailError): string {
-    const ERROR_STRINGS: Partial<
-      Record<ResendConfirmationEmailErrorCode, string>
+  protected getStateHtml() {
+    const stateHtml: Record<
+      AccountStateFieldTags,
+      () => ReturnType<typeof html>
     > = {
-      [ResendConfirmationEmailErrorCode.kMaximumEmailSendAttemptsExceeded]:
+      [AccountStateFieldTags.LOGGED_IN]: () => this.createFirstRow(
         this.i18n(
             BraveAccountSettingsStrings
-                 .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_MAXIMUM_SEND_ATTEMPTS_EXCEEDED),
-      [ResendConfirmationEmailErrorCode.kEmailAlreadyVerified]:
-        this.i18n(
-            BraveAccountSettingsStrings
-                 .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ALREADY_VERIFIED),
+                 .BRAVE_ACCOUNT_TITLE),
+        [html`<div id="email">${this.state!.loggedIn!.email}</div>`],
+        html`
+          <leo-button kind="outline"
+                      size="small"
+                      @click=${this.onLogOutButtonClicked}>
+            <leo-icon name="outside" slot="icon-before"></leo-icon>
+            ${this.i18n(
+                  BraveAccountSettingsStrings
+                       .SETTINGS_BRAVE_ACCOUNT_LOG_OUT_BUTTON_LABEL)}
+          </leo-button>
+        `
+      ),
+      [AccountStateFieldTags.LOGGED_OUT]: () =>
+        this.state!.loggedOut!.verification
+          ? html`
+              ${this.createFirstRow(
+                this.i18n(
+                    BraveAccountSettingsStrings
+                         .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_TITLE),
+                [
+                  html`<localized-link
+                      .localizedString=${`${
+                        this.i18n(BraveAccountSettingsStrings
+                          .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_1)} ${
+                        this.i18n(BraveAccountSettingsStrings
+                          .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_2)} ${
+                        this.i18nAdvanced(BraveAccountSettingsStrings
+                          .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_3,
+                          {tags: ['a'], attrs: ['href']})}`}
+                      @link-clicked=${this.onResendConfirmationEmailLinkClicked}>
+                  </localized-link>`
+                ]
+              )}
+              <div class="second-row">
+                <leo-button kind="plain"
+                            size="small"
+                            @click=${this.openBraveAccountDialog}>
+                  ${this.i18n(
+                        BraveAccountSettingsStrings
+                             .SETTINGS_BRAVE_ACCOUNT_ENTER_REGISTRATION_CODE_BUTTON_LABEL)}
+                </leo-button>
+                <leo-button kind="plain"
+                            size="small"
+                            class="cancel-registration-button"
+                            @click=${this.onCancelRegistrationButtonClicked}>
+                  ${this.i18n(
+                        BraveAccountSettingsStrings
+                             .SETTINGS_BRAVE_ACCOUNT_CANCEL_REGISTRATION_BUTTON_LABEL)}
+                </leo-button>
+              </div>
+            `
+          : this.createFirstRow(
+              this.i18n(
+                  BraveAccountSettingsStrings
+                       .SETTINGS_BRAVE_ACCOUNT_LOGGED_OUT_ROW_TITLE),
+              [this.i18n(
+                  BraveAccountSettingsStrings
+                       .BRAVE_ACCOUNT_DESCRIPTION)],
+              html`
+                <leo-button kind="filled"
+                            size="small"
+                            @click=${this.openBraveAccountDialog}>
+                  ${this.i18n(
+                        BraveAccountSettingsStrings
+                             .SETTINGS_BRAVE_ACCOUNT_GET_STARTED_BUTTON_LABEL)}
+                </leo-button>
+              `
+            ),
     }
 
-    const { netErrorOrHttpStatus, errorCode } = details
+    return this.state === undefined
+      ? nothing
+      : stateHtml[whichAccountState(this.state)]()
+  }
 
-    if (netErrorOrHttpStatus == null) {
-      // client-side error
+  private getErrorMessage(error: ResendConfirmationEmailError): string {
+    const SERVER_ERROR_STRINGS: Partial<
+      Record<ResendConfirmationEmailServerErrorCode, string>
+    > = {
+      [ResendConfirmationEmailServerErrorCode
+          .kMaximumEmailSendAttemptsExceeded]:
+        BraveAccountSettingsStrings
+             .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_MAXIMUM_SEND_ATTEMPTS_EXCEEDED,
+      [ResendConfirmationEmailServerErrorCode.kEmailAlreadyVerified]:
+        BraveAccountSettingsStrings
+             .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ALREADY_VERIFIED,
+    }
+
+    const errorLabel = this.i18n(
+        BraveAccountSettingsStrings.BRAVE_ACCOUNT_ERROR)
+
+    if (whichResendConfirmationEmailError(error)
+            === ResendConfirmationEmailErrorFieldTags.CLIENT_ERROR) {
       return this.i18n(
           BraveAccountSettingsStrings.BRAVE_ACCOUNT_CLIENT_ERROR,
-          errorCode != null
-            ? ` (${this.i18n(
-                       BraveAccountSettingsStrings
-                            .BRAVE_ACCOUNT_ERROR)}=${errorCode})`
-            : '',
+          ` (${errorLabel}=${error.clientError!.errorCode})`,
       )
     }
 
-    // server-side error
-    return (
-      (errorCode != null ? ERROR_STRINGS[errorCode] : null)
-      ?? this.i18n(
+    const serverError = error.serverError!
+    const stringId = SERVER_ERROR_STRINGS[serverError.errorCode]
+    if (stringId) {
+      return this.i18n(stringId)
+    }
+
+    return this.i18n(
         BraveAccountSettingsStrings.BRAVE_ACCOUNT_SERVER_ERROR,
-        netErrorOrHttpStatus,
-        errorCode != null
-          ? `, ${this.i18n(
-                     BraveAccountSettingsStrings
-                          .BRAVE_ACCOUNT_ERROR)}=${errorCode}`
-          : '',
-      )
+        `${serverError.netErrorOrHttpStatus > 0 ? 'HTTP' : 'NET'}=${
+          serverError.netErrorOrHttpStatus
+        }`,
+        `, ${errorLabel}=${serverError.errorCode}`,
     )
   }
 
@@ -240,8 +357,8 @@ export class SettingsBraveAccountRow extends I18nMixinLit(CrLitElement) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'settings-brave-account-row': SettingsBraveAccountRow
+    'settings-brave-account-row': SettingsBraveAccountRowElement
   }
 }
 
-customElements.define(SettingsBraveAccountRow.is, SettingsBraveAccountRow)
+customElements.define(SettingsBraveAccountRowElement.is, SettingsBraveAccountRowElement)

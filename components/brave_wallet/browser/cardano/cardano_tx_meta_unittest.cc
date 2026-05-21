@@ -24,8 +24,8 @@ TEST(CardanoTxMeta, ToTransactionInfo) {
 
   std::unique_ptr<CardanoTransaction> tx =
       std::make_unique<CardanoTransaction>();
-  CardanoTransaction::TxInput input;
-  input.utxo_address = *CardanoAddress::FromString(kMockCardanoAddress1);
+  CardanoTransaction::TxInput input(
+      *CardanoAddress::FromString(kMockCardanoAddress1));
   input.utxo_value = 200000;
   tx->AddInput(std::move(input));
 
@@ -34,8 +34,8 @@ TEST(CardanoTxMeta, ToTransactionInfo) {
   input.utxo_tokens = {{GetMockTokenId("brave"), 123}};
   tx->AddInput(std::move(input));
 
-  CardanoTransaction::TxOutput output;
-  output.address = *CardanoAddress::FromString(kMockCardanoAddress2);
+  CardanoTransaction::TxOutput output(
+      *CardanoAddress::FromString(kMockCardanoAddress2));
   output.amount = 300000 - 1000;
   tx->AddOutput(std::move(output));
 
@@ -102,8 +102,8 @@ TEST(CardanoTxMeta, ToValue) {
   std::unique_ptr<CardanoTransaction> tx =
       std::make_unique<CardanoTransaction>();
 
-  CardanoTransaction::TxInput input;
-  input.utxo_address = *CardanoAddress::FromString(kMockCardanoAddress2);
+  CardanoTransaction::TxInput input(
+      *CardanoAddress::FromString(kMockCardanoAddress2));
   input.utxo_value = 200000;
   tx->AddInput(std::move(input));
 
@@ -112,8 +112,8 @@ TEST(CardanoTxMeta, ToValue) {
   input.utxo_tokens = {{GetMockTokenId("brave"), 123}};
   tx->AddInput(std::move(input));
 
-  CardanoTransaction::TxOutput output;
-  output.address = *CardanoAddress::FromString(kMockCardanoAddress1);
+  CardanoTransaction::TxOutput output(
+      *CardanoAddress::FromString(kMockCardanoAddress1));
   output.amount = 200000 - 1000;
   tx->AddOutput(std::move(output));
 

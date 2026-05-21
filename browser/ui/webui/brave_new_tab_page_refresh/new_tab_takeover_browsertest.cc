@@ -5,10 +5,11 @@
 
 #include "base/callback_list.h"
 #include "base/path_service.h"
+#include "base/test/gmock_callback_support.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
-#include "brave/components/brave_ads/core/browser/service/ads_service_mock.h"
+#include "brave/components/brave_ads/core/browser/service/test/ads_service_mock.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
@@ -148,7 +149,7 @@ class NewTabTakeoverBrowserTest : public InProcessBrowserTest {
 
   void VerifyNewTabPageLoadedExpectation() {
     EXPECT_TRUE(content::EvalJs(GetActiveWebContents(),
-                                "!!document.querySelector(`html[data-test-id="
+                                "!!document.querySelector(`html[data-testid="
                                 "'brave-new-tab-page']`)")
                     .ExtractBool());
   }
@@ -165,8 +166,8 @@ IN_PROC_BROWSER_TEST_F(NewTabTakeoverBrowserTest,
         std::move(callback).Run(/*mojom_statement=*/nullptr);
       });
 
-  EXPECT_CALL(GetAdsServiceMock(), MaybeGetPrefetchedNewTabPageAd())
-      .WillOnce(::testing::Return(/*ad=*/nullptr));
+  EXPECT_CALL(GetAdsServiceMock(), MaybeServeNewTabPageAd)
+      .WillOnce(base::test::RunOnceCallback<0>(/*ad=*/nullptr));
 
   OpenNewTabAndWaitForLoad();
   VerifyNewTabPageLoadedExpectation();
@@ -178,11 +179,13 @@ IN_PROC_BROWSER_TEST_F(NewTabTakeoverBrowserTest,
       .WillByDefault([](brave_ads::GetStatementOfAccountsCallback callback) {
         std::move(callback).Run(/*mojom_statement=*/nullptr);
       });
+  EXPECT_CALL(GetAdsServiceMock(), MaybeServeNewTabPageAd)
+      .WillOnce(base::test::RunOnceCallback<0>(/*ad=*/nullptr));
   OpenNewTabAndWaitForLoad();
   VerifyNewTabPageLoadedExpectation();
 
   brave_ads::AdsServiceMock& ads_service_mock = GetAdsServiceMock();
-  EXPECT_CALL(ads_service_mock, MaybeGetPrefetchedNewTabPageAd()).Times(0);
+  EXPECT_CALL(ads_service_mock, MaybeServeNewTabPageAd).Times(0);
 
   CloseBrowserAndRestoreSession();
 
@@ -190,8 +193,8 @@ IN_PROC_BROWSER_TEST_F(NewTabTakeoverBrowserTest,
   VerifyNewTabPageLoadedExpectation();
   testing::Mock::VerifyAndClearExpectations(&ads_service_mock);
 
-  EXPECT_CALL(ads_service_mock, MaybeGetPrefetchedNewTabPageAd())
-      .WillOnce(::testing::Return(/*ad=*/nullptr));
+  EXPECT_CALL(ads_service_mock, MaybeServeNewTabPageAd)
+      .WillOnce(base::test::RunOnceCallback<0>(/*ad=*/nullptr));
   chrome::Reload(browser(), WindowOpenDisposition::CURRENT_TAB);
   WaitForLoadStop();
   VerifyNewTabPageLoadedExpectation();

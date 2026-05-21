@@ -4,6 +4,7 @@ description:
   'Delete local branches whose PRs have been merged upstream. Checks GitHub PR
   status for each branch. Triggers on: clean branches, delete merged branches,
   prune branches, branch cleanup.'
+disable-model-invocation: true
 ---
 
 # Clean Branches - Delete Merged Local Branches

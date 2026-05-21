@@ -52,11 +52,6 @@ void ObliviousHttpKeyConfig::MaybeFetch() {
   FetchAfter(ExpiresAfter());
 }
 
-void ObliviousHttpKeyConfig::Refetch() {
-  Remove();
-  Fetch();
-}
-
 std::optional<std::string> ObliviousHttpKeyConfig::Get() const {
   if (!local_state_->HasPrefPath(prefs::kObliviousHttpKeyConfig)) {
     return std::nullopt;
@@ -69,6 +64,15 @@ std::optional<std::string> ObliviousHttpKeyConfig::Get() const {
   }
 
   return std::string(base::as_string_view(*key_config));
+}
+
+void ObliviousHttpKeyConfig::Refetch() {
+  Remove();
+  // Invalidate any in-flight fetch callback so a stale response cannot
+  // overwrite the config after it has been cleared.
+  is_fetching_ = false;
+  weak_ptr_factory_.InvalidateWeakPtrs();
+  Fetch();
 }
 
 ///////////////////////////////////////////////////////////////////////////////

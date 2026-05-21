@@ -1,0 +1,26 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+
+assert(enable_brave_wallet)
+
+source_set("nft") {
+  sources = [
+    "nft_ui.cc",
+    "nft_ui.h",
+  ]
+  deps = [
+    "//brave/components/brave_wallet/browser:constants",
+    "//brave/components/brave_wallet_ui:resources",
+    "//brave/components/brave_wallet_ui/nft:nft_display_generated",
+    "//brave/components/constants",
+    "//brave/components/resources:static_resources_grit",
+    "//chrome/browser/profiles",
+    "//content/public/browser",
+    "//ui/webui",
+    "//ui/webui/resources:resources_grit",
+  ]
+}

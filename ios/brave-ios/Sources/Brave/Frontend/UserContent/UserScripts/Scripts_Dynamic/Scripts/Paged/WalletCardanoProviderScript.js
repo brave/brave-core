@@ -17,7 +17,9 @@ if (window.isSecureContext) {
         "method": method,
         "args": JSON.stringify(payload)
       })
-      .then(resolve, (errorJSON) => {
+      .then((result) => {
+        resolve($.extensiveFreeze(result, []));
+      }, (errorJSON) => {
         /* remove `Error: ` prefix. errorJSON=`Error: {code: 1, errorMessage: "Internal error"}` */
         const errorJSONString = new String(errorJSON);
         const errorJSONStringSliced = errorJSONString.slice(errorJSONString.indexOf('{'));
@@ -28,6 +30,25 @@ if (window.isSecureContext) {
         }
       })
     }));
+  }
+
+  // CIP-30 API object factory - creates the API returned by enable()
+  function createCardanoApi() {
+    const api = {};
+    $Object.defineProperties(api, {
+      getNetworkId: { value: $(function() { return post('getNetworkId', {}); }), writable: false, enumerable: true },
+      getUtxos: { value: $(function(amount, paginate) { return post('getUtxos', { amount, paginate }); }), writable: false, enumerable: true },
+      getBalance: { value: $(function() { return post('getBalance', {}); }), writable: false, enumerable: true },
+      getUsedAddresses: { value: $(function() { return post('getUsedAddresses', {}); }), writable: false, enumerable: true },
+      getUnusedAddresses: { value: $(function() { return post('getUnusedAddresses', {}); }), writable: false, enumerable: true },
+      getChangeAddress: { value: $(function() { return post('getChangeAddress', {}); }), writable: false, enumerable: true },
+      getRewardAddresses: { value: $(function() { return post('getRewardAddresses', {}); }), writable: false, enumerable: true },
+      signTx: { value: $(function(tx, partialSign) { return post('signTx', { tx, partialSign }); }), writable: false, enumerable: true },
+      signData: { value: $(function(addr, payload) { return post('signData', { addr, payload }); }), writable: false, enumerable: true },
+      submitTx: { value: $(function(tx) { return post('submitTx', { tx }); }), writable: false, enumerable: true },
+      getCollateral: { value: $(function(amount) { return post('getCollateral', { amount }); }), writable: false, enumerable: true },
+    });
+    return $Object.freeze(api);
   }
 
   // CIP-30 Cardano Provider object
@@ -62,7 +83,9 @@ if (window.isSecureContext) {
     },
     enable: {
       value: $(function() {
-        return post('enable', {});
+        return post('enable', {}).then(function() {
+          return createCardanoApi();
+        });
       }),
       writable: false,
       enumerable: true,
@@ -86,6 +109,7 @@ if (window.isSecureContext) {
     configurable: false,
   };
   $Object.defineProperty(window.cardano, 'brave', braveProvider);
+  $Object.freeze(window.cardano);
 }
 
 });

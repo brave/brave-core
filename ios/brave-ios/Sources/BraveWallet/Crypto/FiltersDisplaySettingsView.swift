@@ -204,19 +204,16 @@ struct FiltersDisplaySettingsView: View {
         }
         .padding(.horizontal)
       }
-      .onChange(
-        of: groupBy,
-        perform: { newValue in
-          if isNFTFilters {
-            if newValue == .accounts {
-              isHidingUnownedNFTs = true
-              isHidingUnownedNFTsDisabled = true
-            } else {
-              isHidingUnownedNFTsDisabled = false
-            }
+      .onChange(of: groupBy) { _, newValue in
+        if isNFTFilters {
+          if newValue == .accounts {
+            isHidingUnownedNFTs = true
+            isHidingUnownedNFTsDisabled = true
+          } else {
+            isHidingUnownedNFTsDisabled = false
           }
         }
-      )
+      }
       .background(Color(uiColor: WalletV2Design.containerBackground))
       .safeAreaInset(
         edge: .bottom,

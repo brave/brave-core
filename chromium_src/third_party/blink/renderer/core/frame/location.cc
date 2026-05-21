@@ -11,7 +11,7 @@
 
 namespace blink {
 
-DOMStringList* Location::ancestorOrigins() const {
+DOMStringList* Location::ancestorOrigins() {
   auto* raw_origins = ancestorOrigins_ChromiumImpl();
   if (!IsAttached() || !raw_origins || raw_origins->IsEmpty()) {
     return raw_origins;
@@ -22,7 +22,7 @@ DOMStringList* Location::ancestorOrigins() const {
       DomWindow()->GetFrame()->GetSecurityContext()->GetSecurityOrigin();
 
   auto is_onion_service = [](const SecurityOrigin* origin) {
-    return origin->Host().EndsWith(".onion", kTextCaseASCIIInsensitive);
+    return origin->Host().EndsWithIgnoringAsciiCase(".onion");
   };
 
   auto is_chrome_untrusted = [](const SecurityOrigin* origin) {

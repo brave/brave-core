@@ -11,7 +11,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 
 namespace brave_ads {
 
@@ -27,6 +27,9 @@ struct PaymentTokenInfo final {
   ~PaymentTokenInfo();
 
   bool operator==(const PaymentTokenInfo&) const = default;
+
+  // Returns true if all fields have valid values.
+  [[nodiscard]] bool IsValid() const;
 
   std::string transaction_id;
   cbr::UnblindedToken unblinded_token;

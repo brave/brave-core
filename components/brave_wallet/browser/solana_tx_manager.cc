@@ -16,7 +16,6 @@
 #include "base/base64.h"
 #include "base/check.h"
 #include "base/functional/callback_helpers.h"
-#include "base/logging.h"
 #include "base/notimplemented.h"
 #include "brave/components/brave_wallet/browser/account_resolver_delegate.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
@@ -190,10 +189,10 @@ SolanaTxManager::SolanaTxManager(
     TxService& tx_service,
     JsonRpcService* json_rpc_service,
     KeyringService& keyring_service,
-    TxStorageDelegate& delegate,
+    TxStorage& tx_storage,
     AccountResolverDelegate& account_resolver_delegate)
     : TxManager(
-          std::make_unique<SolanaTxStateManager>(delegate,
+          std::make_unique<SolanaTxStateManager>(tx_storage,
                                                  account_resolver_delegate),
           std::make_unique<SolanaBlockTracker>(json_rpc_service),
           tx_service,
@@ -207,17 +206,14 @@ SolanaTxManager::~SolanaTxManager() {
   GetSolanaBlockTracker().RemoveObserver(this);
 }
 
-void SolanaTxManager::AddUnapprovedTransaction(
+void SolanaTxManager::AddUnapprovedSolanaTransaction(
     const std::string& chain_id,
-    mojom::TxDataUnionPtr tx_data_union,
+    mojom::SolanaTxDataPtr solana_tx_data,
     const mojom::AccountIdPtr& from,
     const std::optional<url::Origin>& origin,
     mojom::SwapInfoPtr swap_info,
-    AddUnapprovedTransactionCallback callback) {
-  DCHECK(tx_data_union->is_solana_tx_data());
-
-  auto tx = SolanaTransaction::FromSolanaTxData(
-      std::move(tx_data_union->get_solana_tx_data()));
+    AddUnapprovedSolanaTransactionCallback callback) {
+  auto tx = SolanaTransaction::FromSolanaTxData(std::move(solana_tx_data));
   if (!tx) {
     std::move(callback).Run(
         false, "",
@@ -261,7 +257,7 @@ void SolanaTxManager::AddUnapprovedTransaction(
 }
 
 void SolanaTxManager::ContinueAddUnapprovedTransaction(
-    AddUnapprovedTransactionCallback callback,
+    AddUnapprovedSolanaTransactionCallback callback,
     std::unique_ptr<SolanaTxMeta> meta,
     mojom::SolanaFeeEstimationPtr estimation,
     mojom::SolanaProviderError error,
@@ -304,7 +300,6 @@ void SolanaTxManager::ApproveTransaction(const std::string& tx_meta_id,
   std::unique_ptr<SolanaTxMeta> meta =
       GetSolanaTxStateManager().GetSolanaTx(tx_meta_id);
   if (!meta) {
-    LOG(ERROR) << "Transaction should be found";
     std::move(callback).Run(
         false,
         mojom::ProviderErrorUnion::NewSolanaProviderError(
@@ -432,7 +427,6 @@ void SolanaTxManager::OnSendSolanaTransaction(
     const std::string& error_message) {
   std::unique_ptr<TxMeta> meta = tx_state_manager().GetTx(tx_meta_id);
   if (!meta) {
-    LOG(ERROR) << "Transaction should be found";
     std::move(callback).Run(
         false,
         mojom::ProviderErrorUnion::NewSolanaProviderError(
@@ -672,7 +666,6 @@ void SolanaTxManager::GetSolTransactionMessageToSign(
   std::unique_ptr<SolanaTxMeta> meta =
       GetSolanaTxStateManager().GetSolanaTx(tx_meta_id);
   if (!meta || !meta->tx()) {
-    VLOG(1) << __FUNCTION__ << "No transaction found with id:" << tx_meta_id;
     std::move(callback).Run(std::nullopt);
     return;
   }
@@ -721,10 +714,9 @@ void SolanaTxManager::MakeSystemProgramTransferTxData(
     const std::string& to,
     uint64_t lamports,
     MakeSystemProgramTransferTxDataCallback callback) {
-  if (BlockchainRegistry::GetInstance()->IsOfacAddress(to)) {
-    std::move(callback).Run(
-        nullptr, mojom::SolanaProviderError::kInvalidParams,
-        l10n_util::GetStringUTF8(IDS_WALLET_OFAC_RESTRICTION));
+  if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(to)) {
+    std::move(callback).Run(nullptr, mojom::SolanaProviderError::kInvalidParams,
+                            WalletInternalErrorMessage());
     return;
   }
 
@@ -769,10 +761,10 @@ void SolanaTxManager::MakeTokenProgramTransferTxData(
     uint64_t amount,
     uint8_t decimals,
     MakeTokenProgramTransferTxDataCallback callback) {
-  if (BlockchainRegistry::GetInstance()->IsOfacAddress(to_wallet_address)) {
-    std::move(callback).Run(
-        nullptr, mojom::SolanaProviderError::kInvalidParams,
-        l10n_util::GetStringUTF8(IDS_WALLET_OFAC_RESTRICTION));
+  if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(
+          to_wallet_address)) {
+    std::move(callback).Run(nullptr, mojom::SolanaProviderError::kInvalidParams,
+                            WalletInternalErrorMessage());
     return;
   }
 

@@ -20,20 +20,23 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/path_service.h"
 #include "base/task/sequenced_task_runner.h"
+#include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/test_future.h"
 #include "base/test/thread_test_helper.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/brave_shields/ad_block_browser_test_helper.h"
 #include "brave/browser/net/brave_ad_block_tp_network_delegate_helper.h"
-#include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/components/brave_shields/content/browser/ad_block_custom_filters_provider.h"
 #include "brave/components/brave_shields/content/browser/ad_block_engine.h"
+#include "brave/components/brave_shields/content/browser/ad_block_engine_wrapper.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager_observer.h"
-#include "brave/components/brave_shields/content/test/engine_test_observer.h"
+#include "brave/components/brave_shields/content/test/ad_block_service_test_observer.h"
 #include "brave/components/brave_shields/content/test/test_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
 #include "brave/components/brave_shields/core/browser/ad_block_default_resource_provider.h"
@@ -45,9 +48,7 @@
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/common/pref_names.h"
-#include "brave/components/playlist/content/browser/playlist_background_web_contentses.h"
-#include "brave/components/playlist/content/browser/playlist_service.h"
-#include "brave/components/playlist/core/common/features.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
@@ -78,6 +79,13 @@
 #include "brave/components/speedreader/speedreader_service.h"  // nogncheck
 #include "third_party/blink/public/common/web_preferences/web_preferences.h"
 #endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/browser/playlist/playlist_service_factory.h"
+#include "brave/components/playlist/content/browser/playlist_background_web_contentses.h"
+#include "brave/components/playlist/content/browser/playlist_service.h"
+#include "brave/components/playlist/core/common/features.h"
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
 constexpr char kAdBlockTestPage[] = "/blocking.html";
 
@@ -138,6 +146,8 @@ void AdBlockServiceTest::SetUpCommandLine(base::CommandLine* command_line) {
 void AdBlockServiceTest::SetUpInProcessBrowserTestFixture() {
   PlatformBrowserTest::SetUpInProcessBrowserTestFixture();
   mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
+  ad_block_test_helper_ =
+      std::make_unique<brave_shields::AdBlockBrowserTestHelper>();
 }
 
 void AdBlockServiceTest::SetUpOnMainThread() {
@@ -154,16 +164,17 @@ void AdBlockServiceTest::SetUpOnMainThread() {
 
 void AdBlockServiceTest::PreRunTestOnMainThread() {
   PlatformBrowserTest::PreRunTestOnMainThread();
-  WaitForAdBlockServiceThreads();
+  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
 
-  // Wait for initial engine creation to complete, especially on slower
-  // platforms
+  // Wait for the initial engine creation reply to be fully processed on the
+  // UI thread. Using the UI-thread flag (set in OnEngineLoaded) instead of the
+  // cross-thread histogram avoids a race where RunUntil sees the histogram
+  // sample recorded on the background thread but returns before OnEngineLoaded
+  // dispatches OnFilterListLoaded on the UI thread, leaving a stale
+  // notification that the observer in InstallComponent can catch prematurely.
   ASSERT_TRUE(base::test::RunUntil([&]() {
-    auto counts = histogram_tester_.GetTotalCountsForPrefix(
-        "Brave.Adblock.MakeEngineWithRules.Default");
-    return counts.find("Brave.Adblock.MakeEngineWithRules.Default") !=
-               counts.end() &&
-           counts.at("Brave.Adblock.MakeEngineWithRules.Default") >= 1;
+    return g_brave_browser_process->ad_block_service()
+        ->IsFilterListLoadedForTesting(true);
   })) << "Timeout waiting for initial engine creation";
 
   histogram_tester_.ExpectTotalCount(
@@ -175,6 +186,7 @@ void AdBlockServiceTest::PreRunTestOnMainThread() {
 }
 
 void AdBlockServiceTest::TearDownOnMainThread() {
+  ad_block_test_helper_.reset();
   source_providers_.clear();
   temp_dirs_.clear();
   // Unset the host resolver so as not to interfere with later tests.
@@ -212,6 +224,7 @@ AdBlockServiceTest::component_service_manager() {
 void AdBlockServiceTest::AddNewRules(const std::string& rules,
                                      uint8_t permission_mask,
                                      bool first_party_protections) {
+  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
   auto source_provider = std::make_unique<brave_shields::TestFiltersProvider>(
       rules, first_party_protections, permission_mask);
   brave_shields::AdBlockService* ad_block_service =
@@ -219,12 +232,8 @@ void AdBlockServiceTest::AddNewRules(const std::string& rules,
   source_provider->RegisterAsSourceProvider(ad_block_service);
   source_providers_.push_back(std::move(source_provider));
 
-  brave_shields::AdBlockEngine* engine =
-      first_party_protections
-          ? ad_block_service->default_engine_.get()
-          : ad_block_service->additional_filters_engine_.get();
-  EngineTestObserver engine_observer(engine);
-  engine_observer.Wait();
+  brave_shields::AdBlockServiceTestObserver observer(ad_block_service);
+  observer.Wait(first_party_protections);
 }
 
 // Returns the path of the new directory, not the file. Intended for use with
@@ -270,7 +279,8 @@ void AdBlockServiceTest::UpdateAdBlockResources(const std::string& resources) {
   brave_shields::AdBlockService* service =
       g_brave_browser_process->ad_block_service();
 
-  service->default_resource_provider()->OnComponentReady(component_path);
+  service->GetDefaultResourceProviderForTesting()->OnComponentReady(
+      component_path);
 }
 
 void AdBlockServiceTest::UpdateAdBlockInstanceWithRules(
@@ -288,9 +298,8 @@ void AdBlockServiceTest::UpdateAdBlockInstanceWithRules(
   EXPECT_TRUE(provider);
   provider->OnComponentReady(component_path);
 
-  auto* engine = service->default_engine_.get();
-  EngineTestObserver engine_observer(engine);
-  engine_observer.Wait();
+  brave_shields::AdBlockServiceTestObserver observer(service);
+  observer.WaitForDefault();
 }
 
 void AdBlockServiceTest::EnableDeveloperMode(bool enabled) {
@@ -304,19 +313,23 @@ void AdBlockServiceTest::UpdateCustomAdBlockInstanceWithRules(
       g_brave_browser_process->ad_block_service();
   ad_block_service->custom_filters_provider()->UpdateCustomFilters(rules);
 
-  auto* engine = ad_block_service->additional_filters_engine_.get();
-  EngineTestObserver engine_observer(engine);
-  engine_observer.Wait();
+  brave_shields::AdBlockServiceTestObserver observer(ad_block_service);
+  observer.WaitForAdditional();
 }
 
 void AdBlockServiceTest::AssertTagExists(const std::string& tag,
                                          bool expected_exists) const {
-  g_brave_browser_process->ad_block_service()->TagExistsForTest(
-      tag, base::BindOnce(
-               [](bool expected_exists, bool actual_exists) {
-                 ASSERT_EQ(expected_exists, actual_exists);
-               },
-               expected_exists));
+  base::test::TestFuture<bool> future;
+  g_brave_browser_process->ad_block_service()
+      ->AsyncCallAndReplyWithResult<bool>(
+          base::BindLambdaForTesting(
+              [tag](brave_shields::AdBlockEngineWrapper* wrapper) {
+                return wrapper->TagExists(tag);
+              }),
+
+          future.GetCallback());
+  ASSERT_TRUE(future.Wait());
+  ASSERT_EQ(future.Get(), expected_exists);
 }
 
 void AdBlockServiceTest::InitEmbeddedTestServer() {
@@ -362,11 +375,8 @@ void AdBlockServiceTest::InstallComponent(
     EXPECT_TRUE(provider);
     provider->OnComponentReady(component_path);
 
-    auto* engine = catalog_entry.first_party_protections
-                       ? service->default_engine_.get()
-                       : service->additional_filters_engine_.get();
-    EngineTestObserver engine_observer(engine);
-    engine_observer.Wait();
+    brave_shields::AdBlockServiceTestObserver observer(service);
+    observer.Wait(catalog_entry.first_party_protections);
   }
 }
 
@@ -402,12 +412,6 @@ void AdBlockServiceTest::SetSubscriptionIntervals() {
 
   subscription_service_manager->SetUpdateIntervalsForTesting(&initial_delay,
                                                              &retry_interval);
-}
-
-void AdBlockServiceTest::WaitForAdBlockServiceThreads() {
-  scoped_refptr<base::ThreadTestHelper> tr_helper(new base::ThreadTestHelper(
-      g_brave_browser_process->ad_block_service()->GetTaskRunner()));
-  ASSERT_TRUE(tr_helper->Run());
 }
 
 void AdBlockServiceTest::ShieldsDown(const GURL& url) {
@@ -878,7 +882,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
     TestAdBlockSubscriptionServiceManagerObserver sub_observer(
         sub_service_manager);
     sub_observer.Wait();
-    WaitForAdBlockServiceThreads();
+    ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
 
     const auto subscriptions = sub_service_manager->GetSubscriptions();
     ASSERT_EQ(subscriptions.size(), 1ULL);
@@ -1234,7 +1238,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CnameCloakedRequestsCanBeExcepted) {
 // `$removeparam` should happen for the original URL, not the CNAME-uncloaked
 // one
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NoRemoveparamOnCnameUncloakedUrl) {
-  UpdateAdBlockInstanceWithRules(
+  UpdateCustomAdBlockInstanceWithRules(
       "||frame.com^$subdocument,removeparam=evil\n"
       "||assets.cdn.net^$subdocument,removeparam=test");
   GURL tab_url =
@@ -1406,7 +1410,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialButttonAdBlockTagTest) {
   GURL tab_url = embedded_test_server()->GetURL("b.com", kAdBlockTestPage);
   g_brave_browser_process->ad_block_service()->EnableTag(
       brave_shields::kFacebookEmbeds, true);
-  WaitForAdBlockServiceThreads();
+  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
   GURL resource_url =
       embedded_test_server()->GetURL("example.com", "/logo.png");
   NavigateToURL(tab_url);
@@ -1424,7 +1428,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialButttonAdBlockDiffTagTest) {
   GURL tab_url = embedded_test_server()->GetURL("b.com", kAdBlockTestPage);
   g_brave_browser_process->ad_block_service()->EnableTag(
       brave_shields::kFacebookEmbeds, true);
-  WaitForAdBlockServiceThreads();
+  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
   GURL resource_url =
       embedded_test_server()->GetURL("example.com", "/logo.png");
   NavigateToURL(tab_url);
@@ -1440,7 +1444,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialButttonAdBlockDiffTagTest) {
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ResetPreservesTags) {
   g_brave_browser_process->ad_block_service()->EnableTag(
       brave_shields::kFacebookEmbeds, true);
-  WaitForAdBlockServiceThreads();
+  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
   UpdateAdBlockInstanceWithRules("");
   AssertTagExists(brave_shields::kFacebookEmbeds, true);
 }
@@ -1456,38 +1460,38 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, TagPrefsControlTags) {
 
   // Toggling prefs once is reflected in the adblock client.
   prefs->SetBoolean(brave_shields::prefs::kLinkedInEmbedControlType, true);
-  WaitForAdBlockServiceThreads();
+  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
   AssertTagExists(brave_shields::kFacebookEmbeds, true);
   AssertTagExists(brave_shields::kTwitterEmbeds, true);
   AssertTagExists(brave_shields::kLinkedInEmbeds, true);
 
   prefs->SetBoolean(brave_shields::prefs::kFBEmbedControlType, false);
-  WaitForAdBlockServiceThreads();
+  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
   AssertTagExists(brave_shields::kFacebookEmbeds, false);
   AssertTagExists(brave_shields::kTwitterEmbeds, true);
   AssertTagExists(brave_shields::kLinkedInEmbeds, true);
 
   prefs->SetBoolean(brave_shields::prefs::kTwitterEmbedControlType, false);
-  WaitForAdBlockServiceThreads();
+  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
   AssertTagExists(brave_shields::kFacebookEmbeds, false);
   AssertTagExists(brave_shields::kTwitterEmbeds, false);
   AssertTagExists(brave_shields::kLinkedInEmbeds, true);
 
   // Toggling prefs back is reflected in the adblock client.
   prefs->SetBoolean(brave_shields::prefs::kLinkedInEmbedControlType, false);
-  WaitForAdBlockServiceThreads();
+  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
   AssertTagExists(brave_shields::kFacebookEmbeds, false);
   AssertTagExists(brave_shields::kTwitterEmbeds, false);
   AssertTagExists(brave_shields::kLinkedInEmbeds, false);
 
   prefs->SetBoolean(brave_shields::prefs::kFBEmbedControlType, true);
-  WaitForAdBlockServiceThreads();
+  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
   AssertTagExists(brave_shields::kFacebookEmbeds, true);
   AssertTagExists(brave_shields::kTwitterEmbeds, false);
   AssertTagExists(brave_shields::kLinkedInEmbeds, false);
 
   prefs->SetBoolean(brave_shields::prefs::kTwitterEmbedControlType, true);
-  WaitForAdBlockServiceThreads();
+  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
   AssertTagExists(brave_shields::kFacebookEmbeds, true);
   AssertTagExists(brave_shields::kTwitterEmbeds, true);
   AssertTagExists(brave_shields::kLinkedInEmbeds, false);
@@ -1766,7 +1770,7 @@ std::unique_ptr<net::test_server::HttpResponse> NoParamHandler(
 
 // `$removeparam` should be respected for subresource requests
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, RemoveparamSubresource) {
-  UpdateAdBlockInstanceWithRules("*$subdocument,removeparam=evil");
+  UpdateCustomAdBlockInstanceWithRules("*$subdocument,removeparam=evil");
 
   GURL tab_url =
       embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
@@ -1799,16 +1803,16 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, RemoveparamSubresource) {
 #if BUILDFLAG(IS_ANDROID)
 #define MAYBE_RemoveparamTopLevelNavigation \
   DISABLED_RemoveparamTopLevelNavigation
-#define MAYBE_DefaultRemoveparamFromCustom DISABLED_DefaultRemoveparamFromCustom
+#define MAYBE_RemoveparamFromDefaultLists DISABLED_RemoveparamFromDefaultLists
 #else  // BUILDFLAG(IS_ANDROID)
 #define MAYBE_RemoveparamTopLevelNavigation RemoveparamTopLevelNavigation
-#define MAYBE_DefaultRemoveparamFromCustom DefaultRemoveparamFromCustom
+#define MAYBE_RemoveparamFromDefaultLists RemoveparamFromDefaultLists
 #endif  // BUILDFLAG(IS_ANDROID)
 
 // `$removeparam` should be respected for top-level navigations
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                        MAYBE_RemoveparamTopLevelNavigation) {
-  UpdateAdBlockInstanceWithRules("*$document,removeparam=evil");
+  UpdateCustomAdBlockInstanceWithRules("*$document,removeparam=evil");
 
   dynamic_server_.RegisterRequestHandler(base::BindRepeating(&NoParamHandler));
   ASSERT_TRUE(dynamic_server_.Start());
@@ -1849,12 +1853,11 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, DefaultNoRemoveparam) {
                 base::BindRepeating(content::FrameHasSourceUrl, frame_url)));
 }
 
-// `$removeparam` should still be activated in default blocking mode if it comes
-// from custom filters
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, MAYBE_DefaultRemoveparamFromCustom) {
+// `$removeparam` should not be activated if it comes from default filters
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, MAYBE_RemoveparamFromDefaultLists) {
   DisableAggressiveMode();
 
-  UpdateCustomAdBlockInstanceWithRules("*$subdocument,removeparam=evil");
+  UpdateAdBlockInstanceWithRules("*$subdocument,removeparam=evil");
 
   GURL tab_url =
       embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
@@ -1868,19 +1871,12 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, MAYBE_DefaultRemoveparamFromCustom) {
       "frame.com", "/cosmetic_frame.html?evil=true&test=true");
   content::NavigateIframeToURL(contents, "iframe", frame_url);
 
-  ASSERT_EQ(nullptr,
-            content::FrameMatchingPredicateOrNullptr(
-                contents->GetPrimaryPage(),
-                base::BindRepeating(content::FrameHasSourceUrl, frame_url)));
-
-  GURL redirected_frame_url = embedded_test_server()->GetURL(
-      "frame.com", "/cosmetic_frame.html?test=true");
-
   content::RenderFrameHost* inner_frame = content::FrameMatchingPredicate(
       contents->GetPrimaryPage(),
-      base::BindRepeating(content::FrameHasSourceUrl, redirected_frame_url));
+      base::BindRepeating(content::FrameHasSourceUrl, frame_url));
 
-  ASSERT_EQ("?test=true", EvalJs(inner_frame, "window.location.search"));
+  ASSERT_EQ("?evil=true&test=true",
+            EvalJs(inner_frame, "window.location.search"));
 }
 
 // Verify that scripts violating a Content Security Policy from a `$csp` rule
@@ -2044,6 +2040,7 @@ IN_PROC_BROWSER_TEST_F(ProceduralFilteringFlagDisabledTest,
   }
 }
 
+#if BUILDFLAG(ENABLE_PLAYLIST)
 class CosmeticFilteringPlaylistFlagEnabledTest : public AdBlockServiceTest {
  public:
   CosmeticFilteringPlaylistFlagEnabledTest() {
@@ -2078,6 +2075,7 @@ IN_PROC_BROWSER_TEST_F(CosmeticFilteringPlaylistFlagEnabledTest,
   EXPECT_EQ(false, EvalJs(web_contents,
                           "checkSelector('#ad-banner', 'display', 'block')"));
 }
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
 // Ensure no cosmetic filtering occurs when the shields setting is disabled
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringDisabled) {

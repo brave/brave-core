@@ -13,9 +13,7 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
-#include "base/logging.h"
 #include "base/notimplemented.h"
-#include "base/notreached.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_block_tracker.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_transaction.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_tx_meta.h"
@@ -32,10 +30,10 @@ BitcoinTxManager::BitcoinTxManager(
     TxService& tx_service,
     BitcoinWalletService& bitcoin_wallet_service,
     KeyringService& keyring_service,
-    TxStorageDelegate& delegate,
+    TxStorage& tx_storage,
     AccountResolverDelegate& account_resolver_delegate)
     : TxManager(
-          std::make_unique<BitcoinTxStateManager>(delegate,
+          std::make_unique<BitcoinTxStateManager>(tx_storage,
                                                   account_resolver_delegate),
           std::make_unique<BitcoinBlockTracker>(
               bitcoin_wallet_service.bitcoin_rpc()),
@@ -138,19 +136,9 @@ void BitcoinTxManager::AddUnapprovedBitcoinTransaction(
                      std::move(callback)));
 }
 
-void BitcoinTxManager::AddUnapprovedTransaction(
-    const std::string& chain_id,
-    mojom::TxDataUnionPtr tx_data_union,
-    const mojom::AccountIdPtr& from,
-    const std::optional<url::Origin>& origin,
-    mojom::SwapInfoPtr swap_info,
-    AddUnapprovedTransactionCallback callback) {
-  NOTREACHED() << "AddUnapprovedBitcoinTransaction must be used";
-}
-
 void BitcoinTxManager::ContinueAddUnapprovedTransaction(
     std::unique_ptr<BitcoinTxMeta> meta,
-    AddUnapprovedTransactionCallback callback,
+    AddUnapprovedBitcoinTransactionCallback callback,
     base::expected<BitcoinTransaction, std::string> bitcoin_transaction) {
   if (!bitcoin_transaction.has_value()) {
     std::move(callback).Run(false, "", bitcoin_transaction.error());
@@ -172,7 +160,6 @@ void BitcoinTxManager::ApproveTransaction(const std::string& tx_meta_id,
   std::unique_ptr<BitcoinTxMeta> meta =
       GetBitcoinTxStateManager().GetBitcoinTx(tx_meta_id);
   if (!meta) {
-    LOG(ERROR) << "Transaction should be found";
     std::move(callback).Run(
         false,
         mojom::ProviderErrorUnion::NewBitcoinProviderError(
@@ -206,7 +193,6 @@ void BitcoinTxManager::ContinueApproveTransaction(
   std::unique_ptr<BitcoinTxMeta> meta =
       GetBitcoinTxStateManager().GetBitcoinTx(tx_meta_id);
   if (!meta) {
-    LOG(ERROR) << "Transaction should be found";
     std::move(callback).Run(
         false,
         mojom::ProviderErrorUnion::NewBitcoinProviderError(

@@ -1,8 +1,8 @@
 diff --git a/build/android/gyp/lint.py b/build/android/gyp/lint.py
-index a9120ee83475b5fb9ca60934d0df2319637b15b5..5a7d00ac44d405578b45d0878767737a68fa2a37 100755
+index 4ec0458d4325302bf49d7b04112329bee6084f8c..917b53f6f0e594a8065ac739d8b7cf29801c52f4 100755
 --- a/build/android/gyp/lint.py
 +++ b/build/android/gyp/lint.py
-@@ -463,5 +463,6 @@ def main():
+@@ -453,5 +453,6 @@ def main():
    server_utils.MaybeTouch(args.stamp)
  
  

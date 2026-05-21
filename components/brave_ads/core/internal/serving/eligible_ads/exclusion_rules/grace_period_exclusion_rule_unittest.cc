@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder_test_util.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/test/ad_event_builder_test_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
@@ -37,7 +37,7 @@ TEST_F(BraveAdsGracePeriodExclusionRuleTest,
        ShouldIncludeIfWithinGracePeriodWhenDebugIsEnabled) {
   // Arrange
   ASSERT_TRUE(GlobalState::HasInstance());
-  GlobalState::GetInstance()->Flags().should_debug = true;
+  GlobalState::GetInstance()->CommandLineSwitches().should_debug = true;
 
   FastForwardClockBy(kGracePeriod - base::Milliseconds(1));
 
@@ -52,7 +52,7 @@ TEST_F(BraveAdsGracePeriodExclusionRuleTest,
        ShouldIncludeIfOutsideGracePeriodWhenDebugIsEnabled) {
   // Arrange
   ASSERT_TRUE(GlobalState::HasInstance());
-  GlobalState::GetInstance()->Flags().should_debug = true;
+  GlobalState::GetInstance()->CommandLineSwitches().should_debug = true;
 
   FastForwardClockBy(kGracePeriod);
 

@@ -13,6 +13,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
+#include "brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/prefs/internal/condition_matcher_feature_pref_util_internal.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
 namespace brave_ads {
@@ -390,6 +391,10 @@ bool HasLocalStatePrefPath(const std::string& path) {
 std::optional<base::Value> GetVirtualPref(const base::DictValue& virtual_prefs,
                                           std::string_view path) {
   if (path.starts_with(kVirtualPrefPathPrefix)) {
+    if (std::optional<base::Value> dict = MaybeGetFeaturePrefValue(path)) {
+      return dict;
+    }
+
     if (const base::Value* const value = virtual_prefs.Find(path)) {
       return value->Clone();
     }

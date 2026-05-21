@@ -13,6 +13,7 @@ import {
   BitcoinTestnetKeyringIds,
   ZCashTestnetKeyringIds,
   CardanoTestnetKeyringIds,
+  PolkadotTestnetKeyringIds,
 } from '../constants/types'
 
 // constants
@@ -129,6 +130,13 @@ export function isHardwareAccount(account: BraveWallet.AccountId) {
   return account.kind === BraveWallet.AccountKind.kHardware
 }
 
+export const isPolkadotRelayNetwork = (chainId: string) => {
+  return (
+    chainId === BraveWallet.POLKADOT_MAINNET
+    || chainId === BraveWallet.POLKADOT_TESTNET
+  )
+}
+
 export const keyringIdForNewAccount = (
   coin: BraveWallet.CoinType,
   chainId?: string | undefined,
@@ -180,7 +188,7 @@ export const keyringIdForNewAccount = (
     }
   }
 
-  if (coin === BraveWallet.CoinType.DOT) {
+  if (coin === BraveWallet.CoinType.DOT && chainId) {
     if (chainId === BraveWallet.POLKADOT_MAINNET) {
       return BraveWallet.KeyringId.kPolkadotMainnet
     }
@@ -216,6 +224,9 @@ export const getAccountTypeDescription = (accountId: BraveWallet.AccountId) => {
       }
       return getLocale('braveWalletCardanoAccountDescription')
     case BraveWallet.CoinType.DOT:
+      if (PolkadotTestnetKeyringIds.includes(accountId.keyringId)) {
+        return getLocale('braveWalletPolkadotTestnetAccountDescription')
+      }
       return getLocale('braveWalletPolkadotMainnetAccountDescription')
     default:
       assertNotReached(`Unknown coin ${accountId.coin}`)

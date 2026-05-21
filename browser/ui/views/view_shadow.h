@@ -12,6 +12,7 @@
 #include "ui/compositor/layer_delegate.h"
 #include "ui/compositor/layer_owner.h"
 #include "ui/gfx/geometry/insets.h"
+#include "ui/gfx/geometry/rounded_corners_f.h"
 #include "ui/gfx/shadow_value.h"
 #include "ui/views/view_observer.h"
 
@@ -32,7 +33,7 @@
 //         .blur_radius = 4,
 //         .shadow_color = SkColorSetA(SK_ColorBLACK, 0.07 * 255)};
 //
-//     ViewShadow shadow_{this, kCornerRadius, kShadow};
+//     ViewShadow shadow_{this, gfx::RoundedCornersF(kCornerRadius), kShadow};
 //   };
 //
 class ViewShadow : public ui::LayerDelegate,
@@ -47,13 +48,15 @@ class ViewShadow : public ui::LayerDelegate,
   };
 
   ViewShadow(views::View* view,
-             int corner_radius,
+             const gfx::RoundedCornersF& corner_radii,
              const ShadowParameters& params);
 
   ViewShadow(const ViewShadow&) = delete;
   ViewShadow& operator=(const ViewShadow&) = delete;
 
   ~ViewShadow() override;
+
+  void SetCornerRadii(const gfx::RoundedCornersF& corner_radii);
 
   // Sets the insets for the rectangular shadow shape. This allows the shadow
   // and the associated view to have different dimensions.
@@ -83,7 +86,7 @@ class ViewShadow : public ui::LayerDelegate,
 
   ui::LayerOwner layer_owner_;
   raw_ptr<views::View> view_ = nullptr;
-  int corner_radius_ = 0;
+  gfx::RoundedCornersF corner_radii_;
   raw_ref<const gfx::ShadowValues> shadow_values_;
   gfx::Insets insets_;
 

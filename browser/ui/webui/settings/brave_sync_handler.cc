@@ -23,7 +23,6 @@
 #include "brave/components/brave_sync/sync_service_impl_helper.h"
 #include "brave/components/brave_sync/time_limited_words.h"
 #include "brave/components/sync/service/brave_sync_service_impl.h"
-#include "brave/components/sync_device_info/brave_device_info.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sync/device_info_sync_service_factory.h"
@@ -212,7 +211,7 @@ void BraveSyncHandler::HandleGetQRCode(const base::ListValue& args) {
 
   // QR code version 3 can only carry 84 bytes so we hex encode 32 bytes
   // seed then we will have 64 bytes input data
-  const std::string sync_code_hex = base::HexEncode(seed.data(), seed.size());
+  const std::string sync_code_hex = base::HexEncode(seed);
   const std::string qr_code_string =
       brave_sync::QrCodeData::CreateWithActualDate(sync_code_hex)->ToJson();
 
@@ -294,8 +293,7 @@ void BraveSyncHandler::HandleSetSyncCode(const base::ListValue& args) {
   // we will set the result at BraveSyncHandler::OnJoinChainResult.
   // Otherwise we will not let to send request to the server.
 
-  sync_service->GetUserSettings()->SetInitialSyncFeatureSetupComplete(
-      syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
+  sync_service->GetUserSettings()->SetInitialSyncFeatureSetupComplete();
 }
 
 void BraveSyncHandler::OnJoinChainResult(base::Value callback_id, bool result) {
@@ -420,8 +418,10 @@ base::ListValue BraveSyncHandler::GetSyncDeviceList() {
         local_device_info && local_device_info->guid() == device->guid();
     device_value.Set("isCurrentDevice", is_current_device);
     device_value.Set("guid", device->guid());
-    device_value.Set("supportsSelfDelete",
-                     !is_current_device && device->is_self_delete_supported());
+    device_value.Set(
+        "supportsSelfDelete",
+        !is_current_device && device->self_delete_support() ==
+                                  syncer::SelfDeleteSupport::kSupported);
 
     device_list.Append(std::move(device_value));
   }

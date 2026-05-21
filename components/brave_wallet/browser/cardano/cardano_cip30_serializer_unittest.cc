@@ -77,7 +77,9 @@ TEST(CardanoCip30SerializerTest, SerializeUtxos) {
   cardano_rpc::UnspentOutputs utxos;
   // Utxo1
   {
-    cardano_rpc::UnspentOutput output;
+    cardano_rpc::UnspentOutput output(*CardanoAddress::FromString(
+        "addr1qyx2zscdearcexdktcgq6g27jkyff65dw82w6catczfwxz2qjy"
+        "nwf42y3c7ejrrekj5r2fh6kx5m9gcrmywpqxw3np5qjeh38p"));
     output.output_index = 0;
     output.lovelace_amount = 1000000u;
     std::vector<uint8_t> tx_bytes;
@@ -85,15 +87,14 @@ TEST(CardanoCip30SerializerTest, SerializeUtxos) {
         "d9ef8dcd983c6fe996d5029e010e224bec191d0f63ff695cdab046abfd79dfbd",
         &tx_bytes);
     base::SpanWriter(base::span(output.tx_hash)).Write(tx_bytes);
-    output.address_to = *CardanoAddress::FromString(
-        "addr1qyx2zscdearcexdktcgq6g27jkyff65dw82w6catczfwxz2qjy"
-        "nwf42y3c7ejrrekj5r2fh6kx5m9gcrmywpqxw3np5qjeh38p");
     utxos.push_back(std::move(output));
   }
 
   // Utxo2
   {
-    cardano_rpc::UnspentOutput output;
+    cardano_rpc::UnspentOutput output(*CardanoAddress::FromString(
+        "addr1q95842gcg7yr4uxqrr0l389msd68rgvv7cd9q9qc9f36mddy"
+        "q3v4daq49vspumzngv66wfydv2l3qsqtlwa2pvpd6vmstarkzs"));
     output.output_index = 0;
     output.lovelace_amount = 2000000u;
     std::vector<uint8_t> tx_bytes;
@@ -101,9 +102,7 @@ TEST(CardanoCip30SerializerTest, SerializeUtxos) {
         "42c7b97f09cf640dcb76c7426c1181594dfc2da3aa000476aa9639bc0a131f4d",
         &tx_bytes);
     base::SpanWriter(base::span(output.tx_hash)).Write(tx_bytes);
-    output.address_to = *CardanoAddress::FromString(
-        "addr1q95842gcg7yr4uxqrr0l389msd68rgvv7cd9q9qc9f36mddy"
-        "q3v4daq49vspumzngv66wfydv2l3qsqtlwa2pvpd6vmstarkzs");
+
     utxos.push_back(std::move(output));
   }
 

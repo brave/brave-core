@@ -192,7 +192,7 @@ void WalletDataFilesInstaller::RegisterWalletDataFilesComponentInternal(
 void WalletDataFilesInstaller::MaybeRegisterWalletDataFilesComponent(
     component_updater::ComponentUpdateService* cus,
     PrefService* local_state) {
-  if (!IsNativeWalletEnabled() || !HasCreatedWallets(local_state)) {
+  if (!HasCreatedWallets(local_state)) {
     return;
   }
 
@@ -238,7 +238,7 @@ void WalletDataFilesInstaller::OnEvent(
   }
 }
 
-void WalletDataFilesInstaller::ResetForTesting() {
+void WalletDataFilesInstaller::Reset() {
   component_updater_observation_.Reset();
   delegate_.reset();
   registered_ = false;

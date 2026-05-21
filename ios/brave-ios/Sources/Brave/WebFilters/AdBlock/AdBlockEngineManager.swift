@@ -52,6 +52,8 @@ import os
   /// This is the current pending group we are compiling into content blockers
   /// This allows us to ensure we are not compiling the same rules more than once
   private var pendingContentBlockerGroup: GroupedAdBlockEngine.FilterListGroup?
+  /// Rules to exclude from all filter lists during compilation
+  var exclusionRules: Set<String> = []
   /// The blocklist type this manager represents if we are combining content blockers
   var blocklistType: ContentBlockerManager.BlocklistType {
     return .engineGroup(id: cacheFolderName, engineType: engineType)
@@ -369,7 +371,10 @@ import os
     contentBlockerManager: ContentBlockerManager
   ) async {
     // Only do this for content blockers that should be combined
-    guard engineType.combineContentBlockers else { return }
+    guard engineType.combineContentBlockers else {
+      // When `combineContentBlockers` is false (aggressive engine), should use `ensureIndividualContentBlocker`.
+      return
+    }
     let compilableFiles = compilableFiles(for: enabledSources.map({ $0.contentBlockerSource }))
     guard !compilableFiles.isEmpty else { return }
 
@@ -422,6 +427,95 @@ import os
     pendingContentBlockerGroup = nil
   }
 
+  /// Compile the content blocker for a single file, applying exclusion rules if set.
+  /// Only applies for engine types that don't combine content blockers (i.e. aggressive).
+  func ensureIndividualContentBlocker(
+    for fileInfo: FileInfo,
+    contentBlockerManager: ContentBlockerManager
+  ) async {
+    guard !engineType.combineContentBlockers else {
+      // When `combineContentBlockers` is true (standard engine), should use `ensureGroupedContentBlockers`.
+      return
+    }
+
+    guard
+      let blocklistType = fileInfo.filterListInfo.source.blocklistType(engineType: engineType)
+    else {
+      return
+    }
+
+    let modes = await contentBlockerManager.missingModes(
+      for: blocklistType,
+      version: fileInfo.filterListInfo.version
+    )
+    guard !modes.isEmpty else {
+      ContentBlockerManager.log.debug(
+        "Rule lists already compiled for \(fileInfo.filterListInfo.debugDescription)"
+      )
+      return
+    }
+
+    do {
+      let fileURL = try await filteredFileURL(for: fileInfo)
+      try await contentBlockerManager.compileRuleList(
+        at: fileURL,
+        for: blocklistType,
+        version: fileInfo.filterListInfo.version,
+        modes: modes
+      )
+      ContentBlockerManager.log.debug(
+        "Compiled rule lists for \(fileInfo.filterListInfo.debugDescription)"
+      )
+    } catch {
+      ContentBlockerManager.log.error(
+        "Failed to compile rule lists for \(fileInfo.filterListInfo.debugDescription)"
+      )
+    }
+  }
+
+  /// Returns a URL to use for content blocker compilation.
+  /// If no exclusion rules are set, returns the original file URL directly.
+  /// Otherwise, writes a filtered copy to the cache folder (excluding matching lines) and returns that URL.
+  private func filteredFileURL(for fileInfo: FileInfo) async throws -> URL {
+    guard !exclusionRules.isEmpty else {
+      return fileInfo.localFileURL
+    }
+
+    let cachedFolder = try await getOrCreateCacheFolder()
+    let outputURL = cachedFolder.appendingPathComponent(
+      "filtered-\(fileInfo.localFileURL.lastPathComponent)"
+    )
+    let exclusionRulesToApply = exclusionRules
+    let localFileURL = fileInfo.localFileURL
+
+    try await Task.detached {
+      guard let data = await AsyncFileManager.default.contents(atPath: localFileURL.path) else {
+        throw CocoaError(.fileReadNoSuchFile)
+      }
+
+      let dataToWrite: Data
+      if let dataString = String(data: data, encoding: .utf8) {
+        let filtered =
+          dataString
+          .components(separatedBy: .newlines)
+          .filter { !exclusionRulesToApply.contains($0) }
+          .joined(separator: "\n")
+        dataToWrite = filtered.data(using: .utf8) ?? data
+      } else {
+        ContentBlockerManager.log.debug(
+          "Failed to remove exclusion rules as the file is unreadable."
+        )
+        dataToWrite = data
+      }
+      if await AsyncFileManager.default.fileExists(atPath: outputURL.path) {
+        try await AsyncFileManager.default.removeItem(at: outputURL)
+      }
+      await AsyncFileManager.default.createFile(atPath: outputURL.path, contents: dataToWrite)
+    }.value
+
+    return outputURL
+  }
+
   private func set(engine: GroupedAdBlockEngine, start: ContinuousClock.Instant) {
     let group = engine.group
     ContentBlockerManager.log.debug(
@@ -450,6 +544,7 @@ import os
       contents: "".data(using: .utf8)
     )
 
+    let exclusionRulesToApply = self.exclusionRules
     return try await Task.detached {
       let fileWriteHandle = try FileHandle(forWritingTo: temporaryFileURL)
       var compiledInfos: [GroupedAdBlockEngine.FilterListInfo] = []
@@ -460,7 +555,18 @@ import os
           guard let data = try await fileInfo.getRulesData(engineType: self.engineType) else {
             continue
           }
-          try fileWriteHandle.write(contentsOf: data)
+          let dataToWrite: Data
+          if exclusionRulesToApply.isEmpty {
+            dataToWrite = data
+          } else {
+            // filter out exclusion rules
+            let filtered = String(data: data, encoding: .utf8)?
+              .components(separatedBy: .newlines)
+              .filter { !exclusionRulesToApply.contains($0) }
+              .joined(separator: "\n")
+            dataToWrite = filtered?.data(using: .utf8) ?? data
+          }
+          try fileWriteHandle.write(contentsOf: dataToWrite)
           compiledInfos.append(fileInfo.filterListInfo)
         } catch {
           ContentBlockerManager.log.error(

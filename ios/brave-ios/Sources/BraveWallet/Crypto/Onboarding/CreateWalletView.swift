@@ -27,7 +27,7 @@ private enum ValidationError: LocalizedError, Equatable {
 
 struct CreateWalletView: View {
   @ObservedObject var keyringStore: KeyringStore
-  let setupOption: OnboardingSetupOption
+  let setupSelections: OnboardingSetupSelections
   let onValidPasswordEntered: ((_ validPassword: String) -> Void)?
   // Used to dismiss all of Wallet
   let dismissAction: () -> Void
@@ -47,25 +47,29 @@ struct CreateWalletView: View {
 
   init(
     keyringStore: KeyringStore,
-    setupOption: OnboardingSetupOption,
+    setupSelections: OnboardingSetupSelections,
     onValidPasswordEntered: ((_ validPassword: String) -> Void)? = nil,
     dismissAction: @escaping () -> Void
   ) {
     self.keyringStore = keyringStore
-    self.setupOption = setupOption
+    self.setupSelections = setupSelections
     self.onValidPasswordEntered = onValidPasswordEntered
     self.dismissAction = dismissAction
   }
 
   private func createWallet() {
-    switch setupOption {
+    switch setupSelections.setupOption {
     case .new:
-      isShowingCreatingWallet = true
-      keyringStore.createWallet(password: password) { mnemonic in
-        defer { self.isShowingCreatingWallet = false }
+      Task { @MainActor in
+        isShowingCreatingWallet = true
+        let mnemonic = await keyringStore.createWallet(
+          password: password,
+          networks: setupSelections.networks
+        )
         if let mnemonic, !mnemonic.isEmpty {
           isNewWalletCreated = true
         }
+        isShowingCreatingWallet = false
       }
     case .restore:
       if isInputsMatch {
@@ -219,8 +223,12 @@ struct CreateWalletView: View {
         EmptyView()
       }
     )
-    .onChange(of: password, perform: handleInputChange)
-    .onChange(of: repeatedPassword, perform: handleInputChange)
+    .onChange(of: password) { _, newValue in
+      handleInputChange(newValue)
+    }
+    .onChange(of: repeatedPassword) { _, newValue in
+      handleInputChange(newValue)
+    }
     .navigationBarBackButtonHidden(isShowingCreatingWallet)
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .overlay {
@@ -243,7 +251,6 @@ struct CreateWalletView: View {
     })
     .onAppear {
       isFieldFocused = true
-      keyringStore.reportP3AOnboarding(action: .legalAndPassword)
     }
     .transparentNavigationBar(
       backButtonTitle: Strings.Wallet.createWalletBackButtonTitle,
@@ -258,7 +265,7 @@ struct CreateWalletView_Previews: PreviewProvider {
     NavigationView {
       CreateWalletView(
         keyringStore: .previewStore,
-        setupOption: .new,
+        setupSelections: .init(setupOption: .new, networks: []),
         dismissAction: {}
       )
     }

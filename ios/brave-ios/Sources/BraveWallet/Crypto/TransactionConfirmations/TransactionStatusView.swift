@@ -687,7 +687,7 @@ struct TransactionStatusView: View {
         }
       )
     }
-    .onChange(of: txStatusStore.activeTxStatus) { _ in
+    .onChange(of: txStatusStore.activeTxStatus) { _, _ in
       if txStatusStore.activeTxStatus != .submitted {
         isShowingSpeedUpBanner = false
         speedUpTimer?.invalidate()

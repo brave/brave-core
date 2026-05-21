@@ -13,8 +13,6 @@ function_registration("generated_api_registration") {
   root_namespace = brave_extensions_api_root_namespace
 
   deps = [
-    "//brave/components/brave_ads/core/mojom",
-    "//brave/components/brave_rewards/core/mojom",
     "//extensions/browser",
     "//extensions/common",
   ]

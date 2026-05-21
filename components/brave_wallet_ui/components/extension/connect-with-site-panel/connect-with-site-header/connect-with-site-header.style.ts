@@ -83,6 +83,10 @@ export const SiteURL = styled.span`
   margin-bottom: 6px;
 `
 
+export const SiteURLCentered = styled(SiteURL)`
+  text-align: center;
+`
+
 export const FavIcon = styled.img<{ isReadyToConnect: boolean }>`
   width: ${(p) => (p.isReadyToConnect ? 40 : 48)}px;
   height: ${(p) => (p.isReadyToConnect ? 40 : 48)}px;

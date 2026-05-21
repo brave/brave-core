@@ -80,12 +80,6 @@ INSTANTIATE_TEST_SUITE_P(
                     "allow": [ 1, 2.0, "JP"],
                     "block": []
                   },
-                  "gemini": {
-                    "allow": [ 1, 2.0, "AU", "AT", "BE", "CA", "CO", "DK", "FI",
-                              "HK", "IE", "IT", "NL", "NO", "PT", "SG", "ES",
-                              "SE", "GB", "US"],
-                    "block": []
-                  },
                   "uphold": {
                     "allow": [ 1, 2.0, "AU", "AT", "BE", "CO", "DK", "FI", "HK",
                               "IE", "IT", "NL", "NO", "PT", "SG", "ES", "SE",
@@ -95,7 +89,6 @@ INSTANTIATE_TEST_SUITE_P(
                 },
                 "payoutStatus": {
                   "bitflyer": "off",
-                  "gemini": "off",
                   "unverified": "off",
                   "uphold": "complete"
                 },
@@ -114,7 +107,6 @@ INSTANTIATE_TEST_SUITE_P(
               params->tip_choices = std::vector{1.25, 5.0, 10.5};
               params->monthly_tip_choices = std::vector{1.25, 5.0, 10.5};
               params->payout_status = {{"bitflyer", "off"},
-                                       {"gemini", "off"},
                                        {"unverified", "off"},
                                        {"uphold", "complete"}};
 
@@ -124,13 +116,6 @@ INSTANTIATE_TEST_SUITE_P(
                   "bitflyer",
                   mojom::Regions::New(std::vector<std::string>{"JP"},
                                       std::vector<std::string>{}));
-              wallet_provider_regions.emplace(
-                  "gemini",
-                  mojom::Regions::New(
-                      std::vector<std::string>{
-                          "AU", "AT", "BE", "CA", "CO", "DK", "FI", "HK", "IE",
-                          "IT", "NL", "NO", "PT", "SG", "ES", "SE", "GB", "US"},
-                      std::vector<std::string>{}));
               wallet_provider_regions.emplace(
                   "uphold",
                   mojom::Regions::New(

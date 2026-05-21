@@ -7,10 +7,12 @@
 #define BRAVE_BROWSER_NTP_BACKGROUND_ANDROID_NTP_BACKGROUND_IMAGES_BRIDGE_H_
 
 #include <memory>
+#include <optional>
 
 #include "base/android/jni_android.h"
 #include "base/compiler_specific.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -20,6 +22,7 @@ class Profile;
 namespace base {
 template <typename T>
 class NoDestructor;
+class DictValue;
 }  // namespace base
 
 namespace ntp_background_images {
@@ -45,14 +48,17 @@ class NTPBackgroundImagesBridge
       const base::android::JavaRef<jstring>& jcreativeInstanceId,
       const base::android::JavaRef<jstring>& jdestinationUrl,
       int metricType);
-  base::android::ScopedJavaLocalRef<jobject> GetCurrentWallpaper(
-      JNIEnv* env,
-      const base::android::JavaRef<jobject>& obj,
-      jboolean allow_sponsored_image);
+  void GetCurrentWallpaper(JNIEnv* env,
+                           const base::android::JavaRef<jobject>& obj,
+                           const base::android::JavaRef<jobject>& callback,
+                           bool allow_sponsored_image);
 
   base::android::ScopedJavaLocalRef<jobject> GetJavaObject();
 
  private:
+  void GetCurrentWallpaperCallback(
+      base::android::ScopedJavaGlobalRef<jobject> callback,
+      std::optional<base::DictValue> data);
   void OnBackgroundImagesDataDidUpdate(
       ntp_background_images::NTPBackgroundImagesData* data) override;
   void OnSponsoredImagesDataDidUpdate(
@@ -69,6 +75,8 @@ class NTPBackgroundImagesBridge
   raw_ptr<ntp_background_images::NTPBackgroundImagesService>
       background_images_service_ = nullptr;
   base::android::ScopedJavaGlobalRef<jobject> java_object_;
+
+  base::WeakPtrFactory<NTPBackgroundImagesBridge> weak_ptr_factory_{this};
 };
 
 namespace ntp_background_images {

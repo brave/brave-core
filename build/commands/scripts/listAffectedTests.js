@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { getAffectedTests } from '../lib/affectedTests.js'
-import config from '../lib/config.js'
+import config from '../lib/config.ts'
 
 export default (program) =>
   program

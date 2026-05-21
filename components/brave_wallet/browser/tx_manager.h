@@ -34,8 +34,6 @@ class TxManager : public TxStateManager::Observer,
             KeyringService& keyring_service);
   ~TxManager() override;
 
-  using AddUnapprovedTransactionCallback =
-      mojom::TxService::AddUnapprovedTransactionCallback;
   using ApproveTransactionCallback =
       mojom::TxService::ApproveTransactionCallback;
   using RejectTransactionCallback = mojom::TxService::RejectTransactionCallback;
@@ -43,13 +41,6 @@ class TxManager : public TxStateManager::Observer,
       mojom::TxService::SpeedupOrCancelTransactionCallback;
   using RetryTransactionCallback = mojom::TxService::RetryTransactionCallback;
 
-  virtual void AddUnapprovedTransaction(
-      const std::string& chain_id,
-      mojom::TxDataUnionPtr tx_data_union,
-      const mojom::AccountIdPtr& from,
-      const std::optional<url::Origin>& origin,
-      mojom::SwapInfoPtr swap_info,
-      AddUnapprovedTransactionCallback) = 0;
   virtual void ApproveTransaction(const std::string& tx_meta_id,
                                   ApproveTransactionCallback) = 0;
   virtual void RejectTransaction(const std::string& tx_meta_id,

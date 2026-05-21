@@ -167,22 +167,44 @@ bool BraveOriginPolicyManager::IsInitialized() const {
   return initialized_;
 }
 
+void BraveOriginPolicyManager::SetExpectedToBeInitialized() {
+  expected_to_be_initialized_ = true;
+}
+
+bool BraveOriginPolicyManager::IsExpectedToBeInitialized() const {
+  return expected_to_be_initialized_;
+}
+
 void BraveOriginPolicyManager::SetPurchased(bool purchased) {
   if (is_purchased_ == purchased) {
     return;
   }
   is_purchased_ = purchased;
+  // Persist purchase state so policies can be applied immediately on next
+  // startup, before the async SKU credential check completes.
+  if (local_state_) {
+    local_state_->SetBoolean(kOriginPurchaseValidated, purchased);
+  }
   if (initialized_) {
     observers_.Notify(&brave_policy::BravePolicyObserver::OnBravePoliciesReady);
   }
 }
 
 bool BraveOriginPolicyManager::IsPurchased() const {
-  return is_purchased_;
+  if (is_purchased_) {
+    return true;
+  }
+  // Fall back to persisted pref so policies are applied immediately on startup,
+  // before the async purchase verification completes.
+  if (local_state_) {
+    return local_state_->GetBoolean(kOriginPurchaseValidated);
+  }
+  return false;
 }
 
 void BraveOriginPolicyManager::Shutdown() {
   initialized_ = false;
+  expected_to_be_initialized_ = false;
   is_purchased_ = false;
   browser_policy_definitions_.clear();
   profile_policy_definitions_.clear();

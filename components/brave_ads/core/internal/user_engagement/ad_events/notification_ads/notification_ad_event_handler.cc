@@ -39,6 +39,12 @@ void NotificationAdEventHandler::FireEvent(
                              std::move(callback));
   }
 
+  if (mojom_ad_event_type == mojom::NotificationAdEventType::kClicked) {
+    // `RecordAdEvent` is asynchronous. Notifying the delegate before the write
+    // ensures `last_clicked_ad` is set before any page navigation commits.
+    NotifyWillFireNotificationAdClickedEvent(*ad);
+  }
+
   const auto ad_event = NotificationAdEventFactory::Build(mojom_ad_event_type);
   ad_event->FireEvent(
       *ad, base::BindOnce(&NotificationAdEventHandler::FireEventCallback,
@@ -82,6 +88,13 @@ void NotificationAdEventHandler::FailedToFireEvent(
   NotifyFailedToFireNotificationAdEvent(placement_id, mojom_ad_event_type);
 
   std::move(callback).Run(/*success=*/false, placement_id, mojom_ad_event_type);
+}
+
+void NotificationAdEventHandler::NotifyWillFireNotificationAdClickedEvent(
+    const NotificationAdInfo& ad) const {
+  if (delegate_) {
+    delegate_->OnWillFireNotificationAdClickedEvent(ad);
+  }
 }
 
 void NotificationAdEventHandler::NotifyDidFireNotificationAdEvent(

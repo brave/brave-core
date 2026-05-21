@@ -9,12 +9,12 @@
 
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/brave_ads/core/internal/common/resources/language_components_test_constants.h"
+#include "brave/components/brave_ads/core/internal/common/resources/test/language_components_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
-#include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
+#include "brave/components/brave_ads/core/internal/segments/segment_types.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/interest/interest_user_model_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_feature.h"
-#include "brave/components/brave_ads/core/internal/targeting/targeting_test_helper.h"
+#include "brave/components/brave_ads/core/internal/targeting/test/targeting_test_helper.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -25,11 +25,10 @@ class BraveAdsInterestSegmentsTest : public test::TestBase {
   void SetUp() override {
     test::TestBase::SetUp();
 
-    targeting_helper_ =
-        std::make_unique<test::TargetingHelper>(task_environment_);
+    targeting_helper_ = std::make_unique<test::TargetingHelper>();
 
-    NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
-                                     test::kLanguageComponentId);
+    ads_client_notifier_.NotifyResourceComponentDidChange(
+        test::kLanguageComponentManifestVersion, test::kLanguageComponentId);
   }
 
   std::unique_ptr<test::TargetingHelper> targeting_helper_;
@@ -40,7 +39,7 @@ TEST_F(BraveAdsInterestSegmentsTest, BuildInterestSegments) {
   const base::test::ScopedFeatureList scoped_feature_list(
       kTextClassificationFeature);
 
-  targeting_helper_->MockInterest();
+  targeting_helper_->SimulateInterest();
 
   // Act & Assert
   base::MockCallback<BuildSegmentsCallback> callback;
@@ -66,7 +65,7 @@ TEST_F(BraveAdsInterestSegmentsTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kTextClassificationFeature);
 
-  targeting_helper_->MockInterest();
+  targeting_helper_->SimulateInterest();
 
   // Act & Assert
   base::MockCallback<BuildSegmentsCallback> callback;

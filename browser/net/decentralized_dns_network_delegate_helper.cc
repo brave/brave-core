@@ -119,7 +119,7 @@ void OnBeforeURLRequest_EnsRedirectWork(
   GURL resolved_ipfs_uri;
   GURL ipfs_uri = ipfs::ContentHashToCIDv1URL(content_hash);
   if (ipfs_uri.is_valid() &&
-      ipfs::TranslateIPFSURI(ipfs_uri, &resolved_ipfs_uri, false)) {
+      ipfs::TranslateIPFSURI(ipfs_uri, &resolved_ipfs_uri, true)) {
     ctx->set_new_url_spec(resolved_ipfs_uri.spec());
   }
 

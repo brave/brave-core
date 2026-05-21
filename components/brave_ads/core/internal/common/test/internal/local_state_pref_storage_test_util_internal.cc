@@ -32,6 +32,9 @@ PrefValueInfo& LocalStatePref(const std::string& path) {
 }
 
 bool HasLocalStatePref(const std::string& path) {
+  // Intentionally identical to `FindLocalStatePref`: the test double uses a
+  // single map for both registration and storage, so both checks reduce to
+  // the same `contains` lookup.
   return LocalStatePrefStorage().contains(GetUuidForCurrentTestAndValue(path));
 }
 

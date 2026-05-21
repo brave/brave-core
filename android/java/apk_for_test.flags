@@ -45,12 +45,7 @@
 }
 
 -keep class org.chromium.chrome.browser.ntp.NewTabPageLayout {
-    *** mMvTilesContainerLayout;
-    *** mMvtContentFits;
-    *** mProfile;
     *** initializeSiteSectionView(...);
-    *** calculateTabletMvtWidth(...);
-    *** updateMvtOnTablet(...);
 }
 
 -keep class org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesMediator {
@@ -65,6 +60,7 @@
 -keep class org.chromium.chrome.browser.ntp.NewTabPage {
     public <init>(...);
     *** mBrowserControlsStateProvider;
+    *** mNewTabPageCoordinator;
     *** mNewTabPageLayout;
     *** mFeedSurfaceProvider;
     *** mToolbarSupplier;
@@ -74,6 +70,14 @@
 }
 
 -keep class org.chromium.chrome.browser.ntp.BraveNewTabPage {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.ntp.NewTabPageCoordinator {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.ntp.BraveNewTabPageCoordinator {
     public <init>(...);
 }
 
@@ -137,7 +141,7 @@
 
 -keep class org.chromium.chrome.browser.toolbar.ToolbarManager {
     public <init>(...);
-    *** mBottomControlsCoordinatorSupplier;
+    *** mTabGroupUiBottomControlsCoordinatorSupplier;
     *** mCallbackController;
     *** mBottomControlsStacker;
     *** mFullscreenManager;
@@ -380,6 +384,14 @@
 
 -keep class org.chromium.chrome.browser.customtabs.features.toolbar.CustomTabToolbar
 
+-keep class org.chromium.chrome.browser.customtabs.features.toolbar.CustomTabToolbarButtonsViewBinder {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.customtabs.features.toolbar.BraveCustomTabToolbarButtonsViewBinder {
+    public <init>(...);
+}
+
 -keep class org.chromium.chrome.browser.toolbar.top.BraveToolbarLayoutImpl
 
 -keep class org.chromium.chrome.browser.toolbar.top.ToolbarPhone {
@@ -442,6 +454,14 @@
 -keepclassmembers class org.chromium.components.browser_ui.site_settings.BraveContentSettingsResources** { *; }
 -keepclassmembers class org.chromium.components.browser_ui.site_settings.ContentSettingsResources** { *; }
 
+-keep class org.chromium.chrome.browser.autofill.AutofillClientProviderUtils {
+    *** getAndroidAutofillFrameworkAvailability(...);
+}
+
+-keep class org.chromium.components.browser_ui.settings.SettingsUtils {
+    *** getVisiblePreferences(...);
+}
+
 -keep class org.chromium.components.browser_ui.site_settings.WebsitePermissionsFetcher {
     *** getPermissionsType(...);
 }
@@ -468,16 +488,6 @@
 
 -keep class org.chromium.components.browser_ui.site_settings.BraveSiteSettingsPreferencesBase {
     public <init>(...);
-}
-
--keep class org.chromium.chrome.browser.tasks.tab_management.TabUiThemeProvider {
-    *** getActionButtonTintList(...);
-}
-
--keep class org.chromium.chrome.browser.tab_ui.TabCardThemeUtil {
-    *** getTitleTextColor(...);
-    *** getCardViewBackgroundColor(...);
-    *** getActionButtonTintList(...);
 }
 
 -keep class org.chromium.chrome.browser.download.dialogs.DownloadLocationDialogCoordinator {
@@ -528,7 +538,9 @@
 
 -keep class org.chromium.chrome.browser.multiwindow.MultiWindowUtils {
     *** shouldShowManageWindowsMenu(...);
-    *** isOpenInOtherWindowSupported(...);
+    *** isLinkNavigationToOtherWindowSupported(...);
+    *** isLinkNavigationToNewWindowSupported(...);
+    *** isLinkNavigationToIncognitoWindowSupported(...);
     *** isMoveToOtherWindowSupported(...);
     *** canEnterMultiWindowMode(...);
     <init>(...);
@@ -589,6 +601,7 @@
     *** mContext;
     *** mBrandedColorScheme;
     *** mTemplateUrlServiceSupplier;
+    *** mAutocompleteCoordinator;
     *** mUrlCoordinator;
     <init>(...);
     *** updateButtonVisibility(...);
@@ -678,6 +691,7 @@
     *** getUrlForWebapp(...);
     *** isJavascriptSchemeOrInvalidUrl(...);
     *** extractUrlFromIntent(...);
+    *** intentHasUnsafeInternalScheme(...);
 }
 
 -keep class org.chromium.chrome.browser.BraveIntentHandler {
@@ -773,6 +787,7 @@
 
 -keep class org.chromium.chrome.browser.tabbed_mode.TabbedRootUiCoordinator {
     public <init>(...);
+    *** mAdvancedProtectionCoordinator;
 }
 
 -keep class org.chromium.chrome.browser.tabbed_mode.BraveTabbedRootUiCoordinator {
@@ -906,7 +921,13 @@
 -keep class org.chromium.chrome.browser.suggestions.tile.BraveMostVisitedTilesLayoutBase
 
 -keep class org.chromium.chrome.browser.hub.HubManagerImpl {
+    public <init>(...);
     *** ensureHubCoordinatorIsInitialized(...);
+    *** mEdgeToEdgeSupplier;
+}
+
+-keep class org.chromium.chrome.browser.hub.BraveHubManagerImpl {
+    public <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.ui.system.StatusBarColorController {

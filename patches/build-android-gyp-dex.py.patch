@@ -1,5 +1,5 @@
 diff --git a/build/android/gyp/dex.py b/build/android/gyp/dex.py
-index 39da2082abdc45ac21fb3a698f59197fc38aaff2..fe6e99829f4a882cdbbad8ce4eaf96df7561a44b 100755
+index 4e447ae519cc8d310edce1223a3638af6970dd21..ad6857bb365a708b65fcaa9193cb9bceec62e870 100755
 --- a/build/android/gyp/dex.py
 +++ b/build/android/gyp/dex.py
 @@ -35,6 +35,7 @@ DEFAULT_IGNORE_WARNINGS = (
@@ -10,3 +10,11 @@ index 39da2082abdc45ac21fb3a698f59197fc38aaff2..fe6e99829f4a882cdbbad8ce4eaf96df
  
  _MERGE_SERVICE_ENTRIES = (
      # Uses ServiceLoader to find all implementing classes, so multiple are
+@@ -485,6 +486,7 @@ def MergeDexForIncrementalInstall(r8_jar_path, src_paths, dest_dex_jar,
+ def main(args):
+   build_utils.InitLogging('DEX_DEBUG')
+   options = _ParseArgs(args)
++  options.intermediate = options.intermediate and not any('com_wireguard_android_java' in c for c in options.class_inputs)
+ 
+   options.class_inputs += options.class_inputs_filearg
+   options.dex_inputs += options.dex_inputs_filearg

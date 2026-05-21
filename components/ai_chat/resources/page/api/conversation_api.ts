@@ -25,10 +25,6 @@ export default function createConversationApi(
     // since prototype methods aren't spreadable.
     actions: {
       conversationHandler: actionsFor(conversationHandler, [
-        'generateQuestions',
-        'submitSummarizationRequest',
-        'submitSuggestion',
-        'retryAPIRequest',
         'changeModel',
         'rateMessage',
         'sendFeedback',
@@ -60,12 +56,16 @@ export default function createConversationApi(
             currentModelKey: '',
             defaultModelKey: '',
             allModels: [],
+            // <if expr="is_ios">
             suggestedQuestions: [],
             suggestionStatus: Mojom.SuggestionGenerationStatus.None,
+            // </if>
             associatedContent: [],
             error: Mojom.APIError.None,
+            errorDetails: undefined,
             temporary: false,
             toolUseTaskState: Mojom.TaskState.kNone,
+            capabilitiesEnabled: [Mojom.ConversationCapability.CHAT],
           } as Mojom.ConversationState,
         },
         getConversationHistory: {
@@ -143,8 +143,11 @@ export default function createConversationApi(
             }
           },
 
-          onAPIResponseError: (error) => {
-            api.getState.update({ error })
+          onAPIResponseError: (apiError, errorDetails) => {
+            api.getState.update({
+              error: apiError,
+              errorDetails: errorDetails ?? undefined,
+            })
           },
 
           onTaskStateChanged: (toolUseTaskState) => {
@@ -156,13 +159,6 @@ export default function createConversationApi(
               currentModelKey,
               defaultModelKey,
               allModels,
-            })
-          },
-
-          onSuggestedQuestionsChanged(suggestedQuestions, suggestionStatus) {
-            api.getState.update({
-              suggestedQuestions,
-              suggestionStatus,
             })
           },
 

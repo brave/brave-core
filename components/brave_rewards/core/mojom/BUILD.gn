@@ -22,7 +22,10 @@ mojom("engine") {
     "rewards_engine_internal.mojom",
   ]
 
-  public_deps = [ "//mojo/public/mojom/base" ]
+  public_deps = [
+    "//mojo/public/mojom/base",
+    "//url/mojom:url_mojom_gurl",
+  ]
 
   deps = [ ":mojom" ]
 }

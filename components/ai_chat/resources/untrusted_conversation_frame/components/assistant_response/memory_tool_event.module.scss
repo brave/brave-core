@@ -5,7 +5,7 @@
 
 .memoryToolEvent {
   display: flex;
-  animation: reveal 200ms ease-out both;
+  animation: var(--reveal-animation);
   align-items: flex-start;
   gap: var(--leo-spacing-m);
   color: var(--leo-color-text-secondary);

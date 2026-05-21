@@ -17,7 +17,7 @@ namespace android {
 
 namespace {
 template <class T>
-jlong BindWalletService(
+int64_t BindWalletService(
     JNIEnv* env,
     const base::android::JavaRef<jobject>& profile_android) {
   auto* profile = Profile::FromJavaObject(profile_android);
@@ -26,55 +26,62 @@ jlong BindWalletService(
               profile)) {
     mojo::PendingRemote<T> pending;
     brave_wallet_service->Bind(pending.InitWithNewPipeAndPassReceiver());
-    return static_cast<jlong>(pending.PassPipe().release().value());
+    return static_cast<int64_t>(pending.PassPipe().release().value());
   }
-  return static_cast<jlong>(mojo::kInvalidHandleValue);
+  return static_cast<int64_t>(mojo::kInvalidHandleValue);
 }
 }  // namespace
 
-static jlong JNI_BraveWalletServiceFactory_GetInterfaceToBraveWalletService(
+static int64_t JNI_BraveWalletServiceFactory_GetInterfaceToBraveWalletService(
     JNIEnv* env,
     const base::android::JavaRef<jobject>& profile_android) {
   return BindWalletService<brave_wallet::mojom::BraveWalletService>(
       env, profile_android);
 }
 
-static jlong JNI_BraveWalletServiceFactory_GetInterfaceToBraveWalletP3A(
+static int64_t JNI_BraveWalletServiceFactory_GetInterfaceToBraveWalletP3A(
     JNIEnv* env,
     const base::android::JavaRef<jobject>& profile_android) {
   return BindWalletService<brave_wallet::mojom::BraveWalletP3A>(
       env, profile_android);
 }
 
-static jlong JNI_BraveWalletServiceFactory_GetInterfaceToJsonRpcService(
+static int64_t JNI_BraveWalletServiceFactory_GetInterfaceToJsonRpcService(
     JNIEnv* env,
     const base::android::JavaRef<jobject>& profile_android) {
   return BindWalletService<brave_wallet::mojom::JsonRpcService>(
       env, profile_android);
 }
 
-static jlong JNI_BraveWalletServiceFactory_GetInterfaceToKeyringService(
+static int64_t JNI_BraveWalletServiceFactory_GetInterfaceToKeyringService(
     JNIEnv* env,
     const base::android::JavaRef<jobject>& profile_android) {
   return BindWalletService<brave_wallet::mojom::KeyringService>(
       env, profile_android);
 }
 
-static jlong JNI_BraveWalletServiceFactory_GetInterfaceToTxService(
+static int64_t JNI_BraveWalletServiceFactory_GetInterfaceToTxService(
     JNIEnv* env,
     const base::android::JavaRef<jobject>& profile_android) {
   return BindWalletService<brave_wallet::mojom::TxService>(env,
                                                            profile_android);
 }
 
-static jlong JNI_BraveWalletServiceFactory_GetInterfaceToEthTxManagerProxy(
+static int64_t JNI_BraveWalletServiceFactory_GetInterfaceToAssetRatioService(
+    JNIEnv* env,
+    const base::android::JavaRef<jobject>& profile_android) {
+  return BindWalletService<brave_wallet::mojom::AssetRatioService>(
+      env, profile_android);
+}
+
+static int64_t JNI_BraveWalletServiceFactory_GetInterfaceToEthTxManagerProxy(
     JNIEnv* env,
     const base::android::JavaRef<jobject>& profile_android) {
   return BindWalletService<brave_wallet::mojom::EthTxManagerProxy>(
       env, profile_android);
 }
 
-static jlong JNI_BraveWalletServiceFactory_GetInterfaceToSolanaTxManagerProxy(
+static int64_t JNI_BraveWalletServiceFactory_GetInterfaceToSolanaTxManagerProxy(
     JNIEnv* env,
     const base::android::JavaRef<jobject>& profile_android) {
   return BindWalletService<brave_wallet::mojom::SolanaTxManagerProxy>(

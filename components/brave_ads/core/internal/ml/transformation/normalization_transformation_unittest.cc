@@ -10,9 +10,9 @@
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/ml/data/text_data.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
-#include "brave/components/brave_ads/core/internal/ml/ml_alias.h"
 #include "brave/components/brave_ads/core/internal/ml/transformation/hashed_ngrams_transformation.h"
 #include "brave/components/brave_ads/core/internal/ml/transformation/lowercase_transformation.h"
+#include "brave/components/brave_ads/core/internal/ml/transformation/transformation.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -53,8 +53,7 @@ TEST_F(BraveAdsNormalizationTransformationTest, NormalizationTest) {
 
   ASSERT_EQ(DataType::kVector, data->GetType());
 
-  const VectorData* const vector_data =
-      static_cast<VectorData*>(data.release());
+  const VectorData* const vector_data = static_cast<VectorData*>(data.get());
 
   std::vector<double> components;
   double s = 0.0;

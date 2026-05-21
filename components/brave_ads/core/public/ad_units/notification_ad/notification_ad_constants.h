@@ -44,8 +44,6 @@ inline constexpr base::TimeDelta kDefaultNotificationAdTimeout =
     base::Seconds(30);
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
-// Do not fallback to custom notification ad by default
-inline constexpr bool kDefaultCanFallbackToCustomNotificationAds = false;
 
 }  // namespace brave_ads
 

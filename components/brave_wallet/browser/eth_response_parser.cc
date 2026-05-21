@@ -364,33 +364,4 @@ std::optional<std::string> ParseUnstoppableDomainsProxyReaderGet(
   return value;
 }
 
-bool ParseTokenUri(const base::Value& json_value, GURL* url) {
-  std::string result;
-  if (!ParseStringResult(json_value, &result)) {
-    return false;
-  }
-
-  GURL result_url = GURL(result);
-  if (!result_url.is_valid()) {
-    return false;
-  }
-
-  *url = result_url;
-  return true;
-}
-
-bool ParseDataURIAndExtractJSON(const GURL url, std::string* json) {
-  std::string mime_type, charset, data;
-  if (!net::DataURL::Parse(url, &mime_type, &charset, &data) || data.empty()) {
-    return false;
-  }
-
-  if (mime_type != "application/json") {
-    return false;
-  }
-
-  *json = data;
-  return true;
-}
-
 }  // namespace brave_wallet::eth

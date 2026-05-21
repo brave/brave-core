@@ -20,6 +20,7 @@
 #include "chrome/browser/ui/startup/launch_mode_recorder.h"
 #include "chrome/browser/ui/startup/startup_browser_creator.h"
 #include "chrome/browser/ui/startup/startup_browser_creator_impl.h"
+#include "chrome/browser/ui/tab_ui_helper.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/webui/ntp/new_tab_ui.h"
@@ -71,9 +72,9 @@ void AddBookmarkNode(Profile* profile) {
 IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest, NTPFaviconTest) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("brave://newtab/")));
 
-  auto* tab_model = browser()->tab_strip_model();
-  EXPECT_TRUE(
-      browser()->ShouldDisplayFavicon(tab_model->GetActiveWebContents()));
+  tabs::TabInterface* const tab_interface =
+      browser()->tab_strip_model()->GetActiveTab();
+  EXPECT_TRUE(TabUIHelper::From(tab_interface)->ShouldDisplayFavicon());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest, LoadWebUIURLWithBadSchemeTest) {

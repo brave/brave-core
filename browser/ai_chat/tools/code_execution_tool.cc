@@ -13,15 +13,16 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
+#include "base/uuid.h"
 #include "base/values.h"
 #include "brave/common/webui_url_constants.h"
+#include "brave/components/ai_chat/core/browser/tools/bignumber_code_plugin.h"
 #include "brave/components/ai_chat/core/browser/tools/chart_code_plugin.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_input_properties.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/script_injector/common/mojom/script_injector.mojom.h"
 #include "chrome/browser/profiles/profile.h"
-#include "components/grit/brave_components_resources.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/render_frame_host.h"
@@ -30,7 +31,6 @@
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 #include "third_party/blink/public/mojom/script/script_evaluation_params.mojom.h"
 #include "ui/base/page_transition_types.h"
-#include "ui/base/resource/resource_bundle.h"
 #include "url/gurl.h"
 
 namespace ai_chat {
@@ -41,6 +41,7 @@ constexpr base::TimeDelta kExecutionTimeLimit = base::Seconds(10);
 constexpr char kScriptProperty[] = "script";
 constexpr char kArtifactTypeKey[] = "type";
 constexpr char kArtifactContentKey[] = "content";
+constexpr char kArtifactIdKey[] = "id";
 
 }  // namespace
 
@@ -142,15 +143,26 @@ void CodeExecutionTool::ResolveRequest(
       break;
     }
 
+    // Determine artifact ID: reuse existing ID from JS or generate a new one.
+    const auto* existing_id = artifact_dict->FindString(kArtifactIdKey);
+    std::string artifact_id =
+        (existing_id && !existing_id->empty())
+            ? *existing_id
+            : base::Uuid::GenerateRandomV4().AsLowercaseString();
+
     // Find matching plugin and validate artifact
     bool plugin_found = false;
     for (const auto& plugin : code_plugins_) {
-      if (plugin->ArtifactType() != *type) {
+      auto artifact_type = plugin->ArtifactType();
+      if (!artifact_type || *artifact_type != *type) {
         continue;
       }
       plugin_found = true;
       if (auto validation_error = plugin->ValidateArtifact(*content)) {
         error = base::StrCat({"Error: ", *validation_error});
+      } else if (auto log = plugin->GetArtifactCreationMessage(artifact_id)) {
+        base::StrAppend(&console_logs,
+                        {console_logs.empty() ? "" : "\n", *log});
       }
       break;
     }
@@ -173,8 +185,8 @@ void CodeExecutionTool::ResolveRequest(
     }
 
     // Add artifact
-    artifact_ptrs.push_back(
-        mojom::ToolArtifact::New(*type, std::move(content_json)));
+    artifact_ptrs.push_back(mojom::ToolArtifact::New(
+        std::move(artifact_id), *type, std::move(content_json)));
   }
 
   // Construct final content blocks
@@ -194,6 +206,7 @@ void CodeExecutionTool::ResolveRequest(
 CodeExecutionTool::CodeExecutionTool(content::BrowserContext* browser_context)
     : profile_(Profile::FromBrowserContext(browser_context)),
       execution_time_limit_(kExecutionTimeLimit) {
+  code_plugins_.push_back(std::make_unique<BigNumberCodePlugin>());
   if (ChartCodePlugin::IsEnabled()) {
     code_plugins_.push_back(std::make_unique<ChartCodePlugin>());
   }
@@ -215,10 +228,7 @@ CodeExecutionTool::CodeExecutionTool(content::BrowserContext* browser_context)
        "Do not use this for fetching information from the internet. "
        "Use console.log() to output results. "
        "The code will be executed in a sandboxed environment. "
-       "Network requests are not allowed. "
-       "bignumber.js is available in the global scope. Use it for any "
-       "decimal math (i.e. financial calculations). "
-       "Do not use require to import bignumber.js, as it is not needed. ",
+       "Network requests are not allowed. ",
        base::JoinString(plugin_descriptions, " "),
        "\nExample tasks that require code execution:\n"
        " - Financial calculations (e.g. compound interest)\n"
@@ -274,11 +284,7 @@ void CodeExecutionTool::AddCodePluginForTesting(
   code_plugins_.push_back(std::move(plugin));
 }
 
-std::string CodeExecutionTool::WrapScript(const std::string& script) const {
-  auto bignumber_js =
-      ui::ResourceBundle::GetSharedInstance().LoadDataResourceString(
-          IDR_AI_CHAT_BIGNUMBER_JS);
-
+std::string CodeExecutionTool::WrapScript(const std::string& script) {
   std::vector<std::string_view> plugin_scripts;
   for (const auto& plugin : code_plugins_) {
     if (script.find(plugin->InclusionKeyword()) != std::string::npos) {
@@ -287,8 +293,7 @@ std::string CodeExecutionTool::WrapScript(const std::string& script) const {
   }
 
   return base::StrCat({"(async function() { let codeExecArtifacts = []; ",
-                       bignumber_js, base::StrCat(plugin_scripts), " try { ",
-                       script,
+                       base::StrCat(plugin_scripts), " try { ", script,
                        " } catch (error) { console.error(error.toString()); } "
                        "return codeExecArtifacts; })()"});
 }

@@ -1,3 +1,9 @@
+/* The subtitle of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenDescription" = "Halten Sie das Brave-Symbol gedrückt und ziehen Sie es für schnellen Zugriff in Ihr Dock.";
+
+/* The title of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenTitle" = "Brave zu Ihrem Dock hinzufügen";
+
 /* The title of the button that changes the screen to next */
 "focusOnboarding.continueButtonTitle" = "Weiter";
 
@@ -5,7 +11,7 @@
 "focusOnboarding.defaultBrowserScreenDescription" = "Setze Brave noch heute als deinen Standardbrowser.";
 
 /* The title of the screen that requests user to set Brave as default */
-"focusOnboarding.defaultBrowserScreenTitle" = "Erhalte Werbeblockierung auf jeder Website, die du besuchst";
+"focusOnboarding.defaultBrowserScreenTitle" = "Werbeblockierung auf jeder Website, die Sie besuchen";
 
 /* The title of the button that closes the default browser full screen callout */
 "focusOnboarding.notNowActionButtonTitle" = "Nicht jetzt";
@@ -25,18 +31,12 @@
 /* The description shown below the toggle for enabling privacy preserving analytics. This uses standard markdown syntax. The Learn More is a link and #p3a-learn-more is a URL fragment */
 "focusOnboarding.p3aToggleDescription" = "Du kannst dich jederzeit in den Einstellungen unter **Shields und Datenschutz** abmelden. [Erfahre mehr](#p3a-learn-more) über unsere datenschutzfreundliche Produktanalyse.";
 
-/* The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The "completely private & anonymous" snippet should be bold in all languages */
-"focusOnboarding.p3aToggleTitle" = "Teile **vollständig private & anonyme Produktinformationen.";
+/* The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The "private & anonymous" snippet should be bold in all languages */
+"focusOnboarding.p3aToggleTitle" = "**Private und anonyme** Produkteinblicke teilen.";
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "Mit dem Surfen beginnen";
 
 /* The title of the button that triggers navigation link to settings */
 "focusOnboarding.systemSettingsButtonTitle" = "Als Standard festlegen";
-
-/* The description of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorDescription" = "Starte das Streaming und genieße weniger Werbung und Tracking";
-
-/* The title of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorTitle" = "Erlebe den Brave Unterschied";
 

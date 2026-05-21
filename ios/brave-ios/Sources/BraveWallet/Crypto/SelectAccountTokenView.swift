@@ -47,7 +47,8 @@ struct SelectAccountTokenView: View {
         accountSections
       }
     }
-    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+    .scrollContentBackground(.hidden)
+    .background(Color(UIColor.braveGroupedBackground))
     .searchable(
       text: $store.query,
       placement: .navigationBarDrawer(displayMode: .always)

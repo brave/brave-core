@@ -8,15 +8,15 @@
 #include <vector>
 
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
-#include "brave/components/brave_ads/core/internal/ad_units/ad_test_util.h"
+#include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_constants.h"
+#include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_feature.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder_test_util.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_test_util.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/test/ad_event_builder_test_util.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/test/ad_event_test_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
 
@@ -38,10 +38,10 @@ TEST_F(BraveAdsDismissedExclusionRuleTest, ShouldAlwaysInclude) {
   creative_ad.campaign_id = test::kCampaignId;
 
   AdEventList ad_events;
-  const AdEventInfo ad_event = test::BuildAdEvent(
-      creative_ad, mojom::AdType::kNotificationAd,
-      mojom::ConfirmationType::kDismissed,
-      /*created_at=*/test::Now(), /*should_generate_random_uuids=*/true);
+  const AdEventInfo ad_event =
+      test::BuildAdEvent(creative_ad, mojom::AdType::kNotificationAd,
+                         mojom::ConfirmationType::kDismissed,
+                         /*created_at=*/test::Now(), /*use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const NotificationAdDismissedExclusionRule exclusion_rule(ad_events);
@@ -87,7 +87,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
     const AdEventInfo ad_event =
         test::BuildAdEvent(creative_ad, mojom::AdType::kNotificationAd,
                            mojom_confirmation_type, /*created_at=*/test::Now(),
-                           /*should_generate_random_uuids=*/true);
+                           /*use_random_uuids=*/true);
     ad_events.push_back(ad_event);
     AdvanceClockBy(base::Minutes(5));
   }
@@ -114,25 +114,25 @@ TEST_F(
   AdEventList ad_events;
 
   const AdInfo ad_1 = test::BuildAd(mojom::AdType::kNotificationAd,
-                                    /*should_generate_random_uuids=*/true);
+                                    /*use_random_uuids=*/true);
   const AdEventInfo ad_event_1 = BuildAdEvent(
       ad_1, mojom::ConfirmationType::kDismissed, /*created_at=*/test::Now());
   ad_events.push_back(ad_event_1);
 
   const AdInfo ad_2 = test::BuildAd(mojom::AdType::kNewTabPageAd,
-                                    /*should_generate_random_uuids=*/true);
+                                    /*use_random_uuids=*/true);
   const AdEventInfo ad_event_2 = BuildAdEvent(
       ad_2, mojom::ConfirmationType::kDismissed, /*created_at=*/test::Now());
   ad_events.push_back(ad_event_2);
 
   const AdInfo ad_3 = test::BuildAd(mojom::AdType::kNotificationAd,
-                                    /*should_generate_random_uuids=*/true);
+                                    /*use_random_uuids=*/true);
   const AdEventInfo ad_event_3 = BuildAdEvent(
       ad_3, mojom::ConfirmationType::kDismissed, /*created_at=*/test::Now());
   ad_events.push_back(ad_event_3);
 
   const AdInfo ad_4 = test::BuildAd(mojom::AdType::kSearchResultAd,
-                                    /*should_generate_random_uuids=*/true);
+                                    /*use_random_uuids=*/true);
   const AdEventInfo ad_event_4 = BuildAdEvent(
       ad_4, mojom::ConfirmationType::kDismissed, /*created_at=*/test::Now());
   ad_events.push_back(ad_event_4);
@@ -166,7 +166,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
     const AdEventInfo ad_event =
         test::BuildAdEvent(creative_ad, mojom::AdType::kNotificationAd,
                            mojom_confirmation_type, /*created_at=*/test::Now(),
-                           /*should_generate_random_uuids=*/true);
+                           /*use_random_uuids=*/true);
     ad_events.push_back(ad_event);
     AdvanceClockBy(base::Minutes(5));
   }
@@ -200,7 +200,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
     const AdEventInfo ad_event =
         test::BuildAdEvent(creative_ad, mojom::AdType::kNotificationAd,
                            mojom_confirmation_type, /*created_at=*/test::Now(),
-                           /*should_generate_random_uuids=*/true);
+                           /*use_random_uuids=*/true);
     ad_events.push_back(ad_event);
     AdvanceClockBy(base::Minutes(5));
   }
@@ -237,7 +237,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
     const AdEventInfo ad_event =
         test::BuildAdEvent(creative_ad, mojom::AdType::kNotificationAd,
                            mojom_confirmation_type, /*created_at=*/test::Now(),
-                           /*should_generate_random_uuids=*/true);
+                           /*use_random_uuids=*/true);
     ad_events.push_back(ad_event);
     AdvanceClockBy(base::Minutes(5));
   }
@@ -271,7 +271,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
     const AdEventInfo ad_event =
         test::BuildAdEvent(creative_ad, mojom::AdType::kNotificationAd,
                            mojom_confirmation_type, /*created_at=*/test::Now(),
-                           /*should_generate_random_uuids=*/true);
+                           /*use_random_uuids=*/true);
     ad_events.push_back(ad_event);
     AdvanceClockBy(base::Minutes(5));
   }
@@ -310,7 +310,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
     const AdEventInfo ad_event =
         test::BuildAdEvent(creative_ad, mojom::AdType::kNotificationAd,
                            mojom_confirmation_type, /*created_at=*/test::Now(),
-                           /*should_generate_random_uuids=*/true);
+                           /*use_random_uuids=*/true);
     ad_events.push_back(ad_event);
     AdvanceClockBy(base::Minutes(5));
   }
@@ -348,7 +348,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
     const AdEventInfo ad_event =
         test::BuildAdEvent(creative_ad, mojom::AdType::kNotificationAd,
                            mojom_confirmation_type, /*created_at=*/test::Now(),
-                           /*should_generate_random_uuids=*/true);
+                           /*use_random_uuids=*/true);
     ad_events.push_back(ad_event);
     AdvanceClockBy(base::Minutes(5));
   }
@@ -384,7 +384,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
     const AdEventInfo ad_event =
         test::BuildAdEvent(creative_ad, mojom::AdType::kNotificationAd,
                            mojom_confirmation_type, /*created_at=*/test::Now(),
-                           /*should_generate_random_uuids=*/true);
+                           /*use_random_uuids=*/true);
     ad_events.push_back(ad_event);
   }
 
@@ -421,7 +421,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
     const AdEventInfo ad_event =
         test::BuildAdEvent(creative_ad_2, mojom::AdType::kNotificationAd,
                            mojom_confirmation_type, /*created_at=*/test::Now(),
-                           /*should_generate_random_uuids=*/true);
+                           /*use_random_uuids=*/true);
     ad_events.push_back(ad_event);
     AdvanceClockBy(base::Minutes(5));
   }
@@ -457,7 +457,7 @@ TEST_F(BraveAdsDismissedExclusionRuleTest,
     const AdEventInfo ad_event =
         test::BuildAdEvent(creative_ad_2, mojom::AdType::kNotificationAd,
                            mojom_confirmation_type, /*created_at=*/test::Now(),
-                           /*should_generate_random_uuids=*/true);
+                           /*use_random_uuids=*/true);
     ad_events.push_back(ad_event);
     AdvanceClockBy(base::Minutes(5));
   }

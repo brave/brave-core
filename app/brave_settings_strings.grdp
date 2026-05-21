@@ -99,7 +99,10 @@
       Containers
     </message>
     <message name="IDS_SETTINGS_CONTAINERS_SECTION_DESCRIPTION" desc="The description for section containing settings related to containers" formatter_data="webui=Containers">
-      Organize your browsing with containers. <ph name="BEGIN_LINK">&lt;a target="_blank" href="#"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+      Containers are color-coded browser tabs that isolate your browsing data, such as cookies, cache, and site storage into separate contexts. <ph name="BEGIN_LINK">&lt;a target="_blank" href="#"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+    </message>
+    <message name="IDS_SETTINGS_CONTAINERS_ENABLED_LABEL" desc="The label for the toggle that enables the Containers feature" formatter_data="webui=Containers">
+      Enable Containers
     </message>
     <message name="IDS_SETTINGS_CONTAINERS_ADD_CONTAINER_LABEL" desc="The label for dialog title for adding a container" formatter_data="webui=Containers">
       Add new container
@@ -165,6 +168,9 @@
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_VERTICAL_TAB_SHOW_SCROLLBAR" desc="Title for checkbox to show scrollbar on vertical tabs">
     Show scrollbar
   </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_HORIZONTAL_SCROLL_BUTTONS" desc="Title for checkbox to show scroll buttons next to the horizontal tab strip when tabs overflow">
+    Show scroll buttons on horizontal tab strip
+  </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_VERTICAL_TAB_ON_RIGHT" desc="The label for radio button to show vertical tab on right">
     Show on the right
   </message>
@@ -179,6 +185,24 @@
   </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_HOVER_MODE_TOOLTIP" desc="The label name of the tab hover mode where a tooltip with the site title is shown.">
     Tooltip
+  </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_MIN_WIDTH_MODE" desc="Label for horizontal tab minimum width setting">
+    Minimum tab width
+  </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_MIN_WIDTH_MINIMUM" desc="Tab minimum width option: narrowest tabs">
+    Minimum (Default)
+  </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_MIN_WIDTH_MEDIUM" desc="Tab minimum width option: medium width">
+    Medium
+  </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_MIN_WIDTH_LARGE" desc="Tab minimum width option: half of full tab width">
+    Large
+  </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_MIN_WIDTH_FULL" desc="Tab minimum width option: full standard tab width">
+    Full width
+  </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_SCROLLABLE_HORIZONTAL_TAB_STRIP" desc="Title for toggle that enables scrolling the horizontal tab strip when many tabs are open">
+    Use scrollable tab strip
   </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_SHARED_PINNED_TAB" desc="The label name of a toggle button for Shared Pinned Tab feature">
     Show pinned tabs in all windows
@@ -589,14 +613,8 @@
   <message name="IDS_SETTINGS_BRAVE_ORIGIN_TITLE" desc="The title for the Brave Origin section in settings">
     Brave Origin
   </message>
-  <message name="IDS_SETTINGS_BRAVE_ORIGIN_HEADING_TITLE" desc="The title for the Brave Origin heading section in settings">
-    Customize your browser while still supporting Brave
-  </message>
-  <message name="IDS_SETTINGS_BRAVE_ORIGIN_HEADING_DESCRIPTION1" desc="The first paragraph of descriptive text inside the Brave Origin heading section in settings">
-    Brave Origin helps you tune Brave to your liking and removes all in-app promotional offers, branded advertisements and even our anonymous analytics that you may have enabled during installation.
-  </message>
-  <message name="IDS_SETTINGS_BRAVE_ORIGIN_HEADING_DESCRIPTION2" desc="The second paragraph of descriptive text inside the Brave Origin heading section in settings">
-    Any add-ons or features that you have previously enabled or used will remain visible and integrated, while the rest will get disabled. Continue to tune Brave as we deliver new features into the browser. They will appear silently and hidden by default in the Brave Origin control panel.
+  <message name="IDS_SETTINGS_BRAVE_ORIGIN_RESTART_NOTICE" desc="Notifies the user that a browser restart is needed for all Brave Origin changes to fully take effect">
+    Some changes require a browser restart to fully take effect.
   </message>
   <message name="IDS_SETTINGS_BRAVE_ORIGIN_ADS_SECTION_TITLE" desc="The title for the 'ads' section of Brave Origin in settings">
     Ads
@@ -625,6 +643,12 @@
   <message name="IDS_SETTINGS_BRAVE_ORIGIN_SPEED_READER_TOGGLE_TITLE" desc="The title for toggling the 'speedreader' feature on/off for Brave Origin">
     Speedreader
   </message>
+  <message name="IDS_SETTINGS_BRAVE_ORIGIN_PLAYLIST_TOGGLE_TITLE" desc="The title for toggling the 'playlist' feature on/off for Brave Origin">
+    Playlist
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_ORIGIN_EMAIL_ALIASES_TOGGLE_TITLE" desc="The title for toggling the 'email aliases' feature on/off for Brave Origin">
+    Email Aliases
+  </message>  
   <message name="IDS_SETTINGS_BRAVE_ORIGIN_WEB_DISCOVERY_PROJECT_TOGGLE_TITLE" desc="The title for toggling the 'web discovery project' feature on/off for Brave Origin">
     Web Discovery Project
   </message>
@@ -649,16 +673,13 @@
 
   <!-- Settings / Brave Origin Onboarding -->
   <message name="IDS_SETTINGS_BRAVE_ORIGIN_ONBOARDING_TITLE" desc="The section title for the Brave Origin onboarding in settings">
-    Origin
+    Brave Origin
   </message>
   <message name="IDS_SETTINGS_BRAVE_ORIGIN_ONBOARDING_HEADING_TITLE" desc="The heading title for the Brave Origin onboarding section">
     Customize your browser while still supporting Brave
   </message>
-  <message name="IDS_SETTINGS_BRAVE_ORIGIN_ONBOARDING_DESCRIPTION1" desc="The first paragraph describing Brave Origin in the onboarding section">
-    Brave Origin is a paid version of the browser for users who don't need all of the features that support Brave as a business, but still want the privacy that only Brave offers. Brave Origin users will continue to benefit from our industry-leading privacy, adblock, and speed (via Brave Shields), as well as regular software updates, Chromium patches, and security and privacy improvements. They'll also unlock the option to disable features like AI, Rewards, Wallet, VPN, Web3 domains, and more.
-  </message>
-  <message name="IDS_SETTINGS_BRAVE_ORIGIN_ONBOARDING_DESCRIPTION2" desc="The second paragraph describing Brave Origin availability in the onboarding section">
-    Brave Origin is available via one-time purchase. On mobile (Android and iOS) and desktop, Origin can be purchased as an upgrade to your existing release version. On desktop, Origin is also available as a separate, standalone app. Origin users will see a new control panel in the Settings menu. Existing features—as well as any new features we ship in the future—would appear here, and be toggled off by default.
+  <message name="IDS_SETTINGS_BRAVE_ORIGIN_ONBOARDING_DESCRIPTION" desc="The first paragraph describing Brave Origin in the onboarding section">
+    Brave Origin is a paid version of the browser for users who don't need all the features that support Brave as a business, but still want the privacy that only Brave offers. Origin users will continue to benefit from our industry-leading privacy, adblock, and speed (via Shields), as well as regular software updates, Chromium patches, and security and privacy improvements.
   </message>
   <message name="IDS_SETTINGS_BRAVE_ORIGIN_ONBOARDING_BUY_NOW" desc="The label for the Buy now button in Brave Origin onboarding">
     Buy now
@@ -1607,6 +1628,9 @@
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_TAB_ORGANIZATION_MODEL_LABEL" desc="The label for the tab organization model selection dropdown">
     Default model for tab focus
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_TAB_ORGANIZATION_MODEL_DESC" desc="The description for the tab organization model selection dropdown, with a link to a support page about Tab Focus Mode">
+    The model used to organize your tabs in Tab Focus Mode. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_SHOW_SUGGESTED_PROMPTS_LABEL" desc="The text for settings option">
     Show suggested prompts in the conversation

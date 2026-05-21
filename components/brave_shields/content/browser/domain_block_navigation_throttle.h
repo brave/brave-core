@@ -59,7 +59,7 @@ class DomainBlockNavigationThrottle : public content::NavigationThrottle {
 
  private:
   void OnShouldBlockDomain(DomainBlockingType domain_blocking_type,
-                           const BlockResult& should_block_domain);
+                           BlockResult should_block_domain);
   void ShowInterstitial();
   void Enable1PESAndResume();
   void On1PESState(bool is_1pes_enabled);

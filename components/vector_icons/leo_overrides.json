@@ -39,6 +39,8 @@
   "//chrome/app/vector_icons/navigate_stop.icon": "leo_close",
   "//chrome/app/vector_icons/new_tab_in_group_refresh.icon": "leo_group_new_tab",
   "//chrome/app/vector_icons/open_in_full.icon": "leo_browser_split_view_unsplit",
+  "//chrome/app/vector_icons/overflow_button.icon": "leo_carat_last",
+  "//chrome/app/vector_icons/overflow_button_touch.icon": "leo_carat_last",
   "//chrome/app/vector_icons/print_menu.icon": "leo_print",
   "//chrome/app/vector_icons/qr_code_chrome_refresh.icon": "leo_qr_code",
   "//chrome/app/vector_icons/qrcode_generator.icon": "leo_qr_code",

@@ -13,6 +13,7 @@
 #include "components/password_manager/core/browser/password_form_digest.h"
 #include "components/password_manager/core/browser/password_store/password_store_consumer.h"
 #include "components/password_manager/core/browser/password_store/password_store_interface.h"
+#include "components/password_manager/core/browser/password_store/password_store_util.h"
 #include "ios/web/public/thread/web_thread.h"
 #include "net/base/apple/url_conversions.h"
 
@@ -187,7 +188,7 @@ void PasswordStoreConsumerIOS::OnGetPasswordStoreResults(
 
 - (bool)isAbleToSavePasswords {
   // Returns whether the initialization was successful.
-  return password_store_->IsAbleToSavePasswords();
+  return password_manager::IsAbleToSavePasswords(password_store_->GetError());
 }
 
 - (id<PasswordStoreListener>)addObserver:(id<PasswordStoreObserver>)observer {

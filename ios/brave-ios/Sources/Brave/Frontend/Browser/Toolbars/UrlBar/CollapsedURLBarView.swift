@@ -104,17 +104,24 @@ class CollapsedURLBarView: UIView {
 
   var currentURL: URL? {
     didSet {
-      urlLabel.text = currentURL.map {
+      urlLabel.attributedText = currentURL.map {
         if let internalURL = InternalURL($0), internalURL.isBasicAuthURL {
-          Strings.PageSecurityView.signIntoWebsiteURLBarTitle
+          return NSAttributedString(string: Strings.PageSecurityView.signIntoWebsiteURLBarTitle)
         } else if URLOrigin(url: $0).url != nil || URIFixup.getURL($0.absoluteString) != nil {
-          URLFormatter.formatURLOrigin(
+          // Force left to right render direction
+          let paragraphStyle = NSMutableParagraphStyle()
+          paragraphStyle.baseWritingDirection = .leftToRight
+          let urlString = URLFormatter.formatURLOrigin(
             forDisplayOmitSchemePathAndTrivialSubdomains: URLOrigin(url: $0.strippingBlobURLAuth)
               .url?.absoluteString
               ?? $0.strippingBlobURLAuth.absoluteString
           )
+          return NSAttributedString(
+            string: urlString,
+            attributes: [.paragraphStyle: paragraphStyle]
+          )
         } else {
-          String()
+          return NSAttributedString()
         }
       }
     }

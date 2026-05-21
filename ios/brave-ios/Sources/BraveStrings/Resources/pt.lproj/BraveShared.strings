@@ -16,11 +16,17 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Adicionar marcador";
 
+/* Add a new item to the current list */
+"addButtonTitle" = "Adicionar";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "Adicionar aos favoritos em destaque";
 
 /* Cell title for add folder action */
 "AddFolderActionCellTitle" = "Nova pasta";
+
+/* Settings item that opens instructions for adding Brave to the iOS dock. */
+"addToDockSettingsCell" = "Adicionar à Dock";
 
 /* Add to favorites share action. */
 "AddToFavorites" = "Adicionar aos favoritos em destaque";
@@ -66,6 +72,45 @@
 
 /* Username textbox in Authentication prompt */
 "AuthPromptAlertUsernamePlaceholderText" = "Nome de usuário";
+
+/* Settings autofill section title */
+"Autofill" = "Preenchimento automático";
+
+/* Label for account when indicating that a domain has multiple accounts */
+"autofill.managePassword.multipleAccounts" = "Contas";
+
+/* Alert message warning the user that deleting non-synced passwords will permanently remove them */
+"autofill.managePasswords.deleteCredentialConfirmMessage" = "Isto removerá a(s) palavra-passe guardada(s) para %@ da sua cadeia de sincronização e do seu dispositivo.";
+
+/* Prompt title when deleting passwords */
+"autofill.managePasswords.deleteCredentialsAlertTitle" = "Tem certeza?";
+
+/* Label for the button used to delete the current login. */
+"autofill.managePasswords.deleteManagePasswordButtonTitle" = "Eliminar";
+
+/* Title for the section header in the Manage Passwords list screen, that lists the saved sites */
+"autofill.managePasswords.headerTitle" = "Salva";
+
+/* The message displayed on the manage passwords list screen, when there's at least one password, explain the feature */
+"autofill.managePasswords.instructions" = "Crie, guarde e administre as suas palavras-passe para iniciar sessão facilmente em sites e aplicações.";
+
+/* The header title displayed over the never saved passwords list */
+"autofill.managePasswords.neverSavedListHeaderTitle" = "Nunca salvas";
+
+/* Display text for the option to offer to save passwords */
+"autofill.managePasswords.offerToSavePasswords" = "Oferecer para guardar palavras-passe";
+
+/* Prompt that is diplayed in the search bar of the Manage Passwords list screen */
+"autofill.managePasswords.searchWebsitesPrompt" = "Pesquisar websites";
+
+/* Title for navigation bar of the Manage Passwords screen */
+"autofill.managePasswords.title" = "Administrar palavras-passe";
+
+/* Text to show when the origin of a managed password is not available */
+"autofill.managePasswords.UnknownDomainText" = "Desconhecido";
+
+/* Settings autofill section title */
+"autofill.settings.title" = "Preenchimento automático";
 
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "Redireccionamento automático para páginas AMP";
@@ -141,33 +186,6 @@
 
 /* Placeholder text for adding or editing a bookmark */
 "BookmarkUrlPlaceholderText" = "Endereço";
-
-/* Title for the Brave Account section in settings */
-"BraveAccount" = "Conta Brave";
-
-/* Title shown when waiting for email verification */
-"BraveAccountAlmostThere" = "Quase lá!";
-
-/* Detail text for the almost there title */
-"BraveAccountAlmostThereDetail" = "Um email de confirmação está a caminho. Clique no botão nesse email para ativar sua conta.";
-
-/* Button text to cancel Brave Account registration */
-"BraveAccountCancelRegistration" = "Cancelar registo";
-
-/* Title shown when user is logged in */
-"BraveAccountEmailAddress" = "Endereço de e-mail";
-
-/* Button text to get started with Brave Account */
-"BraveAccountGetStarted" = "Começar";
-
-/* Button text to resend confirmation email */
-"BraveAccountResendConfirmationEmail" = "Reenviar email de confirmação";
-
-/* Detail text for the resend confirmation email button */
-"BraveAccountResendConfirmationEmailDetail" = "Não vê o email? Verifique sua pasta de spam ou clique no botão para reenviar o email de confirmação.";
-
-/* Button text to sign out of Brave Account */
-"BraveAccountSignOut" = "Terminar sessão";
 
 /* Button to show the brave panel */
 "BravePanel" = "Painel do Brave";
@@ -706,15 +724,6 @@
 /* Description for new folder popup */
 "EnterFolderName" = "Inserir nome da pasta";
 
-/* Shown in error pages to suggest a fix to the user. */
-"errorPageCantBeReachedTry" = "Tente digitar novamente o URL ou abrir um mecanismo de pesquisa e pesquisar o novo URL.";
-
-/* Shown in error pages for files that can't be shown and need to be downloaded. */
-"ErrorPageOpenInSafariButtonTitle" = "Abrir no Safari";
-
-/* Shown in error pages on a button that will try to load the page again */
-"ErrorPageReloadButtonTitle" = "Recarregar";
-
 /* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
 "ErrorPagesAdvancedErrorPinningDetails" = "%1$@ costuma encriptar a sua informação para a proteger. Quando o Brave tentou ligar-se a %2$@ desta vez, o website devolveu credenciais invulgares e incorretas. Isto pode ocorrar quando um atacante tenta fingir ser %3$@, ou um ecrã de início de sessão na rede Wi-Fi interrompeu a ligação. A sua informação continua segura porque o Brave interrompeu a ligação antes de qualquer comunicação de dados.<br />Não é possível aceder a %4$@ de momento, porque o website usa a aficação de certificados. Os erros e ataques de rede costumam ser temporário, por isso deverá conseguir aceder a esta página mais tarde.";
 
@@ -1063,11 +1072,8 @@
 /* No comment provided by engineer. */
 "ntp.hideSponsoredImages" = "Ocultar imagens patrocinadas";
 
-/* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "As imagens patrocinadas são fundos de ecrã criados por marcas, que aparecem nos separadores recentemente abertos no navegador. A ativação destas imagens patrocinadas apoia a missão do Brave.";
-
-/* The text label of image type learn more link */
-"ntp.imageTypeSelectionDescriptionLearnMore" = "Aprenda mais";
+/* The text description of image type which is being used NTP. The text inside the square brackets should be translated and is a link */
+"ntp.imageTypeSelectionDescription" = "As imagens patrocinadas são fundos de ecrã criados por marcas, que aparecem nos separadores recentemente abertos no navegador. A ativação destas imagens patrocinadas apoia a missão do Brave. [Saiba Mais](#learn-more)";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Saiba mais sobre o Brave Rewards";
@@ -2368,9 +2374,6 @@
 /* Title of an action that allows user to perform a one-click web search for selected text */
 "SearchWithBrave" = "Pesquisar com o Brave";
 
-/* Settings security section title */
-"Security" = "Segurança";
-
 /* No comment provided by engineer. */
 "sendButtonTitle" = "Enviar";
 
@@ -2733,6 +2736,9 @@
 
 /* Setting to show/hide the tabs bar */
 "ShowTabsBar" = "Barra de guias";
+
+/* Settings item for clearing site-specific settings and shields settings. */
+"SiteAndShieldsSettings" = "Definições das Proteções e de Site";
 
 /* No comment provided by engineer. */
 "SiteReportedBody" = "Obrigado por comunicar aos desenvolvedores da Brave que há algo de errado com o site. Daremos o nosso melhor para o consertar.";
@@ -3178,6 +3184,12 @@
 /* No comment provided by engineer. */
 "tabs.settings.privateTabsSettingsTitle" = "Abas Privadas";
 
+/* The description of the toggle for users to allow the browser to remember its last browsing mode so it can re-launch in that mode when Keep Private Tabs is enabled. */
+"tabs.settings.rememberBrowsingModeDescription" = "Se o navegador estava no modo privado quando foi fechado pela última vez, será aberto no modo privado no próximo arranque.";
+
+/* Toggle to launch the browser in private mode when Keep Private Tabs is enabled */
+"tabs.settings.rememberBrowsingModeTitle" = "Lembrar modo de navegação";
+
 /* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
 "TabToolbarAccessibilityLabel" = "Barra de ferramentas de navegação";
 
@@ -3279,9 +3291,6 @@
 
 /* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
 "ThemesDisplayBrightness" = "Aspeto";
-
-/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
-"ThemesDisplayBrightnessFooter" = "Essas configurações não são aplicadas no modo de navegação privada.";
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "Claro";

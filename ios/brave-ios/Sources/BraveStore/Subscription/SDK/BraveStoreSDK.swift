@@ -302,7 +302,12 @@ public class BraveStoreSDK: AppStoreSDK {
   public func restorePurchase(_ product: BraveStoreProduct) async -> Bool {
     if await currentTransaction(for: product) != nil {
       try? await AppStoreReceipt.sync()
-      return true
+      do {
+        try await self.updateSkusPurchaseState(for: product)
+        return true
+      } catch {
+        return false
+      }
     }
 
     return false
@@ -361,12 +366,14 @@ public class BraveStoreSDK: AppStoreSDK {
   /// - Throws: An exception if purchasing fails for any reason.
   ///           Purchase may be successful with the AppStore, but fail with SkusSDK.
   @MainActor
-  public func purchase(product: BraveStoreProduct) async throws {
+  @discardableResult
+  public func purchase(product: BraveStoreProduct) async throws -> Bool {
     // Handle non-consumable purchases (Origin)
     if product == .originPurchase {
       if let nonConsumableProduct = await nonConsumablePurchase(for: product) {
         if try await super.purchase(nonConsumableProduct) != nil {
           Logger.module.info("[BraveStoreSDK] - Product Purchase Successful")
+          return true
         }
       }
     } else {
@@ -374,9 +381,11 @@ public class BraveStoreSDK: AppStoreSDK {
       if let subscription = await subscription(for: product) {
         if try await super.purchase(subscription) != nil {
           Logger.module.info("[BraveStoreSDK] - Product Purchase Successful")
+          return true
         }
       }
     }
+    return false
   }
 
   /// Retrieves a non-consumable product from the loaded products
@@ -498,48 +507,11 @@ public class BraveStoreSDK: AppStoreSDK {
     }
   }
 
-  /// Refreshes a Skus-SDK product order
-  /// - Throws: An exception if refreshing the order information fails
-  @MainActor
-  private func refreshOrder(for productGroup: BraveStoreProductGroup) async throws {
-    // This SDK currently only supports Leo
-    // until we update the VPN code to use it
-    if productGroup == .vpn {
-      return
-    }
-
-    guard let skusService else {
-      throw SkusError.skusServiceUnavailable
-    }
-
-    Logger.module.info("[BraveStoreSDK] - Refreshing Receipt")
-
-    // Attempt to update the Application Bundle's receipt, if necessary
-    try await AppStoreReceipt.sync()
-
-    // Create an order for the AppStore receipt
-    // If an order already exists, refreshes the order information
-    if let orderId = Preferences.AIChat.subscriptionOrderId.value, productGroup == .leo {
-      try await skusService.refreshOrder(orderId: orderId, for: productGroup)
-      return
-    }
-
-    if let orderId = Preferences.BraveOrigin.purchaseOrderId.value, productGroup == .origin {
-      try await skusService.refreshOrder(orderId: orderId, for: productGroup)
-      return
-    }
-
-    Logger.module.info("[BraveStoreSDK] - No Order To Refresh")
-    throw SkusError.cannotCreateOrder
-  }
-
   /// Updates the Skus-SDK credentials and order information
   /// - Parameter product: The product whose information to update
   /// - Throws: An exception if updating the purchase information fails
   @MainActor
   private func updateSkusPurchaseState(for product: BraveStoreProduct) async throws {
-    // This SDK currently only supports Leo
-    // until we update the VPN code to use it
     switch product.group {
     case .vpn:
       return
@@ -570,7 +542,16 @@ public class BraveStoreSDK: AppStoreSDK {
 
     // There is an order, and an expiry date, but no credentials
     // Fetch the credentials
-    try await skusService.fetchCredentials(orderId: orderId, for: product.group)
+    let skusResult = await skusService.fetchOrderCredentials(
+      domain: product.group.skusDomain,
+      orderId: orderId
+    )
+    if skusResult.code != .ok {
+      Logger.module.info(
+        "[SkusService] - Failed Fetching Credentials - \(skusResult.message, privacy: .public)"
+      )
+      throw SkusError.cannotFetchCredentials
+    }
 
     // Store the Order-ID
     switch product.group {

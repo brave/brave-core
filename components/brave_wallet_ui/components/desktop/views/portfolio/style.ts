@@ -24,8 +24,7 @@ import {
   Column,
 } from '../../../shared/style'
 import {
-  layoutSmallWidth,
-  layoutPanelWidth,
+  layoutPanelWidth, //
 } from '../../wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const StyledWrapper = styled.div`
@@ -161,15 +160,6 @@ export const FilterTokenRow = styled.div<{
   margin-bottom: ${(p) => (p.isV2 ? '16px' : 0)};
 `
 
-export const SelectTimelineWrapper = styled(Row)`
-  @media screen and (max-width: ${layoutSmallWidth}px) {
-    justify-content: flex-start;
-  }
-  @media screen and (max-width: ${layoutPanelWidth}px) {
-    justify-content: center;
-  }
-`
-
 export const ControlsRow = styled(Row)`
   box-shadow: 0px -1px 1px ${leo.color.elevation.primary};
   border-radius: 16px 16px 0px 0px;
@@ -180,12 +170,23 @@ export const ControlsRow = styled(Row)`
   }
 `
 
-export const BalanceAndButtonsWrapper = styled(Column)`
-  @media screen and (max-width: ${layoutSmallWidth}px) {
+export const BalanceAndButtonsWrapper = styled(Column)<{
+  hasZeroBalance?: boolean
+}>`
+  ${({ hasZeroBalance }) =>
+    hasZeroBalance
+      ? `
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 40px 32px 24px 32px;
+  `
+      : `
     flex-direction: row;
     justify-content: space-between;
     align-items: flex-start;
-  }
+    padding: 40px 32px;
+  `}
   @media screen and (max-width: ${layoutPanelWidth}px) {
     flex-direction: column;
     justify-content: flex-start;
@@ -194,18 +195,17 @@ export const BalanceAndButtonsWrapper = styled(Column)`
   }
 `
 
-export const BalanceAndChangeWrapper = styled(Column)`
+export const BalanceAndChangeWrapper = styled(Column)<{
+  hasZeroBalance?: boolean
+}>`
   position: relative;
-  margin-bottom: 24px;
-  @media screen and (max-width: ${layoutSmallWidth}px) {
-    align-items: flex-start;
-    margin-bottom: 0px;
-  }
+  align-items: flex-start;
+  margin-bottom: 0px;
   @media screen and (max-width: ${layoutPanelWidth}px) {
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    margin-bottom: 24px;
+    margin-bottom: ${(p) => (p.hasZeroBalance ? '0px' : '24px')};
   }
 `
 
@@ -218,7 +218,7 @@ export const PortfolioActionButton = styled(WalletButton)`
   outline: none;
   background: none;
   background-color: ${leo.color.container.background};
-  border-radius: 8px;
+  border-radius: ${leo.radius.full};
   border: 1px solid var(--button-border-color);
   height: 36px;
   width: 36px;

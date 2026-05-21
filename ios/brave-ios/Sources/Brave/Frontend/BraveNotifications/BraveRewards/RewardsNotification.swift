@@ -23,7 +23,7 @@ class RewardsNotification: NSObject, BraveNotification {
   var id: String { ad.placementID }
   let ad: NotificationAd
   var dismissPolicy: DismissPolicy {
-    guard let adView = view as? AdView else { return .automatic() }
+    guard view is AdView else { return .automatic() }
 
     var dismissTimeInterval: TimeInterval = 30
     if !AppConstants.isOfficialBuild,
@@ -37,7 +37,7 @@ class RewardsNotification: NSObject, BraveNotification {
   private let handler: (Action) -> Void
 
   func willDismiss(timedOut: Bool) {
-    guard let adView = view as? AdView else { return }
+    guard view is AdView else { return }
     handler(timedOut ? .timedOut : .dismissed)
   }
 
@@ -62,7 +62,7 @@ class RewardsNotification: NSObject, BraveNotification {
   }
 
   @objc private func tappedAdView(_ sender: AdContentButton) {
-    guard let adView = sender.superview as? AdView else { return }
+    guard sender.superview is AdView else { return }
     dismissAction?()
     handler(.opened)
   }

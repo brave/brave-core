@@ -73,7 +73,7 @@ class ContentBlockerHelper: ObservableObject {
 
   var stats: TPPageStats = TPPageStats() {
     didSet {
-      guard let tab = self.tab else { return }
+      guard tab != nil else { return }
       statsDidChange?(stats)
     }
   }

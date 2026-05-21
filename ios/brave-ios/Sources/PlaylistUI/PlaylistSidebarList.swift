@@ -226,7 +226,7 @@ struct PlaylistSidebarListHeader: View {
     .task {
       await calculateTotalSizeOnDisk(for: selectedFolder)
     }
-    .onChange(of: selectedFolderItems.map(\.cachedData)) { _ in
+    .onChange(of: selectedFolderItems.map(\.cachedData)) { _, _ in
       Task {
         await calculateTotalSizeOnDisk(for: selectedFolder)
       }

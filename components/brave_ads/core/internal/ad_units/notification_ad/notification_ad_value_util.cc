@@ -5,14 +5,14 @@
 
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_value_util.h"
 
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/internal/ad_units/ad_type.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_constants.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
 
-base::DictValue NotificationAdToValue(const NotificationAdInfo& ad) {
+base::DictValue NotificationAdToDict(const NotificationAdInfo& ad) {
   return base::DictValue()
       .Set(kNotificationAdTypeKey, ToString(ad.type))
       .Set(kNotificationAdPlacementIdKey, ad.placement_id)
@@ -26,19 +26,19 @@ base::DictValue NotificationAdToValue(const NotificationAdInfo& ad) {
       .Set(kNotificationAdTargetUrlKey, ad.target_url.spec());
 }
 
-base::ListValue NotificationAdsToValue(
+base::ListValue NotificationAdsToList(
     const base::circular_deque<NotificationAdInfo>& ads) {
   base::ListValue list;
   list.reserve(ads.size());
 
   for (const auto& ad : ads) {
-    list.Append(NotificationAdToValue(ad));
+    list.Append(NotificationAdToDict(ad));
   }
 
   return list;
 }
 
-NotificationAdInfo NotificationAdFromValue(const base::DictValue& dict) {
+NotificationAdInfo NotificationAdFromDict(const base::DictValue& dict) {
   NotificationAdInfo ad;
 
   if (const auto* const value = dict.FindString(kNotificationAdTypeKey)) {
@@ -88,13 +88,13 @@ NotificationAdInfo NotificationAdFromValue(const base::DictValue& dict) {
   return ad;
 }
 
-base::circular_deque<NotificationAdInfo> NotificationAdsFromValue(
+base::circular_deque<NotificationAdInfo> NotificationAdsFromList(
     const base::ListValue& list) {
   base::circular_deque<NotificationAdInfo> ads;
 
   for (const auto& value : list) {
     if (const auto* const dict = value.GetIfDict()) {
-      ads.push_back(NotificationAdFromValue(*dict));
+      ads.push_back(NotificationAdFromDict(*dict));
     }
   }
 

@@ -16,11 +16,9 @@ import androidx.annotation.Nullable;
 import org.chromium.base.Log;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
-import org.chromium.brave_wallet.mojom.BraveWalletP3a;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
-import org.chromium.brave_wallet.mojom.OnboardingAction;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.KeyringModel;
@@ -141,7 +139,6 @@ public class OnboardingCreatingWalletFragment extends BaseOnboardingWalletFragme
     }
 
     private void createWallet(@NonNull final KeyringModel keyringModel) {
-        BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
         JsonRpcService jsonRpcService = getJsonRpcService();
 
         if (jsonRpcService != null) {
@@ -153,10 +150,6 @@ public class OnboardingCreatingWalletFragment extends BaseOnboardingWalletFragme
                     selectedNetworks,
                     jsonRpcService,
                     recoveryPhrases -> {
-                        if (braveWalletP3A != null) {
-                            braveWalletP3A.reportOnboardingAction(OnboardingAction.RECOVERY_SETUP);
-                        }
-
                         Utils.setCryptoOnboarding(false);
                         setupWalletModel();
                         goToNextPage();

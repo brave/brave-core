@@ -45,8 +45,7 @@ public protocol TabDelegate: AnyObject {
   func tab(
     _ tab: some TabState,
     didRequestHTTPAuthFor protectionSpace: URLProtectionSpace,
-    proposedCredential credential: URLCredential?,
-    previousFailureCount: Int
+    proposedCredential credential: URLCredential?
   ) async -> URLCredential?
   func tab(
     _ tab: some TabState,
@@ -96,7 +95,7 @@ extension TabDelegate {
     return nil
   }
 
-  func tab(
+  public func tab(
     _ tab: some TabState,
     contextMenuWithLinkURL linkURL: URL?,
     willCommitWithAnimator animator: UIContextMenuInteractionCommitAnimating?
@@ -135,8 +134,7 @@ extension TabDelegate {
   public func tab(
     _ tab: some TabState,
     didRequestHTTPAuthFor protectionSpace: URLProtectionSpace,
-    proposedCredential credential: URLCredential?,
-    previousFailureCount: Int
+    proposedCredential credential: URLCredential?
   ) async -> URLCredential? {
     return nil
   }
@@ -153,15 +151,20 @@ extension TabDelegate {
     return false
   }
 
-  func tab(_ tab: some TabState, defaultUserAgentTypeForURL url: URL) -> UserAgentType {
+  public func tab(_ tab: some TabState, defaultUserAgentTypeForURL url: URL) -> UserAgentType {
     return .mobile
   }
 
-  func tab(
+  public func tab(
     _ tab: some TabState,
     userAgentForType type: UserAgentType,
     request: URLRequest
   ) -> String? {
     return nil
   }
+
+  public func tab(
+    _ tab: some TabState,
+    buildEditMenuWithBuilder builder: any UIMenuBuilder
+  ) {}
 }

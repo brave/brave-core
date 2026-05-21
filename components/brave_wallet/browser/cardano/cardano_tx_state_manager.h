@@ -15,11 +15,11 @@ namespace brave_wallet {
 
 class TxMeta;
 class CardanoTxMeta;
-class TxStorageDelegate;
+class TxStorage;
 
 class CardanoTxStateManager : public TxStateManager {
  public:
-  CardanoTxStateManager(TxStorageDelegate& delegate,
+  CardanoTxStateManager(TxStorage& tx_storage,
                         AccountResolverDelegate& account_resolver_delegate);
   ~CardanoTxStateManager() override;
   CardanoTxStateManager(const CardanoTxStateManager&) = delete;

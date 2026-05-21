@@ -17,7 +17,7 @@
 #include "brave/components/brave_origin/mojom/brave_origin_settings.mojom.h"
 #include "brave/components/commands/common/commands.mojom.h"
 #include "brave/components/containers/buildflags/buildflags.h"
-#include "brave/components/email_aliases/email_aliases.mojom.h"
+#include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "chrome/browser/ui/webui/settings/settings_ui.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
@@ -33,11 +33,11 @@
 #include "brave/components/containers/core/mojom/containers.mojom.h"
 #endif
 
-class BraveSettingsUI;
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+#include "brave/components/email_aliases/email_aliases.mojom.h"
+#endif
 
-namespace brave_account {
-class BraveAccountSettingsHandler;
-}  // namespace brave_account
+class BraveSettingsUI;
 
 namespace content {
 class WebUIDataSource;
@@ -78,8 +78,7 @@ class BraveSettingsUI : public settings::SettingsUI {
   void BindInterface(mojo::PendingReceiver<brave_account::mojom::Authentication>
                          pending_receiver);
   void BindInterface(
-      mojo::PendingReceiver<brave_account::mojom::RowHandlerFactory>
-          pending_receiver);
+      mojo::PendingReceiver<brave_account::mojom::RowHandler> pending_receiver);
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
   void BindInterface(
@@ -87,9 +86,11 @@ class BraveSettingsUI : public settings::SettingsUI {
           pending_receiver);
 #endif
 
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   void BindInterface(
       mojo::PendingReceiver<email_aliases::mojom::EmailAliasesService>
           pending_receiver);
+#endif
 
   void BindInterface(
       mojo::PendingReceiver<brave_origin::mojom::BraveOriginSettingsHandler>
@@ -114,8 +115,6 @@ class BraveSettingsUI : public settings::SettingsUI {
         std::move(ref)));
   }
 
-  std::unique_ptr<brave_account::BraveAccountSettingsHandler>
-      brave_account_settings_handler_;
   // Ensure the mojo receivers are destroyed when the UI is destroyed.
   std::vector<base::ScopedClosureRunner> receiver_cleanup_runners_;
 };

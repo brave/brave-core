@@ -564,6 +564,12 @@ Additional details:
   <message name="IDS_POLICY_LABEL_TIME_SINCE_LAST_REFRESH" desc="Label for the time since the last refresh in the policy status boxes.">
     Last policy timestamp:
   </message>
+  <message name="IDS_POLICY_LABEL_POLICY_FETCH" desc="Label for the policy fetch section.">
+    Policy fetch
+  </message>
+  <message name="IDS_POLICY_LABEL_EXTENSION_INSTALL_POLICY_FETCH" desc="Label for the extension install policy fetch section.">
+    Extension install policy fetch
+  </message>
   <message name="IDS_POLICY_LABEL_LAST_CLOUD_REPORT_SENT_TIMESTAMP" desc="Label for the time when the last cloud report is sent successfully.">
     Report sent:
   </message>
@@ -757,6 +763,12 @@ Additional details:
   <message name="IDS_POLICY_CONFLICT_DIFF_VALUE" desc="Text explaining that a policy had conflicting sources and values.">
     This policy is working as intended but a conflicting value is set elsewhere and is overridden by this policy.
   </message>
+  <message name="IDS_POLICY_USES_SAME_LOCAL_STATE_AND_PROFILE_PREFS" desc="Text explaining that a policy has the same value for machine and user.">
+    This policy has the same value applied at the machine and user levels. The policy is working as intended.
+  </message>
+  <message name="IDS_POLICY_USES_LOCAL_STATE_AND_PROFILE_PREFS" desc="Text explaining that a policy had conflicting sources and values from both machine and user scopes and they were merged.">
+    This policy has different values applied at the machine and user levels. The policy is working as intended.
+  </message>
   <message name="IDS_POLICY_MIGRATED_OLD_POLICY" desc="Text explaining that a policy is deprecated, and that admins should use the new policy instead">
     This policy is deprecated. You should use the <ph name="NEW_POLICY">$1<ex>AllowDinosaurEasterEgg</ex></ph> policy instead.
   </message>
@@ -874,6 +886,9 @@ Additional details:
   <!-- Strings for chrome://policy/logs -->
   <message name="IDS_POLICY_LOGS_TITLE" desc="Title for the page.">
     Policy Logs
+  </message>
+  <message name="IDS_POLICY_LOGS_FILTER_PLACEHOLDER" desc="Placeholder for the input field that lets the user filter policy logs by substring.">
+    Filter logs
   </message>
   <message name="IDS_VERSION_INFO" desc="Label for the section showing the version Information.">
     Version Information
@@ -1327,6 +1342,12 @@ Additional details:
   </message>
   <message name="IDS_POLICY_DEVICE_POST_REBOOT_TITLE" desc="The title for notification informing the user that the device was restarted by the administrator.">
     Your administrator restarted your device
+  </message>
+  <message name="IDS_POLICY_DEVICE_LOCATED_TITLE" desc="The title for notification informing the user that the device was located by the administrator.">
+    Device unlocked
+  </message>
+  <message name="IDS_POLICY_DEVICE_LOCATED_MESSAGE" desc="The body for notification informing the user that the device was located by the administrator.">
+    Your administrator located this device while it was disabled. It has been re-enabled and is ready to use.
   </message>
   <message name="IDS_POLICY_BROWSING_DATA_DEPENDENCY_APPLIED_INFO" desc="The text displayed in the status column when a browsing data policy is applied for types for which sync will be automatically disabled.">
     This policy automatically disables syncing across devices for: <ph name="ACTION_LIST">$1<ex>passwords, autofill</ex></ph>.

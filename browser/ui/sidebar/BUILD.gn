@@ -4,8 +4,10 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/brave_origin/buildflags/buildflags.gni")
 import("//brave/components/brave_talk/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//build/config/ui.gni")
 import("//extensions/buildflags/buildflags.gni")
 
@@ -13,13 +15,24 @@ assert(toolkit_views)
 
 source_set("sidebar") {
   sources = [
+    "sidebar.h",
+    "sidebar_model.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//brave/components/sidebar/browser",
+    "//components/history/core/browser",
+  ]
+}
+
+source_set("sidebar_impl") {
+  sources = [
     "features.cc",
     "features.h",
-    "sidebar.h",
     "sidebar_controller.cc",
     "sidebar_controller.h",
     "sidebar_model.cc",
-    "sidebar_model.h",
     "sidebar_service_factory.cc",
     "sidebar_service_factory.h",
     "sidebar_tab_helper.cc",
@@ -33,8 +46,11 @@ source_set("sidebar") {
   public_deps = [ "//brave/components/sidebar/browser" ]
 
   deps = [
+    ":sidebar",
     "//base",
+    "//brave/browser/ui/sidebar/buildflags",
     "//brave/browser/ui/views/frame/split_view",
+    "//brave/components/brave_origin/buildflags",
     "//brave/components/brave_talk/buildflags",
     "//brave/components/sidebar/common",
     "//chrome/browser:browser_process",
@@ -47,6 +63,8 @@ source_set("sidebar") {
     "//chrome/browser/ui:browser_navigator_params_headers",
     "//chrome/browser/ui:ui_features",
     "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/side_panel",
+    "//chrome/browser/ui/side_panel:side_panel_views_dependent",
     "//chrome/browser/ui/tabs:tab_strip",
     "//chrome/browser/ui/views/side_panel",
     "//components/image_fetcher/core",
@@ -68,14 +86,18 @@ source_set("browser_tests") {
 
   deps = [
     ":sidebar",
+    ":sidebar_impl",
     "//base",
     "//brave/app:command_ids",
+    "//brave/browser/ui/sidebar/buildflags",
     "//brave/browser/ui/views/frame",
     "//brave/browser/ui/views/frame/split_view",
+    "//brave/browser/ui/views/side_panel",
+    "//brave/browser/ui/views/sidebar",
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_talk/buildflags",
     "//brave/components/brave_wallet/common/buildflags",
-    "//brave/components/playlist/core/common",
+    "//brave/components/playlist/core/common/buildflags",
     "//brave/components/sidebar/browser",
     "//brave/components/sidebar/common",
     "//chrome/browser",
@@ -84,6 +106,7 @@ source_set("browser_tests") {
     "//chrome/browser/ui",
     "//chrome/browser/ui:ui_features",
     "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/side_panel:side_panel_views_dependent",
     "//chrome/common:constants",
     "//chrome/test:test_support",
     "//chrome/test:test_support_ui",
@@ -98,6 +121,10 @@ source_set("browser_tests") {
   if (enable_ai_chat) {
     deps += [ "//brave/components/ai_chat/core/common" ]
   }
+
+  if (enable_playlist) {
+    deps += [ "//brave/components/playlist/core/common" ]
+  }
 }
 
 source_set("unit_tests") {
@@ -107,11 +134,13 @@ source_set("unit_tests") {
 
   deps = [
     ":sidebar",
+    ":sidebar_impl",
     "//base",
     "//brave/common",
     "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/brave_origin/buildflags",
     "//brave/components/brave_talk/buildflags",
-    "//brave/components/playlist/core/common",
+    "//brave/components/playlist/core/common/buildflags",
     "//brave/components/sidebar/browser",
     "//chrome/browser/ui",
     "//chrome/test:test_support",
@@ -121,4 +150,8 @@ source_set("unit_tests") {
     "//testing/gmock",
     "//testing/gtest",
   ]
+
+  if (enable_playlist) {
+    deps += [ "//brave/components/playlist/core/common" ]
+  }
 }

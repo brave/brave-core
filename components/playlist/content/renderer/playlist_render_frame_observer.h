@@ -13,12 +13,15 @@
 #include "base/functional/callback_forward.h"
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/mojom/playlist.mojom.h"
 #include "content/public/renderer/render_frame_observer.h"
 #include "content/public/renderer/render_frame_observer_tracker.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "mojo/public/cpp/bindings/pending_associated_receiver.h"
+
+static_assert(BUILDFLAG(ENABLE_PLAYLIST));
 
 namespace playlist {
 

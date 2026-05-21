@@ -99,8 +99,9 @@ export const OnboardingContentLayout = ({
         <BackButtonWrapper>
           {showBackButton ? (
             <Button
-              kind='plain'
+              kind='outline'
               size='small'
+              fab
               onClick={handleBackButtonClick}
             >
               <BackButtonIcon />

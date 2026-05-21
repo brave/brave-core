@@ -22,6 +22,7 @@ class EphemeralStorageServiceDelegate {
   virtual void CleanupTLDEphemeralArea(const TLDEphemeralAreaKey& key) = 0;
   // Cleanups non-ephemeral first party storage areas (cache, dom storage).
   virtual void CleanupFirstPartyStorageArea(const TLDEphemeralAreaKey& key) = 0;
+  virtual void CleanupTLDBrowsingHistory(const TLDEphemeralAreaKey& key) = 0;
   // Registers a callback to be called when the first window is opened.
   virtual void RegisterFirstWindowOpenedCallback(
       base::OnceClosure callback) = 0;
@@ -42,6 +43,7 @@ class EphemeralStorageServiceDelegate {
   // at the beginning of the TLD ephemeral lifetime.
   virtual void TriggerCurrentAppStateNotification() = 0;
 #endif
+  virtual bool IsShredBrowsingHistoryEnabled() = 0;
 };
 
 }  // namespace ephemeral_storage

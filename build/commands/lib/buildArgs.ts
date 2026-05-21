@@ -3,19 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import type { Config } from './config.js'
+import type { Config } from './config.ts'
 import { isCI } from './ciDetect.ts'
 import assert from 'node:assert'
 import fs from 'node:fs'
 import path from 'node:path'
 
 const FORWARD_ENV_CONFIG_VARS_TO_GN_ARGS = [
-  'bitflyer_production_client_id',
-  'bitflyer_production_client_secret',
   'bitflyer_production_fee_address',
   'bitflyer_production_url',
-  'bitflyer_sandbox_client_id',
-  'bitflyer_sandbox_client_secret',
   'bitflyer_sandbox_fee_address',
   'bitflyer_sandbox_url',
   'brave_android_developer_options_code',
@@ -33,12 +29,6 @@ const FORWARD_ENV_CONFIG_VARS_TO_GN_ARGS = [
   'concurrent_links',
   'dcheck_always_on',
   'enable_updater',
-  'gemini_production_api_url',
-  'gemini_production_fee_address',
-  'gemini_production_oauth_url',
-  'gemini_sandbox_api_url',
-  'gemini_sandbox_fee_address',
-  'gemini_sandbox_oauth_url',
   'google_default_client_id',
   'google_default_client_secret',
   'msan_track_origins',
@@ -214,18 +204,22 @@ export function getBuildArgs(config: Config) {
     }
   }
 
-  // Adjust symbol_level in Linux builds:
-  // 1. Set minimal symbol level to workaround size restrictions: on Linux x86,
-  //    ELF32 cannot be > 4GiB.
-  // 2. Enable symbols in Static builds. By default symbol_level is 0 in config
-  //    configuration. symbol_level = 2 cannot be used because of "relocation
+  // Adjust symbol_level to 1 to workaround size restrictions:
+  // 1. On Linux x86, ELF32 cannot be > 4GiB.
+  // 2. On Linux Static builds, enable symbols (symbol_level is 0 by default in
+  //    config). symbol_level = 2 cannot be used because of "relocation
   //    R_X86_64_32 out of range" errors.
+  // 3. On Android Release x64/arm64, debug sections exceed 4GiB causing
+  //    "relocation R_X86_64_32 out of range" linker errors.
   if (
-    config.targetOS === 'linux'
-    && (config.targetArch === 'x86'
-      || (!config.isDebug()
-        && !config.isComponentBuild()
-        && !config.isReleaseBuild()))
+    (config.targetOS === 'linux'
+      && (config.targetArch === 'x86'
+        || (!config.isDebug()
+          && !config.isComponentBuild()
+          && !config.isReleaseBuild())))
+    || (config.targetOS === 'android'
+      && config.isReleaseBuild()
+      && (config.targetArch === 'x64' || config.targetArch === 'arm64'))
   ) {
     args.symbol_level = 1
   }
@@ -351,7 +345,7 @@ export function getBuildArgs(config: Config) {
     // https://chromium.googlesource.com/chromium/src/+/master/docs/component_build.md
     args.is_component_build = false
 
-    if (!args.is_official_build) {
+    if (!config.isBraveReleaseBuild()) {
       // When building locally iOS needs dSYMs in order for Xcode to map source
       // files correctly since we are using a framework build
       args.enable_dsyms = true
@@ -368,20 +362,10 @@ export function getBuildArgs(config: Config) {
     delete args.brave_google_api_endpoint
     delete args.brave_google_api_key
     delete args.brave_stats_updater_url
-    delete args.bitflyer_production_client_id
-    delete args.bitflyer_production_client_secret
     delete args.bitflyer_production_fee_address
     delete args.bitflyer_production_url
-    delete args.bitflyer_sandbox_client_id
-    delete args.bitflyer_sandbox_client_secret
     delete args.bitflyer_sandbox_fee_address
     delete args.bitflyer_sandbox_url
-    delete args.gemini_production_api_url
-    delete args.gemini_production_fee_address
-    delete args.gemini_production_oauth_url
-    delete args.gemini_sandbox_api_url
-    delete args.gemini_sandbox_fee_address
-    delete args.gemini_sandbox_oauth_url
     delete args.uphold_production_api_url
     delete args.uphold_production_fee_address
     delete args.uphold_production_oauth_url

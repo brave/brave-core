@@ -66,6 +66,9 @@ CWV_EXPORT
 /// The current favicon status of the web state
 @property(readonly, nullable) CWVFaviconStatus* faviconStatus;
 
+/// Whether or not find in page is visible
+@property(readonly, getter=isFindNavigatorVisible) BOOL findNavigatorVisible;
+
 #pragma mark -
 
 /// Creates a PDF of the current page

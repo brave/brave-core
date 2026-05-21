@@ -5,9 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/device_id_diagnostic_entry.h"
 
-#include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_constants.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_environment_util.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_entry_types.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds.*
@@ -18,7 +18,7 @@ class BraveAdsDeviceIdDiagnosticEntryTest : public test::TestBase {};
 
 TEST_F(BraveAdsDeviceIdDiagnosticEntryTest, GetValue) {
   // Arrange
-  test::MockDeviceId();
+  test::SetUpDeviceId();
 
   const DeviceIdDiagnosticEntry diagnostic_entry;
 

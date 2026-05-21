@@ -5,7 +5,11 @@
 
 #include "brave/components/serp_metrics/serp_classifier_utils.h"
 
+#include <string>
+
 #include "base/containers/fixed_flat_set.h"
+#include "net/base/url_util.h"
+#include "url/gurl.h"
 
 namespace serp_metrics {
 
@@ -17,10 +21,41 @@ constexpr auto kAllowedSearchEngines = base::MakeFixedFlatSet<SearchEngineType>(
      SEARCH_ENGINE_DUCKDUCKGO, SEARCH_ENGINE_QWANT, SEARCH_ENGINE_ECOSIA,
      SEARCH_ENGINE_BRAVE, SEARCH_ENGINE_STARTPAGE});
 
+// Google URL query parameter names that select a search vertical.
+// Known `tbm` verticals: isch (images), nws (news), vid (video), shop
+// (shopping), bks (books).
+// Known `udm` verticals: 2 (images), 7 (video), 12 (news), 18 (forums), 28
+// (shopping), 39 (short videos).
+constexpr std::string_view kTbmParam = "tbm";
+constexpr std::string_view kUdmParam = "udm";
+
+// `udm` values that represent a plain web search. `udm=0` is the implicit
+// default; `udm=14` is the Web tab without AI Overviews; `udm=web` is a string
+// alias Google uses for the Web tab.
+constexpr std::string_view kUdmAllResults = "0";
+constexpr std::string_view kUdmWebNoAiOverview = "14";
+constexpr std::string_view kUdmWebString = "web";
+
 }  // namespace
 
 bool IsAllowedSearchEngine(SearchEngineType type) {
   return kAllowedSearchEngines.contains(type);
+}
+
+bool IsGoogleWebSearch(const GURL& url) {
+  std::string value;
+  if (net::GetValueForKeyInQuery(url, kTbmParam, &value)) {
+    // Any `tbm` value routes to a vertical search (images, news, video, etc.).
+    return false;
+  }
+  if (net::GetValueForKeyInQuery(url, kUdmParam, &value) &&
+      value != kUdmAllResults && value != kUdmWebNoAiOverview &&
+      value != kUdmWebString) {
+    // Any other `udm` value routes to a vertical search (images, video,
+    // shopping, etc.).
+    return false;
+  }
+  return true;
 }
 
 }  // namespace serp_metrics

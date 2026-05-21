@@ -7,12 +7,6 @@
 
 namespace brave_ads::ml {
 
-Transformation::Transformation(TransformationType type) : type_(type) {}
-
 Transformation::~Transformation() = default;
-
-TransformationType Transformation::GetType() const {
-  return type_;
-}
 
 }  // namespace brave_ads::ml

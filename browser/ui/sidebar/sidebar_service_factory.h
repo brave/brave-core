@@ -12,6 +12,7 @@
 
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -49,7 +50,9 @@ class SidebarServiceFactory : public BrowserContextKeyedServiceFactory {
           SidebarItem::BuiltInItemType::kBookmarks,
           SidebarItem::BuiltInItemType::kReadingList,
           SidebarItem::BuiltInItemType::kHistory,
+#if BUILDFLAG(ENABLE_PLAYLIST)
           SidebarItem::BuiltInItemType::kPlaylist,
+#endif
       });
 
   static_assert(SidebarItem::kBuiltInItemsCount ==

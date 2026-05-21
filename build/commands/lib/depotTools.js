@@ -4,11 +4,11 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import ActionGuard from './actionGuard.js'
-import config from './config.js'
+import config from './config.ts'
 import { isCI } from './ciDetect.ts'
 import fs from 'node:fs'
 import path from 'node:path'
-import Log from './logging.js'
+import * as Log from './log.ts'
 import util from './util.js'
 
 // The .disable_auto_update file in the depot_tools directory, regardless of

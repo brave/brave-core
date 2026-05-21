@@ -38,8 +38,9 @@
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:gravity="start"
                 android:layout_marginTop="16dp"
+                android:layout_marginHorizontal="16dp"
                 android:text="@string/try_brave_search_widget"
                 android:textColor="@color/text_primary"/>
 
@@ -48,25 +49,27 @@
                 style="@style/DefaultRegular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:gravity="start"
                 android:layout_marginBottom="8dp"
+                android:layout_marginHorizontal="16dp"
                 android:text="@string/try_brave_search_widget_description"
-                android:textColor="@color/semantic_text_secondary" />
+                android:textColor="@color/text_secondary" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="16dp"
+                android:gravity="end|center_vertical"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="20dp"
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/tvNotNow"
                     style="@style/LargeButtonBase"
                     android:background="@drawable/button_transparent"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
                     android:text="@string/not_now"
                     android:layout_marginEnd="2dp"
                     android:textColor="@color/schemes_on_surface_variant" />
@@ -74,9 +77,8 @@
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btAddWidget"
                     style="@style/LargeFilledButton"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
                     android:layout_marginStart="2dp"
                     android:text="@string/add_widget" />
             </LinearLayout>

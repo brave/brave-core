@@ -868,6 +868,15 @@ export function getTransactionTransferredValue(
     }
   }
 
+  // Cardano Send Token
+  if (isCardanoSendTokenTransaction(tx)) {
+    const wei = new Amount(getTransactionBaseValue(tx))
+    return {
+      wei,
+      normalized: wei.divideByDecimals(token?.decimals ?? txNetwork.decimals),
+    }
+  }
+
   // Solana
   // Filecoin Txs
   // to.toLowerCase() === SwapExchangeProxy:
@@ -1425,6 +1434,7 @@ export function getTransactionTransferredToken({
     || tx.txType === BraveWallet.TransactionType.ERC721TransferFrom
     || tx.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom
     || isSolanaSplTransaction(tx)
+    || isCardanoSendTokenTransaction(tx)
   ) {
     return token
   }
@@ -1459,6 +1469,7 @@ export function getTransactionTokenSymbol({
     || tx.txType === BraveWallet.TransactionType.ERC721TransferFrom
     || tx.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom
     || isSolanaSplTransaction(tx)
+    || isCardanoSendTokenTransaction(tx)
   ) {
     return token?.symbol || ''
   }
@@ -2136,12 +2147,6 @@ export const parseTransactionWithPrices = ({
     }),
     zcashMemo: tx.txDataUnion.zecTxData?.memo ?? undefined,
   }
-}
-
-export function toTxDataUnion<D extends keyof BraveWallet.TxDataUnion>(
-  unionItem: Pick<BraveWallet.TxDataUnion, D>,
-) {
-  return Object.assign({}, unionItem) as BraveWallet.TxDataUnion
 }
 
 export const isAssociatedTokenAccountCreationTx = (

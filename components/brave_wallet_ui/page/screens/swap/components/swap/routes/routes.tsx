@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 import ButtonMenu from '@brave/leo/react/buttonMenu'
+import Button from '@brave/leo/react/button'
 
 // Types
 import { QuoteOption, RouteTagsType } from '../../../constants/types'
@@ -23,7 +24,6 @@ import { RouteOption } from './route_option'
 // Styles
 import { CaratDownIcon, StyledWrapper } from './routes.style'
 import {
-  LeoSquaredButton,
   Row,
   ScrollableColumn,
   Text,
@@ -138,12 +138,12 @@ export const Routes = (props: Props) => {
         ))}
       </ScrollableColumn>
       <Row padding='16px'>
-        <LeoSquaredButton
+        <Button
           onClick={() => onSelectQuoteOption(userSelectedQuoteOptionId)}
           size='large'
         >
           {getLocale('braveWalletUpdate')}
-        </LeoSquaredButton>
+        </Button>
       </Row>
     </StyledWrapper>
   )

@@ -63,6 +63,7 @@ class AssociatedContentDelegate {
     // so it is not safe to call any virtual methods.
     virtual void OnDestroyed(AssociatedContentDelegate* delegate) {}
     virtual void OnRequestArchive(AssociatedContentDelegate* delegate) {}
+    virtual void OnNewPage(AssociatedContentDelegate* delegate) {}
     virtual void OnTitleChanged(AssociatedContentDelegate* delegate) {}
   };
 
@@ -111,6 +112,7 @@ class AssociatedContentDelegate {
   virtual void OnNewPage(int64_t navigation_id);
 
   void set_uuid(std::string uuid) { uuid_ = std::move(uuid); }
+  void NotifyNewPage();
   void set_url(GURL url) { url_ = std::move(url); }
   void SetTitle(std::u16string title);
   void set_cached_page_content(PageContent page_content) {

@@ -936,3 +936,15 @@ chromium_code = false
 # Do not let chromium_code = false disable Error Prone.
 enable_errorprone = true
 ```
+
+---
+
+<a id="AND-055"></a>
+
+## ✅ Prefer Material Components Over Custom Reimplementations
+
+**When a Material component exists for the UI element, use it instead of building a custom version.** Material components carry built-in motion, accessibility, and theming that hand-rolled `View` subclasses almost always miss. Common cases: `MaterialSwitch` over custom toggles, `MaterialButton` over styled `Button`, `BottomSheetDialogFragment` over hand-rolled sheets, `MaterialAlertDialogBuilder` over custom modal views, `Snackbar`, `Chip`, `TextInputLayout`, `MaterialCardView`.
+
+**Brave subclasses are fine, and often required.** A class like `BraveSettingsSwitch extends MaterialSwitch` is the correct pattern, not a violation — it's how Brave adds theming or telemetry on top of Material. If a Brave subclass exists in the module, callers should use it instead of the raw Material class.
+
+**Flag as `nit:` only, never a blocker.** Ask why Material wasn't used; the author may have a valid constraint that just isn't documented. Before flagging, verify the flagged class does **not** extend any `com.google.android.material.*` component (check the full class hierarchy, not just the file in the diff).

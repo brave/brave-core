@@ -62,7 +62,7 @@ void BraveBrowserPolicyProvider::OnBrowserPolicyChanged(
 policy::PolicyBundle BraveBrowserPolicyProvider::LoadPolicies() {
   policy::PolicyBundle bundle;
 
-  if (brave_origin::IsBraveOriginEnabled()) {
+  if (brave_origin::IsBraveOriginPurchased()) {
     LoadBraveOriginPolicies(bundle);
   }
 

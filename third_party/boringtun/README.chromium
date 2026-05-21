@@ -1,0 +1,17 @@
+Name: boringtun
+URL: https://github.com/cloudflare/boringtun/
+Version: 0.7.0
+Revision: cdf3b24558441ff4dc62bf5992484c5457a36760
+Update Mechanism: Manual
+License: BSD 3-Clause License
+Security Critical: yes
+Shipped: yes
+CPEPrefix: unknown
+
+Description:
+BoringTun is a Rust userspace implementation of the WireGuard protocol,
+maintained by Cloudflare. Brave uses it as the WireGuard tunnel engine
+for Brave VPN on desktop platforms.
+
+Local Modifications:
+No modifications.

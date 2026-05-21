@@ -86,6 +86,7 @@ struct UnlockWalletView: View {
             NavigationLink(
               destination: RestoreWalletView(
                 keyringStore: keyringStore,
+                setupSelections: .init(setupOption: .restore, networks: []),
                 dismissAction: dismissAction
               )
             ) {
@@ -122,7 +123,7 @@ struct UnlockWalletView: View {
         .aspectRatio(contentMode: .fill)
         .edgesIgnoringSafeArea(.all)
     )
-    .onChange(of: password) { _ in
+    .onChange(of: password) { _, _ in
       unlockError = nil
     }
     .onAppear {

@@ -1,8 +1,8 @@
 # Unblinded Tokens
 
-Confirmation tokens contain explicit information about the user's identity or
-eligibility. Still, this information is protected through encryption or other
-cryptographic techniques to help protect user privacy while enabling secure and
-efficient interactions with services or systems.
+Confirmation tokens are privacy-preserving cryptographic tokens that prove a
+user's eligibility to confirm an ad event without revealing their identity. They
+are issued by the token server through a blind-signing protocol and stored
+locally until an ad event needs to be confirmed.
 
 Please add to it!

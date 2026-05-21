@@ -3,5 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-brave_browser_window_internal_deps =
-    [ "//brave/browser/ui/browser_window/internal" ]
+brave_browser_window_internal_deps = [
+  "//brave/browser/ui/browser_window/internal",
+  "//brave/browser/ui/sidebar/buildflags",
+]

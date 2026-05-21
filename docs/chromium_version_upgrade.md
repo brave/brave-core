@@ -1,7 +1,7 @@
 # Upgrading `brave-core` to a newer version of Chromium
 
 This document describes the basics and the tooling available to have
-`brave-core` upstream tag selection chromium, also known as a *version bump*.
+`brave-core` upstream tag selection chromium, also known as a _version bump_.
 
 ## Understanding the basics
 
@@ -23,16 +23,16 @@ tag is set in [`package`](../package.json) and saved as `tag`.
 
 ### Common version bump changes
 
-It is the current practice, when changing upstream tag, to produce these
-changes documenting specific steps documenting the steps involved in a upstream
-tag update.
+It is the current practice, when changing upstream tag, to produce these changes
+documenting specific steps documenting the steps involved in a upstream tag
+update.
 
-| Commit name | Purpose |
-| --- | --- |
-| `Upgrade` | A change with the upgrading of the chromium tag in `package.json` |
+| Commit name                 | Purpose                                                                                                                    |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `Upgrade`                   | A change with the upgrading of the chromium tag in `package.json`                                                          |
 | `Conflict-resolved patches` | Patches that may have failed to apply, and required manual conflict resolution, once `npm run init` was run on the new tag |
-| `Update patches` | Regerated versions of all patches that applied cleanly. |
-| `Updated strings` | Translation strings may have had updates once regenerated under the new Chromium tag. |
+| `Update patches`            | Regerated versions of all patches that applied cleanly.                                                                    |
+| `Updated strings`           | Translation strings may have had updates once regenerated under the new Chromium tag.                                      |
 
 There may be many other changes necessary to get Brave to build with the tag
 being picked, but these four changes are a common idiom when doing doing a
@@ -40,9 +40,8 @@ version bump.
 
 ## Doing a version upgrade with `npm run` tools
 
-All version bumps are done with *🚀Brockit!*, however this section goes over
-the basic underlying steps of how one can produce a bump only using `npm run`
-tools.
+All version bumps are done with _🚀Brockit!_, however this section goes over the
+basic underlying steps of how one can produce a bump only using `npm run` tools.
 
 It is important to have a good understanding of the steps involved in order to
 be able to understand what exactly the automation on top is doing.
@@ -51,6 +50,7 @@ be able to understand what exactly the automation on top is doing.
 
 The first step to start the bump would be updating `package.json`, and then
 committing it to the branch.
+
 ```shell
 $ git checkout -b cr121 origin/master  # branch name is cr+Major number
 
@@ -71,6 +71,7 @@ is no longer valid.
 
 This step has to do with checking out the tag, applying patches, and in case of
 failure, dealing with conflict resolution.
+
 ```shell
 # Checks out the new tag, and tries to apply all patches
 $ npm run init
@@ -116,12 +117,13 @@ chrome/browser/ui/webui/settings/site_settings_helper.cc
 brave/patches/chrome-browser-ui-views-frame-browser_view_layout.cc.patch
 brave/patches/chrome-browser-ui-webui-settings-site_settings_helper.cc.patch
 
-| Commit name | Purpose |
-| --- | --- |
-| `chrome/browser/ui/views/frame/browser_view_layout.cc` | `brave/patches/chrome-browser-ui-views-frame-browser_view_layout.cc.patch` |
+| Commit name                                                | Purpose                                                                        |
+| ---------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| `chrome/browser/ui/views/frame/browser_view_layout.cc`     | `brave/patches/chrome-browser-ui-views-frame-browser_view_layout.cc.patch`     |
 | `chrome/browser/ui/webui/settings/site_settings_helper.cc` | `brave/patches/chrome-browser-ui-webui-settings-site_settings_helper.cc.patch` |
 
 Therefore these patches should be applied as:
+
 ```shell
 # Applying patches in `chromium/src`
 $ git -C ../ apply --3way --ignore-space-change --ignore-whitespace \
@@ -133,6 +135,7 @@ $ git -C ../ reset HEAD
 ```
 
 The output to `git apply` will be usually something as the following.
+
 ```
 Applied patch to 'chrome/browser/ui/views/frame/browser_view_layout.cc' with conflicts.
 U chrome/browser/ui/views/frame/browser_view_layout.cc
@@ -144,23 +147,24 @@ This means these files have now conflicts waiting for resolution before
 proceeding.
 
 > [!WARNING]
+>
 > There may be broken patches for repositories other than `chromium/src`. In
 > those cases, it is necessary to run both `reset` and `apply` from for the
 > failed patches of those repositories too.
 
 #### Patches for deleted sources and broken patches
 
-In some cases patches cannot be applied anymore either because the file that
-was being patched is removed/renamed, or because there's something wrong with
-the patch. In these cases it is important to commit the patch removal as its
-own change, outside the `Conflict-resolved patches` change, as it makes it
-easier for reviewers to understand the reason why some patch is being removed
-or drastically changed.
+In some cases patches cannot be applied anymore either because the file that was
+being patched is removed/renamed, or because there's something wrong with the
+patch. In these cases it is important to commit the patch removal as its own
+change, outside the `Conflict-resolved patches` change, as it makes it easier
+for reviewers to understand the reason why some patch is being removed or
+drastically changed.
 
 #### `npm run update_patches` and committing conflict resolution
 
-Once all merge conflicts are resolved, update all patches, and commit the
-the conflict-resolved change to your branch.
+Once all merge conflicts are resolved, update all patches, and commit the the
+conflict-resolved change to your branch.
 
 ```shell
 $ npm run update_patches
@@ -172,6 +176,7 @@ $ git commit -m " Conflict-resolved patches from Chromium 119.7049.17 to Chromiu
 ### Updating all patches left by `npm run update_patches`
 
 At this stage, if you have not updated all patches yet, then have do so.
+
 ```shell
 $ npm run update_patches
 ```
@@ -179,6 +184,7 @@ $ npm run update_patches
 With all patches that had problems out of the way, and committed as part of
 `Conflict-resolved patches`, or in some other change, it is time to commmit all
 remaining changed paths as part of `Update patche`.
+
 ```shell
 git add -u *.patch
 $ git commit -m " Update patches from Chromium 119.7049.17 to Chromium 120.0.7050.40."
@@ -199,9 +205,9 @@ $ git commit -m " Updated strings for Chromium 120.0.7050.40."
 ```
 
 This step concludes the process of management of the infrastructure to pick out
-a Chromium version, and the branch is ready to run a build, to correct the
-build failures that may now be occurring.
+a Chromium version, and the branch is ready to run a build, to correct the build
+failures that may now be occurring.
 
-## Using *🚀Brockit!* for version management
+## Using _🚀Brockit!_ for version management
 
 TBD.

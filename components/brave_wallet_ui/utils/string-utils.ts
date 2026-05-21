@@ -46,6 +46,11 @@ export const isRemoteImageURL = (url?: string) =>
   || url?.startsWith('data:image/')
   || isIpfs(url)
 
+export const sanitizeImageURL = (url: string): string =>
+  isRemoteImageURL(url)
+    ? `chrome://image?url=${encodeURIComponent(url)}&staticEncode=true`
+    : url
+
 export const isValidIconExtension = (url?: string) =>
   url?.endsWith('.jpg')
   || url?.endsWith('.jpeg')

@@ -3,14 +3,17 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+from __future__ import annotations
+
 from contextlib import contextmanager
 import logging
 import platform
 import secrets
+import shutil
 import subprocess
+import sys
 import threading
 import time
-from typing import Optional, Dict
 
 from rich.console import Console
 
@@ -20,6 +23,70 @@ KEEP_ALIVE_PING_INTERVAL = 20
 KEEP_ALIVE_PING_ART = [
     '(-_-)', '(⊙_⊙)', '(¬_¬)', '(－‸ლ)', '(◎_◎;)', '(⌐■_■)', '(•‿•)', '(≖_≖)'
 ]
+
+# The rich console used for all terminal output. Defined here (rather than
+# at the end of the file) so that the import-time logging preset below can
+# route through it.
+console = Console()
+
+
+def is_verbose() -> bool:
+    """Returns True if `--verbose` was passed on the command line.
+
+    Reads `sys.argv` directly so the answer is available at module import
+    time, before any `argparse` parser has had a chance to run.
+    """
+    return '--verbose' in sys.argv
+
+
+class _PresetLoggingHandler(logging.Handler):
+    """Baseline logging handler used both at import time and as the base
+    class for `IncendiaryErrorHandler`.
+
+    Renders DEBUG records in dim styling via `console.log`; all other
+    levels are emitted as plain rich-console log lines.
+    """
+
+    # Stack offset passed to `console.log` so the file:line column points
+    # at the caller's `logging.<level>(...)` site instead of into Python's
+    # logging internals. Subclasses that add their own `emit` frame on top
+    # of this one must override this with `_STACK_OFFSET + 1`.
+    _STACK_OFFSET = 8
+
+    def emit(self, record: logging.LogRecord) -> None:
+        msg = record.getMessage()
+        if record.levelno == logging.DEBUG:
+            console.log(f'[dim]{msg}[/]', _stack_offset=self._STACK_OFFSET)
+        else:
+            console.log(msg, _stack_offset=self._STACK_OFFSET)
+
+
+class IncendiaryErrorHandler(_PresetLoggingHandler):
+    """Logging handler used by tools/cr entry-point `main()` functions.
+
+    Inherits the dim-DEBUG / plain-other-levels behavior from
+    `_PresetLoggingHandler` and adds a loud emoji prefix to ERROR records
+    so failures stand out in the terminal output.
+    """
+
+    # One extra frame on top of `_PresetLoggingHandler.emit` (this class's
+    # `emit` calls `super().emit(record)`).
+    _STACK_OFFSET = _PresetLoggingHandler._STACK_OFFSET + 1
+
+    def emit(self, record: logging.LogRecord) -> None:
+        if record.levelno == logging.ERROR:
+            record.msg = f'¯\\_(ツ)_/¯\n🔥🔥 {record.msg}'
+        super().emit(record)
+
+
+# Baseline logging config installed at import time. Without this, debug
+# logs emitted during module import (e.g. `_compute_brave_core_path` in
+# repository.py) would be dropped because entry-point `main()` functions
+# only call `logging.basicConfig` *after* their imports finish. Entry
+# points can still override this with `logging.basicConfig(..., force=True)`
+# to install custom handlers/formatting.
+logging.basicConfig(level=logging.DEBUG if is_verbose() else logging.INFO,
+                    handlers=[_PresetLoggingHandler()])
 
 
 class Terminal:
@@ -118,8 +185,30 @@ class Terminal:
             status.stop()
             self.status = None
 
-    def run(self, cmd, env: Optional[Dict[str, str]] = None, cwd=None):
+    def run(self,
+            cmd,
+            *,
+            env: dict[str, str] | None = None,
+            cwd=None,
+            interactive: bool = False,
+            stdin: str | None = None):
         """Runs a command on the terminal.
+
+        When `interactive=True`, the subprocess inherits the parent's
+        stdin/stdout/stderr instead of capturing them -- use this for
+        spawning editors, pagers, or anything else that needs to take
+        over the tty. The returned `CompletedProcess.stdout` /
+        `.stderr` are `None` in that case (nothing is captured).
+
+        `env` follows the same semantics as `subprocess.run`: `None` inherits
+        the parent's environment, a dict fully replaces it. If you want to
+        add a few keys on top of `os.environ`, copy it first
+        (`env={**os.environ, ...}`).
+
+                Pass `stdin=` to feed data into the subprocess's stdin. Captured
+        (non-interactive) mode encodes it with utf-8 to match the
+        captured streams; interactive mode rejects `stdin=` because the
+        subprocess owns the tty.
         """
         # Convert all arguments to strings, to avoid issues with `PurePath`
         # being passed arguments
@@ -144,20 +233,42 @@ class Terminal:
             self.current_command_start_time = time.time()
             self.running_command = " ".join(cmd)
 
+        if platform.system() == 'Windows':
+            # On Windows, resolve the command to an absolute path to avoid
+            # issues with bat/cmd wrappers (e.g. `npm` → `npm.cmd`). This
+            # avoids the use of shell=True.
+            resolved = shutil.which(cmd[0])
+            if resolved is None:
+                raise RuntimeError(f'Command not found: {cmd[0]}')
+            if resolved != cmd[0]:
+                cmd = [resolved] + cmd[1:]
+
+        # Captured mode pairs `capture_output` with text decoding so the
+        # `.stdout` / `.stderr` strings on the result are usable directly.
+        # Interactive mode skips both -- stdio is inherited from the parent,
+        # nothing is captured, and `text` / `encoding` are irrelevant.
+        capture_kwargs: dict[str, object] = {}
+        if not interactive:
+            capture_kwargs.update(capture_output=True,
+                                  text=True,
+                                  encoding='utf-8')
+
+        if interactive and stdin is not None:
+            raise ValueError(
+                'terminal.run(): `stdin=` is not supported with '
+                '`interactive=True` (the subprocess owns the tty).')
+
         try:
-            # It is necessary to pass `shell=True` on Windows, otherwise the
-            # process handle is entirely orphan and can't resolve things like
-            # `npm`.
             result = subprocess.run(cmd,
-                                    capture_output=True,
-                                    text=True,
                                     check=True,
-                                    encoding='utf-8',
                                     env=env,
                                     cwd=cwd,
-                                    shell=platform.system() == 'Windows')
+                                    input=stdin,
+                                    **capture_kwargs)
         except subprocess.CalledProcessError as e:
-            logging.debug('❯ %s', e.stderr.strip())
+            if e.stderr:
+                # Only captured in non-interactive mode.
+                logging.debug('❯ %s', e.stderr.strip())
             raise e
         finally:
             if self.infra_mode:
@@ -166,7 +277,10 @@ class Terminal:
 
         return result
 
-    def run_git(self, *cmd, no_trim=False) -> str:
+    def run_git(self,
+                *cmd,
+                no_trim=False,
+                env: dict[str, str] | None = None) -> str:
         """Runs a git command with the arguments provided.
 
     This function returns a proper utf8 string in success, otherwise it allows
@@ -176,13 +290,14 @@ class Terminal:
         *cmd: The command to run, with any arguments.
         no_trim: If True, the output will not be trimmed. This is usually rare
         but preferred when producing the contents of a file.
+        env: Optional environment variables to be forwarded to `terminal.run`.
     e.g:
         self.run_git('add', '-u', '*.patch')
     """
         cmd = ['git'] + list(cmd)
         if no_trim:
-            return self.run(cmd).stdout
-        return self.run(cmd).stdout.strip()
+            return self.run(cmd, env=env).stdout
+        return self.run(cmd, env=env).stdout.strip()
 
     def log_task(self, message):
         """Logs a task to the console using common decorators
@@ -207,5 +322,4 @@ class Terminal:
         return self.run(cmd)
 
 
-console = Console()
 terminal = Terminal()

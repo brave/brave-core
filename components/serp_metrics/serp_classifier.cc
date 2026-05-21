@@ -10,6 +10,7 @@
 
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/serp_metrics/serp_classifier_utils.h"
+#include "components/regional_capabilities/regional_capabilities_utils.h"
 #include "components/search_engines/search_terms_data.h"
 #include "components/search_engines/template_url.h"
 #include "components/search_engines/template_url_data_util.h"
@@ -56,7 +57,7 @@ std::unique_ptr<TemplateURL> MaybeGetTemplateURLForPrepopulatedEngine(
 // any prepopulated engine in the allow list.
 std::unique_ptr<TemplateURL> MaybeGetTemplateUrl(const GURL& url) {
   for (const auto* prepopulated_engine :
-       TemplateURLPrepopulateData::GetAllPrepopulatedEngines()) {
+       regional_capabilities::GetAllPrepopulatedEngines()) {
     if (auto search_engine = MaybeGetTemplateURLForPrepopulatedEngine(
             *prepopulated_engine, url)) {
       return search_engine;

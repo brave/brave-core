@@ -11,11 +11,11 @@
 #include "base/test/gmock_callback_support.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
-#include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_util.h"
-#include "brave/components/brave_ads/core/internal/serving/notification_ad_serving_delegate_mock.h"
+#include "brave/components/brave_ads/core/internal/creatives/notification_ads/test/creative_notification_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving_feature.h"
-#include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules_test_util.h"
+#include "brave/components/brave_ads/core/internal/serving/permission_rules/test/permission_rules_test_util.h"
+#include "brave/components/brave_ads/core/internal/serving/test/notification_ad_serving_delegate_mock.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 
@@ -28,9 +28,9 @@ class BraveAdsNotificationAdServingTest : public test::TestBase {
   void SetUp() override {
     test::TestBase::SetUp();
 
-    NotifyBrowserDidBecomeActive();
+    ads_client_notifier_.NotifyBrowserDidBecomeActive();
 
-    NotifyDidInitializeAds();
+    ads_client_notifier_.NotifyDidInitializeAds();
   }
 
   void MaybeServeAd() {
@@ -56,7 +56,7 @@ TEST_F(BraveAdsNotificationAdServingTest, DoNotServeAdForUnsupportedVersion) {
   test::ForcePermissionRules();
 
   const CreativeNotificationAdInfo creative_ad =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*use_random_uuids=*/true);
   database::SaveCreativeNotificationAds({creative_ad});
 
   // Act & Assert
@@ -75,7 +75,7 @@ TEST_F(BraveAdsNotificationAdServingTest, ServeAd) {
   test::ForcePermissionRules();
 
   const CreativeNotificationAdInfo creative_ad =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*use_random_uuids=*/true);
   database::SaveCreativeNotificationAds({creative_ad});
 
   // Act & Assert
@@ -116,7 +116,7 @@ TEST_F(BraveAdsNotificationAdServingTest,
       kNotificationAdServingFeature);
 
   const CreativeNotificationAdInfo creative_ad =
-      test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeNotificationAd(/*use_random_uuids=*/true);
   database::SaveCreativeNotificationAds({creative_ad});
 
   // Act & Assert

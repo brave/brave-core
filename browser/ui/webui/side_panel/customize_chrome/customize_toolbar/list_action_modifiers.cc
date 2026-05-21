@@ -48,7 +48,7 @@
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-#include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 namespace customize_chrome {
@@ -222,7 +222,7 @@ std::vector<ActionPtr> ApplyBraveSpecificModifications(
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  if (brave_wallet::IsNativeWalletEnabled()) {
+  if (brave_wallet::IsAllowedForContext(web_contents->GetBrowserContext())) {
     brave_actions.push_back(kShowWalletAction);
   }
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)

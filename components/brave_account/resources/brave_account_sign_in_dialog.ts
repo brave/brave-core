@@ -11,11 +11,17 @@ import {
 } from './brave_account_browser_proxy.js'
 import { getCss } from './brave_account_sign_in_dialog.css.js'
 import { getHtml } from './brave_account_sign_in_dialog.html.js'
-import { Error, makeFocusHandler } from './brave_account_common.js'
-import { LoginError, LoginErrorCode } from './brave_account.mojom-webui.js'
+import {
+  LoginClientErrorCode,
+  LoginError,
+} from './brave_account.mojom-webui.js'
+import { showError } from './brave_account_common.js'
 
-// @ts-expect-error
-import { Login } from 'chrome://resources/brave/opaque_ke.bundle.js'
+import {
+  invalidLoginError,
+  Login,
+  // @ts-expect-error
+} from 'chrome://resources/brave/opaque_ke.bundle.js'
 
 export class BraveAccountSignInDialogElement extends CrLitElement {
   static get is() {
@@ -35,13 +41,9 @@ export class BraveAccountSignInDialogElement extends CrLitElement {
       email: { type: String },
       isEmailValid: { type: Boolean },
       isCapsLockOn: { type: Boolean },
-      isPasswordInputFocused: { type: Boolean },
+      isPasswordValid: { type: Boolean },
       password: { type: String },
     }
-  }
-
-  protected onPasswordInput(detail: { value: string }) {
-    this.password = detail.value
   }
 
   // The reason this happens here (rather than in BraveAccountService) is that
@@ -69,26 +71,28 @@ export class BraveAccountSignInDialogElement extends CrLitElement {
         encryptedLoginToken,
         clientMac,
       )
-      this.fire('close-dialog')
-    } catch (error) {
-      let details: LoginError
+    } catch (e) {
+      let error: LoginError
 
-      if (error && typeof error === 'object') {
-        details = error as LoginError
-      } else if (typeof error === 'string') {
-        details = {
-          statusCode: null,
-          errorCode: LoginErrorCode.kOpaqueError,
+      if (e && typeof e === 'object') {
+        error = e as LoginError
+      } else if (typeof e === 'string') {
+        error = {
+          clientError: {
+            errorCode:
+              e === invalidLoginError()
+                ? LoginClientErrorCode.kInvalidLoginError
+                : LoginClientErrorCode.kOpaqueError,
+          },
         }
       } else {
-        console.error('Unexpected error:', error)
-        details = { statusCode: null, errorCode: null }
+        console.error('Unexpected error:', e)
+        error = {
+          clientError: { errorCode: LoginClientErrorCode.kUnexpected },
+        }
       }
 
-      this.fire('error-occurred', {
-        flow: 'login',
-        details,
-      } satisfies Extract<Error, { flow: 'login' }>)
+      showError({ kind: 'login', details: error })
     }
   }
 
@@ -100,20 +104,8 @@ export class BraveAccountSignInDialogElement extends CrLitElement {
   protected accessor email: string = ''
   protected accessor isEmailValid: boolean = false
   protected accessor isCapsLockOn: boolean = false
-  protected accessor isPasswordInputFocused: boolean = false
+  protected accessor isPasswordValid: boolean = false
   protected accessor password: string = ''
-
-  protected readonly passwordFocusHandler = makeFocusHandler(
-    (f) => (this.isPasswordInputFocused = f),
-  )
-
-  protected get shouldShowEmailError(): boolean {
-    return this.email.length !== 0 && !this.isEmailValid
-  }
-
-  protected get isPasswordValid(): boolean {
-    return this.password.length !== 0
-  }
 }
 
 declare global {

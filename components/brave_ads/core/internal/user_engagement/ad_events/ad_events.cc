@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/containers/span.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
@@ -35,7 +36,7 @@ void PurgeOrphanedAdEvents(mojom::AdType mojom_ad_type,
   database_table.PurgeOrphaned(mojom_ad_type, std::move(callback));
 }
 
-void PurgeOrphanedAdEvents(const std::vector<std::string>& placement_ids,
+void PurgeOrphanedAdEvents(base::span<const std::string> placement_ids,
                            AdEventCallback callback) {
   const database::table::AdEvents database_table;
   database_table.PurgeOrphaned(placement_ids, std::move(callback));

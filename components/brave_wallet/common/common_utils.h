@@ -18,7 +18,6 @@ static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
 
 namespace brave_wallet {
 
-bool IsNativeWalletEnabled();
 bool IsBitcoinEnabled();
 bool IsBitcoinImportEnabled();
 bool IsBitcoinLedgerEnabled();
@@ -77,21 +76,20 @@ std::string GetNetworkForCardanoAccount(const mojom::AccountIdPtr& account_id);
 
 bool IsPolkadotKeyring(mojom::KeyringId keyring_id);
 bool IsPolkadotImportKeyring(mojom::KeyringId keyring_id);
-bool IsPolkadotNetwork(std::string_view network_id);
+std::vector<mojom::KeyringId> GetPolkadotKeyrings();
+bool IsPolkadotRelayNetwork(std::string_view network_id);
 std::string GetNetworkForPolkadotKeyring(const mojom::KeyringId& keyring_id);
 std::string GetNetworkForPolkadotAccount(const mojom::AccountIdPtr& account_id);
 
 mojom::CoinType GetCoinForKeyring(mojom::KeyringId keyring_id);
 bool IsAccountBasedCoin(mojom::CoinType coin);
 
-mojom::CoinType GetCoinTypeFromTxDataUnion(
-    const mojom::TxDataUnion& tx_data_union);
-
 GURL GetActiveEndpointUrl(const mojom::NetworkInfo& chain);
 
 std::vector<mojom::CoinType> GetEnabledCoins();
 std::vector<mojom::KeyringId> GetEnabledKeyrings();
-std::vector<mojom::KeyringId> GetSupportedKeyringsForNetwork(
+// This is used to get the supported keyrings for a known hardcoded network.
+std::vector<mojom::KeyringId> GetSupportedKeyringsForKnownNetwork(
     mojom::CoinType coin,
     const std::string& chain_id);
 

@@ -30,11 +30,6 @@ export class TabFocusPageElement extends CrLitElement {
     return getHtml.bind(this)()
   }
 
-  protected topics_: string[] = []
-  protected topic = ''
-  protected undoTopic_ = ''
-  protected showFRE_ = loadTimeData.getBoolean('showTabOrganizationFRE')
-
   private apiProxy_: BraveTabSearchApiProxy =
     TabSearchApiProxyImpl.getInstance() as BraveTabSearchApiProxy
   private listenerIds_: number[] = []
@@ -55,6 +50,13 @@ export class TabFocusPageElement extends CrLitElement {
       showFRE_: { type: Boolean },
     }
   }
+
+  protected accessor topics_: string[] = []
+  protected accessor topic = ''
+  protected accessor undoTopic_ = ''
+  protected accessor showFRE_ = loadTimeData.getBoolean(
+    'showTabOrganizationFRE',
+  )
 
   accessor availableHeight: number = 0
   accessor isLoadingTopics: boolean = false
@@ -311,6 +313,7 @@ export class TabFocusPageElement extends CrLitElement {
           (entry, index) => html`
             <leo-button
               id="${this.getTopicId_(index)}"
+              data-testid="${this.getTopicId_(index)}"
               class="topics-button"
               size="small"
               kind="outline"
@@ -358,6 +361,7 @@ export class TabFocusPageElement extends CrLitElement {
               <div>
                 <leo-button
                   id="enableButton"
+                  data-testid="enable-tab-focus"
                   kind="filled"
                   size="small"
                   @click="${this.onEnableTabFocusClick_}"

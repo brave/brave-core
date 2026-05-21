@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/command_line.h"
-#include "base/strings/utf_string_conversions.h"
 #include "brave/brave_domains/service_domains.h"
 #include "brave/components/web_discovery/common/features.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
@@ -76,10 +75,8 @@ std::string FormatServerDate(const base::Time& date) {
 }
 
 std::string DecodeURLComponent(const std::string_view value) {
-  url::RawCanonOutputT<char16_t> result;
-  url::DecodeURLEscapeSequences(value, url::DecodeURLMode::kUTF8OrIsomorphic,
-                                &result);
-  return base::UTF16ToUTF8(result.view());
+  return url::DecodeUrlEscapeSequences(value,
+                                       url::DecodeUrlMode::kUtf8OrIsomorphic);
 }
 
 std::optional<std::string> ExtractValueFromQueryString(

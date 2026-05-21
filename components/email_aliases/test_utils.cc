@@ -56,7 +56,7 @@ void AuthStateObserver::OnAuthStateChanged(
 }
 
 void AuthStateObserver::OnAliasesUpdated(
-    std::vector<email_aliases::mojom::AliasPtr>) {}
+    email_aliases::mojom::AliasesUpdatePtr) {}
 
 GURL GetEmailAliasesServiceURL() {
   return endpoints::GenerateAlias::URL();

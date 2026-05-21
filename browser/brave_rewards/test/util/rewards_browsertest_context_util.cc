@@ -413,14 +413,14 @@ std::vector<double> GetSiteBannerTipOptions(content::WebContents* context) {
     return {};
   }
 
-  WaitForElementToAppear(context, "[data-test-id=tip-amount-options]");
+  WaitForElementToAppear(context, "[data-testid=tip-amount-options]");
   content::EvalJsResult options =
       content::EvalJs(context,
                       R"(
           const delay = t => new Promise(resolve => setTimeout(resolve, t));
           delay(500).then(() => Array.from(
             document.querySelectorAll(
-              "[data-test-id=tip-amount-options] [data-option-value]"
+              "[data-testid=tip-amount-options] [data-option-value]"
             )
           ).map(node => parseFloat(node.dataset.optionValue)))
       )",
@@ -439,11 +439,11 @@ double GetRewardsPopupMonthlyTipValue(content::WebContents* context) {
     return 0;
   }
 
-  WaitForElementToAppear(context, "[data-test-id=monthly-tip-button]");
+  WaitForElementToAppear(context, "[data-testid=monthly-tip-button]");
   std::string script = R"_(
     new Promise(resolve => setTimeout(resolve, 0)).then(() => {
       const elem = document.querySelector(
-        '[data-test-id=monthly-tip-button]')
+        '[data-testid=monthly-tip-button]')
       return elem && parseFloat(elem.innerText) || 0
     })
   )_";

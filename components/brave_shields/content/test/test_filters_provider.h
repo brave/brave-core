@@ -38,6 +38,9 @@ class TestFiltersProvider : public AdBlockFiltersProvider {
 
   std::string GetNameForDebugging() override;
 
+  // Simulates a provider content change for testing.
+  void SimulateUpdate() { NotifyObservers(engine_is_default_); }
+
  private:
   std::string rules_;
   uint8_t permission_mask_;

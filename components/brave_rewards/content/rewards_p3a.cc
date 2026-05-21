@@ -81,7 +81,7 @@ void RecordRewardsPageViews(PrefService* prefs, bool new_view) {
 void RecordAdTypesEnabled(PrefService* prefs) {
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   if (!prefs->GetBoolean(prefs::kEnabled)) {
-    UMA_HISTOGRAM_EXACT_LINEAR(kAdTypesEnabledHistogramName, INT_MAX - 1, 8);
+    UMA_HISTOGRAM_EXACT_LINEAR(kAdTypesEnabledHistogramName, INT_MAX - 1, 4);
     return;
   }
   int ntp_enabled =
@@ -89,11 +89,8 @@ void RecordAdTypesEnabled(PrefService* prefs) {
                             kNewTabPageShowSponsoredImagesBackgroundImage);
   int notification_enabled =
       prefs->GetBoolean(brave_ads::prefs::kOptedInToNotificationAds);
-  int search_result_enabled =
-      prefs->GetBoolean(brave_ads::prefs::kOptedInToSearchResultAds);
-  int answer =
-      (search_result_enabled << 2) | (notification_enabled << 1) | ntp_enabled;
-  UMA_HISTOGRAM_EXACT_LINEAR(kAdTypesEnabledHistogramName, answer, 8);
+  int answer = (notification_enabled << 1) | ntp_enabled;
+  UMA_HISTOGRAM_EXACT_LINEAR(kAdTypesEnabledHistogramName, answer, 4);
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 }
 

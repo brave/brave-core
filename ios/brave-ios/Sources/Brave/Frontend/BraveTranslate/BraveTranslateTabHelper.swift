@@ -10,6 +10,17 @@ import Web
 import WebKit
 import os.log
 
+extension TabDataValues {
+  private struct BraveTranslateTabHelperKey: TabDataKey {
+    static var defaultValue: BraveTranslateTabHelper?
+  }
+
+  var legacyTranslateHelper: BraveTranslateTabHelper? {
+    get { self[BraveTranslateTabHelperKey.self] }
+    set { self[BraveTranslateTabHelperKey.self] = newValue }
+  }
+}
+
 enum BraveTranslateError: String, Error {
   case invalidURL
   case invalidLanguage
@@ -112,7 +123,7 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
         throw BraveTranslateError.invalidLanguage
       }
 
-      let previousState = tab.translationState ?? .unavailable
+      let previousState = tab.translationState
       delegate.updateTranslateURLBar(tab: tab, state: .pending)
 
       // TranslateAgent::TranslateFrame

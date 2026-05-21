@@ -32,15 +32,11 @@ import {
   ViewOnBlockExplorerModal, //
 } from '../popup-modals/view_on_block_explorer_modal/view_on_block_explorer_modal'
 import { PopupModal } from '../popup-modals'
+import { MenuWrapper } from './menu_wrapper'
 
 // Styled Components
-import {
-  StyledWrapper,
-  PopupButton,
-  PopupButtonText,
-  ButtonIcon,
-} from './wellet-menus.style'
-import { MenuWrapper, Button } from './address_actions_menu.style'
+import { PopupButton, PopupButtonText, ButtonIcon } from './wellet-menus.style'
+import { AddressMenuWrapper, Button } from './address_actions_menu.style'
 import { VerticalDivider, Column } from '../../shared/style'
 
 export interface Props {
@@ -90,10 +86,10 @@ export const AddressActionsMenu = (props: Props) => {
 
   return (
     <>
-      <MenuWrapper ref={menuRef}>
+      <AddressMenuWrapper ref={menuRef}>
         <Button onClick={() => setShowMenu((prev) => !prev)}>{children}</Button>
         {showMenu && (
-          <StyledWrapper
+          <MenuWrapper
             yPosition={isPanel || isMobile ? 26 : 46}
             left={0}
           >
@@ -125,9 +121,9 @@ export const AddressActionsMenu = (props: Props) => {
                 {getLocale('braveWalletPortfolioViewOnExplorerMenuLabel')}
               </PopupButtonText>
             </PopupButton>
-          </StyledWrapper>
+          </MenuWrapper>
         )}
-      </MenuWrapper>
+      </AddressMenuWrapper>
       {showDepositModal && (
         <PopupModal
           title={getLocale('braveWalletDepositCryptoButton')}

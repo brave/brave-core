@@ -8,11 +8,14 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/task/sequenced_task_runner.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ui/webui/webcompat_reporter/webcompat_reporter_dialog.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
+#include "components/favicon/core/favicon_service.h"
+#include "components/favicon_base/favicon_types.h"
 #include "content/public/browser/navigation_controller.h"
 
 using brave_shields::BraveShieldsTabHelper;
@@ -22,9 +25,11 @@ ShieldsPanelDataHandler::ShieldsPanelDataHandler(
     mojo::PendingReceiver<brave_shields::mojom::DataHandler>
         data_handler_receiver,
     TopChromeWebUIController* webui_controller,
-    TabStripModel* tab_strip_model)
+    TabStripModel* tab_strip_model,
+    favicon::FaviconService* favicon_service)
     : data_handler_receiver_(this, std::move(data_handler_receiver)),
-      webui_controller_(webui_controller) {
+      webui_controller_(webui_controller),
+      favicon_service_(favicon_service) {
   DCHECK(tab_strip_model);
   tab_strip_model->AddObserver(this);
 
@@ -224,6 +229,27 @@ void ShieldsPanelDataHandler::AreAnyBlockedElementsPresent(
   std::move(callback).Run(
       g_brave_browser_process->ad_block_service()->AreAnyBlockedElementsPresent(
           active_shields_data_controller_->web_contents()->GetURL().host()));
+}
+
+void ShieldsPanelDataHandler::IsResourceFaviconAvailable(
+    const GURL& url,
+    IsResourceFaviconAvailableCallback callback) {
+  if (!favicon_service_) {
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, base::BindOnce(std::move(callback), false));
+    return;
+  }
+
+  favicon_service_->GetRawFaviconForPageURL(
+      url, {favicon_base::IconType::kFavicon},
+      /*desired_size_in_pixel=*/0, /*fallback_to_host=*/true,
+      base::BindOnce(
+          [](base::OnceCallback<void(bool)> cb,
+             const favicon_base::FaviconRawBitmapResult& result) {
+            std::move(cb).Run(result.is_valid());
+          },
+          std::move(callback)),
+      &cancelable_task_tracker_);
 }
 
 void ShieldsPanelDataHandler::ResetBlockedElements() {

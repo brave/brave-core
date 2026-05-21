@@ -23,17 +23,23 @@ import org.chromium.build.annotations.NullMarked;
 @NullMarked
 public final class SavedPasswordEntry {
     private final String mUrl;
+    private final String mOriginUrl;
     private final String mName;
     private final String mPassword;
 
-    public SavedPasswordEntry(String url, String name, String password) {
+    public SavedPasswordEntry(String url, String originUrl, String name, String password) {
         mUrl = url;
+        mOriginUrl = originUrl;
         mName = name;
         mPassword = password;
     }
 
     public String getUrl() {
         return mUrl;
+    }
+
+    public String getOriginUrl() {
+        return mOriginUrl;
     }
 
     public String getUserName() {

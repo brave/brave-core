@@ -73,7 +73,7 @@ var package = Package(
     .package(url: "https://github.com/siteline/SwiftUI-Introspect", from: "0.1.3"),
     .package(url: "https://github.com/apple/swift-algorithms", from: "1.0.0"),
     .package(url: "https://github.com/devxoul/Then", from: "2.7.0"),
-    .package(url: "https://github.com/mkrd/Swift-BigInt", from: "2.3.0"),
+    .package(name: "Swift-BigInt", path: "../third_party/swift-bigint"),
     .package(url: "https://github.com/GuardianFirewall/GuardianConnect", exact: "2.1.1"),
     .package(url: "https://github.com/pointfreeco/swift-custom-dump", from: "0.6.0"),
     .package(
@@ -179,9 +179,6 @@ var package = Package(
           "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/DomainSpecific/Paged/BraveSkusScript.js"
         ),
         .copy(
-          "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/DomainSpecific/Paged/PlaylistFolderSharingScript.js"
-        ),
-        .copy(
           "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/DomainSpecific/Paged/FrameCheckWrapper.js"
         ),
         .copy(
@@ -198,7 +195,6 @@ var package = Package(
         .copy(
           "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/PlaylistSwizzlerScript.js"
         ),
-        .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/ReadyStateScript.js"),
         .copy(
           "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/RequestBlockingScript.js"
         ),
@@ -470,12 +466,7 @@ var package = Package(
     ),
     .testTarget(
       name: "AIChatTests",
-      dependencies: ["AIChat"],
-      resources: [
-        .copy("Components/Markdown/CodeHighlight/Themes/atom-one-dark.min.css"),
-        .copy("Components/Markdown/CodeHighlight/Themes/atom-one-light.min.css"),
-        .copy("Components/Markdown/CodeHighlight/Scripts/highlight.min.js"),
-      ]
+      dependencies: ["AIChat"]
     ),
     .target(
       name: "BraveStore",
@@ -512,12 +503,10 @@ var package = Package(
         .copy("LottieAssets/playlist-confetti.json"),
         .copy("WelcomeFocus/Resources/LottieAssets"),
         .copy("WelcomeFocus/Resources/Videos"),
-        .copy("WelcomeFocus/Resources/Fonts/Poppins-SemiBold.ttf"),
-        .copy("WelcomeFocus/Resources/Fonts/Poppins-Medium.ttf"),
-        .copy("WelcomeFocus/Resources/Fonts/Poppins-Regular.ttf"),
       ],
       plugins: ["LoggerPlugin"]
     ),
+    .testTarget(name: "OnboardingTests", dependencies: ["Onboarding"]),
     .testTarget(
       name: "BraveNewsTests",
       dependencies: ["BraveNews"],
@@ -646,7 +635,7 @@ var package = Package(
     .target(
       name: "BraveTalk",
       dependencies: [
-        "Shared", "Preferences", "JitsiMeet", "BraveCore",
+        "Shared", "Preferences", "JitsiMeet", "BraveCore", "Web",
         .product(name: "Collections", package: "swift-collections"),
       ],
       plugins: ["LoggerPlugin"]

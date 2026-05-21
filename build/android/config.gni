@@ -18,15 +18,16 @@ declare_args() {
 brave_android_manifest_includes = [
   "//brave/android/java/AndroidManifest.xml",
   "//brave/android/java/AndroidManifest_intent_filters.xml",
-  "//brave/android/java/AndroidManifest_user_permissions.xml",
 ]
 
 brave_chrome_java_deps = [
   "//brave/android:qrreader_java",
   "//brave/android/java/org/chromium/chrome/browser/search_engines:java",
   "//brave/brave_domains/android:java",
+  "//brave/browser/autofill/android:java",
   "//brave/browser/brave_origin/android:java",
   "//brave/browser/brave_shields/android:java",
+  "//brave/browser/custom_search_engines/android:java",
   "//brave/browser/customize_menu/android:java",
   "//brave/browser/download/android:java",
   "//brave/browser/first_run/android:java",
@@ -36,6 +37,7 @@ brave_chrome_java_deps = [
   "//brave/browser/password_entry_edit:public_java",
   "//brave/browser/quick_search_engines/android:java",
   "//brave/browser/safe_browsing/android/java/src/org/chromium/chrome/browser/safe_browsing/settings:java",
+  "//brave/browser/signin/services/android:java",
   "//brave/browser/skus/android:java",
   "//brave/browser/tab_group_sync:java",
   "//brave/browser/ui/android/favicon:java",
@@ -54,7 +56,9 @@ brave_chrome_java_deps = [
   "//brave/components/brave_vpn/common/mojom:mojom_java",
   "//brave/components/browser_ui/media/android:java",
   "//brave/components/browser_ui/notifications/android:java",
+  "//brave/components/browser_ui/settings/android:java",
   "//brave/components/browser_ui/site_settings/android:java",
+  "//brave/components/browser_ui/widget/android:java",
   "//brave/components/misc_metrics/common:mojom_java",
   "//brave/components/playlist/core/common/mojom:mojom_java",
   "//brave/components/safe_browsing/android:brave_safe_browsing_java",
@@ -67,12 +71,12 @@ brave_chrome_java_deps = [
   "//brave/third_party/android_deps:com_github_bumptech_glide_java",
   "//brave/third_party/android_deps:com_google_android_play_app_update_java",
   "//brave/third_party/android_deps:com_google_android_play_integrity_java",
-  "//brave/third_party/android_deps:com_google_android_play_review_java",
   "//brave/third_party/android_deps:com_wireguard_android_J__unpack_aar",
   "//brave/third_party/android_deps:com_wireguard_android_java",
   "//brave/third_party/android_deps:google_play_services_safetynet_java",
   "//brave/third_party/zxing:zxing_java",
   "//brave/ui/android:base_java",
+  "//third_party/android_deps:com_google_android_play_review_java",
   "//third_party/android_deps:com_google_code_gson_gson_java",
   "//third_party/android_deps:google_play_services_vision_common_java",
   "//third_party/android_deps:google_play_services_vision_java",
@@ -116,6 +120,7 @@ brave_chrome_java_srcjar_deps = [
 brave_chrome_app_java_resources_deps = [
   "//brave/android:java_resources",
   "//brave/android/nala:java_resources",
+  "//brave/browser/custom_search_engines/android:java_resources",
   "//brave/browser/first_run/android:java_resources",
   "//brave/browser/quick_search_engines/android:java_resources",
   "//brave/build/android:android_brave_strings_grd",
@@ -137,6 +142,7 @@ brave_jni_headers_sources = [
   "//brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoMojomHelper.java",
   "//brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoUtils.java",
   "//brave/android/java/org/chromium/chrome/browser/brave_news/BraveNewsControllerFactory.java",
+  "//brave/android/java/org/chromium/chrome/browser/browsing_data/BraveShortcutsUtils.java",
   "//brave/android/java/org/chromium/chrome/browser/cosmetic_filters/BraveCosmeticFiltersUtils.java",
   "//brave/android/java/org/chromium/chrome/browser/misc_metrics/MiscAndroidMetricsFactory.java",
   "//brave/android/java/org/chromium/chrome/browser/ntp_background_images/NTPBackgroundImagesBridge.java",
@@ -156,11 +162,9 @@ brave_jni_headers_sources = [
 
 if (enable_brave_wallet) {
   brave_jni_headers_sources += [
-    "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/AssetRatioServiceFactory.java",
     "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/BlockchainRegistryFactory.java",
     "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/BraveWalletProviderDelegateImplHelper.java",
     "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/BraveWalletServiceFactory.java",
-    "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/SwapServiceFactory.java",
     "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/dapps/ConnectAccountFragment.java",
     "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/permission/BraveDappPermissionPromptDialog.java",
     "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/WalletNativeUtils.java",

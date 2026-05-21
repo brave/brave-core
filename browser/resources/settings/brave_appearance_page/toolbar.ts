@@ -39,12 +39,6 @@ class SettingsBraveAppearanceToolbarElement extends SettingsBraveAppearanceToolb
 
   static get properties() {
     return {
-      // <if expr="enable_brave_wallet">
-      isNativeWalletEnabled_: {
-        type: Boolean,
-        value: false,
-      },
-      // </if>
       isShowBraveShieldsInPageInfoEnabled_: {
         type: Boolean,
         value: loadTimeData.getBoolean('isShowBraveShieldsInPageInfoEnabled'),
@@ -52,21 +46,7 @@ class SettingsBraveAppearanceToolbarElement extends SettingsBraveAppearanceToolb
     }
   }
 
-  // <if expr="enable_brave_wallet">
-  private declare isNativeWalletEnabled_: boolean
-  private walletBrowserProxy_: BraveWalletBrowserProxy = BraveWalletBrowserProxyImpl.getInstance()
-  // </if>
   private declare isShowBraveShieldsInPageInfoEnabled_: boolean
-
-  override ready() {
-    super.ready()
-
-    // <if expr="enable_brave_wallet">
-    this.walletBrowserProxy_.isNativeWalletEnabled().then(val => {
-      this.isNativeWalletEnabled_ = val
-    });
-    // </if>
-  }
 
   /**
    * RouteObserverMixin

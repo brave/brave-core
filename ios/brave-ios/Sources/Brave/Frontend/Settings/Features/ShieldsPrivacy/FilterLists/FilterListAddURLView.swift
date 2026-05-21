@@ -18,7 +18,7 @@ struct FilterListAddURLView: View {
 
   private var textField: some View {
     TextField(Strings.Shields.filterListsEnterFilterListURL, text: $newURLInput)
-      .onChange(of: newURLInput) { newValue in
+      .onChange(of: newURLInput) { _, newValue in
         errorMessage = nil
       }
       .keyboardType(.URL)
@@ -59,7 +59,8 @@ struct FilterListAddURLView: View {
         )
       }
       .animation(.easeInOut, value: errorMessage)
-      .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+      .scrollContentBackground(.hidden)
+      .background(Color(UIColor.braveGroupedBackground))
       .listStyle(.insetGrouped)
       .navigationTitle(Strings.Shields.customFilterList)
       .navigationBarTitleDisplayMode(.inline)

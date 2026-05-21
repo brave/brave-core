@@ -130,22 +130,6 @@ class NewTabPageViewController: UIViewController {
   // viewed impressions.
   private var lastViewedSponsoredBackgroundId: String?
 
-  var onboardingYouTubeFavoriteInfo: (favorite: Favorite, cell: UIView)? {
-    // Get the cell for the youtube from the favs section
-    let frc = Favorite.frc()
-    frc.fetchRequest.fetchLimit = 5
-    try? frc.performFetch()
-    guard let section = sections.firstIndex(where: { $0 is FavoritesSectionProvider }),
-      let item = frc.fetchedObjects?.firstIndex(where: {
-        $0.url.flatMap(URL.init(string:))?.baseDomain == "youtube.com"
-      }),
-      let cell = collectionView.cellForItem(at: .init(item: item, section: section))
-    else {
-      return nil
-    }
-    return (frc.fetchedObjects![item], cell)
-  }
-
   /// A gradient to display over background images to ensure visibility of
   /// the NTP contents and sponsored logo
   ///
@@ -200,13 +184,17 @@ class NewTabPageViewController: UIViewController {
       StatsSectionProvider(
         isPrivateBrowsing: tab.isPrivate,
         openPrivacyHubPressed: { [weak self] in
-          if self?.privateBrowsingManager.isPrivateBrowsing == true {
+          guard let self, let tab = browserTab else { return }
+          if privateBrowsingManager.isPrivateBrowsing == true {
             return
           }
 
+          let isOriginPurchased =
+            BraveOriginServiceFactory.get(profile: tab.profile)?.isPurchased() == true
           let host = UIHostingController(
             rootView: PrivacyReportsManager.prepareView(
-              isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
+              isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing,
+              isOriginPurchased: isOriginPurchased
             )
           )
           host.rootView.onDismiss = { [weak self] in
@@ -228,7 +216,7 @@ class NewTabPageViewController: UIViewController {
             )
           }
 
-          self?.present(host, animated: true)
+          present(host, animated: true)
         },
         hidePrivacyHubPressed: { [weak self] in
           self?.hidePrivacyHub()
@@ -287,9 +275,12 @@ class NewTabPageViewController: UIViewController {
 
       let isTabVisible = viewIfLoaded?.window != nil
       setupBackgroundVideoIfNeeded(shouldCreatePlayer: isTabVisible)
-      // Load the video asset here, as viewDidAppear is not called when the view
-      // is already visible
       if isTabVisible {
+        // `viewDidAppear` is not called when the view is already visible, so
+        // report the viewed impression event and load the video asset here
+        // if needed.
+        reportSponsoredBackgroundViewedEventIfNeeded()
+
         videoAdPlayer?.loadAndAutoplayVideoAssetIfNeeded(
           shouldAutoplay: false
         )
@@ -426,11 +417,7 @@ class NewTabPageViewController: UIViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
 
-    // Only record a sponsored background viewed impression when the NTP
-    // background is not covered by the URL bar overlay.
-    if delegate?.isURLBarInOverlayMode() == false {
-      reportSponsoredBackgroundViewedEventIfNeeded()
-    }
+    reportSponsoredBackgroundViewedEventIfNeeded()
 
     videoAdPlayer?.loadAndAutoplayVideoAssetIfNeeded(
       shouldAutoplay: shouldShowBackgroundVideo()
@@ -686,6 +673,12 @@ class NewTabPageViewController: UIViewController {
   // MARK: - Sponsored background events
 
   private func reportSponsoredBackgroundViewedEventIfNeeded() {
+    // Only record a sponsored background viewed impression when the NTP
+    // background is not covered by the URL bar overlay.
+    if delegate?.isURLBarInOverlayMode() == true {
+      return
+    }
+
     guard case .sponsoredMedia(_, let newTabPageAd) = background.currentBackground else {
       return
     }
@@ -704,7 +697,7 @@ class NewTabPageViewController: UIViewController {
     _ event: BraveAds.NewTabPageAdEventType,
     completion: ((_ success: Bool) -> Void)? = nil
   ) {
-    if let tab = browserTab,
+    if browserTab != nil,
       case .sponsoredMedia(let sponsoredBackground, let newTabPageAd) = background.currentBackground
     {
       rewards.ads.triggerNewTabPageAdEvent(

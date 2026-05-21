@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_STATS_BROWSER_BRAVE_STATS_UPDATER_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_STATS_BROWSER_BRAVE_STATS_UPDATER_UTIL_H_
 
+#include <optional>
 #include <string>
 #include <string_view>
 
@@ -15,7 +16,7 @@ class PrefService;
 
 namespace brave_stats {
 
-std::string GetDateAsYMD(const base::Time& time);
+std::string GetDateAsYMD(const base::Time& time, bool use_utc = false);
 
 // Returns platform with architecture information i.e. winx64-bc, osxarm64-bc
 std::string GetPlatformIdentifier();
@@ -27,7 +28,8 @@ int GetIsoWeekNumber(const base::Time& time);
 
 base::Time GetLastMondayTime(const base::Time& time);
 
-base::Time GetYMDAsDate(std::string_view ymd);
+std::optional<base::Time> GetYMDAsDate(std::string_view ymd,
+                                       bool use_utc = false);
 
 std::string GetAPIKey();
 

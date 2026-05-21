@@ -139,7 +139,7 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
 
     if command == "ready" {
       // Translate is ready
-      try await tab.translateHelper?.beginSetup()
+      try await tab.legacyTranslateHelper?.beginSetup()
       return (nil, nil)
     }
 
@@ -150,7 +150,7 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
           from: JSONSerialization.data(withJSONObject: body, options: .fragmentsAllowed)
         )
 
-        guard let translateHelper = tab.translateHelper
+        guard let translateHelper = tab.legacyTranslateHelper
         else {
           return (nil, BraveTranslateError.otherError.rawValue)
         }
@@ -180,7 +180,7 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
     }
 
     if command == "status" {
-      guard let translateHelper = tab.translateHelper else {
+      guard let translateHelper = tab.legacyTranslateHelper else {
         Logger.module.debug("[Brave Translate] - Status: \(body)")
         return (nil, nil)
       }
@@ -246,7 +246,7 @@ class BraveTranslateScriptLanguageDetectionHandler: NSObject, TabContentScript {
       return
     }
 
-    guard let translateHelper = tab.translateHelper else {
+    guard let translateHelper = tab.legacyTranslateHelper else {
       return
     }
 

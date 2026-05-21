@@ -471,6 +471,12 @@ interface PageHandler {
   // - Also available for Android and can be implemented once Android
   // start allowing Wallet WebUI with no wallet created.
   ShowOnboarding(bool is_new_wallet);
+
+  // Mobile only
+  // - Used by iOS Wallet WebUI when there is an interaction to open
+  // Wallet WebUI in another tab. For example, the user taps the button
+  // to open Wallet WebUI in another tab while syncing ZCash Shielded Account.
+  OpenWalletHome();
 };
 
 enum AssetPriceTimeframe {
@@ -554,12 +560,14 @@ enum SwapProvider {
   kAuto,
   kNearIntents,
   kSquid,
-
-  // Providers not supported by Gate3
+  kJupiter,
   kLiFi,
   kZeroEx,
-  kJupiter,
+
+  // Providers not supported by Gate3
   kCowSwap,
+  kJupiterLegacy,  // Direct Jupiter API (legacy, for iOS)
+  kZeroExLegacy,  // Direct 0x API (legacy, for iOS/Android)
 };
 
 struct SwapQuoteParams {
@@ -568,7 +576,7 @@ struct SwapQuoteParams {
   string from_token;
   string from_amount;
 
-  // Setting the to_account_id is only supported for LiFi swaps.
+  // Setting the to_account_id is only supported for Gate3 swaps.
   AccountId to_account_id;
   string to_chain_id;
   string to_token;
@@ -578,8 +586,8 @@ struct SwapQuoteParams {
 
   string slippage_percentage;
 
-  // This is primarily used for LiFi swaps. For every other case, this should
-  // be set to kCheapest.
+  // Used for Gate3 swaps to select route priority. For every other case, this
+  // should be set to kCheapest.
   RoutePriority route_priority;
 
   SwapProvider provider;
@@ -588,21 +596,18 @@ struct SwapQuoteParams {
 union SwapTransactionParamsUnion {
   JupiterTransactionParams jupiter_transaction_params;
   SwapQuoteParams zero_ex_transaction_params;
-  LiFiStep lifi_transaction_params;
   SwapQuoteParams gate3_transaction_params;
 };
 
 union SwapQuoteUnion {
   JupiterQuote jupiter_quote;
   ZeroExQuote zero_ex_quote;
-  LiFiQuote lifi_quote;
   Gate3SwapQuote gate3_quote;
 };
 
 union SwapTransactionUnion {
   string jupiter_transaction;
   ZeroExTransaction zero_ex_transaction;
-  LiFiTransactionUnion lifi_transaction;
   Gate3SwapRoute gate3_route;
 };
 
@@ -626,11 +631,10 @@ struct Gate3SwapTool {
 };
 
 struct Gate3SwapStepToken {
-  string coin;
+  CoinType coin;
   string chain_id;
   string contract_address;
   string symbol;
-  string decimals;
   string logo;
 };
 
@@ -640,6 +644,7 @@ struct Gate3SwapRouteStep {
   Gate3SwapStepToken destination_token;
   string destination_amount;
   Gate3SwapTool tool;
+  string percent;
 };
 
 struct Gate3SwapEvmTransactionParams {
@@ -833,7 +838,6 @@ struct ZeroExError {
 union SwapErrorUnion {
   JupiterError jupiter_error;
   ZeroExError zero_ex_error;
-  LiFiError lifi_error;
   Gate3SwapError gate3_error;
 };
 
@@ -889,213 +893,6 @@ struct JupiterError {
   bool is_insufficient_liquidity;
 };
 
-struct LiFiStepStatus {
-  string chain_id;
-
-  // The following fields are temporarily undefined in case of a pending
-  // receiving step.
-  string? tx_hash;
-  string? tx_link;
-  string? amount;
-  string? contract_address;
-};
-
-enum LiFiStatusCode {
-  kNotFound,
-  kInvalid,
-  kPending,
-  kDone,
-  kFailed,
-};
-
-enum LiFiSubstatusCode {
-  // Substatuses for kPending
-  kWaitSourceConfirmations,
-  kWaitDestinationTransaction,
-  kBridgeNotAvailable,
-  kChainNotAvailable,
-  kRefundInProgress,
-  kUnknownError,
-
-  // Substatuses for kDone
-  kCompleted,
-  kPartial,
-  kRefunded,
-
-  // Substatuses for kFailed
-  kNotProcessableRefundNeeded,
-  kOutOfGas,
-  kSlippageExceeded,
-  kInsufficientAllowance,
-  kInsufficientBalance,
-  kExpired,
-};
-
-struct LiFiStatus {
-  string transaction_id;
-  LiFiStepStatus sending;
-  LiFiStepStatus receiving;
-  string lifi_explorer_link;
-  string from_address;
-  string to_address;
-  string tool;
-  LiFiStatusCode status;
-  LiFiSubstatusCode substatus;
-  string substatus_message;
-};
-
-enum LiFiStepType {
-  kSwap,
-  kCross,
-  kLiFi,
-};
-
-struct LiFiToolDetails {
-  string key;
-  string name;
-  string logo;
-};
-
-struct LiFiAction {
-  BlockchainToken from_token;
-  string from_amount;
-  BlockchainToken to_token;
-  string slippage;
-
-  string? from_address;
-  string? to_address;
-  string? destination_call_data;
-};
-
-struct LiFiFeeCost {
-  string name;
-  string description;
-  string percentage;
-  BlockchainToken token;
-  string amount;
-  bool included;
-};
-
-struct LiFiGasCost {
-  string type;
-  string estimate;
-  string limit;
-  string amount;
-  BlockchainToken token;
-};
-
-struct LiFiStepEstimate {
-  string tool;
-  string from_amount;
-  string to_amount;
-  string to_amount_min;
-  string approval_address;
-  string execution_duration;
-  array<LiFiFeeCost>? fee_costs;
-  array<LiFiGasCost> gas_costs;
-};
-
-struct LiFiStep {
-  string id;
-  LiFiStepType type;
-  string tool;
-  LiFiToolDetails tool_details;
-  LiFiAction action;
-  LiFiStepEstimate estimate;
-
-  // Not defined in included steps
-  string? integrator;
-  array<LiFiStep>? included_steps;
-};
-
-struct LiFiRoute {
-  string id;
-  string unique_id;
-  BlockchainToken from_token;
-  string from_amount;
-  string from_address;
-  BlockchainToken to_token;
-  string to_amount;
-  string to_amount_min;
-  string to_address;
-  array<LiFiStep> steps;
-  array<string> tags;
-};
-
-struct LiFiQuote {
-  array<LiFiRoute> routes;
-};
-
-union LiFiTransactionUnion {
-  string solana_transaction;
-  LiFiEvmTransaction evm_transaction;
-};
-
-struct LiFiEvmTransaction {
-  string data;
-  string from;
-  string to;
-  string value;
-  string gas_limit;
-  string gas_price;
-  string chain_id;
-};
-
-enum LifiToolErrorCode {
-  // No route was found for this action.
-  kNoPossibleRoute = 0,
-  // The tool's liquidity is insufficient.
-  kInsufficientLiquidity = 1,
-  // The third-party tool timed out.
-  kToolTimeout = 2,
-  // An unknown error occurred.
-  kUnknownError = 3,
-  // There was a problem getting on-chain data. Please try again later.
-  kRpcError = 3,
-  // he initial amount is too low to transfer using this tool.
-  kAmountTooLow = 4,
-  // The initial amount is too high to transfer using this tool.
-  kAmountTooHigh = 5,
-  // The fees are higher than the initial amount.
-  // This would result in negative resulting token.
-  kFeesHigherThanAmount = 6,
-  // This tool does not support different recipient addresses.
-  kDifferentRecipientNotSupported = 7,
-  // The third-party tool returned an error.
-  kToolSpecificError = 8,
-  // The tool cannot guarantee that the minimum amount will be met.
-  kCannotGuaranteeMinAmount = 9,
-};
-
-// https://github.com/lifinance/types/blob/main/src/errors.ts
-enum LiFiErrorCode {
-  kSuccess = 0,
-  kDefaultError = 1000,
-  kFailedToBuildTransactionError = 1001,
-  kNoQuoteError = 1002,
-  kNotFoundError = 1003,
-  kNotProcessableError = 1004,
-  kRateLimitError = 1005,
-  kServerError = 1006,
-  kSlippageError = 1007,
-  kThirdPartyError = 1008,
-  kTimeoutError = 1009,
-  kUnauthorizedError = 1010,
-  kValidationError = 1011,
-};
-
-struct LifiToolError {
-  string error_type;
-  string code;
-  string tool;
-  string message;
-};
-
-struct LiFiError {
-  string message;
-  LiFiErrorCode code;
-};
-
 enum SwapDiscountCode {
   // No discount
   kNone = 0,
@@ -1120,6 +917,7 @@ struct SwapFees {
   SwapDiscountCode discount_code;
 };
 
+// KeyringId could be persisted, so do not change values of existing keyrings.
 enum KeyringId {
   kDefault = 0,
   kSolana = 1,
@@ -1140,11 +938,6 @@ enum KeyringId {
   kPolkadotImport = 16,
   kPolkadotImportTestnet = 17,
 };
-
-const string kP3ACountTestNetworksSwitch = "p3a-count-wallet-test-networks";
-
-const string kP3ACountTestNetworksLoadTimeKey =
-    "braveWalletP3ACountTestNetworks";
 
 enum FilecoinAddressProtocol {
   SECP256K1 = 1,  // Represents the address SECP256K1 protocol
@@ -1408,7 +1201,7 @@ interface KeyringService {
 
   // Adds accounts to the keyring in bulk during wallet creation/restoration.
   // Account creation can fail in certain cases, such as an account that is
-  // affected by OFAC sanctions. Because this method is intended to only be
+  // affected by restrictions. Because this method is intended to only be
   // called during onboarding, it will return std::nullopt on failure and reset
   // the keyring.
   CreateDefaultAccountsForSelectedNetworks(
@@ -1613,11 +1406,6 @@ interface SwapService {
   GetStatus(Gate3SwapStatusParams params) => (Gate3SwapStatus? response,
                                               Gate3SwapError? error,
                                               string error_string);
-
-  // Get LiFi status for a given transaction meta id
-  GetLiFiStatus(string tx_hash) => (LiFiStatus? response,
-                                    LiFiError? error_response,
-                                    string error_string);
 };
 
 interface IpfsService {
@@ -1636,14 +1424,13 @@ interface JsonRpcServiceObserver {
 };
 
 struct TxData {
+  string chain_id;
   string nonce;
   string gas_price;
   string gas_limit;
   string to;
   string value;
   array<uint8> data;
-  bool sign_only;
-  string? signed_transaction;
 };
 
 struct GasEstimation1559 {
@@ -1658,7 +1445,6 @@ struct GasEstimation1559 {
 
 struct TxData1559 {
   TxData base_data;
-  string chain_id;
   string max_priority_fee_per_gas;
   string max_fee_per_gas;
 };
@@ -1762,6 +1548,7 @@ const string kPolkadotMainnet = "polkadot_mainnet";
 
 const string kPolkadotTestnet = "polkadot_testnet";
 
+// End of polkadot chains.
 const string kArbitrumNovaChainId = "0xa4ba";
 
 const string kGnosisChainId = "0x64";
@@ -2074,20 +1861,6 @@ interface JsonRpcService {
                          string chain_id)
       => (string allowance, ProviderError error, string error_message);
 
-  // Obtains the metadata JSON for a token ID of an ERC721 contract
-  GetERC721Metadata(string contract, string token_id, string chain_id)
-      => (string token_url,
-          string response,
-          ProviderError error,
-          string error_message);
-
-  // Obtains the metadata JSON for a token ID of an ERC1155 contract
-  GetERC1155Metadata(string contract, string token_id, string chain_id)
-      => (string token_url,
-          string response,
-          ProviderError error,
-          string error_message);
-
   GetUnstoppableDomainsResolveMethod() => (ResolveMethod method);
 
   GetEnsResolveMethod() => (ResolveMethod method);
@@ -2204,13 +1977,6 @@ interface JsonRpcService {
   GetNftBalances(
       string wallet_address, array<NftIdentifier> nft_identifiers)
       => (array<uint64> balances, string error_message);
-
-  // Returns the metadata json associated with the NFT account address
-  GetSolTokenMetadata(string chain_id, string token_mint_address)
-      => (string token_url,
-          string response,
-          SolanaProviderError error,
-          string error_message);
 
   // Returns whether a blockhash is still valid or not for a given chain.
   IsSolanaBlockhashValid(
@@ -2479,12 +2245,27 @@ struct PolkadotAccountInfo {
   PolkadotAccountBalance data;
 };
 
+enum PolkadotValidationStatus {
+  kNoError = 0,
+  kInvalidPrefix = 1,
+  kInvalidAddressFormat = 2,
+  kFailedToFetchMetadata = 3,
+};
+
 interface PolkadotWalletService {
   GetNetworkName(AccountId account)
       => (string? network, string? error_message);
 
+  GetCompatibleNetworks(AccountId account) => (array<NetworkInfo>? networks);
+
+  GetAddress(AccountId account, string chain_id)
+      => (string? address, string? error_message);
+
   GetAccountBalance(AccountId account, string chain_id)
       => (PolkadotAccountInfo? account, string? error_message);
+
+  ValidateAddressForTransaction(string chain_id, string address)
+      => (PolkadotValidationStatus status);
 };
 
 enum TransactionStatus {
@@ -2759,13 +2540,19 @@ struct NewPolkadotTransactionParams {
 // For transaction management such as creation, broadcasting, and storing
 // transactions.
 interface TxService {
-  AddUnapprovedTransaction(TxDataUnion tx_data_union,
-                           string chain_id,
-                           AccountId from,
-                           SwapInfo? swap_info)
+  AddUnapprovedEvmTransaction(NewEvmTransactionParams params)
       => (bool success, string tx_meta_id, string error_message);
 
-  AddUnapprovedEvmTransaction(NewEvmTransactionParams params)
+  AddUnapprovedSolanaTransaction(SolanaTxData tx_data,
+                                 string chain_id,
+                                 AccountId from,
+                                 SwapInfo? swap_info)
+      => (bool success, string tx_meta_id, string error_message);
+
+  AddUnapprovedFilecoinTransaction(FilTxData tx_data,
+                                   string chain_id,
+                                   AccountId from,
+                                   SwapInfo? swap_info)
       => (bool success, string tx_meta_id, string error_message);
 
   AddUnapprovedBitcoinTransaction(NewBitcoinTransactionParams params)
@@ -3370,36 +3157,7 @@ interface BraveWalletService {
 };
 
 // For reporting wallet related P3A metrics.
-interface BraveWalletP3A {
-  // Called when the wallet provider type is evaluated after page load.
-  ReportJSProvider(JSProviderType provider_type,
-                   CoinType coin_type,
-                   bool allow_provider_overwrite);
-
-  // Called when a Wallet onboarding action is performed.
-  ReportOnboardingAction(OnboardingAction onboarding_action);
-
-  // Called to report an active wallet count for P3A
-  RecordActiveWalletCount(int32 count, CoinType coin_type);
-
-  // Called to report displayed NFT count upon viewing the NFT gallery
-  RecordNFTGalleryView(int32 nft_count);
-};
-
-enum OnboardingAction {
-  Shown = 0,
-  LegalAndPassword = 1,
-  RecoverySetup = 2,
-  Complete = 3,
-  CompleteRecoverySkipped = 4,
-  StartRestore = 5,
-};
-
-enum JSProviderType {
-  None = 0,
-  ThirdParty = 1,
-  Native = 2,
-};
+interface BraveWalletP3A {};
 
 enum DefaultWallet {
   AskDeprecated = 0,
@@ -3649,7 +3407,7 @@ enum BlowfishWarningKind {
   kPermitNoExpiration,
   kPermitUnlimitedAllowance,
   kPoisonedAddress,
-  kReferencedOfacAddress,
+  kReferencedRestrictedAddress,
   kSemiTrustedBlocklistDomain,
   kSetOwnerAuthority,
   kSuspectedMalicious,

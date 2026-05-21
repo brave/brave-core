@@ -8,13 +8,13 @@
 // Designed to be used on CI, but should work locally too.
 // The script includes syncing; there is no need to run npm run sync before.
 
-import config from './config.js'
+import config from './config.ts'
 import util from './util.js'
 import path from 'node:path'
 import fs from 'fs-extra'
 import depotTools from './depotTools.js'
 import syncUtil from './syncUtils.js'
-import Log from './logging.js'
+import * as Log from './log.ts'
 import { isCI } from './ciDetect.ts'
 
 // Use the same filename as for Brave archive.
@@ -153,7 +153,7 @@ function buildChromiumRelease(buildOptions = {}) {
       'Warning: the command resets all changes in src/ folder.\n'
         + 'src/brave stays untouched. Pass --force to continue.',
     )
-    return 1
+    process.exit(1)
   }
   config.buildConfig = 'Release'
   config.isChromium = true
@@ -211,7 +211,6 @@ function buildChromiumRelease(buildOptions = {}) {
   Log.progressScope('make archive', () => {
     chromiumConfig.processArtifacts()
   })
-  return 0
 }
 
 export default buildChromiumRelease

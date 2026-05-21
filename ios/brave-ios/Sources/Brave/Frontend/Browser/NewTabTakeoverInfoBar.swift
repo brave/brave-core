@@ -8,12 +8,10 @@ import SwiftUI
 
 class NewTabTakeoverInfoBar: InfoBar {
   init(
-    tabManager: TabManager,
-    onLinkPressed: @escaping (() -> Void),
+    onLinkPressed: @escaping ((URL) -> Void),
     onClosePressed: @escaping (() -> Void)
   ) {
     super.init(
-      tabManager: tabManager,
       labelText: Strings.Ads.newTabTakeoverInfoBarMessage,
       linkText: Strings.Ads.newTabTakeoverInfoBarLearnMoreOptOutChoices,
       linkUrl: URL.brave.newTabTakeoverLearnMoreLinkUrl.absoluteString,

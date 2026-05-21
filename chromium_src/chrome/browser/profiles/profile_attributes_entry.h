@@ -17,19 +17,18 @@ class DictValue;
 #undef GetUserName
 #endif
 
-#define MigrateObsoleteProfileAttributes   \
-  BraveMigrateObsoleteProfileAttributes(); \
-  void MigrateObsoleteProfileAttributes
-
-#define RecordAccountNamesMetric                     \
-  RecordAccountNamesMetric_UnUsed() {}               \
+#define MigrateObsoleteProfileAttributes             \
+  BraveMigrateObsoleteProfileAttributes();           \
+                                                     \
+ public:                                             \
   const base::DictValue* GetSerpMetrics() const;     \
   void SetSerpMetrics(base::DictValue serp_metrics); \
+                                                     \
+ private:                                            \
   friend class ProfileAttributeMigrationTest;        \
-  void RecordAccountNamesMetric
+  void MigrateObsoleteProfileAttributes
 
 #include <chrome/browser/profiles/profile_attributes_entry.h>  // IWYU pragma: export
 #undef MigrateObsoleteProfileAttributes
-#undef RecordAccountNamesMetric
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PROFILES_PROFILE_ATTRIBUTES_ENTRY_H_

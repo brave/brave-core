@@ -46,7 +46,7 @@ struct P3AOptInGraphicsView: View {
     .onAppear {
       isP3AEnabled = p3aUtils?.isP3AEnabled ?? false
     }
-    .onChange(of: isP3AEnabled) { newValue in
+    .onChange(of: isP3AEnabled) { _, newValue in
       p3aUtils?.isP3AEnabled = newValue
     }
     .sheet(isPresented: $isDisplayingP3AHelp) {

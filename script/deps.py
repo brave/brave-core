@@ -6,6 +6,7 @@
 
 """This script is used to download deps."""
 
+import hashlib
 import os
 import shutil
 import sys
@@ -57,7 +58,7 @@ def DownloadUrl(url, output_file):
             sys.stdout.write('\n')
             print(e)
             if num_retries == 0 or isinstance(
-                    e, HTTPError) and e.code in [403, 404]:  # pylint: disable=no-member,line-too-long
+                    e, HTTPError) and e.code in [403, 404]:  # pylint: disable=line-too-long,no-member
                 raise e
             num_retries -= 1
             print("Retrying in {} s ...".format(retry_wait_s))
@@ -70,7 +71,16 @@ def EnsureDirExists(path):
         os.makedirs(path)
 
 
-def DownloadAndUnpack(url, output_dir, path_prefix=None):
+def VerifySHA256(path, expected, url):
+    with open(path, 'rb') as f:
+        actual = hashlib.file_digest(f, 'sha256').hexdigest()
+    if actual.lower() != expected.lower():
+        raise ValueError(f'SHA-256 mismatch for {url}\n'
+                         f'  expected: {expected.lower()}\n'
+                         f'  actual:   {actual}')
+
+
+def DownloadAndUnpack(url, output_dir, path_prefix=None, sha256=None):
     """Download an archive from url and extract into output_dir. If path_prefix
        is not None, only extract files whose paths within the archive start
        with path_prefix."""
@@ -78,6 +88,8 @@ def DownloadAndUnpack(url, output_dir, path_prefix=None):
         try:
             DownloadUrl(url, tmp_file)
             tmp_file.close()
+            if sha256:
+                VerifySHA256(tmp_file.name, sha256, url)
             try:
                 os.unlink(output_dir)
             except OSError:
@@ -97,3 +109,23 @@ def DownloadAndUnpack(url, output_dir, path_prefix=None):
                     t.extractall(path=output_dir, members=members)
         finally:
             os.unlink(tmp_file.name)
+
+
+def DownloadIfChanged(url,
+                      dest_dir,
+                      *args,
+                      download_fn=DownloadAndUnpack,
+                      **kwargs):
+    """Run download_fn() only if dest_dir isn't already recorded as
+    containing a download from url. On success, records url in a
+    '.url' file inside dest_dir so subsequent calls can skip."""
+    url_file = os.path.join(dest_dir, '.url')
+    try:
+        with open(url_file) as f:
+            if f.read() == url:
+                return
+    except FileNotFoundError:
+        pass
+    download_fn(url, dest_dir, *args, **kwargs)
+    with open(url_file, 'w', newline='\n') as f:
+        f.write(url)

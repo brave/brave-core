@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 .sources {
-  animation: reveal 200ms ease-out both;
+  animation: var(--reveal-animation);
   h4 {
     margin: 16px 0 6px 0;
     font: var(--leo-font-small-regular);

@@ -13,6 +13,7 @@
 
 #include "base/check.h"
 #include "base/dcheck_is_on.h"
+#include "base/feature_list.h"
 #include "base/json/json_reader.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
@@ -21,13 +22,19 @@
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_rewards/content/rewards_service.h"
+#include "brave/components/brave_rewards/core/features.h"
 #include "brave/components/brave_rewards/core/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "brave/components/brave_rewards/resources/grit/rewards_internals_generated_map.h"
+#include "chrome/browser/about_flags.h"
+#include "chrome/browser/browser_process.h"
+#include "chrome/browser/lifetime/application_lifetime.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
+#include "components/webui/flags/pref_service_flags_storage.h"
 #include "content/public/browser/web_ui.h"
+#include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/web_ui_message_handler.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
@@ -77,6 +84,7 @@ class RewardsInternalsDOMHandler : public content::WebUIMessageHandler {
   void GetAdDiagnostics(const base::ListValue& args);
   void OnGetAdDiagnostics(std::optional<base::ListValue> diagnostics);
   void SetAdDiagnosticId(const base::ListValue& args);
+  void ToggleVerboseLoggingAndRestart(const base::ListValue& args);
   void GetEnvironment(const base::ListValue& args);
   void OnGetEnvironment(brave_rewards::mojom::Environment environment);
 
@@ -134,6 +142,11 @@ void RewardsInternalsDOMHandler::RegisterMessages() {
       "brave_rewards_internals.setAdDiagnosticId",
       base::BindRepeating(&RewardsInternalsDOMHandler::SetAdDiagnosticId,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "brave_rewards_internals.toggleVerboseLoggingAndRestart",
+      base::BindRepeating(
+          &RewardsInternalsDOMHandler::ToggleVerboseLoggingAndRestart,
+          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "brave_rewards_internals.getEnvironment",
       base::BindRepeating(&RewardsInternalsDOMHandler::GetEnvironment,
@@ -455,6 +468,21 @@ void RewardsInternalsDOMHandler::SetAdDiagnosticId(
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 }
 
+void RewardsInternalsDOMHandler::ToggleVerboseLoggingAndRestart(
+    const base::ListValue& args) {
+  std::string internal_name = "brave-rewards-verbose-logging";
+  if (base::FeatureList::IsEnabled(
+          brave_rewards::features::kVerboseLoggingFeature)) {
+    internal_name += "@0";  // The "Default" (disabled) option.
+  } else {
+    internal_name += "@1";  // The "Enabled" option.
+  }
+  flags_ui::PrefServiceFlagsStorage flags_storage(
+      g_browser_process->local_state());
+  about_flags::SetFeatureEntryEnabled(&flags_storage, internal_name, true);
+  chrome::AttemptRestart();
+}
+
 void RewardsInternalsDOMHandler::GetEnvironment(const base::ListValue& args) {
   if (!rewards_service_) {
     return;
@@ -482,8 +510,13 @@ void RewardsInternalsDOMHandler::OnGetEnvironment(
 BraveRewardsInternalsUI::BraveRewardsInternalsUI(content::WebUI* web_ui,
                                                  std::string_view name)
     : WebUIController(web_ui) {
-  CreateAndAddWebUIDataSource(web_ui, name, kRewardsInternalsGenerated,
-                              IDR_BRAVE_REWARDS_INTERNALS_HTML);
+  auto* source =
+      CreateAndAddWebUIDataSource(web_ui, name, kRewardsInternalsGenerated,
+                                  IDR_BRAVE_REWARDS_INTERNALS_HTML);
+
+  source->AddBoolean("verboseLoggingEnabled",
+                     base::FeatureList::IsEnabled(
+                         brave_rewards::features::kVerboseLoggingFeature));
 
   auto handler_owner = std::make_unique<RewardsInternalsDOMHandler>();
   RewardsInternalsDOMHandler* handler = handler_owner.get();

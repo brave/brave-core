@@ -29,20 +29,25 @@ class PolkadotKeyring {
   // which is the SS58-encoded public key for this particular derivation. Many
   // parachains use their own ss58 prefix, which the caller can supply.
   // Unified addressing uses 0 as the default prefix.
-  std::string GetAddress(uint32_t account_index, uint16_t prefix);
+  // Returns nullopt if account_index has not been added via AddNewHDAccount().
+  std::optional<std::string> GetAddress(uint32_t account_index,
+                                        uint16_t prefix);
 
   // Get the public key associated with the account denoted by
   // `//<network>//<account_index>`.
-  std::array<uint8_t, kSr25519PublicKeySize> GetPublicKey(
+  // Returns nullopt if account_index has not been added via AddNewHDAccount().
+  std::optional<std::array<uint8_t, kSr25519PublicKeySize>> GetPublicKey(
       uint32_t account_index);
 
   // Use the derived account `account_index` to sign the provided message.
-  std::array<uint8_t, kSr25519SignatureSize> SignMessage(
+  // Returns nullopt if account_index has not been added via AddNewHDAccount().
+  std::optional<std::array<uint8_t, kSr25519SignatureSize>> SignMessage(
       base::span<const uint8_t> message,
       uint32_t account_index);
 
   // Verify that the provided signature is associated with the given message,
   // for the account denoted by `account_index`.
+  // Returns false if account_index has not been added via AddNewHDAccount().
   [[nodiscard]] bool VerifyMessage(
       base::span<const uint8_t, kSr25519SignatureSize> signature,
       base::span<const uint8_t> message,
@@ -54,11 +59,12 @@ class PolkadotKeyring {
 
   mojom::KeyringId keyring_id() const { return keyring_id_; }
 
-  std::optional<std::string> AddNewHDAccount(uint32_t index);
+  std::optional<std::string> AddNewHDAccount(uint32_t account_index);
 
   // Encodes the private key for export in JSON format.
   // Returns a JSON string with encoded key, encoding metadata, and address.
   // The seed is encrypted using xsalsa20-poly1305 with a password-derived key.
+  // Returns nullopt if account_index has not been added via AddNewHDAccount().
   std::optional<std::string> EncodePrivateKeyForExport(
       uint32_t account_index,
       std::string_view password);
@@ -86,7 +92,7 @@ class PolkadotKeyring {
   void SetSignatureRngForTesting();
 
  private:
-  HDKeySr25519& EnsureKeyPair(uint32_t account_index);
+  HDKeySr25519* GetKeypair(uint32_t account_index);
 
   HDKeySr25519 root_account_key_;
   mojom::KeyringId keyring_id_;

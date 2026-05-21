@@ -1,0 +1,33 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[[substitution]]
+description = '''Wrap PermissionContextBase class in chromium_impl namespace
+
+This substitution moves the `PermissionContextBase` in its entirety into a
+detail namespace called `chromium_impl`, so we can shadow that class with an
+official brave implementation for `PermissionContextBase` that derives from
+the `chromium_impl` one.
+
+The namespace introduced here only wraps the class definition, so it searches
+for the class declaration first, to avoid wrapping the forward declarations
+or the Observer class that appear earlier in the same namespace block.
+'''
+re_pattern = '(class PermissionContextBase[\s\S]*?)(\n\}\s*// namespace permissions)'
+re_flags = ['MULTILINE']
+replace = '''
+namespace chromium_impl {
+\1
+}  // namespace chromium_impl\2'''
+
+[[substitution]]
+description = 'Make PermissionDecided virtual to allow Brave override in derived class'
+pattern = 'void PermissionDecided('
+replace = 'virtual void PermissionDecided('
+
+[[substitution]]
+description = 'Add Brave PermissionContextBase as friend of chromium_impl::PermissionContextBase'
+re_pattern = '(\bprivate:)'
+replace = '\1\n  friend class ::permissions::PermissionContextBase;'

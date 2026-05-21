@@ -18,6 +18,9 @@ export function createNewTabStore() {
     newsFeatureEnabled: loadTimeData.getBoolean('newsFeatureEnabled'),
     talkFeatureEnabled,
     aiChatInputEnabled: loadTimeData.getBoolean('aiChatInputEnabled'),
+    centerNttCtaButtonFeatureEnabled: loadTimeData.getBoolean(
+      'centerNttCtaButtonFeatureEnabled',
+    ),
   })
 
   async function updateClockPrefs() {

@@ -3,12 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import config from './config.js'
+import config from './config.ts'
 
-const versions = (buildConfig = config.defaultBuildConfig, options = {}) => {
-  config.buildConfig = buildConfig
-  config.update(options)
-
+const versions = () => {
   console.log('chrome ' + config.getProjectRef('chrome'))
   console.log('brave-core ' + config.getProjectRef('brave-core'))
 }

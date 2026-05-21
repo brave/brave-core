@@ -14,7 +14,8 @@
       std::make_unique<syncer::BraveSyncServiceImplDelegate>(   \
           DeviceInfoSyncServiceFactory::GetForProfile(profile), \
           ios::HistoryServiceFactory::GetForProfile(            \
-              profile, ServiceAccessType::IMPLICIT_ACCESS)));
+              profile, ServiceAccessType::IMPLICIT_ACCESS)),    \
+      GetApplicationContext()->GetOSCryptAsync());
 
 #include <ios/chrome/browser/sync/model/sync_service_factory.mm>
 

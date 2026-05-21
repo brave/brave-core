@@ -11,11 +11,17 @@ import * as Mojom from '../../common/mojom'
 import { AIChatAPI } from '../api/ai_chat_api'
 
 export interface ConversationEntriesProps {
-  onIsContentReady: (isContentReady: boolean) => void
+  /* Class to put on the element in order to customize scroll */
+  className: string
 }
 
 type AIChatContextProps = {
   api: AIChatAPI['api']
+
+  /**
+   * React component to render the conversation entries. iframe in the
+   * WebUI, direct Component in the Storybook.
+   */
   conversationEntriesComponent: (
     props: ConversationEntriesProps,
   ) => React.ReactElement
@@ -45,22 +51,18 @@ export default function useProvideAIChatContext(props: AIChatContextProps) {
   const { getConversationsData, isPlaceholderData: isConversationsLoading } =
     api.useGetConversations()
 
-  const [defaultTabContentId, setDefaultTabContentId] = React.useState<number>()
-
-  api.useOnNewDefaultConversation((contentId) => {
-    setDefaultTabContentId(contentId)
-  })
+  const isStandalone = api.useIsStandalone().data
 
   const store = {
     api: props.api,
-    initialized:
-      api.isStandalone.current !== undefined && !isConversationsLoading,
+    initialized: isStandalone !== undefined && !isConversationsLoading,
     isMobile: loadTimeData.getBoolean('isMobile'),
     isHistoryFeatureEnabled: loadTimeData.getBoolean('isHistoryEnabled'),
     isAIChatAgentProfileFeatureEnabled: loadTimeData.getBoolean(
       'isAIChatAgentProfileFeatureEnabled',
     ),
     isAIChatAgentProfile: loadTimeData.getBoolean('isAIChatAgentProfile'),
+    isGlobalPanel: loadTimeData.getBoolean('isGlobalPanel'),
 
     // TODO(https://github.com/brave/brave-browser/issues/52541): consumers
     // should consume directly from
@@ -92,7 +94,7 @@ export default function useProvideAIChatContext(props: AIChatContextProps) {
      */
     actionList: api.useGetActionMenuList().data,
 
-    isStandalone: api.useIsStandalone().data,
+    isStandalone,
 
     /**
      * @deprecated use api.useGetConversations() instead
@@ -145,6 +147,8 @@ export default function useProvideAIChatContext(props: AIChatContextProps) {
     // Note: we might want to show progress during image processing,
     // and we can do that via monitoring the mutation in the provided hook.
     processImageFile: api.processImageFile,
+    processPdfFile: api.processPdfFile,
+    processTextFile: api.processTextFile,
 
     /**
      * @deprecated use api.uiHandler.openAIChatAgentProfile directly instead
@@ -156,7 +160,7 @@ export default function useProvideAIChatContext(props: AIChatContextProps) {
      */
     openURL: api.uiHandler.openURL,
 
-    defaultTabContentId,
+    defaultTabContentId: api.useCurrentOnNewDefaultConversation().data?.[0],
     editingConversationId,
     setEditingConversationId,
     deletingConversationId,

@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/functional/bind.h"
-#include "base/logging.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 
 namespace brave_wallet {
@@ -56,8 +55,6 @@ void FilBlockTracker::OnGetFilBlockHeight(const std::string& chain_id,
   }
 
   if (error != mojom::FilecoinProviderError::kSuccess) {
-    VLOG(1) << __FUNCTION__ << ": Failed to get latest height, error: "
-            << static_cast<int>(error) << ", error_message: " << error_message;
     return;
   }
   if (GetLatestHeight(chain_id) == latest_height) {

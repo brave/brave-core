@@ -57,6 +57,7 @@ TEST_F(NavigationSourceMetricsUnitTest, NoReportWhenTotalIsZero) {
       kNavSourceBookmarksSourcePercentHistogramName, 0);
   histogram_tester_.ExpectTotalCount(
       kNavSourceDirectURLSourcePercentHistogramName, 0);
+  histogram_tester_.ExpectUniqueSample(kNavSourceNavigatedHistogramName, 0, 1);
 }
 
 TEST_F(NavigationSourceMetricsUnitTest, BookmarkBarNavigation) {
@@ -75,6 +76,7 @@ TEST_F(NavigationSourceMetricsUnitTest, BookmarkBarNavigation) {
       kNavSourceBookmarksSourcePercentHistogramName, 3, 1);
   histogram_tester_.ExpectTotalCount(
       kNavSourceDirectURLSourcePercentHistogramName, 0);
+  histogram_tester_.ExpectUniqueSample(kNavSourceNavigatedHistogramName, 1, 1);
 }
 
 TEST_F(NavigationSourceMetricsUnitTest, OmniboxBookmarkNavigation) {
@@ -166,13 +168,17 @@ TEST_F(NavigationSourceMetricsUnitTest, CountsClearedAfterReport) {
 
   histogram_tester_.ExpectTotalCount(
       kNavSourceBookmarksSourcePercentHistogramName, 1);
+  histogram_tester_.ExpectBucketCount(kNavSourceNavigatedHistogramName, 1, 1);
 
   // Record nothing in the next window.
   FastForwardAndReport(base::Days(1));
 
-  // No new sample should be recorded (total is 0).
+  // No new sample should be recorded for percentage histograms (total is 0).
   histogram_tester_.ExpectTotalCount(
       kNavSourceBookmarksSourcePercentHistogramName, 1);
+  // Navigated histogram should now have a false sample for the empty window.
+  histogram_tester_.ExpectBucketCount(kNavSourceNavigatedHistogramName, 0, 1);
+  histogram_tester_.ExpectTotalCount(kNavSourceNavigatedHistogramName, 2);
 }
 
 TEST_F(NavigationSourceMetricsUnitTest, ZeroPercentSourceNotReported) {
@@ -281,7 +287,7 @@ TEST_F(NavigationSourceMetricsUnitTest,
   // No navigations recorded.
   FastForwardAndReport(base::Days(1));
 
-  histogram_tester_.ExpectTotalCount(kNavSourceNavigatedHistogramName, 0);
+  histogram_tester_.ExpectUniqueSample(kNavSourceNavigatedHistogramName, 0, 1);
 }
 
 }  // namespace misc_metrics

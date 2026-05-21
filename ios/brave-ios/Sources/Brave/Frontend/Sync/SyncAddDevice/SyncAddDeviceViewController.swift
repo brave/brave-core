@@ -119,7 +119,6 @@ class SyncAddDeviceViewController: SyncViewController {
       deviceType == .computer ? Strings.Sync.addComputerTitle : Strings.Sync.addTabletOrPhoneTitle
 
     modeControl.do {
-      $0.isHidden = deviceType == .computer
       $0.addTarget(self, action: #selector(changeMode), for: .valueChanged)
     }
 

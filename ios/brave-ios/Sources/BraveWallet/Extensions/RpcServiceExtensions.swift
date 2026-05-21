@@ -124,10 +124,8 @@ extension BraveWalletJsonRpcService {
           completion(nil)
         }
       }
-    case .btc:
-      completion(nil)
-    case .zec:
-      completion(nil)
+    case .btc, .zec, .ada, .dot:
+      fallthrough
     @unknown default:
       completion(nil)
     }
@@ -247,12 +245,8 @@ extension BraveWalletJsonRpcService {
           completion(nil)
         }
       }
-    case .btc:
-      // Bitcoin balance should be fetched using `BraveWallet.BitcoinWalletService`
-      completion(nil)
-    case .zec:
-      // Zcash balance should be fetched using `BraveWallet.ZCashWalletService`
-      completion(nil)
+    case .btc, .zec, .ada, .dot:
+      fallthrough
     @unknown default:
       completion(nil)
     }
@@ -446,7 +440,7 @@ extension BraveWalletJsonRpcService {
       of: [String: BraveWallet.NftMetadata].self
     ) { @MainActor [weak self] group in
       guard let self = self else { return [:] }
-      for (coin, tokensPerCoin) in tokenCoinMap {
+      for (_, tokensPerCoin) in tokenCoinMap {
         group.addTask {
           var uniqueTokensPerCoin: [BraveWallet.BlockchainToken] = []
           for token in tokensPerCoin {

@@ -183,20 +183,9 @@
                     android:layout_height="wrap_content"
                     style="@style/SmallRegular"
                     android:layout_marginHorizontal="24dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="24dp"
                     android:textColor="@android:color/white"
                     android:text="@string/origin_description_body"
-                    android:textAlignment="textStart"/>
-
-                <!-- Note about Brave Search Premium -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/SmallRegular"
-                    android:layout_marginHorizontal="24dp"
-                    android:layout_marginBottom="24dp"
-                    android:textColor="@color/primitive_blurple_90"
-                    android:text="@string/origin_description_note"
                     android:textAlignment="textStart"/>
 
                 <!-- "Already purchased on brave.com?" section -->

@@ -32,6 +32,7 @@
 #include "base/task/single_thread_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
+#include "brave/brave_domains/urls.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/content/diagnostic_log.h"
@@ -55,7 +56,7 @@
 #include "components/country_codes/country_codes.h"
 #include "components/favicon/core/favicon_service.h"
 #include "components/grit/brave_components_strings.h"
-#include "components/os_crypt/sync/os_crypt.h"
+#include "components/os_crypt/async/browser/os_crypt_async.h"
 #include "components/prefs/pref_service.h"
 #include "components/regional_capabilities/regional_capabilities_prefs.h"
 #include "content/public/browser/service_process_host.h"
@@ -206,6 +207,7 @@ RewardsServiceImpl::RewardsServiceImpl(
     PrefService* prefs,
     const base::FilePath& profile_path,
     favicon::FaviconService* favicon_service,
+    os_crypt_async::OSCryptAsync* os_crypt,
     RequestImageCallback request_image_callback,
     CancelImageRequestCallback cancel_image_request_callback,
     content::StoragePartition* storage_partition
@@ -216,6 +218,7 @@ RewardsServiceImpl::RewardsServiceImpl(
     )
     : prefs_(prefs),
       favicon_service_(favicon_service),
+      os_crypt_(os_crypt),
       request_image_callback_(request_image_callback),
       cancel_image_request_callback_(cancel_image_request_callback),
       storage_partition_(storage_partition),
@@ -266,15 +269,8 @@ bool RewardsServiceImpl::IsInitialized() {
   return Connected() && ready_->is_signaled();
 }
 
-void RewardsServiceImpl::Init(
-    std::unique_ptr<RewardsServiceObserver> extension_observer) {
+void RewardsServiceImpl::Init() {
   AddObserver(notification_service_.get());
-
-  if (extension_observer) {
-    extension_observer_ = std::move(extension_observer);
-    AddObserver(extension_observer_.get());
-  }
-
   CheckPreferences();
   InitPrefChangeRegistrar();
 }
@@ -952,12 +948,6 @@ std::vector<std::string> RewardsServiceImpl::GetExternalWalletProviders()
     providers.push_back(internal::constant::kWalletZebPay);
   } else {
     providers.push_back(internal::constant::kWalletUphold);
-
-#if BUILDFLAG(ENABLE_GEMINI_WALLET)
-    if (base::FeatureList::IsEnabled(features::kGeminiFeature)) {
-      providers.push_back(internal::constant::kWalletGemini);
-    }
-#endif
   }
 
   if (base::FeatureList::IsEnabled(
@@ -1146,8 +1136,10 @@ void RewardsServiceImpl::NotifyPublisherPageVisit(uint64_t tab_id,
 
   auto publisher_domain = GetPublisherDomainFromURL(parsed_url);
   if (!publisher_domain) {
-    mojom::PublisherInfoPtr info;
-    OnPanelPublisherInfo(mojom::Result::NOT_FOUND, std::move(info), tab_id);
+    DeferCallback(FROM_HERE,
+                  base::BindOnce(&RewardsServiceImpl::OnPanelPublisherInfo,
+                                 AsWeakPtr(), mojom::Result::NOT_FOUND,
+                                 mojom::PublisherInfoPtr(), tab_id));
     return;
   }
 
@@ -1500,6 +1492,8 @@ mojom::RewardsEngineOptionsPtr RewardsServiceImpl::HandleFlags(
   } else {
     options->environment = GetDefaultServerEnvironment();
   }
+
+  options->gate3_url = brave_domains::GetGate3URL();
 
   if (flags.reconcile_interval) {
     options->reconcile_interval = *flags.reconcile_interval;
@@ -2022,22 +2016,36 @@ void RewardsServiceImpl::GetEventLogs(GetEventLogsCallback callback) {
 
 void RewardsServiceImpl::EncryptString(const std::string& value,
                                        EncryptStringCallback callback) {
-  std::string encrypted;
-  if (OSCrypt::EncryptString(value, &encrypted)) {
-    return std::move(callback).Run(std::move(encrypted));
-  }
+  auto with_encryptor = [](base::WeakPtr<RewardsServiceImpl> self,
+                           std::string value, EncryptStringCallback callback,
+                           os_crypt_async::Encryptor encryptor) {
+    if (!self) {
+      return;
+    }
+    std::optional<std::string> encrypted;
+    if (auto result = encryptor.EncryptString(value)) {
+      encrypted = std::string(base::as_string_view(result.value()));
+    }
+    std::move(callback).Run(std::move(encrypted));
+  };
 
-  std::move(callback).Run(std::nullopt);
+  os_crypt_->GetInstance(
+      base::BindOnce(with_encryptor, AsWeakPtr(), value, std::move(callback)));
 }
 
 void RewardsServiceImpl::DecryptString(const std::string& value,
                                        DecryptStringCallback callback) {
-  std::string decrypted;
-  if (OSCrypt::DecryptString(value, &decrypted)) {
-    return std::move(callback).Run(std::move(decrypted));
-  }
+  auto with_encryptor = [](base::WeakPtr<RewardsServiceImpl> self,
+                           std::string value, DecryptStringCallback callback,
+                           os_crypt_async::Encryptor encryptor) {
+    if (!self) {
+      return;
+    }
+    std::move(callback).Run(encryptor.DecryptData(base::as_byte_span(value)));
+  };
 
-  std::move(callback).Run(std::nullopt);
+  os_crypt_->GetInstance(
+      base::BindOnce(with_encryptor, AsWeakPtr(), value, std::move(callback)));
 }
 
 void RewardsServiceImpl::GetRewardsWallet(GetRewardsWalletCallback callback) {

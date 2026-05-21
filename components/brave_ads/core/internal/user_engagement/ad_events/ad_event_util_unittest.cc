@@ -11,9 +11,9 @@
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
-#include "brave/components/brave_ads/core/internal/creatives/creative_ad_test_util.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder_test_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/test/creative_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/test/ad_event_builder_test_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -36,22 +36,22 @@ TEST_F(BraveAdsAdEventUtilTest, ToHistoryIfNoAdEvents) {
 TEST_F(BraveAdsAdEventUtilTest, ToHistory) {
   // Arrange
   const CreativeAdInfo creative_ad =
-      test::BuildCreativeAd(/*should_generate_random_uuids=*/true);
+      test::BuildCreativeAd(/*use_random_uuids=*/true);
 
   AdEventList ad_events;
 
-  const AdEventInfo ad_event_1 = test::BuildAdEvent(
-      creative_ad, mojom::AdType::kNotificationAd,
-      mojom::ConfirmationType::kConversion,
-      /*created_at=*/test::Now(), /*should_generate_random_uuids=*/true);
+  const AdEventInfo ad_event_1 =
+      test::BuildAdEvent(creative_ad, mojom::AdType::kNotificationAd,
+                         mojom::ConfirmationType::kConversion,
+                         /*created_at=*/test::Now(), /*use_random_uuids=*/true);
   ad_events.push_back(ad_event_1);
 
   AdvanceClockBy(base::Minutes(1));
 
-  const AdEventInfo ad_event_2 = test::BuildAdEvent(
-      creative_ad, mojom::AdType::kNotificationAd,
-      mojom::ConfirmationType::kConversion,
-      /*created_at=*/test::Now(), /*should_generate_random_uuids=*/true);
+  const AdEventInfo ad_event_2 =
+      test::BuildAdEvent(creative_ad, mojom::AdType::kNotificationAd,
+                         mojom::ConfirmationType::kConversion,
+                         /*created_at=*/test::Now(), /*use_random_uuids=*/true);
   ad_events.push_back(ad_event_2);
 
   // Act

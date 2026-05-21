@@ -21,10 +21,13 @@
 #include "brave/components/playlist/content/browser/playlist_p3a.h"
 #include "brave/components/playlist/content/browser/playlist_streaming.h"
 #include "brave/components/playlist/content/browser/playlist_thumbnail_downloader.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/mojom/playlist.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_member.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
+
+static_assert(BUILDFLAG(ENABLE_PLAYLIST));
 
 #if BUILDFLAG(IS_ANDROID)
 #include "mojo/public/cpp/bindings/receiver_set.h"

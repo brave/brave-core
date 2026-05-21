@@ -123,7 +123,8 @@ extension PrivacyReportsView {
           }
         }
         .listStyle(.insetGrouped)
-        .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+        .scrollContentBackground(.hidden)
+        .background(Color(UIColor.braveGroupedBackground))
 
         Spacer()
       }

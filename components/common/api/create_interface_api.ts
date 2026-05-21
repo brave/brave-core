@@ -180,7 +180,14 @@ export function createInterfaceApi<
     string,
     Function | Record<string, Function>
   >,
-  const RawEndpoints extends Record<string, EndpointDef<readonly any[], any>>,
+  // Use `EndpointDef<any, any>` (not `any[]`) so that specific endpoint
+  // definitions remain assignable under `strictFunctionTypes`. With `any[]`,
+  // mutation callbacks like `onMutate: (variables: [a, b]) => …` fail
+  // contravariance checks against `(variables: any[]) => …` because tuples
+  // are narrower than `any[]`. Switching to `any` makes the parameter slot
+  // bivariant and side-steps the variance issue without losing inference on
+  // the concrete `RawEndpoints` type below.
+  const RawEndpoints extends Record<string, EndpointDef<any, any>>,
   EventDefinitions extends Record<string, EventDef<any[], any>> = {},
 >(config: {
   /**
@@ -519,24 +526,45 @@ export function createInterfaceApi<
 
         const queryKey = [...baseKey, ...args]
 
-        // Cancel because our set could be replaced if there is a query
-        // in-progress.
-        if (queryClient.isFetching({ queryKey, exact: true })) {
-          queryClient.cancelQueries({
-            queryKey,
-            exact: true,
-          })
-        }
-
         queryClient.setQueryData<QData>(queryKey, (old) => {
           const updateData: AllowedUpdateParam =
             typeof up === 'function'
               ? up(old as QData)
               : (up as AllowedUpdateParam)
-
+          const oldOrPlaceholder = getCachedData(...args)
+          if (!old && oldOrPlaceholder) {
+            // Warn only if this is a regular query. "state" queries will always
+            // use the update mechanism - the initial data is always considered
+            // placeholder.
+            if (endpointDef.enabled) {
+              console.warn(
+                'Updating data for query when base data has not yet'
+                  + ' been received. Placeholder data will convert to "real" data.'
+                  + ' `isPlaceholder` can no longer be relied upon for this query.',
+                { queryKey, old, oldOrPlaceholder, updateData },
+              )
+            }
+            old = oldOrPlaceholder
+          }
           const newData = updateFromOld(old, updateData)
           return newData
         })
+
+        // Cancel and re-queue because our set could be replaced if there is a
+        // query in-progress.
+        if (queryClient.isFetching({ queryKey, exact: true })) {
+          queryClient.cancelQueries({
+            queryKey,
+            exact: true,
+          })
+          // re-queue, but must first invalidate so that fetcher performs a new
+          // fetch instead of return the cached result
+          queryClient.invalidateQueries({
+            queryKey,
+            exact: true,
+          })
+          fetcher(...args)
+        }
       }
 
       if (prefetchWithArgs && queryOptions.enabled !== false) {

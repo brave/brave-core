@@ -57,6 +57,10 @@ class InitialSearchEngines {
       default: return false
       }
     }
+
+    var quickSearchP3AId: String {
+      rawValue.lowercased()
+    }
   }
 
   struct SearchEngine: Equatable, CustomStringConvertible {

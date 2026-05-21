@@ -15,6 +15,7 @@
 #include "brave/browser/misc_metrics/uptime_monitor_impl.h"
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service.h"
+#include "brave/components/brave_vpn/browser/brave_vpn_service_impl.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/skus/common/features.h"
 #include "build/build_config.h"
@@ -71,11 +72,10 @@ std::unique_ptr<KeyedService> BuildVpnService(
                          ->GetWeakPtr();
   }
 
-  std::unique_ptr<BraveVpnService> vpn_service =
-      std::make_unique<BraveVpnService>(
-          g_brave_browser_process->brave_vpn_connection_manager(),
-          shared_url_loader_factory, local_state,
-          user_prefs::UserPrefs::Get(context), uptime_monitor, callback);
+  auto vpn_service = std::make_unique<BraveVpnServiceImpl>(
+      g_brave_browser_process->brave_vpn_connection_manager(),
+      shared_url_loader_factory, local_state,
+      user_prefs::UserPrefs::Get(context), uptime_monitor, callback);
 #if BUILDFLAG(IS_WIN)
   vpn_service->set_delegate(std::make_unique<BraveVPNServiceDelegateWin>());
   if (auto* wg_observer_service =

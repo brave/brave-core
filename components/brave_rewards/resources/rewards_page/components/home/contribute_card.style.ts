@@ -29,6 +29,7 @@ export const style = scoped.css`
       display: block;
       height: 24px;
       width: 24px;
+      border-radius: 4px;
     }
   }
 

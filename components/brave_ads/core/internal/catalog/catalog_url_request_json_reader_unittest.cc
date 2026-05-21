@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/catalog_type_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/notification_ad/catalog_creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
-#include "brave/components/brave_ads/core/internal/catalog/catalog_test_constants.h"
+#include "brave/components/brave_ads/core/internal/catalog/test/catalog_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/file_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_constants.h"
@@ -94,7 +94,6 @@ CatalogCampaignInfo BuildCatalogCampaign1() {
   catalog_creative_set.per_day = 5;
   catalog_creative_set.per_week = 6;
   catalog_creative_set.per_month = 7;
-  catalog_creative_set.split_test_group = "GroupB";
   catalog_creative_set.total_max = 100;
   catalog_creative_set.value = 0.05;
   catalog_creative_set.segments = catalog_segments;
@@ -317,8 +316,8 @@ TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
 
   // Assert
   EXPECT_THAT(*catalog, ::testing::FieldsAre(
-                            test::kCatalogId, /*version*/ 9,
-                            /*ping*/ base::Milliseconds(7'200'000),
+                            test::kCatalogId, /*version=*/9,
+                            /*ping=*/base::Milliseconds(7'200'000),
                             CatalogCampaignList{BuildCatalogCampaign1()}));
 }
 
@@ -336,8 +335,8 @@ TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
 
   // Assert
   EXPECT_THAT(*catalog, ::testing::FieldsAre(
-                            test::kCatalogId, /*version*/ 9,
-                            /*ping*/ base::Milliseconds(7'200'000),
+                            test::kCatalogId, /*version=*/9,
+                            /*ping=*/base::Milliseconds(7'200'000),
                             CatalogCampaignList{BuildCatalogCampaign1(),
                                                 BuildCatalogCampaign2()}));
 }
@@ -356,9 +355,9 @@ TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest,
 
   // Assert
   EXPECT_THAT(*catalog,
-              ::testing::FieldsAre(test::kCatalogId, /*version*/ 9,
-                                   /*ping*/ base::Milliseconds(7'200'000),
-                                   /*campaigns*/ ::testing::IsEmpty()));
+              ::testing::FieldsAre(test::kCatalogId, /*version=*/9,
+                                   /*ping=*/base::Milliseconds(7'200'000),
+                                   /*campaigns=*/::testing::IsEmpty()));
 }
 
 TEST_F(BraveAdsCatalogUrlRequestJsonReaderTest, DoNotReadMalformedCatalog) {

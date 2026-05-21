@@ -38,10 +38,17 @@ struct ProfileState {
   var migrations: BraveProfileMigrations
   var dau: DAU
   var attributionManager: AttributionManager
+  let profile: any Profile
 
   init(profileController: BraveProfileController) {
+    profile = profileController.profile
+
     // Setup DAU
-    dau = DAU(braveCoreStats: profileController.braveStats)
+    let serpMetrics = SerpMetricsServiceFactory.get(profile: profileController.profile)
+    dau = DAU(
+      braveCoreStats: profileController.braveStats,
+      serpMetrics: serpMetrics
+    )
 
     // Setup Attribution manager
     attributionManager = AttributionManager(
@@ -453,7 +460,17 @@ extension SceneDelegate {
       object: nil
     )
 
-    PrivacyReportsManager.scheduleNotification(debugMode: !AppConstants.isOfficialBuild)
+    let originService = BraveOriginServiceFactory.get(profile: profileState.profile)
+    Task {
+      // This is early enough in the app lifetime that we need to explicitly call
+      // `checkPurchaseState` rather than simply read `isPurchased` as it wont yet be cached.
+      let isOriginPurchased = await originService?.checkPurchaseState() ?? false
+      if isOriginPurchased {
+        PrivacyReportsManager.cancelNotification()
+      } else {
+        PrivacyReportsManager.scheduleNotification(debugMode: !AppConstants.isOfficialBuild)
+      }
+    }
     PrivacyReportsManager.consolidateData()
     PrivacyReportsManager.scheduleProcessingBlockedRequests(
       isPrivateBrowsing: browserViewController.privateBrowsingManager.isPrivateBrowsing
@@ -499,7 +516,7 @@ extension SceneDelegate {
     Task { @MainActor in
       let isPrivateBrowsing =
         scene.browserViewController?.privateBrowsingManager.isPrivateBrowsing == true
-      await BraveSkusManager(isPrivateMode: isPrivateBrowsing)?.refreshVPNCredentials()
+      await Skus.SkusServiceFactory.get(privateMode: isPrivateBrowsing)?.refreshVPNCredentials()
     }
   }
 
@@ -739,8 +756,11 @@ extension SceneDelegate {
       {
         // Restore the scene from the User-Info WindowID
         windowId = windowUUID
-        isPrivate = windowInfo.isPrivate
-        privateBrowsingManager.isPrivateBrowsing = windowInfo.isPrivate
+        let isPrivateFromActivity = windowInfo.isPrivate
+        isPrivate =
+          isPrivateFromActivity
+          || self.shouldLaunchInPrivateMode(windowId: windowUUID)
+        privateBrowsingManager.isPrivateBrowsing = isPrivate
         urlToOpen = windowInfo.openURL
 
         // Create a new session window if it does not already exist
@@ -870,10 +890,12 @@ extension SceneDelegate {
     return (windowId, isPrivate, nil)
   }
 
-  /// When "Keep private tabs" is enabled, returns whether the window should launch in Private mode.
-  /// Returns the default (privateBrowsingOnly) when the preference doesn't apply (e.g. no persistent private tabs to restore).
+  /// When "Keep private tabs" and "Reopen browser in private mode" are enabled, returns whether the window should launch in Private mode.
+  /// Returns the default (privateBrowsingOnly) when the preferences don't apply (e.g. no persistent private tabs to restore).
   private func shouldLaunchInPrivateMode(windowId: UUID) -> Bool {
-    guard Preferences.Privacy.persistentPrivateBrowsing.value else {
+    guard Preferences.Privacy.persistentPrivateBrowsing.value,
+      Preferences.Privacy.rememberBrowsingMode.value
+    else {
       return Preferences.Privacy.privateBrowsingOnly.value
     }
 

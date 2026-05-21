@@ -10,5 +10,10 @@ source_set("browser_window") {
 
   sources = [ "public/browser_window_features.h" ]
 
-  public_deps = [ "//base" ]
+  public_deps = [
+    "//base",
+    "//brave/components/playlist/core/common/buildflags",
+  ]
+
+  deps = [ "//brave/components/email_aliases/buildflags" ]
 }

@@ -727,3 +727,44 @@ Good examples in the repo:
 - `chromium_src/components/ntp_tiles/most_visited_sites_unittest.cc`
 - `chromium_src/components/variations/service/variations_service_unittest.cc`
 
+---
+
+<a id="TI-041"></a>
+
+## ✅ Test All Feature Flag Combinations with Bitmask Parameterization
+
+**When testing a class affected by multiple `base::Feature` flags, use value-parameterized tests to cover all 2^N flag combinations.** Represent each combination as a bitmask where bit `i` enables feature `i`. This prevents regressions caused by unexpected flag interactions.
+
+```cpp
+namespace {
+const std::vector<base::test::FeatureRef> kTestFeatures = {
+    features::kFlagA, features::kFlagB, features::kFlagC};
+}  // namespace
+
+// Generates 2^3 = 8 test instances, one per combination
+INSTANTIATE_TEST_SUITE_P(
+    All, MyFeatureTest,
+    testing::Range<size_t>(0, 1 << kTestFeatures.size()));
+
+class MyFeatureTest : public testing::TestWithParam<size_t> {
+ protected:
+  void SetUp() override {
+    std::vector<base::test::FeatureRef> enabled, disabled;
+    for (size_t i = 0; i < kTestFeatures.size(); i++) {
+      (GetParam() & (size_t{1} << i) ? enabled : disabled)
+          .push_back(kTestFeatures[i]);
+    }
+    scoped_feature_list_.InitWithFeatures(enabled, disabled);
+  }
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+TEST_P(MyFeatureTest, BehaviorIsCorrectForAllFlagCombinations) {
+  // Test logic runs under every flag combination automatically
+}
+```
+
+Place `kTestFeatures` in an unnamed namespace per Chromium C++ style. Use `int` instead of `size_t` for masks with more than 16 flags to avoid overflow.
+
+See [Chromium C++ Testing Best Practices](https://www.chromium.org/chromium-os/developer-library/guides/testing/cpp-writing-tests/).
+

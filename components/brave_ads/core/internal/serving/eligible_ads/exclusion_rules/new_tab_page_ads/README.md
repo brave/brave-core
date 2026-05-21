@@ -19,5 +19,6 @@ Exclusion rules frequency cap the number of times a user can see a new tab page 
 | split test  | Exclude the ad if not part of the split test group  |
 | subdivision targeting  | Exclude the ad if it does not match the user's geographic subdivision. See https://en.wikipedia.org/wiki/ISO_3166-2  |
 | total max  | Exclude the ad if it exceeds the total max for the creative set  |
+| zero priority  | Exclude the ad if it has a priority of 0, which is never servable  |
 
 Please add to it!

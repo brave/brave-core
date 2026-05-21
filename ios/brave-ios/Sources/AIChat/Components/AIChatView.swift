@@ -297,13 +297,13 @@ public struct AIChatView: View {
                         .padding(.trailing, 12.0)
                     }
                   }
-                  .onChange(of: model.requestInProgress) { _ in
+                  .onChange(of: model.requestInProgress) { _, _ in
                     scrollViewReader.scrollTo(lastMessageId, anchor: .bottom)
                   }
-                  .onChange(of: model.conversationHistory) { _ in
+                  .onChange(of: model.conversationHistory) { _, _ in
                     scrollViewReader.scrollTo(lastMessageId, anchor: .bottom)
                   }
-                  .onChange(of: customFeedbackInfo) { _ in
+                  .onChange(of: customFeedbackInfo) { _, _ in
                     hideKeyboard()
                     withAnimation {
                       scrollViewReader.scrollTo(lastMessageId, anchor: .bottom)
@@ -648,10 +648,14 @@ public struct AIChatView: View {
             if let skusService = Skus.SkusServiceFactory.get(privateMode: false),
               let orderId = Preferences.AIChat.subscriptionOrderId.value
             {
-              try? await skusService.fetchCredentials(orderId: orderId, for: .leo)
+              let result = await skusService.fetchOrderCredentials(
+                domain: BraveStoreProductGroup.leo.skusDomain,
+                orderId: orderId
+              )
+              if result.code == .ok {
+                model.retryLastRequest()
+              }
             }
-
-            model.retryLastRequest()
           }
         }
       } else {

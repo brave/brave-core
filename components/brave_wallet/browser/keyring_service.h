@@ -170,8 +170,7 @@ class KeyringService : public mojom::KeyringService {
                       SetAccountNameCallback callback) override;
   void Reset(bool notify_observer = true);
   void SignTransactionByDefaultKeyring(const mojom::AccountIdPtr& account_id,
-                                       EthTransaction* tx,
-                                       uint256_t chain_id);
+                                       EthTransaction* tx);
   std::optional<std::string> SignTransactionByFilecoinKeyring(
       const mojom::AccountIdPtr& account_id,
       const FilTransaction& tx);
@@ -311,6 +310,16 @@ class KeyringService : public mojom::KeyringService {
   SignMessageByPolkadotKeyring(const mojom::AccountIdPtr& account_id,
                                base::span<const uint8_t> message);
 
+  // Sets if autolock timer is enabled.
+  // Typically is set to false or left unset in tests to prevent auto-locking
+  // during tests.
+  // Must not be called more than once.
+  void SetAutolockEnabled(bool enabled);
+
+  void set_wallet_reset_cb(base::RepeatingClosure cb) {
+    wallet_reset_cb_ = std::move(cb);
+  }
+
   const std::vector<mojom::AccountInfoPtr>& GetAllAccountInfos();
   mojom::AccountInfoPtr FindAccount(const mojom::AccountIdPtr& account_id);
   mojom::AccountInfoPtr GetSelectedWalletAccount();
@@ -352,6 +361,8 @@ class KeyringService : public mojom::KeyringService {
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, EncodePrivateKeyForExport);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest,
                            EncodePolkadotPrivateKeyForExport);
+  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest,
+                           ImportPolkadotAccount_RestrictedAddress);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceAccountDiscoveryUnitTest,
                            AccountDiscovery);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceAccountDiscoveryUnitTest,
@@ -380,6 +391,7 @@ class KeyringService : public mojom::KeyringService {
   friend class AssetDiscoveryManagerUnitTest;
   friend class SolanaTransactionUnitTest;
   friend class PolkadotWalletServiceUnitTest;
+  friend class PolkadotTxManagerUnitTest;
 
   void ResetAllAccountInfosCache();
   mojom::AccountInfoPtr AddHDAccountForKeyring(mojom::KeyringId keyring_id,
@@ -499,6 +511,9 @@ class KeyringService : public mojom::KeyringService {
   raw_ptr<PrefService> local_state_ = nullptr;
   bool request_unlock_pending_ = false;
 
+  std::optional<bool> is_autolock_enabled_;
+
+  base::RepeatingClosure wallet_reset_cb_;
   mojo::RemoteSet<mojom::KeyringServiceObserver> observers_;
   mojo::ReceiverSet<mojom::KeyringService> receivers_;
 

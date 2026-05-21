@@ -121,14 +121,13 @@ class BraveAdblockInternalsMessageHandler
 
   void OnGetDebugInfo(const std::string& callback_id,
                       base::DictValue mem_info,
-                      base::DictValue default_engine_info,
-                      base::DictValue additional_engine_info) {
+                      std::pair<base::DictValue, base::DictValue> debug_info) {
     if (!IsJavascriptAllowed()) {
       return;
     }
     base::DictValue result;
-    result.Set("default_engine", std::move(default_engine_info));
-    result.Set("additional_engine", std::move(additional_engine_info));
+    result.Set("default_engine", std::move(debug_info.first));
+    result.Set("additional_engine", std::move(debug_info.second));
     result.Set("memory", std::move(mem_info));
     ResolveJavascriptCallback(base::Value(callback_id), result);
   }

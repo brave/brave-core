@@ -8,7 +8,7 @@
 #include <cstddef>
 
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
-#include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
+#include "brave/components/brave_ads/core/internal/segments/segment_types.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/intent/intent_user_model_info.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/interest/interest_user_model_info.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/latent_interest/latent_interest_user_model_info.h"
@@ -56,21 +56,15 @@ TEST_F(BraveAdsTopUserModelSegmentsUtilTest, GetTopChildSegments) {
 }
 
 TEST_F(BraveAdsTopUserModelSegmentsUtilTest, GetTopChildSegmentsIfEmpty) {
-  // Act
-  const SegmentList top_segments = GetTopSegments(
-      /*user_model=*/{}, kTopSegmentsMaxCount, /*parent_only=*/false);
-
-  // Assert
-  EXPECT_THAT(top_segments, ::testing::IsEmpty());
+  EXPECT_THAT(GetTopSegments(/*user_model=*/{}, kTopSegmentsMaxCount,
+                             /*parent_only=*/false),
+              ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsTopUserModelSegmentsUtilTest, GetTopParentSegmentsIfEmpty) {
-  // Act
-  const SegmentList top_segments = GetTopSegments(
-      /*user_model=*/{}, kTopSegmentsMaxCount, /*parent_only=*/true);
-
-  // Assert
-  EXPECT_THAT(top_segments, ::testing::IsEmpty());
+  EXPECT_THAT(GetTopSegments(/*user_model=*/{}, kTopSegmentsMaxCount,
+                             /*parent_only=*/true),
+              ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsTopUserModelSegmentsUtilTest, GetTopParentSegments) {

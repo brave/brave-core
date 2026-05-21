@@ -7,10 +7,6 @@ import { getMockChrome, getMockLoadTimeData } from './testData'
 
 window.alert = jest.fn()
 
-window.location = {
-  search: '?testTorrentId'
-} as any
-
 global.decodeURIComponent = () => 'test'
 
 window.requestAnimationFrame = function (cb: FrameRequestCallback) {
@@ -23,6 +19,14 @@ windowAsAny.chrome = getMockChrome()
 windowAsAny.loadTimeData = getMockLoadTimeData()
 
 windowAsAny.ResizeObserver = class ResizeObserverPolyfill {
+  observe() {}
+
+  unobserve() {}
+
+  disconnect() {}
+}
+
+windowAsAny.IntersectionObserver = class IntersectionObserverPolyfill {
   observe() {}
 
   unobserve() {}

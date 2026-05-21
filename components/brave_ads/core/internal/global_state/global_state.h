@@ -16,8 +16,8 @@
 
 namespace brave_ads {
 
-// TODO(https://github.com/brave/brave-browser/issues/37622): Deprecate global
-// state.
+// TODO(https://github.com/brave/brave-browser/issues/37622): Deprecate
+// `GlobalState`.
 
 class AdHistoryManager;
 class AdsClient;
@@ -25,13 +25,13 @@ class AdsCore;
 class AdsNotifierManager;
 class BrowserManager;
 class ClientStateManager;
-class ConfirmationStateManager;
 class DatabaseManager;
 class DiagnosticManager;
 class GlobalStateHolder;
 class NotificationAdManager;
 class TabManager;
 class TokenGeneratorInterface;
+class TokenStateManager;
 class UserActivityManager;
 
 class GlobalState final {
@@ -54,7 +54,7 @@ class GlobalState final {
   AdsNotifierManager& GetAdsNotifierManager();
   BrowserManager& GetBrowserManager();
   ClientStateManager& GetClientStateManager();
-  ConfirmationStateManager& GetConfirmationStateManager();
+  TokenStateManager& GetTokenStateManager();
   DatabaseManager& GetDatabaseManager();
   DiagnosticManager& GetDiagnosticManager();
   AdHistoryManager& GetHistoryManager();
@@ -65,7 +65,7 @@ class GlobalState final {
 
   mojom::SysInfo& SysInfo();
   mojom::BuildChannelInfo& BuildChannel();
-  mojom::Flags& Flags();
+  mojom::CommandLineSwitches& CommandLineSwitches();
   mojom::ContentSettings& ContentSettings();
 
   void PostDelayedTask(base::OnceClosure task, base::TimeDelta delay);
@@ -82,7 +82,7 @@ class GlobalState final {
   std::unique_ptr<AdsNotifierManager> ads_notifier_manager_;
   std::unique_ptr<BrowserManager> browser_manager_;
   std::unique_ptr<ClientStateManager> client_state_manager_;
-  std::unique_ptr<ConfirmationStateManager> confirmation_state_manager_;
+  std::unique_ptr<TokenStateManager> token_state_manager_;
   std::unique_ptr<DatabaseManager> database_manager_;
   std::unique_ptr<DiagnosticManager> diagnostic_manager_;
   std::unique_ptr<AdHistoryManager> ad_history_manager_;
@@ -93,7 +93,7 @@ class GlobalState final {
 
   mojom::SysInfo mojom_sys_info_;
   mojom::BuildChannelInfo mojom_build_channel_;
-  mojom::Flags mojom_flags_;
+  mojom::CommandLineSwitches mojom_command_line_switches_;
   mojom::ContentSettings mojom_content_settings_;
 
   base::WeakPtrFactory<GlobalState> weak_ptr_factory_{this};

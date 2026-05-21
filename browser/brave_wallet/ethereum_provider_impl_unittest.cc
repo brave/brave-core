@@ -24,7 +24,6 @@
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
-#include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_delegate_impl.h"
@@ -209,19 +208,18 @@ class EthereumProviderImplUnitTest : public testing::Test {
     BraveWalletServiceDelegateImpl::SetActiveWebContentsForTesting(
         web_contents_.get());
     permissions::PermissionRequestManager::CreateForWebContents(web_contents());
-    asset_ratio_service_ =
-        AssetRatioServiceFactory::GetServiceForContext(browser_context());
-    asset_ratio_service_->SetAPIRequestHelperForTesting(
-        url_loader_factory_.GetSafeWeakWrapper());
     brave_wallet_service_ = std::make_unique<BraveWalletService>(
         url_loader_factory_.GetSafeWeakWrapper(),
         BraveWalletServiceDelegate::Create(browser_context()), prefs(),
         &local_state_);
+    brave_wallet_service_->asset_ratio_service()->SetAPIRequestHelperForTesting(
+        url_loader_factory_.GetSafeWeakWrapper());
+
     ASSERT_TRUE(brave_wallet_service_.get());
     json_rpc_service()->SetAPIRequestHelperForTesting(
         url_loader_factory_.GetSafeWeakWrapper());
     SetNetwork(mojom::kMainnetChainId, std::nullopt);
-    WaitForTxStorageDelegateInitialized(tx_service()->GetDelegateForTesting());
+    WaitForTxStorageInitialized(tx_service()->GetTxStorageForTesting());
     SetNetwork(mojom::kMainnetChainId, std::nullopt);
 
     profile_.SetPermissionControllerDelegate(
@@ -919,7 +917,6 @@ class EthereumProviderImplUnitTest : public testing::Test {
   std::unique_ptr<content::TestWebContents> web_contents_;
   base::ScopedTempDir temp_dir_;
   TestingProfile profile_;
-  raw_ptr<AssetRatioService> asset_ratio_service_;
 
  protected:
   std::unique_ptr<BraveWalletService> brave_wallet_service_;
@@ -1241,15 +1238,27 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApprove1559TransactionNoChainId) {
   browser_task_environment_.RunUntilIdle();
 
   AddEthereumPermission(account_0->account_id);
-  std::string normalized_json_request =
-      "{\"id\":\"1\",\"jsonrpc\":\"2.0\",\"method\":\"eth_sendTransaction\","
-      "\"params\":[{\"from\":\"" +
-      account_0->address +
-      "\",\"maxFeePerGas\":\"0x1\",\"maxPriorityFeePerGas\":\"0x1\","
-      "\"gas\":\"0x1\",\"to\":\"0xbe862ad9abfe6f22bcb087716c7d89a26051f74c\","
-      "\"value\":\"0x00\"}]}";
+  auto json_request = ParseJson(absl::StrFormat(
+      R"json(
+          {
+            "id": "1",
+            "jsonrpc": "2.0",
+            "method": "eth_sendTransaction",
+            "params": [
+              {
+                "from": "%s",
+                "maxFeePerGas": "0x1",
+                "maxPriorityFeePerGas": "0x1",
+                "gas": "0x1",
+                "to": "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                "value": "0x00"
+              }
+            ]
+          }
+      )json",
+      account_0->address));
   provider()->Request(
-      ParseJson(normalized_json_request),
+      json_request.Clone(),
       base::BindLambdaForTesting(
           [&](mojom::EthereumProviderResponsePtr response) {
             tx_hash.clear();
@@ -1266,7 +1275,7 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApprove1559TransactionNoChainId) {
           }));
   browser_task_environment_.RunUntilIdle();
   provider()->Request(
-      ParseJson(normalized_json_request),
+      json_request.Clone(),
       base::BindLambdaForTesting(
           [&](mojom::EthereumProviderResponsePtr response) {
             tx_hash.clear();
@@ -1286,10 +1295,12 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApprove1559TransactionNoChainId) {
       GetAllTransactionInfo(account_0->account_id, mojom::kSepoliaChainId);
   ASSERT_EQ(infos.size(), 2UL);
   ASSERT_TRUE(infos[0]->tx_data_union->is_eth_tx_data_1559());
-  EXPECT_EQ(infos[0]->tx_data_union->get_eth_tx_data_1559()->chain_id,
-            mojom::kSepoliaChainId);
-  EXPECT_EQ(infos[1]->tx_data_union->get_eth_tx_data_1559()->chain_id,
-            mojom::kSepoliaChainId);
+  EXPECT_EQ(
+      infos[0]->tx_data_union->get_eth_tx_data_1559()->base_data->chain_id,
+      mojom::kSepoliaChainId);
+  EXPECT_EQ(
+      infos[1]->tx_data_union->get_eth_tx_data_1559()->base_data->chain_id,
+      mojom::kSepoliaChainId);
 }
 
 TEST_F(EthereumProviderImplUnitTest, AddAndApprove1559TransactionError) {

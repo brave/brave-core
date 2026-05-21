@@ -35,4 +35,9 @@ std::string VirtualPrefProviderDelegateIOS::GetDefaultSearchEngineName() const {
   return base::UTF16ToUTF8(default_search_engine_name);
 }
 
+base::DictValue VirtualPrefProviderDelegateIOS::GetSerpMetrics() const {
+  // SERP metrics are not available on iOS.
+  return {};
+}
+
 }  // namespace brave_ads

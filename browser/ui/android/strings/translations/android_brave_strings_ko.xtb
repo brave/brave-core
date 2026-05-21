@@ -49,6 +49,14 @@
 <translation id="2998960761270772157">youtube.com의 로그인, 메뉴, 댓글, 동영상 정보 요소를 차단합니다.</translation>
 <translation id="8531835121131500698">YouTube Shorts 차단</translation>
 <translation id="2167271714269158912">youtube.com 홈, 인기 급상승 페이지, 검색결과에서 Shorts를 차단합니다.</translation>
+<translation id="2564435705466025309">YouTube 자동 더빙 동영상 차단</translation>
+<translation id="3603500459037204525">youtube.com 홈페이지 및 검색 결과에 자동 더빙 동영상이 나타나지 않도록 차단합니다.</translation>
+<translation id="4067265130987656010">YouTube 썸네일 차단</translation>
+<translation id="3034711349887440574">youtube.com 홈페이지 및 검색 결과에 썸네일이 나타나지 않도록 차단합니다.</translation>
+<translation id="8741919213635379855">YouTube 플레이어블 차단</translation>
+<translation id="2216551241986578034">youtube.com 홈페이지 및 검색 결과에 플레이어블이 나타나지 않도록 차단합니다.</translation>
+<translation id="9038505474874975130">YouTube 멤버 전용 동영상 차단</translation>
+<translation id="3084239516382196983">youtube.com 홈페이지 및 검색 결과에 멤버 전용 동영상이 나타나지 않도록 차단합니다.</translation>
 <translation id="6052725679982758334">소셜 미디어 차단</translation>
 <translation id="7498695072878479744">타사 사이트에서 Google 로그인 버튼 허용</translation>
 <translation id="863171915776379000">Facebook 로그인 및 내장 포스트를 허용합니다</translation>
@@ -188,12 +196,27 @@
 <translation id="834487290629916192">나중에</translation>
 <translation id="4117451092682672487">프라이버시. 더욱 간편하게.</translation>
 <translation id="7909375417585209817">Brave를 기본 브라우저로 설정하면 탭하는 모든 링크가 프라이버시를 보호하는 Brave로 열립니다.</translation>
-<translation id="5148943178722443958">Brave 개선에 참여.</translation>
+<translation id="763369711159699222">Brave 개선에 참여</translation>
+<translation id="8025937231644975408">어떤 기능이 가장 마음에 드는지 알려주세요.</translation>
 <translation id="6718362830686703942">충돌 또는 프리징이 발생하면 진단 보고서를 보냅니다.</translation>
 <translation id="8616157231067364693">Brave 사용자가 사용하고 있는 기능에 대한 프라이빗 익명 제품 인사이트를 공유합니다.</translation>
 <translation id="2888496576732880897">Brave 검색 성장 지원</translation>
+<translation id="7198716519700700181">스트리밍 서비스 이용 시 방해 요소 차단</translation>
 <translation id="7044431516245362795">웹 디스커버리 프로젝트에 참여하여 Brave가 인덱스를 확장하고 검색 결과를 향상할 수 있도록 도와주세요. <ph name="LEARN_MORE_START"/>자세히 알아보기.<ph name="LEARN_MORE_END"/></translation>
+<translation id="4847979153841887006">Brave 로고</translation>
+<translation id="1389386068457132299">온보딩 배경</translation>
+<translation id="5101985748360228609">상단 잎 장식</translation>
+<translation id="5270920361877570459">하단 잎 장식</translation>
+<translation id="4021716437419160885">아래로 스크롤</translation>
+<translation id="4767173360729868049">Brave 검색 지원 일러스트레이션</translation>
+<translation id="8241918461631453498">방해 요소 차단 일러스트레이션</translation>
+<translation id="8213310572767907663">Brave 개선 일러스트레이션</translation>
+<translation id="2427917529469438577">즐겨 찾는 스트리밍 사이트에서 성가신 방해 요소를 차단하세요.</translation>
 <translation id="7818938154803162778">좋아요, 도울게요</translation>
+<translation id="5298784657468199167">충돌 보고서 보내기</translation>
+<translation id="6188781052835527980">충돌 또는 프리징이 발생하면 진단 보고서를 보냅니다.</translation>
+<translation id="4780647518983772446">Brave 기능이 사용되는 방식에 대한 프라이빗 익명 제품 인사이트를 공유합니다.</translation>
+<translation id="5109496672133133896">프라이빗 제품 인사이트</translation>
 <translation id="3545804467215833536">탭하여 Brave Shields 보기</translation>
 <translation id="1724327820822194498">모든 페이지에서 Brave가 Shields로 차단한 모든 나쁜 것들을 확인합니다.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> 포함, <ph name="TRACKER"/>개의 광고 및 트래커 차단됨</translation>
@@ -383,7 +406,7 @@
 <translation id="717952606991220586">이런, 뭔가 잘못되었습니다. 나중에 다시 시도해 주세요.</translation>
 <translation id="987264212798334818">일반</translation>
 <translation id="1116694919640316211">정보</translation>
-<translation id="1275213816424141989">나중에</translation>
+<translation id="2370739752330685659">나중에</translation>
 <translation id="3624048886326677117">트래커 및 광고 차단(공격적)</translation>
 <translation id="7151914815476509258">트래커 및 광고 차단(표준)</translation>
 <translation id="7384778069178817075">모든 트래커 &amp; 광고 허용</translation>
@@ -501,7 +524,6 @@
 <translation id="5705882733397021510">돌아가기</translation>
 <translation id="7889432931837317731">가능한 경우 자동으로 열림</translation>
 <translation id="1029304566263314007">다운로드 진행률 알림 표시</translation>
-<translation id="2910433761530295035">파일을 저장할 위치 묻기(SD 카드 감지 시)</translation>
 <translation id="2977501775944575564">병렬 다운로딩</translation>
 <translation id="6224180438946945617">병렬 다운로딩을 황성화하여 다운로드 속도 높이기</translation>
 <translation id="8967385052772844086">전체 개인 정보 보호 보고서 보기</translation>
@@ -922,6 +944,9 @@
 <translation id="703185154752046151">홈 화면에 위젯 추가됨</translation>
 <translation id="4635094429202343515">Brave 검색 위젯을 사용해 보세요</translation>
 <translation id="4809681171446727314">프라이버시가 보호되는 독립적인 검색을 홈 화면에서 바로 이용할 수 있습니다.</translation>
+<translation id="3280562213547448728">음성 검색</translation>
+<translation id="3925312712530886302">비공개 검색 열기</translation>
+<translation id="9214590551301647710">레오 열기</translation>
 <translation id="7751715172931488388">위젯 추가</translation>
 <translation id="7285167584112910782">Brave 퀵 액션 검색</translation>
 <translation id="2326703104633309781">Brave 번역 사용</translation>
@@ -953,15 +978,25 @@
 <translation id="5494920125229734069">모두 선택</translation>
 <translation id="2361906291514218784">레오 AI</translation>
 <translation id="944736176598169208">리워드</translation>
-<translation id="4272190451231642425">자동으로 충돌 보고서 전송</translation>
 <translation id="1199170151481311646">개인 정보 보호 분석</translation>
 <translation id="1706715315466634757">이메일 별칭</translation>
+<translation id="738840791756723657">AI</translation>
 <translation id="6709133671862442373">뉴스</translation>
 <translation id="5990642573624858459">통계 보고</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="2441719842399509963">기본값으로 재설정</translation>
 <translation id="4922034974043704366">이 기능은 사용자가 동의했기 때문에 사용하도록 설정되어 있습니다.</translation>
-<translation id="3144818380093107753">브레이브 오리진을 구독하시면 브레이브 비즈니스를 지원하는 수익 창출 기능을 비활성화할 수 있습니다. 브레이브 오리진 구독자는 업계 최고의 개인정보 보호, 광고 차단, 속도(브레이브 실드를 통해)는 물론 정기적인 소프트웨어 업데이트, 크롬 패치, 보안 및 개인정보 보호 개선 사항의 혜택을 계속 누릴 수 있습니다. 또한 Brave 레오, 뉴스, 리워드, 지갑, VPN, Web3 도메인 등의 기능을 비활성화할 수 있는 옵션도 잠금 해제됩니다.&lt;br/&gt;&lt;br/&gt;구독자는 브라우저 설정 메뉴에 새로운 제어판을 볼 수 있습니다. 기존 기능은 물론 향후 출시될 새로운 기능도 여기에 표시되며 기본적으로 꺼져 있습니다.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;참고: Brave Origin은 현재 사용 중인 브라우저 기능을 비활성화하지 않으며, Brave 검색 기능이나 Brave 검색 광고에도 영향을 미치지 않습니다.&lt;/b&gt;</translation>
+<translation id="2587535830241068901">Brave를 계속 지원하면서 브라우저 사용자 지정</translation>
+<translation id="7235314227387539944">Brave Origin은 Brave를 비즈니스로 운영하기 위한 모든 기능이 필요하지 않지만 Brave만이 제공하는 프라이버시를 원하는 사용자를 위한 브라우저의 유료 버전입니다. Origin 사용자는 업계 최고 수준의 프라이버시, 광고 차단 및 속도(Brave 쉴드를 통해)는 물론 정기적인 소프트웨어 업데이트, Chromium 패치, 보안 및 프라이버시 개선 사항의 이점을 계속 누릴 수 있습니다. Origin은 브라우저에서 대부분의 다른 기능을 제거합니다.</translation>
+<translation id="7941943775131052130">Brave Origin 구매에는 Brave 검색 프리미엄에 대한 액세스도 포함됩니다. Origin은 Brave 검색 결과 페이지에서 광고를 제거하기 때문입니다.</translation>
+<translation id="2573819149217596923">Brave 기능 변경</translation>
+<translation id="7415416427817229128">Brave 기능을 활성화하거나 비활성화하려면 브라우저를 다시 시작하여 변경 사항을 적용해야 합니다. 지금 다시 시작하시겠습니까?</translation>
+<translation id="2256115617011615191">지금 다시 시작</translation>
+<translation id="2160089182263405907">기능 비활성화 중</translation>
+<translation id="3362364767724670721">Brave 기능을 활성화하거나 비활성화하려면 브라우저를 다시 시작하여 변경 사항을 적용해야 합니다. Origin 업데이트가 완료되면 <ph name="BEGIN_BOLD"/>지금 다시 시작<ph name="END_BOLD"/>을 탭하세요.</translation>
+<translation id="1028940738207645746">모든 설정을 기본값으로 재설정하시겠습니까?</translation>
+<translation id="5939518447894949180">초기화</translation>
+<translation id="8554205386170195281">구매</translation>
 <translation id="8613144770663526433">Brave 월렛으로 로그인</translation>
 <translation id="3696514931437952995"><ph name="ORIGIN"/>에 로그인합니다. Brave 월렛이 귀하의 월렛 주소를 <ph name="ORIGIN"/>에 공유합니다.</translation>
 <translation id="1028781062521375153">세부정보 보기</translation>
@@ -996,7 +1031,6 @@
 <translation id="1309636029062006520">좋아하는 오디오 및 비디오 재생목록을 만들어 언제 어디서든 재생 가능합니다.</translation>
 <translation id="7899390017499980820">재생목록에 추가 버튼</translation>
 <translation id="6901152954398668317">미디어를 빠르게 추가/제거할 수 있는 "재생목록에 추가" 버튼을 표시하거나 숨깁니다.</translation>
-<translation id="5939518447894949180">초기화</translation>
 <translation id="8199028711686989861">오프라인 모드 저장소를 포함한 재생목록에서 모든 비디오를 제거합니다.</translation>
 <translation id="4590997608186539865">재생목록</translation>
 <translation id="7525067979554623046">만들기</translation>
@@ -1079,19 +1113,20 @@
 <translation id="1336494649091412226">Brave를 종료하시겠습니까?</translation>
 <translation id="6061635824229591714">사이트 데이터를 파쇄하시겠습니까?</translation>
 <translation id="1265051174491933207">파쇄하면 '<ph name="SITE_NAME"/>'의 모든 탭이 닫히고 사이트 데이터가 삭제됩니다. 이 작업은 되돌릴 수 없습니다.</translation>
-<translation id="5528772406060281700">사이트 데이터를 파쇄하시겠습니까</translation>
+<translation id="5528772406060281700">사이트 데이터 파쇄</translation>
 <translation id="4426990318287827331">데이터 파쇄</translation>
 <translation id="7942415993090181327">대화 기록</translation>
 <translation id="6859935199732075666">안전한 브라우징 오류 표시</translation>
 <translation id="2735247450315842119">비공개 탭에서 스크린샷 허용</translation>
 <translation id="8420414929552321089">이 기능을 허용하면 앱이 여러 개 열려 있을 때 비공개 탭도 표시됩니다.</translation>
 <translation id="7956713633345437162">모바일 북마크</translation>
+<translation id="7984508421152399880">지금 구매하기</translation>
 <translation id="6261139507111008244">미션 지원 &amp; 오픈소스 작업</translation>
-<translation id="7882690061170175552">쉴드를 중심으로 한 최소한의 브라우저 UI</translation>
+<translation id="6073373503121903099">Brave 쉴드를 중심으로 한 최소한의 브라우저 UI</translation>
 <translation id="2267973897341040743">핵심 애드블록, 개인정보 보호, &amp; 속도 유지</translation>
-<translation id="1361157028850796410">최고의 가성비</translation>
-<translation id="7280825497485894053">월간 구독</translation>
-<translation id="4570901726096223030">Origin에 대해 자세히 알아보기</translation>
+<translation id="3339535734679532460">일회성 구매, 추가 구독 비용 없음</translation>
+<translation id="2805615640226281689">일회성 구매</translation>
+<translation id="261433018299584676">로그인 코드 받기</translation>
 <translation id="1943432128510653496">비밀번호 저장</translation>
 <translation id="2100273922101894616">자동 로그인</translation>
 <translation id="363596933471559332">저장된 사용자 인증 정보를 사용하여 자동으로 웹사이트에 로그인합니다. 이 기능이 꺼져 있는 경우에는 웹사이트에 로그인할 때마다 인증 요청 메시지가 표시됩니다.</translation>
@@ -1142,4 +1177,20 @@
 <translation id="1724977129262658800">비밀번호를 수정하려면 잠금 해제하세요</translation>
 <translation id="5780792035410621042">비밀번호를 복사하려면 먼저 기기에 화면 잠금을 설정하세요.</translation>
 <translation id="7986497153528221272">비밀번호를 보려면 먼저 기기에 화면 잠금을 설정하세요.</translation>
+<translation id="4882237634123415792">맞춤 검색 엔진</translation>
+<translation id="8364431224461158026">사용자 지정 검색 엔진 추가</translation>
+<translation id="7307935603426295341">맞춤 검색 엔진 편집</translation>
+<translation id="4002066346123236978">제목</translation>
+<translation id="3653110185270660915">검색 엔진 이름 입력</translation>
+<translation id="7400418766976504921">URL</translation>
+<translation id="6410668567036790476">검색 엔진 추가</translation>
+<translation id="6289878295410648689">검색 URL을 기입하고 검색어를 <ph name="SPECIAL_SYMBOL"/>(으)로 대체하세요.</translation>
+<translation id="8943582268084103903">예: https://youtube.com/search?q=<ph name="SPECIAL_SYMBOL"/>. 사이트에서 OpenSearch를 지원하는 경우 이 필드를 편집할 때 자동 추가 옵션이 제공됩니다.</translation>
+<translation id="8706939021136180678">URL이 유효하지 않습니다.</translation>
+<translation id="6528099556282059181">검색 엔진이 이미 추가되었습니다.</translation>
+<translation id="463451857046640291">검색 엔진을 추가하지 못했습니다.</translation>
+<translation id="1229671956956864948">검색 엔진을 업데이트하지 못했습니다.</translation>
+<translation id="1462771969120037152">검색 엔진을 삭제하지 못했습니다. 삭제하려는 검색 엔진이 기본값으로 설정되어 있을 수 있습니다.</translation>
+<translation id="1079140196216383600">맞춤 검색 엔진 삭제</translation>
+<translation id="525276572490219787"><ph name="SEARCH_ENGINE_NAME"/>을(를) 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.</translation>
 </translationbundle>

@@ -43,6 +43,9 @@ class MessageMetainfo {
   std::optional<base::Time> GetActivationDate(
       std::string_view histogram_name) const;
 
+  std::optional<std::string> GetCustomAttribute(
+      std::string_view attribute_name) const;
+
   const std::string& platform() const { return platform_; }
   const std::string& general_platform() const { return general_platform_; }
   const std::string& channel() const { return channel_; }
@@ -92,12 +95,6 @@ class MessageMetainfo {
 
   raw_ptr<PrefService, DanglingUntriaged> local_state_ = nullptr;
 };
-
-base::DictValue GenerateP3AMessageDict(std::string_view metric_name,
-                                       uint64_t metric_value,
-                                       MetricLogType log_type,
-                                       const MessageMetainfo& meta,
-                                       const std::string& upload_type);
 
 std::string GenerateP3AConstellationMessage(std::string_view metric_name,
                                             uint64_t metric_value,

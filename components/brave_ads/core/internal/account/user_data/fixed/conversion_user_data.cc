@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/conversion_user_data.h"
 
-#include <optional>
-#include <utility>
 
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/conversion_user_data_constants.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/conversion_user_data_util.h"
@@ -19,12 +17,6 @@ base::DictValue BuildConversionUserData(const ConversionInfo& conversion) {
 
   // Conversion.
   list.Append(BuildConversionActionTypeUserData(conversion));
-
-  // Verifiable conversion.
-  if (std::optional<base::DictValue> verifiable_conversion_user_data =
-          MaybeBuildVerifiableConversionUserData(conversion)) {
-    list.Append(std::move(*verifiable_conversion_user_data));
-  }
 
   return base::DictValue().Set(kConversionKey, std::move(list));
 }

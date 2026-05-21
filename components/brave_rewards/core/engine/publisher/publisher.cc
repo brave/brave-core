@@ -40,13 +40,11 @@ bool IsPublisherExcluded(mojom::PublisherInfo& publisher_info) {
     return true;
   }
   switch (publisher_info.status) {
-    case mojom::PublisherStatus::NOT_VERIFIED:
-    case mojom::PublisherStatus::WEB3_ENABLED:
-      return true;
     case mojom::PublisherStatus::UPHOLD_VERIFIED:
     case mojom::PublisherStatus::BITFLYER_VERIFIED:
-    case mojom::PublisherStatus::GEMINI_VERIFIED:
       return false;
+    default:
+      return true;
   }
 }
 

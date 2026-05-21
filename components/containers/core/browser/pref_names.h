@@ -8,8 +8,16 @@
 
 namespace containers::prefs {
 
-// Preference key for storing the list of containers.
+// Controls whether Containers feature (menus, management UI) is available;
+// existing container tabs are not affected when the pref is disabled.
+inline constexpr char kContainersEnabled[] = "brave.containers.enabled";
+
+// Syncable list of containers.
 inline constexpr char kContainersList[] = "brave.containers.list";
+
+// Local-only dictionary of container snapshots that are still referenced by
+// this profile even if they disappear from the synced containers list.
+inline constexpr char kLocallyUsedContainers[] = "brave.containers.used";
 
 }  // namespace containers::prefs
 

@@ -253,54 +253,42 @@ TEST(SolanaKeyringUnitTest, GetAssociatedTokenAccount) {
   }
 }
 
-TEST(SolanaKeyringUnitTest, GetAssociatedMetadataAccount) {
-  auto addr = SolanaKeyring::GetAssociatedMetadataAccount(
-      "5ZXToo7froykjvjnpHtTLYr9u2tW3USMwPg3sNkiaQVh");
-  ASSERT_TRUE(addr);
-  EXPECT_EQ(*addr, "6L255rMB19d544HLNumpvbdTKkTgiQ3fgMszzX6F9VAL");
-
-  addr = SolanaKeyring::GetAssociatedMetadataAccount(
-      "8q5qbP8xu1TgDWYXokwFjgTqoSNe6W3Ljj3phwqhDKqe");
-  ASSERT_TRUE(addr);
-
-  EXPECT_EQ(*addr, "586XgHr69ZhbUkkGJsQqGt16mf7jpFS6uhnvCAwb68Qq");
-}
-
-TEST(SolanaKeyringUnitTest, AddNewHDAccount_OfacSanctionedAddress) {
+TEST(SolanaKeyringUnitTest, AddNewHDAccount_RestrictedAddress) {
   auto* registry = BlockchainRegistry::GetInstance();
   CHECK(registry);
 
   SolanaKeyring keyring(
       *MnemonicToSeed(kMnemonicScarePiece),
       base::BindLambdaForTesting([=](const std::string& address) {
-        return !registry->IsOfacAddress(address);
+        return !registry->IsRestrictedAddress(address);
       }));
 
   // Add an account to get its address.
   auto address = keyring.AddNewHDAccount(0);
   ASSERT_TRUE(address);
-  const std::string address_to_sanction = *address;
+  const std::string address_to_restrict = *address;
 
   // Remove the account.
   EXPECT_TRUE(keyring.RemoveHDAccount(0));
 
-  // Add address to OFAC list.
-  registry->UpdateOfacAddressesList({base::ToLowerASCII(address_to_sanction)});
+  // Add address to restricted list.
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting scoped_restricted(
+      {base::ToLowerASCII(address_to_restrict)});
 
   // Try to add account again - should fail because it generates the same
   // address.
   auto result = keyring.AddNewHDAccount(0);
-  EXPECT_FALSE(result) << "OFAC sanctioned Solana address should be rejected";
+  EXPECT_FALSE(result) << "Restricted Solana address should be rejected";
 }
 
-TEST(SolanaKeyringUnitTest, ImportAccount_OfacSanctionedAddress) {
+TEST(SolanaKeyringUnitTest, ImportAccount_RestrictedAddress) {
   auto* registry = BlockchainRegistry::GetInstance();
   CHECK(registry);
 
   SolanaKeyring keyring(
       *MnemonicToSeed(kMnemonicScarePiece),
       base::BindLambdaForTesting([=](const std::string& address) {
-        return !registry->IsOfacAddress(address);
+        return !registry->IsRestrictedAddress(address);
       }));
 
   std::vector<uint8_t> private_key;
@@ -312,17 +300,18 @@ TEST(SolanaKeyringUnitTest, ImportAccount_OfacSanctionedAddress) {
   // Import account to get its address
   auto address = keyring.ImportAccount(private_key);
   ASSERT_TRUE(address);
-  const std::string address_to_sanction = *address;
+  const std::string address_to_restrict = *address;
 
   // Remove the account.
   EXPECT_TRUE(keyring.RemoveImportedAccount(*address));
 
-  // Add address to OFAC list.
-  registry->UpdateOfacAddressesList({base::ToLowerASCII(address_to_sanction)});
+  // Add address to restricted list.
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting
+      scoped_import_restricted({base::ToLowerASCII(address_to_restrict)});
 
   // Try to import account again - should fail.
   auto result = keyring.ImportAccount(private_key);
-  EXPECT_FALSE(result) << "OFAC sanctioned Solana address should be rejected";
+  EXPECT_FALSE(result) << "Restricted Solana address should be rejected";
 }
 
 }  // namespace brave_wallet

@@ -57,7 +57,7 @@ VPNPanelHandler::~VPNPanelHandler() = default;
 
 void VPNPanelHandler::ShowUI() {
   auto embedder = panel_controller_->embedder();
-  brave_vpn::BraveVpnService* vpn_service =
+  auto* vpn_service =
       brave_vpn::BraveVpnServiceFactory::GetForProfile(profile_);
   CHECK(vpn_service);
   if (embedder) {
@@ -87,7 +87,7 @@ void VPNPanelHandler::OpenVpnUIUrl(
 }
 
 void VPNPanelHandler::OpenVpnUI(brave_vpn::mojom::ManageURLType type) {
-  brave_vpn::BraveVpnService* vpn_service =
+  auto* vpn_service =
       brave_vpn::BraveVpnServiceFactory::GetForProfile(profile_);
   CHECK(vpn_service);
   vpn_service->GetProductUrls(base::BindOnce(&VPNPanelHandler::OpenVpnUIUrl,

@@ -45,6 +45,7 @@ source_set("brave_metrics_unit_tests") {
     configs += [ "//brave/build/linux:linux_channel_names" ]
 
     deps += [
+      "//brave/components/brave_origin/buildflags",
       "//chrome/common:channel_info",
       "//components/version_info:channel",
     ]

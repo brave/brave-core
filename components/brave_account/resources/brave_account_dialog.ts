@@ -26,15 +26,12 @@ export class BraveAccountDialogElement extends CrLitElement {
 
   static override get properties() {
     return {
-      alertMessage: { type: String },
       dialogDescription: { type: String },
       dialogTitle: { type: String },
       isFooterSlotted: { type: Boolean },
       showBackButton: { type: Boolean },
     }
   }
-
-  protected accessor alertMessage: string = ''
   protected accessor dialogDescription: string = ''
   protected accessor dialogTitle: string = ''
   protected accessor isFooterSlotted: boolean = false

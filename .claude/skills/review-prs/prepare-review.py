@@ -142,6 +142,20 @@ def resolve_bot_username():
 
 
 # ---------------------------------------------------------------------------
+# Branch helpers
+# ---------------------------------------------------------------------------
+def is_feature_branch(base_ref):
+    """Return True if base_ref is a non-default, non-version feature branch."""
+    if not base_ref:
+        return False
+    if base_ref == DEFAULT_BRANCH:
+        return False
+    if _fp_mod.is_version_branch(base_ref):
+        return False
+    return True
+
+
+# ---------------------------------------------------------------------------
 # Diff fetching
 # ---------------------------------------------------------------------------
 def fetch_diff(pr_number):
@@ -684,6 +698,7 @@ def chunk_doc(doc_path):
 _REVIEW_RULES = """\
 Review Rules:
 - Only flag violations in ADDED lines (+ lines), not existing code.
+- If you notice a violation in surrounding context lines (lines without + prefix) or in unchanged code visible in the diff, do NOT comment on it or suggest fixing it -- unless the changes directly affect or break that surrounding code.
 - Also flag bugs introduced by the change (e.g., missing string separators, duplicate DEPS entries, code inside wrong #if guard).
 - Check surrounding context before making claims. When a violation involves dependencies, includes, or patterns, read the full file context (e.g., the BUILD.gn deps list, existing includes in the file) to verify your claim is accurate. Do NOT claim a PR "adds a dependency" or "introduces a pattern" if it already existed before the PR.
 - Only comment on things the PR author introduced. If a dependency, pattern, or architectural issue already existed before this PR, do not flag it — even if it violates a best practice. The PR author is not responsible for pre-existing issues. Focus exclusively on what this PR changes or adds.
@@ -692,6 +707,8 @@ Review Rules:
 - Security-sensitive areas (wallet, crypto, sync, credentials) deserve extra scrutiny — type mismatches, truncation, and correctness issues should use stronger language.
 - Do NOT flag: existing code the PR isn't changing, template functions defined in headers, simple inline getters in headers, style preferences not in the documented best practices, include/import ordering (this is handled by formatting tools and linters, not this bot).
 - Every claim must be verified in the best practices source document. Do NOT make claims based on general knowledge or assumptions about what "should" be a best practice. If the best practices docs do not contain a rule about something, do NOT flag it as a violation — even if you believe it to be true. For example, do NOT claim an API is "deprecated" or a pattern is "banned" unless the best practices doc explicitly says so. Hallucinated rules erode trust and waste developer time. When in doubt, do not comment.
+- Do NOT make claims about what upstream Chromium code does (e.g., "the upstream class overrides X" or "upstream uses pattern Y") unless you read the actual upstream file during validation. Upstream behavior claims are a common hallucination vector. If your violation depends on an upstream comparison, verify it by reading the file -- if you cannot confirm it, drop the violation.
+- Base branch awareness: if the PR targets a non-master feature branch (stated at the top of this prompt), do NOT claim that a symbol, file, include, or dependency is missing or doesn't exist just because it isn't in the source tree. It may have been introduced by the base branch. Use the GitHub API to verify it before flagging: `gh api repos/<repo>/contents/<path>?ref=<base_branch>`. Drop the violation if you cannot confirm the absence.
 - Comment style: short (1-3 sentences), targeted, acknowledge context. Use "nit:" for genuinely minor/stylistic issues (including missing comments/documentation). Substantive issues (test reliability, correctness, banned APIs) should be direct without "nit:" prefix."""
 
 _BEST_PRACTICE_LINK_REQUIREMENT = """\
@@ -777,6 +794,7 @@ For each violation:
 - Deprecation claims require header verification — read the actual header file to confirm.
 - Check surrounding context for justification — comments, TODOs, or patterns that explain the code.
 - If surrounding code uses the same pattern being flagged, the violation may be invalid.
+- If the violation claims upstream code has or lacks something (e.g., "upstream overrides X", "upstream class uses Y"), you MUST read the actual upstream file to confirm. Do not rely on your training data for upstream code state. If you cannot locate and read the upstream file, drop the violation.{base_branch_validation_note}
 - Sanitize @mentions — validate against actual PR participants. Fix or strip hallucinated usernames.
 - Drop false positives. If reading the source reveals the violation is incorrect, drop it.
 - Log each result:
@@ -809,7 +827,8 @@ def build_subagent_prompt(pr_number,
                           chunk,
                           diff_line_ranges=None,
                           results_file=None,
-                          target_repo_path=None):
+                          target_repo_path=None,
+                          base_ref=None):
     """Build a complete self-contained subagent prompt for a single chunk."""
     doc = chunk["doc"]
     chunk_index = chunk["chunk_index"]
@@ -826,6 +845,15 @@ def build_subagent_prompt(pr_number,
     # 1. PR number and repo
     parts.append(f"Review PR #{pr_number} in {PR_REPO}.")
     parts.append(f"PR title: {pr_title}")
+    if base_ref and is_feature_branch(base_ref):
+        parts.append(
+            f"NOTE: This PR targets base branch `{base_ref}`, not "
+            f"`{DEFAULT_BRANCH}`. Code introduced by `{base_ref}` will not "
+            f"appear in this diff and may not be present in the source tree "
+            f"(which reflects `{DEFAULT_BRANCH}`). When validating, do not "
+            f"assume something is missing just because it is absent from the "
+            f"source tree — look it up in the base branch first using: "
+            f"`gh api repos/{PR_REPO}/contents/<path>?ref={base_ref}`")
     parts.append("")
 
     # 2. The FULL PR diff (shared prefix for cache efficiency)
@@ -910,11 +938,22 @@ def build_subagent_prompt(pr_number,
 
     # 11. Validation instructions (subagent validates its own findings)
     if results_file and target_repo_path:
+        if base_ref and is_feature_branch(base_ref):
+            base_branch_validation_note = (
+                f"\n- Base branch: The source tree at `{{target_repo_path}}`"
+                f" reflects `{DEFAULT_BRANCH}`, not `{base_ref}`. Files or "
+                f"symbols added by `{base_ref}` will NOT be present here. "
+                f"Before claiming something doesn't exist, check: "
+                f"`gh api repos/{PR_REPO}/contents/<path>?ref={base_ref}`. "
+                f"If found, the violation is a false positive — drop it.")
+        else:
+            base_branch_validation_note = ""
         parts.append("")
         parts.append(
             _VALIDATION_INSTRUCTIONS.format(
                 target_repo_path=target_repo_path,
                 results_file=results_file,
+                base_branch_validation_note=base_branch_validation_note,
             ))
 
     return "\n".join(parts)
@@ -934,6 +973,7 @@ def process_pr(pr, bot_username, org_members, work_dir):
     pr_title = pr["title"]
     head_sha = pr["headRefOid"]
     author = pr["author"]
+    base_ref = pr.get("baseRefName", "")
     has_approval = pr.get("hasApproval", False)
     is_external = pr.get("isExternalContributor", False)
 
@@ -1027,6 +1067,7 @@ def process_pr(pr, bot_username, org_members, work_dir):
                     diff_line_ranges=diff_line_ranges,
                     results_file=results_file,
                     target_repo_path=TARGET_REPO_PATH,
+                    base_ref=base_ref,
                 )
 
                 # Write prompt to file (not embedded in JSON)
@@ -1170,6 +1211,7 @@ def main():
             "skipped_cached": 0,
             "skipped_approved": 0,
             "skipped_external": 0,
+            "skipped_uplift": 0,
             "skipped_max_prs": 0,
         }
     else:
@@ -1177,10 +1219,12 @@ def main():
         (
             to_review,
             cached_prs_raw,
+            uplift_prs_raw,
             skipped_filtered,
             skipped_cached,
             skipped_approved,
             skipped_external,
+            skipped_uplift,
         ) = _fp_mod.filter_prs(
             raw_prs,
             mode,
@@ -1189,6 +1233,22 @@ def main():
             org_members,
             reviewer_priority=bot_username if reviewer_priority else None,
         )
+
+        # Update cache for uplift PRs so they are not re-fetched
+        for upr in uplift_prs_raw:
+            subprocess.run(
+                [
+                    sys.executable,
+                    os.path.join(_SCRIPT_DIR, "update-cache.py"),
+                    str(upr["number"]),
+                    upr["headRefOid"],
+                ],
+                capture_output=True,
+                text=True,
+                timeout=10,
+                cwd=_REPO_DIR,
+                check=False,
+            )
 
         # Sort by reviewer priority
         if reviewer_priority:
@@ -1211,6 +1271,7 @@ def main():
             "skipped_cached": skipped_cached,
             "skipped_approved": skipped_approved,
             "skipped_external": skipped_external,
+            "skipped_uplift": skipped_uplift,
             "skipped_max_prs": skipped_max_prs,
         }
 
@@ -1223,6 +1284,7 @@ def main():
             "number": pr["number"],
             "title": pr["title"],
             "headRefOid": pr["headRefOid"],
+            "baseRefName": pr.get("baseRefName", ""),
             "author": author,
             "hasApproval": _fp_mod.has_any_approval(pr),
             "isExternalContributor": bool(org_members
@@ -1246,6 +1308,9 @@ def main():
     if fetch_summary["skipped_external"]:
         progress_lines.append(f"Skipped {fetch_summary['skipped_external']}"
                               " PRs (external contributors).")
+    if fetch_summary.get("skipped_uplift"):
+        progress_lines.append(f"Skipped {fetch_summary['skipped_uplift']}"
+                              " PRs (uplifts to version branches).")
 
     log("\n".join(progress_lines))
 

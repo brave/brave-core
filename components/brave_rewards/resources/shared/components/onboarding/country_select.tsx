@@ -49,7 +49,7 @@ export function CountrySelect (props: Props) {
       value={props.value}
       onChange={onCountryChange}
       onFocus={onFocus}
-      data-test-id='country-select'
+      data-testid='country-select'
     >
       <option value=''>{props.placeholderText}</option>
       {

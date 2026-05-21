@@ -7,19 +7,11 @@
 
 #include <algorithm>
 
-#include "base/check_op.h"
-
 namespace brave_ads {
 
 PaymentTokens::PaymentTokens() = default;
 
 PaymentTokens::~PaymentTokens() = default;
-
-const PaymentTokenInfo& PaymentTokens::GetToken() const {
-  CHECK_NE(Count(), 0U);
-
-  return payment_tokens_.front();
-}
 
 const PaymentTokenList& PaymentTokens::GetAllTokens() const {
   return payment_tokens_;
@@ -39,17 +31,6 @@ void PaymentTokens::AddTokens(const PaymentTokenList& payment_tokens) {
   }
 }
 
-bool PaymentTokens::RemoveToken(const PaymentTokenInfo& payment_token) {
-  const auto iter = std::ranges::find(payment_tokens_, payment_token);
-  if (iter == payment_tokens_.cend()) {
-    return false;
-  }
-
-  payment_tokens_.erase(iter);
-
-  return true;
-}
-
 void PaymentTokens::RemoveTokens(const PaymentTokenList& payment_tokens) {
   std::erase_if(payment_tokens_,
                 [&payment_tokens](const PaymentTokenInfo& payment_token) {
@@ -57,12 +38,7 @@ void PaymentTokens::RemoveTokens(const PaymentTokenList& payment_tokens) {
                 });
 }
 
-void PaymentTokens::RemoveAllTokens() {
-  payment_tokens_.clear();
-  payment_tokens_.shrink_to_fit();
-}
-
-bool PaymentTokens::TokenExists(const PaymentTokenInfo& payment_token) {
+bool PaymentTokens::TokenExists(const PaymentTokenInfo& payment_token) const {
   return std::ranges::contains(payment_tokens_, payment_token);
 }
 

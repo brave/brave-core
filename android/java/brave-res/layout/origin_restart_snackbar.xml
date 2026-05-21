@@ -28,38 +28,83 @@
         android:text="@string/origin_changing_brave_features_message"
         android:textColor="@android:color/white" />
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:gravity="center_vertical|end"
-        android:orientation="horizontal">
+        android:layout_marginTop="8dp">
 
-        <TextView
-            android:id="@+id/snackbar_action"
-            style="@style/ComponentsButtonDefault"
-            android:layout_width="wrap_content"
+        <!-- Shown during credential fetch: "Disabling features" + spinner + close -->
+        <LinearLayout
+            android:id="@+id/snackbar_fetching_container"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackground"
-            android:paddingStart="12dp"
-            android:paddingTop="8dp"
-            android:paddingEnd="12dp"
-            android:paddingBottom="8dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:text="@string/origin_restart_now"
-            android:textColor="@color/schemes_primary_fixed_dim" />
+            android:gravity="center_vertical|end"
+            android:orientation="horizontal"
+            android:visibility="gone">
 
-        <ImageButton
-            android:id="@+id/snackbar_close"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="8dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@android:string/cancel"
-            android:src="@drawable/ic_close"
-            android:tint="@color/schemes_primary_fixed_dim" />
+            <TextView
+                android:id="@+id/snackbar_fetching_text"
+                style="@style/DefaultRegular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/origin_disabling_features"
+                android:textColor="@color/schemes_primary_fixed_dim" />
 
-    </LinearLayout>
+            <ProgressBar
+                android:id="@+id/snackbar_fetching_spinner"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="8dp"
+                android:indeterminate="true"
+                android:indeterminateTint="@color/schemes_primary_fixed_dim" />
+
+            <ImageButton
+                android:id="@+id/snackbar_fetching_close"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="20dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@android:string/cancel"
+                android:src="@drawable/ic_close"
+                android:tint="@color/schemes_primary_fixed_dim" />
+
+        </LinearLayout>
+
+        <!-- Shown after credentials are fetched: "Restart now" + close -->
+        <LinearLayout
+            android:id="@+id/snackbar_restart_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|end"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/snackbar_action"
+                style="@style/ComponentsButtonDefault"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:paddingStart="12dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="12dp"
+                android:paddingBottom="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="@string/origin_restart_now"
+                android:textColor="@color/schemes_primary_fixed_dim" />
+
+            <ImageButton
+                android:id="@+id/snackbar_close"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@android:string/cancel"
+                android:src="@drawable/ic_close"
+                android:tint="@color/schemes_primary_fixed_dim" />
+
+        </LinearLayout>
+
+    </FrameLayout>
 
 </LinearLayout>

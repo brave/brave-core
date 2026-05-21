@@ -14,12 +14,14 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/ui/focus_mode/focus_mode_controller.h"
+#include "brave/browser/ui/focus_mode/focus_mode_features.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
-#include "brave/components/email_aliases/features.h"
+#include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -62,14 +64,18 @@
 #include "brave/components/brave_vpn/common/pref_names.h"
 #endif
 
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+#include "brave/components/email_aliases/features.h"
+#endif
+
 #if defined(TOOLKIT_VIEWS)
+#include "chrome/browser/ui/side_panel/side_panel_entry.h"
+#include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
+#include "chrome/browser/ui/side_panel/side_panel_entry_key.h"
+#include "chrome/browser/ui/side_panel/side_panel_enums.h"
+#include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
-#include "chrome/browser/ui/views/side_panel/side_panel_entry.h"
-#include "chrome/browser/ui/views/side_panel/side_panel_entry_id.h"
-#include "chrome/browser/ui/views/side_panel/side_panel_entry_key.h"
-#include "chrome/browser/ui/views/side_panel/side_panel_enums.h"
-#include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #endif
 
 class BraveBrowserCommandControllerTest : public InProcessBrowserTest {
@@ -119,7 +125,8 @@ class BraveBrowserCommandControllerTest : public InProcessBrowserTest {
     auto target_state = purchased
                             ? brave_vpn::mojom::PurchasedState::PURCHASED
                             : brave_vpn::mojom::PurchasedState::NOT_PURCHASED;
-    service->SetPurchasedState(skus::GetDefaultEnvironment(), target_state);
+    service->SetPurchasedStateForTesting(skus::GetDefaultEnvironment(),
+                                         target_state);
     // Call explicitely to update vpn commands status because mojo works in
     // async way.
     static_cast<chrome::BraveBrowserCommandController*>(
@@ -576,17 +583,12 @@ class BraveBrowserCommandControllerWithSideBySideTest
     : public BraveBrowserCommandControllerTest {
  public:
   BraveBrowserCommandControllerWithSideBySideTest() {
-    scoped_features_.InitWithFeatures(
-        /*enabled_features*/ {features::kSideBySide}, {});
   }
   ~BraveBrowserCommandControllerWithSideBySideTest() override = default;
 
   TabStripModel* tab_strip_model() { return browser()->tab_strip_model(); }
 
   CommandUpdater* command_updater() { return browser()->command_controller(); }
-
- private:
-  base::test::ScopedFeatureList scoped_features_;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerWithSideBySideTest,
@@ -657,6 +659,43 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerWithSideBySideTest,
   EXPECT_TRUE(chrome::IsCommandEnabled(browser(), IDC_SWAP_SPLIT_VIEW));
 }
 
+class BraveBrowserCommandControllerFocusModeTest
+    : public BraveBrowserCommandControllerTest {
+ public:
+  BraveBrowserCommandControllerFocusModeTest() {
+    scoped_features_.InitWithFeatures({features::kBraveFocusMode}, {});
+  }
+  ~BraveBrowserCommandControllerFocusModeTest() override = default;
+
+ private:
+  base::test::ScopedFeatureList scoped_features_;
+};
+
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerFocusModeTest,
+                       FocusModeToggle) {
+  auto* controller = browser()->GetFeatures().focus_mode_controller();
+  ASSERT_TRUE(controller);
+
+  EXPECT_FALSE(controller->IsEnabled());
+
+  browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_FOCUS_MODE);
+  EXPECT_TRUE(controller->IsEnabled());
+
+  browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_FOCUS_MODE);
+  EXPECT_FALSE(controller->IsEnabled());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerFocusModeTest,
+                       FocusModeDisabledForPopupWindow) {
+  Browser* popup = Browser::Create(
+      Browser::CreateParams(Browser::TYPE_POPUP, browser()->profile(), true));
+  chrome::AddTabAt(popup, GURL("about:blank"), -1, true);
+  popup->window()->Show();
+  EXPECT_FALSE(
+      popup->command_controller()->IsCommandEnabled(IDC_TOGGLE_FOCUS_MODE));
+}
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
 class BraveBrowserCommandControllerWithEmailAliasesTest
     : public BraveBrowserCommandControllerTest {
  public:
@@ -683,3 +722,4 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerWithEmailAliasesTest,
       chrome::GetSettingsUrl("email-aliases"),
       browser()->tab_strip_model()->GetActiveWebContents()->GetVisibleURL());
 }
+#endif  // BUILDFLAG(ENABLE_EMAIL_ALIASES)

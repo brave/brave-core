@@ -12,7 +12,6 @@ enum DomainUserScript: CaseIterable {
   case braveSearchHelper
   case braveTalkHelper
   case braveSkus
-  case bravePlaylistFolderSharingHelper
 
   /// Initialize this script with a URL
   init?(for url: URL) {
@@ -51,8 +50,6 @@ enum DomainUserScript: CaseIterable {
         "talk.bravesoftware.com",
         "talk.brave.software",
       ])
-    case .bravePlaylistFolderSharingHelper:
-      return Set(["playlist.bravesoftware.com", "playlist.brave.com"])
     case .braveSkus:
       return Set([
         "account.brave.com",

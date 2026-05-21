@@ -6,13 +6,11 @@
 package org.chromium.chrome.browser.search_engines.settings;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.chromium.base.BravePreferenceKeys;
-import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
@@ -28,8 +26,8 @@ import java.util.List;
 public class BraveSearchEngineAdapter extends SearchEngineAdapter {
     private static final String TAG = "BraveSearchEngineAdapter";
 
-    public static final String PRIVATE_DSE_SHORTNAME = "private_dse_shortname";
-    public static final String STANDARD_DSE_SHORTNAME = "standard_dse_shortname";
+    public static final String PRIVATE_DSE_SHORTNAME = BravePreferenceKeys.PRIVATE_DSE_SHORTNAME;
+    public static final String STANDARD_DSE_SHORTNAME = BravePreferenceKeys.STANDARD_DSE_SHORTNAME;
 
     private Profile mProfile;
     private boolean mNeedUpdateActiveDSE;
@@ -40,12 +38,10 @@ public class BraveSearchEngineAdapter extends SearchEngineAdapter {
     }
 
     public static void setDSEPrefs(TemplateUrl templateUrl, Profile profile) {
-        SharedPreferences.Editor sharedPreferencesEditor =
-                ContextUtils.getAppSharedPreferences().edit();
-        sharedPreferencesEditor.putString(
-                profile.isOffTheRecord() ? PRIVATE_DSE_SHORTNAME : STANDARD_DSE_SHORTNAME,
-                templateUrl.getShortName());
-        sharedPreferencesEditor.apply();
+        ChromeSharedPreferences.getInstance()
+                .writeString(
+                        profile.isOffTheRecord() ? PRIVATE_DSE_SHORTNAME : STANDARD_DSE_SHORTNAME,
+                        templateUrl.getShortName());
     }
 
     public static void updateActiveDSE(Profile profile, TemplateUrlService templateUrlServiceArg) {
@@ -93,9 +89,10 @@ public class BraveSearchEngineAdapter extends SearchEngineAdapter {
             }
         }
 
-        return ContextUtils.getAppSharedPreferences().getString(
-                profile.isOffTheRecord() ? PRIVATE_DSE_SHORTNAME : STANDARD_DSE_SHORTNAME,
-                defaultSearchEngineName);
+        return ChromeSharedPreferences.getInstance()
+                .readString(
+                        profile.isOffTheRecord() ? PRIVATE_DSE_SHORTNAME : STANDARD_DSE_SHORTNAME,
+                        defaultSearchEngineName);
     }
 
     public static TemplateUrl getTemplateUrlByShortName(

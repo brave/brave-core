@@ -9,6 +9,7 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace brave_ads {
 
@@ -46,6 +47,14 @@ std::string FriendlyDateAndTime(base::Time time, bool use_sentence_style) {
       {use_sentence_style ? "in " : "", base::UTF16ToUTF8(time_duration),
        base::UTF16ToUTF8(time_of_day)},
       nullptr);
+}
+
+std::string TimeToPrivacyPreservingIso8601(base::Time time) {
+  base::Time::Exploded exploded;
+  time.UTCExplode(&exploded);
+
+  return absl::StrFormat("%04d-%02d-%02dT%02d:00:00.000Z", exploded.year,
+                         exploded.month, exploded.day_of_month, exploded.hour);
 }
 
 }  // namespace brave_ads

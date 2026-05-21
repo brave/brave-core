@@ -19,19 +19,20 @@
 #include "chrome/app/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sessions/tab_restore_service_factory.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_menu_model_delegate.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/sessions/core/tab_restore_service.h"
+#include "components/tabs/public/tab_interface.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/menus/simple_menu_model.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/browser/ui/tabs/containers_tab_menu_model_delegate.h"
+#include "brave/components/containers/core/browser/containers_service.h"
 #include "brave/components/containers/core/common/features.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
@@ -41,18 +42,18 @@ BraveTabMenuModel::BraveTabMenuModel(
     TabStripModel* tab_strip_model,
     int index)
     : TabMenuModel(delegate, tab_menu_model_delegate, tab_strip_model, index) {
-  auto* web_contents = tab_strip_model->GetWebContentsAt(index);
-  CHECK(web_contents);
-  Browser* browser = chrome::FindBrowserWithTab(web_contents);
-  CHECK(browser);
+  auto* tab = tab_strip_model->GetTabAtIndex(index);
+  CHECK(tab);
+  auto* browser_window = tab->GetBrowserWindowInterface();
+  CHECK(browser_window);
 
   restore_service_ =
-      TabRestoreServiceFactory::GetForProfile(browser->profile());
+      TabRestoreServiceFactory::GetForProfile(browser_window->GetProfile());
 
   auto* model = static_cast<BraveTabStripModel*>(tab_strip_model);
   auto indices = model->GetTabIndicesForCommandAt(index);
   all_muted_ = model->GetAllTabsMuted(indices);
-  Build(browser, tab_strip_model, index, indices);
+  Build(browser_window, tab_strip_model, index, indices);
 }
 
 BraveTabMenuModel::~BraveTabMenuModel() = default;
@@ -93,7 +94,7 @@ std::u16string BraveTabMenuModel::GetLabelAt(size_t index) const {
   return TabMenuModel::GetLabelAt(index);
 }
 
-void BraveTabMenuModel::Build(Browser* browser,
+void BraveTabMenuModel::Build(BrowserWindowInterface* browser_window,
                               TabStripModel* tab_strip_model,
                               int selected_index,
                               const std::vector<int>& indices) {
@@ -115,14 +116,16 @@ void BraveTabMenuModel::Build(Browser* browser,
   AddItemWithStringId(TabStripModel::CommandBookmarkAllTabs,
                       IDS_TAB_CXMENU_BOOKMARK_ALL_TABS);
 
-  if (brave::CanBringAllTabs(browser)) {
+  // TODO(https://github.com/brave/brave-browser/issues/54241): Update
+  // brave::CanBringAllTabs() to accept BrowserWindowInterface*.
+  if (brave::CanBringAllTabs(browser_window->GetBrowserForMigrationOnly())) {
     AddItemWithStringId(TabStripModel::CommandBringAllTabsToThisWindow,
                         IDS_TAB_CXMENU_BRING_ALL_TABS_TO_THIS_WINDOW);
   }
 
   AddSeparator(ui::NORMAL_SEPARATOR);
 
-  if (tabs::utils::SupportsBraveVerticalTabs(browser)) {
+  if (tabs::utils::SupportsBraveVerticalTabs(browser_window)) {
     AddCheckItemWithStringId(TabStripModel::CommandShowVerticalTabs,
                              IDS_TAB_CXMENU_SHOW_VERTICAL_TABS);
   }
@@ -135,36 +138,86 @@ void BraveTabMenuModel::Build(Browser* browser,
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
   if (base::FeatureList::IsEnabled(containers::features::kContainers)) {
-    BuildItemForContainers(browser, tab_strip_model, indices);
+    BuildItemForContainers(browser_window, tab_strip_model, indices);
   }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
-  // Replace SplitTabMenuModel with BraveSplitTabMenuModel.
-  if (arrange_split_view_submenu_) {
-    auto arrange_submenu_index =
-        GetIndexOfCommandId(TabStripModel::CommandArrangeSplit);
-    CHECK(arrange_submenu_index);
-    RemoveItemAt(*arrange_submenu_index);
+  // Reorder the split tab entry to the last position of the first section.
+  // For CommandArrangeSplit, also replaces upstream's SplitTabMenuModel with
+  // BraveSplitTabMenuModel.
+  BuildSplitTabEntry(tab_strip_model, selected_index);
+}
+
+void BraveTabMenuModel::BuildSplitTabEntry(TabStripModel* tab_strip_model,
+                                           int selected_index) {
+  // Find whichever split-related command is present in the menu.
+  std::optional<int> split_cmd;
+  size_t split_index = 0;
+  for (int cmd :
+       {TabStripModel::CommandArrangeSplit, TabStripModel::CommandAddToSplit,
+        TabStripModel::CommandSwapWithActiveSplit}) {
+    if (auto index = GetIndexOfCommandId(cmd)) {
+      split_cmd = cmd;
+      split_index = *index;
+      break;
+    }
+  }
+  if (!split_cmd) {
+    return;
+  }
+
+  // Capture item properties before removal so we can re-insert at the target.
+  const auto label = GetLabelAt(split_index);
+  const auto icon = GetIconAt(split_index);
+  const bool is_submenu = GetTypeAt(split_index) == ui::MenuModel::TYPE_SUBMENU;
+  const bool enabled = IsEnabledAt(split_index);
+  const auto element_id = GetElementIdentifierAt(split_index);
+  ui::MenuModel* submenu =
+      is_submenu ? GetSubmenuModelAt(split_index) : nullptr;
+
+  RemoveItemAt(split_index);
+  // Find the first separator which marks the end of the first section.
+  // If no separator exists, append at the end.
+  size_t insert_index = GetItemCount();
+  for (size_t i = 0; i < GetItemCount(); i++) {
+    if (GetTypeAt(i) == ui::MenuModel::TYPE_SEPARATOR) {
+      insert_index = i;
+      break;
+    }
+  }
+  if (*split_cmd == TabStripModel::CommandArrangeSplit) {
     arrange_split_view_submenu_ = std::make_unique<BraveSplitTabMenuModel>(
         tab_strip_model, SplitTabMenuModel::MenuSource::kTabContextMenu,
         selected_index);
     InsertSubMenuWithStringIdAt(
-        *arrange_submenu_index, TabStripModel::CommandArrangeSplit,
+        insert_index, TabStripModel::CommandArrangeSplit,
         IDS_TAB_CXMENU_ARRANGE_SPLIT, arrange_split_view_submenu_.get());
-    SetIcon(*arrange_submenu_index,
-            ui::ImageModel::FromVectorIcon(kSplitSceneIcon, ui::kColorMenuIcon,
-                                           16));
-    SetElementIdentifierAt(*arrange_submenu_index, kArrangeSplitTabsMenuItem);
+  } else {
+    if (submenu) {
+      InsertSubMenuAt(insert_index, *split_cmd, label, submenu);
+    } else {
+      InsertItemAt(insert_index, *split_cmd, label);
+    }
+  }
+  SetEnabledAt(insert_index, enabled);
+  SetIcon(insert_index, icon);
+  if (element_id) {
+    SetElementIdentifierAt(insert_index, element_id);
   }
 }
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 void BraveTabMenuModel::BuildItemForContainers(
-    Browser* browser,
+    BrowserWindowInterface* browser_window,
     TabStripModel* tab_strip_model,
     const std::vector<int>& selected_tab_indices) {
-  auto* service = ContainersServiceFactory::GetForProfile(browser->profile());
+  auto* service =
+      ContainersServiceFactory::GetForProfile(browser_window->GetProfile());
   if (!service) {
+    return;
+  }
+
+  if (!service->ShouldShowContainerControls()) {
     return;
   }
 
@@ -193,7 +246,7 @@ void BraveTabMenuModel::BuildItemForContainers(
 
   containers_menu_delegate_ =
       std::make_unique<brave::ContainersTabMenuModelDelegate>(
-          browser, selected_tab_handles);
+          browser_window, selected_tab_handles);
   containers_submenu_ = std::make_unique<containers::ContainersMenuModel>(
       *containers_menu_delegate_, *service);
   InsertSubMenuWithStringIdAt(*index, TabStripModel::CommandOpenInContainer,

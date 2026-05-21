@@ -1,8 +1,8 @@
 diff --git a/buildtools/checkdeps/checkdeps.py b/buildtools/checkdeps/checkdeps.py
-index 700d77968766ad7271d81c776893466d036c17f9..3fd3408869ac280237586911628f6f4540252f0a 100755
+index 201f0a5436709d18d6974caf94f219b01332b56e..befbf77df880690506fb08c45fb1e17584af14ee 100755
 --- a/buildtools/checkdeps/checkdeps.py
 +++ b/buildtools/checkdeps/checkdeps.py
-@@ -291,5 +291,6 @@ def main():
+@@ -299,5 +299,6 @@ def main():
    return deps_checker.Report()
  
  

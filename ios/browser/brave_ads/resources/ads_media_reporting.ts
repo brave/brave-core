@@ -9,9 +9,14 @@ function sendMessage(playing: boolean) {
   sendWebKitMessage('AdsMediaReportingMessageHandler', {'isPlaying': playing});
 }
 
-function hookVideoElement(video: Element) {
+function isPlayingVideoWithAudio(video: HTMLVideoElement): boolean {
+  return !video.paused && !video.muted;
+}
+
+function hookVideoElement(video: HTMLVideoElement) {
   video.addEventListener('pause', () => sendMessage(false), false);
-  video.addEventListener('playing', () => sendMessage(true), false);
+  video.addEventListener('playing', () => sendMessage(isPlayingVideoWithAudio(video)), false);
+  video.addEventListener('volumechange', () => sendMessage(isPlayingVideoWithAudio(video)), false);
 }
 
 document.querySelectorAll('video').forEach(hookVideoElement);
@@ -21,6 +26,10 @@ const observer = new MutationObserver(function(mutations: MutationRecord[]) {
     mutation.addedNodes.forEach(function(node: Node) {
       if (node instanceof HTMLVideoElement) {
         hookVideoElement(node);
+      } else if (node instanceof HTMLElement) {
+        // Some sites inject a container element that already has video
+        // descendants, so the video itself is never a direct added node.
+        node.querySelectorAll('video').forEach(hookVideoElement);
       }
     });
   });

@@ -52,6 +52,16 @@ class BraveDeviceMemoryFarblingBrowserTest : public InProcessBrowserTest {
 
   ~BraveDeviceMemoryFarblingBrowserTest() override = default;
 
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    InProcessBrowserTest::SetUpCommandLine(command_line);
+    // Use single process so that we can call
+    // blink::ApproximatedDeviceMemory::SetPhysicalMemoryMBForTesting to set
+    // the memory size for the renderers. Otherwise each renderer will
+    // initialize the approximate device memory based on the physical RAM size
+    // on the machine and we can't check for the expected results in the test.
+    command_line->AppendSwitch("single-process");
+  }
+
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
     base::FilePath test_data_dir;
@@ -103,11 +113,13 @@ IN_PROC_BROWSER_TEST_F(BraveDeviceMemoryFarblingBrowserTest,
   std::string domain2 = "d.test";
   GURL url1 = https_server_.GetURL(domain1, "/simple.html");
   GURL url2 = https_server_.GetURL(domain2, "/simple.html");
-  // set memory to 10GB
-  blink::ApproximatedDeviceMemory::SetPhysicalMemoryMBForTesting(1024 * 10);
+  // Set memory to 64GB (greater than the ApproximatedDeviceMemory's kMaxMemory
+  // of 32GB).
+  blink::ApproximatedDeviceMemory::SetPhysicalMemoryMBForTesting(1024 * 64);
   int true_value =
       blink::ApproximatedDeviceMemory::GetApproximatedDeviceMemory() * 1024;
-  EXPECT_EQ(true_value, 8192);
+  EXPECT_EQ(true_value, 32768);
+
   // Farbling level: off
   AllowFingerprinting(domain1);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url1));
@@ -119,18 +131,18 @@ IN_PROC_BROWSER_TEST_F(BraveDeviceMemoryFarblingBrowserTest,
   // Farbling level: default
   SetFingerprintingDefault(domain1);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url1));
-  EXPECT_EQ(4096, EvalJs(contents(), kDeviceMemoryScript));
+  EXPECT_EQ(8192, EvalJs(contents(), kDeviceMemoryScript));
   SetFingerprintingDefault(domain2);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url2));
-  EXPECT_EQ(512, EvalJs(contents(), kDeviceMemoryScript));
+  EXPECT_EQ(32768, EvalJs(contents(), kDeviceMemoryScript));
 
   // Farbling level: maximum
   BlockFingerprinting(domain1);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url1));
-  EXPECT_EQ(512, EvalJs(contents(), kDeviceMemoryScript));
+  EXPECT_EQ(16384, EvalJs(contents(), kDeviceMemoryScript));
   AllowFingerprinting(domain2);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url2));
-  EXPECT_EQ(8192, EvalJs(contents(), kDeviceMemoryScript));
+  EXPECT_EQ(32768, EvalJs(contents(), kDeviceMemoryScript));
 
   // Farbling level: default, but webcompat exception enabled
   SetFingerprintingDefault(domain1);

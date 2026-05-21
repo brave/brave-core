@@ -57,7 +57,8 @@ void BraveExtensionsAPIProvider::RegisterPermissions(
   // No brave-specific permissions.
 }
 
-void BraveExtensionsAPIProvider::RegisterManifestHandlers() {
+void BraveExtensionsAPIProvider::RegisterManifestHandlers(
+    ManifestHandlerRegistry* registry) {
   // No brave-specific manifest handlers.
 }
 

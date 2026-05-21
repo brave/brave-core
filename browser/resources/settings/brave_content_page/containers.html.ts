@@ -28,51 +28,65 @@ export function getHtml(this: SettingsBraveContentContainersElement) {
           >
           </localized-link>
         </div>
-        <cr-button
-          @click="${this.onAddContainerClick_}"
-          size="small"
-        >
-          $i18n{SETTINGS_CONTAINERS_ADD_CONTAINER_LABEL}
-        </cr-button>
       </div>
 
-      ${this.containersList_?.length
+      <settings-toggle-button
+        .checked="${this.containersEnabled_}"
+        icon="container-on"
+        label="$i18n{SETTINGS_CONTAINERS_ENABLED_LABEL}"
+        no-set-pref
+        @change="${this.onContainersEnabledChange_}"
+      ></settings-toggle-button>
+
+      ${this.containersEnabled_
         ? html`
-            <div class="cr-row continuation">
-              <div class="list">
-                ${this.containersList_.map(
-                  (item) => html`
-                    <div class="container">
-                      <div class="icon-and-label">
-                        <settings-brave-content-containers-icon
-                          icon="${item.icon}"
-                          background-color="${skColorToHexColor(
-                            item.backgroundColor,
-                          )}"
-                          disabled
-                        ></settings-brave-content-containers-icon>
-                        <div class="label">${item.name}</div>
-                      </div>
-                      <div>
-                        <cr-icon-button
-                          @click="${this.onEditContainerClick_}"
-                          data-id="${item.id}"
-                          class="size-20"
-                          iron-icon="edit-pencil"
-                        >
-                        </cr-icon-button>
-                        <cr-icon-button
-                          @click="${this.onDeleteContainerClick_}"
-                          data-id="${item.id}"
-                          class="size-20"
-                          iron-icon="trash"
-                        >
-                        </cr-icon-button>
-                      </div>
+            ${this.containersList_?.length
+              ? html`
+                  <div class="cr-row continuation">
+                    <div class="list">
+                      ${this.containersList_.map(
+                        (item) => html`
+                          <div class="container">
+                            <div class="icon-and-label">
+                              <settings-brave-content-containers-icon
+                                icon="${item.icon}"
+                                background-color="${skColorToHexColor(
+                                  item.backgroundColor,
+                                )}"
+                                disabled
+                              ></settings-brave-content-containers-icon>
+                              <div class="label">${item.name}</div>
+                            </div>
+                            <div>
+                              <cr-icon-button
+                                @click="${this.onEditContainerClick_}"
+                                data-id="${item.id}"
+                                class="size-20"
+                                iron-icon="edit-pencil"
+                              >
+                              </cr-icon-button>
+                              <cr-icon-button
+                                @click="${this.onDeleteContainerClick_}"
+                                data-id="${item.id}"
+                                class="size-20"
+                                iron-icon="trash"
+                              >
+                              </cr-icon-button>
+                            </div>
+                          </div>
+                        `,
+                      )}
                     </div>
-                  `,
-                )}
-              </div>
+                  </div>
+                `
+              : nothing}
+            <div class="cr-row continuation containers-add-row">
+              <cr-button
+                @click="${this.onAddContainerClick_}"
+                size="small"
+              >
+                $i18n{SETTINGS_CONTAINERS_ADD_CONTAINER_LABEL}
+              </cr-button>
             </div>
           `
         : nothing}
@@ -82,7 +96,7 @@ export function getHtml(this: SettingsBraveContentContainersElement) {
               id="editContainerDialog"
               show-close-button
               show-on-attach
-              @close="${this.onCancelDialog_}"
+              @close="${this.onDialogClose_}"
             >
               <div slot="title">${this.getEditDialogTitle_()}</div>
               <div slot="body">
@@ -99,7 +113,12 @@ export function getHtml(this: SettingsBraveContentContainersElement) {
                       auto-validate
                       pattern="^.*\\S.*$"
                       placeholder="$i18n{SETTINGS_CONTAINERS_CONTAINER_NAME_PLACEHOLDER}"
-                    ></cr-input>
+                      maxlength="20"
+                    >
+                      <span slot="inline-suffix" class="name-char-counter">
+                        ${(this.editingContainer_.name ?? '').length} / 20
+                      </span>
+                    </cr-input>
                   </section>
                   <section class="background-colors-section">
                     <div class="edit-subsection-label">
@@ -113,7 +132,7 @@ export function getHtml(this: SettingsBraveContentContainersElement) {
                             === this.editingContainer_!.backgroundColor.value}"
                             background-color="${skColorToHexColor(color)}"
                             @background-selected="${this
-                              .onContainersBackgroundColorSelected_}"
+                              .onContainersBackgroundSelected_}"
                           ></settings-brave-content-containers-background-chip>
                         `,
                       )}
@@ -150,13 +169,13 @@ export function getHtml(this: SettingsBraveContentContainersElement) {
               <div slot="button-container">
                 <cr-button
                   class="cancel-button"
-                  @click="${this.onCancelDialog_}"
+                  @click="${this.onCancelDialogClick_}"
                 >
                   $i18n{cancel}
                 </cr-button>
                 <cr-button
                   class="action-button"
-                  @click="${this.onSaveContainerFromDialog_}"
+                  @click="${this.onSaveContainerFromDialogClick_}"
                   ?disabled="${
                     !this.editingContainer_?.name || this.isEditDialogNameInvalid_
                   }"
@@ -173,7 +192,7 @@ export function getHtml(this: SettingsBraveContentContainersElement) {
               id="deleteContainerDialog"
               show-close-button
               show-on-attach
-              @close="${this.onCancelDialog_}"
+              @close="${this.onDialogClose_}"
             >
               <div slot="title">
                 $i18n{SETTINGS_CONTAINERS_DELETE_CONTAINER_LABEL}
@@ -194,13 +213,13 @@ export function getHtml(this: SettingsBraveContentContainersElement) {
               <div slot="button-container">
                 <cr-button
                   class="cancel-button"
-                  @click="${this.onCancelDialog_}"
+                  @click="${this.onCancelDialogClick_}"
                 >
                   $i18n{cancel}
                 </cr-button>
                 <cr-button
                   class="tonal-button"
-                  @click="${this.onDeleteContainerFromDialog_}"
+                  @click="${this.onDeleteContainerFromDialogClick_}"
                 >
                   $i18n{delete}
                 </cr-button>

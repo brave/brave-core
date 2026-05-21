@@ -1,5 +1,5 @@
 use criterion::*;
-use once_cell::sync::Lazy;
+use std::sync::LazyLock;
 
 use adblock::{Engine, FilterSet};
 
@@ -7,8 +7,8 @@ use adblock::{Engine, FilterSet};
 mod test_utils;
 use test_utils::rules_from_lists;
 
-static DEFAULT_LISTS: Lazy<Vec<String>> =
-    Lazy::new(|| rules_from_lists(&["data/easylist.to/easylist/easylist.txt"]).collect());
+static DEFAULT_LISTS: LazyLock<Vec<String>> =
+    LazyLock::new(|| rules_from_lists(&["data/easylist.to/easylist/easylist.txt"]).collect());
 
 fn bench_string_hashing(filters: &Vec<String>) -> adblock::utils::Hash {
     let mut dummy: adblock::utils::Hash = 0;

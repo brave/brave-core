@@ -85,6 +85,18 @@
     Hide VPN card
   </message>
 
+  <message name="IDS_NEW_TAB_MAKE_SEARCH_DEFAULT_CONFIRM_LABEL" desc="Label for the confirm button on the Make Brave Search Default dialog" formatter_data="webui=BraveNewTabPage">
+    Set as default
+  </message>
+
+  <message name="IDS_NEW_TAB_MAKE_SEARCH_DEFAULT_TEXT" desc="Body text of the Make Brave Search Default dialog" formatter_data="webui=BraveNewTabPage">
+    Brave will be used as the search engine in the address bar for normal windows.
+  </message>
+
+  <message name="IDS_NEW_TAB_MAKE_SEARCH_DEFAULT_TITLE" desc="Title of the Make Brave Search Default dialog" formatter_data="webui=BraveNewTabPage">
+    Set Brave as the default search engine?
+  </message>
+
   <message name="IDS_NEW_TAB_NEWS_CUSTOMIZE_BUTTON_LABEL" desc="Label for button that opens the News settings modal" formatter_data="webui=BraveNewTabPage">
     Customize News
   </message>

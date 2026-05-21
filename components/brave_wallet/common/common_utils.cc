@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/common/common_utils.h"
 
+#include <ranges>
 #include <utility>
 
 #include "base/check.h"
@@ -20,10 +21,6 @@
 #include "net/base/url_util.h"
 
 namespace brave_wallet {
-
-bool IsNativeWalletEnabled() {
-  return base::FeatureList::IsEnabled(features::kNativeBraveWalletFeature);
-}
 
 bool IsBitcoinEnabled() {
   return base::FeatureList::IsEnabled(features::kBraveWalletBitcoinFeature);
@@ -285,9 +282,7 @@ std::string GetNetworkForCardanoAccount(const mojom::AccountIdPtr& account_id) {
 }
 
 bool IsPolkadotKeyring(mojom::KeyringId keyring_id) {
-  return keyring_id == mojom::KeyringId::kPolkadotMainnet ||
-         keyring_id == mojom::KeyringId::kPolkadotTestnet ||
-         IsPolkadotImportKeyring(keyring_id);
+  return std::ranges::contains(GetPolkadotKeyrings(), keyring_id);
 }
 
 bool IsPolkadotImportKeyring(mojom::KeyringId keyring_id) {
@@ -295,7 +290,16 @@ bool IsPolkadotImportKeyring(mojom::KeyringId keyring_id) {
          keyring_id == mojom::KeyringId::kPolkadotImportTestnet;
 }
 
-bool IsPolkadotNetwork(std::string_view network_id) {
+std::vector<mojom::KeyringId> GetPolkadotKeyrings() {
+  return {
+      mojom::KeyringId::kPolkadotMainnet,
+      mojom::KeyringId::kPolkadotTestnet,
+      mojom::KeyringId::kPolkadotImport,
+      mojom::KeyringId::kPolkadotImportTestnet,
+  };
+}
+
+bool IsPolkadotRelayNetwork(std::string_view network_id) {
   return network_id == mojom::kPolkadotMainnet ||
          network_id == mojom::kPolkadotTestnet;
 }
@@ -358,39 +362,6 @@ mojom::CoinType GetCoinForKeyring(mojom::KeyringId keyring_id) {
 bool IsAccountBasedCoin(mojom::CoinType coin) {
   return (coin == mojom::CoinType::ETH) || (coin == mojom::CoinType::SOL) ||
          (coin == mojom::CoinType::FIL) || (coin == mojom::CoinType::DOT);
-}
-
-mojom::CoinType GetCoinTypeFromTxDataUnion(
-    const mojom::TxDataUnion& tx_data_union) {
-  if (tx_data_union.is_eth_tx_data_1559() || tx_data_union.is_eth_tx_data()) {
-    return mojom::CoinType::ETH;
-  }
-
-  if (tx_data_union.is_solana_tx_data()) {
-    return mojom::CoinType::SOL;
-  }
-
-  if (tx_data_union.is_fil_tx_data()) {
-    return mojom::CoinType::FIL;
-  }
-
-  if (tx_data_union.is_btc_tx_data()) {
-    return mojom::CoinType::BTC;
-  }
-
-  if (tx_data_union.is_zec_tx_data()) {
-    return mojom::CoinType::ZEC;
-  }
-
-  if (tx_data_union.is_cardano_tx_data()) {
-    return mojom::CoinType::ADA;
-  }
-
-  if (tx_data_union.is_polkadot_tx_data()) {
-    return mojom::CoinType::DOT;
-  }
-
-  NOTREACHED();
 }
 
 GURL GetActiveEndpointUrl(const mojom::NetworkInfo& chain) {
@@ -477,9 +448,11 @@ bool IsFixedSelectedNetworkCoin(mojom::CoinType coin) {
   return coin == mojom::CoinType::BTC || coin == mojom::CoinType::ADA;
 }
 
-std::vector<mojom::KeyringId> GetSupportedKeyringsForNetwork(
+std::vector<mojom::KeyringId> GetSupportedKeyringsForKnownNetwork(
     mojom::CoinType coin,
     const std::string& chain_id) {
+  // TODO(https://github.com/brave/brave-browser/issues/55499) validate chain_id
+  // is hardcoded one.
   switch (coin) {
     case mojom::CoinType::ETH:
       return {mojom::KeyringId::kDefault};
@@ -518,8 +491,10 @@ std::vector<mojom::KeyringId> GetSupportedKeyringsForNetwork(
         return {mojom::KeyringId::kPolkadotMainnet,
                 mojom::KeyringId::kPolkadotImport};
       }
-      return {mojom::KeyringId::kPolkadotTestnet,
-              mojom::KeyringId::kPolkadotImportTestnet};
+      if (chain_id == mojom::kPolkadotTestnet) {
+        return {mojom::KeyringId::kPolkadotTestnet,
+                mojom::KeyringId::kPolkadotImportTestnet};
+      }
   }
   NOTREACHED();
 }

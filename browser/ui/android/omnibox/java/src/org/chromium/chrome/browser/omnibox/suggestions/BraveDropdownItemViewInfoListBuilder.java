@@ -29,6 +29,7 @@ import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.components.omnibox.AutocompleteInput;
 import org.chromium.components.omnibox.AutocompleteResult;
 import org.chromium.components.omnibox.GroupsProto.GroupConfig;
+import org.chromium.components.omnibox.action.OmniboxActionDelegate;
 import org.chromium.components.omnibox.suggestions.OmniboxSuggestionUiType;
 import org.chromium.ui.modelutil.PropertyModel;
 
@@ -66,9 +67,12 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
 
     @Override
     void initDefaultProcessors(
-            Context context, SuggestionHost host, UrlBarEditingTextStateProvider textProvider) {
+            Context context,
+            SuggestionHost host,
+            UrlBarEditingTextStateProvider textProvider,
+            OmniboxActionDelegate actionDelegate) {
         mUrlBarEditingTextProvider = textProvider;
-        super.initDefaultProcessors(context, host, textProvider);
+        super.initDefaultProcessors(context, host, textProvider, actionDelegate);
         if (host instanceof BraveSuggestionHost) {
             mBraveSearchBannerProcessor =
                     new BraveSearchBannerProcessor(
@@ -76,7 +80,8 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
                             (BraveSuggestionHost) host,
                             textProvider,
                             mAutocompleteDelegate);
-            AutocompleteUIContext uiContext = createUIContext(context, host, textProvider);
+            AutocompleteUIContext uiContext =
+                    createUIContext(context, host, textProvider, actionDelegate);
             mBraveLeoSuggestionProcessor = new BraveLeoSuggestionProcessor(uiContext);
             mBraveLeoSuggestionProcessor.setBraveLeoAutocompleteDelegate(mLeoAutocompleteDelegate);
         }
@@ -158,16 +163,17 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
                 viewInfoList
                         .get(viewInfoList.size() - 1)
                         .model
-                        .set(DropdownCommonProperties.BG_BOTTOM_CORNER_ROUNDED, false);
+                        .set(SuggestionCommonProperties.BG_BOTTOM_CORNER_ROUNDED, false);
                 viewInfoList
                         .get(viewInfoList.size() - 1)
                         .model
-                        .set(DropdownCommonProperties.SHOW_DIVIDER, true);
+                        .set(SuggestionCommonProperties.SHOW_DIVIDER, true);
             }
 
-            leoModel.set(DropdownCommonProperties.BG_TOP_CORNER_ROUNDED, viewInfoList.size() == 0);
-            leoModel.set(DropdownCommonProperties.BG_BOTTOM_CORNER_ROUNDED, true);
-            leoModel.set(DropdownCommonProperties.SHOW_DIVIDER, false);
+            leoModel.set(
+                    SuggestionCommonProperties.BG_TOP_CORNER_ROUNDED, viewInfoList.size() == 0);
+            leoModel.set(SuggestionCommonProperties.BG_BOTTOM_CORNER_ROUNDED, true);
+            leoModel.set(SuggestionCommonProperties.SHOW_DIVIDER, false);
 
             viewInfoList.add(
                     tileNavSuggestPosition,
@@ -186,10 +192,10 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
 
     private boolean isBraveLeoEnabled() {
         Tab tab = mActivityTabSupplier.get();
-        if (mLeoAutocompleteDelegate != null
-                && mLeoAutocompleteDelegate.isLeoEnabled()
-                && tab != null
+        if (tab != null
                 && !tab.isIncognito()
+                && mLeoAutocompleteDelegate != null
+                && mLeoAutocompleteDelegate.isLeoEnabled()
                 && ChromeSharedPreferences.getInstance()
                         .readBoolean(BravePreferenceKeys.BRAVE_LEO_AUTOCOMPLETE, true)) {
             return true;
@@ -200,11 +206,11 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
 
     private boolean isBraveSearchPromoBanner() {
         Tab activeTab = mActivityTabSupplier.get();
-        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SEARCH_OMNIBOX_BANNER)
+        if (activeTab != null
+                && !activeTab.isIncognito()
+                && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SEARCH_OMNIBOX_BANNER)
                 && mUrlBarEditingTextProvider != null
                 && mUrlBarEditingTextProvider.getTextWithoutAutocomplete().length() > 0
-                && activeTab != null
-                && !activeTab.isIncognito()
                 && sBraveSearchEngineDefaultRegions.contains(Locale.getDefault().getCountry())
                 && !BraveSearchEngineAdapter.getDSEShortName(
                                 Profile.fromWebContents(activeTab.getWebContents()), false, null)
@@ -229,7 +235,10 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
 
     @SuppressWarnings("UnusedVariable")
     private AutocompleteUIContext createUIContext(
-            Context context, SuggestionHost host, UrlBarEditingTextStateProvider textProvider) {
+            Context context,
+            SuggestionHost host,
+            UrlBarEditingTextStateProvider textProvider,
+            OmniboxActionDelegate actionDelegate) {
         assert false
                 : "This method will be deleted in bytecode. Method from the parent class will be"
                         + " used instead.";

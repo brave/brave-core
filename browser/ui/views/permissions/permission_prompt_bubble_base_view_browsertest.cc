@@ -51,6 +51,7 @@ class MockPermissionPromptDelegate
   void Deny(const PromptOptions& prompt_options) override {}
   void Dismiss(const PromptOptions& prompt_options) override {}
   void Ignore(const PromptOptions& prompt_options) override {}
+  void SwitchToLoudPrompt() override {}
   GeolocationAccuracy GetInitialGeolocationAccuracySelection() const override {
     NOTREACHED();
   }
@@ -77,6 +78,7 @@ class MockPermissionPromptDelegate
   const permissions::PermissionPrompt* GetCurrentPrompt() const override {
     return nullptr;
   }
+  bool ShouldShowLocationPrecisionSelector() const override { return false; }
 
   base::WeakPtr<permissions::PermissionPrompt::Delegate> GetWeakPtr() override {
     return weak_ptr_factory_.GetWeakPtr();

@@ -14,10 +14,8 @@
 #include "brave/components/brave_search/renderer/brave_search_render_frame_observer.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/cosmetic_filters/renderer/cosmetic_filters_js_render_frame_observer.h"
-#include "brave/components/playlist/content/renderer/playlist_render_frame_observer.h"
-#include "brave/components/playlist/core/common/features.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/safe_builtins/renderer/safe_builtins.h"
 #include "brave/components/script_injector/renderer/script_injector_render_frame_observer.h"
 #include "brave/components/skus/common/features.h"
@@ -50,12 +48,19 @@
 #include "brave/components/speedreader/renderer/speedreader_render_frame_observer.h"
 #endif
 
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/content/renderer/playlist_render_frame_observer.h"
+#include "brave/components/playlist/core/common/features.h"
+#endif
+
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
+
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/components/brave_mobile_subscription/renderer/android/subscription_render_frame_observer.h"
+#include "brave/components/brave_origin/features.h"
 #endif  // BUILDFLAG(IS_ANDROID)
-#endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
 #include "media/base/key_system_info.h"
@@ -99,7 +104,6 @@ void BraveContentRendererClient::
       SetRuntimeFeaturesDefaultsBeforeBlinkInitialization();
 
   blink::WebRuntimeFeatures::EnableFledge(false);
-  blink::WebRuntimeFeatures::EnablePermissionElement(false);
   // Disable topics APIs because kBrowsingTopics feature is disabled
   blink::WebRuntimeFeatures::EnableTopicsAPI(false);
   blink::WebRuntimeFeatures::EnableTopicsDocumentAPI(false);
@@ -108,6 +112,7 @@ void BraveContentRendererClient::
 
   // These features don't have dedicated WebRuntimeFeatures wrappers.
   blink::WebRuntimeFeatures::EnableFeatureFromString("AdTagging", false);
+  blink::WebRuntimeFeatures::EnableFeatureFromString("AIClassifierAPI", false);
   blink::WebRuntimeFeatures::EnableFeatureFromString("DigitalGoods", false);
   if (!base::FeatureList::IsEnabled(blink::features::kFileSystemAccessAPI)) {
     blink::WebRuntimeFeatures::EnableFeatureFromString("FileSystemAccessLocal",
@@ -118,6 +123,7 @@ void BraveContentRendererClient::
   blink::WebRuntimeFeatures::EnableFeatureFromString("FledgeMultiBid", false);
   blink::WebRuntimeFeatures::EnableFeatureFromString("PrivateStateTokens",
                                                      false);
+  blink::WebRuntimeFeatures::EnableFeatureFromString("ProfilerAPI", false);
 
 #if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
   if (base::FeatureList::IsEnabled(
@@ -162,8 +168,7 @@ void BraveContentRendererClient::RenderFrameCreated(
   }
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  if (base::FeatureList::IsEnabled(
-          brave_wallet::features::kNativeBraveWalletFeature)) {
+  if (IsBraveWalletAvailable()) {
     new brave_wallet::BraveWalletRenderFrameObserver(
         render_frame,
         base::BindRepeating(&BraveRenderThreadObserver::GetDynamicParams));
@@ -191,6 +196,8 @@ void BraveContentRendererClient::RenderFrameCreated(
   should_create_subscription_observer |=
       ai_chat::features::IsAIChatHistoryEnabled();
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
+  should_create_subscription_observer |=
+      base::FeatureList::IsEnabled(brave_origin::features::kBraveOrigin);
   if (should_create_subscription_observer) {
     new brave_subscription::SubscriptionRenderFrameObserver(
         render_frame, content::ISOLATED_WORLD_ID_GLOBAL);
@@ -205,6 +212,7 @@ void BraveContentRendererClient::RenderFrameCreated(
   }
 #endif
 
+#if BUILDFLAG(ENABLE_PLAYLIST)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
       !process_state::IsIncognitoProcess()) {
     new playlist::PlaylistRenderFrameObserver(
@@ -213,6 +221,7 @@ void BraveContentRendererClient::RenderFrameCreated(
         }),
         ISOLATED_WORLD_ID_BRAVE_INTERNAL);
   }
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   if (ai_chat::features::IsAIChatEnabled() &&
@@ -249,24 +258,28 @@ void BraveContentRendererClient::RunScriptsAtDocumentStart(
     observer->RunScriptsAtDocumentStart();
   }
 
+#if BUILDFLAG(ENABLE_PLAYLIST)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     if (auto* playlist_observer =
             playlist::PlaylistRenderFrameObserver::Get(render_frame)) {
       playlist_observer->RunScriptsAtDocumentStart();
     }
   }
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
   ChromeContentRendererClient::RunScriptsAtDocumentStart(render_frame);
 }
 
 void BraveContentRendererClient::RunScriptsAtDocumentEnd(
     content::RenderFrame* render_frame) {
+#if BUILDFLAG(ENABLE_PLAYLIST)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     if (auto* playlist_observer =
             playlist::PlaylistRenderFrameObserver::Get(render_frame)) {
       playlist_observer->RunScriptsAtDocumentEnd();
     }
   }
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
   ChromeContentRendererClient::RunScriptsAtDocumentEnd(render_frame);
 }
@@ -290,13 +303,15 @@ void BraveContentRendererClient::WillDestroyServiceWorkerContextOnWorkerThread(
     v8::Local<v8::Context> v8_context,
     int64_t service_worker_version_id,
     const GURL& service_worker_scope,
-    const GURL& script_url) {
+    const GURL& script_url,
+    const blink::ServiceWorkerToken& service_worker_token) {
   brave_search_service_worker_holder_
       .WillDestroyServiceWorkerContextOnWorkerThread(
           v8_context, service_worker_version_id, service_worker_scope,
           script_url);
   ChromeContentRendererClient::WillDestroyServiceWorkerContextOnWorkerThread(
-      v8_context, service_worker_version_id, service_worker_scope, script_url);
+      v8_context, service_worker_version_id, service_worker_scope, script_url,
+      service_worker_token);
 }
 
 std::unique_ptr<blink::URLLoaderThrottleProvider>
@@ -309,3 +324,9 @@ BraveContentRendererClient::CreateURLLoaderThrottleProvider(
 bool BraveContentRendererClient::IsOnionAllowed() const {
   return brave_observer_->IsOnionAllowed();
 }
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+bool BraveContentRendererClient::IsBraveWalletAvailable() const {
+  return brave_observer_ && brave_observer_->IsBraveWalletAvailable();
+}
+#endif

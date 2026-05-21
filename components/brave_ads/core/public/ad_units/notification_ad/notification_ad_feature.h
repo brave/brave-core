@@ -17,7 +17,6 @@ static_assert(BUILDFLAG(ENABLE_BRAVE_ADS));
 namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kNotificationAdFeature);
-BASE_DECLARE_FEATURE(kAllowedToFallbackToCustomNotificationAdFeature);
 
 // Ad notification timeout in seconds. Set to 0 to never time out
 inline constexpr base::FeatureParam<base::TimeDelta> kNotificationAdTimeout{
@@ -31,12 +30,6 @@ inline constexpr base::FeatureParam<int> kDefaultNotificationAdsPerHour{
 // Set to 0 to never cap.
 inline constexpr base::FeatureParam<size_t> kMaximumNotificationAdsPerDay{
     &kNotificationAdFeature, "maximum_ads_per_day", 100};
-
-// Set to true to fallback to custom notification ads if native notifications
-// are disabled or false to never fallback
-inline constexpr base::FeatureParam<bool> kCanFallbackToCustomNotificationAds{
-    &kNotificationAdFeature, "can_fallback_to_custom_notifications",
-    kDefaultCanFallbackToCustomNotificationAds};
 
 }  // namespace brave_ads
 

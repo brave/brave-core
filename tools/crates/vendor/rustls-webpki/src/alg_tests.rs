@@ -14,7 +14,8 @@
 
 #![allow(clippy::duplicate_mod)]
 
-use std::prelude::v1::*;
+use alloc::string::String;
+use alloc::vec::Vec;
 
 use base64::{Engine as _, engine::general_purpose};
 use pki_types::alg_id;

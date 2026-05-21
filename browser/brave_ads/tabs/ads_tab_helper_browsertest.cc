@@ -15,6 +15,7 @@
 #include "base/check.h"
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "base/notreached.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
@@ -22,8 +23,9 @@
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/test/gmock_callback_support.h"
+#include "base/test/test_future.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
-#include "brave/components/brave_ads/core/browser/service/ads_service_mock.h"
+#include "brave/components/brave_ads/core/browser/service/test/ads_service_mock.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/constants/brave_paths.h"
@@ -80,25 +82,6 @@ constexpr char kHttpStatusCodeQueryKey[] = "http_status_code";
 
 constexpr char kMultiPageApplicationWebpage[] =
     "/brave_ads/multi_page_application.html";
-constexpr char kMultiPageApplicationWebpageHtmlContent[] =
-    "<!DOCTYPE html><html xmlns=\"http://www.w3.org/1999/xhtml\" "
-    "lang=\"en\"><head>\n  <title>Adventure "
-    "Awaits</title>\n</head>\n\n<body>\n  <h1>Welcome to Your Adventure</h1>\n "
-    " <p>\n    Embark on a journey of learning and discovery. Each step you "
-    "take brings you closer to mastering new skills and\n    achieving your "
-    "goals.\n  </p>\n  <ul>\n    <li><a href=\"rust.html\" "
-    "target=\"_self\">Explore new programming languages</a></li>\n    <li><a "
-    "href=\"open_source.html\" target=\"_self\">Contribute to open-source "
-    "projects</a></li>\n    <li><a href=\"develop.html\" "
-    "target=\"_self\">Develop innovative applications</a></li>\n  </ul>\n  "
-    "<blockquote>\n    \"The only limit to our realization of tomorrow is our "
-    "doubts of today.\" - Franklin D. Roosevelt\n  </blockquote>\n  <table "
-    "border=\"1\">\n    <tbody><tr>\n      <th>Task</th>\n      "
-    "<th>Status</th>\n    </tr>\n    <tr>\n      <td>Learn Rust</td>\n      "
-    "<td>Completed</td>\n    </tr>\n    <tr>\n      <td>Contribute to a GitHub "
-    "repository</td>\n      <td>In Progress</td>\n    </tr>\n    <tr>\n      "
-    "<td>Build a mobile app</td>\n      <td>Pending</td>\n    </tr>\n  "
-    "</tbody></table>\n\n\n\n</body></html>";
 constexpr char kMultiPageApplicationWebpageTextContent[] =
     "Welcome to Your Adventure\n\nEmbark on a journey of learning and "
     "discovery. Each step you take brings you closer to mastering new skills "
@@ -111,35 +94,6 @@ constexpr char kMultiPageApplicationWebpageTextContent[] =
 
 constexpr char kSinglePageApplicationWebpage[] =
     "/brave_ads/single_page_application.html";
-constexpr char kSinglePageApplicationWebpageHtmlContent[] =
-    "<!DOCTYPE html><html xmlns=\"http://www.w3.org/1999/xhtml\" "
-    "lang=\"en\"><head>\n  <title>Single Page Application</title>\n  "
-    "<script>\n    // Function to update the page header.\n    function "
-    "displayContent(state) {\n      const pageHeader = "
-    "document.querySelector(\"#pageHeader\");\n      pageHeader.textContent = "
-    "state.header;\n    }\n\n    // Event listener for clicks on the "
-    "document.\n    document.addEventListener(\"click\", async (event) =&gt; "
-    "{\n      const navigationType = "
-    "event.target.getAttribute(\"data-navigation-type\");\n      if "
-    "(navigationType) {\n        event.preventDefault(); // Stop the default "
-    "link behavior.\n        if (navigationType === \"same_document\") {\n     "
-    "     try {\n            // Update the header.\n            "
-    "displayContent({ header: navigationType });\n\n            // Change the "
-    "URL without reloading.\n            const newState = { header: "
-    "navigationType };\n            history.pushState(newState, \"\", "
-    "navigationType);\n          } catch (err) {\n            // Log any "
-    "errors.\n            console.error(err);\n          }\n        }\n      "
-    "}\n    });\n\n    // Event listener for browser navigation "
-    "(back/forward).\n    window.addEventListener(\"popstate\", (event) =&gt; "
-    "{\n      if (event.state) {\n        // Update the header based on the "
-    "state.\n        displayContent(event.state);\n      }\n    });\n\n    // "
-    "Set the initial state of the page.\n    const initialState = { header: "
-    "\"Home\" };\n    history.replaceState(initialState, \"\", "
-    "document.location.href);\n  </script>\n</head>\n\n<body>\n  <h1 "
-    "id=\"pageHeader\">same_document</h1>\n  <ul>\n    <li><a href=\"/\" "
-    "data-navigation-type=\"home\">Home</a></li>\n    <li><a "
-    "href=\"same_document\" data-navigation-type=\"same_document\">Same "
-    "Document</a></li>\n  </ul>\n\n\n\n</body></html>";
 constexpr char kSinglePageApplicationClickSelector[] =
     "[data-navigation-type='same_document']";
 
@@ -156,35 +110,61 @@ class MediaWaiter final : public content::WebContentsObserver {
   explicit MediaWaiter(content::WebContents* const web_contents)
       : content::WebContentsObserver(web_contents) {}
 
-  void WaitForMediaStartedPlaying() { media_started_playing_run_loop_.Run(); }
+  void WaitForMediaStartedPlaying() {
+    ASSERT_TRUE(media_started_playing_.Wait());
+  }
 
-  void WaitForMediaDestroyed() { media_destroyed_run_loop_.Run(); }
+  void WaitForMediaDestroyed() { ASSERT_TRUE(media_destroyed_.Wait()); }
 
-  void WaitForMediaSessionCreated() { media_session_created_run_loop_.Run(); }
+  void WaitForMediaSessionCreated() {
+    ASSERT_TRUE(media_session_created_.Wait());
+  }
+
+  void WaitForMediaMutedStatusChanged() {
+    if (muted_status_changed_count_ > 0U) {
+      --muted_status_changed_count_;
+      return;
+    }
+    base::test::TestFuture<void> future;
+    muted_status_changed_callback_ = future.GetCallback();
+    ASSERT_TRUE(future.Wait());
+  }
 
   // content::WebContentsObserver:
   void MediaStartedPlaying(const MediaPlayerInfo& /*video_type*/,
                            const content::MediaPlayerId& id) override {
     id_ = id;
-    media_started_playing_run_loop_.Quit();
+    media_started_playing_.SetValue();
   }
 
   void MediaDestroyed(const content::MediaPlayerId& id) override {
     EXPECT_EQ(id, id_);
-    media_destroyed_run_loop_.Quit();
+    media_destroyed_.SetValue();
   }
 
   void MediaSessionCreated(
       content::MediaSession* const /*media_session*/) override {
-    media_session_created_run_loop_.Quit();
+    media_session_created_.SetValue();
+  }
+
+  void MediaMutedStatusChanged(const content::MediaPlayerId& /*id*/,
+                               bool /*muted*/) override {
+    if (muted_status_changed_callback_) {
+      std::move(muted_status_changed_callback_).Run();
+    } else {
+      ++muted_status_changed_count_;
+    }
   }
 
  private:
   std::optional<content::MediaPlayerId> id_;
 
-  base::RunLoop media_started_playing_run_loop_;
-  base::RunLoop media_destroyed_run_loop_;
-  base::RunLoop media_session_created_run_loop_;
+  base::test::TestFuture<void> media_started_playing_;
+  base::test::TestFuture<void> media_destroyed_;
+  base::test::TestFuture<void> media_session_created_;
+
+  size_t muted_status_changed_count_ = 0;
+  base::OnceClosure muted_status_changed_callback_;
 };
 
 std::unique_ptr<KeyedService> CreateAdsService(
@@ -418,6 +398,18 @@ class BraveAdsTabHelperTest : public PlatformBrowserTest {
     ASSERT_TRUE(ExecuteJavaScript(javascript, /*has_user_gesture=*/true));
   }
 
+  void MuteVideoAudio(const std::string& selector) {
+    const std::string javascript = base::ReplaceStringPlaceholders(
+        R"(document.querySelector("$1").muted = true;)", {selector}, nullptr);
+    ASSERT_TRUE(ExecuteJavaScript(javascript, /*has_user_gesture=*/true));
+  }
+
+  void UnmuteVideoAudio(const std::string& selector) {
+    const std::string javascript = base::ReplaceStringPlaceholders(
+        R"(document.querySelector("$1").muted = false;)", {selector}, nullptr);
+    ASSERT_TRUE(ExecuteJavaScript(javascript, /*has_user_gesture=*/true));
+  }
+
   void RestoreBrowser(Profile* const profile) {
     CHECK(profile);
 
@@ -528,135 +520,6 @@ IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
                        NotifyTabDidLoadForHttpSuccessfulResponsePage) {
   EXPECT_CALL(GetAdsServiceMock(), NotifyTabDidLoad(TabId(), net::HTTP_OK));
   SimulateHttpStatusCodePage(net::HTTP_OK);
-}
-
-IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
-                       NotifyTabHtmlContentDidChangeForRewardsUser) {
-  GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
-
-  base::RunLoop run_loop;
-  EXPECT_CALL(
-      GetAdsServiceMock(),
-      NotifyTabHtmlContentDidChange(
-          TabId(), RedirectChainExpectation(kMultiPageApplicationWebpage),
-          kMultiPageApplicationWebpageHtmlContent))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  NavigateToRelativeURL(kMultiPageApplicationWebpage,
-                        /*has_user_gesture=*/true);
-  run_loop.Run();
-}
-
-IN_PROC_BROWSER_TEST_F(
-    BraveAdsTabHelperTest,
-    NotifyTabHtmlContentDidChangeWithEmptyHtmlForNonRewardsUser) {
-  GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, false);
-
-  base::RunLoop run_loop;
-  EXPECT_CALL(
-      GetAdsServiceMock(),
-      NotifyTabHtmlContentDidChange(
-          TabId(), RedirectChainExpectation(kMultiPageApplicationWebpage),
-          /*html=*/::testing::IsEmpty()))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  NavigateToRelativeURL(kMultiPageApplicationWebpage,
-                        /*has_user_gesture=*/true);
-  run_loop.Run();
-}
-
-IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
-                       DoNotNotifyTabHtmlContentDidChangeIfTabWasRestored) {
-  GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
-
-  base::RunLoop run_loop;
-  EXPECT_CALL(GetAdsServiceMock(), NotifyTabHtmlContentDidChange)
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  NavigateToRelativeURL(kMultiPageApplicationWebpage,
-                        /*has_user_gesture=*/true);
-  run_loop.Run();
-  ::testing::Mock::VerifyAndClearExpectations(&GetAdsServiceMock());
-
-  // Must occur before the browser is closed.
-  Profile* const profile = GetProfile();
-  AdsServiceMock& ads_service_mock = GetAdsServiceMock();
-
-  const ScopedKeepAlive scoped_keep_alive(KeepAliveOrigin::SESSION_RESTORE,
-                                          KeepAliveRestartOption::DISABLED);
-  const ScopedProfileKeepAlive scoped_profile_keep_alive(
-      profile, ProfileKeepAliveOrigin::kSessionRestore);
-  CloseBrowserSynchronously(browser());
-
-  // We should not notify about changes to the tab's HTML content, as the
-  // session will be restored and the tab will reload.
-  EXPECT_CALL(ads_service_mock, NotifyTabHtmlContentDidChange).Times(0);
-  RestoreBrowser(profile);
-
-  EXPECT_TRUE(WaitForActiveWebContentsToLoad());
-}
-
-IN_PROC_BROWSER_TEST_F(
-    BraveAdsTabHelperTest,
-    DoNotNotifyTabHtmlContentDidChangeForPreviouslyCommittedNavigation) {
-  GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
-
-  base::RunLoop run_loop;
-  EXPECT_CALL(GetAdsServiceMock(), NotifyTabHtmlContentDidChange)
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  NavigateToRelativeURL(kMultiPageApplicationWebpage,
-                        /*has_user_gesture=*/true);
-  run_loop.Run();
-  ::testing::Mock::VerifyAndClearExpectations(&GetAdsServiceMock());
-
-  EXPECT_CALL(GetAdsServiceMock(), NotifyTabHtmlContentDidChange).Times(0);
-  GoBack();
-  GoForward();
-  Reload();
-
-  EXPECT_TRUE(WaitForActiveWebContentsToLoad());
-}
-
-IN_PROC_BROWSER_TEST_F(
-    BraveAdsTabHelperTest,
-    DoNotNotifyTabHtmlContentDidChangeForHttpClientErrorResponsePage) {
-  GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
-
-  EXPECT_CALL(GetAdsServiceMock(), NotifyTabHtmlContentDidChange).Times(0);
-  SimulateHttpStatusCodePage(net::HTTP_NOT_FOUND);
-}
-
-IN_PROC_BROWSER_TEST_F(
-    BraveAdsTabHelperTest,
-    DoNotNotifyTabHtmlContentDidChangeForHttpServerErrorResponsePage) {
-  GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
-
-  EXPECT_CALL(GetAdsServiceMock(), NotifyTabHtmlContentDidChange).Times(0);
-  SimulateHttpStatusCodePage(net::HTTP_INTERNAL_SERVER_ERROR);
-}
-
-IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
-                       NotifyTabHtmlContentDidChangeForSameDocumentNavigation) {
-  GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
-
-  {
-    base::RunLoop run_loop;
-    EXPECT_CALL(GetAdsServiceMock(), NotifyTabHtmlContentDidChange)
-        .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-    NavigateToRelativeURL(kSinglePageApplicationWebpage,
-                          /*has_user_gesture=*/true);
-    run_loop.Run();
-    ::testing::Mock::VerifyAndClearExpectations(&GetAdsServiceMock());
-  }
-
-  {
-    base::RunLoop run_loop;
-    EXPECT_CALL(GetAdsServiceMock(),
-                NotifyTabHtmlContentDidChange(
-                    TabId(), ::testing::Contains(FileName("same_document")),
-                    kSinglePageApplicationWebpageHtmlContent))
-        .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-    SimulateClick(kSinglePageApplicationClickSelector,
-                  /*has_user_gesture=*/true);
-    run_loop.Run();
-  }
 }
 
 IN_PROC_BROWSER_TEST_F(
@@ -848,8 +711,12 @@ IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
 IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest, NotifyTabDidStartPlayingMedia) {
   NavigateToRelativeURL(kVideoWebpage, /*has_user_gesture=*/true);
 
+  content::WebContents* const web_contents = GetActiveWebContents();
+  MediaWaiter waiter(web_contents);
+
   EXPECT_CALL(GetAdsServiceMock(), NotifyTabDidStartPlayingMedia);
   StartVideoPlayback(kVideoJavascriptDocumentQuerySelector);
+  waiter.WaitForMediaStartedPlaying();
 }
 
 IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest, NotifyTabDidStopPlayingMedia) {
@@ -859,6 +726,97 @@ IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest, NotifyTabDidStopPlayingMedia) {
 
   EXPECT_CALL(GetAdsServiceMock(), NotifyTabDidStopPlayingMedia);
   PauseVideoPlayback(kVideoJavascriptDocumentQuerySelector);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
+                       DoNotNotifyTabDidStartPlayingMediaForMutedVideo) {
+  // Arrange
+  NavigateToRelativeURL(kVideoWebpage, /*has_user_gesture=*/true);
+
+  content::WebContents* const web_contents = GetActiveWebContents();
+  MediaWaiter waiter(web_contents);
+
+  MuteVideoAudio(kVideoJavascriptDocumentQuerySelector);
+
+  // Act & Assert
+  EXPECT_CALL(GetAdsServiceMock(), NotifyTabDidStartPlayingMedia).Times(0);
+  StartVideoPlayback(kVideoJavascriptDocumentQuerySelector);
+  waiter.WaitForMediaStartedPlaying();
+}
+
+IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
+                       NotifyTabDidStartPlayingMediaWhenVideoIsUnmuted) {
+  // Arrange
+  NavigateToRelativeURL(kVideoWebpage, /*has_user_gesture=*/true);
+
+  content::WebContents* const web_contents = GetActiveWebContents();
+  MediaWaiter waiter(web_contents);
+
+  MuteVideoAudio(kVideoJavascriptDocumentQuerySelector);
+  StartVideoPlayback(kVideoJavascriptDocumentQuerySelector);
+  waiter.WaitForMediaStartedPlaying();
+
+  // Act & Assert
+  EXPECT_CALL(GetAdsServiceMock(), NotifyTabDidStartPlayingMedia);
+  UnmuteVideoAudio(kVideoJavascriptDocumentQuerySelector);
+  waiter.WaitForMediaMutedStatusChanged();
+}
+
+IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
+                       NotifyTabDidStopPlayingMediaWhenVideoIsMuted) {
+  // Arrange
+  NavigateToRelativeURL(kVideoWebpage, /*has_user_gesture=*/true);
+
+  content::WebContents* const web_contents = GetActiveWebContents();
+  MediaWaiter waiter(web_contents);
+
+  StartVideoPlayback(kVideoJavascriptDocumentQuerySelector);
+  waiter.WaitForMediaStartedPlaying();
+
+  // Act & Assert
+  EXPECT_CALL(GetAdsServiceMock(), NotifyTabDidStopPlayingMedia);
+  MuteVideoAudio(kVideoJavascriptDocumentQuerySelector);
+  waiter.WaitForMediaMutedStatusChanged();
+}
+
+IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
+                       DoNotNotifyTabDidStopPlayingMediaForMutedVideo) {
+  // Arrange
+  NavigateToRelativeURL(kVideoWebpage, /*has_user_gesture=*/true);
+
+  content::WebContents* const web_contents = GetActiveWebContents();
+  MediaWaiter waiter(web_contents);
+
+  MuteVideoAudio(kVideoJavascriptDocumentQuerySelector);
+  StartVideoPlayback(kVideoJavascriptDocumentQuerySelector);
+  waiter.WaitForMediaStartedPlaying();
+
+  // Act & Assert
+  EXPECT_CALL(GetAdsServiceMock(), NotifyTabDidStopPlayingMedia).Times(0);
+  PauseVideoPlayback(kVideoJavascriptDocumentQuerySelector);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
+                       NotifyTabDidStopPlayingMediaWhenVideoIsRemuted) {
+  // Arrange
+  NavigateToRelativeURL(kVideoWebpage, /*has_user_gesture=*/true);
+
+  content::WebContents* const web_contents = GetActiveWebContents();
+  MediaWaiter waiter(web_contents);
+
+  StartVideoPlayback(kVideoJavascriptDocumentQuerySelector);
+  waiter.WaitForMediaStartedPlaying();
+
+  MuteVideoAudio(kVideoJavascriptDocumentQuerySelector);
+  waiter.WaitForMediaMutedStatusChanged();
+
+  UnmuteVideoAudio(kVideoJavascriptDocumentQuerySelector);
+  waiter.WaitForMediaMutedStatusChanged();
+
+  // Act & Assert
+  EXPECT_CALL(GetAdsServiceMock(), NotifyTabDidStopPlayingMedia);
+  MuteVideoAudio(kVideoJavascriptDocumentQuerySelector);
+  waiter.WaitForMediaMutedStatusChanged();
 }
 
 IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest, NotifyDidCloseTab) {

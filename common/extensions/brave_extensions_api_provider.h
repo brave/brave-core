@@ -30,7 +30,7 @@ class BraveExtensionsAPIProvider : public ExtensionsAPIProvider {
   bool IsAPISchemaGenerated(const std::string& name) override;
   std::string_view GetAPISchema(const std::string& name) override;
   void RegisterPermissions(PermissionsInfo* permissions_info) override;
-  void RegisterManifestHandlers() override;
+  void RegisterManifestHandlers(ManifestHandlerRegistry* registry) override;
 
  private:
 };

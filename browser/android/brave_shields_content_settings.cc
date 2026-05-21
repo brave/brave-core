@@ -374,6 +374,25 @@ jint JNI_BraveShieldsContentSettings_GetAutoShredMode(
       brave_shields::mojom::AutoShredMode>::To(mode);
 }
 
+bool JNI_BraveShieldsContentSettings_IsShredBrowsingHistoryEnabled(
+    JNIEnv* env,
+    const base::android::JavaRef<jobject>& j_profile) {
+  auto* brave_shields_settings =
+      BraveShieldsSettingsServiceFactory::GetForProfile(
+          Profile::FromJavaObject(j_profile));
+  return brave_shields_settings->IsShredBrowsingHistoryEnabled();
+}
+
+void JNI_BraveShieldsContentSettings_SetShredBrowsingHistory(
+    JNIEnv* env,
+    bool enabled,
+    const base::android::JavaRef<jobject>& j_profile) {
+  auto* brave_shields_settings =
+      BraveShieldsSettingsServiceFactory::GetForProfile(
+          Profile::FromJavaObject(j_profile));
+  brave_shields_settings->SetShredBrowsingHistory(enabled);
+}
+
 }  // namespace android
 }  // namespace chrome
 

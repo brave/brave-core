@@ -18,7 +18,7 @@ enum PendingRequest: Equatable {
   case signMessageError([BraveWallet.SignMessageError])
   case getEncryptionPublicKey(BraveWallet.GetEncryptionPublicKeyRequest)
   case decrypt(BraveWallet.DecryptRequest)
-  case signSolTransactions([BraveWallet.SignSolTransactionsRequest])
+  case signTransactions([SignTransactionRequestItem])
 }
 
 extension PendingRequest: Identifiable {
@@ -40,8 +40,8 @@ extension PendingRequest: Identifiable {
       return "getEncryptionPublicKey-\(request.accountId.uniqueKey)-\(request.requestId)"
     case .decrypt(let request):
       return "decrypt-\(request.accountId.uniqueKey)-\(request.requestId)"
-    case .signSolTransactions(let requests):
-      return "signSolTransactions-\(requests.map(\.id))"
+    case .signTransactions(let requests):
+      return "signTransactions-\(requests.map(\.id))"
     }
   }
 }
@@ -55,6 +55,7 @@ enum WebpageRequestResponse: Equatable {
   case getEncryptionPublicKey(approved: Bool, requestId: String)
   case decrypt(approved: Bool, requestId: String)
   case signSolTransactions(approved: Bool, id: Int32)
+  case signCardanoTransactions(approved: Bool, id: Int32)
 }
 
 public class CryptoStore: ObservableObject, WalletObserverStore {
@@ -251,7 +252,6 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
 
   public func setupObservers() {
     guard !isObserving else { return }
-    self.userAssetManager.addUserAssetDataObserver(self)
     self.keyringServiceObserver = KeyringServiceObserver(
       keyringService: keyringService,
       _walletReset: { [weak self] in
@@ -770,7 +770,12 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
     } else if case let signSolTransactionsRequests =
       await walletService.pendingSignSolTransactionsRequests(), !signSolTransactionsRequests.isEmpty
     {
-      return .signSolTransactions(signSolTransactionsRequests)
+      return .signTransactions(signSolTransactionsRequests.map { .solana($0) })
+    } else if case let signCardanoTransactionRequests =
+      await walletService.pendingSignCardanoTransactionRequests(),
+      !signCardanoTransactionRequests.isEmpty
+    {
+      return .signTransactions(signCardanoTransactionRequests.map { .cardano($0) })
     } else if case let signMessageErrors = await walletService.pendingSignMessageErrors(),
       !signMessageErrors.isEmpty
     {
@@ -869,6 +874,12 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
         hwSignatures: [],
         error: nil
       )
+    case .signCardanoTransactions(let approved, let id):
+      walletService.notifySignCardanoTransactionRequestProcessed(
+        approved: approved,
+        id: id,
+        error: nil
+      )
     }
     pendingRequest = nil
     completion?(nil)
@@ -905,45 +916,6 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       }
     }
   }
-
-  private func recordP3AActiveWallets() {
-    Task { @MainActor in
-      let shouldCountTestNetworks = Preferences.BraveCore.activeSwitches.value.contains(
-        BraveWallet.P3aCountTestNetworksSwitch
-      )
-      let allAccounts = await keyringService.allAccounts().accounts
-      let supportedCoinTypes = WalletConstants.supportedCoinTypes()
-      let accountsForCoin = Dictionary(grouping: allAccounts, by: \.coin)
-      for coin in supportedCoinTypes {
-        var activeAccountsForCoin = Int32(0)
-        let accounts = accountsForCoin[coin] ?? []
-        for account in accounts {
-          if let balancesForAccount = userAssetManager.getAssetBalances(
-            for: nil,
-            account: account.id
-          ) {
-            let balancesScopedForP3A = balancesForAccount.optionallyFilter(
-              shouldFilter: !shouldCountTestNetworks,
-              isIncluded: { assetBalance in
-                !WalletConstants.supportedTestNetworkChainIds.contains(where: {
-                  $0 == assetBalance.chainId
-                })
-              }
-            )
-            if balancesScopedForP3A.contains(where: { assetBalance in
-              guard let balance = Double(assetBalance.balance) else { return false }
-              return balance > 0  // account has some balance
-            }) {
-              activeAccountsForCoin += 1
-              // move to next account
-              continue
-            }
-          }
-        }
-        walletP3A.recordActiveWalletCount(activeAccountsForCoin, coinType: coin)
-      }
-    }
-  }
 }
 
 extension CryptoStore: PreferencesObserver {
@@ -960,14 +932,5 @@ extension CryptoStore: PreferencesObserver {
         updateAssets()
       }
     }
-  }
-}
-
-extension CryptoStore: WalletUserAssetDataObserver {
-  public func cachedBalanceRefreshed() {
-    recordP3AActiveWallets()
-  }
-
-  public func userAssetUpdated() {
   }
 }

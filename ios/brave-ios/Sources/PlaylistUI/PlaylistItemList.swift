@@ -55,18 +55,16 @@ struct PlaylistItemList: View {
             isSelected: selectedItemID == item.id,
             isPlaying: isPlaying,
             downloadState: {
-              if let uuid = item.uuid, let state = downloadStates[uuid] {
-                if state == .downloaded {
-                  return .completed
-                }
-                if state == .inProgress {
-                  // PlaylistDownloadManager reports percent as 0...100 not 0...1
-                  let percentCompleted = downloadProgress[uuid, default: 0.0] / 100.0
-                  return .downloading(percentComplete: percentCompleted)
-                }
+              guard let uuid = item.uuid, let state = downloadStates[uuid] else {
+                return nil
               }
-              if let cachedData = item.cachedData, !cachedData.isEmpty {
+              if state == .downloaded {
                 return .completed
+              }
+              if state == .inProgress {
+                // PlaylistDownloadManager reports percent as 0...100 not 0...1
+                let percentCompleted = downloadProgress[uuid, default: 0.0] / 100.0
+                return .downloading(percentComplete: percentCompleted)
               }
               return nil
             }()
@@ -80,13 +78,13 @@ struct PlaylistItemList: View {
           PlaylistManager.shared.getAssetDuration(item: .init(item: item)) { _ in }
         }
         .contextMenu {
-          if let cachedData = item.cachedData, !cachedData.isEmpty {
+          // Mirror the badge's source of truth: only offer "Remove offline data" when the cached file
+          // actually exists on disk. Otherwise we'd offer to remove a phantom download for an item whose bookmark
+          // survived but whose file was wiped (e.g. by iOS reclaiming `com.apple.UserManagedAssets*`).
+          if let uuid = item.uuid, downloadStates[uuid] == .downloaded {
             Button {
               Task { @MainActor in
                 await PlaylistManager.shared.deleteCache(item: .init(item: item))
-                if let uuid = item.uuid {
-                  downloadStates.removeValue(forKey: uuid)
-                }
               }
             } label: {
               Label(Strings.Playlist.removeOfflineData, braveSystemImage: "leo.cloud.off")

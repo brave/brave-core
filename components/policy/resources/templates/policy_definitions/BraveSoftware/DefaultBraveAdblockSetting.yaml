@@ -3,13 +3,13 @@ default: null
 desc: |-
   This policy determines how Brave handles ads on web pages.
 
-            If this policy is set to 1 (AllowAds), ads are allowed to be displayed on websites.
+  If this policy is set to 1 (AllowAds), ads are allowed to be displayed on websites.
 
-            If this policy is set to 2 (BlockAds), ads are blocked.
+  If this policy is set to 2 (BlockAds), ads are blocked.
 
-            If left unset, ads are blocked by default, but users can modify this by:
-            - changing the "Trackers &amp; ads blocking" control to "Disabled" in Shields settings, or to "Allow all trackers &amp; ads" in the Shields panel
-            - disabling Shields on a specific site
+  If left unset, ads are blocked by default, but users can modify this by:
+  - changing the "Trackers &amp; ads blocking" control to "Disabled" in Shields settings, or to "Allow all trackers &amp; ads" in the Shields panel
+  - disabling Shields on a specific site
 example_value: 2
 features:
   can_be_mandatory: true

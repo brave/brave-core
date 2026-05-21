@@ -49,17 +49,14 @@
       }
 
       if (!certificate::x509_utils::IsNull(signature_params)) {
-        std::string signature_params_string =
-            std::string(base::as_string_view(signature_params));
-        _parameters = base::SysUTF8ToNSString(base::HexEncode(
-            signature_params_string.data(), signature_params_string.size()));
+        _parameters = base::SysUTF8ToNSString(
+            base::HexEncode(base::as_byte_span(base::span(signature_params))));
       }
     }
 
-    std::string signature_string = std::string(
-        base::as_string_view(certificate->signature_value().bytes()));
-    _signatureHexEncoded = base::SysUTF8ToNSString(
-        base::HexEncode(signature_string.data(), signature_string.size()));
+    _signatureHexEncoded =
+        base::SysUTF8ToNSString(base::HexEncode(base::as_byte_span(
+            base::span(certificate->signature_value().bytes()))));
     _bytesSize = certificate->signature_value().bytes().size();
   }
   return self;

@@ -1,6 +1,10 @@
 static_library("p3a_utils") {
   sources = [
     "bucket.h",
+    "custom_attributes.cc",
+    "custom_attributes.h",
+    "event_relay.cc",
+    "event_relay.h",
     "feature_usage.cc",
     "feature_usage.h",
   ]
@@ -9,5 +13,20 @@ static_library("p3a_utils") {
     "//base",
     "//brave/components/time_period_storage",
     "//components/prefs",
+  ]
+}
+
+source_set("test_support") {
+  testonly = true
+
+  sources = [
+    "test_event_relay_observer.cc",
+    "test_event_relay_observer.h",
+  ]
+
+  public_deps = [
+    ":p3a_utils",
+    "//base",
+    "//third_party/abseil-cpp:absl",
   ]
 }

@@ -22,7 +22,7 @@ constexpr char kHeaderSecCHUAFullVersionList[] = "Sec-CH-UA-Full-Version-List";
 constexpr char kBraveBrand[] = "\"Brave\"";
 constexpr char kGoogleChromeBrand[] = "\"Google Chrome\"";
 
-void ReplaceBraveWithGoogleChromeInHeader(net::HttpRequestHeaders* headers,
+bool ReplaceBraveWithGoogleChromeInHeader(net::HttpRequestHeaders* headers,
                                           const char* header_name) {
   std::optional<std::string> header_value = headers->GetHeader(header_name);
   if (header_value) {
@@ -30,7 +30,9 @@ void ReplaceBraveWithGoogleChromeInHeader(net::HttpRequestHeaders* headers,
     base::ReplaceFirstSubstringAfterOffset(&value, /*start_offset=*/0,
                                            kBraveBrand, kGoogleChromeBrand);
     headers->SetHeader(header_name, value);
+    return true;
   }
+  return false;
 }
 
 }  // namespace
@@ -46,9 +48,13 @@ int OnBeforeStartTransaction_UserAgentWork(
     if (exceptions) {
       bool show_brave = exceptions->CanShowBrave(ctx->tab_origin());
       if (!show_brave) {
-        ReplaceBraveWithGoogleChromeInHeader(headers, kHeaderSecCHUA);
-        ReplaceBraveWithGoogleChromeInHeader(headers,
-                                             kHeaderSecCHUAFullVersionList);
+        if (ReplaceBraveWithGoogleChromeInHeader(headers, kHeaderSecCHUA)) {
+          ctx->mutable_modified_headers().insert(kHeaderSecCHUA);
+        }
+        if (ReplaceBraveWithGoogleChromeInHeader(
+                headers, kHeaderSecCHUAFullVersionList)) {
+          ctx->mutable_modified_headers().insert(kHeaderSecCHUAFullVersionList);
+        }
       }
     }
   }

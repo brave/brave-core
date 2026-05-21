@@ -5,6 +5,7 @@
 
 #include <algorithm>
 #include <memory>
+#include <vector>
 
 #include "base/check_deref.h"
 #include "base/functional/callback_helpers.h"
@@ -33,6 +34,7 @@
 #include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/render_view_host.h"
@@ -45,6 +47,7 @@
 #include "content/public/test/test_navigation_observer.h"
 #include "services/network/public/cpp/network_switches.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace email_aliases {
 
@@ -175,6 +178,11 @@ class EmailAliasesBrowserTestBase : public InProcessBrowserTest {
   }
 
   void InjectHelpers(content::WebContents* contents) {
+    ASSERT_TRUE(base::test::RunUntil([&]() {
+      return !contents->GetLastCommittedURL().is_empty() &&
+             !contents->GetLastCommittedURL().IsAboutBlank();
+    }));
+    ASSERT_TRUE(content::WaitForLoadStop(contents));
     constexpr char kDeepQuery[] = R"js(
       function deepQuery(selector) {
         const query = (root, selector) =>{
@@ -271,7 +279,17 @@ class EmailAliasesBrowserTestBase : public InProcessBrowserTest {
   }
 
   void Click(const std::string& id, content::WebContents* contents = nullptr) {
-    constexpr char kClick[] = R"js( deepQuery($1).onClick() )js";
+    constexpr const char kClick[] = R"js(
+      (async () => {
+        let waiter = () => {
+          return !deepQuery($1)
+        };
+        while (waiter()) {
+          await new Promise(r => setTimeout(r, 10));
+        }
+        return deepQuery($1).onClick();
+      })();
+    )js";
     auto ignore = content::ExecJs((contents ? contents : ActiveWebContents()),
                                   content::JsReplace(kClick, id));
   }

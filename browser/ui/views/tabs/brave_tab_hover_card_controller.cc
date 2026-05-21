@@ -11,29 +11,13 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/views/tabs/hovercard/tab_hover_card_bubble_view.h"
+#include "chrome/browser/ui/views/tabs/hovercard/tab_hover_card_controller.h"
+#include "chrome/browser/ui/views/tabs/hovercard/tab_hover_card_thumbnail_observer.h"
 #include "chrome/browser/ui/views/tabs/tab.h"
-#include "chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.h"
-#include "chrome/browser/ui/views/tabs/tab_hover_card_controller.h"
-#include "chrome/browser/ui/views/tabs/tab_hover_card_thumbnail_observer.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
-#include "ui/views/bubble/bubble_border.h"
 
 BraveTabHoverCardController::~BraveTabHoverCardController() = default;
-
-void BraveTabHoverCardController::SetIsVerticalTabs(bool is_vertical_tabs) {
-  if (std::exchange(is_vertical_tabs_, is_vertical_tabs) == is_vertical_tabs) {
-    return;
-  }
-
-  UpdateHoverCardArrow();
-}
-
-void BraveTabHoverCardController::UpdateHoverCardArrow() {
-  if (hover_card_) {
-    hover_card_->SetArrow(is_vertical_tabs_ ? views::BubbleBorder::LEFT_TOP
-                                            : views::BubbleBorder::TOP_CENTER);
-  }
-}
 
 void BraveTabHoverCardController::CreateHoverCard(
     HoverCardAnchorTarget* anchor_target) {
@@ -43,8 +27,6 @@ void BraveTabHoverCardController::CreateHoverCard(
           browser_window_interface_->GetProfile()->GetPrefs());
 
   TabHoverCardController::CreateHoverCard(anchor_target);
-
-  UpdateHoverCardArrow();
 }
 
 void BraveTabHoverCardController::OnHovercardImagesEnabledChanged() {

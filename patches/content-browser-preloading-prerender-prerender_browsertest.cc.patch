@@ -1,0 +1,22 @@
+diff --git a/content/browser/preloading/prerender/prerender_browsertest.cc b/content/browser/preloading/prerender/prerender_browsertest.cc
+index 6caa757890083a6fc0b6f8642c1afdf617e9d967..3769b6fff245c3bfe9ef90ade8653144219515c4 100644
+--- a/content/browser/preloading/prerender/prerender_browsertest.cc
++++ b/content/browser/preloading/prerender/prerender_browsertest.cc
+@@ -12986,6 +12986,9 @@ class MultiplePrerendersWithLimitedMemoryBrowserTest
+   base::test::ScopedFeatureList feature_list_;
+ };
+ 
++// Memory pressure notifications to PrerenderHostRegistry are disabled on
++// Android only.
++#if !BUILDFLAG(IS_ANDROID)
+ // Tests that moderate-level memory pressure doesn't cancel prerendering on
+ // trigger.
+ IN_PROC_BROWSER_TEST_F(MultiplePrerendersBrowserTest,
+@@ -13094,6 +13097,7 @@ IN_PROC_BROWSER_TEST_F(MultiplePrerendersBrowserTest,
+       PrerenderFinalStatus::kMemoryPressureAfterTriggered,
+       prerender_urls.size());
+ }
++#endif  // !BUILDFLAG(IS_ANDROID)
+ 
+ // Tests that PrerenderHostRegistry only starts prerender speculation rules
+ // up to `max_num_of_running_speculation_rules` defined by a Finch param.

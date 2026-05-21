@@ -33,10 +33,13 @@
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/api_request_helper/mock_api_request_helper.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
+#include "components/os_crypt/async/browser/os_crypt_async.h"
+#include "components/os_crypt/async/browser/test_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "net/http/http_request_headers.h"
 #include "net/http/http_status_code.h"
 #include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
+#include "services/network/public/cpp/network_context_getter.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -265,7 +268,8 @@ class ConversationAPIV2ClientUnitTest : public testing::Test {
     ModelService::RegisterProfilePrefs(prefs_.registry());
     credential_manager_ = std::make_unique<MockAIChatCredentialManager>(
         base::NullCallback(), &prefs_);
-    model_service_ = std::make_unique<ModelService>(&prefs_);
+    model_service_ = std::make_unique<ModelService>(
+        &prefs_, os_crypt_async_.get(), network::NetworkContextGetter());
 
     client_ = std::make_unique<TestConversationAPIV2Client>(
         credential_manager_.get(), model_service_.get());
@@ -291,6 +295,9 @@ class ConversationAPIV2ClientUnitTest : public testing::Test {
 
  protected:
   base::test::TaskEnvironment task_environment_;
+  std::unique_ptr<os_crypt_async::OSCryptAsync> os_crypt_async_ =
+      os_crypt_async::GetTestOSCryptAsyncForTesting(
+          /*is_sync_for_unittests=*/true);
   std::unique_ptr<MockAIChatCredentialManager> credential_manager_;
   std::unique_ptr<ModelService> model_service_;
   std::unique_ptr<TestConversationAPIV2Client> client_;
@@ -354,6 +361,16 @@ INSTANTIATE_TEST_SUITE_P(
                 "filename": "filename",
                 "file_data": "data:application/pdf;base64,abc123"
               }
+            })"},
+        ContentBlockTestParam{
+            "FileExtractedText", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewFileExtractedTextContentBlock(
+                  mojom::FileExtractedTextContentBlock::New(
+                      "[PDF: file.pdf]\nextracted content"));
+            }),
+            R"({
+              "type": "brave-file-extracted-text",
+              "content": "[PDF: file.pdf]\nextracted content"
             })"},
         ContentBlockTestParam{
             "PageExcerpt", base::BindRepeating([]() {
@@ -2132,6 +2149,93 @@ TEST_F(ConversationAPIV2ClientUnitTest, OnQueryDataReceived_CompletionChunk) {
 
     testing::Mock::VerifyAndClearExpectations(&mock_callbacks);
   }
+}
+
+TEST_F(ConversationAPIV2ClientUnitTest, ErrorParsing_SSE) {
+  MockAPIRequestHelper* mock_request_helper =
+      client_->GetMockAPIRequestHelper();
+  testing::StrictMock<MockCallbacks> mock_callbacks;
+  base::RunLoop run_loop;
+
+  EXPECT_CALL(*mock_request_helper, RequestSSE(_, _, _, _, _, _, _, _))
+      .WillOnce([&](const std::string& method, const GURL& url,
+                    const std::string& body, const std::string& content_type,
+                    DataReceivedCallback data_received_callback,
+                    ResultCallback result_callback,
+                    const base::flat_map<std::string, std::string>& headers,
+                    const api_request_helper::APIRequestOptions& options) {
+        // Error body arrives via value_body() in the terminal APIRequestResult,
+        // populated by APIRequestHelper from the non-2xx SSE response body.
+        auto error_dict = base::test::ParseJsonDict(
+            R"({"error":{"type":"1234","message":"bad request"}})");
+        std::move(result_callback)
+            .Run(api_request_helper::APIRequestResult(
+                400, base::Value(std::move(error_dict)), {}, net::OK, GURL()));
+        return Ticket();
+      });
+
+  EXPECT_CALL(mock_callbacks, OnCompleted(_))
+      .WillOnce([&](EngineConsumer::GenerationResult result) {
+        ASSERT_FALSE(result.has_value());
+        EXPECT_EQ(result.error().api_error, mojom::APIError::ConnectionIssue);
+        ASSERT_TRUE(result.error().details);
+        EXPECT_EQ(result.error().details->status_code, 400);
+        EXPECT_EQ(result.error().details->error_type, "1234");
+        run_loop.Quit();
+      });
+
+  client_->PerformRequest(
+      GetMockMessagesAndExpectedMessagesJson().first, std::nullopt,
+      std::nullopt, {mojom::ConversationCapability::CHAT},
+      base::BindRepeating(&MockCallbacks::OnDataReceived,
+                          base::Unretained(&mock_callbacks)),
+      base::BindOnce(&MockCallbacks::OnCompleted,
+                     base::Unretained(&mock_callbacks)));
+
+  run_loop.Run();
+}
+
+TEST_F(ConversationAPIV2ClientUnitTest, ErrorParsing_NonSSE) {
+  MockAPIRequestHelper* mock_request_helper =
+      client_->GetMockAPIRequestHelper();
+  testing::StrictMock<MockCallbacks> mock_callbacks;
+  base::RunLoop run_loop;
+
+  EXPECT_CALL(*mock_request_helper, Request(_, _, _, _, _, _, _, _))
+      .WillOnce(
+          [&](const std::string& method, const GURL& url,
+              const std::string& body, const std::string& content_type,
+              ResultCallback result_callback,
+              const base::flat_map<std::string, std::string>& headers,
+              const api_request_helper::APIRequestOptions& options,
+              api_request_helper::APIRequestHelper::ResponseConversionCallback
+                  conversion_callback) {
+            auto error_dict = base::test::ParseJsonDict(
+                R"({"error":{"type":"5678","message":"rate limited"}})");
+            std::move(result_callback)
+                .Run(api_request_helper::APIRequestResult(
+                    429, base::Value(std::move(error_dict)), {}, net::OK,
+                    GURL()));
+            return Ticket();
+          });
+
+  EXPECT_CALL(mock_callbacks, OnCompleted(_))
+      .WillOnce([&](EngineConsumer::GenerationResult result) {
+        ASSERT_FALSE(result.has_value());
+        EXPECT_EQ(result.error().api_error, mojom::APIError::RateLimitReached);
+        ASSERT_TRUE(result.error().details);
+        EXPECT_EQ(result.error().details->status_code, 429);
+        EXPECT_EQ(result.error().details->error_type, "5678");
+        run_loop.Quit();
+      });
+
+  client_->PerformRequest(
+      GetMockMessagesAndExpectedMessagesJson().first, std::nullopt,
+      std::nullopt, {mojom::ConversationCapability::CHAT}, base::NullCallback(),
+      base::BindOnce(&MockCallbacks::OnCompleted,
+                     base::Unretained(&mock_callbacks)));
+
+  run_loop.Run();
 }
 
 }  // namespace ai_chat

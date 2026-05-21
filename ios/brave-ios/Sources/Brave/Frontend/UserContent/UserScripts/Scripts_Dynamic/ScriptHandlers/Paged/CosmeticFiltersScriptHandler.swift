@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import Data
 import Foundation
 import Shared
@@ -16,7 +17,6 @@ import os.log
 class CosmeticFiltersScriptHandler: TabContentScript {
   struct CosmeticFiltersDTO: Decodable {
     struct CosmeticFiltersDTOData: Decodable, Hashable {
-      let windowOrigin: String
       let ids: [String]
       let classes: [String]
     }
@@ -46,7 +46,7 @@ class CosmeticFiltersScriptHandler: TabContentScript {
       let data = try JSONSerialization.data(withJSONObject: message.body)
       let dto = try JSONDecoder().decode(CosmeticFiltersDTO.self, from: data)
 
-      guard let frameURL = URL(string: dto.data.windowOrigin) else {
+      guard let frameURL = URLOrigin(wkSecurityOrigin: message.frameInfo.securityOrigin).url else {
         replyHandler(nil, nil)
         return
       }

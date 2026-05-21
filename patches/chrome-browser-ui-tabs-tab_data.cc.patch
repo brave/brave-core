@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/ui/tabs/tab_data.cc b/chrome/browser/ui/tabs/tab_data.cc
+index 84682b0f8437b952f7ed8607ab31a2f7f958938c..2bc5e7c51095e51a827bda7b199767ab3a37dd6a 100644
+--- a/chrome/browser/ui/tabs/tab_data.cc
++++ b/chrome/browser/ui/tabs/tab_data.cc
+@@ -28,6 +28,7 @@
+ namespace tabs {
+ 
+ TabData TabData::FromTabInterface(tabs::TabInterface* tab_interface) {
++  BRAVE_TAB_DATA_FROM_TAB_INTERFACE_SHARED_PINNED_EARLY_RETURN
+   TabUIHelper* const tab_ui_helper = TabUIHelper::From(tab_interface);
+   tabs::TabAlertController* const tab_alert_controller =
+       tabs::TabAlertController::From(tab_interface);
+@@ -72,6 +73,7 @@ TabData TabData::FromTabInterface(tabs::TabInterface* tab_interface) {
+   tab_data.collaboration_messaging =
+       collaboration_messaging ? collaboration_messaging->GetWeakPtr() : nullptr;
+ 
++  BRAVE_TAB_DATA_FROM_TAB_INTERFACE_APPLY_OVERRIDES
+   return tab_data;
+ }
+ 

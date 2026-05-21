@@ -19,7 +19,7 @@ namespace brave_ads::cbr {
 // point. The hash function must ensure the discrete log with respect to other
 // points is unknown.
 
-class TokenPreimage {
+class TokenPreimage final {
  public:
   TokenPreimage();
   explicit TokenPreimage(const std::string& token_preimage_base64);

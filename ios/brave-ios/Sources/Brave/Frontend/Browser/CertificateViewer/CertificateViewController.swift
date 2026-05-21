@@ -96,7 +96,8 @@ private struct CertificateView: View {
         content
       }
       .listStyle(InsetGroupedListStyle())
-      .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+      .scrollContentBackground(.hidden)
+      .background(Color(UIColor.braveGroupedBackground))
       .toolbar {
         ToolbarItemGroup(placement: .navigationBarTrailing) {
           Button(Strings.done) {

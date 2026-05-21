@@ -46,7 +46,7 @@ void VPNFacade::OpenAccountPage(brave_vpn::mojom::ManageURLType url_type) {
 
 void VPNFacade::RecordWidgetUsage() {
   if (vpn_service_) {
-    vpn_service_->brave_vpn_metrics()->RecordWidgetUsage(true);
+    vpn_service_->RecordWidgetUsageMetrics(true);
   }
 }
 

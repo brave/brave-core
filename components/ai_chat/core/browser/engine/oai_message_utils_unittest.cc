@@ -548,6 +548,99 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_UploadedFiles) {
   VerifyTextBlock(FROM_HERE, messages[9].content[0], "response4");
 }
 
+TEST_F(OAIMessageUtilsTest, BuildOAIMessages_PdfExtractedTextPreferred) {
+  // Test that PDFs with extracted_text produce TextContentBlock instead of
+  // FileContentBlock, and PDFs without extracted_text still produce
+  // FileContentBlock.
+  auto history = CreateSampleChatHistory(1);
+
+  auto pdfs = CreateSampleUploadedFiles(2, mojom::UploadedFileType::kPdf);
+  // First PDF has extracted text — should produce TextContentBlock
+  pdfs[0]->extracted_text = "This is the extracted PDF content.";
+  pdfs[0]->filename = "extracted.pdf";
+  // Second PDF has no extracted text — should produce FileContentBlock
+  pdfs[1]->filename = "raw.pdf";
+
+  auto pdf_url2 = GURL(EngineConsumer::GetPdfDataURL(pdfs[1]->data));
+
+  history[0]->uploaded_files = std::move(pdfs);
+
+  PageContentsMap page_contents_map;
+  std::vector<OAIMessage> messages =
+      BuildOAIMessages(std::move(page_contents_map), history, nullptr, true,
+                       10000, [](std::string&) {});
+
+  ASSERT_EQ(messages.size(), 2u);
+  EXPECT_EQ(messages[0].role, "user");
+  // Content: PDFs intro + extracted text (TextContentBlock) +
+  // raw PDF (FileContentBlock) + prompt = 4 blocks
+  ASSERT_EQ(messages[0].content.size(), 4u);
+  VerifyTextBlock(FROM_HERE, messages[0].content[0],
+                  "These PDFs are uploaded by the user");
+  // Extracted PDF becomes a FileExtractedTextContentBlock with
+  // [PDF: filename] prefix
+  VerifyFileExtractedTextBlock(
+      FROM_HERE, messages[0].content[1],
+      "[PDF: extracted.pdf]\nThis is the extracted PDF content.");
+  // Raw PDF still uses FileContentBlock
+  VerifyFileBlock(FROM_HERE, messages[0].content[2], pdf_url2, "raw.pdf");
+  VerifyTextBlock(FROM_HERE, messages[0].content[3], "query0");
+}
+
+TEST_F(OAIMessageUtilsTest, BuildOAIMessages_TextFileExtractedText) {
+  // Test that text files with extracted_text produce TextContentBlock with
+  // [File: filename] prefix, and text files without extracted_text are skipped.
+  auto history = CreateSampleChatHistory(1);
+
+  auto text_files =
+      CreateSampleUploadedFiles(2, mojom::UploadedFileType::kText);
+  // First text file has extracted text — should produce TextContentBlock
+  text_files[0]->extracted_text = "config_key=config_value";
+  text_files[0]->filename = "app.conf";
+  // Second text file has no extracted text — should be skipped
+  text_files[1]->filename = "failed.txt";
+
+  history[0]->uploaded_files = std::move(text_files);
+
+  PageContentsMap page_contents_map;
+  std::vector<OAIMessage> messages =
+      BuildOAIMessages(std::move(page_contents_map), history, nullptr, true,
+                       10000, [](std::string&) {});
+
+  ASSERT_EQ(messages.size(), 2u);
+  EXPECT_EQ(messages[0].role, "user");
+  // Content: text files intro + extracted text + prompt = 3 blocks
+  // (second file with no extracted_text is skipped)
+  ASSERT_EQ(messages[0].content.size(), 3u);
+  VerifyTextBlock(FROM_HERE, messages[0].content[0],
+                  "These text files are uploaded by the user");
+  VerifyFileExtractedTextBlock(FROM_HERE, messages[0].content[1],
+                               "[File: app.conf]\nconfig_key=config_value");
+  VerifyTextBlock(FROM_HERE, messages[0].content[2], "query0");
+}
+
+TEST_F(OAIMessageUtilsTest, BuildOAIMessages_TextFileDefaultFilename) {
+  // Test that text files with empty filename get default "uploaded.txt"
+  auto history = CreateSampleChatHistory(1);
+
+  auto text_files =
+      CreateSampleUploadedFiles(1, mojom::UploadedFileType::kText);
+  text_files[0]->extracted_text = "some content";
+  text_files[0]->filename.clear();
+
+  history[0]->uploaded_files = std::move(text_files);
+
+  PageContentsMap page_contents_map;
+  std::vector<OAIMessage> messages =
+      BuildOAIMessages(std::move(page_contents_map), history, nullptr, true,
+                       10000, [](std::string&) {});
+
+  ASSERT_EQ(messages.size(), 2u);
+  ASSERT_EQ(messages[0].content.size(), 3u);
+  VerifyFileExtractedTextBlock(FROM_HERE, messages[0].content[1],
+                               "[File: uploaded.txt]\nsome content");
+}
+
 TEST_F(OAIMessageUtilsTest, BuildOAIMessages_Memory_Excluded) {
   // Enable customization and set data
   prefs_.SetBoolean(prefs::kBraveAIChatUserCustomizationEnabled, true);
@@ -850,19 +943,17 @@ TEST_F(OAIMessageUtilsTest,
 TEST_F(OAIMessageUtilsTest,
        BuildOAIGenerateConversationTitleMessages_UploadFiles) {
   // Create a conversation history with 1 human turn including upload_files,
-  // and 1 assistant turn.
+  // and 1 assistant turn with non-empty completion text.
   // Tests one message with 1 kRequestTitle block with text set to assistant
   // turn's text is returned.
   PageContentsMap page_contents_map;
 
   auto history = CreateSampleChatHistory(1);
-
-  auto uploaded_file = mojom::UploadedFile::New();
-  uploaded_file->filename = "test.png";
-  uploaded_file->filesize = 1024;
-  uploaded_file->type = mojom::UploadedFileType::kImage;
-  history[0]->uploaded_files.emplace();
-  history[0]->uploaded_files->push_back(std::move(uploaded_file));
+  history[0]->uploaded_files =
+      CreateSampleUploadedFiles(1, mojom::UploadedFileType::kImage);
+  // CreateSampleChatHistory sets the assistant turn's text to "" by default;
+  // populate it so the assistant-text branch can be exercised.
+  history[1]->text = "The image shows a sunset over mountains.";
 
   auto messages = BuildOAIGenerateConversationTitleMessages(
       std::move(page_contents_map), history, 10000, [](std::string&) {});
@@ -876,8 +967,81 @@ TEST_F(OAIMessageUtilsTest,
   ASSERT_EQ(message.content.size(), 1u);
 
   // Request title block should use assistant response as the text when there
-  // are upload files.
+  // are upload files with content and the assistant produced completion text.
   VerifyRequestTitleBlock(FROM_HERE, message.content[0], history[1]->text);
+}
+
+TEST_F(
+    OAIMessageUtilsTest,
+    BuildOAIGenerateConversationTitleMessages_UploadedFilesEmptyVector_UseUserPrompt) {
+  auto history = CreateSampleChatHistory(1);
+  history[0]->uploaded_files = std::vector<mojom::UploadedFilePtr>{};
+  // Make the assistant text non-empty so a wrongly-taken assistant-text
+  // branch would be observable.
+  history[1]->text = "I'll search for that.";
+
+  auto messages = BuildOAIGenerateConversationTitleMessages(
+      PageContentsMap(), history, 10000, [](std::string&) {});
+
+  ASSERT_TRUE(messages);
+  ASSERT_EQ(messages->size(), 1u);
+  ASSERT_EQ(messages->at(0).content.size(), 1u);
+  // Title source must be the user prompt, not the assistant text.
+  VerifyRequestTitleBlock(FROM_HERE, messages->at(0).content[0],
+                          history[0]->text);
+}
+
+// Real files attached but the assistant turn has no text.
+// Fall back to the user prompt rather than picking empty assistant text.
+TEST_F(
+    OAIMessageUtilsTest,
+    BuildOAIGenerateConversationTitleMessages_UploadedFilesPresentEmptyAssistantText_UseUserPrompt) {
+  auto history = CreateSampleChatHistory(1);
+  history[0]->uploaded_files =
+      CreateSampleUploadedFiles(1, mojom::UploadedFileType::kImage);
+  history[1]->text = "";  // tool-only first response
+
+  auto messages = BuildOAIGenerateConversationTitleMessages(
+      PageContentsMap(), history, 10000, [](std::string&) {});
+
+  ASSERT_TRUE(messages);
+  ASSERT_EQ(messages->size(), 1u);
+  ASSERT_EQ(messages->at(0).content.size(), 1u);
+  VerifyRequestTitleBlock(FROM_HERE, messages->at(0).content[0],
+                          history[0]->text);
+}
+
+// Withdraw the request entirely when the resolved title text would be empty.
+TEST_F(
+    OAIMessageUtilsTest,
+    BuildOAIGenerateConversationTitleMessages_EmptyTitleText_ReturnsNullopt) {
+  // Sub-case a: no uploaded files, empty user text/prompt, empty assistant
+  // text. user-prompt branch resolves to empty.
+  {
+    auto history = CreateSampleChatHistory(1);
+    history[0]->text = "";
+    history[0]->prompt = std::nullopt;
+    history[1]->text = "";
+
+    auto messages = BuildOAIGenerateConversationTitleMessages(
+        PageContentsMap(), history, 10000, [](std::string&) {});
+    EXPECT_FALSE(messages);
+  }
+
+  // Sub-case b: real uploaded file but assistant text empty AND user
+  // text/prompt empty. Falls through user-prompt fallback, still empty.
+  {
+    auto history = CreateSampleChatHistory(1);
+    history[0]->text = "";
+    history[0]->prompt = std::nullopt;
+    history[0]->uploaded_files =
+        CreateSampleUploadedFiles(1, mojom::UploadedFileType::kImage);
+    history[1]->text = "";
+
+    auto messages = BuildOAIGenerateConversationTitleMessages(
+        PageContentsMap(), history, 10000, [](std::string&) {});
+    EXPECT_FALSE(messages);
+  }
 }
 
 TEST_F(OAIMessageUtilsTest,

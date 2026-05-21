@@ -3,11 +3,11 @@ default: null
 desc: |-
   Global Privacy Control allows users to signal privacy preferences to websites, such as not wanting their personal information to be sold or shared by businesses. When enabled, GPC sends a Sec-GPC request header and exposes the navigator.globalPrivacyControl JavaScript API.
 
-            If this policy is set to true, Global Privacy Control will be enabled.
+  If this policy is set to true, Global Privacy Control will be enabled.
 
-            If this policy is set to false, Global Privacy Control will be disabled.
+  If this policy is set to false, Global Privacy Control will be disabled.
 
-            If this policy is left unset, Global Privacy Control will be enabled by default.
+  If this policy is left unset, Global Privacy Control will be enabled by default.
 example_value: true
 features:
   can_be_mandatory: true

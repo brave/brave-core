@@ -13,7 +13,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
-#include "base/memory/scoped_refptr.h"
+#include "brave/components/brave_wallet/browser/tx_storage.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -23,15 +23,6 @@
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
 class PrefService;
-
-namespace base {
-class FilePath;
-class SequencedTaskRunner;
-}  // namespace base
-
-namespace value_store {
-class ValueStoreFactory;
-}  // namespace value_store
 
 namespace brave_wallet {
 
@@ -43,8 +34,7 @@ class CardanoWalletService;
 class PolkadotWalletService;
 class KeyringService;
 class TxManager;
-class TxStorageDelegate;
-class TxStorageDelegateImpl;
+class TxStorage;
 class EthTxManager;
 class SolanaTxManager;
 class BitcoinTxManager;
@@ -66,8 +56,7 @@ class TxService : public mojom::TxService,
             PolkadotWalletService* polkadot_wallet_service,
             KeyringService& keyring_service,
             PrefService* prefs,
-            const base::FilePath& wallet_base_directory,
-            scoped_refptr<base::SequencedTaskRunner> ui_task_runner);
+            std::unique_ptr<TxStorage> tx_storage);
   ~TxService() override;
   TxService(const TxService&) = delete;
   TxService operator=(const TxService&) = delete;
@@ -75,27 +64,41 @@ class TxService : public mojom::TxService,
   template <class T>
   void Bind(mojo::PendingReceiver<T> receiver);
 
+  void AddUnapprovedEvmDappTransaction(
+      mojom::TxData1559Ptr tx_data_1559,
+      mojom::AccountIdPtr from,
+      const url::Origin& origin,
+      bool sign_only,
+      AddUnapprovedEvmTransactionCallback callback);
+  void AddUnapprovedEvmDappTransaction(
+      mojom::TxDataPtr tx_data,
+      mojom::AccountIdPtr from,
+      const url::Origin& origin,
+      bool sign_only,
+      AddUnapprovedEvmTransactionCallback callback);
+  void AddUnapprovedSolanaDappTransaction(
+      mojom::SolanaTxDataPtr solana_tx_data,
+      const std::string& chain_id,
+      mojom::AccountIdPtr from,
+      const url::Origin& origin,
+      AddUnapprovedSolanaTransactionCallback callback);
+
   // mojom::TxService
-  void AddUnapprovedTransaction(
-      mojom::TxDataUnionPtr tx_data_union,
-      const std::string& chain_id,
-      mojom::AccountIdPtr from,
-      mojom::SwapInfoPtr swap_info,
-      AddUnapprovedTransactionCallback callback) override;
-  void AddUnapprovedTransactionWithOrigin(
-      mojom::TxDataUnionPtr tx_data_union,
-      const std::string& chain_id,
-      mojom::AccountIdPtr from,
-      mojom::SwapInfoPtr swap_info,
-      const std::optional<url::Origin>& origin,
-      AddUnapprovedTransactionCallback callback);
   void AddUnapprovedEvmTransaction(
       mojom::NewEvmTransactionParamsPtr params,
       AddUnapprovedEvmTransactionCallback callback) override;
-  void AddUnapprovedEvmTransactionWithOrigin(
-      mojom::NewEvmTransactionParamsPtr params,
-      const std::optional<url::Origin>& origin,
-      AddUnapprovedEvmTransactionCallback callback);
+  void AddUnapprovedSolanaTransaction(
+      mojom::SolanaTxDataPtr solana_tx_data,
+      const std::string& chain_id,
+      mojom::AccountIdPtr from,
+      mojom::SwapInfoPtr swap_info,
+      AddUnapprovedSolanaTransactionCallback callback) override;
+  void AddUnapprovedFilecoinTransaction(
+      mojom::FilTxDataPtr fil_tx_data,
+      const std::string& chain_id,
+      mojom::AccountIdPtr from,
+      mojom::SwapInfoPtr swap_info,
+      AddUnapprovedFilecoinTransactionCallback callback) override;
   void AddUnapprovedBitcoinTransaction(
       mojom::NewBitcoinTransactionParamsPtr params,
       AddUnapprovedBitcoinTransactionCallback callback) override;
@@ -121,6 +124,8 @@ class TxService : public mojom::TxService,
                           GetTransactionInfoCallback) override;
   mojom::TransactionInfoPtr GetTransactionInfoSync(
       mojom::CoinType coin_type,
+      const std::string& tx_meta_id);
+  std::optional<std::string> GetEthSignedTransaction(
       const std::string& tx_meta_id);
   void GetAllTransactionInfo(mojom::CoinType coin_type,
                              const std::optional<std::string>& chain_id,
@@ -268,7 +273,7 @@ class TxService : public mojom::TxService,
       mojom::BitcoinSignaturePtr hw_signature,
       ProcessBtcHardwareSignatureCallback callback) override;
 
-  TxStorageDelegate* GetDelegateForTesting();
+  TxStorage* GetTxStorageForTesting();
 
  private:
   friend class EthereumProviderImplUnitTest;
@@ -294,8 +299,7 @@ class TxService : public mojom::TxService,
   raw_ptr<PrefService> prefs_;  // NOT OWNED
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
 
-  scoped_refptr<value_store::ValueStoreFactory> store_factory_;
-  std::unique_ptr<TxStorageDelegateImpl> delegate_;
+  std::unique_ptr<TxStorage> tx_storage_;
   std::unique_ptr<AccountResolverDelegate> account_resolver_delegate_;
   base::flat_map<mojom::CoinType, std::unique_ptr<TxManager>> tx_manager_map_;
 
@@ -306,7 +310,7 @@ class TxService : public mojom::TxService,
   mojo::ReceiverSet<mojom::FilTxManagerProxy> fil_tx_manager_receivers_;
   mojo::ReceiverSet<mojom::BtcTxManagerProxy> btc_tx_manager_receivers_;
 
-  base::WeakPtrFactory<TxService> weak_factory_;
+  base::WeakPtrFactory<TxService> weak_factory_{this};
 };
 
 }  // namespace brave_wallet

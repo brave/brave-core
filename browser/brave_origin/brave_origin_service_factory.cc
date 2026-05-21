@@ -10,8 +10,8 @@
 #include "base/check_is_test.h"
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/map_util.h"
-#include "base/functional/bind.h"
 #include "base/no_destructor.h"
+#include "brave/browser/brave_origin/brave_origin_navigation.h"
 #include "brave/browser/policy/brave_simple_policy_map.h"
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -24,7 +24,9 @@
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/pref_names.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/p3a/pref_names.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
@@ -57,6 +59,14 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
 #include "brave/components/brave_talk/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/core/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+#include "brave/components/email_aliases/pref_names.h"
 #endif
 
 namespace policy {
@@ -155,6 +165,14 @@ constexpr auto kBraveOriginProfileMetadata =
              /*user_settable=*/true)},
 #endif
 
+#if BUILDFLAG(ENABLE_PLAYLIST)
+        // Playlist preferences
+        {playlist::kPlaylistEnabledPref,
+         BraveOriginServiceFactory::BraveOriginPrefMetadata(
+             false,
+             /*user_settable=*/true)},
+#endif
+
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
         // Brave News preferences
         {brave_news::prefs::kBraveNewsDisabledByPolicy,
@@ -179,11 +197,21 @@ constexpr auto kBraveOriginProfileMetadata =
              /*user_settable=*/false)},
 #endif
 
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY)
         // Web Discovery preferences
         {kWebDiscoveryEnabled,
          BraveOriginServiceFactory::BraveOriginPrefMetadata(
              false,
              /*user_settable=*/true)},
+#endif
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+        // Email Aliases preferences
+        {email_aliases::prefs::kEmailAliasesEnabled,
+         BraveOriginServiceFactory::BraveOriginPrefMetadata(
+             false,
+             /*user_settable=*/false)},
+#endif
     });
 
 }  // namespace
@@ -205,6 +233,29 @@ BraveOriginServiceFactory::BraveOriginServiceFactory()
           "BraveOriginService",
           ProfileSelections::BuildRedirectedInIncognito()) {
   DependsOn(skus::SkusServiceFactory::GetInstance());
+  // This factory owns the lazy initialization of `BraveOriginPolicyManager`
+  // (in `BuildServiceInstanceForBrowserContext`). Mark the manager as
+  // expected-to-be-initialized as soon as the factory is registered so that
+  // `BraveProfilePolicyProvider::IsInitializationComplete` knows to gate on
+  // the manager actually finishing initialization. Without this gate
+  // `BraveProvider`'s first `RefreshPolicies` (triggered by
+  // `AdBlockOnlyModePolicyManager`'s `OnBravePoliciesReady`, which fires at
+  // process start) would flip `first_policies_loaded_` to true with an
+  // empty Brave Origin bundle, and consumers of
+  // `PolicyService::OnPolicyServiceInitialized` (notably
+  // `AdsServiceImpl::MaybeStartBatAdsService`) would evaluate against a
+  // managed pref store that does not yet reflect `BraveRewardsDisabled`.
+  //
+  // Upstream unit tests build `ProfilePolicyConnector` directly without
+  // going through `EnsureBrowserContextKeyedServiceFactoriesBuilt()`, so this
+  // factory's `GetInstance()` is never called in those tests, the flag stays
+  // false, and `BraveProvider::IsInitializationComplete` short-circuits to
+  // true to avoid blocking the upstream tests forever. The affected tests
+  // are in `chrome/browser/policy/profile_policy_connector_unittest.cc`,
+  // primarily the `ProfilePolicyConnectorTest.AffiliationMetrics_*`,
+  // `LocalTestProviderUseAndRevert`, and `ChromeosPrimaryUserPoliciesProxied`
+  // cases that use `PolicyServiceInitializedWaiter`.
+  BraveOriginPolicyManager::GetInstance()->SetExpectedToBeInitialized();
 }
 
 BraveOriginServiceFactory::~BraveOriginServiceFactory() = default;
@@ -223,12 +274,10 @@ BraveOriginServiceFactory::BuildServiceInstanceForBrowserContext(
   }
 
   std::string profile_id = GetProfileId(profile->GetPath());
-  auto skus_service_getter =
-      base::BindRepeating(&skus::SkusServiceFactory::GetForContext, context);
   return std::make_unique<BraveOriginService>(
       g_browser_process->local_state(), profile->GetPrefs(), profile_id,
       GetPolicyServiceFromProfile(profile), GetBrowserPolicyService(),
-      std::move(skus_service_getter));
+      std::make_unique<BraveOriginNavigationDelegate>(*profile));
 }
 
 bool BraveOriginServiceFactory::ServiceIsCreatedWithBrowserContext() const {

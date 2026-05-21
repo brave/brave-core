@@ -5,6 +5,7 @@ description:
   assigns stable IDs, creates new category docs if needed. Triggers on: add best
   practice, new best practice, add bp, new bp.'
 argument-hint: '<best practice description>'
+disable-model-invocation: true
 allowed-tools:
   Bash(python3:*), Bash(git:*), Bash(gh:*), Bash(ls:*), Read, Grep, Glob, Edit,
   Write, Agent, WebFetch

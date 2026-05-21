@@ -11,7 +11,6 @@
 #include <string>
 
 #include "base/containers/flat_map.h"
-#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_delegate_base.h"
@@ -43,6 +42,7 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegateBase,
   static void SetActiveWebContentsForTesting(
       content::WebContents* web_contents);
 
+  // BraveWalletServiceDelegateBase:
   void IsExternalWalletInstalled(mojom::ExternalWalletType,
                                  IsExternalWalletInstalledCallback) override;
   void IsExternalWalletInitialized(
@@ -55,6 +55,11 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegateBase,
   std::optional<url::Origin> GetActiveOrigin() override;
 
   void ClearWalletUIStoragePartition() override;
+
+  void DisplayTxNotification(brave_wallet::mojom::TransactionStatus status,
+                             const std::string& account_name,
+                             const std::string& tx_id,
+                             const GURL& tx_url) override;
 
   void AddObserver(BraveWalletServiceDelegate::Observer* observer) override;
   void RemoveObserver(BraveWalletServiceDelegate::Observer* observer) override;

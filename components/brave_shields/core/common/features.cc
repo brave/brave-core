@@ -75,7 +75,7 @@ BASE_FEATURE(kBraveReduceLanguage,
              base::FEATURE_ENABLED_BY_DEFAULT);
 // When enabled, brave shred feature will be available
 BASE_FEATURE(kBraveShredFeature,
-#if BUILDFLAG(IS_IOS)
+#if BUILDFLAG(IS_IOS) || BUILDFLAG(IS_ANDROID)
              base::FEATURE_ENABLED_BY_DEFAULT);
 #else
              base::FEATURE_DISABLED_BY_DEFAULT);
@@ -88,8 +88,7 @@ BASE_FEATURE(kBraveShredCacheData,
              base::FEATURE_DISABLED_BY_DEFAULT);
 #endif
 // When enabled, brave will use content settings for Shields on iOS.
-BASE_FEATURE(kBraveShieldsContentSettingsIOS,
-             base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveShieldsContentSettingsIOS, base::FEATURE_ENABLED_BY_DEFAULT);
 // When enabled, will display debug menu for adblock features in the Shields
 // panel.
 BASE_FEATURE(kBraveIOSDebugAdblock,
@@ -160,6 +159,11 @@ constexpr base::FeatureParam<int>
     kAdblockOverrideRegexDiscardPolicyDiscardUnusedSec{
         &kAdblockOverrideRegexDiscardPolicy, "discard_unused_sec", 180};
 
-BASE_FEATURE(kShowUpdatedShieldsPanel, base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kShowUpdatedShieldsPanel, base::FEATURE_ENABLED_BY_DEFAULT);
+
+// When enabled, adblock engines are serialized to DAT files on disk after
+// filter set loading. On subsequent startups, the cached DAT is loaded
+// instead of reprocessing filter lists, improving startup time.
+BASE_FEATURE(kAdblockDATCache, base::FEATURE_DISABLED_BY_DEFAULT);
 
 }  // namespace brave_shields::features

@@ -17,6 +17,7 @@ import org.chromium.base.ThreadUtils;
 import org.chromium.base.task.AsyncTask;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.brave_origin.BraveOriginSubscriptionPrefs;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
 import org.chromium.chrome.browser.tab.TabLaunchType;
@@ -84,7 +85,9 @@ public class RetentionNotificationPublisher extends BroadcastReceiver {
                     case RetentionNotificationUtil.HOUR_3:
                     case RetentionNotificationUtil.HOUR_24:
                     case RetentionNotificationUtil.DAY_6:
-                        createNotification(context, intent);
+                        if (!BraveOriginSubscriptionPrefs.getIsCredentialSummaryActiveCached()) {
+                            createNotification(context, intent);
+                        }
                         break;
                     case RetentionNotificationUtil.DAY_10:
                     case RetentionNotificationUtil.DAY_30:
@@ -107,13 +110,18 @@ public class RetentionNotificationPublisher extends BroadcastReceiver {
                         }
                         break;
                     case RetentionNotificationUtil.EVERY_SUNDAY:
-                        if (OnboardingPrefManager.getInstance().isBraveStatsNotificationEnabled()) {
+                        if (OnboardingPrefManager.getInstance().isBraveStatsNotificationEnabled()
+                                && !BraveOriginSubscriptionPrefs
+                                        .getIsCredentialSummaryActiveCached()) {
                             createNotification(context, intent);
                         }
                         break;
                     case RetentionNotificationUtil.DORMANT_USERS_DAY_14:
                     case RetentionNotificationUtil.DORMANT_USERS_DAY_25:
                     case RetentionNotificationUtil.DORMANT_USERS_DAY_40:
+                        if (BraveOriginSubscriptionPrefs.getIsCredentialSummaryActiveCached()) {
+                            break;
+                        }
                         if (System.currentTimeMillis()
                                         > OnboardingPrefManager.getInstance()
                                                 .getDormantUsersNotificationTime(notificationType)

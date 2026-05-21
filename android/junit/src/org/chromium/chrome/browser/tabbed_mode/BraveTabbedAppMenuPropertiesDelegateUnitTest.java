@@ -37,6 +37,7 @@ import org.chromium.base.BraveFeatureList;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.supplier.ObservableSuppliers;
 import org.chromium.base.supplier.OneshotSupplierImpl;
+import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.base.supplier.SettableNullableObservableSupplier;
 import org.chromium.base.test.BaseRobolectricTestRule;
 import org.chromium.base.test.BaseRobolectricTestRunner;
@@ -55,16 +56,19 @@ import org.chromium.chrome.browser.feed.webfeed.WebFeedBridge;
 import org.chromium.chrome.browser.feed.webfeed.WebFeedBridgeJni;
 import org.chromium.chrome.browser.feed.webfeed.WebFeedSnackbarController;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.chrome.browser.hub.HubManager;
+import org.chromium.chrome.browser.hub.Pane;
+import org.chromium.chrome.browser.hub.PaneId;
+import org.chromium.chrome.browser.hub.PaneManager;
 import org.chromium.chrome.browser.incognito.IncognitoUtils;
 import org.chromium.chrome.browser.incognito.IncognitoUtilsJni;
 import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthController;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.layouts.LayoutType;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
+import org.chromium.chrome.browser.multiwindow.MultiWindowTestUtils;
 import org.chromium.chrome.browser.offlinepages.OfflinePageUtils;
 import org.chromium.chrome.browser.preferences.BravePref;
-import org.chromium.chrome.browser.preferences.ChromePreferenceKeys;
-import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.readaloud.ReadAloudController;
@@ -81,6 +85,7 @@ import org.chromium.chrome.browser.translate.TranslateBridgeJni;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuHandler;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuItemProperties;
+import org.chromium.chrome.browser.ui.default_browser_promo.DefaultBrowserPromoUtils;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.NativePage;
 import org.chromium.components.browser_ui.accessibility.PageZoomManager;
@@ -120,13 +125,13 @@ import java.util.List;
     ChromeFeatureList.ADAPTIVE_BUTTON_IN_TOP_TOOLBAR_PAGE_SUMMARY,
     ChromeFeatureList.FEED_AUDIO_OVERVIEWS,
     ChromeFeatureList.GLIC,
-    ChromeFeatureList.NEW_TAB_PAGE_CUSTOMIZATION,
+    ChromeFeatureList.SUBMENUS_IN_APP_MENU,
+    DomDistillerFeatures.READER_MODE_DISTILL_IN_APP,
     DomDistillerFeatures.READER_MODE_IMPROVEMENTS,
     BraveFeatureList.BRAVE_SHRED,
 })
 @EnableFeatures({
     BraveFeatureList.AI_CHAT,
-    BraveFeatureList.NATIVE_BRAVE_WALLET,
 })
 public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
@@ -166,6 +171,10 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
     @Mock private WebFeedBridge.Natives mWebFeedBridgeJniMock;
     @Mock private TranslateBridge.Natives mTranslateBridgeJniMock;
     @Mock private PageZoomManager mPageZoomManagerMock;
+    @Mock private DefaultBrowserPromoUtils mDefaultBrowserPromoUtilsMock;
+    @Mock private HubManager mHubManager;
+    @Mock private PaneManager mPaneManager;
+    @Mock private Pane mPane;
 
     private ShadowPackageManager mShadowPackageManager;
 
@@ -173,10 +182,11 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
             new OneshotSupplierImpl<>();
     private final OneshotSupplierImpl<IncognitoReauthController>
             mIncognitoReauthControllerSupplier = new OneshotSupplierImpl<>();
+    private final OneshotSupplierImpl<HubManager> mHubManagerSupplier = new OneshotSupplierImpl<>();
     private final SettableNullableObservableSupplier<BookmarkModel> mBookmarkModelSupplier =
             ObservableSuppliers.createNullable();
-    private final SettableNullableObservableSupplier<ReadAloudController>
-            mReadAloudControllerSupplier = ObservableSuppliers.createNullable();
+    private final SettableMonotonicObservableSupplier<ReadAloudController>
+            mReadAloudControllerSupplier = ObservableSuppliers.createMonotonic();
     private final ActivityTabProvider mActivityTabProvider = new ActivityTabProvider();
 
     private BraveTabbedAppMenuPropertiesDelegate mTabbedAppMenuPropertiesDelegate;
@@ -250,6 +260,12 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
         Mockito.when(mTranslateBridgeJniMock.canManuallyTranslate(any(), anyBoolean()))
                 .thenReturn(false);
 
+        mHubManagerSupplier.set(mHubManager);
+        when(mHubManager.getPaneManager()).thenReturn(mPaneManager);
+        when(mPaneManager.getFocusedPaneSupplier())
+                .thenReturn(ObservableSuppliers.createMonotonic(mPane));
+        when(mPane.getPaneId()).thenReturn(PaneId.TAB_SWITCHER);
+
         PowerBookmarkUtils.setPriceTrackingEligibleForTesting(false);
         PowerBookmarkUtils.setPowerBookmarkMetaForTesting(PowerBookmarkMeta.newBuilder().build());
         BraveTabbedAppMenuPropertiesDelegate delegate =
@@ -269,18 +285,17 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
                         mIncognitoReauthControllerSupplier,
                         mReadAloudControllerSupplier,
                         mPageZoomManagerMock,
+                        mHubManagerSupplier,
                         /* openInAppMenuItemProvider= */ null);
         delegate.setIsJunitTesting(true);
         BaseRobolectricTestRule.runAllBackgroundAndUi();
         mTabbedAppMenuPropertiesDelegate = Mockito.spy(delegate);
 
-        ChromeSharedPreferences.getInstance()
-                .removeKeysWithPrefix(ChromePreferenceKeys.MULTI_INSTANCE_URL);
-        ChromeSharedPreferences.getInstance()
-                .removeKeysWithPrefix(ChromePreferenceKeys.MULTI_INSTANCE_TAB_COUNT);
+        MultiWindowTestUtils.resetInstanceInfo();
 
         CommerceFeatureUtilsJni.setInstanceForTesting(mCommerceFeatureUtilsJniMock);
         ShoppingServiceFactory.setShoppingServiceForTesting(mShoppingService);
+        DefaultBrowserPromoUtils.setInstanceForTesting(mDefaultBrowserPromoUtilsMock);
     }
 
     @After

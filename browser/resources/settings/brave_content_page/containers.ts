@@ -5,6 +5,8 @@
 
 import '//resources/cr_elements/cr_icon_button/cr_icon_button.js'
 import '//resources/mojo/skia/public/mojom/skcolor.mojom-webui.js'
+import '//resources/brave/leo.bundle.js'
+import '../controls/settings_toggle_button.js'
 
 import { I18nMixinLit } from '//resources/cr_elements/i18n_mixin_lit.js'
 import { assert } from '//resources/js/assert.js'
@@ -15,6 +17,7 @@ import {
 } from 'chrome://resources/lit/v3_0/lit.rollup.js'
 
 import { ContainersStrings } from '../brave_generated_resources_webui_strings.js'
+import type { SettingsToggleButtonElement } from '../controls/settings_toggle_button.js'
 import {
   Container,
   ContainerOperationError,
@@ -48,6 +51,9 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
 
   static override get properties() {
     return {
+      containersEnabled_: {
+        type: Boolean,
+      },
       containersList_: {
         type: Array,
       },
@@ -70,6 +76,7 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
   }
 
   private browserProxy = ContainersSettingsHandlerBrowserProxy.getInstance()
+  accessor containersEnabled_ = true
   accessor containersList_: Container[] = []
   accessor editingContainer_: Container | undefined
   accessor deletingContainer_: Container | undefined
@@ -79,12 +86,38 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
 
   override connectedCallback() {
     super.connectedCallback()
+    this.browserProxy.handler.getContainersEnabled().then(({ enabled }) => {
+      this.containersEnabled_ = enabled
+    })
     this.browserProxy.handler.getContainers().then(({ containers }) => {
       this.onContainersListUpdated_(containers)
     })
     this.browserProxy.callbackRouter.onContainersChanged.addListener(
       this.onContainersListUpdated_.bind(this),
     )
+    this.browserProxy.callbackRouter.onContainersEnabledChanged.addListener(
+      this.onContainersEnabledChanged_.bind(this),
+    )
+  }
+
+  override updated(changedProperties: PropertyValues<this>) {
+    super.updated(changedProperties)
+    if (
+      changedProperties.has('containersEnabled_')
+      && !this.containersEnabled_
+    ) {
+      this.editingContainer_ = undefined
+      this.deletingContainer_ = undefined
+    }
+  }
+
+  private onContainersEnabledChanged_(enabled: boolean) {
+    this.containersEnabled_ = enabled
+  }
+
+  onContainersEnabledChange_(e: Event) {
+    const toggle = e.target as SettingsToggleButtonElement
+    this.browserProxy.handler.setContainersEnabled(toggle.checked)
   }
 
   onContainersListUpdated_(containers: Container[]) {
@@ -115,9 +148,13 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
     this.deleteDialogError_ = undefined
   }
 
-  onCancelDialog_() {
+  onDialogClose_() {
     this.editingContainer_ = undefined
     this.deletingContainer_ = undefined
+  }
+
+  onCancelDialogClick_() {
+    this.onDialogClose_()
   }
 
   onContainerNameInput_(e: InputEvent) {
@@ -138,7 +175,7 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
     }
   }
 
-  onContainersBackgroundColorSelected_(event: ColorSelectedEvent) {
+  onContainersBackgroundSelected_(event: ColorSelectedEvent) {
     assert(this.editingContainer_)
     this.editingContainer_ = {
       ...this.editingContainer_,
@@ -146,7 +183,7 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
     }
   }
 
-  async onSaveContainerFromDialog_() {
+  async onSaveContainerFromDialogClick_() {
     assert(this.editingContainer_)
     if (!this.editingContainer_.id) {
       const { error } = await this.browserProxy.handler.addContainer(
@@ -169,7 +206,7 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
     }
   }
 
-  async onDeleteContainerFromDialog_() {
+  async onDeleteContainerFromDialogClick_() {
     assert(this.deletingContainer_)
     const { error } = await this.browserProxy.handler.removeContainer(
       this.deletingContainer_.id,

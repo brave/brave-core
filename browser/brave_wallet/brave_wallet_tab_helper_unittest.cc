@@ -5,37 +5,10 @@
 
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 
-#include <vector>
-
-#include "base/functional/callback_helpers.h"
-#include "brave/components/constants/webui_url_constants.h"
-#include "chrome/browser/ui/hid/hid_chooser_controller.h"
-#include "chrome/grit/generated_resources.h"
 #include "chrome/test/base/browser_with_test_window_test.h"
-#include "components/grit/brave_components_strings.h"
 #include "content/public/browser/global_routing_id.h"
 #include "content/public/test/web_contents_tester.h"
-#include "services/device/public/mojom/hid.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "ui/base/l10n/l10n_util.h"
-
-namespace {
-std::u16string BraveCreateTitleLabel() {
-  auto wallet_title = l10n_util::GetStringUTF16(IDS_BRAVE_WALLET);
-  return l10n_util::GetStringFUTF16(IDS_HID_CHOOSER_PROMPT, wallet_title);
-}
-
-std::u16string GetHIDTitle(content::WebContents* content, const GURL& url) {
-  content::WebContentsTester::For(content)->NavigateAndCommit(
-      url, ui::PAGE_TRANSITION_LINK);
-  std::vector<blink::mojom::HidDeviceFilterPtr> filters;
-  std::vector<blink::mojom::HidDeviceFilterPtr> exclusion_filters;
-  auto hid_chooser_controller = std::make_unique<HidChooserController>(
-      content->GetPrimaryMainFrame(), std::move(filters),
-      std::move(exclusion_filters), base::DoNothing());
-  return hid_chooser_controller->GetTitle();
-}
-}  // namespace
 
 namespace brave_wallet {
 
@@ -74,15 +47,6 @@ TEST_F(BraveWalletTabHelperUnitTest, GetApproveBubbleURL) {
   ASSERT_TRUE(helper);
   ASSERT_EQ(helper->GetApproveBubbleURL(),
             GURL("chrome://wallet-panel.top-chrome/#approveTransaction"));
-}
-
-TEST_F(BraveWalletTabHelperUnitTest, ChooserTitle) {
-  auto wallet_label = BraveCreateTitleLabel();
-  EXPECT_EQ(GetHIDTitle(web_contents(), GURL(kBraveUIWalletPanelURL)),
-            wallet_label);
-  EXPECT_EQ(GetHIDTitle(web_contents(), GURL(kBraveUIWalletPageURL)),
-            wallet_label);
-  EXPECT_NE(GetHIDTitle(web_contents(), GURL("a.com")), wallet_label);
 }
 
 TEST_F(BraveWalletTabHelperUnitTest, SolanaConnectedAccount) {

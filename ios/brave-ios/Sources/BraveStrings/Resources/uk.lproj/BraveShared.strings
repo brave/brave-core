@@ -16,11 +16,17 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Додати закладку";
 
+/* Add a new item to the current list */
+"addButtonTitle" = "Додати";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "Додати до обраного";
 
 /* Cell title for add folder action */
 "AddFolderActionCellTitle" = "Нова папка";
+
+/* Settings item that opens instructions for adding Brave to the iOS dock. */
+"addToDockSettingsCell" = "Додати в Dock";
 
 /* Add to favorites share action. */
 "AddToFavorites" = "Додати до обраного";
@@ -66,6 +72,45 @@
 
 /* Username textbox in Authentication prompt */
 "AuthPromptAlertUsernamePlaceholderText" = "Ім’я користувача";
+
+/* Settings autofill section title */
+"Autofill" = "Автозаповнення";
+
+/* Label for account when indicating that a domain has multiple accounts */
+"autofill.managePassword.multipleAccounts" = "Облікові записи";
+
+/* Alert message warning the user that deleting non-synced passwords will permanently remove them */
+"autofill.managePasswords.deleteCredentialConfirmMessage" = "Збережені паролі для %@ буде видалено з ланцюжка синхронізації та з вашого пристрою.";
+
+/* Prompt title when deleting passwords */
+"autofill.managePasswords.deleteCredentialsAlertTitle" = "Ви впевнені?";
+
+/* Label for the button used to delete the current login. */
+"autofill.managePasswords.deleteManagePasswordButtonTitle" = "Видалити";
+
+/* Title for the section header in the Manage Passwords list screen, that lists the saved sites */
+"autofill.managePasswords.headerTitle" = "Збережено";
+
+/* The message displayed on the manage passwords list screen, when there's at least one password, explain the feature */
+"autofill.managePasswords.instructions" = "Створюйте, зберігайте та керуйте паролями, щоб легко входити на сайти та в програми.";
+
+/* The header title displayed over the never saved passwords list */
+"autofill.managePasswords.neverSavedListHeaderTitle" = "Ніколи не зберігалося";
+
+/* Display text for the option to offer to save passwords */
+"autofill.managePasswords.offerToSavePasswords" = "Пропонувати зберігати паролі";
+
+/* Prompt that is diplayed in the search bar of the Manage Passwords list screen */
+"autofill.managePasswords.searchWebsitesPrompt" = "Шукати веб-сайти";
+
+/* Title for navigation bar of the Manage Passwords screen */
+"autofill.managePasswords.title" = "Керування паролями";
+
+/* Text to show when the origin of a managed password is not available */
+"autofill.managePasswords.UnknownDomainText" = "Невідомо";
+
+/* Settings autofill section title */
+"autofill.settings.title" = "Автозаповнення";
 
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "Автоматичне переспрямування сторінок AMP";
@@ -141,33 +186,6 @@
 
 /* Placeholder text for adding or editing a bookmark */
 "BookmarkUrlPlaceholderText" = "Адреса";
-
-/* Title for the Brave Account section in settings */
-"BraveAccount" = "Обліковий запис Brave";
-
-/* Title shown when waiting for email verification */
-"BraveAccountAlmostThere" = "Майже там!";
-
-/* Detail text for the almost there title */
-"BraveAccountAlmostThereDetail" = "Підтвердження електронною поштою має прийти. Натисніть кнопку в цьому листі, щоб активувати свій обліковий запис.";
-
-/* Button text to cancel Brave Account registration */
-"BraveAccountCancelRegistration" = "Скасувати реєстрацію";
-
-/* Title shown when user is logged in */
-"BraveAccountEmailAddress" = "Адреса електронної пошти";
-
-/* Button text to get started with Brave Account */
-"BraveAccountGetStarted" = "Почати";
-
-/* Button text to resend confirmation email */
-"BraveAccountResendConfirmationEmail" = "Переслати підтвердження електронною поштою";
-
-/* Detail text for the resend confirmation email button */
-"BraveAccountResendConfirmationEmailDetail" = "Не бачите листа? Перевірте папку спаму або натисніть кнопку, щоб переслати підтвердження електронною поштою.";
-
-/* Button text to sign out of Brave Account */
-"BraveAccountSignOut" = "Вийти";
 
 /* Button to show the brave panel */
 "BravePanel" = "Панель Brave";
@@ -706,15 +724,6 @@
 /* Description for new folder popup */
 "EnterFolderName" = "Уведіть назву папки";
 
-/* Shown in error pages to suggest a fix to the user. */
-"errorPageCantBeReachedTry" = "Спробуйте ще раз увести URL-адресу або відкрийте пошукову систему й знайдіть нову URL-адресу.";
-
-/* Shown in error pages for files that can't be shown and need to be downloaded. */
-"ErrorPageOpenInSafariButtonTitle" = "Відкрити в Safari";
-
-/* Shown in error pages on a button that will try to load the page again */
-"ErrorPageReloadButtonTitle" = "Перезавантажити";
-
 /* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
 "ErrorPagesAdvancedErrorPinningDetails" = "%1$@ зазвичай використовує шифрування для захисту вашої інформації. Коли Brave намагався підключитися до %2$@ цього разу, вебсайт надіслав незвичні й неправильні облікові дані. Таке може траплятися, коли хакер намагається видати себе за %3$@ або ж якщо екран підключення до Wi-Fi перервав підключення. Ваша інформація повністю захищена, оскільки Brave припинив підключення, перш ніж будь-які дані було передано.<br />Наразі ви не можете відвідати %4$@, тому що вебсайт використовує закріплення сертифікату. Мережеві помилки й атаки зазвичай тимчасові, тож ця сторінка, скоріш за все, працюватиме пізніше.";
 
@@ -1031,7 +1040,7 @@
 "nightMode.modeTitle" = "Режим";
 
 /* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
-"nightMode.sectionDescription" = "Нічний режим вплине на зовнішній вигляд вебсайту, а також на загальний вигляд системи.";
+"nightMode.sectionDescription" = "Нічний режим вплине на зовнішній вигляд вебсайту та загальний вигляд системи одночасно.";
 
 /* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
 "nightMode.settingsDescription" = "Увімкнути/вимкнути нічний режим";
@@ -1063,11 +1072,8 @@
 /* No comment provided by engineer. */
 "ntp.hideSponsoredImages" = "Приховати рекламні зображення";
 
-/* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "Спонсоровані зображення — це брендовані фони, які з’являються у нових вкладках. Увімкнувши їх, ви підтримуєте місію Brave.";
-
-/* The text label of image type learn more link */
-"ntp.imageTypeSelectionDescriptionLearnMore" = "Докладніше";
+/* The text description of image type which is being used NTP. The text inside the square brackets should be translated and is a link */
+"ntp.imageTypeSelectionDescription" = "Спонсоровані зображення — це брендовані фони, які з'являються у нових вкладках браузера. Увімкнувши такі спонсоровані зображення, ви підтримуєте місію Brave. [Дізнатися більше](#learn-more)";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Докладніше про Brave Rewards";
@@ -2368,9 +2374,6 @@
 /* Title of an action that allows user to perform a one-click web search for selected text */
 "SearchWithBrave" = "Пошук у Brave";
 
-/* Settings security section title */
-"Security" = "Безпека";
-
 /* No comment provided by engineer. */
 "sendButtonTitle" = "Надіслати";
 
@@ -2733,6 +2736,9 @@
 
 /* Setting to show/hide the tabs bar */
 "ShowTabsBar" = "Панель вкладок";
+
+/* Settings item for clearing site-specific settings and shields settings. */
+"SiteAndShieldsSettings" = "Налаштування сайтів і щитів";
 
 /* No comment provided by engineer. */
 "SiteReportedBody" = "Дякуємо, що повідомили розробникам Brave про проблему з вебсайтом. Ми спробуємо вирішити її якнайшвидше!";
@@ -3178,6 +3184,12 @@
 /* No comment provided by engineer. */
 "tabs.settings.privateTabsSettingsTitle" = "Приватні вкладки";
 
+/* The description of the toggle for users to allow the browser to remember its last browsing mode so it can re-launch in that mode when Keep Private Tabs is enabled. */
+"tabs.settings.rememberBrowsingModeDescription" = "Якщо браузер було закрито в приватному режимі, він знову відкриється в приватному режимі.";
+
+/* Toggle to launch the browser in private mode when Keep Private Tabs is enabled */
+"tabs.settings.rememberBrowsingModeTitle" = "Запам'ятати режим перегляду";
+
 /* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
 "TabToolbarAccessibilityLabel" = "Панель навігації";
 
@@ -3279,9 +3291,6 @@
 
 /* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
 "ThemesDisplayBrightness" = "Зовнішній вигляд";
-
-/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
-"ThemesDisplayBrightnessFooter" = "Ці налаштування не застосовуються в приватному режимі.";
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "Світла";

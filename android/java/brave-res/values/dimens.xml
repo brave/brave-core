@@ -6,6 +6,7 @@
 -->
 
 <resources>
+    <dimen name="brave_toolbar_button_height">40dp</dimen>
     <dimen name="onboarding_padding_top">4dp</dimen>
     <dimen name="onboarding_main_container_horizontal_margin">8dp</dimen>
     <dimen name="onboarding_buttons_vertical_margin">8dp</dimen>

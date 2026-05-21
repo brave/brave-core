@@ -10,7 +10,8 @@
 namespace syncer {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
-    {kSyncAutofillLoyaltyCard, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kSyncAutofillValuableMetadata, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kSyncDetermineAccountManagedStatus, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 }  // namespace syncer

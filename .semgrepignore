@@ -27,4 +27,5 @@ tests/
 # Ignore third_party rust libraries
 third_party/rust/
 tools/crates/vendor/
+third_party/boringtun/vendor/
 third_party/wasm/vendor/

@@ -13,18 +13,22 @@ Example:
 
 You can produce the JSON output for a presubmit run by using:
     npm run presubmit -- --base origin/master --json .presubmit_results.json
+
+Notice: Keep this script as *standalone*, with no deps to `tools/cr` code, so
+we can have no room for deps if downloaded and run on its own.
 """
 
 import argparse
+import logging
 from pathlib import Path
 import subprocess
 import json
 import sys
 import hashlib
-from typing import List, Dict, Any
+from typing import Any
 
 
-def post_comments(presubmit_entries: Dict[str, List[Dict[str, Any]]],
+def post_comments(presubmit_entries: dict[str, list[dict[str, Any]]],
                   pr_number: str) -> None:
     """
     Posts comments to a GitHub pull request based on presubmit results.
@@ -37,12 +41,18 @@ def post_comments(presubmit_entries: Dict[str, List[Dict[str, Any]]],
             The pull request number where the comments will be posted.
     """
     # Get a list of existing comments for this PR
-    existing_comments: List[str] = json.loads(
-        subprocess.check_output([
-            'gh', 'api', f'repos/brave/brave-core/issues/{pr_number}/comments',
-            '--paginate', '--jq', '[.[] | {id: .id, body: .body}]'
-        ],
-                                text=True))
+    comments_response = subprocess.check_output([
+        'gh', 'api', f'repos/brave/brave-core/issues/{pr_number}/comments',
+        '--paginate', '--jq', '[.[] | {id: .id, body: .body}]'
+    ],
+                                                text=True,
+                                                stderr=subprocess.PIPE)
+    logging.debug('Existing comments response: %s', comments_response)
+    existing_comments: list[dict[str, Any]] = []
+    for line in comments_response.splitlines():
+        if not line.strip():
+            continue
+        existing_comments.extend(json.loads(line))
 
     # Filtering out all comments that do not contain a presubmit hash as those
     # are not relevant to our comment management.
@@ -74,9 +84,8 @@ def post_comments(presubmit_entries: Dict[str, List[Dict[str, Any]]],
 
             if any(comment_hash in comment["body"]
                    for comment in existing_comments):
-                print(
-                    f'Comment with hash {report_hash} already exists. Skipping.'
-                )
+                logging.info('Comment with hash %s already exists. Skipping.',
+                             report_hash)
                 continue
 
             def get_severity_message():
@@ -118,6 +127,7 @@ def post_comments(presubmit_entries: Dict[str, List[Dict[str, Any]]],
                 'POST', '-F', 'body=@-'
             ],
                            input=body_content.encode('utf-8'),
+                           stderr=subprocess.PIPE,
                            check=True)
 
     # Now we delete the old comments that the hashes didn't come up.
@@ -128,14 +138,14 @@ def post_comments(presubmit_entries: Dict[str, List[Dict[str, Any]]],
         comment_hash = comment["body"].split('<!-- presubmit-hash=')[1].split(
             ' -->')[0]
         if comment_hash not in active_report_hashes:
-            print(
-                f'Deleting comment with id {comment["id"]}, hash {comment_hash}'
-            )
+            logging.info('Deleting comment with id %s, hash %s', comment["id"],
+                         comment_hash)
             subprocess.check_call([
                 'gh', 'api',
                 f'repos/brave/brave-core/issues/comments/{comment["id"]}',
                 '-X', 'DELETE'
-            ])
+            ],
+                                  stderr=subprocess.PIPE)
 
 
 def validate_pr_number(value: str) -> str:
@@ -158,15 +168,29 @@ def main() -> int:
                         type=validate_pr_number,
                         required=True,
                         help='The PR number.')
+    parser.add_argument('--verbose',
+                        action='store_true',
+                        help='Enable verbose logging output.')
     args = parser.parse_args()
+    logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO)
 
     presubmit_path = Path(args.input)
-    presubmit_entries: Dict[str, Any] = json.loads(presubmit_path.read_text())
+    presubmit_entries: dict[str, Any] = json.loads(
+        presubmit_path.read_bytes().decode('utf-8'))
     if not presubmit_entries:
-        print('No presubmit entries found.')
+        logging.info('No presubmit entries found.')
         return 0
 
-    post_comments(presubmit_entries, args.pr)
+    try:
+        post_comments(presubmit_entries, args.pr)
+    except subprocess.CalledProcessError as exception:
+        stderr = exception.stderr
+        if isinstance(stderr, bytes):
+            stderr = stderr.decode('utf-8', errors='replace')
+        logging.error(
+            'Subprocess command failed (return code %s): %s\nStderr: %s',
+            exception.returncode, exception.cmd, stderr if stderr else '')
+        raise
 
     return 0
 

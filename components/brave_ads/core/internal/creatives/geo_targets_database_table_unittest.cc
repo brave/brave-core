@@ -3,20 +3,25 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/creatives/geo_targets_database_table.h"
-
+#include "brave/components/brave_ads/core/internal/creatives/geo_targets_database_table_util.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads::database::table {
 
-TEST(BraveAdsGeoTargetsDatabaseTableTest, GetTableName) {
+TEST(BraveAdsGeoTargetsDatabaseTableTest, InsertEmptyGeoTargets) {
   // Arrange
-  const GeoTargets database_table;
+  mojom::DBTransactionInfoPtr mojom_db_transaction =
+      mojom::DBTransactionInfo::New();
 
-  // Act & Assert
-  EXPECT_EQ("geo_targets", database_table.GetTableName());
+  // Act
+  InsertGeoTargets(mojom_db_transaction, /*geo_targets=*/{});
+
+  // Assert
+  EXPECT_THAT(mojom_db_transaction->actions, ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads::database::table

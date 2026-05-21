@@ -14,12 +14,15 @@ namespace base {
 class TimeDelta;
 }  // namespace base
 
+// Internal helpers for epoch operator condition matching, exposed here so that
+// each parsing step can be unit-tested independently.
+
 namespace brave_ads {
 
-inline constexpr char kEpochOperatorConditionMatcherPrefixPattern[] = "[T?]:*";
-
-// Parses a number of days from a condition.
-std::optional<int> ParseDays(std::string_view condition);
+// Parses the number of days from `condition`. `condition` must have been
+// validated by `MaybeParseEpochOperatorType`. Returns `std::nullopt` if
+// `condition` is malformed or the day count is negative.
+std::optional<int> MaybeParseDays(std::string_view condition);
 
 // Returns `true` if a Unix epoch timestamp.
 bool IsUnixEpochTimestamp(int64_t timestamp);
@@ -31,8 +34,10 @@ int64_t WindowsToUnixEpoch(int64_t timestamp);
 // formatted date and time.
 base::TimeDelta TimeDeltaSinceEpoch(int64_t timestamp);
 
-// Parses a time delta from a string.
-std::optional<base::TimeDelta> ParseTimeDelta(std::string_view value);
+// Parses `value` as a Unix or Windows epoch timestamp (numeric) or an ISO 8601
+// date-time string, and returns the elapsed time since that point. Returns
+// `std::nullopt` if `value` cannot be parsed as any supported format.
+std::optional<base::TimeDelta> MaybeParseTimeDelta(std::string_view value);
 
 }  // namespace brave_ads
 

@@ -60,15 +60,10 @@ class AdsTabHelper : public web::WebStateUserData<AdsTabHelper>,
   void MaybeNotifyTabDidChange();
   void MaybeNotifyTabDidLoad();
   void OnVisibilityChanged(bool is_visible);
-  void MaybeNotifyTabHtmlContentDidChange();
   void MaybeNotifyTabTextContentDidChange();
   bool UserHasOptedInToNotificationAds() const;
-  bool UserHasJoinedBraveRewards() const;
   bool ShouldNotifyTabContentDidChange() const;
   void OnMaybeNotifyTabTextContentDidChange(
-      const std::vector<GURL>& redirect_chain,
-      const base::Value* value);
-  void OnMaybeNotifyTabHtmlContentDidChange(
       const std::vector<GURL>& redirect_chain,
       const base::Value* value);
 

@@ -11,9 +11,13 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/browser/ui/webui/brave_education/brave_education_server_checker.h"
+#include "brave/components/brave_education/buildflags.h"
 #include "chrome/browser/shell_integration.h"
 #include "content/public/browser/web_ui_message_handler.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
+#include "brave/browser/ui/webui/brave_education/brave_education_server_checker.h"
+#endif
 
 class Profile;
 class Browser;
@@ -55,7 +59,9 @@ class WelcomeDOMHandler : public content::WebUIMessageHandler {
   size_t last_onboarding_phase_ = 0;
   std::u16string default_browser_name_;
   raw_ptr<Profile> profile_ = nullptr;
+#if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
   brave_education::BraveEducationServerChecker brave_education_server_checker_;
+#endif
   base::WeakPtrFactory<WelcomeDOMHandler> weak_ptr_factory_{this};
 };
 

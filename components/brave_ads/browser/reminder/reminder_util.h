@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_REMINDER_REMINDER_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_REMINDER_REMINDER_UTIL_H_
 
+#include <stdint.h>
+
 #include <string>
 
 #include "base/values.h"
@@ -14,6 +16,9 @@
 class GURL;
 
 namespace brave_ads {
+namespace mojom {
+enum class ReminderType : int32_t;
+}  // namespace mojom
 
 base::DictValue BuildReminder(mojom::ReminderType mojom_reminder_type);
 

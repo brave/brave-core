@@ -61,4 +61,19 @@ TEST(BraveContentSerializedNavigationDriverTest,
   EXPECT_EQ(std::string(), driver->GetSanitizedPageStateForPickle(&navigation));
 }
 
+// Tests that restored brave:// pages are converted to chrome://
+TEST(BraveContentSerializedNavigationDriverTest,
+     SanitizeConvertsBraveVirtualUrlToChrome) {
+  ContentSerializedNavigationDriver* driver =
+      ContentSerializedNavigationDriver::GetInstance();
+  SerializedNavigationEntry navigation =
+      SerializedNavigationEntryTestHelper::CreateNavigationForTest();
+
+  // Check encoded data is not empty but clean state only with url info for
+  // chrome overridable url by extension.
+  navigation.set_virtual_url(GURL("brave://flags"));
+  driver->Sanitize(&navigation);
+  EXPECT_EQ(GURL("chrome://flags"), navigation.virtual_url());
+}
+
 }  // namespace sessions

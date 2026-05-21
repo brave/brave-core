@@ -29,8 +29,7 @@ import {
 } from '../../../../line-chart/line-chart-controls/line-chart-controls'
 
 // style
-import { Column } from '../../../../../shared/style'
-import { SelectTimelineWrapper } from '../../style'
+import { Column, Row } from '../../../../../shared/style'
 
 interface Props {
   hasZeroBalance: boolean
@@ -83,7 +82,7 @@ export const PortfolioOverviewChart: React.FC<Props> = ({
   // render
   return (
     <>
-      <SelectTimelineWrapper
+      <Row
         padding='0px 32px'
         marginBottom={8}
       >
@@ -91,7 +90,7 @@ export const PortfolioOverviewChart: React.FC<Props> = ({
           onSelectTimeline={onTimeframeChanged}
           selectedTimeline={timeframe}
         />
-      </SelectTimelineWrapper>
+      </Row>
       <Column
         alignItems='center'
         fullWidth

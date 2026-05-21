@@ -70,6 +70,7 @@
     "tools/crates/",
     "win_build_output/",
     "ios/third_party/",
+    "third_party/boringtun/vendor/",
     "third_party/wasm/vendor/",
   ],
 

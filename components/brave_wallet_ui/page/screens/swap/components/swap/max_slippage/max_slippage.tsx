@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
+import Button from '@brave/leo/react/button'
 
 // Selectors
 import {
@@ -18,7 +19,6 @@ import { getLocale } from '../../../../../../../common/locale'
 import { OptionButton, CustomInput, RadioIcon } from './max_slippage.style'
 import {
   Column,
-  LeoSquaredButton,
   Row,
   Text,
   VerticalSpace,
@@ -203,7 +203,7 @@ export const MaxSlippage = (props: Props) => {
         </OptionButton>
       </Row>
       <Row padding='16px 0px'>
-        <LeoSquaredButton
+        <Button
           onClick={handleUpdateSlippageTolerance}
           size='large'
           isDisabled={
@@ -211,7 +211,7 @@ export const MaxSlippage = (props: Props) => {
           }
         >
           {getLocale('braveWalletUpdate')}
-        </LeoSquaredButton>
+        </Button>
       </Row>
     </Column>
   )

@@ -3,13 +3,21 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "base/files/file_util.h"
 #include "base/test/run_until.h"
+#include "base/threading/thread_restrictions.h"
+#include "brave/browser/containers/containers_service_factory.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
+#include "brave/components/containers/core/browser/containers_service.h"
+#include "brave/components/containers/core/browser/prefs.h"
+#include "brave/components/containers/core/browser/temporary_container.h"
 #include "brave/components/containers/core/common/features.h"
 #include "brave/components/containers/core/mojom/containers.mojom.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/sessions/tab_restore_service_factory.h"
 #include "chrome/browser/ui/actions/chrome_action_id.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -17,12 +25,14 @@
 #include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "chrome/browser/ui/views/location_bar/icon_label_bubble_view.h"
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/sessions/core/tab_restore_service.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
@@ -36,13 +46,27 @@
 #include "services/network/public/cpp/network_switches.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "third_party/skia/include/core/SkColor.h"
+#include "ui/actions/actions.h"
+#include "ui/events/base_event_utils.h"
+#include "ui/events/event_constants.h"
+#include "ui/events/keycodes/keyboard_codes.h"
+#include "ui/views/controls/button/button.h"
+#include "ui/views/controls/menu/menu_controller.h"
+#include "ui/views/test/button_test_api.h"
 #include "ui/views/test/views_test_utils.h"
 #include "ui/views/view.h"
 #include "url/gurl.h"
 
 namespace containers {
 
+namespace {
+
 constexpr char kTestContainerId[] = "test-container-id";
+
+constexpr char kFarblingPluginsStringScript[] =
+    "Array.from(navigator.plugins).map(p => p.name).join(',');";
+
+}  // namespace
 
 class ContainersBrowserTest : public InProcessBrowserTest {
  public:
@@ -218,6 +242,46 @@ class ContainersBrowserTest : public InProcessBrowserTest {
            "    Promise.all(promises).then(() => resolve('unregistered'));"
            "  });"
            "});";
+  }
+
+  ContainersService* GetContainersService() {
+    return ContainersServiceFactory::GetForProfile(browser()->profile());
+  }
+
+  void SetBraveNewTabButtonSkipContainersContextMenuRunForTesting(
+      BraveNewTabButton* new_tab_button,
+      bool skip) {
+    new_tab_button->skip_containers_context_menu_runner_for_testing_ = true;
+  }
+
+  bool BraveNewTabButtonHasPreparedContainersContextMenu(
+      BraveNewTabButton* new_tab_button) {
+    return new_tab_button->containers_context_menu_runner_ &&
+           new_tab_button->containers_menu_model_;
+  }
+
+  bool IsContainersStorageDirectoryEmpty() {
+    base::ScopedAllowBlockingForTesting allow_blocking_for_testing;
+    base::FilePath storage_path =
+        browser()
+            ->profile()
+            ->GetPath()
+            .AppendASCII("Storage")
+            .AppendASCII("ext")
+            .AppendASCII(containers::kContainersStoragePartitionDomain);
+    return !base::PathExists(storage_path) ||
+           base::IsDirectoryEmpty(storage_path);
+  }
+
+  content::WebContents* OpenUrlInContainerTab(const GURL& url,
+                                              const std::string& container_id) {
+    NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
+    params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+    params.storage_partition_config = content::StoragePartitionConfig::Create(
+        browser()->profile(), kContainersStoragePartitionDomain, container_id,
+        browser()->profile()->IsOffTheRecord());
+    ui_test_utils::NavigateToURL(&params);
+    return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
  protected:
@@ -413,6 +477,85 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   EXPECT_EQ(
       "persistent_value",
       content::EvalJs(web_contents_reloaded, GetIndexedDBJS("persistent_key")));
+}
+
+// With the container still in the synced list, the first navigation in a
+// container tab records a used snapshot via ContainerTabTracker. After the
+// synced entry is removed, session restore still exposes the partition on the
+// navigation entry and GetRuntimeContainerById resolves metadata from used
+// prefs.
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       PRE_RuntimeContainerAvailableAfterSyncedRemovalRestart) {
+  std::vector<containers::mojom::ContainerPtr> synced;
+  synced.push_back(containers::mojom::Container::New(
+      kTestContainerId, "ReadableName", containers::mojom::Icon::kWork,
+      SK_ColorRED));
+  SetContainersToPrefs(synced, *browser()->profile()->GetPrefs());
+
+  const GURL url("https://a.test/simple.html");
+  NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
+  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.storage_partition_config = content::StoragePartitionConfig::Create(
+      browser()->profile(), kContainersStoragePartitionDomain, kTestContainerId,
+      browser()->profile()->IsOffTheRecord());
+  ui_test_utils::NavigateToURL(&params);
+
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(web_contents);
+  ASSERT_TRUE(content::WaitForLoadStop(web_contents));
+  EXPECT_EQ(url, web_contents->GetLastCommittedURL());
+
+  const ContainersService* service = GetContainersService();
+  ASSERT_TRUE(service);
+  EXPECT_TRUE(service->GetRuntimeContainerById(kTestContainerId));
+
+  PrefService* prefs = browser()->profile()->GetPrefs();
+  EXPECT_TRUE(GetContainerFromPrefs(*prefs, kTestContainerId));
+  mojom::ContainerPtr used_after_nav =
+      GetLocallyUsedContainerFromPrefs(*prefs, kTestContainerId);
+  ASSERT_TRUE(used_after_nav);
+  EXPECT_EQ("ReadableName", used_after_nav->name);
+
+  // Remove the container from the synced list.
+  SetContainersToPrefs({}, *prefs);
+  EXPECT_FALSE(GetContainerFromPrefs(*prefs, kTestContainerId));
+  mojom::ContainerPtr used_after_removal =
+      GetLocallyUsedContainerFromPrefs(*prefs, kTestContainerId);
+  ASSERT_TRUE(used_after_removal);
+  EXPECT_EQ("ReadableName", used_after_removal->name);
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       RuntimeContainerAvailableAfterSyncedRemovalRestart) {
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(web_contents);
+  ASSERT_TRUE(content::WaitForLoadStop(web_contents));
+
+  content::NavigationEntry* entry =
+      web_contents->GetController().GetLastCommittedEntry();
+  ASSERT_TRUE(entry);
+  auto storage_key = entry->GetStoragePartitionKeyToRestore();
+  ASSERT_TRUE(storage_key.has_value())
+      << "Restored navigation should expose container storage partition key";
+  EXPECT_EQ(kContainersStoragePartitionDomain, storage_key->first);
+  EXPECT_EQ(kTestContainerId, storage_key->second);
+
+  content::StoragePartitionConfig frame_config =
+      web_contents->GetPrimaryMainFrame()->GetStoragePartition()->GetConfig();
+  EXPECT_EQ(kContainersStoragePartitionDomain, frame_config.partition_domain());
+  EXPECT_EQ(kTestContainerId, frame_config.partition_name());
+
+  const ContainersService* service = GetContainersService();
+  ASSERT_TRUE(service);
+  mojom::ContainerPtr runtime =
+      service->GetRuntimeContainerById(storage_key->second);
+  ASSERT_TRUE(runtime);
+  EXPECT_EQ(kTestContainerId, runtime->id);
+  EXPECT_EQ("ReadableName", runtime->name);
+  EXPECT_EQ(mojom::Icon::kWork, runtime->icon);
+  EXPECT_EQ(SK_ColorRED, runtime->background_color);
 }
 
 IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
@@ -708,7 +851,58 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, OpenUrlInContainer) {
             content::EvalJs(web_contents, GetLocalStorageJS("container_key")));
 }
 
-IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, OpenTabUrlInContainer) {
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       CreateTemporaryContainerAndOpenUrl) {
+  const GURL url("https://a.test/simple.html");
+  const auto before_containers =
+      GetLocallyUsedContainersFromPrefs(*browser()->profile()->GetPrefs());
+
+  brave::CreateTemporaryContainerAndOpenUrl(browser(), url);
+
+  EXPECT_EQ(2, browser()->tab_strip_model()->count());
+  EXPECT_EQ(1, browser()->tab_strip_model()->active_index());
+
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(web_contents);
+  EXPECT_TRUE(content::WaitForLoadStop(web_contents));
+  EXPECT_EQ(url, web_contents->GetLastCommittedURL());
+
+  const auto after_containers =
+      GetLocallyUsedContainersFromPrefs(*browser()->profile()->GetPrefs());
+  ASSERT_EQ(before_containers.size() + 1, after_containers.size());
+
+  content::StoragePartition* storage_partition =
+      web_contents->GetPrimaryMainFrame()->GetStoragePartition();
+  ASSERT_TRUE(storage_partition);
+  const std::string container_id =
+      storage_partition->GetConfig().partition_name();
+  EXPECT_EQ(kContainersStoragePartitionDomain,
+            storage_partition->GetConfig().partition_domain());
+  EXPECT_TRUE(IsTemporaryContainerId(container_id));
+
+  mojom::ContainerPtr container = GetLocallyUsedContainerFromPrefs(
+      *browser()->profile()->GetPrefs(), container_id);
+  ASSERT_TRUE(container);
+  EXPECT_EQ(container_id, container->id);
+
+  const ContainersService* service = GetContainersService();
+  ASSERT_TRUE(service);
+  mojom::ContainerPtr runtime_container =
+      service->GetRuntimeContainerById(container_id);
+  ASSERT_TRUE(runtime_container);
+  EXPECT_EQ(container_id, runtime_container->id);
+
+  content::NavigationEntry* entry =
+      web_contents->GetController().GetLastCommittedEntry();
+  ASSERT_TRUE(entry);
+  auto storage_key = entry->GetStoragePartitionKeyToRestore();
+  ASSERT_TRUE(storage_key.has_value());
+  EXPECT_EQ(kContainersStoragePartitionDomain, storage_key->first);
+  EXPECT_EQ(container_id, storage_key->second);
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, OpenTabUrlsInContainer) {
   const GURL url("https://a.test/simple.html");
 
   // Navigate to URL in the default (non-container) tab
@@ -738,7 +932,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, OpenTabUrlInContainer) {
   container->icon = containers::mojom::Icon::kPersonal;
   container->background_color = SK_ColorRED;
 
-  brave::OpenTabUrlInContainer(browser(), tab_handle, container);
+  brave::OpenTabUrlsInContainer(browser(), {tab_handle}, container);
 
   // Verify a new tab was created
   EXPECT_EQ(2, browser()->tab_strip_model()->count());
@@ -989,6 +1183,49 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, ShouldShowTabAccent) {
   EXPECT_FALSE(tab_in_container->ShouldShowLargeAccentIcon());
 }
 
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, SmallAccentIconViewVisibility) {
+  auto animation_resetter = gfx::AnimationTestApi::SetRichAnimationRenderMode(
+      gfx::Animation::RichAnimationRenderMode::FORCE_DISABLED);
+  auto* tab_strip_model = browser()->tab_strip_model();
+  auto* tab_strip =
+      browser()->GetBrowserView().horizontal_tab_strip_for_testing();
+
+  const GURL url("https://a.test/simple.html");
+  auto container = containers::mojom::Container::New();
+  container->id = "accent-test-container";
+  container->name = "Accent Test Container";
+  container->icon = containers::mojom::Icon::kSocial;
+  container->background_color = SK_ColorYELLOW;
+
+  brave::OpenUrlInContainer(browser(), url, container);
+  EXPECT_EQ(2, tab_strip_model->count());
+
+  content::WebContents* contents_in_container =
+      tab_strip_model->GetActiveWebContents();
+  ASSERT_TRUE(contents_in_container);
+  EXPECT_TRUE(content::WaitForLoadStop(contents_in_container));
+
+  auto* tab_in_container = static_cast<BraveTab*>(
+      tab_strip->tab_at(tab_strip_model->active_index()));
+  ASSERT_TRUE(tab_strip->ShouldPaintTabAccent(tab_in_container));
+
+  views::View* small_accent_view = tab_in_container->small_accent_icon_view_;
+  ASSERT_TRUE(small_accent_view);
+
+  // When the tab shows the large accent icon, the small accent icon view
+  // should be hidden.
+  RunScheduledLayouts();
+  EXPECT_TRUE(tab_in_container->ShouldShowLargeAccentIcon());
+  EXPECT_FALSE(small_accent_view->GetVisible());
+
+  // When the tab is pinned, it shows the small accent icon instead; the view
+  // should become visible after layout.
+  tab_strip_model->SetTabPinned(tab_strip_model->active_index(), true);
+  RunScheduledLayouts();
+  EXPECT_FALSE(tab_in_container->ShouldShowLargeAccentIcon());
+  EXPECT_TRUE(small_accent_view->GetVisible());
+}
+
 IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
                        PRE_ServiceWorkerPersistenceAcrossSessions) {
   const GURL url("https://a.test/containers/container_test.html");
@@ -1093,6 +1330,57 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   tab_strip_model->ActivateTabAt(1);
   RunScheduledLayouts();
   EXPECT_TRUE(partitioned_storage_view->GetVisible());
+}
+
+IN_PROC_BROWSER_TEST_F(
+    ContainersBrowserTest,
+    PartitionedStoragePageActionRightClickSetsActionItemShowingBubble) {
+  actions::ActionItem* const partitioned_storage_action =
+      actions::ActionManager::Get().FindAction(kActionShowPartitionedStorage);
+  ASSERT_NE(nullptr, partitioned_storage_action);
+
+  IconLabelBubbleView* const partitioned_storage_view =
+      browser()->GetBrowserView().toolbar_button_provider()->GetPageActionView(
+          kActionShowPartitionedStorage);
+  ASSERT_NE(nullptr, partitioned_storage_view);
+
+  const GURL url("https://a.test/simple.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  auto container = containers::mojom::Container::New();
+  container->id = "test-container";
+  container->name = "Test Container";
+  container->icon = containers::mojom::Icon::kSocial;
+  container->background_color = SK_ColorYELLOW;
+
+  brave::OpenUrlInContainer(browser(), url, container);
+  ASSERT_TRUE(content::WaitForLoadStop(
+      browser()->tab_strip_model()->GetActiveWebContents()));
+  RunScheduledLayouts();
+
+  ASSERT_TRUE(partitioned_storage_view->GetVisible());
+  ASSERT_FALSE(partitioned_storage_action->GetIsShowingBubble());
+
+  const gfx::Point click_location =
+      partitioned_storage_view->GetLocalBounds().CenterPoint();
+  const ui::MouseEvent click_event(ui::EventType::kMousePressed, click_location,
+                                   click_location, ui::EventTimeForNow(),
+                                   ui::EF_RIGHT_MOUSE_BUTTON,
+                                   ui::EF_RIGHT_MOUSE_BUTTON);
+  views::test::ButtonTestApi(views::Button::AsButton(partitioned_storage_view))
+      .NotifyClick(click_event);
+
+  EXPECT_TRUE(base::test::RunUntil(
+      [&]() { return partitioned_storage_action->GetIsShowingBubble(); }));
+
+  if (views::MenuController* menu_controller =
+          views::MenuController::GetActiveInstance()) {
+    ui::KeyEvent escape_event(ui::EventType::kKeyPressed, ui::VKEY_ESCAPE,
+                              ui::EF_NONE);
+    menu_controller->OnWillDispatchKeyEvent(&escape_event);
+  }
+  EXPECT_TRUE(base::test::RunUntil(
+      [&]() { return !partitioned_storage_action->GetIsShowingBubble(); }));
 }
 
 IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, GetStoragePartitionKeyToRestore) {
@@ -1416,6 +1704,11 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, MixedTabsPersistence) {
         browser()->tab_strip_model()->GetWebContentsAt(i);
     ASSERT_TRUE(tab);
 
+    // Restored background tabs may not have loaded yet. Activate each tab to
+    // trigger session restore's deferred loading, then wait for it to finish.
+    browser()->tab_strip_model()->ActivateTabAt(i);
+    ASSERT_TRUE(content::WaitForLoadStop(tab));
+
     content::StoragePartition* partition =
         tab->GetPrimaryMainFrame()->GetStoragePartition();
     ASSERT_TRUE(partition);
@@ -1455,6 +1748,116 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, MixedTabsPersistence) {
                 content::EvalJs(tab, GetLocalStorageJS("default2")));
     }
   }
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       PRE_RemovedContainerCleanupAfterRestore) {
+  const GURL url("https://a.test/simple.html");
+  std::vector<containers::mojom::ContainerPtr> synced;
+  auto container = containers::mojom::Container::New(
+      kTestContainerId, "Shopping", containers::mojom::Icon::kShopping,
+      SK_ColorBLUE);
+  synced.push_back(container.Clone());
+  SetContainersToPrefs(synced, *browser()->profile()->GetPrefs());
+
+  brave::OpenUrlInContainer(browser(), url, container);
+  content::WebContents* container_tab =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(container_tab);
+  ASSERT_TRUE(content::WaitForLoadStop(container_tab));
+  EXPECT_TRUE(
+      content::ExecJs(container_tab, SetIndexedDBJS("cleanup", "value")));
+
+  SetContainersToPrefs({}, *browser()->profile()->GetPrefs());
+
+  auto* service = ContainersServiceFactory::GetForProfile(browser()->profile());
+  ASSERT_TRUE(service);
+  auto cached_container = service->GetRuntimeContainerById(kTestContainerId);
+  ASSERT_TRUE(cached_container);
+  EXPECT_EQ(cached_container->name, "Shopping");
+  EXPECT_EQ(cached_container->icon, mojom::Icon::kShopping);
+  EXPECT_EQ(cached_container->background_color, SK_ColorBLUE);
+
+  chrome::CloseTab(browser());
+  ASSERT_EQ(1, browser()->tab_strip_model()->count());
+
+  EXPECT_TRUE(service->GetRuntimeContainerById(kTestContainerId));
+
+  auto* tab_restore_service =
+      TabRestoreServiceFactory::GetForProfile(browser()->profile());
+  ASSERT_TRUE(tab_restore_service);
+  tab_restore_service->ClearEntries();
+
+  EXPECT_FALSE(IsContainersStorageDirectoryEmpty());
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       RemovedContainerCleanupAfterRestore) {
+  const GURL url("https://a.test/simple.html");
+  auto container = containers::mojom::Container::New(
+      kTestContainerId, "Shopping", containers::mojom::Icon::kShopping,
+      SK_ColorBLUE);
+  auto* service = ContainersServiceFactory::GetForProfile(browser()->profile());
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return !service->GetRuntimeContainerById(kTestContainerId); }));
+
+  // The storage directory should be empty because the container was deleted.
+  EXPECT_TRUE(IsContainersStorageDirectoryEmpty());
+
+  brave::OpenUrlInContainer(browser(), url, container);
+  content::WebContents* reopened_tab =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(reopened_tab);
+  ASSERT_TRUE(content::WaitForLoadStop(reopened_tab));
+
+  content::EvalJsResult cookie_result =
+      content::EvalJs(reopened_tab, GetCookiesJS());
+  EXPECT_TRUE(cookie_result.ExtractString().find("cleanup") ==
+              std::string::npos);
+  EXPECT_EQ(base::Value(),
+            content::EvalJs(reopened_tab, GetLocalStorageJS("cleanup")));
+  EXPECT_EQ(base::Value(),
+            content::EvalJs(reopened_tab, GetIndexedDBJS("cleanup")));
+
+  // The storage directory should not be empty because the container was
+  // recreated.
+  EXPECT_FALSE(IsContainersStorageDirectoryEmpty());
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       WebsiteFarblingRespectsContainerPartitions) {
+  const GURL url("https://a.test/simple.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  auto get_farbled_navigator_plugins = [](content::WebContents* web_contents) {
+    return content::EvalJs(web_contents, kFarblingPluginsStringScript)
+        .ExtractString();
+  };
+
+  const std::string plugins_default = get_farbled_navigator_plugins(
+      browser()->tab_strip_model()->GetActiveWebContents());
+
+  const std::string plugins_container_a_tab1 =
+      get_farbled_navigator_plugins(OpenUrlInContainerTab(url, "farbling-a"));
+  const std::string plugins_container_b =
+      get_farbled_navigator_plugins(OpenUrlInContainerTab(url, "farbling-b"));
+  const std::string plugins_container_a_tab2 =
+      get_farbled_navigator_plugins(OpenUrlInContainerTab(url, "farbling-a"));
+
+  EXPECT_FALSE(plugins_default.empty());
+  EXPECT_FALSE(plugins_container_a_tab1.empty());
+  EXPECT_FALSE(plugins_container_b.empty());
+  EXPECT_FALSE(plugins_container_a_tab2.empty());
+
+  // Default partition vs container partitions.
+  EXPECT_NE(plugins_default, plugins_container_a_tab1);
+  EXPECT_NE(plugins_default, plugins_container_b);
+
+  // Different container ids.
+  EXPECT_NE(plugins_container_a_tab1, plugins_container_b);
+
+  // Same container id across separate tabs.
+  EXPECT_EQ(plugins_container_a_tab1, plugins_container_a_tab2);
 }
 
 // Test suite to verify behavior when containers feature is disabled after
@@ -1591,6 +1994,68 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   EXPECT_EQ("test-container", storage_partition->GetConfig().partition_name());
   EXPECT_EQ(kContainersStoragePartitionDomain,
             storage_partition->GetConfig().partition_domain());
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       BraveNewTabButtonShowContextMenuForContainers) {
+  std::vector<mojom::ContainerPtr> synced;
+  synced.push_back(mojom::Container::New(kTestContainerId, "Test",
+                                         mojom::Icon::kWork, SK_ColorRED));
+  SetContainersToPrefs(synced, *browser()->profile()->GetPrefs());
+  ASSERT_TRUE(GetContainersService());
+  BrowserView* const browser_view =
+      BrowserView::GetBrowserViewForBrowser(browser());
+  ASSERT_TRUE(browser_view);
+  auto* horizontal_tab_strip_region =
+      views::AsViewClass<HorizontalTabStripRegionView>(
+          browser_view->tab_strip_view());
+  ASSERT_TRUE(horizontal_tab_strip_region);
+  auto* new_tab = views::AsViewClass<BraveNewTabButton>(
+      horizontal_tab_strip_region->new_tab_button_for_testing());
+  ASSERT_TRUE(new_tab);
+
+  // MenuRunner::RunMenuAt blocks until the menu closes; skip it for the test
+  // and only assert that the containers menu path built model and runner.
+  SetBraveNewTabButtonSkipContainersContextMenuRunForTesting(new_tab, true);
+  new_tab->ShowContextMenuForViewImpl(new_tab, gfx::Point(0, 0),
+                                      ui::mojom::MenuSourceType::kMouse);
+  EXPECT_TRUE(BraveNewTabButtonHasPreparedContainersContextMenu(new_tab));
+
+  // Repeating the same test in order to make it sure that there is no dangling
+  // reference problems
+  // https://github.com/brave/brave-core/pull/35529#issuecomment-4287880242
+  new_tab->ShowContextMenuForViewImpl(new_tab, gfx::Point(0, 0),
+                                      ui::mojom::MenuSourceType::kMouse);
+}
+
+class BraveNewTabButtonContainersFeatureDisabledBrowserTest
+    : public ContainersBrowserTest {
+ public:
+  BraveNewTabButtonContainersFeatureDisabledBrowserTest() {
+    feature_list_override_.InitAndDisableFeature(features::kContainers);
+  }
+
+ protected:
+  base::test::ScopedFeatureList feature_list_override_;
+};
+
+IN_PROC_BROWSER_TEST_F(
+    BraveNewTabButtonContainersFeatureDisabledBrowserTest,
+    BraveNewTabButtonShowContextMenuFallsBackWhenContainersDisabled) {
+  BrowserView* const browser_view =
+      BrowserView::GetBrowserViewForBrowser(browser());
+  ASSERT_TRUE(browser_view);
+  auto* horizontal_tab_strip_region =
+      views::AsViewClass<HorizontalTabStripRegionView>(
+          browser_view->tab_strip_view());
+  ASSERT_TRUE(horizontal_tab_strip_region);
+  auto* new_tab = views::AsViewClass<BraveNewTabButton>(
+      horizontal_tab_strip_region->new_tab_button_for_testing());
+  ASSERT_TRUE(new_tab);
+
+  new_tab->ShowContextMenuForViewImpl(new_tab, gfx::Point(0, 0),
+                                      ui::mojom::MenuSourceType::kMouse);
+  EXPECT_FALSE(BraveNewTabButtonHasPreparedContainersContextMenu(new_tab));
 }
 
 }  // namespace containers

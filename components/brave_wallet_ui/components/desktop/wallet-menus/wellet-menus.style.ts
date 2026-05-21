@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
 
@@ -22,6 +22,12 @@ export const StyledWrapper = styled.div<{
   right?: number
   left?: number
   padding?: string
+  /** When true, anchor the menu above the positioning context (e.g. asset row). */
+  $openUpward?: boolean
+  /** Gap between menu and anchor when opening upward (px). */
+  $verticalGap?: number
+  /** When set, caps height and scrolls overflowing content. */
+  $maxHeightPx?: number
 }>`
   display: flex;
   flex-direction: column;
@@ -33,7 +39,30 @@ export const StyledWrapper = styled.div<{
   border: 1px solid ${leo.color.divider.subtle};
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
   position: absolute;
-  top: ${(p) => (p.yPosition !== undefined ? p.yPosition : 35)}px;
+  ${(p) => {
+    const maxH = p.$maxHeightPx
+    if (maxH === undefined) {
+      return ''
+    }
+    return css`
+      align-items: stretch;
+      justify-content: flex-start;
+      max-height: ${maxH}px;
+      overflow-x: hidden;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    `
+  }}
+  ${(p) =>
+    p.$openUpward
+      ? css`
+          top: auto;
+          bottom: calc(100% + ${p.$verticalGap ?? 8}px);
+        `
+      : css`
+          top: ${p.yPosition ?? 35}px;
+          bottom: auto;
+        `}
   right: ${(p) => {
     if (p.left !== undefined) {
       return 'unset'
@@ -59,11 +88,12 @@ export const PopupButton = styled(WalletButton)<{
   minWidth?: number
 }>`
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: flex-start;
   text-align: left;
   cursor: pointer;
-  min-width: ${(p) => (p.minWidth !== undefined ? p.minWidth : 220)}px;
+  min-width: ${(p) => p.minWidth ?? 220}px;
   border-radius: 8px;
   outline: none;
   border: none;

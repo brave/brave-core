@@ -53,7 +53,7 @@ struct PlayerGestureShortcutsView: View {
         .onTapGesture {
           model.isPlaying.toggle()
         }
-        .onChange(of: seekDirectionNoticeVisible) { _ in
+        .onChange(of: seekDirectionNoticeVisible) { _, _ in
           // Reset if the notice changes
           seekIntervalPower = 0
         }

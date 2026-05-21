@@ -63,7 +63,7 @@ struct DateRangeView: View {
   }
 }
 
-extension BraveWallet.AssetPriceTimeframe: CaseIterable {
+extension BraveWallet.AssetPriceTimeframe: @retroactive CaseIterable {
   public static var allCases: [BraveWallet.AssetPriceTimeframe] {
     [.live, .oneDay, .oneWeek, .oneMonth, .threeMonths, .oneYear, .all]
   }

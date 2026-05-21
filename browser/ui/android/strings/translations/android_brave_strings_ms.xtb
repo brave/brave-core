@@ -49,6 +49,14 @@
 <translation id="2998960761270772157">Menyekat unsur maklumat log masuk, menu, komen dan video di youtube.com.</translation>
 <translation id="8531835121131500698">Sekat YouTube Shorts</translation>
 <translation id="2167271714269158912">Menyekat Shorts daripada halaman utama, halaman sohor kini dan hasil carian di youtube.com.</translation>
+<translation id="2564435705466025309">Sekat video YouTube yang didub auto</translation>
+<translation id="3603500459037204525">Sekat video yang didub auto daripada muncul di halaman utama youtube.com &amp; hasil carian.</translation>
+<translation id="4067265130987656010">Sekat thumbnail YouTube</translation>
+<translation id="3034711349887440574">Sekat thumbnail daripada muncul di halaman utama youtube.com &amp; hasil carian.</translation>
+<translation id="8741919213635379855">Sekat YouTube Playables</translation>
+<translation id="2216551241986578034">Sekat Playables daripada muncul di halaman utama youtube.com &amp; hasil carian.</translation>
+<translation id="9038505474874975130">Sekat video YouTube ahli saja</translation>
+<translation id="3084239516382196983">Sekat video ahli saja daripada muncul di halaman utama youtube.com &amp; hasil carian.</translation>
 <translation id="6052725679982758334">Sekatan Media Sosial</translation>
 <translation id="7498695072878479744">Membenarkan butang log masuk Google di tapak pihak ketiga</translation>
 <translation id="863171915776379000">Benarkan log masuk Facebook dan catatan yang dimasukkan.</translation>
@@ -188,12 +196,27 @@
 <translation id="834487290629916192">NANTI</translation>
 <translation id="4117451092682672487">Privasi. Dipermudahkan.</translation>
 <translation id="7909375417585209817">Apabila Brave ditetapkan sebagai lalai, setiap pautan yang anda ketik akan dibuka dengan perlindungan privasi Brave.</translation>
-<translation id="5148943178722443958">Bantu usaha menambah baik Brave.</translation>
+<translation id="763369711159699222">Bantu usaha menambah baik Brave</translation>
+<translation id="8025937231644975408">Beritahu kami tentang ciri yang paling anda nikmati.</translation>
 <translation id="6718362830686703942">Hantar laporan diagnostik jika anda mengalami ranap atau beku.</translation>
 <translation id="8616157231067364693">Kongsikan cerapan produk yang bersifat peribadi dan tanpa nama tentang jenis ciri yang digunakan oleh pengguna Brave.</translation>
 <translation id="2888496576732880897">Bantu Carian Brave berkembang</translation>
+<translation id="7198716519700700181">Sekat gangguan semasa anda menstrim</translation>
 <translation id="7044431516245362795">Sertai Projek Penemuan Web untuk membantu mengembangkan indeks dan meningkatkan hasil carian. <ph name="LEARN_MORE_START"/> Ketahui lebih lanjut.<ph name="LEARN_MORE_END"/></translation>
+<translation id="4847979153841887006">Logo Brave</translation>
+<translation id="1389386068457132299">Latar belakang penyetaraan</translation>
+<translation id="5101985748360228609">Hiasan daun atas</translation>
+<translation id="5270920361877570459">Hiasan daun bawah</translation>
+<translation id="4021716437419160885">Tatal ke bawah</translation>
+<translation id="4767173360729868049">Ilustrasi Bantu Carian Brave berkembang</translation>
+<translation id="8241918461631453498">Ilustrasi sekat gangguan</translation>
+<translation id="8213310572767907663">Buat ilustrasi Brave lebih baik</translation>
+<translation id="2427917529469438577">Sekat gangguan yang menjengkelkan di laman penstriman kegemaran anda.</translation>
 <translation id="7818938154803162778">Sudah tentu, saya akan membantu</translation>
+<translation id="5298784657468199167">Hantar laporan ranap</translation>
+<translation id="6188781052835527980">Hantar laporan diagnostik tanpa nama jika anda mengalami ranap atau beku.</translation>
+<translation id="4780647518983772446">Kongsikan cerapan produk yang bersifat peribadi dan tanpa nama tentang ciri Brave yang digunakan.</translation>
+<translation id="5109496672133133896">Cerapan produk peribadi</translation>
 <translation id="3545804467215833536">Ketik untuk melihat Brave Shields</translation>
 <translation id="1724327820822194498">Lihat semua perkara buruk yang disekat oleh Brave, pada setiap halaman, dengan bantuan Shields.</translation>
 <translation id="5386259141409498372"><ph name="BIG_TECH"/> dan <ph name="TRACKER"/> penjejak &amp; iklan yang lain disekat</translation>
@@ -383,7 +406,7 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="717952606991220586">Maaf, berlaku kesilapan. Sila cuba sebentar lagi.</translation>
 <translation id="987264212798334818">Umum</translation>
 <translation id="1116694919640316211">Mengenai</translation>
-<translation id="1275213816424141989">Mungkin Kemudian</translation>
+<translation id="2370739752330685659">Mungkin kemudian</translation>
 <translation id="3624048886326677117">Sekat penjejak &amp; iklan (Agresif)</translation>
 <translation id="7151914815476509258">Sekat penjejak &amp; iklan (Standard)</translation>
 <translation id="7384778069178817075">Benarkan semua penjejak &amp; iklan</translation>
@@ -501,7 +524,6 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="5705882733397021510">Kembali</translation>
 <translation id="7889432931837317731">Buka secara automatik bila mungkin</translation>
 <translation id="1029304566263314007">Tunjukkan pemberitahuan perkembangan muat turun</translation>
-<translation id="2910433761530295035">Tanya lokasi penyimpanan fail (jika kad SD dikesan)</translation>
 <translation id="2977501775944575564">Muat Turun Selari</translation>
 <translation id="6224180438946945617">Dayakan muat turun selari untuk mempercepat kelajuan muat turun</translation>
 <translation id="8967385052772844086">Lihat Laporan Privasi penuh</translation>
@@ -922,6 +944,9 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="703185154752046151">Widget telah ditambahkan pada skrin utama</translation>
 <translation id="4635094429202343515">Cuba widget Carian Brave</translation>
 <translation id="4809681171446727314">Akses carian privasi yang bebas terus daripada skrin utama anda.</translation>
+<translation id="3280562213547448728">Carian suara</translation>
+<translation id="3925312712530886302">Buka carian peribadi</translation>
+<translation id="9214590551301647710">Buka Leo</translation>
 <translation id="7751715172931488388">Tambah widget</translation>
 <translation id="7285167584112910782">Carian tindakan pantas Brave</translation>
 <translation id="2326703104633309781">Gunakan Brave Terjemah</translation>
@@ -953,15 +978,25 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="5494920125229734069">Pilih semua</translation>
 <translation id="2361906291514218784">AI Leo</translation>
 <translation id="944736176598169208">Ganjaran</translation>
-<translation id="4272190451231642425">Hantar laporan ranap secara automatik</translation>
 <translation id="1199170151481311646">Analitik pemelihara privasi</translation>
 <translation id="1706715315466634757">Alias E-mel</translation>
+<translation id="738840791756723657">AI</translation>
 <translation id="6709133671862442373">Berita</translation>
 <translation id="5990642573624858459">Pelaporan statistik</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="2441719842399509963">Tetap Semula ke Lalai</translation>
 <translation id="4922034974043704366">Ciri ini diaktifkan kerana anda bersetuju untuk menggunakannya</translation>
-<translation id="3144818380093107753">Brave Origin ialah langganan berasaskan bayaran untuk menyahaktifkan ciri penjanaan hasil yang menyokong Brave sebagai perniagaan. Pelanggan Brave Origin akan terus menikmati privasi terkemuka industri kami, penapisan iklan, dan prestasi pantas (melalui Perisai Brave), serta kemas kini perisian tetap, tampalan Chromium, dan penambahbaikan keselamatan dan privasi.&lt;br/&gt;&lt;br/&gt;Mereka juga akan membuka pilihan untuk menyahaktifkan ciri seperti Brave Leo, Berita, Ganjaran, Wallet, VPN, domain Web3 dan banyak lagi.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Nota: Brave Origin tidak akan menyahaktifkan ciri pelayar yang sedang anda gunakan, dan tidak akan menjejaskan ciri Carian Brave atau Iklan Carian Brave.&lt;/b&gt;</translation>
+<translation id="2587535830241068901">Sesuaikan pelayar anda sambil terus menyokong Brave</translation>
+<translation id="7235314227387539944">Brave Origin ialah versi berbayar pelayar untuk pengguna yang tidak memerlukan semua ciri yang menyokong Brave sebagai perniagaan, tetapi masih mahukan privasi yang hanya Brave tawarkan. Pengguna Origin akan terus mendapat manfaat daripada privasi peringkat industri kami, pemblokiran iklan, dan kelajuan (melalui Perisai), serta kemas kini perisian biasa, tampalan Chromium, dan penambahbaikan keselamatan dan privasi. Origin akan mengeluarkan kebanyakan ciri lain daripada pelayar.</translation>
+<translation id="7941943775131052130">Perhatian bahawa pembelian Brave Origin juga akan termasuk akses ke Carian Brave Premium, kerana Origin akan mengeluarkan iklan daripada halaman hasil Carian Brave.</translation>
+<translation id="2573819149217596923">Mengubah ciri Brave</translation>
+<translation id="7415416427817229128">Mengaktifkan atau melumpuhkan ciri Brave memerlukan pelayar untuk memulakan semula untuk menggunakan perubahan. Adakah anda ingin memulakan semula sekarang?</translation>
+<translation id="2256115617011615191">Mulai semula sekarang</translation>
+<translation id="2160089182263405907">Nyahdayaaktifkan ciri</translation>
+<translation id="3362364767724670721">Mengaktifkan atau menyahdayaaktifkan ciri Brave memerlukan semula penyemak imbas untuk menggunakan perubahan. Sila ketik <ph name="BEGIN_BOLD"/>Mulakan semula sekarang<ph name="END_BOLD"/> selepas Origin selesai mengemas kini.</translation>
+<translation id="1028940738207645746">Betulkah anda mahu menetapkan semula semua tetapan kepada lalai?</translation>
+<translation id="5939518447894949180">Tetapkan semula</translation>
+<translation id="8554205386170195281">Beli</translation>
 <translation id="8613144770663526433">Log masuk dengan Brave Wallet</translation>
 <translation id="3696514931437952995">Anda sedang log masuk ke <ph name="ORIGIN"/>. Brave Wallet akan berkongsi alamat dompet anda dengan <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Lihat butiran</translation>
@@ -996,7 +1031,6 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="1309636029062006520">Buat senarai main bagi audio dan video kegemaran anda dan mainkan pada bila-bila masa, di mana jua.</translation>
 <translation id="7899390017499980820">Tambahkan pada butang Senarai Main</translation>
 <translation id="6901152954398668317">Tunjukkan atau sembunyikan butang "Tambahkan pada Senarai Main" untuk akses pantas bagi menambah atau mengalih keluar media.</translation>
-<translation id="5939518447894949180">Tetapkan semula</translation>
 <translation id="8199028711686989861">Alih keluar semua video daripada Senarai Main, termasuk simpanan mod luar talian.</translation>
 <translation id="4590997608186539865">Senarai Main</translation>
 <translation id="7525067979554623046">Cipta</translation>
@@ -1086,12 +1120,13 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="2735247450315842119">Benarkan tangkapan skrin dalam tab peribadi</translation>
 <translation id="8420414929552321089">Jika dibenarkan, tab privet juga akan kelihatan apabila berbilang aplikasi dibuka.</translation>
 <translation id="7956713633345437162">Penanda Halaman Mudah Alih</translation>
+<translation id="7984508421152399880">Beli sekarang</translation>
 <translation id="6261139507111008244">Sokong misi &amp; kerja sumber terbuka kami</translation>
-<translation id="7882690061170175552">UI pelayar minimum berasaskan Perisai</translation>
+<translation id="6073373503121903099">UI pelayar minimalis berasaskan Perisai Brave</translation>
 <translation id="2267973897341040743">Kekalkan penapisan iklan asas, privasi, &amp; kelajuan</translation>
-<translation id="1361157028850796410">nilai hebat</translation>
-<translation id="7280825497485894053">Langganan setiap bulan</translation>
-<translation id="4570901726096223030">Ketahui lebih lanjut tentang Origin</translation>
+<translation id="3339535734679532460">Pembelian sekali saja, tanpa kos langganan tambahan</translation>
+<translation id="2805615640226281689">Pembelian Sekali Sahaja</translation>
+<translation id="261433018299584676">Dapatkan kod log masuk</translation>
 <translation id="1943432128510653496">Simpan kata laluan</translation>
 <translation id="2100273922101894616">Auto Log masuk</translation>
 <translation id="363596933471559332">Log masuk secara automatik ke laman web menggunakan bukti kelayakan yang disimpan. Apabila ciri ini dimatikan, anda akan diminta memberikan pengesahan setiap kali sebelum log masuk ke laman web.</translation>
@@ -1146,4 +1181,20 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="1724977129262658800">Buka kunci untuk mengedit kata laluan anda</translation>
 <translation id="5780792035410621042">Untuk menyalin kata laluan, pertama sekali, tetapkan kunci skrin pada peranti anda</translation>
 <translation id="7986497153528221272">Untuk melihat kata laluan, pertama sekali, tetapkan kunci skrin pada peranti anda</translation>
+<translation id="4882237634123415792">Enjin carian tersuai</translation>
+<translation id="8364431224461158026">Tambah enjin carian tersuai</translation>
+<translation id="7307935603426295341">Edit enjin carian tersuai</translation>
+<translation id="4002066346123236978">Tajuk</translation>
+<translation id="3653110185270660915">Masukkan nama enjin carian</translation>
+<translation id="7400418766976504921">URL</translation>
+<translation id="6410668567036790476">Tambah Enjin Carian</translation>
+<translation id="6289878295410648689">Tulis url carian dan ganti pertanyaan dengan <ph name="SPECIAL_SYMBOL"/>.</translation>
+<translation id="8943582268084103903">Sebagai contoh: https://youtube.com/search?q=<ph name="SPECIAL_SYMBOL"/>. Sekiranya tapak ini menyokong OpenSearch, satu pilihan untuk menambah secara automatik akan diberikan semasa mengedit bidang ini.</translation>
+<translation id="8706939021136180678">URL tidak sah.</translation>
+<translation id="6528099556282059181">Enjin carian telah ditambah.</translation>
+<translation id="463451857046640291">Gagal menambah enjin carian.</translation>
+<translation id="1229671956956864948">Gagal mengemas kini enjin carian.</translation>
+<translation id="1462771969120037152">Gagal memadam enjin carian. Enjin carian yang anda cuba padam mungkin ditetapkan sebagai yang lalai.</translation>
+<translation id="1079140196216383600">Padam enjin carian tersuai</translation>
+<translation id="525276572490219787">Betulkah anda mahu memadam "<ph name="SEARCH_ENGINE_NAME"/>"? Tindakan ini tidak boleh dipulihkan.</translation>
 </translationbundle>

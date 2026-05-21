@@ -6,6 +6,7 @@
 #include "brave/ios/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 #include <memory>
 #include <optional>
@@ -50,9 +51,7 @@
 #include "ios/web/public/web_state_observer.h"
 #include "ios/web_view/internal/cwv_web_view_internal.h"
 #include "net/base/apple/url_conversions.h"
-#include "services/data_decoder/public/cpp/data_decoder.h"
-#include "services/data_decoder/public/mojom/data_decoder_service.mojom.h"
-#include "services/data_decoder/public/mojom/image_decoder.mojom.h"
+#include "skia/ext/skia_utils_ios.h"
 #include "third_party/skia/include/core/SkBitmap.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/page_transition_types.h"
@@ -62,57 +61,34 @@ namespace ai_chat {
 
 namespace {
 
-void OnImageDecoded(
-    base::OnceCallback<void(std::optional<std::vector<uint8_t>>)> callback,
-    const SkBitmap& decoded_bitmap) {
-  if (decoded_bitmap.drawsNothing()) {
-    std::move(callback).Run(std::nullopt);
-    return;
-  }
+void DecodeAndScaleImage(
+    const std::vector<uint8_t>& file_data,
+    base::OnceCallback<void(std::optional<std::vector<uint8_t>>)> callback) {
+  NSData* ns_data = [NSData dataWithBytes:file_data.data()
+                                   length:file_data.size()];
   auto encode_image = base::BindOnce(
-      [](const SkBitmap& decoded_bitmap) {
-        return gfx::PNGCodec::EncodeBGRASkBitmap(
-            ScaleDownBitmap(decoded_bitmap), false);
+      [](NSData* data) -> std::optional<std::vector<uint8_t>> {
+        CGSize target_size = CGSizeMake(1024, 768);
+        UIImage* image = [[UIImage alloc] initWithData:data];
+        if (image.size.width > target_size.width ||
+            image.size.height > target_size.height) {
+          image = [image imageByPreparingThumbnailOfSize:target_size];
+        }
+        if (!image) {
+          return std::nullopt;
+        }
+        NSData* png_data = UIImagePNGRepresentation(image);
+        if (!png_data) {
+          return std::nullopt;
+        }
+        auto png_span = base::apple::NSDataToSpan(png_data);
+        return std::vector<uint8_t>(png_span.begin(), png_span.end());
       },
-      decoded_bitmap);
+      ns_data);
+
   base::ThreadPool::PostTaskAndReplyWithResult(FROM_HERE, {base::MayBlock()},
                                                std::move(encode_image),
                                                std::move(callback));
-}
-
-// A constant defined in services/data_decoder/public/cpp/decode_image.h
-const uint64_t kDataDecoderDefaultMaxSizeInBytes = 128 * 1024 * 1024;
-
-// iOS can't access the standard cpp image decoder in the data_decoder as its
-// only compiled with use_blink=true, so we must use the mojom API instead to
-// use the in-process service
-//
-// The implementation of this method matches the one in
-// services/data_decoder/public/cpp/decode_image.cc
-void DecodeImageUsingServiceProcess(
-    data_decoder::DataDecoder* data_decoder,
-    base::span<const uint8_t> encoded_bytes,
-    data_decoder::mojom::ImageCodec codec,
-    bool shrink_to_fit,
-    uint64_t max_size_in_bytes,
-    const gfx::Size& desired_image_frame_size,
-    base::OnceCallback<void(const SkBitmap& decoded_bitmap)> callback) {
-  mojo::Remote<data_decoder::mojom::ImageDecoder> decoder;
-  data_decoder->GetService()->BindImageDecoder(
-      decoder.BindNewPipeAndPassReceiver());
-
-  // `callback` will be run exactly once. Disconnect implies no response, and
-  // OnDecodeImage promptly discards the decoder preventing further disconnect
-  // calls.
-  auto callback_pair = base::SplitOnceCallback(std::move(callback));
-  decoder.set_disconnect_handler(
-      base::BindOnce(std::move(callback_pair.first), SkBitmap()));
-
-  data_decoder::mojom::ImageDecoder* raw_decoder = decoder.get();
-  raw_decoder->DecodeImage(
-      encoded_bytes, codec, shrink_to_fit, max_size_in_bytes,
-      desired_image_frame_size,
-      base::IgnoreArgs<base::TimeDelta>(std::move(callback_pair.second)));
 }
 
 }  // namespace
@@ -142,8 +118,8 @@ AIChatUIPageHandler::AIChatUIPageHandler(
   // not a side panel. chat_context_web_state is nullptr in that case
   const bool is_standalone = chat_context_web_state == nullptr;
   if (!is_standalone) {
-    ai_chat_tab_helper_ = ai_chat::AIChatTabHelper::GetOrCreateForWebState(
-        chat_context_web_state);
+    ai_chat_tab_helper_ =
+        ai_chat::AIChatTabHelper::FromWebState(chat_context_web_state);
     associated_content_delegate_observation_.Observe(ai_chat_tab_helper_);
     chat_context_observer_ =
         std::make_unique<ChatContextObserver>(chat_context_web_state, *this);
@@ -158,7 +134,7 @@ void AIChatUIPageHandler::HandleVoiceRecognition(
     return;
   }
   id<AIChatUIHandlerBridge> bridge =
-      UIHandlerBridgeHolder::GetOrCreateForWebState(owner_web_state_)->bridge();
+      UIHandlerBridgeHolder::FromWebState(owner_web_state_)->bridge();
   auto callback = base::CallbackToBlock(
       base::BindOnce(&AIChatUIPageHandler::SubmitVoiceQuery,
                      weak_ptr_factory_.GetWeakPtr(), conversation_uuid));
@@ -194,49 +170,43 @@ void AIChatUIPageHandler::ProcessImageFile(
     const std::vector<uint8_t>& file_data,
     const std::string& filename,
     ProcessImageFileCallback callback) {
-  DecodeImageUsingServiceProcess(
-      &data_decoder_, file_data, data_decoder::mojom::ImageCodec::kDefault,
-      /*shrink_to_fit=*/true, kDataDecoderDefaultMaxSizeInBytes, gfx::Size(),
+  DecodeAndScaleImage(
+      file_data,
       base::BindOnce(
-          &OnImageDecoded,
-          base::BindOnce(
-              [](const std::string& filename, ProcessImageFileCallback callback,
-                 std::optional<std::vector<uint8_t>> processed_data) {
-                if (!processed_data) {
-                  std::move(callback).Run(nullptr);
-                  return;
-                }
-                auto uploaded_file = ai_chat::mojom::UploadedFile::New(
-                    filename, processed_data->size(), *processed_data,
-                    ai_chat::mojom::UploadedFileType::kImage);
-                std::move(callback).Run(std::move(uploaded_file));
-              },
-              filename, std::move(callback))));
+          [](const std::string& filename, ProcessImageFileCallback callback,
+             std::optional<std::vector<uint8_t>> processed_data) {
+            if (!processed_data) {
+              std::move(callback).Run(nullptr);
+              return;
+            }
+            auto uploaded_file = ai_chat::mojom::UploadedFile::New(
+                filename, processed_data->size(), *processed_data,
+                ai_chat::mojom::UploadedFileType::kImage, std::nullopt);
+            std::move(callback).Run(std::move(uploaded_file));
+          },
+          filename, std::move(callback)));
 }
 
-void AIChatUIPageHandler::UploadFile(bool use_media_capture,
-                                     UploadFileCallback callback) {
-  id<AIChatUIHandlerBridge> bridge =
-      UIHandlerBridgeHolder::GetOrCreateForWebState(owner_web_state_)->bridge();
-  if (!bridge) {
-    std::move(callback).Run(std::nullopt);
-    return;
-  }
+void AIChatUIPageHandler::ProcessPdfFile(const std::vector<uint8_t>& file_data,
+                                         const std::string& filename,
+                                         ProcessPdfFileCallback callback) {
+  // iOS does not support background PDF text extraction.
+  // Return the raw PDF data without extracted text.
+  auto uploaded_file = ai_chat::mojom::UploadedFile::New(
+      filename, file_data.size(), file_data,
+      ai_chat::mojom::UploadedFileType::kPdf, std::nullopt);
+  std::move(callback).Run(std::move(uploaded_file));
+}
 
-  auto handler = base::CallbackToBlock(base::BindOnce(
-      [](UploadFileCallback callback, NSArray<AiChatUploadedFile*>* files) {
-        if (!files || [files count] == 0) {
-          std::move(callback).Run(std::nullopt);
-          return;
-        }
-        std::vector<ai_chat::mojom::UploadedFilePtr> uploaded_files;
-        for (AiChatUploadedFile* file in files) {
-          uploaded_files.emplace_back(file.cppObjPtr);
-        }
-        std::move(callback).Run(std::move(uploaded_files));
-      },
-      std::move(callback)));
-  [bridge handleFileUploadRequest:use_media_capture completionHandler:handler];
+void AIChatUIPageHandler::ProcessTextFile(const std::vector<uint8_t>& file_data,
+                                          const std::string& filename,
+                                          ProcessTextFileCallback callback) {
+  // iOS does not support background text extraction.
+  // Return the raw data without extracted text.
+  auto uploaded_file = ai_chat::mojom::UploadedFile::New(
+      filename, file_data.size(), file_data,
+      ai_chat::mojom::UploadedFileType::kText, std::nullopt);
+  std::move(callback).Run(std::move(uploaded_file));
 }
 
 void AIChatUIPageHandler::GetPluralString(const std::string& key,
@@ -250,7 +220,7 @@ void AIChatUIPageHandler::GetPluralString(const std::string& key,
 
 void AIChatUIPageHandler::OpenAIChatSettings() {
   id<AIChatUIHandlerBridge> bridge =
-      UIHandlerBridgeHolder::GetOrCreateForWebState(owner_web_state_)->bridge();
+      UIHandlerBridgeHolder::FromWebState(owner_web_state_)->bridge();
   [bridge openAIChatSettings];
 }
 
@@ -275,7 +245,7 @@ void AIChatUIPageHandler::OpenURL(const GURL& url) {
     return;
   }
   id<AIChatUIHandlerBridge> bridge =
-      UIHandlerBridgeHolder::GetOrCreateForWebState(owner_web_state_)->bridge();
+      UIHandlerBridgeHolder::FromWebState(owner_web_state_)->bridge();
   [bridge openURL:net::NSURLWithGURL(url)];
 }
 
@@ -285,7 +255,7 @@ void AIChatUIPageHandler::OpenStorageSupportUrl() {
 
 void AIChatUIPageHandler::GoPremium() {
   id<AIChatUIHandlerBridge> bridge =
-      UIHandlerBridgeHolder::GetOrCreateForWebState(owner_web_state_)->bridge();
+      UIHandlerBridgeHolder::FromWebState(owner_web_state_)->bridge();
   [bridge goPremium];
 }
 
@@ -295,7 +265,7 @@ void AIChatUIPageHandler::RefreshPremiumSession() {
 
 void AIChatUIPageHandler::ManagePremium() {
   id<AIChatUIHandlerBridge> bridge =
-      UIHandlerBridgeHolder::GetOrCreateForWebState(owner_web_state_)->bridge();
+      UIHandlerBridgeHolder::FromWebState(owner_web_state_)->bridge();
   [bridge managePremium];
 }
 
@@ -318,7 +288,7 @@ void AIChatUIPageHandler::OnRequestArchive(
 
 void AIChatUIPageHandler::CloseUI() {
   id<AIChatUIHandlerBridge> bridge =
-      UIHandlerBridgeHolder::GetOrCreateForWebState(owner_web_state_)->bridge();
+      UIHandlerBridgeHolder::FromWebState(owner_web_state_)->bridge();
   [bridge closeUI];
 }
 
@@ -356,12 +326,11 @@ void AIChatUIPageHandler::BindRelatedConversation(
 void AIChatUIPageHandler::AssociateTab(mojom::TabDataPtr mojom_tab,
                                        const std::string& conversation_uuid) {
   id<AIChatUIHandlerBridge> bridge =
-      UIHandlerBridgeHolder::GetOrCreateForWebState(owner_web_state_)->bridge();
+      UIHandlerBridgeHolder::FromWebState(owner_web_state_)->bridge();
   if (BraveWebView* web_view =
           [bridge webViewForTabWithSessionID:mojom_tab->id]) {
     web::WebState* web_state = web_view.webState;
-    auto* tab_helper =
-        ai_chat::AIChatTabHelper::GetOrCreateForWebState(web_state);
+    auto* tab_helper = ai_chat::AIChatTabHelper::FromWebState(web_state);
     if (!tab_helper) {
       return;
     }
@@ -378,7 +347,7 @@ void AIChatUIPageHandler::AssociateUrlContent(
     const std::string& title,
     const std::string& conversation_uuid) {
   id<AIChatUIHandlerBridge> bridge =
-      UIHandlerBridgeHolder::GetOrCreateForWebState(owner_web_state_)->bridge();
+      UIHandlerBridgeHolder::FromWebState(owner_web_state_)->bridge();
   if (!bridge) {
     return;
   }

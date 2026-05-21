@@ -6,6 +6,18 @@ export {}
 
 declare let window: any
 
+let wdpStartedCallbackForTesting: (() => void) | undefined
+
+function setWDPStartedCallbackForTesting(callback: () => void) {
+  if (window.WDP !== undefined) {
+    callback()
+    return
+  }
+  wdpStartedCallbackForTesting = callback
+}
+
+window.setWDPStartedCallbackForTesting = setWDPStartedCallbackForTesting
+
 async function startWDP() {
   if (window.WDP === undefined) {
     const wdp = await import('gen/brave/web-discovery-project')
@@ -18,7 +30,13 @@ async function startWDP() {
     return
 
   window.WDP.start()
+
+  if (wdpStartedCallbackForTesting) {
+    wdpStartedCallbackForTesting()
+    wdpStartedCallbackForTesting = undefined
+  }
 }
+
 
 function stopWDP() {
   if (window.WDP === undefined)

@@ -10,6 +10,10 @@
 
 namespace brave_ads {
 
+namespace {
+constexpr int kDefaultIssuerPingMilliseconds = 7'200'000;
+}  // namespace
+
 void RegisterLocalStatePrefs(PrefRegistrySimple* const registry) {
   // Ads prefs.
   registry->RegisterTimePref(prefs::kFirstRunAt, base::Time::Now());
@@ -42,7 +46,8 @@ void RegisterProfilePrefs(PrefRegistrySimple* const registry) {
   registry->RegisterInt64Pref(prefs::kCatalogPing, 0);
   registry->RegisterTimePref(prefs::kCatalogLastUpdated, base::Time());
 
-  registry->RegisterIntegerPref(prefs::kIssuerPing, 7'200'000);
+  registry->RegisterIntegerPref(prefs::kIssuerPing,
+                                kDefaultIssuerPingMilliseconds);
   registry->RegisterListPref(prefs::kIssuers);
 
   registry->RegisterListPref(prefs::kNotificationAds);
@@ -56,21 +61,12 @@ void RegisterProfilePrefs(PrefRegistrySimple* const registry) {
   registry->RegisterListPref(prefs::kSaveAds);
   registry->RegisterListPref(prefs::kMarkedAsInappropriate);
 
-  registry->RegisterBooleanPref(prefs::kHasMigratedState, false);
   registry->RegisterBooleanPref(prefs::kHasMigratedClientState, false);
-  registry->RegisterBooleanPref(prefs::kHasMigratedConfirmationState, false);
 
   registry->RegisterStringPref(prefs::kBrowserVersionNumber, "");
 
   // Ads service prefs.
   registry->RegisterBooleanPref(prefs::kShouldShowOnboardingNotification, true);
-
-  registry->RegisterDoublePref(prefs::kNotificationAdLastNormalizedCoordinateX,
-                               0.0);
-  registry->RegisterDoublePref(prefs::kNotificationAdLastNormalizedCoordinateY,
-                               0.0);
-  registry->RegisterBooleanPref(prefs::kNotificationAdDidFallbackToCustom,
-                                false);
 
   registry->RegisterBooleanPref(prefs::kShouldShowSearchResultAdClickedInfoBar,
                                 true);

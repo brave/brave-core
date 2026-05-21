@@ -17,12 +17,13 @@
 #include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
+#include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
+#include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
-#include "chrome/browser/ui/views/side_panel/side_panel_entry_id.h"
-#include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/browser_context.h"
+#include "content/public/browser/web_contents_delegate.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/page_transition_types.h"
 #include "ui/base/window_open_disposition.h"
@@ -135,6 +136,20 @@ content::WebContents* AIChatSidePanelWebView::AddNewContents(
   Navigate(&params);
 
   return params.navigated_or_inserted_contents;
+}
+
+void AIChatSidePanelWebView::RunFileChooser(
+    content::RenderFrameHost* render_frame_host,
+    scoped_refptr<content::FileSelectListener> listener,
+    const blink::mojom::FileChooserParams& params) {
+  auto* browser_view = BrowserView::GetBrowserViewForNativeWindow(
+      GetWidget()->GetNativeWindow());
+  if (browser_view) {
+    static_cast<content::WebContentsDelegate*>(browser_view->browser())
+        ->RunFileChooser(render_frame_host, std::move(listener), params);
+  } else {
+    listener->FileSelectionCanceled();
+  }
 }
 
 content::WebContents* AIChatSidePanelWebView::OpenURLFromTab(

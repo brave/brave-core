@@ -13,6 +13,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/values.h"
 #include "brave/browser/ui/bookmark/bookmark_helper.h"
+#include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/bookmarks/bookmark_merged_surface_service_factory.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
@@ -31,6 +32,13 @@
 #include "content/public/browser/page_navigator.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/gurl.h"
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "base/test/scoped_feature_list.h"
+#include "brave/app/brave_command_ids.h"
+#include "brave/components/containers/core/common/features.h"
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 using bookmarks::BookmarkModel;
 using bookmarks::BookmarkNode;
@@ -71,7 +79,7 @@ TEST_F(BraveBookmarkContextMenuControllerTest,
   BookmarkContextMenuController controller(
       gfx::NativeWindow(), nullptr, nullptr, profile_.get(),
       BookmarkLaunchLocation::kSidePanelContextMenu,
-      {model_->bookmark_bar_node()});
+      {model_->bookmark_bar_node()}, /*can_paste=*/false);
 
   // Show apps command is not present by default.
   sync_preferences::TestingPrefServiceSyncable* prefs =
@@ -108,7 +116,8 @@ TEST_F(BraveBookmarkContextMenuControllerTest,
 TEST_F(BraveBookmarkContextMenuControllerTest, AddBraveBookmarksSubmenu) {
   BraveBookmarkContextMenuController controller(
       gfx::NativeWindow(), nullptr, nullptr, profile_.get(),
-      BookmarkLaunchLocation::kSidePanelFolder, {model_->bookmark_bar_node()});
+      BookmarkLaunchLocation::kSidePanelFolder, {model_->bookmark_bar_node()},
+      /*can_paste=*/false);
   EXPECT_FALSE(controller.menu_model()
                    ->GetIndexOfCommandId(IDC_BOOKMARK_BAR_ALWAYS_SHOW)
                    .has_value());
@@ -171,3 +180,87 @@ TEST_F(BraveBookmarkContextMenuControllerTest, AddBraveBookmarksSubmenu) {
   EXPECT_TRUE(controller.IsCommandIdChecked(IDC_BRAVE_BOOKMARK_BAR_NEVER));
   EXPECT_FALSE(controller.IsCommandIdChecked(IDC_BRAVE_BOOKMARK_BAR_NTP));
 }
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+
+TEST_F(BraveBookmarkContextMenuControllerTest,
+       ContainersSubmenuNotAddedWhenFeatureDisabled) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndDisableFeature(containers::features::kContainers);
+
+  const BookmarkNode* url_node = model_->AddNewURL(
+      model_->bookmark_bar_node(), 0, u"t", GURL("https://example.com"));
+  BraveBookmarkContextMenuController controller(
+      gfx::NativeWindow(), nullptr, nullptr, profile_.get(),
+      BookmarkLaunchLocation::kSidePanelFolder, {url_node},
+      /*can_paste=*/false);
+
+  EXPECT_FALSE(
+      controller.menu_model()->GetIndexOfCommandId(IDC_OPEN_IN_CONTAINER));
+}
+
+class BraveBookmarkContextMenuContainersTest
+    : public BraveBookmarkContextMenuControllerTest {
+ public:
+  void SetUp() override {
+    feature_list_.InitAndEnableFeature(containers::features::kContainers);
+    BraveBookmarkContextMenuControllerTest::SetUp();
+  }
+
+ protected:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+TEST_F(BraveBookmarkContextMenuContainersTest,
+       AddsOpenInContainerForSingleUrlBookmark) {
+  const BookmarkNode* url_node = model_->AddNewURL(
+      model_->bookmark_bar_node(), 0, u"t", GURL("https://example.com"));
+  BraveBookmarkContextMenuController controller(
+      gfx::NativeWindow(), nullptr, nullptr, profile_.get(),
+      BookmarkLaunchLocation::kSidePanelFolder, {url_node},
+      /*can_paste=*/false);
+
+  ASSERT_TRUE(
+      controller.menu_model()->GetIndexOfCommandId(IDC_OPEN_IN_CONTAINER));
+  ASSERT_NE(controller.GetContainersBookmarkSubmenuModel(), nullptr);
+
+  EXPECT_TRUE(controller.IsCommandIdEnabled(IDC_OPEN_IN_CONTAINER));
+  EXPECT_TRUE(controller.IsCommandIdVisible(IDC_OPEN_IN_CONTAINER));
+  EXPECT_FALSE(controller.IsCommandIdChecked(IDC_OPEN_IN_CONTAINER));
+  EXPECT_FALSE(controller.GetLabelForCommandId(IDC_OPEN_IN_CONTAINER).empty());
+
+  EXPECT_TRUE(
+      controller.IsCommandIdEnabled(IDC_OPEN_IN_CONTAINER_NO_CONTAINER));
+  EXPECT_TRUE(
+      controller.IsCommandIdVisible(IDC_OPEN_IN_CONTAINER_NO_CONTAINER));
+}
+
+TEST_F(BraveBookmarkContextMenuContainersTest,
+       NoOpenInContainerForFolderSelection) {
+  const BookmarkNode* folder =
+      model_->AddFolder(model_->bookmark_bar_node(), 0, u"f");
+  BraveBookmarkContextMenuController controller(
+      gfx::NativeWindow(), nullptr, nullptr, profile_.get(),
+      BookmarkLaunchLocation::kSidePanelFolder, {folder}, /*can_paste=*/false);
+
+  EXPECT_FALSE(
+      controller.menu_model()->GetIndexOfCommandId(IDC_OPEN_IN_CONTAINER));
+  EXPECT_EQ(controller.GetContainersBookmarkSubmenuModel(), nullptr);
+}
+
+TEST_F(BraveBookmarkContextMenuContainersTest,
+       NoOpenInContainerForMultipleUrlSelection) {
+  const BookmarkNode* a = model_->AddNewURL(model_->bookmark_bar_node(), 0,
+                                            u"a", GURL("https://a.example/"));
+  const BookmarkNode* b = model_->AddNewURL(model_->bookmark_bar_node(), 1,
+                                            u"b", GURL("https://b.example/"));
+  BraveBookmarkContextMenuController controller(
+      gfx::NativeWindow(), nullptr, nullptr, profile_.get(),
+      BookmarkLaunchLocation::kSidePanelFolder, {a, b}, /*can_paste=*/false);
+
+  EXPECT_FALSE(
+      controller.menu_model()->GetIndexOfCommandId(IDC_OPEN_IN_CONTAINER));
+  EXPECT_EQ(controller.GetContainersBookmarkSubmenuModel(), nullptr);
+}
+
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)

@@ -10,7 +10,7 @@
 
 namespace brave_ads {
 
-void MigrateClientState(InitializeCallback callback);
+void MigrateClientState(ResultCallback callback);
 
 }  // namespace brave_ads
 

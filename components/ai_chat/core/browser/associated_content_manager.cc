@@ -415,9 +415,6 @@ PageContentsMap AssociatedContentManager::GetCachedContentsMap() const {
 
   for (size_t i = 0; i < contents.size(); ++i) {
     auto turn_id = meta[i]->conversation_turn_uuid;
-    DCHECK(turn_id)
-        << "This method should only be called when all content has been "
-           "associated with a turn (i.e. via AssociateUnsentContentWithTurn)";
     if (!turn_id) {
       continue;
     }

@@ -23,6 +23,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/common/chrome_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/optimization_guide/content/browser/page_content_proto_provider.h"
@@ -136,8 +137,7 @@ class ContentAgentToolProviderBrowserTest : public InProcessBrowserTest {
       actor::mojom::ActionResultCode result_code,
       std::optional<size_t> index_of_failed_action,
       std::vector<actor::ActionResultWithLatencyInfo> action_results) {
-    tool_provider_->OnActionsFinished(std::move(callback), result_code,
-                                      std::move(index_of_failed_action),
+    tool_provider_->OnActionsFinished(std::move(callback),
                                       std::move(action_results));
   }
 

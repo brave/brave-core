@@ -8,9 +8,14 @@
 
 #include <string_view>
 
+// Matches conditions against string prefs using RE2 regular expressions, for
+// ads that need more expressive matching than wildcards allow, such as matching
+// a specific locale, all evaluated locally with nothing leaving the device.
+
 namespace brave_ads {
 
-// Matches a value against a regular expression condition.
+// Returns `true` if `condition` (an RE2 expression) partially matches `value`,
+// or `false` if it is not valid.
 bool MatchRegex(std::string_view value, std::string_view condition);
 
 }  // namespace brave_ads

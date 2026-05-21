@@ -22,16 +22,8 @@ std::optional<ConfirmationTokenInfo> MaybeGetConfirmationToken();
 void AddConfirmationTokens(const ConfirmationTokenList& confirmation_tokens);
 
 bool RemoveConfirmationToken(const ConfirmationTokenInfo& confirmation_token);
-void RemoveConfirmationTokens(const ConfirmationTokenList& confirmation_tokens);
-void RemoveAllConfirmationTokens();
-
-bool ConfirmationTokenExists(const ConfirmationTokenInfo& confirmation_token);
-
-bool ConfirmationTokensIsEmpty();
 
 size_t ConfirmationTokenCount();
-
-[[nodiscard]] bool IsValid(const ConfirmationTokenInfo& confirmation_token);
 
 }  // namespace brave_ads
 

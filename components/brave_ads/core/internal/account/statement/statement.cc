@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/statement/statement.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/functional/bind.h"
@@ -45,7 +46,7 @@ void BuildStatement(BuildStatementCallback callback) {
             mojom_statement->max_earnings_this_month = max_earnings_this_month;
 
             mojom_statement->next_payment_date =
-                GetNextPaymentDate(transactions);
+                MaybeGetNextPaymentDate(transactions).value_or(base::Time{});
 
             mojom_statement->ads_received_this_month =
                 GetAdsReceivedThisMonth(transactions);

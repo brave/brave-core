@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.ntp;
 
 import static org.chromium.base.ThreadUtils.runOnUiThread;
 import static org.chromium.build.NullUtil.assertNonNull;
+import static org.chromium.build.NullUtil.assumeNonNull;
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 import android.annotation.SuppressLint;
@@ -24,10 +25,10 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Display;
 import android.view.GestureDetector;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -57,6 +58,8 @@ import org.chromium.brave_news.mojom.Feed;
 import org.chromium.brave_news.mojom.FeedItem;
 import org.chromium.brave_news.mojom.FeedPage;
 import org.chromium.brave_news.mojom.FeedPageItem;
+import org.chromium.build.annotations.EnsuresNonNull;
+import org.chromium.build.annotations.Initializer;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
@@ -68,8 +71,6 @@ import org.chromium.chrome.browser.brave_news.LinearLayoutManagerWrapper;
 import org.chromium.chrome.browser.brave_news.models.FeedItemCard;
 import org.chromium.chrome.browser.brave_news.models.FeedItemsCard;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
-import org.chromium.chrome.browser.feed.FeedSurfaceScrollDelegate;
-import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.ntp_background_images.model.NTPImage;
@@ -77,7 +78,6 @@ import org.chromium.chrome.browser.ntp_background_images.model.SponsoredTab;
 import org.chromium.chrome.browser.ntp_background_images.model.Wallpaper;
 import org.chromium.chrome.browser.ntp_background_images.util.FetchWallpaperWorkerTask;
 import org.chromium.chrome.browser.ntp_background_images.util.NTPImageUtil;
-import org.chromium.chrome.browser.ntp_background_images.util.SponsoredImageUtil;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
@@ -89,24 +89,15 @@ import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.chrome.browser.settings.BraveNewsPreferencesV2;
 import org.chromium.chrome.browser.settings.SettingsNavigationFactory;
 import org.chromium.chrome.browser.suggestions.tile.BraveMostVisitedTilesLayoutBase;
-import org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesLayout;
-import org.chromium.chrome.browser.suggestions.tile.TileGroup.Delegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabAttributes;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tabmodel.TabModelUtils;
-import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
-import org.chromium.chrome.browser.ui.native_page.TouchEnabledDelegate;
-import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.settings.SettingsNavigation;
-import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
-import org.chromium.ui.base.ActivityResultTracker;
 import org.chromium.ui.base.WindowAndroid;
-import org.chromium.ui.modaldialog.ModalDialogManager;
-import org.chromium.url.GURL;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -125,12 +116,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     private static final int MINIMUM_VISIBLE_HEIGHT_THRESHOLD = 50;
     private static final int HOUR_MS = 3_600_000;
 
-    // Variables below will be removed in bytecode, variables from parent class will be used
-    // instead.
-    private ViewGroup mMvTilesContainerLayout;
-
-    @SuppressWarnings("UnusedVariable")
-    private boolean mMvtContentFits;
+    private @Nullable ViewGroup mMvTilesContainerLayout;
 
     // Own members.
     private WindowAndroid mWindowAndroid;
@@ -139,7 +125,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     private @Nullable SponsoredRichMediaWebView mSponsoredRichMediaWebView;
     private @Nullable FrameLayout mBackgroundSponsoredRichMediaView;
 
-    // To be removed in bytecode, parent variable will be used instead.
+    // Own members
     private @Nullable Profile mProfile;
 
     private @Nullable SponsoredTab mSponsoredTab;
@@ -150,7 +136,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     // Whether to show sponsored image on NTP based on experiment variant
     private boolean mShouldShowSponsoredImage;
     private @Nullable NTPBackgroundImagesBridge mNTPBackgroundImagesBridge;
-    private @Nullable ViewGroup mMainLayout;
     private final DatabaseHelper mDatabaseHelper;
 
     private @Nullable LottieAnimationView mBadgeAnimationView;
@@ -218,13 +203,10 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
         }
     }
 
+    @EnsuresNonNull({"mMvTilesContainerLayout"})
     protected void initializeSiteSectionView() {
-        mMainLayout = findViewById(R.id.ntp_content);
         mMvTilesContainerLayout =
-                (ViewGroup)
-                        LayoutInflater.from(mMainLayout.getContext())
-                                .inflate(R.layout.mv_tiles_layout, mMainLayout, false);
-        mMvTilesContainerLayout.setId(R.id.mv_tiles_container);
+                (ViewGroup) ((ViewStub) findViewById(R.id.mv_tiles_layout_stub)).inflate();
         mMvTilesContainerLayout.setPadding(0, 0, 0, 0);
         mMvTilesContainerLayout.setVisibility(View.VISIBLE);
 
@@ -232,6 +214,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                 new Runnable() {
                     @Override
                     public void run() {
+                        assumeNonNull(mMvTilesContainerLayout);
                         mMvTilesContainerLayout.addOnLayoutChangeListener(
                                 (View view,
                                         int left,
@@ -276,10 +259,10 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
         if (mSponsoredTab == null) {
             initilizeSponsoredTab();
         }
-        checkAndShowNTPImage(false);
+        getAndShowNTPImage();
 
-        if (OnboardingPrefManager.getInstance().isFromNotification() ) {
-            ((BraveActivity)mActivity).showOnboardingV2(false);
+        if (OnboardingPrefManager.getInstance().isFromNotification()) {
+            ((BraveActivity) mActivity).showOnboardingV2(false);
             OnboardingPrefManager.getInstance().setFromNotification(false);
         }
         if (mBadgeAnimationView != null
@@ -955,36 +938,29 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
         if (mActivity != null && (mActivity.isFinishing() || mActivity.isDestroyed())) {
-            super.onConfigurationChanged(newConfig);
             return;
         }
-        if (mSponsoredTab != null && NTPImageUtil.shouldEnableNTPFeature()) {
-            NTPImage ntpImage = mSponsoredTab.getTabNTPImage(false, mShouldShowSponsoredImage);
-            if (ntpImage == null) {
-                mSponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
-            } else if (ntpImage instanceof Wallpaper) {
-                Wallpaper mWallpaper = (Wallpaper) ntpImage;
-                if (mWallpaper == null) {
-                    mSponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
-                }
-            }
-            super.onConfigurationChanged(newConfig);
-            showNTPImage(ntpImage);
 
-            new Handler(Looper.getMainLooper())
-                    .postDelayed(
-                            () -> {
-                                assertNonNull(mRecyclerView);
-                                if (mNtpAdapter != null) {
-                                    mNtpAdapter.setRecyclerViewHeight(mRecyclerView.getHeight());
-                                }
-                                keepPosition();
-                            },
-                            10);
-        } else {
-            super.onConfigurationChanged(newConfig);
+        if (mSponsoredTab == null || !NTPImageUtil.shouldEnableNTPFeature()) {
+            return;
         }
+
+        // `maybeShowNTPImage()` is a no-op if configuration changes before the NTP image is ready;
+        // it will be called again once NTP image is ready.
+        maybeShowNTPImage();
+
+        new Handler(Looper.getMainLooper())
+                .postDelayed(
+                        () -> {
+                            assertNonNull(mRecyclerView);
+                            if (mNtpAdapter != null) {
+                                mNtpAdapter.setRecyclerViewHeight(mRecyclerView.getHeight());
+                            }
+                            keepPosition();
+                        },
+                        10);
     }
 
     @Override
@@ -1228,45 +1204,15 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
         }
     }
 
-    @Override
+    @Initializer
     public void initialize(
             NewTabPageManager manager,
             Activity activity,
-            Delegate tileGroupDelegate,
-            boolean searchProviderHasLogo,
-            boolean searchProviderIsGoogle,
-            FeedSurfaceScrollDelegate scrollDelegate,
-            TouchEnabledDelegate touchEnabledDelegate,
-            UiConfig uiConfig,
-            ActivityLifecycleDispatcher lifecycleDispatcher,
             Profile profile,
-            WindowAndroid windowAndroid,
-            ActivityResultTracker activityResultTracker,
-            BottomSheetController bottomSheetController,
-            Supplier<@Nullable ModalDialogManager> modalDialogManagerSupplier,
-            SnackbarManager snackbarManager,
-            boolean isTablet,
-            Supplier<Integer> tabStripHeightSupplier,
-            Supplier<GURL> composeplateUrlSupplier) {
-        super.initialize(
-                manager,
-                activity,
-                tileGroupDelegate,
-                searchProviderHasLogo,
-                searchProviderIsGoogle,
-                scrollDelegate,
-                touchEnabledDelegate,
-                uiConfig,
-                lifecycleDispatcher,
-                profile,
-                windowAndroid,
-                activityResultTracker,
-                bottomSheetController,
-                modalDialogManagerSupplier,
-                snackbarManager,
-                isTablet,
-                tabStripHeightSupplier,
-                composeplateUrlSupplier);
+            WindowAndroid windowAndroid) {
+
+        mProfile = profile;
+
         mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
         mWindowAndroid = windowAndroid;
 
@@ -1306,19 +1252,24 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
 
     public void setTabProvider(Supplier<@Nullable Tab> unused_tabProvider) {}
 
-    private void showNTPImage(NTPImage ntpImage) {
+    private void maybeShowNTPImage() {
+        // Return early if the NTP image is not available yet; this method is called again once it
+        // is ready.
+        if (mNtpImageGlobal == null) {
+            return;
+        }
+
         Display display = mActivity.getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
 
-        mNtpImageGlobal = ntpImage;
         if (mNtpAdapter != null) {
-            mNtpAdapter.setNtpImage(ntpImage);
+            mNtpAdapter.setNtpImage(mNtpImageGlobal);
         }
 
         boolean wasWallpaperShown = true;
-        if (ntpImage instanceof Wallpaper && ((Wallpaper) ntpImage).isRichMedia()) {
-            setupSponsoredBackgroundContent((Wallpaper) ntpImage);
+        if (mNtpImageGlobal instanceof Wallpaper && ((Wallpaper) mNtpImageGlobal).isRichMedia()) {
+            setupSponsoredBackgroundContent((Wallpaper) mNtpImageGlobal);
         } else {
             maybeResetSponsoredRichMediaBackground();
 
@@ -1326,7 +1277,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                             .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)
                     && mSponsoredTab != null
                     && NTPImageUtil.shouldEnableNTPFeature()) {
-                setBackgroundImage(ntpImage);
+                setBackgroundImage(mNtpImageGlobal);
             } else {
                 wasWallpaperShown = false;
             }
@@ -1334,7 +1285,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
 
         assertNonNull(mProfile);
         if (wasWallpaperShown
-                && ntpImage instanceof Wallpaper
+                && mNtpImageGlobal instanceof Wallpaper
                 && getTab() != null
                 && mNewTabTakeoverInfobar == null) {
             mNewTabTakeoverInfobar = new BraveNewTabTakeoverInfobar(mProfile);
@@ -1424,18 +1375,17 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
         return variant == null || !variant.equals("D") || !shouldShowSnackbar;
     }
 
-    private void checkAndShowNTPImage(boolean isReset) {
+    private void getAndShowNTPImage() {
         assertNonNull(mSponsoredTab);
-        NTPImage ntpImage = mSponsoredTab.getTabNTPImage(isReset, mShouldShowSponsoredImage);
-        if (ntpImage == null) {
-            mSponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
-        } else if (ntpImage instanceof Wallpaper) {
-            Wallpaper mWallpaper = (Wallpaper) ntpImage;
-            if (mWallpaper == null) {
-                mSponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
-            }
-        }
-        showNTPImage(ntpImage);
+        mSponsoredTab.getNTPImage(
+                mShouldShowSponsoredImage,
+                ntpImage -> {
+                    if (mActivity == null || mActivity.isFinishing() || mActivity.isDestroyed()) {
+                        return;
+                    }
+                    mNtpImageGlobal = ntpImage;
+                    maybeShowNTPImage();
+                });
     }
 
     private void initilizeSponsoredTab() {
@@ -1513,19 +1463,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                                 action.run();
                             }
                         });
-    }
-
-    public void calculateTabletMvtWidth(int totalWidth) {
-        if (mMvTilesContainerLayout.getVisibility() == GONE) return;
-
-        MostVisitedTilesLayout mvTilesLayout =
-                mMvTilesContainerLayout.findViewById(R.id.mv_tiles_layout);
-        mMvtContentFits = mvTilesLayout.contentFitsOnTablet(totalWidth);
-        updateMvtOnTablet();
-    }
-
-    private void updateMvtOnTablet() {
-        assert false : "This method should be removed in the bytecode!";
     }
 
     /**

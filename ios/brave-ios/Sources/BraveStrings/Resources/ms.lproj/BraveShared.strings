@@ -16,11 +16,17 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Tambah Penanda Buku";
 
+/* Add a new item to the current list */
+"addButtonTitle" = "Tambah";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "Tambahkan pada Kegemaran";
 
 /* Cell title for add folder action */
 "AddFolderActionCellTitle" = "Folder baharu";
+
+/* Settings item that opens instructions for adding Brave to the iOS dock. */
+"addToDockSettingsCell" = "Tambah pada Dock";
 
 /* Add to favorites share action. */
 "AddToFavorites" = "Tambah kepada Kegemaran";
@@ -66,6 +72,45 @@
 
 /* Username textbox in Authentication prompt */
 "AuthPromptAlertUsernamePlaceholderText" = "Nama pengguna";
+
+/* Settings autofill section title */
+"Autofill" = "Autoisi";
+
+/* Label for account when indicating that a domain has multiple accounts */
+"autofill.managePassword.multipleAccounts" = "Akaun";
+
+/* Alert message warning the user that deleting non-synced passwords will permanently remove them */
+"autofill.managePasswords.deleteCredentialConfirmMessage" = "Tindakan ini akan mengeluarkan kata laluan yang disimpan untuk %@ daripada rangkaian penyegerakan dan peranti anda.";
+
+/* Prompt title when deleting passwords */
+"autofill.managePasswords.deleteCredentialsAlertTitle" = "Adakah anda pasti?";
+
+/* Label for the button used to delete the current login. */
+"autofill.managePasswords.deleteManagePasswordButtonTitle" = "Padam";
+
+/* Title for the section header in the Manage Passwords list screen, that lists the saved sites */
+"autofill.managePasswords.headerTitle" = "Disimpan";
+
+/* The message displayed on the manage passwords list screen, when there's at least one password, explain the feature */
+"autofill.managePasswords.instructions" = "Cipta, simpan dan urus kata laluan anda untuk log masuk dengan mudah ke laman dan apl.";
+
+/* The header title displayed over the never saved passwords list */
+"autofill.managePasswords.neverSavedListHeaderTitle" = "Tidak Pernah Disimpan";
+
+/* Display text for the option to offer to save passwords */
+"autofill.managePasswords.offerToSavePasswords" = "Tawarkan untuk menyimpan kata laluan";
+
+/* Prompt that is diplayed in the search bar of the Manage Passwords list screen */
+"autofill.managePasswords.searchWebsitesPrompt" = "Cari Laman Web";
+
+/* Title for navigation bar of the Manage Passwords screen */
+"autofill.managePasswords.title" = "Urus Kata Laluan";
+
+/* Text to show when the origin of a managed password is not available */
+"autofill.managePasswords.UnknownDomainText" = "Tidak diketahui";
+
+/* Settings autofill section title */
+"autofill.settings.title" = "Autoisi";
 
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "Ubah Hala Auto Halaman AMP";
@@ -141,33 +186,6 @@
 
 /* Placeholder text for adding or editing a bookmark */
 "BookmarkUrlPlaceholderText" = "Alamat";
-
-/* Title for the Brave Account section in settings */
-"BraveAccount" = "Akaun Brave";
-
-/* Title shown when waiting for email verification */
-"BraveAccountAlmostThere" = "Almost there!";
-
-/* Detail text for the almost there title */
-"BraveAccountAlmostThereDetail" = "E-mel pengesahan sedang dihantar. Klik butang dalam e-mel tersebut untuk mengaktifkan akaun anda.";
-
-/* Button text to cancel Brave Account registration */
-"BraveAccountCancelRegistration" = "Batalkan pendaftaran";
-
-/* Title shown when user is logged in */
-"BraveAccountEmailAddress" = "Alamat e-mel";
-
-/* Button text to get started with Brave Account */
-"BraveAccountGetStarted" = "Mulakan";
-
-/* Button text to resend confirmation email */
-"BraveAccountResendConfirmationEmail" = "Hantar semula e-mel pengesahan";
-
-/* Detail text for the resend confirmation email button */
-"BraveAccountResendConfirmationEmailDetail" = "Tidak nampak e-mel? Semak folder spam anda atau klik pada butang untuk menghantar semula e-mel pengesahan.";
-
-/* Button text to sign out of Brave Account */
-"BraveAccountSignOut" = "Log keluar";
 
 /* Button to show the brave panel */
 "BravePanel" = "Panel Brave";
@@ -706,15 +724,6 @@
 /* Description for new folder popup */
 "EnterFolderName" = "Masukkan nama folder";
 
-/* Shown in error pages to suggest a fix to the user. */
-"errorPageCantBeReachedTry" = "Cuba taip semula URL, atau buka enjin carian dan cari URL baharu.";
-
-/* Shown in error pages for files that can't be shown and need to be downloaded. */
-"ErrorPageOpenInSafariButtonTitle" = "Buka dalam Safari";
-
-/* Shown in error pages on a button that will try to load the page again */
-"ErrorPageReloadButtonTitle" = "Muat semula";
-
 /* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
 "ErrorPagesAdvancedErrorPinningDetails" = "%1$@ biasanya menggunakan penyulitan untuk melindungi maklumat anda. Apabila Brave cuba berhubung dengan %2$@ kali ini, laman web tersebut menghantar kembali bukti kelayakan yang luar biasa dan salah. Perkara ini mungkin berlaku apabila penyerang cuba menyamar sebagai %3$@, atau skrin log masuk Wi-Fi telah mengganggu sambungan tersebut. Maklumat anda masih selamat kerana Brave menghentikan sambungan sebelum mana-mana data telah ditukar.<br />Anda tidak boleh melawat %4$@ sekarang kerana laman web tersebut menggunakan pencematan sijil. Ralat dan serangan rangkaian selalunya berlaku buat sementara waktu jadi halaman ini mungkin akan berfungsi sebentar lagi.";
 
@@ -1031,7 +1040,7 @@
 "nightMode.modeTitle" = "Mod";
 
 /* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
-"nightMode.sectionDescription" = "Mod Malam akan memberikan kesan kepada penampilan laman web dan juga penampilan sistem secara amnya.";
+"nightMode.sectionDescription" = "Mod malam akan menjejaskan penampilan laman web dan penampilan sistem umum pada masa yang sama.";
 
 /* A table cell subtitle for Night Mode - explanatory element for the toggle preference */
 "nightMode.settingsDescription" = "Hidupkan/Matikan Mod Malam";
@@ -1063,11 +1072,8 @@
 /* No comment provided by engineer. */
 "ntp.hideSponsoredImages" = "Sembunyikan imej tajaan";
 
-/* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "Imej tajaan ialah latar belakang berjenama yang muncul apabila tab baharu dibuka dalam pelayar. Dengan mengaktifkannya, anda menyokong misi Brave.";
-
-/* The text label of image type learn more link */
-"ntp.imageTypeSelectionDescriptionLearnMore" = "Ketahui lebih lanjut";
+/* The text description of image type which is being used NTP. The text inside the square brackets should be translated and is a link */
+"ntp.imageTypeSelectionDescription" = "Imej tajaan ialah latar belakang berjenama yang muncul apabila tab baharu dibuka dalam pelayar. Dengan mengaktifkannya, anda menyokong misi Brave. [Ketahui Lebih Lanjut](#learn-more)";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Ketahui lebih lanjut tentang Brave Rewards";
@@ -2368,9 +2374,6 @@
 /* Title of an action that allows user to perform a one-click web search for selected text */
 "SearchWithBrave" = "Buat carian melalui Brave";
 
-/* Settings security section title */
-"Security" = "Sekuriti";
-
 /* No comment provided by engineer. */
 "sendButtonTitle" = "Hantar";
 
@@ -2733,6 +2736,9 @@
 
 /* Setting to show/hide the tabs bar */
 "ShowTabsBar" = "Bar Tab";
+
+/* Settings item for clearing site-specific settings and shields settings. */
+"SiteAndShieldsSettings" = "Tetapan Tapak dan Perisai";
 
 /* No comment provided by engineer. */
 "SiteReportedBody" = "Terima kasih kerana memberitahu pembangun Brave bahawa ada sesuatu yang tidak kena dengan tapak ini. Kami akan melakukan yang terbaik untuk memperbaikinya!";
@@ -3178,6 +3184,12 @@
 /* No comment provided by engineer. */
 "tabs.settings.privateTabsSettingsTitle" = "Tab Sulit";
 
+/* The description of the toggle for users to allow the browser to remember its last browsing mode so it can re-launch in that mode when Keep Private Tabs is enabled. */
+"tabs.settings.rememberBrowsingModeDescription" = "Jika pelayar berada dalam mod peribadi semasa terakhir ditutup, ia akan dibuka dalam mod peribadi semasa dilancarkan semula.";
+
+/* Toggle to launch the browser in private mode when Keep Private Tabs is enabled */
+"tabs.settings.rememberBrowsingModeTitle" = "Ingat Mod Pelayaran";
+
 /* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
 "TabToolbarAccessibilityLabel" = "Bar Alat Navigasi";
 
@@ -3279,9 +3291,6 @@
 
 /* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
 "ThemesDisplayBrightness" = "Rupa";
-
-/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
-"ThemesDisplayBrightnessFooter" = "Tetapan ini tidak terpakai dalam mod pelayaran peribadi.";
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "Cerah";

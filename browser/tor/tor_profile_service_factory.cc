@@ -21,11 +21,7 @@
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
-
-namespace {
-
-
-}  // namespace
+#include "content/public/browser/storage_partition.h"
 
 // static
 tor::TorProfileService* TorProfileServiceFactory::GetForContext(
@@ -130,8 +126,11 @@ TorProfileServiceFactory::BuildServiceInstanceForBrowserContext(
         g_brave_browser_process->tor_pluggable_transport_updater();
   }
   return std::make_unique<tor::TorProfileServiceImpl>(
-      Profile::FromBrowserContext(context)->GetOriginalProfile(), context,
-      g_browser_process->local_state(), tor_client_updater,
+      Profile::FromBrowserContext(context)
+          ->GetOriginalProfile()
+          ->GetDefaultStoragePartition()
+          ->GetURLLoaderFactoryForBrowserProcess(),
+      context, g_browser_process->local_state(), tor_client_updater,
       tor_pluggable_transport_updater);
 }
 

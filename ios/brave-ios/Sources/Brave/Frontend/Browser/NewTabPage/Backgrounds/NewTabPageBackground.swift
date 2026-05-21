@@ -48,7 +48,9 @@ class NewTabPageBackground: PreferencesObserver {
   init(dataSource: NTPDataSource, rewards: BraveRewards) {
     self.dataSource = dataSource
     self.rewards = rewards
-    self.currentBackground = dataSource.newBackground()
+    dataSource.newBackground { [weak self] background in
+      self?.currentBackground = background
+    }
 
     Preferences.NewTabPage.backgroundImages.observe(from: self)
     Preferences.NewTabPage.backgroundMediaTypeRaw.observe(from: self)
@@ -72,7 +74,9 @@ class NewTabPageBackground: PreferencesObserver {
       repeats: false,
       block: { [weak self] _ in
         guard let self = self else { return }
-        self.currentBackground = self.dataSource.newBackground()
+        self.dataSource.newBackground { [weak self] background in
+          self?.currentBackground = background
+        }
         self.recordSponsoredMediaTypeP3A()
       }
     )

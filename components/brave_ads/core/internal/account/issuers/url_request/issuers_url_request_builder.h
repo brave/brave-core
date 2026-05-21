@@ -13,6 +13,7 @@ namespace brave_ads {
 
 class IssuersUrlRequestBuilder final : public UrlRequestBuilderInterface {
  public:
+  // UrlRequestBuilderInterface:
   mojom::UrlRequestInfoPtr Build() override;
 };
 

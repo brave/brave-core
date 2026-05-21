@@ -10,7 +10,6 @@
 
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
-#include "base/logging.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 
@@ -73,8 +72,6 @@ void SolanaBlockTracker::OnGetLatestBlockhash(
   }
 
   if (error != mojom::SolanaProviderError::kSuccess) {
-    VLOG(1) << __FUNCTION__ << ": Failed to get latest blockhash, error: "
-            << static_cast<int>(error) << ", error_message: " << error_message;
     return;
   }
 

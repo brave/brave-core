@@ -6,8 +6,6 @@
 #ifndef BRAVE_BROWSER_BRAVE_ADS_APPLICATION_STATE_NOTIFICATION_HELPER_NOTIFICATION_HELPER_IMPL_H_
 #define BRAVE_BROWSER_BRAVE_ADS_APPLICATION_STATE_NOTIFICATION_HELPER_NOTIFICATION_HELPER_IMPL_H_
 
-#include "base/functional/callback_forward.h"
-
 namespace brave_ads {
 
 class NotificationHelperImpl {
@@ -17,7 +15,7 @@ class NotificationHelperImpl {
 
   virtual ~NotificationHelperImpl();
 
-  virtual void InitSystemNotifications(base::OnceClosure callback);
+  virtual void InitSystemNotifications();
 
   virtual bool CanShowNotifications();
   virtual bool CanShowSystemNotificationsWhileBrowserIsBackgrounded() const;

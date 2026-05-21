@@ -16,6 +16,7 @@ class NormalizationTransformation final : public Transformation {
  public:
   NormalizationTransformation();
 
+  // Transformation:
   std::unique_ptr<Data> Apply(
       const std::unique_ptr<Data>& input_data) const override;
 };

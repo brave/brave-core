@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/linux/debian/build.py b/chrome/installer/linux/debian/build.py
-index 4c8c99046294dbcdb7bac607af383202faf1b22e..36ad3e6c09ebdd5480287042e634740b639c2169 100755
+index 2d023ed81b760dde4efa72b1a7a58ce536a6aa78..27cc9692240c71d8f202607695e80629bf4b709a 100755
 --- a/chrome/installer/linux/debian/build.py
 +++ b/chrome/installer/linux/debian/build.py
-@@ -161,6 +161,8 @@ def main() -> None:
+@@ -168,6 +168,8 @@ def main() -> None:
          logging.info(f"Packaging {args.arch}...")
          config.deb_pre_depends = config.common_predeps
          config.deb_depends = config.common_deps
@@ -11,7 +11,7 @@ index 4c8c99046294dbcdb7bac607af383202faf1b22e..36ad3e6c09ebdd5480287042e634740b
          config.deb_provides = "www-browser"
  
          installer.gen_changelog(config, deb_changelog)
-@@ -172,6 +174,8 @@ def main() -> None:
+@@ -179,6 +181,8 @@ def main() -> None:
  
          os.environ["DEB_HOST_ARCH"] = args.arch
          pkg_name = f"{config.package_orig}-{config.channel}"

@@ -4,18 +4,19 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { showAlert } from '@brave/leo/react/alertCenter'
 import generateReactContext from '$web-common/api/react_api'
+import { getLocale } from '$web-common/locale'
 import { Url } from 'gen/url/mojom/url.mojom.m.js'
 import { IGNORE_EXTERNAL_LINK_WARNING_KEY } from '../../common/constants'
 import {
   isFullPageScreenshot,
-  processUploadedFilesWithLimits,
+  attachUploadedFilesWithLimits,
 } from '../../common/conversation_history_utils'
 import * as Mojom from '../../common/mojom'
-import useHasConversationStarted from '../hooks/useHasConversationStarted'
 import { useIsDragging } from '../hooks/useIsDragging'
 import { isLeoModel } from '../model_utils'
-import { SelectedChatDetails, tabAssociatedChatId } from './active_chat_context'
+import { SelectedChatDetails } from './active_chat_context'
 import useSendFeedback, { SendFeedbackState } from './useSendFeedback'
 import { useAIChat } from './ai_chat_context'
 import {
@@ -86,14 +87,9 @@ export function useProvideConversationContext(props: ConversationContextProps) {
   // Document-level and iframe drag handling
   useIsDragging({ setDragActive, setDragOver, clearDragState })
 
-  const [
-    showPremiumSuggestionForRegenerate,
-    setShowPremiumSuggestionForRegenerate,
-  ] = React.useState(false)
-
   const aiChat = useAIChat()
 
-  const { api, selectedConversationId, updateSelectedConversationId } = props
+  const { api } = props
   const conversationHistory = api.useGetConversationHistoryData()
   const { getStateData: conversationState } = api.useGetState()
 
@@ -157,21 +153,6 @@ export function useProvideConversationContext(props: ConversationContextProps) {
       (m) => m.key === conversationState.defaultModelKey,
     )
   }, [conversationState.allModels, conversationState.defaultModelKey])
-
-  // Update the location when the conversation has been started
-  const hasConversationStarted = useHasConversationStarted(
-    conversationState.conversationUuid,
-  )
-
-  React.useEffect(() => {
-    if (!hasConversationStarted) return
-    if (selectedConversationId === tabAssociatedChatId) return
-    if (conversationState.conversationUuid === selectedConversationId) return
-    updateSelectedConversationId(conversationState.conversationUuid)
-    // We don't want to re-run this effect on selectedConversationId change as
-    // that would cause an infinite loop.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hasConversationStarted, updateSelectedConversationId])
 
   const shouldShowLongConversationInfo = React.useMemo<boolean>(() => {
     if (!conversationHistory || !currentModel) {
@@ -251,10 +232,8 @@ export function useProvideConversationContext(props: ConversationContextProps) {
   }
 
   const handleSkillClick = (skill: Mojom.Skill) => {
-    setSelectedActionType(undefined)
-    setSelectedSkill(skill)
-    setIsToolsMenuOpen(false)
-
+    // Call makeEdit first before setting the selected skill to prevent
+    // race condition where the input text is not updated before the skill is set.
     makeEdit(document.querySelector('[data-editor="true"]')!)
       .selectRangeToTriggerChar('/')
       .replaceSelectedRange({
@@ -262,6 +241,10 @@ export function useProvideConversationContext(props: ConversationContextProps) {
         id: skill.shortcut,
         text: `/${skill.shortcut}`,
       })
+
+    setSelectedActionType(undefined)
+    setSelectedSkill(skill)
+    setIsToolsMenuOpen(false)
   }
 
   const handleSkillEdit = (skill: Mojom.Skill) => {
@@ -293,6 +276,7 @@ export function useProvideConversationContext(props: ConversationContextProps) {
       api.conversationHandler.submitHumanConversationEntryWithSkill(
         stringifyContent(inputText),
         selectedSkill.id,
+        pendingMessageFiles,
       )
     } else if (selectedActionType) {
       api.conversationHandler.submitHumanConversationEntryWithAction(
@@ -318,7 +302,66 @@ export function useProvideConversationContext(props: ConversationContextProps) {
       content,
       conversationState.conversationUuid,
     )
+
+    // If the attachment was removed then remove any references to it in the input text.
+    const matchingRef = inputText.findIndex(
+      (c) =>
+        typeof c !== 'string'
+        && c.type === 'attachment'
+        && c.url === content.url.url,
+    )
+    if (matchingRef !== -1) {
+      setInputText(inputText.filter((c, i) => i !== matchingRef))
+    }
   }
+
+  // In global panel always mode (not standalone, not tab-associated), the
+  // page handler no longer manages content associations directly. When the
+  // active tab or page changes, clear staged content and attach the new tab.
+  const prevDefaultTabContentIdRef = React.useRef<number | undefined>(undefined)
+  React.useEffect(() => {
+    if (!conversationState.conversationUuid) return
+    if (!props.isMainConversation || !aiChat.isGlobalPanel) {
+      return
+    }
+
+    const prevContentId = prevDefaultTabContentIdRef.current
+    const newContentId = aiChat.defaultTabContentId
+    if (prevContentId === newContentId) return
+
+    // Clear all staged content (not yet committed to a conversation turn).
+    for (const content of conversationState.associatedContent.filter(
+      (c) => !c.conversationTurnUuid,
+    )) {
+      aiChat.api.uiHandler.disassociateContent(
+        content,
+        conversationState.conversationUuid,
+      )
+    }
+
+    const newTab = tabsData?.find((t) => t.contentId === newContentId)
+
+    // If there's no new tab to attach, but the tabsData doesn't have it yet wait for the effect to re-run.
+    if (!newTab && newContentId) {
+      return
+    }
+
+    // We have up to date tabsData, so we can set the previousDefaultTabContentId to the new content id.
+    prevDefaultTabContentIdRef.current = newContentId
+
+    if (newTab) {
+      aiChat.api.uiHandler.associateTab(
+        newTab,
+        conversationState.conversationUuid,
+      )
+    }
+  }, [
+    aiChat.defaultTabContentId,
+    aiChat.isStandalone,
+    props.isMainConversation,
+    conversationState.conversationUuid,
+    tabsData,
+  ])
 
   const associateDefaultContent = React.useMemo(() => {
     const existingAttachedContent = conversationState.associatedContent.find(
@@ -344,24 +387,6 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     conversationState.conversationUuid,
   ])
 
-  // TODO(petemill): rename to switchToNonPremiumModel as there are no longer
-  // a different in limitations between basic and freemium models.
-  const switchToBasicModel = () => {
-    if (showPremiumSuggestionForRegenerate) {
-      setShowPremiumSuggestionForRegenerate(false)
-      return
-    }
-    // Select the first non-premium model
-    const nonPremium = conversationState.allModels.find(
-      (m) => m.options.leoModelOptions?.access !== Mojom.ModelAccess.PREMIUM,
-    )
-    if (!nonPremium) {
-      console.error('Could not find a non-premium model!')
-      return
-    }
-    api.conversationHandler.changeModel(nonPremium.key)
-  }
-
   const handleResetError = async () => {
     const turn = await api.clearErrorAndGetFailedMessage()
     setInputText([turn.text])
@@ -385,7 +410,31 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     )
   }
 
-  const processUploadedFiles = async (files: Mojom.UploadedFile[]) => {
+  const attachUploadedFiles = async (
+    uploadedFiles: (Mojom.UploadedFile | null)[],
+  ) => {
+    // Filter out text files where extraction failed (no extracted text).
+    const validFiles = uploadedFiles
+      .filter((f) => f)
+      .map((f) => f!)
+      .filter(
+        (f) =>
+          f.type !== Mojom.UploadedFileType.kText
+          || (f.extractedText !== undefined && f.extractedText !== null),
+      )
+
+    // Show error when some files were dropped: either text extraction
+    // failed, or unsupported files were included (the backend returns
+    // empty stubs for unsupported types like zip so they are filtered
+    // out here, while cancellation returns null and skips this path).
+    if (validFiles.length < uploadedFiles.length) {
+      showAlert({
+        type: 'error',
+        content: getLocale(S.CHAT_UI_FILE_UPLOAD_ERROR),
+        actions: [],
+      })
+    }
+
     // After mutation, any returned promise will be awaited before settling.
     // This won't re-fetch the conversation history, just get the latest
     // version if it's not invalidated.
@@ -393,8 +442,8 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     // Since we're in an async callback, we need to get the latest version of
     // data.
     setPendingMessageFiles((pendingMessageFiles) => {
-      const newFiles = processUploadedFilesWithLimits(
-        files,
+      const newFiles = attachUploadedFilesWithLimits(
+        validFiles,
         conversationHistory,
         pendingMessageFiles,
       )
@@ -406,6 +455,53 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     })
   }
 
+  // This function converts files into uploaded files by processing them with the C++ sanitizers.
+  const processUploadedFiles = async (files: File[]) => {
+    // Determine the mojom file type from the file.
+    const fileTypeToUploadedFileType = (
+      file: File,
+    ): Mojom.UploadedFileType | undefined => {
+      const mimeType = file.type.toLowerCase()
+      if (mimeType === 'application/pdf') {
+        return Mojom.UploadedFileType.kPdf
+      } else if (mimeType.startsWith('image/')) {
+        return Mojom.UploadedFileType.kImage
+      } else {
+        // Note: We attempt to parse any unknown files as text.
+        return Mojom.UploadedFileType.kText
+      }
+    }
+
+    // Processes the file using the C++ sanitizers
+    const processFile = async (
+      file: File,
+    ): Promise<Mojom.UploadedFile | null> => {
+      try {
+        const type = fileTypeToUploadedFileType(file)
+
+        const data = Array.from(new Uint8Array(await file.arrayBuffer()))
+        let promise: Promise<{ processedFile: Mojom.UploadedFile | null }>
+
+        // TODO(https://github.com/brave/brave-browser/issues/54918): We should just expose a `ProcessFile` function on the mojo API and do the file type detection on the C++ side.
+        if (type === Mojom.UploadedFileType.kText) {
+          promise = aiChat.api.uiHandler.processTextFile(data, file.name)
+        } else if (type === Mojom.UploadedFileType.kImage) {
+          promise = aiChat.api.uiHandler.processImageFile(data, file.name)
+        } else {
+          promise = aiChat.api.uiHandler.processPdfFile(data, file.name)
+        }
+
+        return await promise.then((p) => p.processedFile)
+      } catch (error) {
+        // Note: Error notifications will happen when attaching the files.
+        return null
+      }
+    }
+
+    const processedFiles = await Promise.all(files.map(processFile))
+    return attachUploadedFiles(processedFiles)
+  }
+
   // Register handler for when getScreenshots is called from
   // somewhere in the UI, and also keep track of whether it's in progress.
   const screenshotsMutation = api.useGetScreenshots()
@@ -414,42 +510,15 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     screenshotsMutation.mutate([], {
       onSuccess: async (screenshots) => {
         if (screenshots) {
-          return processUploadedFiles(screenshots)
+          return attachUploadedFiles(screenshots)
         }
       },
     })
   }
-
-  // Register handler for when uploadFile is called
-  const uploadFileMutation = aiChat.api.useUploadFile()
-
-  const uploadFile = (
-    args: Parameters<typeof uploadFileMutation.mutate>[0],
-  ) => {
-    uploadFileMutation.mutate(args, {
-      onSuccess: async (uploadedFiles, [useMediaCapture]) => {
-        // Reset event state, avoid us having to make a useState<bool> for this
-        aiChat.api.resetOnUploadFilesSelected()
-        if (uploadedFiles) {
-          return processUploadedFiles(uploadedFiles)
-        }
-      },
-    })
-  }
-
-  // Listen for user-chosen attached files are processing
-  // to display the uploading indicator only after user has chosen some files
-  // (and not just cancelled the file picker).
-  // Listening via useCurrentXYZ avoids having to create another state property
-  const isAttachedFilesProcessing =
-    aiChat.api.useCurrentOnUploadFilesSelected().hasEmitted
 
   // Is uploading is a combination of if files are being retrieved
   // or if chosen files are being processed.
-  const isUploadingFiles =
-    screenshotsMutation.isPending
-    || uploadFileMutation.isPending
-    || isAttachedFilesProcessing
+  const isUploadingFiles = screenshotsMutation.isPending
 
   const removeFile = (index: number) => {
     const fileToRemove = pendingMessageFiles[index]
@@ -467,17 +536,12 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     }
   }
 
-  // Whenever input text changes, check if the selected skill has been removed
+  // Since we only allow one skill to be selected at a time if the user clears the input text,
+  // we need to clear the selected skill.
   React.useEffect(() => {
-    if (!selectedSkill) return
-
-    // If we still have the skill selected there's nothing to do.
-    if (stringifyContent(inputText).startsWith(`/${selectedSkill.shortcut}`)) {
-      return
+    if (selectedSkill && stringifyContent(inputText) === '') {
+      setSelectedSkill(undefined)
     }
-
-    // Otherwise, the user has cleared it:
-    setSelectedSkill(undefined)
   }, [inputText, selectedSkill])
 
   // TODO(https://github.com/brave/brave-browser/issues/52542): Handle this conversation's deletion:
@@ -531,11 +595,6 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     setGeneratedUrlToBeOpened(url)
   }, [])
 
-  // Listen for showPremiumSuggestionForRegenerate requests from the child frame
-  aiChat.api.useShowPremiumSuggestionForRegenerate((isVisible) => {
-    setShowPremiumSuggestionForRegenerate(isVisible)
-  })
-
   // Listen for showSkillDialog requests from the child frame
   aiChat.api.useShowSkillDialog((prompt) => {
     aiChat.setSkillDialog({
@@ -546,6 +605,11 @@ export function useProvideConversationContext(props: ConversationContextProps) {
       createdTime: { internalValue: BigInt(0) },
       lastUsed: { internalValue: BigInt(0) },
     })
+  })
+
+  // Listen for handleResetError requests from the child frame
+  aiChat.api.useHandleResetError(() => {
+    handleResetError()
   })
 
   return {
@@ -571,18 +635,6 @@ export function useProvideConversationContext(props: ConversationContextProps) {
      * Use `api.useGetState().data.associatedContent` instead.
      */
     associatedContentInfo: conversationState.associatedContent,
-
-    /**
-     * @deprecated
-     * Use `api.useGetState().data.suggestedQuestions` instead.
-     */
-    suggestedQuestions: conversationState.suggestedQuestions,
-
-    /**
-     * @deprecated
-     * Use `api.useGetState().data.suggestionStatus` instead.
-     */
-    suggestionStatus: conversationState.suggestionStatus,
 
     /**
      * @deprecated
@@ -620,21 +672,13 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     setIgnoreExternalLinkWarning,
     disassociateContent,
     associateDefaultContent,
-    attachImages: (images: Mojom.UploadedFile[]) => {
-      processUploadedFiles(images)
-    },
+    attachFiles: processUploadedFiles,
 
     isDragActive,
     isDragOver,
     clearDragState,
 
     pendingMessageFiles,
-
-    /**
-     * @deprecated
-     * Use custom hook instead.
-     */
-    uploadFile,
 
     /**
      * @deprecated
@@ -658,22 +702,19 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     isCurrentModelLeo,
     shouldShowLongConversationInfo,
     unassociatedTabs,
-    showPremiumSuggestionForRegenerate,
 
     dismissLongConversationInfo: () =>
       setHasDismissedLongConversationInfo(true),
-    retryAPIRequest: () => api.conversationHandler.retryAPIRequest(),
+
     handleResetError,
     handleStopGenerating,
     // Experimentally don't cache model key locally, browser should notify of model change quickly
     setCurrentModel: (model: Mojom.Model) =>
       api.conversationHandler.changeModel(model.key),
-    generateSuggestedQuestions: () =>
-      api.conversationHandler.generateQuestions(),
+
     resetSelectedActionType,
     handleActionTypeClick,
     submitInputTextToAPI,
-    switchToBasicModel,
     handleVoiceRecognition,
     setTemporary: (isTemporary: boolean) => {
       // Backend would check if the conversation has not yet started

@@ -107,13 +107,24 @@ void RemoteConfigManager::SetMetricConfigs(
 
   metric_configs_.clear();
   activation_metric_names_.clear();
+  custom_attribute_names_.clear();
 
   for (const auto& entry : *result) {
-    if (!entry.second.activation_metric_name ||
+    if ((!entry.second.activation_metric_name &&
+         !entry.second.custom_attributes) ||
         !delegate_->GetLogTypeForHistogram(entry.first)) {
       continue;
     }
-    activation_metric_names_.insert(*entry.second.activation_metric_name);
+    if (entry.second.activation_metric_name) {
+      activation_metric_names_.insert(*entry.second.activation_metric_name);
+    }
+    if (entry.second.custom_attributes) {
+      for (const auto& attr : *entry.second.custom_attributes) {
+        if (attr) {
+          custom_attribute_names_.insert(*attr);
+        }
+      }
+    }
   }
 
   for (const auto& entry : *result) {
@@ -150,6 +161,18 @@ void RemoteConfigManager::SetMetricConfigs(
     }
     if (remote_config.cadence) {
       metric_config.cadence = remote_config.cadence;
+    }
+    if (remote_config.custom_attributes) {
+      for (size_t i = 0; i < remote_config.custom_attributes->size(); i++) {
+        const auto& attr = (*remote_config.custom_attributes)[i];
+        if (!attr) {
+          continue;
+        }
+        auto it = custom_attribute_names_.find(*attr);
+        if (it != custom_attribute_names_.end()) {
+          metric_config.custom_attributes[i] = *it;
+        }
+      }
     }
 
     metric_configs_.emplace(entry.first, metric_config);

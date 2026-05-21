@@ -131,16 +131,12 @@
 <translation id="8184318863960255706">詳細</translation>
 <translation id="780301667611848630">いいえ</translation>
 <translation id="1162706247109707219">OKをクリックすることで、お客様はWindows 10以降にアップデートするまで、インストールしたBraveブラウザに重要なセキュリティの修正が適用されないことを了承したものとみなされます。この警告は今後表示されません。</translation>
-<translation id="9164786361657554526">OKをクリックすることで、お客様はmacOS 10.15以降にアップデートするまで、インストールしたBraveブラウザに重要なセキュリティの修正が適用されないことを了承したものとみなされます。この警告は今後表示されません。</translation>
+<translation id="2971591422768125177">OKをクリックすることで、お客様はmacOS 10.15以降にアップデートするまで、インストールしたBraveブラウザに重要なセキュリティの修正が適用されないことを了承したものとみなされます。この警告は今後表示されません。</translation>
 <translation id="6020553119523541665">このタブは別のウィンドウで有効になっています</translation>
 <translation id="4987392683074136770">このタブをクリックすると、コンテンツがこのウィンドウに表示されます</translation>
 <translation id="8355523213948477234">「スプリットビュー」メニューボタン</translation>
 <translation id="6040143037577758943">閉じる</translation>
 <translation id="6665472986740899785">Brave通知広告</translation>
-<translation id="5582087890067572966">🎉 ウォレットの接続が完了しました！</translation>
-<translation id="4364336119478610380">このような通知が画面に表示されるたびに、クリックしなくても報酬を獲得できます。</translation>
-<translation id="5893017172751072752">Brave広告を見るだけで報酬を獲得できます</translation>
-<translation id="3447730462826640312">報酬獲得のためにクリックする必要はありません。もちろん、興味のある広告はクリックしてください！</translation>
 <translation id="5253166205743627564">プライベート広告をクリックしてBraveサーチをサポートしてくださり、ありがとうございます。私たちはビッグテックとは異なり、あなたのプライバシーを保護するために匿名で広告パフォーマンスを測定しています。</translation>
 <translation id="8748471354357836070">詳細 / オプトアウトの選択</translation>
 <translation id="5927196110206824867">スポンサー画像は、ユーザーファーストの独立したウェブを構築するというBraveのミッションをサポートしています。また、ビッグテックとは異なり、あなたのプライバシーを守るために匿名で広告パフォーマンスを測定します。</translation>
@@ -323,6 +319,8 @@
 <translation id="8813509417421129632"><ph name="SITE"/> に埋め込まれたページが保存を要求しています</translation>
 <translation id="7700010743463174379">このページが次の保存を要求しています:</translation>
 <translation id="6774238875569752630">このページに埋め込まれたページが次の保存を要求しています</translation>
+<translation id="1383876407941801731">検索</translation>
+<translation id="5496587651328244253">整理する</translation>
 <translation id="1233913566967531780">タブのグループ化</translation>
 <translation id="4034992002364254340">関連するすべてのタブを、新しいウィンドウにまとめる</translation>
 <translation id="8012125596344613514">トピックのサジェスチョン</translation>
@@ -335,11 +333,14 @@
 <translation id="7557539689487606886">プレミアムプランへ</translation>
 <translation id="1035309871698658326">これを開くと、プライベート以外のタブのタイトルと発信元が自動的にLeoに送信され、分類されます。</translation>
 <translation id="3435896845095436175">有効にする</translation>
+<translation id="9031526219709160683">Braveはこのサイトのプライバシー設定を最適化するお手伝いをいたします。Braveの提案を検討しますか？</translation>
+<translation id="5739953050957336013">提案を確認</translation>
 <translation id="9082792303833649978">この設定は、管理者または別のBraveポリシーによって管理されています。</translation>
 <translation id="1940221956626514677">ツールバーをカスタマイズ</translation>
 <translation id="6501807887341963552">テーマと色</translation>
 <translation id="6724227215236550330">保存されたパスワードはここに表示されます。このデバイスの <ph name="BRAND"/> にパスワードをインポートするには、 <ph name="BEGIN_LINK"/> CSV ファイルを選択してください<ph name="END_LINK"/></translation>
 <translation id="3575561030014162610">このデバイスでパスワードを <ph name="BRAND"/> にインポートするには、CSVファイルを選択してください</translation>
+<translation id="8570228839666486945">デバイス上のAI</translation>
 <translation id="9156965752763025780">変更内容は次に Brave を再起動したときに有効になります。</translation>
 <translation id="7179921470347911571">今すぐ再起動</translation>
 <translation id="1426410128494586442">はい</translation>
@@ -390,8 +391,15 @@
 <translation id="2113977810652731515">カード</translation>
 <translation id="4096343215397759358">プレビュー付きカード</translation>
 <translation id="5297085818601043899">ツールヒント</translation>
+<translation id="1033676453210290920">最小タブ幅</translation>
+<translation id="562967218762447012">最小（デフォルト）</translation>
+<translation id="574392208103952083">中</translation>
+<translation id="4209092469652827314">大</translation>
+<translation id="2658845370685508484">フル幅</translation>
+<translation id="1215972473274650670">スクロール可能なタブストリップを使用</translation>
 <translation id="5219886318310413094">すべてのウィンドウでピン留めされたタブを表示</translation>
 <translation id="2396127686705429331">ブックマークボタンを表示する</translation>
+<translation id="443318149139185498">メインメニューボタンにアウトラインロゴを使用</translation>
 <translation id="2814998458708016836">ワイドアドレスバーを使用する</translation>
 <translation id="4749586705247636385">メインコンテンツに角丸を表示</translation>
 <translation id="4109670531935487117">アドレスバー入力中に自動でサイト候補を表示</translation>
@@ -545,7 +553,7 @@
 <translation id="509873765238158442">Microsoft Recallをブロック</translation>
 <translation id="4763421121695677716">Microsoft Windowsコンピュータのリコール機能をブロックして、開いているBraveタブのスクリーンショットを自動的に撮影できないようにします。</translation>
 <translation id="1968895725257436430">データコレクション</translation>
-<translation id="4846154056248462491">終了時に</translation>
+<translation id="1700052872056357670">終了時にデータをクリア</translation>
 <translation id="216468847346280584">Brave広告のデータをクリア</translation>
 <translation id="2808630562319398131">Brave Rewardsデータをリセット...</translation>
 <translation id="6438096877646138757">閉じたときにCookiesを消去するサイト</translation>
@@ -792,6 +800,7 @@
 <translation id="1529674267267221673">ウェブサイトを右クリックすると、コンテキストメニューにLeoが表示されます。これにより、現在のウェブページのコンテキストがLeoに送信されます。</translation>
 <translation id="5226020406479918122">タブのグループ化モード</translation>
 <translation id="3705539672403311123">タブ検索ページでタブのグループ化を有効にします。 開くと、プライベート以外のタブのタイトルと発信元が自動的にLeoに送信され、分類されます。 <ph name="BEGIN_LINK"/><ph name="END_LINK"/></translation>
+<translation id="9049433973274198706">タブフォーカス向けデフォルトモデル</translation>
 <translation id="8172263161008556851">会話でおすすめのプロンプトを表示</translation>
 <translation id="5781842473834867765">会話履歴を保存</translation>
 <translation id="1082960401708055995">会話ストレージを無効にすると、以前に保存された会話はすべて永久に消去されます。この操作を元に戻すことはできません。</translation>
@@ -816,6 +825,8 @@
 <translation id="6374563306438145841">APIキー</translation>
 <translation id="3295756655687327124">Visionサポート</translation>
 <translation id="1415432774589088566">このモデルが画像を入力とする場合。例: Llama 3.2b vision</translation>
+<translation id="5718897035062884425">ツールサポート</translation>
+<translation id="2120046556683363911">このモデルが関数呼び出し/ツール使用をサポートしているかどうか</translation>
 <translation id="8008271349880309090">モデル名はモデル選択メニューに表示されます。</translation>
 <translation id="1355326130503900056">サービングフレームワークへのリクエストで表示されるモデル名。例: phi-3 (この名前がサービングフレームワークでの想定値と正確に一致しない場合、統合が機能しないためご注意ください)</translation>
 <translation id="3213787232304349732">サービングフレームワークがリクエストをリッスンする URL。不明点がある場合は、サービングフレームワークのドキュメントを確認してください。例えばOllama の場合は、常に「http://localhost:11434/v1/chat/completions」となります。</translation>

@@ -4,32 +4,51 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 
-export const SelectAccountTypeWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  width: 100%;
-  padding: 24px;
-  min-height: 320px;
-  height: 100%;
+// Shared Styles
+import { Column, Text, WalletButton } from '../../../../shared/style'
+import { layoutPanelWidth } from '../../../wallet-page-wrapper/wallet-page-wrapper.style'
+
+export const StyledWrapper = styled(Column)`
+  padding: 0px 32px 32px 32px;
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    padding: 0px 20px 20px 20px;
+  }
 `
 
-export const SelectAccountItemWrapper = styled.div`
+export const SectionWrapper = styled(Column)`
+  border: 1px solid ${leo.color.divider.subtle};
+  border-radius: ${leo.radius.l};
+  overflow: hidden;
+`
+
+export const SelectAccountItemWrapper = styled(Column)`
+  border-bottom: 1px solid ${leo.color.divider.subtle};
+  &:last-child {
+    border-bottom: none;
+  }
+`
+
+export const SelectAccountTitle = styled(Text)`
+  font: ${leo.font.heading.h4};
+  letter-spacing: ${leo.typography.letterSpacing.large};
+`
+
+export const TestAccountsButton = styled(WalletButton)<{ isOpen: boolean }>`
+  width: 100%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
-  width: 100%;
-`
-
-export const SelectAccountTitle = styled.span`
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text02};
-  margin-bottom: 12px;
+  justify-content: space-between;
+  cursor: pointer;
+  outline: none;
+  background: none;
+  border: none;
+  padding: 16px 24px;
+  font: ${leo.font.default.semibold};
+  letter-spacing: ${leo.typography.letterSpacing.default};
+  color: ${leo.color.text.secondary};
+  border-bottom: ${({ isOpen }) =>
+    isOpen ? `1px solid ${leo.color.divider.subtle}` : 'none'};
 `

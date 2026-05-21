@@ -148,17 +148,11 @@ export class SettingsBraveClearBrowsingDataOnExitPageV2Element
       return false;
     }
 
+// <if expr="enable_ai_chat">
     if (datatype === BrowsingDataType.BRAVE_AI_CHAT) {
-      // <if expr="enable_ai_chat">
-      if (!this.isLeoAssistantAndHistoryAllowed_) {
-        return false;
-      }
-      // </if>
-
-      // <if expr="not enable_ai_chat">
-      return false;
-      // </if>
+      return this.isLeoAssistantAndHistoryAllowed_;
     }
+// </if>
 
     return true;
   }

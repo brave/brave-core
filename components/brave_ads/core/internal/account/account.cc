@@ -31,14 +31,12 @@
 namespace brave_ads {
 
 Account::Account() {
-  GetAdsClient().AddObserver(this);
+  ads_client_observation_.Observe(&GetAdsClient());
 
   InitializeConfirmations();
 }
 
-Account::~Account() {
-  GetAdsClient().RemoveObserver(this);
-}
+Account::~Account() = default;
 
 void Account::AddObserver(AccountObserver* const observer) {
   CHECK(observer);
@@ -52,19 +50,13 @@ void Account::RemoveObserver(AccountObserver* const observer) {
   observers_.RemoveObserver(observer);
 }
 
-void Account::SetWallet(const std::string& payment_id,
-                        const std::string& recovery_seed_base64) {
-  std::optional<WalletInfo> wallet =
-      CreateWalletFromRecoverySeed(payment_id, recovery_seed_base64);
-  if (!wallet) {
-    BLOG(0, "Failed to initialize wallet");
-    return NotifyFailedToInitializeWallet();
+void Account::SetWallet(std::optional<WalletInfo> wallet) {
+  wallet_ = std::move(wallet);
+
+  if (wallet_) {
+    BLOG(1, "Successfully initialized wallet");
+    NotifyDidInitializeWallet(*wallet_);
   }
-
-  wallet_ = wallet;
-
-  BLOG(1, "Successfully initialized wallet");
-  NotifyDidInitializeWallet(*wallet);
 }
 
 void Account::GetStatement(GetStatementOfAccountsCallback callback) {
@@ -209,11 +201,11 @@ void Account::MaybeInitializeUserRewards() {
     return;
   }
 
-  BLOG(1, "Initialize user rewards");
-
-  if (!HasWallet()) {
+  if (!wallet_) {
     return;
   }
+
+  BLOG(1, "Initialize user rewards");
 
   user_rewards_ = std::make_unique<UserRewards>(*wallet_);
   user_rewards_->FetchIssuers();
@@ -261,7 +253,14 @@ void Account::OnNotifyPrefDidChange(const std::string& path) {
 void Account::OnNotifyRewardsWalletDidUpdate(
     const std::string& payment_id,
     const std::string& recovery_seed_base64) {
-  SetWallet(payment_id, recovery_seed_base64);
+  std::optional<WalletInfo> wallet =
+      MaybeBuildWalletFromRecoverySeed(payment_id, recovery_seed_base64);
+  if (!wallet) {
+    BLOG(0, "Failed to initialize wallet");
+    return NotifyFailedToInitializeWallet();
+  }
+
+  SetWallet(std::move(wallet));
 
   Initialize();
 }

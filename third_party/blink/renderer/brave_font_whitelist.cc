@@ -1983,7 +1983,7 @@ bool AllowFontByFamilyName(const blink::AtomicString& family_name,
   if (fontWhitelist.empty()) {
     return true;
   }
-  std::string lower_ascii_name = family_name.LowerASCII().Ascii();
+  std::string lower_ascii_name = family_name.ToAsciiLower().Ascii();
   if (std::ranges::binary_search(fontWhitelist, lower_ascii_name)) {
     return true;
   }
@@ -1995,15 +1995,16 @@ bool AllowFontByFamilyName(const blink::AtomicString& family_name,
 #if BUILDFLAG(IS_ANDROID)
   // There are literally hundreds of region-specific Noto fonts.
   // To reduce memory and maintenance, we allow them by wildcard.
-  if (family_name.StartsWithIgnoringASCIICase("noto sans ") ||
-      family_name.StartsWithIgnoringASCIICase("noto serif "))
+  if (family_name.StartsWithIgnoringAsciiCase("noto sans ") ||
+      family_name.StartsWithIgnoringAsciiCase("noto serif ")) {
     return true;
+  }
 #endif
   return false;
 }
 
 bool IsFontAllowedForFarbling(const blink::AtomicString& family_name) {
-  std::string lower_ascii_name = family_name.LowerASCII().Ascii();
+  std::string lower_ascii_name = family_name.ToAsciiLower().Ascii();
   return kFontFarblingSet.contains(lower_ascii_name);
 }
 

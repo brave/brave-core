@@ -38,7 +38,6 @@ struct CatalogCreativeSetInfo final {
   int per_month = 0;
   int total_max = 0;
   double value = 0.0;
-  std::string split_test_group;
   ConditionMatcherMap condition_matchers;
   CatalogSegmentList segments;
   CatalogOsList oses;

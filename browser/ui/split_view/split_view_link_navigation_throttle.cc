@@ -16,8 +16,7 @@
 // static
 void SplitViewLinkNavigationThrottle::MaybeCreateAndAdd(
     content::NavigationThrottleRegistry& registry) {
-  if (base::FeatureList::IsEnabled(features::kSideBySide) &&
-      base::FeatureList::IsEnabled(split_view::features::kSplitViewLink)) {
+  if (base::FeatureList::IsEnabled(split_view::features::kSplitViewLink)) {
     registry.AddThrottle(
         std::make_unique<SplitViewLinkNavigationThrottle>(registry));
   }

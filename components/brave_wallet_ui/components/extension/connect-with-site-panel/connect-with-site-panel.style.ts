@@ -90,7 +90,7 @@ export const WhiteSpace = styled.div`
 `
 
 export const PermissionsWrapper = styled(Column)`
-  top: 160px;
+  top: 180px;
   position: relative;
   z-index: 9;
 `

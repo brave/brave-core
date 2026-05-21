@@ -1,0 +1,18 @@
+diff --git a/chrome/browser/resources/history/app.html.ts b/chrome/browser/resources/history/app.html.ts
+index 13be39dc75d2bd81bd91cf0cd54ee6063926fc7c..61c161fd67f0c5fae622b86e85d54ff2c0c99185 100644
+--- a/chrome/browser/resources/history/app.html.ts
++++ b/chrome/browser/resources/history/app.html.ts
+@@ -54,13 +54,6 @@ export function getHtml(this: HistoryAppElement) {
+               ?narrow="${this.hasDrawer_}">
+             <div id="historyEmbeddingsDisclaimerContent">
+               $i18n{historyEmbeddingsDisclaimer}
+-              <a id="historyEmbeddingsDisclaimerLink"
+-                  href="$i18n{historyEmbeddingsSettingsUrl}" target="_blank"
+-                  aria-describedby="historyEmbeddingsDisclaimer"
+-                  @click="${this.onHistoryEmbeddingsDisclaimerLinkClick_}"
+-                  @auxclick="${this.onHistoryEmbeddingsDisclaimerLinkAuxclick_}">
+-                $i18n{learnMore}
+-              </a>
+             </div>
+           </div>
+           ${this.showTabs_ ? html`

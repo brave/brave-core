@@ -66,14 +66,10 @@ final class ScriptExecutionTests: XCTestCase {
 
     // Then
     // Await the script handler and checks it's contents
-    var foundMessage: SiteStateListenerScriptHandler.MessageDTO?
+    var messageData: Data?
     for try await message in stream {
       do {
-        let data = try JSONSerialization.data(withJSONObject: message.body)
-        foundMessage = try JSONDecoder().decode(
-          SiteStateListenerScriptHandler.MessageDTO.self,
-          from: data
-        )
+        messageData = try JSONSerialization.data(withJSONObject: message.body)
       } catch {
         XCTFail(String(describing: error))
       }
@@ -83,8 +79,7 @@ final class ScriptExecutionTests: XCTestCase {
     }
 
     // Ensure we got a result
-    XCTAssertNotNil(foundMessage)
-    XCTAssertEqual(foundMessage?.data.windowURL, "https://example.com/")
+    XCTAssertNotNil(messageData)
   }
 
   @MainActor func testFarblingProtectionScript() async throws {

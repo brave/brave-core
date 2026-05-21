@@ -10,6 +10,11 @@ import * as HWInterfaces from '../hardware/interfaces'
 import EthereumLedgerBridgeKeyring from '../../common/hardware/ledgerjs/eth_ledger_bridge_keyring'
 import SolanaLedgerBridgeKeyring from '../../common/hardware/ledgerjs/sol_ledger_bridge_keyring'
 import TrezorBridgeKeyring from '../../common/hardware/trezor/trezor_bridge_keyring'
+import {
+  createTrezorBridge,
+  TrezorBridgeTransport,
+} from '../../common/hardware/trezor/trezor-bridge-transport'
+import { kTrezorBridgeUrl } from '../../common/hardware/trezor/trezor-messages'
 import FilecoinLedgerBridgeKeyring from '../../common/hardware/ledgerjs/fil_ledger_bridge_keyring'
 import BitcoinLedgerBridgeKeyring from '../hardware/ledgerjs/btc_ledger_bridge_keyring'
 
@@ -20,16 +25,17 @@ let solanaHardwareKeyring: SolanaLedgerBridgeKeyring
 let bitcoinHardwareKeyring: BitcoinLedgerBridgeKeyring
 let trezorHardwareKeyring: TrezorBridgeKeyring
 
-export function getHardwareKeyring(
+export async function getHardwareKeyring(
   vendor: BraveWallet.HardwareVendor,
   coin: BraveWallet.CoinType,
   onAuthorized?: () => void,
-):
+): Promise<
   | EthereumLedgerBridgeKeyring
   | HWInterfaces.TrezorKeyring
   | FilecoinLedgerBridgeKeyring
   | SolanaLedgerBridgeKeyring
-  | BitcoinLedgerBridgeKeyring {
+  | BitcoinLedgerBridgeKeyring
+> {
   if (vendor === BraveWallet.HardwareVendor.kLedger) {
     if (coin === BraveWallet.CoinType.ETH) {
       return getLedgerEthereumHardwareKeyring(onAuthorized)
@@ -42,7 +48,7 @@ export function getHardwareKeyring(
     }
   } else if (vendor === BraveWallet.HardwareVendor.kTrezor) {
     if (coin === BraveWallet.CoinType.ETH) {
-      return getTrezorHardwareKeyring()
+      return await getTrezorHardwareKeyring()
     }
   }
 
@@ -85,9 +91,12 @@ export function getLedgerBitcoinHardwareKeyring(
   return bitcoinHardwareKeyring
 }
 
-export function getTrezorHardwareKeyring(): TrezorBridgeKeyring {
+export async function getTrezorHardwareKeyring(): Promise<TrezorBridgeKeyring> {
   if (!trezorHardwareKeyring) {
-    trezorHardwareKeyring = new TrezorBridgeKeyring()
+    const bridge = await createTrezorBridge(kTrezorBridgeUrl)
+    trezorHardwareKeyring = new TrezorBridgeKeyring(
+      new TrezorBridgeTransport(kTrezorBridgeUrl, bridge),
+    )
   }
   return trezorHardwareKeyring
 }

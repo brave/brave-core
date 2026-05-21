@@ -7,13 +7,11 @@
 description = 'Check if tab can be closed via middle mouse button click based on prefs'
 pattern = 'if (event.IsOnlyMiddleMouseButton())'
 replace = 'if (event.IsOnlyMiddleMouseButton() && controller_->CanCloseTabViaMiddleButtonClick())'
-count = 1
 
 [[substitution]]
 description = 'Add BRAVE_UI_VIEWS_TABS_TAB_LAYOUT_ADJUST_ICON_POSITION'
 re_pattern = '(gfx::Rect favicon_bounds\(start, contents_rect\.y\(\), 0, 0\);\s+if \(showing_icon_\) \{\n)'
 replace = '\1    BRAVE_UI_VIEWS_TABS_TAB_LAYOUT_ADJUST_ICON_POSITION\n'
-count = 1
 
 [[substitution]]
 description = 'Add BRAVE_UI_VIEWS_TABS_TAB_ALERT_INDICATOR_POSITION'

@@ -45,6 +45,12 @@ export const style = scoped.css`
     border: none;
   }
 
+  leo-dialog {
+    --leo-dialog-padding: 24px;
+
+    position: fixed;
+  }
+
   @keyframes background-fade-in {
     from { opacity: 0; }
     to { opacity: 1; }

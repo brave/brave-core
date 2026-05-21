@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_TIMER_BACKOFF_TIMER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_TIMER_BACKOFF_TIMER_H_
 
-#include <cstdint>
+#include <optional>
 
 #include "base/location.h"
 #include "base/time/time.h"
@@ -14,6 +14,9 @@
 
 namespace brave_ads {
 
+// A one-shot timer with exponential backoff, backed by `base::WallClockTimer`
+// so it fires correctly even if `TimeTicks` freeze during system suspend.
+// Backoff resets on `Stop`.
 class BackoffTimer final {
  public:
   // `location` provides basic info where the timer was posted from. Start a
@@ -48,11 +51,11 @@ class BackoffTimer final {
   }
 
  private:
-  base::TimeDelta CalculateDelay(base::TimeDelta delay);
+  base::TimeDelta CalculateDelay(base::TimeDelta delay) const;
 
   Timer timer_;
 
-  int64_t backoff_count_ = 0;
+  std::optional<base::TimeDelta> backoff_delay_;
   base::TimeDelta max_backoff_delay_ = base::Hours(1);
 };
 

@@ -1,0 +1,44 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+
+assert(!is_android)
+assert(enable_brave_wallet)
+
+source_set("trezor") {
+  sources = [
+    "trezor_ui.cc",
+    "trezor_ui.h",
+  ]
+  deps = [
+    "//brave/components/brave_wallet_ui:resources",
+    "//brave/components/brave_wallet_ui/trezor:trezor_bridge_generated",
+    "//brave/components/constants",
+    "//brave/components/resources:static_resources_grit",
+    "//content/public/browser",
+    "//ui/webui",
+    "//ui/webui/resources:resources_grit",
+  ]
+}
+
+source_set("browser_tests") {
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  sources = [ "trezor_ui_browsertest.cc" ]
+  deps = [
+    ":trezor",
+    "//base/test:test_support",
+    "//brave/browser/brave_wallet",
+    "//brave/components/brave_wallet/browser",
+    "//brave/components/brave_wallet/browser:utils",
+    "//chrome/browser:browser_process",
+    "//chrome/test:test_support",
+    "//chrome/test:test_support_ui",
+    "//content/test:test_support",
+    "//testing/gtest",
+  ]
+}

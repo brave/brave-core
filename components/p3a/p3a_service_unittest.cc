@@ -11,6 +11,7 @@
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "brave/components/p3a/pref_names.h"
+#include "brave/components/p3a_utils/custom_attributes.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_task_environment.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -137,6 +138,21 @@ TEST_F(P3AServiceTest, MetricValueStored) {
   stored_log = local_state_.GetDict(kSlowConstellationPrepPrefName)
                    .FindDict(kTestSlowHistogramName);
   EXPECT_TRUE(stored_log != nullptr);
+}
+
+TEST_F(P3AServiceTest, CustomAttributeStored) {
+  CreateP3AService();
+
+  p3a_utils::SetCustomAttribute("foo", "bar");
+
+  const auto* value =
+      local_state_.GetDict(kCustomAttributesDictPref).FindString("foo");
+  ASSERT_TRUE(value != nullptr);
+  EXPECT_EQ(*value, "bar");
+
+  p3a_utils::SetCustomAttribute("foo", std::nullopt);
+  EXPECT_FALSE(
+      local_state_.GetDict(kCustomAttributesDictPref).FindString("foo"));
 }
 
 }  // namespace p3a

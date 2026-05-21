@@ -109,12 +109,15 @@ void CardanoCreateTransactionTask::OnMaybeAllRequiredDataFetched() {
 void CardanoCreateTransactionTask::RunSolverForTransaction() {
   CHECK(IsAllRequiredDataFetched());
 
-  TxBuilderParms builder_params;
+  if (address_to_.IsStakeOnlyAddress()) {
+    StopWithError(WalletInternalErrorMessage());
+    return;
+  }
+
+  TxBuilderParms builder_params(address_to_, *change_address_);
   builder_params.amount = amount_;
   builder_params.sending_max_amount = sending_max_amount_;
   builder_params.token_to_send = token_to_send_;
-  builder_params.send_to_address = address_to_;
-  builder_params.change_address = *change_address_;
   builder_params.epoch_parameters = *latest_epoch_parameters_;
   if (!base::CheckAdd<uint64_t>(latest_block_->slot, kTxValiditySeconds)
            .AssignIfValid(&builder_params.invalid_after)) {

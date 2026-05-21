@@ -6,6 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_SLOT_CONTROLLER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_SLOT_CONTROLLER_H_
 
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/accent_color/brave_tab_accent_types.h"
 #include "ui/base/models/image_model.h"
 
@@ -56,14 +57,21 @@ class TreeTabNodeId;
 #define ShiftGroupRight(...)                                              \
   ShiftGroupRight(__VA_ARGS__) = 0;                                       \
   virtual int GetTreeHeight(const tree_tab::TreeTabNodeId& id) const = 0; \
-  virtual const tabs::TreeTabNode& GetTreeTabNode(                        \
+  virtual const tabs::TreeTabNode* GetTreeTabNode(                        \
       const tree_tab::TreeTabNodeId& id) const = 0;                       \
   virtual void SetTreeTabNodeCollapsed(const tree_tab::TreeTabNodeId& id, \
                                        bool collapsed) = 0;               \
   virtual bool IsInCollapsedTreeTabNode(const tree_tab::TreeTabNodeId& id) const
 
+// Brave horizontal tab minimum width mode and horizontal scroll state
+#define GetStrokeThickness()                                          \
+  GetStrokeThickness() const = 0;                                     \
+  virtual brave_tabs::TabMinWidthMode GetTabMinWidthMode() const = 0; \
+  virtual bool IsHorizontalScrollingEnabled()
+
 #include <chrome/browser/ui/views/tabs/tab_slot_controller.h>  // IWYU pragma: export
 
+#undef GetStrokeThickness
 #undef ShiftGroupRight
 #undef CanPaintThrobberToLayer
 #undef EndDrag

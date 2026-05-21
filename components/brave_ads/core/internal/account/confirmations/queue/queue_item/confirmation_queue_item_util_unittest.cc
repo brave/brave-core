@@ -9,13 +9,13 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_builder.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_util_constants.h"
-#include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_util.h"
-#include "brave/components/brave_ads/core/internal/account/confirmations/user_data_builder/confirmation_user_data_builder_test_util.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_test_util.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/token_generator_test_util.h"
-#include "brave/components/brave_ads/core/internal/account/transactions/transaction_test_constants.h"
-#include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/reward/test/reward_confirmation_test_util.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/user_data_builder/test/confirmation_user_data_builder_test_util.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/test/confirmation_tokens_test_util.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/test/token_generator_test_util.h"
+#include "brave/components/brave_ads/core/internal/account/transactions/test/transaction_test_constants.h"
+#include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
@@ -33,7 +33,7 @@ TEST_F(BraveAdsConfirmationQueueItemUtilTest,
   test::RefillConfirmationTokens(/*count=*/1);
 
   std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
   const ConfirmationQueueItemInfo confirmation_queue_item =
       BuildConfirmationQueueItem(*confirmation,
@@ -55,7 +55,7 @@ TEST_F(BraveAdsConfirmationQueueItemUtilTest,
   test::RefillConfirmationTokens(/*count=*/1);
 
   std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
   const ConfirmationQueueItemInfo confirmation_queue_item =
       BuildConfirmationQueueItem(*confirmation,
@@ -78,7 +78,7 @@ TEST_F(BraveAdsConfirmationQueueItemUtilTest,
   test::RefillConfirmationTokens(/*count=*/1);
 
   std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
   const ConfirmationQueueItemInfo confirmation_queue_item =
       BuildConfirmationQueueItem(
@@ -106,7 +106,7 @@ TEST_F(BraveAdsConfirmationQueueItemUtilTest,
   AdvanceClockTo(test::TimeFromUTCString("Mon, 8 Jul 1996 09:25"));
 
   std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   const base::Time created_at = test::Now();
@@ -142,7 +142,7 @@ TEST_F(BraveAdsConfirmationQueueItemUtilTest,
   AdvanceClockTo(test::TimeFromUTCString("Mon, 8 Jul 1996 09:25"));
 
   std::optional<ConfirmationInfo> confirmation =
-      test::BuildRewardConfirmation(/*should_generate_random_uuids=*/false);
+      test::BuildRewardConfirmation(/*use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   const base::Time created_at = test::Now();

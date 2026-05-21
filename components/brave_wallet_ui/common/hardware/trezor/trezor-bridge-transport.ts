@@ -4,32 +4,28 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import {
-  kTrezorBridgeUrl,
   MessagingTransport,
   TrezorErrorsCodes,
   TrezorFrameCommand,
 } from './trezor-messages'
 
-// Handles sending messages to the Trezor library, creates untrusted iframe,
-// loads library and allows to send commands to the library and subscribe
-// for responses.
+// Handles sending messages to the Trezor library iframe and subscribing for
+// responses.
 export class TrezorBridgeTransport extends MessagingTransport {
-  constructor(bridgeFrameUrl: string) {
+  constructor(bridgeFrameUrl: string, bridge: HTMLIFrameElement) {
     super()
     this.bridgeFrameUrl = bridgeFrameUrl
-    this.frameId = crypto.randomUUID()
+    this.bridge = bridge
   }
 
-  private readonly frameId: string
   private readonly bridgeFrameUrl: string
-  private bridge?: HTMLIFrameElement
+  private readonly bridge: HTMLIFrameElement
 
   closeBridge = () => {
-    if (!this.bridge || !this.hasBridgeCreated()) {
+    if (!this.bridge) {
       return
     }
-    const element = document.getElementById(this.frameId)
-    element?.parentNode?.removeChild(element)
+    this.bridge.parentNode?.removeChild(this.bridge)
   }
 
   /**
@@ -39,10 +35,7 @@ export class TrezorBridgeTransport extends MessagingTransport {
   sendCommandToTrezorFrame = <T>(
     command: TrezorFrameCommand,
   ): Promise<T | TrezorErrorsCodes> => {
-    return new Promise<T | TrezorErrorsCodes>(async (resolve) => {
-      if (!this.bridge && !this.hasBridgeCreated()) {
-        this.bridge = await this.createBridge()
-      }
+    return new Promise<T | TrezorErrorsCodes>((resolve) => {
       if (!this.bridge || !this.bridge.contentWindow) {
         resolve(TrezorErrorsCodes.BridgeNotReady)
         return
@@ -76,38 +69,32 @@ export class TrezorBridgeTransport extends MessagingTransport {
   private readonly getTrezorBridgeOrigin = () => {
     return new URL(this.bridgeFrameUrl).origin
   }
-
-  private readonly createBridge = () => {
-    return new Promise<HTMLIFrameElement>((resolve) => {
-      let element = document.createElement('iframe')
-      element.id = this.frameId
-      element.src = this.bridgeFrameUrl
-      element.style.display = 'none'
-      element.onload = () => {
-        resolve(element)
-      }
-      document.body.appendChild(element)
-    })
-  }
-
-  private readonly hasBridgeCreated = (): boolean => {
-    return document.getElementById(this.frameId) !== null
-  }
 }
 
-let transport: TrezorBridgeTransport
-export async function sendTrezorCommand<T>(
-  command: TrezorFrameCommand,
-): Promise<T | TrezorErrorsCodes> {
-  if (!transport) {
-    transport = new TrezorBridgeTransport(kTrezorBridgeUrl)
-  }
-  return transport.sendCommandToTrezorFrame<T>(command)
+export async function createTrezorBridge(
+  bridgeFrameUrl: string,
+): Promise<HTMLIFrameElement> {
+  let element = document.createElement('iframe')
+  element.id = crypto.randomUUID()
+  element.style.display = 'none'
+
+  await new Promise<void>((resolve, reject) => {
+    element.onload = () => {
+      resolve()
+    }
+    element.onerror = () => {
+      reject(
+        new Error(`Failed to load Trezor bridge iframe: ${bridgeFrameUrl}`),
+      )
+    }
+
+    document.body.appendChild(element)
+    element.src = bridgeFrameUrl
+  })
+
+  return element
 }
 
-export async function closeTrezorBridge() {
-  if (!transport) {
-    return
-  }
+export async function closeTrezorBridge(transport: TrezorBridgeTransport) {
   return transport.closeBridge()
 }

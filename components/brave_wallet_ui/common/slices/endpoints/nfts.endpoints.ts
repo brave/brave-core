@@ -286,7 +286,7 @@ export const nftsEndpoints = ({
       providesTags: ['SimpleHashSpamNFTs'],
     }),
 
-    getNftOwner: query<
+    getEthNftOwner: query<
       string, // owner address
       { contract: string; tokenId: string; chainId: string }
     >({
@@ -309,7 +309,7 @@ export const nftsEndpoints = ({
         } catch (error) {
           return handleEndpointError(
             endpoint,
-            `Unable to fetch owner address for NFT(${
+            `Unable to fetch owner address for ETH NFT(${
               arg.contract //
             }-${arg.tokenId}) on chain(${arg.chainId})`,
             error,

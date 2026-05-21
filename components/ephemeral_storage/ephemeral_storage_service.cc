@@ -111,6 +111,11 @@ void EphemeralStorageService::Shutdown() {
   }
   observer_list_.Clear();
   weak_ptr_factory_.InvalidateWeakPtrs();
+
+  // Reset delegate early to ensure proper cleanup order.
+  // This prevents the delegate from being destroyed later when dependent
+  // services (like HistoryService) may have already been shut down.
+  delegate_.reset();
 }
 
 base::WeakPtr<EphemeralStorageService> EphemeralStorageService::GetWeakPtr() {
@@ -227,6 +232,16 @@ void EphemeralStorageService::TLDEphemeralLifetimeDestroyed(
   const GURL url(GetFirstPartyStorageURL(ephemeral_domain));
   const auto auto_shred_mode = delegate_->GetAutoShredMode(url);
 
+  // We should clean up the browsing history only if shred for browsing history
+  // is enabled and the shred operation has been started manually or by the auto
+  // shred feature.
+  const bool cleanup_browsing_history_for_tld =
+      (cleanup_mode == StorageCleanupMode::kImmediateShred ||
+       (auto_shred_mode.has_value() &&
+        auto_shred_mode.value() !=
+            brave_shields::mojom::AutoShredMode::NEVER)) &&
+      delegate_->IsShredBrowsingHistoryEnabled();
+
   const TLDEphemeralAreaKey key(ephemeral_domain, storage_partition_config);
   const bool cleanup_tld_ephemeral_area =
       !shields_disabled_on_one_of_hosts ||
@@ -259,11 +274,13 @@ void EphemeralStorageService::TLDEphemeralLifetimeDestroyed(
         base::BindOnce(&EphemeralStorageService::CleanupTLDEphemeralAreaByTimer,
                        weak_ptr_factory_.GetWeakPtr(), key,
                        cleanup_tld_ephemeral_area,
-                       cleanup_first_party_storage_area));
+                       cleanup_first_party_storage_area,
+                       cleanup_browsing_history_for_tld));
     tld_ephemeral_areas_to_cleanup_.emplace(key, std::move(cleanup_timer));
   } else {
     CleanupTLDEphemeralArea(key, cleanup_tld_ephemeral_area,
-                            cleanup_first_party_storage_area);
+                            cleanup_first_party_storage_area,
+                            cleanup_browsing_history_for_tld);
   }
 }
 
@@ -394,17 +411,20 @@ bool EphemeralStorageService::FirstPartyStorageAreaNotInUse(
 void EphemeralStorageService::CleanupTLDEphemeralAreaByTimer(
     const TLDEphemeralAreaKey& key,
     bool cleanup_tld_ephemeral_area,
-    bool cleanup_first_party_storage_area) {
+    bool cleanup_first_party_storage_area,
+    bool cleanup_browsing_history_for_tld) {
   DVLOG(1) << __func__ << " " << key.first << " " << key.second;
   tld_ephemeral_areas_to_cleanup_.erase(key);
   CleanupTLDEphemeralArea(key, cleanup_tld_ephemeral_area,
-                          cleanup_first_party_storage_area);
+                          cleanup_first_party_storage_area,
+                          cleanup_browsing_history_for_tld);
 }
 
 void EphemeralStorageService::CleanupTLDEphemeralArea(
     const TLDEphemeralAreaKey& key,
     bool cleanup_tld_ephemeral_area,
-    bool cleanup_first_party_storage_area) {
+    bool cleanup_first_party_storage_area,
+    bool cleanup_browsing_history_for_tld) {
   DVLOG(1) << __func__ << " " << key.first << " " << key.second;
   if (cleanup_tld_ephemeral_area) {
     delegate_->CleanupTLDEphemeralArea(key);
@@ -412,6 +432,9 @@ void EphemeralStorageService::CleanupTLDEphemeralArea(
   fpes_tokens_.erase(key.first);
   if (cleanup_first_party_storage_area) {
     CleanupFirstPartyStorageArea(key);
+  }
+  if (cleanup_browsing_history_for_tld) {
+    delegate_->CleanupTLDBrowsingHistory(key);
   }
   for (auto& observer : observer_list_) {
     observer.OnCleanupTLDEphemeralArea(key);
@@ -442,14 +465,14 @@ void EphemeralStorageService::ScheduleFirstPartyStorageAreasCleanupOnStartup() {
       base::Seconds(
           net::features::
               kBraveForgetFirstPartyStorageStartupCleanupDelayInSeconds.Get()),
-      base::BindOnce(
-          &EphemeralStorageService::CleanupFirstPartyStorageAreasOnStartup,
-          weak_ptr_factory_.GetWeakPtr()));
+      base::BindOnce(&EphemeralStorageService::CleanupOnStartup,
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
-void EphemeralStorageService::CleanupFirstPartyStorageAreasOnStartup() {
+void EphemeralStorageService::CleanupOnStartup() {
   DCHECK(!context_->IsOffTheRecord());
   ScopedListPrefUpdate pref_update(prefs_, kFirstPartyStorageOriginsToCleanup);
+
   for (const auto& url_to_cleanup :
        first_party_storage_areas_to_cleanup_on_startup_) {
     const auto url_and_storage_partition_config =
@@ -465,8 +488,18 @@ void EphemeralStorageService::CleanupFirstPartyStorageAreasOnStartup() {
       continue;
     }
 
-    delegate_->CleanupFirstPartyStorageArea(
-        {std::string(url.host()), storage_partition_config});
+    auto key =
+        std::make_pair(std::string(url.host()), storage_partition_config);
+    delegate_->CleanupFirstPartyStorageArea(key);
+
+    const auto auto_shred_mode = delegate_->GetAutoShredMode(url);
+    if (auto_shred_mode.has_value() &&
+        auto_shred_mode.value() != brave_shields::mojom::AutoShredMode::NEVER &&
+        delegate_->IsShredBrowsingHistoryEnabled()) {
+      // We should clean up the browsing history if shred for browsing
+      // history is enabled
+      delegate_->CleanupTLDBrowsingHistory(key);
+    }
   }
   first_party_storage_areas_to_cleanup_on_startup_.clear();
 }

@@ -360,7 +360,9 @@ if (brave_wallet_enabled) {
 
 ## ✅ Use Friend Class for Test/Private Access
 
-**When tests or subclasses need access to private members, use `friend` declarations instead of making methods public or protected.**
+**When tests or other classes need access to private members, use `friend` declarations instead of making methods public or protected.** This rule is about bypassing access control for convenience. It does not apply to normal inheritance where a subclass calls inherited protected methods or exposes new public methods that delegate to them.
+
+This rule does not apply to `*ForTesting()` methods, which are an accepted Chromium convention for exposing test-only accessors.
 
 ```cpp
 // ❌ WRONG - making methods public just for testing
@@ -373,7 +375,18 @@ private:
   void InternalMethod();
 ```
 
-For patches, use a `BRAVE_CLASS_NAME_H` define at the end of `public:` that adds friend declarations.
+To add a friend declaration to an upstream class, use a `#define` in a chromium_src header override that piggybacks the friend declaration onto an existing method name:
+
+```cpp
+// chromium_src/chrome/browser/extensions/component_loader.h
+#define AddNetworkSpeechSynthesisExtension    \
+  AddNetworkSpeechSynthesisExtensionUnused(); \
+  friend class BraveComponentLoader;          \
+  void AddNetworkSpeechSynthesisExtension
+
+#include <chrome/browser/extensions/component_loader.h>  // IWYU pragma: export
+#undef AddNetworkSpeechSynthesisExtension
+```
 
 ---
 
@@ -964,35 +977,6 @@ if (old_value != visual_content_used_percentage_) {
 
 ---
 
-<a id="ARCH-052"></a>
-
-## ✅ Set Default Values in Mojom Struct Fields
-
-**Mojom struct fields should have explicit default values for safety.** Uninitialized mojom fields can lead to unexpected behavior when the struct is partially constructed.
-
-**Exception:** Do not flag fields whose types are opaque resources that must always be provided by the caller — e.g., `mojo_base.mojom.BigBuffer`, `handle`, `pending_remote`, `pending_receiver`, `pending_associated_remote`, `pending_associated_receiver`. Adding empty defaults for these types would mask bugs where a field is accidentally omitted. When in doubt whether a type benefits from a default, don't bother commenting.
-
-```mojom
-// ❌ WRONG - no defaults on primitive/string fields
-struct ModelConfig {
-  string name;
-  bool supports_tools;
-};
-
-// ✅ CORRECT - explicit defaults on primitive/string fields
-struct ModelConfig {
-  string name = "";
-  bool supports_tools = false;
-};
-
-// ✅ CORRECT - no default on opaque resource fields (must always be provided)
-struct ModelFiles {
-  mojo_base.mojom.BigBuffer weights;
-};
-```
-
----
-
 <a id="ARCH-053"></a>
 
 ## ❌ Avoid Cross-Feature Module Dependencies
@@ -1005,18 +989,17 @@ struct ModelFiles {
 
 ## ✅ Shared URL Constants Belong in `brave_domains`
 
-**When a URL constant (like a service endpoint) is shared across multiple components with no clear single owner, place it in a `brave_domains:constants` target.** Don't duplicate the constant in each component, and don't add it to the legacy `brave_constants.h`.
+**When a URL constant or URL-building function (like a service endpoint) is shared across multiple components with no clear single owner, place it in the `brave_domains:urls` target.** Don't duplicate it in each component, and don't add it to the legacy `brave_constants.h`. For environment-aware URLs, use `GetServicesDomain()` from `brave_domains/service_domains.h`.
 
-```gn
-# ❌ WRONG - duplicated across components
-# components/brave_rewards/common/constants.h
+```cpp
+// ❌ WRONG - duplicated across components
+// components/brave_rewards/common/constants.h
 inline constexpr char kGate3Url[] = "https://gate3.brave.com";
-# components/brave_wallet/common/constants.h
+// components/brave_wallet/common/constants.h
 inline constexpr char kGate3Url[] = "https://gate3.brave.com";
 
-# ✅ CORRECT - shared via brave_domains
-# components/brave_domains/constants.h (with appropriate buildflag guard)
-inline constexpr char kGate3Url[] = "https://gate3.brave.com";
+// ✅ CORRECT - shared via brave_domains/urls.h
+GURL GetGate3URL();  // environment-aware, uses GetServicesDomain()
 ```
 
 ---
@@ -1218,9 +1201,27 @@ If re-entrancy is unavoidable, document it clearly and use guards (e.g., `base::
 
 <a id="ARCH-062"></a>
 
-## ✅ Every UI Feature Needs a CUJ Test; Avoid Change Detector Tests
+## ✅ Every UI Feature Needs a CUJ Test
 
-**Every UI feature should have at least one Critical User Journey (CUJ) test** using `InteractiveBrowserTest`. Do not use `BrowserWithTestWindowTest` — it forces `if (!browser_view)` test-only checks in production code. Use browser tests or unit tests with proper dependency injection instead.
+**Every feature that adds or modifies user-visible UI should have at least one Critical User Journey (CUJ) test** using `InteractiveBrowserTest`. Do not use `BrowserWithTestWindowTest` — it forces `if (!browser_view)` test-only checks in production code. Use browser tests or unit tests with proper dependency injection instead.
+
+This rule applies to features with UI changes (new views, buttons, dialogs, etc.). Non-UI components such as tab helpers, services, or background logic should be covered by unit tests or browser tests appropriate to the code — a CUJ test is not required when there is no user-visible interaction to validate.
+
+```cpp
+// ✅ CORRECT - CUJ test: validates user-visible behavior end-to-end
+IN_PROC_BROWSER_TEST_F(MyFeatureInteractiveTest, UserCanToggleFeature) {
+  RunTestSequence(
+      PressButton(kMyButton),
+      WaitForShow(kResultView),
+      CheckViewProperty(kResultView, &views::Label::GetText, u"Enabled"));
+}
+```
+
+---
+
+<a id="ARCH-062b"></a>
+
+## ❌ Avoid Change Detector Tests
 
 **Avoid change detector tests.** A change detector test is easy to spot because the test logic mirrors the production logic — it just calls the same method and checks the obvious result. These tests break whenever the implementation changes but catch no real bugs. The purpose of a unit test is to validate behavior across common and edge cases for code that has many possible valid inputs.
 
@@ -1253,14 +1254,6 @@ TEST(Math, CheckIsPrime) {
   EXPECT_FALSE(IsPrime(99));
   EXPECT_FALSE(IsPrime(-2));
 }
-
-// ✅ CORRECT - CUJ test: validates user-visible behavior end-to-end
-IN_PROC_BROWSER_TEST_F(MyFeatureInteractiveTest, UserCanToggleFeature) {
-  RunTestSequence(
-      PressButton(kMyButton),
-      WaitForShow(kResultView),
-      CheckViewProperty(kResultView, &views::Label::GetText, u"Enabled"));
-}
 ```
 
 ---
@@ -1288,9 +1281,29 @@ bool IsFeatureReady(MyService* service) {
 
 <a id="ARCH-064"></a>
 
-## ✅ Use Unowned User Data Pattern for Tab/Window Feature Retrieval
+## ✅ Use Unowned User Data Pattern for Tab/Window Feature Retrieval When External Retrieval Is Needed
 
-**Tab-scoped and browser-window-scoped features should use the Unowned User Data pattern** to separate creation/lifetime management from retrieval. Features are owned by `TabFeatures` or `BrowserWindowFeatures` but retrieved via a static `From()` method on `TabInterface` or `BrowserWindowInterface`. See [Unowned User Data README](https://chromium.googlesource.com/chromium/src/+/main/ui/base/unowned_user_data/README.md).
+Tab-scoped and browser-window-scoped features use one of two ownership patterns depending on whether external code needs to retrieve them. See the upstream [Chrome Browser Design Principles](https://chromium.googlesource.com/chromium/src/+/main/docs/chrome_browser_design_principles.md#architecture) for background.
+
+**Simple `unique_ptr` member** — Use when the feature is **self-contained** (observes events internally, doesn't need to be looked up by other code). Owned as a `unique_ptr` member of `BraveTabFeatures` / `BraveBrowserWindowFeatures`. Upstream example: `JsOptimizationsPageActionController` takes its dependencies in the constructor and is simply instantiated in `TabFeatures::Init()`:
+
+```cpp
+// In BraveTabFeatures:
+std::unique_ptr<MyTabFeature> my_tab_feature_;
+```
+
+**Unowned User Data pattern** — Use when **external code needs to retrieve** the feature from a `TabInterface` or `BrowserWindowInterface` via a static `From()` method. This separates creation/lifetime management from retrieval. Upstream example: `CommerceUiTabHelper` is retrieved externally via `CommerceUiTabHelper::From(tab)` by UI code that needs to query commerce state for a given tab. See [Unowned User Data README](https://chromium.googlesource.com/chromium/src/+/main/ui/base/unowned_user_data/README.md).
+
+Example of external retrieval that motivates this pattern:
+
+```cpp
+// Code outside the feature (e.g. a toolbar button or bubble) needs to
+// look up the feature for a given tab:
+auto* feature = MyTabFeature::From(tab);
+if (feature) {
+  feature->DoSomething();
+}
+```
 
 **Setup (~7 lines of boilerplate):**
 
@@ -1372,3 +1385,121 @@ This avoids `BrowserWithTestWindowTest` (which Chromium discourages for producti
 ## ✅ Preference Keys Must Be Correct Before Shipping
 
 **Preference keys that get persisted to disk must be spelled correctly before the first release that includes them.** Changing a preference key after it ships requires a migration path to avoid losing user data. Double-check key strings during review.
+
+---
+
+<a id="ARCH-070"></a>
+
+## ✅ Keep PRs Focused on a Single Purpose
+
+**Each pull request should have one main purpose. Avoid bundling unrelated "ride-along" changes into the same PR.** If you notice something unrelated that needs fixing while working on a PR, make that fix in a separate PR instead.
+
+Focused PRs are easier to review, easier to revert if something goes wrong, and produce a cleaner git history. Mixing unrelated changes obscures the intent of each change and makes bisecting regressions harder.
+
+Small, closely related cleanups in code you are already modifying are acceptable. Formatting changes required by the formatter or presubmit are also fine but should be in a separate commit within the same PR.
+
+Examples of ride-along changes to avoid:
+- Fixing a separate bug you noticed while implementing a feature
+- Adding unrelated refactoring alongside a behavioral change
+- Large-scale renaming or reformatting unrelated to your change
+- Reordering functions or methods for aesthetic reasons
+
+---
+
+<a id="ARCH-071"></a>
+
+## ❌ No Browser-Process-Only APIs in `common/` Directories
+
+**Code under `components/.../common/` must not depend on APIs that only exist in the browser process** — `PrefService`, `content::BrowserContext`, `Profile`, `g_browser_process`, etc. `common/` is compiled into any process that links the component (browser, renderer, utility), so referencing browser-only types there is meaningless or unsafe for non-browser callers.
+
+This is the inverse of the `common/` rule above: code moves *into* `common/` only when it is genuinely safe for every process.
+
+```cpp
+// ❌ WRONG - common/ helper that takes a PrefService
+// components/playlist/core/common/utils.h
+namespace playlist {
+bool IsPlaylistEnabled(PrefService* prefs);  // PrefService is browser-only!
+}
+```
+
+```
+# ❌ WRONG - common/DEPS opening access to browser-only deps
+# components/playlist/core/common/DEPS
+include_rules = [
+  "+components/prefs",
+]
+```
+
+```cpp
+// ✅ CORRECT - helper lives in browser/, where PrefService is valid
+// components/playlist/core/browser/utils.h
+namespace playlist {
+bool IsPlaylistEnabled(PrefService* prefs);
+}
+```
+
+**Directory rules:**
+- `common/` — deps must be safe for every process: `//base`, mojom, shared structs
+- `browser/` — browser process only; `PrefService`, `BrowserContext`, `Profile`, `g_browser_process`
+- `renderer/` — renderer process only
+- `services/` — utility process services
+
+A new `+components/prefs` line (or similar) in a `common/DEPS` file is almost always a sign that the helper belongs in `browser/` instead.
+
+---
+
+<a id="ARCH-072"></a>
+
+## ✅ Factory Return Value Must Be Stable Across the Browser Session
+
+**A `KeyedServiceFactory` may only return `nullptr` (or skip service creation) based on attributes that are fixed for the entire browser session** — profile type, buildflags, and feature flags. Do not gate the result on user-modifiable prefs.
+
+This rule applies to both places a factory can return null:
+
+1. `BuildServiceInstanceForBrowserContext` (returning `nullptr` skips creation), and
+2. The static `GetForProfile` / `GetForBrowserContext` accessor (returning `nullptr` before delegating to the base class).
+
+If the null-vs-non-null result depends on a pref that can change at runtime, the service will be present or absent for the rest of the session regardless of subsequent toggles, forcing a browser restart to apply the user's choice. Callers also start to defensively null-check what should be a stable handle.
+
+```cpp
+// ❌ WRONG - factory result depends on a runtime-toggleable pref
+std::unique_ptr<KeyedService>
+BraveWalletServiceFactory::BuildServiceInstanceForBrowserContext(
+    content::BrowserContext* context) const {
+  PrefService* prefs = user_prefs::UserPrefs::Get(context);
+  if (!prefs->GetBoolean(kBraveWalletEnabledPref)) {
+    return nullptr;  // User toggling the pref now requires a restart
+  }
+  return std::make_unique<BraveWalletService>(...);
+}
+
+// ❌ ALSO WRONG - same anti-pattern, just moved into the accessor
+// static
+BraveWalletService* BraveWalletServiceFactory::GetForProfile(Profile* profile) {
+  if (!profile->GetPrefs()->GetBoolean(kBraveWalletEnabledPref)) {
+    return nullptr;  // Pref toggle still requires a restart to take effect
+  }
+  return static_cast<BraveWalletService*>(
+      GetInstance()->GetServiceForBrowserContext(profile, true));
+}
+
+// ✅ CORRECT - factory always builds; the service reads the pref at runtime
+std::unique_ptr<KeyedService>
+BraveWalletServiceFactory::BuildServiceInstanceForBrowserContext(
+    content::BrowserContext* context) const {
+  return std::make_unique<BraveWalletService>(
+      user_prefs::UserPrefs::Get(context), ...);
+}
+```
+
+**Valid bases for returning `nullptr` from a factory or its accessor:**
+- Profile type (incognito, guest, system) — see [ARCH-015](#ARCH-015)
+- `BUILDFLAG(ENABLE_*)` feature buildflags
+- `base::Feature` flags (stable for the session)
+- Managed/policy prefs that are documented to require a restart (short-term; ideally decouple)
+
+**Invalid bases:**
+- Any user-toggleable pref (e.g. `kPlaylistEnabledPref`, `kBraveWalletEnabledPref`)
+- Any state that can change while the browser is running
+
+If a feature must be fully disable-able at runtime, the service should remain instantiated and expose an `IsEnabled()` accessor, or callers should observe the pref directly.

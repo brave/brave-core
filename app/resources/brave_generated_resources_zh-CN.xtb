@@ -130,16 +130,12 @@
 <translation id="8184318863960255706">更多信息</translation>
 <translation id="780301667611848630">不用了，谢谢</translation>
 <translation id="1162706247109707219">通过单击“确定”，确认在更新到 Windows 10 或更高版本之前，您安装的 Brave 浏览器将不会收到关键安全补丁。此警告将不会再次显示。</translation>
-<translation id="9164786361657554526">通过单击“确定”，确认在更新到 macOS 10.15 或更高版本之前，您安装的 Brave 浏览器将不会收到关键安全补丁。此警告将不会再次显示。</translation>
+<translation id="2971591422768125177">通过单击“确定”，确认在更新到 macOS 10.15 或更高版本之前，您安装的 Brave 浏览器将不会收到关键安全补丁。此警告将不会再次显示。</translation>
 <translation id="6020553119523541665">该选项卡在另一个窗口中处于活动状态</translation>
 <translation id="4987392683074136770">点击该选项卡，其内容将显示在此窗口中</translation>
 <translation id="8355523213948477234">分割视图菜单按钮</translation>
 <translation id="6040143037577758943">关闭</translation>
 <translation id="6665472986740899785">Brave 的通知广告</translation>
-<translation id="5582087890067572966">🎉你开始赚取收益了！</translation>
-<translation id="4364336119478610380">每当这样的通知出现在你的屏幕上，你就能赚取收益。而无需点击以赚取收益。</translation>
-<translation id="5893017172751072752">当 Brave Ads 的通知出现时，你就能赚取收益</translation>
-<translation id="3447730462826640312">你无需点击以赚取收益，但如果你有兴趣，请点击查看！</translation>
 <translation id="5253166205743627564">感谢您通过点击私人广告支持 Brave 搜索。与大型科技公司不同，我们以匿名方式衡量广告效果，以保护您的隐私。</translation>
 <translation id="8748471354357836070">了解更多 / 退出选择</translation>
 <translation id="5927196110206824867">赞助背景图片支持 Brave 实现构建独立与用户优先网络的使命。不同于大型科技公司，我们通过匿名方式衡量广告效果，以保护您的隐私。</translation>
@@ -322,6 +318,8 @@
 <translation id="8813509417421129632"><ph name="SITE"/> 上的一个内嵌页面需要保存</translation>
 <translation id="7700010743463174379">此页面试图保存</translation>
 <translation id="6774238875569752630">此页面上的嵌入式页面试图保存</translation>
+<translation id="1383876407941801731">搜索</translation>
+<translation id="5496587651328244253">整理</translation>
 <translation id="1233913566967531780">标签页聚合</translation>
 <translation id="4034992002364254340">将所有相关标签页在新窗口中聚合</translation>
 <translation id="8012125596344613514">建议主题</translation>
@@ -334,11 +332,14 @@
 <translation id="7557539689487606886">订阅 Premium</translation>
 <translation id="1035309871698658326">开启后，这会自动将所有非无痕标签页的标题和来源发送给 Leo 以进行分类。</translation>
 <translation id="3435896845095436175">启用</translation>
+<translation id="9031526219709160683">Brave可以帮助你优化此网站的隐私设置。你想查看Brave的建议吗？</translation>
+<translation id="5739953050957336013">搜索建议</translation>
 <translation id="9082792303833649978">此设置由您的管理员或其他 Brave 策略管理。</translation>
 <translation id="1940221956626514677">自定义工具栏</translation>
 <translation id="6501807887341963552">主题和颜色</translation>
 <translation id="6724227215236550330">保存的密码会在此处显示。如要将密码导入到此设备上的 <ph name="BRAND"/>，请<ph name="BEGIN_LINK"/>选择 CSV 文件<ph name="END_LINK"/></translation>
 <translation id="3575561030014162610">如要将密码导入到此设备上的 <ph name="BRAND"/>，请选择 CSV 文件</translation>
+<translation id="8570228839666486945">设备端AI</translation>
 <translation id="9156965752763025780">您所做的更改会在下次重新启动 Brave 时生效。</translation>
 <translation id="7179921470347911571">立即重新启动</translation>
 <translation id="1426410128494586442">是</translation>
@@ -389,8 +390,15 @@
 <translation id="2113977810652731515">卡片</translation>
 <translation id="4096343215397759358">带预览的卡片</translation>
 <translation id="5297085818601043899">工具提示</translation>
+<translation id="1033676453210290920">最小标签页宽度</translation>
+<translation id="562967218762447012">最小（默认）</translation>
+<translation id="574392208103952083">中等</translation>
+<translation id="4209092469652827314">大</translation>
+<translation id="2658845370685508484">全宽</translation>
+<translation id="1215972473274650670">使用可滚动标签栏</translation>
 <translation id="5219886318310413094">在所有窗口中显示固定的标签页</translation>
 <translation id="2396127686705429331">显示书签栏按钮</translation>
+<translation id="443318149139185498">在主菜单按钮上使用轮廓徽标</translation>
 <translation id="2814998458708016836">使用宽地址栏</translation>
 <translation id="4749586705247636385">在主要内容区域显示圆角</translation>
 <translation id="4109670531935487117">在地址栏中显示自动完成建议</translation>
@@ -544,7 +552,7 @@
 <translation id="509873765238158442">阻止  Microsoft Recall</translation>
 <translation id="4763421121695677716">在 Microsoft Windows 电脑上阻止 Recall 功能，停止自动截取任何打开的 Brave 标签页的屏幕截图。</translation>
 <translation id="1968895725257436430">资料合集</translation>
-<translation id="4846154056248462491">退出时</translation>
+<translation id="1700052872056357670">退出时删除数据</translation>
 <translation id="216468847346280584">清除 Brave 广告数据…</translation>
 <translation id="2808630562319398131">重置 Brave Rewards 计划数据...</translation>
 <translation id="6438096877646138757">关闭时所有网站窗口时清除 cookie 的网站</translation>
@@ -791,6 +799,7 @@
 <translation id="1529674267267221673">当你右键点击网站时，Leo 将出现在上下文菜单中。这将把当前网页的上下文发送到 Leo。</translation>
 <translation id="5226020406479918122">标签页聚合模式</translation>
 <translation id="3705539672403311123">在“标签页搜索”页面启用标签页整理功能。开启后，这会自动将所有非无痕标签页的标题和来源发送给 Leo 以进行分类。 <ph name="BEGIN_LINK"/>了解更多<ph name="END_LINK"/></translation>
+<translation id="9049433973274198706">标签焦点的默认模型</translation>
 <translation id="8172263161008556851">在对话中显示建议提示</translation>
 <translation id="5781842473834867765">保存我的对话记录</translation>
 <translation id="1082960401708055995">禁用对话存储功能将永久删除所有以前存储的对话。此操作无法撤销。</translation>
@@ -814,6 +823,8 @@
 <translation id="6374563306438145841">API 密钥</translation>
 <translation id="3295756655687327124">视觉支持</translation>
 <translation id="1415432774589088566">如果此模型将图像作为输入内容，例如 llama 3.2b vision</translation>
+<translation id="5718897035062884425">工具支持</translation>
+<translation id="2120046556683363911">如果此模型支持函数调用/工具使用</translation>
 <translation id="8008271349880309090">型号名称将显示在模型选择菜单中</translation>
 <translation id="1355326130503900056">该型号的名称应该出现在服务框架的请求中，如 phi-3（请注意，如果该名称与服务框架期望的不完全匹配，集成将无法运行）</translation>
 <translation id="3213787232304349732">服务框架正在监听申请的网址。如果不确定，请查阅服务框架文档。例如，对于 Ollama 来说，这始终是 http://localhost:11434/v1/chat/completions</translation>

@@ -9,7 +9,7 @@
 #include <string>
 
 #include "brave/components/brave_ads/buildflags/buildflags.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #include "url/gurl.h"
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_ADS));

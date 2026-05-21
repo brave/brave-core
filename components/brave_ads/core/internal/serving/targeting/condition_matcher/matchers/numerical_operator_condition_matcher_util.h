@@ -9,19 +9,24 @@
 #include <optional>
 #include <string_view>
 
-#include "brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/matchers/numerical_operator_condition_matcher_type.h"
+#include "brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/matchers/condition_matcher_operator_type.h"
 
 namespace base {
 class DictValue;
 }  // namespace base
 
+// Matches conditions against numeric pref values, all evaluated locally with
+// nothing leaving the device. The operand can be a literal number or another
+// pref path, allowing ads to be targeted based on relative comparisons between
+// two pref values.
+
 namespace brave_ads {
 
 // Tries to parse the numerical operator from a condition string. For example,
-// "[R>]:5" returns `ConditionMatcherNumericalOperatorType::kGreaterThan`.
-// Returns `std::nullopt` if `condition` does not contain a numerical operator.
-std::optional<ConditionMatcherNumericalOperatorType>
-MaybeGetNumericalOperatorType(std::string_view condition);
+// "[R>]:5" returns `ConditionMatcherOperatorType::kGreaterThan`. Returns
+// `std::nullopt` if `condition` does not contain a numerical operator.
+std::optional<ConditionMatcherOperatorType> MaybeParseNumericalOperatorType(
+    std::string_view condition);
 
 // Tries to resolve the operand for a numerical operator condition. Returns the
 // value directly if it is a number, or resolves it as a pref path. Returns
@@ -35,7 +40,7 @@ std::optional<double> MaybeResolveNumericalOperand(
 // and <= checks use a small absolute epsilon. This is acceptable here because
 // operands are parsed from numeric strings.
 bool MatchNumericalOperator(std::string_view value,
-                            ConditionMatcherNumericalOperatorType operator_type,
+                            ConditionMatcherOperatorType operator_type,
                             double operand);
 
 }  // namespace brave_ads

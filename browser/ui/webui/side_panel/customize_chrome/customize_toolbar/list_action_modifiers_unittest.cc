@@ -13,6 +13,7 @@
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/sharing_hub/sharing_hub_features.h"
 #include "chrome/browser/ui/webui/util/image_util.h"
@@ -33,8 +34,8 @@
 #include "ui/gfx/image/image_skia.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-#include "brave/components/brave_wallet/common/common_utils.h"
-#include "brave/components/brave_wallet/common/features.h"
+#include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -127,6 +128,7 @@ class ListActionModifiersUnitTest : public testing::Test {
 
   void TearDown() override { web_contents_ = nullptr; }
 
+  brave_l10n::test::ScopedDefaultLocale scoped_locale_{"en_US"};
   content::BrowserTaskEnvironment task_environment_;
   TestingProfile testing_profile_;
   content::TestWebContentsFactory test_web_contents_factory_;
@@ -312,8 +314,9 @@ TEST_F(ListActionModifiersUnitTest,
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 TEST_F(ListActionModifiersUnitTest,
        ApplyBraveSpecificModifications_WalletShouldNotBeAddedWhenDisabled) {
-  // Wallet should be added by default(Wallet enabled by default)
-  ASSERT_TRUE(brave_wallet::IsNativeWalletEnabled());
+  // Wallet should be available by default.
+  ASSERT_TRUE(
+      brave_wallet::IsAllowedForContext(web_contents_->GetBrowserContext()));
   auto modified_actions = customize_chrome::ApplyBraveSpecificModifications(
       web_contents_.get(), GetBasicActions());
   auto wallet_action_it =
@@ -321,11 +324,11 @@ TEST_F(ListActionModifiersUnitTest,
                         &side_panel::customize_chrome::mojom::Action::id);
   ASSERT_NE(wallet_action_it, modified_actions.end());
 
-  // Disable Wallet in feature list
-  base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndDisableFeature(
-      brave_wallet::features::kNativeBraveWalletFeature);
-  ASSERT_FALSE(brave_wallet::IsNativeWalletEnabled());
+  // Disable Wallet in prefs.
+  prefs()->SetManagedPref(brave_wallet::kBraveWalletDisabledByPolicy,
+                          base::Value(true));
+  ASSERT_FALSE(
+      brave_wallet::IsAllowedForContext(web_contents_->GetBrowserContext()));
 
   modified_actions = customize_chrome::ApplyBraveSpecificModifications(
       web_contents_.get(), GetBasicActions());
@@ -401,7 +404,8 @@ TEST_F(ListActionModifiersUnitTest,
   ASSERT_TRUE(ai_chat::IsAIChatEnabled(prefs()));
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  ASSERT_TRUE(brave_wallet::IsNativeWalletEnabled());
+  ASSERT_TRUE(
+      brave_wallet::IsAllowedForContext(web_contents_->GetBrowserContext()));
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   ASSERT_TRUE(brave_rewards::IsSupportedForProfile(

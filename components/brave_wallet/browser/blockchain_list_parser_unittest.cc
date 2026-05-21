@@ -838,7 +838,7 @@ TEST(BlockchainListParseUnitTest, ParseCoingeckoIdsMap) {
   EXPECT_FALSE(coingecko_ids_map->contains({"0x2", "0xdeadbeef"}));
 }
 
-TEST(BlockchainListParseUnitTest, ParseOfacAddressesList) {
+TEST(BlockchainListParseUnitTest, ParseRestrictedAddressesList) {
   const std::string json = R"({
     "addresses": [
       "0xb9ef770b6a5e12e45983c5d80545258aa38f3b78",
@@ -848,14 +848,14 @@ TEST(BlockchainListParseUnitTest, ParseOfacAddressesList) {
     ]
   })";
 
-  std::optional<std::vector<std::string>> ofac_addresses_list =
-      ParseOfacAddressesList(json);
-  ASSERT_TRUE(ofac_addresses_list);
+  std::optional<std::vector<std::string>> restricted_addresses_list =
+      ParseRestrictedAddressesList(json);
+  ASSERT_TRUE(restricted_addresses_list);
 
-  EXPECT_EQ((*ofac_addresses_list).size(), 4U);
-  EXPECT_EQ((*ofac_addresses_list)[0],
+  EXPECT_EQ((*restricted_addresses_list).size(), 4U);
+  EXPECT_EQ((*restricted_addresses_list)[0],
             "0xb9ef770b6a5e12e45983c5d80545258aa38f3b78");
-  EXPECT_EQ((*ofac_addresses_list)[1],
+  EXPECT_EQ((*restricted_addresses_list)[1],
             "0xe41d2489571d322189246dafa5ebde1f4699f498");
 }
 

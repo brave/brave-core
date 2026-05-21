@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.ntp_background_images.model;
 
+import org.chromium.base.Callback;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.ntp_background_images.util.NTPImageUtil;
 import org.chromium.chrome.browser.ntp_background_images.util.SponsoredImageUtil;
@@ -12,33 +13,39 @@ import org.chromium.chrome.browser.ntp_background_images.util.SponsoredImageUtil
 public class SponsoredTab {
     private final NTPBackgroundImagesBridge mNTPBackgroundImagesBridge;
     private NTPImage mNtpImage;
-    private int mTabIndex;
+    private boolean mNTPImageReady;
 
     public SponsoredTab(
             NTPBackgroundImagesBridge mNTPBackgroundImagesBridge, boolean allowSponsoredImage) {
         this.mNTPBackgroundImagesBridge = mNTPBackgroundImagesBridge;
-        if (NTPImageUtil.shouldEnableNTPFeature()) {
-            mNtpImage = NTPImageUtil.getNTPImage(mNTPBackgroundImagesBridge, allowSponsoredImage);
-            mTabIndex = SponsoredImageUtil.getTabIndex();
+    }
+
+    public void getNTPImage(boolean allowSponsoredImage, Callback<NTPImage> callback) {
+        // Return cached NTP image if available. We maintain only one NTP image per tab.
+        if (mNTPImageReady) {
+            callback.onResult(mNtpImage);
+            return;
         }
+
+        NTPImageUtil.getNTPImage(
+                mNTPBackgroundImagesBridge,
+                allowSponsoredImage,
+                ntpImage -> getNTPImageCallback(ntpImage, callback));
     }
 
-    public NTPImage getTabNTPImage(boolean isReset, boolean allowSponsoredImage) {
-        if (mNtpImage == null || isReset) {
-            mNtpImage = NTPImageUtil.getNTPImage(mNTPBackgroundImagesBridge, allowSponsoredImage);
+    private void getNTPImageCallback(NTPImage ntpImage, Callback<NTPImage> callback) {
+        mNtpImage = ntpImage;
+
+        if (mNtpImage == null) {
+            mNtpImage = SponsoredImageUtil.getBackgroundImage();
+        } else if (mNtpImage instanceof Wallpaper) {
+            Wallpaper wallpaper = (Wallpaper) mNtpImage;
+            if (wallpaper == null) {
+                mNtpImage = SponsoredImageUtil.getBackgroundImage();
+            }
         }
-        return mNtpImage;
-    }
 
-    public void setNTPImage(NTPImage ntpImage) {
-        this.mNtpImage = ntpImage;
-    }
-
-    public int getTabIndex() {
-        return mTabIndex;
-    }
-
-    public void setTanIndex(int tabIndex) {
-        this.mTabIndex = tabIndex;
+        mNTPImageReady = true;
+        callback.onResult(mNtpImage);
     }
 }

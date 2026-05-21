@@ -53,10 +53,15 @@ public final class BravePreferenceKeys {
     public static final String BRAVE_DEFERRED_DEEPLINK_PLAYLIST =
             "brave_deferred_deeplink_playlist";
     public static final String BRAVE_DEFERRED_DEEPLINK_VPN = "brave_deferred_deeplink_vpn";
+    // Bridges Play Install Referrer attribution from WelcomeOnboardingActivity to BraveActivity
+    // for first-install users only. Existing users tap the App Link directly and are routed
+    // inline by maybeHandleUrlIntent without going through this pref.
+    public static final String BRAVE_DEFERRED_DEEPLINK_ORIGIN_PROMO =
+            "brave_deferred_deeplink_origin_promo";
     public static final String BRAVE_CLOSE_TABS_ON_EXIT = "close_tabs_on_exit";
     public static final String BRAVE_CLEAR_ON_EXIT = "clear_on_exit";
     public static final String BRAVE_QUICK_ACTION_SEARCH_AND_BOOKMARK_WIDGET_TILES =
-            "org.chromium.chrome.browser.widget.quickactionsearchandbookmark.QuickActionSearchAndBookmarkWidgetProvider.TILES";
+            "org.chromium.chrome.browser.widget.quickactionsearchandbookmark.QuickActionSearchAndBookmarkWidgetProvider.TILES"; // presubmit: ignore-long-line
     public static final String ENABLE_MULTI_WINDOWS = "enable_multi_windows";
     public static final String ENABLE_MULTI_WINDOWS_UPGRADE = "enable_multi_windows_upgrade";
 
@@ -111,11 +116,18 @@ public final class BravePreferenceKeys {
             "org.chromium.brave.browser.Brave_SAFE_BROWSING_ERRORS";
 
     public static final String DEFAULT_SEARCH_ENGINE_CHANGED = "default_search_engine_changed";
+    public static final String STANDARD_DSE_SHORTNAME = "standard_dse_shortname";
+    public static final String PRIVATE_DSE_SHORTNAME = "private_dse_shortname";
+
+    public static final String CUSTOM_SEARCH_ENGINE_KEYWORDS = "Brave.SearchEngine.CustomKeywords";
 
     public static final String BRAVE_DEFAULT_SEARCH_ENGINE_MIGRATED_JP =
             "brave_default_search_engine_migrated_jp";
 
     public static final String SEARCH_CHOICE_SCREEN_INSTALL = "search_choice_screen_install";
+
+    public static final String BRAVE_ORIGIN_CREDENTIAL_SUMMARY_CACHED =
+            "brave_origin_credential_summary_cached";
 
     /*
      * Checks if preference key is used in Brave.

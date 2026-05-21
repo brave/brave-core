@@ -10,11 +10,14 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
+#include "base/scoped_observation.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_manager_observer.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
 
 namespace brave_ads {
+
+class AdHistoryManager;
 
 class Reminders final : public AdHistoryManagerObserver {
  public:
@@ -42,6 +45,9 @@ class Reminders final : public AdHistoryManagerObserver {
   void OnDidAddAdHistoryItem(const AdHistoryItemInfo& ad_history_item) override;
 
   base::OneShotTimer timer_;
+
+  base::ScopedObservation<AdHistoryManager, AdHistoryManagerObserver>
+      ad_history_manager_observation_{this};
 
   base::WeakPtrFactory<Reminders> weak_factory_{this};
 };

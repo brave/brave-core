@@ -50,6 +50,9 @@ base::span<const base::cstring_view> GetBravePersistentPrefNames() {
       brave_tabs::kTreeTabsEnabled,
       brave_tabs::kAlwaysHideTabCloseButton,
       brave_tabs::kMiddleClickCloseTabEnabled,
+      brave_tabs::kTabMinWidthMode,
+      brave_tabs::kScrollableHorizontalTabStrip,
+      brave_tabs::kShowHorizontalTabScrollButtons,
 #endif
 #if defined(TOOLKIT_VIEWS)
       sidebar::kSidePanelWidth,

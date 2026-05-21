@@ -5,6 +5,7 @@
 
 #include "brave/components/ai_chat/core/browser/tools/chart_code_plugin.h"
 
+#include "base/strings/strcat.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 
@@ -30,9 +31,12 @@ bool ChartCodePlugin::IsEnabled() {
 }
 
 std::string_view ChartCodePlugin::Description() const {
-  return "Use chartUtil.createLineChart(data, labels) where data is an array "
-         "of objects and labels is an optional map of data keys to display "
-         "labels. You must use 'x' as the key for the x-axis. "
+  return "Use chartUtil.createLineChart(data, labels, existingChartId). "
+         "Returns nothing. data is an array of objects, labels is an optional "
+         "map of data keys to display labels, and existingChartId is an "
+         "optional string ID of a previously created chart to update. You must "
+         "use 'x' as the key for the x-axis. A unique chart ID will be "
+         "provided in the console output. "
          "Example: chartUtil.createLineChart([{x: 'Jan', sales: "
          "100, profit: 30}, {x: 'Feb', sales: 150, profit: 45}], {sales: "
          "'Sales ($)', profit: 'Profit ($)'}).";
@@ -42,22 +46,25 @@ std::string_view ChartCodePlugin::InclusionKeyword() const {
   return "chartUtil";
 }
 
-std::string_view ChartCodePlugin::SetupScript() const {
+std::string_view ChartCodePlugin::SetupScript() {
   return R"(
 const chartUtil = {
-  createLineChart: function(data, labels) {
+  createLineChart: function(data, labels, existingChartId) {
     const chartData = { data: data };
     if (labels) {
       chartData.labels = labels;
     }
-    codeExecArtifacts.push({ type: 'line_chart', content: chartData });
-    console.log('Chart created successfully');
+    const artifact = { type: 'line_chart', content: chartData };
+    if (existingChartId) {
+      artifact.id = existingChartId;
+    }
+    codeExecArtifacts.push(artifact);
   }
 };
 )";
 }
 
-std::string_view ChartCodePlugin::ArtifactType() const {
+std::optional<std::string_view> ChartCodePlugin::ArtifactType() const {
   return mojom::kLineChartArtifactType;
 }
 
@@ -133,6 +140,11 @@ std::optional<std::string> ChartCodePlugin::ValidateArtifact(
   }
 
   return std::nullopt;
+}
+
+std::optional<std::string> ChartCodePlugin::GetArtifactCreationMessage(
+    std::string_view artifact_id) const {
+  return base::StrCat({"Chart created with ID: ", artifact_id});
 }
 
 }  // namespace ai_chat

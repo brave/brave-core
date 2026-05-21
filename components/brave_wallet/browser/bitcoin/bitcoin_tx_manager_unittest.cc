@@ -7,12 +7,9 @@
 
 #include <memory>
 #include <optional>
-#include <unordered_map>
 #include <utility>
 
 #include "base/files/scoped_temp_dir.h"
-#include "base/task/sequenced_task_runner.h"
-#include "base/test/bind.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
@@ -25,6 +22,7 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
+#include "brave/components/brave_wallet/browser/tx_storage.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -65,9 +63,8 @@ class BitcoinTxManagerUnitTest : public testing::Test {
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     tx_service_ = std::make_unique<TxService>(
         json_rpc_service_.get(), bitcoin_wallet_service_.get(), nullptr,
-        nullptr, nullptr, *keyring_service_, &prefs_, temp_dir_.GetPath(),
-        base::SequencedTaskRunner::GetCurrentDefault());
-    WaitForTxStorageDelegateInitialized(tx_service_->GetDelegateForTesting());
+        nullptr, nullptr, *keyring_service_, &prefs_,
+        CreateTxStorageForTest(temp_dir_.GetPath()));
 
     GetAccountUtils().CreateWallet(kMnemonicDivideCruise, "brave");
 
@@ -89,18 +86,6 @@ class BitcoinTxManagerUnitTest : public testing::Test {
   }
 
   PrefService* prefs() { return &prefs_; }
-
-  void AddUnapprovedTransaction(
-      std::string chain_id,
-      mojom::TxDataUnionPtr tx_data_union,
-      mojom::AccountIdPtr from,
-      std::optional<url::Origin> origin,
-      mojom::SwapInfoPtr swap_info,
-      BitcoinTxManager::AddUnapprovedTransactionCallback callback) {
-    btc_tx_manager()->AddUnapprovedTransaction(
-        std::move(chain_id), std::move(tx_data_union), std::move(from),
-        std::move(origin), std::move(swap_info), std::move(callback));
-  }
 
   void ApproveTransaction(
       std::string tx_meta_id,
@@ -132,7 +117,8 @@ TEST_F(BitcoinTxManagerUnitTest, SubmitTransaction) {
       mojom::kBitcoinMainnet, from_account.Clone(), kMockBtcAddress, 5000,
       false, nullptr);
 
-  base::MockCallback<TxManager::AddUnapprovedTransactionCallback> add_callback;
+  base::MockCallback<BitcoinTxManager::AddUnapprovedBitcoinTransactionCallback>
+      add_callback;
   std::string meta_id;
   EXPECT_CALL(add_callback, Run(_, _, _)).WillOnce(SaveArg<1>(&meta_id));
   btc_tx_manager()->AddUnapprovedBitcoinTransaction(params.Clone(),
@@ -178,7 +164,8 @@ TEST_F(BitcoinTxManagerUnitTest, SubmitTransactionError) {
       mojom::kBitcoinMainnet, from_account.Clone(), kMockBtcAddress, 5000,
       false, nullptr);
 
-  base::MockCallback<TxManager::AddUnapprovedTransactionCallback> add_callback;
+  base::MockCallback<BitcoinTxManager::AddUnapprovedBitcoinTransactionCallback>
+      add_callback;
   std::string meta_id;
   EXPECT_CALL(add_callback, Run(_, _, _)).WillOnce(SaveArg<1>(&meta_id));
   btc_tx_manager()->AddUnapprovedBitcoinTransaction(params.Clone(),

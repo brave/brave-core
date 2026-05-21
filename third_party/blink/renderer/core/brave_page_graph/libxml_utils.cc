@@ -29,8 +29,7 @@ XmlUtf8String::XmlUtf8String(std::string_view str) {
     xml_supported_utf8.reserve(str.size());
     for (size_t char_index = 0; char_index < str.size(); ++char_index) {
       base_icu::UChar32 code_point = CBU_SENTINEL;
-      if (!base::ReadUnicodeCharacter(str.data(), str.size(), &char_index,
-                                      &code_point) ||
+      if (!base::ReadUnicodeCharacter(str, &char_index, &code_point) ||
           code_point == CBU_SENTINEL) {
         break;
       }

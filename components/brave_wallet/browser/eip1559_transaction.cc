@@ -21,22 +21,22 @@ Eip1559Transaction::Eip1559Transaction() {
 }
 
 Eip1559Transaction::Eip1559Transaction(
+    uint256_t chain_id,
     std::optional<uint256_t> nonce,
     uint256_t gas_price,
     uint256_t gas_limit,
     const std::variant<EthAddress, EthContractCreationAddress>& to,
     uint256_t value,
     const std::vector<uint8_t>& data,
-    uint256_t chain_id,
     uint256_t max_priority_fee_per_gas,
     uint256_t max_fee_per_gas)
-    : Eip2930Transaction(nonce,
+    : Eip2930Transaction(chain_id,
+                         nonce,
                          gas_price,
                          gas_limit,
                          to,
                          value,
-                         data,
-                         chain_id),
+                         data),
       max_priority_fee_per_gas_(max_priority_fee_per_gas),
       max_fee_per_gas_(max_fee_per_gas) {
   type_ = EthTransactionType::kEip1559;
@@ -49,13 +49,8 @@ Eip1559Transaction::~Eip1559Transaction() = default;
 std::optional<Eip1559Transaction> Eip1559Transaction::FromTxData(
     const mojom::TxData1559Ptr& tx_data1559,
     bool strict) {
-  uint256_t chain_id = 0;
-  if (!HexValueToUint256(tx_data1559->chain_id, &chain_id) && strict) {
-    return std::nullopt;
-  }
-
   std::optional<Eip2930Transaction> tx_2930 =
-      Eip2930Transaction::FromTxData(tx_data1559->base_data, chain_id, strict);
+      Eip2930Transaction::FromTxData(tx_data1559->base_data, strict);
   if (!tx_2930) {
     return std::nullopt;
   }
@@ -72,10 +67,10 @@ std::optional<Eip1559Transaction> Eip1559Transaction::FromTxData(
     return std::nullopt;
   }
 
-  return Eip1559Transaction(
-      tx_2930->nonce(), tx_2930->gas_price(), tx_2930->gas_limit(),
-      tx_2930->to(), tx_2930->value(), tx_2930->data(), tx_2930->chain_id(),
-      max_priority_fee_per_gas, max_fee_per_gas);
+  return Eip1559Transaction(tx_2930->chain_id(), tx_2930->nonce(),
+                            tx_2930->gas_price(), tx_2930->gas_limit(),
+                            tx_2930->to(), tx_2930->value(), tx_2930->data(),
+                            max_priority_fee_per_gas, max_fee_per_gas);
 }
 
 // static
@@ -107,9 +102,9 @@ std::optional<Eip1559Transaction> Eip1559Transaction::FromValue(
     return std::nullopt;
   }
 
-  Eip1559Transaction tx(tx_2930->nonce(), tx_2930->gas_price(),
-                        tx_2930->gas_limit(), tx_2930->to(), tx_2930->value(),
-                        tx_2930->data(), tx_2930->chain_id(),
+  Eip1559Transaction tx(tx_2930->chain_id(), tx_2930->nonce(),
+                        tx_2930->gas_price(), tx_2930->gas_limit(),
+                        tx_2930->to(), tx_2930->value(), tx_2930->data(),
                         max_priority_fee_per_gas, max_fee_per_gas);
   tx.v_ = tx_2930->v();
   tx.r_ = tx_2930->r();
@@ -119,8 +114,8 @@ std::optional<Eip1559Transaction> Eip1559Transaction::FromValue(
   return tx;
 }
 
-std::vector<uint8_t> Eip1559Transaction::GetMessageToSignImpl(
-    uint256_t chain_id) const {
+std::vector<uint8_t> Eip1559Transaction::GetMessageToSignImpl() const {
+  DCHECK(chain_id_);
   DCHECK(nonce_);
 
   base::ListValue list;
@@ -152,6 +147,8 @@ base::DictValue Eip1559Transaction::ToValueImpl() const {
 }
 
 std::vector<uint8_t> Eip1559Transaction::Serialize() const {
+  DCHECK(chain_id_);
+
   base::ListValue list;
   list.Append(RLPUint256ToBlob(chain_id_));
   list.Append(RLPUint256ToBlob(nonce_.value()));

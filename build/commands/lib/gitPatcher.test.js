@@ -52,6 +52,11 @@ describe('Apply Patches', function () {
       'user.name',
       'Unit Tests',
     ])
+    await runGitAsyncWithErrorLog(repoPath, [
+      'config',
+      'commit.gpgsign',
+      'false',
+    ])
     await fs.writeFile(testFile1Path, file1InitialContent, writeReadFileOptions)
     await runGitAsyncWithErrorLog(repoPath, ['add', '.'])
     await runGitAsyncWithErrorLog(repoPath, ['commit', '-m', '"file1 initial"'])

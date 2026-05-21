@@ -7,10 +7,11 @@
 
 #include <utility>
 
-#include "base/check.h"
 #include "base/location.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_database_table.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_tokens_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/campaigns_database_table.h"
@@ -27,15 +28,20 @@
 
 namespace brave_ads::database {
 
-namespace {
-
-void Create(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
-  CHECK(mojom_db_transaction);
+void Create(ResultCallback callback) {
+  mojom::DBTransactionInfoPtr mojom_db_transaction =
+      mojom::DBTransactionInfo::New();
 
   Execute(mojom_db_transaction, "PRAGMA auto_vacuum = FULL;");
 
   table::ConfirmationQueue confirmation_queue_database_table;
   confirmation_queue_database_table.Create(mojom_db_transaction);
+
+  table::ConfirmationTokens confirmation_tokens_database_table;
+  confirmation_tokens_database_table.Create(mojom_db_transaction);
+
+  table::PaymentTokens payment_tokens_database_table;
+  payment_tokens_database_table.Create(mojom_db_transaction);
 
   table::AdEvents ad_events_database_table;
   ad_events_database_table.Create(mojom_db_transaction);
@@ -72,14 +78,6 @@ void Create(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
 
   table::Dayparts dayparts_database_table;
   dayparts_database_table.Create(mojom_db_transaction);
-}
-
-}  // namespace
-
-void Create(ResultCallback callback) {
-  mojom::DBTransactionInfoPtr mojom_db_transaction =
-      mojom::DBTransactionInfo::New();
-  Create(mojom_db_transaction);
 
   RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
                  std::move(callback));

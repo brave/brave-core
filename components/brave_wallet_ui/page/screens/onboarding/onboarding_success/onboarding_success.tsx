@@ -17,13 +17,10 @@ import CompleteGraphicDark from './images/complete_dark.svg'
 // utils
 import { getLocale } from '../../../../../common/locale'
 import { WalletPageActions } from '../../../actions'
-import {
-  useDiscoverAssetsMutation,
-  useReportOnboardingActionMutation, //
-} from '../../../../common/slices/api.slice'
+import { useDiscoverAssetsMutation } from '../../../../common/slices/api.slice'
 
 // constants
-import { BraveWallet, WalletRoutes } from '../../../../constants/types'
+import { WalletRoutes } from '../../../../constants/types'
 
 // components
 import {
@@ -43,7 +40,6 @@ export const OnboardingSuccess = () => {
   const dispatch = useAppDispatch()
 
   // mutations
-  const [report] = useReportOnboardingActionMutation()
   const [discoverAssets] = useDiscoverAssetsMutation()
 
   // methods
@@ -56,9 +52,7 @@ export const OnboardingSuccess = () => {
   React.useEffect(() => {
     // now that the token registry is populated, discover assets
     discoverAssets()
-
-    report(BraveWallet.OnboardingAction.Complete)
-  }, [report, discoverAssets])
+  }, [discoverAssets])
 
   // hooks
   const isDarkMode = useMediaQuery('(prefers-color-scheme: dark)')

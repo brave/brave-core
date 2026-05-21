@@ -29,6 +29,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/test/browser_test.h"
+#include "content/public/test/test_utils.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -42,6 +43,7 @@ class CommanderServiceBrowserTest : public InProcessBrowserTest {
   void SetUp() override { InProcessBrowserTest::SetUp(); }
   void TearDownOnMainThread() override {
     commander()->Hide();
+    content::RunAllTasksUntilIdle();
     WaitUntil(base::BindLambdaForTesting(
         [this] { return !commander()->IsShowing(); }));
   }
@@ -105,35 +107,7 @@ IN_PROC_BROWSER_TEST_F(CommanderServiceBrowserTest, CanHideCommander) {
       base::BindLambdaForTesting([&]() { return commander()->IsShowing(); }));
 
   commander()->Hide();
-  WaitUntil(
-      base::BindLambdaForTesting([&]() { return !commander()->IsShowing(); }));
-}
-
-// NOTE: This test will pass in isolation but they depend on focus
-// so they'll fail if run with other tests. It'd be a good candidate for an
-// interactive UI test.
-IN_PROC_BROWSER_TEST_F(CommanderServiceBrowserTest, MANUAL_HideClearsText) {
-  commander()->Show();
-  omnibox()->SetUserText(
-      base::StrCat({commander::kCommandPrefix, u" Hello World"}));
-
-  commander()->Hide();
-  WaitUntil(
-      base::BindLambdaForTesting([&]() { return !commander()->IsShowing(); }));
-  EXPECT_EQ(u"about:blank", omnibox()->GetText());
-}
-
-// NOTE: This test will pass in isolation but they depend on focus
-// so they'll fail if run with other tests. It'd be a good candidate for an
-// interactive UI test.
-IN_PROC_BROWSER_TEST_F(CommanderServiceBrowserTest,
-                       MANUAL_CanHideCommanderViaText) {
-  omnibox()->SetUserText(
-      base::StrCat({commander::kCommandPrefix, u" Hello World"}));
-  WaitUntil(
-      base::BindLambdaForTesting([&]() { return commander()->IsShowing(); }));
-
-  omnibox()->SetUserText(u"Hello World");
+  content::RunAllTasksUntilIdle();
   WaitUntil(
       base::BindLambdaForTesting([&]() { return !commander()->IsShowing(); }));
 }

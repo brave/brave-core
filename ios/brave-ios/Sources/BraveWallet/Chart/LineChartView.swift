@@ -113,10 +113,10 @@ struct LineChartView<DataType: DataPoint, FillStyle: View>: View {
     }
   }
 
-  private struct DragContext<DataType: DataPoint> {
+  private struct DragContext<DragContextDataType: DataPoint> {
     var location: CGPoint
     var size: CGSize
-    var dataPoint: DataType?
+    var dataPoint: DragContextDataType?
   }
 
   @State private var dragContext: DragContext<DataType>?

@@ -8,11 +8,14 @@
 
 #include "base/feature_list.h"
 
+class PrefService;
+
 namespace email_aliases::features {
 
 BASE_DECLARE_FEATURE(kEmailAliases);
 
 bool IsEmailAliasesEnabled();
+bool IsEmailAliasesEnabledForProfile(const PrefService& pref_service);
 
 }  // namespace email_aliases::features
 

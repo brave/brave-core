@@ -15,8 +15,6 @@ source_set("brave_wallet") {
   sources = [
     "brave_wallet_render_frame_observer.cc",
     "brave_wallet_render_frame_observer.h",
-    "brave_wallet_render_frame_observer_p3a_util.cc",
-    "brave_wallet_render_frame_observer_p3a_util.h",
   ]
 
   deps = [
@@ -24,12 +22,10 @@ source_set("brave_wallet") {
     "//brave/common",
     "//brave/common:mojo_bindings",
     "//brave/components/brave_wallet/common",
-    "//brave/components/brave_wallet/common:mojom",
     "//brave/components/brave_wallet/renderer",
     "//content/public/common",
     "//content/public/renderer",
     "//gin",
-    "//mojo/public/cpp/bindings",
     "//third_party/blink/public:blink",
     "//third_party/blink/public/common",
     "//v8",

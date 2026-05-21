@@ -8,8 +8,8 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "brave/browser/ui/views/side_panel/brave_bookmarks_side_panel_view.h"
-#include "chrome/browser/ui/views/side_panel/side_panel_entry.h"
-#include "chrome/browser/ui/views/side_panel/side_panel_registry.h"
+#include "chrome/browser/ui/side_panel/side_panel_entry.h"
+#include "chrome/browser/ui/side_panel/side_panel_registry.h"
 
 BraveBookmarksSidePanelCoordinator::~BraveBookmarksSidePanelCoordinator() =
     default;

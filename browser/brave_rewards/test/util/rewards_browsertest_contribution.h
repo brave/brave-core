@@ -72,8 +72,6 @@ class RewardsBrowserTestContribution : public RewardsServiceObserver {
 
   std::vector<mojom::Result> GetMultipleACStatus();
 
-  void StartProcessWithBalance(double balance);
-
   std::vector<mojom::Result> GetMultipleTipStatus();
 
   mojom::Result GetTipStatus();

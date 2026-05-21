@@ -33,8 +33,6 @@ namespace {
 std::string GetWalletPref(const std::string& wallet_type) {
   if (wallet_type == constant::kWalletBitflyer) {
     return prefs::kWalletBitflyer;
-  } else if (wallet_type == constant::kWalletGemini) {
-    return prefs::kWalletGemini;
   } else if (wallet_type == constant::kWalletUphold) {
     return prefs::kWalletUphold;
   } else if (wallet_type == constant::kWalletZebPay) {
@@ -42,7 +40,7 @@ std::string GetWalletPref(const std::string& wallet_type) {
   } else if (wallet_type == constant::kWalletSolana) {
     return prefs::kWalletSolana;
   } else {
-    NOTREACHED();
+    return "";
   }
 }
 
@@ -185,6 +183,11 @@ bool SetWallet(RewardsEngine& engine, mojom::ExternalWalletPtr wallet) {
     return false;
   }
 
+  std::string pref_name = GetWalletPref(wallet->type);
+  if (pref_name.empty()) {
+    return false;
+  }
+
   base::DictValue fees;
   for (const auto& fee : wallet->fees) {
     fees.Set(fee.first, fee.second);
@@ -209,7 +212,7 @@ bool SetWallet(RewardsEngine& engine, mojom::ExternalWalletPtr wallet) {
     return false;
   }
 
-  engine.Get<RewardsPrefs>().SetString(GetWalletPref(wallet->type),
+  engine.Get<RewardsPrefs>().SetString(pref_name,
                                        base::Base64Encode(*encrypted));
 
   return true;

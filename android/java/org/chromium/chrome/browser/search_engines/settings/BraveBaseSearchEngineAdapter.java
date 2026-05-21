@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import org.chromium.brave.browser.custom_search_engines.CustomSearchEnginesManager;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.components.search_engines.TemplateUrl;
 
 import java.util.HashSet;
@@ -89,13 +91,15 @@ public class BraveBaseSearchEngineAdapter extends BaseAdapter {
     }
 
     public static @SearchEngineAdapter.TemplateUrlSourceType int getSearchEngineSourceType(
-            TemplateUrl templateUrl, TemplateUrl defaultSearchEngine) {
-        if (templateUrl.getIsPrepopulated()) {
+            TemplateUrl templateUrl, @Nullable TemplateUrl defaultSearchEngine) {
+        // Custom search engines that are not the default are shown in the prepopulated list.
+        if (CustomSearchEnginesManager.getInstance().isCustomSearchEngine(templateUrl.getKeyword())
+                && (defaultSearchEngine == null
+                        || templateUrl.getNativePtr() != defaultSearchEngine.getNativePtr())) {
             return SearchEngineAdapter.TemplateUrlSourceType.PREPOPULATED;
-        } else if (templateUrl.equals(defaultSearchEngine)) {
-            return SearchEngineAdapter.TemplateUrlSourceType.DEFAULT;
-        } else {
-            return SearchEngineAdapter.TemplateUrlSourceType.RECENT;
         }
+        // This call redirects to the upstream's SearchEngineAdapter via bytecode modification.
+        return BraveSearchEngineAdapterDummySuper.getSearchEngineSourceType(
+                templateUrl, defaultSearchEngine);
     }
 }

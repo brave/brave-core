@@ -380,7 +380,8 @@ public struct AIChatAdvancedSettingsView: View {
         }
       }
     }
-    .listBackgroundColor(Color(.braveGroupedBackground))
+    .scrollContentBackground(.hidden)
+    .background(Color(UIColor.braveGroupedBackground))
     .listStyle(.insetGrouped)
   }
 

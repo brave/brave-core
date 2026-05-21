@@ -278,7 +278,7 @@ struct AddAccountView: View {
         }
       }
     }
-    .onChange(of: selectedCoin) { coin in
+    .onChange(of: selectedCoin) { _, coin in
       if coin == .fil || coin == .btc || coin == .zec {
         accountNetwork = selectedCoinNetworks.first(where: { $0.coin == coin }) ?? .init()
       }

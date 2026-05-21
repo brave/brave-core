@@ -1,0 +1,61 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("impl") {
+  visibility = [
+    "//brave/browser/workspaces:*",
+    "//chrome/browser",
+  ]
+
+  sources = [
+    "features.cc",
+    "workspace_service.cc",
+    "workspace_service_factory.cc",
+    "workspace_session_utils.cc",
+    "workspace_utils.cc",
+  ]
+
+  deps = [
+    ":workspaces",
+    "//base",
+    "//chrome/browser/ui",
+    "//chrome/browser/ui/tabs:tab_strip",
+  ]
+}
+source_set("workspaces") {
+  sources = [
+    "features.h",
+    "pref_names.h",
+    "workspace_metadata.h",
+    "workspace_service.h",
+    "workspace_service_factory.h",
+    "workspace_session_utils.h",
+    "workspace_utils.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//chrome/browser/profiles:profile",
+    "//components/keyed_service/core",
+    "//components/pref_registry",
+    "//components/sessions",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "workspace_service_unittest.cc" ]
+  deps = [
+    ":impl",
+    ":workspaces",
+    "//base",
+    "//base/test:test_support",
+    "//chrome/test:test_support",
+    "//components/sessions",
+    "//components/sync_preferences:test_support",
+    "//content/test:test_support",
+    "//testing/gtest",
+  ]
+}

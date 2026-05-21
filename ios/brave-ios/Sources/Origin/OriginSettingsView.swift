@@ -4,15 +4,17 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveStore
 import DesignSystem
 import Strings
 import SwiftUI
 
 public struct OriginSettingsView: View {
   @Bindable private var viewModel: OriginSettingsViewModel
+  @Environment(\.openURL) private var openURL
 
-  public init(service: any BraveOriginService) {
-    viewModel = .init(service: service)
+  public init(viewModel: OriginSettingsViewModel) {
+    self.viewModel = viewModel
   }
 
   public var body: some View {
@@ -51,6 +53,11 @@ public struct OriginSettingsView: View {
         }
         .toggleStyle(.origin)
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
+        Toggle(isOn: $viewModel.isPlaylistEnabled) {
+          Label(Strings.Origin.playlistLabel, braveSystemImage: "leo.product.playlist")
+        }
+        .toggleStyle(.origin)
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Toggle(isOn: $viewModel.isTalkDisabled.inversed) {
           Label(Strings.Origin.talkLabel, braveSystemImage: "leo.product.brave-talk")
         }
@@ -71,22 +78,115 @@ public struct OriginSettingsView: View {
       } footer: {
         VStack(alignment: .leading, spacing: 12) {
           // featuresFooter contains markdown
-          Text(LocalizedStringKey(Strings.Origin.featuresFooter))
+          Text(LocalizedStringKey(Strings.Origin.originFeatureDescription))
         }
       }
       Section {
         Button(role: .destructive) {
-          // Would reset all of the settings
+          viewModel.reset()
         } label: {
           Text(Strings.Origin.resetToDefaultsButton)
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
+      }
+      if viewModel.isPuchaseLinkable {
+        Section {
+          Button {
+            openURL(.braveOriginLinkCredentials)
+          } label: {
+            Text(Strings.Origin.linkPurchase)
+          }
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
+          NavigationLink {
+            StoreKitReceiptSimpleView()
+          } label: {
+            Text(Strings.Origin.viewAppStoreReceipt)
+          }
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
+        } header: {
+          Text(Strings.Origin.purchaseSectionHeader)
+        } footer: {
+          Text(Strings.Origin.purchaseSectionFooter)
+        }
       }
     }
     .navigationTitle(Strings.Origin.originProductName)
     .navigationBarTitleDisplayMode(.inline)
     .scrollContentBackground(.hidden)
     .background(Color(.braveGroupedBackground))
+    .overlay(alignment: .bottom) {
+      if viewModel.isRestartToastVisible {
+        FeatureEnabledToastView {
+          withAnimation(.toast) {
+            viewModel.isRestartToastVisible = false
+          }
+        }
+        .transition(.move(edge: .bottom).combined(with: .blurReplace))
+      }
+    }
+  }
+
+  private struct FeatureEnabledToastView: View {
+    var dismiss: () -> Void
+    @State private var dragOffset: CGFloat = 0
+    @State private var height: CGFloat = 0
+    @AccessibilityFocusState(for: .voiceOver) private var isAccessibilityFocused: Bool
+
+    var body: some View {
+      HStack(alignment: .firstTextBaseline) {
+        VStack(alignment: .leading) {
+          Text(Strings.Origin.featureEnabledToastTitle)
+            .fontWeight(.semibold)
+          Text(Strings.Origin.featureEnabledToastMessage)
+        }
+        Spacer()
+        Button {
+          dismiss()
+        } label: {
+          Label(Strings.close, braveSystemImage: "leo.close")
+            .labelStyle(.iconOnly)
+            .foregroundStyle(Color(braveSystemName: .schemesPrimaryFixedDim))
+            .imageScale(.large)
+        }
+      }
+      .font(.subheadline)
+      .foregroundStyle(Color.white)
+      .padding(16)
+      .background(
+        Color(braveSystemName: .schemesOnPrimaryFixed)
+          .shadow(.drop(color: Color(braveSystemName: .elevationSecondary), radius: 2, y: 1))
+          .shadow(.drop(color: Color(braveSystemName: .elevationSecondary), radius: 3, y: 1)),
+        in: .rect(cornerRadius: 22, style: .continuous)
+      )
+      .onGeometryChange(for: CGFloat.self, of: \.size.height, action: { height = $0 })
+      .offset(y: max(0, dragOffset))
+      .gesture(
+        DragGesture()
+          .onChanged { value in
+            dragOffset = value.translation.height
+          }
+          .onEnded { value in
+            if value.predictedEndTranslation.height > height / 2 {
+              dismiss()
+            } else {
+              withAnimation(.snappy) {
+                dragOffset = 0
+              }
+            }
+          }
+      )
+      .padding(8)
+      .dynamicTypeSize(.xSmall..<DynamicTypeSize.accessibility2)
+      .accessibilityElement(children: .combine)
+      .accessibilityAddTraits(.isModal)
+      .accessibilityFocused($isAccessibilityFocused)
+      .accessibilityAction {
+        dismiss()
+      }
+      .onAppear {
+        isAccessibilityFocused = true
+      }
+    }
   }
 }
 
@@ -98,24 +198,16 @@ private struct OriginToggleStyle: ToggleStyle {
   func makeBody(configuration: Configuration) -> some View {
     Toggle(isOn: configuration.$isOn) {
       configuration.label
-        .labelStyle(_LabelStyle(isOn: configuration.isOn))
+        .labelStyle(_LabelStyle())
     }
     .tint(Color(braveSystemName: .primary40))
   }
 
   struct _LabelStyle: LabelStyle {
-    var isOn: Bool
     func makeBody(configuration: Configuration) -> some View {
       Label {
-        VStack(alignment: .leading) {
-          configuration.title
-            .foregroundStyle(Color(braveSystemName: .textPrimary))
-          if isOn {
-            Text(Strings.Origin.enabledFeatureNote)
-              .foregroundStyle(Color(braveSystemName: .textSecondary))
-              .font(.footnote)
-          }
-        }
+        configuration.title
+          .foregroundStyle(Color(braveSystemName: .textPrimary))
       } icon: {
         configuration.icon
           .foregroundStyle(Color(braveSystemName: .iconDefault))
@@ -130,6 +222,12 @@ extension Bool {
   fileprivate var inversed: Bool {
     get { !self }
     set { self = !newValue }
+  }
+}
+
+extension Animation {
+  static var toast: Animation {
+    .spring(response: 0.3, dampingFraction: 0.725)
   }
 }
 
@@ -155,7 +253,19 @@ private class MockOriginService: BraveOriginService {
 }
 #Preview {
   NavigationStack {
-    OriginSettingsView(service: MockOriginService())
+    OriginSettingsView(
+      viewModel: .init(service: MockOriginService(), storeSDK: .init(skusService: nil))
+    )
   }
+}
+#Preview {
+  Color.white
+    .sheet(isPresented: .constant(true)) {
+      NavigationStack {
+        OriginSettingsView(
+          viewModel: .init(service: MockOriginService(), storeSDK: .init(skusService: nil))
+        )
+      }
+    }
 }
 #endif

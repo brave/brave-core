@@ -8,22 +8,30 @@ package org.chromium.chrome.browser.settings;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.preference.Preference;
+import androidx.preference.PreferenceCategory;
+import androidx.preference.PreferenceGroup;
 
+import org.chromium.base.BraveFeatureList;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.ObservableSuppliers;
 import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
+import org.chromium.brave.browser.custom_search_engines.settings.CustomSearchEnginesPreference;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveConfig;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.Pref;
+import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.settings.search.ChromeBaseSearchIndexProvider;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
-import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvider;
+import org.chromium.components.browser_ui.settings.search.PreferenceParser;
 import org.chromium.components.browser_ui.settings.search.SettingsIndexData;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.components.web_discovery.WebDiscoveryPrefs;
@@ -38,6 +46,9 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
             "show_autocomplete_in_address_bar";
     private static final String PREF_SEND_WEB_DISCOVERY = "send_web_discovery";
 
+    private static final String PREF_CUSTOM_SEARCH_ENGINES_CATEGORY =
+            "custom_search_engines_category";
+    private static final String PREF_CUSTOM_SEARCH_ENGINE_LIST = "custom_search_engine_list";
     private ChromeManagedPreferenceDelegate mManagedPreferenceDelegate;
 
     private ChromeSwitchPreference mShowAutocompleteInAddressBar;
@@ -76,8 +87,42 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
 
     private void removePreferenceIfPresent(String key) {
         Preference preference = getPreferenceScreen().findPreference(key);
-        if (preference != null) {
-            getPreferenceScreen().removePreference(preference);
+        if (preference == null) {
+            return;
+        }
+        PreferenceGroup parent = preference.getParent();
+        if (parent != null) {
+            parent.removePreference(preference);
+        }
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        updateCustomSearchEnginesPreference();
+    }
+
+    private void updateCustomSearchEnginesPreference() {
+        if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_CUSTOM_SEARCH_ENGINES)) {
+            removePreferenceIfPresent(PREF_CUSTOM_SEARCH_ENGINES_CATEGORY);
+            return;
+        }
+
+        PreferenceCategory preferenceCategory =
+                (PreferenceCategory) findPreference(PREF_CUSTOM_SEARCH_ENGINES_CATEGORY);
+        Preference customSearchEnginesListPreference =
+                findPreference(PREF_CUSTOM_SEARCH_ENGINE_LIST);
+
+        if (customSearchEnginesListPreference instanceof CustomSearchEnginesPreference) {
+            ((CustomSearchEnginesPreference) customSearchEnginesListPreference)
+                    .updateCustomSearchEngines();
+        } else if (preferenceCategory != null) {
+            CustomSearchEnginesPreference newPreference =
+                    new CustomSearchEnginesPreference(requireContext());
+            newPreference.initialize(getProfile());
+            newPreference.setKey(PREF_CUSTOM_SEARCH_ENGINE_LIST);
+            newPreference.setOrder(1);
+            preferenceCategory.addPreference(newPreference);
         }
     }
 
@@ -168,20 +213,61 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
         } else {
             removePreferenceIfPresent(PREF_SEND_WEB_DISCOVERY);
         }
+
+        Preference customSearchEnginesListPreference =
+                findPreference(PREF_CUSTOM_SEARCH_ENGINE_LIST);
+        if (customSearchEnginesListPreference != null
+                && customSearchEnginesListPreference instanceof CustomSearchEnginesPreference) {
+            ((CustomSearchEnginesPreference) customSearchEnginesListPreference)
+                    .updateCustomSearchEngines();
+        }
+        updateCustomSearchEnginesPreference();
     }
 
-    public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
-            new BaseSearchIndexProvider(
+    private static void updateIndexSummaryForKey(
+            SettingsIndexData indexData, String fragment, String key, String summary) {
+        String id = PreferenceParser.createUniqueId(fragment, key);
+        SettingsIndexData.Entry entry = indexData.getEntry(id);
+        if (entry != null) {
+            indexData.updateEntry(
+                    id, new SettingsIndexData.Entry.Builder(entry).setSummary(summary).build());
+        }
+    }
+
+    public static final ChromeBaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
+            new ChromeBaseSearchIndexProvider(
                     BraveSearchEnginesPreferences.class.getName(),
                     R.xml.brave_search_engines_preferences) {
 
                 @Override
-                public void updateDynamicPreferences(Context context, SettingsIndexData indexData) {
-                    if (!BraveConfig.WEB_DISCOVERY_ENABLED) {
-                        indexData.removeEntryForKey(
-                                BraveSearchEnginesPreferences.class.getName(),
-                                PREF_SEND_WEB_DISCOVERY);
+                public void updateDynamicPreferences(
+                        Context context, SettingsIndexData indexData, Profile profile) {
+                    String frag = BraveSearchEnginesPreferences.class.getName();
+                    updateIndexSummaryForKey(
+                            indexData,
+                            frag,
+                            PREF_STANDARD_SEARCH_ENGINE,
+                            BraveSearchEngineUtils.getDSEShortName(profile, false));
+                    updateIndexSummaryForKey(
+                            indexData,
+                            frag,
+                            PREF_PRIVATE_SEARCH_ENGINE,
+                            BraveSearchEngineUtils.getDSEShortName(
+                                    profile.getPrimaryOtrProfile(/* createIfNeeded= */ true),
+                                    true));
+
+                    if (!BraveConfig.WEB_DISCOVERY_ENABLED
+                            || UserPrefs.get(profile)
+                                    .isManagedPreference(WebDiscoveryPrefs.WEB_DISCOVERY_ENABLED)) {
+                        indexData.removeEntryForKey(frag, PREF_SEND_WEB_DISCOVERY);
+                    } else {
+                        indexData.updateEntryForKey(
+                                frag, PREF_SEND_WEB_DISCOVERY, R.string.send_web_discovery_title);
+                        indexData.updateEntrySummaryForKey(
+                                frag, PREF_SEND_WEB_DISCOVERY, R.string.send_web_discovery_summary);
                     }
+                    // PREF_CUSTOM_SEARCH_ENGINE_LIST and its "Add" footer are added via Java — not
+                    // indexed for settings search.
                 }
             };
 

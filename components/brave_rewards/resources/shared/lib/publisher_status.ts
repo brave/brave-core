@@ -7,7 +7,6 @@ export const enum PublisherStatus {
   NOT_VERIFIED = 0,
   UPHOLD_VERIFIED = 2,
   BITFLYER_VERIFIED = 3,
-  GEMINI_VERIFIED = 4
 }
 
 // Returns the external wallet provider name for the specified publisher status.
@@ -17,8 +16,6 @@ export function publisherStatusToWalletProviderName (status: PublisherStatus) {
       return 'Uphold'
     case PublisherStatus.BITFLYER_VERIFIED:
       return 'bitFlyer'
-    case PublisherStatus.GEMINI_VERIFIED:
-      return 'Gemini'
     default:
       return ''
   }

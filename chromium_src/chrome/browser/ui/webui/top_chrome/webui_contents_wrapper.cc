@@ -7,8 +7,6 @@
 
 #include <utility>
 
-#include "components/sessions/content/session_tab_helper.h"
-
 // The bubble delegate doesn't allow to open popups and we use
 // the Browser window delegate to redirect opening new popup content
 // to the Browser delegate instead of default one.
@@ -24,8 +22,13 @@ void WebUIContentsWrapper::SetWebContentsAddNewContentsDelegate(
   browser_delegate_ = std::move(browser_delegate);
 }
 
-void WebUIContentsWrapper::ClearPopupIds() {
-  popup_ids_.clear();
+void WebUIContentsWrapper::CloseTrackedPopups() {
+  for (auto& web_contents : tracked_popups_) {
+    if (web_contents) {
+      web_contents->Close();
+    }
+  }
+  tracked_popups_.clear();
 }
 
 content::WebContents* WebUIContentsWrapper::Host::AddNewContents(
@@ -55,7 +58,6 @@ content::WebContents* WebUIContentsWrapper::AddNewContents(
                        window_features, user_gesture, was_blocked)
                  : nullptr;
   }
-  auto* raw_popup_contents = new_contents.get();
   auto* contents = browser_delegate_->AddNewContents(
       source, std::move(new_contents), target_url,
       WindowOpenDisposition::NEW_POPUP, window_features, user_gesture,
@@ -63,7 +65,6 @@ content::WebContents* WebUIContentsWrapper::AddNewContents(
   if (!contents) {
     return nullptr;
   }
-  auto tab_id = sessions::SessionTabHelper::IdForTab(raw_popup_contents).id();
-  popup_ids_.push_back(tab_id);
+  tracked_popups_.push_back(contents->GetWeakPtr());
   return contents;
 }

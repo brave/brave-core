@@ -97,10 +97,9 @@ NotificationHelper* NotificationHelper::GetInstance() {
   return instance.get();
 }
 
-void NotificationHelper::MaybeInitForProfile(Profile* profile,
-                                             base::OnceClosure callback) {
+void NotificationHelper::MaybeInitForProfile(Profile* profile) {
   if (is_initialized_) {
-    return std::move(callback).Run();
+    return;
   }
   is_initialized_ = true;
 
@@ -108,12 +107,12 @@ void NotificationHelper::MaybeInitForProfile(Profile* profile,
       GetSystemNotificationPlatformBridge(profile);
   if (!system_bridge) {
     does_support_system_notifications_ = false;
-    return std::move(callback).Run();
+    return;
   }
 
   system_bridge->SetReadyCallback(base::BindOnce(
       &NotificationHelper::OnSystemNotificationPlatformBridgeReady,
-      weak_factory_.GetWeakPtr(), std::move(callback)));
+      weak_factory_.GetWeakPtr()));
 }
 
 bool NotificationHelper::CanShowNotifications() {
@@ -141,12 +140,10 @@ bool NotificationHelper::DoesSupportSystemNotifications() const {
   return does_support_system_notifications_;
 }
 
-void NotificationHelper::OnSystemNotificationPlatformBridgeReady(
-    base::OnceClosure callback,
-    bool success) {
+void NotificationHelper::OnSystemNotificationPlatformBridgeReady(bool success) {
   does_support_system_notifications_ = success;
 
-  impl_->InitSystemNotifications(std::move(callback));
+  impl_->InitSystemNotifications();
 }
 
 }  // namespace brave_ads

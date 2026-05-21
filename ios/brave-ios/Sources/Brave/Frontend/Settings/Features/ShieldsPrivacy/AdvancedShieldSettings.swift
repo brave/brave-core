@@ -67,6 +67,11 @@ import os
       debounceService?.isEnabled = isDebounceEnabled
     }
   }
+  @Published var isGPCEnabled: Bool {
+    didSet {
+      prefs.set(isGPCEnabled, forPath: kGlobalPrivacyControlEnabled)
+    }
+  }
   @Published var adBlockAndTrackingPreventionLevel: ShieldLevel {
     didSet {
       guard oldValue != adBlockAndTrackingPreventionLevel else { return }
@@ -155,6 +160,7 @@ import os
   @Published var clearableSettings: [ClearableSetting]
 
   private var subscriptions: [AnyCancellable] = []
+  private let prefs: any PrefService
   private let p3aUtilities: BraveP3AUtils
   private let deAmpPrefs: DeAmpPrefs
   private let debounceService: (any DebounceService)?
@@ -188,6 +194,7 @@ import os
     self.rewards = rewards
     self.clearDataCallback = clearDataCallback
     self.braveStats = braveStats
+    self.prefs = braveCore.profile.prefs
     if FeatureList.kBraveShieldsContentSettings.enabled {
       self.adBlockAndTrackingPreventionLevel =
         braveShieldsSettings?.defaultAdBlockMode.shieldLevel ?? .standard
@@ -203,6 +210,7 @@ import os
     }
     self.httpsUpgradeLevel = Preferences.Shields.httpsUpgradeLevel
     self.isDeAmpEnabled = deAmpPrefs.isDeAmpEnabled
+    self.isGPCEnabled = prefs.boolean(forPath: kGlobalPrivacyControlEnabled)
     self.isDebounceEnabled = debounceService?.isEnabled ?? false
     self.shredHistoryItems = Preferences.Shields.shredHistoryItems.value
     self.webcompatReporterHandler = webcompatReporterHandler
@@ -217,7 +225,8 @@ import os
         id: .history,
         clearable: HistoryClearable(
           historyAPI: braveCore.historyAPI,
-          httpsUpgradeService: HttpsUpgradeServiceFactory.get(privateMode: false)
+          httpsUpgradeService: HttpsUpgradeServiceFactory.get(privateMode: false),
+          serpMetrics: SerpMetricsServiceFactory.get(profile: braveCore.profile)
         ),
         isEnabled: true
       ),

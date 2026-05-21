@@ -10,7 +10,6 @@
 
 #include "base/containers/map_util.h"
 #include "base/functional/bind.h"
-#include "base/logging.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 
 namespace brave_wallet {
@@ -84,9 +83,6 @@ void EthBlockTracker::OnGetBlockNumber(const std::string& chain_id,
     for (auto& observer : observers_) {
       observer.OnLatestBlock(chain_id, block_num);
     }
-
-  } else {
-    LOG(ERROR) << "GetBlockNumber failed";
   }
 }
 

@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import Button from '@brave/leo/react/button'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
@@ -23,11 +24,7 @@ import {
 import { CategoryCheckboxes } from './filter-components/category-checkboxes'
 
 // styles
-import {
-  ScrollableColumn,
-  HorizontalSpace,
-  LeoSquaredButton,
-} from '../../../shared/style'
+import { ScrollableColumn, HorizontalSpace } from '../../../shared/style'
 import { ContentWrapper, ButtonRow } from './portfolio-filters-modal.style'
 
 interface Props {
@@ -122,16 +119,16 @@ export const Web3DappFilters = ({ categories, onClose }: Props) => {
         </ContentWrapper>
       </ScrollableColumn>
       <ButtonRow>
-        <LeoSquaredButton
+        <Button
           onClick={onClose}
           kind='outline'
         >
           {getLocale('braveWalletButtonCancel')}
-        </LeoSquaredButton>
+        </Button>
         <HorizontalSpace space='16px' />
-        <LeoSquaredButton onClick={onSaveChanges}>
+        <Button onClick={onSaveChanges}>
           {getLocale('braveWalletButtonSaveChanges')}
-        </LeoSquaredButton>
+        </Button>
       </ButtonRow>
     </PopupModal>
   )

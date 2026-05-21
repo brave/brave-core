@@ -10,19 +10,20 @@
 #include "base/check_op.h"
 #include "base/memory/raw_ref.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/sidebar/features.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/side_panel/side_panel_content_proxy.h"
+#include "chrome/browser/ui/side_panel/side_panel_entry_scope.h"
+#include "chrome/browser/ui/side_panel/side_panel_ui.h"
+#include "chrome/browser/ui/side_panel/side_panel_util.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "chrome/browser/ui/views/side_panel/bookmarks/bookmarks_side_panel_coordinator.h"
 #include "chrome/browser/ui/views/side_panel/reading_list/read_later_side_panel_web_view.h"
-#include "chrome/browser/ui/views/side_panel/side_panel_content_proxy.h"
-#include "chrome/browser/ui/views/side_panel/side_panel_entry_scope.h"
-#include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
-#include "chrome/browser/ui/views/side_panel/side_panel_util.h"
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/grit/generated_resources.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -141,16 +142,17 @@ END_METADATA
 
 BraveBookmarksSidePanelView::BraveBookmarksSidePanelView(
     SidePanelEntryScope& scope) {
+  CHECK(!base::FeatureList::IsEnabled(sidebar::features::kSidebarV2));
+
   CHECK_EQ(SidePanelEntryScope::ScopeType::kBrowser, scope.get_scope_type());
   SetLayoutManager(std::make_unique<views::FlexLayout>())
       ->SetOrientation(views::LayoutOrientation::kVertical);
   AddChildView(std::make_unique<BookmarksSidePanelHeaderView>(scope));
 
   // Reuse upstream's bookmarks panel webui.
-  auto* web_view = AddChildView(scope.GetBrowserWindowInterface()
-                                    .GetFeatures()
-                                    .bookmarks_side_panel_coordinator()
-                                    ->CreateBookmarksWebView(scope));
+  auto* web_view = AddChildView(
+      BookmarksSidePanelCoordinator::From(&scope.GetBrowserWindowInterface())
+          ->CreateBookmarksWebView(scope));
   web_view->SetProperty(
       views::kFlexBehaviorKey,
       views::FlexSpecification(views::MinimumFlexSizeRule::kPreferred,

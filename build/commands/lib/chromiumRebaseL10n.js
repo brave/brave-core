@@ -5,7 +5,7 @@
 
 import path from 'node:path'
 import fs from 'node:fs'
-import config from './config.js'
+import config from './config.ts'
 import util from './util.js'
 import l10nUtil from './l10nUtil.js'
 
@@ -91,6 +91,22 @@ const copyBraveStringsToOrigin = () => {
     )
     fs.copyFileSync(sourceXtb, destXtb)
   }
+
+  // Apply "Brave Origin" branding to the copied origin strings.
+  const cmdOptions = config.defaultOptions
+  cmdOptions.cwd = config.braveCoreDir
+  util.run(
+    'vpython3',
+    [
+      'script/chromium-rebase-l10n.py',
+      '--source_string_path',
+      path.relative(
+        config.braveCoreDir,
+        path.join(srcDir, 'brave', 'app', 'brave_origin_strings.grd'),
+      ),
+    ],
+    cmdOptions,
+  )
 }
 
 const chromiumRebaseL10n = async () => {

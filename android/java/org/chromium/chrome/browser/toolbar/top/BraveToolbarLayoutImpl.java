@@ -53,6 +53,7 @@ import org.chromium.base.ThreadUtils;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.task.AsyncTask;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveConstants;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
@@ -103,12 +104,13 @@ import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarVariationManager;
 import org.chromium.chrome.browser.toolbar.forward_button.ForwardButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.home_button.HomeButton;
+import org.chromium.chrome.browser.toolbar.home_button.HomeButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.reload_button.ReloadButtonCoordinator;
+import org.chromium.chrome.browser.toolbar.signin_button.SigninButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.top.NavigationPopup.HistoryDelegate;
 import org.chromium.chrome.browser.user_education.UserEducationHelper;
-import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.BraveTouchUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.chrome.browser.youtube_script_injector.BraveYouTubeScriptInjectorNativeHelper;
@@ -378,7 +380,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             }
         }
 
-        if (BraveReflectionUtil.equalTypes(this.getClass(), CustomTabToolbar.class)) {
+        if (BraveReflectionUtil.equalTypes(this.getClass(), CustomTabToolbar.class)
+                && !ChromeFeatureList.sCctToolbarRefactor.isEnabled()) {
+            // Non-refactored CCT toolbar: reserve space for the shields button beside
+            // action_buttons.
             LinearLayout customActionButtons = findViewById(R.id.action_buttons);
             assert customActionButtons != null : "Something has changed in the upstream!";
             if (customActionButtons != null && mBraveShieldsButton != null) {
@@ -386,8 +391,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         (ViewGroup.MarginLayoutParams) mBraveShieldsButton.getLayoutParams();
                 ViewGroup.MarginLayoutParams actionButtonsLayout =
                         (ViewGroup.MarginLayoutParams) customActionButtons.getLayoutParams();
-                actionButtonsLayout.setMarginEnd(actionButtonsLayout.getMarginEnd()
-                        + braveShieldsButtonLayout.getMarginEnd());
+                actionButtonsLayout.setMarginEnd(
+                        actionButtonsLayout.getMarginEnd()
+                                + braveShieldsButtonLayout.getMarginEnd());
                 customActionButtons.setLayoutParams(actionButtonsLayout);
             }
         }
@@ -563,6 +569,14 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                                     && !mBraveShieldsHandler.isShowing()) {
                                 checkForTooltip(tab);
                             }
+
+                            // Re-check PiP icon visibility now that the document
+                            // load is complete. The earlier check in
+                            // onDidFinishNavigationInPrimaryMainFrame may have
+                            // returned false because
+                            // IsDocumentOnLoadCompletedInPrimaryMainFrame was not
+                            // yet true at navigation commit time.
+                            showYouTubePipIcon(tab);
                         }
 
                         String countryCode = Locale.getDefault().getCountry();
@@ -1616,7 +1630,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             @Nullable ReloadButtonCoordinator reloadButtonCoordinator,
             @Nullable BackButtonCoordinator backButtonCoordinator,
             @Nullable ForwardButtonCoordinator forwardButtonCoordinator,
-            @Nullable HomeButtonDisplay homeButtonDisplay,
+            HomeButtonCoordinator homeButtonCoordinator,
+            @Nullable SigninButtonCoordinator signinButtonCoordinator,
             ThemeColorProvider themeColorProvider,
             IncognitoStateProvider incognitoStateProvider,
             @Nullable Supplier<Integer> incognitoWindowCountSupplier) {
@@ -1632,7 +1647,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 reloadButtonCoordinator,
                 backButtonCoordinator,
                 forwardButtonCoordinator,
-                homeButtonDisplay,
+                homeButtonCoordinator,
+                signinButtonCoordinator,
                 themeColorProvider,
                 incognitoStateProvider,
                 incognitoWindowCountSupplier);
@@ -1741,9 +1757,12 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     /**
-     * Hides the rewards layout if the toolbar width is less than the minimum tablet width and the
-     * rewards icon should be shown. Uses the same threshold as the existing toolbar button
-     * visibility logic in ToolbarTablet.
+     * Updates the rewards layout visibility on tablet. The layout is shown only when all of the
+     * following are true: the current tab is not incognito, the toolbar width is at least the
+     * minimum tablet width (same threshold as the existing toolbar button visibility logic in
+     * ToolbarTablet), rewards are not disabled by policy, and the native rewards worker is
+     * available and reports rewards as supported. Also updates the shields layout background to
+     * match the resulting rewards layout visibility.
      */
     private void maybeHideRewardsLayout(int width) {
         // Only hide the rewards layout on tablet devices, like it is done in the upstream code.
@@ -1755,12 +1774,19 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             return;
         }
 
-        mRewardsLayout.setVisibility(
-                width >= DeviceFormFactor.getNonMultiDisplayMinimumTabletWidthPx(getContext())
-                        ? View.VISIBLE
-                        : View.GONE);
+        Tab tab = getToolbarDataProvider().getTab();
+        Profile profile = tab != null ? Profile.fromWebContents(tab.getWebContents()) : null;
+        boolean shouldShowRewards =
+                !isIncognito()
+                        && width
+                                >= DeviceFormFactor.getNonMultiDisplayMinimumTabletWidthPx(
+                                        getContext())
+                        && !BraveRewardsPolicy.isDisabledByPolicy(profile)
+                        && mBraveRewardsNativeWorker != null
+                        && mBraveRewardsNativeWorker.isSupported();
+        mRewardsLayout.setVisibility(shouldShowRewards ? View.VISIBLE : View.GONE);
         // Update the shields layout background to match the rewards layout visibility.
-        updateShieldsLayoutBackground(mRewardsLayout.getVisibility() == View.GONE);
+        updateShieldsLayoutBackground(!shouldShowRewards);
     }
 
     public void maybeShowTermsOfServiceUpdateRequiredBadge() {

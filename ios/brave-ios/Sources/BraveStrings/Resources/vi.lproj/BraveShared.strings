@@ -16,11 +16,17 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addBookmarkTitle" = "Thêm Dấu trang";
 
+/* Add a new item to the current list */
+"addButtonTitle" = "Thêm";
+
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "Thêm vào Yêu thích";
 
 /* Cell title for add folder action */
 "AddFolderActionCellTitle" = "Thư mục mới";
+
+/* Settings item that opens instructions for adding Brave to the iOS dock. */
+"addToDockSettingsCell" = "Thêm vào Dock";
 
 /* Add to favorites share action. */
 "AddToFavorites" = "Thêm vào Yêu thích";
@@ -66,6 +72,45 @@
 
 /* Username textbox in Authentication prompt */
 "AuthPromptAlertUsernamePlaceholderText" = "Tên người dùng";
+
+/* Settings autofill section title */
+"Autofill" = "Tự động điền";
+
+/* Label for account when indicating that a domain has multiple accounts */
+"autofill.managePassword.multipleAccounts" = "Tài khoản";
+
+/* Alert message warning the user that deleting non-synced passwords will permanently remove them */
+"autofill.managePasswords.deleteCredentialConfirmMessage" = "Thao tác này sẽ xóa (các) mật khẩu đã lưu cho %@ khỏi chuỗi đồng bộ và thiết bị của bạn.";
+
+/* Prompt title when deleting passwords */
+"autofill.managePasswords.deleteCredentialsAlertTitle" = "Bạn có chắc không?";
+
+/* Label for the button used to delete the current login. */
+"autofill.managePasswords.deleteManagePasswordButtonTitle" = "Xóa";
+
+/* Title for the section header in the Manage Passwords list screen, that lists the saved sites */
+"autofill.managePasswords.headerTitle" = "Đã lưu";
+
+/* The message displayed on the manage passwords list screen, when there's at least one password, explain the feature */
+"autofill.managePasswords.instructions" = "Tạo, lưu và quản lý mật khẩu của bạn để dễ dàng đăng nhập vào các trang web và ứng dụng.";
+
+/* The header title displayed over the never saved passwords list */
+"autofill.managePasswords.neverSavedListHeaderTitle" = "Không bao giờ lưu";
+
+/* Display text for the option to offer to save passwords */
+"autofill.managePasswords.offerToSavePasswords" = "Đề nghị lưu mật khẩu";
+
+/* Prompt that is diplayed in the search bar of the Manage Passwords list screen */
+"autofill.managePasswords.searchWebsitesPrompt" = "Tìm kiếm trang web";
+
+/* Title for navigation bar of the Manage Passwords screen */
+"autofill.managePasswords.title" = "Quản lý mật khẩu";
+
+/* Text to show when the origin of a managed password is not available */
+"autofill.managePasswords.UnknownDomainText" = "Không xác định";
+
+/* Settings autofill section title */
+"autofill.settings.title" = "Tự động điền";
 
 /* This is a title for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' is not to be translated. */
 "AutoRedirectAMPPages" = "Tự động chuyển hướng trang AMP";
@@ -141,33 +186,6 @@
 
 /* Placeholder text for adding or editing a bookmark */
 "BookmarkUrlPlaceholderText" = "Địa chỉ";
-
-/* Title for the Brave Account section in settings */
-"BraveAccount" = "Tài khoản Brave";
-
-/* Title shown when waiting for email verification */
-"BraveAccountAlmostThere" = "Gần đến rồi!";
-
-/* Detail text for the almost there title */
-"BraveAccountAlmostThereDetail" = "Email xác nhận đang được gửi đến. Nhấp vào nút trong email đó để kích hoạt tài khoản của bạn.";
-
-/* Button text to cancel Brave Account registration */
-"BraveAccountCancelRegistration" = "Hủy đăng ký";
-
-/* Title shown when user is logged in */
-"BraveAccountEmailAddress" = "Địa chỉ email";
-
-/* Button text to get started with Brave Account */
-"BraveAccountGetStarted" = "Get Started";
-
-/* Button text to resend confirmation email */
-"BraveAccountResendConfirmationEmail" = "Gửi lại email xác nhận";
-
-/* Detail text for the resend confirmation email button */
-"BraveAccountResendConfirmationEmailDetail" = "Không thấy email? Hãy kiểm tra thư mục thư rác hoặc nhấp vào nút để gửi lại email xác nhận.";
-
-/* Button text to sign out of Brave Account */
-"BraveAccountSignOut" = "Đăng xuất";
 
 /* Button to show the brave panel */
 "BravePanel" = "Bảng điều khiển Brave";
@@ -706,15 +724,6 @@
 /* Description for new folder popup */
 "EnterFolderName" = "Nhập tên thư mục";
 
-/* Shown in error pages to suggest a fix to the user. */
-"errorPageCantBeReachedTry" = "Thử nhập lại URL hoặc mở công cụ tìm kiếm và tìm URL mới.";
-
-/* Shown in error pages for files that can't be shown and need to be downloaded. */
-"ErrorPageOpenInSafariButtonTitle" = "Mở trong Safari";
-
-/* Shown in error pages on a button that will try to load the page again */
-"ErrorPageReloadButtonTitle" = "Tải lại";
-
 /* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
 "ErrorPagesAdvancedErrorPinningDetails" = "%1$@ thường sử dụng mã hóa để bảo vệ thông tin của bạn. Khi Brave cố gắng kết nối với %2$@ lần này, trang web đã gửi lại thông tin đăng nhập bất thường và không chính xác. Điều này có thể xảy ra khi kẻ tấn công cố gắng giả mạo là %3$@ hoặc màn hình đăng nhập Wi-Fi đã làm gián đoạn kết nối. Thông tin của bạn vẫn an toàn vì Brave đã dừng kết nối trước khi bất kỳ dữ liệu nào được trao đổi.<br />Bạn không thể truy cập %4$@ ngay thời điểm này vì trang web sử dụng cơ chế ghim chứng chỉ. Lỗi mạng và các cuộc tấn công thường là tạm thời, vì vậy trang này có thể sẽ hoạt động sau.";
 
@@ -1063,11 +1072,8 @@
 /* No comment provided by engineer. */
 "ntp.hideSponsoredImages" = "Ẩn hình được tài trợ";
 
-/* The text description of image type which is being used NTP */
-"ntp.imageTypeSelectionDescription" = "Hình ảnh được tài trợ là hình nền có thương hiệu xuất hiện trong các thẻ mới mở trong trình duyệt. Bật Hình ảnh được tài trợ hỗ trợ sứ mệnh của Brave.";
-
-/* The text label of image type learn more link */
-"ntp.imageTypeSelectionDescriptionLearnMore" = "Tìm hiểu thêm";
+/* The text description of image type which is being used NTP. The text inside the square brackets should be translated and is a link */
+"ntp.imageTypeSelectionDescription" = "Hình ảnh được tài trợ là hình nền có thương hiệu xuất hiện trong các thẻ mới mở trong trình duyệt. Bật Hình ảnh được tài trợ hỗ trợ sứ mệnh của Brave. [Tìm hiểu thêm](#learn-more)";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Tìm hiểu thêm về Phần thưởng Brave";
@@ -2368,9 +2374,6 @@
 /* Title of an action that allows user to perform a one-click web search for selected text */
 "SearchWithBrave" = "Tìm kiếm với Brave";
 
-/* Settings security section title */
-"Security" = "Bảo mật";
-
 /* No comment provided by engineer. */
 "sendButtonTitle" = "Gửi";
 
@@ -2733,6 +2736,9 @@
 
 /* Setting to show/hide the tabs bar */
 "ShowTabsBar" = "Thanh thẻ";
+
+/* Settings item for clearing site-specific settings and shields settings. */
+"SiteAndShieldsSettings" = "Cài đặt Trang và Khiên";
 
 /* No comment provided by engineer. */
 "SiteReportedBody" = "Cảm ơn bạn đã thông báo cho các nhà phát triển của Brave biết rằng đã xảy ra sự cố với trang web này. Chúng tôi sẽ cố gắng hết sức để khắc phục sự cố này!";
@@ -3178,6 +3184,12 @@
 /* No comment provided by engineer. */
 "tabs.settings.privateTabsSettingsTitle" = "Thẻ riêng tư";
 
+/* The description of the toggle for users to allow the browser to remember its last browsing mode so it can re-launch in that mode when Keep Private Tabs is enabled. */
+"tabs.settings.rememberBrowsingModeDescription" = "Nếu trình duyệt ở chế độ riêng tư khi đóng lần cuối, nó sẽ mở ở chế độ riêng tư khi khởi chạy lại.";
+
+/* Toggle to launch the browser in private mode when Keep Private Tabs is enabled */
+"tabs.settings.rememberBrowsingModeTitle" = "Ghi nhớ chế độ duyệt web";
+
 /* Accessibility label for the navigation toolbar displayed at the bottom of the screen. */
 "TabToolbarAccessibilityLabel" = "Thanh công cụ điều hướng";
 
@@ -3279,9 +3291,6 @@
 
 /* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
 "ThemesDisplayBrightness" = "Giao diện";
-
-/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
-"ThemesDisplayBrightnessFooter" = "Các cài đặt này không được áp dụng ở chế độ duyệt riêng tư.";
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "Sáng";

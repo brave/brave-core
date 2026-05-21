@@ -35,7 +35,8 @@ enum class MetricAttribute {
   kWeekOfActivation,
   kDateOfActivation,
   kIsBrowserDefault,
-  kMaxValue = kIsBrowserDefault,
+  kCustomAttribute,
+  kMaxValue = kCustomAttribute,
 };
 
 inline constexpr MetricAttribute kDefaultMetricAttributes[] = {
@@ -47,6 +48,8 @@ inline constexpr MetricAttribute kDefaultMetricAttributes[] = {
 
 using MetricAttributes = std::array<std::optional<MetricAttribute>, 8>;
 using MetricAttributesToAppend = std::array<std::optional<MetricAttribute>, 2>;
+using CustomAttributes = std::array<std::optional<std::string_view>, 2>;
+using RemoteCustomAttributes = std::array<std::optional<std::string>, 2>;
 
 struct MetricConfig {
   // Once the metric value has been sent, the value will be removed from the log
@@ -72,6 +75,11 @@ struct MetricConfig {
   // If specified in a remote configuration, the cadence of the metric will be
   // overridden.
   std::optional<MetricLogType> cadence;
+
+  // Custom attribute key names to include with the metric. Each
+  // kCustomAttribute in the attributes list is replaced in order with the next
+  // key from this array.
+  CustomAttributes custom_attributes;
 };
 
 // This struct is used to store the remote configuration for a metric.
@@ -91,6 +99,7 @@ struct RemoteMetricConfig {
   std::optional<bool> record_activation_date;
   std::optional<std::string> activation_metric_name;
   std::optional<MetricLogType> cadence;
+  std::optional<RemoteCustomAttributes> custom_attributes;
 
   static void RegisterJSONConverter(
       base::JSONValueConverter<RemoteMetricConfig>* converter);

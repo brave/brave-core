@@ -7,120 +7,13 @@
 
 #include <cstddef>
 #include <optional>
-#include <string>
 #include <utility>
 
-#include "base/check.h"
-#include "base/check_op.h"
-#include "base/notreached.h"
 #include "brave/components/brave_ads/core/internal/common/test/internal/url_response_test_util_internal.h"
-#include "brave/components/brave_ads/core/internal/common/test/test_constants.h"
-#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/history/site_history.h"
 
 namespace brave_ads::test {
-
-namespace {
-
-constexpr char kNightlyBuildChannelName[] = "nightly";
-constexpr char kBetaBuildChannelName[] = "beta";
-constexpr char kReleaseBuildChannelName[] = "release";
-
-constexpr char kUnknownPlatformType[] = "unknown";
-constexpr char kAndroidPlatformType[] = "android";
-constexpr char kIOSPlatformType[] = "ios";
-constexpr char kLinuxPlatformType[] = "linux";
-constexpr char kMacOSPlatformType[] = "macos";
-constexpr char kWindowsPlatformType[] = "windows";
-
-}  // namespace
-
-void MockDeviceId() {
-  CHECK(GlobalState::HasInstance());
-
-  GlobalState::GetInstance()->SysInfo().device_id = kDeviceId;
-}
-
-void MockPlatformHelper(const PlatformHelperMock& platform_helper_mock,
-                        PlatformType type) {
-  PlatformHelper::SetForTesting(&platform_helper_mock);
-
-  bool is_mobile = false;
-  std::string name;
-
-  switch (type) {
-    case PlatformType::kUnknown: {
-      name = kUnknownPlatformType;
-      break;
-    }
-
-    case PlatformType::kAndroid: {
-      is_mobile = true;
-      name = kAndroidPlatformType;
-      break;
-    }
-
-    case PlatformType::kIOS: {
-      is_mobile = true;
-      name = kIOSPlatformType;
-      break;
-    }
-
-    case PlatformType::kLinux: {
-      name = kLinuxPlatformType;
-      break;
-    }
-
-    case PlatformType::kMacOS: {
-      name = kMacOSPlatformType;
-      break;
-    }
-
-    case PlatformType::kWindows: {
-      name = kWindowsPlatformType;
-      break;
-    }
-  }
-
-  ON_CALL(platform_helper_mock, IsMobile)
-      .WillByDefault(::testing::Return(is_mobile));
-  ON_CALL(platform_helper_mock, GetName).WillByDefault(::testing::Return(name));
-  ON_CALL(platform_helper_mock, GetType).WillByDefault(::testing::Return(type));
-}
-
-void MockBuildChannel(BuildChannelType type) {
-  CHECK(GlobalState::HasInstance());
-
-  auto& build_channel = GlobalState::GetInstance()->BuildChannel();
-  switch (type) {
-    case BuildChannelType::kNightly: {
-      build_channel.is_release = false;
-      build_channel.name = kNightlyBuildChannelName;
-      return;
-    }
-
-    case BuildChannelType::kBeta: {
-      build_channel.is_release = false;
-      build_channel.name = kBetaBuildChannelName;
-      return;
-    }
-
-    case BuildChannelType::kRelease: {
-      build_channel.is_release = true;
-      build_channel.name = kReleaseBuildChannelName;
-      return;
-    }
-  }
-
-  NOTREACHED() << "Unexpected value for BuildChannelType: "
-               << std::to_underlying(type);
-}
-
-void MockAllowJavaScript(bool allow_javascript) {
-  GlobalState::GetInstance()->ContentSettings().allow_javascript =
-      allow_javascript;
-}
 
 void MockIsNetworkConnectionAvailable(const AdsClientMock& ads_client_mock,
                                       bool is_available) {

@@ -5,8 +5,15 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_test_utils.h"
 
+#include "base/base_paths.h"
+#include "base/containers/map_util.h"
+#include "base/files/file_util.h"
+#include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
+#include "base/path_service.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
@@ -15,11 +22,39 @@ namespace {
 
 // Default pubkey from our test wallet for account id 0.
 constexpr std::string_view kDefaultPubkey =
-    "D6B2A5CC606EA86342001DD036B301C15A5CBA63C413CAD5CA0E8F47E6FA9516";
+    "14BCCFBAD15C6327408E833D162271F93A51FA3A6BC67D3EACC384BB9704D71E";
 
 bool IsEmpty(
     const std::array<uint8_t, kPolkadotSubstrateAccountIdSize>& pubkey) {
   return pubkey == decltype(pubkey){};
+}
+
+std::string ReadMetadataFixtureJsonImpl(std::string_view file_name) {
+  const auto fixture_path =
+      base::PathService::CheckedGet(base::DIR_SRC_TEST_DATA_ROOT)
+          .AppendASCII("brave")
+          .AppendASCII("components")
+          .AppendASCII("test")
+          .AppendASCII("data")
+          .AppendASCII("brave_wallet")
+          .AppendASCII("polkadot")
+          .AppendASCII("chain_metadata")
+          .AppendASCII(file_name);
+  std::string fixture_contents;
+  CHECK(base::ReadFileToString(fixture_path, &fixture_contents));
+  return fixture_contents;
+}
+
+bool IsCommand(const base::DictValue& req_body, std::string_view method) {
+  if (const auto* json_method = req_body.FindString("method");
+      json_method && *json_method == method) {
+    return true;
+  }
+  return false;
+}
+
+const base::ListValue* FindParamsOrNull(const base::DictValue& req_body) {
+  return req_body.FindList("params");
 }
 
 }  // namespace
@@ -31,6 +66,23 @@ base::DictValue RequestBodyToJsonDict(const network::ResourceRequest& req) {
   const auto& element = body_elems->at(0);
   auto sv = element.As<network::DataElementBytes>().AsStringView();
   return base::test::ParseJsonDict(sv);
+}
+
+std::string ReadMetadataFixtureJson(std::string_view file_name) {
+  return ReadMetadataFixtureJsonImpl(file_name);
+}
+
+std::vector<uint8_t> ReadMetadataFixture(std::string_view file_name) {
+  auto json =
+      base::JSONReader::ReadDict(ReadMetadataFixtureJsonImpl(file_name), 0);
+  CHECK(json.has_value());
+
+  const std::string* metadata_hex = json->FindString("result");
+  CHECK(metadata_hex);
+
+  std::vector<uint8_t> metadata_bytes;
+  CHECK(PrefixedHexStringToBytes(*metadata_hex, &metadata_bytes));
+  return metadata_bytes;
 }
 
 PolkadotMockRpc::PolkadotMockRpc(
@@ -49,6 +101,10 @@ void PolkadotMockRpc::UseInvalidChainMetadata() {
   use_invalid_metadata_ = true;
 }
 
+void PolkadotMockRpc::UseInvalidFinalizedBlockHash() {
+  use_invalid_finalized_block_hash_ = true;
+}
+
 void PolkadotMockRpc::RejectExtrinsicSubmission() {
   reject_extrinsic_submission_ = true;
 }
@@ -60,6 +116,33 @@ void PolkadotMockRpc::RejectAccountInfoRequest() {
 void PolkadotMockRpc::SetSenderPubKey(
     base::span<uint8_t, kPolkadotSubstrateAccountIdSize> pubkey) {
   base::span(sender_pubkey_).copy_from_nonoverlapping(pubkey);
+}
+
+void PolkadotMockRpc::SetExpectedExtrinsic(std::string extrinsic) {
+  expected_extrinsic_ = std::move(extrinsic);
+}
+
+void PolkadotMockRpc::SetFinalizedBlockHeader(std::string_view json_str) {
+  finalized_block_header_json_ = json_str;
+}
+
+void PolkadotMockRpc::SetBlockHashMap(
+    base::flat_map<uint32_t, std::string> block_hash_map) {
+  block_hash_map_ = std::move(block_hash_map);
+}
+
+void PolkadotMockRpc::SetBlockMap(
+    base::flat_map<std::string, PolkadotBlock> block_map) {
+  block_map_ = std::move(block_map);
+}
+
+void PolkadotMockRpc::SetBadBlockMapKey(std::string bad_block_map_key) {
+  bad_block_map_key_ = std::move(bad_block_map_key);
+}
+
+void PolkadotMockRpc::SetEventsMap(
+    base::flat_map<std::string, std::string> events_map) {
+  events_map_ = std::move(events_map);
 }
 
 void PolkadotMockRpc::AddGetInitialChainHeader() {
@@ -119,35 +202,18 @@ void PolkadotMockRpc::AddGetParentBlockHeader() {
 void PolkadotMockRpc::AddGetFinalizedBlockHash() {
   // Our initial call to get the hash of the last finalized block in the canon
   // chain.
+  if (use_invalid_finalized_block_hash_) {
+    req_res_pairs_.emplace(
+        base::test::ParseJsonDict(
+            R"({"id":1,"jsonrpc":"2.0","method":"chain_getFinalizedHead","params":[]})"),
+        R"({"jsonrpc":"2.0","id":11,"result":"0xcat!!!"})");
+    return;
+  }
+
   req_res_pairs_.emplace(
       base::test::ParseJsonDict(
           R"({"id":1,"jsonrpc":"2.0","method":"chain_getFinalizedHead","params":[]})"),
       R"({"jsonrpc":"2.0","id":11,"result":"0x46e5afe42b1ff0c40ecc18d7ff97974f3bdf5dfda1e21d779644a7ea30a97d21"})");
-}
-
-void PolkadotMockRpc::AddGetFinalizedBlockHeader() {
-  // Chained call, grab the block header using the hash of the finalized head.
-  req_res_pairs_.emplace(
-      base::test::ParseJsonDict(
-          R"({"id":1,"jsonrpc":"2.0","method":"chain_getHeader","params":["46e5afe42b1ff0c40ecc18d7ff97974f3bdf5dfda1e21d779644a7ea30a97d21"]})"),
-      R"(
-            {
-              "jsonrpc":"2.0",
-              "id":13,
-              "result":{
-                "parentHash":"0xcf424e463b14b26905d4e2aaff455a3c149c3ccff5a1fc62203c0c07b711e3f4",
-                "number":"0x1c06355",
-                "stateRoot":"0x3a501ddbfc394d859401cd6d55f5743461ddb3a5aecfebb31f587c16ad23f505",
-                "extrinsicsRoot":"0x8fc47b641e793ed938eae4d793636b2feb657bca97726a43ee3375a8e5b321a6",
-                "digest":{
-                  "logs":[
-                    "0x0642414245b501030200000027929111000000008038b165beaf68d4ae8b7a3eae2055ecdfde0a0462993a43e522c709773da51a550d604eb90a671b88437f7f0d5e7f2e4efe323e2cee3992ffa2bcd3e5e10d07ff37c43e11e82263d2bc774942196e96c05a38bbbd820eff1cbf2441b2c59307",
-                    "0x04424545468403cfdc267eac55b3225fe8d581f3d2f7d9ece28a564bb70b50dd04b829e893b78a",
-                    "0x05424142450101fc0b1a7fcff42ffb1fcb8166843fb9b9eded36f64891deea28eea90da9215e70c605638b274f0c8517fc70d0c2b1442fd50ad933ee6cf7ceba600f762e2bd682"
-                  ]
-                }
-              }
-            })");
 }
 
 void PolkadotMockRpc::AddGetSigningBlockHash() {
@@ -205,7 +271,6 @@ void PolkadotMockRpc::AddReqResPairs() {
   AddGetInitialChainHeader();
   AddGetParentBlockHeader();
   AddGetFinalizedBlockHash();
-  AddGetFinalizedBlockHeader();
   AddGetSigningBlockHash();
   AddGetRuntimeInfo();
   AddGetGenesisBlockHash();
@@ -249,11 +314,27 @@ void PolkadotMockRpc::RequestInterceptor(const network::ResourceRequest& req) {
     return;
   }
 
+  if (HandleGetFinalizedBlockHeader(req, req_body)) {
+    return;
+  }
+
   if (HandleAuthorSubmitExtrinsic(req, req_body)) {
     return;
   }
 
   if (HandlePaymentInfoRequest(req, req_body)) {
+    return;
+  }
+
+  if (HandleBlockHashRequest(req, req_body)) {
+    return;
+  }
+
+  if (HandleBlockRequest(req, req_body)) {
+    return;
+  }
+
+  if (HandleEventsRequest(req, req_body)) {
     return;
   }
 
@@ -265,46 +346,80 @@ void PolkadotMockRpc::RequestInterceptor(const network::ResourceRequest& req) {
 
 bool PolkadotMockRpc::HandleMetadataRequest(const network::ResourceRequest& req,
                                             const base::DictValue& req_body) {
-  if (req.url == GURL(testnet_url_)) {
-    if (const auto* str = req_body.FindString("method")) {
-      if (*str == "system_chain") {
-        if (use_invalid_metadata_) {
-          url_loader_factory_->AddResponse(req.url.spec(), R"(
-            { "jsonrpc": "2.0",
-              "error": { "code": 1234 },
-              "id": 1 })");
-        } else {
-          url_loader_factory_->AddResponse(req.url.spec(), R"(
-            { "jsonrpc": "2.0",
-              "result": "Westend",
-              "id": 1 })");
-        }
-        return true;
-      }
-    }
+  const auto* method = req_body.FindString("method");
+  if (!method) {
+    return false;
   }
 
-  if (req.url == GURL(mainnet_url_)) {
-    if (const auto* str = req_body.FindString("method")) {
-      if (*str == "system_chain") {
-        if (use_invalid_metadata_) {
-          url_loader_factory_->AddResponse(req.url.spec(), R"(
-            { "jsonrpc": "2.0",
-              "error": { "code": 4321 },
-              "id": 1 })");
-        } else {
-          url_loader_factory_->AddResponse(req.url.spec(), R"(
-            { "jsonrpc": "2.0",
-              "result": "Polkadot",
-              "id": 1 })");
-        }
+  if (*method == "state_getMetadata") {
+    if (use_invalid_metadata_) {
+      url_loader_factory_->AddResponse(req.url.spec(), R"(
+        { "jsonrpc": "2.0",
+          "error": { "code": 1234 },
+          "id": 1 })");
+      return true;
+    }
+
+    if (req.url == GURL(mainnet_url_)) {
+      url_loader_factory_->AddResponse(
+          req.url.spec(),
+          ReadMetadataFixtureJsonImpl("state_getMetadata_polkadot.json"));
+      return true;
+    }
+
+    if (req.url == GURL(testnet_url_)) {
+      url_loader_factory_->AddResponse(
+          req.url.spec(),
+          ReadMetadataFixtureJsonImpl("state_getMetadata_westend.json"));
+      return true;
+    }
+
+    return false;
+  }
+
+  if (*method == "system_chain") {
+    if (use_invalid_metadata_) {
+      if (req.url == GURL(testnet_url_)) {
+        url_loader_factory_->AddResponse(req.url.spec(), R"(
+          { "jsonrpc": "2.0",
+            "error": { "code": 1234 },
+            "id": 1 })");
         return true;
       }
+
+      if (req.url == GURL(mainnet_url_)) {
+        url_loader_factory_->AddResponse(req.url.spec(), R"(
+          { "jsonrpc": "2.0",
+            "error": { "code": 4321 },
+            "id": 1 })");
+        return true;
+      }
+
+      return false;
     }
+
+    if (req.url == GURL(testnet_url_)) {
+      url_loader_factory_->AddResponse(req.url.spec(), R"(
+        { "jsonrpc": "2.0",
+          "result": "Westend",
+          "id": 1 })");
+      return true;
+    }
+
+    if (req.url == GURL(mainnet_url_)) {
+      url_loader_factory_->AddResponse(req.url.spec(), R"(
+        { "jsonrpc": "2.0",
+          "result": "Polkadot",
+          "id": 1 })");
+      return true;
+    }
+
+    return false;
   }
 
   return false;
 }
+
 bool PolkadotMockRpc::HandleGetAccountInfoRequest(
     const network::ResourceRequest& req,
     const base::DictValue& req_body) {
@@ -378,11 +493,67 @@ bool PolkadotMockRpc::HandleGetAccountInfoRequest(
   return true;
 }
 
+bool PolkadotMockRpc::HandleGetFinalizedBlockHeader(
+    const network::ResourceRequest& req,
+    const base::DictValue& req_body) {
+  if (finalized_block_hash_.empty()) {
+    finalized_block_hash_ =
+        "46e5afe42b1ff0c40ecc18d7ff97974f3bdf5dfda1e21d779644a7ea30a97d21";
+  }
+
+  if (finalized_block_header_json_.empty()) {
+    finalized_block_header_json_ = R"(
+        {
+          "jsonrpc":"2.0",
+          "id":13,
+          "result":{
+            "parentHash":"0xcf424e463b14b26905d4e2aaff455a3c149c3ccff5a1fc62203c0c07b711e3f4",
+            "number":"0x1c06355",
+            "stateRoot":"0x3a501ddbfc394d859401cd6d55f5743461ddb3a5aecfebb31f587c16ad23f505",
+            "extrinsicsRoot":"0x8fc47b641e793ed938eae4d793636b2feb657bca97726a43ee3375a8e5b321a6",
+            "digest":{
+              "logs":[
+                "0x0642414245b501030200000027929111000000008038b165beaf68d4ae8b7a3eae2055ecdfde0a0462993a43e522c709773da51a550d604eb90a671b88437f7f0d5e7f2e4efe323e2cee3992ffa2bcd3e5e10d07ff37c43e11e82263d2bc774942196e96c05a38bbbd820eff1cbf2441b2c59307",
+                "0x04424545468403cfdc267eac55b3225fe8d581f3d2f7d9ece28a564bb70b50dd04b829e893b78a",
+                "0x05424142450101fc0b1a7fcff42ffb1fcb8166843fb9b9eded36f64891deea28eea90da9215e70c605638b274f0c8517fc70d0c2b1442fd50ad933ee6cf7ceba600f762e2bd682"
+              ]
+            }
+          }
+        })";
+  }
+
+  if (IsCommand(req_body, "chain_getHeader")) {
+    if (const auto* params = FindParamsOrNull(req_body)) {
+      if (params->empty()) {
+        url_loader_factory_->AddResponse(req.url.spec(),
+                                         finalized_block_header_json_);
+
+        return true;
+      }
+
+      if (const auto* hash = (*params)[0].GetIfString();
+          hash && *hash == finalized_block_hash_) {
+        url_loader_factory_->AddResponse(req.url.spec(),
+                                         finalized_block_header_json_);
+
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
 bool PolkadotMockRpc::HandleAuthorSubmitExtrinsic(
     const network::ResourceRequest& req,
     const base::DictValue& req_body) {
   if (const auto* method = req_body.FindString("method")) {
     if (*method == "author_submitExtrinsic") {
+      const auto* params = req_body.FindList("params");
+      CHECK_EQ(params->size(), 1u);
+
+      const auto* extrinsic = (*params)[0].GetIfString();
+      CHECK(extrinsic && !extrinsic->empty());
+
       if (reject_extrinsic_submission_) {
         url_loader_factory_->AddResponse(req.url.spec(), R"(
           {
@@ -392,6 +563,19 @@ bool PolkadotMockRpc::HandleAuthorSubmitExtrinsic(
           })");
 
       } else {
+        if (expected_extrinsic_.has_value()) {
+          if (*expected_extrinsic_ != *extrinsic) {
+            url_loader_factory_->AddResponse(req.url.spec(), R"(
+              {
+                "jsonrpc": "2.0",
+                "id": 1,
+                "error": { "code": 4321, "message": "Invalid extrinsic" }
+              })");
+
+            return true;
+          }
+        }
+
         url_loader_factory_->AddResponse(req.url.spec(), R"(
           {
             "jsonrpc": "2.0",
@@ -432,6 +616,129 @@ bool PolkadotMockRpc::HandlePaymentInfoRequest(
               req.url.spec(),
               R"({"jsonrpc":"2.0","id":18,"result":"0x82ab80766da800dc8df1b5030000000000000000000000"})");
           return true;
+        }
+      }
+    }
+  }
+
+  return false;
+}
+
+bool PolkadotMockRpc::HandleBlockHashRequest(
+    const network::ResourceRequest& req,
+    const base::DictValue& req_body) {
+  if (const auto* method = req_body.FindString("method");
+      method && *method == "chain_getBlockHash") {
+    if (const auto* params_list = req_body.FindList("params")) {
+      CHECK(!params_list->empty());
+
+      uint32_t block_num = 0;
+      CHECK(
+          base::HexStringToUInt(params_list->front().GetString(), &block_num));
+
+      const auto* pos = base::FindOrNull(block_hash_map_, block_num);
+      if (pos) {
+        url_loader_factory_->AddResponse(
+            req.url.spec(),
+            absl::StrFormat(R"({"jsonrpc":"2.0","id":18,"result":"%s"})",
+                            *pos));
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+base::DictValue PolkadotBlockToJson(const PolkadotBlock& chain_block) {
+  base::ListValue logs;
+
+  base::DictValue digest;
+  digest.Set("logs", std::move(logs));
+
+  base::DictValue header;
+  header.Set("parentHash",
+             "0x" + base::HexEncodeLower(chain_block.header.parent_hash));
+  header.Set("number", "0x" + base::HexEncodeLower(base::byte_span_from_ref(
+                                  chain_block.header.block_number)));
+  header.Set("stateRoot",
+             "0x" + base::HexEncodeLower(chain_block.header.state_root));
+  header.Set("extrinsicsRoot",
+             "0x" + base::HexEncodeLower(chain_block.header.extrinsics_root));
+
+  header.Set("digest", std::move(digest));
+
+  base::DictValue block;
+  block.Set("header", std::move(header));
+
+  base::ListValue extrinsics;
+  for (const auto& extrinsic : chain_block.extrinsics) {
+    extrinsics.Append(extrinsic);
+  }
+  block.Set("extrinsics", std::move(extrinsics));
+
+  base::DictValue value;
+  value.Set("block", std::move(block));
+
+  return value;
+}
+
+bool PolkadotMockRpc::HandleBlockRequest(const network::ResourceRequest& req,
+                                         const base::DictValue& req_body) {
+  if (const auto* method = req_body.FindString("method");
+      method && *method == "chain_getBlock") {
+    if (const auto* params_list = req_body.FindList("params")) {
+      CHECK(!params_list->empty());
+
+      const auto& block_hash = params_list->front().GetString();
+
+      if (bad_block_map_key_ == block_hash) {
+        url_loader_factory_->AddResponse(
+            req.url.spec(),
+            R"({"jsonrpc":"2.0","id":18,"result":"some bad data here, not a block."})");
+
+        return true;
+      }
+
+      auto pos = block_map_.find(block_hash);
+      if (pos != block_map_.end()) {
+        url_loader_factory_->AddResponse(
+            req.url.spec(),
+            absl::StrFormat(
+                R"({"jsonrpc":"2.0","id":18,"result":%s})",
+                base::WriteJson(PolkadotBlockToJson(pos->second)).value()));
+
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+bool PolkadotMockRpc::HandleEventsRequest(const network::ResourceRequest& req,
+                                          const base::DictValue& req_body) {
+  if (const auto* method = req_body.FindString("method");
+      method && *method == "state_getStorage") {
+    if (const auto* params_list = req_body.FindList("params")) {
+      CHECK(!params_list->empty());
+
+      auto pos = params_list->begin();
+      if (pos->GetString() ==
+          // xxhash(System) | xxhash(Events)
+          "26aa394eea5630e07c48ae0c9558cef780d41e5e16056765bc8461851072c9d7") {
+        ++pos;
+        if (pos != params_list->end()) {
+          const auto& block_hash = pos->GetString();
+
+          auto events_iter = events_map_.find(block_hash);
+          if (events_iter != events_map_.end()) {
+            url_loader_factory_->AddResponse(
+                req.url.spec(),
+                absl::StrFormat(R"({"jsonrpc":"2.0","id":18,"result":"%s"})",
+                                events_iter->second));
+
+            return true;
+          }
         }
       }
     }

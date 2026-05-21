@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/containers/span.h"
 #include "brave/components/brave_shields/core/common/brave_shields_panel.mojom-data-view.h"
 #include "brave/components/brave_shields/core/common/brave_shields_settings_values.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
@@ -131,7 +132,9 @@ bool IsWebcompatEnabled(HostContentSettingsMap* map,
 
 mojom::FarblingLevel GetFarblingLevel(HostContentSettingsMap* map,
                                       const GURL& primary_url);
-base::Token GetFarblingToken(HostContentSettingsMap* map, const GURL& url);
+base::Token GetFarblingToken(HostContentSettingsMap* map,
+                             const GURL& url,
+                             base::span<const uint8_t> additional_entropy);
 
 bool IsDeveloperModeEnabled(PrefService* profile_state);
 

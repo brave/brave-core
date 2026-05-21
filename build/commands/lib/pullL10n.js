@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import path from 'node:path'
-import config from './config.js'
+import config from './config.ts'
 import util from './util.js'
 import l10nUtil from './l10nUtil.js'
 

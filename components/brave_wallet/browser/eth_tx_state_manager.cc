@@ -7,7 +7,6 @@
 
 #include <optional>
 
-#include "base/logging.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
@@ -18,9 +17,9 @@
 namespace brave_wallet {
 
 EthTxStateManager::EthTxStateManager(
-    TxStorageDelegate& delegate,
+    TxStorage& tx_storage,
     AccountResolverDelegate& account_resolver_delegate)
-    : TxStateManager(delegate, account_resolver_delegate) {}
+    : TxStateManager(tx_storage, account_resolver_delegate) {}
 
 EthTxStateManager::~EthTxStateManager() = default;
 
@@ -73,6 +72,14 @@ std::unique_ptr<TxMeta> EthTxStateManager::ValueToTxMeta(
     return nullptr;
   }
 
+  // Stored value might not have chain_id, so we need to add it.
+  std::optional<base::DictValue> tx_with_chain_id;
+  if (!tx->FindString("chain_id")) {
+    tx_with_chain_id = tx->Clone();
+    tx_with_chain_id->Set("chain_id", meta->chain_id());
+    tx = &tx_with_chain_id.value();
+  }
+
   switch (static_cast<uint8_t>(*type)) {
     case 0: {
       std::optional<EthTransaction> tx_from_value =
@@ -102,7 +109,6 @@ std::unique_ptr<TxMeta> EthTxStateManager::ValueToTxMeta(
       break;
     }
     default:
-      LOG(ERROR) << "tx type is not supported";
       break;
   }
 

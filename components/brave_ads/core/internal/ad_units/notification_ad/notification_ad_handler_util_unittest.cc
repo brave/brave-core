@@ -5,9 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/ad_units/notification_ad/notification_ad_handler_util.h"
 
-#include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/operating_system/operating_system.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
-#include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
+#include "brave/components/brave_ads/core/internal/settings/test/settings_test_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -22,7 +22,8 @@ TEST_F(BraveAdsNotificationAdUtilTest, CanServeIfUserIsActive) {
 
 TEST_F(BraveAdsNotificationAdUtilTest, CannotServeIfUserIsActive) {
   // Arrange
-  test::MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
+  fake_operating_system_.SetType(OperatingSystemType::kAndroid);
+  OperatingSystem::SetForTesting(&fake_operating_system_);
 
   // Act & Assert
   EXPECT_FALSE(CanServeIfUserIsActive());
@@ -44,7 +45,8 @@ TEST_F(BraveAdsNotificationAdUtilTest,
 
 TEST_F(BraveAdsNotificationAdUtilTest, CanServeAtRegularIntervals) {
   // Arrange
-  test::MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
+  fake_operating_system_.SetType(OperatingSystemType::kAndroid);
+  OperatingSystem::SetForTesting(&fake_operating_system_);
 
   // Act & Assert
   EXPECT_TRUE(CanServeAtRegularIntervals());

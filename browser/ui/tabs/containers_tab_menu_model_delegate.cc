@@ -9,6 +9,7 @@
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
 #include "brave/components/containers/core/common/features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "content/public/browser/security_principal.h"
 #include "content/public/browser/site_instance.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/compositor/compositor.h"
@@ -27,9 +28,17 @@ ContainersTabMenuModelDelegate::~ContainersTabMenuModelDelegate() = default;
 
 void ContainersTabMenuModelDelegate::OnContainerSelected(
     const containers::mojom::ContainerPtr& container) {
-  for (auto tab_handle : selected_tabs_) {
-    brave::OpenTabUrlInContainer(browser_window_.get(), tab_handle, container);
-  }
+  brave::OpenTabUrlsInContainer(browser_window_.get(), selected_tabs_,
+                                container);
+}
+
+void ContainersTabMenuModelDelegate::OnNoContainerSelected() {
+  brave::OpenTabUrlsWithoutContainer(browser_window_.get(), selected_tabs_);
+}
+
+void ContainersTabMenuModelDelegate::OnNewTemporaryContainerSelected() {
+  brave::CreateTemporaryContainerAndOpenTabUrls(browser_window_.get(),
+                                                selected_tabs_);
 }
 
 base::flat_set<std::string>
@@ -46,13 +55,12 @@ ContainersTabMenuModelDelegate::GetCurrentContainerIds() {
       continue;
     }
 
-    auto storage_partition_config =
-        contents->GetSiteInstance()->GetStoragePartitionConfig();
-    if (!containers::IsContainersStoragePartition(storage_partition_config)) {
+    auto container_id = containers::GetContainerIdForWebContents(contents);
+    if (container_id.empty()) {
       continue;
     }
 
-    container_ids.insert(storage_partition_config.partition_name());
+    container_ids.insert(container_id);
   }
 
   return container_ids;

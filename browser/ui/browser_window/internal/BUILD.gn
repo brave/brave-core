@@ -5,6 +5,8 @@
 
 import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//brave/components/email_aliases/buildflags/buildflags.gni")
+import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//build/config/ui.gni")
 
 source_set("internal") {
@@ -15,21 +17,28 @@ source_set("internal") {
 
   deps = [
     "//base",
-    "//brave/browser/email_aliases",
     "//brave/components/brave_rewards/core/buildflags",
     "//brave/components/brave_vpn/common/buildflags",
-    "//brave/components/playlist/core/common",
+    "//brave/components/email_aliases/buildflags",
+    "//brave/components/playlist/core/common/buildflags",
     "//chrome/browser/tab_group_sync:factories",
     "//chrome/browser/ui/browser_window",
   ]
 
+  if (enable_playlist) {
+    deps += [
+      "//brave/components/playlist/core/browser",
+      "//brave/components/playlist/core/common",
+    ]
+  }
+
   if (toolkit_views) {
-    deps += [ "//brave/browser/ui/sidebar" ]
+    deps += [ "//brave/browser/ui/sidebar:sidebar_impl" ]
   }
 
   if (!is_android) {
     deps += [
-      "//brave/browser/ui/email_aliases",
+      "//brave/browser/ui/focus_mode",
       "//brave/browser/ui/tabs:tab_menu",
       "//brave/browser/ui/views/page_info",
       "//chrome/browser/ui/tabs:features",
@@ -42,5 +51,13 @@ source_set("internal") {
 
   if (enable_brave_vpn) {
     deps += [ "//brave/browser/ui/brave_vpn" ]
+  }
+
+  if (enable_email_aliases) {
+    deps += [
+      "//brave/browser/email_aliases",
+      "//brave/browser/ui/email_aliases",
+      "//brave/components/email_aliases:features",
+    ]
   }
 }

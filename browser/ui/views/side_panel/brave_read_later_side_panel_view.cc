@@ -9,15 +9,16 @@
 
 #include "base/functional/bind.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/sidebar/features.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/side_panel/side_panel_entry_scope.h"
+#include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/side_panel/reading_list/read_later_side_panel_web_view.h"
-#include "chrome/browser/ui/views/side_panel/side_panel_entry_scope.h"
-#include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -112,6 +113,8 @@ BraveReadLaterSidePanelView::BraveReadLaterSidePanelView(
     TabStripModel* tab_strip_model,
     SidePanelEntryScope& scope,
     base::RepeatingClosure close_cb) {
+  CHECK(!base::FeatureList::IsEnabled(sidebar::features::kSidebarV2));
+
   SetLayoutManager(std::make_unique<views::FlexLayout>())
       ->SetOrientation(views::LayoutOrientation::kVertical);
   AddChildView(std::make_unique<ReadLaterSidePanelHeaderView>(scope));

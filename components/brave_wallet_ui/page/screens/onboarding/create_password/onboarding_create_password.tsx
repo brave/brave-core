@@ -5,14 +5,10 @@
 
 import * as React from 'react'
 
-// constants
-import { BraveWallet } from '../../../../constants/types'
-
 // utils
 import { getLocale } from '../../../../../common/locale'
 import {
   useCreateWalletMutation,
-  useReportOnboardingActionMutation,
   useSetAutoLockMinutesMutation,
 } from '../../../../common/slices/api.slice'
 import {
@@ -58,7 +54,6 @@ export const OnboardingCreatePassword = ({
   // mutations
   const [createWallet, { isLoading: isCreatingWallet }] =
     useCreateWalletMutation()
-  const [report] = useReportOnboardingActionMutation()
   const [setAutoLockMinutes] = useSetAutoLockMinutesMutation()
 
   // methods
@@ -83,11 +78,6 @@ export const OnboardingCreatePassword = ({
     setAutoLockDuration(autoLockDuration)
     await setAutoLockMinutes(autoLockDuration)
   }
-
-  // effects
-  React.useEffect(() => {
-    report(BraveWallet.OnboardingAction.LegalAndPassword)
-  }, [report])
 
   React.useEffect(() => {
     // wait for redux before redirecting

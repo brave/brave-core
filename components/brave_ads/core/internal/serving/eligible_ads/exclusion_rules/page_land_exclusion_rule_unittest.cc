@@ -8,14 +8,14 @@
 #include <vector>
 
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
+#include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_feature.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder_test_util.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/test/ad_event_builder_test_util.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit_feature.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/public/user_engagement/site_visit/site_visit_feature.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -38,7 +38,7 @@ TEST_F(BraveAdsPageLandExclusionRuleTest, ShouldAlwaysInclude) {
   const AdEventInfo ad_event = test::BuildAdEvent(
       creative_ad, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kLanded, /*created_at=*/test::Now(),
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const PageLandExclusionRule exclusion_rule(ad_events);
@@ -82,7 +82,7 @@ TEST_F(BraveAdsPageLandExclusionRuleTest,
   const AdEventInfo ad_event = test::BuildAdEvent(
       creative_ad_2, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kLanded, /*created_at=*/test::Now(),
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   ad_events.push_back(ad_event);
   const PageLandExclusionRule exclusion_rule(ad_events);
 
@@ -113,25 +113,25 @@ TEST_F(BraveAdsPageLandExclusionRuleTest,
   const AdEventInfo ad_event_1 = test::BuildAdEvent(
       creative_ad_2, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kLanded, /*created_at=*/test::Now(),
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   ad_events.push_back(ad_event_1);
 
   const AdEventInfo ad_event_2 = test::BuildAdEvent(
       creative_ad_2, mojom::AdType::kNewTabPageAd,
       mojom::ConfirmationType::kLanded, /*created_at=*/test::Now(),
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   ad_events.push_back(ad_event_2);
 
-  const AdEventInfo ad_event_3 = test::BuildAdEvent(
-      creative_ad_2, mojom::AdType::kNotificationAd,
-      mojom::ConfirmationType::kLanded,
-      /*created_at=*/test::Now(), /*should_generate_random_uuids=*/true);
+  const AdEventInfo ad_event_3 =
+      test::BuildAdEvent(creative_ad_2, mojom::AdType::kNotificationAd,
+                         mojom::ConfirmationType::kLanded,
+                         /*created_at=*/test::Now(), /*use_random_uuids=*/true);
   ad_events.push_back(ad_event_3);
 
   const AdEventInfo ad_event_4 = test::BuildAdEvent(
       creative_ad_2, mojom::AdType::kSearchResultAd,
       mojom::ConfirmationType::kLanded, /*created_at=*/test::Now(),
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   ad_events.push_back(ad_event_3);
 
   const PageLandExclusionRule exclusion_rule(ad_events);
@@ -164,7 +164,7 @@ TEST_F(BraveAdsPageLandExclusionRuleTest,
   const AdEventInfo ad_event = test::BuildAdEvent(
       creative_ad, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kLanded, /*created_at=*/test::Now(),
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const PageLandExclusionRule exclusion_rule(ad_events);
@@ -191,7 +191,7 @@ TEST_F(BraveAdsPageLandExclusionRuleTest,
   const AdEventInfo ad_event = test::BuildAdEvent(
       creative_ad, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kLanded, /*created_at=*/test::Now(),
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const PageLandExclusionRule exclusion_rule(ad_events);
@@ -218,7 +218,7 @@ TEST_F(BraveAdsPageLandExclusionRuleTest,
   const AdEventInfo ad_event = test::BuildAdEvent(
       creative_ad, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kLanded, /*created_at=*/test::Now(),
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const PageLandExclusionRule exclusion_rule(ad_events);
@@ -249,7 +249,7 @@ TEST_F(BraveAdsPageLandExclusionRuleTest,
   const AdEventInfo ad_event = test::BuildAdEvent(
       creative_ad_2, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kLanded, /*created_at=*/test::Now(),
-      /*should_generate_random_uuids=*/true);
+      /*use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   const PageLandExclusionRule exclusion_rule(ad_events);

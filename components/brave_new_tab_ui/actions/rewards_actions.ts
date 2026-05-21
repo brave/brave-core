@@ -5,7 +5,6 @@
 
 import { action } from 'typesafe-actions'
 import { types } from '../constants/rewards_types'
-import { InitialRewardsData, PreInitialRewardsData } from '../api/initialData'
 
 export const onBalanceReport = (properties: { month: number, year: number, report: NewTab.RewardsBalanceReport }) => action(types.ON_BALANCE_REPORT, {
   month: properties.month,
@@ -24,10 +23,6 @@ export const onBalance = (balance?: number) => action(types.ON_BALANCE, {
 export const onAdsAccountStatement = (adsAccountStatement: NewTab.AdsAccountStatement) => action(types.ON_ADS_ACCOUNT_STATEMENT, {
   adsAccountStatement
 })
-
-export const setInitialRewardsData = (initialRewardsData: InitialRewardsData) => action(types.SET_INITIAL_REWARDS_DATA, initialRewardsData)
-
-export const setPreInitialRewardsData = (preInitialRewardsData: PreInitialRewardsData) => action(types.SET_PRE_INITIAL_REWARDS_DATA, preInitialRewardsData)
 
 export const onCompleteReset = (success: boolean) => action(types.ON_COMPLETE_RESET, {
   success

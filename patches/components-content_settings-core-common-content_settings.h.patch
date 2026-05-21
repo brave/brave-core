@@ -1,0 +1,12 @@
+diff --git a/components/content_settings/core/common/content_settings.h b/components/content_settings/core/common/content_settings.h
+index e41e55092dccb3de966911f0a293f175b82b4208..b8d8fb03041c9bf7c0a09394653ba02f17458b53 100644
+--- a/components/content_settings/core/common/content_settings.h
++++ b/components/content_settings/core/common/content_settings.h
+@@ -144,6 +144,7 @@ enum class SettingSource {
+   kTpcdGrant,
+   kOsJavascriptOptimizer,
+   kTest,
++  kRemoteList,
+ };
+ 
+ // |SettingInfo| provides meta data for content setting values. |source|

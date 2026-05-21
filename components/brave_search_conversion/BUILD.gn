@@ -18,6 +18,8 @@ static_library("brave_search_conversion") {
 
   deps = [
     "//base",
+    "//brave/components/brave_origin",
+    "//brave/components/brave_origin/buildflags",
     "//brave/components/p3a_utils",
     "//brave/components/search_engines",
     "//components/prefs",
@@ -43,6 +45,7 @@ if (!is_ios) {
       ":brave_search_conversion",
       "//base",
       "//base/test:test_support",
+      "//brave/components/brave_origin/buildflags",
       "//brave/components/search_engines",
       "//components/prefs",
       "//components/prefs:test_support",

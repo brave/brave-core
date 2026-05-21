@@ -68,7 +68,7 @@ export class BraveAdblockBrowserProxyImpl implements BraveAdblockBrowserProxy {
   }
 
   getRegionalLists () {
-    return sendWithPromise('brave_adblock.getRegionalLists')
+    return sendWithPromise<FilterList[]>('brave_adblock.getRegionalLists')
   }
 
   enableFilterList (uuid: string, enabled: boolean) {
@@ -76,11 +76,11 @@ export class BraveAdblockBrowserProxyImpl implements BraveAdblockBrowserProxy {
   }
 
   updateFilterLists () {
-    return sendWithPromise('brave_adblock.updateFilterLists')
+    return sendWithPromise<boolean>('brave_adblock.updateFilterLists')
   }
 
   getCustomFilters () {
-    return sendWithPromise('brave_adblock.getCustomFilters')
+    return sendWithPromise<string>('brave_adblock.getCustomFilters')
   }
 
   updateCustomFilters (value: string) {
@@ -88,7 +88,7 @@ export class BraveAdblockBrowserProxyImpl implements BraveAdblockBrowserProxy {
   }
 
   getListSubscriptions () {
-    return sendWithPromise('brave_adblock.getListSubscriptions')
+    return sendWithPromise<any>('brave_adblock.getListSubscriptions')
   }
 
   setSubscriptionEnabled (url: string, enabled: boolean) {
@@ -112,7 +112,7 @@ export class BraveAdblockBrowserProxyImpl implements BraveAdblockBrowserProxy {
   }
 
   getCustomScriptlets () {
-    return sendWithPromise('brave_adblock.getCustomScriptlets')
+    return sendWithPromise<Scriptlet[]>('brave_adblock.getCustomScriptlets')
       .then((scriptlets) => {
         for (const scriptlet of scriptlets) {
           scriptlet.content = this.base64ToUtf8_(scriptlet.content)
@@ -126,18 +126,18 @@ export class BraveAdblockBrowserProxyImpl implements BraveAdblockBrowserProxy {
 
   addCustomScriptlet (scriptlet: Scriptlet) {
     scriptlet.content = this.utf8ToBase64_(scriptlet.content)
-    return sendWithPromise('brave_adblock.addCustomScriptlet', scriptlet)
+    return sendWithPromise<ErrorCode>('brave_adblock.addCustomScriptlet', scriptlet)
   }
 
   updateCustomScriptlet (name: string, scriptlet: Scriptlet) {
     scriptlet.content = this.utf8ToBase64_(scriptlet.content)
-    return sendWithPromise(
+    return sendWithPromise<ErrorCode>(
       'brave_adblock.updateCustomScriptlet', name, scriptlet
     )
   }
 
   removeCustomScriptlet (name: string) {
-    return sendWithPromise('brave_adblock.removeCustomScriptlet', name)
+    return sendWithPromise<ErrorCode>('brave_adblock.removeCustomScriptlet', name)
   }
 
   addWebUiListener (eventName: string, callback: Function) {

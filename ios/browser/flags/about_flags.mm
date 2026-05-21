@@ -7,6 +7,7 @@
 
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_component_updater/browser/features.h"
+#include "brave/components/brave_origin/features.h"
 #include "brave/components/brave_rewards/core/features.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_sync/features.h"
@@ -16,6 +17,7 @@
 #include "brave/components/debounce/core/common/features.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/ios/browser/api/translate/features.h"
+#include "brave/ios/browser/ui/quick_view/features.h"
 #include "brave/ios/browser/ui/web_view/features.h"
 #include "build/build_config.h"
 #include "components/webui/flags/feature_entry.h"
@@ -307,6 +309,15 @@ const flags_ui::FeatureEntry::FeatureVariation
               kBraveIOSUserAgentFeatureVariations, "BraveIOSUserAgent"),       \
       },                                                                       \
       {                                                                        \
+          "should-cancel-requests-for-user-agent-change",                      \
+          "Cancel requests for user agent change",                             \
+          "Enables cancelling requests when we need to change the user agent " \
+          "for the new destination",                                           \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(brave_user_agent::features::                      \
+                                 kShouldCancelRequestsForUserAgentChange),     \
+      },                                                                       \
+      {                                                                        \
           "brave-use-profile-web-views-configuration",                         \
           "Use a single web view configuraton per profile",                    \
           "Replaces per-tab web view configurations with per-profile "         \
@@ -345,6 +356,20 @@ const flags_ui::FeatureEntry::FeatureVariation
           "do not share it unless asked to by Brave staff.",                   \
           flags_ui::kOsIos,                                                    \
           FEATURE_VALUE_TYPE(brave_rewards::features::kVerboseLoggingFeature), \
+      },                                                                       \
+      {                                                                        \
+          "brave-quick-view",                                                  \
+          "Enable QuickView",                                                  \
+          "Enable QuickView feature",                                          \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(brave::features::kQuickViewEnabled),              \
+      },                                                                       \
+      {                                                                        \
+          "brave-origin",                                                      \
+          "Enable Brave Origin",                                               \
+          "Enables Brave Origin features and settings.",                       \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(brave_origin::features::kBraveOrigin),            \
       })                                                                       \
   BRAVE_SHIELDS_FEATURE_ENTRIES                                                \
   BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                          \

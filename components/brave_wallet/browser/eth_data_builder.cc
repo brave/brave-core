@@ -191,17 +191,6 @@ bool OwnerOf(uint256_t token_id, std::string* data) {
   return brave_wallet::ConcatHexStrings(function_hash, padded_token_id, data);
 }
 
-bool TokenUri(uint256_t token_id, std::string* data) {
-  const std::string function_hash = GetFunctionHash("tokenURI(uint256)");
-
-  std::string padded_token_id;
-  if (!PadHexEncodedParameter(Uint256ValueToHex(token_id), &padded_token_id)) {
-    return false;
-  }
-
-  return brave_wallet::ConcatHexStrings(function_hash, padded_token_id, data);
-}
-
 }  // namespace erc721
 
 namespace erc1155 {
@@ -276,16 +265,6 @@ bool BalanceOf(std::string_view owner_address,
   std::vector<std::string> hex_strings = {function_hash, padded_address,
                                           padded_token_id};
   return ConcatHexStrings(hex_strings, data);
-}
-
-bool Uri(uint256_t token_id, std::string* data) {
-  const std::string function_hash = GetFunctionHash("uri(uint256)");
-  std::string padded_token_id;
-  if (!PadHexEncodedParameter(Uint256ValueToHex(token_id), &padded_token_id)) {
-    return false;
-  }
-
-  return brave_wallet::ConcatHexStrings(function_hash, padded_token_id, data);
 }
 
 }  // namespace erc1155

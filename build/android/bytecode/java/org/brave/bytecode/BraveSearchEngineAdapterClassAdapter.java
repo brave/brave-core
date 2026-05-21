@@ -23,6 +23,9 @@ public class BraveSearchEngineAdapterClassAdapter extends BraveClassVisitor {
     static String sBraveSearchEnginePreferenceClassName =
             "org/chromium/chrome/browser/search_engines/settings/BraveSearchEnginePreference";
 
+    static String sBraveSearchEngineAdapterDummySuperClassName =
+            "org/chromium/chrome/browser/search_engines/settings/BraveSearchEngineAdapterDummySuper"; // presubmit: ignore-long-line
+
     static String sMethodGetSearchEngineSourceType = "getSearchEngineSourceType";
 
     static String sMethodSortAndFilterUnnecessaryTemplateUrl =
@@ -32,10 +35,21 @@ public class BraveSearchEngineAdapterClassAdapter extends BraveClassVisitor {
         super(visitor);
         changeSuperName(sSearchEngineAdapterClassName, sBraveBaseSearchEngineAdapterClassName);
 
-        changeMethodOwner(sSearchEngineAdapterClassName, sMethodGetSearchEngineSourceType,
+        makePublicMethod(sSearchEngineAdapterClassName, sMethodGetSearchEngineSourceType);
+        // Upstream's calls are redirected to our implementation.
+        changeMethodOwner(
+                sSearchEngineAdapterClassName,
+                sMethodGetSearchEngineSourceType,
                 sBraveBaseSearchEngineAdapterClassName);
+        // Dummy super's calls are redirected back to the upstream's (now public) implementation.
+        changeMethodOwner(
+                sBraveSearchEngineAdapterDummySuperClassName,
+                sMethodGetSearchEngineSourceType,
+                sSearchEngineAdapterClassName);
 
-        changeMethodOwner(sSearchEngineAdapterClassName, sMethodSortAndFilterUnnecessaryTemplateUrl,
+        changeMethodOwner(
+                sSearchEngineAdapterClassName,
+                sMethodSortAndFilterUnnecessaryTemplateUrl,
                 sBraveBaseSearchEngineAdapterClassName);
 
         deleteField(sBraveSearchEngineAdapterClassName, "mProfile");

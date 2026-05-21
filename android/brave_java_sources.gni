@@ -10,12 +10,12 @@ import(
     "//brave/android/java/org/chromium/chrome/browser/fullscreen/brave_fullscreen_java_sources.gni")
 import("//brave/android/java/org/chromium/chrome/browser/playlist/sources.gni")
 import("//brave/base/brave_base_shared_preferences_java.gni")
+import("//brave/browser/autofill/android/java_sources.gni")
 import("//brave/browser/bookmarks/android/sources.gni")
 import("//brave/browser/brave_ads/android/java_sources.gni")
 import("//brave/browser/hub/internal/android/java/java_sources.gni")
 import("//brave/browser/incognito/android/java_sources.gni")
 import("//brave/browser/share/android/java_sources.gni")
-import("//brave/browser/tab_ui/android/brave_tab_ui_sources.gni")
 import("//brave/browser/ui/messages/android/java_sources.gni")
 import(
     "//brave/components/cached_flags/brave_components_cached_flags_java_sources.gni")
@@ -27,10 +27,13 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/BraveAdFreeCalloutDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveAppHooks.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveApplicationImplBase.java",
+  "../../brave/android/java/org/chromium/chrome/browser/BraveConstants.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveFeatureUtil.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveIntentHandler.java",
+  "../../brave/android/java/org/chromium/chrome/browser/BraveIntentHandlerInternal.java",
+  "../../brave/android/java/org/chromium/chrome/browser/BraveLandscapeHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveLaunchIntentDispatcher.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveLocalState.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveRelaunchUtils.java",
@@ -63,6 +66,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/app/shimmer/Shimmer.java",
   "../../brave/android/java/org/chromium/chrome/browser/app/shimmer/ShimmerDrawable.java",
   "../../brave/android/java/org/chromium/chrome/browser/app/shimmer/ShimmerFrameLayout.java",
+  "../../brave/android/java/org/chromium/chrome/browser/autofill/settings/BraveAutofillPaymentMethodsFragmentBase.java",
   "../../brave/android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkBridge.java",
   "../../brave/android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkImportExportDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkManagerCoordinator.java",
@@ -87,21 +91,21 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/brave_news/LinearLayoutManagerWrapper.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_news/models/FeedItemCard.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_news/models/FeedItemsCard.java",
+  "../../brave/android/java/org/chromium/chrome/browser/brave_origin/BraveOriginDeepLinkHandler.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_origin/BraveOriginPlansActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_origin/BraveOriginSubscriptionPrefs.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_stats/BraveStatsBottomSheetDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_stats/BraveStatsUtil.java",
   "../../brave/android/java/org/chromium/chrome/browser/browsing_data/BraveClearBrowsingDataFragment.java",
+  "../../brave/android/java/org/chromium/chrome/browser/browsing_data/BraveShortcutsUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/compositor/layouts/BraveToolbarSwipeLayout.java",
   "../../brave/android/java/org/chromium/chrome/browser/contextmenu/BraveChromeContextMenuPopulator.java",
   "../../brave/android/java/org/chromium/chrome/browser/cosmetic_filters/BraveCosmeticFiltersUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/crash/BravePureJavaExceptionReporter.java",
-  "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/AssetRatioServiceFactory.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/BlockchainRegistryFactory.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/BraveWalletPolicy.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/BraveWalletProviderDelegateImplHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/BraveWalletServiceFactory.java",
-  "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/SwapServiceFactory.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/activities/AccountSelectorActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/activities/AddAccountActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/activities/AdvanceTxSettingActivity.java",
@@ -174,7 +178,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/AccountsPermissionsHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/AndroidUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/AssetUtils.java",
-  "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/AssetsPricesHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/AsyncUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/BalanceHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/Blockies.java",
@@ -209,6 +212,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/customtabs/FullScreenCustomTabActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/customtabs/FullScreenCustomTabRootUiCoordinator.java",
   "../../brave/android/java/org/chromium/chrome/browser/customtabs/features/partialcustomtab/BravePartialCustomTabBottomSheetStrategy.java",
+  "../../brave/android/java/org/chromium/chrome/browser/customtabs/features/toolbar/BraveCustomTabToolbarButtonsViewBinder.java",
   "../../brave/android/java/org/chromium/chrome/browser/day_zero/DayZeroHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/decentralized_dns/settings/ENSSettingsFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/decentralized_dns/settings/RadioButtonGroupDDnsResolveMethodPreference.java",
@@ -243,6 +247,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/misc_metrics/MiscAndroidMetricsConnectionErrorHandler.java",
   "../../brave/android/java/org/chromium/chrome/browser/misc_metrics/MiscAndroidMetricsFactory.java",
   "../../brave/android/java/org/chromium/chrome/browser/multiwindow/BraveMultiInstanceManagerApi31.java",
+  "../../brave/android/java/org/chromium/chrome/browser/multiwindow/BraveMultiInstanceOrchestratorImpl.java",
   "../../brave/android/java/org/chromium/chrome/browser/multiwindow/BraveMultiWindowDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/multiwindow/BraveMultiWindowUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/night_mode/settings/BraveRadioButtonGroupThemePreference.java",
@@ -259,6 +264,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/ntp/BraveFreshNtpHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/BraveIncognitoNewTabPage.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/BraveNewTabPage.java",
+  "../../brave/android/java/org/chromium/chrome/browser/ntp/BraveNewTabPageCoordinator.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/BraveNewTabPageLayout.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/BraveNewTabTakeoverInfobar.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/BraveNtpAdapter.java",
@@ -298,6 +304,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/v2/OnboardingV2Fragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/v2/OnboardingV2PagerAdapter.java",
   "../../brave/android/java/org/chromium/chrome/browser/partnercustomizations/CloseBraveManager.java",
+  "../../brave/android/java/org/chromium/chrome/browser/password_manager/settings/PasswordEntryPreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/password_manager/settings/PasswordSettings.java",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/PlaylistHostActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/playlist/PlaylistServiceFactoryAndroid.java",
@@ -357,6 +364,8 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveSettingsActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveSettingsIntentUtil.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveSettingsLauncherImpl.java",
+  "../../brave/android/java/org/chromium/chrome/browser/settings/BraveShredPreference.java",
+  "../../brave/android/java/org/chromium/chrome/browser/settings/BraveShredPreferencesFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveStatsPreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveSyncCodeCountdownFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveSyncScreensPreference.java",
@@ -387,7 +396,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/shields/CreateCustomFiltersFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/shields/FilterListServiceFactory.java",
   "../../brave/android/java/org/chromium/chrome/browser/shields/UrlSanitizerServiceFactory.java",
-  "../../brave/android/java/org/chromium/chrome/browser/signin/BraveSigninManager.java",
   "../../brave/android/java/org/chromium/chrome/browser/site_settings/BraveSiteSettingsDelegate.java",
   "../../brave/android/java/org/chromium/chrome/browser/site_settings/BraveWalletEthereumConnectedSites.java",
   "../../brave/android/java/org/chromium/chrome/browser/site_settings/BraveWalletEthereumConnectedSitesListAdapter.java",
@@ -440,7 +448,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/undo_tab_close_snackbar/BraveUndoBarControllerBase.java",
   "../../brave/android/java/org/chromium/chrome/browser/upgrade/BravePackageReplacedBroadcastReceiver.java",
   "../../brave/android/java/org/chromium/chrome/browser/upgrade/NotificationIntent.java",
-  "../../brave/android/java/org/chromium/chrome/browser/util/BraveConstants.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/BraveDbUtil.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/BraveDynamicColors.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/BraveTouchUtils.java",
@@ -507,6 +514,7 @@ brave_java_sources = [
 ]
 
 brave_java_sources += brave_ads_java_sources
+brave_java_sources += brave_browser_autofill_service_java_sources
 brave_java_sources += brave_components_embedder_support_java_sources
 brave_java_sources += brave_components_signin_java_sources
 brave_java_sources += brave_feed_java_sources
@@ -544,6 +552,8 @@ brave_java_base_sources = [
 ]
 
 brave_java_base_module_sources = [
+  "//brave/android/java/org/chromium/chrome/browser/autofill/BraveAutofillService.java",
+  "//brave/android/java/org/chromium/chrome/browser/base/SplitCompatAutofillService.java",
   "//brave/android/java/org/chromium/chrome/browser/base/SplitCompatJobIntentService.java",
   "//brave/android/java/org/chromium/chrome/browser/media/ui/BraveMediaNotificationControllerServices.java",
   "//brave/android/java/org/chromium/chrome/browser/playlist/hls_content/HlsService.java",

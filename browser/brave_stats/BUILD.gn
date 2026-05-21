@@ -42,10 +42,12 @@ source_set("brave_stats") {
     "//brave/components/misc_metrics",
     "//brave/components/serp_metrics",
     "//brave/components/serp_metrics:features",
+    "//brave/components/serp_metrics:prefs",
     "//brave/components/version_info",
     "//chrome/browser:browser_process",
     "//chrome/browser/headless",
     "//chrome/browser/profiles:profile",
+    "//chrome/browser/profiles:profile_manager",
     "//chrome/browser/profiles:profile_util",
     "//chrome/browser/ui",
     "//chrome/common",
@@ -86,6 +88,7 @@ source_set("unit_tests") {
 
   sources = [
     "//brave/browser/brave_stats/brave_stats_updater_unittest.cc",
+    "//brave/browser/brave_stats/brave_stats_updater_util_unittest.cc",
     "//brave/browser/brave_stats/first_run_util_unittest.cc",
   ]
 
@@ -98,6 +101,7 @@ source_set("unit_tests") {
     "//brave/components/brave_stats/browser",
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/misc_metrics",
+    "//brave/components/serp_metrics:prefs",
     "//chrome/browser",
     "//chrome/browser/prefs",
     "//chrome/browser/profiles:profile_util",

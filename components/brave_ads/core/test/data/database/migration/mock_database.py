@@ -18,8 +18,41 @@ DEFAULT_LONGVARCHAR_COLUMN_LENGTH = 64
 
 MILLISECONDS_IN_SECOND = 1000
 
+EXPECTED_ROW_COUNT = 4
+
 # TODO(https://github.com/brave/brave-browser/issues/40017): Add foreign key
 # support.
+
+# Valid values for columns that have a constrained set of values parsed via
+# strict enum converters (i.e. those that trigger NOTREACHED on unknown input).
+# Keys are (table_name, column_name); use None as the table_name to match the
+# column in any table.
+COLUMN_VALID_VALUES = {
+    # ConfirmationType: parsed via ToMojomConfirmationType which NOTREACHes on
+    # unknown values.
+    (None, 'confirmation_type'): [
+        'click', 'dismiss', 'view', 'served', 'landed', 'bookmark', 'flag',
+        'upvote', 'downvote', 'conversion', 'interaction', 'media_play',
+        'media_25', 'media_100'
+    ],
+    # confirmation_queue.type is a ConfirmationType despite the generic name.
+    ('confirmation_queue', 'type'): [
+        'click', 'dismiss', 'view', 'served', 'landed', 'bookmark', 'flag',
+        'upvote', 'downvote', 'conversion', 'interaction', 'media_play',
+        'media_25', 'media_100'
+    ],
+    # AdType: parsed via ToMojomAdType which NOTREACHes on unknown values.
+    (None, 'ad_type'): [
+        'ad_notification', 'new_tab_page_ad', 'search_result_ad'
+    ],
+    # ad_events.type and ad_history.type are AdType despite the generic name.
+    ('ad_events', 'type'): [
+        'ad_notification', 'new_tab_page_ad', 'search_result_ad'
+    ],
+    ('ad_history', 'type'): [
+        'ad_notification', 'new_tab_page_ad', 'search_result_ad'
+    ],
+}
 
 
 def generate_mock_string(length):
@@ -50,8 +83,19 @@ def generate_mock_chrome_webkit_timestamp():
     return chrome_webkit_delta_in_seconds * MILLISECONDS_IN_SECOND
 
 
+def get_column_valid_values(table_name, column_name):
+    # Check for a table-specific override first, then fall back to a
+    # column-name-only match (None key).
+    return (COLUMN_VALID_VALUES.get((table_name, column_name))
+            or COLUMN_VALID_VALUES.get((None, column_name)))
+
+
 def generate_mock_column_with_random_test_data(connection, table_name,
                                                column_name, column_type):
+    valid_values = get_column_valid_values(table_name, column_name)
+    if valid_values:
+        return secrets.choice(valid_values)
+
     if column_type in ('INTEGER', 'INT', 'NUMERIC'):
         mock_column = secrets.randbelow(100)
     elif column_type == 'TEXT':
@@ -370,6 +414,17 @@ def mock_tables(connection):
     connection.commit()
 
 
+def verify_mock_tables(connection):
+    table_names = get_table_names(connection)
+    for table_name in table_names:
+        connection_cursor = connection.cursor()
+        connection_cursor.execute(f"SELECT count(*) FROM {table_name};")
+        row_count = connection_cursor.fetchone()[0]
+        if row_count != EXPECTED_ROW_COUNT:
+            sys.exit(f"ERROR: {table_name} table has {row_count} rows, "
+                     f"expected {EXPECTED_ROW_COUNT}")
+
+
 def mock_database(database):
     if not os.path.exists(database):
         sys.exit(f"ERROR: {database} does not exist")
@@ -381,6 +436,7 @@ def mock_database(database):
     print("Mocking database migration test data")
 
     mock_tables(connection)
+    verify_mock_tables(connection)
     vacuum(connection)
     close_connection(connection)
 

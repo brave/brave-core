@@ -32,6 +32,7 @@ import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.brave_news.mojom.BraveNewsController;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveConstants;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_news.CardBuilderFeedCard;
 import org.chromium.chrome.browser.brave_news.models.FeedItemsCard;
@@ -46,7 +47,6 @@ import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
-import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.BraveTouchUtils;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.user_prefs.UserPrefs;
@@ -383,6 +383,11 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             return new StatsViewHolder(view);
 
         } else if (viewType == TYPE_TOP_SITES) {
+            // mMvTilesContainerLayout may have been placed in the NTP layout tree by
+            // initializeSiteSectionView (via ViewStub inflation). Detach it first so
+            // RecyclerView can adopt it as an item view without an "already has a parent" error.
+            ViewGroup existingParent = (ViewGroup) mMvTilesContainerLayout.getParent();
+            if (existingParent != null) existingParent.removeView(mMvTilesContainerLayout);
             return new TopSitesViewHolder(mMvTilesContainerLayout);
 
         } else if (viewType == TYPE_NEW_CONTENT) {

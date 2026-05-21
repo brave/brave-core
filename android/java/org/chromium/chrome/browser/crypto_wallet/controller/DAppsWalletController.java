@@ -19,12 +19,10 @@ import androidx.lifecycle.LifecycleOwner;
 
 import org.chromium.base.Log;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
-import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.crypto_wallet.AssetRatioServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.modal.BraveWalletPanel;
 import org.chromium.chrome.browser.crypto_wallet.modal.DAppsDialog;
@@ -43,7 +41,6 @@ public class DAppsWalletController implements ConnectionErrorHandler {
     private FullscreenManager mFullscreenManager;
     private final Context mContext;
     private final View mAnchorViewHost;
-    private AssetRatioService mAssetRatioService;
     private KeyringService mKeyringService;
     private BraveWalletService mBraveWalletService;
     protected JsonRpcService mJsonRpcService;
@@ -113,7 +110,6 @@ public class DAppsWalletController implements ConnectionErrorHandler {
     }
 
     public void showWalletPanel() {
-        initAssetRatioService();
         initKeyringService();
         initJsonRpcService();
         initBraveWalletService();
@@ -175,11 +171,6 @@ public class DAppsWalletController implements ConnectionErrorHandler {
             mBraveWalletService.close();
             mBraveWalletService = null;
         }
-        if (mAssetRatioService != null) {
-            mAssetRatioService.close();
-            mAssetRatioService = null;
-        }
-        initAssetRatioService();
         initKeyringService();
         initJsonRpcService();
         initBraveWalletService();
@@ -233,13 +224,6 @@ public class DAppsWalletController implements ConnectionErrorHandler {
         mBraveWalletService = BraveWalletServiceFactory.getInstance().getBraveWalletService(this);
     }
 
-    private void initAssetRatioService() {
-        if (mAssetRatioService != null) {
-            return;
-        }
-        mAssetRatioService = AssetRatioServiceFactory.getInstance().getAssetRatioService(this);
-    }
-
     private void cleanUp() {
         if (mKeyringService != null) {
             mKeyringService.close();
@@ -252,10 +236,6 @@ public class DAppsWalletController implements ConnectionErrorHandler {
         if (mBraveWalletService != null) {
             mBraveWalletService.close();
             mBraveWalletService = null;
-        }
-        if (mAssetRatioService != null) {
-            mAssetRatioService.close();
-            mAssetRatioService = null;
         }
         if (mActivity != null) {
             mActivity.getLifecycle().removeObserver(mDefaultLifecycleObserver);

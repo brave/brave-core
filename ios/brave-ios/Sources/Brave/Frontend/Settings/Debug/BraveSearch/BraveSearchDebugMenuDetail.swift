@@ -36,7 +36,8 @@ struct BraveSearchDebugMenuDetail: View {
         )
       }
     }
-    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+    .scrollContentBackground(.hidden)
+    .background(Color(UIColor.braveGroupedBackground))
   }
 
   private var cookieNames: String {

@@ -285,6 +285,7 @@ struct AIChatMenuView_Preview: PreviewProvider {
             leoModelOptions: .init(
               name: "Mixtral-8x7b",
               displayMaker: "Powerful, fast and adaptive",
+              description: "",
               category: .chat,
               access: .basicAndPremium,
               maxAssociatedContentLength: 9000,
@@ -295,9 +296,12 @@ struct AIChatMenuView_Preview: PreviewProvider {
           displayName: "Mixtral 8x7b",
           visionSupport: false,
           supportsTools: false,
+          audioSupport: false,
+          videoSupport: false,
           supportedCapabilities: [NSNumber(value: AiChat.ConversationCapability.chat.rawValue)],
           isSuggestedModel: false,
-          isNearModel: false
+          isNearModel: false,
+          supportsPrivateInference: false
         ),
       modelOptions: [
         .init(
@@ -305,6 +309,7 @@ struct AIChatMenuView_Preview: PreviewProvider {
             leoModelOptions: .init(
               name: "Mixtral-8x7b",
               displayMaker: "Powerful, fast and adaptive",
+              description: "",
               category: .chat,
               access: .basicAndPremium,
               maxAssociatedContentLength: 9000,
@@ -315,15 +320,19 @@ struct AIChatMenuView_Preview: PreviewProvider {
           displayName: "Mixtral 8x7b",
           visionSupport: false,
           supportsTools: false,
+          audioSupport: false,
+          videoSupport: false,
           supportedCapabilities: [NSNumber(value: AiChat.ConversationCapability.chat.rawValue)],
           isSuggestedModel: false,
-          isNearModel: false
+          isNearModel: false,
+          supportsPrivateInference: false
         ),
         .init(
           options: .init(
             leoModelOptions: .init(
               name: "Claude-Instant",
               displayMaker: "Strength in creative tasks",
+              description: "",
               category: .chat,
               access: .basicAndPremium,
               maxAssociatedContentLength: 9000,
@@ -334,15 +343,19 @@ struct AIChatMenuView_Preview: PreviewProvider {
           displayName: "Claude-Instant",
           visionSupport: false,
           supportsTools: false,
+          audioSupport: false,
+          videoSupport: false,
           supportedCapabilities: [NSNumber(value: AiChat.ConversationCapability.chat.rawValue)],
           isSuggestedModel: false,
-          isNearModel: false
+          isNearModel: false,
+          supportsPrivateInference: false
         ),
         .init(
           options: .init(
             leoModelOptions: .init(
               name: "Llama-2x13b",
               displayMaker: "General purpose chat",
+              description: "",
               category: .chat,
               access: .basicAndPremium,
               maxAssociatedContentLength: 9000,
@@ -353,15 +366,19 @@ struct AIChatMenuView_Preview: PreviewProvider {
           displayName: "Llama-2 13b",
           visionSupport: false,
           supportsTools: false,
+          audioSupport: false,
+          videoSupport: false,
           supportedCapabilities: [NSNumber(value: AiChat.ConversationCapability.chat.rawValue)],
           isSuggestedModel: false,
-          isNearModel: false
+          isNearModel: false,
+          supportsPrivateInference: false
         ),
         .init(
           options: .init(
             leoModelOptions: .init(
               name: "Llama-2x70b",
               displayMaker: "Advanced and accurate chat",
+              description: "",
               category: .chat,
               access: .premium,
               maxAssociatedContentLength: 9000,
@@ -372,9 +389,12 @@ struct AIChatMenuView_Preview: PreviewProvider {
           displayName: "Llama-2 70b",
           visionSupport: false,
           supportsTools: false,
+          audioSupport: false,
+          videoSupport: false,
           supportedCapabilities: [NSNumber(value: AiChat.ConversationCapability.chat.rawValue)],
           isSuggestedModel: false,
-          isNearModel: false
+          isNearModel: false,
+          supportsPrivateInference: false
         ),
       ],
       onModelChanged: {

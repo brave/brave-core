@@ -5,8 +5,6 @@
 
 #include "brave/browser/brave_content_browser_client.h"
 
-#include "base/memory/raw_ptr.h"
-#include "base/values.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "brave/components/skus/common/skus_utils.h"
 #include "build/build_config.h"
@@ -18,19 +16,13 @@
 #include "extensions/buildflags/buildflags.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-#if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(IS_ANDROID)
-#include "extensions/common/constants.h"
-#endif
-
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-#include "extensions/browser/extension_registry.h"
-#include "extensions/common/extension.h"
-#include "extensions/common/extension_builder.h"
-#endif
-
 #if BUILDFLAG(IS_WIN)
 #include "base/test/scoped_os_info_override_win.h"
 #include "brave/components/windows_recall/windows_recall.h"
+#endif
+
+#if BUILDFLAG(IS_WIN)
+static base::test::ScopedOSInfoOverride* g_scoped_win_version = nullptr;
 #endif
 
 class BraveContentBrowserClientTest : public testing::Test {
@@ -79,11 +71,27 @@ TEST_F(BraveContentBrowserClientTest, GetOriginsRequiringDedicatedProcess) {
       }));
 }
 
-TEST_F(BraveContentBrowserClientTest, IsWindowsRecallDisabled) {
+class BraveContentBrowserClientWindowsRecallTest
+    : public BraveContentBrowserClientTest {
+ public:
+#if BUILDFLAG(IS_WIN)
+  static void SetUpTestSuite() {
+    // We need to setup win version override before TestingBrowserProcess is
+    // created.
+    g_scoped_win_version = new base::test::ScopedOSInfoOverride(
+        base::test::ScopedOSInfoOverride::Type::kWin11Home);
+  }
+
+  static void TearDownTestSuite() {
+    delete g_scoped_win_version;
+    g_scoped_win_version = nullptr;
+  }
+#endif
+};
+
+TEST_F(BraveContentBrowserClientWindowsRecallTest, IsWindowsRecallDisabled) {
   BraveContentBrowserClient client;
 #if BUILDFLAG(IS_WIN)
-  base::test::ScopedOSInfoOverride win_version(
-      base::test::ScopedOSInfoOverride::Type::kWin11Home);
   // Pref is registered.
   EXPECT_TRUE(
       TestingBrowserProcess::GetGlobal()

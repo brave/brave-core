@@ -8,6 +8,7 @@ import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
+import("//brave/components/email_aliases/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 
@@ -18,6 +19,10 @@ import("//brave/components/tor/buildflags/buildflags.gni")
 brave_settings_preprocess_deps =
     [ "//brave/browser/resources/settings:preprocess" ]
 
+# Preprocessor defines passed to build_webui() so that Chromium-patched
+# TypeScript files can use <if expr="..."> with Brave buildflags.
+brave_settings_preprocessor_defines = [ "enable_ai_chat=$enable_ai_chat" ]
+
 brave_settings_web_component_files = [
   "ad_block_only_mode_page/ad_block_only_mode_alert.ts",
   "ad_block_only_mode_page/ad_block_only_mode_page.ts",
@@ -25,7 +30,6 @@ brave_settings_web_component_files = [
   "brave_appearance_page/sidebar.ts",
   "brave_appearance_page/tabs.ts",
   "brave_appearance_page/toolbar.ts",
-  "brave_clear_browsing_data_dialog/brave_clear_browsing_data_on_exit_page.ts",
   "brave_clear_browsing_data_dialog/brave_clear_browsing_data_on_exit_page_v2.ts",
   "brave_content_page/content.ts",
   "brave_content_page/content_page_index.ts",
@@ -78,7 +82,6 @@ brave_settings_ts_files = [
   "br/appearance_page.ts",
   "br/appearance_page_index.ts",
   "br/basic_page.ts",
-  "br/clear_browsing_data_dialog.ts",
   "br/clear_browsing_data_dialog_v2.ts",
   "br/clear_browsing_data_time_picker.ts",
   "br/config.ts",
@@ -120,7 +123,6 @@ brave_settings_ts_files = [
   "br/site_settings_page.ts",
   "br/sync_account_control.ts",
   "br/sync_controls.ts",
-  "brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_behavior.ts",
   "brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_v2_behavior.ts",
   "brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_proxy.ts",
   "brave_autofill_page/brave_autofill_page.ts",
@@ -135,7 +137,6 @@ brave_settings_ts_files = [
   "brave_sync_page/brave_sync_browser_proxy.ts",
   "default_brave_shields_page/brave_adblock_browser_proxy.ts",
   "default_brave_shields_page/default_brave_shields_browser_proxy.ts",
-  "email_aliases_page/email_aliases_page.ts",
   "getting_started_page/brave_account_browser_proxy.ts",
   "getting_started_page/brave_account_row.html.ts",
   "getting_started_page/brave_account_row.ts",
@@ -277,6 +278,10 @@ if (enable_containers) {
 
 if (enable_speedreader) {
   brave_settings_web_component_files += [ "brave_content_page/speedreader.ts" ]
+}
+
+if (enable_email_aliases) {
+  brave_settings_ts_files += [ "email_aliases_page/email_aliases_page.ts" ]
 }
 
 # Generate the list for inclusion via preprocess and exclusion for chromium's preprocess

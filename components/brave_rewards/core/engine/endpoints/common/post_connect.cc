@@ -62,7 +62,7 @@ Result ParseErrorMessage(RewardsEngine& engine, const std::string& body) {
     return base::unexpected(Error::kKYCRequired);
   } else if (message->find("mismatched provider accounts") !=
              std::string::npos) {
-    // HTTP 403: bitFlyer, Gemini, Uphold
+    // HTTP 403: bitFlyer, Uphold
     engine.LogError(FROM_HERE) << "Mismatched provider accounts";
     return base::unexpected(Error::kMismatchedProviderAccounts);
   } else if (message->find("transaction verification failure") !=
@@ -72,29 +72,29 @@ Result ParseErrorMessage(RewardsEngine& engine, const std::string& body) {
     return base::unexpected(Error::kTransactionVerificationFailure);
   } else if (message->find("request signature verification failure") !=
              std::string::npos) {
-    // HTTP 403: bitFlyer, Gemini
+    // HTTP 403: bitFlyer
     engine.LogError(FROM_HERE) << "Request signature verification failure";
     return base::unexpected(Error::kRequestSignatureVerificationFailure);
   } else if (message->find("unable to link - unusual activity") !=
              std::string::npos) {
-    // HTTP 400: bitFlyer, Gemini, Uphold
+    // HTTP 400: bitFlyer, Uphold
     engine.LogError(FROM_HERE) << "Flagged wallet";
     return base::unexpected(Error::kFlaggedWallet);
   } else if (message->find("region not supported") != std::string::npos) {
-    // HTTP 400: bitFlyer, Gemini, Uphold
+    // HTTP 400: bitFlyer, Uphold
     engine.LogError(FROM_HERE) << "Region not supported";
     return base::unexpected(Error::kRegionNotSupported);
   } else if (message->find("mismatched provider account regions") !=
              std::string::npos) {
-    // HTTP 400: bitFlyer, Gemini, Uphold
+    // HTTP 400: bitFlyer, Uphold
     engine.LogError(FROM_HERE) << "Mismatched countries";
     return base::unexpected(Error::kMismatchedCountries);
   } else if (message->find("is temporarily unavailable") != std::string::npos) {
-    // HTTP 400: bitFlyer, Gemini, Uphold
+    // HTTP 400: bitFlyer, Uphold
     engine.LogError(FROM_HERE) << "Provider unavailable";
     return base::unexpected(Error::kProviderUnavailable);
   } else {
-    // bitFlyer, Gemini, Uphold
+    // bitFlyer, Uphold
     engine.LogError(FROM_HERE) << "Unknown message";
     return base::unexpected(Error::kUnknownMessage);
   }

@@ -100,12 +100,10 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
     }
     // </if>
     // <if expr="enable_brave_wallet">
-    const isNativeBraveWalletFeatureEnabled =
-      loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
     const isCardanoDappSupportFeatureEnabled =
       loadTimeData.getBoolean('isCardanoDappSupportFeatureEnabled')
     const isBraveWalletAllowed = loadTimeData.getBoolean('isBraveWalletAllowed')
-    if (isNativeBraveWalletFeatureEnabled && isBraveWalletAllowed) {
+    if (isBraveWalletAllowed) {
       r.SITE_SETTINGS_ETHEREUM = r.SITE_SETTINGS.createChild('ethereum')
       r.SITE_SETTINGS_SOLANA = r.SITE_SETTINGS.createChild('solana')
       if (isCardanoDappSupportFeatureEnabled) {
@@ -137,9 +135,11 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
     console.error(
       '[Settings] Could not move autofill route to advanced route', r)
   }
+  // <if expr="enable_email_aliases">
   if (loadTimeData.getBoolean('isEmailAliasesEnabled') && r.AUTOFILL) {
     r.EMAIL_ALIASES = r.AUTOFILL.createChild('/email-aliases')
   }
+  // </if>
   // Delete performance menu - system menu includes it instead.
   if (r.PERFORMANCE) {
     delete r.PERFORMANCE

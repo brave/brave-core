@@ -22,15 +22,17 @@ import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.lens.LensController;
 import org.chromium.chrome.browser.locale.LocaleManager;
-import org.chromium.chrome.browser.multiwindow.MultiInstanceManager;
 import org.chromium.chrome.browser.omnibox.UrlBar.ScrollType;
 import org.chromium.chrome.browser.omnibox.fusebox.FuseboxCoordinator;
+import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteCoordinator;
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxLoadUrlParams;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.theme.ThemeUtils;
 import org.chromium.chrome.browser.ui.theme.BrandedColorScheme;
 import org.chromium.components.browser_ui.accessibility.PageZoomIndicatorCoordinator;
+import org.chromium.components.omnibox.AutocompleteInput;
+import org.chromium.components.omnibox.OmniboxFocusReason;
 import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.ui.base.PageTransition;
 import org.chromium.ui.base.WindowAndroid;
@@ -52,6 +54,7 @@ public class BraveLocationBarMediator extends LocationBarMediator {
     private boolean mIsLocationBarFocusedFromNtpScroll;
     private Context mContext;
     private OneshotSupplier<TemplateUrlService> mTemplateUrlServiceSupplier;
+    private AutocompleteCoordinator mAutocompleteCoordinator;
     private UrlBarCoordinator mUrlCoordinator;
 
     private static final @BrandedColorScheme int BRANDED_COLOR_SCHEME =
@@ -82,7 +85,6 @@ public class BraveLocationBarMediator extends LocationBarMediator {
             Supplier<@Nullable ModalDialogManager> modalDialogManagerSupplier,
             @Nullable PageZoomIndicatorCoordinator pageZoomIndicatorCoordinator,
             FuseboxCoordinator fuseboxCoordinator,
-            @Nullable MultiInstanceManager multiInstanceManager,
             LocationBarEmbedder locationBarEmbedder,
             @Nullable OmniboxChipManager omniboxChipManager) {
         super(
@@ -106,7 +108,6 @@ public class BraveLocationBarMediator extends LocationBarMediator {
                 modalDialogManagerSupplier,
                 pageZoomIndicatorCoordinator,
                 fuseboxCoordinator,
-                multiInstanceManager,
                 locationBarEmbedder,
                 omniboxChipManager);
     }
@@ -247,5 +248,32 @@ public class BraveLocationBarMediator extends LocationBarMediator {
     public boolean setUrlBarData(
             UrlBarData data, @ScrollType int scrollType, Range<Integer> selection) {
         return mUrlCoordinator.setUrlBarData(data, scrollType, selection);
+    }
+
+    /**
+     * Populates the omnibox with the given query and triggers autocomplete. Required for Brave's QR
+     * code scanner: (1) when a URL-like QR code is scanned, to show the URL in the omnibox for
+     * navigation; (2) as a fallback in performSearchQuery when no default search engine is
+     * configured and a search URL cannot be generated.
+     */
+    public void setSearchQuery(String query) {
+        if (TextUtils.isEmpty(query)) return;
+
+        if (!mNativeInitialized) {
+            return;
+        }
+
+        // Ensure the UrlBar has focus before entering text. If the UrlBar is not focused,
+        // autocomplete text will be updated but the visible text will not.
+        beginInput(
+                new AutocompleteInput()
+                        .setSuppressAutomaticSuggestionsUntilUserStartsTyping(true)
+                        .setFocusReason(OmniboxFocusReason.DEFAULT_WITH_HARDWARE_KEYBOARD));
+        setUrlBarText(
+                UrlBarData.forNonUrlText(query),
+                UrlBar.ScrollType.NO_SCROLL,
+                UrlBarData.SELECT_ALL);
+        mAutocompleteCoordinator.startAutocompleteForQuery(query);
+        mUrlCoordinator.setKeyboardVisibility(true, false);
     }
 }

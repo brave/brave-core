@@ -8,6 +8,9 @@
   <message name="IDS_TOOLTIP_TAB_ALERT_STATE_GLIC_SHARING" desc="Extra tool tip text, when the tab's context is being shared with Gemini">
     You're sharing this tab with Gemini
   </message>
+  <message name="IDS_TOOLTIP_GLIC_CLOSE" desc="The tooltip for the close button within the Glic nudge button.">
+    Dismiss suggestion
+  </message>
   <message name="IDS_TAB_AX_LABEL_GLIC_ACCESSING" is_accessibility_with_no_ui="true" desc="Accessibility label text, when the tab is sharing data with Gemini. Example: 'Wikipedia - Tab context shared with Gemini'">
     <ph name="WINDOW_TITLE">
       $1<ex>Wikipedia</ex>
@@ -145,6 +148,9 @@
   <message name="IDS_SETTINGS_GLIC_KEYBOARD_SHORTCUT_EDIT_LABEL" desc="Label of the edit keyboard shortcut setting button.">
     Edit keyboard shortcut
   </message>
+  <message name="IDS_SETTINGS_GLIC_KEYBOARD_SHORTCUT_CLEAR_LABEL" desc="Label of the clear keyboard shortcut setting button.">
+    Clear keyboard shortcut
+  </message>
   <message name="IDS_SETTINGS_GLIC_KEYBOARD_SHORTCUT_SUBLABEL" desc="Sublabel describing the keyboard shortcut that's used to globally invoke Gemini.">
     Open Gemini with a keyboard shortcut.
   </message>
@@ -157,14 +163,32 @@
   <message name="IDS_SETTINGS_GLIC_NAVIGATION_SHORTCUT_LEARN_MORE_ARIA_LABEL" desc="Aria label for the 'Learn more' link for the navigation shortcut setting in Gemini in Brave settings.">
     Learn more about the navigation shortcut
   </message>
+  <message name="IDS_SETTINGS_GLIC_SELECTION_SHORTCUT_LEARN_MORE_ARIA_LABEL" desc="Aria label for the 'Learn more' link for the selection shortcut setting in Gemini in Brave settings.">
+    Learn more about the selection shortcut
+  </message>
   <message name="IDS_SETTINGS_GLIC_NAVIGATION_SHORTCUT" desc="Title for the navigation shortcut setting to leave and return to Gemini in Brave.">
     Navigation shortcut
   </message>
   <message name="IDS_SETTINGS_GLIC_NAVIGATION_SHORTCUT_EDIT_LABEL" desc="Label of the edit navigation shortcut setting button.">
     Edit navigation shortcut
   </message>
+  <message name="IDS_SETTINGS_GLIC_NAVIGATION_SHORTCUT_CLEAR_LABEL" desc="Label of the clear navigation shortcut setting button.">
+    Clear navigation shortcut
+  </message>
   <message name="IDS_SETTINGS_GLIC_NAVIGATION_SHORTCUT_SUBLABEL" desc="Sublabel describing the keyboard shortcut navigate between Brave and Gemini.">
     To leave or return to Gemini, use keyboard shortcut.
+  </message>
+  <message name="IDS_SETTINGS_GLIC_SELECTION_SHORTCUT" desc="Title for the selection shortcut setting to trigger selection mode in Gemini in Brave.">
+    Selection shortcut
+  </message>
+  <message name="IDS_SETTINGS_GLIC_SELECTION_SHORTCUT_EDIT_LABEL" desc="Label of the edit selection shortcut setting button.">
+    Edit selection shortcut
+  </message>
+  <message name="IDS_SETTINGS_GLIC_SELECTION_SHORTCUT_CLEAR_LABEL" desc="Label of the clear selection shortcut setting button.">
+    Clear selection shortcut
+  </message>
+  <message name="IDS_SETTINGS_GLIC_SELECTION_SHORTCUT_SUBLABEL" desc="Sublabel describing the selection shortcut triggering in Gemini.">
+    To select part of the screen in Gemini, use keyboard shortcut.
   </message>
   <message name="IDS_SETTINGS_GLIC_CLOSED_CAPTIONING" desc="Name of the closed captioning setting.">
     Closed Captioning
@@ -175,13 +199,13 @@
   <message name="IDS_SETTINGS_GLIC_KEEP_SIDEPANEL_OPEN_ON_NEW_TABS" desc="Name of the daisy chain new tabs setting.">
     Keep the Gemini sidebar open when you open a new tab
   </message>
-  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_LOCATION_TOGGLE" desc="Name of the location sharing setting.">
+  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_LOCATION_TOGGLE" desc="Name of the location sharing setting." formatter_data="android_java">
     Precise Location
   </message>
   <message name="IDS_SETTINGS_GLIC_PERMISSIONS_LOCATION_TOGGLE_SUBLABEL" desc="Sublabel describing that this setting will share location data with Gemini for location-aware answers">
     When you share your precise location, Gemini can answer your questions more accurately
   </message>
-  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_LOCATION_TOGGLE_SUBLABEL_DATA_PROTECTED" desc="Sublabel describing that this setting will share location data with Gemini for location-aware answers, but the user's data is not used to improve the model">
+  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_LOCATION_TOGGLE_SUBLABEL_DATA_PROTECTED" desc="Sublabel describing that this setting will share location data with Gemini for location-aware answers, but the user's data is not used to improve the model" formatter_data="android_java">
     When you share your precise location, Gemini can answer your questions more accurately. Your data is not used to improve generative AI models.
   </message>
   <message name="IDS_SETTINGS_GLIC_PERMISSIONS_MICROPHONE_TOGGLE" desc="Name of the microphone setting.">
@@ -202,29 +226,32 @@
   <message name="IDS_SETTINGS_GLIC_PERMISSIONS_TAB_ACCESS_TOGGLE_SUBLABEL_DATA_PROTECTED" desc="Sublabel describing that this setting will enable sharing the current tab's content with Gemini, but the user's data is not used to improve the model">
     Shares the current tab with Gemini, even as you switch tabs. Your data is not used to improve generative AI models.
    </message>
-  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_DEFAULT_TAB_ACCESS_TOGGLE" desc="Name of the enable current default tab access setting.">
+  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_DEFAULT_TAB_ACCESS_TOGGLE" desc="Name of the enable current default tab access setting." formatter_data="android_java">
     Share current tab by default
   </message>
   <message name="IDS_SETTINGS_GLIC_PERMISSIONS_DEFAULT_TAB_ACCESS_TOGGLE_SUBLABEL" desc="Sublabel describing that this setting will enable sharing the current tab's content with Gemini by default for new conversations.">
     The current tab is shared with Gemini when you start a new chat. <ph name="LINK_BEGIN">&lt;a href="#"&gt;</ph>Learn more about AI and privacy<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
-  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_DEFAULT_TAB_ACCESS_TOGGLE_SUBLABEL_DATA_PROTECTED" desc="Sublabel describing that this setting will enable sharing the current tab's content with Gemini by default, but the user's data is not used to improve the model.">
+  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_DEFAULT_TAB_ACCESS_TOGGLE_SUBLABEL_DATA_PROTECTED" desc="Sublabel describing that this setting will enable sharing the current tab's content with Gemini by default, but the user's data is not used to improve the model." formatter_data="android_java">
     The current tab is shared with Gemini when you start a new chat. Your data is not used to improve generative AI models. <ph name="LINK_BEGIN">&lt;a href="#"&gt;</ph>Learn more about AI and privacy<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
-  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_ACTIVITY_BUTTON" desc="Name of the Gemini Apps Activity link out.">
+  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_ACTIVITY_BUTTON" desc="Name of the Gemini Apps Activity link out." formatter_data="android_java">
     Gemini Apps Activity
   </message>
-  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_ACTIVITY_BUTTON_SUBLABEL" desc="Sublabel describing that this link allows the user to view and manage their activity relating to Gemini Apps.">
+  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_ACTIVITY_BUTTON_SUBLABEL" desc="Sublabel describing that this link allows the user to view and manage their activity relating to Gemini Apps." formatter_data="android_java">
     View and manage your Gemini Apps activity
   </message>
-  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_ACTIVITY_BUTTON_URL" translateable="false" desc="URL to navigate when clicking the 'manage your activity' button.">
+  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_ACTIVITY_BUTTON_URL" translateable="false" desc="URL to navigate when clicking the 'manage your activity' button." formatter_data="android_java">
     https://myactivity.google.com/product/gemini?utm_source=gemini
   </message>
-  <message name="IDS_SETTINGS_GLIC_EXTENSIONS_BUTTON" desc="Name of the Gemini Extensions link out.">
+  <message name="IDS_SETTINGS_GLIC_EXTENSIONS_BUTTON" desc="Name of the Gemini Extensions link out." formatter_data="android_java">
     Manage connected apps
   </message>
-  <message name="IDS_SETTINGS_GLIC_EXTENSIONS_BUTTON_SUBLABEL" desc="Sublabel describing that this link allows the user to manage Gemini connected apps.">
+  <message name="IDS_SETTINGS_GLIC_EXTENSIONS_BUTTON_SUBLABEL" desc="Sublabel describing that this link allows the user to manage Gemini connected apps." formatter_data="android_java">
     Manage which apps Gemini connects to
+  </message>
+  <message name="IDS_SETTINGS_GLIC_EXTENSIONS_BUTTON_URL" translateable="false" desc="URL to navigate when clicking the 'manage connected apps' button." formatter_data="android_java">
+    https://gemini.google.com/apps
   </message>
   <message name="IDS_SETTINGS_GLIC_PERMISSIONS_TAB_ACCESS_WHEN_ON_1" desc="First point in the 'when on' column of the 'tab access' expando">
     You can easily ask Gemini questions about your current tab as you browse
@@ -235,16 +262,16 @@
   <message name="IDS_SETTINGS_GLIC_PERMISSIONS_TAB_ACCESS_CONSIDER_1_LEARN_MORE_LABEL" desc="Label for the 'Learn more' link in the 'things to consider' section.">
     Learn more
   </message>
-  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_DEFAULT_TAB_ACCESS_WHEN_ON_1" desc="First point in the 'when on' column of the 'default tab access' expands">
+  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_DEFAULT_TAB_ACCESS_WHEN_ON_1" desc="First point in the 'when on' column of the 'default tab access' expands" formatter_data="android_java">
     You can easily ask Gemini questions about the tabs you’re sharing as you browse.
   </message>
-  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_DEFAULT_TAB_ACCESS_WHEN_ON_2" desc="Part of the description of the 'Share current tab by default' setting. It informs the user about what information is going to be shared with Gemini.">
+  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_DEFAULT_TAB_ACCESS_WHEN_ON_2" desc="Part of the description of the 'Share current tab by default' setting. It informs the user about what information is going to be shared with Gemini." formatter_data="android_java">
     Tabs opened from a chat or a shared tab are also shared with Gemini. In Live mode, only the current tab is shared by default.
   </message>
   <message name="IDS_SETTINGS_GLIC_PERMISSIONS_DEFAULT_TAB_ACCESS_WHEN_ON_2_NO_LIVE" desc="Part of the description of the 'Share current tab by default' setting. It informs the user about what information is going to be shared with Gemini. This version is used when Live mode is not available for the user.">
     Tabs opened from a chat or a shared tab are also shared with Gemini.
   </message>
-  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_DEFAULT_TAB_ACCESS_CONSIDER_1" desc="First point in 'things to consider' column of the 'default tab access' expands">
+  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_DEFAULT_TAB_ACCESS_CONSIDER_1" desc="First point in 'things to consider' column of the 'default tab access' expands" formatter_data="android_java">
     When tabs are shared, their page contents, media and URLs are sent to Brave.
   </message>
   <message name="IDS_SETTINGS_GLIC_PERMISSIONS_DEFAULT_TAB_ACCESS_CONSIDER_2" desc="Second point in 'things to consider' column of the 'default tab access' expands">
@@ -262,25 +289,63 @@
   <message name="IDS_SETTINGS_GLIC_INSTRUCTIONS_BUTTON_SUBLABEL" desc="Description for the Gemini instructions linkout.">
     Customize how Gemini responds to you
   </message>
-
-  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_WEB_ACTUATION_TOGGLE_WHEN_ON_1" desc="First point in 'when on' column of the 'let Gemini browse for you' expands">
+  <message name="IDS_SETTINGS_GLIC_EXPERIMENTAL_TRIGGERING_TOGGLE" desc="Label for the Gemini experimental triggering setting" translateable="false">
+    Allow experimental triggering
+  </message>
+  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_CHROME_WEB_ACTUATION_TOGGLE" desc="Title for the Gemini feature introduction screen" formatter_data="android_java">
+    Let Brave browse for you
+  </message>
+  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_CHROME_WEB_ACTUATION_TOGGLE_SUBLABEL" desc="Subheader explaining what the Gemini feature does" formatter_data="android_java">
+    Gemini in Brave uses auto browse to work in your tabs and complete tasks you give it. <ph name="LINK_BEGIN">&lt;a href="#"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_WEB_ACTUATION_TOGGLE_WHEN_ON_1" desc="First point in 'when on' column of the 'let Gemini browse for you' expands" formatter_data="android_java">
     Gemini can help you book appointments, create shopping carts, or do other tasks you give it.
   </message>
-  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_WEB_ACTUATION_TOGGLE_WHEN_ON_2" desc="Second point in 'when on' column of the 'let Gemini browse for you' expands">
+  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_WEB_ACTUATION_TOGGLE_WHEN_ON_2" desc="Second point in 'when on' column of the 'let Gemini browse for you' expands" formatter_data="android_java  ">
     Gemini shows its steps and tries to confirm before taking sensitive ones. You can stop or take over anytime.
   </message>
-  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_WEB_ACTUATION_TOGGLE_CONSIDER_1" desc="First point in 'things to consider' column of the 'let Gemini browse for you' expands">
+  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_WEB_ACTUATION_TOGGLE_CONSIDER_1" desc="First point in 'things to consider' column of the 'let Gemini browse for you' expands" formatter_data="android_java">
     The page content and URLs that Gemini uses during a task will be shared with Brave.
   </message>
-  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_WEB_ACTUATION_TOGGLE_CONSIDER_2" desc="Second point in 'things to consider' column of the 'let Gemini browse for you' expands">
+  <message name="IDS_SETTINGS_GLIC_PERMISSIONS_WEB_ACTUATION_TOGGLE_CONSIDER_2" desc="Second point in 'things to consider' column of the 'let Gemini browse for you' expands" formatter_data="android_java">
     Use Gemini carefully and <ph name="BEGIN_LINK1">&lt;a href="$1" target="_blank"&gt;</ph>safely<ph name="LINK_END1">&lt;/a&gt;</ph>. You are responsible for Gemini's actions during a task, including mistakes and <ph name="BEGIN_LINK2">&lt;a href="$2" target="_blank"&gt;</ph>unexpected results<ph name="LINK_END2">&lt;/a&gt;</ph> like purchases.
+  </message>
+  <message name="IDS_SETTINGS_GLIC_ACTOR_LOGIN_PERMISSIONS_SECTION_TITLE" desc="Title for the Gemini web login linkout.">
+    Sites Gemini can sign you in to
+  </message>
+  <message name="IDS_SETTINGS_GLIC_ACTOR_LOGIN_PERMISSIONS_SECTION_SUBLABEL" desc="Description for the Gemini web login linkout.">
+    Let Gemini automatically sign you in to complete tasks for you on the web
+  </message>
+  <message name="IDS_SETTINGS_GLIC_LOGIN_PERMISSIONS_PAGE_TITLE" desc="Title for the sites and accounts section on the Gemini web login permissions page.">
+    Sites and accounts
+  </message>
+  <message name="IDS_SETTINGS_GLIC_LOGIN_PERMISSIONS_OFFLINE_WARNING" desc="Warning message shown at the top of the Gemini web login permissions page when the user is offline.">
+    You’re offline. Check your internet connection to manage sites Gemini can sign you in to.
+  </message>
+  <message name="IDS_SETTINGS_GLIC_LOGIN_PERMISSIONS_PAGE_DESCRIPTION" desc="Description for the sites and accounts section on the Gemini web login permissions page.">
+    You've allowed Gemini to automatically sign you in to these sites and apps using your accounts
+  </message>
+  <message name="IDS_SETTINGS_GLIC_LOGIN_PERMISSIONS_NO_SITES" desc="Message shown when there are no sites in the Gemini web login permissions page.">
+    Sites where Gemini can sign you in will appear here
+  </message>
+  <message name="IDS_SETTINGS_GLIC_REVOKE_ACTOR_LOGIN_PERMISSION_ARIA_LABEL" desc="Aria label for the button to remove a login permission.">
+    Remove permission for <ph name="URL">$1<ex>google.com</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_GLIC_REMOVE_ACTOR_LOGIN_DIALOG_TITLE" desc="Title for the dialog to remove a login permission.">
+    Remove permission
+  </message>
+  <message name="IDS_SETTINGS_GLIC_REMOVE_ACTOR_LOGIN_DIALOG_DESCRIPTION" desc="Description for the dialog to remove a login permission.">
+    Gemini will no longer be able to sign you in to <ph name="URL">$1<ex>google.com</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_GLIC_LOGIN_PERMISSIONS_REMOVE_ERROR" desc="Toast message to show when a login permission was unable to be removed.">
+    Couldn't remove permission. Try again later.
   </message>
 
   <!-- Glic button and tab strip context menu -->
-  <message name="IDS_GLIC_PIN" desc="Name of the context menu item for toggling Gemini pinning, when Gemini is unpinned.">
+  <message name="IDS_GLIC_PIN" desc="Name of the context menu item for toggling Gemini pinning, when Gemini is unpinned." formatter_data="android_java">
     Pin Gemini
   </message>
-  <message name="IDS_GLIC_UNPIN" desc="Name of the context menu item for toggling Gemini pinning, when Gemini is pinned.">
+  <message name="IDS_GLIC_UNPIN" desc="Name of the context menu item for toggling Gemini pinning, when Gemini is pinned." formatter_data="android_java">
     Unpin Gemini
   </message>
 
@@ -364,7 +429,7 @@
   </message>
 
   <!-- Glic button context menu. -->
-  <message name="IDS_GLIC_BUTTON_CXMENU_UNPIN" desc="Name of the Glic button context menu item for unpinning Glic.">
+  <message name="IDS_GLIC_BUTTON_CXMENU_UNPIN" desc="Name of the Glic button context menu item for unpinning Glic." formatter_data="android_java">
     Unpin
   </message>
 
@@ -386,10 +451,14 @@
   <!-- Content area context menu. -->
   <if expr="use_titlecase">
     <message name="IDS_CONTENT_CONTEXT_GLICSHAREIMAGE" desc="Share image with Gemini and recreate based on user-selected prompt">Create Image with Gemini</message>
+    <message name="IDS_GLIC_CONTEXT_MENU_SUMMARIZE_PAGE_WITH_GEMINI" desc="Text for the 'Summarize this page' context menu item.">Summarize this page with Gemini</message>
   </if>
   <if expr="not use_titlecase">
     <message name="IDS_CONTENT_CONTEXT_GLICSHAREIMAGE" desc="Share image with Gemini and recreate based on user-selected prompt">Create image with Gemini</message>
+    <message name="IDS_GLIC_CONTEXT_MENU_SUMMARIZE_PAGE_WITH_GEMINI" desc="Text for the 'Summarize this page' context menu item.">Summarize this page with Gemini</message>
   </if>
+
+  <message name="IDS_GLIC_SUMMARIZE_PAGE_PROMPT" desc="Prompt sent to request page summarization via context menu.">Summarize this page</message>
 
   <!-- IPH -->
   <if expr="use_titlecase">
@@ -407,12 +476,20 @@
 
   <!-- Shortcut IPH -->
   <message name="IDS_GLIC_SHORTCUT_IPH_TEXT_TEMPLATE" desc="Placeholder for string to be shown for IPH informing users about Glic keyboard shortcut." translateable="false">
-    <ph name="message">$1<ex>Easily open with Ctrl+⌘+G</ex></ph>
+    <ph name="message">$1<ex>Use Ctrl+⌘+G to open Gemini in Brave</ex></ph>
   </message>
   <message name="IDS_GLIC_SHORTCUT_IPH_TEXT" desc="Title for a promo pointing to the Gemini icon in Brave. It informs the user about a keyboard shortcut for quicly opening Gemini in Brave.">
-    Easily open with <ph name="FOCUS_TOGGLE_HOTKEY">$1<ex>Ctrl+⌘+G</ex></ph>
+    Use <ph name="FOCUS_TOGGLE_HOTKEY">$1<ex>Ctrl+⌘+G</ex></ph> to open Gemini in Brave
   </message>
   <message name="IDS_GLIC_SHORTCUT_IPH_SCREENREADER" is_accessibility_with_no_ui="true" desc="Title for a promo pointing to the Gemini icon in Brave for screen readers. It informs the user about a keyboard shortcut for quicly opening Gemini in Brave.">
     Easily open Gemini in Brave with <ph name="FOCUS_TOGGLE_HOTKEY">$1<ex>Ctrl+⌘+G</ex></ph>
+  </message>
+
+  <!-- Selection Nudge -->
+  <message name="IDS_GLIC_SELECTION_ASK_ABOUT" desc="Label for the nudge asking about the selected text.">
+    Ask about <ph name="TEXT">$1<ex>something</ex></ph>
+  </message>
+  <message name="IDS_GLIC_SELECTION_TELL_ME_ABOUT" desc="Prompt suggestion for telling me about the selected text.">
+    Tell me about <ph name="TEXT">$1<ex>something</ex></ph>
   </message>
 </grit-part>

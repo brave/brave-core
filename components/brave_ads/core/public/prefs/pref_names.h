@@ -58,24 +58,12 @@ inline constexpr char kSaveAds[] = "brave.brave_ads.reactions.saved_ads";
 inline constexpr char kMarkedAsInappropriate[] =
     "brave.brave_ads.reactions.marked_as_inappropriate";
 
-inline constexpr char kHasMigratedState[] =
-    "brave.brave_ads.state.has_migrated.v2";
 inline constexpr char kHasMigratedClientState[] =
     "brave.brave_ads.state.has_migrated.client.v7";
-inline constexpr char kHasMigratedConfirmationState[] =
-    "brave.brave_ads.state.has_migrated.confirmations.v8";
-
 inline constexpr char kBrowserVersionNumber[] =
     "brave.brave_ads.browser_version_number";
 
 // Ads service prefs.
-inline constexpr char kNotificationAdLastNormalizedCoordinateX[] =
-    "brave.brave_ads.ad_notification.last_normalized_coordinate_x";
-inline constexpr char kNotificationAdLastNormalizedCoordinateY[] =
-    "brave.brave_ads.ad_notification.last_normalized_coordinate_y";
-inline constexpr char kNotificationAdDidFallbackToCustom[] =
-    "brave.brave_ads.ad_notification.did_fallback_to_custom";
-
 inline constexpr char kShouldShowOnboardingNotification[] =
     "brave.brave_ads.should_show_my_first_ad_notification";
 

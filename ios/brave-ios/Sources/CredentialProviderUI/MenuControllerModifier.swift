@@ -5,6 +5,7 @@
 
 import Foundation
 import SwiftUI
+import UIKit
 
 extension View {
   func menuController(prompt: String, action: @escaping () -> Void) -> some View {
@@ -35,49 +36,85 @@ private struct MenuControllerRepresentable: UIViewRepresentable {
   var prompt: String
   var action: () -> Void
 
-  class _View: UIView {
+  final class _View: UIView, UIEditMenuInteractionDelegate {
+    var prompt: String = ""
     var action: () -> Void
+    var onDismiss: (() -> Void)?
+    private var editMenuInteraction: UIEditMenuInteraction?
+
     init(action: @escaping () -> Void) {
       self.action = action
       super.init(frame: .zero)
+      let interaction = UIEditMenuInteraction(delegate: self)
+      addInteraction(interaction)
+      editMenuInteraction = interaction
     }
-    @objc func handleAction() {
-      self.action()
-    }
+
     @available(*, unavailable)
     required init(coder: NSCoder) {
       fatalError()
     }
-  }
-  class Coordinator {
-    @Binding var isMenuVisible: Bool
-    private var observationHandle: NSObjectProtocol?
-    init(isMenuVisible: Binding<Bool>) {
-      self._isMenuVisible = isMenuVisible
-      self.observationHandle = NotificationCenter.default.addObserver(
-        forName: UIMenuController.willHideMenuNotification,
-        object: nil,
-        queue: .main,
-        using: { [weak self] notification in
-          self?.isMenuVisible = false
-        }
+
+    func presentMenu() {
+      let configuration = UIEditMenuConfiguration(
+        identifier: nil,
+        sourcePoint: CGPoint(x: bounds.midX, y: bounds.midY)
       )
+      editMenuInteraction?.presentEditMenu(with: configuration)
+    }
+
+    func dismissMenu() {
+      editMenuInteraction?.dismissMenu()
+    }
+
+    func editMenuInteraction(
+      _ interaction: UIEditMenuInteraction,
+      menuFor configuration: UIEditMenuConfiguration,
+      suggestedActions: [UIMenuElement]
+    ) -> UIMenu? {
+      UIMenu(children: [
+        UIAction(title: prompt) { [weak self] _ in
+          self?.action()
+        }
+      ])
+    }
+
+    func editMenuInteraction(
+      _ interaction: UIEditMenuInteraction,
+      willDismissMenuFor configuration: UIEditMenuConfiguration,
+      animator: any UIEditMenuInteractionAnimating
+    ) {
+      onDismiss?()
     }
   }
+
+  class Coordinator {
+    @Binding var isMenuVisible: Bool
+    init(isMenuVisible: Binding<Bool>) {
+      self._isMenuVisible = isMenuVisible
+    }
+    func menuDidEnd() {
+      isMenuVisible = false
+    }
+  }
+
   func makeCoordinator() -> Coordinator {
     Coordinator(isMenuVisible: $isMenuVisible)
   }
-  func makeUIView(context: Context) -> UIView {
-    _View(action: action)
+
+  func makeUIView(context: Context) -> _View {
+    let view = _View(action: action)
+    view.onDismiss = { context.coordinator.menuDidEnd() }
+    return view
   }
-  func updateUIView(_ uiView: UIView, context: Context) {
+
+  func updateUIView(_ uiView: _View, context: Context) {
+    uiView.prompt = prompt
+    uiView.action = action
     if isMenuVisible {
-      UIMenuController.shared.menuItems = [
-        .init(title: prompt, action: #selector(_View.handleAction))
-      ]
-      UIMenuController.shared.showMenu(from: uiView, rect: uiView.bounds)
+      uiView.presentMenu()
     } else {
-      UIMenuController.shared.hideMenu(from: uiView)
+      uiView.dismissMenu()
     }
   }
 }

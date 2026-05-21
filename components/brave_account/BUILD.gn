@@ -4,16 +4,15 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/build/config.gni")
+import("//brave/components/email_aliases/buildflags/buildflags.gni")
 
 source_set("brave_account") {
   sources = [
     "brave_account_constants.h",
     "brave_account_service.cc",
     "brave_account_service.h",
-    "brave_account_service_constants.h",
     "brave_account_ui_base.h",
     "brave_account_utils.h",
-    "pref_names.h",
     "prefs.cc",
     "prefs.h",
   ]
@@ -21,6 +20,7 @@ source_set("brave_account") {
   deps = [
     "//base",
     "//brave/components/brave_account:features",
+    "//brave/components/brave_account:internal",
     "//brave/components/brave_account/endpoint_client",
     "//brave/components/brave_account/endpoints",
     "//brave/components/brave_account/mojom",
@@ -31,7 +31,8 @@ source_set("brave_account") {
     "//brave/components/resources:static_resources_grit",
     "//brave/components/resources:strings_grit",
     "//components/keyed_service/core",
-    "//components/os_crypt/sync",
+    "//components/os_crypt/async/browser",
+    "//components/os_crypt/async/common",
     "//components/prefs",
     "//mojo/public/cpp/bindings",
     "//net",
@@ -47,6 +48,26 @@ source_set("brave_account") {
   }
 }
 
+source_set("internal") {
+  visibility = [
+    ":*",
+    "//brave/components/email_aliases:service",
+  ]
+
+  sources = [
+    "brave_account_service_constants.h",
+    "brave_account_state_prefs.cc",
+    "brave_account_state_prefs.h",
+    "pref_names.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//brave/components/brave_account/mojom",
+    "//components/prefs",
+  ]
+}
+
 source_set("features") {
   sources = [
     "features.cc",
@@ -55,8 +76,12 @@ source_set("features") {
 
   deps = [
     "//base",
-    "//brave/components/email_aliases:features",
+    "//brave/components/email_aliases/buildflags",
   ]
+
+  if (enable_email_aliases) {
+    deps += [ "//brave/components/email_aliases:features" ]
+  }
 }
 
 source_set("test_support") {
@@ -65,6 +90,8 @@ source_set("test_support") {
   sources = [
     "mock_brave_account_authentication.cc",
     "mock_brave_account_authentication.h",
+    "mock_brave_account_authentication_observer.cc",
+    "mock_brave_account_authentication_observer.h",
   ]
 
   deps = [
@@ -80,7 +107,6 @@ source_set("unit_tests") {
   sources = [
     "brave_account_service_test.h",
     "brave_account_service_unittest.cc",
-    "features_unittest.cc",
   ]
 
   deps = [
@@ -88,14 +114,25 @@ source_set("unit_tests") {
     "//base/test:test_support",
     "//brave/components/brave_account",
     "//brave/components/brave_account:features",
+    "//brave/components/brave_account:internal",
+    "//brave/components/brave_account:test_support",
     "//brave/components/brave_account/endpoint_client:test_support",
     "//brave/components/brave_account/endpoints",
     "//brave/components/brave_account/mojom",
-    "//brave/components/email_aliases:features",
+    "//components/os_crypt/async/browser:test_support",
     "//components/prefs:test_support",
     "//net",
     "//services/network:test_support",
     "//services/network/public/cpp",
+    "//testing/gmock",
     "//testing/gtest",
   ]
+
+  if (enable_email_aliases) {
+    sources += [ "features_unittest.cc" ]
+    deps += [
+      "//brave/components/email_aliases:features",
+      "//brave/components/email_aliases/buildflags",
+    ]
+  }
 }

@@ -58,14 +58,24 @@ TEST_F(BraveAdsConditionMatcherUtilTest, MatchMultipleConditions) {
   VerifyDoesMatchConditionsExpectation(condition_matchers);
 }
 
+TEST_F(BraveAdsConditionMatcherUtilTest,
+       DoNotMatchConditionsIfAnyConditionIsFalse) {
+  // Arrange
+  test::RegisterProfileStringPref("foo", "baz");
+  test::RegisterProfileIntegerPref("bar", 1);
+
+  const ConditionMatcherMap condition_matchers = {{"foo", "baz"}, {"bar", "0"}};
+
+  // Act & Assert
+  VerifyDoesNotMatchConditionsExpectation(condition_matchers);
+}
+
 TEST_F(BraveAdsConditionMatcherUtilTest, MatchEpochEqualOperatorCondition) {
   // Arrange
   test::RegisterProfileTimePref("foo", base::Time::Now());
   AdvanceClockBy(base::Days(7));
 
-  const ConditionMatcherMap condition_matchers = {
-      {"foo",
-       "[T=]:7"}};  // Exactly 7 days have elapsed; condition requires = 7.
+  const ConditionMatcherMap condition_matchers = {{"foo", "[T=]:7"}};
 
   // Act & Assert
   VerifyDoesMatchConditionsExpectation(condition_matchers);
@@ -97,9 +107,7 @@ TEST_F(BraveAdsConditionMatcherUtilTest,
   test::RegisterProfileTimePref("foo", base::Time::Now());
   AdvanceClockBy(base::Days(7) - base::Milliseconds(1));
 
-  const ConditionMatcherMap condition_matchers = {
-      {"foo",
-       "[T=]:7"}};  // Just under 7 days have elapsed; condition requires = 7.
+  const ConditionMatcherMap condition_matchers = {{"foo", "[T=]:7"}};
 
   // Act & Assert
   VerifyDoesNotMatchConditionsExpectation(condition_matchers);
@@ -333,8 +341,8 @@ TEST_F(BraveAdsConditionMatcherUtilTest,
   AdvanceClockBy(base::Days(5));
 
   const ConditionMatcherMap condition_matchers = {
-      {"foo", "0"},        // Value is "1" in the pref.
-      {"bar", "[T>]:7"}};  // Only 5 days have elapsed; condition requires > 7.
+      {"foo", "0"},  // Value is "1" in the pref.
+      {"bar", "[T>]:7"}};
 
   // Act & Assert
   VerifyDoesNotMatchConditionsExpectation(condition_matchers);
@@ -367,27 +375,29 @@ TEST_F(BraveAdsConditionMatcherUtilTest,
 TEST_F(BraveAdsConditionMatcherUtilTest,
        MatchNumericalOperatorWithVirtualPrefPathOperand) {
   // Arrange
-  base::DictValue virtual_prefs;
-  virtual_prefs.Set("[virtual]:foo", 2.0);
+  ON_CALL(ads_client_mock_, GetVirtualPrefs).WillByDefault([]() {
+    return base::DictValue().Set("[virtual]:foo", 2.0);
+  });
 
   const ConditionMatcherMap condition_matchers = {
       {"foo", "[R<]:[virtual]:foo"}};
 
   // Act & Assert
-  EXPECT_TRUE(MatchConditions(virtual_prefs, condition_matchers));
+  VerifyDoesMatchConditionsExpectation(condition_matchers);
 }
 
 TEST_F(BraveAdsConditionMatcherUtilTest,
        DoNotMatchNumericalOperatorWithVirtualPrefPathOperand) {
   // Arrange
-  base::DictValue virtual_prefs;
-  virtual_prefs.Set("[virtual]:foo", 1.0);
+  ON_CALL(ads_client_mock_, GetVirtualPrefs).WillByDefault([]() {
+    return base::DictValue().Set("[virtual]:foo", 1.0);
+  });
 
   const ConditionMatcherMap condition_matchers = {
       {"foo", "[R>]:[virtual]:foo"}};
 
   // Act & Assert
-  EXPECT_FALSE(MatchConditions(virtual_prefs, condition_matchers));
+  VerifyDoesNotMatchConditionsExpectation(condition_matchers);
 }
 
 TEST_F(BraveAdsConditionMatcherUtilTest,
@@ -403,14 +413,139 @@ TEST_F(BraveAdsConditionMatcherUtilTest,
 TEST_F(BraveAdsConditionMatcherUtilTest,
        DoNotMatchNumericalOperatorWithNonNumericVirtualPrefPathOperand) {
   // Arrange
-  base::DictValue virtual_prefs;
-  virtual_prefs.Set("[virtual]:foo", "bar");
+  ON_CALL(ads_client_mock_, GetVirtualPrefs).WillByDefault([]() {
+    return base::DictValue().Set("[virtual]:foo", "bar");
+  });
 
   const ConditionMatcherMap condition_matchers = {
       {"foo", "[R=]:[virtual]:foo"}};
 
   // Act & Assert
-  EXPECT_FALSE(MatchConditions(virtual_prefs, condition_matchers));
+  VerifyDoesNotMatchConditionsExpectation(condition_matchers);
+}
+
+TEST_F(BraveAdsConditionMatcherUtilTest,
+       MatchNumericalOperatorConditionWithTimePeriodStorage) {
+  // Arrange
+  ON_CALL(ads_client_mock_, GetVirtualPrefs).WillByDefault([]() {
+    return base::DictValue().Set(
+        "[virtual]:foo",
+        base::DictValue().Set(
+            "bar",
+            base::ListValue()
+                .Append(base::DictValue()
+                            .Set("day", test::Now().InSecondsFSinceUnixEpoch())
+                            .Set("value", 5.0))
+                .Append(base::DictValue()
+                            .Set("day",
+                                 test::DistantPast().InSecondsFSinceUnixEpoch())
+                            .Set("value", 3.0))));
+  });
+
+  const ConditionMatcherMap condition_matchers = {
+      {"[virtual]:foo|bar|time_period_storage=7d", "[R>]:4"}};
+
+  // Act & Assert
+  VerifyDoesMatchConditionsExpectation(condition_matchers);
+}
+
+TEST_F(BraveAdsConditionMatcherUtilTest,
+       DoNotMatchNumericalOperatorConditionWithTimePeriodStorage) {
+  // Arrange
+  ON_CALL(ads_client_mock_, GetVirtualPrefs).WillByDefault([]() {
+    return base::DictValue().Set(
+        "[virtual]:foo",
+        base::DictValue().Set(
+            "bar",
+            base::ListValue()
+                .Append(base::DictValue()
+                            .Set("day", test::Now().InSecondsFSinceUnixEpoch())
+                            .Set("value", 5.0))
+                .Append(base::DictValue()
+                            .Set("day",
+                                 test::DistantPast().InSecondsFSinceUnixEpoch())
+                            .Set("value", 3.0))));
+  });
+
+  const ConditionMatcherMap condition_matchers = {
+      {"[virtual]:foo|bar|time_period_storage=7d", "[R>]:6"}};
+
+  // Act & Assert
+  VerifyDoesNotMatchConditionsExpectation(condition_matchers);
+}
+
+TEST_F(BraveAdsConditionMatcherUtilTest,
+       MatchNumericalOperatorConditionWithTimePeriodStorageOperand) {
+  // Arrange
+  ON_CALL(ads_client_mock_, GetVirtualPrefs).WillByDefault([]() {
+    return base::DictValue().Set(
+        "[virtual]:foo",
+        base::DictValue()
+            .Set("bar",
+                 base::ListValue()
+                     .Append(
+                         base::DictValue()
+                             .Set("day", test::Now().InSecondsFSinceUnixEpoch())
+                             .Set("value", 5.0))
+                     .Append(base::DictValue()
+                                 .Set("day", test::DistantPast()
+                                                 .InSecondsFSinceUnixEpoch())
+                                 .Set("value", 3.0)))
+            .Set("baz",
+                 base::ListValue()
+                     .Append(
+                         base::DictValue()
+                             .Set("day", test::Now().InSecondsFSinceUnixEpoch())
+                             .Set("value", 3.0))
+                     .Append(base::DictValue()
+                                 .Set("day", test::DistantPast()
+                                                 .InSecondsFSinceUnixEpoch())
+                                 .Set("value", 5.0))));
+  });
+
+  const ConditionMatcherMap condition_matchers = {
+      {"[virtual]:foo|bar|time_period_storage=7d",
+       "[R>]:[virtual]:foo|baz|time_period_storage=7d"}};
+
+  // Act & Assert
+  VerifyDoesMatchConditionsExpectation(condition_matchers);
+}
+
+TEST_F(BraveAdsConditionMatcherUtilTest,
+       DoNotMatchNumericalOperatorConditionWithTimePeriodStorageOperand) {
+  // Arrange
+  ON_CALL(ads_client_mock_, GetVirtualPrefs).WillByDefault([]() {
+    return base::DictValue().Set(
+        "[virtual]:foo",
+        base::DictValue()
+            .Set("bar",
+                 base::ListValue()
+                     .Append(
+                         base::DictValue()
+                             .Set("day", test::Now().InSecondsFSinceUnixEpoch())
+                             .Set("value", 5.0))
+                     .Append(base::DictValue()
+                                 .Set("day", test::DistantPast()
+                                                 .InSecondsFSinceUnixEpoch())
+                                 .Set("value", 3.0)))
+            .Set("baz",
+                 base::ListValue()
+                     .Append(
+                         base::DictValue()
+                             .Set("day", test::Now().InSecondsFSinceUnixEpoch())
+                             .Set("value", 3.0))
+                     .Append(base::DictValue()
+                                 .Set("day", test::DistantPast()
+                                                 .InSecondsFSinceUnixEpoch())
+                                 .Set("value", 5.0))));
+  });
+
+  const ConditionMatcherMap condition_matchers = {
+      {"[virtual]:foo|baz|time_period_storage=7d",
+       "[R>]:[virtual]:foo|bar|time_period_storage=7d"}};
+
+  // Act & Assert
+  VerifyDoesNotMatchConditionsExpectation(condition_matchers);
 }
 
 }  // namespace brave_ads

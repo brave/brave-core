@@ -159,7 +159,7 @@ IN_PROC_BROWSER_TEST_F(AIChatAgentProfileBrowserTest,
       ai_chat_browser, GURL(chrome::kChromeUINewTabURL));
   ASSERT_TRUE(ntp_rfh);
   EXPECT_TRUE(content::EvalJs(ntp_rfh,
-                              "!!document.querySelector(`html[data-test-id="
+                              "!!document.querySelector(`html[data-testid="
                               "'brave-ai-chat-agent-new-tab-page']`)")
                   .ExtractBool());
 

@@ -25,16 +25,14 @@ namespace brave_ads {
 UserRewards::UserRewards(WalletInfo wallet) : wallet_(std::move(wallet)) {
   CHECK(wallet_.IsValid());
 
-  GetAdsClient().AddObserver(this);
+  ads_client_observation_.Observe(&GetAdsClient());
 
   issuers_.SetDelegate(this);
   refill_confirmation_tokens_.SetDelegate(this);
   redeem_payment_tokens_.SetDelegate(this);
 }
 
-UserRewards::~UserRewards() {
-  GetAdsClient().RemoveObserver(this);
-}
+UserRewards::~UserRewards() = default;
 
 void UserRewards::FetchIssuers() {
   issuers_.PeriodicallyFetch();

@@ -294,7 +294,7 @@ public class BraveRecentTabsSnackbarHelper {
 
         // Get LayoutManager from ChromeActivity's supplier to detect tab switcher
         activity.getLayoutManagerSupplier()
-                .addObserver(
+                .addSyncObserverAndCallIfNonNull(
                         layoutManager -> {
                             if (mDestroyed || layoutManager == null) {
                                 return;

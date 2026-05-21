@@ -1,0 +1,6 @@
+Name: bytemuck
+URL: https://crates.io/crates/bytemuck/1.24.0
+Version: 1.24.0
+License: MIT OR Apache-2.0
+License File: //brave/third_party/wasm/vendor/bytemuck/LICENSE-APACHE
+Description: Safely perform "bit cast" operations between data types.

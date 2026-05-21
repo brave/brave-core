@@ -21,7 +21,9 @@ class BraveRenderViewContextMenuViews : public RenderViewContextMenuViews {
       // Non-const reference passed in the parent class upstream
       // NOLINTNEXTLINE(runtime/references)
       content::RenderFrameHost& render_frame_host,
-      const content::ContextMenuParams& params);
+      const content::ContextMenuParams& params,
+      bool is_paste_enabled,
+      bool is_paste_and_match_style_enabled);
 
   void Show() override;
 
@@ -29,7 +31,9 @@ class BraveRenderViewContextMenuViews : public RenderViewContextMenuViews {
   // Non-const reference passed in the parent class upstream
   // NOLINTNEXTLINE(runtime/references)
   BraveRenderViewContextMenuViews(content::RenderFrameHost& render_frame_host,
-                                  const content::ContextMenuParams& params);
+                                  const content::ContextMenuParams& params,
+                                  bool is_paste_enabled,
+                                  bool is_paste_and_match_style_enabled);
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_RENDERER_CONTEXT_MENU_BRAVE_RENDER_VIEW_CONTEXT_MENU_VIEWS_H_

@@ -41,6 +41,14 @@ export function bindConversation(
       conversationUIReceiverRemote,
     )
   }
+
+  // Optimistic update for conversation ID to prevent any jank when components
+  // don't know what the conversation ID is for matching to an entry in the
+  // conversation list.
+  if (id) {
+    conversationAPI.api.getState.update({ conversationUuid: id })
+  }
+
   return {
     conversationHandler,
     close: () => {

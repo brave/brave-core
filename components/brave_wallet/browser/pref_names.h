@@ -34,15 +34,6 @@ inline constexpr char kShowWalletIconOnToolbar[] =
     "brave.wallet.show_wallet_icon_on_toolbar";
 inline constexpr char kBraveWalletLastUnlockTime[] =
     "brave.wallet.wallet_last_unlock_time_v2";
-// Deprecated 12/2025
-inline constexpr char kBraveWalletPingReportedUnlockTimeDeprecated[] =
-    "brave.wallet.wallet_report_unlock_time_ping";
-inline constexpr char kBraveWalletP3ANFTGalleryUsed[] =
-    "brave.wallet.wallet_p3a_nft_gallery_used";
-inline constexpr char kBraveWalletP3ANewUserBalanceReported[] =
-    "brave.wallet.p3a_new_user_balance_reported";
-inline constexpr char kBraveWalletP3AActiveWalletDict[] =
-    "brave.wallet.wallet_p3a_active_wallets";
 inline constexpr char kBraveWalletCustomNetworks[] =
     "brave.wallet.custom_networks";
 inline constexpr char kBraveWalletEip1559CustomChains[] =
@@ -74,16 +65,14 @@ inline constexpr char kBraveWalletP3ALastUnlockTime[] =
     "brave.wallet.p3a_last_unlock_time";
 inline constexpr char kBraveWalletP3AUsedSecondDay[] =
     "brave.wallet.p3a_used_second_day";
-inline constexpr char kBraveWalletP3AOnboardingLastStep[] =
-    "brave.wallet.p3a_last_onboarding_step";
 inline constexpr char kBraveWalletKeyringEncryptionKeysMigrated[] =
     "brave.wallet.keyring_encryption_keys_migrated";
-inline constexpr char kBraveWalletLastTransactionSentTimeDict[] =
-    "brave.wallet.last_transaction_sent_time_dict";
 inline constexpr char kBraveWalletNftDiscoveryEnabled[] =
     "brave.wallet.nft_discovery_enabled";
 inline constexpr char kBraveWalletLastDiscoveredAssetsAt[] =
     "brave.wallet.last_discovered_assets_at";
+inline constexpr char kBraveWalletPolkadotChainMetadata[] =
+    "brave.wallet.polkadot_chain_metadata";
 inline constexpr char kBraveWalletPrivateWindowsEnabled[] =
     "brave.wallet.private_windows_enabled";
 inline constexpr char kBraveWalletTransactionSimulationOptInStatus[] =
@@ -110,27 +99,6 @@ inline constexpr char kSolanaPrefKey[] = "solana";
 inline constexpr char kCardanoPrefKey[] = "cardano";
 inline constexpr char kPolkadotPrefKey[] = "polkadot";
 
-// Added 06/2024 to migrate Eip1559 flag to a separate pref.
-inline constexpr char kBraveWalletEip1559ForCustomNetworksMigrated[] =
-    "brave.wallet.eip1559_chains_migrated";
-// 06/2024 to mark existing compressed Solana NFTs as compressed.
-inline constexpr char kBraveWalletIsCompressedNftMigrated[] =
-    "brave.wallet.is_compressed_nft_migrated";
-// Added 11/2024 to mark Aurora mainnet as migrated.
-inline constexpr char kBraveWalletAuroraMainnetMigrated[] =
-    "brave.wallet.aurora_mainnet_migrated";
-
-// 08/2024 to mark fix existing SPL tokens marked as unsupported
-inline constexpr char kBraveWalletIsSPLTokenProgramMigrated[] =
-    "brave.wallet.is_spl_token_program_migrated";
-
-// 06/2024 migrated to kBraveWalletEip1559CustomChains.
-inline constexpr char kSupportEip1559OnLocalhostChainDeprecated[] =
-    "brave.wallet.support_eip1559_on_localhost_chain";
-// Added 07/2024 to remove Goerli mainnet, previously a preloaded network.
-inline constexpr char kBraveWalletGoerliNetworkMigrated[] =
-    "brave.wallet.custom_networks.goerli_migrated";
-
 // CryptoWallets prefs
 // Deprecated 05/2025
 inline constexpr char kERCAES256GCMSivNonceDeprecated[] =
@@ -141,10 +109,17 @@ inline constexpr char kERCPrefVersionDeprecated[] = "brave.wallet.pref_version";
 inline constexpr char kERCOptedIntoCryptoWalletsDeprecated[] =
     "brave.wallet.opted_in";
 
-// Pref registration and migration functions.
+// Deprecated 12/2025
+inline constexpr char kBraveWalletPingReportedUnlockTimeDeprecated[] =
+    "brave.wallet.wallet_report_unlock_time_ping";
+
+// Localstate prefs registration and migration functions.
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
-void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry);
+void MigrateObsoleteLocalStatePrefs(PrefService* local_state);
+
+// Profile prefs registration and migration functions.
+void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 void RegisterProfilePrefsForMigration(
     user_prefs::PrefRegistrySyncable* registry);
 void ClearJsonRpcServiceProfilePrefs(PrefService* prefs);

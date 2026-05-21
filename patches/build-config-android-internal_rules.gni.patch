@@ -1,8 +1,8 @@
 diff --git a/build/config/android/internal_rules.gni b/build/config/android/internal_rules.gni
-index b047ff19a3e8df53af9cc45d99e8ea8b82ea4f0a..bd5c6570e38f21cdfd4d89519fa7eaa60e7d42e7 100644
+index b7a2264f28bf11ad1a73a8a705260597b19b7679..33299e8b0751c8b4ea326f30135835dbcadd25d7 100644
 --- a/build/config/android/internal_rules.gni
 +++ b/build/config/android/internal_rules.gni
-@@ -3657,6 +3657,7 @@ if (enable_java_templates) {
+@@ -3649,6 +3649,7 @@ if (enable_java_templates) {
            # Filter directly in compile_java.py when no other processing is required.
            _processed_jar_path = _javac_jar_path
          }
@@ -10,7 +10,7 @@ index b047ff19a3e8df53af9cc45d99e8ea8b82ea4f0a..bd5c6570e38f21cdfd4d89519fa7eaa6
        }
  
        if (_build_device_jar) {
-@@ -3864,6 +3865,7 @@ if (enable_java_templates) {
+@@ -3856,6 +3857,7 @@ if (enable_java_templates) {
        if (defined(_enable_bytecode_checks) && _enable_bytecode_checks) {
          enable_bytecode_checks = _enable_bytecode_checks
        }

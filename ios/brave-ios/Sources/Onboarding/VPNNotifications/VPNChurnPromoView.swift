@@ -130,7 +130,7 @@ public struct VPNChurnPromoView: View {
         GeometryReader { proxy in
           Color.clear
             .onAppear { height = proxy.size.height }
-            .onChange(of: proxy.size.height) { newValue in
+            .onChange(of: proxy.size.height) { _, newValue in
               height = newValue
             }
         }

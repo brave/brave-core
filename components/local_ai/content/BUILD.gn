@@ -9,7 +9,10 @@ static_library("content") {
     "background_web_contents_impl.h",
   ]
 
-  public_deps = [ "//base" ]
+  public_deps = [
+    "//base",
+    "//brave/components/restricted_web_contents_delegate",
+  ]
 
   deps = [
     "//brave/components/local_ai/core",

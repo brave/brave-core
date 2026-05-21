@@ -9,29 +9,33 @@
 #include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "base/types/optional_ref.h"
-#include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
+#include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/serving/new_tab_page_ad_serving_feature.h"
-#include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules_test_util.h"
-#include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
+#include "brave/components/brave_ads/core/internal/serving/permission_rules/test/permission_rules_test_util.h"
+#include "brave/components/brave_ads/core/internal/settings/test/settings_test_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads.h"
-#include "brave/components/brave_ads/core/public/ads_callback.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
 class BraveAdsNewTabPageAdIntegrationTest : public test::TestBase {
+ public:
+  BraveAdsNewTabPageAdIntegrationTest()
+      : test::TestBase(/*is_integration_test=*/true) {}
+
  protected:
   void SetUp() override {
     AdvanceClockTo(test::TimeFromUTCString("Fri, 31 Jan 2025 16:28"));
 
-    test::TestBase::SetUp(/*is_integration_test=*/true);
+    test::TestBase::SetUp();
   }
 
   void MockCreativeNewTabPageAds() {
@@ -110,14 +114,11 @@ class BraveAdsNewTabPageAdIntegrationTest : public test::TestBase {
       }
     )JSON";
 
-    base::RunLoop run_loop;
-    base::MockCallback<ParseAndSaveNewTabPageAdsCallback> callback;
-    EXPECT_CALL(callback, Run(/*success=*/true))
-        .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-
+    base::test::TestFuture<bool> test_future;
     base::DictValue dict = base::test::ParseJsonDict(json);
-    GetAds().ParseAndSaveNewTabPageAds(std::move(dict), callback.Get());
-    run_loop.Run();
+    GetAds().ParseAndSaveNewTabPageAds(std::move(dict),
+                                       test_future.GetCallback());
+    EXPECT_TRUE(test_future.Get());
   }
 
   void TriggerNewTabPageAdEventAndVerifiyExpectations(
@@ -125,7 +126,7 @@ class BraveAdsNewTabPageAdIntegrationTest : public test::TestBase {
       const std::string& creative_instance_id,
       mojom::NewTabPageAdEventType mojom_ad_event_type,
       bool should_fire_event) {
-    base::MockCallback<TriggerAdEventCallback> callback;
+    base::MockCallback<ResultCallback> callback;
     base::RunLoop run_loop(base::RunLoop::Type::kNestableTasksAllowed);
     EXPECT_CALL(callback, Run(/*success=*/should_fire_event))
         .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));

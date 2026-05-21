@@ -26,10 +26,11 @@ namespace net {
 // in the run-time. This function is the only function which looks up entries
 // in the public suffix list, so we add our special case handling here to avoid
 // patching effective_tld_names.gperf directly.
-int LookupSuffixInReversedSet(base::span<const uint8_t> graph,
-                              bool include_private,
-                              std::string_view host,
-                              size_t* suffix_length) {
+std::optional<DomainRuleTags> LookupSuffixInReversedSet(
+    base::span<const uint8_t> graph,
+    bool include_private,
+    std::string_view host,
+    size_t* suffix_length) {
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   // Recognize .crypto(and other ud suffixes) and .eth as known TLDs for
   // decentralized DNS support. With this, when users type *.crypto or *.eth in
@@ -38,20 +39,20 @@ int LookupSuffixInReversedSet(base::span<const uint8_t> graph,
   // URL instead of search.
   if (auto domain = decentralized_dns::GetUnstoppableDomainSuffix(host)) {
     *suffix_length = domain->size() - 1;
-    return kDafsaFound;
+    return DomainRuleTags();
   }
   if (host.ends_with(decentralized_dns::kEthDomain)) {
     *suffix_length = decentralized_dns::kEthDomain.size() - 1;
-    return kDafsaFound;
+    return DomainRuleTags();
   }
   if (host.ends_with(decentralized_dns::kSolDomain)) {
     *suffix_length = decentralized_dns::kSolDomain.size() - 1;
-    return kDafsaFound;
+    return DomainRuleTags();
   }
 
   if (include_private && host.ends_with(decentralized_dns::kDNSForEthDomain)) {
     *suffix_length = decentralized_dns::kDNSForEthDomain.size() - 1;
-    return kDafsaFound;
+    return DomainRuleTags();
   }
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 

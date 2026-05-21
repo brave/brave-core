@@ -327,40 +327,78 @@ def fetch_existing_comments(repo, pr_number):
         return []
 
 
+def _rule_dedup_key(violation):
+    """Return a stable dedup key for a violation's rule.
+
+    Prefers the URL fragment from rule_link (e.g. '#CS-044') over the
+    human-written rule string, which varies across subagents for the same rule.
+    Falls back to the lowercased rule string if no link is present.
+    Returns None if neither is available.
+    """
+    rule_link = violation.get("rule_link", "")
+    if rule_link:
+        if "#" in rule_link:
+            return rule_link.split("#", 1)[1].lower()
+        return rule_link.lower()
+    rule = violation.get("rule", "").strip()
+    if rule:
+        return rule.lower()
+    return None
+
+
 def deduplicate_batch_violations(violations):
     """Deduplicate violations within a batch from multiple subagent chunks.
 
-    Multiple chunks can independently find the same issue on the same file.
-    Keep only the first violation per (file, rule) combination, and also
-    deduplicate by (file, line) to handle near-identical findings.
+    Multiple subagents independently review the same PR and often flag the
+    same issue with different rule names and slightly different line numbers.
+    We use three dedup passes:
+
+    1. (file, rule_key)  — same formal rule on the same file.  rule_key is
+       derived from the rule_link fragment (#RULE-ID) so it's stable across
+       varying human-written rule strings.
+    2. (file, line)      — different rule, same exact line.
+    3. file-only         — for violations with no rule key and no line, keep
+       only the first finding per file (avoids duplicate "bug" comments that
+       lack a formal rule).
 
     Returns filtered list.
     """
     seen_file_rule = set()
     seen_file_line = set()
+    seen_file_no_rule = set()
     kept = []
 
     for v in violations:
         file_path = v.get("file", "")
-        rule = v.get("rule", "")
         line = v.get("line")
+        rule_key = _rule_dedup_key(v)
 
-        # Dedup by (file, rule) — same rule on same file from different chunks
-        if rule:
-            file_rule_key = (file_path, rule)
+        # Pass 1 — dedup by (file, rule_key)
+        if rule_key:
+            file_rule_key = (file_path, rule_key)
             if file_rule_key in seen_file_rule:
                 log(f"BATCH_DEDUP: skipped {file_path}:{line}"
-                    f" — duplicate rule '{rule}'")
+                    f" — duplicate rule key '{rule_key}'")
                 continue
             seen_file_rule.add(file_rule_key)
 
-        # Dedup by (file, line) — different chunks targeting same line
-        file_line_key = (file_path, line)
-        if file_line_key in seen_file_line:
-            log(f"BATCH_DEDUP: skipped {file_path}:{line} — duplicate file+line"
-                )
-            continue
-        seen_file_line.add(file_line_key)
+        # Pass 2 — dedup by (file, line) regardless of rule
+        if line is not None:
+            file_line_key = (file_path, line)
+            if file_line_key in seen_file_line:
+                log(f"BATCH_DEDUP: skipped {file_path}:{line}"
+                    f" — dup file+line")
+                continue
+            seen_file_line.add(file_line_key)
+
+        # Pass 3 — for informal "bug" findings with no rule key and no line,
+        # keep only the first comment per file to avoid duplicate bug reports
+        if not rule_key and line is None:
+            if file_path in seen_file_no_rule:
+                log(f"BATCH_DEDUP: skipped {file_path}"
+                    f" — dup no-rule finding")
+                continue
+            seen_file_no_rule.add(file_path)
 
         kept.append(v)
 

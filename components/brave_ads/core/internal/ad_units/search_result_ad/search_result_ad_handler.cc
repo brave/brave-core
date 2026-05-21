@@ -20,6 +20,7 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
+#include "third_party/abseil-cpp/absl/cleanup/cleanup.h"
 
 namespace brave_ads {
 
@@ -28,7 +29,7 @@ namespace {
 SearchResultAdHandler* g_search_result_ad_handler_for_testing = nullptr;
 bool g_defer_triggering_of_ad_viewed_event_for_testing = false;
 
-void FireEventCallback(TriggerAdEventCallback callback,
+void FireEventCallback(ResultCallback callback,
                        bool success,
                        const std::string& /*placement_id*/,
                        mojom::SearchResultAdEventType /*mojom_ad_event_type*/) {
@@ -59,21 +60,27 @@ void SearchResultAdHandler::TriggerDeferredAdViewedEventForTesting() {
 
   g_defer_triggering_of_ad_viewed_event_for_testing = false;
 
-  if (g_search_result_ad_handler_for_testing) {
-    g_search_result_ad_handler_for_testing
-        ->is_processing_viewed_ad_event_queue_ = false;
-
-    g_search_result_ad_handler_for_testing->MaybeTriggerDeferredAdViewedEvent(
-        /*intentional*/ base::DoNothing());
-
+  absl::Cleanup cleanup = [] {
+    // `g_search_result_ad_handler_for_testing` was set in
+    // `FireAdViewedEventCallback` to defer the ad viewed event. Reset it when
+    // this scope exits now that the deferred event has been triggered.
     g_search_result_ad_handler_for_testing = nullptr;
+  };
+
+  if (!g_search_result_ad_handler_for_testing) {
+    return;
   }
+
+  g_search_result_ad_handler_for_testing->is_processing_viewed_ad_event_queue_ =
+      false;
+  g_search_result_ad_handler_for_testing->MaybeTriggerDeferredAdViewedEvent(
+      /*intentional*/ base::DoNothing());
 }
 
 void SearchResultAdHandler::TriggerEvent(
     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
     mojom::SearchResultAdEventType mojom_ad_event_type,
-    TriggerAdEventCallback callback) {
+    ResultCallback callback) {
   CHECK_NE(mojom::SearchResultAdEventType::kServedImpression,
            mojom_ad_event_type)
       << "Should not be called with kServedImpression as this event is handled "
@@ -106,7 +113,7 @@ void SearchResultAdHandler::TriggerEvent(
 
 void SearchResultAdHandler::FireServedEventCallback(
     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
-    TriggerAdEventCallback callback,
+    ResultCallback callback,
     bool success,
     const std::string& /*placement_id*/,
     mojom::SearchResultAdEventType /*mojom_ad_event_type*/) {
@@ -120,7 +127,7 @@ void SearchResultAdHandler::FireServedEventCallback(
 }
 
 void SearchResultAdHandler::MaybeTriggerDeferredAdViewedEvent(
-    TriggerAdEventCallback callback) {
+    ResultCallback callback) {
   CHECK((!viewed_ad_event_queue_.empty() ||
          !is_processing_viewed_ad_event_queue_));
 
@@ -141,7 +148,7 @@ void SearchResultAdHandler::MaybeTriggerDeferredAdViewedEvent(
 }
 
 void SearchResultAdHandler::FireAdViewedEventCallback(
-    TriggerAdEventCallback callback,
+    ResultCallback callback,
     bool success,
     const std::string& /*placement_id*/,
     mojom::SearchResultAdEventType mojom_ad_event_type) {
@@ -181,13 +188,19 @@ void SearchResultAdHandler::OnDidFireSearchResultAdViewedEvent(
           ad.creative_instance_id, ad.segment);
 }
 
+void SearchResultAdHandler::OnWillFireSearchResultAdClickedEvent(
+    const SearchResultAdInfo& ad) {
+  // Must be set before `RecordAdEvent` completes so that if a page navigation
+  // commits during the write, `SiteVisit::MaybeLandOnPage` can record the
+  // page land for this ad.
+  site_visit_->set_last_clicked_ad(ad);
+}
+
 void SearchResultAdHandler::OnDidFireSearchResultAdClickedEvent(
     const SearchResultAdInfo& ad) {
   BLOG(3, "Clicked search result ad with placement id "
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
-
-  site_visit_->set_last_clicked_ad(ad);
 
   AdHistoryManager::GetInstance().Add(ad, mojom::ConfirmationType::kClicked);
 

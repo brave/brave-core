@@ -7,6 +7,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/brave_shields/ad_block_browser_test_helper.h"
 #include "brave/browser/brave_shields/ad_block_service_browsertest.h"
 #include "brave/components/brave_shields/content/browser/ad_block_custom_filters_provider.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
@@ -240,7 +241,7 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, DontWarnAgainAndProceed) {
   // Simulate click on "Proceed anyway" button. This should save the "don't warn
   // again" choice and navigate to the originally requested page.
   ClickAndWaitForNavigation("primary-button");
-  WaitForAdBlockServiceThreads();
+  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
   ASSERT_FALSE(IsShowingInterstitial());
   std::u16string expected_title(u"OK");
   content::TitleWatcher watcher(web_contents(), expected_title);
@@ -454,7 +455,7 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest,
   // Simulate click on "Proceed anyway" button. This should navigate to the
   // originally requested page.
   ClickAndWaitForNavigation("primary-button");
-  WaitForAdBlockServiceThreads();
+  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
   ASSERT_FALSE(IsShowingInterstitial());
   std::u16string expected_title(u"OK");
   content::TitleWatcher watcher(web_contents(), expected_title);
@@ -478,7 +479,7 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest,
       "  document.documentElement.appendChild(e);"
       "})";
   EXPECT_EQ(true, EvalJs(web_contents(), iframe_script));
-  WaitForAdBlockServiceThreads();
+  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked),
             ads_blocked_count + 1);
 }

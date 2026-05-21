@@ -542,6 +542,9 @@
     <message name="IDS_IDC_SHOW_APPS_PAGE" desc="The label of the 'Show Apps' menu item">
       Show Apps
     </message>
+    <message name="IDS_IDC_TOGGLE_FOCUS_MODE" desc="The label of the focus mode context menu item">
+      Toggle Focus Mode
+    </message>
   </if>
   <if expr="not use_titlecase">
     <message name="IDS_IDC_COMMANDER">
@@ -562,9 +565,15 @@
     <message name="IDS_IDC_SHOW_APPS_PAGE" desc="The label of the 'Show Apps' menu item">
       Show apps
     </message>
+    <message name="IDS_IDC_TOGGLE_FOCUS_MODE" desc="The label of the focus mode context menu item">
+      Toggle focus mode
+    </message>
   </if>
   <!-- Email aliases context menu -->
   <message name="IDS_IDC_NEW_EMAIL_ALIAS" desc="Message for context menu that enables the Email Alias generator UI for the page">
     New Email Alias
+  </message>
+  <message name="IDS_IDC_NEW_TEMPORARY_CONTAINER" desc="Label for the command that opens the current URL in a new local-only temporary container.">
+    New temporary container
   </message>
 </grit-part>

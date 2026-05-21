@@ -20,12 +20,15 @@
 #include "base/task/single_thread_task_runner.h"
 #include "base/time/time.h"
 #include "brave/brave_domains/service_domains.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/brave_service_keys/brave_service_key_utils.h"
+#include "brave/components/constants/brave_services_key.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "mojo/public/cpp/bindings/struct_ptr.h"
@@ -288,6 +291,17 @@ GURL GetEndpointUrl(bool premium, const std::string& path) {
   CHECK(url.is_valid()) << "Invalid API Url: " << url.spec();
 
   return url;
+}
+
+base::flat_map<std::string, std::string> GetBraveHeaders(
+    std::optional<CredentialCacheEntry> credential) {
+  base::flat_map<std::string, std::string> headers;
+  if (credential) {
+    headers.emplace("Cookie", base::StrCat({"__Secure-sku#brave-leo-premium=",
+                                            credential->credential}));
+  }
+  headers.emplace("x-brave-key", BUILDFLAG(BRAVE_SERVICES_KEY));
+  return headers;
 }
 
 }  // namespace ai_chat

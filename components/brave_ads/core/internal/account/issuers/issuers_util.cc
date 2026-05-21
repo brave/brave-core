@@ -20,7 +20,7 @@ void SetIssuers(const IssuersInfo& issuers) {
   SetProfileIntegerPref(prefs::kIssuerPing, issuers.ping);
 
   SetProfileListPref(prefs::kIssuers,
-                     TokenIssuersToValue(issuers.token_issuers));
+                     TokenIssuersToList(issuers.token_issuers));
 }
 
 std::optional<IssuersInfo> GetIssuers() {
@@ -29,7 +29,8 @@ std::optional<IssuersInfo> GetIssuers() {
     return std::nullopt;
   }
 
-  std::optional<TokenIssuerList> token_issuers = TokenIssuersFromValue(*list);
+  std::optional<TokenIssuerList> token_issuers =
+      MaybeBuildTokenIssuersFromList(*list);
   if (!token_issuers) {
     return std::nullopt;
   }

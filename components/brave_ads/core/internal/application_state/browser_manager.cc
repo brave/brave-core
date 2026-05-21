@@ -14,12 +14,10 @@
 namespace brave_ads {
 
 BrowserManager::BrowserManager() {
-  GetAdsClient().AddObserver(this);
+  ads_client_observation_.Observe(&GetAdsClient());
 }
 
-BrowserManager::~BrowserManager() {
-  GetAdsClient().RemoveObserver(this);
-}
+BrowserManager::~BrowserManager() = default;
 
 // static
 BrowserManager& BrowserManager::GetInstance() {
@@ -77,8 +75,11 @@ void BrowserManager::NotifyBrowserDidEnterBackground() {
 }
 
 void BrowserManager::InitializeBrowserBackgroundState() {
-  is_in_foreground_ = GetAdsClient().IsBrowserActive();
+  const bool is_active = GetAdsClient().IsBrowserActive();
+  is_active_ = is_active;
+  is_in_foreground_ = is_active;
 
+  LogBrowserActiveState();
   LogBrowserBackgroundState();
 }
 

@@ -8,11 +8,8 @@ import { html, nothing } from '//resources/lit/v3_0/lit.rollup.js'
 import { BraveAccountPasswordIconsElement } from './brave_account_password_icons.js'
 
 export function getHtml(this: BraveAccountPasswordIconsElement) {
-  const showCapsLock =
-    this.isCapsLockOn && this.isInputFocused && !this.isPasswordVisible
-
   return html`<!--_html_template_start_-->
-    ${showCapsLock
+    ${this.showCapsLock
       ? html`<leo-tooltip>
           <div slot="content">$i18n{BRAVE_ACCOUNT_CAPS_LOCK_ON}</div>
           <leo-icon name="caps-lock"></leo-icon>

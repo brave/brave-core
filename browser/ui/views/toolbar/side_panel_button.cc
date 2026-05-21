@@ -8,12 +8,14 @@
 #include <memory>
 
 #include "brave/app/vector_icons/vector_icons.h"
+#include "brave/browser/ui/sidebar/buildflags/buildflags.h"
+#include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
-#include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
+#include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -81,7 +83,12 @@ SidePanelButton::SidePanelButton(Browser* browser)
 SidePanelButton::~SidePanelButton() = default;
 
 void SidePanelButton::ButtonPressed() {
+  // Different behavior in v1 and v2.
+#if BUILDFLAG(ENABLE_SIDEBAR_V2)
+  browser_->GetFeatures().sidebar_controller()->ToggleSidebarPinning();
+#else
   browser_->GetFeatures().side_panel_ui()->Toggle();
+#endif
 }
 
 void SidePanelButton::UpdateToolbarButtonIcon() {

@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.settings;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
@@ -168,7 +169,12 @@ public class BravePreferenceDialogFragment extends PreferenceDialogFragmentCompa
 
         String subtitle = mDialogPreference.getDialogSubtitle();
         TextView subTitle = view.findViewById(R.id.summary);
-        subTitle.setText(subtitle);
+        if (TextUtils.isEmpty(subtitle)) {
+            subTitle.setVisibility(View.GONE);
+        } else {
+            subTitle.setText(subtitle);
+            subTitle.setVisibility(View.VISIBLE);
+        }
         subTitle.refreshDrawableState();
         mRadioGroup = view.findViewById(R.id.options);
         BraveDialogPreference.DialogEntry[] dialogEntries = mDialogPreference.getDialogEntries();

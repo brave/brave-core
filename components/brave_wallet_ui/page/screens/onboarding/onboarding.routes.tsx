@@ -4,10 +4,14 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { Redirect, Route, Switch } from 'react-router'
+import { Redirect, Route, Switch, useHistory } from 'react-router'
 
 // types
 import { WalletRoutes } from '../../../constants/types'
+
+// redux
+import { useAppDispatch } from '../../../common/hooks/use-redux'
+import { WalletPageActions } from '../../actions'
 
 // utils
 import {
@@ -34,9 +38,22 @@ import {
 } from './onboarding_hardware_wallet.routes'
 
 export const OnboardingRoutes = () => {
+  // routing
+  const history = useHistory()
+
   // redux
+  const dispatch = useAppDispatch()
   const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
   const isMobile = useSafeUISelector(UISelectors.isMobile)
+  const isIOS = useSafeUISelector(UISelectors.isIOS)
+
+  // On iOS, when wallet is created (from native onboarding), complete setup and navigate to portfolio
+  React.useEffect(() => {
+    if (isIOS && isWalletCreated) {
+      dispatch(WalletPageActions.walletSetupComplete(true))
+      history.push(WalletRoutes.PortfolioAssets)
+    }
+  }, [isIOS, isWalletCreated, dispatch, history])
 
   // render
   return (

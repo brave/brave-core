@@ -1,0 +1,12 @@
+diff --git a/components/sync/service/sync_user_settings_impl.cc b/components/sync/service/sync_user_settings_impl.cc
+index 90d0c045cef1ed7645314da0bd8d103e5ee75b4f..9631b1a9e4d8f76a42726ecae4ef6a6b07ad39da 100644
+--- a/components/sync/service/sync_user_settings_impl.cc
++++ b/components/sync/service/sync_user_settings_impl.cc
+@@ -400,6 +400,7 @@ DataTypeSet SyncUserSettingsImpl::GetPreferredDataTypes() const {
+     types.Remove(THEMES_IOS);
+     types.Remove(ACCESSIBILITY_ANNOTATION);
+   }
++  BraveAdjustPreferredDataTypes(&types);
+   return types;
+ }
+ 

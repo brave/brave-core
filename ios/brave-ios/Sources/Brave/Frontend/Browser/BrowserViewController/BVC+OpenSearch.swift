@@ -163,7 +163,7 @@ extension BrowserViewController {
       url,
       reference: reference,
       title: title,
-      favicon: tabManager.selectedTab?.displayFavicon
+      favicon: tabManager.selectedTab?.faviconTabHelper?.displayFavicon
     )
   }
 

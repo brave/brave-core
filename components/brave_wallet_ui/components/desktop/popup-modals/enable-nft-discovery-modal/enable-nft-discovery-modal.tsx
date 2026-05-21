@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
+import Button from '@brave/leo/react/button'
 
 // selectors
 import {
@@ -24,7 +25,7 @@ import {
   Link,
   Underline,
 } from './enable-nft-discovery-modal.style'
-import { LeoSquaredButton, Column } from '../../../shared/style'
+import { Column } from '../../../shared/style'
 
 interface Props {
   onConfirm: () => void
@@ -73,15 +74,15 @@ export const EnableNftDiscoveryModal = ({ onConfirm, onCancel }: Props) => {
         </Header>
         <Description>{enableNftAutoDiscovery}</Description>
         <ButtonRow>
-          <LeoSquaredButton
+          <Button
             onClick={onCancel}
             kind='plain'
           >
             {getLocale('braveWalletEnableNftAutoDiscoveryModalCancel')}
-          </LeoSquaredButton>
-          <LeoSquaredButton onClick={onConfirm}>
+          </Button>
+          <Button onClick={onConfirm}>
             {getLocale('braveWalletEnableNftAutoDiscoveryModalConfirm')}
-          </LeoSquaredButton>
+          </Button>
         </ButtonRow>
       </Column>
     </PopupModal>

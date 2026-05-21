@@ -10,6 +10,7 @@
 
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
+#include "base/scoped_observation.h"
 #include "brave/components/brave_ads/core/internal/application_state/browser_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving.h"
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving_delegate.h"
@@ -25,7 +26,9 @@ class TimeDelta;
 
 namespace brave_ads {
 
+class AdsClient;
 class AntiTargetingResource;
+class BrowserManager;
 class SiteVisit;
 class SubdivisionTargeting;
 struct NotificationAdInfo;
@@ -46,13 +49,13 @@ class NotificationAdHandler final : public AdsClientNotifierObserver,
 
   void TriggerEvent(const std::string& placement_id,
                     mojom::NotificationAdEventType mojom_ad_event_type,
-                    TriggerAdEventCallback callback);
+                    ResultCallback callback);
 
  private:
   void MaybeServeAtRegularIntervals();
 
   void FireServedEventCallback(
-      TriggerAdEventCallback callback,
+      ResultCallback callback,
       bool success,
       const std::string& placement_id,
       mojom::NotificationAdEventType mojom_ad_event_type);
@@ -73,6 +76,8 @@ class NotificationAdHandler final : public AdsClientNotifierObserver,
   void OnDidServeNotificationAd(const NotificationAdInfo& ad) override;
 
   // NotificationAdEventHandlerDelegate:
+  void OnWillFireNotificationAdClickedEvent(
+      const NotificationAdInfo& ad) override;
   void OnDidFireNotificationAdServedEvent(
       const NotificationAdInfo& ad) override;
   void OnDidFireNotificationAdViewedEvent(
@@ -89,6 +94,12 @@ class NotificationAdHandler final : public AdsClientNotifierObserver,
   NotificationAdEventHandler event_handler_;
 
   NotificationAdServing serving_;
+
+  base::ScopedObservation<AdsClient, AdsClientNotifierObserver>
+      ads_client_observation_{this};
+
+  base::ScopedObservation<BrowserManager, BrowserManagerObserver>
+      browser_manager_observation_{this};
 
   base::WeakPtrFactory<NotificationAdHandler> weak_factory_{this};
 };

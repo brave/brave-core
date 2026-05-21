@@ -12,6 +12,7 @@ import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bu
 
 import {BaseMixin} from '../base_mixin.js';
 import {getTemplate} from './brave_origin_onboarding.html.js';
+import * as BraveOriginMojom from '../brave_origin_settings.mojom-webui.js';
 
 const SettingsBraveOriginOnboardingElementBase =
     BaseMixin(I18nMixin(PolymerElement)) as {
@@ -44,6 +45,13 @@ export class SettingsBraveOriginOnboardingElement extends
         'https://support.brave.app/hc/en-us/articles/38561489788173',
         '_blank',
         'noopener');
+  }
+
+  private async onProceedFreeClick_() {
+    const handler =
+        BraveOriginMojom.BraveOriginSettingsHandler.getRemote();
+    await handler.proceedFree();
+    window.location.assign('chrome://settings/origin');
   }
 }
 

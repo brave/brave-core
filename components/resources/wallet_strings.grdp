@@ -9,7 +9,6 @@
   <message name="IDS_BRAVE_WALLET_NETWORK" desc="General token">network</message>
   <message name="IDS_WALLET_USER_REJECTED_REQUEST" desc="The text of the response for brave provider call if the user rejected the request">The user rejected the request.</message>
   <message name="IDS_WALLET_INVALID_PARAMETERS" desc="The call was made with invalid parameters">Invalid parameters.</message>
-  <message name="IDS_WALLET_OFAC_RESTRICTION" desc="Attempted to transfer to an OFAC restricted address">Destination address is on the OFAC SDN list.</message>
   <message name="IDS_WALLET_UNKNOWN_CHAIN" desc="The text of the response for wallet_switchEthereumChain call with unknown">Chain <ph name="VALUE">$1<ex>1</ex></ph> hasn't been added</message>
   <message name="IDS_WALLET_CHAIN_EXISTS" desc="The text of the response for wallet_addEthereumChain call with existing chain id">This Chain ID is currently used</message>
   <message name="IDS_WALLET_INTERNAL_ERROR" desc="The text of the response for wallet_addEthereumChain call with internal error">An internal error has occurred</message>
@@ -138,13 +137,14 @@
   <message name="IDS_BRAVE_WALLET_ROUTES" desc="Swap routes title">Routes</message>
   <message name="IDS_BRAVE_WALLET_SWAP_ON_NETWORK_VIA_EXCHANGE" desc="Swap on network via an exchange">Swap on <ph name="NETWORK_NAME"><ex>Ethereum Mainnet</ex>$1</ph> via <ph name="EXCHANGE_NAME"><ex>0x</ex>$2</ph></message>
   <message name="IDS_BRAVE_WALLET_BRIDGE_FROM_NETWORK_TO_NETWORK" desc="Bridge from network name to network name">Bridge from <ph name="FRIST_NETWORK_NAME"><ex>Ethereum Mainnet</ex>$1</ph> to <ph name="SECOND_NETWORK_NAME"><ex>Polygon Mainnet</ex>$2</ph></message>
-  <message name="IDS_BRAVE_WALLET_EXCHANGE_NAME_PLUS_STEPS" desc="Name of exchange plust steps to complete a swap">
+  <message name="IDS_BRAVE_WALLET_EXCHANGE_NAME_PLUS_STEPS" desc="Name of exchange with number of steps to complete a swap">
     {SWAP_EXCHANGE_STEPS, plural,
-      =1 {<ph name="EXCHANGE_NAME"><ex>0X</ex>$1</ph> + {SWAP_EXCHANGE_STEPS} step}
-      other {<ph name="EXCHANGE_NAME"><ex>0X</ex>$1</ph> + {SWAP_EXCHANGE_STEPS} steps}
+      =1 {<ph name="EXCHANGE_NAME"><ex>Jupiter</ex>$1</ph> ({SWAP_EXCHANGE_STEPS} step)}
+      other {<ph name="EXCHANGE_NAME"><ex>Jupiter</ex>$1</ph> ({SWAP_EXCHANGE_STEPS} steps)}
     }
   </message>
   <message name="IDS_BRAVE_WALLET_EXCHANGE_VIA_PROVIDER" desc="Exchange being used via API provider"><ph name="EXCHANGE_NAME"><ex>0x</ex>$1</ph> via <ph name="PROVIDER_NAME"><ex>Li.Fi</ex>$2</ph></message>
+  <message name="IDS_BRAVE_WALLET_SWAP_ROUTE_TO_FROM_VIA" desc="Swap route step showing destination token from source token via an exchange"><ph name="DESTINATION_TOKEN"><ex>USDC</ex>$1</ph> ← <ph name="SOURCE_TOKEN"><ex>SOL</ex>$2</ph> via</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_SWAP" desc="Confirm swap title">Confirm swap</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_BRIDGE" desc="Confirm bridge title">Confirm bridge</message>
   <message name="IDS_BRAVE_WALLET_CONFIRM_SEND" desc="Confirm send title">Confirm send</message>
@@ -232,6 +232,7 @@
   <message name="IDS_BRAVE_WALLET_WALLET_POPUP_CONNECTED_SITES" desc="Wallet popup connected sites button">Connected sites</message>
   <message name="IDS_BRAVE_WALLET_WALLET_POPUP_HIDE_BALANCES" desc="Wallet popup hide balances checkbox">Balances</message>
   <message name="IDS_BRAVE_WALLET_WALLET_POPUP_SHOW_GRAPH" desc="Wallet popup show graph checkbox">Graph</message>
+  <message name="IDS_BRAVE_WALLET_DISTRIBUTION" desc="Wallet popup hide distribution checkbox">Distribution</message>
   <message name="IDS_BRAVE_WALLET_WALLET_NFTS_TAB" desc="Wallet popup show NFTs tab checkbox">NFTs tab</message>
   <message name="IDS_BRAVE_WALLET_BACKUP_WARNING_TEXT" desc="Backup warning banner description">Back up your wallet now to protect your assets and ensure you never lose access.</message>
   <message name="IDS_BRAVE_WALLET_BACKUP_BUTTON" desc="Backup warning banner back up button">Back up now</message>
@@ -291,6 +292,9 @@
   <message name="IDS_BRAVE_WALLET_IMPORT_ACCOUNT_SELECTED_FILE" desc="Polkadot import file button text when a file is selected">Selected file</message>
   <message name="IDS_BRAVE_WALLET_IMPORT_ACCOUNT_ERROR" desc="Add account modal failed to import error">Failed to import account, please try again.</message>
   <message name="IDS_BRAVE_WALLET_IMPORT_ACCOUNT" desc="Import account button">Import account</message>
+  <message name="IDS_BRAVE_WALLET_IMPORT_ACCOUNT_PRIVATE_KEY_DESCRIPTION" desc="Import account private key description">Copy private key for the account you want to import from another wallet.</message>
+  <message name="IDS_BRAVE_WALLET_IMPORT_ACCOUNT_JSON_FILE_DESCRIPTION" desc="Import account JSON file description">Export private key from another wallet to a JSON file and upload here.</message>
+  <message name="IDS_BRAVE_WALLET_UPLOAD_JSON_FILE" desc="Upload JSON file label">Upload JSON file</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_TITLE" desc="Connect hardware wallet title">Select your hardware wallet device</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_INFO1" desc="Connect hardware wallet info1">Connect your <ph name="HARDWARE_DEVICE"><ex>Ledger</ex>$1</ph> wallet directly to your computer.</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_INFO2" desc="Connect hardware wallet info2">Unlock your device and select the <ph name="BLOCKCHAIN_NETWORK"><ex>Ethereum</ex>$1</ph> app.</message>
@@ -341,7 +345,7 @@
   <message name="IDS_BRAVE_WALLET_FIL_IMPORT_PRIVATE_KEY_FORMAT_DESCRIPTION" desc="Filecoin private key format description">NOTE: Private key must be provided as a hex-encoded JSON that contains private key and protocol information. <ph name="LINK_START">$1</ph>Learn more<ph name="LINK_END">/$1</ph>.</message>
   <message name="IDS_BRAVE_WALLET_BTC_IMPORT_PRIVATE_KEY_FORMAT_DESCRIPTION" desc="Bitcoin private key input format description">NOTE: Only <ph name="FORMAT"><ex>zprv</ex>$1</ph> extended keys are supported.</message>
   <message name="IDS_BRAVE_WALLET_POLKADOT_IMPORT_JSON_DESCRIPTION" desc="Polkadot import JSON file description">Import using a JSON file exported from Polkadot.js or compatible wallets. Enter the password used to encrypt the export.</message>
-  <message name="IDS_BRAVE_WALLET_TESTNET_ACCOUNTS" desc="Testnet accounts label">Testnet accounts</message>
+  <message name="IDS_BRAVE_WALLET_LOOKING_FOR_TESTNET_ACCOUNTS" desc="Looking for testnet accounts label">Looking for Testnet accounts?</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_EXPORT" desc="Account list item Export button">Export</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_DEPOSIT" desc="Account list item Deposit button">Deposit</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_REMOVE" desc="Account list item Remove button">Remove</message>
@@ -476,12 +480,12 @@
   <message name="IDS_BRAVE_WALLET_PERMISSION_ONE_DAY" desc="Connect with site panel DApp is connected for 1 day">For 24 hours</message>
   <message name="IDS_BRAVE_WALLET_PERMISSION_ONE_WEEK" desc="Connect with site panel DApp is connected for 1 week">For 1 week</message>
   <message name="IDS_BRAVE_WALLET_PERMISSION_FOREVER" desc="Connect with site panel DApp is connected forever">Forever</message>
-  <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_CONNECTED" desc="Connect Hardware panel connected status"><ph name="DEVICE_NAME"><ex>Ledger</ex>$1</ph> connected</message>
-  <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_DISCONNECTED" desc="Connect Hardware panel disconnected status"><ph name="DEVICE_NAME"><ex>Ledger</ex>$1</ph> disconnected</message>
-  <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_INSTRUCTIONS" desc="Connect Hardware panel instructions button">Instructions</message>
-  <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_CONNECT" desc="Connect Hardware panel title">Connect your <ph name="DEVICE_NAME"><ex>Ledger</ex>$1</ph></message>
+  <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_CONNECTED" desc="Connect Hardware panel connected status"><ph name="ACCOUNT_NAME"><ex>Ledger account</ex>$1</ph> is connected to <ph name="DEVICE_NAME"><ex>Ledger Nano</ex>$2</ph></message>
+  <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_DISCONNECTED" desc="Connect Hardware panel disconnected status"><ph name="ACCOUNT_NAME"><ex>Ledger account</ex>$1</ph> is disconnected</message>
+  <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_INSTRUCTIONS" desc="Connect Hardware panel view instructions button">View instructions</message>
+  <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_CONNECT" desc="Connect Hardware panel title">Connect your <ph name="ACCOUNT_NAME"><ex>Ledger account</ex>$1</ph> to continue</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_CONFIRMATION" desc="Connect Hardware panel confirmation description">Hardware wallet requires confirmation on device.</message>
-  <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_OPEN_APP" desc="Connect Hardware panel open app text">Hardware wallet requires <ph name="NETWORK"><ex>Ethereum</ex>$1</ph> App opened on <ph name="DEVICE_NAME"><ex>Ledger</ex>$2</ph></message>
+  <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_PANEL_OPEN_APP" desc="Connect Hardware panel open app text">Hardware wallet requires <ph name="NETWORK"><ex>Ethereum</ex>$1</ph> App opened on <ph name="ACCOUNT_NAME"><ex>Ledger account</ex>$2</ph></message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_SENT" desc="Transaction sent label">sent</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_RECEIVED" desc="Transaction received label">received</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_EXPLORER_MISSING" desc="Alert for when no block explorer is available">Block explorer URL is not available.</message>
@@ -685,6 +689,14 @@
   <message name="IDS_BRAVE_WALLET_ACCOUNT_NAME" desc="Account name input label">Account name</message>
   <message name="IDS_BRAVE_WALLET_MINIMUM_AMOUNT" desc="Minimum amount error label">Minimum amount: <ph name="AMOUNT">$1<ex>$2 USD</ex></ph></message>
   <message name="IDS_BRAVE_WALLET_MAXIMUM_AMOUNT" desc="Maximum amount error label">Maximum amount: <ph name="AMOUNT">$1<ex>$1000 USD</ex></ph></message>
+  <message name="IDS_BRAVE_WALLET_ACCOUNT_CREATED_SUCCESSFULLY" desc="Account created successfully alert">Account created successfully</message>
+  <message name="IDS_BRAVE_WALLET_ACCOUNT_IMPORTED_SUCCESSFULLY" desc="Account imported successfully alert">Account imported successfully</message>
+  <message name="IDS_BRAVE_WALLET_HARDWARE_WALLET_ACCOUNT_CONNECTED_SUCCESSFULLY" desc="Hardware wallet account connected successfully alert">
+      {ACCOUNTS, plural,
+      =1 {Hardware wallet account connected successfully}
+      other {{ACCOUNTS} hardware wallet accounts connected successfully}
+    }
+  </message>
   <message name="IDS_BRAVE_WALLET_NETWORK_FILTER_ALL" desc="Network Filter Selector All Networks">All Networks</message>
   <message name="IDS_BRAVE_WALLET_ASSET_FILTER_LOW_TO_HIGH" desc="Asset Filter Selector Low to High">Low to High</message>
   <message name="IDS_BRAVE_WALLET_ASSET_FILTER_HIGH_TO_LOW" desc="Asset Filter Selector High to Low">High to Low</message>
@@ -696,6 +708,7 @@
   <message name="IDS_BRAVE_WALLET_PORTFOLIO_GROUP_BY_DESCRIPTION" desc="Group assets by dropdown description">Group assets by</message>
   <message name="IDS_BRAVE_WALLET_PORTFOLIO_FILTERS_TITLE" desc="Portfolio Filters and Display settings modal">Filters and display settings</message>
   <message name="IDS_BRAVE_WALLET_PORTFOLIO_NFTS_FILTERS_TITLE" desc="Portfolio Filters and Display settings modal title for NFT tab">NFT display settings</message>
+  <message name="IDS_BRAVE_WALLET_PORTFOLIO_ASSETS_DISTRIBUTION_TITLE" desc="Portfolio overview horizontal allocation chart section title">Assets distribution</message>
   <message name="IDS_BRAVE_WALLET_SORT_ASSETS" desc="Portfolio settings sort assets dropdown title">Sort assets</message>
   <message name="IDS_BRAVE_WALLET_SORT_ASSETS_DESCRIPTION" desc="Portfolio settings sort assets dropdown description">Sort by fiat value or name</message>
   <message name="IDS_BRAVE_WALLET_SMALL_BALANCES" desc="Portfolio settings hide small balances toggle title">Hide small balances</message>
@@ -716,6 +729,8 @@
   <message name="IDS_BRAVE_WALLET_CARDANO_ACCOUNT_DESCRIPTION" desc="Cardano account description" translateable="false">Cardano Mainnet</message>
   <message name="IDS_BRAVE_WALLET_CARDANO_TESTNET_ACCOUNT_DESCRIPTION" desc="Cardano testnet account description" translateable="false">Cardano Testnet</message>
   <message name="IDS_BRAVE_WALLET_POLKADOT_MAINNET_ACCOUNT_DESCRIPTION" desc="Polkadot account description" translateable="false">Polkadot mainnet</message>
+  <message name="IDS_BRAVE_WALLET_POLKADOT_TESTNET_ACCOUNT_DESCRIPTION" desc="Polkadot testnet account description" translateable="false">Polkadot Westend</message>
+  <message name="IDS_BRAVE_WALLET_POLKADOT_INVALID_PREFIX" desc="Polkadot invalid prefix error">Invalid prefix</message>
   <message name="IDS_BRAVE_WALLET_SHOW_NETWORK_LOGO_ON_NFTS_TITLE" desc="Show network logo filter title">Network Logo</message>
   <message name="IDS_BRAVE_WALLET_SHOW_NETWORK_LOGO_ON_NFTS_DESCRIPTION" desc="Show network logo filter description">Show network logo on NFTs</message>
   <message name="IDS_BRAVE_WALLET_SHOW_SPAM_NFTS_TITLE" desc="Show spam NFTs filter title">Spam NFTs</message>
@@ -967,6 +982,9 @@
   <message name="IDS_BRAVE_WALLET_DEPOSIT_ONLY_SEND_ON_X_NETWORK" desc="Warning to only send tokens to a address via a specific network">Only send tokens to this address on <ph name="VALUE">$1</ph></message>
   <message name="IDS_BRAVE_WALLET_PERKS_TOKENS" desc="Description of how the wallet allows access to many crypto tokens">Buy, send, and swap 200+ crypto assets</message>
   <message name="IDS_BRAVE_WALLET_PERKS_BROWSER_NATIVE" desc="Description of how the wallet is browser-native">Browser-native, no risky extensions</message>
+  <message name="IDS_BRAVE_WALLET_LETS_GET_STARTED" desc="Title for getting started screen">Let's get started</message>
+  <message name="IDS_BRAVE_WALLET_LETS_GET_STARTED_BUY_CRYPTO_DESCRIPTION" desc="Description for getting started buying crypto card">Buy your first crypto with a credit or debit card</message>
+  <message name="IDS_BRAVE_WALLET_LETS_GET_STARTED_DEPOSIT_CRYPTO_DESCRIPTION" desc="Description for getting started depositing crypto card">Deposit crypto from another wallet or exchange</message>
   <message name="IDS_BRAVE_WALLET_MULTI_CHAIN" desc="Description of how the wallet allows access to multiple blockchains">Multi-chain &amp; NFT support</message>
   <message name="IDS_BRAVE_WALLET_CLICK_TO_SWITCH" desc="Action text for switching selection">Click to switch</message>
   <message name="IDS_BRAVE_WALLET_ORDINAL_TWELFTH" desc="Twelfth list item ordinal">Twelfth</message>
@@ -1004,7 +1022,7 @@
   <message name="IDS_BRAVE_WALLET_DIDNT_FIND_ASSET_IN_LIST" desc="Visible assets modal, didnt find asset in list after searching">If you didn't find your asset in this list, you can add it manually by using the button below</message>
   <message name="IDS_BRAVE_WALLET_ASSET_NOT_FOUND" desc="Visible assets modal, asset not found title">Asset not found</message>
   <message name="IDS_BRAVE_WALLET_REMOVE_ACCOUNT_MODAL_TITLE" desc="Title prompt to confirm removal of a wallet account">Are you sure you want to remove "<ph name="ACCOUNT_NAME">$1<ex>Eth Account 1</ex></ph>"?</message>
-  <message name="IDS_BRAVE_WALLET_REQUEST_FEATURE_BUTTON_TEXT" desc="Text displayed in request feature button">Request feature</message>
+  <message name="IDS_BRAVE_WALLET_REPORT_AN_ISSUE_BUTTON_TEXT" desc="Text displayed in report an issue button">Report an issue</message>
   <message name="IDS_BRAVE_WALLET_RECOVERY_PHRASE_LENGTH_ERROR" desc="Error message for when a supplied recovery phrase has an invalid number of words">Recovery phrase must be 12, 15, 18, 21, or 24 words long</message>
   <message name="IDS_BRAVE_WALLET_ENS_OFFCHAIN_PROCEED_WITH_YES" desc="Proceed with ENS offchain lookup answer">Yes</message>
   <message name="IDS_BRAVE_WALLET_ENS_OFFCHAIN_PROCEED_WITH_NO" desc="Proceed with ENS offchain lookup answer">No</message>
@@ -1296,6 +1314,7 @@
   <message name="IDS_BRAVE_WALLET_TRANSACTION_TYPE_NAME_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION" desc="Blockchain function name for Solana SPL token transfer with associated token account creation">SPL Token Transfer With Associated Token Account Creation</message>
   <message name="IDS_BRAVE_WALLET_PAGE_NOT_FOUND_TITLE" desc="Page not found title">We can’t find the page you’re looking for right now.</message>
   <message name="IDS_BRAVE_WALLET_PAGE_NOT_FOUND_DESCRIPTION" desc="Page not found description">It may have moved to a different place or the URL may contain a typo.</message>
+  <message name="IDS_BRAVE_WALLET_PROCESS_TRANSACTION_ERROR_MESSAGE" desc="Warning alert in send screen when a UTXO transaction fails due to insufficient balance for the network fee; $1 is the token symbol">There was an error processing your transaction. In many cases, this means there isn't enough <ph name="SYMBOL">$1<ex>ADA</ex></ph> to cover the network fee. Try a smaller amount instead.</message>
   <message name="IDS_BRAVE_WALLET_GO_TO_PORTFOLIO" desc="Go to portfolio button text">Go to Portfolio</message>
   <message name="IDS_BRAVE_WALLET_ADD_TOKEN" desc="Add token button text">Add token</message>
   <message name="IDS_BRAVE_WALLET_UTILITY_PROCESS_WALLET_UTILS_NAME" desc="The display name (in the system task manager, etc) of the service process used for running wallet utils">Brave Wallet Utility Service</message>

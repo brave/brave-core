@@ -27,6 +27,7 @@
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/misc_metrics/general_browser_usage.h"
+#include "brave/components/serp_metrics/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
@@ -847,6 +848,20 @@ TEST_F(BraveStatsUpdaterTest, SendSerpMetricsUsageIfEnabled) {
   ASSERT_TRUE(
       net::GetValueForKeyInQuery(update_url, "staleSearch", &query_value));
   EXPECT_EQ(query_value, "15");
+}
+
+TEST_F(BraveStatsUpdaterTest, SavePrefsSetsLastReportedAtToNow) {
+  base::Time last_reported_at;
+  ASSERT_TRUE(
+      base::Time::FromUTCString("2026-04-22T15:30:00", &last_reported_at));
+  SetCurrentTimeForTest(last_reported_at);
+
+  brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
+      GetLocalState(), kToday, kThisWeek, kThisMonth);
+  brave_stats_updater_params.SavePrefs();
+
+  EXPECT_EQ(GetLocalState()->GetTime(serp_metrics::prefs::kLastReportedAt),
+            last_reported_at);
 }
 
 TEST_F(BraveStatsUpdaterTest, DoNotSendSerpMetricsUsageIfDisabled) {

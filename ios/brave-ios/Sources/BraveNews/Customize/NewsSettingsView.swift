@@ -218,13 +218,14 @@ public struct NewsSettingsView: View {
     }
     .listStyle(.insetGrouped)
     .animation(.default, value: searchDelegate.isEditing)
-    .listBackgroundColor(Color(.braveGroupedBackground))
+    .scrollContentBackground(.hidden)
+    .background(Color(UIColor.braveGroupedBackground))
     .navigationTitle(Strings.BraveNews.braveNews)
     .navigationBarTitleDisplayMode(.inline)
-    .onChange(of: searchDelegate.query) { query in
+    .onChange(of: searchDelegate.query) { _, query in
       searchResults = dataSource.search(query: query)
     }
-    .onChange(of: dataSource.rssFeedLocations) { _ in
+    .onChange(of: dataSource.rssFeedLocations) { _, _ in
       withAnimation {
         searchResults = dataSource.search(query: searchDelegate.query)
       }

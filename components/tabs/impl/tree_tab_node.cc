@@ -150,8 +150,8 @@ int TreeTabNode::CalculateLevelAndHeightRecursivelyImpl() {
     if (std::holds_alternative<tabs::TabCollection*>(child)) {
       auto* collection = std::get<tabs::TabCollection*>(child);
       if (collection->type() != TabCollection::Type::TREE_NODE) {
-        // If non-tree node child, height would be 1 for this node
-        max_height = std::max(max_height, 1);
+        // If non-tree node child, e.g. split or group, height would be 0 for
+        // this node as it should not have descendants.
         continue;
       }
 

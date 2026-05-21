@@ -9,6 +9,7 @@
 
 #include "base/check.h"
 #include "base/no_destructor.h"
+#include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/l10n/common/ofac_sanction_util.h"
 #include "build/build_config.h"
@@ -19,22 +20,14 @@
 #include "brave/components/brave_rewards/core/features.h"
 #endif  // BUILDFLAG(IS_ANDROID)
 
-#if !BUILDFLAG(IS_ANDROID)
-#include "brave/components/brave_rewards/core/pref_names.h"
-#endif  // !BUILDFLAG(IS_ANDROID)
-
 namespace brave_rewards {
 
 namespace {
 
 bool IsDisabledByPolicy(PrefService* prefs) {
-#if BUILDFLAG(IS_ANDROID)
-  return false;
-#else
   DCHECK(prefs);
   return prefs->IsManagedPreference(prefs::kDisabledByPolicy) &&
          prefs->GetBoolean(prefs::kDisabledByPolicy);
-#endif
 }
 
 bool IsDisabledByFeature() {

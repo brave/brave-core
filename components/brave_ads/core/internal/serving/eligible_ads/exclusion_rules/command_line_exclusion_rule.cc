@@ -15,7 +15,7 @@ namespace {
 
 bool DoesRespectCap(const CreativeAdInfo& creative_ad) {
   const base::flat_map<std::string, bool>& ads_uuids =
-      GlobalState::GetInstance()->Flags().ads_uuids;
+      GlobalState::GetInstance()->CommandLineSwitches().ads_uuids;
   if (ads_uuids.empty()) {
     // No command line flags set, respect all ads.
     return true;
