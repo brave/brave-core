@@ -38,6 +38,7 @@
 #include "components/sync/engine/nigori/key_derivation_params.h"
 #include "components/sync/engine/nigori/nigori.h"
 #include "components/sync/model/type_entities_count.h"
+#include "components/sync/nigori/required_passphrase_verifier_impl.h"
 #include "components/sync/service/data_type_manager_impl.h"
 #include "components/sync/service/glue/sync_transport_data_prefs.h"
 #include "components/sync/test/data_type_manager_mock.h"
@@ -339,9 +340,10 @@ TEST_F(BraveSyncServiceImplTest, ForcedSetDecryptionPassphrase) {
   // supplying the encrypted portion of data, as it is done in
   // sync_service_crypto_unittest.cc
   brave_sync_service_impl()->GetCryptoForTesting()->OnPassphraseRequired(
-      KeyDerivationParams::CreateForPbkdf2(),
-      MakeEncryptedData(kValidSyncCode,
-                        KeyDerivationParams::CreateForPbkdf2()));
+      std::make_unique<RequiredPassphraseVerifierImpl>(
+          KeyDerivationParams::CreateForPbkdf2(),
+          MakeEncryptedData(kValidSyncCode,
+                            KeyDerivationParams::CreateForPbkdf2())));
 
   EXPECT_TRUE(
       brave_sync_service_impl()->GetUserSettings()->IsPassphraseRequired());
@@ -370,9 +372,10 @@ TEST_F(BraveSyncServiceImplTest, ForcedSetDecryptionPassphrase) {
 
   brave_sync_service_impl()->GetCryptoForTesting()->Reset();
   brave_sync_service_impl()->GetCryptoForTesting()->OnPassphraseRequired(
-      KeyDerivationParams::CreateForPbkdf2(),
-      MakeEncryptedData(kValidSyncCode,
-                        KeyDerivationParams::CreateForPbkdf2()));
+      std::make_unique<RequiredPassphraseVerifierImpl>(
+          KeyDerivationParams::CreateForPbkdf2(),
+          MakeEncryptedData(kValidSyncCode,
+                            KeyDerivationParams::CreateForPbkdf2())));
   brave_sync_service_impl()->GetDataTypeManagerForTesting()->Stop(
       KEEP_METADATA);
 
