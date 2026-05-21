@@ -125,7 +125,7 @@ source_set("brave_new_tab_page_refresh") {
   if (enable_brave_vpn) {
     deps += [
       "//brave/browser/ui/brave_vpn",
-      "//brave/components/brave_vpn/browser",
+      "//brave/components/brave_vpn/browser:shared",
       "//brave/components/brave_vpn/common",
     ]
   }

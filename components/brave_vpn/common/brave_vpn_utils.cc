@@ -317,6 +317,10 @@ void MigrateLocalStatePrefs(PrefService* local_prefs) {
 #endif
 }
 
+void ClearSubscriberCredential(PrefService* local_prefs) {
+  local_prefs->ClearPref(prefs::kBraveVPNSubscriberCredential);
+}
+
 bool HasValidSubscriberCredential(PrefService* local_prefs) {
   const base::DictValue& sub_cred_dict =
       local_prefs->GetDict(prefs::kBraveVPNSubscriberCredential);

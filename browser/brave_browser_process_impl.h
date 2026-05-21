@@ -142,7 +142,7 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   speedreader::SpeedreaderRewriterService* speedreader_rewriter_service()
       override;
 #endif
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && BUILDFLAG(ENABLE_BRAVE_VPN_V1)
   brave_vpn::BraveVPNConnectionManager* brave_vpn_connection_manager() override;
 #endif
   misc_metrics::ProcessMiscMetrics* process_misc_metrics() override;
@@ -216,7 +216,7 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
       speedreader_rewriter_service_;
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && BUILDFLAG(ENABLE_BRAVE_VPN_V1)
   std::unique_ptr<brave_vpn::BraveVPNConnectionManager>
       brave_vpn_connection_manager_;
 #endif

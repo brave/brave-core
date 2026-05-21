@@ -5,7 +5,7 @@
 
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 
-if (enable_brave_vpn && is_win) {
+if (enable_brave_vpn && enable_brave_vpn_v1_tests && is_win) {
   source_set("vpn_unit_tests") {
     testonly = true
     sources = [ "install_worker_vpn_unittest.cc" ]

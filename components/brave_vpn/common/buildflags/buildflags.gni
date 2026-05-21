@@ -20,6 +20,21 @@ declare_args() {
 }
 
 declare_args() {
-  # vpn 2.0 build flags
-  enable_brave_vpn2_deps = false
+  # Build with Brave VPN architecture 1.0 support.
+  enable_brave_vpn_v1 = true
+
+  # Build with Brave VPN architecture 2.0 support.
+  enable_brave_vpn_v2 = false
 }
+
+assert(!enable_brave_vpn || enable_brave_vpn_v1 || enable_brave_vpn_v2,
+       "If Brave VPN is enabled, at least one VPN architecture must be enabled")
+
+# Build Brave VPN 2.0 deps only if VPN is enabled and architecture 2.0 is supported.
+enable_brave_vpn_v2_deps = enable_brave_vpn && enable_brave_vpn_v2
+
+# Enable Brave VPN 1.0 architecture specific unit tests - turn off for debugging only.
+enable_brave_vpn_v1_tests = true
+
+# Enable Brave VPN 2.0 architecture specific unit tests - turn off for debugging only.
+enable_brave_vpn_v2_tests = true

@@ -743,10 +743,11 @@ source_set("ui") {
           "webui/settings/brave_vpn/brave_vpn_handler.h",
         ]
 
-        deps += [
-          "//brave/browser/brave_vpn/win:wireguard_utils",
-          "//chrome/browser:flags",
-        ]
+        deps += [ "//chrome/browser:flags" ]
+
+        if (enable_brave_vpn_v1) {
+          deps += [ "//brave/browser/brave_vpn/win:wireguard_utils" ]
+        }
       }
       sources += [ "brave_vpn/brave_vpn_controller.cc" ]
     }
@@ -981,16 +982,22 @@ source_set("ui") {
 
   if (enable_brave_vpn) {
     deps += [
-      "//brave/browser/brave_vpn",
-      "//brave/components/brave_vpn/browser",
+      "//brave/browser/brave_vpn:shared",
+      "//brave/components/brave_vpn/browser:shared",
       "//brave/components/brave_vpn/browser/connection:api",
       "//brave/components/brave_vpn/common",
     ]
-    if (is_win) {
-      deps += [
-        "//brave/components/brave_vpn/common/win",
-        "//brave/components/brave_vpn/common/wireguard",
-      ]
+    if (enable_brave_vpn_v1) {
+      deps += [ "//brave/components/brave_vpn/browser" ]
+      if (is_win) {
+        deps += [
+          "//brave/components/brave_vpn/common/win",
+          "//brave/components/brave_vpn/common/wireguard",
+        ]
+      }
+    }
+    if (enable_brave_vpn_v2) {
+      deps += [ "//brave/components/brave_vpn/v2/browser" ]
     }
   }
 
