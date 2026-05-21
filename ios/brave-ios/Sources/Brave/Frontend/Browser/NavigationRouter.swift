@@ -140,7 +140,7 @@ public enum NavigationPath: Equatable {
       }
       if let tab = bvc.tabManager.selectedTab {
         // Attach a WidgetSearchTabHelper to just this tab for a single shot search.
-        // It will be removed after the search is peformed or if the user navigates away
+        // It will be removed after the search commits or if the user navigates away.
         tab.widgetSearchTabHelper = .init(tab: tab)
       }
     case .newTab:

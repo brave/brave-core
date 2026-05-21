@@ -2685,12 +2685,8 @@ extension BrowserViewController: SearchViewControllerDelegate {
     return tabManager.selectedTab?.visibleURL?.isNewTabURL != true
   }
 
-  func searchViewControllerIsWidgetInitiatedSearchSession(_: SearchViewController) -> Bool {
+  func searchViewControllerHasPendingWidgetSearchAttribution(_: SearchViewController) -> Bool {
     tabManager.selectedTab?.widgetSearchTabHelper != nil
-  }
-
-  func searchViewControllerFinalizePendingWidgetSearch(_: SearchViewController) {
-    tabManager.selectedTab?.widgetSearchTabHelper?.finalize()
   }
 
   @objc private func dismissQuickSearchEngines() {
@@ -3133,9 +3129,6 @@ extension BrowserViewController {
       isWidgetSearchAttribution: hasPendingWidgetSearch
     ) {
       // We couldn't find a matching search keyword, so do a search query.
-      if hasPendingWidgetSearch {
-        tabManager.selectedTab?.widgetSearchTabHelper?.finalize()
-      }
       finishEditingAndSubmit(searchURL)
     } else {
       // We still don't have a valid URL, so something is broken. Give up.

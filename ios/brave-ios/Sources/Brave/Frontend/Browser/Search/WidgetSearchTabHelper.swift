@@ -49,12 +49,6 @@ final class WidgetSearchTabHelper: TabObserver {
 
   // MARK: - Teardown
 
-  /// Ends the pending widget search flow and removes this helper from the tab (similar to navigation teardown).
-  /// Call after the committed search URL has been built with `isWidgetSearchAttribution` as needed.
-  func finalize() {
-    detach()
-  }
-
   /// Removes this helper from its tab. After this call the helper is no longer reachable
   /// via `TabDataValues` and will be deallocated once the current call stack unwinds.
   private func detach() {
