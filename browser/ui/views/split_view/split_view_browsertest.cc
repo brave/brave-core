@@ -275,6 +275,15 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
   EXPECT_FALSE(
       multi_contents_view->background_view_for_testing()->GetVisible());
 
+  // Brave zeroes kSplitViewContentInset via chromium_src so that
+  // MultiContentsView doesn't add insets — padding is handled by Brave's
+  // rounded corners feature instead. Content panes must fill the full height.
+  EXPECT_EQ(0, MultiContentsView::kSplitViewContentInset);
+  EXPECT_EQ(multi_contents_view->height(),
+            start_contents_container_view->height());
+  EXPECT_EQ(multi_contents_view->height(),
+            end_contents_container_view->height());
+
   FullscreenController* fullscreen_controller = browser()
                                                     ->GetFeatures()
                                                     .exclusive_access_manager()
