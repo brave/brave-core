@@ -115,11 +115,11 @@ if sys.platform == 'win32':
 
 
 def _check_call(*command, cwd=None):
-    """Run *command* as a subprocess, logging the invocation and any stderr.
+    """Run *command* as a subprocess, logging the invocation.
 
-    Logs the full command string at INFO level before executing it.  If the
-    process exits with a non-zero return code, any captured stderr is logged
-    at WARNING level before the `CalledProcessError` is re-raised.
+    Logs the full command string at INFO level before executing it.  Stdout
+    and stderr are inherited from the parent process so subprocess output
+    streams directly to the terminal.
 
     Args:
         *command: The program and its arguments (passed as positional args,
@@ -145,12 +145,7 @@ def _check_call(*command, cwd=None):
         if resolved != command[0]:
             command = [resolved] + list(command[1:])
 
-    try:
-        subprocess.run(command, cwd=cwd, check=True, stderr=subprocess.PIPE)
-    except subprocess.CalledProcessError as e:
-        if e.stderr:
-            logging.warning(e.stderr.decode('utf-8', errors='replace').strip())
-        raise
+    subprocess.run(command, cwd=cwd, check=True)
 
 
 class ToolchainBuilder:
@@ -623,6 +618,8 @@ def main():
         logging.info('Setting GIT_CACHE_PATH for the build: %s',
                      git_cache_path)
         os.environ['GIT_CACHE_PATH'] = str(git_cache_path)
+
+    logging.info('Using GIT_CACHE_PATH=%s', os.environ.get('GIT_CACHE_PATH'))
 
     ToolchainBuilder(args.chromium_src,
                      args.out_dir).run(args.clone_chromium, args.use_ref)
