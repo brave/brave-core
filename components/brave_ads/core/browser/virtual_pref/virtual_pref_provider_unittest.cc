@@ -33,6 +33,12 @@ class BraveAdsVirtualPrefProviderTest : public ::testing::Test {
         ntp_background_images::prefs::kNewTabPageSponsoredImagesSurveyPanelist,
         true);
     prefs_.registry()->RegisterBooleanPref(
+        ntp_background_images::prefs::kNewTabPageShowBackgroundImage, true);
+    prefs_.registry()->RegisterBooleanPref(
+        ntp_background_images::prefs::
+            kNewTabPageShowSponsoredImagesBackgroundImage,
+        true);
+    prefs_.registry()->RegisterBooleanPref(
         brave_rewards::prefs::kDisabledByPolicy, false);
     local_state_.registry()->RegisterDictionaryPref(skus::prefs::kSkusState);
 
@@ -131,6 +137,24 @@ TEST_F(BraveAdsVirtualPrefProviderTest, IsSurveyPanelist) {
   // Assert
   EXPECT_TRUE(
       virtual_prefs.FindBoolByDottedPath("[virtual]:is_survey_panelist"));
+}
+
+TEST_F(BraveAdsVirtualPrefProviderTest,
+       IsNotSurveyPanelistWhenOptedOutOfNewTabPageAds) {
+  // Arrange
+  prefs_.SetBoolean(
+      ntp_background_images::prefs::kNewTabPageShowBackgroundImage, false);
+  prefs_.SetBoolean(ntp_background_images::prefs::
+                        kNewTabPageShowSponsoredImagesBackgroundImage,
+                    false);
+
+  // Act
+  const base::DictValue virtual_prefs = GetVirtualPrefs();
+
+  // Assert
+  EXPECT_THAT(
+      virtual_prefs.FindBoolByDottedPath("[virtual]:is_survey_panelist"),
+      testing::Optional(false));
 }
 
 TEST_F(BraveAdsVirtualPrefProviderTest, SearchEngineDefaultName) {
