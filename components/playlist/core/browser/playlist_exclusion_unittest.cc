@@ -10,6 +10,7 @@
 #include "base/test/run_until.h"
 #include "base/test/task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/gurl.h"
 
 namespace playlist {
 
@@ -85,8 +86,8 @@ TEST_F(PlaylistExclusionsUnitTest, RulesBlockListedPaths) {
       GURL("https://www.youtube.com/@Example")));
   EXPECT_TRUE(exclusions->CanResolvePageSrcLater(
       GURL("https://www.youtube.com/watch?v=1")));
-  EXPECT_TRUE(exclusions->CanResolvePageSrcLater(
-      GURL("https://www.example.com/")));
+  EXPECT_TRUE(
+      exclusions->CanResolvePageSrcLater(GURL("https://www.example.com/")));
 }
 
 }  // namespace playlist

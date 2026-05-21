@@ -14,7 +14,8 @@
 #include "base/json/json_value_converter.h"
 #include "base/memory/singleton.h"
 #include "base/memory/weak_ptr.h"
-#include "url/gurl.h"
+
+class GURL;
 
 // Component payload `playlist_exclusions.json` schema (JSON object):
 // {
@@ -62,11 +63,15 @@ class PlaylistExclusions {
 
   void OnComponentReady(const base::FilePath& component_dir);
 
-  // Returns true when `pageSrc` may be used for LivePlaylist-style reload /
-  // re-resolution.
+  // Returns true when `url` may be used for LivePlaylist-style reload /
+  // re-resolution. While the exclusions list is still loading or failed to
+  // load, returns true for all URLs to avoid blocking playlist behavior.
   bool CanResolvePageSrcLater(const GURL& url) const;
 
  private:
+  friend struct base::DefaultSingletonTraits<PlaylistExclusions>;
+  friend class PlaylistExclusionsUnitTest;
+
   FRIEND_TEST_ALL_PREFIXES(PlaylistExclusionsUnitTest, RulesBlockListedPaths);
   FRIEND_TEST_ALL_PREFIXES(PlaylistExclusionsUnitTest, NotReadyIsPermissive);
   FRIEND_TEST_ALL_PREFIXES(PlaylistExclusionsUnitTest, EmptyContentsNotReady);
@@ -82,9 +87,6 @@ class PlaylistExclusions {
   std::vector<PlaylistResolveRule> rules_;
   bool is_ready_ = false;
   base::WeakPtrFactory<PlaylistExclusions> weak_factory_{this};
-
-  friend struct base::DefaultSingletonTraits<PlaylistExclusions>;
-  friend class PlaylistExclusionsUnitTest;
 };
 
 }  // namespace playlist

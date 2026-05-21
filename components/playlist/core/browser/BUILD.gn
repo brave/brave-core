@@ -15,8 +15,6 @@ static_library("browser") {
     "utils.h",
   ]
 
-  public_deps = [ "//url" ]
-
   deps = [
     "//base",
     "//brave/components/brave_component_updater/browser:public",
@@ -24,6 +22,7 @@ static_library("browser") {
     "//brave/components/playlist/core/common/buildflags",
     "//components/prefs",
     "//net",
+    "//url",
   ]
 }
 
@@ -43,5 +42,6 @@ source_set("unit_tests") {
     "//components/prefs",
     "//components/prefs:test_support",
     "//testing/gtest",
+    "//url",
   ]
 }

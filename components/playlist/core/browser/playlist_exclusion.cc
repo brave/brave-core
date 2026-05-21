@@ -14,6 +14,7 @@
 #include "base/values.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+#include "url/gurl.h"
 
 namespace playlist {
 
@@ -83,7 +84,9 @@ void PlaylistExclusions::OnComponentReady(const base::FilePath& component_dir) {
   component_path_ = component_dir;
 
   base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()},
+      FROM_HERE,
+      {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
+       base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
       base::BindOnce(&brave_component_updater::GetDATFileAsString,
                      component_path_.AppendASCII(kPlaylistExclusionsFile)),
       base::BindOnce(&PlaylistExclusions::OnPlaylistExclusionsLoaded,
