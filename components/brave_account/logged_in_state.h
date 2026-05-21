@@ -27,6 +27,10 @@ class SharedURLLoaderFactory;
 
 namespace brave_account {
 
+// `mojom::Authentication` surface available after login: `LogOut()` and
+// `GetServiceToken()`. Also periodically refreshes the stored email via
+// `ScheduleAuthValidate()`/`AuthValidate()`, driven by `auth_validate_timer_`.
+// All other methods inherit `StateBase`'s wrong-state default.
 class LoggedInState : public StateBase {
  public:
   LoggedInState(

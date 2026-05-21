@@ -27,6 +27,11 @@ class SharedURLLoaderFactory;
 
 namespace brave_account {
 
+// `mojom::Authentication` surface available before login:
+// `RegisterInitialize()`, `RegisterFinalize()`, `RegisterVerify()`,
+// `ResendConfirmationEmail()`, `CancelRegistration()`,
+// `LoginInitialize()`, and `LoginFinalize()`.
+// All other methods inherit `StateBase`'s wrong-state default.
 class LoggedOutState : public StateBase {
  public:
   LoggedOutState(

@@ -14,6 +14,11 @@
 
 namespace brave_account {
 
+// Encrypts/decrypts Brave Account data via `os_crypt_async::Encryptor`, with
+// base64-encoded ciphertext so values can safely round-trip through prefs/JSON.
+// The encryptor is held by `raw_ref` and must outlive this instance.
+// `SetOSCryptCallbacksForTesting()` allows tests to stub the underlying
+// OSCrypt primitives directly, e.g. to inject failures.
 class BraveAccountEncryption {
  public:
   using OSCryptCallback =
