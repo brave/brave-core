@@ -35,8 +35,6 @@ BraveMultiContentsView::BraveMultiContentsView(
   // Use rounded corners margin as resize area's width.
   resize_area_->SetPreferredSize(
       gfx::Size(BraveContentsViewUtil::kMarginThickness, 0));
-  start_contents_view_inset_ = gfx::Insets();
-  end_contents_view_inset_ = gfx::Insets();
 }
 
 BraveMultiContentsView::~BraveMultiContentsView() = default;
