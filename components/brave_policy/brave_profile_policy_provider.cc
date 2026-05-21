@@ -7,10 +7,10 @@
 
 #include <utility>
 
-#include "base/logging.h"
 #include "base/values.h"
 #include "brave/components/brave_origin/brave_origin_utils.h"
 #include "brave/components/brave_policy/ad_block_only_mode/ad_block_only_mode_policy_manager.h"
+#include "build/build_config.h"
 #include "components/policy/core/common/policy_bundle.h"
 #include "components/policy/core/common/policy_map.h"
 #include "components/policy/core/common/policy_namespace.h"
@@ -48,6 +48,31 @@ void BraveProfilePolicyProvider::RefreshPolicies(
   first_policies_loaded_ = true;
 
   UpdatePolicy(std::move(bundle));
+}
+
+bool BraveProfilePolicyProvider::IsInitializationComplete(
+    policy::PolicyDomain domain) const {
+  auto* manager = brave_origin::BraveOriginPolicyManager::GetInstance();
+  // Short-circuit when the factory has not been registered in this process.
+  // This is the case for upstream unit tests (e.g.
+  // `ProfilePolicyConnectorTest`) that build `ProfilePolicyConnector` directly
+  // without going through Brave's keyed-service-factory startup -- those tests
+  // have no Brave Origin source to wait for, so we report ready and let the
+  // upstream `OnPolicyServiceInitialized` signal fire normally.
+  if (!manager->IsExpectedToBeInitialized()) {
+    return true;
+  }
+  // We observe both `BraveOriginPolicyManager` and
+  // `AdBlockOnlyModePolicyManager` but they initialise on different schedules:
+  // `AdBlockOnlyModePolicyManager` is initialised synchronously at process
+  // start while `BraveOriginPolicyManager` is initialised lazily during
+  // profile keyed-service build. The first `RefreshPolicies` triggered by
+  // AdBlockOnlyMode's `OnBravePoliciesReady` produces a bundle without Brave
+  // Origin policies and would otherwise flip `first_policies_loaded_` to true
+  // prematurely. Gate on Brave Origin's `IsInitialized()` so consumers don't
+  // observe an empty managed pref store before Brave Origin policies (e.g.
+  // `BraveRewardsDisabled`) have been merged.
+  return first_policies_loaded_ && manager->IsInitialized();
 }
 
 bool BraveProfilePolicyProvider::IsFirstPolicyLoadComplete(

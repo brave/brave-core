@@ -22,6 +22,7 @@
 #include "brave/components/brave_ads/browser/test/fake_virtual_pref_provider_delegate.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
+#include "brave/components/brave_policy/policy_initialization_waiter.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/features.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
@@ -80,7 +81,9 @@ class BraveAdsAdsServiceImplTest : public testing::Test {
 
     ads_service_ = std::make_unique<AdsServiceImpl>(
         std::make_unique<test::FakeAdsServiceDelegate>(), prefs_, local_state_,
-        /*policy_service=*/nullptr, /*http_client=*/nullptr,
+        std::make_unique<brave_policy::PolicyInitializationWaiter>(
+            /*policy_service=*/nullptr),
+        /*http_client=*/nullptr,
         std::make_unique<test::FakeVirtualPrefProviderDelegate>(),
         /*channel_name=*/"foo", profile_dir_.GetPath(),
         std::make_unique<test::FakeAdsTooltipsDelegate>(), std::move(device_id),
