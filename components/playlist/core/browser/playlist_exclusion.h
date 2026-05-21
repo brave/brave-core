@@ -11,6 +11,7 @@
 
 #include "base/files/file_path.h"
 #include "base/gtest_prod_util.h"
+#include "base/json/json_value_converter.h"
 #include "base/memory/singleton.h"
 #include "base/memory/weak_ptr.h"
 #include "url/gurl.h"
@@ -43,6 +44,9 @@ class PlaylistResolveRule {
   PlaylistResolveRule(PlaylistResolveRule&&) noexcept;
   PlaylistResolveRule& operator=(PlaylistResolveRule&&) noexcept;
 
+  static void RegisterJSONConverter(
+      base::JSONValueConverter<PlaylistResolveRule>* converter);
+
   std::string registrable_domain;
   std::vector<std::string> path_prefixes;
   bool deny_root_path = false;
@@ -59,17 +63,16 @@ class PlaylistExclusions {
   void OnComponentReady(const base::FilePath& component_dir);
 
   // Returns true when `pageSrc` may be used for LivePlaylist-style reload /
-  // re-resolution. When the component list is not loaded yet, returns true
+  // re-resolution.
   bool CanResolvePageSrcLater(const GURL& url) const;
-
-  // Debugging / UI: human-readable "domain<TAB>condition" rows.
-  std::vector<std::string> ListPlaylistExclusions() const;
-
-  void ResetForTesting();
 
  private:
   FRIEND_TEST_ALL_PREFIXES(PlaylistExclusionsUnitTest, RulesBlockListedPaths);
   FRIEND_TEST_ALL_PREFIXES(PlaylistExclusionsUnitTest, NotReadyIsPermissive);
+  FRIEND_TEST_ALL_PREFIXES(PlaylistExclusionsUnitTest, EmptyContentsNotReady);
+  FRIEND_TEST_ALL_PREFIXES(PlaylistExclusionsUnitTest, InvalidJsonNotReady);
+  FRIEND_TEST_ALL_PREFIXES(PlaylistExclusionsUnitTest,
+                           MissingRulesListNotReady);
 
   PlaylistExclusions();
 

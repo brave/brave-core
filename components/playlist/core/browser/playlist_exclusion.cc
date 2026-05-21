@@ -20,6 +20,26 @@ namespace playlist {
 namespace {
 
 constexpr char kPlaylistExclusionsFile[] = "playlist_exclusions.json";
+constexpr char kRules[] = "rules";
+constexpr char kRegistrableDomain[] = "registrable_domain";
+constexpr char kDenyRootPath[] = "deny_root_path";
+constexpr char kPathPrefixes[] = "path_prefixes";
+
+bool GetPathPrefixesFromValue(const base::Value* value,
+                              std::vector<std::string>* result) {
+  const base::ListValue* list = value->GetIfList();
+  if (!list) {
+    return false;
+  }
+  result->clear();
+  for (const base::Value& prefix : *list) {
+    const std::string* prefix_string = prefix.GetIfString();
+    if (prefix_string) {
+      result->push_back(*prefix_string);
+    }
+  }
+  return true;
+}
 
 }  // namespace
 
@@ -39,6 +59,18 @@ PlaylistResolveRule& PlaylistResolveRule::operator=(
     PlaylistResolveRule&&) noexcept = default;
 
 // static
+void PlaylistResolveRule::RegisterJSONConverter(
+    base::JSONValueConverter<PlaylistResolveRule>* converter) {
+  converter->RegisterStringField(kRegistrableDomain,
+                                 &PlaylistResolveRule::registrable_domain);
+  converter->RegisterBoolField(kDenyRootPath,
+                               &PlaylistResolveRule::deny_root_path);
+  converter->RegisterCustomValueField<std::vector<std::string>>(
+      kPathPrefixes, &PlaylistResolveRule::path_prefixes,
+      GetPathPrefixesFromValue);
+}
+
+// static
 PlaylistExclusions* PlaylistExclusions::GetInstance() {
   return base::Singleton<PlaylistExclusions>::get();
 }
@@ -46,12 +78,6 @@ PlaylistExclusions* PlaylistExclusions::GetInstance() {
 PlaylistExclusions::PlaylistExclusions() = default;
 
 PlaylistExclusions::~PlaylistExclusions() = default;
-
-void PlaylistExclusions::ResetForTesting() {
-  rules_.clear();
-  is_ready_ = false;
-  component_path_.clear();
-}
 
 void PlaylistExclusions::OnComponentReady(const base::FilePath& component_dir) {
   component_path_ = component_dir;
@@ -79,33 +105,19 @@ void PlaylistExclusions::OnPlaylistExclusionsLoaded(
     return;
   }
 
-  const auto* rules_list = root->FindList("rules");
+  const base::ListValue* rules_list = root->FindList(kRules);
   if (!rules_list) {
     return;
   }
 
+  base::JSONValueConverter<PlaylistResolveRule> converter;
   for (const base::Value& rule_val : *rules_list) {
-    const auto* rule_dict = rule_val.GetIfDict();
-    if (!rule_dict) {
-      continue;
-    }
-    const std::string* domain = rule_dict->FindString("registrable_domain");
-    if (!domain || domain->empty()) {
-      continue;
-    }
-
     PlaylistResolveRule rule;
-    rule.registrable_domain = *domain;
-    rule.deny_root_path = rule_dict->FindBool("deny_root_path").value_or(false);
-
-    const auto* prefixes = rule_dict->FindList("path_prefixes");
-    if (prefixes) {
-      for (const base::Value& p : *prefixes) {
-        const std::string* ps = p.GetIfString();
-        if (ps) {
-          rule.path_prefixes.push_back(*ps);
-        }
-      }
+    if (!converter.Convert(rule_val, &rule)) {
+      continue;
+    }
+    if (rule.registrable_domain.empty()) {
+      continue;
     }
     rules_.push_back(std::move(rule));
   }
@@ -115,10 +127,8 @@ void PlaylistExclusions::OnPlaylistExclusionsLoaded(
 
 bool PlaylistExclusions::CanResolvePageSrcLater(const GURL& url) const {
   if (!is_ready_) {
-    return true;
-  }
-
-  if (!url.SchemeIsHTTPOrHTTPS()) {
+    // We don't have the exclusions list loaded yet. To avoid breakage,
+    // allow re-resolution for any page.
     return true;
   }
 
@@ -145,19 +155,6 @@ bool PlaylistExclusions::CanResolvePageSrcLater(const GURL& url) const {
     }
   }
   return true;
-}
-
-std::vector<std::string> PlaylistExclusions::ListPlaylistExclusions() const {
-  std::vector<std::string> out;
-  for (const PlaylistResolveRule& rule : rules_) {
-    if (rule.deny_root_path) {
-      out.push_back(rule.registrable_domain + "\t<empty_or_root_path>");
-    }
-    for (const std::string& prefix : rule.path_prefixes) {
-      out.push_back(rule.registrable_domain + "\t" + prefix);
-    }
-  }
-  return out;
 }
 
 }  // namespace playlist

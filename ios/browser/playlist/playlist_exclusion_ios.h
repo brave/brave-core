@@ -19,9 +19,6 @@ OBJC_EXPORT
 /// `PlaylistExclusions::CanResolvePageSrcLater`.
 - (bool)canResolvePageSrcLater:(NSURL*)url;
 
-/// Rows from the loaded component list (`domain<TAB>condition`), for debugging.
-- (NSArray<NSString*>*)listPlaylistExclusions;
-
 @end
 
 OBJC_EXPORT

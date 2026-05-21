@@ -6,7 +6,6 @@
 #include "brave/components/playlist/core/browser/playlist_exclusion.h"
 
 #include "base/memory/raw_ptr.h"
-#include "base/strings/sys_string_conversions.h"
 #include "brave/ios/browser/playlist/playlist_exclusion_ios+private.h"
 #include "net/base/apple/url_conversions.h"
 #include "url/gurl.h"
@@ -29,17 +28,6 @@
     return true;
   }
   return _playlistExclusions->CanResolvePageSrcLater(gurl);
-}
-
-- (NSArray<NSString*>*)listPlaylistExclusions {
-  const std::vector<std::string> rows =
-      _playlistExclusions->ListPlaylistExclusions();
-  NSMutableArray<NSString*>* out =
-      [NSMutableArray arrayWithCapacity:rows.size()];
-  for (const std::string& row : rows) {
-    [out addObject:base::SysUTF8ToNSString(row)];
-  }
-  return [out copy];
 }
 
 @end

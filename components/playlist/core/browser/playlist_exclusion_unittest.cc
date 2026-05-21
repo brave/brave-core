@@ -18,8 +18,13 @@ class PlaylistExclusionsUnitTest : public testing::Test {
   PlaylistExclusionsUnitTest() = default;
 
  protected:
-  void SetUp() override {
-    PlaylistExclusions::GetInstance()->ResetForTesting();
+  void SetUp() override { ResetExclusions(PlaylistExclusions::GetInstance()); }
+
+  void ResetExclusions(PlaylistExclusions* exclusions) {
+    exclusions->weak_factory_.InvalidateWeakPtrs();
+    exclusions->rules_.clear();
+    exclusions->is_ready_ = false;
+    exclusions->component_path_.clear();
   }
 
   base::test::TaskEnvironment task_environment_{
@@ -30,6 +35,24 @@ TEST_F(PlaylistExclusionsUnitTest, NotReadyIsPermissive) {
   PlaylistExclusions* exclusions = PlaylistExclusions::GetInstance();
   ASSERT_FALSE(exclusions->is_ready_);
   EXPECT_TRUE(exclusions->CanResolvePageSrcLater(GURL("https://youtube.com/")));
+}
+
+TEST_F(PlaylistExclusionsUnitTest, EmptyContentsNotReady) {
+  PlaylistExclusions* exclusions = PlaylistExclusions::GetInstance();
+  exclusions->OnPlaylistExclusionsLoaded("");
+  EXPECT_FALSE(exclusions->is_ready_);
+}
+
+TEST_F(PlaylistExclusionsUnitTest, InvalidJsonNotReady) {
+  PlaylistExclusions* exclusions = PlaylistExclusions::GetInstance();
+  exclusions->OnPlaylistExclusionsLoaded("{not valid json");
+  EXPECT_FALSE(exclusions->is_ready_);
+}
+
+TEST_F(PlaylistExclusionsUnitTest, MissingRulesListNotReady) {
+  PlaylistExclusions* exclusions = PlaylistExclusions::GetInstance();
+  exclusions->OnPlaylistExclusionsLoaded(R"({"version": 1})");
+  EXPECT_FALSE(exclusions->is_ready_);
 }
 
 TEST_F(PlaylistExclusionsUnitTest, RulesBlockListedPaths) {
@@ -62,9 +85,6 @@ TEST_F(PlaylistExclusionsUnitTest, RulesBlockListedPaths) {
       GURL("https://www.youtube.com/@Example")));
   EXPECT_TRUE(exclusions->CanResolvePageSrcLater(
       GURL("https://www.youtube.com/watch?v=1")));
-
-  std::vector<std::string> listed = exclusions->ListPlaylistExclusions();
-  ASSERT_EQ(listed.size(), 4u);
 }
 
 }  // namespace playlist
