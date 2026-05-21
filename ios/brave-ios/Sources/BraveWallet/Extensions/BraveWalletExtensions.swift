@@ -871,6 +871,9 @@ extension BraveWallet.SignDataUnion {
 }
 
 extension BraveWallet.EthSignTypedData {
+  /// Uniswap Permit2 contract address
+  private static let permit2Address = "0x000000000022D473030F116DDeE9F6b43ac78BA3"
+
   private static let permitLikePrimaryTypes: [String] = [
     // ERC-2612 and DAI-style
     "Permit",
@@ -891,6 +894,10 @@ extension BraveWallet.EthSignTypedData {
   private struct TypedDataField: Decodable {
     let name: String
     let type: String
+  }
+
+  private struct EIP712Domain: Decodable {
+    let verifyingContract: String?
   }
 
   private static func fieldsMatchPermitShape(_ fields: [TypedDataField]) -> Bool {
@@ -918,6 +925,9 @@ extension BraveWallet.EthSignTypedData {
     return isPermitStyle || isDaiStyle || isAuthorizationStyle
   }
 
+  /// Returns true if any named type (across the entire type map, not just
+  /// `primaryType`) has a permit-like field shape. This catches smuggled
+  /// permits where a benign `primaryType` wraps a nested permit struct.
   private var hasPermitShape: Bool {
     guard let data = typesJson.data(using: .utf8),
       let types = try? JSONDecoder().decode([String: [TypedDataField]].self, from: data)
@@ -927,7 +937,18 @@ extension BraveWallet.EthSignTypedData {
     })
   }
 
+  /// Returns true if the domain's `verifyingContract` is the well-known
+  /// Uniswap Permit2 address, catching any interaction with that contract
+  /// regardless of the type structure used.
+  private var isPermit2Domain: Bool {
+    guard let data = domainJson.data(using: .utf8),
+      let domain = try? JSONDecoder().decode(EIP712Domain.self, from: data),
+      let verifyingContract = domain.verifyingContract
+    else { return false }
+    return verifyingContract.caseInsensitiveCompare(Self.permit2Address) == .orderedSame
+  }
+
   var isPermitLike: Bool {
-    Self.permitLikePrimaryTypes.contains(primaryType) || hasPermitShape
+    Self.permitLikePrimaryTypes.contains(primaryType) || hasPermitShape || isPermit2Domain
   }
 }
