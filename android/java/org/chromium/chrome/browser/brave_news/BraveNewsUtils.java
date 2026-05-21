@@ -11,10 +11,8 @@ import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.brave_news.mojom.Article;
 import org.chromium.brave_news.mojom.BraveNewsController;
-import org.chromium.brave_news.mojom.CardType;
 import org.chromium.brave_news.mojom.Channel;
 import org.chromium.brave_news.mojom.Deal;
-import org.chromium.brave_news.mojom.DisplayAd;
 import org.chromium.brave_news.mojom.FeedItem;
 import org.chromium.brave_news.mojom.FeedItemMetadata;
 import org.chromium.brave_news.mojom.LocaleInfo;
@@ -46,7 +44,6 @@ import java.util.Map;
 public class BraveNewsUtils {
     private static final String TAG = "BraveNewsUtils";
     public static final int BRAVE_NEWS_VIEWD_CARD_TIME = 1000; // milliseconds
-    private static @Nullable Map<Integer, DisplayAd> sCurrentDisplayAds;
     private static @Nullable String sLocale;
     private static @Nullable List<Channel> sChannelList;
     private static @Nullable List<Publisher> sGlobalPublisherList;
@@ -72,64 +69,36 @@ public class BraveNewsUtils {
         return creativeInstanceId;
     }
 
-    public static void initCurrentAds() {
-        sCurrentDisplayAds = new HashMap<>();
-    }
-
-    public static void putToDisplayAdsMap(Integer index, DisplayAd ad) {
-        if (sCurrentDisplayAds == null) {
-            sCurrentDisplayAds = new HashMap<>();
-        }
-        sCurrentDisplayAds.put(index, ad);
-    }
-
-    @Nullable
-    public static DisplayAd getFromDisplayAdsMap(Integer index) {
-        if (sCurrentDisplayAds != null) {
-            DisplayAd foundItem = sCurrentDisplayAds.get(index);
-            return foundItem;
-        }
-
-        return null;
-    }
-
     // method for logging news object. works by putting Log.d in the desired places of the parsing
     // of the object
     @SuppressWarnings("UnusedVariable")
     public static void logFeedItem(FeedItemsCard items, String id) {
         if (items != null) {
-            if (items.getCardType() == CardType.DISPLAY_AD) {
-                DisplayAd displayAd = items.getDisplayAd();
-                if (displayAd != null) {
-                    Log.d("bn", id + " DISPLAY_AD title: " + displayAd.title);
-                }
-            } else {
-                if (items.getFeedItems() != null) {
-                    int index = 0;
-                    for (FeedItemCard itemCard : items.getFeedItems()) {
-                        if (index > 50) {
-                            return;
-                        }
-                        FeedItem item = itemCard.getFeedItem();
-
-                        switch (item.which()) {
-                            case FeedItem.Tag.Article:
-                                Article article = item.getArticle();
-                                FeedItemMetadata articleData = article.data;
-                                break;
-                            case FeedItem.Tag.PromotedArticle:
-                                PromotedArticle promotedArticle = item.getPromotedArticle();
-                                FeedItemMetadata promotedArticleData = promotedArticle.data;
-                                String creativeInstanceId = promotedArticle.creativeInstanceId;
-                                break;
-                            case FeedItem.Tag.Deal:
-                                Deal deal = item.getDeal();
-                                FeedItemMetadata dealData = deal.data;
-                                String offersCategory = deal.offersCategory;
-                                break;
-                        }
-                        index++;
+            if (items.getFeedItems() != null) {
+                int index = 0;
+                for (FeedItemCard itemCard : items.getFeedItems()) {
+                    if (index > 50) {
+                        return;
                     }
+                    FeedItem item = itemCard.getFeedItem();
+
+                    switch (item.which()) {
+                        case FeedItem.Tag.Article:
+                            Article article = item.getArticle();
+                            FeedItemMetadata articleData = article.data;
+                            break;
+                        case FeedItem.Tag.PromotedArticle:
+                            PromotedArticle promotedArticle = item.getPromotedArticle();
+                            FeedItemMetadata promotedArticleData = promotedArticle.data;
+                            String creativeInstanceId = promotedArticle.creativeInstanceId;
+                            break;
+                        case FeedItem.Tag.Deal:
+                            Deal deal = item.getDeal();
+                            FeedItemMetadata dealData = deal.data;
+                            String offersCategory = deal.offersCategory;
+                            break;
+                    }
+                    index++;
                 }
             }
         }

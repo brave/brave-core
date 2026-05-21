@@ -121,7 +121,6 @@ class BraveNewsController
                         SetConfigurationCallback callback) override;
   void AddConfigurationListener(
       mojo::PendingRemote<mojom::ConfigurationListener> listener) override;
-  void GetDisplayAd(GetDisplayAdCallback callback) override;
   void OnInteractionSessionStarted() override;
 
   void OnNewCardsViewed(uint16_t card_views) override;
@@ -132,11 +131,6 @@ class BraveNewsController
                           const std::string& creative_instance_id) override;
   void OnPromotedItemVisit(const std::string& item_id,
                            const std::string& creative_instance_id) override;
-  void OnDisplayAdVisit(const std::string& item_id,
-                        const std::string& creative_instance_id) override;
-  void OnDisplayAdView(const std::string& item_id,
-                       const std::string& creative_instance_id) override;
-
   // mojom::BraveNewsInternals
   void GetVisitedSites(GetVisitedSitesCallback callback) override;
 

@@ -372,7 +372,6 @@ android_resources("java_resources") {
     "java/brave-res/drawable/ic_promoted.xml",
     "java/brave-res/drawable/ic_qr_code.xml",
     "java/brave-res/drawable/ic_qr_code_18.xml",
-    "java/brave-res/drawable/ic_rewards.xml",
     "java/brave-res/drawable/ic_rocket.xml",
     "java/brave-res/drawable/ic_search_21dp.xml",
     "java/brave-res/drawable/ic_settings.xml",

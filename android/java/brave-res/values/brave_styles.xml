@@ -514,26 +514,6 @@
     <item name="android:typeface">monospace</item>
   </style>
 
-    <!-- Brave News -->
-    <style name="BraveNewsAdLogoText">
-         <item name="android:textColor">@color/blurple</item>
-    </style>
-
-    <style name="BraveNewsAdTitleText">
-        <item name="android:textSize">@dimen/brave_news_ad_title_textsize</item>
-        <item name="android:textColor">@color/news_text_color</item>
-    </style>
-
-    <style name="BraveNewsAdDescText">
-        <item name="android:textSize">@dimen/brave_news_ad_desc_textsize</item>
-        <item name="android:textColor">@color/news_time_color</item>
-    </style>
-
-    <style name="BraveNewsAdButtonText">
-        <item name="android:textSize">@dimen/brave_news_ad_button_textsize</item>
-        <item name="android:textColor">@color/news_text_color</item>
-    </style>
-
     <style name="BraveNewsMoreOffersTabletText">
         <item name="android:textSize">@dimen/brave_news_more_offers_tablet_textsize</item>
         <item name="android:textColor">@color/news_text_color</item>

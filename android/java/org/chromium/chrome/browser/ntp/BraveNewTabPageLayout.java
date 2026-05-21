@@ -53,7 +53,6 @@ import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.brave_news.mojom.BraveNewsController;
 import org.chromium.brave_news.mojom.CardType;
-import org.chromium.brave_news.mojom.DisplayAd;
 import org.chromium.brave_news.mojom.Feed;
 import org.chromium.brave_news.mojom.FeedItem;
 import org.chromium.brave_news.mojom.FeedPage;
@@ -71,7 +70,6 @@ import org.chromium.chrome.browser.brave_news.LinearLayoutManagerWrapper;
 import org.chromium.chrome.browser.brave_news.models.FeedItemCard;
 import org.chromium.chrome.browser.brave_news.models.FeedItemsCard;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
-import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.ntp_background_images.model.NTPImage;
 import org.chromium.chrome.browser.ntp_background_images.model.SponsoredTab;
@@ -101,8 +99,6 @@ import org.chromium.ui.base.WindowAndroid;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Supplier;
@@ -136,8 +132,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     // Whether to show sponsored image on NTP based on experiment variant
     private boolean mShouldShowSponsoredImage;
     private @Nullable NTPBackgroundImagesBridge mNTPBackgroundImagesBridge;
-    private final DatabaseHelper mDatabaseHelper;
-
     private @Nullable LottieAnimationView mBadgeAnimationView;
 
     private @Nullable Tab mTab;
@@ -184,7 +178,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     public BraveNewTabPageLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        mDatabaseHelper = DatabaseHelper.getInstance();
         // Default to show sponsored image on NTP
         // This will be overridden in onAttachedToWindow if the experiment variant is D
         mShouldShowSponsoredImage = true;
@@ -497,8 +490,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                                 if (timeDiff > BraveNewsUtils.BRAVE_NEWS_VIEWD_CARD_TIME) {
                                     if (mVisibleCard != null && mCardType != null) {
                                         // send viewed cards events
-                                        if (mCardType.equals("promo")
-                                                && !mCardType.equals("displayad")) {
+                                        if (mCardType.equals("promo")) {
                                             if (!TextUtils.isEmpty(mUuid)
                                                     && !TextUtils.isEmpty(mCreativeInstanceId)) {
                                                 mVisibleCard.setViewStatSent(true);
@@ -639,77 +631,10 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                                                 mUuid = mVisibleCard.getUuid();
                                                 mCardType = "promo";
                                             }
-
-                                            // get params for view DISPLAY_AD
-                                            if (mVisibleCard.getCardType() == CardType.DISPLAY_AD) {
-                                                mItemPosition = newsFeedViewPosition;
-                                                DisplayAd currentDisplayAd =
-                                                        BraveNewsUtils.getFromDisplayAdsMap(
-                                                                newsFeedViewPosition);
-                                                if (currentDisplayAd != null) {
-                                                    mCreativeInstanceId =
-                                                            currentDisplayAd != null
-                                                                    ? currentDisplayAd
-                                                                            .creativeInstanceId
-                                                                    : "";
-                                                    mUuid =
-                                                            currentDisplayAd != null
-                                                                    ? currentDisplayAd.uuid
-                                                                    : "";
-                                                    mCardType = "displayad";
-
-                                                    // if viewed for more than 100 ms and is more
-                                                    // than 50%
-                                                    // visible send the event
-                                                    final int tabIdForLambda = tabId;
-                                                    Timer timer = new Timer();
-                                                    timer.schedule(
-                                                            new TimerTask() {
-                                                                @Override
-                                                                public void run() {
-                                                                    new Thread() {
-                                                                        @Override
-                                                                        public void run() {
-                                                                            if (!mDatabaseHelper
-                                                                                            .isDisplayAdAlreadyAdded(
-                                                                                                    mUuid)
-                                                                                    && visiblePercentageFinal
-                                                                                            > MINIMUM_VISIBLE_HEIGHT_THRESHOLD
-                                                                                    && mBraveNewsController
-                                                                                            != null
-                                                                                    && mVisibleCard
-                                                                                            != null) {
-                                                                                mVisibleCard
-                                                                                        .setViewStatSent(
-                                                                                                true);
-                                                                                mBraveNewsController
-                                                                                        .onDisplayAdView(
-                                                                                                mUuid,
-                                                                                                mCreativeInstanceId);
-
-                                                                                insertAd(
-                                                                                        tabIdForLambda);
-                                                                            }
-                                                                        }
-                                                                    }.start();
-                                                                }
-                                                            },
-                                                            BraveNewsUtils
-                                                                    .BRAVE_NEWS_VIEWD_CARD_TIME);
-                                                }
-                                            }
                                         }
                                     }
                                 }
                             }
-                        }
-                    }
-
-                    private void insertAd(int tabId) {
-                        DisplayAd currentDisplayAd =
-                                BraveNewsUtils.getFromDisplayAdsMap(mItemPosition);
-                        if (tabId != -1) {
-                            mDatabaseHelper.insertAd(currentDisplayAd, mItemPosition, tabId);
                         }
                     }
 
@@ -1023,7 +948,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                         });
 
         mNewsItemsFeedCard.clear();
-        BraveNewsUtils.initCurrentAds();
         ChromeSharedPreferences.getInstance()
                 .writeString(BravePreferenceKeys.BRAVE_NEWS_FEED_HASH, feed.hash);
 
@@ -1045,26 +969,11 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
             mNewsItemsFeedCard.add(featuredItemsCard);
         }
 
-        if (mNewsItemsFeedCard.size() > 0 || (feed.pages != null && feed.pages.length > 0)) {
-            //  adds empty card to trigger Display ad call for the second card, when the
-            //  user starts scrolling
-            FeedItemsCard displayAdCard = new FeedItemsCard();
-            DisplayAd displayAd = new DisplayAd();
-            displayAdCard.setCardType(CardType.DISPLAY_AD);
-            displayAdCard.setDisplayAd(displayAd);
-            displayAdCard.setUuid(UUID.randomUUID().toString());
-            mNewsItemsFeedCard.add(displayAdCard);
-        }
-
         // start page loop
         for (FeedPage page : feed.pages) {
             for (FeedPageItem cardData : page.items) {
-                // if for any reason we get an empty object, unless it's a
-                // DISPLAY_AD we skip it
-                if (cardData.cardType != CardType.DISPLAY_AD) {
-                    if (cardData.items.length == 0) {
-                        continue;
-                    }
+                if (cardData.items.length == 0) {
+                    continue;
                 }
 
                 FeedItemsCard feedItemsCard = new FeedItemsCard();

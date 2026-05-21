@@ -20,7 +20,6 @@ enum CardType {
   CATEGORY_GROUP,
   PUBLISHER_GROUP,
   DEALS,
-  DISPLAY_AD,
   PROMOTED_ARTICLE
 };
 
@@ -220,17 +219,6 @@ struct FeedV2 {
   FeedV2Error? error;
 };
 
-struct DisplayAd {
-  string uuid;
-  string creative_instance_id;
-  string dimensions;
-  string title;
-  string description;
-  Image image;
-  url.mojom.Url target_url;
-  string? cta_text;
-};
-
 struct FeedSearchResultItem {
   url.mojom.Url feed_url;
   string feed_title;
@@ -322,7 +310,6 @@ interface BraveNewsController {
   SetConfiguration(Configuration configuration) => ();
   AddConfigurationListener(pending_remote<ConfigurationListener> listener);
 
-  GetDisplayAd() => (DisplayAd? ad);
   // Lets the browser know when a user begins viewing or scrolling
   // through Brave News, for statistics gathering purposes.
   OnInteractionSessionStarted();
@@ -333,6 +320,4 @@ interface BraveNewsController {
 
   OnPromotedItemView(string item_id, string creative_instance_id);
   OnPromotedItemVisit(string item_id, string creative_instance_id);
-  OnDisplayAdVisit(string item_id, string creative_instance_id);
-  OnDisplayAdView(string item_id, string creative_instance_id);
 };
