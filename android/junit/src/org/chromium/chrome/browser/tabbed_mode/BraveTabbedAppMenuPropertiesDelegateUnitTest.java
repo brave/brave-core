@@ -373,8 +373,12 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
         expectedItems.add(R.id.add_to_group_menu_id);
         expectedItems.add(R.id.divider_line_id);
         expectedItems.add(R.id.open_history_menu_id);
-        expectedItems.add(R.id.info_menu_id);
-        expectedItems.add(R.id.page_info_divider_line_id);
+        // Page info items only appear when ANDROID_PAGE_INFO_AS_APP_MENU_ITEM or
+        // THREE_DOT_MENU_BACK_BUTTON is enabled; both are disabled at class level.
+        if (ChromeFeatureList.sThreeDotMenuBackButton.isEnabled()) {
+            expectedItems.add(R.id.info_menu_id);
+            expectedItems.add(R.id.page_info_divider_line_id);
+        }
         expectedItems.add(R.id.downloads_menu_id);
         expectedItems.add(R.id.all_bookmarks_menu_id);
         expectedItems.add(R.id.brave_wallet_id);
