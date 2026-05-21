@@ -29,8 +29,13 @@ import java.util.Set;
 public class BraveMediaSessionHelper implements MediaImageCallback {
     private static final List<String> sBraveTalkHosts =
             Arrays.asList("talk.brave.com", "talk.bravesoftware.com", "talk.brave.software");
-    private static final List<String> sYouTubeHosts =
-            Arrays.asList("music.youtube.com", "www.youtube.com", "m.youtube.com", "youtube.com");
+    private static final List<String> sBackgroundPlaybackHosts =
+            Arrays.asList(
+                    "music.youtube.com",
+                    "www.youtube.com",
+                    "m.youtube.com",
+                    "youtube.com",
+                    "open.spotify.com");
 
     public static boolean isBraveTalk(WebContents webContents) {
         if (webContents == null) {
@@ -64,12 +69,12 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
         return isBraveTalk(webContents) || isBackgroundVideo(webContents);
     }
 
-    private boolean isYouTube(WebContents webContents) {
+    private boolean isBackgroundPlaybackHost(WebContents webContents) {
         if (webContents == null) return false;
         GURL pageUrl = webContents.getLastCommittedUrl();
         return pageUrl.isValid()
                 && pageUrl.getScheme().equals(UrlConstants.HTTPS_SCHEME)
-                && sYouTubeHosts.contains(pageUrl.getHost());
+                && sBackgroundPlaybackHosts.contains(pageUrl.getHost());
     }
 
     private boolean isBackgroundVideo(WebContents webContents) {
@@ -82,7 +87,7 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
         // In C++ this switch is defined as switches::kDisableBackgroundMediaSuspend.
         boolean enabled =
                 CommandLine.getInstance().hasSwitch("disable-background-media-suspend")
-                        && isYouTube(webContents);
+                        && isBackgroundPlaybackHost(webContents);
         return enabled;
     }
 
