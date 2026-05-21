@@ -176,16 +176,16 @@ export const addressEndpoints = ({
 
           // Sns
           if (endsWithAny(supportedSNSExtensions, lowercaseURL)) {
-            const { address, errorMessage } =
+            const { address } =
               await api.jsonRpcService.snsGetSolAddr(lowercaseURL)
 
-            if (errorMessage) {
-              throw new Error(errorMessage)
+            if (!address) {
+              throw new Error('Failed to get SNS address')
             }
 
             return {
               data: {
-                address,
+                address: address,
                 requireOffchainConsent: false,
               },
             }

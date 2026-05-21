@@ -621,9 +621,9 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
       self.isResolvingAddress = true
       defer { self.isResolvingAddress = false }
       let domain = sendAddress
-      let (address, status, _) = await rpcService.snsGetSolAddr(domain: domain)
+      let address = await rpcService.snsGetSolAddr(domain: domain)
       guard !Task.isCancelled else { return }
-      if status != .success || address.isEmpty {
+      guard let address, !address.isEmpty else {
         addressError = .snsError(domain: sendAddress)
         return
       }

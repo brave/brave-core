@@ -10,21 +10,21 @@
 #include <string_view>
 #include <utility>
 
+#include "base/barrier_callback.h"
 #include "base/base64.h"
 #include "base/check.h"
-#include "base/containers/to_vector.h"
+#include "base/containers/span_reader.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
-#include "brave/components/brave_wallet/common/string_utils.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "components/prefs/pref_service.h"
-#include "net/base/url_util.h"
 
 namespace brave_wallet {
 
@@ -364,14 +364,8 @@ void AssetDiscoveryTask::DiscoverSPLTokensFromRegistry(
   // Convert each account address to SolanaAddress and check validity
   std::vector<SolanaAddress> solana_addresses;
   for (const auto& account_id : accounts) {
-    std::optional<SolanaAddress> solana_address =
-        SolanaAddress::FromBase58(account_id->address);
-    if (!solana_address.has_value()) {
-      continue;
-    }
-
-    if ((*solana_address).IsValid()) {
-      solana_addresses.push_back(*solana_address);
+    if (auto solana_address = SolanaAddress::FromBase58(account_id->address)) {
+      solana_addresses.push_back(std::move(*solana_address));
     }
   }
 
@@ -407,14 +401,8 @@ void AssetDiscoveryTask::OnGetSolanaTokenAccountsByOwner(
   // Add each token account to the all_discovered_contract_addresses list
   std::vector<SolanaAddress> discovered_mint_addresses;
   for (const auto& token_account : token_accounts) {
-    // Decode Base64
-    const std::optional<std::vector<uint8_t>> data =
-        base::Base64Decode(token_account.data);
-    if (data.has_value()) {
-      // Decode the address
-      const std::optional<SolanaAddress> mint_address =
-          DecodeMintAddress(data.value());
-      if (mint_address.has_value()) {
+    if (auto data = base::Base64Decode(token_account.data)) {
+      if (auto mint_address = DecodeMintAddress(data.value())) {
         // Add the contract address to the list
         discovered_mint_addresses.push_back(mint_address.value());
       }
@@ -532,13 +520,10 @@ void AssetDiscoveryTask::MergeDiscoveredNFTs(
 // See
 // https://github.com/solana-labs/solana-program-library/blob/f97a3dc7cf0e6b8e346d473a8c9d02de7b213cfd/token/program/src/state.rs#L86-L105
 std::optional<SolanaAddress> AssetDiscoveryTask::DecodeMintAddress(
-    const std::vector<uint8_t>& data) {
-  if (data.size() < 32) {
-    return std::nullopt;
-  }
+    base::span<const uint8_t> data) {
+  base::SpanReader<const uint8_t> reader(data);
 
-  std::vector<uint8_t> pub_key_bytes(data.begin(), data.begin() + 32);
-  return SolanaAddress::FromBytes(pub_key_bytes);
+  return SolanaAddress::ReadFrom(reader);
 }
 
 }  // namespace brave_wallet

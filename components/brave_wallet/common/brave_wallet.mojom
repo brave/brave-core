@@ -1891,13 +1891,10 @@ interface JsonRpcService {
                                        string error_message);
 
   // SNS lookups
-  SnsGetSolAddr(string domain)
-      => (string address, SolanaProviderError error, string error_message);
+  SnsGetSolAddr(string domain) => (string? address);
 
   // SNS Domain lookups
-  SnsResolveHost(string domain) => (url.mojom.Url? url,
-                                    SolanaProviderError error,
-                                    string error_message);
+  SnsResolveHost(string domain) => (url.mojom.Url? url);
 
   // Unstoppable Domains lookups
   UnstoppableDomainsGetWalletAddr(string domain, BlockchainToken? token)

@@ -18,6 +18,7 @@
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/types/expected.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/ens_resolver_task.h"
 #include "brave/components/brave_wallet/browser/simple_hash_client.h"
@@ -27,6 +28,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/solana_address.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
@@ -624,13 +626,11 @@ class JsonRpcService : public mojom::JsonRpcService {
       EnsResolverTask* task,
       std::optional<EnsResolverTaskResult> task_result,
       std::optional<EnsResolverTaskError> error);
-  void OnSnsGetSolAddrTaskDone(SnsResolverTask* task,
-                               std::optional<SnsResolverTaskResult> task_result,
-                               std::optional<SnsResolverTaskError> error);
-  void OnSnsResolveHostTaskDone(
+  void OnSnsGetSolAddrTaskDone(
       SnsResolverTask* task,
-      std::optional<SnsResolverTaskResult> task_result,
-      std::optional<SnsResolverTaskError> error);
+      base::expected<SolanaAddress, std::string> result);
+  void OnSnsResolveHostTaskDone(SnsResolverTask* task,
+                                base::expected<GURL, std::string> result);
   void OnGetFilEstimateGas(GetFilEstimateGasCallback callback,
                            APIRequestResult api_request_result);
   void OnGetEstimateGas(GetEstimateGasCallback callback,

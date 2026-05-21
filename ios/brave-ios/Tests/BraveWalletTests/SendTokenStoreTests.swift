@@ -89,7 +89,7 @@ class SendTokenStoreTests: XCTestCase {
       completion(splTokenBalance, UInt8(6), "", .success, "")
     }
     rpcService._snsGetSolAddr = { address, completion in
-      completion(snsGetSolAddr, .success, "")
+      completion(snsGetSolAddr)
     }
     rpcService._ensGetEthAddr = { _, completion in
       completion(ensGetEthAddr, false, .success, "")

@@ -17,7 +17,6 @@
 #include "base/memory/weak_ptr.h"
 #include "base/notreached.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/solana_address.h"
 
 namespace brave_wallet {
@@ -45,7 +44,10 @@ std::optional<SolanaAddress> GetRecordKey(const std::string& domain,
                                           SnsRecordsVersion version);
 
 struct NameRegistryState {
-  NameRegistryState();
+  NameRegistryState(SolanaAddress parent_name,
+                    SolanaAddress owner,
+                    SolanaAddress data_class,
+                    std::vector<uint8_t> data);
   NameRegistryState(const NameRegistryState&);
   NameRegistryState(NameRegistryState&&);
   NameRegistryState& operator=(const NameRegistryState&);
@@ -62,41 +64,17 @@ struct NameRegistryState {
   std::vector<uint8_t> data;
 };
 
-struct SnsResolverTaskResult {
-  SnsResolverTaskResult() = default;
-  explicit SnsResolverTaskResult(SolanaAddress address);
-  SnsResolverTaskResult(const SnsResolverTaskResult&) = default;
-  SnsResolverTaskResult(SnsResolverTaskResult&&) = default;
-  SnsResolverTaskResult& operator=(const SnsResolverTaskResult&) = default;
-  SnsResolverTaskResult& operator=(SnsResolverTaskResult&&) = default;
-  ~SnsResolverTaskResult() = default;
-
-  SolanaAddress resolved_address;
-  GURL resolved_url;
-};
-
-struct SnsResolverTaskError {
-  SnsResolverTaskError() = default;
-  SnsResolverTaskError(mojom::SolanaProviderError error,
-                       std::string error_message);
-  SnsResolverTaskError(const SnsResolverTaskError&) = default;
-  SnsResolverTaskError(SnsResolverTaskError&&) = default;
-  SnsResolverTaskError& operator=(const SnsResolverTaskError&) = default;
-  SnsResolverTaskError& operator=(SnsResolverTaskError&&) = default;
-  ~SnsResolverTaskError() = default;
-
-  mojom::SolanaProviderError error;
-  std::string error_message;
-};
-
 class SnsResolverTask {
  public:
   using APIRequestHelper = api_request_helper::APIRequestHelper;
   using APIRequestResult = api_request_helper::APIRequestResult;
-  using DoneCallback =
+  using ResolveWalletAddressDoneCallback = base::OnceCallback<void(
+      SnsResolverTask* task,
+      base::expected<SolanaAddress, std::string> result)>;
+  using ResolveUrlDoneCallback =
       base::OnceCallback<void(SnsResolverTask* task,
-                              std::optional<SnsResolverTaskResult> result,
-                              std::optional<SnsResolverTaskError> error)>;
+                              base::expected<GURL, std::string> result)>;
+
   using RequestIntermediateCallback =
       base::OnceCallback<void(APIRequestResult api_request_result)>;
   using ResponseConversionCallback =
@@ -105,21 +83,19 @@ class SnsResolverTask {
 
   enum class TaskType { kResolveWalletAddress, kResolveUrl };
 
-  SnsResolverTask(DoneCallback done_callback,
+  SnsResolverTask(ResolveWalletAddressDoneCallback done_callback,
                   APIRequestHelper* api_request_helper,
                   const std::string& domain,
-                  const GURL& network_url,
-                  TaskType type);
+                  const GURL& network_url);
+  SnsResolverTask(ResolveUrlDoneCallback done_callback,
+                  APIRequestHelper* api_request_helper,
+                  const std::string& domain,
+                  const GURL& network_url);
   SnsResolverTask(const SnsResolverTask&) = delete;
   SnsResolverTask& operator=(const SnsResolverTask&) = delete;
   ~SnsResolverTask();
 
   const std::string& domain() const { return domain_; }
-
-  static base::RepeatingCallback<void(SnsResolverTask* task)>&
-  GetWorkOnTaskForTesting();
-  void SetResultForTesting(std::optional<SnsResolverTaskResult> task_result,
-                           std::optional<SnsResolverTaskError> task_error);
 
   void FetchNftSplMint();
   void OnFetchNftSplMint(APIRequestResult api_request_result);
@@ -132,6 +108,7 @@ class SnsResolverTask {
  private:
   template <typename T>
   friend class SnsResolverTaskContainer;
+
   void ScheduleWorkOnTask();
   bool FillWorkData();
   void WorkOnTask();
@@ -140,7 +117,7 @@ class SnsResolverTask {
 
   void SetAddressResult(SolanaAddress address);
   void SetUrlResult(GURL url);
-  void SetError(SnsResolverTaskError error);
+  void SetError(std::string error);
   void NftOwnerDone(std::optional<SolanaAddress> nft_owner);
 
   void FetchNextRecord();
@@ -150,15 +127,17 @@ class SnsResolverTask {
                        RequestIntermediateCallback callback,
                        ResponseConversionCallback conversion_callback);
 
-  DoneCallback done_callback_;
+  ResolveWalletAddressDoneCallback wallet_address_done_callback_;
+  ResolveUrlDoneCallback url_done_callback_;
+
   raw_ptr<APIRequestHelper> api_request_helper_;
   std::string domain_;
   GURL network_url_;
   TaskType task_type_ = TaskType::kResolveWalletAddress;
 
   bool work_data_ready_ = false;
-  SolanaAddress domain_address_;
-  SolanaAddress nft_mint_address_;
+  std::optional<SolanaAddress> domain_address_;
+  std::optional<SolanaAddress> nft_mint_address_;
   std::vector<struct SnsFetchRecordQueueItem> records_queue_;
   size_t cur_queue_item_pos_ = 0;
 
@@ -168,8 +147,9 @@ class SnsResolverTask {
 
   std::optional<NameRegistryState> domain_name_registry_state_;
 
-  std::optional<SnsResolverTaskResult> task_result_;
-  std::optional<SnsResolverTaskError> task_error_;
+  std::optional<base::expected<SolanaAddress, std::string>>
+      wallet_address_result_;
+  std::optional<base::expected<GURL, std::string>> url_result_;
 
   base::WeakPtrFactory<SnsResolverTask> weak_ptr_factory_{this};
 };

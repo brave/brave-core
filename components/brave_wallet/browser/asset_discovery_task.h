@@ -131,7 +131,7 @@ class AssetDiscoveryTask {
   ParseNFTsFromSimpleHash(const base::Value& json_value);
 
   static std::optional<SolanaAddress> DecodeMintAddress(
-      const std::vector<uint8_t>& data);
+      base::span<const uint8_t> data);
 
   raw_ref<APIRequestHelper> api_request_helper_;
   raw_ref<SimpleHashClient> simple_hash_client_;
