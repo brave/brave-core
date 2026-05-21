@@ -95,10 +95,6 @@ using CancelImageRequestCallback = base::RepeatingCallback<void(int)>;
 class RewardsServiceImpl final : public RewardsService,
                                  public mojom::RewardsEngineClient {
  public:
-  // `policy_initialization_waiter` defers the boot-time engine-start gate
-  // (`CheckPreferences()` in `Init()`) until the policy bundle has been merged
-  // into the managed pref store, so that `BraveRewardsDisabled` takes effect
-  // before the gate evaluates.
   RewardsServiceImpl(PrefService* prefs,
                      const base::FilePath& profile_path,
                      favicon::FaviconService* favicon_service,

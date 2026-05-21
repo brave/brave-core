@@ -277,9 +277,6 @@ bool RewardsServiceImpl::IsInitialized() {
 
 void RewardsServiceImpl::Init() {
   AddObserver(notification_service_.get());
-
-  // Must be active regardless of whether the engine starts so that
-  // pref-driven changes are observed.
   InitPrefChangeRegistrar();
 
   // Defer the boot-time engine-start gate until the policy bundle has been
@@ -341,13 +338,9 @@ void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
 }
 
 void RewardsServiceImpl::CheckPreferences() {
-  // Bail when Rewards is not supported for this profile (managed
-  // `BraveRewardsDisabled` policy, Android feature flag off, or OFAC-sanctioned
-  // region). The factory already gates `GetForProfile`, but `Init()` is
-  // deferred behind `policy_initialization_waiter_` so the managed pref may
-  // have become visible since the factory built the service -- re-check here
-  // before any Ads → Rewards force-enable so the engine never starts and no
-  // Rewards endpoints are pinged.
+  // Re-check support after `policy_initialization_waiter_` fires; managed
+  // `prefs::kDisabledByPolicy` may not have been visible when the factory ran
+  // its `IsSupported` gate.
   if (!IsSupported(prefs_)) {
     return;
   }
