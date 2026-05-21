@@ -537,7 +537,7 @@ TEST(PolkadotExtrinsics, SignedExtrinsic_TransferKeepAlive) {
   EXPECT_EQ(base::HexEncodeLower(keypair.GetPublicKey()),
             "d4f9c4dfa3e6ff57b4e1fdea8699e57b0210cf04afe0281acba187d7d1b49274");
 
-  keypair.UseMockRngForTesting();
+  keypair.SetMockRndSeedForTesting();
 
   const bool transfer_all = false;
 
@@ -660,7 +660,7 @@ TEST(PolkadotExtrinsics, SignedExtrinsic_TransferAll) {
   EXPECT_EQ(base::HexEncodeLower(keypair.GetPublicKey()),
             "d4f9c4dfa3e6ff57b4e1fdea8699e57b0210cf04afe0281acba187d7d1b49274");
 
-  keypair.UseMockRngForTesting();
+  keypair.SetMockRndSeedForTesting();
 
   const bool transfer_all = true;
 
@@ -743,7 +743,7 @@ TEST(PolkadotExtrinsics, SignedExtrinsic_TransferKeepAlive_AssetId) {
   EXPECT_EQ(base::HexEncodeLower(keypair.GetPublicKey()),
             "d4f9c4dfa3e6ff57b4e1fdea8699e57b0210cf04afe0281acba187d7d1b49274");
 
-  keypair.UseMockRngForTesting();
+  keypair.SetMockRndSeedForTesting();
 
   const bool transfer_all = false;
 
@@ -857,7 +857,7 @@ TEST(PolkadotExtrinsics, SignedExtrinsic_TransferAll_AssetId) {
   EXPECT_EQ(base::HexEncodeLower(keypair.GetPublicKey()),
             "d4f9c4dfa3e6ff57b4e1fdea8699e57b0210cf04afe0281acba187d7d1b49274");
 
-  keypair.UseMockRngForTesting();
+  keypair.SetMockRndSeedForTesting();
 
   const bool transfer_all = true;
 

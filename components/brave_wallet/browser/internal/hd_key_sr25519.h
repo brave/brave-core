@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_HD_KEY_SR25519_H_
 
 #include <array>
+#include <cstdint>
 #include <optional>
 
 #include "base/containers/span.h"
@@ -80,10 +81,10 @@ class HDKeySr25519 {
   // of a general blob of bytes which can represent anything.
   HDKeySr25519 DeriveHard(uint32_t account_index) const;
 
-  // Update the keypair to use a mock RNG when deriving Shcnorr signatures. This
+  // Update the keypair to use a mock RNG when deriving Schnorr signatures. This
   // is intended only for testing purposes and would be disastrous for
   // production environments.
-  void UseMockRngForTesting();
+  void SetMockRndSeedForTesting(uint64_t seed = 0);
 
  private:
   explicit HDKeySr25519(rust::Box<CxxSchnorrkelKeyPair> keypair);

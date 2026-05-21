@@ -27,9 +27,9 @@ mod ffi {
         ) -> Box<CxxSchnorrkelKeyPair>;
         fn get_public_key(self: &CxxSchnorrkelKeyPair) -> [u8; 32];
 
-        // Used for deterministic schnorr signatures in testing.
+        // Sets the seed used for deterministic schnorr signatures in testing.
         // Absolutely do not use in production.
-        fn use_mock_rng_for_testing(self: &mut CxxSchnorrkelKeyPair);
+        fn set_mock_rnd_seed_for_testing(self: &mut CxxSchnorrkelKeyPair, seed: u64);
         fn get_secret_key(self: &CxxSchnorrkelKeyPair) -> [u8; 64];
         fn get_export_key_pkcs8(self: &CxxSchnorrkelKeyPair) -> [u8; 117];
         fn sign_message(self: &CxxSchnorrkelKeyPair, msg: &[u8]) -> [u8; 64];
@@ -94,7 +94,7 @@ macro_rules! impl_result {
 #[derive(Clone)]
 struct CxxSchnorrkelKeyPair {
     keypair: schnorrkel::Keypair,
-    use_mock_rng: bool,
+    mock_rnd_seed_for_testing: Option<u64>,
 }
 
 const SIGNING_CTX: &'static [u8] = b"substrate";
@@ -120,7 +120,7 @@ fn generate_sr25519_keypair_from_seed(bytes: &[u8]) -> Box<CxxSchnorrkelKeyPair>
     let mini_key = schnorrkel::MiniSecretKey::from_bytes(bytes).unwrap();
     Box::new(CxxSchnorrkelKeyPair {
         keypair: mini_key.expand_to_keypair(schnorrkel::ExpansionMode::Ed25519),
-        use_mock_rng: false,
+        mock_rnd_seed_for_testing: None,
     })
 }
 
@@ -168,7 +168,10 @@ fn create_sr25519_keypair_from_pkcs8(pkcs8: &[u8; 117]) -> Box<CxxSchnorrkelKeyP
     if public_key != pkcs8[public_key_start..public_key_end] {
         return Box::new(CxxSchnorrkelKeyPairResult(Err(Error::InvalidPkcs8PublicKey)));
     }
-    Box::new(CxxSchnorrkelKeyPairResult(Ok(CxxSchnorrkelKeyPair { keypair, use_mock_rng: false })))
+    Box::new(CxxSchnorrkelKeyPairResult(Ok(CxxSchnorrkelKeyPair {
+        keypair,
+        mock_rnd_seed_for_testing: None,
+    })))
 }
 
 impl CxxSchnorrkelKeyPair {
@@ -180,8 +183,8 @@ impl CxxSchnorrkelKeyPair {
         self.keypair.public.to_bytes()
     }
 
-    fn use_mock_rng_for_testing(self: &mut CxxSchnorrkelKeyPair) {
-        self.use_mock_rng = true;
+    fn set_mock_rnd_seed_for_testing(self: &mut CxxSchnorrkelKeyPair, seed: u64) {
+        self.mock_rnd_seed_for_testing = Some(seed);
     }
 
     fn get_secret_key(self: &CxxSchnorrkelKeyPair) -> [u8; 64] {
@@ -206,8 +209,9 @@ impl CxxSchnorrkelKeyPair {
 
     fn sign_message(self: &CxxSchnorrkelKeyPair, msg: &[u8]) -> [u8; 64] {
         let t = schnorrkel::signing_context(SIGNING_CTX).bytes(msg);
-        if self.use_mock_rng {
-            let t = schnorrkel::context::attach_rng(t, rand_chacha::ChaCha20Rng::seed_from_u64(0));
+        if let Some(seed) = self.mock_rnd_seed_for_testing {
+            let t =
+                schnorrkel::context::attach_rng(t, rand_chacha::ChaCha20Rng::seed_from_u64(seed));
             return self.keypair.sign(t).to_bytes();
         }
 
@@ -252,7 +256,7 @@ impl CxxSchnorrkelKeyPair {
                 .hard_derive_mini_secret_key(Some(schnorrkel::derive::ChainCode(cc)), b"")
                 .0
                 .expand_to_keypair(schnorrkel::ExpansionMode::Ed25519),
-            use_mock_rng: false,
+            mock_rnd_seed_for_testing: None,
         })
     }
 
