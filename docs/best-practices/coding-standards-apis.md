@@ -1256,3 +1256,41 @@ base::ReadUnicodeCharacter(
 base::ReadUnicodeCharacter(
     base::as_string_view(data), &i, &code_point);
 ```
+
+---
+
+<a id="CSA-070"></a>
+
+## ✅ Convert Rust FFI Types at the C++ Boundary; Avoid `CxxString`/`CxxVector`
+
+**`rust::Str`/`rust::String` should always be converted to `std::string_view`/`base::span` (or deep-copied to `std::string`) when passed into C++. Avoid `CxxString` and `CxxVector` for ownership transfer between Rust and C++.** Rust's `String`/`Vec` and C++'s `std::string`/`std::vector` use different allocators and memory layouts, so handing raw heap ownership across the boundary is unsafe — copy instead.
+
+```cpp
+// ❌ WRONG - storing rust::String in C++ data structures or passing it
+// around as if it were std::string. Bridge types should not outlive the
+// FFI call.
+class MyService {
+  rust::String value_;  // Don't hold rust types in C++ state.
+};
+
+// ✅ CORRECT - convert at the boundary
+// For rust::Str, use the existing helper in //base:
+#include "base/strings/string_view_rust.h"
+std::string_view sv = base::RustStrToStringView(rust_str);
+
+// For rust::String, view its bytes as string_view, or deep-copy:
+std::string_view RustStringToStringView(const rust::String& s) {
+  return std::string_view(s.data(), s.length());
+}
+std::u16string RustStringToUTF16(const rust::String& s) {
+  return base::UTF8ToUTF16(RustStringToStringView(s));
+}
+
+// When ownership must cross the boundary, deep-copy:
+std::string owned(rust_str.data(), rust_str.size());  // C++ side
+// rust_string.to_string() / rust_string.to_owned()   // Rust side
+```
+
+`CxxString`/`CxxVector` exist in `cxx` but should be avoided: they require pinning, can't be passed by value, and tempt code into sharing heap ownership across allocators. Prefer passing `rust::Str`/`rust::Slice` (borrowed) or deep-copying at the boundary.
+
+---
