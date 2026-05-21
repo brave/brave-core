@@ -355,8 +355,9 @@ void OAIAPIClient::PerformRequest(
   }
 
   if (is_sse_enabled) {
-    auto on_received = base::BindRepeating(&OAIAPIClient::OnQueryDataReceived,
-                                           std::move(data_received_callback));
+    auto on_received = base::BindRepeating(
+        &OAIAPIClient::OnQueryDataReceived, std::move(data_received_callback),
+        /*model_key=*/std::nullopt, /*is_near_verified=*/std::nullopt);
     auto on_complete = base::BindOnce(&OAIAPIClient::OnQueryCompleted,
                                       weak_ptr_factory_.GetWeakPtr(),
                                       std::move(completed_callback));
@@ -393,13 +394,16 @@ void OAIAPIClient::OnQueryCompleted(
     value = std::move(body);
   }
   HandleCompletion(std::move(callback), success, response_code,
-                   std::move(value));
+                   /*model_key=*/std::nullopt,
+                   /*is_near_verified=*/std::nullopt, std::move(value));
 }
 
 // static
 void OAIAPIClient::HandleCompletion(GenerationCompletedCallback callback,
                                     bool success,
                                     int response_code,
+                                    std::optional<std::string> model_key,
+                                    std::optional<bool> is_near_verified,
                                     std::optional<base::Value> value) {
   if (!success) {
     std::move(callback).Run(
@@ -410,7 +414,8 @@ void OAIAPIClient::HandleCompletion(GenerationCompletedCallback callback,
   // We're checking for a value body in case for non-streaming API results.
   if (value && value->is_dict()) {
     if (auto result_data =
-            ParseOAICompletionResponse(value->GetDict(), std::nullopt)) {
+            ParseOAICompletionResponse(value->GetDict(), model_key)) {
+      result_data->is_near_verified = is_near_verified;
       std::move(callback).Run(base::ok(std::move(*result_data)));
       return;
     }
@@ -420,12 +425,14 @@ void OAIAPIClient::HandleCompletion(GenerationCompletedCallback callback,
   auto event = mojom::ConversationEntryEvent::NewCompletionEvent(
       mojom::CompletionEvent::New(""));
   std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
-      std::move(event), std::nullopt /* model_key */)));
+      std::move(event), model_key, is_near_verified)));
 }
 
 // static
 void OAIAPIClient::OnQueryDataReceived(
     GenerationDataCallback callback,
+    std::optional<std::string> model_key,
+    std::optional<bool> is_near_verified,
     base::expected<base::Value, std::string> result) {
   if (!result.has_value() || !result->is_dict()) {
     return;
@@ -433,8 +440,8 @@ void OAIAPIClient::OnQueryDataReceived(
 
   auto& result_dict = result->GetDict();
 
-  if (auto result_data = ParseOAICompletionResponse(
-          result_dict, std::nullopt /* model_key */)) {
+  if (auto result_data = ParseOAICompletionResponse(result_dict, model_key)) {
+    result_data->is_near_verified = is_near_verified;
     callback.Run(std::move(*result_data));
   }
 

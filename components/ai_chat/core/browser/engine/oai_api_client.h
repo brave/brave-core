@@ -79,6 +79,8 @@ class OAIAPIClient {
   // text and tool calls. Safe to call with a null/non-dict value.
   static void OnQueryDataReceived(
       GenerationDataCallback callback,
+      std::optional<std::string> model_key,
+      std::optional<bool> is_near_verified,
       base::expected<base::Value, std::string> result);
 
   // Dispatches the final completion callback. If |success| is false,
@@ -87,6 +89,8 @@ class OAIAPIClient {
   static void HandleCompletion(GenerationCompletedCallback callback,
                                bool success,
                                int response_code,
+                               std::optional<std::string> model_key,
+                               std::optional<bool> is_near_verified,
                                std::optional<base::Value> value);
 
   void SetAPIRequestHelperForTesting(

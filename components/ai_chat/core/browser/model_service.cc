@@ -529,54 +529,39 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       models.push_back(std::move(model));
     }
 
-    // GLM-5 (NEAR)
+    // GLM (NEAR)
     if (features::IsNEARModelsEnabled()) {
       auto options = mojom::LeoModelOptions::New();
       options->display_maker = "Z.ai";
-      options->name = "near-glm-5";
       options->category = mojom::ModelCategory::CHAT;
       options->access = kFreemiumAccess;
       options->max_associated_content_length = 128000;
       options->long_conversation_warning_character_limit = 128000;
 
       auto model = mojom::Model::New();
-      model->key = "chat-near-glm-5";
-      model->display_name = "GLM-5";
       model->vision_support = false;
       model->supports_tools = false;
-      model->supported_capabilities = {
-          mojom::ConversationCapability::CHAT,
-          mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = true;
       model->is_near_model = true;
+
+      if (features::kNEARModelsEncryption.Get()) {
+        // GLM 5.1 (private inference / OHTTP)
+        options->name = "near-glm-5-1";
+        model->key = "chat-near-glm-5-1";
+        model->display_name = "GLM 5.1";
+        model->supported_capabilities = {mojom::ConversationCapability::CHAT};
+        model->supports_private_inference = true;
+      } else {
+        options->name = "near-glm-5";
+        model->key = "chat-near-glm-5";
+        model->display_name = "GLM-5";
+        model->supported_capabilities = {
+            mojom::ConversationCapability::CHAT,
+            mojom::ConversationCapability::DEEP_RESEARCH};
+      }
+
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
-
-      models.push_back(std::move(model));
-    }
-
-    // GLM 5.1 (NEAR, private inference / OHTTP)
-    if (features::IsNEARModelsEnabled()) {
-      auto options = mojom::LeoModelOptions::New();
-      options->display_maker = "Z.ai";
-      options->name = "near-glm-5-1";
-      options->category = mojom::ModelCategory::CHAT;
-      options->access = kFreemiumAccess;
-      options->max_associated_content_length = 128000;
-      options->long_conversation_warning_character_limit = 128000;
-
-      auto model = mojom::Model::New();
-      model->key = "chat-near-glm-5-1";
-      model->display_name = "GLM 5.1";
-      model->vision_support = false;
-      model->supports_tools = false;
-      model->supported_capabilities = {mojom::ConversationCapability::CHAT};
-      model->is_suggested_model = true;
-      model->is_near_model = true;
-      model->supports_private_inference = true;
-      model->options =
-          mojom::ModelOptions::NewLeoModelOptions(std::move(options));
-
       models.push_back(std::move(model));
     }
 
@@ -1266,7 +1251,8 @@ std::unique_ptr<EngineConsumer> ModelService::GetEngineForModel(
     AIChatCredentialManager* credential_manager) {
   const mojom::Model* model = GetModel(model_key);
   std::unique_ptr<EngineConsumer> engine;
-  if (model->options->is_custom_model_options()) {
+  if (model->supports_private_inference ||
+      model->options->is_custom_model_options()) {
     DVLOG(1) << "Started AI engine: oai";
     engine = std::make_unique<EngineConsumerOAIRemote>(
         model->options.Clone(), url_loader_factory, network_context_getter_,
