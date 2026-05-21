@@ -39,6 +39,7 @@ class PolkadotChainMetadata {
 
   // Obtain a reference to the underlying opaque type so that it can be passed
   // to Rust routines.
+  CxxPolkadotChainMetadata& operator*();
   const CxxPolkadotChainMetadata& operator*() const;
 
   // We want to expose the native data members of the underlying

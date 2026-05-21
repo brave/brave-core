@@ -146,15 +146,19 @@ TEST(PolkadotChainMetadataUnitTest, ParseRealStateGetMetadataResponsePolkadot) {
   auto metadata = PolkadotChainMetadata::FromBytes(metadata_bytes);
   ASSERT_TRUE(metadata);
   PolkadotChainMetadata expected;
-  expected->system_pallet_index = 0;
-  expected->balances_pallet_index = 5;
-  expected->transaction_payment_pallet_index = 0x20;
-  expected->transfer_allow_death_call_index = 0;
-  expected->transfer_keep_alive_call_index = 3;
-  expected->transfer_all_call_index = 4;
-  expected->ss58_prefix = 0;
-  expected->spec_version = 2'000'007;
-  expected->asset_tx_payment = false;
+  auto& [system_pallet_index, balances_pallet_index,
+         transaction_payment_pallet_index, transfer_allow_death_call_index,
+         transfer_keep_alive_call_index, transfer_all_call_index, ss58_prefix,
+         spec_version, asset_tx_payment] = *expected;
+  system_pallet_index = 0;
+  balances_pallet_index = 5;
+  transaction_payment_pallet_index = 0x20;
+  transfer_allow_death_call_index = 0;
+  transfer_keep_alive_call_index = 3;
+  transfer_all_call_index = 4;
+  ss58_prefix = 0;
+  spec_version = 2'000'007;
+  asset_tx_payment = false;
   EXPECT_EQ(*metadata, expected);
 
   auto metadata2 = PolkadotMetadataFromChainName("Polkadot");
@@ -192,15 +196,19 @@ TEST(PolkadotChainMetadataUnitTest,
   auto metadata = PolkadotChainMetadata::FromBytes(metadata_bytes);
   ASSERT_TRUE(metadata);
   PolkadotChainMetadata expected;
-  expected->system_pallet_index = 0;
-  expected->balances_pallet_index = 0x0a;
-  expected->transaction_payment_pallet_index = 0x0b;
-  expected->transfer_allow_death_call_index = 0;
-  expected->transfer_keep_alive_call_index = 3;
-  expected->transfer_all_call_index = 4;
-  expected->ss58_prefix = 0;
-  expected->spec_version = 2'002'001;
-  expected->asset_tx_payment = true;
+  auto& [system_pallet_index, balances_pallet_index,
+         transaction_payment_pallet_index, transfer_allow_death_call_index,
+         transfer_keep_alive_call_index, transfer_all_call_index, ss58_prefix,
+         spec_version, asset_tx_payment] = *expected;
+  system_pallet_index = 0;
+  balances_pallet_index = 0x0a;
+  transaction_payment_pallet_index = 0x0b;
+  transfer_allow_death_call_index = 0;
+  transfer_keep_alive_call_index = 3;
+  transfer_all_call_index = 4;
+  ss58_prefix = 0;
+  spec_version = 2'002'001;
+  asset_tx_payment = true;
   EXPECT_EQ(*metadata, expected);
 }
 
@@ -231,15 +239,19 @@ TEST(PolkadotChainMetadataUnitTest, ParseRealStateGetMetadataResponseWestend) {
   auto metadata = PolkadotChainMetadata::FromBytes(metadata_bytes);
   ASSERT_TRUE(metadata);
   PolkadotChainMetadata expected;
-  expected->system_pallet_index = 0;
-  expected->balances_pallet_index = 4;
-  expected->transaction_payment_pallet_index = 0x1a;
-  expected->transfer_allow_death_call_index = 0;
-  expected->transfer_keep_alive_call_index = 3;
-  expected->transfer_all_call_index = 4;
-  expected->ss58_prefix = 42;
-  expected->spec_version = 1'022'000;
-  expected->asset_tx_payment = false;
+  auto& [system_pallet_index, balances_pallet_index,
+         transaction_payment_pallet_index, transfer_allow_death_call_index,
+         transfer_keep_alive_call_index, transfer_all_call_index, ss58_prefix,
+         spec_version, asset_tx_payment] = *expected;
+  system_pallet_index = 0;
+  balances_pallet_index = 4;
+  transaction_payment_pallet_index = 0x1a;
+  transfer_allow_death_call_index = 0;
+  transfer_keep_alive_call_index = 3;
+  transfer_all_call_index = 4;
+  ss58_prefix = 42;
+  spec_version = 1'022'000;
+  asset_tx_payment = false;
   EXPECT_EQ(*metadata, expected);
 }
 
@@ -272,15 +284,19 @@ TEST(PolkadotChainMetadataUnitTest,
   ASSERT_TRUE(metadata);
 
   PolkadotChainMetadata expected;
-  expected->system_pallet_index = 0;
-  expected->balances_pallet_index = 0x0a;
-  expected->transaction_payment_pallet_index = 0x0b;
-  expected->transfer_allow_death_call_index = 0;
-  expected->transfer_keep_alive_call_index = 3;
-  expected->transfer_all_call_index = 4;
-  expected->ss58_prefix = 42;
-  expected->spec_version = 1'022'005;
-  expected->asset_tx_payment = true;
+  auto& [system_pallet_index, balances_pallet_index,
+         transaction_payment_pallet_index, transfer_allow_death_call_index,
+         transfer_keep_alive_call_index, transfer_all_call_index, ss58_prefix,
+         spec_version, asset_tx_payment] = *expected;
+  system_pallet_index = 0;
+  balances_pallet_index = 0x0a;
+  transaction_payment_pallet_index = 0x0b;
+  transfer_allow_death_call_index = 0;
+  transfer_keep_alive_call_index = 3;
+  transfer_all_call_index = 4;
+  ss58_prefix = 42;
+  spec_version = 1'022'005;
+  asset_tx_payment = true;
   EXPECT_EQ(*metadata, expected);
 }
 

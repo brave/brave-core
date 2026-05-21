@@ -44,6 +44,10 @@ const CxxPolkadotChainMetadata& PolkadotChainMetadata::operator*() const {
   return chain_metadata_;
 }
 
+CxxPolkadotChainMetadata& PolkadotChainMetadata::operator*() {
+  return chain_metadata_;
+}
+
 CxxPolkadotChainMetadata* PolkadotChainMetadata::operator->() {
   return &chain_metadata_;
 }
