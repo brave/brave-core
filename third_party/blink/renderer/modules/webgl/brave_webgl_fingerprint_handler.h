@@ -9,7 +9,6 @@
 #include <memory>
 #include <optional>
 
-#include "brave/components/brave_shields/content/browser/brave_farbling_service.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/platform/wtf/vector.h"
