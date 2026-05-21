@@ -68,7 +68,14 @@ void PlaylistContentsWrapper::EnterFullscreenModeForTab(
     widget->SetFullscreen(true, fullscreen_display_id_);
   }
 
-  fullscreen_observation_.Observe(fullscreen_controller);
+  // Observe changes to fullscreen state.
+  fullscreen_subscription_ =
+      browser_view_->browser()
+          ->GetExclusiveAccessManager()
+          ->fullscreen_controller()
+          ->RegisterOnFullscreenStateChanged(base::BindRepeating(
+              &PlaylistContentsWrapper::OnFullscreenStateChanged,
+              base::Unretained(this)));
 }
 
 void PlaylistContentsWrapper::ExitFullscreenModeForTab(
@@ -161,7 +168,7 @@ bool PlaylistContentsWrapper::IsFullscreenForPlaylist() const {
 
 void PlaylistContentsWrapper::OnExitFullscreen() {
   FullscreenWithinTabHelper::RemoveForWebContents(web_contents());
-  fullscreen_observation_.Reset();
+  fullscreen_subscription_ = {};
   fullscreen_display_id_ = display::kInvalidDisplayId;
 
   coordinator_->side_panel_web_view()->InvalidateLayout();
