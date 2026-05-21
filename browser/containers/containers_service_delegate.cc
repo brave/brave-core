@@ -125,11 +125,8 @@ void AddReferencedContainerIdsFromGroup(
 void AddReferencedContainerIdsFromSplit(
     const sessions::tab_restore::Split& split,
     base::flat_set<std::string>& ids) {
-  if (split.leading_tab) {
-    AddReferencedContainerIdsFromTab(*split.leading_tab, ids);
-  }
-  if (split.trailing_tab) {
-    AddReferencedContainerIdsFromTab(*split.trailing_tab, ids);
+  for (const auto& tab : split.tabs) {
+    AddReferencedContainerIdsFromTab(*tab, ids);
   }
 }
 
