@@ -53,23 +53,15 @@ void BraveProfilePolicyProvider::RefreshPolicies(
 bool BraveProfilePolicyProvider::IsInitializationComplete(
     policy::PolicyDomain domain) const {
   auto* manager = brave_origin::BraveOriginPolicyManager::GetInstance();
-#if !BUILDFLAG(IS_IOS)
-  // Desktop/Android only: short-circuit when our factory has not been
-  // registered in this process. This is the case for upstream unit tests
-  // (e.g. `ProfilePolicyConnectorTest`) that build `ProfilePolicyConnector`
-  // directly without going through Brave's keyed-service-factory startup --
-  // those tests have no Brave Origin source to wait for, so we report
-  // ready and let the upstream `OnPolicyServiceInitialized` signal fire
-  // normally.
-  //
-  // iOS does not run these upstream unit tests, and its own keyed-service
-  // startup always constructs `BraveOriginServiceFactory` (which lazily
-  // initializes `BraveOriginPolicyManager`). The gate below works there
-  // without the flag check.
+  // Short-circuit when the factory has not been registered in this process.
+  // This is the case for upstream unit tests (e.g.
+  // `ProfilePolicyConnectorTest`) that build `ProfilePolicyConnector` directly
+  // without going through Brave's keyed-service-factory startup -- those tests
+  // have no Brave Origin source to wait for, so we report ready and let the
+  // upstream `OnPolicyServiceInitialized` signal fire normally.
   if (!manager->IsExpectedToBeInitialized()) {
     return true;
   }
-#endif  // !BUILDFLAG(IS_IOS)
   // We observe both `BraveOriginPolicyManager` and
   // `AdBlockOnlyModePolicyManager` but they initialise on different schedules:
   // `AdBlockOnlyModePolicyManager` is initialised synchronously at process

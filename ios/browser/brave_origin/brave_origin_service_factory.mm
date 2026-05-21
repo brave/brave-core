@@ -182,20 +182,19 @@ BraveOriginServiceFactory::BraveOriginServiceFactory()
                                     ServiceCreation::kCreateWithProfile,
                                     TestingCreation::kNoServiceForTests) {
   DependsOn(skus::SkusServiceFactory::GetInstance());
+  auto* policy_manager = BraveOriginPolicyManager::GetInstance();
+  policy_manager->SetExpectedToBeInitialized();
+  if (!policy_manager->IsInitialized()) {
+    policy_manager->Init(GetBrowserPolicyDefinitions(),
+                         GetProfilePolicyDefinitions(),
+                         GetApplicationContext()->GetLocalState());
+  }
 }
 
 BraveOriginServiceFactory::~BraveOriginServiceFactory() = default;
 
 std::unique_ptr<KeyedService>
 BraveOriginServiceFactory::BuildServiceInstanceFor(ProfileIOS* profile) const {
-  // Lazy initialization of BraveOriginPolicyManager
-  auto* policy_manager = BraveOriginPolicyManager::GetInstance();
-  if (!policy_manager->IsInitialized()) {
-    policy_manager->Init(GetBrowserPolicyDefinitions(),
-                         GetProfilePolicyDefinitions(),
-                         GetApplicationContext()->GetLocalState());
-  }
-
   auto skus_service_getter =
       base::BindRepeating(&skus::SkusServiceFactory::GetForProfile, profile);
 
