@@ -62,10 +62,10 @@ function MockBrowserWindowHorizontal({
         <div className='browser-tabs'>
           {/* Pinned GitHub tab */}
           <div className='browser-tab pinned'>
-            <Icon name='examplecom-color' />
+            <Icon name='gmail-color' />
           </div>
           <div className='browser-tab pinned'>
-            <Icon name='social-signal-color' />
+            <Icon name='google-calendar-color' />
           </div>
           {/* Active tab */}
           <div className='browser-tab active'>
@@ -192,10 +192,10 @@ function MockBrowserWindowVertical({
           {/* Pinned tabs row */}
           <div className='pinned-tabs-row'>
             <div className='pinned-tab'>
-              <Icon name='social-signal-color' />
+              <Icon name='google-calendar-color' />
             </div>
             <div className='pinned-tab'>
-              <Icon name='examplecom-color' />
+              <Icon name='gmail-color' />
             </div>
           </div>
 
