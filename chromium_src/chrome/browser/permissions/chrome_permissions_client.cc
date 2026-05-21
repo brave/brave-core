@@ -53,7 +53,7 @@ bool ChromePermissionsClient::BraveCanBypassEmbeddingOriginCheck(
 std::unique_ptr<ChromePermissionsClient::PermissionMessageDelegate>
 ChromePermissionsClient::MaybeCreateMessageUI(
     content::WebContents* web_contents,
-    ContentSettingsType type,
+    const permissions::PermissionRequest& request,
     base::WeakPtr<permissions::PermissionPromptAndroid> prompt) {
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   const auto& requests = prompt->delegate_public()->Requests();
@@ -78,7 +78,7 @@ ChromePermissionsClient::MaybeCreateMessageUI(
   }
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
-  return MaybeCreateMessageUI_ChromiumImpl(web_contents, type,
+  return MaybeCreateMessageUI_ChromiumImpl(web_contents, request,
                                            std::move(prompt));
 }
 #endif  // BUILDFLAG(IS_ANDROID)
