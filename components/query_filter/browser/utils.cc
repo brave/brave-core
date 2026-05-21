@@ -10,134 +10,21 @@
 #include <string_view>
 #include <vector>
 
-#include "base/check_is_test.h"
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/fixed_flat_set.h"
+#include "base/containers/span.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
+#include "brave/components/query_filter/browser/query_filter_data.h"
+#include "brave/components/query_filter/common/features.h"
+#include "brave/components/query_filter/common/internal/schema_utils.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "third_party/re2/src/re2/re2.h"
 
 namespace {
 
-// Allows to replace the |kScopedQueryStringTrackers| with custom values during
-// testing.
-const query_filter::ScopedQueryTrackerType* g_scoped_trackers_for_testing_ =
-    nullptr;
-
-static constexpr auto kSimpleQueryStringTrackers =
-    base::MakeFixedFlatSet<std::string_view>(
-        base::sorted_unique,
-        {
-            // https://github.com/brave/brave-browser/issues/9019
-            "__hsfp",
-            "__hssc",
-            "__hstc",
-            // https://github.com/brave/brave-browser/issues/8975
-            "__s",
-            // https://github.com/brave/brave-browser/issues/40716
-            "_bhlid",
-            // https://github.com/brave/brave-browser/issues/39575
-            "_branch_match_id",
-            "_branch_referrer",
-            // https://github.com/brave/brave-browser/issues/33188
-            "_gl",
-            // https://github.com/brave/brave-browser/issues/9019
-            "_hsenc",
-            // https://github.com/brave/brave-browser/issues/11579
-            "_openstat",
-            // https://github.com/brave/brave-browser/issues/32488
-            "at_recipient_id",
-            "at_recipient_list",
-            // https://github.com/brave/brave-browser/issues/37971
-            "bbeml",
-            // https://github.com/brave/brave-browser/issues/25238
-            "bsft_clkid",
-            "bsft_uid",
-            // https://github.com/brave/brave-browser/issues/9879
-            "dclid",
-            // https://github.com/brave/brave-browser/issues/37847
-            "et_rid",
-            // https://github.com/brave/brave-browser/issues/33984
-            "fb_action_ids",
-            "fb_comment_id",
-            // https://github.com/brave/brave-browser/issues/4239
-            "fbclid",
-            // https://github.com/brave/brave-browser/issues/4239
-            "gclid",
-            // https://github.com/brave/brave-browser/issues/25691
-            "guce_referrer",
-            "guce_referrer_sig",
-            // https://github.com/brave/brave-browser/issues/9019
-            "hsCtaTracking",
-            // https://github.com/brave/brave-browser/issues/33952
-            "irclickid",
-            // https://github.com/brave/brave-browser/issues/4239
-            "mc_eid",
-            // https://github.com/brave/brave-browser/issues/17507
-            "ml_subscriber",
-            "ml_subscriber_hash",
-            // https://github.com/brave/brave-browser/issues/4239
-            "msclkid",
-            // https://github.com/brave/brave-browser/issues/31084
-            "mtm_cid",
-            // https://github.com/brave/brave-browser/issues/22082
-            "oft_c",
-            "oft_ck",
-            "oft_d",
-            "oft_id",
-            "oft_ids",
-            "oft_k",
-            "oft_lk",
-            "oft_sk",
-            // https://github.com/brave/brave-browser/issues/13644
-            "oly_anon_id",
-            "oly_enc_id",
-            // https://github.com/brave/brave-browser/issues/31084
-            "pk_cid",
-            // https://github.com/brave/brave-browser/issues/17451
-            "rb_clickid",
-            // https://github.com/brave/brave-browser/issues/17452
-            "s_cid",
-            // https://github.com/brave/brave-browser/issues/43077
-            "sc_customer",
-            "sc_eh",
-            "sc_uid",
-            // https://github.com/brave/brave-browser/issues/53345
-            "sfmc_activityid",
-            "sfmc_id",
-            // https://github.com/brave/brave-browser/issues/48228
-            "sms_click",
-            "sms_source",
-            "sms_uph",
-            // https://github.com/brave/brave-browser/issues/40912
-            "srsltid",
-            // https://github.com/brave/brave-browser/issues/24988
-            "ss_email_id",
-            // https://github.com/brave/brave-browser/issues/50532
-            "syclid",
-            // https://github.com/brave/brave-browser/issues/48226
-            "ttclid",
-            // https://github.com/brave/brave-browser/issues/18020
-            "twclid",
-            // https://github.com/brave/brave-browser/issues/33172
-            "unicorn_click_id",
-            // https://github.com/brave/brave-browser/issues/11817
-            "vero_conv",
-            "vero_id",
-            // https://github.com/brave/brave-browser/issues/26295
-            "vgo_ee",
-            // https://github.com/brave/brave-browser/issues/18758
-            "wbraid",
-            // https://github.com/brave/brave-browser/issues/13647
-            "wickedid",
-            // https://github.com/brave/brave-browser/issues/11578
-            "yclid",
-            // https://github.com/brave/brave-browser/issues/33216
-            "ymclid",
-            "ysclid",
-        });
-
+// The "key" is the parameter to remove from the url. This would only get
+// removed if the "value" was NOT found in the url.
 static constexpr auto kConditionalQueryStringTrackers =
     base::MakeFixedFlatMap<std::string_view, std::string_view>({
         // https://github.com/brave/brave-browser/issues/44341
@@ -147,28 +34,6 @@ static constexpr auto kConditionalQueryStringTrackers =
         {"h_slt", "/email/"},
         // https://github.com/brave/brave-browser/issues/9018
         {"mkt_tok", "([uU]nsubscribe|emailWebview)"},
-    });
-
-// The second parameter is a comma-separated list of domains.
-// The domain comparison will also match on subdomains. So if the
-// parameter is scoped to example.com below, it will be removed from
-// https://example.com/index.php and from http://www.example.com/ for
-// example.
-// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
-// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
-// added in the meantime to fix the build error. Remove this attribute and
-// provide a proper fix.
-[[clang::no_destroy]] static const auto kScopedQueryStringTrackers =
-    query_filter::ScopedQueryTrackerType({
-        // https://github.com/brave/brave-browser/issues/35094
-        {"igsh", {"instagram.com"}},
-        // https://github.com/brave/brave-browser/issues/11580
-        {"igshid", {"instagram.com"}},
-        // https://github.com/brave/brave-browser/issues/26966
-        {"ref_src", {"twitter.com", "x.com"}},
-        {"ref_url", {"twitter.com", "x.com"}},
-        // https://github.com/brave/brave-browser/issues/34719
-        {"si", {"youtube.com", "youtu.be"}},
     });
 
 // URLs with these hostnames will not be modified by the query filter.
@@ -181,34 +46,6 @@ static constexpr auto kExemptedHostnames =
             // https://github.com/brave/brave-browser/issues/41134
             "urldefense.com",
         });
-
-bool IsScopedTracker(std::string_view param_name, std::string_view spec) {
-  query_filter::ScopedQueryTrackerType trackers;
-
-  if (g_scoped_trackers_for_testing_) {
-    CHECK_IS_TEST();
-    trackers = *g_scoped_trackers_for_testing_;
-  } else {
-    trackers = kScopedQueryStringTrackers;
-  }
-
-  if (!trackers.contains(param_name)) {
-    return false;
-  }
-
-  const auto& domain_strings = trackers.at(param_name);
-  if (domain_strings.empty()) {
-    return false;
-  }
-  const GURL original_url = GURL(spec);
-  for (const auto& domain : domain_strings) {
-    if (original_url.DomainIs(domain)) {
-      return true;
-    }
-  }
-
-  return false;
-}
 
 // Remove tracking query parameters from a GURL, leaving all
 // other parts untouched.
@@ -225,13 +62,18 @@ std::optional<std::string> StripQueryParameter(std::string_view query,
       SplitStringPiece(query, "&", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
   std::vector<std::string_view> output_kv_strings;
   int disallowed_count = 0;
+
+  // Set of all the params which are blocked for |spec| from our rules.
+  const auto& rules = query_filter::QueryFilterData::GetInstance()->rules();
+  const base::flat_set<std::string> blocked_params_set =
+      query_filter::GetBlocklistedParamsForSpec(base::span(rules), spec);
+
   for (const auto& kv_string : input_kv_strings) {
     const std::vector<std::string_view> pieces = SplitStringPiece(
         kv_string, "=", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
     const std::string_view key = pieces.empty() ? "" : pieces[0];
     if (pieces.size() >= 2 &&
-        (kSimpleQueryStringTrackers.count(key) == 1 ||
-         IsScopedTracker(key, spec) ||
+        (blocked_params_set.contains(key) ||
          (kConditionalQueryStringTrackers.count(key) == 1 &&
           !re2::RE2::PartialMatch(
               spec, kConditionalQueryStringTrackers.at(key).data())))) {
@@ -245,6 +87,7 @@ std::optional<std::string> StripQueryParameter(std::string_view query,
   }
   return std::nullopt;
 }
+
 }  // namespace
 
 namespace query_filter {
@@ -310,11 +153,11 @@ std::optional<GURL> MaybeApplyQueryStringFilter(
     return std::nullopt;
   }
 
-  return ApplyQueryFilter(request_url);
-}
+  if (!base::FeatureList::IsEnabled(
+          query_filter::features::kQueryFilterComponent)) {
+    return std::nullopt;
+  }
 
-void SetScopedTrackerForTesting(  // IN-TEST
-    const ScopedQueryTrackerType* trackers) {
-  g_scoped_trackers_for_testing_ = trackers;
+  return ApplyQueryFilter(request_url);
 }
 }  // namespace query_filter

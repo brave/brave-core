@@ -6,18 +6,12 @@
 #ifndef BRAVE_COMPONENTS_QUERY_FILTER_BROWSER_UTILS_H_
 #define BRAVE_COMPONENTS_QUERY_FILTER_BROWSER_UTILS_H_
 
-#include <map>
 #include <optional>
 #include <string>
-#include <string_view>
-#include <vector>
 
 #include "url/gurl.h"
 
 namespace query_filter {
-using ScopedQueryTrackerType =
-    std::map<std::string_view, std::vector<std::string_view>>;
-
 std::optional<GURL> ApplyQueryFilter(const GURL& original_url);
 
 // This function will return a new url stripping known tracking query params.
@@ -37,9 +31,5 @@ std::optional<GURL> MaybeApplyQueryStringFilter(
     const GURL& request_url,
     const std::string& request_method,
     const bool internal_redirect);
-
-// Overrides the scoped trackers used by IsScopedTracker() for testing. Pass
-// nullptr to restore the default production data.
-void SetScopedTrackerForTesting(const ScopedQueryTrackerType* trackers);
 }  // namespace query_filter
 #endif  // BRAVE_COMPONENTS_QUERY_FILTER_BROWSER_UTILS_H_

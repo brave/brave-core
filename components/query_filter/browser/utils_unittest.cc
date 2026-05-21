@@ -5,25 +5,47 @@
 
 #include "brave/components/query_filter/browser/utils.h"
 
+#include <optional>
+
+#include "base/test/scoped_feature_list.h"
+#include "brave/components/query_filter/browser/query_filter_data.h"
+#include "brave/components/query_filter/browser/test_support/query_filter_test_helper.h"
+#include "brave/components/query_filter/common/features.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
-// TODO(https://github.com/brave/brave-browser/issues/55305): Parameterize this
-// fixture on the QueryFilterComponent feature flag once the support to parse
-// the new downloaded rules is added.
-class BraveQueryFilter : public testing::Test {
+class BraveQueryFilter_ComponentEnabled : public testing::Test {
  public:
-  void TearDown() override {
-    query_filter::SetScopedTrackerForTesting(nullptr);
+  void SetUp() override {
+    feature_list_.InitAndEnableFeature(
+        query_filter::features::kQueryFilterComponent);
+    filter_test_rules_.emplace();
   }
 
-  void SetScopedTrackerForTesting(
-      query_filter::ScopedQueryTrackerType* trackers) {
-    query_filter::SetScopedTrackerForTesting(trackers);
+  void TearDown() override { ResetRules(); }
+
+  void ResetRules() {
+    if (filter_test_rules_.has_value()) {
+      filter_test_rules_.reset();
+    }
   }
+
+  void UpdateRules(std::string_view json) {
+    ASSERT_TRUE(filter_test_rules_);
+    ASSERT_TRUE(filter_test_rules_->UpdateRules(json));
+  }
+
+  query_filter::QueryFilterData* instance() const {
+    return query_filter::QueryFilterData::GetInstance();
+  }
+
+ private:
+  std::optional<query_filter::test::ScopedTestingQueryFilterRules>
+      filter_test_rules_;
+  base::test::ScopedFeatureList feature_list_;
 };
 
-TEST_F(BraveQueryFilter, FilterQueryTrackers) {
+TEST_F(BraveQueryFilter_ComponentEnabled, FilterQueryTrackers) {
   // Expect filtering `gclid` param when cross origin `initiator_url`
   // and `redirect_source_url`
   EXPECT_EQ(query_filter::MaybeApplyQueryStringFilter(
@@ -122,17 +144,49 @@ TEST_F(BraveQueryFilter, FilterQueryTrackers) {
       "GET", false));
 }
 
-TEST_F(BraveQueryFilter, ScopedQueryTrackingTest) {
-  auto trackers = query_filter::ScopedQueryTrackerType(
-      {{"igshid", {"instagram.com"}},
-       {"ref_src", {"twitter.com", "x.com", "y.com"}},
-       {"sample1", {"", " ", "brave.com", ""}},
-       {"sample2", {" "}},
-       {"sample3", {""}},
-       {"sample4", {}},
-       {"evil", {"*://*.facebook.com/*"}}});
-
-  SetScopedTrackerForTesting(&trackers);
+TEST_F(BraveQueryFilter_ComponentEnabled, ScopedQueryTrackingTest) {
+  // Update with the new set of rules.
+  UpdateRules(
+      R"json([
+               {
+                   "include": [
+                       "*://*.instagram.com/*",
+                       "*://instagram.com/*"
+                   ],
+                   "exclude": [],
+                   "params": [
+                       "igshid"
+                   ]
+               },
+               {
+                   "include": [
+                       "*://*twitter.com",
+                       "*://*x.com",
+                       "*://*y.com"
+                   ],
+                   "exclude": [],
+                   "params": [
+                       "ref_src"
+                   ]
+               },
+               {
+                   "include": [
+                       "*://brave.com"
+                   ],
+                   "exclude": [],
+                   "params": ["sample1"]
+               },
+               {
+                   "include": [""],
+                   "exclude": [],
+                   "params": ["sample2", "sample3", "sample4"]
+               },
+               {
+                   "include": ["*://*.facebook.com/*"],
+                   "exclude": ["*://*theshining.com/*"],
+                   "params": ["evil"]
+               }
+               ])json");
 
   // Normal case for a parameter that's not on the list
   EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
@@ -187,17 +241,18 @@ TEST_F(BraveQueryFilter, ScopedQueryTrackingTest) {
       GURL("https://example.com"), GURL(),
       GURL("https://brave.com/?sample4=123"), "GET", false));
 
-  // Wildcard case for the domain *://*.facebook.com/*.
-  // TODO(https://github.com/brave/brave-browser/issues/55305): The new rules
-  // would have URL wildcard support on domains. Currently we don't have that
-  // support so query filter is not applied. When that's supported update this
-  // test to EXPECT_EQ.
+  EXPECT_EQ(query_filter::MaybeApplyQueryStringFilter(
+                GURL("https://google.com"), GURL(),
+                GURL("https://mobile.facebook.com/?evil=666"), "GET", false),
+            GURL("https://mobile.facebook.com/"));
+  // theshining.com is part of the exclude list for the evil param. So, we
+  // shouldn't be stripping it away.
   EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
-      GURL("https:/google.com"), GURL(),
-      GURL("https://mobile.facebook.com/?evil=666"), "GET", false));
+      GURL("https://google.com"), GURL(),
+      GURL("https://theshining.com/?evil=123"), "GET", false));
 }
 
-TEST_F(BraveQueryFilter, ConditionalFilteringTest) {
+TEST_F(BraveQueryFilter_ComponentEnabled, ConditionalFilteringTest) {
   // `ck_subscriber_id` param gets removed when `unsubscribe` not present in
   // url.
   EXPECT_EQ(query_filter::MaybeApplyQueryStringFilter(
@@ -238,4 +293,41 @@ TEST_F(BraveQueryFilter, ConditionalFilteringTest) {
   EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
       GURL(), GURL("https://brave.com"),
       GURL("https://test.com/emailWebview?mkt_tok=123"), "GET", false));
+}
+
+TEST_F(BraveQueryFilter_ComponentEnabled, ConditionalFilteringWithoutAnyRules) {
+  // We nuke the rules so we can test the hardcoded logic only.
+  ResetRules();
+
+  EXPECT_EQ(query_filter::MaybeApplyQueryStringFilter(
+                GURL(), GURL("https://brave.com"),
+                GURL("https://test.com/?mkt_tok=123"), "GET", false),
+            GURL("https://test.com/"));
+}
+
+class BraveQueryFilter_ComponentDisabled : public testing::Test {
+ public:
+  void SetUp() override {
+    feature_list_.InitAndDisableFeature(
+        query_filter::features::kQueryFilterComponent);
+    ASSERT_FALSE(instance());
+  }
+
+  query_filter::QueryFilterData* instance() const {
+    return query_filter::QueryFilterData::GetInstance();
+  }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+TEST_F(BraveQueryFilter_ComponentDisabled, NoStrippingOccurs) {
+  EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
+      GURL("https://brave.com"), GURL("https://brave.com"),
+      GURL("https://test.com/?gclid=123"), "GET", false));
+
+  // Conditional filtering also fails.
+  EXPECT_FALSE(query_filter::MaybeApplyQueryStringFilter(
+      GURL(), GURL("https://brave.com"), GURL("https://test.com/?mkt_tok=123"),
+      "GET", false));
 }

@@ -24,6 +24,8 @@ static_library("browser") {
   deps = [
     "//brave/components/brave_component_updater/browser:public",
     "//brave/components/query_filter/common",
+    "//brave/components/query_filter/common/internal",
+    "//components/url_pattern_index",
     "//net",
     "//third_party/re2",
   ]
@@ -43,13 +45,13 @@ source_set("unit_tests") {
     "//base",
     "//base/test:test_support",
     "//brave/components/brave_component_updater/browser:test_support",
+    "//brave/components/query_filter/browser/test_support",
     "//brave/components/query_filter/common",
     "//brave/components/query_filter/common/internal:unit_tests",
     "//components/component_updater:test_support",
     "//components/update_client",
     "//testing/gmock",
     "//testing/gtest",
-    "//third_party/abseil-cpp:absl",
     "//url",
   ]
 }
