@@ -402,6 +402,8 @@ provideStrings({
   braveWalletConnectedHardwareWallets: 'Connected hardware wallets',
   braveWalletAccountsAssets: 'Assets',
   braveWalletAccountsEditVisibleAssets: 'Visible assets',
+  braveWalletAccountsHide: 'Hide account',
+  braveWalletAccountsRestore: 'Restore',
   braveWalletAccountBalance: 'Account balance',
   braveWalletViewAddressOn: 'View address on:',
   braveWalletNetworkExplorer: '$1 Explorer',
