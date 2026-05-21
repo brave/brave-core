@@ -1096,7 +1096,7 @@ void SplitTabsWithSideBySide(Browser* browser,
                                           : selected_indices[0];
   tab_strip_model->AddToNewSplit(
       {non_active_index_from_selected_indices},
-      split_tabs::SplitTabVisualData(split_tabs::SplitTabLayout::kVertical),
+      split_tabs::SplitTabVisualData(split_tabs::SplitTabLayout::kSideBySide),
       source);
 }
 
