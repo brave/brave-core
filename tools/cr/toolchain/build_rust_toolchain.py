@@ -259,12 +259,23 @@ class ToolchainBuilder:
             if k not in ('linker', 'jemalloc')
         }
 
-        # On Windows `clang-cl.exe` is swapped for
-        # `clang.exe`, since x.py's wasm sanity check refuses the MSVC-style
-        # clang driver for compiler-builtins C sources.
+        # The Windows host stanza names MSVC-style frontends from the LLVM
+        # install (`clang-cl.exe`, `llvm-lib.exe`); wasm32's compiler-builtins
+        # build expects GNU-style ones (`clang.exe`, `llvm-ar.exe`) which sit
+        # in the same `bin/`. The replacements are no-ops on macOS/Linux
+        # because the host stanzas there already use the GNU names.
+        msvc_to_gnu = {
+            'clang-cl.exe': 'clang.exe',
+            'llvm-lib.exe': 'llvm-ar.exe',
+        }
+
+        def _swap(value: str) -> str:
+            for msvc, gnu in msvc_to_gnu.items():
+                value = value.replace(msvc, gnu)
+            return value
+
         wasm = {
-            k: (v.replace('clang-cl.exe', 'clang.exe')
-                if isinstance(v, str) else v)
+            k: _swap(v) if isinstance(v, str) else v
             for k, v in wasm.items()
         }
 
