@@ -758,6 +758,12 @@ class MsgBlock:
                 blocks[-1]._extend_message(msg)
             elif msg:
                 blocks.append(MsgBlock(full_message=msg, note=note))
+            elif note is not None and note.command == "fixup!":
+                # A bare `# fixup!` block carries no message of its own
+                # -- git is just echoing the marker for context (this
+                # also happens with stacked `# fixup! fixup! …` markers).
+                # Treat it the same as a `will be skipped:` block.
+                continue
             else:
                 raise EditorRecoverableFailure(
                     f'Unexpected empty message in block. Block lines: '

@@ -818,6 +818,44 @@ class MessageWriterTest(unittest.TestCase):
             'Update from Chromium 1.0.0.1 to Chromium 1.0.0.2',
         ])
 
+    def test_bare_fixup_block_is_skipped(self):
+        """When the user has stacked `fixup!` commits on top of an
+        already-fixup commit, git emits the marker-only `# fixup!`
+        (or `# fixup! fixup! ...`) inside a regular `# This is the
+        commit message #N:` header with no body. Those blocks carry
+        nothing to merge -- treat them like `will be skipped:` rather
+        than failing the parse."""
+        path = self._file(
+            '# This is a combination of 4 commits.\n'
+            '# This is the 1st commit message:\n'
+            '\n'
+            'Conflict-resolved patches from Chromium 1.0.0.0 to '
+            'Chromium 1.0.0.1.\n'
+            '\n'
+            '# This is the commit message #2:\n'
+            '\n'
+            '# fixup! Conflict-resolved patches from Chromium 1.0.0.0 to '
+            'Chromium 1.0.0.1.\n'
+            '\n'
+            '# This is the commit message #3:\n'
+            '\n'
+            '# fixup! fixup! Conflict-resolved patches from Chromium 1.0.0.0 '
+            'to Chromium 1.0.0.1.\n'
+            '\n'
+            '# This is the commit message #4:\n'
+            '\n'
+            'Conflict-resolved patches from Chromium 1.0.0.2 to '
+            'Chromium 1.0.0.3.\n')
+
+        writer = rebase_v2.MessageWriter.parse(path)
+
+        self.assertEqual(self._messages(writer), [
+            'Conflict-resolved patches from Chromium 1.0.0.0 to '
+            'Chromium 1.0.0.1.',
+            'Conflict-resolved patches from Chromium 1.0.0.2 to '
+            'Chromium 1.0.0.3.',
+        ])
+
     def test_git_footer_terminates_parsing(self):
         """Anything after `# Please enter the commit message ...` is
         ignored, including stale `# This is ...` lines from git's status
@@ -1016,6 +1054,56 @@ class RebaseV2ExecuteTest(unittest.TestCase):
             'Update from Chromium 1.0.0.3 to Chromium 1.0.0.4',
             'Add brave-only feature.txt',
             '[cr148] Some unrelated feature commit',
+        ])
+
+    def _commit_fixup(self, target: str = 'HEAD') -> str:
+        """Stages a unique gen-N.txt and commits it with `git commit
+        --fixup=<target>`. Mirrors what `git commit --fixup` produces in
+        the wild: a commit whose subject is `fixup! <target subject>`
+        and whose body is empty. Stacking a second call (with the
+        previous fixup as target) yields a `fixup! fixup! <subject>`
+        subject -- the marker-only blocks that broke `MsgBlock.parse`."""
+        self._commit_counter += 1
+        self.repo.write_and_stage_file(f'gen-{self._commit_counter}.txt',
+                                       f'fixup {self._commit_counter}\n',
+                                       self.repo.brave)
+        self.repo._run_git_command(['commit', f'--fixup={target}'],
+                                   self.repo.brave)
+        return self.repo._run_git_command(['rev-parse', 'HEAD'],
+                                          self.repo.brave)
+
+    def test_v2_squash_minor_bumps_with_stacked_fixup_commits(self):
+        """Regression: `git commit --fixup=<conflict-resolved commit>` (and
+        a stacked fixup of that fixup) produces commits whose message is
+        only the autosquash marker -- `fixup! …` and `fixup! fixup! …`
+        with empty bodies. After `--autosquash` chains them next to the
+        pinned target and v2's `squash_minor_bumps` collapses the whole
+        group, git emits those as marker-only `# fixup!` blocks inside
+        the squash editor file. `MsgBlock.parse` used to raise
+        `EditorRecoverableFailure` for them; the rebase must instead
+        complete and keep the latest pinned subject."""
+        scenario = self._seed_bump_branch()
+        first_pinned = self._commit_with_file(
+            'Conflict-resolved patches from Chromium 1.0.0.1 to '
+            'Chromium 1.0.0.2.')
+        inner_fixup = self._commit_fixup(target=first_pinned)
+        self._commit_fixup(target=inner_fixup)
+        self._commit_with_file(
+            'Conflict-resolved patches from Chromium 1.0.0.2 to '
+            'Chromium 1.0.0.3.')
+
+        brockit.Rebase().execute(from_ref=scenario['v101'],
+                                 to_ref=scenario['v102'],
+                                 recommit=False,
+                                 discard_regen_changes=False,
+                                 squash_minor_bumps=True,
+                                 v2=True)
+
+        subjects = self._git_log_subjects(scenario['v102'] + '..HEAD')
+        self.assertEqual(subjects, [
+            'Conflict-resolved patches from Chromium 1.0.0.2 to '
+            'Chromium 1.0.0.3.',
+            'Add brave-only feature.txt',
         ])
 
     def test_v2_recommit_amends_first_commit(self):
