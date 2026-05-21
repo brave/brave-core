@@ -15,10 +15,6 @@
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "services/passage_embeddings/public/mojom/passage_embeddings.mojom.h"
 
-namespace content {
-class WebContents;
-}
-
 namespace passage_embeddings {
 
 // In-process implementation of
@@ -35,10 +31,6 @@ namespace passage_embeddings {
 // renderer-side lifecycle (background WebContents, LocalAIService
 // receiver set, PassageEmbedderFactory remote, and the
 // mojom::PassageEmbedder pipe back to the controller).
-//
-// Also exposes the static WebContents -> BindCallback registry used by
-// UntrustedLocalAIUI::BindInterface to route renderer-side
-// LocalAIService bindings to the active embedder.
 class BravePassageEmbeddingsService : public mojom::PassageEmbeddingsService {
  public:
   using BackgroundWebContentsFactory =
@@ -52,19 +44,10 @@ class BravePassageEmbeddingsService : public mojom::PassageEmbeddingsService {
   BravePassageEmbeddingsService& operator=(
       const BravePassageEmbeddingsService&) = delete;
 
-  // Registry for routing mojo binding requests from the background
-  // WebContents (on guest OTR) back to the active embedder.
-  // UntrustedLocalAIUI::BindInterface calls BindForWebContents; the
-  // controller installs SetBindCallbackForWebContents when the
-  // embedder creates its background contents.
-  using BindCallback = base::RepeatingCallback<void(
-      mojo::PendingReceiver<local_ai::mojom::LocalAIService>)>;
-  static void SetBindCallbackForWebContents(content::WebContents* web_contents,
-                                            BindCallback callback);
-  static void RemoveBindCallbackForWebContents(
-      content::WebContents* web_contents);
-  static void BindForWebContents(
-      content::WebContents* web_contents,
+  // Forwards a renderer-side LocalAIService binding request to the
+  // active BatchEmbedder, if one exists. UntrustedLocalAIUI::BindInterface
+  // reaches this through the controller singleton.
+  void BindLocalAIReceiver(
       mojo::PendingReceiver<local_ai::mojom::LocalAIService> receiver);
 
   // Direct in-process equivalent of mojom::PassageEmbeddingsService::LoadModels

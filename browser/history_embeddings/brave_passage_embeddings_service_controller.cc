@@ -46,12 +46,7 @@ mojom::PassagePriority ToMojom(PassagePriority priority) {
   }
 }
 
-void InstallBindCallback(base::WeakPtr<BraveBatchPassageEmbedder> weak_embedder,
-                         content::WebContents* web_contents) {
-  auto bind_cb = base::BindRepeating(
-      &BraveBatchPassageEmbedder::BindLocalAIReceiver, weak_embedder);
-  BravePassageEmbeddingsService::SetBindCallbackForWebContents(
-      web_contents, std::move(bind_cb));
+void TagWebContentsForTaskManager(content::WebContents* web_contents) {
   task_manager::WebContentsTags::CreateForToolContents(
       web_contents, IDS_LOCAL_AI_TASK_MANAGER_TITLE);
 }
@@ -71,7 +66,7 @@ void OnGuestProfileCreated(
   BravePassageEmbeddingsServiceController::Get()->ObserveGuestOTRProfile(otr);
   auto contents = std::make_unique<local_ai::BackgroundWebContentsImpl>(
       otr, GURL(local_ai::kUntrustedLocalAIURL), weak_embedder.get(),
-      base::BindOnce(&InstallBindCallback, weak_embedder));
+      base::BindOnce(&TagWebContentsForTaskManager));
   std::move(callback).Run(std::move(contents));
 }
 
@@ -191,6 +186,13 @@ void BravePassageEmbeddingsServiceController::ResetServiceRemote() {
   ResetEmbedderRemote();
   service_.reset();
   otr_profile_observation_.Reset();
+}
+
+void BravePassageEmbeddingsServiceController::BindLocalAIReceiver(
+    mojo::PendingReceiver<local_ai::mojom::LocalAIService> receiver) {
+  if (service_) {
+    service_->BindLocalAIReceiver(std::move(receiver));
+  }
 }
 
 void BravePassageEmbeddingsServiceController::ObserveGuestOTRProfile(

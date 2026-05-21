@@ -75,10 +75,10 @@ without touching the upstream header (see
   implementation of `passage_embeddings::mojom::PassageEmbeddingsService`.
   Exposes a direct `BindPassageEmbedder(receiver, model_files, cb)`
   entry point used by the controller; constructs a
-  `BraveBatchPassageEmbedder` around the supplied files. Also hosts the
-  static `WebContents*` → bind-callback registry used by
-  `UntrustedLocalAIUI::BindInterface` (the registered callback routes
-  to the active `BraveBatchPassageEmbedder`).
+  `BraveBatchPassageEmbedder` around the supplied files. Also exposes
+  `BindLocalAIReceiver(...)` which the controller forwards to from
+  `UntrustedLocalAIUI::BindInterface` so the WASM page can register its
+  `PassageEmbedderFactory`.
 
 - **`brave_batch_passage_embedder.{h,cc}`** — In-process
   implementation of `passage_embeddings::mojom::PassageEmbedder` and
