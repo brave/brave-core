@@ -17,7 +17,7 @@
 class AiChatInternalUIBrowserTest : public InProcessBrowserTest {
  public:
   AiChatInternalUIBrowserTest() {
-    feature_list_.InitAndEnableFeature(ai_chat::features::kAiChatInternalWebUI);
+    feature_list_.InitAndEnableFeature(ai_chat::features::kAIChatInternalWebUI);
   }
   ~AiChatInternalUIBrowserTest() override = default;
 
@@ -36,7 +36,7 @@ class AiChatInternalUIDisabledBrowserTest : public InProcessBrowserTest {
  public:
   AiChatInternalUIDisabledBrowserTest() {
     feature_list_.InitAndDisableFeature(
-        ai_chat::features::kAiChatInternalWebUI);
+        ai_chat::features::kAIChatInternalWebUI);
   }
   ~AiChatInternalUIDisabledBrowserTest() override = default;
 

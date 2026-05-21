@@ -1614,4 +1614,48 @@ TEST_P(AIChatServiceUnitTest, DeleteSkill) {
   EXPECT_TRUE(all_skills.empty());
 }
 
+TEST_P(AIChatServiceUnitTest, GetConversationData_ValidUUID) {
+  ConversationHandler* handler = CreateConversation();
+  auto conv_client = CreateConversationClient(handler);
+  const std::string uuid = handler->GetMetadataForTesting().uuid;
+  handler->SetChatHistoryForTesting(CreateSampleChatHistory(2u));
+
+  mojom::ConversationPtr received_conv;
+  std::vector<mojom::ConversationTurnPtr> received_turns;
+  base::RunLoop run_loop;
+  client_->service_remote()->GetConversationData(
+      uuid,
+      base::BindLambdaForTesting(
+          [&](mojom::ConversationPtr conv,
+              std::vector<mojom::ConversationTurnPtr> turns) {
+            received_conv = std::move(conv);
+            received_turns = std::move(turns);
+            run_loop.Quit();
+          }));
+  run_loop.Run();
+
+  ASSERT_NE(received_conv, nullptr);
+  EXPECT_EQ(received_conv->uuid, uuid);
+  EXPECT_EQ(received_turns.size(), 2u);
+}
+
+TEST_P(AIChatServiceUnitTest, GetConversationData_UnknownUUID) {
+  mojom::ConversationPtr received_conv;
+  std::vector<mojom::ConversationTurnPtr> received_turns;
+  base::RunLoop run_loop;
+  client_->service_remote()->GetConversationData(
+      "non-existent-uuid",
+      base::BindLambdaForTesting(
+          [&](mojom::ConversationPtr conv,
+              std::vector<mojom::ConversationTurnPtr> turns) {
+            received_conv = std::move(conv);
+            received_turns = std::move(turns);
+            run_loop.Quit();
+          }));
+  run_loop.Run();
+
+  EXPECT_EQ(received_conv, nullptr);
+  EXPECT_TRUE(received_turns.empty());
+}
+
 }  // namespace ai_chat

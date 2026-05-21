@@ -103,7 +103,7 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
     return new SkusInternalsUI(web_ui, url.host());
 #if BUILDFLAG(ENABLE_AI_CHAT)
   } else if (host == kAiChatInternalHost &&
-             ai_chat::features::IsAiChatInternalWebUIEnabled()) {
+             ai_chat::features::IsAIChatInternalWebUIEnabled()) {
     return new AIChatInternalUI(web_ui, url.host());
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
@@ -225,7 +225,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 #if BUILDFLAG(ENABLE_AI_CHAT)
       (url.host() == kAiChatInternalHost &&
-       ai_chat::features::IsAiChatInternalWebUIEnabled()) ||
+       ai_chat::features::IsAIChatInternalWebUIEnabled()) ||
 #endif
       (url.host() == kSkusInternalsHost &&
        base::FeatureList::IsEnabled(skus::features::kSkusFeature))) {

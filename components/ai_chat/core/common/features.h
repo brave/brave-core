@@ -163,8 +163,8 @@ BASE_DECLARE_FEATURE(kAIChatDeepResearch);
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatDeepResearchEnabled();
 
 COMPONENT_EXPORT(AI_CHAT_COMMON)
-BASE_DECLARE_FEATURE(kAiChatInternalWebUI);
-COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAiChatInternalWebUIEnabled();
+BASE_DECLARE_FEATURE(kAIChatInternalWebUI);
+COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatInternalWebUIEnabled();
 
 }  // namespace ai_chat::features
 

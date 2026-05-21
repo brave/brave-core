@@ -1135,13 +1135,18 @@ void AIChatService::GetConversationData(const std::string& uuid,
   GetConversation(
       uuid,
       base::BindOnce(
-          [](GetConversationDataCallback cb, ConversationMap& conversations,
-             const std::string& conv_uuid, ConversationHandler* handler) {
+          [](base::WeakPtr<AIChatService> service,
+             GetConversationDataCallback cb, const std::string& conv_uuid,
+             ConversationHandler* handler) {
+            if (!service) {
+              std::move(cb).Run(nullptr, {});
+              return;
+            }
             std::vector<mojom::ConversationTurnPtr> turns;
             mojom::ConversationPtr conv = nullptr;
             if (handler) {
-              auto it = conversations.find(conv_uuid);
-              if (it != conversations.end()) {
+              auto it = service->conversations_.find(conv_uuid);
+              if (it != service->conversations_.end()) {
                 conv = it->second->Clone();
               }
               for (const auto& turn : handler->GetConversationHistory()) {
@@ -1150,7 +1155,7 @@ void AIChatService::GetConversationData(const std::string& uuid,
             }
             std::move(cb).Run(std::move(conv), std::move(turns));
           },
-          std::move(callback), std::ref(conversations_), uuid));
+          weak_ptr_factory_.GetWeakPtr(), std::move(callback), uuid));
 }
 
 void AIChatService::BindObserver(
