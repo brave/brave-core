@@ -1083,6 +1083,10 @@ void AdsServiceImpl::AddBatAdsObserver(
   }
 }
 
+bool AdsServiceImpl::IsInitialized() const {
+  return is_bat_ads_initialized_;
+}
+
 bool AdsServiceImpl::IsBrowserUpgradeRequiredToServeAds() const {
   return browser_upgrade_required_to_serve_ads_;
 }

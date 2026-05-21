@@ -118,6 +118,8 @@ source_set("test_support") {
   sources = [
     "ntp_background_images_service_waiter.cc",
     "ntp_background_images_service_waiter.h",
+    "test/fake_ntp_background_images_service.cc",
+    "test/fake_ntp_background_images_service.h",
   ]
 }
 
@@ -146,6 +148,7 @@ source_set("unit_tests") {
 
   deps = [
     ":browser",
+    ":test_support",
     "//base",
     "//base/test:test_support",
     "//brave/components/brave_rewards/core",

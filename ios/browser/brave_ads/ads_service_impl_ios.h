@@ -41,8 +41,6 @@ class AdsServiceImplIOS : public AdsService {
 
   ~AdsServiceImplIOS() override;
 
-  bool IsInitialized() const;
-
   void InitializeAds(const std::string& storage_path,
                      std::unique_ptr<AdsClient> ads_client,
                      mojom::SysInfoPtr mojom_sys_info,
@@ -63,6 +61,8 @@ class AdsServiceImplIOS : public AdsService {
   void NotifyDidClearAdsServiceData() const;
 
   // AdsService:
+  bool IsInitialized() const override;
+
   bool IsBrowserUpgradeRequiredToServeAds() const override;
 
   int64_t GetMaximumNotificationAdsPerHour() const override;
