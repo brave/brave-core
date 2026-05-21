@@ -46,6 +46,7 @@ import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveLocalState;
+import org.chromium.chrome.browser.brave_origin.BraveOriginDeepLinkHandler;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.metrics.ChangeMetricsReportingStateCalledFrom;
 import org.chromium.chrome.browser.metrics.UmaSessionStats;
@@ -136,6 +137,13 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase
                                                 .writeBoolean(
                                                         BravePreferenceKeys
                                                                 .BRAVE_DEFERRED_DEEPLINK_VPN,
+                                                        true);
+                                    } else if (referrerUrl.equals(
+                                            BraveOriginDeepLinkHandler.PATH_TOKEN)) {
+                                        ChromeSharedPreferences.getInstance()
+                                                .writeBoolean(
+                                                        BravePreferenceKeys
+                                                                .BRAVE_DEFERRED_DEEPLINK_ORIGIN_PROMO, // presubmit: ignore-long-line
                                                         true);
                                     }
                                 } catch (RemoteException e) {
