@@ -5,7 +5,6 @@
 
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
-import { setIconBasePath } from '@brave/leo/react/icon'
 
 import { NewTabContext } from './context/new_tab_context'
 import { BackgroundContext } from './context/background_context'
@@ -23,8 +22,6 @@ import { createVpnStore } from './state/browser_vpn_store'
 import { createRewardsStore } from './state/browser_rewards_store'
 
 import { App } from './components/app'
-
-setIconBasePath('chrome://resources/brave-icons')
 
 function AppProvider(props: { children: React.ReactNode }) {
   const stores = React.useMemo(() => {

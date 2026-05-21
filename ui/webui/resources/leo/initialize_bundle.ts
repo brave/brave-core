@@ -64,3 +64,5 @@ if (!/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
       ColorChangeUpdater.forDocument().start();
     });
 }
+
+export * from '@brave/leo/tokens/css/variables'

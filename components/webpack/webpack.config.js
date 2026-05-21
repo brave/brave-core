@@ -97,12 +97,24 @@ module.exports = async function (env, argv) {
   }
 
   const externals = env.output_module && !('no_externals' in env) ?
-    {
+    [{
       // React and ReactDOM ship in a single bundle (see
       // brave/ui/webui/resources/react/initialize_bundle.ts).
       'react': ['module //resources/brave/react.bundle.js', 'React'],
       'react-dom': ['module //resources/brave/react.bundle.js', 'ReactDOM'],
-    } : {}
+    },
+    function ({ request }, callback) {
+      const componentMatch = request.match(/^@brave\/leo\/react\/(.*)/.test(request))
+      if (componentMatch) {
+        return callback(null, ['//resources/brave/leo-react.bundle.js', componentMatch[1]])
+      }
+
+      if (/^@brave\/leo\//.test(request)) {
+        return callback(null, 'module //resources/brave/leo.bundle.js')
+      }
+
+      callback()
+    }] : []
 
   return {
     entry,
@@ -117,6 +129,7 @@ module.exports = async function (env, argv) {
       concatenateModules: !process.env.NO_CONCATENATE
     },
     experiments,
+    externalsType: env.output_module ? 'module' : undefined,
     externals: [
       function ({ context, request }, callback) {
         if (env.output_module) {
@@ -126,7 +139,7 @@ module.exports = async function (env, argv) {
         }
         callback();
       },
-      externals,
+      ...externals,
     ],
     plugins: [
       process.env.DEPFILE_SOURCE_NAME && new GenerateDepfilePlugin({

@@ -106,6 +106,10 @@ transpile_web_ui("external_js_bundles") {
       rebase_path("leo/initialize_bundle.ts"),
     ],
     [
+      "leo-react",
+      rebase_path("leo/initialize_react_bundle.ts"),
+    ],
+    [
       "react",
       rebase_path("react/initialize_bundle.ts"),
     ],
