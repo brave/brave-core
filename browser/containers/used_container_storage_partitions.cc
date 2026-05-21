@@ -5,9 +5,14 @@
 
 #include "brave/browser/containers/used_container_storage_partitions.h"
 
+#include <string>
+
+#include "base/check.h"
+#include "base/containers/to_vector.h"
 #include "brave/browser/containers/containers_service_factory.h"
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
 #include "brave/components/containers/core/browser/containers_service.h"
+#include "brave/components/containers/core/common/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/storage_partition_config.h"
 
@@ -15,23 +20,23 @@ namespace containers {
 
 std::vector<content::StoragePartitionConfig>
 GetUsedContainerStoragePartitionConfigs(Profile* profile) {
-  std::vector<content::StoragePartitionConfig> configs;
+  CHECK(base::FeatureList::IsEnabled(features::kContainers));
+
   if (!profile) {
-    return configs;
+    return {};
   }
 
   ContainersService* service = ContainersServiceFactory::GetForProfile(profile);
   if (!service) {
-    return configs;
+    return {};
   }
 
-  for (const std::string& id : service->GetUsedContainerIds()) {
-    configs.push_back(content::StoragePartitionConfig::Create(
-        profile, kContainersStoragePartitionDomain, id,
-        profile->IsOffTheRecord()));
-  }
-
-  return configs;
+  return base::ToVector(service->GetUsedContainerIds(),
+                        [&](const std::string& id) {
+                          return content::StoragePartitionConfig::Create(
+                              profile, kContainersStoragePartitionDomain, id,
+                              profile->IsOffTheRecord());
+                        });
 }
 
 }  // namespace containers

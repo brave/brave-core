@@ -14,7 +14,8 @@ class Profile;
 
 namespace containers {
 
-// Returns StoragePartitionConfig for each locally used container.
+// Returns StoragePartitionConfig for each locally used container. Returns an
+// empty vector when the ContainersService is unavailable.
 std::vector<content::StoragePartitionConfig>
 GetUsedContainerStoragePartitionConfigs(Profile* profile);
 
