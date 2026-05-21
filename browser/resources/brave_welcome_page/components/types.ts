@@ -23,4 +23,3 @@ export interface StepDefinition {
   Content: React.ComponentType<StepContentProps>
   Footer: React.ComponentType<StepFooterProps>
 }
-

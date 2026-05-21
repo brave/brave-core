@@ -30,12 +30,12 @@ interface MakeYoursContextType {
 
 const MakeYoursContext = React.createContext<MakeYoursContextType>({
   hasChanges: false,
-  setHasChanges: () => {}
+  setHasChanges: () => {},
 })
 
 export function MakeYoursProvider({ children }: { children: React.ReactNode }) {
   const [hasChanges, setHasChanges] = React.useState(false)
-  
+
   return (
     <MakeYoursContext.Provider value={{ hasChanges, setHasChanges }}>
       {children}
@@ -48,156 +48,182 @@ interface MockBrowserWindowVariantProps {
   colorStyles: React.CSSProperties
 }
 
-function MockBrowserWindowHorizontal({ themeClass, colorStyles }: MockBrowserWindowVariantProps) {
+function MockBrowserWindowHorizontal({
+  themeClass,
+  colorStyles,
+}: MockBrowserWindowVariantProps) {
   return (
-    <div className={`browser-chrome ${themeClass}`} style={colorStyles}>
+    <div
+      className={`browser-chrome ${themeClass}`}
+      style={colorStyles}
+    >
       {/* Tab Bar */}
-      <div className="browser-tabbar">
-        <div className="browser-tabs">
+      <div className='browser-tabbar'>
+        <div className='browser-tabs'>
           {/* Pinned GitHub tab */}
-          <div className="browser-tab pinned">
-            <Icon name="examplecom-color" />
+          <div className='browser-tab pinned'>
+            <Icon name='examplecom-color' />
+          </div>
+          <div className='browser-tab pinned'>
+            <Icon name='social-signal-color' />
           </div>
           {/* Active tab */}
-          <div className="browser-tab active">
-            <Icon name="social-brave-release-favicon-fullheight-color" />
-            <span className="tab-title">Welcome to Brave</span>
-            <Icon name="close" className="tab-close" />
+          <div className='browser-tab active'>
+            <Icon name='social-brave-release-favicon-fullheight-color' />
+            <span className='tab-title'>Welcome to Brave</span>
+            <Icon
+              name='close'
+              className='tab-close'
+            />
           </div>
           {/* Inactive tab */}
-          <div className="browser-tab">
-            <Icon name="brave-icon-search-color" />
-            <span className="tab-title">Brave Search</span>
-            <div className="tab-divider" />
+          <div className='browser-tab'>
+            <Icon name='brave-icon-search-color' />
+            <span className='tab-title'>Brave Search</span>
+            <div className='tab-divider' />
           </div>
           {/* Add tab button */}
-          <div className="browser-tab-add">
-            <Icon name="plus-add" />
+          <div className='browser-tab-add'>
+            <Icon name='plus-add' />
           </div>
         </div>
         {/* Dropdown button */}
-        <div className="browser-tab-dropdown">
-          <Icon name="carat-down" />
+        <div className='browser-tab-dropdown'>
+          <Icon name='carat-down' />
         </div>
       </div>
 
       {/* Address Bar */}
-      <div className="browser-addressbar">
-        <div className="addressbar-actions">
-          <div className="toolbar-btn">
-            <Icon name="browser-back" />
+      <div className='browser-addressbar'>
+        <div className='addressbar-actions'>
+          <div className='toolbar-btn'>
+            <Icon name='browser-back' />
           </div>
-          <div className="toolbar-btn disabled">
-            <Icon name="browser-forward" />
+          <div className='toolbar-btn disabled'>
+            <Icon name='browser-forward' />
           </div>
-          <div className="toolbar-btn">
-            <Icon name="browser-refresh" />
+          <div className='toolbar-btn'>
+            <Icon name='browser-refresh' />
           </div>
-          <div className="toolbar-btn">
-            <Icon name="browser-bookmark-normal" />
-          </div>
-        </div>
-
-        <div className="addressbar-field">
-          <div className="toolbar-btn small">
-            <Icon name="shield-done" />
-          </div>
-          <span className="addressbar-url">brave.com</span>
-          <div className="toolbar-btn small">
-            <Icon name="share-macos" />
+          <div className='toolbar-btn'>
+            <Icon name='browser-bookmark-normal' />
           </div>
         </div>
 
-        <div className="addressbar-menu">
-          <div className="menu-btn">
-            <Icon name="social-brave-release-favicon-fullheight-color" />
-            <Icon name="more-vertical" />
+        <div className='addressbar-field'>
+          <div className='toolbar-btn small'>
+            <Icon name='tune-small' />
           </div>
+          <span className='addressbar-url'>brave.com</span>
+          <div className='toolbar-btn small'>
+            <Icon name='share-macos' />
+          </div>
+          <div className='toolbar-btn small'>
+            <Icon name='social-brave-release-favicon-fullheight-color' />
+          </div>
+        </div>
+
+        <div className='toolbar-btn'>
+          <Icon name='browser-menu' />
         </div>
       </div>
 
       {/* Browser Content */}
-      <div className="browser-content">
-        <div className="browser-content-bg" />
+      <div className='browser-content'>
+        <div className='browser-content-bg' />
       </div>
     </div>
   )
 }
 
-function MockBrowserWindowVertical({ themeClass, colorStyles }: MockBrowserWindowVariantProps) {
+function MockBrowserWindowVertical({
+  themeClass,
+  colorStyles,
+}: MockBrowserWindowVariantProps) {
   return (
-    <div className={`browser-chrome vertical ${themeClass}`} style={colorStyles}>
+    <div
+      className={`browser-chrome vertical ${themeClass}`}
+      style={colorStyles}
+    >
       {/* Address Bar (at top for vertical layout) */}
-      <div className="browser-addressbar">
-        <div className="addressbar-actions">
-          <div className="toolbar-btn">
-            <Icon name="browser-back" />
+      <div className='browser-addressbar'>
+        <div className='addressbar-actions'>
+          <div className='toolbar-btn'>
+            <Icon name='window-tabs-vertical-expanded' />
           </div>
-          <div className="toolbar-btn disabled">
-            <Icon name="browser-forward" />
+          <div className='toolbar-btn'>
+            <Icon name='browser-back' />
           </div>
-          <div className="toolbar-btn">
-            <Icon name="browser-refresh" />
+          <div className='toolbar-btn disabled'>
+            <Icon name='browser-forward' />
           </div>
-          <div className="toolbar-btn">
-            <Icon name="browser-bookmark-normal" />
+          <div className='toolbar-btn'>
+            <Icon name='browser-refresh' />
           </div>
-        </div>
-
-        <div className="addressbar-field">
-          <div className="toolbar-btn small">
-            <Icon name="shield-done" />
-          </div>
-          <span className="addressbar-url">brave.com</span>
-          <div className="toolbar-btn small">
-            <Icon name="share-macos" />
+          <div className='toolbar-btn'>
+            <Icon name='browser-bookmark-normal' />
           </div>
         </div>
 
-        <div className="addressbar-menu">
-          <div className="menu-btn">
-            <Icon name="social-brave-release-favicon-fullheight-color" />
-            <Icon name="more-vertical" />
+        <div className='addressbar-field'>
+          <div className='toolbar-btn small'>
+            <Icon name='tune-small' />
+          </div>
+          <span className='addressbar-url'>brave.com</span>
+          <div className='toolbar-btn small'>
+            <Icon name='share-macos' />
+          </div>
+          <div className='toolbar-btn small'>
+            <Icon name='social-brave-release-favicon-fullheight-color' />
+          </div>
+        </div>
+
+        <div className='addressbar-menu'>
+          <div className='toolbar-btn'>
+            <Icon name='browser-menu' />
           </div>
         </div>
       </div>
 
       {/* Content area with sidebar */}
-      <div className="browser-main-content">
+      <div className='browser-main-content'>
         {/* Vertical Tab Sidebar */}
-        <div className="vertical-sidebar">
+        <div className='vertical-sidebar'>
           {/* Pinned tabs row */}
-          <div className="pinned-tabs-row">
-            <div className="pinned-tab">
-              <Icon name="examplecom-color" />
+          <div className='pinned-tabs-row'>
+            <div className='pinned-tab'>
+              <Icon name='social-signal-color' />
             </div>
-            <div className="pinned-tab">
-              <Icon name="google-calendar-color" />
+            <div className='pinned-tab'>
+              <Icon name='examplecom-color' />
             </div>
           </div>
 
           {/* Divider */}
-          <div className="sidebar-divider" />
+          <div className='sidebar-divider' />
 
           {/* Vertical tabs list */}
-          <div className="vertical-tabs-list">
+          <div className='vertical-tabs-list'>
             {/* Active tab */}
-            <div className="vertical-tab active">
-              <Icon name="social-brave-release-favicon-fullheight-color" />
-              <span className="vertical-tab-title">Welcome to Brave</span>
-              <Icon name="close" className="vertical-tab-close" />
+            <div className='vertical-tab active'>
+              <Icon name='social-brave-release-favicon-fullheight-color' />
+              <span className='vertical-tab-title'>Welcome to Brave</span>
+              <Icon
+                name='close'
+                className='vertical-tab-close'
+              />
             </div>
             {/* Inactive tab */}
-            <div className="vertical-tab">
-              <Icon name="brave-icon-search-color" />
-              <span className="vertical-tab-title">Brave Search</span>
+            <div className='vertical-tab'>
+              <Icon name='brave-icon-search-color' />
+              <span className='vertical-tab-title'>Brave Search</span>
             </div>
           </div>
         </div>
 
         {/* Browser Content */}
-        <div className="browser-content vertical">
-          <div className="browser-content-bg" />
+        <div className='browser-content vertical'>
+          <div className='browser-content-bg' />
         </div>
       </div>
     </div>
@@ -210,21 +236,38 @@ interface MockBrowserWindowProps {
   colorOption: ColorOption
 }
 
-function MockBrowserWindow({ layout, effectiveTheme, colorOption }: MockBrowserWindowProps) {
+function MockBrowserWindow({
+  layout,
+  effectiveTheme,
+  colorOption,
+}: MockBrowserWindowProps) {
   const themeClass = `preview-theme-${effectiveTheme}`
-  const colorStyles = generateThemedColors(colorOption, effectiveTheme === 'dark')
-  
+  const colorStyles = generateThemedColors(
+    colorOption,
+    effectiveTheme === 'dark',
+  )
+
   if (layout === 'vertical') {
-    return <MockBrowserWindowVertical themeClass={themeClass} colorStyles={colorStyles} />
+    return (
+      <MockBrowserWindowVertical
+        themeClass={themeClass}
+        colorStyles={colorStyles}
+      />
+    )
   }
-  return <MockBrowserWindowHorizontal themeClass={themeClass} colorStyles={colorStyles} />
+  return (
+    <MockBrowserWindowHorizontal
+      themeClass={themeClass}
+      colorStyles={colorStyles}
+    />
+  )
 }
 
 interface ColorOption {
   id: string
-  color1: string  
-  color2: string  
-  color3: string  
+  color1: string
+  color2: string
+  color3: string
 }
 
 // Helper to convert hex to HSL
@@ -243,9 +286,15 @@ function hexToHSL(hex: string): { h: number; s: number; l: number } {
     const d = max - min
     s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
     switch (max) {
-      case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break
-      case g: h = ((b - r) / d + 2) / 6; break
-      case b: h = ((r - g) / d + 4) / 6; break
+      case r:
+        h = ((g - b) / d + (g < b ? 6 : 0)) / 6
+        break
+      case g:
+        h = ((b - r) / d + 2) / 6
+        break
+      case b:
+        h = ((r - g) / d + 4) / 6
+        break
     }
   }
 
@@ -260,7 +309,9 @@ function hslToHex(h: number, s: number, l: number): string {
   const f = (n: number) => {
     const k = (n + h / 30) % 12
     const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1)
-    return Math.round(255 * color).toString(16).padStart(2, '0')
+    return Math.round(255 * color)
+      .toString(16)
+      .padStart(2, '0')
   }
   return `#${f(0)}${f(8)}${f(4)}`
 }
@@ -270,28 +321,31 @@ function hslToHex(h: number, s: number, l: number): string {
 // ============================================
 
 // Saturation multiplier (0-1): higher = more colorful
-const LIGHT_MODE_SATURATION = 0.9  // Light mode saturation
-const DARK_MODE_SATURATION = 0.4   // Dark mode saturation
+const LIGHT_MODE_SATURATION = 0.9 // Light mode saturation
+const DARK_MODE_SATURATION = 0.4 // Dark mode saturation
 
 // Light mode luminosity: higher values = lighter (0-100)
 const LIGHT_MODE_LUMINOSITY = {
-  base: 90,           // Base luminosity for light mode
-  bgOffset: 4,        // bg = base + offset (brighter)
+  base: 90, // Base luminosity for light mode
+  bgOffset: 4, // bg = base + offset (brighter)
   highlightOffset: -2, // highlight = base + offset
-  tabbarOffset: -4,   // tabbar = base + offset (darker)
+  tabbarOffset: -4, // tabbar = base + offset (darker)
 }
 
 // Dark mode luminosity: lower values = darker (0-100)
 const DARK_MODE_LUMINOSITY = {
-  base: 13,           // Base luminosity for dark mode
-  bgOffset: 0,        // bg = base + offset (reference)
+  base: 13, // Base luminosity for dark mode
+  bgOffset: 0, // bg = base + offset (reference)
   highlightOffset: 6, // highlight = base + offset (lighter)
-  tabbarOffset: -4,   // tabbar = base + offset (darker)
+  tabbarOffset: -4, // tabbar = base + offset (darker)
 }
 // ============================================
 
 // Generate themed colors from a color option
-function generateThemedColors(colorOpt: ColorOption, isDark: boolean): React.CSSProperties {
+function generateThemedColors(
+  colorOpt: ColorOption,
+  isDark: boolean,
+): React.CSSProperties {
   // For default, use neutral colors (no tinting)
   if (colorOpt.id === 'Default') {
     return {}
@@ -304,19 +358,29 @@ function generateThemedColors(colorOpt: ColorOption, isDark: boolean): React.CSS
   const maxSat = Math.min(hsl.s, 25)
 
   if (isDark) {
-    const { base, bgOffset, highlightOffset, tabbarOffset } = DARK_MODE_LUMINOSITY
+    const { base, bgOffset, highlightOffset, tabbarOffset } =
+      DARK_MODE_LUMINOSITY
     const sat = maxSat * DARK_MODE_SATURATION
     return {
       '--preview-bg': hslToHex(hue, sat, base + bgOffset),
-      '--preview-bg-highlight': hslToHex(hue, sat * 1.2, base + highlightOffset),
+      '--preview-bg-highlight': hslToHex(
+        hue,
+        sat * 1.2,
+        base + highlightOffset,
+      ),
       '--preview-tabbar-bg': hslToHex(hue, sat * 0.8, base + tabbarOffset),
     } as React.CSSProperties
   } else {
-    const { base, bgOffset, highlightOffset, tabbarOffset } = LIGHT_MODE_LUMINOSITY
+    const { base, bgOffset, highlightOffset, tabbarOffset } =
+      LIGHT_MODE_LUMINOSITY
     const sat = maxSat * LIGHT_MODE_SATURATION
     return {
       '--preview-bg': hslToHex(hue, sat, base + bgOffset),
-      '--preview-bg-highlight': hslToHex(hue, sat * 1.2, base + highlightOffset),
+      '--preview-bg-highlight': hslToHex(
+        hue,
+        sat * 1.2,
+        base + highlightOffset,
+      ),
       '--preview-tabbar-bg': hslToHex(hue, sat, base + tabbarOffset),
     } as React.CSSProperties
   }
@@ -343,7 +407,7 @@ const colorOptions: ColorOption[] = [
 function formatColorName(id: string): string {
   return id
     .split('-')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ')
 }
 
@@ -351,7 +415,9 @@ function formatColorName(id: string): string {
 function useSystemTheme(): 'light' | 'dark' {
   const [systemTheme, setSystemTheme] = React.useState<'light' | 'dark'>(() => {
     if (typeof window !== 'undefined' && window.matchMedia) {
-      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+      return window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light'
     }
     return 'light'
   })
@@ -372,24 +438,27 @@ function useSystemTheme(): 'light' | 'dark' {
 }
 
 export function StepMakeYoursContent({}: StepContentProps) {
-  const [tabLayout, setTabLayout] = React.useState<TabLayout>(DEFAULT_TAB_LAYOUT)
+  const [tabLayout, setTabLayout] =
+    React.useState<TabLayout>(DEFAULT_TAB_LAYOUT)
   const [theme, setTheme] = React.useState<Theme>(DEFAULT_THEME)
-  const [selectedColor, setSelectedColor] = React.useState<string>(DEFAULT_COLOR)
-  
+  const [selectedColor, setSelectedColor] =
+    React.useState<string>(DEFAULT_COLOR)
+
   const { setHasChanges } = React.useContext(MakeYoursContext)
   const systemTheme = useSystemTheme()
-  
+
   // Track whether any changes have been made from defaults
   React.useEffect(() => {
-    const hasAnyChanges = 
-      tabLayout !== DEFAULT_TAB_LAYOUT ||
-      theme !== DEFAULT_THEME ||
-      selectedColor !== DEFAULT_COLOR
+    const hasAnyChanges =
+      tabLayout !== DEFAULT_TAB_LAYOUT
+      || theme !== DEFAULT_THEME
+      || selectedColor !== DEFAULT_COLOR
     setHasChanges(hasAnyChanges)
   }, [tabLayout, theme, selectedColor, setHasChanges])
-  
+
   // Compute effective theme: use system preference when 'system' is selected
-  const effectiveTheme: 'light' | 'dark' = theme === 'system' ? systemTheme : theme
+  const effectiveTheme: 'light' | 'dark' =
+    theme === 'system' ? systemTheme : theme
 
   const handleTabLayoutChange = (detail: { value: string | undefined }) => {
     if (detail.value) {
@@ -404,99 +473,136 @@ export function StepMakeYoursContent({}: StepContentProps) {
   }
 
   return (
-    <div className="content">
-      <div className="left-content">
-        <div className="left-text-content">
+    <div className='content'>
+      <div className='left-content'>
+        <div className='left-text-content'>
           <h1>Make Brave yours</h1>
-          <p>Personalize your browsing experience with your preferred tab layout and color modes.</p>
+          <p>
+            Personalize your browsing experience with your preferred tab layout
+            and color modes.
+          </p>
         </div>
       </div>
-      <div className="right-content">
-        <div className="customize-content">
+      <div className='right-content'>
+        <div className='customize-content'>
           {/* Mock Window Preview */}
-          <div className="mock-window-preview">
-            <div className="mock-window-wallpaper">
-              <img 
-                src={wallpaperLight} 
-                alt="" 
-                className={`mock-window-wallpaper-image ${effectiveTheme === 'light' ? 'wallpaper-visible' : 'wallpaper-hidden'}`} 
+          <div className='mock-window-preview'>
+            <div className='mock-window-wallpaper'>
+              <img
+                src={wallpaperLight}
+                alt=''
+                className={`mock-window-wallpaper-image ${effectiveTheme === 'light' ? 'wallpaper-visible' : 'wallpaper-hidden'}`}
               />
-              <img 
-                src={wallpaperDark} 
-                alt="" 
-                className={`mock-window-wallpaper-image ${effectiveTheme === 'dark' ? 'wallpaper-visible' : 'wallpaper-hidden'}`} 
+              <img
+                src={wallpaperDark}
+                alt=''
+                className={`mock-window-wallpaper-image ${effectiveTheme === 'dark' ? 'wallpaper-visible' : 'wallpaper-hidden'}`}
               />
             </div>
-            <MockBrowserWindow 
-              layout={tabLayout} 
-              effectiveTheme={effectiveTheme} 
-              colorOption={colorOptions.find(c => c.id === selectedColor) || colorOptions[0]}
+            <MockBrowserWindow
+              layout={tabLayout}
+              effectiveTheme={effectiveTheme}
+              colorOption={
+                colorOptions.find((c) => c.id === selectedColor)
+                || colorOptions[0]
+              }
             />
           </div>
 
           {/* Options */}
-          <div className="customize-options">
-          {/* Tab Layout Option */}
-          <div className="customize-option-row">
-            <span className="customize-option-label">Tab layout</span>
-            <SegmentedControl value={tabLayout} onChange={handleTabLayoutChange}>
-              <SegmentedControlItem value="horizontal">
-                <Icon name="window-tabs-horizontal" slot="icon-before" />
-                Horizontal
-              </SegmentedControlItem>
-              <SegmentedControlItem value="vertical">
-                <Icon name="window-tabs-vertical-expanded" slot="icon-before" />
-                Vertical
-              </SegmentedControlItem>
-            </SegmentedControl>
-          </div>
-
-          {/* Appearance Card */}
-          <div className="customize-appearance-card">
-            {/* Theme Row */}
-            <div className="customize-option-row">
-              <span className="customize-option-label">Theme</span>
-              <SegmentedControl value={theme} onChange={handleThemeChange}>
-                <SegmentedControlItem value="system">
-                  <Icon name="theme-system" slot="icon-before" />
-                  Device
+          <div className='customize-options'>
+            {/* Tab Layout Option */}
+            <div className='customize-option-row'>
+              <span className='customize-option-label'>Tab layout</span>
+              <SegmentedControl
+                value={tabLayout}
+                onChange={handleTabLayoutChange}
+              >
+                <SegmentedControlItem value='horizontal'>
+                  <Icon
+                    name='window-tabs-horizontal'
+                    slot='icon-before'
+                  />
+                  Horizontal
                 </SegmentedControlItem>
-                <SegmentedControlItem value="light">
-                  <Icon name="theme-light" slot="icon-before" />
-                  Light
-                </SegmentedControlItem>
-                <SegmentedControlItem value="dark">
-                  <Icon name="theme-dark" slot="icon-before" />
-                  Dark
+                <SegmentedControlItem value='vertical'>
+                  <Icon
+                    name='window-tabs-vertical-expanded'
+                    slot='icon-before'
+                  />
+                  Vertical
                 </SegmentedControlItem>
               </SegmentedControl>
             </div>
 
-            {/* Divider */}
-            <div className="customize-divider" />
+            {/* Appearance Card */}
+            <div className='customize-appearance-card'>
+              {/* Theme Row */}
+              <div className='customize-option-row'>
+                <span className='customize-option-label'>Theme</span>
+                <SegmentedControl
+                  value={theme}
+                  onChange={handleThemeChange}
+                >
+                  <SegmentedControlItem value='system'>
+                    <Icon
+                      name='theme-system'
+                      slot='icon-before'
+                    />
+                    Device
+                  </SegmentedControlItem>
+                  <SegmentedControlItem value='light'>
+                    <Icon
+                      name='theme-light'
+                      slot='icon-before'
+                    />
+                    Light
+                  </SegmentedControlItem>
+                  <SegmentedControlItem value='dark'>
+                    <Icon
+                      name='theme-dark'
+                      slot='icon-before'
+                    />
+                    Dark
+                  </SegmentedControlItem>
+                </SegmentedControl>
+              </div>
 
-            {/* Color Swatches */}
-            <div className="customize-colors-row">
-              {colorOptions.map((colorOpt) => (
-                <Tooltip key={colorOpt.id} mode='mini' text={formatColorName(colorOpt.id)} mouseenterDelay={500}>
-                  <button
-                    className={`color-swatch ${selectedColor === colorOpt.id ? 'color-swatch-selected' : ''}`}
-                    onClick={() => setSelectedColor(colorOpt.id)}
-                    aria-label={`Select ${colorOpt.id} color`}
-                    style={{
-                      '--swatch-color-1': colorOpt.color1,
-                      '--swatch-color-2': colorOpt.color2,
-                      '--swatch-color-3': colorOpt.color3,
-                    } as React.CSSProperties}
+              {/* Divider */}
+              <div className='customize-divider' />
+
+              {/* Color Swatches */}
+              <div className='customize-colors-row'>
+                {colorOptions.map((colorOpt) => (
+                  <Tooltip
+                    key={colorOpt.id}
+                    mode='mini'
+                    text={formatColorName(colorOpt.id)}
+                    mouseenterDelay={500}
                   >
-                    {selectedColor === colorOpt.id && (
-                      <Icon name="check-circle-filled" className="color-swatch-check" />
-                    )}
-                  </button>
-                </Tooltip>
-              ))}
+                    <button
+                      className={`color-swatch ${selectedColor === colorOpt.id ? 'color-swatch-selected' : ''}`}
+                      onClick={() => setSelectedColor(colorOpt.id)}
+                      aria-label={`Select ${colorOpt.id} color`}
+                      style={
+                        {
+                          '--swatch-color-1': colorOpt.color1,
+                          '--swatch-color-2': colorOpt.color2,
+                          '--swatch-color-3': colorOpt.color3,
+                        } as React.CSSProperties
+                      }
+                    >
+                      {selectedColor === colorOpt.id && (
+                        <Icon
+                          name='check-circle-filled'
+                          className='color-swatch-check'
+                        />
+                      )}
+                    </button>
+                  </Tooltip>
+                ))}
+              </div>
             </div>
-          </div>
           </div>
         </div>
       </div>
@@ -504,21 +610,41 @@ export function StepMakeYoursContent({}: StepContentProps) {
   )
 }
 
-export function StepMakeYoursFooter({ onNext, onBack, onSkip }: StepFooterProps) {
+export function StepMakeYoursFooter({
+  onNext,
+  onBack,
+  onSkip,
+}: StepFooterProps) {
   const { hasChanges } = React.useContext(MakeYoursContext)
-  
+
   return (
-    <div className="footer">
-      <div className="footer-left">
-        <Button kind="plain-faint" size="large" onClick={onBack}>Back</Button>
+    <div className='footer'>
+      <div className='footer-left'>
+        <Button
+          kind='plain-faint'
+          size='large'
+          onClick={onBack}
+        >
+          Back
+        </Button>
       </div>
-      <div className="footer-right">
-        <Button kind="plain-faint" size="large" onClick={onSkip}>Use defaults</Button>
-        <Button kind="filled" size="large" className='main-button' onClick={onNext}>
+      <div className='footer-right'>
+        <Button
+          kind='plain-faint'
+          size='large'
+          onClick={onSkip}
+        >
+          Use defaults
+        </Button>
+        <Button
+          kind='filled'
+          size='large'
+          className='main-button'
+          onClick={onNext}
+        >
           {hasChanges ? 'Apply and continue' : 'Continue'}
         </Button>
       </div>
     </div>
   )
 }
-

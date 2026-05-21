@@ -18,6 +18,7 @@ export const layoutStyles = `
     border-radius: ${radius.xxl};
     backdrop-filter: blur(35px);
     overflow: hidden;
+    padding: 0;
   }
 
   .content-area {
@@ -117,4 +118,3 @@ export const layoutStyles = `
     min-width: 240px;
   }
 `
-

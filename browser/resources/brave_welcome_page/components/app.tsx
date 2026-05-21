@@ -6,22 +6,41 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 
-import { style, bgLightVideo, bgDarkVideo } from './styles'
+import { style } from './styles'
 import { StepDefinition } from './types'
 import {
-  StepWelcomeContent, StepWelcomeFooter,
-  StepImportDataContent, StepImportDataFooter, ImportDataProvider,
-  StepMakeYoursContent, StepMakeYoursFooter, MakeYoursProvider,
-  StepStartingFeaturesContent, StepStartingFeaturesFooter,
-  StepCompleteContent, StepCompleteFooter
+  StepWelcomeContent,
+  StepWelcomeFooter,
+  StepImportDataContent,
+  StepImportDataFooter,
+  ImportDataProvider,
+  StepMakeYoursContent,
+  StepMakeYoursFooter,
+  MakeYoursProvider,
+  StepStartingFeaturesContent,
+  StepStartingFeaturesFooter,
+  StepCompleteContent,
+  StepCompleteFooter,
 } from './steps'
 
 // Define your onboarding steps here
 const steps: StepDefinition[] = [
   { id: 'welcome', Content: StepWelcomeContent, Footer: StepWelcomeFooter },
-  { id: 'import-data', Content: StepImportDataContent, Footer: StepImportDataFooter },
-  { id: 'make-yours', Content: StepMakeYoursContent, Footer: StepMakeYoursFooter },
-  { id: 'starting-features', Content: StepStartingFeaturesContent, Footer: StepStartingFeaturesFooter },
+  {
+    id: 'import-data',
+    Content: StepImportDataContent,
+    Footer: StepImportDataFooter,
+  },
+  {
+    id: 'make-yours',
+    Content: StepMakeYoursContent,
+    Footer: StepMakeYoursFooter,
+  },
+  {
+    id: 'starting-features',
+    Content: StepStartingFeaturesContent,
+    Footer: StepStartingFeaturesFooter,
+  },
   { id: 'complete', Content: StepCompleteContent, Footer: StepCompleteFooter },
 ]
 
@@ -33,8 +52,10 @@ const TRANSITION_DURATION = 300 // ms
 export function App() {
   const [currentStepIndex, setCurrentStepIndex] = React.useState(0)
   const [displayedContentIndex, setDisplayedContentIndex] = React.useState(0)
-  const [transitionState, setTransitionState] = React.useState<TransitionState>('idle')
-  const [direction, setDirection] = React.useState<TransitionDirection>('forward')
+  const [transitionState, setTransitionState] =
+    React.useState<TransitionState>('idle')
+  const [direction, setDirection] =
+    React.useState<TransitionDirection>('forward')
   const [isInitialLoad, setIsInitialLoad] = React.useState(true)
 
   // Clear initial load flag after entrance animation completes
@@ -45,22 +66,25 @@ export function App() {
     return () => clearTimeout(timer)
   }, [])
 
-  const navigateToStep = React.useCallback((newIndex: number, dir: TransitionDirection) => {
-    if (transitionState !== 'idle') return
+  const navigateToStep = React.useCallback(
+    (newIndex: number, dir: TransitionDirection) => {
+      if (transitionState !== 'idle') return
 
-    setDirection(dir)
-    setTransitionState('exiting')
-
-    setTimeout(() => {
-      setDisplayedContentIndex(newIndex)
-      setCurrentStepIndex(newIndex)
-      setTransitionState('entering')
+      setDirection(dir)
+      setTransitionState('exiting')
 
       setTimeout(() => {
-        setTransitionState('idle')
+        setDisplayedContentIndex(newIndex)
+        setCurrentStepIndex(newIndex)
+        setTransitionState('entering')
+
+        setTimeout(() => {
+          setTransitionState('idle')
+        }, TRANSITION_DURATION)
       }, TRANSITION_DURATION)
-    }, TRANSITION_DURATION)
-  }, [transitionState])
+    },
+    [transitionState],
+  )
 
   const handleNext = React.useCallback(() => {
     if (currentStepIndex < steps.length - 1) {
@@ -85,7 +109,10 @@ export function App() {
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Don't navigate if user is typing in an input
-      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+      if (
+        e.target instanceof HTMLInputElement
+        || e.target instanceof HTMLTextAreaElement
+      ) {
         return
       }
 
@@ -114,7 +141,9 @@ export function App() {
       return direction === 'forward' ? 'step-exit-left' : 'step-exit-right'
     }
     if (transitionState === 'entering') {
-      return direction === 'forward' ? 'step-enter-from-right' : 'step-enter-from-left'
+      return direction === 'forward'
+        ? 'step-enter-from-right'
+        : 'step-enter-from-left'
     }
     return ''
   }
@@ -123,28 +152,12 @@ export function App() {
     <ImportDataProvider>
       <MakeYoursProvider>
         <div data-css-scope={style.scope}>
-          <video
-            className="video-background light"
-            autoPlay
-            muted
-            loop
-            playsInline
+          <div
+            className={`container ${isInitialLoad ? 'entrance-animation' : ''}`}
           >
-            <source src={bgLightVideo} type="video/mp4" />
-          </video>
-          <video
-            className="video-background dark"
-            autoPlay
-            muted
-            loop
-            playsInline
-          >
-            <source src={bgDarkVideo} type="video/mp4" />
-          </video>
-          <div className={`container ${isInitialLoad ? 'entrance-animation' : ''}`}>
-            <div className="content-area">
-              <div className="brave-logo-container">
-                <Icon name='social-brave-release-favicon-fullheight-color'/>
+            <div className='content-area'>
+              <div className='brave-logo-container'>
+                <Icon name='social-brave-release-favicon-fullheight-color' />
               </div>
               <div className={`step-wrapper ${getTransitionClass()}`}>
                 <DisplayedContent

@@ -4,8 +4,18 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 export { StepWelcomeContent, StepWelcomeFooter } from './step_welcome'
-export { StepImportDataContent, StepImportDataFooter, ImportDataProvider } from './step_import_data'
-export { StepMakeYoursContent, StepMakeYoursFooter, MakeYoursProvider } from './step_make_yours'
-export { StepStartingFeaturesContent, StepStartingFeaturesFooter } from './step_starting_features'
+export {
+  StepImportDataContent,
+  StepImportDataFooter,
+  ImportDataProvider,
+} from './step_import_data'
+export {
+  StepMakeYoursContent,
+  StepMakeYoursFooter,
+  MakeYoursProvider,
+} from './step_make_yours'
+export {
+  StepStartingFeaturesContent,
+  StepStartingFeaturesFooter,
+} from './step_starting_features'
 export { StepCompleteContent, StepCompleteFooter } from './step_complete'
-

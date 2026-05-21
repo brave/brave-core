@@ -26,53 +26,83 @@ const privacyOptions: PrivacyOption[] = [
   {
     id: 'wdp',
     title: 'Help Brave Search grow',
-    subtitle: 'Opt into the Web Discovery Project to help grow the index and improve search results.',
-    icon: wdpIcon
+    subtitle:
+      'Opt into the Web Discovery Project to help grow the index and improve search results.',
+    icon: wdpIcon,
   },
   {
     id: 'anonymous-data',
     title: 'Help us make the browser better',
     subtitle: 'Share completely private & anonymous product insights.',
-    icon: p3aIcon
+    icon: p3aIcon,
   },
 ]
 
 export function StepCompleteContent({}: StepContentProps) {
-  const [checkedOptions, setCheckedOptions] = React.useState<Record<string, boolean>>(
-    Object.fromEntries(privacyOptions.map(opt => [opt.id, true]))
-  )
+  const [checkedOptions, setCheckedOptions] = React.useState<
+    Record<string, boolean>
+  >(Object.fromEntries(privacyOptions.map((opt) => [opt.id, true])))
 
   const handleCardClick = (id: string) => {
-    setCheckedOptions(prev => ({ ...prev, [id]: !prev[id] }))
+    setCheckedOptions((prev) => ({ ...prev, [id]: !prev[id] }))
   }
 
   return (
-    <div className="content">
-      <div className="left-content">
-        <div className="left-text-content">
+    <div className='content'>
+      <div className='left-content'>
+        <div className='left-text-content'>
           <h1>Build a better web with us</h1>
-          <p>Help Brave be better and create better products by enabling these private metrics. We promise to protect your privacy in everything we do.</p>
-          <p>You can change these choices at any time in Brave at <a href="#" target="_blank">brave://settings/privacy.</a> Read our full <a href="#" target="_blank">Privacy Policy.</a></p>
+          <p>
+            Help Brave be better and create better products by enabling these
+            private metrics. We promise to protect your privacy in everything we
+            do.
+          </p>
+          <p>
+            You can change these choices at any time in Brave at{' '}
+            <a
+              href='#'
+              target='_blank'
+            >
+              brave://settings/privacy.
+            </a>{' '}
+            Read our full{' '}
+            <a
+              href='#'
+              target='_blank'
+            >
+              Privacy Policy.
+            </a>
+          </p>
         </div>
       </div>
-      <div className="right-content">
-        <div className="privacy-cards">
+      <div className='right-content'>
+        <div className='privacy-cards'>
           {privacyOptions.map((option) => (
             <div
               key={option.id}
               className={`privacy-card ${!checkedOptions[option.id] ? 'privacy-card-unchecked' : ''}`}
               onClick={() => handleCardClick(option.id)}
             >
-              <div className="privacy-card-icon">
-                {option.icon && <img src={option.icon} alt="" />}
+              <div className='privacy-card-icon'>
+                {option.icon && (
+                  <img
+                    src={option.icon}
+                    alt=''
+                  />
+                )}
               </div>
-              <div className="privacy-card-content">
-                <h3 className="privacy-card-title">{option.title}</h3>
-                <p className="privacy-card-subtitle">{option.subtitle}</p>
+              <div className='privacy-card-content'>
+                <h3 className='privacy-card-title'>{option.title}</h3>
+                <p className='privacy-card-subtitle'>{option.subtitle}</p>
               </div>
               <Checkbox
                 checked={checkedOptions[option.id]}
-                onChange={(detail) => setCheckedOptions(prev => ({ ...prev, [option.id]: detail.checked }))}
+                onChange={(detail) =>
+                  setCheckedOptions((prev) => ({
+                    ...prev,
+                    [option.id]: detail.checked,
+                  }))
+                }
               />
             </div>
           ))}
@@ -84,16 +114,26 @@ export function StepCompleteContent({}: StepContentProps) {
 
 export function StepCompleteFooter({ onNext, onBack }: StepFooterProps) {
   return (
-    <div className="footer">
-      <div className="footer-left">
-        <Button kind="plain-faint" size="large" onClick={onBack}>Back</Button>
+    <div className='footer'>
+      <div className='footer-left'>
+        <Button
+          kind='plain-faint'
+          size='large'
+          onClick={onBack}
+        >
+          Back
+        </Button>
       </div>
-      <div className="footer-right">
-        <Button kind="filled" size="large" className='main-button' onClick={onNext}>
+      <div className='footer-right'>
+        <Button
+          kind='filled'
+          size='large'
+          className='main-button'
+          onClick={onNext}
+        >
           Start browsing
         </Button>
       </div>
     </div>
   )
 }
-

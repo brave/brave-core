@@ -504,4 +504,3 @@ export const importDataStyles = `
     --leo-icon-color: ${color.systemfeedback.successIcon};
   }
 `
-

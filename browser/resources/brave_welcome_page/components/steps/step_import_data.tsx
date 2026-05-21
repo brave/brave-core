@@ -19,7 +19,11 @@ interface BrowserProfile {
 }
 
 const browserProfiles: BrowserProfile[] = [
-  { name: 'Google Chrome', icon: 'chromerelease-color', profile: 'Agustín Ruiz' },
+  {
+    name: 'Google Chrome',
+    icon: 'chromerelease-color',
+    profile: 'Agustín Ruiz',
+  },
   { name: 'Google Chrome', icon: 'chromerelease-color', profile: 'Work' },
   { name: 'Microsoft Edge', icon: 'edge-color' },
   { name: 'Vivaldi', icon: 'vivaldi-color' },
@@ -27,7 +31,7 @@ const browserProfiles: BrowserProfile[] = [
   { name: 'Firefox', icon: 'firefox-color' },
   { name: 'Edge', icon: 'edge-color' },
   { name: 'Ecosia', icon: 'ecosia-color' },
-  { name: 'Safari', icon: 'safari-color' }
+  { name: 'Safari', icon: 'safari-color' },
 ]
 
 const importOptions = [
@@ -35,7 +39,7 @@ const importOptions = [
   { id: 'history', label: 'History', completedText: 'Last 180 days' },
   { id: 'passwords', label: 'Saved passwords', completedText: '23 passwords' },
   { id: 'extensions', label: 'Extensions', completedText: '12 extensions' },
-  { id: 'tabs', label: 'Open tabs and groups', completedText: '8 tabs' }
+  { id: 'tabs', label: 'Open tabs and groups', completedText: '8 tabs' },
 ]
 
 type ImportStatus = 'pending' | 'importing' | 'completed'
@@ -76,35 +80,40 @@ const ImportDataContext = React.createContext<ImportDataContextType>({
   importStatuses: {},
   setImportStatuses: () => {},
   startImport: () => {},
-  resetImport: () => {}
+  resetImport: () => {},
 })
 
 // Provider component to wrap both Content and Footer
-export function ImportDataProvider({ children }: { children: React.ReactNode }) {
+export function ImportDataProvider({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   const [isBrowserSelected, setIsBrowserSelected] = React.useState(false)
   const [hasSelectedImports, setHasSelectedImports] = React.useState(true)
   const [isImporting, setIsImporting] = React.useState(false)
   const [importComplete, setImportComplete] = React.useState(false)
-  const [selectedBrowser, setSelectedBrowser] = React.useState<BrowserProfile | null>(null)
-  const [selectedImports, setSelectedImports] = React.useState<Record<string, boolean>>(
-    Object.fromEntries(importOptions.map(opt => [opt.id, true]))
-  )
-  const [importStatuses, setImportStatuses] = React.useState<Record<string, ImportStatus>>(
-    Object.fromEntries(importOptions.map(opt => [opt.id, 'pending']))
-  )
+  const [selectedBrowser, setSelectedBrowser] =
+    React.useState<BrowserProfile | null>(null)
+  const [selectedImports, setSelectedImports] = React.useState<
+    Record<string, boolean>
+  >(Object.fromEntries(importOptions.map((opt) => [opt.id, true])))
+  const [importStatuses, setImportStatuses] = React.useState<
+    Record<string, ImportStatus>
+  >(Object.fromEntries(importOptions.map((opt) => [opt.id, 'pending'])))
 
   const startImport = React.useCallback(() => {
     setIsImporting(true)
-    
+
     // Get list of selected imports to process
     const selectedIds = importOptions
-      .filter(opt => selectedImports[opt.id])
-      .map(opt => opt.id)
-    
+      .filter((opt) => selectedImports[opt.id])
+      .map((opt) => opt.id)
+
     // Set all selected items to importing initially
-    setImportStatuses(prev => {
+    setImportStatuses((prev) => {
       const newStatuses = { ...prev }
-      selectedIds.forEach(id => {
+      selectedIds.forEach((id) => {
         newStatuses[id] = 'importing'
       })
       return newStatuses
@@ -112,20 +121,23 @@ export function ImportDataProvider({ children }: { children: React.ReactNode }) 
 
     // Simulate completing each item one by one
     selectedIds.forEach((id, index) => {
-      setTimeout(() => {
-        setImportStatuses(prev => ({
-          ...prev,
-          [id]: 'completed'
-        }))
-        
-        // Check if this is the last item
-        if (index === selectedIds.length - 1) {
-          setTimeout(() => {
-            setIsImporting(false)
-            setImportComplete(true)
-          }, 300)
-        }
-      }, (index + 1) * 800) // Stagger completions by 800ms each
+      setTimeout(
+        () => {
+          setImportStatuses((prev) => ({
+            ...prev,
+            [id]: 'completed',
+          }))
+
+          // Check if this is the last item
+          if (index === selectedIds.length - 1) {
+            setTimeout(() => {
+              setIsImporting(false)
+              setImportComplete(true)
+            }, 300)
+          }
+        },
+        (index + 1) * 800,
+      ) // Stagger completions by 800ms each
     })
   }, [selectedImports])
 
@@ -134,35 +146,47 @@ export function ImportDataProvider({ children }: { children: React.ReactNode }) 
     setImportComplete(false)
     setIsBrowserSelected(false)
     setSelectedBrowser(null)
-    setSelectedImports(Object.fromEntries(importOptions.map(opt => [opt.id, true])))
-    setImportStatuses(Object.fromEntries(importOptions.map(opt => [opt.id, 'pending'])))
+    setSelectedImports(
+      Object.fromEntries(importOptions.map((opt) => [opt.id, true])),
+    )
+    setImportStatuses(
+      Object.fromEntries(importOptions.map((opt) => [opt.id, 'pending'])),
+    )
   }, [])
 
   return (
-    <ImportDataContext.Provider value={{
-      isBrowserSelected,
-      setIsBrowserSelected,
-      hasSelectedImports,
-      setHasSelectedImports,
-      isImporting,
-      setIsImporting,
-      importComplete,
-      setImportComplete,
-      selectedBrowser,
-      setSelectedBrowser,
-      selectedImports,
-      setSelectedImports,
-      importStatuses,
-      setImportStatuses,
-      startImport,
-      resetImport
-    }}>
+    <ImportDataContext.Provider
+      value={{
+        isBrowserSelected,
+        setIsBrowserSelected,
+        hasSelectedImports,
+        setHasSelectedImports,
+        isImporting,
+        setIsImporting,
+        importComplete,
+        setImportComplete,
+        selectedBrowser,
+        setSelectedBrowser,
+        selectedImports,
+        setSelectedImports,
+        importStatuses,
+        setImportStatuses,
+        startImport,
+        resetImport,
+      }}
+    >
       {children}
     </ImportDataContext.Provider>
   )
 }
 
-type TransitionState = 'idle' | 'dropdown-exiting' | 'dropdown-entering' | 'selected-exiting' | 'selected-entering' | 'morphing-to-transfer'
+type TransitionState =
+  | 'idle'
+  | 'dropdown-exiting'
+  | 'dropdown-entering'
+  | 'selected-exiting'
+  | 'selected-entering'
+  | 'morphing-to-transfer'
 
 export function StepImportDataContent({}: StepContentProps) {
   const {
@@ -174,21 +198,27 @@ export function StepImportDataContent({}: StepContentProps) {
     setSelectedBrowser,
     selectedImports,
     setSelectedImports,
-    importStatuses
+    importStatuses,
   } = React.useContext(ImportDataContext)
 
-  const [transitionState, setTransitionState] = React.useState<TransitionState>('idle')
-  const [displayedBrowser, setDisplayedBrowser] = React.useState<BrowserProfile | null>(selectedBrowser)
+  const [transitionState, setTransitionState] =
+    React.useState<TransitionState>('idle')
+  const [displayedBrowser, setDisplayedBrowser] =
+    React.useState<BrowserProfile | null>(selectedBrowser)
   const [isAtScrollBottom, setIsAtScrollBottom] = React.useState(false)
   const prevIsImporting = React.useRef(isImporting)
   const dropdownListRef = React.useRef<HTMLDivElement>(null)
 
   // Handle scroll detection for hiding gradient at bottom
-  const handleDropdownScroll = React.useCallback((e: React.UIEvent<HTMLDivElement>) => {
-    const target = e.target as HTMLDivElement
-    const isAtBottom = target.scrollHeight - target.scrollTop - target.clientHeight < 1
-    setIsAtScrollBottom(isAtBottom)
-  }, [])
+  const handleDropdownScroll = React.useCallback(
+    (e: React.UIEvent<HTMLDivElement>) => {
+      const target = e.target as HTMLDivElement
+      const isAtBottom =
+        target.scrollHeight - target.scrollTop - target.clientHeight < 1
+      setIsAtScrollBottom(isAtBottom)
+    },
+    [],
+  )
 
   // Handle transition when import starts - trigger morph animation
   React.useEffect(() => {
@@ -204,13 +234,13 @@ export function StepImportDataContent({}: StepContentProps) {
     // Start exit animation for dropdown
     setTransitionState('dropdown-exiting')
     setDisplayedBrowser(browser)
-    
+
     // After exit animation, switch to selected state with enter animation
     setTimeout(() => {
       setSelectedBrowser(browser)
       setIsBrowserSelected(true)
       setTransitionState('selected-entering')
-      
+
       // Reset to idle after enter animation completes
       setTimeout(() => setTransitionState('idle'), 350)
     }, 200)
@@ -218,17 +248,17 @@ export function StepImportDataContent({}: StepContentProps) {
 
   const handleClearSelection = () => {
     if (isImporting || importComplete) return // Don't allow changing during/after import
-    
+
     // Start exit animation for selected header
     setTransitionState('selected-exiting')
-    
+
     // After exit animation, switch to dropdown state with enter animation
     setTimeout(() => {
       setSelectedBrowser(null)
       setIsBrowserSelected(false)
       setDisplayedBrowser(null)
       setTransitionState('dropdown-entering')
-      
+
       // Reset to idle after enter animation completes
       setTimeout(() => setTransitionState('idle'), 300)
     }, 200)
@@ -238,109 +268,141 @@ export function StepImportDataContent({}: StepContentProps) {
     if (isImporting || importComplete) return // Don't allow changing during/after import
     const newImports = { ...selectedImports, [id]: checked }
     setSelectedImports(newImports)
-    setHasSelectedImports(Object.values(newImports).some(v => v))
+    setHasSelectedImports(Object.values(newImports).some((v) => v))
   }
 
   // Show importing state
   const showImportingState = isImporting || importComplete
-  
+
   // Determine which view to show based on transition state and selected browser
   const isExitingDropdown = transitionState === 'dropdown-exiting'
   const isEnteringDropdown = transitionState === 'dropdown-entering'
   const isExitingSelected = transitionState === 'selected-exiting'
   const isEnteringSelected = transitionState === 'selected-entering'
   const isMorphingToTransfer = transitionState === 'morphing-to-transfer'
-  
+
   // Show dropdown when no browser selected OR during dropdown transitions
-  const showDropdown = (!selectedBrowser && transitionState !== 'selected-entering') || isExitingDropdown || isEnteringDropdown
+  const showDropdown =
+    (!selectedBrowser && transitionState !== 'selected-entering')
+    || isExitingDropdown
+    || isEnteringDropdown
   // Show selected/morphing header when browser is selected
-  const showSelected = selectedBrowser && transitionState !== 'dropdown-entering'
+  const showSelected =
+    selectedBrowser && transitionState !== 'dropdown-entering'
 
   return (
-    <div className="content">
-      <div className="left-content">
-        <div className="left-text-content">
+    <div className='content'>
+      <div className='left-content'>
+        <div className='left-text-content'>
           <h1>Bring along your old browser content</h1>
-          <p>Import everything from your old browser and make the transition seamless.</p>
+          <p>
+            Import everything from your old browser and make the transition
+            seamless.
+          </p>
           <p>You can also do this later in Brave's settings.</p>
         </div>
       </div>
-      <div className="right-content">
-        <div className="import-container">
+      <div className='right-content'>
+        <div className='import-container'>
           {/* Morphing header - transitions between selected and transfer states */}
           {showSelected && (selectedBrowser || displayedBrowser) ? (
-            <div 
+            <div
               className={`browser-morphing-header ${showImportingState ? 'transfer-mode' : 'selected-mode'} ${isExitingSelected ? 'exiting' : ''} ${isEnteringSelected ? 'entering' : ''} ${isMorphingToTransfer ? 'morphing-to-transfer' : ''} ${importComplete ? 'import-complete' : ''}`}
               onClick={!showImportingState ? handleClearSelection : undefined}
             >
               {/* Browser icon - shared element that morphs position */}
-              <div className="browser-item-icon">
+              <div className='browser-item-icon'>
                 <Icon name={(selectedBrowser || displayedBrowser)!.icon} />
               </div>
-              
+
               {/* Selected state elements - fade out during morph */}
-              <div className="selected-elements">
-                <h3 className="browser-selected-name">{(selectedBrowser || displayedBrowser)!.name}</h3>
+              <div className='selected-elements'>
+                <h3 className='browser-selected-name'>
+                  {(selectedBrowser || displayedBrowser)!.name}
+                </h3>
                 {(selectedBrowser || displayedBrowser)!.profile && (
-                  <Label mode="loud" color="neutral">{(selectedBrowser || displayedBrowser)!.profile}</Label>
+                  <Label
+                    mode='loud'
+                    color='neutral'
+                  >
+                    {(selectedBrowser || displayedBrowser)!.profile}
+                  </Label>
                 )}
-                <Icon name="carat-down" />
+                <Icon name='carat-down' />
               </div>
-              
+
               {/* Transfer state elements - fade in during morph */}
-              <div className="transfer-elements">
-                <div className="transfer-arrows">
-                  <Icon name="carat-right" className="arrow-1" />
-                  <Icon name="carat-right" className="arrow-2" />
-                  <Icon name="carat-right" className="arrow-3" />
+              <div className='transfer-elements'>
+                <div className='transfer-arrows'>
+                  <Icon
+                    name='carat-right'
+                    className='arrow-1'
+                  />
+                  <Icon
+                    name='carat-right'
+                    className='arrow-2'
+                  />
+                  <Icon
+                    name='carat-right'
+                    className='arrow-3'
+                  />
                 </div>
-                <div className="brave-icon-with-spinner">
-                  <Icon name="social-brave-release-favicon-fullheight-color" />
+                <div className='brave-icon-with-spinner'>
+                  <Icon name='social-brave-release-favicon-fullheight-color' />
                   {isImporting && (
-                    <div className="transfer-spinner">
+                    <div className='transfer-spinner'>
                       <ProgressRing />
                     </div>
                   )}
                   {importComplete && (
-                    <div className="transfer-complete">
-                      <Icon name="check-circle-filled" />
+                    <div className='transfer-complete'>
+                      <Icon name='check-circle-filled' />
                     </div>
                   )}
                 </div>
               </div>
             </div>
           ) : (
-            <div className="browser-selector-wrapper">
+            <div className='browser-selector-wrapper'>
               {/* Browser dropdown list */}
               {showDropdown && (
-                <div className={`browser-dropdown ${isExitingDropdown ? 'exiting' : ''} ${isEnteringDropdown ? 'entering' : ''} ${isAtScrollBottom ? 'scrolled-to-bottom' : ''}`}>
-                  <div className="browser-dropdown-header">
-                    <div className="browser-icons-grid">
-                      <Icon name="chromerelease-color" />
-                      <Icon name="safari-color" />
-                      <Icon name="firefox-color" />
-                      <Icon name="edge-color" />
+                <div
+                  className={`browser-dropdown ${isExitingDropdown ? 'exiting' : ''} ${isEnteringDropdown ? 'entering' : ''} ${isAtScrollBottom ? 'scrolled-to-bottom' : ''}`}
+                >
+                  <div className='browser-dropdown-header'>
+                    <div className='browser-icons-grid'>
+                      <Icon name='chromerelease-color' />
+                      <Icon name='safari-color' />
+                      <Icon name='firefox-color' />
+                      <Icon name='edge-color' />
                     </div>
                     <h3>Select your previous browser</h3>
                   </div>
-                  <div 
-                    className="browser-dropdown-list"
+                  <div
+                    className='browser-dropdown-list'
                     ref={dropdownListRef}
                     onScroll={handleDropdownScroll}
                   >
                     {browserProfiles.map((browser, index) => (
                       <div
                         key={index}
-                        className="browser-item"
+                        className='browser-item'
                         onClick={() => handleBrowserSelect(browser)}
                         style={{ animationDelay: `${index * 30}ms` }}
                       >
-                        <div className="browser-item-icon">
+                        <div className='browser-item-icon'>
                           <Icon name={browser.icon} />
                         </div>
-                        <span className="browser-item-name">{browser.name}</span>
+                        <span className='browser-item-name'>
+                          {browser.name}
+                        </span>
                         {browser.profile && (
-                          <Label mode="loud" color="neutral">{browser.profile}</Label>
+                          <Label
+                            mode='loud'
+                            color='neutral'
+                          >
+                            {browser.profile}
+                          </Label>
                         )}
                       </div>
                     ))}
@@ -352,43 +414,64 @@ export function StepImportDataContent({}: StepContentProps) {
 
           {/* Import options / progress */}
           {selectedBrowser && (
-            <div className="import-options">
-              <h4>{showImportingState ? 'Importing your content' : 'What do you want to import?'}</h4>
-              <div className="import-options-list">
+            <div className='import-options'>
+              <h4>
+                {showImportingState
+                  ? 'Importing your content'
+                  : 'What do you want to import?'}
+              </h4>
+              <div className='import-options-list'>
                 {importOptions
-                  .filter(option => showImportingState ? selectedImports[option.id] : true)
+                  .filter((option) =>
+                    showImportingState ? selectedImports[option.id] : true,
+                  )
                   .map((option) => (
-                  <div
-                    key={option.id}
-                    className={`import-option-item ${showImportingState ? 'importing-state' : ''}`}
-                    onClick={() => !showImportingState && handleImportToggle(option.id, !selectedImports[option.id])}
-                  >
-                    {showImportingState ? (
-                      <>
-                        <div className="import-status-icon">
-                          {importStatuses[option.id] === 'completed' ? (
-                            <Icon name="check-circle-filled" className="status-complete" />
-                          ) : (
-                            <ProgressRing />
-                          )}
+                    <div
+                      key={option.id}
+                      className={`import-option-item ${showImportingState ? 'importing-state' : ''}`}
+                      onClick={() =>
+                        !showImportingState
+                        && handleImportToggle(
+                          option.id,
+                          !selectedImports[option.id],
+                        )
+                      }
+                    >
+                      {showImportingState ? (
+                        <>
+                          <div className='import-status-icon'>
+                            {importStatuses[option.id] === 'completed' ? (
+                              <Icon
+                                name='check-circle-filled'
+                                className='status-complete'
+                              />
+                            ) : (
+                              <ProgressRing />
+                            )}
+                          </div>
+                          <span className='import-item-label'>
+                            {option.label}
+                          </span>
+                          <span className='import-item-status'>
+                            {importStatuses[option.id] === 'completed'
+                              ? option.completedText
+                              : 'Importing'}
+                          </span>
+                        </>
+                      ) : (
+                        <div onClick={(e) => e.stopPropagation()}>
+                          <Checkbox
+                            checked={selectedImports[option.id]}
+                            onChange={(detail) =>
+                              handleImportToggle(option.id, detail.checked)
+                            }
+                          >
+                            {option.label}
+                          </Checkbox>
                         </div>
-                        <span className="import-item-label">{option.label}</span>
-                        <span className="import-item-status">
-                          {importStatuses[option.id] === 'completed' ? option.completedText : 'Importing'}
-                        </span>
-                      </>
-                    ) : (
-                      <div onClick={(e) => e.stopPropagation()}>
-                        <Checkbox
-                          checked={selectedImports[option.id]}
-                          onChange={(detail) => handleImportToggle(option.id, detail.checked)}
-                        >
-                          {option.label}
-                        </Checkbox>
-                      </div>
-                    )}
-                  </div>
-                ))}
+                      )}
+                    </div>
+                  ))}
               </div>
             </div>
           )}
@@ -398,8 +481,19 @@ export function StepImportDataContent({}: StepContentProps) {
   )
 }
 
-export function StepImportDataFooter({ onNext, onBack, onSkip }: StepFooterProps) {
-  const { isBrowserSelected, hasSelectedImports, isImporting, importComplete, startImport, resetImport } = React.useContext(ImportDataContext)
+export function StepImportDataFooter({
+  onNext,
+  onBack,
+  onSkip,
+}: StepFooterProps) {
+  const {
+    isBrowserSelected,
+    hasSelectedImports,
+    isImporting,
+    importComplete,
+    startImport,
+    resetImport,
+  } = React.useContext(ImportDataContext)
 
   const canImport = isBrowserSelected && hasSelectedImports
   const showImportingState = isImporting || importComplete
@@ -419,26 +513,39 @@ export function StepImportDataFooter({ onNext, onBack, onSkip }: StepFooterProps
   }
 
   return (
-    <div className="footer">
-      <div className="footer-left">
-        <Button 
-          kind="plain-faint" 
-          size="large" 
+    <div className='footer'>
+      <div className='footer-left'>
+        <Button
+          kind='plain-faint'
+          size='large'
           onClick={onBack}
           isDisabled={isImporting}
         >
           Back
         </Button>
       </div>
-      <div className="footer-right">
+      <div className='footer-right'>
         {showImportingState ? (
-          <Button kind="plain-faint" size="large" onClick={resetImport} isDisabled={isImporting}>Undo import</Button>
+          <Button
+            kind='plain-faint'
+            size='large'
+            onClick={resetImport}
+            isDisabled={isImporting}
+          >
+            Undo import
+          </Button>
         ) : (
-          <Button kind="plain-faint" size="large" onClick={onSkip}>Don't import</Button>
+          <Button
+            kind='plain-faint'
+            size='large'
+            onClick={onSkip}
+          >
+            Don't import
+          </Button>
         )}
         <Button
-          kind="filled"
-          size="large"
+          kind='filled'
+          size='large'
           className='main-button'
           onClick={handleButtonClick}
           isDisabled={!canImport && !importComplete}
@@ -450,4 +557,3 @@ export function StepImportDataFooter({ onNext, onBack, onSkip }: StepFooterProps
     </div>
   )
 }
-

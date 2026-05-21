@@ -78,4 +78,3 @@ export const completeStyles = `
     color: ${color.text.tertiary};
   }
 `
-

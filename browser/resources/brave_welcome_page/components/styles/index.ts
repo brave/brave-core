@@ -5,9 +5,7 @@
 
 import { scoped } from '$web-common/scoped_css'
 
-import { baseStyles, bgLightVideo, bgDarkVideo } from './base'
-
-export { bgLightVideo, bgDarkVideo }
+import { baseStyles } from './base'
 import { layoutStyles } from './layout'
 import { transitionStyles } from './transitions'
 import { importDataStyles } from './import_data'
@@ -24,4 +22,3 @@ export const style = scoped.css`
   ${completeStyles}
   ${responsiveStyles}
 `
-

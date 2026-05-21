@@ -666,16 +666,15 @@ export const makeYoursStyles = `
 
   /* Segmented Control customization */
   .customize-option-row leo-segmented-control {
-    --leo-segmentedcontrol-radius: 1000px;
-    --leo-segmentedcontrol-background: ${color.neutral[10]};
+    --leo-segmented-control-radius: 1000px;
+    --leo-segmented-control-bg: ${color.neutral[10]};
   }
 
   .customize-option-row leo-segmented-control-item {
-    --leo-segmentedcontrolitem-icon-gap: ${spacing.xs};
+    --leo-segmented-control-item-icon-gap: ${spacing.xs};
   }
 
   .customize-option-row leo-icon {
     --leo-icon-size: 20px;
   }
 `
-
