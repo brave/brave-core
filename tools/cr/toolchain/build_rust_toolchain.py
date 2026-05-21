@@ -74,6 +74,7 @@ import shutil
 import subprocess
 import sys
 import tarfile
+import tomllib
 from types import ModuleType
 
 # Filename of the LLVM linker binary produced by the Chromium LLVM build.
@@ -173,9 +174,8 @@ class ToolchainBuilder:
          from the stage-1 rustlib output, stored verbatim.
 
     Phases 1 and 2 are wrapped in `_temporary_config_toml_template_edits`,
-    which appends `profiler = false` for the wasm32 target to
-    `config.toml.template` and restores the file (via `git checkout`)
-    both before the build starts and in a `finally` block afterwards.
+    which appends a `[target.wasm32-unknown-unknown]` stanza to
+    `config.toml.template` (inherited from the host stanza).
     """
 
     def __init__(self, chromium_src: str, out_dir: str):
@@ -207,15 +207,35 @@ class ToolchainBuilder:
         # Module for tools/rust/package_rust.py. Initialised by `run()`.
         self.package_rust_module: ModuleType | None = None
 
+    def _native_target_stanza(self) -> dict[str, str | bool]:
+        """Return the `[target.<native-triple>]` table from the template.
+
+        `$LLVM_BIN` placeholders inside string values are preserved verbatim
+        — `build_rust.py` substitutes them when it generates `config.toml`.
+        Bare `$UPPERCASE` placeholder lines (e.g. `$CHANGELOG_SEEN`) are not
+        valid TOML on their own, so they are stripped before parsing.
+        """
+        target_triple = self.build_rust_module.RustTargetTriple()
+        text = self.config_toml_template.read_bytes().decode('utf-8')
+        text = re.sub(r'(?m)^\$[A-Z_]+\s*$\n?', '', text)
+        data = tomllib.loads(text)
+        return dict(data['target'][target_triple])
+
+    @staticmethod
+    def _emit_toml_kv(key: str, value: str | bool) -> str:
+        """Render a single key/value pair as a TOML assignment line."""
+        if isinstance(value, bool):
+            return f'{key} = {"true" if value else "false"}'
+        return f'{key} = "{value}"'
+
     @contextlib.contextmanager
     def _temporary_config_toml_template_edits(self):
         """Context manager: patch `config.toml.template` for the build.
 
         `build_rust.py` generates `config.toml` from
-        `tools/rust/config.toml.template`.  For the wasm32 target we need
-        to set `profiler = false` (otherwise the profiling infrastructure
-        required by the full toolchain build is pulled in, but is not needed
-        for our subset).
+        `tools/rust/config.toml.template`.  We append a
+        `[target.wasm32-unknown-unknown]` stanza that inherits most of the
+        host target's settings, and then we do a few changes to them.
 
         Protocol:
         1. Restore the template to its HEAD state via `git checkout` before
@@ -231,9 +251,34 @@ class ToolchainBuilder:
                         str(self.config_toml_template))
 
         _restore_config_toml_template()
+
+        # Always filtering out linker, as WASM builds with rust-lld.
+        wasm = {
+            k: v
+            for k, v in self._native_target_stanza().items()
+            if k not in ('linker', 'jemalloc')
+        }
+
+        # On Windows `clang-cl.exe` is swapped for
+        # `clang.exe`, since x.py's wasm sanity check refuses the MSVC-style
+        # clang driver for compiler-builtins C sources.
+        wasm = {
+            k: (v.replace('clang-cl.exe', 'clang.exe')
+                if isinstance(v, str) else v)
+            for k, v in wasm.items()
+        }
+
+        # Disabling profiler for all configurations.
+        wasm['profiler'] = False
+
+        stanza = '\n'.join([
+            f'[target.{WASM32_UNKNOWN_UNKNOWN}]',
+            *(self._emit_toml_kv(k, v) for k, v in wasm.items())
+        ])
+
+        logging.info('Appending to %s:\n%s', self.config_toml_template, stanza)
         with self.config_toml_template.open('a') as file:
-            file.write(
-                f'\n[target.{WASM32_UNKNOWN_UNKNOWN}]\nprofiler = false\n')
+            file.write('\n' + stanza + '\n')
 
         try:
             yield
