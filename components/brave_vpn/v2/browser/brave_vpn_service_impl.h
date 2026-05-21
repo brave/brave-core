@@ -1,0 +1,124 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_COMPONENTS_BRAVE_VPN_V2_BROWSER_BRAVE_VPN_SERVICE_IMPL_H_
+#define BRAVE_COMPONENTS_BRAVE_VPN_V2_BROWSER_BRAVE_VPN_SERVICE_IMPL_H_
+
+#include "brave/components/brave_vpn/browser/brave_vpn_service.h"
+#include "build/build_config.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/remote_set.h"
+
+namespace brave_vpn {
+namespace v2 {
+
+class BraveVpnServiceImpl : public BraveVpnService {
+ public:
+  BraveVpnServiceImpl();
+  ~BraveVpnServiceImpl() override;
+
+  BraveVpnServiceImpl(const BraveVpnServiceImpl&) = delete;
+  BraveVpnServiceImpl& operator=(const BraveVpnServiceImpl&) = delete;
+
+  // BraveVpnService overrides:
+  // Implementation of public interface exposed to other components.
+  bool IsBraveVPNEnabled() const override;
+  bool IsPurchased() const override;
+  void ReloadPurchasedState() override;
+  std::string GetCurrentEnvironment() const override;
+#if !BUILDFLAG(IS_ANDROID)
+  bool IsConnected() const override;
+  void ToggleConnection() override;
+  mojom::ConnectionState GetConnectionState() const override;
+  void RecordWidgetUsageMetrics(bool new_usage) override;
+#endif  // !BUILDFLAG(IS_ANDROID)
+
+  // mojom::ServiceHandler overrides:
+  void GetPurchasedState(GetPurchasedStateCallback callback) override;
+  void LoadPurchasedState(const std::string& domain) override;
+  void GetAllRegions(GetAllRegionsCallback callback) override;
+#if !BUILDFLAG(IS_ANDROID)
+  void GetConnectionState(GetConnectionStateCallback callback) override;
+  void Connect() override;
+  void Disconnect() override;
+  void GetSelectedRegion(GetSelectedRegionCallback callback) override;
+  void SetSelectedRegion(mojom::RegionPtr region) override;
+  void ClearSelectedRegion() override;
+  void GetProductUrls(GetProductUrlsCallback callback) override;
+  void CreateSupportTicket(const std::string& email,
+                           const std::string& subject,
+                           const std::string& body,
+                           CreateSupportTicketCallback callback) override;
+  void GetSupportData(GetSupportDataCallback callback) override;
+  void ResetConnectionState() override;
+  void EnableOnDemand(bool enable) override;
+  void GetOnDemandState(GetOnDemandStateCallback callback) override;
+  void EnableSmartProxyRouting(bool enable) override;
+  void GetSmartProxyRoutingState(
+      GetSmartProxyRoutingStateCallback callback) override;
+#else   // !BUILDFLAG(IS_ANDROID)
+  void GetPurchaseToken(GetPurchaseTokenCallback callback) override;
+#endif  // !BUILDFLAG(IS_ANDROID)
+
+#if BUILDFLAG(IS_ANDROID)
+  // Implementation of public interface for Android native worker.
+  void GetTimezonesForRegions(ResponseCallback callback) override;
+  void GetHostnamesForRegion(ResponseCallback callback,
+                             const std::string& region,
+                             const std::string& region_precision) override;
+  void GetProfileCredentials(ResponseCallback callback,
+                             const std::string& subscriber_credential,
+                             const std::string& hostname) override;
+  void GetWireguardProfileCredentials(ResponseCallback callback,
+                                      const std::string& subscriber_credential,
+                                      const std::string& public_key,
+                                      const std::string& hostname) override;
+  void VerifyCredentials(ResponseCallback callback,
+                         const std::string& hostname,
+                         const std::string& client_id,
+                         const std::string& subscriber_credential,
+                         const std::string& api_auth_token) override;
+  void InvalidateCredentials(ResponseCallback callback,
+                             const std::string& hostname,
+                             const std::string& client_id,
+                             const std::string& subscriber_credential,
+                             const std::string& api_auth_token) override;
+  void VerifyPurchaseToken(ResponseCallback callback,
+                           const std::string& purchase_token,
+                           const std::string& product_id,
+                           const std::string& product_type,
+                           const std::string& bundle_id) override;
+  void GetSubscriberCredential(ResponseCallback callback,
+                               const std::string& product_type,
+                               const std::string& product_id,
+                               const std::string& validation_method,
+                               const std::string& purchase_token,
+                               const std::string& bundle_id) override;
+  void GetSubscriberCredentialV12(ResponseCallback callback) override;
+  void RecordAllMetrics() override;
+  void RecordAndroidBackgroundP3A(int64_t session_start_time_ms,
+                                  int64_t session_end_time_ms) override;
+#endif  // BUILDFLAG(IS_ANDROID)
+
+ private:
+  // KeyedService overrides:
+  void Shutdown() override;
+
+  // BraveVpnService overrides:
+#if !BUILDFLAG(IS_ANDROID)
+  void SetConnectionStateForTesting(mojom::ConnectionState state) override;
+  void SetPurchasedStateForTesting(const std::string& env,
+                                   mojom::PurchasedState state) override;
+#endif  // !BUILDFLAG(IS_ANDROID)
+
+ private:
+  [[maybe_unused]] mojom::ConnectionState connection_state_;
+  mojom::PurchasedState purchased_state_;
+};
+
+}  // namespace v2
+}  // namespace brave_vpn
+
+#endif  // BRAVE_COMPONENTS_BRAVE_VPN_V2_BROWSER_BRAVE_VPN_SERVICE_IMPL_H_

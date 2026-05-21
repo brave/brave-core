@@ -7,20 +7,37 @@ import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 
 assert(enable_brave_vpn)
 
+# Browser sources shared between v1 and v2 implementations.
+static_library("shared") {
+  sources = [
+    "brave_vpn_service.cc",
+    "brave_vpn_service.h",
+    "brave_vpn_service_observer.cc",
+    "brave_vpn_service_observer.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//brave/components/brave_vpn/common/mojom",
+    "//brave/components/skus/browser",
+    "//components/keyed_service/core",
+  ]
+
+  deps = [ "//brave/components/brave_vpn/common" ]
+}
+
 static_library("browser") {
   sources = [
     "brave_vpn_metrics.cc",
     "brave_vpn_metrics.h",
-    "brave_vpn_service.cc",
-    "brave_vpn_service.h",
     "brave_vpn_service_delegate.h",
     "brave_vpn_service_helper.cc",
     "brave_vpn_service_helper.h",
     "brave_vpn_service_impl.cc",
     "brave_vpn_service_impl.h",
-    "brave_vpn_service_observer.cc",
-    "brave_vpn_service_observer.h",
   ]
+
+  public_deps = [ ":shared" ]
 
   deps = [
     "api",
@@ -39,7 +56,6 @@ static_library("browser") {
     "//brave/components/time_period_storage",
     "//brave/components/version_info",
     "//build:buildflag_header_h",
-    "//components/keyed_service/core",
     "//components/pref_registry",
     "//components/prefs",
     "//components/version_info",
@@ -52,20 +68,17 @@ static_library("browser") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [
-    "brave_vpn_metrics_unittest.cc",
-    "brave_vpn_service_impl_unittest.cc",
-    "brave_vpn_service_unittest.cc",
-  ]
+  sources = [ "brave_vpn_service_unittest.cc" ]
+  if (enable_brave_vpn_v1_tests) {
+    sources += [
+      "brave_vpn_metrics_unittest.cc",
+      "brave_vpn_service_impl_unittest.cc",
+    ]
+  }
 
   deps = [
-    ":browser",
-    "api",
-    "api:unit_tests",
+    ":shared",
     "//base",
-    "//brave/components/brave_vpn/browser/connection:api",
-    "//brave/components/brave_vpn/browser/connection:common",
-    "//brave/components/brave_vpn/browser/connection/wireguard/credentials:unit_tests",
     "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/common/mojom",
     "//brave/components/constants",
@@ -80,10 +93,23 @@ source_set("unit_tests") {
     "//testing/gmock",
     "//testing/gtest",
   ]
-  if (!is_android) {
+  if (enable_brave_vpn_v1_tests) {
     deps += [
-      "connection:unit_tests",
-      "//brave/components/brave_vpn/browser/connection/ikev2:sim",
+      ":browser",
+      "api",
+      "api:unit_tests",
+      "//brave/components/brave_vpn/browser/connection:api",
+      "//brave/components/brave_vpn/browser/connection:common",
+      "//brave/components/brave_vpn/browser/connection/wireguard/credentials:unit_tests",
     ]
+  }
+
+  if (!is_android) {
+    if (enable_brave_vpn_v1_tests) {
+      deps += [
+        "connection:unit_tests",
+        "//brave/components/brave_vpn/browser/connection/ikev2:sim",
+      ]
+    }
   }
 }

@@ -8,7 +8,7 @@ import("//build/config/clang/clang.gni")
 import("//build/config/rust.gni")
 import("//build/config/sysroot.gni")
 
-assert(enable_brave_vpn2_deps,
+assert(enable_brave_vpn_v2_deps,
        "BoringTun is only buildable when Brave VPN 2.0 deps are enabled")
 
 action("boringtun") {

@@ -415,16 +415,23 @@ test("brave_unit_tests") {
     deps += [
       "//brave/components/brave_vpn/browser:unit_tests",
       "//brave/components/brave_vpn/common:unit_tests",
-      "//brave/components/brave_vpn/common/wireguard:unit_tests",
       "//brave/components/skus/browser:unit_tests",
     ]
-    if (is_win) {
-      deps += [
-        "//brave/browser/brave_vpn/dns:unit_tests",
-        "//brave/browser/brave_vpn/win:unit_tests",
-        "//brave/browser/brave_vpn/win/brave_vpn_helper:unit_tests",
-        "//brave/browser/brave_vpn/win/brave_vpn_wireguard_service:unit_tests",
-      ]
+
+    if (enable_brave_vpn_v1_tests) {
+      deps += [ "//brave/components/brave_vpn/common/wireguard:unit_tests" ]
+      if (is_win) {
+        deps += [
+          "//brave/browser/brave_vpn/dns:unit_tests",
+          "//brave/browser/brave_vpn/win:unit_tests",
+          "//brave/browser/brave_vpn/win/brave_vpn_helper:unit_tests",
+          "//brave/browser/brave_vpn/win/brave_vpn_wireguard_service:unit_tests",
+        ]
+      }
+    }
+
+    if (enable_brave_vpn_v2_tests) {
+      deps += [ "//brave/components/brave_vpn/v2/browser:unit_tests" ]
     }
   }
   if (toolkit_views) {
@@ -710,7 +717,7 @@ if (!is_android) {
         "//testing/gtest",
       ]
 
-      if (enable_brave_vpn) {
+      if (enable_brave_vpn && enable_brave_vpn_v1_tests) {
         deps += [
           "//brave/chromium_src/chrome/installer/setup/test:vpn_unit_tests",
         ]
@@ -1259,9 +1266,12 @@ test("brave_browser_tests") {
 
   if (enable_brave_vpn) {
     deps += [
-      "//brave/components/brave_vpn/browser",
+      "//brave/components/brave_vpn/browser:shared",
       "//brave/components/brave_vpn/common",
     ]
+    if (enable_brave_vpn_v1_tests) {
+      deps += [ "//brave/components/brave_vpn/browser" ]
+    }
   }
   if (is_android) {
     deps += [ "//brave/components/brave_mobile_subscription/renderer/android:browser_tests" ]

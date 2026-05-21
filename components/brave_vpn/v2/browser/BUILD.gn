@@ -1,0 +1,46 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+
+assert(enable_brave_vpn)
+
+static_library("browser") {
+  sources = [
+    "brave_vpn_service_impl.cc",
+    "brave_vpn_service_impl.h",
+  ]
+
+  public_deps = [
+    "//brave/components/brave_vpn/browser:shared",
+    "//brave/components/skus/browser",
+    "//brave/components/skus/common:mojom",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_vpn/common",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "brave_vpn_service_impl_unittest.cc" ]
+
+  deps = [
+    ":browser",
+    "//base",
+    "//brave/components/brave_vpn/browser:shared",
+    "//brave/components/brave_vpn/common",
+    "//brave/components/brave_vpn/common/mojom",
+    "//brave/components/constants",
+    "//brave/components/skus/browser",
+    "//brave/components/skus/common",
+    "//brave/components/skus/common:mojom",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
+}

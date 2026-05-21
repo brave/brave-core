@@ -82,7 +82,7 @@ class TestingBraveBrowserProcess : public BraveBrowserProcess {
   speedreader::SpeedreaderRewriterService* speedreader_rewriter_service()
       override;
 #endif
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && BUILDFLAG(ENABLE_BRAVE_VPN_V1)
   brave_vpn::BraveVPNConnectionManager* brave_vpn_connection_manager() override;
   void SetBraveVPNConnectionManagerForTesting(
       std::unique_ptr<brave_vpn::BraveVPNConnectionManager> manager);
@@ -103,7 +103,7 @@ class TestingBraveBrowserProcess : public BraveBrowserProcess {
 
   std::unique_ptr<brave_shields::AdBlockService> ad_block_service_;
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#if BUILDFLAG(ENABLE_BRAVE_VPN) && BUILDFLAG(ENABLE_BRAVE_VPN_V1)
   std::unique_ptr<brave_vpn::BraveVPNConnectionManager>
       brave_vpn_connection_manager_;
 #endif
