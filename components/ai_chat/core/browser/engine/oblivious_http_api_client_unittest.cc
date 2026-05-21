@@ -117,6 +117,8 @@ class ObliviousHttpAPIClientUnitTest : public testing::Test,
     auto inner = network::mojom::ObliviousHttpResponse::New();
     inner->response_code = response_code;
     inner->response_body = std::move(body);
+    inner->headers =
+        net::HttpResponseHeaders::TryToCreate("HTTP/1.1 200 OK\r\n");
     completion_client_->OnCompleted(
         network::mojom::ObliviousHttpCompletionResult::NewInnerResponse(
             std::move(inner)));
