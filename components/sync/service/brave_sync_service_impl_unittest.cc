@@ -78,8 +78,8 @@ constexpr char kValidSyncCode[] =
 sync_pb::EncryptedData MakeEncryptedData(
     const std::string& passphrase,
     const KeyDerivationParams& derivation_params) {
-  std::unique_ptr<Nigori> nigori =
-      Nigori::CreateByDerivation(derivation_params, passphrase);
+  std::unique_ptr<Nigori> nigori = Nigori::CreateByDerivation(
+      syncer::NigoriPassKey::ForTesting(), derivation_params, passphrase);
 
   std::string nigori_name = nigori->GetKeyName();
   const std::string unencrypted = "test";
