@@ -12,6 +12,11 @@
   case template_url_starter_pack_data::StarterPackId::kAskBraveSearch: \
     return KEYWORD_MODE_STARTER_PACK_ASK_BRAVE_SEARCH
 
+// Suppress Chrome-specific source attribution (chrome.ob/chrome.rb) in Google
+// search.
+#define BRAVE_TEMPLATE_URL_REPLACE_PARAMETER return true;
+
 #include <components/search_engines/template_url.cc>
 
+#undef BRAVE_TEMPLATE_URL_REPLACE_PARAMETER
 #undef KEYWORD_MODE_STARTER_PACK_AI_MODE
