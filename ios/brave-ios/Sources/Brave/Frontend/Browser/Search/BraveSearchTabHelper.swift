@@ -33,6 +33,8 @@ class BraveSearchTabHelper: TabObserver, TabPolicyDecider, BraveSearchMakeDefaul
 
   var presentSearchResultClickedInfoBar: (() -> Void)?
 
+  var presentInQuickView: ((URL, any TabState) -> Void)?
+
   init(tab: some TabState, rewards: BraveRewards, searchEngines: SearchEngines) {
     self.tab = tab
     self.rewards = rewards
@@ -237,6 +239,13 @@ class BraveSearchTabHelper: TabObserver, TabPolicyDecider, BraveSearchMakeDefaul
       braveSearchResultAdManager = nil
     }
 
+    if FeatureList.kQuickViewEnabled.enabled,
+      shouldOpenInQuickView(requestURL: requestURL, requestInfo: requestInfo, tab: tab)
+    {
+      presentInQuickView?(requestURL, tab)
+      return .cancel
+    }
+
     return .allow
   }
 
@@ -336,6 +345,23 @@ class BraveSearchTabHelper: TabObserver, TabPolicyDecider, BraveSearchMakeDefaul
         self.braveSearchManager = nil
       }
     }
+  }
+
+  private func shouldOpenInQuickView(
+    requestURL: URL,
+    requestInfo: WebRequestInfo,
+    tab: some TabState
+  ) -> Bool {
+    guard requestInfo.isMainFrame,
+      requestInfo.navigationType == .linkActivated,
+      requestInfo.isUserInitiated,
+      let sourceURL = tab.lastCommittedURL,
+      BraveSearchManager.isValidURL(sourceURL),  // sourceURL needs to be valid brave search url
+      sourceURL.path == "/search" || sourceURL.path == "/ask",
+      !BraveSearchManager.isValidURL(requestURL),  // don't intercept same-domain nav
+      requestURL.isWebPage(includeDataURIs: false)
+    else { return false }
+    return true
   }
 }
 
