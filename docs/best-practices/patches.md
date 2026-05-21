@@ -1,5 +1,13 @@
 # Patches
 
+> [!IMPORTANT]
+>
+> The guidelines below apply only to hand-written patches. Patches generated
+> by 🩹 [Plaster](../plaster.md) are produced from *Plaster* files
+> under `rewrite/`, and bound to different style rules. A patch is
+> plaster-managed when a corresponding `rewrite/<same-source-path>.yaml` (or
+> the deprecated `.toml`) exists.
+
 <a id="PATCH-001"></a>
 <a id="PATCH-002"></a>
 <a id="PATCH-003"></a>
