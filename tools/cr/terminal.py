@@ -229,7 +229,11 @@ class Terminal:
             self.update_status(truncate_on_max_length(" ".join(cmd)))
         logging.debug('λ %s', ' '.join(cmd))
 
-        if self.infra_mode:
+        # We don't want the keep alive messages to be printed when interactive
+        # is True, as we are delegating to the called command to provide its own
+        # feedback.
+        arm_keep_alive = self.infra_mode and not interactive
+        if arm_keep_alive:
             self.current_command_start_time = time.time()
             self.running_command = " ".join(cmd)
 
@@ -258,6 +262,12 @@ class Terminal:
                 'terminal.run(): `stdin=` is not supported with '
                 '`interactive=True` (the subprocess owns the tty).')
 
+        # The status spinner has to be stopped before running any commands in
+        # interactive mode, to not interfere with that process's output.
+        paused_status = self.status if interactive and self.status else None
+        if paused_status is not None:
+            paused_status.stop()
+
         try:
             result = subprocess.run(cmd,
                                     check=True,
@@ -271,7 +281,9 @@ class Terminal:
                 logging.debug('❯ %s', e.stderr.strip())
             raise e
         finally:
-            if self.infra_mode:
+            if paused_status is not None:
+                paused_status.start()
+            if arm_keep_alive:
                 self.current_command_start_time = None
                 self.running_command = None
 
