@@ -225,7 +225,7 @@ class AdBlockSubpage extends AdBlockSubpageBase {
     return this.i18nAdvanced(id, { substitutions: [ link ]})
   }
 
-  private isEqual_(lhs: any, rhs: any) {
+  private isEqual_(lhs: unknown, rhs: unknown) {
     return lhs === rhs
   }
 

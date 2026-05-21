@@ -87,7 +87,7 @@ export class SettingsBraveSystemPageIndexElement extends
     };
   }
 
-  declare prefs: { [key: string]: any };
+  declare prefs: Record<string, unknown>;
   declare private showBatterySettings_: boolean;
   declare private showShortcutsPage_: boolean;
   declare private showOriginOnboarding_: boolean;

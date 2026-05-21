@@ -14,11 +14,11 @@ const BraveResetProfileDialogBehaviorImpl = {
    * @private
    */
   fixSendSettingsCheckbox: function() {
-    const sendSettings = (this as any).shadowRoot!.getElementById('sendSettings')
+    const sendSettings = (this as unknown as HTMLElement).shadowRoot!.getElementById('sendSettings') as HTMLInputElement
     sendSettings.checked = false
     sendSettings.hidden = true
     sendSettings.disabled = true
-    sendSettings.parentNode.hidden = true
+    sendSettings.parentNode && ((sendSettings.parentNode as HTMLElement).hidden = true)
   }
 }
 

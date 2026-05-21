@@ -23,6 +23,7 @@ import {
   BraveTorBrowserProxy,
   BraveTorBrowserProxyImpl
 } from './brave_tor_browser_proxy.js'
+import type {BridgesConfig} from './brave_tor_browser_proxy.js'
 
 import {getTemplate} from './brave_tor_subpage.html.js'
 
@@ -169,7 +170,7 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
     ]
   }
 
-  private declare loadedConfig_: any
+  private declare loadedConfig_: BridgesConfig | null
   private declare useBridges_: number
   private declare useBridgesValue_: string
   private declare builtInBridgesTypes_: { name: string, value: number }[]
@@ -196,10 +197,10 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
 
     if (loadTimeData.getBoolean('shouldExposeElementsForTesting')) {
       window.testing = window.testing || {}
-      window.testing.torSubpage = this.shadowRoot
+      window.testing['torSubpage'] = this.shadowRoot
     }
 
-    this.browserProxy_.getBridgesConfig().then((config: any) => {
+    this.browserProxy_.getBridgesConfig().then((config) => {
       this.loadedConfig_ = config
       this.isUsingBridgesPref_ = {
         key: '',
@@ -290,7 +291,8 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
 
   private isUsingBridgesChanged_(value: boolean) {
     if (value) {
-      if (this.loadedConfig_.use_bridges !== Usage.NOT_USED) {
+      if (this.loadedConfig_ &&
+          this.loadedConfig_.use_bridges !== Usage.NOT_USED) {
         this.useBridges_ = this.loadedConfig_.use_bridges
       } else {
         this.useBridges_ = Usage.USE_BUILT_IN
@@ -310,7 +312,7 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
   }
 
   private computeIsConfigChanged_() {
-    const isObject = (object: any) => {
+    const isObject = (object: unknown) => {
       return object != null && typeof object === 'object'
     }
 
@@ -366,11 +368,11 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
     return this.isUsingBridgesPref_.value && this.torEnabledPref_.value
   }
 
-  private builtInTypeEqual_(item: any, selection: any) {
+  private builtInTypeEqual_(item: unknown, selection: unknown) {
     return item === selection
   }
 
-  private usageEqual_(usage: any, current: any) {
+  private usageEqual_(usage: unknown, current: unknown) {
     return usage === current
   }
 
@@ -398,8 +400,9 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
 
   private setBridgesConfig_(event: Event) {
     event.stopPropagation()
-    this.loadedConfig_ = this.getCurrentConfig_()
-    this.browserProxy_.setBridgesConfig(this.loadedConfig_)
+    const newConfig = this.getCurrentConfig_()
+    this.loadedConfig_ = newConfig
+    this.browserProxy_.setBridgesConfig(newConfig)
   }
 
   private requestBridges_() {

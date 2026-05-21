@@ -46,7 +46,7 @@ export class SettingsBraveExtensionsPageIndexElement extends
     };
   }
 
-  declare prefs: { [key: string]: any };
+  declare prefs: Record<string, unknown>;
 
   private showDefaultViews_() {
     this.$.viewManager.switchViews(

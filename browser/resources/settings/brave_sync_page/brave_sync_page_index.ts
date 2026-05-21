@@ -77,7 +77,7 @@ export class SettingsBraveSyncPageElement extends SettingsBraveSyncPageElementBa
     };
   }
 
-  declare prefs: {[key: string]: any};
+  declare prefs: Record<string, unknown>;
 
   private declare syncStatus_: BraveSyncStatus;
   private declare isEncryptionSet_: boolean;
