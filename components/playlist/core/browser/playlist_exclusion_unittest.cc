@@ -85,6 +85,8 @@ TEST_F(PlaylistExclusionsUnitTest, RulesBlockListedPaths) {
       GURL("https://www.youtube.com/@Example")));
   EXPECT_TRUE(exclusions->CanResolvePageSrcLater(
       GURL("https://www.youtube.com/watch?v=1")));
+  EXPECT_TRUE(exclusions->CanResolvePageSrcLater(
+      GURL("https://www.example.com/")));
 }
 
 }  // namespace playlist
