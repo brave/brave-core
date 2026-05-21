@@ -335,8 +335,8 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
             R.id.add_to_group_menu_id,
             R.id.divider_line_id,
             R.id.open_history_menu_id,
-            R.id.info_menu_id,
-            R.id.page_info_divider_line_id,
+            // info_menu_id and page_info_divider_line_id are not shown on NTP
+            // (shouldShowPageInfoItem returns false for NTP pages).
             R.id.downloads_menu_id,
             R.id.all_bookmarks_menu_id,
             R.id.brave_wallet_id,
@@ -443,8 +443,8 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
             R.id.add_to_group_menu_id,
             R.id.divider_line_id,
             R.id.open_history_menu_id,
-            R.id.info_menu_id,
-            R.id.page_info_divider_line_id,
+            // info_menu_id and page_info_divider_line_id are not shown on NTP
+            // (shouldShowPageInfoItem returns false for NTP pages).
             R.id.downloads_menu_id,
             R.id.all_bookmarks_menu_id,
             // R.id.brave_wallet_id is NOT included - disabled by policy
