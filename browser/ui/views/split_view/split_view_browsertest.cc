@@ -250,7 +250,7 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
   EXPECT_NE(gfx::Size(),
             browser_view->top_container_separator_for_testing()->size());
 
-  chrome::NewSplitTab(browser(), split_tabs::SplitTabLayout::kVertical,
+  chrome::NewSplitTab(browser(), split_tabs::SplitTabLayout::kSideBySide,
                       split_tabs::SplitTabCreatedSource::kToolbarButton);
   RunScheduledLayouts();
 
@@ -341,7 +341,7 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest, SelectTabTest) {
   EXPECT_FALSE(split_view_separator()->GetVisible());
 
   // Created new tab(at 3) for new split view with existing tab(at 2).
-  chrome::NewSplitTab(browser(), split_tabs::SplitTabLayout::kVertical,
+  chrome::NewSplitTab(browser(), split_tabs::SplitTabLayout::kSideBySide,
                       split_tabs::SplitTabCreatedSource::kToolbarButton);
   EXPECT_TRUE(tab_strip()->tab_at(2)->split().has_value());
   EXPECT_FALSE(tab_strip()->tab_at(2)->IsActive());
@@ -404,7 +404,7 @@ IN_PROC_BROWSER_TEST_F(SideBySideWithRoundedCornersTest, ContentsShadowTest) {
   // Shadow if split tab is not active.
   EXPECT_TRUE(brave_browser_view()->contents_shadow_);
 
-  chrome::NewSplitTab(browser(), split_tabs::SplitTabLayout::kVertical,
+  chrome::NewSplitTab(browser(), split_tabs::SplitTabLayout::kSideBySide,
                       split_tabs::SplitTabCreatedSource::kToolbarButton);
 
   auto* tab_strip_model = browser()->tab_strip_model();
@@ -523,7 +523,7 @@ class SplitViewCommonBrowserTest : public InProcessBrowserTest {
   }
 
   void NewSplitTab() {
-    chrome::NewSplitTab(browser(), split_tabs::SplitTabLayout::kVertical,
+    chrome::NewSplitTab(browser(), split_tabs::SplitTabLayout::kSideBySide,
                         split_tabs::SplitTabCreatedSource::kToolbarButton);
   }
 

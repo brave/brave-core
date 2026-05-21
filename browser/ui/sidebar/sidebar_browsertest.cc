@@ -789,7 +789,7 @@ class SidebarBrowserWithSplitViewTest
   }
 
   void NewSplitTab() {
-    chrome::NewSplitTab(browser(), split_tabs::SplitTabLayout::kVertical,
+    chrome::NewSplitTab(browser(), split_tabs::SplitTabLayout::kSideBySide,
                         split_tabs::SplitTabCreatedSource::kTabContextMenu);
   }
 
@@ -1086,7 +1086,7 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithWebPanelTest, WebPanelTest) {
   // Check tab contents test with split view.
   // Create split view with tab at 1.
   tab_strip_model->ActivateTabAt(1);
-  chrome::NewSplitTab(browser(), split_tabs::SplitTabLayout::kVertical,
+  chrome::NewSplitTab(browser(), split_tabs::SplitTabLayout::kSideBySide,
                       split_tabs::SplitTabCreatedSource::kTabContextMenu);
   EXPECT_EQ(2, tab_strip_model->active_index());
   EXPECT_TRUE(tab_strip_model->GetTabAtIndex(1)->IsSplit());
