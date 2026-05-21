@@ -36,6 +36,7 @@ class BraveBrowserFrameViewWin : public BrowserFrameViewWin {
   int NonClientHitTest(const gfx::Point& point) override;
   bool ShouldShowWindowTitle(TitlebarType type) const override;
   void LayoutCaptionButtons() override;
+  int FrameTopBorderThickness(bool restored) const override;
 
   std::unique_ptr<BraveWindowFrameGraphic> frame_graphic_;
 

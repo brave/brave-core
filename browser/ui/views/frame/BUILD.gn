@@ -117,6 +117,7 @@ source_set("browser_tests") {
 
     deps += [
       "//base/test:test_support",
+      "//brave/browser/ui:brave_tab_prefs",
       "//chrome/browser/ui/tabs:features",
       "//chrome/browser/ui/views/frame",
     ]
