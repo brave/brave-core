@@ -61,6 +61,10 @@ namespace os_crypt_async {
 class OSCryptAsync;
 }  // namespace os_crypt_async
 
+namespace brave_policy {
+class PolicyInitializationWaiter;
+}  // namespace brave_policy
+
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 namespace brave_wallet {
 class BraveWalletService;
@@ -91,10 +95,16 @@ using CancelImageRequestCallback = base::RepeatingCallback<void(int)>;
 class RewardsServiceImpl final : public RewardsService,
                                  public mojom::RewardsEngineClient {
  public:
+  // `policy_initialization_waiter` defers the boot-time engine-start gate
+  // (`CheckPreferences()` in `Init()`) until the policy bundle has been merged
+  // into the managed pref store, so that `BraveRewardsDisabled` takes effect
+  // before the gate evaluates.
   RewardsServiceImpl(PrefService* prefs,
                      const base::FilePath& profile_path,
                      favicon::FaviconService* favicon_service,
                      os_crypt_async::OSCryptAsync* os_crypt,
+                     std::unique_ptr<brave_policy::PolicyInitializationWaiter>
+                         policy_initialization_waiter,
                      RequestImageCallback request_image_callback,
                      CancelImageRequestCallback cancel_image_request_callback,
                      content::StoragePartition* storage_partition
@@ -485,6 +495,8 @@ class RewardsServiceImpl final : public RewardsService,
   SimpleURLLoaderList url_loaders_;
   std::map<std::string, int> current_media_fetchers_;
   PrefChangeRegistrar profile_pref_change_registrar_;
+  std::unique_ptr<brave_policy::PolicyInitializationWaiter>
+      policy_initialization_waiter_;
 
   bool engine_for_testing_ = false;
   bool resetting_rewards_ = false;

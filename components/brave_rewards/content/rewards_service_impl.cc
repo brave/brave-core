@@ -35,6 +35,7 @@
 #include "brave/brave_domains/urls.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
+#include "brave/components/brave_policy/policy_initialization_waiter.h"
 #include "brave/components/brave_rewards/content/diagnostic_log.h"
 #include "brave/components/brave_rewards/content/logging.h"
 #include "brave/components/brave_rewards/content/rewards_notification_service.h"
@@ -208,6 +209,8 @@ RewardsServiceImpl::RewardsServiceImpl(
     const base::FilePath& profile_path,
     favicon::FaviconService* favicon_service,
     os_crypt_async::OSCryptAsync* os_crypt,
+    std::unique_ptr<brave_policy::PolicyInitializationWaiter>
+        policy_initialization_waiter,
     RequestImageCallback request_image_callback,
     CancelImageRequestCallback cancel_image_request_callback,
     content::StoragePartition* storage_partition
@@ -239,7 +242,10 @@ RewardsServiceImpl::RewardsServiceImpl(
       rewards_database_(file_task_runner_),
       creator_prefix_store_(file_task_runner_),
       notification_service_(new RewardsNotificationServiceImpl(prefs)),
+      policy_initialization_waiter_(std::move(policy_initialization_waiter)),
       conversion_monitor_(prefs) {
+  CHECK(policy_initialization_waiter_);
+
   ready_ = std::make_unique<base::OneShotEvent>();
 
   if (base::FeatureList::IsEnabled(features::kVerboseLoggingFeature)) {
@@ -271,8 +277,16 @@ bool RewardsServiceImpl::IsInitialized() {
 
 void RewardsServiceImpl::Init() {
   AddObserver(notification_service_.get());
-  CheckPreferences();
+
+  // Must be active regardless of whether the engine starts so that
+  // pref-driven changes are observed.
   InitPrefChangeRegistrar();
+
+  // Defer the boot-time engine-start gate until the policy bundle has been
+  // merged into the managed pref store, so that `BraveRewardsDisabled` (which
+  // writes `prefs::kDisabledByPolicy`) is visible when the gate evaluates.
+  policy_initialization_waiter_->Wait(
+      base::BindOnce(&RewardsServiceImpl::CheckPreferences, AsWeakPtr()));
 }
 
 void RewardsServiceImpl::InitPrefChangeRegistrar() {
@@ -327,6 +341,17 @@ void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
 }
 
 void RewardsServiceImpl::CheckPreferences() {
+  // Bail when Rewards is not supported for this profile (managed
+  // `BraveRewardsDisabled` policy, Android feature flag off, or OFAC-sanctioned
+  // region). The factory already gates `GetForProfile`, but `Init()` is
+  // deferred behind `policy_initialization_waiter_` so the managed pref may
+  // have become visible since the factory built the service -- re-check here
+  // before any Ads → Rewards force-enable so the engine never starts and no
+  // Rewards endpoints are pinged.
+  if (!IsSupported(prefs_)) {
+    return;
+  }
+
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   if (prefs_->GetBoolean(brave_ads::prefs::kOptedInToNotificationAds)) {
     // If the user has enabled Ads, but the "enabled" pref is missing, set the

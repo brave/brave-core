@@ -818,6 +818,17 @@ if (enable_brave_ads) {
   ]
 }
 
+# `rewards_service_factory.cc` includes `chrome/browser/policy/
+# profile_policy_connector.h`, which lives in the `//chrome/browser:browser`
+# monolith. Since `:browser` already depends on `:brave_rewards_impl` (added
+# above), the include can only resolve via a circular-include allowance.
+# Drop this entry once the header is componentized upstream
+# (crbug.com/353332589).
+if (enable_brave_rewards) {
+  brave_chrome_browser_allow_circular_includes_from +=
+      [ "//brave/browser/brave_rewards:brave_rewards_impl" ]
+}
+
 if (toolkit_views) {
   brave_chrome_browser_deps += [
     "//brave/browser/ui/sidebar:sidebar_impl",
