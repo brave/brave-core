@@ -399,16 +399,6 @@ if (!is_android) {
 if (!is_android) {
   # Already included on android by upstream
 
-  # Including feed v2 back into the desktop chrome browser build.
-  # `FeedServiceFactory` was lifted alongside the (now-deleted) Web Feed
-  # `FetchRssLinks` pipeline; the latter has since been replaced by
-  # `brave_news::FetchRssLinks` (see //brave/browser/brave_news/sources.gni)
-  # but the factory is still pulled in by chrome browser callers.
-  brave_chrome_browser_sources += [
-    "feed/feed_service_factory.cc",
-    "feed/feed_service_factory.h",
-  ]
-
   brave_chrome_browser_deps += [
     "//brave/browser/ui/split_view",
     "//brave/browser/ui/tabs:impl",
