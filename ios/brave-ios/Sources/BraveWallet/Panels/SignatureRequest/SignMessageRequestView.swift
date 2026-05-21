@@ -127,9 +127,7 @@ struct SignMessageRequestView: View {
     }
     .navigationTitle(Strings.Wallet.signatureRequestTitle)
     .onAppear {
-      isWarningShown =
-        (request.signData.cardanoSignData != nil)
-        || request.signData.ethSignTypedData?.primaryType == "Permit"
+      isWarningShown = request.signData.isWarningsNeeded
     }
   }
 
