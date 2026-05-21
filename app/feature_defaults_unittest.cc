@@ -123,6 +123,9 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kPrivateAggregationApi,
       &blink::features::kTranslationAPI,
       &blink::features::kUserMediaElement,
+#if BUILDFLAG(IS_ANDROID)
+      &chrome::android::kAndroidPageInfoAsAppMenuItem,
+#endif
       &commerce::kCommerceAllowOnDemandBookmarkUpdates,
       &commerce::kCommerceDeveloper,
       &commerce::kCommerceMerchantViewer,
