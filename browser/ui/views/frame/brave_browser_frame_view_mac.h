@@ -41,6 +41,7 @@ class BraveBrowserFrameViewMac : public BrowserFrameViewMac {
 
   BooleanPrefMember show_vertical_tabs_;
   BooleanPrefMember show_title_bar_on_vertical_tabs_;
+  BooleanPrefMember compact_horizontal_tabs_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_FRAME_VIEW_MAC_H_

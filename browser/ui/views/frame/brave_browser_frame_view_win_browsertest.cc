@@ -3,10 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/frame/browser_caption_button_container_win.h"
 #include "chrome/browser/ui/views/frame/browser_frame_view_win.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -52,16 +51,13 @@ class BraveBrowserFrameViewWinTest : public InProcessBrowserTest {
 class BraveBrowserFrameViewWinLayoutTest
     : public BraveBrowserFrameViewWinTest,
       public testing::WithParamInterface<bool> {
- public:
-  BraveBrowserFrameViewWinLayoutTest() {
-    if (GetParam()) {
-      scoped_feature_list_.InitAndEnableFeature(
-          tabs::kBraveCompactHorizontalTabs);
-    }
+ protected:
+  void SetUpOnMainThread() override {
+    BraveBrowserFrameViewWinTest::SetUpOnMainThread();
+    g_browser_process->local_state()->SetBoolean(
+        brave_tabs::kCompactHorizontalTabs, GetParam());
+    browser_view()->InvalidateLayout();
   }
-
- private:
-  base::test::ScopedFeatureList scoped_feature_list_;
 };
 
 // Verifies that after layout the caption button container:

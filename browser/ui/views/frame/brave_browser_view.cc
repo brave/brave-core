@@ -56,6 +56,7 @@
 #include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/app_mode/app_mode_utils.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/devtools/devtools_ui_controller.h"
 #include "chrome/browser/devtools/devtools_window.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -324,7 +325,13 @@ BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
       tabs::utils::ShouldShowBraveVerticalTabs(browser_);
 #endif
 
+  compact_horizontal_tabs_.Init(
+      brave_tabs::kCompactHorizontalTabs, g_browser_process->local_state(),
+      base::BindRepeating(&BraveBrowserView::OnCompactModePrefChanged,
+                          base::Unretained(this)));
+
   pref_change_registrar_.Init(GetProfile()->GetPrefs());
+
   pref_change_registrar_.Add(
       kTabsSearchShow,
       base::BindRepeating(&BraveBrowserView::OnPreferenceChanged,
@@ -405,6 +412,10 @@ void BraveBrowserView::EnsureFindBarHostViewIsLastChild() {
   // FindBarHost uses this view as kHostViewKey. See
   // BrowserView::find_bar_host_view().
   ReorderChildView(find_bar_host_view_, -1);
+}
+
+void BraveBrowserView::OnCompactModePrefChanged() {
+  InvalidateLayout();
 }
 
 void BraveBrowserView::OnPreferenceChanged(const std::string& pref_name) {

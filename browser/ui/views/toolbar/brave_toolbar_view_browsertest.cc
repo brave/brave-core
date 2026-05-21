@@ -38,6 +38,7 @@
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry_key.h"
@@ -709,6 +710,33 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewRTLTest,
       << "in RTL, switching from on-left to on-right should *decrease* the "
          "toggle's logical index (on_left_ix="
       << *ix_rtl_on_left << ", on_right_ix=" << *ix_rtl_on_right << ")";
+}
+
+// Verifies that toggling the compact pref at runtime resizes the toolbar and
+// the location bar.
+IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, ResizesWithCompactModeToggle) {
+  auto* location_bar = toolbar_view_->location_bar_view();
+  ASSERT_NE(location_bar, nullptr);
+  auto* local_state = g_browser_process->local_state();
+
+  local_state->SetBoolean(brave_tabs::kCompactHorizontalTabs, false);
+  toolbar_view_->InvalidateLayout();
+  RunScheduledLayouts();
+  const int default_height = location_bar->height();
+  EXPECT_EQ(default_height,
+            GetLayoutConstant(LayoutConstant::kLocationBarHeight));
+
+  local_state->SetBoolean(brave_tabs::kCompactHorizontalTabs, true);
+  RunScheduledLayouts();
+  const int compact_height = location_bar->height();
+  EXPECT_EQ(compact_height,
+            GetLayoutConstant(LayoutConstant::kLocationBarHeight));
+  EXPECT_LT(compact_height, default_height);
+
+  local_state->SetBoolean(brave_tabs::kCompactHorizontalTabs, false);
+  RunScheduledLayouts();
+  EXPECT_EQ(location_bar->height(),
+            GetLayoutConstant(LayoutConstant::kLocationBarHeight));
 }
 
 // Verifies that UpdateHorizontalPadding() keeps the toolbar border

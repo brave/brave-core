@@ -8,8 +8,10 @@
 #include <algorithm>
 #include <optional>
 
-#include "base/feature_list.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/ui/tabs/features.h"
+#include "components/prefs/pref_service.h"
 #include "ui/base/pointer/touch_ui_controller.h"
 #include "ui/gfx/geometry/insets.h"
 
@@ -166,8 +168,14 @@ int GetDragHandleExtensionHeight() {
 }
 
 bool UseCompactHorizontalTabs() {
-  return base::FeatureList::IsEnabled(kBraveCompactHorizontalTabs) &&
-         !ui::TouchUiController::Get()->touch_ui();
+  if (ui::TouchUiController::Get()->touch_ui()) {
+    return false;
+  }
+  if (g_browser_process && g_browser_process->local_state()) {
+    return g_browser_process->local_state()->GetBoolean(
+        brave_tabs::kCompactHorizontalTabs);
+  }
+  return false;
 }
 
 }  // namespace tabs

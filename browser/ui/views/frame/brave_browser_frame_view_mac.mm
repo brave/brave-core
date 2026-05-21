@@ -11,6 +11,7 @@
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 #include "brave/browser/ui/views/frame/brave_window_frame_graphic.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
@@ -47,6 +48,12 @@ BraveBrowserFrameViewMac::BraveBrowserFrameViewMac(
             &BraveBrowserFrameViewMac::UpdateWindowTitleVisibility,
             base::Unretained(this)));
   }
+
+  compact_horizontal_tabs_.Init(
+      brave_tabs::kCompactHorizontalTabs, g_browser_process->local_state(),
+      base::BindRepeating(
+          &BraveBrowserFrameViewMac::UpdateWindowTitleAndControls,
+          base::Unretained(this)));
 }
 
 BraveBrowserFrameViewMac::~BraveBrowserFrameViewMac() = default;

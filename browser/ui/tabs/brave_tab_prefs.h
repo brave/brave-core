@@ -42,6 +42,13 @@ inline constexpr char kTreeTabsEnabled[] = "brave.tabs.tree_tabs_enabled";
 
 inline constexpr char kSharedPinnedTab[] = "brave.tabs.shared_pinned_tab";
 
+// A boolean local state pref that, when true, will reduce the height of the
+// horizontal tab strip and toolbar. This pref is stored in local state instead
+// of profile prefs in order to allow access where a Profile is not available
+// in the current Chromium architecture (i.e. `layout_constants.cc`).
+inline constexpr char kCompactHorizontalTabs[] =
+    "brave.tabs.compact_horizontal_tabs";
+
 inline constexpr char kAlwaysHideTabCloseButton[] =
     "brave.tabs.always_hide_tab_close_button";
 
@@ -67,6 +74,8 @@ enum class TabMinWidthMode {
 
 void RegisterBraveProfilePrefs(PrefRegistrySimple* registry);
 void MigrateBraveProfilePrefs(PrefService* prefs);
+
+void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 
 bool AreTooltipsEnabled(PrefService* prefs);
 bool AreCardPreviewsEnabled(PrefService* prefs);

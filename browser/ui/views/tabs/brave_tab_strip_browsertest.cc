@@ -8,9 +8,12 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/prefs/pref_service.h"
@@ -93,4 +96,34 @@ IN_PROC_BROWSER_TEST_F(
 
   EXPECT_EQ(brave_tabs::TabMinWidthMode::kDefault,
             tab_strip()->GetTabMinWidthMode());
+}
+
+using BraveTabStripCompactModeBrowserTest = InProcessBrowserTest;
+
+// Verifies that toggling the compact pref at runtime resizes the tab strip.
+IN_PROC_BROWSER_TEST_F(BraveTabStripCompactModeBrowserTest,
+                       ResizesWithCompactModeToggle) {
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+  auto* local_state = g_browser_process->local_state();
+
+  auto tab_strip_height = [&]() {
+    return browser_view->tab_strip_view()->height();
+  };
+
+  local_state->SetBoolean(brave_tabs::kCompactHorizontalTabs, false);
+  browser_view->InvalidateLayout();
+  RunScheduledLayouts();
+  const int default_height = tab_strip_height();
+  EXPECT_EQ(default_height, GetLayoutConstant(LayoutConstant::kTabStripHeight));
+
+  local_state->SetBoolean(brave_tabs::kCompactHorizontalTabs, true);
+  RunScheduledLayouts();
+  const int compact_height = tab_strip_height();
+  EXPECT_EQ(compact_height, GetLayoutConstant(LayoutConstant::kTabStripHeight));
+  EXPECT_LT(compact_height, default_height);
+
+  local_state->SetBoolean(brave_tabs::kCompactHorizontalTabs, false);
+  RunScheduledLayouts();
+  EXPECT_EQ(tab_strip_height(),
+            GetLayoutConstant(LayoutConstant::kTabStripHeight));
 }

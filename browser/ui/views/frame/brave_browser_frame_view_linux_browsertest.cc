@@ -9,17 +9,16 @@
 #include "base/functional/callback_helpers.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
-#include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/frame/brave_browser_frame_view_linux_native.h"
 #include "brave/browser/ui/views/frame/brave_opaque_browser_frame_view.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_service.h"
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/layout_constants.h"
-#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/frame/browser_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/custom_corners_background.h"
@@ -250,20 +249,16 @@ IN_PROC_BROWSER_TEST_F(
 }
 
 // Parameterized fixture: bool param = compact mode enabled.
-// Enables #brave-compact-horizontal-tabs in the constructor so the layout
-// constants are in effect when the browser window is created.
 class BraveBrowserFrameViewTabStripHeightTest
     : public BraveBrowserFrameViewTest,
       public testing::WithParamInterface<bool> {
- public:
-  BraveBrowserFrameViewTabStripHeightTest() {
-    if (GetParam()) {
-      features_.InitAndEnableFeature(tabs::kBraveCompactHorizontalTabs);
-    }
+ protected:
+  void SetUpOnMainThread() override {
+    BraveBrowserFrameViewTest::SetUpOnMainThread();
+    g_browser_process->local_state()->SetBoolean(
+        brave_tabs::kCompactHorizontalTabs, GetParam());
+    browser_view()->InvalidateLayout();
   }
-
- private:
-  base::test::ScopedFeatureList features_;
 };
 
 // Verifies the horizontal tab strip height equals kTabStripHeight for both

@@ -216,6 +216,9 @@
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_LOCATION_BAR_IS_WIDE" desc="The label for whether the location bar should display wide or not">
     Use wide address bar
   </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_TABS_USE_COMPACT_HORIZONTAL_TABS" desc="The label for the toggle to enable compact horizontal tabs mode" formatter_data="webui=BraveSettings">
+    Use compact mode
+  </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_WEB_VIEW_ROUNDED_CORNERS" desc="The label for whether the main content areas should have rounded corners">
     Show rounded corners on main content areas
   </message>
@@ -648,7 +651,7 @@
   </message>
   <message name="IDS_SETTINGS_BRAVE_ORIGIN_EMAIL_ALIASES_TOGGLE_TITLE" desc="The title for toggling the 'email aliases' feature on/off for Brave Origin">
     Email Aliases
-  </message>  
+  </message>
   <message name="IDS_SETTINGS_BRAVE_ORIGIN_WEB_DISCOVERY_PROJECT_TOGGLE_TITLE" desc="The title for toggling the 'web discovery project' feature on/off for Brave Origin">
     Web Discovery Project
   </message>
