@@ -12,8 +12,8 @@
 #include <string>
 #include <string_view>
 #include <utility>
+#include <vector>
 
-#include "base/logging.h"
 #include "base/strings/strcat.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"
 #include "brave/components/ai_chat/core/browser/sync/ai_chat_sync_conversions.h"
@@ -50,9 +50,11 @@ mojom::ConversationPtr FindSyncableConversation(AIChatDatabase* database,
 
 AIChatSyncBridge::AIChatSyncBridge(
     std::unique_ptr<syncer::DataTypeLocalChangeProcessor> change_processor,
-    AIChatDatabase* database)
+    AIChatDatabase* database,
+    base::RepeatingClosure on_remote_changes_applied)
     : syncer::DataTypeSyncBridge(std::move(change_processor)),
-      database_(database) {
+      database_(database),
+      on_remote_changes_applied_(std::move(on_remote_changes_applied)) {
   DCHECK(database_);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -93,13 +95,14 @@ std::optional<syncer::ModelError> AIChatSyncBridge::MergeFullSyncData(
   // Track which storage keys we already have from remote so we don't
   // re-upload them.
   std::set<std::string> remote_storage_keys;
+  bool any_remote_change_applied = false;
   for (const auto& change : entity_data) {
     if (change->type() == syncer::EntityChange::ACTION_DELETE) {
       continue;
     }
     remote_storage_keys.insert(change->storage_key());
-    // TODO(https://github.com/brave/brave-browser/issues/53978): apply
-    // remote ADD/UPDATE to local database (handled in -flow).
+    ApplyRemoteRecord(change->data().specifics.ai_chat_conversation());
+    any_remote_change_applied = true;
   }
 
   // Upload every non-temporary local conversation: its metadata plus each of
@@ -138,6 +141,9 @@ std::optional<syncer::ModelError> AIChatSyncBridge::MergeFullSyncData(
     }
   }
 
+  if (any_remote_change_applied && on_remote_changes_applied_) {
+    on_remote_changes_applied_.Run();
+  }
   return std::nullopt;
 }
 
@@ -146,6 +152,7 @@ std::optional<syncer::ModelError> AIChatSyncBridge::ApplyIncrementalSyncChanges(
     syncer::EntityChangeList entity_changes) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
+  bool any_remote_change_applied = false;
   for (const auto& change : entity_changes) {
     const std::string& storage_key = change->storage_key();
 
@@ -153,18 +160,22 @@ std::optional<syncer::ModelError> AIChatSyncBridge::ApplyIncrementalSyncChanges(
       if (storage_key.starts_with(kConversationStorageKeyPrefix)) {
         database_->DeleteConversation(
             storage_key.substr(kConversationStorageKeyPrefix.size()));
+        any_remote_change_applied = true;
       } else if (storage_key.starts_with(kEntryStorageKeyPrefix)) {
         database_->DeleteConversationEntry(
             storage_key.substr(kEntryStorageKeyPrefix.size()));
+        any_remote_change_applied = true;
       }
       continue;
     }
 
-    // TODO(https://github.com/brave/brave-browser/issues/53978): apply remote
-    // ADD/UPDATE for both record kinds (handled in -flow).
-    DVLOG(1) << "Received remote sync change for: " << storage_key;
+    ApplyRemoteRecord(change->data().specifics.ai_chat_conversation());
+    any_remote_change_applied = true;
   }
 
+  if (any_remote_change_applied && on_remote_changes_applied_) {
+    on_remote_changes_applied_.Run();
+  }
   return std::nullopt;
 }
 
@@ -349,6 +360,138 @@ void AIChatSyncBridge::OnConversationEntryDeleted(
   this->change_processor()->Delete(
       base::StrCat({kEntryStorageKeyPrefix, entry_uuid}),
       syncer::DeletionOrigin::Unspecified(), metadata_change_list.get());
+}
+
+void AIChatSyncBridge::ApplyRemoteRecord(
+    const sync_pb::AIChatConversationSpecifics& specifics) {
+  if (specifics.has_conversation()) {
+    auto conversation = SpecificsToConversationMetadata(specifics);
+    if (conversation) {
+      database_->ApplyRemoteConversationMetadata(std::move(conversation));
+    }
+    return;
+  }
+  if (!specifics.has_entry()) {
+    return;
+  }
+
+  // Substitute local values into the remote proto for any field the sender
+  // marked as truncated-for-sync. This guarantees a re-sync of an existing
+  // entry does not overwrite locally-present bytes (page text, uploaded
+  // file data, extracted text) with empty placeholders.
+  sync_pb::AIChatConversationSpecifics merged = specifics;
+  MergePreservedLocalFieldsIntoRemoteEntry(merged.mutable_entry());
+
+  std::vector<mojom::AssociatedContentPtr> associated_content;
+  base::flat_map<std::string, std::string> associated_content_texts;
+  auto entry =
+      SpecificsToEntry(merged, &associated_content, &associated_content_texts);
+  if (!entry) {
+    return;
+  }
+
+  // Build a parallel |contents| vector for ApplyRemoteEntry. When the map
+  // has no entry for an AC UUID (because the sender chose not to send a
+  // text and we could not recover one locally), leave it empty — the DB
+  // will write an empty last_contents column.
+  std::vector<std::string> contents;
+  contents.reserve(associated_content.size());
+  for (const auto& ac : associated_content) {
+    auto it = associated_content_texts.find(ac->uuid);
+    contents.emplace_back(it != associated_content_texts.end() ? it->second
+                                                               : std::string());
+  }
+  database_->ApplyRemoteEntry(merged.entry().conversation_uuid(),
+                              std::move(entry), std::move(associated_content),
+                              std::move(contents));
+}
+
+void AIChatSyncBridge::MergePreservedLocalFieldsIntoRemoteEntry(
+    sync_pb::AIChatConversationSpecifics_Entry* remote_entry) {
+  const std::string& conversation_uuid = remote_entry->conversation_uuid();
+  const std::string& entry_uuid = remote_entry->uuid();
+  if (conversation_uuid.empty() || entry_uuid.empty()) {
+    return;
+  }
+
+  // Associated content texts: if any AC came in with last_contents marked
+  // truncated, fetch the conversation's archived contents and substitute
+  // the local value by AC UUID.
+  bool needs_ac_lookup = false;
+  for (const auto& ac : remote_entry->associated_content()) {
+    if (ac.has_last_contents() && ac.last_contents().was_truncated_for_sync()) {
+      needs_ac_lookup = true;
+      break;
+    }
+  }
+  if (needs_ac_lookup) {
+    auto local_contents =
+        database_->GetArchiveContentsForConversation(conversation_uuid);
+    base::flat_map<std::string, std::string> by_uuid;
+    for (const auto& c : local_contents) {
+      if (!c->content.empty()) {
+        by_uuid[c->content_uuid] = c->content;
+      }
+    }
+    for (auto& ac : *remote_entry->mutable_associated_content()) {
+      if (!ac.has_last_contents() ||
+          !ac.last_contents().was_truncated_for_sync()) {
+        continue;
+      }
+      auto it = by_uuid.find(ac.uuid());
+      if (it != by_uuid.end()) {
+        WriteCompressibleString(it->second, ac.mutable_last_contents());
+      }
+    }
+  }
+
+  // Uploaded files: matched by ordinal (file_order). When the sender
+  // dropped raw bytes or extracted text to fit the budget, substitute the
+  // local value if one exists.
+  bool needs_file_lookup = false;
+  for (const auto& file : remote_entry->uploaded_files()) {
+    if (file.data_truncated_for_sync() ||
+        (file.has_extracted_text() &&
+         file.extracted_text().was_truncated_for_sync())) {
+      needs_file_lookup = true;
+      break;
+    }
+  }
+  if (!needs_file_lookup) {
+    return;
+  }
+  auto archive = database_->GetConversationData(conversation_uuid);
+  if (!archive) {
+    return;
+  }
+  const std::vector<mojom::UploadedFilePtr>* local_files = nullptr;
+  for (const auto& local_entry : archive->entries) {
+    if (local_entry->uuid && *local_entry->uuid == entry_uuid) {
+      if (local_entry->uploaded_files) {
+        local_files = &(*local_entry->uploaded_files);
+      }
+      break;
+    }
+  }
+  if (!local_files) {
+    return;
+  }
+  const int n = std::min(remote_entry->uploaded_files_size(),
+                         static_cast<int>(local_files->size()));
+  for (int i = 0; i < n; ++i) {
+    auto* remote_file = remote_entry->mutable_uploaded_files(i);
+    const auto& local_file = (*local_files)[i];
+    if (remote_file->data_truncated_for_sync() && !local_file->data.empty()) {
+      remote_file->set_data(local_file->data.data(), local_file->data.size());
+      remote_file->clear_data_truncated_for_sync();
+    }
+    if (remote_file->has_extracted_text() &&
+        remote_file->extracted_text().was_truncated_for_sync() &&
+        local_file->extracted_text) {
+      WriteCompressibleString(*local_file->extracted_text,
+                              remote_file->mutable_extracted_text());
+    }
+  }
 }
 
 void AIChatSyncBridge::PutConversationMetadata(const std::string& uuid) {

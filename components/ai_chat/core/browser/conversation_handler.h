@@ -163,6 +163,14 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   void OnArchiveContentUpdated(mojom::ConversationArchivePtr conversation_data);
 
+  // Called by AIChatService when a remote sync batch has been applied to
+  // the local DB and this handler's persisted state has been superseded.
+  // Stops any in-flight request or tool-use task (their reply would be
+  // applied against now-stale local state), replaces |chat_history_|
+  // and associated content with |conversation_data|, and notifies clients
+  // so the UI re-fetches.
+  void OnRemoteSyncDataApplied(mojom::ConversationArchivePtr conversation_data);
+
   bool IsAnyClientConnected();
   bool HasAnyHistory();
   bool IsRequestInProgress();
