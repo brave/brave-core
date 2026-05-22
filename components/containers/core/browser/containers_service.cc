@@ -9,6 +9,7 @@
 
 #include "base/check.h"
 #include "base/check_deref.h"
+#include "base/containers/to_vector.h"
 #include "base/functional/bind.h"
 #include "base/types/to_address.h"
 #include "brave/components/containers/core/browser/containers_service_observer.h"
@@ -85,6 +86,11 @@ mojom::ContainerPtr ContainersService::GetRuntimeContainerById(
 
 std::vector<mojom::ContainerPtr> ContainersService::GetContainers() const {
   return GetContainersFromPrefs(*prefs_);
+}
+
+std::vector<std::string> ContainersService::GetUsedContainerIds() const {
+  return base::ToVector(GetLocallyUsedContainersFromPrefs(*prefs_),
+                        [](const auto& c) { return c->id; });
 }
 
 bool ContainersService::ShouldShowContainerControls() const {
