@@ -342,6 +342,36 @@ describe('input box', () => {
     ).toBeInTheDocument()
   })
 
+  it('shows the upload spinner when isUploadingFiles is true alongside pending files', async () => {
+    const { container } = await renderInputBox(
+      <MockContext>
+        <InputBox
+          context={{
+            ...testContext,
+            pendingMessageFiles: [
+              {
+                filename: 'test.pdf',
+                data: [],
+                extractedText: '',
+                type: UploadedFileType.kPdf,
+                filesize: 1024,
+              },
+            ],
+            isUploadingFiles: true,
+          }}
+          conversationStarted={false}
+        />
+      </MockContext>,
+    )
+
+    const attachmentWrapper = container.querySelector('.attachmentWrapper')
+    expect(attachmentWrapper).toBeInTheDocument()
+    expect(screen.getByText('test.pdf')).toBeInTheDocument()
+    expect(
+      attachmentWrapper!.querySelector('leo-progressring'),
+    ).toBeInTheDocument()
+  })
+
   it('does not show the upload spinner when isUploadingFiles is false and there are no pending files', async () => {
     const { container } = await renderInputBox(
       <MockContext>

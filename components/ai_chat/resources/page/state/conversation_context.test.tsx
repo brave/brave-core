@@ -244,8 +244,8 @@ describe('useProvideConversationContext default tab attachment', () => {
         <MockContext
           uiHandler={{
             processTextFile: () =>
-              new Promise((r) => {
-                resolveProcess = r
+              new Promise((resolve) => {
+                resolveProcess = resolve
               }),
           }}
         >
@@ -295,8 +295,8 @@ describe('useProvideConversationContext default tab attachment', () => {
           <MockContext
             uiHandler={{
               [methodName]: () =>
-                new Promise((r) => {
-                  resolveProcess = r
+                new Promise((resolve) => {
+                  resolveProcess = resolve
                 }),
             }}
           >
