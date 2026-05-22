@@ -163,8 +163,9 @@ void BraveBrowserFrameViewWin::LayoutCaptionButtons() {
 
   if (auto* browser = GetBrowserView()->browser();
       tabs::utils::ShouldShowBraveVerticalTabs(browser)) {
-    // Investigate why calculated container height is 1px longer than
-    // around.(ex, title bar or toolbar height).
+    // TODO(https://github.com/brave/brave-browser/issues/55744): Investigate
+    // why calculated container height is 1px longer than around.(ex, title bar
+    // or toolbar height).
     int caption_button_container_height_delta = -1;
 
     if (!tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser)) {
