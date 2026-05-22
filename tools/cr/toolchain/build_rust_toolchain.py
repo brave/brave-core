@@ -66,7 +66,7 @@ import argparse
 import contextlib
 import importlib
 import logging
-from pathlib import Path, PurePath
+from pathlib import Path
 import os
 import platform
 import re
@@ -74,7 +74,6 @@ import shutil
 import subprocess
 import sys
 import tarfile
-import tomllib
 from types import ModuleType
 
 # Filename of the LLVM linker binary produced by the Chromium LLVM build.
@@ -89,26 +88,28 @@ WASM32_UNKNOWN_UNKNOWN = 'wasm32-unknown-unknown'
 
 # Relative path (within tools/rust/) of the Rust bootstrap configuration
 # template. build_rust.py generates config.toml from this file.
-CONFIG_TOML_TEMPLATE = PurePath('config.toml.template')
+CONFIG_TOML_TEMPLATE = Path('config.toml.template')
 
 # Relative path (within the Chromium src/ root) of the Rust toolchain scripts.
-TOOLS_RUST = PurePath('tools') / 'rust'
+TOOLS_RUST = Path('tools') / 'rust'
 
 # Relative path (within RUST_BUILD_DIR/<target_triple>/) to the stage-1
 # rustlib output directory.  The wasm32 standard-library sysroot lives at
 # <RUST_BUILD_DIR>/<triple>/stage1/lib/rustlib/wasm32-unknown-unknown/.
-STAGE1_RUSTLIB = PurePath('stage1') / 'lib' / 'rustlib'
+STAGE1_RUSTLIB = Path('stage1') / 'lib' / 'rustlib'
 
-# The relative path for `vpython3` found under Chromium. This is not the same
 # vpython3 that is selected by `depot_tools` from `$PATH`.
-VPYTHON_PATH = PurePath('third_party/depot_tools/vpython3')
+# This little Windows specific quirk is only needed when calling this script on
+# Windows using git bash.
+VPYTHON_PATH = Path('third_party/depot_tools') / (
+    'vpython3.bat' if sys.platform == 'win32' else 'vpython3')
 
 # Latest Chromium depot_tools bundle
 DEPOT_TOOLS_URL = 'https://chromium.googlesource.com/chromium/tools/depot_tools'
 
 # This source is used as a token to check if we have a valid Chromium repo as
 # it is one of those reliable files that are always present in any version.
-CHROME_VERSION_FILE = PurePath('chrome/VERSION')
+CHROME_VERSION_FILE = Path('chrome/VERSION')
 
 if sys.platform == 'win32':
     # Path to Git's sh.exe on Windows, which is used by
@@ -212,14 +213,46 @@ class ToolchainBuilder:
 
         `$LLVM_BIN` placeholders inside string values are preserved verbatim
         — `build_rust.py` substitutes them when it generates `config.toml`.
-        Bare `$UPPERCASE` placeholder lines (e.g. `$CHANGELOG_SEEN`) are not
-        valid TOML on their own, so they are stripped before parsing.
         """
         target_triple = self.build_rust_module.RustTargetTriple()
         text = self.config_toml_template.read_bytes().decode('utf-8')
-        text = re.sub(r'(?m)^\$[A-Z_]+\s*$\n?', '', text)
-        data = tomllib.loads(text)
-        return dict(data['target'][target_triple])
+        if sys.version_info >= (3, 11):
+            # `tomllib` is stdlib since 3.11; the Linux CI node still runs
+            # 3.10, hence the fallback below. Drop both this import and the
+            # fallback once every node is on 3.11+.
+            import tomllib
+            text = re.sub(r'(?m)^\$[A-Z_]+\s*$\n?', '', text)
+            data = tomllib.loads(text)
+            return dict(data['target'][target_triple])
+
+        # Python <=3.10 fallback: walk the file and collect `key = value`
+        # lines inside the target's section, ignoring blanks, comments and
+        # the `$PLACEHOLDER` lines that confuse a real TOML parser anyway.
+        header = f'[target.{target_triple}]'
+        result: dict[str, str | bool] = {}
+        in_section = False
+        for line in text.splitlines():
+            stripped = line.strip()
+            if stripped.startswith('['):
+                in_section = stripped == header
+                continue
+            if (not in_section or not stripped or stripped.startswith('#')
+                    or '=' not in stripped):
+                continue
+            key, _, raw = stripped.partition('=')
+            key = key.strip()
+            raw = raw.strip()
+            if raw == 'true':
+                result[key] = True
+            elif raw == 'false':
+                result[key] = False
+            elif (len(raw) >= 2 and raw[0] == raw[-1]
+                  and raw[0] in ('"', "'")):
+                result[key] = raw[1:-1]
+            else:
+                raise ValueError(f'Cannot parse {key!r} = {raw!r} in {header} '
+                                 'fallback parser')
+        return result
 
     @staticmethod
     def _emit_toml_kv(key: str, value: str | bool) -> str:
