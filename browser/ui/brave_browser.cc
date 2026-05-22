@@ -285,9 +285,7 @@ void BraveBrowser::OnTabStripModelChanged(
 }
 
 void BraveBrowser::OnTreeTabChanged(const TreeTabChange& change) {
-  if (!base::FeatureList::IsEnabled(tabs::kBraveTreeTab)) {
-    return;
-  }
+  CHECK(base::FeatureList::IsEnabled(tabs::kBraveTreeTab));
 
   switch (change.type) {
     case TreeTabChange::Type::kNodeCreated:

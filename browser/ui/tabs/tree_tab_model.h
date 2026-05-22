@@ -73,7 +73,7 @@ class TreeTabModel {
       base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> callback);
 
   bool has_pending_add_tree_tab_node_notification_for_testing() const {
-    return pending_add_tree_tab_node_notification_count_ > 0;
+    return pending_add_tree_tab_node_notification_count_for_testing_ > 0;
   }
 
  private:
@@ -89,7 +89,7 @@ class TreeTabModel {
   std::map<tree_tab::TreeTabNodeId, std::set<tree_tab::TreeTabNodeId>>
       descendant_ids_by_collapsed_ancestor_;
 
-  int pending_add_tree_tab_node_notification_count_ = 0;
+  int pending_add_tree_tab_node_notification_count_for_testing_ = 0;
 
   base::RepeatingCallbackList<void(const tabs::TreeTabNode&)>
       add_tree_tab_node_callback_list_;

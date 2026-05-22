@@ -125,8 +125,9 @@ void TreeTabModel::AddTreeTabNode(tabs::TreeTabNode& node) {
       return;
     }
 
-    model->pending_add_tree_tab_node_notification_count_--;
-    CHECK_GE(model->pending_add_tree_tab_node_notification_count_, 0);
+    model->pending_add_tree_tab_node_notification_count_for_testing_--;
+    CHECK_GE(model->pending_add_tree_tab_node_notification_count_for_testing_,
+             0);
     if (const tabs::TreeTabNode* node = model->GetNode(id)) {
       model->add_tree_tab_node_callback_list_.Notify(*node);
     }
@@ -134,7 +135,7 @@ void TreeTabModel::AddTreeTabNode(tabs::TreeTabNode& node) {
 
   // Defer notification so that the collection tree is fully set up before
   // observers query tab indices and views.
-  pending_add_tree_tab_node_notification_count_++;
+  pending_add_tree_tab_node_notification_count_for_testing_++;
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE,
       base::BindOnce(std::move(notification), GetWeakPtr(), node.id()));
