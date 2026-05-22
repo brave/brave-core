@@ -40,18 +40,12 @@ final class WidgetSearchTabHelper: TabObserver {
     guard self.tab === tab else { return }
     // Don't tear down on the NTP commit that precedes the actual widget search navigation.
     guard let url = tab.lastCommittedURL, !url.isNewTabURL else { return }
-    detach()
+    // detach this helper from its tab. After this call the helper is no longer reachable
+    // via `TabDataValues` and will be deallocated once the current call stack unwinds.
+    tab.widgetSearchTabHelper = nil
   }
 
   func tabWillBeDestroyed(_ tab: some TabState) {
     tab.removeObserver(self)
-  }
-
-  // MARK: - Teardown
-
-  /// Removes this helper from its tab. After this call the helper is no longer reachable
-  /// via `TabDataValues` and will be deallocated once the current call stack unwinds.
-  private func detach() {
-    tab?.widgetSearchTabHelper = nil
   }
 }
