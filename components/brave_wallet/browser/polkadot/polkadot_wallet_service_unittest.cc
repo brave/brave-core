@@ -97,11 +97,11 @@ class PolkadotWalletServiceUnitTest : public testing::Test {
 
     keyring_service_
         ->GetKeyring<PolkadotKeyring>(mojom::KeyringId::kPolkadotTestnet)
-        ->SetSignatureRngForTesting();
+        ->SetMockRndSeedForTesting();
 
     keyring_service_
         ->GetKeyring<PolkadotKeyring>(mojom::KeyringId::kPolkadotMainnet)
-        ->SetSignatureRngForTesting();
+        ->SetMockRndSeedForTesting();
   }
 
   AccountUtils GetAccountUtils() {

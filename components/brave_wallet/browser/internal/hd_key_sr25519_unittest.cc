@@ -299,23 +299,32 @@ TEST(HDKeySr25519, DeterministicSignatures) {
   auto sig1 = keypair.SignMessage(message);
   auto sig2 = keypair.SignMessage(message);
 
+  const char expected_sig[] =
+      R"(b45c968fd66bbb503bedd3a4735fca241a7867cb9b07989dd36bf4837cad4377a8b1fe8135a97ab85ccb5ff7bb0381890d4b78298fec1ac8ffc086387071688e)";
+
+  // Since mock rng seed is not set, the signatures should be different.
+  EXPECT_NE(base::HexEncodeLower(sig1), expected_sig);
+  EXPECT_NE(base::HexEncodeLower(sig2), expected_sig);
   EXPECT_NE(base::HexEncodeLower(sig1), base::HexEncodeLower(sig2));
   EXPECT_TRUE(keypair.VerifyMessage(sig1, message));
   EXPECT_TRUE(keypair.VerifyMessage(sig2, message));
 
-  keypair.UseMockRngForTesting();
+  keypair.SetMockRndSeedForTesting();
 
   sig1 = keypair.SignMessage(message);
   sig2 = keypair.SignMessage(message);
-
-  const char expected_sig[] =
-      R"(b45c968fd66bbb503bedd3a4735fca241a7867cb9b07989dd36bf4837cad4377a8b1fe8135a97ab85ccb5ff7bb0381890d4b78298fec1ac8ffc086387071688e)";
 
   EXPECT_EQ(base::HexEncodeLower(sig1), expected_sig);
   EXPECT_EQ(base::HexEncodeLower(sig2), expected_sig);
 
   EXPECT_TRUE(keypair.VerifyMessage(sig1, message));
   EXPECT_TRUE(keypair.VerifyMessage(sig2, message));
+
+  keypair.SetMockRndSeedForTesting(1);
+  sig1 = keypair.SignMessage(message);
+
+  EXPECT_NE(base::HexEncodeLower(sig1), expected_sig);
+  EXPECT_TRUE(keypair.VerifyMessage(sig1, message));
 }
 
 TEST(HDKeySr25519, GetExportKeyPkcs8) {

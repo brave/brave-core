@@ -130,10 +130,10 @@ void PolkadotKeyring::SetRandBytesForTesting(  // IN-TEST
   rand_nonce_bytes_for_testing_ = nonce_bytes;
 }
 
-void PolkadotKeyring::SetSignatureRngForTesting() {
+void PolkadotKeyring::SetMockRndSeedForTesting(uint64_t seed) {
   CHECK_IS_TEST();
   for (auto& [idx, keypair] : secondary_keys_) {
-    keypair.UseMockRngForTesting();  // IN-TEST
+    keypair.SetMockRndSeedForTesting(seed);  // IN-TEST
   }
 }
 

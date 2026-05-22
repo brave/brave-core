@@ -103,9 +103,9 @@ HDKeySr25519 HDKeySr25519::DeriveHard(uint32_t account_index) const {
   return HDKeySr25519(keypair_->derive_hard_from_account_index(account_index));
 }
 
-void HDKeySr25519::UseMockRngForTesting() {
+void HDKeySr25519::SetMockRndSeedForTesting(uint64_t seed) {
   CHECK_IS_TEST();
-  keypair_->use_mock_rng_for_testing();  // IN-TEST
+  keypair_->set_mock_rnd_seed_for_testing(seed);  // IN-TEST
 }
 
 }  // namespace brave_wallet

@@ -225,8 +225,8 @@ class PolkadotTxManagerUnitTest : public testing::Test {
 
     task_environment_.RunUntilQuit();
 
-    keyring_service_->polkadot_mainnet_keyring_->SetSignatureRngForTesting();
-    keyring_service_->polkadot_testnet_keyring_->SetSignatureRngForTesting();
+    keyring_service_->polkadot_mainnet_keyring_->SetMockRndSeedForTesting();
+    keyring_service_->polkadot_testnet_keyring_->SetMockRndSeedForTesting();
   }
 
   AccountUtils GetAccountUtils() {
