@@ -6,6 +6,7 @@
 ##
 
 # These tests pass locally but fail on CI
+-AntiVirusMetricsProviderTest.GetMetricsFullName/*
 -FileSystemAccessUIHelpersTest.GetElidedPathForDisplayAsTitle
 -NotificationHelperLaunchesChrome.ChromeLaunchTest
 -PerformanceManagerMetricsProviderDesktopTest.TestCpuThrottlingMetricRecordedWhereAvailable

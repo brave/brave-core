@@ -39,8 +39,9 @@ bool IsAlreadyRegistered(ComponentUpdateService* cus) {
 }
 #if !BUILDFLAG(IS_LINUX)
 content::WebContents* GetActiveWebContents() {
-  if (Browser* browser = chrome::FindLastActive())
-    return browser->tab_strip_model()->GetActiveWebContents();
+  if (BrowserWindowInterface* browser = chrome::FindLastActive()) {
+    return browser->GetTabStripModel()->GetActiveWebContents();
+  }
   return nullptr;
 }
 

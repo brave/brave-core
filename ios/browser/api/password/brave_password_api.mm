@@ -11,6 +11,7 @@
 #include "brave/ios/browser/api/password/password_store_listener_ios.h"
 #include "components/password_manager/core/browser/password_form.h"
 #include "components/password_manager/core/browser/password_form_digest.h"
+#include "components/password_manager/core/browser/password_store/password_form_converters.h"
 #include "components/password_manager/core/browser/password_store/password_store_consumer.h"
 #include "components/password_manager/core/browser/password_store/password_store_interface.h"
 #include "components/password_manager/core/browser/password_store/password_store_util.h"
@@ -134,21 +135,19 @@ class PasswordStoreConsumerIOS
     : public password_manager::PasswordStoreConsumer {
  public:
   PasswordStoreConsumerIOS(
-      base::OnceCallback<
-          void(std::vector<std::unique_ptr<password_manager::PasswordForm>>)>
+      base::OnceCallback<void(std::vector<password_manager::PasswordForm>)>
           callback)
       : consumer_callback(std::move(callback)) {}
 
   base::WeakPtr<PasswordStoreConsumerIOS> GetWeakPtr();
 
  private:
-  base::OnceCallback<void(
-      std::vector<std::unique_ptr<password_manager::PasswordForm>>)>
+  base::OnceCallback<void(std::vector<password_manager::PasswordForm>)>
       consumer_callback;
 
-  void OnGetPasswordStoreResults(
-      std::vector<std::unique_ptr<password_manager::PasswordForm>> results)
-      override;
+  void OnGetPasswordStoreResultsOrErrorFrom(
+      password_manager::PasswordStoreInterface* store,
+      password_manager::LoginsResultOrError results_or_error) override;
 
   base::WeakPtrFactory<PasswordStoreConsumerIOS> weak_ptr_factory_{this};
 };
@@ -157,9 +156,18 @@ base::WeakPtr<PasswordStoreConsumerIOS> PasswordStoreConsumerIOS::GetWeakPtr() {
   return weak_ptr_factory_.GetWeakPtr();
 }
 
-void PasswordStoreConsumerIOS::OnGetPasswordStoreResults(
-    std::vector<std::unique_ptr<password_manager::PasswordForm>> results) {
-  std::move(consumer_callback).Run(std::move(results));
+void PasswordStoreConsumerIOS::OnGetPasswordStoreResultsOrErrorFrom(
+    password_manager::PasswordStoreInterface* store,
+    password_manager::LoginsResultOrError results_or_error) {
+  if (std::holds_alternative<std::vector<password_manager::StoredCredential>>(
+          results_or_error)) {
+    std::move(consumer_callback)
+        .Run(password_manager::ToPasswordForms(
+            std::get<std::vector<password_manager::StoredCredential>>(
+                results_or_error)));
+  } else {
+    std::move(consumer_callback).Run({});
+  }
   delete this;
 }
 
@@ -287,7 +295,7 @@ void PasswordStoreConsumerIOS::OnGetPasswordStoreResults(
   __weak BravePasswordAPI* weakSelf = self;
 
   auto fetchCredentialsCallback =
-      ^(std::vector<std::unique_ptr<password_manager::PasswordForm>> logins) {
+      ^(std::vector<password_manager::PasswordForm> logins) {
         const auto strongSelf = weakSelf;
 
         NSArray<IOSPasswordForm*>* credentials =
@@ -307,7 +315,7 @@ void PasswordStoreConsumerIOS::OnGetPasswordStoreResults(
   __weak BravePasswordAPI* weakSelf = self;
 
   auto fetchCredentialsCallback =
-      ^(std::vector<std::unique_ptr<password_manager::PasswordForm>> logins) {
+      ^(std::vector<password_manager::PasswordForm> logins) {
         const auto strongSelf = weakSelf;
 
         NSArray<IOSPasswordForm*>* credentials =
@@ -329,24 +337,24 @@ void PasswordStoreConsumerIOS::OnGetPasswordStoreResults(
 }
 
 - (NSArray<IOSPasswordForm*>*)onLoginsResult:
-    (std::vector<std::unique_ptr<password_manager::PasswordForm>>)results {
+    (std::vector<password_manager::PasswordForm>)results {
   NSMutableArray<IOSPasswordForm*>* loginForms = [[NSMutableArray alloc] init];
 
   for (const auto& result : results) {
     IOSPasswordForm* passwordForm = [[IOSPasswordForm alloc]
-                initWithURL:net::NSURLWithGURL(result->url)
-                signOnRealm:base::SysUTF8ToNSString(result->signon_realm)
-                dateCreated:result->date_created.ToNSDate()
-               dateLastUsed:result->date_last_used.ToNSDate()
-        datePasswordChanged:result->date_password_modified.ToNSDate()
-            usernameElement:base::SysUTF16ToNSString(result->username_element)
-              usernameValue:base::SysUTF16ToNSString(result->username_value)
-            passwordElement:base::SysUTF16ToNSString(result->password_element)
-              passwordValue:base::SysUTF16ToNSString(result->password_value)
-            isBlockedByUser:result->blocked_by_user
+                initWithURL:net::NSURLWithGURL(result.url)
+                signOnRealm:base::SysUTF8ToNSString(result.signon_realm)
+                dateCreated:result.date_created.ToNSDate()
+               dateLastUsed:result.date_last_used.ToNSDate()
+        datePasswordChanged:result.date_password_modified.ToNSDate()
+            usernameElement:base::SysUTF16ToNSString(result.username_element)
+              usernameValue:base::SysUTF16ToNSString(result.username_value)
+            passwordElement:base::SysUTF16ToNSString(result.password_element)
+              passwordValue:base::SysUTF16ToNSString(result.password_value)
+            isBlockedByUser:result.blocked_by_user
                      scheme:brave::ios::
                                 PasswordFormSchemeFromPasswordManagerScheme(
-                                    result->scheme)];
+                                    result.scheme)];
 
     [loginForms addObject:passwordForm];
   }

@@ -33,7 +33,7 @@ const gfx::VectorIcon& MultiContentsViewMiniToolbar::GetMoreVerticalIcon() {
 }
 
 // static
-std::unique_ptr<ui::SimpleMenuModel>
+std::unique_ptr<SplitTabMenuModel>
 MultiContentsViewMiniToolbar::CreateBraveSplitTabMenuModel(
     TabStripModel* tab_strip_model,
     SplitTabMenuModel::MenuSource source,

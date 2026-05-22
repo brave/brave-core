@@ -275,9 +275,9 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest, TorItemEnabled) {
   [ac executeCommand:tor_menu withProfile:browser()->profile()];
   base::RunLoop().RunUntilIdle();
 
-  Browser* tor_window = chrome::FindLastActive();
+  BrowserWindowInterface* tor_window = chrome::FindLastActive();
   EXPECT_TRUE(tor_window);
-  EXPECT_TRUE(tor_window->profile()->IsTor());
+  EXPECT_TRUE(tor_window->GetProfile()->IsTor());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,

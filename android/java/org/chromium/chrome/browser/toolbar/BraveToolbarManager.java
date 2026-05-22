@@ -89,6 +89,7 @@ import org.chromium.chrome.browser.toolbar.top.ToolbarActionModeCallback;
 import org.chromium.chrome.browser.toolbar.top.ToolbarControlContainer;
 import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
 import org.chromium.chrome.browser.toolbar.top.TopToolbarCoordinator;
+import org.chromium.chrome.browser.ui.actions.ActionRegistry;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuCoordinator;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.bottombar.BottomBarHostManager;
@@ -215,7 +216,8 @@ public class BraveToolbarManager extends ToolbarManager
             DataSharingTabManager dataSharingTabManager,
             TabContentManager tabContentManager,
             TabCreatorManager tabCreatorManager,
-            Supplier<MerchantTrustSignalsCoordinator> merchantTrustSignalsCoordinatorSupplier,
+            MonotonicObservableSupplier<MerchantTrustSignalsCoordinator>
+                    merchantTrustSignalsCoordinatorSupplier,
             OmniboxActionDelegateImpl omniboxActionDelegate,
             MonotonicObservableSupplier<EphemeralTabCoordinator> ephemeralTabCoordinatorSupplier,
             boolean initializeWithIncognitoColors,
@@ -231,7 +233,8 @@ public class BraveToolbarManager extends ToolbarManager
             PageZoomManager pageZoomManager,
             SnackbarManager snackbarManager,
             @Nullable OmniboxChipManager omniboxChipManager,
-            @Nullable BottomBarHostManager bottomBarHostManager) {
+            @Nullable BottomBarHostManager bottomBarHostManager,
+            @Nullable ActionRegistry actionRegistry) {
         super(
                 activity,
                 bottomControlsStacker,
@@ -287,7 +290,8 @@ public class BraveToolbarManager extends ToolbarManager
                 pageZoomManager,
                 snackbarManager,
                 omniboxChipManager,
-                bottomBarHostManager);
+                bottomBarHostManager,
+                actionRegistry);
 
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;
@@ -376,6 +380,9 @@ public class BraveToolbarManager extends ToolbarManager
                         mUndoBarThrottle,
                         mTabBookmarkerSupplier,
                         mShareDelegateSupplier);
+        // mTabGroupUiOneshotSupplier is a OneshotSupplier of a concrete subtype, so narrowing
+        // the wildcard to the bound type is safe in practice but not provable to the compiler.
+        @SuppressWarnings("unchecked")
         var bottomControlsContentDelegateSupplier =
                 (OneshotSupplier<BottomControlsContentDelegate>)
                         ((OneshotSupplier<? extends BottomControlsContentDelegate>)
@@ -409,6 +416,7 @@ public class BraveToolbarManager extends ToolbarManager
                         mEdgeToEdgeControllerSupplier,
                         mBottomControls,
                         LayerType.TABSTRIP_TOOLBAR,
+                        R.dimen.brave_bottom_toolbar_height,
                         bottomControlsContentDelegateSupplier,
                         mTabObscuringHandler,
                         mOverlayPanelVisibilitySupplier,

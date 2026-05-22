@@ -49,6 +49,7 @@ def GetRequiredLibsPaths(args, extension):
         'libarcore_sdk_c.so',  # Augmented reality lib from Android SDK
         'libarcore_sdk_jni.so',  # Augmented reality lib from Android SDK
         'libandroidx.xr.runtime.openxr.so',  # AndroidX XR ARCore prebuilt (arcore-openxr.aar)
+        'libandroidx.xr.arcore.openxr.so',  # AndroidX XR ARCore prebuilt (arcore-openxr.aar)
         'libimpress_api_jni.so',  # Google AR Impress prebuilt (com_google_ar_impress_java)
         'libwg-go.so'  # Wireguard lib for Brave VPN
     }

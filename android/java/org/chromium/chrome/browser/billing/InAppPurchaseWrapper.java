@@ -102,17 +102,17 @@ public class InAppPurchaseWrapper {
 
     // VPN monthly subscription product details
     private final MutableLiveData<ProductDetails> mMutableMonthlyProductDetailsVPN =
-            new MutableLiveData();
+            new MutableLiveData<>();
     private final LiveData<ProductDetails> mMonthlyProductDetailsVPN =
             mMutableMonthlyProductDetailsVPN;
     // Leo monthly subscription product details
     private final MutableLiveData<ProductDetails> mMutableMonthlyProductDetailsLeo =
-            new MutableLiveData();
+            new MutableLiveData<>();
     private final LiveData<ProductDetails> mMonthlyProductDetailsLeo =
             mMutableMonthlyProductDetailsLeo;
     // Origin one-time purchase product details
     private final MutableLiveData<ProductDetails> mMutableOriginProductDetails =
-            new MutableLiveData();
+            new MutableLiveData<>();
     private final LiveData<ProductDetails> mOriginProductDetails = mMutableOriginProductDetails;
 
     /**
@@ -155,12 +155,12 @@ public class InAppPurchaseWrapper {
 
     // VPN yearly subscription product details
     private final MutableLiveData<ProductDetails> mMutableYearlyProductDetailsVPN =
-            new MutableLiveData();
+            new MutableLiveData<>();
     private final LiveData<ProductDetails> mYearlyProductDetailsVPN =
             mMutableYearlyProductDetailsVPN;
     // Leo yearly subscription product details
     private final MutableLiveData<ProductDetails> mMutableYearlyProductDetailsLeo =
-            new MutableLiveData();
+            new MutableLiveData<>();
     private final LiveData<ProductDetails> mYearlyProductDetailsLeo =
             mMutableYearlyProductDetailsLeo;
 
@@ -304,7 +304,7 @@ public class InAppPurchaseWrapper {
         QueryProductDetailsParams queryProductDetailsParams =
                 QueryProductDetailsParams.newBuilder().setProductList(products).build();
 
-        MutableLiveData<Boolean> _billingConnectionState = new MutableLiveData();
+        MutableLiveData<Boolean> _billingConnectionState = new MutableLiveData<>();
         LiveData<Boolean> billingConnectionState = _billingConnectionState;
         startBillingServiceConnection(_billingConnectionState);
         LiveDataUtil.observeOnce(
@@ -341,7 +341,7 @@ public class InAppPurchaseWrapper {
      * Play. This is intended for QA/testing use only via Developer Options.
      */
     public void consumeExistingOriginPurchase() {
-        MutableLiveData<Boolean> _billingConnectionState = new MutableLiveData();
+        MutableLiveData<Boolean> _billingConnectionState = new MutableLiveData<>();
         LiveData<Boolean> billingConnectionState = _billingConnectionState;
         startBillingServiceConnection(_billingConnectionState);
         LiveDataUtil.observeOnce(
@@ -398,7 +398,7 @@ public class InAppPurchaseWrapper {
         QueryProductDetailsParams queryProductDetailsParams =
                 QueryProductDetailsParams.newBuilder().setProductList(products).build();
 
-        MutableLiveData<Boolean> _billingConnectionState = new MutableLiveData();
+        MutableLiveData<Boolean> _billingConnectionState = new MutableLiveData<>();
         LiveData<Boolean> billingConnectionState = _billingConnectionState;
         startBillingServiceConnection(_billingConnectionState);
         LiveDataUtil.observeOnce(
@@ -445,7 +445,7 @@ public class InAppPurchaseWrapper {
                 type.equals(SubscriptionProduct.ORIGIN)
                         ? BillingClient.ProductType.INAPP
                         : BillingClient.ProductType.SUBS;
-        MutableLiveData<Boolean> _billingConnectionState = new MutableLiveData();
+        MutableLiveData<Boolean> _billingConnectionState = new MutableLiveData<>();
         LiveData<Boolean> billingConnectionState = _billingConnectionState;
         startBillingServiceConnection(_billingConnectionState);
         LiveDataUtil.observeOnce(
@@ -523,7 +523,7 @@ public class InAppPurchaseWrapper {
                 BillingFlowParams.newBuilder()
                         .setProductDetailsParamsList(productDetailsParamsList)
                         .build();
-        MutableLiveData<Boolean> _billingConnectionState = new MutableLiveData();
+        MutableLiveData<Boolean> _billingConnectionState = new MutableLiveData<>();
         LiveData<Boolean> billingConnectionState = _billingConnectionState;
         startBillingServiceConnection(_billingConnectionState);
         LiveDataUtil.observeOnce(
@@ -567,7 +567,7 @@ public class InAppPurchaseWrapper {
                 BillingFlowParams.newBuilder()
                         .setProductDetailsParamsList(productDetailsParamsList)
                         .build();
-        MutableLiveData<Boolean> _billingConnectionState = new MutableLiveData();
+        MutableLiveData<Boolean> _billingConnectionState = new MutableLiveData<>();
         LiveData<Boolean> billingConnectionState = _billingConnectionState;
         startBillingServiceConnection(_billingConnectionState);
         LiveDataUtil.observeOnce(
@@ -601,7 +601,7 @@ public class InAppPurchaseWrapper {
         boolean isLeoProduct = isLeoProduct(productIds);
         boolean isOriginProduct = isOriginProduct(productIds);
         if (!purchase.isAcknowledged()) {
-            MutableLiveData<Boolean> _billingConnectionState = new MutableLiveData();
+            MutableLiveData<Boolean> _billingConnectionState = new MutableLiveData<>();
             LiveData<Boolean> billingConnectionState = _billingConnectionState;
             startBillingServiceConnection(_billingConnectionState);
             LiveDataUtil.observeOnce(

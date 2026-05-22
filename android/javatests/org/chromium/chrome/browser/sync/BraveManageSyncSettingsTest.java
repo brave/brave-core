@@ -50,56 +50,32 @@ public class BraveManageSyncSettingsTest {
     @Test
     @SmallTest
     @Feature({"Sync"})
-    public void syncEverythingOrPasswordsHandlerIsOriginalOnChromeOS() {
-        syncEverythingOrPasswordsOverridden(true, false);
+    public void syncPasswordsHandlerIsOriginalOnChromeOS() {
+        syncPasswordsOverridden(true, false);
     }
 
     @Test
     @SmallTest
     @Feature({"Sync"})
-    public void syncEverythingOrPasswordsHandlerOverriddenOnNonChromeOS() {
-        syncEverythingOrPasswordsOverridden(false, true);
+    public void syncPasswordsHandlerOverriddenOnNonChromeOS() {
+        syncPasswordsOverridden(false, true);
     }
 
-    void syncEverythingOrPasswordsOverridden(
-            Boolean isChromeOS, Boolean handlerShouldBeOverridden) {
-
+    void syncPasswordsOverridden(Boolean isChromeOS, Boolean handlerShouldBeOverridden) {
         setupMockSyncService();
-
-        // The next line triggers presubmit warning
-        // Banned functions were used.
-        // ...
-        // It is safe to ignore this warning if you are just moving an existing
-        // call, or if you want special handling for users in the legacy state.
-        // Support the legacy state is the case for Brave Sync
-        when(mSyncService.hasSyncConsent()).thenReturn(true);
-
-        when(mSyncService.getSetupInProgressHandle())
-                .thenReturn(
-                        new SyncService.SyncSetupInProgressHandle() {
-                            @Override
-                            public void close() {}
-                        });
 
         BraveManageSyncSettings.setIsRunningOnChromeOSForTesting(isChromeOS);
         BraveManageSyncSettings fragment = startManageSyncPreferences();
 
         ChromeSwitchPreference prefSyncPasswords =
-                fragment.findPreference(ManageSyncSettings.PREF_SYNC_PASSWORDS);
-        ChromeSwitchPreference syncEverything =
-                fragment.findPreference(ManageSyncSettings.PREF_SYNC_EVERYTHING);
+                fragment.findPreference(ManageSyncSettings.PREF_ACCOUNT_SECTION_PASSWORDS_TOGGLE);
 
         Preference.OnPreferenceChangeListener origSyncPasswordsListner =
                 prefSyncPasswords.getOnPreferenceChangeListener();
-        Preference.OnPreferenceChangeListener origSyncEverythingListner =
-                syncEverything.getOnPreferenceChangeListener();
 
         Assert.assertEquals(
                 handlerShouldBeOverridden,
                 origSyncPasswordsListner != (Preference.OnPreferenceChangeListener) fragment);
-        Assert.assertEquals(
-                handlerShouldBeOverridden,
-                origSyncEverythingListner != (Preference.OnPreferenceChangeListener) fragment);
     }
 
     private BraveManageSyncSettings startManageSyncPreferences() {

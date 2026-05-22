@@ -57,6 +57,7 @@ source_set("brave_shields_impl") {
     "//chrome/browser:browser_process",
     "//chrome/browser/content_settings:content_settings_factory",
     "//chrome/browser/download",
+    "//chrome/browser/net",
     "//chrome/browser/profiles",
     "//chrome/common:mojo_bindings",
     "//components/content_settings/core/browser:cookie_settings",

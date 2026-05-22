@@ -10,6 +10,7 @@
 #include "base/check.h"
 #include "base/check_deref.h"
 #include "base/functional/bind.h"
+#include "base/logging.h"
 #include "base/types/to_address.h"
 #include "brave/components/containers/core/browser/containers_service_observer.h"
 #include "brave/components/containers/core/browser/pref_names.h"

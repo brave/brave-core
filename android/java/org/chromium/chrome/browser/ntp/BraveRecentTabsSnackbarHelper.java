@@ -362,7 +362,7 @@ public class BraveRecentTabsSnackbarHelper {
                 };
 
         // 0 is a max bitmap size for download
-        mFaviconHelper.getLocalFaviconImageForURL(profile, url, 0, imageCallback);
+        mFaviconHelper.getLocalFaviconImageForURL(profile, url, 0, true, imageCallback);
     }
 
     /** Sets the profile image on the snackbar from a bitmap. */

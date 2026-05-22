@@ -13,10 +13,10 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_navigator.h"
-#include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
+#include "chrome/browser/ui/navigator/browser_navigator.h"
+#include "chrome/browser/ui/navigator/browser_navigator_params.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -109,8 +109,9 @@ content::WebContents* AIChatSidePanelWebView::AddNewContents(
   auto* browser = browser_view->browser();
 
   // If AI Chat is not open in the side panel, don't open the tab.
-  if (browser->browser_window_features()->side_panel_ui()->GetCurrentEntryId(
-          SidePanelEntry::PanelType::kContent) != SidePanelEntryId::kChatUI) {
+  if (browser->browser_window_features()
+          ->side_panel_ui()
+          ->GetCurrentEntryId() != SidePanelEntryId::kChatUI) {
     return nullptr;
   }
 

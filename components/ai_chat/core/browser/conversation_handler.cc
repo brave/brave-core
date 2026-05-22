@@ -1434,7 +1434,7 @@ void ConversationHandler::MaybeSeedOrClearSuggestions() {
     // generate all of them  and remove random ones until we have the required
     // number and then shuffle the result.
     while (suggestions_.size() > kDefaultSuggestionsCount) {
-      auto remove_at = base::RandInt(0, suggestions_.size() - 1);
+      auto remove_at = base::RandIntInclusive(0, suggestions_.size() - 1);
       suggestions_.erase(suggestions_.begin() + remove_at);
     }
     base::RandomShuffle(suggestions_.begin(), suggestions_.end());

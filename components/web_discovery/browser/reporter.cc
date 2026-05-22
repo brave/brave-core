@@ -97,7 +97,8 @@ base::Value GenerateFinalPayload(const base::DictValue& pre_payload) {
   result.Set(kReporterVersionField, kCurrentReporterVersion);
   result.Set(kSenderField, kHpnSenderValue);
   result.Set(kTimestampField, FormatServerDate(base::Time::Now()));
-  result.Set(kAntiDuplicatesField, base::RandInt(0, kMaxAntiDuplicatesNonce));
+  result.Set(kAntiDuplicatesField,
+             base::RandIntInclusive(0, kMaxAntiDuplicatesNonce));
   result.Set(kChannelField, kBraveChannel);
 
   return base::Value(std::move(result));

@@ -11,6 +11,7 @@
 #include "base/notreached.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/browser/ui/brave_pages.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "content/public/browser/web_contents.h"
 

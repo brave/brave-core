@@ -26,7 +26,7 @@ source_set("unit_tests") {
       "//chrome/browser/regional_capabilities",
       "//chrome/browser/search_engines",
       "//chrome/browser/ui",
-      "//chrome/browser/ui:browser_navigator_params_headers",
+      "//chrome/browser/ui/navigator",
       "//chrome/test:test_support",
       "//components/browsing_data/content:test_support",
       "//components/regional_capabilities",

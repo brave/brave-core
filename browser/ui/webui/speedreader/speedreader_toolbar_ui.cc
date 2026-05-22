@@ -16,6 +16,7 @@
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/prefs/prefs_tab_helper.h"
 #include "chrome/browser/ui/webui/theme_source.h"
 #include "components/grit/brave_components_resources.h"
@@ -37,7 +38,9 @@ SpeedreaderToolbarUI::SpeedreaderToolbarUI(content::WebUI* web_ui)
       ->SetZoomLevelForHostAndScheme(content::kChromeUIScheme,
                                      kSpeedreaderPanelHost, 0);
 
-  browser_ = chrome::FindLastActiveWithProfile(profile_);
+  if (auto* bwi = chrome::FindLastActiveWithProfile(profile_)) {
+    browser_ = bwi->GetBrowserForMigrationOnly();
+  }
 
   content::WebUIDataSource* source = CreateAndAddWebUIDataSource(
       web_ui, kSpeedreaderPanelHost, kBraveSpeedreaderToolbarGenerated,

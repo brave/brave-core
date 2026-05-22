@@ -30,7 +30,7 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ssl/ask_before_http_dialog_controller.h"
-#include "chrome/browser/ui/browser_navigator_params.h"
+#include "chrome/browser/ui/navigator/browser_navigator_params.h"
 #include "chrome/test/base/ui_test_utils.h"
 #endif
 
@@ -208,7 +208,7 @@ class HttpsUpgradeBrowserTest : public PlatformBrowserTest {
     if (!dialog_controller) {
       return false;
     }
-    return dialog_controller->HasOpenDialogWidget();
+    return dialog_controller->HasOpenDialog();
   }
 #endif
 

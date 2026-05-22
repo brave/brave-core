@@ -58,7 +58,6 @@
 #include "chrome/browser/app_mode/app_mode_utils.h"
 #include "chrome/browser/devtools/devtools_ui_controller.h"
 #include "chrome/browser/devtools/devtools_window.h"
-#include "chrome/browser/enterprise/watermark/watermark_view.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_element_identifiers.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
@@ -344,19 +343,17 @@ BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
           AddChildView(std::make_unique<SidebarContainerView>(
               browser_, SidePanelCoordinator::From(browser_), nullptr));
 #if BUILDFLAG(ENABLE_SIDEBAR_V2)
-      contents_height_side_panel_->SetResizeArea(
-          std::make_unique<views::BraveSidePanelResizeArea>(
-              contents_height_side_panel_));
+      side_panel_->SetResizeArea(
+          std::make_unique<views::BraveSidePanelResizeArea>(side_panel_));
 #endif
     } else {
       // V1: wrap chromium's side panel inside SidebarContainerView.
-      auto original_side_panel =
-          RemoveChildViewT(contents_height_side_panel_.get());
+      auto side_panel = RemoveChildViewT(side_panel_.get());
       sidebar_container_view_ =
           AddChildView(std::make_unique<SidebarContainerView>(
               browser_, SidePanelCoordinator::From(browser_),
-              std::move(original_side_panel)));
-      contents_height_side_panel_ = sidebar_container_view_->side_panel();
+              std::move(side_panel)));
+      side_panel_ = sidebar_container_view_->side_panel();
     }
 
 #if defined(USE_AURA)
@@ -642,7 +639,7 @@ void BraveBrowserView::ShowPlaylistBubble() {
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
 void BraveBrowserView::ShowWaybackMachineBubble() {
-  if (auto* anchor = toolbar_button_provider_->GetPageActionIconView(
+  if (auto* anchor = toolbar_button_provider()->GetPageActionIconView(
           brave::kWaybackMachineActionIconType)) {
     DCHECK(anchor->GetVisible());
     // Launch bubble with this anchor.
@@ -883,7 +880,7 @@ bool BraveBrowserView::MaybeUpdateDevtools(content::WebContents* web_contents) {
   // together. Early return to avoid crash from that.
   if (IsWebPanelContents(web_contents) && IsInSplitView()) {
     return browser_->GetFeatures().devtools_ui_controller()->UpdateDevtools(
-        GetActiveContentsContainerView(), web_contents, false);
+        web_contents, false);
   }
 
   bool result = BrowserView::MaybeUpdateDevtools(web_contents);
@@ -1059,13 +1056,13 @@ void BraveBrowserView::UpdateVerticalTabStripBorder() {
 
 void BraveBrowserView::UpdateSidebarBorder() {
 #if BUILDFLAG(ENABLE_SIDEBAR_V2)
-  if (contents_height_side_panel_) {
-    contents_height_side_panel_->SetRoundedBorderEnabled(
+  if (side_panel_) {
+    side_panel_->SetRoundedBorderEnabled(
         ShouldUseBraveWebViewRoundedCornersForContents(browser_));
   }
 #else
-  if (contents_height_side_panel_) {
-    contents_height_side_panel_->UpdateBorder();
+  if (side_panel_) {
+    side_panel_->UpdateBorder();
   }
 #endif
 

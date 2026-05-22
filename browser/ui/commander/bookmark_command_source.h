@@ -13,6 +13,8 @@
 
 #include "brave/browser/ui/commander/command_source.h"
 
+class BrowserWindowInterface;
+
 namespace commander {
 
 // Provides an "Open Bookmark..." composite command which lets the user
@@ -28,8 +30,9 @@ class BookmarkCommandSource : public CommandSource {
   BookmarkCommandSource& operator=(const BookmarkCommandSource& other) = delete;
 
   // Command source overrides
-  CommandSource::CommandResults GetCommands(const std::u16string& input,
-                                            Browser* browser) const override;
+  CommandSource::CommandResults GetCommands(
+      const std::u16string& input,
+      BrowserWindowInterface* browser) const override;
 };
 
 }  // namespace commander

@@ -10,6 +10,7 @@
 #include "chrome/browser/ui/views/frame/browser_root_view.h"
 #include "chrome/browser/ui/views/intent_picker_bubble_view.h"
 #include "chrome/browser/ui/views/location_bar/custom_tab_bar_view.h"
+#include "chrome/browser/ui/views/toolbar/split_tabs_button.h"
 
 #define Init virtual Init
 #define Update virtual Update

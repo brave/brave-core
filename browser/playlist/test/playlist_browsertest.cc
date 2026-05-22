@@ -182,12 +182,10 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PanelToggleTestWhilePlaying) {
 
   // Open playlist panel.
   panel_ui->Show(SidePanelEntryId::kPlaylist);
-  WaitUntil(base::BindLambdaForTesting([&]() {
-    return panel_ui->IsSidePanelShowing(SidePanelEntry::PanelType::kContent);
-  }));
-  ASSERT_TRUE(base::test::RunUntil([&]() {
-    return panel_ui->IsSidePanelShowing(SidePanelEntry::PanelType::kContent);
-  }));
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return panel_ui->IsSidePanelShowing(); }));
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return panel_ui->IsSidePanelShowing(); }));
 
   auto* coordinator =
       browser()->GetFeatures().playlist_side_panel_coordinator();
@@ -195,27 +193,24 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PanelToggleTestWhilePlaying) {
   coordinator->is_audible_for_testing_ = true;
 
   // Close playlist panel check cached instances are still live.
-  panel_ui->Close(SidePanelEntry::PanelType::kContent);
+  panel_ui->Close();
   EXPECT_TRUE(coordinator->contents_wrapper_);
-  ASSERT_TRUE(base::test::RunUntil([&]() {
-    return !panel_ui->IsSidePanelShowing(SidePanelEntry::PanelType::kContent);
-  }));
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return !panel_ui->IsSidePanelShowing(); }));
 
   // Re-open playlist panel.
   panel_ui->Show(SidePanelEntryId::kPlaylist);
-  ASSERT_TRUE(base::test::RunUntil([&]() {
-    return panel_ui->IsSidePanelShowing(SidePanelEntry::PanelType::kContent);
-  }));
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return panel_ui->IsSidePanelShowing(); }));
 
   // Not audible. Check cached webview/contents are destroyed.
   coordinator->is_audible_for_testing_ = false;
 
   // Close playlist panel. Check cached instances are all freed.
-  panel_ui->Close(SidePanelEntry::PanelType::kContent);
+  panel_ui->Close();
   EXPECT_FALSE(coordinator->contents_wrapper_);
-  ASSERT_TRUE(base::test::RunUntil([&]() {
-    return !panel_ui->IsSidePanelShowing(SidePanelEntry::PanelType::kContent);
-  }));
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return !panel_ui->IsSidePanelShowing(); }));
 }
 
 IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, AddItemsToList) {

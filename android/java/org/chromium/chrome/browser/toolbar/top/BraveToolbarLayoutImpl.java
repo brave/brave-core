@@ -831,7 +831,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                     for (PlaylistItem defaultPlaylistItem : defaultPlaylist.items) {
                         pageSources.add(defaultPlaylistItem.pageSource.url);
                     }
-                    List<PlaylistItem> playlistItems = new ArrayList();
+                    List<PlaylistItem> playlistItems = new ArrayList<>();
                     for (PlaylistItem playlistItem : items) {
                         // Check for duplicates in default playlist
                         if (!pageSources.contains(playlistItem.pageSource.url)) {
@@ -1396,7 +1396,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 && mBraveRewardsNativeWorker.isSupported()
                 && NtpUtil.shouldShowRewardsIcon()) {
             // Check policy before showing rewards icon
-            Profile profile = tab != null ? Profile.fromWebContents(tab.getWebContents()) : null;
+            Profile profile = Profile.fromWebContents(tab.getWebContents());
             boolean isDisabled = BraveRewardsPolicy.isDisabledByPolicy(profile);
             if (!isDisabled) {
                 mRewardsLayout.setVisibility(View.VISIBLE);
@@ -1751,9 +1751,27 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        maybeHideTopTabSwitcherButton();
+
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
         maybeHideRewardsLayout(MeasureSpec.getSize(widthMeasureSpec));
+    }
+
+    /**
+     * Re-enforces GONE on the top toolbar's tab switcher button when Brave's tab switcher lives on
+     * the bottom toolbar. ToolbarPhone.updateButtonVisibility() (and related upstream paths) calls
+     * setHasSpaceToShow(true) on the tab switcher coordinator, which forces the button VISIBLE and
+     * overrides the GONE state set in onBottomControlsVisibilityChanged.
+     */
+    private void maybeHideTopTabSwitcherButton() {
+        if (!isTabSwitcherOnBottomControls()) {
+            return;
+        }
+        View toggleTabStackButton = findViewById(R.id.tab_switcher_button);
+        if (toggleTabStackButton != null && toggleTabStackButton.getVisibility() != GONE) {
+            toggleTabStackButton.setVisibility(GONE);
+        }
     }
 
     /**

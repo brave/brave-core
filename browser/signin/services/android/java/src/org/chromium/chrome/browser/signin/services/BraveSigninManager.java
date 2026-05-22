@@ -12,7 +12,6 @@ import org.jni_zero.JniType;
 
 import org.chromium.base.Callback;
 import org.chromium.build.annotations.NullMarked;
-import org.chromium.build.annotations.Nullable;
 import org.chromium.components.prefs.PrefService;
 import org.chromium.components.signin.base.CoreAccountInfo;
 import org.chromium.components.signin.identitymanager.IdentityManager;
@@ -44,15 +43,7 @@ public class BraveSigninManager implements SigninManager {
     }
 
     @Override
-    public String getManagementDomain() {
-        return "";
-    }
-
-    @Override
-    public void signOut(
-            @SignoutReason int signoutSource,
-            @Nullable SignOutCallback signOutCallback,
-            boolean forceWipeUserData) {}
+    public void signOut(@SignoutReason int signoutSource, Runnable signOutCallback) {}
 
     @Override
     @MainThread
@@ -63,11 +54,6 @@ public class BraveSigninManager implements SigninManager {
 
     @Override
     public void addSignInStateObserver(SignInStateObserver observer) {}
-
-    @Override
-    public boolean isForceSigninEnabled() {
-        return false;
-    }
 
     @Override
     public IdentityManager getIdentityManager() {
@@ -92,19 +78,13 @@ public class BraveSigninManager implements SigninManager {
     void destroy() {}
 
     @Override
-    public void wipeSyncUserData(Runnable wipeDataCallback, @DataWipeOption int dataWipeOption) {}
-
-    @Override
-    public void revokeSyncConsent(
-            @SignoutReason int signoutSource,
-            @Nullable SignOutCallback signOutCallback,
-            boolean forceWipeUserData) {}
+    public void wipeSyncUserData(Runnable wipeDataCallback) {}
 
     @Override
     public void signin(
             CoreAccountInfo coreAccountInfo,
             @SigninAccessPoint int accessPoint,
-            @Nullable SignInCallback callback) {}
+            SignInCallback callback) {}
 
     @Deprecated
     public void turnOnSyncForTesting(
@@ -122,7 +102,7 @@ public class BraveSigninManager implements SigninManager {
     public void isAccountManaged(CoreAccountInfo account, final Callback<Boolean> callback) {}
 
     @Override
-    public boolean didAccountFetchSucceed() {
+    public boolean didAccountsFetchSucceed() {
         return false;
     }
 }

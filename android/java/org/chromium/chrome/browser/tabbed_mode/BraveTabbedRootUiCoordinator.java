@@ -54,6 +54,7 @@ import org.chromium.chrome.browser.ui.BraveAdaptiveToolbarUiCoordinator;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuBlocker;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.bottombar.BottomBarHostManager;
+import org.chromium.chrome.browser.ui.browser_window.ChromeAndroidTask;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeUtils;
 import org.chromium.chrome.browser.ui.edge_to_edge.TopInsetProvider;
@@ -99,7 +100,7 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
             BrowserControlsManager browserControlsManager,
             ActivityWindowAndroid windowAndroid,
             ActivityResultTracker activityResultTracker,
-            OneshotSupplier chromeAndroidTaskSupplier,
+            OneshotSupplier<ChromeAndroidTask> chromeAndroidTaskSupplier,
             ActivityLifecycleDispatcher activityLifecycleDispatcher,
             MonotonicObservableSupplier<LayoutManagerImpl> layoutManagerSupplier,
             MenuOrKeyboardActionController menuOrKeyboardActionController,
@@ -107,9 +108,9 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
             MonotonicObservableSupplier<ModalDialogManager> modalDialogManagerSupplier,
             AppMenuBlocker appMenuBlocker,
             BooleanSupplier supportsAppMenuSupplier,
-            Supplier<TabCreatorManager> tabCreatorManagerSupplier,
+            MonotonicObservableSupplier<TabCreatorManager> tabCreatorManagerSupplier,
             FullscreenManager fullscreenManager,
-            Supplier<CompositorViewHolder> compositorViewHolderSupplier,
+            MonotonicObservableSupplier<CompositorViewHolder> compositorViewHolderSupplier,
             Supplier<TabContentManager> tabContentManagerSupplier,
             MonotonicObservableSupplier<SnackbarManager> snackbarManagerSupplier,
             SettableMonotonicObservableSupplier<EdgeToEdgeController> edgeToEdgeSupplier,
@@ -233,7 +234,8 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                     int bottomToolbarHeight =
                             mBraveActivity
                                             .getResources()
-                                            .getDimensionPixelSize(R.dimen.bottom_controls_height)
+                                            .getDimensionPixelSize(
+                                                    R.dimen.brave_bottom_toolbar_height)
                                     * -1;
                     if (EdgeToEdgeUtils.isEdgeToEdgeBottomChinEnabled(mBraveActivity)
                             && mBraveEdgeToEdgeControllerSupplier.get() != null) {

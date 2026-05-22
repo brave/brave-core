@@ -26,6 +26,7 @@
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/profiles/avatar_toolbar_button.h"
+#include "chrome/browser/ui/views/profiles/avatar_toolbar_button_state_manager.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -94,11 +95,11 @@ void BraveAvatarToolbarButton::SetHighlight(
 
   // We put window count to otr window's profile icon.
   int window_count = 0;
-  if (browser_->profile()->IsOffTheRecord()) {
-    window_count =
-        chrome::GetOffTheRecordBrowsersActiveForProfile(browser_->profile());
+  if (state_manager_->browser()->profile()->IsOffTheRecord()) {
+    window_count = chrome::GetOffTheRecordBrowsersActiveForProfile(
+        state_manager_->browser()->profile());
   }
-  if (browser_->profile()->IsTor()) {
+  if (state_manager_->browser()->profile()->IsTor()) {
     revised_highlight_text =
         l10n_util::GetStringUTF16(IDS_TOR_AVATAR_BUTTON_LABEL);
 
@@ -107,13 +108,13 @@ void BraveAvatarToolbarButton::SetHighlight(
           l10n_util::GetStringFUTF16(IDS_TOR_AVATAR_BUTTON_LABEL_COUNT,
                                      base::NumberToString16(window_count));
     }
-  } else if (browser_->profile()->IsIncognitoProfile()) {
+  } else if (state_manager_->browser()->profile()->IsIncognitoProfile()) {
     // We only want the icon and count for Incognito profiles.
     revised_highlight_text = std::u16string();
     if (window_count > 1) {
       revised_highlight_text = base::NumberToString16(window_count);
     }
-  } else if (browser_->profile()->IsGuestSession()) {
+  } else if (state_manager_->browser()->profile()->IsGuestSession()) {
     // We only want the icon for Guest profiles.
     revised_highlight_text = std::u16string();
   } else {
@@ -128,8 +129,8 @@ void BraveAvatarToolbarButton::OnThemeChanged() {
 
   constexpr int kNormalProfileHighlightRadius = 36;
   int radius = kNormalProfileHighlightRadius;
-  bool is_private = browser_->profile()->IsOffTheRecord() ||
-                    browser_->profile()->IsGuestSession();
+  bool is_private = state_manager_->browser()->profile()->IsOffTheRecord() ||
+                    state_manager_->browser()->profile()->IsGuestSession();
   if (is_private) {
     radius = ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
         views::Emphasis::kMaximum, {});
@@ -147,8 +148,8 @@ int BraveAvatarToolbarButton::GetIconSize() const {
 
 void BraveAvatarToolbarButton::UpdateColorsAndInsets() {
   // Use custom bg/border for private/tor window.
-  if (browser_->profile()->IsOffTheRecord()) {
-    const bool is_tor = browser_->profile()->IsTor();
+  if (state_manager_->browser()->profile()->IsOffTheRecord()) {
+    const bool is_tor = state_manager_->browser()->profile()->IsTor();
     const auto text_color = is_tor ? SkColorSetRGB(0xE3, 0xB3, 0xFF)
                                    : SkColorSetRGB(0xcc, 0xBE, 0xFE);
     SetEnabledTextColors(text_color);
@@ -188,7 +189,7 @@ void BraveAvatarToolbarButton::UpdateColorsAndInsets() {
     return;
   }
 
-  if (browser_->profile()->IsGuestSession()) {
+  if (state_manager_->browser()->profile()->IsGuestSession()) {
     gfx::Insets target_insets = ::GetLayoutInsets(TOOLBAR_BUTTON);
     SetBorder(views::CreateEmptyBorder(target_insets));
     return;

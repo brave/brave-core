@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/prefs/BUILD.gn b/chrome/browser/prefs/BUILD.gn
-index 8d26ff42799fa78c02a2fb52c8c7785662de4180..3856cb5ff6505aa98a66bbdefe668bcace8d7d17 100644
+index 092d14266ad90bf6b15d6f5d0868b6e8b642fa85..dda6f683019c2e72debec93d50bfae479efefcfb 100644
 --- a/chrome/browser/prefs/BUILD.gn
 +++ b/chrome/browser/prefs/BUILD.gn
-@@ -180,6 +180,7 @@ source_set("impl") {
-     "//services/preferences/tracked",
+@@ -190,6 +190,7 @@ source_set("impl") {
      "//services/preferences/tracked:features",
+     "//ui/webui:buildflags",
    ]
 +  import("//brave/browser/sources.gni") deps += brave_chrome_browser_prefs_impl_deps
  

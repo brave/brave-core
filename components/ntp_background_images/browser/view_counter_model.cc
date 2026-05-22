@@ -36,14 +36,14 @@ void ViewCounterModel::SetCampaignsTotalBrandedImageCount(
 
   // Pick the first image index for each campaign randomly for SI
   for (size_t i = 0; i < total_campaign_count_; ++i) {
-    const int index = base::RandInt(
+    const int index = base::RandIntInclusive(
         0, static_cast<int>(campaigns_total_branded_image_count_[i]) - 1);
     campaigns_current_branded_image_index_.push_back(index);
   }
 
   // Pick the first campaign index randomly.
   current_campaign_index_ =
-      base::RandInt(0, static_cast<int>(total_campaign_count_) - 1);
+      base::RandIntInclusive(0, static_cast<int>(total_campaign_count_) - 1);
 }
 
 std::tuple<size_t, size_t> ViewCounterModel::GetCurrentBrandedImageIndex()
@@ -91,7 +91,7 @@ void ViewCounterModel::RegisterPageViewForBrandedImages() {
 
     // Randomize SI campaign branded image index for next time.
     campaigns_current_branded_image_index_[current_campaign_index_] =
-        base::RandInt(
+        base::RandIntInclusive(
             0,
             static_cast<int>(
                 campaigns_total_branded_image_count_[current_campaign_index_]) -
@@ -99,7 +99,7 @@ void ViewCounterModel::RegisterPageViewForBrandedImages() {
 
     // Randomize campaign index for next time.
     current_campaign_index_ =
-        base::RandInt(0, static_cast<int>(total_campaign_count_) - 1);
+        base::RandIntInclusive(0, static_cast<int>(total_campaign_count_) - 1);
   }
 }
 

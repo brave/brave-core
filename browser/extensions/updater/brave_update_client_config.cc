@@ -52,12 +52,11 @@ BraveUpdateClientConfig::~BraveUpdateClientConfig() = default;
 
 // static
 scoped_refptr<ChromeUpdateClientConfig> BraveUpdateClientConfig::Create(
-    content::BrowserContext* context,
-    std::optional<GURL> update_url_override) {
+    content::BrowserContext* context) {
   FactoryCallback& factory = GetFactoryCallback();
-  return factory.is_null() ? base::MakeRefCounted<BraveUpdateClientConfig>(
-                                 context, update_url_override)
-                           : factory.Run(context);
+  return factory.is_null()
+             ? base::MakeRefCounted<BraveUpdateClientConfig>(context)
+             : factory.Run(context);
 }
 
 }  // namespace extensions

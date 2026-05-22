@@ -10,6 +10,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 
+import androidx.annotation.DimenRes;
 import androidx.annotation.Nullable;
 
 import org.chromium.base.Callback;
@@ -77,6 +78,7 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
             MonotonicObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
             ScrollingBottomViewResourceFrameLayout root,
             @LayerType int layerType,
+            @DimenRes int heightResId,
             OneshotSupplier<BottomControlsContentDelegate> contentDelegateSupplier,
             TabObscuringHandler tabObscuringHandler,
             NonNullObservableSupplier<Boolean> overlayPanelVisibilitySupplier,
@@ -92,6 +94,7 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
                 edgeToEdgeControllerSupplier,
                 root,
                 layerType,
+                heightResId,
                 contentDelegateSupplier,
                 tabObscuringHandler,
                 overlayPanelVisibilitySupplier,

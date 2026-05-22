@@ -101,7 +101,13 @@ class ToolProvider {
  protected:
   void NotifyTaskStateChanged();
 
-  base::ObserverList<Observer> observers_;
+  // TODO(https://github.com/brave/brave-browser/issues/55615): Investigate if
+  // reentrancy can be removed.
+  base::ObserverList<
+      Observer,
+      /*check_empty=*/false,
+      base::ObserverListReentrancyPolicy::kAllowReentrancyUntriaged>
+      observers_;
 };
 
 }  // namespace ai_chat

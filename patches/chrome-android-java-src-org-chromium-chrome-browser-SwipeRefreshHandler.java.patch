@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/SwipeRefreshHandler.java b/chrome/android/java/src/org/chromium/chrome/browser/SwipeRefreshHandler.java
-index 7884ad28a7d493cf884434461ab07d9afe4ffae4..a18508da75bb69bb71ed878708cb3d46afaa35c3 100644
+index 3fa1ad72e700d59f674b5fab7e103bfa36473c21..fbdbcf5c20f8bdce1b17b4f9355c00cf4424c88a 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/SwipeRefreshHandler.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/SwipeRefreshHandler.java
 @@ -137,7 +137,7 @@ public class SwipeRefreshHandler extends TabWebContentsUserData

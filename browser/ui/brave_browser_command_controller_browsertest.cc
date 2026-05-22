@@ -31,8 +31,6 @@
 #include "chrome/browser/tab_group_sync/tab_group_sync_service_factory.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_commands.h"
-#include "chrome/browser/ui/browser_list.h"
-#include "chrome/browser/ui/browser_list_observer.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/ui_features.h"
@@ -198,10 +196,8 @@ class BraveBrowserCommandControllerTest : public InProcessBrowserTest {
 #if defined(TOOLKIT_VIEWS)
   void WaitForSidePanelClose() {
     ASSERT_TRUE(base::test::RunUntil([&]() {
-      return browser()
-                 ->GetBrowserView()
-                 .contents_height_side_panel()
-                 ->state() == SidePanel::State::kClosed;
+      return browser()->GetBrowserView().side_panel()->state() ==
+             SidePanel::State::kClosed;
     }));
   }
 #endif  // #if defined(TOOLKIT_VIEWS)
@@ -511,7 +507,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
       SidePanelEntry::Key(SidePanelEntryId::kChatUI);
   auto* side_panel_coordinator = SidePanelCoordinator::From(browser());
   ASSERT_TRUE(base::test::RunUntil([&]() {
-    return browser()->GetBrowserView().contents_height_side_panel()->state() ==
+    return browser()->GetBrowserView().side_panel()->state() ==
            SidePanel::State::kClosed;
   }));
 

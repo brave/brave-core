@@ -11,7 +11,6 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
-#include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -82,10 +81,8 @@ class AIChatGlobalSidePanelBrowserTest
       return false;
     }
 
-    return side_panel_coordinator->IsSidePanelShowing(
-               SidePanelEntry::PanelType::kContent) &&
-           side_panel_coordinator->GetCurrentEntryId(
-               SidePanelEntry::PanelType::kContent) ==
+    return side_panel_coordinator->IsSidePanelShowing() &&
+           side_panel_coordinator->GetCurrentEntryId() ==
                SidePanelEntry::Id::kChatUI;
   }
 
@@ -169,7 +166,7 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
   // actually attached to the browser window.
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
   ASSERT_TRUE(browser_view);
-  auto* side_panel = browser_view->contents_height_side_panel();
+  auto* side_panel = browser_view->side_panel();
   ASSERT_TRUE(side_panel);
   auto* view = side_panel->GetContentParentView()->GetViewByID(
       SidePanelWebUIView::kSidePanelWebViewId);

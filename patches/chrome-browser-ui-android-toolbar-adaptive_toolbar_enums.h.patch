@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/toolbar/adaptive_toolbar_enums.h b/chrome/browser/ui/android/toolbar/adaptive_toolbar_enums.h
-index bfcd84476de607d00df467ce6c62c8dbcffe40fd..131dbc46fcbb39dd55219e8d52ed9f8430b24f56 100644
+index 6fa0383b3488a77460bb7acb62816614471943fa..3d70a1d7f5a7f8619d46d6b755d31b90df984ee6 100644
 --- a/chrome/browser/ui/android/toolbar/adaptive_toolbar_enums.h
 +++ b/chrome/browser/ui/android/toolbar/adaptive_toolbar_enums.h
 @@ -49,8 +49,16 @@ enum class AdaptiveToolbarButtonVariant {

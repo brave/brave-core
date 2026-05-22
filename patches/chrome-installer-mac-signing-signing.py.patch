@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mac/signing/signing.py b/chrome/installer/mac/signing/signing.py
-index 1e9cff5e169d755bb3e4447db9b871fef9b2d0dd..15108daf7fa4aa23d3ad9852fca57c2447b82e5d 100644
+index f7a23dc5d7873d16485020d735ac9189d25f9139..9d31709d23b898cc54ed03e11c409861423af224 100644
 --- a/chrome/installer/mac/signing/signing.py
 +++ b/chrome/installer/mac/signing/signing.py
 @@ -24,7 +24,7 @@ class InvalidAppGeometryException(ValueError):

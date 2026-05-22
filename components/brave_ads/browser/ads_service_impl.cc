@@ -191,7 +191,6 @@ AdsServiceImpl::~AdsServiceImpl() = default;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-
 void AdsServiceImpl::RegisterResourceComponents() {
   RegisterCountryResourceComponent();
 
@@ -1060,6 +1059,11 @@ void AdsServiceImpl::Shutdown() {
   policy_initialization_waiter_.reset();
 
   ShutdownAdsService();
+
+  // ApplicationStateMonitor is only used by this service, it needs to be reset
+  // to let go of the BrowserCollectionObserver before GlobalFeatures object is
+  // destoryed.
+  ApplicationStateMonitor::GetInstance()->Reset();
 }
 
 void AdsServiceImpl::AddBatAdsObserver(

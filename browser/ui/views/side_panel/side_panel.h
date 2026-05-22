@@ -44,9 +44,7 @@ class SidePanel : public views::View,
   enum class HorizontalAlignment { kLeft = 0, kRight };
 
   // Same signature as chromium SidePanel
-  explicit SidePanel(BrowserView* browser_view,
-                     SidePanelEntry::PanelType type,
-                     bool has_border);
+  explicit SidePanel(BrowserView* browser_view);
   SidePanel(const SidePanel&) = delete;
   SidePanel& operator=(const SidePanel&) = delete;
   ~SidePanel() override;
@@ -62,8 +60,6 @@ class SidePanel : public views::View,
   void DisableAnimationsForTesting() {}
   void AddHeaderView(std::unique_ptr<views::View> view);
   void RemoveHeaderView();
-  void SetHeaderVisibility(bool visible);
-  void SetOutlineVisibility(bool visible);
   HorizontalAlignment horizontal_alignment() const {
     return horizontal_alignment_;
   }
@@ -99,7 +95,8 @@ class SidePanel : public views::View,
   void AddedToWidget() override;
   void Layout(PassKey) override;
 
-  SidePanelEntry::PanelType type() const { return type_; }
+  void SetCurrentEntryType(SidePanelType type);
+  SidePanelType GetCurrentEntryType() const;
 
   // Reflects the current state of the visibility of the side panel.
   enum class State { kClosed, kOpening, kOpen, kClosing };
@@ -152,7 +149,7 @@ class SidePanel : public views::View,
   // contents layout while sidebar show/hide animation is in-progress.
   std::optional<int> fixed_contents_width_;
   raw_ptr<BrowserView> browser_view_ = nullptr;
-  const SidePanelEntry::PanelType type_;
+  SidePanelType current_entry_type_ = SidePanelType::kToolbar;
   IntegerPrefMember side_panel_width_;
   std::unique_ptr<SidePanelResizeWidget> resize_widget_;
   std::unique_ptr<ViewShadow> shadow_;

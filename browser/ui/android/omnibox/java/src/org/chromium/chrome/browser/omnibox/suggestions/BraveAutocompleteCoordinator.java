@@ -23,6 +23,10 @@ import java.util.List;
 
 public class BraveAutocompleteCoordinator {
     public ViewProvider<SuggestionListViewHolder> createViewProvider() {
+        // The reflected AutocompleteCoordinator#createViewProvider returns
+        // ViewProvider<SuggestionListViewHolder>, but invokeMethod returns Object so the cast
+        // is unverifiable at compile time due to generic erasure.
+        @SuppressWarnings("unchecked")
         ViewProvider<SuggestionListViewHolder> provider =
                 (ViewProvider<SuggestionListViewHolder>)
                         BraveReflectionUtil.invokeMethod(

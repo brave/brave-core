@@ -33,8 +33,7 @@ class BraveUpdateClientConfig : public ChromeUpdateClientConfig {
   BraveUpdateClientConfig& operator=(const BraveUpdateClientConfig&) = delete;
 
   static scoped_refptr<ChromeUpdateClientConfig> Create(
-      content::BrowserContext* context,
-      std::optional<GURL> url_override);
+      content::BrowserContext* context);
 
   using ChromeUpdateClientConfig::ChromeUpdateClientConfig;
 

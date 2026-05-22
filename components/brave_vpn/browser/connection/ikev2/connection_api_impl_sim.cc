@@ -34,7 +34,7 @@ void ConnectionAPIImplSim::ConnectImpl(const std::string& name) {
   disconnect_requested_ = false;
 
   // Determine connection success randomly.
-  const bool success = base::RandInt(0, 9) > 3;
+  const bool success = base::RandIntInclusive(0, 9) > 3;
   // Simulate connection success
   if (success) {
     base::SequencedTaskRunner::GetCurrentDefault()->PostTask(

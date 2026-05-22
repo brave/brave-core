@@ -23,6 +23,8 @@
 #include "chrome/browser/ui/accelerator_utils.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "ui/base/accelerators/accelerator.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -33,12 +35,13 @@ namespace commander {
 
 namespace {
 
-void MaybeReportCommandExecution(Browser* browser, int command_id) {
+void MaybeReportCommandExecution(BrowserWindowInterface* browser,
+                                 int command_id) {
 #if BUILDFLAG(ENABLE_AI_CHAT)
   if (command_id == IDC_TOGGLE_AI_CHAT) {
     auto* profile_metrics =
         misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(
-            browser->profile());
+            browser->GetProfile());
     if (!profile_metrics) {
       return;
     }
@@ -59,9 +62,9 @@ SimpleCommandSource::~SimpleCommandSource() = default;
 
 CommandSource::CommandResults SimpleCommandSource::GetCommands(
     const std::u16string& input,
-    Browser* browser) const {
+    BrowserWindowInterface* browser) const {
   CommandSource::CommandResults results;
-  if (!browser || !browser->command_controller()) {
+  if (!browser || !browser->GetFeatures().browser_command_controller()) {
     return results;
   }
 
@@ -84,13 +87,14 @@ CommandSource::CommandResults SimpleCommandSource::GetCommands(
 
     auto item = std::make_unique<CommandItem>(name, score, ranges);
     ui::Accelerator accelerator;
-    ui::AcceleratorProvider* provider = AcceleratorProviderForBrowser(browser);
+    ui::AcceleratorProvider* provider =
+        AcceleratorProviderForBrowser(browser->GetBrowserForMigrationOnly());
     if (provider->GetAcceleratorForCommandId(command_id, &accelerator)) {
       item->annotation = accelerator.GetShortcutText();
     }
 
     item->command = base::BindOnce(
-        [](Browser* browser, int command_id) {
+        [](BrowserWindowInterface* browser, int command_id) {
           MaybeReportCommandExecution(browser, command_id);
           chrome::ExecuteCommand(browser, command_id);
         },

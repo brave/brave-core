@@ -235,7 +235,7 @@ void DistillPageTextViaSiteScript(
   std::string script = absl::StrFormat("{%s\ndistill()}", script_content);
 
   blink::WebScriptSource source =
-      blink::WebScriptSource(blink::WebString::FromUTF8(script));
+      blink::WebScriptSource(blink::WebString::FromUtf8(script));
 
   auto on_script_executed =
       [](base::OnceCallback<void(const std::optional<std::string>&)> callback,

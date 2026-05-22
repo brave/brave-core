@@ -36,6 +36,8 @@
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/bookmarks/bookmark_bubble_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/profiles/avatar_toolbar_button.h"
+#include "chrome/browser/ui/views/toolbar/browser_app_menu_button.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_divider.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
@@ -313,13 +315,13 @@ void BraveToolbarView::Init() {
   SetBraveButtonFlexBehavior(bookmark_);
 
   side_panel_ = AddChildViewAt(std::make_unique<SidePanelButton>(browser()),
-                               *GetIndexOf(GetAppMenuButton()) - 1);
+                               *GetIndexOf(app_menu_button()) - 1);
   SetBraveButtonFlexBehavior(side_panel_);
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  wallet_ = AddChildViewAt(
-      std::make_unique<WalletButton>(GetAppMenuButton(), profile),
-      *GetIndexOf(GetAppMenuButton()) - 1);
+  wallet_ =
+      AddChildViewAt(std::make_unique<WalletButton>(app_menu_button(), profile),
+                     *GetIndexOf(app_menu_button()) - 1);
   wallet_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON |
                                     ui::EF_MIDDLE_MOUSE_BUTTON);
   wallet_->UpdateImageAndText();
@@ -333,7 +335,7 @@ void BraveToolbarView::Init() {
   // setup a watcher for policy pref.
   if (ai_chat::IsAllowedForContext(browser_->profile(), false)) {
     ai_chat_button_ = AddChildViewAt(std::make_unique<AIChatButton>(browser()),
-                                     *GetIndexOf(GetAppMenuButton()) - 1);
+                                     *GetIndexOf(app_menu_button()) - 1);
     SetBraveButtonFlexBehavior(ai_chat_button_);
     show_ai_chat_button_.Init(
         ai_chat::prefs::kBraveAIChatShowToolbarButton,
@@ -351,7 +353,7 @@ void BraveToolbarView::Init() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (brave_vpn::BraveVpnServiceFactory::GetForProfile(profile)) {
     brave_vpn_ = AddChildViewAt(std::make_unique<BraveVPNButton>(browser()),
-                                *GetIndexOf(GetAppMenuButton()) - 1);
+                                *GetIndexOf(app_menu_button()) - 1);
     SetBraveButtonFlexBehavior(brave_vpn_);
     show_brave_vpn_button_.Init(
         brave_vpn::prefs::kBraveVPNShowButton, profile->GetPrefs(),
@@ -365,9 +367,10 @@ void BraveToolbarView::Init() {
   }
 #endif
 
-  // Make sure that avatar button should be located right before the app menu.
-  if (auto* avatar = GetAvatarToolbarButton()) {
-    ReorderChildView(avatar, *GetIndexOf(GetAppMenuButton()) - 1);
+  // Make sure that avatar button is located right before the app menu.
+  if (auto* avatar_button = static_cast<AvatarToolbarButton*>(
+          GetAvatarToolbarButtonInterface())) {
+    ReorderChildView(avatar_button, *GetIndexOf(app_menu_button()) - 1);
   }
 
   brave_initialized_ = true;
@@ -451,7 +454,8 @@ void BraveToolbarView::Update(content::WebContents* tab) {
 
   // Remove avatar menu if only a single user profile exists.
   // Always show if private / tor / guest window, as an indicator.
-  auto* avatar_button = GetAvatarToolbarButton();
+  auto* avatar_button =
+      static_cast<AvatarToolbarButton*>(GetAvatarToolbarButtonInterface());
   if (avatar_button) {
     auto* profile = browser_->profile();
     const bool should_show_profile =

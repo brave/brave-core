@@ -7,7 +7,6 @@ package org.chromium.chrome.browser.toolbar.adaptive;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
@@ -20,6 +19,7 @@ import org.chromium.chrome.browser.bookmarks.BookmarkManagerOpener;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.toolbar.optional_button.BaseButtonDataProvider;
+import org.chromium.chrome.browser.toolbar.optional_button.ButtonData.ButtonSpec;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
 /** Handles displaying bookmarks button on toolbar. */
@@ -39,13 +39,13 @@ public class BraveBookmarksButtonController extends BaseButtonDataProvider {
         super(
                 tabProvider,
                 modalDialogManager,
-                buttonDrawable,
-                context.getString(R.string.menu_bookmarks),
-                /* actionChipLabelResId= */ Resources.ID_NULL,
-                /* supportsTinting= */ true,
-                /* iphCommandBuilder= */ null,
-                AdaptiveToolbarButtonVariant.BOOKMARKS,
-                /* tooltipTextResId= */ R.string.menu_bookmarks);
+                new ButtonSpec.Builder(
+                                buttonDrawable,
+                                context.getString(R.string.menu_bookmarks),
+                                /* supportsTinting= */ true)
+                        .setButtonVariant(AdaptiveToolbarButtonVariant.BOOKMARKS)
+                        .setHoverTooltipTextId(R.string.menu_bookmarks)
+                        .build());
 
         mContext = context;
         mProfileSupplier = profileSupplier;

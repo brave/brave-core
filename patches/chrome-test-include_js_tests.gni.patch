@@ -1,5 +1,5 @@
 diff --git a/chrome/test/include_js_tests.gni b/chrome/test/include_js_tests.gni
-index 68ffc11592f831374447b4bbb47af37e52203028..68ed67a1bb5955e868cd14f19892c31e81bc808d 100644
+index c27374c548a04e3f51778891b598c3f8cf9120e7..973c5cd7d4e435932f7938e6ae05839275ffeab9 100644
 --- a/chrome/test/include_js_tests.gni
 +++ b/chrome/test/include_js_tests.gni
 @@ -1,7 +1,7 @@
@@ -9,5 +9,5 @@ index 68ffc11592f831374447b4bbb47af37e52203028..68ed67a1bb5955e868cd14f19892c31e
 -  include_js_tests = !(is_asan || is_msan || is_tsan || is_cfi)
 +  include_js_tests = false && !(is_asan || is_msan || is_tsan || is_cfi)
  
-   # Tests using js2gtest don't work in cross builds, https://crbug.com/1010561
+   # Tests using js2gtest don't work in cross builds, https://crbug.com/40101516
    include_js2gtest_tests = include_js_tests && !(is_win && host_os != "win")

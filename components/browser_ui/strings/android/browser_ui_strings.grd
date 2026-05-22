@@ -324,9 +324,6 @@
       <message name="IDS_ALWAYS" desc="Generic label for a user to select an always option">
         Always
       </message>
-      <message name="IDS_PROVIDED_BY_GOOGLE" desc="Generic label for something that comes from Brave servers.">
-        Provided by Brave
-      </message>
       <message name="IDS_TURN_ON" desc="Generic label for a user to turn">
         Turn on
       </message>
@@ -590,6 +587,9 @@
       <message name="IDS_PAGE_INFO_COOKIES_SITE_NOT_WORKING_DESCRIPTION_TRACKING_PROTECTION" desc="Descriptive text in the Page Info UI explaining the trade-off of temporarily allowing third-party cookies for this site, a change that will automatically expire in the future.">
         Try temporarily allowing third-party cookies, which means less browsing protection but site features are more likely to work as expected.
       </message>
+      <message name="IDS_PAGE_INFO_COOKIES_SITE_NOT_WORKING_DESCRIPTION" desc="Descriptive text in the Page Info UI explaining the trade-off of allowing third-party cookies for the current site.">
+        Try allowing third-party cookies, which means less browsing protection but site features are more likely to work as expected.
+      </message>
       <message name="IDS_PAGE_INFO_COOKIES_SUBTITLE_ALLOWED" desc="Description text in the Page Info dialog to indicate that third-party cookies are allowed on this site.">
         Third-party cookies allowed
       </message>
@@ -834,8 +834,14 @@
       <message name="IDS_CONTACTS_PICKER_SELECT_CONTACTS" desc="The label at the top of the dialog that allows users to select contacts from their device and share the details with a web page.">
         Select contacts
       </message>
+      <message name="IDS_CONTACTS_PICKER_SHARE_CONTACTS" desc="The label at the top of the dialog that allows users to review the contacts and details to be shared with a web page.">
+        Share contacts
+      </message>
       <message name="IDS_CONTACTS_PICKER_SELECT_CONTACT" desc="The label at the top of the dialog that allows users to select a single contact from their device and share the details with a web page.">
         Select a contact
+      </message>
+      <message name="IDS_CONTACTS_PICKER_SHARE_CONTACT" desc="The label at the top of the dialog that allows users to review a single contact and details to be shared with a web page.">
+        Share a contact
       </message>
       <message name="IDS_CONTACTS_PICKER_ALL_CONTACTS" desc="The label associated with the select all checkbox, indicating that all the contacts will be selected.">
         All contacts
@@ -1219,9 +1225,6 @@
       </message>
 
       <!-- Educational tip module strings -->
-      <message name="IDS_EDUCATIONAL_TIP_MODULE_TITLE" desc="Title of the educational tip module on NTP.">
-        Brave Tips
-      </message>
       <message name="IDS_EDUCATIONAL_TIP_MODULE_NAME" desc="The string that is shown in settings to customize whether the educational tip card should be enabled.">
         Brave tips
       </message>
@@ -1257,6 +1260,15 @@
       </message>
       <message name="IDS_EDUCATIONAL_TIP_TAB_GROUP_SYNC_DESCRIPTION" desc="Description of the Tab group promo in the educational tip module on NTP.">
         You’ll find your groups in the tab group section across all your devices
+      </message>
+      <message name="IDS_EDUCATIONAL_TIP_NTP_THEME_TITLE" desc="Title of the NTP theme promo in the educational tip module on NTP.">
+        Customize your homepage
+      </message>
+      <message name="IDS_EDUCATIONAL_TIP_NTP_THEME_DESCRIPTION" desc="Description of the NTP theme promo in the educational tip module on NTP.">
+        Make Brave your own with custom colors and images for your homepage
+      </message>
+      <message name="IDS_EDUCATIONAL_TIP_NTP_THEME_PROMO_BUTTON" desc="Text on the clickable button for the ntp theme promo in the Educational tip module on NTP.">
+        Try it now
       </message>
       <message name="IDS_EDUCATIONAL_TIP_QUICK_DELETE_TITLE" desc="Title of the quick delete promo in the educational tip module on NTP.">
         Manage your browsing data
@@ -1463,6 +1475,9 @@
       <message name="IDS_NTP_CUSTOMIZATION_SUBTITLE" desc="Subtitle of the new tab page customization bottom sheet">
         Quickly get to what matters to you
       </message>
+      <message name="IDS_NTP_CUSTOMIZATION_MORE_OPTIONS_TITLE" desc="Title of more colors and options section on the new tab page customization bottom sheet">
+        More colors &amp; options
+      </message>
       <message name="IDS_NTP_CUSTOMIZATION_MVT_SETTINGS_TITLE" desc="the title of the bottom sheet to customize the most visited tiles section on the new tab page">
         My shortcuts
       </message>
@@ -1662,6 +1677,11 @@
       </message>
       <message name="IDS_JAVASCRIPT_OPTIMIZER_DISABLED_DUE_TO_ADVANCED_PROTECTION_SETTINGS_MESSAGE" desc="Message displayed in Javascript-Optimizer site-settings page to inform user that Javascript-Optimizer toggle is disabled because Android Advanced Protection was enabled in Android OS Settings.">
         This setting is disabled because you turned on Advanced Protection in Android Settings.
+      </message>
+      <message name="IDS_OFFLINE_ITEMS_TRUNCATED" desc="Toast message shown when only some items could be loaded due to low memory. The first placeholder is the number of items shown, and the second is the total number of items. [ICU Syntax]">
+        {LOADED_COUNT, plural,
+          =1 {Showing 1 of {TOTAL_COUNT} items due to low memory}
+          other {Showing # of {TOTAL_COUNT} items due to low memory}}
       </message>
     </messages>
   </release>

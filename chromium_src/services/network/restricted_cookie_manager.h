@@ -12,16 +12,18 @@
 #include "net/cookies/site_for_cookies.h"
 #include "services/network/public/mojom/restricted_cookie_manager.mojom.h"
 
-#define RemoveChangeListener                                          \
-  NotUsed() const {}                                                  \
-  net::CookieOptions MakeOptionsForSet(                               \
-      mojom::RestrictedCookieManagerRole role, const GURL& url,       \
-      const net::SiteForCookies& site_for_cookies,                    \
-      const CookieSettings& cookie_settings) const;                   \
-  net::CookieOptions MakeOptionsForGet(                               \
-      mojom::RestrictedCookieManagerRole role, const GURL& url,       \
-      const net::SiteForCookies& site_for_cookies,                    \
-      const CookieSettings& cookie_settings) const;                   \
+#define RemoveChangeListener                                    \
+  NotUsed() const {}                                            \
+  net::CookieOptions MakeOptionsForSet(                         \
+      mojom::RestrictedCookieManagerRole role, const GURL& url, \
+      const net::SiteForCookies& site_for_cookies,              \
+      const url::Origin& top_frame_origin,                      \
+      const CookieSettings& cookie_settings) const;             \
+  net::CookieOptions MakeOptionsForGet(                         \
+      mojom::RestrictedCookieManagerRole role, const GURL& url, \
+      const net::SiteForCookies& site_for_cookies,              \
+      const url::Origin& top_frame_origin,                      \
+      const CookieSettings& cookie_settings) const;             \
   void RemoveChangeListener
 
 #include <services/network/restricted_cookie_manager.h>  // IWYU pragma: export

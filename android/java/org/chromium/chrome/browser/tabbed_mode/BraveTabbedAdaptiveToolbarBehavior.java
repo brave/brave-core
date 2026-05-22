@@ -5,7 +5,7 @@
 
 package org.chromium.chrome.browser.tabbed_mode;
 
-import android.content.Context;
+import android.app.Activity;
 
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.NullableObservableSupplier;
@@ -14,6 +14,8 @@ import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.bookmarks.TabBookmarker;
+import org.chromium.chrome.browser.browser_controls.BrowserControlsVisibilityManager;
+import org.chromium.chrome.browser.glic.GlicToolbarButtonController;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.tab_group_suggestion.toolbar.GroupSuggestionsButtonController;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
@@ -21,7 +23,7 @@ import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tabstrip.StripVisibilityState;
 import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarBehavior;
 import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarButtonVariant;
-import org.chromium.ui.modaldialog.ModalDialogManager;
+import org.chromium.chrome.browser.ui.browser_window.ChromeAndroidTask;
 
 import java.util.List;
 import java.util.Set;
@@ -41,23 +43,24 @@ public class BraveTabbedAdaptiveToolbarBehavior extends TabbedAdaptiveToolbarBeh
                     AdaptiveToolbarButtonVariant.LEO,
                     AdaptiveToolbarButtonVariant.WALLET);
 
-    private final Context mContext;
+    private final Activity mActivity;
 
     public BraveTabbedAdaptiveToolbarBehavior(
-            Context context,
+            Activity activity,
             ActivityLifecycleDispatcher activityLifecycleDispatcher,
             Supplier<@Nullable TabCreatorManager> tabCreatorManagerSupplier,
-            Supplier<TabBookmarker> tabBookmarkerSupplier,
+            Supplier<@Nullable TabBookmarker> tabBookmarkerSupplier,
             NullableObservableSupplier<BookmarkModel> bookmarkModelSupplier,
             ActivityTabProvider activityTabProvider,
             Runnable registerVoiceSearchRunnable,
             Supplier<GroupSuggestionsButtonController> groupSuggestionsButtonController,
-            Supplier<TabModelSelector> tabModelSelectorSupplier,
-            Supplier<ModalDialogManager> modalDialogManagerSupplier,
+            Supplier<@Nullable TabModelSelector> tabModelSelectorSupplier,
             MonotonicObservableSupplier<@StripVisibilityState Integer> tabStripVisibilitySupplier,
-            Runnable toggleGlicCallback) {
+            GlicToolbarButtonController.GlicButtonDelegate toggleGlicCallback,
+            Supplier<@Nullable ChromeAndroidTask> chromeAndroidTaskSupplier,
+            BrowserControlsVisibilityManager browserControlsVisibilityManager) {
         super(
-                context,
+                activity,
                 activityLifecycleDispatcher,
                 tabCreatorManagerSupplier,
                 tabBookmarkerSupplier,
@@ -66,18 +69,19 @@ public class BraveTabbedAdaptiveToolbarBehavior extends TabbedAdaptiveToolbarBeh
                 registerVoiceSearchRunnable,
                 groupSuggestionsButtonController,
                 tabModelSelectorSupplier,
-                modalDialogManagerSupplier,
                 tabStripVisibilitySupplier,
-                toggleGlicCallback);
-        mContext = context;
+                toggleGlicCallback,
+                chromeAndroidTaskSupplier,
+                browserControlsVisibilityManager);
+        mActivity = activity;
     }
 
     @Override
     public int resultFilter(List<Integer> segmentationResults) {
-        int result = AdaptiveToolbarBehavior.defaultResultFilter(mContext, segmentationResults);
+        int result = AdaptiveToolbarBehavior.defaultResultFilter(mActivity, segmentationResults);
         if (result == AdaptiveToolbarButtonVariant.UNKNOWN) {
             maybeAddBraveButtonVariants();
-            result = AdaptiveToolbarBehavior.defaultResultFilter(mContext, segmentationResults);
+            result = AdaptiveToolbarBehavior.defaultResultFilter(mActivity, segmentationResults);
         }
         return result;
     }
