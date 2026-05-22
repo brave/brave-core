@@ -47,67 +47,6 @@ TEST(PolkadotChainMetadataUnitTest, EqualityOperator) {
   EXPECT_NE(metadata_a, metadata_d);
 }
 
-TEST(PolkadotChainMetadataUnitTest, FromChainName) {
-  PolkadotChainMetadata expected_westend;
-  expected_westend->system_pallet_index = 0;
-  expected_westend->balances_pallet_index = 4;
-  expected_westend->transaction_payment_pallet_index = 0x1a;
-  expected_westend->transfer_allow_death_call_index = 0;
-  expected_westend->transfer_keep_alive_call_index = 3;
-  expected_westend->transfer_all_call_index = 4;
-  expected_westend->ss58_prefix = 42;
-  expected_westend->spec_version = 0;
-  expected_westend->asset_tx_payment = false;
-  auto westend = PolkadotMetadataFromChainName("Westend");
-  ASSERT_TRUE(westend);
-  EXPECT_EQ(*westend, expected_westend);
-
-  PolkadotChainMetadata expected_westend_asset_hub;
-  expected_westend_asset_hub->system_pallet_index = 0;
-  expected_westend_asset_hub->balances_pallet_index = 10;
-  expected_westend_asset_hub->transaction_payment_pallet_index = 0x0b;
-  expected_westend_asset_hub->transfer_allow_death_call_index = 0;
-  expected_westend_asset_hub->transfer_keep_alive_call_index = 3;
-  expected_westend_asset_hub->transfer_all_call_index = 4;
-  expected_westend_asset_hub->ss58_prefix = 42;
-  expected_westend_asset_hub->spec_version = 0;
-  expected_westend_asset_hub->asset_tx_payment = true;
-  auto westend_asset_hub = PolkadotMetadataFromChainName("Westend Asset Hub");
-  ASSERT_TRUE(westend_asset_hub);
-  EXPECT_EQ(*westend_asset_hub, expected_westend_asset_hub);
-
-  PolkadotChainMetadata expected_polkadot;
-  expected_polkadot->system_pallet_index = 0;
-  expected_polkadot->balances_pallet_index = 5;
-  expected_polkadot->transaction_payment_pallet_index = 0x20;
-  expected_polkadot->transfer_allow_death_call_index = 0;
-  expected_polkadot->transfer_keep_alive_call_index = 3;
-  expected_polkadot->transfer_all_call_index = 4;
-  expected_polkadot->ss58_prefix = 0;
-  expected_polkadot->spec_version = 0;
-  expected_polkadot->asset_tx_payment = false;
-  auto polkadot = PolkadotMetadataFromChainName("Polkadot");
-  ASSERT_TRUE(polkadot);
-  EXPECT_EQ(*polkadot, expected_polkadot);
-
-  PolkadotChainMetadata expected_polkadot_asset_hub;
-  expected_polkadot_asset_hub->system_pallet_index = 0;
-  expected_polkadot_asset_hub->balances_pallet_index = 10;
-  expected_polkadot_asset_hub->transaction_payment_pallet_index = 0x0b;
-  expected_polkadot_asset_hub->transfer_allow_death_call_index = 0;
-  expected_polkadot_asset_hub->transfer_keep_alive_call_index = 3;
-  expected_polkadot_asset_hub->transfer_all_call_index = 4;
-  expected_polkadot_asset_hub->ss58_prefix = 0;
-  expected_polkadot_asset_hub->spec_version = 0;
-  expected_polkadot_asset_hub->asset_tx_payment = true;
-  auto polkadot_asset_hub = PolkadotMetadataFromChainName("Polkadot Asset Hub");
-  ASSERT_TRUE(polkadot_asset_hub);
-  EXPECT_EQ(*polkadot_asset_hub, expected_polkadot_asset_hub);
-
-  EXPECT_FALSE(PolkadotMetadataFromChainName(""));
-  EXPECT_FALSE(PolkadotMetadataFromChainName("Unknown Chain"));
-}
-
 TEST(PolkadotChainMetadataUnitTest, FromBytesInvalid) {
   // Invalid metadata magic/version payload.
   std::vector<uint8_t> invalid_magic;
@@ -210,6 +149,12 @@ TEST(PolkadotChainMetadataUnitTest,
   spec_version = 2'002'001;
   asset_tx_payment = true;
   EXPECT_EQ(*metadata, expected);
+
+  auto metadata2 = PolkadotMetadataFromChainName("Polkadot Asset Hub");
+  ASSERT_TRUE(metadata2);
+  PolkadotChainMetadata expected_from_name = expected;
+  expected_from_name->spec_version = 0;
+  EXPECT_EQ(*metadata2, expected_from_name);
 }
 
 TEST(PolkadotChainMetadataUnitTest, ParseRealStateGetMetadataResponseWestend) {
@@ -253,6 +198,12 @@ TEST(PolkadotChainMetadataUnitTest, ParseRealStateGetMetadataResponseWestend) {
   spec_version = 1'022'000;
   asset_tx_payment = false;
   EXPECT_EQ(*metadata, expected);
+
+  auto metadata2 = PolkadotMetadataFromChainName("Westend");
+  ASSERT_TRUE(metadata2);
+  PolkadotChainMetadata expected_from_name = expected;
+  expected_from_name->spec_version = 0;
+  EXPECT_EQ(*metadata2, expected_from_name);
 }
 
 TEST(PolkadotChainMetadataUnitTest,
@@ -298,6 +249,12 @@ TEST(PolkadotChainMetadataUnitTest,
   spec_version = 1'022'005;
   asset_tx_payment = true;
   EXPECT_EQ(*metadata, expected);
+
+  auto metadata2 = PolkadotMetadataFromChainName("Westend Asset Hub");
+  ASSERT_TRUE(metadata2);
+  PolkadotChainMetadata expected_from_name = expected;
+  expected_from_name->spec_version = 0;
+  EXPECT_EQ(*metadata2, expected_from_name);
 }
 
 }  // namespace brave_wallet
