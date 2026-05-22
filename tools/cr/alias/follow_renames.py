@@ -7,7 +7,7 @@
 For each file rename found in the Chromium git log for the given revision
 reference or range, updates every brave-core artefact that references the old
 path: chromium_src/ shadow files (move + shadow include + include guard),
-rewrite/ TOML files (move + patch deletion), and all cross-brave-core
+rewrite/ plaster files (move + patch deletion), and all cross-brave-core
 #include/#import/comment/BUILD.gn references.
 
 Usage
@@ -66,7 +66,7 @@ def cmd_follow_renames(args: list[str]) -> int:
     parser.add_argument('--no-run-plaster',
                         action='store_true',
                         dest='no_run_plaster',
-                        help='Skip running plaster after moving TOML files')
+                        help='Skip running plaster after moving plaster files')
     parser.add_argument(
         '--no-format',
         action='store_true',
@@ -193,22 +193,31 @@ def _repair_plaster_files(old_chromium: Path,
     """Moves the plaster file and deletes the corresponding patch file.
 
     Plaster file convention: chromium path A/foo.h lives at
-    rewrite/A/foo.h.toml. If no plaster file exists, this is a no-op.
-    The old patch file for that plaster gets automatically deleted.
+    rewrite/A/foo.h.yaml (or the deprecated rewrite/A/foo.h.toml). If no
+    plaster file exists, this is a no-op. The old patch file for that
+    plaster gets automatically deleted. The destination keeps the same
+    extension as the source.
     """
-    old_toml = (plaster.PLASTER_FILES_PATH / old_chromium.parent /
-                (old_chromium.name + '.toml'))
-    if not old_toml.exists():
-        return
+    old_dir = plaster.PLASTER_FILES_PATH / old_chromium.parent
+    new_dir = plaster.PLASTER_FILES_PATH / new_chromium.parent
+    old_plaster = old_dir / (old_chromium.name + '.yaml')
+    new_plaster = new_dir / (new_chromium.name + '.yaml')
+    if not old_plaster.exists():
+        # TODO(https://github.com/brave/brave-browser/issues/55738): Remove
+        # this entire fallback once every plaster under `rewrite/` has
+        # been migrated to YAML — only the `.yaml` lookup above should
+        # remain, returning when it does not exist.
+        old_plaster = old_dir / (old_chromium.name + '.toml')
+        new_plaster = new_dir / (new_chromium.name + '.toml')
+        if not old_plaster.exists():
+            return
 
-    new_toml = (plaster.PLASTER_FILES_PATH / new_chromium.parent /
-                (new_chromium.name + '.toml'))
-    new_toml.parent.mkdir(parents=True, exist_ok=True)
+    new_plaster.parent.mkdir(parents=True, exist_ok=True)
 
     if no_git:
-        old_toml.rename(new_toml)
+        old_plaster.rename(new_plaster)
     else:
-        terminal.run_git('mv', str(old_toml), str(new_toml))
+        terminal.run_git('mv', str(old_plaster), str(new_plaster))
 
     patch_file = (repository.brave.root / 'patches' /
                   patch_name_for(old_chromium))
@@ -227,7 +236,7 @@ def _repair_plaster_files(old_chromium: Path,
 
     if run_plaster:
         try:
-            PlasterFile(new_toml).apply()
+            PlasterFile(new_plaster).apply()
             if not no_git:
                 new_patch = (repository.brave.root / 'patches' /
                              patch_name_for(new_chromium))
@@ -236,7 +245,7 @@ def _repair_plaster_files(old_chromium: Path,
         # TODO(https://github.com/brave/brave-browser/issues/55370): Eventually
         # we should better constrain this to only catch plaster exceptions.
         except Exception as e:
-            logging.warning('plaster failed to apply %s: %s', new_toml, e)
+            logging.warning('plaster failed to apply %s: %s', new_plaster, e)
 
 
 def _repair_patch_files(old_chromium: Path, new_chromium: Path,

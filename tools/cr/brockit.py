@@ -431,9 +431,9 @@ class ApplyPatchesRecord:
         """Verifies all previously-broken plasters are now resolved.
 
         For each entry in plaster_broken_patches:
-        - If the plaster .toml still exists, runs a dry-run check to confirm
+        - If the plaster file still exists, runs a dry-run check to confirm
           the plaster output is up to date.
-        - If the plaster .toml is gone, verifies the corresponding .patch
+        - If the plaster file is gone, verifies the corresponding .patch
           file has also been removed.
 
         Raises InvalidInputException if any broken plaster is not yet resolved.

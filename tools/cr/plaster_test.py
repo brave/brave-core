@@ -150,6 +150,174 @@ class PlasterTest(unittest.TestCase):
         self.assertEqual(temp_file.read_text(), 'bar')
         temp_file.unlink()
 
+    def test_yaml_plaster_applies_like_toml(self):
+        """A .yaml plaster produces the same result as the equivalent .toml."""
+        test_file_chromium = Path(
+            'chrome/common/extensions/api/test_yaml_plaster.idl')
+
+        self.fake_chromium_src.write_and_stage_file(
+            test_file_chromium, 'Initial content for Chromium file.',
+            self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit('Add test_yaml_plaster.idl',
+                                      self.fake_chromium_src.chromium)
+
+        plaster_path = plaster.PLASTER_FILES_PATH / (str(test_file_chromium) +
+                                                     '.yaml')
+        plaster_path.parent.mkdir(parents=True, exist_ok=True)
+        plaster_path.write_text('substitutions:\n'
+                                '  - description: Simple yaml substitution\n'
+                                "    re_pattern: 'Chromium'\n"
+                                "    replace: 'Plaster'\n")
+
+        plaster.PlasterFile(plaster_path).apply()
+
+        self.assertEqual(
+            (self.fake_chromium_src.chromium / test_file_chromium).read_text(),
+            'Initial content for Plaster file.')
+
+        # The patch file is named after the source, not the plaster
+        # extension, so it should be a sibling of where the .toml patch
+        # would have landed.
+        patchinfo = plaster.PatchinfoBuilder(plaster_path)
+        self.assertTrue(patchinfo.patch.path.exists())
+        self.assertTrue(patchinfo.patchinfo.path.exists())
+
+    def test_yaml_plaster_validation_failures(self):
+        """YAML plasters surface the same validation errors as TOML."""
+        test_file_chromium = Path(
+            'chrome/common/extensions/api/test_yaml_validation.idl')
+
+        self.fake_chromium_src.write_and_stage_file(
+            test_file_chromium, 'Initial content for Chromium file.',
+            self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit('Add test_yaml_validation.idl',
+                                      self.fake_chromium_src.chromium)
+
+        cases = [
+            ('substitutions:\n'
+             '  - description: Both patterns specified\n'
+             "    pattern: 'Chromium'\n"
+             "    re_pattern: 'Chromium'\n"
+             "    replace: 'Plaster'\n",
+             'Please specify either pattern or re_pattern'),
+            ('substitutions:\n'
+             '  - description: No pattern specified\n'
+             "    replace: 'Plaster'\n", 'No pattern specified'),
+            ('substitutions:\n'
+             '  - description: No replace specified\n'
+             "    pattern: 'Chromium'\n", 'No replace value specified'),
+        ]
+
+        for yaml_content, expected_error in cases:
+            with self.subTest(error=expected_error):
+                plaster_path = plaster.PLASTER_FILES_PATH / (
+                    str(test_file_chromium) + '.yaml')
+                plaster_path.parent.mkdir(parents=True, exist_ok=True)
+                plaster_path.write_text(yaml_content)
+
+                plaster_file = plaster.PlasterFile(plaster_path)
+                with self.assertRaises(ValueError) as context:
+                    plaster_file.apply()
+                self.assertIn(expected_error, str(context.exception))
+
+    def test_yaml_and_toml_collision_is_rejected(self):
+        """Having both .yaml and .toml plasters for the same source errors."""
+        test_file_chromium = Path(
+            'chrome/common/extensions/api/test_collision.idl')
+
+        self.fake_chromium_src.write_and_stage_file(
+            test_file_chromium, 'Content with Chromium word.',
+            self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit('Add test_collision.idl',
+                                      self.fake_chromium_src.chromium)
+
+        plaster_stem = (plaster.PLASTER_FILES_PATH / str(test_file_chromium))
+        plaster_stem.parent.mkdir(parents=True, exist_ok=True)
+
+        yaml_path = plaster_stem.with_suffix(plaster_stem.suffix + '.yaml')
+        yaml_path.write_text('substitutions:\n'
+                             '  - description: yaml form\n'
+                             "    re_pattern: 'Chromium'\n"
+                             "    replace: 'Brave'\n")
+
+        toml_path = plaster_stem.with_suffix(plaster_stem.suffix + '.toml')
+        toml_path.write_text("[[substitution]]\n"
+                             "description = 'toml form'\n"
+                             "re_pattern = 'Chromium'\n"
+                             "replace = 'Brave'\n")
+
+        with self.assertRaises(plaster.PlasterError) as context:
+            plaster.PlasterFile(yaml_path).apply()
+        message = str(context.exception)
+        self.assertIn('Both `.yaml` and `.toml`', message)
+        self.assertIn(str(yaml_path), message)
+        self.assertIn(str(toml_path), message)
+
+        # And the other direction: starting from the .toml file.
+        with self.assertRaises(plaster.PlasterError):
+            plaster.PlasterFile(toml_path).apply()
+
+    def test_duplicate_yaml_keys_are_rejected(self):
+        """A YAML mapping with a duplicate key surfaces as a ValueError.
+
+        Without this guard, `yaml.safe_load` would silently keep the last
+        value for the repeated key, and a typo would shadow the real
+        field — applying a different patch than the author intended.
+        """
+        test_file_chromium = Path(
+            'chrome/common/extensions/api/test_duplicate_key.idl')
+
+        self.fake_chromium_src.write_and_stage_file(
+            test_file_chromium, 'Content with Chromium word.',
+            self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit('Add test_duplicate_key.idl',
+                                      self.fake_chromium_src.chromium)
+
+        plaster_path = plaster.PLASTER_FILES_PATH / (str(test_file_chromium) +
+                                                     '.yaml')
+        plaster_path.parent.mkdir(parents=True, exist_ok=True)
+        # `pattern` is declared twice; the second occurrence would
+        # silently win without the strict loader.
+        plaster_path.write_text('substitutions:\n'
+                                '  - description: Duplicate pattern key\n'
+                                "    pattern: 'Chromium'\n"
+                                "    pattern: 'Brave'\n"
+                                "    replace: 'Brave'\n")
+
+        plaster_file = plaster.PlasterFile(plaster_path)
+        with self.assertRaises(ValueError) as context:
+            plaster_file.apply()
+        message = str(context.exception)
+        self.assertIn('Duplicate key', message)
+        self.assertIn("'pattern'", message)
+
+    def test_unknown_substitution_key_is_rejected(self):
+        """Unrecognised substitution keys raise instead of being ignored."""
+        test_file_chromium = Path(
+            'chrome/common/extensions/api/test_unknown_key.idl')
+
+        self.fake_chromium_src.write_and_stage_file(
+            test_file_chromium, 'Content with Chromium word.',
+            self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit('Add test_unknown_key.idl',
+                                      self.fake_chromium_src.chromium)
+
+        plaster_path = plaster.PLASTER_FILES_PATH / (str(test_file_chromium) +
+                                                     '.yaml')
+        plaster_path.parent.mkdir(parents=True, exist_ok=True)
+        # Common typo: `replacement` (the field is `replace`).
+        plaster_path.write_text('substitutions:\n'
+                                '  - description: Typo in key name\n'
+                                "    pattern: 'Chromium'\n"
+                                "    replacement: 'Brave'\n")
+
+        plaster_file = plaster.PlasterFile(plaster_path)
+        with self.assertRaises(ValueError) as context:
+            plaster_file.apply()
+        message = str(context.exception)
+        self.assertIn('Unrecognised substitution key', message)
+        self.assertIn("'replacement'", message)
+
     def test_check_success_multiple_up_to_date(self):
         """Test plaster check succeeds for 3 up-to-date plaster files."""
         # Create 3 source files in chromium and matching .toml in brave/rewrite
