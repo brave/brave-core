@@ -38,6 +38,32 @@ std::optional<PolkadotChainMetadata> PolkadotChainMetadata::FromBytes(
   return PolkadotChainMetadata(*parsed);
 }
 
+// static
+PolkadotChainMetadata PolkadotChainMetadata::FromFields(
+    uint8_t system_pallet_index,
+    uint8_t balances_pallet_index,
+    uint8_t transaction_payment_pallet_index,
+    uint8_t transfer_allow_death_call_index,
+    uint8_t transfer_keep_alive_call_index,
+    uint8_t transfer_all_call_index,
+    uint16_t ss58_prefix,
+    uint32_t spec_version,
+    bool asset_tx_payment) {
+  PolkadotChainMetadata metadata;
+
+  metadata->system_pallet_index = system_pallet_index;
+  metadata->balances_pallet_index = balances_pallet_index;
+  metadata->transaction_payment_pallet_index = transaction_payment_pallet_index;
+  metadata->transfer_allow_death_call_index = transfer_allow_death_call_index;
+  metadata->transfer_keep_alive_call_index = transfer_keep_alive_call_index;
+  metadata->transfer_all_call_index = transfer_all_call_index;
+  metadata->ss58_prefix = ss58_prefix;
+  metadata->spec_version = spec_version;
+  metadata->asset_tx_payment = asset_tx_payment;
+
+  return metadata;
+}
+
 const CxxPolkadotChainMetadata& PolkadotChainMetadata::operator*() const {
   return chain_metadata_;
 }

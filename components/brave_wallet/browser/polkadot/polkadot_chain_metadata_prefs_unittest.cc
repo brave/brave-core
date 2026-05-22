@@ -74,40 +74,18 @@ TEST_F(PolkadotChainMetadataPrefsUnitTest, SetAndGetChainMetadataRoundTrip) {
   for (const auto& tc : test_cases) {
     SCOPED_TRACE(tc.test_name);
 
-    PolkadotChainMetadata metadata;
-    metadata->system_pallet_index = tc.system_pallet_index;
-    metadata->balances_pallet_index = tc.balances_pallet_index;
-    metadata->transaction_payment_pallet_index =
-        tc.transaction_payment_pallet_index;
-    metadata->transfer_allow_death_call_index =
-        tc.transfer_allow_death_call_index;
-    metadata->transfer_keep_alive_call_index =
-        tc.transfer_keep_alive_call_index;
-    metadata->transfer_all_call_index = tc.transfer_all_call_index;
-    metadata->ss58_prefix = tc.ss58_prefix;
-    metadata->spec_version = tc.spec_version;
-    metadata->asset_tx_payment = tc.asset_tx_payment;
+    auto metadata = PolkadotChainMetadata::FromFields(
+        tc.system_pallet_index, tc.balances_pallet_index,
+        tc.transaction_payment_pallet_index, tc.transfer_allow_death_call_index,
+        tc.transfer_keep_alive_call_index, tc.transfer_all_call_index,
+        tc.ss58_prefix, tc.spec_version, tc.asset_tx_payment);
 
     PolkadotChainMetadataPrefs prefs = MakePrefs();
     EXPECT_TRUE(prefs.SetChainMetadata(mojom::kPolkadotMainnet, metadata));
 
     auto loaded = prefs.GetChainMetadata(mojom::kPolkadotMainnet);
     ASSERT_TRUE(loaded);
-
-    const auto& loaded_metadata = *loaded;
-    EXPECT_EQ(loaded_metadata->system_pallet_index, tc.system_pallet_index);
-    EXPECT_EQ(loaded_metadata->balances_pallet_index, tc.balances_pallet_index);
-    EXPECT_EQ(loaded_metadata->transaction_payment_pallet_index,
-              tc.transaction_payment_pallet_index);
-    EXPECT_EQ(loaded_metadata->transfer_allow_death_call_index,
-              tc.transfer_allow_death_call_index);
-    EXPECT_EQ(loaded_metadata->transfer_keep_alive_call_index,
-              tc.transfer_keep_alive_call_index);
-    EXPECT_EQ(loaded_metadata->transfer_all_call_index,
-              tc.transfer_all_call_index);
-    EXPECT_EQ(loaded_metadata->ss58_prefix, tc.ss58_prefix);
-    EXPECT_EQ(loaded_metadata->spec_version, tc.spec_version);
-    EXPECT_EQ(loaded_metadata->asset_tx_payment, tc.asset_tx_payment);
+    EXPECT_EQ(*loaded, metadata);
 
     const auto& all_metadata =
         profile_prefs_.GetDict(kBraveWalletPolkadotChainMetadata);

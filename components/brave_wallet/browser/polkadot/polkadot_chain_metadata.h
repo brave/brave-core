@@ -37,6 +37,18 @@ class PolkadotChainMetadata {
   static std::optional<PolkadotChainMetadata> FromBytes(
       base::span<const uint8_t> metadata_bytes);
 
+  // Build metadata from explicit fields. Always succeeds.
+  static PolkadotChainMetadata FromFields(
+      uint8_t system_pallet_index,
+      uint8_t balances_pallet_index,
+      uint8_t transaction_payment_pallet_index,
+      uint8_t transfer_allow_death_call_index,
+      uint8_t transfer_keep_alive_call_index,
+      uint8_t transfer_all_call_index,
+      uint16_t ss58_prefix,
+      uint32_t spec_version,
+      bool asset_tx_payment);
+
   // Obtain a reference to the underlying opaque type so that it can be passed
   // to Rust routines.
   CxxPolkadotChainMetadata& operator*();
