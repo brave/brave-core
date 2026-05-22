@@ -68,6 +68,9 @@ export const completeStyles = `
   .privacy-card-unchecked {
     filter: grayscale(1);
   }
+  .privacy-card-unchecked.privacy-card {
+    background: ${color.material.thin};
+  }
 
   .privacy-card-unchecked .privacy-card-icon {
     opacity: 0.5;
