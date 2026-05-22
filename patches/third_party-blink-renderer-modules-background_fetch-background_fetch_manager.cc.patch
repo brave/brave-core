@@ -1,0 +1,92 @@
+diff --git a/third_party/blink/renderer/modules/background_fetch/background_fetch_manager.cc b/third_party/blink/renderer/modules/background_fetch/background_fetch_manager.cc
+index f032ce8303affc999b0d1e4e074aa9d4fb204c83..cd9fea05a0aac1d614c30863c72984b250beedb2 100644
+--- a/third_party/blink/renderer/modules/background_fetch/background_fetch_manager.cc
++++ b/third_party/blink/renderer/modules/background_fetch/background_fetch_manager.cc
+@@ -9,6 +9,7 @@
+ 
+ #include "base/memory/scoped_refptr.h"
+ #include "services/network/public/mojom/ip_address_space.mojom-blink.h"
++#include "third_party/blink/public/common/features.h"
+ #include "third_party/blink/renderer/bindings/core/v8/script_promise_resolver.h"
+ #include "third_party/blink/renderer/bindings/core/v8/v8_union_request_requestorusvstringsequence_usvstring.h"
+ #include "third_party/blink/renderer/bindings/core/v8/v8_union_request_usvstring.h"
+@@ -125,6 +126,34 @@ scoped_refptr<BlobDataHandle> ExtractBlobHandle(
+   return blob_handle;
+ }
+ 
++// Returns true if Background Fetch is permitted in the current execution
++// context. Usage within Service Worker contexts is restricted.
++bool IsBackgroundFetchAllowedForContext(ExecutionContext* execution_context) {
++  // If the context is not a Service Worker, or if the restriction feature
++  // is disabled, the restriction does not apply.
++  if (!execution_context->IsServiceWorkerGlobalScope() ||
++      !base::FeatureList::IsEnabled(
++          blink::features::kRestrictBackgroundFetchFromServiceWorker)) {
++    return true;
++  }
++
++  // Define a local storage wrapper to manage the one-time initialization
++  // and parsing of the allowlist origins.
++  struct ParsedAllowlist {
++    HashSet<scoped_refptr<const SecurityOrigin>> origins;
++    ParsedAllowlist() {
++      std::string allowlist_str =
++          blink::features::kBackgroundFetchFromServiceWorkerAllowListStr.Get();
++      origins = BackgroundFetchManager::ParseAllowlist(allowlist_str);
++    }
++  };
++  DEFINE_THREAD_SAFE_STATIC_LOCAL(ParsedAllowlist, parsed_allowlist, ());
++
++  // Check if the current context's origin is present in the list.
++  return parsed_allowlist.origins.Contains(
++      execution_context->GetSecurityOrigin());
++}
++
+ }  // namespace
+ 
+ BackgroundFetchManager::BackgroundFetchManager(
+@@ -135,6 +164,29 @@ BackgroundFetchManager::BackgroundFetchManager(
+   bridge_ = BackgroundFetchBridge::From(registration_);
+ }
+ 
++// static
++HashSet<scoped_refptr<const SecurityOrigin>>
++BackgroundFetchManager::ParseAllowlist(const std::string& allowlist_str) {
++  HashSet<scoped_refptr<const SecurityOrigin>> origins;
++  if (!allowlist_str.empty()) {
++    String blink_allowlist_str = String::FromUtf8(allowlist_str);
++    Vector<String> allowlist_origins =
++        blink_allowlist_str.SplitSkippingEmpty(',');
++    for (String origin_str : allowlist_origins) {
++      origin_str = origin_str.StripWhiteSpace();
++      if (origin_str.empty()) {
++        continue;
++      }
++      scoped_refptr<SecurityOrigin> origin =
++          SecurityOrigin::CreateFromString(origin_str);
++      if (origin && !origin->IsOpaque()) {
++        origins.insert(std::move(origin));
++      }
++    }
++  }
++  return origins;
++}
++
+ ScriptPromise<BackgroundFetchRegistration> BackgroundFetchManager::fetch(
+     ScriptState* script_state,
+     const String& id,
+@@ -155,6 +207,14 @@ ScriptPromise<BackgroundFetchRegistration> BackgroundFetchManager::fetch(
+     return EmptyPromise();
+   }
+ 
++  if (!IsBackgroundFetchAllowedForContext(execution_context)) {
++    exception_state.ThrowDOMException(
++        DOMExceptionCode::kNotAllowedError,
++        "backgroundFetch.fetch() is not allowed in service worker "
++        "environments.");
++    return EmptyPromise();
++  }
++
+   Vector<mojom::blink::FetchAPIRequestPtr> fetch_api_requests =
+       CreateFetchAPIRequestVector(script_state, requests, exception_state);
+   if (exception_state.HadException()) {
