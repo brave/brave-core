@@ -22,8 +22,6 @@ namespace {
 inline constexpr const char kBob[] =
     "8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48";
 
-constexpr uint32_t kSpecVersion = 0;
-
 // Taken from:
 // https://docs.rs/schnorrkel/0.11.4/schnorrkel/keys/struct.MiniSecretKey.html#method.from_bytes
 constexpr uint8_t kSchnorrkelSeed[] = {
@@ -35,59 +33,19 @@ constexpr uint8_t kSchnorrkelSeed[] = {
 }  // namespace
 
 PolkadotChainMetadata MakeWestendMetadata() {
-  PolkadotChainMetadata metadata;
-  metadata->system_pallet_index = 0;
-  metadata->balances_pallet_index = 4;
-  metadata->transaction_payment_pallet_index = 0x1a;
-  metadata->transfer_allow_death_call_index = 0;
-  metadata->transfer_keep_alive_call_index = 3;
-  metadata->transfer_all_call_index = 4;
-  metadata->ss58_prefix = 42;
-  metadata->spec_version = kSpecVersion;
-  metadata->asset_tx_payment = false;
-  return metadata;
+  return PolkadotMetadataFromChainName("Westend").value();
 }
 
 PolkadotChainMetadata MakePolkadotMetadata() {
-  PolkadotChainMetadata metadata;
-  metadata->system_pallet_index = 0;
-  metadata->balances_pallet_index = 5;
-  metadata->transaction_payment_pallet_index = 0x20;
-  metadata->transfer_allow_death_call_index = 0;
-  metadata->transfer_keep_alive_call_index = 3;
-  metadata->transfer_all_call_index = 4;
-  metadata->ss58_prefix = 0;
-  metadata->spec_version = kSpecVersion;
-  metadata->asset_tx_payment = false;
-  return metadata;
+  return PolkadotMetadataFromChainName("Polkadot").value();
 }
 
 PolkadotChainMetadata MakeWestendAssetHubMetadata() {
-  PolkadotChainMetadata metadata;
-  metadata->system_pallet_index = 0;
-  metadata->balances_pallet_index = 10;
-  metadata->transaction_payment_pallet_index = 0x0b;
-  metadata->transfer_allow_death_call_index = 0;
-  metadata->transfer_keep_alive_call_index = 3;
-  metadata->transfer_all_call_index = 4;
-  metadata->ss58_prefix = 42;
-  metadata->spec_version = kSpecVersion;
-  metadata->asset_tx_payment = true;
-  return metadata;
+  return PolkadotMetadataFromChainName("Westend Asset Hub").value();
 }
 
 PolkadotChainMetadata MakePolkadotAssetHubMetadata() {
-  PolkadotChainMetadata metadata;
-  metadata->system_pallet_index = 0;
-  metadata->balances_pallet_index = 10;
-  metadata->transaction_payment_pallet_index = 0x0b;
-  metadata->transfer_allow_death_call_index = 0;
-  metadata->transfer_keep_alive_call_index = 3;
-  metadata->transfer_all_call_index = 4;
-  metadata->ss58_prefix = 0;
-  metadata->spec_version = kSpecVersion;
-  metadata->asset_tx_payment = true;
-  return metadata;
+  return PolkadotMetadataFromChainName("Polkadot Asset Hub").value();
 }
 
 TEST(PolkadotExtrinsics, MortalityEncoding) {
