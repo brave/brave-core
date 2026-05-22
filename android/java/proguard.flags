@@ -14,8 +14,8 @@
     *** maybeHandleUrlIntent(...);
 }
 
--keep class org.chromium.chrome.browser.omnibox.suggestions.AutocompleteCoordinator {
-    *** createViewProvider(...);
+-keep class org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestionsDropdownAdapter {
+    <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.AutocompleteMediator {
