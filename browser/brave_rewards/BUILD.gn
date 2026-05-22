@@ -41,6 +41,7 @@ source_set("brave_rewards_impl") {
   deps = [
     ":util",
     "//base",
+    "//brave/components/brave_policy:policy_initialization_waiter",
     "//brave/components/brave_rewards/content",
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_rewards/core:features",
@@ -52,6 +53,7 @@ source_set("brave_rewards_impl") {
     "//chrome/browser/profiles",
     "//chrome/browser/ui",
     "//components/keyed_service/content",
+    "//components/policy/core/common",
     "//components/prefs",
     "//components/sessions",
   ]
