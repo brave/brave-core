@@ -105,7 +105,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"/>
 
-               <androidx.appcompat.widget.SwitchCompat
+               <com.google.android.material.materialswitch.MaterialSwitch
                     android:id="@+id/switch_show_news"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
