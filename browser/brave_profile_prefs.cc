@@ -415,6 +415,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
       registry);
   // autofill
   registry->RegisterBooleanPref(kBraveAutofillPrivateWindows, true);
+  registry->RegisterBooleanPref(kBraveSafeBrowsingDownloadProtectionEnabled,
+                                true);
   // appearance
   registry->RegisterBooleanPref(kShowBookmarksButton, true);
   registry->RegisterBooleanPref(kShowSidePanelButton, true);
