@@ -859,3 +859,9 @@ extension BraveWallet.MeldCryptoCurrency {
     }
   }
 }
+
+extension BraveWallet.SignDataUnion {
+  var isWarningsNeeded: Bool {
+    cardanoSignData != nil || ethSignTypedData != nil
+  }
+}
