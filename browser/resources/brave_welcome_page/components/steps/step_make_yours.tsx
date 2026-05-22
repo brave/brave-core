@@ -384,11 +384,7 @@ function buildPreviewThemeVars(
       base + offsets.tabbarOffset,
     ),
     '--preview-text-primary': hslToHex(hue, textSat, offsets.textPrimary),
-    '--preview-text-secondary': hslToHex(
-      hue,
-      textSat,
-      offsets.textSecondary,
-    ),
+    '--preview-text-secondary': hslToHex(hue, textSat, offsets.textSecondary),
     '--preview-icon-color': hslToHex(hue, textSat, offsets.textSecondary),
     '--preview-divider': hslToHex(
       hue,
