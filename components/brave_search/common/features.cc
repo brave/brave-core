@@ -26,7 +26,7 @@ BASE_FEATURE(kBackupResultsFullRender,
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 const base::FeatureParam<int> kBackupResultsFullRenderMaxRequests{
-    &kBackupResultsFullRender, "MaxRequests", 2};
+    &kBackupResultsFullRender, "MaxRequests", 8};
 
 bool IsBackupResultsFullRenderEnabled() {
   return base::FeatureList::IsEnabled(kBackupResultsFullRender);

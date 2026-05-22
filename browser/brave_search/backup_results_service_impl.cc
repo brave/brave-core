@@ -25,11 +25,11 @@
 #include "chrome/browser/content_extraction/inner_html.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
-#include "components/prefs/pref_service.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
-#include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
+#include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_handle.h"
@@ -187,10 +187,20 @@ void BackupResultsServiceImpl::FetchBackupResults(
     // web_contents->Resize({360, 488});
 
     // Insert the web contents into the tab strip model
-    auto* browser_list = BrowserList::GetInstance();
-    if (!browser_list->empty()) {
-      auto* browser = browser_list->get(0);  // Get the first browser instance
-      auto* model = browser->tab_strip_model();
+    auto* global_browser_collection = GlobalBrowserCollection::GetInstance();
+    BrowserWindowInterface* target_browser = nullptr;
+    global_browser_collection->ForEach(
+        [&](BrowserWindowInterface* browser) {
+          if (browser->GetType() !=
+              BrowserWindowInterface::Type::TYPE_DEVTOOLS) {
+            target_browser = browser;
+            return false;
+          }
+          return true;
+        },
+        BrowserCollection::Order::kActivation);
+    if (target_browser) {
+      auto* model = target_browser->GetTabStripModel();
       web_contents =
           web_contents_unique.get();  // Store raw pointer before moving
 
@@ -535,20 +545,18 @@ void BackupResultsServiceImpl::CleanupAndDispatchResult(
   // Remove the web contents from the tab strip model before destroying the
   // profile
   if (pending_request->web_contents) {
-    auto* browser_list = BrowserList::GetInstance();
-    if (!browser_list->empty()) {
-      auto* browser = browser_list->get(0);  // Get the first browser instance
-      auto* model = browser->tab_strip_model();
-
-      // Find and remove the tab containing our web contents
+    auto* global_browser_collection = GlobalBrowserCollection::GetInstance();
+    global_browser_collection->ForEach([&](BrowserWindowInterface* browser) {
+      auto* model = browser->GetTabStripModel();
       for (int i = 0; i < model->count(); ++i) {
         if (model->GetWebContentsAt(i) == pending_request->web_contents) {
           pending_request->web_contents = nullptr;
           model->DetachAndDeleteWebContentsAt(i);
-          break;
+          return false;
         }
       }
-    }
+      return true;
+    });
   }
 
   std::move(pending_request->callback).Run(result);
