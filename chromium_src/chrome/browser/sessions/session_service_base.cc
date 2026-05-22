@@ -47,8 +47,7 @@ void BuildCommandsForTreeTab(
 }
 
 // This will be called in SessionTabBase::BuildCommandsForBrowser(). Plaster
-// will insert this function
-// there.
+// will insert this function there.
 void BuildCommandsForTreeTab(
     TabStripModel* tab_strip_model,
     sessions::CommandStorageManager* command_storage_manager) {
