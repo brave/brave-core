@@ -49,6 +49,11 @@ protocol SearchViewControllerDelegate: AnyObject {
     shouldFindInPage query: String
   )
   func searchViewControllerAllowFindInPage() -> Bool
+
+  /// Whether the selected tab has pending widget search attribution (Brave Search `source=ios-widget`).
+  func searchViewControllerHasPendingWidgetSearchAttribution(
+    _ searchViewController: SearchViewController
+  ) -> Bool
 }
 
 class SearchCompositionalLayout: UICollectionViewCompositionalLayout {
@@ -849,7 +854,11 @@ public class SearchViewController: UIViewController, LoaderListener {
     let offset = dataSource.isAIChatAvailable ? 1 : 0  // offset for the Leo button
     let engine = dataSource.quickSearchEngines[index - offset]
     let localSearchQuery = dataSource.searchQuery.lowercased()
-    guard let url = engine.searchURLForQuery(localSearchQuery) else {
+    let widgetAttr =
+      searchDelegate?.searchViewControllerHasPendingWidgetSearchAttribution(self) ?? false
+    guard
+      let url = engine.searchURLForQuery(localSearchQuery, isWidgetSearchAttribution: widgetAttr)
+    else {
       assertionFailure()
       return
     }
@@ -1138,7 +1147,9 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
 
         var url = URIFixup.getURL(suggestion)
         if url == nil {
-          url = engine?.searchURLForQuery(suggestion)
+          let widgetAttr =
+            searchDelegate?.searchViewControllerHasPendingWidgetSearchAttribution(self) ?? false
+          url = engine?.searchURLForQuery(suggestion, isWidgetSearchAttribution: widgetAttr)
         }
 
         if let url = url {

@@ -2649,6 +2649,10 @@ extension BrowserViewController: SearchViewControllerDelegate {
     return tabManager.selectedTab?.visibleURL?.isNewTabURL != true
   }
 
+  func searchViewControllerHasPendingWidgetSearchAttribution(_: SearchViewController) -> Bool {
+    tabManager.selectedTab?.widgetSearchTabHelper != nil
+  }
+
   @objc private func dismissQuickSearchEngines() {
     dismiss(animated: true) { [weak self] in
       self?.updateViewConstraints()
@@ -3082,9 +3086,11 @@ extension BrowserViewController {
       }
     }
 
+    let hasPendingWidgetSearch = tabManager.selectedTab?.widgetSearchTabHelper != nil
     if let searchURL = engine?.searchURLForQuery(
       text,
-      isBraveSearchPromotion: isBraveSearchPromotion
+      isBraveSearchPromotion: isBraveSearchPromotion,
+      isWidgetSearchAttribution: hasPendingWidgetSearch
     ) {
       // We couldn't find a matching search keyword, so do a search query.
       finishEditingAndSubmit(searchURL)

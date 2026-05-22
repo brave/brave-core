@@ -138,6 +138,11 @@ public enum NavigationPath: Equatable {
           isPrivate: bvc.privateBrowsingManager.isPrivateBrowsing
         )
       }
+      if let tab = bvc.tabManager.selectedTab {
+        // Attach a WidgetSearchTabHelper to just this tab for a single shot search.
+        // It will be removed after the search commits or if the user navigates away.
+        tab.widgetSearchTabHelper = .init(tab: tab)
+      }
     case .newTab:
       bvc.openBlankNewTab(
         attemptLocationFieldFocus: Preferences.General.openKeyboardOnNTPSelection.value,
