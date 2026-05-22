@@ -116,6 +116,7 @@ source_set("unit_tests") {
   sources = [
     "brave_account_service_test.h",
     "brave_account_service_unittest.cc",
+    "state_base_unittest.cc",
   ]
 
   deps = [
@@ -125,16 +126,20 @@ source_set("unit_tests") {
     "//brave/components/brave_account:features",
     "//brave/components/brave_account:internal",
     "//brave/components/brave_account:test_support",
+    "//brave/components/brave_account/endpoint_client",
+    "//brave/components/brave_account/endpoint_client:json_test_endpoint_bodies",
     "//brave/components/brave_account/endpoint_client:test_support",
     "//brave/components/brave_account/endpoints",
     "//brave/components/brave_account/mojom",
     "//components/os_crypt/async/browser:test_support",
+    "//components/os_crypt/async/common",
     "//components/prefs:test_support",
     "//net",
     "//services/network:test_support",
     "//services/network/public/cpp",
     "//testing/gmock",
     "//testing/gtest",
+    "//url",
   ]
 
   if (enable_email_aliases) {

@@ -37,9 +37,9 @@ BraveAccountService::~BraveAccountService() = default;
 
 void BraveAccountService::BindInterface(
     mojo::PendingReceiver<mojom::Authentication> pending_receiver) {
-  std::holds_alternative<std::monostate>(state_)
-      ? pending_receivers_.push_back(std::move(pending_receiver))
-      : ActiveState().AddReceiver(std::move(pending_receiver));
+  const bool initializing = std::holds_alternative<std::monostate>(state_);
+  initializing ? pending_receivers_.push_back(std::move(pending_receiver))
+               : ActiveState().AddReceiver(std::move(pending_receiver));
 }
 
 base::OneShotTimer* BraveAccountService::AuthValidateTimerForTesting() {
@@ -77,7 +77,7 @@ void BraveAccountService::OnAccountStateChanged() {
 
 void BraveAccountService::EnsureState(mojom::AccountState::Tag which) {
   // NOLINTBEGIN(readability/braces) - false positive on templated lambda.
-  const auto ensure_state = [&]<typename State>() {
+  const auto ensure_state_fn = [&]<typename State>() {
     if (std::holds_alternative<State>(state_)) {
       return;
     }
@@ -106,9 +106,9 @@ void BraveAccountService::EnsureState(mojom::AccountState::Tag which) {
 
   switch (which) {
     case mojom::AccountState::Tag::kLoggedOut:
-      return ensure_state.operator()<LoggedOutState>();
+      return ensure_state_fn.operator()<LoggedOutState>();
     case mojom::AccountState::Tag::kLoggedIn:
-      return ensure_state.operator()<LoggedInState>();
+      return ensure_state_fn.operator()<LoggedInState>();
   }
 }
 
