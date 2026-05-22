@@ -30,12 +30,9 @@ public class BraveIntentHandlerClassAdapter extends BraveClassVisitor {
         changeMethodOwner(
                 sIntentHandlerClassName, "extractUrlFromIntent", sBraveIntentHandlerClassName);
 
-        makePublicMethod(sIntentHandlerClassName, "intentHasUnsafeUrl");
+        makePublicMethod(sIntentHandlerClassName, "isUrlUnsafe");
+        changeMethodOwner(sIntentHandlerClassName, "isUrlUnsafe", sBraveIntentHandlerClassName);
         changeMethodOwner(
-                sIntentHandlerClassName, "intentHasUnsafeUrl", sBraveIntentHandlerClassName);
-        changeMethodOwner(
-                sBraveIntentHandlerInternalClassName,
-                "intentHasUnsafeUrl",
-                sIntentHandlerClassName);
+                sBraveIntentHandlerInternalClassName, "isUrlUnsafe", sIntentHandlerClassName);
     }
 }
