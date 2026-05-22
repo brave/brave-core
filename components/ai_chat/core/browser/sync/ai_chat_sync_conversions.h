@@ -41,6 +41,18 @@ sync_pb::AIChatConversationSpecifics EntryToSpecifics(
     const mojom::ConversationTurn& entry,
     const std::vector<mojom::AssociatedContentPtr>& associated_content);
 
+// Reverses ConversationMetadataToSpecifics. The returned Conversation has no
+// entries or associated content (those are carried by Entry records).
+mojom::ConversationPtr SpecificsToConversationMetadata(
+    const sync_pb::AIChatConversationSpecifics& specifics);
+
+// Reverses EntryToSpecifics. |associated_content| is populated from the
+// entry's associated_content field, each tagged with this entry's UUID via
+// |conversation_turn_uuid|.
+mojom::ConversationTurnPtr SpecificsToEntry(
+    const sync_pb::AIChatConversationSpecifics& specifics,
+    std::vector<mojom::AssociatedContentPtr>* associated_content);
+
 // Wraps an AIChatConversationSpecifics in EntityData for change_processor()
 // to consume. Sets the entity name to a human-readable string.
 std::unique_ptr<syncer::EntityData> CreateEntityDataFromSpecifics(

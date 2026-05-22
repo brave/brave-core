@@ -12,8 +12,8 @@
 #include <string>
 #include <string_view>
 #include <utility>
+#include <vector>
 
-#include "base/logging.h"
 #include "base/strings/strcat.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"
 #include "brave/components/ai_chat/core/browser/sync/ai_chat_sync_conversions.h"
@@ -98,8 +98,7 @@ std::optional<syncer::ModelError> AIChatSyncBridge::MergeFullSyncData(
       continue;
     }
     remote_storage_keys.insert(change->storage_key());
-    // TODO(https://github.com/brave/brave-browser/issues/53978): apply
-    // remote ADD/UPDATE to local database (handled in -flow).
+    ApplyRemoteRecord(change->data().specifics.ai_chat_conversation());
   }
 
   // Upload every non-temporary local conversation: its metadata plus each of
@@ -160,9 +159,7 @@ std::optional<syncer::ModelError> AIChatSyncBridge::ApplyIncrementalSyncChanges(
       continue;
     }
 
-    // TODO(https://github.com/brave/brave-browser/issues/53978): apply remote
-    // ADD/UPDATE for both record kinds (handled in -flow).
-    DVLOG(1) << "Received remote sync change for: " << storage_key;
+    ApplyRemoteRecord(change->data().specifics.ai_chat_conversation());
   }
 
   return std::nullopt;
@@ -349,6 +346,26 @@ void AIChatSyncBridge::OnConversationEntryDeleted(
   this->change_processor()->Delete(
       base::StrCat({kEntryStorageKeyPrefix, entry_uuid}),
       syncer::DeletionOrigin::Unspecified(), metadata_change_list.get());
+}
+
+void AIChatSyncBridge::ApplyRemoteRecord(
+    const sync_pb::AIChatConversationSpecifics& specifics) {
+  if (specifics.has_conversation()) {
+    auto conversation = SpecificsToConversationMetadata(specifics);
+    if (conversation) {
+      database_->ApplyRemoteConversationMetadata(std::move(conversation));
+    }
+    return;
+  }
+  if (specifics.has_entry()) {
+    std::vector<mojom::AssociatedContentPtr> associated_content;
+    auto entry = SpecificsToEntry(specifics, &associated_content);
+    if (entry) {
+      database_->ApplyRemoteEntry(specifics.entry().conversation_uuid(),
+                                  std::move(entry),
+                                  std::move(associated_content));
+    }
+  }
 }
 
 void AIChatSyncBridge::PutConversationMetadata(const std::string& uuid) {

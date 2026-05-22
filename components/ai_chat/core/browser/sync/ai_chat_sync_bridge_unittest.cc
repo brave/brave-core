@@ -339,5 +339,64 @@ TEST_F(AIChatSyncBridgeTest, GetDataForCommitEntry) {
             "commit-conv-2");
 }
 
+TEST_F(AIChatSyncBridgeTest, ApplyIncrementalSyncChangesUpsertConversation) {
+  CreateBridge();
+
+  syncer::EntityChangeList changes;
+  syncer::EntityData data;
+  auto* conv =
+      data.specifics.mutable_ai_chat_conversation()->mutable_conversation();
+  conv->set_uuid("remote-conv");
+  conv->set_title("From remote");
+  conv->set_total_tokens(100);
+  conv->set_trimmed_tokens(10);
+  changes.push_back(
+      syncer::EntityChange::CreateAdd("c:remote-conv", std::move(data)));
+
+  bridge_->ApplyIncrementalSyncChanges(bridge_->CreateMetadataChangeList(),
+                                       std::move(changes));
+
+  bool found = false;
+  for (const auto& c : db_->GetAllConversations()) {
+    if (c->uuid == "remote-conv") {
+      found = true;
+      EXPECT_EQ(c->title, "From remote");
+      EXPECT_EQ(c->total_tokens, 100u);
+      EXPECT_EQ(c->trimmed_tokens, 10u);
+    }
+  }
+  EXPECT_TRUE(found);
+}
+
+TEST_F(AIChatSyncBridgeTest,
+       ApplyIncrementalSyncChangesUpsertEntryCreatesStub) {
+  CreateBridge();
+
+  // Send an entry whose parent conversation does not exist locally yet;
+  // ApplyRemoteEntry should create a stub conversation row.
+  syncer::EntityChangeList changes;
+  syncer::EntityData data;
+  auto* entry = data.specifics.mutable_ai_chat_conversation()->mutable_entry();
+  entry->set_uuid("remote-entry");
+  entry->set_conversation_uuid("remote-conv-stub");
+  entry->set_entry_text("Hi from remote");
+  entry->set_character_type(static_cast<int>(mojom::CharacterType::HUMAN));
+  entry->set_action_type(static_cast<int>(mojom::ActionType::QUERY));
+  entry->set_date_unix_epoch_micros(
+      base::Time::Now().ToDeltaSinceWindowsEpoch().InMicroseconds());
+  changes.push_back(
+      syncer::EntityChange::CreateAdd("e:remote-entry", std::move(data)));
+
+  bridge_->ApplyIncrementalSyncChanges(bridge_->CreateMetadataChangeList(),
+                                       std::move(changes));
+
+  auto archive = db_->GetConversationData("remote-conv-stub");
+  ASSERT_TRUE(archive);
+  ASSERT_EQ(archive->entries.size(), 1u);
+  ASSERT_TRUE(archive->entries[0]->uuid.has_value());
+  EXPECT_EQ(*archive->entries[0]->uuid, "remote-entry");
+  EXPECT_EQ(archive->entries[0]->text, "Hi from remote");
+}
+
 }  // namespace
 }  // namespace ai_chat

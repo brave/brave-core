@@ -89,6 +89,9 @@ class AIChatSyncBridge : public syncer::DataTypeSyncBridge {
   // |conversation_uuid|. No-op when the conversation is temporary or unknown.
   void PutEntry(const std::string& conversation_uuid,
                 const std::string& entry_uuid);
+  // Dispatches |specifics| (an ADD or UPDATE from the server) to the right
+  // database upsert. Silently skips invalid records.
+  void ApplyRemoteRecord(const sync_pb::AIChatConversationSpecifics& specifics);
 
   const raw_ptr<AIChatDatabase> database_;
 

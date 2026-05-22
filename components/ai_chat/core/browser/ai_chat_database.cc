@@ -1861,6 +1861,93 @@ bool AIChatDatabase::CreateSchema() {
   return true;
 }
 
+bool AIChatDatabase::ApplyRemoteConversationMetadata(
+    mojom::ConversationPtr conversation) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(conversation);
+  CHECK(!conversation->uuid.empty());
+  if (!LazyInit()) {
+    return false;
+  }
+
+  sql::Transaction transaction(&GetDB());
+  if (!transaction.Begin()) {
+    return false;
+  }
+
+  // Upsert by uuid. PRAGMA foreign_keys is off for this database so REPLACE
+  // does not cascade into entry/associated_content rows; those are synced
+  // and managed as independent per-record sync entities.
+  static constexpr char kUpsertConversationQuery[] =
+      "INSERT OR REPLACE INTO conversation"
+      "  (uuid, title, model_key, total_tokens, trimmed_tokens)"
+      "  VALUES(?, ?, ?, ?, ?)";
+  sql::Statement stmt(GetDB().GetUniqueStatement(kUpsertConversationQuery));
+  stmt.BindString(0, conversation->uuid);
+  BindAndEncryptOptionalString(stmt, 1, conversation->title);
+  BindOptionalString(stmt, 2, conversation->model_key);
+  stmt.BindInt64(3, conversation->total_tokens);
+  stmt.BindInt64(4, conversation->trimmed_tokens);
+  if (!stmt.Run()) {
+    return false;
+  }
+
+  return transaction.Commit();
+}
+
+bool AIChatDatabase::ApplyRemoteEntry(
+    const std::string& conversation_uuid,
+    mojom::ConversationTurnPtr entry,
+    std::vector<mojom::AssociatedContentPtr> associated_content) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(entry);
+  CHECK(entry->uuid);
+  CHECK(!conversation_uuid.empty());
+  if (!LazyInit()) {
+    return false;
+  }
+
+  sql::Transaction transaction(&GetDB());
+  if (!transaction.Begin()) {
+    return false;
+  }
+
+  // Ensure the parent conversation row exists. If the metadata record has
+  // not arrived yet we insert a minimal stub; a later metadata sync will
+  // fill in title/model_key/tokens via ApplyRemoteConversationMetadata.
+  static constexpr char kInsertStubConversationQuery[] =
+      "INSERT OR IGNORE INTO conversation"
+      "  (uuid, title, model_key, total_tokens, trimmed_tokens)"
+      "  VALUES(?, NULL, NULL, 0, 0)";
+  sql::Statement stub_stmt(
+      GetDB().GetUniqueStatement(kInsertStubConversationQuery));
+  stub_stmt.BindString(0, conversation_uuid);
+  if (!stub_stmt.Run()) {
+    return false;
+  }
+
+  // Full-replace the entry: delete any existing row + child events, then
+  // re-insert via AddConversationEntry which handles all event tables.
+  DeleteConversationEntry(*entry->uuid);
+  if (!AddConversationEntry(conversation_uuid, std::move(entry))) {
+    return false;
+  }
+
+  // Upsert the per-entry associated_content metadata. We don't have full
+  // text from sync so |contents| is a vector of empty strings.
+  if (!associated_content.empty()) {
+    std::vector<std::string> empty_contents(associated_content.size(),
+                                            std::string());
+    if (!AddOrUpdateAssociatedContent(conversation_uuid,
+                                      std::move(associated_content),
+                                      std::move(empty_contents))) {
+      return false;
+    }
+  }
+
+  return transaction.Commit();
+}
+
 bool AIChatDatabase::GetAllSyncMetadata(syncer::MetadataBatch* metadata_batch) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!LazyInit()) {
