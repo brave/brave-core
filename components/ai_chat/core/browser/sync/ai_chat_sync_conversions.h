@@ -12,12 +12,14 @@
 #include <string_view>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
 
 namespace sync_pb {
 class AIChatCompressibleString;
 class AIChatConversationSpecifics;
+class AIChatConversationSpecifics_Entry;
 class EntitySpecifics;
 }  // namespace sync_pb
 
@@ -58,17 +60,48 @@ void MarkCompressibleStringTruncated(sync_pb::AIChatCompressibleString* out);
 std::optional<std::string> ReadCompressibleString(
     const sync_pb::AIChatCompressibleString& in);
 
+// Walks a priority-ordered list of long-text and binary fields on |entry|,
+// truncating them (marking the per-field sentinel so the receiver
+// preserves any local value) until the serialized record fits under the
+// per-record size budget. Returns true if the entry now fits (either
+// because no truncation was needed or because it succeeded), and false if
+// the entry remains too large even after every truncatable field has been
+// dropped — callers should refuse to commit such records.
+bool TruncateEntryForSync(sync_pb::AIChatConversationSpecifics_Entry* entry);
+
 // Builds a sync entity containing only conversation metadata.
 sync_pb::AIChatConversationSpecifics ConversationMetadataToSpecifics(
     const mojom::Conversation& conversation);
 
 // Builds a sync entity for a single conversation entry. |conversation_uuid|
 // is the parent conversation's UUID. |associated_content| is filtered to
-// only the items that belong to this entry.
+// only the items that belong to this entry. |associated_content_texts|
+// holds the optional extracted text for each AC, keyed by AC UUID; entries
+// without a text in the map have their last_contents field left absent on
+// the wire so the receiver preserves any existing local text.
 sync_pb::AIChatConversationSpecifics EntryToSpecifics(
     const std::string& conversation_uuid,
     const mojom::ConversationTurn& entry,
-    const std::vector<mojom::AssociatedContentPtr>& associated_content);
+    const std::vector<mojom::AssociatedContentPtr>& associated_content,
+    const base::flat_map<std::string, std::string>& associated_content_texts =
+        {});
+
+// Reverses ConversationMetadataToSpecifics. The returned Conversation has no
+// entries or associated content (those are carried by Entry records).
+mojom::ConversationPtr SpecificsToConversationMetadata(
+    const sync_pb::AIChatConversationSpecifics& specifics);
+
+// Reverses EntryToSpecifics. |associated_content| is populated from the
+// entry's associated_content field, each tagged with this entry's UUID via
+// |conversation_turn_uuid|. When non-null, |associated_content_texts|
+// receives the last_contents value for each AC where the sender provided
+// one; absent map entries mean the caller should preserve any existing
+// local text (forward-compat or truncated-for-sync).
+mojom::ConversationTurnPtr SpecificsToEntry(
+    const sync_pb::AIChatConversationSpecifics& specifics,
+    std::vector<mojom::AssociatedContentPtr>* associated_content,
+    base::flat_map<std::string, std::string>* associated_content_texts =
+        nullptr);
 
 // Wraps an AIChatConversationSpecifics in EntityData for change_processor()
 // to consume. Sets the entity name to a human-readable string.

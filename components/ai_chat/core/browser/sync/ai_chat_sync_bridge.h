@@ -10,10 +10,15 @@
 #include <optional>
 #include <string>
 
+#include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
 #include "components/sync/model/data_type_sync_bridge.h"
+
+namespace sync_pb {
+class AIChatConversationSpecifics_Entry;
+}  // namespace sync_pb
 
 namespace ai_chat {
 
@@ -32,9 +37,15 @@ class AIChatDatabase;
 class AIChatSyncBridge : public syncer::DataTypeSyncBridge {
  public:
   // |database| must outlive this bridge and live on the same sequence.
+  // |on_remote_changes_applied| is invoked once per Merge/Apply batch when
+  // any remote ADD, UPDATE, or DELETE was applied to the database. Callers
+  // typically wrap a UI-thread callback in base::BindPostTask so the
+  // closure marshals from the bridge sequence to wherever the listener
+  // lives. It is OK for this to be a null callback (bridge will no-op).
   AIChatSyncBridge(
       std::unique_ptr<syncer::DataTypeLocalChangeProcessor> change_processor,
-      AIChatDatabase* database);
+      AIChatDatabase* database,
+      base::RepeatingClosure on_remote_changes_applied);
   AIChatSyncBridge(const AIChatSyncBridge&) = delete;
   AIChatSyncBridge& operator=(const AIChatSyncBridge&) = delete;
   ~AIChatSyncBridge() override;
@@ -89,8 +100,22 @@ class AIChatSyncBridge : public syncer::DataTypeSyncBridge {
   // |conversation_uuid|. No-op when the conversation is temporary or unknown.
   void PutEntry(const std::string& conversation_uuid,
                 const std::string& entry_uuid);
+  // Dispatches |specifics| (an ADD or UPDATE from the server) to the right
+  // database upsert. Silently skips invalid records.
+  void ApplyRemoteRecord(const sync_pb::AIChatConversationSpecifics& specifics);
+  // Substitutes local values into |remote_entry| for any field the remote
+  // sender marked as truncated-for-sync. Operates in proto space so the
+  // downstream apply path can stay full-replace without losing locally-
+  // present bytes.
+  void MergePreservedLocalFieldsIntoRemoteEntry(
+      sync_pb::AIChatConversationSpecifics_Entry* remote_entry);
 
   const raw_ptr<AIChatDatabase> database_;
+
+  // Invoked once per Merge/Apply batch when any remote ADD, UPDATE, or
+  // DELETE was applied to the local DB. Usually a base::BindPostTask back
+  // to the UI thread so the listener can refresh in-memory state.
+  base::RepeatingClosure on_remote_changes_applied_;
 
   SEQUENCE_CHECKER(sequence_checker_);
 
