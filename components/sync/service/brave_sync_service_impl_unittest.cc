@@ -961,8 +961,6 @@ class BraveSyncServiceImplGACookiesTest
 };
 
 TEST_P(BraveSyncServiceImplGACookiesTest, CacheGuidIsNotWiped) {
-  SyncTransportDataPrefs::RegisterProfilePrefs(pref_service()->registry());
-
   SyncTransportDataPrefs sync_transport_data_prefs(
       pref_service(), signin::GaiaIdHash::FromGaiaId(GaiaId("user_gaia_id")));
 
