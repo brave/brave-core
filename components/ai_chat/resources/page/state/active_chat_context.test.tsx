@@ -71,17 +71,20 @@ const renderProvider = async (opts: RenderOptions) => {
     return null
   }
 
+  const tree = (selectedConversationId: string | undefined) => (
+    <MockContext aiChatOverrides={{ isGlobalPanel: opts.isGlobalPanel }}>
+      <ActiveChatProvider
+        selectedConversationId={selectedConversationId}
+        updateSelectedConversationId={updateSelectedConversationId}
+      >
+        <Sink />
+      </ActiveChatProvider>
+    </MockContext>
+  )
+
+  let result: ReturnType<typeof render>
   await act(async () => {
-    render(
-      <MockContext aiChatOverrides={{ isGlobalPanel: opts.isGlobalPanel }}>
-        <ActiveChatProvider
-          selectedConversationId={opts.selectedConversationId}
-          updateSelectedConversationId={updateSelectedConversationId}
-        >
-          <Sink />
-        </ActiveChatProvider>
-      </MockContext>,
-    )
+    result = render(tree(opts.selectedConversationId))
   })
 
   // Wait for the bind effect to fire and re-render so the Sink mounts.
@@ -92,7 +95,21 @@ const renderProvider = async (opts: RenderOptions) => {
     await Promise.resolve()
   })
 
-  return { detailsRef, updateSelectedConversationId }
+  const setSelectedConversationId = async (id: string | undefined) => {
+    await act(async () => {
+      result.rerender(tree(id))
+    })
+    // Flush microtasks so any post-rebind getState fetches settle.
+    await act(async () => {
+      await Promise.resolve()
+    })
+  }
+
+  return {
+    detailsRef,
+    updateSelectedConversationId,
+    setSelectedConversationId,
+  }
 }
 
 beforeEach(() => {
@@ -161,6 +178,88 @@ describe('ActiveChatProvider routing — global panel mode', () => {
     // In global panel mode the "main" is `selectedConversationId === undefined`,
     // so createNewConversation's tab-sentinel short-circuit doesn't apply and
     // we navigate to '/' (which will mount as a fresh global main on remount).
+    expect(window.location.pathname).toBe('/')
+  })
+
+  // Regression coverage for the global-panel "new conversation" fix: while on
+  // the main conversation the URL may already be '/' (or the global id), so a
+  // pushState alone is a no-op and won't actually swap in a new conversation —
+  // the provider must also manually rebind via newConversation.
+  it('createNewConversation works after navigating to a history conversation and back to "/"', async () => {
+    const { detailsRef, setSelectedConversationId } = await renderProvider({
+      isGlobalPanel: true,
+      selectedConversationId: undefined,
+    })
+
+    // Initial mount in global main: one fresh bind.
+    expect(mockedBind.newConversation).toHaveBeenCalledTimes(1)
+    expect(detailsRef.current!.isMainConversation).toBe(true)
+
+    // Navigate to a history conversation: should bind by uuid.
+    await setSelectedConversationId('history-uuid')
+    expect(mockedBind.bindConversation).toHaveBeenLastCalledWith(
+      expect.anything(),
+      'history-uuid',
+    )
+    expect(detailsRef.current!.isMainConversation).toBe(false)
+
+    // Navigate back to the global main (URL = '/').
+    await setSelectedConversationId(undefined)
+    expect(detailsRef.current!.isMainConversation).toBe(true)
+
+    mockedBind.newConversation.mockClear()
+    window.history.replaceState(null, '', '/some-other-path')
+
+    act(() => {
+      detailsRef.current!.createNewConversation()
+    })
+
+    // Must rebind manually (this is the fix) AND navigate to '/'.
+    expect(mockedBind.newConversation).toHaveBeenCalledTimes(1)
+    expect(window.location.pathname).toBe('/')
+  })
+
+  it('createNewConversation works after navigating to a history conversation and back to the global conversation id', async () => {
+    const { detailsRef, setSelectedConversationId } = await renderProvider({
+      isGlobalPanel: true,
+      selectedConversationId: undefined,
+    })
+
+    // First bind in global main mode resolves to uuid 'new-0' (see mock in
+    // beforeEach), which becomes the tracked globalConversationId.
+    const globalConversationId = 'new-0'
+    expect(mockedBind.newConversation).toHaveBeenCalledTimes(1)
+
+    // URL set explicitly to the global conversation id is still the main
+    // conversation, and should not trigger a rebind (already bound).
+    mockedBind.bindConversation.mockClear()
+    await setSelectedConversationId(globalConversationId)
+    expect(detailsRef.current!.isMainConversation).toBe(true)
+    expect(mockedBind.bindConversation).not.toHaveBeenCalled()
+
+    // Navigate away to a history conversation.
+    await setSelectedConversationId('history-uuid')
+    expect(mockedBind.bindConversation).toHaveBeenLastCalledWith(
+      expect.anything(),
+      'history-uuid',
+    )
+    expect(detailsRef.current!.isMainConversation).toBe(false)
+
+    // Navigate back to the global conversation id URL.
+    await setSelectedConversationId(globalConversationId)
+    expect(detailsRef.current!.isMainConversation).toBe(true)
+
+    mockedBind.newConversation.mockClear()
+    window.history.replaceState(null, '', '/some-other-path')
+
+    act(() => {
+      detailsRef.current!.createNewConversation()
+    })
+
+    // The URL still matches the existing global conversation id, so without
+    // the manual rebind a plain pushState to '/' would leave the user looking
+    // at the same conversation. Verify both happen.
+    expect(mockedBind.newConversation).toHaveBeenCalledTimes(1)
     expect(window.location.pathname).toBe('/')
   })
 })
