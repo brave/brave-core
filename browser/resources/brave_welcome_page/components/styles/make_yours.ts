@@ -397,7 +397,7 @@ export const makeYoursStyles = `
   }
 
   .vertical-tab.active {
-    background: ${color.container.highlight};
+    background: ${color.desktopbrowser.tabbar.activeTabVertical};
     transition: background-color 0.4s ease;
   }
 
@@ -590,12 +590,14 @@ export const makeYoursStyles = `
     padding: ${spacing.xl} ${spacing['2Xl']};
     background: ${color.material.regular};
     border-radius: ${radius.xl};
+    border: 1px solid ${color.divider.subtle};
   }
 
   .customize-appearance-card .customize-option-row {
     background: transparent;
     border-radius: 0;
     padding: ${spacing.xl} ${spacing['2Xl']};
+    border: none;
   }
 
   .customize-option-label {
@@ -609,6 +611,7 @@ export const makeYoursStyles = `
     flex-direction: column;
     background: ${color.material.regular};
     border-radius: ${radius.xl};
+    border: 1px solid ${color.divider.subtle};
   }
 
   .customize-divider {
