@@ -72,7 +72,12 @@ replace = '''\1
 #endif
     case RequestType::kBraveOpenAIChat:
       return ContentSettingsType::BRAVE_OPEN_AI_CHAT;\2
-    case RequestType::kWidevine:\3'''
+    case RequestType::kWidevine:
+#if !BUILDFLAG(ENABLE_BRAVE_WALLET)
+    case RequestType::kBraveEthereum:
+    case RequestType::kBraveSolana:
+    case RequestType::kBraveCardano:
+#endif\3'''
 
 [[substitution]]
 description = 'Brave mappings for `RequestType` to permission key'
