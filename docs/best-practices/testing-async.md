@@ -142,36 +142,6 @@ ASSERT_TRUE(base::test::RunUntil([this]() {
 
 ---
 
-<a id="TA-007"></a>
-
-## ❌ CRITICAL: Never Use EvalJs Inside RunUntil()
-
-**DO NOT call `content::EvalJs()` or `content::ExecJs()` inside `base::test::RunUntil()` lambdas.**
-
-This causes DCHECK failures on macOS arm64 due to nested run loop issues.
-
-**BAD - Causes DCHECK failure:**
-```cpp
-// ❌ WRONG - Nested run loops!
-ASSERT_TRUE(base::test::RunUntil([&]() {
-  return content::EvalJs(web_contents, "!!document.getElementById('foo')")
-      .ExtractBool();
-}));
-```
-
-**Error you'll see on macOS arm64:**
-```
-FATAL:base/message_loop/message_pump_apple.mm:389]
-DCHECK failed: stack_.size() < static_cast<size_t>(nesting_level_)
-```
-
-**Why it fails:**
-1. `base::test::RunUntil()` starts a run loop to poll the condition
-2. Inside that loop, `content::EvalJs()` starts **another** run loop to execute JavaScript
-3. This creates **nested run loops**, which triggers a DCHECK on macOS
-
----
-
 <a id="TA-008"></a>
 
 ## General Rule: Avoid Nested Run Loops
