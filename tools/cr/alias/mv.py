@@ -7,7 +7,7 @@
 Performs the filesystem or git rename then updates every downstream artefact
 that depends on the old path: C++ include guards, chromium_src shadow-file
 includes, cross-tree #include/#import references, // comment references,
-BUILD.gn source-list entries, and plaster TOML patch files.
+BUILD.gn source-list entries, and plaster patch files.
 """
 
 from __future__ import annotations
@@ -57,7 +57,7 @@ def cmd_mv(args: list[str]) -> int:
     parser.add_argument('--no-run-plaster',
                         action='store_true',
                         dest='no_run_plaster',
-                        help='Skip running plaster after moving TOML files')
+                        help='Skip running plaster after moving plaster files')
     parser.add_argument('--no-format',
                         action='store_true',
                         dest='no_format',
@@ -186,12 +186,15 @@ def _step3_shadow_includes(file_pairs: list[_FilePair]) -> None:
 def _step5_plaster(file_pairs: list[_FilePair], no_git: bool,
                    run_plaster: bool) -> None:
     """Deletes stale patch files and optionally re-runs plaster for moved
-    TOMLs."""
+    plaster files (.yaml, or the deprecated .toml)."""
     rewrite_path = plaster.PLASTER_FILES_PATH.resolve()
     patches_path = repository.brave.root / 'patches'
 
     for old_file, new_file in file_pairs:
-        if old_file.suffix != '.toml':
+        # TODO(https://github.com/brave/brave-browser/issues/55738): Drop
+        # `'.toml'` from this tuple once every plaster under `rewrite/`
+        # has been migrated to YAML.
+        if old_file.suffix not in ('.yaml', '.toml'):
             continue
         if not old_file.is_relative_to(rewrite_path):
             continue

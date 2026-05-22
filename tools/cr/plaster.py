@@ -15,7 +15,13 @@ import json
 import os
 import re
 import sys
+
+# TODO(https://github.com/brave/brave-browser/issues/55738): Remove all the
+# TOML-related code once every plaster under `rewrite/` has been migrated to
+# YAML.
 import tomllib
+
+import yaml
 
 from terminal import IncendiaryErrorHandler, console, is_verbose, terminal
 import repository
@@ -25,6 +31,19 @@ PLASTER_FILES_PATH = repository.brave.root / 'rewrite'
 
 # The path to the directory where patch files are stored in brave-core.
 PATCHES_PATH = repository.brave.root / 'patches'
+
+# Supported plaster file extensions.
+#
+# `.yaml` is the preferred format. `.toml` is the original syntax and is
+# **deprecated**.
+#
+# TODO(https://github.com/brave/brave-browser/issues/55738): Once every
+# plaster under `rewrite/` has been migrated to YAML, drop `'.toml'` from
+# this tuple and remove every other site tagged with the same issue
+# number (the `tomllib` import, `Substitution.from_toml`, and the
+# `.toml` branch in `PlasterFile.apply`).
+PLASTER_EXTENSIONS = ('.yaml', '.toml')
+
 
 @dataclass
 class PathChecksumPair:
@@ -111,7 +130,8 @@ class Patchinfo:
     # ever produce and accept a single entry.
     applies_to: Entry
 
-    # The plaster .toml file that produced this patchinfo.
+    # The plaster file that produced this patchinfo (`.yaml`, or the
+    # deprecated `.toml`).
     plaster: Entry
 
     @staticmethod
@@ -329,6 +349,191 @@ class PatchinfoBuilder:
         self.patchinfo.save_if_changed(content)
 
 
+@dataclass(frozen=True)
+class Substitution:
+    """A single substitution entry parsed from a plaster file.
+
+    `from_yaml` instantiates all the substitutions from a YAML plaster
+    file, and `from_toml` does the same for a (deprecated) TOML plaster
+    file.
+    """
+
+    # Human-readable description, used as a prefix in error messages.
+    description: str
+
+    # Regex pattern passed verbatim to `re.subn`. When the plaster entry
+    # uses the literal `pattern` form, this field holds its `re.escape`'d
+    # form.
+    re_pattern: str
+
+    # Replacement string passed to `re.subn`.
+    replace: str
+
+    # Expected number of substitutions. `0` means "replace all matches"
+    # and disables the count check.
+    expected_count: int = 1
+
+    # Combined bitmask of `re` flags built from the `re_flags` plaster
+    # field.
+    re_flags: int = 0
+
+    # Every key accepted on a substitution mapping. Anything else is
+    # rejected by `_from_dict` so typos surface immediately instead of
+    # being silently ignored.
+    _ALLOWED_KEYS = frozenset(('description', 'pattern', 're_pattern',
+                               'replace', 'count', 're_flags'))
+
+    class _NoDupSafeLoader(yaml.SafeLoader):
+        """`yaml.SafeLoader` that rejects duplicate mapping keys.
+
+        `yaml.safe_load` silently keeps the last value for a duplicate
+        key — which would let a typo'd substitution field shadow the
+        real one and apply the wrong patch. We surface those cases as
+        a `ValueError` instead.
+        """
+
+        @staticmethod
+        def _construct_mapping_strict(loader: yaml.SafeLoader,
+                                      node: yaml.MappingNode) -> dict:
+            """Construct a dict from `node`, raising on duplicate keys."""
+            loader.flatten_mapping(node)
+            seen: set = set()
+            duplicates: list = []
+            for key_node, _ in node.value:
+                key = loader.construct_object(key_node, deep=True)
+                if key in seen:
+                    duplicates.append(key)
+                else:
+                    seen.add(key)
+            if duplicates:
+                raise ValueError('Duplicate key(s) in YAML mapping: ' +
+                                 ', '.join(repr(k) for k in duplicates))
+            return loader.construct_mapping(node, deep=True)
+
+        # Install the strict constructor.
+        yaml_constructors = yaml.SafeLoader.yaml_constructors | {
+            'tag:yaml.org,2002:map': _construct_mapping_strict,
+        }
+
+    # TODO(https://github.com/brave/brave-browser/issues/55738): Remove
+    # `from_toml` (and its callers) once every plaster under `rewrite/`
+    # has been migrated to YAML.
+    @staticmethod
+    def from_toml(contents: str) -> list[Substitution]:
+        """Parse all substitutions from the contents of a TOML plaster file.
+
+        TOML plasters use `[[substitution]]` array-of-tables entries.
+        """
+        data = tomllib.loads(contents)
+        raw = data.get('substitution')
+        if raw is None:
+            raise ValueError(
+                'Plaster TOML is missing required `[[substitution]]` entries')
+        if not isinstance(raw, list):
+            raise ValueError('TOML `substitution` must be an array of tables')
+        if not raw:
+            raise ValueError(
+                'Plaster TOML must declare at least one `[[substitution]]`')
+        return [Substitution._from_dict(entry) for entry in raw]
+
+    @staticmethod
+    def from_yaml(contents: str) -> list[Substitution]:
+        """Parse all substitutions from the contents of a YAML plaster file.
+
+        YAML plasters use a top-level `substitutions:` list whose items
+        have the same field names as their TOML counterparts.
+        """
+        data = yaml.load(contents, Loader=Substitution._NoDupSafeLoader)
+        if data is None:
+            data = {}
+        if not isinstance(data, dict):
+            raise ValueError('Plaster YAML must be a mapping at the top level')
+        raw = data.get('substitutions')
+        if raw is None:
+            raise ValueError(
+                'Plaster YAML is missing required `substitutions:` key')
+        if not isinstance(raw, list):
+            raise ValueError('YAML `substitutions` must be a list')
+        if not raw:
+            raise ValueError(
+                'Plaster YAML `substitutions:` must contain at least one entry'
+            )
+        return [Substitution._from_dict(entry) for entry in raw]
+
+    @staticmethod
+    def _from_dict(data: object) -> Substitution:
+        """Validate a single substitution mapping and build a Substitution.
+
+        Both `from_toml` and `from_yaml` dispatch through this helper after
+        format-specific parsing produces a Python `dict` for each entry.
+
+        Raises:
+            ValueError: if required fields are missing, a field has the
+                wrong type, or `pattern` and `re_pattern` are both set.
+        """
+        if not isinstance(data, dict):
+            raise ValueError(f'substitution entry must be a mapping, got '
+                             f'{type(data).__name__}')
+
+        unknown = sorted(set(data.keys()) - Substitution._ALLOWED_KEYS)
+        if unknown:
+            raise ValueError('Unrecognised substitution key(s): '
+                             f'{", ".join(repr(k) for k in unknown)}')
+
+        description = data.get('description')
+        if not isinstance(description, str):
+            raise ValueError('No description specified for substitution entry')
+
+        pattern = data.get('pattern')
+        re_pattern = data.get('re_pattern')
+        if pattern is not None and re_pattern is not None:
+            raise ValueError(
+                f'Please specify either pattern or re_pattern, not both '
+                f'(in "{description}")')
+        if pattern is None and re_pattern is None:
+            raise ValueError(f'No pattern specified (in "{description}")')
+        if pattern is not None:
+            if not isinstance(pattern, str):
+                raise ValueError(
+                    f'pattern must be a string (in "{description}")')
+            re_pattern = re.escape(pattern)
+        elif not isinstance(re_pattern, str):
+            raise ValueError(
+                f're_pattern must be a string (in "{description}")')
+
+        replace = data.get('replace')
+        if not isinstance(replace, str):
+            raise ValueError(
+                f'No replace value specified (in "{description}")')
+
+        expected_count = data.get('count', 1)
+        # bool is a subclass of int; reject it explicitly.
+        if (not isinstance(expected_count, int)
+                or isinstance(expected_count, bool)):
+            raise ValueError(f'count must be an integer (in "{description}")')
+
+        flags_raw = data.get('re_flags', [])
+        if not isinstance(flags_raw, list):
+            raise ValueError(
+                f're_flags must be a list of strings (in "{description}")')
+        re_flags = 0
+        for flag in flags_raw:
+            if not isinstance(flag, str):
+                raise ValueError(
+                    f're_flags entries must be strings (in "{description}")')
+            if not (flag.isupper() and hasattr(re, flag)):
+                raise ValueError(f'Invalid re flag specified: {flag}')
+            re_flags |= getattr(re, flag)
+
+        return Substitution(
+            description=description,
+            re_pattern=re_pattern,
+            replace=replace,
+            expected_count=expected_count,
+            re_flags=re_flags,
+        )
+
+
 @dataclass
 class PlasterFile:
     """ Class representing an plaster file.
@@ -349,7 +554,7 @@ class PlasterFile:
 
         for root, _, files in os.walk(PLASTER_FILES_PATH):
             for file in files:
-                if file.endswith('.toml'):
+                if file.endswith(PLASTER_EXTENSIONS):
                     plaster_files.append(cls(Path(root) / file))
 
         return plaster_files
@@ -371,9 +576,9 @@ class PlasterFile:
         patch_path = PATCHES_PATH / f'{patch_stem}.patch'
         patchinfo_path = PATCHES_PATH / f'{patch_stem}.patchinfo'
 
-        # Only the plaster toml is guaranteed to exist here; any of the
-        # other files may be missing and that is by itself a reason to
-        # re-apply.
+        # Only the plaster file itself is guaranteed to exist here; any
+        # of the other files may be missing and that is by itself a
+        # reason to re-apply.
         if (not patchinfo_path.exists() or not patch_path.exists()
                 or not source_path.exists()):
             return True
@@ -403,66 +608,52 @@ class PlasterFile:
             or PathChecksumPair(patch_path).checksum != info.patch_checksum)
 
     def apply(self, dry_run=False):
+        suffix = self.path.suffix.lower()
+
+        # TODO(https://github.com/brave/brave-browser/issues/55738): Remove
+        # this collision check once every plaster under `rewrite/` has
+        # been migrated to YAML — only one extension will exist by then,
+        # so the twin can never appear.
+        if suffix in PLASTER_EXTENSIONS:
+            twin_ext = '.toml' if suffix == '.yaml' else '.yaml'
+            twin = self.path.with_suffix(twin_ext)
+            if twin.exists():
+                raise PlasterError(
+                    'Both `.yaml` and `.toml` plaster files exist for the '
+                    f'same source — remove one:\n  {self.path}\n  {twin}')
+
         info = PatchinfoBuilder(self.path)
-        plaster_file = tomllib.loads(info.plaster_contents)
+        if suffix == '.yaml':
+            substitutions = Substitution.from_yaml(info.plaster_contents)
+        elif suffix == '.toml':
+            # TODO(https://github.com/brave/brave-browser/issues/55738):
+            # Drop this entire `elif` branch once every plaster under
+            # `rewrite/` has been migrated to YAML.
+            substitutions = Substitution.from_toml(info.plaster_contents)
+        else:
+            raise ValueError(f'Unsupported plaster file extension: {suffix}')
         contents = repository.chromium.read_file(info.source)
         errors = []
 
         try:
-            for substitution in plaster_file.get('substitution'):
-                description = substitution.get('description')
-                re_pattern = substitution.get('re_pattern')
-                pattern = substitution.get('pattern')
-                replace = substitution.get('replace')
-                expected_count = substitution.get('count', 1)
-                flags = substitution.get('re_flags', [])
-
-                if description is None:
-                    raise ValueError(
-                        f'No description specified in {info.source}')
-
-                if re_pattern is not None and pattern is not None:
-                    raise ValueError(
-                        f'Please specify either pattern or re_pattern '
-                        f' in {info.source}')
-
-                if re_pattern is None:
-                    if pattern is None:
-                        raise ValueError(
-                            f'No pattern specified in {info.source}')
-                    re_pattern = re.escape(pattern)
-
-                if replace is None:
-                    raise ValueError(
-                        f'No replace value specified in {info.source}')
-
-                re_flags = 0
-                for flag in flags:
-                    # Only accept valid re flags
-                    if flag.isupper() and hasattr(re, flag):
-                        re_flags |= getattr(re, flag)
-                    else:
-                        raise ValueError(
-                            f'Invalid re flag specified: {flag} in '
-                            f'{info.source}')
-
+            for substitution in substitutions:
                 contents, num_changes = re.subn(
-                    re_pattern,
-                    replace,
+                    substitution.re_pattern,
+                    substitution.replace,
                     contents,
-                    flags=re_flags,
-                    # We dont't want to explicitly limit the number of matches
+                    flags=substitution.re_flags,
+                    # We don't want to explicitly limit the number of matches
                     # here, we want to control what matches using the match
                     # pattern and then ensure the output matches only what we
-                    # expected
+                    # expected.
                     count=0)
 
-                # count == 0 means "replace all matches" and bypass count
-                # validation
-                if expected_count not in (0, num_changes):
+                # count == 0 means "replace all matches" and bypasses count
+                # validation.
+                if substitution.expected_count not in (0, num_changes):
                     errors.append(
                         f'Unexpected number of matches ({num_changes} vs '
-                        f'{expected_count}) in {self.path}')
+                        f'{substitution.expected_count}) in {self.path}')
 
         except re.error as e:
             errors.append(f'Invalid regex: {e} in {self.path}')
@@ -512,10 +703,14 @@ def get_plaster_files(filepaths: list[str] | None = None) -> list[PlasterFile]:
         filepath = PurePath(filepath).as_posix()
         if filepath.startswith('patches/') and filepath.endswith('.patch'):
             base = filepath[len('patches/'):-len('.patch')]
-            plaster_relative = base.replace('-', '/') + '.toml'
-            plaster_path = f'rewrite/{plaster_relative}'
-            expected_plaster_files.add(plaster_path)
-        elif filepath.startswith('rewrite/') and filepath.endswith('.toml'):
+            stem = f'rewrite/{base.replace("-", "/")}'
+            # The patch file does not tell us which plaster format produced
+            # it, so seed candidates for every supported extension and let
+            # the existence filter below pick the real one.
+            for ext in PLASTER_EXTENSIONS:
+                expected_plaster_files.add(f'{stem}{ext}')
+        elif (filepath.startswith('rewrite/')
+              and filepath.endswith(PLASTER_EXTENSIONS)):
             expected_plaster_files.add(filepath)
         else:
             raise ValueError(f'Unexpected file path: {filepath}')
