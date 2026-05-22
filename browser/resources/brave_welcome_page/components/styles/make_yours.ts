@@ -590,7 +590,6 @@ export const makeYoursStyles = `
     padding: ${spacing.xl} ${spacing['2Xl']};
     background: ${color.material.regular};
     border-radius: ${radius.xl};
-    border: 1px solid ${color.divider.subtle};
   }
 
   .customize-appearance-card .customize-option-row {
@@ -611,7 +610,6 @@ export const makeYoursStyles = `
     flex-direction: column;
     background: ${color.material.regular};
     border-radius: ${radius.xl};
-    border: 1px solid ${color.divider.subtle};
   }
 
   .customize-divider {

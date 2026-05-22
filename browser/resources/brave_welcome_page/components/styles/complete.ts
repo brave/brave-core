@@ -23,7 +23,6 @@ export const completeStyles = `
     border-radius: ${radius.xl};
     cursor: pointer;
     transition: background-color 0.15s ease, filter 0.3s ease;
-    border: 1px solid ${color.divider.subtle};
   }
 
   .privacy-card:hover {

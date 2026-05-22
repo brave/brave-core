@@ -21,7 +21,6 @@ export const importDataStyles = `
     overflow: hidden;
     width: 100%;
     position: relative;
-    border: 1px solid ${color.divider.subtle};
   }
 
   .browser-dropdown::after {
