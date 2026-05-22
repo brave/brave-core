@@ -73,7 +73,33 @@ gfx::Image GetPlaceholderAvatarIconWithColors_ChromiumImpl(
 #define GetPlaceholderAvatarIconVisibleAgainstBackground \
   GetPlaceholderAvatarIconVisibleAgainstBackground_ChromiumImpl
 
+#include "chrome/browser/browser_process.h"
+#include "chrome/browser/profiles/profile_attributes_entry.h"
+#include "chrome/browser/profiles/profile_manager.h"
+
+#define BRAVE_ADJUST_PROFILE_AVATAR_SELECTOR_SELECTION(entry, using_gaia,   \
+                                                       selected_avatar_idx) \
+  do {                                                                      \
+    if ((entry)->IsUsingBraveCustomAvatar()) {                              \
+      (using_gaia) = false;                                                 \
+      (selected_avatar_idx) = SIZE_MAX;                                     \
+    }                                                                       \
+  } while (0)
+
+#define BRAVE_ON_DEFAULT_PROFILE_AVATAR_INDEX_SET(profile)       \
+  do {                                                           \
+    ProfileAttributesEntry* brave_entry =                        \
+        g_browser_process->profile_manager()                     \
+            ->GetProfileAttributesStorage()                      \
+            .GetProfileAttributesWithPath((profile)->GetPath()); \
+    if (brave_entry) {                                           \
+      brave_entry->DeactivateBraveCustomAvatar();                \
+    }                                                            \
+  } while (0)
+
 #include <chrome/browser/profiles/profile_avatar_icon_util.cc>
+#undef BRAVE_ON_DEFAULT_PROFILE_AVATAR_INDEX_SET
+#undef BRAVE_ADJUST_PROFILE_AVATAR_SELECTOR_SELECTION
 #undef GetPlaceholderAvatarIconVisibleAgainstBackground
 #undef GetDefaultProfileAvatarIconAndLabel
 #undef GetPlaceholderAvatarIconWithColors

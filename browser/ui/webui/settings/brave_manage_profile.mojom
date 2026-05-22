@@ -1,0 +1,86 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module brave_manage_profile.mojom;
+
+import "mojo/public/mojom/base/big_buffer.mojom";
+
+// Snapshot of the user-uploaded custom profile avatar state shown on
+// `brave://settings/manageProfile`.
+struct CustomAvatarState {
+  // True when a custom avatar file exists on disk. The file can be present
+  // while the profile icon shows a preset/GAIA image (see `is_active`).
+  bool has_saved_avatar;
+  // True when the saved custom avatar is the one currently rendered as the
+  // profile icon across Chrome UI surfaces.
+  bool is_active;
+  // PNG `data:` URL preview for the saved image (`data:image/png;base64,…`),
+  // built server-side via `webui::GetBitmapDataUrl`. The settings page assigns
+  // this to `<img id="braveCustomAvatarImage">.src` as a DOM property (not a
+  // CSS `url()`), avoiding a CSS-injection parser context. Empty when no
+  // custom avatar is saved or while the bitmap is still loading from disk
+  // after a restart.
+  string data_url;
+};
+
+// Reasons a `SetCustomAvatar` upload may fail. All paths that don't return
+// an error also surface a fresh `CustomAvatarState` snapshot.
+enum SetCustomAvatarError {
+  // The payload was empty.
+  kEmpty,
+  // The payload exceeded the size cap (decoded bitmap could OOM).
+  kTooLarge,
+  // The sandboxed image decoder rejected the bytes.
+  kDecodeFailed,
+  // The profile attributes entry for this profile is missing.
+  kNoProfileEntry,
+  // Disk persistence failed after decoding.
+  kSaveFailed,
+  // A newer upload arrived before this one finished decoding.
+  kSuperseded,
+  // The owning profile was destroyed before this upload finished.
+  kProfileShuttingDown,
+};
+
+// Browser-side handler for the Brave-specific "Upload your own image" row on
+// `brave://settings/manageProfile`. The settings page acts as the client.
+interface BraveManageProfileSettingsHandler {
+  // Establishes the 1-to-1 connection used by the browser to push UI updates
+  // (e.g. after the storage observer reports an avatar change).
+  BindUI(pending_remote<BraveManageProfileSettingsUI> ui);
+
+  // Returns the current custom avatar state for the active profile.
+  GetCustomAvatar() => (CustomAvatarState state);
+
+  // Uploads `bytes` (raw bytes of any common image codec supported by the
+  // sandboxed image decoder) as the user's custom avatar.
+  //
+  // Large uploads use the `BigBuffer` shared-memory arm (see
+  // `bytesToBigBuffer` in `brave_manage_profile_browser_proxy.ts`): the
+  // renderer validates `Mojo.createSharedBuffer` / `mapBuffer` results before
+  // sending. The browser reads either inline bytes or the mapped region via
+  // `base::span(big_buffer)` (see
+  // `BraveManageProfileHandler::SetCustomAvatar`).
+  // On success returns the new state (including a PNG preview). On any failure,
+  // `error` is set and `state` is the unchanged current state.
+  SetCustomAvatar(mojo_base.mojom.BigBuffer bytes)
+      => (SetCustomAvatarError? error, CustomAvatarState state);
+
+  // Removes the saved custom avatar (also deletes the on-disk file). The
+  // `OnCustomAvatarChanged` event fires once the storage observer reports
+  // the change.
+  RemoveCustomAvatar();
+
+  // Re-activates the saved custom avatar after a preset/GAIA avatar was
+  // selected. No-op if no avatar is saved.
+  ActivateCustomAvatar();
+};
+
+// Client interface implemented by the settings page; receives push updates
+// from the browser when the custom avatar state changes (uploads finishing
+// disk writes, external changes, etc.).
+interface BraveManageProfileSettingsUI {
+  OnCustomAvatarChanged(CustomAvatarState state);
+};

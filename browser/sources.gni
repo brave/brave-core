@@ -381,6 +381,7 @@ if (!is_android) {
     "//brave/browser/hid/brave_hid_delegate.h",
   ]
   brave_chrome_browser_deps += [
+    "//brave/browser/ui/webui/settings:mojo_bindings",
     "//brave/components/brave_wallet/common/buildflags",
     "//chrome/browser/hid",
     "//chrome/browser/ui/hid",

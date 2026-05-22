@@ -781,6 +781,8 @@ if (!is_android) {
       deps += [ "//brave/browser/ui/commander:interactive_ui_tests" ]
     }
 
+    deps += [ "//brave/browser/ui/webui/settings:interactive_ui_tests" ]
+
     if (use_aura) {
       deps += [ "//ui/aura:test_support" ]
     }

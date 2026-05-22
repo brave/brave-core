@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/webui/settings/settings_manage_profile_handler.cc b/chrome/browser/ui/webui/settings/settings_manage_profile_handler.cc
+index c7a66025521656acab3fe1822484659158378f2e..0be887c377938c4a125ad9d798310ddb071eb181 100644
+--- a/chrome/browser/ui/webui/settings/settings_manage_profile_handler.cc
++++ b/chrome/browser/ui/webui/settings/settings_manage_profile_handler.cc
+@@ -158,6 +158,7 @@ void ManageProfileHandler::HandleSetProfileIconToGaiaAvatar(
+     // below.
+     ProfileMetrics::LogProfileAvatarSelection(SIZE_MAX);
+   }
++  BRAVE_HANDLE_SET_PROFILE_ICON_TO_GAIA_AVATAR_END(profile_);
+ }
+ 
+ void ManageProfileHandler::HandleSetProfileIconToDefaultAvatar(

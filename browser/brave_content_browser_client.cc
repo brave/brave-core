@@ -243,6 +243,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/split_view/split_view_link_navigation_throttle.h"
 #include "brave/browser/ui/webui/brave_account/brave_account_ui_desktop.h"
+#include "brave/browser/ui/webui/settings/brave_manage_profile.mojom.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "brave/components/brave_account/mojom/brave_account_row.mojom.h"
 #include "brave/components/commands/common/commands.mojom.h"
@@ -673,6 +674,21 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
   }
   registry.ForWebUI<BraveSettingsUI>()
       .Add<brave_origin::mojom::BraveOriginSettingsHandler>();
+  // `brave://settings/manageProfile` is a route inside the single
+  // `BraveSettingsUI` WebUI controller, not a separately-hosted WebUI. The
+  // `WebUIBrowserInterfaceBrokerRegistry` keys on the WebUI controller
+  // class, so there is no Mojo-broker hook for restricting binding to a
+  // particular subpage path; mirroring the registration pattern used by
+  // every other BraveSettings handler above (containers, ai_chat,
+  // commands, brave_account, brave_origin) is intentional. The handler
+  // itself is the security boundary for this surface: it null-checks the
+  // owning `Profile` on every entry point, validates the upload size
+  // (`kMaxUploadBytes`) and decoded dimensions (`kMaxDecodedDimension`)
+  // before doing work, performs decode out-of-process in the sandboxed
+  // image_decoder service, and only mutates avatar state on the user's
+  // own profile.
+  registry.ForWebUI<BraveSettingsUI>()
+      .Add<brave_manage_profile::mojom::BraveManageProfileSettingsHandler>();
 #endif  // !BUILDFLAG(IS_ANDROID)
   // End of BraveSettingsUI interfaces
 

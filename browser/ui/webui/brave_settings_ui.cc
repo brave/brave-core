@@ -25,6 +25,7 @@
 #include "brave/browser/ui/webui/settings/brave_adblock_handler.h"
 #include "brave/browser/ui/webui/settings/brave_appearance_handler.h"
 #include "brave/browser/ui/webui/settings/brave_default_extensions_handler.h"
+#include "brave/browser/ui/webui/settings/brave_manage_profile_handler.h"
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
 #include "brave/browser/ui/webui/settings/brave_sync_handler.h"
 #include "brave/browser/ui/webui/settings/default_brave_shields_handler.h"
@@ -346,6 +347,20 @@ void BraveSettingsUI::BindInterface(
   commands::AcceleratorServiceFactory::GetForContext(
       web_ui()->GetWebContents()->GetBrowserContext())
       ->BindInterface(std::move(pending_receiver));
+}
+
+void BraveSettingsUI::BindInterface(
+    mojo::PendingReceiver<
+        brave_manage_profile::mojom::BraveManageProfileSettingsHandler>
+        pending_receiver) {
+  // Each bind (e.g. settings navigation/reload) constructs a fresh handler for
+  // the current `Profile`. `MakeOwnedReceiver` ties handler lifetime to the
+  // Mojo pipe, not the profile: if the pipe outlives profile teardown,
+  // `OnProfileWillBeDestroyed` nulls `profile_` and all entry points no-op or
+  // return `kProfileShuttingDown` until the WebUI closes the receiver.
+  auto handler =
+      std::make_unique<BraveManageProfileHandler>(Profile::FromWebUI(web_ui()));
+  MakeOwnedReceiver(std::move(handler), std::move(pending_receiver));
 }
 
 #if BUILDFLAG(ENABLE_AI_CHAT)

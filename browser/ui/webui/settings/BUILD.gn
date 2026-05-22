@@ -6,6 +6,56 @@
 import("//brave/components/brave_ads/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/email_aliases/buildflags/buildflags.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
+
+# Mojo interface backing the Brave-specific "Upload your own image" row on
+# `brave://settings/manageProfile`, plus the source_set that implements it.
+# Desktop-only — `settings-manage-profile` is not built on Android.
+#
+# `manage_profile` is split out of //brave/browser/ui per docs/gni_sources.md
+# (avoid new sources in the monolithic ui target; Semgrep ui_build_gn).
+if (!is_android) {
+  mojom("mojo_bindings") {
+    sources = [ "brave_manage_profile.mojom" ]
+    webui_module_path = "/"
+
+    # `brave_manage_profile.mojom` references `mojo_base.mojom.BigBuffer` for
+    # the custom-avatar upload payload.
+    public_deps = [ "//mojo/public/mojom/base" ]
+  }
+
+  source_set("manage_profile") {
+    sources = [
+      "brave_manage_profile_handler.cc",
+      "brave_manage_profile_handler.h",
+    ]
+
+    # Avoid //chrome/browser:browser (pulls chrome browser ui and cycles back to
+    # //brave/browser/ui:ui).
+    deps = [
+      "//base",
+      "//chrome/browser:browser_process",
+      "//chrome/browser/profiles:profile_manager",
+      "//content/public/browser",
+      "//mojo/public/cpp/base",
+      "//mojo/public/cpp/bindings",
+      "//skia",
+      "//ui/base",
+      "//ui/gfx",
+    ]
+
+    # `brave_manage_profile_handler.h` derives from `ImageDecoder::ImageRequest`,
+    # `ProfileAttributesStorage::Observer`, and `ProfileObserver`, so consumers
+    # transitively need those headers. (`profile_observer.h` ships in
+    # //chrome/browser/profiles:profile, which is a public_dep of
+    # :profile_util.)
+    public_deps = [
+      ":mojo_bindings",
+      "//chrome/browser/image_decoder",
+      "//chrome/browser/profiles:profile_util",
+    ]
+  }
+}
 
 source_set("unit_tests") {
   if (!is_android) {
@@ -13,12 +63,15 @@ source_set("unit_tests") {
 
     sources = [
       "brave_importer_observer_unittest.cc",
+      "brave_manage_profile_handler_unittest.cc",
       "brave_search_engines_handler_unittest.cc",
       "brave_site_settings_handler_unittest.cc",
       "brave_sync_handler_unittest.cc",
     ]
 
     deps = [
+      ":manage_profile",
+      ":mojo_bindings",
       "//base/test:test_support",
       "//brave/components/brave_shields/core/common",
       "//brave/components/resources:strings_grit",
@@ -33,9 +86,13 @@ source_set("unit_tests") {
       "//components/search_engines",
       "//components/sync_preferences:test_support",
       "//content/test:test_support",
+      "//mojo/public/cpp/base",
+      "//mojo/public/cpp/bindings",
+      "//services/data_decoder/public/cpp:test_support",
       "//testing/gtest",
       "//ui/base/clipboard",
       "//ui/base/clipboard:clipboard_test_support",
+      "//ui/gfx:test_support",
     ]
 
     if (enable_brave_ads) {
@@ -61,6 +118,35 @@ source_set("unit_tests") {
         "//components/user_prefs",
       ]
     }
+  }
+}
+
+if (!is_android) {
+  source_set("interactive_ui_tests") {
+    testonly = true
+
+    defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+    sources = [ "brave_manage_profile_custom_avatar_interactive_ui_test.cc" ]
+
+    deps = [
+      "//base",
+      "//base/test:test_support",
+      "//chrome/browser:browser_process",
+      "//chrome/browser/profiles:profile",
+      "//chrome/browser/ui",
+      "//chrome/common:constants",
+      "//chrome/test:test_support_ui",
+      "//components/infobars/content",
+      "//components/infobars/core",
+      "//components/prefs",
+      "//content/public/browser",
+      "//content/test:test_support",
+      "//testing/gtest",
+      "//ui/base/interaction:test_support",
+      "//ui/gfx:test_support",
+      "//url",
+    ]
   }
 }
 

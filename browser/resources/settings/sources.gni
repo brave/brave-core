@@ -108,6 +108,7 @@ brave_settings_ts_files = [
   "br/search_page.ts",
   "br/search_page_index.ts",
   "br/security_page.ts",
+  "br/brave_manage_profile_browser_proxy.ts",
   "br/settings_basic_page.ts",
   "br/settings_manage_profile.ts",
   "br/settings_main.ts",
@@ -212,6 +213,7 @@ brave_settings_ts_extra_deps =
     [ "//brave/browser/resources/settings:preprocess" ]
 
 brave_settings_mojo_files = [
+  "$root_gen_dir/brave/browser/ui/webui/settings/brave_manage_profile.mojom-webui.ts",
   "$root_gen_dir/brave/components/brave_account/mojom/brave_account.mojom-webui.ts",
   "$root_gen_dir/brave/components/brave_account/mojom/brave_account_row.mojom-webui.ts",
   "$root_gen_dir/brave/components/brave_origin/mojom/brave_origin_settings.mojom-webui.ts",
@@ -223,6 +225,7 @@ brave_settings_mojo_files = [
 ]
 
 brave_settings_mojo_files_deps = [
+  "//brave/browser/ui/webui/settings:mojo_bindings_ts__generator",
   "//brave/components/brave_account/mojom:mojom_ts__generator",
   "//brave/components/brave_origin/mojom:mojom_ts__generator",
 

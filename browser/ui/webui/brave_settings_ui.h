@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/functional/bind.h"
+#include "brave/browser/ui/webui/settings/brave_manage_profile.mojom.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "brave/components/brave_account/mojom/brave_account_row.mojom.h"
@@ -66,6 +67,10 @@ class BraveSettingsUI : public settings::SettingsUI {
 
   void BindInterface(
       mojo::PendingReceiver<commands::mojom::CommandsService> pending_receiver);
+  void BindInterface(
+      mojo::PendingReceiver<
+          brave_manage_profile::mojom::BraveManageProfileSettingsHandler>
+          pending_receiver);
 #if BUILDFLAG(ENABLE_AI_CHAT)
   void BindInterface(mojo::PendingReceiver<ai_chat::mojom::AIChatSettingsHelper>
                          pending_receiver);
