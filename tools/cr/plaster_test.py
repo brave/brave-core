@@ -9,7 +9,9 @@ from pathlib import Path
 import hashlib
 import json
 import os
+import textwrap
 import time
+import unittest.mock
 
 import plaster
 
@@ -1049,6 +1051,333 @@ class PatchinfoTest(unittest.TestCase):
         self.assertIsNotNone(original)
         roundtripped = plaster.Patchinfo.from_json(original.to_json())
         self.assertEqual(original, roundtripped)
+
+
+class _SubstitutionIntegrationBase(unittest.TestCase):
+    """Shared scaffolding for the ast-grep / comby integration tests.
+
+    Subclasses set `BIN_ATTR` (the plaster.py attribute name of the
+    rewriter binary path) and `READABLE_NAME` (used in skip messages).
+    Both subclasses get the same `_make_plaster` helper that mirrors
+    the existing `_setup_applied_plaster` pattern but stops short of
+    calling `apply()` so individual tests can do that themselves.
+    """
+
+    BIN_ATTR: str = ''
+    READABLE_NAME: str = ''
+
+    def setUp(self) -> None:
+        self.fake_chromium_src = FakeChromiumRepo()
+        self.fake_chromium_src.setup()
+        self.addCleanup(self.fake_chromium_src.cleanup)
+
+    @classmethod
+    def _binary_available(cls) -> bool:
+        return getattr(plaster, cls.BIN_ATTR).is_file()
+
+    @classmethod
+    def _skip_reason(cls) -> str:
+        return (f'{cls.READABLE_NAME} not installed at '
+                f'{getattr(plaster, cls.BIN_ATTR)}')
+
+    def _make_plaster(self, source_relative: Path, source_content: str,
+                      plaster_toml: str) -> plaster.PlasterFile:
+        """Stage `source_relative` in fake chromium with `source_content`,
+        write `plaster_toml` to the matching path under brave's rewrite
+        directory, and return the loaded PlasterFile (not yet applied).
+        """
+        self.fake_chromium_src.write_and_stage_file(
+            source_relative, source_content, self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit(f'Add {source_relative.name}',
+                                      self.fake_chromium_src.chromium)
+        plaster_path = (plaster.PLASTER_FILES_PATH /
+                        (str(source_relative) + '.toml'))
+        plaster_path.parent.mkdir(parents=True, exist_ok=True)
+        plaster_path.write_text(plaster_toml)
+        return plaster.PlasterFile(plaster_path)
+
+
+class AstSubstitutionTest(_SubstitutionIntegrationBase):
+    """Integration tests for the `[[ast-substitution]]` back-end.
+
+    Tests that need the real `ast-grep` binary are decorated with
+    `skipUnless` so the suite stays green on machines that haven't run
+    `tools/cr/ast_grep/build_ast_grep.py`. The error-path tests (missing
+    binary, disabled flag, unknown extension) mock `plaster.AST_GREP_BIN`
+    and therefore run regardless.
+    """
+
+    BIN_ATTR = 'AST_GREP_BIN'
+    READABLE_NAME = 'ast-grep'
+
+    @unittest.skipUnless(plaster.AST_GREP_BIN.is_file(),
+                         f'ast-grep not installed at {plaster.AST_GREP_BIN}')
+    def test_simple_rewrite(self) -> None:
+        """A C++ destructor declaration gains `virtual` via ast-grep.
+
+        Note: ast-grep patterns must be a *single* AST node, so we
+        match the function declarator `~Foo()` (no trailing semicolon).
+        """
+        source_rel = Path('chrome/browser/foo/foo.h')
+        original = textwrap.dedent('''\
+            class Foo {
+             public:
+              ~Foo();
+            };
+            ''')
+        expected = textwrap.dedent('''\
+            class Foo {
+             public:
+              virtual ~Foo();
+            };
+            ''')
+        toml = textwrap.dedent('''\
+            [[ast-substitution]]
+            description = 'virtualize destructor'
+            pattern = '~Foo()'
+            replace = 'virtual ~Foo()'
+            ''')
+        plaster_file = self._make_plaster(source_rel, original, toml)
+        plaster_file.apply()
+        result = (self.fake_chromium_src.chromium / source_rel).read_text()
+        self.assertEqual(result, expected)
+
+    @unittest.skipUnless(plaster.AST_GREP_BIN.is_file(),
+                         f'ast-grep not installed at {plaster.AST_GREP_BIN}')
+    def test_count_mismatch_fails(self) -> None:
+        """An entry whose actual match count differs from `count` errors."""
+        source_rel = Path('chrome/browser/foo/foo.h')
+        original = textwrap.dedent('''\
+            class A { ~A(); };
+            class B { ~A(); };
+            ''')
+        toml = textwrap.dedent('''\
+            [[ast-substitution]]
+            description = 'too greedy'
+            pattern = '~A()'
+            replace = 'virtual ~A()'
+            count = 1
+            ''')
+        plaster_file = self._make_plaster(source_rel, original, toml)
+        with self.assertRaises(plaster.PlasterApplyError) as ctx:
+            plaster_file.apply()
+        self.assertIn('ast-grep matches', str(ctx.exception))
+        self.assertIn('2 vs 1', str(ctx.exception))
+
+    @unittest.skipUnless(plaster.AST_GREP_BIN.is_file(),
+                         f'ast-grep not installed at {plaster.AST_GREP_BIN}')
+    def test_count_zero_replaces_all_without_validation(self) -> None:
+        """count=0 mirrors the regex path: replace all, skip the assertion."""
+        source_rel = Path('chrome/browser/foo/foo.h')
+        original = textwrap.dedent('''\
+            void f() { Foo(); }
+            void g() { Foo(); Foo(); }
+            ''')
+        expected = textwrap.dedent('''\
+            void f() { Bar(); }
+            void g() { Bar(); Bar(); }
+            ''')
+        toml = textwrap.dedent('''\
+            [[ast-substitution]]
+            description = 'rename all Foo calls'
+            pattern = 'Foo()'
+            replace = 'Bar()'
+            count = 0
+            ''')
+        plaster_file = self._make_plaster(source_rel, original, toml)
+        plaster_file.apply()
+        result = (self.fake_chromium_src.chromium / source_rel).read_text()
+        self.assertEqual(result, expected)
+
+    def test_missing_binary_error_points_to_readme(self) -> None:
+        """If AST_GREP_BIN does not exist on disk, error mentions README."""
+        source_rel = Path('chrome/browser/foo/foo.h')
+        toml = textwrap.dedent('''\
+            [[ast-substitution]]
+            description = 'noop'
+            pattern = '~Foo();'
+            replace = 'virtual ~Foo();'
+            ''')
+        plaster_file = self._make_plaster(source_rel, 'class Foo { ~Foo(); };',
+                                          toml)
+        with unittest.mock.patch.object(plaster, 'AST_GREP_BIN',
+                                        Path('/definitely/not/there')):
+            with self.assertRaises(plaster.PlasterApplyError) as ctx:
+                plaster_file.apply()
+        message = str(ctx.exception)
+        self.assertIn('ast-grep', message)
+        self.assertIn('is not installed', message)
+        self.assertIn('brave/tools/cr/ast_grep/README.md', message)
+
+    def test_disabled_flag_with_entries_raises(self) -> None:
+        """Flag = False + ast-substitution table present = hard error."""
+        source_rel = Path('chrome/browser/foo/foo.h')
+        toml = textwrap.dedent('''\
+            [[ast-substitution]]
+            description = 'noop'
+            pattern = '~Foo();'
+            replace = 'virtual ~Foo();'
+            ''')
+        plaster_file = self._make_plaster(source_rel, 'class Foo { ~Foo(); };',
+                                          toml)
+        with unittest.mock.patch.object(plaster, 'AST_SUBSTITUTION_ENABLED',
+                                        False):
+            with self.assertRaises(plaster.PlasterApplyError) as ctx:
+                plaster_file.apply()
+        message = str(ctx.exception)
+        self.assertIn('[[ast-substitution]]', message)
+        self.assertIn('AST_SUBSTITUTION_ENABLED is False', message)
+
+    def test_unknown_extension_raises(self) -> None:
+        """A source extension with no language mapping errors out clearly."""
+        source_rel = Path('chrome/browser/foo/foo.xyz')
+        toml = textwrap.dedent('''\
+            [[ast-substitution]]
+            description = 'noop'
+            pattern = 'a'
+            replace = 'b'
+            ''')
+        plaster_file = self._make_plaster(source_rel, 'a\n', toml)
+        # `Path(__file__)` is guaranteed to exist as a file, so the
+        # binary-presence check passes and we exercise the language
+        # inference branch without needing an actual ast-grep build.
+        with unittest.mock.patch.object(plaster, 'AST_GREP_BIN',
+                                        Path(__file__)):
+            with self.assertRaises(plaster.PlasterApplyError) as ctx:
+                plaster_file.apply()
+        message = str(ctx.exception)
+        self.assertIn('does not know how to handle the file extension',
+                      message)
+        self.assertIn('.xyz', message)
+
+
+class CombySubstitutionTest(_SubstitutionIntegrationBase):
+    """Integration tests for the `[[comby-substitution]]` back-end.
+
+    Mirror layout of `AstSubstitutionTest`. Skipped wholesale on the
+    happy paths if comby isn't built; error paths use mock binaries so
+    they always run.
+    """
+
+    BIN_ATTR = 'COMBY_BIN'
+    READABLE_NAME = 'comby'
+
+    @unittest.skipUnless(plaster.COMBY_BIN.is_file(),
+                         f'comby not installed at {plaster.COMBY_BIN}')
+    def test_simple_rewrite(self) -> None:
+        """Drop `final` from a class declaration with a balanced-body hole."""
+        source_rel = Path('chrome/browser/tabs/dragging_tabs_session.h')
+        original = textwrap.dedent('''\
+            class DraggingTabsSession final {
+             public:
+              ~DraggingTabsSession();
+              void Drag();
+            };
+            ''')
+        expected = textwrap.dedent('''\
+            class DraggingTabsSession {
+             public:
+              ~DraggingTabsSession();
+              void Drag();
+            };
+            ''')
+        toml = textwrap.dedent('''\
+            [[comby-substitution]]
+            description = 'drop final'
+            pattern = "class DraggingTabsSession final {:[BODY]}"
+            replace = "class DraggingTabsSession {:[BODY]}"
+            ''')
+        plaster_file = self._make_plaster(source_rel, original, toml)
+        plaster_file.apply()
+        result = (self.fake_chromium_src.chromium / source_rel).read_text()
+        self.assertEqual(result, expected)
+
+    @unittest.skipUnless(plaster.COMBY_BIN.is_file(),
+                         f'comby not installed at {plaster.COMBY_BIN}')
+    def test_count_mismatch_fails(self) -> None:
+        """Count assertion fires when comby finds a different number."""
+        source_rel = Path('chrome/browser/foo/foo.cc')
+        original = textwrap.dedent('''\
+            void a() { Foo(); }
+            void b() { Foo(); }
+            ''')
+        toml = textwrap.dedent('''\
+            [[comby-substitution]]
+            description = 'expect one'
+            pattern = "Foo()"
+            replace = "Bar()"
+            count = 1
+            ''')
+        plaster_file = self._make_plaster(source_rel, original, toml)
+        with self.assertRaises(plaster.PlasterApplyError) as ctx:
+            plaster_file.apply()
+        self.assertIn('comby matches', str(ctx.exception))
+        self.assertIn('2 vs 1', str(ctx.exception))
+
+    @unittest.skipUnless(plaster.COMBY_BIN.is_file(),
+                         f'comby not installed at {plaster.COMBY_BIN}')
+    def test_explicit_matcher_overrides_extension(self) -> None:
+        """An explicit `matcher` field beats the file-extension default."""
+        # `.unknownext` would default to `.generic`; ask comby for `.cpp`
+        # explicitly so it skips C++ comments while matching.
+        source_rel = Path('chrome/browser/foo/foo.unknownext')
+        original = textwrap.dedent('''\
+            // Foo()  -- this is a comment and should not be rewritten
+            void f() { Foo(); }
+            ''')
+        toml = textwrap.dedent('''\
+            [[comby-substitution]]
+            description = 'rewrite call, ignore comment'
+            pattern = "Foo()"
+            replace = "Bar()"
+            matcher = ".cpp"
+            ''')
+        plaster_file = self._make_plaster(source_rel, original, toml)
+        plaster_file.apply()
+        result = (self.fake_chromium_src.chromium / source_rel).read_text()
+        # The comment is preserved; only the real call is rewritten.
+        self.assertIn('// Foo()', result)
+        self.assertIn('Bar()', result)
+        self.assertNotIn('void f() { Foo(); }', result)
+
+    def test_missing_binary_error_points_to_readme(self) -> None:
+        """If COMBY_BIN doesn't exist on disk, the error mentions README."""
+        source_rel = Path('chrome/browser/foo/foo.cc')
+        toml = textwrap.dedent('''\
+            [[comby-substitution]]
+            description = 'noop'
+            pattern = "Foo()"
+            replace = "Bar()"
+            ''')
+        plaster_file = self._make_plaster(source_rel, 'void f() { Foo(); }',
+                                          toml)
+        with unittest.mock.patch.object(plaster, 'COMBY_BIN',
+                                        Path('/definitely/not/there')):
+            with self.assertRaises(plaster.PlasterApplyError) as ctx:
+                plaster_file.apply()
+        message = str(ctx.exception)
+        self.assertIn('comby', message)
+        self.assertIn('is not installed', message)
+        self.assertIn('brave/tools/cr/comby/README.md', message)
+
+    def test_disabled_flag_with_entries_raises(self) -> None:
+        """Flag = False + comby-substitution table present = hard error."""
+        source_rel = Path('chrome/browser/foo/foo.cc')
+        toml = textwrap.dedent('''\
+            [[comby-substitution]]
+            description = 'noop'
+            pattern = "Foo()"
+            replace = "Bar()"
+            ''')
+        plaster_file = self._make_plaster(source_rel, 'void f() { Foo(); }',
+                                          toml)
+        with unittest.mock.patch.object(plaster, 'COMBY_SUBSTITUTION_ENABLED',
+                                        False):
+            with self.assertRaises(plaster.PlasterApplyError) as ctx:
+                plaster_file.apply()
+        message = str(ctx.exception)
+        self.assertIn('[[comby-substitution]]', message)
+        self.assertIn('COMBY_SUBSTITUTION_ENABLED is False', message)
 
 
 if __name__ == '__main__':

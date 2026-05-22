@@ -24,6 +24,9 @@ vendor/omaha/
 node_modules/
 patches/**/*.patchinfo
 /third_party/argon2/src
+/third_party/ast-grep-src/
+/third_party/ast-grep-toolchain/
+/third_party/ast-grep-toolchain-intermediate/
 /third_party/boringtun/.cargo-home/
 /third_party/boringtun/target/
 /third_party/brave-vpn-wireguard-nt-dlls/
@@ -31,6 +34,9 @@ patches/**/*.patchinfo
 /third_party/bip39wally-core-native/
 /third_party/ethash/src
 /third_party/bitcoin-core/src
+/third_party/comby-src/
+/third_party/comby-toolchain/
+/third_party/comby-toolchain-intermediate/
 /third_party/playlist_component/src
 /third_party/reclient_configs/src
 /third_party/rust/futures_retry/v0_5/crate
