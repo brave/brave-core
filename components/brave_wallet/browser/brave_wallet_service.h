@@ -20,7 +20,6 @@
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/asset_discovery_manager.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_p3a.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_wallet_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
@@ -340,8 +339,6 @@ class BraveWalletService : public KeyedService,
 
   void RemovePrefListenersForTests();
 
-  BraveWalletP3A* GetBraveWalletP3A();
-
   void SetSignSolTransactionsRequestAddedCallbackForTesting(
       base::OnceClosure callback) {
     sign_sol_txs_request_added_cb_for_testing_ = std::move(callback);
@@ -496,7 +493,6 @@ class BraveWalletService : public KeyedService,
   std::unique_ptr<ZCashWalletService> zcash_wallet_service_;
   std::unique_ptr<CardanoWalletService> cardano_wallet_service_;
   std::unique_ptr<TxService> tx_service_;
-  std::unique_ptr<BraveWalletP3A> brave_wallet_p3a_;
   std::unique_ptr<SimpleHashClient> simple_hash_client_;
   std::unique_ptr<AssetDiscoveryManager> asset_discovery_manager_;
   std::unique_ptr<EthAllowanceManager> eth_allowance_manager_;

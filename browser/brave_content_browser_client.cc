@@ -183,7 +183,6 @@
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_p3a_private.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -369,25 +368,6 @@ void BindCosmeticFiltersResources(
   g_brave_browser_process->ad_block_service()->AsyncCall(base::BindOnce(
       &BindCosmeticFiltersResourcesOnTaskRunner, std::move(receiver)));
 }
-
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-void MaybeBindWalletP3A(
-    content::RenderFrameHost* const frame_host,
-    mojo::PendingReceiver<brave_wallet::mojom::BraveWalletP3A> receiver) {
-  auto* context = frame_host->GetBrowserContext();
-  if (brave_wallet::IsAllowedForContext(frame_host->GetBrowserContext())) {
-    brave_wallet::BraveWalletService* wallet_service =
-        brave_wallet::BraveWalletServiceFactory::GetServiceForContext(context);
-    DCHECK(wallet_service);
-    wallet_service->GetBraveWalletP3A()->Bind(std::move(receiver));
-  } else {
-    // Dummy API to avoid reporting P3A for OTR contexts
-    mojo::MakeSelfOwnedReceiver(
-        std::make_unique<brave_wallet::BraveWalletP3APrivate>(),
-        std::move(receiver));
-  }
-}
-#endif
 
 void BindBraveSearchFallbackHost(
     content::ChildProcessId process_id,
@@ -952,8 +932,6 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   }
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  map->Add<brave_wallet::mojom::BraveWalletP3A>(
-      base::BindRepeating(&MaybeBindWalletP3A));
   if (brave_wallet::IsAllowedForContext(
           render_frame_host->GetBrowserContext())) {
     map->Add<brave_wallet::mojom::EthereumProvider>(base::BindRepeating(

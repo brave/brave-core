@@ -190,7 +190,6 @@ void WalletPageUI::CreatePageHandler(
         bitcoin_tx_manager_proxy_receiver,
     mojo::PendingReceiver<mojom::BraveWalletService>
         brave_wallet_service_receiver,
-    mojo::PendingReceiver<mojom::BraveWalletP3A> brave_wallet_p3a_receiver,
     mojo::PendingReceiver<mojom::IpfsService> ipfs_service_receiver,
     mojo::PendingReceiver<mojom::MeldIntegrationService>
         meld_integration_service) {
@@ -216,7 +215,6 @@ void WalletPageUI::CreatePageHandler(
     wallet_service->Bind(std::move(solana_tx_manager_proxy_receiver));
     wallet_service->Bind(std::move(filecoin_tx_manager_proxy_receiver));
     wallet_service->Bind(std::move(bitcoin_tx_manager_proxy_receiver));
-    wallet_service->Bind(std::move(brave_wallet_p3a_receiver));
     wallet_service->Bind(std::move(asset_ratio_service_receiver));
     wallet_service->Bind(std::move(swap_service_receiver));
     wallet_service->Bind(std::move(meld_integration_service));

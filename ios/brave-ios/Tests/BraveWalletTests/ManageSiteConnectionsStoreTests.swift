@@ -122,8 +122,7 @@ class ManageSiteConnectionsStoreTests: CoreDataTestCase {
       keyringStore: .init(
         keyringService: keyringService,
         walletService: MockBraveWalletService(),
-        rpcService: MockJsonRpcService(),
-        walletP3A: TestBraveWalletP3A()
+        rpcService: MockJsonRpcService()
       )
     )
     // Domains added with Ethereum permissions in `setUp()`
@@ -188,8 +187,7 @@ class ManageSiteConnectionsStoreTests: CoreDataTestCase {
       keyringStore: .init(
         keyringService: keyringService,
         walletService: MockBraveWalletService(),
-        rpcService: MockJsonRpcService(),
-        walletP3A: TestBraveWalletP3A()
+        rpcService: MockJsonRpcService()
       )
     )
     // Domains added with Ethereum permissions in `setUp()`
@@ -229,8 +227,7 @@ class ManageSiteConnectionsStoreTests: CoreDataTestCase {
       keyringStore: .init(
         keyringService: keyringService,
         walletService: MockBraveWalletService(),
-        rpcService: MockJsonRpcService(),
-        walletP3A: TestBraveWalletP3A()
+        rpcService: MockJsonRpcService()
       )
     )
     // Domains added with Ethereum permissions in `setUp()`
@@ -276,8 +273,7 @@ class ManageSiteConnectionsStoreTests: CoreDataTestCase {
       keyringStore: .init(
         keyringService: keyringService,
         walletService: MockBraveWalletService(),
-        rpcService: MockJsonRpcService(),
-        walletP3A: TestBraveWalletP3A()
+        rpcService: MockJsonRpcService()
       )
     )
     // Domains added with Ethereum permissions in `setUp()`

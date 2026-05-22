@@ -55,8 +55,7 @@ class KeyringStoreTests: XCTestCase {
     let store = KeyringStore(
       keyringService: keyringService,
       walletService: walletService,
-      rpcService: rpcService,
-      walletP3A: TestBraveWalletP3A()
+      rpcService: rpcService
     )
 
     let initalSelectedAccountExpectation = expectation(description: "initalSelectedAccount")
@@ -83,8 +82,7 @@ class KeyringStoreTests: XCTestCase {
     let store = KeyringStore(
       keyringService: keyringService,
       walletService: walletService,
-      rpcService: rpcService,
-      walletP3A: TestBraveWalletP3A()
+      rpcService: rpcService
     )
 
     let emptyPassword1 = ""

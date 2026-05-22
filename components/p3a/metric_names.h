@@ -173,10 +173,6 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.VerticalTabs.GroupTabs", MetricConfig{.ephemeral = true}},
     {"Brave.VerticalTabs.OpenTabs", MetricConfig{.ephemeral = true}},
     {"Brave.VerticalTabs.PinnedTabs", MetricConfig{.ephemeral = true}},
-    {"Brave.Wallet.NFTCount", MetricConfig{.ephemeral = true}},
-    {"Brave.Wallet.NewUserReturning", {}},
-    {"Brave.Wallet.OnboardingConversion.3", MetricConfig{.ephemeral = true}},
-    {"Brave.Wallet.UsageWeekly", MetricConfig{.ephemeral = true}},
     {"Brave.WebTorrent.UsageWeekly", MetricConfig{.ephemeral = true}},
 });
 
@@ -205,7 +201,6 @@ inline constexpr auto kCollectedSlowHistograms =
     {"Brave.Today.DirectFeedsTotal.3", MetricConfig{.ephemeral = true}},
     {"Brave.Today.PublisherCount.2", MetricConfig{.ephemeral = true}},
     {"Brave.Today.UsageMonthly", MetricConfig{.ephemeral = true}},
-    {"Brave.Wallet.UsageMonthly", MetricConfig{.ephemeral = true}},
 });
 
 inline constexpr auto kCollectedExpressHistograms =
@@ -335,7 +330,6 @@ inline constexpr auto kCollectedExpressHistograms =
       .record_activation_date = true
     }},
     {"Brave.Uptime.BrowserOpenTime.2", MetricConfig{.ephemeral = true}},
-    {"Brave.Wallet.UsageDaily", MetricConfig{.ephemeral = true}},
     {"Brave.Welcome.InteractionStatus.2", MetricConfig{
       .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform, MetricAttribute::kDateOfInstall, MetricAttribute::kSubregion, MetricAttribute::kVersion},
     }},
