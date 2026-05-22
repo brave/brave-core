@@ -508,8 +508,8 @@
     *** isVisibleToUser(...);
 }
 
--keep class org.chromium.chrome.browser.omnibox.suggestions.BraveAutocompleteCoordinator {
-    *** createViewProvider(...);
+-keep class org.chromium.chrome.browser.omnibox.suggestions.BraveOmniboxSuggestionsDropdownAdapter {
+    <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.AutocompleteMediator {

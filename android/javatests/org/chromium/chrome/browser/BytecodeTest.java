@@ -219,7 +219,6 @@ import org.chromium.content_public.browser.BrowserContextHandle;
 import org.chromium.content_public.browser.MediaSession;
 import org.chromium.content_public.browser.MediaSessionObserver;
 import org.chromium.content_public.browser.WebContents;
-import org.chromium.ui.ViewProvider;
 import org.chromium.ui.base.ActivityResultTracker;
 import org.chromium.ui.base.ActivityWindowAndroid;
 import org.chromium.ui.base.Clipboard;
@@ -370,9 +369,6 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/download/DownloadMessageUiControllerImpl"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/autofill/AutofillClientProviderUtils"));
-        Assert.assertTrue(
-                classExists(
-                        "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteCoordinator"));
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder")); // presubmit: ignore-long-line
@@ -1200,12 +1196,6 @@ public class BytecodeTest {
                         Intent.class));
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteCoordinator", // presubmit: ignore-long-line
-                        "createViewProvider",
-                        MethodModifier.REGULAR,
-                        ViewProvider.class));
-        Assert.assertTrue(
-                methodExists(
                         "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator",
                         "loadUrlForOmniboxMatch",
                         MethodModifier.REGULAR,
@@ -1713,6 +1703,11 @@ public class BytecodeTest {
                         DeferredIMEWindowInsetApplicationCallback.class,
                         FuseboxCoordinator.class,
                         boolean.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/omnibox/suggestions/OmniboxSuggestionsDropdownAdapter", // presubmit: ignore-long-line
+                        "org/chromium/chrome/browser/omnibox/suggestions/BraveOmniboxSuggestionsDropdownAdapter", // presubmit: ignore-long-line
+                        ModelList.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/multiwindow/MultiInstanceManagerApi31",
@@ -2887,10 +2882,6 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/download/BraveDownloadMessageUiControllerImpl")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 checkSuperName(
-                        "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteCoordinator",
-                        "org/chromium/chrome/browser/omnibox/suggestions/BraveAutocompleteCoordinator")); // presubmit: ignore-long-line
-        Assert.assertTrue(
-                checkSuperName(
                         "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator",
                         "org/chromium/chrome/browser/omnibox/suggestions/BraveAutocompleteMediatorBase")); // presubmit: ignore-long-line
         Assert.assertTrue(
@@ -3025,13 +3016,6 @@ public class BytecodeTest {
                 methods,
                 "BraveMediaSessionHelper.createMediaSessionObserver",
                 "MediaSessionHelper.createMediaSessionObserver");
-
-        methods = Arrays.asList("inflate", "whenLoaded");
-        doesHaveOnlyListedMethods(
-                "org/chromium/ui/ViewProvider",
-                methods,
-                "BraveAutocompleteCoordinator.createViewProvider",
-                "AutocompleteCoordinator.createViewProvider");
     }
 
     private boolean classExists(String className) {
