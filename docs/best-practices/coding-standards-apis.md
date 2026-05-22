@@ -1333,8 +1333,8 @@ reporter.set_last_report(std::move(report));
 Zero-copy. Heap pointer moves to C++; C++ wraps bytes in `std::string_view` or `base::span`. Rust's allocator cleans up when `Box` drops. Use for file buffers, JSON blobs, streaming payloads.
 
 ```rust
-// ❌ WRONG - copies container layout
-fn take_payload(buf: String);
+// ❌ WRONG - container copy through rust::String layout
+fn produce_payload() -> String;
 
 // ✅ CORRECT - pointer move, zero-copy
 fn produce_payload() -> Box<Vec<u8>>;
