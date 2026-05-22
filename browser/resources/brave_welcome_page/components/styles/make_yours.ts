@@ -305,6 +305,7 @@ export const makeYoursStyles = `
   .browser-content {
     flex: 1;
     padding: 0 4px 4px;
+    box-shadow: var(--leo-effect-elevation-01);
   }
 
   .browser-content-bg {
@@ -428,26 +429,26 @@ export const makeYoursStyles = `
     padding: 0 4px 4px 0;
   }
 
-  /* Preview Theme Overrides - Light Mode */
+  /* Preview Theme Overrides - Light Mode (Leo Desktop Browser tokens) */
   .browser-chrome.preview-theme-light {
-    --preview-bg: #FFFFFF;
-    --preview-bg-highlight: #F0F2F5;
-    --preview-tabbar-bg: #E3E5E7;
-    --preview-text-primary: #1D1F25;
-    --preview-text-secondary: #6B6F7B;
-    --preview-icon-color: #6B6F7B;
-    --preview-divider: rgba(0, 0, 0, 0.08);
+    --preview-bg: #ffffff; /* desktopbrowser.chromeBackgroundDesktop */
+    --preview-bg-highlight: #f2f2f3; /* desktopbrowser.omnibar.backgroundDesktop */
+    --preview-tabbar-bg: #e4e4e5; /* desktopbrowser.tabbar.background */
+    --preview-text-primary: #1c1c1d; /* text.primary */
+    --preview-text-secondary: #464649; /* text.secondary */
+    --preview-icon-color: #464649; /* icon.default */
+    --preview-divider: #c9c9ca; /* desktopbrowser.tabbar.pinnedTabOutlineHorizontal */
   }
 
-  /* Preview Theme Overrides - Dark Mode */
+  /* Preview Theme Overrides - Dark Mode (Leo Desktop Browser tokens) */
   .browser-chrome.preview-theme-dark {
-    --preview-bg: #1E2029;
-    --preview-bg-highlight: #2B2E3A;
-    --preview-tabbar-bg: #14151A;
-    --preview-text-primary: #F0F2F5;
-    --preview-text-secondary: #9A9DAA;
-    --preview-icon-color: #9A9DAA;
-    --preview-divider: rgba(255, 255, 255, 0.1);
+    --preview-bg: #303032; /* desktopbrowser.chromeBackgroundDesktop */
+    --preview-bg-highlight: #1c1c1d; /* desktopbrowser.omnibar.backgroundDesktop */
+    --preview-tabbar-bg: #1c1c1d; /* desktopbrowser.tabbar.background */
+    --preview-text-primary: #e4e4e5; /* text.primary */
+    --preview-text-secondary: #c9c9ca; /* text.secondary */
+    --preview-icon-color: #c9c9ca; /* icon.default */
+    --preview-divider: #464649; /* desktopbrowser.tabbar.pinnedTabOutlineHorizontal */
   }
 
   /* Apply theme colors to browser chrome elements */
