@@ -3,6 +3,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//chrome/common/features.gni")
+
+assert(enable_session_service)
+
 static_library("sessions") {
   sources = [ "brave_session_keys.h" ]
 }
