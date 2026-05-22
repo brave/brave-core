@@ -113,84 +113,22 @@ TEST_F(PolkadotMetadataProviderUnitTest, InitInitialization) {
   EXPECT_TRUE(mainnet_metadata_requested.Wait());
   EXPECT_TRUE(testnet_metadata_requested.Wait());
 
-  PolkadotChainMetadata expected_mainnet;
-  expected_mainnet->system_pallet_index = 0;
-  expected_mainnet->balances_pallet_index = 5;
-  expected_mainnet->transaction_payment_pallet_index = 0x20;
-  expected_mainnet->transfer_allow_death_call_index = 0;
-  expected_mainnet->transfer_keep_alive_call_index = 3;
-  expected_mainnet->transfer_all_call_index = 4;
-  expected_mainnet->ss58_prefix = 0;
+  PolkadotChainMetadata expected_mainnet = MakePolkadotMetadata();
   expected_mainnet->spec_version = 2'000'007;
-  expected_mainnet->asset_tx_payment = false;
 
   auto mainnet_metadata =
       chain_metadata_prefs_->GetChainMetadata(mojom::kPolkadotMainnet);
   ASSERT_TRUE(mainnet_metadata.has_value());
-  {
-    const auto& [system_pallet_index, balances_pallet_index,
-                 transaction_payment_pallet_index,
-                 transfer_allow_death_call_index,
-                 transfer_keep_alive_call_index, transfer_all_call_index,
-                 ss58_prefix, spec_version, asset_tx_payment] =
-        **mainnet_metadata;
+  EXPECT_EQ(mainnet_metadata, expected_mainnet);
 
-    EXPECT_EQ(system_pallet_index, expected_mainnet->system_pallet_index);
-    EXPECT_EQ(balances_pallet_index, expected_mainnet->balances_pallet_index);
-    EXPECT_EQ(transaction_payment_pallet_index,
-              expected_mainnet->transaction_payment_pallet_index);
-    EXPECT_EQ(transfer_allow_death_call_index,
-              expected_mainnet->transfer_allow_death_call_index);
-    EXPECT_EQ(transfer_keep_alive_call_index,
-              expected_mainnet->transfer_keep_alive_call_index);
-    EXPECT_EQ(transfer_all_call_index,
-              expected_mainnet->transfer_all_call_index);
-    EXPECT_EQ(ss58_prefix, expected_mainnet->ss58_prefix);
-    EXPECT_EQ(spec_version, expected_mainnet->spec_version);
-    EXPECT_EQ(asset_tx_payment, expected_mainnet->asset_tx_payment);
-
-    EXPECT_EQ(mainnet_metadata, expected_mainnet);
-  }
-
-  PolkadotChainMetadata expected_testnet;
-  expected_testnet->system_pallet_index = 0;
-  expected_testnet->balances_pallet_index = 4;
-  expected_testnet->transaction_payment_pallet_index = 0x1a;
-  expected_testnet->transfer_allow_death_call_index = 0;
-  expected_testnet->transfer_keep_alive_call_index = 3;
-  expected_testnet->transfer_all_call_index = 4;
-  expected_testnet->ss58_prefix = 42;
+  PolkadotChainMetadata expected_testnet = MakeWestendMetadata();
   expected_testnet->spec_version = 1'022'000;
-  expected_testnet->asset_tx_payment = false;
 
   auto testnet_metadata =
       chain_metadata_prefs_->GetChainMetadata(mojom::kPolkadotTestnet);
   ASSERT_TRUE(testnet_metadata.has_value());
-  {
-    const auto& [system_pallet_index, balances_pallet_index,
-                 transaction_payment_pallet_index,
-                 transfer_allow_death_call_index,
-                 transfer_keep_alive_call_index, transfer_all_call_index,
-                 ss58_prefix, spec_version, asset_tx_payment] =
-        **testnet_metadata;
-
-    EXPECT_EQ(system_pallet_index, expected_testnet->system_pallet_index);
-    EXPECT_EQ(balances_pallet_index, expected_testnet->balances_pallet_index);
-    EXPECT_EQ(transaction_payment_pallet_index,
-              expected_testnet->transaction_payment_pallet_index);
-    EXPECT_EQ(transfer_allow_death_call_index,
-              expected_testnet->transfer_allow_death_call_index);
-    EXPECT_EQ(transfer_keep_alive_call_index,
-              expected_testnet->transfer_keep_alive_call_index);
-    EXPECT_EQ(transfer_all_call_index,
-              expected_testnet->transfer_all_call_index);
-    EXPECT_EQ(ss58_prefix, expected_testnet->ss58_prefix);
-    EXPECT_EQ(spec_version, expected_testnet->spec_version);
-    EXPECT_EQ(asset_tx_payment, expected_testnet->asset_tx_payment);
-
-    EXPECT_EQ(testnet_metadata, expected_testnet);
-    EXPECT_NE(testnet_metadata, mainnet_metadata);
-  }
+  EXPECT_EQ(testnet_metadata, expected_testnet);
+  EXPECT_NE(testnet_metadata, mainnet_metadata);
 }
 
 // Verifies that Init() schedules and performs retry when initial metadata fetch
@@ -237,100 +175,28 @@ TEST_F(PolkadotMetadataProviderUnitTest, InitRetryCase) {
   EXPECT_TRUE(second_mainnet_attempt.Wait());
   EXPECT_GE(mainnet_calls, 2);
 
-  PolkadotChainMetadata expected_mainnet;
-  expected_mainnet->system_pallet_index = 0;
-  expected_mainnet->balances_pallet_index = 5;
-  expected_mainnet->transaction_payment_pallet_index = 0x20;
-  expected_mainnet->transfer_allow_death_call_index = 0;
-  expected_mainnet->transfer_keep_alive_call_index = 3;
-  expected_mainnet->transfer_all_call_index = 4;
-  expected_mainnet->ss58_prefix = 0;
+  PolkadotChainMetadata expected_mainnet = MakePolkadotMetadata();
   expected_mainnet->spec_version = 2'000'007;
-  expected_mainnet->asset_tx_payment = false;
 
-  PolkadotChainMetadata expected_testnet;
-  expected_testnet->system_pallet_index = 0;
-  expected_testnet->balances_pallet_index = 4;
-  expected_testnet->transaction_payment_pallet_index = 0x1a;
-  expected_testnet->transfer_allow_death_call_index = 0;
-  expected_testnet->transfer_keep_alive_call_index = 3;
-  expected_testnet->transfer_all_call_index = 4;
-  expected_testnet->ss58_prefix = 42;
+  PolkadotChainMetadata expected_testnet = MakeWestendMetadata();
   expected_testnet->spec_version = 1'022'000;
-  expected_testnet->asset_tx_payment = false;
 
   auto mainnet_metadata =
       chain_metadata_prefs_->GetChainMetadata(mojom::kPolkadotMainnet);
   ASSERT_TRUE(mainnet_metadata.has_value());
+  EXPECT_EQ(mainnet_metadata, expected_mainnet);
 
   auto testnet_metadata =
       chain_metadata_prefs_->GetChainMetadata(mojom::kPolkadotTestnet);
   ASSERT_TRUE(testnet_metadata.has_value());
-
-  {
-    const auto& [system_pallet_index, balances_pallet_index,
-                 transaction_payment_pallet_index,
-                 transfer_allow_death_call_index,
-                 transfer_keep_alive_call_index, transfer_all_call_index,
-                 ss58_prefix, spec_version, asset_tx_payment] =
-        **mainnet_metadata;
-
-    EXPECT_EQ(system_pallet_index, expected_mainnet->system_pallet_index);
-    EXPECT_EQ(balances_pallet_index, expected_mainnet->balances_pallet_index);
-    EXPECT_EQ(transaction_payment_pallet_index,
-              expected_mainnet->transaction_payment_pallet_index);
-    EXPECT_EQ(transfer_allow_death_call_index,
-              expected_mainnet->transfer_allow_death_call_index);
-    EXPECT_EQ(transfer_keep_alive_call_index,
-              expected_mainnet->transfer_keep_alive_call_index);
-    EXPECT_EQ(transfer_all_call_index,
-              expected_mainnet->transfer_all_call_index);
-    EXPECT_EQ(ss58_prefix, expected_mainnet->ss58_prefix);
-    EXPECT_EQ(spec_version, expected_mainnet->spec_version);
-    EXPECT_EQ(asset_tx_payment, expected_mainnet->asset_tx_payment);
-
-    EXPECT_EQ(mainnet_metadata, expected_mainnet);
-  }
-
-  {
-    const auto& [system_pallet_index, balances_pallet_index,
-                 transaction_payment_pallet_index,
-                 transfer_allow_death_call_index,
-                 transfer_keep_alive_call_index, transfer_all_call_index,
-                 ss58_prefix, spec_version, asset_tx_payment] =
-        **testnet_metadata;
-
-    EXPECT_EQ(system_pallet_index, expected_testnet->system_pallet_index);
-    EXPECT_EQ(balances_pallet_index, expected_testnet->balances_pallet_index);
-    EXPECT_EQ(transaction_payment_pallet_index,
-              expected_testnet->transaction_payment_pallet_index);
-    EXPECT_EQ(transfer_allow_death_call_index,
-              expected_testnet->transfer_allow_death_call_index);
-    EXPECT_EQ(transfer_keep_alive_call_index,
-              expected_testnet->transfer_keep_alive_call_index);
-    EXPECT_EQ(transfer_all_call_index,
-              expected_testnet->transfer_all_call_index);
-    EXPECT_EQ(ss58_prefix, expected_testnet->ss58_prefix);
-    EXPECT_EQ(spec_version, expected_testnet->spec_version);
-    EXPECT_EQ(asset_tx_payment, expected_testnet->asset_tx_payment);
-
-    EXPECT_EQ(testnet_metadata, expected_testnet);
-  }
+  EXPECT_EQ(testnet_metadata, expected_testnet);
 }
 
 // Verifies that when persisted metadata is present and runtime spec version
 // matches, data is served from cache without network metadata refresh.
 TEST_F(PolkadotMetadataProviderUnitTest, DataIsRestoredFromCache) {
-  PolkadotChainMetadata saved_metadata;
-  saved_metadata->system_pallet_index = 0;
-  saved_metadata->balances_pallet_index = 5;
-  saved_metadata->transaction_payment_pallet_index = 32;
-  saved_metadata->transfer_allow_death_call_index = 1;
-  saved_metadata->transfer_keep_alive_call_index = 3;
-  saved_metadata->transfer_all_call_index = 4;
-  saved_metadata->ss58_prefix = 0;
+  PolkadotChainMetadata saved_metadata = MakePolkadotMetadata();
   saved_metadata->spec_version = 100;
-  saved_metadata->asset_tx_payment = false;
   ASSERT_TRUE(chain_metadata_prefs_->SetChainMetadata(mojom::kPolkadotMainnet,
                                                       saved_metadata));
 
@@ -352,54 +218,12 @@ TEST_F(PolkadotMetadataProviderUnitTest, DataIsRestoredFromCache) {
 
   auto result = future.Take();
   ASSERT_TRUE(result.has_value());
-  {
-    const auto& [system_pallet_index, balances_pallet_index,
-                 transaction_payment_pallet_index,
-                 transfer_allow_death_call_index,
-                 transfer_keep_alive_call_index, transfer_all_call_index,
-                 ss58_prefix, spec_version, asset_tx_payment] = **result;
-
-    EXPECT_EQ(system_pallet_index, saved_metadata->system_pallet_index);
-    EXPECT_EQ(balances_pallet_index, saved_metadata->balances_pallet_index);
-    EXPECT_EQ(transaction_payment_pallet_index,
-              saved_metadata->transaction_payment_pallet_index);
-    EXPECT_EQ(transfer_allow_death_call_index,
-              saved_metadata->transfer_allow_death_call_index);
-    EXPECT_EQ(transfer_keep_alive_call_index,
-              saved_metadata->transfer_keep_alive_call_index);
-    EXPECT_EQ(transfer_all_call_index, saved_metadata->transfer_all_call_index);
-    EXPECT_EQ(ss58_prefix, saved_metadata->ss58_prefix);
-    EXPECT_EQ(spec_version, saved_metadata->spec_version);
-    EXPECT_EQ(asset_tx_payment, saved_metadata->asset_tx_payment);
-
-    EXPECT_EQ(*result, saved_metadata);
-  }
+  EXPECT_EQ(*result, saved_metadata);
 
   auto stored =
       chain_metadata_prefs_->GetChainMetadata(mojom::kPolkadotMainnet);
   ASSERT_TRUE(stored.has_value());
-  {
-    const auto& [system_pallet_index, balances_pallet_index,
-                 transaction_payment_pallet_index,
-                 transfer_allow_death_call_index,
-                 transfer_keep_alive_call_index, transfer_all_call_index,
-                 ss58_prefix, spec_version, asset_tx_payment] = **stored;
-
-    EXPECT_EQ(system_pallet_index, saved_metadata->system_pallet_index);
-    EXPECT_EQ(balances_pallet_index, saved_metadata->balances_pallet_index);
-    EXPECT_EQ(transaction_payment_pallet_index,
-              saved_metadata->transaction_payment_pallet_index);
-    EXPECT_EQ(transfer_allow_death_call_index,
-              saved_metadata->transfer_allow_death_call_index);
-    EXPECT_EQ(transfer_keep_alive_call_index,
-              saved_metadata->transfer_keep_alive_call_index);
-    EXPECT_EQ(transfer_all_call_index, saved_metadata->transfer_all_call_index);
-    EXPECT_EQ(ss58_prefix, saved_metadata->ss58_prefix);
-    EXPECT_EQ(spec_version, saved_metadata->spec_version);
-    EXPECT_EQ(asset_tx_payment, saved_metadata->asset_tx_payment);
-
-    EXPECT_EQ(*stored, saved_metadata);
-  }
+  EXPECT_EQ(*stored, saved_metadata);
 }
 
 // Verifies that on cache miss metadata is fetched from network, persisted to
@@ -426,50 +250,13 @@ TEST_F(PolkadotMetadataProviderUnitTest, DataIsSavedToCache) {
   provider_->GetChainMetadata(mojom::kPolkadotMainnet, future2.GetCallback());
   auto result2 = future2.Take();
   ASSERT_TRUE(result2.has_value());
-  {
-    const auto& [system_pallet_index, balances_pallet_index,
-                 transaction_payment_pallet_index,
-                 transfer_allow_death_call_index,
-                 transfer_keep_alive_call_index, transfer_all_call_index,
-                 ss58_prefix, spec_version, asset_tx_payment] = **result2;
 
-    EXPECT_EQ(system_pallet_index, (*result1)->system_pallet_index);
-    EXPECT_EQ(balances_pallet_index, (*result1)->balances_pallet_index);
-    EXPECT_EQ(transaction_payment_pallet_index,
-              (*result1)->transaction_payment_pallet_index);
-    EXPECT_EQ(transfer_allow_death_call_index,
-              (*result1)->transfer_allow_death_call_index);
-    EXPECT_EQ(transfer_keep_alive_call_index,
-              (*result1)->transfer_keep_alive_call_index);
-    EXPECT_EQ(transfer_all_call_index, (*result1)->transfer_all_call_index);
-    EXPECT_EQ(ss58_prefix, (*result1)->ss58_prefix);
-    EXPECT_EQ(spec_version, (*result1)->spec_version);
-    EXPECT_EQ(asset_tx_payment, (*result1)->asset_tx_payment);
-  }
+  EXPECT_EQ(*result1, *result2);
 
   auto stored =
       chain_metadata_prefs_->GetChainMetadata(mojom::kPolkadotMainnet);
   ASSERT_TRUE(stored.has_value());
-  {
-    const auto& [system_pallet_index, balances_pallet_index,
-                 transaction_payment_pallet_index,
-                 transfer_allow_death_call_index,
-                 transfer_keep_alive_call_index, transfer_all_call_index,
-                 ss58_prefix, spec_version, asset_tx_payment] = **stored;
-
-    EXPECT_EQ(system_pallet_index, (*result1)->system_pallet_index);
-    EXPECT_EQ(balances_pallet_index, (*result1)->balances_pallet_index);
-    EXPECT_EQ(transaction_payment_pallet_index,
-              (*result1)->transaction_payment_pallet_index);
-    EXPECT_EQ(transfer_allow_death_call_index,
-              (*result1)->transfer_allow_death_call_index);
-    EXPECT_EQ(transfer_keep_alive_call_index,
-              (*result1)->transfer_keep_alive_call_index);
-    EXPECT_EQ(transfer_all_call_index, (*result1)->transfer_all_call_index);
-    EXPECT_EQ(ss58_prefix, (*result1)->ss58_prefix);
-    EXPECT_EQ(spec_version, (*result1)->spec_version);
-    EXPECT_EQ(asset_tx_payment, (*result1)->asset_tx_payment);
-  }
+  EXPECT_EQ(*stored, *result1);
 }
 
 // Verifies that when persisted metadata spec version is stale, provider fetches
@@ -477,16 +264,11 @@ TEST_F(PolkadotMetadataProviderUnitTest, DataIsSavedToCache) {
 TEST_F(PolkadotMetadataProviderUnitTest, CachedDataIsUpdated) {
   const std::vector<uint8_t> metadata_bytes =
       ReadMetadataFixture("state_getMetadata_westend.json");
-  PolkadotChainMetadata saved_metadata;
-  saved_metadata->system_pallet_index = 0;
+  PolkadotChainMetadata saved_metadata = MakeWestendMetadata();
   saved_metadata->balances_pallet_index = 1;
   saved_metadata->transaction_payment_pallet_index = 32;
-  saved_metadata->transfer_allow_death_call_index = 0;
-  saved_metadata->transfer_keep_alive_call_index = 3;
-  saved_metadata->transfer_all_call_index = 4;
   saved_metadata->ss58_prefix = 0;
   saved_metadata->spec_version = 1;
-  saved_metadata->asset_tx_payment = false;
   ASSERT_TRUE(chain_metadata_prefs_->SetChainMetadata(mojom::kPolkadotMainnet,
                                                       saved_metadata));
 
@@ -512,61 +294,15 @@ TEST_F(PolkadotMetadataProviderUnitTest, CachedDataIsUpdated) {
 
   ASSERT_TRUE(result.has_value());
 
-  PolkadotChainMetadata expected;
-  expected->system_pallet_index = 0;
-  expected->balances_pallet_index = 4;
-  expected->transaction_payment_pallet_index = 0x1a;
-  expected->transfer_allow_death_call_index = 0;
-  expected->transfer_keep_alive_call_index = 3;
-  expected->transfer_all_call_index = 4;
-  expected->ss58_prefix = 42;
+  PolkadotChainMetadata expected = MakeWestendMetadata();
   expected->spec_version = 1'022'000;
-  expected->asset_tx_payment = false;
 
-  {
-    const auto& [system_pallet_index, balances_pallet_index,
-                 transaction_payment_pallet_index,
-                 transfer_allow_death_call_index,
-                 transfer_keep_alive_call_index, transfer_all_call_index,
-                 ss58_prefix, spec_version, asset_tx_payment] = **result;
-
-    EXPECT_EQ(system_pallet_index, expected->system_pallet_index);
-    EXPECT_EQ(balances_pallet_index, expected->balances_pallet_index);
-    EXPECT_EQ(transaction_payment_pallet_index,
-              expected->transaction_payment_pallet_index);
-    EXPECT_EQ(transfer_allow_death_call_index,
-              expected->transfer_allow_death_call_index);
-    EXPECT_EQ(transfer_keep_alive_call_index,
-              expected->transfer_keep_alive_call_index);
-    EXPECT_EQ(transfer_all_call_index, expected->transfer_all_call_index);
-    EXPECT_EQ(ss58_prefix, expected->ss58_prefix);
-    EXPECT_EQ(spec_version, expected->spec_version);
-    EXPECT_EQ(asset_tx_payment, expected->asset_tx_payment);
-  }
+  EXPECT_EQ(*result, expected);
 
   auto stored =
       chain_metadata_prefs_->GetChainMetadata(mojom::kPolkadotMainnet);
   ASSERT_TRUE(stored.has_value());
-  {
-    const auto& [system_pallet_index, balances_pallet_index,
-                 transaction_payment_pallet_index,
-                 transfer_allow_death_call_index,
-                 transfer_keep_alive_call_index, transfer_all_call_index,
-                 ss58_prefix, spec_version, asset_tx_payment] = **stored;
-
-    EXPECT_EQ(system_pallet_index, expected->system_pallet_index);
-    EXPECT_EQ(balances_pallet_index, expected->balances_pallet_index);
-    EXPECT_EQ(transaction_payment_pallet_index,
-              expected->transaction_payment_pallet_index);
-    EXPECT_EQ(transfer_allow_death_call_index,
-              expected->transfer_allow_death_call_index);
-    EXPECT_EQ(transfer_keep_alive_call_index,
-              expected->transfer_keep_alive_call_index);
-    EXPECT_EQ(transfer_all_call_index, expected->transfer_all_call_index);
-    EXPECT_EQ(ss58_prefix, expected->ss58_prefix);
-    EXPECT_EQ(spec_version, expected->spec_version);
-    EXPECT_EQ(asset_tx_payment, expected->asset_tx_payment);
-  }
+  EXPECT_EQ(*stored, expected);
 }
 
 }  // namespace

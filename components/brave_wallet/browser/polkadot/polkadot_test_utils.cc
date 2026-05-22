@@ -89,6 +89,8 @@ std::optional<PolkadotChainMetadata> PolkadotMetadataFromChainName(
     std::string_view chain_name) {
   // spec_version is unknown when constructing from chain name alone; callers
   // must update it from state_getRuntimeVersion before use.
+  // This means synthetic metadata is also unusable if it slips into production,
+  // as no validator will accept a spec version of 0.
   constexpr uint32_t kUnknownSpecVersion = 0;
 
   PolkadotChainMetadata metadata;
@@ -135,6 +137,22 @@ std::optional<PolkadotChainMetadata> PolkadotMetadataFromChainName(
   }
 
   return std::nullopt;
+}
+
+PolkadotChainMetadata MakeWestendMetadata() {
+  return PolkadotMetadataFromChainName("Westend").value();
+}
+
+PolkadotChainMetadata MakePolkadotMetadata() {
+  return PolkadotMetadataFromChainName("Polkadot").value();
+}
+
+PolkadotChainMetadata MakeWestendAssetHubMetadata() {
+  return PolkadotMetadataFromChainName("Westend Asset Hub").value();
+}
+
+PolkadotChainMetadata MakePolkadotAssetHubMetadata() {
+  return PolkadotMetadataFromChainName("Polkadot Asset Hub").value();
 }
 
 PolkadotMockRpc::PolkadotMockRpc(
