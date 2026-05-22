@@ -69,7 +69,9 @@ class TestingBraveBrowserProcess : public BraveBrowserProcess {
 #endif
   p3a::P3AService* p3a_service() override;
   brave::BraveReferralsService* brave_referrals_service() override;
+#if BUILDFLAG(ENABLE_BRAVE_STATS_UPDATER)
   brave_stats::BraveStatsUpdater* brave_stats_updater() override;
+#endif
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   brave_ads::BraveStatsHelper* ads_brave_stats_helper() override;
   brave_ads::ResourceComponent* resource_component() override;

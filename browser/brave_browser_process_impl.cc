@@ -17,7 +17,7 @@
 #include "brave/browser/brave_origin/brave_origin_service_factory.h"
 #include "brave/browser/brave_referrals/referrals_service_delegate.h"
 #include "brave/browser/brave_shields/ad_block_subscription_download_manager_getter.h"
-#include "brave/browser/brave_stats/brave_stats_updater.h"
+#include "brave/browser/brave_stats/buildflags.h"
 #include "brave/browser/brave_stats/first_run_util.h"
 #include "brave/browser/component_updater/brave_component_updater_configurator.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
@@ -59,6 +59,10 @@
 #include "content/public/browser/child_process_security_policy.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_STATS_UPDATER)
+#include "brave/browser/brave_stats/brave_stats_updater.h"
+#endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
 #include "chrome/browser/extensions/chrome_component_extension_resource_manager.h"
@@ -243,7 +247,9 @@ void BraveBrowserProcessImpl::StartTearDown() {
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   brave_stats_helper_.reset();
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
+#if BUILDFLAG(ENABLE_BRAVE_STATS_UPDATER)
   brave_stats_updater_.reset();
+#endif
   brave_referrals_service_.reset();
   if (ntp_background_images_service_) {
     ntp_background_images_service_->StartTearDown();
@@ -488,6 +494,7 @@ BraveBrowserProcessImpl::brave_referrals_service() {
   return brave_referrals_service_.get();
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_STATS_UPDATER)
 brave_stats::BraveStatsUpdater* BraveBrowserProcessImpl::brave_stats_updater() {
   if (!brave_stats_updater_) {
     brave_stats_updater_ = std::make_unique<brave_stats::BraveStatsUpdater>(
@@ -495,6 +502,7 @@ brave_stats::BraveStatsUpdater* BraveBrowserProcessImpl::brave_stats_updater() {
   }
   return brave_stats_updater_.get();
 }
+#endif  // BUILDFLAG(ENABLE_BRAVE_STATS_UPDATER)
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
 brave_ads::BraveStatsHelper* BraveBrowserProcessImpl::ads_brave_stats_helper() {

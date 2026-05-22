@@ -8,7 +8,7 @@
 #include <string>
 
 #include "base/values.h"
-#include "brave/browser/brave_stats/brave_stats_updater.h"
+#include "brave/browser/brave_stats/buildflags.h"
 #include "brave/browser/metrics/buildflags/buildflags.h"
 #include "brave/browser/metrics/metrics_reporting_util.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
@@ -47,6 +47,10 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "components/webui/chrome_urls/pref_names.h"
 #include "third_party/widevine/cdm/buildflags.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_STATS_UPDATER)
+#include "brave/browser/brave_stats/brave_stats_updater.h"
+#endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/browser/playlist/playlist_service_factory.h"
@@ -136,7 +140,9 @@ void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
 #endif
   brave_search_conversion::p3a::RegisterLocalStatePrefsForMigration(registry);
   brave_shields::RegisterPrefsForAdBlockServiceForMigration(registry);
+#if BUILDFLAG(ENABLE_BRAVE_STATS_UPDATER)
   brave_stats::RegisterLocalStatePrefsForMigration(registry);
+#endif
   p3a::MetricLogStore::RegisterLocalStatePrefsForMigration(registry);
   p3a::RotationScheduler::RegisterLocalStatePrefsForMigration(registry);
 
@@ -154,7 +160,15 @@ void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   brave_shields::RegisterPrefsForAdBlockService(registry);
+  // `kStatsReportingEnabled` is the user/policy-facing opt-in for anonymous
+  // usage pings. It is read by other systems (privacy settings UI, policy
+  // map, referrals service, SERP tab helper, Brave Origin service) that
+  // remain compiled in even when the stats updater itself is excluded, so
+  // it must always be registered.
+  registry->RegisterBooleanPref(kStatsReportingEnabled, true);
+#if BUILDFLAG(ENABLE_BRAVE_STATS_UPDATER)
   brave_stats::RegisterLocalStatePrefs(registry);
+#endif
   brave_origin::RegisterLocalStatePrefs(registry);
   ntp_background_images::RegisterLocalStatePrefs(registry);
   RegisterPrefsForBraveReferralsService(registry);

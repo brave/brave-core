@@ -14,11 +14,17 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
+#include "brave/browser/brave_stats/buildflags.h"
 #include "brave/components/brave_origin/brave_origin_policy_manager.h"
 #include "brave/components/brave_policy/brave_policy_observer.h"
 #include "chrome/browser/profiles/profile_manager_observer.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "url/gurl.h"
+
+static_assert(BUILDFLAG(ENABLE_BRAVE_STATS_UPDATER),
+              "BraveStatsUpdater must not be used when "
+              "enable_brave_stats_updater is false (e.g. Brave Origin "
+              "branded builds).");
 
 class BraveStatsUpdaterBrowserTest;
 class PrefChangeRegistrar;
