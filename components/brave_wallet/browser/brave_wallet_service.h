@@ -425,8 +425,6 @@ class BraveWalletService : public KeyedService,
       GenerateReceiveAddressCallback callback,
       base::expected<mojom::CardanoAddressPtr, std::string> result);
 
-  void OnWalletUnlockPreferenceChanged(const std::string& pref_name);
-
   void OnNewCardanoTokenDiscovered(mojom::BlockchainTokenPtr token);
   void OnGetImportInfo(
       const std::string& new_password,

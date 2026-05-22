@@ -713,7 +713,6 @@ source_set("unit_tests") {
     "bitcoin/bitcoin_wallet_service_unittest.cc",
     "blockchain_images_source_base_unittest.cc",
     "blockchain_list_parser_unittest.cc",
-    "brave_wallet_p3a_unittest.cc",
     "cardano/cardano_block_tracker_unittest.cc",
     "cardano/cardano_cip30_serializer_unittest.cc",
     "cardano/cardano_create_transaction_task_unittest.cc",

@@ -2450,94 +2450,6 @@ TEST_F(BraveWalletServiceUnitTest, Reset) {
 #endif
 }
 
-TEST_F(BraveWalletServiceUnitTest, NewUserReturningMetric) {
-#if BUILDFLAG(IS_MAC)
-  // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
-  // unexpected test timeout failures are resolved.
-  if (base::mac::MacOSMajorVersion() == 26) {
-    GTEST_SKIP() << "Disabled on macOS Tahoe.";
-  }
-#endif
-  histogram_tester_->ExpectBucketCount(
-      kBraveWalletNewUserReturningHistogramName, 0, 1);
-  GetLocalState()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
-
-  task_environment_.FastForwardBy(base::Days(1));
-  histogram_tester_->ExpectBucketCount(
-      kBraveWalletNewUserReturningHistogramName, 2, 2);
-
-  GetLocalState()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
-  task_environment_.RunUntilIdle();
-
-  histogram_tester_->ExpectBucketCount(
-      kBraveWalletNewUserReturningHistogramName, 3, 1);
-
-  task_environment_.FastForwardBy(base::Days(6));
-  histogram_tester_->ExpectBucketCount(
-      kBraveWalletNewUserReturningHistogramName, 1, 1);
-}
-
-TEST_F(BraveWalletServiceUnitTest, NewUserReturningMetricMigration) {
-#if BUILDFLAG(IS_MAC)
-  // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
-  // unexpected test timeout failures are resolved.
-  if (base::mac::MacOSMajorVersion() == 26) {
-    GTEST_SKIP() << "Disabled on macOS Tahoe.";
-  }
-#endif
-  GetLocalState()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
-
-  task_environment_.RunUntilIdle();
-  GetLocalState()->SetTime(kBraveWalletP3AFirstUnlockTime, base::Time());
-  GetLocalState()->SetTime(kBraveWalletP3ALastUnlockTime, base::Time());
-
-  task_environment_.FastForwardBy(base::Hours(30));
-  // Existing unlock timestamp should not trigger "new" value for new user
-  // metric
-  histogram_tester_->ExpectBucketCount(
-      kBraveWalletNewUserReturningHistogramName, 1, 1);
-
-  task_environment_.FastForwardBy(base::Hours(30));
-  histogram_tester_->ExpectBucketCount(
-      kBraveWalletNewUserReturningHistogramName, 1, 2);
-}
-
-TEST_F(BraveWalletServiceUnitTest, LastUsageTimeMetric) {
-#if BUILDFLAG(IS_MAC)
-  // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
-  // unexpected test timeout failures are resolved.
-  if (base::mac::MacOSMajorVersion() == 26) {
-    GTEST_SKIP() << "Disabled on macOS Tahoe.";
-  }
-#endif
-  histogram_tester_->ExpectTotalCount(kBraveWalletLastUsageTimeHistogramName,
-                                      0);
-
-  GetLocalState()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
-  task_environment_.RunUntilIdle();
-
-  histogram_tester_->ExpectUniqueSample(kBraveWalletLastUsageTimeHistogramName,
-                                        1, 1);
-
-  task_environment_.FastForwardBy(base::Days(7));
-
-  histogram_tester_->ExpectBucketCount(kBraveWalletLastUsageTimeHistogramName,
-                                       2, 1);
-
-  task_environment_.FastForwardBy(base::Days(7));
-
-  histogram_tester_->ExpectBucketCount(kBraveWalletLastUsageTimeHistogramName,
-                                       3, 1);
-  histogram_tester_->ExpectBucketCount(kBraveWalletLastUsageTimeHistogramName,
-                                       1, 7);
-
-  GetLocalState()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
-  task_environment_.RunUntilIdle();
-
-  histogram_tester_->ExpectBucketCount(kBraveWalletLastUsageTimeHistogramName,
-                                       1, 8);
-}
-
 TEST_F(BraveWalletServiceUnitTest, GetNftDiscoveryEnabled) {
   // Default should be off
   GetNftDiscoveryEnabled(false);
@@ -2585,39 +2497,6 @@ TEST_F(BraveWalletServiceUnitTest, SetPrivateWindowsEnabled) {
   service_->SetPrivateWindowsEnabled(false);
   base::RunLoop().RunUntilIdle();
   EXPECT_FALSE(GetPrefs()->GetBoolean(kBraveWalletPrivateWindowsEnabled));
-}
-
-TEST_F(BraveWalletServiceUnitTest, RecordGeneralUsageMetrics) {
-#if BUILDFLAG(IS_MAC)
-  // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
-  // unexpected test timeout failures are resolved.
-  if (base::mac::MacOSMajorVersion() == 26) {
-    GTEST_SKIP() << "Disabled on macOS Tahoe.";
-  }
-#endif
-  histogram_tester_->ExpectTotalCount(kBraveWalletMonthlyHistogramName, 0);
-  histogram_tester_->ExpectTotalCount(kBraveWalletWeeklyHistogramName, 0);
-  histogram_tester_->ExpectTotalCount(kBraveWalletDailyHistogramName, 0);
-
-  GetLocalState()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
-  task_environment_.RunUntilIdle();
-
-  histogram_tester_->ExpectUniqueSample(kBraveWalletMonthlyHistogramName, 1, 1);
-  histogram_tester_->ExpectUniqueSample(kBraveWalletWeeklyHistogramName, 1, 1);
-  histogram_tester_->ExpectUniqueSample(kBraveWalletDailyHistogramName, 1, 1);
-
-  task_environment_.FastForwardBy(base::Days(7));
-
-  histogram_tester_->ExpectUniqueSample(kBraveWalletMonthlyHistogramName, 1, 1);
-  histogram_tester_->ExpectUniqueSample(kBraveWalletWeeklyHistogramName, 1, 1);
-  histogram_tester_->ExpectUniqueSample(kBraveWalletDailyHistogramName, 1, 1);
-
-  GetLocalState()->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
-  task_environment_.RunUntilIdle();
-
-  histogram_tester_->ExpectUniqueSample(kBraveWalletMonthlyHistogramName, 1, 2);
-  histogram_tester_->ExpectUniqueSample(kBraveWalletWeeklyHistogramName, 1, 2);
-  histogram_tester_->ExpectUniqueSample(kBraveWalletDailyHistogramName, 1, 2);
 }
 
 TEST_F(BraveWalletServiceUnitTest, GetBalanceScannerSupportedChains) {

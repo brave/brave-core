@@ -309,10 +309,6 @@ BraveWalletService::BraveWalletService(
 
   pref_change_registrar_.Init(profile_prefs_);
   pref_change_registrar_.Add(
-      kBraveWalletLastUnlockTime,
-      base::BindRepeating(&BraveWalletService::OnWalletUnlockPreferenceChanged,
-                          base::Unretained(this)));
-  pref_change_registrar_.Add(
       kDefaultEthereumWallet,
       base::BindRepeating(&BraveWalletService::OnDefaultEthereumWalletChanged,
                           base::Unretained(this)));
@@ -1149,11 +1145,6 @@ void BraveWalletService::MigrateDeadNetwork(
   }
 
   prefs->SetBoolean(pref_key, true);
-}
-
-void BraveWalletService::OnWalletUnlockPreferenceChanged(
-    const std::string& pref_name) {
-  brave_wallet_p3a_->ReportUsage(true);
 }
 
 BraveWalletP3A* BraveWalletService::GetBraveWalletP3A() {
