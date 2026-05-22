@@ -19,8 +19,7 @@ import os
   struct ClearableSetting: Identifiable {
     enum ClearableType: String {
       case history, cache, cookiesAndCache, passwords, siteAndShieldsSettings,
-        downloads, braveNews, playlistCache, playlistData, recentSearches,
-        braveAdsData
+        downloads, braveNews, recentSearches, braveAdsData
     }
 
     var id: ClearableType
@@ -264,13 +263,6 @@ import os
           isEnabled: false
         )
       )
-    }
-
-    if braveCore.profile.prefs.isPlaylistAvailable {
-      clearableSettings += [
-        ClearableSetting(id: .playlistCache, clearable: PlayListCacheClearable(), isEnabled: false),
-        ClearableSetting(id: .playlistData, clearable: PlayListDataClearable(), isEnabled: false),
-      ]
     }
 
     clearableSettings.append(contentsOf: [
