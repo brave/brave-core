@@ -11,7 +11,6 @@
 
 #include "base/check.h"
 #include "base/check_is_test.h"
-#include "brave/browser/ui/tabs/brave_compact_horizontal_tabs_layout.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
@@ -22,6 +21,7 @@
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
+#include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
 #include "chrome/browser/ui/views/bookmarks/bookmark_bar_view.h"
@@ -341,41 +341,17 @@ BraveBrowserViewTabbedLayoutImpl::GetTopSeparatorType() const {
 
 int BraveBrowserViewTabbedLayoutImpl::GetHorizontalTabStripLeadingMargin(
     const BrowserLayoutParams& params) const {
-  // Defer to upstream when compact horizontal tabs is not active so the
-  // default tab strip keeps its established swoop-sized leading margin.
-  if (!tabs::ShouldUseCompactHorizontalTabsForNonTouchUI()) {
-    return BrowserViewTabbedLayoutImpl::GetHorizontalTabStripLeadingMargin(
-        params);
+  // Compact, with no leading exclusion padding (i.e. not an alternate
+  // tab-strip layout like split-view): tuck the first tab pill against the
+  // caption-button cluster by halving the corner radius. All other cases
+  // (non-compact, split-view, etc.) get the upstream margin.
+  if (tabs::UseCompactHorizontalTabs() &&
+      !views().horizontal_tab_strip_region_view->GetProperty(
+          views::kInternalPaddingKey)) {
+    return TabStyle::Get()->GetBottomCornerRadius() / 2;
   }
-
-  // The `internal_padding` branch in upstream is used by alternate tab strip
-  // layouts (e.g. split-view) and computes a margin from the leading
-  // exclusion's horizontal padding rather than the tab swoop. Preserve it
-  // verbatim so we don't perturb those paths.
-  if (const gfx::Insets* internal_padding =
-          views().horizontal_tab_strip_region_view->GetProperty(
-              views::kInternalPaddingKey)) {
-    return std::max(0.f, params.leading_exclusion.horizontal_padding -
-                             static_cast<float>(internal_padding->left()));
-  }
-
-  // Compact mode default: tuck the first tab pill closer to the trailing edge
-  // of the caption-button cluster so the tab strip and the traffic lights
-  // read as a single visually centred row. Halving the corner-radius mirrors
-  // imputnet/helium @ b6e5b77e (`fix-caption-button-bounds.patch`, the
-  // companion to the `GetCaptionButtonBounds()` margin zeroing in
-  // `BraveBrowserFrameViewMac::GetCaptionButtonBounds()`).
-  //
-  // No `IS_MAC` guard here: this margin is consumed by upstream's
-  // `GetBoundsWithExclusion()` via
-  // `params.leading_exclusion.ContentWithPaddingAndInsets(leading_margin, …)`,
-  // which has no visible effect when `params.leading_exclusion` is empty
-  // (the typical Windows/Linux case with no leading caption buttons). The
-  // half-radius value therefore only takes effect on platforms that expose
-  // leading caption buttons (Mac traffic lights, and Linux DEs configured
-  // for left-side caption buttons), which is exactly the surface this
-  // adjustment is meant for.
-  return TabStyle::Get()->GetBottomCornerRadius() / 2;
+  return BrowserViewTabbedLayoutImpl::GetHorizontalTabStripLeadingMargin(
+      params);
 }
 
 void BraveBrowserViewTabbedLayoutImpl::CalculateBraveVerticalTabStripLayout(

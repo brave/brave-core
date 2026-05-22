@@ -17,50 +17,30 @@ namespace tabs {
 
 // Horizontal tab layout:
 //
-// The upstream tab implemenation assumes that tab view bounds overlap. In order
-// to create a gap between tabs without violating these assumptions, tabs views
-// are given a small overlap. Rounded tab rectangles are drawn centered and
-// inset horizontally by an amount that will create the required visual gap.
+// The upstream tab implementation assumes that tab view bounds overlap. In
+// order to create a gap between tabs without violating these assumptions, tabs
+// views are given a small overlap. Rounded tab rectangles are drawn centered
+// and inset horizontally by an amount that will create the required visual gap.
 
 // The visual height of tabs in horizontal tabs mode. Note that the height of
-// the view may be greater than the visual height of the tab shape. See also
-// `GetHorizontalTabVerticalSpacing()`.
+// the view may be greater than the visual height of the tab shape.
 int GetHorizontalTabHeight();
 
-// Spacing between the top and bottom of tabs and the tab strip bounds. Use
-// this instead of `kHorizontalTabVerticalSpacing` for layout.
-//
-// Returns `compact_horizontal_tabs_layout::kTabVerticalSpacing` (2) when the
-// `#brave-compact-horizontal-tabs` flag is enabled and touch UI is off.
-// Returns `compact_horizontal_tabs_layout::kTabVerticalSpacingDefault` (which
-// equals `kHorizontalTabVerticalSpacing`, 4) otherwise (flag disabled or touch
-// UI active).
+// Returns the amount of visual spacing between the top and bottom of tabs and
+// the bounds of the tab strip region. The portion of this space below tabs will
+// be occupied by tab group underlines.
 int GetHorizontalTabVerticalSpacing();
 
-// Vertical delta (DIP) used by tab strip control button placement math (see
-// `UpdateButtonBorders()` in horizontal_tab_strip_region_view.cc). This is
-// intentionally separate from `LayoutConstant::kTabstripToolbarOverlap` so
-// tab/toolbar geometry can be tuned without unintentionally shifting
-// navigation/caption controls. See the comment on
-// `compact_horizontal_tabs_layout::kTabStripControlsHeightDelta` for the
-// rationale behind the split.
-//
-// Returns `compact_horizontal_tabs_layout::kTabStripControlsHeightDelta` (-5)
-// when the `#brave-compact-horizontal-tabs` flag is enabled and touch UI is
-// off. Returns
-// `compact_horizontal_tabs_layout::kTabStripControlsHeightDeltaDefault`
-// (-4) otherwise (flag disabled or touch UI active).
-int GetHorizontalTabControlsDelta();
+// Y-offset applied to buttons aligned with the horizontal tab strip (new tab
+// button, tab strip combo/search buttons, Mac caption buttons) so they sit
+// centered against the tab row.
+int GetHorizontalTabButtonYOffset();
 
 // The amount of space before the first tab view.
 inline constexpr int kHorizontalTabStripLeftMargin = 3;
 
-// Default vertical spacing when not using compact horizontal tabs (and for
-// touch UI). `GetHorizontalTabVerticalSpacing()` may return a smaller value
-// when
-// `#brave-compact-horizontal-tabs` is enabled.
-inline constexpr int kHorizontalTabVerticalSpacing = 4;
-
+// The amount of visual spacing between the top and bottom of tabs and the
+// bounds of the tab strip region for a split view tab.
 inline constexpr int kHorizontalSplitViewTabVerticalSpacing = 6;
 
 // The height of the tab strip in horizontal mode.
@@ -79,7 +59,7 @@ inline constexpr int kHorizontalTabOverlap = 2;
 inline constexpr int kHorizontalTabInset =
     (kHorizontalTabGap + kHorizontalTabOverlap) / 2;
 
-// The content padding within a tab.
+// The horizontal content padding within a tab.
 int GetHorizontalTabPadding();
 
 // The horizontal difference between the visual edge of a tab group and the
@@ -98,6 +78,15 @@ int GetTabGroupTitleVerticalInset();
 
 // The amount of padding at sides of tab group header "chips".
 int GetTabGroupTitleHorizontalInset();
+
+// The amount of space at the top of inactive tabs where mouse clicks are
+// treated as clicks in the "caption" area, i.e. the draggable part of the
+// window frame.
+int GetDragHandleExtensionHeight();
+
+// Indicates whether horizontal tabs (and the toolbar) are displayed in compact
+// mode.
+bool UseCompactHorizontalTabs();
 
 }  // namespace tabs
 

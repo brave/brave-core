@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/tabs/brave_compact_horizontal_tabs_layout.h"
 #include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
 #include "brave/browser/ui/views/tabs/brave_tab_hover_card_controller.h"
@@ -22,19 +21,13 @@
 namespace {
 
 // Tab-strip-region-local override of `GetLayoutConstant`. Inside the upstream
-// `UpdateButtonBorders()` body, `kTabstripToolbarOverlap` is used to vertically
-// center tab-strip *control* buttons (new tab button, combo button, tab search
-// button, …). In compact mode that role wants the smaller
-// `tabs::GetHorizontalTabControlsDelta()` value, while every other consumer of
-// `kTabstripToolbarOverlap` (tab/toolbar geometry, frame views, etc.) wants
-// the larger value supplied by the central `GetBraveLayoutConstant()`
-// override in `chromium_src/chrome/browser/ui/layout_constants.cc`. Routing
-// just this translation unit's `GetLayoutConstant` calls through the wrapper
-// avoids patching upstream and mirrors the same pattern used in
-// `chromium_src/chrome/browser/ui/views/frame/browser_frame_view_win.cc`.
+// `UpdateButtonBorders()` body, `kTabstripToolbarOverlap` is consumed as the
+// vertical inset used to center tab-strip control buttons (new tab, combo,
+// tab search). Routing just this translation unit's `GetLayoutConstant` calls
+// through the wrapper avoids patching upstream.
 int GetLayoutConstantForBraveHorizontalTabStripRegion(LayoutConstant constant) {
   if (constant == LayoutConstant::kTabstripToolbarOverlap) {
-    return tabs::GetHorizontalTabControlsDelta();
+    return tabs::GetHorizontalTabButtonYOffset();
   }
   return GetLayoutConstant(constant);
 }

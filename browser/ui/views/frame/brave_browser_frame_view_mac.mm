@@ -7,7 +7,6 @@
 
 #include <memory>
 
-#include "brave/browser/ui/tabs/brave_compact_horizontal_tabs_layout.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 #include "brave/browser/ui/views/frame/brave_window_frame_graphic.h"
@@ -106,17 +105,11 @@ BrowserFrameViewMac::BoundsAndMargins
 BraveBrowserFrameViewMac::GetCaptionButtonBounds() const {
   auto bounds_and_margins = BrowserFrameViewMac::GetCaptionButtonBounds();
   bounds_and_margins.bounds.set_y(bounds_and_margins.bounds.y() +
-                                  tabs::GetHorizontalTabControlsDelta());
-  // In compact horizontal tabs mode the tab pill is ~26 DIP tall, but the
-  // upstream caption button rect carries vertical margins of 11 px (macOS 15-)
-  // / 10 px (macOS 26+) above and below. Those margins flow into
-  // `BrowserFrameView::GetBrowserLayoutParams()` as `leading_exclusion`'s
-  // vertical extent, reserving more vertical band than the tab strip occupies
-  // and biasing where the tab strip lays out next to the traffic lights. Zero
-  // them so the exclusion rect collapses around the buttons themselves and
-  // the tab strip can sit centred against them. Mirrors Helium's
-  // `fix-caption-button-bounds.patch` (imputnet/helium @ b6e5b77e).
-  if (tabs::ShouldUseCompactHorizontalTabsForNonTouchUI() &&
+                                  tabs::GetHorizontalTabButtonYOffset());
+  // Compact: zero the caption button vertical margins so the leading
+  // exclusion collapses around the buttons themselves, letting the shorter
+  // tab strip sit centred against the traffic lights.
+  if (tabs::UseCompactHorizontalTabs() &&
       !bounds_and_margins.bounds.IsEmpty()) {
     bounds_and_margins.margins.set_top(0).set_bottom(0);
   }

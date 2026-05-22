@@ -19,7 +19,6 @@
 #include "base/feature_list.h"
 #include "base/notimplemented.h"
 #include "brave/browser/ui/color/brave_color_id.h"
-#include "brave/browser/ui/tabs/brave_compact_horizontal_tabs_layout.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
@@ -496,11 +495,8 @@ void BraveTabContainer::PaintBoundingBoxForSplitTab(
         tabs::kHorizontalTabInset));
   }
 
-  const float kRadius =
-      (!is_vertical_tab && tabs::ShouldUseCompactHorizontalTabsForNonTouchUI())
-          ? tabs::compact_horizontal_tabs_layout::
-                kHorizontalSplitViewTileCornerRadiusDip
-          : 12.f;  // default matches --leo-radius-l
+  const float corner_radius =
+      !is_vertical_tab && tabs::UseCompactHorizontalTabs() ? 9.0f : 12.f;
 
   auto* cp = GetColorProvider();
   DCHECK(cp);
@@ -510,7 +506,7 @@ void BraveTabContainer::PaintBoundingBoxForSplitTab(
       is_vertical_tab ? kColorBraveSplitViewTileBackgroundVertical
                       : kColorBraveSplitViewTileBackgroundHorizontal));
 
-  canvas.DrawRoundRect(bounding_rects, kRadius, flags);
+  canvas.DrawRoundRect(bounding_rects, corner_radius, flags);
 
   auto* tab_strip_model =
       tab_slot_controller_->GetBrowserWindowInterface()->GetTabStripModel();
@@ -536,7 +532,7 @@ void BraveTabContainer::PaintBoundingBoxForSplitTab(
   bounding_rects.Outset(1);
   flags.setStyle(cc::PaintFlags::kStroke_Style);
   flags.setColor(cp->GetColor(kColorBraveSplitViewTileBackgroundBorder));
-  canvas.DrawRoundRect(bounding_rects, kRadius, flags);
+  canvas.DrawRoundRect(bounding_rects, corner_radius, flags);
 }
 
 void BraveTabContainer::OnUnlockLayout() {

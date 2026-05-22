@@ -23,7 +23,7 @@
 // container so its bottom aligns with `top_container` top and its top sits at
 // `WindowTopY()` below the window top. Before the fix,
 // `BraveBrowserFrameViewWin::LayoutCaptionButtons()` applied an extra
-// `tabs::GetHorizontalTabControlsDelta()` Y-offset (negative in every mode)
+// `tabs::GetHorizontalTabButtonYOffset()` Y-offset (negative in every mode)
 // that shifted the container upward and broke both alignments.
 //
 // Additional regression tests for vertical tab mode: when vertical tabs are
