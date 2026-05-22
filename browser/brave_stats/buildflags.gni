@@ -3,10 +3,14 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_origin/buildflags/buildflags.gni")
+
 declare_args() {
   brave_stats_updater_url = ""
+
+  enable_brave_stats_updater = !is_brave_origin_branded
 }
 
-if (is_official_build) {
+if (is_official_build && enable_brave_stats_updater) {
   assert(brave_stats_updater_url != "")
 }

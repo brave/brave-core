@@ -39,9 +39,11 @@ namespace https_upgrade_exceptions {
 class HttpsUpgradeExceptionsService;
 }  // namespace https_upgrade_exceptions
 
+#if BUILDFLAG(ENABLE_BRAVE_STATS_UPDATER)
 namespace brave_stats {
 class BraveStatsUpdater;
 }  // namespace brave_stats
+#endif
 
 namespace debounce {
 class DebounceComponentInstaller;
@@ -127,7 +129,9 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 #endif
   p3a::P3AService* p3a_service() override;
   brave::BraveReferralsService* brave_referrals_service() override;
+#if BUILDFLAG(ENABLE_BRAVE_STATS_UPDATER)
   brave_stats::BraveStatsUpdater* brave_stats_updater() override;
+#endif
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   brave_ads::BraveStatsHelper* ads_brave_stats_helper() override;
   brave_ads::ResourceComponent* resource_component() override;
@@ -188,7 +192,9 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 #endif
   std::unique_ptr<brave::URLSanitizerComponentInstaller>
       url_sanitizer_component_installer_;
+#if BUILDFLAG(ENABLE_BRAVE_STATS_UPDATER)
   std::unique_ptr<brave_stats::BraveStatsUpdater> brave_stats_updater_;
+#endif
   std::unique_ptr<brave::BraveReferralsService> brave_referrals_service_;
 #if BUILDFLAG(ENABLE_TOR)
   std::unique_ptr<tor::BraveTorClientUpdater> tor_client_updater_;
