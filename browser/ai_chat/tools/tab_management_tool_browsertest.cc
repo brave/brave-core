@@ -10,7 +10,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/strings/stringprintf.h"
 #include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
@@ -18,9 +17,9 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
-#include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -53,9 +52,12 @@ std::string RunToolAndGetText(base::Location location,
                               TabManagementTool* tool,
                               const std::string& input_json) {
   SCOPED_TRACE(testing::Message() << location.ToString());
-  base::test::TestFuture<std::vector<mojom::ContentBlockPtr>> future;
+  base::test::TestFuture<std::vector<mojom::ContentBlockPtr>,
+                         std::vector<mojom::ToolArtifactPtr>>
+      future;
   tool->UseTool(input_json, future.GetCallback());
-  return ExtractToolOutputText(future.Get());
+  return ExtractToolOutputText(
+      future.Get<std::vector<mojom::ContentBlockPtr>>());
 }
 
 int GetTabHandle(content::WebContents* contents) {
@@ -68,45 +70,46 @@ int GetTabHandle(content::WebContents* contents) {
 // Build a minimal expected windows skeleton for the current profile state so
 // tests can compare. We should always also test actual browser state to verify
 // the response has waited for the state to catch up with the commands.
-base::Value::Dict BuildExpectedOutputSubset(Profile* profile) {
-  base::Value::Dict expected;
-  base::Value::List expected_windows;
-  for (Browser* b : *BrowserList::GetInstance()) {
-    if (b->profile() != profile) {
+base::DictValue BuildExpectedOutputSubset(Profile* profile) {
+  base::DictValue expected;
+  base::ListValue expected_windows;
+  for (BrowserWindowInterface* bwi : GetAllBrowserWindowInterfaces()) {
+    if (bwi->GetProfile() != profile) {
       continue;
     }
     // Manually skip empty windows to verify that the tool doesn't
     // provide any windows with empty tab strips. It should do that
     // via timing so that we're sure we're sending accurate window-tab
     // relationships.
-    if (b->tab_strip_model()->empty()) {
+
+    if (bwi->GetTabStripModel()->empty()) {
       continue;
     }
-    base::Value::Dict w;
-    w.Set("window_id", b->session_id().id());
-    w.Set("active_tab_index", b->tab_strip_model()->active_index());
+    base::DictValue w;
+    w.Set("window_id", bwi->GetSessionID().id());
+    w.Set("active_tab_index", bwi->GetTabStripModel()->active_index());
 
-    base::Value::List tabs;
-    for (int i = 0; i < b->tab_strip_model()->count(); ++i) {
-      content::WebContents* wc = b->tab_strip_model()->GetWebContentsAt(i);
-      base::Value::Dict t;
+    base::ListValue tabs;
+    for (int i = 0; i < bwi->GetTabStripModel()->count(); ++i) {
+      content::WebContents* wc = bwi->GetTabStripModel()->GetWebContentsAt(i);
+      base::DictValue t;
       t.Set("tab_id", GetTabHandle(wc));
       t.Set("index", i);
-      t.Set("is_active", i == b->tab_strip_model()->active_index());
-      if (b->tab_strip_model()->GetTabGroupForTab(i).has_value()) {
+      t.Set("is_active", i == bwi->GetTabStripModel()->active_index());
+      if (bwi->GetTabStripModel()->GetTabGroupForTab(i).has_value()) {
         t.Set("group_id",
-              b->tab_strip_model()->GetTabGroupForTab(i)->ToString());
+              bwi->GetTabStripModel()->GetTabGroupForTab(i)->ToString());
       }
       tabs.Append(std::move(t));
     }
     w.Set("tabs", std::move(tabs));
 
-    base::Value::Dict groups;
+    base::DictValue groups;
     for (const auto& group_id :
-         b->tab_strip_model()->group_model()->ListTabGroups()) {
+         bwi->GetTabStripModel()->group_model()->ListTabGroups()) {
       const TabGroup* group =
-          b->tab_strip_model()->group_model()->GetTabGroup(group_id);
-      base::Value::Dict g;
+          bwi->GetTabStripModel()->group_model()->GetTabGroup(group_id);
+      base::DictValue g;
       g.Set("title", group->visual_data()->title());
       groups.Set(group_id.ToString(), std::move(g));
     }
@@ -184,7 +187,7 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest, TabManagementToolTest) {
 
     // Sanity: we have both windows
     auto list_root = base::test::ParseJsonDict(response);
-    const base::Value::List* output_windows = list_root.FindList("windows");
+    const base::ListValue* output_windows = list_root.FindList("windows");
     ASSERT_TRUE(output_windows);
     ASSERT_EQ(output_windows->size(), 2u);
   }

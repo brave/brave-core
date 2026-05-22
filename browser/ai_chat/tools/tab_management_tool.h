@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/values.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 
 class Profile;
@@ -41,7 +42,7 @@ class TabManagementTool : public Tool {
   void HandleListTabs(UseToolCallback callback);
 
   // Helper to generate tab list that can be reused by all handlers
-  base::Value::Dict GenerateTabList() const;
+  base::DictValue GenerateTabList() const;
 
   // Conversation-level permission state
   bool user_has_granted_permission_ = false;

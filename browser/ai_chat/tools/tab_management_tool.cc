@@ -60,6 +60,8 @@ std::string GetTabGroupColorString(tab_groups::TabGroupColorId color) {
       return "cyan";
     case tab_groups::TabGroupColorId::kOrange:
       return "orange";
+    case tab_groups::TabGroupColorId::kNumEntries:
+      NOTREACHED();
   }
 }
 
@@ -236,15 +238,17 @@ void TabManagementTool::UseTool(const std::string& input_json,
   if (*action == "list") {
     HandleListTabs(std::move(callback));
   } else {
-    std::move(callback).Run(CreateContentBlocksForText(
-        "Invalid action. Must be one of: list, move, close, "
-        "create_group, update_group, remove_from_group"));
+    std::move(callback).Run(
+        CreateContentBlocksForText(
+            "Invalid action. Must be one of: list, move, close, "
+            "create_group, update_group, remove_from_group"),
+        {});
   }
 }
 
-base::Value::Dict TabManagementTool::GenerateTabList() const {
-  base::Value::Dict result;
-  base::Value::List windows;
+base::DictValue TabManagementTool::GenerateTabList() const {
+  base::DictValue result;
+  base::ListValue windows;
 
   // Iterate through all browser windows for this profile
   for (BrowserWindowInterface* browser : GetAllBrowserWindowInterfaces()) {
@@ -252,7 +256,7 @@ base::Value::Dict TabManagementTool::GenerateTabList() const {
       continue;
     }
 
-    base::Value::Dict window_info;
+    base::DictValue window_info;
     window_info.Set("window_id", browser->GetSessionID().id());
     window_info.Set("is_active", browser->IsActive());
 
@@ -261,15 +265,15 @@ base::Value::Dict TabManagementTool::GenerateTabList() const {
       continue;
     }
 
-    base::Value::List tabs;
-    base::Value::Dict groups;
+    base::ListValue tabs;
+    base::DictValue groups;
 
     // First, collect group information
     if (tab_strip->SupportsTabGroups() && tab_strip->group_model()) {
       for (const auto& group_id : tab_strip->group_model()->ListTabGroups()) {
         const TabGroup* group = tab_strip->group_model()->GetTabGroup(group_id);
         if (group) {
-          base::Value::Dict group_info;
+          base::DictValue group_info;
           const auto* visual_data = group->visual_data();
           group_info.Set("title", base::UTF16ToUTF8(visual_data->title()));
           group_info.Set("color", GetTabGroupColorString(visual_data->color()));
@@ -289,7 +293,7 @@ base::Value::Dict TabManagementTool::GenerateTabList() const {
 
       content::WebContents* web_contents = tab->GetContents();
 
-      base::Value::Dict tab_info;
+      base::DictValue tab_info;
       // Use TabHandle instead of extension tab ID
       tab_info.Set("tab_id", tab->GetHandle().raw_value());
       tab_info.Set("index", i);
@@ -319,12 +323,12 @@ base::Value::Dict TabManagementTool::GenerateTabList() const {
 }
 
 void TabManagementTool::HandleListTabs(UseToolCallback callback) {
-  base::Value::Dict result = GenerateTabList();
+  base::DictValue result = GenerateTabList();
 
   std::string json_output;
   base::JSONWriter::WriteWithOptions(
       result, base::JSONWriter::OPTIONS_PRETTY_PRINT, &json_output);
 
-  std::move(callback).Run(CreateContentBlocksForText(json_output));
+  std::move(callback).Run(CreateContentBlocksForText(json_output), {});
 }
 }  // namespace ai_chat
