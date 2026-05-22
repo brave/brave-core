@@ -1261,44 +1261,166 @@ base::ReadUnicodeCharacter(
 
 <a id="CSA-070"></a>
 
-## ✅ Convert Rust FFI Types at the C++ Boundary; Prefer `rust::Str`/`rust::Slice` Over `CxxString`/`CxxVector`
+## ✅ String Usage in Rust/C++ FFI
 
-**`rust::Str`/`rust::String` should always be converted to `std::string_view`/`base::span` (or deep-copied to `std::string`) when passed into C++. Prefer `rust::Str`/`rust::Slice` over `CxxString`/`CxxVector` for borrowed data.** Rust's `String`/`Vec` and C++'s `std::string`/`std::vector` use different allocators and memory layouts, so handing raw heap ownership across the boundary is unsafe — copy instead.
+**Pick FFI string types by data flow (borrow vs. own) and payload size (standard vs. large).** Rust's `String`/`Vec` and C++'s `std::string`/`std::vector` use different allocators and memory layouts, so the wrong choice causes hidden copies, lifetime bugs, or container overhead. Sections below cover each case with examples.
 
-```cpp
-// ❌ WRONG - storing rust::String in C++ data structures or passing it
-// around as if it were std::string. Bridge types should not outlive the
-// FFI call.
-class MyService {
-  rust::String value_;  // Don't hold rust types in C++ state.
-};
+### Rust → C++ read-only text — `&str` (maps to `rust::Str`)
 
-// ✅ CORRECT - convert at the boundary
-// For rust::Str, use the existing helper in //base:
-#include "base/strings/string_view_rust.h"
-std::string_view sv = base::RustStrToStringView(rust_str);
+Zero-copy. Rust retains ownership; C++ reads via pointer/length window. Use for logging, printing, parsing.
 
-// For rust::String, view its bytes as string_view, or deep-copy:
-std::string_view RustStringToStringView(const rust::String& s) {
-  return std::string_view(s.data(), s.length());
-}
-std::u16string RustStringToUTF16(const rust::String& s) {
-  return base::UTF8ToUTF16(RustStringToStringView(s));
+```rust
+// ❌ WRONG - forces C++ container overhead for a borrow
+unsafe extern "C++" {
+    fn log_event(name: &CxxString);
 }
 
-// When ownership must cross the boundary, deep-copy:
-std::string owned(rust_str.data(), rust_str.size());  // C++ side
-// rust_string.to_string() / rust_string.to_owned()   // Rust side
+// ✅ CORRECT - zero-copy borrow
+unsafe extern "C++" {
+    fn log_event(name: &str);
+}
 ```
 
-`CxxString`/`CxxVector` can't be passed by value across the FFI and `&mut`
-access requires `Pin<&mut CxxString>`, so for borrowed access prefer
-`rust::Str`/`rust::Slice` and deep-copy at the boundary when you need an
-owned copy. If you need to pass a large amount of data without copying,
-prefer `cxx::UniquePtr<T>`: C++ allocates the object via
-`std::make_unique<T>()` and hands ownership to a `cxx::UniquePtr<T>`, and
-when Rust drops the `UniquePtr`, `cxx` safely invokes the C++ allocator to
-delete it. This keeps allocation and deallocation on the same side of the
-boundary while still moving ownership across it.
+```cpp
+void LogEvent(rust::Str name) {
+  // Treat rust::Str as std::string_view — read only, do not store.
+  VLOG(1) << std::string_view(name);
+}
+```
+
+### C++ → Rust read-only text — `&str` (maps to `rust::Str`)
+
+Zero-copy. Rust receives a native `&str` it can search, slice, or print immediately. Use for validation, key lookup.
+
+```rust
+// ❌ WRONG - bridge type leaks into idiomatic Rust code
+fn is_valid_key(key: &CxxString) -> bool;
+
+// ✅ CORRECT - native &str on the Rust side
+fn is_valid_key(key: &str) -> bool {
+    KNOWN_KEYS.contains(&key)
+}
+```
+
+```cpp
+bool valid = ffi::is_valid_key(key_string_view);  // implicit conversion
+```
+
+### Rust → C++ ownership, standard text — `String` (maps to `rust::String`)
+
+Container move; no text copy. C++ owns the `rust::String` for the scope of the call. **Deep-copy into `std::string` to preserve past the function's return** — never store `rust::String` as a class member.
+
+```rust
+// ✅ Return owned text by value
+fn build_report() -> String {
+    format!("report: {}", compute())
+}
+```
+
+```cpp
+// ❌ WRONG - bridge type stored past FFI call
+class Reporter {
+  rust::String last_report_;
+};
+
+// ✅ CORRECT - deep-copy at the boundary
+std::string report(rust_report.data(), rust_report.size());
+reporter.set_last_report(std::move(report));
+```
+
+### Rust → C++ ownership, MASSIVE payload — `Box<Vec<u8>>` (maps to `rust::Box<rust::Vec<uint8_t>>`)
+
+Zero-copy. Heap pointer moves to C++; C++ wraps bytes in `std::string_view` or `base::span`. Rust's allocator cleans up when `Box` drops. Use for file buffers, JSON blobs, streaming payloads.
+
+```rust
+// ❌ WRONG - copies container layout
+fn take_payload(buf: String);
+
+// ✅ CORRECT - pointer move, zero-copy
+fn produce_payload() -> Box<Vec<u8>>;
+```
+
+```cpp
+void Consume(rust::Box<rust::Vec<uint8_t>> buf) {
+  base::span<const uint8_t> bytes(buf->data(), buf->size());
+  // ...consume bytes. Rust deallocator runs when buf drops.
+}
+```
+
+### C++ → Rust ownership, standard text — `String` (maps to `rust::String`)
+
+Deep copy into Rust heap. C++ builds text, copies into `rust::String`, drops its local copy. Rust gains un-aliased control of an idiomatic container.
+
+```rust
+// ❌ WRONG - borrowing CxxString into long-lived Rust state ties Rust's
+// lifetime to a C++ container.
+fn store_name(name: &CxxString);
+
+// ✅ CORRECT - C++ deep-copies at the call site
+fn store_name(name: String);
+```
+
+```cpp
+std::string computed = base::StrCat({prefix, suffix});
+ffi::store_name(rust::String(computed));  // deep copy into Rust heap
+```
+
+### C++ → Rust ownership, MASSIVE payload — `UniquePtr<CxxString>`
+
+Zero-copy pointer move. Allocation context stays C++-side; `cxx` invokes the C++ destructor when Rust drops the `UniquePtr`. Use for ingesting large blobs.
+
+```rust
+// ❌ WRONG - forces deep copy of large buffer
+fn ingest(blob: String);
+
+// ✅ CORRECT - zero-copy pointer move
+fn ingest(blob: UniquePtr<CxxString>);
+```
+
+```cpp
+auto blob = std::make_unique<std::string>(LoadLargeFile());
+ffi::ingest(std::move(blob));  // ownership transfers to Rust
+```
+
+### Collections of strings
+
+Same borrow-vs-own split. `&CxxVector<CxxString>` is almost never the right answer.
+
+**Rust → C++ read-only array — `&[&str]`**
+
+Zero-copy, zero-allocation. No C++ container overhead.
+
+```rust
+// ❌ WRONG - C++ container overhead for a borrow
+unsafe extern "C++" {
+    fn process(keys: &CxxVector<CxxString>);
+}
+
+// ✅ CORRECT
+unsafe extern "C++" {
+    fn process(keys: &[&str]);
+}
+```
+
+**C++ → Rust ownership, large — `UniquePtr<CxxVector<CxxString>>`**
+
+Container lifetime owned by Rust; strings readable without per-element conversion.
+
+```rust
+fn ingest(items: UniquePtr<CxxVector<CxxString>>);
+```
+
+```cpp
+auto items = std::make_unique<std::vector<std::string>>(BuildItems());
+ffi::ingest(std::move(items));
+```
+
+**C++ → Rust ownership, small / ergonomic — `Vec<String>` (deep copy)**
+
+Highest safety. Fully decouples from C++ memory on receipt.
+
+```rust
+fn ingest_small(items: Vec<String>);
+```
 
 ---
