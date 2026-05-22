@@ -19,6 +19,7 @@
 #include "base/logging.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
+#include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -215,10 +216,11 @@ void IKEv2ConnectionAPIImplMac::CreateVPNConnectionImpl(
       vpn_server_connect_rule.interfaceTypeMatch =
           NEOnDemandRuleInterfaceTypeAny;
       vpn_server_connect_rule.probeURL = [NSURL
-          URLWithString:
-              [NSString
-                  stringWithFormat:@"https://%@/vpnsrv/api/server-status",
-                                   base::SysUTF8ToNSString(info.hostname())]];
+          URLWithString:[NSString stringWithFormat:@"https://%@/%@",
+                                                   base::SysUTF8ToNSString(
+                                                       info.hostname()),
+                                                   base::SysUTF8ToNSString(
+                                                       kServerStatus)]];
       [vpn_manager setOnDemandRules:@[ vpn_server_connect_rule ]];
     }
 
