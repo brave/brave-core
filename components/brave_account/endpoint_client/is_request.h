@@ -9,6 +9,16 @@
 #include "brave/components/brave_account/endpoint_client/is_request_body.h"
 #include "brave/components/brave_account/endpoint_client/request.h"
 
+namespace brave_account {
+namespace endpoint_client {
+namespace detail {
+enum class Method;
+template <IsRequestBody RequestBody, Method M>
+struct Request;
+}  // namespace detail
+}  // namespace endpoint_client
+}  // namespace brave_account
+
 namespace brave_account::endpoint_client::detail {
 
 template <typename>

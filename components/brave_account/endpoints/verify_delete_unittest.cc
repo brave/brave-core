@@ -6,7 +6,11 @@
 #include "brave/components/brave_account/endpoints/verify_delete.h"
 
 #include <optional>
+#include <ostream>
+#include <string>
 
+#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "base/no_destructor.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_account/endpoints/endpoint_test.h"

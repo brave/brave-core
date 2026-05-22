@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <type_traits>
 #include <utility>
 
 #include "base/check_deref.h"
@@ -16,6 +17,7 @@
 #include "base/functional/callback_helpers.h"
 #include "base/json/json_writer.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
@@ -25,6 +27,7 @@
 #include "brave/components/brave_account/endpoint_client/test_support.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_account/prefs.h"
+#include "components/os_crypt/async/browser/os_crypt_async.h"
 #include "components/os_crypt/async/browser/test_utils.h"
 #include "components/prefs/testing_pref_service.h"
 #include "net/http/http_status_code.h"
@@ -33,6 +36,10 @@
 #include "services/network/test/test_url_loader_factory.h"
 #include "services/network/test/test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+namespace base {
+class OneShotTimer;
+}  // namespace base
 
 namespace brave_account {
 

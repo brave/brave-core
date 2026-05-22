@@ -6,7 +6,9 @@
 #include "brave/components/brave_account/features.h"
 
 #include <string>
+#include <utility>
 
+#include "base/containers/flat_map.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/email_aliases/features.h"
 #include "testing/gtest/include/gtest/gtest.h"

@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_account/prefs.h"
 
+#include <string_view>
+
 #include "base/values.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_account/pref_names.h"

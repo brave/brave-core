@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "base/android/jni_android.h"
 #include "brave/components/brave_account/android/features_jni_headers/BraveAccountFeatures_jni.h"
 #include "brave/components/brave_account/features.h"
+#include "third_party/jni_zero/jni_zero.h"
 
 namespace brave_account {
 

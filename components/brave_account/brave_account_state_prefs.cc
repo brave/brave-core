@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_account/brave_account_state_prefs.h"
 
+#include <compare>
 #include <optional>
 
 #include "base/check.h"

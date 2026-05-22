@@ -11,10 +11,6 @@
 #include "google/protobuf/message_lite.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace base {
-class DictValue;
-}  // namespace base
-
 namespace brave_account::endpoint_client::detail {
 
 namespace {

@@ -12,6 +12,15 @@
 #include "base/values.h"
 #include "google/protobuf/message_lite.h"
 
+namespace base {
+class Value;
+}  // namespace base
+namespace google {
+namespace protobuf {
+class MessageLite;
+}  // namespace protobuf
+}  // namespace google
+
 namespace brave_account::endpoint_client::detail {
 
 // A JSON response body provides a static FromValue() taking

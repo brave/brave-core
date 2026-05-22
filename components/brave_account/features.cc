@@ -5,6 +5,9 @@
 
 #include "brave/components/brave_account/features.h"
 
+#include "base/containers/span.h"
+#include "base/feature.h"
+#include "base/feature_list.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
