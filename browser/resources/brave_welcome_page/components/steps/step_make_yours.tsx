@@ -326,64 +326,117 @@ const DARK_MODE_SATURATION = 0.4 // Dark mode saturation
 
 // Light mode luminosity: higher values = lighter (0-100)
 const LIGHT_MODE_LUMINOSITY = {
-  base: 90, // Base luminosity for light mode
-  bgOffset: 4, // bg = base + offset (brighter)
-  highlightOffset: -2, // highlight = base + offset
-  tabbarOffset: -4, // tabbar = base + offset (darker)
+  base: 90,
+  bgOffset: 4,
+  highlightOffset: -2,
+  tabbarOffset: -4,
+  dividerOffset: -10,
+  dividerVerticalOffset: -4,
+  textPrimary: 10,
+  textSecondary: 30,
 }
 
 // Dark mode luminosity: lower values = darker (0-100)
 const DARK_MODE_LUMINOSITY = {
-  base: 13, // Base luminosity for dark mode
-  bgOffset: 0, // bg = base + offset (reference)
-  highlightOffset: 6, // highlight = base + offset (lighter)
-  tabbarOffset: -4, // tabbar = base + offset (darker)
+  base: 13,
+  bgOffset: 0,
+  highlightOffset: 6,
+  tabbarOffset: -4,
+  dividerOffset: 17,
+  dividerVerticalOffset: 17,
+  textPrimary: 90,
+  textSecondary: 80,
 }
 // ============================================
+
+type PreviewThemeVars = {
+  '--preview-bg': string
+  '--preview-bg-highlight': string
+  '--preview-tabbar-bg': string
+  '--preview-text-primary': string
+  '--preview-text-secondary': string
+  '--preview-icon-color': string
+  '--preview-divider': string
+  '--preview-divider-vertical': string
+}
+
+function buildPreviewThemeVars(
+  hue: number,
+  surfaceSat: number,
+  textSat: number,
+  offsets: typeof LIGHT_MODE_LUMINOSITY | typeof DARK_MODE_LUMINOSITY,
+  isDark: boolean,
+): PreviewThemeVars {
+  const { base } = offsets
+  const surfaceSatMuted = surfaceSat * (isDark ? 0.8 : 1)
+  const highlightSat = surfaceSat * 1.2
+
+  return {
+    '--preview-bg': hslToHex(hue, surfaceSat, base + offsets.bgOffset),
+    '--preview-bg-highlight': hslToHex(
+      hue,
+      highlightSat,
+      base + offsets.highlightOffset,
+    ),
+    '--preview-tabbar-bg': hslToHex(
+      hue,
+      surfaceSatMuted,
+      base + offsets.tabbarOffset,
+    ),
+    '--preview-text-primary': hslToHex(hue, textSat, offsets.textPrimary),
+    '--preview-text-secondary': hslToHex(
+      hue,
+      textSat,
+      offsets.textSecondary,
+    ),
+    '--preview-icon-color': hslToHex(hue, textSat, offsets.textSecondary),
+    '--preview-divider': hslToHex(
+      hue,
+      surfaceSatMuted,
+      base + offsets.dividerOffset,
+    ),
+    '--preview-divider-vertical': hslToHex(
+      hue,
+      surfaceSatMuted,
+      base + offsets.dividerVerticalOffset,
+    ),
+  }
+}
 
 // Generate themed colors from a color option
 function generateThemedColors(
   colorOpt: ColorOption,
   isDark: boolean,
 ): React.CSSProperties {
-  // For default, use neutral colors (no tinting)
+  // For default, use neutral Leo tokens from preview-theme CSS (no tinting)
   if (colorOpt.id === 'Default') {
     return {}
   }
 
-  // Get the hue from the accent color (color3)
-  const hsl = hexToHSL(colorOpt.color3)
-  const hue = hsl.h
-  // Use similar saturation to the original color but capped for subtlety
-  const maxSat = Math.min(hsl.s, 25)
+  const { h: hue, s } = hexToHSL(colorOpt.color3)
+  const maxSat = Math.min(s, 25)
 
   if (isDark) {
-    const { base, bgOffset, highlightOffset, tabbarOffset } =
-      DARK_MODE_LUMINOSITY
-    const sat = maxSat * DARK_MODE_SATURATION
-    return {
-      '--preview-bg': hslToHex(hue, sat, base + bgOffset),
-      '--preview-bg-highlight': hslToHex(
-        hue,
-        sat * 1.2,
-        base + highlightOffset,
-      ),
-      '--preview-tabbar-bg': hslToHex(hue, sat * 0.8, base + tabbarOffset),
-    } as React.CSSProperties
-  } else {
-    const { base, bgOffset, highlightOffset, tabbarOffset } =
-      LIGHT_MODE_LUMINOSITY
-    const sat = maxSat * LIGHT_MODE_SATURATION
-    return {
-      '--preview-bg': hslToHex(hue, sat, base + bgOffset),
-      '--preview-bg-highlight': hslToHex(
-        hue,
-        sat * 1.2,
-        base + highlightOffset,
-      ),
-      '--preview-tabbar-bg': hslToHex(hue, sat, base + tabbarOffset),
-    } as React.CSSProperties
+    const surfaceSat = maxSat * DARK_MODE_SATURATION
+    const textSat = surfaceSat * 0.2
+    return buildPreviewThemeVars(
+      hue,
+      surfaceSat,
+      textSat,
+      DARK_MODE_LUMINOSITY,
+      true,
+    ) as React.CSSProperties
   }
+
+  const surfaceSat = maxSat * LIGHT_MODE_SATURATION
+  const textSat = surfaceSat * 0.3
+  return buildPreviewThemeVars(
+    hue,
+    surfaceSat,
+    textSat,
+    LIGHT_MODE_LUMINOSITY,
+    false,
+  ) as React.CSSProperties
 }
 
 const colorOptions: ColorOption[] = [

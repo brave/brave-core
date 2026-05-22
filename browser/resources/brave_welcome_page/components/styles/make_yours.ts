@@ -438,6 +438,7 @@ export const makeYoursStyles = `
     --preview-text-secondary: #464649; /* text.secondary */
     --preview-icon-color: #464649; /* icon.default */
     --preview-divider: #c9c9ca; /* desktopbrowser.tabbar.pinnedTabOutlineHorizontal */
+    --preview-divider-vertical: #e4e4e5; /* desktopbrowser.tabbar.pinnedTabOutlineVertical */
   }
 
   /* Preview Theme Overrides - Dark Mode (Leo Desktop Browser tokens) */
@@ -449,6 +450,7 @@ export const makeYoursStyles = `
     --preview-text-secondary: #c9c9ca; /* text.secondary */
     --preview-icon-color: #c9c9ca; /* icon.default */
     --preview-divider: #464649; /* desktopbrowser.tabbar.pinnedTabOutlineHorizontal */
+    --preview-divider-vertical: #464649; /* desktopbrowser.tabbar.pinnedTabOutlineVertical */
   }
 
   /* Apply theme colors to browser chrome elements */
@@ -517,8 +519,8 @@ export const makeYoursStyles = `
     border-color: var(--preview-divider);
   }
 
-  .browser-chrome.preview-theme-light .menu-btn leo-icon:last-child,
-  .browser-chrome.preview-theme-dark .menu-btn leo-icon:last-child {
+  .browser-chrome.preview-theme-light .menu-btn leo-icon,
+  .browser-chrome.preview-theme-dark .menu-btn leo-icon {
     --leo-icon-color: var(--preview-icon-color);
   }
 
@@ -545,12 +547,12 @@ export const makeYoursStyles = `
 
   .browser-chrome.preview-theme-light .pinned-tab,
   .browser-chrome.preview-theme-dark .pinned-tab {
-    border-color: var(--preview-divider);
+    border-color: var(--preview-divider-vertical);
   }
 
   .browser-chrome.preview-theme-light .sidebar-divider,
   .browser-chrome.preview-theme-dark .sidebar-divider {
-    background: var(--preview-divider);
+    background: var(--preview-divider-vertical);
   }
 
   .browser-chrome.preview-theme-light .vertical-tab.active,
