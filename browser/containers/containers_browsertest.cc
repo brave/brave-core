@@ -2111,11 +2111,11 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   const GURL worker_url("https://a.test/containers/container_worker.js");
   const std::string scope = "https://a.test/containers/";
 
-  constexpr PartitionSiteData kDefaultData = {"default_cookie", "default_value",
-                                              "default_key", "default_value"};
-  constexpr PartitionSiteData kContainerData = {
-      "container_cookie", "container_value", "container_key",
-      "container_value"};
+  const PartitionSiteData default_data = {"default_cookie", "default_value",
+                                          "default_key", "default_value"};
+  const PartitionSiteData container_data = {"container_cookie",
+                                            "container_value", "container_key",
+                                            "container_value"};
 
   std::vector<mojom::ContainerPtr> synced;
   synced.push_back(MakeContainer(kTestContainerId, "Test"));
@@ -2124,23 +2124,23 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* default_web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  SetPartitionSiteData(default_web_contents, kDefaultData, worker_url, scope);
-  ExpectPartitionSiteDataPresent(default_web_contents, kDefaultData, scope);
+  SetPartitionSiteData(default_web_contents, default_data, worker_url, scope);
+  ExpectPartitionSiteDataPresent(default_web_contents, default_data, scope);
 
   content::WebContents* container_web_contents =
       OpenUrlInContainerTab(url, kTestContainerId);
-  SetPartitionSiteData(container_web_contents, kContainerData, worker_url,
+  SetPartitionSiteData(container_web_contents, container_data, worker_url,
                        scope);
-  ExpectPartitionSiteDataPresent(container_web_contents, kContainerData, scope);
+  ExpectPartitionSiteDataPresent(container_web_contents, container_data, scope);
 
   RemoveSiteDataAndWait();
 
   // Nested container-partition removes are started asynchronously (same as
   // IWA).
-  ExpectPartitionSiteDataClearedEventually(default_web_contents, kDefaultData,
+  ExpectPartitionSiteDataClearedEventually(default_web_contents, default_data,
                                            scope);
   ExpectPartitionSiteDataClearedEventually(container_web_contents,
-                                           kContainerData, scope);
+                                           container_data, scope);
 }
 
 IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
