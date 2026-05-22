@@ -31,7 +31,8 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
 }  // namespace prefs
 
 bool IsEnabled(PrefService* prefs) {
-  if (prefs->GetBoolean(prefs::kBraveNewsDisabledByPolicy)) {
+  if (prefs->IsManagedPreference(prefs::kBraveNewsDisabledByPolicy) &&
+      prefs->GetBoolean(prefs::kBraveNewsDisabledByPolicy)) {
     return false;
   }
   return prefs->GetBoolean(prefs::kNewTabPageShowToday) &&
