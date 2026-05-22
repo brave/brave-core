@@ -203,21 +203,17 @@ public class BraveIntentHandler {
     }
 
     /**
-     * Bytecode-redirected from {@link IntentHandler#intentHasUnsafeUrl}. Defers to the upstream
-     * check (which handles chrome://, chrome-native://, devtools://, distiller://, about://) and
+     * Bytecode-redirected from {@link IntentHandler#isUrlUnsafe}. Defers to the upstream check
+     * (which handles chrome://, chrome-native://, devtools://, distiller://, about://) and
      * additionally blocks brave://, since it is a display alias for chrome:// and gets rewritten to
      * chrome:// deeper in the navigation stack — too late to protect this guard.
      */
-    public static boolean intentHasUnsafeUrl(@Nullable String url, Intent intent) {
-        if (BraveIntentHandlerInternal.intentHasUnsafeUrl(url, intent)) {
+    public static boolean isUrlUnsafe(@Nullable String url) {
+        if (BraveIntentHandlerInternal.isUrlUnsafe(url)) {
             return true;
         }
         if (url == null) return false;
         String scheme = Uri.parse(url).getScheme();
-        return scheme != null
-                && BRAVE_SCHEME.equals(scheme.toLowerCase(Locale.US))
-                && (intent.hasCategory(Intent.CATEGORY_BROWSABLE)
-                        || intent.hasCategory(Intent.CATEGORY_DEFAULT)
-                        || intent.getCategories() == null);
+        return scheme != null && BRAVE_SCHEME.equals(scheme.toLowerCase(Locale.US));
     }
 }

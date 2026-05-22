@@ -780,11 +780,10 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/IntentHandler",
-                        "intentHasUnsafeUrl",
+                        "isUrlUnsafe",
                         MethodModifier.STATIC,
                         boolean.class,
-                        String.class,
-                        Intent.class));
+                        String.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/download/dialogs/DownloadLocationDialogCoordinator", // presubmit: ignore-long-line

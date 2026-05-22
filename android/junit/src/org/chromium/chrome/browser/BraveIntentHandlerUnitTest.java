@@ -214,25 +214,19 @@ public class BraveIntentHandlerUnitTest {
 
     @Test
     @SmallTest
-    public void intentHasUnsafeInternalScheme_braveScheme_isBlocked() {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.addCategory(Intent.CATEGORY_BROWSABLE);
-        assertTrue(BraveIntentHandler.intentHasUnsafeUrl("brave://flags/", intent));
+    public void isUrlUnsafe_braveScheme_isBlocked() {
+        assertTrue(BraveIntentHandler.isUrlUnsafe("brave://flags/"));
     }
 
     @Test
     @SmallTest
-    public void intentHasUnsafeInternalScheme_braveScheme_mixedCase_isBlocked() {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.addCategory(Intent.CATEGORY_DEFAULT);
-        assertTrue(BraveIntentHandler.intentHasUnsafeUrl("Brave://flags/", intent));
+    public void isUrlUnsafe_braveScheme_mixedCase_isBlocked() {
+        assertTrue(BraveIntentHandler.isUrlUnsafe("Brave://flags/"));
     }
 
     @Test
     @SmallTest
-    public void intentHasUnsafeInternalScheme_httpsScheme_isAllowed() {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.addCategory(Intent.CATEGORY_BROWSABLE);
-        assertFalse(BraveIntentHandler.intentHasUnsafeUrl("https://example.com/", intent));
+    public void isUrlUnsafe_httpsScheme_isAllowed() {
+        assertFalse(BraveIntentHandler.isUrlUnsafe("https://example.com/"));
     }
 }
