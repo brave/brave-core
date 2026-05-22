@@ -19,6 +19,31 @@
                               fetcher:(web::URLFetcherBlockAdapter*)fetcher;
 @end
 
+namespace {
+NSInteger GetErrorCodeForUrl(const GURL& URL);
+
+// Returns true if URL is a sub-resource that Brave additionally permits to
+// be loaded from a WebUI page whose main-frame URL has a different
+// SchemeHostPort. Currently:
+//   - chrome://image, used by Brave WebUIs for image rendering.
+//   - chrome://favicon2, used by Brave WebUIs for favicon rendering.
+//   - chrome-untrusted://... URLs served by a registered
+//     WebUIIOSControllerFactory, used by Brave's per-frame WebUIIOS
+//     support (e.g. AI Chat embedding a sandboxed conversation iframe).
+// The chrome-untrusted bypass is intentionally scoped to that scheme so two
+// distinct chrome:// WebUIs remain cross-origin-isolated from each other.
+bool IsBraveAllowedCrossHostSubResource(const GURL& URL) {
+  if (URL.DomainIs("image") || URL.DomainIs("favicon2")) {
+    return true;
+  }
+  if (URL.SchemeIs("chrome-untrusted") && GetErrorCodeForUrl(URL) == 0) {
+    return true;
+  }
+  return false;
+}
+
+}  // namespace
+
 // Override Chromium's `didReceiveResponse
 // So we can replace the responseHeaders with our own,
 // and whatever comes from the server, so WebKit can enforce CSP
@@ -27,8 +52,16 @@
   didReceiveResponse:[strongSelf processResponse:response fetcher:fetcher]]; \
         [strongSelf dummy
 
+// Extend the upstream same-origin guard's allow-list. Upstream rejects any
+// sub-resource whose SchemeHostPort differs from the main webView.URL
+// unless its host is chrome://resources. This macro adds a second clause
+// to that check; see IsBraveAllowedCrossHostSubResource for the policy.
+#define DomainIs(host) \
+  DomainIs(host) && !IsBraveAllowedCrossHostSubResource(URL)
+
 #include <ios/web/webui/crw_web_ui_scheme_handler.mm>
 
+#undef DomainIs
 #undef didReceiveResponse
 
 @implementation CRWWebUISchemeHandler (Override)

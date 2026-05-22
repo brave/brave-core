@@ -1,8 +1,8 @@
 diff --git a/content/browser/devtools/protocol_config.json b/content/browser/devtools/protocol_config.json
-index e3143b0c7ee95942e173b7ee488ae05d73ff0106..ca22c10dc95cbff33726bd9d53f3a4404e63c883 100644
+index 52f56a8213191f0407176c6080e3bf9189f7c5d0..e98c00caaac240df19c6a8f3775bdf2b4417cc9d 100644
 --- a/content/browser/devtools/protocol_config.json
 +++ b/content/browser/devtools/protocol_config.json
-@@ -133,7 +133,7 @@
+@@ -134,7 +134,7 @@
                    "setCookieControls",
                    "configureDurableMessages"
                  ],

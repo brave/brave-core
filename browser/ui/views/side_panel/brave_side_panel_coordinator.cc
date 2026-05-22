@@ -71,22 +71,19 @@ void BraveSidePanelCoordinator::Show(
 #endif
 }
 
-void BraveSidePanelCoordinator::Close(SidePanelEntry::PanelType panel_type,
-                                      SidePanelEntryHideReason hide_reason,
+void BraveSidePanelCoordinator::Close(SidePanelEntryHideReason hide_reason,
                                       bool suppress_animations) {
 #if BUILDFLAG(ENABLE_SIDEBAR_V2)
   // Same as Show(): sidebar v2 does not rely on SidebarContainerView to
   // propagate panel close events, so clear the active item state here.
   CHECK(browser_view_->browser()->GetFeatures().sidebar_controller());
-  if (panel_type == SidePanelEntry::PanelType::kContent) {
-    browser_view_->browser()
-        ->GetFeatures()
-        .sidebar_controller()
-        ->UpdateActiveItemState();
-  }
+  browser_view_->browser()
+      ->GetFeatures()
+      .sidebar_controller()
+      ->UpdateActiveItemState();
 #endif
 
-  SidePanelCoordinator::Close(panel_type, hide_reason, suppress_animations);
+  SidePanelCoordinator::Close(hide_reason, suppress_animations);
 }
 
 void BraveSidePanelCoordinator::OnActiveTabChanged(
@@ -105,9 +102,8 @@ void BraveSidePanelCoordinator::OnActiveTabChanged(
 }
 
 void BraveSidePanelCoordinator::Toggle() {
-  if (IsSidePanelShowing(SidePanelEntry::PanelType::kContent) &&
-      !browser_view_->contents_height_side_panel()->IsClosing()) {
-    SidePanelCoordinator::Close(SidePanelEntry::PanelType::kContent);
+  if (IsSidePanelShowing() && !browser_view_->side_panel()->IsClosing()) {
+    SidePanelCoordinator::Close();
   } else if (const auto key = GetLastActiveEntryKey()) {
     SidePanelUIBase::Show(*key, SidePanelOpenTrigger::kToolbarButton);
   }
@@ -127,8 +123,7 @@ void BraveSidePanelCoordinator::OnViewVisibilityChanged(
   // See the comment of SidePanelCoordinator::OnViewVisibilityChanged()
   // about this condition.
   bool update_items_state = true;
-  if (observed_view->GetVisible() ||
-      !current_key(SidePanelEntry::PanelType::kContent)) {
+  if (observed_view->GetVisible() || !current_key()) {
     update_items_state = false;
   }
 

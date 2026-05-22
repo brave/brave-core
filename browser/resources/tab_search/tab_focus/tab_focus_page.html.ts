@@ -8,7 +8,45 @@ import type { TabFocusPageElement } from './tab_focus_page.js'
 
 export function getHtml(this: TabFocusPageElement) {
   return this.showFRE_
-    ? this.getEnableTabFocusHtml_()
+    ? html`
+        <div class="enable-tab-focus-wrapper">
+          <div class="title-row">
+            <div class="title-column">
+              <div class="title">${this.getTitle_()}</div>
+              ${!this.showFRE_
+                ? html` <div class="subtitle">${this.getSubtitle_()}</div> `
+                : ''}
+            </div>
+          </div>
+          <div class="enable-tab-focus-content-wrapper">
+            <div class="enable-tab-focus-illustration"></div>
+            <div class="enable-tab-focus-info-wrapper">
+              <span class="enable-tab-focus-info-text">
+                ${this.getPrivacyDisclaimerMessage_()}
+              </span>
+              <div class="enable-tab-focus-button-row">
+                <span
+                  class="learn-more-link"
+                  @click=${this.onLearnMoreClick_}
+                >
+                  ${this.getLearnMoreLabel_()}
+                </span>
+                <div>
+                  <leo-button
+                    id="enableButton"
+                    data-testid="enable-tab-focus"
+                    kind="filled"
+                    size="small"
+                    @click="${this.onEnableTabFocusClick_}"
+                  >
+                    ${this.getEnableButtonLabel_()}
+                  </leo-button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `
     : html`<!--_html_template_start_-->
         <div
           id="brave-tab-focus"
@@ -20,7 +58,14 @@ export function getHtml(this: TabFocusPageElement) {
             aria-live="polite"
             aria-relevant="all"
           >
-            ${this.getHeaderHtml_()}
+            <div class="title-row">
+              <div class="title-column">
+                <div class="title">${this.getTitle_()}</div>
+                ${!this.showFRE_
+                  ? html` <div class="subtitle">${this.getSubtitle_()}</div> `
+                  : ''}
+              </div>
+            </div>
             <div class="input-row">
               <leo-input
                 id="topic-input"
@@ -42,7 +87,25 @@ export function getHtml(this: TabFocusPageElement) {
                 ${this.getSubmitButtonLabel_()}
               </leo-button>
             </div>
-            ${this.getUndoFocusTabsHtml_()}
+            ${this.undoTopic_ !== ''
+              ? html`
+                  <leo-alert
+                    id="undo"
+                    type="success"
+                    hideIcon="{true}"
+                  >
+                    ${this.getWindowCreatedMessage_()}
+                    <leo-button
+                      id="undoButton"
+                      kind="plain-faint"
+                      size="tiny"
+                      @click="${this.onUndoClick_}"
+                    >
+                      ${this.getUndoButtonLabel_()}
+                    </leo-button>
+                  </leo-alert>
+                `
+              : ''}
           </div>
           ${this.errorMessage === ''
             ? html`
@@ -50,7 +113,47 @@ export function getHtml(this: TabFocusPageElement) {
                   <div class="topics-title">
                     ${this.getSuggestedTopicsSubtitle_()}
                   </div>
-                  ${this.getTopicsHtml_()}
+                  ${this.isLoadingTopics
+                    ? [1, 2, 3, 4, 5].map(
+                        (key) => html`
+                          <leo-button
+                            key=${key}
+                            class="topics-button"
+                            size="small"
+                            kind="outline"
+                            isDisabled="{true}"
+                          >
+                            <div class="topic-description">
+                              <div class="emoji-wrapper">
+                                <leo-progressring
+                                  class="loading-ring"
+                                ></leo-progressring>
+                              </div>
+                              <div class="empty-state"></div>
+                            </div>
+                          </leo-button>
+                        `,
+                      )
+                    : this.topics_.map(
+                        (entry, index) => html`
+                          <leo-button
+                            id="${this.getTopicId_(index)}"
+                            data-testid="${this.getTopicId_(index)}"
+                            data-index="${index}"
+                            class="topics-button"
+                            size="small"
+                            kind="outline"
+                            @click=${this.onTopicClick_}
+                          >
+                            <div class="topic-description">
+                              <div class="emoji-wrapper">
+                                ${this.getTopicEmoji_(entry)}
+                              </div>
+                              ${this.getTopicWithoutEmoji_(entry)}
+                            </div>
+                          </leo-button>
+                        `,
+                      )}
                 </div>
               `
             : html`

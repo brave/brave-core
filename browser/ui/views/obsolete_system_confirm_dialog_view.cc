@@ -25,7 +25,7 @@ void ShowObsoleteSystemConfirmDialog(base::OnceCallback<void(bool)> callback) {
   if (auto* browser = chrome::FindLastActive()) {
     constrained_window::CreateBrowserModalDialogViews(
         new ObsoleteSystemConfirmDialogView(std::move(callback)),
-        browser->window()->GetNativeWindow())
+        browser->GetWindow()->GetNativeWindow())
         ->Show();
   }
 }

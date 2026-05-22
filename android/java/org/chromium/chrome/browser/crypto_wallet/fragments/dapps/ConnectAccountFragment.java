@@ -148,7 +148,7 @@ public class ConnectAccountFragment extends BaseDAppsFragment implements Permiss
                             ConnectAccountFragment.this.onFaviconAvailable(pageUrl, bitmap);
             // 0 is a max bitmap size for download
             mFaviconHelper.getLocalFaviconImageForURL(
-                    activity.getCurrentProfile(), pageUrl, 0, imageCallback);
+                    activity.getCurrentProfile(), pageUrl, 0, true, imageCallback);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "initComponents " + e);
         }

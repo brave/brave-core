@@ -29,8 +29,8 @@ import org.chromium.content_public.browser.WebContents;
 public class BraveLeoUtils {
     private static final String TAG = "BraveLeoUtils";
 
-    public static void verifySubscription(Callback callback) {
-        MutableLiveData<PurchaseModel> _activePurchases = new MutableLiveData();
+    public static void verifySubscription(Callback<Object> callback) {
+        MutableLiveData<PurchaseModel> _activePurchases = new MutableLiveData<>();
         LiveData<PurchaseModel> activePurchases = _activePurchases;
         InAppPurchaseWrapper.getInstance()
                 .queryPurchases(_activePurchases, InAppPurchaseWrapper.SubscriptionProduct.LEO);

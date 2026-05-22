@@ -1,5 +1,5 @@
 diff --git a/components/sessions/BUILD.gn b/components/sessions/BUILD.gn
-index 004a99346441e6d34166939546262d8f5432fb1c..9d53cf46acafca7701f68b48b48e314803029124 100644
+index 065feb12f55b231e1790ccd8a0db79bd4683eb16..66676acba643e4d61a1a2d1152f45fe9703c7225 100644
 --- a/components/sessions/BUILD.gn
 +++ b/components/sessions/BUILD.gn
 @@ -44,6 +44,7 @@ if (!is_ios) {

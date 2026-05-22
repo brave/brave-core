@@ -120,8 +120,6 @@ mojom::ContentSettingSource ConvertSettingsSource(
       return mojom::ContentSettingSource::kNone;
     case content_settings::SettingSource::kAllowList:
       return mojom::ContentSettingSource::kAllowList;
-    case content_settings::SettingSource::kTpcdGrant:
-      return mojom::ContentSettingSource::kTpcdGrant;
     case content_settings::SettingSource::kRemoteList:
       return mojom::ContentSettingSource::kRemoteList;
     case content_settings::SettingSource::kOsJavascriptOptimizer:

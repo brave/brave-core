@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/toolbar/app_menu.h b/chrome/browser/ui/views/toolbar/app_menu.h
-index f2acf6e7111efe3cdd8a59fe580db5be62a12c2a..89420ab38e5205c210fd43dcab6f0ea3b5cc947b 100644
+index 63aa030ad4fc86a5eed3c6728926fea114cdbf49..1b14e29dda57edd6f8b82e3cf0ffb97cb7c077d5 100644
 --- a/chrome/browser/ui/views/toolbar/app_menu.h
 +++ b/chrome/browser/ui/views/toolbar/app_menu.h
-@@ -34,7 +34,7 @@ class MenuRunner;
+@@ -35,7 +35,7 @@ class MenuRunner;
  struct BookmarkParentFolder;
  
  // AppMenu adapts the AppMenuModel to view's menu related classes.

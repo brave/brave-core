@@ -13,6 +13,7 @@
 #include "base/check_op.h"
 #include "base/functional/bind.h"
 #include "base/i18n/rtl.h"
+#include "brave/browser/ui/sidebar/features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/side_panel/side_panel_resize_widget.h"
@@ -40,14 +41,12 @@ using views::ShapeContextTokensOverride::kRoundedCornersBorderRadius;
 
 namespace {
 
-SidePanel::HorizontalAlignment GetHorizontalAlignment(
-    PrefService* pref_service,
-    SidePanelEntry::PanelType type) {
+SidePanel::HorizontalAlignment GetHorizontalAlignment(PrefService* pref_service,
+                                                      SidePanelType type) {
   bool is_right_aligned =
       pref_service->GetBoolean(prefs::kSidePanelHorizontalAlignment);
-  is_right_aligned = type == SidePanelEntry::PanelType::kToolbar
-                         ? !is_right_aligned
-                         : is_right_aligned;
+  is_right_aligned =
+      type == SidePanelType::kToolbar ? !is_right_aligned : is_right_aligned;
   return is_right_aligned ? SidePanel::HorizontalAlignment::kRight
                           : SidePanel::HorizontalAlignment::kLeft;
 }
@@ -75,13 +74,13 @@ END_METADATA
 
 }  // namespace
 
-SidePanel::SidePanel(BrowserView* browser_view,
-                     SidePanelEntry::PanelType type,
-                     bool has_border)
-    : horizontal_alignment_(
-          GetHorizontalAlignment(browser_view->GetProfile()->GetPrefs(), type)),
-      browser_view_(browser_view),
-      type_(type) {
+SidePanel::SidePanel(BrowserView* browser_view)
+    : horizontal_alignment_(GetHorizontalAlignment(
+          browser_view->GetProfile()->GetPrefs(),
+          base::FeatureList::IsEnabled(sidebar::features::kSidebarV2)
+              ? SidePanelType::kToolbar
+              : SidePanelType::kContent)),
+      browser_view_(browser_view) {
   // Disable mirroring as this panel can have different margin per alignment.
   SetMirrored(false);
 
@@ -112,7 +111,6 @@ SidePanel::SidePanel(BrowserView* browser_view,
       prefs::kSidePanelHorizontalAlignment,
       base::BindRepeating(&SidePanel::UpdateHorizontalAlignment,
                           base::Unretained(this)));
-
 }
 
 SidePanel::~SidePanel() {
@@ -186,7 +184,7 @@ gfx::Size SidePanel::GetMinimumSize() const {
   // fits in the remaining space beside the toolbar. Use the upstream-compatible
   // minimum for toolbar panels so that clamping logic works correctly.
   // The content-height panel (inside the sidebar) keeps kDefaultSidePanelWidth.
-  if (type_ == SidePanelEntry::PanelType::kToolbar) {
+  if (current_entry_type_ == SidePanelType::kToolbar) {
     return gfx::Size(SidePanelEntry::kSidePanelDefaultContentWidth, 0);
   }
   return gfx::Size(sidebar::kDefaultSidePanelWidth, 0);
@@ -266,7 +264,14 @@ void SidePanel::AddHeaderView(std::unique_ptr<views::View> view) {}
 
 void SidePanel::RemoveHeaderView() {}
 
-void SidePanel::SetOutlineVisibility(bool visible) {}
+void SidePanel::SetCurrentEntryType(SidePanelType type) {
+  current_entry_type_ = type;
+  UpdateHorizontalAlignment();
+}
+
+SidePanelType SidePanel::GetCurrentEntryType() const {
+  return current_entry_type_;
+}
 
 void SidePanel::ResetSidePanelAnimationContent() {}
 
@@ -307,8 +312,8 @@ void SidePanel::UpdateVisibility(bool should_be_open) {
 }
 
 void SidePanel::UpdateHorizontalAlignment() {
-  horizontal_alignment_ =
-      GetHorizontalAlignment(browser_view_->GetProfile()->GetPrefs(), type_);
+  horizontal_alignment_ = GetHorizontalAlignment(
+      browser_view_->GetProfile()->GetPrefs(), current_entry_type_);
 
   InvalidateLayout();
 }

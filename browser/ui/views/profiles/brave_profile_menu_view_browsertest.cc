@@ -75,8 +75,9 @@ class BraveProfileMenuViewTest : public InProcessBrowserTest {
 
   void OpenProfileMenu(Browser* browser) {
     BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
-    AvatarToolbarButton* avatar_toolbar_button =
-        browser_view->toolbar_button_provider()->GetAvatarToolbarButton();
+    auto* avatar_toolbar_button = static_cast<AvatarToolbarButton*>(
+        browser_view->toolbar_button_provider()
+            ->GetAvatarToolbarButtonInterface());
     views::test::WidgetVisibleWaiter(avatar_toolbar_button->GetWidget()).Wait();
     ASSERT_TRUE(avatar_toolbar_button);
     ClickAvatarToolbarButton(avatar_toolbar_button);

@@ -55,7 +55,8 @@ public class SponsoredRichMediaWebView {
                 ThinWebViewFactory.create(
                         activity,
                         new ThinWebViewConstraints(),
-                        windowAndroid.getIntentRequestTracker());
+                        windowAndroid.getIntentRequestTracker(),
+                        /* enablePermissionRequests= */ false);
         mWebView.getView()
                 .setLayoutParams(
                         new FrameLayout.LayoutParams(

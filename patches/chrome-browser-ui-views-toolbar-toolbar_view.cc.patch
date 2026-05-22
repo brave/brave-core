@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.cc b/chrome/browser/ui/views/toolbar/toolbar_view.cc
-index 8e2e270e9c09e54cb1d8c51ae5141420c08012ff..7d9981acdc403e2850f6fe5304cd301b4f04bf95 100644
+index 9fe780a0259e5a284f8e5db75a723c3d6ef7301f..849caf654b76969c565d4a27de7fc90d6fdba2a4 100644
 --- a/chrome/browser/ui/views/toolbar/toolbar_view.cc
 +++ b/chrome/browser/ui/views/toolbar/toolbar_view.cc
-@@ -569,6 +569,7 @@ void ToolbarView::Init() {
-     UpdateGlicButtonVisibility();
+@@ -576,6 +576,7 @@ void ToolbarView::Init() {
    }
  
-+  BRAVE_TOOLBAR_VIEW_INIT
-   avatar_ = AddChildView(std::make_unique<AvatarToolbarButton>(browser_view_));
-   bool show_avatar_toolbar_button = true;
- 
+   if (!features::IsWebUIAvatarButtonEnabled()) {
++    BRAVE_TOOLBAR_VIEW_INIT
+     avatar_ =
+         AddChildView(std::make_unique<AvatarToolbarButton>(browser_view_));
+     bool show_avatar_toolbar_button = true;

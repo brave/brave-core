@@ -19,10 +19,6 @@ source_set("tabs") {
     "//content/public/browser",
   ]
 
-  if (!is_android) {
-    public_deps += [ "//chrome/browser/ui:browser_list" ]
-  }
-
   deps = [
     "//brave/browser/brave_ads",
     "//brave/components/brave_ads/browser",
@@ -30,6 +26,7 @@ source_set("tabs") {
     "//brave/components/brave_rewards/core",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui",
+    "//chrome/browser/ui/browser_window",
     "//chrome/common",
     "//components/prefs",
     "//components/sessions",

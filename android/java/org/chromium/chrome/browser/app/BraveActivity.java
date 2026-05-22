@@ -866,7 +866,7 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     private void verifySubscription() {
-        MutableLiveData<PurchaseModel> _activePurchases = new MutableLiveData();
+        MutableLiveData<PurchaseModel> _activePurchases = new MutableLiveData<>();
         LiveData<PurchaseModel> activePurchases = _activePurchases;
         InAppPurchaseWrapper.getInstance()
                 .queryPurchases(_activePurchases, InAppPurchaseWrapper.SubscriptionProduct.VPN);
@@ -1747,7 +1747,7 @@ public abstract class BraveActivity extends ChromeActivity
 
     public void focusSearchBox() {
         if (mNewTabPageManager != null) {
-            mNewTabPageManager.focusSearchBox(false, AutocompleteRequestType.SEARCH, null);
+            mNewTabPageManager.focusSearchBox(false, AutocompleteRequestType.SEARCH, false, null);
         }
     }
 
@@ -2699,7 +2699,7 @@ public abstract class BraveActivity extends ChromeActivity
                         orientation == Configuration.ORIENTATION_LANDSCAPE
                                 ? 0
                                 : getResources()
-                                        .getDimensionPixelSize(R.dimen.bottom_controls_height);
+                                        .getDimensionPixelSize(R.dimen.brave_bottom_toolbar_height);
                 sheetContainer.setLayoutParams(params);
             }
         }

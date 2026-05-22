@@ -1,5 +1,5 @@
 diff --git a/net/cookies/cookie_monster.h b/net/cookies/cookie_monster.h
-index b2c27c9f0ae796d5ff39b0e2da3a580135d7412f..83e34ab11786f5309fdccf5956552726a5f10105 100644
+index 9948d2be0b806c0711548fe65628f1a81005098f..1b1d2f6fce9a7d17e79704b705aeb16029c3a845 100644
 --- a/net/cookies/cookie_monster.h
 +++ b/net/cookies/cookie_monster.h
 @@ -58,6 +58,7 @@ class CookieInclusionStatus;
@@ -10,7 +10,7 @@ index b2c27c9f0ae796d5ff39b0e2da3a580135d7412f..83e34ab11786f5309fdccf5956552726
  class NET_EXPORT CookieMonster : public CookieStore {
   public:
    class PersistentCookieStore;
-@@ -973,6 +974,7 @@ class NET_EXPORT CookieMonster::PersistentCookieStore
+@@ -980,6 +981,7 @@ class NET_EXPORT CookieMonster::PersistentCookieStore
    friend class base::RefCountedThreadSafe<PersistentCookieStore>;
  };
  

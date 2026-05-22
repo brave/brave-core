@@ -15,4 +15,6 @@
     <dimen name="onboarding_title_margin_top">0dp</dimen>
     <dimen name="onboarding_subtitle_margin_top">8dp</dimen>
     <item name="onboarding_image_top_guide_percent" format="float" type="dimen">0.25</item>
+    <dimen name="mvt_container_top_margin">23dp</dimen>
+    <dimen name="brave_bottom_toolbar_height">@dimen/min_touch_target_size</dimen>
 </resources>

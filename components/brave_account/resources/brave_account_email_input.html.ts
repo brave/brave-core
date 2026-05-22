@@ -26,7 +26,7 @@ export function getHtml(this: BraveAccountEmailInputElement) {
         $i18n{BRAVE_ACCOUNT_EMAIL_INPUT_LABEL}
       </div>
       <div
-        class="dropdown ${this.shouldShowDropdown ? 'visible' : ''}"
+        class="dropdown ${this.shouldShowDropdown() ? 'visible' : ''}"
         slot="errors"
       >
         <!-- Note: .dropdown-content is included in each branch (rather than
@@ -38,8 +38,8 @@ export function getHtml(this: BraveAccountEmailInputElement) {
              freezeWhen directive freezes the previous content while the dropdown
              is collapsing, preventing flashes during animation. -->
         ${freezeWhen(
-          !this.shouldShowDropdown,
-          this.blockBraveAlias && this.isBraveAlias
+          !this.shouldShowDropdown(),
+          this.blockBraveAlias && this.isBraveAlias()
             ? html`
                 <div class="dropdown-content">
                   <leo-icon name="warning-triangle-filled"></leo-icon>

@@ -17,7 +17,8 @@ class NET_EXPORT CookieMonster : public chromium_impl::CookieMonster {
   CookieMonster(scoped_refptr<PersistentCookieStore> store,
                 NetLog* net_log,
                 std::unique_ptr<PrefDelegate> pref_delegate = nullptr);
-  CookieMonster(scoped_refptr<PersistentCookieStore> store,
+  CookieMonster(base::PassKey<chromium_impl::CookieMonster>,
+                scoped_refptr<PersistentCookieStore> store,
                 base::TimeDelta last_access_threshold,
                 NetLog* net_log,
                 std::unique_ptr<PrefDelegate> pref_delegate);
@@ -43,8 +44,7 @@ class NET_EXPORT CookieMonster : public chromium_impl::CookieMonster {
       const GURL& source_url,
       const CookieOptions& options,
       SetCookiesCallback callback,
-      std::optional<CookieAccessResult> cookie_access_result =
-          std::nullopt) override;
+      std::optional<CookieAccessResult> cookie_access_result) override;
   void GetCookieListWithOptionsAsync(
       const GURL& url,
       const CookieOptions& options,

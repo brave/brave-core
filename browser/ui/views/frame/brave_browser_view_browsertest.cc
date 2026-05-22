@@ -163,8 +163,10 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
   chrome::AddTabAt(browser(), GURL(), -1, true);
   EXPECT_TRUE(bookmark_bar()->GetVisible());
   EXPECT_FALSE(infobar_container()->GetVisible());
-  ASSERT_TRUE(base::test::RunUntil(
-      [&]() { return !browser()->window()->IsBookmarkBarAnimating(); }));
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return !BrowserView::GetBrowserViewForBrowser(browser())
+                ->IsBookmarkBarAnimating();
+  }));
 
   // Check bookmark bar/contents container position.
   EXPECT_EQ(vertical_tab_strip_host_view()->bounds().top_right(),
@@ -177,8 +179,10 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
   // Check contents container is positioned right after the vertical tab.
   brave::SetBookmarkState(brave::BookmarkBarState::kNever, prefs);
   EXPECT_EQ(brave::BookmarkBarState::kNever, brave::GetBookmarkBarState(prefs));
-  ASSERT_TRUE(base::test::RunUntil(
-      [&]() { return !browser()->window()->IsBookmarkBarAnimating(); }));
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return !BrowserView::GetBrowserViewForBrowser(browser())
+                ->IsBookmarkBarAnimating();
+  }));
   EXPECT_FALSE(bookmark_bar()->GetVisible());
   EXPECT_EQ(vertical_tab_strip_host_view()->bounds().top_right(),
             contents_area_origin());
@@ -198,8 +202,10 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
   brave::SetBookmarkState(brave::BookmarkBarState::kAlways, prefs);
   EXPECT_EQ(brave::BookmarkBarState::kAlways,
             brave::GetBookmarkBarState(prefs));
-  ASSERT_TRUE(base::test::RunUntil(
-      [&]() { return !browser()->window()->IsBookmarkBarAnimating(); }));
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return !BrowserView::GetBrowserViewForBrowser(browser())
+                ->IsBookmarkBarAnimating();
+  }));
   EXPECT_TRUE(bookmark_bar()->GetVisible());
   EXPECT_EQ(vertical_tab_strip_host_view()->bounds().origin(),
             bookmark_bar()->bounds().bottom_left() +
@@ -335,7 +341,7 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
   RunScheduledLayouts();
 
   views::View* contents_container = browser_view()->contents_container();
-  views::View* side_panel = browser_view()->contents_height_side_panel();
+  views::View* side_panel = browser_view()->side_panel();
   const auto rounded_corners_margin = BraveContentsViewUtil::kMarginThickness;
   const auto rounded_corners_border_radius = GetRoundedCornersBorderRadius();
   const auto rounded_corners_border_radius_at_window_corner =
@@ -410,7 +416,7 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
   RunScheduledLayouts();
 
   views::View* contents_container = browser_view()->contents_container();
-  views::View* side_panel = browser_view()->contents_height_side_panel();
+  views::View* side_panel = browser_view()->side_panel();
   const auto rounded_corners_margin = BraveContentsViewUtil::kMarginThickness;
   const auto rounded_corners_border_radius = GetRoundedCornersBorderRadius();
   const auto rounded_corners_border_radius_at_window_corner =
@@ -459,7 +465,7 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
   RunScheduledLayouts();
 
   views::View* contents_container = browser_view()->contents_container();
-  views::View* side_panel = browser_view()->contents_height_side_panel();
+  views::View* side_panel = browser_view()->side_panel();
   const auto rounded_corners_margin = BraveContentsViewUtil::kMarginThickness;
   const auto rounded_corners_border_radius = GetRoundedCornersBorderRadius();
   const auto rounded_corners_border_radius_at_window_corner =

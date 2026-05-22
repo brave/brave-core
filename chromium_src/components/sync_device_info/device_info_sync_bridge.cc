@@ -87,6 +87,7 @@ std::unique_ptr<DeviceInfo> BraveSpecificsToModel(
       SpecificsToAutoSignOutLastSigninTimestamp(specifics),
       specifics.feature_fields().desktop_to_ios_promo_receiving_enabled(),
       SpecificsToDesktopToIOSPromoReceivingTypes(specifics),
+      SpecificsToGlicExperimentalTriggeringState(specifics),
       SpecificsToSelfDeleteSupport(specifics));
 }
 

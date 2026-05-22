@@ -26,6 +26,11 @@ nala_icon_overrides = [
     source = "ic_minus.xml"
     dest = "ic_remove.xml"
   },
+  {
+    # Override Chromium's product icon in media notifications with the Brave shield.
+    source = "ic_brave_icon_monochrome.xml"
+    dest = "chrome_product_vd_24.xml"
+  },
 ]
 
 # Please keep this list sorted alphabetically.

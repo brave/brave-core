@@ -77,17 +77,18 @@ std::optional<tab_groups::TabGroupId> IneligibleGroupForSelected(
 
 // Returns true only if `browser` is alive, and the contents at `index` match
 // `tab_session_id`.
-bool DoesTabAtIndexMatchSessionId(base::WeakPtr<Browser> browser,
+bool DoesTabAtIndexMatchSessionId(base::WeakPtr<BrowserWindowInterface> browser,
                                   int index,
                                   int tab_session_id) {
   if (!browser.get()) {
     return false;
   }
-  if (browser->tab_strip_model()->count() <= index) {
+
+  auto* tab_strip_model = browser->GetTabStripModel();
+  if (tab_strip_model->count() <= index) {
     return false;
   }
-  content::WebContents* contents =
-      browser->tab_strip_model()->GetWebContentsAt(index);
+  content::WebContents* contents = tab_strip_model->GetWebContentsAt(index);
   DCHECK(contents);
   return sessions::SessionTabHelper::IdForTab(contents).id() == tab_session_id;
 }
@@ -102,25 +103,26 @@ bool HasPinnedTabs(const TabStripModel* model) {
   return model->IndexOfFirstNonPinnedTab() > 0;
 }
 
-bool CanMoveTabsToExistingWindow(const Browser* browser_to_exclude) {
+bool CanMoveTabsToExistingWindow(
+    const BrowserWindowInterface* browser_to_exclude) {
   bool has_found = false;
   GlobalBrowserCollection::GetInstance()->ForEach(
       [browser_to_exclude, &has_found](BrowserWindowInterface* browser) {
         has_found = browser != browser_to_exclude &&
                     browser->GetType() == BrowserWindowInterface::TYPE_NORMAL &&
-                    browser->GetProfile() == browser_to_exclude->profile();
+                    browser->GetProfile() == browser_to_exclude->GetProfile();
         return !has_found;
       });
   return has_found;
 }
 
-void MoveTabsToExistingWindow(base::WeakPtr<Browser> source,
-                              base::WeakPtr<Browser> target) {
+void MoveTabsToExistingWindow(base::WeakPtr<BrowserWindowInterface> source,
+                              base::WeakPtr<BrowserWindowInterface> target) {
   if (!source.get() || !target.get()) {
     return;
   }
   const ui::ListSelectionModel::SelectedIndices& sel =
-      source->tab_strip_model()
+      source->GetTabStripModel()
           ->selection_model()
           .GetListSelectionModel()
           .selected_indices();
@@ -128,8 +130,8 @@ void MoveTabsToExistingWindow(base::WeakPtr<Browser> source,
                                    std::vector<int>(sel.begin(), sel.end()));
 }
 
-void AddSelectedToNewGroup(Browser* browser) {
-  TabStripModel* model = browser->tab_strip_model();
+void AddSelectedToNewGroup(BrowserWindowInterface* browser) {
+  TabStripModel* model = browser->GetTabStripModel();
   const ui::ListSelectionModel::SelectedIndices& sel =
       model->selection_model().GetListSelectionModel().selected_indices();
   model->AddToNewGroup(std::vector<int>(sel.begin(), sel.end()));
@@ -137,27 +139,27 @@ void AddSelectedToNewGroup(Browser* browser) {
 
 // Multiphase commands:
 
-void TogglePinTab(base::WeakPtr<Browser> browser,
+void TogglePinTab(base::WeakPtr<BrowserWindowInterface> browser,
                   int tab_index,
                   int tab_session_id,
                   bool pin) {
   if (!DoesTabAtIndexMatchSessionId(browser, tab_index, tab_session_id)) {
     return;
   }
-  browser->tab_strip_model()->SetTabPinned(tab_index, pin);
+  browser->GetTabStripModel()->SetTabPinned(tab_index, pin);
 }
 
 std::unique_ptr<CommandItem> CreatePinTabItem(const TabMatch& match,
-                                              Browser* browser,
+                                              BrowserWindowInterface* browser,
                                               bool pin) {
   auto item = match.ToCommandItem();
-  item->command = base::BindOnce(&TogglePinTab, browser->AsWeakPtr(),
+  item->command = base::BindOnce(&TogglePinTab, browser->GetWeakPtr(),
                                  match.index, match.session_id, pin);
   return item;
 }
 
 CommandSource::CommandResults TogglePinTabCommandsForTabsMatching(
-    Browser* browser,
+    BrowserWindowInterface* browser,
     bool pin,
     const std::u16string& input) {
   CommandSource::CommandResults results;
@@ -174,16 +176,17 @@ CommandSource::CommandResults TogglePinTabCommandsForTabsMatching(
 }
 
 std::unique_ptr<CommandItem> CreateMoveTabsToWindowItem(
-    Browser* source,
+    BrowserWindowInterface* source,
     const WindowMatch& match) {
   auto item = match.ToCommandItem();
-  item->command = base::BindOnce(&MoveTabsToExistingWindow, source->AsWeakPtr(),
-                                 match.browser->AsWeakPtr());
+  item->command =
+      base::BindOnce(&MoveTabsToExistingWindow, source->GetWeakPtr(),
+                     match.browser->GetWeakPtr());
   return item;
 }
 
 CommandSource::CommandResults MoveTabsToWindowCommandsForWindowsMatching(
-    Browser* source,
+    BrowserWindowInterface* source,
     const std::u16string& input) {
   CommandSource::CommandResults results;
   // Add "New Window", if appropriate. It should score highest with no input.
@@ -210,25 +213,25 @@ CommandSource::CommandResults MoveTabsToWindowCommandsForWindowsMatching(
   return results;
 }
 
-void AddTabsToGroup(base::WeakPtr<Browser> browser,
+void AddTabsToGroup(base::WeakPtr<BrowserWindowInterface> browser,
                     tab_groups::TabGroupId group) {
   if (!browser.get()) {
     return;
   }
   const ui::ListSelectionModel::SelectedIndices& sel =
-      browser->tab_strip_model()
+      browser->GetTabStripModel()
           ->selection_model()
           .GetListSelectionModel()
           .selected_indices();
-  browser->tab_strip_model()->AddToExistingGroup(
+  browser->GetTabStripModel()->AddToExistingGroup(
       std::vector<int>(sel.begin(), sel.end()), group);
 }
 
 CommandSource::CommandResults AddTabsToGroupCommandsForGroupsMatching(
-    Browser* browser,
+    BrowserWindowInterface* browser,
     const std::u16string& input) {
   CommandSource::CommandResults results;
-  TabStripModel* tab_strip_model = browser->tab_strip_model();
+  TabStripModel* tab_strip_model = browser->GetTabStripModel();
   // Add "New Group", if appropriate. It should score highest with no input.
   std::u16string new_group_title =
       l10n_util::GetStringUTF16(IDS_TAB_CXMENU_SUBMENU_NEW_GROUP);
@@ -251,7 +254,7 @@ CommandSource::CommandResults AddTabsToGroupCommandsForGroupsMatching(
            browser, input, IneligibleGroupForSelected(tab_strip_model))) {
     auto command_item = match.ToCommandItem();
     command_item->command =
-        base::BindOnce(&AddTabsToGroup, browser->AsWeakPtr(), match.group);
+        base::BindOnce(&AddTabsToGroup, browser->GetWeakPtr(), match.group);
     results.push_back(std::move(command_item));
   }
   return results;
@@ -264,12 +267,12 @@ TabCommandSource::~TabCommandSource() = default;
 
 CommandSource::CommandResults TabCommandSource::GetCommands(
     const std::u16string& input,
-    Browser* browser) const {
+    BrowserWindowInterface* browser) const {
   CommandSource::CommandResults results;
   FuzzyFinder finder(input);
   std::vector<gfx::Range> ranges;
 
-  TabStripModel* tab_strip_model = browser->tab_strip_model();
+  TabStripModel* tab_strip_model = browser->GetTabStripModel();
 
   if (CanMoveTabsToExistingWindow(browser)) {
     auto text = l10n_util::GetStringUTF16(IDS_COMMANDER_MOVE_TABS_TO_WINDOW);

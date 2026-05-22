@@ -104,6 +104,10 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
             HashSet<Integer> actionSet = new HashSet<Integer>();
             actionSet.add(0);
             notificationInfoBuilder.setMediaSessionActions(actionSet);
+            // The reflected field MediaSessionHelper#mMediaSessionActions is declared as
+            // Set<Integer>, but getField returns Object so the cast is unverifiable at compile
+            // time due to generic erasure.
+            @SuppressWarnings("unchecked")
             Set<Integer> mediaSessionActions =
                     (Set<Integer>)
                             BraveReflectionUtil.getField(

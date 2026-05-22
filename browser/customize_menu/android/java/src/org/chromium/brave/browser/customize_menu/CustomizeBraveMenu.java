@@ -135,7 +135,6 @@ public class CustomizeBraveMenu {
         MENU_ICON_MAP.put(R.id.enable_price_tracking_menu_id, R.drawable.price_tracking_disabled);
         MENU_ICON_MAP.put(
                 R.id.disable_price_tracking_menu_id, R.drawable.price_tracking_enabled_filled);
-        MENU_ICON_MAP.put(R.id.ai_web_menu_id, R.drawable.summarize_auto);
         MENU_ICON_MAP.put(R.id.find_in_page_id, R.drawable.ic_find_in_page);
         MENU_ICON_MAP.put(R.id.translate_id, R.drawable.ic_translate);
         MENU_ICON_MAP.put(R.id.readaloud_menu_id, R.drawable.ic_play_circle);

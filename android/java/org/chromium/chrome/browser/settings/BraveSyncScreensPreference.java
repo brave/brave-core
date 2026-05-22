@@ -1211,7 +1211,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         if (isSyncStateChangedObserverPaused()) {
             return;
         }
-        if (!SyncServiceFactory.getForProfile(getProfile()).isInitialSyncFeatureSetupComplete()) {
+        if (!getBraveSyncWorker().isInitialSyncFeatureSetupComplete()) {
             if (mLeaveSyncChainInProgress) {
                 leaveSyncChainComplete();
             } else {

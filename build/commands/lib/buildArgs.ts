@@ -183,10 +183,6 @@ export function getBuildArgs(config: Config) {
     args.last_chrome_installer = config.last_chrome_installer
   }
 
-  if (process.platform === 'darwin') {
-    args.allow_runtime_configurable_key_storage = true
-  }
-
   if (
     config.isDebug()
     && !config.isComponentBuild()
@@ -234,6 +230,8 @@ export function getBuildArgs(config: Config) {
   // unless use_debug_fission is set. However, they don't set it when a
   // cc_wrapper is used. Since we use cc_wrapper we need to set it manually.
   if (config.targetOS === 'linux' && config.isReleaseBuild()) {
+    // use_debug_fission requires symbol_level >= 1
+    args.symbol_level = 1
     args.use_debug_fission = true
   }
 

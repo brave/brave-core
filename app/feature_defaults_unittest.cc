@@ -13,6 +13,7 @@
 #include "chrome/browser/policy/policy_util.h"
 #include "chrome/browser/preloading/preloading_features.h"
 #include "chrome/browser/ui/tab_search_feature.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/common/chrome_features.h"
 #include "components/aggregation_service/features.h"
@@ -75,6 +76,7 @@
 #include "chrome/browser/flags/android/chrome_feature_list.h"
 #include "components/security_interstitials/core/features.h"
 #else
+#include "chrome/browser/enterprise/data_protection/data_protection_features.h"
 #include "chrome/browser/sharing_hub/sharing_hub_features.h"
 #include "chrome/browser/ui/toasts/toast_features.h"
 #include "chrome/browser/ui/views/desktop_capture/desktop_media_picker_views.h"
@@ -108,7 +110,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kAllowURNsInIframes,
       &blink::features::kBackgroundResourceFetch,
       &blink::features::kControlledFrame,
-      &blink::features::kCssSelectorFragmentAnchor,
       &blink::features::kFencedFrames,
       &blink::features::kFledge,
       &blink::features::kFledgeBiddingAndAuctionServer,
@@ -129,10 +130,11 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &commerce::kShoppingPDPMetrics,
       &commerce::kRetailCoupons,
       &compose::features::kEnableCompose,
-      &content_settings::features::kTrackingProtection3pcd,
       &content_settings::features::kUserBypassUI,
       &contextual_tasks::kContextualTasks,
 #if !BUILDFLAG(IS_ANDROID)
+      &enterprise_data_protection::kEnableForceDownloadToCloud,
+      &enterprise_data_protection::kEnableForceDownloadToOneDrive,
       &enterprise_signals::features::kDeviceSignalsConsentDialog,
       &extensions_features::kExtensionManifestV2Disabled,
       &extensions_features::kExtensionManifestV2Unsupported,
@@ -164,13 +166,14 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
       &features::kFewerUpdateConfirmations,
 #endif
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
-      &features::kPdfInfoBar,
-#endif
       &features::kHttpsFirstBalancedMode,
       &features::kIdleDetection,
       &features::kIndigo,
+      &features::kInfobarRefresh,
       &features::kNewTabPageTriggerForPrerender2,
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
+      &features::kPdfInfoBar,
+#endif
       &features::kPrivacySandboxAdsAPIsOverride,
       &features::kPrivacySandboxAdsAPIsM1Override,
 #if !BUILDFLAG(IS_ANDROID)
@@ -206,7 +209,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &metrics::structured::kPhoneHubStructuredMetrics,
       &multistep_filter::kMultistepFilter,
       &net::features::kEnableWebTransportDraft07,
-      &net::features::kTpcdMetadataGrants,
       &net::features::kWaitForFirstPartySetsInit,
       &network::features::kBrowsingTopics,
       &network::features::kInterestGroupStorage,
@@ -251,6 +253,10 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &subresource_filter::kAdTagging,
       &switches::kSyncEnableBookmarksInTransportMode,
       &syncer::kSyncDetermineAccountManagedStatus,
+#if !BUILDFLAG(IS_ANDROID)
+      &tabs::kHorizontalTabStripComboButton,
+      &tabs::kVerticalTabsLaunch,
+#endif  // !BUILDFLAG(IS_ANDROID)
       &variations::kReportOmniboxAutofocusHeader,
       &webapps::features::kWebAppsEnableMLModelForPromotion,
   };

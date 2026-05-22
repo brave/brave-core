@@ -36,7 +36,6 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_finder.h"
-#include "chrome/browser/ui/browser_list_observer.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry.h"
@@ -47,6 +46,7 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/custom_corners_background.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
+#include "chrome/browser/ui/views/profiles/avatar_toolbar_button.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
 #include "chrome/browser/ui/views/toolbar/browser_app_menu_button.h"
 #include "chrome/browser/ui/views/toolbar/split_tabs_button.h"
@@ -131,7 +131,7 @@ class BraveToolbarViewTest : public InProcessBrowserTest {
   }
 #endif
 
-  void Init(Browser* browser) {
+  void Init(BrowserWindowInterface* browser) {
     BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
     ASSERT_NE(browser_view, nullptr);
 
@@ -144,7 +144,8 @@ class BraveToolbarViewTest : public InProcessBrowserTest {
 
  protected:
   bool is_avatar_button_shown() {
-    views::View* button = toolbar_button_provider_->GetAvatarToolbarButton();
+    auto* button = static_cast<AvatarToolbarButton*>(
+        toolbar_button_provider_->GetAvatarToolbarButtonInterface());
     DCHECK(button);
     return button->GetVisible();
   }
@@ -165,7 +166,7 @@ class BraveToolbarViewTest : public InProcessBrowserTest {
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-  bool is_ai_chat_button_shown(Browser* browser) {
+  bool is_ai_chat_button_shown(BrowserWindowInterface* browser) {
     BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
     toolbar_view_ = static_cast<BraveToolbarView*>(browser_view->toolbar());
     AIChatButton* button = toolbar_view_->ai_chat_button();
@@ -177,9 +178,10 @@ class BraveToolbarViewTest : public InProcessBrowserTest {
 #endif
 
   AvatarToolbarButton* GetAvatarToolbarButton(Browser* browser) {
-    return BrowserView::GetBrowserViewForBrowser(browser)
-        ->toolbar_button_provider()
-        ->GetAvatarToolbarButton();
+    return static_cast<AvatarToolbarButton*>(
+        BrowserView::GetBrowserViewForBrowser(browser)
+            ->toolbar_button_provider()
+            ->GetAvatarToolbarButtonInterface());
   }
 
   raw_ptr<ToolbarButtonProvider, DanglingUntriaged> toolbar_button_provider_ =
@@ -284,8 +286,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_AIChatEnabled,
   SidePanelEntryKey ai_chat_key =
       SidePanelEntry::Key(SidePanelEntryId::kChatUI);
   auto* side_panel_coordinator = SidePanelCoordinator::From(browser());
-  EXPECT_FALSE(side_panel_coordinator->IsSidePanelShowing(
-      SidePanelEntry::PanelType::kContent));
+  EXPECT_FALSE(side_panel_coordinator->IsSidePanelShowing());
   button->ButtonPressed();
   EXPECT_TRUE(side_panel_coordinator->IsSidePanelEntryShowing(ai_chat_key));
 
@@ -343,7 +344,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_AIChatEnabled,
       ProfileManager::GetGuestProfilePath());
 
   // Access the browser with the Guest profile and re-init test for it.
-  Browser* browser = chrome::FindAnyBrowser(guest, true);
+  BrowserWindowInterface* browser = ui_test_utils::FindAnyBrowser(guest, true);
   EXPECT_TRUE(browser);
   Init(browser);
   EXPECT_EQ(false, is_ai_chat_button_shown(browser));
@@ -466,7 +467,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, AvatarButtonIsShownGuestProfile) {
       ProfileManager::GetGuestProfilePath());
 
   // Access the browser with the Guest profile and re-init test for it.
-  Browser* browser = chrome::FindAnyBrowser(guest, true);
+  BrowserWindowInterface* browser = ui_test_utils::FindAnyBrowser(guest, true);
   EXPECT_TRUE(browser);
   Init(browser);
   EXPECT_EQ(true, is_avatar_button_shown());
@@ -502,15 +503,17 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
   EXPECT_EQ(2U, chrome::GetTotalBrowserCount());
 
   // Check it's shown in second profile
-  Browser* browser = chrome::FindAnyBrowser(&new_profile, true);
+  BrowserWindowInterface* browser =
+      ui_test_utils::FindAnyBrowser(&new_profile, true);
   EXPECT_TRUE(browser);
   Init(browser);
   EXPECT_EQ(true, is_avatar_button_shown());
 
   // Check avatar is positioned at the right before app menu button.
-  views::View* avatar = toolbar_button_provider_->GetAvatarToolbarButton();
+  auto* avatar = static_cast<AvatarToolbarButton*>(
+      toolbar_button_provider_->GetAvatarToolbarButtonInterface());
   ASSERT_TRUE(!!avatar);
-  views::View* app_menu = toolbar_button_provider_->GetAppMenuButton();
+  views::View* app_menu = toolbar_view_->app_menu_button();
   ASSERT_TRUE(!!app_menu);
   EXPECT_EQ(toolbar_view_->GetIndexOf(avatar).value(),
             toolbar_view_->GetIndexOf(app_menu).value() - 1ul);
@@ -524,9 +527,10 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
 // Check no crash when clicking private window's avatar button.
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, ClickAvatarButtonTest) {
   auto* incognito_browser = CreateIncognitoBrowser(browser()->profile());
-  auto* avatar_button = BrowserView::GetBrowserViewForBrowser(incognito_browser)
-                            ->toolbar_button_provider()
-                            ->GetAvatarToolbarButton();
+  auto* avatar_button = static_cast<AvatarToolbarButton*>(
+      BrowserView::GetBrowserViewForBrowser(incognito_browser)
+          ->toolbar_button_provider()
+          ->GetAvatarToolbarButtonInterface());
   EXPECT_TRUE(avatar_button->GetVisible());
   avatar_button->button_controller()->NotifyClick();
 }
@@ -630,7 +634,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
   ASSERT_TRUE(ix_on_right.has_value())
       << "toggle missing from toolbar (kVerticalTabsOnRight=true)";
 
-  views::View* menu = toolbar_button_provider_->GetAppMenuButton();
+  views::View* menu = toolbar_view_->app_menu_button();
   ASSERT_TRUE(menu);
   const auto menu_ix = toolbar_view_->GetIndexOf(menu);
   ASSERT_TRUE(menu_ix.has_value() && *menu_ix > 0)
@@ -676,7 +680,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewRTLTest,
   auto* toggle = toolbar_view_->vertical_tab_toggle_button();
   ASSERT_TRUE(toggle) << "vertical tabs enabled in RTL with on-left pref";
 
-  views::View* menu = toolbar_button_provider_->GetAppMenuButton();
+  views::View* menu = toolbar_view_->app_menu_button();
   ASSERT_TRUE(menu);
   const auto menu_ix_left = toolbar_view_->GetIndexOf(menu);
   ASSERT_TRUE(menu_ix_left.has_value() && *menu_ix_left > 0)

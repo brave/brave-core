@@ -17,10 +17,10 @@
 #include "brave/components/query_filter/common/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/new_tab_page/ntp_pref_names.h"
 #include "chrome/browser/prefetch/pref_names.h"
 #include "chrome/browser/preloading/preloading_prefs.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/webui/new_tab_page/ntp_pref_names.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/platform_browser_test.h"
@@ -148,6 +148,8 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest,
       spellcheck::prefs::kSpellCheckUseSpellingService));
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       prefs::kSafeBrowsingExtendedReportingOptInAllowed));
+  EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
+      prefs::kSafeBrowsingDeepScanningEnabled));
 #if !BUILDFLAG(IS_ANDROID)
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       prefs::kSearchSuggestEnabled));
@@ -166,6 +168,11 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest,
 
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       prefs::kSplitViewDragAndDropEnabled));
+
+  EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
+      prefs::kWebRtcEventLogCollectionAllowed));
+  EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
+      prefs::kWebRtcTextLogCollectionAllowed));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MediaRouterPrefTest) {

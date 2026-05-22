@@ -7,14 +7,14 @@ package org.chromium.chrome.browser.tabbed_mode;
 
 import static org.junit.Assert.assertEquals;
 
-import android.content.Context;
+import android.app.Activity;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.robolectric.RuntimeEnvironment;
+import org.robolectric.Robolectric;
 
 import org.chromium.base.supplier.ObservableSuppliers;
 import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
@@ -23,6 +23,7 @@ import org.chromium.base.test.BaseRobolectricTestRunner;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
+import org.chromium.chrome.browser.browser_controls.BrowserControlsVisibilityManager;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.tab_group_suggestion.toolbar.GroupSuggestionsButtonController;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
@@ -30,7 +31,6 @@ import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tabstrip.StripVisibilityState;
 import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarBehavior;
 import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarButtonVariant;
-import org.chromium.ui.modaldialog.ModalDialogManager;
 
 import java.util.Arrays;
 import java.util.function.Supplier;
@@ -42,7 +42,7 @@ public class BraveTabbedAdaptiveToolbarBehaviorTest {
 
     @Before
     public void setUp() {
-        Context context = RuntimeEnvironment.getApplication();
+        Activity activity = Robolectric.setupActivity(Activity.class);
         AdaptiveToolbarBehavior.sValidButtons.clear();
 
         SettableNullableObservableSupplier<BookmarkModel> bookmarkModelSupplier =
@@ -56,11 +56,10 @@ public class BraveTabbedAdaptiveToolbarBehaviorTest {
         Supplier<@Nullable TabCreatorManager> tabCreatorManagerSupplier = () -> null;
         Supplier<GroupSuggestionsButtonController> groupSuggestionsControllerSupplier = () -> null;
         Supplier<TabModelSelector> tabModelSelectorSupplier = () -> null;
-        Supplier<ModalDialogManager> modalDialogManagerSupplier = () -> null;
 
         mBehavior =
                 new BraveTabbedAdaptiveToolbarBehavior(
-                        context,
+                        activity,
                         lifecycleDispatcher,
                         tabCreatorManagerSupplier,
                         () -> null,
@@ -69,9 +68,10 @@ public class BraveTabbedAdaptiveToolbarBehaviorTest {
                         () -> {},
                         groupSuggestionsControllerSupplier,
                         tabModelSelectorSupplier,
-                        modalDialogManagerSupplier,
                         tabStripVisibilitySupplier,
-                        () -> {});
+                        preventClose -> {},
+                        () -> null,
+                        Mockito.mock(BrowserControlsVisibilityManager.class));
     }
 
     @After

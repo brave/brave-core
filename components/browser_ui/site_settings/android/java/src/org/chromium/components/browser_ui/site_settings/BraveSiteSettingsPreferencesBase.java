@@ -47,14 +47,16 @@ public class BraveSiteSettingsPreferencesBase extends BaseSiteSettingsFragment {
         super.onResume();
     }
 
-    /**
-     *  We need to override it to avoid NullPointerException in Chromium's child classes
-     */
+    /** We need to override it to avoid NullPointerException in Chromium's child classes */
+    // The cast mirrors the upstream PreferenceFragmentCompat#findPreference contract: callers
+    // request a specific Preference subtype via the type parameter, but mRemovedPreferences
+    // stores the erased Preference type, so the (T) cast is unverifiable at compile time.
+    @SuppressWarnings("unchecked")
     @Override
-    public Preference findPreference(CharSequence key) {
-        Preference result = super.findPreference(key);
+    public <T extends Preference> T findPreference(CharSequence key) {
+        T result = super.findPreference(key);
         if (result == null) {
-            result = mRemovedPreferences.get((String) key);
+            result = (T) mRemovedPreferences.get((String) key);
         }
         return result;
     }

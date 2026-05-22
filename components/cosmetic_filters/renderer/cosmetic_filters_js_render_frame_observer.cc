@@ -45,7 +45,7 @@ void EnsureIsolatedWorldInitialized(int world_id) {
   info.security_origin =
       blink::WebSecurityOrigin::Create(GURL(kSecurityOrigin));
   info.content_security_policy =
-      blink::WebString::FromUTF8(kContentSecurityPolicy);
+      blink::WebString::FromUtf8(kContentSecurityPolicy);
   blink::SetIsolatedWorldInfo(world_id, info);
 }
 

@@ -50,11 +50,6 @@ group("ui_public_dependencies") {
   ]
 }
 
-group("browser_navigator_params_headers_public_dependencies") {
-  visibility = [ "//chrome/browser/ui:browser_navigator_params_headers" ]
-  public_deps = [ "//brave/components/containers/buildflags" ]
-}
-
 source_set("ui") {
   # Depend on //chrome/browser/ui instead of //brave/browser/ui.
   visibility = [
@@ -95,9 +90,9 @@ source_set("ui") {
     "//chrome/browser/contextual_search",
     "//chrome/browser/history",
     "//chrome/browser/image_fetcher",
-    "//chrome/browser/ui:browser_navigator_params_headers",
     "//chrome/browser/ui:tab_search_feature",
     "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/navigator",
     "//chrome/browser/ui/select_file_policy",
     "//chrome/browser/ui/startup",
     "//chrome/browser/ui/tabs:tabs_public",
@@ -178,6 +173,7 @@ source_set("ui") {
     deps += [
       "//brave/browser/brave_rewards",
       "//chrome/browser:flags",
+      "//chrome/browser/lifetime",
     ]
 
     sources += [
@@ -432,7 +428,10 @@ source_set("ui") {
       "//chrome/browser/content_settings:content_settings_factory",
       "//chrome/browser/contextual_search",
       "//chrome/browser/favicon",
+      "//chrome/browser/first_run",
       "//chrome/browser/importer",
+      "//chrome/browser/metrics",
+      "//chrome/browser/new_tab_page",
       "//chrome/browser/profiles",
       "//chrome/browser/search",
       "//chrome/browser/send_tab_to_self",
@@ -472,6 +471,7 @@ source_set("ui") {
       "//content/public/browser",
       "//content/public/common",
       "//extensions/buildflags",
+      "//extensions/common:extension_features",
       "//skia",
       "//third_party/abseil-cpp:absl",
       "//ui/actions:actions_headers",
@@ -712,6 +712,7 @@ source_set("ui") {
       "//chrome/browser/devtools",
       "//chrome/browser/enterprise/watermark:watermark_view_lib",
       "//chrome/browser/glic",
+      "//chrome/browser/metrics",
       "//chrome/browser/sharing_hub",
       "//chrome/browser/ui/download",
       "//chrome/browser/ui/exclusive_access",
@@ -789,6 +790,8 @@ source_set("ui") {
         "views/frame/brave_browser_native_widget_mac.h",
         "views/frame/brave_browser_native_widget_mac.mm",
       ]
+
+      deps += [ "//chrome/browser/ui/cocoa" ]
     }
   }
 

@@ -1,13 +1,13 @@
 diff --git a/components/sync_device_info/device_info.h b/components/sync_device_info/device_info.h
-index 0de973ef3cfb970cfdbc773cc8be98ae6d384750..7605a23c9386910e5f8ed76616309a47e21fbcd2 100644
+index 1b3c17ca587d408561b52edbd7130fbd3c684aac..c74008d68bd48fd06039b10634bdd39107e2f52b 100644
 --- a/components/sync_device_info/device_info.h
 +++ b/components/sync_device_info/device_info.h
-@@ -192,12 +192,27 @@ class DeviceInfo {
-              std::optional<base::Time> auto_sign_out_last_signin_timestamp,
-              bool desktop_to_ios_promo_receiving_enabled,
-              const MobilePromoOnDesktopPromoTypeSet&
--                 desktop_to_ios_promo_receiving_types = {});
-+                 desktop_to_ios_promo_receiving_types = {},
+@@ -202,12 +202,27 @@ class DeviceInfo {
+       bool desktop_to_ios_promo_receiving_enabled,
+       const MobilePromoOnDesktopPromoTypeSet&
+           desktop_to_ios_promo_receiving_types,
+-      GlicExperimentalTriggeringState glic_experimental_triggering_state);
++      GlicExperimentalTriggeringState glic_experimental_triggering_state,
 +             SelfDeleteSupport self_delete_support =
 +                 SelfDeleteSupport::kNotSupported);
  
@@ -31,7 +31,7 @@ index 0de973ef3cfb970cfdbc773cc8be98ae6d384750..7605a23c9386910e5f8ed76616309a47
  
    // Sync specific unique identifier for the device. Note if a device
    // is wiped and sync is set up again this id WILL be different.
-@@ -372,6 +387,7 @@ class DeviceInfo {
+@@ -390,6 +405,7 @@ class DeviceInfo {
    // NOTE: when adding a member, don't forget to update
    // |StoredDeviceInfoStillAccurate| in device_info_sync_bridge.cc or else
    // changes in that member might not trigger uploads of updated DeviceInfos.

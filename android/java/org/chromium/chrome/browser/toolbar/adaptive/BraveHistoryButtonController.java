@@ -7,7 +7,6 @@ package org.chromium.chrome.browser.toolbar.adaptive;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
@@ -20,6 +19,7 @@ import org.chromium.chrome.browser.history.HistoryManagerUtils;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.toolbar.optional_button.BaseButtonDataProvider;
+import org.chromium.chrome.browser.toolbar.optional_button.ButtonData.ButtonSpec;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
 /** Handles displaying history button on toolbar. */
@@ -37,13 +37,13 @@ public class BraveHistoryButtonController extends BaseButtonDataProvider {
         super(
                 tabProvider,
                 modalDialogManager,
-                buttonDrawable,
-                context.getString(R.string.menu_history),
-                /* actionChipLabelResId= */ Resources.ID_NULL,
-                /* supportsTinting= */ true,
-                /* iphCommandBuilder= */ null,
-                AdaptiveToolbarButtonVariant.HISTORY,
-                /* tooltipTextResId= */ R.string.menu_history);
+                new ButtonSpec.Builder(
+                                buttonDrawable,
+                                context.getString(R.string.menu_history),
+                                /* supportsTinting= */ true)
+                        .setButtonVariant(AdaptiveToolbarButtonVariant.HISTORY)
+                        .setHoverTooltipTextId(R.string.menu_history)
+                        .build());
 
         mContext = context;
         mProfileSupplier = profileSupplier;

@@ -189,10 +189,10 @@
 
    <!-- Signin Search AI Mode promo. -->
   <message name="IDS_AI_SIGNIN_PROMO_TITLE" desc="The title of in the sign-in promo bubble that is shown to users not signed-in to the browser when they click on search AI Mode result.">
-    Keep AI Mode nearby while you browse
+    Ask questions while you browse
   </message>
   <message name="IDS_AI_VERIFY_PROMO_SUBTITLE" desc="The message shown in a sign-in promo bubble that is shown to users that were previously signed in to the browser but their sign-in credentials have expired state, when they click in an AI Mode Search result link.">
-    To ask AI Mode about your tab without leaving the page, verify it's you. You'll also get your passwords and more on all your devices.
+    You can keep chatting with AI Mode without switching tabs. To get started, verify it's you. You'll also get your passwords and more on all your devices.
   </message>
 
   <if expr="use_titlecase">
@@ -1263,9 +1263,6 @@
     </message>
     <message name="IDS_BATCH_UPLOAD_SCREEN_READER_SELECT_ALL" desc="Text read by the screen reader when focusing the toggle button of a section in the Batch Upload dialog and that toggle is turned off. Notifies that the action on the toggle would select all items in this section.">
       Select all
-    </message>
-    <message name="IDS_BATCH_UPLOAD_SCREEN_READER_SELECT_NONE" desc="Text read by the screen reader when focusing the toggle button of a section in the Batch Upload dialog and that toggle is turned on. Notifies that the action on the toggle would select no items in this section.">
-      Select none
     </message>
     <message name="IDS_BATCH_UPLOAD_PROMO_TITLE" desc="Title of the Batch Upload promo. This promo appears to inform the user that there are items saved only to their device. If the user chooses to save items in their Brave sync chain, the user can access them on any device where they’re signed in to Brave. This promo leads to the Batch Upload dialog, where the user can select the checkboxes for the items that they want to save in their Brave sync chain. The tone should be motivating.">
       Get your bookmarks and more on all your devices

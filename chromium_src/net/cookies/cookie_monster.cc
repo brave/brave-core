@@ -14,11 +14,13 @@ CookieMonster::CookieMonster(scoped_refptr<PersistentCookieStore> store,
       net_log_(
           NetLogWithSource::Make(net_log, NetLogSourceType::COOKIE_STORE)) {}
 
-CookieMonster::CookieMonster(scoped_refptr<PersistentCookieStore> store,
+CookieMonster::CookieMonster(base::PassKey<chromium_impl::CookieMonster> key,
+                             scoped_refptr<PersistentCookieStore> store,
                              base::TimeDelta last_access_threshold,
                              NetLog* net_log,
                              std::unique_ptr<PrefDelegate> pref_delegate)
-    : chromium_impl::CookieMonster(store,
+    : chromium_impl::CookieMonster(key,
+                                   store,
                                    last_access_threshold,
                                    net_log,
                                    std::move(pref_delegate)),

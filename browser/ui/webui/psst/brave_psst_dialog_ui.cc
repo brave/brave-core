@@ -15,7 +15,6 @@
 #include "brave/components/psst/resources/grit/brave_psst_dialog_generated_map.h"
 #include "brave/components/psst/resources/grit/brave_psst_resources.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "components/grit/brave_components_webui_strings.h"

@@ -54,7 +54,7 @@ export class BraveAccountEmailInputElement extends CrLitElement {
       : ''
     this.fire('email-input', {
       email: this.email,
-      isValid: this.isValid,
+      isValid: this.isValid(),
     } satisfies EmailInputEventDetail)
   }
 
@@ -63,14 +63,14 @@ export class BraveAccountEmailInputElement extends CrLitElement {
   private accessor isFormatValid = false
   protected accessor suggestion = ''
 
-  protected get isBraveAlias(): boolean {
+  protected isBraveAlias(): boolean {
     return this.isFormatValid && /@bravealias\.com$/i.test(this.email)
   }
 
-  protected get severity(): 'error' | 'warning' | '' {
+  protected severity(): 'error' | 'warning' | '' {
     if (
       (this.email.length !== 0 && !this.isFormatValid)
-      || (this.blockBraveAlias && this.isBraveAlias)
+      || (this.blockBraveAlias && this.isBraveAlias())
     ) {
       return 'error'
     }
@@ -80,12 +80,12 @@ export class BraveAccountEmailInputElement extends CrLitElement {
     return ''
   }
 
-  protected get shouldShowDropdown(): boolean {
-    return (this.blockBraveAlias && this.isBraveAlias) || !!this.suggestion
+  protected shouldShowDropdown(): boolean {
+    return (this.blockBraveAlias && this.isBraveAlias()) || !!this.suggestion
   }
 
-  private get isValid(): boolean {
-    return this.isFormatValid && (!this.blockBraveAlias || !this.isBraveAlias)
+  private isValid(): boolean {
+    return this.isFormatValid && (!this.blockBraveAlias || !this.isBraveAlias())
   }
 }
 

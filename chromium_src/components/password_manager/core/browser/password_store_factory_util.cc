@@ -9,6 +9,8 @@
 #include "components/password_manager/core/browser/password_store/login_database.h"
 #endif  // !BUILDFLAG(IS_ANDROID)
 
+class PrefService;
+
 namespace password_manager {
 
 namespace {

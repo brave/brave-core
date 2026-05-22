@@ -7,7 +7,7 @@ import '//resources/cr_elements/cr_button/cr_button.js'
 import '//resources/cr_elements/cr_input/cr_input.js'
 
 import { loadTimeData } from '//resources/js/load_time_data.js'
-import { CrLitElement, html } from '//resources/lit/v3_0/lit.rollup.js'
+import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
 
 import {
   BraveTabSearchApiProxy,
@@ -154,7 +154,8 @@ export class TabFocusPageElement extends CrLitElement {
     return topic.match(/^\p{Emoji}/u)![0]
   }
 
-  protected onTopicClick_(index: number) {
+  protected onTopicClick_(e: Event) {
+    const index = Number((e.currentTarget as HTMLElement).dataset['index'])
     if (this.topics_[index]) {
       this.getFocusTabs_(this.topics_[index])
     }
@@ -265,115 +266,6 @@ export class TabFocusPageElement extends CrLitElement {
 
   protected onDismissErrorClick_() {
     this.errorMessage = ''
-  }
-
-  protected getUndoFocusTabsHtml_() {
-    return this.undoTopic_ !== ''
-      ? html`
-          <leo-alert
-            id="undo"
-            type="success"
-            hideIcon="{true}"
-          >
-            ${this.getWindowCreatedMessage_()}
-            <leo-button
-              id="undoButton"
-              kind="plain-faint"
-              size="tiny"
-              @click="${this.onUndoClick_}"
-            >
-              ${this.getUndoButtonLabel_()}
-            </leo-button>
-          </leo-alert>
-        `
-      : ''
-  }
-
-  protected getTopicsHtml_() {
-    return this.isLoadingTopics
-      ? [1, 2, 3, 4, 5].map(
-          (key) => html`
-            <leo-button
-              key=${key}
-              class="topics-button"
-              size="small"
-              kind="outline"
-              isDisabled="{true}"
-            >
-              <div class="topic-description">
-                <div class="emoji-wrapper">
-                  <leo-progressring class="loading-ring"></leo-progressring>
-                </div>
-                <div class="empty-state"></div>
-              </div>
-            </leo-button>
-          `,
-        )
-      : this.topics_.map(
-          (entry, index) => html`
-            <leo-button
-              id="${this.getTopicId_(index)}"
-              data-testid="${this.getTopicId_(index)}"
-              class="topics-button"
-              size="small"
-              kind="outline"
-              @click="${() => this.onTopicClick_(index)}"
-            >
-              <div class="topic-description">
-                <div class="emoji-wrapper">${this.getTopicEmoji_(entry)}</div>
-                ${this.getTopicWithoutEmoji_(entry)}
-              </div>
-            </leo-button>
-          `,
-        )
-  }
-
-  protected getHeaderHtml_() {
-    return html`
-      <div class="title-row">
-        <div class="title-column">
-          <div class="title">${this.getTitle_()}</div>
-          ${!this.showFRE_
-            ? html` <div class="subtitle">${this.getSubtitle_()}</div> `
-            : ''}
-        </div>
-      </div>
-    `
-  }
-
-  protected getEnableTabFocusHtml_() {
-    return html`
-      <div class="enable-tab-focus-wrapper">
-        ${this.getHeaderHtml_()}
-        <div class="enable-tab-focus-content-wrapper">
-          <div class="enable-tab-focus-illustration"></div>
-          <div class="enable-tab-focus-info-wrapper">
-            <span class="enable-tab-focus-info-text">
-              ${this.getPrivacyDisclaimerMessage_()}
-            </span>
-            <div class="enable-tab-focus-button-row">
-              <span
-                class="learn-more-link"
-                @click=${this.onLearnMoreClick_}
-              >
-                ${this.getLearnMoreLabel_()}
-              </span>
-              <div>
-                <leo-button
-                  id="enableButton"
-                  data-testid="enable-tab-focus"
-                  kind="filled"
-                  size="small"
-                  @click="${this.onEnableTabFocusClick_}"
-                >
-                  ${this.getEnableButtonLabel_()}
-                </leo-button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    `
   }
 
   private onElementVisibilityChanged_(visible: boolean) {

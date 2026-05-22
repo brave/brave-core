@@ -6,6 +6,10 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_PERMISSION_CONTEXT_BASE_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_PERMISSION_CONTEXT_BASE_H_
 
+namespace permissions {
+class PermissionContextBase;
+}
+
 #include <components/permissions/permission_context_base.h>  // IWYU pragma: export
 
 namespace permissions {

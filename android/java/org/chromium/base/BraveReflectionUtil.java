@@ -21,7 +21,7 @@ public class BraveReflectionUtil {
     // checking parameter types.
     @Nullable
     public static Object invokeMethod(
-            Class methodOwner, @Nullable Object obj, String method, Object... typesAndArgs) {
+            Class<?> methodOwner, @Nullable Object obj, String method, Object... typesAndArgs) {
         try {
             Class<?>[] parameterTypes = null;
             Object[] args = null;

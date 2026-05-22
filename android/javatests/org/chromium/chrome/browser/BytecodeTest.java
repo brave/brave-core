@@ -78,10 +78,10 @@ import org.chromium.chrome.browser.data_sharing.DataSharingTabManager;
 import org.chromium.chrome.browser.feed.FeedActionDelegate;
 import org.chromium.chrome.browser.feed.FeedSurfaceCoordinator;
 import org.chromium.chrome.browser.feed.SnapScrollHelper;
-import org.chromium.chrome.browser.feed.webfeed.WebFeedSnackbarController;
 import org.chromium.chrome.browser.findinpage.FindToolbarManager;
 import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
+import org.chromium.chrome.browser.glic.GlicToolbarButtonController;
 import org.chromium.chrome.browser.homepage.settings.BraveRadioButtonGroupHomepagePreference;
 import org.chromium.chrome.browser.hub.HubShowPaneHelper;
 import org.chromium.chrome.browser.hub.PaneListBuilder;
@@ -105,6 +105,7 @@ import org.chromium.chrome.browser.omnibox.DeferredIMEWindowInsetApplicationCall
 import org.chromium.chrome.browser.omnibox.LocationBarDataProvider;
 import org.chromium.chrome.browser.omnibox.LocationBarEmbedder;
 import org.chromium.chrome.browser.omnibox.LocationBarEmbedderUiOverrides;
+import org.chromium.chrome.browser.omnibox.LocationBarFocusScrimHandler;
 import org.chromium.chrome.browser.omnibox.LocationBarLayout;
 import org.chromium.chrome.browser.omnibox.OmniboxChipManager;
 import org.chromium.chrome.browser.omnibox.OverrideUrlLoadingDelegate;
@@ -155,6 +156,7 @@ import org.chromium.chrome.browser.toolbar.top.ToolbarActionModeCallback;
 import org.chromium.chrome.browser.toolbar.top.ToolbarControlContainer;
 import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
 import org.chromium.chrome.browser.toolbar.top.tab_strip.TabStripTransitionCoordinator.TabStripTransitionHandler;
+import org.chromium.chrome.browser.ui.actions.ActionRegistry;
 import org.chromium.chrome.browser.ui.actions.button.ResourceButtonData;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuBlocker;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
@@ -777,10 +779,9 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/IntentHandler",
-                        "intentHasUnsafeInternalScheme",
+                        "intentHasUnsafeUrl",
                         MethodModifier.STATIC,
                         boolean.class,
-                        String.class,
                         String.class,
                         Intent.class));
         Assert.assertTrue(
@@ -1416,7 +1417,6 @@ public class BytecodeTest {
                         AppMenuDelegate.class,
                         OneshotSupplier.class,
                         NullableObservableSupplier.class,
-                        WebFeedSnackbarController.FeedLauncher.class,
                         ModalDialogManager.class,
                         SnackbarManager.class,
                         OneshotSupplier.class,
@@ -1478,7 +1478,7 @@ public class BytecodeTest {
                         DataSharingTabManager.class,
                         TabContentManager.class,
                         TabCreatorManager.class,
-                        Supplier.class,
+                        MonotonicObservableSupplier.class,
                         OmniboxActionDelegateImpl.class,
                         MonotonicObservableSupplier.class,
                         boolean.class,
@@ -1494,7 +1494,8 @@ public class BytecodeTest {
                         PageZoomManager.class,
                         SnackbarManager.class,
                         OmniboxChipManager.class,
-                        BottomBarHostManager.class));
+                        BottomBarHostManager.class,
+                        ActionRegistry.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
@@ -1816,7 +1817,9 @@ public class BytecodeTest {
                         Function.class,
                         SnackbarManager.class,
                         View.class,
-                        OmniboxChipManager.class));
+                        OmniboxChipManager.class,
+                        LocationBarFocusScrimHandler.class,
+                        UserEducationHelper.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/LocationBarMediator",
@@ -1842,7 +1845,8 @@ public class BytecodeTest {
                         PageZoomIndicatorCoordinator.class,
                         FuseboxCoordinator.class,
                         LocationBarEmbedder.class,
-                        OmniboxChipManager.class));
+                        OmniboxChipManager.class,
+                        LocationBarFocusScrimHandler.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/AppHooks",
@@ -1933,9 +1937,9 @@ public class BytecodeTest {
                         MonotonicObservableSupplier.class,
                         AppMenuBlocker.class,
                         BooleanSupplier.class,
-                        Supplier.class,
+                        MonotonicObservableSupplier.class,
                         FullscreenManager.class,
-                        Supplier.class,
+                        MonotonicObservableSupplier.class,
                         Supplier.class,
                         MonotonicObservableSupplier.class,
                         SettableMonotonicObservableSupplier.class,
@@ -2265,7 +2269,8 @@ public class BytecodeTest {
                         ActivityLifecycleDispatcher.class,
                         WindowAndroid.class,
                         java.util.function.Supplier.class,
-                        java.util.function.Supplier.class));
+                        java.util.function.Supplier.class,
+                        Runnable.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/components/minidump_uploader/util/HttpURLConnectionFactoryImpl", // presubmit: ignore-long-line
@@ -2288,7 +2293,7 @@ public class BytecodeTest {
                 constructorsMatch(
                         "org/chromium/chrome/browser/tabbed_mode/TabbedAdaptiveToolbarBehavior",
                         "org/chromium/chrome/browser/tabbed_mode/BraveTabbedAdaptiveToolbarBehavior", // presubmit: ignore-long-line
-                        Context.class,
+                        Activity.class,
                         ActivityLifecycleDispatcher.class,
                         Supplier.class,
                         Supplier.class,
@@ -2297,9 +2302,10 @@ public class BytecodeTest {
                         Runnable.class,
                         Supplier.class,
                         Supplier.class,
-                        Supplier.class,
                         MonotonicObservableSupplier.class,
-                        Runnable.class));
+                        GlicToolbarButtonController.GlicButtonDelegate.class,
+                        Supplier.class,
+                        BrowserControlsVisibilityManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/SwipeRefreshHandler",
@@ -2369,11 +2375,6 @@ public class BytecodeTest {
                 fieldExists(
                         "org/chromium/chrome/browser/sync/settings/ManageSyncSettings",
                         "mSyncEncryption"));
-
-        Assert.assertTrue(
-                fieldExists(
-                        "org/chromium/chrome/browser/sync/settings/ManageSyncSettings",
-                        "mSyncEverything"));
 
         Assert.assertTrue(
                 fieldExists(
@@ -3182,13 +3183,14 @@ public class BytecodeTest {
         return constructorsMatchImpl(class1, class2, parameterTypes);
     }
 
-    private boolean constructorsMatchImpl(Class class1, Class class2, Class<?>... parameterTypes) {
+    private boolean constructorsMatchImpl(
+            Class<?> class1, Class<?> class2, Class<?>... parameterTypes) {
         if (class1 == null || class2 == null) {
             return false;
         }
         try {
-            Constructor ctor1 = class1.getDeclaredConstructor(parameterTypes);
-            Constructor ctor2 = class2.getDeclaredConstructor(parameterTypes);
+            Constructor<?> ctor1 = class1.getDeclaredConstructor(parameterTypes);
+            Constructor<?> ctor2 = class2.getDeclaredConstructor(parameterTypes);
             if (ctor1 != null && ctor2 != null) {
                 return true;
             }

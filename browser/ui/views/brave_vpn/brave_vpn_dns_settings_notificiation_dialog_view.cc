@@ -39,8 +39,9 @@ constexpr int kDialogWidth = 600;
 }  // namespace
 
 // static
-void BraveVpnDnsSettingsNotificiationDialogView::Show(Browser* browser) {
-  auto* prefs = browser->profile()->GetPrefs();
+void BraveVpnDnsSettingsNotificiationDialogView::Show(
+    BrowserWindowInterface* browser) {
+  auto* prefs = browser->GetProfile()->GetPrefs();
   if (!prefs->GetBoolean(prefs::kBraveVPNShowNotificationDialog))
     return;
   // The dialog eats mouse events which results in the close button
@@ -53,13 +54,13 @@ void BraveVpnDnsSettingsNotificiationDialogView::Show(Browser* browser) {
 
   constrained_window::CreateBrowserModalDialogViews(
       new BraveVpnDnsSettingsNotificiationDialogView(browser),
-      browser->window()->GetNativeWindow())
+      browser->GetWindow()->GetNativeWindow())
       ->Show();
 }
 
 BraveVpnDnsSettingsNotificiationDialogView::
-    BraveVpnDnsSettingsNotificiationDialogView(Browser* browser)
-    : browser_(browser), prefs_(browser->profile()->GetPrefs()) {
+    BraveVpnDnsSettingsNotificiationDialogView(BrowserWindowInterface* browser)
+    : browser_(browser), prefs_(browser->GetProfile()->GetPrefs()) {
   SetLayoutManager(std::make_unique<views::BoxLayout>(
       views::BoxLayout::Orientation::kVertical,
       gfx::Insets::TLBR(kTopPadding, kPadding, kBottomPadding, kPadding),
@@ -117,7 +118,8 @@ BraveVpnDnsSettingsNotificiationDialogView::
     ~BraveVpnDnsSettingsNotificiationDialogView() = default;
 
 void BraveVpnDnsSettingsNotificiationDialogView::OnLearnMoreLinkClicked() {
-  chrome::AddSelectedTabWithURL(browser_, GURL(kBraveVPNLearnMoreURL),
+  chrome::AddSelectedTabWithURL(browser_->GetBrowserForMigrationOnly(),
+                                GURL(kBraveVPNLearnMoreURL),
                                 ui::PAGE_TRANSITION_AUTO_TOPLEVEL);
   AcceptDialog();
 }

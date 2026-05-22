@@ -853,7 +853,7 @@ void PageGraph::RegisterPageGraphWebAPICallWithResult(
       blink::Vector<String> cookie_structure = value.SplitSkippingEmpty('=');
       String cookie_key = *(cookie_structure.begin());
       String cookie_value =
-          value.Substring(cookie_key.length() + 1, value.length());
+          value.DeprecatedSubstring(cookie_key.length() + 1, value.length());
       RegisterStorageWrite(execution_context, cookie_key,
                            base::Value(cookie_value.Utf8()),
                            brave_page_graph::StorageLocation::kCookie);
@@ -936,7 +936,7 @@ void PageGraph::RegisterPageGraphJavaScriptUrl(blink::Document* document,
           .script_code =
               blink::DecodeUrlEscapeSequences(
                   url.GetString(), blink::DecodeUrlMode::kUtf8OrIsomorphic)
-                  .Substring(kJavascriptSchemeLength),
+                  .DeprecatedSubstring(kJavascriptSchemeLength),
           .parent_script_id = GetExecutingScriptId(execution_context),
       });
 }

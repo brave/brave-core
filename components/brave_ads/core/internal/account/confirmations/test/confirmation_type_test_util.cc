@@ -38,8 +38,8 @@ BuildConfirmationTypeForCountAndIntersperseOtherTypes(
 
     // Sprinkles on ice cream, sprinkles on cakes, sprinkle-covered donuts,
     // cupcakes, or even confirmation types.
-    const int random_index =
-        base::RandInt(0, static_cast<int>(mojom_confirmation_types.size()));
+    const int random_index = base::RandIntInclusive(
+        0, static_cast<int>(mojom_confirmation_types.size()));
     mojom_confirmation_types.insert(
         mojom_confirmation_types.cbegin() + random_index,
         other_mojom_confirmation_type);

@@ -126,8 +126,8 @@ void CardanoKnapsackSolver::RunSolverForTransaction(
 
       for (uint32_t input_index = 0; input_index < inputs_.size();
            ++input_index) {
-        bool pick_input =
-            pass == 0 ? base::RandInt(0, 1) : !picked_inputs[input_index];
+        bool pick_input = pass == 0 ? base::RandIntInclusive(0, 1)
+                                    : !picked_inputs[input_index];
         if (!pick_input) {
           continue;
         }

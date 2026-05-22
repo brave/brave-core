@@ -11,6 +11,7 @@
 #import "cwv_export.h"                  // NOLINT
 #import "cwv_web_view_configuration.h"  // NOLINT
 
+@class CWVPreferences;
 @class WKWebsiteDataStore;
 @protocol ProfileBridge;
 
@@ -33,6 +34,8 @@ CWV_EXPORT
 /// Obtain a BraveWebViewConfiguration for a given profile
 + (BraveWebViewConfiguration*)configurationForProfile:
     (id<ProfileBridge>)profileBridge NS_SWIFT_NAME(init(profile:));
+
+@property(nonatomic, readonly) CWVPreferences* preferences NS_UNAVAILABLE;
 
 @end
 

@@ -581,13 +581,6 @@ _BANNED_CPP_FUNCTIONS += (
         ),
         treat_as_error=True,
     ),
-    BanRule(
-        r'/\bOSCrypt::',
-        ('Prefer using OSCryptAsync instead of synchronous OSCrypt. '
-         'See components/os_crypt/sync/README.md', ),
-        treat_as_error=False,
-        excluded_paths=[_THIRD_PARTY_EXCEPT_BLINK],
-    ),
 )
 
 
@@ -725,7 +718,7 @@ def CheckJavaStyle(_original_check, input_api, output_api):
     local_path = os.path.join(input_api.PresubmitLocalPath(), 'brave')
     style_file = os.path.join(input_api.PresubmitLocalPath(), 'brave', 'tools',
                               'android', 'checkstyle', 'brave-style-5.0.xml')
-    violations = checkstyle.run_checkstyle(local_path, style_file, java_files)
+    violations = checkstyle.run_checkstyle(local_path, style_file, java_files)  # pylint: disable=no-member
     warnings = ['  ' + str(v) for v in violations if v.is_warning()]
     errors = ['  ' + str(v) for v in violations if v.is_error()]
 

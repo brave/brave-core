@@ -8,22 +8,42 @@ package org.chromium.chrome.browser;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
 
 import android.content.Intent;
 import android.net.Uri;
 
 import androidx.test.filters.SmallTest;
 
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 import org.robolectric.annotation.Config;
 
 import org.chromium.base.test.BaseRobolectricTestRunner;
 import org.chromium.chrome.browser.searchwidget.SearchWidgetProvider;
+import org.chromium.url.GURL;
 
 @RunWith(BaseRobolectricTestRunner.class)
 @Config(manifest = Config.NONE)
 public class BraveIntentHandlerUnitTest {
+    @Rule public MockitoRule mMockitoRule = MockitoJUnit.rule();
+
+    @Mock IntentHandler.Natives mIntentHandlerNativesMock;
+
+    @Before
+    public void setUp() {
+        // Return true (URL is valid) so the native check doesn't block anything; our
+        // Brave-specific brave:// guard is what the tests below actually exercise.
+        doReturn(true).when(mIntentHandlerNativesMock).validateLaunchUrl(any(GURL.class));
+        IntentHandlerJni.setInstanceForTesting(mIntentHandlerNativesMock);
+    }
+
     @Test
     @SmallTest
     public void extractUrlFromIntent_widgetSearch_rewritesSourceToAndroidWidget() {
@@ -65,9 +85,7 @@ public class BraveIntentHandlerUnitTest {
     public void intentHasUnsafeInternalScheme_braveScheme_isBlocked() {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.addCategory(Intent.CATEGORY_BROWSABLE);
-        assertTrue(
-                BraveIntentHandler.intentHasUnsafeInternalScheme(
-                        "brave", "brave://flags/", intent));
+        assertTrue(BraveIntentHandler.intentHasUnsafeUrl("brave://flags/", intent));
     }
 
     @Test
@@ -75,9 +93,7 @@ public class BraveIntentHandlerUnitTest {
     public void intentHasUnsafeInternalScheme_braveScheme_mixedCase_isBlocked() {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.addCategory(Intent.CATEGORY_DEFAULT);
-        assertTrue(
-                BraveIntentHandler.intentHasUnsafeInternalScheme(
-                        "Brave", "Brave://flags/", intent));
+        assertTrue(BraveIntentHandler.intentHasUnsafeUrl("Brave://flags/", intent));
     }
 
     @Test
@@ -85,8 +101,6 @@ public class BraveIntentHandlerUnitTest {
     public void intentHasUnsafeInternalScheme_httpsScheme_isAllowed() {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.addCategory(Intent.CATEGORY_BROWSABLE);
-        assertFalse(
-                BraveIntentHandler.intentHasUnsafeInternalScheme(
-                        "https", "https://example.com/", intent));
+        assertFalse(BraveIntentHandler.intentHasUnsafeUrl("https://example.com/", intent));
     }
 }

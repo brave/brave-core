@@ -168,13 +168,6 @@ BraveBrowserViewTabbedLayoutImpl::CalculateProposedLayout(
     contents_layout->bounds.Inset(GetInsetsConsideringVerticalTabHost());
   }
 
-  if (views().webui_tab_strip && views().webui_tab_strip->GetVisible()) {
-    // The WebUI tab strip container should "push" the tab contents down without
-    // resizing it.
-    contents_layout->bounds.Inset(
-        gfx::Insets().set_bottom(-views().webui_tab_strip->size().height()));
-  }
-
   // Handle sidebar and adjust contents container bounds. This should be done
   // BEFORE calling `InsetContentsContainerBounds()` so that the contents
   // container's final bounds is updated considering the sidebar's bounds.
@@ -192,7 +185,7 @@ BraveBrowserViewTabbedLayoutImpl::CalculateProposedLayout(
     // This is Brave specific view so the layout shouldn't be populated by
     // upstream's logic.
     CHECK(!layout.GetLayoutFor(views().vertical_tab_strip_host));
-    layout.AddChild(views().vertical_tab_strip_host, gfx::Rect());
+    layout.AddChild(views().vertical_tab_strip_host, gfx::Rect(), false);
   }
 
   // Adjust infobar layout if vertical tabs are shown. i.e. sets insets to
@@ -234,13 +227,15 @@ BraveBrowserViewTabbedLayoutImpl::CalculateProposedLayout(
   return layout;
 }
 
-gfx::Rect BraveBrowserViewTabbedLayoutImpl::CalculateTopContainerLayout(
+gfx::Rect BraveBrowserViewTabbedLayoutImpl::CalculateTopContainerLayoutImpl(
     ProposedLayout& layout,
     BrowserLayoutParams params,
-    bool needs_exclusion) const {
+    bool needs_exclusion,
+    bool suppress_top_separator) const {
   // Get base layout from parent
-  gfx::Rect bounds = BrowserViewTabbedLayoutImpl::CalculateTopContainerLayout(
-      layout, params, needs_exclusion);
+  gfx::Rect bounds =
+      BrowserViewTabbedLayoutImpl::CalculateTopContainerLayoutImpl(
+          layout, params, needs_exclusion, suppress_top_separator);
 
   if (!delegate().ShouldShowVerticalTabs()) {
     return bounds;
@@ -437,11 +432,10 @@ void BraveBrowserViewTabbedLayoutImpl::CalculateSideBarLayout(
   //   [sidebar] [panel] [contents] [vertical_tab]
   //
   // In V2, sidebar_container holds only the control view and the upstream
-  // side panels (toolbar/contents_height_side_panel) are direct children of
-  // browser_view positioned separately.  In V1, sidebar_container wraps both
-  // the control and the side panel, and those upstream panel pointers point
-  // back into the container (so they are NOT in the proposed layout as top-
-  // level entries — layout.GetLayoutFor returns null). The adjust_panel lambda
+  // toolbar_height_side_panel is a direct child of browser_view positioned
+  // separately.  In V1, sidebar_container wraps both the control and the side
+  // panel, and the toolbar_height_side_panel pointer is NOT inside the
+  // container (so layout.GetLayoutFor returns null). The adjust_panel lambda
   // in this function is a no-op in V1 and meaningful only in V2.
 
   // Vertical tab is outermost when on the same side as the sidebar.
@@ -488,7 +482,7 @@ void BraveBrowserViewTabbedLayoutImpl::CalculateSideBarLayout(
     panel_layout->bounds.set_y(contents_bounds.y());
     panel_layout->bounds.set_height(contents_bounds.height());
   };
-  adjust_panel(views().contents_height_side_panel.get());
+  adjust_panel(views().side_panel.get());
 
   // Reduce contents bounds by the sidebar width on the sidebar side.
   if (on_left) {
@@ -620,6 +614,13 @@ void BraveBrowserViewTabbedLayoutImpl::UpdateInsetsForVerticalTabStrip() {
 
   views().vertical_tab_strip_host->SetBorder(
       insets.IsEmpty() ? nullptr : views::CreateEmptyBorder(insets));
+}
+
+bool BraveBrowserViewTabbedLayoutImpl::ShadowOverlayVisible() const {
+  // Brave manages its own rounded-corners shadow around the contents and side
+  // panel via BraveContentsViewUtil. Suppress the upstream shadow overlay (and
+  // its accompanying main-area padding) so it doesn't double up.
+  return false;
 }
 
 void BraveBrowserViewTabbedLayoutImpl::UpdateMarginsForSideBar() {

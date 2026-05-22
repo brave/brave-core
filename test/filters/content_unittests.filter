@@ -29,7 +29,9 @@
 
 # These tests fail because we disable Prefetch/Preload
 -PrefetchContainerXClientDataTests/PrefetchContainerXClientDataHeaderTest.AddHeaderForEligibleRedirectUrlOnlyWhenNotInIncognito/0
+-PrefetchContainerXClientDataTests/PrefetchContainerXClientDataHeaderTest.AddHeaderForEligibleRedirectUrlOnlyWhenNotInIncognito/2
 -PrefetchContainerXClientDataTests/PrefetchContainerXClientDataHeaderTest.AddHeaderForEligibleUrlOnlyWhenNotInIncognito/0
+-PrefetchContainerXClientDataTests/PrefetchContainerXClientDataHeaderTest.AddHeaderForEligibleUrlOnlyWhenNotInIncognito/2
 -PrefetchServiceEventTest.*
 
 # Intermittent Mojo data pipe race: response_body().ReadData() returns 0 bytes

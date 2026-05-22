@@ -28,7 +28,6 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "components/os_crypt/async/browser/test_utils.h"
-#include "components/os_crypt/sync/os_crypt_mocker.h"
 #include "sql/init_status.h"
 #include "sql/meta_table.h"
 #include "sql/test/test_helpers.h"
@@ -1179,7 +1178,6 @@ class AIChatDatabaseMigrationTest : public testing::Test,
   AIChatDatabaseMigrationTest() = default;
 
   void SetUp() override {
-    OSCryptMocker::SetUp();
     CHECK(temp_directory_.CreateUniqueTempDir());
     database_dump_location_ = database_dump_location_.AppendASCII("brave")
                                   .AppendASCII("components")
@@ -1212,7 +1210,6 @@ class AIChatDatabaseMigrationTest : public testing::Test,
               meta_table.GetCompatibleVersionNumber());
     EXPECT_EQ(kCurrentDatabaseVersion, meta_table.GetVersionNumber());
     db.Close();
-    OSCryptMocker::TearDown();
     task_environment_.RunUntilIdle();
     ASSERT_TRUE(temp_directory_.Delete());
   }
