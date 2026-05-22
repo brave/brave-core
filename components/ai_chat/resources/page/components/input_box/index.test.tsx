@@ -321,76 +321,65 @@ describe('input box', () => {
     expect(attachmentWrapper).toBeInTheDocument()
   })
 
-  it('shows the upload spinner when isUploadingFiles is true and there are no pending files', async () => {
-    const { container } = await renderInputBox(
-      <MockContext>
-        <InputBox
-          context={{
-            ...testContext,
-            pendingMessageFiles: [],
-            isUploadingFiles: true,
-          }}
-          conversationStarted={false}
-        />
-      </MockContext>,
-    )
+  const pendingPdf = {
+    filename: 'test.pdf',
+    data: [],
+    extractedText: '',
+    type: UploadedFileType.kPdf,
+    filesize: 1024,
+  }
 
-    const attachmentWrapper = container.querySelector('.attachmentWrapper')
-    expect(attachmentWrapper).toBeInTheDocument()
-    expect(
-      attachmentWrapper!.querySelector('leo-progressring'),
-    ).toBeInTheDocument()
-  })
+  it.each([
+    ['isUploadingFiles=true, no pending files', true, [], true, false],
+    ['isUploadingFiles=true, pending files', true, [pendingPdf], true, true],
+    ['isUploadingFiles=false, no pending files', false, [], false, false],
+    ['isUploadingFiles=false, pending files', false, [pendingPdf], false, true],
+  ])(
+    'upload spinner visibility (%s)',
+    async (
+      _label,
+      isUploadingFiles,
+      pendingMessageFiles,
+      expectSpinner,
+      expectFileChip,
+    ) => {
+      const { container } = await renderInputBox(
+        <MockContext>
+          <InputBox
+            context={{
+              ...testContext,
+              pendingMessageFiles,
+              isUploadingFiles,
+            }}
+            conversationStarted={false}
+          />
+        </MockContext>,
+      )
 
-  it('shows the upload spinner when isUploadingFiles is true alongside pending files', async () => {
-    const { container } = await renderInputBox(
-      <MockContext>
-        <InputBox
-          context={{
-            ...testContext,
-            pendingMessageFiles: [
-              {
-                filename: 'test.pdf',
-                data: [],
-                extractedText: '',
-                type: UploadedFileType.kPdf,
-                filesize: 1024,
-              },
-            ],
-            isUploadingFiles: true,
-          }}
-          conversationStarted={false}
-        />
-      </MockContext>,
-    )
+      const attachmentWrapper = container.querySelector('.attachmentWrapper')
+      if (expectSpinner || expectFileChip) {
+        expect(attachmentWrapper).toBeInTheDocument()
+      } else {
+        expect(attachmentWrapper).not.toBeInTheDocument()
+      }
 
-    const attachmentWrapper = container.querySelector('.attachmentWrapper')
-    expect(attachmentWrapper).toBeInTheDocument()
-    expect(screen.getByText('test.pdf')).toBeInTheDocument()
-    expect(
-      attachmentWrapper!.querySelector('leo-progressring'),
-    ).toBeInTheDocument()
-  })
+      if (expectSpinner) {
+        expect(
+          attachmentWrapper!.querySelector('leo-progressring'),
+        ).toBeInTheDocument()
+      } else {
+        expect(
+          container.querySelector('leo-progressring'),
+        ).not.toBeInTheDocument()
+      }
 
-  it('does not show the upload spinner when isUploadingFiles is false and there are no pending files', async () => {
-    const { container } = await renderInputBox(
-      <MockContext>
-        <InputBox
-          context={{
-            ...testContext,
-            pendingMessageFiles: [],
-            isUploadingFiles: false,
-          }}
-          conversationStarted={false}
-        />
-      </MockContext>,
-    )
-
-    expect(
-      container.querySelector('.attachmentWrapper'),
-    ).not.toBeInTheDocument()
-    expect(container.querySelector('leo-progressring')).not.toBeInTheDocument()
-  })
+      if (expectFileChip) {
+        expect(screen.getByText('test.pdf')).toBeInTheDocument()
+      } else {
+        expect(screen.queryByText('test.pdf')).not.toBeInTheDocument()
+      }
+    },
+  )
 
   it('attachments are shown if only documents are available', async () => {
     const { container } = await renderInputBox(
