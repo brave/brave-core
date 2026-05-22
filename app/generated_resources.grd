@@ -9766,6 +9766,15 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_TOOLTIP_TAB_SCROLL_TRAILING" desc="The tooltip for the trailing scroll button">
         Scroll to last tab
       </message>
+      <message name="IDS_TOOLTIP_WORKSPACES_BUTTON" desc="The tooltip for the workspaces button in the tab strip">
+        Workspaces
+      </message>
+      <message name="IDS_ACCNAME_WORKSPACES_BUTTON" desc="The accessible name for the workspaces button in the tab strip.">
+        Workspaces
+      </message>
+      <message name="IDS_WORKSPACES_BUBBLE_TITLE" desc="The title shown at the top of the workspaces bubble panel.">
+        Spaces
+      </message>
       <message name="IDS_TOOLTIP_MIC_SEARCH" desc="The tooltip for search-by-voice button">
         Search by voice
       </message>

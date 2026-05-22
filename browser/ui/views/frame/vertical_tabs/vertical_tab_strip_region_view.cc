@@ -28,6 +28,8 @@
 #include "brave/browser/ui/views/tabs/brave_tab_search_button.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/browser/ui/views/workspaces/workspaces_bubble_view.h"
+#include "brave/browser/workspaces/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
@@ -270,6 +272,95 @@ class ResettableResizeArea : public views::ResizeArea {
 BEGIN_METADATA(ResettableResizeArea)
 END_METADATA
 
+class VerticalTabWorkspacesButton : public views::Button {
+  METADATA_HEADER(VerticalTabWorkspacesButton, views::Button)
+ public:
+  explicit VerticalTabWorkspacesButton(PressedCallback callback)
+      : views::Button(std::move(callback)) {
+    views::InkDrop::Get(this)->SetMode(views::InkDropHost::InkDropMode::OFF);
+    SetNotifyEnterExitOnChild(true);
+
+    constexpr int kVerticalPadding = 8;
+    constexpr int kHorizontalPadding = 7;
+    SetLayoutManager(std::make_unique<views::FlexLayout>())
+        ->SetOrientation(views::LayoutOrientation::kHorizontal)
+        .SetCrossAxisAlignment(views::LayoutAlignment::kStretch)
+        .SetInteriorMargin(
+            gfx::Insets::VH(kHorizontalPadding, kVerticalPadding));
+
+    icon_ = AddChildView(std::make_unique<views::ImageView>());
+    icon_->SetHorizontalAlignment(views::ImageView::Alignment::kCenter);
+    icon_->SetVerticalAlignment(views::ImageView::Alignment::kCenter);
+    icon_->SetImage(ui::ImageModel::FromVectorIcon(
+        kLeoSpacesIcon, kColorBraveVerticalTabNTBIconColor,
+        /* icon_size= */ 16));
+    icon_->SetProperty(
+        views::kFlexBehaviorKey,
+        views::FlexSpecification(views::MinimumFlexSizeRule::kPreferred,
+                                 views::MaximumFlexSizeRule::kPreferred)
+            .WithOrder(1));
+
+    label_ = AddChildView(std::make_unique<views::Label>(
+        l10n_util::GetStringUTF16(IDS_ACCNAME_WORKSPACES_BUTTON)));
+    label_->SetHorizontalAlignment(gfx::HorizontalAlignment::ALIGN_LEFT);
+    label_->SetVerticalAlignment(gfx::VerticalAlignment::ALIGN_MIDDLE);
+    constexpr int kGapBetweenIconAndText = 16;
+    label_->SetProperty(views::kMarginsKey,
+                        gfx::Insets::TLBR(0, kGapBetweenIconAndText, 0, 0));
+    label_->SetProperty(views::kFlexBehaviorKey,
+                        views::FlexSpecification(
+                            views::MinimumFlexSizeRule::kPreferredSnapToZero,
+                            views::MaximumFlexSizeRule::kPreferred)
+                            .WithOrder(2));
+
+    constexpr int kFontSize = 12;
+    const auto font = label_->font_list();
+    label_->SetFontList(
+        font.DeriveWithSizeDelta(kFontSize - font.GetFontSize()));
+    label_->SetEnabledColor(kColorBraveVerticalTabNTBTextColor);
+
+    SetTooltipText(l10n_util::GetStringUTF16(IDS_TOOLTIP_WORKSPACES_BUTTON));
+    GetViewAccessibility().SetName(
+        l10n_util::GetStringUTF16(IDS_ACCNAME_WORKSPACES_BUTTON));
+  }
+
+  ~VerticalTabWorkspacesButton() override = default;
+
+  void StateChanged(ButtonState old_state) override {
+    views::Button::StateChanged(old_state);
+    UpdateColors();
+  }
+
+  void OnThemeChanged() override {
+    views::Button::OnThemeChanged();
+    UpdateColors();
+  }
+
+ private:
+  void UpdateColors() {
+    auto* widget = GetWidget();
+    if (!widget || widget->IsClosed()) {
+      return;
+    }
+
+    constexpr int kCornerRadius = 4;
+    ui::ColorId bg_color_id = kColorToolbar;
+    if (GetState() == views::Button::STATE_PRESSED) {
+      bg_color_id = kColorBraveVerticalTabActiveBackground;
+    } else if (GetState() == views::Button::STATE_HOVERED) {
+      bg_color_id = kColorBraveVerticalTabHoveredBackground;
+    }
+    SetBackground(
+        views::CreateRoundedRectBackground(bg_color_id, kCornerRadius));
+  }
+
+  raw_ptr<views::ImageView> icon_ = nullptr;
+  raw_ptr<views::Label> label_ = nullptr;
+};
+
+BEGIN_METADATA(VerticalTabWorkspacesButton)
+END_METADATA
+
 TabStripPlacementCoordinator* GetPlacementCoordinator(
     BrowserView* browser_view) {
   CHECK(browser_view);
@@ -311,6 +402,13 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
       base::BindRepeating(&TabStrip::NewTabButtonPressed,
                           base::Unretained(original_region_view_->tab_strip_)),
       GetShortcutTextForNewTabButton(browser_view), browser_));
+
+  if (base::FeatureList::IsEnabled(features::kWorkspaces)) {
+    workspaces_button_ = AddChildView(
+        std::make_unique<VerticalTabWorkspacesButton>(base::BindRepeating(
+            &BraveVerticalTabStripRegionView::OnWorkspacesButtonPressed,
+            base::Unretained(this))));
+  }
 
   resize_area_ = AddChildView(std::make_unique<ResettableResizeArea>(this));
   SetBackground(views::CreateSolidBackground(kColorToolbar));
@@ -659,10 +757,14 @@ void BraveVerticalTabStripRegionView::Layout(PassKey) {
   const auto contents_bounds = GetContentsBounds();
 
   constexpr int kNewTabButtonHeight = tabs::kVerticalTabHeight;
-  const int contents_view_max_height =
+  int contents_view_max_height =
       contents_bounds.height() - tabs::kMarginForVerticalTabContainers -
       kNewTabButtonHeight - tabs::kMarginForVerticalTabContainers -
       kSeparatorHeight;
+  if (workspaces_button_) {
+    contents_view_max_height -=
+        kNewTabButtonHeight + tabs::kMarginForVerticalTabContainers;
+  }
   // Using tab_container_'s preferred height because tab_strip's preferred
   // height could be 0 in tests.
   const int contents_view_preferred_height =
@@ -685,6 +787,14 @@ void BraveVerticalTabStripRegionView::Layout(PassKey) {
       gfx::Size(separator_bounds.width(), kNewTabButtonHeight));
   new_tab_button_bounds.Offset(0, tabs::kMarginForVerticalTabContainers);
   new_tab_button_->SetBoundsRect(new_tab_button_bounds);
+
+  if (workspaces_button_) {
+    gfx::Rect workspaces_button_bounds(
+        new_tab_button_->bounds().bottom_left(),
+        gfx::Size(new_tab_button_bounds.width(), kNewTabButtonHeight));
+    workspaces_button_bounds.Offset(0, tabs::kMarginForVerticalTabContainers);
+    workspaces_button_->SetBoundsRect(workspaces_button_bounds);
+  }
 
   // Put resize area, overlapped with contents.
   if (vertical_tab_on_right_.GetPrefName().empty()) {
@@ -906,14 +1016,22 @@ void BraveVerticalTabStripRegionView::UpdateNewTabButtonVisibility() {
   original_ntb->SetVisible(!is_vertical_tabs);
   new_tab_button_->SetVisible(is_vertical_tabs);
   separator_->SetVisible(is_vertical_tabs);
+  if (workspaces_button_) {
+    workspaces_button_->SetVisible(is_vertical_tabs);
+  }
 }
 
 int BraveVerticalTabStripRegionView::GetTabStripViewportMaxHeight() const {
   // Don't depend on |contents_view_|'s current height. It could be bigger than
   // the actual viewport height.
-  return GetContentsBounds().height() -
-         (separator_->height() + tabs::kMarginForVerticalTabContainers) -
-         new_tab_button_->height();
+  int height = GetContentsBounds().height() -
+               (separator_->height() + tabs::kMarginForVerticalTabContainers) -
+               new_tab_button_->height();
+  if (workspaces_button_) {
+    height -=
+        tabs::kMarginForVerticalTabContainers + workspaces_button_->height();
+  }
+  return height;
 }
 
 void BraveVerticalTabStripRegionView::ResetExpandedWidth() {
@@ -1266,6 +1384,10 @@ void BraveVerticalTabStripRegionView::OnBrowserClosing(
   // destroyed during `browser_widget_.reset()`, so we want to tear down our
   // menu runner before that happens.
   menu_runner_.reset();
+}
+
+void BraveVerticalTabStripRegionView::OnWorkspacesButtonPressed() {
+  WorkspacesBubbleView::Show(workspaces_button_, browser_->profile());
 }
 
 BEGIN_METADATA(BraveVerticalTabStripRegionView)

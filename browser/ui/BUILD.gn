@@ -690,6 +690,8 @@ source_set("ui") {
       "views/view_shadow.h",
       "views/window_closing_confirm_dialog_view.cc",
       "views/window_closing_confirm_dialog_view.h",
+      "views/workspaces/workspaces_bubble_view.cc",
+      "views/workspaces/workspaces_bubble_view.h",
     ]
 
     deps += [

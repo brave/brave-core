@@ -209,6 +209,11 @@ class BraveVerticalTabStripRegionView : public views::View,
   // New tab button created for vertical tabs
   raw_ptr<BraveNewTabButton> new_tab_button_ = nullptr;
 
+  void OnWorkspacesButtonPressed();
+
+  // Workspaces button shown below the new tab button when the feature is on.
+  raw_ptr<views::View> workspaces_button_ = nullptr;
+
   raw_ptr<views::View> resize_area_ = nullptr;
   std::optional<int> resize_offset_;
 
