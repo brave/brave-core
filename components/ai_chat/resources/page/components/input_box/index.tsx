@@ -278,7 +278,10 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
       props.context.openAIChatAgentProfile()
     }
 
-    const showUploadedFiles = props.context.pendingMessageFiles.length > 0
+    const showUploadedFiles =
+      props.context.pendingMessageFiles.length > 0
+      || props.context.isUploadingFiles
+
     const pendingContent = props.context.associatedContentInfo.filter(
       (c) => !c.conversationTurnUuid,
     )

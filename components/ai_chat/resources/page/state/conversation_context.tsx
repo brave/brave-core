@@ -455,6 +455,10 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     })
   }
 
+  const processTextFileMutation = aiChat.api.useProcessTextFile()
+  const processImageFileMutation = aiChat.api.useProcessImageFile()
+  const processPdfFileMutation = aiChat.api.useProcessPdfFile()
+
   // This function converts files into uploaded files by processing them with the C++ sanitizers.
   const processUploadedFiles = async (files: File[]) => {
     // Determine the mojom file type from the file.
@@ -480,18 +484,18 @@ export function useProvideConversationContext(props: ConversationContextProps) {
         const type = fileTypeToUploadedFileType(file)
 
         const data = Array.from(new Uint8Array(await file.arrayBuffer()))
-        let promise: Promise<{ processedFile: Mojom.UploadedFile | null }>
+        let promise: Promise<Mojom.UploadedFile | null>
 
         // TODO(https://github.com/brave/brave-browser/issues/54918): We should just expose a `ProcessFile` function on the mojo API and do the file type detection on the C++ side.
         if (type === Mojom.UploadedFileType.kText) {
-          promise = aiChat.api.uiHandler.processTextFile(data, file.name)
+          promise = processTextFileMutation.mutateAsync([data, file.name])
         } else if (type === Mojom.UploadedFileType.kImage) {
-          promise = aiChat.api.uiHandler.processImageFile(data, file.name)
+          promise = processImageFileMutation.mutateAsync([data, file.name])
         } else {
-          promise = aiChat.api.uiHandler.processPdfFile(data, file.name)
+          promise = processPdfFileMutation.mutateAsync([data, file.name])
         }
 
-        return await promise.then((p) => p.processedFile)
+        return await promise
       } catch (error) {
         // Note: Error notifications will happen when attaching the files.
         return null
@@ -518,7 +522,11 @@ export function useProvideConversationContext(props: ConversationContextProps) {
 
   // Is uploading is a combination of if files are being retrieved
   // or if chosen files are being processed.
-  const isUploadingFiles = screenshotsMutation.isPending
+  const isUploadingFiles =
+    screenshotsMutation.isPending
+    || processTextFileMutation.isPending
+    || processImageFileMutation.isPending
+    || processPdfFileMutation.isPending
 
   const removeFile = (index: number) => {
     const fileToRemove = pendingMessageFiles[index]

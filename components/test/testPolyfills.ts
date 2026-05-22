@@ -33,3 +33,9 @@ windowAsAny.IntersectionObserver = class IntersectionObserverPolyfill {
 
   disconnect() {}
 }
+
+if (typeof File.prototype.arrayBuffer !== 'function') {
+  File.prototype.arrayBuffer = async function () {
+    return new ArrayBuffer(0)
+  }
+}
