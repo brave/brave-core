@@ -26,36 +26,36 @@ Matching specific context (method names, surrounding code) makes patches more ma
 
 <a id="PLSTR-002"></a>
 
-## ✅ Use `pattern` for Simple Symbol Replacement, `pattern_re` for Context-Aware Matches
+## ✅ Use `pattern` for Simple Symbol Replacement, `re_pattern` for Context-Aware Matches
 
-**Only use `pattern` for simple matches—generally a single symbol name that you want to replace globally.** If you need more context (including whitespace), then `pattern_re` is more appropriate.
+**Only use `pattern` for simple matches—generally a single symbol name that you want to replace globally.** If you need more context (including whitespace), then `re_pattern` is more appropriate.
 
 ```yaml
 # ✅ CORRECT - simple symbol replacement with pattern for all instances of a constant
 pattern: 'kOldConstantName'
-replacement: 'kNewConstantName'
+replace: 'kNewConstantName'
 
 # ✅ CORRECT - simple symbol replacement with pattern for all instances of a method call
 pattern: 'ChromiumMethod'
-replacement: 'BraveMethod'
+replace: 'BraveMethod'
 
-# ✅ CORRECT - pattern_re handles flexible whitespace
-pattern_re: '(^\s+)(ChromiumMethod\(\))'
-replacement: '\1BraveMethod()'
+# ✅ CORRECT - re_pattern handles flexible whitespace
+re_pattern: '(^\s+)(ChromiumMethod\(\))'
+replace: '\1BraveMethod()'
 
 # ❌ WRONG - pattern requires exact whitespace match, fragile to upstream changes
 pattern: '    MyMethod()'  # Breaks if upstream changes indentation
-replacement: '    BraveMethod()'
+replace: '    BraveMethod()'
 
-# ✅ CORRECT - pattern_re handles flexible whitespace
-pattern_re: '(if\s+\()MyMethod\(\)([\S\s]+?{)'
-replacement: '\1BraveMethod()\2'
+# ✅ CORRECT - re_pattern handles flexible whitespace
+re_pattern: '(if\s+\()MyMethod\(\)([\S\s]+?{)'
+replace: '\1BraveMethod()\2'
 
 # ❌ WRONG - pattern includes additional context
 pattern: 'if (MyMethod() && my_bool) {'  # Breaks if upstream changes indentation
-replacement: 'if (BraveMethod() && my_pool) {`
+replace: 'if (BraveMethod() && my_bool) {'
 ```
 
-Using `pattern` for simple symbol names keeps configs readable and maintainable. Reserve `pattern_re` for when you need regex features like whitespace matching, character classes, or structural patterns.
+Using `pattern` for simple symbol names keeps configs readable and maintainable. Reserve `re_pattern` for when you need regex features like whitespace matching, character classes, or structural patterns.
 
 ---
