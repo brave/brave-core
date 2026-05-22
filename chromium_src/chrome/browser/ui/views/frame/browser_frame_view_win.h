@@ -13,9 +13,11 @@
   friend class BraveBrowserFrameViewWin
 #define ShouldShowWindowTitle virtual ShouldShowWindowTitle
 #define LayoutCaptionButtons virtual LayoutCaptionButtons
+#define FrameTopBorderThickness virtual FrameTopBorderThickness
 
 #include <chrome/browser/ui/views/frame/browser_frame_view_win.h>  // IWYU pragma: export
 
+#undef FrameTopBorderThickness
 #undef LayoutCaptionButtons
 #undef ShouldShowWindowTitle
 #undef client_view_bounds_

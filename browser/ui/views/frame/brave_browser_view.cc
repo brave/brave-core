@@ -1283,6 +1283,15 @@ ClientFrameElementInfo BraveBrowserView::GetFrameElementInfo() const {
   if (tabs::utils::ShouldShowBraveVerticalTabs(browser())) {
     // In case of Brave vertical tabs, we don't want to show the tabstrip.
     info.tabstrip_preferred_height = 0;
+
+#if BUILDFLAG(IS_WIN)
+    // On Windows, we need to set |toolbar_minimum_height| to calculate
+    // the correct caption button container height.
+    // See BrowserFrameViewWin::TitlebarMaximizedVisualHeight().
+    if (!tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser())) {
+      info.toolbar_minimum_height = toolbar_->GetMinimumSize().height();
+    }
+#endif
   }
   return info;
 }
