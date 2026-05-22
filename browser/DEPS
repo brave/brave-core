@@ -16,6 +16,7 @@ include_rules += [
   "!brave/third_party/blink/renderer/brave_farbling_constants.h",
   "+brave/net",
   "+brave/components/constants",
+  "+brave/components/safebrowsing",
   "+chrome/browser",
   "+content/test",
 
