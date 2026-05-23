@@ -1267,7 +1267,7 @@ base::ReadUnicodeCharacter(
 
 ### Rust → C++ read-only text — `&str` (maps to `rust::Str`)
 
-Zero-copy. Rust retains ownership; C++ reads via pointer/length window. Use for logging, printing, parsing.
+Zero-copy. Rust retains ownership; C++ reads as a view. Use for logging, printing, parsing.
 
 ```rust
 // ❌ WRONG - forces C++ container overhead for a borrow
