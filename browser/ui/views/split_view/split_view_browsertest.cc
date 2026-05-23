@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <cstdlib>
 #include <utility>
 
 #include "base/functional/callback_helpers.h"
@@ -310,15 +311,20 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
   EXPECT_EQ(gfx::Insets(BraveContentsContainerView::kBorderThickness),
             end_contents_container_view->GetBorder()->GetInsets());
 
+  // Tolerate a 1px rounding asymmetry: GetViewSizes uses std::round(0.5 *
+  // (available_size - resize_width)), which gives one side an extra pixel
+  // whenever that quantity is odd.
   ASSERT_TRUE(base::test::RunUntil([&]() {
-    return start_contents_web_view->width() == end_contents_web_view->width();
+    return std::abs(start_contents_web_view->width() -
+                    end_contents_web_view->width()) <= 1;
   }));
 
   multi_contents_view->OnResize(30, false);
   multi_contents_view->OnResize(30, true);
 
   ASSERT_TRUE(base::test::RunUntil([&]() {
-    return start_contents_web_view->width() != end_contents_web_view->width();
+    return std::abs(start_contents_web_view->width() -
+                    end_contents_web_view->width()) > 1;
   }));
 
   // Check double click makes both contents view have same width.
@@ -329,7 +335,8 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
   event.SetClickCount(2);
   split_view_separator()->OnMouseReleased(event);
   ASSERT_TRUE(base::test::RunUntil([&]() {
-    return start_contents_web_view->width() == end_contents_web_view->width();
+    return std::abs(start_contents_web_view->width() -
+                    end_contents_web_view->width()) <= 1;
   }));
 }
 
