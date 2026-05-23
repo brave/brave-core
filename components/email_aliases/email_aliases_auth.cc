@@ -64,7 +64,7 @@ void EmailAliasesAuth::GetServiceToken(
         brave_account::mojom::GetServiceTokenError::NewClientError(
             brave_account::mojom::GetServiceTokenClientError::New(
                 brave_account::mojom::GetServiceTokenClientErrorCode::
-                    kUserNotLoggedIn))));
+                    kUnexpected))));
   }
 }
 

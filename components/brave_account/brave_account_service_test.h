@@ -8,25 +8,25 @@
 
 #include <memory>
 #include <string>
-#include <utility>
 
 #include "base/check_deref.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
 #include "base/json/json_writer.h"
-#include "base/memory/raw_ptr.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
-#include "base/timer/timer.h"
 #include "base/values.h"
+#include "brave/components/brave_account/brave_account_encryption.h"
 #include "brave/components/brave_account/brave_account_service.h"
 #include "brave/components/brave_account/endpoint_client/test_support.h"
 #include "brave/components/brave_account/features.h"
+#include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "brave/components/brave_account/prefs.h"
 #include "components/os_crypt/async/browser/test_utils.h"
 #include "components/prefs/testing_pref_service.h"
+#include "mojo/public/cpp/bindings/remote.h"
 #include "net/http/http_status_code.h"
 #include "services/network/public/cpp/url_loader_completion_status.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -58,7 +58,7 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
  protected:
   void SetUp() override {
     prefs::RegisterPrefs(pref_service_.registry());
-    BraveAccountService::SetOSCryptCallbacksForTesting(
+    BraveAccountEncryption::SetOSCryptCallbacksForTesting(
         base::BindRepeating(&BraveAccountServiceTest::Encrypt,
                             base::Unretained(this)),
         base::BindRepeating(&BraveAccountServiceTest::Decrypt,
@@ -68,12 +68,13 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
     brave_account_service_ = std::make_unique<BraveAccountService>(
         &pref_service_, test_url_loader_factory_.GetSafeWeakWrapper(),
         os_crypt_async_.get());
-    auth_validate_timer_ = &brave_account_service_->auth_validate_timer_;
+    brave_account_service_->BindInterface(
+        authentication_.BindNewPipeAndPassReceiver());
   }
 
   void TearDown() override {
-    BraveAccountService::SetOSCryptCallbacksForTesting(base::NullCallback(),
-                                                       base::NullCallback());
+    BraveAccountEncryption::SetOSCryptCallbacksForTesting(base::NullCallback(),
+                                                          base::NullCallback());
   }
 
   void RunTestCase() {
@@ -95,18 +96,16 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
                   std::is_same_v<TestCase, GetServiceTokenTestCase>) {
       base::test::TestFuture<typename TestCase::MojoExpected> future;
       TestCase::Run(test_case, pref_service_, task_environment_,
-                    CHECK_DEREF(brave_account_service_.get()),
-                    future.GetCallback());
+                    authentication_, future.GetCallback());
       EXPECT_EQ(future.Take(), test_case.mojo_expected);
     } else if constexpr (std::is_same_v<TestCase, AuthValidateTestCase>) {
       TestCase::Run(test_case, pref_service_, task_environment_,
-                    *auth_validate_timer_);
+                    CHECK_DEREF(brave_account_service_.get()));
     } else if constexpr (std::is_same_v<TestCase,
                                         AuthenticationObserverTestCase> ||
                          std::is_same_v<TestCase, CancelRegistrationTestCase> ||
                          std::is_same_v<TestCase, LogOutTestCase>) {
-      TestCase::Run(test_case, pref_service_,
-                    CHECK_DEREF(brave_account_service_.get()));
+      TestCase::Run(test_case, pref_service_, authentication_);
     } else {
       static_assert(false);
     }
@@ -136,7 +135,7 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
   network::TestURLLoaderFactory test_url_loader_factory_;
   std::unique_ptr<os_crypt_async::OSCryptAsync> os_crypt_async_;
   std::unique_ptr<BraveAccountService> brave_account_service_;
-  raw_ptr<base::OneShotTimer> auth_validate_timer_;
+  mojo::Remote<mojom::Authentication> authentication_;
 };
 
 }  // namespace brave_account

@@ -9,12 +9,21 @@ import("//brave/components/email_aliases/buildflags/buildflags.gni")
 source_set("brave_account") {
   sources = [
     "brave_account_constants.h",
+    "brave_account_encryption.cc",
+    "brave_account_encryption.h",
     "brave_account_service.cc",
     "brave_account_service.h",
     "brave_account_ui_base.h",
     "brave_account_utils.h",
+    "logged_in_state.cc",
+    "logged_in_state.h",
+    "logged_out_state.cc",
+    "logged_out_state.h",
     "prefs.cc",
     "prefs.h",
+    "state_base.cc",
+    "state_base.h",
+    "state_internal.h",
   ]
 
   deps = [
@@ -107,6 +116,7 @@ source_set("unit_tests") {
   sources = [
     "brave_account_service_test.h",
     "brave_account_service_unittest.cc",
+    "state_base_unittest.cc",
   ]
 
   deps = [
@@ -116,16 +126,20 @@ source_set("unit_tests") {
     "//brave/components/brave_account:features",
     "//brave/components/brave_account:internal",
     "//brave/components/brave_account:test_support",
+    "//brave/components/brave_account/endpoint_client",
+    "//brave/components/brave_account/endpoint_client:json_test_endpoint_bodies",
     "//brave/components/brave_account/endpoint_client:test_support",
     "//brave/components/brave_account/endpoints",
     "//brave/components/brave_account/mojom",
     "//components/os_crypt/async/browser:test_support",
+    "//components/os_crypt/async/common",
     "//components/prefs:test_support",
     "//net",
     "//services/network:test_support",
     "//services/network/public/cpp",
     "//testing/gmock",
     "//testing/gtest",
+    "//url",
   ]
 
   if (enable_email_aliases) {
