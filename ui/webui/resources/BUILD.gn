@@ -497,6 +497,7 @@ leo_icons_sources = [
 
 if (enable_brave_vpn_panel) {
   leo_icons_sources += [
+    "country-ae.svg",
     "country-al.svg",
     "country-ar.svg",
     "country-at.svg",
@@ -532,6 +533,7 @@ if (enable_brave_vpn_panel) {
     "country-lu.svg",
     "country-mx.svg",
     "country-my.svg",
+    "country-ng.svg",
     "country-nl.svg",
     "country-no.svg",
     "country-nz.svg",
