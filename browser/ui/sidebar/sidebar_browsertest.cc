@@ -2194,44 +2194,61 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
   // --- Border case (rounded corners ON) ---
   prefs->SetBoolean(kWebViewRoundedCorners, true);
   RunScheduledLayouts();
-  EXPECT_FALSE(side_panel->GetInsets().IsEmpty());
+  EXPECT_GT(side_panel->GetInsets().width(), 0)
+      << "panel should have left/right insets";
 
   // In the bordered case the resize strip sits in the gap between the panel
   // edge and the content, at the left edge (panel is on the right in LTR).
-  const gfx::Rect bordered_bounds = resize_area->bounds();
-  EXPECT_EQ(bordered_bounds.top_right(),
-            side_panel->GetContentParentView()->origin())
+  // Check resize area and panel's screen bounds.origin().
+  EXPECT_EQ(resize_area->GetBoundsInScreen().origin(),
+            side_panel->GetBoundsInScreen().origin())
       << "Bordered resize area right edge should align with content origin";
-  EXPECT_EQ(bordered_bounds.width(), side_panel->GetInsets().left())
+  EXPECT_EQ(resize_area->width(), side_panel->GetInsets().left())
       << "Bordered resize area width should match the left border inset";
+  EXPECT_EQ(side_panel->GetIndexOf(resize_area),
+            side_panel->children().size() - 1)
+      << "resize area should be the top-most view";
 
   // --- No-border case (rounded corners OFF) ---
   prefs->SetBoolean(kWebViewRoundedCorners, false);
   RunScheduledLayouts();
-  EXPECT_TRUE(side_panel->GetInsets().IsEmpty());
+  EXPECT_EQ(0, side_panel->GetInsets().width());
+
+  // Shared assertions for the no-border state after a panel switch.
+  auto verify_no_border_state = [&]() {
+    EXPECT_EQ(0, side_panel->GetInsets().width())
+        << "Border insets' width should stay empty after switching panels "
+           "(border OFF)";
+    EXPECT_EQ(resize_area->GetBoundsInScreen().origin(),
+              side_panel->GetBoundsInScreen().origin())
+        << "No-border resize area should be placed at the inner edge of "
+           "content";
+    EXPECT_EQ(resize_area->width(),
+              views::BraveSidePanelResizeArea::kNoBorderResizeAreaWidth)
+        << "No-border resize area width should equal kNoBorderResizeAreaWidth";
+    EXPECT_EQ(side_panel->GetIndexOf(resize_area),
+              side_panel->children().size() - 1)
+        << "resize area should be the top-most view";
+  };
 
   // --- Panel-switch: border OFF must survive switching panels ---
+  // Switch to another panel that has brave panel header.
   panel_ui->Show(SidePanelEntryId::kBookmarks);
   ASSERT_TRUE(base::test::RunUntil([&]() {
     return panel_ui->IsSidePanelEntryShowing(
         SidePanelEntry::Key(SidePanelEntryId::kBookmarks));
   }));
+  RunScheduledLayouts();
+  verify_no_border_state();
+
+  // Switch to another panel that doesn't have brave panel header.
   panel_ui->Show(SidePanelEntryId::kCustomizeChrome);
   ASSERT_TRUE(base::test::RunUntil([&]() {
     return panel_ui->IsSidePanelEntryShowing(
         SidePanelEntry::Key(SidePanelEntryId::kCustomizeChrome));
   }));
   RunScheduledLayouts();
-  EXPECT_TRUE(side_panel->GetInsets().IsEmpty())
-      << "Border insets should stay empty after switching panels (border OFF)";
-
-  const gfx::Rect no_border_bounds = resize_area->bounds();
-  EXPECT_EQ(no_border_bounds.origin(),
-            side_panel->GetContentParentView()->origin())
-      << "No-border resize area should be placed at the inner edge of content";
-  EXPECT_EQ(no_border_bounds.width(),
-            views::BraveSidePanelResizeArea::kNoBorderResizeAreaWidth)
-      << "No-border resize area width should equal kNoBorderResizeAreaWidth";
+  verify_no_border_state();
 }
 
 class ScopedSidePanelUIForTesting {

@@ -69,6 +69,12 @@ void SidePanel::UpdateBorder() {
 void SidePanel::AddHeaderView(std::unique_ptr<views::View> view) {
   AddHeaderView_ChromiumImpl(std::move(view));
   UpdateBorder();
+
+  // Resize area is overlapped with other views such as contents and
+  // header view. Make it top-most view to get event for dragging.
+  if (!rounded_border_enabled_) {
+    ReorderChildView(resize_area_, children().size());
+  }
 }
 
 void SidePanel::RemoveHeaderView() {
