@@ -1318,14 +1318,23 @@ fn build_report() -> String {
 ```
 
 ```cpp
-// ❌ WRONG - bridge type stored past FFI call
+// ❌ WRONG - bridge type held past FFI call; ties C++ class to Rust
+// allocator and bridge layout.
 class Reporter {
   rust::String last_report_;
 };
+void Reporter::Refresh() {
+  last_report_ = ffi::build_report();
+}
 
-// ✅ CORRECT - deep-copy at the boundary
-std::string report(rust_report.data(), rust_report.size());
-reporter.set_last_report(std::move(report));
+// ✅ CORRECT - deep-copy into std::string at the boundary
+class Reporter {
+  std::string last_report_;
+};
+void Reporter::Refresh() {
+  rust::String r = ffi::build_report();
+  last_report_.assign(r.data(), r.size());
+}
 ```
 
 ### Rust → C++ ownership, MASSIVE payload — `Box<Vec<u8>>` (maps to `rust::Box<rust::Vec<uint8_t>>`)
@@ -1342,7 +1351,7 @@ fn produce_payload() -> Box<Vec<u8>>;
 
 ```cpp
 void Consume(rust::Box<rust::Vec<uint8_t>> buf) {
-  base::span<const uint8_t> bytes(buf->data(), buf->size());
+  base::span<const uint8_t> bytes(buf);
   // ...consume bytes. Rust deallocator runs when buf drops.
 }
 ```
