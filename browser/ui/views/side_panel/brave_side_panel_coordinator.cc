@@ -206,7 +206,7 @@ void BraveSidePanelCoordinator::PopulateSidePanel(
 
 #if BUILDFLAG(ENABLE_SIDEBAR_V2)
   if (ShouldShowBraveHeader(entry)) {
-    auto* side_panel = GetSidePanelFor(entry->type());
+    SidePanel* side_panel = browser_view_->side_panel();
     CHECK(side_panel);
     side_panel->AddHeaderView(std::make_unique<BraveSidePanelHeader>(
         std::make_unique<BraveSidePanelHeaderController>(

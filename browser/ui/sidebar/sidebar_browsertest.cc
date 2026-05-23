@@ -2259,26 +2259,17 @@ class MockSidePanelUI : public SidePanelUI {
               (SidePanelEntryKey, std::optional<SidePanelOpenTrigger>, bool),
               (override));
   MOCK_METHOD(void, ShowFrom, (SidePanelEntryKey, gfx::Rect), (override));
-  MOCK_METHOD(void,
-              Close,
-              (SidePanelEntry::PanelType, SidePanelEntryHideReason, bool),
-              (override));
+  MOCK_METHOD(void, Close, (SidePanelEntryHideReason, bool), (override));
   MOCK_METHOD(void,
               Toggle,
               (SidePanelEntryKey, SidePanelOpenTrigger),
               (override));
   MOCK_METHOD(std::optional<SidePanelEntryId>,
               GetCurrentEntryId,
-              (SidePanelEntry::PanelType),
+              (),
               (const, override));
-  MOCK_METHOD(int,
-              GetCurrentEntryDefaultContentWidth,
-              (SidePanelEntry::PanelType),
-              (const, override));
-  MOCK_METHOD(bool,
-              IsSidePanelShowing,
-              (SidePanelEntry::PanelType),
-              (const, override));
+  MOCK_METHOD(int, GetCurrentEntryDefaultContentWidth, (), (const, override));
+  MOCK_METHOD(bool, IsSidePanelShowing, (), (const, override));
   MOCK_METHOD(bool,
               IsSidePanelEntryShowing,
               (const SidePanelEntryKey&),
@@ -2289,7 +2280,7 @@ class MockSidePanelUI : public SidePanelUI {
               (const, override));
   MOCK_METHOD(base::CallbackListSubscription,
               RegisterSidePanelShown,
-              (SidePanelEntry::PanelType, ShownCallback),
+              (ShownCallback),
               (override));
   MOCK_METHOD(void,
               OnActiveTabChanged,
