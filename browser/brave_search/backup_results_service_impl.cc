@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <utility>
+#include <vector>
 
 #include "base/base64.h"
 #include "base/byte_count.h"
@@ -28,7 +29,9 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/navigation_controller.h"
+#include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
+#include "content/public/browser/restore_type.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
@@ -174,6 +177,8 @@ void BackupResultsServiceImpl::FetchBackupResults(
     web_preferences.supports_multiple_windows = false;
     web_contents->SetWebPreferences(web_preferences);
 
+    SeedNavigationHistory(*web_contents, url);
+
     if (features::IsBackupResultsFullRenderEnabled()) {
       BackupResultsWebContentsObserver::CreateForWebContents(
           web_contents.get(), weak_ptr_factory_.GetWeakPtr());
@@ -186,6 +191,7 @@ void BackupResultsServiceImpl::FetchBackupResults(
 
   if (should_render) {
     auto load_url_params = content::NavigationController::LoadURLParams(url);
+    load_url_params.transition_type = ui::PAGE_TRANSITION_LINK;
     // Disallow all downloads
     for (size_t i = 0;
          i <= static_cast<size_t>(blink::NavigationDownloadType::kMaxValue);
@@ -340,6 +346,36 @@ void BackupResultsServiceImpl::MaybeApplyUserAgentOverride(
                                     /*override_in_new_tabs=*/true);
   load_url_params.override_user_agent =
       content::NavigationController::UA_OVERRIDE_TRUE;
+}
+
+void BackupResultsServiceImpl::SeedNavigationHistory(
+    content::WebContents& web_contents,
+    const GURL& target_url) {
+  if (!target_url.SchemeIsHTTPOrHTTPS()) {
+    return;
+  }
+  GURL::Replacements replacements;
+  replacements.SetPathStr("/");
+  replacements.ClearQuery();
+  replacements.ClearRef();
+  GURL origin_root = target_url.ReplaceComponents(replacements);
+  if (!origin_root.is_valid() || origin_root == target_url) {
+    return;
+  }
+
+  std::unique_ptr<content::NavigationEntry> entry =
+      content::NavigationController::CreateNavigationEntry(
+          origin_root, content::Referrer(),
+          /*initiator_origin=*/std::nullopt,
+          /*initiator_base_url=*/std::nullopt, ui::PAGE_TRANSITION_TYPED,
+          /*is_renderer_initiated=*/false,
+          /*extra_headers=*/std::string(), web_contents.GetBrowserContext(),
+          /*blob_url_loader_factory=*/nullptr);
+
+  std::vector<std::unique_ptr<content::NavigationEntry>> entries;
+  entries.push_back(std::move(entry));
+  web_contents.GetController().Restore(
+      /*selected_navigation=*/0, content::RestoreType::kRestored, &entries);
 }
 
 void BackupResultsServiceImpl::MakeSimpleURLLoaderRequest(

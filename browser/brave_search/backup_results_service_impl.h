@@ -107,6 +107,9 @@ class BackupResultsServiceImpl : public BackupResultsService,
       content::WebContents& web_contents,
       content::NavigationController::LoadURLParams& load_url_params);
 
+  void SeedNavigationHistory(content::WebContents& web_contents,
+                             const GURL& target_url);
+
   net::HttpRequestHeaders GetExtraHeaders(
       const std::optional<net::HttpRequestHeaders>& request_headers);
 
