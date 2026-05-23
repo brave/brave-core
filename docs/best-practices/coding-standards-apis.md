@@ -1333,7 +1333,7 @@ class Reporter {
 };
 void Reporter::Refresh() {
   rust::String r = ffi::build_report();
-  last_report_.assign(r.data(), r.size());
+  last_report_.assign(r.data(), r.length());
 }
 ```
 
