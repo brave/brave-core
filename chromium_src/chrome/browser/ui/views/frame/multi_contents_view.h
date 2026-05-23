@@ -36,11 +36,8 @@
   kSplitViewContentInset = 0;  \
   static constexpr int kSplitViewContentInset_UnUsed
 
-#define SetSplitViewInsets virtual SetSplitViewInsets
-
 #include <chrome/browser/ui/views/frame/multi_contents_view.h>  // IWYU pragma: export
 
-#undef SetSplitViewInsets
 #undef kSplitViewContentInset
 #undef GetContentsContainerViewFor
 #undef GetActiveContentsView
