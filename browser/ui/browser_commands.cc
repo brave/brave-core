@@ -147,7 +147,7 @@ namespace {
 
 bool CanTakeTabs(const Browser* from, const Browser* to) {
   return from != to && from->type() == Browser::TYPE_NORMAL &&
-         !from->IsAttemptingToCloseBrowser() && !from->is_delete_scheduled() &&
+         !from->IsAttemptingToCloseBrowser() && !from->IsDeleteScheduled() &&
          to->profile() == from->profile();
 }
 
