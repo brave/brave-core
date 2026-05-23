@@ -11,6 +11,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
 #include "brave/browser/brave_search/backup_results_service_factory.h"
+#include "brave/browser/brave_search/backup_results_service_impl.h"
 #include "brave/components/brave_search/browser/prefs.h"
 #include "brave/components/brave_search/common/features.h"
 #include "chrome/browser/browser_process.h"
@@ -28,6 +29,7 @@
 #include "net/test/embedded_test_server/http_response.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "third_party/blink/public/common/user_agent/user_agent_metadata.h"
+#include "ui/gfx/geometry/size.h"
 
 namespace brave_search {
 
@@ -143,25 +145,45 @@ class BackupResultsServiceBrowserTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(BackupResultsServiceBrowserTest, BasicRenderAndLoad) {
-  base::RunLoop run_loop;
   GURL url = https_server_->GetURL("google.ca", kTestInitPath);
 
-  backup_results_service_->FetchBackupResults(
-      url, std::nullopt,
-      base::BindLambdaForTesting(
-          [&](std::optional<BackupResultsService::BackupResults> result) {
-            EXPECT_TRUE(result.has_value());
-            if (result) {
-              EXPECT_EQ(kTestFinalHtml, result->html);
-              EXPECT_EQ(net::HTTP_OK, result->final_status_code);
-            }
-            EXPECT_FALSE(last_custom_header_);
-            EXPECT_TRUE(last_user_agent_);
-            EXPECT_NE(last_user_agent_, kTestUAOverride);
-            run_loop.Quit();
-          }));
+  {
+    base::RunLoop run_loop;
+    backup_results_service_->FetchBackupResults(
+        url, std::nullopt,
+        base::BindLambdaForTesting(
+            [&](std::optional<BackupResultsService::BackupResults> result) {
+              EXPECT_TRUE(result.has_value());
+              if (result) {
+                EXPECT_EQ(kTestFinalHtml, result->html);
+                EXPECT_EQ(net::HTTP_OK, result->final_status_code);
+              }
+              EXPECT_FALSE(last_custom_header_);
+              EXPECT_TRUE(last_user_agent_);
+              EXPECT_NE(last_user_agent_, kTestUAOverride);
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+  }
 
-  run_loop.Run();
+  BackupResultsServiceImpl::RecordLastViewSize(g_browser_process->local_state(),
+                                               gfx::Size(1280, 720));
+
+  {
+    base::RunLoop run_loop;
+    backup_results_service_->FetchBackupResults(
+        url, std::nullopt,
+        base::BindLambdaForTesting(
+            [&](std::optional<BackupResultsService::BackupResults> result) {
+              EXPECT_TRUE(result.has_value());
+              if (result) {
+                EXPECT_EQ(kTestFinalHtml, result->html);
+                EXPECT_EQ(net::HTTP_OK, result->final_status_code);
+              }
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+  }
 }
 
 IN_PROC_BROWSER_TEST_F(BackupResultsServiceBrowserTest, InvalidDomain) {
