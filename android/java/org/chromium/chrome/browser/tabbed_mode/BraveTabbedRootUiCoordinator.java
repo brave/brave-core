@@ -137,8 +137,7 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
             MonotonicObservableSupplier<BookmarkManagerOpener> bookmarkManagerOpenerSupplier,
             NonNullObservableSupplier<Boolean> xrSpaceModeObservableSupplier,
             OneshotSupplier<ChromeInactivityTracker> inactivityTrackerSupplier,
-            @Nullable BottomBarHostManager bottomBarHostManager,
-            Supplier<Boolean> urlBarVisibleSupplier) {
+            @Nullable BottomBarHostManager bottomBarHostManager) {
         super(
                 activity,
                 onOmniboxFocusChangedListener,
@@ -192,8 +191,7 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                 bookmarkManagerOpenerSupplier,
                 xrSpaceModeObservableSupplier,
                 inactivityTrackerSupplier,
-                bottomBarHostManager,
-                urlBarVisibleSupplier);
+                bottomBarHostManager);
 
         mBraveActivity = activity;
         mHubManagerSupplier = hubManagerSupplier;
