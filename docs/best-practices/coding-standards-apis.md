@@ -1284,7 +1284,7 @@ unsafe extern "C++" {
 ```cpp
 void LogEvent(rust::Str name) {
   // Treat rust::Str as std::string_view — read only, do not store.
-  VLOG(1) << std::string_view(name);
+  VLOG(1) << base::RustStrToStringView(name);
 }
 ```
 
