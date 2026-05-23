@@ -27,11 +27,14 @@ inline constexpr char kAdBlockListSubscriptions[] =
     "brave.ad_block.list_subscriptions";
 inline constexpr char kAdBlockDeveloperMode[] = "brave.ad_block.developer_mode";
 
-inline constexpr char kFBEmbedControlType[] = "brave.fb_embed_default";
+inline constexpr char kMigratedAdblockSocialMediaBlockingSettings[] =
+    "brave.migrated_adblock_social_media_blocking_settings";
+inline constexpr char kFBEmbedControlType[] = "brave.shields.fb_embed_default";
 inline constexpr char kTwitterEmbedControlType[] =
-    "brave.twitter_embed_default";
+    "brave.shields.twitter_embed_default";
 inline constexpr char kLinkedInEmbedControlType[] =
-    "brave.linkedin_embed_default";
+    "brave.shields.linkedin_embed_default";
+
 inline constexpr char kReduceLanguageEnabled[] = "brave.reduce_language";
 
 inline constexpr char kAdBlockOnlyModeEnabled[] =

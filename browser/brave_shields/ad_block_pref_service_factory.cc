@@ -48,7 +48,7 @@ AdBlockPrefServiceFactory::BuildServiceInstanceForBrowserContext(
   Profile* profile = Profile::FromBrowserContext(context);
 
   auto service = std::make_unique<AdBlockPrefService>(
-      g_brave_browser_process->ad_block_service(), profile->GetPrefs(),
+      profile->IsRegularProfile(), profile->GetPrefs(),
       g_browser_process->local_state(),
       g_browser_process->GetApplicationLocale());
 
