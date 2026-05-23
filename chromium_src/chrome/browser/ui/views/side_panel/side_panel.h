@@ -19,16 +19,11 @@
 // to support toggling the border at runtime (disabling it makes content fill
 // the panel).
 
-// Override Open/Close to apply our border style whenever open/close panel.
-// Override VisibilityChanged() is not sufficient as it's not called when
-// opening another panel while other panel is opened.
 #define GetContentParentView(...)                                     \
   GetContentParentView(__VA_ARGS__);                                  \
   void SetResizeArea(std::unique_ptr<views::View> resize_area);       \
   void SetRoundedBorderEnabled(bool enabled);                         \
   void UpdateBorder();                                                \
-  void Open_ChromiumImpl(bool animated);                              \
-  void Close_ChromiumImpl(bool animated);                             \
   void AddHeaderView_ChromiumImpl(std::unique_ptr<views::View> view); \
   void RemoveHeaderView_ChromiumImpl()
 

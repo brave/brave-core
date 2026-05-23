@@ -18,39 +18,14 @@
 #define AddHeaderView AddHeaderView_ChromiumImpl
 #define RemoveHeaderView RemoveHeaderView_ChromiumImpl
 
-// Rename the upstream Open/Close implementation so we can provide a thin
-// wrapper that reapplies border state after UpdateVisibility() runs.
-// UpdateVisibility() unconditionally re-shows border_view_ whenever the panel
-// opens, which would undo SetBorderEnabled(false).
-#define Open Open_ChromiumImpl
-#define Close Close_ChromiumImpl
-
 #include <chrome/browser/ui/views/side_panel/side_panel.cc>
 
-#undef Close
-#undef Open
 #undef RemoveHeaderView
 #undef AddHeaderView
 
 #endif  // BUILDFLAG(ENABLE_SIDEBAR_V2)
 
 #if BUILDFLAG(ENABLE_SIDEBAR_V2)
-
-void SidePanel::Open(bool animated) {
-  Open_ChromiumImpl(animated);
-
-  // UpdateVisibility() unconditionally sets border_view_ visible when opening;
-  // restore desired state.
-  UpdateBorder();
-}
-
-void SidePanel::Close(bool animated) {
-  Close_ChromiumImpl(animated);
-
-  // At the start of Close(), GetVisible() is still true, so UpdateVisibility()
-  // shows border_view_; restore desired state.
-  UpdateBorder();
-}
 
 void SidePanel::SetResizeArea(std::unique_ptr<views::View> resize_area) {
   CHECK(resize_area);
@@ -75,10 +50,6 @@ void SidePanel::SetRoundedBorderEnabled(bool enabled) {
 }
 
 void SidePanel::UpdateBorder() {
-  if (!border_view_) {
-    return;
-  }
-
   // When a Brave header is attached, reserve top inset for it so the header
   // paints over the border strip without overlapping content.
   const int header_top_inset =
@@ -93,8 +64,6 @@ void SidePanel::UpdateBorder() {
     SetBorder(
         views::CreateEmptyBorder(gfx::Insets::TLBR(header_top_inset, 0, 0, 0)));
   }
-
-  border_view_->SetVisible(rounded_border_enabled_);
 }
 
 void SidePanel::AddHeaderView(std::unique_ptr<views::View> view) {

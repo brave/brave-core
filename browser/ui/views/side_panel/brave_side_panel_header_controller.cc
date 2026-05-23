@@ -119,6 +119,6 @@ void BraveSidePanelHeaderController::OnLaunchButtonPressed(const GURL& url) {
 
 void BraveSidePanelHeaderController::OnCloseButtonPressed() {
   if (auto* side_panel_ui = browser_window_->GetFeatures().side_panel_ui()) {
-    side_panel_ui->Close(SidePanelEntry::PanelType::kContent);
+    side_panel_ui->Close();
   }
 }
