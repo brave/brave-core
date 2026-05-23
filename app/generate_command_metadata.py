@@ -283,8 +283,6 @@ EXISTING_TRANSLATIONS = {
         "IDS_BOOKMARK_BAR_SHOW_APPS_SHORTCUT", # Show apps shortcut
     "IDC_BOOKMARK_BAR_OPEN_INCOGNITO": \
         "IDS_BOOKMARK_BAR_OPEN_INCOGNITO", # Open in &amp;Private window
-    "IDC_BOOKMARK_BAR_OPEN_ALL": \
-        "IDS_BOOKMARK_BAR_OPEN_ALL", # &amp;Open all bookmarks
     "IDC_BOOKMARK_ALL_TABS": "IDS_BOOKMARK_ALL_TABS", # Bookmark all tabs...
     "IDC_ADD_NEW_PROFILE": "IDS_ADD_NEW_PROFILE", # &amp;Add new profile
     "IDC_CLOSE_DUPLICATE_TABS": \
