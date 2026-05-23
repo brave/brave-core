@@ -115,3 +115,82 @@ with path.open('r', encoding='utf-8') as file:
     for chunk in iter(lambda: file.read(4096), ''):
         checksum.update(chunk.encode())
 ```
+
+## Classes with data
+
+Prefer `@dataclass` over hand-rolled `__init__` / `__repr__` / `__eq__`
+boilerplate. Pick the variant that matches how the data is meant to flow:
+
+- **`@dataclass(frozen=True)`** when instances are read-only after construction.
+  Fields are public, but the `frozen=True` setting blocks mutation -- callers
+  can read `obj.field` directly without an accessor.
+- **Plain class or `@dataclass` with private members and `@property` accessors**
+  when the object has internal invariants to keep in sync, or only a subset of
+  fields should be mutable from outside. Store state as `_field`, expose reads
+  via `@property`, and add `@field.setter` only for the fields that genuinely
+  need outside writes. A setter is also the natural place to refresh derived
+  state.
+- **`@dataclass` (non-frozen)** is fine when the object is a plain mutable bag
+  with no invariants -- e.g. a parsed-then-rewritten container whose fields are
+  independent. If you find yourself wanting "this field is read-only but that
+  one isn't", switch to the private-members pattern.
+
+When deciding whether to use a `@dataclass` or a _plain class_, consider the
+following:
+
+- (_Preferable when possible_) A **`@dataclass`** declares fields in the class
+  body, which makes it easy to see and document field declarations. It also
+  generates `__init__` / `__repr__` / `__eq__` on its own. In our code,
+  `@dataclasses` should always be used with composition, and if inheritance is
+  needed, then _plain classes_ should be used instead.
+- A **plain class** declares its fields inside the constructor body as
+  `self.field = ...` assignments in `__init__`, rather than at the class body.
+  That gives you full control over the constructor signature (positional args,
+  keyword-only args, validation, computed defaults) and supports field
+  inheritance from a base class.
+
+Types annotated with `@dataclass` (and `@dataclass(frozen=True)`) can make use
+of factory methods (`@staticmethod`, `@classmethod`, etc) as an alternative to
+the absence of a constructor.
+
+Don't (public attributes on a hand-rolled class, no protection against external
+mutation):
+
+```python
+class Config:
+    def __init__(self, name: str, retries: int):
+        self.name = name
+        self.retries = retries
+```
+
+Do (frozen dataclass -- public reads, no mutation):
+
+```python
+@dataclass(frozen=True)
+class Config:
+    name: str
+    retries: int
+```
+
+Do (private members + accessors when some fields need controlled writes):
+
+```python
+class EntryLine:
+    def __init__(self, *, command: str, hash: str) -> None:
+        self._command = command
+        self._hash = hash
+        self._out = f'{command} {hash}'
+
+    @property
+    def hash(self) -> str:
+        return self._hash
+
+    @property
+    def command(self) -> str:
+        return self._command
+
+    @command.setter
+    def command(self, new_command: str) -> None:
+        self._command = new_command
+        self._refresh_out()
+```
