@@ -3,26 +3,30 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//media/media_options.gni")
 import("//third_party/ffmpeg/ffmpeg_options.gni")
 
-_use_linux_config = is_linux || is_chromeos || is_fuchsia
+# Linux ships without a working hardware HEVC decode path: VA-API is disabled
+# on NVIDIA, and Chromium's hardware decode pipeline can't consume frames from
+# nvidia-vaapi-driver. To cover those users we compile the FFmpeg HEVC software
+# decoder in, gated behind the upstream `enable_hevc_parser_and_hw_decoder`
+# build arg so it can be turned off via `gn args` if anything goes wrong.
+enable_ffmpeg_hevc_support =
+    is_linux && enable_hevc_parser_and_hw_decoder && ffmpeg_branding == "Chrome"
 
 brave_third_party_ffmpeg_c_sources = []
 brave_third_party_ffmpeg_asm_sources = []
 brave_third_party_ffmpeg_asm_deps = []
 
-# HEVC/H.265 software decoder sources for Linux.
-# Provides a fallback when hardware decode is unavailable (e.g., NVIDIA GPUs
-# where VA-API hardware decode is not functional in Chromium).
-if (_use_linux_config && ffmpeg_branding == "Chrome") {
+if (enable_ffmpeg_hevc_support) {
   brave_third_party_ffmpeg_c_sources += [
     # Byte-swap DSP (renamed to avoid duplicate object name with x86/bswapdsp.asm)
-    "//brave/third_party/ffmpeg/libavcodec/autorename_libavcodec_bswapdsp.c",
+    "//brave/third_party/ffmpeg/libavcodec/libavcodec_bswapdsp.c",
 
     # HEVC core decoder
-    "//brave/third_party/ffmpeg/libavcodec/hevc/autorename_libavcodec_hevc_cabac.c",
-    "//brave/third_party/ffmpeg/libavcodec/hevc/autorename_libavcodec_hevc_parse.c",
-    "//brave/third_party/ffmpeg/libavcodec/hevc/autorename_libavcodec_hevc_parser.c",
+    "//brave/third_party/ffmpeg/libavcodec/hevc/libavcodec_hevc_cabac.c",
+    "//brave/third_party/ffmpeg/libavcodec/hevc/libavcodec_hevc_parse.c",
+    "//brave/third_party/ffmpeg/libavcodec/hevc/libavcodec_hevc_parser.c",
     "libavcodec/hevc/data.c",
     "libavcodec/hevc/dsp.c",
     "libavcodec/hevc/filter.c",
@@ -40,8 +44,8 @@ if (_use_linux_config && ffmpeg_branding == "Chrome") {
   ]
 }
 
-# HEVC x86_64 optimizations for Linux.
-if (_use_linux_config && current_cpu == "x64" && ffmpeg_branding == "Chrome") {
+# HEVC x86_64 optimizations.
+if (enable_ffmpeg_hevc_support && current_cpu == "x64") {
   brave_third_party_ffmpeg_c_sources += [
     "libavcodec/x86/bswapdsp_init.c",
     "libavcodec/x86/h26x/h2656dsp.c",

@@ -48,6 +48,8 @@
 #include "components/webui/flags/feature_entry.h"
 #include "components/webui/flags/feature_entry_macros.h"
 #include "components/webui/flags/flags_state.h"
+#include "media/base/media_switches.h"
+#include "media/media_buildflags.h"
 #include "net/base/features.h"
 #include "third_party/blink/public/common/features.h"
 
@@ -346,6 +348,21 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
   })
 #else
 #define BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES
+#endif
+
+#if BUILDFLAG(IS_LINUX) && BUILDFLAG(ENABLE_PLATFORM_HEVC)
+#define BRAVE_FFMPEG_SOFTWARE_HEVC_DECODER_FEATURE_ENTRIES              \
+  EXPAND_FEATURE_ENTRIES({                                              \
+      "brave-ffmpeg-software-hevc-decoder",                             \
+      "Software HEVC/H.265 decoder",                                    \
+      "Enables the bundled FFmpeg HEVC software decoder. Useful as a "  \
+      "fallback when hardware decode is unavailable (e.g. NVIDIA GPUs " \
+      "on Linux). Disable if HEVC playback misbehaves.",                \
+      kOsLinux,                                                         \
+      FEATURE_VALUE_TYPE(media::kFFmpegSoftwareHEVCDecoder),            \
+  })
+#else
+#define BRAVE_FFMPEG_SOFTWARE_HEVC_DECODER_FEATURE_ENTRIES
 #endif
 
 #if BUILDFLAG(IS_ANDROID)
@@ -1384,6 +1401,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_ANDROID_DYNAMIC_COLORS                                                 \
   BRAVE_CUSTOM_SEARCH_ENGINES                                                  \
   BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES                      \
+  BRAVE_FFMPEG_SOFTWARE_HEVC_DECODER_FEATURE_ENTRIES                           \
   BRAVE_TABS_FEATURE_ENTRIES                                                   \
   BRAVE_DARKER_THEME_FEATURE_ENTRIES                                           \
   BRAVE_PAGE_INFO_FEATURE_ENTRIES                                              \
