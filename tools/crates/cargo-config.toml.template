@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+#
+# Build-time cargo configuration overlay.  This template is substituted by
+# generate_cargo_config.py and the output is passed to cargo via --config when
+# building build_crate() targets.  It layers on top of the in-tree
+# .cargo/config.toml (which holds the vendor source replacement and release
+# profile settings owned by update.py).
+#
+# Keep this file scoped to entries that need build-time path substitution
+# (typically hermetic-toolchain paths that vary across machines).  Settings
+# expressible statically should stay in .cargo/config.toml.
+
+[target.wasm32-unknown-unknown]
+linker = "$RUST_LLD"

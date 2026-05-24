@@ -5,6 +5,24 @@
 
 import("//brave/tools/crates/build_crate.gni")
 
+# Build-time cargo configuration overlay shared by every `build_crate()`
+# target.  Substituted from cargo-config.toml.template; the output is passed
+# to cargo via --config alongside the in-tree .cargo/config.toml.
+action("cargo_config") {
+  script = "//brave/tools/crates/generate_cargo_config.py"
+  _template = "//brave/tools/crates/cargo-config.toml.template"
+  inputs = [ _template ]
+  outputs = [ cargo_config_overlay_path ]
+  args = [
+    "--template",
+    rebase_path(_template, root_build_dir),
+    "--out",
+    rebase_path(cargo_config_overlay_path, root_build_dir),
+    "--var",
+    "RUST_LLD=" + rebase_path("//third_party/rust-toolchain/bin/rust-lld"),
+  ]
+}
+
 build_crate("cargo-audit") {
 }
 

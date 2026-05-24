@@ -4,6 +4,17 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/build/host_os_constants.gni")
+import("//build/config/clang/clang.gni")
+import("//build_overrides/build.gni")
+if (host_os == "mac") {
+  import("//build/config/mac/mac_sdk.gni")
+}
+
+# Path of the generated cargo configuration overlay.  Produced by the
+# `:cargo_config` action in //brave/tools/crates:BUILD.gn and consumed by
+# every `build_crate()` invocation below.  Kept here so both files agree on
+# the location without an extra import.
+cargo_config_overlay_path = "$root_gen_dir/brave/tools/crates/cargo-config.toml"
 
 template("build_crate") {
   if (defined(invoker["crates"])) {
@@ -31,6 +42,10 @@ template("build_crate") {
     assert(current_toolchain == host_toolchain)
 
     forward_variables_from(invoker, [ "deps" ])
+    if (!defined(deps)) {
+      deps = []
+    }
+    deps += [ "//brave/tools/crates:cargo_config" ]
 
     script = "//brave/build/gn_run_rsp.py"
     args = [ "{{response_file_name}}" ]
@@ -41,6 +56,7 @@ template("build_crate") {
       "//brave/tools/crates/.cargo/config.toml",
       "//brave/tools/crates/Cargo.lock",
       "//brave/tools/crates/Cargo.toml",
+      cargo_config_overlay_path,
     ]
 
     outputs = executable_output_paths
@@ -58,6 +74,30 @@ template("build_crate") {
       "PATH=" +
           rebase_path("//third_party/rust-toolchain/bin", root_build_dir) +
           host_path_sep + getenv("PATH"),
+    ]
+
+    # Point cargo at the chromium-bundled clang as the linker driver so rustc
+    # doesn't fall through to the system `/usr/bin/cc` -> `/usr/bin/xcrun`
+    # chain (the hermetic Xcode tarball ships only the SDK, not a compiler;
+    # see build/toolchain/apple/toolchain.gni:160 where the upstream apple
+    # toolchain wires its own `clang`/`clang++` etc. from
+    # `$clang_base_path/bin/`).  Because that clang lives outside any Xcode
+    # layout, it can't auto-detect the SDK, so we also export `SDKROOT`
+    # pointing at the hermetic SDK from build/config/mac/mac_sdk.gni.
+    if (host_os == "mac" && !use_system_xcode) {
+      if (host_cpu == "arm64") {
+        _host_triple_envname = "AARCH64_APPLE_DARWIN"
+      } else {
+        _host_triple_envname = "X86_64_APPLE_DARWIN"
+      }
+      response_file_contents += [
+        "SDKROOT=" + rebase_path(mac_sdk_path),
+        "CARGO_TARGET_${_host_triple_envname}_LINKER=" +
+            rebase_path("$clang_base_path/bin/clang"),
+      ]
+    }
+
+    response_file_contents += [
       rebase_path(cargo_exe),
       "build",
       "--quiet",
@@ -67,6 +107,8 @@ template("build_crate") {
       rebase_path("//brave/tools/crates/Cargo.toml"),
       "--config",
       rebase_path("//brave/tools/crates/.cargo/config.toml"),
+      "--config",
+      rebase_path(cargo_config_overlay_path),
       "--target-dir",
       rebase_path(cargo_target_dir),
       "--frozen",
