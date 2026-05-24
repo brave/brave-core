@@ -20,13 +20,76 @@ function hasReloadsDetectedFlag() {
   return urlParams.get('mode') === 'afterRepeatedReloads'
 }
 
+function getSettingsPagePath(url: string) {
+  try {
+    const parsedUrl = new URL(url)
+    if (
+      (parsedUrl.protocol === 'chrome:' || parsedUrl.protocol === 'brave:') &&
+      parsedUrl.hostname === 'settings'
+    ) {
+      return parsedUrl.pathname
+    }
+  } catch {
+    return null
+  }
+
+  return null
+}
+
+function isSettingsPageTab(tab: chrome.tabs.Tab, pagePath: string) {
+  const tabUrl = tab.pendingUrl ?? tab.url
+  if (!tabUrl) {
+    return false
+  }
+
+  try {
+    const parsedUrl = new URL(tabUrl)
+    return (
+      (parsedUrl.protocol === 'chrome:' || parsedUrl.protocol === 'brave:') &&
+      parsedUrl.hostname === 'settings' &&
+      parsedUrl.pathname === pagePath
+    )
+  } catch {
+    return false
+  }
+}
+
+function openOrFocusTab(url: string) {
+  const settingsPagePath = getSettingsPagePath(url)
+  if (settingsPagePath !== '/shields/filters') {
+    chrome.tabs.create({ url, active: true })
+    return
+  }
+
+  chrome.tabs.query({}, (tabs) => {
+    if (chrome.runtime.lastError) {
+      chrome.tabs.create({ url, active: true })
+      return
+    }
+
+    const existingTab = tabs.find((tab) => {
+      return isSettingsPageTab(tab, settingsPagePath)
+    })
+    if (existingTab?.id === undefined) {
+      chrome.tabs.create({ url, active: true })
+      return
+    }
+
+    if (existingTab.windowId !== undefined) {
+      chrome.windows.update(existingTab.windowId, { focused: true })
+    }
+
+    chrome.tabs.update(existingTab.id, { active: true })
+  })
+}
+
 function createBrowserShieldsApi() {
   const proxy = ShieldsPanelProxy.getInstance()
   return createShieldsApi({
     dataHandler: proxy.dataHandler,
     panelHandler: proxy.panelHandler,
     createUIHandlerRemote: (impl) => proxy.createUIHandlerRemote(impl),
-    openTab: (url) => chrome.tabs.create({ url, active: true }),
+    openTab,
     loadTimeState: {
       isHttpsByDefaultEnabled: loadTimeData.getBoolean(
         'isHttpsByDefaultEnabled',
