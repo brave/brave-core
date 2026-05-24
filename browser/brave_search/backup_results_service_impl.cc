@@ -17,6 +17,7 @@
 #include "base/rand_util.h"
 #include "base/time/time.h"
 #include "base/values.h"
+#include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_search/browser/backup_results_allowed_urls.h"
 #include "brave/components/brave_search/browser/backup_results_service.h"
 #include "brave/components/brave_search/browser/prefs.h"
@@ -163,6 +164,8 @@ void BackupResultsServiceImpl::FetchBackupResults(
   if (should_render) {
     auto create_params = content::WebContents::CreateParams(otr_profile);
     web_contents = content::WebContents::Create(create_params);
+    brave_shields::BraveShieldsWebContentsObserver::CreateForWebContents(
+        web_contents.get());
 
     int random_width = base::RandInt(800, 1920);
     int random_height = base::RandInt(600, 1080);

@@ -16,6 +16,7 @@ source_set("brave_search") {
   ]
 
   deps = [
+    "//brave/browser/brave_shields",
     "//brave/components/brave_search/browser",
     "//brave/components/brave_search/common",
     "//brave/components/brave_shields/core/browser",
