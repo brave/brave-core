@@ -1,0 +1,13 @@
+diff --git a/chromium/config/Chrome/linux/arm64/config.h b/chromium/config/Chrome/linux/arm64/config.h
+index 62b9fb495eb5ea538b14e56b818511493c299e29..d4ef0b642d5555b2e72804e66eac9c5cc830b100 100644
+--- a/chromium/config/Chrome/linux/arm64/config.h
++++ b/chromium/config/Chrome/linux/arm64/config.h
+@@ -730,7 +730,7 @@
+ #define CONFIG_AUDIO_FRAME_QUEUE 0
+ #define CONFIG_AUDIODSP 0
+ #define CONFIG_BLOCKDSP 0
+-#define CONFIG_BSWAPDSP 0
++#define CONFIG_BSWAPDSP 1
+ #define CONFIG_CABAC 1
+ #define CONFIG_CBS 0
+ #define CONFIG_CBS_APV 0
