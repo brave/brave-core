@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <tuple>
+
 // The upstream test sets a cookie via document.cookie (CookieJar mojo pipe,
 // async with AsyncSetCookie) then immediately reads it via cookieStore.get()
 // (CookieStore API, separate mojo pipe). These two APIs use independent
@@ -33,7 +35,7 @@ IN_PROC_BROWSER_TEST_P(CookieStoreSameSiteTest,
   // Synchronize: reading document.cookie is a sync IPC on the CookieJar mojo
   // pipe — the same pipe the setter used. Mojo message ordering on a single
   // pipe guarantees the async set is committed before this getter returns.
-  content::EvalJs(GetFrame(), "document.cookie");
+  std::ignore = content::EvalJs(GetFrame(), "document.cookie");
 
   std::string sameSite = GetCookieSameSite("unspecified-cookie");
   if (HasNonLegacySameSiteAccessSemantics()) {
