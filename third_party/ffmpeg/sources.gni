@@ -17,6 +17,7 @@ enable_ffmpeg_hevc_support =
 brave_third_party_ffmpeg_c_sources = []
 brave_third_party_ffmpeg_asm_sources = []
 brave_third_party_ffmpeg_asm_deps = []
+brave_third_party_ffmpeg_gas_sources = []
 
 if (enable_ffmpeg_hevc_support) {
   brave_third_party_ffmpeg_c_sources += [
@@ -42,28 +43,42 @@ if (enable_ffmpeg_hevc_support) {
     "libavcodec/dovi_rpu.c",
     "libavcodec/dovi_rpudec.c",
   ]
-}
 
-# HEVC x86_64 optimizations.
-if (enable_ffmpeg_hevc_support && current_cpu == "x64") {
-  brave_third_party_ffmpeg_c_sources += [
-    "libavcodec/x86/bswapdsp_init.c",
-    "libavcodec/x86/h26x/h2656dsp.c",
-    "libavcodec/x86/hevc/dsp_init.c",
-  ]
-  brave_third_party_ffmpeg_asm_sources += [
-    "libavcodec/x86/bswapdsp.asm",
-    "libavcodec/x86/h26x/h2656_inter.asm",
-    "libavcodec/x86/hevc/add_res.asm",
-    "libavcodec/x86/hevc/deblock.asm",
-    "libavcodec/x86/hevc/dequant.asm",
-    "libavcodec/x86/hevc/idct.asm",
-    "libavcodec/x86/hevc/mc.asm",
-    "libavcodec/x86/hevc/sao.asm",
-    "libavcodec/x86/hevc/sao_10bit.asm",
-  ]
-  brave_third_party_ffmpeg_asm_deps += [
-    "libavcodec/x86/h26x/h2656_sao.asm",
-    "libavcodec/x86/h26x/h2656_sao_10bit.asm",
-  ]
+  # HEVC x86_64 optimizations.
+  if (current_cpu == "x64") {
+    brave_third_party_ffmpeg_c_sources += [
+      "libavcodec/x86/bswapdsp_init.c",
+      "libavcodec/x86/h26x/h2656dsp.c",
+      "libavcodec/x86/hevc/dsp_init.c",
+    ]
+    brave_third_party_ffmpeg_asm_sources += [
+      "libavcodec/x86/bswapdsp.asm",
+      "libavcodec/x86/h26x/h2656_inter.asm",
+      "libavcodec/x86/hevc/add_res.asm",
+      "libavcodec/x86/hevc/deblock.asm",
+      "libavcodec/x86/hevc/dequant.asm",
+      "libavcodec/x86/hevc/idct.asm",
+      "libavcodec/x86/hevc/mc.asm",
+      "libavcodec/x86/hevc/sao.asm",
+      "libavcodec/x86/hevc/sao_10bit.asm",
+    ]
+    brave_third_party_ffmpeg_asm_deps += [
+      "libavcodec/x86/h26x/h2656_sao.asm",
+      "libavcodec/x86/h26x/h2656_sao_10bit.asm",
+    ]
+  }
+
+  # HEVC arm64 NEON optimizations.
+  if (current_cpu == "arm64") {
+    brave_third_party_ffmpeg_c_sources +=
+        [ "libavcodec/aarch64/hevcdsp_init_aarch64.c" ]
+    brave_third_party_ffmpeg_gas_sources += [
+      "libavcodec/aarch64/h26x/epel_neon.S",
+      "libavcodec/aarch64/h26x/qpel_neon.S",
+      "libavcodec/aarch64/h26x/sao_neon.S",
+      "libavcodec/aarch64/hevcdsp_deblock_neon.S",
+      "libavcodec/aarch64/hevcdsp_dequant_neon.S",
+      "libavcodec/aarch64/hevcdsp_idct_neon.S",
+    ]
+  }
 }

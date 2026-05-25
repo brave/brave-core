@@ -1,8 +1,8 @@
 diff --git a/ffmpeg_generated.gni b/ffmpeg_generated.gni
-index 447e27212b68d771505098c3f5d3795b98467192..44807e2568942b04958f22026ffbc541fd894e3b 100644
+index 447e27212b68d771505098c3f5d3795b98467192..6a18ba0deb3f9573629e19a468a28faaa321cae2 100644
 --- a/ffmpeg_generated.gni
 +++ b/ffmpeg_generated.gni
-@@ -15,6 +15,10 @@ ffmpeg_asm_include_dirs = []
+@@ -15,6 +15,11 @@ ffmpeg_asm_include_dirs = []
  ffmpeg_nasm_include_dirs = []
  ffmpeg_c_deps = []
  ffmpeg_asm_deps = []
@@ -10,6 +10,7 @@ index 447e27212b68d771505098c3f5d3795b98467192..44807e2568942b04958f22026ffbc541
 +ffmpeg_c_sources += brave_third_party_ffmpeg_c_sources
 +ffmpeg_asm_sources += brave_third_party_ffmpeg_asm_sources
 +ffmpeg_asm_deps += brave_third_party_ffmpeg_asm_deps
++ffmpeg_gas_sources += brave_third_party_ffmpeg_gas_sources
  
  use_linux_config = is_linux || is_chromeos || is_fuchsia
  
