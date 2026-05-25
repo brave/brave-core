@@ -142,7 +142,7 @@ class InstallShPatchTest(unittest.TestCase):
         self.assertFalse(calls[2][-2].endswith("/"), calls[2])
 
     def test_versioned_rsync_clean_slate_parent_succeeds(self):
-        """First three rsync attempts fail; clean-slate parent-rsync succeeds."""
+        """First 3 rsync attempts fail; clean-slate parent-rsync succeeds."""
         app_dir = join(self.temp_dir.name, f"{PRODUCT_NAME}.app")
         self._make_app(app_dir, CURRENT_VERSION)
         calls = []
