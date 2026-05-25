@@ -148,6 +148,7 @@ class NewTabPageViewController: UIViewController {
   private let feedDataSource: FeedDataSource
   private let feedOverlayView = NewTabPageFeedOverlayView()
   private var preventReloadOnBraveNewsEnabledChange = false
+  private var didAttemptBackgroundVideoAutoplay = false
 
   private let notifications: NewTabPageNotifications
   private var cancellables: Set<AnyCancellable> = []
@@ -277,9 +278,7 @@ class NewTabPageViewController: UIViewController {
         // if needed.
         reportSponsoredBackgroundViewedEventIfNeeded()
 
-        videoAdPlayer?.loadAndAutoplayVideoAssetIfNeeded(
-          shouldAutoplay: false
-        )
+        loadAndAutoplayBackgroundVideoAdIfNeeded()
       }
     }
 
@@ -415,9 +414,7 @@ class NewTabPageViewController: UIViewController {
 
     reportSponsoredBackgroundViewedEventIfNeeded()
 
-    videoAdPlayer?.loadAndAutoplayVideoAssetIfNeeded(
-      shouldAutoplay: shouldShowBackgroundVideo()
-    )
+    loadAndAutoplayBackgroundVideoAdIfNeeded()
 
     presentNotification()
 
@@ -579,6 +576,20 @@ class NewTabPageViewController: UIViewController {
     videoAdPlayer?.didPlay25PercentEvent = { [weak self] in
       self?.reportSponsoredBackgroundEvent(.media25)
     }
+  }
+
+  private func loadAndAutoplayBackgroundVideoAdIfNeeded() {
+    guard background.currentBackground != nil else { return }
+    let shouldAutoplay =
+      shouldShowBackgroundVideo()
+      && delegate?.isURLBarInOverlayMode() != true
+      && !didAttemptBackgroundVideoAutoplay
+    videoAdPlayer?.loadAndAutoplayVideoAssetIfNeeded(
+      shouldAutoplay: shouldAutoplay
+    )
+    // Autoplay is only attempted once per tab open to avoid background changes
+    // triggering autoplay when the tab is already in use.
+    didAttemptBackgroundVideoAutoplay = true
   }
 
   private func shouldShowBackgroundVideo() -> Bool {

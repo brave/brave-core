@@ -364,8 +364,11 @@ extension BrowserViewController: TabManagerDelegate {
       searchResultAdClickedInfoBar = nil
     }
 
-    newTabTakeoverInfoBar?.dismiss(false)
-    newTabTakeoverInfoBar = nil
+    let isNewTabURL = tabManager.selectedTab?.visibleURL?.isNewTabURL
+    if isNewTabURL != true {
+      newTabTakeoverInfoBar?.dismiss(false)
+      newTabTakeoverInfoBar = nil
+    }
   }
 
   func tabManagerDidRemoveAllTabs(_ tabManager: TabManager, toast: ButtonToast?) {
