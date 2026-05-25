@@ -32,33 +32,16 @@ struct DefaultShieldsSectionView: View {
         )
       }
 
-      if FeatureList.kBraveHttpsByDefault.enabled {
-        FormPicker(selection: $settings.httpsUpgradeLevel) {
-          ForEach(HTTPSUpgradeLevel.allCases) { level in
-            Text(level.localizedTitle)
-              .foregroundColor(Color(.secondaryBraveLabel))
-              .tag(level)
-          }
-        } label: {
-          LabelView(
-            title: Strings.Shields.upgradeConnectionsToHTTPS,
-            subtitle: nil
-          )
+      FormPicker(selection: $settings.httpsUpgradeLevel) {
+        ForEach(HTTPSUpgradeLevel.allCases) { level in
+          Text(level.localizedTitle)
+            .foregroundColor(Color(.secondaryBraveLabel))
+            .tag(level)
         }
-      } else {
-        ToggleView(
-          title: Strings.HTTPSEverywhere,
-          subtitle: Strings.HTTPSEverywhereDescription,
-          toggle: Binding(
-            get: {
-              settings.httpsUpgradeLevel.isEnabled
-            },
-            set: { newValue in
-              settings.httpsUpgradeLevel =
-                !newValue
-                ? .disabled : (Preferences.Shields.httpsUpgradePriorEnabledLevel ?? .standard)
-            }
-          )
+      } label: {
+        LabelView(
+          title: Strings.Shields.upgradeConnectionsToHTTPS,
+          subtitle: nil
         )
       }
 

@@ -554,9 +554,6 @@ extension Preferences {
     // then assign that enabled level a preference so that if a user toggles HTTPS Everywhere off
     // and on it will correctly set the underlying upgrade level to the level they had set when
     // the feature flag was on.
-    if !FeatureList.kBraveHttpsByDefault.enabled {
-      Preferences.Shields.httpsUpgradePriorEnabledLevel = Preferences.Shields.httpsUpgradeLevel
-    }
     guard !Migration.httpsUpgradesLivelCompleted.value else { return }
 
     // Migrate old tracking protection setting to new BraveShields setting

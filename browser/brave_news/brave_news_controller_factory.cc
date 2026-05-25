@@ -11,7 +11,6 @@
 #include "brave/browser/brave_news/direct_feed_fetcher_delegate_impl.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/brave_policy/policy_initialization_waiter.h"
-#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/policy/profile_policy_connector.h"
@@ -54,7 +53,6 @@ BraveNewsControllerFactory::BraveNewsControllerFactory()
           "BraveNewsControllerFactory",
           BrowserContextDependencyManager::GetInstance()) {
   DependsOn(HistoryServiceFactory::GetInstance());
-  DependsOn(HostContentSettingsMapFactory::GetInstance());
 }
 
 BraveNewsControllerFactory::~BraveNewsControllerFactory() = default;
@@ -75,9 +73,6 @@ BraveNewsControllerFactory::BuildServiceInstanceForBrowserContext(
   }
   auto* history_service = HistoryServiceFactory::GetForProfile(
       profile, ServiceAccessType::EXPLICIT_ACCESS);
-  auto* host_content_settings_map =
-      HostContentSettingsMapFactory::GetForProfile(profile);
-
   policy::PolicyService* policy_service = nullptr;
   if (auto* policy_connector = profile->GetProfilePolicyConnector()) {
     policy_service = policy_connector->policy_service();
@@ -89,8 +84,7 @@ BraveNewsControllerFactory::BuildServiceInstanceForBrowserContext(
   return std::make_unique<BraveNewsController>(
       profile->GetPrefs(), std::move(policy_initialization_waiter),
       history_service, profile->GetURLLoaderFactory(),
-      std::make_unique<DirectFeedFetcherDelegateImpl>(
-          host_content_settings_map));
+      std::make_unique<DirectFeedFetcherDelegateImpl>(profile->GetPrefs()));
 }
 
 bool BraveNewsControllerFactory::ServiceIsNULLWhileTesting() const {

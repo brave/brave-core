@@ -304,10 +304,6 @@
       initWithFeature:&brave_rewards::features::kVerboseLoggingFeature];
 }
 
-+ (Feature*)kBraveHttpsByDefault {
-  return [[Feature alloc] initWithFeature:&net::features::kBraveHttpsByDefault];
-}
-
 + (Feature*)kBlockAllCookiesToggle {
   return [[Feature alloc]
       initWithFeature:&brave_shields::features::kBlockAllCookiesToggle];

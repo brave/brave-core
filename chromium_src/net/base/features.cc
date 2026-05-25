@@ -39,11 +39,6 @@ BASE_FEATURE(kBravePartitionHSTS,
 BASE_FEATURE(kBraveTorWindowsHttpsOnly,
              base::FEATURE_ENABLED_BY_DEFAULT);
 
-// Enabled HTTPS by Default.
-BASE_FEATURE(kBraveHttpsByDefault,
-             "HttpsByDefault",
-             base::FEATURE_ENABLED_BY_DEFAULT);
-
 // When enabled, use a fallback DNS over HTTPS (DoH)
 // provider when the current DNS provider does not offer Secure DNS.
 BASE_FEATURE(kBraveFallbackDoHProvider,

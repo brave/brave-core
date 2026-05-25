@@ -373,20 +373,6 @@ mojom::CookieBlockMode BraveShieldsTabHelper::GetCookieBlockMode() {
                << std::to_underlying(control_type);
 }
 
-mojom::HttpsUpgradeMode BraveShieldsTabHelper::GetHttpsUpgradeMode() {
-  ControlType control_type = brave_shields::GetHttpsUpgradeControlType(
-      &*host_content_settings_map_, GetCurrentSiteURL());
-  if (control_type == ControlType::ALLOW) {
-    return mojom::HttpsUpgradeMode::DISABLED_MODE;
-  } else if (control_type == ControlType::BLOCK) {
-    return mojom::HttpsUpgradeMode::STRICT_MODE;
-  } else if (control_type == ControlType::BLOCK_THIRD_PARTY) {
-    return mojom::HttpsUpgradeMode::STANDARD_MODE;
-  } else {
-    return mojom::HttpsUpgradeMode::STANDARD_MODE;
-  }
-}
-
 bool BraveShieldsTabHelper::GetNoScriptEnabled() {
   return brave_shields_settings_->IsNoScriptEnabled(GetCurrentSiteURL());
 }
@@ -434,24 +420,6 @@ void BraveShieldsTabHelper::SetCookieBlockMode(mojom::CookieBlockMode mode) {
   brave_shields::SetCookieControlType(&*host_content_settings_map_, prefs,
                                       control_type, GetCurrentSiteURL(),
                                       g_browser_process->local_state());
-
-  ReloadWebContents();
-}
-
-void BraveShieldsTabHelper::SetHttpsUpgradeMode(mojom::HttpsUpgradeMode mode) {
-  ControlType control_type;
-  if (mode == mojom::HttpsUpgradeMode::DISABLED_MODE) {
-    control_type = ControlType::ALLOW;
-  } else if (mode == mojom::HttpsUpgradeMode::STRICT_MODE) {
-    control_type = ControlType::BLOCK;
-  } else if (mode == mojom::HttpsUpgradeMode::STANDARD_MODE) {
-    control_type = ControlType::BLOCK_THIRD_PARTY;
-  } else {
-    control_type = ControlType::DEFAULT;
-  }
-  brave_shields::SetHttpsUpgradeControlType(&*host_content_settings_map_,
-                                            control_type, GetCurrentSiteURL(),
-                                            g_browser_process->local_state());
 
   ReloadWebContents();
 }
