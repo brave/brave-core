@@ -807,10 +807,11 @@ TEST_F(BraveOriginServiceWithSkusTest, FirstPurchaseDetection_CallsDelegate) {
   EXPECT_TRUE(result.Get());
 #if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
   // Branded builds handle the post-purchase flow via the startup dialog,
-  // not by opening the settings page.
+  // not by opening the settings page. No PostTask is scheduled on this
+  // path, so checking immediately after the callback resolves is safe.
   EXPECT_FALSE(delegate_called);
 #else
-  EXPECT_TRUE(delegate_called);
+  ASSERT_TRUE(base::test::RunUntil([&] { return delegate_called; }));
 #endif
 }
 
@@ -863,12 +864,15 @@ TEST_F(BraveOriginServiceWithSkusTest, DelegateIsOneShot_OnlyFiresOnce) {
   service_->CheckPurchaseState(result1.GetCallback());
   EXPECT_TRUE(result1.Get());
 #if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+  // Branded builds never schedule the delegate task.
   EXPECT_FALSE(delegate_called);
 #else
-  EXPECT_TRUE(delegate_called);
+  ASSERT_TRUE(base::test::RunUntil([&] { return delegate_called; }));
 #endif
 
-  // Reset the flag and verify the delegate is not called again.
+  // Reset the flag and verify the delegate is not called again. After the
+  // first purchase, did_open_origin_settings_ is set, so no new task is
+  // posted; checking immediately is safe.
   delegate_called = false;
   base::test::TestFuture<bool> result2;
   service_->CheckPurchaseState(result2.GetCallback());
@@ -910,9 +914,10 @@ TEST_F(BraveOriginServiceWithSkusTest,
 
   ASSERT_TRUE(base::test::RunUntil([&] { return service_->IsPurchased(); }));
 #if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+  // Branded builds never schedule the delegate task.
   EXPECT_FALSE(delegate_called);
 #else
-  EXPECT_TRUE(delegate_called);
+  ASSERT_TRUE(base::test::RunUntil([&] { return delegate_called; }));
 #endif
 }
 
