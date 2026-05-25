@@ -9,6 +9,7 @@
 #include "base/metrics/histogram_macros.h"
 #include "base/strings/string_util.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/brave_search/backup_results_service_impl.h"
 #include "brave/browser/misc_metrics/media_session_metrics.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
@@ -16,6 +17,7 @@
 #include "brave/components/misc_metrics/navigation_source_metrics.h"
 #include "brave/components/misc_metrics/page_metrics.h"
 #include "build/build_config.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "components/tabs/public/tab_interface.h"
@@ -74,6 +76,9 @@ void PageMetricsTabHelper::DidFinishNavigation(
   bool is_otr = IsPrivateWindowEvent();
   if (is_otr) {
     UMA_HISTOGRAM_BOOLEAN("Brave.Core.PrivateWindowUsed", true);
+  } else {
+    brave_search::BackupResultsServiceImpl::RecordLastViewSize(
+        g_browser_process->local_state(), web_contents()->GetSize());
   }
 
   bool is_reload = false;
