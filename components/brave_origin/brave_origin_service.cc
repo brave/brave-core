@@ -262,6 +262,7 @@ void BraveOriginService::OnCredentialSummary(
   }
 #endif
 
+  LOG(ERROR) << "-----------OnCredentiaSummary Set Purchased: " << purchased;
   BraveOriginPolicyManager::GetInstance()->SetPurchased(purchased);
 
   // Persist enforcement state so NeedsRestart() can detect first-purchase
