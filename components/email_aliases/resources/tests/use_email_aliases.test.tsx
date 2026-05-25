@@ -39,8 +39,6 @@ describe('useEmailAliases', () => {
   it('starts with empty aliases when logged out', () => {
     const { result } = renderHook(() => useEmailAliases(bindObserver))
 
-    act(() => {})
-
     expect(result.current.accountState).toEqual(makeLoggedOutAccountState())
     expect(result.current.aliasesUpdate).toEqual({ aliases: [] })
   })
@@ -109,8 +107,11 @@ describe('useEmailAliases', () => {
 
   it('runs bindObserver cleanup on unmount', () => {
     const unbind = jest.fn()
-    const { unmount } = renderHook(() => useEmailAliases((_observer) => unbind))
+    const bindObserver = (_observer: EmailAliasesServiceObserverInterface) =>
+      unbind
+    const { unmount } = renderHook(() => useEmailAliases(bindObserver))
 
+    unbind.mockClear()
     unmount()
     expect(unbind).toHaveBeenCalledTimes(1)
   })
