@@ -1312,9 +1312,7 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
   html_source->AddBoolean("isMediaRouterEnabled",
                           media_router::MediaRouterEnabled(profile));
 
-  html_source->AddBoolean(
-      "isHttpsByDefaultEnabled",
-      base::FeatureList::IsEnabled(net::features::kBraveHttpsByDefault));
+  html_source->AddBoolean("isHttpsByDefaultEnabled", true);
 
   html_source->AddBoolean(
       "showStrictFingerprintingMode",

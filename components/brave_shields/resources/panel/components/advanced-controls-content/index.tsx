@@ -14,7 +14,6 @@ import getPanelBrowserAPI, {
   AdBlockMode,
   CookieBlockMode,
   FingerprintMode,
-  HttpsUpgradeMode,
   ContentSettingSource,
 } from '../../api/panel_browser_api'
 import DataContext from '../../state/context'
@@ -46,12 +45,6 @@ const fingerprintModeOptions = [
   { value: FingerprintMode.STRICT_MODE, text: getLocale('braveShieldsFingerprintingBlockedAgg') },
   { value: FingerprintMode.STANDARD_MODE, text: getLocale('braveShieldsFingerprintingBlockedStd') },
   { value: FingerprintMode.ALLOW_MODE, text: getLocale('braveShieldsFingerprintingAllowAll') }
-]
-
-const httpsUpgradeModeOptions = [
-  { value: HttpsUpgradeMode.STRICT_MODE, text: getLocale('braveShieldsHttpsUpgradeModeStrict') },
-  { value: HttpsUpgradeMode.STANDARD_MODE, text: getLocale('braveShieldsHttpsUpgradeModeStandard') },
-  { value: HttpsUpgradeMode.DISABLED_MODE, text: getLocale('braveShieldsHttpsUpgradeModeDisabled') }
 ]
 
 interface Props {
@@ -115,11 +108,6 @@ function AdvancedControlsContent() {
     if (getSiteSettings) getSiteSettings()
   }
 
-  const handleHttpsUpgradeModeChange = ({ value }: { value: string }) => {
-    getPanelBrowserAPI().dataHandler.setHttpsUpgradeMode(parseInt(value))
-    if (getSiteSettings) getSiteSettings()
-  }
-
   const handleIsNoScriptEnabledChange = (detail: { checked: boolean }) => {
     getPanelBrowserAPI().dataHandler.setIsNoScriptsEnabled(detail.checked)
     if (getSiteSettings) getSiteSettings()
@@ -156,10 +144,8 @@ function AdvancedControlsContent() {
   const adsListCount = siteBlockInfo?.adsList.length ?? 0
   const jsListCount = siteBlockInfo?.blockedJsList.length ?? 0
   const invokedWebcompatListCount = siteBlockInfo?.invokedWebcompatList.length ?? 0
-  const isHttpsByDefaultEnabled = loadTimeData.getBoolean('isHttpsByDefaultEnabled')
   const showStrictFingerprintingMode = loadTimeData.getBoolean('showStrictFingerprintingMode')
   const isWebcompatExceptionsServiceEnabled = loadTimeData.getBoolean('isWebcompatExceptionsServiceEnabled')
-  const isTorProfile = loadTimeData.getBoolean('isTorProfile')
   const isBraveForgetFirstPartyStorageFeatureEnabled = loadTimeData.getBoolean(
     'isBraveForgetFirstPartyStorageFeatureEnabled'
   )
@@ -204,21 +190,6 @@ function AdvancedControlsContent() {
             <span>{adsListCount > 99 ? '99+' : adsListCount}</span>
           </S.CountButton>
         </S.ControlGroup>
-        {(isHttpsByDefaultEnabled && !isTorProfile) && <S.ControlGroup>
-          <div className="col-2">
-            <PanelDropdown
-              size="small"
-              value={siteSettings?.httpsUpgradeMode?.toString()}
-              onChange={handleHttpsUpgradeModeChange}
-            >
-              {httpsUpgradeModeOptions.map(entry => {
-                return (
-                  <leo-option key={entry.value} value={entry.value?.toString()}>{entry.text}</leo-option>
-                )
-              })}
-            </PanelDropdown>
-          </div>
-        </S.ControlGroup>}
         <S.ControlGroup>
           <label>
             <S.LabelContainer>
