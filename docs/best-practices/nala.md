@@ -8,7 +8,7 @@
 
 **Always use the Leo/Nala icon system instead of adding new icon files.** Leo is the canonical icon source across all platforms. Bypassing it leads to inconsistency, duplicates, and maintenance burden.
 
-> **Reviewer note:** Tag `@nala-token-reviewers` when flagging this violation.
+> **Reviewer note:** Tag `@brave/nala-token-reviewers` when flagging this violation.
 
 <a id="NA-009"></a>
 
@@ -69,7 +69,7 @@ leo_icons = [
 
 **When adding color values on Android, use existing Nala/Leo color tokens instead of defining new color resources.** New color definitions in `res/values/colors.xml` or similar files bypass the design system and create inconsistency across themes and platforms.
 
-> **Reviewer note:** Tag `@nala-token-reviewers` when flagging this violation.
+> **Reviewer note:** Tag `@brave/nala-token-reviewers` when flagging this violation.
 
 ```xml
 <!-- ❌ WRONG - defining a new color resource -->
@@ -89,7 +89,7 @@ leo_icons = [
 
 **In WebUI React code, use Leo components from `@brave/leo/react/*` instead of native HTML elements or custom re-implementations.** Leo components are design-system-approved, theme-aware, and accessible. Using raw HTML or hand-rolling equivalents produces visual inconsistency, bypasses Brave's design tokens, and requires manual accessibility work.
 
-> **Reviewer note:** Tag `@nala-token-reviewers` when flagging this violation.
+> **Reviewer note:** Tag `@brave/nala-token-reviewers` when flagging this violation.
 
 <a id="NA-007"></a>
 
