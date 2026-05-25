@@ -83,8 +83,6 @@ bool IsPolkadotKeyring(mojom::KeyringId keyring_id);
 bool IsPolkadotImportKeyring(mojom::KeyringId keyring_id);
 std::vector<mojom::KeyringId> GetPolkadotKeyrings();
 bool IsPolkadotRelayNetwork(std::string_view network_id);
-std::string GetNetworkForPolkadotKeyring(const mojom::KeyringId& keyring_id);
-std::string GetNetworkForPolkadotAccount(const mojom::AccountIdPtr& account_id);
 
 mojom::CoinType GetCoinForKeyring(mojom::KeyringId keyring_id);
 bool IsAccountBasedCoin(mojom::CoinType coin);

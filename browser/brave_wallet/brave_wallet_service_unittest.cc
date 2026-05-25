@@ -2713,32 +2713,15 @@ TEST_F(BraveWalletServiceUnitTest, GenerateReceiveAddress_Dot) {
   auto dot_mainnet_account = GetAccountUtils().EnsureDotAccount(0);
   auto dot_testnet_account = GetAccountUtils().EnsureDotTestAccount(0);
 
-  auto polkadot_mainnet_url =
-      network_manager_
-          ->GetKnownChain(mojom::kPolkadotMainnet, mojom::CoinType::DOT)
-          ->rpc_endpoints.front();
-  auto polkadot_testnet_url =
-      network_manager_
-          ->GetKnownChain(mojom::kPolkadotTestnet, mojom::CoinType::DOT)
-          ->rpc_endpoints.front();
-
-  SetInterceptors(
-      {{polkadot_mainnet_url,
-        ReadMetadataFixtureJson("state_getMetadata_polkadot.json")},
-       {polkadot_testnet_url,
-        ReadMetadataFixtureJson("state_getMetadata_westend.json")}});
-
   for (auto* acc : {dot_mainnet_account.get(), dot_testnet_account.get()}) {
-    auto expected_address = std::optional<std::string>(acc->address);
-
     base::test::TestFuture<const std::optional<std::string>&,
                            const std::optional<std::string>&>
         future1;
     service_->GenerateReceiveAddress(acc->account_id.Clone(),
                                      future1.GetCallback());
     auto [address1, error1] = future1.Take();
-    EXPECT_EQ(address1, expected_address);
-    EXPECT_FALSE(error1.has_value());
+    EXPECT_EQ(address1, "");
+    EXPECT_EQ(error1, WalletInternalErrorMessage());
 
     base::test::TestFuture<const std::optional<std::string>&,
                            const std::optional<std::string>&>
@@ -2746,8 +2729,8 @@ TEST_F(BraveWalletServiceUnitTest, GenerateReceiveAddress_Dot) {
     service_->GenerateReceiveAddress(acc->account_id.Clone(),
                                      future2.GetCallback());
     auto [address2, error2] = future2.Take();
-    EXPECT_EQ(address2, expected_address);
-    EXPECT_FALSE(error2.has_value());
+    EXPECT_EQ(address2, "");
+    EXPECT_EQ(error2, WalletInternalErrorMessage());
   }
 }
 

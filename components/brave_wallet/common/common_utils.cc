@@ -317,24 +317,6 @@ bool IsPolkadotAccount(const mojom::AccountIdPtr& account_id) {
          IsPolkadotKeyring(account_id->keyring_id);
 }
 
-std::string GetNetworkForPolkadotKeyring(const mojom::KeyringId& keyring_id) {
-  if (keyring_id == mojom::KeyringId::kPolkadotMainnet ||
-      keyring_id == mojom::KeyringId::kPolkadotImport) {
-    return mojom::kPolkadotMainnet;
-  }
-  if (keyring_id == mojom::KeyringId::kPolkadotTestnet ||
-      keyring_id == mojom::KeyringId::kPolkadotImportTestnet) {
-    return mojom::kPolkadotTestnet;
-  }
-  NOTREACHED();
-}
-
-std::string GetNetworkForPolkadotAccount(
-    const mojom::AccountIdPtr& account_id) {
-  CHECK(IsPolkadotAccount(account_id));
-  return GetNetworkForPolkadotKeyring(account_id->keyring_id);
-}
-
 mojom::CoinType GetCoinForKeyring(mojom::KeyringId keyring_id) {
   if (IsEthereumKeyring(keyring_id)) {
     return mojom::CoinType::ETH;
