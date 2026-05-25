@@ -222,6 +222,8 @@ class AdsServiceImpl final : public AdsService,
   void AddBatAdsObserver(mojo::PendingRemote<bat_ads::mojom::BatAdsObserver>
                              bat_ads_observer_pending_remote) override;
 
+  bool IsInitialized() const override;
+
   bool IsBrowserUpgradeRequiredToServeAds() const override;
 
   int64_t GetMaximumNotificationAdsPerHour() const override;
