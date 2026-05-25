@@ -4991,26 +4991,6 @@ extension Strings {
         comment: "Option Text for Auto Save Only Wi-Fi Option"
       )
 
-    public static let playlistOfflineDataToggleOption =
-      NSLocalizedString(
-        "playlist.playlistOfflineDataToggleOption",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Playlist Offline Data",
-        comment:
-          "Text for Playlist Offline Data Toggle while clearing the offline data storage in settings"
-      )
-
-    public static let playlistMediaAndOfflineDataToggleOption =
-      NSLocalizedString(
-        "playlist.playlistMediaAndOfflineDataToggleOption",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Playlist Media & Offline Data",
-        comment:
-          "Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings"
-      )
-
     public static let playlistResetAlertTitle =
       NSLocalizedString(
         "playList.playlistResetAlertTitle",
