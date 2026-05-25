@@ -34,6 +34,12 @@ export function getLoggedInEmail(
   return accountState!.loggedIn!.email
 }
 
+type AuthenticationWithTestSubscribe = {
+  subscribeAccountState?: (
+    listener: (state: AccountState) => void,
+  ) => () => void
+}
+
 function useBraveAccountState(): AccountState | undefined {
   const [accountState, setAccountState] = React.useState<
     AccountState | undefined
@@ -41,6 +47,13 @@ function useBraveAccountState(): AccountState | undefined {
 
   React.useEffect(() => {
     const authentication = Authentication.getRemote()
+    const subscribeAccountState = (
+      authentication as AuthenticationWithTestSubscribe
+    ).subscribeAccountState
+    if (subscribeAccountState) {
+      return subscribeAccountState.call(authentication, setAccountState)
+    }
+
     const router = new AuthenticationObserverCallbackRouter()
     authentication.addObserver(router.$.bindNewPipeAndPassRemote())
     const listenerId = router.onAccountStateChanged.addListener(

@@ -19,25 +19,29 @@ export function makeLoggedInAccountState(email: string): AccountState {
 
 export class MockAuthentication {
   private accountState: AccountState | undefined
-  private observerRemote: AuthenticationObserverRemote | null = null
+  private listeners = new Set<(state: AccountState) => void>()
 
   constructor(initialState?: AccountState) {
     this.accountState = initialState
   }
 
-  addObserver(observer: AuthenticationObserverRemote) {
-    this.observerRemote = observer
-    this.notifyAccountState()
+  // Used by `useBraveAccountState` in tests (no Mojo required).
+  subscribeAccountState(listener: (state: AccountState) => void): () => void {
+    this.listeners.add(listener)
+    if (this.accountState !== undefined) {
+      listener(this.accountState)
+    }
+    return () => {
+      this.listeners.delete(listener)
+    }
   }
+
+  addObserver(_observer: AuthenticationObserverRemote) {}
 
   setAccountState(state: AccountState) {
     this.accountState = state
-    this.notifyAccountState()
-  }
-
-  private notifyAccountState() {
-    if (this.observerRemote !== null && this.accountState !== undefined) {
-      this.observerRemote.onAccountStateChanged(this.accountState)
+    for (const listener of this.listeners) {
+      listener(state)
     }
   }
 }
