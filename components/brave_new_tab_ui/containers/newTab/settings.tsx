@@ -12,8 +12,8 @@ import {
 } from '../../components/default'
 
 import Navigation from '@brave/leo/react/navigation'
-import NavigationItem from '@brave/leo/react/navigationItem'
-import NavigationMenu from '@brave/leo/react/navigationMenu'
+import Navigationitem from '@brave/leo/react/navigationItem'
+import Navigationmenu from '@brave/leo/react/navigationMenu'
 
 import { getLocale } from '$web-common/locale'
 import { useBraveNews } from '../../../brave_news/browser/resources/shared/Context'
@@ -40,7 +40,7 @@ const Sidebar = styled(Navigation)`
   margin-inline-start: -24px;
 `
 
-const SidebarItem = styled(NavigationItem)`
+const SidebarItem = styled(Navigationitem)`
   text-transform: capitalize;
 `
 
@@ -151,7 +151,7 @@ export default function Settings(props: Props) {
     </SettingsTitle>
     <SettingsContent id='settingsBody'>
       <Sidebar id="sidebar">
-        <NavigationMenu>
+        <Navigationmenu>
           {allowedTabTypes.map(tabType =>
             <SidebarItem
               key={tabType}
@@ -161,7 +161,7 @@ export default function Settings(props: Props) {
             >
               {getLocale(tabTranslationKeys[tabType])}
             </SidebarItem>)}
-        </NavigationMenu>
+        </Navigationmenu>
       </Sidebar>
       <SettingsFeatureBody id='content'>
         {/* Empty loading fallback is ok here since we are loading from local disk. */}

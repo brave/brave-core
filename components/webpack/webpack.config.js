@@ -47,6 +47,14 @@ module.exports = async function (env, argv) {
     entry[entryInputItemParts[0]] = entryInputItemParts[1]
   }
 
+  // When the `react` entry is built alongside `leo-react` in the same compilation,
+  // make leo-react share the React module with react.bundle.js instead of letting
+  // splitChunks extract React into its own vendor chunk.
+  // TODO: Tidy this up - ideally we wouldn't need it.
+  if ('react' in entry && 'leo-react' in entry) {
+    entry['leo-react'] = { import: entry['leo-react'], dependOn: 'react' }
+  }
+
   // Webpack config object
   const resolve = {
     extensions: ['.js', '.tsx', '.ts', '.json'],
@@ -104,9 +112,10 @@ module.exports = async function (env, argv) {
       'react-dom': ['module //resources/brave/react.bundle.js', 'ReactDOM'],
     },
     function ({ request }, callback) {
-      const componentMatch = request.match(/^@brave\/leo\/react\/(.*)/.test(request))
+      const componentMatch = request.match(/^@brave\/leo\/react\/(.*)/)
       if (componentMatch) {
-        return callback(null, ['//resources/brave/leo-react.bundle.js', componentMatch[1]])
+        const name = componentMatch[1][0].toUpperCase() + componentMatch[1].slice(1)
+        return callback(null, ['//resources/brave/leo-react.bundle.js', name])
       }
 
       if (/^@brave\/leo\//.test(request)) {
@@ -125,6 +134,9 @@ module.exports = async function (env, argv) {
       // We are providing chunk and module IDs via a plugin instead of a default
       chunkIds: false,
       moduleIds: false,
+      splitChunks: {
+        chunks: 'all',
+      },
       // Define NO_CONCATENATE for analyzing module size.
       concatenateModules: !process.env.NO_CONCATENATE
     },

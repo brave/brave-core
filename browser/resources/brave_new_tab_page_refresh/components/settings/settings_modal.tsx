@@ -7,7 +7,7 @@ import * as React from 'react'
 import Dialog from '@brave/leo/react/dialog'
 import Icon from '@brave/leo/react/icon'
 import Navigation from '@brave/leo/react/navigation'
-import NavigationItem from '@brave/leo/react/navigationItem'
+import Navigationitem from '@brave/leo/react/navigationItem'
 
 import { useBraveNews } from '../../../../../components/brave_news/browser/resources/shared/Context'
 
@@ -129,7 +129,7 @@ export function SettingsModal(props: Props) {
       return null
     }
     return (
-      <NavigationItem
+      <Navigationitem
         isCurrent={view === currentView}
         onClick={() => {
           if (view === 'news') {
@@ -141,7 +141,7 @@ export function SettingsModal(props: Props) {
       >
         {getNavItemIcon(view)}
         {getNavItemText(view)}
-      </NavigationItem>
+      </Navigationitem>
     )
   }
 

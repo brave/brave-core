@@ -5,8 +5,8 @@
 
 import * as React from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
-import NavigationMenu from '@brave/leo/react/navigationMenu'
-import NavigationItem from '@brave/leo/react/navigationItem'
+import Navigationmenu from '@brave/leo/react/navigationMenu'
+import Navigationitem from '@brave/leo/react/navigationItem'
 
 // Hooks
 import { useRoute } from '../../../common/hooks/use_route'
@@ -79,31 +79,31 @@ export const WalletNav = () => {
           >
             <WalletLogo />
           </Row>
-          <NavigationMenu>
+          <Navigationmenu>
             {navigationOptions.map((option) => (
-              <NavigationItem
+              <Navigationitem
                 key={option.id}
                 icon={option.icon}
                 isCurrent={walletLocation.includes(option.route)}
                 onClick={() => history.push(option.route)}
               >
                 {getLocale(option.name)}
-              </NavigationItem>
+              </Navigationitem>
             ))}
             <Row>
               <VerticalDivider />
             </Row>
             {walletActionOptions.map((option) => (
-              <NavigationItem
+              <Navigationitem
                 key={option.id}
                 icon={option.icon}
                 isCurrent={walletLocation.includes(option.route)}
                 onClick={() => openOrPushRoute(option.route)}
               >
                 {getLocale(option.name)}
-              </NavigationItem>
+              </Navigationitem>
             ))}
-          </NavigationMenu>
+          </Navigationmenu>
         </LeoNavigation>
       </PageOptionsWrapper>
     </Wrapper>

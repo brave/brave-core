@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
-import NavDots from '@brave/leo/react/navdots'
+import Navdots from '@brave/leo/react/navdots'
 
 import { TopSite } from '../../state/top_sites_store'
 import {
@@ -176,7 +176,7 @@ export function TopSitesGrid(props: Props) {
       </div>
       {pages.length > 1 && (
         <div className='page-nav'>
-          <NavDots
+          <Navdots
             dotCount={pages.length}
             activeDot={scrollPage}
             onChange={(event) => scrollToPage(event.activeDot)}
