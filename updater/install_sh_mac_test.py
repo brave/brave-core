@@ -23,12 +23,12 @@ import unittest
 SRC_ROOT = dirname(dirname(dirname(realpath(__file__))))
 INSTALL_SH = join(SRC_ROOT, "chrome", "updater", "mac", ".install.sh")
 
-RSYNC_PROMPT = "rsync exit code: "
-RSYNC_WRAPPER = f"""
+COMMAND_PROMPT = "command exit code: "
+COMMAND_WRAPPER = f"""
 #!/bin/bash
 
 printf -v args '%q ' "$@"
-echo "{RSYNC_PROMPT}${{args}}"
+echo "{COMMAND_PROMPT}$(basename "$0") ${{args}}"
 read -r code
 exit "$code"
 """
@@ -44,7 +44,7 @@ class InstallShPatchTest(unittest.TestCase):
     def setUp(self):
         self.temp_dir = TemporaryDirectory()
         self.dmg_dir = self._prepare_dmg_dir()
-        self.install_sh = self._prepare_install_sh()
+        self.install_sh, self.bin_dir = self._prepare_install_sh()
 
     def tearDown(self):
         self.temp_dir.cleanup()
@@ -63,7 +63,7 @@ class InstallShPatchTest(unittest.TestCase):
         def rsync(args):
             rsync_args.extend(args)
             return system_rsync(args)
-        self._run_install_sh(app_dir, rsync=rsync)
+        self._run_install_sh(app_dir, commands={'rsync': rsync})
         for arg in ('--ignore-times', '--links', '--no-perms',
                     '--executability', '--chmod=u=rwX,go=rX'):
             self.assertIn(arg, rsync_args)
@@ -77,7 +77,7 @@ class InstallShPatchTest(unittest.TestCase):
         def rsync(args):
             rsync_args.extend(args)
             return system_rsync(args)
-        self._run_install_sh(app_dir, is_root=True, rsync=rsync)
+        self._run_install_sh(app_dir, is_root=True, commands={'rsync': rsync})
         for arg in ('--ignore-times', '--links', '--perms', '--times'):
             self.assertIn(arg, rsync_args)
         for arg in ('--no-perms', '--executability', '--chmod=u=rwX,go=rX'):
@@ -100,11 +100,7 @@ class InstallShPatchTest(unittest.TestCase):
         self.assertEqual(1, count)
         bin_dir = join(self.temp_dir.name, "bin")
         mkdir(bin_dir)
-        rsync_wrapper = join(bin_dir, "rsync")
-        with open(rsync_wrapper, "w") as f:
-            f.write(RSYNC_WRAPPER.lstrip())
-        chmod(rsync_wrapper, stat(rsync_wrapper).st_mode | S_IXUSR)
-        # Add bin/ to PATH so tests can override commands like rsync.
+        # Prepend bin/ to PATH so tests can override commands like rsync.
         patched, count = re.subn(r'^export PATH="',
                                  f'export PATH="{bin_dir}:',
                                  patched,
@@ -115,7 +111,7 @@ class InstallShPatchTest(unittest.TestCase):
         with open(install_sh_path, "w") as f:
             f.write(patched)
         chmod(install_sh_path, stat(install_sh_path).st_mode | S_IXUSR)
-        return install_sh_path
+        return install_sh_path, bin_dir
 
     def _make_app(self, bundle_path, version):
         """Create the minimum .app bundle that .install.sh's checks accept."""
@@ -148,9 +144,13 @@ class InstallShPatchTest(unittest.TestCase):
         )
         self.assertTrue(exists(versioned_dir), msg=versioned_dir)
 
-    def _run_install_sh(self, installed_app_dir, is_root=False, rsync=None):
-        if rsync is None:
-            rsync = system_rsync
+    def _run_install_sh(self, installed_app_dir, is_root=False, commands=None):
+        commands = commands or {}
+        for name in commands:
+            wrapper_path = join(self.bin_dir, name)
+            with open(wrapper_path, "w") as f:
+                f.write(COMMAND_WRAPPER)
+            chmod(wrapper_path, stat(wrapper_path).st_mode | S_IXUSR)
         env = {}
         if is_root:
             env["EUID"] = "0"
@@ -166,9 +166,9 @@ class InstallShPatchTest(unittest.TestCase):
         try:
             for line in proc.stdout:
                 output_lines.append(line)
-                if line.startswith(RSYNC_PROMPT):
-                    args = shlex.split(line[len(RSYNC_PROMPT):])
-                    exit_code = rsync(args) or 0
+                if line.startswith(COMMAND_PROMPT):
+                    name, *args = shlex.split(line[len(COMMAND_PROMPT):])
+                    exit_code = commands[name](args) or 0
                     proc.stdin.write(f"{exit_code}\n")
                     proc.stdin.flush()
             proc.wait(timeout=30)
