@@ -1591,6 +1591,16 @@ bool BraveContentBrowserClient::ShouldInheritStoragePartition(
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 }
 
+bool BraveContentBrowserClient::ShouldUseDefaultHostZoomMapForStoragePartition(
+    const content::StoragePartitionConfig& partition_config) const {
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  return base::FeatureList::IsEnabled(containers::features::kContainers) &&
+         containers::IsContainersStoragePartition(partition_config);
+#else
+  return false;
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+}
+
 bool BraveContentBrowserClient::AllowSignedExchange(
     content::BrowserContext* context) {
   // This override has been introduced due to the deletion of the flag

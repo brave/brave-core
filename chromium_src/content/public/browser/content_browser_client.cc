@@ -53,4 +53,9 @@ bool ContentBrowserClient::ShouldInheritStoragePartition(
   return false;
 }
 
+bool ContentBrowserClient::ShouldUseDefaultHostZoomMapForStoragePartition(
+    const content::StoragePartitionConfig& partition_config) const {
+  return false;
+}
+
 }  // namespace content

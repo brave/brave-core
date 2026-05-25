@@ -193,6 +193,9 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
   bool ShouldInheritStoragePartition(
       const content::StoragePartitionConfig& partition_config) const override;
 
+  bool ShouldUseDefaultHostZoomMapForStoragePartition(
+      const content::StoragePartitionConfig& partition_config) const override;
+
   bool AllowSignedExchange(content::BrowserContext* context) override;
 
 #if !BUILDFLAG(IS_ANDROID)

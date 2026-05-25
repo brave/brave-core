@@ -35,6 +35,7 @@
 #include "chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "chrome/browser/ui/views/location_bar/icon_label_bubble_view.h"
+#include "chrome/browser/ui/zoom/chrome_zoom_level_prefs.h"
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -42,8 +43,10 @@
 #include "components/sessions/core/tab_restore_service.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/browsing_data_remover.h"
+#include "content/public/browser/host_zoom_map.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
+#include "content/public/browser/security_principal.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/storage_partition_config.h"
 #include "content/public/test/browser_test.h"
@@ -54,6 +57,7 @@
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "services/network/public/cpp/network_switches.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
+#include "third_party/blink/public/common/page/page_zoom.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/actions/actions.h"
 #include "ui/events/base_event_utils.h"
@@ -2205,6 +2209,77 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   // https://github.com/brave/brave-core/pull/35529#issuecomment-4287880242
   new_tab->ShowContextMenuForViewImpl(new_tab, gfx::Point(0, 0),
                                       ui::mojom::MenuSourceType::kMouse);
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, PerHostZoomSharedWithContainer) {
+  const GURL url = https_server_.GetURL("a.test", "/simple.html");
+  const std::string host(url.host());
+  const double kZoomLevel = blink::ZoomFactorToZoomLevel(1.25);
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  content::WebContents* default_wc =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  content::HostZoomMap* host_zoom_map =
+      content::HostZoomMap::GetForWebContents(default_wc);
+  host_zoom_map->SetZoomLevelForHost(host, kZoomLevel);
+
+  content::WebContents* container_wc =
+      OpenUrlInContainerTab(url, "container-zoom-a");
+  ASSERT_TRUE(IsContainersStoragePartition(container_wc->GetSiteInstance()
+                                               ->GetSecurityPrincipal()
+                                               .GetStoragePartitionConfig()));
+
+  EXPECT_EQ(content::HostZoomMap::GetForWebContents(container_wc),
+            content::HostZoomMap::GetForWebContents(default_wc));
+  EXPECT_TRUE(blink::ZoomValuesEqual(
+      content::HostZoomMap::GetZoomLevel(container_wc), kZoomLevel));
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       PerHostZoomSetInContainerAppliesToDefault) {
+  const GURL url = https_server_.GetURL("a.test", "/simple.html");
+  const std::string host(url.host());
+  const double kZoomLevel = blink::ZoomFactorToZoomLevel(1.3);
+
+  content::WebContents* container_wc =
+      OpenUrlInContainerTab(url, "container-zoom-b");
+  content::HostZoomMap::GetForWebContents(container_wc)
+      ->SetZoomLevelForHost(host, kZoomLevel);
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  content::WebContents* default_wc =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  EXPECT_TRUE(blink::ZoomValuesEqual(
+      content::HostZoomMap::GetZoomLevel(default_wc), kZoomLevel));
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, DefaultZoomSharedWithContainer) {
+  const GURL url = https_server_.GetURL("b.test", "/simple.html");
+  const double kDefaultZoom = blink::ZoomFactorToZoomLevel(1.5);
+  browser()->profile()->GetZoomLevelPrefs()->SetDefaultZoomLevelPref(
+      kDefaultZoom);
+
+  content::WebContents* container_wc =
+      OpenUrlInContainerTab(url, "container-default-zoom");
+  EXPECT_TRUE(blink::ZoomValuesEqual(
+      content::HostZoomMap::GetZoomLevel(container_wc), kDefaultZoom));
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, ZoomSharedAcrossContainers) {
+  const GURL url = https_server_.GetURL("a.test", "/simple.html");
+  const double kZoomLevel = blink::ZoomFactorToZoomLevel(1.1);
+
+  content::WebContents* container_a =
+      OpenUrlInContainerTab(url, "container-zoom-c");
+  content::HostZoomMap::GetForWebContents(container_a)
+      ->SetZoomLevelForHost(std::string(url.host()), kZoomLevel);
+
+  content::WebContents* container_b =
+      OpenUrlInContainerTab(url, "container-zoom-d");
+  EXPECT_EQ(content::HostZoomMap::GetForWebContents(container_a),
+            content::HostZoomMap::GetForWebContents(container_b));
+  EXPECT_TRUE(blink::ZoomValuesEqual(
+      content::HostZoomMap::GetZoomLevel(container_b), kZoomLevel));
 }
 
 class BraveNewTabButtonContainersFeatureDisabledBrowserTest
