@@ -44,7 +44,6 @@ interface DataHandler {
   SetAdBlockMode(AdBlockMode mode);
   SetFingerprintMode(FingerprintMode mode);
   SetCookieBlockMode(CookieBlockMode mode);
-  SetHttpsUpgradeMode(HttpsUpgradeMode mode);
   SetIsNoScriptsEnabled(bool is_enabled);
   SetBraveShieldsEnabled(bool is_enabled);
   SetBraveShieldsAdBlockOnlyModeEnabled(bool is_enabled);
@@ -96,7 +95,6 @@ struct SiteSettings {
   AdBlockMode ad_block_mode;
   FingerprintMode fingerprint_mode;
   CookieBlockMode cookie_block_mode;
-  HttpsUpgradeMode https_upgrade_mode;
   bool is_noscript_enabled;
   bool is_forget_first_party_storage_enabled;
   ContentSettingsOverriddenData? scripts_blocked_override_status;

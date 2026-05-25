@@ -78,14 +78,12 @@ class BraveShieldsTabHelper
   mojom::FingerprintMode GetFingerprintMode();
   mojom::CookieBlockMode GetCookieBlockMode();
   bool IsBraveShieldsManaged();
-  mojom::HttpsUpgradeMode GetHttpsUpgradeMode();
   bool GetNoScriptEnabled();
   mojom::ContentSettingsOverriddenDataPtr GetJsContentSettingsOverriddenData();
   bool GetForgetFirstPartyStorageEnabled();
   void SetAdBlockMode(mojom::AdBlockMode mode);
   void SetFingerprintMode(mojom::FingerprintMode mode);
   void SetCookieBlockMode(mojom::CookieBlockMode mode);
-  void SetHttpsUpgradeMode(mojom::HttpsUpgradeMode mode);
   void SetIsNoScriptEnabled(bool is_enabled);
   void SetForgetFirstPartyStorageEnabled(bool is_enabled);
   void EnforceSiteDataCleanup();

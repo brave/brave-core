@@ -50,8 +50,6 @@ class ShieldsPanelDataHandler
   void SetAdBlockMode(brave_shields::mojom::AdBlockMode callback) override;
   void SetFingerprintMode(brave_shields::mojom::FingerprintMode mode) override;
   void SetCookieBlockMode(brave_shields::mojom::CookieBlockMode mode) override;
-  void SetHttpsUpgradeMode(
-      brave_shields::mojom::HttpsUpgradeMode mode) override;
   void SetIsNoScriptsEnabled(bool is_enabled) override;
   void SetBraveShieldsEnabled(bool is_enabled) override;
   void SetBraveShieldsAdBlockOnlyModeEnabled(bool is_enabled) override;

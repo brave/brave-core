@@ -14,10 +14,6 @@
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 
-namespace https_upgrade_exceptions {
-class HttpsUpgradeExceptionsService;
-}
-
 namespace content_settings {
 class CookieSettings;
 }
@@ -95,19 +91,6 @@ ControlType GetFingerprintingControlType(HostContentSettingsMap* map,
 bool IsBraveShieldsManaged(PrefService* prefs,
                            HostContentSettingsMap* map,
                            GURL url);
-
-void SetHttpsUpgradeControlType(HostContentSettingsMap* map,
-                                ControlType type,
-                                const GURL& url,
-                                PrefService* local_state = nullptr);
-ControlType GetHttpsUpgradeControlType(HostContentSettingsMap* map,
-                                       const GURL& url);
-bool ShouldUpgradeToHttps(
-    HostContentSettingsMap* map,
-    const GURL& url,
-    https_upgrade_exceptions::HttpsUpgradeExceptionsService*
-        https_upgrade_exceptions_service);
-bool ShouldForceHttps(HostContentSettingsMap* map, const GURL& url);
 
 bool IsShowStrictFingerprintingModeEnabled();
 

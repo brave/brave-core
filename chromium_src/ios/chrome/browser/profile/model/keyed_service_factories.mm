@@ -126,7 +126,6 @@ void EnsureProfileKeyedServiceFactoriesBuilt() {
   DeviceInfoSyncServiceFactory::GetInstance();
   supervised_user::FamilyLinkSettingsServiceFactory::GetInstance();
   GoogleGroupsManagerFactory::GetInstance();
-  HttpsUpgradeServiceFactory::GetInstance();
   IdentityManagerFactory::GetInstance();
   IOSAccountSettingServiceFactory::GetInstance();
   IOSChromeAccountPasswordStoreFactory::GetInstance();
