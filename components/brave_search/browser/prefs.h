@@ -26,6 +26,10 @@ inline constexpr char kBackupResultsDailyRequestCount[] =
     "brave.search.backup_results.daily_request_count";
 inline constexpr char kBackupResultsDailyRequestWindowStart[] =
     "brave.search.backup_results.daily_request_window_start";
+inline constexpr char kBackupResultsLastViewWidth[] =
+    "brave.search.backup_results.last_view_width";
+inline constexpr char kBackupResultsLastViewHeight[] =
+    "brave.search.backup_results.last_view_height";
 
 }  // namespace prefs
 }  // namespace brave_search

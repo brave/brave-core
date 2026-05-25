@@ -25,6 +25,10 @@
 class PrefService;
 class Profile;
 
+namespace gfx {
+class Size;
+}  // namespace gfx
+
 namespace content {
 class WebContents;
 }  // namespace content
@@ -39,6 +43,9 @@ namespace brave_search {
 class BackupResultsServiceImpl : public BackupResultsService,
                                  public ProfileObserver {
  public:
+  static void RecordLastViewSize(PrefService* local_state,
+                                 const gfx::Size& size);
+
   explicit BackupResultsServiceImpl(Profile* profile);
 
   ~BackupResultsServiceImpl() override;

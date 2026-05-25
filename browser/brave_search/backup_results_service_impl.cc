@@ -47,6 +47,7 @@
 #include "third_party/blink/public/common/navigation/navigation_policy.h"
 #include "third_party/blink/public/common/user_agent/user_agent_metadata.h"
 #include "third_party/blink/public/common/web_preferences/web_preferences.h"
+#include "ui/gfx/geometry/size.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "ui/android/view_android.h"
@@ -133,6 +134,16 @@ BackupResultsServiceImpl::BackupResultsServiceImpl(Profile* profile)
 }
 BackupResultsServiceImpl::~BackupResultsServiceImpl() = default;
 
+// static
+void BackupResultsServiceImpl::RecordLastViewSize(PrefService* local_state,
+                                                  const gfx::Size& size) {
+  if (size.IsEmpty()) {
+    return;
+  }
+  local_state->SetInteger(prefs::kBackupResultsLastViewWidth, size.width());
+  local_state->SetInteger(prefs::kBackupResultsLastViewHeight, size.height());
+}
+
 void BackupResultsServiceImpl::FetchBackupResults(
     const GURL& url,
     std::optional<net::HttpRequestHeaders> headers,
@@ -173,13 +184,18 @@ void BackupResultsServiceImpl::FetchBackupResults(
     brave_shields::BraveShieldsWebContentsObserver::CreateForWebContents(
         web_contents.get());
 
-    int random_width = base::RandInt(800, 1920);
-    int random_height = base::RandInt(600, 1080);
+    int stored_width =
+        local_state_->GetInteger(prefs::kBackupResultsLastViewWidth);
+    int stored_height =
+        local_state_->GetInteger(prefs::kBackupResultsLastViewHeight);
+    gfx::Size view_size(
+        stored_width > 0 ? stored_width : base::RandInt(800, 1920),
+        stored_height > 0 ? stored_height : base::RandInt(600, 1080));
 #if BUILDFLAG(IS_ANDROID)
     auto* native_view = web_contents->GetNativeView();
-    native_view->OnSizeChanged(random_width, random_height);
+    native_view->OnSizeChanged(view_size.width(), view_size.height());
 #else
-    web_contents->Resize({random_width, random_height});
+    web_contents->Resize(gfx::Rect(view_size));
 #endif
 
     auto web_preferences = web_contents->GetOrCreateWebPreferences();

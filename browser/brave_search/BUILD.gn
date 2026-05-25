@@ -30,6 +30,7 @@ source_set("brave_search") {
     "//components/prefs",
     "//content/public/browser",
     "//services/network/public/cpp",
+    "//ui/gfx/geometry",
   ]
 
   if (is_android) {
