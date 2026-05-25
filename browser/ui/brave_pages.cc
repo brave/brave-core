@@ -86,13 +86,17 @@ void ShowBraveWalletOnboarding(BrowserWindowInterface* browser) {
 }
 
 void ShowBraveWalletAccountCreation(BrowserWindowInterface* browser,
-                                    std::string_view coin_name) {}
+                                    std::string_view coin_name) {
+  ShowSingletonTabOverwritingNTP(
+      browser,
+      GURL(base::StrCat({kBraveUIWalletAccountCreationURL, coin_name})));
+}
 
-void ShowExtensionSettings(Browser* browser) {
+void ShowExtensionSettings(BrowserWindowInterface* browser) {
   ShowSingletonTabOverwritingNTP(browser, GURL(kExtensionSettingsURL));
 }
 
-void ShowWalletSettings(Browser* browser) {
+void ShowWalletSettings(BrowserWindowInterface* browser) {
   ShowSingletonTabOverwritingNTP(browser, GURL(kWalletSettingsURL));
 }
 
