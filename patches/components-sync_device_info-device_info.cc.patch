@@ -1,5 +1,5 @@
 diff --git a/components/sync_device_info/device_info.cc b/components/sync_device_info/device_info.cc
-index 9dac3f990d14afdf8de2c2036e57f9bdf97609e8..b972c31de9e8e541846b4e94afb16b029e93970d 100644
+index 9dac3f990d14afdf8de2c2036e57f9bdf97609e8..de84c023f308e7e6e916121475ab9781dedc3dba 100644
 --- a/components/sync_device_info/device_info.cc
 +++ b/components/sync_device_info/device_info.cc
 @@ -82,7 +82,8 @@ DeviceInfo::DeviceInfo(
