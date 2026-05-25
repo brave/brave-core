@@ -11,7 +11,7 @@ port cleanly. Brave-specific differences:
   * Downloads a Brave-internal tarball rather than a CIPD package.
   * Gated on USE_BRAVE_HERMETIC_TOOLCHAIN=1 in place of upstream's
     should_use_hermetic_xcode.py check.
-  * Compares Xcode versions via pkg_resources.parse_version (semver-aware)
+  * Compares Xcode versions via packaging.version.parse (semver-aware)
     instead of upstream's string-split lexicographic compare.
 """
 
@@ -26,29 +26,36 @@ import sys
 from pathlib import Path
 from urllib.error import URLError  # pylint: disable=no-name-in-module,import-error
 
-import pkg_resources
+from packaging.version import parse as parse_version
 
-import deps
-from deps_config import DEPS_PACKAGES_INTERNAL_URL, MAC_TOOLCHAIN_ROOT
+# Importing script explicitly, so we can call this script from the terminal
+# without needing to set up the PYTHONPATH.
+sys.path.append(str(Path(__file__).resolve().parents[2] / 'script'))
+
+import deps  # pylint: disable=wrong-import-position
+
+# This contains binaries from Xcode 26.4 (17E202) along with the macOS 26.4 SDK
+# (25E251) and the Metal toolchain (17E188).
+XCODE_VERSION = '26.4.1'
+XCODE_TOOLCHAIN_DOWNLOAD_URL = (
+    f'https://vhemnu34de4lf5cj6bx2wwshyy0egdxk.lambda-url.us-west-2.on.aws'
+    f'/xcode-hermetic-toolchain/xcode-hermetic-toolchain-{XCODE_VERSION}.tar.gz'
+)
+
+# The toolchain will not be downloaded if the minimum OS version is not met. 19
+# is the Darwin major version number for macOS 10.15. Xcode 26.0 17A324 only
+# runs on macOS 15.6 and newer, but some bots are still running older OS
+# versions. macOS 10.15.4, the OS minimum through Xcode 12.4, still seems to
+# work.
+MAC_MINIMUM_OS_VERSION = [19, 4]
+
+MAC_TOOLCHAIN_ROOT = Path(
+    __file__).resolve().parents[3] / 'build' / 'mac_files'
 
 
 def LoadPList(path: Path) -> dict:
     """Loads Plist at |path| and returns it as a dictionary."""
     return plistlib.loads(path.read_bytes())
-
-
-# This contains binaries from Xcode 26.4.1, along with the macOS 26.4 SDK
-XCODE_VERSION = '26.4.1'
-HERMETIC_XCODE_BINARY = (
-    DEPS_PACKAGES_INTERNAL_URL +
-    '/xcode-hermetic-toolchain/xcode-hermetic-toolchain-' + XCODE_VERSION +
-    '.tar.gz')
-
-# The toolchain will not be downloaded if the minimum OS version is not met. 19
-# is the Darwin major version number for macOS 10.15.
-MAC_MINIMUM_OS_VERSION = [19, 4]
-
-TOOLCHAIN_BUILD_DIR = Path(MAC_TOOLCHAIN_ROOT) / 'Xcode.app'
 
 
 def PlatformMeetsHermeticXcodeRequirements() -> bool:
@@ -75,14 +82,14 @@ def GetHermeticXcodeVersion(binaries_root: Path) -> str:
 def InstallXcodeBinaries() -> int:
     """Installs the Xcode binaries needed to build Brave and accepts the
     license."""
-    binaries_root = Path(MAC_TOOLCHAIN_ROOT) / 'xcode_binaries'
+    binaries_root = MAC_TOOLCHAIN_ROOT / 'xcode_binaries'
 
     # Tarball extraction or not, if we have a hermetic toolchain,we still want
     # to process the license if the version is newer than the currently
     # accepted one.
     if (XCODE_VERSION != GetHermeticXcodeVersion(binaries_root)
             or binaries_root.is_symlink()):
-        url = HERMETIC_XCODE_BINARY
+        url = XCODE_TOOLCHAIN_DOWNLOAD_URL
         print(f"Downloading hermetic Xcode: {url}")
         try:
             deps.DownloadAndUnpack(url, binaries_root)
@@ -92,6 +99,26 @@ def InstallXcodeBinaries() -> int:
             return 1
     else:
         print(f"Hermetic Xcode {XCODE_VERSION} already installed")
+
+    on_disk_version = GetHermeticXcodeVersion(binaries_root)
+    license_info_path = (binaries_root /
+                         'Contents/Resources/LicenseInfo.plist')
+    on_disk_license = (LoadPList(license_info_path).get(
+        'licenseID', '(missing)') if license_info_path.exists() else
+                       '(LicenseInfo.plist not present)')
+    print(f"  on-disk hermetic version:    {on_disk_version}")
+    print(f"  on-disk hermetic licenseID:  {on_disk_license}")
+    current_license_path = Path(
+        '/Library/Preferences/com.apple.dt.Xcode.plist')
+    if current_license_path.exists():
+        sys_plist = LoadPList(current_license_path)
+        sys_version = sys_plist.get('IDEXcodeVersionForAgreedToGMLicense',
+                                    '(missing)')
+        sys_license = sys_plist.get('IDELastGMLicenseAgreedTo', '(missing)')
+    else:
+        sys_version = sys_license = '(plist not present)'
+    print(f"  system recorded version:     {sys_version}")
+    print(f"  system recorded licenseID:   {sys_license}")
 
     if sys.platform != 'darwin':
         return 0
@@ -115,9 +142,8 @@ def InstallXcodeBinaries() -> int:
         current_license_plist = LoadPList(current_license_path)
         xcode_version = current_license_plist.get(
             'IDEXcodeVersionForAgreedToGMLicense')
-        if (xcode_version is not None
-                and pkg_resources.parse_version(xcode_version)
-                >= pkg_resources.parse_version(hermetic_xcode_version)):
+        if (xcode_version is not None and parse_version(xcode_version)
+                >= parse_version(hermetic_xcode_version)):
             should_overwrite_license = False
 
     if not should_overwrite_license:
