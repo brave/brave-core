@@ -7,7 +7,6 @@
 
 # These tests pass locally but fail on CI
 -All/ChromeMultiProfileStartupBrowserTestBase.PostProfileInitInvocation/1
--All/CookieStoreSameSiteTest.CookieStoreUsesEffectiveSameSiteForUnspecifiedCookies/1
 -All/GetDisplayMediaHiDpiBrowserTest.Capture/640x480
 -AvatarMenuBrowserTest.AddNewProfile
 -DebuggerExtensionApiTest.ParentTargetPermissions
