@@ -76,6 +76,13 @@ replace = '''# Try various remedies; Report in exit code what would have worked.
         rm -rf "${new_versioned_dir}"
         exit 77
       fi
+      # Try the same rsync-into-parent, but from a clean slate.
+      rm -rf "${new_versioned_dir}"
+      if rsync ${RSYNC_FLAGS} --delete-before "${update_versioned_dir}" \
+                                              "${installed_versions_dir}"; then
+        rm -rf "${new_versioned_dir}"
+        exit 78
+      fi
       # None of the attempted remedies worked.
       rm -rf "${new_versioned_dir}"
-      exit 78'''
+      exit 79'''

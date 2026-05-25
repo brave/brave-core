@@ -141,12 +141,29 @@ class InstallShPatchTest(unittest.TestCase):
         # trailing slash on the source path.
         self.assertFalse(calls[2][-2].endswith("/"), calls[2])
 
+    def test_versioned_rsync_clean_slate_parent_succeeds(self):
+        """First three rsync attempts fail; clean-slate parent-rsync succeeds."""
+        app_dir = join(self.temp_dir.name, f"{PRODUCT_NAME}.app")
+        self._make_app(app_dir, CURRENT_VERSION)
+        calls = []
+
+        def rsync(args):
+            calls.append(args)
+            if len(calls) <= 3:
+                return 1, ""
+            return system_rsync(args)
+
+        self._run_install_sh(app_dir,
+                             commands={'rsync': rsync},
+                             expected_exit_code=78)
+        self.assertEqual(4, len(calls))
+
     def test_versioned_rsync_all_attempts_fail(self):
         app_dir = join(self.temp_dir.name, f"{PRODUCT_NAME}.app")
         self._make_app(app_dir, CURRENT_VERSION)
         self._run_install_sh(app_dir,
                              commands={'rsync': lambda args: (1, '')},
-                             expected_exit_code=78)
+                             expected_exit_code=79)
 
     def test_mkdir_failure_classified_by_stderr(self):
         """
