@@ -4690,7 +4690,7 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value:
-        "Brave will be using Chainstack to resolve .eth domain names that are on Ethereum Name Service (ENS). Brave hides your IP address. If you enable this, Chainstack will see that someone is trying to visit these .eth domains but nothing else. See Chainstack's <a href=%@>%@</a> and <a href=%@>%@</a>.",
+        "Brave will rely on your configured Ethereum Mainnet RPC service which is Chainstack by default to resolve .eth domain names that are on Ethereum Name Service (ENS). Brave hides your IP address. If you enable this, Chainstack will see that someone is trying to visit these .eth domains but nothing else. See Chainstack's <a href=%@>%@</a> and <a href=%@>%@</a>.",
       comment:
         "Description displayed when users chose Brave to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Chainstack's terms of use page. The second '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Chainstack's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'."
     )
@@ -4742,7 +4742,7 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value:
-        "Brave will be using Chainstack to resolve .crypto (and also %@) domain names that are on Unstoppable Domains. Brave hides your IP address. If you enable this, Chainstack will see that someone is trying to visit these domains but nothing else. See Chainstack's <a href=%@>%@</a> and <a href=%@>%@</a>.",
+        "Brave will be the configured Ethereum RPC service which defaults to Chainstack to resolve .crypto (and also %@) domain names that are on Unstoppable Domains. Brave hides your IP address. If you enable this, Chainstack will see that someone is trying to visit these domains but nothing else. See Chainstack's <a href=%@>%@</a> and <a href=%@>%@</a>.",
       comment:
         "Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Chainstack's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Chainstack's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'."
     )
