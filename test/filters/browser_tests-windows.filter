@@ -206,3 +206,13 @@
 # The related ReloadCacheRevalidate variant is already DISABLED upstream.
 # https://github.com/brave/brave-browser/issues/53995
 -CrashRecoveryBrowserTest.Reload
+
+# Chromium test: intermittent RunLoop timeout during browser close with
+# autofill progress dialog showing. Stable upstream (0.1% flake rate over
+# 30 days per LUCI Analysis). Brave's additional shutdown overhead (sidebar,
+# wallet, rewards, shields teardown) extends browser close time, triggering
+# ProxyRunTestOnMainThreadLoop timeout under high parallelism (32 jobs).
+# No Brave chromium_src overrides for the dialog views, controller, or
+# ChromePaymentsAutofillClient. Not disabled upstream.
+# https://github.com/brave/brave-browser/issues/55112
+-AutofillProgressDialogViewsBrowserTest.CloseBrowserWhileDialogShowing/3
