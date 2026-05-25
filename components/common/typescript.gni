@@ -62,6 +62,10 @@ brave_common_web_compile_inputs = [
 #       - intended pak name, e.g. resourcename_generated.pak
 #       - generated resource map, e.g. resourcename_generated_map.h
 #       - resource ID (e.g. `IDR_RESOURCENAME_MYFILE_JS`)
+#   no_externals
+#     Set this if you're compiling a bundle with dependencies
+#     which will otherwise be externalized (otherwise your
+# dependency will be excluded from its own bundle!).
 #   output_dir
 #     Optional custom path for compiled output
 #   generate_grdp
@@ -180,6 +184,10 @@ template("transpile_web_ui") {
       "--resource_name=$resource_name",
       "--depfile_path=" + rebase_path(depfile),
     ]
+
+    if (defined(invoker.no_externals) && invoker.no_externals) {
+      args += [ "--no_externals" ]
+    }
 
     if (defined(invoker.webpack_aliases)) {
       # support multiple web pack aliases

@@ -92,9 +92,17 @@ module.exports = async function (env, argv) {
     experiments.syncWebAssembly = true
   } else {
     experiments.asyncWebAssembly = true
-    output.enabledWasmLoadingTypes = [ 'xhr' ]
+    output.enabledWasmLoadingTypes = ['xhr']
     output.wasmLoading = 'xhr'
   }
+
+  const externals = env.output_module && !('no_externals' in env) ?
+    {
+      // React and ReactDOM ship in a single bundle (see
+      // brave/ui/webui/resources/react/initialize_bundle.ts).
+      'react': ['module //resources/brave/react.bundle.js', 'React'],
+      'react-dom': ['module //resources/brave/react.bundle.js', 'ReactDOM'],
+    } : {}
 
   return {
     entry,
@@ -118,6 +126,7 @@ module.exports = async function (env, argv) {
         }
         callback();
       },
+      externals,
     ],
     plugins: [
       process.env.DEPFILE_SOURCE_NAME && new GenerateDepfilePlugin({
@@ -222,7 +231,7 @@ module.exports = async function (env, argv) {
         {
           test: p => p.includes(path.join('@brave', 'brave-ui')) && p.endsWith('.js'),
           resolve: {
-              fullySpecified: false,
+            fullySpecified: false,
           },
         },
         {
