@@ -189,7 +189,7 @@ export const SignPanel = (props: Props) => {
   React.useEffect(() => {
     if (
       showWarning
-      || ethSignTypedData?.primaryType === 'Permit'
+      || ethSignTypedData
       || (cardanoSignTypedData && network?.coin === BraveWallet.CoinType.ADA)
     ) {
       setSignStep(SignDataSteps.SignRisk)
