@@ -152,6 +152,14 @@ BraveStatsUpdater::BraveStatsUpdater(PrefService* pref_service,
     : pref_service_(pref_service),
       profile_manager_(profile_manager),
       testing_url_loader_factory_(nullptr) {
+  // Observe `BraveOriginPolicyManager` so we can defer the boot ping until
+  // its policies have been merged into local state. `AddObserver` fires
+  // `OnBravePoliciesReady` immediately if the manager is already initialised,
+  // so construction order between this service and the manager doesn't
+  // matter.
+  policy_manager_observation_.Observe(
+      brave_origin::BraveOriginPolicyManager::GetInstance());
+
   const base::CommandLine& command_line =
       *base::CommandLine::ForCurrentProcess();
   if (command_line.HasSwitch(switches::kBraveStatsUpdaterServer)) {
@@ -337,6 +345,28 @@ void BraveStatsUpdater::OnReferralInitialization() {
 void BraveStatsUpdater::StartServerPingStartupTimer() {
   stats_preconditions_barrier_.Reset();
   stats_startup_complete_ = true;
+  MaybeStartStartupTimer();
+}
+
+void BraveStatsUpdater::OnBravePoliciesReady() {
+  // `AddObserver` may fire this synchronously (if the manager was already
+  // initialised when we attached), and `BraveOriginPolicyManager` may notify
+  // again later. The startup-timer path must run at most once.
+  if (brave_policies_ready_) {
+    return;
+  }
+  brave_policies_ready_ = true;
+  MaybeStartStartupTimer();
+}
+
+void BraveStatsUpdater::MaybeStartStartupTimer() {
+  // Both gates must have fired: referrals barrier resolved
+  // (`stats_startup_complete_`) and Brave Origin policies merged into local
+  // state (`brave_policies_ready_`). Whichever finishes last actually starts
+  // the timer.
+  if (!stats_startup_complete_ || !brave_policies_ready_) {
+    return;
+  }
   server_ping_startup_timer_->Start(
       FROM_HERE, base::Seconds(kUpdateServerStartupPingDelaySeconds), this,
       &BraveStatsUpdater::OnServerPingTimerFired);

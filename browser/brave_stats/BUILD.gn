@@ -46,6 +46,8 @@ source_set("brave_stats") {
     "//brave/browser/serp_metrics",
     "//brave/common",
     "//brave/components/brave_ads/buildflags",
+    "//brave/components/brave_origin",
+    "//brave/components/brave_policy:brave_policy_observer",
     "//brave/components/brave_referrals/common",
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/constants",
