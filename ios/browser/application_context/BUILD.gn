@@ -18,7 +18,6 @@ source_set("application_context") {
     "//brave/components/brave_sync:network_time_helper",
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/debounce/core/browser",
-    "//brave/components/https_upgrade_exceptions/browser",
     "//brave/components/url_sanitizer/core/browser",
     "//components/application_locale_storage",
     "//ios/chrome/browser/application_context/model",

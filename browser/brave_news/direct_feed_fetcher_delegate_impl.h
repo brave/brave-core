@@ -9,18 +9,13 @@
 #include "brave/components/brave_news/browser/direct_feed_fetcher.h"
 #include "url/gurl.h"
 
-namespace https_upgrade_exceptions {
-class HttpsUpgradeExceptionsService;
-}  // namespace https_upgrade_exceptions
-
-class HostContentSettingsMap;
+class PrefService;
 
 namespace brave_news {
 
 class DirectFeedFetcherDelegateImpl : public DirectFeedFetcher::Delegate {
  public:
-  explicit DirectFeedFetcherDelegateImpl(
-      HostContentSettingsMap* host_content_settings_map);
+  explicit DirectFeedFetcherDelegateImpl(PrefService* pref_service);
   ~DirectFeedFetcherDelegateImpl() override;
 
   DirectFeedFetcherDelegateImpl(const DirectFeedFetcherDelegateImpl&) = delete;
@@ -34,9 +29,7 @@ class DirectFeedFetcherDelegateImpl : public DirectFeedFetcher::Delegate {
   base::WeakPtr<DirectFeedFetcher::Delegate> AsWeakPtr() override;
 
  private:
-  raw_ptr<HostContentSettingsMap> host_content_settings_map_;
-  raw_ptr<https_upgrade_exceptions::HttpsUpgradeExceptionsService>
-      https_upgrade_exceptions_service_;
+  raw_ptr<PrefService> pref_service_;
 
   base::WeakPtrFactory<DirectFeedFetcherDelegateImpl> weak_ptr_factory_{this};
 };
