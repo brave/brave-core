@@ -8,7 +8,7 @@
 
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
-#include "brave/components/brave_rewards/core/pref_names.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
@@ -31,6 +31,10 @@
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/components/brave_rewards/core/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -72,8 +76,10 @@
 namespace policy {
 
 inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
     {policy::key::kBraveRewardsDisabled,
      brave_rewards::prefs::kDisabledByPolicy, base::Value::Type::BOOLEAN},
+#endif
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
     {policy::key::kBraveWalletDisabled,
      brave_wallet::kBraveWalletDisabledByPolicy, base::Value::Type::BOOLEAN},
