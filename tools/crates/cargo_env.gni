@@ -1,0 +1,311 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Hermetic environment for cargo invocations driven by the Brave build.
+#
+# Both //brave/tools/crates/build_crate.gni (host CLI tools like wasm-pack)
+# and //brave/components/common/rust_to_wasm.gni (the actual wasm-pack -> cargo
+# build of WASM packages) shell out to cargo, which in turn invokes build
+# scripts that compile native code via the `cc-rs` crate.  Without explicit
+# pinning, `cc-rs` falls through to whatever cc/c++/ar/ld it finds on PATH,
+# which on macOS routes via `xcrun` and breaks under the hermetic Xcode
+# tarball, and on Linux/Windows picks up the system toolchain rather than the
+# Chromium-bundled one.
+#
+# This file builds a `cargo_hermetic_env` list of "KEY=VALUE" strings that
+# both callers append to their `response_file_contents` before the cargo
+# command itself.  Mirrors the env block in tools/rust/build_rust.py's
+# `XPy.__init__`, scaled down to consumers of the prebuilt rust toolchain
+# (we pin to clang_base_path rather than RUST_HOST_LLVM_INSTALL_DIR, which
+# only exists on toolchain builders).
+
+import("//brave/build/host_os_constants.gni")
+import("//build/config/clang/clang.gni")
+
+# `mac_sdk.gni` itself asserts that it's only imported from a context where
+# the Mac SDK is meaningful — i.e. mac targets, the default toolchain, or
+# Android-on-mac builds.  We can be re-imported from contexts that violate
+# that assertion (e.g. an iOS app-extension toolchain pulling in
+# typescript.gni -> rust_to_wasm.gni -> this file), so mirror the same gate
+# here and skip the mac SDK env block when it doesn't apply.  `cargo_hermetic_env`
+# only actually gets *used* in host_toolchain — anywhere else it's just
+# imported-but-unused, so emitting an env without mac-SDK paths is harmless.
+_have_mac_sdk = false
+if (host_os == "mac" &&
+    (current_os == "mac" || current_toolchain == default_toolchain ||
+     target_os == "android")) {
+  import("//build/config/mac/mac_sdk.gni")
+  _have_mac_sdk = true
+}
+
+# Compute the Linux *host* sysroot path explicitly rather than reading the
+# `sysroot` variable from //build/config/sysroot.gni.  That file resolves
+# `sysroot` based on target-side `current_os`/`current_cpu` — so when
+# cargo_env.gni is evaluated in an Android (or any non-linux) toolchain
+# context, `sysroot` points at e.g. the Android NDK sysroot, which is the
+# wrong tree for our host build scripts (which compile for
+# x86_64-unknown-linux-gnu and need glibc).  Hardcoding the
+# Debian-bullseye path off `host_cpu` is what gives us a stable host-side
+# sysroot independent of the target.
+_linux_host_sysroot = ""
+if (host_os == "linux") {
+  if (host_cpu == "x64") {
+    _linux_host_sysroot = "//build/linux/debian_bullseye_amd64-sysroot"
+  } else if (host_cpu == "x86") {
+    _linux_host_sysroot = "//build/linux/debian_bullseye_i386-sysroot"
+  } else if (host_cpu == "arm64") {
+    _linux_host_sysroot = "//build/linux/debian_bullseye_arm64-sysroot"
+  } else if (host_cpu == "arm") {
+    _linux_host_sysroot = "//build/linux/debian_bullseye_armhf-sysroot"
+  }
+
+  # Guard against builders that haven't run the install-sysroot.py gclient
+  # hook (or have it disabled).  If the dir isn't there, fall through to no
+  # `--sysroot=` flag — the build script link will probably still fail, but
+  # at least with a clear "missing libc" error rather than a confusing
+  # wrong-sysroot one.
+  if (_linux_host_sysroot != "" && !path_exists(_linux_host_sysroot)) {
+    _linux_host_sysroot = ""
+  }
+}
+
+_clang_bin = rebase_path("$clang_base_path/bin")
+
+# rustc's default linker on linux/mac is `cc`, and on Windows it's `link.exe`.
+# Neither is what we want — we want the Chromium-bundled clang/lld-link.  Pin
+# the linker via `CARGO_TARGET_<HOST_TRIPLE>_LINKER`, which cargo translates
+# into `-C linker=…` *only* for builds to that triple.  Scoping to the host
+# triple keeps this from leaking into the wasm32 build inside rust_to_wasm.gni
+# (where the linker is pinned to `rust-lld` via --config).
+#
+# The triple is built from host_os/host_cpu rather than e.g. probing rustc,
+# because both must be statically resolvable at GN-time.
+if (host_os == "linux") {
+  if (host_cpu == "x64") {
+    _host_triple_env = "X86_64_UNKNOWN_LINUX_GNU"
+    _host_triple_canon = "x86_64-unknown-linux-gnu"
+  } else if (host_cpu == "arm64") {
+    _host_triple_env = "AARCH64_UNKNOWN_LINUX_GNU"
+    _host_triple_canon = "aarch64-unknown-linux-gnu"
+  } else {
+    assert(false, "Unsupported host_cpu '$host_cpu' on linux")
+  }
+} else if (host_os == "mac") {
+  if (host_cpu == "x64") {
+    _host_triple_env = "X86_64_APPLE_DARWIN"
+    _host_triple_canon = "x86_64-apple-darwin"
+  } else if (host_cpu == "arm64") {
+    _host_triple_env = "AARCH64_APPLE_DARWIN"
+    _host_triple_canon = "aarch64-apple-darwin"
+  } else {
+    assert(false, "Unsupported host_cpu '$host_cpu' on mac")
+  }
+} else if (host_os == "win") {
+  if (host_cpu == "x64") {
+    _host_triple_env = "X86_64_PC_WINDOWS_MSVC"
+    _host_triple_canon = "x86_64-pc-windows-msvc"
+  } else if (host_cpu == "arm64") {
+    _host_triple_env = "AARCH64_PC_WINDOWS_MSVC"
+    _host_triple_canon = "aarch64-pc-windows-msvc"
+  } else {
+    assert(false, "Unsupported host_cpu '$host_cpu' on win")
+  }
+} else {
+  assert(false, "Unsupported host_os '$host_os'")
+}
+
+# Per-host link args, gathered as a list and joined into the final
+# `CARGO_TARGET_<HOST>_RUSTFLAGS` env var below.  rustc doesn't read
+# LDFLAGS/SYSROOT for its own link step, so anything the link needs must be
+# passed through as `-Clink-arg=...`.  Scoping via `CARGO_TARGET_<HOST>_*`
+# (rather than global `RUSTFLAGS`) keeps these flags out of the wasm32 link
+# step, which is driven by `rust-lld` directly and wouldn't understand
+# GCC-driver-style flags like `-fuse-ld=lld` or `--sysroot=`.
+_host_link_args = []
+
+if (host_os == "win") {
+  _host_linker = "$_clang_bin/lld-link.exe"
+  # lld-link.exe is a drop-in replacement for MSVC's link.exe, so rustc can
+  # invoke it directly with no clang driver wrapper and no -fuse-ld dispatch.
+} else {
+  _host_linker = "$_clang_bin/clang"
+  _host_link_args += [ "-Clink-arg=-fuse-ld=lld" ]
+}
+
+if (_linux_host_sysroot != "") {
+  # Inject the Debian sysroot into the clang-driven link.  Without this, lld
+  # pulls in libpthread.so/librt.so/libdl.so linker scripts from the sysroot
+  # but resolves their absolute paths to libc.so.6 against the host's glibc,
+  # which doesn't carry the matching @GLIBC_PRIVATE symbols.
+  _host_link_args +=
+      [ "-Clink-arg=--sysroot=" + rebase_path(_linux_host_sysroot) ]
+}
+
+if (host_os == "win") {
+  # cc-rs's `envflags` *concatenates* every variant of an env var that is
+  # set, walking the precedence chain (see tools/crates/vendor/cc/src/lib.rs
+  # :3915-3935 — note the comment "Collect from all environment variables").
+  # That means if we set `CFLAGS` and `CFLAGS_<target>` and `TARGET_CFLAGS`
+  # all to the same value, our flags get added 3x to the compile command.
+  #
+  # Trick: cc-rs treats an empty-string value as "set but contributes no
+  # tokens".  So put the real flags on the generic `<VAR>` slot, and set
+  # every target-specific / TARGET_<VAR> variant to empty.  The empty
+  # variants neutralize anything siso/ninja might have populated for the
+  # Chromium C++ build (which is what was originally leaking
+  # `-Wunsafe-buffer-usage` and the unsafe-buffers plugin args into cc-rs's
+  # clang-cl invocation — vendored third-party C in tools/crates/vendor/
+  # isn't subject to Chromium's warning policy and is exempted from the
+  # GN-driven build via //build/config/unsafe_buffers_paths.txt).
+  _win_flags = "--no-default-config -w"
+
+  # C++ extras: clang-cl on Windows leaves exceptions disabled by default
+  # (matching MSVC), and cc-rs doesn't add `/EHsc` itself for the
+  # MSVC-style driver.  Binaryen (wasm-opt-sys) uses `throw`, so we need
+  # to enable C++ exceptions explicitly.
+  _win_cxxflags = "$_win_flags /EHsc"
+  cargo_hermetic_env = [
+    "CC=$_clang_bin/clang-cl.exe",
+    "CXX=$_clang_bin/clang-cl.exe",
+
+    # Chromium's Windows clang package strips both `llvm-ar.exe` and
+    # `llvm-lib.exe` (see tools/clang/scripts/package.py), so neither is
+    # available as a standalone MSVC librarian via `clang_base_path`.  As a
+    # workaround we use the shipped `lld-link.exe` and rely on the
+    # `ARFLAGS=-lib` env var below to prepend `-lib` to cc-rs's invocation —
+    # lld-link enters MSVC librarian mode when its first arg is `-lib`/`/lib`.
+    # See tools/crates/vendor/cc/src/lib.rs:2712-2723 + :3287-3290: the MSVC
+    # archiver pattern is `<AR> <ARFLAGS...> -out:<dst> <objs...>`, which
+    # puts ARFLAGS in exactly the right slot.
+    #
+    # Renaming `lld-link.exe` to `lib.exe` does NOT work: LLD dispatches its
+    # flavor on argv[0] basename and only recognizes
+    # `lld-link`/`ld.lld`/`ld64.lld`/`wasm-ld`/`lld` — `lib` falls through
+    # to the generic-driver error ("lld is a generic driver…").
+    #
+    # TODO: once a rust-toolchain archive built with the updated
+    # tools/cr/toolchain/build_rust_toolchain.py has been deployed (it now
+    # ships `llvm-lib.exe` on Windows alongside `rust-lld`), simplify this
+    # block by replacing the AR line with
+    #   "AR=" + rebase_path("//third_party/rust-toolchain/bin/llvm-lib.exe"),
+    # and dropping the `ARFLAGS=-lib` line plus the four `ARFLAGS_*` empty
+    # clobbers further below.  cc-rs's standard MSVC archiver invocation
+    # works against `llvm-lib.exe` natively (it's a real lib.exe-compatible
+    # tool, not an LLD alias).  Mirrors what upstream
+    # tools/rust/config.toml.template already does for the rust bootstrap.
+    "AR=$_clang_bin/lld-link.exe",
+    "LD=$_clang_bin/lld-link.exe",
+
+    # Real flag values on the generic slot; target-specific and TARGET_*
+    # variants emptied to absorb any siso/ninja leaks without duplicating.
+    #
+    # TODO: drop `ARFLAGS=-lib` and the three `ARFLAGS_*`/`TARGET_ARFLAGS`
+    # clobbers below when AR is switched to point at the bundled
+    # `llvm-lib.exe` (see the TODO on the AR line above).
+    "CFLAGS=$_win_flags",
+    "CXXFLAGS=$_win_cxxflags",
+    "ARFLAGS=-lib",
+    "CFLAGS_x86_64-pc-windows-msvc=",
+    "CFLAGS_x86_64_pc_windows_msvc=",
+    "CXXFLAGS_x86_64-pc-windows-msvc=",
+    "CXXFLAGS_x86_64_pc_windows_msvc=",
+    "ARFLAGS_x86_64-pc-windows-msvc=",
+    "ARFLAGS_x86_64_pc_windows_msvc=",
+    "TARGET_CFLAGS=",
+    "TARGET_CXXFLAGS=",
+    "TARGET_ARFLAGS=",
+
+    # MSVC-style env vars read by clang-cl itself.
+    "CL=",
+    "_CL_=",
+  ]
+} else {
+  cargo_hermetic_env = [
+    "CC=$_clang_bin/clang",
+    "CXX=$_clang_bin/clang++",
+    "AR=$_clang_bin/llvm-ar",
+    "LD=$_clang_bin/clang",
+  ]
+}
+
+# For non-cross-compile cargo invocations (build_crate.gni — HOST == TARGET),
+# `CARGO_TARGET_<HOST>_LINKER` and `CARGO_TARGET_<HOST>_RUSTFLAGS` env vars
+# work — cargo applies them to everything it builds.
+cargo_hermetic_env +=
+    [ "CARGO_TARGET_${_host_triple_env}_LINKER=$_host_linker" ]
+if (_host_link_args != []) {
+  cargo_hermetic_env += [ "CARGO_TARGET_${_host_triple_env}_RUSTFLAGS=" +
+                          string_join(" ", _host_link_args) ]
+}
+
+# For cross-compile invocations (rust_to_wasm.gni — TARGET=wasm32-unknown-unknown
+# but build scripts and proc-macros still build for HOST), the env-var and
+# `[target.<host>]` routes don't reach host-side *rustflags*.  cargo's
+# rustflags lookup is keyed on the cargo invocation's `--target` argument
+# (wasm32), not on each artifact's compilation target — so during cross-
+# compile, `[target.<host>].rustflags` is never consulted for host build
+# scripts.  (The `linker` lookup *is* per-artifact-compilation-target, which
+# is why our CARGO_TARGET_<HOST>_LINKER env var does reach host scripts.)
+#
+# The only knob cargo has for "rustflags applied specifically to host
+# artifacts in cross-compile" is the `[host]` table, gated behind
+# `-Z host-config`.  Our rust-toolchain is built from
+# `channel = "nightly"` (see tools/rust/config.toml.template), so `-Z` flags
+# are accepted.  rust_to_wasm.gni splices these into the cargo arg list
+# after `--`.
+cargo_host_config_args = [
+  # `-Z host-config` requires `-Z target-applies-to-host` to also be set —
+  # cargo rejects host-config-without-target-applies-to-host as an error.
+  "-Z",
+  "host-config",
+  "-Z",
+  "target-applies-to-host",
+  "--config",
+  "host.linker=\"$_host_linker\"",
+]
+if (_host_link_args != []) {
+  _host_rustflags_quoted = []
+  foreach(_flag, _host_link_args) {
+    _host_rustflags_quoted += [ "\"$_flag\"" ]
+  }
+  cargo_host_config_args += [
+    "--config",
+    "host.rustflags=[" + string_join(",", _host_rustflags_quoted) + "]",
+  ]
+}
+
+if (_have_mac_sdk) {
+  # The Chromium-bundled clang lives outside any Xcode layout, so it can't
+  # auto-detect an SDK — true under *both* `use_system_xcode = true` (which
+  # is what external builders and the iOS bots use) and the depot_tools
+  # hermetic Xcode mode (Brave-internal CI).  Point both rustc and `cc-rs`
+  # build scripts at whichever SDK //build/config/mac/mac_sdk.gni resolved
+  # to.  Without `-isysroot`, the ring/wasm-opt-sys cc-rs build scripts
+  # fail to find `<TargetConditionals.h>` and other Apple SDK headers.
+  # SDKROOT also satisfies `xcrun` fallbacks inside dependent crates'
+  # build scripts.
+  _sdk = rebase_path(mac_sdk_path)
+  cargo_hermetic_env += [
+    "SDKROOT=$_sdk",
+    "CFLAGS=-isysroot $_sdk",
+    "CXXFLAGS=-isysroot $_sdk",
+    "LDFLAGS=-isysroot $_sdk",
+  ]
+}
+
+if (_linux_host_sysroot != "") {
+  # Same shape as XPy.__init__ on linux: inject --sysroot into the C/C++/link
+  # flag set so build-script-compiled native code links against the pinned
+  # Debian sysroot rather than the host glibc, and steer pkg-config at the
+  # sysroot's libs.
+  _sys = rebase_path(_linux_host_sysroot)
+  cargo_hermetic_env += [
+    "CFLAGS=--sysroot=$_sys",
+    "CXXFLAGS=--sysroot=$_sys",
+    "LDFLAGS=--sysroot=$_sys",
+    "PKG_CONFIG_SYSROOT_DIR=$_sys",
+    "PKG_CONFIG_LIBDIR=$_sys/usr/lib/pkgconfig",
+  ]
+}

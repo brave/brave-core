@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/build/host_os_constants.gni")
+import("//brave/tools/crates/cargo_env.gni")
 
 template("build_crate") {
   if (defined(invoker["crates"])) {
@@ -58,6 +59,9 @@ template("build_crate") {
       "PATH=" +
           rebase_path("//third_party/rust-toolchain/bin", root_build_dir) +
           host_path_sep + getenv("PATH"),
+    ]
+    response_file_contents += cargo_hermetic_env
+    response_file_contents += [
       rebase_path(cargo_exe),
       "build",
       "--quiet",
