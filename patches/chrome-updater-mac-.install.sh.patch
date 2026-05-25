@@ -1,5 +1,5 @@
 diff --git a/chrome/updater/mac/.install.sh b/chrome/updater/mac/.install.sh
-index 3b1874d09fca0cf88e361927dfea7c4273790030..b5abcdf22df138367cf2da8f3eb1cabfd796b6b8 100755
+index 3b1874d09fca0cf88e361927dfea7c4273790030..0998ab9d6a1e6a5cc8a249e6fbac288851570dea 100755
 --- a/chrome/updater/mac/.install.sh
 +++ b/chrome/updater/mac/.install.sh
 @@ -322,7 +322,7 @@ main() {
@@ -20,45 +20,50 @@ index 3b1874d09fca0cf88e361927dfea7c4273790030..b5abcdf22df138367cf2da8f3eb1cabf
    note "update_app = ${update_app}"
  
    # Make sure that it's an absolute path.
-@@ -455,6 +455,30 @@ main() {
-   # directory unusable even for an instant.
-   if [[ -n "${update_versioned_dir}" ]]; then
-     note "rsyncing versioned directory"
-+    local debug_flags=0
-+    if [[ ! -d "${new_versioned_dir}" ]]; then
-+      debug_flags=1
-+      local mkdir_stderr
-+      if ! mkdir_stderr="$(mkdir -p "${new_versioned_dir}" 2>&1 1>/dev/null)"
-+      then
-+        case "${mkdir_stderr}" in
-+          *"Read-only file system"*)
-+            exit 90 ;;
-+          *"No space left on device"*|*"Disc quota exceeded"*)
-+            exit 91 ;;
-+          *"Operation not permitted"*)
-+            exit 92 ;;
-+          *"Permission denied"*)
-+            exit 93 ;;
-+          *"File exists"*|*"Not a directory"*)
-+            exit 94 ;;
-+          *)
-+            exit 95 ;;
-+        esac
-+      fi
-+      debug_flags=$((debug_flags | 2))
-+      rm -rf "${new_versioned_dir}"
-+    fi
-     if ! rsync ${RSYNC_FLAGS} --delete-before "${update_versioned_dir}/" \
-                                               "${new_versioned_dir}"; then
-       err "rsync of versioned directory failed, status ${PIPESTATUS[0]}"
-@@ -463,7 +487,9 @@ main() {
+@@ -463,7 +463,45 @@ main() {
        # The incomplete version would break code signature validation.
        note "cleaning up new_versioned_dir"
        rm -rf "${new_versioned_dir}"
 -      exit 12
-+      rsync ${RSYNC_FLAGS} --delete-before "${update_versioned_dir}" "${installed_versions_dir}" && (( debug_flags |= 4 ))
++      # Try various remedies; Report in exit code what would have worked.
++      local mkdir_stderr
++      if ! mkdir_stderr="$(mkdir -p "${new_versioned_dir}" 2>&1 1>/dev/null)"
++      then
++        # If `mkdir` fails, then other remedies won't work either; Exit with a
++        # code that tells us the cause.
++        case "${mkdir_stderr}" in
++          *"Read-only file system"*)
++            exit 70 ;;
++          *"No space left on device"*|*"Disc quota exceeded"*)
++            exit 71 ;;
++          *"Operation not permitted"*)
++            exit 72 ;;
++          *"Permission denied"*)
++            exit 73 ;;
++          *"File exists"*|*"Not a directory"*)
++            exit 74 ;;
++          *)
++            exit 75 ;;
++        esac
++      fi
++      # `mkdir` succeeded. Retry the original rsync. If it succeeds, then clean
++      # up and return an exit code that tells us that this fix is worth keeping.
++      if rsync ${RSYNC_FLAGS} --delete-before "${update_versioned_dir}/" \
++                                              "${new_versioned_dir}"; then
++        rm -rf "${new_versioned_dir}"
++        exit 76
++      fi
++      # Another potential remedy is to rsync into the parent directory. As
++      # before, if this succeeds, clean up and return a unique exit code that
++      # tells us that this workaround is worth keeping.
++      if rsync ${RSYNC_FLAGS} --delete-before "${update_versioned_dir}" \
++                                              "${installed_versions_dir}"; then
++        rm -rf "${new_versioned_dir}"
++        exit 77
++      fi
++      # None of the attempted remedies worked.
 +      rm -rf "${new_versioned_dir}"
-+      exit $((80 + debug_flags))
++      exit 78
      fi
    fi
  
