@@ -88,12 +88,17 @@ void ShowBraveWalletOnboarding(BrowserWindowInterface* browser) {
 void ShowBraveWalletTxNotificationUrl(BrowserWindowInterface* browser,
                                       GURL url) {
   if (url.GetWithEmptyPath() != GURL(kBraveUIWalletURL)) {
+    return;
   }
   ShowSingletonTabOverwritingNTP(browser, url);
 }
 
 void ShowBraveWalletAccountCreation(BrowserWindowInterface* browser,
-                                    std::string_view coin_name) {}
+                                    std::string_view coin_name) {
+  ShowSingletonTabOverwritingNTP(
+      browser,
+      GURL(base::StrCat({kBraveUIWalletAccountCreationURL, coin_name})));
+}
 #endif
 
 void ShowAppsPage(BrowserWindowInterface* browser) {
