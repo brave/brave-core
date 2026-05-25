@@ -2234,6 +2234,32 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
       << "No-border resize area width should equal kNoBorderResizeAreaWidth";
 }
 
+// Regression test: the top container separator must remain visible when a side
+// panel opens. Upstream suppresses it (suppress_top_separator=true) when the
+// side panel is shown and GetTopSeparatorType() returns kTopContainer.
+// BraveBrowserViewTabbedLayoutImpl::CalculateTopContainerLayoutImpl resets the
+// flag to false for that case so the separator stays shown.
+// Rounded corners must be disabled: GetTopSeparatorType() only returns
+// kTopContainer (instead of kNone) when rounded corners are off.
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
+                       TopContainerSeparatorVisibleWhenPanelOpens) {
+  browser()->profile()->GetPrefs()->SetBoolean(kWebViewRoundedCorners, false);
+  RunScheduledLayouts();
+
+  auto* brave_view =
+      BraveBrowserView::From(BrowserView::GetBrowserViewForBrowser(browser()));
+  auto* separator = brave_view->top_container_separator_for_testing();
+  ASSERT_TRUE(separator);
+  EXPECT_TRUE(separator->GetVisible());
+
+  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  panel_ui->Show(SidePanelEntryId::kBookmarks);
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return panel_ui->IsSidePanelShowing(); }));
+
+  EXPECT_TRUE(separator->GetVisible());
+}
+
 class ScopedSidePanelUIForTesting {
  public:
   ScopedSidePanelUIForTesting(SidebarController* controller, SidePanelUI* ui)

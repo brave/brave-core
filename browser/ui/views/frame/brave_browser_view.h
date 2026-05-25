@@ -173,6 +173,10 @@ class BraveBrowserView : public BrowserView,
     return tab_strip_placement_.get();
   }
 
+  views::View* top_container_separator_for_testing() const {
+    return top_container_separator_;
+  }
+
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   // Returns the PWA Shields toolbar button, if it exists. Note that this
   // returns valid pointer only when it's web app browser.
@@ -272,9 +276,6 @@ class BraveBrowserView : public BrowserView,
 #endif
 
   void UpdateSideBarHorizontalAlignment();
-  views::View* top_container_separator_for_testing() const {
-    return top_container_separator_;
-  }
 
   std::unique_ptr<TabStripPlacementCoordinator> tab_strip_placement_;
   std::unique_ptr<views::Widget> vertical_tab_strip_widget_;
