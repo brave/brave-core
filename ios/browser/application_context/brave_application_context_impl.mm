@@ -16,7 +16,6 @@
 #include "brave/components/brave_sync/network_time_helper.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/debounce/core/browser/debounce_component_installer.h"
-#include "brave/components/https_upgrade_exceptions/browser/https_upgrade_exceptions_service.h"
 #include "brave/components/url_sanitizer/core/browser/url_sanitizer_component_installer.h"
 #include "components/application_locale_storage/application_locale_storage.h"
 #include "ios/chrome/browser/application_context/model/application_context_impl.h"
@@ -101,24 +100,11 @@ BraveApplicationContextImpl::debounce_component_installer() {
   return debounce_component_installer_.get();
 }
 
-https_upgrade_exceptions::HttpsUpgradeExceptionsService*
-BraveApplicationContextImpl::https_upgrade_exceptions_service() {
-  if (!https_upgrade_exceptions_service_) {
-    https_upgrade_exceptions_service_ =
-        https_upgrade_exceptions::HttpsUpgradeExceptionsServiceFactory(
-            local_data_files_service());
-  }
-  return https_upgrade_exceptions_service_.get();
-}
-
 void BraveApplicationContextImpl::StartBraveServices() {
   // We need to Initialize the component installers
   // before calling Start on the local_data_files_service
   url_sanitizer_component_installer();
   debounce_component_installer();
-
-  // eagerly initialize for component updater
-  https_upgrade_exceptions_service();
 
   // Start the local data file service
   local_data_files_service()->Start();

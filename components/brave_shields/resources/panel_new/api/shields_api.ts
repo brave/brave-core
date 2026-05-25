@@ -24,7 +24,6 @@ import {
   AdBlockMode,
   FingerprintMode,
   CookieBlockMode,
-  HttpsUpgradeMode,
 } from 'gen/brave/components/brave_shields/core/common/shields_settings.mojom.m.js'
 
 import { ContentSettingsType } from 'gen/components/content_settings/core/common/content_settings_types.mojom.m'
@@ -109,12 +108,6 @@ export function createShieldsApi(opts: {
           mutationResponse: () => undefined,
           onMutate: ([mode]: [CookieBlockMode]) => {
             api.getSiteSettings.update({ cookieBlockMode: mode })
-          },
-        },
-        setHttpsUpgradeMode: {
-          mutationResponse: () => undefined,
-          onMutate: ([mode]: [HttpsUpgradeMode]) => {
-            api.getSiteSettings.update({ httpsUpgradeMode: mode })
           },
         },
         setIsNoScriptsEnabled: {

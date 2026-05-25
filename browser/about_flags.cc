@@ -1274,14 +1274,6 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           FEATURE_VALUE_TYPE(blink::features::kBraveGlobalPrivacyControl),     \
       },                                                                       \
       {                                                                        \
-          "https-by-default",                                                  \
-          "Use HTTPS by Default",                                              \
-          "Attempt to connect to all websites using HTTPS before falling "     \
-          "back to HTTP.",                                                     \
-          kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(net::features::kBraveHttpsByDefault),             \
-      },                                                                       \
-      {                                                                        \
           "fallback-dns-over-https",                                           \
           "Use a fallback DoH provider",                                       \
           "In Automatic DoH mode, use a fallback DoH provider if the current " \

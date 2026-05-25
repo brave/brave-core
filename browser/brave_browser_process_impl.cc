@@ -38,7 +38,6 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/debounce/core/browser/debounce_component_installer.h"
 #include "brave/components/debounce/core/common/features.h"
-#include "brave/components/https_upgrade_exceptions/browser/https_upgrade_exceptions_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/p3a/histograms_braveizer.h"
 #include "brave/components/p3a/p3a_config.h"
@@ -310,9 +309,6 @@ void BraveBrowserProcessImpl::StartBraveServices() {
   resource_component();
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
-  // eagerly initialize for component updater
-  https_upgrade_exceptions_service();
-
   if (base::FeatureList::IsEnabled(
           webcompat::features::kBraveWebcompatExceptionsService)) {
     webcompat::WebcompatExceptionsService::CreateInstance(
@@ -361,16 +357,6 @@ BraveBrowserProcessImpl::ntp_background_images_service() {
   }
 
   return ntp_background_images_service_.get();
-}
-
-https_upgrade_exceptions::HttpsUpgradeExceptionsService*
-BraveBrowserProcessImpl::https_upgrade_exceptions_service() {
-  if (!https_upgrade_exceptions_service_) {
-    https_upgrade_exceptions_service_ =
-        https_upgrade_exceptions::HttpsUpgradeExceptionsServiceFactory(
-            local_data_files_service());
-  }
-  return https_upgrade_exceptions_service_.get();
 }
 
 debounce::DebounceComponentInstaller*

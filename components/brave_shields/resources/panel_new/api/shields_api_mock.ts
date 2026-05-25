@@ -17,7 +17,6 @@ import {
   AdBlockMode,
   FingerprintMode,
   CookieBlockMode,
-  HttpsUpgradeMode,
   ContentSettingSource,
 } from 'gen/brave/components/brave_shields/core/common/shields_settings.mojom.m.js'
 
@@ -56,7 +55,6 @@ const mockSiteSettings: SiteSettings = {
   adBlockMode: AdBlockMode.STANDARD,
   fingerprintMode: FingerprintMode.STANDARD_MODE,
   cookieBlockMode: CookieBlockMode.BLOCKED,
-  httpsUpgradeMode: HttpsUpgradeMode.STANDARD_MODE,
   isNoscriptEnabled: false,
   isForgetFirstPartyStorageEnabled: false,
   scriptsBlockedOverrideStatus: {
@@ -86,7 +84,6 @@ function createMockDataHandler(): Closable<DataHandlerInterface> {
     setAdBlockMode(mode) {},
     setFingerprintMode(mode) {},
     setCookieBlockMode(mode) {},
-    setHttpsUpgradeMode(mode) {},
     setIsNoScriptsEnabled(isEnabled) {},
     setBraveShieldsAdBlockOnlyModeEnabled(isEnabled) {},
     setBraveShieldsAdBlockOnlyModePromptDismissed() {},

@@ -82,7 +82,7 @@ extension Preferences {
       default: defaultHTTPsUpgradeLevel.rawValue
     )
 
-    /// Get the enabled level for https upgrade for when the kBraveHttpsByDefault feature flag is off
+    /// Legacy HTTPS upgrade level stored in Shields preferences (UI only).
     /// This preserves the value the user had set (possibly `strict` or `standard`) when they enable
     /// https everywhere
     public static var httpsUpgradePriorEnabledLevelRaw = Preferences.Option<String?>(
