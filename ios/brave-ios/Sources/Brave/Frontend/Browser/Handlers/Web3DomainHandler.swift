@@ -114,7 +114,9 @@ public class Web3DomainHandler: InternalSchemeResponse {
       Web3NameServiceScriptHandler.ParamKey.serviceId.rawValue: service.id,
       "ud_intro": service == .unstoppable ? Strings.Wallet.udDomainInterstitialPageIntro : "",
       "ud_extensions": service == .unstoppable
-        ? WalletConstants.supportedUDExtensions.joined(separator: ",") : "",
+        ? WalletConstants.supportedUDExtensions.sorted { $0 == ".brave" && $1 != ".brave" }.joined(
+          separator: ","
+        ) : "",
       "ud_more": service == .unstoppable ? Strings.Wallet.udDomainInterstitialPageMore : "",
     ]
 
