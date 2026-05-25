@@ -12,7 +12,8 @@ import { BraveWallet } from '../../../constants/types'
 
 // Mock Data
 import {
-  mockCardanoAccount, //
+  mockCardanoAccount,
+  mockEthAccount, //
 } from '../../../stories/mock-data/mock-wallet-accounts'
 import { mockOriginInfo } from '../../../stories/mock-data/mock-origin-info'
 import { mockSolanaAccount } from '../../../common/constants/mocks'
@@ -38,6 +39,31 @@ const signCardanoMessageData: BraveWallet.SignMessageRequest = {
     cardanoSignData: {
       message: 'Test Cardano Sign Data',
     },
+  },
+}
+
+const signEthTypedDataMessage: BraveWallet.SignMessageRequest = {
+  id: 0,
+  accountId: mockEthAccount.accountId,
+  originInfo: mockOriginInfo,
+  coin: BraveWallet.CoinType.ETH,
+  chainId: BraveWallet.MAINNET_CHAIN_ID,
+  signData: {
+    ethSignTypedData: {
+      addressParam: '',
+      messageJson: 'Sign below to authenticate with CryptoKitties.',
+      domainJson: '',
+      typesJson: '',
+      primaryType: 'Mail',
+      chainId: '',
+      domainHash: [],
+      primaryHash: [],
+      meta: undefined,
+    },
+    solanaSignData: undefined,
+    ethSiweData: undefined,
+    ethStandardSignData: undefined,
+    cardanoSignData: undefined,
   },
 }
 
@@ -94,6 +120,30 @@ describe('SignTypedDataPanel', () => {
 
       // Buttons
       expect(screen.getByText('braveWalletButtonCancel')).toBeInTheDocument()
+      expect(screen.getByText('braveWalletButtonContinue')).toBeInTheDocument()
+    })
+  })
+
+  it('Should show warning when eth sign typed data is present', async () => {
+    const store = createMockStore({})
+    const { container } = render(
+      <Provider store={store}>
+        <BraveCoreThemeProvider>
+          <SignPanel
+            signMessageData={[signEthTypedDataMessage]}
+            showWarning={false}
+          />
+        </BraveCoreThemeProvider>
+      </Provider>,
+    )
+
+    await waitFor(() => {
+      expect(container).toBeVisible()
+
+      expect(
+        screen.getByText('braveWalletSignWarningTitle'),
+      ).toBeInTheDocument()
+      expect(screen.getByText('braveWalletSignWarning')).toBeInTheDocument()
       expect(screen.getByText('braveWalletButtonContinue')).toBeInTheDocument()
     })
   })
