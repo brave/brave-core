@@ -74,6 +74,7 @@ static_library("browser") {
     "//brave/brave_domains",
     "//brave/components/api_request_helper",
     "//brave/components/brave_news/api",
+    "//brave/components/brave_policy:policy_initialization_waiter",
     "//brave/components/brave_private_cdn",
     "//brave/components/brave_rewards/core",
     "//brave/components/l10n/common",

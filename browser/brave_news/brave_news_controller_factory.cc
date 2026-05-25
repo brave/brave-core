@@ -10,13 +10,16 @@
 #include "base/no_destructor.h"
 #include "brave/browser/brave_news/direct_feed_fetcher_delegate_impl.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
+#include "brave/components/brave_policy/policy_initialization_waiter.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/history/history_service_factory.h"
+#include "chrome/browser/policy/profile_policy_connector.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/keyed_service/core/service_access_type.h"
+#include "components/policy/core/common/policy_service.h"
 #include "content/public/browser/browser_context.h"
 
 namespace brave_news {
@@ -74,8 +77,18 @@ BraveNewsControllerFactory::BuildServiceInstanceForBrowserContext(
       profile, ServiceAccessType::EXPLICIT_ACCESS);
   auto* host_content_settings_map =
       HostContentSettingsMapFactory::GetForProfile(profile);
+
+  policy::PolicyService* policy_service = nullptr;
+  if (auto* policy_connector = profile->GetProfilePolicyConnector()) {
+    policy_service = policy_connector->policy_service();
+  }
+  auto policy_initialization_waiter =
+      std::make_unique<brave_policy::PolicyInitializationWaiter>(
+          policy_service);
+
   return std::make_unique<BraveNewsController>(
-      profile->GetPrefs(), history_service, profile->GetURLLoaderFactory(),
+      profile->GetPrefs(), std::move(policy_initialization_waiter),
+      history_service, profile->GetURLLoaderFactory(),
       std::make_unique<DirectFeedFetcherDelegateImpl>(
           host_content_settings_map));
 }
