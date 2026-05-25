@@ -11,14 +11,6 @@ testonly = true
 
 if (is_android) {
   robolectric_library(
-      "brave_junit_tests_org.chromium.chrome.browser.compositor") {
-    resources_package = "org.chromium.chrome"
-    sources = [ "src/org/chromium/chrome/browser/compositor/layouts/phone/BraveNewTabAnimationLayoutUnitTest.java" ]
-
-    deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
-  }
-
-  robolectric_library(
       "brave_junit_tests_org.chromium.chrome.browser.homepage") {
     sources = [
       "src/org/chromium/chrome/browser/homepage/BraveHomepageManagerTest.java",
@@ -230,5 +222,16 @@ if (is_android) {
       "//chrome/android/junit:chrome_junit_tests_helper",
       "//chrome/browser/hub/internal:java",
     ]
+  }
+
+  robolectric_library(
+      "brave_junit_tests_org.chromium.chrome.browser.compositor") {
+    resources_package = "org.chromium.chrome"
+    sources = [
+      "src/org/chromium/chrome/browser/compositor/layouts/phone/BraveNewBackgroundTabAnimationDataUnitTest.java",
+      "src/org/chromium/chrome/browser/compositor/layouts/phone/BraveNewTabAnimationLayoutUnitTest.java",
+    ]
+
+    deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
   }
 }

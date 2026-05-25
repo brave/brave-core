@@ -1543,6 +1543,12 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/notifications/BraveNotificationManagerProxyImpl")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 constructorsMatch(
+                        "org/chromium/chrome/browser/compositor/layouts/phone/NewBackgroundTabAnimationData", // presubmit: ignore-long-line
+                        "org/chromium/chrome/browser/compositor/layouts/phone/BraveNewBackgroundTabAnimationData", // presubmit: ignore-long-line
+                        View.class,
+                        ToolbarManager.class));
+        Assert.assertTrue(
+                constructorsMatch(
                         "org/chromium/chrome/browser/ntp/NewTabPage",
                         "org/chromium/chrome/browser/ntp/BraveNewTabPage",
                         Activity.class,

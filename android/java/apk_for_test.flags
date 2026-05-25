@@ -411,6 +411,14 @@
     public <init>(...);
 }
 
+-keep class org.chromium.chrome.browser.compositor.layouts.phone.BraveNewBackgroundTabAnimationData {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.compositor.layouts.phone.NewBackgroundTabAnimationData {
+    public <init>(...);
+}
+
 -keep class org.chromium.chrome.browser.feed.FeedSurfaceCoordinator {
     *** mActivity;
     *** mNtpHeader;
