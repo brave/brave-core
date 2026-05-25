@@ -360,26 +360,6 @@ extension BrowserViewController {
     UmaHistogramEnumeration("Brave.General.BottomBarLocation", sample: answer)
   }
 
-  func recordTimeBasedNumberReaderModeUsedP3A(activated: Bool) {
-    var storage = P3ATimedStorage<Int>.readerModeActivated
-    if activated {
-      storage.add(value: 1, to: Date())
-    }
-
-    // Q102- How many times did you use reader mode in the last 7 days?
-    UmaHistogramRecordValueToBucket(
-      "Brave.ReaderMode.NumberReaderModeActivated",
-      buckets: [
-        0,
-        .r(1...5),
-        .r(5...20),
-        .r(20...50),
-        .r(51...),
-      ],
-      value: storage.combinedValue
-    )
-  }
-
   func recordAdsUsageType() {
     enum Answer: Int, CaseIterable {
       case none = 0
@@ -455,7 +435,7 @@ extension P3ATimedStorage where Value == Int {
   fileprivate static var braveVPNDaysInMonthUsedStorage: Self {
     .init(name: "vpn-days-in-month-used", lifetimeInDays: 30)
   }
-  fileprivate static var readerModeActivated: Self {
+  internal static var readerModeActivated: Self {
     .init(name: "reader-mode-activated", lifetimeInDays: 7)
   }
   fileprivate static var navigationActionPerformedStorage: Self {
