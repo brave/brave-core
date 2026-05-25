@@ -13,11 +13,6 @@ public class FeedItemsCard {
     private int cardType;
     private byte[] imageByte;
     private String uuid;
-    private boolean viewStatSent;
-
-    public FeedItemsCard() {
-        this.viewStatSent = false;
-    }
 
     public List<FeedItemCard> getFeedItems() {
         return feedItems;
@@ -49,14 +44,6 @@ public class FeedItemsCard {
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
-    }
-
-    public boolean isViewStatSent() {
-        return viewStatSent;
-    }
-
-    public void setViewStatSent(boolean viewStatSent) {
-        this.viewStatSent = viewStatSent;
     }
 
     @SuppressWarnings("ObjectToString")

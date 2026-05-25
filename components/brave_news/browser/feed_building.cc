@@ -231,8 +231,6 @@ void BuildFeedPageItem(std::list<mojom::ArticlePtr>* articles,
                           base::BindRepeating(&FromDeal));
       }
       break;
-    case CardType::PROMOTED_ARTICLE:
-      break;
   }
 }
 
@@ -243,8 +241,6 @@ mojom::FeedItemMetadataPtr& MetadataFromFeedItem(
       return item->get_article()->data;
     case mojom::FeedItem::Tag::kDeal:
       return item->get_deal()->data;
-    case mojom::FeedItem::Tag::kPromotedArticle:
-      return item->get_promoted_article()->data;
   }
 }
 
@@ -370,8 +366,6 @@ bool BuildFeed(const std::vector<mojom::FeedItemPtr>& feed_items,
         break;
       case mojom::FeedItem::Tag::kDeal:
         deals.push_back(std::move(item->get_deal()));
-        break;
-      case mojom::FeedItem::Tag::kPromotedArticle:
         break;
     }
   }

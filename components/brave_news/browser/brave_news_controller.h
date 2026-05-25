@@ -133,10 +133,6 @@ class BraveNewsController
   void OnCardVisited(uint32_t depth) override;
   void OnSidebarFilterUsage() override;
 
-  void OnPromotedItemView(const std::string& item_id,
-                          const std::string& creative_instance_id) override;
-  void OnPromotedItemVisit(const std::string& item_id,
-                           const std::string& creative_instance_id) override;
   // mojom::BraveNewsInternals
   void GetVisitedSites(GetVisitedSitesCallback callback) override;
 

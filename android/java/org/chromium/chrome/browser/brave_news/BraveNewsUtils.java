@@ -16,7 +16,6 @@ import org.chromium.brave_news.mojom.Deal;
 import org.chromium.brave_news.mojom.FeedItem;
 import org.chromium.brave_news.mojom.FeedItemMetadata;
 import org.chromium.brave_news.mojom.LocaleInfo;
-import org.chromium.brave_news.mojom.PromotedArticle;
 import org.chromium.brave_news.mojom.Publisher;
 import org.chromium.brave_news.mojom.PublisherType;
 import org.chromium.brave_news.mojom.UserEnabled;
@@ -43,7 +42,6 @@ import java.util.Map;
 @NullMarked
 public class BraveNewsUtils {
     private static final String TAG = "BraveNewsUtils";
-    public static final int BRAVE_NEWS_VIEWD_CARD_TIME = 1000; // milliseconds
     private static @Nullable String sLocale;
     private static @Nullable List<Channel> sChannelList;
     private static @Nullable List<Publisher> sGlobalPublisherList;
@@ -52,22 +50,6 @@ public class BraveNewsUtils {
     private static @Nullable List<Publisher> sFollowingPublisherList;
     private static @Nullable List<String> sSuggestionsList;
     private static final HashMap<String, Integer> sChannelIcons = new HashMap<>();
-
-    public static String getPromotionIdItem(FeedItemsCard items) {
-        String creativeInstanceId = "null";
-        if (items.getFeedItems() != null) {
-            for (FeedItemCard itemCard : items.getFeedItems()) {
-                FeedItem item = itemCard.getFeedItem();
-                if (item.which() == FeedItem.Tag.PromotedArticle) {
-                    PromotedArticle promotedArticle = item.getPromotedArticle();
-                    creativeInstanceId = promotedArticle.creativeInstanceId;
-                    break;
-                }
-            }
-        }
-
-        return creativeInstanceId;
-    }
 
     // method for logging news object. works by putting Log.d in the desired places of the parsing
     // of the object
@@ -86,11 +68,6 @@ public class BraveNewsUtils {
                         case FeedItem.Tag.Article:
                             Article article = item.getArticle();
                             FeedItemMetadata articleData = article.data;
-                            break;
-                        case FeedItem.Tag.PromotedArticle:
-                            PromotedArticle promotedArticle = item.getPromotedArticle();
-                            FeedItemMetadata promotedArticleData = promotedArticle.data;
-                            String creativeInstanceId = promotedArticle.creativeInstanceId;
                             break;
                         case FeedItem.Tag.Deal:
                             Deal deal = item.getDeal();

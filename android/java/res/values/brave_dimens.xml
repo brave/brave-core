@@ -73,10 +73,6 @@
     <dimen name="brave_news_headline_desc_phone_textsize">11sp</dimen>
     <dimen name="brave_news_headline_publisher_tablet_textsize">16sp</dimen>
     <dimen name="brave_news_headline_publisher_phone_textsize">12sp</dimen>
-    <dimen name="brave_news_promoted_article_title_textsize">17sp</dimen>
-    <dimen name="brave_news_promoted_article_desc_textsize">11sp</dimen>
-    <dimen name="brave_news_promoted_article_promoted_textsize">12sp</dimen>
-    <dimen name="brave_news_promoted_article_publisher_textsize">12sp</dimen>
     <dimen name="brave_news_headline_paired_title_tablet_textsize">17sp</dimen>
     <dimen name="brave_news_headline_paired_title_phone_textsize">13sp</dimen>
     <dimen name="brave_news_headline_paired_desc_tablet_textsize">15sp</dimen>

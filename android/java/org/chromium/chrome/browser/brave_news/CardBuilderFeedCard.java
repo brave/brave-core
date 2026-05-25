@@ -42,7 +42,6 @@ import org.chromium.brave_news.mojom.Deal;
 import org.chromium.brave_news.mojom.FeedItem;
 import org.chromium.brave_news.mojom.FeedItemMetadata;
 import org.chromium.brave_news.mojom.Image;
-import org.chromium.brave_news.mojom.PromotedArticle;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.ChromeActivity;
@@ -79,8 +78,6 @@ public class CardBuilderFeedCard {
     private final int mPosition;
     private final int mHorizontalMargin;
     private final int mDeviceWidth;
-    private boolean mIsPromo;
-    private String mCreativeInstanceId;
     private String mOffersCategory;
     private final RequestManager mGlide;
 
@@ -100,8 +97,6 @@ public class CardBuilderFeedCard {
         mDeviceWidth = ConfigurationUtils.getDisplayMetrics(activity).get("width");
         mGlide = glide;
 
-        mIsPromo = false;
-        mCreativeInstanceId = "";
         mOffersCategory = "";
 
         boolean isTablet = ConfigurationUtils.isTablet(activity);
@@ -162,7 +157,6 @@ public class CardBuilderFeedCard {
         try {
             switch (type) {
                 case CardType.HEADLINE:
-                case CardType.PROMOTED_ARTICLE:
                     addElementsToSingleLayout(mLinearLayout, 0, type, position);
                     mLinearLayout.setBackground(
                             makeRound(CARD_LAYOUT, R.color.card_background, 30));
@@ -653,109 +647,6 @@ public class CardBuilderFeedCard {
                     publisher.setLayoutParams(publisherParams);
 
                     break;
-                case CardType.PROMOTED_ARTICLE:
-                    layout.setOrientation(LinearLayout.VERTICAL);
-                    RecyclerView.LayoutParams recylcePromotedLayoutParams =
-                            (RecyclerView.LayoutParams) layout.getLayoutParams();
-
-                    recylcePromotedLayoutParams.setMargins(
-                            mHorizontalMargin, 0, mHorizontalMargin, 5 * MARGIN_VERTICAL);
-                    layout.setLayoutParams(recylcePromotedLayoutParams);
-
-                    TextView promoted = new TextView(mActivity);
-                    LinearLayout promotedLogoLayout = new LinearLayout(mActivity);
-
-                    imageParams =
-                            new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                                    LinearLayout.LayoutParams.WRAP_CONTENT);
-                    titleParams =
-                            new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                                    LinearLayout.LayoutParams.WRAP_CONTENT);
-                    descParams =
-                            new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                                    LinearLayout.LayoutParams.WRAP_CONTENT);
-                    publisherParams =
-                            new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                                    LinearLayout.LayoutParams.WRAP_CONTENT);
-
-                    layout.addView(image);
-                    layout.addView(title);
-                    layout.addView(desc);
-                    layout.addView(promotedLogoLayout);
-
-                    imageParams.height = (int) (mDeviceWidth * 0.6);
-
-                    imageParams.bottomMargin = 2 * MARGIN_VERTICAL;
-                    image.setLayoutParams(imageParams);
-
-                    setImage(image, "image", index);
-                    image.setScaleType(ImageView.ScaleType.CENTER_CROP);
-
-                    titleParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
-
-                    titleParams.rightMargin = 20;
-                    titleParams.bottomMargin = 2 * MARGIN_VERTICAL;
-                    title.setTextAppearance(R.style.BraveNewsPromotedArticleTitleText);
-                    title.setTypeface(null, Typeface.BOLD);
-                    title.setMaxLines(5);
-                    titleParams.bottomMargin = MARGIN_VERTICAL;
-                    title.setEllipsize(TextUtils.TruncateAt.END);
-                    title.setPadding(50, 30, 50, 0);
-                    title.setLayoutParams(titleParams);
-
-                    descParams.weight = LinearLayout.LayoutParams.WRAP_CONTENT;
-
-                    setTextFromFeed(desc, TIME, index);
-                    desc.setTextAppearance(R.style.BraveNewsPromotedArticleDescText);
-                    desc.setLayoutParams(descParams);
-                    desc.setPadding(50, 0, 50, 30);
-
-                    LinearLayout.LayoutParams promotedParams =
-                            new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                                    LinearLayout.LayoutParams.MATCH_PARENT);
-                    publisherParams = new LinearLayout.LayoutParams(
-                            0, LinearLayout.LayoutParams.MATCH_PARENT, 1f);
-                    LinearLayout.LayoutParams promotedLayoutParams =
-                            new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                                    LinearLayout.LayoutParams.WRAP_CONTENT);
-                    promotedLayoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
-                    promotedLogoLayout.setPadding(50, 0, 50, 0);
-
-                    promotedParams.width = 0;
-                    promotedParams.weight = 1;
-
-                    promotedLogoLayout.setOrientation(LinearLayout.HORIZONTAL);
-                    promoted.setPadding(20, 0, 0, 0);
-                    promoted.setGravity(Gravity.CENTER);
-                    promotedParams.gravity = Gravity.CENTER_VERTICAL | Gravity.END;
-                    promotedLayoutParams.gravity = Gravity.CENTER;
-                    publisher.setGravity(Gravity.CENTER_VERTICAL);
-                    publisherParams.gravity = Gravity.CENTER_VERTICAL;
-
-                    promoted.setCompoundDrawablesWithIntrinsicBounds(
-                            R.drawable.ic_promoted, 0, 0, 0);
-
-                    promoted.setText(
-                            mActivity.getResources().getString(R.string.brave_news_promoted_title));
-
-                    promoted.setTextAppearance(R.style.BraveNewsPromotedArticlePromotedText);
-                    promoted.setLayoutParams(promotedParams);
-                    promotedLayoutParams.bottomMargin = 4 * MARGIN_VERTICAL;
-
-                    promoted.setBackground(
-                            makeRound(BUTTON_LAYOUT, R.color.news_promoted_background_color, 15));
-                    promotedLogoLayout.setLayoutParams(promotedLayoutParams);
-
-                    setTextFromFeed(publisher, PUBLISHER, 0);
-                    publisher.setTextAppearance(R.style.BraveNewsPromotedArticlePublisherText);
-                    publisherParams.width = 0;
-                    publisherParams.weight = 2;
-
-                    publisher.setLayoutParams(publisherParams);
-                    promotedLogoLayout.addView(publisher);
-                    promotedLogoLayout.addView(promoted);
-
-                    break;
                 case CardType.HEADLINE_PAIRED:
 
                     layout.setOrientation(LinearLayout.VERTICAL);
@@ -1047,7 +938,6 @@ public class CardBuilderFeedCard {
             FeedItemMetadata itemData = getItemData(index);
             if (itemData != null) {
                 setText(itemData, textView, type);
-                setListeners(textView, mCreativeInstanceId, mIsPromo);
             }
 
         } catch (Exception e) {
@@ -1070,12 +960,6 @@ public class CardBuilderFeedCard {
                     Article article = feedItem.getArticle();
                     itemData = article.data;
                     break;
-                case FeedItem.Tag.PromotedArticle:
-                    PromotedArticle promotedArticle = feedItem.getPromotedArticle();
-                    mCreativeInstanceId = promotedArticle.creativeInstanceId;
-                    itemData = promotedArticle.data;
-                    mIsPromo = true;
-                    break;
                 case FeedItem.Tag.Deal:
                     Deal deal = feedItem.getDeal();
                     mOffersCategory = deal.offersCategory;
@@ -1089,20 +973,6 @@ public class CardBuilderFeedCard {
         final FeedItemMetadata itemDataFinal = itemData;
 
         return itemDataFinal;
-    }
-
-    private void setListeners(View view, String creativeInstanceId, boolean isPromo) {
-        view.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (mBraveNewsController != null && isPromo) {
-                            // Updates the no. of promotion cards visited
-                            mBraveNewsController.onPromotedItemVisit(
-                                    mNewsItem.getUuid(), creativeInstanceId);
-                        }
-                    }
-                });
     }
 
     private void setText(FeedItemMetadata itemData, TextView textView, int type) {
@@ -1143,10 +1013,6 @@ public class CardBuilderFeedCard {
                 case FeedItem.Tag.Article:
                     Article article = item.getArticle();
                     itemMetaData = article.data;
-                    break;
-                case FeedItem.Tag.PromotedArticle:
-                    PromotedArticle promotedArticle = item.getPromotedArticle();
-                    itemMetaData = promotedArticle.data;
                     break;
                 case FeedItem.Tag.Deal:
                     Deal deal = item.getDeal();
