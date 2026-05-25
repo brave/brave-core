@@ -25,6 +25,7 @@
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
+#include "brave/components/ntp_background_images/browser/test/fake_ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/browser/view_counter_model.h"
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
@@ -210,11 +211,10 @@ class ViewCounterServiceTest : public testing::Test {
         &prefs_, /* is_off_the_record=*/false, /*store_last_modified=*/false,
         /*restore_session=*/false, /*should_record_metrics=*/false);
 
-    background_images_service_ = std::make_unique<NTPBackgroundImagesService>(
-        /*variations_service=*/nullptr, /*component_updater_service=*/nullptr,
-        &local_state_);
-
-    BraveNTPCustomBackgroundService* custom_background_service = nullptr;
+    background_images_service_ =
+        std::make_unique<FakeNTPBackgroundImagesService>(
+            /*variations_service=*/nullptr,
+            /*component_updater_service=*/nullptr, &local_state_);
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
     auto custom_background_service_delegate =
@@ -224,17 +224,30 @@ class ViewCounterServiceTest : public testing::Test {
     custom_background_service_ =
         std::make_unique<BraveNTPCustomBackgroundService>(
             std::move(custom_background_service_delegate));
-
-    custom_background_service = custom_background_service_.get();
 #endif  // BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
 
+    ON_CALL(ads_service_mock_, IsInitialized)
+        .WillByDefault(testing::Return(false));
+
+    CreateViewCounterService();
+  }
+
+  void TearDown() override { host_content_settings_map_->ShutdownOnUIThread(); }
+
+  void SimulateAdsServiceInitialized() {
+    view_counter_service_->OnDidInitializeAdsService();
+  }
+
+  void CreateViewCounterService() {
+    BraveNTPCustomBackgroundService* custom_background_service = nullptr;
+#if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
+    custom_background_service = custom_background_service_.get();
+#endif
     view_counter_service_ = std::make_unique<ViewCounterService>(
         host_content_settings_map_.get(), background_images_service_.get(),
         custom_background_service, &ads_service_mock_, &prefs_, &local_state_,
         /*is_supported_locale=*/true);
   }
-
-  void TearDown() override { host_content_settings_map_->ShutdownOnUIThread(); }
 
   void SetSponsoredImagesVisibility(bool should_show) {
     prefs_.SetBoolean(prefs::kNewTabPageShowSponsoredImagesBackgroundImage,
@@ -367,7 +380,7 @@ class ViewCounterServiceTest : public testing::Test {
 
   scoped_refptr<HostContentSettingsMap> host_content_settings_map_;
 
-  std::unique_ptr<NTPBackgroundImagesService> background_images_service_;
+  std::unique_ptr<FakeNTPBackgroundImagesService> background_images_service_;
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
   std::unique_ptr<BraveNTPCustomBackgroundService> custom_background_service_;
@@ -633,6 +646,28 @@ TEST_F(ViewCounterServiceTest, NewTabsCreatedDailyHistogram) {
   histogram_tester_.ExpectBucketCount(kNewTabsCreatedDailyHistogramName, 7, 1);
 
   histogram_tester_.ExpectTotalCount(kNewTabsCreatedDailyHistogramName, 25);
+}
+
+TEST_F(ViewCounterServiceTest,
+       RegistersSponsoredImagesComponentWhenAdsServiceIsAlreadyInitialized) {
+  EXPECT_EQ(0U, background_images_service_
+                    ->register_sponsored_images_component_call_count());
+
+  EXPECT_CALL(ads_service_mock_, IsInitialized).WillOnce(testing::Return(true));
+  CreateViewCounterService();
+
+  EXPECT_EQ(1U, background_images_service_
+                    ->register_sponsored_images_component_call_count());
+}
+
+TEST_F(ViewCounterServiceTest,
+       RegistersSponsoredImagesComponentWhenAdsServiceIsInitialized) {
+  EXPECT_EQ(0U, background_images_service_
+                    ->register_sponsored_images_component_call_count());
+
+  SimulateAdsServiceInitialized();
+  EXPECT_EQ(1U, background_images_service_
+                    ->register_sponsored_images_component_call_count());
 }
 
 }  // namespace ntp_background_images
