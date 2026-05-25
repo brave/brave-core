@@ -1361,6 +1361,10 @@ source_set("ui") {
       deps += [ "//brave/components/brave_vpn/common" ]
     }
 
+    if (enable_email_aliases) {
+      deps += [ "//brave/components/email_aliases:features" ]
+    }
+
     if (enable_tor) {
       deps += [ "//brave/components/tor:pref_names" ]
     }
