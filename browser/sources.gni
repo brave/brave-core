@@ -225,7 +225,6 @@ brave_chrome_browser_deps = [
   "//brave/components/extension_malware_blocklist/common",
   "//brave/components/global_privacy_control",
   "//brave/components/google_sign_in_permission",
-  "//brave/components/https_upgrade_exceptions/browser",
   "//brave/components/image_metadata_stripper/common",
   "//brave/components/ipfs",
   "//brave/components/ipfs/buildflags",

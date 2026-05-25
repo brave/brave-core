@@ -14,10 +14,6 @@
 #include "base/scoped_observation.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 
-namespace https_upgrade_exceptions {
-class HttpsUpgradeExceptionsService;
-}
-
 namespace debounce {
 class DebounceComponentInstaller;
 }
@@ -57,7 +53,6 @@ class COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER) LocalDataFilesObserver {
 
  private:
   friend class brave::URLSanitizerComponentInstaller;
-  friend class https_upgrade_exceptions::HttpsUpgradeExceptionsService;
   friend class debounce::DebounceComponentInstaller;
   friend class request_otr::RequestOTRComponentInstallerPolicy;
   friend class webcompat::WebcompatExceptionsService;
