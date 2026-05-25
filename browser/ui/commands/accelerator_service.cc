@@ -453,10 +453,12 @@ bool AcceleratorService::IsCommandDisabledByPolicy(int command_id) const {
     case IDC_SHOW_BRAVE_REWARDS:
     case IDC_OFFERS_AND_REWARDS_FOR_PAGE:
       return pref_service_->GetBoolean(brave_rewards::prefs::kDisabledByPolicy);
-#if BUILDFLAG(ENABLE_AI_CHAT)
     case IDC_TOGGLE_AI_CHAT:
     case IDC_OPEN_FULL_PAGE_CHAT:
+#if BUILDFLAG(ENABLE_AI_CHAT)
       return !pref_service_->GetBoolean(ai_chat::prefs::kEnabledByPolicy);
+#else
+      return true;  // AI Chat not compiled in, always disabled
 #endif
     case IDC_NEW_OFFTHERECORD_WINDOW_TOR:
     case IDC_NEW_TOR_CONNECTION_FOR_SITE:
