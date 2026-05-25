@@ -232,6 +232,15 @@ gfx::Rect BraveBrowserViewTabbedLayoutImpl::CalculateTopContainerLayoutImpl(
     BrowserLayoutParams params,
     bool needs_exclusion,
     bool suppress_top_separator) const {
+  // Upstream suppresses the top separator when the side panel is shown and
+  // GetTopSeparatorType() == kTopContainer. Brave always wants the separator
+  // visible in that case, so undo only that specific suppression.
+  // See suppress_top_separator var in
+  // BrowserViewTabbedLayoutImpl::CalculateProposedLayout().
+  if (GetTopSeparatorType() == TopSeparatorType::kTopContainer) {
+    suppress_top_separator = false;
+  }
+
   // Get base layout from parent
   gfx::Rect bounds =
       BrowserViewTabbedLayoutImpl::CalculateTopContainerLayoutImpl(
