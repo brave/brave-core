@@ -13,6 +13,7 @@
 
 namespace chrome {
 
+// On Android, the CANARY channel is branded as Nightly, not Canary.
 std::string GetChannelName(WithExtendedStable with_extended_stable) {
   if (GetChannel() == version_info::Channel::CANARY) {
     return "nightly";
