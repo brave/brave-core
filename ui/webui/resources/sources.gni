@@ -13,6 +13,7 @@ brave_resources_extra_grdps = [
   "$brave_resources_extra_grdps_path/brave_icons_resources.grdp",
   "$brave_resources_extra_grdps_path/brave_static_resources.grdp",
   "$root_gen_dir/brave/web-ui-external_js/external_js.grdp",
+  "$root_gen_dir/brave/web-ui-external_js_leo_react/external_js_leo_react.grdp",
   "$root_gen_dir/brave/web-ui-opaque_ke/opaque_ke.grdp",
 ]
 

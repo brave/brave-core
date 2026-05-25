@@ -27,6 +27,7 @@ include_polymer = !is_android && !is_ios
 group("grdp") {
   public_deps = [
     ":external_js_bundles",
+    ":external_js_leo_react_bundle",
     ":fonts_grdp",
     ":icons_grdp",
     ":static_grdp",
@@ -90,10 +91,14 @@ if (include_polymer) {
   ]
 }
 
+# leo and react are built together with no cross-references between them. The
+# entry-aware externals function in components/webpack/webpack.config.js skips
+# externalizing `@brave/leo/*` and `react`/`react-dom` for this compilation
+# (because `leo` and `react` appear in the entries), so each bundle keeps its
+# own contents.
 transpile_web_ui("external_js_bundles") {
   generate_grdp = true
   resource_path_prefix = "brave"
-  no_externals = true
 
   imports_from = [
     "//brave/ui/webui/resources/leo/",
@@ -106,16 +111,35 @@ transpile_web_ui("external_js_bundles") {
       rebase_path("leo/initialize_bundle.ts"),
     ],
     [
-      "leo-react",
-      rebase_path("leo/initialize_react_bundle.ts"),
-    ],
-    [
       "react",
       rebase_path("react/initialize_bundle.ts"),
     ],
   ]
 
   resource_name = "external_js"
+}
+
+# leo-react is built in a separate webpack invocation so its `@brave/leo/*`
+# (web-components, tokens, icons) and `react` / `react-dom` imports get
+# externalized to leo.bundle.js / react.bundle.js. The externals function does
+# NOT externalize `@brave/leo/react/*` here because `leo-react` is the entry
+# being built. The result is a leo-react.bundle.js that contains just the React
+# wrappers and emits real top-of-file ESM imports of the other two bundles, so
+# customElements.define / React initialization run exactly once at runtime.
+transpile_web_ui("external_js_leo_react_bundle") {
+  generate_grdp = true
+  resource_path_prefix = "brave"
+
+  imports_from = [ "//brave/ui/webui/resources/leo/" ]
+
+  entry_points = [
+    [
+      "leo-react",
+      rebase_path("leo/initialize_react_bundle.ts"),
+    ],
+  ]
+
+  resource_name = "external_js_leo_react"
 }
 
 # Create a grdp that //ui/webui/resources can include in its main resources GRD

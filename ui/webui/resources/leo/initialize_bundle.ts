@@ -1,30 +1,47 @@
 // Copyright (c) 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// You can obtain one at https://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
-// Import web components here. They will be available on the page
-// as <leo-{component}></leo-{component}>.
-import '@brave/leo/web-components/alert'
-import '@brave/leo/web-components/alertCenter'
-import '@brave/leo/web-components/button'
-import '@brave/leo/web-components/buttonMenu'
-import '@brave/leo/web-components/checkbox'
-import '@brave/leo/web-components/dialog'
-import '@brave/leo/web-components/dropdown'
-import '@brave/leo/web-components/icon'
-import '@brave/leo/web-components/input'
-import '@brave/leo/web-components/label'
-import '@brave/leo/web-components/navdots'
-import '@brave/leo/web-components/navigation'
-import '@brave/leo/web-components/navigationItem'
-import '@brave/leo/web-components/progressRing'
-import '@brave/leo/web-components/radioButton'
-import '@brave/leo/web-components/tabItem'
-import '@brave/leo/web-components/tabs'
-import '@brave/leo/web-components/textarea'
-import '@brave/leo/web-components/toggle'
-import '@brave/leo/web-components/tooltip'
+// Each `@brave/leo/web-components/<name>` module is re-exported under its
+// PascalCase name. The externals function in components/webpack/webpack.config.js
+// rewrites imports of `@brave/leo/web-components/<name>` to a real ESM import
+// of `(leo.bundle.js).<Name>`, so the module body (and its
+// `customElements.define(...)` side effect) runs exactly once — here.
+export { default as Alert } from '@brave/leo/web-components/alert'
+export { default as AlertCenter } from '@brave/leo/web-components/alertCenter'
+export { default as Button } from '@brave/leo/web-components/button'
+export { default as ButtonMenu } from '@brave/leo/web-components/buttonMenu'
+export { default as Checkbox } from '@brave/leo/web-components/checkbox'
+export { default as Collapse } from '@brave/leo/web-components/collapse'
+export { default as Dialog } from '@brave/leo/web-components/dialog'
+export { default as DialogsContainer } from '@brave/leo/web-components/dialogsContainer'
+export { default as Dropdown } from '@brave/leo/web-components/dropdown'
+export { default as Floating } from '@brave/leo/web-components/floating'
+export { default as FormItem } from '@brave/leo/web-components/formItem'
+export { default as Hr } from '@brave/leo/web-components/hr'
+export { default as Icon } from '@brave/leo/web-components/icon'
+export { default as Input } from '@brave/leo/web-components/input'
+export { default as Label } from '@brave/leo/web-components/label'
+export { default as Link } from '@brave/leo/web-components/link'
+export { default as Menu } from '@brave/leo/web-components/menu'
+export { default as Navdots } from '@brave/leo/web-components/navdots'
+export { default as Navigation } from '@brave/leo/web-components/navigation'
+export { default as NavigationActions } from '@brave/leo/web-components/navigationActions'
+export { default as NavigationHeader } from '@brave/leo/web-components/navigationHeader'
+export { default as NavigationItem } from '@brave/leo/web-components/navigationItem'
+export { default as NavigationMenu } from '@brave/leo/web-components/navigationMenu'
+export { default as ProgressBar } from '@brave/leo/web-components/progressBar'
+export { default as ProgressRing } from '@brave/leo/web-components/progressRing'
+export { default as RadioButton } from '@brave/leo/web-components/radioButton'
+export { default as SegmentedControl } from '@brave/leo/web-components/segmentedControl'
+export { default as SegmentedControlItem } from '@brave/leo/web-components/segmentedControlItem'
+export { default as TabItem } from '@brave/leo/web-components/tabItem'
+export { default as Tabs } from '@brave/leo/web-components/tabs'
+export { default as Textarea } from '@brave/leo/web-components/textarea'
+export { default as Toggle } from '@brave/leo/web-components/toggle'
+export { default as Tooltip } from '@brave/leo/web-components/tooltip'
+
 import { setIconBasePath } from '@brave/leo/web-components/icon'
 import iconsMeta from '@brave/leo/icons/meta'
 

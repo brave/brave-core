@@ -47,14 +47,6 @@ module.exports = async function (env, argv) {
     entry[entryInputItemParts[0]] = entryInputItemParts[1]
   }
 
-  // When the `react` entry is built alongside `leo-react` in the same compilation,
-  // make leo-react share the React module with react.bundle.js instead of letting
-  // splitChunks extract React into its own vendor chunk.
-  // TODO: Tidy this up - ideally we wouldn't need it.
-  if ('react' in entry && 'leo-react' in entry) {
-    entry['leo-react'] = { import: entry['leo-react'], dependOn: 'react' }
-  }
-
   // Webpack config object
   const resolve = {
     extensions: ['.js', '.tsx', '.ts', '.json'],
@@ -104,21 +96,59 @@ module.exports = async function (env, argv) {
     output.wasmLoading = 'xhr'
   }
 
+  // Each branch is skipped when the destination bundle is itself an entry in
+  // this compilation — otherwise the bundle would externalize its own contents
+  // to itself. This lets the same externals config serve both downstream webui
+  // builds (where leo / leo-react / react are all external) and the bundle
+  // builds themselves (where each entry is built natively, but cross-bundle
+  // imports are still externalized so e.g. leo-react's web-component imports
+  // resolve to a real ESM `import './leo.bundle.js'` rather than re-bundling
+  // and re-running customElements.define).
   const externals = env.output_module && !('no_externals' in env) ?
-    [{
-      // React and ReactDOM ship in a single bundle (see
-      // brave/ui/webui/resources/react/initialize_bundle.ts).
-      'react': ['module //resources/brave/react.bundle.js', 'React'],
-      'react-dom': ['module //resources/brave/react.bundle.js', 'ReactDOM'],
-    },
-    function ({ request }, callback) {
-      const componentMatch = request.match(/^@brave\/leo\/react\/(.*)/)
-      if (componentMatch) {
-        const name = componentMatch[1][0].toUpperCase() + componentMatch[1].slice(1)
-        return callback(null, ['//resources/brave/leo-react.bundle.js', name])
+    [function ({ context, request }, callback) {
+      // Relative imports from inside node_modules/@brave/leo/ (e.g. a React
+      // wrapper importing '../web-components/button.js') normalize back to
+      // their @brave/leo/<subdir>/<name> form so they get the same treatment
+      // as top-level imports.
+      let normalized = request
+      if (request.startsWith('.') && context) {
+        const idx = context.indexOf(`${path.sep}@brave${path.sep}leo${path.sep}`)
+        if (idx !== -1) {
+          const resolved = path.resolve(context, request)
+          const inPackage = resolved.indexOf(`${path.sep}node_modules${path.sep}`)
+          if (inPackage !== -1) {
+            normalized = resolved
+              .substring(inPackage + `${path.sep}node_modules${path.sep}`.length)
+              .replace(/\\/g, '/')
+              .replace(/\.js$/, '')
+          }
+        }
       }
 
-      if (/^@brave\/leo\//.test(request)) {
+      if (normalized === 'react' || normalized === 'react-dom') {
+        if ('react' in entry) return callback()
+        const name = normalized === 'react' ? 'React' : 'ReactDOM'
+        return callback(null, ['module //resources/brave/react.bundle.js', name])
+      }
+
+      const reactMatch = normalized.match(/^@brave\/leo\/react\/(.+)/)
+      if (reactMatch) {
+        if ('leo-react' in entry) return callback()
+        const name = reactMatch[1][0].toUpperCase() + reactMatch[1].slice(1)
+        return callback(null, ['module //resources/brave/leo-react.bundle.js', name])
+      }
+
+      const webComponentMatch = normalized.match(/^@brave\/leo\/web-components\/(.+)/)
+      if (webComponentMatch) {
+        if ('leo' in entry) return callback()
+        const name = webComponentMatch[1][0].toUpperCase() + webComponentMatch[1].slice(1)
+        return callback(null, ['module //resources/brave/leo.bundle.js', name])
+      }
+
+      // `@brave/leo/tokens/css/variables` is re-exported from leo.bundle.js as
+      // a flat namespace via `export *`, so consumers' named imports resolve
+      // directly off the bundle's module namespace.
+      if (normalized === '@brave/leo/tokens/css/variables' && !('leo' in entry)) {
         return callback(null, 'module //resources/brave/leo.bundle.js')
       }
 
