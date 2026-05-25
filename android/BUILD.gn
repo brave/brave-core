@@ -663,6 +663,7 @@ android_resources("java_resources") {
     "java/brave-res/layout/report_error_page_layout.xml",
     "java/brave-res/layout/search_preference.xml",
     "java/brave-res/layout/selected_network_item.xml",
+    "java/brave-res/layout/sign_warning_container.xml",
     "java/brave-res/layout/toolbar_space.xml",
     "java/brave-res/layout/tracker_item_layout.xml",
     "java/brave-res/layout/view_holder_account_selector.xml",

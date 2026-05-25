@@ -151,43 +151,12 @@
         app:layout_constraintVertical_bias="0"
         />
 
-    <LinearLayout
+    <include
         android:id="@+id/fragment_sign_tx_warning_container"
+        layout="@layout/sign_warning_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="32dp"
-        android:background="#32E32444"
-        android:orientation="vertical"
-        android:padding="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/approve_tx_bottom_sheet_action"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/view_tab_line"
-        app:layout_constraintVertical_bias="0"
-        android:visibility="visible">
-
-        <TextView
-            style="@style/BraveWalletTextView"
-            android:text="@string/brave_wallet_sign_warning_title"
-            android:textColor="@color/brave_theme_error_txt"
-            android:textStyle="bold"
-            android:drawablePadding="6dp"
-            app:drawableStartCompat="@drawable/ic_warning" />
-
-        <TextView
-            android:layout_marginTop="8dp"
-            style="@style/BraveWalletTextView"
-            android:layout_width="match_parent"
-            android:text="@string/brave_wallet_sign_warning"
-            android:textColor="@color/brave_theme_error_txt" />
-        <TextView
-            android:id="@+id/fragment_sign_tx_warning_learn_more"
-            style="@style/BraveWalletTextView"
-            android:textStyle="bold"
-            android:text="@string/learn_more"
-            android:textColor="@color/brave_link"
-            app:layout_constraintTop_toBottomOf="@id/fragment_sign_tx_warning_container" />
-    </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@id/view_tab_line" />
 
     <LinearLayout
         android:id="@+id/approve_tx_bottom_sheet_action"

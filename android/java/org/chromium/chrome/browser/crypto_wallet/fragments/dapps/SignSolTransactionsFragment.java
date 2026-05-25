@@ -116,7 +116,7 @@ public class SignSolTransactionsFragment extends WalletBottomSheetDialogFragment
         mTvTxCounter = view.findViewById(R.id.fragment_sign_tx_msg_tv_counter);
         mBtnCounterNext = view.findViewById(R.id.fragment_encryption_msg_btn_next);
         mWarningLl = view.findViewById(R.id.fragment_sign_tx_warning_container);
-        mTxLearnMore = view.findViewById(R.id.fragment_sign_tx_warning_learn_more);
+        mTxLearnMore = view.findViewById(R.id.sign_warning_learn_more);
         mBtCancel = view.findViewById(R.id.fragment_sign_tx_msg_btn_cancel);
         mBtSign = view.findViewById(R.id.fragment_sign_tx_msg_btn_sign);
         mWebSite = view.findViewById(R.id.domain);

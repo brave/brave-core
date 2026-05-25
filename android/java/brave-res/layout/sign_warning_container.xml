@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2026 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="12dp"
+    android:layout_marginBottom="32dp"
+    android:background="#32E32444"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:visibility="gone"
+    app:layout_constraintBottom_toTopOf="@+id/approve_tx_bottom_sheet_action"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintVertical_bias="0">
+
+    <TextView
+        style="@style/BraveWalletTextView"
+        android:drawablePadding="6dp"
+        android:text="@string/brave_wallet_sign_warning_title"
+        android:textColor="@color/brave_theme_error_txt"
+        android:textStyle="bold"
+        app:drawableStartCompat="@drawable/ic_warning" />
+
+    <TextView
+        style="@style/BraveWalletTextView"
+        android:layout_width="match_parent"
+        android:layout_marginTop="8dp"
+        android:text="@string/brave_wallet_sign_warning"
+        android:textColor="@color/brave_theme_error_txt" />
+
+    <TextView
+        android:id="@+id/sign_warning_learn_more"
+        style="@style/BraveWalletTextView"
+        android:layout_marginTop="8dp"
+        android:text="@string/learn_more"
+        android:textColor="@color/brave_link"
+        android:textStyle="bold" />
+</LinearLayout>
