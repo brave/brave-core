@@ -11,16 +11,27 @@ You can run it with `python3 install_sh_mac_test.py`.
 from os import chmod, makedirs, mkdir, stat
 from os.path import dirname, exists, join, realpath
 from stat import S_IXUSR
-from subprocess import run
+from subprocess import run, DEVNULL, Popen, PIPE, STDOUT
 from tempfile import TemporaryDirectory
 
 import plistlib
 import re
+import shlex
 import sys
 import unittest
 
 SRC_ROOT = dirname(dirname(dirname(realpath(__file__))))
 INSTALL_SH = join(SRC_ROOT, "chrome", "updater", "mac", ".install.sh")
+
+RSYNC_PROMPT = "rsync exit code: "
+RSYNC_WRAPPER = f"""
+#!/bin/bash
+
+printf -v args '%q ' "$@"
+echo "{RSYNC_PROMPT}${{args}}"
+read -r code
+exit "$code"
+"""
 
 PRODUCT_NAME = "Brave Browser"
 CURRENT_VERSION = "1.0.0.0"
@@ -33,7 +44,7 @@ class InstallShPatchTest(unittest.TestCase):
     def setUp(self):
         self.temp_dir = TemporaryDirectory()
         self.dmg_dir = self._prepare_dmg_dir()
-        self.install_sh, self.rsync_log = self._prepare_install_sh()
+        self.install_sh = self._prepare_install_sh()
 
     def tearDown(self):
         self.temp_dir.cleanup()
@@ -48,8 +59,11 @@ class InstallShPatchTest(unittest.TestCase):
         # See Chromium CL 5866112.
         app_dir = join(self.temp_dir.name, f"{PRODUCT_NAME}.app")
         self._make_app(app_dir, CURRENT_VERSION)
-        self._run_install_sh(app_dir)
-        rsync_args = self._get_rsync_args()
+        rsync_args = []
+        def rsync(args):
+            rsync_args.extend(args)
+            return system_rsync(args)
+        self._run_install_sh(app_dir, rsync=rsync)
         for arg in ('--ignore-times', '--links', '--no-perms',
                     '--executability', '--chmod=u=rwX,go=rX'):
             self.assertIn(arg, rsync_args)
@@ -59,8 +73,11 @@ class InstallShPatchTest(unittest.TestCase):
     def test_root_has_perms_and_link_and_dir_times(self):
         app_dir = join(self.temp_dir.name, f"{PRODUCT_NAME}.app")
         self._make_app(app_dir, CURRENT_VERSION)
-        self._run_install_sh(app_dir, is_root=True)
-        rsync_args = self._get_rsync_args()
+        rsync_args = []
+        def rsync(args):
+            rsync_args.extend(args)
+            return system_rsync(args)
+        self._run_install_sh(app_dir, is_root=True, rsync=rsync)
         for arg in ('--ignore-times', '--links', '--perms', '--times'):
             self.assertIn(arg, rsync_args)
         for arg in ('--no-perms', '--executability', '--chmod=u=rwX,go=rX'):
@@ -84,11 +101,8 @@ class InstallShPatchTest(unittest.TestCase):
         bin_dir = join(self.temp_dir.name, "bin")
         mkdir(bin_dir)
         rsync_wrapper = join(bin_dir, "rsync")
-        rsync_log_path = join(self.temp_dir.name, "rsync_args.log")
         with open(rsync_wrapper, "w") as f:
-            f.write("#!/bin/bash\n"
-                    f'printf "%s\\n" "$@" >> "{rsync_log_path}"\n'
-                    'exec /usr/bin/rsync "$@"\n')
+            f.write(RSYNC_WRAPPER.lstrip())
         chmod(rsync_wrapper, stat(rsync_wrapper).st_mode | S_IXUSR)
         # Add bin/ to PATH so tests can override commands like rsync.
         patched, count = re.subn(r'^export PATH="',
@@ -101,7 +115,7 @@ class InstallShPatchTest(unittest.TestCase):
         with open(install_sh_path, "w") as f:
             f.write(patched)
         chmod(install_sh_path, stat(install_sh_path).st_mode | S_IXUSR)
-        return install_sh_path, rsync_log_path
+        return install_sh_path
 
     def _make_app(self, bundle_path, version):
         """Create the minimum .app bundle that .install.sh's checks accept."""
@@ -134,29 +148,46 @@ class InstallShPatchTest(unittest.TestCase):
         )
         self.assertTrue(exists(versioned_dir), msg=versioned_dir)
 
-    def _run_install_sh(self, installed_app_dir, is_root=False):
+    def _run_install_sh(self, installed_app_dir, is_root=False, rsync=None):
+        if rsync is None:
+            rsync = system_rsync
         env = {}
         if is_root:
             env["EUID"] = "0"
-        cp = run(
+        proc = Popen(
             [
                 self.install_sh, self.dmg_dir, installed_app_dir,
                 CURRENT_VERSION
             ],
-            capture_output=True,
-            text=True,
-            timeout=60,
-            env=env,
-            check=False,
+            stdin=PIPE, stdout=PIPE, stderr=STDOUT, text=True, bufsize=1,
+            env=env
         )
+        output_lines = []
+        try:
+            for line in proc.stdout:
+                output_lines.append(line)
+                if line.startswith(RSYNC_PROMPT):
+                    args = shlex.split(line[len(RSYNC_PROMPT):])
+                    exit_code = rsync(args) or 0
+                    proc.stdin.write(f"{exit_code}\n")
+                    proc.stdin.flush()
+            proc.wait(timeout=30)
+        finally:
+            # Reap the subprocess if wait() timed out or the loop raised.
+            if proc.poll() is None:
+                proc.kill()
+                proc.wait()
+        output = "".join(output_lines)
         self.assertEqual(
-            0, cp.returncode,
+            0, proc.returncode,
             f"Command {self.install_sh} failed with return code "
-            f"{cp.returncode}.\n\nStdout:\n{cp.stdout}\nStderr:\n{cp.stderr}")
+            f"{proc.returncode}.\n\nOutput:\n{output}")
 
-    def _get_rsync_args(self):
-        with open(self.rsync_log, "r") as f:
-            return re.split(r"\s+", f.read())
+
+def system_rsync(args):
+    return run(
+        ["/usr/bin/rsync"] + args, stdout=DEVNULL, stderr=DEVNULL
+    ).returncode
 
 
 if __name__ == "__main__":
