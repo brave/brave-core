@@ -4737,14 +4737,31 @@ extension Strings {
       comment:
         "Title displayed when users chose Brave to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one."
     )
+    public static let udDomainInterstitialPageIntro = NSLocalizedString(
+      "wallet.udDomainInterstitialPageIntro",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Brave will be the configured Ethereum RPC service which defaults to Chainstack to resolve:",
+      comment:
+        "The intro displayed below `udDomainInterstitialPageTitle`."
+    )
     public static let udDomainInterstitialPageDescription = NSLocalizedString(
       "wallet.udDomainInterstitialPageDescription",
       tableName: "BraveWallet",
       bundle: .module,
       value:
-        "Brave will be the configured Ethereum RPC service which defaults to Chainstack to resolve .crypto (and also %@) domain names that are on Unstoppable Domains. Brave hides your IP address. If you enable this, Chainstack will see that someone is trying to visit these domains but nothing else. See Chainstack's <a href=%@>%@</a> and <a href=%@>%@</a>.",
+        "domain names that are on Unstoppable Domains. Brave hides your IP address. If you enable this, Chainstack will see that someone is trying to visit these domains but nothing else. See Chainstack's <a href=%@>%@</a> and <a href=%@>%@</a>.",
       comment:
         "Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Chainstack's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Chainstack's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'."
+    )
+    public static let udDomainInterstitialPageMore = NSLocalizedString(
+      "wallet.udDomainInterstitialPageMore",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:
+        "+ more",
+      comment:
+        "The title of the button that user can tap to reveal more unstoppable domain extensions we support to resolve."
     )
     public static let activityPageTitle = NSLocalizedString(
       "wallet.activityPageTitle",
