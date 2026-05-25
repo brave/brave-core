@@ -487,7 +487,7 @@ void BraveToolbarView::UpdateHorizontalPadding() {
     auto [leading, trailing] =
         tabs::utils::GetLeadingTrailingCaptionButtonWidth(
             browser_view_->browser_widget());
-  SetBorder(views::CreateEmptyBorder(
+    SetBorder(views::CreateEmptyBorder(
         gfx::Insets().set_left(leading).set_right(trailing)));
   }
 }
