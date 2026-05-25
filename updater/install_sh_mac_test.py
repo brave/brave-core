@@ -77,9 +77,11 @@ class InstallShPatchTest(unittest.TestCase):
         app_dir = join(self.temp_dir.name, f"{PRODUCT_NAME}.app")
         self._make_app(app_dir, CURRENT_VERSION)
         rsync_args = []
+
         def rsync(args):
             rsync_args.extend(args)
             return system_rsync(args)
+
         self._run_install_sh(app_dir, commands={'rsync': rsync})
         for arg in ('--ignore-times', '--links', '--no-perms',
                     '--executability', '--chmod=u=rwX,go=rX'):
@@ -91,9 +93,11 @@ class InstallShPatchTest(unittest.TestCase):
         app_dir = join(self.temp_dir.name, f"{PRODUCT_NAME}.app")
         self._make_app(app_dir, CURRENT_VERSION)
         rsync_args = []
+
         def rsync(args):
             rsync_args.extend(args)
             return system_rsync(args)
+
         self._run_install_sh(app_dir, is_root=True, commands={'rsync': rsync})
         for arg in ('--ignore-times', '--links', '--perms', '--times'):
             self.assertIn(arg, rsync_args)
@@ -105,14 +109,16 @@ class InstallShPatchTest(unittest.TestCase):
         app_dir = join(self.temp_dir.name, f"{PRODUCT_NAME}.app")
         self._make_app(app_dir, CURRENT_VERSION)
         calls = []
+
         def rsync(args):
             calls.append(args)
             if len(calls) == 1:
                 return 1, ""
             return system_rsync(args)
-        self._run_install_sh(
-            app_dir, commands={'rsync': rsync}, expected_exit_code=76
-        )
+
+        self._run_install_sh(app_dir,
+                             commands={'rsync': rsync},
+                             expected_exit_code=76)
         self.assertEqual(2, len(calls))
 
     def test_versioned_rsync_into_parent_succeeds(self):
@@ -120,14 +126,16 @@ class InstallShPatchTest(unittest.TestCase):
         app_dir = join(self.temp_dir.name, f"{PRODUCT_NAME}.app")
         self._make_app(app_dir, CURRENT_VERSION)
         calls = []
+
         def rsync(args):
             calls.append(args)
             if len(calls) <= 2:
                 return 1, ""
             return system_rsync(args)
-        self._run_install_sh(
-            app_dir, commands={'rsync': rsync}, expected_exit_code=77
-        )
+
+        self._run_install_sh(app_dir,
+                             commands={'rsync': rsync},
+                             expected_exit_code=77)
         self.assertEqual(3, len(calls))
         # The third invocation rsyncs into installed_versions_dir, with no
         # trailing slash on the source path.
@@ -136,10 +144,9 @@ class InstallShPatchTest(unittest.TestCase):
     def test_versioned_rsync_all_attempts_fail(self):
         app_dir = join(self.temp_dir.name, f"{PRODUCT_NAME}.app")
         self._make_app(app_dir, CURRENT_VERSION)
-        self._run_install_sh(
-            app_dir, commands={'rsync': lambda args: (1, '')},
-            expected_exit_code=78
-        )
+        self._run_install_sh(app_dir,
+                             commands={'rsync': lambda args: (1, '')},
+                             expected_exit_code=78)
 
     def test_mkdir_failure_classified_by_stderr(self):
         """
@@ -160,18 +167,21 @@ class InstallShPatchTest(unittest.TestCase):
             with self.subTest(stderr=stderr_msg):
                 app_dir = join(self.temp_dir.name, f"App-{i}.app")
                 self._make_app(app_dir, CURRENT_VERSION)
-                def mkdir(args, msg=stderr_msg):
+
+                def mock_mkdir(args, msg=stderr_msg):
                     # The earlier `mkdir -p installed_versions_dir` runs
                     # against a path that already exists; only the recovery
                     # mkdir targets a path containing UPDATE_VERSION.
                     if UPDATE_VERSION in args[-1]:
                         return 1, f"mkdir: {args[-1]}: {msg}"
                     return 0, ""
-                self._run_install_sh(
-                    app_dir,
-                    commands={'rsync': lambda args: (1, ""), 'mkdir': mkdir},
-                    expected_exit_code=expected_exit_code
-                )
+
+                self._run_install_sh(app_dir,
+                                     commands={
+                                         'rsync': lambda args: (1, ""),
+                                         'mkdir': mock_mkdir
+                                     },
+                                     expected_exit_code=expected_exit_code)
 
     def _prepare_dmg_dir(self):
         dmg_dir = join(self.temp_dir.name, "dmg")
@@ -234,10 +244,11 @@ class InstallShPatchTest(unittest.TestCase):
         )
         self.assertTrue(exists(versioned_dir), msg=versioned_dir)
 
-    def _run_install_sh(
-        self, installed_app_dir, is_root=False, commands=None,
-        expected_exit_code=0
-    ):
+    def _run_install_sh(self,
+                        installed_app_dir,
+                        is_root=False,
+                        commands=None,
+                        expected_exit_code=0):
         commands = commands or {}
         for name in commands:
             wrapper_path = join(self.bin_dir, name)
@@ -248,23 +259,27 @@ class InstallShPatchTest(unittest.TestCase):
         env = {"PROMPT_FD": str(prompt_w)}
         if is_root:
             env["EUID"] = "0"
-        proc = Popen(
-            [
-                self.install_sh, self.dmg_dir, installed_app_dir,
-                CURRENT_VERSION
-            ],
-            stdin=PIPE, stdout=PIPE, stderr=STDOUT, text=True, bufsize=1,
-            env=env, pass_fds=(prompt_w,)
-        )
+        proc = Popen([
+            self.install_sh, self.dmg_dir, installed_app_dir, CURRENT_VERSION
+        ],
+                     stdin=PIPE,
+                     stdout=PIPE,
+                     stderr=STDOUT,
+                     text=True,
+                     bufsize=1,
+                     env=env,
+                     pass_fds=(prompt_w, ))
         # The subprocess inherited its own copy of prompt_w via pass_fds. A
         # pipe only reaches EOF once *every* writer has closed its end, so we
         # must drop our copy here; otherwise the read loop below would block
         # forever even after the subprocess and its children exited.
         close(prompt_w)
         output_lines = []
+
         def drain():
             for line in proc.stdout:
                 output_lines.append(line)
+
         drain_thread = Thread(target=drain)
         drain_thread.start()
         try:
@@ -285,14 +300,15 @@ class InstallShPatchTest(unittest.TestCase):
         self.assertEqual(
             expected_exit_code, proc.returncode,
             f"Command {self.install_sh} exited with code {proc.returncode} "
-            f"instead of {expected_exit_code}.\n\nOutput:\n{output}"
-        )
+            f"instead of {expected_exit_code}.\n\nOutput:\n{output}")
 
 
 def system_rsync(args):
-    cp = run(
-        ["/usr/bin/rsync"] + args, stdout=DEVNULL, stderr=PIPE, text=True
-    )
+    cp = run(["/usr/bin/rsync"] + args,
+             stdout=DEVNULL,
+             stderr=PIPE,
+             text=True,
+             check=False)
     return cp.returncode, cp.stderr
 
 
