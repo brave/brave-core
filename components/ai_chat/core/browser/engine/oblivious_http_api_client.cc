@@ -320,9 +320,12 @@ void ObliviousHttpAPIClient::OnInnerResponse(
     credential_manager_->PutCredentialInCache(std::move(*credential));
   }
 
+  bool is_outer_response_code_bad =
+      outer_response_code < 200 || outer_response_code >= 300;
+
   // A non-2xx outer response means the relay rejected the request; the cached
   // key config may be stale so clear it to force a fresh fetch next time.
-  if (outer_response_code < 200 || outer_response_code >= 300) {
+  if (is_outer_response_code_bad) {
     config_manager_->ClearKeyConfig(request.model_name);
   }
 
@@ -333,7 +336,8 @@ void ObliviousHttpAPIClient::OnInnerResponse(
                      base::JSON_PARSE_RFC, static_cast<size_t>(200)),
       base::BindOnce(&OAIAPIClient::HandleCompletion,
                      std::move(request.completed_callback), success,
-                     inner_response_code,
+                     is_outer_response_code_bad ? outer_response_code
+                                                : inner_response_code,
                      /*model_key=*/GetModelKey(request.model_name),
                      /*is_near_verified=*/true));
 }
