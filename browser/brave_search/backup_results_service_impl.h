@@ -25,6 +25,10 @@
 class PrefService;
 class Profile;
 
+namespace gfx {
+class Size;
+}  // namespace gfx
+
 namespace content {
 class WebContents;
 }  // namespace content
@@ -39,6 +43,9 @@ namespace brave_search {
 class BackupResultsServiceImpl : public BackupResultsService,
                                  public ProfileObserver {
  public:
+  static void RecordLastViewSize(PrefService* local_state,
+                                 const gfx::Size& size);
+
   explicit BackupResultsServiceImpl(Profile* profile);
 
   ~BackupResultsServiceImpl() override;
@@ -106,6 +113,9 @@ class BackupResultsServiceImpl : public BackupResultsService,
   void MaybeApplyUserAgentOverride(
       content::WebContents& web_contents,
       content::NavigationController::LoadURLParams& load_url_params);
+
+  void SeedNavigationHistory(content::WebContents& web_contents,
+                             const GURL& target_url);
 
   net::HttpRequestHeaders GetExtraHeaders(
       const std::optional<net::HttpRequestHeaders>& request_headers);
