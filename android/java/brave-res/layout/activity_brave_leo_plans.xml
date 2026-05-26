@@ -25,11 +25,12 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
             android:contentDescription="@null"
             android:layout_gravity="end"
-            app:srcCompat="@drawable/ic_product_brave_leo"/>
+            app:srcCompat="@drawable/ic_product_brave_leo"
+            app:tint="@color/primitive_blurple_15"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -77,13 +78,15 @@
 
                             <ImageView
                                     android:id="@+id/iv_explore"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
+                                    android:layout_width="56dp"
+                                    android:layout_height="56dp"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"
-                                    android:padding="8dp"
-                                    app:srcCompat="@drawable/ic_widget_generic_with_container"
+                                    android:padding="16dp"
+                                    android:background="@drawable/leo_tip_icon_background"
+                                    app:srcCompat="@drawable/ic_widget_generic"
+                                    app:tint="@color/primitive_blurple_90"
                                     android:contentDescription="@null"/>
 
                             <TextView
@@ -126,13 +129,15 @@
 
                             <ImageView
                                     android:id="@+id/iv_unlock"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
+                                    android:layout_width="56dp"
+                                    android:layout_height="56dp"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"
-                                    android:padding="8dp"
+                                    android:padding="16dp"
+                                    android:background="@drawable/leo_tip_icon_background"
                                     app:srcCompat="@drawable/ic_idea"
+                                    app:tint="@color/primitive_blurple_90"
                                     android:contentDescription="@null"/>
 
                             <TextView
@@ -175,13 +180,15 @@
 
                             <ImageView
                                     android:id="@+id/iv_stay"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
+                                    android:layout_width="56dp"
+                                    android:layout_height="56dp"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"
-                                    android:padding="8dp"
+                                    android:padding="16dp"
+                                    android:background="@drawable/leo_tip_icon_background"
                                     app:srcCompat="@drawable/ic_edit_pencil"
+                                    app:tint="@color/primitive_blurple_90"
                                     android:contentDescription="@null"/>
 
                             <TextView
@@ -224,13 +231,15 @@
 
                             <ImageView
                                     android:id="@+id/iv_chat"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
+                                    android:layout_width="56dp"
+                                    android:layout_height="56dp"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"
-                                    android:padding="8dp"
+                                    android:padding="16dp"
+                                    android:background="@drawable/leo_tip_icon_background"
                                     app:srcCompat="@drawable/ic_message_bubble_comments"
+                                    app:tint="@color/primitive_blurple_90"
                                     android:contentDescription="@null"/>
 
                             <TextView
