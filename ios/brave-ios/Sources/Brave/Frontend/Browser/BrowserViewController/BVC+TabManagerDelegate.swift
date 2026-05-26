@@ -62,6 +62,11 @@ extension BrowserViewController: TabManagerDelegate {
       guard let self, !isPrivate else { return [] }
       return tabManager.allTabs.filter { !$0.isPrivate }
     }
+    tab.aiChatWebUIHelper?.webDelegateForTab = { detachedTab in
+      /// If AIChat created a hidden tab for history or bookmarks, we need to
+      /// use it's `AIChatWebDelegate` to fetch content from.
+      detachedTab.leoTabHelper
+    }
     tab.walletWebUIHelper = .init(
       tab: tab,
       showApprovePanelUIHandler: { [weak self] tab in
