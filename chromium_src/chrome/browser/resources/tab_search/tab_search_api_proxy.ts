@@ -15,6 +15,7 @@ export interface BraveTabSearchApiProxy extends TabSearchApiProxy {
   openLearnMorePage: () => void
   setTabFocusEnabled: () => void
   getTabFocusShowFRE: () => Promise<{ showFRE: boolean }>
+  searchTabsByContent: (query: string) => Promise<{ tabIds: number[] }>
 }
 
 export class BraveTabSearchApiProxyImpl extends TabSearchApiProxyImpl implements BraveTabSearchApiProxy {
@@ -44,6 +45,10 @@ export class BraveTabSearchApiProxyImpl extends TabSearchApiProxyImpl implements
 
   getTabFocusShowFRE() {
     return this.handler.getTabFocusShowFRE()
+  }
+
+  searchTabsByContent(query: string) {
+    return this.handler.searchTabsByContent(query)
   }
 }
 
