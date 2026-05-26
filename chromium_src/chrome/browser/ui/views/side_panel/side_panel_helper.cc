@@ -6,6 +6,7 @@
 #include "chrome/browser/ui/views/side_panel/side_panel_helper.h"
 
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
@@ -16,6 +17,15 @@
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_side_panel_web_view.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "base/feature_list.h"
+#include "brave/browser/ui/views/side_panel/brave_news/brave_news_side_panel_web_view.h"
+#include "brave/components/brave_news/common/features.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/side_panel/side_panel_entry.h"
+#include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
 #endif
 
 #define PopulateGlobalEntries PopulateGlobalEntries_ChromiumImpl
@@ -49,6 +59,16 @@ void SidePanelHelper::PopulateGlobalEntries(
         base::BindRepeating(&AIChatSidePanelWebView::CreateView,
                             browser->profile(),
                             /*is_tab_associated=*/false),
+        base::NullCallback()));
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+  if (base::FeatureList::IsEnabled(brave_news::features::kBraveNewsSidebar)) {
+    global_registry->Register(std::make_unique<SidePanelEntry>(
+        SidePanelEntry::Key(SidePanelEntry::Id::kBraveNews),
+        base::BindRepeating(&BraveNewsSidePanelWebView::CreateView,
+                            browser->profile()),
         base::NullCallback()));
   }
 #endif

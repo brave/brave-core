@@ -21,6 +21,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
@@ -55,6 +56,10 @@
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/components/playlist/core/browser/utils.h"
 #include "brave/components/playlist/core/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/components/brave_news/common/features.h"
 #endif
 
 namespace sidebar {
@@ -502,6 +507,9 @@ std::optional<SidebarItem> SidebarService::GetDefaultPanelItem() const {
 #if BUILDFLAG(ENABLE_AI_CHAT)
       SidebarItem::BuiltInItemType::kChatUI,
 #endif
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+      SidebarItem::BuiltInItemType::kBraveNews,
+#endif
       SidebarItem::BuiltInItemType::kReadingList,
       SidebarItem::BuiltInItemType::kBookmarks,
 #if BUILDFLAG(ENABLE_PLAYLIST)
@@ -731,6 +739,19 @@ SidebarItem SidebarService::GetBuiltInItemForType(
       return SidebarItem();
     }
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+    case SidebarItem::BuiltInItemType::kBraveNews: {
+      if (base::FeatureList::IsEnabled(brave_news::features::kBraveNewsSidebar)) {
+        return SidebarItem::Create(
+            GURL(kBraveNewsURL),
+            l10n_util::GetStringUTF16(IDS_BRAVE_NEWS_TITLE),
+            SidebarItem::Type::kTypeBuiltIn,
+            SidebarItem::BuiltInItemType::kBraveNews,
+            /* open_in_panel = */ true);
+      }
+      return SidebarItem();
+    }
+#endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
     case SidebarItem::BuiltInItemType::kNone:
       break;
   }

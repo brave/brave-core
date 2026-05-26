@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
     <include name="IDR_BRAVE_NEWS_INTERNALS_HTML" file="../brave_news/browser/resources/internals.html" type="BINDATA" />
+    <if expr="not is_android">
+        <include name="IDR_BRAVE_NEWS_PANEL_HTML" file="../brave_news/browser/resources/news_panel.html" type="BINDATA" />
+    </if>
 </grit-part>

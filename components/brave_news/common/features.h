@@ -16,6 +16,8 @@ namespace brave_news::features {
 
 BASE_DECLARE_FEATURE(kBraveNewsCardPeekFeature);
 
+BASE_DECLARE_FEATURE(kBraveNewsSidebar);
+
 BASE_DECLARE_FEATURE(kBraveNewsFeedUpdate);
 // The minimum number of cards (following the hero) in a block.
 extern const base::FeatureParam<int> kBraveNewsMinBlockCards;

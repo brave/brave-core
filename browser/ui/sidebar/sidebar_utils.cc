@@ -15,6 +15,7 @@
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
@@ -171,6 +172,10 @@ SidePanelEntryId SidePanelIdFromSideBarItemType(BuiltInItemType type) {
     case BuiltInItemType::kChatUI:
       return SidePanelEntryId::kChatUI;
 #endif
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+    case BuiltInItemType::kBraveNews:
+      return SidePanelEntryId::kBraveNews;
+#endif
     case BuiltInItemType::kWallet:
       [[fallthrough]];
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
@@ -201,6 +206,10 @@ std::optional<BuiltInItemType> BuiltInItemTypeFromSidePanelId(
 #if BUILDFLAG(ENABLE_AI_CHAT)
     case SidePanelEntryId::kChatUI:
       return BuiltInItemType::kChatUI;
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+    case SidePanelEntryId::kBraveNews:
+      return BuiltInItemType::kBraveNews;
 #endif
     default:
       break;
@@ -252,6 +261,11 @@ void SetLastUsedSidePanel(PrefService* prefs,
 #if BUILDFLAG(ENABLE_AI_CHAT)
       case SidePanelEntryId::kChatUI:
         type = BuiltInItemType::kChatUI;
+        break;
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+      case SidePanelEntryId::kBraveNews:
+        type = BuiltInItemType::kBraveNews;
         break;
 #endif
       default:

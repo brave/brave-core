@@ -271,6 +271,13 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
           "Use the updated Brave News feed",                                   \
           kOsDesktop,                                                          \
           FEATURE_VALUE_TYPE(brave_news::features::kBraveNewsFeedUpdate),      \
+      },                                                                       \
+      {                                                                        \
+          "brave-news-sidebar",                                                \
+          "Brave News Sidebar",                                                \
+          "Show a Brave News entry in the sidebar that opens a side panel.",   \
+          kOsDesktop,                                                          \
+          FEATURE_VALUE_TYPE(brave_news::features::kBraveNewsSidebar),         \
       })
 #else
 #define BRAVE_NEWS_FEATURE_ENTRIES

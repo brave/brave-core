@@ -36,8 +36,10 @@ if (!is_android) {
         [ "//brave/browser/ui/webui/brave_education" ]
   }
   if (enable_brave_news) {
-    brave_ui_allow_circular_includes_from +=
-        [ "//brave/browser/ui/webui/brave_news_internals" ]
+    brave_ui_allow_circular_includes_from += [
+      "//brave/browser/ui/webui/brave_news",
+      "//brave/browser/ui/webui/brave_news_internals",
+    ]
   }
 }
 if (is_android) {
@@ -62,6 +64,11 @@ if (toolkit_views) {
   if (enable_ai_chat) {
     brave_ui_allow_circular_includes_from +=
         [ "//brave/browser/ui/views/side_panel/ai_chat" ]
+  }
+
+  if (enable_brave_news) {
+    brave_ui_allow_circular_includes_from +=
+        [ "//brave/browser/ui/views/side_panel/brave_news" ]
   }
 
   if (enable_containers) {

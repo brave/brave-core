@@ -6,7 +6,7 @@ index 8164f26295c0bef2eaabd6ff584c31cfb447c64d..7428b7a4289b24c228f9b6b492dd32f5
    /* Side Panel items */ \
    E(kActionSidePanelShowAboutThisSite) \
    E(kActionSidePanelShowAssistant) \
-+  E(kActionSidePanelShowPlaylist) E(kActionSidePanelShowChatUI) \
++  E(kActionSidePanelShowPlaylist) E(kActionSidePanelShowChatUI) E(kActionSidePanelShowBraveNews) \
    E(kActionSidePanelShowBookmarks, IDC_SHOW_BOOKMARK_SIDE_PANEL) \
    E(kActionSidePanelShowComments, IDC_SHOW_COMMENTS_SIDE_PANEL) \
    E(kActionSidePanelShowCustomizeChrome, IDC_SHOW_CUSTOMIZE_CHROME_SIDE_PANEL) \

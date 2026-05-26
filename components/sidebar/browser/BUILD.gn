@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/brave_news/common/buildflags/buildflags.gni")
 import("//brave/components/brave_talk/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
@@ -25,6 +26,7 @@ static_library("browser") {
 
   public_deps = [
     "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/brave_news/common/buildflags",
     "//brave/components/brave_talk/buildflags",
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/playlist/core/common/buildflags",
@@ -66,6 +68,10 @@ static_library("browser") {
 
   if (enable_brave_talk) {
     deps += [ "//brave/components/brave_talk" ]
+  }
+
+  if (enable_brave_news) {
+    deps += [ "//brave/components/brave_news/common" ]
   }
 }
 

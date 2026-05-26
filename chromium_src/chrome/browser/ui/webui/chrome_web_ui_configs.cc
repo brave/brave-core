@@ -5,9 +5,11 @@
 
 #include "chrome/browser/ui/webui/chrome_web_ui_configs.h"
 
+#include "base/feature_list.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_education/buildflags.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
@@ -19,6 +21,10 @@
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/components/brave_news/common/features.h"
 #endif
 
 #define RegisterChromeWebUIConfigs RegisterChromeWebUIConfigs_ChromiumImpl
@@ -35,6 +41,9 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/webui/brave_account/brave_account_ui_desktop.h"
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/browser/ui/webui/brave_news/brave_news_ui.h"
+#endif
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_top_ui.h"
 #endif
@@ -124,6 +133,11 @@ void RegisterChromeWebUIConfigs() {
 #if !BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   map.AddWebUIConfig(std::make_unique<brave_rewards::RewardsPageTopUIConfig>());
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+  if (base::FeatureList::IsEnabled(brave_news::features::kBraveNewsSidebar)) {
+    map.AddWebUIConfig(std::make_unique<BraveNewsUIConfig>());
+  }
 #endif
   map.AddWebUIConfig(std::make_unique<BravePrivateNewTabUIConfig>());
   map.AddWebUIConfig(std::make_unique<BraveSettingsUIConfig>());
