@@ -39,13 +39,6 @@ static int64_t JNI_BraveWalletServiceFactory_GetInterfaceToBraveWalletService(
       env, profile_android);
 }
 
-static int64_t JNI_BraveWalletServiceFactory_GetInterfaceToBraveWalletP3A(
-    JNIEnv* env,
-    const base::android::JavaRef<jobject>& profile_android) {
-  return BindWalletService<brave_wallet::mojom::BraveWalletP3A>(
-      env, profile_android);
-}
-
 static int64_t JNI_BraveWalletServiceFactory_GetInterfaceToJsonRpcService(
     JNIEnv* env,
     const base::android::JavaRef<jobject>& profile_android) {

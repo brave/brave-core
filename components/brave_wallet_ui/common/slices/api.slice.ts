@@ -21,7 +21,6 @@ import {
 import { createWalletApiBase } from './api-base.slice'
 import { transactionSimulationEndpoints } from './endpoints/tx-simulation.endpoints'
 import { braveRewardsApiEndpoints } from './endpoints/rewards.endpoints'
-import { p3aEndpoints } from './endpoints/p3a.endpoints'
 import { pricingEndpoints } from './endpoints/pricing.endpoints'
 import { nftsEndpoints } from './endpoints/nfts.endpoints'
 import { qrCodeEndpoints } from './endpoints/qr-code.endpoints'
@@ -117,8 +116,6 @@ export function createWalletApi() {
       .injectEndpoints({ endpoints: braveRewardsApiEndpoints })
       // tx simulation
       .injectEndpoints({ endpoints: transactionSimulationEndpoints })
-      // p3a endpoints
-      .injectEndpoints({ endpoints: p3aEndpoints })
       // price history endpoints
       .injectEndpoints({ endpoints: pricingEndpoints })
       // nfts endpoints

@@ -14,7 +14,6 @@
 @protocol BraveWalletProviderDelegate;
 @protocol BraveWalletSolanaProvider;
 @protocol BraveWalletCardanoProvider;
-@protocol BraveWalletBraveWalletP3A;
 
 typedef NS_ENUM(NSInteger, BraveWalletCoinType);
 
@@ -60,8 +59,6 @@ OBJC_EXPORT
 
 - (NSDictionary<BraveWalletProviderScriptKey, NSString*>*)
     providerScriptsForCoinType:(BraveWalletCoinType)coinType;
-
-- (nullable id<BraveWalletBraveWalletP3A>)walletP3A;
 
 - (instancetype)init NS_UNAVAILABLE;
 

@@ -134,7 +134,6 @@ public class NFTStore: ObservableObject, WalletObserverStore {
   private let assetRatioService: BraveWalletAssetRatioService
   private let blockchainRegistry: BraveWalletBlockchainRegistry
   private let ipfsApi: IpfsAPI
-  private let walletP3A: BraveWalletBraveWalletP3A
   private let assetManager: WalletUserAssetManagerType
   private let txService: BraveWalletTxService
   private var rpcServiceObserver: JsonRpcServiceObserver?
@@ -176,7 +175,6 @@ public class NFTStore: ObservableObject, WalletObserverStore {
     assetRatioService: BraveWalletAssetRatioService,
     blockchainRegistry: BraveWalletBlockchainRegistry,
     ipfsApi: IpfsAPI,
-    walletP3A: BraveWalletBraveWalletP3A,
     userAssetManager: WalletUserAssetManagerType,
     txService: BraveWalletTxService
   ) {
@@ -186,7 +184,6 @@ public class NFTStore: ObservableObject, WalletObserverStore {
     self.assetRatioService = assetRatioService
     self.blockchainRegistry = blockchainRegistry
     self.ipfsApi = ipfsApi
-    self.walletP3A = walletP3A
     self.assetManager = userAssetManager
     self.txService = txService
 

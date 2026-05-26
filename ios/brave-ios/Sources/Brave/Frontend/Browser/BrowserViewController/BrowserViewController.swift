@@ -2511,7 +2511,6 @@ extension BrowserViewController: TabMiscDelegate {
       let cryptoStore = self.walletStore?.cryptoStore
         ?? CryptoStore.from(
           ipfsApi: profileController.ipfsAPI,
-          walletP3A: profileController.braveWalletAPI.walletP3A(),
           privateMode: privateMode
         )
     else {
@@ -2946,7 +2945,6 @@ extension BrowserViewController: PreferencesObserver {
       let privateMode = privateBrowsingManager.isPrivateBrowsing
       if let cryptoStore = CryptoStore.from(
         ipfsApi: profileController.ipfsAPI,
-        walletP3A: profileController.braveWalletAPI.walletP3A(),
         privateMode: privateMode
       ) {
         cryptoStore.rejectAllPendingWebpageRequests()
@@ -2961,7 +2959,6 @@ extension BrowserViewController: PreferencesObserver {
       let privateMode = privateBrowsingManager.isPrivateBrowsing
       if let cryptoStore = CryptoStore.from(
         ipfsApi: profileController.ipfsAPI,
-        walletP3A: profileController.braveWalletAPI.walletP3A(),
         privateMode: privateMode
       ) {
         cryptoStore.rejectAllPendingWebpageRequests()

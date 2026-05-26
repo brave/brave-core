@@ -19,7 +19,6 @@ extension WalletStore {
   /// Creates a WalletStore based on whether or not the user is in Private Mode
   static func from(
     ipfsApi: IpfsAPI,
-    walletP3A: BraveWalletBraveWalletP3A?,
     privateMode: Bool
   ) -> WalletStore? {
     guard
@@ -31,7 +30,6 @@ extension WalletStore {
       let txService = BraveWallet.TxServiceFactory.get(privateMode: privateMode),
       let ethTxManagerProxy = BraveWallet.EthTxManagerProxyFactory.get(privateMode: privateMode),
       let solTxManagerProxy = BraveWallet.SolanaTxManagerProxyFactory.get(privateMode: privateMode),
-      let walletP3A,
       let bitcoinWalletService = BraveWallet.BitcoinWalletServiceFactory.get(
         privateMode: privateMode
       ),
@@ -59,7 +57,6 @@ extension WalletStore {
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       ipfsApi: ipfsApi,
-      walletP3A: walletP3A,
       bitcoinWalletService: bitcoinWalletService,
       zcashWalletService: zcashWalletService,
       meldIntegrationService: meldIntegrationService,
@@ -72,7 +69,6 @@ extension CryptoStore {
   /// Creates a CryptoStore based on whether or not the user is in Private Mode
   static func from(
     ipfsApi: IpfsAPI,
-    walletP3A: BraveWalletBraveWalletP3A?,
     privateMode: Bool
   ) -> CryptoStore? {
     guard
@@ -84,7 +80,6 @@ extension CryptoStore {
       let txService = BraveWallet.TxServiceFactory.get(privateMode: privateMode),
       let ethTxManagerProxy = BraveWallet.EthTxManagerProxyFactory.get(privateMode: privateMode),
       let solTxManagerProxy = BraveWallet.SolanaTxManagerProxyFactory.get(privateMode: privateMode),
-      let walletP3A,
       let bitcoinWalletService = BraveWallet.BitcoinWalletServiceFactory.get(
         privateMode: privateMode
       ),
@@ -112,7 +107,6 @@ extension CryptoStore {
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       ipfsApi: ipfsApi,
-      walletP3A: walletP3A,
       bitcoinWalletService: bitcoinWalletService,
       zcashWalletService: zcashWalletService,
       meldIntegrationService: meldIntegrationService,
@@ -132,7 +126,6 @@ extension BrowserViewController {
     guard
       let walletStore = WalletStore.from(
         ipfsApi: profileController.ipfsAPI,
-        walletP3A: profileController.braveWalletAPI.walletP3A(),
         privateMode: privateMode
       )
     else {

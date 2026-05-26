@@ -756,8 +756,6 @@ export class MockedWalletApiProxy {
     },
   }
 
-  braveWalletP3A: InstanceType<typeof BraveWallet.BraveWalletP3AInterface> = {}
-
   assetRatioService: Partial<
     InstanceType<typeof BraveWallet.AssetRatioServiceInterface>
   > = {

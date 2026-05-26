@@ -9,7 +9,6 @@ import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
 
 import org.chromium.brave_wallet.mojom.AssetRatioService;
-import org.chromium.brave_wallet.mojom.BraveWalletP3a;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.EthTxManagerProxy;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
@@ -50,18 +49,6 @@ public class BraveWalletServiceFactory {
         handler.setErrorHandler(connectionErrorHandler);
 
         return braveWalletService;
-    }
-
-    public BraveWalletP3a getBraveWalletP3A(ConnectionErrorHandler connectionErrorHandler) {
-        Profile profile = Utils.getProfile(false); // always use regular profile
-        long nativeHandle =
-                BraveWalletServiceFactoryJni.get().getInterfaceToBraveWalletP3A(profile);
-        MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
-        BraveWalletP3a braveWalletP3A = BraveWalletP3a.MANAGER.attachProxy(handle, 0);
-        Handler handler = ((Interface.Proxy) braveWalletP3A).getProxyHandler();
-        handler.setErrorHandler(connectionErrorHandler);
-
-        return braveWalletP3A;
     }
 
     public JsonRpcService getJsonRpcService(ConnectionErrorHandler connectionErrorHandler) {
@@ -144,8 +131,6 @@ public class BraveWalletServiceFactory {
     @NativeMethods
     interface Natives {
         long getInterfaceToBraveWalletService(Profile profile);
-
-        long getInterfaceToBraveWalletP3A(Profile profile);
 
         long getInterfaceToJsonRpcService(Profile profile);
 

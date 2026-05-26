@@ -287,9 +287,6 @@ BraveWalletService::BraveWalletService(
       GetCardanoWalletService(), GetPolkadotWalletService(), *keyring_service(),
       profile_prefs, CreateTxStorage(*delegate_));
 
-  brave_wallet_p3a_ = std::make_unique<BraveWalletP3A>(
-      this, keyring_service(), profile_prefs, local_state),
-
   simple_hash_client_ = std::make_unique<SimpleHashClient>(url_loader_factory);
   asset_discovery_manager_ = std::make_unique<AssetDiscoveryManager>(
       url_loader_factory, *this, *json_rpc_service(), *keyring_service(),
@@ -434,12 +431,6 @@ template <>
 void BraveWalletService::Bind(
     mojo::PendingReceiver<mojom::BtcTxManagerProxy> receiver) {
   tx_service()->Bind(std::move(receiver));
-}
-
-template <>
-void BraveWalletService::Bind(
-    mojo::PendingReceiver<mojom::BraveWalletP3A> receiver) {
-  GetBraveWalletP3A()->Bind(std::move(receiver));
 }
 
 template <>
@@ -1145,10 +1136,6 @@ void BraveWalletService::MigrateDeadNetwork(
   }
 
   prefs->SetBoolean(pref_key, true);
-}
-
-BraveWalletP3A* BraveWalletService::GetBraveWalletP3A() {
-  return brave_wallet_p3a_.get();
 }
 
 BitcoinWalletService* BraveWalletService::GetBitcoinWalletService() {

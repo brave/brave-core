@@ -393,7 +393,6 @@ interface PanelHandlerFactory {
       pending_receiver<FilTxManagerProxy> fil_tx_manager_proxy,
       pending_receiver<BtcTxManagerProxy> btc_tx_manager_proxy,
       pending_receiver<BraveWalletService> brave_wallet_service,
-      pending_receiver<BraveWalletP3A> brave_wallet_p3a,
       pending_receiver<IpfsService> brave_wallet_ipfs_service_receiver,
       pending_receiver<MeldIntegrationService> meld_integration_service);
 };
@@ -418,7 +417,6 @@ interface PageHandlerFactory {
       pending_receiver<FilTxManagerProxy> fil_tx_manager_proxy,
       pending_receiver<BtcTxManagerProxy> btc_tx_manager_proxy,
       pending_receiver<BraveWalletService> brave_wallet_service,
-      pending_receiver<BraveWalletP3A> brave_wallet_p3a,
       pending_receiver<IpfsService> brave_wallet_ipfs_service,
       pending_receiver<MeldIntegrationService> meld_integration_service);
 };
@@ -3164,9 +3162,6 @@ interface BraveWalletService {
 
   WriteToClipboard(string text, bool is_sensitive);
 };
-
-// For reporting wallet related P3A metrics.
-interface BraveWalletP3A {};
 
 enum DefaultWallet {
   AskDeprecated = 0,

@@ -123,7 +123,6 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
   private let ethTxManagerProxy: BraveWalletEthTxManagerProxy
   private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
   private let ipfsApi: IpfsAPI
-  private let walletP3A: BraveWalletBraveWalletP3A
   private let bitcoinWalletService: BraveWalletBitcoinWalletService
   private let zcashWalletService: BraveWalletZCashWalletService
   private let meldIntegrationService: BraveWalletMeldIntegrationService
@@ -148,7 +147,6 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
     ethTxManagerProxy: BraveWalletEthTxManagerProxy,
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
     ipfsApi: IpfsAPI,
-    walletP3A: BraveWalletBraveWalletP3A,
     bitcoinWalletService: BraveWalletBitcoinWalletService,
     zcashWalletService: BraveWalletZCashWalletService,
     meldIntegrationService: BraveWalletMeldIntegrationService,
@@ -165,7 +163,6 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
     self.ethTxManagerProxy = ethTxManagerProxy
     self.solTxManagerProxy = solTxManagerProxy
     self.ipfsApi = ipfsApi
-    self.walletP3A = walletP3A
     self.bitcoinWalletService = bitcoinWalletService
     self.zcashWalletService = zcashWalletService
     self.meldIntegrationService = meldIntegrationService
@@ -206,7 +203,6 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       assetRatioService: assetRatioService,
       blockchainRegistry: blockchainRegistry,
       ipfsApi: ipfsApi,
-      walletP3A: walletP3A,
       userAssetManager: userAssetManager,
       txService: txService
     )
