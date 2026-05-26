@@ -64,6 +64,7 @@ function PeekItem() {
   return (
     <Link
       url={peekItem.url.url}
+      openInNewTab={braveNews.openArticlesInNewTab}
       className='peek'
     >
       <SafeImage
