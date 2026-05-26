@@ -15,6 +15,7 @@
 #include "base/notreached.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/string_util.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
@@ -645,6 +646,14 @@ void SolanaProviderImpl::SignMessage(
   }
   // Prevent transaction payload from being signed
   if (SolanaMessage::Deserialize(blob_msg)) {
+    std::move(callback).Run(mojom::SolanaProviderError::kUnauthorized,
+                            l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED),
+                            base::DictValue());
+    return;
+  }
+  // Reject non-UTF-8 binary payloads; signMessage is for plain text only.
+  const std::string blob_str(blob_msg.begin(), blob_msg.end());
+  if (!base::IsStringUTF8(blob_str)) {
     std::move(callback).Run(mojom::SolanaProviderError::kUnauthorized,
                             l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED),
                             base::DictValue());

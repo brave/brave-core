@@ -835,6 +835,13 @@ TEST_F(SolanaProviderImplUnitTest, SignMessage) {
   Connect(std::nullopt, &error, &error_message);
   ASSERT_TRUE(IsConnected());
 
+  // Non-UTF-8 binary payload should be rejected (matches Phantom behavior).
+  signature =
+      SignMessage({0xFF, 0xFE, 0xFD}, std::nullopt, &error, &error_message);
+  EXPECT_TRUE(signature.empty());
+  EXPECT_EQ(error, mojom::SolanaProviderError::kUnauthorized);
+  EXPECT_EQ(error_message, l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
+
   // User rejected.
   signature = SignMessage({1, 2, 3, 4}, std::nullopt, &error, &error_message,
                           true, false /* approve */);
