@@ -971,7 +971,6 @@ test("brave_browser_tests") {
     "//brave/browser/sandbox:browser_tests",
     "//brave/browser/script_injector:browser_tests",
     "//brave/browser/serp_metrics:browser_tests",
-    "//brave/browser/sessions:browser_tests",
     "//brave/browser/skus/test:browser_tests",
     "//brave/browser/storage_access_api:browser_tests",
     "//brave/browser/test:browser_tests",
@@ -991,6 +990,10 @@ test("brave_browser_tests") {
     "//brave/components/brave_rewards/core",
     "//brave/components/email_aliases/buildflags",
   ]
+
+  if (enable_session_service) {
+    deps += [ "//brave/browser/sessions:browser_tests" ]
+  }
 
   if (enable_webui_ntp) {
     deps += [ "//chrome/browser/new_tab_page" ]
