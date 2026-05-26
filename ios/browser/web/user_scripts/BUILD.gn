@@ -1,0 +1,27 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//ios/web/public/js_messaging/optimize_ts.gni")
+
+source_set("user_scripts") {
+  sources = [
+    "user_scripts_javascript_feature.h",
+    "user_scripts_javascript_feature.mm",
+  ]
+  deps = [
+    ":user_scripts_js",
+    "//base",
+    "//brave/ios/web/js_messaging",
+    "//ios/web/public/js_messaging",
+  ]
+}
+
+optimize_ts("user_scripts_js") {
+  visibility = [ ":user_scripts" ]
+
+  sources = [ "resources/user_scripts.ts" ]
+
+  deps = [ "//brave/ios/web/js_messaging:util_scripts" ]
+}
