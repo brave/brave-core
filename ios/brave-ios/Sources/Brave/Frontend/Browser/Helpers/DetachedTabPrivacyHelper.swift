@@ -74,12 +74,82 @@ class DetachedTabPrivacyHelper: TabPolicyDecider {
     shouldAllowRequest request: URLRequest,
     requestInfo: WebRequestInfo
   ) async -> WebPolicyDecision {
-    if let mainDocumentURL = request.mainDocumentURL {
-      let pageData = PageData(mainFrameURL: mainDocumentURL)
-      if mainDocumentURL != tab.currentPageData?.mainFrameURL {
-        tab.currentPageData = pageData
-      }
+    guard let mainDocumentURL = request.mainDocumentURL else { return .allow }
 
+    let pageData = PageData(mainFrameURL: mainDocumentURL)
+    if mainDocumentURL != tab.currentPageData?.mainFrameURL {
+      tab.currentPageData = pageData
+    }
+
+    let isAdBlockEnabled =
+      tab.braveShieldsHelper?.shieldLevel(
+        for: mainDocumentURL,
+        considerAllShieldsOption: true
+      ).isEnabled ?? true
+    let isBlockFingerprintingEnabled =
+      tab.braveShieldsHelper?.isShieldExpected(
+        for: mainDocumentURL,
+        shield: .fpProtection,
+        considerAllShieldsOption: true
+      ) ?? true
+
+    if requestInfo.isMainFrame {
+      tab.browserData?.setScripts(scripts: [
+        // Add de-amp script
+        // The user script manager will take care to not reload scripts if this value doesn't change
+        .deAmp: deAmpPrefs.isDeAmpEnabled,
+
+        // Add request blocking script
+        // This script will block certian `xhr` and `window.fetch()` requests
+        .requestBlocking: mainDocumentURL.isWebPage(includeDataURIs: false)
+          && isAdBlockEnabled,
+
+        // The tracker protection script
+        // This script will track what is blocked and increase stats
+        .trackerProtectionStats: mainDocumentURL.isWebPage(includeDataURIs: false)
+          && isAdBlockEnabled,
+      ])
+    }
+
+    let scriptTypes =
+      await tab.currentPageData?.makeUserScriptTypes(
+        isDeAmpEnabled: deAmpPrefs.isDeAmpEnabled,
+        isAdBlockEnabled: isAdBlockEnabled,
+        isBlockFingerprintingEnabled: isBlockFingerprintingEnabled
+      ) ?? []
+    tab.browserData?.setCustomUserScript(scripts: scriptTypes)
+
+    if !requestInfo.isNewWindow, let requestURL = request.url {
+      // Check if custom user scripts must be added to or removed from the web view.
+      tab.currentPageData?.addSubframeURL(
+        forRequestURL: requestURL,
+        isForMainFrame: requestInfo.isMainFrame
+      )
+      let scriptTypes =
+        await tab.currentPageData?.makeUserScriptTypes(
+          isDeAmpEnabled: deAmpPrefs.isDeAmpEnabled,
+          isAdBlockEnabled: isAdBlockEnabled,
+          isBlockFingerprintingEnabled: isBlockFingerprintingEnabled
+        ) ?? []
+      tab.browserData?.setCustomUserScript(scripts: scriptTypes)
+    }
+
+    return .allow
+  }
+
+  func tab(
+    _ tab: some TabState,
+    shouldAllowResponse response: URLResponse,
+    responseInfo: WebResponseInfo
+  ) async -> WebPolicyDecision {
+    // Check if we upgraded to https and if so we need to update the url of frame evaluations
+    if let responseURL = response.url,
+      let pageData = tab.currentPageData,
+      tab.currentPageData?.upgradeFrameURL(
+        forResponseURL: responseURL,
+        isForMainFrame: responseInfo.isForMainFrame
+      ) == true
+    {
       let scriptTypes =
         await tab.currentPageData?.makeUserScriptTypes(
           isDeAmpEnabled: deAmpPrefs.isDeAmpEnabled,
