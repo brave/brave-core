@@ -270,17 +270,30 @@ TEST_F(ObliviousHttpAPIClientUnitTest, PerformRequest_Streaming_BadStatusCode) {
 }
 
 TEST_F(ObliviousHttpAPIClientUnitTest, PerformRequest_BadOuterResponseCode) {
-  PerformRequest();
+  const struct {
+    int response_code;
+    mojom::APIError expected_error;
+  } kCases[] = {
+      {net::HTTP_INTERNAL_SERVER_ERROR, mojom::APIError::ConnectionIssue},
+      {net::HTTP_UNAUTHORIZED, mojom::APIError::InvalidAPIKey},
+      {net::HTTP_TOO_MANY_REQUESTS, mojom::APIError::RateLimitReached},
+  };
 
-  ASSERT_TRUE(completion_client_.is_bound());
-  completion_client_->OnCompleted(
-      network::mojom::ObliviousHttpCompletionResult::NewOuterResponseErrorCode(
-          net::HTTP_INTERNAL_SERVER_ERROR));
-  completion_client_.FlushForTesting();
-  run_loop_->Run();
+  for (const auto& c : kCases) {
+    completion_client_.reset();
 
-  ASSERT_FALSE(result_.has_value());
-  EXPECT_EQ(mojom::APIError::ConnectionIssue, result_.error());
+    PerformRequest();
+
+    ASSERT_TRUE(completion_client_.is_bound());
+    completion_client_->OnCompleted(
+        network::mojom::ObliviousHttpCompletionResult::
+            NewOuterResponseErrorCode(c.response_code));
+    completion_client_.FlushForTesting();
+    run_loop_->Run();
+
+    ASSERT_FALSE(result_.has_value());
+    EXPECT_EQ(c.expected_error, result_.error());
+  }
 }
 
 }  // namespace ai_chat
