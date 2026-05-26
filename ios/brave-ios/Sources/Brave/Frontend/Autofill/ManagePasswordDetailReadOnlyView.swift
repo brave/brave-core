@@ -9,7 +9,7 @@ import BraveUI
 import SwiftUI
 import UIKit
 
-struct ManagePasswordDetailView: View {
+struct ManagePasswordDetailReadOnlyView: View {
   @Environment(\.openURL) private var openURL
   @Environment(\.dismiss) private var dismiss
   @Environment(\.redactionReasons) private var redactionReasons
