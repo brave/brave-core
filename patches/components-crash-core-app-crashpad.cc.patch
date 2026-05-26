@@ -1,8 +1,16 @@
 diff --git a/components/crash/core/app/crashpad.cc b/components/crash/core/app/crashpad.cc
-index db68eaa22030aca74f31a9d8612b4952a3b25642..2b252b96dc22d063953eb0684fea1e0c04184451 100644
+index db68eaa22030aca74f31a9d8612b4952a3b25642..518fdb1148c6449a4ba3a650669b110aed5f4707 100644
 --- a/components/crash/core/app/crashpad.cc
 +++ b/components/crash/core/app/crashpad.cc
-@@ -95,6 +95,7 @@ bool InitializeCrashpadImpl(bool initial_client,
+@@ -85,6 +85,7 @@ bool InitializeCrashpadImpl(bool initial_client,
+     // component can't see Chrome's switches. This is only used for argument
+     // sanitization.
+     DCHECK(browser_process || process_type == "relauncher" ||
++           BRAVE_INITIALIZE_CRASHPAD_IMPL_PROCESS_TYPE
+            process_type == "app_shim");
+ #elif BUILDFLAG(IS_WIN)
+     // "Chrome Installer" is the name historically used for installer binaries
+@@ -95,10 +96,13 @@ bool InitializeCrashpadImpl(bool initial_client,
             process_type == "os-update-handler" ||
             process_type == "platform-experience-helper" ||
  #endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)
@@ -10,3 +18,10 @@ index db68eaa22030aca74f31a9d8612b4952a3b25642..2b252b96dc22d063953eb0684fea1e0c
             process_type == "GCPW Installer" || process_type == "GCPW DLL" ||
             process_type == "elevated-tracing-service");
  #elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID)
+-    DCHECK(browser_process);
++    DCHECK(browser_process ||
++           BRAVE_INITIALIZE_CRASHPAD_IMPL_PROCESS_TYPE
++           false);
+ #else
+ #error Port.
+ #endif  // BUILDFLAG(IS_APPLE)

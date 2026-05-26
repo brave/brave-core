@@ -1,0 +1,58 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+if (is_win) {
+  import("//chrome/process_version_rc_template.gni")
+}
+
+assert(enable_brave_vpn)
+
+executable("brave_vpn_agent_app") {
+  sources = [
+    "agent_app.cc",
+    "agent_app.h",
+  ]
+
+  deps = [
+    "//base",
+    "//base:base_static",
+    "//brave/components/brave_vpn/v2/app/shared",
+  ]
+
+  if (is_win) {
+    sources += [ "main_win.cc" ]
+
+    deps += [
+      ":version_resources",
+      "//build/win:default_exe_manifest",
+    ]
+
+    public_configs = [ "//build/config/win:windowed" ]
+  }
+
+  if (is_posix) {
+    sources += [ "main_posix.cc" ]
+  }
+}
+
+if (is_win) {
+  process_version_rc_template("version_resources") {
+    sources = [ "agent.ver" ]
+    output = "$target_gen_dir/brave_vpn_agent_app.rc"
+  }
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = []
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//testing/gtest",
+  ]
+}

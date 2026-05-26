@@ -1,0 +1,38 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+
+assert(enable_brave_vpn)
+
+static_library("shared") {
+  sources = [
+    "app_utils.cc",
+    "app_utils.h",
+    "crash_reporter_client.cc",
+    "crash_reporter_client.h",
+    "switches.h",
+  ]
+
+  public_deps = [ "//components/crash/core/app" ]
+
+  deps = [ "//base" ]
+
+  if (is_win) {
+    sources += [ "crash_reporter_client_win.cc" ]
+
+    deps += [
+      "//chrome/install_static:install_static_util",
+      "//components/crash/core/app:crash_export_thunks",
+      "//components/crash/core/app:run_as_crashpad_handler",
+      "//components/version_info:channel",
+    ]
+  }
+
+  if (is_posix) {
+    sources += [ "crash_reporter_client_posix.cc" ]
+    data_deps = [ "//components/crash/core/app:chrome_crashpad_handler" ]
+  }
+}

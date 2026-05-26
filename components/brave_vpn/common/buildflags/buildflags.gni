@@ -33,6 +33,9 @@ assert(!enable_brave_vpn || enable_brave_vpn_v1 || enable_brave_vpn_v2,
 # Build Brave VPN 2.0 deps only if VPN is enabled and architecture 2.0 is supported.
 enable_brave_vpn_v2_deps = enable_brave_vpn && enable_brave_vpn_v2
 
+# Build Brave VPN 2.0 agent and helper applications
+enable_brave_vpn_v2_apps = enable_brave_vpn && enable_brave_vpn_v2
+
 # Enable Brave VPN 1.0 architecture specific unit tests - turn off for debugging only.
 enable_brave_vpn_v1_tests = true
 
