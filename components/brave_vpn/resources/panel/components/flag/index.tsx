@@ -18,6 +18,7 @@ interface Props {
 // when adding a new entry here, please also add SVG for the entry into
 // `brave/ui/webui/resources/BUILD.gn` (under `enable_brave_vpn_panel`)
 const COUNTRIES = [
+    'AE',
     'AL',
     'AR',
     'AT',
@@ -53,6 +54,7 @@ const COUNTRIES = [
     'LU',
     'MX',
     'MY',
+    'NG',
     'NL',
     'NO',
     'NZ',
@@ -62,8 +64,10 @@ const COUNTRIES = [
     'PT',
     'PY',
     'RO',
+    'RS',
     'SE',
     'SG',
+    'SK',
     'TH',
     'TR',
     'UA',
