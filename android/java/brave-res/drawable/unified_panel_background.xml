@@ -4,8 +4,15 @@
      License, v. 2.0. If a copy of the MPL was not distributed with this file,
      You can obtain one at https://mozilla.org/MPL/2.0/. -->
 
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="rectangle">
-    <solid android:color="@color/schemes_surface_container" />
-    <corners android:radius="28dp" />
-</shape>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:top="@dimen/app_menu_shadow_length"
+        android:left="@dimen/app_menu_shadow_length"
+        android:bottom="@dimen/app_menu_shadow_length"
+        android:right="@dimen/app_menu_shadow_length">
+        <shape android:shape="rectangle">
+            <solid android:color="?attr/colorSurfaceContainer" />
+            <corners android:radius="28dp" />
+        </shape>
+    </item>
+</layer-list>

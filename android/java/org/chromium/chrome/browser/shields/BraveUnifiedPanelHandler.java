@@ -54,6 +54,7 @@ import androidx.appcompat.widget.AppCompatRadioButton;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -112,13 +113,19 @@ public class BraveUnifiedPanelHandler {
             "https://github.com/brave/brave-browser/wiki/Web-compatibility-reports";
 
     private static final int MAX_BLOCKED_URLS = 50;
-    private static final int POPUP_ELEVATION_DP = 20;
+
     private static final int POPUP_MARGIN_DP = 16;
     private static final int POPUP_MAX_WIDTH_DP = 400;
     private static final float LANDSCAPE_WIDTH_FRACTION = 0.50f;
     private static final int ICON_OVERLAP_MARGIN_DP = -8;
     private static final int FAVICON_ELEVATION_DP = 1;
     private static final int PANEL_OVERLAP_OFFSET_DP = 7;
+    private static final int SITE_FAVICON_CONTAINER_SIZE_DP = 32;
+    private static final int SITE_FAVICON_SIZE_DP = 20;
+    // The Leo ic_disable_outline icon draws its circle between viewport coordinates 2–22 inside a
+    // 24dp canvas, so the visible circle occupies 20/24 of the view's size.
+    private static final float BLOCKED_OVERLAY_CIRCLE_RATIO = 20f / 24f;
+    private static final int BLOCKED_OVERLAY_SIZE_DP = 26;
 
     // Nala primitive_*_50 colours used as deterministic placeholder backgrounds for blocked-tracker
     // favicons. The colour is chosen by hashing the display domain so the same origin always maps
@@ -376,18 +383,24 @@ public class BraveUnifiedPanelHandler {
         int marginPx = (int) (POPUP_MARGIN_DP * density);
         int screenWidth = mContext.getResources().getDisplayMetrics().widthPixels;
         int maxWidthPx = (int) (POPUP_MAX_WIDTH_DP * density);
+        // The root FrameLayout is padded by app_menu_shadow_length on each side so children align
+        // with the visible panel edge. Widen the popup by 2× that amount so the visible panel
+        // still reaches the intended width.
+        int shadowPx =
+                mContext.getResources().getDimensionPixelSize(R.dimen.app_menu_shadow_length);
 
         int width;
         if (ConfigurationUtils.isLandscape(mContext)) {
-            width = Math.min((int) (screenWidth * LANDSCAPE_WIDTH_FRACTION), maxWidthPx);
+            width =
+                    Math.min((int) (screenWidth * LANDSCAPE_WIDTH_FRACTION), maxWidthPx)
+                            + 2 * shadowPx;
         } else {
-            width = Math.min(screenWidth - (marginPx * 2), maxWidthPx);
+            width = Math.min(screenWidth - (marginPx * 2), maxWidthPx) + 2 * shadowPx;
         }
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
 
         PopupWindow popupWindow = new PopupWindow(mPopupView, width, height, true);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        popupWindow.setElevation(POPUP_ELEVATION_DP);
         mPopupView.setClipToOutline(true);
 
         mAnchorView = anchorView;
@@ -434,6 +447,7 @@ public class BraveUnifiedPanelHandler {
     @Initializer
     private void setupViews() {
         View popupView = assumeNonNull(mPopupView);
+        Context context = assumeNonNull(mContext);
 
         mMainPanelContainer = popupView.findViewById(R.id.main_panel_container);
         mHttpsPanelContainer = popupView.findViewById(R.id.https_panel_container);
@@ -445,6 +459,12 @@ public class BraveUnifiedPanelHandler {
 
         // Shields content elements
         mShieldIconUnified = popupView.findViewById(R.id.shield_icon_unified);
+        float mainFaviconOffset =
+                (ViewUtils.dpToPx(context, SITE_FAVICON_CONTAINER_SIZE_DP)
+                                - ViewUtils.dpToPx(context, SITE_FAVICON_SIZE_DP))
+                        / 2f;
+        mShieldIconUnified.setTranslationX(mainFaviconOffset);
+        mShieldIconUnified.setTranslationY(mainFaviconOffset);
         mSiteTextUnified = assumeNonNull(popupView.findViewById(R.id.site_text_unified));
         mShieldsStatusText = popupView.findViewById(R.id.shields_status_text);
         mShieldsToggleSwitch = popupView.findViewById(R.id.shields_toggle_switch);
@@ -777,7 +797,8 @@ public class BraveUnifiedPanelHandler {
             int learnMoreStart = descText.length() + 1;
             int learnMoreEnd = learnMoreStart + learnMoreText.length();
             spannable.setSpan(
-                    new ForegroundColorSpan(mContext.getColor(R.color.schemes_primary)),
+                    new ForegroundColorSpan(
+                            MaterialColors.getColor(mContext, R.attr.colorPrimary, 0)),
                     learnMoreStart,
                     learnMoreEnd,
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -796,7 +817,7 @@ public class BraveUnifiedPanelHandler {
                             super.updateDrawState(ds);
                             if (mContext != null) {
                                 ds.setColor(
-                                        ContextCompat.getColor(mContext, R.color.schemes_primary));
+                                        MaterialColors.getColor(mContext, R.attr.colorPrimary, 0));
                                 ds.setUnderlineText(false);
                             }
                         }
@@ -806,7 +827,7 @@ public class BraveUnifiedPanelHandler {
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             descLearnMore.setText(spannable);
             descLearnMore.setHighlightColor(
-                    ContextCompat.getColor(mContext, R.color.schemes_primary));
+                    MaterialColors.getColor(mContext, R.attr.colorPrimary, 0));
             descLearnMore.setMovementMethod(LinkMovementMethod.getInstance());
         }
 
@@ -1812,8 +1833,16 @@ public class BraveUnifiedPanelHandler {
         FrameLayout container = createBlockedItemContainer(iconSize);
         if (container == null) return;
 
+        int faviconSize =
+                Math.round(
+                        ViewUtils.dpToPx(mContext, BLOCKED_OVERLAY_SIZE_DP)
+                                * BLOCKED_OVERLAY_CIRCLE_RATIO);
+        float faviconOffset = (iconSize - faviconSize) / 2f;
         TextView textView = new TextView(mContext);
-        textView.setLayoutParams(new FrameLayout.LayoutParams(iconSize, iconSize));
+        textView.setLayoutParams(new FrameLayout.LayoutParams(faviconSize, faviconSize));
+        textView.setTranslationX(faviconOffset);
+        textView.setTranslationY(faviconOffset);
+        textView.setIncludeFontPadding(false);
 
         String displayDomain =
                 UrlFormatter.formatUrlForDisplayOmitSchemePathAndTrivialSubdomains(origin);
@@ -1848,11 +1877,15 @@ public class BraveUnifiedPanelHandler {
         FrameLayout container = createBlockedItemContainer(iconSize);
         if (container == null) return;
 
-        int faviconSize = iconSize - ViewUtils.dpToPx(mContext, 6);
+        int faviconSize =
+                Math.round(
+                        ViewUtils.dpToPx(mContext, BLOCKED_OVERLAY_SIZE_DP)
+                                * BLOCKED_OVERLAY_CIRCLE_RATIO);
+        float faviconOffset = (iconSize - faviconSize) / 2f;
         ImageView imageView = new ImageView(mContext);
-        FrameLayout.LayoutParams imgParams =
-                new FrameLayout.LayoutParams(faviconSize, faviconSize, Gravity.CENTER);
-        imageView.setLayoutParams(imgParams);
+        imageView.setLayoutParams(new FrameLayout.LayoutParams(faviconSize, faviconSize));
+        imageView.setTranslationX(faviconOffset);
+        imageView.setTranslationY(faviconOffset);
         imageView.setImageBitmap(favicon);
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         imageView.setOutlineProvider(
@@ -1882,7 +1915,7 @@ public class BraveUnifiedPanelHandler {
 
         GradientDrawable bg = new GradientDrawable();
         bg.setShape(GradientDrawable.OVAL);
-        bg.setColor(ContextCompat.getColor(mContext, R.color.schemes_surface_container));
+        bg.setColor(MaterialColors.getColor(mContext, R.attr.colorSurfaceContainer, 0));
         frame.setBackground(bg);
 
         frame.setOutlineProvider(ViewOutlineProvider.BACKGROUND);
@@ -1896,8 +1929,12 @@ public class BraveUnifiedPanelHandler {
     private void addBlockOverlay(FrameLayout container, int iconSize) {
         if (mContext == null) return;
 
+        int overlaySize = ViewUtils.dpToPx(mContext, BLOCKED_OVERLAY_SIZE_DP);
+        float overlayOffset = (iconSize - overlaySize) / 2f;
         ImageView overlay = new ImageView(mContext);
-        overlay.setLayoutParams(new FrameLayout.LayoutParams(iconSize, iconSize));
+        overlay.setLayoutParams(new FrameLayout.LayoutParams(overlaySize, overlaySize));
+        overlay.setTranslationX(overlayOffset);
+        overlay.setTranslationY(overlayOffset);
         overlay.setImageResource(R.drawable.ic_disable_outline);
         overlay.setScaleType(ImageView.ScaleType.FIT_CENTER);
         container.addView(overlay);

@@ -11,7 +11,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@color/container_background">
+    android:background="?attr/colorSurfaceContainer">
 
     <!-- Top App Bar -->
     <LinearLayout
@@ -30,17 +30,18 @@
         <!-- Title -->
         <TextView
             android:layout_width="0dp"
-            android:layout_height="36dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginStart="16dp"
-            android:gravity="center_vertical"
             android:text="@string/report_broken_site_panel_title"
             android:textAppearance="?attr/textAppearanceTitleLarge"
-            android:textColor="@color/text_primary"
+            android:textColor="?attr/colorOnSurface"
             android:maxLines="1"
             android:autoSizeTextType="uniform"
             android:autoSizeMinTextSize="14sp"
-            android:autoSizeMaxTextSize="22sp"/>
+            android:autoSizeMaxTextSize="22sp"
+            android:ellipsize="end"
+            android:includeFontPadding="false"/>
 
     </LinearLayout>
 
@@ -76,7 +77,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginStart="16dp"
-                    android:textColor="@color/text_primary"
+                    android:textColor="?attr/colorOnSurface"
                     android:maxLines="1"
                     android:ellipsize="end"
                     tools:text="example.com"/>
@@ -96,7 +97,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/report_broken_site_panel_desc1"
-                    android:textColor="@color/text_primary"
+                    android:textColor="?attr/colorOnSurface"
                     android:layout_marginBottom="8dp"/>
 
                 <TextView
@@ -104,7 +105,7 @@
                     style="@style/DefaultRegular"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/text_primary"/>
+                    android:textColor="?attr/colorOnSurface"/>
 
             </LinearLayout>
 
@@ -123,14 +124,14 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/issue_category_spinner_text"
                     app:placeholderText="@string/issue_category_placeholder"
-                    app:hintTextColor="@color/schemes_primary"
-                    app:boxStrokeColor="@color/schemes_primary"
+                    app:hintTextColor="?attr/colorPrimary"
+                    app:boxStrokeColor="?attr/colorPrimary"
                     app:boxCornerRadiusTopStart="12dp"
                     app:boxCornerRadiusTopEnd="12dp"
                     app:boxCornerRadiusBottomStart="12dp"
                     app:boxCornerRadiusBottomEnd="12dp"
                     app:endIconMode="dropdown_menu"
-                    app:endIconTint="@color/schemes_primary"
+                    app:endIconTint="?attr/colorPrimary"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
 
                     <AutoCompleteTextView
@@ -151,8 +152,8 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/report_broken_site_details_placeholder"
                     app:placeholderText="@string/report_broken_site_panel_details_hint"
-                    app:hintTextColor="@color/schemes_primary"
-                    app:boxStrokeColor="@color/schemes_primary"
+                    app:hintTextColor="?attr/colorPrimary"
+                    app:boxStrokeColor="?attr/colorPrimary"
                     app:boxCornerRadiusTopStart="12dp"
                     app:boxCornerRadiusTopEnd="12dp"
                     app:boxCornerRadiusBottomStart="12dp"
@@ -177,8 +178,8 @@
                     android:layout_marginTop="16dp"
                     android:hint="@string/report_broken_site_panel_contact_label"
                     app:placeholderText="@string/report_broken_site_panel_contact_hint"
-                    app:hintTextColor="@color/schemes_primary"
-                    app:boxStrokeColor="@color/schemes_primary"
+                    app:hintTextColor="?attr/colorPrimary"
+                    app:boxStrokeColor="?attr/colorPrimary"
                     app:boxCornerRadiusTopStart="12dp"
                     app:boxCornerRadiusTopEnd="12dp"
                     app:boxCornerRadiusBottomStart="12dp"
@@ -234,7 +235,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/report_broken_site_text_attach_screenshot_label"
-                        android:textColor="@color/text_primary"/>
+                        android:textColor="?attr/colorOnSurface"/>
 
                     <TextView
                         android:id="@+id/report_view_screenshot_link"
@@ -243,7 +244,7 @@
                         android:text="@string/report_broken_site_view_screenshot"
                         android:textSize="14sp"
                         android:lineHeight="22sp"
-                        android:textColor="@color/schemes_primary"
+                        android:textColor="?attr/colorPrimary"
                         android:visibility="gone"/>
 
                 </LinearLayout>
@@ -254,7 +255,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/container_background"/>
+                android:background="?attr/colorSurface"/>
 
             <!-- Button row -->
             <LinearLayout
@@ -273,7 +274,7 @@
                     android:gravity="center"
                     android:text="@string/brave_cancel"
                     android:textSize="14sp"
-                    android:textColor="@color/text_secondary"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     android:fontFamily="sans-serif-medium"
                     android:letterSpacing="0.006"
                     android:clickable="true"
@@ -293,7 +294,7 @@
                     android:gravity="center"
                     android:text="@string/report_broken_site_panel_submit"
                     android:textSize="14sp"
-                    android:textColor="@color/schemes_on_primary"
+                    android:textColor="?attr/colorOnPrimary"
                     android:fontFamily="sans-serif-medium"
                     android:letterSpacing="0.006"
                     android:clickable="true"

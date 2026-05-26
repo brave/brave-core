@@ -11,7 +11,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@color/container_background">
+    android:background="?attr/colorSurfaceContainer">
 
     <!-- Top App Bar -->
     <LinearLayout
@@ -30,17 +30,18 @@
         <!-- Title -->
         <TextView
             android:layout_width="0dp"
-            android:layout_height="36dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginStart="16dp"
-            android:gravity="center_vertical"
             android:text="@string/https_upgrade_title"
             android:textAppearance="?attr/textAppearanceTitleLarge"
-            android:textColor="@color/text_primary"
+            android:textColor="?attr/colorOnSurface"
             android:maxLines="1"
             android:autoSizeTextType="uniform"
             android:autoSizeMinTextSize="14sp"
-            android:autoSizeMaxTextSize="22sp"/>
+            android:autoSizeMaxTextSize="22sp"
+            android:ellipsize="end"
+            android:includeFontPadding="false"/>
 
     </LinearLayout>
 
@@ -65,7 +66,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/https_upgrade_text"
-                android:textColor="@color/text_primary"
+                android:textColor="?attr/colorOnSurface"
                 android:paddingHorizontal="16dp"
                 android:paddingTop="12dp"
                 android:paddingBottom="24dp"/>
@@ -94,7 +95,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/https_upgrade_option_1"
-                        android:textColor="@color/text_primary"
+                        android:textColor="?attr/colorOnSurface"
                         android:layout_marginEnd="8dp"/>
 
                     <androidx.appcompat.widget.AppCompatRadioButton
@@ -103,9 +104,14 @@
                         android:layout_height="wrap_content"
                         android:clickable="false"
                         android:focusable="false"
-                        app:buttonTint="@color/schemes_primary"/>
+                        app:buttonTint="?attr/colorPrimary"/>
 
                 </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?attr/colorSurfaceContainer"/>
 
                 <!-- Radio option 2: Default -->
                 <LinearLayout
@@ -126,7 +132,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/https_upgrade_option_2"
-                        android:textColor="@color/text_primary"
+                        android:textColor="?attr/colorOnSurface"
                         android:layout_marginEnd="8dp"/>
 
                     <androidx.appcompat.widget.AppCompatRadioButton
@@ -135,9 +141,14 @@
                         android:layout_height="wrap_content"
                         android:clickable="false"
                         android:focusable="false"
-                        app:buttonTint="@color/schemes_primary"/>
+                        app:buttonTint="?attr/colorPrimary"/>
 
                 </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?attr/colorSurfaceContainer"/>
 
                 <!-- Radio option 3: Disabled -->
                 <LinearLayout
@@ -158,7 +169,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/https_upgrade_option_3"
-                        android:textColor="@color/text_primary"
+                        android:textColor="?attr/colorOnSurface"
                         android:layout_marginEnd="8dp"/>
 
                     <androidx.appcompat.widget.AppCompatRadioButton
@@ -167,7 +178,7 @@
                         android:layout_height="wrap_content"
                         android:clickable="false"
                         android:focusable="false"
-                        app:buttonTint="@color/schemes_primary"/>
+                        app:buttonTint="?attr/colorPrimary"/>
 
                 </LinearLayout>
 

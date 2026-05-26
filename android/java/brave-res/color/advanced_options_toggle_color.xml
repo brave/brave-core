@@ -5,6 +5,6 @@
      You can obtain one at https://mozilla.org/MPL/2.0/. -->
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_activated="true" android:color="@color/text_interactive"/>
-    <item android:color="@color/text_secondary"/>
+    <item android:state_activated="true" android:color="?attr/colorPrimary"/>
+    <item android:color="?attr/colorOnSurfaceVariant"/>
 </selector>

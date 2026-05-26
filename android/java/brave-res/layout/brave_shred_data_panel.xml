@@ -11,7 +11,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@color/container_background">
+    android:background="?attr/colorSurfaceContainer">
 
     <!-- Top App Bar -->
     <LinearLayout
@@ -30,17 +30,18 @@
         <!-- Title -->
         <TextView
             android:layout_width="0dp"
-            android:layout_height="36dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginStart="16dp"
-            android:gravity="center_vertical"
             android:text="@string/shred_site_data_title"
             android:textAppearance="?attr/textAppearanceTitleLarge"
-            android:textColor="@color/text_primary"
+            android:textColor="?attr/colorOnSurface"
             android:maxLines="1"
             android:autoSizeTextType="uniform"
             android:autoSizeMinTextSize="14sp"
-            android:autoSizeMaxTextSize="22sp"/>
+            android:autoSizeMaxTextSize="22sp"
+            android:ellipsize="end"
+            android:includeFontPadding="false"/>
 
     </LinearLayout>
 
@@ -60,7 +61,7 @@
             android:layout_marginBottom="8dp"
             android:textSize="13sp"
             android:lineHeight="18sp"
-            android:textColor="@color/text_secondary"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:textAllCaps="true"
             tools:text="THEVERGE.COM"/>
 
@@ -93,7 +94,7 @@
                     android:text="@string/shred_auto_shred"
                     android:textSize="17sp"
                     android:lineHeight="22sp"
-                    android:textColor="@color/text_primary"/>
+                    android:textColor="?attr/colorOnSurface"/>
 
                 <!-- Right content: dropdown value -->
                 <TextView
@@ -102,10 +103,10 @@
                     android:layout_height="wrap_content"
                     android:textSize="17sp"
                     android:lineHeight="22sp"
-                    android:textColor="@color/text_secondary"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     android:drawableEnd="@drawable/ic_arrow_up_and_down"
                     android:drawablePadding="4dp"
-                    app:drawableTint="@color/text_secondary"
+                    app:drawableTint="?attr/colorOnSurfaceVariant"
                     tools:text="Site Tabs Closed"/>
 
             </LinearLayout>
@@ -114,7 +115,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/container_background"/>
+                android:background="?attr/colorSurfaceContainer"/>
 
             <!-- Shred Site Data Now row -->
             <LinearLayout
@@ -137,10 +138,10 @@
                     android:text="@string/shred_site_data_now"
                     android:textSize="17sp"
                     android:lineHeight="22sp"
-                    android:textColor="@color/text_interactive"
+                    android:textColor="?attr/colorPrimary"
                     android:drawableEnd="@drawable/ic_shred_data"
                     android:drawablePadding="8dp"
-                    app:drawableTint="@color/text_interactive"/>
+                    app:drawableTint="?attr/colorPrimary"/>
 
             </LinearLayout>
 
