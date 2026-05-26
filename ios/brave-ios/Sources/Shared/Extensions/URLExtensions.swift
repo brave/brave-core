@@ -215,6 +215,13 @@ extension URL {
     return scheme.map { schemes.contains($0) } ?? false
   }
 
+  /// Requires both an http/https scheme *and* a non-empty host. `data:` URLs are excluded because they have no host.
+  ///
+  /// Use this when a URL is being persisted or sent to an API that expects a real reachable web address.
+  public func isFullyQualifiedWebPage() -> Bool {
+    isWebPage(includeDataURIs: false) && !(host?.isEmpty ?? true)
+  }
+
   public func isSecureWebPage() -> Bool {
     return scheme?.contains("https") ?? false
   }

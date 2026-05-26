@@ -22,6 +22,7 @@ struct ManagePasswordGroupView: View {
 
   @State private var selectedCredentialIds: Set<String> = []
   @State private var isDeleteSelectionDialogPresented = false
+  @State private var passwordDraft: ManagePasswordDraft? = nil
 
   private var passwords: [CWVPassword] {
     (viewModel.allowedGroups.first { $0.domain == domain }
@@ -33,7 +34,7 @@ struct ManagePasswordGroupView: View {
       Section {
         ForEach(passwords, id: \.identifier) { password in
           NavigationLink {
-            ManagePasswordDetailReadOnlyView(viewModel: viewModel, password: password)
+            ManagePasswordDetailContainerView(viewModel: viewModel, mode: .edit(password))
               .environment(\.openURL, openURL)
               .environment(\.redactionReasons, redactionReasons)
           } label: {
@@ -65,7 +66,9 @@ struct ManagePasswordGroupView: View {
       if !redactionReasons.contains(.privacy) {
         ToolbarItem(placement: .topBarTrailing) {
           Button {
-            // TODO: Present Add Password Form
+            passwordDraft = ManagePasswordDraft(
+              site: passwords.first?.site ?? URL(string: domain)?.absoluteString ?? ""
+            )
           } label: {
             Label(Strings.addButtonTitle, braveSystemImage: "leo.plus.add")
           }
@@ -124,6 +127,15 @@ struct ManagePasswordGroupView: View {
     .overlay {
       if redactionReasons.contains(.privacy) {
         Color(uiColor: .systemGroupedBackground).ignoresSafeArea()
+      }
+    }
+    .sheet(item: $passwordDraft) { draft in
+      NavigationStack {
+        ManagePasswordDetailContainerView(
+          viewModel: viewModel,
+          mode: .add(draft)
+        )
+        .environment(\.redactionReasons, redactionReasons)
       }
     }
   }
