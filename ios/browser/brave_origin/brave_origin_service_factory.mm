@@ -184,10 +184,12 @@ BraveOriginServiceFactory::BraveOriginServiceFactory()
   DependsOn(skus::SkusServiceFactory::GetInstance());
   auto* policy_manager = BraveOriginPolicyManager::GetInstance();
   policy_manager->SetExpectedToBeInitialized();
-  if (!policy_manager->IsInitialized()) {
+  auto* application_context = GetApplicationContext();
+  // ApplicationContext may not be set up in unit tests yet
+  if (!policy_manager->IsInitialized() && application_context) {
     policy_manager->Init(GetBrowserPolicyDefinitions(),
                          GetProfilePolicyDefinitions(),
-                         GetApplicationContext()->GetLocalState());
+                         application_context->GetLocalState());
   }
 }
 
