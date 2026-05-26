@@ -177,6 +177,18 @@ export const getAssetIdKey = (
       : `${asset.coin}-${asset.contractAddress.toLowerCase()}-${asset.chainId}`
 }
 
+export const dedupeAssetsByIdKey = (assets: BraveWallet.BlockchainToken[]) => {
+  const seenIds = new Set<string>()
+  return assets.filter((asset) => {
+    const id = getAssetIdKey(asset)
+    if (seenIds.has(id)) {
+      return false
+    }
+    seenIds.add(id)
+    return true
+  })
+}
+
 export const findTokenByContractAddress = <
   T extends Pick<BraveWallet.BlockchainToken, 'contractAddress'>,
 >(
