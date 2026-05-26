@@ -52,10 +52,12 @@ content::WebUIDataSource* CreateWebUIDataSource(
     int html_resource_id) {
   content::WebUIDataSource* source = content::WebUIDataSource::CreateAndAdd(
       Profile::FromWebUI(web_ui), std::string(name));
-  // Allow a policy to be created so that we
-  // can allow trusted HTML and trusted lazy-load script sources.
-  source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::TrustedTypes, "trusted-types svelte-trusted-html default;");
+
+    // Create a trusted-types policy - note: Brave's default trusted types are
+    // applied in OverrideContentSecurityPolicy, so this is empty to clear the
+    // trusted-types policies from upstream we don't need.
+    source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::TrustedTypes, "trusted-types;");
 
   source->UseStringsJs();
   source->SetDefaultResource(html_resource_id);

@@ -83,7 +83,7 @@ class BraveAccountUIBase {
         "require-trusted-types-for 'script';");
     source->OverrideContentSecurityPolicy(
         network::mojom::CSPDirectiveName::TrustedTypes,
-        "trusted-types svelte-trusted-html lit-html-desktop;");
+        "trusted-types lit-html-desktop;");
 
     source->UseStringsJs();
     source->EnableReplaceI18nInJS();

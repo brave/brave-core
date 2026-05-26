@@ -404,9 +404,6 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameAncestors,
       base::StrCat({"frame-ancestors ", kAIChatUIURL, ";"}));
-  source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::TrustedTypes,
-      "trusted-types svelte-trusted-html default;");
 
   Profile* profile = Profile::FromWebUI(web_ui);
   content::URLDataSource::Add(profile,

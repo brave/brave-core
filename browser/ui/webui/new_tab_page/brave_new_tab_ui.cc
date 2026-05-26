@@ -114,8 +114,8 @@ BraveNewTabUI::BraveNewTabUI(
 
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::TrustedTypes,
-      "trusted-types static-types lottie-worker-script-loader lit-html-desktop "
-      "default; ");
+      "trusted-types static-types lottie-worker-script-loader "
+      "lit-html-desktop;");
 
   source->AddBoolean("featureCustomBackgroundEnabled",
                      !profile->GetPrefs()->IsManagedPreference(
