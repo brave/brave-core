@@ -276,7 +276,7 @@ private struct ManagePasswordListRow: View {
     NavigationLink {
       Group {
         if passwords.count == 1, let password = passwords.first {
-          ManagePasswordDetailView(viewModel: viewModel, password: password)
+          ManagePasswordDetailReadOnlyView(viewModel: viewModel, password: password)
         } else {
           ManagePasswordGroupView(viewModel: viewModel, domain: domain)
         }

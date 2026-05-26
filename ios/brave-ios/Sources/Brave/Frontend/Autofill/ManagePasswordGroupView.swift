@@ -33,7 +33,7 @@ struct ManagePasswordGroupView: View {
       Section {
         ForEach(passwords, id: \.identifier) { password in
           NavigationLink {
-            ManagePasswordDetailView(viewModel: viewModel, password: password)
+            ManagePasswordDetailReadOnlyView(viewModel: viewModel, password: password)
               .environment(\.openURL, openURL)
               .environment(\.redactionReasons, redactionReasons)
           } label: {
