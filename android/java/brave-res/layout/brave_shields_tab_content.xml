@@ -78,16 +78,16 @@
 
             </LinearLayout>
 
-            <!-- Toggle Switch -->
-            <ImageView
+            <!-- Toggle Switch — scaled up to match the original 65×40dp footprint.
+                 layout_marginEnd compensates for the right-side overflow from scaleX. -->
+            <com.google.android.material.materialswitch.MaterialSwitch
                 android:id="@+id/shields_toggle_switch"
-                android:layout_width="65dp"
-                android:layout_height="40dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:src="@drawable/shields_switch"
-                android:scaleType="fitXY"
-                android:clickable="true"
-                android:focusable="true"
+                android:layout_marginEnd="7dp"
+                android:scaleX="1.25"
+                android:scaleY="1.25"
                 android:contentDescription="@string/brave_shields_onboarding_title"/>
 
         </LinearLayout>
@@ -282,11 +282,10 @@
             <!-- 2. Block scripts (toggle) -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="12dp">
+                android:paddingHorizontal="16dp">
 
                 <TextView
                     style="@style/LargeRegular"
@@ -296,14 +295,11 @@
                     android:text="@string/brave_shields_blocks_scripts_switch"
                     android:textColor="@color/text_primary"/>
 
-                <ImageView
+                <com.google.android.material.materialswitch.MaterialSwitch
                     android:id="@+id/scripts_toggle"
-                    android:layout_width="42dp"
-                    android:layout_height="26dp"
-                    android:src="@drawable/shields_switch_small"
-                    android:scaleType="fitXY"
-                    android:clickable="true"
-                    android:focusable="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minHeight="0dp"
                     android:contentDescription="@string/brave_shields_blocks_scripts_switch"/>
 
             </LinearLayout>
@@ -421,11 +417,10 @@
             <!-- 6. Block fingerprinting (toggle) -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="12dp">
+                android:paddingHorizontal="16dp">
 
                 <TextView
                     style="@style/LargeRegular"
@@ -435,14 +430,11 @@
                     android:text="@string/block_fingerprinting"
                     android:textColor="@color/text_primary"/>
 
-                <ImageView
+                <com.google.android.material.materialswitch.MaterialSwitch
                     android:id="@+id/fingerprinting_toggle"
-                    android:layout_width="42dp"
-                    android:layout_height="26dp"
-                    android:src="@drawable/shields_switch_small"
-                    android:scaleType="fitXY"
-                    android:clickable="true"
-                    android:focusable="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minHeight="0dp"
                     android:contentDescription="@string/block_fingerprinting"/>
 
             </LinearLayout>

@@ -19,9 +19,7 @@ import android.graphics.Matrix;
 import android.graphics.Outline;
 import android.graphics.PointF;
 import android.graphics.Rect;
-import android.graphics.drawable.Animatable;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.text.SpannableString;
@@ -53,9 +51,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatRadioButton;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -122,9 +119,6 @@ public class BraveUnifiedPanelHandler {
     private static final int ICON_OVERLAP_MARGIN_DP = -8;
     private static final int FAVICON_ELEVATION_DP = 1;
     private static final int PANEL_OVERLAP_OFFSET_DP = 7;
-    private static final float BLOCK_SCRIPTS_SWITCH_SHIELDS_ENABLED_ALPHA = 1f;
-    private static final float BLOCK_SCRIPTS_SWITCH_SHIELDS_DISABLED_ALPHA = 0.5f;
-    private static final int TOGGLE_ANIMATION_MS = 200;
 
     // Nala primitive_*_50 colours used as deterministic placeholder backgrounds for blocked-tracker
     // favicons. The colour is chosen by hashing the display domain so the same origin always maps
@@ -172,13 +166,7 @@ public class BraveUnifiedPanelHandler {
     private ImageView mShieldIconUnified;
     private TextView mSiteTextUnified;
     private TextView mShieldsStatusText;
-    private ImageView mShieldsToggleSwitch;
-    private final Runnable mRestoreToggleOnDrawable =
-            () -> {
-                if (mShieldsToggleSwitch != null) {
-                    mShieldsToggleSwitch.setImageResource(R.drawable.shields_switch_on);
-                }
-            };
+    private SwitchCompat mShieldsToggleSwitch;
     private TextView mBlockCountNumber;
     private TextView mBlockCountText;
     private LinearLayout mBlockedItemsContainer;
@@ -191,8 +179,8 @@ public class BraveUnifiedPanelHandler {
     private boolean mIsAdvancedOptionsExpanded;
 
     // Advanced options switches (no Forget Me in new design)
-    private ImageView mBlockScriptsSwitch;
-    private ImageView mFingerprintingSwitch;
+    private SwitchCompat mBlockScriptsSwitch;
+    private SwitchCompat mFingerprintingSwitch;
 
     // Observer for notifying toolbar of shields changes (icon update, page reload)
     private @Nullable BraveShieldsMenuObserver mMenuObserver;
@@ -309,7 +297,7 @@ public class BraveUnifiedPanelHandler {
                         mProfile,
                         mUrl.getSpec(),
                         BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS);
-        applyToggleState(isShieldsUp, false);
+        applyToggleState(isShieldsUp);
         mShieldsStatusText.setText(
                 isShieldsUp
                         ? mContext.getString(R.string.shields_up_status)
@@ -481,33 +469,22 @@ public class BraveUnifiedPanelHandler {
         mReportBrokenSiteButton = popupView.findViewById(R.id.report_broken_site_button);
         mShieldsWarningSection = popupView.findViewById(R.id.shields_warning_section);
 
-        // Set up shields toggle
-        setToggleAccessibility(mShieldsToggleSwitch);
+        // Set up shields toggle — SwitchCompat toggles its own checked state on click, so
+        // isChecked() already reflects the new state inside the click listener.
         mShieldsToggleSwitch.setOnClickListener(
                 v -> {
-                    boolean newState = !v.isSelected();
-                    applyToggleState(newState, true);
+                    boolean newState = mShieldsToggleSwitch.isChecked();
                     onShieldsToggleChanged(newState);
                 });
 
         // Set up advanced options switches
         if (mBlockScriptsSwitch != null) {
-            setToggleAccessibility(mBlockScriptsSwitch);
             mBlockScriptsSwitch.setOnClickListener(
-                    v -> {
-                        boolean newState = !v.isSelected();
-                        v.setSelected(newState);
-                        onBlockScriptsChanged(newState);
-                    });
+                    v -> onBlockScriptsChanged(mBlockScriptsSwitch.isChecked()));
         }
         if (mFingerprintingSwitch != null) {
-            setToggleAccessibility(mFingerprintingSwitch);
             mFingerprintingSwitch.setOnClickListener(
-                    v -> {
-                        boolean newState = !v.isSelected();
-                        v.setSelected(newState);
-                        onFingerprintingChanged(newState);
-                    });
+                    v -> onFingerprintingChanged(mFingerprintingSwitch.isChecked()));
         }
 
         if (mReportBrokenSiteButton != null) {
@@ -642,12 +619,10 @@ public class BraveUnifiedPanelHandler {
                                 mUrl.getSpec(),
                                 BraveShieldsContentSettings.RESOURCE_IDENTIFIER_JAVASCRIPTS);
                 mBlockScriptsSwitch.setEnabled(true);
-                mBlockScriptsSwitch.setAlpha(BLOCK_SCRIPTS_SWITCH_SHIELDS_ENABLED_ALPHA);
-                mBlockScriptsSwitch.setSelected(scriptsBlocked);
+                mBlockScriptsSwitch.setChecked(scriptsBlocked);
             } else {
                 mBlockScriptsSwitch.setEnabled(false);
-                mBlockScriptsSwitch.setAlpha(BLOCK_SCRIPTS_SWITCH_SHIELDS_DISABLED_ALPHA);
-                mBlockScriptsSwitch.setSelected(false);
+                mBlockScriptsSwitch.setChecked(false);
             }
         }
 
@@ -661,30 +636,16 @@ public class BraveUnifiedPanelHandler {
                 boolean fingerprintingEnabled =
                         !fingerprintingValue.equals(BraveShieldsContentSettings.ALLOW_RESOURCE);
                 mFingerprintingSwitch.setEnabled(true);
-                mFingerprintingSwitch.setAlpha(1.0f);
-                mFingerprintingSwitch.setSelected(fingerprintingEnabled);
+                mFingerprintingSwitch.setChecked(fingerprintingEnabled);
             } else {
                 mFingerprintingSwitch.setEnabled(false);
-                mFingerprintingSwitch.setAlpha(0.5f);
-                mFingerprintingSwitch.setSelected(false);
+                mFingerprintingSwitch.setChecked(false);
             }
         }
     }
 
-    private void applyToggleState(boolean isOn, boolean animated) {
-        mShieldsToggleSwitch.setSelected(isOn);
-        mShieldsToggleSwitch.removeCallbacks(mRestoreToggleOnDrawable);
-        if (animated && isOn && mContext != null) {
-            Drawable avd = ContextCompat.getDrawable(mContext, R.drawable.shields_switch_off_to_on);
-            if (avd != null) {
-                mShieldsToggleSwitch.setImageDrawable(avd);
-                ((Animatable) avd).start();
-                mShieldsToggleSwitch.postDelayed(mRestoreToggleOnDrawable, TOGGLE_ANIMATION_MS);
-                return;
-            }
-        }
-        mShieldsToggleSwitch.setImageResource(
-                isOn ? R.drawable.shields_switch_on : R.drawable.shields_switch_off);
+    private void applyToggleState(boolean isOn) {
+        mShieldsToggleSwitch.setChecked(isOn);
     }
 
     private void onShieldsToggleChanged(boolean isChecked) {
@@ -1842,21 +1803,6 @@ public class BraveUnifiedPanelHandler {
                 (bitmap, iconUrl) -> {
                     if (mBlockedItemsContainer == null || mContext == null) return;
                     PostTask.postTask(TaskTraits.UI_DEFAULT, () -> onFaviconResult(origin, bitmap));
-                });
-    }
-
-    private static void setToggleAccessibility(ImageView toggle) {
-        ViewCompat.setAccessibilityDelegate(
-                toggle,
-                new androidx.core.view.AccessibilityDelegateCompat() {
-                    @Override
-                    public void onInitializeAccessibilityNodeInfo(
-                            View host, AccessibilityNodeInfoCompat info) {
-                        super.onInitializeAccessibilityNodeInfo(host, info);
-                        info.setClassName("android.widget.Switch");
-                        info.setCheckable(true);
-                        info.setChecked(host.isSelected());
-                    }
                 });
     }
 
