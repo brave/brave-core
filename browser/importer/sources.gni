@@ -11,8 +11,10 @@ brave_browser_importer_impl_sources = []
 brave_browser_importer_impl_deps = []
 
 if (!is_android) {
-  brave_browser_importer_sources +=
-      [ "//brave/browser/importer/brave_external_process_importer_host.h" ]
+  brave_browser_importer_sources += [
+    "//brave/browser/importer/brave_external_process_importer_host.h",
+    "//brave/browser/importer/brave_password_importer.h",
+  ]
   brave_browser_importer_public_deps += [
     "//base",
     "//chrome/common/extensions",
@@ -24,6 +26,7 @@ if (!is_android) {
     "//brave/browser/importer/brave_external_process_importer_host.cc",
     "//brave/browser/importer/brave_in_process_importer_bridge.cc",
     "//brave/browser/importer/brave_in_process_importer_bridge.h",
+    "//brave/browser/importer/brave_password_importer.cc",
   ]
   if (enable_extensions) {
     brave_browser_importer_impl_sources += [
@@ -42,8 +45,16 @@ if (!is_android) {
     "//base",
     "//brave/app:brave_generated_resources_grit_grit",
     "//brave/browser/importer",
+    "//brave/common/importer",
     "//brave/common/importer:interfaces",
     "//brave/components/brave_origin/buildflags",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/password_manager/factories",
+    "//components/keyed_service/core",
+    "//components/os_crypt/async/browser",
+    "//components/os_crypt/async/common",
+    "//components/password_manager/core/browser/password_store:password_store_impl",
+    "//components/password_manager/core/browser/password_store:password_store_interface",
     "//content/public/browser",
     "//extensions/buildflags",
     "//mojo/public/cpp/bindings",
