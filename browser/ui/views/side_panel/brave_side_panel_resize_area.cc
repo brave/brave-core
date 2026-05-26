@@ -28,7 +28,12 @@ gfx::Rect BraveSidePanelResizeArea::GetNoBorderResizeBounds(
 }
 
 void BraveSidePanelResizeArea::Layout(PassKey) {
-  if (!side_panel_->GetInsets().IsEmpty()) {
+  // Upstream puts resize area over the left or right border.
+  // If it doesn't have left or right border, we should put over the contents.
+  // Check only horizontal insets — top insets may be non-zero when a panel
+  // header is present, so IsEmpty() would incorrectly treat a header-only inset
+  // as a side border.
+  if (side_panel_->GetInsets().width() != 0) {
     // Parent has a border: resize area sits in the border gap between the
     // panel edge and the content area. Delegate entirely to upstream.
     LayoutSuperclass<SidePanelResizeArea>(this);
