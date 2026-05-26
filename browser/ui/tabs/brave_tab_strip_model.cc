@@ -223,9 +223,7 @@ void BraveTabStripModel::NotifyTreeTabNodeReparented(
     return;
   }
   auto change = TreeTabChange(id, TreeTabChange::ReparentedChange(*node));
-  for (auto& observer : observers_) {
-    observer.OnTreeTabChanged(change);
-  }
+  observers_.Notify(&TabStripModelObserver::OnTreeTabChanged, change);
 }
 
 const tree_tab::TreeTabNodeId* BraveTabStripModel::GetTreeTabNodeIdForGroup(
