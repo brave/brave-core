@@ -5,25 +5,45 @@
 
 import("//ios/web/public/js_messaging/compile_ts.gni")
 import("//ios/web/public/js_messaging/optimize_js.gni")
+import("//ios/web/public/js_messaging/optimize_ts.gni")
 
 source_set("js_messaging") {
   sources = [
+    "message_handler_token.h",
+    "message_handler_token.mm",
+    "protected_javascript_feature.h",
+    "protected_javascript_feature.mm",
+    "randomized_message_handler_name.h",
+    "randomized_message_handler_name.mm",
     "safe_builtins_javascript_feature.h",
     "safe_builtins_javascript_feature.mm",
   ]
   deps = [ ":safe_builtins_js" ]
-  public_deps = [ "//ios/web/public/js_messaging" ]
+  public_deps = [
+    "//base",
+    "//ios/web/public/js_messaging",
+  ]
 }
 
 source_set("unittests") {
   testonly = true
-  sources = [ "safe_builtins_javascript_test.mm" ]
+  sources = [
+    "message_handler_token_inttest.mm",
+    "randomized_message_handler_name_inttest.mm",
+    "safe_builtins_javascript_test.mm",
+  ]
   deps = [
+    ":js_messaging",
+    ":randomized_message_handler_test_api",
     ":safe_builtins_js",
+    ":tokenized_message_handler_test_api",
     "//base",
     "//base/test:test_support",
+    "//ios/web/public/js_messaging",
     "//ios/web/public/test:javascript_test",
+    "//ios/web/public/test:test_fixture",
     "//ios/web/public/test:util",
+    "//ios/web/public/test/fakes",
     "//testing/gtest",
     "//url",
   ]
@@ -31,6 +51,11 @@ source_set("unittests") {
 
 compile_ts("safe_builtins") {
   sources = [ "resources/safe_builtins.ts" ]
+}
+
+compile_ts("util_scripts") {
+  sources = [ "resources/utils.ts" ]
+  deps = [ ":safe_builtins" ]
 }
 
 optimize_js("safe_builtins_js") {
@@ -41,4 +66,23 @@ optimize_js("safe_builtins_js") {
   output_name = "safe_builtins"
 
   deps = [ ":safe_builtins" ]
+}
+
+optimize_ts("randomized_message_handler_test_api") {
+  testonly = true
+  sources = [ "resources/randomized_message_handler_test_api.ts" ]
+  deps = [
+    ":util_scripts",
+    "//ios/web/public/js_messaging:gcrweb",
+    "//ios/web/public/js_messaging:util_scripts",
+  ]
+}
+
+optimize_ts("tokenized_message_handler_test_api") {
+  testonly = true
+  sources = [ "resources/tokenized_message_handler_test_api.ts" ]
+  deps = [
+    ":util_scripts",
+    "//ios/web/public/js_messaging:gcrweb",
+  ]
 }

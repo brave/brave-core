@@ -3,21 +3,69 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+declare global {
+  interface Window {
+    webkit: any;
+  }
+}
+
 class SafeBuiltins {
   readonly $Object: typeof Object = this.secureCopy(Object);
   readonly $Function: typeof Function = this.secureCopy(Function);
   readonly $Array: typeof Array = this.secureCopy(Array);
   readonly $ = function(value: any): any { return value; }
 
+  // Sends a message to a script message handler in the browser
+  readonly sendWebKitMessage: (handlerName: string, message: object|string) => void;
+
+  // Sends a message to a script message handler in the browser and returns a
+  // Promise that resolves when the browser replies
+  readonly sendWebKitMessageWithReply: (handlerName: string, message: object|string) => Promise<any>;
+
+  // Send a message expecting synchronously by using window.prompt and returns
+  // the reply from the browser.
+  readonly sendWebKitMessageSynchronously: (handlerName: string, message: object|string) => string|null;
+
   constructor() {
-    // Freeze all the safe builtins
-    for (const value of [this.$Object, this.$Function, this.$Array, this.$]) {
+    // Setup private refs to capture in safe builtin functions
+    const webkitMessageHandlers = window.webkit.messageHandlers;
+    const windowPrompt = window.prompt.bind(window);
+    const jsonStringify = JSON.stringify.bind(JSON);
+    const jsonParse = JSON.parse.bind(JSON);
+
+    this.sendWebKitMessage = (handlerName, message) => {
+      webkitMessageHandlers[handlerName].postMessage(message);
+    }
+
+    this.sendWebKitMessageWithReply = (handlerName, message) => {
+      return webkitMessageHandlers[handlerName].postMessage(message);
+    }
+
+    this.sendWebKitMessageSynchronously = (handlerName, message) => {
+      const response = windowPrompt(jsonStringify({
+        handler: handlerName,
+        message: message
+      }));
+      if (!response) {
+        return null;
+      }
+      try {
+        return jsonParse(response)
+      } catch {
+        return null;
+      }
+    }
+
+    // Freeze all the safe builtins and any function we export
+    for (const value of [this.$Object, this.$Function, this.$Array, this.$,
+      this.sendWebKitMessage, this.sendWebKitMessageWithReply,
+      this.sendWebKitMessageSynchronously]) {
       this.deepFreeze(value);
     }
   }
 
   // Freeze an object and its prototype
-  deepFreeze(value: any) {
+  private deepFreeze(value: any) {
     if (!value) {
       return;
     }
