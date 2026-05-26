@@ -85,6 +85,11 @@ bool IsTransactionSimulationsEnabled() {
       features::kBraveWalletTransactionSimulationsFeature);
 }
 
+bool IsAccountHidingEnabled() {
+  return base::FeatureList::IsEnabled(
+      features::kBraveWalletAccountHidingFeature);
+}
+
 #if BUILDFLAG(IS_IOS)
 bool IsWalletWebUIEnabled() {
   return base::FeatureList::IsEnabled(features::kBraveWalletWebUIFeature);

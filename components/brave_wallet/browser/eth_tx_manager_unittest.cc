@@ -242,7 +242,7 @@ class EthTxManagerUnitTest : public testing::Test {
         url_loader_factory_.GetSafeWeakWrapper(), network_manager_.get(),
         &profile_prefs_, nullptr);
     keyring_service_ = std::make_unique<KeyringService>(
-        json_rpc_service_.get(), &profile_prefs_, &local_state_);
+        json_rpc_service_.get(), &profile_prefs_, &local_state_, nullptr);
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     auto tx_storage = CreateTxStorageForTest(temp_dir_.GetPath());
     tx_storage_ptr_ = tx_storage.get();

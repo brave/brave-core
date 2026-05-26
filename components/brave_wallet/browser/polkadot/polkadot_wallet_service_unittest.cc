@@ -68,8 +68,8 @@ class PolkadotWalletServiceUnitTest : public testing::Test {
 
   void Init() {
     network_manager_ = std::make_unique<NetworkManager>(&prefs_);
-    keyring_service_ =
-        std::make_unique<KeyringService>(nullptr, &prefs_, &local_state_);
+    keyring_service_ = std::make_unique<KeyringService>(nullptr, &prefs_,
+                                                        &local_state_, nullptr);
 
     polkadot_substrate_rpc_ = std::make_unique<PolkadotSubstrateRpc>(
         *network_manager_, url_loader_factory_.GetSafeWeakWrapper());

@@ -80,6 +80,10 @@ class BraveWalletPermissionContext
                               content::BrowserContext* context,
                               const url::Origin& origin,
                               const std::string& account);
+  static void ResetPermissionsForAccount(
+      content::BrowserContext* context,
+      ContentSettingsType content_settings_type,
+      const std::string& account);
   static void ResetAllPermissions(content::BrowserContext* context);
 
   static std::vector<std::string> GetWebSitesWithPermission(

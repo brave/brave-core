@@ -42,6 +42,7 @@ class AssetDiscoveryManagerUnitTest;
 class BitcoinHDKeyring;
 class BitcoinHardwareKeyring;
 class BitcoinImportKeyring;
+class BraveWalletServiceDelegate;
 class CardanoHDKeyring;
 class EthTransaction;
 class EthereumKeyring;
@@ -73,7 +74,8 @@ class KeyringService : public mojom::KeyringService {
  public:
   KeyringService(JsonRpcService* json_rpc_service,
                  PrefService* profile_prefs,
-                 PrefService* local_state);
+                 PrefService* local_state,
+                 BraveWalletServiceDelegate* delegate);
   ~KeyringService() override;
 
   void Bind(mojo::PendingReceiver<mojom::KeyringService> receiver);
@@ -218,6 +220,7 @@ class KeyringService : public mojom::KeyringService {
 
   void AddObserver(
       ::mojo::PendingRemote<mojom::KeyringServiceObserver> observer) override;
+  void SetDelegateForTesting(BraveWalletServiceDelegate* delegate);
   void NotifyUserInteraction() override;
   void GetAllAccounts(GetAllAccountsCallback callback) override;
   mojom::AllAccountsInfoPtr GetAllAccountsSync();
@@ -518,6 +521,7 @@ class KeyringService : public mojom::KeyringService {
   raw_ptr<JsonRpcService> json_rpc_service_;
   raw_ptr<PrefService> profile_prefs_ = nullptr;
   raw_ptr<PrefService> local_state_ = nullptr;
+  raw_ptr<BraveWalletServiceDelegate> delegate_ = nullptr;
   bool request_unlock_pending_ = false;
 
   std::optional<bool> is_autolock_enabled_;

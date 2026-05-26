@@ -167,8 +167,8 @@ class ZCashWalletServiceUnitTest : public testing::Test {
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
-    keyring_service_ =
-        std::make_unique<KeyringService>(nullptr, &prefs_, &local_state_);
+    keyring_service_ = std::make_unique<KeyringService>(nullptr, &prefs_,
+                                                        &local_state_, nullptr);
 
     zcash_wallet_service_ = std::make_unique<TestingZCashWalletService>(
         *keyring_service_, std::make_unique<testing::NiceMock<MockZCashRPC>>());

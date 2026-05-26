@@ -236,7 +236,8 @@ BraveWalletService::BraveWalletService(
                                                          local_state)),
       keyring_service_(std::make_unique<KeyringService>(json_rpc_service_.get(),
                                                         profile_prefs,
-                                                        local_state)),
+                                                        local_state,
+                                                        delegate_.get())),
       eth_allowance_manager_(
           std::make_unique<EthAllowanceManager>(json_rpc_service_.get(),
                                                 keyring_service_.get(),
@@ -2075,6 +2076,7 @@ void BraveWalletService::OnWalletReset() {
 void BraveWalletService::SetDelegateForTesting(  // IN-TEST
     std::unique_ptr<BraveWalletServiceDelegate> delegate) {
   delegate_ = std::move(delegate);
+  keyring_service_->SetDelegateForTesting(delegate_.get());
 }
 
 }  // namespace brave_wallet
