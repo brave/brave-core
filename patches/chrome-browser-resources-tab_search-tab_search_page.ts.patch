@@ -1,0 +1,29 @@
+diff --git a/chrome/browser/resources/tab_search/tab_search_page.ts b/chrome/browser/resources/tab_search/tab_search_page.ts
+index 2ab7169fc958847959d9ea75e3174da260ad0a5c..b6f24ec85eba2b11b1a9a0aee989615b11004717 100644
+--- a/chrome/browser/resources/tab_search/tab_search_page.ts
++++ b/chrome/browser/resources/tab_search/tab_search_page.ts
+@@ -158,6 +158,11 @@ export class TabSearchPageElement extends TabSearchSearchFieldBase {
+   private filteredOpenHeaderIndices_: number[] = [];
+   private initiallySelectedIndex_: number = NO_SELECTION;
+   private documentVisibilityChangedListener_: () => void;
++  // Override hook: post-process the substring-filtered open-tab list.
++  protected async processFilteredOpenTabs_(
++      tabs: Array<TabData|SplitViewData>): Promise<Array<TabData|SplitViewData>> {
++    return tabs;
++  }
+ 
+   constructor() {
+     super();
+@@ -856,6 +861,7 @@ export class TabSearchPageElement extends TabSearchSearchFieldBase {
+ 
+     let filteredOpenTabs = search<TabData|SplitViewData>(
+         this.searchText_, this.openTabs_, this.searchOptions_);
++    filteredOpenTabs = await this.processFilteredOpenTabs_(filteredOpenTabs);
+ 
+     // The MRU tab that is not the active tab is either the first tab in the
+     // Audio and Video section (if it exists) or the first tab in the Open Tabs
+@@ -1022,4 +1028,3 @@ declare global {
+   }
+ }
+ 
+-customElements.define(TabSearchPageElement.is, TabSearchPageElement);
