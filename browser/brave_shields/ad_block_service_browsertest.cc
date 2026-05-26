@@ -180,8 +180,18 @@ void AdBlockServiceTest::PreRunTestOnMainThread() {
   histogram_tester_.ExpectTotalCount(
       "Brave.Adblock.MakeEngineWithRules.Default", 1);
   InstallDefaultAdBlockComponent();
-  histogram_tester_.ExpectTotalCount(
-      "Brave.Adblock.MakeEngineWithRules.Default", 2);
+  // The histogram is recorded on the ad-block background thread before the
+  // OnEngineLoaded reply is posted back to the UI thread.  Although the
+  // PostTask provides a happens-before guarantee for the reply callback
+  // itself, the HistogramTester reads through relaxed-atomic snapshots that
+  // may not yet reflect the background write at the exact moment the
+  // observer fires.  Poll briefly so slower platforms (especially Windows
+  // CI) have time for the sample to become visible.
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return histogram_tester_
+               .GetAllSamples("Brave.Adblock.MakeEngineWithRules.Default")
+               .size() >= 2;
+  })) << "Timeout waiting for second MakeEngineWithRules histogram sample";
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
 
