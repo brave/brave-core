@@ -96,37 +96,32 @@ public class BraveIntentHandlerUnitTest {
         String result = BraveIntentHandler.extractUrlFromIntent(intent);
 
         assertEquals(
-                "https://search.brave.com/search?q=C%2B%2B+tutorial&source=android-widget",
-                result);
+                "https://search.brave.com/search?q=C%2B%2B+tutorial&source=android-widget", result);
     }
 
     @Test
     @SmallTest
     public void extractUrlFromIntent_widgetSearch_preservesFormEncodedSpaceInQuery() {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(
-                Uri.parse("https://search.brave.com/search?q=hello+world&source=android"));
+        intent.setData(Uri.parse("https://search.brave.com/search?q=hello+world&source=android"));
         intent.putExtra(SearchWidgetProvider.EXTRA_FROM_SEARCH_WIDGET, true);
 
         String result = BraveIntentHandler.extractUrlFromIntent(intent);
 
-        assertEquals(
-                "https://search.brave.com/search?q=hello+world&source=android-widget", result);
+        assertEquals("https://search.brave.com/search?q=hello+world&source=android-widget", result);
     }
 
     @Test
     @SmallTest
     public void extractUrlFromIntent_widgetSearch_preservesPercentEncodedSpaceInQuery() {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(
-                Uri.parse("https://search.brave.com/search?q=hello%20world&source=android"));
+        intent.setData(Uri.parse("https://search.brave.com/search?q=hello%20world&source=android"));
         intent.putExtra(SearchWidgetProvider.EXTRA_FROM_SEARCH_WIDGET, true);
 
         String result = BraveIntentHandler.extractUrlFromIntent(intent);
 
         assertEquals(
-                "https://search.brave.com/search?q=hello%20world&source=android-widget",
-                result);
+                "https://search.brave.com/search?q=hello%20world&source=android-widget", result);
     }
 
     @Test
@@ -209,15 +204,12 @@ public class BraveIntentHandlerUnitTest {
         // sender as %26 and %3D. They must survive untouched, otherwise the
         // server would re-split the query and misinterpret it.
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(
-                Uri.parse(
-                        "https://search.brave.com/search?q=a%26b%3Dc&source=android"));
+        intent.setData(Uri.parse("https://search.brave.com/search?q=a%26b%3Dc&source=android"));
         intent.putExtra(SearchWidgetProvider.EXTRA_FROM_SEARCH_WIDGET, true);
 
         String result = BraveIntentHandler.extractUrlFromIntent(intent);
 
-        assertEquals(
-                "https://search.brave.com/search?q=a%26b%3Dc&source=android-widget", result);
+        assertEquals("https://search.brave.com/search?q=a%26b%3Dc&source=android-widget", result);
     }
 
     @Test
