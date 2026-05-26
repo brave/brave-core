@@ -15,6 +15,8 @@
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/brave_service_keys/brave_service_key_utils.h"
+#include "brave/components/constants/brave_services_key.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "net/http/http_request_headers.h"
@@ -151,15 +153,23 @@ void ObliviousHttpConfigManager::FetchKeyConfig(const std::string& model_name,
         std::make_unique<api_request_helper::APIRequestHelper>(
             GetKeyConfigTrafficAnnotationTag(), url_loader_factory_);
   }
+  const GURL api_url = GetEndpointUrl(
+      /*premium=*/false, absl::StrFormat(kKeyConfigPathFormat, model_name));
+  auto headers = GetBraveHeaders(/*credential=*/std::nullopt);
+  const auto digest_header =
+      brave_service_keys::GetDigestHeader(/*payload=*/"");
+  headers.emplace(digest_header.first, digest_header.second);
+  auto auth_header = brave_service_keys::GetAuthorizationHeader(
+      BUILDFLAG(SERVICE_KEY_AICHAT), headers, api_url,
+      net::HttpRequestHeaders::kGetMethod, {"digest"});
+  headers.emplace(auth_header.first, auth_header.second);
   api_request_helper_->Request(
-      net::HttpRequestHeaders::kGetMethod,
-      GetEndpointUrl(/*premium=*/false,
-                     absl::StrFormat(kKeyConfigPathFormat, model_name)),
+      net::HttpRequestHeaders::kGetMethod, api_url,
       /*payload=*/"", /*payload_content_type=*/"",
       base::BindOnce(&ObliviousHttpConfigManager::OnKeyConfigFetched,
                      weak_factory_.GetWeakPtr(), model_name,
                      std::move(callback)),
-      GetBraveHeaders(/*credential=*/std::nullopt));
+      std::move(headers));
 }
 
 void ObliviousHttpConfigManager::OnKeyConfigFetched(
