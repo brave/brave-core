@@ -2215,7 +2215,8 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
   EXPECT_EQ(0, side_panel->GetInsets().width());
 
   // Shared assertions for the no-border state after a panel switch.
-  auto verify_no_border_state = [&]() {
+  auto verify_no_border_state = [&](const base::Location& loc) {
+    SCOPED_TRACE(loc.ToString());
     EXPECT_EQ(0, side_panel->GetInsets().width())
         << "Border insets' width should stay empty after switching panels "
            "(border OFF)";
@@ -2239,7 +2240,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
         SidePanelEntry::Key(SidePanelEntryId::kBookmarks));
   }));
   RunScheduledLayouts();
-  verify_no_border_state();
+  verify_no_border_state(FROM_HERE);
 
   // Switch to another panel that doesn't have brave panel header.
   panel_ui->Show(SidePanelEntryId::kCustomizeChrome);
@@ -2248,7 +2249,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
         SidePanelEntry::Key(SidePanelEntryId::kCustomizeChrome));
   }));
   RunScheduledLayouts();
-  verify_no_border_state();
+  verify_no_border_state(FROM_HERE);
 }
 
 class ScopedSidePanelUIForTesting {

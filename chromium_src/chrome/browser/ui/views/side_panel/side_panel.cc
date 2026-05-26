@@ -70,8 +70,9 @@ void SidePanel::AddHeaderView(std::unique_ptr<views::View> view) {
   AddHeaderView_ChromiumImpl(std::move(view));
   UpdateBorder();
 
-  // Resize area is overlapped with other views such as contents and
-  // header view. Make it top-most view to get event for dragging.
+  // The resize area overlaps other views (contents, header), so it must be
+  // top-most to receive drag events. With rounded corners, it sits over the
+  // border area instead and doesn't overlap other views, so no reorder needed.
   if (!rounded_border_enabled_) {
     ReorderChildView(resize_area_, children().size());
   }
