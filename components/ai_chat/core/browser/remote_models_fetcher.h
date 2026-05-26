@@ -13,6 +13,7 @@
 #include "base/functional/callback.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/sequence_checker.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
 
 namespace network {
@@ -39,7 +40,10 @@ class RemoteModelsFetcher {
   RemoteModelsFetcher(const RemoteModelsFetcher&) = delete;
   RemoteModelsFetcher& operator=(const RemoteModelsFetcher&) = delete;
 
-  // Calls callback with parsed models on success, or empty vector on failure.
+  // Fetches and parses models from |url|, then invokes |callback| with the
+  // results. |url| must be a valid HTTPS URL; non-HTTPS or malformed URLs
+  // result in an empty callback. On network or parse failure, the callback
+  // is invoked with an empty vector.
   void FetchModels(const std::string& url, FetchModelsCallback callback);
 
  private:
@@ -47,6 +51,8 @@ class RemoteModelsFetcher {
                        api_request_helper::APIRequestResult result);
 
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
+
+  SEQUENCE_CHECKER(sequence_checker_);
 
   base::WeakPtrFactory<RemoteModelsFetcher> weak_ptr_factory_{this};
 };

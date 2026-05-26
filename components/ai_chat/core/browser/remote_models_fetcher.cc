@@ -9,8 +9,10 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "base/location.h"
 #include "base/logging.h"
 #include "base/numerics/safe_conversions.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -111,6 +113,46 @@ std::optional<mojom::ConversationCapability> ParseCapability(
   return std::nullopt;
 }
 
+struct ParsedCapabilities {
+  std::vector<mojom::ConversationCapability> capabilities;
+  mojom::ModelCategory category;
+};
+
+// Parses the model's capability list and derives its category from the first
+// CHAT or SUMMARY capability in list order. Returns std::nullopt if the list
+// is missing or declares neither category capability, in which case the model
+// is rejected.
+std::optional<ParsedCapabilities> ParseCapabilities(
+    const base::DictValue& model_dict) {
+  const base::ListValue* capabilities_list =
+      model_dict.FindList(kCapabilitiesField);
+  if (!capabilities_list) {
+    return std::nullopt;
+  }
+
+  std::vector<mojom::ConversationCapability> capabilities;
+  for (const auto& capability_value : *capabilities_list) {
+    if (!capability_value.is_string()) {
+      continue;
+    }
+    if (auto capability = ParseCapability(capability_value.GetString())) {
+      capabilities.push_back(*capability);
+    }
+  }
+
+  for (auto capability : capabilities) {
+    if (capability == mojom::ConversationCapability::CHAT) {
+      return ParsedCapabilities{std::move(capabilities),
+                                mojom::ModelCategory::CHAT};
+    }
+    if (capability == mojom::ConversationCapability::SUMMARY) {
+      return ParsedCapabilities{std::move(capabilities),
+                                mojom::ModelCategory::SUMMARY};
+    }
+  }
+  return std::nullopt;
+}
+
 mojom::ModelPtr ParseModel(const base::DictValue& model_dict) {
   const std::string* key = model_dict.FindString(kKeyField);
   if (!key || key->empty()) {
@@ -156,36 +198,8 @@ mojom::ModelPtr ParseModel(const base::DictValue& model_dict) {
     return nullptr;
   }
 
-  const base::ListValue* capabilities_list =
-      model_dict.FindList(kCapabilitiesField);
-  if (!capabilities_list) {
-    return nullptr;
-  }
-
-  std::vector<mojom::ConversationCapability> capabilities;
-  mojom::ModelCategory category = mojom::ModelCategory::CHAT;
-  bool has_category = false;
-  for (const auto& capability_value : *capabilities_list) {
-    if (!capability_value.is_string()) {
-      continue;
-    }
-    auto capability = ParseCapability(capability_value.GetString());
-    if (!capability.has_value()) {
-      continue;
-    }
-    capabilities.push_back(*capability);
-    if (*capability == mojom::ConversationCapability::CHAT && !has_category) {
-      category = mojom::ModelCategory::CHAT;
-      has_category = true;
-    }
-    if (*capability == mojom::ConversationCapability::SUMMARY &&
-        !has_category) {
-      category = mojom::ModelCategory::SUMMARY;
-      has_category = true;
-    }
-  }
-
-  if (!has_category) {
+  auto parsed_capabilities = ParseCapabilities(model_dict);
+  if (!parsed_capabilities) {
     return nullptr;
   }
 
@@ -195,7 +209,7 @@ mojom::ModelPtr ParseModel(const base::DictValue& model_dict) {
   model->is_suggested_model =
       model_dict.FindBool(kIsSuggestedModelField).value_or(false);
   model->is_near_model = model_dict.FindBool(kIsNearModelField).value_or(false);
-  model->supported_capabilities = std::move(capabilities);
+  model->supported_capabilities = std::move(parsed_capabilities->capabilities);
 
   auto leo_opts = mojom::LeoModelOptions::New();
   leo_opts->name = *name;
@@ -209,7 +223,7 @@ mojom::ModelPtr ParseModel(const base::DictValue& model_dict) {
   const std::string* description = options_dict->FindString(kDescriptionField);
   leo_opts->description = description ? *description : "";
 
-  leo_opts->category = category;
+  leo_opts->category = parsed_capabilities->category;
 
   leo_opts->access = *parsed_access;
 
@@ -274,7 +288,9 @@ void RemoteModelsFetcher::FetchModels(const std::string& url,
   const GURL endpoint_url(url);
 
   if (!endpoint_url.is_valid() || !endpoint_url.SchemeIs(url::kHttpsScheme)) {
-    std::move(callback).Run({});
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE,
+        base::BindOnce(std::move(callback), std::vector<mojom::ModelPtr>{}));
     return;
   }
 
@@ -294,6 +310,7 @@ void RemoteModelsFetcher::FetchModels(const std::string& url,
 void RemoteModelsFetcher::OnFetchComplete(
     FetchModelsCallback callback,
     api_request_helper::APIRequestResult result) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!result.Is2XXResponseCode()) {
     std::move(callback).Run({});
     return;

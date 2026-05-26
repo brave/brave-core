@@ -9,7 +9,6 @@
 #include <string>
 #include <vector>
 
-#include "base/notreached.h"
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
@@ -210,7 +209,7 @@ class RemoteModelsFetcherTest : public testing::Test {
             test_url_loader_factory_.AddResponse(request.url.spec(),
                                                  json_response);
           } else {
-            NOTREACHED() << "Unexpected request: " << request.url.spec();
+            ADD_FAILURE() << "Unexpected request: " << request.url.spec();
           }
         }));
   }
@@ -224,7 +223,7 @@ class RemoteModelsFetcherTest : public testing::Test {
                 request.url.spec(), "",
                 static_cast<net::HttpStatusCode>(http_code));
           } else {
-            NOTREACHED() << "Unexpected request: " << request.url.spec();
+            ADD_FAILURE() << "Unexpected request: " << request.url.spec();
           }
         }));
   }
@@ -238,7 +237,7 @@ class RemoteModelsFetcherTest : public testing::Test {
                 network::URLLoaderCompletionStatus(
                     net::ERR_CONNECTION_REFUSED));
           } else {
-            NOTREACHED() << "Unexpected request: " << request.url.spec();
+            ADD_FAILURE() << "Unexpected request: " << request.url.spec();
           }
         }));
   }
