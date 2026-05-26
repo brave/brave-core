@@ -5,16 +5,17 @@
 
 #include "brave/browser/brave_ads/application_state/application_state_monitor/application_state_monitor_android.h"
 
+#include <memory>
+
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
-#include "base/no_destructor.h"
+#include "brave/browser/brave_ads/application_state/application_state_util_android.h"
 
 namespace brave_ads {
 
 // static
-ApplicationStateMonitor* ApplicationStateMonitor::GetInstance() {
-  static base::NoDestructor<ApplicationStateMonitorAndroid> instance;
-  return instance.get();
+std::unique_ptr<ApplicationStateMonitor> ApplicationStateMonitor::Create() {
+  return std::make_unique<ApplicationStateMonitorAndroid>();
 }
 
 ApplicationStateMonitorAndroid::ApplicationStateMonitorAndroid() {
@@ -29,8 +30,7 @@ ApplicationStateMonitorAndroid::ApplicationStateMonitorAndroid() {
 ApplicationStateMonitorAndroid::~ApplicationStateMonitorAndroid() = default;
 
 bool ApplicationStateMonitorAndroid::IsBrowserActive() const {
-  return base::android::ApplicationStatusListener::GetState() ==
-         base::android::APPLICATION_STATE_HAS_RUNNING_ACTIVITIES;
+  return IsApplicationInForeground();
 }
 
 void ApplicationStateMonitorAndroid::OnApplicationStateChange(

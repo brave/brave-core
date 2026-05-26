@@ -93,7 +93,8 @@ class BraveAdsAdsServiceImplTest : public testing::Test {
         std::make_unique<test::FakeVirtualPrefProviderDelegate>(),
         /*channel_name=*/"foo", profile_dir_.GetPath(),
         std::make_unique<test::FakeAdsTooltipsDelegate>(), std::move(device_id),
-        std::move(bat_ads_service_factory), mock_resource_component_,
+        std::move(bat_ads_service_factory),
+        std::make_unique<ApplicationStateMonitor>(), mock_resource_component_,
         /*history_service=*/nullptr,
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
         &rewards_service_,
