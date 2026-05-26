@@ -68,7 +68,7 @@ void DecentralizedDnsOptInPage::CommandReceived(const std::string& command) {
 }
 
 void DecentralizedDnsOptInPage::PopulateInterstitialStrings(
-    base::Value::Dict& load_time_data) {
+    base::DictValue& load_time_data) {
   const std::u16string provider = u"Chainstack";
   const std::u16string provider_tou = u"https://chainstack.com/tos/";
   const std::u16string provider_privacy_policy =
