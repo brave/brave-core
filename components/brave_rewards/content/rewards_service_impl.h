@@ -61,6 +61,10 @@ namespace os_crypt_async {
 class OSCryptAsync;
 }  // namespace os_crypt_async
 
+namespace brave_policy {
+class PolicyInitializationWaiter;
+}  // namespace brave_policy
+
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 namespace brave_wallet {
 class BraveWalletService;
@@ -95,6 +99,8 @@ class RewardsServiceImpl final : public RewardsService,
                      const base::FilePath& profile_path,
                      favicon::FaviconService* favicon_service,
                      os_crypt_async::OSCryptAsync* os_crypt,
+                     std::unique_ptr<brave_policy::PolicyInitializationWaiter>
+                         policy_initialization_waiter,
                      RequestImageCallback request_image_callback,
                      CancelImageRequestCallback cancel_image_request_callback,
                      content::StoragePartition* storage_partition
@@ -485,6 +491,8 @@ class RewardsServiceImpl final : public RewardsService,
   SimpleURLLoaderList url_loaders_;
   std::map<std::string, int> current_media_fetchers_;
   PrefChangeRegistrar profile_pref_change_registrar_;
+  std::unique_ptr<brave_policy::PolicyInitializationWaiter>
+      policy_initialization_waiter_;
 
   bool engine_for_testing_ = false;
   bool resetting_rewards_ = false;
