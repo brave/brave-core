@@ -7,10 +7,11 @@
 
 #include <algorithm>
 #include <optional>
-#include <tuple>
 #include <utility>
 
 #include "base/check.h"
+#include "base/containers/extend.h"
+#include "base/containers/span_reader.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/solana_compiled_instruction.h"
@@ -50,55 +51,60 @@ bool MaybeAddVersionPrefix(mojom::SolanaMessageVersion version,
   return true;
 }
 
-// Deserialize message header from a serialized message.
-// Returns the bytes_index after message header part, deserialized version and
-// message header.
-std::optional<
-    std::tuple<size_t, mojom::SolanaMessageVersion, SolanaMessageHeader>>
-DeserializeMessageHeader(const std::vector<uint8_t>& bytes) {
-  // Check version
-  if (bytes.size() < 1) {
+// Deserialize version from a serialized message. Leaves reader position
+// pointing to the first byte of message header.
+std::optional<mojom::SolanaMessageVersion> DeserializeVersion(
+    base::SpanReader<const uint8_t>& reader) {
+  if (reader.remaining_span().size() < 1) {
     return std::nullopt;
   }
+  auto first_byte = reader.remaining_span()[0];
+
   mojom::SolanaMessageVersion version;
-  if (bytes[0] == (bytes[0] & kVersionPrefixMask)) {
+  if (first_byte == (first_byte & kVersionPrefixMask)) {
     version = mojom::SolanaMessageVersion::kLegacy;
-  } else if (bytes[0] == kV0MessagePrefix) {
+    // Don't skip first byte as it is a part of legacy header.
+  } else if (first_byte == kV0MessagePrefix) {
     version = mojom::SolanaMessageVersion::kV0;
+    // Skip first byte V0 as it is not a part of message header.
+    reader.Skip(1u);
   } else {
     return std::nullopt;
   }
 
-  size_t bytes_index = version == mojom::SolanaMessageVersion::kLegacy ? 0 : 1;
-  if (bytes_index + 3 > bytes.size()) {  // Message header length.
+  return version;
+}
+
+// Deserialize message header from a serialized message.
+std::optional<SolanaMessageHeader> DeserializeMessageHeader(
+    base::SpanReader<const uint8_t>& reader) {
+  // Message header
+  SolanaMessageHeader message_header;
+  if (!reader.ReadU8LittleEndian(message_header.num_required_signatures)) {
+    return std::nullopt;
+  }
+  if (!reader.ReadU8LittleEndian(message_header.num_readonly_signed_accounts)) {
+    return std::nullopt;
+  }
+  if (!reader.ReadU8LittleEndian(
+          message_header.num_readonly_unsigned_accounts)) {
     return std::nullopt;
   }
 
-  // Message header
-  SolanaMessageHeader message_header;
-  message_header.num_required_signatures = bytes[bytes_index++];
-  message_header.num_readonly_signed_accounts = bytes[bytes_index++];
-  message_header.num_readonly_unsigned_accounts = bytes[bytes_index++];
-
-  return std::make_tuple(bytes_index, version, message_header);
+  return message_header;
 }
 
 std::optional<std::vector<SolanaMessageAddressTableLookup>>
-DeserializeAddressTableLookups(const std::vector<uint8_t>& bytes,
-                               size_t* bytes_index) {
-  DCHECK(bytes_index);
-
-  auto ret = CompactU16Decode(bytes, *bytes_index);
-  if (!ret) {
+DeserializeAddressTableLookups(base::SpanReader<const uint8_t>& reader) {
+  auto num_of_addr_table_lookups = CompactU16Decode(reader);
+  if (!num_of_addr_table_lookups) {
     return std::nullopt;
   }
-  *bytes_index += std::get<1>(*ret);
-  size_t num_of_addr_table_lookups = std::get<0>(*ret);
 
   std::vector<SolanaMessageAddressTableLookup> addr_table_lookups;
-  for (size_t i = 0; i < num_of_addr_table_lookups; i++) {
+  for (size_t i = 0; i < *num_of_addr_table_lookups; i++) {
     auto addr_table_lookup =
-        SolanaMessageAddressTableLookup::Deserialize(bytes, bytes_index);
+        SolanaMessageAddressTableLookup::Deserialize(reader);
     if (!addr_table_lookup) {
       return std::nullopt;
     }
@@ -116,9 +122,9 @@ SolanaMessage::SolanaMessage(
     uint64_t last_valid_block_height,
     const std::string& fee_payer,
     const SolanaMessageHeader& message_header,
-    std::vector<SolanaAddress>&& static_account_keys,
-    std::vector<SolanaInstruction>&& instructions,
-    std::vector<SolanaMessageAddressTableLookup>&& address_table_lookups)
+    std::vector<SolanaAddress> static_account_keys,
+    std::vector<SolanaInstruction> instructions,
+    std::vector<SolanaMessageAddressTableLookup> address_table_lookups)
     : version_(version),
       recent_blockhash_(recent_blockhash),
       last_valid_block_height_(last_valid_block_height),
@@ -137,8 +143,8 @@ std::optional<SolanaMessage> SolanaMessage::CreateLegacyMessage(
   uint16_t num_required_signatures = 0;
   uint16_t num_readonly_signed_accounts = 0;
   uint16_t num_readonly_unsigned_accounts = 0;
-  std::vector<SolanaAccountMeta> unique_account_metas;
-  GetUniqueAccountMetas(fee_payer, instructions, &unique_account_metas);
+  std::vector<SolanaAccountMeta> unique_account_metas =
+      GetUniqueAccountMetas(fee_payer, instructions);
   std::vector<SolanaAddress> static_accounts;
 
   // Check for non-legacy meta
@@ -167,17 +173,6 @@ SolanaMessage& SolanaMessage::operator=(SolanaMessage&&) = default;
 
 SolanaMessage::~SolanaMessage() = default;
 
-bool SolanaMessage::operator==(const SolanaMessage& message) const {
-  return version_ == message.version_ &&
-         recent_blockhash_ == message.recent_blockhash_ &&
-         last_valid_block_height_ == message.last_valid_block_height_ &&
-         fee_payer_ == message.fee_payer_ &&
-         message_header_ == message.message_header_ &&
-         static_account_keys_ == message.static_account_keys_ &&
-         instructions_ == message.instructions_ &&
-         address_table_lookups_ == message.address_table_lookups_;
-}
-
 // Process instructions to return an unique account meta array with following
 // properties.
 // 1. No duplication (each pubkey will only have one item).
@@ -187,21 +182,15 @@ bool SolanaMessage::operator==(const SolanaMessage& message) const {
 // This function is currently only used when creating legacy messages and does
 // not support address table lookups.
 // static
-void SolanaMessage::GetUniqueAccountMetas(
+std::vector<SolanaAccountMeta> SolanaMessage::GetUniqueAccountMetas(
     const std::string& fee_payer,
-    const std::vector<SolanaInstruction>& instructions,
-    std::vector<SolanaAccountMeta>* unique_account_metas) {
-  DCHECK(unique_account_metas);
-  unique_account_metas->clear();
-
+    const std::vector<SolanaInstruction>& instructions) {
   std::vector<SolanaAccountMeta> account_metas;
   // Get accounts from each instruction.
   for (const auto& instruction : instructions) {
-    account_metas.emplace_back(
-        SolanaAccountMeta(instruction.GetProgramId(), std::nullopt,
-                          false /* is_signer */, false /* is_writable */));
-    account_metas.insert(account_metas.end(), instruction.GetAccounts().begin(),
-                         instruction.GetAccounts().end());
+    account_metas.emplace_back(instruction.GetProgramId(), std::nullopt,
+                               false /* is_signer */, false /* is_writable */);
+    base::Extend(account_metas, instruction.GetAccounts());
   }
 
   // Sort accounts by is_signer first, then writable.
@@ -221,22 +210,26 @@ void SolanaMessage::GetUniqueAccountMetas(
                      return false;
                    });
 
+  std::vector<SolanaAccountMeta> unique_account_metas;
+
   // Fee payer will always be placed at first.
-  unique_account_metas->push_back(SolanaAccountMeta(
-      fee_payer, std::nullopt, true /* is_signer */, true /* is_writable */));
+  unique_account_metas.emplace_back(
+      fee_payer, std::nullopt, true /* is_signer */, true /* is_writable */);
 
   // Remove duplicate accounts. is_writable is updated if later account meta
   // with the same pubkey is writable.
   for (const auto& account_meta : account_metas) {
-    auto it = std::ranges::find(*unique_account_metas, account_meta.pubkey,
+    auto it = std::ranges::find(unique_account_metas, account_meta.pubkey,
                                 &SolanaAccountMeta::pubkey);
 
-    if (it == unique_account_metas->end()) {
-      unique_account_metas->push_back(account_meta);
+    if (it == unique_account_metas.end()) {
+      unique_account_metas.push_back(account_meta);
     } else {
       it->is_writable |= account_meta.is_writable;
     }
   }
+
+  return unique_account_metas;
 }
 
 // A message contains a header, followed by a compact-array of account
@@ -288,11 +281,9 @@ std::optional<std::vector<uint8_t>> SolanaMessage::Serialize(
   message_bytes.emplace_back(message_header_.num_readonly_unsigned_accounts);
 
   // Compact array of account addresses.
-  CompactU16Encode(static_account_keys_.size(), &message_bytes);
+  base::Extend(message_bytes, CompactU16Encode(static_account_keys_.size()));
   for (size_t i = 0; i < static_account_keys_.size(); ++i) {
-    message_bytes.insert(message_bytes.end(),
-                         static_account_keys_[i].bytes().begin(),
-                         static_account_keys_[i].bytes().end());
+    base::Extend(message_bytes, static_account_keys_[i].bytes());
 
     if (signers && i < message_header_.num_required_signatures) {
       signers->emplace_back(static_account_keys_[i].ToBase58());
@@ -305,11 +296,10 @@ std::optional<std::vector<uint8_t>> SolanaMessage::Serialize(
                     recent_blockhash_bytes.size())) {
     return std::nullopt;
   }
-  message_bytes.insert(message_bytes.end(), recent_blockhash_bytes.begin(),
-                       recent_blockhash_bytes.end());
+  base::Extend(message_bytes, recent_blockhash_bytes);
 
   // Compact array of instructions.
-  CompactU16Encode(instructions_.size(), &message_bytes);
+  base::Extend(message_bytes, CompactU16Encode(instructions_.size()));
   for (const auto& instruction : instructions_) {
     auto compiled_instruction = SolanaCompiledInstruction::FromInstruction(
         instruction, static_account_keys_, address_table_lookups_,
@@ -317,14 +307,15 @@ std::optional<std::vector<uint8_t>> SolanaMessage::Serialize(
     if (!compiled_instruction) {
       return std::nullopt;
     }
-    compiled_instruction->Serialize(&message_bytes);
+    compiled_instruction->Serialize(message_bytes);
   }
 
   // Compact array of address table lookups.
   if (version_ == mojom::SolanaMessageVersion::kV0) {
-    CompactU16Encode(address_table_lookups_.size(), &message_bytes);
+    base::Extend(message_bytes,
+                 CompactU16Encode(address_table_lookups_.size()));
     for (const auto& address_table_lookup : address_table_lookups_) {
-      address_table_lookup.Serialize(&message_bytes);
+      address_table_lookup.Serialize(message_bytes);
     }
   }
 
@@ -334,30 +325,43 @@ std::optional<std::vector<uint8_t>> SolanaMessage::Serialize(
 std::optional<std::vector<std::string>>
 SolanaMessage::GetSignerAccountsFromSerializedMessage(
     const std::vector<uint8_t>& serialized_message) {
-  auto tuple = DeserializeMessageHeader(serialized_message);
-  if (!tuple) {
+  base::SpanReader<const uint8_t> reader(serialized_message);
+
+  auto version = DeserializeVersion(reader);
+  if (!version) {
     return std::nullopt;
   }
-  size_t index = std::get<0>(*tuple);
-  SolanaMessageHeader message_header = std::get<2>(*tuple);
 
-  // Consume length of account array.
-  auto ret = CompactU16Decode(serialized_message, index);
-  if (!ret) {
+  auto message_header = DeserializeMessageHeader(reader);
+  if (!message_header) {
     return std::nullopt;
   }
-  index += std::get<1>(*ret);
 
-  std::vector<std::string> signers;
-  for (size_t i = 0; i < message_header.num_required_signatures; ++i) {
-    if (index + kSolanaPubkeySize > serialized_message.size()) {
+  // Compact array of account addresses.
+  auto num_of_accounts = CompactU16Decode(reader);
+  if (!num_of_accounts) {
+    return std::nullopt;
+  }
+  if (*num_of_accounts == 0 || *num_of_accounts > UINT8_MAX) {
+    return std::nullopt;
+  }
+
+  std::vector<SolanaAddress> accounts;
+  for (size_t i = 0; i < *num_of_accounts; ++i) {
+    auto account_key = SolanaAddress::ReadFrom(reader);
+    if (!account_key) {
       return std::nullopt;
     }
+    accounts.emplace_back(std::move(*account_key));
+  }
 
-    base::span<const uint8_t> address_bytes =
-        base::span(serialized_message).subspan(index, kSolanaPubkeySize);
-    signers.push_back(Base58Encode(address_bytes));
-    index += kSolanaPubkeySize;
+  if (message_header->num_required_signatures > accounts.size()) {
+    return std::nullopt;
+  }
+
+  std::vector<std::string> signers;
+  for (size_t i = 0; i < message_header->num_required_signatures; ++i) {
+    signers.push_back(accounts[i].ToBase58());
   }
 
   return signers;
@@ -365,62 +369,50 @@ SolanaMessage::GetSignerAccountsFromSerializedMessage(
 
 // static
 std::optional<SolanaMessage> SolanaMessage::Deserialize(
-    const std::vector<uint8_t>& bytes) {
-  auto tuple = DeserializeMessageHeader(bytes);
-  if (!tuple) {
+    base::span<const uint8_t> bytes) {
+  base::SpanReader<const uint8_t> reader(bytes);
+
+  auto version = DeserializeVersion(reader);
+  if (!version) {
     return std::nullopt;
   }
-  size_t bytes_index = std::get<0>(*tuple);
-  mojom::SolanaMessageVersion version = std::get<1>(*tuple);
-  SolanaMessageHeader message_header = std::get<2>(*tuple);
+
+  auto message_header = DeserializeMessageHeader(reader);
+  if (!message_header) {
+    return std::nullopt;
+  }
 
   // Compact array of account addresses
-  auto ret = CompactU16Decode(bytes, bytes_index);
-  if (!ret) {
+  auto num_of_accounts = CompactU16Decode(reader);
+  if (!num_of_accounts) {
     return std::nullopt;
   }
-  const uint16_t num_of_accounts = std::get<0>(*ret);
-  if (num_of_accounts == 0 || num_of_accounts > UINT8_MAX) {
+  if (*num_of_accounts == 0 || *num_of_accounts > UINT8_MAX) {
     return std::nullopt;
   }
-  bytes_index += std::get<1>(*ret);
 
   std::vector<SolanaAddress> accounts;
-  for (size_t i = 0; i < num_of_accounts; ++i) {
-    if (bytes_index + kSolanaPubkeySize > bytes.size()) {
-      return std::nullopt;
-    }
-    auto account_key = SolanaAddress::FromBytes(
-        base::span(bytes).subspan(bytes_index, kSolanaPubkeySize));
+  for (size_t i = 0; i < *num_of_accounts; ++i) {
+    auto account_key = SolanaAddress::ReadFrom(reader);
     if (!account_key) {
       return std::nullopt;
     }
-    accounts.emplace_back(*account_key);
-    bytes_index += kSolanaPubkeySize;
+    accounts.emplace_back(std::move(*account_key));
   }
   std::string fee_payer = accounts[0].ToBase58();
 
   // Blockhash
-  if (bytes_index + kSolanaHashSize > bytes.size()) {
+  auto blockhash_bytes = reader.Read<kSolanaHashSize>();
+  if (!blockhash_bytes) {
     return std::nullopt;
   }
-  base::span<const uint8_t> blockhash_bytes =
-      base::span(bytes).subspan(bytes_index, kSolanaHashSize);
-  bytes_index += kSolanaHashSize;
-  const std::string recent_blockhash = Base58Encode(blockhash_bytes);
+  const std::string recent_blockhash = Base58Encode(*blockhash_bytes);
 
   // Instructions length
-  ret = CompactU16Decode(bytes, bytes_index);
-  if (!ret) {
-    return std::nullopt;
-  }
-  bytes_index += std::get<1>(*ret);
-  size_t num_of_instructions = std::get<0>(*ret);
-
+  auto num_of_instructions = CompactU16Decode(reader);
   std::vector<SolanaCompiledInstruction> compiled_instructions;
-  for (size_t i = 0; i < num_of_instructions; ++i) {
-    auto compiled_instruction =
-        SolanaCompiledInstruction::Deserialize(bytes, &bytes_index);
+  for (size_t i = 0; i < *num_of_instructions; ++i) {
+    auto compiled_instruction = SolanaCompiledInstruction::Deserialize(reader);
     if (!compiled_instruction) {
       return std::nullopt;
     }
@@ -430,14 +422,14 @@ std::optional<SolanaMessage> SolanaMessage::Deserialize(
   std::optional<std::vector<SolanaMessageAddressTableLookup>>
       addr_table_lookups = std::vector<SolanaMessageAddressTableLookup>();
   if (version == mojom::SolanaMessageVersion::kV0) {
-    addr_table_lookups = DeserializeAddressTableLookups(bytes, &bytes_index);
+    addr_table_lookups = DeserializeAddressTableLookups(reader);
     if (!addr_table_lookups) {
       return std::nullopt;
     }
   }
 
   // Byte array needs to be exact without any left over bytes.
-  if (bytes_index != bytes.size()) {
+  if (reader.remaining() != 0) {
     return std::nullopt;
   }
 
@@ -461,7 +453,7 @@ std::optional<SolanaMessage> SolanaMessage::Deserialize(
   std::vector<SolanaInstruction> instructions;
   for (const auto& compiled_instruction : compiled_instructions) {
     auto ins = SolanaInstruction::FromCompiledInstruction(
-        compiled_instruction, message_header, accounts, *addr_table_lookups,
+        compiled_instruction, *message_header, accounts, *addr_table_lookups,
         num_of_write_indexes, num_of_read_indexes);
     if (!ins) {
       return std::nullopt;
@@ -469,9 +461,9 @@ std::optional<SolanaMessage> SolanaMessage::Deserialize(
     instructions.emplace_back(std::move(*ins));
   }
 
-  return SolanaMessage(version, recent_blockhash, 0, fee_payer, message_header,
-                       std::move(accounts), std::move(instructions),
-                       std::move(*addr_table_lookups));
+  return SolanaMessage(*version, recent_blockhash, 0, fee_payer,
+                       *message_header, std::move(accounts),
+                       std::move(instructions), std::move(*addr_table_lookups));
 }
 
 mojom::SolanaTxDataPtr SolanaMessage::ToSolanaTxData() const {
@@ -630,50 +622,6 @@ std::optional<SolanaMessage> SolanaMessage::FromValue(
                        std::move(address_table_lookups));
 }
 
-// static
-std::optional<SolanaMessage> SolanaMessage::FromDeprecatedLegacyValue(
-    const base::DictValue& value) {
-  const std::string* recent_blockhash = value.FindString(kRecentBlockhash);
-  if (!recent_blockhash) {
-    return std::nullopt;
-  }
-
-  const std::string* last_valid_block_height_string =
-      value.FindString(kLastValidBlockHeight);
-  uint64_t last_valid_block_height = 0;
-  if (!last_valid_block_height_string ||
-      !base::StringToUint64(*last_valid_block_height_string,
-                            &last_valid_block_height)) {
-    return std::nullopt;
-  }
-
-  const std::string* fee_payer = value.FindString(kFeePayer);
-  if (!fee_payer) {
-    return std::nullopt;
-  }
-
-  const base::ListValue* instruction_list = value.FindList(kInstructions);
-  if (!instruction_list) {
-    return std::nullopt;
-  }
-  std::vector<SolanaInstruction> instructions;
-  for (const auto& instruction_value : *instruction_list) {
-    if (!instruction_value.is_dict()) {
-      return std::nullopt;
-    }
-
-    std::optional<SolanaInstruction> instruction =
-        SolanaInstruction::FromValue(instruction_value.GetDict());
-    if (!instruction) {
-      return std::nullopt;
-    }
-    instructions.emplace_back(std::move(instruction.value()));
-  }
-
-  return CreateLegacyMessage(*recent_blockhash, last_valid_block_height,
-                             *fee_payer, std::move(instructions));
-}
-
 bool SolanaMessage::UsesDurableNonce() const {
   if (instructions_.empty()) {
     return false;
@@ -755,8 +703,8 @@ bool SolanaMessage::AddPriorityFee(uint32_t compute_units,
   uint16_t num_required_signatures = 0;
   uint16_t num_readonly_signed_accounts = 0;
   uint16_t num_readonly_unsigned_accounts = 0;
-  std::vector<SolanaAccountMeta> unique_account_metas;
-  GetUniqueAccountMetas(fee_payer_, instructions_, &unique_account_metas);
+  std::vector<SolanaAccountMeta> unique_account_metas =
+      GetUniqueAccountMetas(fee_payer_, instructions_);
   std::vector<SolanaAddress> static_accounts;
 
   if (!ProcessAccountMetas(

@@ -7,7 +7,6 @@
 
 #include <vector>
 
-#include "brave/components/brave_wallet/common/solana_address.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
@@ -23,19 +22,15 @@ TEST(SolanaCompiledInstructionUnitTest, SerializeDeserialize) {
                                          2, 1, 2};
 
   std::vector<uint8_t> bytes;
-  compiled_ins.Serialize(&bytes);
+  compiled_ins.Serialize(bytes);
   EXPECT_EQ(bytes, expected_bytes);
 
-  size_t bytes_index = 0;
+  base::SpanReader<const uint8_t> reader(bytes);
   auto deserialized_compiled_ins =
-      SolanaCompiledInstruction::Deserialize(bytes, &bytes_index);
+      SolanaCompiledInstruction::Deserialize(reader);
   ASSERT_TRUE(deserialized_compiled_ins);
   EXPECT_EQ(deserialized_compiled_ins, compiled_ins);
-  EXPECT_EQ(bytes_index, bytes.size());
-
-  bytes.clear();
-  deserialized_compiled_ins->Serialize(&bytes);
-  EXPECT_EQ(bytes, expected_bytes);
+  EXPECT_EQ(reader.remaining(), 0u);
 }
 
 }  // namespace brave_wallet

@@ -30,18 +30,18 @@ TEST(SolanaMessageAddressTableLookupUnitTest, SerializeDeserialize) {
       254, 148, 183, 39, 51, 192, 2,   1,  2,   2,   3,   4};
 
   std::vector<uint8_t> bytes;
-  lookup.Serialize(&bytes);
+  lookup.Serialize(bytes);
   EXPECT_EQ(bytes, expected_bytes);
 
-  size_t bytes_index = 0;
+  base::SpanReader<const uint8_t> reader(bytes);
   auto deserialized_lookup =
-      SolanaMessageAddressTableLookup::Deserialize(bytes, &bytes_index);
+      SolanaMessageAddressTableLookup::Deserialize(reader);
   ASSERT_TRUE(deserialized_lookup);
   EXPECT_EQ(deserialized_lookup, lookup);
-  EXPECT_EQ(bytes_index, bytes.size());
+  EXPECT_EQ(reader.remaining(), 0u);
 
   bytes.clear();
-  deserialized_lookup->Serialize(&bytes);
+  deserialized_lookup->Serialize(bytes);
   EXPECT_EQ(bytes, expected_bytes);
 }
 

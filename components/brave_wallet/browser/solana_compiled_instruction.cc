@@ -9,6 +9,7 @@
 #include <optional>
 
 #include "base/check.h"
+#include "base/containers/extend.h"
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
 #include "brave/components/brave_wallet/browser/solana_message_address_table_lookup.h"
 #include "brave/components/brave_wallet/common/solana_address.h"
@@ -66,23 +67,17 @@ std::optional<uint8_t> FindIndexInAddressTableLookups(
 
 SolanaCompiledInstruction::SolanaCompiledInstruction(
     uint8_t program_id_index,
-    const std::vector<uint8_t>& account_indexes,
-    const std::vector<uint8_t>& data)
+    std::vector<uint8_t> account_indexes,
+    std::vector<uint8_t> data)
     : program_id_index_(program_id_index),
-      account_indexes_(account_indexes),
-      data_(data) {}
+      account_indexes_(std::move(account_indexes)),
+      data_(std::move(data)) {}
 
 SolanaCompiledInstruction::SolanaCompiledInstruction(
     SolanaCompiledInstruction&&) = default;
 SolanaCompiledInstruction& SolanaCompiledInstruction::operator=(
     SolanaCompiledInstruction&&) = default;
 SolanaCompiledInstruction::~SolanaCompiledInstruction() = default;
-
-bool SolanaCompiledInstruction::operator==(
-    const SolanaCompiledInstruction& ins) const {
-  return program_id_index_ == ins.program_id_index_ &&
-         account_indexes_ == ins.account_indexes_ && data_ == ins.data_;
-}
 
 // static
 std::optional<SolanaCompiledInstruction>
@@ -123,36 +118,34 @@ SolanaCompiledInstruction::FromInstruction(
                                    instruction.data());
 }
 
-void SolanaCompiledInstruction::Serialize(std::vector<uint8_t>* bytes) const {
-  DCHECK(bytes);
+void SolanaCompiledInstruction::Serialize(std::vector<uint8_t>& bytes) const {
+  bytes.emplace_back(program_id_index_);
 
-  bytes->emplace_back(program_id_index_);
+  base::Extend(bytes, CompactU16Encode(account_indexes_.size()));
+  base::Extend(bytes, account_indexes_);
 
-  CompactU16Encode(account_indexes_.size(), bytes);
-  bytes->insert(bytes->end(), account_indexes_.begin(), account_indexes_.end());
-
-  CompactU16Encode(data_.size(), bytes);
-  bytes->insert(bytes->end(), data_.begin(), data_.end());
+  base::Extend(bytes, CompactU16Encode(data_.size()));
+  base::Extend(bytes, data_);
 }
 
+// https://solana.com/docs/core/transactions/transaction-structure#instructions
 // static
 std::optional<SolanaCompiledInstruction> SolanaCompiledInstruction::Deserialize(
-    const std::vector<uint8_t>& bytes,
-    size_t* bytes_index) {
-  DCHECK(bytes_index);
-
-  if (*bytes_index >= bytes.size()) {
+    base::SpanReader<const uint8_t>& reader) {
+  uint8_t program_id_index = 0;
+  if (!reader.ReadU8LittleEndian(program_id_index)) {
     return std::nullopt;
   }
-  uint8_t program_id_index = bytes[(*bytes_index)++];
-
-  auto account_indexes = CompactArrayDecode(bytes, bytes_index);
-  auto data = CompactArrayDecode(bytes, bytes_index);
-  if (!account_indexes || !data) {
+  auto account_indexes = CompactArrayDecode(reader);
+  if (!account_indexes) {
     return std::nullopt;
   }
-
-  return SolanaCompiledInstruction(program_id_index, *account_indexes, *data);
+  auto data = CompactArrayDecode(reader);
+  if (!data) {
+    return std::nullopt;
+  }
+  return SolanaCompiledInstruction(
+      program_id_index, std::move(*account_indexes), std::move(*data));
 }
 
 }  // namespace brave_wallet

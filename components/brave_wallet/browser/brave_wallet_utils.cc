@@ -29,6 +29,7 @@
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
+#include "brave/components/brave_wallet/common/solana_address.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "brave/components/constants/brave_services_key.h"
@@ -90,7 +91,7 @@ std::optional<std::string> GetUserAssetAddress(const std::string& address,
 
   if (coin == mojom::CoinType::SOL) {
     std::vector<uint8_t> bytes;
-    if (!::brave_wallet::IsBase58EncodedSolanaPubkey(address)) {
+    if (!SolanaAddress::FromBase58(address)) {
       return std::nullopt;
     }
     return address;
