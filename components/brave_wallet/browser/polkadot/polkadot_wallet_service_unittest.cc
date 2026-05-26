@@ -22,7 +22,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
-#include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"  // IWYU pragma: export
+#include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"  // IWYU pragma: keep
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -127,29 +127,13 @@ class PolkadotWalletServiceUnitTest : public testing::Test {
 };
 
 void VerifyTestnet(const PolkadotChainMetadata& metadata) {
-  std::array<uint8_t, kPolkadotSubstrateAccountIdSize> pubkey = {};
-  base::HexStringToSpan(kBob, pubkey);
-
-  PolkadotUnsignedTransfer transfer_extrinsic(pubkey, 1234);
-  const char* testnet_extrinsic =
-      R"(98040400008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a484913)";
-
-  EXPECT_EQ(transfer_extrinsic.send_amount(), 1234u);
-  EXPECT_EQ(base::HexEncodeLower(transfer_extrinsic.recipient()), kBob);
-  EXPECT_EQ(transfer_extrinsic.Encode(metadata), testnet_extrinsic);
+  EXPECT_EQ(metadata.GetBalancesPalletIndex(), 4u);
+  EXPECT_EQ(metadata.GetSs58Prefix(), 42u);
 }
 
 void VerifyMainnet(const PolkadotChainMetadata& metadata) {
-  std::array<uint8_t, kPolkadotSubstrateAccountIdSize> pubkey = {};
-  base::HexStringToSpan(kBob, pubkey);
-
-  PolkadotUnsignedTransfer transfer_extrinsic(pubkey, 1234);
-  const char* mainnet_extrinsic =
-      R"(98040500008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a484913)";
-
-  EXPECT_EQ(transfer_extrinsic.send_amount(), 1234u);
-  EXPECT_EQ(base::HexEncodeLower(transfer_extrinsic.recipient()), kBob);
-  EXPECT_EQ(transfer_extrinsic.Encode(metadata), mainnet_extrinsic);
+  EXPECT_EQ(metadata.GetBalancesPalletIndex(), 5u);
+  EXPECT_EQ(metadata.GetSs58Prefix(), 0u);
 }
 
 TEST_F(PolkadotWalletServiceUnitTest, Constructor) {
