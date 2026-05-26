@@ -82,6 +82,14 @@ LLD = 'lld' + ('.exe' if sys.platform == 'win32' else '')
 # Name under which the LLD binary is stored inside the output archive.
 RUST_LLD = f'rust-{LLD}'
 
+# Filename of the standalone MSVC-style librarian produced by the LLVM build.
+# Shipped (Windows only) so that `cc-rs`-driven cargo invocations have an AR
+# they can call directly without flag-injection workarounds.  Chromium's
+# distributed clang package strips this (see tools/clang/scripts/package.py),
+# but RUST_HOST_LLVM_INSTALL_DIR has it.  Mirrors what upstream
+# tools/rust/config.toml.template references via `$LLVM_BIN/llvm-lib.exe`.
+LLVM_LIB = 'llvm-lib.exe'
+
 # Rust target triple for the bare-metal WebAssembly target.  Included in the
 # build so that Chromium can compile Rust code targeting WebAssembly.
 WASM32_UNKNOWN_UNKNOWN = 'wasm32-unknown-unknown'
@@ -417,8 +425,7 @@ class ToolchainBuilder:
     def _create_archive(self):
         """Write the output .tar.xz archive to `self.out_dir`.
 
-        The archive (named via `_package_name()`) contains exactly two
-        entries:
+        The archive (named via `_package_name()`) contains:
 
         * `rust-lld` — the LLD linker binary from
           `RUST_HOST_LLVM_INSTALL_DIR/bin/lld[.exe]`.  Rust's toolchain
@@ -430,19 +437,27 @@ class ToolchainBuilder:
           This directory contains the precompiled `core`, `alloc`, and
           `std` libraries needed to compile Rust code for the bare-metal
           WebAssembly target.
+        * `llvm-lib.exe` (Windows only) — the standalone MSVC-style
+          librarian from `RUST_HOST_LLVM_INSTALL_DIR/bin/llvm-lib.exe`.
+          Shipping this binary allows us to point AR straight at it,
+          matching the upstream `tools/rust/config.toml.template` pattern
+          (`ar = "$LLVM_BIN/llvm-lib.exe"`).
         """
         target_triple = self.build_rust_module.RustTargetTriple()
         stage1_output_path = (Path(self.build_rust_module.RUST_BUILD_DIR) /
                               target_triple / STAGE1_RUSTLIB)
         output_archive = self.out_dir / self._package_name()
 
+        llvm_bin = Path(
+            self.build_rust_module.RUST_HOST_LLVM_INSTALL_DIR) / 'bin'
+
         logging.info('Creating output archive at %s', output_archive)
         with tarfile.open(output_archive, 'w:xz') as tar:
-            tar.add(Path(self.build_rust_module.RUST_HOST_LLVM_INSTALL_DIR) /
-                    'bin' / LLD,
-                    arcname=RUST_LLD)
+            tar.add(llvm_bin / LLD, arcname=RUST_LLD)
             tar.add(stage1_output_path / WASM32_UNKNOWN_UNKNOWN,
                     arcname=WASM32_UNKNOWN_UNKNOWN)
+            if sys.platform == 'win32':
+                tar.add(llvm_bin / LLVM_LIB, arcname=LLVM_LIB)
 
     def _bootstrap_depot_tools(self):
         """Ensure `depot_tools` is on PATH if no existing install is found.
