@@ -437,6 +437,11 @@ void BraveBrowserView::UpdateSideBarHorizontalAlignment() {
   const bool on_left = !GetProfile()->GetPrefs()->GetBoolean(
       prefs::kSidePanelHorizontalAlignment);
 
+#if BUILDFLAG(ENABLE_SIDEBAR_V2)
+  // Panel has different border per horizontal alignment.
+  side_panel_->UpdateBorder();
+#endif
+
   sidebar_container_view_->SetSidebarOnLeft(on_left);
 
   if (multi_contents_view_ &&

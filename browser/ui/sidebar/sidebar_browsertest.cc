@@ -2179,10 +2179,10 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarV2BraveHeaderTest) {
 }
 
 // Verify that the resize area is positioned correctly for both border states.
-// With border: the resize area sits inside the border inset strip (its width
-// equals the border inset and it starts at x=0).
-// Without border: the resize area is a narrow kNoBorderResizeAreaWidth strip
-// placed at the inner edge facing the web content.
+// In both cases the strip starts at the panel's outer edge with width
+// kResizeStripWidth. Border state only affects z-order: without rounded
+// corners the strip is reordered to the top so it wins the hit-test over
+// the overlapping content edge.
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
                        SidebarV2ResizeAreaPositionMatchesBorderState) {
   auto* panel_ui = browser()->GetFeatures().side_panel_ui();
@@ -2200,48 +2200,42 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
   auto* resize_area = side_panel->resize_area_for_testing();
   ASSERT_TRUE(resize_area);
 
-  // --- Border case (rounded corners ON) ---
-  prefs->SetBoolean(kWebViewRoundedCorners, true);
-  RunScheduledLayouts();
-  EXPECT_GT(side_panel->GetInsets().width(), 0)
-      << "panel should have left/right insets";
-
-  // In the bordered case the resize strip sits in the gap between the panel
-  // edge and the content, at the left edge (panel is on the right in LTR).
-  // Check resize area and panel's screen bounds.origin().
-  EXPECT_EQ(resize_area->GetBoundsInScreen().origin(),
-            side_panel->GetBoundsInScreen().origin())
-      << "Bordered resize area right edge should align with content origin";
-  EXPECT_EQ(resize_area->width(), side_panel->GetInsets().left())
-      << "Bordered resize area width should match the left border inset";
-  EXPECT_EQ(side_panel->GetIndexOf(resize_area),
-            side_panel->children().size() - 1)
-      << "resize area should be the top-most view";
-
-  // --- No-border case (rounded corners OFF) ---
-  prefs->SetBoolean(kWebViewRoundedCorners, false);
-  RunScheduledLayouts();
-  EXPECT_EQ(0, side_panel->GetInsets().width());
-
-  // Shared assertions for the no-border state after a panel switch.
-  auto verify_no_border_state = [&](const base::Location& loc) {
+  // Verifies resize strip position, width, z-order, and panel insets for the
+  // given border mode. Panel is on the right in LTR, so the content-facing
+  // edge is left and the outer edge is right.
+  auto verify_state = [&](const base::Location& loc, bool rounded_corners) {
     SCOPED_TRACE(loc.ToString());
-    EXPECT_EQ(0, side_panel->GetInsets().width())
-        << "Border insets' width should stay empty after switching panels "
-           "(border OFF)";
+    if (rounded_corners) {
+      EXPECT_EQ(0, side_panel->GetInsets().left())
+          << "rounded: no content-side inset (content view owns its margin)";
+      EXPECT_EQ(kRoundedCornersContentsViewMargin,
+                side_panel->GetInsets().right())
+          << "rounded: outer-side gap for visual separation from window chrome";
+    } else {
+      EXPECT_EQ(1, side_panel->GetInsets().left())
+          << "plain: 1px separator on the content-facing side";
+      EXPECT_EQ(0, side_panel->GetInsets().right())
+          << "plain: no outer-side inset";
+    }
     EXPECT_EQ(resize_area->GetBoundsInScreen().origin(),
               side_panel->GetBoundsInScreen().origin())
-        << "No-border resize area should be placed at the inner edge of "
-           "content";
+        << "resize strip should sit at the panel's outer edge";
     EXPECT_EQ(resize_area->width(),
-              views::BraveSidePanelResizeArea::kNoBorderResizeAreaWidth)
-        << "No-border resize area width should equal kNoBorderResizeAreaWidth";
+              views::BraveSidePanelResizeArea::kResizeStripWidth)
+        << "resize strip width should equal kResizeStripWidth";
     EXPECT_EQ(side_panel->GetIndexOf(resize_area),
               side_panel->children().size() - 1)
-        << "resize area should be the top-most view";
+        << "resize strip should be the top-most child view";
   };
 
-  // --- Panel-switch: border OFF must survive switching panels ---
+  prefs->SetBoolean(kWebViewRoundedCorners, true);
+  RunScheduledLayouts();
+  verify_state(FROM_HERE, /*rounded_corners=*/true);
+
+  prefs->SetBoolean(kWebViewRoundedCorners, false);
+  RunScheduledLayouts();
+  verify_state(FROM_HERE, /*rounded_corners=*/false);
+
   // Switch to another panel that has brave panel header.
   panel_ui->Show(SidePanelEntryId::kBookmarks);
   ASSERT_TRUE(base::test::RunUntil([&]() {
@@ -2249,7 +2243,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
         SidePanelEntry::Key(SidePanelEntryId::kBookmarks));
   }));
   RunScheduledLayouts();
-  verify_no_border_state(FROM_HERE);
+  verify_state(FROM_HERE, /*rounded_corners=*/false);
 
   // Switch to another panel that doesn't have brave panel header.
   panel_ui->Show(SidePanelEntryId::kCustomizeChrome);
@@ -2258,7 +2252,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
         SidePanelEntry::Key(SidePanelEntryId::kCustomizeChrome));
   }));
   RunScheduledLayouts();
-  verify_no_border_state(FROM_HERE);
+  verify_state(FROM_HERE, /*rounded_corners=*/false);
 }
 
 // Regression test: the top container separator must remain visible when a side

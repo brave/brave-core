@@ -7,10 +7,7 @@
 #include "build/buildflag.h"
 
 #if BUILDFLAG(ENABLE_SIDEBAR_V2)
-// Include the Brave-overridden header first, WITHOUT the rename macros below
-// active, so that the class declaration keeps the original Open name and the
-// include guard prevents the header from being re-processed when the upstream
-// .cc pulls it in.
+#include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
 
 // Rename the upstream Add/RemoveHeaderView implementation so we can provide
@@ -30,9 +27,9 @@
 void SidePanel::SetResizeArea(std::unique_ptr<views::View> resize_area) {
   CHECK(resize_area);
   auto old_resize_area = RemoveChildViewT(resize_area_);
-  // Add at the end so the resize area is above content_parent_view_ in z-order.
-  // This is required for the no-border case where the resize strip overlaps
-  // the content edge and must win the hit-test.
+  // Add at the end so the resize area is above content_parent_view_ in
+  // z-order. The strip always overlaps the content edge and must win the
+  // hit-test to receive drag events.
   resize_area_ = AddChildView(std::move(resize_area));
   resize_area_->InsertBeforeInFocusList(content_parent_view_);
 }
@@ -50,20 +47,34 @@ void SidePanel::SetRoundedBorderEnabled(bool enabled) {
 }
 
 void SidePanel::UpdateBorder() {
-  // When a Brave header is attached, reserve top inset for it so the header
-  // paints over the border strip without overlapping content.
   const int header_top_inset =
       header_view_ ? header_view_->GetPreferredSize().height() : 0;
+  gfx::Insets insets;
+  insets.set_top(header_top_inset);
 
+  // With rounded corners the content view owns its own margins, so only add an
+  // outer-side gap for visual separation from the window chrome.
   if (rounded_border_enabled_) {
-    // Upstream GetBorderInsets() has a negative top to overlap the toolbar;
-    // Brave doesn't need that overlap.
-    SetBorder(
-        views::CreateEmptyBorder(GetBorderInsets().set_top(header_top_inset)));
-  } else {
-    SetBorder(
-        views::CreateEmptyBorder(gfx::Insets::TLBR(header_top_inset, 0, 0, 0)));
+    insets.set_bottom(kRoundedCornersContentsViewMargin);
+    if (IsRightAligned()) {
+      insets.set_right(kRoundedCornersContentsViewMargin);
+    } else {
+      insets.set_left(kRoundedCornersContentsViewMargin);
+    }
+    SetBorder(views::CreateEmptyBorder(insets));
+    return;
   }
+
+  // Without rounded corners, draw a 1px vertical separator between content and
+  // panel.
+  constexpr int kBorderThickness = 1;
+  if (IsRightAligned()) {
+    insets.set_left(kBorderThickness);
+  } else {
+    insets.set_right(kBorderThickness);
+  }
+  SetBorder(
+      views::CreateSolidSidedBorder(insets, kColorToolbarContentAreaSeparator));
 }
 
 void SidePanel::AddHeaderView(std::unique_ptr<views::View> view) {
@@ -71,11 +82,8 @@ void SidePanel::AddHeaderView(std::unique_ptr<views::View> view) {
   UpdateBorder();
 
   // The resize area overlaps other views (contents, header), so it must be
-  // top-most to receive drag events. With rounded corners, it sits over the
-  // border area instead and doesn't overlap other views, so no reorder needed.
-  if (!rounded_border_enabled_) {
-    ReorderChildView(resize_area_, children().size());
-  }
+  // top-most to receive drag events.
+  ReorderChildView(resize_area_, children().size());
 }
 
 void SidePanel::RemoveHeaderView() {
