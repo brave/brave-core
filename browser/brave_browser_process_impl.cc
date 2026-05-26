@@ -14,6 +14,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/path_service.h"
 #include "base/task/thread_pool.h"
+#include "brave/browser/brave_origin/brave_origin_service_factory.h"
 #include "brave/browser/brave_referrals/referrals_service_delegate.h"
 #include "brave/browser/brave_shields/ad_block_subscription_download_manager_getter.h"
 #include "brave/browser/brave_stats/buildflags.h"
@@ -214,6 +215,21 @@ void BraveBrowserProcessImpl::Init() {
   // Lazy initialization of AdBlockOnlyModePolicyManager
   brave_policy::AdBlockOnlyModePolicyManager::GetInstance()->Init(
       local_state());
+
+  // Initialize BraveOriginPolicyManager here so its managed prefs are merged
+  // into local state before any profile's policy connector polls
+  // `BraveProfilePolicyProvider::IsInitializationComplete`. Without this,
+  // profile pref-store init can deadlock waiting for the gate while the gate
+  // is waiting for `BuildServiceInstanceForBrowserContext` (gated on profile
+  // build) to run `Init` -- manifests as "stuck on profile selection."
+  auto* origin_policy_manager =
+      brave_origin::BraveOriginPolicyManager::GetInstance();
+  if (!origin_policy_manager->IsInitialized()) {
+    origin_policy_manager->Init(
+        brave_origin::BraveOriginServiceFactory::GetBrowserPolicyDefinitions(),
+        brave_origin::BraveOriginServiceFactory::GetProfilePolicyDefinitions(),
+        local_state());
+  }
 }
 
 void BraveBrowserProcessImpl::PreMainMessageLoopRun() {
