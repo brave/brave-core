@@ -5,9 +5,7 @@
 
 import BraveCore
 import BraveStrings
-import BraveUI
 import SwiftUI
-import UIKit
 
 struct ManagePasswordDetailContainerView: View {
   /// How the password detail screen is opened: view/edit an existing login, or add a new one.
