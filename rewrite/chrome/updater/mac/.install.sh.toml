@@ -27,55 +27,8 @@ description = 'Omit perms, link and dir times when non-root'
 pattern = 'RSYNC_FLAGS="--ignore-times --links --perms --recursive --times"'
 replace = 'RSYNC_FLAGS="--ignore-times --links $(if [[ ${EUID} -eq 0 ]]; then echo "--perms --recursive --times"; else echo "--no-perms --executability --chmod=u=rwX,go=rX --recursive"; fi)"'
 
-# .install.sh fails with exit code 12 in ~1% of update attempts. It is unclear
-# why. The following two substitions attempt two possible fixes and report their
-# effectiveness in the script's exit code. They do this in such a way that the
-# externally-visible behavior of the script is unchanged. In particular, the
-# script still fails even when one of the fixes is successful. The motivation
-# for this is that right now, we only want to know which of the fixes (if any)
-# can be successful. In a future change, only the effective fixes will be kept.
-# The new exit codes have the following meanings:
-#  90 mkdir of new versioned directory failed: read-only file system (EROFS).
-#  91 mkdir of new versioned directory failed: no space / quota (ENOSPC/EDQUOT).
-#  92 mkdir of new versioned directory failed: operation not permitted (EPERM,
-#     e.g. App Management gate on macOS 13+, or endpoint security software).
-#  93 mkdir of new versioned directory failed: permission denied (EACCES,
-#     e.g. POSIX ownership or ACL mismatch on the installed bundle).
-#  94 mkdir of new versioned directory failed: non-directory at path
-#     (EEXIST/ENOTDIR; stale entry or TOCTOU with another process).
-#  95 mkdir of new versioned directory failed: unclassified (see logged stderr).
-
 [[substitution]]
-description = 'Probe mkdir, classify the failure, initialize debug_flags'
-pattern = 'note "rsyncing versioned directory"'
-replace = '''note "rsyncing versioned directory"
-    local debug_flags=0
-    if [[ ! -d "${new_versioned_dir}" ]]; then
-      debug_flags=1
-      local mkdir_stderr
-      if ! mkdir_stderr="$(mkdir -p "${new_versioned_dir}" 2>&1 1>/dev/null)"
-      then
-        case "${mkdir_stderr}" in
-          *"Read-only file system"*)
-            exit 90 ;;
-          *"No space left on device"*|*"Disc quota exceeded"*)
-            exit 91 ;;
-          *"Operation not permitted"*)
-            exit 92 ;;
-          *"Permission denied"*)
-            exit 93 ;;
-          *"File exists"*|*"Not a directory"*)
-            exit 94 ;;
-          *)
-            exit 95 ;;
-        esac
-      fi
-      debug_flags=$((debug_flags | 2))
-      rm -rf "${new_versioned_dir}"
-    fi'''
-
-[[substitution]]
-description = '''Return debug_flags in exit code'
+description = '''Try various fixes for exit code 12 failures.
 
 We anchor on upstream's `exit 12` because it is expected to remain unchanged.
 The reasons are:
@@ -83,10 +36,53 @@ The reasons are:
  2. It is documented at the top of the script.
  3. Other numeric error values in //chrome/updater are treated as unchangeable.
 
-We start our custom codes at 80 in order to not clash with upstream's, even in
+We start our custom codes at 70 in order to not clash with upstream's, even in
 case they add new ones beyond the current maximum 16.
 '''
 pattern = 'exit 12'
-replace = '''rsync ${RSYNC_FLAGS} --delete-before "${update_versioned_dir}" "${installed_versions_dir}" && (( debug_flags |= 4 ))
+replace = '''# Try various remedies; Report in exit code what would have worked.
+      local mkdir_stderr
+      if ! mkdir_stderr="$(mkdir -p "${new_versioned_dir}" 2>&1 1>/dev/null)"
+      then
+        # If `mkdir` fails, then other remedies won't work either; Exit with a
+        # code that tells us the cause.
+        case "${mkdir_stderr}" in
+          *"Read-only file system"*)
+            exit 70 ;;
+          *"No space left on device"*|*"Disc quota exceeded"*)
+            exit 71 ;;
+          *"Operation not permitted"*)
+            exit 72 ;;
+          *"Permission denied"*)
+            exit 73 ;;
+          *"File exists"*|*"Not a directory"*)
+            exit 74 ;;
+          *)
+            exit 75 ;;
+        esac
+      fi
+      # `mkdir` succeeded. Retry the original rsync. If it succeeds, then clean
+      # up and return an exit code that tells us that this fix is worth keeping.
+      if rsync ${RSYNC_FLAGS} --delete-before "${update_versioned_dir}/" \
+                                              "${new_versioned_dir}"; then
+        rm -rf "${new_versioned_dir}"
+        exit 76
+      fi
+      # Another potential remedy is to rsync into the parent directory. As
+      # before, if this succeeds, clean up and return a unique exit code that
+      # tells us that this workaround is worth keeping.
+      if rsync ${RSYNC_FLAGS} --delete-before "${update_versioned_dir}" \
+                                              "${installed_versions_dir}"; then
+        rm -rf "${new_versioned_dir}"
+        exit 77
+      fi
+      # Try the same rsync-into-parent, but from a clean slate.
       rm -rf "${new_versioned_dir}"
-      exit $((80 + debug_flags))'''
+      if rsync ${RSYNC_FLAGS} --delete-before "${update_versioned_dir}" \
+                                              "${installed_versions_dir}"; then
+        rm -rf "${new_versioned_dir}"
+        exit 78
+      fi
+      # None of the attempted remedies worked.
+      rm -rf "${new_versioned_dir}"
+      exit 79'''
