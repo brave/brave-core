@@ -9,11 +9,11 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-.navigationButtons {
+.navigation-buttons {
   display: block;
 }
 
-.disableButton {
+.disable-button {
   background: rgb(255, 255, 255);
   border-radius: 100px;
   background-repeat: no-repeat;
@@ -24,7 +24,7 @@
   width: 100%;
 }
 
-.disableButtonTitle {
+.disable-button-title {
   color: rgb(76, 84, 210);
   font-size: 16px;
   font-family: SFProText-Semibold, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -36,7 +36,7 @@
   outline: none;
 }
 
-.proceedButton {
+.proceed-button {
   background: rgb(76, 84, 210);
   border-radius: 100px;
   background-repeat: no-repeat;
@@ -48,7 +48,7 @@
   width: 100%;
 }
 
-.proceedButtonTitle {
+.proceed-button-title {
   color: rgb(255, 255, 255);
   font-size: 16px;
   font-family: SFProText-Semibold, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -61,7 +61,7 @@
   outline: none;
 }
 
-.udIntro {
+.ud-intro {
     color: rgb(82, 82, 82);
     font-size: 14px;
     font-family: SFProText-Regular, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -76,7 +76,7 @@
   gap: 6px;
   margin-bottom: 8px;
 }
-                                        
+
 .extension-pill {
   display: inline-block;
   padding: 4px 10px;
@@ -86,7 +86,7 @@
   color: rgb(57, 57, 59);
   background: rgb(242, 242, 243);
 }
-                                                                                                                                      
+
 .show-more-btn {
   display: inline-block;
   padding: 4px 12px;
