@@ -6,8 +6,8 @@
 #ifndef BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_NTP_BACKGROUND_IMAGES_SERVICE_WAITER_H_
 #define BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_NTP_BACKGROUND_IMAGES_SERVICE_WAITER_H_
 
-#include "base/memory/raw_ref.h"
 #include "base/run_loop.h"
+#include "base/scoped_observation.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 
 namespace base {
@@ -42,7 +42,9 @@ class NTPBackgroundImagesServiceWaiter
   void OnSponsoredImagesDataDidUpdate(NTPSponsoredImagesData* data) override;
   void OnSponsoredContentDidUpdate(const base::DictValue& dict) override;
 
-  const raw_ref<NTPBackgroundImagesService> service_;
+  base::ScopedObservation<NTPBackgroundImagesService,
+                          NTPBackgroundImagesService::Observer>
+      observation_{this};
 
   base::RunLoop on_background_images_did_update_run_loop_;
   base::RunLoop on_sponsored_images_data_did_update_run_loop_;
