@@ -17,22 +17,19 @@
 #include "base/scoped_observation.h"
 #include "base/timer/wall_clock_timer.h"
 #include "base/values.h"
+#include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service_observer.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/view_counter_model.h"
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "components/content_settings/core/browser/content_settings_observer.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
 
 class PrefService;
 
-namespace brave_ads {
-class AdsService;
-}  // namespace brave_ads
-
-class HostContentSettingsMap;
 class WeeklyStorage;
 class DailyStorage;
 
@@ -203,6 +200,10 @@ class ViewCounterService : public KeyedService,
   std::unique_ptr<DailyStorage> new_tab_count_daily_state_;
   std::unique_ptr<WeeklyStorage> branded_new_tab_count_state_;
 
+  base::ScopedObservation<brave_ads::AdsService, brave_ads::AdsServiceObserver>
+      ads_service_observation_{this};
+  base::ScopedObservation<HostContentSettingsMap, content_settings::Observer>
+      host_content_settings_map_observation_{this};
   base::ScopedObservation<NTPBackgroundImagesService,
                           NTPBackgroundImagesService::Observer>
       ntp_background_images_service_observation_{this};

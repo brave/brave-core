@@ -10,14 +10,11 @@
 namespace ntp_background_images {
 
 NTPBackgroundImagesServiceWaiter::NTPBackgroundImagesServiceWaiter(
-    NTPBackgroundImagesService& service)
-    : service_(service) {
-  service_->AddObserver(this);
+    NTPBackgroundImagesService& service) {
+  observation_.Observe(&service);
 }
 
-NTPBackgroundImagesServiceWaiter::~NTPBackgroundImagesServiceWaiter() {
-  service_->RemoveObserver(this);
-}
+NTPBackgroundImagesServiceWaiter::~NTPBackgroundImagesServiceWaiter() = default;
 
 void NTPBackgroundImagesServiceWaiter::
     WaitForOnBackgroundImagesDataDidUpdate() {

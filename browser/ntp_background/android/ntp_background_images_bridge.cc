@@ -80,21 +80,20 @@ bool NTPBackgroundImagesBridgeFactory::ServiceIsCreatedWithBrowserContext()
 
 NTPBackgroundImagesBridge::NTPBackgroundImagesBridge(Profile* profile)
     : profile_(profile),
-      view_counter_service_(ViewCounterServiceFactory::GetForProfile(profile_)),
-      background_images_service_(
-          g_brave_browser_process->ntp_background_images_service()) {
+      view_counter_service_(
+          ViewCounterServiceFactory::GetForProfile(profile_)) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
 
   java_object_.Reset(Java_NTPBackgroundImagesBridge_create(
       AttachCurrentThread(), reinterpret_cast<intptr_t>(this)));
 
-  if (background_images_service_)
-    background_images_service_->AddObserver(this);
+  if (g_brave_browser_process->ntp_background_images_service()) {
+    ntp_background_images_service_observation_.Observe(
+        g_brave_browser_process->ntp_background_images_service());
+  }
 }
 
 NTPBackgroundImagesBridge::~NTPBackgroundImagesBridge() {
-  if (background_images_service_)
-    background_images_service_->RemoveObserver(this);
   Java_NTPBackgroundImagesBridge_destroy(AttachCurrentThread(), java_object_);
 }
 
