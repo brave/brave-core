@@ -5,7 +5,6 @@
 
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
-import { setIconBasePath } from '@brave/leo/react/icon'
 
 import { AppContext } from './lib/app_context'
 import { createAppStore } from './webui/browser_app_store'
@@ -13,8 +12,6 @@ import { TabOpenerContext } from '../shared/components/new_tab_link'
 import { ShowHandler } from './components/common/show_handler'
 import { App } from './components/app'
 import * as routes from './lib/app_routes'
-
-setIconBasePath('chrome://resources/brave-icons')
 
 function handleLegacyURLs() {
   switch (location.hash.toLocaleLowerCase().replace(/^#/, '')) {

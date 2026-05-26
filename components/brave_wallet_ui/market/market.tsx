@@ -18,9 +18,6 @@ import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
 import walletDarkTheme from '../theme/wallet-dark'
 import walletLightTheme from '../theme/wallet-light'
 
-// leo icons setup
-import { setIconBasePath } from '@brave/leo/react/icon'
-
 // constants
 import {
   BraveWallet,
@@ -63,7 +60,6 @@ import {
 } from '../components/desktop/assets-filter-dropdown/index'
 import { SearchBar } from '../components/shared/search-bar/index'
 import { MarketGrid } from '../components/shared/market-grid/market-grid'
-setIconBasePath('chrome-untrusted://resources/brave-icons')
 
 const App = () => {
   // State

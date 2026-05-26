@@ -31,9 +31,6 @@ import walletDarkTheme from '../theme/wallet-dark'
 import walletLightTheme from '../theme/wallet-light'
 import 'emptykit.css'
 
-import { setIconBasePath } from '@brave/leo/react/icon'
-setIconBasePath('chrome://resources/brave-icons')
-
 function App() {
   React.useEffect(() => {
     /** Sets FAVICON for Wallet Pages */

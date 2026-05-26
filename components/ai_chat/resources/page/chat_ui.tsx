@@ -5,7 +5,6 @@
 
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
-import { setIconBasePath } from '@brave/leo/react/icon'
 import '$web-common/defaultTrustedTypesPolicy'
 import * as Mojom from '../common/mojom'
 import bindWebUiServices from './api/bind_webui_services'
@@ -34,8 +33,6 @@ import { useIOSOneTapFix } from '../common/useIOSOneTapFix'
 // </if>
 
 // Perform any setup specific to this platform
-
-setIconBasePath('chrome://resources/brave-icons')
 
 // Create global mojo connections
 const aiChat = bindWebUiServices()

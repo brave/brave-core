@@ -12,7 +12,6 @@ import { createRoot } from 'react-dom/client'
 import { SignInPage, ManagePage } from './content/email_aliases_manage_page'
 import { StyleSheetManager } from 'styled-components'
 import * as React from 'react'
-import { setIconBasePath } from '@brave/leo/react/icon'
 import {
   EmailAliasesMetrics,
   EmailAliasesServiceInterface,
@@ -43,8 +42,6 @@ export const ManagePageConnected = ({
 }
 
 export const mount = (signInElem: HTMLElement, manageElem: HTMLElement) => {
-  setIconBasePath('//resources/brave-icons')
-
   const emailAliasesService = EmailAliasesService.getRemote()
   const emailAliasesMetrics = EmailAliasesMetrics.getRemote()
 

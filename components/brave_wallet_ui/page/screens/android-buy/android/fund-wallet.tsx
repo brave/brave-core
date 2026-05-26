@@ -26,10 +26,6 @@ import * as WalletActions from '../../../../common/actions/wallet_actions'
 import BraveCoreThemeProvider from '../../../../../common/BraveCoreThemeProvider'
 import { FundWalletScreen } from '../../fund-wallet/fund_wallet_v2'
 
-// Resources
-import { setIconBasePath } from '@brave/leo/react/icon'
-setIconBasePath('chrome://resources/brave-icons')
-
 export function AndroidFundWalletApp() {
   return (
     <Provider store={store}>

@@ -8,8 +8,6 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 
-import { setIconBasePath } from '@brave/leo/react/icon'
-
 // Components
 import App from './components/app.v1'
 
@@ -34,6 +32,5 @@ function initialize () {
 
 wireApiEventsToStore()
 startReceivingPlayerEvents()
-setIconBasePath('chrome-untrusted://resources/brave-icons')
 
 document.addEventListener('DOMContentLoaded', initialize)

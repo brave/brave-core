@@ -5,15 +5,12 @@
 
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
-import { setIconBasePath } from '@brave/leo/react/icon'
 
 import { loadTimeData } from '$web-common/loadTimeData'
 import { ShieldsPanelProxy } from './api/shields_panel_proxy'
 import { createShieldsApi } from './api/shields_api'
 import { ShieldsApiProvider } from './api/shields_api_context'
 import { App } from './components/app'
-
-setIconBasePath('//resources/brave-icons')
 
 function hasReloadsDetectedFlag() {
   const urlParams = new URLSearchParams(window.location.search)

@@ -8,7 +8,6 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { initLocale } from 'brave-ui'
-import { setIconBasePath } from '@brave/leo/react/icon'
 
 import { loadTimeData } from '../../common/loadTimeData'
 import walletDarkTheme from '../theme/wallet-dark'
@@ -20,7 +19,6 @@ import Container from './container'
 import {
   runLocalStorageMigrations, //
 } from '../common/constants/local-storage-keys'
-setIconBasePath('chrome://resources/brave-icons')
 
 function App() {
   React.useEffect(() => {

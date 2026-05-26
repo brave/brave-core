@@ -5,7 +5,6 @@
 
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
-import { setIconBasePath } from '@brave/leo/react/icon'
 import '$web-common/defaultTrustedTypesPolicy'
 import Conversation from './components/conversation'
 import { UntrustedConversationContextProvider } from './untrusted_conversation_context'
@@ -21,8 +20,6 @@ import {
   bindUntrustedConversation,
   BoundUntrustedConversation,
 } from './api/bind_untrusted_conversation'
-
-setIconBasePath('chrome-untrusted://resources/brave-icons')
 
 interface AppProps {
   boundConversation: BoundUntrustedConversation

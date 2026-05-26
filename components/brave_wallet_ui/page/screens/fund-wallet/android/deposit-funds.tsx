@@ -26,9 +26,6 @@ import * as WalletActions from '../../../../common/actions/wallet_actions'
 import BraveCoreThemeProvider from '../../../../../common/BraveCoreThemeProvider'
 import { DepositFundsScreen } from '../deposit-funds'
 
-import { setIconBasePath } from '@brave/leo/react/icon'
-setIconBasePath('chrome://resources/brave-icons')
-
 export function AndroidDepositApp() {
   return (
     <Provider store={store}>

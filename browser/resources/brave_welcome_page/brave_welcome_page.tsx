@@ -5,10 +5,7 @@
 
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
-import { setIconBasePath } from '@brave/leo/react/icon'
 
 import { App } from './components/app'
-
-setIconBasePath('chrome://resources/brave-icons')
 
 createRoot(document.getElementById('root')!).render(<App />)

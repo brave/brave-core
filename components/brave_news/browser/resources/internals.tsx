@@ -7,13 +7,10 @@ import * as React from 'react'
 import { createRoot } from 'react-dom/client'
 
 import Button from '@brave/leo/react/button'
-import { setIconBasePath } from '@brave/leo/react/icon'
 import styled from 'styled-components'
 import { downloadExport, getExportData } from './export'
 import Variables from './Variables'
 import usePromise from '$web-common/usePromise'
-
-setIconBasePath('//resources/brave-icons')
 
 const Grid = styled(Variables)`
   display: grid;

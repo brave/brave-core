@@ -6,7 +6,6 @@
 import { createRoot } from 'react-dom/client'
 import * as React from 'react'
 import { StyleSheetManager } from 'styled-components'
-import { setIconBasePath } from '@brave/leo/react/icon'
 import {
   EmailAliasModal,
   EmailAliasModalResultType,
@@ -69,7 +68,6 @@ const mount = () => {
     emailAliasesService.addObserver(observerRemote)
     return () => observerReceiver.$.close()
   }
-  setIconBasePath('//resources/brave-icons')
   createRoot(rootElement).render(
     <StyleSheetManager>
       <EmailAliasesPanelConnected
