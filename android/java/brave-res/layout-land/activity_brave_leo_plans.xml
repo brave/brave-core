@@ -26,11 +26,12 @@
         android:layout_weight="1">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
             android:layout_gravity="end"
             android:contentDescription="@null"
-            app:srcCompat="@drawable/ic_product_brave_leo" />
+            app:srcCompat="@drawable/ic_product_brave_leo"
+            app:tint="@color/primitive_blurple_15" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -77,14 +78,16 @@
 
                             <ImageView
                                 android:id="@+id/iv_explore"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="56dp"
+                                android:layout_height="56dp"
+                                android:background="@drawable/leo_tip_icon_background"
                                 android:contentDescription="@null"
-                                android:padding="8dp"
+                                android:padding="16dp"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:srcCompat="@drawable/ic_widget_generic_with_container" />
+                                app:srcCompat="@drawable/ic_widget_generic"
+                                app:tint="@color/primitive_blurple_90" />
 
                             <TextView
                                 android:id="@+id/tv_explore"
@@ -126,14 +129,16 @@
 
                             <ImageView
                                 android:id="@+id/iv_unlock"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="56dp"
+                                android:layout_height="56dp"
+                                android:background="@drawable/leo_tip_icon_background"
                                 android:contentDescription="@null"
-                                android:padding="8dp"
+                                android:padding="16dp"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:srcCompat="@drawable/ic_idea" />
+                                app:srcCompat="@drawable/ic_idea"
+                                app:tint="@color/primitive_blurple_90" />
 
                             <TextView
                                 android:id="@+id/tv_unlock"
@@ -175,14 +180,16 @@
 
                             <ImageView
                                 android:id="@+id/iv_stay"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="56dp"
+                                android:layout_height="56dp"
+                                android:background="@drawable/leo_tip_icon_background"
                                 android:contentDescription="@null"
-                                android:padding="8dp"
+                                android:padding="16dp"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:srcCompat="@drawable/ic_edit_pencil" />
+                                app:srcCompat="@drawable/ic_edit_pencil"
+                                app:tint="@color/primitive_blurple_90" />
 
                             <TextView
                                 android:id="@+id/tv_stay"
@@ -224,14 +231,16 @@
 
                             <ImageView
                                 android:id="@+id/iv_chat"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="56dp"
+                                android:layout_height="56dp"
+                                android:background="@drawable/leo_tip_icon_background"
                                 android:contentDescription="@null"
-                                android:padding="8dp"
+                                android:padding="16dp"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:srcCompat="@drawable/ic_message_bubble_comments" />
+                                app:srcCompat="@drawable/ic_message_bubble_comments"
+                                app:tint="@color/primitive_blurple_90" />
 
                             <TextView
                                 android:id="@+id/tv_chat"
