@@ -14,6 +14,7 @@
 #include "base/logging.h"
 #include "base/metrics/histogram_samples.h"
 #include "base/metrics/statistics_recorder.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/trace_event/trace_event.h"
 #include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/p3a/component_installer.h"
@@ -87,6 +88,13 @@ P3AService::P3AService(PrefService& local_state,
       local_state, &config_, *this, channel, first_run_time);
 
   event_relay_observation_.Observe(p3a_utils::EventRelay::GetInstance());
+
+  // Observe `BraveOriginPolicyManager` so we can defer `message_manager_`
+  // startup until its policies have been merged into local state.
+  // `AddObserver` fires `OnBravePoliciesReady` immediately if the manager is
+  // already initialised.
+  policy_manager_observation_.Observe(
+      brave_origin::BraveOriginPolicyManager::GetInstance());
 }
 
 P3AService::~P3AService() = default;
@@ -199,8 +207,17 @@ void P3AService::Init(
     pref_change_registrar_.Add(kP3AEnabled, callback);
   }
 
+  TryFinalizeInit();
+}
+
+void P3AService::TryFinalizeInit() {
+  // All preconditions must be met before reading `kP3AEnabled` and starting
+  // the message manager: factories ready, remote config loaded, and
+  // `BraveOriginPolicyManager` has merged any managed prefs (which can
+  // override `kP3AEnabled` to false). Whichever signal lands last triggers
+  // the actual start.
   if (initialized_ || !url_loader_factory_ ||
-      !remote_config_manager_->is_loaded()) {
+      !remote_config_manager_->is_loaded() || !brave_policies_ready_) {
     return;
   }
 
@@ -215,6 +232,30 @@ void P3AService::Init(
   if (IsP3AEnabled()) {
     message_manager_->Start(url_loader_factory_);
   }
+}
+
+void P3AService::OnBravePoliciesReady() {
+  // `AddObserver` may fire this synchronously (manager already initialised)
+  // and the manager may notify again. The start-side work must run at most
+  // once -- `TryFinalizeInit` handles that via `initialized_`.
+  if (brave_policies_ready_) {
+    return;
+  }
+  brave_policies_ready_ = true;
+
+  // Propagation from `BraveBrowserPolicyProvider::RefreshPolicies` to the
+  // managed pref is async; post so we read `kP3AEnabled` after it lands.
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, base::BindOnce(&P3AService::OnBravePoliciesPropagated, this));
+}
+
+void P3AService::OnBravePoliciesPropagated() {
+  TryFinalizeInit();
+  // Re-evaluate the component installer registration now that the managed
+  // pref is visible. The early call from `RegisterComponentsForUpdate`
+  // no-ops while `BraveOriginPolicyManager::IsInitialized()` is false; this
+  // call is what actually does the work post-merge.
+  MaybeToggleP3AComponent(component_update_service_, this);
 }
 
 void P3AService::OnRotation(MetricLogType log_type) {

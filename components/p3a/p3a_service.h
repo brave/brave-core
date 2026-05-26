@@ -20,6 +20,8 @@
 #include "base/metrics/histogram_base.h"
 #include "base/metrics/statistics_recorder.h"
 #include "base/scoped_observation.h"
+#include "brave/components/brave_origin/brave_origin_policy_manager.h"
+#include "brave/components/brave_policy/brave_policy_observer.h"
 #include "brave/components/p3a/message_manager.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/p3a_config.h"
@@ -59,6 +61,7 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
                    public misc_metrics::DefaultBrowserMonitor::Observer,
 #endif  // !BUILDFLAG(IS_IOS)
                    public p3a_utils::EventRelay::Observer,
+                   public brave_policy::BravePolicyObserver,
                    public RemoteConfigManager::Delegate {
  public:
   P3AService(PrefService& local_state,
@@ -135,6 +138,9 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
       std::string_view attribute_name,
       std::optional<std::string_view> attribute_value) override;
 
+  // brave_policy::BravePolicyObserver
+  void OnBravePoliciesReady() override;
+
 #if !BUILDFLAG(IS_IOS)
   // misc_metrics::DefaultBrowserMonitor::Observer
   void OnDefaultBrowserStatusChanged(bool is_default) override;
@@ -160,11 +166,15 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
 
   void OnP3AEnabledChanged();
 
+  void TryFinalizeInit();
+  void OnBravePoliciesPropagated();
+
   // Updates or removes a metric from the log.
   void HandleHistogramChange(std::string_view histogram_name, size_t bucket);
 
   // General prefs:
   bool initialized_ = false;
+  bool brave_policies_ready_ = false;
 
   const raw_ref<PrefService> local_state_;
   P3AConfig config_;
@@ -201,6 +211,10 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
   base::ScopedObservation<p3a_utils::EventRelay,
                           p3a_utils::EventRelay::Observer>
       event_relay_observation_{this};
+
+  base::ScopedObservation<brave_origin::BraveOriginPolicyManager,
+                          brave_policy::BravePolicyObserver>
+      policy_manager_observation_{this};
 
 #if !BUILDFLAG(IS_IOS)
   base::ScopedObservation<misc_metrics::DefaultBrowserMonitor,

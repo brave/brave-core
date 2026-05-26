@@ -12,6 +12,7 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
+#include "brave/components/brave_origin/brave_origin_policy_manager.h"
 #include "brave/components/p3a/p3a_service.h"
 #include "brave/components/p3a/remote_config_manager.h"
 #include "components/component_updater/component_installer.h"
@@ -101,6 +102,16 @@ void MaybeToggleP3AComponent(ComponentUpdateService* cus,
   if (!cus || !p3a_service ||
       brave_component_updater::BraveOnDemandUpdater::GetInstance()
           ->is_component_update_disabled()) {
+    return;
+  }
+
+  // Defer until `BraveOriginPolicyManager` has merged its managed prefs.
+  // Otherwise `IsP3AEnabled()` would read the still-default value at the
+  // early `RegisterComponentsForUpdate` call site and `EnsureInstalled`
+  // would fire a component fetch before any Brave Origin policy override
+  // had a chance to disable it. `P3AService::OnBravePoliciesReady` re-runs
+  // this once the manager is initialised.
+  if (!brave_origin::BraveOriginPolicyManager::GetInstance()->IsInitialized()) {
     return;
   }
 
