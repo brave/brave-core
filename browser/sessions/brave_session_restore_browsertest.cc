@@ -241,6 +241,37 @@ class BraveTreeTabSessionRestoreBrowserTest : public InProcessBrowserTest {
     VerifyExtraData(std::move(predicate), location);
   }
 
+  // Asserts that at least one tab carries all three tree extra-data keys and
+  // that the keys for parent and collapsed state accompany any node-id found.
+  static void VerifyTreeNodeExtraDataKeys(
+      std::vector<std::unique_ptr<sessions::SessionWindow>> windows) {
+    ASSERT_EQ(1u, windows.size());
+    ASSERT_GE(windows[0]->tabs.size(), 1u);
+
+    bool found_tree_id = false;
+    for (const auto& session_tab : windows[0]->tabs) {
+      const auto* node_id =
+          base::FindOrNull(session_tab->extra_data, kBraveTreeNodeIdKey);
+      if (node_id && !node_id->empty()) {
+        found_tree_id = true;
+        EXPECT_TRUE(base::FindOrNull(session_tab->extra_data,
+                                     kBraveTreeParentNodeIdKey))
+            << "tab extra data should contain kBraveTreeParentNodeIdKey";
+        EXPECT_TRUE(base::FindOrNull(session_tab->extra_data,
+                                     kBraveTreeNodeCollapsedKey))
+            << "tab extra data should contain kBraveTreeNodeCollapsedKey";
+        EXPECT_TRUE(
+            session_tab->extra_data.at(kBraveTreeNodeCollapsedKey) == "0" ||
+            session_tab->extra_data.at(kBraveTreeNodeCollapsedKey) == "1")
+            << "tab extra data should contain kBraveTreeNodeCollapsedKey with "
+               "value 0 or 1";
+        break;
+      }
+    }
+    EXPECT_TRUE(found_tree_id) << "Expected at least one tab with "
+                               << kBraveTreeNodeIdKey << " in extra_data";
+  }
+
   base::test::ScopedFeatureList feature_list_;
 };
 
@@ -267,29 +298,7 @@ IN_PROC_BROWSER_TEST_F(BraveTreeTabSessionRestoreBrowserTest,
   // Check that the first tab's tree node gets kBraveTreeNodeIdKey via the
   // incremental (AddTabExtraData) path, without a full rebuild.
   VerifyExtraData(base::BindOnce(
-      [](std::vector<std::unique_ptr<sessions::SessionWindow>> windows) {
-        ASSERT_EQ(1u, windows.size());
-        ASSERT_GE(windows[0]->tabs.size(), 1u);
-
-        bool found_tree_id = false;
-        for (const auto& session_tab : windows[0]->tabs) {
-          const auto* node_id =
-              base::FindOrNull(session_tab->extra_data, kBraveTreeNodeIdKey);
-          if (node_id && !node_id->empty()) {
-            found_tree_id = true;
-            // If node_id is present, parent_node_id must also be present.
-            EXPECT_TRUE(base::FindOrNull(session_tab->extra_data,
-                                         kBraveTreeParentNodeIdKey));
-
-            // if node_id is present, collapsed state must be present.
-            EXPECT_TRUE(base::FindOrNull(session_tab->extra_data,
-                                         kBraveTreeNodeCollapsedKey));
-            break;
-          }
-        }
-        EXPECT_TRUE(found_tree_id) << "Expected at least one tab with "
-                                   << kBraveTreeNodeIdKey << " in extra_data";
-      }));
+      &BraveTreeTabSessionRestoreBrowserTest::VerifyTreeNodeExtraDataKeys));
 }
 
 // Verifies that tree extra_data is written during a full session rebuild
@@ -300,29 +309,7 @@ IN_PROC_BROWSER_TEST_F(BraveTreeTabSessionRestoreBrowserTest,
   ASSERT_TRUE(brave_tab_strip_model()->tree_model());
 
   VerifyExtraDataAfterFullRebuild(base::BindOnce(
-      [](std::vector<std::unique_ptr<sessions::SessionWindow>> windows) {
-        ASSERT_EQ(1u, windows.size());
-        ASSERT_GE(windows[0]->tabs.size(), 1u);
-
-        bool found_tree_id = false;
-        for (const auto& session_tab : windows[0]->tabs) {
-          const auto* node_id =
-              base::FindOrNull(session_tab->extra_data, kBraveTreeNodeIdKey);
-          if (node_id && !node_id->empty()) {
-            found_tree_id = true;
-            EXPECT_TRUE(base::FindOrNull(session_tab->extra_data,
-                                         kBraveTreeParentNodeIdKey));
-
-            EXPECT_TRUE(base::FindOrNull(session_tab->extra_data,
-                                         kBraveTreeNodeCollapsedKey));
-            break;
-          }
-        }
-        EXPECT_TRUE(found_tree_id)
-            << "Expected tree node ID after full rebuild; "
-               "check BRAVE_BUILD_COMMANDS_FOR_TREE_TAB in "
-               "chromium_src/chrome/browser/sessions/session_service_base.cc";
-      }));
+      &BraveTreeTabSessionRestoreBrowserTest::VerifyTreeNodeExtraDataKeys));
 }
 
 // Verifies that a tab nested under a parent tree node stores the parent's id
