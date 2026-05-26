@@ -13,6 +13,7 @@
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/strings/string_util.h"
+#include "base/task/sequenced_task_runner.h"
 #include "brave/brave_domains/service_domains.h"
 #include "brave/components/brave_origin/brave_origin_policy_manager.h"
 #include "brave/components/brave_origin/brave_origin_utils.h"
@@ -262,7 +263,6 @@ void BraveOriginService::OnCredentialSummary(
   }
 #endif
 
-  LOG(ERROR) << "-----------OnCredentiaSummary Set Purchased: " << purchased;
   BraveOriginPolicyManager::GetInstance()->SetPurchased(purchased);
 
   // Persist enforcement state so NeedsRestart() can detect first-purchase
@@ -276,15 +276,30 @@ void BraveOriginService::OnCredentialSummary(
   // On first purchase detection in the upgrade case, open the settings page
   // so the user can configure Origin policies and restart. Branded builds
   // handle the post-purchase flow via the startup dialog instead.
+  // Post the call instead of invoking it inline: this runs from a mojo
+  // CredentialSummary reply triggered by the account.brave.com Refresh
+  // button, and opening a settings tab synchronously from inside that
+  // callback (which also fires policy/pref reload via SetPurchased above)
+  // has produced dangling raw_ptr crashes during the transition.
   if (purchased && !was_previously_purchased && delegate_ &&
       !did_open_origin_settings_) {
-    delegate_->OpenOriginSettings();
     did_open_origin_settings_ = true;
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, base::BindOnce(&BraveOriginService::OpenOriginSettings,
+                                  weak_ptr_factory_.GetWeakPtr()));
   }
 #endif
 
   std::move(callback).Run(purchased);
 }
+
+#if !BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+void BraveOriginService::OpenOriginSettings() {
+  if (delegate_) {
+    delegate_->OpenOriginSettings();
+  }
+}
+#endif
 
 bool BraveOriginService::EnsureSkusConnected() {
   if (!skus_service_) {

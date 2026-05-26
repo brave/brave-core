@@ -106,6 +106,9 @@ class BraveOriginService : public KeyedService {
                            skus::mojom::SkusResultPtr summary);
   void OnSkusStateChanged();
   bool EnsureSkusConnected();
+#if !BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+  void OpenOriginSettings();
+#endif
 
   mojo::Remote<skus::mojom::SkusService> skus_service_;
   std::string origin_sku_domain_;
