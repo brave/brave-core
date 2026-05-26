@@ -7,6 +7,11 @@ import * as React from 'react'
 // Types
 import { BraveWallet } from '../../../../constants/types'
 
+// Queries
+import {
+  useGetPolkadotAddressForNetworkQuery, //
+} from '../../../../common/slices/api.slice'
+
 // Custom hooks
 import { useExplorer } from '../../../../common/hooks/explorer'
 
@@ -33,6 +38,52 @@ export const NetworkButton = (props: Props) => {
 
   return (
     <Button onClick={onClickViewOnBlockExplorer('address', address)}>
+      <Row width='unset'>
+        <CreateNetworkIcon
+          network={network}
+          marginRight={12}
+          size='big'
+        />
+        <Text
+          isBold={true}
+          textColor='primary'
+          textSize='14px'
+        >
+          {getLocale('braveWalletNetworkExplorer').replace(
+            '$1',
+            network.chainName,
+          )}
+        </Text>
+      </Row>
+      <LaunchIcon />
+    </Button>
+  )
+}
+
+interface PolkadotNetworkButtonProps {
+  network: BraveWallet.NetworkInfo
+  accountId: BraveWallet.AccountId
+}
+
+export const PolkadotNetworkButton = (props: PolkadotNetworkButtonProps) => {
+  const { network, accountId } = props
+
+  // Queries
+  const { currentData: address } = useGetPolkadotAddressForNetworkQuery({
+    accountId,
+    chainId: network.chainId,
+  })
+
+  // Hooks
+  const onClickViewOnBlockExplorer = useExplorer(network)
+
+  return (
+    <Button
+      onClick={
+        address ? onClickViewOnBlockExplorer('address', address) : undefined
+      }
+      disabled={!address}
+    >
       <Row width='unset'>
         <CreateNetworkIcon
           network={network}
