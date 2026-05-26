@@ -11,6 +11,7 @@
 // active, so that the class declaration keeps the original Open name and the
 // include guard prevents the header from being re-processed when the upstream
 // .cc pulls it in.
+#include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
 
 // Rename the upstream Add/RemoveHeaderView implementation so we can provide
@@ -50,20 +51,20 @@ void SidePanel::SetRoundedBorderEnabled(bool enabled) {
 }
 
 void SidePanel::UpdateBorder() {
-  // When a Brave header is attached, reserve top inset for it so the header
-  // paints over the border strip without overlapping content.
   const int header_top_inset =
       header_view_ ? header_view_->GetPreferredSize().height() : 0;
-
+  gfx::Insets insets;
+  insets.set_top(header_top_inset);
   if (rounded_border_enabled_) {
-    // Upstream GetBorderInsets() has a negative top to overlap the toolbar;
-    // Brave doesn't need that overlap.
-    SetBorder(
-        views::CreateEmptyBorder(GetBorderInsets().set_top(header_top_inset)));
-  } else {
-    SetBorder(
-        views::CreateEmptyBorder(gfx::Insets::TLBR(header_top_inset, 0, 0, 0)));
+    insets.set_bottom(kRoundedCornersContentsViewMargin);
+    if (IsRightAligned()) {
+      insets.set_right(kRoundedCornersContentsViewMargin);
+    } else {
+      insets.set_left(kRoundedCornersContentsViewMargin);
+    }
   }
+
+  SetBorder(views::CreateEmptyBorder(insets));
 }
 
 void SidePanel::AddHeaderView(std::unique_ptr<views::View> view) {

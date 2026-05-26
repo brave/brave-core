@@ -25,6 +25,7 @@ class View;
 class BraveContentsViewUtil {
  public:
   // The distance between main content areas and other UI elements.
+  // Deprecated. Use kRoundedCornersContentsViewMargin in layout_constants.h
   static constexpr int kMarginThickness = 4;
 
   // Creates a drop shadow matching |corner_radii| (typically from

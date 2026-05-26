@@ -13,6 +13,10 @@
 
 int GetLayoutConstant(LayoutConstant constant);
 
+// Rounded corners.
+// The distance between main content areas and other UI elements.
+inline constexpr int kRoundedCornersContentsViewMargin = 4;
+
 namespace tabs {
 
 // Horizontal tab layout:
