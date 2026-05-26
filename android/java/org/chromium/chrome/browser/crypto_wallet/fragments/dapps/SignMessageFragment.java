@@ -52,9 +52,8 @@ import java.util.concurrent.Executors;
 @NullMarked
 public class SignMessageFragment extends WalletBottomSheetDialogFragment {
     /**
-     * Two-step flow shown for sign requests that need a risk acknowledgment
-     * (EIP-712 typed data and Cardano payloads). Other request types start
-     * directly at {@link #SIGN_TX}.
+     * Two-step flow shown for sign requests that need a risk acknowledgment (EIP-712 typed data and
+     * Cardano payloads). Other request types start directly at {@link #SIGN_TX}.
      */
     private enum SignStep {
         // Risk warning is displayed; the primary button reads "Continue".
@@ -106,8 +105,7 @@ public class SignMessageFragment extends WalletBottomSheetDialogFragment {
         TextView warningLearnMore = view.findViewById(R.id.sign_warning_learn_more);
         warningLearnMore.setOnClickListener(
                 v -> {
-                    TabUtils.openUrlInNewTab(
-                            false, WalletConstants.URL_SIGN_TRANSACTION_REQUEST);
+                    TabUtils.openUrlInNewTab(false, WalletConstants.URL_SIGN_TRANSACTION_REQUEST);
                     TabUtils.bringChromeTabbedActivityToTheTop(getActivity());
                 });
 
@@ -207,9 +205,10 @@ public class SignMessageFragment extends WalletBottomSheetDialogFragment {
             }
         }
 
-        mSignStep = needsSignRiskWarning(mCurrentSignMessageRequest.signData)
-                ? SignStep.SIGN_RISK
-                : SignStep.SIGN_TX;
+        mSignStep =
+                needsSignRiskWarning(mCurrentSignMessageRequest.signData)
+                        ? SignStep.SIGN_RISK
+                        : SignStep.SIGN_TX;
         updateWarningLayoutForCurrentStep();
 
         if (mCurrentSignMessageRequest.originInfo != null
@@ -221,9 +220,9 @@ public class SignMessageFragment extends WalletBottomSheetDialogFragment {
     }
 
     /**
-     * EIP-712 typed data can grant broad authority (e.g. ERC-20 Permit
-     * allowances) that is easy to misread, and Cardano sign payloads are opaque
-     * to Brave; warn the user before either is signed.
+     * EIP-712 typed data can grant broad authority (e.g. ERC-20 Permit allowances) that is easy to
+     * misread, and Cardano sign payloads are opaque to Brave; warn the user before either is
+     * signed.
      */
     private static boolean needsSignRiskWarning(final SignDataUnion signData) {
         int tag = signData.which();
