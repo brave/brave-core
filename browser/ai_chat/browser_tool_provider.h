@@ -9,6 +9,7 @@
 #include <memory>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_provider.h"
@@ -25,6 +26,7 @@ namespace ai_chat {
 class CodeExecutionTool;
 class HistorySearchTool;
 class TabManagementTool;
+class TabSemanticSearchTool;
 
 // Implementation of ToolProvider that provides browser-specific
 // tools for conversations.
@@ -53,6 +55,7 @@ class BrowserToolProvider : public ToolProvider {
 #if BUILDFLAG(ENABLE_AI_CHAT_TAB_MANAGEMENT_TOOL)
   std::unique_ptr<TabManagementTool> tab_management_tool_;
 #endif
+  std::unique_ptr<TabSemanticSearchTool> tab_semantic_search_tool_;
   raw_ptr<Profile> profile_ = nullptr;
 };
 

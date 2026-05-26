@@ -13,6 +13,7 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/ai_chat/tools/code_execution_tool.h"
 #include "brave/browser/ai_chat/tools/history_search_tool.h"
+#include "brave/browser/ai_chat/tools/tab_semantic_search_tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -46,6 +47,9 @@ std::vector<base::WeakPtr<Tool>> BrowserToolProvider::GetTools() {
     tool_ptrs.push_back(tab_management_tool_->GetWeakPtr());
   }
 #endif
+  if (tab_semantic_search_tool_) {
+    tool_ptrs.push_back(tab_semantic_search_tool_->GetWeakPtr());
+  }
 
   return tool_ptrs;
 }
@@ -69,6 +73,11 @@ void BrowserToolProvider::CreateTools(
     tab_management_tool_ = std::make_unique<TabManagementTool>(profile_);
   }
 #endif
+  if (profile_ &&
+      history_embeddings::IsHistoryEmbeddingsEnabledForProfile(profile_)) {
+    tab_semantic_search_tool_ =
+        std::make_unique<TabSemanticSearchTool>(profile_);
+  }
 }
 
 }  // namespace ai_chat
