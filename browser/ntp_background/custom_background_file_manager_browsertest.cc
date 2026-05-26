@@ -9,6 +9,7 @@
 
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/location.h"
 #include "base/logging.h"
 #include "base/path_service.h"
 #include "base/test/bind.h"
@@ -65,40 +66,31 @@ class CustomBackgroundFileManagerBrowserTest : public InProcessBrowserTest {
     return profile()->GetPath().AppendASCII(kTestImageName);
   }
 
-  std::optional<base::FilePath> CreateHighResolutionTestImage() const {
+  void CreateHighResolutionTestImage(
+      base::FilePath* image_path_out,
+      const base::Location& location = FROM_HERE) const {
+    SCOPED_TRACE(location.ToString());
+
     constexpr int kWidth = 9216;
     constexpr int kHeight = 5184;
 
     SkBitmap bitmap;
-    if (!bitmap.tryAllocN32Pixels(kWidth, kHeight)) {
-      return std::nullopt;
-    }
+    ASSERT_TRUE(bitmap.tryAllocN32Pixels(kWidth, kHeight));
     bitmap.eraseColor(SK_ColorRED);
 
     SkPixmap pixmap;
-    if (!bitmap.peekPixels(&pixmap)) {
-      return std::nullopt;
-    }
+    ASSERT_TRUE(bitmap.peekPixels(&pixmap));
 
     // Encode the generated bitmap into a valid PNG image so it can be written
     // to disk and used during the browser test.
     std::optional<std::vector<uint8_t>> encoded_png =
         gfx::PNGCodec::EncodeBGRASkBitmap(bitmap,
                                           /*discard_transparency=*/false);
+    ASSERT_TRUE(encoded_png.has_value());
 
-    if (!encoded_png) {
-      LOG(ERROR) << "Failed to encode high-resolution image as PNG";
-      return std::nullopt;
-    }
-
-    const base::FilePath image_path =
+    *image_path_out =
         profile()->GetPath().AppendASCII(kTestHighResolutionImageName);
-
-    if (!base::WriteFile(image_path, *encoded_png)) {
-      return std::nullopt;
-    }
-
-    return image_path;
+    ASSERT_TRUE(base::WriteFile(*image_path_out, *encoded_png));
   }
 
   Profile* profile() { return browser()->profile(); }
@@ -161,11 +153,8 @@ IN_PROC_BROWSER_TEST_F(CustomBackgroundFileManagerBrowserTest,
                        SaveHighResolutionImageToCustomBackgroundDir) {
   base::ScopedAllowBlockingForTesting allow_blocking_call;
 
-  std::optional<base::FilePath> high_resolution_image_path =
-      CreateHighResolutionTestImage();
-  ASSERT_TRUE(high_resolution_image_path.has_value());
-
-  const base::FilePath& image_path = high_resolution_image_path.value();
+  base::FilePath image_path;
+  CreateHighResolutionTestImage(&image_path);
   ASSERT_TRUE(base::PathExists(image_path));
 
   auto check_result = base::BindOnce([](const base::FilePath& path) {
