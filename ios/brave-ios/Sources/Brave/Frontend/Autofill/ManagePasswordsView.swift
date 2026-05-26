@@ -25,6 +25,7 @@ struct ManagePasswordsView: View {
   @State private var selectedGroupIds: Set<GroupID> = []
   @State private var isDeleteSelectionDialogPresented: Bool = false
   @State private var isSceneInactive = false
+  @State private var addPasswordDraft: ManagePasswordDraft? = nil
 
   private var isSearchActive: Bool {
     !viewModel.searchText.isEmpty
@@ -148,7 +149,7 @@ struct ManagePasswordsView: View {
       if !isPrivacyOverlayActive {
         ToolbarItem(placement: .topBarTrailing) {
           Button {
-            //TODO: Present Add Password Form
+            addPasswordDraft = ManagePasswordDraft()
           } label: {
             Label(Strings.addButtonTitle, braveSystemImage: "leo.plus.add")
           }
@@ -214,6 +215,15 @@ struct ManagePasswordsView: View {
         await privacyLock.authenticate(onFailure: exitAfterAuthFailure)
       }
     }
+    .sheet(item: $addPasswordDraft) { draft in
+      NavigationStack {
+        ManagePasswordDetailContainerView(
+          viewModel: viewModel,
+          mode: .add(draft)
+        )
+        .environment(\.redactionReasons, effectiveRedactionReasons)
+      }
+    }
     // Obscure list immediately when the scene deactivates (Control Center, Face ID sheet, etc.);
     // does not invalidate auth — that waits for `didEnterBackground`.
     .onReceive(NotificationCenter.default.publisher(for: UIScene.willDeactivateNotification)) { _ in
@@ -276,7 +286,7 @@ private struct ManagePasswordListRow: View {
     NavigationLink {
       Group {
         if passwords.count == 1, let password = passwords.first {
-          ManagePasswordDetailReadOnlyView(viewModel: viewModel, password: password)
+          ManagePasswordDetailContainerView(viewModel: viewModel, mode: .edit(password))
         } else {
           ManagePasswordGroupView(viewModel: viewModel, domain: domain)
         }

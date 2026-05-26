@@ -11,14 +11,8 @@ import UIKit
 
 struct ManagePasswordDetailReadOnlyView: View {
   @Environment(\.openURL) private var openURL
-  @Environment(\.dismiss) private var dismiss
-  @Environment(\.redactionReasons) private var redactionReasons
-  @State private var isPasswordRevealed = false
-
-  let viewModel: ManagePasswordsViewModel
+  @Binding var isPasswordRevealed: Bool
   let password: CWVPassword
-  var navigationTitle: String { URL(string: password.site)?.baseDomain ?? password.title }
-  let redactedTitle = Strings.Autofill.managePasswordsTitle
 
   var body: some View {
     Form {
@@ -112,15 +106,6 @@ struct ManagePasswordDetailReadOnlyView: View {
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
-    }
-    .scrollContentBackground(.hidden)
-    .background((Color(.braveGroupedBackground)))
-    .foregroundStyle(Color(braveSystemName: .textPrimary))
-    .accessibility(hidden: redactionReasons.contains(.privacy) ? true : false)
-    .navigationTitle(redactionReasons.contains(.privacy) ? redactedTitle : navigationTitle)
-    .navigationBarTitleDisplayMode(.inline)
-    .overlay {
-      if redactionReasons.contains(.privacy) { Color(.braveGroupedBackground).ignoresSafeArea() }
     }
   }
 }
