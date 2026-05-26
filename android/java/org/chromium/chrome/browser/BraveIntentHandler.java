@@ -86,15 +86,67 @@ public class BraveIntentHandler {
             return url;
         }
 
-        final Uri.Builder builder = parsedUrl.buildUpon().clearQuery();
-        for (String name : parsedUrl.getQueryParameterNames()) {
-            for (String value : parsedUrl.getQueryParameters(name)) {
-                builder.appendQueryParameter(
-                        name,
-                        SOURCE.equals(name) && ANDROID.equals(value) ? ANDROID_WIDGET : value);
+        // Rewrite only the `source` parameter on the raw encoded query, so
+        // every other parameter's bytes pass through completely untouched.
+        //
+        // We can't safely decode and re-encode the query through
+        // Uri.getQueryParameters() / appendQueryParameter(), because the two
+        // sides use different encodings:
+        //
+        //   - Search URLs use application/x-www-form-urlencoded, where ' '
+        //     is encoded as '+' and a literal '+' as '%2B'.
+        //   - Android's Uri follows RFC 3986, where ' ' is '%20' and '+' is
+        //     a literal.
+        //
+        // getQueryParameters() percent-decodes '%2B' to '+' but leaves a
+        // form-encoded '+' (meaning space) alone. After that step, a
+        // literal '+' and an encoded space are indistinguishable, so any
+        // attempt to re-encode the value corrupts the query.
+        //
+        // For example, a widget search for "C++ tutorial" arrives as
+        // "q=C%2B%2B+tutorial". getQueryParameters() would return "C+++tutorial"
+        // (three '+' chars, origin unknown). If those were then re-encoded
+        // and the '+' chars converted back to spaces, the server would
+        // receive "C   tutorial"; if they were left as '+', the server
+        // would receive a literal "C+++tutorial". Either way the query is
+        // broken.
+        final String encodedQuery = parsedUrl.getEncodedQuery();
+        if (encodedQuery == null) {
+            return url;
+        }
+
+        final StringBuilder newQuery = new StringBuilder(encodedQuery.length());
+        // Walk each name=value pair in encoded form. We intentionally do not
+        // use Uri.getQueryParameters() here. See the comment above for why
+        // decoding and re-encoding through it is lossy.
+        for (String pair : encodedQuery.split("&")) {
+            // Restore the '&' separator between pairs (skipped before the
+            // first pair).
+            //noinspection SizeReplaceableByIsEmpty
+            if (newQuery.length() > 0) {
+                newQuery.append('&');
+            }
+            // Locate the name/value split.
+            final int eq = pair.indexOf('=');
+            // Decode only for the comparison, the original encoded bytes are
+            // what we actually write back out below.
+            if (eq >= 0
+                    && SOURCE.equals(Uri.decode(pair.substring(0, eq)))
+                    && ANDROID.equals(Uri.decode(pair.substring(eq + 1)))) {
+                // Keep the original "source=" prefix (preserving any
+                // encoding the caller used in the name) and substitute just
+                // the value. Uri.encode() percent-encodes ANDROID_WIDGET
+                // safely, though "android-widget" has no chars that need it.
+                newQuery.append(pair, 0, eq + 1).append(Uri.encode(ANDROID_WIDGET));
+            } else {
+                // Any other parameter including the search query `q`
+                // passes through untouched, byte-for-byte.
+                newQuery.append(pair);
             }
         }
-        return builder.build().toString();
+        // encodedQuery() tells Uri.Builder our string is
+        // already encoded and must not be re-encoded.
+        return parsedUrl.buildUpon().encodedQuery(newQuery.toString()).build().toString();
     }
 
     @Nullable
