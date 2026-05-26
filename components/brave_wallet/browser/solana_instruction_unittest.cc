@@ -138,6 +138,50 @@ TEST(SolanaInstructionUnitTest, FromToCompiledInstruction) {
   EXPECT_EQ(compiled_ins2, *compiled_ins_from_ins2);
 }
 
+// Regression test: FromCompiledInstruction must use
+// num_readonly_unsigned_accounts (not num_readonly_signed_accounts) when
+// computing num_writable_unsigned_accounts. A crafted transaction with header
+// [num_req_sig=5, ro_signed=4, ro_unsigned=1] and 8 accounts is valid per
+// Solana (8-5-1=2 writable unsigned), but the typo causes Brave to compute
+// 8-5-4=-1 and return nullopt, bypassing the signMessage transaction guard that
+// rejects blobs which successfully deserialize as transactions.
+TEST(SolanaInstructionUnitTest,
+     FromCompiledInstructionUsesReadonlyUnsignedForWritableUnsignedCount) {
+  // 8 accounts: [0] writable signer, [1..4] readonly signers,
+  //             [5..6] writable unsigned, [7] readonly unsigned (program)
+  std::vector<SolanaAddress> accounts = {
+      *SolanaAddress::FromBase58(kAccount1),
+      *SolanaAddress::FromBase58(kAccount2),
+      *SolanaAddress::FromBase58(kAccount3),
+      *SolanaAddress::FromBase58(kAccount4),
+      *SolanaAddress::FromBase58(kAccount5),
+      *SolanaAddress::FromBase58(kAccount1),
+      *SolanaAddress::FromBase58(kAccount2),
+      *SolanaAddress::FromBase58(mojom::kSolanaSystemProgramId),
+  };
+
+  // header(5, 4, 1): 5 required signers, 4 readonly signed, 1 readonly unsigned
+  // Correct: num_writable_unsigned = 8 - 5 - 1 = 2 (valid)
+  // Buggy:   num_writable_unsigned = 8 - 5 - 4 = -1 (returns nullopt, bypasses
+  // guard)
+  SolanaMessageHeader header(5, 4, 1);
+
+  // program_id = index 7 (kSolanaSystemProgramId), account = index 0
+  // (kAccount1)
+  SolanaCompiledInstruction compiled_ins(7, {0}, {});
+
+  auto result = SolanaInstruction::FromCompiledInstruction(compiled_ins, header,
+                                                           accounts, {}, 0, 0);
+  ASSERT_TRUE(result.has_value());
+
+  // Account [0]: is_signer=true (0 < 5), is_writable=true (0 <
+  // num_writable_signed=1)
+  ASSERT_EQ(result->GetAccounts().size(), 1u);
+  EXPECT_EQ(result->GetAccounts()[0].pubkey, kAccount1);
+  EXPECT_TRUE(result->GetAccounts()[0].is_signer);
+  EXPECT_TRUE(result->GetAccounts()[0].is_writable);
+}
+
 TEST(SolanaInstructionUnitTest, FromToValue) {
   std::string from_account = "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw";
   std::string to_account = from_account;
