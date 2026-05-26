@@ -126,6 +126,20 @@ extension BrowserViewController: TabManagerDelegate {
       )
       show(toast: searchResultClickedInfobar, duration: nil)
     }
+    tab.braveSearch?.presentInQuickView = { [weak self] url, tab in
+      guard let self else { return }
+      let quickViewController = QuickViewController(
+        url: url,
+        profile: tab.profile
+      ) { [weak self] request in
+        guard let self else { return }
+        self.tabManager.addTabAndSelect(
+          request,
+          isPrivate: self.privateBrowsingManager.isPrivateBrowsing
+        )
+      }
+      self.present(quickViewController, animated: true)
+    }
   }
 
   func tabManager(

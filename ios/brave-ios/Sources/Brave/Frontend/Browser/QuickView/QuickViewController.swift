@@ -16,9 +16,8 @@ import WebKit
 
 class QuickViewController: UIViewController {
   private let url: URL
-  private weak var parentTab: (any TabState)?
   private var currentTab: (any TabState)?
-  private let privateBrowsingManager: PrivateBrowsingManager
+  private let profile: any Profile
   private let toolbarViewModel: QuickViewToolbarModel
   private lazy var toolbarHostingController = UIHostingController(
     rootView: QuickViewToolbarView(viewModel: toolbarViewModel)
@@ -27,14 +26,12 @@ class QuickViewController: UIViewController {
 
   init(
     url: URL,
-    for tab: some TabState,
-    privateBrowsingManager: PrivateBrowsingManager,
+    profile: any Profile,
     onOpenInNewTab: ((URLRequest) -> Void)?
   ) {
     self.url = url
-    self.parentTab = tab
     self.toolbarViewModel = QuickViewToolbarModel(url: url)
-    self.privateBrowsingManager = privateBrowsingManager
+    self.profile = profile
     self.onOpenInNewTab = onOpenInNewTab
     super.init(nibName: nil, bundle: nil)
     modalPresentationStyle = .fullScreen
@@ -48,18 +45,14 @@ class QuickViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    guard let parentTab else {
-      return
-    }
-
     var initialConfiguration: WKWebViewConfiguration?
     if !FeatureList.kUseProfileWebViewConfiguration.enabled {
       initialConfiguration =
-        parentTab.isPrivate
+        profile.isOffTheRecord
         ? TabManager.privateConfiguration : TabManager.defaultConfiguration
     }
     let tab = TabStateFactory.create(
-      with: .init(profile: parentTab.profile, initialConfiguration: initialConfiguration)
+      with: .init(profile: profile, initialConfiguration: initialConfiguration)
     )
     tab.createWebView()
     tab.addObserver(toolbarViewModel)
@@ -121,7 +114,8 @@ class QuickViewController: UIViewController {
       return
     }
 
-    view.backgroundColor = privateBrowsingManager.browserColors.chromeBackground
+    let colors: any BrowserColors = profile.isOffTheRecord ? .privateMode : .standard
+    view.backgroundColor = colors.chromeBackground
     view.addSubview(currentTab.view)
 
     toolbarHostingController.view.backgroundColor = .clear
