@@ -93,7 +93,15 @@ public abstract class BraveVpnParentActivity extends AsyncInitializationActivity
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        if (hasFocus) BraveLandscapeHelper.applyLandscapeWindowSizing(this);
+        if (hasFocus && shouldApplyLandscapeWindowSizing()) {
+            BraveLandscapeHelper.applyLandscapeWindowSizing(this);
+        }
+    }
+
+    // Subclasses that ship a dedicated `layout-land` resource should return
+    // false so the landscape layout can use the full window width.
+    protected boolean shouldApplyLandscapeWindowSizing() {
+        return true;
     }
 
     @Override
