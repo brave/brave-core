@@ -592,7 +592,7 @@ ui::ImageModel SidebarItemsContentsView::GetImageForBuiltInItems(
       return get_image_model(kLeoProductBraveTalkIcon, state);
 #endif
     case sidebar::SidebarItem::BuiltInItemType::kBookmarks:
-      return get_image_model(kLeoProductBookmarksIcon, state);
+      return get_image_model(kLeoBrowserBookmarkNormalIcon, state);
     case sidebar::SidebarItem::BuiltInItemType::kReadingList:
       return get_image_model(kLeoReadingListIcon, state);
     case sidebar::SidebarItem::BuiltInItemType::kHistory:
