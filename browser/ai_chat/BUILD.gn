@@ -37,6 +37,8 @@ static_library("ai_chat") {
     "tools/code_execution_tool.h",
     "tools/history_search_tool.cc",
     "tools/history_search_tool.h",
+    "tools/tab_semantic_search_tool.cc",
+    "tools/tab_semantic_search_tool.h",
   ]
 
   if (enable_ai_chat_tab_management_tool) {
@@ -68,14 +70,17 @@ static_library("ai_chat") {
     "//brave/net/base:utils",
     "//chrome/browser:browser_process",
     "//chrome/browser/actor",
+    "//chrome/browser/history",
     "//chrome/browser/history_embeddings",
     "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/tabs:tabs_public",
     "//chrome/common",
     "//chrome/common:channel_info",
     "//components/browsing_data/core",
     "//components/history/core/browser",
     "//components/history_embeddings/content",
+    "//components/history_embeddings/core",
     "//components/keyed_service/content",
     "//components/prefs",
     "//components/user_prefs",
@@ -267,6 +272,7 @@ source_set("unit_tests") {
     "brave_open_ai_chat_permission_context_unittest.cc",
     "full_screenshotter_unittest.cc",
     "tools/history_search_tool_unittest.cc",
+    "tools/tab_semantic_search_tool_unittest.cc",
   ]
 
   deps = [

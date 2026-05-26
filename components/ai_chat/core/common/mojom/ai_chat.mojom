@@ -25,6 +25,8 @@ const string kSemanticHistorySearchToolName = "semantic_history_search";
 [EnableIf=enable_ai_chat_tab_management_tool]
 const string kTabManagementToolName = "tab_management";
 
+const string kSemanticTabSearchToolName = "semantic_tab_search";
+
 const string kClickToolName = "click_element";
 const string kDragAndReleaseToolName = "drag_and_release";
 const string kMoveMouseToolName = "move_mouse";
