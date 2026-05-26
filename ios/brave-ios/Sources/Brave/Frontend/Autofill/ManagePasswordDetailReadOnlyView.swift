@@ -5,9 +5,7 @@
 
 import BraveCore
 import BraveStrings
-import BraveUI
 import SwiftUI
-import UIKit
 
 struct ManagePasswordDetailReadOnlyView: View {
   @Environment(\.openURL) private var openURL
