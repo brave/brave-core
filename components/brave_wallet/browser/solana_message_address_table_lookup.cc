@@ -8,8 +8,8 @@
 #include <optional>
 
 #include "base/base64.h"
-#include "base/check.h"
-#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
+#include "base/containers/extend.h"
+#include "base/containers/span_reader.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 
 namespace {
@@ -33,12 +33,12 @@ std::optional<std::vector<uint8_t>> GetIndexesFromBase64EncodedStringDict(
 namespace brave_wallet {
 
 SolanaMessageAddressTableLookup::SolanaMessageAddressTableLookup(
-    const SolanaAddress& account_key,
-    const std::vector<uint8_t>& write_indexes,
-    const std::vector<uint8_t>& read_indexes)
-    : account_key_(account_key),
-      write_indexes_(write_indexes),
-      read_indexes_(read_indexes) {}
+    SolanaAddress account_key,
+    std::vector<uint8_t> write_indexes,
+    std::vector<uint8_t> read_indexes)
+    : account_key_(std::move(account_key)),
+      write_indexes_(std::move(write_indexes)),
+      read_indexes_(std::move(read_indexes)) {}
 
 SolanaMessageAddressTableLookup::SolanaMessageAddressTableLookup(
     SolanaMessageAddressTableLookup&&) = default;
@@ -46,59 +46,39 @@ SolanaMessageAddressTableLookup& SolanaMessageAddressTableLookup::operator=(
     SolanaMessageAddressTableLookup&&) = default;
 SolanaMessageAddressTableLookup::~SolanaMessageAddressTableLookup() = default;
 
-bool SolanaMessageAddressTableLookup::operator==(
-    const SolanaMessageAddressTableLookup& lookup) const {
-  return account_key_ == lookup.account_key_ &&
-         write_indexes_ == lookup.write_indexes_ &&
-         read_indexes_ == lookup.read_indexes_;
-}
-
 void SolanaMessageAddressTableLookup::Serialize(
-    std::vector<uint8_t>* bytes) const {
-  DCHECK(bytes);
+    std::vector<uint8_t>& bytes) const {
+  base::Extend(bytes, account_key_.bytes());
 
-  bytes->insert(bytes->end(), account_key_.bytes().begin(),
-                account_key_.bytes().end());
+  base::Extend(bytes, CompactU16Encode(write_indexes_.size()));
+  base::Extend(bytes, write_indexes_);
 
-  CompactU16Encode(write_indexes_.size(), bytes);
-  bytes->insert(bytes->end(), write_indexes_.begin(), write_indexes_.end());
-
-  CompactU16Encode(read_indexes_.size(), bytes);
-  bytes->insert(bytes->end(), read_indexes_.begin(), read_indexes_.end());
+  base::Extend(bytes, CompactU16Encode(read_indexes_.size()));
+  base::Extend(bytes, read_indexes_);
 }
 
 // static
 std::optional<SolanaMessageAddressTableLookup>
-SolanaMessageAddressTableLookup::Deserialize(const std::vector<uint8_t>& bytes,
-                                             size_t* bytes_index) {
-  DCHECK(bytes_index);
-  if (*bytes_index >= bytes.size()) {
-    return std::nullopt;
-  }
-
-  // Account key.
-  if (*bytes_index + kSolanaPubkeySize > bytes.size()) {
-    return std::nullopt;
-  }
-  auto account_key = SolanaAddress::FromBytes(
-      base::span(bytes).subspan(*bytes_index, kSolanaPubkeySize));
+SolanaMessageAddressTableLookup::Deserialize(
+    base::SpanReader<const uint8_t>& reader) {
+  auto account_key = SolanaAddress::ReadFrom(reader);
   if (!account_key) {
     return std::nullopt;
   }
-  *bytes_index += kSolanaPubkeySize;
 
-  auto write_indexes = CompactArrayDecode(bytes, bytes_index);
+  auto write_indexes = CompactArrayDecode(reader);
   if (!write_indexes || write_indexes->size() > UINT8_MAX) {
     return std::nullopt;
   }
 
-  auto read_indexes = CompactArrayDecode(bytes, bytes_index);
+  auto read_indexes = CompactArrayDecode(reader);
   if (!read_indexes || read_indexes->size() > UINT8_MAX) {
     return std::nullopt;
   }
 
-  return SolanaMessageAddressTableLookup(*account_key, *write_indexes,
-                                         *read_indexes);
+  return SolanaMessageAddressTableLookup(std::move(*account_key),
+                                         std::move(*write_indexes),
+                                         std::move(*read_indexes));
 }
 
 base::DictValue SolanaMessageAddressTableLookup::ToValue() const {

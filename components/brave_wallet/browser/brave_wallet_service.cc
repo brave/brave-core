@@ -41,6 +41,7 @@
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/fil_address.h"
+#include "brave/components/brave_wallet/common/solana_address.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "components/grit/brave_components_strings.h"
@@ -1696,7 +1697,7 @@ void BraveWalletService::NotifyDecryptRequestProcessed(
 void BraveWalletService::IsBase58EncodedSolanaPubkey(
     const std::string& key,
     IsBase58EncodedSolanaPubkeyCallback callback) {
-  std::move(callback).Run(::brave_wallet::IsBase58EncodedSolanaPubkey(key));
+  std::move(callback).Run(!!SolanaAddress::FromBase58(key));
 }
 
 void BraveWalletService::Base58Encode(

@@ -11,6 +11,7 @@
 
 #include "base/base64.h"
 #include "base/check.h"
+#include "base/containers/extend.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
@@ -153,11 +154,9 @@ std::optional<std::string> GetBase64TransactionFromSolanaTxData(
   // message bytes. Since the transactions are not signed yet, we use 64
   // empty bytes for each signature.
   std::vector<uint8_t> transaction_bytes;
-  CompactU16Encode(signers.size(), &transaction_bytes);
-  transaction_bytes.insert(transaction_bytes.end(),
-                           kSolanaSignatureSize * signers.size(), 0);
-  transaction_bytes.insert(transaction_bytes.end(), message_bytes.begin(),
-                           message_bytes.end());
+  base::Extend(transaction_bytes, CompactU16Encode(signers.size()));
+  ExtendWithEmptySignatures(transaction_bytes, signers.size());
+  base::Extend(transaction_bytes, message_bytes);
 
   return base::Base64Encode(transaction_bytes);
 }

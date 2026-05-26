@@ -9,6 +9,7 @@
 #include <optional>
 #include <vector>
 
+#include "base/containers/span_reader.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/solana_address.h"
@@ -20,9 +21,9 @@ namespace brave_wallet {
 // https://docs.rs/solana-sdk/1.14.12/solana_sdk/message/v0/struct.MessageAddressTableLookup.html
 class SolanaMessageAddressTableLookup {
  public:
-  SolanaMessageAddressTableLookup(const SolanaAddress& account_key,
-                                  const std::vector<uint8_t>& write_indexes,
-                                  const std::vector<uint8_t>& read_indexes);
+  SolanaMessageAddressTableLookup(SolanaAddress account_key,
+                                  std::vector<uint8_t> write_indexes,
+                                  std::vector<uint8_t> read_indexes);
 
   SolanaMessageAddressTableLookup(const SolanaMessageAddressTableLookup&) =
       delete;
@@ -32,12 +33,11 @@ class SolanaMessageAddressTableLookup {
   SolanaMessageAddressTableLookup& operator=(SolanaMessageAddressTableLookup&&);
 
   ~SolanaMessageAddressTableLookup();
-  bool operator==(const SolanaMessageAddressTableLookup&) const;
+  bool operator==(const SolanaMessageAddressTableLookup&) const = default;
 
-  void Serialize(std::vector<uint8_t>* bytes) const;
+  void Serialize(std::vector<uint8_t>& bytes) const;
   static std::optional<SolanaMessageAddressTableLookup> Deserialize(
-      const std::vector<uint8_t>& bytes,
-      size_t* bytes_index);
+      base::SpanReader<const uint8_t>& reader);
 
   base::DictValue ToValue() const;
   static std::optional<SolanaMessageAddressTableLookup> FromValue(

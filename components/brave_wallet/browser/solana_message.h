@@ -27,15 +27,15 @@ class SolanaMessage {
       uint64_t last_valid_block_height,
       const std::string& fee_payer,
       const SolanaMessageHeader& message_header,
-      std::vector<SolanaAddress>&& static_account_keys,
-      std::vector<SolanaInstruction>&& instructions,
-      std::vector<SolanaMessageAddressTableLookup>&& addr_table_lookups);
+      std::vector<SolanaAddress> static_account_keys,
+      std::vector<SolanaInstruction> instructions,
+      std::vector<SolanaMessageAddressTableLookup> addr_table_lookups);
   SolanaMessage(const SolanaMessage&) = delete;
   SolanaMessage(SolanaMessage&&);
   SolanaMessage& operator=(const SolanaMessage&) = delete;
   SolanaMessage& operator=(SolanaMessage&&);
   ~SolanaMessage();
-  bool operator==(const SolanaMessage&) const;
+  bool operator==(const SolanaMessage&) const = default;
 
   static std::optional<SolanaMessage> CreateLegacyMessage(
       const std::string& recent_blockhash,
@@ -47,7 +47,7 @@ class SolanaMessage {
       std::vector<std::string>* signers) const;
 
   static std::optional<SolanaMessage> Deserialize(
-      const std::vector<uint8_t>& bytes);
+      base::span<const uint8_t> bytes);
   static std::optional<std::vector<std::string>>
   GetSignerAccountsFromSerializedMessage(
       const std::vector<uint8_t>& serialized_message);
@@ -67,8 +67,6 @@ class SolanaMessage {
   base::DictValue ToValue() const;
 
   static std::optional<SolanaMessage> FromValue(const base::DictValue& value);
-  static std::optional<SolanaMessage> FromDeprecatedLegacyValue(
-      const base::DictValue& value);
 
   void SetInstructionsForTesting(
       const std::vector<SolanaInstruction>& instructions) {
@@ -101,10 +99,9 @@ class SolanaMessage {
   FRIEND_TEST_ALL_PREFIXES(SolanaMessageUnitTest, GetUniqueAccountMetas);
   FRIEND_TEST_ALL_PREFIXES(SolanaMessageUnitTest, UsesPriorityFee);
 
-  static void GetUniqueAccountMetas(
+  static std::vector<SolanaAccountMeta> GetUniqueAccountMetas(
       const std::string& fee_payer,
-      const std::vector<SolanaInstruction>& instructions,
-      std::vector<SolanaAccountMeta>* unique_account_metas);
+      const std::vector<SolanaInstruction>& instructions);
 
   static bool ProcessAccountMetas(
       const std::vector<SolanaAccountMeta>& unique_account_metas,
