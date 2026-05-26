@@ -7,6 +7,7 @@
 
 #include <optional>
 
+#include "brave/third_party/blink/renderer/bindings/core/webgl/webgl_extension_handler.h"
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
 #include "third_party/blink/public/common/features.h"
 #include "third_party/blink/renderer/bindings/modules/v8/webgl_any.h"
@@ -104,8 +105,6 @@ blink::ScriptValue GetWebGLDebugInfoValue(
     precision = 0;                                          \
   }
 
-// TODO(https://github.com/brave/brave-browser/issues/55445): Add fingerprinting
-// protections for GL_RENDERER and GL_VENDOR
 #define BRAVE_WEBGL_GET_PARAMETER_UNMASKED_RENDERER                 \
   if (ExtensionEnabled(kWebGLDebugRendererInfoName))                \
     return GetWebGLDebugInfoValue(                                  \
@@ -136,16 +135,13 @@ WebGLRenderingContextBase::getSupportedExtensions() {
     return real_extensions;
   }
 
-  auto handler =
+  blink::WebGLExtensionHandler* handler =
       brave::BraveSessionCache::From(*Host()->GetTopExecutionContext())
-          .GetBraveWebGLFingerprintHandler(real_extensions.value());
+          .GetWebGLExtensionHandler(real_extensions.value());
 
   return handler->GetSupportedExtensions();
 }
 
-// If fingerprinting is disallowed and they're asking for information
-// about any extension other than WebGLDebugRendererInfo, don't give it to
-// them.
 ScriptObject WebGLRenderingContextBase::getExtension(ScriptState* script_state,
                                                      const String& name) {
   std::optional<Vector<String>> real_extensions =
@@ -154,17 +150,16 @@ ScriptObject WebGLRenderingContextBase::getExtension(ScriptState* script_state,
     return ScriptObject::CreateNull(v8::Isolate::GetCurrent());
   }
 
-  auto handler =
+  blink::WebGLExtensionHandler* handler =
       brave::BraveSessionCache::From(*Host()->GetTopExecutionContext())
-          .GetBraveWebGLFingerprintHandler(real_extensions.value());
-  // if (handler->IsFarbledExtension(name)) {
-  //   return ScriptObject(v8::Isolate::GetCurrent(),
-  //   v8::Local<v8::Value>(name));
-  // }
+          .GetWebGLExtensionHandler(real_extensions.value());
 
-  return handler->IsExtensionSupported(name)
-             ? getExtension_ChromiumImpl(script_state, name)
-             : ScriptObject::CreateNull(v8::Isolate::GetCurrent());
+  // Chromium takes care of returning a null extension if |name| is not
+  // supported internally.
+  const ScriptObject real_extension =
+      getExtension_ChromiumImpl(script_state, name);
+
+  return handler->GetExtension(script_state, name, &real_extension);
 }
 
 }  // namespace blink
