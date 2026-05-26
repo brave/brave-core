@@ -45,7 +45,8 @@
                     android:textColor="@android:color/white"
                     android:drawablePadding="8dp"
                     android:text="@string/vpn_paywall_text_1"
-                    app:drawableStartCompat="@drawable/ic_shield_done" />
+                    app:drawableStartCompat="@drawable/ic_check_normal"
+                    app:drawableTint="@color/primitive_primary_70" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -58,7 +59,8 @@
                     android:textColor="@android:color/white"
                     android:drawablePadding="8dp"
                     android:text="@string/vpn_paywall_text_2"
-                    app:drawableStartCompat="@drawable/ic_shield_done" />
+                    app:drawableStartCompat="@drawable/ic_check_normal"
+                    app:drawableTint="@color/primitive_primary_70" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -71,7 +73,8 @@
                     android:textColor="@android:color/white"
                     android:drawablePadding="8dp"
                     android:text="@string/vpn_paywall_text_3"
-                    app:drawableStartCompat="@drawable/ic_shield_done" />
+                    app:drawableStartCompat="@drawable/ic_check_normal"
+                    app:drawableTint="@color/primitive_primary_70" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -84,7 +87,8 @@
                     android:textColor="@android:color/white"
                     android:drawablePadding="8dp"
                     android:text="@string/vpn_paywall_text_4"
-                    app:drawableStartCompat="@drawable/ic_shield_done" />
+                    app:drawableStartCompat="@drawable/ic_check_normal"
+                    app:drawableTint="@color/primitive_primary_70" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -97,7 +101,8 @@
                     android:textColor="@android:color/white"
                     android:drawablePadding="8dp"
                     android:text="@string/vpn_paywall_text_5"
-                    app:drawableStartCompat="@drawable/ic_shield_done" />
+                    app:drawableStartCompat="@drawable/ic_check_normal"
+                    app:drawableTint="@color/primitive_primary_70" />
 
                 <View
                     android:layout_width="match_parent"
