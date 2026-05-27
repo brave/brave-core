@@ -4758,8 +4758,7 @@ extension Strings {
       "wallet.udDomainInterstitialPageMore",
       tableName: "BraveWallet",
       bundle: .module,
-      value:
-        "+ more",
+      value: "+ more",
       comment:
         "The title of the button that user can tap to reveal more unstoppable domain extensions we support to resolve."
     )
