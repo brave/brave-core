@@ -43,6 +43,7 @@
 #include "brave/components/brave_news/common/locales_helper.h"
 #include "brave/components/brave_news/common/subscriptions_snapshot.h"
 #include "brave/components/brave_news/common/types.h"
+#include "brave/components/brave_policy/policy_initialization_waiter.h"
 #include "brave/components/brave_private_cdn/private_cdn_helper.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_types.h"
@@ -98,6 +99,8 @@ mojo::StructPtr<EventType> CreateChangeEvent(
 
 BraveNewsController::BraveNewsController(
     PrefService* prefs,
+    std::unique_ptr<brave_policy::PolicyInitializationWaiter>
+        policy_initialization_waiter,
     history::HistoryService* history_service,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     std::unique_ptr<DirectFeedFetcher::Delegate> direct_feed_fetcher_delegate)
@@ -109,6 +112,7 @@ BraveNewsController::BraveNewsController(
       history_service_(history_service),
       url_loader_factory_(url_loader_factory),
       direct_feed_fetcher_delegate_(std::move(direct_feed_fetcher_delegate)),
+      policy_initialization_waiter_(std::move(policy_initialization_waiter)),
       pref_manager_(*prefs),
       news_metrics_(prefs, pref_manager_),
       direct_feed_controller_(url_loader_factory,
@@ -125,15 +129,25 @@ BraveNewsController::BraveNewsController(
               // Unretained is safe here because |initialization_promise_| is
               // owned by BraveNewsController.
               base::Unretained(this))) {
+  CHECK(policy_initialization_waiter_);
+
   ResetEngine();
   net::NetworkChangeNotifier::AddNetworkChangeObserver(this);
 
   prefs_observation_.Observe(&pref_manager_);
 
   news_metrics_.RecordAtInit();
+
   // Monitor kBraveNewsSources and update feed / publisher cache
-  // Start timer of updating feeds, if applicable
-  ConditionallyStartOrStopTimer();
+  // Start timer of updating feeds, if applicable.
+  //
+  // Defer the initial timer/fetch decision until the policy bundle has been
+  // merged into the managed pref store, so that `BraveNewsDisabled` (which
+  // writes `prefs::kBraveNewsDisabledByPolicy`) is visible when
+  // `pref_manager_.IsEnabled()` is evaluated.
+  policy_initialization_waiter_->Wait(
+      base::BindOnce(&BraveNewsController::ConditionallyStartOrStopTimer,
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 BraveNewsController::~BraveNewsController() {
