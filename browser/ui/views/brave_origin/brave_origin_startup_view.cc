@@ -44,6 +44,8 @@
 
 #if BUILDFLAG(IS_LINUX)
 #include "brave/components/brave_origin/switches.h"
+#include "chrome/common/channel_info.h"
+#include "components/version_info/channel.h"
 #endif
 
 namespace {
@@ -57,6 +59,32 @@ constexpr int kDialogHeight = 500;
 
 BraveOriginStartupView* g_startup_view = nullptr;
 std::optional<bool> g_should_show_dialog_override;
+
+// On Linux, IDR_PRODUCT_LOGO_128 is the stable-channel branded icon. Non-stable
+// channels ship channel-specific PNGs as separate resources, so picking by
+// channel here mirrors BraveViewsDelegateLinux::GetDefaultWindowIcon() and
+// avoids showing the stable icon (or a generic fallback) on beta/dev/nightly
+// builds, which is what Brave Origin runs as.
+int GetWindowIconResourceId() {
+#if BUILDFLAG(IS_LINUX)
+#if defined(OFFICIAL_BUILD)
+  switch (chrome::GetChannel()) {
+    case version_info::Channel::DEV:
+      return IDR_PRODUCT_LOGO_128_DEV;
+    case version_info::Channel::BETA:
+      return IDR_PRODUCT_LOGO_128_BETA;
+    case version_info::Channel::CANARY:
+      return IDR_PRODUCT_LOGO_128_NIGHTLY;
+    default:
+      return IDR_PRODUCT_LOGO_128;
+  }
+#else
+  return IDR_PRODUCT_LOGO_128_DEVELOPMENT;
+#endif  // defined(OFFICIAL_BUILD)
+#else
+  return IDR_PRODUCT_LOGO_128;
+#endif  // BUILDFLAG(IS_LINUX)
+}
 
 bool HasOriginSkuCredentials(PrefService* local_state) {
   const auto& skus_state = local_state->GetDict(skus::prefs::kSkusState);
@@ -249,7 +277,7 @@ bool BraveOriginStartupView::ShouldShowWindowIcon() const {
 ui::ImageModel BraveOriginStartupView::GetWindowAppIcon() {
   ui::ResourceBundle& rb = ui::ResourceBundle::GetSharedInstance();
   return ui::ImageModel::FromImageSkia(
-      *rb.GetImageSkiaNamed(IDR_PRODUCT_LOGO_128));
+      *rb.GetImageSkiaNamed(GetWindowIconResourceId()));
 }
 
 ui::ImageModel BraveOriginStartupView::GetWindowIcon() {
