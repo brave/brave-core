@@ -71,6 +71,9 @@ public class AIChatWebUIHelper: NSObject, TabObserver, AIChatUIHandler,
     if let tab = associatedTab, tab.isChromiumTab {
       if !tab.isWebViewCreated {
         tab.createWebView()
+        // Add to view hierarchy so it loads quicker, without waiting for Leo
+        // to evaluate javascript to start page load.
+        tab.isVisible = true
       }
       return BraveWebView.from(tab: tab)
     }
@@ -94,6 +97,9 @@ public class AIChatWebUIHelper: NSObject, TabObserver, AIChatUIHandler,
     var webView: BraveWebView {
       if !tab.isWebViewCreated {
         tab.createWebView()
+        // Add to view hierarchy so it loads quicker, without waiting for Leo
+        // to evaluate javascript to start page load.
+        tab.isVisible = true
       }
       // Force unwrap is safe here as we enforce that the tab is a ChromiumTabState
       return BraveWebView.from(tab: self.tab)!
@@ -118,6 +124,9 @@ public class AIChatWebUIHelper: NSObject, TabObserver, AIChatUIHandler,
       with: .init(profile: profile, initialConfiguration: wkConfiguration)
     )
     tab.createWebView()
+    // Add to view hierarchy so it loads quicker, without waiting for Leo
+    // to evaluate javascript to start page load.
+    tab.isVisible = true
     attachPrivacySensitiveTabHelpers?(tab, profile)
     guard
       let childHelper = AIChatWebUIHelper(
