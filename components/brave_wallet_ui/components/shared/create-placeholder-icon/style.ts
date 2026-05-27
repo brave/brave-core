@@ -51,7 +51,6 @@ export const PlaceholderText = styled.span<{
   font-size: ${(p) =>
     p.size === 'big' ? '16px' : p.size === 'tiny' ? '10px' : '12px'};
   font-weight: 600;
-  letter-spacing: 0.01em;
   color: ${(p) => p.theme.palette.white};
 `
 

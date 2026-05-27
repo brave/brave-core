@@ -39,7 +39,6 @@ export const BackButton = styled(WalletButton)<{
   background: none;
   padding: 3px 0px;
   line-height: 20px;
-  letter-spacing: 0.01em;
   border: none;
   text-decoration: ${(p) => (p.to ? 'none' : 'unset')};
 

@@ -110,7 +110,6 @@ export const Cell = styled.div<{
   font-style: normal;
   font-weight: 500;
   line-height: normal;
-  letter-spacing: 0.14px;
   color: ${leo.color.text.primary};
   overflow: hidden;
   ${({ hideOnPanel }) =>
@@ -205,7 +204,6 @@ export const ActionButton = styled(WalletButton)`
   font-style: normal;
   font-weight: 500;
   line-height: 16px;
-  letter-spacing: 0.36px;
   color: ${leo.color.text.interactive};
 `
 

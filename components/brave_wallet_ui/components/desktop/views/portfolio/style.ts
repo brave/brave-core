@@ -108,7 +108,6 @@ export const SubDivider = styled.div`
 export const DividerText = styled.span`
   font-size: 15px;
   line-height: 20px;
-  letter-spacing: 0.04em;
   font-weight: 600;
   margin-bottom: 10px;
   color: ${(p) => p.theme.color.text03};
@@ -122,7 +121,6 @@ export const PercentBubble = styled.div<{ isDown?: boolean }>`
     p.isDown ? leo.color.red[20] : leo.color.green[20]};
   font-size: 11px;
   line-height: 16px;
-  letter-spacing: 0.02em;
   font-weight: 500;
   color: ${(p) => (p.isDown ? leo.color.red[50] : leo.color.green[50])};
 `

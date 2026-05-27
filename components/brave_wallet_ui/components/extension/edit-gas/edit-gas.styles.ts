@@ -54,14 +54,12 @@ export const Input = styled.input<{
   font-style: normal;
   font-size: 13px;
   line-height: 20px;
-  letter-spacing: 0.01em;
   padding: 10px;
   margin-bottom: 8px;
   color: ${(p) => p.theme.color.text01};
   ::placeholder {
     font-style: normal;
     font-size: 12px;
-    letter-spacing: 0.01em;
     color: ${(p) => p.theme.color.text03};
     font-weight: normal;
   }
@@ -92,7 +90,6 @@ export const Description = styled.span`
   width: 100%;
   font-size: 12px;
   line-height: 18px;
-  letter-spacing: 0.01em;
   text-align: flex-start;
   color: ${(p) => p.theme.color.text02};
 `
@@ -118,7 +115,6 @@ export const MaximumFeeText = styled.span`
   font-size: 12px;
   line-height: 18px;
   color: ${(p) => p.theme.color.text01};
-  letter-spacing: 0.01em;
 `
 
 export const MaximumFeeRow = styled.div`
@@ -142,7 +138,6 @@ export const SliderValue = styled.span`
   line-height: 24px;
   font-weight: 600;
   color: ${(p) => p.theme.color.text01};
-  letter-spacing: 0.01em;
   margin-top: 6px;
   margin-bottom: 16px;
 `
@@ -213,11 +208,9 @@ export const SliderLabel = styled.span`
   font-size: 14px;
   line-height: 20px;
   color: ${(p) => p.theme.color.text02};
-  letter-spacing: 0.01em;
 `
 
 export const WarningText = styled.span`
-  letter-spacing: 0.01em;
   font-size: 12px;
   color: ${(p) => p.theme.color.errorText};
   word-break: break-word;

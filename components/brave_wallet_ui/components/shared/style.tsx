@@ -53,7 +53,6 @@ export const LinkText = styled.a`
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
-  letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.interactive05};
   margin: 0px;
   cursor: pointer;

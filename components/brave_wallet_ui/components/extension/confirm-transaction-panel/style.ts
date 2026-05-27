@@ -70,21 +70,18 @@ export const AccountNameText = styled.span`
   font-size: 13px;
   line-height: 20px;
   font-weight: 600;
-  letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text02};
 `
 
 export const NetworkText = styled.span`
   font-size: 12px;
   line-height: 18px;
-  letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text03};
 `
 
 export const TransactionAmountBig = styled.span`
   font-size: 18px;
   line-height: 22px;
-  letter-spacing: 0.02em;
   color: ${(p) => p.theme.color.text01};
   font-weight: 600;
   word-break: break-all;
@@ -94,7 +91,6 @@ export const TransactionAmountBig = styled.span`
 export const TransactionFiatAmountBig = styled.span`
   font-size: 12px;
   line-height: 18px;
-  letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text01};
   margin-bottom: 10px;
   word-break: break-all;
@@ -122,7 +118,6 @@ export const MessageBox = styled.div<{ isDetails: boolean; width?: string }>`
 export const TransactionTitle = styled.span`
   font-size: 12px;
   line-height: 18px;
-  letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text02};
   font-weight: 600;
 `
@@ -130,7 +125,6 @@ export const TransactionTitle = styled.span`
 export const TransactionTypeText = styled.span`
   font-size: 12px;
   line-height: 18px;
-  letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text03};
   font-weight: 600;
   word-break: break-all;
@@ -177,7 +171,6 @@ export const EditButton = styled(WalletButton)`
   font-weight: 600;
   font-size: 12px;
   line-height: 18px;
-  letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.interactive05};
   background: none;
   cursor: pointer;
@@ -190,7 +183,6 @@ export const EditButton = styled(WalletButton)`
 export const TransactionText = styled.span<{ hasError?: boolean }>`
   font-size: 12px;
   line-height: 18px;
-  letter-spacing: 0.01em;
   color: ${(p) =>
     p.hasError ? p.theme.color.errorText : p.theme.color.text03};
   text-align: left;
@@ -223,7 +215,6 @@ export const ContractButton = styled(WalletButton)`
   font-weight: 600;
   font-size: 14px;
   line-height: 20px;
-  letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.interactive05};
   background: none;
   cursor: pointer;

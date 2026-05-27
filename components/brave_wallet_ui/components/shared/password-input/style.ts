@@ -57,14 +57,12 @@ export const Input = styled.input<{ hasError: boolean }>`
   font-style: normal;
   font-size: 13px;
   line-height: 20px;
-  letter-spacing: 0.01em;
   margin: 0px;
   color: ${(p) => p.theme.color.text01};
 
   ::placeholder {
     font-style: normal;
     font-size: 12px;
-    letter-spacing: 0.01em;
     color: ${(p) => p.theme.color.text03};
     font-weight: normal;
   }
@@ -99,7 +97,6 @@ export const ErrorText = styled.span`
   justify-content: flex-start;
   width: 240px;
   font-size: 12px;
-  letter-spacing: 0.01em;
   line-height: 18px;
   color: ${(p) => p.theme.color.errorText};
   padding-left: 4px;

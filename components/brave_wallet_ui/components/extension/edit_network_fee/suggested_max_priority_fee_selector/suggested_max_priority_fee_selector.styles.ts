@@ -39,23 +39,19 @@ export const FeeOptionButton = styled(WalletButton)<{
 
 export const NameText = styled(Text)`
   font: ${leo.font.small.semibold};
-  letter-spacing: ${leo.typography.letterSpacing.small};
 `
 
 export const TimeText = styled(Text)`
   font: ${leo.font.heading.h4};
-  letter-spacing: ${leo.typography.letterSpacing.large};
 `
 
 export const FeeAmountText = styled(Text)`
   font: ${leo.font.xSmall.semibold};
-  letter-spacing: ${leo.typography.letterSpacing.small};
   word-break: break-all;
 `
 
 export const FiatAmountText = styled(Text)`
   font: ${leo.font.small.regular};
-  letter-spacing: ${leo.typography.letterSpacing.small};
 `
 
 export const RadioIcon = styled(Icon)<{

@@ -22,7 +22,6 @@ export const CheckboxText = styled.div`
     vertical-align: top;
 
     font: ${leo.font.large.regular};
-    letter-spacing: 0.01em;
 
     color: ${leo.color.text.primary};
   }

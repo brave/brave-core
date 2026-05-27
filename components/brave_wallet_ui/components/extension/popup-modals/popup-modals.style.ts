@@ -46,7 +46,6 @@ export const Title = styled.span`
   font-weight: 600;
   font-size: 18px;
   line-height: 27px;
-  letter-spacing: 0.02em;
   margin-left: auto;
 `
 

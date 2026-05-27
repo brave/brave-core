@@ -20,7 +20,6 @@ export const Title = styled.span`
   font-weight: 600;
   line-height: 30px;
   color: ${(p) => p.theme.color.text01};
-  letter-spacing: 0.02em;
   margin-bottom: 10px;
   text-align: left;
 `

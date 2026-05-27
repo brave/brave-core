@@ -15,17 +15,14 @@ export const StyledWrapper = styled(Column)`
 
 export const HeaderText = styled(Text)`
   font: ${leo.font.heading.h4};
-  letter-spacing: ${leo.typography.letterSpacing.large};
 `
 
 export const AccountNameText = styled(Text)`
   font: ${leo.font.heading.h4};
-  letter-spacing: ${leo.typography.letterSpacing.large};
 `
 
 export const Title = styled(Text)`
   font: ${leo.font.heading.h3};
-  letter-spacing: ${leo.typography.letterSpacing.headings};
 `
 
 export const MessageContainer = styled(Column)`
@@ -35,7 +32,6 @@ export const MessageContainer = styled(Column)`
 
 export const MessageContainerTitle = styled(Text)`
   font: ${leo.font.default.semibold};
-  letter-spacing: ${leo.typography.letterSpacing.default};
 `
 
 export const MessageBox = styled(Column)`
@@ -50,7 +46,6 @@ export const MessageBox = styled(Column)`
 
 export const MessageText = styled(Text)`
   font: ${leo.font.default.regular};
-  letter-spacing: ${leo.typography.letterSpacing.default};
   flex-wrap: wrap;
   word-break: break-word;
 `
@@ -63,7 +58,6 @@ export const DecryptMessageBox = styled(Column)`
 
 export const URLText = styled(Text)`
   font: ${leo.font.default.regular};
-  letter-spacing: ${leo.typography.letterSpacing.default};
   max-width: 80%;
   word-break: break-word;
 `

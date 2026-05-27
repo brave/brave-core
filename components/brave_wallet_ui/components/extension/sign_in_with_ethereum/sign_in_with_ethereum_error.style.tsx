@@ -16,7 +16,6 @@ export const ErrorWrapper = styled(Column)`
 
 export const ErrorTitle = styled(Text)`
   font: ${leo.font.heading.h4};
-  letter-spacing: ${leo.typography.letterSpacing.large};
 `
 
 export const ErrorBox = styled(Column)`
@@ -25,7 +24,6 @@ export const ErrorBox = styled(Column)`
 
 export const ErrorDescriptionText = styled(Text)`
   font: ${leo.font.default.regular};
-  letter-spacing: ${leo.typography.letterSpacing.default};
   display: inline-block;
   text-align: center;
 `
@@ -44,14 +42,12 @@ export const WarningIcon = styled(Icon).attrs({
 
 export const OriginErrorTitle = styled(Text)`
   font: ${leo.font.default.semibold};
-  letter-spacing: ${leo.typography.letterSpacing.default};
   display: inline-block;
   text-align: center;
 `
 
 export const OriginErrorText = styled(Text)`
   font: ${leo.font.small.semibold};
-  letter-spacing: ${leo.typography.letterSpacing.small};
 `
 
 export const LaunchButton = styled(WalletButton)`

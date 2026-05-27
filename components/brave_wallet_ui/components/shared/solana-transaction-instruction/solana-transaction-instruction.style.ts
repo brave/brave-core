@@ -24,7 +24,6 @@ export const InstructionParamBox = styled.div`
   margin-top: 12px;
   word-break: break-all;
   font-size: 12px;
-  letter-spacing: 0.01em;
   font-weight: 400;
   color: ${(p) => p.theme.color.text01};
   text-align: left;

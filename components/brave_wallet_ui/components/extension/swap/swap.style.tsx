@@ -111,7 +111,6 @@ export const AccountNameText = styled.span`
   display: flex;
   align-items: center;
   text-align: right;
-  letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text03};
   margin-right: 3px;
 `
@@ -164,7 +163,6 @@ export const LaunchButton = styled(WalletButton)`
   font-weight: 600;
   font-size: 12px;
   line-height: 18px;
-  letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.interactive05};
   background: none;
   cursor: pointer;

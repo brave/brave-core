@@ -21,7 +21,6 @@ export const StyledWrapper = styled(Column)`
 
 export const HeaderText = styled(Text)`
   font: ${leo.font.heading.h4};
-  letter-spacing: ${leo.typography.letterSpacing.large};
 `
 
 export const MessageBox = styled(Column)`
@@ -34,19 +33,16 @@ export const MessageBox = styled(Column)`
 
 export const Title = styled(Text)`
   font: ${leo.font.heading.h4};
-  letter-spacing: ${leo.typography.letterSpacing.large};
 `
 
 export const MessageText = styled(Text)`
   font: ${leo.font.default.regular};
-  letter-spacing: ${leo.typography.letterSpacing.default};
   text-align: left;
   flex-wrap: wrap;
 `
 
 export const SectionTitle = styled(Text)`
   font: ${leo.font.default.semibold};
-  letter-spacing: ${leo.typography.letterSpacing.default};
 `
 
 export const URLText = styled(MessageText)`
@@ -61,7 +57,6 @@ export const DetailsWrapper = styled(Column)`
 
 export const DetailsTitle = styled(Title)`
   font: ${leo.font.heading.h2};
-  letter-spacing: ${leo.typography.letterSpacing.headings};
 `
 
 export const DetailsContent = styled(Column)`
@@ -77,7 +72,6 @@ export const DetailsBox = styled(ScrollableColumn)`
 
 export const DetailsKeyText = styled(Text)`
   font: ${leo.font.default.regular};
-  letter-spacing: ${leo.typography.letterSpacing.default};
   text-align: left;
   flex-wrap: wrap;
 `
@@ -86,7 +80,6 @@ export const CodeBlock = styled.code``
 
 export const DetailsInfoText = styled(Text)`
   font: ${leo.font.default.regular};
-  letter-spacing: ${leo.typography.letterSpacing.default};
   text-align: left;
   flex-wrap: wrap;
   word-wrap: break-word;

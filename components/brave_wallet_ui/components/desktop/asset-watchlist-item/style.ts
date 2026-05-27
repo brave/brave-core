@@ -54,7 +54,6 @@ export const NameAndSymbol = styled.div`
 export const AssetName = styled.span`
   font-size: 14px;
   line-height: 20px;
-  letter-spacing: 0.01em;
   font-weight: 600;
   color: ${(p) => p.theme.color.text01};
   text-align: left;
@@ -63,7 +62,6 @@ export const AssetName = styled.span`
 export const AssetSymbol = styled.span`
   font-size: 12px;
   line-height: 18px;
-  letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text01};
   text-align: left;
 `
@@ -75,7 +73,6 @@ export const Balance = styled.div`
   flex-direction: row;
   font-size: 14px;
   line-height: 20px;
-  letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text01};
   width: 48%;
 `

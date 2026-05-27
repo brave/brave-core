@@ -17,5 +17,4 @@ export const Wrapper = styled(Row)`
 
 export const ErrorText = styled(Text)`
   font: ${leo.font.small.regular};
-  letter-spacing: ${leo.typography.letterSpacing.small};
 `

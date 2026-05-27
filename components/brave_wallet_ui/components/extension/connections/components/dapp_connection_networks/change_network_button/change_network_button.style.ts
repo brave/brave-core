@@ -38,7 +38,6 @@ export const ActiveIndicator = styled.div`
   font-size: 10px;
   line-height: 15px;
   text-transform: uppercase;
-  letter-spacing: 0.4px;
 `
 
 export const NetworkName = styled.span`
@@ -49,5 +48,4 @@ export const NetworkName = styled.span`
   text-align: left;
   font-size: 14px;
   font-weight: 400;
-  letter-spacing: 0.02em;
 `

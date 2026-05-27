@@ -26,7 +26,6 @@ export const StyledButton = styled(WalletButton)<Partial<StyleProps>>`
 export const ButtonText = styled.span<Partial<StyleProps>>`
   font-size: 15px;
   font-weight: 600;
-  letter-spacing: 0.04em;
   line-height: 20px;
   margin-bottom: 10px;
   background: ${(p) =>

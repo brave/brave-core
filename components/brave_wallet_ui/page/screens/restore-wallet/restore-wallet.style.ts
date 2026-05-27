@@ -21,7 +21,6 @@ export const Title = styled.span`
   font-size: 20px;
   font-weight: 600;
   color: ${(p) => p.theme.color.text01};
-  letter-spacing: 0.02em;
   margin-bottom: 8px;
 `
 
@@ -40,7 +39,6 @@ export const FormText = styled.span`
   font-size: 15px;
   font-weight: 600;
   color: ${(p) => p.theme.color.text01};
-  letter-spacing: 0.04em;
   margin-bottom: 8px;
 `
 
@@ -86,14 +84,12 @@ export const RecoveryPhraseInput = styled.input`
   font-style: normal;
   font-size: 13px;
   line-height: 20px;
-  letter-spacing: 0.01em;
   padding: 10px;
   margin-bottom: 10px;
   color: ${(p) => p.theme.color.text01};
   ::placeholder {
     font-style: normal;
     font-size: 12px;
-    letter-spacing: 0.01em;
     color: ${(p) => p.theme.color.text03};
     font-weight: normal;
   }

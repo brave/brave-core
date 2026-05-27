@@ -57,7 +57,6 @@ export const DisclaimerWrapper = styled.div`
 export const DisclaimerText = styled.span`
   font-size: 12px;
   line-height: 18px;
-  letter-spacing: 0.01em;
   text-align: center;
   color: ${(p) => p.theme.color.text02};
   text-transform: none;
@@ -108,21 +107,17 @@ export const NetworkIcon = styled.img`
 
 export const NetworkName = styled(Text)`
   font: ${leo.font.default.semibold};
-  letter-spacing: ${leo.typography.letterSpacing.default};
 `
 
 export const NetworkDescription = styled(Text)`
   font: ${leo.font.default.regular};
-  letter-spacing: ${leo.typography.letterSpacing.default};
 `
 
 export const FileNameText = styled(Text)`
   font: ${leo.font.default.regular};
-  letter-spacing: ${leo.typography.letterSpacing.default};
   text-transform: none;
 `
 
 export const JsonFileLabel = styled(Text)`
   font: ${leo.font.small.semibold};
-  letter-spacing: ${leo.typography.letterSpacing.small};
 `

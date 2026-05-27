@@ -21,7 +21,6 @@ export const GettingStartedWrapper = styled(Column)`
 
 export const Title = styled(Text)`
   font: ${leo.font.heading.h4};
-  letter-spacing: ${leo.typography.letterSpacing.large};
   background: ${leo.gradient.iconsActive};
   background-clip: text;
   -webkit-background-clip: text;
@@ -55,11 +54,9 @@ export const Card = styled(WalletButton)`
 
 export const CardTitle = styled(Text)`
   font: ${leo.font.large.semibold};
-  letter-spacing: ${leo.typography.letterSpacing.default};
   color: ${leo.color.text.interactive};
 `
 
 export const CardDescription = styled(Text)`
   font: ${leo.font.small.regular};
-  letter-spacing: ${leo.typography.letterSpacing.small};
 `

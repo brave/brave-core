@@ -35,7 +35,6 @@ export const Button = styled(WalletButton)`
   cursor: ${(p) => (p.disabled ? 'auto' : 'pointer')};
   font-size: 14px;
   line-height: 20px;
-  letter-spacing: 0.01em;
 `
 
 export const Dropdown = styled.ul`
@@ -70,7 +69,6 @@ export const Option = styled.li<Partial<OptionProps>>`
   padding: 10px 0;
   font-size: 14px;
   line-height: 20px;
-  letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text02};
   font-weight: ${(p) => (p.selected ? 600 : 400)};
   cursor: pointer;

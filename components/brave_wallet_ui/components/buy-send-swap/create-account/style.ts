@@ -18,7 +18,6 @@ export const StyledWrapper = styled.div`
 export const Description = styled.span`
   font-size: 13px;
   line-height: 20px;
-  letter-spacing: 0.01em;
   font-weight: 600;
   color: ${(p) => p.theme.color.text01};
   text-align: center;

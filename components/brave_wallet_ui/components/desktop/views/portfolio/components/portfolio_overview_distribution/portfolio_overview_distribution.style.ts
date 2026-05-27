@@ -11,7 +11,6 @@ import { Row, Text, Column } from '../../../../../shared/style'
 
 export const Title = styled(Text)`
   font: ${leo.font.small.regular};
-  letter-spacing: ${leo.typography.letterSpacing.default};
 `
 
 export const Segment = styled(Column)<{ $grow: number }>`

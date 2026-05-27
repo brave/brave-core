@@ -22,7 +22,6 @@ export const Tip = styled.div`
   z-index: 120;
   font-size: 12px;
   line-height: 16px;
-  letter-spacing: 0.01em;
   top: -144px;
   height: 108px;
   width: 240px;

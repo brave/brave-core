@@ -20,13 +20,11 @@ export const ContentWrapper = styled(Column)`
 
 export const Title = styled(Row)`
   font: ${leo.font.heading.h4};
-  letter-spacing: ${leo.typography.letterSpacing.headings};
   color: ${leo.color.text.primary};
 `
 
 export const Description = styled(Text)`
   font: ${leo.font.small.regular};
-  letter-spacing: ${leo.typography.letterSpacing.small};
 `
 
 export const Card = styled(Column)`
@@ -44,10 +42,8 @@ export const InfoBox = styled(Column)`
 
 export const AmountText = styled(Text)`
   font: ${leo.font.small.semibold};
-  letter-spacing: ${leo.typography.letterSpacing.small};
 `
 
 export const TokenButtonLink = styled(ConfirmationButtonLink)`
   font: ${leo.font.heading.h4};
-  letter-spacing: ${leo.typography.letterSpacing.headings};
 `

@@ -40,7 +40,6 @@ export const TextWrapper = styled.div<StyleProps>`
     p.alignment === 'right' ? 'flex-end' : 'flex-start'};
   width: 100%;
   font-size: 14px;
-  letter-spacing: 0.01em;
 `
 
 export const LineChartWrapper = styled.div`

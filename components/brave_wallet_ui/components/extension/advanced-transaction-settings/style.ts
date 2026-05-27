@@ -43,14 +43,12 @@ export const Input = styled.input`
   font-style: normal;
   font-size: 13px;
   line-height: 20px;
-  letter-spacing: 0.01em;
   padding: 10px;
   margin-bottom: 8px;
   color: ${(p) => p.theme.color.text01};
   ::placeholder {
     font-style: normal;
     font-size: 12px;
-    letter-spacing: 0.01em;
     color: ${(p) => p.theme.color.text03};
     font-weight: normal;
   }
@@ -78,7 +76,6 @@ export const ButtonRow = styled.div`
 `
 
 export const InfoText = styled.span`
-  letter-spacing: 0.01em;
   font-size: 12px;
   color: ${(p) => p.theme.color.text03};
   word-break: break-word;

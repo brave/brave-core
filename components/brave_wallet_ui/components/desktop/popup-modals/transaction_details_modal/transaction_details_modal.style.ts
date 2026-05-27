@@ -188,7 +188,6 @@ export const StatusText = styled(Text)<{
           ? leo.color.text.secondary
           : leo.color.systemfeedback.infoText};
   line-height: normal;
-  letter-spacing: 0.4px;
   text-transform: uppercase;
   font-size: 10px;
 `

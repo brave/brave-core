@@ -30,12 +30,10 @@ export const FavIcon = styled.img<{ bigger?: boolean }>`
 
 export const OriginName = styled(Text)`
   font: ${leo.font.default.semibold};
-  letter-spacing: ${leo.typography.letterSpacing.default};
   word-break: break-word;
 `
 
 export const OriginUrl = styled(Text)`
   font: ${leo.font.small.regular};
-  letter-spacing: ${leo.typography.letterSpacing.small};
   word-break: break-word;
 `

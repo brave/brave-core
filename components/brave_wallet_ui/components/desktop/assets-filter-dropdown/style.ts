@@ -27,7 +27,6 @@ export const Button = styled(WalletButton)`
   border: none;
   color: ${leo.color.text.primary};
   font-size: 14px;
-  letter-spacing: 0.01em;
   box-sizing: border-box;
   background-color: ${leo.color.container.highlight};
   padding: 6px 12px;

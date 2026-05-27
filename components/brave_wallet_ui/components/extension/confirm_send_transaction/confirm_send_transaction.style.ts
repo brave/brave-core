@@ -28,5 +28,4 @@ export const InfoBox = styled(Column)`
 
 export const Title = styled(Text)`
   font: ${leo.font.heading.h4};
-  letter-spacing: ${leo.typography.letterSpacing.large};
 `

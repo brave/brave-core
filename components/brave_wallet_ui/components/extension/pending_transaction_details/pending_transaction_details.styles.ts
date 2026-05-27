@@ -32,7 +32,6 @@ export const LabelText = styled(Text).attrs({
   textColor: 'primary',
 })`
   font: ${leo.font.default.semibold};
-  letter-spacing: ${leo.typography.letterSpacing.default};
 `
 
 export const DetailText = styled(Text).attrs({
@@ -40,7 +39,6 @@ export const DetailText = styled(Text).attrs({
   textAlign: 'left',
 })`
   font: ${leo.font.default.regular};
-  letter-spacing: ${leo.typography.letterSpacing.default};
   word-break: break-all;
 `
 
@@ -48,5 +46,4 @@ export const NoDataText = styled(Text).attrs({
   textColor: 'tertiary',
 })`
   font: ${leo.font.default.semibold};
-  letter-spacing: ${leo.typography.letterSpacing.default};
 `

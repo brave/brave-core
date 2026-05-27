@@ -44,7 +44,6 @@ export const BarMessage = styled.p<{ criteria: boolean[] }>`
   display: flex;
   align-items: center;
   text-align: right;
-  letter-spacing: 0.01em;
 `
 const getCriteriaPercentColor = (
   p: ThemedStyledProps<

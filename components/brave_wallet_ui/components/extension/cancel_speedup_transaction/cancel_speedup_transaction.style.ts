@@ -24,22 +24,18 @@ export const Card = styled(Column)`
 
 export const Title = styled(Text)`
   font: ${leo.font.heading.h4};
-  letter-spacing: ${leo.typography.letterSpacing.large};
 `
 
 export const PriorityLabel = styled(Text)`
   font: ${leo.font.default.semibold};
-  letter-spacing: ${leo.typography.letterSpacing.default};
 `
 
 export const FeeButton = styled(ConfirmationButtonLink)`
   font: ${leo.font.default.semibold};
-  letter-spacing: ${leo.typography.letterSpacing.button};
 `
 
 export const InfoText = styled(Text)`
   font: ${leo.font.small.regular};
-  letter-spacing: ${leo.typography.letterSpacing.small};
 `
 
 export const InfoIcon = styled(Icon)`

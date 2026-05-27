@@ -74,7 +74,6 @@ export const Title = styled.p<{
   font-size: 20px;
   font-weight: 600;
   color: ${(p) => p.theme.color.text01};
-  letter-spacing: 0.02em;
   margin-bottom: 16px;
   max-width: ${(p) => p?.maxWidth || 'unset'};
   text-align: ${(p) => p?.textAlign || 'left'};
@@ -87,7 +86,6 @@ export const Description = styled.p<{ textAlign?: 'right' | 'center' }>`
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
-  letter-spacing: 0.01em;
   line-height: 20px;
   color: ${(p) => p.theme.color.text02};
   text-align: ${(p) => p?.textAlign || 'left'};

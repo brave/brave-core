@@ -32,7 +32,6 @@ export const SelectAccountItemWrapper = styled(Column)`
 
 export const SelectAccountTitle = styled(Text)`
   font: ${leo.font.heading.h4};
-  letter-spacing: ${leo.typography.letterSpacing.large};
 `
 
 export const TestAccountsButton = styled(WalletButton)<{ isOpen: boolean }>`
@@ -47,7 +46,6 @@ export const TestAccountsButton = styled(WalletButton)<{ isOpen: boolean }>`
   border: none;
   padding: 16px 24px;
   font: ${leo.font.default.semibold};
-  letter-spacing: ${leo.typography.letterSpacing.default};
   color: ${leo.color.text.secondary};
   border-bottom: ${({ isOpen }) =>
     isOpen ? `1px solid ${leo.color.divider.subtle}` : 'none'};

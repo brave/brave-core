@@ -11,7 +11,6 @@ export const HeaderTitle = styled.span`
   font-size: 12px;
   line-height: 18px;
   font-weight: 500;
-  letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text03};
   position: absolute;
 `

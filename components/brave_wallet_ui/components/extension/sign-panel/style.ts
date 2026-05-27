@@ -42,7 +42,6 @@ export const AccountNameText = styled.span`
   font-size: 13px;
   line-height: 20px;
   font-weight: 600;
-  letter-spacing: 0.01em;
   line-height: 20px;
   color: ${(p) => p.theme.color.text02};
   margin-bottom: 2px;
@@ -54,7 +53,6 @@ export const AccountNameText = styled.span`
 export const NetworkText = styled.span`
   font-size: 12px;
   line-height: 18px;
-  letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text03};
 `
 
@@ -62,7 +60,6 @@ export const PanelTitle = styled.span`
   width: 236px;
   font-size: 18px;
   line-height: 26px;
-  letter-spacing: 0.02em;
   text-align: center;
   color: ${(p) => p.theme.color.text01};
   font-weight: 600;
@@ -88,7 +85,6 @@ export const MessageBox = styled.div<{ height?: string; width?: string }>`
 export const MessageHeader = styled.span`
   font-size: 12px;
   line-height: 18px;
-  letter-spacing: 0.01em;
   text-align: left;
   color: ${(p) => p.theme.color.text02};
   font-weight: 600;
@@ -104,7 +100,6 @@ export const MessageHeaderSection = styled(MessageHeader)`
 export const MessageText = styled.span`
   font-size: 12px;
   line-height: 18px;
-  letter-spacing: 0.01em;
   text-align: left;
   color: ${(p) => p.theme.color.text02};
   word-break: break-word;
