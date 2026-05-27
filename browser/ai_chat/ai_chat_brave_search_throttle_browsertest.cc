@@ -11,10 +11,8 @@
 #include "base/files/file_path.h"
 #include "base/location.h"
 #include "base/path_service.h"
-#include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
-#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
@@ -43,25 +41,10 @@ constexpr char kOpenAIChatButtonInvalidPath[] =
 
 // TODO(jocelyn): This should be changed to PlatformBrowserTest when we support
 // Android. https://github.com/brave/brave-browser/issues/41905
-class AIChatBraveSearchThrottleBrowserTest
-    : public InProcessBrowserTest,
-      public testing::WithParamInterface<bool> {
+class AIChatBraveSearchThrottleBrowserTest : public InProcessBrowserTest {
  public:
   AIChatBraveSearchThrottleBrowserTest()
-      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    std::vector<base::test::FeatureRef> enabled_features;
-    std::vector<base::test::FeatureRef> disabled_features;
-
-    if (IsConversationAPIV2Enabled()) {
-      enabled_features.push_back(ai_chat::features::kAIChatConversationAPIV2);
-    } else {
-      disabled_features.push_back(ai_chat::features::kAIChatConversationAPIV2);
-    }
-
-    scoped_feature_list_.InitWithFeatures(enabled_features, disabled_features);
-  }
-
-  bool IsConversationAPIV2Enabled() const { return GetParam(); }
+      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
@@ -168,7 +151,6 @@ class AIChatBraveSearchThrottleBrowserTest
   }
 
  protected:
-  base::test::ScopedFeatureList scoped_feature_list_;
   net::test_server::EmbeddedTestServer https_server_;
   std::unique_ptr<permissions::MockPermissionPromptFactory> prompt_factory_;
 
@@ -176,7 +158,7 @@ class AIChatBraveSearchThrottleBrowserTest
   content::ContentMockCertVerifier mock_cert_verifier_;
 };
 
-IN_PROC_BROWSER_TEST_P(AIChatBraveSearchThrottleBrowserTest,
+IN_PROC_BROWSER_TEST_F(AIChatBraveSearchThrottleBrowserTest,
                        OpenAIChat_AskAndAccept) {
   int cur_prompt_count = 0;
   prompt_factory_->set_response_type(
@@ -193,7 +175,7 @@ IN_PROC_BROWSER_TEST_P(AIChatBraveSearchThrottleBrowserTest,
       /*expected_leo_opened=*/true);
 }
 
-IN_PROC_BROWSER_TEST_P(AIChatBraveSearchThrottleBrowserTest,
+IN_PROC_BROWSER_TEST_F(AIChatBraveSearchThrottleBrowserTest,
                        OpenAIChat_AskAndDeny) {
   int cur_prompt_count = 0;
   prompt_factory_->set_response_type(
@@ -210,7 +192,7 @@ IN_PROC_BROWSER_TEST_P(AIChatBraveSearchThrottleBrowserTest,
       /*expected_leo_opened=*/false);
 }
 
-IN_PROC_BROWSER_TEST_P(AIChatBraveSearchThrottleBrowserTest,
+IN_PROC_BROWSER_TEST_F(AIChatBraveSearchThrottleBrowserTest,
                        OpenAIChat_AskAndDismiss) {
   int cur_prompt_count = 0;
   prompt_factory_->set_response_type(
@@ -231,7 +213,7 @@ IN_PROC_BROWSER_TEST_P(AIChatBraveSearchThrottleBrowserTest,
       /*expected_leo_opened=*/true);
 }
 
-IN_PROC_BROWSER_TEST_P(AIChatBraveSearchThrottleBrowserTest,
+IN_PROC_BROWSER_TEST_F(AIChatBraveSearchThrottleBrowserTest,
                        OpenAIChat_MismatchedNonce) {
   int cur_prompt_count = 0;
   NavigateToTestPage(FROM_HERE, kBraveSearchHost, kOpenAIChatButtonInvalidPath,
@@ -242,7 +224,7 @@ IN_PROC_BROWSER_TEST_P(AIChatBraveSearchThrottleBrowserTest,
       kOpenAIChatButtonInvalidPath);
 }
 
-IN_PROC_BROWSER_TEST_P(AIChatBraveSearchThrottleBrowserTest,
+IN_PROC_BROWSER_TEST_F(AIChatBraveSearchThrottleBrowserTest,
                        OpenAIChat_NotBraveSearchURL) {
   // The behavior should be the same as without the throttle.
   NavigateToTestPage(FROM_HERE, "brave.com", kOpenAIChatButtonValidPath, 0);
@@ -256,12 +238,3 @@ IN_PROC_BROWSER_TEST_P(AIChatBraveSearchThrottleBrowserTest,
   EXPECT_EQ(observer.last_navigation_url().path(), kLeoPath);
   EXPECT_EQ(GetActiveWebContents()->GetLastCommittedURL().path(), kLeoPath);
 }
-
-INSTANTIATE_TEST_SUITE_P(
-    ,
-    AIChatBraveSearchThrottleBrowserTest,
-    testing::Bool(),
-    [](const testing::TestParamInfo<
-        AIChatBraveSearchThrottleBrowserTest::ParamType>& info) {
-      return info.param ? "ConversationAPIV2" : "ConversationAPIV1";
-    });

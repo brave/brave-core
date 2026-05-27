@@ -132,10 +132,6 @@ COMPONENT_EXPORT(AI_CHAT_COMMON)
 BASE_DECLARE_FEATURE(kBraveSummaryModel);
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsBraveSummaryModelEnabled();
 
-COMPONENT_EXPORT(AI_CHAT_COMMON)
-BASE_DECLARE_FEATURE(kAIChatConversationAPIV2);
-COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatConversationAPIV2Enabled();
-
 // Whether we should show rich search widgets in the conversation.
 COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kRichSearchWidgets);
 

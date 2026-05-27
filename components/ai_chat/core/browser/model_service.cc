@@ -34,7 +34,6 @@
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
-#include "brave/components/ai_chat/core/browser/engine/engine_consumer_conversation_api.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_conversation_api_v2.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_oai.h"
 #include "brave/components/ai_chat/core/browser/engine/oblivious_http_config_manager.h"
@@ -1258,19 +1257,11 @@ std::unique_ptr<EngineConsumer> ModelService::GetEngineForModel(
         model->options.Clone(), url_loader_factory, network_context_getter_,
         credential_manager, this, pref_service_);
   } else if (model->options->is_leo_model_options()) {
-    if (features::IsAIChatConversationAPIV2Enabled()) {
-      DVLOG(1) << "Started AI engine: conversation api v2";
-      auto& leo_model_opts = model->options->get_leo_model_options();
-      engine = std::make_unique<EngineConsumerConversationAPIV2>(
-          *leo_model_opts, url_loader_factory, credential_manager, this,
-          pref_service_);
-    } else {
-      DVLOG(1) << "Started AI engine: conversation api";
-      auto& leo_model_opts = model->options->get_leo_model_options();
-      engine = std::make_unique<EngineConsumerConversationAPI>(
-          *leo_model_opts, url_loader_factory, credential_manager, this,
-          pref_service_);
-    }
+    DVLOG(1) << "Started AI engine: conversation api v2";
+    auto& leo_model_opts = model->options->get_leo_model_options();
+    engine = std::make_unique<EngineConsumerConversationAPIV2>(
+        *leo_model_opts, url_loader_factory, credential_manager, this,
+        pref_service_);
   }
 
   return engine;
