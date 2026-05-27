@@ -28,7 +28,7 @@
 #include "content/public/browser/web_ui_message_handler.h"
 
 #if BUILDFLAG(IS_ANDROID)
-#include "chrome/browser/android/tab_web_contents_delegate_android.h"
+#include "chrome/browser/android/tab_web_contents_delegate_android.h"  // nogncheck crbug.com/40147906
 #include "content/public/browser/web_contents.h"
 #else
 #include "chrome/browser/ui/browser.h"
