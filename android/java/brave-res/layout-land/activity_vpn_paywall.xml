@@ -52,7 +52,8 @@
                     android:text="@string/vpn_paywall_text_1"
                     android:textAlignment="textStart"
                     android:textColor="@android:color/white"
-                    app:drawableStartCompat="@drawable/ic_shield_done" />
+                    app:drawableStartCompat="@drawable/ic_check_normal"
+                    app:drawableTint="@color/primitive_primary_70" />
 
                 <TextView
                     style="@style/DefaultRegular"
@@ -65,7 +66,8 @@
                     android:text="@string/vpn_paywall_text_2"
                     android:textAlignment="textStart"
                     android:textColor="@android:color/white"
-                    app:drawableStartCompat="@drawable/ic_shield_done" />
+                    app:drawableStartCompat="@drawable/ic_check_normal"
+                    app:drawableTint="@color/primitive_primary_70" />
 
                 <TextView
                     style="@style/DefaultRegular"
@@ -78,7 +80,8 @@
                     android:text="@string/vpn_paywall_text_3"
                     android:textAlignment="textStart"
                     android:textColor="@android:color/white"
-                    app:drawableStartCompat="@drawable/ic_shield_done" />
+                    app:drawableStartCompat="@drawable/ic_check_normal"
+                    app:drawableTint="@color/primitive_primary_70" />
 
                 <TextView
                     style="@style/DefaultRegular"
@@ -91,7 +94,8 @@
                     android:text="@string/vpn_paywall_text_4"
                     android:textAlignment="textStart"
                     android:textColor="@android:color/white"
-                    app:drawableStartCompat="@drawable/ic_shield_done" />
+                    app:drawableStartCompat="@drawable/ic_check_normal"
+                    app:drawableTint="@color/primitive_primary_70" />
 
                 <TextView
                     style="@style/DefaultRegular"
@@ -104,7 +108,8 @@
                     android:text="@string/vpn_paywall_text_5"
                     android:textAlignment="textStart"
                     android:textColor="@android:color/white"
-                    app:drawableStartCompat="@drawable/ic_shield_done" />
+                    app:drawableStartCompat="@drawable/ic_check_normal"
+                    app:drawableTint="@color/primitive_primary_70" />
 
                 <TextView
                     style="@style/DefaultRegular"
