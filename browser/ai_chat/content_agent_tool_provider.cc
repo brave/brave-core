@@ -29,6 +29,7 @@
 #include "chrome/browser/actor/actor_proto_conversion.h"
 #include "chrome/browser/actor/actor_task.h"
 #include "chrome/browser/actor/actor_task_metadata.h"
+#include "chrome/browser/actor/tab_observation_strategy.h"
 #include "chrome/browser/glic/actor/glic_actor_policy_checker.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
@@ -243,7 +244,8 @@ void ContentAgentToolProvider::CreateTools() {
 
 void ContentAgentToolProvider::OnActionsFinished(
     Tool::UseToolCallback callback,
-    std::vector<actor::ActionResultWithLatencyInfo> action_results) {
+    std::vector<actor::ActionResultWithLatencyInfo> action_results,
+    actor::TabObservationStrategy observation_strategy) {
   actor::mojom::ActionResultCode result_code =
       actor::mojom::ActionResultCode::kOk;
   std::optional<size_t> index_of_failed_action;

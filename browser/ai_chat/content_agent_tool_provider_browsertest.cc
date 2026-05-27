@@ -18,6 +18,7 @@
 #include "brave/components/ai_chat/core/common/test_utils.h"
 #include "chrome/browser/actor/actor_keyed_service_factory.h"
 #include "chrome/browser/actor/actor_proto_conversion.h"
+#include "chrome/browser/actor/tab_observation_strategy.h"
 #include "chrome/browser/glic/actor/glic_actor_policy_checker.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -138,7 +139,8 @@ class ContentAgentToolProviderBrowserTest : public InProcessBrowserTest {
       std::optional<size_t> index_of_failed_action,
       std::vector<actor::ActionResultWithLatencyInfo> action_results) {
     tool_provider_->OnActionsFinished(std::move(callback),
-                                      std::move(action_results));
+                                      std::move(action_results),
+                                      actor::TabObservationStrategy());
   }
 
   raw_ptr<Profile> agent_profile_;
