@@ -178,7 +178,6 @@ fn parse_storage_entry_type(input: &mut &[u8]) -> Result<(), Error> {
         // Map { hashers, key, value }
         1 => {
             let saved = *input;
-            // Most runtimes (including v14 Polkadot) use Vec<StorageHasher>.
             if decode_vec(input, decode_scale::<u8>).is_ok() {
                 let _: u32 = decode_type_id(input)?;
                 let _: u32 = decode_type_id(input)?;
@@ -251,11 +250,8 @@ fn parse_pallets(input: &mut &[u8], has_pallet_docs: bool) -> Result<Vec<PalletI
 }
 
 // SS58Prefix constant is SCALE-encoded but the concrete integer width varies
-// across runtimes (u8, u16, u32, or Compact<u32>). Try fixed-width first,
-// then Compact<u32>, accepting whichever consumes the entire buffer.
-// Compact<u32> must come after u16/u32 to avoid misinterpreting multi-byte
-// fixed-width encodings as compact (e.g. u16(42)=[0x2a,0x00] has mode bits
-// 10 which compact decodes as value 10, not 42).
+// across runtimes (u8, u16, u32, or Compact<u32>). Try fixed-width first to
+// avoid misinterpreting multi-byte fixed-width encodings as compact.
 fn decode_ss58_prefix(raw: &[u8]) -> Option<u16> {
     let mut input = raw;
     if let Ok(v) = u16::decode(&mut input) {

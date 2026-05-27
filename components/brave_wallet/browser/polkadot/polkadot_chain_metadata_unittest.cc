@@ -270,24 +270,6 @@ TEST(PolkadotChainMetadataUnitTest,
   EXPECT_EQ(*metadata2, expected_from_name);
 }
 
-// ---------------------------------------------------------------------------
-// Security validation tests: each test is labelled with a concern number
-// that maps to the security review findings for PR #34784.
-// ---------------------------------------------------------------------------
-
-// Concern #1: v14 Map storage format mismatch.
-//
-// In RuntimeMetadataV14, StorageEntryType::Map encodes the hasher as a
-// single StorageHasher enum byte:
-//   Map { hasher: StorageHasher, key: TypeId, value: TypeId }
-//
-// In RuntimeMetadataV15, it was changed to a Vec:
-//   Map { hashers: Vec<StorageHasher>, key: TypeId, value: TypeId }
-//
-// FIX: The parser now tries Vec<StorageHasher> first, and falls back to a
-// single byte on decode failure, handling both v14 and v15 formats.
-
-// v14 metadata with no storage entries — baseline that should parse correctly.
 TEST(PolkadotChainMetadataUnitTest, Security_V14NoStorage_ParsesCorrectly) {
   std::vector<uint8_t> bytes;
   ASSERT_TRUE(PrefixedHexStringToBytes(
@@ -304,8 +286,6 @@ TEST(PolkadotChainMetadataUnitTest, Security_V14NoStorage_ParsesCorrectly) {
   EXPECT_EQ(metadata->GetSpecVersion(), 100u);
 }
 
-// v14 metadata with Map storage, hasher=0 (Blake2_128).
-// Vec<StorageHasher> decode succeeds: 0x00 decodes as Compact(0)=empty vec.
 TEST(PolkadotChainMetadataUnitTest,
      Security_V14MapStorageHasher0_ParsesCorrectly) {
   std::vector<uint8_t> bytes;
@@ -323,9 +303,6 @@ TEST(PolkadotChainMetadataUnitTest,
   EXPECT_EQ(metadata->GetBalancesPalletIndex(), 5u);
 }
 
-// v14 metadata with Map storage, hasher=1 (Blake2_256).
-// Vec<StorageHasher> decode fails (0x01 triggers two-byte Compact mode),
-// but the single-byte fallback succeeds.
 TEST(PolkadotChainMetadataUnitTest,
      Security_V14MapStorageHasher1_ParsesCorrectly) {
   std::vector<uint8_t> bytes;
@@ -343,7 +320,6 @@ TEST(PolkadotChainMetadataUnitTest,
   EXPECT_EQ(metadata->GetBalancesPalletIndex(), 5u);
 }
 
-// v15 metadata with Map storage, hasher=1 encoded as Vec<StorageHasher>([1]).
 TEST(PolkadotChainMetadataUnitTest,
      Security_V15MapStorageHasher1_ParsesCorrectly) {
   std::vector<uint8_t> bytes;
@@ -361,16 +337,6 @@ TEST(PolkadotChainMetadataUnitTest,
   EXPECT_EQ(metadata->GetBalancesPalletIndex(), 5u);
 }
 
-// Concern #2: decode_ss58_prefix doesn't handle Compact<u32> encoding.
-//
-// The SS58Prefix constant is SCALE-encoded, but its concrete integer width
-// varies across runtimes (u8, u16, u32, or Compact<u32>).
-//
-// FIX: The parser now tries u16, u32, Compact<u32>, then u8 in order,
-// checking that all bytes are consumed. Compact<u32> is tried after u16/u32
-// to avoid misinterpreting multi-byte fixed-width encodings as compact.
-
-// v15 metadata with SS58Prefix as u16(42)=[0x2a, 0x00] → returns 42.
 TEST(PolkadotChainMetadataUnitTest,
      Security_SS58PrefixU16_ReturnsCorrectValue) {
   std::vector<uint8_t> bytes;
@@ -386,7 +352,6 @@ TEST(PolkadotChainMetadataUnitTest,
   EXPECT_EQ(metadata->GetSs58Prefix(), 42u);
 }
 
-// v15 metadata with SS58Prefix as Compact<u32>(42)=[0xa8] → returns 42.
 TEST(PolkadotChainMetadataUnitTest,
      Security_SS58PrefixCompact_ReturnsCorrectValue) {
   std::vector<uint8_t> bytes;
@@ -401,16 +366,6 @@ TEST(PolkadotChainMetadataUnitTest,
   ASSERT_TRUE(metadata);
   EXPECT_EQ(metadata->GetSs58Prefix(), 42u);
 }
-
-// Concern #3: Parser does not validate that all input bytes are consumed.
-//
-// After reading all expected fields, the parser never checks that the input
-// buffer is empty. A compromised RPC could append arbitrary bytes to valid
-// metadata. Note: real metadata also has trailing fields (extrinsics, APIs,
-// outer_event) that this partial parser doesn't consume, so a trailing-bytes
-// check cannot be added without breaking real-world parsing.
-//
-// This test documents the known limitation.
 
 TEST(PolkadotChainMetadataUnitTest,
      Security_TrailingBytesNotRejected_KnownLimitation) {
@@ -430,11 +385,6 @@ TEST(PolkadotChainMetadataUnitTest,
   EXPECT_EQ(metadata->GetSs58Prefix(), 42u);
   EXPECT_EQ(metadata->GetBalancesPalletIndex(), 5u);
 }
-
-// Concern #4: Unbounded Vec::with_capacity on untrusted vec length.
-//
-// FIX: decode_vec_len now rejects vec lengths > 10_000 before allocation,
-// preventing a DoS via maliciously large Compact length values.
 
 TEST(PolkadotChainMetadataUnitTest,
      Security_HugeVecLength_RejectedByBoundsCheck) {
