@@ -460,8 +460,7 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
               marginBottom={4}
             >
               <LabelText
-                textSize='12px'
-                isBold={true}
+                variant='small.semibold'
               >
                 {getLocale('braveWalletSendTo')}
               </LabelText>
@@ -503,8 +502,7 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
                     marginBottom={4}
                   >
                     <LabelText
-                      textSize='12px'
-                      isBold={true}
+                      variant='small.semibold'
                     >
                       {getLocale('braveWalletMyAddresses')}
                     </LabelText>
@@ -527,8 +525,7 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
                 <Row margin='26px 0px 0px 0px'>
                   <DomainLoadIcon />
                   <Text
-                    textSize='14px'
-                    isBold={false}
+                    variant='default.semibold'={false}
                     textColor='secondary'
                   >
                     {getLocale('braveWalletSearchingForDomain')}
@@ -543,8 +540,7 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
                     <WalletIcon />
                     <Column alignItems='flex-start'>
                       <AddressButtonText
-                        textSize='14px'
-                        isBold={true}
+                        variant='default.semibold'
                         textColor='primary'
                         textAlign='left'
                       >
@@ -552,8 +548,7 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
                       </AddressButtonText>
                       {searchValueHasValidExtension && (
                         <AddressButtonText
-                          textSize='14px'
-                          isBold={false}
+                          variant='default.semibold'={false}
                           textColor='secondary'
                           textAlign='left'
                         >

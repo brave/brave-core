@@ -92,7 +92,7 @@ export const Title = styled.h3`
   color: ${leo.color.text.primary};
   text-align: center;
   font: ${leo.font.heading.h1};
-  margin: 0;
+margin: 0;
   padding: 0;
 `
 
@@ -100,7 +100,7 @@ export const Subtitle = styled.p`
   color: ${leo.color.text.secondary};
   text-align: center;
   font: ${leo.font.large.regular};
-  margin: 0;
+margin: 0;
   padding: 16px 0 19px 0;
 `
 
@@ -153,7 +153,7 @@ export const BraveIcon = styled(Icon).attrs({
 
 export const WalletTitle = styled.h4`
   font: ${leo.font.default.regular};
-  color: ${leo.color.text.primary};
+color: ${leo.color.text.primary};
   margin: 0;
 `
 

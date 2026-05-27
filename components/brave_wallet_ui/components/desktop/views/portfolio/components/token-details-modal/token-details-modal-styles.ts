@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 import { WalletButton } from '../../../../../shared/style'
 export const modalWidth = '500px'
 
@@ -20,20 +21,15 @@ export const TokenBalanceRow = styled.div`
   align-items: center;
 `
 export const CryptoBalance = styled.p`
-  font-style: normal;
-  font-weight: 600;
-  font-size: 45px;
-  line-height: 45px;
-  margin: 0;
+  font: ${leo.font.heading.display2};
+margin: 0;
   padding: 0 16px 0 0;
   color: ${(p) => p.theme.color.text01};
 `
 
 export const FiatBalance = styled.h6`
-  font-style: normal;
-  font-size: 18px;
-  font-weight: 400;
-  margin: 0;
+  font: ${leo.font.large.regular};
+margin: 0;
   padding-top: 20px;
   padding-bottom: 4px;
   color: ${(p) => p.theme.color.text02};
@@ -47,19 +43,15 @@ export const DetailColumn = styled.div`
 `
 
 export const TokenDetailLabel = styled.h6`
-  font-style: normal;
-  font-size: 14px;
-  font-weight: 600;
-  margin: 0;
+  font: ${leo.font.default.semibold};
+margin: 0;
   padding: 0;
   color: ${(p) => p.theme.color.text01};
 `
 
 export const TokenDetailValue = styled.h6`
-  font-style: normal;
-  font-size: 14px;
-  font-weight: 400;
-  margin: 8px 0 0 0;
+  font: ${leo.font.default.regular};
+margin: 8px 0 0 0;
   padding: 0;
   color: ${(p) => p.theme.color.text01};
 `
@@ -74,10 +66,8 @@ export const HideTokenButton = styled(WalletButton)`
   height: 40px;
   margin-top: 70px;
   border-radius: 100px;
-  font-style: normal;
-  font-size: 14px;
-  font-weight: 400;
-  width: 320px;
+  font: ${leo.font.default.regular};
+width: 320px;
   display: flex;
   align-self: center;
   justify-content: center;

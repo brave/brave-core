@@ -74,7 +74,7 @@ export const DappDetails = ({ dapp, ...rest }: DappDetailsProps) => {
             ))}
           </Row>
 
-          <Text textSize='14px'>{dapp.description}</Text>
+          <Text variant='default.regular'>{dapp.description}</Text>
         </Column>
 
         <Column
@@ -158,14 +158,13 @@ function DappMetric({
     <DappMetricContainer>
       <Text
         textAlign='left'
-        textSize='12px'
+        variant='small.regular'
       >
         {metricName}
       </Text>
       <Text
         textAlign='left'
-        textSize='16px'
-        isBold
+        variant='large.semibold'
       >
         {isUSDValue ? CurrencySymbols.USD : ''}
         {new Amount(meticValue).abbreviate(2)}

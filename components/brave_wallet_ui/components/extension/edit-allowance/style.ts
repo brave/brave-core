@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -33,16 +34,13 @@ export const Input = styled.input`
   border: ${(p) => `1px solid ${p.theme.color.interactive08}`};
   border-radius: 4px;
   font-style: normal;
-  font-size: 13px;
-  line-height: 20px;
-  padding: 10px;
+  font: ${leo.font.small.regular};
+padding: 10px;
   margin-bottom: 8px;
   color: ${(p) => p.theme.color.text01};
   ::placeholder {
-    font-style: normal;
-    font-size: 12px;
-    color: ${(p) => p.theme.color.text03};
-    font-weight: normal;
+    font: ${leo.font.small.regular};
+color: ${(p) => p.theme.color.text03};
   }
   :focus {
     outline: none;
@@ -68,9 +66,8 @@ export const ButtonRow = styled.div`
 
 export const Description = styled.span`
   width: 100%;
-  font-size: 12px;
-  line-height: 18px;
-  text-align: flex-start;
+  font: ${leo.font.small.regular};
+text-align: flex-start;
   color: ${(p) => p.theme.color.text02};
 `
 
@@ -80,18 +77,12 @@ export const AllowanceOption = styled.div`
 `
 
 export const AllowanceTitle = styled.div`
-  font-style: normal;
-  font-weight: normal;
-  font-size: 12px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.text01};
+  font: ${leo.font.small.regular};
+color: ${(p) => p.theme.color.text01};
   padding-bottom: 6px;
 `
 
 export const AllowanceContent = styled.div`
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 20px;
-  color: ${(p) => p.theme.color.text01};
+  font: ${leo.font.default.semibold};
+color: ${(p) => p.theme.color.text01};
 `

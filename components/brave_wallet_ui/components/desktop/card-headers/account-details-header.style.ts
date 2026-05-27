@@ -16,23 +16,19 @@ export const AccountNameText = styled(Text)`
 `
 
 export const AddressText = styled(Text)`
-  font-size: 12px;
-  line-height: 18px;
-  color: ${leo.color.text.primary};
+  font: ${leo.font.small.regular};
+color: ${leo.color.text.primary};
   margin-right: 8px;
 `
 
 export const AccountsNetworkText = styled(Text)`
-  font-size: 12px;
-  line-height: 18px;
-  color: ${leo.color.text.secondary};
+  font: ${leo.font.small.regular};
+color: ${leo.color.text.secondary};
 `
 
 export const AccountBalanceText = styled(Text)`
-  font-size: 22px;
-  line-height: 32px;
-  font-weight: 500;
-  color: ${leo.color.text.primary};
+  font: ${leo.font.heading.h2};
+color: ${leo.color.text.primary};
 `
 
 export const CopyIcon = styled(Icon).attrs({

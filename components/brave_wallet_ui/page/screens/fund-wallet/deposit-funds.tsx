@@ -768,7 +768,7 @@ function DepositAccount() {
           <>
             <Row gap={'12px'}>
               <AddressText
-                textSize='14px'
+                variant='default.regular'
                 textColor='secondary'
               >
                 {address}

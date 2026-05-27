@@ -110,10 +110,8 @@ export const PopupButton = styled(WalletButton)<{
 export const PopupButtonText = styled.span`
   flex: 1;
   font-style: normal;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 24px;
-  color: ${leo.color.text.primary};
+  font: ${leo.font.default.regular};
+color: ${leo.color.text.primary};
 `
 
 export const ButtonIcon = styled(Icon)<{ id?: AccountModalTypes }>`
@@ -161,6 +159,6 @@ export const SectionLabel = styled(Row)`
   background-color: ${leo.color.page.background};
   padding: 4px 8px;
   font: ${leo.font.components.label};
-  text-transform: capitalize;
+text-transform: capitalize;
   color: ${leo.color.text.tertiary};
 `

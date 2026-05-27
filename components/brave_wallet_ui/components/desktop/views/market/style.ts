@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 import { LoaderIcon } from 'brave-ui/components/icons'
 
 export interface StyleProps {
@@ -39,7 +40,7 @@ export const TextWrapper = styled.div<StyleProps>`
   justify-content: ${(p) =>
     p.alignment === 'right' ? 'flex-end' : 'flex-start'};
   width: 100%;
-  font-size: 14px;
+  font: ${leo.font.default.regular};
 `
 
 export const LineChartWrapper = styled.div`

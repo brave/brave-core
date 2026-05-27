@@ -143,7 +143,7 @@ export const TransactionSubmittedOrSigned = (props: Props) => {
         gap='16px'
       >
         <Text
-          textSize='12px'
+          variant='small.regular'
           textColor='tertiary'
           isBold={false}
         >

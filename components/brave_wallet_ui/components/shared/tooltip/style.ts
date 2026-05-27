@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled, { css, CSSProperties } from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 interface PositionProps {
   position: 'left' | 'right' | 'center'
@@ -47,9 +48,8 @@ export const Tip = styled.div<{
 }>`
   border-radius: 4px;
   padding: 6px;
-  font-size: 12px;
-
-  width: ${(p) => (p.isAddress ? '180px' : 'unset')};
+  font: ${leo.font.small.regular};
+width: ${(p) => (p.isAddress ? '180px' : 'unset')};
   max-width: ${(p) => p?.maxWidth || '100%'};
   min-width: ${(p) => p?.minWidth || 'fit-content'};
 

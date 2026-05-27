@@ -437,7 +437,7 @@ export const EditGas = ({
                   >
                     <Text
                       textAlign='left'
-                      textSize='14px'
+                      variant='default.regular'
                     >
                       {getLocale(
                         'braveWalletGasFeeLimitLowerThanBaseFeeWarning',

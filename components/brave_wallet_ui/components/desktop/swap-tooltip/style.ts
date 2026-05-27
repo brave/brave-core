@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 export const StyledWrapper = styled.span`
   flex: 1;
@@ -20,9 +21,8 @@ export const Tip = styled.div`
   color: ${(p) => p.theme.palette.white};
   background: ${(p) => p.theme.palette.black};
   z-index: 120;
-  font-size: 12px;
-  line-height: 16px;
-  top: -144px;
+  font: ${leo.font.small.regular};
+top: -144px;
   height: 108px;
   width: 240px;
 `

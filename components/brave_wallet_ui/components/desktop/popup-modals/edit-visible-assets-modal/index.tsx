@@ -325,7 +325,7 @@ export const EditVisibleAssetsModal = ({ onClose }: Props) => {
             justifyContent='space-between'
           >
             <Text
-              textSize='16px'
+              variant='large.regular'
               textColor='text03'
               isBold={true}
             >
@@ -381,7 +381,7 @@ export const EditVisibleAssetsModal = ({ onClose }: Props) => {
                   <Column>
                     <InfoIcon />
                     <Text
-                      textSize='16px'
+                      variant='large.regular'
                       textColor='text01'
                       isBold={true}
                     >
@@ -389,7 +389,7 @@ export const EditVisibleAssetsModal = ({ onClose }: Props) => {
                     </Text>
                     <VerticalSpace space='12px' />
                     <Text
-                      textSize='14px'
+                      variant='default.regular'
                       textColor='text03'
                       isBold={false}
                     >

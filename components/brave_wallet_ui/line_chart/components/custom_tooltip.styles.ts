@@ -7,19 +7,9 @@ import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
 
 export const ChartBalance = styled.span`
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 24px;
-  color: ${leo.color.text.primary};
-`
-
-export const ChartDate = styled.span`
-  font-style: normal;
-  font-weight: 400;
-  font-size: 11px;
-  line-height: 16px;
-  color: ${leo.color.text.secondary};
+  font: ${leo.font.default.semibold};
+font: ${leo.font.xSmall.regular};
+color: ${leo.color.text.secondary};
 `
 
 interface ToolTipProps {

@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 import CaratDownIcon from '../../assets/svg-icons/select-down-icon.svg'
 import { WalletButton } from '../shared/style'
@@ -33,8 +34,7 @@ export const Button = styled(WalletButton)`
   padding: 9px 12px;
   border-radius: 12px;
   cursor: ${(p) => (p.disabled ? 'auto' : 'pointer')};
-  font-size: 14px;
-  line-height: 20px;
+  font: ${leo.font.default.regular};
 `
 
 export const Dropdown = styled.ul`
@@ -67,9 +67,7 @@ export const Option = styled.li<Partial<OptionProps>>`
   display: flex;
   align-items: center;
   padding: 10px 0;
-  font-size: 14px;
-  line-height: 20px;
-  color: ${(p) => p.theme.color.text02};
-  font-weight: ${(p) => (p.selected ? 600 : 400)};
+  font: ${leo.font.default.regular};
+color: ${(p) => p.theme.color.text02};
   cursor: pointer;
 `

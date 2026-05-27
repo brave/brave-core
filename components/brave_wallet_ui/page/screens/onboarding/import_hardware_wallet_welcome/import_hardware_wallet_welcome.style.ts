@@ -16,11 +16,5 @@ export const Description = styled.p`
   color: ${leo.color.text.primary};
   text-align: center;
   font: ${leo.font.large.regular};
-  font-size: 16px;
-  margin: 0;
-  padding: 0;
-`
-
-export const Bold = styled.span`
-  font-weight: 600;
+font: ${leo.font.large.semibold};
 `

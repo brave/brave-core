@@ -168,7 +168,7 @@ export function PortfolioOverviewDistribution({ data }: Props) {
                 <SegmentSymbol textColor='tertiary'>{label}</SegmentSymbol>
                 {item.value ? (
                   <SegmentPercent
-                    textSize='12px'
+                    variant='small.regular'
                     textColor='tertiary'
                   >
                     {percentage}%
@@ -189,7 +189,7 @@ export function PortfolioOverviewDistribution({ data }: Props) {
                 {item.fiatValue ? (
                   <SegmentFiat
                     className={styles.portfolioOverviewDistributionFiat}
-                    textSize='12px'
+                    variant='small.regular'
                     textColor='primary'
                     textAlign='left'
                     isBold

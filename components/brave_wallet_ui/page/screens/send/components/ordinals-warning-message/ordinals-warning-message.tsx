@@ -35,7 +35,7 @@ export const OrdinalsWarningMessage = ({ acknowledged, onChange }: Props) => {
       <WarningIcon />
       <Column horizontalAlign='flex-start'>
         <Text
-          textSize='12px'
+          variant='small.regular'
           textColor='warning'
           textAlign='left'
           isBold={false}
@@ -48,7 +48,7 @@ export const OrdinalsWarningMessage = ({ acknowledged, onChange }: Props) => {
             onChange={() => onChange(!acknowledged)}
           >
             <Text
-              textSize='12px'
+              variant='small.regular'
               textColor='warning'
               textAlign='left'
               isBold={false}

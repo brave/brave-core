@@ -32,11 +32,8 @@ export const TooltipContent = styled.div`
 `
 
 export const Heading = styled.p`
-  font-style: normal;
-  font-weight: 500;
-  font-size: 13px;
-  line-height: 20px;
-  padding: 0;
+  font: ${leo.font.small.semibold};
+padding: 0;
   margin: 0;
 `
 
@@ -45,11 +42,8 @@ export const List = styled.ul`
   padding-left: 20px;
 
   li {
-    font-style: normal;
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 20px;
-    padding: 0;
+    font: ${leo.font.small.regular};
+padding: 0;
     margin: 0;
   }
 `

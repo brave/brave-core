@@ -97,7 +97,7 @@ export const SelectButton = (props: Props) => {
           </IconsWrapper>
         )}
         <SelectButtonText
-          textSize='22px'
+          variant='heading.h2'
           isNFT={selectedSendOption === SendPageTabHashes.nft}
           textAlign='left'
         >

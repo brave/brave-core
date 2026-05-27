@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 // Assets
 import WarningCircleFilled from '../../../../assets/svg-icons/warning-circle-filled.svg'
@@ -71,9 +72,8 @@ export const AssetIcon = AssetIconFactory<AssetIconProps>({
 export const AmountInput = styled.input`
   color: ${(p) => p.theme.color.text01};
   font-weight: 500;
-  font-size: 32px;
-  line-height: 48px;
-  text-align: left;
+  font: ${leo.font.heading.display3};
+text-align: left;
   width: 100%;
   outline: none;
   background-image: none;
@@ -103,10 +103,8 @@ export const PresetButton = styled.button<{ marginRight?: number }>`
   background: none;
   background-color: var(--button-background);
   border-radius: 4px;
-  font-size: 11px;
-  font-weight: 600;
-  line-height: 16px;
-  color: ${(p) => p.theme.color.text02};
+  font: ${leo.font.xSmall.semibold};
+color: ${(p) => p.theme.color.text02};
   margin-right: ${(p) => (p.marginRight ? p.marginRight : 0)}px;
   padding: 4px 8px;
   &:hover {

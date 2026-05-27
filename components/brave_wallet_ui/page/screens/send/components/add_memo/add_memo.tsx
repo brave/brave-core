@@ -59,8 +59,7 @@ export const AddMemo = (props: Props) => {
           showErrors={memoText.length > MAX_ZCASH_MEMO_LENGTH}
         >
           <Text
-            textSize='12px'
-            isBold={true}
+            variant='small.semibold'
             textColor='primary'
           >
             {getLocale('braveWalletMessageOptional')}
@@ -69,8 +68,7 @@ export const AddMemo = (props: Props) => {
             {memoTextLength}/{MAX_ZCASH_MEMO_LENGTH}
           </span>
           <Text
-            textSize='12px'
-            isBold={true}
+            variant='small.semibold'
             textColor='error'
             slot='errors'
             textAlign='left'

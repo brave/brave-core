@@ -62,7 +62,7 @@ export const RewardsLogin = ({ provider }: Props) => {
       >
         <InfoIcon />
         <InfoText
-          textSize='14px'
+          variant='default.regular'
           textAlign='left'
         >
           {loginDescription}

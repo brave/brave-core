@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 import { Column } from '../../shared-swap.styles'
 
 export const Section = styled(Column)`
@@ -13,11 +14,8 @@ export const Section = styled(Column)`
 `
 
 export const Link = styled.a`
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 20px;
-  color: ${(p) => p.theme.color.interactive05};
+  font: ${leo.font.default.regular};
+color: ${(p) => p.theme.color.interactive05};
   text-decoration: none;
   display: block;
   cursor: pointer;

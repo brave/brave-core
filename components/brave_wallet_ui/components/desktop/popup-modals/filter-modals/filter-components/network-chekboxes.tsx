@@ -52,8 +52,7 @@ export const NetworkCheckboxes = (props: Props) => {
         justifyContent='flex-start'
       >
         <Description
-          textSize='12px'
-          isBold={true}
+          variant='small.semibold'
         >
           {title}
         </Description>
@@ -87,8 +86,7 @@ export const NetworkCheckboxes = (props: Props) => {
                 size='big'
               />
               <CheckboxText
-                textSize='14px'
-                isBold={false}
+                variant='default.semibold'={false}
               >
                 {network.chainName}
               </CheckboxText>

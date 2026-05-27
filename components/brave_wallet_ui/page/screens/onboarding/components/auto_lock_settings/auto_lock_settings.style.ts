@@ -28,7 +28,7 @@ export const LockIcon = styled(Icon).attrs({
 
 export const SettingDescription = styled.div`
   font: ${leo.font.default.regular};
-  white-space: nowrap;
+white-space: nowrap;
   color: ${leo.color.text.primary};
 `
 

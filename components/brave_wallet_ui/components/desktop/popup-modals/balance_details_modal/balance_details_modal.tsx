@@ -62,7 +62,7 @@ export const BalanceDetailsModal = React.forwardRef<HTMLDivElement, Props>(
                 width='unset'
                 gap='4px'
               >
-                <SectionText textSize='14px'>
+                <SectionText variant='default.regular'>
                   {getLocale('braveWalletAvailable')}:
                 </SectionText>
                 <Tooltip
@@ -83,7 +83,7 @@ export const BalanceDetailsModal = React.forwardRef<HTMLDivElement, Props>(
                   />
                 </Column>
               ) : (
-                <BalanceText textSize='14px'>
+                <BalanceText variant='default.regular'>
                   {new Amount(balances?.availableBalance ?? '')
                     .divideByDecimals(token.decimals)
                     .formatAsAsset(6, token.symbol)}
@@ -98,7 +98,7 @@ export const BalanceDetailsModal = React.forwardRef<HTMLDivElement, Props>(
                 width='unset'
                 gap='4px'
               >
-                <SectionText textSize='14px'>
+                <SectionText variant='default.regular'>
                   {getLocale('braveWalletPending')}:
                 </SectionText>
                 <Tooltip
@@ -119,7 +119,7 @@ export const BalanceDetailsModal = React.forwardRef<HTMLDivElement, Props>(
                   />
                 </Column>
               ) : (
-                <BalanceText textSize='14px'>
+                <BalanceText variant='default.regular'>
                   {new Amount(balances?.pendingBalance ?? '')
                     .divideByDecimals(token.decimals)
                     .formatAsAsset(6, token.symbol)}
@@ -135,8 +135,7 @@ export const BalanceDetailsModal = React.forwardRef<HTMLDivElement, Props>(
                 gap='4px'
               >
                 <SectionText
-                  textSize='14px'
-                  isBold={true}
+                  variant='default.semibold'
                 >
                   {getLocale('braveWalletConfirmTransactionTotal')}:
                 </SectionText>
@@ -159,8 +158,7 @@ export const BalanceDetailsModal = React.forwardRef<HTMLDivElement, Props>(
                 </Column>
               ) : (
                 <BalanceText
-                  textSize='14px'
-                  isBold={true}
+                  variant='default.semibold'
                 >
                   {new Amount(balances?.totalBalance ?? '')
                     .divideByDecimals(token.decimals)

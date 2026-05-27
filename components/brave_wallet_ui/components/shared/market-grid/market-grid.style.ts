@@ -55,11 +55,8 @@ export const HeaderItem = styled.div<{
   align-items: center;
   gap: ${({ sortable }) => (sortable ? '5px' : '0px')};
   cursor: ${({ sortable }) => (sortable ? 'pointer' : 'auto')};
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 18px;
-  color: ${leo.color.text.tertiary};
+  font: ${leo.font.small.semibold};
+color: ${leo.color.text.tertiary};
   ${({ hideOnPanel }) =>
     hideOnPanel
     && css`
@@ -106,11 +103,8 @@ export const Cell = styled.div<{
 }>`
   display: flex;
   align-items: center;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-  color: ${leo.color.text.primary};
+  font: ${leo.font.default.semibold};
+color: ${leo.color.text.primary};
   overflow: hidden;
   ${({ hideOnPanel }) =>
     hideOnPanel
@@ -160,15 +154,12 @@ export const TextWrapper = styled.div<{
     }
   }};
   width: 100%;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-  color: ${leo.color.text.primary};
+  font: ${leo.font.default.semibold};
+color: ${leo.color.text.primary};
 
   @media screen and (max-width: ${layoutPanelWidth}px) {
-    font-size: 12px;
-  }
+    font: ${leo.font.small.regular};
+}
 `
 
 export const ButtonsRow = styled.div`
@@ -181,10 +172,8 @@ export const ButtonsRow = styled.div`
 `
 
 export const CoinGeckoText = styled.span`
-  font-family: Arial;
-  font-size: 10px;
-  font-weight: normal;
-  color: ${leo.color.text.secondary};
+  font: ${leo.font.xSmall.regular};
+color: ${leo.color.text.secondary};
   margin: 15px 0px;
 `
 
@@ -200,11 +189,8 @@ export const ActionButton = styled(WalletButton)`
   border: 1px solid ${leo.color.divider.interactive};
   margin-right: 6px;
   pointer-events: auto;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 16px;
-  color: ${leo.color.text.interactive};
+  font: ${leo.font.components.buttonSmall};
+color: ${leo.color.text.interactive};
 `
 
 export const EmptyStateText = styled(Text)`

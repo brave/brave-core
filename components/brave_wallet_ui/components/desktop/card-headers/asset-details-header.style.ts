@@ -15,26 +15,18 @@ export const AssetIcon = AssetIconFactory<AssetIconProps>({
 
 export const AssetNameText = styled.span`
   font-style: normal;
-  font-size: 16px;
-  line-height: 18px;
-  font-weight: 600;
-  color: ${leo.color.text.primary};
+  font: ${leo.font.large.semibold};
+color: ${leo.color.text.primary};
 `
 
 export const NetworkDescriptionText = styled.span`
-  font-style: normal;
-  font-size: 12px;
-  line-height: 18px;
-  font-weight: 400;
-  color: ${leo.color.text.secondary};
+  font: ${leo.font.small.regular};
+color: ${leo.color.text.secondary};
 `
 
 export const PriceText = styled.span`
-  font-style: normal;
-  font-size: 14px;
-  line-height: 24px;
-  font-weight: 600;
-  color: ${leo.color.text.primary};
+  font: ${leo.font.default.semibold};
+color: ${leo.color.text.primary};
 `
 
 export const PercentChange = styled.div<{ isDown?: boolean }>`
@@ -42,11 +34,8 @@ export const PercentChange = styled.div<{ isDown?: boolean }>`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  font-style: normal;
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 18px;
-  color: ${(p) =>
+  font: ${leo.font.small.regular};
+color: ${(p) =>
     p.isDown
       ? leo.color.systemfeedback.errorIcon
       : leo.color.systemfeedback.successIcon};

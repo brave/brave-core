@@ -89,7 +89,7 @@ export const TransactionComplete = (props: Props) => {
       >
         {hasMoreTransactions && (
           <Text
-            textSize='12px'
+            variant='small.regular'
             textColor='tertiary'
             isBold={false}
           >

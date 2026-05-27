@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -24,10 +25,8 @@ export const FormColumn = styled.div`
 `
 
 export const InputLabel = styled.span`
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 500;
-  color: ${(p) => p.theme.color.text02};
+  font: ${leo.font.default.regular};
+color: ${(p) => p.theme.color.text02};
   margin-bottom: 6px;
 `
 
@@ -41,16 +40,13 @@ export const Input = styled.input`
   border: ${(p) => `1px solid ${p.theme.color.interactive08}`};
   border-radius: 4px;
   font-style: normal;
-  font-size: 13px;
-  line-height: 20px;
-  padding: 10px;
+  font: ${leo.font.small.regular};
+padding: 10px;
   margin-bottom: 8px;
   color: ${(p) => p.theme.color.text01};
   ::placeholder {
-    font-style: normal;
-    font-size: 12px;
-    color: ${(p) => p.theme.color.text03};
-    font-weight: normal;
+    font: ${leo.font.small.regular};
+color: ${(p) => p.theme.color.text03};
   }
   :focus {
     outline: none;
@@ -76,8 +72,8 @@ export const ButtonRow = styled.div`
 `
 
 export const InfoText = styled.span`
-  font-size: 12px;
-  color: ${(p) => p.theme.color.text03};
+  font: ${leo.font.small.regular};
+color: ${(p) => p.theme.color.text03};
   word-break: break-word;
   margin-bottom: 12px;
 `

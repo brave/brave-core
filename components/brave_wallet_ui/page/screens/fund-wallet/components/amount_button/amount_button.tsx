@@ -90,7 +90,7 @@ export const AmountButton = ({
         >
           <ErrorText
             textColor='error'
-            textSize='12px'
+            variant='small.regular'
           >
             {amountError}
           </ErrorText>

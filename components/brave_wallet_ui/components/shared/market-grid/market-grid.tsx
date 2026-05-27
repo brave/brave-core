@@ -205,7 +205,7 @@ export const MarketGrid = ({
           <Row margin='30px 0px'>
             <EmptyStateText
               isBold={true}
-              textSize='14px'
+              variant='default.regular'
             >
               {getLocale('braveWalletMarketDataNoAssetsFound')}
             </EmptyStateText>

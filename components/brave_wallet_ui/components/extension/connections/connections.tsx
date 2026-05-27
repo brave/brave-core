@@ -88,15 +88,13 @@ export const Connections = () => {
           padding='0px 24px'
         >
           <DomainText
-            textSize='16px'
-            isBold={true}
+            variant='large.semibold'
             textColor='primary'
           >
             {activeOrigin.eTldPlusOne}
           </DomainText>
           <DomainText
-            textSize='14px'
-            isBold={false}
+            variant='default.semibold'={false}
             textColor='tertiary'
           >
             <CreateSiteOrigin

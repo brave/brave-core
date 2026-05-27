@@ -39,7 +39,7 @@ export const CopyAddress = (props: Props) => {
     >
       <AddressButton onClick={handleClick}>
         <Text
-          textSize='12px'
+          variant='small.regular'
           textColor='text03'
           isBold={false}
         >
@@ -48,7 +48,7 @@ export const CopyAddress = (props: Props) => {
       </AddressButton>
       {isCopied && (
         <Text
-          textSize='12px'
+          variant='small.regular'
           textColor='success'
           isBold={false}
         >

@@ -70,8 +70,7 @@ export const Routes = (props: Props) => {
         padding='0px 24px'
       >
         <Text
-          textSize={isPanel ? '16px' : '22px'}
-          isBold={true}
+          variant={isPanel ? 'large.semibold' : 'heading.h2'}
           textColor='primary'
         >
           {getLocale('braveWalletRoutes')}
@@ -83,8 +82,7 @@ export const Routes = (props: Props) => {
         padding='0px 16px'
       >
         <Text
-          textSize='12px'
-          isBold={true}
+          variant='small.semibold'
           textColor='primary'
         >
           {getLocale('braveWalletSortBy')}
@@ -100,8 +98,7 @@ export const Routes = (props: Props) => {
             gap='8px'
           >
             <Text
-              textSize='12px'
-              isBold={true}
+              variant='small.semibold'
               textColor='secondary'
             >
               {getLocale(

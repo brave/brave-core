@@ -46,7 +46,7 @@ export const MessageBox = styled(Column)`
 
 export const MessageText = styled(Text)`
   font: ${leo.font.default.regular};
-  flex-wrap: wrap;
+flex-wrap: wrap;
   word-break: break-word;
 `
 
@@ -58,6 +58,6 @@ export const DecryptMessageBox = styled(Column)`
 
 export const URLText = styled(Text)`
   font: ${leo.font.default.regular};
-  max-width: 80%;
+max-width: 80%;
   word-break: break-word;
 `

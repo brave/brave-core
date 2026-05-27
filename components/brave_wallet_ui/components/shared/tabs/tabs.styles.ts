@@ -30,11 +30,8 @@ export const Tab = styled.div<{ isActive: boolean }>`
   flex-direction: row;
   align-items: center;
   gap: 8px;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 20px;
-  color: ${(p) =>
+  font: ${leo.font.default.semibold};
+color: ${(p) =>
     p.isActive ? leo.color.text.interactive : leo.color.text.tertiary};
   margin-bottom: 12px;
 `
@@ -57,11 +54,8 @@ export const LabelSummary = styled.span<{ isActive: boolean }>`
   height: 20px;
   border-radius: 6px;
   padding: 4px;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 11px;
-  line-height: 16px;
-  display: flex;
+  font: ${leo.font.xSmall.regular};
+display: flex;
   align-items: center;
   text-transform: uppercase;
   color: ${(p) =>

@@ -279,7 +279,7 @@ export const FundWalletScreen = () => {
                       <InfoIcon />
                     </InfoIconWrapper>
                     <Text
-                      textSize='16px'
+                      variant='large.regular'
                       textColor='primary'
                       isBold={true}
                     >
@@ -289,7 +289,7 @@ export const FundWalletScreen = () => {
                       )}
                     </Text>
                     <Text
-                      textSize='14px'
+                      variant='default.regular'
                       textColor='secondary'
                       isBold={false}
                     >
@@ -308,7 +308,7 @@ export const FundWalletScreen = () => {
                           <InfoIcon />
                         </InfoIconWrapper>
                         <Text
-                          textSize='16px'
+                          variant='large.regular'
                           textColor='primary'
                           isBold={true}
                         >
@@ -318,7 +318,7 @@ export const FundWalletScreen = () => {
                           )}
                         </Text>
                         <Text
-                          textSize='14px'
+                          variant='default.regular'
                           textColor='secondary'
                           isBold={false}
                         >

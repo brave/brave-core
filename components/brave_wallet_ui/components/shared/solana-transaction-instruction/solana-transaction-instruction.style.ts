@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 export const InstructionBox = styled.div`
   width: 100%;
@@ -23,45 +24,36 @@ export const InstructionParamBox = styled.div`
   margin-bottom: 12px;
   margin-top: 12px;
   word-break: break-all;
-  font-size: 12px;
-  font-weight: 400;
-  color: ${(p) => p.theme.color.text01};
+  font: ${leo.font.small.regular};
+color: ${(p) => p.theme.color.text01};
   text-align: left;
 
   & > * {
-    font-style: normal;
     width: 100%;
   }
 
   & > var {
-    font-weight: 600;
     text-align: left;
     display: block;
-    font-size: 12px;
-  }
-
-  & > samp {
-    font-weight: 400;
-    color: ${(p) => p.theme.color.text02};
-    font-size: 12px;
-    margin-left: 4px;
+    font: ${leo.font.small.regular};
+color: ${(p) => p.theme.color.text02};
+    font: ${leo.font.small.regular};
+margin-left: 4px;
   }
 `
 
 export const AddressText = styled.span<{ isBold?: true }>`
-  font-weight: ${(p) => (p.isBold ? 600 : 400)};
   color: ${(p) => p.theme.color.text02};
-  font-size: 12px;
-  margin-left: 4px;
+  font: ${leo.font.small.regular};
+margin-left: 4px;
   text-align: left;
   display: block;
 `
 
 export const CodeSectionTitle = styled.span`
-  font-weight: 400;
   color: ${(p) => p.theme.color.text02};
-  font-size: 12px;
-  margin-left: 4px;
+  font: ${leo.font.small.regular};
+margin-left: 4px;
   margin-bottom: 4px;
   text-align: left;
   display: block;

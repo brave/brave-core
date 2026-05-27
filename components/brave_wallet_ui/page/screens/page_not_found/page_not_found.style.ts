@@ -36,8 +36,7 @@ export const ContentWrapper = styled(Column)`
 `
 
 export const Title = styled(Text)`
-  font-size: 34px;
-  line-height: 40px;
+  font: ${leo.font.heading.display3};
 `
 
 export const PageNotFoundIllustration = styled.div`

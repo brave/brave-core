@@ -102,12 +102,15 @@ export const SelectTokenOrNetworkButton = (props: Props) => {
         )}
         <HiddenResponsiveRow dontHide={!isHeader}>
           <Text
-            isBold={text !== undefined}
             textColor={text ? 'text01' : 'text03'}
-            textSize={
+            variant={
               buttonSize === 'small' || buttonSize === 'medium'
-                ? '14px'
-                : '18px'
+                ? text !== undefined
+                  ? 'default.semibold'
+                  : 'default.regular'
+                : text !== undefined
+                  ? 'large.semibold'
+                  : 'large.regular'
             }
           >
             {text ?? getLocale('braveSwapSelectToken')}
@@ -124,7 +127,7 @@ export const SelectTokenOrNetworkButton = (props: Props) => {
                 size={16}
               />
               <Text
-                textSize='14px'
+                variant='default.regular'
                 textColor='text01'
               >
                 {networkFeeFiatValue}

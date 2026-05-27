@@ -45,19 +45,13 @@ export const TopRow = styled.div`
 `
 
 export const BalanceText = styled.span`
-  font-style: normal;
-  font-size: 36px;
-  font-weight: 500;
-  line-height: 54px;
-  color: ${leo.color.text.primary};
+  font: ${leo.font.components.numbersLarge};
+color: ${leo.color.text.primary};
 `
 
 export const FiatChange = styled.span<{ isDown?: boolean }>`
-  font-style: normal;
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 18px;
-  margin-right: 8px;
+  font: ${leo.font.small.regular};
+margin-right: 8px;
   color: ${(p) =>
     p.isDown
       ? leo.color.systemfeedback.errorIcon
@@ -106,10 +100,8 @@ export const SubDivider = styled.div`
 `
 
 export const DividerText = styled.span`
-  font-size: 15px;
-  line-height: 20px;
-  font-weight: 600;
-  margin-bottom: 10px;
+  font: ${leo.font.heading.h4};
+margin-bottom: 10px;
   color: ${(p) => p.theme.color.text03};
 `
 
@@ -119,10 +111,8 @@ export const PercentBubble = styled.div<{ isDown?: boolean }>`
   border-radius: 4px;
   background-color: ${(p) =>
     p.isDown ? leo.color.red[20] : leo.color.green[20]};
-  font-size: 11px;
-  line-height: 16px;
-  font-weight: 500;
-  color: ${(p) => (p.isDown ? leo.color.red[50] : leo.color.green[50])};
+  font: ${leo.font.xSmall.semibold};
+color: ${(p) => (p.isDown ? leo.color.red[50] : leo.color.green[50])};
 `
 
 export const Spacer = styled.div`
@@ -133,10 +123,8 @@ export const Spacer = styled.div`
 `
 
 export const CoinGeckoText = styled.span`
-  font-family: Arial;
-  font-size: 10px;
-  font-weight: normal;
-  color: ${(p) => p.theme.color.text03};
+  font: ${leo.font.xSmall.regular};
+color: ${(p) => p.theme.color.text03};
   margin: 15px 0px;
 `
 

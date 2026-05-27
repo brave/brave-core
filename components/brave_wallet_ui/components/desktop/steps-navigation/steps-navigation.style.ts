@@ -4,14 +4,12 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled, { css } from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 import { WalletButton } from '../../shared/style'
 
 const Font = css`
-  font-style: normal;
-  font-weight: 600;
-  font-size: 13px;
-  line-height: 20px;
-  color: ${(p) => p.theme.color.text02};
+  font: ${leo.font.small.semibold};
+color: ${(p) => p.theme.color.text02};
 `
 
 export const Wrapper = styled.div`

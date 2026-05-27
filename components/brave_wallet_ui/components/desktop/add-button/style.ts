@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 import { WalletButton } from '../../shared/style'
 import icon from '../../../assets/svg-icons/plus-icon.svg'
 import { EditOIcon } from 'brave-ui/components/icons'
@@ -31,9 +32,8 @@ export const StyledButton = styled(WalletButton)<StyleProps>`
 `
 
 export const ButtonText = styled.span<StyleProps>`
-  font-size: 13px;
-  font-weight: 600;
-  color: ${(p) =>
+  font: ${leo.font.components.tableheader};
+color: ${(p) =>
     p.buttonType === 'primary' ? '#ffffff' : `${p.theme.color.interactive07}`};
 `
 

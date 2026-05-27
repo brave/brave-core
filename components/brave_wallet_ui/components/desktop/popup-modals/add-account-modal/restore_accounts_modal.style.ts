@@ -22,13 +22,12 @@ export const RestoreAccountsList = styled(Column)`
 
 export const AccountNameText = styled(Text)`
   color: ${leo.color.text.primary};
-  font-size: 14px;
-  font-weight: 600;
+  font: ${leo.font.default.semibold};
 `
 
 export const AccountMetaText = styled(Text)`
   color: ${leo.color.text.secondary};
-  font-size: 12px;
+  font: ${leo.font.small.regular};
 `
 
 export const FooterRow = styled(Row)`

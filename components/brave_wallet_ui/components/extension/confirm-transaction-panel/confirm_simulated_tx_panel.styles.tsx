@@ -28,10 +28,7 @@ export const TransactionChangeCollapseContent = styled.div`
 
 export const TransactionChangeCollapseTitle = styled.div`
   color: ${leo.color.text.secondary};
-  font-size: 11px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 16px;
+  font: ${leo.font.xSmall.semibold};
 `
 
 export const TransactionChangeCollapse = styled(Collapse)<{
@@ -87,13 +84,13 @@ export const Divider = styled.div`
 export const NetworkNameText = styled.p`
   color: ${leo.color.text.secondary};
   font: ${leo.font.small.regular};
-  margin: 0px;
+margin: 0px;
 `
 
 export const AccountNameAndAddress = styled.div`
   color: ${leo.color.text.tertiary};
   font: ${leo.font.xSmall.regular};
-  margin: 0px;
+margin: 0px;
   word-break: break-all;
 `
 

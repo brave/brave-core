@@ -43,10 +43,8 @@ export const ButtonIcon = styled(Icon)`
 
 export const ButtonText = styled.span`
   font-style: normal;
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 20px;
-  color: ${leo.color.text.primary};
+  font: ${leo.font.small.semibold};
+color: ${leo.color.text.primary};
 `
 
 export const MoreMenuWrapper = styled(ButtonWrapper)`

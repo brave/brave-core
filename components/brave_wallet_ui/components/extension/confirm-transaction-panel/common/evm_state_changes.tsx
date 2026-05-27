@@ -131,7 +131,7 @@ export const EvmNativeAssetOrErc20TokenTransfer = ({
         justifyContent='space-between'
       >
         <Text
-          textSize='12px'
+          variant='small.regular'
           color={color.text.secondary}
         >
           {getLocale(isReceive ? 'braveWalletReceive' : 'braveWalletSend')}
@@ -270,7 +270,7 @@ export const NonFungibleErcTokenTransfer = ({
         justifyContent='space-between'
       >
         <Text
-          textSize='12px'
+          variant='small.regular'
           color={color.text.secondary}
         >
           {getLocale(isReceive ? 'braveWalletReceive' : 'braveWalletSend')}
@@ -461,7 +461,7 @@ export const ErcTokenApproval = ({
           position='left'
           verticalPosition='below'
         >
-          <Text textSize='11px'>
+          <Text variant='xSmall.regular'>
             {getLocale('braveWalletSpenderAddress').replace(
               '$1',
               reduceAddress(approval.spender.address),

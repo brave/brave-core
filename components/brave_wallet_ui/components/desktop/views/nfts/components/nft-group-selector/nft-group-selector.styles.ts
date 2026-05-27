@@ -28,10 +28,7 @@ export const DropdownButton = styled(WalletButton)`
 
 export const DropdownButtonText = styled.span`
   color: ${leo.color.text.interactive};
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 22px;
+  font: ${leo.font.default.semibold};
 `
 
 export const DropdownButtonLabel = styled.span`
@@ -40,10 +37,8 @@ export const DropdownButtonLabel = styled.span`
   align-items: center;
   justify-content: center;
   color: ${leo.color.primary[50]};
-  font-size: 11px;
-  font-style: normal;
-  font-weight: 600;
-  text-transform: uppercase;
+  font: ${leo.font.xSmall.semibold};
+text-transform: uppercase;
   background-color: ${leo.color.primary[20]};
   border-radius: 4px;
   min-width: 20px;
@@ -85,11 +80,8 @@ export const DropDownItem = styled(WalletButton)`
   padding: 0px 8px;
   align-items: center;
   gap: 8px;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 24px;
-  color: ${leo.color.text.primary};
+  font: ${leo.font.default.regular};
+color: ${leo.color.text.primary};
   cursor: pointer;
   border: none;
   background-color: transparent;

@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 // assets
 import BraveWalletSvg from '../../../../assets/svg-icons/onboarding/brave-wallet.svg'
@@ -45,20 +46,15 @@ export const CardButtonTextContainer = styled.div`
   max-width: 70%;
 
   & > p {
-    font-style: normal;
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 18px;
-    color: ${(p) => p.theme.color.text03};
+    font: ${leo.font.small.regular};
+color: ${(p) => p.theme.color.text03};
     text-align: left;
     margin: 2px;
   }
 
   & > p:first-of-type {
-    font-weight: 500;
-    font-size: 14px;
-    color: ${(p) => p.theme.color.text01};
-    line-height: 26px;
+    font: ${leo.font.default.regular};
+color: ${(p) => p.theme.color.text01};
   }
 `
 

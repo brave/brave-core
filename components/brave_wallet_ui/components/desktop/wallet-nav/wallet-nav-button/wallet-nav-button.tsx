@@ -46,8 +46,7 @@ export const WalletNavButton = (props: Props) => {
       <SelectedIndicator />
       <ButtonIcon name={option.icon} />
       <ButtonText
-        textSize='14px'
-        isBold={true}
+        variant='default.semibold'
       >
         {getLocale(option.name)}
       </ButtonText>

@@ -36,11 +36,8 @@ export const NameAndSymbolWrapper = styled.div`
 
 export const AssetName = styled.span`
   color: ${leo.color.text.primary};
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 24px;
-  overflow: hidden;
+  font: ${leo.font.default.semibold};
+overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   width: 160px;
@@ -53,10 +50,7 @@ export const AssetName = styled.span`
 
 export const AssetSymbol = styled.span`
   color: ${leo.color.text.tertiary};
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 18px;
-  text-transform: uppercase;
+  font: ${leo.font.small.regular};
+text-transform: uppercase;
   text-align: left;
 `

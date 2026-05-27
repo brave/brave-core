@@ -42,7 +42,7 @@ export const NetworkButton = (props: Props) => {
         <Text
           isBold={true}
           textColor='primary'
-          textSize='14px'
+          variant='default.regular'
         >
           {getLocale('braveWalletNetworkExplorer').replace(
             '$1',

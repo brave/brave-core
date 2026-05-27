@@ -10,11 +10,8 @@ import * as leo from '@brave/leo/tokens/css/variables'
 export const DappCategoryLabel = styled.div`
   display: inline-flex;
   color: ${leo.color.neutral[50]};
-  font-size: 10px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-  text-transform: uppercase;
+  font: ${leo.font.xSmall.regular};
+text-transform: uppercase;
   height: 20px;
   padding: 0px ${leo.spacing.s};
   align-items: center;
@@ -46,6 +43,6 @@ export const DappDetailDialog = styled(Dialog)`
 export const Title = styled.h1`
   color: ${leo.color.text.primary};
   font: ${leo.font.heading.h2};
-  margin: 0;
+margin: 0;
   padding: 0;
 `

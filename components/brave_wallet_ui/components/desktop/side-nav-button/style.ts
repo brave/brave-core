@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 interface StyleProps {
   isSelected: boolean
@@ -26,9 +27,8 @@ export const StyledButton = styled.button<Partial<StyleProps>>`
 `
 
 export const ButtonText = styled.span<Partial<StyleProps>>`
-  font-size: 13px;
-  font-weight: 600;
-  color: ${(p) =>
+  font: ${leo.font.components.tableheader};
+color: ${(p) =>
     p.isSelected ? p.theme.palette.white : p.theme.color.text02};
 `
 

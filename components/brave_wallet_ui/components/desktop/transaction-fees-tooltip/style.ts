@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 export const StyledWrapper = styled.div`
   flex: 1;
@@ -24,8 +25,8 @@ export const Tip = styled.div`
   background: ${(p) => p.theme.palette.black};
   z-index: 120;
   white-space: nowrap;
-  font-size: 12px;
-  top: 9px;
+  font: ${leo.font.small.regular};
+top: 9px;
 `
 
 export const Pointer = styled.div`

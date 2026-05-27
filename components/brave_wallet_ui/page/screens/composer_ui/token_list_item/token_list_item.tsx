@@ -143,15 +143,13 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
               padding='10px 16px'
             >
               <Text
-                textSize='12px'
-                isBold={false}
+                variant='small.semibold'={false}
                 textColor='secondary'
               >
                 {getLocale('braveWalletOwned')}
               </Text>
               <Text
-                textSize='12px'
-                isBold={false}
+                variant='small.semibold'={false}
                 textColor='secondary'
               >
                 {getLocale('braveWalletAmount24H')}
@@ -163,8 +161,7 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
               padding='10px 16px'
             >
               <Text
-                textSize='12px'
-                isBold={false}
+                variant='small.semibold'={false}
                 textColor='secondary'
               >
                 {getLocale('braveWalletNotOwned')}
@@ -204,8 +201,7 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
                   gap='6px'
                 >
                   <TokenNameText
-                    textSize='14px'
-                    isBold={true}
+                    variant='default.semibold'
                     textAlign='left'
                     textColor='primary'
                   >
@@ -217,8 +213,7 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
                   )}
                 </TokenNameRow>
                 <TokenBalanceText
-                  textSize='12px'
-                  isBold={false}
+                  variant='small.semibold'={false}
                   textAlign='left'
                   textColor='secondary'
                 >
@@ -258,8 +253,7 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
                         )}
                         <LastPricesUpdatedTooltip>
                           <FiatBalanceText
-                            textSize='14px'
-                            isBold={true}
+                            variant='default.semibold'
                             textAlign='right'
                             textColor='primary'
                           >
@@ -279,8 +273,7 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
                               isDown={isPriceDown}
                             />
                             <PercentChangeText
-                              textSize='12px'
-                              isBold={false}
+                              variant='small.semibold'={false}
                               textAlign='right'
                               isDown={isPriceDown}
                             >
@@ -291,7 +284,7 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
                           </>
                         ) : (
                           <Text
-                            textSize='12px'
+                            variant='small.regular'
                             textColor='secondary'
                             isBold={false}
                           >

@@ -79,14 +79,14 @@ export const ViewOnBlockExplorerModal = React.forwardRef<HTMLDivElement, Props>(
               <Text
                 isBold={true}
                 textColor='primary'
-                textSize='14px'
+                variant='default.regular'
               >
                 {account.name}
               </Text>
               <AddressText
                 isBold={false}
                 textColor='secondary'
-                textSize='12px'
+                variant='small.regular'
                 textAlign='left'
               >
                 {account.address}
@@ -100,7 +100,7 @@ export const ViewOnBlockExplorerModal = React.forwardRef<HTMLDivElement, Props>(
             <Text
               isBold={true}
               textColor='primary'
-              textSize='14px'
+              variant='default.regular'
             >
               {getLocale('braveWalletViewAddressOn')}
             </Text>

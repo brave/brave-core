@@ -37,16 +37,14 @@ export const ChangeAccountButton = (props: Props) => {
           marginRight={12}
         />
         <Text
-          textSize='14px'
-          isBold={true}
+          variant='default.semibold'
           textColor='primary'
         >
           {account.name}
         </Text>
       </Row>
       <Text
-        textSize='12px'
-        isBold={false}
+        variant='small.semibold'={false}
         textColor='tertiary'
       >
         {reduceAddress(account.accountId.address)}

@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 import { WalletButton } from '../../../../../shared/style'
 
 export const hideTokenModalWidth = '400px'
@@ -16,11 +17,8 @@ export const StyledWrapper = styled.div`
 `
 
 export const TokenSymbol = styled.h6`
-  font-style: normal;
-  font-size: 16px;
-  line-height: 1.4;
-  font-weight: 400;
-  margin: 0;
+  font: ${leo.font.large.regular};
+margin: 0;
   padding-top: 20px;
   padding-bottom: 7px;
   color: ${(p) => p.theme.color.text02};
@@ -29,11 +27,8 @@ export const TokenSymbol = styled.h6`
 `
 
 export const Instructions = styled.p`
-  font-style: normal;
-  font-size: 16px;
-  line-height: 1.4;
-  font-weight: 400;
-  margin: 0;
+  font: ${leo.font.large.regular};
+margin: 0;
   padding-top: 20px;
   padding-bottom: 7px;
   color: ${(p) => p.theme.color.text02};
@@ -55,10 +50,8 @@ export const OkButton = styled(WalletButton)`
   width: 125px;
   margin-top: 70px;
   border-radius: 100px;
-  font-style: normal;
-  font-size: 14px;
-  font-weight: 400;
-  display: flex;
+  font: ${leo.font.default.regular};
+display: flex;
   align-self: center;
   justify-content: center;
   align-items: center;
@@ -73,10 +66,8 @@ export const CancelButton = styled(WalletButton)`
   width: 125px;
   margin-top: 70px;
   border-radius: 100px;
-  font-style: normal;
-  font-size: 14px;
-  font-weight: 400;
-  display: flex;
+  font: ${leo.font.default.regular};
+display: flex;
   align-self: center;
   justify-content: center;
   align-items: center;

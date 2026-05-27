@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 import { WalletButton } from '../../shared/style'
 
 interface StyleProps {
@@ -23,10 +24,8 @@ export const StyledButton = styled(WalletButton)<Partial<StyleProps>>`
 `
 
 export const ButtonText = styled.span<Partial<StyleProps>>`
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 18px;
-  margin-bottom: 10px;
+  font: ${leo.font.small.semibold};
+margin-bottom: 10px;
   background: ${(p) =>
     p.isSelected ? p.theme.color.text01 : p.theme.color.text02};
   -webkit-background-clip: text;

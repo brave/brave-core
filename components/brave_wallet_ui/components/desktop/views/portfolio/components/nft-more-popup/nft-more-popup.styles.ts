@@ -49,10 +49,7 @@ export const PopupButton = styled(WalletButton)`
 
 export const PopupButtonText = styled.span`
   color: ${leo.color.text.primary};
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 24px;
+  font: ${leo.font.default.regular};
 `
 
 export const ButtonIcon = styled(Icon)`

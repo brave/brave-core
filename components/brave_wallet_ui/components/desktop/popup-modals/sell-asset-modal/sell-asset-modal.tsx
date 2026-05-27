@@ -159,16 +159,14 @@ export const SellAssetModal = (props: Props) => {
             >
               <Row width='unset'>
                 <Text
-                  textSize='12px'
-                  isBold={false}
+                  variant='small.semibold'={false}
                   textColor='text03'
                   marginRight={8}
                 >
                   {getLocale('braveWalletBalance')}
                 </Text>
                 <Text
-                  textSize='12px'
-                  isBold={true}
+                  variant='small.semibold'
                   textColor='text01'
                 >
                   {formatTokenBalanceWithSymbol(
@@ -205,7 +203,7 @@ export const SellAssetModal = (props: Props) => {
               <Row width='unset'>
                 <AssetIconWithPlaceholder asset={selectedAsset} />
                 <Text
-                  textSize='22px'
+                  variant='heading.h2'
                   isBold={true}
                   textColor='text01'
                 >
@@ -218,8 +216,7 @@ export const SellAssetModal = (props: Props) => {
             <ErrorBox>
               <ErrorIcon />
               <Text
-                textSize='14px'
-                isBold={false}
+                variant='default.semibold'={false}
                 textColor='text01'
                 textAlign='left'
               >

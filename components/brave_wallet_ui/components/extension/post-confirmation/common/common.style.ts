@@ -17,15 +17,8 @@ export const Wrapper = styled(Column)`
 
 export const Title = styled(Text)`
   font: ${leo.font.heading.h3};
-  margin-bottom: 8px;
-`
-
-export const TransactionStatusDescription = styled.div`
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 20px;
-  text-align: center;
+font: ${leo.font.small.regular};
+text-align: center;
   color: ${(p) => p.theme.color.text02};
   padding: 8px 16px;
 `
@@ -38,11 +31,8 @@ export const LinkIcon = styled.div`
 `
 
 export const DetailButton = styled(WalletButton)`
-  font-style: normal;
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 20px;
-  text-align: center;
+  font: ${leo.font.small.semibold};
+text-align: center;
   color: ${(p) => p.theme.color.interactive05};
   background: none;
   cursor: pointer;
@@ -106,8 +96,8 @@ export const Alert = styled(LeoAlert)`
 export const InternalStatusText = styled.code`
   color: ${leo.color.text.tertiary};
   font-family: monospace;
-  font-size: 12px;
-  margin-top: 8px;
+  font: ${leo.font.small.regular};
+margin-top: 8px;
 `
 
 export const ErrorOrSuccessIconWrapper = styled.div<{

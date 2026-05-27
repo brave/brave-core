@@ -5,6 +5,7 @@
 
 import { SortOrder } from '../../../constants/types'
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 import ArrowDownIcon from '../../../assets/svg-icons/arrow-down-fill.svg'
 import ArrowUpIcon from '../../../assets/svg-icons/arrow-up-fill.svg'
@@ -31,7 +32,7 @@ export const StyledNoContent = styled('div')<{}>`
   text-align: center;
   padding: 30px 0;
   color: ${(p) => p.theme.color.text03};
-  font-size: 14px;
+  font: ${leo.font.default.regular};
 `
 
 export const StyledTable = styled('table')`
@@ -49,10 +50,8 @@ export const StyledTHead = styled('thead')``
 
 export const StyledTH = styled('th')<Partial<StyleProps>>`
   text-align: left;
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 18px;
-  border-bottom: ${(p) => `2px solid ${p.theme.color.disabled}`};
+  font: ${leo.font.small.semibold};
+border-bottom: ${(p) => `2px solid ${p.theme.color.disabled}`};
   color: ${(p) =>
     p.sortOrder !== undefined ? p.theme.color.text02 : p.theme.color.text03};
   padding: 10px 0 10px 0px;
@@ -77,12 +76,10 @@ export const StyledTR = styled('tr')`
 
 export const StyledTD = styled('td')`
   vertical-align: middle;
-  font-size: 14px;
-  font-weight: 400;
-  color: ${(p) => p.theme.color.text01};
-  font-size: 14px;
-  line-height: 20px;
-  padding: 0 0 16px 10px;
+  font: ${leo.font.default.regular};
+color: ${(p) => p.theme.color.text01};
+  font: ${leo.font.default.regular};
+padding: 0 0 16px 10px;
   pointer-events: auto;
 
   &:last-child {

@@ -71,9 +71,8 @@ export const Title = styled.p<{
   maxWidth?: string
   textAlign?: 'right' | 'center'
 }>`
-  font-size: 20px;
-  font-weight: 600;
-  color: ${(p) => p.theme.color.text01};
+  font: ${leo.font.heading.h3};
+color: ${(p) => p.theme.color.text01};
   margin-bottom: 16px;
   max-width: ${(p) => p?.maxWidth || 'unset'};
   text-align: ${(p) => p?.textAlign || 'left'};
@@ -83,17 +82,9 @@ export const Description = styled.p<{ textAlign?: 'right' | 'center' }>`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
-  color: ${(p) => p.theme.color.text02};
-  text-align: ${(p) => p?.textAlign || 'left'};
-
-  & > * > strong {
-    font-weight: 600;
-    font-size: 14px;
-    color: ${(p) => p.theme.color.text01};
+  font: ${leo.font.default.semibold};
+font: ${leo.font.default.regular};
+color: ${(p) => p.theme.color.text01};
   }
 `
 

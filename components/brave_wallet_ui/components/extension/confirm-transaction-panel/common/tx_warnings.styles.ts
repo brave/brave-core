@@ -66,15 +66,14 @@ export const WarningCollapse = styled(Collapse)<WarningProps>`
   }
 
   font: ${leo.font.small.semibold};
-
-  color: ${(p) =>
+color: ${(p) =>
     p.isCritical
       ? leo.color.systemfeedback.errorText
       : leo.color.systemfeedback.warningText};
 
   & > * > li {
     font: ${leo.font.small.regular};
-    margin-bottom: 8px;
+margin-bottom: 8px;
   }
 `
 

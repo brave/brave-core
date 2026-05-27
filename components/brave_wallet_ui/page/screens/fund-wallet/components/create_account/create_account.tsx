@@ -136,7 +136,7 @@ export const CreateAccount = (props: Props) => {
             size='massive'
           />
           <Text
-            textSize='22px'
+            variant='heading.h2'
             textColor='primary'
             isBold={true}
           >
@@ -148,7 +148,7 @@ export const CreateAccount = (props: Props) => {
               : ''}
           </Text>
           <Text
-            textSize='14px'
+            variant='default.regular'
             textColor='tertiary'
             isBold={false}
           >
@@ -168,7 +168,7 @@ export const CreateAccount = (props: Props) => {
             maxlength={BraveWallet.ACCOUNT_NAME_MAX_CHARACTER_LENGTH}
           >
             <Text
-              textSize='12px'
+              variant='small.regular'
               textColor='primary'
               isBold={true}
             >

@@ -32,20 +32,16 @@ export const SelectAllButton = styled(WalletButton)`
   border: none;
   background: none;
   padding: 0px;
-  font-size: 12px;
-  line-height: 16px;
-  font-weight: 600;
-  color: ${leo.color.text.interactive};
+  font: ${leo.font.small.semibold};
+color: ${leo.color.text.interactive};
 `
 
 export const Title = styled(Text)`
   color: ${leo.color.text.primary};
-  line-height: 28px;
 `
 
 export const Description = styled(Text)`
   color: ${leo.color.text.secondary};
-  line-height: 18px;
 `
 
 export const CheckboxText = styled(Text)`

@@ -465,7 +465,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
               >
                 <TransactionTypeText
                   isBold={false}
-                  textSize='16px'
+                  variant='large.regular'
                   textAlign='left'
                 >
                   {isSolanaSwap
@@ -496,8 +496,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
                         >
                           <SwapIconWithPlaceholder asset={sourceToken} />
                           <SwapAmountText
-                            textSize='14px'
-                            isBold={true}
+                            variant='default.semibold'
                             textAlign='left'
                           >
                             {formattedSourceAmount}
@@ -511,8 +510,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
                             gap='4px'
                           >
                             <SwapAmountText
-                              textSize='14px'
-                              isBold={true}
+                              variant='default.semibold'
                               textAlign='left'
                             >
                               {getLocale('braveWalletOnNetwork').replace(
@@ -539,15 +537,14 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
                               justifyContent='flex-start'
                             >
                               <SwapAmountText
-                                textSize='14px'
-                                isBold={true}
+                                variant='default.semibold'
                                 textAlign='left'
                               >
                                 {formattedDestinationAmount}
                               </SwapAmountText>
                               {formattedBuyFiatValue && (
                                 <SwapFiatValueText
-                                  textSize='14px'
+                                  variant='default.regular'
                                   textAlign='left'
                                 >
                                   {`(${formattedBuyFiatValue})`}
@@ -564,7 +561,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
                   <>
                     <TransactionTotalText
                       isBold={true}
-                      textSize='16px'
+                      variant='large.regular'
                       textAlign='left'
                     >
                       {txCurrencyTotal}
@@ -573,7 +570,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
                       !== BraveWallet.TransactionType.ERC20Approve && (
                       <TransactionFiatText
                         isBold={false}
-                        textSize='12px'
+                        variant='small.regular'
                         textAlign='left'
                       >
                         {txFiatTotal}
@@ -599,7 +596,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
                 </StatusText>
               </StatusBox>
               <DateText
-                textSize='12px'
+                variant='small.regular'
                 textAlign='right'
               >
                 {serializedTimeDeltaToJSDate(
@@ -607,7 +604,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
                 ).toUTCString()}
               </DateText>
               <NetworkNameText
-                textSize='12px'
+                variant='small.regular'
                 textAlign='right'
               >
                 {txNetwork?.chainName ?? ''}
@@ -621,13 +618,13 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
             <SectionRow padding='16px 0px'>
               <SectionLabel
                 textAlign='left'
-                textSize='14px'
+                variant='default.regular'
               >
                 {getLocale('braveWalletMemo')}
               </SectionLabel>
               <SectionInfoText
                 textAlign='left'
-                textSize='14px'
+                variant='default.regular'
               >
                 {memoText}
               </SectionInfoText>
@@ -641,14 +638,14 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
             <SectionRow padding='16px 0px'>
               <SectionLabel
                 textAlign='left'
-                textSize='14px'
+                variant='default.regular'
               >
                 {getLocale('braveWalletTransactionDetailHash')}
               </SectionLabel>
               <Row justifyContent='space-between'>
                 <SectionInfoText
                   textAlign='left'
-                  textSize='14px'
+                  variant='default.regular'
                 >
                   {transaction.txHash}
                 </SectionInfoText>
@@ -691,7 +688,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
         <SectionRow padding='16px 0px'>
           <SectionLabel
             textAlign='left'
-            textSize='14px'
+            variant='default.regular'
           >
             {getLocale('braveWalletFrom')}
           </SectionLabel>
@@ -700,14 +697,14 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
               {fromAddress && (
                 <SectionInfoText
                   textAlign='left'
-                  textSize='14px'
+                  variant='default.regular'
                 >
                   {fromAddress}
                 </SectionInfoText>
               )}
               <IntentAddressText
                 textAlign='left'
-                textSize='12px'
+                variant='small.regular'
               >
                 {senderLabel}
               </IntentAddressText>
@@ -734,7 +731,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
             <SectionRow padding='16px 0px'>
               <SectionLabel
                 textAlign='left'
-                textSize='14px'
+                variant='default.regular'
               >
                 {getLocale('braveWalletSwapTo')}
               </SectionLabel>
@@ -742,13 +739,13 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
                 <Column alignItems='flex-start'>
                   <SectionInfoText
                     textAlign='left'
-                    textSize='14px'
+                    variant='default.regular'
                   >
                     {recipient}
                   </SectionInfoText>
                   <IntentAddressText
                     textAlign='left'
-                    textSize='12px'
+                    variant='small.regular'
                   >
                     {transaction.txType
                     === BraveWallet.TransactionType.ERC20Approve
@@ -780,14 +777,14 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
         >
           <SectionLabel
             textAlign='left'
-            textSize='14px'
+            variant='default.regular'
           >
             {getLocale('braveWalletConfirmTransactionTransactionFee')}
           </SectionLabel>
           <Row width='unset'>
             <SectionInfoText
               textAlign='left'
-              textSize='14px'
+              variant='default.regular'
             >
               {txNetwork
                 && new Amount(gasFee)
@@ -809,7 +806,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
             <SectionRow padding='16px 0px 0px 0px'>
               <SectionLabel
                 textAlign='left'
-                textSize='14px'
+                variant='default.regular'
               >
                 {getLocale('braveWalletSwapProviderStatus')}
               </SectionLabel>

@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 // shared styles
 import { WalletButton } from '../../../shared/style'
@@ -17,19 +18,15 @@ export const QueueStepRow = styled.div`
 `
 
 export const QueueStepText = styled.span`
-  font-size: 13px;
-  color: ${(p) => p.theme.color.text02};
-  font-weight: 600;
-  margin-right: 9px;
+  font: ${leo.font.small.semibold};
+margin-right: 9px;
 `
 
 export const queueStepButtonRowPadding = '16px 0px 4px 0px'
 
 export const QueueStepButton = styled(WalletButton)<{ needsMargin?: boolean }>`
-  font-style: normal;
-  font-weight: 600;
-  font-size: 13px;
-  color: ${(p) => p.theme.color.interactive05};
+  font: ${leo.font.small.semibold};
+color: ${(p) => p.theme.color.interactive05};
   background: none;
   cursor: pointer;
   outline: none;

@@ -56,13 +56,13 @@ export const DappListItem = React.forwardRef<
         <Text
           textAlign='left'
           isBold
-          textSize='14px'
+          variant='default.regular'
         >
           {dapp.name}
         </Text>
 
         <TextWithOverflowEllipsis
-          textSize='12px'
+          variant='small.regular'
           textAlign='left'
           textColor='tertiary'
           maxLines={1}

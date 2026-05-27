@@ -36,11 +36,8 @@ export const TopWrapper = styled.div`
 `
 
 export const NftName = styled.h2`
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 28px;
-  text-align: left;
+  font: ${leo.font.large.semibold};
+text-align: left;
   color: ${leo.color.text.primary};
   width: 100%;
   white-space: nowrap;
@@ -51,11 +48,8 @@ export const NftName = styled.h2`
 `
 
 export const CollectionName = styled.p`
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 24px;
-  text-align: left;
+  font: ${leo.font.default.regular};
+text-align: left;
   color: ${leo.color.legacy.text3};
   width: 100%;
   white-space: nowrap;
@@ -66,11 +60,8 @@ export const CollectionName = styled.p`
 `
 
 export const PurchaseDate = styled.p`
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 18px;
-  text-align: left;
+  font: ${leo.font.small.regular};
+text-align: left;
   color: ${leo.color.legacy.text3};
   width: 100%;
   white-space: nowrap;
@@ -84,11 +75,8 @@ export const SectionTitle = styled.h3`
   display: flex;
   flex-direction: row;
   align-items: center;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 24px;
-  text-align: left;
+  font: ${leo.font.large.semibold};
+text-align: left;
   color: ${leo.color.text.primary};
   margin: 0;
   padding: 16px 0;
@@ -118,11 +106,8 @@ export const InfoBox = styled.div`
 `
 
 export const InfoTitle = styled.p`
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 18px;
-  color: ${leo.color.text.secondary};
+  font: ${leo.font.small.regular};
+color: ${leo.color.text.secondary};
   margin: 0;
   padding: 0;
   width: 100%;
@@ -132,11 +117,8 @@ export const InfoTitle = styled.p`
 `
 
 export const InfoText = styled.p`
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 24px;
-  color: ${leo.color.text.primary};
+  font: ${leo.font.default.regular};
+color: ${leo.color.text.primary};
   margin: 0;
   padding: 0;
   width: 100%;
@@ -146,11 +128,8 @@ export const InfoText = styled.p`
 `
 
 export const AccountName = styled.span`
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 24px;
-  color: ${leo.color.text.primary};
+  font: ${leo.font.default.regular};
+color: ${leo.color.text.primary};
 `
 
 export const AccountAddress = styled(AccountName)`
@@ -168,11 +147,8 @@ export const CopyIcon = styled(Icon)`
 `
 
 export const ViewAccount = styled(WalletButton)`
-  font-style: normal;
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 16px;
-  display: flex;
+  font: ${leo.font.small.semibold};
+display: flex;
   align-items: center;
   text-align: center;
   align-self: flex-end;
@@ -187,11 +163,8 @@ export const ViewAccount = styled(WalletButton)`
 
 export const Description = styled.p`
   width: 100%;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 24px;
-  color: ${leo.color.text.primary};
+  font: ${leo.font.default.regular};
+color: ${leo.color.text.primary};
   margin: 0;
   padding: 0;
 `
@@ -267,33 +240,24 @@ export const Trait = styled.div`
 `
 
 export const TraitType = styled.span`
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 18px;
-  color: ${leo.color.text.secondary};
+  font: ${leo.font.small.regular};
+color: ${leo.color.text.secondary};
   overflow: hidden;
   -webkit-line-clamp: 1;
   text-overflow: ellipsis;
 `
 
 export const TraitValue = styled.span`
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 24px;
-  color: ${leo.color.text.primary};
+  font: ${leo.font.default.regular};
+color: ${leo.color.text.primary};
   overflow: hidden;
   -webkit-line-clamp: 1;
   text-overflow: ellipsis;
 `
 
 export const TraitRarity = styled.span`
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 24px;
-  color: ${leo.color.text.primary};
+  font: ${leo.font.default.semibold};
+color: ${leo.color.text.primary};
   overflow: hidden;
   -webkit-line-clamp: 1;
   text-overflow: ellipsis;
@@ -312,9 +276,8 @@ export const ErrorMessage = styled.p`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  font-size: 11px;
-  line-height: 16px;
-  color: ${(p) => p.theme.color.text02};
+  font: ${leo.font.xSmall.regular};
+color: ${(p) => p.theme.color.text02};
   word-break: break-word;
   margin: 24px 0;
 `

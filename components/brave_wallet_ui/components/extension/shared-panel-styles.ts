@@ -50,34 +50,28 @@ export const AddressAndOrb = styled.div`
 
 export const AddressText = styled.span`
   cursor: default;
-  font-size: 12px;
-  line-height: 18px;
-  font-weight: 600;
-  color: ${(p) => p.theme.color.text03};
+  font: ${leo.font.small.semibold};
+color: ${(p) => p.theme.color.text03};
   margin-right: 12px;
 `
 
 export const NetworkText = styled.span`
-  font-size: 12px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.text03};
+  font: ${leo.font.small.regular};
+color: ${(p) => p.theme.color.text03};
 `
 
 export const PanelTitle = styled.span`
-  font-size: 15px;
-  line-height: 20px;
-  text-align: center;
+  font: ${leo.font.heading.h4};
+text-align: center;
   width: 90%;
   color: ${(p) => p.theme.color.text01};
-  font-weight: 600;
   margin-bottom: 6px;
 `
 
 export const Description = styled.span`
   width: 90%;
-  font-size: 12px;
-  line-height: 18px;
-  text-align: center;
+  font: ${leo.font.small.regular};
+text-align: center;
   color: ${(p) => p.theme.color.text02};
   margin-bottom: 12px;
 `
@@ -92,18 +86,13 @@ export const TabRow = styled.div`
 `
 
 export const DetailTextDarkBold = styled.span`
-  font-size: 12px;
-  line-height: 18px;
-  font-weight: 600;
-  color: ${(p) => p.theme.color.text02};
+  font: ${leo.font.small.semibold};
+color: ${(p) => p.theme.color.text02};
 `
 
 export const URLText = styled.span`
-  font-style: normal;
-  font-weight: normal;
-  font-size: 10px;
-  line-height: 16px;
-  text-align: center;
+  font: ${leo.font.xSmall.regular};
+text-align: center;
   margin-bottom: 8px;
   color: ${(p) => p.theme.color.text02};
   max-width: 80%;
@@ -128,10 +117,8 @@ export const WarningBox = styled.div<Partial<StyleProps>>`
 `
 
 export const WarningTitle = styled.span<Partial<StyleProps>>`
-  font-size: 12px;
-  line-height: 18px;
-  font-weight: 600;
-  color: ${(p) =>
+  font: ${leo.font.small.semibold};
+color: ${(p) =>
     p.warningType === 'danger'
       ? p.theme.color.errorText
       : p.theme.color.text01};
@@ -146,9 +133,8 @@ export const WarningBoxTitleRow = styled.div`
 `
 
 export const WarningText = styled.span`
-  font-size: 12px;
-  line-height: 18px;
-  text-align: left;
+  font: ${leo.font.small.regular};
+text-align: left;
   color: ${(p) => p.theme.color.errorText};
 `
 
@@ -169,10 +155,8 @@ export const WarningIcon = styled(WarningBoxIcon)`
 `
 
 export const LearnMoreButton = styled(WalletButton)`
-  font-style: normal;
-  font-size: 12px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.interactive05};
+  font: ${leo.font.small.regular};
+color: ${(p) => p.theme.color.interactive05};
   background: none;
   cursor: pointer;
   outline: none;
@@ -233,7 +217,7 @@ export const ConfirmationButtonLink = styled(WalletButton)`
   border: none;
   background: none;
   font: ${leo.font.small.semibold};
-  color: ${leo.color.text.interactive};
+color: ${leo.color.text.interactive};
 `
 
 export const ConfirmationIconButton = styled(WalletButton)`
@@ -247,7 +231,7 @@ export const ConfirmationIconButton = styled(WalletButton)`
   border: none;
   background: none;
   font: ${leo.font.small.semibold};
-  color: ${leo.color.text.primary};
+color: ${leo.color.text.primary};
 `
 
 export const ScrollableColumn = styled(Column)`

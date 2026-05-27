@@ -27,7 +27,7 @@ export const WelcomeActionWrapper = styled(WalletButton)`
 export const Title = styled.h6`
   width: 100%;
   font: ${leo.font.heading.h3};
-  margin: 0;
+margin: 0;
   color: ${leo.color.text.primary};
   text-align: left;
 `
@@ -35,7 +35,7 @@ export const Title = styled.h6`
 export const Description = styled.p`
   width: 100%;
   font: ${leo.font.default.regular};
-  color: ${leo.color.text.secondary};
+color: ${leo.color.text.secondary};
   text-align: left;
   margin: 0;
 `

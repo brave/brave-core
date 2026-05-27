@@ -24,7 +24,7 @@ export const ErrorBox = styled(Column)`
 
 export const ErrorDescriptionText = styled(Text)`
   font: ${leo.font.default.regular};
-  display: inline-block;
+display: inline-block;
   text-align: center;
 `
 
@@ -42,7 +42,7 @@ export const WarningIcon = styled(Icon).attrs({
 
 export const OriginErrorTitle = styled(Text)`
   font: ${leo.font.default.semibold};
-  display: inline-block;
+display: inline-block;
   text-align: center;
 `
 

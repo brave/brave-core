@@ -67,31 +67,24 @@ export const ToCircle = styled.div<{ orb: string }>`
 
 export const AccountNameText = styled.span`
   cursor: default;
-  font-size: 13px;
-  line-height: 20px;
-  font-weight: 600;
-  color: ${(p) => p.theme.color.text02};
+  font: ${leo.font.components.tableheader};
+color: ${(p) => p.theme.color.text02};
 `
 
 export const NetworkText = styled.span`
-  font-size: 12px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.text03};
+  font: ${leo.font.small.regular};
+color: ${(p) => p.theme.color.text03};
 `
 
 export const TransactionAmountBig = styled.span`
-  font-size: 18px;
-  line-height: 22px;
-  color: ${(p) => p.theme.color.text01};
-  font-weight: 600;
-  word-break: break-all;
+  font: ${leo.font.large.semibold};
+word-break: break-all;
   text-align: center;
 `
 
 export const TransactionFiatAmountBig = styled.span`
-  font-size: 12px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.text01};
+  font: ${leo.font.small.regular};
+color: ${(p) => p.theme.color.text01};
   margin-bottom: 10px;
   word-break: break-all;
   text-align: center;
@@ -116,18 +109,12 @@ export const MessageBox = styled.div<{ isDetails: boolean; width?: string }>`
 `
 
 export const TransactionTitle = styled.span`
-  font-size: 12px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.text02};
-  font-weight: 600;
+  font: ${leo.font.small.semibold};
 `
 
 export const TransactionTypeText = styled.span`
-  font-size: 12px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.text03};
-  font-weight: 600;
-  word-break: break-all;
+  font: ${leo.font.small.semibold};
+word-break: break-all;
   text-align: left;
 `
 
@@ -167,11 +154,8 @@ export const SectionColumn = styled.div`
 `
 
 export const EditButton = styled(WalletButton)`
-  font-style: normal;
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.interactive05};
+  font: ${leo.font.small.semibold};
+color: ${(p) => p.theme.color.interactive05};
   background: none;
   cursor: pointer;
   outline: none;
@@ -181,9 +165,8 @@ export const EditButton = styled(WalletButton)`
 `
 
 export const TransactionText = styled.span<{ hasError?: boolean }>`
-  font-size: 12px;
-  line-height: 18px;
-  color: ${(p) =>
+  font: ${leo.font.small.regular};
+color: ${(p) =>
     p.hasError ? p.theme.color.errorText : p.theme.color.text03};
   text-align: left;
   word-break: break-all;
@@ -211,11 +194,8 @@ export const ContractButton = styled(WalletButton)`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 20px;
-  color: ${(p) => p.theme.color.interactive05};
+  font: ${leo.font.default.semibold};
+color: ${(p) => p.theme.color.interactive05};
   background: none;
   cursor: pointer;
   outline: none;

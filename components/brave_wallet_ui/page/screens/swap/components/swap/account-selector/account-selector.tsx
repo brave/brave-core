@@ -92,7 +92,7 @@ export const AccountSelector = (props: Props) => {
         disabled={disabled}
       >
         <Text
-          textSize='12px'
+          variant='small.regular'
           textColor='text02'
         >
           {selectedAccount

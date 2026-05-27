@@ -28,10 +28,8 @@ export const FormColumn = styled.div`
 `
 
 export const InputLabel = styled.span`
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 500;
-  color: ${(p) => p.theme.color.text02};
+  font: ${leo.font.default.regular};
+color: ${(p) => p.theme.color.text02};
   margin-bottom: 6px;
 `
 
@@ -52,16 +50,13 @@ export const Input = styled.input<{
       : p.theme.color.interactive08};
   border-radius: 4px;
   font-style: normal;
-  font-size: 13px;
-  line-height: 20px;
-  padding: 10px;
+  font: ${leo.font.small.regular};
+padding: 10px;
   margin-bottom: 8px;
   color: ${(p) => p.theme.color.text01};
   ::placeholder {
-    font-style: normal;
-    font-size: 12px;
-    color: ${(p) => p.theme.color.text03};
-    font-weight: normal;
+    font: ${leo.font.small.regular};
+color: ${(p) => p.theme.color.text03};
   }
   :focus {
     outline: none;
@@ -88,16 +83,14 @@ export const ButtonRow = styled.div`
 
 export const Description = styled.span`
   width: 100%;
-  font-size: 12px;
-  line-height: 18px;
-  text-align: flex-start;
+  font: ${leo.font.small.regular};
+text-align: flex-start;
   color: ${(p) => p.theme.color.text02};
 `
 
 export const CurrentBaseText = styled.span`
-  font-size: 12px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.text01};
+  font: ${leo.font.small.regular};
+color: ${(p) => p.theme.color.text01};
   margin-bottom: 10px;
 `
 
@@ -112,9 +105,8 @@ export const CurrentBaseRow = styled.div`
 `
 
 export const MaximumFeeText = styled.span`
-  font-size: 12px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.text01};
+  font: ${leo.font.small.regular};
+color: ${(p) => p.theme.color.text01};
 `
 
 export const MaximumFeeRow = styled.div`
@@ -134,10 +126,8 @@ export const SliderWrapper = styled.div`
 `
 
 export const SliderValue = styled.span`
-  font-size: 16px;
-  line-height: 24px;
-  font-weight: 600;
-  color: ${(p) => p.theme.color.text01};
+  font: ${leo.font.large.semibold};
+color: ${(p) => p.theme.color.text01};
   margin-top: 6px;
   margin-bottom: 16px;
 `
@@ -205,14 +195,13 @@ export const SliderLabelRow = styled.div`
 `
 
 export const SliderLabel = styled.span`
-  font-size: 14px;
-  line-height: 20px;
-  color: ${(p) => p.theme.color.text02};
+  font: ${leo.font.default.regular};
+color: ${(p) => p.theme.color.text02};
 `
 
 export const WarningText = styled.span`
-  font-size: 12px;
-  color: ${(p) => p.theme.color.errorText};
+  font: ${leo.font.small.regular};
+color: ${(p) => p.theme.color.errorText};
   word-break: break-word;
   margin-bottom: 12px;
 `

@@ -14,9 +14,8 @@ export const CodeSnippet = styled.pre`
   width: 100%;
   background-color: ${(p) => p.theme.color.divider01};
   padding: 14px;
-  font-size: 12px;
-  line-height: 18px;
-  text-align: left;
+  font: ${leo.font.small.regular};
+text-align: left;
   color: ${(p) => p.theme.color.text03};
   border-radius: 4px;
   margin: 0px;
@@ -31,9 +30,8 @@ export const HexBlock = styled.div`
   width: 100%;
   background-color: ${(p) => p.theme.color.divider01};
   padding: 14px;
-  font-size: 12px;
-  line-height: 18px;
-  text-align: left;
+  font: ${leo.font.small.regular};
+text-align: left;
   color: ${(p) => p.theme.color.text03};
   border-radius: 4px;
   word-break: break-all;
@@ -61,9 +59,8 @@ export const CodeDetailLine = styled.code`
 `
 
 export const DetailText = styled.span`
-  font-size: 11px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.text01};
+  font: ${leo.font.xSmall.regular};
+color: ${(p) => p.theme.color.text01};
   word-break: break-all;
 `
 
@@ -73,7 +70,6 @@ export const CodeSnippetText = styled.p`
 `
 
 export const TransactionText = styled.span`
-  font-size: 12px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.text03};
+  font: ${leo.font.small.regular};
+color: ${(p) => p.theme.color.text03};
 `

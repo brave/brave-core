@@ -23,10 +23,8 @@ export const Input = styled.input<{ hasError: boolean }>`
   padding: 10px 8px 10px 16px;
   border-radius: 8px;
   font-style: normal;
-  font-size: 14px;
-  line-height: 24px;
-  font-weight: 400;
-  margin: 0px;
+  font: ${leo.font.default.regular};
+margin: 0px;
   color: ${leo.color.text.primary};
 
   ::placeholder {
@@ -54,9 +52,8 @@ export const Input = styled.input<{ hasError: boolean }>`
 `
 
 export const InputLabel = styled.label`
-  font: ${leo.font.default.regular};
-  font-weight: 600;
-  color: ${leo.color.text.primary};
+  font: ${leo.font.default.semibold};
+color: ${leo.color.text.primary};
   margin-bottom: 4px;
 `
 
@@ -66,8 +63,6 @@ export const Asterisk = styled.span`
 `
 
 export const ErrorText = styled(Text)`
-  line-height: 18px;
-  font-weight: 400;
   color: ${leo.color.systemfeedback.errorIcon};
 `
 

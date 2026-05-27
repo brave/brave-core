@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 // Assets
 import IdeaIcon from '../../../assets/svg-icons/idea.svg'
@@ -29,11 +30,8 @@ export const Button = styled(WalletButton)`
 `
 
 export const ButtonText = styled.span`
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 21px;
-  color: ${(p) => p.theme.palette.white};
+  font: ${leo.font.default.semibold};
+color: ${(p) => p.theme.palette.white};
 `
 
 export const IdeaButtonIcon = styled.span`

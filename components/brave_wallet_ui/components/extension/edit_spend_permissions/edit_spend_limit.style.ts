@@ -25,7 +25,7 @@ export const Input = styled.input<{
   hasError?: boolean
 }>`
   font: ${leo.font.small.regular};
-  background-color: ${leo.color.container.highlight};
+background-color: ${leo.color.container.highlight};
   color: ${leo.color.text.primary};
   border: none;
   width: 100%;
@@ -38,7 +38,7 @@ export const Input = styled.input<{
   padding: 10px 12px;
   ::placeholder {
     font: ${leo.font.small.regular};
-    color: ${leo.color.text.tertiary};
+color: ${leo.color.text.tertiary};
   }
   :hover {
     outline: 1px solid ${leo.color.divider.strong};

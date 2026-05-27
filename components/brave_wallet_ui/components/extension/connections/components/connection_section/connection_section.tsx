@@ -300,8 +300,7 @@ export const ConnectionSection = (props: Props) => {
                   marginRight={12}
                 />
                 <Text
-                  textSize='14px'
-                  isBold={true}
+                  variant='default.semibold'
                   textColor='primary'
                   textAlign='left'
                 >
@@ -310,8 +309,7 @@ export const ConnectionSection = (props: Props) => {
               </Row>
               <Row width='unset'>
                 <Text
-                  textSize='14px'
-                  isBold={false}
+                  variant='default.semibold'={false}
                   textColor='tertiary'
                 >
                   {reduceAddress(selectedAccount?.address ?? '')}
@@ -333,8 +331,7 @@ export const ConnectionSection = (props: Props) => {
                   marginRight={12}
                 />
                 <Text
-                  textSize='14px'
-                  isBold={true}
+                  variant='default.semibold'
                   textColor='primary'
                 >
                   {selectedNetwork?.chainName ?? ''}
