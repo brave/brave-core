@@ -27,7 +27,7 @@ replace = '''\1
   virtual void SetOverrideTriggerableEvent(PageActionPassKey,
                                            std::optional<int> event_flags) = 0;
   virtual void SetOverrideBorder(base::PassKey<PageActionController>,
-                                 const std::optional<gfx::Insets>& border) = 0;
+                                 std::optional<gfx::Insets> border) = 0;
   virtual std::optional<SkColor> GetOverrideBackgroundColor() const = 0;
   virtual std::optional<SkColor> GetOverrideForegroundColor() const = 0;
   virtual bool GetAlwaysShowLabel() const = 0;

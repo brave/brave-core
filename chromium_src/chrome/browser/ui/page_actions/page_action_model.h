@@ -35,7 +35,7 @@ class PageActionModel : public chromium_impl::PageActionModel {
   void SetOverrideTriggerableEvent(PageActionPassKey,
                                    std::optional<int> event_flags) override;
   void SetOverrideBorder(base::PassKey<PageActionController>,
-                         const std::optional<gfx::Insets>& border) override;
+                         std::optional<gfx::Insets> border) override;
   std::optional<SkColor> GetOverrideBackgroundColor() const override;
   std::optional<SkColor> GetOverrideForegroundColor() const override;
   bool GetAlwaysShowLabel() const override;
