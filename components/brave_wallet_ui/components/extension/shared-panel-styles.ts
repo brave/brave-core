@@ -53,7 +53,6 @@ export const AddressText = styled.span`
   font-size: 12px;
   line-height: 18px;
   font-weight: 600;
-  letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text03};
   margin-right: 12px;
 `
@@ -61,14 +60,12 @@ export const AddressText = styled.span`
 export const NetworkText = styled.span`
   font-size: 12px;
   line-height: 18px;
-  letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text03};
 `
 
 export const PanelTitle = styled.span`
   font-size: 15px;
   line-height: 20px;
-  letter-spacing: 0.04em;
   text-align: center;
   width: 90%;
   color: ${(p) => p.theme.color.text01};
@@ -80,7 +77,6 @@ export const Description = styled.span`
   width: 90%;
   font-size: 12px;
   line-height: 18px;
-  letter-spacing: 0.01em;
   text-align: center;
   color: ${(p) => p.theme.color.text02};
   margin-bottom: 12px;
@@ -98,7 +94,6 @@ export const TabRow = styled.div`
 export const DetailTextDarkBold = styled.span`
   font-size: 12px;
   line-height: 18px;
-  letter-spacing: 0.01em;
   font-weight: 600;
   color: ${(p) => p.theme.color.text02};
 `
@@ -109,7 +104,6 @@ export const URLText = styled.span`
   font-size: 10px;
   line-height: 16px;
   text-align: center;
-  letter-spacing: 0.01em;
   margin-bottom: 8px;
   color: ${(p) => p.theme.color.text02};
   max-width: 80%;
@@ -136,7 +130,6 @@ export const WarningBox = styled.div<Partial<StyleProps>>`
 export const WarningTitle = styled.span<Partial<StyleProps>>`
   font-size: 12px;
   line-height: 18px;
-  letter-spacing: 0.01em;
   font-weight: 600;
   color: ${(p) =>
     p.warningType === 'danger'
@@ -155,7 +148,6 @@ export const WarningBoxTitleRow = styled.div`
 export const WarningText = styled.span`
   font-size: 12px;
   line-height: 18px;
-  letter-spacing: 0.01em;
   text-align: left;
   color: ${(p) => p.theme.color.errorText};
 `
@@ -180,7 +172,6 @@ export const LearnMoreButton = styled(WalletButton)`
   font-style: normal;
   font-size: 12px;
   line-height: 18px;
-  letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.interactive05};
   background: none;
   cursor: pointer;
@@ -225,12 +216,10 @@ export const FloatingCard = styled.div`
 
 export const ConfirmationInfoLabel = styled(Text)`
   font: ${leo.font.small.semibold};
-  letter-spacing: ${leo.typography.letterSpacing.small};
 `
 
 export const ConfirmationInfoText = styled(Text)`
   font: ${leo.font.small.regular};
-  letter-spacing: ${leo.typography.letterSpacing.small};
 `
 
 export const ConfirmationButtonLink = styled(WalletButton)`
@@ -244,7 +233,6 @@ export const ConfirmationButtonLink = styled(WalletButton)`
   border: none;
   background: none;
   font: ${leo.font.small.semibold};
-  letter-spacing: ${leo.typography.letterSpacing.small};
   color: ${leo.color.text.interactive};
 `
 
@@ -259,7 +247,6 @@ export const ConfirmationIconButton = styled(WalletButton)`
   border: none;
   background: none;
   font: ${leo.font.small.semibold};
-  letter-spacing: ${leo.typography.letterSpacing.small};
   color: ${leo.color.text.primary};
 `
 

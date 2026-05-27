@@ -21,7 +21,6 @@ export const StyledWrapper = styled(Column)`
 
 export const HeaderText = styled(Text)`
   font: ${leo.font.heading.h4};
-  letter-spacing: ${leo.typography.letterSpacing.headings};
 `
 
 export const Card = styled(Column)`
@@ -33,22 +32,18 @@ export const Card = styled(Column)`
 
 export const Description = styled(Text)`
   font: ${leo.font.heading.h3};
-  letter-spacing: ${leo.typography.letterSpacing.headings};
 `
 
 export const TokenName = styled(Text)`
   font: ${leo.font.large.semibold};
-  letter-spacing: ${leo.typography.letterSpacing.default};
 `
 
 export const TokenDescription = styled(Text)`
   font: ${leo.font.large.regular};
-  letter-spacing: ${leo.typography.letterSpacing.default};
 `
 
 export const ContractAddress = styled(WalletButton)`
   font: ${leo.font.small.semibold};
-  letter-spacing: ${leo.typography.letterSpacing.small};
   color: ${leo.color.text.interactive};
   background: none;
   cursor: pointer;

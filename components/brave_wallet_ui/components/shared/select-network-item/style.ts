@@ -31,7 +31,6 @@ export const LeftSide = styled.div`
 export const NetworkName = styled.span`
   font-size: 13px;
   line-height: 20px;
-  letter-spacing: 0.01em;
   font-weight: 600;
   color: ${(p) => p.theme.color.text01};
   text-align: left;

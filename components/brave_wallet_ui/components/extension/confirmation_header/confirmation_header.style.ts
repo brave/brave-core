@@ -11,5 +11,4 @@ import { Text } from '../../shared/style'
 
 export const HeaderText = styled(Text)`
   font: ${leo.font.heading.h4};
-  letter-spacing: ${leo.typography.letterSpacing.headings};
 `

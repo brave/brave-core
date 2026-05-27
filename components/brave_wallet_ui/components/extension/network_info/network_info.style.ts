@@ -16,12 +16,10 @@ export const StyledWrapper = styled(Column)`
 
 export const SectionLabel = styled(Text)`
   font: ${leo.font.default.regular};
-  letter-spacing: ${leo.typography.letterSpacing.default};
 `
 
 export const SectionDetails = styled(Text)`
   font: ${leo.font.default.semibold};
-  letter-spacing: ${leo.typography.letterSpacing.default};
   word-break: break-all;
   text-align: left;
 `

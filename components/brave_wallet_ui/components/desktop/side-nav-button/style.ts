@@ -28,7 +28,6 @@ export const StyledButton = styled.button<Partial<StyleProps>>`
 export const ButtonText = styled.span<Partial<StyleProps>>`
   font-size: 13px;
   font-weight: 600;
-  letter-spacing: 0.02em;
   color: ${(p) =>
     p.isSelected ? p.theme.palette.white : p.theme.color.text02};
 `

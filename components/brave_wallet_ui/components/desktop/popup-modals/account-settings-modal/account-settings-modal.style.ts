@@ -63,7 +63,6 @@ export const AddressButton = styled(WalletButton)`
   flex-direction: row;
   font-size: 16px;
   line-height: 20px;
-  letter-spacing: 0.02em;
   color: ${(p) => p.theme.color.text03};
   cursor: pointer;
   outline: none;

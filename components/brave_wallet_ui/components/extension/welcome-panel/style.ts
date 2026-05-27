@@ -19,7 +19,6 @@ export const Title = styled.span`
   font-weight: 600;
   line-height: 20px;
   color: ${(p) => p.theme.color.text01};
-  letter-spacing: 0.04em;
   margin-bottom: 12px;
 `
 
@@ -31,5 +30,4 @@ export const Description = styled.span`
   max-width: 270px;
   text-align: center;
   margin-bottom: 35px;
-  letter-spacing: 0.01em;
 `

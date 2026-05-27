@@ -15,19 +15,16 @@ export const StyledWrapper = styled(Column)`
 
 export const LabelText = styled(Text)`
   font: ${leo.font.small.semibold};
-  letter-spacing: ${leo.typography.letterSpacing.small};
 `
 
 export const DescriptionText = styled(Text)`
   font: ${leo.font.small.regular};
-  letter-spacing: ${leo.typography.letterSpacing.small};
 `
 
 export const Input = styled.input<{
   hasError?: boolean
 }>`
   font: ${leo.font.small.regular};
-  letter-spacing: ${leo.typography.letterSpacing.small};
   background-color: ${leo.color.container.background};
   color: ${leo.color.text.primary};
   border: none;
@@ -41,7 +38,6 @@ export const Input = styled.input<{
   padding: 10px 12px;
   ::placeholder {
     font: ${leo.font.small.regular};
-    letter-spacing: ${leo.typography.letterSpacing.small};
     color: ${leo.color.text.tertiary};
   }
   :hover {

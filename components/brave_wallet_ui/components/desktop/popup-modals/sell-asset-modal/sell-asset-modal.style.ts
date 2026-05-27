@@ -58,7 +58,6 @@ export const Text = styled.span<{
   font-weight: ${(p) => (p.isBold ? 500 : 400)};
   height: ${(p) => (p.maintainHeight ? 'var(--line-height)' : 'unset')};
   line-height: var(--line-height);
-  letter-spacing: 0.02em;
   text-align: ${(p) => (p.textAlign ? p.textAlign : 'center')};
   word-wrap: wrap;
   margin-right: ${(p) => (p.marginRight ? p.marginRight : 0)}px;

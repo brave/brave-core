@@ -24,7 +24,6 @@ export const StatValue = styled.div`
   font-weight: 500;
   font-size: 24px;
   line-height: 20px;
-  letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text01};
   margin-bottom: 12px;
   justify-content: center;
@@ -38,7 +37,6 @@ export const StatLabel = styled.div`
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text02};
   justify-content: center;
 `
@@ -56,7 +54,6 @@ export const Currency = styled.sup`
   font-weight: 500;
   font-size: 12px;
   line-height: 18px;
-  letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text02};
   top: -0.8em;
   margin-right: 2px;

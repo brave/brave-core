@@ -71,7 +71,6 @@ export const RecoveryBaseCss = css`
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
-  letter-spacing: 0.01em;
 
   color: ${(p) => p.theme.color.text01};
   background-color: ${(p) => p.theme.color.background02};

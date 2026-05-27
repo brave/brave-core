@@ -176,7 +176,6 @@ export const ViewAccount = styled(WalletButton)`
   align-items: center;
   text-align: center;
   align-self: flex-end;
-  letter-spacing: 0.03em;
   color: ${leo.color.text.interactive};
   border: transparent;
   background-color: transparent;
@@ -313,7 +312,6 @@ export const ErrorMessage = styled.p`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  letter-spacing: 0.01em;
   font-size: 11px;
   line-height: 16px;
   color: ${(p) => p.theme.color.text02};

@@ -20,12 +20,10 @@ export const Card = styled(Column)`
 
 export const Description = styled(Text)`
   font: ${leo.font.small.semibold};
-  letter-spacing: ${leo.typography.letterSpacing.small};
 `
 
 export const SectionLabel = styled(Text)`
   font: ${leo.font.small.semibold};
-  letter-spacing: ${leo.typography.letterSpacing.small};
 `
 
 export const InputWrapper = styled(Row)<{
@@ -57,7 +55,6 @@ export const InputWrapper = styled(Row)<{
 
 export const Input = styled.input`
   font: ${leo.font.small.regular};
-  letter-spacing: ${leo.typography.letterSpacing.small};
   background-color: ${leo.color.container.background};
   color: ${leo.color.text.primary};
   outline: none;
@@ -67,7 +64,6 @@ export const Input = styled.input`
   text-align: right;
   ::placeholder {
     font: ${leo.font.small.regular};
-    letter-spacing: ${leo.typography.letterSpacing.small};
     color: ${leo.color.text.tertiary};
   }
   :focus {
@@ -85,5 +81,4 @@ export const Input = styled.input`
 
 export const InputLabel = styled(Text)`
   font: ${leo.font.small.regular};
-  letter-spacing: ${leo.typography.letterSpacing.small};
 `

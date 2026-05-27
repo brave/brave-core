@@ -49,7 +49,6 @@ export const CardButtonTextContainer = styled.div`
     font-weight: 400;
     font-size: 12px;
     line-height: 18px;
-    letter-spacing: 0.02em;
     color: ${(p) => p.theme.color.text03};
     text-align: left;
     margin: 2px;

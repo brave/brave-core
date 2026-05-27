@@ -34,7 +34,6 @@ export const Tab = styled.div<{ isActive: boolean }>`
   font-weight: 600;
   font-size: 14px;
   line-height: 20px;
-  letter-spacing: 0.02em;
   color: ${(p) =>
     p.isActive ? leo.color.text.interactive : leo.color.text.tertiary};
   margin-bottom: 12px;
@@ -64,7 +63,6 @@ export const LabelSummary = styled.span<{ isActive: boolean }>`
   line-height: 16px;
   display: flex;
   align-items: center;
-  letter-spacing: 0.02em;
   text-transform: uppercase;
   color: ${(p) =>
     p.isActive ? leo.color.text.interactive : leo.color.neutral['50']};

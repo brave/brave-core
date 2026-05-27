@@ -98,6 +98,5 @@ export const StyledBox = styled('span')`
 export const StyledText = styled('span')<{ size?: 'big' | 'small' }>`
   flex: 1;
   padding-top: ${(p) => (p?.size === 'big' ? '2px' : '1px')};
-  letter-spacing: 0;
   display: flex;
 `

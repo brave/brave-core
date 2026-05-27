@@ -35,14 +35,12 @@ export const Input = styled.input`
   font-style: normal;
   font-size: 13px;
   line-height: 20px;
-  letter-spacing: 0.01em;
   padding: 10px;
   margin-bottom: 8px;
   color: ${(p) => p.theme.color.text01};
   ::placeholder {
     font-style: normal;
     font-size: 12px;
-    letter-spacing: 0.01em;
     color: ${(p) => p.theme.color.text03};
     font-weight: normal;
   }
@@ -72,7 +70,6 @@ export const Description = styled.span`
   width: 100%;
   font-size: 12px;
   line-height: 18px;
-  letter-spacing: 0.01em;
   text-align: flex-start;
   color: ${(p) => p.theme.color.text02};
 `
@@ -96,6 +93,5 @@ export const AllowanceContent = styled.div`
   font-weight: 600;
   font-size: 14px;
   line-height: 20px;
-  letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text01};
 `

@@ -27,7 +27,6 @@ export const Text = styled.span<{
   font-weight: ${(p) => (p.isBold ? 500 : 400)};
   height: ${(p) => (p.maintainHeight ? '20px' : 'unset')};
   line-height: ${(p) => (p.textSize === '12px' ? '18px' : '20px')};
-  letter-spacing: 0.02em;
   text-align: ${(p) => (p.textAlign ? p.textAlign : 'center')};
   @media screen and (max-width: 570px) {
     font-size: ${(p) =>
@@ -48,7 +47,6 @@ export const StyledDiv = styled.div`
   font-weight: 400;
   font-size: 18px;
   line-height: 20px;
-  letter-spacing: 0.02em;
 `
 
 export const Row = styled(StyledDiv)<{
@@ -177,7 +175,6 @@ export const StyledButton = styled.button`
   font-size: 16px;
   font-weight: 500;
   line-height: 20px;
-  letter-spacing: 0.02em;
   flex-direction: row;
   align-items: center;
   justify-content: center;
@@ -221,7 +218,6 @@ export const StyledInput = styled.input`
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   background-color: transparent;
-  letter-spacing: 0.02em;
   ::placeholder {
     color: ${(p) => p.theme.color.text01};
   }

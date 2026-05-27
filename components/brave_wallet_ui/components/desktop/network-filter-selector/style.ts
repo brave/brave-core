@@ -34,7 +34,6 @@ export const DropDownButton = styled(WalletButton)<{
   font-style: normal;
   font-size: ${(p) => (p.isV2 ? '14px' : '13px')};
   line-height: ${(p) => (p.isV2 ? '24px' : '20px')};
-  letter-spacing: 0.01em;
   padding: ${(p) => (p.isV2 ? '10px 8px' : '8px 12px')};
   margin-bottom: ${(p) => (p.isV2 ? 0 : '8px')};
   color: ${(p) => (p.isV2 ? leo.color.text.secondary : p.theme.color.text01)};
@@ -123,7 +122,6 @@ export const SelectorLeftSide = styled(LeftSide)`
 
 export const NetworkName = styled.span`
   font-size: 14px;
-  letter-spacing: 0.01em;
   font-weight: 400;
   color: ${(p) => p.theme.color.text01};
   text-align: left;
@@ -140,7 +138,6 @@ export const BigCheckMark = styled.div`
 
 export const SecondaryNetworkText = styled.span`
   font-size: 12px;
-  letter-spacing: 0.01em;
   font-weight: 400;
   color: ${(p) => p.theme.color.text03};
   text-align: left;

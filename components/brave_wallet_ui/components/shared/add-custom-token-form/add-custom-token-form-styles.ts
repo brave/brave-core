@@ -73,7 +73,6 @@ export const SubDivider = styled.div`
 export const DividerText = styled.span`
   font-size: 15px;
   line-height: 20px;
-  letter-spacing: 0.04em;
   font-weight: 600;
   margin-bottom: 10px;
   color: ${(p) => p.theme.color.text03};

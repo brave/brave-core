@@ -41,7 +41,6 @@ export const PopupButton = styled(WalletButton)`
 export const PopupButtonText = styled.span`
   font-size: 13px;
   font-weight: 600;
-  letter-spacing: 0.01em;
   line-height: 20px;
   color: ${(p) => p.theme.color.text01};
 `

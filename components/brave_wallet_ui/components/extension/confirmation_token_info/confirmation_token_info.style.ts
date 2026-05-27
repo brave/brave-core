@@ -39,7 +39,6 @@ export const NetworkIconWrapper = styled.div`
 
 export const TokenAmountText = styled(Text)`
   font: ${leo.font.heading.h3};
-  letter-spacing: ${leo.typography.letterSpacing.headings};
 `
 
 export const AccountButton = styled(WalletButton)`
@@ -65,7 +64,6 @@ export const ArrowIconContainer = styled.div`
 
 export const AddressText = styled(Text)`
   font: ${leo.font.large.semibold};
-  letter-spacing: ${leo.typography.letterSpacing.large};
 `
 
 export const WarningTooltip = styled(Tooltip)`

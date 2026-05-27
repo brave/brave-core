@@ -48,7 +48,6 @@ export const Tip = styled.div<{
   border-radius: 4px;
   padding: 6px;
   font-size: 12px;
-  letter-spacing: 0.01em;
 
   width: ${(p) => (p.isAddress ? '180px' : 'unset')};
   max-width: ${(p) => p?.maxWidth || '100%'};

@@ -231,7 +231,6 @@ const NetworkFeeValue = styled.div`
   line-height: 18px;
   display: flex;
   align-items: center;
-  letter-spacing: 0.01em;
   color: #27ae60;
   gap: 6px;
 `
@@ -241,7 +240,6 @@ const TextButton = styled(WalletButton)`
   font-weight: 600;
   font-size: 12px;
   line-height: 18px;
-  letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.interactive05};
   background: none;
   cursor: pointer;

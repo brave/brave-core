@@ -52,7 +52,6 @@ export const StyledTH = styled('th')<Partial<StyleProps>>`
   font-size: 12px;
   font-weight: 600;
   line-height: 18px;
-  letter-spacing: 0.01em;
   border-bottom: ${(p) => `2px solid ${p.theme.color.disabled}`};
   color: ${(p) =>
     p.sortOrder !== undefined ? p.theme.color.text02 : p.theme.color.text03};
@@ -78,7 +77,6 @@ export const StyledTR = styled('tr')`
 
 export const StyledTD = styled('td')`
   vertical-align: middle;
-  letter-spacing: 0.01em;
   font-size: 14px;
   font-weight: 400;
   color: ${(p) => p.theme.color.text01};

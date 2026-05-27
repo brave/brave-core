@@ -16,17 +16,14 @@ export const StyledWrapper = styled(Column)`
 
 export const HeaderText = styled(Text)`
   font: ${leo.font.heading.h4};
-  letter-spacing: ${leo.typography.letterSpacing.large};
 `
 
 export const Title = styled(Text)`
   font: ${leo.font.heading.h3};
-  letter-spacing: ${leo.typography.letterSpacing.headings};
 `
 
 export const Description = styled(Text)`
   font: ${leo.font.default.regular};
-  letter-spacing: ${leo.typography.letterSpacing.default};
 `
 
 export const NetworkInfoBox = styled(Column)`
@@ -36,14 +33,12 @@ export const NetworkInfoBox = styled(Column)`
 
 export const NetworkInfoLabel = styled(Text)`
   font: ${leo.font.small.regular};
-  letter-spacing: ${leo.typography.letterSpacing.small};
   word-break: break-all;
   text-align: left;
 `
 
 export const NetworkInfoText = styled(Text)`
   font: ${leo.font.default.semibold};
-  letter-spacing: ${leo.typography.letterSpacing.default};
   word-break: break-all;
   text-align: left;
 `
@@ -75,7 +70,6 @@ export const ArrowIcon = styled(Icon).attrs({
 
 export const DetailsButton = styled(WalletButton)`
   font: ${leo.font.small.semibold};
-  letter-spacing: ${leo.typography.letterSpacing.small};
   color: ${leo.color.text.interactive};
   background: none;
   cursor: pointer;
@@ -87,7 +81,6 @@ export const DetailsButton = styled(WalletButton)`
 
 export const LearnMoreButton = styled(DetailsButton)`
   font: ${leo.font.default.semibold};
-  letter-spacing: ${leo.typography.letterSpacing.default};
 `
 
 export const Card = styled(Column)`

@@ -54,7 +54,6 @@ export const NoAssetButton = styled(WalletButton)`
   padding: 0px;
   margin: 0px;
   font-size: 14px;
-  letter-spacing: 0.4px;
   line-height: 20px;
   font-weight: 600;
   color: ${leo.color.text.interactive};

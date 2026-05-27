@@ -36,7 +36,6 @@ export const Heading = styled.p`
   font-weight: 500;
   font-size: 13px;
   line-height: 20px;
-  letter-spacing: 0.01em;
   padding: 0;
   margin: 0;
 `
@@ -50,7 +49,6 @@ export const List = styled.ul`
     font-weight: 400;
     font-size: 12px;
     line-height: 20px;
-    letter-spacing: 0.01em;
     padding: 0;
     margin: 0;
   }

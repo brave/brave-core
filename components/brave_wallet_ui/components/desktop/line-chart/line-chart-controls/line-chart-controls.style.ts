@@ -30,7 +30,6 @@ export const SelectTimelinButton = styled(WalletButton)`
   border: 1px solid var(--button-border);
   font-size: 12px;
   line-height: 16px;
-  letter-spacing: 0.03em;
   font-weight: 600;
   color: ${leo.color.text.interactive};
 `

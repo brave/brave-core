@@ -78,7 +78,6 @@ export const StyledDiv = styled.div`
   font-weight: 400;
   font-size: 18px;
   line-height: 20px;
-  letter-spacing: 0.02em;
 `
 
 export const Row = styled(StyledDiv)<{
@@ -213,7 +212,6 @@ export const StyledButton = styled.button`
   font-size: 16px;
   font-weight: 500;
   line-height: 20px;
-  letter-spacing: 0.02em;
   flex-direction: row;
   align-items: center;
   justify-content: center;
@@ -255,7 +253,6 @@ export const StyledInput = styled.input`
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   background-color: transparent;
-  letter-spacing: 0.02em;
   ::placeholder {
     color: ${(p) => p.theme.color.text01};
   }

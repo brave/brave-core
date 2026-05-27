@@ -35,7 +35,6 @@ export const NetworkFeeValue = styled.div`
   font: ${leo.font.small.semibold};
   display: flex;
   align-items: center;
-  letter-spacing: 0.01em;
   gap: 6px;
 `
 

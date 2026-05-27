@@ -23,12 +23,10 @@ export const StyledWrapper = styled(Row)`
 
 export const Title = styled(Text)`
   font: ${leo.font.default.semibold};
-  letter-spacing: ${leo.typography.letterSpacing.default};
 `
 
 export const Description = styled(Text)`
   font: ${leo.font.default.regular};
-  letter-spacing: ${leo.typography.letterSpacing.default};
 `
 
 export const NetworkIcon = styled.img`

@@ -19,7 +19,6 @@ export const StyledWrapper = styled(WalletButton)`
   font-weight: 600;
   font-size: 12px;
   line-height: 18px;
-  letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.interactive07};
   border: ${(p) => `1px solid ${p.theme.color.interactive08}`};
   border-radius: 48px;
