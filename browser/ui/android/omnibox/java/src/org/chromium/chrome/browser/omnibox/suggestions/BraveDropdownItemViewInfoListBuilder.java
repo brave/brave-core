@@ -138,9 +138,11 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
         } else {
             // The search widget launches SearchActivity without a tab, so use the profile
             // pushed in via setProfile to honor the "Show browser suggestions" preference.
+            // If the profile hasn't been pushed in yet (e.g. cold start from the widget after
+            // a force-stop), suppress suggestions until we can read the pref.
             autocompleteEnabled =
-                    mProfile == null
-                            || UserPrefs.get(mProfile).getBoolean(BravePref.AUTOCOMPLETE_ENABLED);
+                    mProfile != null
+                            && UserPrefs.get(mProfile).getBoolean(BravePref.AUTOCOMPLETE_ENABLED);
         }
         if (!autocompleteEnabled && viewInfoList.size() > 0) {
             DropdownItemViewInfo firstObj = viewInfoList.get(0);
