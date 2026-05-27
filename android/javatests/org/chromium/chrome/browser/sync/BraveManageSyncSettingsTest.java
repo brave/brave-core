@@ -61,6 +61,21 @@ public class BraveManageSyncSettingsTest {
         syncPasswordsOverridden(false, true);
     }
 
+    @Test
+    @SmallTest
+    @Feature({"Sync"})
+    public void readingListToggleIsVisible() {
+        setupMockSyncService();
+        BraveManageSyncSettings fragment = startManageSyncPreferences();
+
+        Preference prefReadingList =
+                fragment.findPreference(
+                        ManageSyncSettings.PREF_ACCOUNT_SECTION_READING_LIST_TOGGLE);
+
+        Assert.assertNotNull("Reading list preference should exist", prefReadingList);
+        Assert.assertTrue("Reading list toggle should be visible", prefReadingList.isVisible());
+    }
+
     void syncPasswordsOverridden(Boolean isChromeOS, Boolean handlerShouldBeOverridden) {
         setupMockSyncService();
 
