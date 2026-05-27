@@ -20,6 +20,20 @@ replace = '''\1,
                  SelfDeleteSupport::kNotSupported\2'''
 
 [[substitution]]
+description = '''Declare a move constructor for DeviceInfo
+
+The defaulted move constructor is suppressed by the deleted copy operations
+together with the user-declared destructor. We re-introduce a move
+constructor so that Brave-specific call sites can wrap the value-returning
+upstream `SpecificsToModel` into `std::make_unique<DeviceInfo>(...)`,
+removing the need to duplicate the upstream argument list.
+'''
+re_pattern = '(DeviceInfo& operator=\(const DeviceInfo&\) = delete;)'
+replace = '''\1
+
+  DeviceInfo(DeviceInfo&&);'''
+
+[[substitution]]
 description = '''Add Brave-specific methods to DeviceInfo public interface
 
 Adding brave-specific methods to this type's interface. This methods used to
