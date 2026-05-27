@@ -101,8 +101,8 @@ extension BrowserViewController: TabManagerDelegate {
       guard let self, self.tabManager.selectedTab === tab else { return }
       self.topToolbar.updateReaderModeState(tab.readerMode?.state ?? .unavailable)
     }
-    tab.readerMode?.onReaderModeDisplayed = { [weak self] in
-      guard let self else { return }
+    tab.readerMode?.onReaderModeDisplayed = { [weak self, weak tab] in
+      guard let self, let tab else { return }
       self.showReaderModeBar(animated: true)
       tab.showContent(true)
     }

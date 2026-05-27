@@ -204,15 +204,17 @@ class ReaderModeTabHelper {
 
 extension ReaderModeTabHelper: TabObserver {
   func tabDidCreateWebView(_ tab: some TabState) {
-    // add content script for legacy reader mode only
-    guard let browserData = tab.browserData else { return }
-    let handler = ReaderModeScriptHandler()
-    browserData.addContentScript(
-      handler,
-      name: ReaderModeScriptHandler.scriptName,
-      contentWorld: ReaderModeScriptHandler.scriptSandbox
-    )
-    handler.delegate = self
+    if !FeatureList.kUseProfileWebViewConfiguration.enabled {
+      // add content script for legacy reader mode only
+      guard let browserData = tab.browserData else { return }
+      let handler = ReaderModeScriptHandler()
+      browserData.addContentScript(
+        handler,
+        name: ReaderModeScriptHandler.scriptName,
+        contentWorld: ReaderModeScriptHandler.scriptSandbox
+      )
+      handler.delegate = self
+    }
   }
 
   func tabDidStartNavigation(_ tab: some TabState) {
