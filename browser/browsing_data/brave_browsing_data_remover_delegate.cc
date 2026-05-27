@@ -67,8 +67,12 @@ class ContentSettingsDefaultsKeeper {
       ContentSettingsForOneType settings =
           map->GetSettingsForOneType(content_type);
       for (const auto& setting : settings) {
-        if (setting.source !=
-                content_settings::ProviderType::kDefaultProvider &&
+        // Only preserve user-level wildcard rules. Snapshotting (and then
+        // re-applying via the user pref store) rules from other providers --
+        // notably `kPolicyProvider` for AdBlockOnlyMode defaults -- would
+        // outlive their source and leave stale user-level overrides once the
+        // policy is gone.
+        if (setting.source == content_settings::ProviderType::kPrefProvider &&
             setting.primary_pattern.MatchesAllHosts()) {
           defaults_[content_type].push_back(setting);
         }
