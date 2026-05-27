@@ -1,8 +1,8 @@
 diff --git a/components/sync_device_info/device_info.h b/components/sync_device_info/device_info.h
-index 980032a34b76c3e4f25c923812b37b2f3da57dc3..0f94a2b43a444a3c9133ad8638a1a033f0ab4b63 100644
+index 980032a34b76c3e4f25c923812b37b2f3da57dc3..2d552fb0a68960a0c28bc9488e237100189f441e 100644
 --- a/components/sync_device_info/device_info.h
 +++ b/components/sync_device_info/device_info.h
-@@ -208,11 +208,26 @@ class DeviceInfo {
+@@ -208,11 +208,28 @@ class DeviceInfo {
               const MobilePromoOnDesktopPromoTypeSet&
                   desktop_to_ios_promo_receiving_types,
               GlicExperimentalTriggeringState glic_experimental_triggering_state,
@@ -13,6 +13,8 @@ index 980032a34b76c3e4f25c923812b37b2f3da57dc3..0f94a2b43a444a3c9133ad8638a1a033
  
    DeviceInfo& operator=(const DeviceInfo&) = delete;
  
++  DeviceInfo(DeviceInfo&&);
++
    ~DeviceInfo();
 +  SelfDeleteSupport self_delete_support() const {
 +    return self_delete_support_;
@@ -30,7 +32,7 @@ index 980032a34b76c3e4f25c923812b37b2f3da57dc3..0f94a2b43a444a3c9133ad8638a1a033
  
    std::unique_ptr<DeviceInfo> DeepCopyForTesting() const;
  
-@@ -414,6 +429,7 @@ class DeviceInfo {
+@@ -414,6 +431,7 @@ class DeviceInfo {
    // NOTE: when adding a member, don't forget to update
    // |StoredDeviceInfoStillAccurate| in device_info_sync_bridge.cc or else
    // changes in that member might not trigger uploads of updated DeviceInfos.
