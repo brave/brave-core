@@ -1,12 +1,44 @@
 diff --git a/chrome/common/extensions/BUILD.gn b/chrome/common/extensions/BUILD.gn
-index 17b456ecba88d82bce47edbaefa593c4d033c23c..7624fe2a0715609fea5c445626e9ba77ba76a664 100644
+index 17b456ecba88d82bce47edbaefa593c4d033c23c..d63cd34ef023c2efaf1db7e1d68f29a0c666ff1e 100644
 --- a/chrome/common/extensions/BUILD.gn
 +++ b/chrome/common/extensions/BUILD.gn
-@@ -114,6 +114,7 @@ source_set("extensions") {
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
  
-     sources += [ "api/file_system_provider_capabilities/file_system_provider_capabilities_handler.cc" ]
-   }
-+  import("//brave/common/extensions/sources.gni") public += brave_chrome_common_extensions_public sources += brave_chrome_common_extensions_sources deps += brave_chrome_common_extensions_deps public_deps += brave_chrome_common_extensions_public_deps
- }
++import("//brave/common/extensions/sources.gni")
+ import("//extensions/buildflags/buildflags.gni")
+ import("//tools/json_schema_compiler/json_features.gni")
  
- source_set("unit_tests") {
+@@ -26,6 +27,7 @@ source_set("extensions") {
+     "permissions/chrome_permission_message_rules.h",
+     "sync_helper.h",
+   ]
++  public += brave_chrome_common_extensions_public
+ 
+   # Files that can only be included from here.
+   sources = [
+@@ -50,6 +52,7 @@ source_set("extensions") {
+     "permissions/chrome_permission_message_rules.cc",
+     "sync_helper.cc",
+   ]
++  sources += brave_chrome_common_extensions_sources
+ 
+   public_deps = [
+     "//base",
+@@ -62,6 +65,7 @@ source_set("extensions") {
+     "//ui/gfx/geometry",
+     "//url",
+   ]
++  public_deps += brave_chrome_common_extensions_public_deps
+ 
+   deps = [
+     "//chrome/app:branded_strings",
+@@ -88,6 +92,7 @@ source_set("extensions") {
+     "//ui/message_center/public/cpp",
+     "//url",
+   ]
++  deps += brave_chrome_common_extensions_deps
+ 
+   # TODO(https://crbug.com/356905053): These sources do not currently build
+   # cleanly on the experimental desktop-android configuration. Gradually include
