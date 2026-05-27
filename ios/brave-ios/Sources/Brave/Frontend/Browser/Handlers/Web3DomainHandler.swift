@@ -55,7 +55,6 @@ extension Web3Service {
       let nonCryptoExtensions = WalletConstants.supportedUDExtensions.filter { $0 != ".crypto" }
       return String.localizedStringWithFormat(
         Strings.Wallet.udDomainInterstitialPageDescription,
-        nonCryptoExtensions.joined(separator: ", "),
         termsOfUseUrl,
         Strings.Wallet.web3DomainInterstitialPageTAndU,
         privacyPolicyUrl,
@@ -113,6 +112,12 @@ public class Web3DomainHandler: InternalSchemeResponse {
       "button_procced": service.proceedButtonTitle,
       "message_handler": Web3NameServiceScriptHandler.messageHandlerName,
       Web3NameServiceScriptHandler.ParamKey.serviceId.rawValue: service.id,
+      "ud_intro": service == .unstoppable ? Strings.Wallet.udDomainInterstitialPageIntro : "",
+      "ud_extensions": service == .unstoppable
+        ? WalletConstants.supportedUDExtensions.sorted { $0 == ".brave" && $1 != ".brave" }.joined(
+          separator: ","
+        ) : "",
+      "ud_more": service == .unstoppable ? Strings.Wallet.udDomainInterstitialPageMore : "",
     ]
 
     variables.forEach { (arg, value) in

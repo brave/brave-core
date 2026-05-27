@@ -21,21 +21,57 @@ You can obtain one at https://mozilla.org/MPL/2.0/.
     %error_title%
     </p>
     
-    <p class="description">
-    %error_description%
-    </p>
+    <p class="ud-intro">%ud_intro%</p>
+                               
+    <div id="extensionsSection" class="extensions-section" style="display:none">
+      <div id="extensionsGrid" class="extensions-grid"></div>
+      <button id="showMoreBtn" class="show-more-btn">%ud_more%</button>
+    </div>
     
+    <p class="description">%error_description%</p>
+
     <br />
     
-    <div id="navigationButtons" class="navigationButtons">
-      <button id="disableWeb3Button" class="disableButton disableButtonTitle">%button_disable%</button>
-      <button id="proceedWeb3Button" class="proceedButton proceedButtonTitle">%button_procced%</button>
+    <div id="navigationButtons" class="navigation-buttons">
+      <button id="proceedWeb3Button" class="proceed-button proceed-button-title">%button_procced%</button>
+      <button id="disableWeb3Button" class="disable-button disable-button-title">%button_disable%</button>
     </div>
     
     <script type="text/javascript">
       // Clickjacking protection: delay before accepting proceed clicks
       var PROCEED_CLICK_DELAY_MS = 500;
       var proceedClicksEnabled = false;
+      
+      var INITIAL_COUNT = 10;
+      var extensions = "%ud_extensions%".split(",").filter(Boolean);
+      
+      if (extensions.length > 0) {
+         document.getElementById("extensionsSection").style.display = "block";
+         var grid = document.getElementById("extensionsGrid");
+                                             
+         function renderPills(count) {
+             grid.innerHTML = "";
+             extensions.slice(0, count).forEach(function(ext) {
+                 var pill = document.createElement("span");
+                 pill.className = "extension-pill";
+                 pill.textContent = ext;
+                 grid.appendChild(pill);
+             });
+         }
+                              
+         renderPills(INITIAL_COUNT);
+                              
+         var showMoreBtn = document.getElementById("showMoreBtn");
+         if (extensions.length <= INITIAL_COUNT) {
+             showMoreBtn.style.display = "none";
+         } else {
+             showMoreBtn.addEventListener("click", function() {
+                 renderPills(extensions.length);
+                 showMoreBtn.style.display = "none";
+             });
+         }
+     }
+
       
       var disableButton = document.getElementById("disableWeb3Button")
       disableButton.addEventListener('click', function(e) {
