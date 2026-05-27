@@ -15,6 +15,7 @@
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
+#include "brave/components/containers/core/browser/container_specifier.h"
 #include "brave/components/containers/core/browser/containers_service_observer.h"
 #include "brave/components/containers/core/mojom/containers.mojom-forward.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -70,6 +71,9 @@ class ContainersService : public KeyedService {
   // container or a removed, but still used container.
   mojom::ContainerPtr GetRuntimeContainerById(std::string_view id) const;
 
+  // Returns the runtime container with the given `name`.
+  mojom::ContainerPtr GetRuntimeContainerByName(std::string_view name) const;
+
   // Returns the list of user-editable containers.
   std::vector<mojom::ContainerPtr> GetContainers() const;
 
@@ -78,6 +82,10 @@ class ContainersService : public KeyedService {
 
   // Whether the Containers controls (menus, management UI) should be shown.
   bool ShouldShowContainerControls() const;
+
+  // Returns the container id for the given container specifier.
+  std::optional<std::string> GetContainerIdFromContainerSpecifier(
+      const ContainerSpecifier& container_specifier) const;
 
   void ScheduleOrphanedContainersCleanupForTesting();
 

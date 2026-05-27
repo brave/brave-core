@@ -710,6 +710,7 @@ brave_chrome_browser_public_deps = [
   "//brave/browser/resources/bookmark_icon:bookmark_icon_resources",
   "//brave/common/importer:interfaces",
   "//brave/components/brave_sync:constants",
+  "//brave/components/containers/buildflags",
   "//brave/components/psst/buildflags",
   "//brave/components/v8/buildflags",
   "//brave/components/variations",

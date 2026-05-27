@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/test/scoped_feature_list.h"
+#include "brave/components/containers/core/browser/container_specifier.h"
 #include "brave/components/containers/core/browser/containers_service_observer.h"
 #include "brave/components/containers/core/browser/containers_test_utils.h"
 #include "brave/components/containers/core/browser/prefs.h"
@@ -70,6 +71,62 @@ TEST_F(ContainersServiceTest, GetRuntimeContainerById) {
   ExpectContainer(runtime_container, "container-id", "Personal");
 
   EXPECT_FALSE(service_->GetRuntimeContainerById("non-existent-container-id"));
+}
+
+TEST_F(ContainersServiceTest, GetRuntimeContainerByName) {
+  auto container = MakeContainer("container-id", "Work");
+  std::vector<mojom::ContainerPtr> synced_containers;
+  synced_containers.push_back(container.Clone());
+  SetContainersToPrefs(std::move(synced_containers), prefs_);
+
+  auto runtime_container = service_->GetRuntimeContainerByName("Work");
+  ExpectContainer(runtime_container, "container-id", "Work");
+
+  EXPECT_FALSE(service_->GetRuntimeContainerByName("non-existent-name"));
+}
+
+TEST_F(ContainersServiceTest,
+       GetRuntimeContainerByName_FallsBackToUsedWhenNotInSyncedList) {
+  SetContainersToPrefs({}, prefs_);
+  SetLocallyUsedContainerToPrefs(MakeContainer("cached-id", "CachedName"),
+                                 prefs_);
+
+  auto runtime = service_->GetRuntimeContainerByName("CachedName");
+  ExpectContainer(runtime, "cached-id", "CachedName");
+}
+
+TEST_F(ContainersServiceTest, GetContainerIdFromContainerSpecifier_ById) {
+  auto container = MakeContainer("container-id", "Work");
+  std::vector<mojom::ContainerPtr> synced_containers;
+  synced_containers.push_back(container.Clone());
+  SetContainersToPrefs(std::move(synced_containers), prefs_);
+
+  EXPECT_EQ(service_->GetContainerIdFromContainerSpecifier(
+                ContainerId("container-id")),
+            "container-id");
+}
+
+TEST_F(ContainersServiceTest, GetContainerIdFromContainerSpecifier_ByName) {
+  auto container = MakeContainer("container-id", "Shopping");
+  std::vector<mojom::ContainerPtr> synced_containers;
+  synced_containers.push_back(container.Clone());
+  SetContainersToPrefs(std::move(synced_containers), prefs_);
+
+  EXPECT_EQ(
+      service_->GetContainerIdFromContainerSpecifier(ContainerName("Shopping")),
+      "container-id");
+}
+
+TEST_F(ContainersServiceTest,
+       GetContainerIdFromContainerSpecifier_ReturnsNulloptWhenNotFound) {
+  SetContainersToPrefs({}, prefs_);
+
+  EXPECT_FALSE(service_->GetContainerIdFromContainerSpecifier(
+      ContainerId("missing-id")));
+  EXPECT_FALSE(service_->GetContainerIdFromContainerSpecifier(
+      ContainerName("missing-name")));
+  EXPECT_FALSE(
+      service_->GetContainerIdFromContainerSpecifier(ContainerSpecifier{}));
 }
 
 TEST_F(ContainersServiceTest, GetContainers) {

@@ -1,0 +1,13 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: 'Modify navigation params before Navigate call for startup tab'
+    count: 2
+    re_pattern: |-
+      (.+)(Navigate\(&params\);)
+    replace: |-
+      \1BraveModifyStartupTabNavigationParams(tab, browser, params);
+      \1\2

@@ -16,6 +16,7 @@
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
+#include "brave/components/containers/core/browser/container_specifier.h"
 #include "brave/components/containers/core/browser/containers_service.h"
 #include "brave/components/containers/core/browser/containers_test_utils.h"
 #include "brave/components/containers/core/browser/prefs.h"
@@ -23,7 +24,9 @@
 #include "brave/components/containers/core/common/features.h"
 #include "brave/components/containers/core/mojom/containers.mojom.h"
 #include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
+#include "chrome/browser/prefs/session_startup_pref.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/sessions/exit_type_service.h"
 #include "chrome/browser/sessions/tab_restore_service_factory.h"
 #include "chrome/browser/ui/actions/chrome_action_id.h"
 #include "chrome/browser/ui/browser.h"
@@ -31,11 +34,14 @@
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/navigator/browser_navigator.h"
 #include "chrome/browser/ui/navigator/browser_navigator_params.h"
+#include "chrome/browser/ui/tabs/pinned_tab_codec.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "chrome/browser/ui/views/location_bar/icon_label_bubble_view.h"
 #include "chrome/browser/ui/zoom/chrome_zoom_level_prefs.h"
+#include "chrome/common/pref_names.h"
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -2310,6 +2316,137 @@ IN_PROC_BROWSER_TEST_F(
   new_tab->ShowContextMenuForViewImpl(new_tab, gfx::Point(0, 0),
                                       ui::mojom::MenuSourceType::kMouse);
   EXPECT_FALSE(BraveNewTabButtonHasPreparedContainersContextMenu(new_tab));
+}
+
+// Pinned tabs are restored from prefs on startup. Session restore must stay off
+// so the container partition comes from pinned-tab encoding, not session data.
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       PRE_PinnedTabRestorePreservesContainer) {
+  Profile* profile = browser()->profile();
+  SessionStartupPref pref(SessionStartupPref::DEFAULT);
+  SessionStartupPref::SetStartupPref(profile, pref);
+  profile->GetPrefs()->SetInteger(prefs::kRestoreOnStartup,
+                                  SessionStartupPref::kPrefValueNewTab);
+  ExitTypeService::GetInstanceForProfile(profile)
+      ->SetLastSessionExitTypeForTest(ExitType::kClean);
+
+  std::vector<mojom::ContainerPtr> synced;
+  synced.push_back(
+      MakeContainer(kTestContainerId, "Work", mojom::Icon::kWork, SK_ColorRED));
+  SetContainersToPrefs(synced, *browser()->profile()->GetPrefs());
+
+  const GURL url = https_server_.GetURL("a.test", "/simple.html");
+  content::WebContents* web_contents =
+      OpenUrlInContainerTab(url, kTestContainerId);
+  ASSERT_TRUE(web_contents);
+  ASSERT_TRUE(content::WaitForLoadStop(web_contents));
+  EXPECT_TRUE(content::ExecJs(web_contents,
+                              SetCookieJS("pinned_cookie", "pinned_value")));
+
+  TabStripModel* tab_strip_model = browser()->tab_strip_model();
+  const int container_tab_index =
+      tab_strip_model->GetIndexOfWebContents(web_contents);
+  ASSERT_NE(TabStripModel::kNoTab, container_tab_index);
+  tab_strip_model->SetTabPinned(container_tab_index, true);
+
+  PinnedTabCodec::WritePinnedTabs(browser()->profile());
+
+  StartupTabs pinned_tabs =
+      PinnedTabCodec::ReadPinnedTabs(browser()->profile());
+  ASSERT_EQ(1u, pinned_tabs.size());
+  ASSERT_TRUE(std::holds_alternative<ContainerId>(pinned_tabs[0].container));
+  EXPECT_EQ(kTestContainerId,
+            std::get<ContainerId>(pinned_tabs[0].container).value());
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       PinnedTabRestorePreservesContainer) {
+  Profile* profile = browser()->profile();
+  SessionStartupPref pref = SessionStartupPref::GetStartupPref(profile);
+  EXPECT_FALSE(pref.ShouldRestoreLastSession());
+
+  TabStripModel* tab_strip_model = browser()->tab_strip_model();
+
+  content::WebContents* pinned_web_contents = nullptr;
+  EXPECT_TRUE(base::test::RunUntil([&]() {
+    for (int i = 0; i < tab_strip_model->count(); ++i) {
+      if (!tab_strip_model->IsTabPinned(i)) {
+        continue;
+      }
+      pinned_web_contents = tab_strip_model->GetWebContentsAt(i);
+      return true;
+    }
+    return false;
+  }));
+  ASSERT_TRUE(pinned_web_contents);
+
+  const GURL expected_url = https_server_.GetURL("a.test", "/simple.html");
+  tab_strip_model->ActivateTabAt(
+      tab_strip_model->GetIndexOfWebContents(pinned_web_contents));
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), expected_url));
+  pinned_web_contents = tab_strip_model->GetActiveWebContents();
+  ASSERT_TRUE(pinned_web_contents);
+  ASSERT_TRUE(content::WaitForLoadStop(pinned_web_contents));
+  EXPECT_EQ(expected_url, pinned_web_contents->GetLastCommittedURL());
+
+  content::StoragePartitionConfig config =
+      pinned_web_contents->GetPrimaryMainFrame()
+          ->GetStoragePartition()
+          ->GetConfig();
+  EXPECT_EQ(kContainersStoragePartitionDomain, config.partition_domain());
+  EXPECT_EQ(kTestContainerId, config.partition_name());
+
+  content::EvalJsResult cookies =
+      content::EvalJs(pinned_web_contents, GetCookiesJS());
+  ASSERT_TRUE(cookies.is_ok());
+  EXPECT_NE(std::string::npos,
+            cookies.ExtractString().find("pinned_cookie=pinned_value"));
+}
+
+class ContainersCommandLineContainerBrowserTest : public ContainersBrowserTest {
+ public:
+  ContainersCommandLineContainerBrowserTest() = default;
+
+  void SetUpDefaultCommandLine(base::CommandLine* command_line) override {
+    ContainersBrowserTest::SetUpDefaultCommandLine(command_line);
+    command_line->AppendSwitchASCII("container", "Work");
+    command_line->AppendArg(
+        https_server_.GetURL("a.test", "/simple.html").spec());
+  }
+};
+
+// PRE_ stores the synced container list; the follow-up test launches with a URL
+// and --container on the command line.
+IN_PROC_BROWSER_TEST_F(ContainersCommandLineContainerBrowserTest,
+                       PRE_CommandLineContainerSwitch) {
+  Profile* profile = browser()->profile();
+  std::vector<mojom::ContainerPtr> synced;
+  synced.push_back(
+      MakeContainer(kTestContainerId, "Work", mojom::Icon::kWork, SK_ColorRED));
+  SetContainersToPrefs(synced, *profile->GetPrefs());
+
+  SessionStartupPref pref(SessionStartupPref::DEFAULT);
+  SessionStartupPref::SetStartupPref(profile, pref);
+  profile->GetPrefs()->SetInteger(prefs::kRestoreOnStartup,
+                                  SessionStartupPref::kPrefValueNewTab);
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersCommandLineContainerBrowserTest,
+                       CommandLineContainerSwitch) {
+  const GURL test_url = https_server_.GetURL("a.test", "/simple.html");
+  TabStripModel* tab_strip_model = browser()->tab_strip_model();
+  ASSERT_GE(tab_strip_model->count(), 1);
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), test_url));
+  content::WebContents* web_contents = tab_strip_model->GetActiveWebContents();
+  ASSERT_TRUE(web_contents);
+  ASSERT_TRUE(content::WaitForLoadStop(web_contents));
+  EXPECT_EQ(test_url, web_contents->GetLastCommittedURL());
+
+  content::StoragePartitionConfig config =
+      web_contents->GetPrimaryMainFrame()->GetStoragePartition()->GetConfig();
+  EXPECT_EQ(kContainersStoragePartitionDomain, config.partition_domain());
+  EXPECT_EQ(kTestContainerId, config.partition_name());
 }
 
 }  // namespace containers
