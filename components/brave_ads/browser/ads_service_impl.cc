@@ -220,14 +220,6 @@ void AdsServiceImpl::RegisterResourceComponents() {
 }
 
 void AdsServiceImpl::Migrate() {
-  // Added 08/2023.
-  const int64_t ads_per_hour =
-      prefs_->GetInt64(prefs::kMaximumNotificationAdsPerHour);
-  if (ads_per_hour == 0) {
-    prefs_->ClearPref(prefs::kMaximumNotificationAdsPerHour);
-    prefs_->SetBoolean(prefs::kOptedInToNotificationAds, false);
-  }
-
   // Added 10/2025.
   if (!local_state_->HasPrefPath(prefs::kFirstRunAt)) {
     base::Time first_run_at =
