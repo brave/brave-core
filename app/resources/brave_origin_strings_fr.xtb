@@ -52,7 +52,6 @@ Certaines fonctionnalités ne seront peut-être pas disponibles, et les modifica
 <translation id="6570689355868013775">Outils de sécurité de Brave</translation>
 <translation id="1902837727299679178">Brave souhaite supprimer les données du Gestionnaire de mots de passe. Saisissez votre mot de passe Windows pour autoriser l'opération.</translation>
 <translation id="4449148723378534338">Passez en revue les principaux paramètres de confidentialité et de sécurité dans Brave</translation>
-<translation id="5229247933547820267">Pour poser des questions au Mode IA sur votre onglet sans quitter la page, connectez-vous à Brave. Vous pourrez également accéder à vos mots de passe et à d'autres données sur tous vos appareils.</translation>
 <translation id="1640672724030957280">Téléchargement en cours…</translation>
 <translation id="1680687534629375545">Demander des infos sur cette page à la recherche dans des images</translation>
 <translation id="509363484780540563">Vous pouvez utiliser Brave chaque fois que vous cliquez sur des liens dans des messages, des documents et d'autres applis. Il sera aussi épinglé à votre barre des tâches.</translation>
@@ -96,6 +95,9 @@ Certaines fonctionnalités ne seront peut-être pas disponibles, et les modifica
 <translation id="2066690553719545730">Toujours afficher le Mode IA</translation>
 <translation id="2472891440303445472">Brave a bloqué ce téléchargement, car le fichier est trompeur et risque d'apporter des modifications inattendues à votre appareil</translation>
 <translation id="2054358978145431867">La prochaine fois que vous ouvrirez Brave iOS, une invite vous proposera d'essayer <ph name="FEATURE_NAME"/>.</translation>
+<translation id="4315579854608498851">Brave désactive l'optimisation JavaScript lorsque vous consultez un site pour la première fois.
+
+Si cette page ne fonctionne pas comme prévu, essayez d'autoriser l'optimisation.</translation>
 <translation id="2726948994393234543">Vos mots de passe et d'autres données Brave enregistrés dans votre compte Brave seront supprimés de cet appareil. Pour les utiliser de nouveau dans Brave, reconnectez-vous.</translation>
 <translation id="4375530476448642348">{COUNT,plural, =1{Votre organisation supprime automatiquement les données de navigation lorsque Brave n'est pas utilisé pendant 1 minute. Il peut s'agir de l'historique, de la saisie automatique et des téléchargements. Vos onglets resteront ouverts.}one{Votre organisation supprime automatiquement les données de navigation quand Brave n'est pas utilisé pendant # minute. Il peut s'agir de l'historique, de la saisie automatique et des téléchargements. Vos onglets resteront ouverts.}other{Votre organisation supprime automatiquement les données de navigation quand Brave n'est pas utilisé pendant # minutes. Il peut s'agir de l'historique, de la saisie automatique et des téléchargements. Vos onglets resteront ouverts.}}</translation>
 <translation id="2126108037660393668">Échec de validation du fichier téléchargé.</translation>
@@ -211,6 +213,7 @@ Certaines fonctionnalités ne seront peut-être pas disponibles, et les modifica
 
 <ph name="EXTENSION_NAME"/></translation>
 <translation id="1742948938503172561">Personnalisez votre nouveau profil Brave</translation>
+<translation id="2430807206104224491">Vous pouvez continuer à discuter en Mode IA sans changer d'onglet. Pour commencer, connectez-vous à Brave. Vous pourrez également accéder à vos mots de passe et à d'autres données sur tous vos appareils.</translation>
 <translation id="4805865169608137960">Pour supprimer votre compte Brave de Brave, déconnectez-vous de Brave sur la page de paramètres</translation>
 <translation id="1651639704310627074">Plus tard, Brave pourra vous demander si vous souhaitez utiliser les informations enregistrées pour remplir automatiquement des formulaires</translation>
 <translation id="2585240446624043880">Brave ne peut ni lire, ni écrire dans son répertoire de données :
@@ -499,6 +502,7 @@ Certaines fonctionnalités ne seront peut-être pas disponibles, et les modifica
 <translation id="8646609321956191980">Chaque profil possède ses propres informations Brave, comme des favoris, un historique, des mots de passe, etc.</translation>
 <translation id="6756656512757374876">Découvrez <ph name="BEGIN_LINK"/>comment Brave protège la confidentialité de vos données<ph name="END_LINK"/></translation>
 <translation id="3556601443414636547">Les modifications apportées à ce paramètre seront appliquées quand Brave redémarrera.</translation>
+<translation id="3396870972301571614">Pour gérer vos extensions, cliquez sur "Extensions" dans le menu principal de Brave.</translation>
 <translation id="2535436634051789953">Vous pouvez changer de profil pour voir les mots de passe d'un autre profil Brave</translation>
 <translation id="2312399718665761438">Pour corriger les fautes d'orthographe, Brave envoie à Brave le texte que vous saisissez dans les champs</translation>
 <translation id="3507835409099344374">Accéder aux paramètres de notification Brave</translation>
