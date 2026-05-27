@@ -20,7 +20,7 @@ TEST(ResourceCoordinatorUsageClock, UsageClock) {
     metrics::DesktopSessionDurationTracker::Initialize();
     auto* tracker = metrics::DesktopSessionDurationTracker::Get();
     tracker->OnVisibilityChanged(true, base::TimeDelta());
-    tracker->OnUserEvent();
+    tracker->OnUserEvent(std::nullopt);
     EXPECT_TRUE(tracker->in_session());
 
     UsageClock usage_clock;
