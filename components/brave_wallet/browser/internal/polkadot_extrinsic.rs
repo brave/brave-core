@@ -66,6 +66,7 @@ mod ffi {
 
     extern "Rust" {
         fn compact_scale_encode_u32(x: u32) -> Vec<u8>;
+        fn scale_encode_string(value: &[u8]) -> Vec<u8>;
 
         type CxxPolkadotDecodeUnsignedTransferResult;
         type CxxPolkadotChainMetadataResult;
@@ -523,6 +524,10 @@ fn parse_fee_info(input: &[u8], fee_bytes: &mut [u8; 16]) -> bool {
 
 fn compact_scale_encode_u32(x: u32) -> Vec<u8> {
     Compact(x).encode()
+}
+
+fn scale_encode_string(value: &[u8]) -> Vec<u8> {
+    value.encode()
 }
 
 fn was_extrinsic_successful(

@@ -204,7 +204,8 @@ bool PolkadotChainMetadataPrefs::SetChainMetadata(
            .AssignIfValid(&assets_pallet_index) ||
       !base::CheckedNumeric<int>(metadata->assets_transfer_all_call_index)
            .AssignIfValid(&assets_transfer_all_call_index) ||
-      !base::CheckedNumeric<int>(metadata->assets_transfer_keep_alive_call_index)
+      !base::CheckedNumeric<int>(
+           metadata->assets_transfer_keep_alive_call_index)
            .AssignIfValid(&assets_transfer_keep_alive_call_index) ||
       !base::CheckedNumeric<int>(metadata->ss58_prefix)
            .AssignIfValid(&ss58_prefix) ||

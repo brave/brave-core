@@ -5,8 +5,14 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_test_utils.h"
 
+#include <algorithm>
+#include <iterator>
+
 #include "base/base_paths.h"
+#include "base/check.h"
 #include "base/containers/map_util.h"
+#include "base/containers/span.h"
+#include "base/containers/to_vector.h"
 #include "base/files/file_util.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
@@ -57,6 +63,10 @@ const base::ListValue* FindParamsOrNull(const base::DictValue& req_body) {
   return req_body.FindList("params");
 }
 
+std::vector<uint8_t> StringToBytes(std::string_view value) {
+  return base::ToVector(base::as_byte_span(value));
+}
+
 }  // namespace
 
 base::DictValue RequestBodyToJsonDict(const network::ResourceRequest& req) {
@@ -83,6 +93,40 @@ std::vector<uint8_t> ReadMetadataFixture(std::string_view file_name) {
   std::vector<uint8_t> metadata_bytes;
   CHECK(PrefixedHexStringToBytes(*metadata_hex, &metadata_bytes));
   return metadata_bytes;
+}
+
+bool ReplaceNthOccurrence(std::vector<uint8_t>& bytes,
+                          std::string_view needle,
+                          std::string_view replacement,
+                          size_t occurrence) {
+  DCHECK(!needle.empty());
+  if (needle.empty()) {
+    return false;
+  }
+
+  const auto needle_bytes = StringToBytes(needle);
+  const auto replacement_bytes = StringToBytes(replacement);
+  auto it = bytes.begin();
+  size_t num_found = 0;
+
+  while (it != bytes.end()) {
+    auto match =
+        std::search(it, bytes.end(), needle_bytes.begin(), needle_bytes.end());
+    if (match == bytes.end()) {
+      return false;
+    }
+
+    if (num_found == occurrence) {
+      auto pos = bytes.erase(match, std::next(match, needle_bytes.size()));
+      bytes.insert(pos, replacement_bytes.begin(), replacement_bytes.end());
+      return true;
+    }
+
+    ++num_found;
+    it = std::next(match, needle_bytes.size());
+  }
+
+  return false;
 }
 
 std::optional<PolkadotChainMetadata> PolkadotMetadataFromChainName(

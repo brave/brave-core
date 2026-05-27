@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_chain_metadata.h"
 
+#include <string>
 #include <string_view>
 #include <vector>
 
@@ -45,38 +46,10 @@ std::vector<uint8_t> ReadMetadataFixture(const char* fixture_name) {
   return metadata_bytes;
 }
 
-bool ReplaceNthOccurrence(std::vector<uint8_t>* bytes,
-                          std::string_view needle,
-                          std::string_view replacement,
-                          size_t occurrence) {
-  if (needle.size() != replacement.size() || needle.empty()) {
-    return false;
-  }
-
-  size_t matches = 0;
-  for (size_t i = 0; i + needle.size() <= bytes->size(); ++i) {
-    bool matched = true;
-    for (size_t j = 0; j < needle.size(); ++j) {
-      if ((*bytes)[i + j] != static_cast<uint8_t>(needle[j])) {
-        matched = false;
-        break;
-      }
-    }
-
-    if (!matched) {
-      continue;
-    }
-
-    if (matches == occurrence) {
-      for (size_t j = 0; j < replacement.size(); ++j) {
-        (*bytes)[i + j] = static_cast<uint8_t>(replacement[j]);
-      }
-      return true;
-    }
-    ++matches;
-  }
-
-  return false;
+std::string ScaleEncodeString(std::string_view value) {
+  auto encoded = scale_encode_string(::rust::Slice<const uint8_t>(
+      reinterpret_cast<const uint8_t*>(value.data()), value.size()));
+  return std::string(encoded.begin(), encoded.end());
 }
 
 }  // namespace
@@ -243,17 +216,14 @@ TEST(PolkadotChainMetadataUnitTest,
       ReadMetadataFixture("state_getMetadata_assethub_polkadot.json");
   ASSERT_FALSE(metadata_bytes.empty());
 
-  // SCALE string length prefix 0x4c encodes 19 bytes. The second
-  // transfer_keep_alive occurrence is the Assets pallet call variant; the first
-  // belongs to Balances.
-  constexpr std::string_view kTransferKeepAlive =
-      "\x4c"
-      "transfer_keep_alive";
-  constexpr std::string_view kTransferDeadAlive =
-      "\x4c"
-      "transfer_dead_alive";
-  ASSERT_TRUE(ReplaceNthOccurrence(&metadata_bytes, kTransferKeepAlive,
-                                   kTransferDeadAlive, /*occurrence=*/1));
+  // The second transfer_keep_alive occurrence is the Assets pallet call
+  // variant; the first belongs to Balances.
+  const std::string transfer_keep_alive =
+      ScaleEncodeString("transfer_keep_alive");
+  const std::string transfer_dead_alive =
+      ScaleEncodeString("transfer_dead_alive");
+  ASSERT_TRUE(ReplaceNthOccurrence(metadata_bytes, transfer_keep_alive,
+                                   transfer_dead_alive, /*occurrence=*/1));
 
   EXPECT_FALSE(PolkadotChainMetadata::FromBytes(metadata_bytes));
 }

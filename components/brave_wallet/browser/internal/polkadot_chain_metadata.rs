@@ -457,7 +457,5 @@ fn parse_chain_metadata_fields(bytes: &[u8]) -> Result<CxxPolkadotChainMetadata,
 pub(super) fn parse_chain_metadata_from_scale(
     metadata_bytes: &[u8],
 ) -> Box<CxxPolkadotChainMetadataResult> {
-    Box::new(CxxPolkadotChainMetadataResult(
-        parse_chain_metadata_fields(metadata_bytes),
-    ))
+    Box::new(CxxPolkadotChainMetadataResult(parse_chain_metadata_fields(metadata_bytes)))
 }
