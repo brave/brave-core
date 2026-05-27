@@ -52,8 +52,6 @@
 #include "ios/chrome/browser/passwords/model/ios_password_manager_settings_service_factory.h"
 #include "ios/chrome/browser/passwords/model/ios_password_requirements_service_factory.h"
 #include "ios/chrome/browser/passwords/model/password_manager_log_router_factory.h"
-#include "ios/chrome/browser/plus_addresses/model/plus_address_service_factory.h"
-#include "ios/chrome/browser/plus_addresses/model/plus_address_setting_service_factory.h"
 #include "ios/chrome/browser/power_bookmarks/model/power_bookmark_service_factory.h"
 #include "ios/chrome/browser/push_notification/model/push_notification_profile_service_factory.h"
 #include "ios/chrome/browser/reading_list/model/reading_list_model_factory.h"
@@ -152,8 +150,6 @@ void EnsureProfileKeyedServiceFactoriesBuilt() {
   ListFamilyMembersServiceFactory::GetInstance();
   OptimizationGuideServiceFactory::GetInstance();
   DataTypeStoreServiceFactory::GetInstance();
-  PlusAddressServiceFactory::GetInstance();
-  PlusAddressSettingServiceFactory::GetInstance();
   PowerBookmarkServiceFactory::GetInstance();
   PushNotificationProfileServiceFactory::GetInstance();
   SupervisedUserServiceFactory::GetInstance();
