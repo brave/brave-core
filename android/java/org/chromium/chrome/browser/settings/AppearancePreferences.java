@@ -363,15 +363,16 @@ public class AppearancePreferences extends AppearanceSettingsFragment
         setPreferenceOrder(AppearanceSettingsFragment.PREF_UI_THEME, 0);
         setPreferenceOrder(PREF_BRAVE_CUSTOMIZE_MENU, 1);
         setPreferenceOrder(AppearanceSettingsFragment.PREF_TOOLBAR_SHORTCUT, 2);
-        setPreferenceOrder(PREF_ADDRESS_BAR, 3);
-        setPreferenceOrder(BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY, 4);
-        setPreferenceOrder(PREF_SHOW_BRAVE_REWARDS_ICON, 5);
-        setPreferenceOrder(PREF_ADS_SWITCH, 6);
-        setPreferenceOrder(PREF_BRAVE_NIGHT_MODE_ENABLED, 7);
-        setPreferenceOrder(PREF_BRAVE_DISABLE_SHARING_HUB, 8);
-        setPreferenceOrder(PREF_BRAVE_ENABLE_TAB_GROUPS, 9);
-        setPreferenceOrder(PREF_ENABLE_MULTI_WINDOWS, 10);
-        setPreferenceOrder(PREF_SHOW_UNDO_WHEN_TABS_CLOSED, 11);
+        setPreferenceOrder(AppearanceSettingsFragment.PREF_BOOKMARK_BAR, 3);
+        setPreferenceOrder(PREF_ADDRESS_BAR, 4);
+        setPreferenceOrder(BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY, 5);
+        setPreferenceOrder(PREF_SHOW_BRAVE_REWARDS_ICON, 6);
+        setPreferenceOrder(PREF_ADS_SWITCH, 7);
+        setPreferenceOrder(PREF_BRAVE_NIGHT_MODE_ENABLED, 8);
+        setPreferenceOrder(PREF_BRAVE_DISABLE_SHARING_HUB, 9);
+        setPreferenceOrder(PREF_BRAVE_ENABLE_TAB_GROUPS, 10);
+        setPreferenceOrder(PREF_ENABLE_MULTI_WINDOWS, 11);
+        setPreferenceOrder(PREF_SHOW_UNDO_WHEN_TABS_CLOSED, 12);
     }
 
     private void setPreferenceOrder(String key, int order) {
