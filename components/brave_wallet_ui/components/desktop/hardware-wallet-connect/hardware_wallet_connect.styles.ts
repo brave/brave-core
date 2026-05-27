@@ -46,7 +46,7 @@ export const HardwareWalletGraphic = styled.div<{
 
 export const HardwareWalletCaption = styled.div`
   font: ${leo.font.large.regular};
-text-align: left;
+  text-align: left;
   flex-shrink: 0;
   max-width: 200px;
 `
@@ -96,7 +96,7 @@ export const HardwareWalletAccountListItemRow = styled.div`
   flex: 1;
   flex-direction: row;
   font: ${leo.font.default.regular};
-display: flex;
+  display: flex;
   align-items: center;
 
   color: ${leo.color.text.primary};
@@ -147,7 +147,7 @@ export const SelectWrapper = styled.div`
 
 export const ErrorText = styled.span`
   font: ${leo.font.small.regular};
-color: ${(p) => p.theme.color.errorText};
+  color: ${(p) => p.theme.color.errorText};
   margin-bottom: 10px;
 `
 
@@ -169,7 +169,7 @@ export const LoadIcon = styled(LoaderIcon)<Partial<StyleProps>>`
 
 export const NoSearchResultText = styled.div`
   font: ${leo.font.small.regular};
-text-align: center;
+  text-align: center;
   width: 100%;
   margin-top: 16px;
   color: ${(p) => p.theme.color.text02};
@@ -212,7 +212,7 @@ export const AccountListHeader = styled.div`
 
   color: ${leo.color.text.tertiary};
   font: ${leo.font.small.semibold};
-border-bottom: 1px solid ${leo.color.divider.subtle};
+  border-bottom: 1px solid ${leo.color.divider.subtle};
   padding: 16px;
 `
 
@@ -228,12 +228,12 @@ export const AccountListContent = styled.div`
 
 export const DropdownLabel = styled.div`
   font: ${leo.font.small.semibold};
-color: ${leo.color.text.primary};
+  color: ${leo.color.text.primary};
 `
 
 export const HelpLink = styled.a`
   font: ${leo.font.small.semibold};
-color: ${leo.color.text.interactive};
+  color: ${leo.color.text.interactive};
   text-decoration: none;
 `
 

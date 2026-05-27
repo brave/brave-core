@@ -56,7 +56,7 @@ export const HeaderItem = styled.div<{
   gap: ${({ sortable }) => (sortable ? '5px' : '0px')};
   cursor: ${({ sortable }) => (sortable ? 'pointer' : 'auto')};
   font: ${leo.font.small.semibold};
-color: ${leo.color.text.tertiary};
+  color: ${leo.color.text.tertiary};
   ${({ hideOnPanel }) =>
     hideOnPanel
     && css`
@@ -104,7 +104,7 @@ export const Cell = styled.div<{
   display: flex;
   align-items: center;
   font: ${leo.font.default.semibold};
-color: ${leo.color.text.primary};
+  color: ${leo.color.text.primary};
   overflow: hidden;
   ${({ hideOnPanel }) =>
     hideOnPanel
@@ -155,11 +155,11 @@ export const TextWrapper = styled.div<{
   }};
   width: 100%;
   font: ${leo.font.default.semibold};
-color: ${leo.color.text.primary};
+  color: ${leo.color.text.primary};
 
   @media screen and (max-width: ${layoutPanelWidth}px) {
     font: ${leo.font.small.regular};
-}
+  }
 `
 
 export const ButtonsRow = styled.div`
@@ -173,7 +173,7 @@ export const ButtonsRow = styled.div`
 
 export const CoinGeckoText = styled.span`
   font: ${leo.font.xSmall.regular};
-color: ${leo.color.text.secondary};
+  color: ${leo.color.text.secondary};
   margin: 15px 0px;
 `
 
@@ -190,7 +190,7 @@ export const ActionButton = styled(WalletButton)`
   margin-right: 6px;
   pointer-events: auto;
   font: ${leo.font.components.buttonSmall};
-color: ${leo.color.text.interactive};
+  color: ${leo.color.text.interactive};
 `
 
 export const EmptyStateText = styled(Text)`

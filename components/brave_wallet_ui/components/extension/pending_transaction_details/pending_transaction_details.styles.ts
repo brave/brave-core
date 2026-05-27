@@ -39,7 +39,7 @@ export const DetailText = styled(Text).attrs({
   textAlign: 'left',
 })`
   font: ${leo.font.default.regular};
-word-break: break-all;
+  word-break: break-all;
 `
 
 export const NoDataText = styled(Text).attrs({

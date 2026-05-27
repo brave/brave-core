@@ -211,7 +211,7 @@ export const StyledButton = styled.button`
   outline: none;
   background: none;
   font: ${leo.font.components.buttonLarge};
-flex-direction: row;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   color: ${(p) => p.theme.color.text01};
@@ -241,7 +241,7 @@ export const HiddenResponsiveRow = styled(Row)<{ dontHide?: boolean }>`
 
 export const StyledInput = styled.input`
   font: ${leo.font.default.regular};
-outline: none;
+  outline: none;
   background-image: none;
   box-shadow: none;
   border: none;
@@ -268,7 +268,7 @@ outline: none;
 
 export const StyledLabel = styled.label`
   font: ${leo.font.components.label};
-color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.color.text01};
 `
 
 // Re-export for callers migrating off deprecated textSize

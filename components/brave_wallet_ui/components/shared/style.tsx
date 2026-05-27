@@ -51,7 +51,7 @@ export const VerticalSpacer = styled.div<{ space: number | string }>`
 // Text
 export const LinkText = styled.a`
   font: ${leo.font.default.link};
-color: ${(p) => p.theme.color.interactive05};
+  color: ${(p) => p.theme.color.interactive05};
   margin: 0px;
   cursor: pointer;
   display: inline-flex;
@@ -63,12 +63,12 @@ color: ${(p) => p.theme.color.interactive05};
 
 export const MutedLinkText = styled(LinkText)`
   font: ${leo.font.small.regular};
-color: ${leo.color.text.tertiary};
+  color: ${leo.color.text.tertiary};
 `
 
 export const ErrorText = styled.span`
   font: ${leo.font.small.regular};
-color: ${(p) => p.theme.color.errorText};
+  color: ${(p) => p.theme.color.errorText};
   margin-bottom: 10px;
 `
 
@@ -253,7 +253,7 @@ export const WalletButton = styled.button`
 
 export const WalletLink = styled(Link)`
   font: ${leo.font.components.tableheader};
-text-align: center;
+  text-align: center;
   color: ${(p) => p.theme.color.interactive05};
   background: none;
   border: none;
@@ -348,7 +348,7 @@ export const SellButton = styled(WalletButton)`
   outline: none;
   border-radius: 40px;
   font: ${leo.font.components.buttonSmall};
-background-color: ${(p) => p.theme.palette.blurple500};
+  background-color: ${(p) => p.theme.palette.blurple500};
   color: ${(p) => p.theme.palette.white};
   border: none;
 `
@@ -564,7 +564,7 @@ export const BraveRewardsIndicator = styled.div`
   align-items: center;
   justify-content: center;
   font: ${leo.font.xSmall.semibold};
-color: ${leo.color.text.primary};
+  color: ${leo.color.text.primary};
   padding: 2px 6px;
   border: 1px solid ${leo.color.divider.subtle};
   border-radius: 4px;

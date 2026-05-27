@@ -56,7 +56,7 @@ export const PageNotFound = () => {
             </Title>
             <Text
               textColor='tertiary'
-              variant='default.semibold'={false}
+              variant='default.regular'
             >
               {getLocale('braveWalletPageNotFoundDescription')}
             </Text>

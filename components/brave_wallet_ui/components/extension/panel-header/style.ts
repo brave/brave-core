@@ -13,7 +13,7 @@ interface StyleProps {
 
 export const HeaderTitle = styled.span`
   font: ${leo.font.large.semibold};
-color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.color.text02};
 `
 
 export const HeaderWrapper = styled.div<StyleProps>`

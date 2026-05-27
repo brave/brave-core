@@ -47,14 +47,14 @@ export const CardButtonTextContainer = styled.div`
 
   & > p {
     font: ${leo.font.small.regular};
-color: ${(p) => p.theme.color.text03};
+    color: ${(p) => p.theme.color.text03};
     text-align: left;
     margin: 2px;
   }
 
   & > p:first-of-type {
     font: ${leo.font.default.regular};
-color: ${(p) => p.theme.color.text01};
+    color: ${(p) => p.theme.color.text01};
   }
 `
 

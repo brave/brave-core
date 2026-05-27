@@ -48,7 +48,7 @@ export const TopRowButton = styled(WalletButton)`
   justify-content: center;
   cursor: pointer;
   font: ${leo.font.small.semibold};
-background-color: transparent;
+  background-color: transparent;
   color: ${(p) => p.theme.palette.white};
   outline: none;
   border: none;
@@ -88,7 +88,7 @@ export const MainContent = styled.section`
 export const NftCountHeading = styled.h1`
   font-style: normal;
   font: ${leo.font.heading.display2};
-color: ${(p) => p.theme.palette.white};
+  color: ${(p) => p.theme.palette.white};
   margin: 0 0 32px 0;
   padding: 0;
 `
@@ -108,7 +108,7 @@ export const PinNftsButton = styled(ActionButton).attrs({
 
 export const InfoSubHeading = styled.h6`
   font: ${leo.font.small.semibold};
-margin: 0;
+  margin: 0;
   padding: 0;
   color: ${(p) => p.theme.color.interactive08};
   cursor: pointer;

@@ -600,14 +600,14 @@ export const QuoteInfo = (props: Props) => {
                 >
                   {effectiveFeeAmount && effectiveFeeAmount.isZero() ? (
                     <Bubble padding='5px 6px'>
-                      <FreeText
-                        variant='xSmall.semibold'
-                      >
+                      <FreeText variant='xSmall.semibold'>
                         {getLocale('braveSwapFree')}
                       </FreeText>
                     </Bubble>
                   ) : (
-                    <Text variant='default.regular'>{braveFee.effectiveFeePct}%</Text>
+                    <Text variant='default.regular'>
+                      {braveFee.effectiveFeePct}%
+                    </Text>
                   )}
 
                   {braveFee.discountCode

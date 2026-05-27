@@ -41,9 +41,7 @@ export const PrivacyModal = React.forwardRef<HTMLDivElement, Props>(
           horizontalPadding={24}
           verticalPadding={20}
         >
-          <Text
-            variant='large.semibold'
-          >
+          <Text variant='large.semibold'>
             {getLocale('braveSwapPrivacyPolicy')}
           </Text>
           <IconButton onClick={onClose}>

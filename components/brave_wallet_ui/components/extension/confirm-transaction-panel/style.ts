@@ -68,23 +68,23 @@ export const ToCircle = styled.div<{ orb: string }>`
 export const AccountNameText = styled.span`
   cursor: default;
   font: ${leo.font.components.tableheader};
-color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.color.text02};
 `
 
 export const NetworkText = styled.span`
   font: ${leo.font.small.regular};
-color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.color.text03};
 `
 
 export const TransactionAmountBig = styled.span`
   font: ${leo.font.large.semibold};
-word-break: break-all;
+  word-break: break-all;
   text-align: center;
 `
 
 export const TransactionFiatAmountBig = styled.span`
   font: ${leo.font.small.regular};
-color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.color.text01};
   margin-bottom: 10px;
   word-break: break-all;
   text-align: center;
@@ -114,7 +114,7 @@ export const TransactionTitle = styled.span`
 
 export const TransactionTypeText = styled.span`
   font: ${leo.font.small.semibold};
-word-break: break-all;
+  word-break: break-all;
   text-align: left;
 `
 
@@ -155,7 +155,7 @@ export const SectionColumn = styled.div`
 
 export const EditButton = styled(WalletButton)`
   font: ${leo.font.small.semibold};
-color: ${(p) => p.theme.color.interactive05};
+  color: ${(p) => p.theme.color.interactive05};
   background: none;
   cursor: pointer;
   outline: none;
@@ -166,7 +166,7 @@ color: ${(p) => p.theme.color.interactive05};
 
 export const TransactionText = styled.span<{ hasError?: boolean }>`
   font: ${leo.font.small.regular};
-color: ${(p) =>
+  color: ${(p) =>
     p.hasError ? p.theme.color.errorText : p.theme.color.text03};
   text-align: left;
   word-break: break-all;
@@ -195,7 +195,7 @@ export const ContractButton = styled(WalletButton)`
   align-items: center;
   justify-content: center;
   font: ${leo.font.default.semibold};
-color: ${(p) => p.theme.color.interactive05};
+  color: ${(p) => p.theme.color.interactive05};
   background: none;
   cursor: pointer;
   outline: none;

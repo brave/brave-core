@@ -76,13 +76,9 @@ export const FilterDropdownSection = (props: Props) => {
           <Icon name={icon} />
         </IconWrapper>
         <Column alignItems='flex-start'>
-          <CheckboxText
-            variant='default.semibold'
-          >
-            {title}
-          </CheckboxText>
+          <CheckboxText variant='default.semibold'>{title}</CheckboxText>
           <Description
-            variant='small.semibold'={false}
+            variant='small.regular'
             textAlign='left'
           >
             {description}

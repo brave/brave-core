@@ -17,7 +17,7 @@ export const GroupingText = styled.h3`
 export const SelectAllText = styled.a`
   color: ${leo.color.text.interactive};
   font: ${leo.font.small.semibold};
-cursor: pointer;
+  cursor: pointer;
 `
 
 export const ScrollableColumn = styled(ScrollableCol)`

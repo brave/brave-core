@@ -16,5 +16,5 @@ export const Description = styled.p`
   color: ${leo.color.text.primary};
   text-align: center;
   font: ${leo.font.large.regular};
-font: ${leo.font.large.semibold};
+  font: ${leo.font.large.semibold};
 `

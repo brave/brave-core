@@ -219,8 +219,8 @@ const NetworkFeeContainer = styled.div``
 
 const NetworkFeeTitle = styled.div`
   font: ${leo.font.small.semibold};
-font: ${leo.font.default.regular};
-display: flex;
+  font: ${leo.font.default.regular};
+  display: flex;
   align-items: center;
   color: #27ae60;
   gap: 6px;
@@ -228,7 +228,7 @@ display: flex;
 
 const TextButton = styled(WalletButton)`
   font: ${leo.font.small.semibold};
-color: ${(p) => p.theme.color.interactive05};
+  color: ${(p) => p.theme.color.interactive05};
   background: none;
   cursor: pointer;
   outline: none;

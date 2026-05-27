@@ -25,7 +25,7 @@ export const InstructionParamBox = styled.div`
   margin-top: 12px;
   word-break: break-all;
   font: ${leo.font.small.regular};
-color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.color.text01};
   text-align: left;
 
   & > * {
@@ -36,16 +36,16 @@ color: ${(p) => p.theme.color.text01};
     text-align: left;
     display: block;
     font: ${leo.font.small.regular};
-color: ${(p) => p.theme.color.text02};
+    color: ${(p) => p.theme.color.text02};
     font: ${leo.font.small.regular};
-margin-left: 4px;
+    margin-left: 4px;
   }
 `
 
 export const AddressText = styled.span<{ isBold?: true }>`
   color: ${(p) => p.theme.color.text02};
   font: ${leo.font.small.regular};
-margin-left: 4px;
+  margin-left: 4px;
   text-align: left;
   display: block;
 `
@@ -53,7 +53,7 @@ margin-left: 4px;
 export const CodeSectionTitle = styled.span`
   color: ${(p) => p.theme.color.text02};
   font: ${leo.font.small.regular};
-margin-left: 4px;
+  margin-left: 4px;
   margin-bottom: 4px;
   text-align: left;
   display: block;

@@ -32,7 +32,7 @@ export const RightArrow = styled(Icon).attrs({
 export const Title = styled.h3`
   color: ${leo.color.text.primary};
   font: ${leo.font.heading.h3};
-width: 100%;
+  width: 100%;
   text-align: left;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -44,7 +44,7 @@ width: 100%;
 export const Subtitle = styled.h5`
   color: ${leo.color.text.secondary};
   font: ${leo.font.default.regular};
-width: 100%;
+  width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

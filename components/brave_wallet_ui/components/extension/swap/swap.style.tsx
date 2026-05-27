@@ -15,7 +15,7 @@ import {
 
 export const ExchangeRate = styled.div`
   font: ${leo.font.small.regular};
-display: flex;
+  display: flex;
   align-items: center;
   text-align: right;
   color: ${(p) => p.theme.color.text03};
@@ -75,7 +75,7 @@ export const SwapAssetHeader = styled.div`
 
 export const SwapAssetTitle = styled.div`
   font: ${leo.font.small.semibold};
-color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.color.text03};
 `
 
 export const SwapAssetAddress = styled.div`
@@ -99,7 +99,7 @@ export const AddressOrb = styled.div<{ orb: string }>`
 export const AccountNameText = styled.span`
   cursor: default;
   font: ${leo.font.xSmall.regular};
-display: flex;
+  display: flex;
   align-items: center;
   text-align: right;
   color: ${(p) => p.theme.color.text03};
@@ -133,21 +133,21 @@ export const Spacer = styled.div`
 
 export const SwapAssetAmountSymbol = styled.span`
   font: ${leo.font.heading.h2};
-display: flex;
+  display: flex;
   align-items: center;
   color: ${(p) => p.theme.color.text01};
 `
 
 export const NetworkDescriptionText = styled.span`
   font: ${leo.font.small.regular};
-display: flex;
+  display: flex;
   align-items: center;
   color: ${(p) => p.theme.color.text03};
 `
 
 export const LaunchButton = styled(WalletButton)`
   font: ${leo.font.small.semibold};
-color: ${(p) => p.theme.color.interactive05};
+  color: ${(p) => p.theme.color.interactive05};
   background: none;
   cursor: pointer;
   outline: none;

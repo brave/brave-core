@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 # Remove redundant font-weight after leo.font shorthand; fix split replacements.
 
 import re
@@ -32,11 +36,13 @@ SIZE_WEIGHT = {
 
 
 def fix_font_style_middle(content: str) -> str:
+
     def repl(m):
         token = SIZE_WEIGHT.get((m.group(1), m.group(2)))
         if not token:
             return m.group(0)
         return f'font: ${{leo.font.{token}}};\n'
+
     return FONT_STYLE_MIDDLE.sub(repl, content)
 
 
@@ -102,6 +108,7 @@ def fix_broken_indent(content: str) -> str:
 
 
 def remove_style_weight_before_font(content: str) -> str:
+
     def repl(m):
         weight = m.group(1)
         variant = m.group(2)
@@ -138,13 +145,11 @@ def remove_orphan_font_lines(content: str) -> str:
     while i < len(lines):
         line = lines[i]
         if re.match(
-            r'\s*(?:font-weight|line-height|font-style):\s*',
-            line,
+                r'\s*(?:font-weight|line-height|font-style):\s*',
+                line,
         ):
-            has_font = any(
-                'font: ${leo.font.' in lines[j]
-                for j in range(max(0, i - 12), i)
-            )
+            has_font = any('font: ${leo.font.' in lines[j]
+                           for j in range(max(0, i - 12), i))
             if has_font:
                 i += 1
                 continue
@@ -183,8 +188,8 @@ def process(path: Path) -> bool:
 def main():
     n = 0
     for pattern in (
-        '**/*.ts',
-        '**/*.tsx',
+            '**/*.ts',
+            '**/*.tsx',
     ):
         for path in ROOT.glob(pattern):
             if 'scripts' in path.parts:

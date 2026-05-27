@@ -84,13 +84,13 @@ export const Divider = styled.div`
 export const NetworkNameText = styled.p`
   color: ${leo.color.text.secondary};
   font: ${leo.font.small.regular};
-margin: 0px;
+  margin: 0px;
 `
 
 export const AccountNameAndAddress = styled.div`
   color: ${leo.color.text.tertiary};
   font: ${leo.font.xSmall.regular};
-margin: 0px;
+  margin: 0px;
   word-break: break-all;
 `
 

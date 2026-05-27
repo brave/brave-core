@@ -9,7 +9,7 @@ import { WalletButton } from '../../shared/style'
 
 const Font = css`
   font: ${leo.font.small.semibold};
-color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.color.text02};
 `
 
 export const Wrapper = styled.div`

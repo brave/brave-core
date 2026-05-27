@@ -39,7 +39,7 @@ export const TransactionsWrapper = styled(Column)`
 
 export const SectionTitle = styled.span`
   font: ${leo.font.default.semibold};
-color: ${leo.color.text.secondary};
+  color: ${leo.color.text.secondary};
 `
 
 export const EmptyStateWrapper = styled(Column)`

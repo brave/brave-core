@@ -18,7 +18,7 @@ export const StyledWrapper = styled.div`
 
 export const TokenSymbol = styled.h6`
   font: ${leo.font.large.regular};
-margin: 0;
+  margin: 0;
   padding-top: 20px;
   padding-bottom: 7px;
   color: ${(p) => p.theme.color.text02};
@@ -28,7 +28,7 @@ margin: 0;
 
 export const Instructions = styled.p`
   font: ${leo.font.large.regular};
-margin: 0;
+  margin: 0;
   padding-top: 20px;
   padding-bottom: 7px;
   color: ${(p) => p.theme.color.text02};
@@ -51,7 +51,7 @@ export const OkButton = styled(WalletButton)`
   margin-top: 70px;
   border-radius: 100px;
   font: ${leo.font.default.regular};
-display: flex;
+  display: flex;
   align-self: center;
   justify-content: center;
   align-items: center;
@@ -67,7 +67,7 @@ export const CancelButton = styled(WalletButton)`
   margin-top: 70px;
   border-radius: 100px;
   font: ${leo.font.default.regular};
-display: flex;
+  display: flex;
   align-self: center;
   justify-content: center;
   align-items: center;

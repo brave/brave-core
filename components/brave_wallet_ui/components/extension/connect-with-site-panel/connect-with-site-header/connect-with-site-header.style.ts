@@ -47,7 +47,7 @@ export const TitleWrapper = styled(Row)<{
 
 export const Title = styled.span`
   font: ${leo.font.large.semibold};
-text-align: center;
+  text-align: center;
   color: ${leo.color.text.primary};
 `
 
@@ -58,14 +58,14 @@ export const DomainTextContainer = styled(Column)`
 
 export const SiteName = styled.span`
   font: ${leo.font.large.semibold};
-text-align: left;
+  text-align: left;
   color: ${leo.color.text.primary};
   word-break: break-all;
 `
 
 export const SiteURL = styled.span`
   font: ${leo.font.small.regular};
-text-align: left;
+  text-align: left;
   color: ${leo.color.text.secondary};
   word-break: break-all;
   margin-bottom: 6px;
@@ -87,7 +87,7 @@ export const MessageBox = styled(Row)`
   border-radius: 8px;
   font-weight: 400;
   font: ${leo.font.default.regular};
-color: ${leo.color.text.primary};
+  color: ${leo.color.text.primary};
 `
 
 export const InfoIcon = styled(Icon)`

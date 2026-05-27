@@ -33,7 +33,7 @@ export const SelectAllButton = styled(WalletButton)`
   background: none;
   padding: 0px;
   font: ${leo.font.small.semibold};
-color: ${leo.color.text.interactive};
+  color: ${leo.color.text.interactive};
 `
 
 export const Title = styled(Text)`

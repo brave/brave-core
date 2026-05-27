@@ -49,7 +49,7 @@ export const Tip = styled.div<{
   border-radius: 4px;
   padding: 6px;
   font: ${leo.font.small.regular};
-width: ${(p) => (p.isAddress ? '180px' : 'unset')};
+  width: ${(p) => (p.isAddress ? '180px' : 'unset')};
   max-width: ${(p) => p?.maxWidth || '100%'};
   min-width: ${(p) => p?.minWidth || 'fit-content'};
 

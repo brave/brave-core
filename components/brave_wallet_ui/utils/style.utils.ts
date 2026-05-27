@@ -85,7 +85,8 @@ const FONT_VARIANT_MAP: Record<WalletFontVariant, string> = {
   'monospace.small': font.monospace.small,
 }
 
-export const walletFont = (variant: WalletFontVariant) => FONT_VARIANT_MAP[variant]
+export const walletFont = (variant: WalletFontVariant) =>
+  FONT_VARIANT_MAP[variant]
 
 const TYPOGRAPHY_LINE_HEIGHT_MAP: Record<WalletFontVariant, string> = {
   'default.regular': typography.default.regular.lineHeight,
@@ -154,7 +155,11 @@ export const resolveWalletTextVariant = (props: {
   isBold?: boolean
 }): WalletFontVariant => {
   if (props.variant) {
-    if (props.isBold && !props.variant.includes('semibold') && !props.variant.startsWith('heading.')) {
+    if (
+      props.isBold
+      && !props.variant.includes('semibold')
+      && !props.variant.startsWith('heading.')
+    ) {
       const semiboldVariant = props.variant.replace(
         '.regular',
         '.semibold',

@@ -23,14 +23,14 @@ export const NetworkFeeContainer = styled.div`
 
 export const NetworkFeeTitle = styled.div`
   font: ${leo.font.small.semibold};
-color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.color.text03};
 `
 
 export const NetworkFeeValue = styled.div`
   color: ${leo.color.text.primary};
   text-align: right;
   font: ${leo.font.small.semibold};
-display: flex;
+  display: flex;
   align-items: center;
   gap: 6px;
 `

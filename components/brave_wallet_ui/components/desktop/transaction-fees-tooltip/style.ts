@@ -26,7 +26,7 @@ export const Tip = styled.div`
   z-index: 120;
   white-space: nowrap;
   font: ${leo.font.small.regular};
-top: 9px;
+  top: 9px;
 `
 
 export const Pointer = styled.div`

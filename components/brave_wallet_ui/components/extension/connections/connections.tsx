@@ -94,7 +94,7 @@ export const Connections = () => {
             {activeOrigin.eTldPlusOne}
           </DomainText>
           <DomainText
-            variant='default.semibold'={false}
+            variant='default.regular'
             textColor='tertiary'
           >
             <CreateSiteOrigin

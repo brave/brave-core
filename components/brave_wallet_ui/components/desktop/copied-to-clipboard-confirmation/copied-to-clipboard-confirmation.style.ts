@@ -15,10 +15,10 @@ export const CopiedToClipboardContainer = styled.div`
   justify-content: center;
   width: 100%;
   font: ${leo.font.small.semibold};
-& p {
+  & p {
     margin-left: 4px;
     font: ${leo.font.small.semibold};
-text-align: center;
+    text-align: center;
     color: ${(p) => p.theme.color.text01};
   }
 `

@@ -37,7 +37,7 @@ export const TopWrapper = styled.div`
 
 export const NftName = styled.h2`
   font: ${leo.font.large.semibold};
-text-align: left;
+  text-align: left;
   color: ${leo.color.text.primary};
   width: 100%;
   white-space: nowrap;
@@ -49,7 +49,7 @@ text-align: left;
 
 export const CollectionName = styled.p`
   font: ${leo.font.default.regular};
-text-align: left;
+  text-align: left;
   color: ${leo.color.legacy.text3};
   width: 100%;
   white-space: nowrap;
@@ -61,7 +61,7 @@ text-align: left;
 
 export const PurchaseDate = styled.p`
   font: ${leo.font.small.regular};
-text-align: left;
+  text-align: left;
   color: ${leo.color.legacy.text3};
   width: 100%;
   white-space: nowrap;
@@ -76,7 +76,7 @@ export const SectionTitle = styled.h3`
   flex-direction: row;
   align-items: center;
   font: ${leo.font.large.semibold};
-text-align: left;
+  text-align: left;
   color: ${leo.color.text.primary};
   margin: 0;
   padding: 16px 0;
@@ -107,7 +107,7 @@ export const InfoBox = styled.div`
 
 export const InfoTitle = styled.p`
   font: ${leo.font.small.regular};
-color: ${leo.color.text.secondary};
+  color: ${leo.color.text.secondary};
   margin: 0;
   padding: 0;
   width: 100%;
@@ -118,7 +118,7 @@ color: ${leo.color.text.secondary};
 
 export const InfoText = styled.p`
   font: ${leo.font.default.regular};
-color: ${leo.color.text.primary};
+  color: ${leo.color.text.primary};
   margin: 0;
   padding: 0;
   width: 100%;
@@ -129,7 +129,7 @@ color: ${leo.color.text.primary};
 
 export const AccountName = styled.span`
   font: ${leo.font.default.regular};
-color: ${leo.color.text.primary};
+  color: ${leo.color.text.primary};
 `
 
 export const AccountAddress = styled(AccountName)`
@@ -148,7 +148,7 @@ export const CopyIcon = styled(Icon)`
 
 export const ViewAccount = styled(WalletButton)`
   font: ${leo.font.small.semibold};
-display: flex;
+  display: flex;
   align-items: center;
   text-align: center;
   align-self: flex-end;
@@ -164,7 +164,7 @@ display: flex;
 export const Description = styled.p`
   width: 100%;
   font: ${leo.font.default.regular};
-color: ${leo.color.text.primary};
+  color: ${leo.color.text.primary};
   margin: 0;
   padding: 0;
 `
@@ -241,7 +241,7 @@ export const Trait = styled.div`
 
 export const TraitType = styled.span`
   font: ${leo.font.small.regular};
-color: ${leo.color.text.secondary};
+  color: ${leo.color.text.secondary};
   overflow: hidden;
   -webkit-line-clamp: 1;
   text-overflow: ellipsis;
@@ -249,7 +249,7 @@ color: ${leo.color.text.secondary};
 
 export const TraitValue = styled.span`
   font: ${leo.font.default.regular};
-color: ${leo.color.text.primary};
+  color: ${leo.color.text.primary};
   overflow: hidden;
   -webkit-line-clamp: 1;
   text-overflow: ellipsis;
@@ -257,7 +257,7 @@ color: ${leo.color.text.primary};
 
 export const TraitRarity = styled.span`
   font: ${leo.font.default.semibold};
-color: ${leo.color.text.primary};
+  color: ${leo.color.text.primary};
   overflow: hidden;
   -webkit-line-clamp: 1;
   text-overflow: ellipsis;
@@ -277,7 +277,7 @@ export const ErrorMessage = styled.p`
   justify-content: flex-start;
   align-items: center;
   font: ${leo.font.xSmall.regular};
-color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.color.text02};
   word-break: break-word;
   margin: 24px 0;
 `

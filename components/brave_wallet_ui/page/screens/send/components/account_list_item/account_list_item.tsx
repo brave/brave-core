@@ -84,14 +84,14 @@ export const AccountListItem = (props: Props) => {
           {isShielded && <ShieldedLabel />}
         </Row>
         <AddressText
-          variant='small.semibold'={false}
+          variant='small.regular'
           textAlign='left'
         >
           {reduceAddress(addressOverride ?? account.address)}
         </AddressText>
         {accountAlias && accountAlias !== '' && (
           <AddressText
-            variant='small.semibold'={false}
+            variant='small.regular'
             textAlign='left'
           >
             {accountAlias}

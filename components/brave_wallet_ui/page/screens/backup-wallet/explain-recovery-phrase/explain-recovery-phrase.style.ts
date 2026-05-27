@@ -27,8 +27,8 @@ export const BannerCard = styled.div`
 
 export const ImportantText = styled.span`
   font: ${leo.font.small.semibold};
-font: ${leo.font.small.regular};
-color: ${(p) => p.theme.color.text};
+  font: ${leo.font.small.regular};
+  color: ${(p) => p.theme.color.text};
 `
 
 export const CenteredRow = styled.div`
@@ -56,14 +56,14 @@ export const Subtitle = styled.p`
   color: ${leo.color.text.secondary};
   text-align: left;
   font: ${leo.font.large.regular};
-margin: 0;
+  margin: 0;
   padding: 16px 0 0 0;
 `
 
 export const BackupInstructions = styled.p`
   color: ${leo.color.text.primary};
   font: ${leo.font.large.semibold};
-padding: 0;
+  padding: 0;
   margin: 14px 0 0;
 `
 
@@ -88,7 +88,7 @@ export const SkipDialog = styled(Dialog).attrs({
 export const WarningText = styled.p`
   color: --leo-color-text-primary;
   font: ${leo.font.large.regular};
-padding: 0;
+  padding: 0;
   margin: 0;
 `
 

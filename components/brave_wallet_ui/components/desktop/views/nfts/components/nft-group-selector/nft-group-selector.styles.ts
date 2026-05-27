@@ -38,7 +38,7 @@ export const DropdownButtonLabel = styled.span`
   justify-content: center;
   color: ${leo.color.primary[50]};
   font: ${leo.font.xSmall.semibold};
-text-transform: uppercase;
+  text-transform: uppercase;
   background-color: ${leo.color.primary[20]};
   border-radius: 4px;
   min-width: 20px;
@@ -81,7 +81,7 @@ export const DropDownItem = styled(WalletButton)`
   align-items: center;
   gap: 8px;
   font: ${leo.font.default.regular};
-color: ${leo.color.text.primary};
+  color: ${leo.color.text.primary};
   cursor: pointer;
   border: none;
   background-color: transparent;

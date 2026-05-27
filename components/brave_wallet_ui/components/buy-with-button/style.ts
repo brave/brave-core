@@ -68,6 +68,6 @@ export const Option = styled.li<Partial<OptionProps>>`
   align-items: center;
   padding: 10px 0;
   font: ${leo.font.default.regular};
-color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.color.text02};
   cursor: pointer;
 `

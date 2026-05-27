@@ -8,8 +8,8 @@ import * as leo from '@brave/leo/tokens/css/variables'
 
 export const ChartBalance = styled.span`
   font: ${leo.font.default.semibold};
-font: ${leo.font.xSmall.regular};
-color: ${leo.color.text.secondary};
+  font: ${leo.font.xSmall.regular};
+  color: ${leo.color.text.secondary};
 `
 
 interface ToolTipProps {

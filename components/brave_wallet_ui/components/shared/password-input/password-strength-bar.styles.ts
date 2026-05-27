@@ -38,7 +38,7 @@ export const BarProgressTooltipContainer = styled.div<{
 export const BarMessage = styled.p<{ criteria: boolean[] }>`
   color: ${(p) => getCriteriaPercentColor(p)};
   font: ${leo.font.small.semibold};
-display: flex;
+  display: flex;
   align-items: center;
   text-align: right;
 `

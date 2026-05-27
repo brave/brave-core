@@ -260,7 +260,7 @@ export const PortfolioAssetItem = ({
                         {token.isShielded && <ShieldedLabel />}
                       </Row>
                       <NetworkDescriptionText
-                        variant='small.semibold'={false}
+                        variant='small.regular'
                         textAlign='left'
                       >
                         {NetworkDescription}
@@ -294,7 +294,7 @@ export const PortfolioAssetItem = ({
                     <>
                       {formattedFiatBalance ? (
                         <FiatBalanceText
-                          variant='small.semibold'={false}
+                          variant='small.regular'
                           textAlign='right'
                         >
                           {formattedFiatBalance}
@@ -346,7 +346,7 @@ export const PortfolioAssetItem = ({
               >
                 <LoadingRing />
                 <InfoText
-                  variant='default.semibold'={false}
+                  variant='default.regular'
                   textAlign='left'
                 >
                   {getLocale('braveWalletUnavailableBalances')}

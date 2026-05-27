@@ -253,9 +253,7 @@ export const TransactionsScreen = (props: Props) => {
                 padding={isPanel ? '0px 0px 32px 0px' : '0px'}
               >
                 <EmptyTransactionsIcon />
-                <Text
-                  variant='large.semibold'
-                >
+                <Text variant='large.semibold'>
                   {getLocale('braveWalletNoTransactionsYet')}
                 </Text>
                 <Text variant='default.regular'>

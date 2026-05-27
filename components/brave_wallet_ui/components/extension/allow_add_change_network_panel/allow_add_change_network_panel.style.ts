@@ -33,13 +33,13 @@ export const NetworkInfoBox = styled(Column)`
 
 export const NetworkInfoLabel = styled(Text)`
   font: ${leo.font.small.regular};
-word-break: break-all;
+  word-break: break-all;
   text-align: left;
 `
 
 export const NetworkInfoText = styled(Text)`
   font: ${leo.font.default.semibold};
-word-break: break-all;
+  word-break: break-all;
   text-align: left;
 `
 
@@ -70,7 +70,7 @@ export const ArrowIcon = styled(Icon).attrs({
 
 export const DetailsButton = styled(WalletButton)`
   font: ${leo.font.small.semibold};
-color: ${leo.color.text.interactive};
+  color: ${leo.color.text.interactive};
   background: none;
   cursor: pointer;
   outline: none;

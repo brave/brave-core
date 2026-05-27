@@ -31,7 +31,7 @@ export const LeftSide = styled.div`
 
 export const NetworkName = styled.span`
   font: ${leo.font.components.tableheader};
-color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.color.text01};
   text-align: left;
 `
 

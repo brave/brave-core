@@ -11,7 +11,7 @@ import Icon from '@brave/leo/react/icon'
 export const StateChangeText = styled.span<{ color?: string }>`
   color: ${(p) => p.color || color.text.secondary};
   font: ${leo.font.small.regular};
-vertical-align: middle;
+  vertical-align: middle;
   text-align: left;
   display: inline-flex;
   flex-wrap: wrap;
@@ -19,7 +19,7 @@ vertical-align: middle;
 
   strong {
     font: ${leo.font.small.semibold};
-color: ${(p) => p.color || color.text.primary};
+    color: ${(p) => p.color || color.text.primary};
     word-break: break-all;
   }
 `

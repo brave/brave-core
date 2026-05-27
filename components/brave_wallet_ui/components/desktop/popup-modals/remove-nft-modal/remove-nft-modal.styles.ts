@@ -24,7 +24,7 @@ export const Header = styled.div`
   color: ${leo.color.text.primary};
   text-align: center;
   font: ${leo.font.heading.h2};
-text-align: left;
+  text-align: left;
   width: 100%;
   padding-bottom: 16px;
 `
@@ -33,7 +33,7 @@ export const Description = styled.div`
   color: ${leo.color.text.secondary};
   text-align: center;
   font: ${leo.font.default.regular};
-padding-bottom: 24px;
+  padding-bottom: 24px;
 `
 
 export const ButtonRow = styled.div`

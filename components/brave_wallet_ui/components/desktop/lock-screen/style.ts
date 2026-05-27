@@ -33,23 +33,23 @@ export const StyledWrapper = styled.div`
 
 export const Title = styled(Text)`
   font: ${leo.font.heading.h1};
-color: ${leo.color.text.primary};
+  color: ${leo.color.text.primary};
   margin-bottom: 8px;
   text-align: center;
   @media screen and (max-width: ${layoutPanelWidth}px) {
     font: ${leo.font.heading.h2};
-margin-bottom: 4px;
+    margin-bottom: 4px;
   }
 `
 
 export const Description = styled(Text)`
   font: ${leo.font.large.regular};
-color: ${leo.color.text.secondary};
+  color: ${leo.color.text.secondary};
   margin-bottom: 40px;
   text-align: center;
   @media screen and (max-width: ${layoutPanelWidth}px) {
     font: ${leo.font.default.regular};
-color: ${leo.color.text.tertiary};
+    color: ${leo.color.text.tertiary};
     margin-bottom: 24px;
   }
 `

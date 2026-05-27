@@ -22,7 +22,7 @@ export const Wrapper = styled(Row)<{ type?: 'error' | 'warning' | 'info' }>`
 
 export const LearnMoreLink = styled.a`
   font: ${leo.font.small.semibold};
-color: ${(p) => p.theme.color.interactive05};
+  color: ${(p) => p.theme.color.interactive05};
   margin: 0px;
   padding: 0px;
   text-decoration: none;
@@ -38,7 +38,7 @@ export const HowToSolveButton = styled(WalletButton)`
   background: none;
   border: none;
   font: ${leo.font.small.semibold};
-color: ${(p) => p.theme.color.interactive05};
+  color: ${(p) => p.theme.color.interactive05};
   margin: 0px;
   @media (prefers-color-scheme: dark) {
     color: ${(p) => p.theme.color.interactive06};

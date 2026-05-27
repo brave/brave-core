@@ -22,7 +22,7 @@ export const StatValue = styled.div`
   flex-direction: row;
   align-items: center;
   font: ${leo.font.heading.h2};
-color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.color.text01};
   margin-bottom: 12px;
   justify-content: center;
 `
@@ -32,7 +32,7 @@ export const StatLabel = styled.div`
   align-items: center;
   text-align: center;
   font: ${leo.font.default.regular};
-color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.color.text02};
   justify-content: center;
 `
 
@@ -46,7 +46,7 @@ export const Row = styled.div`
 export const Currency = styled.sup`
   display: flex;
   font: ${leo.font.small.semibold};
-color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.color.text02};
   top: -0.8em;
   margin-right: 2px;
 `

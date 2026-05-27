@@ -22,7 +22,7 @@ export const Tip = styled.div`
   background: ${(p) => p.theme.palette.black};
   z-index: 120;
   font: ${leo.font.small.regular};
-top: -144px;
+  top: -144px;
   height: 108px;
   width: 240px;
 `

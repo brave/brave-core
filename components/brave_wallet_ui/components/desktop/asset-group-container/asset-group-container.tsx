@@ -347,7 +347,7 @@ export const AssetGroupContainer = (props: Props) => {
                 <AddressArea width='unset'>
                   <AddressActionsMenu account={account}>
                     <Text
-                      variant='small.semibold'={false}
+                      variant='small.regular'
                       textColor='secondary'
                     >
                       {reduceAddress(account.address)}
@@ -408,7 +408,7 @@ export const AssetGroupContainer = (props: Props) => {
                 >
                   <WarningIcon />
                   <InfoText
-                    variant='default.semibold'={false}
+                    variant='default.regular'
                     textAlign='left'
                   >
                     {!chainTipStatus

@@ -189,32 +189,20 @@ export const FromAsset = (props: Props) => {
   const accountNameAndBalance = React.useMemo(() => {
     if (!token || !account) {
       return (
-        <FromText
-          variant='default.semibold'={false}
-        >
+        <FromText variant='default.regular'>
           {getLocale('braveWalletFrom')}
         </FromText>
       )
     }
     if (token.isNft) {
-      return (
-        <FromText
-          variant='default.semibold'={false}
-        >
-          {account.name}
-        </FromText>
-      )
+      return <FromText variant='default.regular'>{account.name}</FromText>
     }
     return (
       <AccountNameAndBalanceRow
         width='unset'
         justifyContent='flex-start'
       >
-        <FromText
-          variant='default.semibold'={false}
-        >
-          {account.name}:
-        </FromText>
+        <FromText variant='default.regular'>{account.name}:</FromText>
         <AccountNameAndBalanceRow
           width='unset'
           justifyContent='flex-start'
@@ -349,7 +337,7 @@ export const FromAsset = (props: Props) => {
         >
           {network && token && (
             <NetworkText
-              variant='default.semibold'={false}
+              variant='default.regular'
               textColor='secondary'
             >
               {getLocale('braveWalletPortfolioAssetNetworkDescription')
@@ -365,11 +353,7 @@ export const FromAsset = (props: Props) => {
                   width={60}
                 />
               ) : (
-                <FiatText
-                  variant='default.semibold'={false}
-                >
-                  {fiatValue}
-                </FiatText>
+                <FiatText variant='default.regular'>{fiatValue}</FiatText>
               )}
             </Row>
           )}

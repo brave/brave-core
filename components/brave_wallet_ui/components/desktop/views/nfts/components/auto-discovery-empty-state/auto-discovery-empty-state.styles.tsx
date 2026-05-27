@@ -19,7 +19,7 @@ export const StyledWrapper = styled.div`
 
 export const Heading = styled.h3`
   font: ${leo.font.default.semibold};
-text-align: center;
+  text-align: center;
   color: ${leo.color.text.secondary};
   margin: 0 0 8px 0;
   padding: 0;
@@ -27,8 +27,8 @@ text-align: center;
 
 export const Description = styled.span`
   font: ${leo.font.small.semibold};
-font: ${leo.font.small.regular};
-background: transparent;
+  font: ${leo.font.small.regular};
+  background: transparent;
   color: ${leo.color.button.background};
   border: none;
   cursor: pointer;

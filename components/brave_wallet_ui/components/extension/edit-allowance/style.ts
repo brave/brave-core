@@ -35,12 +35,12 @@ export const Input = styled.input`
   border-radius: 4px;
   font-style: normal;
   font: ${leo.font.small.regular};
-padding: 10px;
+  padding: 10px;
   margin-bottom: 8px;
   color: ${(p) => p.theme.color.text01};
   ::placeholder {
     font: ${leo.font.small.regular};
-color: ${(p) => p.theme.color.text03};
+    color: ${(p) => p.theme.color.text03};
   }
   :focus {
     outline: none;
@@ -67,7 +67,7 @@ export const ButtonRow = styled.div`
 export const Description = styled.span`
   width: 100%;
   font: ${leo.font.small.regular};
-text-align: flex-start;
+  text-align: flex-start;
   color: ${(p) => p.theme.color.text02};
 `
 
@@ -78,11 +78,11 @@ export const AllowanceOption = styled.div`
 
 export const AllowanceTitle = styled.div`
   font: ${leo.font.small.regular};
-color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.color.text01};
   padding-bottom: 6px;
 `
 
 export const AllowanceContent = styled.div`
   font: ${leo.font.default.semibold};
-color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.color.text01};
 `

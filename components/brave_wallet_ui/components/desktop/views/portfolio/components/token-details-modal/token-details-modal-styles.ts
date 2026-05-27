@@ -22,14 +22,14 @@ export const TokenBalanceRow = styled.div`
 `
 export const CryptoBalance = styled.p`
   font: ${leo.font.heading.display2};
-margin: 0;
+  margin: 0;
   padding: 0 16px 0 0;
   color: ${(p) => p.theme.color.text01};
 `
 
 export const FiatBalance = styled.h6`
   font: ${leo.font.large.regular};
-margin: 0;
+  margin: 0;
   padding-top: 20px;
   padding-bottom: 4px;
   color: ${(p) => p.theme.color.text02};
@@ -44,14 +44,14 @@ export const DetailColumn = styled.div`
 
 export const TokenDetailLabel = styled.h6`
   font: ${leo.font.default.semibold};
-margin: 0;
+  margin: 0;
   padding: 0;
   color: ${(p) => p.theme.color.text01};
 `
 
 export const TokenDetailValue = styled.h6`
   font: ${leo.font.default.regular};
-margin: 8px 0 0 0;
+  margin: 8px 0 0 0;
   padding: 0;
   color: ${(p) => p.theme.color.text01};
 `
@@ -67,7 +67,7 @@ export const HideTokenButton = styled(WalletButton)`
   margin-top: 70px;
   border-radius: 100px;
   font: ${leo.font.default.regular};
-width: 320px;
+  width: 320px;
   display: flex;
   align-self: center;
   justify-content: center;

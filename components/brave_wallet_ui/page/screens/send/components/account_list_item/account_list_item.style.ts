@@ -50,7 +50,7 @@ export const DisabledLabel = styled.div`
   background-color: ${leo.color.green[20]};
   color: ${leo.color.green[50]};
   font: ${leo.font.xSmall.regular};
-text-transform: uppercase;
+  text-transform: uppercase;
   padding: 4px 6px;
   border-radius: 4px;
 `

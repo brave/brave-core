@@ -47,7 +47,7 @@ export const TimeText = styled(Text)`
 
 export const FeeAmountText = styled(Text)`
   font: ${leo.font.xSmall.semibold};
-word-break: break-all;
+  word-break: break-all;
 `
 
 export const FiatAmountText = styled(Text)`

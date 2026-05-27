@@ -201,7 +201,7 @@ export const PortfolioAccountItem = (props: Props) => {
               )}
               {account.address && !isRewardsAccount && (
                 <Text
-                  variant='small.semibold'={false}
+                  variant='small.regular'
                   textColor='primary'
                   textAlign='left'
                 >
@@ -226,7 +226,7 @@ export const PortfolioAccountItem = (props: Props) => {
                 {`${formattedAssetBalance} ${asset.symbol}`}
               </Text>
               <Text
-                variant='small.semibold'={false}
+                variant='small.regular'
                 textColor='secondary'
                 textAlign='right'
               >

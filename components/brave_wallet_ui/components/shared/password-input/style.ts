@@ -57,12 +57,12 @@ export const Input = styled.input<{ hasError: boolean }>`
   border-radius: 4px;
   font-style: normal;
   font: ${leo.font.small.regular};
-margin: 0px;
+  margin: 0px;
   color: ${(p) => p.theme.color.text01};
 
   ::placeholder {
     font: ${leo.font.small.regular};
-color: ${(p) => p.theme.color.text03};
+    color: ${(p) => p.theme.color.text03};
   }
 
   :focus {
@@ -95,7 +95,7 @@ export const ErrorText = styled.span`
   justify-content: flex-start;
   width: 240px;
   font: ${leo.font.small.regular};
-color: ${(p) => p.theme.color.errorText};
+  color: ${(p) => p.theme.color.errorText};
   padding-left: 4px;
 `
 

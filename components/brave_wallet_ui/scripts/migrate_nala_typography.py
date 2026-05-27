@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 # Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 # Wallet hardcoded typography -> leo.font tokens.
 
 import re
@@ -118,27 +121,6 @@ def token_for(size: str, weight: Optional[str]) -> Optional[str]:
 def replace_font_blocks(content: str) -> tuple[str, int]:
     count = 0
 
-    def sub_block(m: re.Match) -> str:
-        nonlocal count
-        groups = [g for g in m.groups() if g]
-        if not groups:
-            return m.group(0)
-        # extract size and weight from groups
-        size = None
-        weight = '400'
-        for g in groups:
-            if g and g.endswith('px'):
-                size = g
-            elif g in ('400', '500', '600', '700', 'normal'):
-                weight = '400' if g == 'normal' else g
-        if not size:
-            return m.group(0)
-        token = token_for(size, weight)
-        if not token:
-            return m.group(0)
-        count += 1
-        return f'font: ${{leo.font.{token}}};\n'
-
     patterns = [
         re.compile(
             r'font-style:\s*normal;\s*'
@@ -184,7 +166,9 @@ def replace_font_blocks(content: str) -> tuple[str, int]:
         ),
     ]
 
-    lone_pat = re.compile(r'font-size:\s*(\d+px);\s*(?!\n\s*font-weight)', re.MULTILINE)
+    lone_pat = re.compile(r'font-size:\s*(\d+px);\s*(?!\n\s*font-weight)',
+                          re.MULTILINE)
+
     def lone_repl(m):
         nonlocal count
         token = LONE_FONT_SIZE.get(m.group(1))
@@ -192,9 +176,11 @@ def replace_font_blocks(content: str) -> tuple[str, int]:
             return m.group(0)
         count += 1
         return f'font: ${{leo.font.{token}}};\n'
+
     content = lone_pat.sub(lone_repl, content)
 
     for pat in patterns:
+
         def repl(m):
             nonlocal count
             gs = m.groups()
@@ -223,11 +209,9 @@ def ensure_leo_import(content: str) -> str:
         return content
     m = re.search(r"(import styled[^\n]+\n)", content)
     if m:
-        return (
-            content[: m.end()]
-            + "import * as leo from '@brave/leo/tokens/css/variables'\n"
-            + content[m.end() :]
-        )
+        return (content[:m.end()] +
+                "import * as leo from '@brave/leo/tokens/css/variables'\n" +
+                content[m.end():])
     return content
 
 
@@ -235,13 +219,34 @@ def migrate_tsx(content: str) -> str:
     for old, new in TEXT_SIZE_REPLACEMENTS:
         content = content.replace(old, new)
     content = re.sub(
-        r"variant='(\w+)\.regular'(\s+)isBold",
+        r"variant='(\w+)\.regular'(\s+)isBold=\{false\}",
+        lambda m: f"variant='{m.group(1)}.regular'",
+        content,
+    )
+    content = re.sub(
+        r'variant="(\w+)\.regular"(\s+)isBold=\{false\}',
+        lambda m: f'variant="{m.group(1)}.regular"',
+        content,
+    )
+    content = re.sub(
+        r"variant='(\w+)\.regular'(\s+)isBold(?:=\{true\})?",
         lambda m: f"variant='{m.group(1)}.semibold'",
         content,
     )
     content = re.sub(
-        r'variant="(\w+)\.regular"(\s+)isBold',
+        r'variant="(\w+)\.regular"(\s+)isBold(?:=\{true\})?',
         lambda m: f'variant="{m.group(1)}.semibold"',
+        content,
+    )
+    # Fix any prior broken runs that left ={false} suffix.
+    content = re.sub(
+        r"variant='(\w+)\.semibold'=\{false\}",
+        r"variant='\1.regular'",
+        content,
+    )
+    content = re.sub(
+        r'variant="(\w+)\.semibold"=\{false\}',
+        r'variant="\1.regular"',
         content,
     )
     content = re.sub(
@@ -273,13 +278,13 @@ def process_file(path: Path) -> bool:
 def main():
     changed = []
     for pattern in (
-        '**/*.style.ts',
-        '**/*.style.tsx',
-        '**/*.styles.ts',
-        '**/*.styles.tsx',
-        '**/style.ts',
-        '**/style.tsx',
-        '**/*.tsx',
+            '**/*.style.ts',
+            '**/*.style.tsx',
+            '**/*.styles.ts',
+            '**/*.styles.tsx',
+            '**/style.ts',
+            '**/style.tsx',
+            '**/*.tsx',
     ):
         for path in ROOT.glob(pattern):
             if 'scripts' in path.parts or 'node_modules' in str(path):

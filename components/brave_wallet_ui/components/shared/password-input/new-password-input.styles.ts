@@ -22,7 +22,7 @@ export const PasswordValidationText = styled.p<{ isMatch: boolean }>`
       ? leo.color.text.interactive
       : leo.color.systemfeedback.errorText};
   font: ${leo.font.small.regular};
-margin: 0;
+  margin: 0;
   padding: 0;
 `
 

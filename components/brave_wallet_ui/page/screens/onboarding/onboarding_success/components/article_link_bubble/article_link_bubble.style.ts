@@ -86,7 +86,7 @@ export const Bubble = styled.a`
 export const BubbleText = styled.span`
   height: 20px;
   font: ${leo.font.small.semibold};
-display: flex;
+  display: flex;
   align-items: center;
   text-align: center;
   margin-left: 8px;

@@ -36,7 +36,7 @@ export const ActiveIndicator = styled.div`
   color: ${leo.color.primary[50]};
   font-weight: 600;
   font: ${leo.font.xSmall.regular};
-text-transform: uppercase;
+  text-transform: uppercase;
 `
 
 export const NetworkName = styled.span`

@@ -25,7 +25,7 @@ export const StyledButton = styled(WalletButton)<Partial<StyleProps>>`
 
 export const ButtonText = styled.span<Partial<StyleProps>>`
   font: ${leo.font.small.semibold};
-margin-bottom: 10px;
+  margin-bottom: 10px;
   background: ${(p) =>
     p.isSelected ? p.theme.color.text01 : p.theme.color.text02};
   -webkit-background-clip: text;

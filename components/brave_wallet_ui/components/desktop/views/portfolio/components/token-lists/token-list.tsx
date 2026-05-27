@@ -642,9 +642,7 @@ export const TokenLists = ({
         showSearchBar={showSearchBar}
       >
         {!showSearchBar && (
-          <Text
-            variant='large.semibold'
-          >
+          <Text variant='large.semibold'>
             {getLocale('braveWalletAccountsAssets')}
           </Text>
         )}
