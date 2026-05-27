@@ -95,27 +95,26 @@ void RedeemPaymentTokens::RedeemCallback(
   BLOG(6, UrlResponseToString(mojom_url_response));
   BLOG(7, UrlResponseHeadersToString(mojom_url_response));
 
-  const auto result = HandleRedeemPaymentTokensUrlResponse(mojom_url_response);
-  if (!result.has_value()) {
-    const auto& [failure, should_retry] = result.error();
-
-    BLOG(0, failure);
-
-    return FailedToRedeem(should_retry);
+  const UrlResponseResult<void> url_response_result =
+      HandleRedeemPaymentTokensUrlResponse(mojom_url_response);
+  if (!url_response_result.has_value()) {
+    const auto& error = url_response_result.error();
+    BLOG(0, error.message);
+    return FailedToRedeem(error.should_retry);
   }
 
   SuccessfullyRedeemed(payment_tokens);
 }
 
 // static
-base::expected<void, std::tuple<std::string, bool>>
+UrlResponseResult<void>
 RedeemPaymentTokens::HandleRedeemPaymentTokensUrlResponse(
     const mojom::UrlResponseInfo& mojom_url_response) {
   if (mojom_url_response.code != net::HTTP_OK) {
-    const bool should_retry = HttpStatusCodeClass(mojom_url_response.code) !=
-                              HttpStatusCodeClassType::kClientError;
-    return base::unexpected(
-        std::make_tuple("Failed to redeem payment tokens", should_retry));
+    return UrlResponseError(
+        {.message = "Failed to redeem payment tokens",
+         .should_retry = HttpStatusCodeClass(mojom_url_response.code) !=
+                         HttpStatusCodeClassType::kClientError});
   }
 
   return base::ok();

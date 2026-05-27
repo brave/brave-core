@@ -267,6 +267,7 @@ static_library("internal") {
     "account/utility/tokens_feature.h",
     "account/utility/tokens_util.cc",
     "account/utility/tokens_util.h",
+    "account/utility/url_response_result.h",
     "account/wallet/wallet_info.cc",
     "account/wallet/wallet_info.h",
     "account/wallet/wallet_util.cc",
