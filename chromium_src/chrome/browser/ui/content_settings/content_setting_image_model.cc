@@ -27,7 +27,7 @@ void ContentSettingImageModel::GetIconFromType(
     raw_ptr<const gfx::VectorIcon>* icon,
     raw_ptr<const gfx::VectorIcon>* badge) {
   if (type == ContentSettingsType::AUTOPLAY) {
-    *badge = (blocked ? &vector_icons::kBlockedBadgeIcon
+    *badge = (blocked ? &vector_icons::kBlockedBadgeCustomIcon
                       : &gfx::VectorIcon::EmptyIcon());
     *icon = &kAutoplayStatusIcon;
   } else {
