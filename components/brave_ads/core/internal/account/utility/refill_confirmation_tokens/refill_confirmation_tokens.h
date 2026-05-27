@@ -9,12 +9,12 @@
 #include <cstddef>
 #include <optional>
 #include <string>
-#include <tuple>
 
 #include "base/check_op.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/refill_confirmation_tokens_delegate.h"
+#include "brave/components/brave_ads/core/internal/account/utility/url_response_result.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/token.h"
@@ -52,15 +52,13 @@ class RefillConfirmationTokens final {
   void RequestSignedTokens();
   void RequestSignedTokensCallback(
       const mojom::UrlResponseInfo& mojom_url_response);
-  base::expected<void, std::tuple<std::string, /*should_retry*/ bool>>
-  HandleRequestSignedTokensUrlResponse(
+  UrlResponseResult<void> HandleRequestSignedTokensUrlResponse(
       const mojom::UrlResponseInfo& mojom_url_response);
 
   void GetSignedTokens();
   void GetSignedTokensCallback(
       const mojom::UrlResponseInfo& mojom_url_response);
-  base::expected<void, std::tuple<std::string, /*should_retry*/ bool>>
-  HandleGetSignedTokensUrlResponse(
+  UrlResponseResult<void> HandleGetSignedTokensUrlResponse(
       const mojom::UrlResponseInfo& mojom_url_response);
   void ParseAndRequireCaptcha(const base::DictValue& dict) const;
 
