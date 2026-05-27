@@ -6,6 +6,8 @@
 import { css } from 'styled-components'
 import { sanitizeImageURL } from './string-utils'
 
+export const systemFontStack = `system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif`
+
 export const sizeCssValue = (size: string | number) => {
   return typeof size === 'number'
     ? `${size}px` // use pixels for numeric values

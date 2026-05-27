@@ -53,7 +53,6 @@ export const AccountCircle = styled.div<{
 `
 
 export const AccountNameText = styled.span`
-  font-family: 'Poppins';
   font-style: normal;
   font-size: 14px;
   line-height: 24px;
@@ -62,7 +61,6 @@ export const AccountNameText = styled.span`
 `
 
 export const AccountAddressText = styled.span`
-  font-family: 'Poppins';
   font-style: normal;
   font-size: 12px;
   line-height: 18px;
@@ -71,7 +69,6 @@ export const AccountAddressText = styled.span`
 `
 
 export const BalanceText = styled.span`
-  font-family: 'Poppins';
   font-style: normal;
   font-size: 12px;
   line-height: 18px;

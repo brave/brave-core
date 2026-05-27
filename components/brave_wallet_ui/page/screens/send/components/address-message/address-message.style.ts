@@ -21,7 +21,6 @@ export const Wrapper = styled(Row)<{ type?: 'error' | 'warning' | 'info' }>`
 `
 
 export const LearnMoreLink = styled.a`
-  font-family: 'Poppins';
   font-style: normal;
   font-weight: 600;
   font-size: 12px;
@@ -41,7 +40,6 @@ export const HowToSolveButton = styled(WalletButton)`
   outline: none;
   background: none;
   border: none;
-  font-family: 'Poppins';
   font-style: normal;
   font-weight: 600;
   font-size: 12px;

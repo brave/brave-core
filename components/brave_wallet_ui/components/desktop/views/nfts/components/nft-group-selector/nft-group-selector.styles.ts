@@ -28,7 +28,6 @@ export const DropdownButton = styled(WalletButton)`
 
 export const DropdownButtonText = styled.span`
   color: ${leo.color.text.interactive};
-  font-family: Poppins;
   font-size: 14px;
   font-style: normal;
   font-weight: 600;
@@ -41,7 +40,6 @@ export const DropdownButtonLabel = styled.span`
   align-items: center;
   justify-content: center;
   color: ${leo.color.primary[50]};
-  font-family: Poppins;
   font-size: 11px;
   font-style: normal;
   font-weight: 600;
@@ -87,7 +85,6 @@ export const DropDownItem = styled(WalletButton)`
   padding: 0px 8px;
   align-items: center;
   gap: 8px;
-  font-family: Poppins;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;

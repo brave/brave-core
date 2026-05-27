@@ -22,7 +22,6 @@ export const NetworkFeeContainer = styled.div`
 `
 
 export const NetworkFeeTitle = styled.div`
-  font-family: 'Poppins';
   font-style: normal;
   font-weight: 500;
   font-size: 12px;

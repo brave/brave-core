@@ -42,7 +42,6 @@ export const Header = styled.div`
 `
 
 export const Title = styled.span`
-  font-family: 'Poppins';
   font-style: normal;
   font-weight: 600;
   font-size: 18px;

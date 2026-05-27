@@ -11,7 +11,6 @@ import { ScrollableColumn as ScrollableCol } from '../../../../components/shared
 
 export const GroupingText = styled.h3`
   color: ${leo.color.text.tertiary};
-  font-family: 'Inter', 'Poppins';
   font-size: 12px;
   font-style: normal;
   font-weight: 600;
@@ -20,7 +19,6 @@ export const GroupingText = styled.h3`
 
 export const SelectAllText = styled.a`
   color: ${leo.color.text.interactive};
-  font-family: 'Poppins';
   font-size: 12px;
   font-style: normal;
   font-weight: 600;

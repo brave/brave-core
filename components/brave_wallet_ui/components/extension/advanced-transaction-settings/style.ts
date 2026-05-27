@@ -24,7 +24,6 @@ export const FormColumn = styled.div`
 `
 
 export const InputLabel = styled.span`
-  font-family: Poppins;
   font-size: 14px;
   line-height: 20px;
   font-weight: 500;
@@ -41,7 +40,6 @@ export const Input = styled.input`
   box-shadow: none;
   border: ${(p) => `1px solid ${p.theme.color.interactive08}`};
   border-radius: 4px;
-  font-family: Poppins;
   font-style: normal;
   font-size: 13px;
   line-height: 20px;
@@ -50,7 +48,6 @@ export const Input = styled.input`
   margin-bottom: 8px;
   color: ${(p) => p.theme.color.text01};
   ::placeholder {
-    font-family: Poppins;
     font-style: normal;
     font-size: 12px;
     letter-spacing: 0.01em;
@@ -81,7 +78,6 @@ export const ButtonRow = styled.div`
 `
 
 export const InfoText = styled.span`
-  font-family: Poppins;
   letter-spacing: 0.01em;
   font-size: 12px;
   color: ${(p) => p.theme.color.text03};

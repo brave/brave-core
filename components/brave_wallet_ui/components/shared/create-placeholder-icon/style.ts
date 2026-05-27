@@ -48,7 +48,6 @@ export const IconWrapper = styled.div<{
 export const PlaceholderText = styled.span<{
   size: AssetIconSizes
 }>`
-  font-family: Poppins;
   font-size: ${(p) =>
     p.size === 'big' ? '16px' : p.size === 'tiny' ? '10px' : '12px'};
   font-weight: 600;

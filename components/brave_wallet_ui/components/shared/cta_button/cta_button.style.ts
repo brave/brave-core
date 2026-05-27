@@ -29,7 +29,6 @@ export const Button = styled(WalletButton)`
 `
 
 export const ButtonText = styled.span`
-  font-family: 'Poppins';
   font-style: normal;
   font-weight: 600;
   font-size: 14px;

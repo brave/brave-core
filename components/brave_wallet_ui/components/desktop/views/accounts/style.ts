@@ -38,7 +38,6 @@ export const TransactionsWrapper = styled(Column)`
 `
 
 export const SectionTitle = styled.span`
-  font-family: Poppins;
   font-size: 14px;
   line-height: 24px;
   font-weight: 600;

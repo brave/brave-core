@@ -78,6 +78,7 @@ static_files = [
   # Note: On Android, we replace this with the default theme, as it doesn't
   # support ThemeSource.
   "css/nala.css",
+  "css/wallet_typography.css",
 ]
 
 if (include_polymer) {

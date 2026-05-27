@@ -20,7 +20,6 @@ export const StatValue = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  font-family: 'Poppins';
   font-style: normal;
   font-weight: 500;
   font-size: 24px;
@@ -35,7 +34,6 @@ export const StatLabel = styled.div`
   display: flex;
   align-items: center;
   text-align: center;
-  font-family: 'Poppins';
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -54,7 +52,6 @@ export const Row = styled.div`
 
 export const Currency = styled.sup`
   display: flex;
-  font-family: 'Poppins';
   font-style: normal;
   font-weight: 500;
   font-size: 12px;
