@@ -68,6 +68,17 @@ void ResourceComponentRegistrar::RegisterResourceComponent(
   }
 }
 
+void ResourceComponentRegistrar::UnregisterResourceComponent() {
+  if (!resource_component_id_) {
+    return;
+  }
+
+  Unregister();
+  OnComponentUnregistered(*resource_component_id_);
+  last_install_dir_.reset();
+  resource_component_id_.reset();
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 void ResourceComponentRegistrar::OnComponentReady(

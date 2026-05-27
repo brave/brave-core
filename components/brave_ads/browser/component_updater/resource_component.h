@@ -28,7 +28,7 @@ static_assert(BUILDFLAG(ENABLE_BRAVE_ADS));
 
 namespace brave_ads {
 
-class ResourceComponent final : public ResourceComponentRegistrarDelegate {
+class ResourceComponent : public ResourceComponentRegistrarDelegate {
  public:
   explicit ResourceComponent(
       brave_component_updater::BraveComponent::Delegate* delegate);
@@ -41,8 +41,10 @@ class ResourceComponent final : public ResourceComponentRegistrarDelegate {
   void AddObserver(ResourceComponentObserver* observer);
   void RemoveObserver(ResourceComponentObserver* observer);
 
-  void RegisterCountryComponent(const std::string& country_code);
-  void RegisterLanguageComponent(const std::string& language_code);
+  virtual void RegisterCountryComponent(const std::string& country_code);
+  virtual void UnregisterCountryComponent();
+  virtual void RegisterLanguageComponent(const std::string& language_code);
+  virtual void UnregisterLanguageComponent();
 
   std::optional<base::FilePath> MaybeGetPath(const std::string& id,
                                              int version);
