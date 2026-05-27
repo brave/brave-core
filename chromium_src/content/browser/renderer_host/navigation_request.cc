@@ -34,8 +34,6 @@ GURL GetTopDocumentGURL(content::FrameTreeNode* frame_tree_node) {
 }  // namespace
 
 #define BRAVE_ONREQUESTREDIRECTED_MAYBEHIDEREFERRER                   \
-  BrowserContext* browser_context =                                   \
-      frame_tree_node_->navigator().controller().GetBrowserContext(); \
   GetContentClient()->browser()->MaybeHideReferrer(                   \
       browser_context, common_params_->url,                           \
       GetTopDocumentGURL(frame_tree_node_), &common_params_->referrer);
