@@ -101,20 +101,19 @@ std::optional<SolanaInstruction> SolanaInstruction::FromCompiledInstruction(
     uint8_t num_of_write_indexes,
     uint8_t num_of_read_indexes) {
   const auto checked_writable_signed =
-      base::CheckedNumeric<int>(message_header.num_required_signatures) -
+      base::CheckedNumeric<uint8_t>(message_header.num_required_signatures) -
       message_header.num_readonly_signed_accounts;
   const auto checked_writable_unsigned =
-      base::CheckedNumeric<int>(static_accounts.size()) -
+      base::CheckedNumeric<uint8_t>(static_accounts.size()) -
       message_header.num_required_signatures -
       message_header.num_readonly_unsigned_accounts;
   if (!checked_writable_signed.IsValid() ||
-      !checked_writable_unsigned.IsValid() ||
-      checked_writable_signed.ValueOrDie() < 0 ||
-      checked_writable_unsigned.ValueOrDie() < 0) {  // invalid message header
+      !checked_writable_unsigned.IsValid()) {
     return std::nullopt;
   }
-  const int num_writable_signed_accounts = checked_writable_signed.ValueOrDie();
-  const int num_writable_unsigned_accounts =
+  const uint8_t num_writable_signed_accounts =
+      checked_writable_signed.ValueOrDie();
+  const uint8_t num_writable_unsigned_accounts =
       checked_writable_unsigned.ValueOrDie();
 
   // Program ID of compiled_instruction should be in static accounts.
