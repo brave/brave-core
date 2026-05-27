@@ -7,9 +7,18 @@ import("//brave/components/brave_origin/buildflags/buildflags.gni")
 
 declare_args() {
   # On macOS, vpn is not available w/o signing.
-  enable_brave_vpn =
+  # Build with Brave VPN architecture 1.0 support.
+  enable_brave_vpn_v1 =
       (is_win || is_android || is_mac || is_ios) && !is_brave_origin_branded
+
+  # Build with Brave VPN architecture 2.0 support.
+  enable_brave_vpn_v2 = false
 }
+
+# Brave VPN is enabled, if at least one VPN architecture is enabled.
+# Both architectures can be enabled at compile time; in that case, the
+# right architecture will be selected at runtime.
+enable_brave_vpn = enable_brave_vpn_v1 || enable_brave_vpn_v2
 
 declare_args() {
   # vpn panel is desktop specific UI.
@@ -17,9 +26,4 @@ declare_args() {
 
   # Wireguard is available only on Windows.
   enable_brave_vpn_wireguard = (is_mac || is_win) && enable_brave_vpn
-}
-
-declare_args() {
-  # vpn 2.0 build flags
-  enable_brave_vpn2_deps = false
 }
