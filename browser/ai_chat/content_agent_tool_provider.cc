@@ -36,7 +36,7 @@
 #include "chrome/browser/ui/navigator/browser_navigator.h"
 #include "chrome/common/actor.mojom.h"
 #include "chrome/common/actor/action_result.h"
-#include "chrome/common/actor/task_id.h"
+#include "components/actor/core/task_id.h"
 #include "components/actor/core/task_source_info.h"
 #include "components/optimization_guide/content/browser/page_content_proto_provider.h"
 #include "components/tabs/public/tab_interface.h"
