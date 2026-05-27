@@ -109,7 +109,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-#include "brave/browser/brave_vpn/vpn_utils.h"
+#include "brave/browser/brave_vpn/vpn_connection_manager_utils.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
 #endif
 
