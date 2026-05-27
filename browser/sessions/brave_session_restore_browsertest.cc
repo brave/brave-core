@@ -21,6 +21,7 @@
 #include "chrome/browser/sessions/session_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -360,5 +361,99 @@ IN_PROC_BROWSER_TEST_F(BraveTreeTabSessionRestoreBrowserTest,
               << "brave_tree_parent_node_id '" << *parent_id
               << "' has no matching brave_tree_node_id in the session";
         }
+      }));
+}
+
+// Verifies that moving a child tab before its parent reparents it to a root
+// node and that both the incremental (AddTabExtraData) path and the full
+// rebuild path write an empty kBraveTreeParentNodeIdKey for the moved tab.
+IN_PROC_BROWSER_TEST_F(BraveTreeTabSessionRestoreBrowserTest,
+                       ReparentedChildBecomesRootInSession) {
+  ASSERT_TRUE(brave_tab_strip_model()->tree_model());
+
+  // Build A (root at 0) -> B (child of A at 1).
+  auto* tab_a = browser()->tab_strip_model()->GetTabAtIndex(0);
+  {
+    auto tab_b = std::make_unique<tabs::TabModel>(
+        content::WebContents::Create(
+            content::WebContents::CreateParams(browser()->profile())),
+        browser()->tab_strip_model());
+    tab_b->set_opener(tab_a);
+    brave_tab_strip_model()->AddTab(
+        std::move(tab_b), -1, ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  }
+  content::WebContents* wc_b =
+      browser()->tab_strip_model()->GetWebContentsAt(1);
+  ASSERT_TRUE(wc_b);
+
+  // Navigate B so it has a committed entry and is not filtered out during
+  // session save.
+  ASSERT_TRUE(content::NavigateToURL(wc_b, GURL("about:blank")));
+
+  // Reparent B to a root by moving it before A.
+  browser()->tab_strip_model()->MoveWebContentsAt(1, 0, false);
+
+  // Both A and B should now have empty parent IDs (both are roots). Both A and
+  // B should now have empty parent IDs (both are roots).
+  auto check_both_roots =
+      [](std::vector<std::unique_ptr<sessions::SessionWindow>> windows) {
+        ASSERT_EQ(1u, windows.size());
+        ASSERT_EQ(2u, windows[0]->tabs.size());
+        for (const auto& tab : windows[0]->tabs) {
+          const auto* parent_id =
+              base::FindOrNull(tab->extra_data, kBraveTreeParentNodeIdKey);
+          EXPECT_TRUE(parent_id && parent_id->empty())
+              << "after reparenting B before A, both tabs should be roots";
+        }
+      };
+
+  // Incremental path: written by the kNodeReparented AddTabExtraData call.
+  VerifyExtraData(base::BindOnce(check_both_roots));
+  // Rebuild path: written by BuildCommandsForBrowser scanning the live tree.
+  VerifyExtraDataAfterFullRebuild(base::BindOnce(check_both_roots));
+}
+
+// Verifies that when a child tab is closed the session contains only the
+// remaining parent tab and that it is still recorded as a root node.
+IN_PROC_BROWSER_TEST_F(BraveTreeTabSessionRestoreBrowserTest,
+                       ClosedChildTabRemovedFromSession) {
+  ASSERT_TRUE(brave_tab_strip_model()->tree_model());
+
+  // Build A (root at 0) -> B (child of A at 1). Navigate B so it persists.
+  auto* tab_a = browser()->tab_strip_model()->GetTabAtIndex(0);
+  {
+    auto tab_b = std::make_unique<tabs::TabModel>(
+        content::WebContents::Create(
+            content::WebContents::CreateParams(browser()->profile())),
+        browser()->tab_strip_model());
+    tab_b->set_opener(tab_a);
+    brave_tab_strip_model()->AddTab(
+        std::move(tab_b), -1, ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  }
+  content::WebContents* wc_b =
+      browser()->tab_strip_model()->GetWebContentsAt(1);
+  ASSERT_TRUE(wc_b);
+  ASSERT_TRUE(content::NavigateToURL(wc_b, GURL("about:blank")));
+
+  // Close B. SessionService::TabClosed() removes B from the session.
+  browser()->tab_strip_model()->CloseWebContentsAt(1,
+                                                   TabCloseTypes::CLOSE_NONE);
+
+  // Only A should remain in the session, and it must be a root.
+  VerifyExtraData(base::BindOnce(
+      [](std::vector<std::unique_ptr<sessions::SessionWindow>> windows) {
+        ASSERT_EQ(1u, windows.size());
+        ASSERT_EQ(1u, windows[0]->tabs.size());
+
+        const auto& tab = windows[0]->tabs[0];
+        const auto* node_id =
+            base::FindOrNull(tab->extra_data, kBraveTreeNodeIdKey);
+        EXPECT_TRUE(node_id && !node_id->empty())
+            << "surviving tab should still carry kBraveTreeNodeIdKey";
+
+        const auto* parent_id =
+            base::FindOrNull(tab->extra_data, kBraveTreeParentNodeIdKey);
+        EXPECT_TRUE(parent_id && parent_id->empty())
+            << "surviving tab is the root; its parent ID should be empty";
       }));
 }
