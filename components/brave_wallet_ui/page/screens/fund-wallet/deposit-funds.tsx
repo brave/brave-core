@@ -23,6 +23,7 @@ import {
 import { getLocale } from '../../../../common/locale'
 import { makeNetworkAsset } from '../../../options/asset-options'
 import {
+  dedupeAssetsByIdKey,
   getAssetIdKey,
   sortNativeAndAndBatAssetsToTop,
   tokenNameToNftCollectionName,
@@ -330,10 +331,12 @@ function AssetSelection() {
     const sortedFungibleAssets = sortNativeAndAndBatAssetsToTop(
       tokensList,
     ).filter((token) => token.contractAddress && !token.tokenId)
-    return mainnetNetworkAssetsList.concat(
-      sortedFungibleAssets,
-      testnetAssetsList,
-      nftCollectionAssets,
+    return dedupeAssetsByIdKey(
+      mainnetNetworkAssetsList.concat(
+        sortedFungibleAssets,
+        testnetAssetsList,
+        nftCollectionAssets,
+      ),
     )
   }, [
     mainnetNetworkAssetsList,
