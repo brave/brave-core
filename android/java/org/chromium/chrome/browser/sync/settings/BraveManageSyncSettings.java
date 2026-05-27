@@ -102,8 +102,6 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
         removePreferenceByKey(PREF_ACCOUNT_SECTION_HEADER);
         removePreferenceByKey(PREF_ACCOUNT_SECTION_FOOTER);
         removePreferenceByKey(PREF_ACCOUNT_ADVANCED_HEADER);
-        Preference prefReadingList = findPreference(PREF_ACCOUNT_SECTION_READING_LIST_TOGGLE);
-        if (prefReadingList != null) prefReadingList.setVisible(false);
 
         Preference prefPayments = findPreference(PREF_ACCOUNT_SECTION_PAYMENTS_TOGGLE);
         if (prefPayments != null) prefPayments.setVisible(false);
