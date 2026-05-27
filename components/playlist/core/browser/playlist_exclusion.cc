@@ -98,17 +98,20 @@ void PlaylistExclusions::OnPlaylistExclusionsLoaded(
   rules_.clear();
   is_ready_ = false;
 
+  // Bail out if the component file was not loaded.
   if (contents.empty()) {
     return;
   }
 
   std::optional<base::DictValue> root =
       base::JSONReader::ReadDict(contents, base::JSON_PARSE_RFC);
+  // Skip malformed JSON payloads.
   if (!root) {
     return;
   }
 
   const base::ListValue* rules_list = root->FindList(kRules);
+  // Skip payloads without a rules list.
   if (!rules_list) {
     return;
   }
