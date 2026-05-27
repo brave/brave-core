@@ -1833,7 +1833,7 @@ void BraveWalletService::GenerateReceiveAddress(
   }
 
   if (account_id->coin == mojom::CoinType::DOT) {
-    // TODO(https://github.com/brave/brave-browser/issues/34405): Implement
+    // TODO(https://github.com/brave/brave-browser/issues/55797): Implement
     // custom modal for Polkadot.
     std::move(callback).Run("", WalletInternalErrorMessage());
     return;
