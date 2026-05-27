@@ -156,7 +156,6 @@ std::string user_name;
 
 - **Opening brace** goes at the end of the previous line (K&R style)
 - **Continuation lines** should be indented 4 spaces
-- **No `{}` when not required** in C++ (e.g., single-line if/for bodies) — **Note:** This is a Brave-specific deviation from upstream Chromium, which requires `{}` braces on all conditionals and loops. Follow Brave convention.
 - **Do NOT enforce include order** — include ordering is handled by code formatting tools and lint, not by code review
 
 ---
