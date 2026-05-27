@@ -11,6 +11,10 @@
 
 namespace oblivious_http {
 
+namespace {
+constexpr size_t kMaxEncryptChunkSize = 16384;
+}  // namespace
+
 ObliviousHttpChunkProcessor::ObliviousHttpChunkProcessor(
     mojo::PendingRemote<network::mojom::ObliviousHttpChunkClient>
         chunk_client_remote,
@@ -55,12 +59,19 @@ ObliviousHttpChunkProcessor::Create(
 std::optional<std::string> ObliviousHttpChunkProcessor::EncryptRequest(
     std::string_view plaintext) {
   CHECK(ohttp_client_);
-  auto result =
-      ohttp_client_->EncryptRequestChunk(plaintext, /*is_final_chunk=*/true);
-  if (!result.ok()) {
-    return std::nullopt;
+
+  std::string result;
+  for (size_t offset = 0; offset < plaintext.size();
+       offset += kMaxEncryptChunkSize) {
+    const bool is_final = offset + kMaxEncryptChunkSize >= plaintext.size();
+    const auto chunk = plaintext.substr(offset, kMaxEncryptChunkSize);
+    auto encrypted = ohttp_client_->EncryptRequestChunk(chunk, is_final);
+    if (!encrypted.ok()) {
+      return std::nullopt;
+    }
+    result += std::move(*encrypted);
   }
-  return std::move(*result);
+  return result;
 }
 
 void ObliviousHttpChunkProcessor::OnDataReceived(std::string_view data,

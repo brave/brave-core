@@ -161,12 +161,13 @@ class ObliviousHttpChunkProcessorTest
     return result;
   }
 
-  void EncryptRequestAndGatewayDecrypt() {
-    auto encrypted_request = processor_->EncryptRequest(kTestRequestBody);
+  void EncryptRequestAndGatewayDecrypt(
+      std::string_view request_body = kTestRequestBody) {
+    auto encrypted_request = processor_->EncryptRequest(request_body);
     ASSERT_TRUE(encrypted_request.has_value());
     ASSERT_TRUE(
         gateway_->DecryptRequest(*encrypted_request, /*end_stream=*/true).ok());
-    EXPECT_EQ(kTestRequestBody, received_client_request_body_);
+    EXPECT_EQ(request_body, received_client_request_body_);
   }
 
   // Drives a full round-trip: encrypts kTestRequestBody, feeds the simulated
@@ -231,6 +232,18 @@ TEST_F(ObliviousHttpChunkProcessorTest, Create_BadKeyConfig_ReturnsNull) {
 TEST_F(ObliviousHttpChunkProcessorTest,
        EncryptRequest_GatewayDecryptsCorrectly) {
   EncryptRequestAndGatewayDecrypt();
+}
+
+TEST_F(ObliviousHttpChunkProcessorTest,
+       EncryptRequest_LargeRequest_GatewayDecryptsCorrectly) {
+  constexpr std::string_view kAlphabet = "abcdefghijklmnopqrstuvwxyz";
+  constexpr size_t kLargeRequestSize = 50000;
+  std::string large_request;
+  large_request.reserve(kLargeRequestSize);
+  while (large_request.size() < kLargeRequestSize) {
+    large_request += kAlphabet;
+  }
+  EncryptRequestAndGatewayDecrypt(large_request);
 }
 
 TEST_F(ObliviousHttpChunkProcessorTest,
