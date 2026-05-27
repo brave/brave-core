@@ -194,20 +194,12 @@
 <translation id="6587448235155023666">ለውጦችዎ Brave በሚያስጀምሩበት ቀጣዩ ጊዜ ላይ ይተገበራሉ</translation>
 <translation id="8701563696941209024">አሁን እንደገና ያስጀምሩ</translation>
 <translation id="834487290629916192">በኋላ</translation>
-<translation id="4117451092682672487">ግላዊነት። ቀላል ተደርጓል።</translation>
-<translation id="7909375417585209817">Brave እንደ ነባሪ ሲሆን ጠቅ የሚያደርጉት አያንዳንዱ አገናኝ በBrave የግላዊነት ጥበቃዎች አማካኝነት ይከፍታል።</translation>
 <translation id="763369711159699222">Brave ይበልጥ የተሻለ እንዲሆን ያግዙ።</translation>
 <translation id="8025937231644975408">ከእርስዎ በጣም በምታደስዋቸው ትዕይንቶች ይንገሩን።</translation>
-<translation id="6718362830686703942">ብልሽት ወይም የማንቀሳቀስ ችግሮች ካጋጠምዎ፣ የምርመራ ሪፖርቶችን ይላኩ።</translation>
-<translation id="8616157231067364693">በብሬቭ ተጠቃሚዎች ምን አይነት ይዘቶች ጥቅም ላይ እንደሚውሉ፣ በግል እና ማንነትን በማያሳውቅ መንገድ አስተያየትዎን ያጋሩ።</translation>
 <translation id="2888496576732880897">እንዲጨመር ያግዙ Brave ፍለጋ</translation>
 <translation id="7198716519700700181">ሲስተም እንዳያቋርጥ ይከላከሉ።</translation>
 <translation id="7044431516245362795">ማኅበረሰብ የመግኛ ፕሮጀክት ውስጥ ገባችሁ የማህበረሰቡን ዝርዝር ለመስፋት እና የፍለጋን ውጤቶች እንዲሻሻል ያግዙ። <ph name="LEARN_MORE_START"/>ተጨማሪ ተማሩ.<ph name="LEARN_MORE_END"/></translation>
 <translation id="4847979153841887006">Brave ምልክት</translation>
-<translation id="1389386068457132299">በበስተኋላ ህትመት</translation>
-<translation id="5101985748360228609">ከላይ ሉሪ ግንባታ</translation>
-<translation id="5270920361877570459">ከታች ሉሪ ግንባታ</translation>
-<translation id="4021716437419160885">ወደ ታች ሸብልል</translation>
 <translation id="4767173360729868049">Brave ፍለጋን ይርዱ ምስል</translation>
 <translation id="8241918461631453498">ስርጭትን ይከላከሉ ምስል</translation>
 <translation id="8213310572767907663">Brave ማሻሻል ምስል</translation>
@@ -223,7 +215,6 @@
 <translation id="7256200875155794202"><ph name="BIG_TECH"/>እንዲሁም ሌሎች ማስታወቂያዎች እና መከታተያዎች ታግደዋል</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/>ማስታወቂያዎች &amp; መከታተያዎች ታግደዋል</translation>
 <translation id="8281886186245836920">ዝለል</translation>
-<translation id="6165508094623778733">በተጨማሪ ይወቁ</translation>
 <translation id="986879628471635371">ችግር ፈቺ አሰራርን መተግበር</translation>
 <translation id="5806601733251372221">የ Brave መከላከያዎች</translation>
 <translation id="8537217141725709400">ያግኙ <ph name="TOKEN"/>s</translation>
@@ -373,7 +364,7 @@
 <translation id="944340256927461196">በመሣሪያዎ ላይ ምንም እርምጃ አይታወቅም</translation>
 <translation id="2063044449012253966">በግል መስኮቶች ላይ ያገኛቸውን ጣቢያዎች በታሪክዎ ውስጥ አይመጡም። ኩኪዎች፣ ፎርም መረጃ እና የጣቢያ መረጃ አንድ ግል መስኮት ሲገባ እንዲሰርዝ ይሄድናል።</translation>
 <translation id="7395764193745523646">የድር ፊዝብለት</translation>
-<translation id="8670344404057978375">እንኳንሆነ በማስታከኝ መስኮት ውስጥ ስንኳ የመቃቀብ እንቅስቃሴዎ ለኢኤስፒን አፋረሰምተው ሊሆን ይችላል፤ ለአውትራ ክኒሽነት ግምጋም ወይም ለሥራ መሳሪያ (እናንተ እንዲያስተውሉኝ ሥራ መሳሪያ ከሆነ ኔትወርኮ፣ ንግም ሊሆን ይችላል።)</translation>
+<translation id="8435098045013317895">በግል መስኮቶች ውስጥ እንኳን—የእርስዎ የአሰሳ እንቅስቃሴ አሁንም ለISP፣ ለኔትወርክ ተመልካቾች ወይም ለቀጣሪዎ (የስራ ማሽን/ኔትወርክ እየተጠቀሙ ከሆነ) ሊታይ እንደሚችል ልብ ይበሉ።</translation>
 <translation id="1413177583895309156">የ Brave VPN የአገኛቸውን እናቢዎችን ይምርጥ በሚሆንበትን ጊዜ</translation>
 <translation id="3974348661685061050">ነጻ ሞክር ለ7 ቀናት</translation>
 <translation id="5789441016350810005">አሳሹ በስተጀርባ እያሉ የተላኩ የ Brave ማስታወቂያዎች</translation>
@@ -514,6 +505,7 @@
 <translation id="2718046830255553131">የግላዊነት ሪፖርቶች ውሂብ ጠፍቷል።</translation>
 <translation id="8376263745431603066">የ "ማታ ሁነታ" አንቃ (የሙከራ)</translation>
 <translation id="1383876407941801731">ፍለጋ</translation>
+<translation id="6165508094623778733">በተጨማሪ ይወቁ</translation>
 <translation id="13296465911709339">የእርስዎ ጽሑፍ ወደ ቅንጥብ ሰሌዳው ተቀድቷል</translation>
 <translation id="2735834606413553397">የህዝብ አድራሻ ወደ ቅንጥብ ሰሌዳ ተቀድቷል።</translation>
 <translation id="2977461003134694205">የግላዊነት መረጃ</translation>
@@ -970,23 +962,21 @@
 <translation id="7659483790930268440">የመፈለጊያ ሰንጠረዥ ጠቋሚ አድራሻ፦</translation>
 <translation id="5494920125229734069">ሁሉንም ይመርጣል</translation>
 <translation id="2361906291514218784">Leo AI</translation>
+<translation id="2935698011275148880">Brave መነሻ</translation>
 <translation id="944736176598169208">ሽልማቶች</translation>
 <translation id="1199170151481311646">ግላዊነትን የሚጠብቁ ትንታኔዎች</translation>
 <translation id="1706715315466634757">ኢ-መልእክት እንፋላዎች</translation>
-<translation id="738840791756723657">AI</translation>
 <translation id="6709133671862442373">ዜና</translation>
 <translation id="5990642573624858459">የስታቲስቲክስ ሪፖርት</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="2441719842399509963">ወደ ነባሪዎች አካል አስጀምር</translation>
-<translation id="4922034974043704366">ይህ ባህሪ የተከፈተው እርስዎ መምረጥዎን በመነሳት ነው</translation>
 <translation id="2587535830241068901">አሳሳቢነትን ሳትጣስም Brave አሳልፍ</translation>
-<translation id="7235314227387539944">Brave Origin ሁሉንም ለ Brave እንደ ንግድ ድጋፍ ሰጪ ባህሪያት ያልፈለጉ ግን Brave ብቻ የሚሰጠውን ግላዊነት ሌላ ማንም ምንም ባይ ሊጣሉ ብለው የሚሰዉ ተጠቃሚዎች የ browser ክፋይ ነው። Origin ተጠቃሚዎች ከ industry-leading privacy፣ adblock፣ speed (via Shields) እንዲሁም መደበኛ software updates፣ Chromium patches፣ security and privacy improvements ሊያገኙ ይቀጥላሉ። Origin ከ browser ውስጥ ሌሎች አብዛኞቹን ባህሪያት ይወስዳል።</translation>
-<translation id="7941943775131052130">Brave Origin ግዥ Brave ፍለጋ Premium እንዲሁም መድረሻ ይሸፍናል ስለ Origin ከBrave ፍለጋ ውጤት ገጽ ላይ ማስታወቂያዎች ያስወግዳል።</translation>
+<translation id="123297831435065577">Brave Origin የ browser ክፍያ ሰሪ የተደረገ ስሪት ነው ሁሉንም ለ Brave እንደ ንግድ ድጋፍ ሰጪ ባህሪያት ላልፈለጉ ግን Brave ብቻ የሚሰጠውን ግላዊነት ለሚፈልጉ ተጠቃሚዎች። Origin ተጠቃሚዎች ከኢንዱስትሪ መሪ ግላዊነታችን፣ adblock፣ እና ፍጥነት (በ Shields በኩል) እንዲሁም መደበኛ የሶፍትዌር ዝመናዎች፣ Chromium ጥገናዎች፣ እና ደህንነት እና ግላዊነት ማሻሻያዎች መጠቀማቸውን ይቀጥላሉ።</translation>
 <translation id="2573819149217596923">Brave ባህሪያትን ማስቀየር</translation>
 <translation id="7415416427817229128">Brave ባህሪያት ነቅ ወይም ማሰናከል ለውጦችን ለመተግበር browser ዳግም እንዲጀምር ያስፈልገዋል። አሁን ዳግም ልጀምሩ?</translation>
 <translation id="2256115617011615191">አሁን ዳግም አስጀምር</translation>
 <translation id="2160089182263405907">ባህሪያትን መጠdisable ያደርጋል</translation>
-<translation id="3362364767724670721">Brave ባህሪያትን በሰናይ መንገድ ማንቃት ወይም መጠገን ለውጠ ተግባር ለመተግበር ሲመጣ ብራውዘሩ እንደገና ሊጀመር ይገባል። ምክንያቱ Origin ማሻሻሉ ሲያጠናቅቅ <ph name="BEGIN_BOLD"/>አሁን ዳግም ጀምር<ph name="END_BOLD"/> አንዴ ብታመልክት።</translation>
+<translation id="7530313002494358590">የBrave ባህሪን ማንቃት ወይም ማቦዘን ለውጦቹን ለመተግበር አሳሹን እንደገና ማስጀመር ይጠይቃል። Brave Origin ማዘመኑን እንደጨረሰ እባክዎ <ph name="BEGIN_BOLD"/>አሁን እንደገና አስጀምር<ph name="END_BOLD"/> የሚለውን ይንኩ።</translation>
 <translation id="1028940738207645746">እርግጠኛ ነዎት ሁሉንም ቅንጅቶች ወደ ነባሪ ሊመልሱ ይፈልጋሉ?</translation>
 <translation id="5939518447894949180">ዳግም አስጀምር</translation>
 <translation id="8554205386170195281">ግዥ</translation>
@@ -1117,9 +1107,9 @@
 <translation id="6261139507111008244">ተልእኮአችንን እና የክፍት ምንጭ ሥራችንን ደግፉ</translation>
 <translation id="6073373503121903099">በShields ላይ የተመሰረተ ዝቅተኛ የbrowser አገልግሎት ተገጣጣሚ (UI)</translation>
 <translation id="2267973897341040743">ዋና የመሳሰሉትን መከላከያ ፣ ፕራይቬሲ እና ፍጥነት ያኑሩ</translation>
-<translation id="3339535734679532460">አንድ ጊዜ ግዥ፣ ተጨማሪ ምዝገባ ወጪ የለም</translation>
-<translation id="2805615640226281689">አንድ ጊዜ ግዥ</translation>
-<translation id="261433018299584676">መግቢያ ኮድ ይግኙ</translation>
+<translation id="4059093523966730868">አንድ ጊዜ ግዥ በሁሉም መሣሪያዎችዎ ላይ በተደጋጋሚ ሊነቃ ይችላል</translation>
+<translation id="7006681677649762716">አንድ ጊዜ ግዥ</translation>
+<translation id="8707617004598499947">Brave Origin ግዥን ያረጋግጡ</translation>
 <translation id="1943432128510653496">የይለፍ ቃላትን አስቀምጥ</translation>
 <translation id="2100273922101894616">በራስ-ግባ</translation>
 <translation id="363596933471559332">የተከማቹ ምስክርነቶችን በመጠቀም በራስ-ሰር ወደ የድር ጣቢያዎች መለያ ይግቡ። ባህሪው ሲጠፋ ወደ አንድ ድር ጣቢያ ከመግባትዎ በፊት ማረጋገጫ ይጠየቃሉ።</translation>
@@ -1182,12 +1172,14 @@
 <translation id="7400418766976504921">URL</translation>
 <translation id="6410668567036790476">ፍለጋ ፕሮግራም ጨምር</translation>
 <translation id="6289878295410648689">የፍለጋ url ን ይፃፉ እና ጥያቄውን ከ <ph name="SPECIAL_SYMBOL"/>. ጋር ይተኩ።</translation>
-<translation id="8943582268084103903">ለምሳሌ: https://youtube.com/search?q=<ph name="SPECIAL_SYMBOL"/>. ጣቢያው OpenSearch ን ይደግፋል ከሆነ ይህን መስክ በሚያርትዑበት ጊዜ ራስ-ሰር ለመጨመር ምርጫ ይሰጣል።</translation>
+<translation id="1298325705808878139">ለምሳሌ፡ https://youtube.com/search?q=<ph name="SPECIAL_SYMBOL"/>።</translation>
 <translation id="8706939021136180678">URL ድልdl ነው።</translation>
-<translation id="6528099556282059181">ፍለጋ ፕሮግራም አስቀድሞ ታክሏል።</translation>
+<translation id="5144960943371551167">ርዕስ ፊደላትን፣ ቁጥሮችን እና ክፍተቶችን ብቻ ሊይዝ ይችላል።</translation>
+<translation id="7361775378755455309">በዚህ ቁልፍ ቃል ያለው ፍለጋ ሞተር አስቀድሞ አለ።</translation>
 <translation id="463451857046640291">ፍለጋ ፕሮግራም ማከል ተሳናል።</translation>
 <translation id="1229671956956864948">ፍለጋ ፕሮግራም ማሻሻል ተሳናል።</translation>
 <translation id="1462771969120037152">ፍለጋ ፕሮግራም ማጥፋት ተሳናል። ለመሰረዝ ለሚሞክሩት ፍለጋ ፕሮግራም ነባሪ ሆኖ ሊሆን ይችላል።</translation>
 <translation id="1079140196216383600">ጸደይ ፍለጋ ፕሮግራም 삭제</translation>
 <translation id="525276572490219787">"<ph name="SEARCH_ENGINE_NAME"/>" መሰረዝ ይፈልጋሉ? ይህ እርምጃ ሊቀለበስ አይችልም።</translation>
+<translation id="6406506848690869874">አመሳስል</translation>
 </translationbundle>

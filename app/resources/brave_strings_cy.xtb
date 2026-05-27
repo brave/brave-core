@@ -56,7 +56,6 @@ Mae'n bosib na fydd rhai nodweddion ar gael ac ni fydd newidiadau o ran dewisiad
 <translation id="1902837727299679178">Mae Brave eisiau dileu eich data Rheolwr Cyfrineiriau. Teipiwch eich cyfrinair Windows i ganiatáu hyn.</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Mae eich gweinyddwr yn gofyn i chi ail-lansio Brave i gymhwyso diweddariad}=1{Mae eich gweinyddwr yn gofyn i chi ail-lansio Brave i gymhwyso diweddariad. Ni fydd eich ffenestr Anhysbys yn ailagor.}two{Mae eich gweinyddwr yn gofyn i chi ail-lansio Brave i gymhwyso diweddariad. Ni fydd eich # ffenestr Anhysbys yn ailagor.}few{Mae eich gweinyddwr yn gofyn i chi ail-lansio Brave i gymhwyso diweddariad. Ni fydd eich # ffenestr Anhysbys yn ailagor.}many{Mae eich gweinyddwr yn gofyn i chi ail-lansio Brave i gymhwyso diweddariad. Ni fydd eich # ffenestr Anhysbys yn ailagor.}other{Mae eich gweinyddwr yn gofyn i chi ail-lansio Brave i gymhwyso diweddariad. Ni fydd eich # ffenestr Anhysbys yn ailagor.}}</translation>
 <translation id="4449148723378534338">Adolygu rheoliadau diogelwch a phreifatrwydd allweddol yn Brave</translation>
-<translation id="5229247933547820267">I ofyn i'r Dull AI am eich tab heb adael y dudalen, mewngofnodwch i Brave. Byddwch hefyd yn cael eich cyfrineiriau a rhagor ar eich holl ddyfeisiau.</translation>
 <translation id="1640672724030957280">Wrthi'n lawrlwytho...</translation>
 <translation id="1680687534629375545">Gofyn i Chwilio Lluniau am y dudalen hon</translation>
 <translation id="509363484780540563">Gallwch ddefnyddio Brave unrhyw bryd y byddwch yn clicio dolenni mewn negeseuon, dogfennau ac apiau eraill. Bydd hefyd yn cael ei binio i'ch bar tasgau.</translation>
@@ -102,6 +101,9 @@ Mae'n bosib na fydd rhai nodweddion ar gael ac ni fydd newidiadau o ran dewisiad
 <translation id="2066690553719545730">Dangos Dull AI Bob Amser</translation>
 <translation id="2472891440303445472">Gwnaeth Brave rwystro'r lawrlwythiad hwn oherwydd bod y ffeil yn dwyllodrus a gallai wneud newidiadau annisgwyl i'ch dyfais</translation>
 <translation id="2054358978145431867">Byddwch yn gweld anogwr i roi cynnig ar <ph name="FEATURE_NAME"/> y tro nesaf y byddwch yn agor Brave iOS.</translation>
+<translation id="4315579854608498851">Mae Brave yn diffodd optimeiddio JavaScript pan fyddwch yn ymweld â gwefan am y tro cyntaf.
+
+Os nad yw'r dudalen hon yn gweithio fel y disgwylir, rhowch gynnig ar ganiatáu optimeiddio.</translation>
 <translation id="2726948994393234543">Bydd eich cyfrineiriau a data Brave arall a gadwyd gennych yn eich Cyfrif Brave yn cael eu tynnu o'r ddyfais hon. I'w defnyddio eto yn Brave, mewngofnodwch eto.</translation>
 <translation id="4375530476448642348">{COUNT,plural, =1{Mae eich sefydliad yn dileu data pori yn awtomatig pan nad yw Brave yn cael ei ddefnyddio am 1 funud. Gallai hyn gynnwys hanes, awtolenwi a lawrlwythiadau. Bydd eich tabiau yn aros ar agor.}zero{Mae eich sefydliad yn dileu data pori yn awtomatig pan nad yw Brave yn cael ei ddefnyddio am # munud. Gallai hyn gynnwys hanes, awtolenwi a lawrlwythiadau. Bydd eich tabiau yn aros ar agor.}two{Mae eich sefydliad yn dileu data pori yn awtomatig pan nad yw Brave yn cael ei ddefnyddio am # funud. Gallai hyn gynnwys hanes, awtolenwi a lawrlwythiadau. Bydd eich tabiau yn aros ar agor.}few{Mae eich sefydliad yn dileu data pori yn awtomatig pan nad yw Brave yn cael ei ddefnyddio am # munud. Gallai hyn gynnwys hanes, awtolenwi a lawrlwythiadau. Bydd eich tabiau yn aros ar agor.}many{Mae eich sefydliad yn dileu data pori yn awtomatig pan nad yw Brave yn cael ei ddefnyddio am # munud. Gallai hyn gynnwys hanes, awtolenwi a lawrlwythiadau. Bydd eich tabiau yn aros ar agor.}other{Mae eich sefydliad yn dileu data pori yn awtomatig pan nad yw Brave yn cael ei ddefnyddio am # munud. Gallai hyn gynnwys hanes, awtolenwi a lawrlwythiadau. Bydd eich tabiau yn aros ar agor.}}</translation>
 <translation id="2126108037660393668">Mae'r ffeil a lawrlwythwyd wedi methu â dilysu.</translation>
@@ -219,6 +221,7 @@ Mae'n bosib na fydd rhai nodweddion ar gael ac ni fydd newidiadau o ran dewisiad
 
 <ph name="EXTENSION_NAME"/></translation>
 <translation id="1742948938503172561">Personoleiddio eich proffil Brave newydd</translation>
+<translation id="2430807206104224491">Gallwch barhau i sgwrsio gyda'r Dull AI heb newid tabiau. I ddechrau arni, mewngofnodwch i Brave. Byddwch hefyd yn cael eich cyfrineiriau a rhagor ar eich holl ddyfeisiau.</translation>
 <translation id="4805865169608137960">I dynnu'ch Cyfrif Brave o Brave, allgofnodwch o Brave yn y dudalen Gosodiadau</translation>
 <translation id="1651639704310627074">Yn ddiweddarach, gall Brave ofyn a ydych chi am ddefnyddio gwybodaeth sydd wedi'i chadw i awtolenwi ffurflenni i chi</translation>
 <translation id="2585240446624043880">Ni all Brave ddarllen nac ysgrifennu i'w gyfeiriadur data:
@@ -513,6 +516,7 @@ Mae'n bosib na fydd rhai nodweddion ar gael ac ni fydd newidiadau o ran dewisiad
 <translation id="8646609321956191980">Mae gan bob proffil ei wybodaeth Brave ei hun megis nodau tudalen, hanes, cyfrineiriau, a rhagor</translation>
 <translation id="6756656512757374876">Dysgu rhagor am <ph name="BEGIN_LINK"/>sut mae Brave yn cadw eich data yn breifat<ph name="END_LINK"/></translation>
 <translation id="3556601443414636547">Bydd newidiadau i'r gosodiad hwn yn cael eu gweithredu unwaith y bydd Brave yn ailgychwyn.</translation>
+<translation id="3396870972301571614">Rheolwch eich estyniadau trwy glicio Estyniadau ym mhrif ddewislen Brave.</translation>
 <translation id="2535436634051789953">Gallwch newid i weld cyfrineiriau o broffil Brave arall</translation>
 <translation id="2312399718665761438">I drwsio gwallau sillafu, mae Brave yn anfon y testun rydych yn ei deipio mewn meysydd testun at Brave</translation>
 <translation id="3507835409099344374">Ewch i osodiadau hysbysu Brave</translation>

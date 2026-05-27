@@ -377,7 +377,6 @@
 <translation id="1430915738399379752">In</translation>
 <translation id="2600847485413879104">Phần thưởng BAT</translation>
 <translation id="3439853736976204026">bitFlyer</translation>
-<translation id="8533411848724153701">Gemini</translation>
 <translation id="6569877533335686968">Uphold</translation>
 <translation id="6011108706830742093">ZebPay</translation>
 <translation id="5390923430722428146">Solana</translation>
@@ -438,6 +437,7 @@
 <translation id="412480955826088549">Đang tải xuống Thành phần...</translation>
 <translation id="4894106830958548828">Tôi hiểu</translation>
 <translation id="2729085694451916573">Test string for <ph name="PART_ONE"/>place holders<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>Learn more<ph name="PART_TWO_END"/></translation>
+<translation id="6705666103672654256">Các tìm kiếm và nội dung trang của bạn được xử lý trên thiết bị này. Không có gì được gửi đến Brave hoặc được người đánh giá xem. Đây là tính năng thử nghiệm và sẽ không phải lúc nào cũng chính xác.</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Bật hỗ trợ Unstoppable Domains trong Brave?</translation>
 <translation id="5015092481905019948">Brave sẽ sử dụng <ph name="PROVIDER_NAME"/> để giải quyết tên miền <ph name="DOMAIN_LIST"/> trên <ph name="DOMAIN_PROVIDER_NAME"/>. Brave ẩn địa chỉ IP của bạn. Nếu bạn bật tính năng này thì <ph name="PROVIDER_NAME"/> sẽ thấy ai đó đang cố truy cập những miền này chứ không phải gì khác. Xem<ph name="BEGIN_PROVIDER_TOU_LINK"/>điều khoản sử dụng<ph name="END_PROVIDER_TOU_LINK"/> và <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>chính sách quyền riêng tư<ph name="END_PROVIDER_PRIVACY_LINK"/> của <ph name="PROVIDER_NAME"/>.</translation>
@@ -749,7 +749,6 @@
 <translation id="1288078776976153868">mạng</translation>
 <translation id="1148827340205946630">Người dùng đã từ chối yêu cầu.</translation>
 <translation id="2403819048476450281">Thông số không hợp lệ.</translation>
-<translation id="3849003816301348130">Địa chỉ đích nằm trong danh sách OFAC SDN.</translation>
 <translation id="3955144560853195652">Chuỗi <ph name="VALUE"/> chưa được thêm vào</translation>
 <translation id="1875861420974447980">Mã chuỗi này hiện đang được sử dụng</translation>
 <translation id="167698752210114155">Đã xảy ra lỗi nội bộ</translation>
@@ -863,11 +862,12 @@
 <translation id="3751611888003301070">Tuyến</translation>
 <translation id="3799091982455573025">Hoán đổi trên <ph name="NETWORK_NAME"/> qua <ph name="EXCHANGE_NAME"/></translation>
 <translation id="5136093123841570193">Cầu nối từ <ph name="FRIST_NETWORK_NAME"/> đến <ph name="SECOND_NETWORK_NAME"/></translation>
-<translation id="5962276579291287541">{SWAP_EXCHANGE_STEPS, plural,
-      =1 {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} bước}
-      other {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} bước}
+<translation id="4419195975736642805">{SWAP_EXCHANGE_STEPS, plural,
+      =1 {<ph name="EXCHANGE_NAME"/> ({SWAP_EXCHANGE_STEPS} bước)}
+      other {<ph name="EXCHANGE_NAME"/> ({SWAP_EXCHANGE_STEPS} bước)}
     }</translation>
 <translation id="8621264173374071200"><ph name="EXCHANGE_NAME"/> thông qua <ph name="PROVIDER_NAME"/></translation>
+<translation id="7214440235486032620"><ph name="DESTINATION_TOKEN"/> ← <ph name="SOURCE_TOKEN"/> qua</translation>
 <translation id="646023614746251785">Xác nhận hoán đổi</translation>
 <translation id="6264944956989873014">Xác nhận chuyển qua cầu nối</translation>
 <translation id="7067917728851842589">Xác nhận gửi</translation>
@@ -948,6 +948,7 @@
 <translation id="1108298724135935307">Các website đã kết nối</translation>
 <translation id="5716350339763180836">Số dư</translation>
 <translation id="5538251867290702601">Biểu đồ</translation>
+<translation id="8123016618655108594">Phân bổ</translation>
 <translation id="352407037922720467">Tab NFT</translation>
 <translation id="163697698769819510">Sao lưu ví của bạn ngay bây giờ để bảo vệ tài sản của bạn và đảm bảo bạn không bao giờ mất quyền truy cập.</translation>
 <translation id="1018806299114415224">Sao lưu ngay</translation>
@@ -1171,12 +1172,12 @@
 <translation id="4324239559624557455">Trong 24 giờ</translation>
 <translation id="9139452553033760558">Trong 1 tuần</translation>
 <translation id="1658834457013045127">Mãi mãi</translation>
-<translation id="5571630233760536706"><ph name="DEVICE_NAME"/> đã kết nối</translation>
-<translation id="7058480232601314508"><ph name="DEVICE_NAME"/> đã ngắt kết nối</translation>
+<translation id="620344059960827012"><ph name="ACCOUNT_NAME"/> đã được kết nối với <ph name="DEVICE_NAME"/></translation>
+<translation id="4403794623379243396"><ph name="ACCOUNT_NAME"/> đã ngắt kết nối</translation>
 <translation id="434328838837168401">Xem hướng dẫn</translation>
-<translation id="6739517232898494646">Kết nối <ph name="DEVICE_NAME"/> của bạn để tiếp tục</translation>
+<translation id="13670155462680755">Kết nối <ph name="ACCOUNT_NAME"/> của bạn để tiếp tục</translation>
 <translation id="6941881257520473899">Ví cứng yêu cầu xác nhận trên thiết bị.</translation>
-<translation id="2288190100157580461">Ví phần cứng yêu cầu mở Ứng dụng <ph name="NETWORK"/> trên <ph name="DEVICE_NAME"/></translation>
+<translation id="4108619287854657806">Ví phần cứng yêu cầu mở Ứng dụng <ph name="NETWORK"/> trên <ph name="ACCOUNT_NAME"/></translation>
 <translation id="8687869982094542529">đã gửi</translation>
 <translation id="5013754027092416509">đã nhận</translation>
 <translation id="5867988533873716616">URL trình khám phá khối không khả dụng.</translation>
@@ -1361,6 +1362,7 @@
 <translation id="8491675129455635799">Nhóm tài sản theo</translation>
 <translation id="5331775401966766526">Cài đặt bộ lọc và hiển thị</translation>
 <translation id="5332541468425943610">Cài đặt hiển thị NFT</translation>
+<translation id="1539149309756422999">Phân bổ tài sản</translation>
 <translation id="886032538431162695">Sắp xếp tài sản</translation>
 <translation id="6080181976198929758">Sắp xếp theo giá trị tiền pháp định hoặc tên</translation>
 <translation id="2563815561570398537">Ẩn số dư nhỏ</translation>
@@ -1604,6 +1606,9 @@
 <translation id="5882719778740918116">Chỉ gửi mã thông báo đến địa chỉ này trên <ph name="VALUE"/></translation>
 <translation id="6885009592653876601">Mua, gửi và hoán đổi hơn 200+ tài sản tiền điện tử</translation>
 <translation id="8716223552348254401">Trình duyệt gốc, không có tiện ích mở rộng rủi ro</translation>
+<translation id="1198271701881992799">Hãy bắt đầu</translation>
+<translation id="7904301836463577071">Mua tiền điện tử đầu tiên của bạn bằng thẻ tín dụng hoặc thẻ ghi nợ</translation>
+<translation id="3721561070667360112">Nạp tiền điện tử từ một ví hoặc sàn giao dịch khác</translation>
 <translation id="4559901986238865734">Hỗ trợ đa chuỗi &amp; NFT</translation>
 <translation id="296101411136980896">Nhấp để chuyển đổi</translation>
 <translation id="753655478253155745">Thứ mười hai</translation>
@@ -1751,6 +1756,7 @@
 <translation id="8549067157732633185">Mã thông báo này đã được xác minh</translation>
 <translation id="2130170065617939165">Mã thông báo này đã được xác minh trên danh sách <ph name="NUMBER_OF_LISTS"/></translation>
 <translation id="1554316484739382186">Spender: <ph name="ADDRESS"/></translation>
+<translation id="8533411848724153701">Gemini</translation>
 <translation id="4265415116535094892">Zebpay</translation>
 <translation id="3026353765778463291">Tài khoản <ph name="PROVIDER"/></translation>
 <translation id="5360752485622434494">Brave Phần thưởng BAT trên<ph name="PROVIDER"/></translation>
@@ -2145,12 +2151,14 @@
 <translation id="6459036216700972269">Hủy tách tab</translation>
 <translation id="4235382917338421035">Hoán đổi vị trí tab</translation>
 <translation id="4288085058450834672">Hiển thị ứng dụng</translation>
+<translation id="4750337523930607658">Bật/tắt Chế độ Tập trung</translation>
 <translation id="4144468798716165316">Lệnh nhanh</translation>
 <translation id="3617523374417810198">Chia đôi màn hình mới</translation>
 <translation id="8571323456914890254">Mở trong chia đôi màn hình</translation>
 <translation id="5329136173514538969">Hủy tách tab</translation>
 <translation id="7595612919377246359">Hoán đổi vị trí tab</translation>
 <translation id="2367972762794486313">Hiển thị ứng dụng</translation>
+<translation id="3142853026316054951">Bật/tắt chế độ tập trung</translation>
 <translation id="3468387898712904997">Bí danh email mới</translation>
 <translation id="8591883849678260674">Xem bản gốc</translation>
 <translation id="1969654232209826429">phút đọc</translation>
@@ -2198,6 +2206,7 @@
 <translation id="5923170497201832190">Cuộn xuống dưới cùng</translation>
 <translation id="6219262425964000211">Đặt tệp của bạn vào đây</translation>
 <translation id="4313763911013851687">Đặt tệp bất kỳ vào đây để thêm vào cuộc trò chuyện</translation>
+<translation id="8206915760129310348">Một số tệp không thể đọc được và không được đính kèm</translation>
 <translation id="4524675003624341892">Gợi ý câu hỏi...</translation>
 <translation id="4567071417854988869">Tóm tắt video này</translation>
 <translation id="4264902191243445258">{PAGE_COUNT, plural,
@@ -2208,7 +2217,9 @@
 <translation id="7932221068776853847">Ngắt kết nối để ngừng gửi nội dung trang này cho Leo và bắt đầu cuộc trò chuyện mới</translation>
 <translation id="8743383817154663379">Có vấn đề xảy ra khi xử lý yêu cầu của bạn. Vui lòng thử lại sau.</translation>
 <translation id="2712650703044366764">Mô hình này có điểm cuối không hợp lệ. Vui lòng kiểm tra cấu hình của bạn và thử lại.</translation>
-<translation id="1167803637855350748">Đã xảy ra sự cố mạng khi kết nối với Leo. Hãy kiểm tra kết nối của bạn và thử lại.</translation>
+<translation id="7092656392206649236">Đã xảy ra sự cố khi giao tiếp với Leo. Vui lòng thử lại.</translation>
+<translation id="3552709750512842961">Mã trạng thái: <ph name="STATUS_CODE"/>, mã lỗi: <ph name="ERROR_CODE"/></translation>
+<translation id="9215978379284690246">Mã trạng thái: <ph name="STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Bạn đã đạt đến giới hạn premium. Vui lòng thử lại sau vài giờ nữa.</translation>
 <translation id="3683964919745779766">Bạn đã đạt giới hạn tần suất của mô hình này hoặc đã hết tín dụng. Vui lòng thử lại sau.</translation>
 <translation id="7692501701960747469">Khóa API được cấu hình cho mô hình này không hợp lệ. Vui lòng kiểm tra cấu hình của bạn và thử lại.</translation>
@@ -2491,7 +2502,9 @@
 <translation id="5663901348199429994">Bí danh email của bạn</translation>
 <translation id="9046133327037621173">Bí danh email mới</translation>
 <translation id="3768606658230902536">Tạo địa chỉ email ngẫu nhiên chuyển tiếp đến hộp thư đến của bạn và giữ bí mật email cá nhân của bạn.</translation>
-<translation id="6887156107256264506">Bạn đã đạt giới hạn 5 bí danh email miễn phí. Bấm "Quản lý" để tái sử dụng hoặc xóa bí danh.</translation>
+<translation id="4452721050684632493">Đã đạt đến giới hạn bí danh</translation>
+<translation id="2912191433415590080">Bạn đã sử dụng hết <ph name="MAX_ALIASES"/> bí danh email của mình. Hãy xóa một bí danh hiện có để tạo bí danh mới.</translation>
+<translation id="3847337908410945070">Bí danh của bạn (<ph name="CURRENT"/> / <ph name="MAX"/>)</translation>
 <translation id="1104500750724567895">Bí danh mới</translation>
 <translation id="8072910658503112482">Gợi ý bí danh email khác</translation>
 <translation id="7710361355427562228">Đang tạo bí danh mới...</translation>
@@ -2534,6 +2547,8 @@
 <translation id="2991633563551889054">Ẩn tiện ích Trò chuyện</translation>
 <translation id="5355776323718420036">Ẩn các trang hàng đầu</translation>
 <translation id="1689504141194856995">Ẩn tiện ích VPN</translation>
+<translation id="2919329118360099847">Brave sẽ được sử dụng làm công cụ tìm kiếm trong thanh địa chỉ cho các cửa sổ thông thường.</translation>
+<translation id="6792837540759934892">Đặt Brave làm công cụ tìm kiếm mặc định?</translation>
 <translation id="8262911270872215147">Tùy chỉnh Tin tức</translation>
 <translation id="3884037897537157986">Tắt Tin tức</translation>
 <translation id="7847477075635510673">Ẩn Tin tức</translation>
@@ -2672,7 +2687,7 @@
 <translation id="2273851479262317744">Đặt Brave làm trình duyệt mặc định</translation>
 <translation id="5037676449506322593">Chọn Tất cả</translation>
 <translation id="5148943178722443958">Giúp cải thiện Brave.</translation>
-<translation id="479535542793009168">Tính ổn định và Chẩn đoán</translation>
+<translation id="8874748598814587364">Tính ổn định</translation>
 <translation id="1097073572755862978">Gửi báo cáo chẩn đoán nếu bạn gặp sự cố hoặc đóng băng. <ph name="LINK_BEFORE"/>Tìm hiểu thêm.<ph name="LINK_AFTER"/></translation>
 <translation id="6629244688368006959">Chia sẻ thông tin chi tiết về sản phẩm riêng tư và ẩn danh về các tính năng đang được người dùng Brave sử dụng. <ph name="LINK_BEFORE"/>Tìm hiểu thêm.<ph name="LINK_AFTER"/></translation>
 <translation id="7415454883318062233">Cài đặt hoàn thành</translation>
@@ -2801,6 +2816,10 @@ Chúng tôi sẽ giúp bạn kết nối!</translation>
 <translation id="1602850501393095406">Nhấn ↑ để làm nổi bật</translation>
 <translation id="8367705492654390392">Hỏi bất kỳ điều gì</translation>
 <translation id="8525248723479742219">Phát sau</translation>
+<translation id="1751249301761991853">Cá nhân</translation>
+<translation id="1122068467107743258">Công việc</translation>
+<translation id="8372721116225477180">Mạng xã hội</translation>
+<translation id="1539343118617844331">Trường học</translation>
 <translation id="2935698011275148880">Nguồn gốc dũng cảm</translation>
 <translation id="3983844925615091103">Chào mừng bạn đến với Brave Origin. Để tiếp tục, vui lòng mua hoặc khôi phục lần mua Brave Origin của bạn.</translation>
 <translation id="4801175670604644729">Bạn cần một lần mua Brave Origin đang hoạt động để sử dụng trình duyệt này.</translation>
@@ -2816,4 +2835,60 @@ Chúng tôi sẽ giúp bạn kết nối!</translation>
 <translation id="5816720995022674532">Origin miễn phí để sử dụng trên các thiết bị Linux, nhưng vẫn <ph name="BEGIN_LINK"/>có sẵn để mua<ph name="END_LINK"/> nếu bạn muốn hỗ trợ Brave như một doanh nghiệp. Việc mua cũng sẽ mở khóa khả năng sử dụng Origin trên các thiết bị Android, iOS, macOS và Windows.</translation>
 <translation id="3065220545261045367">Hỗ trợ Brave bằng cách mua Origin</translation>
 <translation id="2069499076031488636">Tiến hành sử dụng Origin miễn phí trên Linux</translation>
+<translation id="5713644099811900409">Tài khoản Brave</translation>
+<translation id="2906576968270573525">Đăng nhập hoặc tạo tài khoản Brave</translation>
+<translation id="6972754398087986839">Get Started</translation>
+<translation id="5378207817582281342">Gần đến rồi!</translation>
+<translation id="3750210661641549834">Để tạo tài khoản của bạn, vui lòng xác minh địa chỉ email của bạn.</translation>
+<translation id="4129813507847680661">Nhập mã đăng ký</translation>
+<translation id="1672793037892810340">Bạn sẽ nhận được một email chứa mã mà bạn cần phải nhập.</translation>
+<translation id="4821255729182569254">Gửi lại email xác nhận</translation>
+<translation id="5837679375142747484">Không thấy email? Hãy kiểm tra thư mục thư rác của bạn hoặc <ph name="BEGIN_LINK"/>gửi lại<ph name="END_LINK"/>.</translation>
+<translation id="1080588816740959885">Không thấy email? Hãy kiểm tra thư mục thư rác của bạn hoặc gửi lại.</translation>
+<translation id="1020730839570724178">Hủy đăng ký</translation>
+<translation id="4869737930995549965">Đăng xuất</translation>
+<translation id="5538654494923870167">Bắt đầu với tài khoản Brave của bạn</translation>
+<translation id="1544145635547515689">Tạo tài khoản Brave</translation>
+<translation id="3828644479849256404">Đã có tài khoản? Đăng nhập</translation>
+<translation id="6624553071240278643">Tạo tài khoản của bạn</translation>
+<translation id="6505120968393722022">Bạn không thể sử dụng địa chỉ @bravealias.com để tạo tài khoản Brave. Vui lòng thử lại với một tên miền khác.</translation>
+<translation id="8248460961680233459">Tạo mật khẩu</translation>
+<translation id="4917385247580444890">Mạnh</translation>
+<translation id="5486261815000869482">Xác nhận mật khẩu</translation>
+<translation id="7345706641791090287">Xác nhận mật khẩu của bạn</translation>
+<translation id="7114054701490058191">Mật khẩu không khớp</translation>
+<translation id="1293857704520741614">Đăng nhập vào tài khoản của bạn</translation>
+<translation id="118617366439356381">Quên mật khẩu?</translation>
+<translation id="5183159033908953146">Xác nhận email tài khoản Brave của bạn và bạn sẽ nhận được một liên kết để đặt lại mật khẩu. Liên kết này chỉ có hiệu lực trong 30 phút.</translation>
+<translation id="3997368361371298873">Cảnh báo: vì bạn chưa đăng nhập trên thiết bị này, việc đặt lại mật khẩu sẽ <ph name="BEGIN_BOLD"/>xóa toàn bộ dữ liệu của bạn<ph name="END_BOLD"/> trên máy chủ. Nếu bạn có một thiết bị khác đang đăng nhập, hãy thay đổi mật khẩu từ thiết bị đó thay vì đặt lại mật khẩu.</translation>
+<translation id="3674472551471103443">Đặt lại mật khẩu của bạn</translation>
+<translation id="2755539422340788311">Xác minh email của bạn</translation>
+<translation id="6641436078676327508">Bạn sẽ nhận được một email chứa mã ngắn. Vui lòng nhập mã đó tại đây để tiếp tục.</translation>
+<translation id="7228810962389847249">Nhập mã tại đây</translation>
+<translation id="4683390091376980486">Xác nhận mã</translation>
+<translation id="3970028678400797622">Gửi lại mã qua email</translation>
+<translation id="2475982808118771221">Đã xảy ra lỗi</translation>
+<translation id="5430795854491041407">lỗi</translation>
+<translation id="2232323423357029857">Trình duyệt gặp phải một lỗi không mong muốn<ph name="ERROR_CODE"/>. Vui lòng khởi động lại trình duyệt và thử lại.</translation>
+<translation id="7167650060829320707">Lỗi máy chủ nội bộ (<ph name="STATUS_CODE"/><ph name="ERROR_CODE"/>). Vui lòng thử lại sau.</translation>
+<translation id="2387645930330673048">Tài khoản này đang chờ xác minh email.</translation>
+<translation id="2199962270601714404">Không tìm thấy tài khoản nào cho địa chỉ email đó. Vui lòng thử lại hoặc tạo một tài khoản mới.</translation>
+<translation id="8130611002720478693">Mật khẩu không đúng. Vui lòng thử lại.</translation>
+<translation id="7144067487084094749">Đã có tài khoản tồn tại cho địa chỉ email này. Hãy thử đăng nhập thay vì tạo tài khoản mới.</translation>
+<translation id="5288951359968156008">Tên miền của địa chỉ email này không được hỗ trợ. Vui lòng sử dụng một địa chỉ email khác.</translation>
+<translation id="7625678607509255072">Đã vượt quá giới hạn xác minh email. Vui lòng đợi 30 phút trước khi thử lại.</translation>
+<translation id="4582421696414628320">Xác minh đã hết hạn. Hãy bắt đầu lại quá trình đăng ký.</translation>
+<translation id="8439543211004394821">Đã nhập quá nhiều mã sai. Hãy bắt đầu lại quá trình đăng ký.</translation>
+<translation id="3229986152760633988">Mã sai, vui lòng thử lại.</translation>
+<translation id="4178004989875422946">Tài khoản Brave sẽ cho phép bạn dễ dàng truy cập các dịch vụ của Brave.</translation>
+<translation id="8314772463905284467">Caps Lock đang bật</translation>
+<translation id="7044608453949401443">Không được phép có khoảng trắng ở đầu hoặc cuối mật khẩu.</translation>
+<translation id="2939492377741553693">Đã gửi lại email xác nhận.</translation>
+<translation id="2112559299194052697">Không thể gửi lại</translation>
+<translation id="7932611814134267012">Đã có quá nhiều email xác minh được gửi. Vui lòng kiểm tra thư mục thư rác của bạn.</translation>
+<translation id="1364223093800750401">Email đã được xác minh.</translation>
+<translation id="3353844160742960162">Tinh chỉnh cài đặt quyền riêng tư</translation>
+<translation id="528205534230423181">Trang web này cung cấp các cài đặt quyền riêng tư mà Brave có thể tự động điều chỉnh cho bạn. Đây là những gì chúng tôi khuyến nghị:</translation>
+<translation id="1063227610401477317">Áp dụng thay đổi</translation>
+<translation id="5539769255716491933">Báo cáo các bước thất bại</translation>
 </translationbundle>

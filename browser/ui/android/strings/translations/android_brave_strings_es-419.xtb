@@ -20,17 +20,17 @@
 <translation id="4935400164159327304">Díganos de qué forma podemos mejorar Brave.</translation>
 <translation id="8966035543003363155">Todo es más fácil con las notificaciones de Brave</translation>
 <translation id="7662771815233894695">Gestiona las descargas, gana tokens o consulta las estadísticas de uso semanales, entre muchas otras cosas.</translation>
-<translation id="4265429476391459783">No vas a ganar recompensas ni vas a recibir informes de privacidad</translation>
-<translation id="1305714751384738456">No vas a ganar recompensas de Brave</translation>
+<translation id="4265429476391459783">No vas a ganar Recompensas ni vas a recibir informes de privacidad</translation>
+<translation id="1305714751384738456">No vas a ganar Recompensas de Brave</translation>
 <translation id="1483391942610220726">No vas a recibir informes de privacidad</translation>
 <translation id="4683790942451502796">Vuelve a activar las notificaciones si quieres seguir ganando BAT y recibiendo informes de privacidad semanales.</translation>
 <translation id="8618359751943259593">Vuelve a activar las notificaciones si quieres seguir ganando BAT.</translation>
 <translation id="760355165169399836">Vuelve a activar las notificaciones si quieres seguir recibiendo informes de privacidad semanales.</translation>
-<translation id="6268959058971634697">No vas a ganar recompensas</translation>
-<translation id="1088637159642753509">Habilita las notificaciones en el dispositivo para ganar recompensas de Brave y ver los informes de privacidad.</translation>
-<translation id="312404770066229090">Habilita las notificaciones en el dispositivo para ganar recompensas de Brave.</translation>
+<translation id="6268959058971634697">No estás acumulando Recompensas</translation>
+<translation id="1088637159642753509">Habilita las notificaciones en el dispositivo para ganar Recompensas de Brave y ver los informes de privacidad.</translation>
+<translation id="312404770066229090">Habilita las notificaciones en el dispositivo para ganar Recompensas de Brave.</translation>
 <translation id="2241529840361230499">Habilita las notificaciones en el dispositivo para recibir informes de privacidad de Brave.</translation>
-<translation id="4930155581888391118">Habilita las notificaciones de Brave para ganar recompensas de Brave.</translation>
+<translation id="4930155581888391118">Habilita las notificaciones de Brave para ganar Recompensas de Brave.</translation>
 <translation id="325187916104529570">Abre la configuración y activa las notificaciones de Anuncios de Brave en el dispositivo.</translation>
 <translation id="5744802588121897886">Activar las notificaciones de Brave</translation>
 <translation id="7307834434086582547">Activar/desactivar escudos de Brave</translation>
@@ -62,7 +62,7 @@
 <translation id="863171915776379000">Permitir publicaciones integradas e inicios de sesión de Facebook</translation>
 <translation id="5165042248369837294">Permitir tuits integrados de Twitter</translation>
 <translation id="958971637207126733">Permitir publicaciones integradas de LinkedIn</translation>
-<translation id="6302422639282249274">Administrar Recompensas Brave</translation>
+<translation id="6302422639282249274">Administrar Recompensas de Brave</translation>
 <translation id="8617525558807213034">Autorrelleno en las pestañas de incógnito</translation>
 <translation id="8685431198160039193">La información guardada se puede rellenar automáticamente en las pestañas de incógnito</translation>
 <translation id="6583902294974160967">Asistencia</translation>
@@ -110,7 +110,7 @@
 <translation id="8300751939969131609">Activa Noticias de Brave para no perderte nada</translation>
 <translation id="7627131190984957214">Noticias de Brave contiene anuncios privados, anonimizados y optimizados para su dispositivo.</translation>
 <translation id="7699565323725789472">Sigue tus fuentes favoritas en un solo canal. Basta con abrir una pestaña en Brave, desplazarte hacia abajo… ¡y listo!\nNoticias de Brave se mantiene con publicidad y muestra anuncios completamente privados y anónimos.</translation>
-<translation id="1765217911817124376">Activar las Noticias sobre Brave</translation>
+<translation id="1765217911817124376">Activar las Noticias de Brave</translation>
 <translation id="8981973962043893066">Busca canales de sitios web, temas o RSS</translation>
 <translation id="3225021799163709119">Populares</translation>
 <translation id="3673348851739109493">Lista clasificada de fuentes</translation>
@@ -127,7 +127,7 @@
 <translation id="7461899062138731833">FUENTES</translation>
 <translation id="6150420917380577651">No se encontraron canales en <ph name="SEARCH_URL"/></translation>
 <translation id="4541978218358617681">Anuncio</translation>
-<translation id="7823038307453615214">Mostrar Brave News</translation>
+<translation id="7823038307453615214">Mostrar Noticias de Brave</translation>
 <translation id="6527303717912515753">Compartir</translation>
 <translation id="1654539412343893324">Obtén más información sobre tus datos</translation>
 <translation id="2989805286512600854">Abrir en una nueva pestaña</translation>
@@ -188,26 +188,18 @@
 <translation id="6961369821791548622">Permitir (volver a ejecutar ahora)</translation>
 <translation id="2433507940547922241">Diseño</translation>
 <translation id="9040069796107003510">Ícono de Recompensas de Brave</translation>
-<translation id="6333347122924254968">Mostrar ícono de Recompensas Brave en la barra de direcciones</translation>
+<translation id="6333347122924254968">Mostrar ícono de Recompensas de Brave en la barra de direcciones</translation>
 <translation id="1215433243238902715">Habilitar la barra de navegación inferior</translation>
 <translation id="1422686363939271829">Este ajuste se desactiva cuando se selecciona la posición inferior de la barra de navegación</translation>
 <translation id="6587448235155023666">Los cambios se aplicarán la próxima vez que inicies Brave.</translation>
 <translation id="8701563696941209024">REINICIAR AHORA</translation>
 <translation id="834487290629916192">DESPUÉS</translation>
-<translation id="4117451092682672487">La privacidad, simplificada.</translation>
-<translation id="7909375417585209817">Si utilizas Brave de manera predeterminada, todos los enlaces que pulses se abrirán con las protecciones de privacidad de Brave.</translation>
 <translation id="763369711159699222">Ayuda a mejorar Brave</translation>
 <translation id="8025937231644975408">Cuéntenos qué funciones le resultan más útiles.</translation>
-<translation id="6718362830686703942">Envía informes de diagnóstico en caso de fallos o bloqueos.</translation>
-<translation id="8616157231067364693">Comparta de forma privada y anónima su opinión sobre las funciones que utilizan los usuarios de Brave.</translation>
 <translation id="2888496576732880897">Ayuda a que el Buscador de Brave crezca</translation>
 <translation id="7198716519700700181">Bloquea las interrupciones mientras transmitas</translation>
 <translation id="7044431516245362795">Opte por el Proyecto de Descubrimiento Web para ayudar a crecer el índice y mejorar los resultados de búsqueda. <ph name="LEARN_MORE_START"/>Más información.<ph name="LEARN_MORE_END"/></translation>
 <translation id="4847979153841887006">Logo de Brave</translation>
-<translation id="1389386068457132299">Fondo de incorporación</translation>
-<translation id="5101985748360228609">Decoración de hoja superior</translation>
-<translation id="5270920361877570459">Decoración de hoja inferior</translation>
-<translation id="4021716437419160885">Desplazarse hacia abajo</translation>
 <translation id="4767173360729868049">Ilustración del Buscador de Brave</translation>
 <translation id="8241918461631453498">Ilustración de bloqueo de interrupciones</translation>
 <translation id="8213310572767907663">Ilustración de mejora de Brave</translation>
@@ -223,20 +215,19 @@
 <translation id="7256200875155794202"><ph name="BIG_TECH"/> y otros anuncios y rastreadores bloqueados</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> anuncios y rastreadores bloqueados</translation>
 <translation id="8281886186245836920">Omitir</translation>
-<translation id="6165508094623778733">Más información</translation>
 <translation id="986879628471635371">Ajustes de solución de problemas</translation>
 <translation id="5806601733251372221">Escudos de Brave</translation>
 <translation id="8537217141725709400">Gane <ph name="TOKEN"/>s</translation>
-<translation id="3333887201479867589">Recompensas Brave</translation>
+<translation id="3333887201479867589">Recompensas de Brave</translation>
 <translation id="5870330605209713397">viendo anuncios respetuosos de tu privacidad y, de manera predeterminada, apoya a tus sitios y creadores de contenido favoritos.</translation>
-<translation id="5302488867897327287">Al pulsar Comenzar a utilizar Recompensas Brave, aceptas las</translation>
+<translation id="5302488867897327287">Al pulsar Comenzar a utilizar Recompensas de Brave, aceptas las</translation>
 <translation id="4281844954008187215">Condiciones de servicio</translation>
 <translation id="6871397658902960384">Empieza a navegar</translation>
 <translation id="454386012157232640">No vi ningún anuncio</translation>
 <translation id="1448877943847791441">Brave mostrará tu primer anuncio en</translation>
 <translation id="4410793187232041318">Ahora podrás ganar tokens con los anuncios de Brave.</translation>
 <translation id="6511854390690723657">Este es tu primer anuncio de Brave. Pulsa para obtener más información.</translation>
-<translation id="2070991379950719711">Comenzar a utilizar Recompensas Brave</translation>
+<translation id="2070991379950719711">Comenzar a utilizar Recompensas de Brave</translation>
 <translation id="48520986898237073">Continuar a la billetera</translation>
 <translation id="6213254277250932867">Tengo una frase de recuperación de 12 palabras</translation>
 <translation id="4225265925807365011">Tengo una frase de recuperación de 24 palabras</translation>
@@ -267,7 +258,7 @@
 <translation id="8280223431922155812">NOVIEMBRE</translation>
 <translation id="4254029385847607686">DICIEMBRE</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
-<translation id="1772301834467143364">Noticias sobre Brave</translation>
+<translation id="1772301834467143364">Noticias de Brave</translation>
 <translation id="2518692840036393666">Personalizar menú</translation>
 <translation id="5582839680698949063">Menú principal</translation>
 <translation id="7002271985859760052">Acciones de página</translation>
@@ -323,11 +314,11 @@
 <translation id="4358805443781965194">El código ha caducado. Haga clic en el botón de abajo para generar uno nuevo.</translation>
 <translation id="318164877797885563">Este código temporal caducará dentro de <ph name="TIME_AMOUNT"/></translation>
 <translation id="327726072512457161">Salir de Configuración</translation>
-<translation id="8050847734948770789">Activar las Recompensas Brave</translation>
+<translation id="8050847734948770789">Activar las Recompensas de Brave</translation>
 <translation id="9187185473011056079">Sí, acepto</translation>
-<translation id="8185825081026121627">Gane un Token de Atención Básica por ver los anuncios de Brave Rewards respetando la privacidad.</translation>
+<translation id="8185825081026121627">Gane un Basic Attention Token por ver los anuncios de Recompensas de Brave respetando la privacidad.</translation>
 <translation id="5321518976657560663">Error de restablecimiento</translation>
-<translation id="4114170343590425996">Hubo un error al restablecer las Recompensas Brave. Reinicia Brave y vuelve a intentarlo.</translation>
+<translation id="4114170343590425996">Hubo un error al restablecer las Recompensas de Brave. Reinicia Brave y vuelve a intentarlo.</translation>
 <translation id="6417420737057016607">Anuncios de Brave</translation>
 <translation id="5611966874859284786">Mostrar anuncios de notificaciones cuando Brave no esté en uso</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Restablecer datos de Recompensas de Brave…<ph name="END_LINK1"/></translation>
@@ -373,7 +364,7 @@ Verifique que ha sido un dispositivo suyo el que ha generado estas palabras clav
 <translation id="944340256927461196">No dejes rastro en tu dispositivo</translation>
 <translation id="2063044449012253966">Los sitios que visites en ventanas privadas no aparecerán en tu historial. Las cookies, los datos de los formularios y los datos de los sitios desaparecen una vez que se cierren todas las ventanas privadas.</translation>
 <translation id="7395764193745523646">Visibilidad de la navegación</translation>
-<translation id="8670344404057978375">Ten en cuenta que tu actividad de navegación puede seguir siendo visible para tu ISP, observadores de la red o tu empleador (si utilizas un dispositivo/red de trabajo) incluso en las ventanas privadas.</translation>
+<translation id="8435098045013317895">Ten en cuenta que es posible que tu actividad de navegación sigua estando visible para tu ISP, observadores de la red o tu empleador (si utilizas un dispositivo/red de trabajo) incluso en las ventanas privadas.</translation>
 <translation id="1413177583895309156">El VPN de Brave encripta y protege cualquier cosa que hagas en línea, incluso fuera del navegador de Brave.</translation>
 <translation id="3974348661685061050">Prueba gratis durante 7 días</translation>
 <translation id="5789441016350810005">Permitir Brave Ads cuando el navegador está en segundo plano</translation>
@@ -514,6 +505,7 @@ Verifique que ha sido un dispositivo suyo el que ha generado estas palabras clav
 <translation id="2718046830255553131">Los datos de informes de privacidad se han borrado.</translation>
 <translation id="8376263745431603066">Activar Modo noche (experimental)</translation>
 <translation id="1383876407941801731">Buscar</translation>
+<translation id="6165508094623778733">Más información</translation>
 <translation id="13296465911709339">El texto se ha copiado al portapapeles.</translation>
 <translation id="2735834606413553397">La dirección pública se copió al portapapeles.</translation>
 <translation id="2977461003134694205">Estadísticas de privacidad</translation>
@@ -974,23 +966,21 @@ Si no acepta esta solicitud, la VPN no se volverá a conectar y su conexión a I
 <translation id="7659483790930268440">Índice de la tabla de consulta de direcciones:</translation>
 <translation id="5494920125229734069">Seleccionar todo</translation>
 <translation id="2361906291514218784">IA de Leo</translation>
+<translation id="2935698011275148880">Origen valiente</translation>
 <translation id="944736176598169208">Recompensas</translation>
 <translation id="1199170151481311646">Análisis con preservación de la privacidad</translation>
 <translation id="1706715315466634757">Alias de correo electrónico</translation>
-<translation id="738840791756723657">IA</translation>
 <translation id="6709133671862442373">Noticias</translation>
 <translation id="5990642573624858459">Informes estadísticos</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="2441719842399509963">Restablecer valores predeterminados</translation>
-<translation id="4922034974043704366">Esta función está habilitada porque usted la ha activado.</translation>
 <translation id="2587535830241068901">Personaliza tu navegador sin dejar de apoyar a Brave</translation>
-<translation id="7235314227387539944">Brave Origin es una versión de pago del navegador para usuarios que no necesitan todas las funciones que respaldan a Brave como negocio, pero que aún desean la privacidad que solo Brave ofrece. Los usuarios de Origin seguirán beneficiándose de nuestra privacidad líder en la industria, bloqueador de anuncios y velocidad (a través de Escudos), así como de actualizaciones regulares de software, parches de Chromium y mejoras de seguridad y privacidad. Origin eliminará la mayoría de las otras funciones del navegador.</translation>
-<translation id="7941943775131052130">Tenga en cuenta que una compra de Brave Origin también incluirá acceso a Buscador de Brave Premium, ya que Origin eliminará los anuncios de la página de resultados del Buscador de Brave.</translation>
+<translation id="123297831435065577">Brave Origin es una versión de pago del navegador para usuarios que no necesitan todas las funciones que respaldan a Brave como negocio, pero que aún desean la privacidad que solo Brave ofrece. Los usuarios de Origin seguirán beneficiándose de nuestra privacidad líder en la industria, bloqueador de anuncios y velocidad (a través de Escudos), así como de actualizaciones regulares de software, parches de Chromium y mejoras de seguridad y privacidad.</translation>
 <translation id="2573819149217596923">Cambio de funciones de Brave</translation>
 <translation id="7415416427817229128">Activar o desactivar una función de Brave requiere que el navegador se reinicie para aplicar los cambios. ¿Desea reiniciar ahora?</translation>
 <translation id="2256115617011615191">Reiniciar ahora</translation>
 <translation id="2160089182263405907">Desactivando funciones</translation>
-<translation id="3362364767724670721">Habilitar o deshabilitar una función de Brave requiere reiniciar el navegador para aplicar los cambios. Por favor, toca <ph name="BEGIN_BOLD"/>Reiniciar ahora<ph name="END_BOLD"/> una vez que Origin haya terminado de actualizar.</translation>
+<translation id="7530313002494358590">Habilitar o deshabilitar una función de Brave requiere reiniciar el navegador para aplicar los cambios. Por favor, toca <ph name="BEGIN_BOLD"/>Reiniciar ahora<ph name="END_BOLD"/> una vez que Brave Origin haya terminado de actualizar.</translation>
 <translation id="1028940738207645746">¿Seguro que quieres restablecer todos los ajustes a los valores por defecto?</translation>
 <translation id="5939518447894949180">Restablecer</translation>
 <translation id="8554205386170195281">Comprar</translation>
@@ -1121,9 +1111,9 @@ Si no acepta esta solicitud, la VPN no se volverá a conectar y su conexión a I
 <translation id="6261139507111008244">Apoye nuestra misión &amp; trabajo de código abierto</translation>
 <translation id="6073373503121903099">IU del navegador minimalista centrada en Escudos de Brave</translation>
 <translation id="2267973897341040743">Mantén el bloqueo de anuncios, la privacidad y la velocidad de &amp; .</translation>
-<translation id="3339535734679532460">Compra única, sin costo de suscripción adicional</translation>
-<translation id="2805615640226281689">Compra única</translation>
-<translation id="261433018299584676">Obtener un código de inicio de sesión</translation>
+<translation id="4059093523966730868">La compra única puede activarse varias veces en todos tus dispositivos</translation>
+<translation id="7006681677649762716">Compra única</translation>
+<translation id="8707617004598499947">Verificar compra de Brave Origin</translation>
 <translation id="1943432128510653496">Guardar contraseñas</translation>
 <translation id="2100273922101894616">Acceso automático</translation>
 <translation id="363596933471559332">Permite acceder automáticamente a los sitios web con las credenciales almacenadas. Si la función está desactivada, siempre se solicitará verificación antes de acceder a un sitio web.</translation>
@@ -1182,12 +1172,14 @@ Si no acepta esta solicitud, la VPN no se volverá a conectar y su conexión a I
 <translation id="7400418766976504921">URL</translation>
 <translation id="6410668567036790476">Añadir buscador</translation>
 <translation id="6289878295410648689">Escribe la url de búsqueda y sustituye la consulta por <ph name="SPECIAL_SYMBOL"/>.</translation>
-<translation id="8943582268084103903">Por ejemplo: https://youtube.com/search?q=<ph name="SPECIAL_SYMBOL"/>. Si el sitio es compatible con OpenSearch, la opción de añadir automáticamente estará disponible al editar este campo.</translation>
+<translation id="1298325705808878139">Por ejemplo: https://youtube.com/search?q=<ph name="SPECIAL_SYMBOL"/>.</translation>
 <translation id="8706939021136180678">La URL no es válida.</translation>
-<translation id="6528099556282059181">El motor de búsqueda ya está agregado.</translation>
+<translation id="5144960943371551167">El título solo puede contener letras, números y espacios.</translation>
+<translation id="7361775378755455309">Ya existe un motor de búsqueda con esta palabra clave.</translation>
 <translation id="463451857046640291">Error al agregar el motor de búsqueda.</translation>
 <translation id="1229671956956864948">Error al actualizar el motor de búsqueda.</translation>
 <translation id="1462771969120037152">Error al eliminar el motor de búsqueda. El motor de búsqueda que intentas eliminar podría estar configurado como predeterminado.</translation>
 <translation id="1079140196216383600">Eliminar motor de búsqueda personalizado</translation>
 <translation id="525276572490219787">¿Estás seguro de que quieres eliminar "<ph name="SEARCH_ENGINE_NAME"/>"? Esta acción no se puede deshacer.</translation>
+<translation id="6406506848690869874">Sincronización</translation>
 </translationbundle>

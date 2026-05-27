@@ -51,7 +51,6 @@
 <translation id="6570689355868013775">Brave drošības rīki</translation>
 <translation id="1902837727299679178">Brave pieprasa dzēst jūsu paroļu pārvaldnieka datus. Lai to atļautu, ierakstiet savu Windows paroli.</translation>
 <translation id="4449148723378534338">Pārskatiet svarīgākās konfidencialitātes un drošības vadīklas pārlūkā Brave.</translation>
-<translation id="5229247933547820267">Lai MI režīmā uzdotu jautājumus par savu cilni, nepametot lapu, pierakstieties pārlūkā Brave. Jūs arī varēsiet piekļūt parolēm un citiem datiem visās savās ierīcēs.</translation>
 <translation id="1640672724030957280">Notiek lejupielāde...</translation>
 <translation id="1680687534629375545">Jautāt attēlu meklēšanas funkcijai par šo lapu</translation>
 <translation id="509363484780540563">Varat izmantot pārlūku Brave ikreiz, kad noklikšķināt uz saitēm ziņojumos, dokumentos un citās lietotnēs. Tas arī tiks piesprausts uzdevumu joslai.</translation>
@@ -95,6 +94,9 @@
 <translation id="2066690553719545730">Vienmēr rādīt MI režīmu</translation>
 <translation id="2472891440303445472">Pārlūkā Brave šī lejupielāde tika bloķēta, jo fails ir maldinošs un var veikt neparedzētas izmaiņas jūsu ierīcē.</translation>
 <translation id="2054358978145431867">Kad nākamreiz iOS ierīcē atvērsiet pārlūku Brave, tiks parādīts aicinājums izmēģināt funkciju <ph name="FEATURE_NAME"/>.</translation>
+<translation id="4315579854608498851">Pārlūkā Brave tiek izslēgta JavaScript optimizācija, kad pirmoreiz apmeklējat kādu vietni.
+
+Ja šī lapa nedarbojas, kā paredzēts, mēģiniet atļaut optimizāciju.</translation>
 <translation id="2726948994393234543">Jūsu paroles un citi Brave dati, ko saglabājāt savā Brave kontā, tiks noņemti no šīs ierīces. Lai atkal izmantotu šos datus pārlūkā Brave, atkārtoti pierakstieties.</translation>
 <translation id="4375530476448642348">{COUNT,plural, =1{Jūsu organizācija automātiski dzēš pārlūkošanas datus, ja pārlūks Brave nav izmantots vienu minūti. Tie var ietvert vēsturi, automātiskās aizpildes datus un lejupielādes. Cilnes joprojām būs atvērtas.}zero{Jūsu organizācija automātiski dzēš pārlūkošanas datus, ja pārlūks Brave nav izmantots # minūtes. Tie var ietvert vēsturi, automātiskās aizpildes datus un lejupielādes. Cilnes joprojām būs atvērtas.}one{Jūsu organizācija automātiski dzēš pārlūkošanas datus, ja pārlūks Brave nav izmantots # minūti. Tie var ietvert vēsturi, automātiskās aizpildes datus un lejupielādes. Cilnes joprojām būs atvērtas.}other{Jūsu organizācija automātiski dzēš pārlūkošanas datus, ja pārlūks Brave nav izmantots # minūtes. Tie var ietvert vēsturi, automātiskās aizpildes datus un lejupielādes. Cilnes joprojām būs atvērtas.}}</translation>
 <translation id="2126108037660393668">Neizdevās verificēt lejupielādēto failu.</translation>
@@ -210,6 +212,7 @@
 
 <ph name="EXTENSION_NAME"/></translation>
 <translation id="1742948938503172561">Pielāgojiet savu jauno Brave profilu.</translation>
+<translation id="2430807206104224491">Varat turpināt tērzēšanu MI režīmā, nepārslēdzot cilnes. Lai sāktu darbu, pierakstieties pārlūkā Brave. Jūs arī varēsiet piekļūt parolēm un citiem datiem visās savās ierīcēs.</translation>
 <translation id="4805865169608137960">Lai noņemtu savu Brave kontu no pārlūka Brave, lapā “Iestatījumi” izrakstieties no pārlūka Brave.</translation>
 <translation id="1651639704310627074">Vēlāk pārlūkā Brave var tikt vaicāts, vai vēlaties izmantot saglabāto informāciju veidlapu automātiskai aizpildei.</translation>
 <translation id="2585240446624043880">Brave nevar nolasīt savu datu direktoriju un ierakstīt tajā:
@@ -498,6 +501,7 @@
 <translation id="8646609321956191980">Katrā profilā tiek glabāta attiecīgā Brave profila informācija, piemēram, grāmatzīmes, vēsture, paroles un citi dati.</translation>
 <translation id="6756656512757374876">Uzziniet vairāk par to, <ph name="BEGIN_LINK"/>kā pārlūkā Brave tiek saglabāta jūsu datu konfidencialitāte<ph name="END_LINK"/>.</translation>
 <translation id="3556601443414636547">Šī iestatījuma izmaiņas tiks lietotas pēc pārlūka Brave restartēšanas.</translation>
+<translation id="3396870972301571614">Pārvaldiet savus paplašinājumus, Brave galvenajā izvēlnē noklikšķinot uz Paplašinājumi.</translation>
 <translation id="2535436634051789953">Varat pārslēgties, lai skatītu paroles no cita Brave profila.</translation>
 <translation id="2312399718665761438">Lai izlabotu pareizrakstības kļūdas, Brave nosūta teksta laukos ievadīto tekstu Brave serveriem.</translation>
 <translation id="3507835409099344374">Pāriet uz Brave paziņojumu iestatījumiem</translation>

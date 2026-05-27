@@ -194,20 +194,12 @@
 <translation id="6587448235155023666">Your changes will take effect the next time you relaunch Brave</translation>
 <translation id="8701563696941209024">RELAUNCH NOW</translation>
 <translation id="834487290629916192">LATER</translation>
-<translation id="4117451092682672487">Privacy. Made simple.</translation>
-<translation id="7909375417585209817">With Brave as default, every link you tap opens with Brave's privacy protections.</translation>
 <translation id="763369711159699222">Help make Brave better</translation>
 <translation id="8025937231644975408">Let us know which features you're enjoying the most.</translation>
-<translation id="6718362830686703942">Send diagnostic reports if you experience a crash or freeze.</translation>
-<translation id="8616157231067364693">Share private and anonymous product insights about what features are being used by Brave's users.</translation>
 <translation id="2888496576732880897">Help Brave Search grow</translation>
 <translation id="7198716519700700181">Block interruptions when you stream</translation>
 <translation id="7044431516245362795">Opt into the Web Discovery Project to help grow the index and improve search results. <ph name="LEARN_MORE_START"/>Learn more.<ph name="LEARN_MORE_END"/></translation>
 <translation id="4847979153841887006">Brave logo</translation>
-<translation id="1389386068457132299">Onboarding background</translation>
-<translation id="5101985748360228609">Top leaf decoration</translation>
-<translation id="5270920361877570459">Bottom leaf decoration</translation>
-<translation id="4021716437419160885">Scroll down</translation>
 <translation id="4767173360729868049">Help Brave Search illustration</translation>
 <translation id="8241918461631453498">Block interruptions illustration</translation>
 <translation id="8213310572767907663">Make Brave better illustration</translation>
@@ -223,7 +215,6 @@
 <translation id="7256200875155794202"><ph name="BIG_TECH"/> and other ads &amp; trackers blocked</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> ads &amp; trackers blocked</translation>
 <translation id="8281886186245836920">Skip</translation>
-<translation id="6165508094623778733">Learn more</translation>
 <translation id="986879628471635371">Troubleshooting onboarding</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
 <translation id="8537217141725709400">Earn <ph name="TOKEN"/>s</translation>
@@ -373,7 +364,7 @@ Are you sure you want to do this?</translation>
 <translation id="944340256927461196">Leave no trace on your device</translation>
 <translation id="2063044449012253966">Sites you visit in private windows won't appear in your history. Cookies, form data, and site data vanish once all private windows are closed.</translation>
 <translation id="7395764193745523646">Browsing visibility</translation>
-<translation id="8670344404057978375">Note that, even in private windows, your browsing activity may still be visible to your ISP, network observers, or your employer (if you're using a work device/network).</translation>
+<translation id="8435098045013317895">Note that—even in private windows—your browsing activity may still be visible to your ISP, network observers, or your employer (if you're using a work machine/network).</translation>
 <translation id="1413177583895309156">Brave VPN encrypts and protects anything you do online, even outside the Brave browser.</translation>
 <translation id="3974348661685061050">Try free for 7 days</translation>
 <translation id="5789441016350810005">Brave Ads sent when browser is in the background</translation>
@@ -517,6 +508,7 @@ Are you sure you want to do this?</translation>
 <translation id="2718046830255553131">Privacy reports data has been cleared.</translation>
 <translation id="8376263745431603066">Enable "Night Mode" (Experimental)</translation>
 <translation id="1383876407941801731">Search</translation>
+<translation id="6165508094623778733">Learn more</translation>
 <translation id="13296465911709339">Your text has been copied to the clipboard.</translation>
 <translation id="2735834606413553397">Public address has been copied to the clipboard.</translation>
 <translation id="2977461003134694205">Privacy Stats</translation>
@@ -977,23 +969,21 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="7659483790930268440">Address look-up table index:</translation>
 <translation id="5494920125229734069">Select all</translation>
 <translation id="2361906291514218784">Leo AI</translation>
+<translation id="2935698011275148880">Brave Origin</translation>
 <translation id="944736176598169208">Rewards</translation>
 <translation id="1199170151481311646">Privacy preserving analytics</translation>
 <translation id="1706715315466634757">Email aliases</translation>
-<translation id="738840791756723657">AI</translation>
 <translation id="6709133671862442373">News</translation>
 <translation id="5990642573624858459">Statistics reporting</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="2441719842399509963">Reset to defaults</translation>
-<translation id="4922034974043704366">This feature is enabled because you opted into it</translation>
 <translation id="2587535830241068901">Customize your browser while still supporting Brave</translation>
-<translation id="7235314227387539944">Brave Origin is a paid version of the browser for users who don't need all the features that support Brave as a business, but still want the privacy that only Brave offers. Origin users will continue to benefit from our industry-leading privacy, adblock, and speed (via Shields), as well as regular software updates, Chromium patches, and security and privacy improvements. Origin will remove most other features from the browser.</translation>
-<translation id="7941943775131052130">Note that a Brave Origin purchase will also include access to Brave Search Premium, as Origin will remove ads from the Brave Search results page.</translation>
+<translation id="123297831435065577">Brave Origin is a paid version of the browser for users who don't need all the features that support Brave as a business, but still want the privacy that only Brave offers. Origin users will continue to benefit from our industry-leading privacy, adblock, and speed (via Shields), as well as regular software updates, Chromium patches, and security and privacy improvements.</translation>
 <translation id="2573819149217596923">Changing Brave features</translation>
 <translation id="7415416427817229128">Enabling or disabling a Brave feature requires the browser to restart to apply changes. Would you like to restart now?</translation>
 <translation id="2256115617011615191">Restart now</translation>
 <translation id="2160089182263405907">Disabling features</translation>
-<translation id="3362364767724670721">Enabling or disabling a Brave feature requires a browser restart to apply changes. Please tap <ph name="BEGIN_BOLD"/>Restart now<ph name="END_BOLD"/> once Origin has finished updating.</translation>
+<translation id="7530313002494358590">Enabling or disabling a Brave feature requires a browser restart to apply changes. Please tap <ph name="BEGIN_BOLD"/>Restart now<ph name="END_BOLD"/> once Brave Origin has finished updating.</translation>
 <translation id="1028940738207645746">Are you sure you want to reset all settings to default?</translation>
 <translation id="5939518447894949180">Reset</translation>
 <translation id="8554205386170195281">Purchase</translation>
@@ -1124,9 +1114,9 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="6261139507111008244">Support our mission &amp; open-source work</translation>
 <translation id="6073373503121903099">Minimalist browser UI centred on Brave Shields</translation>
 <translation id="2267973897341040743">Maintain core adblock, privacy, &amp; speed</translation>
-<translation id="3339535734679532460">One-time purchase, no additional subscription cost</translation>
-<translation id="2805615640226281689">One Time Purchase</translation>
-<translation id="261433018299584676">Get a login code</translation>
+<translation id="4059093523966730868">One-time purchase can be activated multiple times across all your devices</translation>
+<translation id="7006681677649762716">One-time purchase</translation>
+<translation id="8707617004598499947">Verify Brave Origin purchase</translation>
 <translation id="1943432128510653496">Save passwords</translation>
 <translation id="2100273922101894616">Auto Sign-in</translation>
 <translation id="363596933471559332">Automatically sign in to websites using stored credentials. When the feature is off, you’ll be asked for verification every time before signing in to a website.</translation>
@@ -1185,12 +1175,14 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="7400418766976504921">URL</translation>
 <translation id="6410668567036790476">Add search engine</translation>
 <translation id="6289878295410648689">Write the search url and replace the query with <ph name="SPECIAL_SYMBOL"/>.</translation>
-<translation id="8943582268084103903">For example: https://youtube.com/search?q=<ph name="SPECIAL_SYMBOL"/>. If the site supports OpenSearch an option to add automatically will be provided while editing this field.</translation>
+<translation id="1298325705808878139">For example: https://youtube.com/search?q=<ph name="SPECIAL_SYMBOL"/>.</translation>
 <translation id="8706939021136180678">URL is invalid.</translation>
-<translation id="6528099556282059181">Search engine is already added.</translation>
+<translation id="5144960943371551167">Title can only contain letters, numbers and spaces.</translation>
+<translation id="7361775378755455309">Search engine with this keyword already exists.</translation>
 <translation id="463451857046640291">Failed to add search engine.</translation>
 <translation id="1229671956956864948">Failed to update search engine.</translation>
 <translation id="1462771969120037152">Failed to delete search engine. The search engine you're trying to delete may be set as the default one.</translation>
 <translation id="1079140196216383600">Delete custom search engine</translation>
 <translation id="525276572490219787">Are you sure you want to delete "<ph name="SEARCH_ENGINE_NAME"/>"? This action cannot be undone.</translation>
+<translation id="6406506848690869874">Sync</translation>
 </translationbundle>

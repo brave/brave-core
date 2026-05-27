@@ -52,7 +52,6 @@ peranti Bluetooth. <ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"
 <translation id="6570689355868013775">Alatan keselamatan Brave</translation>
 <translation id="1902837727299679178">Brave mahu memadamkan data Password Manager anda. Taip kata laluan Windows anda untuk membenarkan tindakan ini.</translation>
 <translation id="4449148723378534338">Semak privasi dan kawalan keselamatan utama dalam Brave</translation>
-<translation id="5229247933547820267">Untuk bertanya kepada AI Mode tentang tab anda tanpa meninggalkan halaman, log masuk ke Brave. Anda juga akan mendapat kata laluan anda dan pelbagai lagi pada semua peranti anda.</translation>
 <translation id="1640672724030957280">Memuat turun...</translation>
 <translation id="1680687534629375545">Tanya Carian Imej tentang halaman ini</translation>
 <translation id="509363484780540563">Anda boleh menggunakan Brave pada bila-bila masa anda mengklik pautan dalam mesej, dokumen dan apl lain. Apl juga akan disematkan pada bar tugas anda.</translation>
@@ -96,6 +95,9 @@ peranti Bluetooth. <ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"
 <translation id="2066690553719545730">Sentiasa Paparkan AI Mode</translation>
 <translation id="2472891440303445472">Brave menyekat muat turun ini kerana fail mengelirukan dan mungkin membuat perubahan tidak dijangka pada peranti anda</translation>
 <translation id="2054358978145431867">Anda akan melihat gesaan untuk mencuba <ph name="FEATURE_NAME"/> apabila anda membuka Brave iOS selepas ini.</translation>
+<translation id="4315579854608498851">Brave mematikan pengoptimuman JavaScript apabila anda melawati laman untuk kali pertama.
+
+Jika halaman ini tidak berfungsi seperti yang dijangkakan, cuba benarkan pengoptimuman.</translation>
 <translation id="2726948994393234543">Kata laluan anda dan data Brave lain yang anda simpan dalam Brave sync chain anda akan dialih keluar daripada peranti ini. Untuk menggunakan maklumat itu semula dalam Brave, log masuk semula.</translation>
 <translation id="4375530476448642348">{COUNT,plural, =1{Organisasi anda akan memadamkan data semakan imbas secara automatik apabila Brave tidak digunakan selama 1 minit. Pemadaman ini termasuk sejarah, autolengkap dan muat turun. Tab anda akan kekal terbuka.}other{Organisasi anda akan memadamkan data semakan imbas secara automatik apabila Brave tidak digunakan selama # minit. Pemadaman ini termasuk sejarah, autolengkap dan muat turun. Tab anda akan kekal terbuka.}}</translation>
 <translation id="2126108037660393668">Pengesahan fail yang dimuat turun gagal.</translation>
@@ -211,6 +213,7 @@ peranti Bluetooth. <ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"
 
 <ph name="EXTENSION_NAME"/></translation>
 <translation id="1742948938503172561">Sesuaikan profil Brave baharu anda</translation>
+<translation id="2430807206104224491">Anda boleh terus bersembang dengan AI Mode tanpa menukar tab. Untuk bermula, log masuk ke Brave. Anda juga akan mendapat kata laluan anda dan pelbagai lagi pada semua peranti anda.</translation>
 <translation id="4805865169608137960">Untuk mengalih keluar Brave sync chain anda daripada Brave, log keluar dari Brave dalam halaman Tetapan</translation>
 <translation id="1651639704310627074">Kemudian, Brave boleh bertanya sama ada anda mahu menggunakan maklumat yang disimpan bagi mengisi borang untuk anda secara automatik atau tidak</translation>
 <translation id="2585240446624043880">Brave tidak dapat membaca atau menulis pada direktori datanya:
@@ -499,6 +502,7 @@ peranti Bluetooth. <ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"
 <translation id="8646609321956191980">Setiap profil menyimpan maklumat Brave profil itu sendiri seperti penanda halaman, sejarah, kata laluan dan pelbagai lagi</translation>
 <translation id="6756656512757374876">Ketahui lebih lanjut tentang <ph name="BEGIN_LINK"/>cara Brave mengekalkan data anda peribadi<ph name="END_LINK"/></translation>
 <translation id="3556601443414636547">Perubahan pada tetapan ini akan digunakan setelah Brave dimulakan semula.</translation>
+<translation id="3396870972301571614">Urus sambungan anda dengan mengklik Sambungan dalam menu utama Brave.</translation>
 <translation id="2535436634051789953">Anda boleh menukar profil untuk melihat kata laluan daripada profil Brave yang lain</translation>
 <translation id="2312399718665761438">Untuk membetulkan kesilapan ejaan, Brave menghantar teks yang anda taip dalam medan teks kepada Brave</translation>
 <translation id="3507835409099344374">Pergi ke tetapan pemberitahuan Brave</translation>

@@ -37,6 +37,7 @@
 <translation id="1384959399684842514">Wedi seibio lawrlwytho</translation>
 <translation id="1396327438254055134">Caniatáu i wefan ddefnyddio optimieiddiwr V8.</translation>
 <translation id="1409338233051621926">Tapiwch Apiau yna tapiwch Apiau diofyn</translation>
+<translation id="1414315029670184034">Peidio â chaniatáu i wefannau ddefnyddio'ch camera</translation>
 <translation id="1415402041810619267">Mae'r URL wedi'i gwtogi</translation>
 <translation id="1741136041592162279">Gadewch i Brave rannu'ch tabiau diweddar gyda'ch dyfais i'w gweld yn rhestr apiau a chanlyniadau chwilio eich dyfais. Gallwch droi hwn ymlaen neu ei ddiffodd yng ngosodiadau Brave.</translation>
 <translation id="1420688843103859429">Llywiwch yn ôl ac ymlaen trwy sweipio gyda dau fys ar y pad cyffwrdd</translation>
@@ -80,7 +81,6 @@
 <translation id="1781533683087883868">Diffodd dolenni Modd Darllen</translation>
 <translation id="1785415724048343560">Argymhellir ar gyfer y profiad gorau</translation>
 <translation id="1796588414813960292">Ni fydd nodweddion sy'n gofyn am sain yn gweithio</translation>
-<translation id="7401204338724669842">Awgrymiadau Brave</translation>
 <translation id="6704867734300244173">Pan fydd ymlaen, mae Brave yn rhedeg yn gyflymach a dylai nodweddion sy'n defnyddio JavaScript weithio fel y'u dyluniwyd. Pan fydd wedi'i ddiffodd, mae hyn yn lleihau perfformiad ond yn gwneud V8 yn fwy ymwrthol i ymosodiadau.</translation>
 <translation id="1818308510395330587">I ganiatáu i <ph name="APP_NAME"/> ddefnyddio AR, trowch y camera ymlaen yn <ph name="BEGIN_LINK"/>Gosodiadau Android<ph name="END_LINK"/>.</translation>
 <translation id="1822318649925991542">Newidiwch y safle i addasu eich profiad pori</translation>
@@ -99,6 +99,7 @@
 <translation id="1985247341569771101">Pan fydd wedi'i droi ymlaen, gall gwefannau ddefnyddio synwyryddion symud eich dyfais. Pan fydd wedi'i ddiffodd, ni all gwefannau ddefnyddio synwyryddion symud.</translation>
 <translation id="1985716030964443178">Bydd hyn yn ailosod yr holl wefannau yn eich rhestr i'r lefel chwyddo ddiofyn</translation>
 <translation id="1989112275319619282">Pori</translation>
+<translation id="1991370806334788445">Rhowch gynnig ar ganiatáu cwcis trydydd parti, sy'n golygu llai o amddiffyniad pori ond mae nodweddion y wefan yn fwy tebygol o weithio yn ôl y disgwyl.</translation>
 <translation id="1994173015038366702">URL gwefan</translation>
 <translation id="1994558116414798016">Ffont Lexend</translation>
 <translation id="2004697686368036666">Mae'n bosib na fydd nodweddion ar rai gwefannau yn gweithio</translation>
@@ -164,6 +165,7 @@
 <translation id="257931822824936280">Wedi'i ehangu - cliciwch i grebachu.</translation>
 <translation id="2586657967955657006">Clipfwrdd</translation>
 <translation id="2588271083332682494">Tacluso gyda grwpiau tab</translation>
+<translation id="2592917252160773942">Gall gwefannau ofyn am eich camera</translation>
 <translation id="2597457036804169544">Peidio â defnyddio'r thema dywyll ar gyfer gwefannau</translation>
 <translation id="2606760465469169465">Awtoddilysu</translation>
 <translation id="2621115761605608342">Caniatáu JavaScript ar wefan benodol.</translation>
@@ -237,6 +239,7 @@
 <translation id="3360338140203645771">Dileu lefelau chwyddo sydd wedi'u cadw?</translation>
 <translation id="3362437373201486687">Wrthi'n sganio am ddyfeisiau Bluetooth</translation>
 <translation id="3368138297038111198">Rhannu ffenestr</translation>
+<translation id="3376322973772560482">{LOADED_COUNT,plural, =1{Yn dangos 1 o {TOTAL_COUNT} eitem oherwydd cof isel}zero{Yn dangos # o {TOTAL_COUNT} eitem oherwydd cof isel}two{Yn dangos # o {TOTAL_COUNT} eitem oherwydd cof isel}few{Yn dangos # o {TOTAL_COUNT} eitem oherwydd cof isel}many{Yn dangos # o {TOTAL_COUNT} eitem oherwydd cof isel}other{Yn dangos # o {TOTAL_COUNT} eitem oherwydd cof isel}}</translation>
 <translation id="3386292677130313581">Gofyn cyn caniatáu i wefannau wybod eich lleoliad (argymhellir)</translation>
 <translation id="3403537308306431953"><ph name="ZOOM_LEVEL"/> %%</translation>
 <translation id="344449859752187052">Mae cwcis trydydd parti wedi'u rhwystro</translation>
@@ -330,6 +333,7 @@
 <translation id="4290791284969893584">Ar ôl cau tudalen, mae'n bosib na fydd y tasgau y gwnaethoch eu cychwyn yn gorffen</translation>
 <translation id="429312253194641664">Mae gwefan yn chwarae cyfryngau</translation>
 <translation id="42981349822642051">Ehangu</translation>
+<translation id="4310738531374808763">Addasu eich hafan</translation>
 <translation id="4336219115486912529">{COUNT,plural, =1{Yn darfod yfory}zero{Yn darfod mewn # diwrnod}two{Yn darfod mewn # ddiwrnod}few{Yn darfod mewn # diwrnod}many{Yn darfod mewn # diwrnod}other{Yn darfod mewn # diwrnod}}</translation>
 <translation id="4338831206024587507">Pob gwefan o dan <ph name="DOMAIN"/></translation>
 <translation id="4340799661701629185">Peidio â chaniatáu i wefannau anfon hysbysiadau</translation>
@@ -359,6 +363,7 @@
 <translation id="4635969503923889910">Peidiwch â chaniatáu i wefannau ddefnyddio dyfeisiau NFC</translation>
 <translation id="4644713492825682049">Dileu ac ailosod</translation>
 <translation id="4645575059429386691">Rheolir gan dy riant</translation>
+<translation id="4651224148644053314">Rhagor o liwiau ac opsiynau</translation>
 <translation id="4652266463001779298">Ni chaniateir</translation>
 <translation id="4655846733459137112">Tapiwch Ie i ddefnyddio'r cyfrinair hwn yn hawdd y tro nesaf y byddwch yn mewngofnodi</translation>
 <translation id="4663373278480897665">Caniateir camera</translation>
@@ -520,6 +525,7 @@
 <translation id="6262279340360821358">Mae <ph name="PERMISSION_1"/> a <ph name="PERMISSION_2"/> wedi'u rhwystro</translation>
 <translation id="6270391203985052864">Gall gwefannau ofyn am anfon hysbysiadau</translation>
 <translation id="6295158916970320988">Pob gwefan</translation>
+<translation id="6305257382500066042">Rhoi cynnig arni nawr</translation>
 <translation id="6320088164292336938">Dirgrynu</translation>
 <translation id="6367753977865761591">Rhwystro mewngofnodi trydydd parti ar gyfer gwefan benodol.</translation>
 <translation id="6398765197997659313">Gadael y sgrîn lawn</translation>
@@ -605,6 +611,7 @@
 <translation id="7250468141469952378">Mae <ph name="ITEM_COUNT"/> wedi'u dewis</translation>
 <translation id="7260727271532453612">Caniateir <ph name="PERMISSION_1"/> a <ph name="PERMISSION_2"/></translation>
 <translation id="7276071417425470385">Pan fydd wedi'i droi ymlaen, gall gwefannau ofyn am gael defnyddio dyfeisiau rhith-realiti. Pan fydd wedi'i ddiffodd, ni all gwefannau ddefnyddio dyfeisiau rhith-realiti.</translation>
+<translation id="7279851812866769760">Rhannu cysylltiadau</translation>
 <translation id="7282197670900591579">Thema sitron</translation>
 <translation id="728412880473384942">Mae gwefannau'n gyflymach ond yn llai diogel</translation>
 <translation id="5843014938239239453">Rheoli yn y <ph name="BEGIN_LINK1"/>gosodiadau Android<ph name="END_LINK1"/>
@@ -654,7 +661,6 @@ Mae Advanced Protection yn rheoli'r gosodiadau Brave hyn:</translation>
 <translation id="780301667611848630">Dim diolch</translation>
 <translation id="7804248752222191302">Mae gwefan yn defnyddio'ch camera</translation>
 <translation id="7805832099057502789">Ymddangosiad dalen waelod tudalen tab newydd wedi'i hagor ar uchder llawn</translation>
-<translation id="6720480757902085971">Darperir gan Brave</translation>
 <translation id="7809029041571842593">Dalen waelod cardiau tudalen tab newydd wedi'i hagor ar hanner uchder</translation>
 <translation id="7815680994978050279">Rhwystrwyd lawrlwythiad peryglus</translation>
 <translation id="7835852323729233924">Chwarae cyfryngau</translation>
@@ -697,6 +703,7 @@ Mae Advanced Protection yn rheoli'r gosodiadau Brave hyn:</translation>
 <translation id="823874716226307142">Pan fydd wedi'i droi ymlaen, gall gwefannau ofyn am gael mynediad at ddyfeisiau eraill ar eich rhwydwaith lleol. Pan fydd wedi'i ddiffodd, ni all gwefannau gael mynediad at ddyfeisiau eraill ar eich rhwydwaith lleol.</translation>
 <translation id="8249310407154411074">Symud i'r brig</translation>
 <translation id="8261506727792406068">Dileu</translation>
+<translation id="8273596202562472147">Rhagor o ddewisiadau ar gyfer <ph name="SITE_NAME"/></translation>
 <translation id="8284326494547611709">Capsiynau</translation>
 <translation id="8300705686683892304">Wedi'u rheoli gan ap</translation>
 <translation id="8301363963630676147">Caniateir y tro hwn • Gan ddefnyddio lleoliad bras</translation>
@@ -742,7 +749,6 @@ Mae Advanced Protection yn rheoli'r gosodiadau Brave hyn:</translation>
 <translation id="8676374126336081632">Clirio mewnbwn</translation>
 <translation id="8681886425883659911">Mae hysbysebion yn cael eu rhwystro ar wefannau y gwyddys eu bod yn dangos hysbysebion ymwthiol neu gamarweiniol</translation>
 <translation id="868929229000858085">Chwilio eich cysylltiadau</translation>
-<translation id="8707904142362025782">Gall y wefan ofyn am eich camera</translation>
 <translation id="8712637175834984815">Iawn</translation>
 <translation id="8715862698998036666">Llusgwch o'r brig a sweipiwch o'r ymyl chwith neu dde i adael y sgrîn lawn.</translation>
 <translation id="8716050156658570300">Gall gwefannau ofyn am ddefnyddio synwyryddion symudiad a golau</translation>
@@ -792,6 +798,7 @@ Mae Advanced Protection yn rheoli'r gosodiadau Brave hyn:</translation>
 <translation id="7359422048569205930">Gadewch i Brave ddangos eich tabiau diweddar yn rhestr apiau a chanlyniadau chwilio eich dyfais. Gallwch ddiffodd hwn unrhyw bryd yng ngosodiadau Brave.</translation>
 <translation id="9162462602695099906">Mae'r dudalen hon yn beryglus</translation>
 <translation id="9182556968660520230">Peidio â chaniatáu i wefannau chwarae cynnwys gwarchodedig</translation>
+<translation id="927148002081263046">Rhannu cyswllt</translation>
 <translation id="947156494302904893">Gall gwefannau rydych yn ymweld â nhw gadarnhau eich bod yn berson go iawn ac nid bot</translation>
 <translation id="959682366969460160">Byddwch yn drefnus</translation>
 <translation id="960590623979248167">Dangos hyperddolenni</translation>
