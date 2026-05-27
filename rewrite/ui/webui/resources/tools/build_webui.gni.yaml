@@ -1,0 +1,101 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Pull in `brave_or_default_grit`, used below to dispatch the
+      `grit("resources")` call through Brave's grit wrapper.
+
+      Anchored on the license header so the insertion does not depend
+      on any particular upstream import surviving — only on the BSD
+      header block that every Chromium source file starts with.
+    re_pattern: '(# found in the LICENSE file\.\n\n)'
+    replace: |
+      \1import("//brave/resources/brave_grit.gni")
+
+  - description: |
+      Let `build_webui` callers exclude specific TypeScript files from
+      preprocessing and inject extra `public_deps` into the preprocess
+      step. Brave uses both hooks to reroute upstream WebUI TS files
+      through Brave overrides and to wire in Brave-only generated
+      dependencies.
+
+      `( *)` captures the indent of the target's opening line and the
+      closing anchor `\n\1\}` reuses it via a backreference, so the
+      match pairs the target's own `}` with its opener regardless of
+      where the target sits in the file. The inner
+      `if (enable_source_maps) { ... }` block's close lives one level
+      deeper and therefore can't satisfy the backreference. The
+      replacement strings reuse `\1` too, so the inserted hooks pick
+      up the same indent.
+    re_pattern:
+      '( *)(preprocess_if_expr\("preprocess_ts_files"\) \{.*?)(\n\1\})'
+    re_flags: [DOTALL]
+    replace: |-
+      \1\2
+      \1  if (defined(invoker.exclude_ts_preprocess_files)) {
+      \1    in_files -= invoker.exclude_ts_preprocess_files
+      \1  }
+      \1  if (defined(invoker.preprocess_deps)) {
+      \1    public_deps = invoker.preprocess_deps
+      \1  }\3
+
+  - description: |
+      Same pair of hooks for the HTML/CSS preprocess target: exclude
+      list and extra `public_deps`. Same indent-backreference trick as
+      `preprocess_ts_files` above — important here because this target
+      ends with `if (defined(invoker.css_files)) { ... }`, whose `}`
+      sits one level deeper than the target's own close. The
+      backreference pairs the close with the opener so they can't be
+      confused.
+    re_pattern:
+      '( *)(preprocess_if_expr\("preprocess_html_css_files"\) \{.*?)(\n\1\})'
+    re_flags: [DOTALL]
+    replace: |-
+      \1\2
+      \1  if (defined(invoker.exclude_html_css_preprocess_files)) {
+      \1    in_files -= invoker.exclude_html_css_preprocess_files
+      \1  }
+      \1  if (defined(invoker.preprocess_deps)) {
+      \1    public_deps = invoker.preprocess_deps
+      \1  }\3
+
+  - description: |
+      Default the ESLint `enable_web_component_missing_deps` check to
+      `false` for non-Ash WebUIs.
+
+      Brave-side WebUIs depend on Brave-only resources that aren't
+      visible to the upstream missing-deps check, so keeping it on by
+      default would break the build. Callers can still opt in via
+      `invoker.eslint_enable_web_component_missing_deps`.
+    re_pattern: 'enable_web_component_missing_deps = true'
+    replace: 'enable_web_component_missing_deps = false'
+
+  - description: |
+      Append `//brave/ui/webui/resources` to `no_explicit_any_exceptions`
+      so Brave's shared WebUI resources are not subject to the upstream
+      `noExplicitAny` lint.
+
+      Done as a `+=` immediately after the list's declaration, rather
+      than as an in-list entry, so the addition doesn't depend on the
+      surrounding entries or trailing-comma formatting staying as they
+      are. The `[^\]]*` body keeps the match from running past the
+      list's own `]` (greedy `.*` would otherwise reach the `grit_flags`
+      list further down).
+    re_pattern: '(no_explicit_any_exceptions = \[[^\]]*\])'
+    replace: |-
+      \1
+            no_explicit_any_exceptions += [ "//brave/ui/webui/resources" ]
+
+  - description: |
+      Route the `grit("resources")` template call through Brave's
+      `brave_or_default_grit` wrapper, so WebUIs that opt in via
+      `use_brave_grit` can substitute Brave-specific grit handling.
+      The `brave_grit.gni` import that defines this wrapper is added
+      to the top of the file by the first substitution in this plaster.
+    re_pattern: '(    )(grit\("resources"\) \{)'
+    replace: |-
+      \1forward_variables_from(invoker, [ "use_brave_grit" ])
+      \1brave_or_default_grit("resources") {
