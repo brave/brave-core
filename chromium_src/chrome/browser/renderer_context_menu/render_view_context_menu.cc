@@ -514,7 +514,7 @@ void RenderViewContextMenu::ExecuteAIChatCommand(int command) {
   if (browser) {
     auto* profile_metrics =
         misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(
-            browser->profile());
+            browser->GetProfile());
     if (profile_metrics) {
       ai_chat_metrics = profile_metrics->GetAIChatMetrics();
       if (ai_chat_metrics) {
@@ -678,7 +678,7 @@ void RenderViewContextMenu::BuildContainersMenu() {
 }
 
 Browser* RenderViewContextMenu::GetBrowserToOpenSettings() {
-  return GetBrowser();
+  return GetBrowser()->GetBrowserForMigrationOnly();
 }
 
 float RenderViewContextMenu::GetScaleFactor() {
@@ -856,8 +856,9 @@ void RenderViewContextMenu::InitMenu() {
   if (!TorProfileServiceFactory::IsTorDisabled(GetProfile()) &&
       content_type_->SupportsGroup(ContextMenuContentType::ITEM_GROUP_LINK) &&
       !params_.link_url.is_empty()) {
-    const Browser* browser = GetBrowser();
-    const bool is_app = browser && browser->is_type_app();
+    const auto* browser = GetBrowser();
+    const bool is_app =
+        browser && browser->GetType() == BrowserWindowInterface::TYPE_APP;
 
     index = menu_model_.GetIndexOfCommandId(
         IDC_CONTENT_CONTEXT_OPENLINKOFFTHERECORD);
