@@ -1,0 +1,41 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Call `MaybeHideReferrer` on redirect in
+      `NavigationRequest::OnRequestRedirected`, after the redirect's new
+      referrer has been written to `common_params_->referrer->url` and
+      before `Referrer::SanitizeForRequest` runs on it.
+
+      The injected call relies on the `browser_context` local defined
+      earlier in the same function, and on `GetTopDocumentGURL` defined
+      in the chromium_src shadow file's anonymous namespace.
+    re_pattern:
+      '(common_params_->referrer->url = GURL\(redirect_info\.new_referrer\);\n)'
+    replace: |
+      \1  GetContentClient()->browser()->MaybeHideReferrer(
+            browser_context, common_params_->url,
+            GetTopDocumentGURL(frame_tree_node_), &common_params_->referrer);
+
+  - description: |
+      Call `MaybeHideReferrer` from
+      `NavigationRequest::OnStartChecksComplete`, after the embedder
+      header merge block and before the navigation params are cloned.
+
+      Anchored on `    begin_params_->headers = headers.ToString();`
+      (4-space indent, only the in-`if` occurrence in this file) plus
+      the closing `}` and blank line that follow, so the insertion lands
+      exactly where the upstream block ends.
+
+      `GetTopDocumentGURL` comes from the chromium_src shadow file's
+      anonymous namespace.
+    re_pattern:
+      '(    begin_params_->headers = headers\.ToString\(\);\n  \}\n\n)'
+    replace: |
+      \1  GetContentClient()->browser()->MaybeHideReferrer(
+            frame_tree_node_->navigator().controller().GetBrowserContext(),
+            common_params_->url, GetTopDocumentGURL(frame_tree_node_),
+            &common_params_->referrer);

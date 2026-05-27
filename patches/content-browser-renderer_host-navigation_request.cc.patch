@@ -1,20 +1,25 @@
 diff --git a/content/browser/renderer_host/navigation_request.cc b/content/browser/renderer_host/navigation_request.cc
-index 0e2411f84984db70787deade18ab00c40e5886bc..88bbe068bcc50cd601fc54b3f0904fbc8cd6194e 100644
+index 23237a41ca78b3f4eee4135ba9f18f9f46493e36..15fa41d9235d9561a514a67c3ee92eb8e753400a 100644
 --- a/content/browser/renderer_host/navigation_request.cc
 +++ b/content/browser/renderer_host/navigation_request.cc
-@@ -3798,6 +3798,7 @@ void NavigationRequest::OnRequestRedirected(
+@@ -3925,6 +3925,9 @@ void NavigationRequest::OnRequestRedirected(
    common_params_->url = redirect_info.new_url;
    common_params_->method = redirect_info.new_method;
    common_params_->referrer->url = GURL(redirect_info.new_referrer);
-+  BRAVE_ONREQUESTREDIRECTED_MAYBEHIDEREFERRER
++  GetContentClient()->browser()->MaybeHideReferrer(
++      browser_context, common_params_->url,
++      GetTopDocumentGURL(frame_tree_node_), &common_params_->referrer);
    common_params_->referrer = Referrer::SanitizeForRequest(
        common_params_->url, *common_params_->referrer);
  
-@@ -5709,6 +5710,7 @@ void NavigationRequest::OnStartChecksComplete(
+@@ -5846,6 +5849,10 @@ void NavigationRequest::OnStartChecksComplete(
      begin_params_->headers = headers.ToString();
    }
  
-+  BRAVE_ONSTARTCHECKSCOMPLETE_MAYBEHIDEREFERRER
++  GetContentClient()->browser()->MaybeHideReferrer(
++      frame_tree_node_->navigator().controller().GetBrowserContext(),
++      common_params_->url, GetTopDocumentGURL(frame_tree_node_),
++      &common_params_->referrer);
    // TODO(clamy): Avoid cloning the navigation params and create the
    // ResourceRequest directly here.
    std::vector<std::unique_ptr<NavigationLoaderInterceptor>> interceptor;
