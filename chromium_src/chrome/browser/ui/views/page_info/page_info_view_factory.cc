@@ -4,13 +4,10 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "chrome/browser/ui/views/page_info/page_info_view_factory.h"
+
 #include "brave/components/vector_icons/vector_icons.h"
 
-#define BRAVE_PAGE_INFO_VIEW_FACTORY_GET_PERMISSION_ICON \
-  case ContentSettingsType::AUTOPLAY:                    \
-    icon = &kAutoplayStatusIcon;                         \
-    break;
+// This shadow source is being used merely to include `kAutoplayStatusIcon`, to
+// be used in `PageInfoViewFactory::GetPermissionIcon()`.
 
 #include <chrome/browser/ui/views/page_info/page_info_view_factory.cc>
-
-#undef BRAVE_PAGE_INFO_VIEW_FACTORY_GET_PERMISSION_ICON

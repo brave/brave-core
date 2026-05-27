@@ -1,12 +1,14 @@
 diff --git a/chrome/browser/ui/views/page_info/page_info_view_factory.cc b/chrome/browser/ui/views/page_info/page_info_view_factory.cc
-index 30eeeb566d0910f3c3de4e45267df146a7cc806c..04cfaf616a8651b540df5adb55d0871d41029c7d 100644
+index f50ea1e5c3c608f558c040b9a5dbe5bbb43bae0e..48a4b6a65e95600956133ee3830d04c978f4119b 100644
 --- a/chrome/browser/ui/views/page_info/page_info_view_factory.cc
 +++ b/chrome/browser/ui/views/page_info/page_info_view_factory.cc
-@@ -653,6 +653,7 @@ const ui::ImageModel PageInfoViewFactory::GetPermissionIcon(
+@@ -653,6 +653,9 @@ const ui::ImageModel PageInfoViewFactory::GetPermissionIcon(
  
    icon = &gfx::VectorIcon::EmptyIcon();
    switch (permission.type) {
-+    BRAVE_PAGE_INFO_VIEW_FACTORY_GET_PERMISSION_ICON
++    case ContentSettingsType::AUTOPLAY:
++      icon = &kAutoplayStatusIcon;
++      break;
      case ContentSettingsType::COOKIES:
        icon =
            &(features::IsRoundedIconsEnabled() ? vector_icons::kDatabaseIcon
