@@ -1,0 +1,24 @@
+diff --git a/chrome/browser/ui/startup/default_browser_prompt/default_browser_infobar_manager.cc b/chrome/browser/ui/startup/default_browser_prompt/default_browser_infobar_manager.cc
+index a74db2456122022d109aa93bc9fe93b7e409c663..76b5ef9ea8aabc7867ee435712a89d538ed2ec9d 100644
+--- a/chrome/browser/ui/startup/default_browser_prompt/default_browser_infobar_manager.cc
++++ b/chrome/browser/ui/startup/default_browser_prompt/default_browser_infobar_manager.cc
+@@ -30,7 +30,9 @@
+ using CloseReason = DefaultBrowserPromptManager::CloseReason;
+ 
+ DefaultBrowserInfoBarManager::DefaultBrowserInfoBarManager() = default;
+-DefaultBrowserInfoBarManager::~DefaultBrowserInfoBarManager() = default;
++DefaultBrowserInfoBarManager::~DefaultBrowserInfoBarManager() {
++  CloseAllPromptInstances();
++}
+ 
+ void DefaultBrowserInfoBarManager::Show(bool can_pin_to_taskbar) {
+   DefaultBrowserSurfaceManager::Show(can_pin_to_taskbar);
+@@ -88,6 +90,8 @@ void DefaultBrowserInfoBarManager::CloseAllPromptInstances() {
+ 
+   for (const auto& infobars_entry : infobars_) {
+     infobars_entry.second->owner()->RemoveObserver(this);
++    static_cast<ConfirmInfoBarDelegate*>(infobars_entry.second->delegate())
++        ->RemoveObserver(this);
+     infobars_entry.second->RemoveSelf();
+   }
+ 
