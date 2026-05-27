@@ -536,11 +536,13 @@ public class BytecodeTest {
                         int[].class,
                         int[].class,
                         boolean.class,
+                        boolean.class,
                         int.class,
                         int.class,
                         Rect.class,
                         Rect.class,
                         View.class,
+                        int.class,
                         int.class,
                         int.class));
 
