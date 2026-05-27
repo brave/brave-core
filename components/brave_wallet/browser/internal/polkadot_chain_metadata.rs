@@ -179,12 +179,7 @@ fn parse_storage_entry_type(input: &mut &[u8]) -> Result<(), Error> {
         1 => {
             let saved = *input;
             // Most runtimes (including v14 Polkadot) use Vec<StorageHasher>.
-            if decode_vec(input, |input| {
-                let _: u8 = decode_scale(input)?;
-                Ok(())
-            })
-            .is_ok()
-            {
+            if decode_vec(input, decode_scale::<u8>).is_ok() {
                 let _: u32 = decode_type_id(input)?;
                 let _: u32 = decode_type_id(input)?;
                 return Ok(());
