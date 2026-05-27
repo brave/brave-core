@@ -30,6 +30,7 @@ public class AIChatWebUIHelper: NSObject, TabObserver, AIChatUIHandler,
   public var tabsForPrivateMode: (_ isPrivate: Bool) -> [any TabState] = { _ in [] }
   public var profileController: BraveProfileController
   public var attachPrivacySensitiveTabHelpers: ((any TabState, any Profile) -> Void)?
+  public var webDelegateForTab: ((any TabState) -> AIChatWebDelegate?)?
 
   public init?(
     tab: some TabState,
@@ -122,7 +123,7 @@ public class AIChatWebUIHelper: NSObject, TabObserver, AIChatUIHandler,
     guard
       let childHelper = AIChatWebUIHelper(
         tab: tab,
-        webDelegate: webDelegate,
+        webDelegate: webDelegateForTab?(tab) ?? webDelegate,
         braveTalkJavascript: braveTalkJavascript,
         profileController: profileController
       ),
