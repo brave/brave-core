@@ -38,10 +38,10 @@ public struct WalletConstants {
   )!
 
   /// Terms of Use for Ethereum Name Service (ENS)
-  public static let ensTermsOfUseURL: URL = URL(string: "https://consensys.net/terms-of-use/")!
+  public static let ensTermsOfUseURL: URL = URL(string: "https://chainstack.com/tos/")!
 
   /// Privacy Policy for Ethereum Name Service (ENS)
-  public static let ensPrivacyPolicyURL: URL = URL(string: "https://consensys.net/privacy-policy/")!
+  public static let ensPrivacyPolicyURL: URL = URL(string: "https://chainstack.com/privacy/")!
 
   /// The url to learn more about ENS off-chain lookups
   public static let braveWalletENSOffchainURL = URL(
