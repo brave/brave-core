@@ -93,9 +93,8 @@ class BraveIdentityManagerTest : public testing::Test {
 
     ASSERT_TRUE(temp_profile_dir_.CreateUniqueTempDir());
 
-    auto account_tracker_service = std::make_unique<AccountTrackerService>();
-    account_tracker_service->Initialize(&pref_service_,
-                                        temp_profile_dir_.GetPath());
+    auto account_tracker_service = std::make_unique<AccountTrackerService>(
+        &pref_service_, temp_profile_dir_.GetPath());
     auto token_service =
         std::make_unique<FakeProfileOAuth2TokenService>(&pref_service_);
 
