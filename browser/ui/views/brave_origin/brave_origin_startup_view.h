@@ -12,10 +12,12 @@ static_assert(BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED));
 
 #include <memory>
 #include <optional>
+#include <string>
 
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "build/build_config.h"
 #include "content/public/browser/web_contents_delegate.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "ui/base/models/image_model.h"
@@ -64,6 +66,18 @@ class BraveOriginStartupView : public views::WidgetDelegate,
     // Asynchronously creates the default user profile and passes it to
     // |callback|.
     virtual void CreateDefaultProfile(ProfileCallback callback) = 0;
+
+#if BUILDFLAG(IS_LINUX)
+    // Returns the WM_CLASS res_name / res_class (and equivalent Wayland
+    // app_id) for the startup dialog's window. The window manager uses these
+    // to match the window to the Brave .desktop file and pick its icon; if
+    // they're empty the taskbar shows a generic icon. Implemented in the
+    // production delegate via shell_integration_linux. Routed through the
+    // delegate to avoid a dependency cycle from this source set to
+    // //chrome/browser.
+    virtual std::string GetLinuxWMClassName() = 0;
+    virtual std::string GetLinuxWMClassClass() = 0;
+#endif
   };
 
   // Returns true if the startup dialog should be shown (purchase not yet

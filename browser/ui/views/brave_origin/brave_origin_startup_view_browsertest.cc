@@ -59,6 +59,13 @@ class TestDelegate : public BraveOriginStartupView::Delegate {
         std::move(callback));
   }
 
+#if BUILDFLAG(IS_LINUX)
+  // Test infrastructure doesn't display the dialog in a context where the
+  // WM_CLASS matters; empty values are fine.
+  std::string GetLinuxWMClassName() override { return std::string(); }
+  std::string GetLinuxWMClassClass() override { return std::string(); }
+#endif
+
  private:
   raw_ptr<bool> attempt_exit_flag_ = nullptr;
 };
