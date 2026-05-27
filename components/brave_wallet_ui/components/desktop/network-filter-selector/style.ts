@@ -122,7 +122,7 @@ export const SelectorLeftSide = styled(LeftSide)`
 
 export const NetworkName = styled.span`
   font: ${leo.font.default.regular};
-color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.color.text01};
   text-align: left;
 `
 
@@ -137,7 +137,7 @@ export const BigCheckMark = styled.div`
 
 export const SecondaryNetworkText = styled.span`
   font: ${leo.font.small.regular};
-color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.color.text03};
   text-align: left;
   margin: 10px 0px 10px 10px;
 `

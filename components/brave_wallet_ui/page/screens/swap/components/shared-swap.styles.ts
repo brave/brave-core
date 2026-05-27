@@ -172,7 +172,7 @@ export const StyledButton = styled.button`
   outline: none;
   background: none;
   font: ${leo.font.large.semibold};
-flex-direction: row;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   color: ${(p) => p.theme.color.text01};
@@ -205,7 +205,7 @@ export const ShownResponsiveRow = styled(Row)<{ maxWidth?: number }>`
 export const StyledInput = styled.input`
   font-weight: 400;
   font: ${leo.font.default.regular};
-outline: none;
+  outline: none;
   background-image: none;
   box-shadow: none;
   border: none;
@@ -232,7 +232,7 @@ outline: none;
 
 export const StyledLabel = styled.label`
   font: ${leo.font.default.regular};
-color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.color.text01};
 `
 
 export const LPIcon = styled.div<{ icon: string; size?: string }>`

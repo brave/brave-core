@@ -23,7 +23,7 @@ export const Button = styled(WalletButton)<{
   background: none;
   font-weight: 600;
   font: ${leo.font.default.regular};
-padding: 10px 0px 0px 0px;
+  padding: 10px 0px 0px 0px;
   color: ${(p) =>
     p.isSelected ? leo.color.text.interactive : leo.color.text.secondary};
 `

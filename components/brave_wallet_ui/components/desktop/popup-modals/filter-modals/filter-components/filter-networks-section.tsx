@@ -129,9 +129,7 @@ export const FilterNetworksSection = ({
         marginBottom={8}
         justifyContent='space-between'
       >
-        <Title
-          variant='large.semibold'
-        >
+        <Title variant='large.semibold'>
           {getLocale('braveWalletSelectNetworks')}
         </Title>
         <SelectAllButton onClick={onSelectOrDeselectAllNetworks}>

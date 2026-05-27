@@ -15,7 +15,7 @@ export const OriginURLText = styled.span`
   margin-bottom: 4px;
   color: ${leo.color.neutral[60]};
   font: ${leo.font.small.regular};
-margin-bottom: 0px;
+  margin-bottom: 0px;
 `
 
 export const ContractOriginColumn = styled(Column)`
@@ -30,7 +30,7 @@ export const InlineContractRow = styled(Row)`
   text-align: left;
   vertical-align: center;
   font: ${leo.font.xSmall.regular};
-gap: 4px;
+  gap: 4px;
 `
 
 export const OriginIndicatorIconWrapper = styled.div`

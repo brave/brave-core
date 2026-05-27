@@ -20,7 +20,7 @@ export const StyledWrapper = styled.div`
 
 export const Title = styled.span`
   font: ${leo.font.heading.h3};
-color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.color.text01};
   margin-bottom: 8px;
 `
 
@@ -28,7 +28,7 @@ export const Description = styled.span<StyleProps>`
   display: flex;
   align-items: center;
   font: ${leo.font.default.regular};
-color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.color.text02};
   max-width: 520px;
   text-align: ${(p) => (p.textAlign ? p.textAlign : 'center')};
   margin-bottom: 25px;
@@ -36,7 +36,7 @@ color: ${(p) => p.theme.color.text02};
 
 export const FormText = styled.span`
   font: ${leo.font.heading.h4};
-color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.color.text01};
   margin-bottom: 8px;
 `
 
@@ -51,7 +51,7 @@ export const FormWrapper = styled.div`
 
 export const ErrorText = styled.span`
   font: ${leo.font.small.regular};
-color: ${(p) => p.theme.color.errorText};
+  color: ${(p) => p.theme.color.errorText};
   margin-bottom: 10px;
 `
 
@@ -80,12 +80,12 @@ export const RecoveryPhraseInput = styled.input`
   border-radius: 4px;
   font-style: normal;
   font: ${leo.font.small.regular};
-padding: 10px;
+  padding: 10px;
   margin-bottom: 10px;
   color: ${(p) => p.theme.color.text01};
   ::placeholder {
     font: ${leo.font.small.regular};
-color: ${(p) => p.theme.color.text03};
+    color: ${(p) => p.theme.color.text03};
   }
   :focus {
     outline: none;

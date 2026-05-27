@@ -50,7 +50,7 @@ export const ToSectionWrapper = styled(Column)`
 export const Input = styled.input`
   font-weight: 400;
   font: ${leo.font.default.regular};
-outline: none;
+  outline: none;
   background-image: none;
   box-shadow: none;
   border: none;
@@ -82,7 +82,7 @@ export const AmountInput = styled(Input)<{
     p.hasError ? leo.color.systemfeedback.errorText : leo.color.text.primary};
   font-weight: 500;
   font: ${leo.font.heading.display3};
-text-align: right;
+  text-align: right;
   width: 100%;
 `
 
@@ -92,7 +92,7 @@ export const PresetButton = styled(WalletButton)`
   background-color: ${leo.color.neutral[10]};
   border-radius: 4px;
   font: ${leo.font.xSmall.regular};
-padding: 4px 6px;
+  padding: 4px 6px;
   color: ${leo.color.neutral[50]};
   text-transform: uppercase;
   cursor: pointer;

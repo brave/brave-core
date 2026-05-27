@@ -28,7 +28,7 @@ export const StyledButton = styled.button<Partial<StyleProps>>`
 
 export const ButtonText = styled.span<Partial<StyleProps>>`
   font: ${leo.font.components.tableheader};
-color: ${(p) =>
+  color: ${(p) =>
     p.isSelected ? p.theme.palette.white : p.theme.color.text02};
 `
 

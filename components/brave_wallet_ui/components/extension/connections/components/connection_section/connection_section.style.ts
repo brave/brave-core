@@ -85,7 +85,7 @@ export const Icon = styled(LeoIcon)`
 export const StatusText = styled(Text)`
   text-transform: uppercase;
   font: ${leo.font.default.semibold};
-color: var(--connection-text-color);
+  color: var(--connection-text-color);
 `
 
 export const SelectButton = styled(WalletButton)`

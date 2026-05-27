@@ -53,8 +53,8 @@ export const Text = styled.span<{
             : p.textSize === '32px'
               ? '48px'
               : '20px'}
-  color: ${(p) =>
-    p.textColor ? `var(--${p.textColor})` : p.theme.color.text01};
+    color: ${(p) =>
+      p.textColor ? `var(--${p.textColor})` : p.theme.color.text01};
   font-size: ${(p) => (p.textSize ? p.textSize : '18px')};
   font-weight: ${(p) => (p.isBold ? 500 : 400)};
   height: ${(p) => (p.maintainHeight ? 'var(--line-height)' : 'unset')};
@@ -73,7 +73,7 @@ export const AmountInput = styled.input`
   color: ${(p) => p.theme.color.text01};
   font-weight: 500;
   font: ${leo.font.heading.display3};
-text-align: left;
+  text-align: left;
   width: 100%;
   outline: none;
   background-image: none;
@@ -104,7 +104,7 @@ export const PresetButton = styled.button<{ marginRight?: number }>`
   background-color: var(--button-background);
   border-radius: 4px;
   font: ${leo.font.xSmall.semibold};
-color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.color.text02};
   margin-right: ${(p) => (p.marginRight ? p.marginRight : 0)}px;
   padding: 4px 8px;
   &:hover {

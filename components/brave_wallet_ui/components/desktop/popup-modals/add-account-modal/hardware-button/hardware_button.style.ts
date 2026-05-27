@@ -22,7 +22,7 @@ export const Container = styled.button`
 export const Title = styled.p`
   color: ${leo.color.text.primary};
   font: ${leo.font.heading.h3};
-padding: 0;
+  padding: 0;
   margin: 0;
 `
 
@@ -30,7 +30,7 @@ export const Description = styled.p`
   width: 90%;
   color: ${leo.color.text.primary};
   font: ${leo.font.default.regular};
-padding: 0;
+  padding: 0;
   margin: 0;
   text-align: left;
 `

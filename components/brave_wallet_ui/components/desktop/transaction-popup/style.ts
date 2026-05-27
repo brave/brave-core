@@ -41,7 +41,7 @@ export const PopupButton = styled(WalletButton)`
 
 export const PopupButtonText = styled.span`
   font: ${leo.font.components.tableheader};
-color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.color.text01};
 `
 
 export const ClickAwayContainer = styled.div`

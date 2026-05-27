@@ -51,7 +51,7 @@ export const DIVForClickableArea = styled.div`
 
 export const NFTText = styled.span`
   font: ${leo.font.default.semibold};
-color: ${leo.color.text.primary};
+  color: ${leo.color.text.primary};
   margin-top: 6px;
   max-width: 99%;
   white-space: nowrap;
@@ -61,7 +61,7 @@ color: ${leo.color.text.primary};
 
 export const NFTSymbol = styled.span`
   font: ${leo.font.small.regular};
-color: ${leo.color.text.secondary};
+  color: ${leo.color.text.secondary};
 `
 
 export const PinnedIcon = styled.div`
@@ -125,7 +125,7 @@ export const JunkMarker = styled.div`
   background-color: ${leo.color.red[20]};
   color: ${leo.color.red[50]};
   font: ${leo.font.xSmall.semibold};
-text-transform: uppercase;
+  text-transform: uppercase;
   z-index: 2;
 `
 

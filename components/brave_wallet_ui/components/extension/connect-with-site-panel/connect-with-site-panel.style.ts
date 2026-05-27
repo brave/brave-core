@@ -105,14 +105,14 @@ export const PermissionsContainer = styled(Column)`
 
 export const SectionLabel = styled.span`
   font: ${leo.font.small.semibold};
-text-align: left;
+  text-align: left;
   color: ${leo.color.text.primary};
   margin-bottom: 8px;
 `
 
 export const SectionPoint = styled.span`
   font: ${leo.font.small.regular};
-text-align: left;
+  text-align: left;
   color: ${leo.color.text.primary};
   max-width: 90%;
   white-space: pre-line;
@@ -146,7 +146,7 @@ export const BulletIcon = styled(Icon)<{ status: 'success' | 'error' }>`
 
 export const AddAccountText = styled.span`
   font: ${leo.font.default.semibold};
-color: ${leo.color.text.interactive};
+  color: ${leo.color.text.interactive};
 `
 
 export const AddAcountIcon = styled(Icon)`
@@ -193,7 +193,7 @@ export const DurationLabel = styled.div`
   outline: none;
   border-radius: 8px;
   font: ${leo.font.default.regular};
-padding: 10px 8px 10px 16px;
+  padding: 10px 8px 10px 16px;
   margin-bottom: 8px;
   color: ${leo.color.text.primary};
   border: none;

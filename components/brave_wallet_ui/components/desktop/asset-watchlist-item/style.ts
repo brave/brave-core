@@ -53,13 +53,13 @@ export const NameAndSymbol = styled.div`
 
 export const AssetName = styled.span`
   font: ${leo.font.default.semibold};
-color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.color.text01};
   text-align: left;
 `
 
 export const AssetSymbol = styled.span`
   font: ${leo.font.small.regular};
-color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.color.text01};
   text-align: left;
 `
 
@@ -69,7 +69,7 @@ export const Balance = styled.div`
   justify-content: flex-start;
   flex-direction: row;
   font: ${leo.font.default.regular};
-color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.color.text01};
   width: 48%;
 `
 

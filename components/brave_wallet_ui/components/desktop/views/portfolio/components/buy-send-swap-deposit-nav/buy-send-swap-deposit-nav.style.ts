@@ -44,7 +44,7 @@ export const ButtonIcon = styled(Icon)`
 export const ButtonText = styled.span`
   font-style: normal;
   font: ${leo.font.small.semibold};
-color: ${leo.color.text.primary};
+  color: ${leo.color.text.primary};
 `
 
 export const MoreMenuWrapper = styled(ButtonWrapper)`

@@ -17,13 +17,13 @@ export const StyledWrapper = styled.div`
 
 export const Title = styled.span`
   font: ${leo.font.heading.h3};
-color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.color.text01};
   margin-bottom: 12px;
 `
 
 export const Description = styled.span`
   font: ${leo.font.default.regular};
-color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.color.text02};
   max-width: 270px;
   text-align: center;
   margin-bottom: 35px;

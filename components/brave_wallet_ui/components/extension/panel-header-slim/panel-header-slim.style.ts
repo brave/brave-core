@@ -10,7 +10,7 @@ import { WalletButton } from '../../shared/style'
 
 export const HeaderTitle = styled.span`
   font: ${leo.font.small.semibold};
-color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.color.text03};
   position: absolute;
 `
 

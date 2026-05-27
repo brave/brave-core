@@ -29,7 +29,7 @@ export const DropDownButton = styled(WalletButton)`
   outline: none;
   border-radius: 8px;
   font: ${leo.font.default.regular};
-padding: 10px 8px 10px 16px;
+  padding: 10px 8px 10px 16px;
   margin-bottom: 8px;
   color: ${leo.color.text.primary};
   border: none;
@@ -77,7 +77,7 @@ export const PermissionButton = styled(WalletButton)`
   background: none;
   padding: 8px 8px;
   font: ${leo.font.default.regular};
-color: ${leo.color.text.primary};
+  color: ${leo.color.text.primary};
   margin-bottom: 8px;
   &:last-child {
     margin-bottom: 0px;

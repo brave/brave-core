@@ -33,7 +33,7 @@ export const StyledButton = styled(WalletButton)<StyleProps>`
 
 export const ButtonText = styled.span<StyleProps>`
   font: ${leo.font.components.tableheader};
-color: ${(p) =>
+  color: ${(p) =>
     p.buttonType === 'primary' ? '#ffffff' : `${p.theme.color.interactive07}`};
 `
 

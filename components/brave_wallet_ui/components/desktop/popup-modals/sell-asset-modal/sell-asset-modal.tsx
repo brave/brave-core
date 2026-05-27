@@ -159,7 +159,7 @@ export const SellAssetModal = (props: Props) => {
             >
               <Row width='unset'>
                 <Text
-                  variant='small.semibold'={false}
+                  variant='small.regular'
                   textColor='text03'
                   marginRight={8}
                 >
@@ -216,7 +216,7 @@ export const SellAssetModal = (props: Props) => {
             <ErrorBox>
               <ErrorIcon />
               <Text
-                variant='default.semibold'={false}
+                variant='default.regular'
                 textColor='text01'
                 textAlign='left'
               >

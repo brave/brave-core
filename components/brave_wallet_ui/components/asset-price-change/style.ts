@@ -19,14 +19,14 @@ export const PriceChange = styled.span<{
   display: flex;
   align-items: center;
   font: ${leo.font.default.semibold};
-color: ${(p) =>
+  color: ${(p) =>
     p.isDown
       ? leo.color.systemfeedback.errorText
       : leo.color.systemfeedback.successText};
 
   @media screen and (max-width: ${layoutPanelWidth}px) {
     font: ${leo.font.small.regular};
-}
+  }
 `
 
 export const Arrow = styled(Icon)<{

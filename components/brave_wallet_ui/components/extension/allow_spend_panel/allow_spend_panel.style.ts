@@ -20,7 +20,7 @@ export const ContentWrapper = styled(Column)`
 
 export const Title = styled(Row)`
   font: ${leo.font.heading.h4};
-color: ${leo.color.text.primary};
+  color: ${leo.color.text.primary};
 `
 
 export const Description = styled(Text)`

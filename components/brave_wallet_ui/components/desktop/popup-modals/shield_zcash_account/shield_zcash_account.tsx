@@ -121,7 +121,7 @@ export const ShieldZCashAccountModal = (props: Props) => {
               {account.name}
             </Text>
             <Text
-              variant='small.semibold'={false}
+              variant='small.regular'
               textColor='secondary'
               textAlign='left'
             >
@@ -130,7 +130,7 @@ export const ShieldZCashAccountModal = (props: Props) => {
           </Column>
         </AccountRow>
         <Text
-          variant='default.semibold'={false}
+          variant='default.regular'
           textColor='primary'
           textAlign='left'
         >
@@ -173,7 +173,7 @@ export const ShieldZCashAccountModal = (props: Props) => {
               >
                 <Text
                   textColor='primary'
-                  variant='default.semibold'={false}
+                  variant='default.regular'
                 >
                   {getLocale('braveWalletShieldedAccountBirthdayBlock')}
                 </Text>
@@ -192,7 +192,7 @@ export const ShieldZCashAccountModal = (props: Props) => {
                 >
                   <Text
                     textColor='error'
-                    variant='small.semibold'={false}
+                    variant='small.regular'
                   >
                     {birthdayBlockIsToLow
                       ? getLocale('braveWalletAccountBirthdayTooLow').replace(

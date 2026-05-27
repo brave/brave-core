@@ -17,18 +17,18 @@ export const AccountNameText = styled(Text)`
 
 export const AddressText = styled(Text)`
   font: ${leo.font.small.regular};
-color: ${leo.color.text.primary};
+  color: ${leo.color.text.primary};
   margin-right: 8px;
 `
 
 export const AccountsNetworkText = styled(Text)`
   font: ${leo.font.small.regular};
-color: ${leo.color.text.secondary};
+  color: ${leo.color.text.secondary};
 `
 
 export const AccountBalanceText = styled(Text)`
   font: ${leo.font.heading.h2};
-color: ${leo.color.text.primary};
+  color: ${leo.color.text.primary};
 `
 
 export const CopyIcon = styled(Icon).attrs({

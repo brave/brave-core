@@ -55,17 +55,17 @@ export const AccountCircle = styled.div<{
 export const AccountNameText = styled.span`
   font-style: normal;
   font: ${leo.font.default.semibold};
-color: ${leo.color.text.primary};
+  color: ${leo.color.text.primary};
 `
 
 export const AccountAddressText = styled.span`
   font: ${leo.font.small.regular};
-color: ${leo.color.text.primary};
+  color: ${leo.color.text.primary};
 `
 
 export const BalanceText = styled.span`
   font: ${leo.font.small.regular};
-color: ${leo.color.text.secondary};
+  color: ${leo.color.text.secondary};
 `
 
 export const SelectedIcon = styled(Icon)<{ isSelected: boolean }>`

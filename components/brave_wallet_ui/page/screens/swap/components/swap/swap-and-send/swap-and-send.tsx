@@ -98,7 +98,9 @@ export const SwapAndSend = (props: Props) => {
         horizontalPadding={16}
       >
         <Row>
-          <Text variant='default.regular'>{getLocale('braveSwapSwapAndSend')}</Text>
+          <Text variant='default.regular'>
+            {getLocale('braveSwapSwapAndSend')}
+          </Text>
           <Flash
             name='flash'
             size={16}

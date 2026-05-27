@@ -15,7 +15,7 @@ export const Section = styled(Column)`
 
 export const Link = styled.a`
   font: ${leo.font.default.regular};
-color: ${(p) => p.theme.color.interactive05};
+  color: ${(p) => p.theme.color.interactive05};
   text-decoration: none;
   display: block;
   cursor: pointer;

@@ -29,7 +29,7 @@ export const FormColumn = styled.div`
 
 export const InputLabel = styled.span`
   font: ${leo.font.default.regular};
-color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.color.text02};
   margin-bottom: 6px;
 `
 
@@ -51,12 +51,12 @@ export const Input = styled.input<{
   border-radius: 4px;
   font-style: normal;
   font: ${leo.font.small.regular};
-padding: 10px;
+  padding: 10px;
   margin-bottom: 8px;
   color: ${(p) => p.theme.color.text01};
   ::placeholder {
     font: ${leo.font.small.regular};
-color: ${(p) => p.theme.color.text03};
+    color: ${(p) => p.theme.color.text03};
   }
   :focus {
     outline: none;
@@ -84,13 +84,13 @@ export const ButtonRow = styled.div`
 export const Description = styled.span`
   width: 100%;
   font: ${leo.font.small.regular};
-text-align: flex-start;
+  text-align: flex-start;
   color: ${(p) => p.theme.color.text02};
 `
 
 export const CurrentBaseText = styled.span`
   font: ${leo.font.small.regular};
-color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.color.text01};
   margin-bottom: 10px;
 `
 
@@ -106,7 +106,7 @@ export const CurrentBaseRow = styled.div`
 
 export const MaximumFeeText = styled.span`
   font: ${leo.font.small.regular};
-color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.color.text01};
 `
 
 export const MaximumFeeRow = styled.div`
@@ -127,7 +127,7 @@ export const SliderWrapper = styled.div`
 
 export const SliderValue = styled.span`
   font: ${leo.font.large.semibold};
-color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.color.text01};
   margin-top: 6px;
   margin-bottom: 16px;
 `
@@ -196,12 +196,12 @@ export const SliderLabelRow = styled.div`
 
 export const SliderLabel = styled.span`
   font: ${leo.font.default.regular};
-color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.color.text02};
 `
 
 export const WarningText = styled.span`
   font: ${leo.font.small.regular};
-color: ${(p) => p.theme.color.errorText};
+  color: ${(p) => p.theme.color.errorText};
   word-break: break-word;
   margin-bottom: 12px;
 `

@@ -7,7 +7,7 @@ import * as leo from '@brave/leo/tokens/css/variables'
 
 export const Header = styled.h1`
   font: ${leo.font.large.semibold};
-color: ${leo.color.text.primary};
+  color: ${leo.color.text.primary};
   margin: 0 0 8px 0;
   padding: 0;
   text-align: left;
@@ -16,7 +16,7 @@ color: ${leo.color.text.primary};
 
 export const Description = styled.p`
   font: ${leo.font.small.regular};
-color: ${leo.color.text.secondary};
+  color: ${leo.color.text.secondary};
   margin: 0;
   padding: 0;
 `

@@ -134,9 +134,7 @@ export const BalanceDetailsModal = React.forwardRef<HTMLDivElement, Props>(
                 width='unset'
                 gap='4px'
               >
-                <SectionText
-                  variant='default.semibold'
-                >
+                <SectionText variant='default.semibold'>
                   {getLocale('braveWalletConfirmTransactionTotal')}:
                 </SectionText>
                 <Tooltip
@@ -157,9 +155,7 @@ export const BalanceDetailsModal = React.forwardRef<HTMLDivElement, Props>(
                   />
                 </Column>
               ) : (
-                <BalanceText
-                  variant='default.semibold'
-                >
+                <BalanceText variant='default.semibold'>
                   {new Amount(balances?.totalBalance ?? '')
                     .divideByDecimals(token.decimals)
                     .formatAsAsset(6, token.symbol)}

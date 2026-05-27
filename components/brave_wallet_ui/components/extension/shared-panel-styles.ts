@@ -51,18 +51,18 @@ export const AddressAndOrb = styled.div`
 export const AddressText = styled.span`
   cursor: default;
   font: ${leo.font.small.semibold};
-color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.color.text03};
   margin-right: 12px;
 `
 
 export const NetworkText = styled.span`
   font: ${leo.font.small.regular};
-color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.color.text03};
 `
 
 export const PanelTitle = styled.span`
   font: ${leo.font.heading.h4};
-text-align: center;
+  text-align: center;
   width: 90%;
   color: ${(p) => p.theme.color.text01};
   margin-bottom: 6px;
@@ -71,7 +71,7 @@ text-align: center;
 export const Description = styled.span`
   width: 90%;
   font: ${leo.font.small.regular};
-text-align: center;
+  text-align: center;
   color: ${(p) => p.theme.color.text02};
   margin-bottom: 12px;
 `
@@ -87,12 +87,12 @@ export const TabRow = styled.div`
 
 export const DetailTextDarkBold = styled.span`
   font: ${leo.font.small.semibold};
-color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.color.text02};
 `
 
 export const URLText = styled.span`
   font: ${leo.font.xSmall.regular};
-text-align: center;
+  text-align: center;
   margin-bottom: 8px;
   color: ${(p) => p.theme.color.text02};
   max-width: 80%;
@@ -118,7 +118,7 @@ export const WarningBox = styled.div<Partial<StyleProps>>`
 
 export const WarningTitle = styled.span<Partial<StyleProps>>`
   font: ${leo.font.small.semibold};
-color: ${(p) =>
+  color: ${(p) =>
     p.warningType === 'danger'
       ? p.theme.color.errorText
       : p.theme.color.text01};
@@ -134,7 +134,7 @@ export const WarningBoxTitleRow = styled.div`
 
 export const WarningText = styled.span`
   font: ${leo.font.small.regular};
-text-align: left;
+  text-align: left;
   color: ${(p) => p.theme.color.errorText};
 `
 
@@ -156,7 +156,7 @@ export const WarningIcon = styled(WarningBoxIcon)`
 
 export const LearnMoreButton = styled(WalletButton)`
   font: ${leo.font.small.regular};
-color: ${(p) => p.theme.color.interactive05};
+  color: ${(p) => p.theme.color.interactive05};
   background: none;
   cursor: pointer;
   outline: none;
@@ -217,7 +217,7 @@ export const ConfirmationButtonLink = styled(WalletButton)`
   border: none;
   background: none;
   font: ${leo.font.small.semibold};
-color: ${leo.color.text.interactive};
+  color: ${leo.color.text.interactive};
 `
 
 export const ConfirmationIconButton = styled(WalletButton)`
@@ -231,7 +231,7 @@ export const ConfirmationIconButton = styled(WalletButton)`
   border: none;
   background: none;
   font: ${leo.font.small.semibold};
-color: ${leo.color.text.primary};
+  color: ${leo.color.text.primary};
 `
 
 export const ScrollableColumn = styled(Column)`

@@ -54,7 +54,7 @@ export const NoAssetButton = styled(WalletButton)`
   padding: 0px;
   margin: 0px;
   font: ${leo.font.default.semibold};
-color: ${leo.color.text.interactive};
+  color: ${leo.color.text.interactive};
 `
 
 export const TitleRow = styled(Row)`

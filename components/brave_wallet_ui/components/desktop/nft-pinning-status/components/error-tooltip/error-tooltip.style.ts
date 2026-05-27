@@ -33,7 +33,7 @@ export const TooltipContent = styled.div`
 
 export const Heading = styled.p`
   font: ${leo.font.small.semibold};
-padding: 0;
+  padding: 0;
   margin: 0;
 `
 
@@ -43,7 +43,7 @@ export const List = styled.ul`
 
   li {
     font: ${leo.font.small.regular};
-padding: 0;
+    padding: 0;
     margin: 0;
   }
 `

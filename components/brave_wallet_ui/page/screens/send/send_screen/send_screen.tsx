@@ -723,9 +723,7 @@ export const SendScreen = React.memo(() => {
                   justifyContent='flex-start'
                   marginBottom={10}
                 >
-                  <ToText
-                    variant='default.semibold'={false}
-                  >
+                  <ToText variant='default.regular'>
                     {getLocale('braveWalletSwapTo')}
                   </ToText>
                 </ToRow>

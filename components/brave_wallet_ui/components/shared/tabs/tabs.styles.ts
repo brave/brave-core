@@ -31,7 +31,7 @@ export const Tab = styled.div<{ isActive: boolean }>`
   align-items: center;
   gap: 8px;
   font: ${leo.font.default.semibold};
-color: ${(p) =>
+  color: ${(p) =>
     p.isActive ? leo.color.text.interactive : leo.color.text.tertiary};
   margin-bottom: 12px;
 `
@@ -55,7 +55,7 @@ export const LabelSummary = styled.span<{ isActive: boolean }>`
   border-radius: 6px;
   padding: 4px;
   font: ${leo.font.xSmall.regular};
-display: flex;
+  display: flex;
   align-items: center;
   text-transform: uppercase;
   color: ${(p) =>

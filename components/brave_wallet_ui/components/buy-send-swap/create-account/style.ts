@@ -18,7 +18,7 @@ export const StyledWrapper = styled.div`
 
 export const Description = styled.span`
   font: ${leo.font.components.tableheader};
-color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.color.text01};
   text-align: center;
   width: 80%;
   margin-bottom: 20px;

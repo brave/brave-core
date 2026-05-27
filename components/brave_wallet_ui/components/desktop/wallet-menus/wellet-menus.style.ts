@@ -111,7 +111,7 @@ export const PopupButtonText = styled.span`
   flex: 1;
   font-style: normal;
   font: ${leo.font.default.regular};
-color: ${leo.color.text.primary};
+  color: ${leo.color.text.primary};
 `
 
 export const ButtonIcon = styled(Icon)<{ id?: AccountModalTypes }>`
@@ -159,6 +159,6 @@ export const SectionLabel = styled(Row)`
   background-color: ${leo.color.page.background};
   padding: 4px 8px;
   font: ${leo.font.components.label};
-text-transform: capitalize;
+  text-transform: capitalize;
   color: ${leo.color.text.tertiary};
 `

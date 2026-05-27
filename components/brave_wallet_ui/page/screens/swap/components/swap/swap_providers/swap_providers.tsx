@@ -117,7 +117,7 @@ export const SwapProviders = (props: Props) => {
                 </Row>
                 {!isAvailableForSwap && (
                   <Text
-                    variant='default.semibold'={false}
+                    variant='default.regular'
                     textColor='disabled'
                   >
                     {getLocale('braveWalletNotAvailable')}

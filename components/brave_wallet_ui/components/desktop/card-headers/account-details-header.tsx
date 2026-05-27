@@ -287,9 +287,7 @@ export const AccountDetailsHeader = (props: Props) => {
           marginRight={8}
         />
         <Column alignItems='flex-start'>
-          <AccountNameText
-            variant='large.semibold'
-          >
+          <AccountNameText variant='large.semibold'>
             {account.name}
           </AccountNameText>
           {account.address && (

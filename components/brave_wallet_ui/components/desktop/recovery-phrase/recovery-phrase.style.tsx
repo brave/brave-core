@@ -52,7 +52,7 @@ export const RecoveryBubble = styled.div`
   border: 1px solid ${leo.color.divider.subtle};
 
   font: ${leo.font.small.semibold};
-color: ${leo.color.text.primary};
+  color: ${leo.color.text.primary};
   background-color: ${leo.color.container.background};
 `
 
@@ -70,7 +70,7 @@ export const RecoveryBubbleBadge = styled.p`
   width: 40px;
   border-radius: 4px;
   font: ${leo.font.xSmall.regular};
-display: flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
@@ -105,7 +105,7 @@ export const HiddenPhraseContainer = styled.div`
 
   & p {
     font: ${leo.font.small.semibold};
-text-align: center;
+    text-align: center;
     margin-top: 10px;
     color: ${(p) => p.theme.color.background01};
   }

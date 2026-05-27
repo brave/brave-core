@@ -37,7 +37,7 @@ export const Title = styled(Text)`
 
 export const MessageText = styled(Text)`
   font: ${leo.font.default.regular};
-text-align: left;
+  text-align: left;
   flex-wrap: wrap;
 `
 
@@ -72,7 +72,7 @@ export const DetailsBox = styled(ScrollableColumn)`
 
 export const DetailsKeyText = styled(Text)`
   font: ${leo.font.default.regular};
-text-align: left;
+  text-align: left;
   flex-wrap: wrap;
 `
 
@@ -80,7 +80,7 @@ export const CodeBlock = styled.code``
 
 export const DetailsInfoText = styled(Text)`
   font: ${leo.font.default.regular};
-text-align: left;
+  text-align: left;
   flex-wrap: wrap;
   word-wrap: break-word;
   max-width: 100%;

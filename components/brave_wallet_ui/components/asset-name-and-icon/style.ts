@@ -37,7 +37,7 @@ export const NameAndSymbolWrapper = styled.div`
 export const AssetName = styled.span`
   color: ${leo.color.text.primary};
   font: ${leo.font.default.semibold};
-overflow: hidden;
+  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   width: 160px;
@@ -51,6 +51,6 @@ overflow: hidden;
 export const AssetSymbol = styled.span`
   color: ${leo.color.text.tertiary};
   font: ${leo.font.small.regular};
-text-transform: uppercase;
+  text-transform: uppercase;
   text-align: left;
 `

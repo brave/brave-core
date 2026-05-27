@@ -24,7 +24,7 @@ export const Input = styled.input<{ hasError: boolean }>`
   border-radius: 8px;
   font-style: normal;
   font: ${leo.font.default.regular};
-margin: 0px;
+  margin: 0px;
   color: ${leo.color.text.primary};
 
   ::placeholder {
@@ -53,7 +53,7 @@ margin: 0px;
 
 export const InputLabel = styled.label`
   font: ${leo.font.default.semibold};
-color: ${leo.color.text.primary};
+  color: ${leo.color.text.primary};
   margin-bottom: 4px;
 `
 

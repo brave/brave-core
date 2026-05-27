@@ -175,9 +175,7 @@ export const ToAsset = (props: Props) => {
         justifyContent='space-between'
         marginBottom={10}
       >
-        <ReceiveAndQuoteText
-          variant='default.semibold'={false}
-        >
+        <ReceiveAndQuoteText variant='default.regular'>
           {getLocale('braveWalletReceiveEstimate')}
         </ReceiveAndQuoteText>
         <Row width='unset'>
@@ -187,9 +185,7 @@ export const ToAsset = (props: Props) => {
               gap='4px'
               margin='0px 4px 0px 0px'
             >
-              <ReceiveAndQuoteText
-                variant='small.semibold'={false}
-              >
+              <ReceiveAndQuoteText variant='small.regular'>
                 {newQuote}
               </ReceiveAndQuoteText>
             </Row>
@@ -237,9 +233,7 @@ export const ToAsset = (props: Props) => {
         justifyContent='space-between'
       >
         {network && token && (
-          <NetworkAndFiatText
-            variant='default.semibold'={false}
-          >
+          <NetworkAndFiatText variant='default.regular'>
             {getLocale('braveWalletPortfolioAssetNetworkDescription')
               .replace('$1', '')
               .replace('$2', network.chainName)}
@@ -253,9 +247,7 @@ export const ToAsset = (props: Props) => {
                 width={60}
               />
             ) : (
-              <NetworkAndFiatText
-                variant='default.semibold'={false}
-              >
+              <NetworkAndFiatText variant='default.regular'>
                 {fiatValue}
               </NetworkAndFiatText>
             )}

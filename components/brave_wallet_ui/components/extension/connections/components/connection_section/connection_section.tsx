@@ -309,7 +309,7 @@ export const ConnectionSection = (props: Props) => {
               </Row>
               <Row width='unset'>
                 <Text
-                  variant='default.semibold'={false}
+                  variant='default.regular'
                   textColor='tertiary'
                 >
                   {reduceAddress(selectedAccount?.address ?? '')}

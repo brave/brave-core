@@ -56,7 +56,7 @@ export const DisclaimerWrapper = styled.div`
 
 export const DisclaimerText = styled.span`
   font: ${leo.font.small.regular};
-width: 100%;
+  width: 100%;
 `
 
 export const InfoIcon = styled.div`
@@ -74,7 +74,7 @@ export const ImportButton = styled(LeoButton)`
 
 export const ErrorText = styled.span`
   font: ${leo.font.default.regular};
-color: ${leo.color.systemfeedback.errorText};
+  color: ${leo.color.systemfeedback.errorText};
 `
 
 export const CreateAccountWrapper = styled(Column)`
@@ -110,7 +110,7 @@ export const NetworkDescription = styled(Text)`
 
 export const FileNameText = styled(Text)`
   font: ${leo.font.default.regular};
-text-transform: none;
+  text-transform: none;
 `
 
 export const JsonFileLabel = styled(Text)`

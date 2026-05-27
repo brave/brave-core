@@ -65,10 +65,10 @@ export const ButtonIcon = styled(Icon)`
 export const ButtonText = styled(Text)`
   color: var(--text-color);
   font: ${leo.font.default.semibold};
-@media screen and (max-width: ${layoutSmallWidth}px) {
+  @media screen and (max-width: ${layoutSmallWidth}px) {
     color: ${leo.color.icon.default};
     font: ${leo.font.small.regular};
-}
+  }
 `
 
 export const SelectedIndicator = styled.div`

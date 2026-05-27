@@ -62,7 +62,7 @@ export const AddressButton = styled(WalletButton)`
   justify-content: center;
   flex-direction: row;
   font: ${leo.font.large.regular};
-color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.color.text03};
   cursor: pointer;
   outline: none;
   background: none;
@@ -105,7 +105,7 @@ export const PrivateKeyBubble = styled(WalletButton)`
   margin: 0px;
   word-break: break-all;
   font: ${leo.font.default.semibold};
-color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.color.text01};
   outline: none;
   border: none;
 `
@@ -125,7 +125,7 @@ export const ButtonWrapper = styled.div`
 
 export const ErrorText = styled.span`
   font: ${leo.font.small.regular};
-color: ${(p) => p.theme.color.errorText};
+  color: ${(p) => p.theme.color.errorText};
   margin-bottom: 16px;
 `
 

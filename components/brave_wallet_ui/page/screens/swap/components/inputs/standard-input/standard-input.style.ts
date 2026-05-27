@@ -17,7 +17,7 @@ export const Input = styled(StyledInput)`
   ::placeholder {
     color: ${(p) => p.theme.color.text03};
     font: ${leo.font.default.regular};
-}
+  }
   :disabled {
     border: 1px solid ${(p) => p.theme.color.disabled};
     ::placeholder {

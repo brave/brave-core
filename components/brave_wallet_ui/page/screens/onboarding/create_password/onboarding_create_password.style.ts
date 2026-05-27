@@ -18,7 +18,7 @@ export const StyledWrapper = styled.div`
 
 export const Title = styled.span`
   font: ${leo.font.heading.h3};
-color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.color.text01};
   margin-bottom: 10px;
   text-align: left;
 `
@@ -27,7 +27,7 @@ export const Description = styled.span`
   display: flex;
   align-items: flex-start;
   font: ${leo.font.default.regular};
-color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.color.text02};
   max-width: 380px;
   text-align: left;
   margin-bottom: 24px;

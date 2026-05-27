@@ -143,13 +143,13 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
               padding='10px 16px'
             >
               <Text
-                variant='small.semibold'={false}
+                variant='small.regular'
                 textColor='secondary'
               >
                 {getLocale('braveWalletOwned')}
               </Text>
               <Text
-                variant='small.semibold'={false}
+                variant='small.regular'
                 textColor='secondary'
               >
                 {getLocale('braveWalletAmount24H')}
@@ -161,7 +161,7 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
               padding='10px 16px'
             >
               <Text
-                variant='small.semibold'={false}
+                variant='small.regular'
                 textColor='secondary'
               >
                 {getLocale('braveWalletNotOwned')}
@@ -213,7 +213,7 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
                   )}
                 </TokenNameRow>
                 <TokenBalanceText
-                  variant='small.semibold'={false}
+                  variant='small.regular'
                   textAlign='left'
                   textColor='secondary'
                 >
@@ -273,7 +273,7 @@ export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
                               isDown={isPriceDown}
                             />
                             <PercentChangeText
-                              variant='small.semibold'={false}
+                              variant='small.regular'
                               textAlign='right'
                               isDown={isPriceDown}
                             >

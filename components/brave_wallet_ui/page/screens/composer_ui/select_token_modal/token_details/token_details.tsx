@@ -170,7 +170,7 @@ export const TokenDetails = (props: Props) => {
                 {spotPrice?.percentageChange24h ? (
                   <PercentChangeText
                     isDown={isPriceDown}
-                    variant='default.semibold'={false}
+                    variant='default.regular'
                   >
                     {`${!isPriceDown ? '+' : ''}
                         ${Number(spotPrice.percentageChange24h).toFixed(2)}%`}

@@ -44,7 +44,7 @@ export const Header = styled.div`
 
 export const Title = styled.span`
   font: ${leo.font.large.semibold};
-margin-left: auto;
+  margin-left: auto;
 `
 
 export const CloseButton = styled(WalletButton)`

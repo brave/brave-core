@@ -19,14 +19,14 @@ export const QueueStepRow = styled.div`
 
 export const QueueStepText = styled.span`
   font: ${leo.font.small.semibold};
-margin-right: 9px;
+  margin-right: 9px;
 `
 
 export const queueStepButtonRowPadding = '16px 0px 4px 0px'
 
 export const QueueStepButton = styled(WalletButton)<{ needsMargin?: boolean }>`
   font: ${leo.font.small.semibold};
-color: ${(p) => p.theme.color.interactive05};
+  color: ${(p) => p.theme.color.interactive05};
   background: none;
   cursor: pointer;
   outline: none;

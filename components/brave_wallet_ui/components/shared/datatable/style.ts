@@ -51,7 +51,7 @@ export const StyledTHead = styled('thead')``
 export const StyledTH = styled('th')<Partial<StyleProps>>`
   text-align: left;
   font: ${leo.font.small.semibold};
-border-bottom: ${(p) => `2px solid ${p.theme.color.disabled}`};
+  border-bottom: ${(p) => `2px solid ${p.theme.color.disabled}`};
   color: ${(p) =>
     p.sortOrder !== undefined ? p.theme.color.text02 : p.theme.color.text03};
   padding: 10px 0 10px 0px;
@@ -77,9 +77,9 @@ export const StyledTR = styled('tr')`
 export const StyledTD = styled('td')`
   vertical-align: middle;
   font: ${leo.font.default.regular};
-color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.color.text01};
   font: ${leo.font.default.regular};
-padding: 0 0 16px 10px;
+  padding: 0 0 16px 10px;
   pointer-events: auto;
 
   &:last-child {

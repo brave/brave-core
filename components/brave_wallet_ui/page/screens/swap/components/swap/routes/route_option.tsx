@@ -170,7 +170,7 @@ const Gate3StepSource = ({
           gap='4px'
         >
           <Text
-            variant='small.semibold'={false}
+            variant='small.regular'
             textColor='tertiary'
           >
             {getLocale('braveWalletSwapRouteToFromVia')
@@ -355,7 +355,7 @@ export const RouteOption = (props: Props) => {
               {toAmount.formatAsAsset(6, toToken.symbol)}
             </Text>
             <Text
-              variant='small.semibold'={false}
+              variant='small.regular'
               textColor='secondary'
               textAlign='left'
             >
@@ -461,7 +461,7 @@ export const RouteOption = (props: Props) => {
                         gap='4px'
                       >
                         <Text
-                          variant='small.semibold'={false}
+                          variant='small.regular'
                           textColor='tertiary'
                         >
                           {exchangeViaProvider}
@@ -514,7 +514,7 @@ export const RouteOption = (props: Props) => {
                   {fromAmount.formatAsAsset(6, fromToken.symbol)}
                 </Text>
                 <Text
-                  variant='small.semibold'={false}
+                  variant='small.regular'
                   textColor='secondary'
                 >
                   {getLocale('braveWalletOnNetwork').replace(

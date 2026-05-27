@@ -141,9 +141,7 @@ export const LockScreen = () => {
           padding='0px 4px'
           marginBottom={4}
         >
-          <InputLabel
-            variant='small.semibold'
-          >
+          <InputLabel variant='small.semibold'>
             {getLocale('braveWalletInputLabelPassword')}
           </InputLabel>
         </Row>

@@ -47,11 +47,7 @@ export const CategoryCheckboxes = (props: Props) => {
         marginBottom={8}
         justifyContent='space-between'
       >
-        <Title
-          variant='large.semibold'
-        >
-          {title}
-        </Title>
+        <Title variant='large.semibold'>{title}</Title>
         <SelectAllButton onClick={onSelectOrDeselectAllCategories}>
           {isSelectAll
             ? getLocale('braveWalletSelectAll')
@@ -73,9 +69,7 @@ export const CategoryCheckboxes = (props: Props) => {
               checked={!isCategoryFilteredOut(category)}
               onChange={() => onCheckCategory(category)}
             >
-              <CheckboxText
-                variant='default.semibold'={false}
-              >
+              <CheckboxText variant='default.regular'>
                 {capitalizeFirstLetter(category)}
               </CheckboxText>
             </Checkbox>

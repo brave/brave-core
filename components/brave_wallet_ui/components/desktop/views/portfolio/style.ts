@@ -46,12 +46,12 @@ export const TopRow = styled.div`
 
 export const BalanceText = styled.span`
   font: ${leo.font.components.numbersLarge};
-color: ${leo.color.text.primary};
+  color: ${leo.color.text.primary};
 `
 
 export const FiatChange = styled.span<{ isDown?: boolean }>`
   font: ${leo.font.small.regular};
-margin-right: 8px;
+  margin-right: 8px;
   color: ${(p) =>
     p.isDown
       ? leo.color.systemfeedback.errorIcon
@@ -101,7 +101,7 @@ export const SubDivider = styled.div`
 
 export const DividerText = styled.span`
   font: ${leo.font.heading.h4};
-margin-bottom: 10px;
+  margin-bottom: 10px;
   color: ${(p) => p.theme.color.text03};
 `
 
@@ -112,7 +112,7 @@ export const PercentBubble = styled.div<{ isDown?: boolean }>`
   background-color: ${(p) =>
     p.isDown ? leo.color.red[20] : leo.color.green[20]};
   font: ${leo.font.xSmall.semibold};
-color: ${(p) => (p.isDown ? leo.color.red[50] : leo.color.green[50])};
+  color: ${(p) => (p.isDown ? leo.color.red[50] : leo.color.green[50])};
 `
 
 export const Spacer = styled.div`
@@ -124,7 +124,7 @@ export const Spacer = styled.div`
 
 export const CoinGeckoText = styled.span`
   font: ${leo.font.xSmall.regular};
-color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.color.text03};
   margin: 15px 0px;
 `
 

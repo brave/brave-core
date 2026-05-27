@@ -28,7 +28,7 @@ export const DappsGrid = styled.div`
 export const CategoryHeader = styled.p`
   width: 100%;
   font: ${leo.font.heading.h4};
-color: ${leo.color.text.primary};
+  color: ${leo.color.text.primary};
   text-align: left;
   text-transform: capitalize;
   padding: 0;
@@ -52,7 +52,7 @@ export const FilterLabel = styled(Label).attrs({
 
   color: ${leo.color.neutral[50]};
   font: ${leo.font.xSmall.regular};
-text-transform: uppercase;
+  text-transform: uppercase;
 `
 
 export const FilterClose = styled(Icon).attrs({

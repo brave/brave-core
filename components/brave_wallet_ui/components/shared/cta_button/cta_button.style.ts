@@ -31,7 +31,7 @@ export const Button = styled(WalletButton)`
 
 export const ButtonText = styled.span`
   font: ${leo.font.default.semibold};
-color: ${(p) => p.theme.palette.white};
+  color: ${(p) => p.theme.palette.white};
 `
 
 export const IdeaButtonIcon = styled.span`

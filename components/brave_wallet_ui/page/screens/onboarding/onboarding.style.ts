@@ -72,7 +72,7 @@ export const Title = styled.p<{
   textAlign?: 'right' | 'center'
 }>`
   font: ${leo.font.heading.h3};
-color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.color.text01};
   margin-bottom: 16px;
   max-width: ${(p) => p?.maxWidth || 'unset'};
   text-align: ${(p) => p?.textAlign || 'left'};

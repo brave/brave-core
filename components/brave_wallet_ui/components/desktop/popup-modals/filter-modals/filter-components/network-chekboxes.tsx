@@ -51,11 +51,7 @@ export const NetworkCheckboxes = (props: Props) => {
         marginBottom={8}
         justifyContent='flex-start'
       >
-        <Description
-          variant='small.semibold'
-        >
-          {title}
-        </Description>
+        <Description variant='small.semibold'>{title}</Description>
       </Row>
       <CheckboxRow
         justifyContent='space-between'
@@ -85,9 +81,7 @@ export const NetworkCheckboxes = (props: Props) => {
                 marginRight={0}
                 size='big'
               />
-              <CheckboxText
-                variant='default.semibold'={false}
-              >
+              <CheckboxText variant='default.regular'>
                 {network.chainName}
               </CheckboxText>
             </Checkbox>

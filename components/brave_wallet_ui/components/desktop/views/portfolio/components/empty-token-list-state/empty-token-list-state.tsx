@@ -66,14 +66,10 @@ export const EmptyTokenListState = (props: Props) => {
       justifyContent='center'
     >
       <EmptyStateIcon />
-      <Title
-        variant='large.semibold'
-      >
+      <Title variant='large.semibold'>
         {getLocale('braveWalletNoAvailableAssets')}
       </Title>
-      <Description
-        variant='default.semibold'={false}
-      >
+      <Description variant='default.regular'>
         {getLocale('braveWalletNoAvailableAssetsDescription')}
       </Description>
       <VerticalSpace space='24px' />
@@ -96,9 +92,7 @@ export const EmptyTokenListState = (props: Props) => {
           </Button>
         </ButtonWrapper>
       </Row>
-      <Description
-        variant='small.semibold'={false}
-      >
+      <Description variant='small.regular'>
         {getLocale('braveWalletWelcomeDividerText')}
       </Description>
       <Button

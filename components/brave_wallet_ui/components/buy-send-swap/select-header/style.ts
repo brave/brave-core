@@ -19,7 +19,7 @@ export const Header = styled.div`
 
 export const HeaderText = styled.span`
   font: ${leo.font.components.tableheader};
-color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.theme.color.text01};
 `
 
 export const Button = styled(WalletButton)`

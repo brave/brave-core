@@ -360,24 +360,18 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
             padding='2px'
             margin='0px 0px 4px 0px'
           >
-            <DateText
-              variant='small.semibold'={false}
-            >
+            <DateText variant='small.regular'>
               {formatDateAsRelative(
                 serializedTimeDeltaToJSDate(transaction.createdTime),
               )}
             </DateText>
             <TransactionTypeIcon name={transactionTypeIcon} />
-            <TransactionTypeText
-              variant='small.semibold'={false}
-            >
+            <TransactionTypeText variant='small.regular'>
               {getLocale(transactionTypeLocale)}
               {` `}
               {getLocale(intentLabel)}
             </TransactionTypeText>
-            <IntentAddressText
-              variant='small.semibold'
-            >
+            <IntentAddressText variant='small.semibold'>
               {intentAddress}
             </IntentAddressText>
           </Row>
@@ -542,7 +536,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
                           {sendToken?.name ?? ''}
                         </TokenNameText>
                         <TokenSymbolText
-                          variant='small.semibold'={false}
+                          variant='small.regular'
                           textAlign='left'
                         >
                           {sendToken?.symbol ?? ''}
@@ -562,7 +556,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
                   <>
                     {formattedSourceAmount && (
                       <FiatValueText
-                        variant='small.semibold'={false}
+                        variant='small.regular'
                         textAlign='right'
                       >
                         {`-${formattedSourceAmount}`}
@@ -597,7 +591,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
                       />
                     ) : (
                       <FiatValueText
-                        variant='small.semibold'={false}
+                        variant='small.regular'
                         textAlign='right'
                       >
                         {formattedSendFiatValue}

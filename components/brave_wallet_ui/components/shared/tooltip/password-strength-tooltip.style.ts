@@ -30,7 +30,7 @@ export const CriteriaCheckContainer = styled.div`
 
 export const PasswordStrengthText = styled.p<{ isStrong?: boolean }>`
   font: ${leo.font.default.regular};
-margin-bottom: 6px;
+  margin-bottom: 6px;
   vertical-align: middle;
   color: ${leo.color.text.primary};
   padding: 0;
@@ -39,7 +39,7 @@ margin-bottom: 6px;
 
 export const PasswordStrengthHeading = styled(PasswordStrengthText)`
   font: ${leo.font.default.regular};
-color: ${leo.color.text.primary};
+  color: ${leo.color.text.primary};
   margin-bottom: ${leo.spacing.xs};
 `
 

@@ -26,7 +26,7 @@ export const FormColumn = styled.div`
 
 export const InputLabel = styled.span`
   font: ${leo.font.default.regular};
-color: ${(p) => p.theme.color.text02};
+  color: ${(p) => p.theme.color.text02};
   margin-bottom: 6px;
 `
 
@@ -41,12 +41,12 @@ export const Input = styled.input`
   border-radius: 4px;
   font-style: normal;
   font: ${leo.font.small.regular};
-padding: 10px;
+  padding: 10px;
   margin-bottom: 8px;
   color: ${(p) => p.theme.color.text01};
   ::placeholder {
     font: ${leo.font.small.regular};
-color: ${(p) => p.theme.color.text03};
+    color: ${(p) => p.theme.color.text03};
   }
   :focus {
     outline: none;
@@ -73,7 +73,7 @@ export const ButtonRow = styled.div`
 
 export const InfoText = styled.span`
   font: ${leo.font.small.regular};
-color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.color.text03};
   word-break: break-word;
   margin-bottom: 12px;
 `

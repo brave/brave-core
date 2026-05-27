@@ -439,7 +439,7 @@ export const AccountListItem = ({
                 </AccountNameWrapper>
                 {account.address && !isRewardsAccount && (
                   <Text
-                    variant='small.semibold'={false}
+                    variant='small.regular'
                     textColor='primary'
                     textAlign='left'
                   >
@@ -447,7 +447,7 @@ export const AccountListItem = ({
                   </Text>
                 )}
                 <Text
-                  variant='small.semibold'={false}
+                  variant='small.regular'
                   textColor='secondary'
                   textAlign='left'
                 >
@@ -463,7 +463,7 @@ export const AccountListItem = ({
                     <WarningIcon />
                     <Text
                       textColor='warning'
-                      variant='default.semibold'={false}
+                      variant='default.regular'
                     >
                       {getLocale('braveWalletOutOfSyncTitle')}
                     </Text>
@@ -498,9 +498,7 @@ export const AccountListItem = ({
                   </>
                 ) : (
                   <>
-                    <AccountBalanceText
-                      variant='default.semibold'
-                    >
+                    <AccountBalanceText variant='default.semibold'>
                       {accountsFiatValue.formatAsFiat(defaultFiatCurrency)}
                     </AccountBalanceText>
                   </>

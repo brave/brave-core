@@ -19,7 +19,7 @@ export const StyledWrapper = styled(WalletButton)`
   padding: 3px 14px;
   font-weight: 600;
   font: ${leo.font.small.regular};
-color: ${(p) => p.theme.color.interactive07};
+  color: ${(p) => p.theme.color.interactive07};
   border: ${(p) => `1px solid ${p.theme.color.interactive08}`};
   border-radius: 48px;
 `

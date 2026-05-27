@@ -30,10 +30,10 @@ export const FavIcon = styled.img<{ bigger?: boolean }>`
 
 export const OriginName = styled(Text)`
   font: ${leo.font.default.semibold};
-word-break: break-word;
+  word-break: break-word;
 `
 
 export const OriginUrl = styled(Text)`
   font: ${leo.font.small.regular};
-word-break: break-word;
+  word-break: break-word;
 `

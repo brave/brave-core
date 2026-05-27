@@ -459,9 +459,7 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
               padding='0px 4px'
               marginBottom={4}
             >
-              <LabelText
-                variant='small.semibold'
-              >
+              <LabelText variant='small.semibold'>
                 {getLocale('braveWalletSendTo')}
               </LabelText>
             </Row>
@@ -501,9 +499,7 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
                     padding='0px 8px'
                     marginBottom={4}
                   >
-                    <LabelText
-                      variant='small.semibold'
-                    >
+                    <LabelText variant='small.semibold'>
                       {getLocale('braveWalletMyAddresses')}
                     </LabelText>
                   </Row>
@@ -525,7 +521,7 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
                 <Row margin='26px 0px 0px 0px'>
                   <DomainLoadIcon />
                   <Text
-                    variant='default.semibold'={false}
+                    variant='default.regular'
                     textColor='secondary'
                   >
                     {getLocale('braveWalletSearchingForDomain')}
@@ -548,7 +544,7 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
                       </AddressButtonText>
                       {searchValueHasValidExtension && (
                         <AddressButtonText
-                          variant='default.semibold'={false}
+                          variant='default.regular'
                           textColor='secondary'
                           textAlign='left'
                         >

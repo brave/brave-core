@@ -75,29 +75,29 @@ export const BraveIcon = styled(Icon).attrs({
 
 export const Title = styled.h4`
   font: ${leo.font.large.semibold};
-color: ${leo.color.text.primary};
+  color: ${leo.color.text.primary};
   margin: 0;
 
   @media screen and (max-width: ${layoutPanelWidth}px) {
     font: ${leo.font.large.regular};
-}
+  }
 `
 
 export const Heading = styled.h1`
   font: ${leo.font.heading.display1};
-color: ${leo.color.text.primary};
+  color: ${leo.color.text.primary};
   margin: 0;
   padding-bottom: 16px;
 
   @media screen and (max-width: ${layoutPanelWidth}px) {
     font: ${leo.font.components.numbersLarge};
-}
+  }
 `
 
 export const SubHeading = styled.h3`
   color: ${leo.color.text.tertiary};
   font: ${leo.font.heading.h2};
-margin: 0;
+  margin: 0;
   padding: 0 0 48px 0;
 `
 
@@ -117,6 +117,6 @@ export const ActionsContainer = styled.div`
 export const Footer = styled.footer`
   color: ${leo.color.text.secondary};
   font: ${leo.font.default.regular};
-margin: 0;
+  margin: 0;
   padding-bottom: 72px;
 `
