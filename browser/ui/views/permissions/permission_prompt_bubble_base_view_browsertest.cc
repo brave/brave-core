@@ -75,7 +75,10 @@ class MockPermissionPromptDelegate
   const permissions::PermissionPrompt* GetCurrentPrompt() const override {
     return nullptr;
   }
-  bool ShouldShowLocationPrecisionSelector() const override { return false; }
+  std::optional<permissions::GeolocationPromptType> GetGeolocationPromptType()
+      const override {
+    return std::nullopt;
+  }
 
   base::WeakPtr<permissions::PermissionPrompt::Delegate> GetWeakPtr() override {
     return weak_ptr_factory_.GetWeakPtr();
