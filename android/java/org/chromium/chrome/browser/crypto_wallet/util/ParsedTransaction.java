@@ -401,7 +401,9 @@ public class ParsedTransaction extends ParsedTransactionFees {
                             nativeAsset.chainId,
                             nativeAsset.contractAddress);
             double sendAmount;
-            if (txInfo.txType == TransactionType.SOLANA_SYSTEM_TRANSFER || zecTxData != null) {
+            if (txInfo.txType == TransactionType.SOLANA_SYSTEM_TRANSFER
+                    || zecTxData != null
+                    || btcTxData != null) {
                 sendAmount = Utils.fromWei(value, txNetwork.decimals);
             } else {
                 sendAmount = Utils.fromHexWei(value, txNetwork.decimals);
