@@ -127,13 +127,13 @@ class PolkadotWalletServiceUnitTest : public testing::Test {
 };
 
 void VerifyTestnet(const PolkadotChainMetadata& metadata) {
-  EXPECT_EQ(metadata.GetBalancesPalletIndex(), 4u);
-  EXPECT_EQ(metadata.GetSs58Prefix(), 42u);
+  EXPECT_EQ(metadata->balances_pallet_index, 4u);
+  EXPECT_EQ(metadata->ss58_prefix, 42u);
 }
 
 void VerifyMainnet(const PolkadotChainMetadata& metadata) {
-  EXPECT_EQ(metadata.GetBalancesPalletIndex(), 5u);
-  EXPECT_EQ(metadata.GetSs58Prefix(), 0u);
+  EXPECT_EQ(metadata->balances_pallet_index, 5u);
+  EXPECT_EQ(metadata->ss58_prefix, 0u);
 }
 
 TEST_F(PolkadotWalletServiceUnitTest, Constructor) {

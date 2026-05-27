@@ -187,7 +187,7 @@ void PolkadotTxManager::OnGetChainMetadataForUnapproved(
   }
 
   auto recipient =
-      ParsePolkadotAccount(params->to, chain_metadata->GetSs58Prefix());
+      ParsePolkadotAccount(params->to, (*chain_metadata)->ss58_prefix);
   if (!recipient.has_value()) {
     return std::move(callback).Run(false, "", WalletInternalErrorMessage());
   }
@@ -225,7 +225,7 @@ void PolkadotTxManager::OnGetFeeForUnapproved(
   std::optional<url::Origin> origin = std::nullopt;
 
   auto recipient =
-      ParsePolkadotAccount(params->to, chain_metadata.GetSs58Prefix());
+      ParsePolkadotAccount(params->to, chain_metadata->ss58_prefix);
   // We should have already verified this upon retrieving the chain metadata.
   CHECK(recipient.has_value());
 

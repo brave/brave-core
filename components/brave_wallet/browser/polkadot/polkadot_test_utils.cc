@@ -85,6 +85,85 @@ std::vector<uint8_t> ReadMetadataFixture(std::string_view file_name) {
   return metadata_bytes;
 }
 
+std::optional<PolkadotChainMetadata> PolkadotMetadataFromChainName(
+    std::string_view chain_name) {
+  // spec_version is unknown when constructing from chain name alone; callers
+  // must update it from state_getRuntimeVersion before use.
+  // This means synthetic metadata is also unusable if it slips into production,
+  // as no validator will accept a spec version of 0.
+  constexpr uint32_t kUnknownSpecVersion = 0;
+
+  // https://github.com/paritytech/polkadot-sdk/blob/69f210b33fce91b23570f3bda64f8e3deff04843/polkadot/runtime/westend/src/lib.rs#L1853-L1854
+  if (chain_name == "Westend") {
+    return PolkadotChainMetadata::FromFields(
+        /*system_pallet_index=*/0,
+        /*balances_pallet_index=*/4,
+        /*transaction_payment_pallet_index=*/0x1a,
+        /*transfer_allow_death_call_index=*/0,
+        /*transfer_keep_alive_call_index=*/3,
+        /*transfer_all_call_index=*/4,
+        /*ss58_prefix=*/42, kUnknownSpecVersion,
+        /*asset_tx_payment=*/false);
+  }
+
+  // https://github.com/polkadot-js/api/blob/f45dfc72ec320cab7d69f08010c9921d2a21065f/packages/types-support/src/metadata/v15/asset-hub-kusama-json.json#L969
+  if (chain_name == "Westend Asset Hub") {
+    return PolkadotChainMetadata::FromFields(
+        /*system_pallet_index=*/0,
+        /*balances_pallet_index=*/10,
+        /*transaction_payment_pallet_index=*/0x0b,
+        /*transfer_allow_death_call_index=*/0,
+        /*transfer_keep_alive_call_index=*/3,
+        /*transfer_all_call_index=*/4,
+        /*ss58_prefix=*/42, kUnknownSpecVersion,
+        /*asset_tx_payment=*/true);
+  }
+
+  // https://github.com/polkadot-js/api/blob/f45dfc72ec320cab7d69f08010c9921d2a21065f/packages/types-support/src/metadata/v15/polkadot-json.json#L1096
+  if (chain_name == "Polkadot") {
+    return PolkadotChainMetadata::FromFields(
+        /*system_pallet_index=*/0,
+        /*balances_pallet_index=*/5,
+        /*transaction_payment_pallet_index=*/0x20,
+        /*transfer_allow_death_call_index=*/0,
+        /*transfer_keep_alive_call_index=*/3,
+        /*transfer_all_call_index=*/4,
+        /*ss58_prefix=*/0, kUnknownSpecVersion,
+        /*asset_tx_payment=*/false);
+  }
+
+  // https://github.com/polkadot-js/api/blob/f45dfc72ec320cab7d69f08010c9921d2a21065f/packages/types-support/src/metadata/v15/asset-hub-polkadot-json.json#L969
+  if (chain_name == "Polkadot Asset Hub") {
+    return PolkadotChainMetadata::FromFields(
+        /*system_pallet_index=*/0,
+        /*balances_pallet_index=*/10,
+        /*transaction_payment_pallet_index=*/0x0b,
+        /*transfer_allow_death_call_index=*/0,
+        /*transfer_keep_alive_call_index=*/3,
+        /*transfer_all_call_index=*/4,
+        /*ss58_prefix=*/0, kUnknownSpecVersion,
+        /*asset_tx_payment=*/true);
+  }
+
+  return std::nullopt;
+}
+
+PolkadotChainMetadata MakeWestendMetadata() {
+  return PolkadotMetadataFromChainName("Westend").value();
+}
+
+PolkadotChainMetadata MakePolkadotMetadata() {
+  return PolkadotMetadataFromChainName("Polkadot").value();
+}
+
+PolkadotChainMetadata MakeWestendAssetHubMetadata() {
+  return PolkadotMetadataFromChainName("Westend Asset Hub").value();
+}
+
+PolkadotChainMetadata MakePolkadotAssetHubMetadata() {
+  return PolkadotMetadataFromChainName("Polkadot Asset Hub").value();
+}
+
 PolkadotMockRpc::PolkadotMockRpc(
     network::TestURLLoaderFactory* url_loader_factory,
     NetworkManager* network_manager)

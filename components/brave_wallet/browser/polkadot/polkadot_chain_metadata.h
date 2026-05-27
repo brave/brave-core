@@ -23,7 +23,7 @@ namespace brave_wallet {
 // We parse minimal fields needed for transfer extrinsic handling.
 class PolkadotChainMetadata {
  public:
-  PolkadotChainMetadata() = delete;
+  PolkadotChainMetadata();
   PolkadotChainMetadata(const PolkadotChainMetadata&);
   PolkadotChainMetadata(PolkadotChainMetadata&&) noexcept;
   ~PolkadotChainMetadata();
@@ -49,37 +49,23 @@ class PolkadotChainMetadata {
       uint32_t spec_version,
       bool asset_tx_payment);
 
-  // Build metadata from a known relay/parachain name returned by system_chain.
-  // Returns std::nullopt for unknown names. The returned metadata has an
-  // unknown spec_version (set to 0); callers must populate spec_version from
-  // state_getRuntimeVersion before using it for version-sensitive operations.
-  static std::optional<PolkadotChainMetadata> FromChainName(
-      std::string_view chain_name);
-
   // Obtain a reference to the underlying opaque type so that it can be passed
   // to Rust routines.
+  CxxPolkadotChainMetadata& operator*();
   const CxxPolkadotChainMetadata& operator*() const;
 
-  uint8_t GetSystemPalletIndex() const;
-  uint8_t GetBalancesPalletIndex() const;
-  uint8_t GetTransactionPaymentPalletIndex() const;
-  uint8_t GetTransferAllowDeathCallIndex() const;
-  uint8_t GetTransferKeepAliveCallIndex() const;
-  uint8_t GetTransferAllCallIndex() const;
-
-  // Returns the ss58 prefix used by the chain when encoding/working with ss58
-  // addresses.
-  uint16_t GetSs58Prefix() const;
-  uint32_t GetSpecVersion() const;
-
-  // Returns true if the runtime uses ChargeAssetTxPayment as a signed
-  // extension, meaning the signature payload must include an asset_id field.
-  bool UsesAssetTxPayment() const;
+  // We want to expose the native data members of the underlying
+  // CxxPolkadotChainMetadata struct, but the cxx crate marks generated structs
+  // as final so we can't simply inherit from them publicly. To make accessing
+  // the data members more ergonomic, we overload the arrow operator to return a
+  // pointer to the generated struct.
+  CxxPolkadotChainMetadata* operator->();
+  const CxxPolkadotChainMetadata* operator->() const;
 
  private:
   explicit PolkadotChainMetadata(CxxPolkadotChainMetadata chain_metadata);
 
-  CxxPolkadotChainMetadata chain_metadata_;
+  CxxPolkadotChainMetadata chain_metadata_ = {};
 };
 
 }  // namespace brave_wallet

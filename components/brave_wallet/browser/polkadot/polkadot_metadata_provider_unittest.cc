@@ -11,7 +11,6 @@
 
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_chain_metadata_prefs.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc.h"
@@ -19,7 +18,7 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
-#include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
+#include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"  // IWYU pragma: keep
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -114,31 +113,22 @@ TEST_F(PolkadotMetadataProviderUnitTest, InitInitialization) {
   EXPECT_TRUE(mainnet_metadata_requested.Wait());
   EXPECT_TRUE(testnet_metadata_requested.Wait());
 
+  PolkadotChainMetadata expected_mainnet = MakePolkadotMetadata();
+  expected_mainnet->spec_version = 2'000'007;
+
   auto mainnet_metadata =
       chain_metadata_prefs_->GetChainMetadata(mojom::kPolkadotMainnet);
   ASSERT_TRUE(mainnet_metadata.has_value());
-  auto expected_mainnet = PolkadotChainMetadata::FromFields(
-      /*system_pallet_index=*/0, /*balances_pallet_index=*/5,
-      /*transaction_payment_pallet_index=*/0x20,
-      /*transfer_allow_death_call_index=*/0,
-      /*transfer_keep_alive_call_index=*/3,
-      /*transfer_all_call_index=*/4,
-      /*ss58_prefix=*/0, /*spec_version=*/2'000'007,
-      /*asset_tx_payment=*/false);
-  EXPECT_EQ(*mainnet_metadata, expected_mainnet);
+  EXPECT_EQ(mainnet_metadata, expected_mainnet);
+
+  PolkadotChainMetadata expected_testnet = MakeWestendMetadata();
+  expected_testnet->spec_version = 1'022'000;
 
   auto testnet_metadata =
       chain_metadata_prefs_->GetChainMetadata(mojom::kPolkadotTestnet);
   ASSERT_TRUE(testnet_metadata.has_value());
-  auto expected_testnet = PolkadotChainMetadata::FromFields(
-      /*system_pallet_index=*/0, /*balances_pallet_index=*/4,
-      /*transaction_payment_pallet_index=*/0x1a,
-      /*transfer_allow_death_call_index=*/0,
-      /*transfer_keep_alive_call_index=*/3,
-      /*transfer_all_call_index=*/4,
-      /*ss58_prefix=*/42, /*spec_version=*/1'022'000,
-      /*asset_tx_payment=*/false);
-  EXPECT_EQ(*testnet_metadata, expected_testnet);
+  EXPECT_EQ(testnet_metadata, expected_testnet);
+  EXPECT_NE(testnet_metadata, mainnet_metadata);
 }
 
 // Verifies that Init() schedules and performs retry when initial metadata fetch
@@ -185,37 +175,28 @@ TEST_F(PolkadotMetadataProviderUnitTest, InitRetryCase) {
   EXPECT_TRUE(second_mainnet_attempt.Wait());
   EXPECT_GE(mainnet_calls, 2);
 
+  PolkadotChainMetadata expected_mainnet = MakePolkadotMetadata();
+  expected_mainnet->spec_version = 2'000'007;
+
+  PolkadotChainMetadata expected_testnet = MakeWestendMetadata();
+  expected_testnet->spec_version = 1'022'000;
+
   auto mainnet_metadata =
       chain_metadata_prefs_->GetChainMetadata(mojom::kPolkadotMainnet);
+  ASSERT_TRUE(mainnet_metadata.has_value());
+  EXPECT_EQ(mainnet_metadata, expected_mainnet);
+
   auto testnet_metadata =
       chain_metadata_prefs_->GetChainMetadata(mojom::kPolkadotTestnet);
-  ASSERT_TRUE(mainnet_metadata.has_value());
   ASSERT_TRUE(testnet_metadata.has_value());
-  auto expected_mainnet = PolkadotChainMetadata::FromFields(
-      /*system_pallet_index=*/0, /*balances_pallet_index=*/5,
-      /*transaction_payment_pallet_index=*/0x20,
-      /*transfer_allow_death_call_index=*/0,
-      /*transfer_keep_alive_call_index=*/3,
-      /*transfer_all_call_index=*/4,
-      /*ss58_prefix=*/0, /*spec_version=*/2'000'007,
-      /*asset_tx_payment=*/false);
-  auto expected_testnet = PolkadotChainMetadata::FromFields(
-      /*system_pallet_index=*/0, /*balances_pallet_index=*/4,
-      /*transaction_payment_pallet_index=*/0x1a,
-      /*transfer_allow_death_call_index=*/0,
-      /*transfer_keep_alive_call_index=*/3,
-      /*transfer_all_call_index=*/4,
-      /*ss58_prefix=*/42, /*spec_version=*/1'022'000,
-      /*asset_tx_payment=*/false);
-  EXPECT_EQ(*mainnet_metadata, expected_mainnet);
-  EXPECT_EQ(*testnet_metadata, expected_testnet);
+  EXPECT_EQ(testnet_metadata, expected_testnet);
 }
 
 // Verifies that when persisted metadata is present and runtime spec version
 // matches, data is served from cache without network metadata refresh.
 TEST_F(PolkadotMetadataProviderUnitTest, DataIsRestoredFromCache) {
-  auto saved_metadata =
-      PolkadotChainMetadata::FromFields(0, 5, 32, 1, 3, 4, 0, 100, false);
+  PolkadotChainMetadata saved_metadata = MakePolkadotMetadata();
+  saved_metadata->spec_version = 100;
   ASSERT_TRUE(chain_metadata_prefs_->SetChainMetadata(mojom::kPolkadotMainnet,
                                                       saved_metadata));
 
@@ -232,11 +213,13 @@ TEST_F(PolkadotMetadataProviderUnitTest, DataIsRestoredFromCache) {
 
   base::test::TestFuture<base::expected<PolkadotChainMetadata, std::string>>
       future;
-  provider_->GetChainMetadata(mojom::kPolkadotMainnet, future.GetCallback());
-  auto result = future.Take();
 
+  provider_->GetChainMetadata(mojom::kPolkadotMainnet, future.GetCallback());
+
+  auto result = future.Take();
   ASSERT_TRUE(result.has_value());
   EXPECT_EQ(*result, saved_metadata);
+
   auto stored =
       chain_metadata_prefs_->GetChainMetadata(mojom::kPolkadotMainnet);
   ASSERT_TRUE(stored.has_value());
@@ -267,7 +250,9 @@ TEST_F(PolkadotMetadataProviderUnitTest, DataIsSavedToCache) {
   provider_->GetChainMetadata(mojom::kPolkadotMainnet, future2.GetCallback());
   auto result2 = future2.Take();
   ASSERT_TRUE(result2.has_value());
-  EXPECT_EQ(*result2, *result1);
+
+  EXPECT_EQ(*result1, *result2);
+
   auto stored =
       chain_metadata_prefs_->GetChainMetadata(mojom::kPolkadotMainnet);
   ASSERT_TRUE(stored.has_value());
@@ -279,8 +264,11 @@ TEST_F(PolkadotMetadataProviderUnitTest, DataIsSavedToCache) {
 TEST_F(PolkadotMetadataProviderUnitTest, CachedDataIsUpdated) {
   const std::vector<uint8_t> metadata_bytes =
       ReadMetadataFixture("state_getMetadata_westend.json");
-  auto saved_metadata =
-      PolkadotChainMetadata::FromFields(0, 1, 32, 0, 3, 4, 0, 1, false);
+  PolkadotChainMetadata saved_metadata = MakeWestendMetadata();
+  saved_metadata->balances_pallet_index = 1;
+  saved_metadata->transaction_payment_pallet_index = 32;
+  saved_metadata->ss58_prefix = 0;
+  saved_metadata->spec_version = 1;
   ASSERT_TRUE(chain_metadata_prefs_->SetChainMetadata(mojom::kPolkadotMainnet,
                                                       saved_metadata));
 
@@ -305,15 +293,12 @@ TEST_F(PolkadotMetadataProviderUnitTest, CachedDataIsUpdated) {
   auto result = future.Take();
 
   ASSERT_TRUE(result.has_value());
-  auto expected = PolkadotChainMetadata::FromFields(
-      /*system_pallet_index=*/0, /*balances_pallet_index=*/4,
-      /*transaction_payment_pallet_index=*/0x1a,
-      /*transfer_allow_death_call_index=*/0,
-      /*transfer_keep_alive_call_index=*/3,
-      /*transfer_all_call_index=*/4,
-      /*ss58_prefix=*/42, /*spec_version=*/1'022'000,
-      /*asset_tx_payment=*/false);
+
+  PolkadotChainMetadata expected = MakeWestendMetadata();
+  expected->spec_version = 1'022'000;
+
   EXPECT_EQ(*result, expected);
+
   auto stored =
       chain_metadata_prefs_->GetChainMetadata(mojom::kPolkadotMainnet);
   ASSERT_TRUE(stored.has_value());

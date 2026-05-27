@@ -85,18 +85,7 @@ TEST_F(PolkadotChainMetadataPrefsUnitTest, SetAndGetChainMetadataRoundTrip) {
 
     auto loaded = prefs.GetChainMetadata(mojom::kPolkadotMainnet);
     ASSERT_TRUE(loaded);
-    EXPECT_EQ(loaded->GetSystemPalletIndex(), tc.system_pallet_index);
-    EXPECT_EQ(loaded->GetBalancesPalletIndex(), tc.balances_pallet_index);
-    EXPECT_EQ(loaded->GetTransactionPaymentPalletIndex(),
-              tc.transaction_payment_pallet_index);
-    EXPECT_EQ(loaded->GetTransferAllowDeathCallIndex(),
-              tc.transfer_allow_death_call_index);
-    EXPECT_EQ(loaded->GetTransferKeepAliveCallIndex(),
-              tc.transfer_keep_alive_call_index);
-    EXPECT_EQ(loaded->GetTransferAllCallIndex(), tc.transfer_all_call_index);
-    EXPECT_EQ(loaded->GetSs58Prefix(), tc.ss58_prefix);
-    EXPECT_EQ(loaded->GetSpecVersion(), tc.spec_version);
-    EXPECT_EQ(loaded->UsesAssetTxPayment(), tc.asset_tx_payment);
+    EXPECT_EQ(*loaded, metadata);
 
     const auto& all_metadata =
         profile_prefs_.GetDict(kBraveWalletPolkadotChainMetadata);

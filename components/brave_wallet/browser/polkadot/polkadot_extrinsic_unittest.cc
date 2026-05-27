@@ -9,6 +9,7 @@
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key_sr25519.h"
 #include "brave/components/brave_wallet/browser/internal/polkadot_extrinsic.rs.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_test_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -21,8 +22,6 @@ namespace {
 inline constexpr const char kBob[] =
     "8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48";
 
-constexpr uint32_t kSpecVersion = 0;
-
 // Taken from:
 // https://docs.rs/schnorrkel/0.11.4/schnorrkel/keys/struct.MiniSecretKey.html#method.from_bytes
 constexpr uint8_t kSchnorrkelSeed[] = {
@@ -32,50 +31,6 @@ constexpr uint8_t kSchnorrkelSeed[] = {
 };
 
 }  // namespace
-
-PolkadotChainMetadata MakeWestendMetadata() {
-  return PolkadotChainMetadata::FromFields(
-      /*system_pallet_index=*/0, /*balances_pallet_index=*/4,
-      /*transaction_payment_pallet_index=*/0x1a,
-      /*transfer_allow_death_call_index=*/0,
-      /*transfer_keep_alive_call_index=*/3,
-      /*transfer_all_call_index=*/4,
-      /*ss58_prefix=*/42, kSpecVersion,
-      /*asset_tx_payment=*/false);
-}
-
-PolkadotChainMetadata MakePolkadotMetadata() {
-  return PolkadotChainMetadata::FromFields(
-      /*system_pallet_index=*/0, /*balances_pallet_index=*/5,
-      /*transaction_payment_pallet_index=*/0x20,
-      /*transfer_allow_death_call_index=*/0,
-      /*transfer_keep_alive_call_index=*/3,
-      /*transfer_all_call_index=*/4,
-      /*ss58_prefix=*/0, kSpecVersion,
-      /*asset_tx_payment=*/false);
-}
-
-PolkadotChainMetadata MakeWestendAssetHubMetadata() {
-  return PolkadotChainMetadata::FromFields(
-      /*system_pallet_index=*/0, /*balances_pallet_index=*/10,
-      /*transaction_payment_pallet_index=*/0x0b,
-      /*transfer_allow_death_call_index=*/0,
-      /*transfer_keep_alive_call_index=*/3,
-      /*transfer_all_call_index=*/4,
-      /*ss58_prefix=*/42, kSpecVersion,
-      /*asset_tx_payment=*/true);
-}
-
-PolkadotChainMetadata MakePolkadotAssetHubMetadata() {
-  return PolkadotChainMetadata::FromFields(
-      /*system_pallet_index=*/0, /*balances_pallet_index=*/10,
-      /*transaction_payment_pallet_index=*/0x0b,
-      /*transfer_allow_death_call_index=*/0,
-      /*transfer_keep_alive_call_index=*/3,
-      /*transfer_all_call_index=*/4,
-      /*ss58_prefix=*/0, kSpecVersion,
-      /*asset_tx_payment=*/true);
-}
 
 TEST(PolkadotExtrinsics, MortalityEncoding) {
   // clang-format off
@@ -775,8 +730,7 @@ TEST(PolkadotExtrinsics, EventsParsing) {
       "bf0be0352ca5bc12a8ac6cf0006e220e5c55bb03126890ad37ce9753f9b3e3db";
   ASSERT_TRUE(base::HexStringToSpan(sender_hex, sender));
 
-  auto chain_metadata =
-      PolkadotChainMetadata::FromChainName("Polkadot").value();
+  auto chain_metadata = MakePolkadotMetadata();
 
   const uint32_t extrinsic_idx = 2;
 
@@ -836,8 +790,7 @@ TEST(PolkadotExtrinsics, EventsParsing_WithAccountCreation) {
       "2a27dd26f5f3fe4f48fc67cddb54a8cdb0f3c6e4b9c8cf751a59466771dc6144";
   ASSERT_TRUE(base::HexStringToSpan(sender_hex, sender));
 
-  auto chain_metadata =
-      PolkadotChainMetadata::FromChainName("Polkadot").value();
+  auto chain_metadata = MakePolkadotMetadata();
 
   uint32_t extrinsic_idx = 2;
 
@@ -914,8 +867,7 @@ TEST(PolkadotExtrinsics, EventsParsing_FailedExtrinsic_ArithmeticUnderflow) {
       "d44c4639d57190aed08f053cac6db1c85221253e7353d484dba9caa663d86a5f";
   ASSERT_TRUE(base::HexStringToSpan(sender_hex, sender));
 
-  auto chain_metadata =
-      PolkadotChainMetadata::FromChainName("Polkadot").value();
+  auto chain_metadata = MakePolkadotMetadata();
 
   uint32_t extrinsic_idx = 2;
 
@@ -974,8 +926,7 @@ TEST(PolkadotExtrinsics, EventsParsing_FailedExtrinsic_BelowMinimum) {
       "3c67dd0ea1126b09609ac341b4417251457f0fad467b8e1d3004209d4756ea2e";
   ASSERT_TRUE(base::HexStringToSpan(sender_hex, sender));
 
-  auto chain_metadata =
-      PolkadotChainMetadata::FromChainName("Polkadot").value();
+  auto chain_metadata = MakePolkadotMetadata();
 
   uint32_t extrinsic_idx = 2;
 
@@ -1033,8 +984,7 @@ TEST(PolkadotExtrinsics, EventsParsing_Error) {
 
   ASSERT_TRUE(base::HexStringToSpan(sender_hex, sender));
 
-  auto chain_metadata =
-      PolkadotChainMetadata::FromChainName("Polkadot").value();
+  auto chain_metadata = MakePolkadotMetadata();
 
   uint32_t extrinsic_idx = 2;
 

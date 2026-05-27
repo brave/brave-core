@@ -121,6 +121,19 @@ struct PolkadotMockRpc {
   bool reject_extrinsic_submission_ = false;
   bool reject_account_info_request_ = false;
 };
+
+// Build metadata from a known relay/parachain name returned by system_chain.
+// Returns std::nullopt for unknown names. The returned metadata has an
+// unknown spec_version (set to 0); callers must populate spec_version from
+// state_getRuntimeVersion before using it for version-sensitive operations.
+std::optional<PolkadotChainMetadata> PolkadotMetadataFromChainName(
+    std::string_view chain_name);
+
+PolkadotChainMetadata MakeWestendMetadata();
+PolkadotChainMetadata MakePolkadotMetadata();
+PolkadotChainMetadata MakeWestendAssetHubMetadata();
+PolkadotChainMetadata MakePolkadotAssetHubMetadata();
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_TEST_UTILS_H_
