@@ -66,6 +66,14 @@ class BraveOriginPolicyManager {
   // Determines if the policy is a profile-level policy
   bool IsProfilePolicy(std::string_view policy_key) const;
 
+  // Returns the policy definitions registered at Init() time.
+  const BraveOriginPolicyMap& GetBrowserPolicyDefinitions() const {
+    return browser_policy_definitions_;
+  }
+  const BraveOriginPolicyMap& GetProfilePolicyDefinitions() const {
+    return profile_policy_definitions_;
+  }
+
   // Check if the singleton has been initialized
   bool IsInitialized() const;
 

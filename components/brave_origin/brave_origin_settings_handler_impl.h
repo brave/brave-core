@@ -39,6 +39,7 @@ class BraveOriginSettingsHandlerImpl
   void SetPolicyValue(const std::string& policy_key,
                       bool value,
                       SetPolicyValueCallback callback) override;
+  void ResetToDefaults(ResetToDefaultsCallback callback) override;
   void GetNeedsRestart(GetNeedsRestartCallback callback) override;
   void ProceedFree(ProceedFreeCallback callback) override;
 

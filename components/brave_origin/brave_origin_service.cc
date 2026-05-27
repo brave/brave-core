@@ -182,6 +182,26 @@ std::optional<bool> BraveOriginService::GetPolicyValue(
   return std::nullopt;
 }
 
+void BraveOriginService::ResetToDefaults() {
+  if (!IsBraveOriginPurchased()) {
+    return;
+  }
+
+  // Resets every Brave Origin policy back to its default. Profile-level
+  // policies are scoped to this profile (keyed by `profile_id_`); browser-
+  // level policies live in shared local state and have no profile id, so
+  // resetting them is observable in every profile by design.
+  auto* manager = BraveOriginPolicyManager::GetInstance();
+  for (const auto& [policy_key, policy_info] :
+       manager->GetBrowserPolicyDefinitions()) {
+    SetPolicyValue(policy_key, policy_info.default_value);
+  }
+  for (const auto& [policy_key, policy_info] :
+       manager->GetProfilePolicyDefinitions()) {
+    SetPolicyValue(policy_key, policy_info.default_value);
+  }
+}
+
 void BraveOriginService::CheckPurchaseState(
     base::OnceCallback<void(bool)> callback) {
   if (!EnsureSkusConnected()) {

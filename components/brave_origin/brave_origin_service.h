@@ -69,6 +69,12 @@ class BraveOriginService : public KeyedService {
   // Get the current value of a BraveOrigin policy
   std::optional<bool> GetPolicyValue(std::string_view policy_key) const;
 
+  // Resets all Brave Origin policies back to their default values. Profile-
+  // level policies are scoped to this profile, but browser-level policies are
+  // stored in shared local state, so resetting them is observable in every
+  // profile by design.
+  void ResetToDefaults();
+
   // Asynchronously check purchase state via SKU credential summary.
   // The callback receives true if the user has a valid Origin purchase.
   void CheckPurchaseState(base::OnceCallback<void(bool)> callback);

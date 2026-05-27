@@ -25,6 +25,11 @@ interface BraveOriginSettingsHandler {
   // Set the value of a Brave Origin controlled policy
   SetPolicyValue(string policy_key, bool value) => (bool success);
 
+  // Reset all Brave Origin policies back to their default values. Profile-
+  // level policies are scoped to the current profile; browser-level policies
+  // live in shared local state and reset for every profile by design.
+  ResetToDefaults() => ();
+
   // Check if any Brave Origin policy values have been changed since
   // browser startup, indicating a restart is needed.
   GetNeedsRestart() => (bool needs_restart);

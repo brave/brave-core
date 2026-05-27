@@ -142,21 +142,14 @@ export class SettingsBraveOriginPageElement
   }
 
   private async resetToDefaults_() {
-    // Query all origin-toggle-button elements
+    // The handler only resets profile-scoped policies for the current
+    // profile; browser-level policies (shared across all profiles) are
+    // left alone so that one profile's reset cannot silently change the
+    // settings other profiles see.
+    await this.braveOriginHandler_.resetToDefaults();
+
+    // Reload all toggle states so the UI reflects the new values.
     const toggles = this.shadowRoot!.querySelectorAll('origin-toggle-button');
-
-    // Turn off all toggles that are currently on
-    for (const toggle of toggles) {
-      const toggleElement = toggle as OriginToggleButtonElement;
-      if (toggleElement.checked) {
-        // Set to off (accounting for inverted toggles)
-        const valueToSet = toggleElement.inverted ? true : false;
-        await this.braveOriginHandler_.setPolicyValue(
-            toggleElement.policyKey, valueToSet);
-      }
-    }
-
-    // Reload all toggle states
     for (const toggle of toggles) {
       await (toggle as OriginToggleButtonElement).loadPolicyValue_();
     }
