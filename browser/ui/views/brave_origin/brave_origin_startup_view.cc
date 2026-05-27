@@ -258,6 +258,16 @@ void BraveOriginStartupView::Init(Profile* profile) {
       views::Widget::InitParams::CLIENT_OWNS_WIDGET,
       views::Widget::InitParams::TYPE_WINDOW);
   params.delegate = this;
+#if BUILDFLAG(IS_LINUX)
+  // Without these, the dialog's window has no WM_CLASS / app_id, so the Linux
+  // window manager can't match it to the Brave .desktop file and falls back to
+  // a generic icon in the taskbar. Mirrors ProfilePickerWidget. Routed through
+  // the delegate so this source set doesn't need to depend on //chrome/browser
+  // (which would create a dependency cycle).
+  params.wm_class_name = delegate_->GetLinuxWMClassName();
+  params.wm_class_class = delegate_->GetLinuxWMClassClass();
+  params.wayland_app_id = params.wm_class_class;
+#endif
 
   // Widget is freed in WidgetIsZombie() after the delegate is deleted.
   auto* widget = new views::Widget();

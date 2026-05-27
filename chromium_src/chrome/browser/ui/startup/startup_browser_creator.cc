@@ -23,6 +23,9 @@
 #include "chrome/browser/platform_util.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "components/prefs/pref_service.h"
+#if BUILDFLAG(IS_LINUX)
+#include "chrome/browser/shell_integration_linux.h"
+#endif
 #if BUILDFLAG(IS_MAC)
 // Defined in brave_app_controller_mac.mm. We can't include the ObjC header
 // from a .cc file, so declare the free function directly.
@@ -132,6 +135,16 @@ class StartupDialogDelegate : public BraveOriginStartupView::Delegate {
         g_browser_process->profile_manager()->GetLastUsedProfileDir(),
         std::move(callback));
   }
+
+#if BUILDFLAG(IS_LINUX)
+  std::string GetLinuxWMClassName() override {
+    return shell_integration_linux::GetProgramClassName();
+  }
+
+  std::string GetLinuxWMClassClass() override {
+    return shell_integration_linux::GetProgramClassClass();
+  }
+#endif
 };
 
 }  // namespace
