@@ -1,0 +1,13 @@
+diff --git a/content/browser/webui/web_ui_data_source_unittest.cc b/content/browser/webui/web_ui_data_source_unittest.cc
+index cde691c4f05b55af0cabeee880499b6f5e1d7298..5a330ca7cea63d3a75a53326368abd3c3d2ef468 100644
+--- a/content/browser/webui/web_ui_data_source_unittest.cc
++++ b/content/browser/webui/web_ui_data_source_unittest.cc
+@@ -426,7 +426,7 @@ TEST_F(WebUIDataSourceTest, SetCspValues) {
+                 network::mojom::CSPDirectiveName::RequireTrustedTypesFor));
+   source()->OverrideContentSecurityPolicy(
+       network::mojom::CSPDirectiveName::TrustedTypes, "trusted-types test;");
+-  EXPECT_EQ("trusted-types test;",
++  EXPECT_EQ("trusted-types test svelte-trusted-html default;",
+             url_data_source->GetContentSecurityPolicy(
+                 network::mojom::CSPDirectiveName::TrustedTypes));
+   source()->DisableTrustedTypesCSP();
