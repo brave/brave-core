@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/ui/tabs/pinned_tab_codec.cc b/chrome/browser/ui/tabs/pinned_tab_codec.cc
+index fcee60557595f8001594c05a107b7b59745f13b8..037e66ac660b803b03b84544c0847cbf5bc34b48 100644
+--- a/chrome/browser/ui/tabs/pinned_tab_codec.cc
++++ b/chrome/browser/ui/tabs/pinned_tab_codec.cc
+@@ -48,6 +48,7 @@ void EncodePinnedTabs(BrowserWindowInterface* browser,
+         web_contents->GetController().GetLastCommittedEntry();
+     if (entry) {
+       serialized_tabs.Append(EncodeTab(entry->GetURL()));
++      BraveModifyEncodedPinnedTab(web_contents, serialized_tabs.back());
+     }
+   }
+ }
+@@ -119,6 +120,7 @@ StartupTabs PinnedTabCodec::ReadPinnedTabs(Profile* profile) {
+     }
+     std::optional<StartupTab> tab = DecodeTab(serialized_tab.GetDict());
+     if (tab.has_value()) {
++      BraveModifyDecodedPinnedTab(serialized_tab, tab.value());
+       results.push_back(tab.value());
+     }
+   }

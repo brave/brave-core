@@ -20,6 +20,9 @@ class BraveStartupTabProviderImpl : public StartupTabProviderImpl {
   // StartupTabProvider:
   StartupTabs GetDistributionFirstRunTabs(
       StartupBrowserCreator* browser_creator) const override;
+  StartupTabs GetCommandLineTabs(const base::CommandLine& command_line,
+                                 const base::FilePath& cur_dir,
+                                 Profile* profile) const override;
 };
 
 #endif  // BRAVE_BROWSER_UI_STARTUP_BRAVE_STARTUP_TAB_PROVIDER_IMPL_H_
