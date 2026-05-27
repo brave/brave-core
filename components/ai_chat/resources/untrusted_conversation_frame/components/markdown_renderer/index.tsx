@@ -209,7 +209,7 @@ function extractTextContent(node: React.ReactNode): string {
 
 function buildTableRenderer() {
   // For table header tracking
-  const tableHeaders: string[] = []
+  const tableHeaders: (string | null)[] = []
   let columnIndex = 0
 
   return {
@@ -241,13 +241,13 @@ function buildTableRenderer() {
 
       const text =
         React.Children.map(processedChildren, extractTextContent)?.join(' ')
-        || ''
-      if (text) tableHeaders.push(text)
+        || null
+      tableHeaders.push(text)
       return <th className={styles.tableHeader}>{processedChildren}</th>
     },
     td: (props: { children: React.ReactNode }) => {
       // Assign data-label from headers
-      const label = tableHeaders[columnIndex] || ''
+      const label = tableHeaders[columnIndex]
       columnIndex++
       return (
         <td
