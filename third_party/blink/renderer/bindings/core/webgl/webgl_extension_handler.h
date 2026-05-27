@@ -6,21 +6,32 @@
 #ifndef BRAVE_THIRD_PARTY_BLINK_RENDERER_BINDINGS_CORE_WEBGL_WEBGL_EXTENSION_HANDLER_H_
 #define BRAVE_THIRD_PARTY_BLINK_RENDERER_BINDINGS_CORE_WEBGL_WEBGL_EXTENSION_HANDLER_H_
 
-#include <array>
+#include <base/containers/span.h>
+
 #include <memory>
 #include <optional>
 
 #include "third_party/blink/renderer/core/core_export.h"
-#include "third_party/blink/renderer/platform/wtf/vector.h"
+#include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
 namespace blink {
-class String;
 class ScriptObject;
 class ScriptState;
+}  // namespace blink
 
-using ExtensionVector = Vector<String>;
+namespace webgl {
 
-constexpr size_t kFakeExtensionsSize = 21;
+using ExtensionVector = blink::Vector<blink::String>;
+
+// Internal data type of the fake WebGL extensions array.
+struct FakeExtensionType {
+  // The real name of the fake extension returned by the getSupportedExtension
+  // call when farbled. For example: EXT_texture_sampler.
+  blink::String name;
+  // The underlying name of the script object which is returned by the
+  // getExtension call when farbled.
+  blink::String script_object_name;
+};
 
 // Handler for returning information around the available webgl extensions.
 // This handler automatically takes into consideration any farbling when the
@@ -29,8 +40,9 @@ constexpr size_t kFakeExtensionsSize = 21;
 // integration with the BraveSessionCache.
 class CORE_EXPORT WebGLExtensionHandler {
  public:
-  WebGLExtensionHandler(const ExtensionVector& supported_extensions,
-                        std::optional<size_t> fake_index = std::nullopt);
+  WebGLExtensionHandler(
+      const ExtensionVector& supported_extensions,
+      std::optional<FakeExtensionType> fake_extension = std::nullopt);
   ~WebGLExtensionHandler();
 
   // Returns a vector of supported extensions which could also include a farbled
@@ -40,19 +52,20 @@ class CORE_EXPORT WebGLExtensionHandler {
   // Returns a ScriptObject which is either |real_extension| or a
   // dummy ScriptObject with the internal value set to the farbled extension
   // |name|. If |name| doesn't exists in |supported_extensions_| then it returns
-  // an ScriptObject with null value.
-  ScriptObject GetExtension(ScriptState* script_state,
-                            const String& name,
-                            const ScriptObject* real_extension);
+  // an ScriptObject with null value. |real_extension| must be non-null when
+  // |name| is in |supported_extensions_|.
+  blink::ScriptObject GetExtension(blink::ScriptState* script_state,
+                                   const blink::String& name,
+                                   const blink::ScriptObject* real_extension);
 
  private:
   // Returns true if |extension_name| is a farbled value, false otherwise.
-  bool IsExtensionFarbled(const String& extension_name) const;
+  bool IsExtensionFarbled(const blink::String& extension_name) const;
 
   // The list of the supported webgl extensions including any farbled extension.
   const ExtensionVector supported_extensions_;
-  // Points to an index in the fake supported extensions array.
-  std::optional<size_t> fake_index_;
+  // The fake extension.
+  std::optional<FakeExtensionType> fake_extension_;
 };
 
 // Returns the default handler without any farbling logic.
@@ -74,8 +87,8 @@ CORE_EXPORT std::unique_ptr<WebGLExtensionHandler> CreateMaximumHandler(
     const ExtensionVector& real_extensions);
 
 // A test only method to fetch the list of fake extensions.
-CORE_EXPORT std::array<String, kFakeExtensionsSize>
+CORE_EXPORT base::span<const FakeExtensionType>
 GetFakeSupportedExtensionsForTesting();
-}  // namespace blink
+}  // namespace webgl
 
 #endif  // BRAVE_THIRD_PARTY_BLINK_RENDERER_BINDINGS_CORE_WEBGL_WEBGL_EXTENSION_HANDLER_H_

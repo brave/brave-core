@@ -12,13 +12,14 @@
 #include "third_party/blink/public/common/features.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
-namespace blink {
+namespace webgl {
 
 namespace {
 
-bool IsKnownFakeExtension(const String& name) {
+bool IsKnownFakeExtension(const blink::String& name) {
   const auto fake_extensions = GetFakeSupportedExtensionsForTesting();
-  return std::ranges::find(fake_extensions, name) != fake_extensions.end();
+  return std::ranges::any_of(
+      fake_extensions, [&name](const auto& ext) { return ext.name == name; });
 }
 
 }  // namespace
@@ -40,7 +41,7 @@ TEST(WebGLExtensionHandlerTest,
   auto handler = CreateMaximumHandler(real);
   const auto extensions = handler->GetSupportedExtensions();
   ASSERT_EQ(extensions.size(), 1u);
-  EXPECT_EQ(extensions[0], String("WEBGL_debug_renderer_info"));
+  EXPECT_EQ(extensions[0], blink::String("WEBGL_debug_renderer_info"));
 }
 
 TEST(WebGLExtensionHandlerTest,
@@ -62,7 +63,7 @@ TEST(WebGLExtensionHandlerTest,
      BalancedHandler_FeatureDisabled_ReturnsSameExtensions) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndDisableFeature(
-      features::kWebGLBalancedFingerprintingProtection);
+      blink::features::kWebGLBalancedFingerprintingProtection);
 
   auto real = ExtensionVector({"OES_texture_float", "WEBGL_lose_context"});
   auto handler = CreateBalancedHandler(real, /*seed=*/0);
@@ -74,7 +75,7 @@ TEST(WebGLExtensionHandlerTest,
 TEST(WebGLExtensionHandlerTest, BalancedHandler_FeatureEnabled) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndEnableFeature(
-      features::kWebGLBalancedFingerprintingProtection);
+      blink::features::kWebGLBalancedFingerprintingProtection);
 
   auto real = ExtensionVector({"OES_texture_float", "WEBGL_lose_context"});
   auto handler = CreateBalancedHandler(real, /*seed=*/0);
@@ -82,8 +83,8 @@ TEST(WebGLExtensionHandlerTest, BalancedHandler_FeatureEnabled) {
   ASSERT_FALSE(extensions.empty());
 
   EXPECT_EQ(extensions.size(), real.size() + 1u);
-  EXPECT_EQ(extensions[0], String("OES_texture_float"));
-  EXPECT_EQ(extensions[1], String("WEBGL_lose_context"));
+  EXPECT_EQ(extensions[0], blink::String("OES_texture_float"));
+  EXPECT_EQ(extensions[1], blink::String("WEBGL_lose_context"));
   EXPECT_TRUE(IsKnownFakeExtension(extensions.back()))
       << "Injected extension not from known fake set: " << extensions.back();
 }
@@ -92,55 +93,53 @@ TEST(WebGLExtensionHandlerTest,
      BalancedHandler_FeatureEnabled_SeedDeterminesInjectedExtension) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndEnableFeature(
-      features::kWebGLBalancedFingerprintingProtection);
+      blink::features::kWebGLBalancedFingerprintingProtection);
 
   auto real = ExtensionVector({"OES_texture_float"});
   auto fake = GetFakeSupportedExtensionsForTesting();
 
-  // seed=0  → index 0  → "EXT_texture_sampler"
   auto handler0 = CreateBalancedHandler(real,
                                         /*seed=*/0);
   const auto ext0 = handler0->GetSupportedExtensions();
   ASSERT_EQ(ext0.size(), 2u);
-  EXPECT_EQ(ext0.back(), fake[0]);
+  EXPECT_EQ(ext0.back(), fake[0].name);
 
-  // seed=1  → index 1  → "EXT_texture_compressor"
   auto handler1 = CreateBalancedHandler(real,
                                         /*seed=*/1);
   const auto ext1 = handler1->GetSupportedExtensions();
   ASSERT_EQ(ext1.size(), 2u);
-  EXPECT_EQ(ext1.back(), fake[1]);
+  EXPECT_EQ(ext1.back(), fake[1].name);
 
-  // seed=20 → index 20 → "EXT_draw_blender"
   auto handler20 = CreateBalancedHandler(real,
                                          /*seed=*/20);
   const auto ext20 = handler20->GetSupportedExtensions();
   ASSERT_EQ(ext20.size(), 2u);
-  EXPECT_EQ(ext20.back(), fake[20]);
+  EXPECT_EQ(ext20.back(), fake[20].name);
 }
 
 TEST(WebGLExtensionHandlerTest,
      BalancedHandler_FeatureEnabled_SeedModuloWrapsAround) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndEnableFeature(
-      features::kWebGLBalancedFingerprintingProtection);
+      blink::features::kWebGLBalancedFingerprintingProtection);
 
   auto real = ExtensionVector({"OES_texture_float"});
+  auto fake = GetFakeSupportedExtensionsForTesting();
 
   // seed=0 and seed=kFakeListSize both map to index 0.
   auto handler0 = CreateBalancedHandler(real,
                                         /*seed=*/0);
-  auto handler21 = CreateBalancedHandler(real,
-                                         /*seed=*/kFakeExtensionsSize);
+  auto handler_last = CreateBalancedHandler(real,
+                                            /*seed=*/fake.size());
   EXPECT_EQ(handler0->GetSupportedExtensions().back(),
-            handler21->GetSupportedExtensions().back());
+            handler_last->GetSupportedExtensions().back());
 }
 
 TEST(WebGLExtensionHandlerTest,
      BalancedHandler_FeatureEnabled_EmptyRealExtensions_OneEntryAdded) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndEnableFeature(
-      features::kWebGLBalancedFingerprintingProtection);
+      blink::features::kWebGLBalancedFingerprintingProtection);
 
   auto handler = CreateBalancedHandler(ExtensionVector{},
                                        /*seed=*/3);
@@ -149,4 +148,4 @@ TEST(WebGLExtensionHandlerTest,
   EXPECT_TRUE(IsKnownFakeExtension(extensions[0]));
 }
 
-}  // namespace blink
+}  // namespace webgl

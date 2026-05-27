@@ -15,67 +15,62 @@
 #include "third_party/blink/public/common/features.h"
 #include "third_party/blink/renderer/bindings/core/v8/script_value.h"
 #include "third_party/blink/renderer/platform/bindings/v8_binding.h"
-#include "third_party/blink/renderer/platform/wtf/text/ascii_ctype.h"
-#include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
-namespace blink {
+namespace webgl {
 
 namespace {
-// The below *fake* extension names are inspired from existing names (see
+// The size of the fake extension list.
+inline constexpr size_t kFakeExtensionsSize = 21;
+
+// The following *fake* extension names are inspired from existing names (see
 // https://registry.khronos.org/webgl/extensions/). This fake list serves to
 // defuse any automated fingerprinting scripts that relies on a hash based
-// approach. Through farbling, we will inject one of the fake values below to
-// the result of the getSupportedExtensions call which would be consistent
+// approach. Through farbling, we will inject one of the following fake values
+// to the result of the getSupportedExtensions call which would be consistent
 // across that eTLD+1 session. A different session would pseudo-randomly yield a
 // different list resulting in a different hash. Hence the two call sites can't
 // link it's the same user via the hash based approach.
 //
 // The list below is a flat representation of the two sets {texture, expanded,
 // polygon, circle, triangle, blend, draw} and {sampler, blender, compressor}.
-const std::array<String, kFakeExtensionsSize> GetFakeSupportedExtensions() {
-  static const base::NoDestructor<std::array<String, kFakeExtensionsSize>>
+const std::array<FakeExtensionType, kFakeExtensionsSize>&
+GetFakeSupportedExtensions() {
+  static const base::NoDestructor<
+      std::array<FakeExtensionType, kFakeExtensionsSize>>
       fake_values({{
-          {"EXT_texture_sampler"},     {"EXT_texture_compressor"},
-          {"EXT_texture_blender"},     {"EXT_expanded_sampler"},
-          {"EXT_expanded_compressor"}, {"EXT_expanded_blender"},
-          {"EXT_polygon_sampler"},     {"EXT_polygon_compressor"},
-          {"EXT_polygon_blender"},     {"EXT_circle_sampler"},
-          {"EXT_circle_compressor"},   {"EXT_circle_blender"},
-          {"EXT_triangle_sampler"},    {"EXT_triangle_compressor"},
-          {"EXT_triangle_blender"},    {"EXT_blend_sampler"},
-          {"EXT_blend_compressor"},    {"EXT_blend_blender"},
-          {"EXT_draw_sampler"},        {"EXT_draw_compressor"},
-          {"EXT_draw_blender"},
+          {"EXT_texture_sampler", "ExtTextureSampler"},
+          {"EXT_texture_compressor", "ExtTextureCompressor"},
+          {"EXT_texture_blender", "ExtTextureBlender"},
+          {"EXT_expanded_sampler", "ExtExpandedSampler"},
+          {"EXT_expanded_compressor", "ExtExpandedCompressor"},
+          {"EXT_expanded_blender", "ExtExpandedBlender"},
+          {"EXT_polygon_sampler", "ExtPolygonSampler"},
+          {"EXT_polygon_compressor", "ExtPolygonCompressor"},
+          {"EXT_polygon_blender", "ExtPolygonBlender"},
+          {"EXT_circle_sampler", "ExtCircleSampler"},
+          {"EXT_circle_compressor", "ExtCircleCompressor"},
+          {"EXT_circle_blender", "ExtCircleBlender"},
+          {"EXT_triangle_sampler", "ExtTriangleSampler"},
+          {"EXT_triangle_compressor", "ExtTriangleCompressor"},
+          {"EXT_triangle_blender", "ExtTriangleBlender"},
+          {"EXT_blend_sampler", "ExtBlendSampler"},
+          {"EXT_blend_compressor", "ExtBlendCompressor"},
+          {"EXT_blend_blender", "ExtBlendBlender"},
+          {"EXT_draw_sampler", "ExtDrawSampler"},
+          {"EXT_draw_compressor", "ExtDrawCompressor"},
+          {"EXT_draw_blender", "ExtDrawBlender"},
       }});
   return *fake_values;
-}
-
-// Converts an extension name like "EXT_draw_compressor" to a CamelCase class
-// name like "ExtDrawCompressor".
-String ToExtensionClassName(const String& name) {
-  StringBuilder result;
-  bool capitalize_next = true;
-  for (unsigned i = 0; i < name.length(); ++i) {
-    const UChar c = name[i];
-    if (c == '_') {
-      capitalize_next = true;
-    } else if (capitalize_next) {
-      result.Append(static_cast<UChar>(ToAsciiUpper(c)));
-      capitalize_next = false;
-    } else {
-      result.Append(static_cast<UChar>(ToAsciiLower(c)));
-    }
-  }
-  return result.ToString();
 }
 
 }  // namespace
 
 WebGLExtensionHandler::WebGLExtensionHandler(
     const ExtensionVector& supported_extensions,
-    std::optional<size_t> fake_index)
-    : supported_extensions_(supported_extensions), fake_index_(fake_index) {}
+    std::optional<FakeExtensionType> fake_extension)
+    : supported_extensions_(supported_extensions),
+      fake_extension_(fake_extension) {}
 
 WebGLExtensionHandler::~WebGLExtensionHandler() = default;
 
@@ -86,21 +81,21 @@ ExtensionVector WebGLExtensionHandler::GetSupportedExtensions() const {
 // TODO(https://github.com/brave/brave-browser/issues/55858): Cover testing this
 // in browser_tests as it's not straightforward to test it as unittest due to
 // various v8 dependencies.
-ScriptObject WebGLExtensionHandler::GetExtension(
-    ScriptState* script_state,
-    const String& name,
-    const ScriptObject* real_extension) {
+blink::ScriptObject WebGLExtensionHandler::GetExtension(
+    blink::ScriptState* script_state,
+    const blink::String& name,
+    const blink::ScriptObject* real_extension) {
   // Create and return a fake object if the extension was farbled.
   if (IsExtensionFarbled(name)) {
     v8::Isolate* isolate = script_state->GetIsolate();
     v8::Local<v8::Context> context = script_state->GetContext();
     v8::Local<v8::FunctionTemplate> tmpl = v8::FunctionTemplate::New(isolate);
-    tmpl->SetClassName(V8String(isolate, ToExtensionClassName(name)));
+    tmpl->SetClassName(V8String(isolate, fake_extension_->script_object_name));
     v8::Local<v8::Object> obj = tmpl->GetFunction(context)
                                     .ToLocalChecked()
                                     ->NewInstance(context)
                                     .ToLocalChecked();
-    return ScriptObject(isolate, obj);
+    return blink::ScriptObject(isolate, obj);
   }
 
   // If extension is part of the supported list return the real extension.
@@ -109,15 +104,12 @@ ScriptObject WebGLExtensionHandler::GetExtension(
     return *real_extension;
   }
 
-  return ScriptObject::CreateNull(script_state->GetIsolate());
+  return blink::ScriptObject::CreateNull(script_state->GetIsolate());
 }
 
-bool WebGLExtensionHandler::IsExtensionFarbled(const String& name) const {
-  if (!fake_index_.has_value()) {
-    return false;
-  }
-  const auto& fake_extension_list = GetFakeSupportedExtensions();
-  return fake_extension_list[fake_index_.value()] == name;
+bool WebGLExtensionHandler::IsExtensionFarbled(
+    const blink::String& name) const {
+  return fake_extension_.has_value() && fake_extension_.value().name == name;
 }
 
 std::unique_ptr<WebGLExtensionHandler> CreateOffHandler(
@@ -127,22 +119,21 @@ std::unique_ptr<WebGLExtensionHandler> CreateOffHandler(
 
 std::unique_ptr<WebGLExtensionHandler> CreateBalancedHandler(
     const ExtensionVector& real_extensions,
-    size_t seed) {
+    const size_t seed) {
   if (!base::FeatureList::IsEnabled(
-          features::kWebGLBalancedFingerprintingProtection)) {
+          blink::features::kWebGLBalancedFingerprintingProtection)) {
     return std::make_unique<WebGLExtensionHandler>(real_extensions);
   }
 
   ExtensionVector modified_extensions = real_extensions;
   const auto& fake_extension_list = GetFakeSupportedExtensions();
   const size_t fake_index = seed % fake_extension_list.size();
-  modified_extensions.push_back(fake_extension_list[fake_index]);
+  const FakeExtensionType& fake_extension = fake_extension_list[fake_index];
+  modified_extensions.emplace_back(fake_extension.name);
 
-  // The fake_index is now stable across the lifetime of the current
-  // eTLD+1 session. The index would be reset when the owner destroys the
-  // handler.
+  // The fake_extension_name is now stable until the lifetime of the handler.
   return std::make_unique<WebGLExtensionHandler>(modified_extensions,
-                                                 fake_index);
+                                                 fake_extension);
 }
 
 std::unique_ptr<WebGLExtensionHandler> CreateMaximumHandler(
@@ -154,8 +145,8 @@ std::unique_ptr<WebGLExtensionHandler> CreateMaximumHandler(
   return std::make_unique<WebGLExtensionHandler>(ExtensionVector{});
 }
 
-std::array<String, kFakeExtensionsSize> GetFakeSupportedExtensionsForTesting() {
+base::span<const FakeExtensionType> GetFakeSupportedExtensionsForTesting() {
   CHECK_IS_TEST();
-  return GetFakeSupportedExtensions();
+  return base::span(GetFakeSupportedExtensions());
 }
-}  // namespace blink
+}  // namespace webgl
