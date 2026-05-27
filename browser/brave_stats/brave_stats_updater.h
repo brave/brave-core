@@ -14,6 +14,8 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
+#include "brave/components/brave_origin/brave_origin_policy_manager.h"
+#include "brave/components/brave_policy/brave_policy_observer.h"
 #include "chrome/browser/profiles/profile_manager_observer.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "url/gurl.h"
@@ -49,7 +51,8 @@ inline constexpr char kP3ADailyPingHistogramName[] = "Brave.Core.UsageDaily";
 
 class BraveStatsUpdaterParams;
 
-class BraveStatsUpdater : public ProfileManagerObserver {
+class BraveStatsUpdater : public ProfileManagerObserver,
+                          public brave_policy::BravePolicyObserver {
  public:
   BraveStatsUpdater(PrefService* pref_service, ProfileManager* profile_manager);
   BraveStatsUpdater(const BraveStatsUpdater&) = delete;
@@ -84,6 +87,11 @@ class BraveStatsUpdater : public ProfileManagerObserver {
   void OnReferralInitialization();
 
   void StartServerPingStartupTimer();
+  // Fires only when both `stats_startup_complete_` (referrals barrier
+  // resolved) and `brave_policies_ready_` (Brave Origin policies merged) are
+  // true. Either path is allowed to be first; the second one's call actually
+  // starts the timer.
+  void MaybeStartStartupTimer();
   void QueueServerPing();
   void SendServerPing();
 
@@ -91,6 +99,9 @@ class BraveStatsUpdater : public ProfileManagerObserver {
 
   // ProfileManagerObserver:
   void OnProfileAdded(Profile* profile) override;
+
+  // brave_policy::BravePolicyObserver:
+  void OnBravePoliciesReady() override;
 
   network::mojom::URLLoaderFactory* GetURLLoaderFactory();
 
@@ -109,6 +120,16 @@ class BraveStatsUpdater : public ProfileManagerObserver {
   scoped_refptr<network::SharedURLLoaderFactory> testing_url_loader_factory_;
 
   std::unique_ptr<misc_metrics::GeneralBrowserUsage> general_browser_usage_p3a_;
+
+  // True once `OnBravePoliciesReady` has been observed. `AddObserver` fires
+  // it synchronously when the manager is already initialised, so this can be
+  // true even before the ctor finishes. Subsequent firings are idempotent.
+  bool brave_policies_ready_ = false;
+
+  base::ScopedObservation<brave_origin::BraveOriginPolicyManager,
+                          brave_policy::BravePolicyObserver>
+      policy_manager_observation_{this};
+
   base::WeakPtrFactory<BraveStatsUpdater> weak_ptr_factory_{this};
 };
 
