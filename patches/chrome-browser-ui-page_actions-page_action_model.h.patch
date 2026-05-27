@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/page_actions/page_action_model.h b/chrome/browser/ui/page_actions/page_action_model.h
-index 7dacb805a0c88fc8d78095f29550e70375639634..28a79f70b714d67e22db2432c93735f45b6269c5 100644
+index 7dacb805a0c88fc8d78095f29550e70375639634..a8bb1e8007b1bf5ed6fc755084cc6e21bae7058e 100644
 --- a/chrome/browser/ui/page_actions/page_action_model.h
 +++ b/chrome/browser/ui/page_actions/page_action_model.h
 @@ -118,9 +118,28 @@ class PageActionModelInterface {
@@ -16,7 +16,7 @@ index 7dacb805a0c88fc8d78095f29550e70375639634..28a79f70b714d67e22db2432c93735f4
 +                                 std::optional<int> height) = 0;
 +  virtual void SetOverrideTriggerableEvent(PageActionPassKey,
 +                                           std::optional<int> event_flags) = 0;
-+  virtual void SetOverrideBorder(base::PassKey<PageActionController>,
++  virtual void SetOverrideBorder(PageActionPassKey,
 +                                 std::optional<gfx::Insets> border) = 0;
 +  virtual std::optional<SkColor> GetOverrideBackgroundColor() const = 0;
 +  virtual std::optional<SkColor> GetOverrideForegroundColor() const = 0;

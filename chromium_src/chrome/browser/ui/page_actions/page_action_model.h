@@ -34,7 +34,7 @@ class PageActionModel : public chromium_impl::PageActionModel {
                          std::optional<int> height_px) override;
   void SetOverrideTriggerableEvent(PageActionPassKey,
                                    std::optional<int> event_flags) override;
-  void SetOverrideBorder(base::PassKey<PageActionController>,
+  void SetOverrideBorder(PageActionPassKey,
                          std::optional<gfx::Insets> border) override;
   std::optional<SkColor> GetOverrideBackgroundColor() const override;
   std::optional<SkColor> GetOverrideForegroundColor() const override;

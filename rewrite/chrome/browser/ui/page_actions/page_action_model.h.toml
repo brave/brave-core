@@ -26,7 +26,7 @@ replace = '''\1
                                  std::optional<int> height) = 0;
   virtual void SetOverrideTriggerableEvent(PageActionPassKey,
                                            std::optional<int> event_flags) = 0;
-  virtual void SetOverrideBorder(base::PassKey<PageActionController>,
+  virtual void SetOverrideBorder(PageActionPassKey,
                                  std::optional<gfx::Insets> border) = 0;
   virtual std::optional<SkColor> GetOverrideBackgroundColor() const = 0;
   virtual std::optional<SkColor> GetOverrideForegroundColor() const = 0;
