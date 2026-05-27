@@ -149,25 +149,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         sceneState: sceneState
       )
 
-      // When launching in private mode with biometric/PIN lock enabled, authenticate before showing content.
-      // If auth fails or is cancelled, launch in regular mode instead.
-      if browserViewController.privateBrowsingManager.isPrivateBrowsing
-        && Preferences.Privacy.privateBrowsingLock.value
-      {
-        await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
-          windowProtection.presentAuthenticationForViewController(
-            determineLockWithPasscode: false,
-            viewType: .general
-          ) { success, error in
-            // Treat passcodeNotSet as success (user may have removed passcode)
-            if !success && error != .passcodeNotSet {
-              browserViewController.privateBrowsingManager.isPrivateBrowsing = false
-            }
-            continuation.resume()
-          }
-        }
-      }
-
       browserViewController.windowProtection = windowProtection
 
       let container = UINavigationController(rootViewController: browserViewController)
