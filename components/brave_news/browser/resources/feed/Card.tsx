@@ -67,7 +67,7 @@ const HidableImage = ({
   }, [onLoad])
 
   if (src) {
-    src = 'chrome://brave-image?url=' + encodeURIComponent(src);
+    src = '//brave-image?url=' + encodeURIComponent(src);
   }
   if (targetHeight && targetWidth) {
     const width = Math.round(targetWidth * window.devicePixelRatio)

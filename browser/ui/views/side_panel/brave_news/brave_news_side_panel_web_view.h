@@ -25,6 +25,22 @@ class BraveNewsSidePanelWebView : public SidePanelWebUIViewT<BraveNewsUI> {
   BraveNewsSidePanelWebView& operator=(const BraveNewsSidePanelWebView&) =
       delete;
   ~BraveNewsSidePanelWebView() override;
+
+  // WebUIContentsWrapper::Host:
+  content::WebContents* AddNewContents(
+      content::WebContents* source,
+      std::unique_ptr<content::WebContents> new_contents,
+      const GURL& target_url,
+      WindowOpenDisposition disposition,
+      const blink::mojom::WindowFeatures& window_features,
+      bool user_gesture,
+      bool* was_blocked) override;
+
+  content::WebContents* OpenURLFromTab(
+      content::WebContents* source,
+      const content::OpenURLParams& params,
+      base::OnceCallback<void(content::NavigationHandle&)>
+          navigation_handle_callback) override;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_BRAVE_NEWS_BRAVE_NEWS_SIDE_PANEL_WEB_VIEW_H_

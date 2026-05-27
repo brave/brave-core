@@ -741,7 +741,8 @@ SidebarItem SidebarService::GetBuiltInItemForType(
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
     case SidebarItem::BuiltInItemType::kBraveNews: {
-      if (base::FeatureList::IsEnabled(brave_news::features::kBraveNewsSidebar)) {
+      if (base::FeatureList::IsEnabled(
+              brave_news::features::kBraveNewsSidebar)) {
         return SidebarItem::Create(
             GURL(kBraveNewsURL),
             l10n_util::GetStringUTF16(IDS_BRAVE_NEWS_TITLE),

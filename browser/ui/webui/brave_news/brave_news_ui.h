@@ -8,24 +8,35 @@
 
 #include <string_view>
 
-#include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
+#include "base/memory/raw_ptr.h"
+#include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_webui_config.h"
+#include "chrome/browser/ui/webui/top_chrome/untrusted_top_chrome_web_ui_controller.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
+
+namespace brave_news {
+class BraveNewsController;
+}
 
 namespace content {
 class BrowserContext;
 class WebUI;
 }  // namespace content
 
-class BraveNewsUI : public TopChromeWebUIController {
+class BraveNewsUI : public UntrustedTopChromeWebUIController {
  public:
   explicit BraveNewsUI(content::WebUI* web_ui);
   BraveNewsUI(const BraveNewsUI&) = delete;
   BraveNewsUI& operator=(const BraveNewsUI&) = delete;
   ~BraveNewsUI() override;
 
+  void BindInterface(
+      mojo::PendingReceiver<brave_news::mojom::BraveNewsController> receiver);
+
   static constexpr std::string_view GetWebUIName() { return "BraveNewsPanel"; }
 
  private:
+  raw_ptr<brave_news::BraveNewsController> controller_ = nullptr;
   WEB_UI_CONTROLLER_TYPE_DECL();
 };
 

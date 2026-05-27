@@ -424,8 +424,10 @@ if (!is_android) {
     "//components/regional_capabilities",
   ]
   if (enable_brave_news) {
-    brave_chrome_browser_deps +=
-        [ "//brave/browser/ui/webui/brave_news_internals" ]
+    brave_chrome_browser_deps += [
+      "//brave/browser/ui/webui/brave_news",
+      "//brave/browser/ui/webui/brave_news_internals",
+    ]
   }
 }
 

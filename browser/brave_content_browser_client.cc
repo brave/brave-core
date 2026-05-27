@@ -297,6 +297,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if !BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/browser/ui/webui/brave_news/brave_news_ui.h"
 #include "brave/browser/ui/webui/brave_news_internals/brave_news_internals_ui.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
@@ -809,6 +810,13 @@ void BraveContentBrowserClient::RegisterUntrustedWebUIInterfaceBrokers(
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     registry.ForWebUI<playlist::PlaylistUI>()
         .Add<playlist::mojom::PageHandlerFactory>();
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS) && !BUILDFLAG(IS_ANDROID)
+  if (base::FeatureList::IsEnabled(brave_news::features::kBraveNewsSidebar)) {
+    registry.ForWebUI<BraveNewsUI>()
+        .Add<brave_news::mojom::BraveNewsController>();
   }
 #endif
 }
