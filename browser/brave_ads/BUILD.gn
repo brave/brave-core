@@ -117,6 +117,7 @@ source_set("impl") {
       "//brave/browser/brave_ads/android:jni_headers",
       "//brave/browser/notifications",
       "//brave/build/android:jni_headers",
+      "//chrome/browser/android",
       "//chrome/browser/notifications:jni_headers",
       "//chrome/browser/notifications:notifications_java_enum_srcjar",
     ]
