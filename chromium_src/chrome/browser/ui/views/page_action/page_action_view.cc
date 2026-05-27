@@ -15,16 +15,30 @@
 #include "ui/views/style/platform_style.h"
 #include "ui/views/view_class_properties.h"
 
+namespace {
+
+void MaybeOverrideBorder(const page_actions::PageActionModelInterface* source,
+                         gfx::Insets& border_insets) {
+  if (source && source->GetOverrideBorder().has_value()) {
+    border_insets = source->GetOverrideBorder().value();
+  }
+}
+
+}  // namespace
+
 #define GetMinimumSize GetMinimumSize_Chromium
 #define OnNewActiveController OnNewActiveController_Chromium
 #define OnPageActionModelChanged OnPageActionModelChanged_Chromium
-#define UpdateBorder UpdateBorder_Chromium
+#define BRAVE_PAGE_ACTION_VIEW_UPDATE_BORDER                           \
+  MaybeOverrideBorder(                                                 \
+      observation_.IsObserving() ? observation_.GetSource() : nullptr, \
+      border_insets);
 
 // Want to use default color even it's expanded.
 #define SetUseTonalColorsWhenExpanded(...) SetUseTonalColorsWhenExpanded(false)
 #include <chrome/browser/ui/views/page_action/page_action_view.cc>
 
-#undef UpdateBorder
+#undef BRAVE_PAGE_ACTION_VIEW_UPDATE_BORDER
 #undef SetUseTonalColorsWhenExpanded
 #undef OnPageActionModelChanged
 #undef OnNewActiveController
@@ -158,15 +172,6 @@ void PageActionView::OnPageActionModelChanged(
         ui::EF_LEFT_MOUSE_BUTTON));
   }
   UpdateBorder();
-}
-
-void PageActionView::UpdateBorder() {
-  const PageActionModelInterface* source = observation_.GetSource();
-  if (source && source->GetOverrideBorder().has_value()) {
-    SetBorder(views::CreateEmptyBorder(source->GetOverrideBorder().value()));
-  } else {
-    UpdateBorder_Chromium();
-  }
 }
 
 }  // namespace page_actions

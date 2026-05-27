@@ -7,3 +7,12 @@
 description = 'Adding code to force show the label if it should be always shown in OnPageActionModelChanged()'
 re_pattern = 'else if \((model.ShouldShowSuggestionChip\(\))\)'
 replace = 'else if (\1 || model.GetAlwaysShowLabel())'
+
+[[substitution]]
+description = '''
+Adding BRAVE_PAGE_ACTION_VIEW_UPDATE_BORDER in UpdateBorder() right before
+SetBorder() call in it.
+'''
+re_pattern = '(void PageActionView::UpdateBorder\(\)[\s\S]*?)(SetBorder\()'
+replace = '''\1BRAVE_PAGE_ACTION_VIEW_UPDATE_BORDER
+  \2'''

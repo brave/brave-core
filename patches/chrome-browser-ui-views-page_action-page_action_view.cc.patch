@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/page_action/page_action_view.cc b/chrome/browser/ui/views/page_action/page_action_view.cc
-index 271f5b9adba10ee60aa45b4c00e1bfb541fd05fd..1a20372af0948f87a8d94a99ea287c039e10d126 100644
+index 271f5b9adba10ee60aa45b4c00e1bfb541fd05fd..a6f93e9b26b636b5aaf16555a6487500b9ecb33e 100644
 --- a/chrome/browser/ui/views/page_action/page_action_view.cc
 +++ b/chrome/browser/ui/views/page_action/page_action_view.cc
 @@ -167,7 +167,7 @@ void PageActionView::OnPageActionModelChanged(
@@ -11,3 +11,11 @@ index 271f5b9adba10ee60aa45b4c00e1bfb541fd05fd..1a20372af0948f87a8d94a99ea287c03
      if (model.GetShouldAnimateChipIn()) {
        AnimateIn(/*string_id=*/std::nullopt);
      } else {
+@@ -232,6 +232,7 @@ void PageActionView::UpdateBorder() {
+       !observation_.GetSource()->GetImage().IsVectorIcon()) {
+     border_insets = GetInsetsForNonVectorIcon();
+   }
++  BRAVE_PAGE_ACTION_VIEW_UPDATE_BORDER
+   SetBorder(views::CreateEmptyBorder(border_insets));
+ }
+ 

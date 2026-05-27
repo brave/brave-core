@@ -48,8 +48,7 @@ class MockPageActionModel : public MockPageActionModel_Chromium {
               (const, override));
   MOCK_METHOD(void,
               SetOverrideBorder,
-              (base::PassKey<PageActionController>,
-               const std::optional<gfx::Insets>&),
+              (PageActionPassKey, std::optional<gfx::Insets>),
               (override));
   MOCK_METHOD(std::optional<gfx::Insets>,
               GetOverrideBorder,
