@@ -10,6 +10,7 @@ import { useSafeWalletSelector } from '../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../common/selectors'
 import {
   useAddAccountMutation,
+  useGetHiddenAccountsQuery,
   useGetNetworkQuery,
 } from '../../../common/slices/api.slice'
 
@@ -44,6 +45,7 @@ export const CreateAccountTab = ({
 
   // queries
   const { accounts } = useAccountsQuery()
+  const { data: hiddenAccounts = [] } = useGetHiddenAccountsQuery()
   const { data: network } = useGetNetworkQuery({
     chainId: accountNetwork.chainId,
     coin: accountNetwork.coin,
@@ -56,7 +58,7 @@ export const CreateAccountTab = ({
   const [showUnlock, setShowUnlock] = React.useState<boolean>(false)
 
   const suggestedAccountName = network
-    ? suggestNewAccountName(accounts, network)
+    ? suggestNewAccountName([...accounts, ...hiddenAccounts], network)
     : ''
 
   const onCreateAccount = React.useCallback(async () => {

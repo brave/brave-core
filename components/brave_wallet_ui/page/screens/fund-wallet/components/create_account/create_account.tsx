@@ -13,6 +13,7 @@ import Button from '@brave/leo/react/button'
 import { useAccountsQuery } from '../../../../../common/slices/api.slice.extra'
 import {
   useAddAccountMutation,
+  useGetHiddenAccountsQuery,
   useGetNetworkQuery,
 } from '../../../../../common/slices/api.slice'
 
@@ -65,6 +66,7 @@ export const CreateAccount = (props: Props) => {
 
   // Queries
   const { accounts } = useAccountsQuery()
+  const { data: hiddenAccounts = [] } = useGetHiddenAccountsQuery()
   const { data: network } = useGetNetworkQuery(
     token?.chainId
       ? {
@@ -76,7 +78,7 @@ export const CreateAccount = (props: Props) => {
 
   // Computed
   const suggestedAccountName = network
-    ? suggestNewAccountName(accounts, network)
+    ? suggestNewAccountName([...accounts, ...hiddenAccounts], network)
     : ''
 
   // Mutations
