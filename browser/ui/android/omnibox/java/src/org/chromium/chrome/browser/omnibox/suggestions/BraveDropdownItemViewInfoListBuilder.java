@@ -31,6 +31,7 @@ import org.chromium.components.omnibox.AutocompleteResult;
 import org.chromium.components.omnibox.GroupsProto.GroupConfig;
 import org.chromium.components.omnibox.action.OmniboxActionDelegate;
 import org.chromium.components.omnibox.suggestions.OmniboxSuggestionUiType;
+import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.ui.modelutil.PropertyModel;
 
 import java.util.Arrays;
@@ -47,6 +48,7 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
             Arrays.asList("CA", "DE", "FR", "GB", "US", "AT", "ES", "MX");
     private AutocompleteDelegate mAutocompleteDelegate;
     private BraveLeoAutocompleteDelegate mLeoAutocompleteDelegate;
+    private @Nullable Profile mProfile;
 
     BraveDropdownItemViewInfoListBuilder(
             Supplier<@Nullable Tab> tabSupplier,
@@ -63,6 +65,12 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
 
     public void setLeoAutocompleteDelegate(BraveLeoAutocompleteDelegate leoAutocompleteDelegate) {
         mLeoAutocompleteDelegate = leoAutocompleteDelegate;
+    }
+
+    @Override
+    void setProfile(Profile profile) {
+        super.setProfile(profile);
+        mProfile = profile;
     }
 
     @Override
@@ -122,10 +130,18 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
         // We want to show Leo auto suggestion even if the whole auto complete feature
         // is disabled
         Tab tab = mActivityTabSupplier.get();
-        boolean autocompleteEnabled =
-                tab != null
-                        ? mLeoAutocompleteDelegate.isAutoCompleteEnabled(tab.getWebContents())
-                        : true;
+        boolean autocompleteEnabled;
+        if (tab != null) {
+            autocompleteEnabled =
+                    mLeoAutocompleteDelegate.isAutoCompleteEnabled(tab.getWebContents());
+        } else {
+            // The search widget launches SearchActivity without a tab, so use the profile
+            // pushed in via setProfile to honor the "Show browser suggestions" preference.
+            autocompleteEnabled =
+                    mProfile == null
+                            || UserPrefs.get(mProfile)
+                                    .getBoolean(BravePreferenceKeys.BRAVE_AUTOCOMPLETE_ENABLED);
+        }
         if (!autocompleteEnabled && viewInfoList.size() > 0) {
             DropdownItemViewInfo firstObj = viewInfoList.get(0);
             viewInfoList.clear();

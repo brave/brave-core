@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.omnibox.suggestions;
 import android.content.Context;
 import android.os.Handler;
 
+import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.Callback;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
@@ -39,7 +40,6 @@ import java.util.function.Supplier;
 @NullMarked
 class BraveAutocompleteMediator extends AutocompleteMediator
         implements BraveSuggestionHost, BraveLeoAutocompleteDelegate {
-    private static final String AUTOCOMPLETE_ENABLED = "brave.autocomplete_enabled";
     private static final String LEO_START_WORD_UPPER_CASE = "LEO";
 
     private final AutocompleteDelegate mDelegate;
@@ -120,7 +120,9 @@ class BraveAutocompleteMediator extends AutocompleteMediator
     public boolean isAutoCompleteEnabled(WebContents webContents) {
         if (ProfileManager.isInitialized()) {
             Profile profile = Profile.fromWebContents(webContents);
-            if (profile != null && !UserPrefs.get(profile).getBoolean(AUTOCOMPLETE_ENABLED)) {
+            if (profile != null
+                    && !UserPrefs.get(profile)
+                            .getBoolean(BravePreferenceKeys.BRAVE_AUTOCOMPLETE_ENABLED)) {
                 return false;
             }
         }
