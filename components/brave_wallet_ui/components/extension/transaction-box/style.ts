@@ -14,7 +14,6 @@ export const CodeSnippet = styled.pre`
   width: 100%;
   background-color: ${(p) => p.theme.color.divider01};
   padding: 14px;
-  font-family: Poppins;
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
@@ -33,7 +32,6 @@ export const HexBlock = styled.div`
   width: 100%;
   background-color: ${(p) => p.theme.color.divider01};
   padding: 14px;
-  font-family: Poppins;
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
@@ -65,7 +63,6 @@ export const CodeDetailLine = styled.code`
 `
 
 export const DetailText = styled.span`
-  font-family: Poppins;
   font-size: 11px;
   line-height: 18px;
   letter-spacing: 0.01em;
@@ -79,7 +76,6 @@ export const CodeSnippetText = styled.p`
 `
 
 export const TransactionText = styled.span`
-  font-family: Poppins;
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;

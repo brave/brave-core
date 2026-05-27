@@ -36,7 +36,6 @@ export const NameAndSymbolWrapper = styled.div`
 
 export const AssetName = styled.span`
   color: ${leo.color.text.primary};
-  font-family: Poppins;
   font-size: 14px;
   font-style: normal;
   font-weight: 600;
@@ -54,7 +53,6 @@ export const AssetName = styled.span`
 
 export const AssetSymbol = styled.span`
   color: ${leo.color.text.tertiary};
-  font-family: Poppins;
   font-size: 12px;
   font-style: normal;
   font-weight: 400;

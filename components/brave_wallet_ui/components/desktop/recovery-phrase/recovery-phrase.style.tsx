@@ -69,7 +69,6 @@ export const RecoveryBubbleBadge = styled.p`
   background-color: ${(p) => p.theme.color.brandBat};
   width: 40px;
   border-radius: 4px;
-  font-family: 'Poppins';
   font-style: normal;
   font-weight: 500;
   font-size: 10px;
@@ -108,7 +107,6 @@ export const HiddenPhraseContainer = styled.div`
   cursor: pointer;
 
   & p {
-    font-family: 'Poppins';
     font-style: normal;
     font-weight: 600;
     font-size: 13px;

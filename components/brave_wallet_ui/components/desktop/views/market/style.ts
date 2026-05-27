@@ -39,7 +39,6 @@ export const TextWrapper = styled.div<StyleProps>`
   justify-content: ${(p) =>
     p.alignment === 'right' ? 'flex-end' : 'flex-start'};
   width: 100%;
-  font-family: Poppins;
   font-size: 14px;
   letter-spacing: 0.01em;
 `

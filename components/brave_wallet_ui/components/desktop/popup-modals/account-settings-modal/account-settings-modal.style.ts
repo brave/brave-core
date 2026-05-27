@@ -61,7 +61,6 @@ export const AddressButton = styled(WalletButton)`
   align-items: center;
   justify-content: center;
   flex-direction: row;
-  font-family: Poppins;
   font-size: 16px;
   line-height: 20px;
   letter-spacing: 0.02em;
@@ -107,7 +106,6 @@ export const PrivateKeyBubble = styled(WalletButton)`
   border-radius: 4px;
   margin: 0px;
   word-break: break-all;
-  font-family: Poppins;
   font-size: 14px;
   line-height: 22px;
   font-weight: 600;
@@ -130,7 +128,6 @@ export const ButtonWrapper = styled.div`
 `
 
 export const ErrorText = styled.span`
-  font-family: Poppins;
   font-size: 12px;
   line-height: 18px;
   color: ${(p) => p.theme.color.errorText};

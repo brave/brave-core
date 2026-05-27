@@ -92,7 +92,6 @@ export const OvalButton = styled(WalletButton)`
 `
 
 export const OvalButtonText = styled.span`
-  font-family: Poppins;
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;

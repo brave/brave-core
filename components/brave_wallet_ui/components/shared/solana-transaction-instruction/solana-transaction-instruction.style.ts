@@ -15,7 +15,6 @@ export const InstructionBox = styled.div`
 `
 
 export const InstructionParamBox = styled.div`
-  font-family: Poppins;
   width: 100%;
   box-sizing: border-box;
   display: flex;
@@ -24,7 +23,6 @@ export const InstructionParamBox = styled.div`
   margin-bottom: 12px;
   margin-top: 12px;
   word-break: break-all;
-  font-family: Poppins;
   font-size: 12px;
   letter-spacing: 0.01em;
   font-weight: 400;
@@ -52,7 +50,6 @@ export const InstructionParamBox = styled.div`
 `
 
 export const AddressText = styled.span<{ isBold?: true }>`
-  font-family: Poppins;
   font-weight: ${(p) => (p.isBold ? 600 : 400)};
   color: ${(p) => p.theme.color.text02};
   font-size: 12px;
@@ -62,7 +59,6 @@ export const AddressText = styled.span<{ isBold?: true }>`
 `
 
 export const CodeSectionTitle = styled.span`
-  font-family: Poppins;
   font-weight: 400;
   color: ${(p) => p.theme.color.text02};
   font-size: 12px;

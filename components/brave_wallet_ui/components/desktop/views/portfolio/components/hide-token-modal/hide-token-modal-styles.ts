@@ -16,7 +16,6 @@ export const StyledWrapper = styled.div`
 `
 
 export const TokenSymbol = styled.h6`
-  font-family: 'Poppins';
   font-style: normal;
   font-size: 16px;
   line-height: 1.4;
@@ -30,7 +29,6 @@ export const TokenSymbol = styled.h6`
 `
 
 export const Instructions = styled.p`
-  font-family: 'Poppins';
   font-style: normal;
   font-size: 16px;
   line-height: 1.4;
@@ -57,7 +55,6 @@ export const OkButton = styled(WalletButton)`
   width: 125px;
   margin-top: 70px;
   border-radius: 100px;
-  font-family: 'Poppins';
   font-style: normal;
   font-size: 14px;
   font-weight: 400;
@@ -76,7 +73,6 @@ export const CancelButton = styled(WalletButton)`
   width: 125px;
   margin-top: 70px;
   border-radius: 100px;
-  font-family: 'Poppins';
   font-style: normal;
   font-size: 14px;
   font-weight: 400;

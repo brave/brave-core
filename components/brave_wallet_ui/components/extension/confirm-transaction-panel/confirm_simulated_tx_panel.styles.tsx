@@ -28,7 +28,6 @@ export const TransactionChangeCollapseContent = styled.div`
 
 export const TransactionChangeCollapseTitle = styled.div`
   color: ${leo.color.text.secondary};
-  font-family: Poppins;
   font-size: 11px;
   font-style: normal;
   font-weight: 600;

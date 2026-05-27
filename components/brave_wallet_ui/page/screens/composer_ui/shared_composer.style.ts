@@ -48,7 +48,6 @@ export const ToSectionWrapper = styled(Column)`
 `
 
 export const Input = styled.input`
-  font-family: 'Poppins';
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
@@ -94,7 +93,6 @@ export const PresetButton = styled(WalletButton)`
   border: none;
   background-color: ${leo.color.neutral[10]};
   border-radius: 4px;
-  font-family: Poppins;
   font-size: 10px;
   font-style: normal;
   font-weight: 700;

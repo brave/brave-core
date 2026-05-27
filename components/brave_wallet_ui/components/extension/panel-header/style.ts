@@ -11,7 +11,6 @@ interface StyleProps {
 }
 
 export const HeaderTitle = styled.span`
-  font-family: Poppins;
   font-size: 18px;
   line-height: 26px;
   font-weight: 600;

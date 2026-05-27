@@ -17,7 +17,6 @@ export const Header = styled.div`
 `
 
 export const HeaderText = styled.span`
-  font-family: Poppins;
   font-size: 13px;
   line-height: 20px;
   letter-spacing: 0.01em;

@@ -32,7 +32,6 @@ export const Input = styled.input`
   box-shadow: none;
   border: ${(p) => `1px solid ${p.theme.color.interactive08}`};
   border-radius: 4px;
-  font-family: Poppins;
   font-style: normal;
   font-size: 13px;
   line-height: 20px;
@@ -41,7 +40,6 @@ export const Input = styled.input`
   margin-bottom: 8px;
   color: ${(p) => p.theme.color.text01};
   ::placeholder {
-    font-family: Poppins;
     font-style: normal;
     font-size: 12px;
     letter-spacing: 0.01em;
@@ -72,7 +70,6 @@ export const ButtonRow = styled.div`
 
 export const Description = styled.span`
   width: 100%;
-  font-family: Poppins;
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
@@ -86,7 +83,6 @@ export const AllowanceOption = styled.div`
 `
 
 export const AllowanceTitle = styled.div`
-  font-family: Poppins;
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
@@ -96,7 +92,6 @@ export const AllowanceTitle = styled.div`
 `
 
 export const AllowanceContent = styled.div`
-  font-family: Poppins;
   font-style: normal;
   font-weight: 600;
   font-size: 14px;

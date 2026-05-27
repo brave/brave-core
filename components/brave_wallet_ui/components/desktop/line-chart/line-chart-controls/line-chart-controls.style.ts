@@ -28,7 +28,6 @@ export const SelectTimelinButton = styled(WalletButton)`
   border-radius: ${leo.radius.full};
   padding: 6px 10px 6px 18px;
   border: 1px solid var(--button-border);
-  font-family: Poppins;
   font-size: 12px;
   line-height: 16px;
   letter-spacing: 0.03em;

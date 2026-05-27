@@ -217,7 +217,6 @@ const NetworkFeeAndDetailsContainer = styled.div`
 const NetworkFeeContainer = styled.div``
 
 const NetworkFeeTitle = styled.div`
-  font-family: 'Poppins';
   font-style: normal;
   font-weight: 500;
   font-size: 12px;
@@ -226,7 +225,6 @@ const NetworkFeeTitle = styled.div`
 `
 
 const NetworkFeeValue = styled.div`
-  font-family: 'Poppins';
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
@@ -239,7 +237,6 @@ const NetworkFeeValue = styled.div`
 `
 
 const TextButton = styled(WalletButton)`
-  font-family: Poppins;
   font-style: normal;
   font-weight: 600;
   font-size: 12px;

@@ -42,7 +42,6 @@ export const ButtonIcon = styled(Icon)`
 `
 
 export const ButtonText = styled.span`
-  font-family: Poppins;
   font-style: normal;
   font-size: 12px;
   font-weight: 600;

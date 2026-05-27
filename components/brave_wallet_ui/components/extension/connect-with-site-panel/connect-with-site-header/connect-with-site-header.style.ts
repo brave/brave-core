@@ -46,7 +46,6 @@ export const TitleWrapper = styled(Row)<{
 `
 
 export const Title = styled.span`
-  font-family: Poppins;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
@@ -61,7 +60,6 @@ export const DomainTextContainer = styled(Column)`
 `
 
 export const SiteName = styled.span`
-  font-family: Poppins;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
@@ -72,7 +70,6 @@ export const SiteName = styled.span`
 `
 
 export const SiteURL = styled.span`
-  font-family: Poppins;
   font-style: normal;
   font-weight: 400;
   font-size: 12px;

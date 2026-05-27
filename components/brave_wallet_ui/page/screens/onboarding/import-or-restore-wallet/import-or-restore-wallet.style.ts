@@ -45,7 +45,6 @@ export const CardButtonTextContainer = styled.div`
   max-width: 70%;
 
   & > p {
-    font-family: 'Poppins';
     font-style: normal;
     font-weight: 400;
     font-size: 12px;

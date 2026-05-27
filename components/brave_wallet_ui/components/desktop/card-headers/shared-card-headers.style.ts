@@ -16,7 +16,6 @@ import {
 export const HeaderTitle = styled.span<{
   isMobileOrPanel?: boolean
 }>`
-  font-family: Poppins;
   font-style: normal;
   font-size: ${(p) => (p.isMobileOrPanel ? 16 : 28)}px;
   font-weight: ${(p) => (p.isMobileOrPanel ? 600 : 500)};

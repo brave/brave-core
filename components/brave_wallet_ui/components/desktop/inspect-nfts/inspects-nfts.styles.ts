@@ -46,7 +46,6 @@ export const TopRowButton = styled(WalletButton)`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  font-family: 'Poppins';
   font-style: normal;
   font-weight: 600;
   font-size: 13px;
@@ -89,7 +88,6 @@ export const MainContent = styled.section`
 `
 
 export const NftCountHeading = styled.h1`
-  font-family: 'Poppins';
   font-style: normal;
   font-weight: 600;
   font-size: 40px;
@@ -113,7 +111,6 @@ export const PinNftsButton = styled(ActionButton).attrs({
 `
 
 export const InfoSubHeading = styled.h6`
-  font-family: 'Poppins';
   font-style: normal;
   font-weight: 600;
   font-size: 12px;

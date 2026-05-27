@@ -17,7 +17,6 @@ export const QueueStepRow = styled.div`
 `
 
 export const QueueStepText = styled.span`
-  font-family: Poppins;
   font-size: 13px;
   color: ${(p) => p.theme.color.text02};
   font-weight: 600;
@@ -27,7 +26,6 @@ export const QueueStepText = styled.span`
 export const queueStepButtonRowPadding = '16px 0px 4px 0px'
 
 export const QueueStepButton = styled(WalletButton)<{ needsMargin?: boolean }>`
-  font-family: Poppins;
   font-style: normal;
   font-weight: 600;
   font-size: 13px;
