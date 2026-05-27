@@ -61,7 +61,8 @@ void CopySanitizedURL(BrowserWindowInterface* browser, const GURL& url);
 // - Debouncer (potentially debouncing many levels)
 // - Query filter
 // - URLSanitizerService
-void CopyLinkWithStrictCleaning(Browser* browser, const GURL& url);
+void CopyLinkWithStrictCleaning(BrowserWindowInterface* browser,
+                                const GURL& url);
 
 void ToggleWindowTitleVisibilityForVerticalTabs(Browser* browser);
 void ToggleVerticalTabStrip(Browser* browser);
