@@ -41,6 +41,9 @@
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/browser/containers/containers_service_factory.h"
 #include "brave/components/containers/core/browser/containers_service.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 namespace {
@@ -51,13 +54,34 @@ constexpr int kSmallAccentSize = 16;
 
 BraveTab::SmallAccentIconView::SmallAccentIconView() {
   SetCanProcessEventsWithinSubtree(false);
-  // In order to be clipped by Tab::PaintChildren(), we need to set paint to
-  // layer.
-  SetPaintToLayer();
-  layer()->SetFillsBoundsOpaquely(false);
 }
 
 BraveTab::SmallAccentIconView::~SmallAccentIconView() = default;
+
+void BraveTab::SmallAccentIconView::SetCanPaintToLayer(
+    bool can_paint_to_layer) {
+  if (can_paint_to_layer == can_paint_to_layer_) {
+    return;
+  }
+  can_paint_to_layer_ = can_paint_to_layer;
+  RefreshLayer();
+}
+
+void BraveTab::SmallAccentIconView::RefreshLayer() {
+  // In order to be clipped by Tab::PaintChildren(), we need to set paint to
+  // layer. Disable layer painting in fullscreen where the tab strip may be
+  // sliding in or out.
+  if (can_paint_to_layer_ == !!layer()) {
+    return;
+  }
+
+  if (can_paint_to_layer_) {
+    SetPaintToLayer();
+    layer()->SetFillsBoundsOpaquely(false);
+  } else {
+    DestroyLayer();
+  }
+}
 
 void BraveTab::SmallAccentIconView::OnPaint(gfx::Canvas* canvas) {
   auto* tab = static_cast<BraveTab*>(parent());
@@ -115,10 +139,60 @@ BraveTab::BraveTab(tabs::TabHandle handle, TabSlotController* controller)
   small_accent_icon_view_ =
       AddChildView(std::make_unique<SmallAccentIconView>());
   small_accent_icon_view_->SetVisible(false);
+  UpdateSmallAccentIconLayer();
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 }
 
 BraveTab::~BraveTab() = default;
+
+void BraveTab::AddedToWidget() {
+  Tab::AddedToWidget();
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  UpdateSmallAccentIconLayer();
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+}
+
+void BraveTab::RemovedFromWidget() {
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  StopObservingFullscreenChanges();
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+  Tab::RemovedFromWidget();
+}
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+void BraveTab::MaybeStartObservingFullscreenChanges() {
+  if (!small_accent_icon_view_ || fullscreen_observation_.IsObserving()) {
+    return;
+  }
+
+  auto* browser = controller_->GetBrowserWindowInterface();
+  if (!browser) {
+    return;
+  }
+
+  auto* exclusive_access_manager =
+      browser->GetFeatures().exclusive_access_manager();
+  if (!exclusive_access_manager) {
+    return;
+  }
+
+  auto* fullscreen_controller =
+      exclusive_access_manager->fullscreen_controller();
+  if (!fullscreen_controller) {
+    return;
+  }
+
+  fullscreen_observation_.Observe(fullscreen_controller);
+}
+
+void BraveTab::StopObservingFullscreenChanges() {
+  fullscreen_observation_.Reset();
+}
+
+void BraveTab::OnFullscreenStateChanged() {
+  UpdateSmallAccentIconLayer();
+}
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 void BraveTab::UpdateTabStyle() {
   ResetTabStyle(TabStyleViews::CreateForTab(this));
@@ -363,6 +437,15 @@ void BraveTab::LayoutTreeToggleButton() {
   }
 }
 
+void BraveTab::UpdateSmallAccentIconLayer() {
+  if (!small_accent_icon_view_) {
+    return;
+  }
+  const views::Widget* widget = GetWidget();
+  small_accent_icon_view_->SetCanPaintToLayer(widget &&
+                                              !widget->IsFullscreen());
+}
+
 void BraveTab::LayoutSmallTabAccentIcon() {
   if (!small_accent_icon_view_) {
     return;
@@ -370,6 +453,17 @@ void BraveTab::LayoutSmallTabAccentIcon() {
 
   const bool show_small_accent =
       ShouldPaintTabAccent() && !ShouldShowLargeAccentIcon();
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  if (show_small_accent) {
+    MaybeStartObservingFullscreenChanges();
+  } else {
+    StopObservingFullscreenChanges();
+  }
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
+  UpdateSmallAccentIconLayer();
+
   small_accent_icon_view_->SetVisible(show_small_accent);
   if (show_small_accent) {
     const auto tab_bounds = gfx::SkRectToRectF(
@@ -532,6 +626,7 @@ void BraveTab::OnTabDataChanged(TabChangeType tab_change_type,
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
   MaybeObserveContainerChanges();
+  UpdateSmallAccentIconLayer();
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 }
 
