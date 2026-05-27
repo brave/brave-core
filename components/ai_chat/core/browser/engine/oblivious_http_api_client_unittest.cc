@@ -109,7 +109,7 @@ class ObliviousHttpAPIClientUnitTest : public testing::Test,
 
   void EmitChunk(const std::string& content) {
     EmitRawChunk(absl::StrFormat(
-        "data: {\"choices\":[{\"delta\":{\"content\":\"%s\"}}]}", content));
+        "data: {\"choices\":[{\"delta\":{\"content\":\"%s\"}}]}\n", content));
   }
 
   void CompleteWithInnerResponse(int response_code, std::string body) {
@@ -231,9 +231,9 @@ TEST_F(ObliviousHttpAPIClientUnitTest,
   EXPECT_TRUE(last_request_->enable_chunking);
 
   EmitChunk("good1");
-  EmitRawChunk("this is not valid json or sse");
+  EmitRawChunk("this is not valid json or sse\n");
   EmitChunk("good2");
-  EmitRawChunk("{\"also\": \"garbage\"}");
+  EmitRawChunk("{\"also\": \"garbage\"}\n");
   EmitChunk("good3");
 
   CompleteWithInnerResponse(net::HTTP_OK, "");

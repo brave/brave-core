@@ -5,13 +5,11 @@
 
 #include "brave/components/ai_chat/core/browser/engine/oblivious_http_api_client.h"
 
-#include <string_view>
 #include <utility>
 
 #include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
-#include "base/strings/string_util.h"
 #include "base/task/thread_pool.h"
 #include "base/types/expected.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
@@ -34,8 +32,6 @@ namespace ai_chat {
 namespace {
 
 constexpr char kOHTTPRelayPathFormat[] = "v1/models/%s/relay";
-
-constexpr std::string_view kSSEDataPrefix = "data: {";
 
 constexpr base::TimeDelta kRequestTimeout = base::Minutes(5);
 
@@ -81,10 +77,15 @@ std::string GetModelKey(const std::string& model_name) {
 }  // namespace
 
 ObliviousHttpAPIClient::InnerClient::InnerClient(
+    scoped_refptr<base::SequencedTaskRunner> task_runner,
     CompletionCallback completion_callback,
     ChunkCallback chunk_callback)
-    : completion_callback_(std::move(completion_callback)),
-      chunk_callback_(std::move(chunk_callback)) {}
+    : sequenced_task_runner_(task_runner),
+      completion_callback_(std::move(completion_callback)),
+      chunk_callback_(std::move(chunk_callback)),
+      sse_parser_(task_runner,
+                  base::BindRepeating(&InnerClient::OnSSEEvent,
+                                      base::Unretained(this))) {}
 
 ObliviousHttpAPIClient::InnerClient::~InnerClient() = default;
 
@@ -106,44 +107,74 @@ ObliviousHttpAPIClient::InnerClient::BindChunkReceiver() {
 
 void ObliviousHttpAPIClient::InnerClient::OnCompleted(
     network::mojom::ObliviousHttpCompletionResultPtr response) {
-  if (completion_callback_.is_null()) {
-    return;
-  }
-  int outer_response_code = net::HTTP_OK;
-  int inner_response_code = 0;
-  std::string body;
   switch (response->which()) {
     case network::mojom::ObliviousHttpCompletionResult::Tag::kNetError:
-      outer_response_code = response->get_net_error();
+      pending_outer_response_code_ = response->get_net_error();
       break;
     case network::mojom::ObliviousHttpCompletionResult::Tag::
         kOuterResponseErrorCode:
-      outer_response_code = response->get_outer_response_error_code();
+      pending_outer_response_code_ = response->get_outer_response_error_code();
       break;
     case network::mojom::ObliviousHttpCompletionResult::Tag::kInnerResponse: {
-      const auto& inner = response->get_inner_response();
-      inner_response_code = inner->response_code;
-      body = inner->response_body;
+      pending_inner_response_code_ =
+          response->get_inner_response()->response_code;
+      const std::string& body = response->get_inner_response()->response_body;
+      if (!body.empty()) {
+        on_completed_called_ = true;
+        is_non_streaming_body_decoding_ = true;
+        sequenced_task_runner_->PostTaskAndReplyWithResult(
+            FROM_HERE,
+            base::BindOnce(&base::JSONReader::ReadAndReturnValueWithError, body,
+                           base::JSON_PARSE_RFC),
+            base::BindOnce(&InnerClient::OnNonStreamingBodyParsed,
+                           weak_ptr_factory_.GetWeakPtr()));
+        return;
+      }
       break;
     }
   }
-  std::move(completion_callback_)
-      .Run(outer_response_code, inner_response_code, std::move(body));
+  on_completed_called_ = true;
+  MaybeCompleteRequest();
 }
 
 void ObliviousHttpAPIClient::InnerClient::OnBodyChunk(
     const std::string& chunk) {
-  if (!chunk_callback_.is_null()) {
-    chunk_callback_.Run(chunk);
-  }
+  sse_parser_.Process(chunk);
 }
 
-void ObliviousHttpAPIClient::InnerClient::OnPipeDisconnected() {
-  if (completion_callback_.is_null()) {
+void ObliviousHttpAPIClient::InnerClient::OnSSEEvent(
+    api_request_helper::ValueOrError result) {
+  if (!chunk_callback_.is_null() && result.has_value()) {
+    chunk_callback_.Run(std::move(result.value()));
+  }
+  MaybeCompleteRequest();
+}
+
+void ObliviousHttpAPIClient::InnerClient::OnNonStreamingBodyParsed(
+    base::JSONReader::Result value) {
+  if (value.has_value()) {
+    pending_parsed_body_ = std::move(*value);
+  }
+  is_non_streaming_body_decoding_ = false;
+  MaybeCompleteRequest();
+}
+
+void ObliviousHttpAPIClient::InnerClient::MaybeCompleteRequest() {
+  if (!on_completed_called_ || sse_parser_.IsDecoding() ||
+      is_non_streaming_body_decoding_) {
     return;
   }
   std::move(completion_callback_)
-      .Run(net::ERR_FAILED, /*inner_response_code=*/0, std::string());
+      .Run(pending_outer_response_code_, pending_inner_response_code_,
+           std::move(pending_parsed_body_));
+}
+
+void ObliviousHttpAPIClient::InnerClient::OnPipeDisconnected() {
+  if (on_completed_called_) {
+    return;
+  }
+  std::move(completion_callback_)
+      .Run(net::ERR_FAILED, /*inner_response_code=*/0, std::nullopt);
 }
 
 ObliviousHttpAPIClient::Request::Request(
@@ -286,12 +317,13 @@ void ObliviousHttpAPIClient::DispatchOHTTPRequest(
   GenerationDataCallback data_received_callback =
       request.data_received_callback;
   std::string model_name = request.model_name;
+
   *it = std::make_unique<InnerClient>(
+      sequenced_task_runner_,
       base::BindOnce(&ObliviousHttpAPIClient::OnInnerResponse,
                      weak_factory_.GetWeakPtr(), std::move(request),
                      std::move(credential)),
-      base::BindRepeating(&ObliviousHttpAPIClient::OnInnerChunkReceived,
-                          weak_factory_.GetWeakPtr(),
+      base::BindRepeating(&ObliviousHttpAPIClient::OnChunkParsed,
                           std::move(data_received_callback),
                           std::move(model_name)));
 
@@ -311,7 +343,7 @@ void ObliviousHttpAPIClient::OnInnerResponse(
     std::optional<CredentialCacheEntry> credential,
     int outer_response_code,
     int inner_response_code,
-    std::string response_body) {
+    std::optional<base::Value> parsed_body) {
   // Erase the InnerClient from the ownership list now that the request is done.
   inner_clients_.erase(request.it);
 
@@ -330,48 +362,21 @@ void ObliviousHttpAPIClient::OnInnerResponse(
   }
 
   const bool success = inner_response_code >= 200 && inner_response_code < 300;
-  sequenced_task_runner_->PostTaskAndReplyWithResult(
-      FROM_HERE,
-      base::BindOnce(&base::JSONReader::Read, std::move(response_body),
-                     base::JSON_PARSE_RFC, static_cast<size_t>(200)),
-      base::BindOnce(&OAIAPIClient::HandleCompletion,
-                     std::move(request.completed_callback), success,
-                     is_outer_response_code_bad ? outer_response_code
-                                                : inner_response_code,
-                     /*model_key=*/GetModelKey(request.model_name),
-                     /*is_near_verified=*/true));
-}
-
-void ObliviousHttpAPIClient::OnInnerChunkReceived(
-    GenerationDataCallback data_received_callback,
-    std::string model_name,
-    std::string chunk) {
-  if (!base::StartsWith(chunk, kSSEDataPrefix)) {
-    return;
-  }
-  // OHTTP chunks are guaranteed to contain complete JSON,
-  // so there is no need to append chunks to a buffer and wait
-  // for a full JSON object.
-  sequenced_task_runner_->PostTaskAndReplyWithResult(
-      FROM_HERE,
-      base::BindOnce(&base::JSONReader::Read,
-                     chunk.substr(kSSEDataPrefix.size() - 1),
-                     base::JSON_PARSE_RFC, static_cast<size_t>(200)),
-      base::BindOnce(&ObliviousHttpAPIClient::OnChunkParsed,
-                     std::move(data_received_callback), std::move(model_name)));
+  OAIAPIClient::HandleCompletion(
+      std::move(request.completed_callback), success,
+      is_outer_response_code_bad ? outer_response_code : inner_response_code,
+      /*model_key=*/GetModelKey(request.model_name),
+      /*is_near_verified=*/true, std::move(parsed_body));
 }
 
 // static
 void ObliviousHttpAPIClient::OnChunkParsed(
     GenerationDataCallback data_received_callback,
     std::string model_name,
-    std::optional<base::Value> value) {
-  if (!value) {
-    return;
-  }
+    base::Value value) {
   OnQueryDataReceived(std::move(data_received_callback),
                       GetModelKey(model_name), /*is_near_verified=*/true,
-                      base::ok(std::move(*value)));
+                      base::ok(std::move(value)));
 }
 
 }  // namespace ai_chat

@@ -14,7 +14,7 @@
 namespace api_request_helper {
 
 namespace {
-constexpr char kDataPrefix[] = "data: {";
+constexpr std::string_view kDataPrefix = "data: {";
 }  // namespace
 
 SSEParser::SSEParser(scoped_refptr<base::SequencedTaskRunner> task_runner,
@@ -56,7 +56,7 @@ void SSEParser::ProcessLine(std::string_view line) {
     return;
   }
 
-  auto json = line.substr(strlen(kDataPrefix) - 1);
+  auto json = line.substr(kDataPrefix.size() - 1);
   decoding_count_++;
   ParseJsonInWorkerTaskRunner(
       std::string(json), task_runner_.get(),
