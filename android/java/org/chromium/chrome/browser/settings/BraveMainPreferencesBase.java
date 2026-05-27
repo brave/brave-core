@@ -388,11 +388,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         setPreferenceOrder(PREF_CONTENT_SETTINGS, ++generalOrder);
         setPreferenceOrder(PREF_DOWNLOADS, ++generalOrder);
         setPreferenceOrder(PREF_CLOSING_ALL_TABS_CLOSES_BRAVE, ++generalOrder);
-        if (DeviceFormFactor.isTablet()) {
-            removePreferenceIfPresent(PREF_USE_CUSTOM_TABS);
-        } else {
-            setPreferenceOrder(PREF_USE_CUSTOM_TABS, ++generalOrder);
-        }
+        setPreferenceOrder(PREF_USE_CUSTOM_TABS, ++generalOrder);
 
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ORIGIN)) {
             setPreferenceOrder(PREF_BRAVE_ORIGIN, ++generalOrder);

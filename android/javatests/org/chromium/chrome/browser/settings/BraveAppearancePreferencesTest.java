@@ -58,6 +58,7 @@ public class BraveAppearancePreferencesTest {
             AppearanceSettingsFragment.PREF_UI_THEME,
             AppearancePreferences.PREF_BRAVE_CUSTOMIZE_MENU,
             AppearanceSettingsFragment.PREF_TOOLBAR_SHORTCUT,
+            AppearanceSettingsFragment.PREF_BOOKMARK_BAR,
             AppearancePreferences.PREF_ADDRESS_BAR,
             BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY,
             AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON,
