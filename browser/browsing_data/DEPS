@@ -4,6 +4,7 @@ include_rules = [
   "+brave/components/containers/content/browser",
   "+brave/components/containers/core/browser",
   "+brave/components/containers/core/common",
+  "+brave/components/containers/core/mojom",
   "+brave/components/content_settings/core/browser",
   "+brave/components/content_settings/core/common",
 ]

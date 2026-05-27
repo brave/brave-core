@@ -2220,6 +2220,64 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       OrphanContainerSkippedOnSiteDataClear) {
+  const GURL url("https://a.test/containers/container_test.html");
+  const GURL worker_url("https://a.test/containers/container_worker.js");
+  const std::string scope = "https://a.test/containers/";
+
+  constexpr char kSyncedContainerId[] = "synced-container-id";
+  constexpr char kOrphanContainerId[] = "orphan-container-id";
+
+  const PartitionSiteData synced_data = {"synced_cookie", "synced_value",
+                                         "synced_key", "synced_value"};
+  const PartitionSiteData orphan_data = {"orphan_cookie", "orphan_value",
+                                         "orphan_key", "orphan_value"};
+
+  // Start with both containers synced, open a tab in each, and populate their
+  // partitions with site data.
+  std::vector<mojom::ContainerPtr> synced;
+  synced.push_back(MakeContainer(kSyncedContainerId, "Synced"));
+  synced.push_back(MakeContainer(kOrphanContainerId, "Orphan"));
+  SetContainersToPrefs(synced, *browser()->profile()->GetPrefs());
+
+  content::WebContents* synced_web_contents =
+      OpenUrlInContainerTab(url, kSyncedContainerId);
+  SetPartitionSiteData(synced_web_contents, synced_data, worker_url, scope);
+  ExpectPartitionSiteDataPresent(synced_web_contents, synced_data, scope);
+
+  content::WebContents* orphan_web_contents =
+      OpenUrlInContainerTab(url, kOrphanContainerId);
+  SetPartitionSiteData(orphan_web_contents, orphan_data, worker_url, scope);
+  ExpectPartitionSiteDataPresent(orphan_web_contents, orphan_data, scope);
+
+  // Drop the orphan from the synced list. Its partition stays in
+  // GetUsedContainerStoragePartitionConfigs because the locally-used snapshot
+  // is retained. Keeping its tab open marks the container as referenced, so the
+  // asynchronous orphan cleanup defers deletion and cannot race this test.
+  std::vector<mojom::ContainerPtr> remaining;
+  remaining.push_back(MakeContainer(kSyncedContainerId, "Synced"));
+  SetContainersToPrefs(remaining, *browser()->profile()->GetPrefs());
+
+  // The orphan is gone from the synced list (which the delegate filters on)
+  // but its partition is still enumerated as locally used.
+  const auto synced_containers = GetContainersService()->GetContainers();
+  EXPECT_FALSE(std::ranges::any_of(synced_containers, [&](const auto& c) {
+    return c->id == kOrphanContainerId;
+  }));
+  ExpectUsedContainerStoragePartitionConfigsMatch(
+      {kSyncedContainerId, kOrphanContainerId});
+
+  RemoveSiteDataAndWait();
+
+  // The synced container's partition is cleared by the delegate (nested
+  // container-partition removes start asynchronously, same as IWA)...
+  ExpectPartitionSiteDataClearedEventually(synced_web_contents, synced_data,
+                                           scope);
+  // ...but the orphan partition is skipped, leaving its data untouched.
+  ExpectPartitionSiteDataPresent(orphan_web_contents, orphan_data, scope);
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
                        NewTabPageInheritsStoragePartitionConfig) {
   const GURL new_tab_url(chrome::kChromeUINewTabURL);
 
