@@ -22,6 +22,7 @@ import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
 import org.chromium.chrome.browser.omnibox.suggestions.brave_leo.BraveLeoSuggestionProcessor;
 import org.chromium.chrome.browser.omnibox.suggestions.brave_search.BraveSearchBannerProcessor;
+import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.search_engines.settings.BraveSearchEngineAdapter;
@@ -139,8 +140,7 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
             // pushed in via setProfile to honor the "Show browser suggestions" preference.
             autocompleteEnabled =
                     mProfile == null
-                            || UserPrefs.get(mProfile)
-                                    .getBoolean(BravePreferenceKeys.BRAVE_AUTOCOMPLETE_ENABLED);
+                            || UserPrefs.get(mProfile).getBoolean(BravePref.AUTOCOMPLETE_ENABLED);
         }
         if (!autocompleteEnabled && viewInfoList.size() > 0) {
             DropdownItemViewInfo firstObj = viewInfoList.get(0);

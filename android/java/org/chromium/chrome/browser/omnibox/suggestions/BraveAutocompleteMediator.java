@@ -8,7 +8,6 @@ package org.chromium.chrome.browser.omnibox.suggestions;
 import android.content.Context;
 import android.os.Handler;
 
-import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.Callback;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
@@ -23,6 +22,7 @@ import org.chromium.chrome.browser.omnibox.suggestions.action.OmniboxActionDeleg
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
 import org.chromium.chrome.browser.omnibox.voice.VoiceRecognitionHandler;
 import org.chromium.chrome.browser.omnibox.voice.VoiceRecognitionHandler.VoiceResult;
+import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.share.ShareDelegate;
@@ -121,8 +121,7 @@ class BraveAutocompleteMediator extends AutocompleteMediator
         if (ProfileManager.isInitialized()) {
             Profile profile = Profile.fromWebContents(webContents);
             if (profile != null
-                    && !UserPrefs.get(profile)
-                            .getBoolean(BravePreferenceKeys.BRAVE_AUTOCOMPLETE_ENABLED)) {
+                    && !UserPrefs.get(profile).getBoolean(BravePref.AUTOCOMPLETE_ENABLED)) {
                 return false;
             }
         }
