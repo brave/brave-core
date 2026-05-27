@@ -3,13 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
+import { skipToken } from '@reduxjs/toolkit/query'
 
 // Types
 import { BraveWallet } from '../../../../constants/types'
 
 // Queries
 import {
-  useGetVisibleNetworksQuery, //
+  useGetPolkadotCompatibleNetworksQuery,
+  useGetVisibleNetworksQuery,
 } from '../../../../common/slices/api.slice'
 
 // Utils
@@ -23,7 +25,7 @@ import { PopupModal } from '../../popup-modals/index'
 import {
   CreateAccountIcon, //
 } from '../../../shared/create-account-icon/create-account-icon'
-import { NetworkButton } from './network_button'
+import { NetworkButton, PolkadotNetworkButton } from './network_button'
 
 // Styles
 import {
@@ -42,15 +44,30 @@ export const ViewOnBlockExplorerModal = React.forwardRef<HTMLDivElement, Props>(
   (props: Props, forwardedRef) => {
     const { account, onClose } = props
 
+    const isPolkadotAccount =
+      account.accountId.coin === BraveWallet.CoinType.DOT
+
     // Queries
     const { data: visibleNetworks = [] } = useGetVisibleNetworksQuery()
+    const { data: polkadotCompatibleNetworks = [] } =
+      useGetPolkadotCompatibleNetworksQuery(
+        isPolkadotAccount ? account.accountId : skipToken,
+      )
 
     // Memos
     const networksByAccountCoinType = React.useMemo(() => {
+      if (isPolkadotAccount) {
+        return polkadotCompatibleNetworks
+      }
       return visibleNetworks.filter(
         (network) => network.coin === account.accountId.coin,
       )
-    }, [visibleNetworks, account])
+    }, [
+      isPolkadotAccount,
+      polkadotCompatibleNetworks,
+      visibleNetworks,
+      account,
+    ])
 
     return (
       <PopupModal
@@ -83,14 +100,16 @@ export const ViewOnBlockExplorerModal = React.forwardRef<HTMLDivElement, Props>(
               >
                 {account.name}
               </Text>
-              <AddressText
-                isBold={false}
-                textColor='secondary'
-                textSize='12px'
-                textAlign='left'
-              >
-                {account.address}
-              </AddressText>
+              {!isPolkadotAccount && (
+                <AddressText
+                  isBold={false}
+                  textColor='secondary'
+                  textSize='12px'
+                  textAlign='left'
+                >
+                  {account.address}
+                </AddressText>
+              )}
             </Column>
           </AccountInfoRow>
           <Row
@@ -106,13 +125,21 @@ export const ViewOnBlockExplorerModal = React.forwardRef<HTMLDivElement, Props>(
             </Text>
           </Row>
           <ScrollableColumn>
-            {networksByAccountCoinType.map((network) => (
-              <NetworkButton
-                key={getNetworkId(network)}
-                network={network}
-                address={account.accountId.address}
-              />
-            ))}
+            {networksByAccountCoinType.map((network) =>
+              isPolkadotAccount ? (
+                <PolkadotNetworkButton
+                  key={getNetworkId(network)}
+                  network={network}
+                  accountId={account.accountId}
+                />
+              ) : (
+                <NetworkButton
+                  key={getNetworkId(network)}
+                  network={network}
+                  address={account.accountId.address}
+                />
+              ),
+            )}
           </ScrollableColumn>
         </StyledWrapper>
       </PopupModal>

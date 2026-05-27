@@ -543,6 +543,16 @@ export const Account = () => {
         setShowViewOnBlockExplorerModal(true)
         return
       }
+      // Polkadot uses index-based AccountIds, so accountId.address is empty
+      // and the displayable address is network-specific. Defer to the modal,
+      // which resolves the per-network address.
+      if (
+        option === 'explorer'
+        && selectedAccount?.accountId.coin === BraveWallet.CoinType.DOT
+      ) {
+        setShowViewOnBlockExplorerModal(true)
+        return
+      }
       if (option === 'explorer' && selectedAccount?.accountId.address) {
         onClickViewOnBlockExplorer(
           'address',
