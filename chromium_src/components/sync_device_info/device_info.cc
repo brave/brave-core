@@ -9,6 +9,12 @@
 
 namespace syncer {
 
+// Paired with the in-class declaration injected by
+// rewrite/components/sync_device_info/device_info.h.toml. The destructor is
+// also out-of-line in upstream; we follow the same pattern here so all
+// special-member definitions stay together at file scope.
+DeviceInfo::DeviceInfo(DeviceInfo&&) = default;
+
 std::string DeviceInfo::GetOSString() const {
   switch (os_type()) {
     case OsType::kUnknown:
