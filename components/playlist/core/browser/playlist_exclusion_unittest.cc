@@ -9,6 +9,7 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/test/run_until.h"
 #include "base/test/task_environment.h"
+#include "brave/components/playlist/core/common/constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
@@ -71,7 +72,7 @@ TEST_F(PlaylistExclusionsUnitTest, RulesBlockListedPaths) {
   base::ScopedTempDir temp_dir;
   ASSERT_TRUE(temp_dir.CreateUniqueTempDir());
   ASSERT_TRUE(base::WriteFile(
-      temp_dir.GetPath().AppendASCII("playlist_exclusions.json"), kJson));
+      temp_dir.GetPath().AppendASCII(kPlaylistExclusionsJsonFile), kJson));
 
   exclusions->OnComponentReady(temp_dir.GetPath());
   ASSERT_TRUE(base::test::RunUntil([&]() { return exclusions->is_ready_; }));

@@ -14,6 +14,10 @@ declare_args() {
   enable_playlist_webui = enable_playlist && toolkit_views
 }
 
+declare_args() {
+  enable_playlist_by_default = is_ios
+}
+
 assert(enable_playlist || !is_android,
        "enable_playlist=false is not supported on Android")
 assert(enable_playlist || !is_ios,
