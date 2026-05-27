@@ -2511,13 +2511,11 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
   verify_state(/*right_aligned=*/true, /*rounded_corners=*/false);
 }
 
-// Regression test: the top container separator must remain visible when a side
-// panel opens. Upstream suppresses it (suppress_top_separator=true) when the
-// side panel is shown and GetTopSeparatorType() returns kTopContainer.
-// BraveBrowserViewTabbedLayoutImpl::CalculateTopContainerLayoutImpl resets the
-// flag to false for that case so the separator stays shown.
-// Rounded corners must be disabled: GetTopSeparatorType() only returns
-// kTopContainer (instead of kNone) when rounded corners are off.
+// Regression test: the top container separator must remain visible when a
+// side panel opens. Upstream's CalculateSeparatorInfo() would clear
+// `top_container_separator` in this case, but
+// BraveBrowserViewTabbedLayoutImpl::CalculateSeparatorInfo() promotes it back
+// to true when rounded corners are off, so the separator stays shown.
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
                        TopContainerSeparatorVisibleWhenPanelOpens) {
   browser()->profile()->GetPrefs()->SetBoolean(kWebViewRoundedCorners, false);
