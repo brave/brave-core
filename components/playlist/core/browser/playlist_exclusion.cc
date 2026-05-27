@@ -13,6 +13,7 @@
 #include "base/task/thread_pool.h"
 #include "base/values.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
+#include "brave/components/playlist/core/common/constants.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
 
@@ -20,7 +21,6 @@ namespace playlist {
 
 namespace {
 
-constexpr char kPlaylistExclusionsFile[] = "playlist_exclusions.json";
 constexpr char kRules[] = "rules";
 constexpr char kRegistrableDomain[] = "registrable_domain";
 constexpr char kDenyRootPath[] = "deny_root_path";
@@ -88,7 +88,7 @@ void PlaylistExclusions::OnComponentReady(const base::FilePath& component_dir) {
       {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
        base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
       base::BindOnce(&brave_component_updater::GetDATFileAsString,
-                     component_path_.AppendASCII(kPlaylistExclusionsFile)),
+                     component_path_.AppendASCII(kPlaylistExclusionsJsonFile)),
       base::BindOnce(&PlaylistExclusions::OnPlaylistExclusionsLoaded,
                      weak_factory_.GetWeakPtr()));
 }

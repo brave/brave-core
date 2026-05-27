@@ -11,5 +11,6 @@ buildflag_header("buildflags") {
   flags = [
     "ENABLE_PLAYLIST=$enable_playlist",
     "ENABLE_PLAYLIST_WEBUI=$enable_playlist_webui",
+    "ENABLE_PLAYLIST_BY_DEFAULT=$enable_playlist_by_default",
   ]
 }
