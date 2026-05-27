@@ -7,9 +7,11 @@
 description = '''Use Brave's gradient colors and stops for the handoff button shadow.
 
 Replaces both branches of upstream's `kActorUiThemed` feature flag with an
-unconditional Brave sweep gradient.
+unconditional Brave sweep gradient. Anchors on the `colors` declaration and
+the `pos` array name (not their values) so upstream tweaks to the stop
+positions don't break the match.
 '''
-re_pattern = 'std::vector<SkColor> colors;.+?const SkScalar pos\[\] = \{0\.0f, 0\.4f, 0\.6f, 1\.0f\};'
+re_pattern = 'std::vector<SkColor> colors;.+?const SkScalar pos\[\] = \{[^}]+\};'
 re_flags = ['DOTALL']
 replace = '''std::vector<SkColor> colors = {
           SkColorSetARGB(255, 250, 114, 80),
@@ -21,18 +23,23 @@ replace = '''std::vector<SkColor> colors = {
 [[substitution]]
 description = '''Tighten handoff button content padding.
 
-Brave's location bar centers its URL text, so the centered handoff button
-covers it more than upstream; a smaller button is less obtrusive.
+Anchors on the `kHandoffButtonContentPadding` declaration so upstream tweaks
+to its default insets don't break the match.
 '''
-pattern = 'gfx::Insets::TLBR(10, 10, 10, 14)'
-replace = 'gfx::Insets::TLBR(4, 6, 4, 10)'
+re_pattern = 'kHandoffButtonContentPadding =\s+gfx::Insets::TLBR\([^)]*\)'
+replace = '''kHandoffButtonContentPadding =
+    gfx::Insets::TLBR(4, 6, 4, 10)'''
 
 [[substitution]]
 description = '''Nudge the handoff button down when the location bar is visible.
 
-The widget bottom otherwise sits flush with the top of the contents container,
-putting the visible button into the toolbar area where it covers Brave's
-centered URL text.
+Anchors on the `HandoffButtonController::GetHandoffButtonBounds()` function
+signature and its return statement. The body between them is captured and
+emitted verbatim via `\1`; only the return is rewritten to wrap `y` with the
+Brave offset, conditioned on the function-local `is_tab_strip_visible`. This
+keeps the substitution scoped to one specific function and one specific
+statement, so unrelated returns of the same shape elsewhere in the file
+can't be mis-targeted.
 '''
-pattern = '? anchor_bounds.y() - kHandoffButtonPreferredHeight'
-replace = '? anchor_bounds.y() - kHandoffButtonPreferredHeight + (kHandoffButtonPreferredHeight / 3)'
+re_pattern = '(gfx::Rect HandoffButtonController::GetHandoffButtonBounds\(\)[\s\S]+?)return gfx::Rect\(\{x, y\}, preferred_size\);'
+replace = '\1return gfx::Rect({x, y + (is_tab_strip_visible ? kHandoffButtonPreferredHeight / 3 : 0)}, preferred_size);'

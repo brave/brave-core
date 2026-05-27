@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/actor/ui/handoff_button_controller.cc b/chrome/browser/actor/ui/handoff_button_controller.cc
-index f7efc4d9584c9c9cd3087d5f5452b0f14268f82f..20def2e487184681368896cd8c6fa5df8a919e0d 100644
+index f7efc4d9584c9c9cd3087d5f5452b0f14268f82f..9b6f882398472d0fe6891f582e92054b232f066c 100644
 --- a/chrome/browser/actor/ui/handoff_button_controller.cc
 +++ b/chrome/browser/actor/ui/handoff_button_controller.cc
 @@ -58,7 +58,7 @@ constexpr float kBackgroundInset = 2.0f;
@@ -36,12 +36,12 @@ index f7efc4d9584c9c9cd3087d5f5452b0f14268f82f..20def2e487184681368896cd8c6fa5df
        std::vector<SkColor4f> color4fs;
        for (const auto& color : colors) {
          color4fs.push_back(SkColor4f::FromColor(color));
-@@ -378,7 +372,7 @@ gfx::Rect HandoffButtonController::GetHandoffButtonBounds() {
-   const int y =
-       is_tab_strip_visible
-           // Vertically center the button on the top edge of the anchor.
--          ? anchor_bounds.y() - kHandoffButtonPreferredHeight
-+          ? anchor_bounds.y() - kHandoffButtonPreferredHeight + (kHandoffButtonPreferredHeight / 3)
+@@ -382,7 +376,7 @@ gfx::Rect HandoffButtonController::GetHandoffButtonBounds() {
            // Position with a fixed offset from the top of the anchor.
            : anchor_bounds.y() - kHandoffButtonTopOffset;
  
+-  return gfx::Rect({x, y}, preferred_size);
++  return gfx::Rect({x, y + (is_tab_strip_visible ? kHandoffButtonPreferredHeight / 3 : 0)}, preferred_size);
+ }
+ 
+ void HandoffButtonController::OnWidgetDestroying(
