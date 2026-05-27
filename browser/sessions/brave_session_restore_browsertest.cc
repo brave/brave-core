@@ -257,12 +257,9 @@ class BraveTreeTabSessionRestoreBrowserTest : public InProcessBrowserTest {
         EXPECT_TRUE(base::FindOrNull(session_tab->extra_data,
                                      kBraveTreeParentNodeIdKey))
             << "tab extra data should contain kBraveTreeParentNodeIdKey";
-        EXPECT_TRUE(base::FindOrNull(session_tab->extra_data,
-                                     kBraveTreeNodeCollapsedKey))
-            << "tab extra data should contain kBraveTreeNodeCollapsedKey";
-        EXPECT_TRUE(
-            session_tab->extra_data.at(kBraveTreeNodeCollapsedKey) == "0" ||
-            session_tab->extra_data.at(kBraveTreeNodeCollapsedKey) == "1")
+        auto* collapsed = base::FindOrNull(session_tab->extra_data,
+                                           kBraveTreeNodeCollapsedKey);
+        EXPECT_TRUE(collapsed && (*collapsed == "0" || *collapsed == "1"))
             << "tab extra data should contain kBraveTreeNodeCollapsedKey with "
                "value 0 or 1";
         break;
