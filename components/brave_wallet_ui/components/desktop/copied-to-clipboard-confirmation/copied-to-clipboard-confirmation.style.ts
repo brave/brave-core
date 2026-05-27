@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 export const CopiedToClipboardContainer = styled.div`
   align-self: center;
@@ -13,16 +14,11 @@ export const CopiedToClipboardContainer = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  font-size: 12px;
-  font-weight: 500;
-
-  & p {
+  font: ${leo.font.small.semibold};
+& p {
     margin-left: 4px;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 12px;
-    line-height: 20px;
-    text-align: center;
+    font: ${leo.font.small.semibold};
+text-align: center;
     color: ${(p) => p.theme.color.text01};
   }
 `

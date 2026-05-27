@@ -50,10 +50,8 @@ export const VerticalSpacer = styled.div<{ space: number | string }>`
 
 // Text
 export const LinkText = styled.a`
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
-  color: ${(p) => p.theme.color.interactive05};
+  font: ${leo.font.default.link};
+color: ${(p) => p.theme.color.interactive05};
   margin: 0px;
   cursor: pointer;
   display: inline-flex;
@@ -64,16 +62,13 @@ export const LinkText = styled.a`
 `
 
 export const MutedLinkText = styled(LinkText)`
-  font-size: 12px;
-  font-weight: 400;
-  color: ${leo.color.text.tertiary};
-  line-height: 20px;
+  font: ${leo.font.small.regular};
+color: ${leo.color.text.tertiary};
 `
 
 export const ErrorText = styled.span`
-  font-size: 12px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.errorText};
+  font: ${leo.font.small.regular};
+color: ${(p) => p.theme.color.errorText};
   margin-bottom: 10px;
 `
 
@@ -257,11 +252,8 @@ export const WalletButton = styled.button`
 `
 
 export const WalletLink = styled(Link)`
-  font-style: normal;
-  font-weight: 600;
-  font-size: 13px;
-  line-height: 20px;
-  text-align: center;
+  font: ${leo.font.components.tableheader};
+text-align: center;
   color: ${(p) => p.theme.color.interactive05};
   background: none;
   border: none;
@@ -355,10 +347,8 @@ export const SellButton = styled(WalletButton)`
   cursor: pointer;
   outline: none;
   border-radius: 40px;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 12px;
-  background-color: ${(p) => p.theme.palette.blurple500};
+  font: ${leo.font.components.buttonSmall};
+background-color: ${(p) => p.theme.palette.blurple500};
   color: ${(p) => p.theme.palette.white};
   border: none;
 `
@@ -573,10 +563,8 @@ export const BraveRewardsIndicator = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 10px;
-  line-height: 15px;
-  font-weight: 500;
-  color: ${leo.color.text.primary};
+  font: ${leo.font.xSmall.semibold};
+color: ${leo.color.text.primary};
   padding: 2px 6px;
   border: 1px solid ${leo.color.divider.subtle};
   border-radius: 4px;

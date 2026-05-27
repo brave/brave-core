@@ -111,7 +111,7 @@ export const PasswordInput = (props: Props) => {
           padding='2px 6px'
         >
           <ErrorIcon />
-          <ErrorText textSize='12px'>{error}</ErrorText>
+          <ErrorText variant='small.regular'>{error}</ErrorText>
         </Row>
       )}
       {/* Allow custom child elements */}

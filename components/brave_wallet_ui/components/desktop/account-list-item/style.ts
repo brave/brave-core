@@ -92,10 +92,7 @@ export const OvalButton = styled(WalletButton)`
 `
 
 export const OvalButtonText = styled.span`
-  font-size: 12px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.text02};
-  font-weight: 600;
+  font: ${leo.font.small.semibold};
 `
 
 export const AccountMenuButton = styled(WalletButton)`

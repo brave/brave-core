@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 // Shared Styles
 import { Row, ScrollableColumn } from '../../../../shared/style'
@@ -34,7 +35,7 @@ export const EmptyStateText = styled.div`
   text-align: center;
   padding: 30px 0;
   color: ${(p) => p.theme.color.text03};
-  font-size: 14px;
+  font: ${leo.font.default.regular};
 `
 
 export const BannerWrapper = styled(Row)`

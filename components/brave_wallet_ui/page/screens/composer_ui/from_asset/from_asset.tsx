@@ -190,8 +190,7 @@ export const FromAsset = (props: Props) => {
     if (!token || !account) {
       return (
         <FromText
-          textSize='14px'
-          isBold={false}
+          variant='default.semibold'={false}
         >
           {getLocale('braveWalletFrom')}
         </FromText>
@@ -200,8 +199,7 @@ export const FromAsset = (props: Props) => {
     if (token.isNft) {
       return (
         <FromText
-          textSize='14px'
-          isBold={false}
+          variant='default.semibold'={false}
         >
           {account.name}
         </FromText>
@@ -213,8 +211,7 @@ export const FromAsset = (props: Props) => {
         justifyContent='flex-start'
       >
         <FromText
-          textSize='14px'
-          isBold={false}
+          variant='default.semibold'={false}
         >
           {account.name}:
         </FromText>
@@ -230,8 +227,7 @@ export const FromAsset = (props: Props) => {
           ) : (
             <>
               <BalanceText
-                textSize='14px'
-                isBold={true}
+                variant='default.semibold'
                 textColor='primary'
               >
                 {formatTokenBalanceWithSymbol(
@@ -245,8 +241,7 @@ export const FromAsset = (props: Props) => {
               {token.coin === BraveWallet.CoinType.BTC && hasPendingBalance && (
                 <>
                   <BalanceText
-                    textSize='14px'
-                    isBold={true}
+                    variant='default.semibold'
                     textColor='primary'
                   >
                     {`(${getLocale('braveWalletAvailable')})`}
@@ -354,8 +349,7 @@ export const FromAsset = (props: Props) => {
         >
           {network && token && (
             <NetworkText
-              textSize='14px'
-              isBold={false}
+              variant='default.semibold'={false}
               textColor='secondary'
             >
               {getLocale('braveWalletPortfolioAssetNetworkDescription')
@@ -372,8 +366,7 @@ export const FromAsset = (props: Props) => {
                 />
               ) : (
                 <FiatText
-                  textSize='14px'
-                  isBold={false}
+                  variant='default.semibold'={false}
                 >
                   {fiatValue}
                 </FiatText>

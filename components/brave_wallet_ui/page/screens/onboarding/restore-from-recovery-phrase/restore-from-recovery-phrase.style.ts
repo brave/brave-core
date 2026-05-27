@@ -50,9 +50,7 @@ export const RecoveryBubble = styled.div`
   border: 1px solid ${leo.color.divider.subtle};
 
   font: ${leo.font.default.semibold};
-  font-weight: 600;
-
-  color: ${leo.color.text.primary};
+color: ${leo.color.text.primary};
   background-color: ${leo.color.container.background};
 `
 export const RecoveryBaseCss = css`
@@ -62,17 +60,13 @@ export const RecoveryBaseCss = css`
   border-radius: 4px;
   text-align: left;
   vertical-align: middle;
-  line-height: 40px;
   word-break: break-word;
   padding-left: 16px;
   padding-right: 16px;
   padding-top: 8px;
   padding-bottom: 8px;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-
-  color: ${(p) => p.theme.color.text01};
+  font: ${leo.font.default.regular};
+color: ${(p) => p.theme.color.text01};
   background-color: ${(p) => p.theme.color.background02};
 `
 
@@ -108,5 +102,5 @@ export const InputLabel = styled(Text)`
 
 export const CheckboxText = styled.span`
   font: ${leo.font.default.semibold};
-  color: ${leo.color.text.interactive};
+color: ${leo.color.text.interactive};
 `

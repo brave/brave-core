@@ -28,8 +28,7 @@ export const PortfolioAssetActionButton = (props: Props) => {
         <Icon name={icon} />
       </Button>
       <Text
-        textSize='12px'
-        isBold={true}
+        variant='small.semibold'
         textColor='primary'
       >
         {text}

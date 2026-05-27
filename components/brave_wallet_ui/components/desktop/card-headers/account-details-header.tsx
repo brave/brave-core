@@ -288,8 +288,7 @@ export const AccountDetailsHeader = (props: Props) => {
         />
         <Column alignItems='flex-start'>
           <AccountNameText
-            textSize='16px'
-            isBold={true}
+            variant='large.semibold'
           >
             {account.name}
           </AccountNameText>

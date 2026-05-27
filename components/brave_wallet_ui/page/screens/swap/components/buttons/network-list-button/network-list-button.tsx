@@ -44,7 +44,7 @@ export const NetworkListButton = (props: Props) => {
         />
         <Text
           isBold={true}
-          textSize='14px'
+          variant='default.regular'
         >
           {network.chainName}
         </Text>

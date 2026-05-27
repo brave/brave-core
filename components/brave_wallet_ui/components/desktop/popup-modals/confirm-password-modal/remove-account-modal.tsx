@@ -147,7 +147,7 @@ export const RemoveAccountModal = () => {
               gap={leo.spacing.m}
             >
               <Text
-                textSize='16px'
+                variant='large.regular'
                 textAlign='left'
               >
                 {getLocale('braveWalletRemoveAccountModalTitle').replace(
@@ -157,7 +157,7 @@ export const RemoveAccountModal = () => {
               </Text>
 
               <Text
-                textSize='16px'
+                variant='large.regular'
                 textColor={'tertiary'}
               >
                 {getLocale('braveWalletPasswordIsRequiredToTakeThisAction')}

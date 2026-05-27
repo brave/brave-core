@@ -53,7 +53,7 @@ export function ShieldAccountAlert(props: Props) {
               <Text
                 textColor='info'
                 isBold={true}
-                textSize='16px'
+                variant='large.regular'
               >
                 {getLocale('braveWalletShieldAccount')}
               </Text>

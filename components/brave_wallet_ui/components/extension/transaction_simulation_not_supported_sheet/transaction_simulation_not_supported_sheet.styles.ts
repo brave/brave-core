@@ -15,7 +15,7 @@ export const TitleText = styled.h4`
   color: ${leo.color.text.primary};
   text-align: center;
   font: ${leo.font.heading.h4};
-  padding: 8px 32px 0px 32px;
+padding: 8px 32px 0px 32px;
 `
 
 export const AlertTextContainer = styled.div`
@@ -28,7 +28,7 @@ export const SeeAvailableNetworksLink = styled.a`
   color: ${leo.color.text.interactive};
   text-align: center;
   font: ${leo.font.small.semibold};
-  text-decoration: none;
+text-decoration: none;
   cursor: pointer;
 `
 

@@ -669,8 +669,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       if (emptyTokensList) {
         return (
           <NoAssetsText
-            textSize='14px'
-            isBold={false}
+            variant='default.semibold'={false}
           >
             {getLocale('braveWalletNoAvailableTokens')}
           </NoAssetsText>

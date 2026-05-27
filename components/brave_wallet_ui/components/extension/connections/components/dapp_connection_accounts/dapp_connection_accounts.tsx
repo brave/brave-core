@@ -79,8 +79,7 @@ export const DAppConnectionAccounts = (props: Props) => {
             marginBottom='8px'
           >
             <Text
-              textSize='12px'
-              isBold={true}
+              variant='small.semibold'
               textColor='tertiary'
             >
               {getLocale('braveWalletConnectedAccounts')}
@@ -108,8 +107,7 @@ export const DAppConnectionAccounts = (props: Props) => {
             marginBottom='8px'
           >
             <Text
-              textSize='12px'
-              isBold={true}
+              variant='small.semibold'
               textColor='tertiary'
             >
               {getLocale('braveWalletAvailableAccounts')}

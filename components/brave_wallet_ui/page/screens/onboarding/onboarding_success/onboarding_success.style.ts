@@ -16,7 +16,7 @@ export const Title = styled.h2`
   color: ${leo.color.text.primary};
   text-align: center;
   font: ${leo.font.heading.h1};
-  margin: 0;
+margin: 0;
   padding: 0;
 `
 
@@ -24,6 +24,6 @@ export const SubTitle = styled.h5`
   color: ${leo.color.text.secondary};
   text-align: center;
   font: ${leo.font.default.regular};
-  font-size: 16px;
-  margin: 0;
+font: ${leo.font.large.regular};
+margin: 0;
 `

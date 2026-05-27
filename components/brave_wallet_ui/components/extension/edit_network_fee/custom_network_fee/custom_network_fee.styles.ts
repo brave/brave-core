@@ -55,7 +55,7 @@ export const InputWrapper = styled(Row)<{
 
 export const Input = styled.input`
   font: ${leo.font.small.regular};
-  background-color: ${leo.color.container.background};
+background-color: ${leo.color.container.background};
   color: ${leo.color.text.primary};
   outline: none;
   border: none;
@@ -64,7 +64,7 @@ export const Input = styled.input`
   text-align: right;
   ::placeholder {
     font: ${leo.font.small.regular};
-    color: ${leo.color.text.tertiary};
+color: ${leo.color.text.tertiary};
   }
   :focus {
     outline: none;

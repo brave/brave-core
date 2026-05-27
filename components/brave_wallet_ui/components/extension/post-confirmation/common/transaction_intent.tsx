@@ -443,7 +443,7 @@ export const TransactionIntent = (props: Props) => {
       >
         <Text
           textColor='secondary'
-          textSize='14px'
+          variant='default.regular'
         >
           {swapInfoDescription}
         </Text>
@@ -461,8 +461,7 @@ export const TransactionIntent = (props: Props) => {
       $1: (
         <Text
           textColor='primary'
-          textSize='14px'
-          isBold
+          variant='default.semibold'
         >
           {firstDuringValue}
         </Text>
@@ -474,8 +473,7 @@ export const TransactionIntent = (props: Props) => {
         >
           <Text
             textColor='primary'
-            textSize='14px'
-            isBold
+            variant='default.semibold'
           >
             {secondDuringValue}
           </Text>
@@ -501,7 +499,7 @@ export const TransactionIntent = (props: Props) => {
     >
       <Text
         textColor='secondary'
-        textSize='14px'
+        variant='default.regular'
       >
         {description}
       </Text>

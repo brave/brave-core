@@ -52,7 +52,7 @@ export const SelectAddressButton = (props: Props) => {
           />
         )}
         <ButtonText
-          textSize='22px'
+          variant='heading.h2'
           textAlign='left'
         >
           {toAddressOrUrl !== ''

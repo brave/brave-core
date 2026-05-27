@@ -93,8 +93,7 @@ export const DAppConnectionNetworks = (props: Props) => {
             marginBottom='8px'
           >
             <Text
-              textSize='12px'
-              isBold={true}
+              variant='small.semibold'
               textColor='tertiary'
             >
               {getLocale('braveWalletPrimaryNetworks')}
@@ -122,8 +121,7 @@ export const DAppConnectionNetworks = (props: Props) => {
             marginBottom='8px'
           >
             <Text
-              textSize='12px'
-              isBold={true}
+              variant='small.semibold'
               textColor='tertiary'
             >
               {getLocale('braveWalletNetworkFilterSecondary')}
@@ -151,8 +149,7 @@ export const DAppConnectionNetworks = (props: Props) => {
             marginBottom='8px'
           >
             <Text
-              textSize='12px'
-              isBold={true}
+              variant='small.semibold'
               textColor='tertiary'
             >
               {getLocale('braveWalletNetworkFilterTestNetworks')}

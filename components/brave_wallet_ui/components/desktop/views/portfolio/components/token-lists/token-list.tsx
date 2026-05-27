@@ -643,8 +643,7 @@ export const TokenLists = ({
       >
         {!showSearchBar && (
           <Text
-            textSize='16px'
-            isBold={true}
+            variant='large.semibold'
           >
             {getLocale('braveWalletAccountsAssets')}
           </Text>

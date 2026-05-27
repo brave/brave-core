@@ -48,8 +48,7 @@ export const CategoryCheckboxes = (props: Props) => {
         justifyContent='space-between'
       >
         <Title
-          textSize='16px'
-          isBold={true}
+          variant='large.semibold'
         >
           {title}
         </Title>
@@ -75,8 +74,7 @@ export const CategoryCheckboxes = (props: Props) => {
               onChange={() => onCheckCategory(category)}
             >
               <CheckboxText
-                textSize='14px'
-                isBold={false}
+                variant='default.semibold'={false}
               >
                 {capitalizeFirstLetter(category)}
               </CheckboxText>

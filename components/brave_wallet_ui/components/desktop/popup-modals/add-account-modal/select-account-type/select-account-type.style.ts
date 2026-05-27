@@ -46,7 +46,7 @@ export const TestAccountsButton = styled(WalletButton)<{ isOpen: boolean }>`
   border: none;
   padding: 16px 24px;
   font: ${leo.font.default.semibold};
-  color: ${leo.color.text.secondary};
+color: ${leo.color.text.secondary};
   border-bottom: ${({ isOpen }) =>
     isOpen ? `1px solid ${leo.color.divider.subtle}` : 'none'};
 `

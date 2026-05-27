@@ -45,8 +45,7 @@ export const StyledDiv = styled.div`
   flex-direction: column;
   color: ${(p) => p.theme.color.text01};
   font-weight: 400;
-  font-size: 18px;
-  line-height: 20px;
+  font: ${leo.font.large.regular};
 `
 
 export const Row = styled(StyledDiv)<{
@@ -172,10 +171,8 @@ export const StyledButton = styled.button`
   border: none;
   outline: none;
   background: none;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 20px;
-  flex-direction: row;
+  font: ${leo.font.large.semibold};
+flex-direction: row;
   align-items: center;
   justify-content: center;
   color: ${(p) => p.theme.color.text01};
@@ -207,9 +204,8 @@ export const ShownResponsiveRow = styled(Row)<{ maxWidth?: number }>`
 
 export const StyledInput = styled.input`
   font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
-  outline: none;
+  font: ${leo.font.default.regular};
+outline: none;
   background-image: none;
   box-shadow: none;
   border: none;
@@ -235,11 +231,8 @@ export const StyledInput = styled.input`
 `
 
 export const StyledLabel = styled.label`
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.text01};
+  font: ${leo.font.default.regular};
+color: ${(p) => p.theme.color.text01};
 `
 
 export const LPIcon = styled.div<{ icon: string; size?: string }>`

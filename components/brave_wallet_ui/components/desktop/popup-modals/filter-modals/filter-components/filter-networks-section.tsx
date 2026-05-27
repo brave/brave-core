@@ -130,8 +130,7 @@ export const FilterNetworksSection = ({
         justifyContent='space-between'
       >
         <Title
-          textSize='16px'
-          isBold={true}
+          variant='large.semibold'
         >
           {getLocale('braveWalletSelectNetworks')}
         </Title>

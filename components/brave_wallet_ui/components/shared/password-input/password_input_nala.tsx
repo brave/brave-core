@@ -63,7 +63,7 @@ export const PasswordInputNala = ({
         padding='2px 6px'
       >
         <Text
-          textSize='16px'
+          variant='large.regular'
           textColor='error'
         >
           {getLocale('braveWalletLockScreenError')}

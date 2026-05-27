@@ -114,13 +114,13 @@ export const LockScreen = () => {
       <AndroidLockScreenWrapper onClick={onDoubleTap}>
         <DoubleTapIcon />
         <Text
-          textSize='22px'
+          variant='heading.h2'
           textColor='primary'
         >
           {getLocale('braveWalletDoubleTapScreen')}
         </Text>
         <Text
-          textSize='16px'
+          variant='large.regular'
           textColor='tertiary'
         >
           {getLocale('braveWalletUnlockAndroidDescription')}
@@ -142,8 +142,7 @@ export const LockScreen = () => {
           marginBottom={4}
         >
           <InputLabel
-            textSize='12px'
-            isBold={true}
+            variant='small.semibold'
           >
             {getLocale('braveWalletInputLabelPassword')}
           </InputLabel>

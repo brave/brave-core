@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -15,18 +16,14 @@ export const StyledWrapper = styled.div`
 `
 
 export const Title = styled.span`
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 20px;
-  color: ${(p) => p.theme.color.text01};
+  font: ${leo.font.heading.h3};
+color: ${(p) => p.theme.color.text01};
   margin-bottom: 12px;
 `
 
 export const Description = styled.span`
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 300;
-  color: ${(p) => p.theme.color.text02};
+  font: ${leo.font.default.regular};
+color: ${(p) => p.theme.color.text02};
   max-width: 270px;
   text-align: center;
   margin-bottom: 35px;

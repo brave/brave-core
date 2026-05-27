@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 // icons
 import GridIcon from '../../../../../../assets/svg-icons/grid-icon.svg'
@@ -84,11 +85,8 @@ export const Bubble = styled.a`
 
 export const BubbleText = styled.span`
   height: 20px;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 13px;
-  line-height: 20px;
-  display: flex;
+  font: ${leo.font.small.semibold};
+display: flex;
   align-items: center;
   text-align: center;
   margin-left: 8px;

@@ -67,14 +67,12 @@ export const EmptyTokenListState = (props: Props) => {
     >
       <EmptyStateIcon />
       <Title
-        textSize='16px'
-        isBold={true}
+        variant='large.semibold'
       >
         {getLocale('braveWalletNoAvailableAssets')}
       </Title>
       <Description
-        textSize='14px'
-        isBold={false}
+        variant='default.semibold'={false}
       >
         {getLocale('braveWalletNoAvailableAssetsDescription')}
       </Description>
@@ -99,8 +97,7 @@ export const EmptyTokenListState = (props: Props) => {
         </ButtonWrapper>
       </Row>
       <Description
-        textSize='12px'
-        isBold={false}
+        variant='small.semibold'={false}
       >
         {getLocale('braveWalletWelcomeDividerText')}
       </Description>

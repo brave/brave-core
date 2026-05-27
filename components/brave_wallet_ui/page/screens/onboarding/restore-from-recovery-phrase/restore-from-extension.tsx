@@ -203,8 +203,7 @@ export const OnboardingRestoreFromExtension = ({ restoreFrom }: Props) => {
             marginBottom={4}
           >
             <InputLabel
-              textSize='12px'
-              isBold={true}
+              variant='small.semibold'
             >
               {getLocale('braveWalletInputLabelPassword')}
             </InputLabel>

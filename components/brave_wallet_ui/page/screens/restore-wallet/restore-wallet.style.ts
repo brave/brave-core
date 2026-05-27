@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 interface StyleProps {
   textAlign?: 'left' | 'right' | 'center' | 'justify'
@@ -18,27 +19,24 @@ export const StyledWrapper = styled.div`
 `
 
 export const Title = styled.span`
-  font-size: 20px;
-  font-weight: 600;
-  color: ${(p) => p.theme.color.text01};
+  font: ${leo.font.heading.h3};
+color: ${(p) => p.theme.color.text01};
   margin-bottom: 8px;
 `
 
 export const Description = styled.span<StyleProps>`
   display: flex;
   align-items: center;
-  font-size: 14px;
-  font-weight: 300;
-  color: ${(p) => p.theme.color.text02};
+  font: ${leo.font.default.regular};
+color: ${(p) => p.theme.color.text02};
   max-width: 520px;
   text-align: ${(p) => (p.textAlign ? p.textAlign : 'center')};
   margin-bottom: 25px;
 `
 
 export const FormText = styled.span`
-  font-size: 15px;
-  font-weight: 600;
-  color: ${(p) => p.theme.color.text01};
+  font: ${leo.font.heading.h4};
+color: ${(p) => p.theme.color.text01};
   margin-bottom: 8px;
 `
 
@@ -52,9 +50,8 @@ export const FormWrapper = styled.div`
 `
 
 export const ErrorText = styled.span`
-  font-size: 12px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.errorText};
+  font: ${leo.font.small.regular};
+color: ${(p) => p.theme.color.errorText};
   margin-bottom: 10px;
 `
 
@@ -82,16 +79,13 @@ export const RecoveryPhraseInput = styled.input`
   border: ${(p) => `1px solid ${p.theme.color.interactive08}`};
   border-radius: 4px;
   font-style: normal;
-  font-size: 13px;
-  line-height: 20px;
-  padding: 10px;
+  font: ${leo.font.small.regular};
+padding: 10px;
   margin-bottom: 10px;
   color: ${(p) => p.theme.color.text01};
   ::placeholder {
-    font-style: normal;
-    font-size: 12px;
-    color: ${(p) => p.theme.color.text03};
-    font-weight: normal;
+    font: ${leo.font.small.regular};
+color: ${(p) => p.theme.color.text03};
   }
   :focus {
     outline: none;

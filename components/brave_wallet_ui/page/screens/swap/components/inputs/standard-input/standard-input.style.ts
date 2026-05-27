@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 import { StyledInput } from '../../shared-swap.styles'
 
 export const Input = styled(StyledInput)`
@@ -15,9 +16,8 @@ export const Input = styled(StyledInput)`
   font-weight: 200;
   ::placeholder {
     color: ${(p) => p.theme.color.text03};
-    font-size: 14px;
-    font-weight: 200;
-  }
+    font: ${leo.font.default.regular};
+}
   :disabled {
     border: 1px solid ${(p) => p.theme.color.disabled};
     ::placeholder {

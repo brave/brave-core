@@ -114,16 +114,14 @@ export const ShieldZCashAccountModal = (props: Props) => {
           />
           <Column alignItems='flex-start'>
             <Text
-              textSize='14px'
-              isBold={true}
+              variant='default.semibold'
               textColor='primary'
               textAlign='left'
             >
               {account.name}
             </Text>
             <Text
-              textSize='12px'
-              isBold={false}
+              variant='small.semibold'={false}
               textColor='secondary'
               textAlign='left'
             >
@@ -132,16 +130,14 @@ export const ShieldZCashAccountModal = (props: Props) => {
           </Column>
         </AccountRow>
         <Text
-          textSize='14px'
-          isBold={false}
+          variant='default.semibold'={false}
           textColor='primary'
           textAlign='left'
         >
           {getLocale('braveWalletAccountNotShieldedDescription')}
         </Text>
         <Text
-          textSize='14px'
-          isBold={true}
+          variant='default.semibold'
           textColor='primary'
           textAlign='left'
         >
@@ -159,8 +155,7 @@ export const ShieldZCashAccountModal = (props: Props) => {
               />
               <Text
                 textColor='primary'
-                textSize='14px'
-                isBold={true}
+                variant='default.semibold'
               >
                 {getLocale('braveWalletAdvancedTransactionSettings')}
               </Text>
@@ -178,8 +173,7 @@ export const ShieldZCashAccountModal = (props: Props) => {
               >
                 <Text
                   textColor='primary'
-                  textSize='14px'
-                  isBold={false}
+                  variant='default.semibold'={false}
                 >
                   {getLocale('braveWalletShieldedAccountBirthdayBlock')}
                 </Text>
@@ -198,8 +192,7 @@ export const ShieldZCashAccountModal = (props: Props) => {
                 >
                   <Text
                     textColor='error'
-                    textSize='12px'
-                    isBold={false}
+                    variant='small.semibold'={false}
                   >
                     {birthdayBlockIsToLow
                       ? getLocale('braveWalletAccountBirthdayTooLow').replace(

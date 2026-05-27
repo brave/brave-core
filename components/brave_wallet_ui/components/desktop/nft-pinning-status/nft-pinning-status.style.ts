@@ -43,11 +43,8 @@ export const ContentWrapper = styled.div<{
   gap: 4px;
   border-radius: 4px;
   padding: 2px 4px;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.text02};
+  font: ${leo.font.small.regular};
+color: ${(p) => p.theme.color.text02};
   background-color: ${(p) =>
     p.pinningStatus
       === BraveWallet.TokenPinStatusCode.STATUS_PINNING_IN_PROGRESS
@@ -91,11 +88,8 @@ export const ReportButton = styled(WalletButton)`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 18px;
-  border: none;
+  font: ${leo.font.small.semibold};
+border: none;
   color: #4c54d2;
   outline: none;
   border: none;
@@ -103,11 +97,8 @@ export const ReportButton = styled(WalletButton)`
 `
 
 export const Text = styled.span`
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.text02};
+  font: ${leo.font.small.regular};
+color: ${(p) => p.theme.color.text02};
 `
 
 export const ReasonsTooltipWrapper = styled.div`
@@ -133,11 +124,8 @@ export const TooltipContent = styled.div`
 `
 
 export const TooltipHeading = styled.div`
-  font-style: normal;
-  font-weight: 500;
-  font-size: 13px;
-  line-height: 20px;
-  color: ${(p) => p.theme.color.text02};
+  font: ${leo.font.small.semibold};
+color: ${(p) => p.theme.color.text02};
 `
 
 export const TooltipList = styled.ul`
@@ -146,11 +134,8 @@ export const TooltipList = styled.ul`
   padding: 0;
 
   li {
-    font-style: normal;
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 18px;
-    padding: 0;
+    font: ${leo.font.small.regular};
+padding: 0;
     margin: 0;
     color: ${(p) => p.theme.color.text01};
   }

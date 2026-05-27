@@ -73,8 +73,7 @@ export const AccountListItem = (props: Props) => {
           gap='8px'
         >
           <NameAndBalanceText
-            textSize='14px'
-            isBold={true}
+            variant='default.semibold'
             textAlign='left'
           >
             {account.name}
@@ -85,16 +84,14 @@ export const AccountListItem = (props: Props) => {
           {isShielded && <ShieldedLabel />}
         </Row>
         <AddressText
-          textSize='12px'
-          isBold={false}
+          variant='small.semibold'={false}
           textAlign='left'
         >
           {reduceAddress(addressOverride ?? account.address)}
         </AddressText>
         {accountAlias && accountAlias !== '' && (
           <AddressText
-            textSize='12px'
-            isBold={false}
+            variant='small.semibold'={false}
             textAlign='left'
           >
             {accountAlias}

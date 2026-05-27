@@ -40,7 +40,7 @@ export const BottomSheet = (props: Props) => {
           >
             <Text
               isBold={true}
-              textSize='20px'
+              variant='heading.h3'
               textColor='primary'
             >
               {title}

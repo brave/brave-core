@@ -69,8 +69,7 @@ export const MaxSlippage = (props: Props) => {
         padding='0px 8px'
       >
         <Text
-          textSize={isPanel ? '16px' : '22px'}
-          isBold={true}
+          variant={isPanel ? 'large.semibold' : 'heading.h2'}
           textColor='primary'
         >
           {getLocale('braveWalletMaxSlippage')}
@@ -83,7 +82,7 @@ export const MaxSlippage = (props: Props) => {
       >
         <Text
           isBold={false}
-          textSize='12px'
+          variant='small.regular'
           textColor='primary'
           textAlign='left'
         >
@@ -92,7 +91,7 @@ export const MaxSlippage = (props: Props) => {
         <VerticalSpace space='8px' />
         <Text
           isBold={true}
-          textSize='12px'
+          variant='small.regular'
           textColor='primary'
           textAlign='left'
         >
@@ -101,7 +100,7 @@ export const MaxSlippage = (props: Props) => {
         <VerticalSpace space='8px' />
         <Text
           isBold={false}
-          textSize='12px'
+          variant='small.regular'
           textColor='primary'
           textAlign='left'
         >
@@ -112,7 +111,7 @@ export const MaxSlippage = (props: Props) => {
         </Text>
         <Text
           isBold={false}
-          textSize='12px'
+          variant='small.regular'
           textColor='primary'
           textAlign='left'
         >
@@ -124,7 +123,7 @@ export const MaxSlippage = (props: Props) => {
         <VerticalSpace space='8px' />
         <Text
           isBold={false}
-          textSize='12px'
+          variant='small.regular'
           textColor='primary'
           textAlign='left'
         >
@@ -142,14 +141,14 @@ export const MaxSlippage = (props: Props) => {
           >
             <Text
               isBold={true}
-              textSize='12px'
+              variant='small.regular'
               textColor='primary'
             >
               {getLocale('braveWalletSuggested')}
             </Text>
             <Text
               isBold={true}
-              textSize='16px'
+              variant='large.regular'
               textColor='primary'
             >
               {SUGGESTED_SLIPPAGE}%
@@ -174,7 +173,7 @@ export const MaxSlippage = (props: Props) => {
           >
             <Text
               isBold={true}
-              textSize='12px'
+              variant='small.regular'
               textColor='primary'
             >
               {getLocale('braveWalletCustom')}

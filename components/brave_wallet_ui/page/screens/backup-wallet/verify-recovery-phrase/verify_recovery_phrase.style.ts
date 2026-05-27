@@ -24,12 +24,7 @@ export const ErrorTextRow = styled.div<{
 `
 
 export const FormLabel = styled.span`
-  font: ${leo.font.default.regular};
-  color: ${leo.color.text.primary};
-`
-
-export const Bold = styled(FormLabel)`
-  font-weight: 600;
+  font: ${leo.font.default.semibold};
 `
 
 export const FormInput = styled(Input).attrs({

@@ -86,8 +86,7 @@ export const FilterAccountsSection = (props: Props) => {
         justifyContent='space-between'
       >
         <Title
-          textSize='16px'
-          isBold={true}
+          variant='large.semibold'
         >
           {getLocale('braveWalletSelectAccounts')}
         </Title>
@@ -119,14 +118,12 @@ export const FilterAccountsSection = (props: Props) => {
               />
               <Column alignItems='flex-start'>
                 <CheckboxText
-                  textSize='14px'
-                  isBold={false}
+                  variant='default.semibold'={false}
                 >
                   {account.name}
                 </CheckboxText>
                 <Description
-                  textSize='12px'
-                  isBold={false}
+                  variant='small.semibold'={false}
                 >
                   {getAccountTypeDescription(account.accountId)}
                 </Description>

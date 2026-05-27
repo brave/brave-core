@@ -252,8 +252,7 @@ export const PortfolioAssetItem = ({
                         gap='6px'
                       >
                         <AssetName
-                          textSize='14px'
-                          isBold={true}
+                          variant='default.semibold'
                           textAlign='left'
                         >
                           {token.isShielded ? 'Zcash' : token.name}
@@ -261,8 +260,7 @@ export const PortfolioAssetItem = ({
                         {token.isShielded && <ShieldedLabel />}
                       </Row>
                       <NetworkDescriptionText
-                        textSize='12px'
-                        isBold={false}
+                        variant='small.semibold'={false}
                         textAlign='left'
                       >
                         {NetworkDescription}
@@ -278,8 +276,7 @@ export const PortfolioAssetItem = ({
                 >
                   {formattedAssetBalance ? (
                     <AssetBalanceText
-                      textSize='14px'
-                      isBold={true}
+                      variant='default.semibold'
                       textAlign='right'
                     >
                       {formattedAssetBalance}
@@ -297,8 +294,7 @@ export const PortfolioAssetItem = ({
                     <>
                       {formattedFiatBalance ? (
                         <FiatBalanceText
-                          textSize='12px'
-                          isBold={false}
+                          variant='small.semibold'={false}
                           textAlign='right'
                         >
                           {formattedFiatBalance}
@@ -350,8 +346,7 @@ export const PortfolioAssetItem = ({
               >
                 <LoadingRing />
                 <InfoText
-                  textSize='14px'
-                  isBold={false}
+                  variant='default.semibold'={false}
                   textAlign='left'
                 >
                   {getLocale('braveWalletUnavailableBalances')}

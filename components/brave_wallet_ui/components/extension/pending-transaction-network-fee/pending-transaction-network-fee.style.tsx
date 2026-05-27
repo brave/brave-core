@@ -22,18 +22,15 @@ export const NetworkFeeContainer = styled.div`
 `
 
 export const NetworkFeeTitle = styled.div`
-  font-style: normal;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 20px;
-  color: ${(p) => p.theme.color.text03};
+  font: ${leo.font.small.semibold};
+color: ${(p) => p.theme.color.text03};
 `
 
 export const NetworkFeeValue = styled.div`
   color: ${leo.color.text.primary};
   text-align: right;
   font: ${leo.font.small.semibold};
-  display: flex;
+display: flex;
   align-items: center;
   gap: 6px;
 `

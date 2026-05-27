@@ -224,7 +224,7 @@ export const DepositModal = ({ selectedAccount }: DepositModalProps) => {
           size='huge'
         />
         <Text
-          textSize='14px'
+          variant='default.regular'
           textColor='primary'
         >
           {selectedAccount.name}

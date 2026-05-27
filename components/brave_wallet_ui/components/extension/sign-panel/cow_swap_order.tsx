@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 // Types / constants
 import { BraveWallet } from '../../../constants/types'
@@ -217,30 +218,17 @@ const NetworkFeeAndDetailsContainer = styled.div`
 const NetworkFeeContainer = styled.div``
 
 const NetworkFeeTitle = styled.div`
-  font-style: normal;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 20px;
-  color: ${(p) => p.theme.color.text03};
-`
-
-const NetworkFeeValue = styled.div`
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 18px;
-  display: flex;
+  font: ${leo.font.small.semibold};
+font: ${leo.font.default.regular};
+display: flex;
   align-items: center;
   color: #27ae60;
   gap: 6px;
 `
 
 const TextButton = styled(WalletButton)`
-  font-style: normal;
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.interactive05};
+  font: ${leo.font.small.semibold};
+color: ${(p) => p.theme.color.interactive05};
   background: none;
   cursor: pointer;
   outline: none;

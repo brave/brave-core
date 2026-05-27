@@ -170,8 +170,7 @@ const Gate3StepSource = ({
           gap='4px'
         >
           <Text
-            textSize='12px'
-            isBold={false}
+            variant='small.semibold'={false}
             textColor='tertiary'
           >
             {getLocale('braveWalletSwapRouteToFromVia')
@@ -187,8 +186,7 @@ const Gate3StepSource = ({
             <BankIcon size='14px' />
           )}
           <Text
-            textSize='12px'
-            isBold={true}
+            variant='small.semibold'
             textColor='tertiary'
           >
             {step.tool.name}
@@ -199,8 +197,7 @@ const Gate3StepSource = ({
               margin='0px 0px 0px 8px'
             >
               <Text
-                textSize='10px'
-                isBold={true}
+                variant='xSmall.semibold'
                 textColor='primary'
               >
                 {new Amount(step.percent).format()}%
@@ -316,8 +313,7 @@ export const RouteOption = (props: Props) => {
             ))}
           {durationTime && (
             <Text
-              textSize='10px'
-              isBold={true}
+              variant='xSmall.semibold'
               textColor='primary'
             >
               ~ {durationTime}
@@ -330,8 +326,7 @@ export const RouteOption = (props: Props) => {
         >
           <GasIcon />
           <Text
-            textSize='10px'
-            isBold={true}
+            variant='xSmall.semibold'
             textColor='primary'
           >
             {option.networkFeeFiat}
@@ -353,16 +348,14 @@ export const RouteOption = (props: Props) => {
           </IconsWrapper>
           <Column alignItems='flex-start'>
             <Text
-              textSize='16px'
-              isBold={true}
+              variant='large.semibold'
               textColor='primary'
               textAlign='left'
             >
               {toAmount.formatAsAsset(6, toToken.symbol)}
             </Text>
             <Text
-              textSize='12px'
-              isBold={false}
+              variant='small.semibold'={false}
               textColor='secondary'
               textAlign='left'
             >
@@ -424,8 +417,7 @@ export const RouteOption = (props: Props) => {
                   {
                     $1: (
                       <Text
-                        textSize='16px'
-                        isBold={true}
+                        variant='large.semibold'
                         textColor='primary'
                       >
                         {source.name}
@@ -433,8 +425,7 @@ export const RouteOption = (props: Props) => {
                     ),
                     $2: (
                       <Text
-                        textSize='16px'
-                        isBold={true}
+                        variant='large.semibold'
                         textColor='primary'
                       >
                         {SwapProviderNameMapping[option.provider] ?? ''}
@@ -470,8 +461,7 @@ export const RouteOption = (props: Props) => {
                         gap='4px'
                       >
                         <Text
-                          textSize='12px'
-                          isBold={false}
+                          variant='small.semibold'={false}
                           textColor='tertiary'
                         >
                           {exchangeViaProvider}
@@ -481,8 +471,7 @@ export const RouteOption = (props: Props) => {
                           margin='0px 0px 0px 8px'
                         >
                           <Text
-                            textSize='10px'
-                            isBold={true}
+                            variant='xSmall.semibold'
                             textColor='primary'
                           >
                             {source.proportion.times(100).format()}%
@@ -519,15 +508,13 @@ export const RouteOption = (props: Props) => {
               </IconsWrapper>
               <Column alignItems='flex-start'>
                 <Text
-                  textSize='16px'
-                  isBold={true}
+                  variant='large.semibold'
                   textColor='primary'
                 >
                   {fromAmount.formatAsAsset(6, fromToken.symbol)}
                 </Text>
                 <Text
-                  textSize='12px'
-                  isBold={false}
+                  variant='small.semibold'={false}
                   textColor='secondary'
                 >
                   {getLocale('braveWalletOnNetwork').replace(

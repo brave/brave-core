@@ -161,7 +161,7 @@ export const SelectAccount = (props: Props) => {
         </IconsWrapper>
         <Text
           isBold={true}
-          textSize='22px'
+          variant='heading.h2'
           textColor='primary'
         >
           {getLocale('braveWalletChooseAccount')}
@@ -190,7 +190,7 @@ export const SelectAccount = (props: Props) => {
               />
               <Column alignItems='flex-start'>
                 <Text
-                  textSize='14px'
+                  variant='default.regular'
                   textColor='primary'
                   isBold={false}
                   textAlign='left'
@@ -198,7 +198,7 @@ export const SelectAccount = (props: Props) => {
                   {account.name}
                 </Text>
                 <Text
-                  textSize='12px'
+                  variant='small.regular'
                   textColor='secondary'
                   isBold={false}
                   textAlign='left'
@@ -209,7 +209,7 @@ export const SelectAccount = (props: Props) => {
             </Row>
             <Column alignItems='flex-end'>
               <Text
-                textSize='14px'
+                variant='default.regular'
                 textColor='primary'
                 isBold={true}
                 textAlign='right'
@@ -221,7 +221,7 @@ export const SelectAccount = (props: Props) => {
                 )}
               </Text>
               <Text
-                textSize='12px'
+                variant='small.regular'
                 textColor='secondary'
                 isBold={false}
                 textAlign='right'

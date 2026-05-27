@@ -24,7 +24,7 @@ interface Props {
   provider: BraveWallet.SwapProvider
   sourcesLength: number
   iconSize?: string
-  textSize?: '12px' | '14px'
+  variant?: 'small.semibold' | 'default.semibold'
   textColor?: 'primary' | 'secondary'
 }
 
@@ -33,7 +33,7 @@ export const ProviderRoute = (props: Props) => {
     provider,
     sourcesLength,
     iconSize = '16px',
-    textSize = '12px',
+    variant = 'small.semibold',
     textColor = 'secondary',
   } = props
 
@@ -61,8 +61,7 @@ export const ProviderRoute = (props: Props) => {
         />
       )}
       <Text
-        textSize={textSize}
-        isBold={true}
+        variant={variant}
         textColor={textColor}
       >
         {stepsLocale ? stepsLocale.replace('$1', providerName) : providerName}

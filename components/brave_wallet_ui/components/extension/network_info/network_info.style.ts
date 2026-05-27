@@ -20,6 +20,6 @@ export const SectionLabel = styled(Text)`
 
 export const SectionDetails = styled(Text)`
   font: ${leo.font.default.semibold};
-  word-break: break-all;
+word-break: break-all;
   text-align: left;
 `

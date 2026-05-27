@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 import WarningCircle from '../../../assets/svg-icons/warning-circle-icon.svg'
 import EyeOnIcon from '../../../assets/svg-icons/eye-on-icon.svg'
 import EyeOffIcon from '../../../assets/svg-icons/eye-off-icon.svg'
@@ -55,16 +56,13 @@ export const Input = styled.input<{ hasError: boolean }>`
 
   border-radius: 4px;
   font-style: normal;
-  font-size: 13px;
-  line-height: 20px;
-  margin: 0px;
+  font: ${leo.font.small.regular};
+margin: 0px;
   color: ${(p) => p.theme.color.text01};
 
   ::placeholder {
-    font-style: normal;
-    font-size: 12px;
-    color: ${(p) => p.theme.color.text03};
-    font-weight: normal;
+    font: ${leo.font.small.regular};
+color: ${(p) => p.theme.color.text03};
   }
 
   :focus {
@@ -96,9 +94,8 @@ export const ErrorText = styled.span`
   align-items: flex-start;
   justify-content: flex-start;
   width: 240px;
-  font-size: 12px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.errorText};
+  font: ${leo.font.small.regular};
+color: ${(p) => p.theme.color.errorText};
   padding-left: 4px;
 `
 

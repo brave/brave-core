@@ -8,16 +8,21 @@ import styled from 'styled-components'
 // Leo styles
 import * as leo from '@brave/leo/tokens/css/variables'
 
+import {
+  legacyTextSizeToVariant,
+  resolveWalletTextVariant,
+  walletFont,
+  walletFontLineHeight,
+  type LegacyTextSize,
+  type WalletFontVariant,
+} from '../../../utils/style.utils'
+
+export type { LegacyTextSize, WalletFontVariant }
+
 export interface TextProps {
-  textSize?:
-    | '22px'
-    | '20px'
-    | '18px'
-    | '16px'
-    | '14px'
-    | '12px'
-    | '11px'
-    | '10px'
+  variant?: WalletFontVariant
+  /** @deprecated Use `variant` instead */
+  textSize?: LegacyTextSize
   isBold?: boolean
   textColor?:
     | 'text01'
@@ -49,14 +54,12 @@ export const Text = styled.span<TextProps>`
   --text02: ${(p) => p.theme.color.text02};
   --text03: ${(p) => p.theme.color.text03};
   --success: ${(p) => p.theme.color.successIcon};
-  --line-height: ${(p) =>
-    p.textSize === '12px' ? '18px' : p.textSize === '22px' ? '24px' : '20px'};
+  --text-variant: ${(p) => resolveWalletTextVariant(p)};
+  --line-height: ${(p) => walletFontLineHeight(resolveWalletTextVariant(p))};
   color: ${(p) =>
     (p.color ?? p.textColor) ? `var(--${p.textColor})` : p.theme.color.text01};
-  font-size: ${(p) => (p.textSize ? p.textSize : '18px')};
-  font-weight: ${(p) => (p.isBold ? 500 : 400)};
+  font: ${(p) => walletFont(resolveWalletTextVariant(p))};
   height: ${(p) => (p.maintainHeight ? 'var(--line-height)' : 'unset')};
-  line-height: var(--line-height);
   text-align: ${(p) => (p.textAlign ? p.textAlign : 'center')};
   word-wrap: wrap;
 `
@@ -75,9 +78,7 @@ export const StyledDiv = styled.div`
   justify-content: center;
   flex-direction: column;
   color: ${(p) => p.theme.color.text01};
-  font-weight: 400;
-  font-size: 18px;
-  line-height: 20px;
+  font: ${leo.font.large.regular};
 `
 
 export const Row = styled(StyledDiv)<{
@@ -209,10 +210,8 @@ export const StyledButton = styled.button`
   border: none;
   outline: none;
   background: none;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 20px;
-  flex-direction: row;
+  font: ${leo.font.components.buttonLarge};
+flex-direction: row;
   align-items: center;
   justify-content: center;
   color: ${(p) => p.theme.color.text01};
@@ -241,10 +240,8 @@ export const HiddenResponsiveRow = styled(Row)<{ dontHide?: boolean }>`
 `
 
 export const StyledInput = styled.input`
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
-  outline: none;
+  font: ${leo.font.default.regular};
+outline: none;
   background-image: none;
   box-shadow: none;
   border: none;
@@ -270,9 +267,9 @@ export const StyledInput = styled.input`
 `
 
 export const StyledLabel = styled.label`
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.text01};
+  font: ${leo.font.components.label};
+color: ${(p) => p.theme.color.text01};
 `
+
+// Re-export for callers migrating off deprecated textSize
+export { legacyTextSizeToVariant }

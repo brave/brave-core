@@ -22,11 +22,4 @@ export const CheckboxText = styled.div`
     vertical-align: top;
 
     font: ${leo.font.large.regular};
-
-    color: ${leo.color.text.primary};
-  }
-`
-
-export const TermsLink = styled(LinkText)`
-  font-weight: 400;
 `

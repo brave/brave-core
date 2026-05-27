@@ -75,7 +75,7 @@ export const HeaderControlBar: React.FC<Props> = ({
               </BackButton>
             ) : null}
             <Text
-              textSize='16px'
+              variant='large.regular'
               textAlign='left'
               isBold={true}
             >

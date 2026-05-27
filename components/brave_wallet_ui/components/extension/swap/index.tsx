@@ -300,7 +300,7 @@ function SwapAsset(props: SwapAssetProps) {
           gap='8px'
         >
           <Text
-            textSize='22px'
+            variant='heading.h2'
             isBold={true}
             textColor='success'
           >

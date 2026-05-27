@@ -252,7 +252,7 @@ export const ExploreWeb3View = () => {
             <Text
               textAlign='left'
               isBold
-              textSize='14px'
+              variant='default.regular'
             >
               {getLocale('braveWalletFilters')}:
             </Text>

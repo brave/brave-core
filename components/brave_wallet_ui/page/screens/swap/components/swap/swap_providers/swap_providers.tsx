@@ -72,8 +72,7 @@ export const SwapProviders = (props: Props) => {
         padding='0px 16px'
       >
         <Text
-          textSize={isPanel ? '16px' : '22px'}
-          isBold={true}
+          variant={isPanel ? 'large.semibold' : 'heading.h2'}
           textColor='primary'
         >
           {getLocale('braveWalletChooseQuoteProvider')}
@@ -110,8 +109,7 @@ export const SwapProviders = (props: Props) => {
                 <Row width='unset'>
                   <ProviderIcon src={SwapProviderMetadata[provider]} />
                   <Text
-                    textSize='14px'
-                    isBold={true}
+                    variant='default.semibold'
                     textColor={!isAvailableForSwap ? 'disabled' : 'primary'}
                   >
                     {SwapProviderNameMapping[provider]}
@@ -119,8 +117,7 @@ export const SwapProviders = (props: Props) => {
                 </Row>
                 {!isAvailableForSwap && (
                   <Text
-                    textSize='14px'
-                    isBold={false}
+                    variant='default.semibold'={false}
                     textColor='disabled'
                   >
                     {getLocale('braveWalletNotAvailable')}

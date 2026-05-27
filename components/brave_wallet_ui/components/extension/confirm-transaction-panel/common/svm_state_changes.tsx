@@ -123,7 +123,7 @@ export const SOLTransfer = ({
         justifyContent='space-between'
       >
         <Text
-          textSize='12px'
+          variant='small.regular'
           color={color.text.secondary}
         >
           {getLocale(isReceive ? 'braveWalletReceive' : 'braveWalletSend')}
@@ -246,7 +246,7 @@ export const SPLTokenTransfer = ({
         justifyContent='space-between'
       >
         <Text
-          textSize='12px'
+          variant='small.regular'
           color={color.text.secondary}
         >
           {getLocale(isReceive ? 'braveWalletReceive' : 'braveWalletSend')}
@@ -368,7 +368,7 @@ export const SPLTokenApproval = ({
           position='left'
           verticalPosition='below'
         >
-          <Text textSize='11px'>
+          <Text variant='xSmall.regular'>
             {getLocale('braveWalletSpenderAddress').replace(
               '$1',
               reduceAddress(approval.delegate),

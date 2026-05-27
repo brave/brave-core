@@ -54,7 +54,7 @@ export const AddressMessage = (props: Props) => {
       >
         {addressMessageInfo.title && (
           <Text
-            textSize='12px'
+            variant='small.regular'
             textColor={addressMessageInfo.type ?? 'info'}
             isBold={true}
             textAlign='left'
@@ -66,7 +66,7 @@ export const AddressMessage = (props: Props) => {
           <>
             <Row>
               <Text
-                textSize='12px'
+                variant='small.regular'
                 textColor={addressMessageInfo.type ?? 'info'}
                 isBold={false}
                 textAlign='left'

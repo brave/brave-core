@@ -152,8 +152,7 @@ export const ToAsset = (props: Props) => {
   const newQuote = formatLocale('braveWalletNewQuoteIn', {
     $1: (
       <Text
-        textSize='12px'
-        isBold
+        variant='small.semibold'
         textColor='primary'
       >
         {countdown}
@@ -177,8 +176,7 @@ export const ToAsset = (props: Props) => {
         marginBottom={10}
       >
         <ReceiveAndQuoteText
-          textSize='14px'
-          isBold={false}
+          variant='default.semibold'={false}
         >
           {getLocale('braveWalletReceiveEstimate')}
         </ReceiveAndQuoteText>
@@ -190,8 +188,7 @@ export const ToAsset = (props: Props) => {
               margin='0px 4px 0px 0px'
             >
               <ReceiveAndQuoteText
-                textSize='12px'
-                isBold={false}
+                variant='small.semibold'={false}
               >
                 {newQuote}
               </ReceiveAndQuoteText>
@@ -241,8 +238,7 @@ export const ToAsset = (props: Props) => {
       >
         {network && token && (
           <NetworkAndFiatText
-            textSize='14px'
-            isBold={false}
+            variant='default.semibold'={false}
           >
             {getLocale('braveWalletPortfolioAssetNetworkDescription')
               .replace('$1', '')
@@ -258,8 +254,7 @@ export const ToAsset = (props: Props) => {
               />
             ) : (
               <NetworkAndFiatText
-                textSize='14px'
-                isBold={false}
+                variant='default.semibold'={false}
               >
                 {fiatValue}
               </NetworkAndFiatText>

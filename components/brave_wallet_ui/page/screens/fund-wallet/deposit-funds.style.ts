@@ -32,10 +32,8 @@ export const AddressText = styled(Text)`
 
 export const AddressTextLabel = styled(Text)`
   font-weight: 600;
-  font-size: 15px;
-  line-height: 20px;
-  font-style: normal;
-  text-align: center;
+  font: ${leo.font.default.regular};
+text-align: center;
   color: ${(p) => p.theme.color.text02};
   word-break: break-all;
 `

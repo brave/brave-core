@@ -18,30 +18,17 @@ export const StyledWrapper = styled.div`
 `
 
 export const Heading = styled.h3`
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 24px;
-  text-align: center;
+  font: ${leo.font.default.semibold};
+text-align: center;
   color: ${leo.color.text.secondary};
   margin: 0 0 8px 0;
   padding: 0;
 `
 
 export const Description = styled.span`
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 18px;
-  color: ${leo.color.text.tertiary};
-`
-
-export const ActionButton = styled(WalletButton)`
-  font-style: normal;
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 18px;
-  background: transparent;
+  font: ${leo.font.small.semibold};
+font: ${leo.font.small.regular};
+background: transparent;
   color: ${leo.color.button.background};
   border: none;
   cursor: pointer;
@@ -54,8 +41,5 @@ export const LoadingRing = styled(Ring)`
 export const RefreshText = styled.div`
   color: ${leo.color.text.secondary};
   text-align: center;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 24px;
+  font: ${leo.font.default.regular};
 `

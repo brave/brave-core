@@ -254,12 +254,11 @@ export const TransactionsScreen = (props: Props) => {
               >
                 <EmptyTransactionsIcon />
                 <Text
-                  textSize='18px'
-                  isBold
+                  variant='large.semibold'
                 >
                   {getLocale('braveWalletNoTransactionsYet')}
                 </Text>
-                <Text textSize='14px'>
+                <Text variant='default.regular'>
                   {getLocale('braveWalletNoTransactionsYetDescription')}
                 </Text>
               </Column>
@@ -279,7 +278,7 @@ export const TransactionsScreen = (props: Props) => {
                   fullHeight
                   padding={isPanel ? '32px 0px 64px 0px' : '0px'}
                 >
-                  <Text textSize='14px'>
+                  <Text variant='default.regular'>
                     {getLocale('braveWalletConnectHardwareSearchNothingFound')}
                   </Text>
                 </Column>

@@ -381,15 +381,14 @@ export const QuoteInfo = (props: Props) => {
         {minimumReceived !== '' && (
           <Row justifyContent='space-between'>
             <Text
-              textSize='12px'
+              variant='small.regular'
               textColor='secondary'
               textAlign='left'
             >
               {getLocale('braveSwapMinimumReceivedAfterSlippage')}
             </Text>
             <Text
-              textSize='12px'
-              isBold={true}
+              variant='small.semibold'
               textColor='primary'
               textAlign='right'
             >
@@ -400,7 +399,7 @@ export const QuoteInfo = (props: Props) => {
 
         <Row justifyContent='space-between'>
           <Text
-            textSize='12px'
+            variant='small.regular'
             textColor='secondary'
             textAlign='left'
           >
@@ -408,8 +407,7 @@ export const QuoteInfo = (props: Props) => {
           </Text>
           <Row width='unset'>
             <Text
-              textSize='12px'
-              isBold={true}
+              variant='small.semibold'
               textColor='primary'
               textAlign='right'
             >
@@ -445,14 +443,13 @@ export const QuoteInfo = (props: Props) => {
                 gap='8px'
               >
                 <Text
-                  textSize='12px'
+                  variant='small.regular'
                   textColor='secondary'
                 >
                   {getLocale('braveSwapNetworkFee')}
                 </Text>
                 <Text
-                  textSize='12px'
-                  isBold={true}
+                  variant='small.semibold'
                   textColor='primary'
                 >
                   {selectedQuoteOption.networkFee.formatAsAsset(
@@ -471,7 +468,7 @@ export const QuoteInfo = (props: Props) => {
               <Column fullWidth={true}>
                 <Row justifyContent='space-between'>
                   <Text
-                    textSize='12px'
+                    variant='small.regular'
                     textColor='secondary'
                     textAlign='left'
                   >
@@ -500,14 +497,13 @@ export const QuoteInfo = (props: Props) => {
             {!isBridge && (
               <Row justifyContent='space-between'>
                 <Text
-                  textSize='12px'
+                  variant='small.regular'
                   textColor='secondary'
                 >
                   {getLocale('braveWalletExchangeRate')}
                 </Text>
                 <Text
-                  textSize='12px'
-                  isBold={true}
+                  variant='small.semibold'
                   textColor='primary'
                 >
                   {swapRate}
@@ -518,14 +514,13 @@ export const QuoteInfo = (props: Props) => {
             {estimatedDuration !== '' && (
               <Row justifyContent='space-between'>
                 <Text
-                  textSize='12px'
+                  variant='small.regular'
                   textColor='secondary'
                 >
                   {getLocale('braveWalletEstTime')}
                 </Text>
                 <Text
-                  textSize='12px'
-                  isBold={true}
+                  variant='small.semibold'
                   textColor='primary'
                 >
                   {estimatedDuration}
@@ -539,7 +534,7 @@ export const QuoteInfo = (props: Props) => {
                 gap='4px'
               >
                 <Text
-                  textSize='12px'
+                  variant='small.regular'
                   textColor='secondary'
                   textAlign='left'
                 >
@@ -552,8 +547,7 @@ export const QuoteInfo = (props: Props) => {
                 />
               </Row>
               <Text
-                textSize='12px'
-                isBold={true}
+                variant='small.semibold'
                 textColor='primary'
                 textAlign='right'
               >
@@ -563,7 +557,7 @@ export const QuoteInfo = (props: Props) => {
 
             <Row justifyContent='flex-end'>
               <Text
-                textSize='12px'
+                variant='small.regular'
                 textColor={coinGeckoDeltaColor}
               >
                 {coinGeckoDeltaText}
@@ -573,7 +567,7 @@ export const QuoteInfo = (props: Props) => {
             {isBridge && (
               <Row justifyContent='space-between'>
                 <Text
-                  textSize='12px'
+                  variant='small.regular'
                   textColor='secondary'
                   textAlign='left'
                 >
@@ -581,8 +575,7 @@ export const QuoteInfo = (props: Props) => {
                 </Text>
                 <Button onClick={() => setShowAccountSelector(true)}>
                   <Text
-                    textSize='12px'
-                    isBold={true}
+                    variant='small.semibold'
                     textColor='primary'
                   >
                     {toAccount?.name ?? ''}
@@ -596,7 +589,7 @@ export const QuoteInfo = (props: Props) => {
             {braveFee && (
               <Row justifyContent='space-between'>
                 <Text
-                  textSize='12px'
+                  variant='small.regular'
                   textColor='secondary'
                 >
                   {getLocale('braveSwapBraveFee')}
@@ -608,22 +601,20 @@ export const QuoteInfo = (props: Props) => {
                   {effectiveFeeAmount && effectiveFeeAmount.isZero() ? (
                     <Bubble padding='5px 6px'>
                       <FreeText
-                        textSize='10px'
-                        isBold={true}
+                        variant='xSmall.semibold'
                       >
                         {getLocale('braveSwapFree')}
                       </FreeText>
                     </Bubble>
                   ) : (
-                    <Text textSize='14px'>{braveFee.effectiveFeePct}%</Text>
+                    <Text variant='default.regular'>{braveFee.effectiveFeePct}%</Text>
                   )}
 
                   {braveFee.discountCode
                     !== BraveWallet.SwapDiscountCode.kNone && (
                     <>
                       <BraveFeeDiscounted
-                        textSize='12px'
-                        isBold={true}
+                        variant='small.semibold'
                         textColor='primary'
                       >
                         {braveFee.feePct}%
@@ -631,7 +622,7 @@ export const QuoteInfo = (props: Props) => {
 
                       {effectiveFeeAmount?.gt(0) && (
                         <Text
-                          textSize='12px'
+                          variant='small.regular'
                           textColor='primary'
                         >
                           (-{braveFee.discountPct}%)
@@ -646,14 +637,13 @@ export const QuoteInfo = (props: Props) => {
             {selectedQuoteOption && txNetwork && (
               <Row justifyContent='space-between'>
                 <Text
-                  textSize='12px'
+                  variant='small.regular'
                   textColor='secondary'
                 >
                   {getLocale('braveSwapNetworkFee')}
                 </Text>
                 <Text
-                  textSize='12px'
-                  isBold={true}
+                  variant='small.semibold'
                   textColor='primary'
                 >
                   {selectedQuoteOption.networkFee.formatAsAsset(

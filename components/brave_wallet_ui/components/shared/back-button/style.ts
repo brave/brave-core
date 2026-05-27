@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 import { CaratStrongLeftIcon } from 'brave-ui/components/icons'
 import { WalletButton } from '../style'
 
@@ -17,9 +18,8 @@ export const StyledWrapper = styled(WalletButton)`
   background: none;
   padding: 3px 14px;
   font-weight: 600;
-  font-size: 12px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.interactive07};
+  font: ${leo.font.small.regular};
+color: ${(p) => p.theme.color.interactive07};
   border: ${(p) => `1px solid ${p.theme.color.interactive08}`};
   border-radius: 48px;
 `

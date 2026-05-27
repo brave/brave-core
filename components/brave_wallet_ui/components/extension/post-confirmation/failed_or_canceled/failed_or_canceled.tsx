@@ -160,8 +160,7 @@ export const TransactionFailedOrCanceled = (props: Props) => {
           <InternalStatusText>{swapStatus.internalStatus}</InternalStatusText>
         )}
         <Text
-          textSize='12px'
-          isBold={false}
+          variant='small.semibold'={false}
           textColor='secondary'
         >
           {errorDetails}

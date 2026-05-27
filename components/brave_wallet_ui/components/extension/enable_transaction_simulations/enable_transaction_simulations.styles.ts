@@ -52,7 +52,7 @@ export const Title = styled.p`
   color: ${leo.color.text.primary};
   text-align: center;
   font: ${leo.font.heading.h4};
-  border-bottom: 1px solid ${leo.color.divider.subtle};
+border-bottom: 1px solid ${leo.color.divider.subtle};
 `
 
 export const HeadingText = styled.p`
@@ -69,11 +69,11 @@ export const BulletPoints = styled.ul`
   & li {
     color: ${leo.color.text.secondary};
     font: ${leo.font.default.regular};
-  }
+}
   & a {
     color: ${leo.color.text.secondary};
     font: ${leo.font.default.regular};
-  }
+}
 `
 
 export const TermsText = styled.p`
@@ -87,16 +87,13 @@ export const TermsText = styled.p`
   background: ${leo.color.page.background};
   color: ${leo.color.text.tertiary};
   text-align: center;
-  font: ${leo.font.small.regular};
-
-  & strong {
-    font-weight: 600;
-  }
+  font: ${leo.font.small.semibold};
+}
 
   & a {
     color: ${leo.color.text.tertiary};
     font: ${leo.font.small.regular};
-  }
+}
 `
 
 export const OptionsRow = styled.div`

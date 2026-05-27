@@ -35,17 +35,14 @@ export const ActiveIndicator = styled.div`
   background-color: ${leo.color.primary[20]};
   color: ${leo.color.primary[50]};
   font-weight: 600;
-  font-size: 10px;
-  line-height: 15px;
-  text-transform: uppercase;
+  font: ${leo.font.xSmall.regular};
+text-transform: uppercase;
 `
 
 export const NetworkName = styled.span`
   color: ${leo.color.text.primary};
-  line-height: 24px;
   word-wrap: wrap;
   word-break: break-all;
   text-align: left;
-  font-size: 14px;
-  font-weight: 400;
+  font: ${leo.font.default.regular};
 `

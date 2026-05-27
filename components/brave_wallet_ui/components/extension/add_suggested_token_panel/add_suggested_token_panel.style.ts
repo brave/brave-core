@@ -44,7 +44,7 @@ export const TokenDescription = styled(Text)`
 
 export const ContractAddress = styled(WalletButton)`
   font: ${leo.font.small.semibold};
-  color: ${leo.color.text.interactive};
+color: ${leo.color.text.interactive};
   background: none;
   cursor: pointer;
   outline: none;

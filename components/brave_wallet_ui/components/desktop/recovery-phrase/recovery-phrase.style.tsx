@@ -52,7 +52,7 @@ export const RecoveryBubble = styled.div`
   border: 1px solid ${leo.color.divider.subtle};
 
   font: ${leo.font.small.semibold};
-  color: ${leo.color.text.primary};
+color: ${leo.color.text.primary};
   background-color: ${leo.color.container.background};
 `
 
@@ -69,11 +69,8 @@ export const RecoveryBubbleBadge = styled.p`
   background-color: ${(p) => p.theme.color.brandBat};
   width: 40px;
   border-radius: 4px;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 10px;
-  line-height: 15px;
-  display: flex;
+  font: ${leo.font.xSmall.regular};
+display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
@@ -107,11 +104,8 @@ export const HiddenPhraseContainer = styled.div`
   cursor: pointer;
 
   & p {
-    font-style: normal;
-    font-weight: 600;
-    font-size: 13px;
-    line-height: 20px;
-    text-align: center;
+    font: ${leo.font.small.semibold};
+text-align: center;
     margin-top: 10px;
     color: ${(p) => p.theme.color.background01};
   }

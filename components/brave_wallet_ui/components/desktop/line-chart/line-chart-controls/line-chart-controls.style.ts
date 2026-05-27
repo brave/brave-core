@@ -28,10 +28,8 @@ export const SelectTimelinButton = styled(WalletButton)`
   border-radius: ${leo.radius.full};
   padding: 6px 10px 6px 18px;
   border: 1px solid var(--button-border);
-  font-size: 12px;
-  line-height: 16px;
-  font-weight: 600;
-  color: ${leo.color.text.interactive};
+  font: ${leo.font.small.semibold};
+color: ${leo.color.text.interactive};
 `
 
 export const SelectTimelinButtonIcon = styled(Icon)<{

@@ -104,21 +104,15 @@ export const PermissionsContainer = styled(Column)`
 `
 
 export const SectionLabel = styled.span`
-  font-style: normal;
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 18px;
-  text-align: left;
+  font: ${leo.font.small.semibold};
+text-align: left;
   color: ${leo.color.text.primary};
   margin-bottom: 8px;
 `
 
 export const SectionPoint = styled.span`
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 18px;
-  text-align: left;
+  font: ${leo.font.small.regular};
+text-align: left;
   color: ${leo.color.text.primary};
   max-width: 90%;
   white-space: pre-line;
@@ -151,11 +145,8 @@ export const BulletIcon = styled(Icon)<{ status: 'success' | 'error' }>`
 `
 
 export const AddAccountText = styled.span`
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 24px;
-  color: ${leo.color.text.interactive};
+  font: ${leo.font.default.semibold};
+color: ${leo.color.text.interactive};
 `
 
 export const AddAcountIcon = styled(Icon)`
@@ -201,11 +192,8 @@ export const DurationLabel = styled.div`
   background-color: ${leo.color.container.highlight};
   outline: none;
   border-radius: 8px;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 24px;
-  padding: 10px 8px 10px 16px;
+  font: ${leo.font.default.regular};
+padding: 10px 8px 10px 16px;
   margin-bottom: 8px;
   color: ${leo.color.text.primary};
   border: none;

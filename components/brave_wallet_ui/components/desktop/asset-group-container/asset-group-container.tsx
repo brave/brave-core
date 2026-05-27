@@ -277,8 +277,7 @@ export const AssetGroupContainer = (props: Props) => {
               )}
               <RewardsProviderContainer>
                 <RewardsText
-                  textSize='14px'
-                  isBold={true}
+                  variant='default.semibold'
                   textColor='primary'
                   textAlign='left'
                 >
@@ -304,8 +303,7 @@ export const AssetGroupContainer = (props: Props) => {
                 size='huge'
               />
               <Text
-                textSize='14px'
-                isBold={true}
+                variant='default.semibold'
                 textColor='primary'
                 textAlign='left'
               >
@@ -337,8 +335,7 @@ export const AssetGroupContainer = (props: Props) => {
                 hasAddress={account.address !== ''}
               >
                 <Text
-                  textSize='14px'
-                  isBold={true}
+                  variant='default.semibold'
                   textColor='primary'
                   textAlign='left'
                 >
@@ -350,8 +347,7 @@ export const AssetGroupContainer = (props: Props) => {
                 <AddressArea width='unset'>
                   <AddressActionsMenu account={account}>
                     <Text
-                      textSize='12px'
-                      isBold={false}
+                      variant='small.semibold'={false}
                       textColor='secondary'
                     >
                       {reduceAddress(account.address)}
@@ -374,8 +370,7 @@ export const AssetGroupContainer = (props: Props) => {
           <Row width='unset'>
             {balance !== '' && !hideBalance ? (
               <Text
-                textSize='14px'
-                isBold={true}
+                variant='default.semibold'
                 textColor='primary'
               >
                 {hidePortfolioBalances ? '******' : balance}
@@ -413,8 +408,7 @@ export const AssetGroupContainer = (props: Props) => {
                 >
                   <WarningIcon />
                   <InfoText
-                    textSize='14px'
-                    isBold={false}
+                    variant='default.semibold'={false}
                     textAlign='left'
                   >
                     {!chainTipStatus

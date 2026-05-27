@@ -26,19 +26,9 @@ export const BannerCard = styled.div`
 `
 
 export const ImportantText = styled.span`
-  font-style: normal;
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 22px;
-  color: ${(p) => p.theme.color.errorBorder};
-`
-
-export const BannerText = styled.span`
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 22px;
-  color: ${(p) => p.theme.color.text};
+  font: ${leo.font.small.semibold};
+font: ${leo.font.small.regular};
+color: ${(p) => p.theme.color.text};
 `
 
 export const CenteredRow = styled.div`
@@ -66,15 +56,14 @@ export const Subtitle = styled.p`
   color: ${leo.color.text.secondary};
   text-align: left;
   font: ${leo.font.large.regular};
-  margin: 0;
+margin: 0;
   padding: 16px 0 0 0;
-  line-height: 26px;
 `
 
 export const BackupInstructions = styled.p`
   color: ${leo.color.text.primary};
   font: ${leo.font.large.semibold};
-  padding: 0;
+padding: 0;
   margin: 14px 0 0;
 `
 
@@ -99,7 +88,7 @@ export const SkipDialog = styled(Dialog).attrs({
 export const WarningText = styled.p`
   color: --leo-color-text-primary;
   font: ${leo.font.large.regular};
-  padding: 0;
+padding: 0;
   margin: 0;
 `
 
@@ -111,9 +100,7 @@ export const CopyButton = styled(Button).attrs({
 `
 
 export const CopyText = styled.span`
-  font-size: 12px;
-  line-height: 20px;
-  font-weight: 400 !important;
+  font: ${leo.font.small.regular};
 `
 
 export const CopiedTick = styled(Icon).attrs({

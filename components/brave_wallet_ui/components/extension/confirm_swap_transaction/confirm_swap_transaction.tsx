@@ -282,8 +282,7 @@ export function ConfirmSwapTransaction() {
                       >
                         <ProviderIcon src={SwapProviderMetadata[provider]} />
                         <Text
-                          textSize='12px'
-                          isBold={true}
+                          variant='small.semibold'
                           textColor='primary'
                         >
                           {SwapProviderNameMapping[provider]}

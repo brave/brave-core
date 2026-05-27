@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 import * as leo from '@brave/leo/tokens/css'
 
 // styles
@@ -46,11 +47,8 @@ export const TopRowButton = styled(WalletButton)`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 13px;
-  line-height: 20px;
-  background-color: transparent;
+  font: ${leo.font.small.semibold};
+background-color: transparent;
   color: ${(p) => p.theme.palette.white};
   outline: none;
   border: none;
@@ -89,10 +87,8 @@ export const MainContent = styled.section`
 
 export const NftCountHeading = styled.h1`
   font-style: normal;
-  font-weight: 600;
-  font-size: 40px;
-  line-height: 60px;
-  color: ${(p) => p.theme.palette.white};
+  font: ${leo.font.heading.display2};
+color: ${(p) => p.theme.palette.white};
   margin: 0 0 32px 0;
   padding: 0;
 `
@@ -111,11 +107,8 @@ export const PinNftsButton = styled(ActionButton).attrs({
 `
 
 export const InfoSubHeading = styled.h6`
-  font-style: normal;
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 18px;
-  margin: 0;
+  font: ${leo.font.small.semibold};
+margin: 0;
   padding: 0;
   color: ${(p) => p.theme.color.interactive08};
   cursor: pointer;

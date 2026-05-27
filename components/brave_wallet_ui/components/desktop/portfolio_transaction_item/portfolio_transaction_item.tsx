@@ -361,8 +361,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
             margin='0px 0px 4px 0px'
           >
             <DateText
-              textSize='12px'
-              isBold={false}
+              variant='small.semibold'={false}
             >
               {formatDateAsRelative(
                 serializedTimeDeltaToJSDate(transaction.createdTime),
@@ -370,16 +369,14 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
             </DateText>
             <TransactionTypeIcon name={transactionTypeIcon} />
             <TransactionTypeText
-              textSize='12px'
-              isBold={false}
+              variant='small.semibold'={false}
             >
               {getLocale(transactionTypeLocale)}
               {` `}
               {getLocale(intentLabel)}
             </TransactionTypeText>
             <IntentAddressText
-              textSize='12px'
-              isBold={true}
+              variant='small.semibold'
             >
               {intentAddress}
             </IntentAddressText>
@@ -463,8 +460,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
                   <Row gap='8px'>
                     {isSolanaSwap ? (
                       <TokenNameText
-                        textSize='14px'
-                        isBold={true}
+                        variant='default.semibold'
                         textAlign='left'
                       >
                         {getLocale('braveWalletSolanaSwap')}
@@ -490,8 +486,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
                         ) : (
                           <>
                             <TokenNameText
-                              textSize='14px'
-                              isBold={true}
+                              variant='default.semibold'
                               textAlign='left'
                             >
                               {sourceToken?.symbol ?? ''}
@@ -500,8 +495,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
                               <ArrowIcon />
                             </ArrowIconWrapper>
                             <TokenNameText
-                              textSize='14px'
-                              isBold={true}
+                              variant='default.semibold'
                               textAlign='left'
                             >
                               {isBridge && destinationNetwork
@@ -542,15 +536,13 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
                     ) : (
                       <>
                         <TokenNameText
-                          textSize='14px'
-                          isBold={true}
+                          variant='default.semibold'
                           textAlign='left'
                         >
                           {sendToken?.name ?? ''}
                         </TokenNameText>
                         <TokenSymbolText
-                          textSize='12px'
-                          isBold={false}
+                          variant='small.semibold'={false}
                           textAlign='left'
                         >
                           {sendToken?.symbol ?? ''}
@@ -570,8 +562,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
                   <>
                     {formattedSourceAmount && (
                       <FiatValueText
-                        textSize='12px'
-                        isBold={false}
+                        variant='small.semibold'={false}
                         textAlign='right'
                       >
                         {`-${formattedSourceAmount}`}
@@ -579,8 +570,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
                     )}
                     {formattedDestinationAmount && (
                       <AssetValueText
-                        textSize='14px'
-                        isBold={true}
+                        variant='default.semibold'
                         textAlign='right'
                       >
                         {`+${formattedDestinationAmount}`}
@@ -590,8 +580,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
                 ) : (
                   <>
                     <AssetValueText
-                      textSize='14px'
-                      isBold={true}
+                      variant='default.semibold'
                       textAlign='right'
                     >
                       {transaction.txType
@@ -608,8 +597,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
                       />
                     ) : (
                       <FiatValueText
-                        textSize='12px'
-                        isBold={false}
+                        variant='small.semibold'={false}
                         textAlign='right'
                       >
                         {formattedSendFiatValue}

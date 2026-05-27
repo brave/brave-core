@@ -126,9 +126,8 @@ export const DisabledLabel = styled.div`
   flex-direction: row;
   background-color: ${leo.color.green[20]};
   color: ${leo.color.green[50]};
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
+  font: ${leo.font.xSmall.regular};
+text-transform: uppercase;
   padding: 4px 6px;
   border-radius: 4px;
 `

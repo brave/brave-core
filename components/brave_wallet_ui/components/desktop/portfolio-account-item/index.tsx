@@ -185,8 +185,7 @@ export const PortfolioAccountItem = (props: Props) => {
             />
             <Column alignItems='flex-start'>
               <Text
-                textSize='14px'
-                isBold={true}
+                variant='default.semibold'
                 textColor='primary'
                 textAlign='left'
               >
@@ -202,8 +201,7 @@ export const PortfolioAccountItem = (props: Props) => {
               )}
               {account.address && !isRewardsAccount && (
                 <Text
-                  textSize='12px'
-                  isBold={false}
+                  variant='small.semibold'={false}
                   textColor='primary'
                   textAlign='left'
                 >
@@ -221,16 +219,14 @@ export const PortfolioAccountItem = (props: Props) => {
               hideBalances={hideBalances ?? false}
             >
               <Text
-                textSize='14px'
-                isBold={true}
+                variant='default.semibold'
                 textColor='primary'
                 textAlign='right'
               >
                 {`${formattedAssetBalance} ${asset.symbol}`}
               </Text>
               <Text
-                textSize='12px'
-                isBold={false}
+                variant='small.semibold'={false}
                 textColor='secondary'
                 textAlign='right'
               >

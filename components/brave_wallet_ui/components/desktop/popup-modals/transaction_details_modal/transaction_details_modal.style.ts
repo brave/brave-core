@@ -91,15 +91,17 @@ export const SectionRow = styled(Row)`
   }
 `
 
-export const SectionLabel = styled(Text)`
+export const SectionLabel = styled(Text).attrs({
+  variant: 'default.regular',
+})`
   color: ${leo.color.text.secondary};
   min-width: 150px;
-  line-height: 24px;
 `
 
-export const SectionInfoText = styled(Text)`
+export const SectionInfoText = styled(Text).attrs({
+  variant: 'default.regular',
+})`
   color: ${leo.color.text.primary};
-  line-height: 24px;
   word-break: break-all;
 `
 
@@ -117,20 +119,23 @@ export const HeroBackground = styled.div`
     mask-size: cover;
   }
 `
-export const TransactionTypeText = styled(Text)`
+export const TransactionTypeText = styled(Text).attrs({
+  variant: 'heading.h2',
+})`
   color: ${leo.color.text.primary};
-  line-height: 28px;
   text-transform: capitalize;
 `
 
-export const TransactionTotalText = styled(Text)`
+export const TransactionTotalText = styled(Text).attrs({
+  variant: 'heading.h4',
+})`
   color: ${leo.color.text.primary};
-  line-height: 24px;
 `
 
-export const TransactionFiatText = styled(Text)`
+export const TransactionFiatText = styled(Text).attrs({
+  variant: 'small.regular',
+})`
   color: ${leo.color.text.secondary};
-  line-height: 18px;
 `
 
 const assetIconProps = {
@@ -189,7 +194,7 @@ export const StatusText = styled(Text)<{
           : leo.color.systemfeedback.infoText};
   line-height: normal;
   text-transform: uppercase;
-  font-size: 10px;
+  font: ${leo.font.xSmall.regular};
 `
 
 export const LoadingIcon = styled(ProgressRing)<{
@@ -222,13 +227,11 @@ export const ErrorIcon = styled(Icon).attrs({
 export const InternalStatusText = styled.code`
   color: ${leo.color.text.primary};
   font-family: monospace;
-  font-size: 12px;
-  line-height: 24px;
+  font: ${leo.font.small.regular};
 `
 
 export const DateText = styled(Text)`
   color: ${leo.color.text.primary};
-  line-height: 18px;
   margin-bottom: 4px;
 `
 

@@ -32,7 +32,7 @@ export const AccountListButton = (props: Props) => {
       <Row>
         <Text
           isBold={true}
-          textSize='14px'
+          variant='default.regular'
           textColor='text01'
         >
           {account.name}
@@ -40,7 +40,7 @@ export const AccountListButton = (props: Props) => {
         <HorizontalSpacer size={15} />
         <Text
           isBold={false}
-          textSize='12px'
+          variant='small.regular'
           textColor='text03'
         >
           {reduceAddress(account.address)}

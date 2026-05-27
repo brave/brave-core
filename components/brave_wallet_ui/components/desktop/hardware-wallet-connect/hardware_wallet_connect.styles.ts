@@ -45,8 +45,8 @@ export const HardwareWalletGraphic = styled.div<{
 `
 
 export const HardwareWalletCaption = styled.div`
-  font-size: 16px;
-  text-align: left;
+  font: ${leo.font.large.regular};
+text-align: left;
   flex-shrink: 0;
   max-width: 200px;
 `
@@ -95,11 +95,8 @@ export const HardwareWalletAccountListItem = styled.div`
 export const HardwareWalletAccountListItemRow = styled.div`
   flex: 1;
   flex-direction: row;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
-  display: flex;
+  font: ${leo.font.default.regular};
+display: flex;
   align-items: center;
 
   color: ${leo.color.text.primary};
@@ -149,9 +146,8 @@ export const SelectWrapper = styled.div`
 `
 
 export const ErrorText = styled.span`
-  font-size: 12px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.errorText};
+  font: ${leo.font.small.regular};
+color: ${(p) => p.theme.color.errorText};
   margin-bottom: 10px;
 `
 
@@ -172,8 +168,8 @@ export const LoadIcon = styled(LoaderIcon)<Partial<StyleProps>>`
 `
 
 export const NoSearchResultText = styled.div`
-  font-size: 12px;
-  text-align: center;
+  font: ${leo.font.small.regular};
+text-align: center;
   width: 100%;
   margin-top: 16px;
   color: ${(p) => p.theme.color.text02};
@@ -190,12 +186,7 @@ export const Instructions = styled.div<{ mode: 'info' | 'success' | 'error' }>`
         ? leo.color.systemfeedback.successText
         : leo.color.systemfeedback.errorText};
   text-align: center;
-  font: ${leo.font.large.regular};
-  gap: 8px;
-`
-
-export const Bold = styled.span`
-  font-weight: 600;
+  font: ${leo.font.large.semibold};
 `
 
 export const AccountCheckbox = styled(Checkbox)`
@@ -221,7 +212,7 @@ export const AccountListHeader = styled.div`
 
   color: ${leo.color.text.tertiary};
   font: ${leo.font.small.semibold};
-  border-bottom: 1px solid ${leo.color.divider.subtle};
+border-bottom: 1px solid ${leo.color.divider.subtle};
   padding: 16px;
 `
 
@@ -237,12 +228,12 @@ export const AccountListContent = styled.div`
 
 export const DropdownLabel = styled.div`
   font: ${leo.font.small.semibold};
-  color: ${leo.color.text.primary};
+color: ${leo.color.text.primary};
 `
 
 export const HelpLink = styled.a`
   font: ${leo.font.small.semibold};
-  color: ${leo.color.text.interactive};
+color: ${leo.color.text.interactive};
   text-decoration: none;
 `
 

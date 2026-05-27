@@ -132,8 +132,7 @@ function NetworkCheckbox({
         size='big'
       />
       <Text
-        textSize='14px'
-        isBold={false}
+        variant='default.semibold'={false}
       >
         {network.chainName}
       </Text>
@@ -334,8 +333,7 @@ export const OnboardingNetworkSelection = () => {
             onChange={() => setShowTestNets((prev) => !prev)}
           >
             <Text
-              textSize='12px'
-              isBold={false}
+              variant='small.semibold'={false}
               color={leo.color.text.primary}
             >
               {getLocale('braveWalletShowTestnets')}

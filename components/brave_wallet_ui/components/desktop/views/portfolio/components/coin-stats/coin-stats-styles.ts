@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -20,11 +21,8 @@ export const StatValue = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 24px;
-  line-height: 20px;
-  color: ${(p) => p.theme.color.text01};
+  font: ${leo.font.heading.h2};
+color: ${(p) => p.theme.color.text01};
   margin-bottom: 12px;
   justify-content: center;
 `
@@ -33,11 +31,8 @@ export const StatLabel = styled.div`
   display: flex;
   align-items: center;
   text-align: center;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
-  color: ${(p) => p.theme.color.text02};
+  font: ${leo.font.default.regular};
+color: ${(p) => p.theme.color.text02};
   justify-content: center;
 `
 
@@ -50,11 +45,8 @@ export const Row = styled.div`
 
 export const Currency = styled.sup`
   display: flex;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.text02};
+  font: ${leo.font.small.semibold};
+color: ${(p) => p.theme.color.text02};
   top: -0.8em;
   margin-right: 2px;
 `

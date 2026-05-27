@@ -32,7 +32,7 @@ export const ChecksumInfo = () => {
         padding='0px 40px'
       >
         <Text
-          textSize='22px'
+          variant='heading.h2'
           textColor='primary'
           isBold={true}
         >
@@ -40,7 +40,7 @@ export const ChecksumInfo = () => {
         </Text>
         <VerticalSpacer space={16} />
         <Text
-          textSize='14px'
+          variant='default.regular'
           textColor='secondary'
           isBold={false}
         >
@@ -55,7 +55,7 @@ export const ChecksumInfo = () => {
         padding='24px 40px'
       >
         <Text
-          textSize='14px'
+          variant='default.regular'
           textColor='primary'
           isBold={true}
         >
@@ -70,7 +70,7 @@ export const ChecksumInfo = () => {
         </Text>
         <VerticalSpacer space={8} />
         <Text
-          textSize='12px'
+          variant='small.regular'
           textColor='secondary'
           isBold={false}
           textAlign='left'
@@ -79,7 +79,7 @@ export const ChecksumInfo = () => {
         </Text>
         <VerticalSpacer space={24} />
         <Text
-          textSize='14px'
+          variant='default.regular'
           textColor='primary'
           isBold={true}
         >
@@ -87,7 +87,7 @@ export const ChecksumInfo = () => {
         </Text>
         <VerticalSpacer space={8} />
         <Text
-          textSize='12px'
+          variant='small.regular'
           textColor='secondary'
           isBold={false}
           textAlign='left'
@@ -104,7 +104,7 @@ export const ChecksumInfo = () => {
         padding='52px 0px'
       >
         <Text
-          textSize='14px'
+          variant='default.regular'
           textColor='secondary'
           isBold={true}
         >

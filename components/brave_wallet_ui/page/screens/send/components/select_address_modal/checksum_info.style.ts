@@ -26,7 +26,7 @@ export const InfoGraphic = styled.img`
 
 export const Link = styled.a`
   font: ${leo.font.small.semibold};
-  color: ${leo.color.text.interactive};
+color: ${leo.color.text.interactive};
   margin: 0px;
   padding: 0px;
   text-decoration: none;

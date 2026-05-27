@@ -6,11 +6,8 @@ import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
 
 export const Header = styled.h1`
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 28px;
-  color: ${leo.color.text.primary};
+  font: ${leo.font.large.semibold};
+color: ${leo.color.text.primary};
   margin: 0 0 8px 0;
   padding: 0;
   text-align: left;
@@ -18,11 +15,8 @@ export const Header = styled.h1`
 `
 
 export const Description = styled.p`
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 18px;
-  color: ${leo.color.text.secondary};
+  font: ${leo.font.small.regular};
+color: ${leo.color.text.secondary};
   margin: 0;
   padding: 0;
 `
@@ -30,7 +24,6 @@ export const Description = styled.p`
 export const Link = styled.a`
   color: ${leo.color.button.background};
   text-decoration: none;
-  font-weight: 600;
 `
 
 export const Underline = styled.span`

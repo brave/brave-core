@@ -61,9 +61,8 @@ export const AddressButton = styled(WalletButton)`
   align-items: center;
   justify-content: center;
   flex-direction: row;
-  font-size: 16px;
-  line-height: 20px;
-  color: ${(p) => p.theme.color.text03};
+  font: ${leo.font.large.regular};
+color: ${(p) => p.theme.color.text03};
   cursor: pointer;
   outline: none;
   background: none;
@@ -105,10 +104,8 @@ export const PrivateKeyBubble = styled(WalletButton)`
   border-radius: 4px;
   margin: 0px;
   word-break: break-all;
-  font-size: 14px;
-  line-height: 22px;
-  font-weight: 600;
-  color: ${(p) => p.theme.color.text01};
+  font: ${leo.font.default.semibold};
+color: ${(p) => p.theme.color.text01};
   outline: none;
   border: none;
 `
@@ -127,9 +124,8 @@ export const ButtonWrapper = styled.div`
 `
 
 export const ErrorText = styled.span`
-  font-size: 12px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.errorText};
+  font: ${leo.font.small.regular};
+color: ${(p) => p.theme.color.errorText};
   margin-bottom: 16px;
 `
 

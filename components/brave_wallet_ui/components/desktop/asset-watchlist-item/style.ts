@@ -52,17 +52,14 @@ export const NameAndSymbol = styled.div`
 `
 
 export const AssetName = styled.span`
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 600;
-  color: ${(p) => p.theme.color.text01};
+  font: ${leo.font.default.semibold};
+color: ${(p) => p.theme.color.text01};
   text-align: left;
 `
 
 export const AssetSymbol = styled.span`
-  font-size: 12px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.text01};
+  font: ${leo.font.small.regular};
+color: ${(p) => p.theme.color.text01};
   text-align: left;
 `
 
@@ -71,9 +68,8 @@ export const Balance = styled.div`
   align-items: center;
   justify-content: flex-start;
   flex-direction: row;
-  font-size: 14px;
-  line-height: 20px;
-  color: ${(p) => p.theme.color.text01};
+  font: ${leo.font.default.regular};
+color: ${(p) => p.theme.color.text01};
   width: 48%;
 `
 

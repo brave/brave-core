@@ -145,7 +145,7 @@ export const ZCashSyncModal = (props: Props) => {
         >
           {syncStatus !== undefined && (
             <Text
-              textSize='22px'
+              variant='heading.h2'
               textColor='primary'
               isBold={true}
             >
@@ -159,7 +159,7 @@ export const ZCashSyncModal = (props: Props) => {
         >
           {syncStatus === undefined ? (
             <Text
-              textSize='14px'
+              variant='default.regular'
               textColor='primary'
               isBold={false}
             >
@@ -169,14 +169,14 @@ export const ZCashSyncModal = (props: Props) => {
             <>
               <Column gap='8px'>
                 <Text
-                  textSize='14px'
+                  variant='default.regular'
                   textColor='primary'
                   isBold={false}
                 >
                   {getLocale('braveWalletProcessingBlock')}
                 </Text>
                 <Text
-                  textSize='16px'
+                  variant='large.regular'
                   textColor='primary'
                   isBold={true}
                 >
@@ -186,7 +186,7 @@ export const ZCashSyncModal = (props: Props) => {
                   )}
                 </Text>
                 <Text
-                  textSize='12px'
+                  variant='small.regular'
                   textColor='tertiary'
                   isBold={false}
                 >
@@ -197,14 +197,14 @@ export const ZCashSyncModal = (props: Props) => {
               </Column>
               <Column gap='8px'>
                 <Text
-                  textSize='14px'
+                  variant='default.regular'
                   textColor='primary'
                   isBold={false}
                 >
                   {getLocale('braveWalletRanges')}
                 </Text>
                 <Text
-                  textSize='16px'
+                  variant='large.regular'
                   textColor='primary'
                   isBold={true}
                 >

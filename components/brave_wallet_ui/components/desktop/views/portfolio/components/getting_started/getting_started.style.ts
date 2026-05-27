@@ -21,7 +21,7 @@ export const GettingStartedWrapper = styled(Column)`
 
 export const Title = styled(Text)`
   font: ${leo.font.heading.h4};
-  background: ${leo.gradient.iconsActive};
+background: ${leo.gradient.iconsActive};
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -54,7 +54,7 @@ export const Card = styled(WalletButton)`
 
 export const CardTitle = styled(Text)`
   font: ${leo.font.large.semibold};
-  color: ${leo.color.text.interactive};
+color: ${leo.color.text.interactive};
 `
 
 export const CardDescription = styled(Text)`

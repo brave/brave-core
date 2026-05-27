@@ -77,14 +77,12 @@ export const FilterDropdownSection = (props: Props) => {
         </IconWrapper>
         <Column alignItems='flex-start'>
           <CheckboxText
-            textSize='14px'
-            isBold={true}
+            variant='default.semibold'
           >
             {title}
           </CheckboxText>
           <Description
-            textSize='12px'
-            isBold={false}
+            variant='small.semibold'={false}
             textAlign='left'
           >
             {description}

@@ -32,37 +32,29 @@ export const StyledWrapper = styled.div`
 `
 
 export const Title = styled(Text)`
-  font-size: 28px;
-  font-weight: 500;
-  line-height: 40px;
-  color: ${leo.color.text.primary};
+  font: ${leo.font.heading.h1};
+color: ${leo.color.text.primary};
   margin-bottom: 8px;
   text-align: center;
   @media screen and (max-width: ${layoutPanelWidth}px) {
-    font-size: 22px;
-    line-height: 28px;
-    font-weight: 600;
-    margin-bottom: 4px;
+    font: ${leo.font.heading.h2};
+margin-bottom: 4px;
   }
 `
 
 export const Description = styled(Text)`
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 28px;
-  color: ${leo.color.text.secondary};
+  font: ${leo.font.large.regular};
+color: ${leo.color.text.secondary};
   margin-bottom: 40px;
   text-align: center;
   @media screen and (max-width: ${layoutPanelWidth}px) {
-    font-size: 14px;
-    line-height: 22px;
-    color: ${leo.color.text.tertiary};
+    font: ${leo.font.default.regular};
+color: ${leo.color.text.tertiary};
     margin-bottom: 24px;
   }
 `
 
 export const InputLabel = styled(Text)`
-  line-height: 18px;
   color: ${leo.color.text.primary};
   @media screen and (max-width: ${layoutPanelWidth}px) {
     display: none;

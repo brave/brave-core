@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 import ArrowDown2Icon from '../../../assets/svg-icons/arrow-down-2.svg'
 import {
@@ -13,12 +14,8 @@ import {
 } from '../../shared/style'
 
 export const ExchangeRate = styled.div`
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 18px;
-
-  display: flex;
+  font: ${leo.font.small.regular};
+display: flex;
   align-items: center;
   text-align: right;
   color: ${(p) => p.theme.color.text03};
@@ -77,11 +74,8 @@ export const SwapAssetHeader = styled.div`
 `
 
 export const SwapAssetTitle = styled.div`
-  font-style: normal;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.text03};
+  font: ${leo.font.small.semibold};
+color: ${(p) => p.theme.color.text03};
 `
 
 export const SwapAssetAddress = styled.div`
@@ -104,11 +98,8 @@ export const AddressOrb = styled.div<{ orb: string }>`
 
 export const AccountNameText = styled.span`
   cursor: default;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 10px;
-  line-height: 15px;
-  display: flex;
+  font: ${leo.font.xSmall.regular};
+display: flex;
   align-items: center;
   text-align: right;
   color: ${(p) => p.theme.color.text03};
@@ -141,29 +132,22 @@ export const Spacer = styled.div`
 `
 
 export const SwapAssetAmountSymbol = styled.span`
-  font-style: normal;
-  font-weight: 500;
-  font-size: 22px;
-  display: flex;
+  font: ${leo.font.heading.h2};
+display: flex;
   align-items: center;
   color: ${(p) => p.theme.color.text01};
 `
 
 export const NetworkDescriptionText = styled.span`
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  display: flex;
+  font: ${leo.font.small.regular};
+display: flex;
   align-items: center;
   color: ${(p) => p.theme.color.text03};
 `
 
 export const LaunchButton = styled(WalletButton)`
-  font-style: normal;
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.interactive05};
+  font: ${leo.font.small.semibold};
+color: ${(p) => p.theme.color.interactive05};
   background: none;
   cursor: pointer;
   outline: none;

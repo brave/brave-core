@@ -37,10 +37,8 @@ export const NameAndIcon = styled.div`
 `
 
 export const AssetName = styled.span`
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 24px;
-  color: ${leo.color.text.primary};
+  font: ${leo.font.default.semibold};
+color: ${leo.color.text.primary};
 `
 
 export const NameColumn = styled.div`
@@ -51,9 +49,8 @@ export const NameColumn = styled.div`
 `
 
 export const NetworkDescriptionText = styled.span`
-  font-size: 12px;
-  line-height: 18px;
-  color: ${leo.color.text.secondary};
+  font: ${leo.font.small.regular};
+color: ${leo.color.text.secondary};
 `
 
 export const PriceContainer = styled.div`
@@ -62,10 +59,8 @@ export const PriceContainer = styled.div`
 `
 
 export const PriceText = styled.span`
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 24px;
-  color: ${leo.color.text.primary};
+  font: ${leo.font.default.semibold};
+color: ${leo.color.text.primary};
   text-align: right;
   vertical-align: middle;
 `

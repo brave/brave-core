@@ -48,9 +48,8 @@ export const ButtonRow = styled(Row)`
 `
 
 export const ErrorText = styled.span`
-  font-size: 12px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.errorText};
+  font: ${leo.font.small.regular};
+color: ${(p) => p.theme.color.errorText};
   margin-bottom: 10px;
   text-align: left;
 `
@@ -71,10 +70,8 @@ export const SubDivider = styled.div`
 `
 
 export const DividerText = styled.span`
-  font-size: 15px;
-  line-height: 20px;
-  font-weight: 600;
-  margin-bottom: 10px;
+  font: ${leo.font.heading.h4};
+margin-bottom: 10px;
   color: ${(p) => p.theme.color.text03};
 `
 export const FormWrapper = styled.div`
@@ -124,13 +121,13 @@ export const InputLabel = styled.span`
 export const TokenNamePreviewText = styled.span`
   color: ${leo.color.text.primary};
   font: ${leo.font.default.regular};
-  text-align: center;
+text-align: center;
 `
 
 export const TokenTickerPreviewText = styled.span`
   color: ${leo.color.text.primary};
   font: ${leo.font.default.semibold};
-  text-align: center;
+text-align: center;
 `
 
 export const ButtonRowSpacer = styled.div`

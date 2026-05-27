@@ -42,8 +42,7 @@ export const PrivacyModal = React.forwardRef<HTMLDivElement, Props>(
           verticalPadding={20}
         >
           <Text
-            textSize='18px'
-            isBold={true}
+            variant='large.semibold'
           >
             {getLocale('braveSwapPrivacyPolicy')}
           </Text>
@@ -61,7 +60,7 @@ export const PrivacyModal = React.forwardRef<HTMLDivElement, Props>(
           horizontalAlign='flex-start'
         >
           <Text
-            textSize='16px'
+            variant='large.regular'
             textColor='text02'
             textAlign='left'
             isBold={true}
@@ -83,7 +82,7 @@ export const PrivacyModal = React.forwardRef<HTMLDivElement, Props>(
               0x
             </Link>
             <Text
-              textSize='14px'
+              variant='default.regular'
               textColor='text03'
               textAlign='left'
               isBold={true}
@@ -116,7 +115,7 @@ export const PrivacyModal = React.forwardRef<HTMLDivElement, Props>(
               Jupiter
             </Link>
             <Text
-              textSize='14px'
+              variant='default.regular'
               textColor='text03'
               textAlign='left'
               isBold={true}

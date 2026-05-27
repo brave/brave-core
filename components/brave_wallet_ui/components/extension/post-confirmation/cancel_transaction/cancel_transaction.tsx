@@ -70,7 +70,7 @@ export const CancelTransaction = (props: Props) => {
       >
         <Title>{getLocale('braveWalletTransactionCancel')}</Title>
         <Text
-          textSize='14px'
+          variant='default.regular'
           textColor='primary'
           isBold={false}
         >

@@ -117,14 +117,14 @@ export const TokenDetails = (props: Props) => {
           <AssetIconWithPlaceholder asset={token} />
         )}
         <Text
-          textSize='16px'
+          variant='large.regular'
           textColor='primary'
           isBold={true}
         >
           {tokenName}
         </Text>
         <Text
-          textSize='12px'
+          variant='small.regular'
           textColor='secondary'
           isBold={false}
         >
@@ -139,7 +139,7 @@ export const TokenDetails = (props: Props) => {
         {!isNFT && (
           <Row justifyContent='space-between'>
             <Text
-              textSize='14px'
+              variant='default.regular'
               textColor='secondary'
               isBold={false}
             >
@@ -158,7 +158,7 @@ export const TokenDetails = (props: Props) => {
                 gap='2px'
               >
                 <Text
-                  textSize='14px'
+                  variant='default.regular'
                   textColor='primary'
                   isBold={true}
                 >
@@ -170,15 +170,14 @@ export const TokenDetails = (props: Props) => {
                 {spotPrice?.percentageChange24h ? (
                   <PercentChangeText
                     isDown={isPriceDown}
-                    textSize='14px'
-                    isBold={false}
+                    variant='default.semibold'={false}
                   >
                     {`${!isPriceDown ? '+' : ''}
                         ${Number(spotPrice.percentageChange24h).toFixed(2)}%`}
                   </PercentChangeText>
                 ) : (
                   <Text
-                    textSize='14px'
+                    variant='default.regular'
                     textColor='primary'
                     isBold={false}
                   >
@@ -191,14 +190,14 @@ export const TokenDetails = (props: Props) => {
         )}
         <Row justifyContent='space-between'>
           <Text
-            textSize='14px'
+            variant='default.regular'
             textColor='secondary'
             isBold={false}
           >
             {getLocale('braveWalletAllowAddNetworkNetworkPanelTitle')}
           </Text>
           <Text
-            textSize='14px'
+            variant='default.regular'
             textColor='primary'
             isBold={true}
           >
@@ -208,7 +207,7 @@ export const TokenDetails = (props: Props) => {
         {isNFT && (
           <Row justifyContent='space-between'>
             <Text
-              textSize='14px'
+              variant='default.regular'
               textColor='secondary'
               isBold={false}
             >
@@ -220,7 +219,7 @@ export const TokenDetails = (props: Props) => {
                 gap='4px'
               >
                 <Text
-                  textSize='14px'
+                  variant='default.regular'
                   textColor='primary'
                   isBold={true}
                 >
@@ -234,14 +233,14 @@ export const TokenDetails = (props: Props) => {
         {isNFT && (
           <Row justifyContent='space-between'>
             <Text
-              textSize='14px'
+              variant='default.regular'
               textColor='secondary'
               isBold={false}
             >
               {getLocale('braveWalletNFTDetailTokenStandard')}
             </Text>
             <Text
-              textSize='14px'
+              variant='default.regular'
               textColor='primary'
               isBold={true}
             >
@@ -252,7 +251,7 @@ export const TokenDetails = (props: Props) => {
         {!isNativeToken && (
           <Row justifyContent='space-between'>
             <Text
-              textSize='14px'
+              variant='default.regular'
               textColor='secondary'
               isBold={false}
             >
@@ -264,7 +263,7 @@ export const TokenDetails = (props: Props) => {
                 gap='4px'
               >
                 <Text
-                  textSize='14px'
+                  variant='default.regular'
                   textColor='primary'
                   isBold={true}
                 >
