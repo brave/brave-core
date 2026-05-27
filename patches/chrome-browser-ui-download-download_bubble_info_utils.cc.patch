@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/download/download_bubble_info_utils.cc b/chrome/browser/ui/download/download_bubble_info_utils.cc
+index 8d65908660c254f5eb38989d8143bfd034263ab7..e5aedf27d2521f974d0ffa92b1ff63fc6e9848d2 100644
+--- a/chrome/browser/ui/download/download_bubble_info_utils.cc
++++ b/chrome/browser/ui/download/download_bubble_info_utils.cc
+@@ -332,6 +332,7 @@ std::vector<DownloadBubbleQuickAction> QuickActionsForDownload(
+         DownloadCommands::Command::OPEN_WHEN_COMPLETE,
+         l10n_util::GetStringUTF16(IDS_DOWNLOAD_BUBBLE_OPEN_QUICK_ACTION),
+         &vector_icons::kLaunchChromeRefreshIcon);
++    AddDeleteLocalFileQuickAction(actions);
+   }
+ 
+   return actions;
