@@ -1,0 +1,86 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Zero out `kSplitViewContentInset`.
+
+      Brave controls split-view padding via the rounded-corners feature
+      instead. The constant is referenced both inside and outside
+      `MultiContentsView`, so adjusting it here is preferable to zeroing
+      the inset fields in the constructor.
+    re_pattern: 'kSplitViewContentInset = 8;'
+    replace: 'kSplitViewContentInset = 0;'
+
+  - description: |
+      Make `GetActiveContentsContainerView` virtual.
+
+      `BraveMultiContentsView` overrides this hook to return the
+      web-panel container when a web panel is active.
+    re_pattern:
+      '(\s+)(ContentsContainerView\* GetActiveContentsContainerView\(\) const;)'
+    replace: '\1virtual \2'
+
+  - description: |
+      Make `GetContentsContainerViewFor` virtual.
+
+      `BraveMultiContentsView` overrides this hook to return the
+      web-panel container for the web-panel `WebContents`.
+    re_pattern: '(\s+)(ContentsContainerView\* GetContentsContainerViewFor\()'
+    replace: '\1virtual \2'
+
+  - description: |
+      Make `GetActiveContentsView` virtual.
+
+      `BraveMultiContentsView` overrides this hook to return the
+      web-panel's contents view when a web panel is active.
+    re_pattern: '(\s+)(ContentsWebView\* GetActiveContentsView\(\) const;)'
+    replace: '\1virtual \2'
+
+  - description: |
+      Declare `ResetResizeArea` as a virtual no-op hook.
+
+      `BraveMultiContentsView` overrides this to reset the resize area
+      when the web-panel layout changes.
+    re_pattern: '( +)(void SetBackgroundRadii\([^)]*\);)'
+    replace: |-
+      \1\2
+      \1virtual void ResetResizeArea() {}
+
+  - description: |
+      Make `ExecuteOnEachVisibleContentsView` virtual.
+
+      `BraveMultiContentsView` overrides this hook to include the
+      web-panel contents view when iterating visible contents.
+    re_pattern: '(\s+)(void ExecuteOnEachVisibleContentsView\()'
+    replace: '\1virtual \2'
+
+  - description: |
+      Make `OnWebContentsFocused` virtual.
+
+      `BraveMultiContentsView` overrides this hook to intercept focus on
+      the web-panel contents.
+    re_pattern: '(\s+)(void OnWebContentsFocused\(views::WebView\*\);)'
+    replace: '\1virtual \2'
+
+  - description: |
+      Make `UpdateContentsBorderAndOverlay` virtual.
+
+      `BraveMultiContentsView` overrides this hook to adjust the borders
+      and overlays for the web-panel layout.
+    re_pattern: '(\s+)(void UpdateContentsBorderAndOverlay\(\);)'
+    replace: '\1virtual \2'
+
+  - description: |
+      Friend `BraveMultiContentsView` from the base class.
+
+      The Brave subclass overrides private virtuals declared above
+      (`ResetResizeArea`, `UpdateContentsBorderAndOverlay`,
+      `OnWebContentsFocused`, `ExecuteOnEachVisibleContentsView`) and
+      reads private members such as `contents_container_views_`.
+    re_pattern: '(class MultiContentsView\b.*?\n private:\n)'
+    re_flags: [DOTALL]
+    replace: |
+      \1  friend class BraveMultiContentsView;
