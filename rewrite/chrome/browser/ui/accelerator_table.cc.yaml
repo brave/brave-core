@@ -4,7 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: >-
+  - description: |-
       Rename GetAcceleratorList() to GetAcceleratorList_ChromiumImpl() so that
       we can have our own implementation of GetAcceleratorList().
     re_pattern: '(std::vector<AcceleratorMapping>\ GetAcceleratorList)(\(\)\ {)'
