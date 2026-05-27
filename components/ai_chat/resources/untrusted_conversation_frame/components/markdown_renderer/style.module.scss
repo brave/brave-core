@@ -228,7 +228,7 @@
       display: inline;
     }
   }
-  .markdownContainer .tableCell:before {
+  .markdownContainer .tableCell[data-label]::before {
     content: attr(data-label) ': ';
     color: var(--leo-color-text-tertiary);
     display: inline;
