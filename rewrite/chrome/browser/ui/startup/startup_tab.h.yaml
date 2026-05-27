@@ -4,19 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: 'Add headers'
-    pattern: |-
-      #include "url/gurl.h"
-    replace: |-
-      #include "url/gurl.h"
-      // Containers headers begin
-      #include "brave/components/containers/buildflags/buildflags.h"
-
-      #if BUILDFLAG(ENABLE_CONTAINERS)
-      #include "brave/components/containers/core/browser/container_specifier.h"
-      #endif
-      // Containers headers end
-
   - description: 'Add fields to StartupTab'
     pattern: |-
       Type type;

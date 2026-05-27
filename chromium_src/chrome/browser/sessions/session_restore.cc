@@ -5,7 +5,7 @@
 
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/navigator/browser_navigator_params.h"
 #include "chrome/browser/ui/startup/startup_tab.h"
 
@@ -16,13 +16,13 @@
 namespace {
 
 void BraveModifyStartupTabNavigationParams(const StartupTab& tab,
-                                           Browser* browser,
+                                           BrowserWindowInterface* browser,
                                            NavigateParams& params) {
 #if BUILDFLAG(ENABLE_CONTAINERS)
   if (!params.storage_partition_config) {
     params.storage_partition_config =
         containers::GetStoragePartitionConfigForContainerSpecifier(
-            browser->profile(), tab.container);
+            browser->GetProfile(), tab.container);
   }
 #endif
 }

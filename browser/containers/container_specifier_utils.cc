@@ -29,7 +29,7 @@ void SerializeContainerSpecifier(content::WebContents* web_contents,
   }
 
   CHECK(value.is_dict());
-  if (auto container_id = GetContainerIdForWebContents(web_contents);
+  if (std::string container_id = GetContainerIdForWebContents(web_contents);
       !container_id.empty()) {
     value.GetDict().Set(kContainerIdKey, base::Value(container_id));
   }
