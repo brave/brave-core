@@ -21,6 +21,7 @@
 #include "brave/components/ai_chat/core/browser/tools/chart_code_plugin.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_input_properties.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/script_injector/common/mojom/script_injector.mojom.h"
 #include "chrome/browser/profiles/profile.h"
@@ -39,7 +40,6 @@ namespace ai_chat {
 namespace {
 
 constexpr base::TimeDelta kExecutionTimeLimit = base::Seconds(10);
-constexpr size_t kMaxConsoleLogLength = 50000;
 constexpr char kScriptProperty[] = "script";
 constexpr char kArtifactTypeKey[] = "type";
 constexpr char kArtifactContentKey[] = "content";
@@ -102,19 +102,21 @@ void CodeExecutionTool::CodeExecutionRequest::OnDidAddMessageToConsole(
     int32_t line_no,
     const std::u16string& source_id,
     const std::optional<std::u16string>& untrusted_stack_trace) {
-  auto message_utf8 = base::UTF16ToUTF8(message);
-  if (console_logs_total_size_ + message_utf8.size() > kMaxConsoleLogLength) {
+  std::string message_utf8 = base::UTF16ToUTF8(message);
+  size_t message_size = message_utf8.size();
+  if (console_logs_total_size_ + message_size >
+      features::kMaxConsoleLogOutputSize.Get()) {
     timeout_timer_.Stop();
     Observe(nullptr);
     if (resolve_callback_) {
       base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
           FROM_HERE, base::BindOnce(std::move(resolve_callback_),
-                                    "Error: Console log limit exceeded",
+                                    "Error: Console log output limit exceeded",
                                     base::ListValue()));
     }
     return;
   }
-  console_logs_total_size_ += message_utf8.size();
+  console_logs_total_size_ += message_size;
   console_logs_.push_back(std::move(message_utf8));
 }
 

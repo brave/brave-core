@@ -149,6 +149,8 @@ COMPONENT_EXPORT(AI_CHAT_COMMON)
 BASE_DECLARE_FEATURE(kCodeExecutionTool);
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<bool> kCodeExecutionToolCharts;
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<size_t> kMaxConsoleLogOutputSize;
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsCodeExecutionToolEnabled();
 
 #if BUILDFLAG(IS_IOS)

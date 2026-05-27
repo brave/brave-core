@@ -370,7 +370,7 @@ IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
 
   std::string output;
   ExecuteCode(script, &output);
-  EXPECT_EQ(output, "Error: Console log limit exceeded");
+  EXPECT_EQ(output, "Error: Console log output limit exceeded");
 }
 
 }  // namespace ai_chat
