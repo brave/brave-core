@@ -87,7 +87,7 @@ std::vector<std::string> GetImportableListFromChromeExtensionsList(
 
     if (auto* manifest_dict = dict.FindDict("manifest")) {
       if (Manifest::GetTypeFromManifestValue(*manifest_dict) ==
-          Manifest::TYPE_EXTENSION) {
+          Manifest::Type::kExtension) {
         extensions.push_back(key);
       }
     }
