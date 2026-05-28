@@ -14,6 +14,8 @@
 #include "brave/components/ai_chat/core/browser/tools/tool_provider.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 
+class Profile;
+
 namespace content {
 class BrowserContext;
 }
@@ -29,7 +31,7 @@ class TabManagementTool;
 // that the tools for a conversation perform actions on.
 class BrowserToolProvider : public ToolProvider {
  public:
-  explicit BrowserToolProvider(content::BrowserContext* browser_context);
+  explicit BrowserToolProvider(Profile* profile);
 
   ~BrowserToolProvider() override;
 
@@ -47,6 +49,7 @@ class BrowserToolProvider : public ToolProvider {
 #if BUILDFLAG(ENABLE_AI_CHAT_TAB_MANAGEMENT_TOOL)
   std::unique_ptr<TabManagementTool> tab_management_tool_;
 #endif
+  raw_ptr<Profile> profile_ = nullptr;
 };
 
 }  // namespace ai_chat
