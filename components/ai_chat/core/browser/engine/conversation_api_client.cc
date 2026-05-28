@@ -1,67 +1,54 @@
-// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "brave/components/ai_chat/core/browser/engine/conversation_api_client.h"
 
-#include <ios>
-#include <ostream>
+#include <optional>
 #include <string>
-#include <string_view>
-#include <type_traits>
 #include <utility>
 #include <vector>
 
 #include "base/check.h"
-#include "base/containers/checked_iterators.h"
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/flat_map.h"
 #include "base/containers/map_util.h"
 #include "base/functional/bind.h"
+#include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "base/logging.h"
-#include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
-#include "base/memory/weak_ptr.h"
-#include "base/metrics/field_trial_params.h"
-#include "base/numerics/clamped_math.h"
 #include "base/strings/strcat.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/types/expected.h"
-#include "base/values.h"
-#include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
-#include "brave/components/ai_chat/core/browser/engine/conversation_api_parsing.h"
+#include "brave/components/ai_chat/core/browser/engine/deep_research_parsing.h"
+#include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_parsing.h"
+#include "brave/components/ai_chat/core/browser/engine/oai_serialization_utils.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_service_keys/brave_service_key_utils.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/l10n/common/locale_util.h"
-#include "mojo/public/cpp/bindings/struct_ptr.h"
 #include "net/http/http_request_headers.h"
 #include "net/http/http_status_code.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
-#include "url/gurl.h"
-#include "url/url_constants.h"
+#include "third_party/abseil-cpp/absl/functional/overload.h"
 
 namespace ai_chat {
 
 namespace {
 
-using ConversationEvent = ConversationAPIClient::ConversationEvent;
-using ConversationEventType = ConversationAPIClient::ConversationEventType;
-using ConversationEventRole = ConversationAPIClient::ConversationEventRole;
-
-constexpr char kRemotePath[] = "v1/conversation";
-
-constexpr char kAllowedWebSourceFaviconHost[] = "imgs.search.brave.com";
+// https://github.com/brave/aichat/blob/8fc09e023e8674e1069b7c1c30f848c74c4c1154/aichat/serve/open_ai_api.py#L47
+constexpr char kRemotePath[] = "v1/chat/completions";
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("ai_chat", R"(
@@ -87,136 +74,240 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
     )");
 }
 
-base::ListValue ConversationEventsToList(
-    std::vector<ConversationEvent> conversation) {
-  static constexpr auto kRoleMap =
-      base::MakeFixedFlatMap<ConversationEventRole, std::string_view>(
-          {{ConversationEventRole::kUser, "user"},
-           {ConversationEventRole::kAssistant, "assistant"},
-           {ConversationEventRole::kTool, "tool"}});
+std::string_view GetContentBlockTypeString(
+    const mojom::ContentBlockPtr& block) {
+  static constexpr auto kSimpleRequestTypeMap =
+      base::MakeFixedFlatMap<mojom::SimpleRequestType, std::string_view>({
+          {mojom::SimpleRequestType::kParaphrase, "brave-request-paraphrase"},
+          {mojom::SimpleRequestType::kImprove,
+           "brave-request-improve-excerpt-language"},
+          {mojom::SimpleRequestType::kShorten, "brave-request-shorten"},
+          {mojom::SimpleRequestType::kExpand, "brave-request-expansion"},
+          {mojom::SimpleRequestType::kRequestSummary, "brave-request-summary"},
+          {mojom::SimpleRequestType::kRequestQuestions,
+           "brave-request-questions"},
+      });
 
-  static constexpr auto kTypeMap =
-      base::MakeFixedFlatMap<ConversationEventType, std::string_view>(
-          {{ConversationEventType::kContextURL, "contextURL"},
-           {ConversationEventType::kUserText, "userText"},
-           {ConversationEventType::kPageText, "pageText"},
-           {ConversationEventType::kPageExcerpt, "pageExcerpt"},
-           {ConversationEventType::kVideoTranscript, "videoTranscript"},
-           {ConversationEventType::kVideoTranscriptXML, "videoTranscriptXML"},
-           {ConversationEventType::kVideoTranscriptVTT, "videoTranscriptVTT"},
-           {ConversationEventType::kChatMessage, "chatMessage"},
-           {ConversationEventType::kRequestRewrite, "requestRewrite"},
-           {ConversationEventType::kRequestSummary, "requestSummary"},
-           {ConversationEventType::kRequestSuggestedActions,
-            "requestSuggestedActions"},
-           {ConversationEventType::kSuggestedActions, "suggestedActions"},
-           {ConversationEventType::kGetSuggestedTopicsForFocusTabs,
-            "suggestFocusTopics"},
-           {ConversationEventType::kDedupeTopics, "dedupeFocusTopics"},
-           {ConversationEventType::kGetSuggestedAndDedupeTopicsForFocusTabs,
-            "suggestAndDedupeFocusTopics"},
-           {ConversationEventType::kGetFocusTabsForTopic, "classifyTabs"},
-           {ConversationEventType::kUploadImage, "uploadImage"},
-           {ConversationEventType::kPageScreenshot, "pageScreenshot"},
-           {ConversationEventType::kUploadPdf, "uploadPdf"},
-           {ConversationEventType::kToolUse, "toolUse"},
-           {ConversationEventType::kUserMemory, "userMemory"},
-           {ConversationEventType::kChangeTone, "requestChangeTone"},
-           {ConversationEventType::kParaphrase, "requestParaphrase"},
-           {ConversationEventType::kImprove, "requestImprove"},
-           {ConversationEventType::kShorten, "requestShorten"},
-           {ConversationEventType::kExpand, "requestExpand"}});
+  static_assert(kSimpleRequestTypeMap.size() ==
+                    static_cast<size_t>(mojom::SimpleRequestType::kCount),
+                "kSimpleRequestTypeMap must cover all "
+                "SimpleRequestType enum values");
 
-  base::ListValue events;
-  for (auto& event : conversation) {
-    base::DictValue event_dict;
-
-    // Set role
-    auto role_it = kRoleMap.find(event.role);
-    CHECK(role_it != kRoleMap.end());
-    event_dict.Set("role", role_it->second);
-
-    // Set type
-    auto type_it = kTypeMap.find(event.type);
-    CHECK(type_it != kTypeMap.end());
-    event_dict.Set("type", type_it->second);
-
-    // Content string or content blocks
-    event_dict.Set("content", ContentBlocksToJson(event.content));
-
-    // Tool calls
-    if (!event.tool_calls.empty()) {
-      // For some reason the server currently expects chat messages that contain
-      // tool calls as well as regular content to have a different type.
-      event_dict.Set("type", "toolCalls");
-      base::ListValue tool_call_dicts;
-      for (const auto& tool_event : event.tool_calls) {
-        base::DictValue tool_call_dict;
-        tool_call_dict.Set("id", tool_event->id);
-        tool_call_dict.Set("type", "function");
-
-        base::DictValue function_dict;
-        function_dict.Set("name", tool_event->tool_name);
-
-        function_dict.Set("arguments", tool_event->arguments_json);
-
-        tool_call_dict.Set("function", std::move(function_dict));
-        tool_call_dicts.Append(std::move(tool_call_dict));
-      }
-
-      event_dict.Set("tool_calls", std::move(tool_call_dicts));
+  switch (block->which()) {
+    case mojom::ContentBlock::Tag::kTextContentBlock:
+      return "text";
+    case mojom::ContentBlock::Tag::kImageContentBlock:
+      return "image_url";
+    case mojom::ContentBlock::Tag::kFileContentBlock:
+      return "file";
+    case mojom::ContentBlock::Tag::kFileExtractedTextContentBlock:
+      return "brave-file-extracted-text";
+    case mojom::ContentBlock::Tag::kPageExcerptContentBlock:
+      return "brave-page-excerpt";
+    case mojom::ContentBlock::Tag::kPageTextContentBlock:
+      return "brave-page-text";
+    case mojom::ContentBlock::Tag::kVideoTranscriptContentBlock:
+      return "brave-video-transcript";
+    case mojom::ContentBlock::Tag::kRequestTitleContentBlock:
+      return "brave-conversation-title";
+    case mojom::ContentBlock::Tag::kChangeToneContentBlock:
+      return "brave-request-change-tone";
+    case mojom::ContentBlock::Tag::kMemoryContentBlock:
+      return "brave-user-memory";
+    case mojom::ContentBlock::Tag::kSuggestFocusTopicsContentBlock:
+      return "brave-suggest-focus-topics";
+    case mojom::ContentBlock::Tag::kSuggestFocusTopicsWithEmojiContentBlock:
+      return "brave-suggest-focus-topics-emoji";
+    case mojom::ContentBlock::Tag::kFilterTabsContentBlock:
+      return "brave-filter-tabs";
+    case mojom::ContentBlock::Tag::kReduceFocusTopicsContentBlock:
+      return "brave-reduce-focus-topics";
+    case mojom::ContentBlock::Tag::kSimpleRequestContentBlock: {
+      const auto& request = block->get_simple_request_content_block();
+      auto it = kSimpleRequestTypeMap.find(request->type);
+      return it->second;
     }
-
-    if (!event.tool_call_id.empty()) {
-      event_dict.Set("tool_call_id", event.tool_call_id);
-    }
-
-    if (event.type == ConversationEventType::kGetFocusTabsForTopic) {
-      event_dict.Set("topic", event.topic);
-    }
-
-    if (event.type == ConversationEventType::kUserMemory && event.user_memory) {
-      event_dict.Set("memory", std::move(*event.user_memory));
-    }
-
-    if (event.type == ConversationEventType::kChangeTone) {
-      event_dict.Set("tone", event.tone);
-    }
-
-    events.Append(std::move(event_dict));
+    case mojom::ContentBlock::Tag::kWebSourcesContentBlock:
+      return "brave-chat.webSources";
   }
-  return events;
+}
+
+std::string ParseErrorCode(const base::Value& body) {
+  if (body.is_dict()) {
+    if (auto* error_dict = body.GetDict().FindDict("error")) {
+      if (auto* type_str = error_dict->FindString("type")) {
+        return *type_str;
+      }
+    }
+  }
+  return std::string();
 }
 
 }  // namespace
 
-ConversationAPIClient::ConversationEvent::ConversationEvent(
-    ConversationEventRole role,
-    ConversationEventType type,
-    Content content,
-    const std::string& topic,
-    std::optional<base::DictValue> user_memory,
-    std::vector<mojom::ToolUseEventPtr> tool_calls,
-    const std::string& tool_call_id,
-    const std::string& tone)
-    : role(role),
-      type(type),
-      content(std::move(content)),
-      topic(topic),
-      user_memory(std::move(user_memory)),
-      tool_calls(std::move(tool_calls)),
-      tool_call_id(tool_call_id),
-      tone(tone) {}
+// static
+base::ListValue ConversationAPIClient::SerializeOAIMessages(
+    std::vector<OAIMessage> messages) {
+  base::ListValue serialized_messages;
+  for (auto& message : messages) {
+    base::DictValue message_dict;
 
-ConversationAPIClient::ConversationEvent::ConversationEvent() = default;
+    // Set role
+    message_dict.Set("role", std::move(message.role));
 
-ConversationAPIClient::ConversationEvent::~ConversationEvent() = default;
+    // Content blocks
+    base::ListValue content_list;
+    for (auto& block : message.content) {
+      base::DictValue content_block_dict;
 
-ConversationAPIClient::ConversationEvent::ConversationEvent(
-    ConversationAPIClient::ConversationEvent&& other) = default;
+      // Set type for all blocks
+      content_block_dict.Set("type", GetContentBlockTypeString(block));
 
-ConversationAPIClient::ConversationEvent& ConversationEvent::operator=(
-    ConversationAPIClient::ConversationEvent&& other) = default;
+      // Set content data based on union tag
+      switch (block->which()) {
+        case mojom::ContentBlock::Tag::kTextContentBlock:
+          content_block_dict.Set("text", block->get_text_content_block()->text);
+          break;
+
+        case mojom::ContentBlock::Tag::kPageExcerptContentBlock:
+          content_block_dict.Set("text",
+                                 block->get_page_excerpt_content_block()->text);
+          break;
+
+        case mojom::ContentBlock::Tag::kPageTextContentBlock:
+          content_block_dict.Set("text",
+                                 block->get_page_text_content_block()->text);
+          break;
+
+        case mojom::ContentBlock::Tag::kVideoTranscriptContentBlock:
+          content_block_dict.Set(
+              "text", block->get_video_transcript_content_block()->text);
+          break;
+
+        case mojom::ContentBlock::Tag::kRequestTitleContentBlock:
+          content_block_dict.Set(
+              "text", block->get_request_title_content_block()->text);
+          break;
+
+        case mojom::ContentBlock::Tag::kImageContentBlock: {
+          content_block_dict.Set(
+              "image_url",
+              ImageContentBlockToDict(*block->get_image_content_block()));
+          break;
+        }
+
+        case mojom::ContentBlock::Tag::kFileContentBlock: {
+          content_block_dict.Set(
+              "file", FileContentBlockToDict(*block->get_file_content_block()));
+          break;
+        }
+
+        case mojom::ContentBlock::Tag::kFileExtractedTextContentBlock:
+          content_block_dict.Set(
+              "content", block->get_file_extracted_text_content_block()->text);
+          break;
+
+        case mojom::ContentBlock::Tag::kChangeToneContentBlock: {
+          const auto& tone = block->get_change_tone_content_block();
+          // Server currently requires the empty text field to be passed.
+          content_block_dict.Set("text", tone->text);
+          content_block_dict.Set("tone", tone->tone);
+          break;
+        }
+
+        case mojom::ContentBlock::Tag::kMemoryContentBlock: {
+          content_block_dict.Set(
+              "memory",
+              MemoryContentBlockToDict(*block->get_memory_content_block()));
+          break;
+        }
+
+        case mojom::ContentBlock::Tag::kSuggestFocusTopicsContentBlock:
+          content_block_dict.Set(
+              "text", block->get_suggest_focus_topics_content_block()->text);
+          break;
+
+        case mojom::ContentBlock::Tag::kSuggestFocusTopicsWithEmojiContentBlock:
+          content_block_dict.Set(
+              "text",
+              block->get_suggest_focus_topics_with_emoji_content_block()->text);
+          break;
+
+        case mojom::ContentBlock::Tag::kFilterTabsContentBlock: {
+          const auto& filter_tabs = block->get_filter_tabs_content_block();
+          content_block_dict.Set("text", filter_tabs->text);
+          content_block_dict.Set("topic", filter_tabs->topic);
+          break;
+        }
+
+        case mojom::ContentBlock::Tag::kReduceFocusTopicsContentBlock:
+          content_block_dict.Set(
+              "text", block->get_reduce_focus_topics_content_block()->text);
+          break;
+
+        case mojom::ContentBlock::Tag::kSimpleRequestContentBlock:
+          // Server currently requires the empty text field to be passed.
+          content_block_dict.Set("text", "");
+          break;
+
+        case mojom::ContentBlock::Tag::kWebSourcesContentBlock: {
+          auto& web_sources = block->get_web_sources_content_block();
+          base::ListValue sources_list;
+          for (auto& source : web_sources->sources) {
+            base::DictValue source_dict;
+            source_dict.Set("title", source->title);
+            source_dict.Set("url", source->url.spec());
+            source_dict.Set("favicon", source->favicon_url.spec());
+            if (source->page_content) {
+              source_dict.Set("page_content", std::move(*source->page_content));
+            }
+            if (source->extra_snippets) {
+              base::ListValue snippets_list;
+              for (auto& snippet : source->extra_snippets.value()) {
+                snippets_list.Append(std::move(snippet));
+              }
+              source_dict.Set("extra_snippets", std::move(snippets_list));
+            }
+            sources_list.Append(std::move(source_dict));
+          }
+          content_block_dict.Set("sources", std::move(sources_list));
+          if (!web_sources->queries.empty()) {
+            if (web_sources->queries.size() == 1) {
+              content_block_dict.Set("query", web_sources->queries.front());
+            } else {
+              base::ListValue queries_list;
+              for (const auto& q : web_sources->queries) {
+                queries_list.Append(q);
+              }
+              content_block_dict.Set("query", std::move(queries_list));
+            }
+          }
+          if (!web_sources->rich_results.empty()) {
+            base::ListValue rich_results_list;
+            for (const auto& rich_result : web_sources->rich_results) {
+              auto parsed =
+                  base::JSONReader::Read(rich_result, base::JSON_PARSE_RFC);
+              if (parsed.has_value()) {
+                rich_results_list.Append(std::move(*parsed));
+              }
+            }
+            content_block_dict.Set("rich_results",
+                                   std::move(rich_results_list));
+          }
+          break;
+        }
+      }
+      content_list.Append(std::move(content_block_dict));
+    }
+    message_dict.Set("content", std::move(content_list));
+
+    SerializeToolCallsOnMessageDict(message, message_dict);
+
+    serialized_messages.Append(std::move(message_dict));
+  }
+
+  return serialized_messages;
+}
 
 ConversationAPIClient::ConversationAPIClient(
     const std::string& model_name,
@@ -238,7 +329,7 @@ void ConversationAPIClient::ClearAllQueries() {
 }
 
 void ConversationAPIClient::PerformRequest(
-    std::vector<ConversationEvent> conversation,
+    std::vector<OAIMessage> messages,
     std::optional<base::ListValue> oai_tool_definitions,
     const std::optional<std::string>& preferred_tool_name,
     const ConversationCapabilitySet& conversation_capabilities,
@@ -248,7 +339,7 @@ void ConversationAPIClient::PerformRequest(
   // Get credentials and then perform request
   auto callback = base::BindOnce(
       &ConversationAPIClient::PerformRequestWithCredentials,
-      weak_ptr_factory_.GetWeakPtr(), std::move(conversation),
+      weak_ptr_factory_.GetWeakPtr(), std::move(messages),
       std::move(oai_tool_definitions), preferred_tool_name,
       conversation_capabilities, model_name, std::move(data_received_callback),
       std::move(completed_callback));
@@ -256,7 +347,7 @@ void ConversationAPIClient::PerformRequest(
 }
 
 std::string ConversationAPIClient::CreateJSONRequestBody(
-    std::vector<ConversationEvent> conversation,
+    std::vector<OAIMessage> messages,
     std::optional<base::ListValue> oai_tool_definitions,
     const std::optional<std::string>& preferred_tool_name,
     const ConversationCapabilitySet& conversation_capabilities,
@@ -264,27 +355,21 @@ std::string ConversationAPIClient::CreateJSONRequestBody(
     const bool is_sse_enabled) {
   base::DictValue dict;
 
-  auto capability = mojom::ConversationCapability::CHAT;
-  if (conversation_capabilities.contains(
-          mojom::ConversationCapability::CONTENT_AGENT)) {
-    capability = mojom::ConversationCapability::CONTENT_AGENT;
-  }
-  const auto* capability_str =
-      base::FindOrNull(kCapabilityStringMap, capability);
-  CHECK(capability_str);
-  dict.Set("capability", *capability_str);
+  dict.Set("messages", SerializeOAIMessages(std::move(messages)));
 
-  dict.Set("events", ConversationEventsToList(std::move(conversation)));
+  base::ListValue capabilities_list;
+  for (const auto& capability : conversation_capabilities) {
+    const auto* capability_str =
+        base::FindOrNull(kCapabilityStringMap, capability);
+    CHECK(capability_str) << "Missing string for capability: " << capability;
+    capabilities_list.Append(*capability_str);
+  }
+  dict.Set("brave_capability", std::move(capabilities_list));
   dict.Set("model", model_name ? *model_name : model_name_);
   dict.Set("system_language",
            base::StrCat({brave_l10n::GetDefaultISOLanguageCodeString(), "_",
                          brave_l10n::GetDefaultISOCountryCodeString()}));
   dict.Set("stream", is_sse_enabled);
-#if BUILDFLAG(IS_IOS)
-  dict.Set("use_citations", ai_chat::features::IsAIChatWebUIEnabled());
-#else
-  dict.Set("use_citations", true);
-#endif
 
   if (oai_tool_definitions.has_value() && !oai_tool_definitions->empty()) {
     dict.Set("tools", std::move(oai_tool_definitions.value()));
@@ -296,7 +381,7 @@ std::string ConversationAPIClient::CreateJSONRequestBody(
 }
 
 void ConversationAPIClient::PerformRequestWithCredentials(
-    std::vector<ConversationEvent> conversation,
+    std::vector<OAIMessage> messages,
     std::optional<base::ListValue> oai_tool_definitions,
     const std::optional<std::string>& preferred_tool_name,
     const ConversationCapabilitySet& conversation_capabilities,
@@ -304,7 +389,7 @@ void ConversationAPIClient::PerformRequestWithCredentials(
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback,
     std::optional<CredentialCacheEntry> credential) {
-  if (conversation.empty()) {
+  if (messages.empty()) {
     std::move(completed_callback).Run(base::unexpected(mojom::APIError::None));
     return;
   }
@@ -320,25 +405,16 @@ void ConversationAPIClient::PerformRequestWithCredentials(
   const bool is_sse_enabled =
       ai_chat::features::kAIChatSSE.Get() && !data_received_callback.is_null();
   const std::string request_body = CreateJSONRequestBody(
-      std::move(conversation), std::move(oai_tool_definitions),
-      preferred_tool_name, conversation_capabilities, model_name,
-      is_sse_enabled);
+      std::move(messages), std::move(oai_tool_definitions), preferred_tool_name,
+      conversation_capabilities, model_name, is_sse_enabled);
 
-  base::flat_map<std::string, std::string> headers;
+  auto headers = GetBraveHeaders(credential);
   const auto digest_header = brave_service_keys::GetDigestHeader(request_body);
   headers.emplace(digest_header.first, digest_header.second);
-  auto result = brave_service_keys::GetAuthorizationHeader(
+  auto auth_header = brave_service_keys::GetAuthorizationHeader(
       BUILDFLAG(SERVICE_KEY_AICHAT), headers, api_url,
       net::HttpRequestHeaders::kPostMethod, {"digest"});
-  headers.emplace(result.first, result.second);
-
-  if (premium_enabled) {
-    // Add Leo premium SKU credential as a Cookie header.
-    std::string cookie_header_value =
-        "__Secure-sku#brave-leo-premium=" + credential->credential;
-    headers.emplace("Cookie", cookie_header_value);
-  }
-  headers.emplace("x-brave-key", BUILDFLAG(BRAVE_SERVICES_KEY));
+  headers.emplace(auth_header.first, auth_header.second);
   headers.emplace("Accept", "text/event-stream");
 
   if (is_sse_enabled) {
@@ -375,41 +451,30 @@ void ConversationAPIClient::OnQueryCompleted(
   const bool success = result.Is2XXResponseCode();
   // Handle successful request
   if (success) {
-    std::string completion = "";
-    std::optional<std::string> model_key = std::nullopt;
     std::optional<bool> is_near_verified = std::nullopt;
-    mojom::ConversationEntryEventPtr completion_event = nullptr;
-    // We're checking for a value body in case for non-streaming API results.
-    // TODO(petemill): server should provide parseable history events even for
-    // non-streaming requests?
-    if (result.value_body().is_dict()) {
-      const std::string* value =
-          result.value_body().GetDict().FindString("completion");
-      if (value) {
-        // Trimming necessary for Llama 2 which prepends responses with a " ".
-        completion = base::TrimWhitespaceASCII(*value, base::TRIM_ALL);
-      }
-
-      const std::string* model_value =
-          result.value_body().GetDict().FindString("model");
-      if (model_value) {
-        model_key = model_service_->GetLeoModelKeyByName(*model_value);
-      }
-    }
-
+    std::optional<std::string> model_key = std::nullopt;
     const auto& headers = result.headers();
     if (const auto* header_value =
             base::FindOrNull(headers, kBraveNearVerifiedHeader)) {
       is_near_verified = *header_value == "true";
     }
 
-    completion_event = completion.empty()
-                           ? nullptr
-                           : mojom::ConversationEntryEvent::NewCompletionEvent(
-                                 mojom::CompletionEvent::New(completion));
-    GenerationResultData data(std::move(completion_event), std::move(model_key),
-                              is_near_verified);
-    std::move(callback).Run(base::ok(std::move(data)));
+    // Parse OAI-format response for non-streaming API results
+    if (result.value_body().is_dict()) {
+      auto& result_dict = result.value_body().GetDict();
+      model_key = GetLeoModelKeyFromResponse(result_dict);
+      if (auto parsed_result =
+              ParseOAICompletionResponse(result_dict, model_key)) {
+        parsed_result->is_near_verified = is_near_verified;
+        std::move(callback).Run(base::ok(std::move(*parsed_result)));
+        return;
+      }
+    }
+
+    // Return null event if no completion was provided in response body, can
+    // happen when server send them all via OnQueryDataReceived.
+    std::move(callback).Run(
+        GenerationResultData{nullptr, std::move(model_key), is_near_verified});
     return;
   }
 
@@ -429,7 +494,12 @@ void ConversationAPIClient::OnQueryCompleted(
     error = mojom::APIError::ConnectionIssue;
   }
 
-  std::move(callback).Run(base::unexpected(std::move(error)));
+  auto details =
+      mojom::APIErrorDetails::New(static_cast<int32_t>(result.response_code()),
+                                  ParseErrorCode(result.value_body()));
+
+  std::move(callback).Run(
+      base::unexpected(EngineConsumer::Error(error, std::move(details))));
 }
 
 void ConversationAPIClient::OnQueryDataReceived(
@@ -440,190 +510,66 @@ void ConversationAPIClient::OnQueryDataReceived(
   }
 
   auto& result_params = result->GetDict();
-
-  if (auto result_data = ParseResponseEvent(result_params, model_service_)) {
-    callback.Run(std::move(*result_data));
+  std::optional<std::string> model_key =
+      GetLeoModelKeyFromResponse(result_params);
+  const auto* object_type = result_params.FindString("object");
+  if (!object_type) {
+    return;
   }
 
-  // Tool calls - they may happen individually or combined with a response event
-  if (const base::ListValue* tool_calls =
-          result_params.FindList("tool_calls")) {
-    // Check for alignment_check that applies to tool calls in this response
-    mojom::PermissionChallengePtr permission_challenge = nullptr;
-    if (const base::DictValue* alignment_dict =
-            result_params.FindDict("alignment_check")) {
-      if (!alignment_dict->FindBool("allowed").value_or(true)) {
-        const std::string* assessment = alignment_dict->FindString("reasoning");
-        permission_challenge = mojom::PermissionChallenge::New(
-            assessment ? std::make_optional(*assessment) : std::nullopt,
-            std::nullopt);
-      }
+  if (*object_type == "chat.completion.chunk") {
+    if (auto result_data =
+            ParseOAICompletionResponse(result_params, model_key)) {
+      callback.Run(std::move(*result_data));
     }
-    std::optional<std::string> model_key;
-    if (const auto* model = result_params.FindString("model")) {
-      model_key = model_service_->GetLeoModelKeyByName(*model);
-    }
+  } else if (*object_type == "brave-chat.contentReceipt") {
+    uint64_t total_tokens = base::saturated_cast<uint64_t>(
+        result_params.FindInt("total_tokens").value_or(0));
+    uint64_t trimmed_tokens = base::saturated_cast<uint64_t>(
+        result_params.FindInt("trimmed_tokens").value_or(0));
+    auto event = mojom::ConversationEntryEvent::NewContentReceiptEvent(
+        mojom::ContentReceiptEvent::New(total_tokens, trimmed_tokens));
 
-    // Provide any valid tool use events to the callback
-    for (auto& tool_use_event : ToolUseEventFromToolCallsResponse(tool_calls)) {
-      if (permission_challenge) {
-        // Apply PermissionChallenge to the first tool call, which will
-        // stop the tool execution loop until the user approves or denies.
-        tool_use_event->permission_challenge = std::move(permission_challenge);
-        permission_challenge = nullptr;
-      }
-      auto tool_event = mojom::ConversationEntryEvent::NewToolUseEvent(
-          std::move(tool_use_event));
-
-      callback.Run(GenerationResultData(std::move(tool_event), model_key));
+    callback.Run(GenerationResultData(std::move(event), model_key));
+  } else if (*object_type == "brave-chat.toolStart") {
+    const std::string* tool_name = result_params.FindString("tool_name");
+    if (tool_name && IsBraveSearchTool(*tool_name)) {
+      auto event = mojom::ConversationEntryEvent::NewSearchStatusEvent(
+          mojom::SearchStatusEvent::New(true));
+      callback.Run(GenerationResultData(std::move(event), std::nullopt));
     }
+  } else if (*object_type == "brave-chat.inlineSearch") {
+    auto* query = result_params.FindString("query");
+    auto* results = result_params.FindList("results");
+    if (query && !query->empty() && results) {
+      std::string results_json;
+      base::JSONWriter::Write(*results, &results_json);
+      auto event = mojom::ConversationEntryEvent::NewInlineSearchEvent(
+          mojom::InlineSearchEvent::New(*query, std::move(results_json)));
+      callback.Run(GenerationResultData(std::move(event), model_key));
+    }
+  } else if (base::StartsWith(*object_type, "brave-chat.deepResearch")) {
+    if (auto event = ParseDeepResearchEvent(*object_type, result_params)) {
+      callback.Run(GenerationResultData(std::move(event), model_key));
+    }
+  }
+
+  // Tool calls - in OpenAI format they're inside choices[0].delta.tool_calls
+  // or choices[0].message.tool_calls
+  for (auto& tool_result :
+       ParseToolCallsFromOAIResponse(result_params, model_key)) {
+    callback.Run(std::move(tool_result));
   }
 }
 
-// static
-std::optional<ConversationAPIClient::GenerationResultData>
-ConversationAPIClient::ParseResponseEvent(base::DictValue& response_event,
-                                          ModelService* model_service) {
-  mojom::ConversationEntryEventPtr event;
-  const std::string* model = response_event.FindString("model");
-  if (!model) {
+std::optional<std::string> ConversationAPIClient::GetLeoModelKeyFromResponse(
+    const base::DictValue& response) {
+  const std::string* model = response.FindString("model");
+  if (!model_service_ || !model) {
     return std::nullopt;
   }
 
-  const std::string* type = response_event.FindString("type");
-  if (!type) {
-    return std::nullopt;
-  }
-
-  // Vary response parsing based on type
-  if (*type == "completion") {
-    const std::string* completion = response_event.FindString("completion");
-    if (!completion || completion->empty()) {
-      return std::nullopt;
-    }
-    event = mojom::ConversationEntryEvent::NewCompletionEvent(
-        mojom::CompletionEvent::New(*completion));
-  } else if (*type == "isSearching") {
-    event = mojom::ConversationEntryEvent::NewSearchStatusEvent(
-        mojom::SearchStatusEvent::New());
-  } else if (*type == "searchQueries") {
-    const base::ListValue* queries = response_event.FindList("queries");
-    if (!queries) {
-      return std::nullopt;
-    }
-    auto search_queries_event = mojom::SearchQueriesEvent::New();
-    for (auto& item : *queries) {
-      if (item.is_string()) {
-        search_queries_event->search_queries.push_back(item.GetString());
-      }
-    }
-    event = mojom::ConversationEntryEvent::NewSearchQueriesEvent(
-        std::move(search_queries_event));
-  } else if (*type == "webSources") {
-    const base::ListValue* sources = response_event.FindList("sources");
-    if (!sources) {
-      return std::nullopt;
-    }
-    auto web_sources_event = mojom::WebSourcesEvent::New();
-    for (auto& item : *sources) {
-      if (!item.is_dict()) {
-        continue;
-      }
-      const base::DictValue& source = item.GetDict();
-      const std::string* title = source.FindString("title");
-      const std::string* url = source.FindString("url");
-      const std::string* favicon_url = source.FindString("favicon");
-      if (!title || !url) {
-        DVLOG(2) << "Missing required fields in web source event: "
-                 << item.DebugString();
-        continue;
-      }
-      GURL item_url(*url);
-      GURL item_favicon_url =
-          favicon_url
-              ? GURL(*favicon_url)
-              : GURL("chrome-untrusted://resources/brave-icons/globe.svg");
-
-      if (!item_url.is_valid() || !item_favicon_url.is_valid()) {
-        DVLOG(2) << "Invalid URL in webSource event: " << item.DebugString();
-        continue;
-      }
-      // Validate favicon is private source
-      if (favicon_url &&
-          (!item_favicon_url.SchemeIs(url::kHttpsScheme) ||
-           base::CompareCaseInsensitiveASCII(
-               item_favicon_url.host(), kAllowedWebSourceFaviconHost) != 0)) {
-        DVLOG(2) << "webSource event contained disallowed host or scheme: "
-                 << item.DebugString();
-        continue;
-      }
-      web_sources_event->sources.push_back(mojom::WebSource::New(
-          *title, item_url, item_favicon_url, std::nullopt, std::nullopt));
-    }
-
-    // Rich Data
-    const base::ListValue* rich_results =
-        response_event.FindList("rich_results");
-    if (rich_results) {
-      for (auto& item : *rich_results) {
-        if (!item.is_dict()) {
-          continue;
-        }
-
-        const base::ListValue* rich_sources_item =
-            item.GetDict().FindList("results");
-        if (!rich_sources_item) {
-          continue;
-        }
-
-        for (auto& rich_source_item : *rich_sources_item) {
-          if (!rich_source_item.is_dict()) {
-            continue;
-          }
-
-          // Add the raw JSON string to the rich results list
-          std::string json;
-          base::JSONWriter::Write(rich_source_item, &json);
-          web_sources_event->rich_results.push_back(json);
-        }
-      }
-    }
-
-    if (web_sources_event->sources.empty()) {
-      return std::nullopt;
-    }
-    event = mojom::ConversationEntryEvent::NewSourcesEvent(
-        std::move(web_sources_event));
-  } else if (*type == "conversationTitle") {
-    const std::string* title = response_event.FindString("title");
-    if (!title) {
-      return std::nullopt;
-    }
-    event = mojom::ConversationEntryEvent::NewConversationTitleEvent(
-        mojom::ConversationTitleEvent::New(*title));
-  } else if (*type == "contentReceipt") {
-    std::optional<int> total_tokens_opt =
-        response_event.FindInt("total_tokens");
-    uint64_t total_tokens =
-        total_tokens_opt.has_value() && total_tokens_opt.value() >= 0
-            ? static_cast<uint64_t>(total_tokens_opt.value())
-            : 0;
-    std::optional<int> trimmed_tokens_opt =
-        response_event.FindInt("trimmed_tokens");
-    uint64_t trimmed_tokens =
-        trimmed_tokens_opt.has_value() && trimmed_tokens_opt.value() >= 0
-            ? static_cast<uint64_t>(trimmed_tokens_opt.value())
-            : 0;
-    event = mojom::ConversationEntryEvent::NewContentReceiptEvent(
-        mojom::ContentReceiptEvent::New(total_tokens, trimmed_tokens));
-  } else {
-    // Server will provide different types of events. From time to time, new
-    // types of events will be introduced and we should ignore unknown ones.
-    return std::nullopt;
-  }
-
-  return GenerationResultData(std::move(event),
-                              model_service->GetLeoModelKeyByName(*model));
+  return model_service_->GetLeoModelKeyByName(*model);
 }
 
 }  // namespace ai_chat

@@ -1,4 +1,4 @@
-// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -11,7 +11,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/core/browser/engine/conversation_api_client.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
@@ -30,18 +29,21 @@ class SharedURLLoaderFactory;
 namespace ai_chat {
 
 class AIChatCredentialManager;
+
 namespace mojom {
 class LeoModelOptions;
 class ModelOptions;
 }  // namespace mojom
 
-// An AI Chat engine consumer that uses the remote HTTP Brave Conversation API.
+// An AI Chat engine consumer that uses the remote HTTP Brave Conversation API
+// which is using OpenAI API format with some customization, such as a
+// customized content block type handled by Brave aichat server.
 // Converts between AI Chat's Conversation actions and data model
 // (history, associated content, suggested questions, etc.) and the Conversation
 // API's request/response format.
 class EngineConsumerConversationAPI : public EngineConsumer {
  public:
-  explicit EngineConsumerConversationAPI(
+  EngineConsumerConversationAPI(
       const mojom::LeoModelOptions& model_options,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       AIChatCredentialManager* credential_manager,
@@ -70,17 +72,16 @@ class EngineConsumerConversationAPI : public EngineConsumer {
       mojom::ActionType action_type,
       GenerationDataCallback received_callback,
       GenerationCompletedCallback completed_callback) override;
-  void SanitizeInput(std::string& input) override;
+  void GenerateConversationTitle(
+      const PageContentsMap& page_contents,
+      const ConversationHistory& conversation_history,
+      GenerationCompletedCallback completed_callback) override;
+
+  void SanitizeInput(std::string& input) override {}  // Handle by server.
   void ClearAllQueries() override;
   bool SupportsDeltaTextResponses() const override;
-
-  void SetAPIForTesting(
-      std::unique_ptr<ConversationAPIClient> api_for_testing) {
-    api_ = std::move(api_for_testing);
-  }
-  ConversationAPIClient* GetAPIForTesting() { return api_.get(); }
+  bool RequiresClientSideTitleGeneration() const override;
   void UpdateModelOptions(const mojom::ModelOptions& options) override {}
-
   // Given a list of tabs, get the suggested topics from the server.
   void GetSuggestedTopics(const std::vector<Tab>& tabs,
                           GetSuggestedTopicsCallback callback) override;
@@ -89,35 +90,22 @@ class EngineConsumerConversationAPI : public EngineConsumer {
                     const std::string& topic,
                     GetFocusTabsCallback callback) override;
 
- private:
-  FRIEND_TEST_ALL_PREFIXES(
-      EngineConsumerConversationAPIUnitTest,
-      GetAssociatedContentConversationEvent_UTF8Truncation);
+  void SetAPIForTesting(
+      std::unique_ptr<ConversationAPIClient> api_for_testing) {
+    api_ = std::move(api_for_testing);
+  }
+  ConversationAPIClient* GetAPIForTesting() { return api_.get(); }
 
-  // Processes the tab chunks and sends the merge callback with the results.
-  // Used by GetSuggestedTopics and GetFocusTabs where the tabs are split into
-  // chunks and processed.
-  void ProcessTabChunks(
-      const std::vector<Tab>& tabs,
-      ConversationAPIClient::ConversationEventType event_type,
-      base::OnceCallback<void(std::vector<GenerationResult>)> merge_callback,
-      const std::string& topic);
+ private:
+  void OnGenerateQuestionSuggestionsResponse(
+      SuggestedQuestionsCallback callback,
+      GenerationResult result);
 
   // Given a list of results from GetSuggestedTopics, send another request to
   // the server to dedupe the topics.
   void DedupeTopics(
       base::expected<std::vector<std::string>, mojom::APIError> topics_result,
       GetSuggestedTopicsCallback callback) override;
-
-  void OnGenerateQuestionSuggestionsResponse(
-      SuggestedQuestionsCallback callback,
-      GenerationResult result);
-
-  ConversationAPIClient::ConversationEvent
-  GetAssociatedContentConversationEvent(const PageContent& content,
-                                        uint32_t remaining_length);
-  std::optional<ConversationAPIClient::ConversationEvent> GetUserMemoryEvent(
-      bool is_temporary_chat) const;
 
   std::unique_ptr<ConversationAPIClient> api_ = nullptr;
 
