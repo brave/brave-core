@@ -6,7 +6,11 @@
 
 ## ✅ Use unique_ptr for View Child Add/Remove
 
-**Prefer the `unique_ptr` overload of `View::AddChildView()` and use `View::RemoveChildViewT()` when you need to remove a child from the hierarchy and then destroy it.** `RemoveChildView(View*)` does not delete the child; `RemoveChildViewT()` returns a `unique_ptr` so ownership and destruction are explicit.
+**Prefer the `unique_ptr` overload of `View::AddChildView()` and use
+`View::RemoveChildViewT()` when you need to remove a child from the hierarchy
+and then destroy it.** `RemoveChildView(View*)` does not delete the child;
+`RemoveChildViewT()` returns a `unique_ptr` so ownership and destruction are
+explicit.
 
 ```cpp
 // ❌ WRONG - raw pointer add; remove does not transfer ownership
@@ -26,9 +30,16 @@ std::unique_ptr<views::View> owned = parent->RemoveChildViewT(some_child);
 
 ## ✅ Do not manually call `RemoveObserver` when inheriting `TabStripModelObserver`
 
-**Do not call `TabStripModel::RemoveObserver(this)` from your subclass destructor, `Shutdown()`, or `OnTabStripModelDestroyed`.** `~TabStripModelObserver` copies every `TabStripModel*` in `observed_models_` and calls `RemoveObserver(this)` on each. Registration via `AddObserver` / `StartedObserving` is undone by that base destructor, so derived code must not duplicate it.
+**Do not call `TabStripModel::RemoveObserver(this)` from your subclass
+destructor, `Shutdown()`, or `OnTabStripModelDestroyed`.**
+`~TabStripModelObserver` copies every `TabStripModel*` in `observed_models_` and
+calls `RemoveObserver(this)` on each. Registration via `AddObserver` /
+`StartedObserving` is undone by that base destructor, so derived code must not
+duplicate it.
 
-When a `TabStripModel` is destroyed, it also notifies observers through `ModelDestroyed`, which removes the observer before `OnTabStripModelDestroyed`; explicit `RemoveObserver` there is redundant as well.
+When a `TabStripModel` is destroyed, it also notifies observers through
+`ModelDestroyed`, which removes the observer before `OnTabStripModelDestroyed`;
+explicit `RemoveObserver` there is redundant as well.
 
 ```cpp
 // ❌ WRONG - ~TabStripModelObserver already unregisters from every observed model
@@ -59,9 +70,17 @@ void MyView::OnTabStripModelDestroyed(TabStripModel* model) {
 
 ## ✅ Prefer `views::AsViewClass` and `views::IsViewClass` Over `static_cast<>` for View Downcasting
 
-**Use `views::AsViewClass<T>()` and `views::IsViewClass<T>()` instead of `static_cast<T*>()` when downcasting `views::View` pointers.**
+**Use `views::AsViewClass<T>()` and `views::IsViewClass<T>()` instead of
+`static_cast<T*>()` when downcasting `views::View` pointers.**
 
-Since Chromium disables RTTI, `dynamic_cast` is unavailable. `AsViewClass` and `IsViewClass` fill that role for the views hierarchy: they walk the metadata chain registered via `METADATA_HEADER` and catch — at compile time — target classes that have omitted `METADATA_HEADER` or left a metadata path unoverridden. At runtime, `AsViewClass` returns `nullptr` on a type mismatch, including for partially constructed views that have not yet installed their own class metadata. `static_cast` does none of this and silently produces a pointer whose dereference is undefined behaviour on a type mismatch.
+Since Chromium disables RTTI, `dynamic_cast` is unavailable. `AsViewClass` and
+`IsViewClass` fill that role for the views hierarchy: they walk the metadata
+chain registered via `METADATA_HEADER` and catch — at compile time — target
+classes that have omitted `METADATA_HEADER` or left a metadata path
+unoverridden. At runtime, `AsViewClass` returns `nullptr` on a type mismatch,
+including for partially constructed views that have not yet installed their own
+class metadata. `static_cast` does none of this and silently produces a pointer
+whose dereference is undefined behaviour on a type mismatch.
 
 ```cpp
 // ❌ WRONG - no type check; UB on dereference if type assumption is wrong.
@@ -87,4 +106,3 @@ if (views::IsViewClass<MyCustomView>(some_view)) {
 ```
 
 ---
-

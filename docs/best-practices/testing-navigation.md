@@ -4,9 +4,11 @@
 
 ## Same-Document Navigation
 
-**DO NOT use `base::test::RunUntil()` polling for same-document (hash/fragment) navigations.**
+**DO NOT use `base::test::RunUntil()` polling for same-document (hash/fragment)
+navigations.**
 
-Standard `TestNavigationObserver` skips same-document navigations. Use a custom observer:
+Standard `TestNavigationObserver` skips same-document navigations. Use a custom
+observer:
 
 ```cpp
 class SameDocumentCommitObserver : public content::WebContentsObserver {
@@ -39,6 +41,7 @@ observer.Wait();
 ## Avoid Hardcoded JavaScript Timeouts
 
 **BAD:**
+
 ```cpp
 // ❌ WRONG - Unreliable hardcoded timeout
 content::EvalJs(web_contents, R"(
@@ -47,6 +50,7 @@ content::EvalJs(web_contents, R"(
 ```
 
 **GOOD:**
+
 ```cpp
 // ✅ CORRECT - Wait for actual condition in C++
 ASSERT_TRUE(base::test::RunUntil([&]() {
@@ -60,7 +64,8 @@ ASSERT_TRUE(base::test::RunUntil([&]() {
 
 ## Wait for Page Distillation
 
-When testing distilled content (Speedreader), always wait for distillation to complete:
+When testing distilled content (Speedreader), always wait for distillation to
+complete:
 
 ```cpp
 NavigateToPageSynchronously(url);

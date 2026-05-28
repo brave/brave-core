@@ -6,7 +6,9 @@
 
 ## ✅ Always Include What You Use (IWYU)
 
-**Always include the headers for types you directly use.** Don't rely on transitive includes from other headers - they can change at any time and break your code.
+**Always include the headers for types you directly use.** Don't rely on
+transitive includes from other headers - they can change at any time and break
+your code.
 
 ```cpp
 // ❌ WRONG - relying on transitive includes
@@ -18,9 +20,12 @@
 #include "base/memory/ref_counted.h"
 ```
 
-Also remove includes you don't actually use. Double-check all includes in new files.
+Also remove includes you don't actually use. Double-check all includes in new
+files.
 
-**For type aliases:** include the header that declares the type alias, not the headers for the underlying types. Same principle as class inheritance — if class B inherits from A, include B's header, not A's.
+**For type aliases:** include the header that declares the type alias, not the
+headers for the underlying types. Same principle as class inheritance — if class
+B inherits from A, include B's header, not A's.
 
 ---
 
@@ -32,7 +37,8 @@ Also remove includes you don't actually use. Double-check all includes in new fi
 
 ### ✅ Use Positive Form for Booleans and Methods
 
-**Always use the positive form ("Enabled" not "Disabled") for readability and consistency.**
+**Always use the positive form ("Enabled" not "Disabled") for readability and
+consistency.**
 
 ```cpp
 // ❌ WRONG - negative form is confusing
@@ -48,7 +54,8 @@ pref: kTorEnabled
 
 ### ✅ Consistent Naming Across Layers
 
-**Use the same name for a concept everywhere - C++, JS, prefs, and UI.** Don't arbitrarily use different names in different places for the same thing.
+**Use the same name for a concept everywhere - C++, JS, prefs, and UI.** Don't
+arbitrarily use different names in different places for the same thing.
 
 ```cpp
 // ❌ WRONG - different names for same concept
@@ -98,7 +105,9 @@ bool IsBraveCommandId(int id);
 
 ## ✅ Naming: Only Use `Brave*` Prefix When Overriding Chromium
 
-**Only add the `Brave*` prefix to class names when overriding or subclassing Chromium classes.** For purely Brave-originated code, use the feature name directly.
+**Only add the `Brave*` prefix to class names when overriding or subclassing
+Chromium classes.** For purely Brave-originated code, use the feature name
+directly.
 
 ```cpp
 // ❌ WRONG - Brave prefix on a new Brave-only class
@@ -111,7 +120,8 @@ class WebcompatReporterService { ... };
 class BraveOmniboxClientImpl : public ChromeOmniboxClient { ... };
 ```
 
-Also: **filename should match the class name.** `WebcompatReporterService` -> `webcompat_reporter_service.h`.
+Also: **filename should match the class name.** `WebcompatReporterService` ->
+`webcompat_reporter_service.h`.
 
 ---
 
@@ -136,7 +146,8 @@ void MaybeHideReferrer();
 
 ## ✅ C++ Variable Naming - Underscores, Not camelCase
 
-**C++ variables use underscores (snake_case), not camelCase.** camelCase is only for class names and method names.
+**C++ variables use underscores (snake_case), not camelCase.** camelCase is only
+for class names and method names.
 
 ```cpp
 // ❌ WRONG
@@ -156,7 +167,8 @@ std::string user_name;
 
 - **Opening brace** goes at the end of the previous line (K&R style)
 - **Continuation lines** should be indented 4 spaces
-- **Do NOT enforce include order** — include ordering is handled by code formatting tools and lint, not by code review
+- **Do NOT enforce include order** — include ordering is handled by code
+  formatting tools and lint, not by code review
 
 ---
 
@@ -164,7 +176,9 @@ std::string user_name;
 
 ## ✅ Copyright Rules
 
-**Never copy a Chromium file and use Brave's copyright.** If you copy or derive from Chromium code, you must include their copyright notice. The original year should remain unchanged - don't bump existing copyright years.
+**Never copy a Chromium file and use Brave's copyright.** If you copy or derive
+from Chromium code, you must include their copyright notice. The original year
+should remain unchanged - don't bump existing copyright years.
 
 ---
 
@@ -172,7 +186,10 @@ std::string user_name;
 
 ## ✅ Copyright Year in New Files Must Be Current Year
 
-**New files must use the current year in the copyright header.** Always determine the current year from the system date (e.g., `date +%Y`), never from training data or memory — the training cutoff year is often outdated. Don't copy-paste old copyright years from other files.
+**New files must use the current year in the copyright header.** Always
+determine the current year from the system date (e.g., `date +%Y`), never from
+training data or memory — the training cutoff year is often outdated. Don't
+copy-paste old copyright years from other files.
 
 ---
 
@@ -180,7 +197,9 @@ std::string user_name;
 
 ## ❌ Don't Define Methods in Headers
 
-**Move method definitions to .cc files.** Headers should only contain declarations. Keep headers minimal - only include what's strictly required for the declarations.
+**Move method definitions to .cc files.** Headers should only contain
+declarations. Keep headers minimal - only include what's strictly required for
+the declarations.
 
 ```cpp
 // ❌ WRONG - method body in header
@@ -200,7 +219,8 @@ bool HandleRewardsProtocol(const GURL& url) {
 }
 ```
 
-Also: `static` has no meaning for free functions in C++ (it's a C holdover). Use anonymous namespaces instead.
+Also: `static` has no meaning for free functions in C++ (it's a C holdover). Use
+anonymous namespaces instead.
 
 ---
 
@@ -208,12 +228,19 @@ Also: `static` has no meaning for free functions in C++ (it's a C holdover). Use
 
 ## ✅ Use Forward Declarations in Headers, Include in `.cc`
 
-**Headers should use forward declarations instead of `#include` for types only used as pointers or references.** Move the full `#include` to the `.cc` file.
+**Headers should use forward declarations instead of `#include` for types only
+used as pointers or references.** Move the full `#include` to the `.cc` file.
 
 **Exceptions — do NOT suggest forward declarations when:**
-- The type is **not directly `#include`d** but comes transitively through a base class header that must be included anyway (e.g., `content::WebUI*` comes through `webui_config.h` or `mojo_web_ui_controller.h` — there's nothing to remove)
-- The type is **not actually used** in the file — verify the type appears in the file before suggesting a forward declaration
-- The `#include` is for a **base class** the current class inherits from — these cannot be forward-declared
+
+- The type is **not directly `#include`d** but comes transitively through a base
+  class header that must be included anyway (e.g., `content::WebUI*` comes
+  through `webui_config.h` or `mojo_web_ui_controller.h` — there's nothing to
+  remove)
+- The type is **not actually used** in the file — verify the type appears in the
+  file before suggesting a forward declaration
+- The `#include` is for a **base class** the current class inherits from — these
+  cannot be forward-declared
 
 ```cpp
 // ❌ WRONG - full include in header for pointer-only usage
@@ -240,7 +267,8 @@ namespace foo { class Bar; }
 
 ## ✅ `friend` Declarations Go Right After `private:`
 
-**In class declarations, `friend` statements should be placed immediately after the `private:` access specifier,** before any member variables or methods.
+**In class declarations, `friend` statements should be placed immediately after
+the `private:` access specifier,** before any member variables or methods.
 
 ```cpp
 // ❌ WRONG
@@ -265,7 +293,8 @@ class MyClass {
 
 ## ✅ Use Anonymous Namespaces for Internal Code
 
-**If a function or class is strictly internal to a .cc file, put it in an anonymous namespace.**
+**If a function or class is strictly internal to a .cc file, put it in an
+anonymous namespace.**
 
 ```cpp
 // ❌ WRONG - internal helper visible outside file
@@ -277,7 +306,8 @@ void InternalHelper() { ... }
 }  // namespace
 ```
 
-**No `static` on `constexpr` inside anonymous namespaces** — the namespace already provides internal linkage, so `static` is redundant.
+**No `static` on `constexpr` inside anonymous namespaces** — the namespace
+already provides internal linkage, so `static` is redundant.
 
 ```cpp
 // ❌ WRONG - redundant static
@@ -297,7 +327,8 @@ constexpr int kMaxRetries = 3;
 
 ## ✅ Function Ordering in `.cc` Should Match `.h`
 
-**Function definitions in `.cc` files should appear in the same order as their declarations in the corresponding `.h` file.**
+**Function definitions in `.cc` files should appear in the same order as their
+declarations in the corresponding `.h` file.**
 
 ---
 
@@ -305,7 +336,9 @@ constexpr int kMaxRetries = 3;
 
 ## ✅ Break Up Bloated Files
 
-**Don't keep dumping code into already-large files.** Encapsulate related functionality into smaller, focused helper files and targets. This improves readability, reduces rebase conflicts, and makes dependency tracking easier.
+**Don't keep dumping code into already-large files.** Encapsulate related
+functionality into smaller, focused helper files and targets. This improves
+readability, reduces rebase conflicts, and makes dependency tracking easier.
 
 ```cpp
 // ❌ WRONG - adding more P3A code to 5000-line RewardsServiceImpl
@@ -323,7 +356,10 @@ void RecordRewardsP3A(RewardsService* service);
 
 ## ✅ Comments Must Make Sense to Future Readers of the Codebase
 
-**Every comment should be meaningful to someone reading the code for the first time, with no knowledge of the PR or change history.** Do not add comments that reference removed code, prior behavior, or the change itself. Comments are part of the codebase, not a changelog.
+**Every comment should be meaningful to someone reading the code for the first
+time, with no knowledge of the PR or change history.** Do not add comments that
+reference removed code, prior behavior, or the change itself. Comments are part
+of the codebase, not a changelog.
 
 ```cpp
 // ❌ WRONG - references removed code / change history
@@ -350,7 +386,8 @@ base::flat_map<std::string, int> lookup_;
 
 ## ✅ Document Non-Obvious Failure Branches
 
-**When a function has multiple early-return failure branches, add a brief comment before each summarizing what it handles.**
+**When a function has multiple early-return failure branches, add a brief
+comment before each summarizing what it handles.**
 
 ```cpp
 // ❌ WRONG - unclear what each branch handles
@@ -373,7 +410,8 @@ if (!number) return std::nullopt;
 
 ## ✅ Feature Flag Comments Go in `.cc` Files
 
-**Comments explaining what a `base::Feature` does should be placed in the `.cc` file where the feature is defined, not in the `.h` file.**
+**Comments explaining what a `base::Feature` does should be placed in the `.cc`
+file where the feature is defined, not in the `.h` file.**
 
 ```cpp
 // ❌ WRONG - feature comment in .h
@@ -394,8 +432,10 @@ BASE_FEATURE(kBraveWorkaroundNewWindowFlash, ...);
 ## ✅ Document Upstream Workarounds with Issue Links
 
 **When adding a workaround for an upstream Chromium bug:**
+
 1. Add a link to the upstream issue in a code comment
-2. File details on the upstream issue explaining what's happening so they can fix it
+2. File details on the upstream issue explaining what's happening so they can
+   fix it
 
 This allows us to remove the workaround when the upstream fix lands.
 
@@ -412,7 +452,9 @@ if (!x) return;
 
 ## ❌ Don't Use Positional Terms in Code Comments
 
-**Do not use "above" or "below" in comments to reference other code.** Other developers may insert code between the comment and referenced item, breaking the meaning. Reference items explicitly by name or identifier instead.
+**Do not use "above" or "below" in comments to reference other code.** Other
+developers may insert code between the comment and referenced item, breaking the
+meaning. Reference items explicitly by name or identifier instead.
 
 ```cpp
 // ❌ WRONG - fragile positional reference
@@ -430,7 +472,8 @@ if (!x) return;
 
 ## ✅ Use CHECK for Impossible Conditions
 
-**Use `CHECK` (not `DCHECK`) for conditions that should never happen in any build.**
+**Use `CHECK` (not `DCHECK`) for conditions that should never happen in any
+build.**
 
 ```cpp
 // ❌ WRONG - DCHECK for something that should never happen
@@ -440,7 +483,8 @@ DCHECK(browser_context);
 CHECK(browser_context);  // should never be null
 ```
 
-Also: don't add unnecessary DCHECKs. For example, `DCHECK(g_browser_process)` is unnecessary because the browser wouldn't even be running without it.
+Also: don't add unnecessary DCHECKs. For example, `DCHECK(g_browser_process)` is
+unnecessary because the browser wouldn't even be running without it.
 
 ---
 
@@ -448,11 +492,20 @@ Also: don't add unnecessary DCHECKs. For example, `DCHECK(g_browser_process)` is
 
 ## ✅ `NOTREACHED`/`CHECK(false)` Only for Security-Critical Invariants
 
-**`NOTREACHED`/`CHECK(false)` should only crash the browser for security-critical invariants.** For non-security cases (like invalid enum values from data processing), prefer returning `std::optional`/`std::nullopt` or a default value.
+**`NOTREACHED`/`CHECK(false)` should only crash the browser for
+security-critical invariants.** For non-security cases (like invalid enum values
+from data processing), prefer returning `std::optional`/`std::nullopt` or a
+default value.
 
-**Important:** `NOTREACHED()` is now fatal in all builds and terminates control flow. The compiler treats code after `NOTREACHED()` as dead code. Do not place executable statements after it.
+**Important:** `NOTREACHED()` is now fatal in all builds and terminates control
+flow. The compiler treats code after `NOTREACHED()` as dead code. Do not place
+executable statements after it.
 
-**Gradual migration:** When migrating from `DCHECK` to fatal `NOTREACHED()`/`CHECK()`, you can use `NOTREACHED(base::NotFatalUntil::M140)` or `CHECK(cond, base::NotFatalUntil::M140)` to gather crash diagnostics before enforcing fatality. See [Chromium style guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md).
+**Gradual migration:** When migrating from `DCHECK` to fatal
+`NOTREACHED()`/`CHECK()`, you can use `NOTREACHED(base::NotFatalUntil::M140)` or
+`CHECK(cond, base::NotFatalUntil::M140)` to gather crash diagnostics before
+enforcing fatality. See
+[Chromium style guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md).
 
 ```cpp
 // ❌ WRONG - crashes browser for non-security enum mismatch
@@ -474,7 +527,9 @@ std::optional<mojom::AdType> ToMojomAdType(const std::string& type) {
 
 ## ✅ Use `CHECK` Only for Invariants Within Code's Control
 
-**Use `CHECK` only for conditions fully within the code's control.** For data from databases, user input, or external sources, use graceful error handling instead. `CHECK` failures crash the user's browser.
+**Use `CHECK` only for conditions fully within the code's control.** For data
+from databases, user input, or external sources, use graceful error handling
+instead. `CHECK` failures crash the user's browser.
 
 ```cpp
 // ❌ WRONG - crashes on external data
@@ -487,7 +542,8 @@ if (!db_value.has_value()) {
 }
 ```
 
-See also: [Chromium CHECK style guide](https://chromium.googlesource.com/chromium/src/+/refs/heads/main/styleguide/c++/checks.md)
+See also:
+[Chromium CHECK style guide](https://chromium.googlesource.com/chromium/src/+/refs/heads/main/styleguide/c++/checks.md)
 
 ---
 
@@ -495,7 +551,8 @@ See also: [Chromium CHECK style guide](https://chromium.googlesource.com/chromiu
 
 ## ✅ Use Result Codes, Not bool, for Error Reporting
 
-**Return result codes (enums) instead of `bool` for operations that can fail.** This allows providing additional error information and is more future-proof.
+**Return result codes (enums) instead of `bool` for operations that can fail.**
+This allows providing additional error information and is more future-proof.
 
 ---
 
@@ -503,7 +560,8 @@ See also: [Chromium CHECK style guide](https://chromium.googlesource.com/chromiu
 
 ## ✅ Don't Store Error State - Handle/Log and Store Only Success
 
-**When a field can hold either a success or error, handle/log the error immediately and store only the success type.**
+**When a field can hold either a success or error, handle/log the error
+immediately and store only the success type.**
 
 ```cpp
 // ❌ WRONG - storing error variant
@@ -519,7 +577,8 @@ std::optional<ChainMetadata> chain_metadata_;
 
 ## ❌ Don't Override Empty/No-Op Methods
 
-**If you're overriding a virtual method but not implementing any behavior, don't define it at all.**
+**If you're overriding a virtual method but not implementing any behavior, don't
+define it at all.**
 
 ```cpp
 // ❌ WRONG - pointless override
@@ -534,7 +593,9 @@ void OnSomethingHappened() override {}
 
 ## ✅ Combine Methods That Are Always Called Together
 
-**If two methods are always called in sequence (especially in patches), combine them into a single method.** This reduces patch size and prevents callers from forgetting one of the calls.
+**If two methods are always called in sequence (especially in patches), combine
+them into a single method.** This reduces patch size and prevents callers from
+forgetting one of the calls.
 
 ```cpp
 // ❌ WRONG - two methods always called together in a patch
@@ -551,7 +612,9 @@ void OnSomethingHappened() override {}
 
 ## ✅ Use Observer Pattern for UI Updates
 
-**Don't make service-layer queries to update UI directly.** Instead, trigger observer notifications and let the UI respond. See also [ARCH-021](architecture.md#ARCH-021) for when to use observers vs. callbacks.
+**Don't make service-layer queries to update UI directly.** Instead, trigger
+observer notifications and let the UI respond. See also
+[ARCH-021](architecture.md#ARCH-021) for when to use observers vs. callbacks.
 
 ```cpp
 // ❌ WRONG - service making UI queries
@@ -575,7 +638,9 @@ void RewardsService::SavePendingContribution(...) {
 
 ## ✅ Platform-Specific Code Splitting
 
-**When a method's implementation is completely different on a platform, split it into a separate file** like `my_class_android.cc` rather than filling the main file with `#if defined(OS_ANDROID)` blocks.
+**When a method's implementation is completely different on a platform, split it
+into a separate file** like `my_class_android.cc` rather than filling the main
+file with `#if defined(OS_ANDROID)` blocks.
 
 ---
 
@@ -583,7 +648,8 @@ void RewardsService::SavePendingContribution(...) {
 
 ## ✅ Use Feature Checks Over Platform Checks
 
-**Prefer feature checks over platform checks when the behavior is feature-dependent, not platform-dependent.**
+**Prefer feature checks over platform checks when the behavior is
+feature-dependent, not platform-dependent.**
 
 ```cpp
 // ❌ WRONG - platform check for feature behavior
@@ -603,9 +669,13 @@ if (IsDoNotDisturbEnabled()) {
 
 ## ✅ Consolidate Feature Flag Checks to Entry Points
 
-**Don't scatter `CHECK`/`DCHECK` for feature flag status in private helper functions.** Follow the upstream pattern: check at entry points only. Add comments on private helpers like "Only called when X is enabled".
+**Don't scatter `CHECK`/`DCHECK` for feature flag status in private helper
+functions.** Follow the upstream pattern: check at entry points only. Add
+comments on private helpers like "Only called when X is enabled".
 
-**Exception:** Public API functions that can be called independently from multiple callsites should keep their own `CHECK`/`DCHECK` guards — they are entry points themselves.
+**Exception:** Public API functions that can be called independently from
+multiple callsites should keep their own `CHECK`/`DCHECK` guards — they are
+entry points themselves.
 
 ```cpp
 // ❌ WRONG - CHECK in private helper called from a single entry point
@@ -633,7 +703,9 @@ bool StoragePartitionUtils::IsContainersStoragePartition(...) {
 
 ## ❌ Don't Use Static Variables for Per-Profile Settings
 
-**Never use static variables to store per-profile settings.** Static state is shared across all profiles and will cause incorrect behavior in multi-profile scenarios. Use `UserData` or profile-attached keyed services instead.
+**Never use static variables to store per-profile settings.** Static state is
+shared across all profiles and will cause incorrect behavior in multi-profile
+scenarios. Use `UserData` or profile-attached keyed services instead.
 
 ---
 
@@ -641,7 +713,8 @@ bool StoragePartitionUtils::IsContainersStoragePartition(...) {
 
 ## ❌ Don't Use Environment Variables for Configuration
 
-**Configuration should come from GN args, not environment variables.** For runtime overrides, use command line switches.
+**Configuration should come from GN args, not environment variables.** For
+runtime overrides, use command line switches.
 
 ```cpp
 // ❌ WRONG
@@ -659,7 +732,8 @@ std::string api_url = std::getenv("BRAVE_API_URL");
 
 ## ❌ Don't Duplicate Enum/Constant Values Across Languages
 
-**When values are defined in Mojo, use the generated bindings in C++, Java, and JS.** Don't manually duplicate constants - they easily drift out of sync.
+**When values are defined in Mojo, use the generated bindings in C++, Java, and
+JS.** Don't manually duplicate constants - they easily drift out of sync.
 
 ---
 
@@ -667,7 +741,8 @@ std::string api_url = std::getenv("BRAVE_API_URL");
 
 ## ❌ Don't Use rapidjson
 
-**Use base::JSONReader/JSONWriter, not rapidjson.** The base libraries are the standard in Chromium.
+**Use base::JSONReader/JSONWriter, not rapidjson.** The base libraries are the
+standard in Chromium.
 
 ---
 
@@ -675,7 +750,9 @@ std::string api_url = std::getenv("BRAVE_API_URL");
 
 ## VLOG Macros Handle Their Own Checks
 
-**Don't use `VLOG_IS_ON` before `VLOG` calls.** The VLOG macro already handles the level check internally and is smart enough to avoid evaluating inline expressions when the level is disabled.
+**Don't use `VLOG_IS_ON` before `VLOG` calls.** The VLOG macro already handles
+the level check internally and is smart enough to avoid evaluating inline
+expressions when the level is disabled.
 
 ```cpp
 // ❌ WRONG - unnecessary check
@@ -687,7 +764,8 @@ if (VLOG_IS_ON(2)) {
 VLOG(2) << "Some message";
 ```
 
-Also: be judicious with VLOG - make sure each log statement has a specific purpose and isn't leftover from debugging.
+Also: be judicious with VLOG - make sure each log statement has a specific
+purpose and isn't leftover from debugging.
 
 ---
 
@@ -695,7 +773,8 @@ Also: be judicious with VLOG - make sure each log statement has a specific purpo
 
 ## ✅ VLOG Component Name Should Match Directory
 
-**The component name used in VLOG messages should match the component directory name** (e.g., `policy` or `brave/components/brave_policy`).
+**The component name used in VLOG messages should match the component directory
+name** (e.g., `policy` or `brave/components/brave_policy`).
 
 ---
 
@@ -703,9 +782,16 @@ Also: be judicious with VLOG - make sure each log statement has a specific purpo
 
 ## ✅ Use `LOG(WARNING)` or `VLOG` Instead of `LOG(ERROR)` for Non-Critical Failures
 
-**`LOG(ERROR)` should be reserved for truly unexpected and serious failures.** For expected or non-critical failure cases (e.g., a bad user-supplied filter list, a failed parse of optional data), use `VLOG` for debug info or `LOG(WARNING)` for noteworthy but non-critical issues.
+**`LOG(ERROR)` should be reserved for truly unexpected and serious failures.**
+For expected or non-critical failure cases (e.g., a bad user-supplied filter
+list, a failed parse of optional data), use `VLOG` for debug info or
+`LOG(WARNING)` for noteworthy but non-critical issues.
 
-**Do not suggest lowering log severity for failures you haven't confirmed are non-critical.** The developer knows whether a failure is critical for their service better than a reviewer can infer from the code alone. For example, failing to load a model file may look non-critical in isolation but could be a critical failure for the keyed service that depends on it.
+**Do not suggest lowering log severity for failures you haven't confirmed are
+non-critical.** The developer knows whether a failure is critical for their
+service better than a reviewer can infer from the code alone. For example,
+failing to load a model file may look non-critical in isolation but could be a
+critical failure for the keyed service that depends on it.
 
 ```cpp
 // ❌ WRONG
@@ -721,7 +807,9 @@ VLOG(1) << "Failed to parse filter list";
 
 ## ✅ Use `DLOG(ERROR)` for Non-Critical Debug-Only Errors
 
-**Use `DLOG(ERROR)` instead of `LOG(ERROR)` for error conditions that are not critical in release builds.** This avoids polluting release build logs with non-actionable errors.
+**Use `DLOG(ERROR)` instead of `LOG(ERROR)` for error conditions that are not
+critical in release builds.** This avoids polluting release build logs with
+non-actionable errors.
 
 ```cpp
 // ❌ WRONG - release log noise for non-critical error
@@ -737,7 +825,8 @@ DLOG(ERROR) << "Failed to parse optional field";
 
 ## ✅ Add `SCOPED_UMA_HISTOGRAM_TIMER` for Performance-Sensitive Paths
 
-**When writing code that processes data on the UI thread or performs potentially slow operations, add `SCOPED_UMA_HISTOGRAM_TIMER` to measure performance.**
+**When writing code that processes data on the UI thread or performs potentially
+slow operations, add `SCOPED_UMA_HISTOGRAM_TIMER` to measure performance.**
 
 ```cpp
 void GetUrlCosmeticResourcesOnUI(const GURL& url) {
@@ -753,7 +842,9 @@ void GetUrlCosmeticResourcesOnUI(const GURL& url) {
 
 ## ✅ Emit Histograms from a Single Location
 
-**When recording UMA histograms, emit to each histogram from a single location.** Create a helper function rather than duplicating histogram emission across multiple call sites.
+**When recording UMA histograms, emit to each histogram from a single
+location.** Create a helper function rather than duplicating histogram emission
+across multiple call sites.
 
 ```cpp
 // ❌ WRONG - histogram emitted from multiple places
@@ -775,7 +866,8 @@ void RecordNTPCustomizeUsage(NTPCustomizeUsage usage) {
 
 ## ❌ Don't Log Sensitive Information
 
-**Never log sensitive data such as sync seeds, private keys, tokens, or credentials.** Even VLOG-level logging can expose data in debug builds.
+**Never log sensitive data such as sync seeds, private keys, tokens, or
+credentials.** Even VLOG-level logging can expose data in debug builds.
 
 ```cpp
 // ❌ WRONG
@@ -791,7 +883,9 @@ VLOG(1) << "Sync seed set successfully";
 
 ## ❌ Don't Use `public:` in Structs
 
-**Do not use `public:` labels in struct declarations since struct members are public by default.** Either remove the label or change `struct` to `class` if access control is intended.
+**Do not use `public:` labels in struct declarations since struct members are
+public by default.** Either remove the label or change `struct` to `class` if
+access control is intended.
 
 ```cpp
 // ❌ WRONG - redundant public label
@@ -814,7 +908,10 @@ struct TestData {
 
 ## ✅ Prefer `GlobalFeatures` Over `NoDestructor` for Global Services
 
-**For global/singleton services, prefer registering in `GlobalFeatures` (the Chromium replacement for `BrowserProcessImpl`) over `base::NoDestructor`.** `NoDestructor` makes testing difficult since you can't reset the instance between tests.
+**For global/singleton services, prefer registering in `GlobalFeatures` (the
+Chromium replacement for `BrowserProcessImpl`) over `base::NoDestructor`.**
+`NoDestructor` makes testing difficult since you can't reset the instance
+between tests.
 
 ```cpp
 // ❌ WRONG - hard to test
@@ -833,7 +930,9 @@ BraveOriginService* BraveOriginService::GetInstance() {
 
 ## ✅ Multiply Before Dividing in Integer Percentage Calculations
 
-**When computing percentages with integer arithmetic, multiply by 100 before dividing.** `(used * 100) / total` preserves precision, while `(used / total) * 100` truncates to 0 when `used < total`.
+**When computing percentages with integer arithmetic, multiply by 100 before
+dividing.** `(used * 100) / total` preserves precision, while
+`(used / total) * 100` truncates to 0 when `used < total`.
 
 ```cpp
 // ❌ WRONG - truncates to 0 for used < total
@@ -849,7 +948,8 @@ int pct = (used * 100) / total;
 
 ## ✅ Prefer Free Functions Over Complex Inline Lambdas
 
-**When a lambda is complex enough to make surrounding code harder to parse, extract it into a named free function in the anonymous namespace.**
+**When a lambda is complex enough to make surrounding code harder to parse,
+extract it into a named free function in the anonymous namespace.**
 
 ```cpp
 // ❌ WRONG - complex lambda obscures call site
@@ -872,9 +972,15 @@ DoSomething(base::BindOnce(&ProcessResult));
 
 ## ⚠️ Use `auto` Judiciously — Prefer Explicit Types When Short and Descriptive
 
-**Don't use `auto` merely to avoid writing a type name** when the explicit type is short and adds readability. Spell out types like `base::TimeDelta`, `base::Time`, etc. Per Google style guide: "Do not use [auto] merely to avoid the inconvenience of writing an explicit type."
+**Don't use `auto` merely to avoid writing a type name** when the explicit type
+is short and adds readability. Spell out types like `base::TimeDelta`,
+`base::Time`, etc. Per Google style guide: "Do not use [auto] merely to avoid
+the inconvenience of writing an explicit type."
 
-However, `auto` **is appropriate** when the explicit type is verbose/complex and doesn't improve readability (e.g., nested templates, long type names). This is a preference, not a hard rule — always prefix with `nit:` and do not insist if the developer declines.
+However, `auto` **is appropriate** when the explicit type is verbose/complex and
+doesn't improve readability (e.g., nested templates, long type names). This is a
+preference, not a hard rule — always prefix with `nit:` and do not insist if the
+developer declines.
 
 ```cpp
 // ❌ WRONG - auto hides a short, descriptive type
@@ -894,7 +1000,8 @@ auto weights_opt = base::ReadFileToBytes(weights_path);
 
 ## ✅ Member Initialization - Don't Add Default When Constructor Always Sets
 
-Per Chromium C++ dos and donts: "Initialize class members in their declarations, **except where a member's value is explicitly set by every constructor**."
+Per Chromium C++ dos and donts: "Initialize class members in their declarations,
+**except where a member's value is explicitly set by every constructor**."
 
 ```cpp
 // ❌ WRONG - misleading, constructor always sets this
@@ -916,7 +1023,9 @@ class TreeTabNode {
 
 ## ✅ Prefer Overloads Over Silently-Ignored Optional Parameters
 
-**Don't force callers to provide parameters that are silently ignored.** Use function overloads. Similarly, prefer overloads over `std::variant` for distinct call patterns.
+**Don't force callers to provide parameters that are silently ignored.** Use
+function overloads. Similarly, prefer overloads over `std::variant` for distinct
+call patterns.
 
 ```cpp
 // ❌ WRONG - body_value silently ignored for GET/HEAD
@@ -934,7 +1043,8 @@ void ApiFetch(const std::string& url, const base::Value& body, Callback cb);  //
 
 ## ✅ Use `observers_.Notify()` Instead of Manual Iteration
 
-**Use `observers_.Notify(&Observer::Method)` instead of manually iterating observer lists.**
+**Use `observers_.Notify(&Observer::Method)` instead of manually iterating
+observer lists.**
 
 ```cpp
 // ❌ WRONG - manual iteration
@@ -952,7 +1062,9 @@ observers_.Notify(&Observer::OnPoliciesChanged);
 
 ## ✅ Validate and Sanitize Data Before Injecting as JavaScript
 
-**When constructing JavaScript from C++ data for injection, use JSON serialization (`base::JSONWriter`) for safe encoding.** String concatenation can lead to injection vulnerabilities.
+**When constructing JavaScript from C++ data for injection, use JSON
+serialization (`base::JSONWriter`) for safe encoding.** String concatenation can
+lead to injection vulnerabilities.
 
 ```cpp
 // ❌ WRONG - string concatenation
@@ -970,7 +1082,8 @@ std::string script = "const selectors = " + json_selectors + ";";
 
 ## ✅ Use `EvalJs` Instead of Deprecated `ExecuteScriptAndExtract*`
 
-**In browser tests, use `EvalJs` and `ExecJs` instead of the deprecated `ExecuteScriptAndExtractBool/String/Int` functions.**
+**In browser tests, use `EvalJs` and `ExecJs` instead of the deprecated
+`ExecuteScriptAndExtractBool/String/Int` functions.**
 
 ```cpp
 // ❌ WRONG
@@ -988,7 +1101,9 @@ EXPECT_EQ(true, content::EvalJs(web_contents, "someCheck()"));
 
 ## ✅ Use `Profile::FromBrowserContext` for Conversion
 
-**When you have a `BrowserContext*` and need a `Profile*`, use `Profile::FromBrowserContext()`.** Don't use `static_cast` - the proper method includes safety checks.
+**When you have a `BrowserContext*` and need a `Profile*`, use
+`Profile::FromBrowserContext()`.** Don't use `static_cast` - the proper method
+includes safety checks.
 
 ```cpp
 // ❌ WRONG
@@ -1004,7 +1119,9 @@ Profile* profile = Profile::FromBrowserContext(browser_context);
 
 ## ✅ Validate URLs with `GURL::is_valid()` Before Use
 
-**Always check `GURL::is_valid()` before using a constructed URL.** Passing invalid or malformed URLs to network functions can cause crashes or unexpected behavior.
+**Always check `GURL::is_valid()` before using a constructed URL.** Passing
+invalid or malformed URLs to network functions can cause crashes or unexpected
+behavior.
 
 ```cpp
 // ❌ WRONG - no validity check
@@ -1024,7 +1141,9 @@ loader->DownloadUrl(url);
 
 ## ✅ Name Death Test Suites with `*DeathTest` Suffix
 
-**Per GoogleTest conventions, death test suite names must end with `DeathTest`.** GoogleTest uses this suffix to apply special threading behavior needed for death tests to work reliably.
+**Per GoogleTest conventions, death test suite names must end with
+`DeathTest`.** GoogleTest uses this suffix to apply special threading behavior
+needed for death tests to work reliably.
 
 ```cpp
 // ❌ WRONG - missing DeathTest suffix
@@ -1048,7 +1167,9 @@ TEST_F(MyFeatureDeathTest, CrashesOnNull) {
 
 ## ✅ Use `constexpr` for Compile-Time Constant `base::TimeDelta` Values
 
-**Declare time constants as `constexpr base::TimeDelta` rather than just `const`.** The `base::Milliseconds()`, `base::Seconds()`, and similar factory functions are constexpr-capable, so the value can be computed at compile time.
+**Declare time constants as `constexpr base::TimeDelta` rather than just
+`const`.** The `base::Milliseconds()`, `base::Seconds()`, and similar factory
+functions are constexpr-capable, so the value can be computed at compile time.
 
 ```cpp
 // ❌ WRONG - runtime initialization
@@ -1064,7 +1185,10 @@ constexpr base::TimeDelta kAnimationDuration = base::Milliseconds(200);
 
 ## ❌ Don't Commit Commented-Out Code
 
-**Remove commented-out code, dead `#include` lines, and development leftovers before merging.** Commented-out code adds noise, confuses future readers, and is never cleaned up. If the code might be needed later, it lives in version control history.
+**Remove commented-out code, dead `#include` lines, and development leftovers
+before merging.** Commented-out code adds noise, confuses future readers, and is
+never cleaned up. If the code might be needed later, it lives in version control
+history.
 
 ```cpp
 // ❌ WRONG - dead code left in
@@ -1080,7 +1204,10 @@ constexpr base::TimeDelta kAnimationDuration = base::Milliseconds(200);
 
 ## ✅ Migrate User Prefs When Removing or Renaming Features
 
-**When removing a feature, model, or preference key that users may have selected, add a migration step to reset affected prefs to a sensible default.** Otherwise users who had the removed option selected are left with a stale value that may cause errors or confusing behavior.
+**When removing a feature, model, or preference key that users may have
+selected, add a migration step to reset affected prefs to a sensible default.**
+Otherwise users who had the removed option selected are left with a stale value
+that may cause errors or confusing behavior.
 
 ```cpp
 // ❌ WRONG - just delete the model, users with it selected get broken state
@@ -1104,7 +1231,10 @@ void MigrateProfilePrefs(PrefService* prefs) {
 
 ## ✅ Clean Up All Dead Code When Removing Features
 
-**When removing a feature flag, model, or script, also remove all associated dead code:** unused helper functions, orphaned UI strings from `.grdp` files, related constants, and utility functions that were only referenced by the removed code. Leaving dead code behind creates maintenance burden and confusion.
+**When removing a feature flag, model, or script, also remove all associated
+dead code:** unused helper functions, orphaned UI strings from `.grdp` files,
+related constants, and utility functions that were only referenced by the
+removed code. Leaving dead code behind creates maintenance burden and confusion.
 
 ---
 
@@ -1112,7 +1242,11 @@ void MigrateProfilePrefs(PrefService* prefs) {
 
 ## ❌ Avoid Multiple Inheritance Beyond Interfaces
 
-**Multiple inheritance is permitted in Chromium but discouraged beyond interface-style patterns.** Prefer composition over deep multiple inheritance hierarchies. If you inherit from multiple concrete classes, explore whether composition achieves the same goal more cleanly. See [Chromium C++ style guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md).
+**Multiple inheritance is permitted in Chromium but discouraged beyond
+interface-style patterns.** Prefer composition over deep multiple inheritance
+hierarchies. If you inherit from multiple concrete classes, explore whether
+composition achieves the same goal more cleanly. See
+[Chromium C++ style guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md).
 
 ---
 
@@ -1120,9 +1254,12 @@ void MigrateProfilePrefs(PrefService* prefs) {
 
 ## ✅ Use `DVLOG(1)` for Retained Logging, `ScopedCrashKeyString` for Crash Diagnostics
 
-**Per the Chromium style guide, remove all logging before check-in.** When logging must remain (e.g., for rare bug investigation), use `DVLOG(1)` — it avoids release binary bloat and can be enabled via `--v=1` or `--vmodule=mod=1`.
+**Per the Chromium style guide, remove all logging before check-in.** When
+logging must remain (e.g., for rare bug investigation), use `DVLOG(1)` — it
+avoids release binary bloat and can be enabled via `--v=1` or `--vmodule=mod=1`.
 
-**For crash diagnostics, use `base::debug::ScopedCrashKeyString` instead of logs.** Crash keys attach data to crash reports without polluting logs.
+**For crash diagnostics, use `base::debug::ScopedCrashKeyString` instead of
+logs.** Crash keys attach data to crash reports without polluting logs.
 
 ```cpp
 // ❌ WRONG - LOG in production for diagnostics
@@ -1137,7 +1274,8 @@ static auto* crash_key = base::debug::AllocateCrashKeyString(
 base::debug::ScopedCrashKeyString scoped_key(crash_key, state);
 ```
 
-See [Chromium C++ style guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md).
+See
+[Chromium C++ style guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md).
 
 ---
 
@@ -1145,7 +1283,12 @@ See [Chromium C++ style guide](https://chromium.googlesource.com/chromium/src/+/
 
 ## ✅ Use `*.mojom-forward.h` in Headers When Only Forward Declarations Are Needed
 
-**When a header only references mojom types as pointers, references, or function parameters, include the auto-generated `*.mojom-forward.h` instead of the full `*.mojom.h` bindings.** The forward header declares all types from the mojom file without pulling in the full bindings, which reduces compile times and transitive dependencies. Move the full `*.mojom.h` include to the `.cc` file where the types are actually used.
+**When a header only references mojom types as pointers, references, or function
+parameters, include the auto-generated `*.mojom-forward.h` instead of the full
+`*.mojom.h` bindings.** The forward header declares all types from the mojom
+file without pulling in the full bindings, which reduces compile times and
+transitive dependencies. Move the full `*.mojom.h` include to the `.cc` file
+where the types are actually used.
 
 ```cpp
 // ❌ WRONG - full mojom bindings in header for forward-declared usage only
@@ -1172,6 +1315,8 @@ void RegisterProfilePrefs(
 #include "brave/components/containers/core/mojom/containers.mojom.h"
 ```
 
-This is a mojom-specific application of [CS-014](#CS-014). The `*.mojom-forward.h` is auto-generated alongside the full bindings — every mojom target produces it.
+This is a mojom-specific application of [CS-014](#CS-014). The
+`*.mojom-forward.h` is auto-generated alongside the full bindings — every mojom
+target produces it.
 
 ---

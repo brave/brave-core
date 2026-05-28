@@ -1,12 +1,16 @@
 # Localization & String Resources
 
-Technical conventions for GRD/GRDP string resources, placeholders, and i18n patterns. For voice, capitalization, punctuation, product naming, and general writing style, see the [Brave Style Guide](./style-guide.md).
+Technical conventions for GRD/GRDP string resources, placeholders, and i18n
+patterns. For voice, capitalization, punctuation, product naming, and general
+writing style, see the [Brave Style Guide](./style-guide.md).
 
 <a id="L10N-001"></a>
 
 ## ❌ Don't Add `translateable="true"` on GRD Strings
 
-**In `.grdp` string resource files, `translateable="true"` is the default.** Never add it explicitly. The tooling only looks for `translateable="false"` when excluding strings from translation.
+**In `.grdp` string resource files, `translateable="true"` is the default.**
+Never add it explicitly. The tooling only looks for `translateable="false"` when
+excluding strings from translation.
 
 ---
 
@@ -14,7 +18,9 @@ Technical conventions for GRD/GRDP string resources, placeholders, and i18n patt
 
 ## ✅ Use Proper Ellipsis Characters in UI Strings
 
-**In user-facing strings, use the proper Unicode ellipsis character (`…`) instead of three periods (`...`).** This is a standard typographic convention for UI text.
+**In user-facing strings, use the proper Unicode ellipsis character (`…`)
+instead of three periods (`...`).** This is a standard typographic convention
+for UI text.
 
 ---
 
@@ -22,16 +28,29 @@ Technical conventions for GRD/GRDP string resources, placeholders, and i18n patt
 
 ## ✅ Provide Sufficient Context in Localization String Descriptions
 
-**Localization string descriptions should contain enough context for translators who only see the description.** For example, "History" alone might be ambiguous across languages (browser history vs. event history). Add specifics like "Title for the browser visits history section of a URL picker".
+**Localization string descriptions should contain enough context for translators
+who only see the description.** For example, "History" alone might be ambiguous
+across languages (browser history vs. event history). Add specifics like "Title
+for the browser visits history section of a URL picker".
 
-For simple, self-evident strings where the meaning is unambiguous in any language (e.g., "Summary", "Settings", "Cancel"), a brief description is fine — do not insist on verbose descriptions when the string speaks for itself.
+For simple, self-evident strings where the meaning is unambiguous in any
+language (e.g., "Summary", "Settings", "Cancel"), a brief description is fine —
+do not insist on verbose descriptions when the string speaks for itself.
 
 Additional requirements for `desc` attributes:
-- **Never leave `desc` empty** — every `<message>` element must have a non-empty description.
-- **Specify the UI element type** — include whether the string is a title, button label, description, tooltip, placeholder, menu item, etc. (e.g., `desc="Title for the about section"` not `desc="About section text"`).
-- **Disambiguate terms with multiple meanings** — words like "History" (browser vs. conversation), "Wallet" (crypto vs. payment), "Send" (where?) need qualification.
-- **Each description must be unique** — do not copy-paste the same `desc` across different strings that serve different purposes.
-- **Proofread descriptions** — typos in `desc` confuse translators and affect translation quality.
+
+- **Never leave `desc` empty** — every `<message>` element must have a non-empty
+  description.
+- **Specify the UI element type** — include whether the string is a title,
+  button label, description, tooltip, placeholder, menu item, etc. (e.g.,
+  `desc="Title for the about section"` not `desc="About section text"`).
+- **Disambiguate terms with multiple meanings** — words like "History" (browser
+  vs. conversation), "Wallet" (crypto vs. payment), "Send" (where?) need
+  qualification.
+- **Each description must be unique** — do not copy-paste the same `desc` across
+  different strings that serve different purposes.
+- **Proofread descriptions** — typos in `desc` confuse translators and affect
+  translation quality.
 
 ---
 
@@ -39,7 +58,9 @@ Additional requirements for `desc` attributes:
 
 ## ✅ Use `I18nMixinLit` for Localization in Lit Components
 
-**In Lit-based WebUI components, use `I18nMixinLit` instead of calling `loadTimeData.getString()` directly.** The mixin provides consistent i18n patterns and is the standard approach.
+**In Lit-based WebUI components, use `I18nMixinLit` instead of calling
+`loadTimeData.getString()` directly.** The mixin provides consistent i18n
+patterns and is the standard approach.
 
 ---
 
@@ -47,11 +68,19 @@ Additional requirements for `desc` attributes:
 
 ## ❌ Never Modify Upstream GRD/GRDP Files Directly
 
-**Never add or modify strings in upstream Chromium GRD/GRDP files** (e.g., `app/generated_resources.grd`, `app/settings_strings.grdp`, `components/browser_ui/strings/android/browser_ui_strings.grd`). These files are auto-replaced during every Chromium version bump, so any changes will be lost on the next rebase.
+**Never add or modify strings in upstream Chromium GRD/GRDP files** (e.g.,
+`app/generated_resources.grd`, `app/settings_strings.grdp`,
+`components/browser_ui/strings/android/browser_ui_strings.grd`). These files are
+auto-replaced during every Chromium version bump, so any changes will be lost on
+the next rebase.
 
 To customize an upstream string:
-1. Add a new string in the corresponding Brave GRD/GRDP file (e.g., `app/brave_generated_resources.grd`, `app/brave_settings_strings.grdp`, `browser/ui/android/strings/android_brave_strings.grd`).
-2. Create a `chromium_src` override that `#undef`s the upstream `IDS_` constant and `#define`s it to your Brave-specific `IDS_` constant.
+
+1. Add a new string in the corresponding Brave GRD/GRDP file (e.g.,
+   `app/brave_generated_resources.grd`, `app/brave_settings_strings.grdp`,
+   `browser/ui/android/strings/android_brave_strings.grd`).
+2. Create a `chromium_src` override that `#undef`s the upstream `IDS_` constant
+   and `#define`s it to your Brave-specific `IDS_` constant.
 
 ```cpp
 // chromium_src/chrome/browser/ui/webui/password_manager/password_manager_ui.cc
@@ -66,7 +95,11 @@ To customize an upstream string:
 
 ## ✅ Use `grd_string_replacements.py` for Simple Upstream Text Substitutions
 
-**For simple word/phrase substitutions across upstream strings in all locales, use `brave/script/lib/l10n/grd_string_replacements.py`** with `default_replacements` and run `npm run chromium_rebase_l10n`. This applies the replacement consistently across all localized versions without needing to manually edit GRD files or create chromium_src overrides.
+**For simple word/phrase substitutions across upstream strings in all locales,
+use `brave/script/lib/l10n/grd_string_replacements.py`** with
+`default_replacements` and run `npm run chromium_rebase_l10n`. This applies the
+replacement consistently across all localized versions without needing to
+manually edit GRD files or create chromium_src overrides.
 
 ---
 
@@ -74,7 +107,10 @@ To customize an upstream string:
 
 ## ✅ Include `formatter_data="webui=X"` Matching the WebUI Component
 
-**When adding strings to a WebUI GRDP file, include the `formatter_data="webui=ComponentName"` attribute.** The value must exactly match the WebUI component identifier so the build system generates the correct string constants for the right bundle.
+**When adding strings to a WebUI GRDP file, include the
+`formatter_data="webui=ComponentName"` attribute.** The value must exactly match
+the WebUI component identifier so the build system generates the correct string
+constants for the right bundle.
 
 ```xml
 <!-- ✅ CORRECT - matches the AI Chat WebUI component -->
@@ -92,7 +128,9 @@ To customize an upstream string:
 
 ## ✅ Use SCREAMING_SNAKE_CASE Placeholder Names with Example Tags
 
-**Placeholders in GRD/GRDP strings must have descriptive `name` attributes in SCREAMING_SNAKE_CASE and include `<ex>` example tags** showing translators what value will appear at runtime.
+**Placeholders in GRD/GRDP strings must have descriptive `name` attributes in
+SCREAMING_SNAKE_CASE and include `<ex>` example tags** showing translators what
+value will appear at runtime.
 
 ```xml
 <!-- ✅ CORRECT - descriptive name and example -->
@@ -118,7 +156,10 @@ To customize an upstream string:
 
 ## ✅ Capitalization Consistency Across Feature Strings
 
-**All strings within a single feature or UI surface must use a consistent capitalization style.** Do not mix title case ("Background Image") and sentence case ("Brave backgrounds") within the same group of UI controls at the same hierarchy level.
+**All strings within a single feature or UI surface must use a consistent
+capitalization style.** Do not mix title case ("Background Image") and sentence
+case ("Brave backgrounds") within the same group of UI controls at the same
+hierarchy level.
 
 - **Title case** for: page titles, section headers, button labels, menu items
 - **Sentence case** for: descriptions, body text, tooltips, helper text
@@ -131,12 +172,19 @@ To customize an upstream string:
 
 **Follow these conventions for user-facing string text:**
 
-- **Use "Brave's" instead of "our"** — e.g., "access Brave's premium products" not "access our premium products"
-- **Use "and more" instead of "etc."** — e.g., "bookmarks, passwords, and more" not "bookmarks, passwords, etc."
-- **Match established feature terminology** — e.g., Shields uses "up/down" not "on/off" (`"with Shields up"` not `"with Shields on"`). Check existing strings for a feature's vocabulary before adding new ones.
-- **Use natural word order around placeholders** — test by substituting an example value and reading the sentence aloud
-- **Avoid possessive constructions** — prefer "the content of this page" over "this page's contents" for better translatability
-- **Be explicit about data-sharing actions** — "send your tabs to Brave AI" not just "send your tabs" (where?)
+- **Use "Brave's" instead of "our"** — e.g., "access Brave's premium products"
+  not "access our premium products"
+- **Use "and more" instead of "etc."** — e.g., "bookmarks, passwords, and more"
+  not "bookmarks, passwords, etc."
+- **Match established feature terminology** — e.g., Shields uses "up/down" not
+  "on/off" (`"with Shields up"` not `"with Shields on"`). Check existing strings
+  for a feature's vocabulary before adding new ones.
+- **Use natural word order around placeholders** — test by substituting an
+  example value and reading the sentence aloud
+- **Avoid possessive constructions** — prefer "the content of this page" over
+  "this page's contents" for better translatability
+- **Be explicit about data-sharing actions** — "send your tabs to Brave AI" not
+  just "send your tabs" (where?)
 
 ---
 
@@ -144,7 +192,11 @@ To customize an upstream string:
 
 ## ❌ Never Add Unused Strings to GRD/GRDP Files
 
-**Only add strings to GRD/GRDP files when they are actively referenced in the codebase.** Every string in a GRD/GRDP file gets sent to translators and translated into all supported languages, which costs time and money. If a string is no longer used after a refactor, remove it. When reviewing string additions, verify the `IDS_` constant is actually used in the code.
+**Only add strings to GRD/GRDP files when they are actively referenced in the
+codebase.** Every string in a GRD/GRDP file gets sent to translators and
+translated into all supported languages, which costs time and money. If a string
+is no longer used after a refactor, remove it. When reviewing string additions,
+verify the `IDS_` constant is actually used in the code.
 
 ---
 
@@ -152,9 +204,13 @@ To customize an upstream string:
 
 ## ✅ Replace Upstream Product Names with Brave Equivalents During Rebases
 
-**During Chromium rebases, review all new strings in upstream GRD/GRDP files for Google product references** (Gemini, Google Pay, Chrome, etc.) that need to be replaced with Brave equivalents. New user-facing strings introduced by rebases should be reviewed to ensure they show correct Brave branding.
+**During Chromium rebases, review all new strings in upstream GRD/GRDP files for
+Google product references** (Gemini, Google Pay, Chrome, etc.) that need to be
+replaced with Brave equivalents. New user-facing strings introduced by rebases
+should be reviewed to ensure they show correct Brave branding.
 
-Also verify correct product name usage: "Brave Wallet" refers specifically to the cryptocurrency wallet, not general autofill/payment card features.
+Also verify correct product name usage: "Brave Wallet" refers specifically to
+the cryptocurrency wallet, not general autofill/payment card features.
 
 ---
 
@@ -162,7 +218,9 @@ Also verify correct product name usage: "Brave Wallet" refers specifically to th
 
 ## ❌ Avoid Dynamic String Key Construction in `getLocale()`
 
-**Never dynamically construct string keys for `getLocale()` calls.** This makes static analysis impossible, prevents dead string detection, and breaks if key formats change.
+**Never dynamically construct string keys for `getLocale()` calls.** This makes
+static analysis impossible, prevents dead string detection, and breaks if key
+formats change.
 
 ```tsx
 // ❌ WRONG - dynamic key construction
@@ -172,7 +230,7 @@ getLocale(`CHAT_UI_${model.key.toUpperCase().replaceAll('-', '_')}_SUBTITLE`)
 getLocale(S.CHAT_UI_CLAUDE_SUBTITLE)
 
 // ✅ ALSO CORRECT - data source provides the string or key
-model.description  // provided by server API / mojom struct
+model.description // provided by server API / mojom struct
 ```
 
 ---
@@ -181,7 +239,9 @@ model.description  // provided by server API / mojom struct
 
 ## ✅ Build Links in UI, Not in Localized Strings
 
-**When a localized string needs a clickable link, build the link element in the UI (TypeScript/HTML) and pass the URL separately** via `AddString` or a mojom constant. Do not embed URLs into localized strings via C++ string formatting.
+**When a localized string needs a clickable link, build the link element in the
+UI (TypeScript/HTML) and pass the URL separately** via `AddString` or a mojom
+constant. Do not embed URLs into localized strings via C++ string formatting.
 
 ```cpp
 // ❌ WRONG - URL embedded in localized string
@@ -212,13 +272,17 @@ html_source->AddString("learnMoreUrl", kLearnMoreURL);
 
 ## ✅ String Text Must Be Complete and Grammatically Correct
 
-**User-facing strings must be complete sentences (not truncated), grammatically correct, and use proper punctuation.** String reviewers verify:
+**User-facing strings must be complete sentences (not truncated), grammatically
+correct, and use proper punctuation.** String reviewers verify:
 
 - Sentences are not cut off mid-thought
-- Compound adjectives are hyphenated (e.g., "non-compatible" not "non compatible")
-- Prepositions are appropriate for context (e.g., "in" vs. "on" for UI locations)
+- Compound adjectives are hyphenated (e.g., "non-compatible" not "non
+  compatible")
+- Prepositions are appropriate for context (e.g., "in" vs. "on" for UI
+  locations)
 
-This matters because translators use the English source as a reference, and errors propagate to translations.
+This matters because translators use the English source as a reference, and
+errors propagate to translations.
 
 ---
 
@@ -226,8 +290,14 @@ This matters because translators use the English source as a reference, and erro
 
 ## ✅ Include UI Screenshots When Adding or Modifying Strings
 
-**When a PR adds or modifies user-facing strings, the developer must include a screenshot of the affected UI in the PR description.** This allows string reviewers to verify the string in context — checking for truncation, capitalization consistency, layout issues, and correct terminology. Screenshots should show the actual rendered UI, not just the GRD/GRDP diff.
+**When a PR adds or modifies user-facing strings, the developer must include a
+screenshot of the affected UI in the PR description.** This allows string
+reviewers to verify the string in context — checking for truncation,
+capitalization consistency, layout issues, and correct terminology. Screenshots
+should show the actual rendered UI, not just the GRD/GRDP diff.
 
-Do not add screenshots as inline code comments. Add them to the PR description body.
+Do not add screenshots as inline code comments. Add them to the PR description
+body.
 
-See also: [Brave Style Guide](./style-guide.md) for voice, capitalization, punctuation, and product naming rules that apply to all user-facing strings.
+See also: [Brave Style Guide](./style-guide.md) for voice, capitalization,
+punctuation, and product naming rules that apply to all user-facing strings.

@@ -4,9 +4,13 @@
 
 ## ✅ Use `[weak self]` in Async Closures to Prevent Retain Cycles
 
-**Always capture `[weak self]` in closures that outlive the current scope** — network callbacks, notification handlers, animation completions, and stored closures. Use `[unowned self]` only when the closure's lifetime is guaranteed to be shorter than `self`.
+**Always capture `[weak self]` in closures that outlive the current scope** —
+network callbacks, notification handlers, animation completions, and stored
+closures. Use `[unowned self]` only when the closure's lifetime is guaranteed to
+be shorter than `self`.
 
-**Exception:** Fire-and-forget `Task {}` blocks that are **not** stored as a property do not need `[weak self]` because they don't create a retain cycle.
+**Exception:** Fire-and-forget `Task {}` blocks that are **not** stored as a
+property do not need `[weak self]` because they don't create a retain cycle.
 
 ```swift
 // ❌ WRONG - strong self capture in stored closure
@@ -35,7 +39,8 @@ fetchTask = Task { [weak self] in
 }
 ```
 
-**Apply `[weak self]` to the root/outermost closure**, not inner closures. Inner closures inherit the capture from the outer scope.
+**Apply `[weak self]` to the root/outermost closure**, not inner closures. Inner
+closures inherit the capture from the outer scope.
 
 ---
 
@@ -43,7 +48,9 @@ fetchTask = Task { [weak self] in
 
 ## ✅ Use `@Observable` Macro, Not `ObservableObject`
 
-**Prefer the `@Observable` macro (Observation framework) over `ObservableObject` (Combine).** `@Observable` is the modern replacement, requires less boilerplate, and integrates better with SwiftUI.
+**Prefer the `@Observable` macro (Observation framework) over `ObservableObject`
+(Combine).** `@Observable` is the modern replacement, requires less boilerplate,
+and integrates better with SwiftUI.
 
 ```swift
 // ❌ WRONG - legacy Combine pattern
@@ -64,7 +71,10 @@ class ViewModel {
 
 ## ✅ Use `@MainActor` to Ensure UI Work Runs on the Main Thread
 
-**Mark methods and types that perform UI work as `@MainActor`** so that async contexts are forced to await them. Note that Tasks inherit actor isolation from their enclosing context — adding `@MainActor` to a Task created inside an already-`@MainActor`-isolated context is redundant.
+**Mark methods and types that perform UI work as `@MainActor`** so that async
+contexts are forced to await them. Note that Tasks inherit actor isolation from
+their enclosing context — adding `@MainActor` to a Task created inside an
+already-`@MainActor`-isolated context is redundant.
 
 ```swift
 // ❌ WRONG - redundant @MainActor on Task inside @MainActor context
@@ -107,7 +117,9 @@ func updateUI() async {
 
 ## ✅ Use `#available` Compiler Checks
 
-**Use `#available` for API availability checks, not manual version comparisons.** The compiler enforces `#available` correctness and produces warnings when minimum deployment targets change.
+**Use `#available` for API availability checks, not manual version
+comparisons.** The compiler enforces `#available` correctness and produces
+warnings when minimum deployment targets change.
 
 ```swift
 // ❌ WRONG - manual version check
@@ -168,7 +180,8 @@ guard let a = optionalA, let b = optionalB else { return }
 
 ## ✅ Use `Set` for Membership Testing
 
-**Use `Set` instead of `Array` when the primary operation is membership testing (`contains`).** `Set.contains` is O(1) vs Array's O(n).
+**Use `Set` instead of `Array` when the primary operation is membership testing
+(`contains`).** `Set.contains` is O(1) vs Array's O(n).
 
 ```swift
 // ❌ WRONG - O(n) lookup
@@ -186,7 +199,9 @@ if allowedTypes.contains(type) { ... }
 
 ## ✅ Use `public` Not `open` Unless Subclassing Is Required
 
-**Default to `public` access control. Only use `open` when external modules need to subclass or override.** Using `open` unnecessarily exposes implementation details.
+**Default to `public` access control. Only use `open` when external modules need
+to subclass or override.** Using `open` unnecessarily exposes implementation
+details.
 
 ---
 
@@ -194,7 +209,8 @@ if allowedTypes.contains(type) { ... }
 
 ## ✅ Prefer Convenience Initializers on Enums Over Static Factory Methods
 
-**Use convenience initializers on enums instead of static factory methods.** This is more idiomatic Swift and integrates better with the type system.
+**Use convenience initializers on enums instead of static factory methods.**
+This is more idiomatic Swift and integrates better with the type system.
 
 ```swift
 // ❌ WRONG - static factory
@@ -218,7 +234,8 @@ extension TabType {
 
 ## ❌ No Default Values for Required Init Parameters
 
-**Don't provide default values for parameters that callers should always explicitly specify.** This prevents accidental use of incorrect defaults.
+**Don't provide default values for parameters that callers should always
+explicitly specify.** This prevents accidental use of incorrect defaults.
 
 ---
 
@@ -226,9 +243,11 @@ extension TabType {
 
 ## ✅ Use `let` Over `var` for Single-Assignment Properties
 
-**Use `let` for properties that are assigned once and never mutated.** The compiler enforces immutability, preventing accidental reassignment.
+**Use `let` for properties that are assigned once and never mutated.** The
+compiler enforces immutability, preventing accidental reassignment.
 
-**Exception:** Swift structs control mutability at the usage site via `let`/`var`, so `var` properties in structs are acceptable:
+**Exception:** Swift structs control mutability at the usage site via
+`let`/`var`, so `var` properties in structs are acceptable:
 
 ```swift
 struct Item {
@@ -245,9 +264,12 @@ var itemTwo = Item(name: "...") // itemTwo.name is mutable
 
 ## ❌ Avoid Implicitly Unwrapped Optionals for viewDidLoad Properties
 
-**Do not use implicitly unwrapped optionals (`!`) for properties initialized in `viewDidLoad`.** Use lazy properties, optional types with safe unwrapping, or initialize in the initializer.
+**Do not use implicitly unwrapped optionals (`!`) for properties initialized in
+`viewDidLoad`.** Use lazy properties, optional types with safe unwrapping, or
+initialize in the initializer.
 
-**Use `lazy var` only when** you need to defer creation to avoid work at init time, or when the initializer requires `self`.
+**Use `lazy var` only when** you need to defer creation to avoid work at init
+time, or when the initializer requires `self`.
 
 ```swift
 // ❌ WRONG - crash risk if accessed before viewDidLoad
@@ -263,7 +285,8 @@ lazy var tableView = UITableView()
 
 ## ✅ Use `withTaskCancellationHandler` When Bridging Callbacks to Async
 
-**When wrapping callback-based APIs with `withCheckedContinuation`, use `withTaskCancellationHandler` to propagate cancellation properly.**
+**When wrapping callback-based APIs with `withCheckedContinuation`, use
+`withTaskCancellationHandler` to propagate cancellation properly.**
 
 ```swift
 // ✅ CORRECT - cancellation-aware bridging
@@ -286,7 +309,9 @@ func fetchData() async throws -> Data {
 
 ## ✅ Always Call Completion Handlers on All Code Paths
 
-**When a function accepts a completion handler, always call it on every code path — including error and early-return paths.** Failing to call the completion handler leaks resources and may leave callers waiting indefinitely.
+**When a function accepts a completion handler, always call it on every code
+path — including error and early-return paths.** Failing to call the completion
+handler leaks resources and may leave callers waiting indefinitely.
 
 ```swift
 // ❌ WRONG - completion handler not called on error path
@@ -311,7 +336,9 @@ func fetchData(from url: URL, _ completionHandler: @escaping () -> Void) {
 
 ## ✅ Use `evaluateSafeJavaScript` Instead of Raw JS Evaluation
 
-**Use the `evaluateSafeJavaScript` wrapper instead of calling `callAsyncJavaScript` or `evaluateJavaScript` directly.** The wrapper provides proper error handling and security checks.
+**Use the `evaluateSafeJavaScript` wrapper instead of calling
+`callAsyncJavaScript` or `evaluateJavaScript` directly.** The wrapper provides
+proper error handling and security checks.
 
 ---
 
@@ -319,7 +346,9 @@ func fetchData(from url: URL, _ completionHandler: @escaping () -> Void) {
 
 ## ✅ Model Error States as Swift `Error` Types
 
-**Use Swift `Error` enums/structs for error representation, not integer error codes.** This provides type safety, exhaustive switch handling, and better debugging.
+**Use Swift `Error` enums/structs for error representation, not integer error
+codes.** This provides type safety, exhaustive switch handling, and better
+debugging.
 
 ```swift
 // ❌ WRONG - integer error codes
@@ -341,7 +370,8 @@ enum FetchError: Error {
 
 ## ✅ Delegate Methods Should Take Non-Optional Parameters
 
-**Delegate method parameters should be non-optional.** The delegate should not need to handle nil values from the delegating object.
+**Delegate method parameters should be non-optional.** The delegate should not
+need to handle nil values from the delegating object.
 
 ---
 
@@ -349,7 +379,9 @@ enum FetchError: Error {
 
 ## ✅ Use `_ = variable` to Silence "Wrote But Not Read" Warnings
 
-**When a variable is intentionally unused (e.g., the result of a side-effecting function), assign it to `_` explicitly.** This signals intent to future readers and silences compiler warnings.
+**When a variable is intentionally unused (e.g., the result of a side-effecting
+function), assign it to `_` explicitly.** This signals intent to future readers
+and silences compiler warnings.
 
 ---
 
@@ -357,7 +389,8 @@ enum FetchError: Error {
 
 ## ✅ Use `.clipShape` Instead of Deprecated `.cornerRadius()`
 
-**Use `.clipShape(.rect(cornerRadius:))` instead of the deprecated `.cornerRadius()` modifier.**
+**Use `.clipShape(.rect(cornerRadius:))` instead of the deprecated
+`.cornerRadius()` modifier.**
 
 ```swift
 // ❌ WRONG - deprecated modifier
@@ -375,7 +408,8 @@ Text("Hello")
 
 ## ✅ Use `.background(_:in:)` With Shape Parameter
 
-**Use the `.background(_:in:)` modifier with a shape parameter instead of layering `.background()` with `.clipShape()`.**
+**Use the `.background(_:in:)` modifier with a shape parameter instead of
+layering `.background()` with `.clipShape()`.**
 
 ```swift
 // ❌ WRONG - separate background and clip
@@ -394,7 +428,8 @@ Text("Hello")
 
 ## ✅ Use Stack Spacing Instead of Individual Padding
 
-**Use the `spacing` parameter on `VStack`/`HStack` instead of adding padding to each child element.** This is cleaner and more maintainable.
+**Use the `spacing` parameter on `VStack`/`HStack` instead of adding padding to
+each child element.** This is cleaner and more maintainable.
 
 ```swift
 // ❌ WRONG - padding on each child
@@ -420,7 +455,9 @@ VStack(spacing: 8) {
 
 ## ✅ Extract Inline SwiftUI Blocks Into Named Views
 
-**When an inline SwiftUI view builder block exceeds a few lines, extract it into a named `View` struct or computed property.** This improves readability and enables reuse.
+**When an inline SwiftUI view builder block exceeds a few lines, extract it into
+a named `View` struct or computed property.** This improves readability and
+enables reuse.
 
 ---
 
@@ -428,7 +465,9 @@ VStack(spacing: 8) {
 
 ## ✅ Use `UIHostingConfiguration` for SwiftUI in UITableViewCell
 
-**When using SwiftUI views inside `UITableViewCell` or `UICollectionViewCell`, use `UIHostingConfiguration` instead of manually embedding a `UIHostingController`.**
+**When using SwiftUI views inside `UITableViewCell` or `UICollectionViewCell`,
+use `UIHostingConfiguration` instead of manually embedding a
+`UIHostingController`.**
 
 ```swift
 // ✅ CORRECT - modern cell configuration
@@ -443,7 +482,9 @@ cell.contentConfiguration = UIHostingConfiguration {
 
 ## ❌ Never Modify Constraints in `layoutSubviews`
 
-**Do not create or modify Auto Layout constraints inside `layoutSubviews`.** This causes infinite layout loops. Use `updateViewConstraints` or set constraints once during setup.
+**Do not create or modify Auto Layout constraints inside `layoutSubviews`.**
+This causes infinite layout loops. Use `updateViewConstraints` or set
+constraints once during setup.
 
 ```swift
 // ❌ WRONG - constraints in layoutSubviews (infinite loop risk)
@@ -465,7 +506,9 @@ override func updateViewConstraints() {
 
 ## ✅ Use `setNeedsUpdateConstraints()` for Constraint Changes
 
-**When constraints need to change, call `setNeedsUpdateConstraints()`, not `setNeedsLayout()` + `layoutIfNeeded()`.** The constraint system handles layout invalidation.
+**When constraints need to change, call `setNeedsUpdateConstraints()`, not
+`setNeedsLayout()` + `layoutIfNeeded()`.** The constraint system handles layout
+invalidation.
 
 ---
 
@@ -473,7 +516,8 @@ override func updateViewConstraints() {
 
 ## ✅ Use `UIView.keyboardLayoutGuide` Instead of Manual Keyboard Height
 
-**Use `UIView.keyboardLayoutGuide` for keyboard-responsive layouts instead of manually observing keyboard notifications and adjusting insets.**
+**Use `UIView.keyboardLayoutGuide` for keyboard-responsive layouts instead of
+manually observing keyboard notifications and adjusting insets.**
 
 ```swift
 // ❌ WRONG - manual keyboard observation
@@ -492,9 +536,16 @@ bottomConstraint = view.bottomAnchor.constraint(
 
 ## ✅ Use Brave Design System Colors
 
-**Use `UIColor(braveSystemName:)` for colors, not hard-coded values or system colors.** This ensures consistency with the Brave design system and proper dark mode support.
+**Use `UIColor(braveSystemName:)` for colors, not hard-coded values or system
+colors.** This ensures consistency with the Brave design system and proper dark
+mode support.
 
-**Avoid deprecated legacy colors** such as `UIColor.braveBlurpleTint` / `Color(.braveBlurpleTint)` from [LegacyColors.swift](https://github.com/brave/brave-core/blob/00785ba10b5dea2f7ac4e1d66dafe0ddd6d1c0af/ios/brave-ios/Sources/DesignSystem/Colors/LegacyColors.swift). The only legacy colors still acceptable in the short-term are the "grouped" backgrounds: `braveGroupedBackground`, `secondaryBraveGroupedBackground`, `tertiaryBraveGroupedBackground`.
+**Avoid deprecated legacy colors** such as `UIColor.braveBlurpleTint` /
+`Color(.braveBlurpleTint)` from
+[LegacyColors.swift](https://github.com/brave/brave-core/blob/00785ba10b5dea2f7ac4e1d66dafe0ddd6d1c0af/ios/brave-ios/Sources/DesignSystem/Colors/LegacyColors.swift).
+The only legacy colors still acceptable in the short-term are the "grouped"
+backgrounds: `braveGroupedBackground`, `secondaryBraveGroupedBackground`,
+`tertiaryBraveGroupedBackground`.
 
 ```swift
 // ❌ WRONG - hard-coded color
@@ -513,7 +564,9 @@ view.backgroundColor = UIColor(braveSystemName: .primary20)
 
 ## ✅ Keep Tab Observer and Policy Decider Thin
 
-**Do not add feature-specific business logic directly in `BVC+TabObserver.swift` or `BVC+TabPolicyDecider.swift`.** These files should only contain thin delegation. Feature-specific logic belongs in `Tab` helpers.
+**Do not add feature-specific business logic directly in `BVC+TabObserver.swift`
+or `BVC+TabPolicyDecider.swift`.** These files should only contain thin
+delegation. Feature-specific logic belongs in `Tab` helpers.
 
 ---
 
@@ -521,7 +574,8 @@ view.backgroundColor = UIColor(braveSystemName: .primary20)
 
 ## ✅ Set Properties Before Dependent Setup in `viewDidLoad`
 
-**In `viewDidLoad`, set properties before calling setup methods that depend on them.** Ordering bugs here are common and hard to debug.
+**In `viewDidLoad`, set properties before calling setup methods that depend on
+them.** Ordering bugs here are common and hard to debug.
 
 ```swift
 // ❌ WRONG - setup uses property before it's set
@@ -545,7 +599,9 @@ override func viewDidLoad() {
 
 ## ✅ Wrap ObjC Headers With Nullability Annotations
 
-**All Objective-C headers should use `NS_ASSUME_NONNULL_BEGIN`/`NS_ASSUME_NONNULL_END` and explicitly annotate nullable parameters.**
+**All Objective-C headers should use
+`NS_ASSUME_NONNULL_BEGIN`/`NS_ASSUME_NONNULL_END` and explicitly annotate
+nullable parameters.**
 
 ```objc
 // ✅ CORRECT
@@ -564,7 +620,9 @@ NS_ASSUME_NONNULL_END
 
 ## ✅ Mark Static-Only ObjC Classes With `NS_UNAVAILABLE` Init
 
-**For Objective-C classes that should not be instantiated (only class methods), mark `init` as `NS_UNAVAILABLE`.** Marking `new` is not necessary since most Objective-C usage is from Swift, which does not call `new`.
+**For Objective-C classes that should not be instantiated (only class methods),
+mark `init` as `NS_UNAVAILABLE`.** Marking `new` is not necessary since most
+Objective-C usage is from Swift, which does not call `new`.
 
 ```objc
 @interface BraveUtils : NSObject
@@ -579,7 +637,8 @@ NS_ASSUME_NONNULL_END
 
 ## ✅ `OBJC_EXPORT` Goes on Headers Only
 
-**`OBJC_EXPORT` should only appear on the header declaration, not the implementation.**
+**`OBJC_EXPORT` should only appear on the header declaration, not the
+implementation.**
 
 ---
 
@@ -587,7 +646,9 @@ NS_ASSUME_NONNULL_END
 
 ## ✅ Use `NS_SWIFT_NAME` to Control Swift Method Naming
 
-**Use `NS_SWIFT_NAME` on Objective-C APIs to provide idiomatic Swift names.** This is especially important for factory methods and methods with C-style naming.
+**Use `NS_SWIFT_NAME` on Objective-C APIs to provide idiomatic Swift names.**
+This is especially important for factory methods and methods with C-style
+naming.
 
 ---
 
@@ -595,7 +656,8 @@ NS_ASSUME_NONNULL_END
 
 ## ✅ Use `isEqualToString:` for NSString Comparison
 
-**Never use `==` or `!=` for `NSString` comparison — use `isEqualToString:`.** The `==` operator compares pointer identity, not string contents.
+**Never use `==` or `!=` for `NSString` comparison — use `isEqualToString:`.**
+The `==` operator compares pointer identity, not string contents.
 
 ```objc
 // ❌ WRONG - pointer comparison
@@ -611,7 +673,9 @@ if ([string isEqualToString:@"expected"]) { ... }
 
 ## ✅ Use camelCase for Obj-C Variable Names Inside Obj-C Classes/Types
 
-**Objective-C variable naming must use camelCase inside Obj-C classes and types.** When Obj-C types are used inside C++ classes, follow C++ snake_case conventions instead.
+**Objective-C variable naming must use camelCase inside Obj-C classes and
+types.** When Obj-C types are used inside C++ classes, follow C++ snake_case
+conventions instead.
 
 ---
 
@@ -619,7 +683,8 @@ if ([string isEqualToString:@"expected"]) { ... }
 
 ## ✅ Weak/Strong Dance in Posted Tasks
 
-**When posting tasks from Objective-C++ that capture `self`, pass `weakSelf` as a closure parameter rather than capturing it directly.**
+**When posting tasks from Objective-C++ that capture `self`, pass `weakSelf` as
+a closure parameter rather than capturing it directly.**
 
 ```objc
 // ❌ WRONG - capturing weakSelf directly in block
@@ -643,7 +708,9 @@ dispatch_async(queue, ^{
 
 ## ✅ Ensure ObjC Collection Mutability Correctness
 
-**Use `copy` for immutable and `mutableCopy` for mutable collections.** Passing a mutable collection where an immutable one is expected (or vice versa) leads to subtle bugs.
+**Use `copy` for immutable and `mutableCopy` for mutable collections.** Passing
+a mutable collection where an immutable one is expected (or vice versa) leads to
+subtle bugs.
 
 ---
 
@@ -651,7 +718,8 @@ dispatch_async(queue, ^{
 
 ## ❌ No Singletons — Use Dependency Injection
 
-**Do not use singletons for service access.** Pass dependencies through initializers, method parameters, or the `Tab`/`TabHelper` extension pattern.
+**Do not use singletons for service access.** Pass dependencies through
+initializers, method parameters, or the `Tab`/`TabHelper` extension pattern.
 
 ```swift
 // ❌ WRONG - singleton access
@@ -670,7 +738,9 @@ init(rewardsController: BraveRewardsViewController) {
 
 ## ✅ Tab Helpers Must Use `TabDataValues` Extension Pattern
 
-**Tab-associated data should use the `TabDataValues` extension pattern, not stored properties or associated objects.** This ensures proper lifecycle management.
+**Tab-associated data should use the `TabDataValues` extension pattern, not
+stored properties or associated objects.** This ensures proper lifecycle
+management.
 
 ---
 
@@ -678,7 +748,9 @@ init(rewardsController: BraveRewardsViewController) {
 
 ## ❌ Do Not Add Feature Data to `TabState`
 
-**Do not add feature-related data directly to `TabState`.** Instead, use a Tab Helper with `TabDataValues` to store feature-specific state. `TabState` should remain a minimal model representing core tab state.
+**Do not add feature-related data directly to `TabState`.** Instead, use a Tab
+Helper with `TabDataValues` to store feature-specific state. `TabState` should
+remain a minimal model representing core tab state.
 
 ---
 
@@ -686,7 +758,8 @@ init(rewardsController: BraveRewardsViewController) {
 
 ## ❌ View Model Types Must Not Import SDK Singletons
 
-**View models must not import or reference SDK singletons directly.** Pass SDK dependencies through the initializer for testability.
+**View models must not import or reference SDK singletons directly.** Pass SDK
+dependencies through the initializer for testability.
 
 ---
 
@@ -694,7 +767,8 @@ init(rewardsController: BraveRewardsViewController) {
 
 ## ✅ Bind ProfileIOS Directly, Avoid `getLastUsedProfile`
 
-**Pass `ProfileIOS` explicitly into closures and initializers.** Do not call `getLastUsedProfile` at point of use — the last-used profile can change.
+**Pass `ProfileIOS` explicitly into closures and initializers.** Do not call
+`getLastUsedProfile` at point of use — the last-used profile can change.
 
 ---
 
@@ -702,7 +776,9 @@ init(rewardsController: BraveRewardsViewController) {
 
 ## ✅ Feature Flag Checks Gate Registration, Not Runtime
 
-**Feature flag checks should gate handler/observer registration, not runtime checks inside the handler.** This avoids unnecessary overhead when the feature is disabled.
+**Feature flag checks should gate handler/observer registration, not runtime
+checks inside the handler.** This avoids unnecessary overhead when the feature
+is disabled.
 
 ```swift
 // ❌ WRONG - checking flag at runtime inside handler
@@ -723,7 +799,8 @@ if FeatureFlags.isEnabled(.myFeature) {
 
 ## ❌ Feature-Specific Logic Does Not Belong in Generic Extensions
 
-**Do not add feature-specific logic to generic utility extensions.** Create feature-specific helpers instead.
+**Do not add feature-specific logic to generic utility extensions.** Create
+feature-specific helpers instead.
 
 ---
 
@@ -731,7 +808,8 @@ if FeatureFlags.isEnabled(.myFeature) {
 
 ## ✅ Register Prefs in `browser_prefs.mm` on iOS
 
-**iOS preference registration goes in `browser_prefs.mm`, not in arbitrary init methods.**
+**iOS preference registration goes in `browser_prefs.mm`, not in arbitrary init
+methods.**
 
 ---
 
@@ -739,7 +817,8 @@ if FeatureFlags.isEnabled(.myFeature) {
 
 ## ✅ Use `P3A.installationDate`, Not `DAU.installationDate`
 
-**`Preferences.DAU.installationDate` resets after 14 days. Use `Preferences.P3A.installationDate` for persistent installation dates.**
+**`Preferences.DAU.installationDate` resets after 14 days. Use
+`Preferences.P3A.installationDate` for persistent installation dates.**
 
 ---
 
@@ -747,7 +826,9 @@ if FeatureFlags.isEnabled(.myFeature) {
 
 ## ✅ Wire Complete Observer/Bridge Chains
 
-**When connecting C++ observers to Objective-C/Swift code, ensure the entire chain is wired: C++ observer → bridge object → Obj-C/Swift delegate.** Missing links in the chain are a common source of silent failures.
+**When connecting C++ observers to Objective-C/Swift code, ensure the entire
+chain is wired: C++ observer → bridge object → Obj-C/Swift delegate.** Missing
+links in the chain are a common source of silent failures.
 
 ---
 
@@ -755,7 +836,8 @@ if FeatureFlags.isEnabled(.myFeature) {
 
 ## ✅ Use `raw_ptr<T>` for Stored Pointers in C++ Classes
 
-**When a C++ class stores a pointer to another object, use `raw_ptr<T>` instead of raw `T*`.** This enables Chromium's pointer safety checks.
+**When a C++ class stores a pointer to another object, use `raw_ptr<T>` instead
+of raw `T*`.** This enables Chromium's pointer safety checks.
 
 ---
 
@@ -763,7 +845,9 @@ if FeatureFlags.isEnabled(.myFeature) {
 
 ## ✅ Use `NOTIMPLEMENTED()` for Potentially Reachable Code
 
-**`NOTREACHED()` crashes in release builds. Use `NOTIMPLEMENTED()` for code paths that may be reached but are not yet implemented.** Only use `NOTREACHED()` when the code path should truly never execute.
+**`NOTREACHED()` crashes in release builds. Use `NOTIMPLEMENTED()` for code
+paths that may be reached but are not yet implemented.** Only use `NOTREACHED()`
+when the code path should truly never execute.
 
 ---
 
@@ -771,7 +855,8 @@ if FeatureFlags.isEnabled(.myFeature) {
 
 ## ✅ Use Mojo `::Name_` Constants for Interface Registration
 
-**When registering Mojo interfaces, use the `::Name_` constant from the generated interface, not hard-coded strings.**
+**When registering Mojo interfaces, use the `::Name_` constant from the
+generated interface, not hard-coded strings.**
 
 ---
 
@@ -779,7 +864,8 @@ if FeatureFlags.isEnabled(.myFeature) {
 
 ## ❌ Do Not Rely on iOS Caches Directory for Persistent State
 
-**The iOS caches directory can be cleared by the system at any time.** Do not store state that must survive app restarts in the caches directory.
+**The iOS caches directory can be cleared by the system at any time.** Do not
+store state that must survive app restarts in the caches directory.
 
 ---
 
@@ -787,7 +873,8 @@ if FeatureFlags.isEnabled(.myFeature) {
 
 ## ✅ New Strings Go in `BraveStrings`, Not `SharedStrings.swift`
 
-**Add new user-facing strings to `BraveStrings`, not `SharedStrings.swift`.** SharedStrings is for legacy/shared strings only.
+**Add new user-facing strings to `BraveStrings`, not `SharedStrings.swift`.**
+SharedStrings is for legacy/shared strings only.
 
 ---
 
@@ -795,7 +882,9 @@ if FeatureFlags.isEnabled(.myFeature) {
 
 ## ❌ Do Not Add New Functionality to the Legacy `Shared` Module
 
-**The `Shared` module is legacy — do not add new functionality to it.** If you need a shared module for new code, create a new module instead. Existing `Shared` code can still be used but should not be extended.
+**The `Shared` module is legacy — do not add new functionality to it.** If you
+need a shared module for new code, create a new module instead. Existing
+`Shared` code can still be used but should not be extended.
 
 ---
 
@@ -803,7 +892,8 @@ if FeatureFlags.isEnabled(.myFeature) {
 
 ## ✅ Tests Mirror Source Modules
 
-**Test files should be organized to mirror the source module structure.** A class in `BraveCore/Wallet/` should have tests in `BraveCoreTests/Wallet/`.
+**Test files should be organized to mirror the source module structure.** A
+class in `BraveCore/Wallet/` should have tests in `BraveCoreTests/Wallet/`.
 
 ---
 
@@ -811,7 +901,9 @@ if FeatureFlags.isEnabled(.myFeature) {
 
 ## ✅ Export Pref Constants in Feature-Specific Headers
 
-**iOS pref constants should be exported in feature-specific headers, not in a shared `pref_names_bridge.h`.** This reduces coupling and makes dependencies explicit.
+**iOS pref constants should be exported in feature-specific headers, not in a
+shared `pref_names_bridge.h`.** This reduces coupling and makes dependencies
+explicit.
 
 ---
 
@@ -819,7 +911,9 @@ if FeatureFlags.isEnabled(.myFeature) {
 
 ## ✅ Mojom Wrappers Go in `ios/common`, Not `ios/browser`
 
-**Mojom wrapper types belong in `ios/common/` because they are shared between browser and renderer processes.** Placing them in `ios/browser/` creates unnecessary layering constraints.
+**Mojom wrapper types belong in `ios/common/` because they are shared between
+browser and renderer processes.** Placing them in `ios/browser/` creates
+unnecessary layering constraints.
 
 ---
 
@@ -827,7 +921,9 @@ if FeatureFlags.isEnabled(.myFeature) {
 
 ## ✅ Use `_bridge.h` for ObjC Wrappers, `_ios.h` for iOS Implementations
 
-**Use the `_bridge.h` suffix for plain Objective-C wrapper headers that expose C++ types to Swift.** Use `_ios.h` for iOS-specific implementations of cross-platform interfaces.
+**Use the `_bridge.h` suffix for plain Objective-C wrapper headers that expose
+C++ types to Swift.** Use `_ios.h` for iOS-specific implementations of
+cross-platform interfaces.
 
 ---
 
@@ -835,7 +931,9 @@ if FeatureFlags.isEnabled(.myFeature) {
 
 ## ✅ Use `Impl` Suffix for Concrete Implementations
 
-**Name concrete implementations with the `Impl` suffix, not a platform suffix like `_ios`.** For example: `BraveWalletServiceImpl`, not `BraveWalletServiceIOS`.
+**Name concrete implementations with the `Impl` suffix, not a platform suffix
+like `_ios`.** For example: `BraveWalletServiceImpl`, not
+`BraveWalletServiceIOS`.
 
 ---
 
@@ -843,7 +941,8 @@ if FeatureFlags.isEnabled(.myFeature) {
 
 ## ✅ Remove Dead Code and Debug Statements
 
-**Remove all debug `print` statements and dead code before submitting.** Use `Logger` instead of `print` for any logging that should remain.
+**Remove all debug `print` statements and dead code before submitting.** Use
+`Logger` instead of `print` for any logging that should remain.
 
 ---
 
@@ -851,7 +950,9 @@ if FeatureFlags.isEnabled(.myFeature) {
 
 ## ✅ Preserve Accessibility Labels
 
-**Always set accessibility labels on interactive elements.** VoiceOver users depend on these. When refactoring UI, verify that accessibility labels are preserved.
+**Always set accessibility labels on interactive elements.** VoiceOver users
+depend on these. When refactoring UI, verify that accessibility labels are
+preserved.
 
 ---
 
@@ -859,7 +960,9 @@ if FeatureFlags.isEnabled(.myFeature) {
 
 ## ✅ Use `UIImage.prepareThumbnail(of:)` for Thumbnailing
 
-**Use `UIImage.prepareThumbnail(of:)` for generating thumbnails instead of manual `UIGraphicsImageRenderer` resizing.** The system method is optimized for memory and performance.
+**Use `UIImage.prepareThumbnail(of:)` for generating thumbnails instead of
+manual `UIGraphicsImageRenderer` resizing.** The system method is optimized for
+memory and performance.
 
 ---
 
@@ -867,7 +970,8 @@ if FeatureFlags.isEnabled(.myFeature) {
 
 ## ✅ Prefer CSS `@media (prefers-color-scheme)` Over JS Class Toggling
 
-**For injected web content, use CSS `@media (prefers-color-scheme: dark)` for dark mode support instead of toggling CSS classes via JavaScript.**
+**For injected web content, use CSS `@media (prefers-color-scheme: dark)` for
+dark mode support instead of toggling CSS classes via JavaScript.**
 
 ---
 
@@ -875,7 +979,9 @@ if FeatureFlags.isEnabled(.myFeature) {
 
 ## ✅ Use `@_disfavoredOverload` + `@available(iOS, obsoleted:)` for Backporting
 
-**When backporting newer APIs, use `@_disfavoredOverload` combined with `@available(iOS, obsoleted:)` to create transparent fallbacks that automatically disappear when the deployment target is raised.**
+**When backporting newer APIs, use `@_disfavoredOverload` combined with
+`@available(iOS, obsoleted:)` to create transparent fallbacks that automatically
+disappear when the deployment target is raised.**
 
 ```swift
 // Backport API available in iOS 17+
@@ -895,7 +1001,9 @@ extension View {
 
 ## ✅ Artificial Delays Require Comments
 
-**Any use of `Task.sleep` or similar artificial delays must include a comment explaining why the delay is necessary.** Unexplained delays are a code smell and may hide race conditions.
+**Any use of `Task.sleep` or similar artificial delays must include a comment
+explaining why the delay is necessary.** Unexplained delays are a code smell and
+may hide race conditions.
 
 ```swift
 // ❌ WRONG - unexplained delay
@@ -913,7 +1021,8 @@ try await Task.sleep(nanoseconds: 500_000_000)
 
 ## ✅ Use `TimestampFormatStyle` for Duration Formatting
 
-**Use `TimestampFormatStyle` or `Duration.formatted()` for displaying durations instead of manual string formatting.**
+**Use `TimestampFormatStyle` or `Duration.formatted()` for displaying durations
+instead of manual string formatting.**
 
 ---
 
@@ -921,7 +1030,9 @@ try await Task.sleep(nanoseconds: 500_000_000)
 
 ## ✅ Prefer Local Variables for Short-Lived Cancellables
 
-**For Combine subscriptions that are only needed temporarily (e.g., waiting for a single value), use a local variable instead of storing the cancellable as a property.** This prevents accumulation of dead subscriptions.
+**For Combine subscriptions that are only needed temporarily (e.g., waiting for
+a single value), use a local variable instead of storing the cancellable as a
+property.** This prevents accumulation of dead subscriptions.
 
 ---
 
@@ -929,7 +1040,9 @@ try await Task.sleep(nanoseconds: 500_000_000)
 
 ## ✅ Check Delegate Before `withCheckedContinuation`
 
-**When using `withCheckedContinuation` that depends on a delegate callback, verify the delegate is set before entering the continuation.** Otherwise the continuation may never resume, hanging the task indefinitely.
+**When using `withCheckedContinuation` that depends on a delegate callback,
+verify the delegate is set before entering the continuation.** Otherwise the
+continuation may never resume, hanging the task indefinitely.
 
 ---
 
@@ -937,7 +1050,9 @@ try await Task.sleep(nanoseconds: 500_000_000)
 
 ## ✅ Match Button Shapes to Nala Design System
 
-**Buttons should use rounded rectangle shapes consistent with the Nala design system.** Do not use fully rounded (capsule) or sharp-cornered buttons unless the design specifically calls for it.
+**Buttons should use rounded rectangle shapes consistent with the Nala design
+system.** Do not use fully rounded (capsule) or sharp-cornered buttons unless
+the design specifically calls for it.
 
 ---
 
@@ -945,7 +1060,9 @@ try await Task.sleep(nanoseconds: 500_000_000)
 
 ## ✅ chromium_src iOS Overrides: Prefer Subclassing
 
-**When overriding iOS Chromium classes via chromium_src, prefer subclassing over code duplication.** Use the `#define`/`#include`/`#undef` pattern to substitute Brave subclasses.
+**When overriding iOS Chromium classes via chromium_src, prefer subclassing over
+code duplication.** Use the `#define`/`#include`/`#undef` pattern to substitute
+Brave subclasses.
 
 ```cpp
 // chromium_src/ios/chrome/browser/some_file.mm
@@ -956,7 +1073,8 @@ try await Task.sleep(nanoseconds: 500_000_000)
 #undef ChromeViewController
 ```
 
-**Always add blank lines around the `#define`/`#undef`-wrapped includes for readability.**
+**Always add blank lines around the `#define`/`#undef`-wrapped includes for
+readability.**
 
 ---
 
@@ -964,7 +1082,8 @@ try await Task.sleep(nanoseconds: 500_000_000)
 
 ## ✅ Use GN Build Args for Platform-Specific Feature Defaults
 
-**Use GN build arguments (not C++ source code) to set platform-specific feature defaults.** This allows build-time configuration and reduces `#ifdef` clutter.
+**Use GN build arguments (not C++ source code) to set platform-specific feature
+defaults.** This allows build-time configuration and reduces `#ifdef` clutter.
 
 ---
 
@@ -972,7 +1091,8 @@ try await Task.sleep(nanoseconds: 500_000_000)
 
 ## ✅ Include All iOS Test Targets in `brave_all_unit_tests`
 
-**Every new iOS test target must be included in `brave_all_unit_tests`.** Tests that are not included will never run on CI.
+**Every new iOS test target must be included in `brave_all_unit_tests`.** Tests
+that are not included will never run on CI.
 
 ---
 
@@ -980,7 +1100,9 @@ try await Task.sleep(nanoseconds: 500_000_000)
 
 ## ✅ Feature Flag Names Must Match C++ Feature Names
 
-**In iOS bridge headers, feature flag names must exactly match the C++ `base::Feature` names.** Mismatches cause silent failures where the flag appears to work but doesn't actually control the feature.
+**In iOS bridge headers, feature flag names must exactly match the C++
+`base::Feature` names.** Mismatches cause silent failures where the flag appears
+to work but doesn't actually control the feature.
 
 ---
 
@@ -988,7 +1110,9 @@ try await Task.sleep(nanoseconds: 500_000_000)
 
 ## ✅ Use `contentMode: .fill` or Size Constraints for Images
 
-**Set explicit `contentMode` or size constraints on `UIImageView` and SwiftUI `Image` views.** Without these, images may display at their natural size, causing layout issues.
+**Set explicit `contentMode` or size constraints on `UIImageView` and SwiftUI
+`Image` views.** Without these, images may display at their natural size,
+causing layout issues.
 
 ```swift
 // SwiftUI
@@ -1006,7 +1130,8 @@ imageView.contentMode = .scaleAspectFill
 
 ## ✅ Use `Label` for Icon-Only Buttons in SwiftUI
 
-**Always use `Label` with `.labelStyle(.iconOnly)` for icon-only buttons.** This ensures accessibility information is provided automatically.
+**Always use `Label` with `.labelStyle(.iconOnly)` for icon-only buttons.** This
+ensures accessibility information is provided automatically.
 
 ```swift
 // ❌ WRONG - no accessibility label
@@ -1031,7 +1156,9 @@ Button {
 
 ## ✅ Use Nala Design System Icons Over Apple's System Icons
 
-**Use `Image(braveSystemName:)` with Nala (Leo) icons instead of Apple's `Image(systemName:)`.** Nala icons ensure visual consistency with the Brave design system.
+**Use `Image(braveSystemName:)` with Nala (Leo) icons instead of Apple's
+`Image(systemName:)`.** Nala icons ensure visual consistency with the Brave
+design system.
 
 ```swift
 // ❌ WRONG - Apple system icon
@@ -1047,7 +1174,8 @@ Image(braveSystemName: "leo.trash")
 
 ## ✅ Size Nala Icons Using Fonts, Not Frame
 
-**Nala icons are custom SF Symbols and should be treated like font glyphs, not images.** Size them with `.font()`, not `.resizable().frame()`.
+**Nala icons are custom SF Symbols and should be treated like font glyphs, not
+images.** Size them with `.font()`, not `.resizable().frame()`.
 
 ```swift
 // ❌ WRONG - treating icon like an image
@@ -1066,7 +1194,9 @@ Image(braveSystemName: "leo.trash")
 
 ## ❌ Do Not Use Explicit Font Sizes
 
-**UI must adhere to the user's dynamic font sizing preferences.** Use semantic font styles (`.subheadline`, `.body`, etc.). If a custom value must be used, use `@ScaledMetric` in SwiftUI or `UIFontMetrics` in UIKit.
+**UI must adhere to the user's dynamic font sizing preferences.** Use semantic
+font styles (`.subheadline`, `.body`, etc.). If a custom value must be used, use
+`@ScaledMetric` in SwiftUI or `UIFontMetrics` in UIKit.
 
 ```swift
 // ❌ WRONG - fixed font size ignores user preferences
@@ -1089,7 +1219,9 @@ Text("Hello World")
 
 ## ❌ Do Not Initialize SwiftUI `@State` on `init`
 
-**Do not assign `@State` properties in `init` using `State(wrappedValue:)`.** This can cause undefined behavior on future body computations. Pass in the initial value and assign it using an `onAppear` or `task` modifier.
+**Do not assign `@State` properties in `init` using `State(wrappedValue:)`.**
+This can cause undefined behavior on future body computations. Pass in the
+initial value and assign it using an `onAppear` or `task` modifier.
 
 ```swift
 // ❌ WRONG - assigning @State in init
