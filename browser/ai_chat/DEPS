@@ -14,6 +14,9 @@ specific_include_rules = {
  "content_agent_tools_browsertest\.cc": [
     "+components/origin_gating/core/origin_gating_cache.h",
  ],
+ "tab_semantic_search_tool_browsertest\.cc": [
+    "+brave/components/history_embeddings/test/fake_history_embeddings_search.h",
+ ],
  "content_agent_tool_provider\.cc": [
     "+components/actor/core/task_source_info.h",
  ],

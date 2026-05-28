@@ -434,8 +434,14 @@ source_set("browser_tests") {
     ]
 
     if (enable_local_ai) {
-      sources += [ "tools/history_search_tool_browsertest.cc" ]
-      deps += [ "//brave/components/local_ai/core" ]
+      sources += [
+        "tools/history_search_tool_browsertest.cc",
+        "tools/tab_semantic_search_tool_browsertest.cc",
+      ]
+      deps += [
+        "//brave/components/local_ai/core",
+        "//chrome/browser/ui/tabs:tabs_public",
+      ]
     }
 
     if (enable_ai_chat_tab_management_tool) {

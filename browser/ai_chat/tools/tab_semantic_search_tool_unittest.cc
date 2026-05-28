@@ -155,4 +155,31 @@ TEST(TabSemanticSearchToolBuildResultsJsonTest, EmptyTabsEmitsEmptyResults) {
   EXPECT_TRUE(results->empty());
 }
 
+TEST(TabSemanticSearchToolBuildTabSourcesJsonTest, EmitsRankedTabSources) {
+  const std::vector<history_embeddings::OpenTabInfo> tabs = {
+      {/*tab_id=*/22, "Tab Two", GURL("https://two.example/")},
+      {/*tab_id=*/11, "Tab One", GURL("https://one.example/")},
+  };
+
+  std::string json = internal::BuildSemanticSearchTabSourcesJson(tabs);
+  auto parsed = base::JSONReader::ReadDict(json, base::JSON_PARSE_RFC);
+  ASSERT_TRUE(parsed.has_value());
+  const auto* sources = parsed->FindList("sources");
+  ASSERT_TRUE(sources);
+  ASSERT_EQ(sources->size(), 2u);
+  // tab_id is emitted as an int32 so the frontend can hand it straight to
+  // `SwitchToTab(int32)` without re-parsing.
+  EXPECT_EQ(*(*sources)[0].GetDict().FindInt("tab_id"), 22);
+  EXPECT_EQ(*(*sources)[0].GetDict().FindString("title"), "Tab Two");
+  EXPECT_EQ(*(*sources)[0].GetDict().FindString("url"), "https://two.example/");
+  EXPECT_EQ(*(*sources)[1].GetDict().FindInt("tab_id"), 11);
+  EXPECT_EQ(*(*sources)[1].GetDict().FindString("title"), "Tab One");
+  EXPECT_EQ(*(*sources)[1].GetDict().FindString("url"), "https://one.example/");
+}
+
+TEST(TabSemanticSearchToolBuildTabSourcesJsonTest, EmptyTabsEmitsEmptyString) {
+  // Empty payload signals `OnRanked` to skip emitting a tab_sources artifact.
+  EXPECT_TRUE(internal::BuildSemanticSearchTabSourcesJson({}).empty());
+}
+
 }  // namespace ai_chat

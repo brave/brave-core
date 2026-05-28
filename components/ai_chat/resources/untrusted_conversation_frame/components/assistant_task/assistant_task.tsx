@@ -11,6 +11,7 @@ import * as Mojom from '../../../common/mojom'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import { getToolArtifacts } from '../conversation_entries/conversation_entries_utils'
 import AssistantResponse from '../assistant_response'
+import TabSourcesEvent from '../assistant_response/tab_sources_event'
 import ToolEvent from '../assistant_response/tool_event'
 import styles from './assistant_task.module.scss'
 import useExtractTaskData, { TaskData } from './use_extract_task_data'
@@ -136,6 +137,9 @@ export default function AssistantTask(props: Props) {
               {...tabProps}
               toolArtifacts={toolArtifacts}
             />
+          )}
+          {!conversationContext.isGenerating && (
+            <TabSourcesEvent artifacts={toolArtifacts} />
           )}
         </div>
         {taskThumbnail && (

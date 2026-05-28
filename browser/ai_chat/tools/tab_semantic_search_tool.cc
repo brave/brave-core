@@ -46,7 +46,16 @@ void OnRanked(Tool::UseToolCallback callback,
     return;
   }
   std::string serialized = internal::BuildSemanticSearchResultsJson(tabs);
-  std::move(callback).Run(CreateContentBlocksForText(serialized), {});
+  std::vector<mojom::ToolArtifactPtr> artifacts;
+  std::string sources_json = internal::BuildSemanticSearchTabSourcesJson(tabs);
+  if (!sources_json.empty()) {
+    auto artifact = mojom::ToolArtifact::New();
+    artifact->type = mojom::kTabSourcesArtifactType;
+    artifact->content_json = std::move(sources_json);
+    artifacts.push_back(std::move(artifact));
+  }
+  std::move(callback).Run(CreateContentBlocksForText(serialized),
+                          std::move(artifacts));
 }
 
 }  // namespace
@@ -65,6 +74,26 @@ std::string BuildSemanticSearchResultsJson(
   }
   base::DictValue root;
   root.Set("results", std::move(results_list));
+  std::string serialized;
+  base::JSONWriter::Write(root, &serialized);
+  return serialized;
+}
+
+std::string BuildSemanticSearchTabSourcesJson(
+    const std::vector<history_embeddings::OpenTabInfo>& tabs) {
+  base::ListValue sources;
+  for (const auto& tab : tabs) {
+    base::DictValue entry;
+    entry.Set("tab_id", tab.tab_id);
+    entry.Set("title", tab.title);
+    entry.Set("url", tab.url.spec());
+    sources.Append(std::move(entry));
+  }
+  if (sources.empty()) {
+    return std::string();
+  }
+  base::DictValue root;
+  root.Set("sources", std::move(sources));
   std::string serialized;
   base::JSONWriter::Write(root, &serialized);
   return serialized;

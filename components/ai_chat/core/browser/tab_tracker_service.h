@@ -8,6 +8,7 @@
 
 #include <vector>
 
+#include "base/functional/callback.h"
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -29,6 +30,19 @@ class TabTrackerService : public KeyedService, public mojom::TabTrackerService {
 
   void Bind(mojo::PendingReceiver<mojom::TabTrackerService> receiver);
 
+  // Callback that activates the tab matching `tab_id`. Implementations live
+  // in code with chrome/browser/ui access (e.g. iterating BrowserList).
+  // Returns true if a tab was activated.
+  using ActivateTabCallback = base::RepeatingCallback<bool(int32_t tab_id)>;
+
+  // Sets the bridge used by ActivateTab(). Called once at startup by the code
+  // owning the UI-side implementation.
+  void SetActivator(ActivateTabCallback activator);
+
+  // Activates the tab matching `tab_id` via the configured activator. Returns
+  // false if no activator is installed or the tab cannot be found.
+  bool ActivateTab(int32_t tab_id);
+
   // mojom::TabTrackerService
   void AddObserver(
       mojo::PendingRemote<mojom::TabDataObserver> observer) override;
@@ -43,6 +57,7 @@ class TabTrackerService : public KeyedService, public mojom::TabTrackerService {
   mojo::RemoteSet<mojom::TabDataObserver> observers_;
 
   std::vector<mojom::TabDataPtr> tabs_;
+  ActivateTabCallback activator_;
 };
 
 }  // namespace ai_chat

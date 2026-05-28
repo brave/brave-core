@@ -27,6 +27,12 @@ namespace internal {
 std::string BuildSemanticSearchResultsJson(
     const std::vector<history_embeddings::OpenTabInfo>& tabs);
 
+// Same ranked `tabs` serialized as a `kTabSourcesArtifactType` artifact
+// payload for the chat frontend to render as clickable cards. Returns empty
+// when there are no ranked tabs.
+std::string BuildSemanticSearchTabSourcesJson(
+    const std::vector<history_embeddings::OpenTabInfo>& tabs);
+
 }  // namespace internal
 
 // Leo tool that semantically searches the user's currently-open tabs. Calls
