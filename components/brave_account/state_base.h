@@ -19,6 +19,7 @@
 #include "brave/components/brave_account/brave_account_state_prefs.h"
 #include "brave/components/brave_account/endpoint_client/client.h"
 #include "brave/components/brave_account/endpoint_client/request_handle.h"
+#include "brave/components/brave_account/endpoints/verify_resend.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -137,10 +138,11 @@ class StateBase : public mojom::Authentication {
   void RegisterVerify(const std::string& code,
                       RegisterVerifyCallback callback) override;
 
-  void ResendConfirmationEmail(
-      ResendConfirmationEmailCallback callback) override;
+  void ResendVerificationEmail(
+      mojom::VerificationIntentPtr intent,
+      ResendVerificationEmailCallback callback) override;
 
-  void CancelRegistration() override;
+  void CancelVerification(mojom::VerificationIntentPtr intent) override;
 
   void LoginInitialize(mojom::Service initiating_service,
                        const std::string& email,
@@ -155,6 +157,9 @@ class StateBase : public mojom::Authentication {
 
   void GetServiceToken(mojom::Service service,
                        GetServiceTokenCallback callback) override;
+
+  void OnResendVerificationEmail(ResendVerificationEmailCallback callback,
+                                 endpoints::VerifyResend::Response response);
 
   void RemoveRequestHandle(
       std::list<endpoint_client::RequestHandle>::iterator slot);

@@ -23,6 +23,7 @@ import org.chromium.brave_account.mojom.ResendConfirmationEmailError;
 import org.chromium.brave_account.mojom.ResendConfirmationEmailResult;
 import org.chromium.brave_account.mojom.ResendConfirmationEmailServerError;
 import org.chromium.brave_account.mojom.ResendConfirmationEmailServerErrorCode;
+import org.chromium.brave_account.mojom.VerificationIntent;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
@@ -136,30 +137,6 @@ public class BraveAccountSectionController
                     preference -> openBraveAccountDialog());
         }
 
-        Preference resendConfirmationEmailPreference =
-                mFragment.findPreference(PREF_RESEND_CONFIRMATION_EMAIL);
-        if (resendConfirmationEmailPreference != null) {
-            resendConfirmationEmailPreference.setOnPreferenceClickListener(
-                    preference -> {
-                        preference.setEnabled(false);
-                        assert mBraveAccountService != null;
-                        mBraveAccountService.resendConfirmationEmail(
-                                result -> showAlertDialog(preference, result));
-                        return true;
-                    });
-        }
-
-        Preference cancelRegistrationPreference =
-                mFragment.findPreference(PREF_CANCEL_REGISTRATION);
-        if (cancelRegistrationPreference != null) {
-            cancelRegistrationPreference.setOnPreferenceClickListener(
-                    preference -> {
-                        assert mBraveAccountService != null;
-                        mBraveAccountService.cancelRegistration();
-                        return true;
-                    });
-        }
-
         Preference getStartedPreference = mFragment.findPreference(PREF_GET_STARTED);
         if (getStartedPreference != null) {
             getStartedPreference.setOnPreferenceClickListener(
@@ -192,6 +169,32 @@ public class BraveAccountSectionController
             setVisibility(cancelRegistrationPref, false);
             setVisibility(getStartedPref, false);
         } else if (state.getLoggedOut().verification != null) {
+            // The in-progress verification, wired into the resend/cancel
+            // listeners. Re-set on every state change so the captured intent
+            // always reflects the current verification.
+            VerificationIntent intent = new VerificationIntent();
+            intent.setLoggedOutIntent(state.getLoggedOut().verification.intent);
+
+            if (resendConfirmationEmailPref != null) {
+                resendConfirmationEmailPref.setOnPreferenceClickListener(
+                        preference -> {
+                            preference.setEnabled(false);
+                            assert mBraveAccountService != null;
+                            mBraveAccountService.resendVerificationEmail(
+                                    intent, result -> showAlertDialog(preference, result));
+                            return true;
+                        });
+            }
+
+            if (cancelRegistrationPref != null) {
+                cancelRegistrationPref.setOnPreferenceClickListener(
+                        preference -> {
+                            assert mBraveAccountService != null;
+                            mBraveAccountService.cancelVerification(intent);
+                            return true;
+                        });
+            }
+
             setVisibility(userInfoPref, false);
             setVisibility(signOutPref, false);
             setVisibility(almostTherePref, true);

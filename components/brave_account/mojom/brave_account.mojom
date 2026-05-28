@@ -20,6 +20,11 @@ enum LoggedInVerificationIntent {
   kChangePassword = 0,
 };
 
+union VerificationIntent {
+  LoggedOutVerificationIntent logged_out_intent;
+  LoggedInVerificationIntent logged_in_intent;
+};
+
 struct LoggedOutVerification {
   LoggedOutVerificationIntent intent;
 };
@@ -321,14 +326,15 @@ interface Authentication {
   RegisterVerify(string code)
     => result<RegisterVerifyResult, RegisterError>;
 
-  // Resends the confirmation email to the user during the registration process.
+  // Resends the verification email for the verification selected by
+  // `intent`.
   // Returns `ResendConfirmationEmailResult` on success, or
   //         `ResendConfirmationEmailError` on failure.
-  ResendConfirmationEmail()
+  ResendVerificationEmail(VerificationIntent intent)
     => result<ResendConfirmationEmailResult, ResendConfirmationEmailError>;
 
-  // Cancels the registration process by clearing the verification token.
-  CancelRegistration();
+  // Cancels the verification selected by `intent`.
+  CancelVerification(VerificationIntent intent);
 
   // First step of the login process.
   // `initiatingService`: the service that

@@ -487,7 +487,11 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
                 rowUUID: braveAccountResendConfirmationEmailRowUUID,
                 sectionUUID: braveAccountSectionUUID
               )
-              braveAccountAuthentication.resendConfirmationEmail { [weak self] _, failure in
+              braveAccountAuthentication.resendVerificationEmail(
+                intent: BraveAccount.VerificationIntent(
+                  loggedOutIntent: braveAccountState.loggedOut!.verification!.intent
+                )
+              ) { [weak self] _, failure in
                 guard let self else { return }
                 DispatchQueue.main.async {
                   let alert = UIAlertController(
@@ -515,7 +519,13 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
             text: L10nUtils.string(
               messageId: .SETTINGS_BRAVE_ACCOUNT_CANCEL_REGISTRATION_BUTTON_LABEL
             ),
-            selection: { braveAccountAuthentication.cancelRegistration() },
+            selection: {
+              braveAccountAuthentication.cancelVerification(
+                intent: BraveAccount.VerificationIntent(
+                  loggedOutIntent: braveAccountState.loggedOut!.verification!.intent
+                )
+              )
+            },
             cellClass: BraveAccountIconCell.self,
             context: [
               BraveAccountIconCell.textColor: UIColor(braveSystemName: .systemfeedbackErrorText)

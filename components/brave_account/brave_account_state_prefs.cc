@@ -6,12 +6,15 @@
 #include "brave/components/brave_account/brave_account_state_prefs.h"
 
 #include <optional>
+#include <utility>
 
 #include "base/check.h"
+#include "base/check_deref.h"
 #include "base/json/values_util.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_account/brave_account_service_constants.h"
+#include "brave/components/brave_account/pref_names.h"
 #include "components/prefs/scoped_user_pref_update.h"
 
 namespace brave_account {
@@ -78,6 +81,11 @@ void AccountStatePrefs::SetLoggedIn(
                encrypted_authentication_token));
 }
 
+void AccountStatePrefs::ClearVerification() {
+  ScopedDictPrefUpdate(&*pref_service_, prefs::kBraveAccountState)
+      ->Remove(prefs::keys::kVerification);
+}
+
 // Firewall against tampered prefs: enforce on the way out the same
 // invariants the setters enforce on the way in, so downstream code can
 // trust the returned variant matches the underlying prefs without
@@ -121,6 +129,38 @@ mojom::AccountStatePtr AccountStatePrefs::GetAccountState() const {
 std::string AccountStatePrefs::GetAuthenticationToken() const {
   const auto* token = pref_service_->GetDict(prefs::kBraveAccountState)
                           .FindString(prefs::keys::kAuthenticationToken);
+  return token ? *token : "";
+}
+
+std::string AccountStatePrefs::GetVerificationToken(
+    mojom::VerificationIntentPtr intent) const {
+  CHECK(intent);
+
+  const bool has_matching_verification = [&] {
+    const auto account_state = GetAccountState();
+
+    switch (intent->which()) {
+      case mojom::VerificationIntent::Tag::kLoggedOutIntent:
+        return account_state->is_logged_out() &&
+               account_state->get_logged_out()->verification &&
+               account_state->get_logged_out()->verification->intent ==
+                   intent->get_logged_out_intent();
+      case mojom::VerificationIntent::Tag::kLoggedInIntent:
+        return account_state->is_logged_in() &&
+               account_state->get_logged_in()->verification &&
+               account_state->get_logged_in()->verification->intent ==
+                   intent->get_logged_in_intent();
+    }
+  }();
+
+  if (!has_matching_verification) {
+    return "";
+  }
+
+  const auto* token =
+      CHECK_DEREF(pref_service_->GetDict(prefs::kBraveAccountState)
+                      .FindDict(prefs::keys::kVerification))
+          .FindString(prefs::keys::kVerificationToken);
   return token ? *token : "";
 }
 
