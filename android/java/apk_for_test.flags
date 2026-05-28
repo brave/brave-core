@@ -516,7 +516,7 @@
     *** isVisibleToUser(...);
 }
 
--keep class org.chromium.chrome.browser.omnibox.suggestions.BraveOmniboxSuggestionsDropdownAdapter {
+-keep class org.chromium.chrome.browser.omnibox.suggestions.BraveOmniboxViewHolderFactory {
     <init>(...);
 }
 
