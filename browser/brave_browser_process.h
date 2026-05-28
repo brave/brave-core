@@ -25,7 +25,7 @@ class BraveReferralsService;
 class URLSanitizerComponentInstaller;
 }  // namespace brave
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V1)
 namespace brave_vpn {
 class BraveVPNConnectionManager;
 }  // namespace brave_vpn
@@ -125,7 +125,7 @@ class BraveBrowserProcess {
   virtual speedreader::SpeedreaderRewriterService*
   speedreader_rewriter_service() = 0;
 #endif
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V1)
   virtual brave_vpn::BraveVPNConnectionManager*
   brave_vpn_connection_manager() = 0;
 #endif

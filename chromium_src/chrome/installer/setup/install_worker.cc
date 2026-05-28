@@ -37,7 +37,7 @@
 // clang-format on
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V1)
 #include "brave/browser/brave_vpn/win/brave_vpn_helper/brave_vpn_helper_constants.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_helper/brave_vpn_helper_utils.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/install_utils.h"
@@ -185,7 +185,7 @@ void UpdateBraveVpn(const base::FilePath& target_path,
   UpdateBraveVpn(target_path, new_version, install_list); \
   AddUpdateDowngradeVersionItem
 
-#endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V1)
 
 // The code in BRAVE_ADD_INSTALLER_COPY_TASKS and
 // BRAVE_MAYBE_ABORT_ADD_CHROME_WORK_ITEMS used to be upstream and had to be
@@ -209,9 +209,9 @@ void UpdateBraveVpn(const base::FilePath& target_path,
 #include <chrome/installer/setup/install_worker.cc>
 #undef BRAVE_MAYBE_ABORT_ADD_CHROME_WORK_ITEMS
 #undef BRAVE_ADD_INSTALLER_COPY_TASKS
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V1)
 #undef AddUpdateDowngradeVersionItem
-#endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V1)
 #if defined(OFFICIAL_BUILD)
 #include "chrome/install_static/brave_restore_google_update_integration.h"
 #endif

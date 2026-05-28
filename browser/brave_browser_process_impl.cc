@@ -108,7 +108,7 @@
 #include "brave/components/request_otr/common/features.h"
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V1)
 #include "brave/browser/brave_vpn/vpn_connection_manager_utils.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
 #endif
@@ -547,7 +547,7 @@ BraveBrowserProcessImpl::speedreader_rewriter_service() {
 }
 #endif  // BUILDFLAG(ENABLE_SPEEDREADER)
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V1)
 brave_vpn::BraveVPNConnectionManager*
 BraveBrowserProcessImpl::brave_vpn_connection_manager() {
   if (brave_vpn_connection_manager_) {
