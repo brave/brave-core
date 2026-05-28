@@ -14,12 +14,13 @@ import org.chromium.chrome.browser.omnibox.suggestions.base.BaseSuggestionView;
 import org.chromium.chrome.browser.omnibox.suggestions.base.BaseSuggestionViewBinder;
 import org.chromium.chrome.browser.omnibox.suggestions.brave_leo.BraveLeoSuggestionViewBinder;
 import org.chromium.chrome.browser.omnibox.suggestions.brave_search.BraveSearchBannerViewBinder;
-import org.chromium.ui.modelutil.MVCListAdapter.ModelList;
 
+/** Brave extension of {@link OmniboxViewHolderFactory} that registers Brave suggestion types. */
 @NullMarked
-public class BraveOmniboxSuggestionsDropdownAdapter extends OmniboxSuggestionsDropdownAdapter {
-    BraveOmniboxSuggestionsDropdownAdapter(ModelList data) {
-        super(data);
+public class BraveOmniboxViewHolderFactory extends BraveOmniboxViewHolderFactoryDummySuper {
+    @SuppressWarnings("unchecked")
+    public BraveOmniboxViewHolderFactory() {
+        super();
 
         registerType(
                 BraveOmniboxSuggestionUiType.BRAVE_SEARCH_PROMO_BANNER,

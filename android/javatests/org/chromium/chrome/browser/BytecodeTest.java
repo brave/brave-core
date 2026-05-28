@@ -1714,9 +1714,8 @@ public class BytecodeTest {
                         boolean.class));
         Assert.assertTrue(
                 constructorsMatch(
-                        "org/chromium/chrome/browser/omnibox/suggestions/OmniboxSuggestionsDropdownAdapter", // presubmit: ignore-long-line
-                        "org/chromium/chrome/browser/omnibox/suggestions/BraveOmniboxSuggestionsDropdownAdapter", // presubmit: ignore-long-line
-                        ModelList.class));
+                        "org/chromium/chrome/browser/omnibox/suggestions/OmniboxViewHolderFactory",
+                        "org/chromium/chrome/browser/omnibox/suggestions/BraveOmniboxViewHolderFactory")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/multiwindow/MultiInstanceManagerApi31",
