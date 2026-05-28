@@ -1,21 +1,42 @@
-#!/usr/bin/env python3
+#!/usr/bin/env vpython3
 # Copyright (c) 2026 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
+#
+# [VPYTHON:BEGIN]
+# python_version: "3.11"
+#
+# wheel: <
+#   name: "infra/python/wheels/pyyaml-py3"
+#   version: "version:6.0.1"
+# >
+# [VPYTHON:END]
 """Build a hermetic, reproducible Xcode toolchain archive for Chromium.
 
 Keep this as a *standalone* script that can be invoked directly on a macOS CI
-node. PyYAML is the only non-stdlib import; if it is not already importable it
-is installed via `pip --user` on the first run, so a fresh CI image needs no
-preconfiguration beyond `python3` and `pip`.
+node. PyYAML is the only non-stdlib import and is provided by the inline
+vpython3 spec above, so either use a vpython environment, or make sure to
+install PyYAML into the system Python if running directly.
 
-To run directly from GitHub:
+To run directly from GitHub on a worker that already has depot_tools on PATH:
 
 ```sh
 curl -sL \
     https://raw.githubusercontent.com/brave/brave-core/refs/heads/master/tools/cr/toolchain/build_xcode_toolchain.py \
+    | vpython3 - \
+        --out-dir=./out/ \
+        --chromium-tag=150.0.7841.1
+```
+
+Or via the bootstrap forwarder on a fresh worker:
+
+```sh
+curl -sSLf \
+    https://raw.githubusercontent.com/brave/brave-core/refs/heads/master/tools/cr/toolchain/bootstrap_depot_tools.py \
     | python3 - \
+        --run=https://raw.githubusercontent.com/brave/brave-core/refs/heads/master/tools/cr/toolchain/build_xcode_toolchain.py \
+        -- \
         --out-dir=./out/ \
         --chromium-tag=150.0.7841.1
 ```
