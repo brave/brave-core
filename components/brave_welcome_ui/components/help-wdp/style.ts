@@ -81,8 +81,4 @@ export const ActionBox = styled.div`
   flex-direction: column;
   font-size: 16px;
   font-weight: 600;
-
-  button {
-    color: white;
-  }
 `
