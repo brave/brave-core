@@ -87,6 +87,10 @@
 #include "services/device/public/cpp/device_features.h"
 #endif
 
+#if BUILDFLAG(IS_WIN)
+#include "chrome/browser/startup/startup_features.h"
+#endif
+
 #if BUILDFLAG(ENABLE_SCREEN_CAPTURE)
 #include "chrome/browser/media/webrtc/display_media_access_handler.h"
 #endif
@@ -172,6 +176,9 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kHttpsFirstBalancedMode,
       &features::kIdleDetection,
       &features::kIndigo,
+#if BUILDFLAG(IS_WIN)
+      &features::kLaunchOnStartup,
+#endif
       &features::kNewTabPageTriggerForPrerender2,
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
       &features::kPdfInfoBar,
