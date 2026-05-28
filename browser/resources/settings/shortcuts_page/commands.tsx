@@ -5,6 +5,11 @@
 
 import './strings'
 
+// This page contains a copy of Svelte (via @brave/leo) which will attempt
+// to register its own trusted-types policy which duplicates the one registered
+// by the main page.
+import '$web-common/disableDuplicateSvelteTrustedPolicies'
+
 import * as CommandsMojo from 'gen/brave/components/commands/common/commands.mojom.m.js'
 import * as React from 'react'
 import { render } from 'react-dom'

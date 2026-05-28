@@ -276,7 +276,8 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
       network::mojom::CSPDirectiveName::FrameAncestors,
       absl::StrFormat("frame-ancestors %s;", kAIChatUIURL));
   source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::TrustedTypes, "trusted-types default;");
+      network::mojom::CSPDirectiveName::TrustedTypes,
+      "trusted-types svelte-trusted-html default;");
 
   web::URLDataSourceIOS::Add(
       profile_, new FaviconSource(profile_, chrome::FaviconUrlFormat::kFavicon2,

@@ -42,8 +42,8 @@ IN_PROC_BROWSER_TEST_F(BraveSessionRestoreBrowserTest,
         input.autocomplete = 'on'
         input.value = '__some_text__'
         document.body.append(input);
-        var controls_ready = document.getElementsByTagName('textarea')[0].textContent === '__some_text__' &&
-                             document.getElementsByTagName('input')[0].value === '__some_text__';
+        var controls_ready = textarea.textContent === '__some_text__' &&
+                             input.value === '__some_text__';
         controls_ready;
       )"));
   session_service->MoveCurrentSessionToLastSession();
@@ -85,8 +85,8 @@ IN_PROC_BROWSER_TEST_F(BraveSessionRestoreBrowserTest,
         input.autocomplete = 'on'
         input.value = '__some_text__'
         document.body.append(input);
-        var controls_ready = document.getElementsByTagName('textarea')[0].textContent === '__some_text__' &&
-                             document.getElementsByTagName('input')[0].value === '__some_text__';
+        var controls_ready = textarea.textContent === '__some_text__' &&
+                             input.value === '__some_text__';
         controls_ready;
       )"));
   session_service->MoveCurrentSessionToLastSession();

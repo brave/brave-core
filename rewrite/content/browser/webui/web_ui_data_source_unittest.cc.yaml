@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Brave augments any non-empty trusted-types CSP override with our
+      svelte-trusted-html / default policies inside
+      WebUIDataSourceImpl::OverrideContentSecurityPolicy (see the
+      GetBraveTrustedTypesValue helper in the chromium_src shadow). The
+      SetCspValues test exercises that override path with
+      "trusted-types test;" and expects the stored value back verbatim;
+      update the expectation to match the augmented value.
+    re_pattern: 'EXPECT_EQ\("trusted-types test;",'
+    replace: 'EXPECT_EQ("trusted-types test svelte-trusted-html default;",'

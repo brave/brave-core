@@ -9,7 +9,6 @@ import Button from '@brave/leo/react/button'
 
 // redux
 import { useAppDispatch } from '../../../../common/hooks/use-redux'
-import * as leo from '@brave/leo/tokens/css/variables'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
@@ -148,7 +147,6 @@ export const BackupRecoveryPhrase = () => {
         </NextButtonRow>
         <Button
           kind='plain-faint'
-          color={leo.color.text.secondary}
           onClick={() => setIsSkipWarningOpen(true)}
         >
           {getLocale('braveWalletButtonSkip')}
