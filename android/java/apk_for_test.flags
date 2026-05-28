@@ -219,7 +219,7 @@
 }
 
 -keep class org.chromium.chrome.browser.bookmarks.BookmarkUtils {
-    *** addOrEditBookmark(...);
+    *** addOrEditSingleBookmark(...);
     *** isSpecialFolder(...);
 }
 
