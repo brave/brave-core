@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java b/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
-index 79ee74e12d1f40d1ea8665efaa3616d3ef82d77b..00e0d9e9953b3412c2c1535be23630bf011001c7 100644
+index 72ad6e6d1df36d3a7ac426189a1a296b1b69c8c8..c6d5459408ce15943e926316c58671c545ffd7e5 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
-@@ -319,6 +319,11 @@ public abstract class FullscreenHtmlApiHandlerBase
+@@ -320,6 +320,11 @@ public abstract class FullscreenHtmlApiHandlerBase
  
                      @Override
                      public void onHidden(Tab tab, @TabHidingType int reason) {
@@ -14,7 +14,7 @@ index 79ee74e12d1f40d1ea8665efaa3616d3ef82d77b..00e0d9e9953b3412c2c1535be23630bf
                          // Clean up any fullscreen state that might impact other tabs.
                          mFullscreenManagerDelegate.onExitFullscreen(null);
                      }
-@@ -624,6 +629,14 @@ public abstract class FullscreenHtmlApiHandlerBase
+@@ -625,6 +630,14 @@ public abstract class FullscreenHtmlApiHandlerBase
  
      @Override
      public void exitPersistentFullscreenMode() {
@@ -29,7 +29,7 @@ index 79ee74e12d1f40d1ea8665efaa3616d3ef82d77b..00e0d9e9953b3412c2c1535be23630bf
          // Return to the original starting position and bounds if the fullscreen was opening on
          // another display.
          returnFromTargetScreenIfNeeded();
-@@ -646,7 +659,10 @@ public abstract class FullscreenHtmlApiHandlerBase
+@@ -647,7 +660,10 @@ public abstract class FullscreenHtmlApiHandlerBase
              if (mWebContentsInFullscreen != null && mTabInFullscreen != null) {
                  // mContentViewInFullscreen is non-null, since mWebContentsInFullscreen is non-null
                  assumeNonNull(mContentViewInFullscreen);
@@ -41,7 +41,7 @@ index 79ee74e12d1f40d1ea8665efaa3616d3ef82d77b..00e0d9e9953b3412c2c1535be23630bf
              } else {
                  if (mPendingFullscreenOptions != null) mPendingFullscreenOptions.setCanceled();
                  if (mAreControlsHidden.get()) {
-@@ -719,7 +735,8 @@ public abstract class FullscreenHtmlApiHandlerBase
+@@ -720,7 +736,8 @@ public abstract class FullscreenHtmlApiHandlerBase
          return mPersistentModeSupplier;
      }
  
@@ -51,7 +51,7 @@ index 79ee74e12d1f40d1ea8665efaa3616d3ef82d77b..00e0d9e9953b3412c2c1535be23630bf
          getToast().onExitFullscreen();
          mHandler.removeMessages(MSG_ID_SET_VISIBILITY_FOR_SYSTEM_BARS);
          mHandler.removeMessages(MSG_ID_UNSET_FULLSCREEN_LAYOUT);
-@@ -728,7 +745,9 @@ public abstract class FullscreenHtmlApiHandlerBase
+@@ -729,7 +746,9 @@ public abstract class FullscreenHtmlApiHandlerBase
          showSystemBars(contentView);
          if (DEBUG_LOGS) logExitFullscreen(contentView);
          resetExitFullscreenLayoutChangeListener(contentView);
@@ -62,7 +62,7 @@ index 79ee74e12d1f40d1ea8665efaa3616d3ef82d77b..00e0d9e9953b3412c2c1535be23630bf
  
          // Often - when edge to edge is enabled, or when we are in multi window
          //  mode, or on automotive devices that never hide system bars - onLayoutChange doesn't
-@@ -884,6 +903,9 @@ public abstract class FullscreenHtmlApiHandlerBase
+@@ -885,6 +904,9 @@ public abstract class FullscreenHtmlApiHandlerBase
      @Override
      public void onActivityStateChange(Activity activity, int newState) {
          if (newState == ActivityState.STOPPED && mExitFullscreenOnStop) {
