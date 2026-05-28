@@ -11,8 +11,6 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import androidx.test.filters.SmallTest;
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,12 +18,10 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import org.chromium.base.test.util.Batch;
+import org.chromium.base.test.BaseRobolectricTestRunner;
 import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 
-@Batch(Batch.PER_CLASS)
-@RunWith(ChromeJUnit4ClassRunner.class)
+@RunWith(BaseRobolectricTestRunner.class)
 public class BraveFullscreenVideoPictureInPictureControllerTest {
     @Rule public MockitoRule mMockitoRule = MockitoJUnit.rule();
 
@@ -35,7 +31,6 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
             new BraveFullscreenVideoPictureInPictureController();
 
     @Test
-    @SmallTest
     public void maybeHandleDismiss_activeYouTubePictureInPictureDefersResumeCleanup() {
         when(mBraveActivity.isYouTubePictureInPictureActive()).thenReturn(true);
         mController.mDismissPending = true;
@@ -55,7 +50,6 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
     }
 
     @Test
-    @SmallTest
     public void maybeHandleDismiss_activeYouTubePictureInPictureDefersStartCleanup() {
         when(mBraveActivity.isYouTubePictureInPictureActive()).thenReturn(true);
         mController.mDismissPending = true;
@@ -75,7 +69,6 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
     }
 
     @Test
-    @SmallTest
     public void maybeHandleDismiss_activePictureInPictureKeepsPictureInPictureAlive() {
         when(mBraveActivity.isInPictureInPictureMode()).thenReturn(true);
         when(mBraveActivity.isYouTubePictureInPictureActive()).thenReturn(true);
@@ -96,7 +89,6 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
     }
 
     @Test
-    @SmallTest
     public void maybeHandleDismiss_webContentsSignalDuringActivePictureInPicture_keepsAlive() {
         when(mBraveActivity.isInPictureInPictureMode()).thenReturn(true);
         when(mBraveActivity.isYouTubePictureInPictureActive()).thenReturn(true);
@@ -117,7 +109,6 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
     }
 
     @Test
-    @SmallTest
     public void maybeHandleDismiss_inactiveYouTubeAndNotInPip_doesNotKeepAlive() {
         // Not a YT PiP session and not in PiP: the hook should fall through to the upstream
         // dismiss logic.
@@ -140,7 +131,6 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
     }
 
     @Test
-    @SmallTest
     public void maybeHandleDismiss_newTabDuringActiveYouTubePictureInPicture_keepsForeground() {
         // A new tab arriving during a Brave-managed YouTube PiP session must skip upstream's
         // moveTaskToBack(true) so the activity stays in the foreground (e.g. when the user taps
@@ -166,7 +156,6 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
     }
 
     @Test
-    @SmallTest
     public void maybeHandleDismiss_newTabWhenActiveButNotInPictureInPicture_doesNotKeepAlive() {
         when(mBraveActivity.isInPictureInPictureMode()).thenReturn(false);
         when(mBraveActivity.isYouTubePictureInPictureActive()).thenReturn(true);
@@ -188,7 +177,6 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
     }
 
     @Test
-    @SmallTest
     public void maybeHandleDismiss_newTabWithoutActiveYouTubePictureInPicture_doesNotKeepAlive() {
         when(mBraveActivity.isYouTubePictureInPictureActive()).thenReturn(false);
         mController.mDismissPending = true;

@@ -11,8 +11,6 @@ import static org.mockito.Mockito.when;
 
 import android.app.Activity;
 
-import androidx.test.filters.SmallTest;
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,12 +18,10 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import org.chromium.base.test.util.Batch;
+import org.chromium.base.test.BaseRobolectricTestRunner;
 import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 
-@Batch(Batch.PER_CLASS)
-@RunWith(ChromeJUnit4ClassRunner.class)
+@RunWith(BaseRobolectricTestRunner.class)
 public class BraveFullscreenHtmlApiHandlerBaseTest {
     private static final class TestBraveFullscreenHtmlApiHandlerBase
             extends BraveFullscreenHtmlApiHandlerBase {}
@@ -39,13 +35,11 @@ public class BraveFullscreenHtmlApiHandlerBaseTest {
             new TestBraveFullscreenHtmlApiHandlerBase();
 
     @Test
-    @SmallTest
     public void shouldPreservePersistentFullscreenForPictureInPicture_nonBraveActivity() {
         assertFalse(mHandler.shouldPreservePersistentFullscreenForPictureInPicture(mActivity));
     }
 
     @Test
-    @SmallTest
     public void shouldPreservePersistentFullscreenForPictureInPicture_inactiveBraveActivity() {
         when(mBraveActivity.isYouTubePictureInPictureActive()).thenReturn(false);
 
@@ -53,7 +47,6 @@ public class BraveFullscreenHtmlApiHandlerBaseTest {
     }
 
     @Test
-    @SmallTest
     public void shouldPreservePersistentFullscreenForPictureInPicture_activeBraveActivity() {
         when(mBraveActivity.isYouTubePictureInPictureActive()).thenReturn(true);
 
