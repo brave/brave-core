@@ -44,24 +44,12 @@ source_set("page_action") {
 
     # TODO remove unneeded deps here
     deps += [
-      "//brave/browser/ui/tabs:tab_menu",
+      "//brave/browser/ui/psst",
       "//brave/components/psst/browser/content",
       "//brave/components/psst/common",
       "//brave/components/resources:strings_grit",
-
-      #      "//components/infobars/content",
-      #      "//components/infobars/content/common",
-      #      "//components/infobars/core/common:infobar_delegate",
-      #      "//components/infobars/core/common:infobar_manager",
-      "//chrome/browser/ui/actions",
-      "//chrome/browser/ui/browser_window",
-      "//chrome/browser/ui/views/frame",
-      "//chrome/browser/ui/views/frame:toolbar_button_provider",
-      "//chrome/browser/ui/views/page_action",
-
-      #      "//brave/browser/ui/views/page_action",
-      "//components/infobars/core",
-      "//ui/views",
+      "//brave/components/vector_icons",
+      "//chrome/browser/ui/color:mixers",
     ]
   }
 }

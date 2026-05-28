@@ -17,7 +17,7 @@ source_set("psst") {
     "//base",
     "//brave/app:brave_generated_resources_grit",
     "//brave/app:command_ids",
-    "//brave/components/resources",
+    "//brave/components/resources:strings_grit",
     "//brave/components/vector_icons",
     "//chrome/app:generated_resources",
     "//chrome/browser/ui/browser_window",
