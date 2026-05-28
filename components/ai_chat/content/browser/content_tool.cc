@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/ai_chat/content/browser/script_tool.h"
+#include "brave/components/ai_chat/content/browser/content_tool.h"
 
 #include <algorithm>
 #include <optional>
@@ -26,10 +26,10 @@
 
 namespace ai_chat {
 
-ScriptTool::ScriptTool(const blink::mojom::ScriptTool& script_tool,
-                       content::WeakDocumentPtr rfh)
+ContentTool::ContentTool(const blink::mojom::ScriptTool& script_tool,
+                         content::WeakDocumentPtr rfh)
     : rfh_(std::move(rfh)), internal_tool_name_(script_tool.name) {
-  // Name of the ScriptTool is {origin}_tool_name.
+  // Name of the ContentTool is {origin}_tool_name.
   name_ = base::StrCat(
       {rfh_.AsRenderFrameHostIfValid()->GetLastCommittedURL().host(), "_",
        script_tool.name});
@@ -39,8 +39,8 @@ ScriptTool::ScriptTool(const blink::mojom::ScriptTool& script_tool,
       name_.begin(), name_.end(),
       [](char c) { return !absl::ascii_isalnum(c) && c != '_'; }, '_');
 
-  // We add some additional information to the description of the script tool to
-  // make it obvious the tool is coming from a website.
+  // We add some additional information to the description of the content tool
+  // to make it obvious the tool is coming from a website.
   description_ = base::StrCat(
       {"Website-provided tool for the current page at ",
        rfh_.AsRenderFrameHostIfValid()->GetLastCommittedURL().host(), ".",
@@ -69,24 +69,25 @@ ScriptTool::ScriptTool(const blink::mojom::ScriptTool& script_tool,
   }
 }
 
-ScriptTool::~ScriptTool() = default;
+ContentTool::~ContentTool() = default;
 
-std::string_view ScriptTool::Name() const {
+std::string_view ContentTool::Name() const {
   return name_;
 }
 
-std::string_view ScriptTool::Description() const {
+std::string_view ContentTool::Description() const {
   return description_;
 }
 
-std::optional<base::DictValue> ScriptTool::InputProperties() const {
+std::optional<base::DictValue> ContentTool::InputProperties() const {
   if (!input_properties_) {
     return std::nullopt;
   }
   return input_properties_->Clone();
 }
 
-std::optional<std::vector<std::string>> ScriptTool::RequiredProperties() const {
+std::optional<std::vector<std::string>> ContentTool::RequiredProperties()
+    const {
   if (required_properties_.empty()) {
     return std::nullopt;
   }
@@ -94,7 +95,7 @@ std::optional<std::vector<std::string>> ScriptTool::RequiredProperties() const {
 }
 
 std::variant<bool, mojom::PermissionChallengePtr>
-ScriptTool::RequiresUserInteractionBeforeHandling(
+ContentTool::RequiresUserInteractionBeforeHandling(
     const mojom::ToolUseEvent& tool_use) const {
   if (user_permission_granted_) {
     return false;
@@ -103,12 +104,12 @@ ScriptTool::RequiresUserInteractionBeforeHandling(
   return mojom::PermissionChallenge::New();
 }
 
-void ScriptTool::UserPermissionGranted(const std::string& tool_use_id) {
+void ContentTool::UserPermissionGranted(const std::string& tool_use_id) {
   user_permission_granted_ = true;
 }
 
-void ScriptTool::UseTool(const std::string& input_json,
-                         UseToolCallback callback) {
+void ContentTool::UseTool(const std::string& input_json,
+                          UseToolCallback callback) {
   content::RenderFrameHost* rfh = rfh_.AsRenderFrameHostIfValid();
   if (!rfh) {
     std::move(callback).Run({}, {});
@@ -118,7 +119,7 @@ void ScriptTool::UseTool(const std::string& input_json,
   rfh->GetRemoteInterfaces()->GetInterface(
       extractor.BindNewPipeAndPassReceiver());
   auto* extractor_ptr = extractor.get();
-  extractor_ptr->ExecuteScriptTool(
+  extractor_ptr->ExecuteContentTool(
       internal_tool_name_, input_json,
       base::BindOnce(
           [](UseToolCallback cb, mojo::Remote<mojom::PageContentExtractor>,

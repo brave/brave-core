@@ -23,8 +23,8 @@
 #include "base/types/fixed_array.h"
 #include "base/uuid.h"
 #include "brave/components/ai_chat/content/browser/ai_page_content_fetcher.h"
+#include "brave/components/ai_chat/content/browser/content_tool.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
-#include "brave/components/ai_chat/content/browser/script_tool.h"
 #include "brave/components/ai_chat/core/browser/associated_content_driver.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
@@ -338,8 +338,8 @@ void AssociatedWebContentsContent::GetOpenAIChatButtonNonce(
   page_content_fetcher_delegate_->GetOpenAIChatButtonNonce(std::move(callback));
 }
 
-void AssociatedWebContentsContent::GetScriptTools(
-    GetScriptToolsCallback callback) {
+void AssociatedWebContentsContent::GetContentTools(
+    GetContentToolsCallback callback) {
   content::RenderFrameHost* rfh = web_contents()->GetPrimaryMainFrame();
   if (!rfh || !rfh->IsRenderFrameLive()) {
     std::move(callback).Run({});
@@ -348,7 +348,7 @@ void AssociatedWebContentsContent::GetScriptTools(
   // Use a local Remote rather than the `ai_page_content_agent_` member: the
   // member is also used by FetchPageContentFromAIPageContentAgent (the
   // GetContent fallback path). If GetContent's fallback was in flight when
-  // GetScriptTools is called, the shared remote gets reset and the in-flight
+  // GetContentTools is called, the shared remote gets reset and the in-flight
   // response is dropped — and vice versa. Owning the remote in the bound
   // callback keeps each call independent.
   mojo::Remote<blink::mojom::AIPageContentAgent> agent;
@@ -360,21 +360,21 @@ void AssociatedWebContentsContent::GetScriptTools(
   agent_ptr->GetAIPageContent(
       std::move(options),
       mojo::WrapCallbackWithDefaultInvokeIfNotRun(
-          base::BindOnce(&AssociatedWebContentsContent::OnScriptToolsFetched,
+          base::BindOnce(&AssociatedWebContentsContent::OnContentToolsFetched,
                          weak_ptr_factory_.GetWeakPtr(), std::move(callback),
                          rfh->GetWeakDocumentPtr(), std::move(agent)),
           nullptr));
 }
 
-void AssociatedWebContentsContent::OnScriptToolsFetched(
-    GetScriptToolsCallback callback,
+void AssociatedWebContentsContent::OnContentToolsFetched(
+    GetContentToolsCallback callback,
     content::WeakDocumentPtr rfh,
     mojo::Remote<blink::mojom::AIPageContentAgent> agent,
     blink::mojom::AIPageContentPtr result) {
   std::vector<std::unique_ptr<Tool>> tools;
   if (result && result->frame_data) {
     for (const auto& script_tool : result->frame_data->script_tools) {
-      tools.push_back(std::make_unique<ScriptTool>(*script_tool, rfh));
+      tools.push_back(std::make_unique<ContentTool>(*script_tool, rfh));
     }
   }
   std::move(callback).Run(std::move(tools));

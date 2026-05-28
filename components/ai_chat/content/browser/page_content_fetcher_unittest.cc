@@ -59,10 +59,10 @@ class MockPageContentExtractor : public mojom::PageContentExtractor {
               (GetOpenAIChatButtonNonceCallback),
               (override));
   MOCK_METHOD(void,
-              ExecuteScriptTool,
+              ExecuteContentTool,
               (const std::string& name,
                const std::string& input_json,
-               ExecuteScriptToolCallback),
+               ExecuteContentToolCallback),
               (override));
 
   void Bind(mojo::ScopedMessagePipeHandle handle) {
