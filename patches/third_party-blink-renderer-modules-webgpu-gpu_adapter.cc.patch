@@ -2,15 +2,6 @@ diff --git a/third_party/blink/renderer/modules/webgpu/gpu_adapter.cc b/third_pa
 index 4e4ca8dcb4febd1fc8eb132e24cbf1d98b41aef7..c0750443df1c5dbadd5ea2b3d568e6a0b61c5496 100644
 --- a/third_party/blink/renderer/modules/webgpu/gpu_adapter.cc
 +++ b/third_party/blink/renderer/modules/webgpu/gpu_adapter.cc
-@@ -45,7 +45,7 @@ GPUSupportedFeatures* MakeFeatureNameSet(wgpu::Adapter adapter) {
-     if (feature_name_enum_optional) {
-       features->AddFeatureName(
-           V8GPUFeatureName(feature_name_enum_optional.value()));
--      }
-+    }
-   }
-   return features;
- }
 @@ -124,7 +124,8 @@ GPUAdapter::GPUAdapter(
  
  GPUAdapterInfo* GPUAdapter::CreateAdapterInfoForAdapter() {
