@@ -149,4 +149,29 @@ TEST(TabSemanticSearchToolBuildResultsJsonTest, EmptyTabsEmitsEmptyResults) {
       base::test::ParseJsonDict(R"({"results":[]})"));
 }
 
+TEST(TabSemanticSearchToolBuildTabSourcesJsonTest, EmitsRankedTabSources) {
+  const std::vector<history_embeddings::OpenTabInfo> tabs = {
+      {/*tab_id=*/22, "Tab Two", GURL("https://two.example/")},
+      {/*tab_id=*/11, "Tab One", GURL("https://one.example/")},
+  };
+
+  // tab_id is emitted as an int32 so the frontend can hand it straight to
+  // `SwitchToTab(int32)` without re-parsing.
+  EXPECT_EQ(base::test::ParseJsonDict(
+                internal::BuildSemanticSearchTabSourcesJson(tabs)),
+            base::test::ParseJsonDict(R"({
+              "sources": [
+                {"tab_id": 22, "title": "Tab Two",
+                 "url": "https://two.example/"},
+                {"tab_id": 11, "title": "Tab One",
+                 "url": "https://one.example/"}
+              ]
+            })"));
+}
+
+TEST(TabSemanticSearchToolBuildTabSourcesJsonTest, EmptyTabsEmitsEmptyString) {
+  // Empty payload signals `OnRanked` to skip emitting a tab_sources artifact.
+  EXPECT_TRUE(internal::BuildSemanticSearchTabSourcesJson({}).empty());
+}
+
 }  // namespace ai_chat

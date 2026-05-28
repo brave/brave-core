@@ -55,6 +55,11 @@ const string kLineChartArtifactType = "line_chart";
 // visually.
 const string kVisitedLinksArtifactType = "visited_links";
 
+// `TabSemanticSearchTool` artifact carrying open-tab references for the chat
+// frontend to render as clickable cards. JSON shape:
+// `{"sources":[{"tab_id":int32,"title":string,"url":string}]}`.
+const string kTabSourcesArtifactType = "tab_sources";
+
 // Maximum length for memory and customization records.
 const int32 kMaxMemoryRecordLength = 512;
 

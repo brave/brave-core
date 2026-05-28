@@ -11,15 +11,27 @@ assert(enable_ai_chat)
 if (!is_android) {
   source_set("ai_chat") {
     sources = [
+      "tab_activator.cc",
+      "tab_activator.h",
+      "tab_activator_factory.cc",
+      "tab_activator_factory.h",
       "utils.cc",
       "utils.h",
     ]
 
     deps = [
+      "//brave/browser/ai_chat",
+      "//brave/components/ai_chat/core/browser",
+      "//chrome/browser/profiles:profile",
+      "//chrome/browser/ui",
       "//chrome/browser/ui/browser_window",
       "//chrome/browser/ui/side_panel",
       "//chrome/browser/ui/tabs",
+      "//chrome/browser/ui/tabs:tab_strip",
       "//chrome/browser/ui/views/side_panel",
+      "//components/keyed_service/content",
+      "//components/keyed_service/core",
+      "//components/sessions",
     ]
   }
 }
