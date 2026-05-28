@@ -6,7 +6,7 @@
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "webgl_extension_handler_unittest.cc" ]
+  sources = [ "webgl_farbled_extension_handler_unittest.cc" ]
 
   deps = [
     "//base/test:test_support",
