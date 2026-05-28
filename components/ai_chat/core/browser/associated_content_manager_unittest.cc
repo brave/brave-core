@@ -455,7 +455,7 @@ TEST_F(AssociatedContentManagerUnitTest,
 
 // Tests for the script-tools (WebMCP) plumbing: AssociatedContentManager acts
 // as a ToolProvider and aggregates per-content tools fetched via
-// AssociatedContentDelegate::GetScriptTools.
+// AssociatedContentDelegate::GetContentTools.
 TEST_F(AssociatedContentManagerUnitTest,
        UpdateToolsForNewGenerationLoop_NoDelegates) {
   // With no content delegates attached, the on_updated callback must still
@@ -476,14 +476,14 @@ TEST_F(AssociatedContentManagerUnitTest,
   manager->AddContent(&first_content);
   manager->AddContent(&second_content);
 
-  EXPECT_CALL(first_content, GetScriptTools)
-      .WillOnce([](AssociatedContentDelegate::GetScriptToolsCallback cb) {
+  EXPECT_CALL(first_content, GetContentTools)
+      .WillOnce([](AssociatedContentDelegate::GetContentToolsCallback cb) {
         std::vector<std::unique_ptr<Tool>> tools;
         tools.push_back(std::make_unique<NiceMock<MockTool>>("first_tool"));
         std::move(cb).Run(std::move(tools));
       });
-  EXPECT_CALL(second_content, GetScriptTools)
-      .WillOnce([](AssociatedContentDelegate::GetScriptToolsCallback cb) {
+  EXPECT_CALL(second_content, GetContentTools)
+      .WillOnce([](AssociatedContentDelegate::GetContentToolsCallback cb) {
         std::vector<std::unique_ptr<Tool>> tools;
         tools.push_back(std::make_unique<NiceMock<MockTool>>("second_tool"));
         tools.push_back(std::make_unique<NiceMock<MockTool>>("third_tool"));
@@ -511,8 +511,8 @@ TEST_F(AssociatedContentManagerUnitTest,
   auto* manager = conversation_handler_->associated_content_manager();
   manager->AddContent(&content);
 
-  EXPECT_CALL(content, GetScriptTools)
-      .WillOnce([](AssociatedContentDelegate::GetScriptToolsCallback cb) {
+  EXPECT_CALL(content, GetContentTools)
+      .WillOnce([](AssociatedContentDelegate::GetContentToolsCallback cb) {
         std::vector<std::unique_ptr<Tool>> tools;
         tools.push_back(std::make_unique<NiceMock<MockTool>>("first_loop"));
         std::move(cb).Run(std::move(tools));
@@ -523,8 +523,8 @@ TEST_F(AssociatedContentManagerUnitTest,
   ASSERT_EQ(1u, manager->GetTools().size());
 
   // A subsequent loop with no tools must clear the previously aggregated set.
-  EXPECT_CALL(content, GetScriptTools)
-      .WillOnce([](AssociatedContentDelegate::GetScriptToolsCallback cb) {
+  EXPECT_CALL(content, GetContentTools)
+      .WillOnce([](AssociatedContentDelegate::GetContentToolsCallback cb) {
         std::move(cb).Run({});
       });
   base::test::TestFuture<void> second_done;
@@ -543,13 +543,13 @@ TEST_F(AssociatedContentManagerUnitTest,
   manager->AddContent(&first_content);
   manager->AddContent(&second_content);
 
-  AssociatedContentDelegate::GetScriptToolsCallback pending_callback;
-  EXPECT_CALL(first_content, GetScriptTools)
-      .WillOnce([&](AssociatedContentDelegate::GetScriptToolsCallback cb) {
+  AssociatedContentDelegate::GetContentToolsCallback pending_callback;
+  EXPECT_CALL(first_content, GetContentTools)
+      .WillOnce([&](AssociatedContentDelegate::GetContentToolsCallback cb) {
         pending_callback = std::move(cb);
       });
-  EXPECT_CALL(second_content, GetScriptTools)
-      .WillOnce([](AssociatedContentDelegate::GetScriptToolsCallback cb) {
+  EXPECT_CALL(second_content, GetContentTools)
+      .WillOnce([](AssociatedContentDelegate::GetContentToolsCallback cb) {
         std::move(cb).Run({});
       });
 

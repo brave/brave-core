@@ -87,11 +87,11 @@ class AssociatedContentDelegate {
   virtual void GetScreenshots(
       mojom::ConversationHandler::GetScreenshotsCallback callback);
 
-  // Fetches the current set of script tools from the content. The default
+  // Fetches the current set of content tools from the content. The default
   // implementation calls |callback| with an empty list immediately.
-  using GetScriptToolsCallback =
+  using GetContentToolsCallback =
       base::OnceCallback<void(std::vector<std::unique_ptr<Tool>>)>;
-  virtual void GetScriptTools(GetScriptToolsCallback callback);
+  virtual void GetContentTools(GetContentToolsCallback callback);
 
   base::WeakPtr<AssociatedContentDelegate> GetWeakPtr() {
     return weak_ptr_factory_.GetWeakPtr();

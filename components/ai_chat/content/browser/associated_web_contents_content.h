@@ -126,7 +126,7 @@ class AssociatedWebContentsContent : public content::WebContentsObserver,
   void GetPageContent(FetchPageContentCallback callback,
                       std::string_view invalidation_token) override;
   void OnNewPage(int64_t navigation_id) override;
-  void GetScriptTools(GetScriptToolsCallback callback) override;
+  void GetContentTools(GetContentToolsCallback callback) override;
 
   // Called when an event of significance occurs that, if the page is a
   // same-document navigation, should result in that previous navigation
@@ -162,8 +162,8 @@ class AssociatedWebContentsContent : public content::WebContentsObserver,
   void OnAIPageContentResult(FetchPageContentCallback callback,
                              blink::mojom::AIPageContentPtr result);
 
-  void OnScriptToolsFetched(
-      GetScriptToolsCallback callback,
+  void OnContentToolsFetched(
+      GetContentToolsCallback callback,
       content::WeakDocumentPtr rfh,
       mojo::Remote<blink::mojom::AIPageContentAgent> agent,
       blink::mojom::AIPageContentPtr result);

@@ -65,8 +65,8 @@ void AssociatedContentDelegate::GetScreenshots(
   std::move(callback).Run(std::nullopt);
 }
 
-void AssociatedContentDelegate::GetScriptTools(
-    GetScriptToolsCallback callback) {
+void AssociatedContentDelegate::GetContentTools(
+    GetContentToolsCallback callback) {
   std::move(callback).Run({});
 }
 

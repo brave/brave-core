@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/ai_chat/content/browser/script_tool.h"
+#include "brave/components/ai_chat/content/browser/content_tool.h"
 
 #include <string>
 #include <vector>
@@ -41,7 +41,7 @@ blink::mojom::ScriptToolPtr MakeScriptTool(
 
 }  // namespace
 
-class ScriptToolTest : public content::RenderViewHostTestHarness {
+class ContentToolTest : public content::RenderViewHostTestHarness {
  public:
   void SetUp() override {
     content::RenderViewHostTestHarness::SetUp();
@@ -54,9 +54,9 @@ class ScriptToolTest : public content::RenderViewHostTestHarness {
   }
 };
 
-TEST_F(ScriptToolTest, NamePrefixesHostAndSanitizes) {
+TEST_F(ContentToolTest, NamePrefixesHostAndSanitizes) {
   auto mojo_tool = MakeScriptTool("highlight", "Highlight the page");
-  ScriptTool tool(*mojo_tool, weak_document());
+  ContentTool tool(*mojo_tool, weak_document());
   // Name format is "{sanitized-host}_{tool-name}". The dot in the host is
   // replaced with an underscore because tool names only allow alphanumeric
   // characters and underscores.
@@ -64,16 +64,16 @@ TEST_F(ScriptToolTest, NamePrefixesHostAndSanitizes) {
             std::string(kTestHostSanitized) + std::string("_highlight"));
 }
 
-TEST_F(ScriptToolTest, NameSanitizesDisallowedCharactersInToolName) {
+TEST_F(ContentToolTest, NameSanitizesDisallowedCharactersInToolName) {
   auto mojo_tool = MakeScriptTool("do-thing.now!", "");
-  ScriptTool tool(*mojo_tool, weak_document());
+  ContentTool tool(*mojo_tool, weak_document());
   EXPECT_EQ(tool.Name(),
             std::string(kTestHostSanitized) + std::string("_do_thing_now_"));
 }
 
-TEST_F(ScriptToolTest, DescriptionIncludesHostAndOriginalMetadata) {
+TEST_F(ContentToolTest, DescriptionIncludesHostAndOriginalMetadata) {
   auto mojo_tool = MakeScriptTool("highlight", "Highlight the page");
-  ScriptTool tool(*mojo_tool, weak_document());
+  ContentTool tool(*mojo_tool, weak_document());
   // The description embeds the host, the page-provided tool name and the
   // page-provided description so the LLM has the context it needs.
   std::string description(tool.Description());
@@ -84,14 +84,14 @@ TEST_F(ScriptToolTest, DescriptionIncludesHostAndOriginalMetadata) {
       std::string::npos);
 }
 
-TEST_F(ScriptToolTest, MissingInputSchemaYieldsNoProperties) {
+TEST_F(ContentToolTest, MissingInputSchemaYieldsNoProperties) {
   auto mojo_tool = MakeScriptTool("noop", "");
-  ScriptTool tool(*mojo_tool, weak_document());
+  ContentTool tool(*mojo_tool, weak_document());
   EXPECT_FALSE(tool.InputProperties().has_value());
   EXPECT_FALSE(tool.RequiredProperties().has_value());
 }
 
-TEST_F(ScriptToolTest, ParsesPropertiesAndRequired) {
+TEST_F(ContentToolTest, ParsesPropertiesAndRequired) {
   // input_schema follows the JSON Schema convention used by WebMCP.
   static constexpr char kSchema[] = R"({
     "type": "object",
@@ -102,7 +102,7 @@ TEST_F(ScriptToolTest, ParsesPropertiesAndRequired) {
     "required": ["query"]
   })";
   auto mojo_tool = MakeScriptTool("search", "Search", std::string(kSchema));
-  ScriptTool tool(*mojo_tool, weak_document());
+  ContentTool tool(*mojo_tool, weak_document());
 
   auto input_properties = tool.InputProperties();
   ASSERT_TRUE(input_properties.has_value());
@@ -113,26 +113,26 @@ TEST_F(ScriptToolTest, ParsesPropertiesAndRequired) {
   EXPECT_THAT(*tool.RequiredProperties(), ::testing::ElementsAre("query"));
 }
 
-TEST_F(ScriptToolTest, MalformedSchemaFallsBackToNoProperties) {
+TEST_F(ContentToolTest, MalformedSchemaFallsBackToNoProperties) {
   auto mojo_tool = MakeScriptTool("broken", "", std::string("not json"));
-  ScriptTool tool(*mojo_tool, weak_document());
+  ContentTool tool(*mojo_tool, weak_document());
   EXPECT_FALSE(tool.InputProperties().has_value());
   EXPECT_FALSE(tool.RequiredProperties().has_value());
 }
 
-TEST_F(ScriptToolTest, SchemaWithoutPropertiesOrRequired) {
+TEST_F(ContentToolTest, SchemaWithoutPropertiesOrRequired) {
   // A schema that parses but lacks "properties"/"required" should still
   // construct cleanly with no input properties.
   auto mojo_tool =
       MakeScriptTool("ping", "", std::string(R"({"type":"object"})"));
-  ScriptTool tool(*mojo_tool, weak_document());
+  ContentTool tool(*mojo_tool, weak_document());
   EXPECT_FALSE(tool.InputProperties().has_value());
   EXPECT_FALSE(tool.RequiredProperties().has_value());
 }
 
-TEST_F(ScriptToolTest, RequiresPermissionChallengeUntilGranted) {
+TEST_F(ContentToolTest, RequiresPermissionChallengeUntilGranted) {
   auto mojo_tool = MakeScriptTool("echo", "");
-  ScriptTool tool(*mojo_tool, weak_document());
+  ContentTool tool(*mojo_tool, weak_document());
 
   auto tool_use = mojom::ToolUseEvent::New();
   auto result = tool.RequiresUserInteractionBeforeHandling(*tool_use);
@@ -146,12 +146,12 @@ TEST_F(ScriptToolTest, RequiresPermissionChallengeUntilGranted) {
   EXPECT_FALSE(std::get<bool>(after));
 }
 
-TEST_F(ScriptToolTest, UseToolAfterDocumentGoneReturnsEmpty) {
+TEST_F(ContentToolTest, UseToolAfterDocumentGoneReturnsEmpty) {
   // The WeakDocumentPtr can go stale between construction and UseTool (e.g.
   // when the underlying WebContents is destroyed). UseTool must short-circuit
   // and run the callback with empty results rather than crashing.
   auto mojo_tool = MakeScriptTool("noop", "");
-  ScriptTool tool(*mojo_tool, weak_document());
+  ContentTool tool(*mojo_tool, weak_document());
 
   DeleteContents();
 

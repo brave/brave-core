@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_SCRIPT_TOOL_H_
-#define BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_SCRIPT_TOOL_H_
+#ifndef BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_CONTENT_TOOL_H_
+#define BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_CONTENT_TOOL_H_
 
 #include <optional>
 #include <string>
@@ -16,16 +16,16 @@
 
 namespace ai_chat {
 
-// A page-defined script tool registered via the Model Context web API.
+// A page-defined content tool registered via the Model Context web API.
 // Executes via the renderer's PageContentExtractor mojo interface.
-class ScriptTool : public Tool {
+class ContentTool : public Tool {
  public:
-  ScriptTool(const blink::mojom::ScriptTool& script_tool,
-             content::WeakDocumentPtr rfh);
-  ~ScriptTool() override;
+  ContentTool(const blink::mojom::ScriptTool& script_tool,
+              content::WeakDocumentPtr rfh);
+  ~ContentTool() override;
 
-  ScriptTool(const ScriptTool&) = delete;
-  ScriptTool& operator=(const ScriptTool&) = delete;
+  ContentTool(const ContentTool&) = delete;
+  ContentTool& operator=(const ContentTool&) = delete;
 
   // Tool overrides:
   std::string_view Name() const override;
@@ -53,4 +53,4 @@ class ScriptTool : public Tool {
 
 }  // namespace ai_chat
 
-#endif  // BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_SCRIPT_TOOL_H_
+#endif  // BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_CONTENT_TOOL_H_
