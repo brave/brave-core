@@ -371,6 +371,13 @@ IN_PROC_BROWSER_TEST_F(BraveTorWithCustomProfileBrowserTest, Incognito) {
         .ExtractBool();
   };
 
+  const auto does_element_exist = [&](const char* id) {
+    return EvalJs(web_contents,
+                  base::StrCat({"!!window.testing.torSubpage.getElementById('",
+                                id, "')"}))
+        .ExtractBool();
+  };
+
   // Disable incognito mode for this profile.
   IncognitoModePrefs::SetAvailability(
       browser()->profile()->GetPrefs(),
@@ -383,7 +390,9 @@ IN_PROC_BROWSER_TEST_F(BraveTorWithCustomProfileBrowserTest, Incognito) {
                                            GURL("brave://settings/privacy")));
   web_contents = browser()->tab_strip_model()->GetActiveWebContents();
 
-  EXPECT_FALSE(is_element_enabled("torEnabled"));
+  // When Tor is managed the toggle is hidden (not stamped) rather than just
+  // disabled.
+  EXPECT_FALSE(does_element_exist("torEnabled"));
   EXPECT_FALSE(is_element_enabled("useBridges"));
   EXPECT_TRUE(is_element_enabled("onionOnlyInTorWindows"));
   EXPECT_TRUE(is_element_enabled("torSnowflake"));
@@ -412,6 +421,8 @@ IN_PROC_BROWSER_TEST_F(BraveTorWithCustomProfileBrowserTest, Incognito) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(),
                                            GURL("brave://settings/privacy")));
   web_contents = browser()->tab_strip_model()->GetActiveWebContents();
+  // No longer managed: the toggle is stamped again and enabled.
+  EXPECT_TRUE(does_element_exist("torEnabled"));
   EXPECT_TRUE(is_element_enabled("torEnabled"));
   EXPECT_TRUE(is_element_enabled("useBridges"));
   EXPECT_TRUE(is_element_enabled("onionOnlyInTorWindows"));
