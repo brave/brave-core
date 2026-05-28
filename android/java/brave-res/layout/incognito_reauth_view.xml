@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2026 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this
+     file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+     Brave resource overlay for the upstream incognito reauth view. The view IDs
+     incognito_reauth_unlock_incognito_button, incognito_reauth_see_other_tabs_label,
+     and incognito_reauth_menu_button are required by IncognitoReauthViewBinder. -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primitive_private_window_5">
+
+    <!-- Top bar: optional 3-dot menu shown for fullscreen private-tab reauth,
+         hidden when MENU_BUTTON_DELEGATE is null. -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp">
+
+        <org.chromium.ui.listmenu.ListMenuButton
+            android:id="@+id/incognito_reauth_menu_button"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center_vertical|end"
+            android:layout_marginEnd="8dp"
+            android:background="@null"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_more_vert_24dp_on_dark_bg"
+            app:menuMaxWidth="@dimen/menu_width"
+            style="@style/ToolbarButton" />
+
+    </FrameLayout>
+
+    <!-- Centred content: Brave brand + status text. -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
+
+        <!-- Full Brave brand: Nala release icon + wordmark converted from brave_wordmark.svg -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="64dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="56dp"
+                android:layout_height="64dp"
+                android:scaleType="fitCenter"
+                android:importantForAccessibility="no"
+                app:srcCompat="@drawable/ic_brave_icon_release_color" />
+
+            <ImageView
+                android:layout_width="138dp"
+                android:layout_height="39dp"
+                android:layout_marginStart="10dp"
+                android:scaleType="fitCenter"
+                android:importantForAccessibility="no"
+                app:srcCompat="@drawable/ic_brave_wordmark" />
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="40dp" />
+
+        <!-- This ID only exists in the Brave resource overlay, not in the upstream layout,
+             so the lint tool flags it as inconsistent across configurations. It is
+             intentional: BraveBrowserLockCoordinator uses it to replace the default
+             "Private tabs locked" text with "Browser locked" for the browser-wide lock. -->
+        <TextView
+            android:id="@+id/incognito_lock_status_text"
+            tools:ignore="InconsistentLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/brave_private_tabs_locked"
+            android:textColor="@color/primitive_private_window_80"
+            android:textSize="20sp"
+            android:gravity="center" />
+
+    </LinearLayout>
+
+    <!-- Action buttons. -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="24dp"
+        android:paddingBottom="24dp">
+
+        <!-- Primary: "Unlock private tabs". -->
+        <org.chromium.ui.widget.ButtonCompat
+            android:id="@+id/incognito_reauth_unlock_incognito_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/brave_unlock_private_tabs"
+            android:backgroundTint="@color/primitive_private_window_80"
+            app:buttonTextColor="@color/primitive_private_window_20"
+            style="@style/FilledButton" />
+
+        <!-- Secondary: "Open normal tabs" — hidden via IS_SEE_OTHER_TABS_VISIBLE=false
+             for tab-switcher reauth; visible for fullscreen reauth. -->
+        <org.chromium.ui.widget.ButtonCompat
+            android:id="@+id/incognito_reauth_see_other_tabs_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/brave_open_normal_tabs"
+            android:visibility="gone"
+            app:buttonTextColor="@color/primitive_private_window_80"
+            style="@style/TextButton" />
+
+    </LinearLayout>
+
+</LinearLayout>
