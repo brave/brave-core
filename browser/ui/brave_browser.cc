@@ -16,7 +16,6 @@
 #include "base/functional/callback_helpers.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/browser/brave_browser_features.h"
-#include "brave/browser/sessions/brave_session_keys.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/brave_file_select_utils.h"
 #include "brave/browser/ui/sidebar/sidebar.h"
@@ -25,12 +24,8 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/tabs/public/tree_tab_node.h"
-#include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
 #include "chrome/browser/lifetime/browser_close_manager.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/sessions/session_service.h"
-#include "chrome/browser/sessions/session_service_factory.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
@@ -46,7 +41,6 @@
 #include "chrome/browser/ui/webui_browser/webui_browser.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/prefs/pref_service.h"
-#include "components/sessions/content/session_tab_helper.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/file_select_listener.h"
 #include "content/public/browser/navigation_entry.h"
@@ -60,17 +54,6 @@
 namespace {
 
 bool g_suppress_dialog_for_testing = false;
-
-// Finds the nearest TreeTabNodeTabCollection ancestor of |tab| and returns it,
-// or nullptr if the tab is not inside a tree node.
-const tabs::TreeTabNodeTabCollection* GetTreeTabNodeCollection(
-    const tabs::TabInterface* tab) {
-  const tabs::TabCollection* parent = tab->GetParentCollection();
-  if (parent && parent->type() == tabs::TabCollection::Type::TREE_NODE) {
-    return static_cast<const tabs::TreeTabNodeTabCollection*>(parent);
-  }
-  return nullptr;
-}
 
 }  // namespace
 
@@ -284,31 +267,6 @@ void BraveBrowser::OnTabStripModelChanged(
   }
 }
 
-void BraveBrowser::OnTreeTabChanged(const TreeTabChange& change) {
-  CHECK(base::FeatureList::IsEnabled(tabs::kBraveTreeTab));
-
-  switch (change.type) {
-    case TreeTabChange::Type::kNodeCreated:
-      UpdateTreeTabSessionDataForNode(change.GetCreatedChange().node.get());
-      break;
-    case TreeTabChange::Type::kNodeCollapsedStateChanged:
-      UpdateTreeTabCollapsedState(
-          change.GetCollapsedStateChangedChange().node.get());
-      break;
-    case TreeTabChange::Type::kNodeReparented:
-      UpdateTreeTabSessionDataForNode(change.GetReparentedChange().node.get());
-      break;
-    case TreeTabChange::Type::kNodeWillBeDestroyed:
-      // Do not clear tree data when a node is destroyed. The tree node data
-      // must remain in the session so that "restore closed tab" can place the
-      // tab back into its original tree position. When the tab is actually
-      // closed, SessionService::TabClosed() removes the whole tab from the
-      // session. On browser restart a full rebuild will naturally omit tree
-      // data for any tabs that are no longer in tree nodes.
-      break;
-  }
-}
-
 void BraveBrowser::FinishWarnBeforeClosing(WarnBeforeClosingResult result) {
   // Clear user's choice because user cancelled window closing by some
   // warning(ex, download is in-progress).
@@ -430,72 +388,4 @@ bool BraveBrowser::ShouldSuppressDialogs(content::WebContents* source) {
   return (tab && tabs_closing_with_onbeforeunload_ignore_.contains(
                      tab->GetHandle())) ||
          content::WebContentsDelegate::ShouldSuppressDialogs(source);
-}
-
-void BraveBrowser::UpdateTreeTabSessionDataForNode(
-    const tabs::TreeTabNode& node) {
-  SessionService* const session_service =
-      SessionServiceFactory::GetForProfileIfExisting(profile());
-  if (!session_service) {
-    return;
-  }
-
-  auto parent_id = node.GetParentTreeNodeId();
-  const std::string parent_id_str = parent_id ? parent_id->ToString() : "";
-  const std::string node_id_str = node.id().ToString();
-
-  for (const tabs::TabInterface* tab_iface : node.GetTabs()) {
-    auto* wc = tab_iface->GetContents();
-    CHECK(wc);
-    auto* session_helper = sessions::SessionTabHelper::FromWebContents(wc);
-    CHECK(session_helper);
-
-    const SessionID tab_id = session_helper->session_id();
-    const auto* tree_coll = GetTreeTabNodeCollection(tab_iface);
-    if (!tree_coll) {
-      // TODO(https://github.com/brave/brave-browser/issues/49792): Add support
-      // Tabs are in the groups or splits. In this case, we don't do anything
-      // for now.
-      continue;
-    }
-
-    CHECK_EQ(tree_coll->current_value_type(),
-             tabs::TreeTabNodeTabCollection::CurrentValueType::kTab);
-    session_service->AddTabExtraData(session_id(), tab_id, kBraveTreeNodeIdKey,
-                                     node_id_str);
-    session_service->AddTabExtraData(session_id(), tab_id,
-                                     kBraveTreeParentNodeIdKey, parent_id_str);
-    session_service->AddTabExtraData(session_id(), tab_id,
-                                     kBraveTreeNodeCollapsedKey,
-                                     node.collapsed() ? "1" : "0");
-  }
-}
-
-void BraveBrowser::UpdateTreeTabCollapsedState(const tabs::TreeTabNode& node) {
-  SessionService* const session_service =
-      SessionServiceFactory::GetForProfileIfExisting(profile());
-  if (!session_service) {
-    return;
-  }
-
-  // Only the primary (kTab) tab of a node carries the collapsed state key.
-  for (const tabs::TabInterface* tab_iface : node.GetTabs()) {
-    const auto* tree_coll = GetTreeTabNodeCollection(tab_iface);
-    if (!tree_coll) {
-      // TODO(https://github.com/brave/brave-browser/issues/49792): Add support
-      // Tabs are in the groups or splits. In this case, we don't do anything
-      // for now.
-      continue;
-    }
-
-    auto* wc = tab_iface->GetContents();
-    CHECK(wc);
-
-    auto* session_helper = sessions::SessionTabHelper::FromWebContents(wc);
-    CHECK(session_helper);
-
-    session_service->AddTabExtraData(session_id(), session_helper->session_id(),
-                                     kBraveTreeNodeCollapsedKey,
-                                     node.collapsed() ? "1" : "0");
-  }
 }

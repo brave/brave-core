@@ -147,6 +147,26 @@ if (!is_android) {
       "//components/tabs:public",
     ]
   }
+
+  source_set("tree_tab_session_observer") {
+    sources = [
+      "tree_tab_session_observer.cc",
+      "tree_tab_session_observer.h",
+    ]
+
+    deps = [
+      "//base",
+      "//brave/browser/sessions",
+      "//brave/components/tabs",
+      "//chrome/browser/sessions",
+      "//chrome/browser/ui/tabs:features",
+      "//chrome/browser/ui/tabs:tab_strip",
+      "//components/sessions",
+      "//components/sessions:session_id",
+      "//components/tabs:public",
+      "//content/public/browser",
+    ]
+  }
 }
 
 source_set("browser_tests") {
