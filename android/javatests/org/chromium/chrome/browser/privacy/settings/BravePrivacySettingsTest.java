@@ -44,7 +44,6 @@ public class BravePrivacySettingsTest {
     private static final String PREF_HTTPS_FIRST_MODE = "https_first_mode";
     private static final String PREF_HTTPS_UPGRADE = "https_upgrade";
     private static final String PREF_FORGET_FIRST_PARTY_STORAGE = "forget_first_party_storage";
-    private static final String PREF_INCOGNITO_LOCK = "incognito_lock";
     private static final String PREF_SPONSORED_ADS_ENABLED = "sponsored_ads_enabled";
     private static final String PREF_SPONSORED_ADS_LEARN_MORE = "sponsored_ads_learn_more";
     private static final String PREF_SURVEY_PANELIST = "survey_panelist";
@@ -57,7 +56,7 @@ public class BravePrivacySettingsTest {
     private static final String PREF_ALLOW_ELEMENTS_BLOCKING_ON_PRIVATE_TABS =
             "allow_elements_blocking_on_private_tabs";
 
-    private static final int BRAVE_PRIVACY_SETTINGS_NUMBER_OF_ITEMS = 29;
+    private static final int BRAVE_PRIVACY_SETTINGS_NUMBER_OF_ITEMS = 28;
 
     private int mItemsLeft;
 
@@ -88,7 +87,6 @@ public class BravePrivacySettingsTest {
         checkPreferenceExists(PREF_FORGET_FIRST_PARTY_STORAGE);
         checkPreferenceExists(PREF_SAFE_BROWSING);
         checkPreferenceExists(PREF_SECURE_DNS);
-        checkPreferenceExists(PREF_INCOGNITO_LOCK);
         checkPreferenceExists(PREF_SPONSORED_ADS_ENABLED);
         checkPreferenceExists(PREF_SPONSORED_ADS_LEARN_MORE);
         checkPreferenceExists(PREF_SURVEY_PANELIST);

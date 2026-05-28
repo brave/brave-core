@@ -98,6 +98,7 @@ public class BraveMainSettingsFragmentTest {
         "brave_stats",
         "content_settings",
         "brave_downloads",
+        "brave_browser_lock",
         "closing_all_tabs_closes_brave",
         "default_browser",
         "display_section",
@@ -260,8 +261,8 @@ public class BraveMainSettingsFragmentTest {
         // settings screen in that case.
         int expectedCount =
                 ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ANDROID_TAB_GROUPS_SETTINGS)
-                        ? 33
-                        : 34;
+                        ? 34
+                        : 35;
 
         assertEquals(
                 "Number of preferences has changed, please check and update preferenceCount"
