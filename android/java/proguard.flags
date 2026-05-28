@@ -14,7 +14,7 @@
     *** maybeHandleUrlIntent(...);
 }
 
--keep class org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestionsDropdownAdapter {
+-keep class org.chromium.chrome.browser.omnibox.suggestions.OmniboxViewHolderFactory {
     <init>(...);
 }
 
