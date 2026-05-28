@@ -22,12 +22,15 @@ import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingFlowParams;
 import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.ConsumeParams;
+import com.android.billingclient.api.InAppMessageParams;
 import com.android.billingclient.api.ProductDetails;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.android.billingclient.api.QueryProductDetailsParams;
 import com.android.billingclient.api.QueryPurchasesParams;
 
+import org.chromium.base.ApplicationState;
+import org.chromium.base.ApplicationStatus;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
@@ -181,6 +184,8 @@ public class InAppPurchaseWrapper {
     }
 
     private boolean mSuppressToasts;
+    private boolean mInAppMessagesShownThisForeground;
+    private boolean mAppStateListenerRegistered;
 
     private InAppPurchaseWrapper() {}
 
@@ -716,6 +721,77 @@ public class InAppPurchaseWrapper {
         return productIds.contains(ORIGIN_PERPETUAL_PURCHASE)
                 || productIds.contains(ORIGIN_NIGHTLY_PERPETUAL_PURCHASE)
                 || productIds.contains(ORIGIN_BETA_PERPETUAL_PURCHASE);
+    }
+
+    /**
+     * Asks Play to surface any pending in-app messages for the user's subscriptions (failed
+     * renewals, opt-in price-rise consent). Gated on the user having an active Play subscription to
+     * VPN or Leo, and throttled to one call per foreground session. The throttle is reset
+     * automatically when the app is fully backgrounded; callers do not need to manage it.
+     */
+    public void maybeShowSubscriptionInAppMessages(Activity activity, Profile profile) {
+        if (mInAppMessagesShownThisForeground) {
+            return;
+        }
+        boolean hasVpnSubscription = BraveVpnPrefUtils.isSubscriptionPurchase();
+        boolean hasLeoSubscription = BraveLeoPrefUtils.getIsSubscriptionActive(profile);
+        if (!hasVpnSubscription && !hasLeoSubscription) {
+            return;
+        }
+        // Register the throttle-reset listener lazily, only after confirming
+        // this user actually has a subscription. Non-subscribers never pay any
+        // listener cost.
+        ensureAppStateListenerRegistered();
+        mInAppMessagesShownThisForeground = true;
+        showInAppMessages(activity);
+    }
+
+    private void ensureAppStateListenerRegistered() {
+        if (mAppStateListenerRegistered) {
+            return;
+        }
+        mAppStateListenerRegistered = true;
+        // Clear the per-foreground throttle only when *all* activities are
+        // stopped, i.e. the app is truly backgrounded. In-app navigation
+        // (BraveActivity -> Settings -> back) stays in HAS_RUNNING_ACTIVITIES
+        // and must not re-trigger a Play call.
+        ApplicationStatus.registerApplicationStateListener(
+                state -> {
+                    if ((state == ApplicationState.HAS_STOPPED_ACTIVITIES
+                                    || state == ApplicationState.HAS_DESTROYED_ACTIVITIES)
+                            && mInAppMessagesShownThisForeground) {
+                        mInAppMessagesShownThisForeground = false;
+                    }
+                });
+    }
+
+    /**
+     * Surfaces Play in-app messages for subscription-related events: declined payment methods
+     * (account hold / grace period) and opt-in price-rise consent. Play renders any pending message
+     * as a dialog above {@code activity}; if there is nothing to show the callback returns
+     * NO_ACTION_NEEDED and the user sees nothing. Only SUBS products are eligible — Origin (INAPP)
+     * is excluded by Play.
+     */
+    private void showInAppMessages(Activity activity) {
+        InAppMessageParams params =
+                InAppMessageParams.newBuilder()
+                        .addInAppMessageCategoryToShow(
+                                InAppMessageParams.InAppMessageCategoryId.TRANSACTIONAL)
+                        .build();
+
+        MutableLiveData<Boolean> _billingConnectionState = new MutableLiveData<>();
+        LiveData<Boolean> billingConnectionState = _billingConnectionState;
+        startBillingServiceConnection(_billingConnectionState);
+        LiveDataUtil.observeOnce(
+                billingConnectionState,
+                isConnected -> {
+                    if (isConnected && mBillingClient != null) {
+                        mBillingClient.showInAppMessages(
+                                activity, params, result -> endConnection());
+                    } else {
+                        endConnection();
+                    }
+                });
     }
 
     private PurchasesUpdatedListener getPurchasesUpdatedListener(Context context) {
