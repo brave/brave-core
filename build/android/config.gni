@@ -24,6 +24,7 @@ brave_chrome_java_deps = [
   "//brave/android:qrreader_java",
   "//brave/android/java/org/chromium/chrome/browser/search_engines:java",
   "//brave/brave_domains/android:java",
+  "//brave/browser/android/preferences:pref_names_java",
   "//brave/browser/autofill/android:java",
   "//brave/browser/brave_origin/android:java",
   "//brave/browser/brave_shields/android:java",
@@ -112,7 +113,6 @@ brave_chrome_java_srcjar_deps = [
   "//brave/android:brave_android_java_enums_srcjar",
   "//brave/android:brave_config_java",
   "//brave/android:brave_policy_constants_java_srcjar",
-  "//brave/browser/android/preferences:java_pref_names_srcjar",
   "//brave/components/brave_account/android:brave_account_constants_srcjar",
   "//brave/components/web_discovery/browser/android:java_pref_names_srcjar",
 ]

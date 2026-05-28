@@ -64,3 +64,7 @@ java_cpp_strings("java_pref_names_srcjar") {
   template =
       "//brave/browser/preferences/android/java_templates/BravePref.java.tmpl"
 }
+
+android_library("pref_names_java") {
+  srcjar_deps = [ ":java_pref_names_srcjar" ]
+}

@@ -22,6 +22,7 @@ import org.chromium.chrome.browser.omnibox.suggestions.action.OmniboxActionDeleg
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
 import org.chromium.chrome.browser.omnibox.voice.VoiceRecognitionHandler;
 import org.chromium.chrome.browser.omnibox.voice.VoiceRecognitionHandler.VoiceResult;
+import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.share.ShareDelegate;
@@ -39,7 +40,6 @@ import java.util.function.Supplier;
 @NullMarked
 class BraveAutocompleteMediator extends AutocompleteMediator
         implements BraveSuggestionHost, BraveLeoAutocompleteDelegate {
-    private static final String AUTOCOMPLETE_ENABLED = "brave.autocomplete_enabled";
     private static final String LEO_START_WORD_UPPER_CASE = "LEO";
 
     private final AutocompleteDelegate mDelegate;
@@ -120,7 +120,8 @@ class BraveAutocompleteMediator extends AutocompleteMediator
     public boolean isAutoCompleteEnabled(WebContents webContents) {
         if (ProfileManager.isInitialized()) {
             Profile profile = Profile.fromWebContents(webContents);
-            if (profile != null && !UserPrefs.get(profile).getBoolean(AUTOCOMPLETE_ENABLED)) {
+            if (profile != null
+                    && !UserPrefs.get(profile).getBoolean(BravePref.AUTOCOMPLETE_ENABLED)) {
                 return false;
             }
         }
