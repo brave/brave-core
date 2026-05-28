@@ -598,7 +598,7 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/bookmarks/BookmarkUtils",
-                        "addOrEditBookmark",
+                        "addOrEditSingleBookmark",
                         MethodModifier.STATIC,
                         void.class,
                         BookmarkItem.class,
