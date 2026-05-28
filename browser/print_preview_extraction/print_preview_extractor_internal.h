@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_BROWSER_AI_CHAT_PRINT_PREVIEW_EXTRACTOR_INTERNAL_H_
-#define BRAVE_BROWSER_AI_CHAT_PRINT_PREVIEW_EXTRACTOR_INTERNAL_H_
+#ifndef BRAVE_BROWSER_PRINT_PREVIEW_EXTRACTION_PRINT_PREVIEW_EXTRACTOR_INTERNAL_H_
+#define BRAVE_BROWSER_PRINT_PREVIEW_EXTRACTION_PRINT_PREVIEW_EXTRACTOR_INTERNAL_H_
 
 #include <cstddef>
 #include <cstdint>
@@ -18,7 +18,7 @@
 #include "base/memory/read_only_shared_memory_region.h"
 #include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
-#include "brave/browser/ai_chat/print_preview_extractor.h"
+#include "brave/browser/print_preview_extraction/print_preview_extractor.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/services/printing/public/mojom/pdf_to_bitmap_converter.mojom.h"
 #include "chrome/browser/profiles/profile.h"
@@ -185,4 +185,4 @@ class PrintPreviewExtractorInternal : public PrintPreviewExtractor::Extractor,
 };
 }  // namespace ai_chat
 
-#endif  // BRAVE_BROWSER_AI_CHAT_PRINT_PREVIEW_EXTRACTOR_INTERNAL_H_
+#endif  // BRAVE_BROWSER_PRINT_PREVIEW_EXTRACTION_PRINT_PREVIEW_EXTRACTOR_INTERNAL_H_
