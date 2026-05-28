@@ -13,6 +13,7 @@
 
 #include "base/base64.h"
 #include "base/containers/span.h"
+#include "base/numerics/checked_math.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/solana_compiled_instruction.h"
 #include "brave/components/brave_wallet/browser/solana_instruction_data_decoder.h"
@@ -99,16 +100,21 @@ std::optional<SolanaInstruction> SolanaInstruction::FromCompiledInstruction(
     const std::vector<SolanaMessageAddressTableLookup>& addr_table_lookups,
     uint8_t num_of_write_indexes,
     uint8_t num_of_read_indexes) {
-  int num_writable_signed_accounts =
+  const auto checked_writable_signed =
+      base::CheckedNumeric<uint8_t>(message_header.num_required_signatures) -
+      message_header.num_readonly_signed_accounts;
+  const auto checked_writable_unsigned =
+      base::CheckedNumeric<uint8_t>(static_accounts.size()) -
       message_header.num_required_signatures -
-      message_header.num_readonly_signed_accounts;
-  int num_writable_unsigned_accounts =
-      static_accounts.size() - message_header.num_required_signatures -
-      message_header.num_readonly_signed_accounts;
-  if (num_writable_signed_accounts < 0 ||
-      num_writable_unsigned_accounts < 0) {  // invalid message header
+      message_header.num_readonly_unsigned_accounts;
+  if (!checked_writable_signed.IsValid() ||
+      !checked_writable_unsigned.IsValid()) {
     return std::nullopt;
   }
+  const uint8_t num_writable_signed_accounts =
+      checked_writable_signed.ValueOrDie();
+  const uint8_t num_writable_unsigned_accounts =
+      checked_writable_unsigned.ValueOrDie();
 
   // Program ID of compiled_instruction should be in static accounts.
   // https://docs.rs/solana-program/1.14.12/src/solana_program/message/versions/v0/mod.rs.html#72-73
