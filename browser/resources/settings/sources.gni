@@ -198,6 +198,7 @@ if (enable_ai_chat) {
   ]
   brave_settings_ts_files += [
     "brave_leo_assistant_page/brave_leo_assistant_browser_proxy.ts",
+    "brave_leo_assistant_page/model_icons.ts",
     "brave_leo_assistant_page/model_selector.html.ts",
     "brave_leo_assistant_page/model_selector.ts",
   ]
@@ -243,6 +244,9 @@ if (enable_ai_chat) {
     "$root_gen_dir/brave/components/ai_chat/core/common/mojom/ollama.mojom-webui.ts",
     "$root_gen_dir/brave/components/ai_chat/core/common/mojom/tab_tracker.mojom-webui.ts",
     "$root_gen_dir/brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom-webui.ts",
+
+    # Shared with the AI Chat UI; lands at preprocessed/model_icon_map.ts.
+    "//brave/components/ai_chat/resources/common/model_icon_map.ts",
   ]
 
   brave_settings_mojo_files_deps +=

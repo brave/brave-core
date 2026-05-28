@@ -6,6 +6,7 @@
 import {html, nothing} from
   '//resources/lit/v3_0/lit.rollup.js'
 
+import {getModelIcon} from './model_icons.js'
 import type {LeoModelSelectorElement} from
   './model_selector.js'
 
@@ -14,15 +15,27 @@ export function getHtml(this: LeoModelSelectorElement) {
     <leo-dropdown
       value="${this.selectedKey}"
       @change="${this.onSelectionChange_}"
+      widthIsMaxWidth="true"
     >
-      <div slot="value">${this.getSelectedDisplayName()}</div>
+      <div slot="value" class="value-with-icon">
+        ${this.getSelectedEntry() ? html`
+          <leo-icon
+            name="${getModelIcon(this.getSelectedEntry()!.model)}">
+          </leo-icon>
+        ` : nothing}
+        <span>${this.getSelectedEntry()?.model.displayName ?? ''}</span>
+      </div>
       <div class="menu-section-title">
         <span>$i18n{braveLeoModelSectionTitle}</span>
       </div>
       ${this.models.map((entry) => html`
         <leo-option value="${entry.model.key}">
           <div class="menu-item-with-icon">
-            <div>
+            <leo-icon
+              class="model-icon"
+              name="${getModelIcon(entry.model)}">
+            </leo-icon>
+            <div class="model-info">
               <div>${entry.model.displayName}</div>
               ${entry.model.options.leoModelOptions
                   !== undefined ? html`

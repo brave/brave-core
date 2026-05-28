@@ -11,9 +11,26 @@
   --leo-icon-size: 20px;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
-  gap: 22px;
+  gap: var(--leo-spacing-m);
+}
+
+.menu-item-with-icon .model-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.menu-item-with-icon .model-icon {
+  flex-shrink: 0;
+}
+
+.value-with-icon {
+  --leo-icon-size: 16px;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--leo-spacing-s);
+  margin: -2px 0;
 }
 
 .model-subtitle {
