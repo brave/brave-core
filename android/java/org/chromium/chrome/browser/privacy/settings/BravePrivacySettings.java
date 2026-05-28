@@ -87,7 +87,6 @@ public class BravePrivacySettings extends PrivacySettings {
     private static final String PREF_HTTPS_FIRST_MODE = "https_first_mode";
     private static final String PREF_INCOGNITO_SCREENSHOT = "incognito_screenshot";
     private static final String PREF_INCOGNITO_LOCK = "incognito_lock";
-    private static final String PREF_BROWSER_LOCK = "browser_lock";
     private static final String PREF_PHONE_AS_A_SECURITY_KEY = "phone_as_a_security_key";
     private static final String PREF_FINGERPRINT_LANGUAGE = "fingerprint_language";
     private static final String PREF_SHIELDS_SAVE_CONTACT_INFO = "brave_shields_save_contact_info";
@@ -183,7 +182,6 @@ public class BravePrivacySettings extends PrivacySettings {
         PREF_WEBRTC_POLICY,
         PREF_INCOGNITO_SCREENSHOT,
         PREF_INCOGNITO_LOCK,
-        PREF_BROWSER_LOCK,
         PREF_CAN_MAKE_PAYMENT,
         PREF_UNSTOPPABLE_DOMAINS,
         PREF_ENS,
@@ -244,7 +242,6 @@ public class BravePrivacySettings extends PrivacySettings {
     private ChromeSwitchPreference mUseCustomTabs;
     private ChromeSwitchPreference mAppLinks;
     private ChromeSwitchPreference mIncognitoScreenshot;
-    private @Nullable BraveLockSettings mBraveLockSettings;
     private ChromeBasePreference mWebrtcPolicy;
     private ChromeSwitchPreference mClearBrowsingDataOnExit;
     private Preference mUstoppableDomains;
@@ -267,10 +264,6 @@ public class BravePrivacySettings extends PrivacySettings {
         if (mFilterListAndroidHandler != null) {
             mFilterListAndroidHandler.close();
             mFilterListAndroidHandler = null;
-        }
-        if (mBraveLockSettings != null) {
-            mBraveLockSettings.destroy();
-            mBraveLockSettings = null;
         }
         super.onDestroy();
     }
@@ -496,13 +489,6 @@ public class BravePrivacySettings extends PrivacySettings {
 
         mIncognitoScreenshot = (ChromeSwitchPreference) findPreference(PREF_INCOGNITO_SCREENSHOT);
         mIncognitoScreenshot.setOnPreferenceChangeListener(this);
-
-        ChromeSwitchPreference browserLock =
-                (ChromeSwitchPreference) findPreference(PREF_BROWSER_LOCK);
-        if (browserLock != null) {
-            mBraveLockSettings = new BraveLockSettings(browserLock, getProfile());
-            mBraveLockSettings.setUp(requireActivity());
-        }
 
         mWebrtcPolicy = (ChromeBasePreference) findPreference(PREF_WEBRTC_POLICY);
 
