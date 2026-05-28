@@ -207,6 +207,9 @@ source_set("unit_tests") {
       "//ui/accessibility:ax_base",
     ]
   }
+  if (is_win) {
+    deps += [ "//chrome/browser/startup" ]
+  }
 }
 
 group("app") {
