@@ -1268,6 +1268,21 @@ void AIChatService::DisassociateContent(
   }
 }
 
+void AIChatService::GetFocusTabs(const std::vector<Tab>& tabs,
+                                 const std::string& topic,
+                                 GetFocusTabsCallback callback) {
+  if (tabs.empty()) {
+    std::move(callback).Run(base::unexpected(mojom::APIError::InternalError));
+    return;
+  }
+
+  CreateTabOrganizationEngineIfNeeded();
+  tab_organization_engine_->GetFocusTabs(
+      tabs, topic,
+      base::BindOnce(&AIChatService::OnGetFocusTabs,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
 void AIChatService::GetSuggestedTopics(const std::vector<Tab>& tabs,
                                        GetSuggestedTopicsCallback callback) {
   if (!cached_focus_topics_.empty()) {
@@ -1292,45 +1307,6 @@ void AIChatService::GetSuggestedTopics(const std::vector<Tab>& tabs,
       tabs,
       base::BindOnce(&AIChatService::OnSuggestedTopicsReceived,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
-}
-
-void AIChatService::GetFocusTabs(const std::vector<Tab>& tabs,
-                                 const std::string& topic,
-                                 GetFocusTabsCallback callback) {
-  if (tabs.empty()) {
-    std::move(callback).Run(base::unexpected(mojom::APIError::InternalError));
-    return;
-  }
-
-  CreateTabOrganizationEngineIfNeeded();
-  tab_organization_engine_->GetFocusTabs(
-      tabs, topic,
-      base::BindOnce(&AIChatService::OnGetFocusTabs,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
-}
-
-void AIChatService::OnGetFocusTabs(
-    GetFocusTabsCallback callback,
-    base::expected<std::vector<std::string>, mojom::APIError> result) {
-  if (ai_chat_metrics_ && result.has_value() && !result->empty()) {
-    ai_chat_metrics_->tab_focus_metrics()->RecordUsage(result.value().size());
-  }
-  std::move(callback).Run(std::move(result));
-}
-
-std::vector<std::unique_ptr<ToolProvider>>
-AIChatService::CreateToolProvidersForNewConversation() {
-  std::vector<std::unique_ptr<ToolProvider>> tool_providers;
-
-  for (const auto& factory : tool_provider_factories_) {
-    tool_providers.push_back(factory->CreateToolProvider());
-  }
-
-  // Basic set of tools that we can provide
-  tool_providers.push_back(std::make_unique<ConversationToolProvider>(
-      memory_tool_ ? memory_tool_->GetWeakPtr() : nullptr));
-
-  return tool_providers;
 }
 
 void AIChatService::CreateTabOrganizationEngineIfNeeded() {
@@ -1358,6 +1334,30 @@ void AIChatService::OnSuggestedTopicsReceived(
   }
 
   std::move(callback).Run(std::move(topics));
+}
+
+void AIChatService::OnGetFocusTabs(
+    GetFocusTabsCallback callback,
+    base::expected<std::vector<std::string>, mojom::APIError> result) {
+  if (ai_chat_metrics_ && result.has_value() && !result->empty()) {
+    ai_chat_metrics_->tab_focus_metrics()->RecordUsage(result.value().size());
+  }
+  std::move(callback).Run(std::move(result));
+}
+
+std::vector<std::unique_ptr<ToolProvider>>
+AIChatService::CreateToolProvidersForNewConversation() {
+  std::vector<std::unique_ptr<ToolProvider>> tool_providers;
+
+  for (const auto& factory : tool_provider_factories_) {
+    tool_providers.push_back(factory->CreateToolProvider());
+  }
+
+  // Basic set of tools that we can provide
+  tool_providers.push_back(std::make_unique<ConversationToolProvider>(
+      memory_tool_ ? memory_tool_->GetWeakPtr() : nullptr));
+
+  return tool_providers;
 }
 
 void AIChatService::TabDataChanged(std::vector<mojom::TabDataPtr> tab_data) {
