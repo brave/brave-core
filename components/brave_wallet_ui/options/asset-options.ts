@@ -71,6 +71,7 @@ export const getNetworkLogo = (chainId: string, symbol: string): string => {
       return CardanoIcon
     case 'DOT':
     case 'WND':
+    case 'PAS':
       return PolkadotIcon
   }
 

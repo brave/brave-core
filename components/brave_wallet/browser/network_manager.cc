@@ -91,6 +91,7 @@ constexpr auto kChainSubdomains =
             // Polkadot testnet chains.
             {mojom::kPolkadotTestnet, "polkadot-westend"},
             {mojom::kPolkadotTestnetAssetHub, "westend-asset-hub"},
+            {mojom::kPolkadotPaseoAssetHub, "polkadot-paseo-asset-hub"},
         },
         CaseInsensitiveCompare());
 
@@ -631,6 +632,16 @@ GURL PolkadotTestnetAssetHubRpcUrl() {
   return GetURLForKnownChainId(mojom::kPolkadotTestnetAssetHub).value();
 }
 
+GURL PolkadotPaseoAssetHubRpcUrl() {
+  auto switch_url =
+      GURL(base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
+          switches::kPolkadotPaseoAssetHubRpcUrl));
+  if (switch_url.is_valid()) {
+    return switch_url;
+  }
+  return GetURLForKnownChainId(mojom::kPolkadotPaseoAssetHub).value();
+}
+
 const mojom::NetworkInfo* GetBitcoinMainnet() {
   const auto coin = mojom::CoinType::BTC;
   const auto* chain_id = mojom::kBitcoinMainnet;
@@ -821,6 +832,25 @@ const mojom::NetworkInfo* GetPolkadotTestnetAssetHub() {
   return network_info.get();
 }
 
+const mojom::NetworkInfo* GetPolkadotPaseoAssetHub() {
+  const auto coin = mojom::CoinType::DOT;
+  const auto* chain_id = mojom::kPolkadotPaseoAssetHub;
+
+  static base::NoDestructor<mojom::NetworkInfo> network_info(
+      {chain_id,
+       "Paseo Asset Hub",
+       {"https://assethub-paseo.subscan.io/"},
+       {},
+       0,
+       {PolkadotPaseoAssetHubRpcUrl()},
+       "PAS",
+       "Paseo",
+       10,
+       coin,
+       GetSupportedKeyringsForKnownNetwork(coin, chain_id)});
+  return network_info.get();
+}
+
 const std::vector<const mojom::NetworkInfo*>& GetKnownBitcoinNetworks() {
   static base::NoDestructor<std::vector<const mojom::NetworkInfo*>> networks({
       // clang-format off
@@ -867,6 +897,7 @@ const std::vector<const mojom::NetworkInfo*>& GetKnownPolkadotNetworks() {
           GetPolkadotMainnetAssetHub(),
           GetPolkadotTestnet(),
           GetPolkadotTestnetAssetHub(),
+          GetPolkadotPaseoAssetHub(),
           // clang-format on
       });
 
