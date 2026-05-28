@@ -12,7 +12,6 @@
 #include "base/check.h"
 #include "base/check_is_test.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
-#include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "build/build_config.h"
@@ -669,7 +668,7 @@ gfx::Insets BraveBrowserViewTabbedLayoutImpl::GetContentsMargins() const {
     return {};
   }
 
-  gfx::Insets margins(BraveContentsViewUtil::kMarginThickness);
+  gfx::Insets margins(kRoundedCornersContentsViewMargin);
 
   // If there is a visible view above the contents container, then there is no
   // need for a top margin.
