@@ -584,7 +584,6 @@ void BraveSyncServiceImpl::MaybeAndroidSyncEverythingIfRequired() {
     selected_types.Put(type);
   }
   GetUserSettings()->SetSelectedTypes(false, selected_types);
-  DCHECK(!GetUserSettings()->IsSyncEverythingEnabled());
 }
 #endif
 
