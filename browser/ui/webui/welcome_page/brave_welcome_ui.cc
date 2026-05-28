@@ -46,6 +46,7 @@
 #include "content/public/browser/url_data_source.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/web_ui_message_handler.h"
+#include "services/network/public/mojom/content_security_policy.mojom-shared.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace {
@@ -111,8 +112,7 @@ void OpenJapanWelcomePage(Profile* profile) {
 BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, std::string_view name)
     : WebUIController(web_ui) {
   content::WebUIDataSource* source = CreateAndAddWebUIDataSource(
-      web_ui, name, kBraveWelcomeGenerated, IDR_BRAVE_WELCOME_HTML,
-      /*disable_trusted_types_csp=*/true);
+      web_ui, name, kBraveWelcomeGenerated, IDR_BRAVE_WELCOME_HTML);
 
   // Lottie animations tick on a worker thread and requires the document CSP to
   // be set to "worker-src blob: 'self';".
