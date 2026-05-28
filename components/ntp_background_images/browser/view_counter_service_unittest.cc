@@ -17,6 +17,7 @@
 #include "base/test/gmock_callback_support.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/browser/service/test/ads_service_mock.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
@@ -323,13 +324,9 @@ class ViewCounterServiceTest : public testing::Test {
   }
 
   std::optional<base::DictValue> GetCurrentBrandedWallpaper() {
-    std::optional<base::DictValue> result;
-    view_counter_service_->GetCurrentBrandedWallpaper(
-        base::BindLambdaForTesting(
-            [&result](std::optional<base::DictValue> dict) {
-              result = std::move(dict);
-            }));
-    return result;
+    base::test::TestFuture<std::optional<base::DictValue>> future;
+    view_counter_service_->GetCurrentBrandedWallpaper(future.GetCallback());
+    return future.Take();
   }
 
   void MockBackgroundImagesService() {
