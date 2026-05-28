@@ -11,6 +11,7 @@ import { StepContentProps, StepFooterProps } from '../types'
 
 import aiIcon from '../img/ai.svg'
 import web3Icon from '../img/web3.svg'
+import rewardsIcon from '../img/rewards.svg'
 // TODO: Replace these placeholder imports with actual SVG icons
 // import anonymousDataIcon from '../img/anonymous-data.svg'
 // import defaultBrowserIcon from '../img/default-browser.svg'
@@ -36,6 +37,13 @@ const featureOptions: FeatureOption[] = [
     subtitle:
       'The secure, built-in crypto wallet that supercharges your browser for Web3.',
     icon: web3Icon,
+  },
+  {
+    id: 'rewards',
+    title: 'Rewards',
+    subtitle:
+      'Support content creators and earn tokens for ads you see in Brave.',
+    icon: rewardsIcon,
   },
 ]
 
