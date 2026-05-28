@@ -110,7 +110,7 @@ SidePanel::SidePanel(BrowserView* browser_view)
   pref_change_registrar_.Add(
       prefs::kSidePanelHorizontalAlignment,
       base::BindRepeating(&SidePanel::UpdateHorizontalAlignment,
-                          base::Unretained(this)));
+                          base::Unretained(this), std::nullopt));
 }
 
 SidePanel::~SidePanel() {
@@ -311,7 +311,8 @@ void SidePanel::UpdateVisibility(bool should_be_open) {
   SetVisible(should_be_open);
 }
 
-void SidePanel::UpdateHorizontalAlignment() {
+void SidePanel::UpdateHorizontalAlignment(
+    std::optional<SidePanelEntryId> entry_id) {
   horizontal_alignment_ = GetHorizontalAlignment(
       browser_view_->GetProfile()->GetPrefs(), current_entry_type_);
 
