@@ -121,6 +121,10 @@ void EngineConsumerConversationAPI::GenerateRewriteSuggestion(
                        std::move(completed_callback));
 }
 
+void EngineConsumerConversationAPI::SanitizeInput(std::string& input) {
+  // Handle by server.
+}
+
 void EngineConsumerConversationAPI::ClearAllQueries() {
   api_->ClearAllQueries();
 }
