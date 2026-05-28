@@ -12,6 +12,7 @@
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -31,7 +32,7 @@ namespace {
 constexpr ViewShadow::ShadowParameters kShadow{
     .offset_x = 0,
     .offset_y = 0,
-    .blur_radius = BraveContentsViewUtil::kMarginThickness,
+    .blur_radius = kRoundedCornersContentsViewMargin,
     .shadow_color = SkColorSetA(SK_ColorBLACK, 0.1 * 255)};
 }  // namespace
 
@@ -49,7 +50,7 @@ std::unique_ptr<ViewShadow> BraveContentsViewUtil::CreateShadow(
 int BraveContentsViewUtil::GetRoundedCornersWebViewMargin(Browser* browser) {
   return BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
              browser)
-             ? BraveContentsViewUtil::kMarginThickness
+             ? kRoundedCornersContentsViewMargin
              : 0;
 }
 
@@ -58,7 +59,7 @@ int BraveContentsViewUtil::GetRoundedCornersWebViewMargin(
     const Browser* browser) {
   return BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
              browser)
-             ? BraveContentsViewUtil::kMarginThickness
+             ? kRoundedCornersContentsViewMargin
              : 0;
 }
 

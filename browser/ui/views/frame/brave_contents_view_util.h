@@ -24,9 +24,6 @@ class View;
 
 class BraveContentsViewUtil {
  public:
-  // The distance between main content areas and other UI elements.
-  static constexpr int kMarginThickness = 4;
-
   // Creates a drop shadow matching |corner_radii| (typically from
   // GetRoundedCornersForContentsView for the main contents container).
   static std::unique_ptr<ViewShadow> CreateShadow(

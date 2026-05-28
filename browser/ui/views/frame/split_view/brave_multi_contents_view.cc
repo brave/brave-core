@@ -8,11 +8,11 @@
 #include <utility>
 
 #include "base/check.h"
-#include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
 #include "chrome/browser/devtools/devtools_ui_controller.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/contents_web_view.h"
 #include "chrome/browser/ui/views/frame/multi_contents_background_view.h"
@@ -34,7 +34,7 @@ BraveMultiContentsView::BraveMultiContentsView(
     : MultiContentsView(browser_view, std::move(delegate)) {
   // Use rounded corners margin as resize area's width.
   resize_area_->SetPreferredSize(
-      gfx::Size(BraveContentsViewUtil::kMarginThickness, 0));
+      gfx::Size(kRoundedCornersContentsViewMargin, 0));
 }
 
 BraveMultiContentsView::~BraveMultiContentsView() = default;

@@ -31,6 +31,7 @@
 #include "chrome/browser/ui/exclusive_access/exclusive_access_context.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
+#include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/tab_modal_confirm_dialog.h"
 #include "chrome/browser/ui/tabs/features.h"
@@ -342,7 +343,7 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
 
   views::View* contents_container = browser_view()->contents_container();
   views::View* side_panel = browser_view()->side_panel();
-  const auto rounded_corners_margin = BraveContentsViewUtil::kMarginThickness;
+  const auto rounded_corners_margin = kRoundedCornersContentsViewMargin;
   const auto rounded_corners_border_radius = GetRoundedCornersBorderRadius();
   const auto rounded_corners_border_radius_at_window_corner =
       GetRoundedCornersBorderRadiusAtWindowCorner();
@@ -417,7 +418,7 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
 
   views::View* contents_container = browser_view()->contents_container();
   views::View* side_panel = browser_view()->side_panel();
-  const auto rounded_corners_margin = BraveContentsViewUtil::kMarginThickness;
+  const auto rounded_corners_margin = kRoundedCornersContentsViewMargin;
   const auto rounded_corners_border_radius = GetRoundedCornersBorderRadius();
   const auto rounded_corners_border_radius_at_window_corner =
       GetRoundedCornersBorderRadiusAtWindowCorner();
@@ -466,7 +467,7 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
 
   views::View* contents_container = browser_view()->contents_container();
   views::View* side_panel = browser_view()->side_panel();
-  const auto rounded_corners_margin = BraveContentsViewUtil::kMarginThickness;
+  const auto rounded_corners_margin = kRoundedCornersContentsViewMargin;
   const auto rounded_corners_border_radius = GetRoundedCornersBorderRadius();
   const auto rounded_corners_border_radius_at_window_corner =
       GetRoundedCornersBorderRadiusAtWindowCorner();
