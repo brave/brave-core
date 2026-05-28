@@ -36,7 +36,7 @@ HOOK_SOURCE: Path = (Path(__file__).resolve().parent / 'alias' /
                      'commit-msg.py')
 
 # A representative archive URL emitted by
-# `tools/cr/toolchain/build_xcode_toolchain.py`. The six dash-separated tokens
+# `tools/cr/toolchains/build_xcode_toolchain.py`. The six dash-separated tokens
 # in the filename are what `UpdateXcodeToolchain.execute` consumes.
 TOOLCHAIN_URL = (
     'https://example.invalid/xcode-hermetic-toolchain/'

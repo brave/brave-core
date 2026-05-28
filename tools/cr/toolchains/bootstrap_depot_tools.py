@@ -25,9 +25,9 @@ Example:
 
 ```sh
 curl -sSLf \
-    https://raw.githubusercontent.com/brave/brave-core/refs/heads/master/tools/cr/toolchain/bootstrap_depot_tools.py \
+    https://raw.githubusercontent.com/brave/brave-core/refs/heads/master/tools/cr/toolchains/bootstrap_depot_tools.py \
     | python3 - \
-        --run=https://raw.githubusercontent.com/brave/brave-core/refs/heads/master/tools/cr/toolchain/build_rust_toolchain.py \
+        --run=https://raw.githubusercontent.com/brave/brave-core/refs/heads/master/tools/cr/toolchains/build_rust_toolchain.py \
         -- \
         --out-dir=./out \
         --chromium-src=chromium/src \

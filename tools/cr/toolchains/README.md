@@ -14,7 +14,7 @@ Example invocation pattern:
 
 ```sh
 curl -sL \
-    https://raw.githubusercontent.com/brave/brave-core/refs/heads/master/tools/cr/toolchain/<script>.py \
+    https://raw.githubusercontent.com/brave/brave-core/refs/heads/master/tools/cr/toolchains/<script>.py \
     | python3 - [args...]
 ```
 
@@ -29,9 +29,9 @@ are forwarded verbatim.
 
 ```sh
 curl -sSLf \
-    https://raw.githubusercontent.com/brave/brave-core/refs/heads/master/tools/cr/toolchain/bootstrap_depot_tools.py \
+    https://raw.githubusercontent.com/brave/brave-core/refs/heads/master/tools/cr/toolchains/bootstrap_depot_tools.py \
     | python3 - \
-        --run=https://raw.githubusercontent.com/brave/brave-core/refs/heads/master/tools/cr/toolchain/build_rust_toolchain.py \
+        --run=https://raw.githubusercontent.com/brave/brave-core/refs/heads/master/tools/cr/toolchains/build_rust_toolchain.py \
         -- \
         --out-dir=./out/ --chromium-src=chromium/src --clone-chromium \
         --use-ref=150.0.7850.1
@@ -45,7 +45,7 @@ sysroot. The output is a `.tar.xz` archive ready for upload to GCS.
 
 ```sh
 curl -sL \
-    https://raw.githubusercontent.com/brave/brave-core/refs/heads/master/tools/cr/toolchain/build_rust_toolchain.py \
+    https://raw.githubusercontent.com/brave/brave-core/refs/heads/master/tools/cr/toolchains/build_rust_toolchain.py \
     | python3 - \
         --out-dir=./out/ \
         --chromium-src=~/dev/chromium/src/
@@ -62,7 +62,7 @@ Metal toolchain, with all archive metadata zeroed for reproducible builds.
 
 ```sh
 curl -sL \
-    https://raw.githubusercontent.com/brave/brave-core/refs/heads/master/tools/cr/toolchain/build_xcode_toolchain.py \
+    https://raw.githubusercontent.com/brave/brave-core/refs/heads/master/tools/cr/toolchains/build_xcode_toolchain.py \
     | python3 - \
         --out-dir=./out/ \
         --chromium-tag=150.0.7841.1
