@@ -3,10 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_IOS_BROWSER_PLAYLIST_PLAYLIST_EXCLUSION_BRIDGE_IMPL_H_
-#define BRAVE_IOS_BROWSER_PLAYLIST_PLAYLIST_EXCLUSION_BRIDGE_IMPL_H_
+#ifndef BRAVE_IOS_BROWSER_PLAYLIST_PLAYLIST_EXCLUSIONS_IMPL_H_
+#define BRAVE_IOS_BROWSER_PLAYLIST_PLAYLIST_EXCLUSIONS_IMPL_H_
 
-#include "brave/ios/browser/playlist/playlist_exclusion_bridge.h"
+#include "brave/ios/browser/playlist/playlist_exclusions.h"
 
 namespace playlist {
 class PlaylistExclusions;
@@ -15,7 +15,7 @@ class PlaylistExclusions;
 NS_ASSUME_NONNULL_BEGIN
 
 OBJC_EXPORT
-@interface PlaylistExclusionsBridgeImpl : NSObject <PlaylistExclusionsBridge>
+@interface PlaylistExclusionsImpl : NSObject <PlaylistExclusions>
 
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithPlaylistExclusions:
@@ -25,4 +25,4 @@ OBJC_EXPORT
 
 NS_ASSUME_NONNULL_END
 
-#endif  // BRAVE_IOS_BROWSER_PLAYLIST_PLAYLIST_EXCLUSION_BRIDGE_IMPL_H_
+#endif  // BRAVE_IOS_BROWSER_PLAYLIST_PLAYLIST_EXCLUSIONS_IMPL_H_
