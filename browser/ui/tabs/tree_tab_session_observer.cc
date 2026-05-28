@@ -46,9 +46,7 @@ TreeTabSessionObserver::TreeTabSessionObserver(Profile* profile,
   tab_strip_model_->AddObserver(this);
 }
 
-TreeTabSessionObserver::~TreeTabSessionObserver() {
-  tab_strip_model_->RemoveObserver(this);
-}
+TreeTabSessionObserver::~TreeTabSessionObserver() = default;
 
 void TreeTabSessionObserver::OnTreeTabChanged(const TreeTabChange& change) {
   CHECK(base::FeatureList::IsEnabled(tabs::kBraveTreeTab));
