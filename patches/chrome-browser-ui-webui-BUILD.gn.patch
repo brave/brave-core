@@ -1,12 +1,20 @@
 diff --git a/chrome/browser/ui/webui/BUILD.gn b/chrome/browser/ui/webui/BUILD.gn
-index b8099c5064df789ecb481ff40c40091504f91354..bc59c8682c9e534fb14cf2cf247be5ce3a1c3b68 100644
+index b8099c5064df789ecb481ff40c40091504f91354..df0ee6e1bd7aa4c31cfef15a4cd9c9c9cfd08501 100644
 --- a/chrome/browser/ui/webui/BUILD.gn
 +++ b/chrome/browser/ui/webui/BUILD.gn
-@@ -224,6 +224,7 @@ source_set("configs") {
-       "//chrome/browser/ui/webui/webui_gallery",
-     ]
-   }
-+  import("//brave/browser/ui/webui/sources.gni") deps += brave_browser_ui_webui_configs_deps
- }
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
  
- source_set("webui") {
++import("//brave/browser/ui/webui/sources.gni")
+ import("//chrome/common/features.gni")
+ import("//chromeos/dbus/config/use_real_dbus_clients.gni")
+ import("//components/enterprise/buildflags/buildflags.gni")
+@@ -90,6 +91,7 @@ source_set("configs") {
+     "//third_party/abseil-cpp:absl",
+     "//ui/webui:buildflags",
+   ]
++  deps += brave_browser_ui_webui_configs_deps
+ 
+   if (is_win || is_chromeos) {
+     deps += [ "//chrome/browser/ui/webui/signin:inline_login" ]
