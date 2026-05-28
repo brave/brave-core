@@ -358,4 +358,19 @@ IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
   EXPECT_TRUE(artifacts.empty());
 }
 
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
+                       ConsoleLogLimitExceeded) {
+  // Generate output that exceeds the 50,000 character console log limit.
+  std::string script = R"(
+    const longStr = 'x'.repeat(1000);
+    for (let i = 0; i < 60; i++) {
+      console.log(i + longStr);
+    }
+  )";
+
+  std::string output;
+  ExecuteCode(script, &output);
+  EXPECT_EQ(output, "Error: Console log output limit exceeded");
+}
+
 }  // namespace ai_chat

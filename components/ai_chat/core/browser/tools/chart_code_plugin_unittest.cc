@@ -51,6 +51,9 @@ TEST(ChartCodePluginTest, ValidateArtifact_Failures) {
       {"Non-numeric value field",
        R"({"data": [{"x": "A", "value": "not a number"}]})",
        "Chart data entry values (except 'x') must be numbers"},
+      {"X field exceeds 30 characters",
+       R"({"data": [{"x": "This is a very long x value that is way more than thirty characters", "value": 10}]})",
+       "Chart data entry 'x' field must not exceed 30 characters"},
       {"Invalid labels type",
        R"({"data": [{"x": "A", "value": 10}], "labels": "not an object"})",
        "Chart labels must be an object"},
@@ -121,6 +124,25 @@ TEST(ChartCodePluginTest, ValidateArtifact_SizeLimits) {
     auto result = chart_plugin.ValidateArtifact(base::Value(std::move(chart)));
     ASSERT_TRUE(result.has_value());
     EXPECT_EQ(result.value(), "Chart labels exceeds maximum of 10 entries");
+  }
+
+  // Label value exceeds 30 characters.
+  {
+    base::DictValue entry;
+    entry.Set("x", "Jan");
+    entry.Set("s0", 1);
+    base::ListValue data;
+    data.Append(std::move(entry));
+    base::DictValue labels;
+    labels.Set("s0",
+               "A string that is definitely longer than thirty characters");
+    base::DictValue chart;
+    chart.Set("data", std::move(data));
+    chart.Set("labels", std::move(labels));
+    auto result = chart_plugin.ValidateArtifact(base::Value(std::move(chart)));
+    ASSERT_TRUE(result.has_value());
+    EXPECT_EQ(result.value(),
+              "Chart label values must not exceed 30 characters");
   }
 }
 

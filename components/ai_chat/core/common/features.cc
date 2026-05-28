@@ -183,6 +183,8 @@ BASE_FEATURE(kCodeExecutionTool,
 
 const base::FeatureParam<bool> kCodeExecutionToolCharts{&kCodeExecutionTool,
                                                         "charts", false};
+const base::FeatureParam<size_t> kMaxConsoleLogOutputSize{
+    &kCodeExecutionTool, "max_console_log_output_size", 50000};
 
 bool IsCodeExecutionToolEnabled() {
   return base::FeatureList::IsEnabled(features::kCodeExecutionTool);

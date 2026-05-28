@@ -19,6 +19,7 @@ constexpr char kLabelsKey[] = "labels";
 
 constexpr size_t kMaxDataPoints = 200;
 constexpr size_t kMaxSeries = 10;
+constexpr size_t kMaxLabelLength = 30;
 
 }  // namespace
 
@@ -111,6 +112,9 @@ std::optional<std::string> ChartCodePlugin::ValidateArtifact(
         if (!value.is_string() && !value.is_int() && !value.is_double()) {
           return "Chart data entry 'x' field must be a string or number";
         }
+        if (value.is_string() && value.GetString().size() > kMaxLabelLength) {
+          return "Chart data entry 'x' field must not exceed 30 characters";
+        }
       } else if (!value.is_int() && !value.is_double()) {
         return "Chart data entry values (except 'x') must be numbers";
       }
@@ -131,6 +135,9 @@ std::optional<std::string> ChartCodePlugin::ValidateArtifact(
     for (const auto [key, value] : *labels_dict) {
       if (!value.is_string()) {
         return "Chart label values must be strings";
+      }
+      if (value.GetString().size() > kMaxLabelLength) {
+        return "Chart label values must not exceed 30 characters";
       }
     }
   }

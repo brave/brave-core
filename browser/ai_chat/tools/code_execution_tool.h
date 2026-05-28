@@ -99,6 +99,7 @@ class CodeExecutionTool : public Tool {
     base::OneShotTimer timeout_timer_;
     ResolveCallback resolve_callback_;
     std::vector<std::string> console_logs_;
+    size_t console_logs_total_size_ = 0;
     base::WeakPtrFactory<CodeExecutionRequest> weak_ptr_factory_{this};
   };
 
