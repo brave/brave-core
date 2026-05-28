@@ -26,6 +26,7 @@ class EmailAliasesNotes {
 
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
+  static size_t GetTotalCount(PrefService& pref_service);
   std::optional<std::string> GetNote(const std::string& alias);
   void UpdateNote(const std::string& alias, const std::string& notes);
   void RemoveNote(const std::string& alias);

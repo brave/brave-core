@@ -6,7 +6,10 @@
 #ifndef BRAVE_BROWSER_UI_EMAIL_ALIASES_EMAIL_ALIASES_CONTROLLER_H_
 #define BRAVE_BROWSER_UI_EMAIL_ALIASES_EMAIL_ALIASES_CONTROLLER_H_
 
+#include <optional>
+
 #include "base/memory/raw_ptr.h"
+#include "brave/components/email_aliases/email_aliases_metrics.h"
 #include "brave/components/email_aliases/email_aliases_service.h"
 
 class BrowserView;
@@ -33,9 +36,11 @@ class EmailAliasesController {
 
   void ShowBubble(content::WebContents* initiator,
                   content::RenderFrameHost* render_frame,
-                  uint64_t field_renderer_id);
+                  uint64_t field_renderer_id,
+                  std::optional<SettingsPageMethod> method = std::nullopt);
   void CloseBubble();
-  void OpenSettingsPage();
+  void OpenSettingsPage(
+      std::optional<SettingsPageMethod> method = std::nullopt);
 
   content::WebContents* GetBubbleForTesting();
   static void DisableAutoCloseBubbleForTesting(bool disale_autoclose);

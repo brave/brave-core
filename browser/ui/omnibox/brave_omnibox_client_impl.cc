@@ -36,6 +36,14 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #endif
 
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+#include "brave/browser/email_aliases/email_aliases_service_factory.h"
+#include "brave/components/email_aliases/constants.h"
+#include "brave/components/email_aliases/email_aliases_metrics.h"
+#include "brave/components/email_aliases/email_aliases_service.h"
+#include "brave/components/email_aliases/features.h"
+#endif
+
 namespace {
 
 using brave_search_conversion::ConversionType;
@@ -105,6 +113,17 @@ BraveOmniboxClientImpl::BraveOmniboxClientImpl(LocationBar* location_bar,
       navigation_source_metrics_ = &page_metrics->navigation_source_metrics();
     }
   }
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+  if (email_aliases::features::IsEmailAliasesEnabled()) {
+    auto* email_aliases_service =
+        email_aliases::EmailAliasesServiceFactory::GetServiceForProfile(
+            profile);
+    if (email_aliases_service) {
+      email_aliases_metrics_ = &email_aliases_service->metrics();
+    }
+  }
+#endif
 
   pref_change_registrar_.Init(profile_->GetPrefs());
   pref_change_registrar_.Add(
@@ -191,6 +210,14 @@ void BraveOmniboxClientImpl::OnAutocompleteAccept(
         break;
     }
   }
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+  if (email_aliases_metrics_ &&
+      match.type == AutocompleteMatchType::URL_WHAT_YOU_TYPED &&
+      destination_url.spec() == email_aliases::kEmailAliasesSettingsURL) {
+    email_aliases_metrics_->RecordSettingsPageNavigation(
+        email_aliases::SettingsPageMethod::kManualNavigation);
+  }
+#endif
 
   ChromeOmniboxClient::OnAutocompleteAccept(
       destination_url, post_content, disposition, transition, match_type,

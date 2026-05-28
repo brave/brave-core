@@ -164,8 +164,9 @@ class BraveChromeAutofillClient : public ChromeAutofillClient {
       auto* render_frame_host = autofill::FindRenderFrameHostByToken(
           *web_contents(), field.frame_token);
       if (render_frame_host) {
-        email_aliases->ShowBubble(web_contents(), render_frame_host,
-                                  field.renderer_id.value());
+        email_aliases->ShowBubble(
+            web_contents(), render_frame_host, field.renderer_id.value(),
+            email_aliases::SettingsPageMethod::kAutofillBubble);
       }
     }
     return true;

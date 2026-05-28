@@ -5,6 +5,8 @@
 
 #include "brave/components/email_aliases/email_aliases_notes.h"
 
+#include <numeric>
+
 #include "brave/components/email_aliases/pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -24,6 +26,16 @@ void EmailAliasesNotes::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterDictionaryPref(
       prefs::kEmailAliasesNotes,
       user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
+}
+
+// static
+size_t EmailAliasesNotes::GetTotalCount(PrefService& pref_service) {
+  const auto& pref = pref_service.GetDict(prefs::kEmailAliasesNotes);
+  return std::reduce(
+      pref.begin(), pref.end(), size_t{0}, [](size_t acc, const auto& entry) {
+        return acc +
+               (entry.second.is_dict() ? entry.second.GetDict().size() : 0);
+      });
 }
 
 std::optional<std::string> EmailAliasesNotes::GetNote(

@@ -134,6 +134,7 @@
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
 #include "brave/browser/email_aliases/email_aliases_service_factory.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
+#include "brave/components/email_aliases/email_aliases_service.h"
 #include "brave/components/email_aliases/features.h"
 #endif
 
@@ -412,6 +413,16 @@ void BraveSettingsUI::BindInterface(
   auto* profile = Profile::FromWebUI(web_ui());
   email_aliases::EmailAliasesServiceFactory::BindForProfile(
       profile, std::move(receiver));
+}
+
+void BraveSettingsUI::BindInterface(
+    mojo::PendingReceiver<email_aliases::mojom::EmailAliasesMetrics> receiver) {
+  auto* profile = Profile::FromWebUI(web_ui());
+  auto* service =
+      email_aliases::EmailAliasesServiceFactory::GetServiceForProfile(profile);
+  if (service) {
+    service->metrics().BindInterface(std::move(receiver));
+  }
 }
 #endif  // BUILDFLAG(ENABLE_EMAIL_ALIASES)
 

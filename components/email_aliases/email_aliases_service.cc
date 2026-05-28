@@ -18,6 +18,7 @@
 #include "brave/components/constants/network_constants.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
 #include "brave/components/email_aliases/email_aliases_api.h"
+#include "brave/components/email_aliases/email_aliases_metrics.h"
 #include "brave/components/email_aliases/email_aliases_notes.h"
 #include "brave/components/email_aliases/features.h"
 #include "brave/components/email_aliases/pref_names.h"
@@ -104,7 +105,9 @@ EmailAliasesService::EmailAliasesService(
         brave_account_auth,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService& pref_service)
-    : url_loader_factory_(url_loader_factory), pref_service_(pref_service) {
+    : url_loader_factory_(url_loader_factory),
+      pref_service_(pref_service),
+      metrics_(pref_service) {
   CHECK(base::FeatureList::IsEnabled(email_aliases::features::kEmailAliases));
   CHECK(brave_account_auth);
 
@@ -118,6 +121,7 @@ EmailAliasesService::~EmailAliasesService() = default;
 // static
 void EmailAliasesService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kEmailAliasesEnabled, true);
+  EmailAliasesMetrics::RegisterProfilePrefs(registry);
   EmailAliasesNotes::RegisterProfilePrefs(registry);
 }
 
@@ -211,6 +215,9 @@ void EmailAliasesService::OnGenerateAliasResponse(
       parsed.has_value()
           ? base::expected<std::string, std::string>(parsed.value().alias)
           : base::unexpected(parsed.error());
+  if (result.has_value()) {
+    metrics_.ReportEmailAliasPresence(true);
+  }
   std::move(user_callback).Run(std::move(result));
 }
 
@@ -359,6 +366,7 @@ void EmailAliasesService::OnRefreshAliasesResponse(
     aliases.push_back(std::move(alias_obj));
   }
 
+  metrics_.ReportEmailAliasPresence(!aliases.empty());
   NotifyObserversAliasesUpdated(
       observers_, mojom::AliasesUpdate::NewAliases(std::move(aliases)));
 }
