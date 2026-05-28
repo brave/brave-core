@@ -1697,7 +1697,7 @@ void BraveWalletService::NotifyDecryptRequestProcessed(
 void BraveWalletService::IsBase58EncodedSolanaPubkey(
     const std::string& key,
     IsBase58EncodedSolanaPubkeyCallback callback) {
-  std::move(callback).Run(!!SolanaAddress::FromBase58(key));
+  std::move(callback).Run(SolanaAddress::FromBase58(key).has_value());
 }
 
 void BraveWalletService::Base58Encode(
