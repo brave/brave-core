@@ -363,11 +363,22 @@ void BraveSyncServiceImpl::OnEngineInitialized(
     VLOG(1) << "Forced set decryption passphrase result is "
             << set_passphrase_result;
   }
+
+#if BUILDFLAG(IS_ANDROID)
+  DCHECK(GetSyncAccountStateForPrefs() !=
+         SyncPrefs::SyncAccountState::kNotSignedIn);
+  MigrateAndroidSyncEverythingIfRequired();
+#endif
 }
 
 SyncServiceCrypto* BraveSyncServiceImpl::GetCryptoForTesting() {
   CHECK_IS_TEST();
   return &crypto_;
+}
+
+DataTypeManager* BraveSyncServiceImpl::GetDataTypeManagerForTesting() {
+  CHECK_IS_TEST();
+  return data_type_manager_.get();
 }
 
 void BraveSyncServiceImpl::SetInitializingForTesting() {
@@ -561,5 +572,22 @@ void BraveSyncServiceImpl::OnAccountsInCookieUpdated(
 
 void BraveSyncServiceImpl::OnPrimaryAccountChanged(
     const signin::PrimaryAccountChangeEvent& event_details) {}
+
+#if BUILDFLAG(IS_ANDROID)
+void BraveSyncServiceImpl::MigrateAndroidSyncEverythingIfRequired() {
+  if (!GetUserSettings()->IsSyncEverythingEnabled()) {
+    return;
+  }
+
+  syncer::UserSelectableTypeSet selected_types;
+  UserSelectableTypeSet registered_types =
+      GetUserSettings()->GetRegisteredSelectableTypes();
+  for (UserSelectableType type : registered_types) {
+    selected_types.Put(type);
+  }
+  GetUserSettings()->SetSelectedTypes(false, selected_types);
+  CHECK(!GetUserSettings()->IsSyncEverythingEnabled());
+}
+#endif
 
 }  // namespace syncer

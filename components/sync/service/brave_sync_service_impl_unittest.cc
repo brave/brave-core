@@ -16,6 +16,7 @@
 #include "base/test/bind.h"
 #include "base/test/gtest_util.h"
 #include "base/test/metrics/histogram_tester.h"
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/time/default_clock.h"
@@ -357,7 +358,8 @@ TEST_F(BraveSyncServiceImplTest, ForcedSetDecryptionPassphrase) {
   // So we just make DataTypeManagerImpl::SetConfigurer requirements be
   // satisfied.
   // Related Chromium commit 7cdf92e9470fc73a09b871f99d14ff115edef652
-  brave_sync_service_impl()->data_type_manager_->Stop(KEEP_METADATA);
+  brave_sync_service_impl()->GetDataTypeManagerForTesting()->Stop(
+      KEEP_METADATA);
 
   // We have to cleanup SyncServiceCrypto.state_.engine with Reset
   // because on 2nd OnEngineInitialized call it is non-null and CHECK gets
@@ -371,7 +373,8 @@ TEST_F(BraveSyncServiceImplTest, ForcedSetDecryptionPassphrase) {
       KeyDerivationParams::CreateForPbkdf2(),
       MakeEncryptedData(kValidSyncCode,
                         KeyDerivationParams::CreateForPbkdf2()));
-  brave_sync_service_impl()->data_type_manager_->Stop(KEEP_METADATA);
+  brave_sync_service_impl()->GetDataTypeManagerForTesting()->Stop(
+      KEEP_METADATA);
 
   brave_sync_service_impl()->OnEngineInitialized(true, false);
   EXPECT_FALSE(
@@ -733,6 +736,55 @@ TEST_F(BraveSyncServiceImplTest, BookmarksAndPasswordsAfterSetup) {
   EXPECT_TRUE(selected_types.Has(UserSelectableType::kBookmarks));
   EXPECT_TRUE(selected_types.Has(UserSelectableType::kPasswords));
 }
+
+#if BUILDFLAG(IS_ANDROID)
+TEST_F(BraveSyncServiceImplTest,
+       MigrateAndroidSyncEverythingOnEngineInitialized) {
+  CreateSyncService();
+  EXPECT_FALSE(engine());
+
+  brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
+  ASSERT_TRUE(base::test::RunUntil([&] { return engine() != nullptr; }));
+
+  // Complete setup so IsInitialSyncFeatureSetupComplete() returns true.
+  // OnEngineInitialized was already called above but exited early because
+  // setup was not yet complete at that point.
+  brave_sync_service_impl()
+      ->GetUserSettings()
+      ->SetInitialSyncFeatureSetupComplete();
+
+  // Simulate pre-cr149 device state: sync-everything was enabled.
+  {
+    auto setup_handle = brave_sync_service_impl()->GetSetupInProgressHandle();
+    UserSelectableTypeSet registered_types =
+        brave_sync_service_impl()
+            ->GetUserSettings()
+            ->GetRegisteredSelectableTypes();
+    brave_sync_service_impl()->GetUserSettings()->SetSelectedTypes(
+        /*keep_everything_synced=*/true, registered_types);
+  }
+  ASSERT_TRUE(
+      brave_sync_service_impl()->GetUserSettings()->IsSyncEverythingEnabled());
+
+  // Re-trigger OnEngineInitialized (simulating app restart with cr149).
+  // Stop the data type manager first — required by DataTypeManagerImpl's
+  // SetConfigurer. Reset crypto state to clear the engine pointer set during
+  // the first OnEngineInitialized call, otherwise a CHECK fires.
+  brave_sync_service_impl()->GetDataTypeManagerForTesting()->Stop(
+      KEEP_METADATA);
+  brave_sync_service_impl()->GetCryptoForTesting()->Reset();
+  brave_sync_service_impl()->OnEngineInitialized(true, false);
+
+  // After migration: sync_everything must be off, all registered types
+  // selected.
+  EXPECT_FALSE(
+      brave_sync_service_impl()->GetUserSettings()->IsSyncEverythingEnabled());
+  EXPECT_EQ(brave_sync_service_impl()->GetUserSettings()->GetSelectedTypes(),
+            brave_sync_service_impl()
+                ->GetUserSettings()
+                ->GetRegisteredSelectableTypes());
+}
+#endif  // BUILDFLAG(IS_ANDROID)
 
 TEST_F(BraveSyncServiceImplTest, P3aForHistoryThroughDelegate) {
   CreateSyncService(DataTypeSet({BOOKMARKS, HISTORY, PASSWORDS}));
