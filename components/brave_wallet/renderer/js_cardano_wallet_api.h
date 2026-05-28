@@ -51,6 +51,12 @@ class JSCardanoWalletApi final : public gin::Wrappable<JSCardanoWalletApi>,
 
  private:
   bool EnsureConnected();
+
+  void Cleanup();
+
+  // content::RenderFrameObserver
+  void WillReleaseScriptContext(v8::Local<v8::Context> context,
+                                int32_t world_id) override;
   void OnDestruct() override;
 
   void HandleStringResult(v8::Global<v8::Context> global_context,

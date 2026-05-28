@@ -121,30 +121,33 @@ JSEthereumProvider::JSEthereumProvider(content::RenderFrame* render_frame)
 
 JSEthereumProvider::~JSEthereumProvider() = default;
 
-void JSEthereumProvider::OnDestruct() {}
+void JSEthereumProvider::Cleanup() {
+  // No longer need that provider object. Reset mojo connection, clean bound v8
+  // references, stop tracking the render frame.
+
+  receiver_.reset();
+  weak_ptr_factory_.InvalidateWeakPtrs();
+  Dispose();
+}
+
+void JSEthereumProvider::OnDestruct() {
+  Cleanup();
+}
 
 void JSEthereumProvider::WillReleaseScriptContext(v8::Local<v8::Context>,
                                                   int32_t world_id) {
   if (world_id != content::ISOLATED_WORLD_ID_GLOBAL) {
     return;
   }
-  // Close mojo connection from browser to renderer.
-  receiver_.reset();
-  script_context_released_ = true;
+
+  Cleanup();
 }
 
 void JSEthereumProvider::DidDispatchDOMContentLoadedEvent() {
-  if (script_context_released_) {
-    return;
-  }
   ConnectEvent();
 }
 
 void JSEthereumProvider::DidFinishLoad() {
-  if (script_context_released_) {
-    return;
-  }
-
   // These used to be called synchronously by `JSEthereumProvider::Install`
   // which appeared to cause rare crashes with certain extensions' behavior. See
   // https://github.com/brave/brave-browser/issues/45694 for details.

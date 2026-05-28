@@ -9,6 +9,7 @@
 
 #include "base/containers/to_value_list.h"
 #include "components/grit/brave_components_strings.h"
+#include "content/public/common/isolated_world_ids.h"
 #include "content/public/renderer/v8_value_converter.h"
 #include "gin/converter.h"
 #include "gin/object_template_builder.h"
@@ -48,8 +49,27 @@ v8::Local<v8::Value> ConvertError(
   return content::V8ValueConverter::Create()->ToV8Value(error_value, context);
 }
 
-// content::RenderFrameObserver
-void JSCardanoWalletApi::OnDestruct() {}
+void JSCardanoWalletApi::Cleanup() {
+  // No longer need that provider object. Reset mojo connection, clean bound v8
+  // references, stop tracking the render frame.
+
+  cardano_api_.reset();
+  weak_ptr_factory_.InvalidateWeakPtrs();
+  Dispose();
+}
+
+void JSCardanoWalletApi::WillReleaseScriptContext(
+    v8::Local<v8::Context> context,
+    int32_t world_id) {
+  if (world_id != content::ISOLATED_WORLD_ID_GLOBAL) {
+    return;
+  }
+  Cleanup();
+}
+
+void JSCardanoWalletApi::OnDestruct() {
+  Cleanup();
+}
 
 // gin::Wrappable<JSCardanoProvider>
 gin::ObjectTemplateBuilder JSCardanoWalletApi::GetObjectTemplateBuilder(

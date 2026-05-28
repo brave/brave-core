@@ -80,6 +80,8 @@ class JSEthereumProvider final : public gin::Wrappable<JSEthereumProvider>,
     mojo::Remote<mojom::EthereumProvider> ethereum_provider_;
   };
 
+  void Cleanup();
+
   // content::RenderFrameObserver
   void OnDestruct() override;
   void WillReleaseScriptContext(v8::Local<v8::Context>,
@@ -132,7 +134,6 @@ class JSEthereumProvider final : public gin::Wrappable<JSEthereumProvider>,
   mojo::Remote<mojom::EthereumProvider> ethereum_provider_;
   mojo::Receiver<mojom::EventsListener> receiver_{this};
   bool is_connected_ = false;
-  bool script_context_released_ = false;
   std::string chain_id_;
   std::string first_allowed_account_;
   std::string uuid_;
