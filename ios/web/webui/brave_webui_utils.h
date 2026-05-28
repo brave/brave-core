@@ -28,8 +28,7 @@ BraveWebUIIOSDataSource* CreateAndAddWebUIDataSource(
     web::WebUIIOS* web_ui,
     std::string_view name,
     base::span<const webui::ResourcePath> resource_paths,
-    int html_resource_id,
-    bool disable_trusted_types_csp = false);
+    int html_resource_id);
 
 }  // namespace brave
 

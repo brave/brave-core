@@ -49,26 +49,13 @@ content::WebUIDataSource* CreateWebUIDataSource(
     content::WebUI* web_ui,
     std::string_view name,
     base::span<const webui::ResourcePath> resource_paths,
-    int html_resource_id,
-    bool disable_trusted_types_csp) {
+    int html_resource_id) {
   content::WebUIDataSource* source = content::WebUIDataSource::CreateAndAdd(
       Profile::FromWebUI(web_ui), std::string(name));
-  // Some parts of Brave's UI pages are not yet migrated to work without doing
-  // assignments of strings directly into |innerHTML| elements (i.e. see usage
-  // of |dangerouslySetInnerHTML| in .tsx files). This will break Brave due to
-  // committing a Trusted Types related violation now that Trusted Types are
-  // enforced on WebUI pages (see crrev.com/c/2234238 and crrev.com/c/2353547).
-  // We should migrate those pages not to require using |innerHTML|, but for now
-  // we just restore pre-Cromium 87 behaviour for pages that are not ready yet.
-  if (disable_trusted_types_csp) {
-    source->DisableTrustedTypesCSP();
-  } else {
-    // Allow a policy to be created so that we
-    // can allow trusted HTML and trusted lazy-load script sources.
-    source->OverrideContentSecurityPolicy(
-        network::mojom::CSPDirectiveName::TrustedTypes,
-        "trusted-types default;");
-  }
+  // Allow a policy to be created so that we
+  // can allow trusted HTML and trusted lazy-load script sources.
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::TrustedTypes, "trusted-types default;");
 
   source->UseStringsJs();
   source->SetDefaultResource(html_resource_id);
@@ -83,11 +70,9 @@ content::WebUIDataSource* CreateAndAddWebUIDataSource(
     content::WebUI* web_ui,
     std::string_view name,
     base::span<const webui::ResourcePath> resource_paths,
-    int html_resource_id,
-    bool disable_trusted_types_csp) {
+    int html_resource_id) {
   content::WebUIDataSource* data_source =
-      CreateWebUIDataSource(web_ui, name, resource_paths, html_resource_id,
-                            disable_trusted_types_csp);
+      CreateWebUIDataSource(web_ui, name, resource_paths, html_resource_id);
   return data_source;
 }
 
