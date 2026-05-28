@@ -20,6 +20,23 @@ curl -sL \
 
 ## Scripts
 
+### `bootstrap_depot_tools.py`
+
+Bootstraps `depot_tools` on a fresh CI worker, and then runs a given python
+script using `vpython3`. This allows for the toolchain python scripts to be run
+across different environments with the same guarantees. Arguments after `--`
+are forwarded verbatim.
+
+```sh
+curl -sSLf \
+    https://raw.githubusercontent.com/brave/brave-core/refs/heads/master/tools/cr/toolchain/bootstrap_depot_tools.py \
+    | python3 - \
+        --run=https://raw.githubusercontent.com/brave/brave-core/refs/heads/master/tools/cr/toolchain/build_rust_toolchain.py \
+        -- \
+        --out-dir=./out/ --chromium-src=chromium/src --clone-chromium \
+        --use-ref=150.0.7850.1
+```
+
 ### `build_rust_toolchain.py`
 
 Builds and packages a minimal Rust toolchain subset for Chromium: the
