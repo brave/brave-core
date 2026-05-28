@@ -60,8 +60,8 @@ class CardanoBlockTrackerUnitTest : public testing::Test {
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     network_manager_ = std::make_unique<NetworkManager>(&prefs_);
-    keyring_service_ = std::make_unique<KeyringService>(nullptr, &prefs_,
-                                                        &local_state_, nullptr);
+    keyring_service_ =
+        std::make_unique<KeyringService>(nullptr, &prefs_, &local_state_);
     cardano_wallet_service_ = std::make_unique<CardanoWalletService>(
         *keyring_service_, *network_manager_,
         url_loader_factory_.GetSafeWeakWrapper());

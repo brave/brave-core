@@ -153,8 +153,8 @@ class PolkadotTransactionStatusTaskUnitTest : public testing::Test {
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
 
     network_manager_ = std::make_unique<NetworkManager>(&prefs_);
-    keyring_service_ = std::make_unique<KeyringService>(nullptr, &prefs_,
-                                                        &local_state_, nullptr);
+    keyring_service_ =
+        std::make_unique<KeyringService>(nullptr, &prefs_, &local_state_);
 
     polkadot_substrate_rpc_ = std::make_unique<PolkadotSubstrateRpc>(
         *network_manager_, url_loader_factory_.GetSafeWeakWrapper());

@@ -88,8 +88,8 @@ class BitcoinWalletServiceUnitTest : public testing::Test {
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
 
     network_manager_ = std::make_unique<NetworkManager>(&prefs_);
-    keyring_service_ = std::make_unique<KeyringService>(nullptr, &prefs_,
-                                                        &local_state_, nullptr);
+    keyring_service_ =
+        std::make_unique<KeyringService>(nullptr, &prefs_, &local_state_);
     bitcoin_test_rpc_server_ = std::make_unique<BitcoinTestRpcServer>();
     bitcoin_wallet_service_ = std::make_unique<BitcoinWalletService>(
         *keyring_service_, *network_manager_,

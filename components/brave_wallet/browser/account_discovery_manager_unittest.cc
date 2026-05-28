@@ -41,8 +41,8 @@ class AccountDiscoveryManagerUnitTest : public testing::Test {
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
 
     network_manager_ = std::make_unique<NetworkManager>(&prefs_);
-    keyring_service_ = std::make_unique<KeyringService>(nullptr, &prefs_,
-                                                        &local_state_, nullptr);
+    keyring_service_ =
+        std::make_unique<KeyringService>(nullptr, &prefs_, &local_state_);
     json_rpc_service_ = std::make_unique<JsonRpcService>(
         url_loader_factory_.GetSafeWeakWrapper(), network_manager_.get(),
         &prefs_, nullptr);

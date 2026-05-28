@@ -50,8 +50,8 @@ class BitcoinTxManagerUnitTest : public testing::Test {
     json_rpc_service_ = std::make_unique<JsonRpcService>(
         url_loader_factory_.GetSafeWeakWrapper(), network_manager_.get(),
         &prefs_, nullptr);
-    keyring_service_ = std::make_unique<KeyringService>(
-        json_rpc_service_.get(), &prefs_, &local_state_, nullptr);
+    keyring_service_ = std::make_unique<KeyringService>(json_rpc_service_.get(),
+                                                        &prefs_, &local_state_);
 
     bitcoin_test_rpc_server_ = std::make_unique<BitcoinTestRpcServer>();
     bitcoin_wallet_service_ = std::make_unique<BitcoinWalletService>(

@@ -523,7 +523,7 @@ class KeyringServiceMigrationsLegacyIterationsUnitTest
 };
 
 TEST_F(KeyringServiceMigrationsLegacyIterationsUnitTest, NoMigration) {
-  KeyringService service(nullptr, GetPrefs(), GetLocalState(), nullptr);
+  KeyringService service(nullptr, GetPrefs(), GetLocalState());
 
   base::MockCallback<KeyringService::CreateWalletCallback> callback;
   EXPECT_CALL(callback, Run(_));
@@ -542,7 +542,7 @@ TEST_F(KeyringServiceMigrationsLegacyIterationsUnitTest, NoMigration) {
 TEST_F(KeyringServiceMigrationsLegacyIterationsUnitTest, MigrateOnUnlock) {
   SetupLegacyKeyringPrefs();
 
-  KeyringService service(nullptr, GetPrefs(), GetLocalState(), nullptr);
+  KeyringService service(nullptr, GetPrefs(), GetLocalState());
 
   base::MockCallback<KeyringService::UnlockCallback> callback;
   EXPECT_CALL(callback, Run(true));
@@ -557,7 +557,7 @@ TEST_F(KeyringServiceMigrationsLegacyIterationsUnitTest,
        MigrateOnUnlockAfterInvalidPassword) {
   SetupLegacyKeyringPrefs();
 
-  KeyringService service(nullptr, GetPrefs(), GetLocalState(), nullptr);
+  KeyringService service(nullptr, GetPrefs(), GetLocalState());
 
   base::MockCallback<KeyringService::UnlockCallback> callback;
   EXPECT_CALL(callback, Run(false));
@@ -577,7 +577,7 @@ TEST_F(KeyringServiceMigrationsLegacyIterationsUnitTest,
        MigrateOnValidatePassword) {
   SetupLegacyKeyringPrefs();
 
-  KeyringService service(nullptr, GetPrefs(), GetLocalState(), nullptr);
+  KeyringService service(nullptr, GetPrefs(), GetLocalState());
 
   base::MockCallback<KeyringService::UnlockCallback> callback;
   EXPECT_CALL(callback, Run(true));
@@ -598,7 +598,7 @@ TEST_F(KeyringServiceMigrationsLegacyIterationsUnitTest,
        MigrateOnValidatePasswordAfterInvalidPassword) {
   SetupLegacyKeyringPrefs();
 
-  KeyringService service(nullptr, GetPrefs(), GetLocalState(), nullptr);
+  KeyringService service(nullptr, GetPrefs(), GetLocalState());
 
   base::MockCallback<KeyringService::UnlockCallback> callback;
   EXPECT_CALL(callback, Run(false));
@@ -626,7 +626,7 @@ TEST_F(KeyringServiceMigrationsLegacyIterationsUnitTest,
        MigrateOnRestoreWallet) {
   SetupLegacyKeyringPrefs();
 
-  KeyringService service(nullptr, GetPrefs(), GetLocalState(), nullptr);
+  KeyringService service(nullptr, GetPrefs(), GetLocalState());
 
   service.RestoreWallet(kMnemonicDivideCruise, kPassword, false,
                         base::DoNothing());
@@ -641,7 +641,7 @@ TEST_F(KeyringServiceMigrationsLegacyIterationsUnitTest,
 
   const char new_password[] = "new password";
 
-  KeyringService service(nullptr, GetPrefs(), GetLocalState(), nullptr);
+  KeyringService service(nullptr, GetPrefs(), GetLocalState());
 
   service.RestoreWallet(kMnemonicDivideCruise, new_password, false,
                         base::DoNothing());
@@ -712,7 +712,7 @@ class KeyringServiceMigrationsLegacyMnemonicFormatUnitTest
 };
 
 TEST_F(KeyringServiceMigrationsLegacyMnemonicFormatUnitTest, NoMigration) {
-  KeyringService service(nullptr, GetPrefs(), GetLocalState(), nullptr);
+  KeyringService service(nullptr, GetPrefs(), GetLocalState());
 
   base::MockCallback<KeyringService::CreateWalletCallback> callback;
   EXPECT_CALL(callback, Run(_));
@@ -731,7 +731,7 @@ TEST_F(KeyringServiceMigrationsLegacyMnemonicFormatUnitTest, NoMigration) {
 TEST_F(KeyringServiceMigrationsLegacyMnemonicFormatUnitTest, MigrateOnUnlock) {
   SetupLegacyKeyringPrefs();
 
-  KeyringService service(nullptr, GetPrefs(), GetLocalState(), nullptr);
+  KeyringService service(nullptr, GetPrefs(), GetLocalState());
 
   base::MockCallback<KeyringService::UnlockCallback> callback;
   EXPECT_CALL(callback, Run(true));
@@ -746,7 +746,7 @@ TEST_F(KeyringServiceMigrationsLegacyMnemonicFormatUnitTest,
        MigrateOnUnlockAfterInvalidPassword) {
   SetupLegacyKeyringPrefs();
 
-  KeyringService service(nullptr, GetPrefs(), GetLocalState(), nullptr);
+  KeyringService service(nullptr, GetPrefs(), GetLocalState());
 
   base::MockCallback<KeyringService::UnlockCallback> callback;
   EXPECT_CALL(callback, Run(false));
@@ -766,7 +766,7 @@ TEST_F(KeyringServiceMigrationsLegacyMnemonicFormatUnitTest,
        MigrateOnValidatePassword) {
   SetupLegacyKeyringPrefs();
 
-  KeyringService service(nullptr, GetPrefs(), GetLocalState(), nullptr);
+  KeyringService service(nullptr, GetPrefs(), GetLocalState());
 
   base::MockCallback<KeyringService::UnlockCallback> callback;
   EXPECT_CALL(callback, Run(true));
@@ -787,7 +787,7 @@ TEST_F(KeyringServiceMigrationsLegacyMnemonicFormatUnitTest,
        MigrateOnValidatePasswordAfterInvalidPassword) {
   SetupLegacyKeyringPrefs();
 
-  KeyringService service(nullptr, GetPrefs(), GetLocalState(), nullptr);
+  KeyringService service(nullptr, GetPrefs(), GetLocalState());
 
   base::MockCallback<KeyringService::UnlockCallback> callback;
   EXPECT_CALL(callback, Run(false));
@@ -815,7 +815,7 @@ TEST_F(KeyringServiceMigrationsLegacyMnemonicFormatUnitTest,
        MigrateOnRestoreWallet) {
   SetupLegacyKeyringPrefs();
 
-  KeyringService service(nullptr, GetPrefs(), GetLocalState(), nullptr);
+  KeyringService service(nullptr, GetPrefs(), GetLocalState());
 
   service.RestoreWallet(kMnemonicDivideCruise, kPassword, false,
                         base::DoNothing());
@@ -830,7 +830,7 @@ TEST_F(KeyringServiceMigrationsLegacyMnemonicFormatUnitTest,
 
   const char new_password[] = "new password";
 
-  KeyringService service(nullptr, GetPrefs(), GetLocalState(), nullptr);
+  KeyringService service(nullptr, GetPrefs(), GetLocalState());
 
   service.RestoreWallet(kMnemonicDivideCruise, new_password, false,
                         base::DoNothing());

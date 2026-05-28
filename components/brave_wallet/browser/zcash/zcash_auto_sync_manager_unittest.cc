@@ -50,8 +50,8 @@ class ZCashAutoSyncManagerTest : public testing::Test {
     ASSERT_TRUE(temp_directory_.CreateUniqueTempDir());
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
-    keyring_service_ = std::make_unique<KeyringService>(nullptr, &prefs_,
-                                                        &local_state_, nullptr);
+    keyring_service_ =
+        std::make_unique<KeyringService>(nullptr, &prefs_, &local_state_);
     mock_zcash_wallet_service_ = std::make_unique<MockZCashWalletService>(
         *keyring_service_, std::make_unique<ZCashRpc>(nullptr, nullptr));
     mock_zcash_wallet_service_->SetupSyncState(

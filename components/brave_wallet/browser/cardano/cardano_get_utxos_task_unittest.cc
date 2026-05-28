@@ -44,8 +44,8 @@ class CardanoGetUtxosTaskUnitTest : public testing::Test {
 
     network_manager_ = std::make_unique<NetworkManager>(&prefs_);
 
-    keyring_service_ = std::make_unique<KeyringService>(nullptr, &prefs_,
-                                                        &local_state_, nullptr);
+    keyring_service_ =
+        std::make_unique<KeyringService>(nullptr, &prefs_, &local_state_);
     cardano_wallet_service_ = std::make_unique<CardanoWalletService>(
         *keyring_service_, *network_manager_, nullptr);
     cardano_test_rpc_server_ =

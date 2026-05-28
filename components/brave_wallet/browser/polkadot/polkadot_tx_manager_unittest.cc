@@ -166,7 +166,7 @@ class PolkadotTxManagerUnitTest : public testing::Test {
         url_loader_factory_.GetSafeWeakWrapper(), network_manager_.get(),
         &profile_prefs_, &local_state_);
     keyring_service_ = std::make_unique<KeyringService>(
-        json_rpc_service_.get(), &profile_prefs_, &local_state_, nullptr);
+        json_rpc_service_.get(), &profile_prefs_, &local_state_);
 
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
 

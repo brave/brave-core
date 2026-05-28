@@ -74,9 +74,10 @@ class KeyringService : public mojom::KeyringService {
  public:
   KeyringService(JsonRpcService* json_rpc_service,
                  PrefService* profile_prefs,
-                 PrefService* local_state,
-                 BraveWalletServiceDelegate* delegate);
+                 PrefService* local_state);
   ~KeyringService() override;
+
+  void SetDelegate(BraveWalletServiceDelegate* delegate);
 
   void Bind(mojo::PendingReceiver<mojom::KeyringService> receiver);
 
@@ -220,7 +221,6 @@ class KeyringService : public mojom::KeyringService {
 
   void AddObserver(
       ::mojo::PendingRemote<mojom::KeyringServiceObserver> observer) override;
-  void SetDelegateForTesting(BraveWalletServiceDelegate* delegate);
   void NotifyUserInteraction() override;
   void GetAllAccounts(GetAllAccountsCallback callback) override;
   mojom::AllAccountsInfoPtr GetAllAccountsSync();

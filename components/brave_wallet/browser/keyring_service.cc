@@ -1110,12 +1110,10 @@ std::optional<KeyringSeed> MakeSeedFromMnemonic(
 
 KeyringService::KeyringService(JsonRpcService* json_rpc_service,
                                PrefService* profile_prefs,
-                               PrefService* local_state,
-                               BraveWalletServiceDelegate* delegate)
+                               PrefService* local_state)
     : json_rpc_service_(json_rpc_service),
       profile_prefs_(profile_prefs),
-      local_state_(local_state),
-      delegate_(delegate) {
+      local_state_(local_state) {
   DCHECK(profile_prefs);
   DCHECK(local_state);
   auto_lock_timer_ = std::make_unique<base::OneShotTimer>();
@@ -1137,6 +1135,10 @@ KeyringService::KeyringService(JsonRpcService* json_rpc_service,
 
 KeyringService::~KeyringService() {
   auto_lock_timer_.reset();
+}
+
+void KeyringService::SetDelegate(BraveWalletServiceDelegate* delegate) {
+  delegate_ = delegate;
 }
 
 void KeyringService::Bind(
@@ -2720,11 +2722,6 @@ void KeyringService::ResetAutoLockTimer() {
 void KeyringService::AddObserver(
     ::mojo::PendingRemote<mojom::KeyringServiceObserver> observer) {
   observers_.Add(std::move(observer));
-}
-
-void KeyringService::SetDelegateForTesting(
-    BraveWalletServiceDelegate* delegate) {  // IN-TEST
-  delegate_ = delegate;
 }
 
 void KeyringService::NotifyUserInteraction() {
