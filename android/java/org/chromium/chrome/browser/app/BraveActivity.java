@@ -96,6 +96,7 @@ import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.SignDataUnion;
 import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
 import org.chromium.brave_wallet.mojom.TxService;
+import org.chromium.build.annotations.MonotonicNonNull;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveAdFreeCalloutDialogFragment;
 import org.chromium.chrome.browser.BraveConstants;
@@ -144,9 +145,9 @@ import org.chromium.chrome.browser.customtabs.FullScreenCustomTabActivity;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
 import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
-import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.informers.BraveSyncAccountDeletedInformer;
 import org.chromium.chrome.browser.lifetime.ApplicationLifetime;
+import org.chromium.chrome.browser.media.BraveYouTubePictureInPictureController;
 import org.chromium.chrome.browser.misc_metrics.MiscAndroidMetricsConnectionErrorHandler;
 import org.chromium.chrome.browser.misc_metrics.MiscAndroidMetricsFactory;
 import org.chromium.chrome.browser.multiwindow.BraveMultiWindowUtils;
@@ -224,7 +225,6 @@ import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.chrome.browser.vpn.wireguard.WireguardConfigUtils;
 import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.promo.SearchWidgetPromoPanel;
-import org.chromium.chrome.browser.youtube_script_injector.BraveYouTubeScriptInjectorNativeHelper;
 import org.chromium.components.browser_ui.settings.SettingsNavigation;
 import org.chromium.components.browser_ui.util.motion.MotionEventInfo;
 import org.chromium.components.embedder_support.util.UrlConstants;
@@ -237,7 +237,6 @@ import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.content_public.browser.LoadUrlParams;
-import org.chromium.content_public.browser.MediaSession;
 import org.chromium.content_public.browser.WebContents;
 import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
@@ -292,8 +291,6 @@ public abstract class BraveActivity extends ChromeActivity
     public static final String OPEN_URL = "open_url";
     public static final String BRAVE_WEBCOMPAT_INFO_WIKI_URL =
             "https://github.com/brave/brave-browser/wiki/Web-compatibility-reports";
-    private static final String KEY_RESUME_MEDIA_SESSION =
-            "org.chromium.chrome.browser.app.KEY_RESUME_MEDIA_SESSION";
 
     private static final int DAYS_4 = 4;
     private static final int DAYS_7 = 7;
@@ -348,9 +345,11 @@ public abstract class BraveActivity extends ChromeActivity
     private AppUpdateManager mAppUpdateManager;
     private boolean mWalletBadgeVisible;
     private boolean mSpoofCustomTab;
-    // Boolean flag that indicates if the media session must be resumed
-    // when switching in picture-in-picture mode.
-    private boolean mResumeMediaSession;
+
+    // Owns YouTube Picture-in-Picture session state and lifecycle.
+    // Lazily created the first time a hook needs it; never null after first access.
+    @MonotonicNonNull
+    private BraveYouTubePictureInPictureController mYouTubePictureInPictureController;
 
     private View mQuickSearchEnginesView;
 
@@ -370,16 +369,13 @@ public abstract class BraveActivity extends ChromeActivity
     @Override
     protected void onPostCreate() {
         super.onPostCreate();
-        final Bundle savedInstanceState = getSavedInstanceState();
-        if (savedInstanceState != null) {
-            mResumeMediaSession = savedInstanceState.getBoolean(KEY_RESUME_MEDIA_SESSION, false);
-        }
+        getYouTubePictureInPictureController().onPostCreate(getSavedInstanceState());
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBoolean(KEY_RESUME_MEDIA_SESSION, mResumeMediaSession);
+        getYouTubePictureInPictureController().onSaveInstanceState(outState);
     }
 
     @Override
@@ -446,6 +442,8 @@ public abstract class BraveActivity extends ChromeActivity
                 mMiscAndroidMetrics.recordIntentUrl(resumeIntent.getData().toString());
             }
         }
+
+        getYouTubePictureInPictureController().onResume();
     }
 
     @Override
@@ -597,6 +595,7 @@ public abstract class BraveActivity extends ChromeActivity
         if (mAppUpdateManager != null) {
             mAppUpdateManager.unregisterListener(mInstallStateUpdatedListener);
         }
+        getYouTubePictureInPictureController().onDestroy();
         super.onDestroyInternal();
         cleanUpWalletNativeServices();
         cleanUpMiscAndroidMetrics();
@@ -605,40 +604,27 @@ public abstract class BraveActivity extends ChromeActivity
     @Override
     public void onPictureInPictureModeChanged(boolean inPicture, Configuration newConfig) {
         super.onPictureInPictureModeChanged(inPicture, newConfig);
-        if (mResumeMediaSession) {
-            mResumeMediaSession = false;
-            MediaSession mediaSession = MediaSession.fromWebContents(getCurrentWebContents());
-            if (mediaSession != null) {
-                mediaSession.resume();
+        BraveYouTubePictureInPictureController controller = getYouTubePictureInPictureController();
+        if (inPicture) {
+            if (controller.onEnterPictureInPictureMode()) {
+                // Adopting the same workaround adopted upstream, to check the full implementation
+                // see FullscreenVideoPictureInPictureController class.
+                // Post a delayed handler to update the Pip status, once things have had some
+                // time to settle. When switching into fullscreen mode sometimes the transition is
+                // called before relayout has happened, causing the source rectangle for the Pip
+                // transition to be wrong. This causes the Pip window to look like it moves to the
+                // wrong part of the screen and partially clipped before snapping to its normal
+                // place.
+                PostTask.postDelayedTask(
+                        TaskTraits.UI_BEST_EFFORT,
+                        (Runnable)
+                                () ->
+                                        setPictureInPictureParams(
+                                                new PictureInPictureParams.Builder().build()),
+                        PIP_UPDATE_DELAY_MS);
             }
-            // Adopting the same workaround adopted upstream, to check the full implementation
-            // see FullscreenVideoPictureInPictureController class.
-            // Post a delayed handler to update the Pip status, once things have had some
-            // time to settle. When switching into fullscreen mode sometimes the transition is
-            // called before relayout has happened, causing the source rectangle for the Pip
-            // transition to be wrong. This causes the Pip window to look like it moves to the
-            // wrong part of the screen and partially clipped before snapping to its normal place.
-            PostTask.postDelayedTask(
-                    TaskTraits.UI_BEST_EFFORT,
-                    (Runnable)
-                            () ->
-                                    setPictureInPictureParams(
-                                            new PictureInPictureParams.Builder().build()),
-                    PIP_UPDATE_DELAY_MS);
-        }
-        if (!inPicture
-                && getCurrentWebContents() != null
-                && BraveYouTubeScriptInjectorNativeHelper.isPictureInPictureAvailable(
-                        getCurrentWebContents())) {
-            // PiP has been dismissed when watching a YT video, then pause it.
-            MediaSession mediaSession = MediaSession.fromWebContents(getCurrentWebContents());
-            if (mediaSession != null) {
-                mediaSession.suspend();
-            }
-            FullscreenManager fullscreenManager = getFullscreenManager();
-            if (fullscreenManager.getPersistentFullscreenMode()) {
-                fullscreenManager.exitPersistentFullscreenMode();
-            }
+        } else {
+            controller.onExitPictureInPictureMode();
         }
     }
 
@@ -2334,11 +2320,45 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     /**
-     * Sets a flag to resume the currently active media session when entering picture-in-picture
-     * mode, so the user won't have to manually resume the video after the transition.
+     * @see BraveYouTubePictureInPictureController#onSessionRequested
      */
-    public void resumeMediaSession(final boolean resume) {
-        mResumeMediaSession = resume;
+    public void onYouTubePictureInPictureRequested(final WebContents webContents) {
+        getYouTubePictureInPictureController().onSessionRequested(webContents);
+    }
+
+    /**
+     * @see BraveYouTubePictureInPictureController#onSessionEnterFailed
+     */
+    public void onYouTubePictureInPictureEnterFailed() {
+        getYouTubePictureInPictureController().onSessionEnterFailed();
+    }
+
+    /**
+     * @see BraveYouTubePictureInPictureController#isActive
+     */
+    public boolean isYouTubePictureInPictureActive() {
+        return getYouTubePictureInPictureController().isActive();
+    }
+
+    /**
+     * @see BraveYouTubePictureInPictureController#onFullscreenInterrupted
+     */
+    public void onYouTubePictureInPictureFullscreenInterrupted() {
+        getYouTubePictureInPictureController().onFullscreenInterrupted();
+    }
+
+    /**
+     * @see BraveYouTubePictureInPictureController#onNewTabDuringPictureInPicture
+     */
+    public void onYouTubePictureInPictureNewTab() {
+        getYouTubePictureInPictureController().onNewTabDuringPictureInPicture();
+    }
+
+    private BraveYouTubePictureInPictureController getYouTubePictureInPictureController() {
+        if (mYouTubePictureInPictureController == null) {
+            mYouTubePictureInPictureController = new BraveYouTubePictureInPictureController(this);
+        }
+        return mYouTubePictureInPictureController;
     }
 
     public static ChromeTabbedActivity getChromeTabbedActivity() {

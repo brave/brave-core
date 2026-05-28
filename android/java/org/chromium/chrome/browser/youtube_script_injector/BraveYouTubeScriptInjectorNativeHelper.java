@@ -15,6 +15,7 @@ import org.jni_zero.NativeMethods;
 import org.chromium.base.Log;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.media.PictureInPicture;
 import org.chromium.content_public.browser.WebContents;
 import org.chromium.ui.base.WindowAndroid;
 
@@ -28,6 +29,10 @@ public class BraveYouTubeScriptInjectorNativeHelper {
 
     public static void setFullscreen(WebContents webContents) {
         BraveYouTubeScriptInjectorNativeHelperJni.get().setFullscreen(webContents);
+    }
+
+    public static void exitFullscreen(WebContents webContents) {
+        BraveYouTubeScriptInjectorNativeHelperJni.get().exitFullscreen(webContents);
     }
 
     public static boolean hasFullscreenBeenRequested(WebContents webContents) {
@@ -53,15 +58,25 @@ public class BraveYouTubeScriptInjectorNativeHelper {
             if (activity == null || activity.isChangingConfigurations() || activity.isFinishing()) {
                 return;
             }
+            // Mirror the toolbar icon's gate: skip when Picture-in-Picture is unavailable on
+            // this device. Covers SDK < R (the framework crash documented as b/143784148), the
+            // FEATURE_PICTURE_IN_PICTURE package check, and the AppOps user toggle.
+            if (!PictureInPicture.isEnabled(activity)) {
+                return;
+            }
             if (activity instanceof final BraveActivity braveActivity) {
                 // Resume the media session when the transition completes.
-                braveActivity.resumeMediaSession(true);
+                braveActivity.onYouTubePictureInPictureRequested(webContents);
                 try {
-                    braveActivity.enterPictureInPictureMode(
-                            new PictureInPictureParams.Builder().build());
+                    boolean entered =
+                            braveActivity.enterPictureInPictureMode(
+                                    new PictureInPictureParams.Builder().build());
+                    if (!entered) {
+                        braveActivity.onYouTubePictureInPictureEnterFailed();
+                    }
                 } catch (IllegalStateException | IllegalArgumentException e) {
                     Log.e(TAG, "Error entering picture in picture mode.", e);
-                    braveActivity.resumeMediaSession(false);
+                    braveActivity.onYouTubePictureInPictureEnterFailed();
                 }
             }
         }
@@ -71,8 +86,10 @@ public class BraveYouTubeScriptInjectorNativeHelper {
      * @noinspection unused
      */
     @NativeMethods
-    interface Natives {
+    public interface Natives {
         void setFullscreen(WebContents webContents);
+
+        void exitFullscreen(WebContents webContents);
 
         boolean hasFullscreenBeenRequested(WebContents webContents);
 

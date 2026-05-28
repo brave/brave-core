@@ -5,9 +5,11 @@
 
 package org.chromium.components.browser_ui.media;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.CommandLine;
@@ -19,8 +21,10 @@ import org.chromium.content_public.browser.WebContents;
 import org.chromium.services.media_session.MediaImage;
 import org.chromium.services.media_session.MediaMetadata;
 import org.chromium.services.media_session.MediaPosition;
+import org.chromium.ui.base.WindowAndroid;
 import org.chromium.url.GURL;
 
+import java.lang.ref.WeakReference;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -36,6 +40,52 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
                     "m.youtube.com",
                     "youtube.com",
                     "open.spotify.com");
+
+    // Tracks the WebContents that the Brave YouTube Picture-in-Picture controller has registered
+    // as its active session, so the suppression logic in this helper can distinguish a real
+    // Brave-managed session from any other YouTube tab whose hosting Activity happens to be in
+    // PiP. A single static slot is sufficient because Android allows at most one PiP window per
+    // device at a time.
+    private static @Nullable WeakReference<WebContents> sYouTubePictureInPictureWebContents;
+
+    public static void setYouTubePictureInPictureWebContents(
+            @Nullable final WebContents webContents) {
+        sYouTubePictureInPictureWebContents =
+                webContents == null ? null : new WeakReference<>(webContents);
+    }
+
+    public static void clearYouTubePictureInPictureWebContents(
+            @Nullable final WebContents webContents) {
+        if (webContents == null) {
+            sYouTubePictureInPictureWebContents = null;
+            return;
+        }
+
+        if (sYouTubePictureInPictureWebContents == null) {
+            return;
+        }
+
+        final WebContents pictureInPictureWebContents = sYouTubePictureInPictureWebContents.get();
+        if (pictureInPictureWebContents == null
+                || pictureInPictureWebContents == webContents
+                || pictureInPictureWebContents.isDestroyed()) {
+            sYouTubePictureInPictureWebContents = null;
+        }
+    }
+
+    public static @Nullable WebContents getYouTubePictureInPictureWebContents() {
+        if (sYouTubePictureInPictureWebContents == null) {
+            return null;
+        }
+
+        final WebContents pictureInPictureWebContents = sYouTubePictureInPictureWebContents.get();
+        if (pictureInPictureWebContents == null || pictureInPictureWebContents.isDestroyed()) {
+            sYouTubePictureInPictureWebContents = null;
+            return null;
+        }
+
+        return pictureInPictureWebContents;
+    }
 
     public static boolean isBraveTalk(WebContents webContents) {
         if (webContents == null) {
@@ -61,15 +111,24 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
     }
 
     private boolean shouldSuppressMediaPause() {
+        // Compute the YouTube classification once and pass it to the
+        // YT-specific predicates instead of having each one re-parse the URL.
         WebContents webContents =
                 (WebContents)
                         BraveReflectionUtil.getField(
                                 MediaSessionHelper.class, "mWebContents", this);
+        if (isBraveTalk(webContents)) {
+            return true;
+        }
 
-        return isBraveTalk(webContents) || isBackgroundVideo(webContents);
+        if (!isYouTube(webContents)) {
+            return false;
+        }
+        return isBackgroundVideo() || isYouTubePictureInPicture(webContents);
     }
 
-    private boolean isBackgroundPlaybackHost(WebContents webContents) {
+    @VisibleForTesting
+    static boolean isYouTube(WebContents webContents) {
         if (webContents == null) return false;
         GURL pageUrl = webContents.getLastCommittedUrl();
         return pageUrl.isValid()
@@ -77,7 +136,8 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
                 && sBackgroundPlaybackHosts.contains(pageUrl.getHost());
     }
 
-    private boolean isBackgroundVideo(WebContents webContents) {
+    @VisibleForTesting
+    boolean isBackgroundVideo() {
         // We check the command line switch rather than reading the preference directly because
         // this class is in the components layer and cannot access Profile or UserPrefs (chrome
         // layer) without causing R8 module boundary violations in the AAB build. The switch is
@@ -85,10 +145,36 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
         // feature and preference are both enabled, and the app restarts whenever the preference
         // changes, so the switch reliably reflects the current preference state.
         // In C++ this switch is defined as switches::kDisableBackgroundMediaSuspend.
-        boolean enabled =
-                CommandLine.getInstance().hasSwitch("disable-background-media-suspend")
-                        && isBackgroundPlaybackHost(webContents);
-        return enabled;
+        return CommandLine.getInstance().hasSwitch("disable-background-media-suspend");
+    }
+
+    @VisibleForTesting
+    boolean isYouTubePictureInPicture(WebContents webContents) {
+        if (!isYouTubePictureInPictureWebContents(webContents)) {
+            return false;
+        }
+
+        final WindowAndroid windowAndroid = webContents.getTopLevelNativeWindow();
+        if (windowAndroid == null) {
+            return false;
+        }
+
+        final WeakReference<Activity> activityRef = windowAndroid.getActivity();
+        if (activityRef == null) {
+            return false;
+        }
+
+        final Activity activity = activityRef.get();
+        return activity != null && activity.isInPictureInPictureMode();
+    }
+
+    @VisibleForTesting
+    static boolean isYouTubePictureInPictureWebContents(@Nullable WebContents webContents) {
+        if (webContents == null || webContents.isDestroyed()) {
+            return false;
+        }
+
+        return getYouTubePictureInPictureWebContents() == webContents;
     }
 
     @Override
@@ -130,7 +216,7 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
                                 mediaSession);
         assert mediaSessionObserver != null;
 
-        if (!shouldSuppressMediaPause()) {
+        if (!(mediaSession instanceof MediaSessionImpl)) {
             return mediaSessionObserver;
         }
         ((MediaSessionImpl) mediaSession).removeObserver(mediaSessionObserver);
@@ -142,9 +228,13 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
 
             @Override
             public void mediaSessionStateChanged(boolean isControllable, boolean isPaused) {
-                if (!isControllable) {
+                // Keep the Android media controls alive for Brave Talk, background YouTube audio,
+                // and the active Brave-managed YouTube PiP session when the page transiently
+                // reports itself as not controllable. Preserve the real paused state so SystemUI
+                // shows the correct action and forwards the right command after wake/restore
+                // transitions.
+                if (!isControllable && shouldSuppressMediaPause()) {
                     isControllable = true;
-                    isPaused = false;
                 }
                 mediaSessionObserver.mediaSessionStateChanged(isControllable, isPaused);
             }

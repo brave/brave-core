@@ -8,6 +8,7 @@
 #include <memory>
 #include <string>
 
+#include "base/android/android_info.h"
 #include "base/feature_list.h"
 #include "base/supports_user_data.h"
 #include "brave/browser/android/youtube_script_injector/brave_youtube_script_injector_native_helper.h"
@@ -95,90 +96,193 @@ constexpr char16_t kYoutubePictureInPictureSupport[] =
 }());
 )";
 
+// Keep selector lists in sync so the exit path can target whichever fullscreen
+// button the YouTube player variant rendered on entry.
+//
+// The script tries to put the YouTube player into fullscreen. On a cold load
+// the player and its controls hydrate asynchronously, so the fullscreen button
+// may not be present in the DOM at injection time. Rather than poll on a
+// timer, we make a couple of synchronous attempts and then wait for a
+// MutationObserver to fire when the button is inserted. A single hard timeout
+// prevents the observer from leaking on broken pages.
 constexpr char16_t kYoutubeFullscreen[] =
     uR"(
 (function() {
   return new Promise((resolve) => {
-    const videoPlaySelector = "video.html5-main-video";
-    const fullscreenSelector = "button.fullscreen-icon";
-    function triggerFullscreen() {
-      // Check if the video is not in fullscreen mode already.
-      if (!document.fullscreenElement) {
-        var fullscreenBtn = document.querySelector(fullscreenSelector);
-        var videoPlayer = document.querySelector(videoPlaySelector);
-        // Check if fullscreen button and video are available.
-        if (fullscreenBtn && videoPlayer) {
-         requestFullscreen(fullscreenBtn, resolve, videoPlayer);
-        } else {
-          // When fullscreen button is not available
-          // clicking the movie player resume the UI.
-          var playerContainer = document.getElementById("player-container-id");
-          if (videoPlayer && playerContainer) {
-            let observerTimeout;
-            // Create a MutationObserver to watch for changes in the DOM.
-            const observer = new MutationObserver(
-            (_mutationsList, observer) => {
-              var fullscreenBtn = document.querySelector(fullscreenSelector);
-              var videoPlayer = document.querySelector(videoPlaySelector);
-              if (fullscreenBtn && videoPlayer) {
-                clearTimeout(observerTimeout);
-                observer.disconnect()
-                requestFullscreen(fullscreenBtn, resolve, videoPlayer);
-              }
-            });
-            // Auto-disconnect the observer after 30 seconds,
-            // a reasonable duration picked after some testing.
-            observerTimeout = setTimeout(() => {
-              observer.disconnect();
-              resolve('timeout');
-            }, 30000);
-            // Start observing the DOM.
-            observer.observe(playerContainer, {
-              childList: true, subtree: true
-            });
-            // Make sure the player is in focus or responsive.
-            videoPlayer.click();
-          } else {
-            // No fullscreen elements found, resolve immediately
-            resolve('no_elements');
-          }
+    const videoSelector = "video.html5-main-video";
+    const fullscreenSelector = "button.fullscreen-icon, "
+        + "button.ytp-fullscreen-button, .ytp-fullscreen-button";
+    const playerSelector = "#movie_player, .html5-video-player";
+    const playerContainerSelector = "#player-container-id, ytm-player, #player";
+    // Hard ceiling so the MutationObserver does not outlive a broken page.
+    // Healthy loads resolve in well under a second 30 seconds is generous
+    // enough to absorb cold-cache loads on slow networks.
+    const TIMEOUT_MS = 30000;
+
+    let resolved = false;
+    function resolveOnce(value) {
+      if (resolved) return;
+      resolved = true;
+      resolve(value);
+    }
+
+    function isFullscreen() {
+      const player = document.querySelector(playerSelector);
+      return !!document.fullscreenElement || !!player?.isFullscreen?.();
+    }
+
+    // Click YouTube's fullscreen button if both it and the video are present.
+    // Returns true if the promise was resolved (fullscreen triggered or
+    // already in fullscreen) and the caller should stop trying.
+    function attempt() {
+      if (resolved) return true;
+      if (isFullscreen()) {
+        resolveOnce('already_fullscreen');
+        return true;
+      }
+      const btn = document.querySelector(fullscreenSelector);
+      const video = document.querySelector(videoSelector);
+      if (btn && video) {
+        if (video.readyState >= 3) {
+          // Video is decodable, tap it to give the player input focus before
+          // the button click is dispatched.
+          video.click();
         }
-      } else {
-        // Already in fullscreen, resolve immediately
-        resolve('already_fullscreen');
+        btn.click();
+        resolveOnce('fullscreen_triggered');
+        return true;
+      }
+      return false;
+    }
+
+    function tryYoutubeApi() {
+      // Bail if the player or document already reports fullscreen.
+      // toggleFullscreen() is YouTube's undocumented API; calling it
+      // from a fullscreen state would flip us back out, which on the
+      // entry path would silently land us in PiP with no fullscreen
+      // content. The classList check alone is not enough: the player
+      // can be in document level fullscreen without the ytp-fullscreen
+      // class set.
+      if (isFullscreen()) {
+        return false;
+      }
+      const player = document.querySelector(playerSelector);
+      if (!player?.toggleFullscreen
+          || player.classList.contains('ytp-fullscreen')) {
+        return false;
+      }
+      // Use YouTube's own toggle. Do not also call requestFullscreen on the
+      // same element as the two APIs race on Android.
+      try {
+        player.toggleFullscreen();
+        return true;
+      } catch (e) {
+        return false;
       }
     }
-    // Attempts to request fullscreen mode for the given movie player element.
-    // Resolves with 'fullscreen_triggered' if successful, or
-    // 'requestFullscreen_failed' if the request fails.
-    function requestFullscreen(fullscreenBtn, resolve, videoPlayer) {
-      if (videoPlayer.readyState >= 3) {
-        videoPlayer.click();
-        clickFullscreenButton(fullscreenBtn, resolve);
-      } else {
-        videoPlayer.addEventListener("canplay", () => {
-          videoPlayer.click();
-          clickFullscreenButton(fullscreenBtn, resolve);
-        }, { once: true });
+
+    function tryElementFullscreen() {
+      const target = document.querySelector(playerSelector)
+          || document.querySelector(playerContainerSelector)
+          || document.querySelector(videoSelector);
+      if (!target?.requestFullscreen) return false;
+      try {
+        const result = target.requestFullscreen();
+        if (result?.then) {
+          result
+              .then(() => resolveOnce('fullscreen_triggered'))
+              .catch(() => {});
+        } else {
+          resolveOnce('fullscreen_triggered');
+        }
+        return true;
+      } catch (e) {
+        return false;
       }
     }
-    function clickFullscreenButton(fullscreenBtn, resolve) {
-      if (fullscreenBtn && !document.hidden) {
-        fullscreenBtn.click();
-        resolve('fullscreen_triggered');
-      } else {
-        resolve('requestFullscreen_failed');
-      }
+
+    function start() {
+      // Fast path: button is already in the tree.
+      if (attempt()) return;
+
+      // Tap to reveal controls in case the button is hidden behind a YouTube
+      // overlay that only renders on first interaction.
+      (document.querySelector(videoSelector)
+          || document.querySelector(playerSelector)
+          || document.querySelector(playerContainerSelector))?.click();
+      if (attempt()) return;
+
+      // Fallbacks if the button never materialises but the player exposes its
+      // own fullscreen API or supports the standard requestFullscreen call.
+      if (tryYoutubeApi() || tryElementFullscreen()) return;
+
+      // Watch the player subtree for the button to be inserted or revealed
+      // (e.g. via a class/style change). The callback re-runs attempt() on
+      // every mutation - a cheap pair of querySelector calls.
+      const observerRoot = document.querySelector(playerContainerSelector)
+          || document.body;
+      const observer = new MutationObserver(() => {
+        if (resolved) {
+          observer.disconnect();
+          return;
+        }
+        if (attempt()) {
+          observer.disconnect();
+        }
+      });
+      observer.observe(observerRoot, { childList: true, subtree: true });
+
+      setTimeout(() => {
+        observer.disconnect();
+        resolveOnce('timeout');
+      }, TIMEOUT_MS);
     }
+
     if (document.readyState === "loading") {
-      // Loading hasn't finished yet.
-      document.addEventListener("DOMContentLoaded",
-      triggerFullscreen, { once: true });
+      document.addEventListener("DOMContentLoaded", start, { once: true });
     } else {
-      // `DOMContentLoaded` has already fired.
-      triggerFullscreen();
+      start();
     }
   });
+}());
+)";
+
+constexpr char16_t kYoutubeExitFullscreen[] =
+    uR"(
+(function() {
+  // Mirror the entry-side selectors so we can fall back to whichever
+  // fullscreen button this YouTube variant is rendering.
+  const fullscreenSelector = "button.fullscreen-icon, "
+      + "button.ytp-fullscreen-button, .ytp-fullscreen-button";
+  const playerSelector = "#movie_player, .html5-video-player";
+  const player = document.querySelector(playerSelector);
+  const isPlayerFullscreen = player?.isFullscreen?.() === true;
+
+  if (document.fullscreenElement && document.exitFullscreen) {
+    document.exitFullscreen().catch(() => {
+      const fullscreenBtn = document.querySelector(fullscreenSelector);
+      if (fullscreenBtn && document.fullscreenElement) {
+        fullscreenBtn.click();
+      }
+    });
+    return;
+  }
+
+  if (isPlayerFullscreen && player?.toggleFullscreen) {
+    try {
+      player.toggleFullscreen();
+      return;
+    } catch (e) {
+      // Fall through to the button-based fallback below.
+    }
+  }
+
+  if (isPlayerFullscreen) {
+    const fullscreenBtn = document.querySelector(fullscreenSelector);
+    if (fullscreenBtn) {
+      fullscreenBtn.click();
+    }
+  }
 }());
 )";
 
@@ -189,6 +293,16 @@ bool IsBackgroundVideoPlaybackEnabled(content::WebContents* contents) {
   return (base::FeatureList::IsEnabled(
               ::preferences::features::kBraveBackgroundVideoPlayback) &&
           prefs->GetBoolean(kBackgroundVideoPlaybackEnabled));
+}
+
+// Mirrors the SDK gate that Java's PictureInPicture.isEnabled() applies before
+// any PiP entry attempt (see
+// chrome/android/java/src/.../media/PictureInPicture.java). PiP is
+// hard-disabled on Android < R to dodge a framework crash when entering PiP
+// immediately after exiting it.
+bool IsAndroidPictureInPictureSupported() {
+  return base::android::android_info::sdk_int() >=
+         base::android::android_info::SDK_VERSION_R;
 }
 
 }  // namespace
@@ -236,7 +350,8 @@ void YouTubeScriptInjectorTabHelper::PrimaryMainDocumentElementAvailable() {
         kYoutubeBackgroundPlayback, base::NullCallback());
   }
   if (base::FeatureList::IsEnabled(
-          ::preferences::features::kBravePictureInPictureForYouTubeVideos)) {
+          ::preferences::features::kBravePictureInPictureForYouTubeVideos) &&
+      IsAndroidPictureInPictureSupported()) {
     contents->GetPrimaryMainFrame()->ExecuteJavaScript(
         kYoutubePictureInPictureSupport, base::NullCallback());
   }
@@ -246,7 +361,8 @@ void YouTubeScriptInjectorTabHelper::MediaEffectivelyFullscreenChanged(
     bool is_fullscreen) {
   if (is_fullscreen && HasFullscreenBeenRequested()) {
     SetFullscreenRequested(false);
-    if (web_contents()->GetVisibility() == content::Visibility::VISIBLE) {
+    if (web_contents()->GetVisibility() == content::Visibility::VISIBLE &&
+        IsAndroidPictureInPictureSupported()) {
       ::youtube_script_injector::EnterPictureInPicture(web_contents());
     }
   }
@@ -254,8 +370,13 @@ void YouTubeScriptInjectorTabHelper::MediaEffectivelyFullscreenChanged(
 
 void YouTubeScriptInjectorTabHelper::MaybeSetFullscreen() {
   content::RenderFrameHost* rfh = web_contents()->GetPrimaryMainFrame();
-  // Check if fullscreen has already been requested for this page.
-  if (!rfh || !rfh->IsRenderFrameLive() || HasFullscreenBeenRequested()) {
+  // Check if fullscreen has already been requested for this page. The
+  // IsYouTubeDomain guard closes a navigation race: callers gate at
+  // toolbar-click time, but the page may commit a cross-origin navigation
+  // before this Mojo IPC reaches the renderer, which would land the script in
+  // a non-YouTube document.
+  if (!rfh || !rfh->IsRenderFrameLive() || HasFullscreenBeenRequested() ||
+      !IsYouTubeDomain()) {
     return;
   }
 
@@ -269,6 +390,25 @@ void YouTubeScriptInjectorTabHelper::MaybeSetFullscreen() {
       base::BindOnce(
           &YouTubeScriptInjectorTabHelper::OnFullscreenScriptComplete,
           weak_factory_.GetWeakPtr(), rfh->GetGlobalFrameToken()));
+}
+
+void YouTubeScriptInjectorTabHelper::MaybeExitFullscreen() {
+  content::RenderFrameHost* rfh = web_contents()->GetPrimaryMainFrame();
+  // The exit script begins with document.exitFullscreen(), which is observable
+  // on any page currently in DOM fullscreen. The controller treats this
+  // WebContents as YouTube based on a check made when the session started, but
+  // a navigation can commit before this IPC reaches the renderer. Verify the
+  // domain again here so the script never lands on a document that has since
+  // changed origins.
+  if (!rfh || !rfh->IsRenderFrameLive() || !IsYouTubeDomain()) {
+    return;
+  }
+
+  EnsureBound(rfh);
+  script_injector_remote_->RequestAsyncExecuteScript(
+      ISOLATED_WORLD_ID_BRAVE_INTERNAL, kYoutubeExitFullscreen,
+      blink::mojom::UserActivationOption::kActivate,
+      blink::mojom::PromiseResultOption::kDoNotWait, base::NullCallback());
 }
 
 bool YouTubeScriptInjectorTabHelper::IsYouTubeDomain(bool mobileOnly) const {
@@ -378,9 +518,19 @@ void YouTubeScriptInjectorTabHelper::OnFullscreenScriptComplete(
 }
 
 bool YouTubeScriptInjectorTabHelper::IsPictureInPictureAvailable() const {
+  if (!web_contents()) {
+    return false;
+  }
+  // Reject inner WebContents (guest views, fenced frames, portals). PiP must be
+  // driven from the outermost tab WebContents; offering it on an embedded view
+  // would target the wrong frame tree and bypass the tab level lifecycle the
+  // controller depends on.
+  if (web_contents()->GetOuterWebContents() != nullptr) {
+    return false;
+  }
   return base::FeatureList::IsEnabled(
              preferences::features::kBravePictureInPictureForYouTubeVideos) &&
-         IsYouTubeVideo(true) && web_contents() &&
+         IsYouTubeVideo(true) &&
          web_contents()->IsDocumentOnLoadCompletedInPrimaryMainFrame();
 }
 

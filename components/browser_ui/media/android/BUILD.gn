@@ -15,6 +15,7 @@ android_library("java") {
     "//content/public/android:content_java",
     "//services/media_session/public/cpp/android:media_session_java",
     "//third_party/androidx:androidx_annotation_annotation_java",
+    "//ui/android:ui_no_recycler_view_java",
     "//url:gurl_java",
   ]
 }

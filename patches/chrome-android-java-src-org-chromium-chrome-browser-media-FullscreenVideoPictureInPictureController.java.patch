@@ -1,0 +1,47 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController.java b/chrome/android/java/src/org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController.java
+index aa4753242c00d57dc3702d3e8f65954e43aa9085..d64e5a3231f364435747107fad581049d3b60979 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController.java
+@@ -270,6 +270,8 @@ public class FullscreenVideoPictureInPictureController {
+ 
+         final WebContents webContents = getWebContents();
+         assert webContents != null;
++        BraveFullscreenVideoPictureInPictureController.class.cast(this)
++                .onYouTubePictureInPictureAttempt(mActivity, webContents);
+ 
+         Rect bounds = getVideoBounds(webContents, mActivity);
+         PictureInPictureParams.Builder builder = new PictureInPictureParams.Builder();
+@@ -281,9 +283,15 @@ public class FullscreenVideoPictureInPictureController {
+         }
+ 
+         try {
+-            if (!mActivity.enterPictureInPictureMode(builder.build())) return;
++            if (!mActivity.enterPictureInPictureMode(builder.build())) {
++                BraveFullscreenVideoPictureInPictureController.class.cast(this)
++                        .onYouTubePictureInPictureEnterFailed();
++                return;
++            }
+         } catch (IllegalStateException | IllegalArgumentException e) {
+             Log.e(TAG, "Error entering PiP with bounds %s", bounds, e);
++            BraveFullscreenVideoPictureInPictureController.class.cast(this)
++                    .onYouTubePictureInPictureEnterFailed();
+             return;
+         }
+     }
+@@ -606,6 +614,16 @@ public class FullscreenVideoPictureInPictureController {
+      * This will also update our auto-PiP preference with the framework, if it's changed.
+      */
+     private void dismissActivityIfNeeded(Activity activity, @MetricsEndReason int reason) {
++        if (BraveFullscreenVideoPictureInPictureController.class.cast(this)
++                .maybeHandleDismissActivityForYouTubePictureInPicture(
++                        activity,
++                        reason == MetricsEndReason.START,
++                        reason == MetricsEndReason.RESUME,
++                        reason == MetricsEndReason.LEFT_FULLSCREEN,
++                        reason == MetricsEndReason.WEB_CONTENTS_LEFT_FULLSCREEN,
++                        reason == MetricsEndReason.NEW_TAB)) {
++            return;
++        }
+         // Something interesting happened -- make sure we've updated our preference for auto-PiP
+         // with the framework, if applicable.
+         Log.i(TAG, "Dismiss activity with reason " + reason);
