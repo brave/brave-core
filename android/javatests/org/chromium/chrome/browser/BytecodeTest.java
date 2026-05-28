@@ -1508,6 +1508,7 @@ public class BytecodeTest {
                         int.class,
                         NonNullObservableSupplier.class,
                         MonotonicObservableSupplier.class,
+                        NullableObservableSupplier.class,
                         Supplier.class));
         Assert.assertTrue(
                 constructorsMatch(
