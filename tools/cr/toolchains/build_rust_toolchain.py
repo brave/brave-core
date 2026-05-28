@@ -12,7 +12,7 @@ To use this straight from Github just call:
 
 ```sh
 curl -sL \
-    https://raw.githubusercontent.com/brave/brave-core/refs/heads/master/tools/cr/toolchain/build_rust_toolchain.py \
+    https://raw.githubusercontent.com/brave/brave-core/refs/heads/master/tools/cr/toolchains/build_rust_toolchain.py \
     | python3 - \
         --out-dir=./out/ \
         --chromium-src=~/dev/chromium/src/
@@ -514,11 +514,7 @@ class ToolchainBuilder:
                     'FETCH_HEAD',
                     cwd=self.chromium_src)
 
-        _check_call('gclient',
-                    'sync',
-                    '--force',
-                    '-D',
-                    cwd=self.chromium_src)
+        _check_call('gclient', 'sync', '--force', '-D', cwd=self.chromium_src)
         _check_call('git',
                     'log',
                     '-1',

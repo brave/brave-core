@@ -2273,7 +2273,7 @@ class UpdateXcodeToolchain(Task):
     Xcode toolchain.
     """
 
-    # Filename pattern emitted by tools/cr/toolchain/build_xcode_toolchain.py.
+    # Filename pattern emitted by tools/cr/toolchains/build_xcode_toolchain.py.
     # The six dash-separated tokens map 1:1 onto the six constants in
     # `HERMETIC_XCODE_SCRIPT`.
     _TOOLCHAIN_URL_RE = re.compile(
@@ -2671,7 +2671,7 @@ def main():
     update_xcode_parser.add_argument(
         'url',
         help=
-        'Archive URL emitted by tools/cr/toolchain/build_xcode_toolchain.py '
+        'Archive URL emitted by tools/cr/toolchains/build_xcode_toolchain.py '
         '(filename must follow the xcode-hermetic-toolchain-<...>.tar.gz '
         'pattern).')
     update_xcode_parser.add_argument(
