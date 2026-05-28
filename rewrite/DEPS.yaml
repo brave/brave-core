@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Disable the mac_toolchain hook by neutralising its condition.
+
+      Brave has its own script to download the hermetic toolchain,
+      brave/build/mac/download_hermetic_xcode.py, so it is okay to disable the
+      upstream hook as it causes confusing output to be printed to the user.
+    re_pattern: |-
+      ('name': 'mac_toolchain',.+?'condition':\s*)'checkout_mac or checkout_ios'
+    re_flags: [DOTALL]
+    replace: |-
+      \1'False'
