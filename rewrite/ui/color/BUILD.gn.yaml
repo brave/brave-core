@@ -1,0 +1,38 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Pull in the variable lists for the Brave additions to
+      `component("color")` and `component("mixers")`.
+
+      Inserted at the top of the file.
+    re_pattern: '(# found in the LICENSE file\.\n\n)'
+    replace: |
+      \1import("//brave/ui/color/sources.gni")
+
+  - description: |
+      Append Brave sources to `component("color")`.
+    re_pattern: '(component\("color"\).*?\bsources\s*=\s*\[.*?\])'
+    re_flags: [DOTALL]
+    replace: '\1\n  sources += brave_ui_color_sources'
+
+  - description: |
+      Append Brave public_deps to `component("color")`.
+    re_pattern: '(component\("color"\).*?\bpublic_deps\s*=\s*\[.*?\])'
+    re_flags: [DOTALL]
+    replace: '\1\n  public_deps += brave_ui_color_public_deps'
+
+  - description: |
+      Append Brave sources to `component("mixers")`.
+    re_pattern: '(component\("mixers"\).*?\bsources\s*=\s*\[.*?\])'
+    re_flags: [DOTALL]
+    replace: '\1\n  sources += brave_ui_color_mixer_sources'
+
+  - description: |
+      Append Brave public_deps to `component("mixers")`.
+    re_pattern: '(component\("mixers"\).*?\bpublic_deps\s*=\s*\[[^\]]*\])'
+    re_flags: [DOTALL]
+    replace: '\1\n  public_deps += brave_ui_color_mixer_public_deps'
