@@ -126,8 +126,6 @@ void TreeTabModel::AddTreeTabNode(tabs::TreeTabNode& node) {
     }
 
     model->pending_add_tree_tab_node_notification_count_for_testing_--;
-    CHECK_GE(model->pending_add_tree_tab_node_notification_count_for_testing_,
-             0);
     if (const tabs::TreeTabNode* node = model->GetNode(id)) {
       model->add_tree_tab_node_callback_list_.Notify(*node);
     }
