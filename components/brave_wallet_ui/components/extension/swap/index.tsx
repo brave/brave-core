@@ -37,7 +37,6 @@ import {
   SwapDetailsDivider,
   SwapAssetContainer,
   SwapAssetAddress,
-  SwapAssetTitle,
   AddressOrb,
   AccountNameText,
   SwapAssetHeader,
@@ -200,7 +199,11 @@ export function SwapBase(props: Props) {
   return (
     <>
       {buyTokenResult && sellTokenResult && buyAmount && sellAmount && (
-        <ExchangeRate>
+        <ExchangeRate
+          textColor='tertiary'
+          variant='small.regular'
+          textAlign='right'
+        >
           1 {sellTokenResult.symbol} ={' '}
           {new Amount(buyAmount)
             .divideByDecimals(buyTokenResult.decimals)
@@ -268,11 +271,14 @@ function SwapAsset(props: SwapAssetProps) {
   return (
     <SwapAssetContainer top={type === 'sell'}>
       <SwapAssetHeader>
-        <SwapAssetTitle>
+        <Text
+          textColor='tertiary'
+          variant='small.regular'
+        >
           {type === 'sell'
             ? getLocale('braveWalletSwapReviewSpend')
             : getLocale('braveWalletSwapReviewReceive')}
-        </SwapAssetTitle>
+        </Text>
         {expectAddress && (
           <SwapAssetAddress>
             {address && orb ? (
@@ -286,7 +292,13 @@ function SwapAsset(props: SwapAssetProps) {
             )}
 
             {address ? (
-              <AccountNameText>{address}</AccountNameText>
+              <AccountNameText
+                textColor='tertiary'
+                variant='xSmall.regular'
+                textAlign='right'
+              >
+                {address}
+              </AccountNameText>
             ) : (
               <LoadingSkeleton width={84} />
             )}
@@ -300,8 +312,7 @@ function SwapAsset(props: SwapAssetProps) {
           gap='8px'
         >
           <Text
-            textSize='22px'
-            isBold={true}
+            variant='heading.h2'
             textColor='success'
           >
             {getLocale('braveWalletOnNetwork').replace(
@@ -358,7 +369,11 @@ function SwapAsset(props: SwapAssetProps) {
             ) : (
               <>
                 <SwapAmountRow>
-                  <SwapAssetAmountSymbol>
+                  <SwapAssetAmountSymbol
+                    textColor='primary'
+                    variant='default.semibold'
+                    isBold={false}
+                  >
                     {new Amount(amount)
                       .divideByDecimals(asset.decimals)
                       .formatAsAsset(6, asset.symbol)}
@@ -375,7 +390,10 @@ function SwapAsset(props: SwapAssetProps) {
                     </LaunchButton>
                   )}
                 </SwapAmountRow>
-                <NetworkDescriptionText>
+                <NetworkDescriptionText
+                  textColor='tertiary'
+                  variant='small.regular'
+                >
                   {networkDescription}
                 </NetworkDescriptionText>
               </>

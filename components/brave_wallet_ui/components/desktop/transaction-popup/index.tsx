@@ -4,13 +4,11 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 
+// Shared Styles
+import { Text } from '../../shared/style'
+
 // Styled Components
-import {
-  StyledWrapper,
-  PopupButton,
-  PopupButtonText,
-  ClickAwayContainer,
-} from './style'
+import { StyledWrapper, PopupButton, ClickAwayContainer } from './style'
 
 interface TransactionPopupItemProps {
   onClick: () => void
@@ -19,7 +17,13 @@ interface TransactionPopupItemProps {
 
 export const TransactionPopupItem = (props: TransactionPopupItemProps) => (
   <PopupButton onClick={props.onClick}>
-    <PopupButtonText>{props.text}</PopupButtonText>
+    <Text
+      textAlign='left'
+      variant='default.semibold'
+      textColor='primary'
+    >
+      {props.text}
+    </Text>
   </PopupButton>
 )
 

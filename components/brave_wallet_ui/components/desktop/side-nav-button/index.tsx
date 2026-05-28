@@ -23,7 +23,12 @@ export class SideNavButton extends React.PureComponent<Props, {}> {
         onClick={onSubmit}
       >
         <ButtonIcon icon={icon} />
-        <ButtonText isSelected={isSelected}>{text}</ButtonText>
+        <ButtonText
+          isSelected={isSelected}
+          variant='default.semibold'
+        >
+          {text}
+        </ButtonText>
       </StyledButton>
     )
   }

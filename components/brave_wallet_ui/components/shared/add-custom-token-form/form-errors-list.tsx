@@ -22,7 +22,16 @@ export const FormErrorsList = ({ errors }: Props) => {
       justifyContent='flex-start'
     >
       {errors.map((err) =>
-        err ? <ErrorText key={err}>{err}</ErrorText> : null,
+        err ? (
+          <ErrorText
+            key={err}
+            textColor='error'
+            variant='small.regular'
+            textAlign='left'
+          >
+            {err}
+          </ErrorText>
+        ) : null,
       )}
     </Column>
   )

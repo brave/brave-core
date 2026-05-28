@@ -7,10 +7,16 @@ import ITheme from 'brave-ui/theme/theme-interface'
 import IThemeWallet from './wallet-theme'
 import defaultTheme from 'brave-ui/theme/brave-default'
 import colors from 'brave-ui/theme/colors'
+import { walletFontFamily } from '../utils/font.utils'
 
 const walletLightTheme: ITheme & IThemeWallet = {
   ...defaultTheme,
   name: 'Wallet Light',
+  fontFamily: {
+    heading: walletFontFamily,
+    body: walletFontFamily,
+    system: walletFontFamily,
+  },
   color: {
     ...defaultTheme.color,
     text: colors.neutral900,

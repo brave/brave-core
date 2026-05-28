@@ -14,7 +14,7 @@ import LeoSegmentedControl, {
 import ClipboardIcon from '../../../../assets/svg-icons/copy-to-clipboard-icon.svg'
 
 // Shared Styles
-import { WalletButton, Row, Column } from '../../../shared/style'
+import { Text, WalletButton, Row, Column } from '../../../shared/style'
 import {
   layoutPanelWidth, //
 } from '../../wallet-page-wrapper/wallet-page-wrapper.style'
@@ -57,13 +57,11 @@ export const QRCodeImage = styled.img`
 `
 
 export const AddressButton = styled(WalletButton)`
+  font: ${leo.font.large.regular};
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: row;
-  font-family: Poppins;
-  font-size: 16px;
-  line-height: 20px;
   letter-spacing: 0.02em;
   color: ${(p) => p.theme.color.text03};
   cursor: pointer;
@@ -95,6 +93,7 @@ export const PrivateKeyWrapper = styled(Column)`
 `
 
 export const PrivateKeyBubble = styled(WalletButton)`
+  font: ${leo.font.default.semibold};
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -107,10 +106,6 @@ export const PrivateKeyBubble = styled(WalletButton)`
   border-radius: 4px;
   margin: 0px;
   word-break: break-all;
-  font-family: Poppins;
-  font-size: 14px;
-  line-height: 22px;
-  font-weight: 600;
   color: ${(p) => p.theme.color.text01};
   outline: none;
   border: none;
@@ -129,11 +124,7 @@ export const ButtonWrapper = styled.div`
   }
 `
 
-export const ErrorText = styled.span`
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.errorText};
+export const ErrorText = styled(Text)`
   margin-bottom: 16px;
 `
 

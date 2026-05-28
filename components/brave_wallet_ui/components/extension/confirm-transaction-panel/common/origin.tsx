@@ -58,7 +58,10 @@ export function Origin(props: Props) {
   return (
     <>
       <FavIcon src={getFaviconSrc(originInfo)} />
-      <URLText>
+      <URLText
+        textColor='secondary'
+        variant='xSmall.regular'
+      >
         <SiteOrigin
           originSpec={originInfo.originSpec}
           eTldPlusOne={originInfo.eTldPlusOne}

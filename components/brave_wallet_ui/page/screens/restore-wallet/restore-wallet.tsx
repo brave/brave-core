@@ -185,8 +185,18 @@ export const RestoreWallet = () => {
       <BackButton onSubmit={onBack} />
 
       <StyledWrapper>
-        <Title>{getLocale('braveWalletRestoreTite')}</Title>
-        <Description>{getLocale('braveWalletRestoreDescription')}</Description>
+        <Title
+          textColor='primary'
+          variant='heading.h3'
+        >
+          {getLocale('braveWalletRestoreTite')}
+        </Title>
+        <Description
+          textColor='secondary'
+          variant='default.regular'
+        >
+          {getLocale('braveWalletRestoreDescription')}
+        </Description>
 
         <FormWrapper>
           <RecoveryPhraseInput
@@ -200,7 +210,12 @@ export const RestoreWallet = () => {
           />
 
           {invalidMnemonic && (
-            <ErrorText>{getLocale('braveWalletRestoreError')}</ErrorText>
+            <ErrorText
+              textColor='error'
+              variant='small.regular'
+            >
+              {getLocale('braveWalletRestoreError')}
+            </ErrorText>
           )}
 
           {recoveryPhrase.split(' ').length === 24 && (
@@ -227,8 +242,17 @@ export const RestoreWallet = () => {
             </Checkbox>
           </CheckboxRow>
 
-          <FormText>{getLocale('braveWalletRestoreFormText')}</FormText>
-          <Description textAlign='left'>
+          <FormText
+            textColor='primary'
+            isBold={true}
+          >
+            {getLocale('braveWalletRestoreFormText')}
+          </FormText>
+          <Description
+            textAlign='left'
+            textColor='secondary'
+            variant='default.regular'
+          >
             {getLocale('braveWalletCreatePasswordDescription')}
           </Description>
           <InputColumn>

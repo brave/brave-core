@@ -27,7 +27,12 @@ export const ActivityPageHeader = (props: Props) => {
       padding='24px 0px'
       justifyContent='space-between'
     >
-      <HeaderTitle>{getLocale('braveWalletActivity')}</HeaderTitle>
+      <HeaderTitle
+        textColor='primary'
+        variant='heading.h1'
+      >
+        {getLocale('braveWalletActivity')}
+      </HeaderTitle>
       <SearchBarWrapper alignItems='flex-start'>
         <SearchBar
           placeholder={getLocale('braveWalletSearchText')}

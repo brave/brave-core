@@ -10,13 +10,11 @@ import { getLocale, formatLocale } from '$web-common/locale'
 // styles
 import {
   ActionButton,
-  Description,
   Heading,
   LoadingRing,
-  RefreshText,
   StyledWrapper,
 } from './auto-discovery-empty-state.styles'
-import { Row, VerticalSpace } from '../../../../../shared/style'
+import { Text, Row, VerticalSpace } from '../../../../../shared/style'
 
 interface Props {
   isRefreshingTokens: boolean
@@ -47,27 +45,41 @@ export const AutoDiscoveryEmptyState = ({
         <>
           <LoadingRing />
           <VerticalSpace space='16px' />
-          <RefreshText>
+          <Text
+            textColor='secondary'
+            variant='default.regular'
+          >
             {getLocale('braveWalletAutoDiscoveryEmptyStateRefresh')}...
-          </RefreshText>
+          </Text>
         </>
       ) : (
         <>
           <Heading>
             {getLocale('braveWalletAutoDiscoveryEmptyStateHeading')}
           </Heading>
-          <Description>
+          <Text
+            textColor='tertiary'
+            variant='small.regular'
+          >
             {getLocale('braveWalletAutoDiscoveryEmptyStateSubHeading')}
-          </Description>
+          </Text>
           <Row
             margin='48px 0 8px 0'
             marginBottom={8}
           >
-            <Description>
+            <Text
+              textColor='tertiary'
+              variant='small.regular'
+            >
               {getLocale('braveWalletAutoDiscoveryEmptyStateFooter')}
-            </Description>
+            </Text>
           </Row>
-          <Description>{emptyStateActions}</Description>
+          <Text
+            textColor='tertiary'
+            variant='small.regular'
+          >
+            {emptyStateActions}
+          </Text>
         </>
       )}
     </StyledWrapper>

@@ -91,15 +91,6 @@ export const OvalButton = styled(WalletButton)`
   pointer-events: auto;
 `
 
-export const OvalButtonText = styled.span`
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text02};
-  font-weight: 600;
-`
-
 export const AccountMenuButton = styled(WalletButton)`
   display: flex;
   align-items: center;
@@ -121,7 +112,6 @@ export const AccountMenuIcon = styled(Icon).attrs({
 `
 
 export const AccountBalanceText = styled(Text)`
-  color: ${leo.color.text.primary};
   margin-right: 12px;
 `
 

@@ -47,17 +47,14 @@ export const Divider = styled.div`
 `
 
 export const NoAssetButton = styled(WalletButton)`
+  font: ${leo.font.default.semibold};
   cursor: pointer;
   outline: none;
   border: none;
   background: none;
   padding: 0px;
   margin: 0px;
-  font-family: Poppins;
-  font-size: 14px;
   letter-spacing: 0.4px;
-  line-height: 20px;
-  font-weight: 600;
   color: ${leo.color.text.interactive};
 `
 

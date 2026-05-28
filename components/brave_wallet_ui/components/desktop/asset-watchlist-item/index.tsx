@@ -23,7 +23,6 @@ import {
 // Styled Components
 import {
   StyledWrapper,
-  AssetName,
   NameAndIcon,
   AssetIcon,
   NftIconWrapper,
@@ -31,9 +30,8 @@ import {
   Icon,
   RightSide,
   NameAndSymbol,
-  AssetSymbol,
 } from './style'
-import { HorizontalSpace } from '../../shared/style'
+import { HorizontalSpace, Text } from '../../shared/style'
 
 export interface Props {
   onSelectAsset: (token: BraveWallet.BlockchainToken) => void
@@ -81,17 +79,25 @@ const AssetWatchlistItem = React.forwardRef<HTMLDivElement, Props>(
             <AssetIconWithPlaceholder asset={token} />
           )}
           <NameAndSymbol>
-            <AssetName>
+            <Text
+              textColor='primary'
+              variant='default.semibold'
+              textAlign='left'
+            >
               {token.name || token.symbol}{' '}
               {token.isErc721 && token.tokenId
                 ? '#' + reduceInt(new Amount(token.tokenId).format())
                 : ''}
-            </AssetName>
-            <AssetSymbol>
+            </Text>
+            <Text
+              textColor='primary'
+              variant='small.regular'
+              textAlign='left'
+            >
               {getLocale('braveWalletPortfolioAssetNetworkDescription')
                 .replace('$1', token.symbol)
                 .replace('$2', tokensNetwork?.chainName ?? '')}
-            </AssetSymbol>
+            </Text>
           </NameAndSymbol>
         </NameAndIcon>
         <RightSide>

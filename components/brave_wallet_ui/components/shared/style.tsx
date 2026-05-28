@@ -37,6 +37,9 @@ import WarningTriangleFilled from '../../assets/svg-icons/warning-triangle-fille
 import BraveWalletWithCoins from '../../assets/svg-icons/onboarding/brave-wallet-with-coins.svg'
 import { makePaddingMixin } from '../../utils/style.utils'
 
+// Shared Styles
+import { Text as SharedText } from '../../page/screens/send/shared.styles'
+
 export type ThemeColor = StringWithAutocomplete<keyof IThemeProps['color']>
 
 // re-export "send" styles
@@ -50,10 +53,7 @@ export const VerticalSpacer = styled.div<{ space: number | string }>`
 
 // Text
 export const LinkText = styled.a`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
+  font: ${leo.font.default.semibold};
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.interactive05};
   margin: 0px;
@@ -66,17 +66,12 @@ export const LinkText = styled.a`
 `
 
 export const MutedLinkText = styled(LinkText)`
-  font-family: 'Inter', 'Poppins';
-  font-size: 12px;
-  font-weight: 400;
+  font: ${leo.font.small.regular};
+
   color: ${leo.color.text.tertiary};
-  line-height: 20px;
 `
 
-export const ErrorText = styled.span`
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
+export const ErrorText = styled(SharedText)`
   color: ${(p) => p.theme.color.errorText};
   margin-bottom: 10px;
 `
@@ -153,7 +148,6 @@ export const Row = styled.div<
   }
 >`
   cursor: ${(p) => (p.onClick ? 'pointer' : 'unset')};
-  font-family: 'Poppins';
   display: flex;
   flex-direction: row;
   flex-wrap: ${(p) => (p.$wrap ? 'wrap' : 'unset')};
@@ -194,7 +188,6 @@ export const Column = styled.div<
     margin?: number | string
   }
 >`
-  font-family: 'Poppins';
   height: ${(p) => (p.fullHeight ? '100%' : p?.height || 'unset')};
   width: ${(p) => (p.fullWidth ? '100%' : p?.width || 'unset')};
   flex: ${(p) => p.flex ?? 'unset'};
@@ -263,11 +256,7 @@ export const WalletButton = styled.button`
 `
 
 export const WalletLink = styled(Link)`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 600;
-  font-size: 13px;
-  line-height: 20px;
+  font: ${leo.font.components.tableheader};
   text-align: center;
   color: ${(p) => p.theme.color.interactive05};
   background: none;
@@ -354,6 +343,8 @@ export const SellButtonRow = styled.div`
 `
 
 export const SellButton = styled(WalletButton)`
+  font: ${leo.font.small.semibold};
+
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -362,10 +353,6 @@ export const SellButton = styled(WalletButton)`
   cursor: pointer;
   outline: none;
   border-radius: 40px;
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 600;
-  font-size: 12px;
   background-color: ${(p) => p.theme.palette.blurple500};
   color: ${(p) => p.theme.palette.white};
   border: none;
@@ -560,7 +547,6 @@ export const HorizontalSpace = styled.div<{ space: string }>`
 
 // Forms
 export const InputLabelText = styled.label`
-  font-family: Poppins;
   font-style: normal;
   display: block;
   margin-bottom: 8px;
@@ -579,13 +565,11 @@ export const VerticalDivider = styled.div<{ margin?: string }>`
 `
 
 export const BraveRewardsIndicator = styled.div`
+  font: ${leo.font.xSmall.regular};
+
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: Poppins;
-  font-size: 10px;
-  line-height: 15px;
-  font-weight: 500;
   color: ${leo.color.text.primary};
   padding: 2px 6px;
   border: 1px solid ${leo.color.divider.subtle};

@@ -58,7 +58,6 @@ import {
   ToCircle,
   AccountNameText,
   TopRow,
-  NetworkText,
   TransactionAmountBig,
   TransactionFiatAmountBig,
   MessageBox,
@@ -74,13 +73,12 @@ import {
 import {
   TabRow,
   WarningBox,
-  WarningTitle,
   WarningText,
   LearnMoreButton,
   WarningBoxTitleRow,
   URLText,
 } from '../shared-panel-styles'
-import { Column, Row } from '../../shared/style'
+import { Column, Row, Text } from '../../shared/style'
 import { NetworkFeeRow } from './common/style'
 import { FooterContainer } from './common/pending_tx_actions_footer.style'
 import { LongWrapper } from '../../../stories/style'
@@ -221,7 +219,12 @@ export const ConfirmTransactionPanel = ({
     <LongWrapper>
       <StyledWrapper>
         <TopRow>
-          <NetworkText>{transactionsNetwork?.chainName ?? ''}</NetworkText>
+          <Text
+            textColor='tertiary'
+            variant='small.regular'
+          >
+            {transactionsNetwork?.chainName ?? ''}
+          </Text>
 
           <TransactionQueueSteps
             queueNextTransaction={queueNextTransaction}
@@ -234,7 +237,10 @@ export const ConfirmTransactionPanel = ({
             <FromCircle orb={fromOrb} />
             <ToCircle orb={toOrb} />
           </AccountCircleWrapper>
-          <URLText>
+          <URLText
+            textColor='secondary'
+            variant='xSmall.regular'
+          >
             <CreateSiteOrigin
               originSpec={originInfo.originSpec}
               eTldPlusOne={originInfo.eTldPlusOne}
@@ -254,7 +260,12 @@ export const ConfirmTransactionPanel = ({
               isAddress={true}
               position={'left'}
             >
-              <AccountNameText>{fromAccount.name}</AccountNameText>
+              <AccountNameText
+                textColor='secondary'
+                variant='default.semibold'
+              >
+                {fromAccount.name}
+              </AccountNameText>
             </Tooltip>
 
             {transactionDetails.recipient
@@ -266,9 +277,12 @@ export const ConfirmTransactionPanel = ({
                       alignItems={'flex-start'}
                       justifyContent={'flex-start'}
                     >
-                      <NetworkText>
+                      <Text
+                        textColor='tertiary'
+                        variant='small.regular'
+                      >
                         {getLocale('braveWalletNFTDetailContractAddress')}
-                      </NetworkText>
+                      </Text>
                       <ContractButton
                         onClick={onClickViewOnBlockExplorer(
                           'contract',
@@ -285,7 +299,10 @@ export const ConfirmTransactionPanel = ({
                       isAddress={true}
                       position='right'
                     >
-                      <AccountNameText>
+                      <AccountNameText
+                        textColor='secondary'
+                        variant='default.semibold'
+                      >
                         {reduceAddress(transactionDetails.recipient)}
                       </AccountNameText>
                     </Tooltip>
@@ -294,7 +311,12 @@ export const ConfirmTransactionPanel = ({
               )}
           </Row>
 
-          <TransactionTypeText>{transactionTitle}</TransactionTypeText>
+          <TransactionTypeText
+            textColor='tertiary'
+            variant='small.semibold'
+          >
+            {transactionTitle}
+          </TransactionTypeText>
 
           {(isERC721TransferFrom || isERC721SafeTransferFrom) && (
             <NftAssetIconWithPlaceholder
@@ -314,7 +336,10 @@ export const ConfirmTransactionPanel = ({
                 justifyContent='center'
                 gap={'4px'}
               >
-                <TransactionAmountBig>
+                <TransactionAmountBig
+                  textColor='primary'
+                  variant='large.semibold'
+                >
                   {isERC721TransferFrom || isERC721SafeTransferFrom
                     ? transactionDetails.erc721BlockchainToken?.name
                       + ' '
@@ -350,7 +375,10 @@ export const ConfirmTransactionPanel = ({
               </Row>
 
               {!isERC721TransferFrom && !isERC721SafeTransferFrom && (
-                <TransactionFiatAmountBig>
+                <TransactionFiatAmountBig
+                  textColor='primary'
+                  variant='small.regular'
+                >
                   {new Amount(transactionDetails.fiatValue).formatAsFiat(
                     defaultFiatCurrency,
                   )}
@@ -363,10 +391,16 @@ export const ConfirmTransactionPanel = ({
             <WarningBox warningType={'danger'}>
               <WarningBoxTitleRow>
                 <WarningIcon />
-                <WarningTitle warningType={'danger'}>
+                <Text
+                  textColor='error'
+                  variant='small.semibold'
+                >
                   {getLocale('braveWalletSystemProgramAssignWarningTitle')}
-                </WarningTitle>
-                <WarningText>
+                </Text>
+                <WarningText
+                  textColor='error'
+                  variant='small.regular'
+                >
                   {getLocale(
                     'braveWalletSystemProgramAssignWarningDescription',
                   )}

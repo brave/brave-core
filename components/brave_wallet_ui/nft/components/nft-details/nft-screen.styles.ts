@@ -9,7 +9,8 @@ import {
   layoutPanelWidth,
   layoutSmallWidth,
 } from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
-import { WalletButton } from '../../../components/shared/style'
+// Shared Styles
+import { Text, WalletButton } from '../../../components/shared/style'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -36,11 +37,7 @@ export const TopWrapper = styled.div`
 `
 
 export const NftName = styled.h2`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 28px;
+  font: ${leo.font.large.semibold};
   text-align: left;
   color: ${leo.color.text.primary};
   width: 100%;
@@ -52,11 +49,7 @@ export const NftName = styled.h2`
 `
 
 export const CollectionName = styled.p`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 24px;
+  font: ${leo.font.default.regular};
   text-align: left;
   color: ${leo.color.legacy.text3};
   width: 100%;
@@ -68,11 +61,7 @@ export const CollectionName = styled.p`
 `
 
 export const PurchaseDate = styled.p`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 18px;
+  font: ${leo.font.small.regular};
   text-align: left;
   color: ${leo.color.legacy.text3};
   width: 100%;
@@ -84,14 +73,10 @@ export const PurchaseDate = styled.p`
 `
 
 export const SectionTitle = styled.h3`
+  font: ${leo.font.large.semibold};
   display: flex;
   flex-direction: row;
   align-items: center;
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 24px;
   text-align: left;
   color: ${leo.color.text.primary};
   margin: 0;
@@ -122,11 +107,7 @@ export const InfoBox = styled.div`
 `
 
 export const InfoTitle = styled.p`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 18px;
+  font: ${leo.font.small.regular};
   color: ${leo.color.text.secondary};
   margin: 0;
   padding: 0;
@@ -137,11 +118,7 @@ export const InfoTitle = styled.p`
 `
 
 export const InfoText = styled.p`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 24px;
+  font: ${leo.font.default.regular};
   color: ${leo.color.text.primary};
   margin: 0;
   padding: 0;
@@ -151,13 +128,8 @@ export const InfoText = styled.p`
   text-overflow: ellipsis;
 `
 
-export const AccountName = styled.span`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
+export const AccountName = styled(Text)`
   line-height: 24px;
-  color: ${leo.color.text.primary};
 `
 
 export const AccountAddress = styled(AccountName)`
@@ -175,11 +147,7 @@ export const CopyIcon = styled(Icon)`
 `
 
 export const ViewAccount = styled(WalletButton)`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 16px;
+  font: ${leo.font.small.semibold};
   display: flex;
   align-items: center;
   text-align: center;
@@ -195,12 +163,8 @@ export const ViewAccount = styled(WalletButton)`
 `
 
 export const Description = styled.p`
+  font: ${leo.font.default.regular};
   width: 100%;
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 24px;
   color: ${leo.color.text.primary};
   margin: 0;
   padding: 0;
@@ -276,37 +240,22 @@ export const Trait = styled.div`
   align-items: flex-start;
 `
 
-export const TraitType = styled.span`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
+export const TraitType = styled(Text)`
   line-height: 18px;
-  color: ${leo.color.text.secondary};
   overflow: hidden;
   -webkit-line-clamp: 1;
   text-overflow: ellipsis;
 `
 
-export const TraitValue = styled.span`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
+export const TraitValue = styled(Text)`
   line-height: 24px;
-  color: ${leo.color.text.primary};
   overflow: hidden;
   -webkit-line-clamp: 1;
   text-overflow: ellipsis;
 `
 
-export const TraitRarity = styled.span`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
+export const TraitRarity = styled(Text)`
   line-height: 24px;
-  color: ${leo.color.text.primary};
   overflow: hidden;
   -webkit-line-clamp: 1;
   text-overflow: ellipsis;
@@ -322,13 +271,11 @@ export const ErrorWrapper = styled.div`
 `
 
 export const ErrorMessage = styled.p`
+  font: ${leo.font.xSmall.regular};
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  font-family: Poppins;
   letter-spacing: 0.01em;
-  font-size: 11px;
-  line-height: 16px;
   color: ${(p) => p.theme.color.text02};
   word-break: break-word;
   margin: 24px 0;

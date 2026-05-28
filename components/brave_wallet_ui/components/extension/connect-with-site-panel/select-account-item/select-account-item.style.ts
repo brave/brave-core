@@ -6,6 +6,8 @@
 import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
 import styled from 'styled-components'
+
+// Shared Styles
 import { WalletButton } from '../../../shared/style'
 
 export const ConnectPanelButton = styled(WalletButton)<{
@@ -50,33 +52,6 @@ export const AccountCircle = styled.div<{
   border-radius: 100%;
   background-image: url(${(p) => p.orb});
   background-size: cover;
-`
-
-export const AccountNameText = styled.span`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-size: 14px;
-  line-height: 24px;
-  font-weight: 600;
-  color: ${leo.color.text.primary};
-`
-
-export const AccountAddressText = styled.span`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-size: 12px;
-  line-height: 18px;
-  font-weight: 400;
-  color: ${leo.color.text.primary};
-`
-
-export const BalanceText = styled.span`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-size: 12px;
-  line-height: 18px;
-  font-weight: 400;
-  color: ${leo.color.text.secondary};
 `
 
 export const SelectedIcon = styled(Icon)<{ isSelected: boolean }>`

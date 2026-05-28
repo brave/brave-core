@@ -39,6 +39,7 @@ import {
   MediumAssetIcon,
   NetworkIconWrapper,
   Row,
+  Text,
 } from '../style'
 import { withPlaceholderIcon } from '../create-placeholder-icon/index'
 import { CreateNetworkIcon } from '../create-network-icon/index'
@@ -47,10 +48,8 @@ import { NftIcon } from '../nft-icon/nft-icon'
 // styles
 import {
   AssetButton,
-  AssetName,
   NameAndIcon,
   NameColumn,
-  NetworkDescriptionText,
   PriceContainer,
   PriceText,
   LoadIcon,
@@ -160,10 +159,18 @@ export const BuyAssetOptionItem = React.forwardRef<HTMLDivElement, Props>(
                 )}
             </IconsWrapper>
             <NameColumn>
-              <AssetName>{token.name}</AssetName>
-              <NetworkDescriptionText>
+              <Text
+                textColor='primary'
+                variant='default.semibold'
+              >
+                {token.name}
+              </Text>
+              <Text
+                textColor='secondary'
+                variant='small.regular'
+              >
                 {networkDescription}
-              </NetworkDescriptionText>
+              </Text>
             </NameColumn>
           </NameAndIcon>
 
@@ -172,7 +179,12 @@ export const BuyAssetOptionItem = React.forwardRef<HTMLDivElement, Props>(
               {isFetchingPrice || isLoadingPrice ? (
                 <LoadIcon />
               ) : (
-                <PriceText>{price.formatAsFiat(selectedCurrency)}</PriceText>
+                <PriceText
+                  textColor='primary'
+                  variant='default.semibold'
+                >
+                  {price.formatAsFiat(selectedCurrency)}
+                </PriceText>
               )}
             </PriceContainer>
           )}

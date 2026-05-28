@@ -36,8 +36,8 @@ import {
   CodeSnippetText,
   DetailColumn,
   DetailText,
-  TransactionText,
 } from './style'
+import { Text } from '../../shared/style'
 
 export interface Props {
   transactionInfo: SerializableTransactionInfo
@@ -191,28 +191,50 @@ export const TransactionDetailBox = ({
         <>
           {!!Number(sendOptions?.maxRetries?.maxRetries) && (
             <DetailColumn key={'maxRetries'}>
-              <TransactionText>
+              <Text
+                textColor='tertiary'
+                variant='small.regular'
+              >
                 {getLocale('braveWalletSolanaMaxRetries')}:
-              </TransactionText>
-              <DetailText>{sendOptions?.maxRetries?.maxRetries}</DetailText>
+              </Text>
+              <DetailText
+                textColor='primary'
+                variant='xSmall.regular'
+              >
+                {sendOptions?.maxRetries?.maxRetries}
+              </DetailText>
             </DetailColumn>
           )}
 
           {sendOptions?.preflightCommitment && (
             <DetailColumn key={'preflightCommitment'}>
-              <TransactionText>
+              <Text
+                textColor='tertiary'
+                variant='small.regular'
+              >
                 {getLocale('braveWalletSolanaPreflightCommitment')}:
-              </TransactionText>
-              <DetailText>{sendOptions?.preflightCommitment}</DetailText>
+              </Text>
+              <DetailText
+                textColor='primary'
+                variant='xSmall.regular'
+              >
+                {sendOptions?.preflightCommitment}
+              </DetailText>
             </DetailColumn>
           )}
 
           {sendOptions?.skipPreflight && (
             <DetailColumn key={'skipPreflight'}>
-              <TransactionText>
+              <Text
+                textColor='tertiary'
+                variant='small.regular'
+              >
                 {getLocale('braveWalletSolanaSkipPreflight')}:
-              </TransactionText>
-              <DetailText>
+              </Text>
+              <DetailText
+                textColor='primary'
+                variant='xSmall.regular'
+              >
                 {sendOptions.skipPreflight.skipPreflight.toString()}
               </DetailText>
             </DetailColumn>
@@ -222,10 +244,18 @@ export const TransactionDetailBox = ({
 
       {solData || dataArray ? (
         <DetailColumn>
-          <TransactionText>
+          <Text
+            textColor='tertiary'
+            variant='small.regular'
+          >
             {getLocale('braveWalletTransactionDetailBoxFunction')}:
-          </TransactionText>
-          <DetailText>{getTransactionTypeName(txType)}</DetailText>
+          </Text>
+          <DetailText
+            textColor='primary'
+            variant='xSmall.regular'
+          >
+            {getTransactionTypeName(txType)}
+          </DetailText>
         </DetailColumn>
       ) : null}
 

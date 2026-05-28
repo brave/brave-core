@@ -7,6 +7,7 @@ import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
 import { WalletButton } from '../../../../../shared/style'
+export { PopupButtonText } from '../../../../wallet-menus/wellet-menus.style'
 
 export const Popup = styled.div<{ isOpen: boolean }>`
   display: flex;
@@ -45,15 +46,6 @@ export const PopupButton = styled(WalletButton)`
   border: none;
   outline: transparent;
   cursor: pointer;
-`
-
-export const PopupButtonText = styled.span`
-  color: ${leo.color.text.primary};
-  font-family: Poppins;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 24px;
 `
 
 export const ButtonIcon = styled(Icon)`

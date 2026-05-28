@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 // Types / constants
 import { BraveWallet } from '../../../constants/types'
@@ -16,14 +17,8 @@ import { findTokenByContractAddress } from '../../../utils/asset-utils'
 import { getAccountLabel, getAddressLabel } from '../../../utils/account-utils'
 
 // Styled components
-import {
-  NetworkText,
-  StyledWrapper,
-  TopRow,
-  SignPanelButtonRow,
-  HeaderTitle,
-} from './style'
-import { WalletButton } from '../../shared/style'
+import { StyledWrapper, TopRow, SignPanelButtonRow, HeaderTitle } from './style'
+import { WalletButton, Text } from '../../shared/style'
 import { CreateNetworkIcon } from '../../shared/create-network-icon/index'
 
 // Components
@@ -121,7 +116,6 @@ export function SignCowSwapOrder(props: Props) {
   return (
     <StyledWrapper>
       <TopRow>
-        <NetworkText />
         <TransactionQueueSteps
           queueNextTransaction={onQueueNextSignMessage}
           transactionQueueNumber={queueNumber}
@@ -216,36 +210,25 @@ const NetworkFeeAndDetailsContainer = styled.div`
 
 const NetworkFeeContainer = styled.div``
 
-const NetworkFeeTitle = styled.div`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 20px;
-  color: ${(p) => p.theme.color.text03};
-`
+const NetworkFeeTitle = styled(Text).attrs({
+  variant: 'small.regular',
+  textColor: 'secondary',
+})``
 
-const NetworkFeeValue = styled.div`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 18px;
+const NetworkFeeValue = styled(Text).attrs({
+  variant: 'default.semibold',
+})`
   display: flex;
   align-items: center;
-  letter-spacing: 0.01em;
-  color: #27ae60;
   gap: 6px;
+  letter-spacing: ${leo.typography.letterSpacing.default};
+  color: ${leo.color.systemfeedback.successText};
 `
 
 const TextButton = styled(WalletButton)`
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 18px;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.interactive05};
+  font: ${leo.font.small.semibold};
+  letter-spacing: ${leo.typography.letterSpacing.small};
+  color: ${leo.color.text.interactive};
   background: none;
   cursor: pointer;
   outline: none;

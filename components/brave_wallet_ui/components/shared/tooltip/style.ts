@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+import * as leo from '@brave/leo/tokens/css/variables'
 import styled, { css, CSSProperties } from 'styled-components'
 
 interface PositionProps {
@@ -45,11 +46,10 @@ export const Tip = styled.div<{
   maxWidth?: CSSProperties['maxWidth']
   minWidth?: CSSProperties['minWidth']
 }>`
+  font: ${leo.font.small.regular};
+
   border-radius: 4px;
   padding: 6px;
-
-  font-family: Poppins;
-  font-size: 12px;
   letter-spacing: 0.01em;
 
   width: ${(p) => (p.isAddress ? '180px' : 'unset')};

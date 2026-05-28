@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import * as leo from '@brave/leo/tokens/css/variables'
 import styled from 'styled-components'
 
 import CaratDownIcon from '../../assets/svg-icons/select-down-icon.svg'
@@ -26,16 +27,13 @@ export const Button = styled(WalletButton)`
   width: 100%;
   border: none;
   color: ${(p) => p.theme.color.text02};
-  font-family: Poppins;
-  font-weight: 400;
+  font: ${leo.font.default.regular};
   box-sizing: border-box;
   background-color: ${(p) => p.theme.color.background02};
   border: ${(p) => `1px solid ${p.theme.color.divider01}`};
   padding: 9px 12px;
   border-radius: 12px;
   cursor: ${(p) => (p.disabled ? 'auto' : 'pointer')};
-  font-size: 14px;
-  line-height: 20px;
   letter-spacing: 0.01em;
 `
 
@@ -69,7 +67,6 @@ export const Option = styled.li<Partial<OptionProps>>`
   display: flex;
   align-items: center;
   padding: 10px 0;
-  font-family: Poppins;
   font-size: 14px;
   line-height: 20px;
   letter-spacing: 0.01em;

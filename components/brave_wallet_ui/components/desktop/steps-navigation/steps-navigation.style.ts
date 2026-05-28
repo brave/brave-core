@@ -3,15 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+import * as leo from '@brave/leo/tokens/css/variables'
 import styled, { css } from 'styled-components'
 import { WalletButton } from '../../shared/style'
 
 const Font = css`
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 13px;
-  line-height: 20px;
+  font: ${leo.font.default.semibold};
   color: ${(p) => p.theme.color.text02};
 `
 

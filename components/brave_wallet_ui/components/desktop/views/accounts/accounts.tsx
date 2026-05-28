@@ -28,9 +28,8 @@ import { makeAccountRoute } from '../../../../utils/routes-utils'
 import { getPriceRequestsForTokens } from '../../../../utils/pricing-utils'
 
 // Styled Components
-import { SectionTitle, AccountsListWrapper } from './style'
-
-import { Column, Row } from '../../../shared/style'
+import { AccountsListWrapper } from './style'
+import { Column, Row, Text } from '../../../shared/style'
 
 // Components
 import AccountListItem from '../../account-list-item'
@@ -248,7 +247,13 @@ export const Accounts = () => {
         padding='0px 8px 8px 8px'
         justifyContent='flex-start'
       >
-        <SectionTitle>{getLocale('braveWalletAccounts')}</SectionTitle>
+        <Text
+          variant='default.semibold'
+          textColor='secondary'
+          textAlign='left'
+        >
+          {getLocale('braveWalletAccounts')}
+        </Text>
       </Row>
       <AccountsListWrapper
         fullWidth={true}
@@ -275,9 +280,13 @@ export const Accounts = () => {
             padding='8px'
             justifyContent='flex-start'
           >
-            <SectionTitle>
+            <Text
+              variant='default.semibold'
+              textColor='secondary'
+              textAlign='left'
+            >
               {getLocale('braveWalletAccountsSecondary')}
-            </SectionTitle>
+            </Text>
           </Row>
           <AccountsListWrapper
             fullWidth={true}
@@ -306,9 +315,13 @@ export const Accounts = () => {
             padding='8px'
             justifyContent='flex-start'
           >
-            <SectionTitle>
+            <Text
+              variant='default.semibold'
+              textColor='secondary'
+              textAlign='left'
+            >
               {getLocale('braveWalletConnectedHardwareWallets')}
-            </SectionTitle>
+            </Text>
           </Row>
           <Column
             fullWidth={true}
@@ -327,9 +340,13 @@ export const Accounts = () => {
             padding='8px'
             justifyContent='flex-start'
           >
-            <SectionTitle>
+            <Text
+              variant='default.semibold'
+              textColor='secondary'
+              textAlign='left'
+            >
               {getLocale('braveWalletConnectedAccounts')}
-            </SectionTitle>
+            </Text>
           </Row>
           <AccountsListWrapper
             fullWidth={true}

@@ -5,6 +5,9 @@
 
 import styled from 'styled-components'
 
+// Shared Styles
+import { Text } from '../../shared/style'
+
 export const StyledWrapper = styled.div`
   display: flex;
   width: 100%;
@@ -15,14 +18,7 @@ export const StyledWrapper = styled.div`
   min-height: 200px;
 `
 
-export const Description = styled.span`
-  font-family: Poppins;
-  font-size: 13px;
-  line-height: 20px;
-  letter-spacing: 0.01em;
-  font-weight: 600;
-  color: ${(p) => p.theme.color.text01};
-  text-align: center;
+export const Description = styled(Text)`
   width: 80%;
   margin-bottom: 20px;
 `

@@ -3,13 +3,18 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import * as leo from '@brave/leo/tokens/css/variables'
 import styled from 'styled-components'
 
 // Assets
 import WarningCircleFilled from '../../../../assets/svg-icons/warning-circle-filled.svg'
 
 // Shared Styles
-import { AssetIconProps, AssetIconFactory } from '../../../shared/style'
+import {
+  AssetIconProps,
+  AssetIconFactory,
+  Text as SharedText,
+} from '../../../shared/style'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -31,37 +36,10 @@ export const InputSection = styled.div`
   margin-bottom: 16px;
 `
 
-export const Text = styled.span<{
-  textSize?: '32px' | '22px' | '20px' | '18px' | '16px' | '14px' | '12px'
-  isBold?: boolean
-  textColor?: 'text01' | 'text02' | 'text03'
-  maintainHeight?: boolean
-  textAlign?: 'left' | 'right'
+export const Text = styled(SharedText)<{
   marginRight?: number
 }>`
-  --text01: ${(p) => p.theme.color.text01};
-  --text02: ${(p) => p.theme.color.text02};
-  --text03: ${(p) => p.theme.color.text03};
-  --line-height: ${(p) =>
-      p.textSize === '12px'
-        ? '18px'
-        : p.textSize === '14px'
-          ? '24px'
-          : p.textSize === '22px'
-            ? '32px'
-            : p.textSize === '32px'
-              ? '48px'
-              : '20px'}
-    font-family: 'Poppins';
-  color: ${(p) =>
-    p.textColor ? `var(--${p.textColor})` : p.theme.color.text01};
-  font-size: ${(p) => (p.textSize ? p.textSize : '18px')};
-  font-weight: ${(p) => (p.isBold ? 500 : 400)};
-  height: ${(p) => (p.maintainHeight ? 'var(--line-height)' : 'unset')};
-  line-height: var(--line-height);
   letter-spacing: 0.02em;
-  text-align: ${(p) => (p.textAlign ? p.textAlign : 'center')};
-  word-wrap: wrap;
   margin-right: ${(p) => (p.marginRight ? p.marginRight : 0)}px;
 `
 
@@ -71,7 +49,6 @@ export const AssetIcon = AssetIconFactory<AssetIconProps>({
 })
 
 export const AmountInput = styled.input`
-  font-family: 'Poppins';
   color: ${(p) => p.theme.color.text01};
   font-weight: 500;
   font-size: 32px;
@@ -90,6 +67,8 @@ export const AmountInput = styled.input`
 `
 
 export const PresetButton = styled.button<{ marginRight?: number }>`
+  font: ${leo.font.xSmall.semibold};
+
   /* #F4F6F8 does not exist in the design system */
   --button-background: #f4f6f8;
   /* rgba(218, 220, 232, 0.4) does not exist in the design system */
@@ -100,16 +79,12 @@ export const PresetButton = styled.button<{ marginRight?: number }>`
     --button-background-hover: ${(p) => p.theme.color.background01};
   }
   display: flex;
-  font-family: 'Poppins';
   cursor: pointer;
   border: none;
   outline: none;
   background: none;
   background-color: var(--button-background);
   border-radius: 4px;
-  font-size: 11px;
-  font-weight: 600;
-  line-height: 16px;
   color: ${(p) => p.theme.color.text02};
   margin-right: ${(p) => (p.marginRight ? p.marginRight : 0)}px;
   padding: 4px 8px;

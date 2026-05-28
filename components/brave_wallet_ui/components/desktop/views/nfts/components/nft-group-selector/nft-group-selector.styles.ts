@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import Icon from '@brave/leo/react/icon'
 import * as leo from '@brave/leo/tokens/css/variables'
 
-import { WalletButton } from '../../../../../shared/style'
+import { WalletButton, Text } from '../../../../../shared/style'
 
 export const DropdownContainer = styled.div`
   position: relative;
@@ -26,25 +26,16 @@ export const DropdownButton = styled(WalletButton)`
   cursor: pointer;
 `
 
-export const DropdownButtonText = styled.span`
+export const DropdownButtonText = styled(Text)`
   color: ${leo.color.text.interactive};
-  font-family: Poppins;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 22px;
 `
 
-export const DropdownButtonLabel = styled.span`
+export const DropdownButtonLabel = styled(Text)`
   display: flex;
   padding: 4px;
   align-items: center;
   justify-content: center;
   color: ${leo.color.primary[50]};
-  font-family: Poppins;
-  font-size: 11px;
-  font-style: normal;
-  font-weight: 600;
   text-transform: uppercase;
   background-color: ${leo.color.primary[20]};
   border-radius: 4px;
@@ -82,16 +73,12 @@ export const DropDown = styled.div<{ isOpen: boolean }>`
 `
 
 export const DropDownItem = styled(WalletButton)`
+  font: ${leo.font.default.regular};
   display: flex;
   height: 44px;
   padding: 0px 8px;
   align-items: center;
   gap: 8px;
-  font-family: Poppins;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 24px;
   color: ${leo.color.text.primary};
   cursor: pointer;
   border: none;

@@ -45,7 +45,12 @@ export const PopupModal = (props: Props) => {
     <StyledWrapper>
       <Modal>
         <Header>
-          <Title>{title}</Title>
+          <Title
+            textColor='primary'
+            variant='large.semibold'
+          >
+            {title}
+          </Title>
           <CloseButton onClick={onClose} />
         </Header>
         {children}

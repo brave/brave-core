@@ -24,7 +24,7 @@ export const CTAButton = ({ buttonText, url }: Props) => {
   return (
     <Button onClick={onClick}>
       <IdeaButtonIcon />
-      <ButtonText>{buttonText}</ButtonText>
+      <ButtonText variant='default.semibold'>{buttonText}</ButtonText>
     </Button>
   )
 }

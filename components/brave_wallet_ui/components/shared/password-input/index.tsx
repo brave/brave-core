@@ -112,7 +112,12 @@ export function PasswordInput({
       {hasError && error && (
         <ErrorRow>
           <WarningIcon />
-          <ErrorText>{error}</ErrorText>
+          <ErrorText
+            textColor='error'
+            variant='small.regular'
+          >
+            {error}
+          </ErrorText>
         </ErrorRow>
       )}
       {/* Allow custom child elements */}

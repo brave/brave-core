@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+import * as leo from '@brave/leo/tokens/css/variables'
 import styled from 'styled-components'
 import { LoaderIcon } from 'brave-ui/components/icons'
 
@@ -35,12 +36,12 @@ export const AssetsColumnItemSpacer = styled.div`
   margin-right: 19px;
 `
 export const TextWrapper = styled.div<StyleProps>`
+  font: ${leo.font.default.regular};
+
   display: flex;
   justify-content: ${(p) =>
     p.alignment === 'right' ? 'flex-end' : 'flex-start'};
   width: 100%;
-  font-family: Poppins;
-  font-size: 14px;
   letter-spacing: 0.01em;
 `
 

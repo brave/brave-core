@@ -25,8 +25,8 @@ import { CopyTooltip } from '../copy-tooltip/copy-tooltip'
 import {
   Divider,
   SectionRow,
-  TransactionTitle,
 } from '../../extension/confirm-transaction-panel/style'
+import { Text } from '../../shared/style'
 
 import {
   InstructionBox,
@@ -66,7 +66,11 @@ export const SolanaTransactionInstruction: React.FC<Props> = ({
       <InstructionBox>
         {programId && (
           <>
-            <CodeSectionTitle>
+            <CodeSectionTitle
+              variant='small.regular'
+              textAlign='left'
+              textColor='secondary'
+            >
               {getLocale('braveWalletSolanaProgramID')}
             </CodeSectionTitle>
             <CodeSnippet>
@@ -81,7 +85,11 @@ export const SolanaTransactionInstruction: React.FC<Props> = ({
           <>
             <Divider />
 
-            <CodeSectionTitle>
+            <CodeSectionTitle
+              variant='small.regular'
+              textAlign='left'
+              textColor='secondary'
+            >
               {getLocale('braveWalletSolanaAccounts')}
             </CodeSectionTitle>
 
@@ -104,7 +112,11 @@ export const SolanaTransactionInstruction: React.FC<Props> = ({
           <>
             <Divider />
 
-            <CodeSectionTitle>
+            <CodeSectionTitle
+              variant='small.regular'
+              textAlign='left'
+              textColor='secondary'
+            >
               {getLocale('braveWalletSolanaData')}
             </CodeSectionTitle>
             <CodeSnippet>
@@ -123,7 +135,7 @@ export const SolanaTransactionInstruction: React.FC<Props> = ({
     <InstructionBox>
       <>
         <SectionRow>
-          <TransactionTitle>
+          <Text variant='small.semibold'>
             <CopyTooltip
               text={programId}
               tooltipText={programId}
@@ -132,7 +144,7 @@ export const SolanaTransactionInstruction: React.FC<Props> = ({
             >
               {getSolanaProgramIdName(programId)} - {type}
             </CopyTooltip>
-          </TransactionTitle>
+          </Text>
         </SectionRow>
 
         {accountParams.length > 0 && (
@@ -235,7 +247,11 @@ const AddressParamValue = ({
   return (
     <>
       {lookupTableIndex !== undefined && (
-        <AddressText isBold={true}>
+        <AddressText
+          variant='small.semibold'
+          textAlign='left'
+          textColor='secondary'
+        >
           {getLocale('braveWalletSolanaAddressLookupTableAccount')}
         </AddressText>
       )}
@@ -246,14 +262,30 @@ const AddressParamValue = ({
         isAddress
         position='left'
       >
-        <AddressText>{formattedValue}</AddressText>
+        <AddressText
+          variant='small.regular'
+          textAlign='left'
+          textColor='secondary'
+        >
+          {formattedValue}
+        </AddressText>
       </CopyTooltip>
       {lookupTableIndex !== undefined && (
         <>
-          <AddressText isBold={true}>
+          <AddressText
+            variant='small.semibold'
+            textAlign='left'
+            textColor='secondary'
+          >
             {getLocale('braveWalletSolanaAddressLookupTableIndex')}
           </AddressText>
-          <AddressText>{lookupTableIndex}</AddressText>
+          <AddressText
+            variant='small.regular'
+            textAlign='left'
+            textColor='secondary'
+          >
+            {lookupTableIndex}
+          </AddressText>
         </>
       )}
     </>

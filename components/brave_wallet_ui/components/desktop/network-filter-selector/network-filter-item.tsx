@@ -16,11 +16,11 @@ import { AllNetworksOption } from '../../../options/network-filter-options'
 // Styled Components
 import {
   NetworkItemButton,
-  NetworkName,
   LeftSide,
   NetworkItemWrapper,
   BigCheckMark,
 } from './style'
+import { Text } from '../../shared/style'
 
 export interface Props {
   isSelected: boolean
@@ -46,7 +46,13 @@ function NetworkFilterItem(props: Props) {
               size='big'
             />
           )}
-          <NetworkName>{network.chainName}</NetworkName>
+          <Text
+            textColor='primary'
+            variant='default.regular'
+            textAlign='left'
+          >
+            {network.chainName}
+          </Text>
         </LeftSide>
         {isSelected ? <BigCheckMark /> : null}
       </NetworkItemButton>

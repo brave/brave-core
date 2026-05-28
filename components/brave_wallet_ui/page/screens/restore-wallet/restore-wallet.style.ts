@@ -2,7 +2,11 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
+import * as leo from '@brave/leo/tokens/css/variables'
 import styled from 'styled-components'
+
+// Shared Styles
+import { Text } from '../../../components/shared/style'
 
 interface StyleProps {
   textAlign?: 'left' | 'right' | 'center' | 'justify'
@@ -17,33 +21,21 @@ export const StyledWrapper = styled.div`
   padding-top: 50px;
 `
 
-export const Title = styled.span`
-  font-family: Poppins;
-  font-size: 20px;
-  font-weight: 600;
-  color: ${(p) => p.theme.color.text01};
-  letter-spacing: 0.02em;
+export const Title = styled(Text)`
   margin-bottom: 8px;
 `
 
-export const Description = styled.span<StyleProps>`
+export const Description = styled(Text)<StyleProps>`
   display: flex;
   align-items: center;
-  font-family: Poppins;
-  font-size: 14px;
   font-weight: 300;
-  color: ${(p) => p.theme.color.text02};
   max-width: 520px;
   text-align: ${(p) => (p.textAlign ? p.textAlign : 'center')};
   margin-bottom: 25px;
 `
 
-export const FormText = styled.span`
-  font-family: Poppins;
+export const FormText = styled(Text)`
   font-size: 15px;
-  font-weight: 600;
-  color: ${(p) => p.theme.color.text01};
-  letter-spacing: 0.04em;
   margin-bottom: 8px;
 `
 
@@ -56,11 +48,7 @@ export const FormWrapper = styled.div`
   max-width: 550px;
 `
 
-export const ErrorText = styled.span`
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.errorText};
+export const ErrorText = styled(Text)`
   margin-bottom: 10px;
 `
 
@@ -80,6 +68,7 @@ export const CheckboxRow = styled.div`
 `
 
 export const RecoveryPhraseInput = styled.input`
+  font: ${leo.font.components.tableheader};
   width: 100%;
   outline: none;
   background-image: none;
@@ -87,21 +76,13 @@ export const RecoveryPhraseInput = styled.input`
   box-shadow: none;
   border: ${(p) => `1px solid ${p.theme.color.interactive08}`};
   border-radius: 4px;
-  font-family: Poppins;
-  font-style: normal;
-  font-size: 13px;
-  line-height: 20px;
   letter-spacing: 0.01em;
   padding: 10px;
   margin-bottom: 10px;
   color: ${(p) => p.theme.color.text01};
   ::placeholder {
-    font-family: Poppins;
-    font-style: normal;
-    font-size: 12px;
     letter-spacing: 0.01em;
     color: ${(p) => p.theme.color.text03};
-    font-weight: normal;
   }
   :focus {
     outline: none;

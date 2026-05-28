@@ -83,7 +83,12 @@ export const DefaultPanelHeader = (props: Props) => {
           </Button>
         )}
       </LeftRightContainer>
-      <HeaderTitle isMobileOrPanel={true}>{title}</HeaderTitle>
+      <HeaderTitle
+        variant='large.semibold'
+        textColor='primary'
+      >
+        {title}
+      </HeaderTitle>
       <LeftRightContainer
         width='unset'
         justifyContent='flex-end'

@@ -12,8 +12,8 @@ import CloseIcon from '../../../../assets/svg-icons/close.svg'
 import KeyIcon from '../../../../assets/svg-icons/key-icon.svg'
 import CheckIcon from '../../assets/filled-checkmark.svg'
 
-// styles
-import { walletButtonFocusMixin } from '../../../shared/style'
+// Shared Styles
+import { walletButtonFocusMixin, Text } from '../../../shared/style'
 import { Link } from 'react-router-dom'
 
 export type PanelButtonTypes =
@@ -38,7 +38,6 @@ interface StyledButtonProps {
 const StyledButtonCssMixin = (p: StyledButtonProps) => {
   return css<StyledButtonProps>`
     ${walletButtonFocusMixin}
-    font-family: Poppins;
     font-style: normal;
     min-width: ${(p) => p?.minWidth || 'unset'};
     min-height: ${(p) => p?.minHeight || 'unset'};
@@ -87,13 +86,11 @@ export const StyledLink = styled(Link).withConfig<StyledButtonProps>({
   ${(p) => StyledButtonCssMixin(p)}
 `
 
-export const ButtonText = styled.span<{
+export const ButtonText = styled(Text)<{
   buttonType: PanelButtonTypes
   isV2?: boolean
 }>`
-  font-family: Poppins;
-  font-size: ${(p) => (p.isV2 ? '16px' : '13px')};
-  font-weight: 600;
+  font-size: ${(p) => (p.isV2 ? '16px' : '14px')};
   line-height: ${(p) => (p.isV2 ? '24px' : '20px')};
   color: ${(p) =>
     p.buttonType === 'secondary'

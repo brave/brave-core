@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import * as leo from '@brave/leo/tokens/css/variables'
 import styled from 'styled-components'
 import { Column } from '../../shared-swap.styles'
 
@@ -13,11 +14,7 @@ export const Section = styled(Column)`
 `
 
 export const Link = styled.a`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 20px;
+  font: ${leo.font.default.regular};
   color: ${(p) => p.theme.color.interactive05};
   text-decoration: none;
   display: block;

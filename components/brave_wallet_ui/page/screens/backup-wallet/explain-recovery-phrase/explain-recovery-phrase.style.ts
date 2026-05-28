@@ -11,6 +11,9 @@ import * as leo from '@brave/leo/tokens/css/variables'
 
 import WarningCircleOutlineIcon from '../../../../assets/svg-icons/warning-circle-outline-icon.svg'
 
+// Shared Styles
+import { Text } from '../../../../components/shared/style'
+
 export const BannerCard = styled.div`
   margin-top: 24px;
   margin-bottom: 40px;
@@ -25,20 +28,12 @@ export const BannerCard = styled.div`
   padding: 16px;
 `
 
-export const ImportantText = styled.span`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 600;
-  font-size: 12px;
+export const ImportantText = styled(Text)`
   line-height: 22px;
   color: ${(p) => p.theme.color.errorBorder};
 `
 
-export const BannerText = styled.span`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
+export const BannerText = styled(Text)`
   line-height: 22px;
   color: ${(p) => p.theme.color.text};
 `

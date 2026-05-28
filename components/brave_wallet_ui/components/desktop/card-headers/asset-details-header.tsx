@@ -54,16 +54,13 @@ import {
 } from './shared-card-headers.style'
 import {
   AssetIcon,
-  AssetNameText,
-  NetworkDescriptionText,
-  PriceText,
   PercentChange,
   UpDownIcon,
   IconsWrapper,
   NetworkIconWrapper,
 } from './asset-details-header.style'
 import { Button, ButtonIcon } from './shared-panel-headers.style'
-import { Row, Column, HorizontalSpace } from '../../shared/style'
+import { Text, Row, Column, HorizontalSpace } from '../../shared/style'
 import { Skeleton } from '../../shared/loading-skeleton/styles'
 
 const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, {
@@ -238,11 +235,15 @@ export const AssetDetailsHeader = (props: Props) => {
                 width='unset'
                 gap='6px'
               >
-                <AssetNameText>
+                <Text
+                  textColor='primary'
+                  variant='large.semibold'
+                  textAlign='left'
+                >
                   {selectedAsset.isShielded
                     ? 'Zcash'
                     : (selectedAsset?.name ?? '')}
-                </AssetNameText>
+                </Text>
                 {selectedAsset.isShielded && <ShieldedLabel />}
               </Row>
             ) : (
@@ -257,22 +258,30 @@ export const AssetDetailsHeader = (props: Props) => {
                 width={'150px'}
               />
             ) : (
-              <NetworkDescriptionText>
+              <Text
+                textColor='secondary'
+                variant='small.regular'
+                textAlign='left'
+              >
                 {networkDescription}
-              </NetworkDescriptionText>
+              </Text>
             )}
           </Column>
         </Row>
       </Row>
       <Row width='unset'>
         <Column alignItems='flex-end'>
-          <PriceText>
+          <Text
+            textColor='primary'
+            variant='default.semibold'
+            textAlign='right'
+          >
             {selectedAssetFiatPrice
               ? new Amount(selectedAssetFiatPrice.price).formatAsFiat(
                   defaultFiatCurrency,
                 )
               : '0.00'}
-          </PriceText>
+          </Text>
 
           {/* We may still keep BTC price value,
           keeping this around until decided. */}

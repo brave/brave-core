@@ -3,26 +3,22 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import * as leo from '@brave/leo/tokens/css/variables'
 import styled from 'styled-components'
 
 import ArrowDown2Icon from '../../../assets/svg-icons/arrow-down-2.svg'
+
+// Shared Styles
 import {
   AssetIconFactory,
   AssetIconProps,
+  Text,
   WalletButton,
 } from '../../shared/style'
 
-export const ExchangeRate = styled.div`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 18px;
-
+export const ExchangeRate = styled(Text)`
   display: flex;
   align-items: center;
-  text-align: right;
-  color: ${(p) => p.theme.color.text03};
 `
 
 export const SwapDetails = styled.div`
@@ -77,15 +73,6 @@ export const SwapAssetHeader = styled.div`
   margin: 8px 12px;
 `
 
-export const SwapAssetTitle = styled.div`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 18px;
-  color: ${(p) => p.theme.color.text03};
-`
-
 export const SwapAssetAddress = styled.div`
   border: 1px solid ${(p) => p.theme.color.divider01};
   border-radius: 4px;
@@ -104,18 +91,10 @@ export const AddressOrb = styled.div<{ orb: string }>`
   margin: 3px;
 `
 
-export const AccountNameText = styled.span`
+export const AccountNameText = styled(Text)`
   cursor: default;
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 10px;
-  line-height: 15px;
   display: flex;
   align-items: center;
-  text-align: right;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text03};
   margin-right: 3px;
 `
 
@@ -144,32 +123,18 @@ export const Spacer = styled.div`
   height: 4px;
 `
 
-export const SwapAssetAmountSymbol = styled.span`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 22px;
+export const SwapAssetAmountSymbol = styled(Text)`
   display: flex;
   align-items: center;
-  color: ${(p) => p.theme.color.text01};
 `
 
-export const NetworkDescriptionText = styled.span`
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
+export const NetworkDescriptionText = styled(Text)`
   display: flex;
   align-items: center;
-  color: ${(p) => p.theme.color.text03};
 `
 
 export const LaunchButton = styled(WalletButton)`
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 18px;
+  font: ${leo.font.small.semibold};
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.interactive05};
   background: none;

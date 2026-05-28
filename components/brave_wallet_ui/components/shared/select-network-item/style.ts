@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
+// Shared Styles
 import { WalletButton } from '../style'
 import CheckMark from '../../../assets/svg-icons/big-checkmark.svg'
 
@@ -26,16 +27,6 @@ export const LeftSide = styled.div`
   justify-content: flex-start;
   flex-direction: row;
   margin-right: 6px;
-`
-
-export const NetworkName = styled.span`
-  font-family: Poppins;
-  font-size: 13px;
-  line-height: 20px;
-  letter-spacing: 0.01em;
-  font-weight: 600;
-  color: ${(p) => p.theme.color.text01};
-  text-align: left;
 `
 
 export const BigCheckMark = styled.div`

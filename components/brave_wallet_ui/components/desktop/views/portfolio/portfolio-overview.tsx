@@ -105,7 +105,6 @@ import { GettingStarted } from './components/getting_started/getting_started'
 
 // Styled Components
 import {
-  BalanceText,
   PercentBubble,
   FiatChange,
   ControlsRow,
@@ -115,6 +114,7 @@ import {
   ActivityWrapper,
 } from './style'
 import {
+  Text,
   Column,
   Row,
   HorizontalSpace,
@@ -657,11 +657,14 @@ export const PortfolioOverview = () => {
                 <BalanceAndChangeWrapper hasZeroBalance={hasZeroBalance}>
                   {formattedFullPortfolioFiatBalance !== '' ? (
                     <LastPricesUpdatedTooltip>
-                      <BalanceText>
+                      <Text
+                        variant='components.numbersLarge'
+                        textColor='primary'
+                      >
                         {hidePortfolioBalances
                           ? '******'
                           : formattedFullPortfolioFiatBalance}
-                      </BalanceText>
+                      </Text>
                     </LastPricesUpdatedTooltip>
                   ) : (
                     <Column padding='9px 0px'>
@@ -679,7 +682,10 @@ export const PortfolioOverview = () => {
                     >
                       {fiatValueChange !== '' ? (
                         <>
-                          <FiatChange isDown={isPortfolioDown}>
+                          <FiatChange
+                            textColor={isPortfolioDown ? 'error' : 'success'}
+                            variant='small.regular'
+                          >
                             {hidePortfolioBalances
                               ? '*****'
                               : fiatValueChangeDisplay}

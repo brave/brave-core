@@ -71,9 +71,7 @@ export const Title = styled.p<{
   maxWidth?: string
   textAlign?: 'right' | 'center'
 }>`
-  font-family: Poppins;
-  font-size: 20px;
-  font-weight: 600;
+  font: ${leo.font.heading.h3};
   color: ${(p) => p.theme.color.text01};
   letter-spacing: 0.02em;
   margin-bottom: 16px;
@@ -82,22 +80,16 @@ export const Title = styled.p<{
 `
 
 export const Description = styled.p<{ textAlign?: 'right' | 'center' }>`
+  font: ${leo.font.default.regular};
+
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
   letter-spacing: 0.01em;
-  line-height: 20px;
   color: ${(p) => p.theme.color.text02};
   text-align: ${(p) => p?.textAlign || 'left'};
 
   & > * > strong {
-    font-weight: 600;
-    font-size: 14px;
     color: ${(p) => p.theme.color.text01};
   }
 `

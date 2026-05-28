@@ -53,7 +53,10 @@ export const Tabs = ({ options, onSelect }: Props) => {
           <Tab isActive={option.id === activeTab.id}>
             {option.label}
             {option.labelSummary && (
-              <LabelSummary isActive={activeTab.id === option.id}>
+              <LabelSummary
+                isActive={activeTab.id === option.id}
+                variant='small.semibold'
+              >
                 {option.labelSummary}
               </LabelSummary>
             )}

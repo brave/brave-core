@@ -8,13 +8,9 @@ import Dialog from '@brave/leo/react/dialog'
 import * as leo from '@brave/leo/tokens/css/variables'
 
 export const DappCategoryLabel = styled.div`
+  font: ${leo.font.xSmall.semibold};
   display: inline-flex;
   color: ${leo.color.neutral[50]};
-  font-family: Inter, 'Poppins';
-  font-size: 10px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
   text-transform: uppercase;
   height: 20px;
   padding: 0px ${leo.spacing.s};

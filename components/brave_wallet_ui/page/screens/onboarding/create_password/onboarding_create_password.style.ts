@@ -1,9 +1,12 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// You can obtain one at https://mozilla.org/MPL/2.0/.
+// you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+
+// Shared Styles
+import { Text } from '../../../../components/shared/style'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -15,25 +18,17 @@ export const StyledWrapper = styled.div`
   padding-left: 14px;
 `
 
-export const Title = styled.span`
-  font-family: Poppins;
-  font-size: 20px;
-  font-weight: 600;
+export const Title = styled(Text)`
   line-height: 30px;
-  color: ${(p) => p.theme.color.text01};
-  letter-spacing: 0.02em;
   margin-bottom: 10px;
   text-align: left;
 `
 
-export const Description = styled.span`
+export const Description = styled(Text)`
   display: flex;
   align-items: flex-start;
-  font-family: Poppins;
-  font-size: 14px;
   line-height: 20px;
   font-weight: 300;
-  color: ${(p) => p.theme.color.text02};
   max-width: 380px;
   text-align: left;
   margin-bottom: 24px;

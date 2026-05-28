@@ -4,20 +4,13 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
 import CloseIcon from '../../../assets/svg-icons/close.svg'
+
+// Shared Styles
 import { WalletButton } from '../../shared/style'
 
 interface StyleProps {
   hasSearch: boolean
 }
-
-export const HeaderTitle = styled.span`
-  font-family: Poppins;
-  font-size: 18px;
-  line-height: 26px;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text02};
-`
 
 export const HeaderWrapper = styled.div<StyleProps>`
   display: flex;

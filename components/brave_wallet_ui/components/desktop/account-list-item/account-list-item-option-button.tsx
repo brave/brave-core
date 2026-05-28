@@ -9,7 +9,8 @@ import * as React from 'react'
 import { AccountButtonOptionsObjectType } from '../../../constants/types'
 
 // Styled Components
-import { OvalButton, OvalButtonText, ButtonIcon } from './style'
+import { OvalButton, ButtonIcon } from './style'
+import { Text } from '../../shared/style'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -25,7 +26,12 @@ export const AccountListItemOptionButton = (props: Props) => {
   return (
     <OvalButton onClick={onClick}>
       {!hideIcon && <ButtonIcon name={option.icon} />}
-      <OvalButtonText>{getLocale(option.name)}</OvalButtonText>
+      <Text
+        textColor='secondary'
+        variant='small.semibold'
+      >
+        {getLocale(option.name)}
+      </Text>
     </OvalButton>
   )
 }

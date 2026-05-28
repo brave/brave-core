@@ -21,7 +21,9 @@ export const AssetPriceChange = (props: Props) => {
         isDown={isDown}
         name={isDown ? 'arrow-small-down' : 'arrow-small-up'}
       />
-      <PriceChange isDown={isDown}>{priceChangePercentage}</PriceChange>
+      <PriceChange textColor={isDown ? 'error' : 'success'}>
+        {priceChangePercentage}
+      </PriceChange>
     </StyledWrapper>
   )
 }
