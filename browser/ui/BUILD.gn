@@ -815,6 +815,15 @@ source_set("ui") {
         "views/toolbar/ai_chat_button.h",
       ]
     }
+
+    sources += [
+      "views/screenshot/screenshot_bubble_view.cc",
+      "views/screenshot/screenshot_bubble_view.h",
+      "views/toolbar/screenshot_button.cc",
+      "views/toolbar/screenshot_button.h",
+    ]
+
+    deps += [ "//brave/browser/ui/screenshot" ]
   }
 
   if (is_win || is_mac || is_linux) {
