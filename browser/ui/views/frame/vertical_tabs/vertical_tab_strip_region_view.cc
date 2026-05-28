@@ -568,7 +568,8 @@ void BraveVerticalTabStripRegionView::UpdateStateAfterDragAndDropFinished(
 }
 
 BraveVerticalTabStripRegionView::ScopedStateResetter
-BraveVerticalTabStripRegionView::ExpandTabStripForDragging() {
+BraveVerticalTabStripRegionView::ExpandTabStripForDragging(
+    bool snap_to_expanded) {
   if (state_ == State::kExpanded) {
     return {};
   }
@@ -578,6 +579,16 @@ BraveVerticalTabStripRegionView::ExpandTabStripForDragging() {
       weak_factory_.GetWeakPtr(), state_));
 
   SetState(State::kExpanded);
+  if (snap_to_expanded && width_animation_.is_animating()) {
+    // Skip the slide animation so the strip immediately takes its full
+    // expanded width. Otherwise the animation drives per-frame widget bounds
+    // changes that re-trigger tab container layout (see OnBoundsChanged), and
+    // an in-flight drag-and-drop session sees the dragged tab's insertion
+    // index recomputed every frame -- visible as flicker when a tab is
+    // dropped into a previously collapsed strip from another window.
+    width_animation_.Reset(1);
+    width_animation_.Stop();
+  }
   // In this case, we dont' wait for the widget bounds to be changed so that
   // tab drag controller can layout tabs properly.
   SetSize(GetPreferredSize());
