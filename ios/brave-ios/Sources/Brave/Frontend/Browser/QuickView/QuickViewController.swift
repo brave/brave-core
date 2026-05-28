@@ -249,16 +249,11 @@ extension QuickViewController: TabDelegate {
 // MARK: - TabObserver
 extension QuickViewController: TabObserver {
   func tabDidCreateWebView(_ tab: some TabState) {
-    if FeatureList.kUseProfileWebViewConfiguration.enabled {
-      tab.readerMode = .init(tab: tab)
-    } else {
-      // content blocker
-      if let detachedTabPrivacyHelper = DetachedTabPrivacyHelper(
-        tab: tab,
-        profileController: profileController
-      ) {
-        tab.data.detachedPrivacyHelper = detachedTabPrivacyHelper
-      }
+    if let detachedTabPrivacyHelper = DetachedTabPrivacyHelper(
+      tab: tab,
+      profileController: profileController
+    ) {
+      tab.data.detachedPrivacyHelper = detachedTabPrivacyHelper
     }
   }
 
