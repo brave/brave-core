@@ -21,6 +21,8 @@ static_library("browser") {
     "associated_url_content.h",
     "associated_web_contents_content.cc",
     "associated_web_contents_content.h",
+    "content_tool.cc",
+    "content_tool.h",
     "full_screenshotter.cc",
     "full_screenshotter.h",
     "page_content_blocks.cc",
@@ -29,8 +31,6 @@ static_library("browser") {
     "page_content_fetcher.h",
     "pdf_utils.cc",
     "pdf_utils.h",
-    "script_tool.cc",
-    "script_tool.h",
   ]
 
   if (enable_pdf) {
@@ -91,9 +91,9 @@ source_set("unit_tests") {
     "ai_page_content_fetcher_unittest.cc",
     "associated_url_content_unittest.cc",
     "associated_web_contents_content_unittest.cc",
+    "content_tool_unittest.cc",
     "page_content_blocks_unittest.cc",
     "page_content_fetcher_unittest.cc",
-    "script_tool_unittest.cc",
   ]
 
   deps = [

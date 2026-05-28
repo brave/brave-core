@@ -1180,8 +1180,6 @@ void ConversationHandler::ProcessPermissionChallenge(
   // Find the tool and notify it
   base::WeakPtr<Tool> tool_ptr;
   for (auto& tool : GetTools()) {
-    LOG(ERROR) << "Tool name: " << tool->Name()
-               << " tool use name: " << tool_use->tool_name;
     if (tool && tool->Name() == tool_use->tool_name) {
       tool_ptr = tool;
       break;

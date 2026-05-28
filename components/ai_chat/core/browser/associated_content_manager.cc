@@ -492,7 +492,7 @@ void AssociatedContentManager::UpdateToolsForNewGenerationLoop(
   auto barrier =
       base::BarrierClosure(content_delegates_.size(), std::move(on_updated));
   for (auto* content : content_delegates_) {
-    content->GetScriptTools(base::BindOnce(
+    content->GetContentTools(base::BindOnce(
         [](base::WeakPtr<AssociatedContentManager> self,
            base::RepeatingClosure done,
            std::vector<std::unique_ptr<Tool>> tools) {

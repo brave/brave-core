@@ -177,7 +177,7 @@ IN_PROC_BROWSER_TEST_F(WebMcpBrowserTest,
   ASSERT_TRUE(content);
 
   base::test::TestFuture<std::vector<std::unique_ptr<Tool>>> future;
-  content->GetScriptTools(future.GetCallback());
+  content->GetContentTools(future.GetCallback());
   EXPECT_EQ(2u, future.Take().size());
 }
 

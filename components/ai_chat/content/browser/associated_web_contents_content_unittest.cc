@@ -240,9 +240,9 @@ class AssociatedWebContentsContentUnitTest
     web_contents_content_->GetScreenshots(std::move(callback));
   }
 
-  void GetScriptTools(
-      AssociatedContentDelegate::GetScriptToolsCallback callback) {
-    web_contents_content_->GetScriptTools(std::move(callback));
+  void GetContentTools(
+      AssociatedContentDelegate::GetContentToolsCallback callback) {
+    web_contents_content_->GetContentTools(std::move(callback));
   }
 
   void TitleWasSet(content::NavigationEntry* entry) {
@@ -685,7 +685,7 @@ TEST_P(AssociatedWebContentsContentUnitTest,
 // is just: "given a populated AIPageContent response, expose one Tool per
 // entry in frame_data->script_tools". These tests fake that response.
 TEST_P(AssociatedWebContentsContentUnitTest,
-       GetScriptTools_ReturnsToolsFromFrameData) {
+       GetContentTools_ReturnsToolsFromFrameData) {
   auto* agent = SetUpFakeAIPageContentAgent();
   std::vector<blink::mojom::ScriptToolPtr> script_tools;
   script_tools.push_back(MakeScriptTool("search", "Search the page"));
@@ -698,7 +698,7 @@ TEST_P(AssociatedWebContentsContentUnitTest,
   NavigateTo(GURL("https://www.example.com"));
 
   base::test::TestFuture<std::vector<std::unique_ptr<Tool>>> future;
-  GetScriptTools(future.GetCallback());
+  GetContentTools(future.GetCallback());
   auto tools = future.Take();
   // ScriptTool prefixes names with the sanitized host ("www.example.com" →
   // "www_example_com") and embeds the host plus the page-provided description
@@ -713,7 +713,7 @@ TEST_P(AssociatedWebContentsContentUnitTest,
 }
 
 TEST_P(AssociatedWebContentsContentUnitTest,
-       GetScriptTools_NoToolsWhenFrameDataEmpty) {
+       GetContentTools_NoToolsWhenFrameDataEmpty) {
   auto* agent = SetUpFakeAIPageContentAgent();
   // CreateAIPageContentWithText leaves script_tools empty.
   agent->SetResponse(CreateAIPageContentWithText("hello"));
@@ -721,11 +721,11 @@ TEST_P(AssociatedWebContentsContentUnitTest,
   NavigateTo(GURL("https://www.example.com"));
 
   base::test::TestFuture<std::vector<std::unique_ptr<Tool>>> future;
-  GetScriptTools(future.GetCallback());
+  GetContentTools(future.GetCallback());
   EXPECT_TRUE(future.Take().empty());
 }
 
-TEST_P(AssociatedWebContentsContentUnitTest, GetScriptTools_NullResponse) {
+TEST_P(AssociatedWebContentsContentUnitTest, GetContentTools_NullResponse) {
   // If the renderer drops the call (no model context, feature disabled, etc.)
   // the WrapCallbackWithDefaultInvokeIfNotRun helper delivers a null result
   // and the callback must still fire with an empty list.
@@ -735,12 +735,12 @@ TEST_P(AssociatedWebContentsContentUnitTest, GetScriptTools_NullResponse) {
   NavigateTo(GURL("https://www.example.com"));
 
   base::test::TestFuture<std::vector<std::unique_ptr<Tool>>> future;
-  GetScriptTools(future.GetCallback());
+  GetContentTools(future.GetCallback());
   EXPECT_TRUE(future.Take().empty());
 }
 
 TEST_P(AssociatedWebContentsContentUnitTest,
-       GetScriptTools_NoLiveFrameReturnsEmpty) {
+       GetContentTools_NoLiveFrameReturnsEmpty) {
   // If the main frame is not live, we should not attempt to bind the agent
   // and the callback must run synchronously with an empty list.
   NavigateTo(GURL("https://www.example.com"));
@@ -748,7 +748,7 @@ TEST_P(AssociatedWebContentsContentUnitTest,
       ->SetIsCrashed(base::TERMINATION_STATUS_PROCESS_CRASHED, 0);
 
   base::test::TestFuture<std::vector<std::unique_ptr<Tool>>> future;
-  GetScriptTools(future.GetCallback());
+  GetContentTools(future.GetCallback());
   EXPECT_TRUE(future.Take().empty());
 }
 

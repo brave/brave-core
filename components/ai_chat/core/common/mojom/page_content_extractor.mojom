@@ -45,7 +45,7 @@ interface PageContentExtractor {
   // nonces value must be the same, otherwise nullopt will be returned.
   GetOpenAIChatButtonNonce() => (string? nonce);
 
-  // Execute a script tool registered on the page by name. Returns the tool
+  // Execute a content tool registered on the page by name. Returns the tool
   // result string, or null on failure.
-  ExecuteScriptTool(string name, string input_json) => (string? result);
+  ExecuteContentTool(string name, string input_json) => (string? result);
 };

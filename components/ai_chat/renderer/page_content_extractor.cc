@@ -18,6 +18,7 @@
 #include "base/logging.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
+#include "base/unguessable_token.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "brave/components/ai_chat/core/common/utils.h"
@@ -342,10 +343,10 @@ void PageContentExtractor::OnJSTranscriptUrlResult(
   std::move(callback).Run(std::move(result));
 }
 
-void PageContentExtractor::ExecuteScriptTool(
+void PageContentExtractor::ExecuteContentTool(
     const std::string& name,
     const std::string& input_json,
-    mojom::PageContentExtractor::ExecuteScriptToolCallback callback) {
+    mojom::PageContentExtractor::ExecuteContentToolCallback callback) {
   blink::WebDocument document = render_frame()->GetWebFrame()->GetDocument();
   // If WebDocument drops the callback without calling it (no model context →
   // nullopt return value), WrapCallbackWithDefaultInvokeIfNotRun ensures the
@@ -353,9 +354,10 @@ void PageContentExtractor::ExecuteScriptTool(
   auto wrapped = mojo::WrapCallbackWithDefaultInvokeIfNotRun(
       std::move(callback), std::optional<std::string>(std::nullopt));
   document.ExecuteScriptTool(
-      blink::WebString::FromUTF8(name), blink::WebString::FromUTF8(input_json),
+      base::UnguessableToken::Create(), blink::WebString::FromUtf8(name),
+      blink::WebString::FromUtf8(input_json),
       base::BindOnce(
-          [](mojom::PageContentExtractor::ExecuteScriptToolCallback cb,
+          [](mojom::PageContentExtractor::ExecuteContentToolCallback cb,
              std::unique_ptr<blink::WebScriptToolDeclaration> declaration,
              base::expected<blink::WebString, blink::WebScriptToolError>
                  result) {
