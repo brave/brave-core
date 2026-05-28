@@ -101,7 +101,7 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
     private final SharedPreferences.OnSharedPreferenceChangeListener mPrefChangeListener =
             (sharedPreferences, key) -> {
                 if (BravePreferenceKeys.BRAVE_BROWSER_LOCK.equals(key)
-                        || BravePreferenceKeys.BRAVE_BROWSER_LOCK_PRIVATE_TABS_ONLY.equals(key)) {
+                        || BravePreferenceKeys.BRAVE_BROWSER_LOCK_PREVENT_CAPTURE.equals(key)) {
                     applySecureFlagToAllActivities();
                 }
             };
