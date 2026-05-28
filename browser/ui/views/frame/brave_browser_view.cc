@@ -119,6 +119,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_SIDEBAR_V2)
+#include "brave/browser/ui/views/frame/brave_side_panel_shadow_overlay_view.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel_resize_area.h"
 #endif
 
@@ -362,6 +363,14 @@ BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
 #if BUILDFLAG(ENABLE_SIDEBAR_V2)
       side_panel_->SetResizeArea(
           std::make_unique<views::BraveSidePanelResizeArea>(side_panel_));
+
+      side_panel_shadow_overlay_ = AddChildView(
+          std::make_unique<BraveSidePanelShadowOverlayView>(*this));
+      // The overlay must render below side_panel_ so the shadow appears around
+      // the panel edges, not over its content. Move it just before side_panel_
+      // in the child order (higher index = rendered on top).
+      ReorderChildView(side_panel_shadow_overlay_,
+                       GetIndexOf(side_panel_).value());
 #endif
     } else {
       // V1: wrap chromium's side panel inside SidebarContainerView.
@@ -1110,6 +1119,9 @@ void BraveBrowserView::UpdateSidebarBorder() {
   if (side_panel_) {
     side_panel_->SetRoundedBorderEnabled(
         ShouldUseBraveWebViewRoundedCornersForContents(browser_));
+  }
+  if (side_panel_shadow_overlay_) {
+    side_panel_shadow_overlay_->UpdateShadowVisibility();
   }
 #else
   if (side_panel_) {

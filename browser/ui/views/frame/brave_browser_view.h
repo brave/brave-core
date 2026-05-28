@@ -17,6 +17,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/browser/ui/commands/accelerator_service.h"
+#include "brave/browser/ui/sidebar/buildflags/buildflags.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
@@ -64,6 +65,7 @@ class Widget;
 }  // namespace views
 
 class BraveBrowser;
+class BraveSidePanelShadowOverlayView;
 class BraveShieldsToolbarButton;
 class BraveHelpBubbleHostView;
 class BraveMultiContentsView;
@@ -304,6 +306,9 @@ class BraveBrowserView : public BrowserView,
   std::unique_ptr<BrowserWindowMouseEventHandler>
       browser_window_mouse_event_handler_;
   std::unique_ptr<ViewShadow> contents_shadow_;
+#if BUILDFLAG(ENABLE_SIDEBAR_V2)
+  raw_ptr<BraveSidePanelShadowOverlayView> side_panel_shadow_overlay_ = nullptr;
+#endif
 
   PrefChangeRegistrar pref_change_registrar_;
   base::ScopedObservation<commands::AcceleratorService,
