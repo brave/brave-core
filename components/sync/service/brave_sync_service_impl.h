@@ -90,8 +90,8 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
   void RemoveAllPrefsChangeRegistrarForTesting();
   SyncServiceCrypto* GetCryptoForTesting();
   bool SetSeedForTesting(const std::string& seed);
-  void SetInitializingForTesting();
   DataTypeManager* GetDataTypeManagerForTesting();
+  void SetInitializingForTesting();
 
  private:
   friend class BraveSyncServiceImplGACookiesTest;
@@ -151,7 +151,7 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
   bool SetSeed(const std::string& seed);
 
 #if BUILDFLAG(IS_ANDROID)
-  void MigrateAndroidSyncEverythingIfRequired();
+  void MaybeAndroidSyncEverythingIfRequired();
 #endif
 
   brave_sync::Prefs brave_sync_prefs_;

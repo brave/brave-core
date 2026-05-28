@@ -365,9 +365,7 @@ void BraveSyncServiceImpl::OnEngineInitialized(
   }
 
 #if BUILDFLAG(IS_ANDROID)
-  DCHECK(GetSyncAccountStateForPrefs() !=
-         SyncPrefs::SyncAccountState::kNotSignedIn);
-  MigrateAndroidSyncEverythingIfRequired();
+  MaybeAndroidSyncEverythingIfRequired();
 #endif
 }
 
@@ -574,7 +572,7 @@ void BraveSyncServiceImpl::OnPrimaryAccountChanged(
     const signin::PrimaryAccountChangeEvent& event_details) {}
 
 #if BUILDFLAG(IS_ANDROID)
-void BraveSyncServiceImpl::MigrateAndroidSyncEverythingIfRequired() {
+void BraveSyncServiceImpl::MaybeAndroidSyncEverythingIfRequired() {
   if (!GetUserSettings()->IsSyncEverythingEnabled()) {
     return;
   }
@@ -586,7 +584,7 @@ void BraveSyncServiceImpl::MigrateAndroidSyncEverythingIfRequired() {
     selected_types.Put(type);
   }
   GetUserSettings()->SetSelectedTypes(false, selected_types);
-  CHECK(!GetUserSettings()->IsSyncEverythingEnabled());
+  DCHECK(!GetUserSettings()->IsSyncEverythingEnabled());
 }
 #endif
 

@@ -747,8 +747,8 @@ TEST_F(BraveSyncServiceImplTest,
   ASSERT_TRUE(base::test::RunUntil([&] { return engine() != nullptr; }));
 
   // Complete setup so IsInitialSyncFeatureSetupComplete() returns true.
-  // OnEngineInitialized was already called above but exited early because
-  // setup was not yet complete at that point.
+  // OnEngineInitialized was already called after we set the sync code, but
+  // exited early because setup was not yet complete at that point.
   brave_sync_service_impl()
       ->GetUserSettings()
       ->SetInitialSyncFeatureSetupComplete();
