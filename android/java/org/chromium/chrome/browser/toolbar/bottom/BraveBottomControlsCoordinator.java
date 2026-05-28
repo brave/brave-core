@@ -30,6 +30,7 @@ import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.layouts.LayoutManager;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.overlay_panel.PanelState;
+import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabObscuringHandler;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
@@ -77,6 +78,7 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
             BrowserStateBrowserControlsVisibilityDelegate browserControlsVisibilityDelegate,
             FullscreenManager fullscreenManager,
             MonotonicObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
+            NullableObservableSupplier<Tab> tabSupplier,
             ScrollingBottomViewResourceFrameLayout root,
             @LayerType int layerType,
             @DimenRes int heightResId,
@@ -93,6 +95,7 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
                 browserControlsVisibilityDelegate,
                 fullscreenManager,
                 edgeToEdgeControllerSupplier,
+                tabSupplier,
                 root,
                 layerType,
                 heightResId,
