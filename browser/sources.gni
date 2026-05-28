@@ -852,6 +852,11 @@ if (enable_ai_chat && enable_print_preview) {
       [ "//brave/browser/ai_chat:print_preview_extractor_internal" ]
 }
 
+if (enable_print_preview) {
+  brave_chrome_browser_sources +=
+      [ "//brave/browser/ai_chat/print_preview_extractor_factory.cc" ]
+}
+
 # https://github.com/brave/brave-browser/issues/41464
 if (enable_tor) {
   brave_chrome_browser_deps += [ "//brave/browser/tor:util" ]

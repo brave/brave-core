@@ -138,6 +138,7 @@ if (enable_print_preview) {
     sources = [
       "print_preview_extractor.cc",
       "print_preview_extractor.h",
+      "print_preview_extractor_factory.h",
     ]
     deps = [
       "//base",
