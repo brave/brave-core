@@ -58,6 +58,17 @@ void BraveBrowserViewTabbedLayoutImpl::ConfigureTopContainerBackground(
     background->SetCorners(corners);
   }
 #endif  // BUILDFLAG(IS_LINUX)
+
+  // In focus mode, the horizontal tab strip is reparented into the top
+  // container. Since the tab strip does not paint its own background, the top
+  // container background must be set to the frame color instead of the toolbar
+  // background color.
+  if (IsParentedTo(views().horizontal_tab_strip_region_view,
+                   views().top_container)) {
+    if (!delegate().ShouldShowVerticalTabs()) {
+      background->SetPrimaryColor(ui::kColorFrameActive);
+    }
+  }
 }
 
 // static
@@ -325,6 +336,16 @@ void BraveBrowserViewTabbedLayoutImpl::CalculateBraveVerticalTabStripLayout(
   // Compute the top edge based on the proposed bounds of bookmark/infobar/top
   // container, not the current view bounds.
   auto get_vertical_tabs_top = [&]() -> int {
+    // In focus mode the top chrome slides over the contents area rather than
+    // pushing it down. Anchor the vertical tab strip to the top of the
+    // contents bounds so it stays full-height and the revealed top views
+    // overlay it.
+    if (!IsParentedTo(views().top_container, views().browser_view)) {
+      auto* contents_layout = layout.GetLayoutFor(views().contents_container);
+      CHECK(contents_layout);
+      return contents_layout->bounds.y();
+    }
+
     if (ShouldPushBookmarkBarForVerticalTabs()) {
       CHECK(views().bookmark_bar);
       auto* bookmark_layout = layout.GetLayoutFor(views().bookmark_bar);
@@ -341,9 +362,11 @@ void BraveBrowserViewTabbedLayoutImpl::CalculateBraveVerticalTabStripLayout(
     }
 
     CHECK(views().top_container);
-    auto* top_container_layout = layout.GetLayoutFor(views().top_container);
-    CHECK(top_container_layout);
-    return top_container_layout->bounds.bottom() - GetContentsMargins().top();
+    if (auto* top_layout = layout.GetLayoutFor(views().top_container)) {
+      return top_layout->bounds.bottom() - GetContentsMargins().top();
+    }
+
+    return GetContentsMargins().top();
   };
 
   gfx::Rect vertical_tab_strip_bounds = views().browser_view->GetLocalBounds();
@@ -575,10 +598,24 @@ gfx::Insets BraveBrowserViewTabbedLayoutImpl::GetContentsMargins() const {
 
   gfx::Insets margins(kRoundedCornersContentsViewMargin);
 
-  // If there is a visible view above the contents container, then there is no
-  // need for a top margin.
-  if (delegate().ShouldDrawTabStrip() || delegate().IsToolbarVisible() ||
-      delegate().IsBookmarkBarVisible() || delegate().IsInfobarVisible()) {
+  auto contents_at_top_edge = [&]() {
+    if (delegate().IsInfobarVisible()) {
+      return false;
+    }
+    // In focus mode the top container is reparented out of the browser view, so
+    // the top chrome no longer pushes the contents down. Only treat top UI as
+    // occupying the top edge when the top container is still a child of the
+    // browser view.
+    if (IsParentedTo(views().top_container, views().browser_view)) {
+      if (delegate().ShouldDrawTabStrip() || delegate().IsToolbarVisible() ||
+          delegate().IsBookmarkBarVisible()) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  if (!contents_at_top_edge()) {
     margins.set_top(0);
   }
 
@@ -589,6 +626,13 @@ bool BraveBrowserViewTabbedLayoutImpl::ShouldPushBookmarkBarForVerticalTabs()
     const {
   CHECK(views().vertical_tab_strip_host)
       << "This method is used only when vertical tab strip host is set";
+
+  // In focus mode, the top container (and the bookmark view within it) has been
+  // parented to the top overlay and the bookmark bar does not need to be
+  // repositioned.
+  if (!IsParentedTo(views().top_container, views().browser_view)) {
+    return false;
+  }
 
   // This can happen when bookmarks bar is visible on NTP. In this case
   // we should lay out vertical tab strip next to bookmarks bar so that

@@ -8,6 +8,8 @@ source_set("frame") {
     "brave_contents_view_util.h",
     "brave_side_panel_shadow_overlay_view.h",
     "focus_mode_title_bar_view.h",
+    "focus_mode_top_overlay.cc",
+    "focus_mode_top_overlay.h",
     "layout/brave_browser_view_layout_delegate_impl.cc",
     "layout/brave_browser_view_layout_delegate_impl.h",
     "layout/brave_browser_view_tabbed_layout_impl.cc",
@@ -17,6 +19,7 @@ source_set("frame") {
 
   public_deps = [
     "//base",
+    "//brave/browser/ui/views/frame/edge_reveal",
     "//components/tabs:public",
     "//ui/views",
   ]
@@ -88,6 +91,7 @@ source_set("browser_tests") {
 
   sources = [
     "//brave/browser/ui/views/frame/brave_browser_view_browsertest.cc",
+    "//brave/browser/ui/views/frame/focus_mode_top_overlay_browsertest.cc",
     "//brave/browser/ui/views/frame/tab_strip_placement_coordinator_browsertest.cc",
   ]
 
@@ -95,6 +99,7 @@ source_set("browser_tests") {
     ":frame",
     ":frame_impl",
     "//base",
+    "//brave/browser/ui/focus_mode",
     "//brave/browser/ui/sidebar:sidebar_impl",
     "//brave/browser/ui/views/frame/vertical_tabs",
     "//brave/browser/ui/views/sidebar",
