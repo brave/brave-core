@@ -25,6 +25,7 @@ class BraveVPNButton;
 #endif
 
 class BraveBookmarkButton;
+class ScreenshotButton;
 class SidePanelButton;
 class ToolbarButton;
 class WalletButton;
@@ -112,6 +113,8 @@ class BraveToolbarView : public ToolbarView,
   BooleanPrefMember show_ai_chat_button_;
   BooleanPrefMember hide_ai_chat_button_by_policy_;
 #endif
+
+  raw_ptr<ScreenshotButton> screenshot_button_ = nullptr;
 
   BooleanPrefMember show_wallet_button_;
   BooleanPrefMember wallet_disabled_by_policy_;

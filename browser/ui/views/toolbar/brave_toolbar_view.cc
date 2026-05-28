@@ -62,6 +62,9 @@
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #endif
 
+#include "brave/browser/ui/screenshot/features.h"
+#include "brave/browser/ui/views/toolbar/screenshot_button.h"
+
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/browser/ui/views/toolbar/brave_vpn_button.h"
@@ -360,6 +363,13 @@ void BraveToolbarView::Init() {
     UpdateAIChatButtonVisibility();
   }
 #endif
+
+  if (screenshot::features::IsScreenshotEnabled()) {
+    screenshot_button_ =
+        AddChildViewAt(std::make_unique<ScreenshotButton>(browser()),
+                       *GetIndexOf(app_menu_button()) - 1);
+    SetBraveButtonFlexBehavior(screenshot_button_);
+  }
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (brave_vpn::BraveVpnServiceFactory::GetForProfile(profile)) {
