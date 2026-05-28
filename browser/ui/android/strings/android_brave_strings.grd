@@ -709,13 +709,34 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Don't persist tabs between browsing sessions
       </message>
       <message name="IDS_BRAVE_BROWSER_LOCK_TITLE" desc="Title for the browser biometrics lock setting.">
-        Lockdown Brave
-      </message>
-      <message name="IDS_BRAVE_BROWSER_LOCK_SUMMARY" desc="Summary for the browser biometrics lock setting.">
-        Require your screen lock every time you launch or switch back to Brave.
+        Browser lock
       </message>
       <message name="IDS_BRAVE_BROWSER_LOCK_UNLOCK_BUTTON" desc="Button label to unlock the browser via biometrics.">
         Unlock browser
+      </message>
+      <message name="IDS_BRAVE_BROWSER_LOCKED" desc="Status label shown on the browser-wide lock screen.">
+        Browser locked
+      </message>
+      <message name="IDS_BRAVE_PRIVATE_TABS_LOCKED" desc="Status label shown on the private tabs lock screen.">
+        Private tabs locked
+      </message>
+      <message name="IDS_BRAVE_UNLOCK_PRIVATE_TABS" desc="Button label to unlock private tabs via biometrics.">
+        Unlock private tabs
+      </message>
+      <message name="IDS_BRAVE_OPEN_NORMAL_TABS" desc="Button label on the private tabs lock screen to navigate to regular tabs instead.">
+        Open normal tabs
+      </message>
+      <message name="IDS_BRAVE_BROWSER_LOCK_SCREEN_DESCRIPTION" desc="Description at the top of the Browser Lock settings screen.">
+        Lock private tabs or the entire Brave app with your device's screen lock.
+      </message>
+      <message name="IDS_BRAVE_BROWSER_LOCK_WHAT_TO_LOCK" desc="Section header on the Browser Lock settings screen.">
+        What to lock
+      </message>
+      <message name="IDS_BRAVE_BROWSER_LOCK_ENTIRE_APPLICATION" desc="Toggle label: lock the entire Brave application.">
+        Entire application
+      </message>
+      <message name="IDS_BRAVE_BROWSER_LOCK_PRIVATE_TABS" desc="Toggle label: lock private tabs.">
+        Private tabs
       </message>
       <message name="IDS_SEND_P3A_ANALYTICS_TITLE" desc="Title for checkbox of send p3a analytics.">
         Allow privacy-preserving product analytics (P3A)
