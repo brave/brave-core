@@ -1382,6 +1382,7 @@
 -PictureInPictureWindowControllerFencedFrameBrowserTest.FencedFrameShouldNotCloseWindow
 -PlatformAppNavigationRedirectorFencedFrameBrowserTest.DoNotLaunchAppInFencedFrames
 -PrefetchProxyFencedFrameBrowserTest.*
+-PrintFencedFrameBrowserTest.BrowserPrint
 -PrintFencedFrameBrowserTest.DocumentExecCommand
 -PrintFencedFrameBrowserTest.ScriptedPrint
 -SBNavigationObserverBrowserTest.FencedFrameNavigationEventsAndReferrerChain
@@ -2949,6 +2950,7 @@
 -CookiePolicyBrowserTest.*
 -CookiePolicyStorageBrowserTest.*
 -CookieStoreSameParty*Test.*
+-CredentialManagerAutofillBrowserTest.*
 -CredentialManagerBrowserTest.*
 -CriticalClientHintsBrowserTest.*
 -CrossProfileDebuggerApiTest.GetTargets
