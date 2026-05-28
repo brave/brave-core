@@ -67,10 +67,10 @@ TEST_F(ConfiguredProxyResolutionServiceTest, TorProxy) {
   ProxyInfo info;
   TestCompletionCallback callback;
   std::unique_ptr<ProxyResolutionRequest> request;
-  int rv = service->ResolveProxy(url, std::string(), network_anonymization_key,
-                                 &info, callback.callback(), &request,
-                                 NetLogWithSource::Make(NetLogSourceType::NONE),
-                                 DEFAULT_PRIORITY);
+  int rv = service->ResolveProxy(
+      url, std::string(), network_anonymization_key,
+      handles::kInvalidNetworkHandle, &info, callback.callback(), &request,
+      NetLogWithSource::Make(NetLogSourceType::NONE), DEFAULT_PRIORITY);
   EXPECT_THAT(rv, IsOk());
 
   ProxyServer server = info.proxy_chain().GetProxyServer(/*chain_index=*/0);
