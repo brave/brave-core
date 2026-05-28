@@ -1,13 +1,12 @@
 diff --git a/third_party/blink/renderer/modules/webgpu/gpu_adapter.cc b/third_party/blink/renderer/modules/webgpu/gpu_adapter.cc
-index 4e4ca8dcb4febd1fc8eb132e24cbf1d98b41aef7..c0750443df1c5dbadd5ea2b3d568e6a0b61c5496 100644
+index 4e4ca8dcb4febd1fc8eb132e24cbf1d98b41aef7..b0a3567bb556e8dc45a80ff86b9cce9628b9ca53 100644
 --- a/third_party/blink/renderer/modules/webgpu/gpu_adapter.cc
 +++ b/third_party/blink/renderer/modules/webgpu/gpu_adapter.cc
-@@ -124,7 +124,8 @@ GPUAdapter::GPUAdapter(
- 
- GPUAdapterInfo* GPUAdapter::CreateAdapterInfoForAdapter() {
-   bool is_fallback_adapter = adapter_type_ == wgpu::AdapterType::CPU;
-+  BRAVE_CREATE_WEBGPU_ADAPTER_IMPL
- 
-   GPUAdapterInfo* info;
-   if (RuntimeEnabledFeatures::WebGPUDeveloperFeaturesEnabled()) {
-     // If WebGPU developer features have been enabled then provide all available
+@@ -143,6 +143,7 @@ GPUAdapterInfo* GPUAdapter::CreateAdapterInfoForAdapter() {
+       info->AppendMemoryHeapInfo(MakeGarbageCollected<GPUMemoryHeapInfo>(m));
+     }
+   } else {
++    BRAVE_SCRUB_WEBGPU_ADAPTER_INFO
+     info = MakeGarbageCollected<GPUAdapterInfo>(
+         vendor_, architecture_, subgroup_min_size_, subgroup_max_size_,
+         is_fallback_adapter);

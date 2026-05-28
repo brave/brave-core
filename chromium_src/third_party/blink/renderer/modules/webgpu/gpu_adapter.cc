@@ -7,7 +7,7 @@
 #include "third_party/blink/public/common/features.h"
 
 // clang-format off
-#define BRAVE_CREATE_WEBGPU_ADAPTER_IMPL                                       \
+#define BRAVE_SCRUB_WEBGPU_ADAPTER_INFO                                       \
   ExecutionContext* context = gpu_->GetExecutionContext();                     \
   BraveFarblingLevel level = brave::GetBraveFarblingLevelFor(                  \
       context, ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL,                     \
@@ -33,4 +33,4 @@
 
 #include <third_party/blink/renderer/modules/webgpu/gpu_adapter.cc>
 
-#undef BRAVE_CREATE_WEBGPU_ADAPTER_IMPL
+#undef BRAVE_SCRUB_WEBGPU_ADAPTER_INFO
