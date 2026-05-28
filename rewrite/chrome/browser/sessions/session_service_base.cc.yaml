@@ -5,8 +5,8 @@
 
 substitutions:
   - description:
-      'Call BuildCommandsForTreeTab at in
-      SessionTabBase::BuildCommandsForBrowser().'
+      Call BuildCommandsForTreeTab at in
+      SessionTabBase::BuildCommandsForBrowser().
     re_pattern: |-
       (void SessionServiceBase::BuildCommandsForBrowser\([\s\S]*?\) {)
     replace: |-
