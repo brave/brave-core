@@ -5,10 +5,17 @@
 
 #include "brave/browser/psst/psst_ui_delegate_impl.h"
 
-#include "base/strings/string_util.h"
+#include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
 #include "brave/components/psst/common/pref_names.h"
 #include "brave/components/psst/common/psst_metadata_schema.h"
 #include "components/prefs/pref_service.h"
+
+namespace {
+
+constexpr int kMaxPsstInfobarShownCounter = 2;
+
+}  // namespace
 
 namespace psst {
 
@@ -34,15 +41,35 @@ void PsstUiDelegateImpl::Show(
   dialog_data_ = std::move(dialog_data);
   origin_ = std::move(origin);
   user_script_result_ = std::move(user_script_result);
-  ui_presenter_->ShowInfoBar(
-      base::BindOnce(&PsstUiDelegateImpl::OnUserAcceptedInfobar,
+  ui_presenter_->SetLocationBarIconStatus(
+      LocationBarIconStatus::kIconWithBadge,
+      base::BindOnce(&PsstUiDelegateImpl::OnDontShowForThisSite,
+                     weak_ptr_factory_.GetWeakPtr()),
+      base::BindOnce(&PsstUiDelegateImpl::OnDisablePrivacySettingsTuning,
                      weak_ptr_factory_.GetWeakPtr()));
+
+  const int infobar_shown_count =
+      prefs_->GetInteger(prefs::kPsstInfobarShownCounter);
+  // Show the infobar only if it has been shown less than the max allowed times.
+  if (infobar_shown_count < kMaxPsstInfobarShownCounter) {
+    prefs_->SetInteger(prefs::kPsstInfobarShownCounter,
+                       infobar_shown_count + 1);
+    ui_presenter_->ShowInfoBar(
+        base::BindOnce(&PsstUiDelegateImpl::OnUserAcceptedInfobar,
+                       weak_ptr_factory_.GetWeakPtr()));
+  }
 }
 
 void PsstUiDelegateImpl::UpdateTasks(
     long progress,
     const std::vector<PolicyTask>& performed_tasks,
     const mojom::PsstStatus status) {
+  if (status == mojom::PsstStatus::kFailed) {
+    ui_presenter_->SetLocationBarIconStatus(LocationBarIconStatus::kHidden,
+                                            base::NullCallback(),
+                                            base::NullCallback());
+  }
+
   if (!ui_presenter_->IsDialogShown()) {
     return;
   }
@@ -114,11 +141,40 @@ void PsstUiDelegateImpl::OnUserAcceptedPsstSettings(
 void PsstUiDelegateImpl::OnUserAcceptedInfobar(const bool is_accepted) {
   // Handle the user's response to the infobar
   if (is_accepted) {
+    // Hide notification badge on the icon after the user interacts with the
+    // infobar
+    ui_presenter_->SetLocationBarIconStatus(
+        LocationBarIconStatus::kOnlyIcon,
+        base::BindOnce(&PsstUiDelegateImpl::OnDontShowForThisSite,
+                       weak_ptr_factory_.GetWeakPtr()),
+        base::BindOnce(&PsstUiDelegateImpl::OnDisablePrivacySettingsTuning,
+                       weak_ptr_factory_.GetWeakPtr()));
+
     ui_presenter_->ShowConsentDialog();
   } else {
     // Disable PSST if user declined the infobar
     prefs_->SetBoolean(prefs::kPsstEnabled, false);
   }
+}
+
+void PsstUiDelegateImpl::OnDontShowForThisSite() {
+  CHECK(origin_);
+  CHECK(dialog_data_);
+  psst_settings_service_->SetPsstWebsiteSettings(
+      origin_.value(), ConsentStatus::kBlock, dialog_data_->script_version,
+      dialog_data_->user_id, {});
+  ui_presenter_->HideInfoBar();
+  ui_presenter_->SetLocationBarIconStatus(LocationBarIconStatus::kHidden,
+                                          base::NullCallback(),
+                                          base::NullCallback());
+}
+
+void PsstUiDelegateImpl::OnDisablePrivacySettingsTuning() {
+  prefs_->SetBoolean(prefs::kPsstEnabled, false);
+  ui_presenter_->HideInfoBar();
+  ui_presenter_->SetLocationBarIconStatus(LocationBarIconStatus::kHidden,
+                                          base::NullCallback(),
+                                          base::NullCallback());
 }
 
 }  // namespace psst

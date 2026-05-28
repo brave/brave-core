@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//brave/components/psst/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//build/config/ui.gni")
 import("//components/vector_icons/vector_icons.gni")
@@ -57,6 +58,12 @@ aggregate_vector_icons("brave_vector_icons") {
       "brave_speedreader_graphic_book3.icon",
       "brave_speedreader_graphic_lines.icon",
     ]
+  }
+
+  if (enable_psst) {
+    sources += rebase_path([ "leo_psst.icon" ],
+                           ".",
+                           "//brave/node_modules/@brave/leo/icons-skia")
   }
 }
 

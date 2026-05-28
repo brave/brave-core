@@ -14,6 +14,8 @@ namespace psst {
 
 namespace prefs {
 inline constexpr char kPsstEnabled[] = "brave.psst.settings.enable_psst";
+inline constexpr char kPsstInfobarShownCounter[] =
+    "brave.psst.settings.infobar_shown_counter";
 }  // namespace prefs
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry);

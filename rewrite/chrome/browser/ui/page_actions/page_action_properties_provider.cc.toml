@@ -14,3 +14,15 @@ replace = '''kActionShowPartitionedStorage,
     },
     {
         kActionVirtualCardEnroll,'''
+
+[[substitution]]
+description = 'Insert kActionShowPsstIcon before kActionVirtualCardEnroll'
+pattern = 'kActionVirtualCardEnroll,'
+replace = '''kActionShowPsstIcon,
+            {
+                .histogram_name = "PsstIcon",
+                .type = brave::kPsstIconActionIconType,
+            },
+        },
+        {
+            kActionVirtualCardEnroll,'''

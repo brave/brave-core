@@ -24,6 +24,7 @@ static_library("psst") {
   deps = [
     "//base",
     "//brave/app:brave_generated_resources_grit",
+    "//brave/browser/ui/views/page_action",
     "//brave/components/constants",
     "//brave/components/psst/browser/content",
     "//brave/components/psst/browser/core",
@@ -32,6 +33,7 @@ static_library("psst") {
     "//chrome/browser/infobars",
     "//chrome/browser/profiles",
     "//chrome/browser/ui/dialogs",
+    "//chrome/browser/ui/tabs",
     "//chrome/browser/ui/webui",
     "//components/content_settings/core/browser",
     "//components/infobars/core",

@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/containers/buildflags/buildflags.gni")
+import("//brave/components/psst/buildflags/buildflags.gni")
 
 source_set("page_action") {
   # TODO(https://github.com/brave/brave-browser/issues/52829)
@@ -31,6 +32,35 @@ source_set("page_action") {
       "//chrome/browser/ui/views/frame:toolbar_button_provider",
       "//chrome/browser/ui/views/page_action",
       "//components/tabs:public",
+      "//ui/views",
+    ]
+  }
+
+  if (enable_psst) {
+    sources += [
+      "psst_action_controller.cc",
+      "psst_action_controller.h",
+    ]
+
+    # TODO remove unneeded deps here
+    deps += [
+      "//brave/browser/ui/tabs:tab_menu",
+      "//brave/components/psst/browser/content",
+      "//brave/components/psst/common",
+      "//brave/components/resources:strings_grit",
+
+      #      "//components/infobars/content",
+      #      "//components/infobars/content/common",
+      #      "//components/infobars/core/common:infobar_delegate",
+      #      "//components/infobars/core/common:infobar_manager",
+      "//chrome/browser/ui/actions",
+      "//chrome/browser/ui/browser_window",
+      "//chrome/browser/ui/views/frame",
+      "//chrome/browser/ui/views/frame:toolbar_button_provider",
+      "//chrome/browser/ui/views/page_action",
+
+      #      "//brave/browser/ui/views/page_action",
+      "//components/infobars/core",
       "//ui/views",
     ]
   }

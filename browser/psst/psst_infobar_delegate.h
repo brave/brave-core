@@ -28,6 +28,8 @@ class PsstInfoBarDelegate : public ConfirmInfoBarDelegate {
   bool Cancel() override;
   void InfoBarDismissed() override;
 
+  void DisableCallback();
+
  private:
   explicit PsstInfoBarDelegate(AcceptCallback on_accept_callback);
 

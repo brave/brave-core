@@ -11,6 +11,7 @@
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
+#include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/ui/tabs/split_tab_metrics.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
@@ -192,6 +193,11 @@ void CreateTemporaryContainerAndOpenUrl(BrowserWindowInterface* browser_window,
 // container.
 void OpenContainerMenuOnPageActionView(BrowserWindowInterface* browser,
                                        ::actions::ActionItem* item);
+#endif
+
+#if BUILDFLAG(ENABLE_PSST)
+void OpenPsstMenuOnPageActionView(BrowserWindowInterface* browser_window,
+                                  actions::ActionItem* item);
 #endif
 
 }  // namespace brave
