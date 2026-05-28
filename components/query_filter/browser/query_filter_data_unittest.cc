@@ -6,7 +6,6 @@
 #include "brave/components/query_filter/browser/query_filter_data.h"
 
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/query_filter/common/constants.h"
 #include "brave/components/query_filter/common/features.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
