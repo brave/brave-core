@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/third_party/blink/renderer/bindings/core/webgl/webgl_extension_handler.h"
+#include "brave/third_party/blink/renderer/bindings/core/webgl/webgl_farbled_extension_handler.h"
 
 #include <array>
 #include <optional>
@@ -17,7 +17,7 @@
 #include "third_party/blink/renderer/platform/bindings/v8_binding.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
-namespace webgl {
+namespace blink {
 
 namespace {
 // The size of the fake extension list.
@@ -34,10 +34,10 @@ inline constexpr size_t kFakeExtensionsSize = 21;
 //
 // The list below is a flat representation of the two sets {texture, expanded,
 // polygon, circle, triangle, blend, draw} and {sampler, blender, compressor}.
-const std::array<FakeExtensionType, kFakeExtensionsSize>&
+const std::array<WebGLFakeExtension, kFakeExtensionsSize>&
 GetFakeSupportedExtensions() {
   static const base::NoDestructor<
-      std::array<FakeExtensionType, kFakeExtensionsSize>>
+      std::array<WebGLFakeExtension, kFakeExtensionsSize>>
       fake_values({{
           {"EXT_texture_sampler", "ExtTextureSampler"},
           {"EXT_texture_compressor", "ExtTextureCompressor"},
@@ -66,22 +66,65 @@ GetFakeSupportedExtensions() {
 
 }  // namespace
 
-WebGLExtensionHandler::WebGLExtensionHandler(
-    const ExtensionVector& supported_extensions,
-    std::optional<FakeExtensionType> fake_extension)
+WebGLFarbledExtensionHandler::WebGLFarbledExtensionHandler(
+    const Vector<String>& supported_extensions,
+    std::optional<WebGLFakeExtension> fake_extension)
     : supported_extensions_(supported_extensions),
       fake_extension_(fake_extension) {}
 
-WebGLExtensionHandler::~WebGLExtensionHandler() = default;
+WebGLFarbledExtensionHandler::~WebGLFarbledExtensionHandler() = default;
 
-ExtensionVector WebGLExtensionHandler::GetSupportedExtensions() const {
+// static
+std::unique_ptr<WebGLFarbledExtensionHandler>
+WebGLFarbledExtensionHandler::CreateOffHandler(
+    const Vector<String>& real_extensions) {
+  return std::unique_ptr<WebGLFarbledExtensionHandler>(
+      new WebGLFarbledExtensionHandler(real_extensions));
+}
+
+// static
+std::unique_ptr<WebGLFarbledExtensionHandler>
+WebGLFarbledExtensionHandler::CreateBalancedHandler(
+    const Vector<String>& real_extensions,
+    const size_t seed) {
+  if (!base::FeatureList::IsEnabled(
+          blink::features::kWebGLBalancedFingerprintingProtection)) {
+    return std::unique_ptr<WebGLFarbledExtensionHandler>(
+        new WebGLFarbledExtensionHandler(real_extensions));
+  }
+
+  Vector<String> modified_extensions = real_extensions;
+  const auto& fake_extension_list = GetFakeSupportedExtensions();
+  const size_t fake_index = seed % fake_extension_list.size();
+  const WebGLFakeExtension& fake_extension = fake_extension_list[fake_index];
+  modified_extensions.emplace_back(fake_extension.name);
+
+  // The fake_extension_name is now stable until the lifetime of the handler.
+  return std::unique_ptr<WebGLFarbledExtensionHandler>(
+      new WebGLFarbledExtensionHandler(modified_extensions, fake_extension));
+}
+
+// static
+std::unique_ptr<WebGLFarbledExtensionHandler>
+WebGLFarbledExtensionHandler::CreateMaximumHandler(
+    const Vector<String>& real_extensions) {
+  if (real_extensions.Contains("WEBGL_debug_renderer_info")) {
+    return std::unique_ptr<WebGLFarbledExtensionHandler>(
+        new WebGLFarbledExtensionHandler(
+            Vector<String>{"WEBGL_debug_renderer_info"}));
+  }
+  return std::unique_ptr<WebGLFarbledExtensionHandler>(
+      new WebGLFarbledExtensionHandler(Vector<String>{}));
+}
+
+Vector<String> WebGLFarbledExtensionHandler::GetSupportedExtensions() const {
   return supported_extensions_;
 }
 
 // TODO(https://github.com/brave/brave-browser/issues/55858): Cover testing this
 // in browser_tests as it's not straightforward to test it as unittest due to
 // various v8 dependencies.
-blink::ScriptObject WebGLExtensionHandler::GetExtension(
+blink::ScriptObject WebGLFarbledExtensionHandler::GetExtension(
     blink::ScriptState* script_state,
     const blink::String& name,
     const blink::ScriptObject* real_extension) {
@@ -107,46 +150,13 @@ blink::ScriptObject WebGLExtensionHandler::GetExtension(
   return blink::ScriptObject::CreateNull(script_state->GetIsolate());
 }
 
-bool WebGLExtensionHandler::IsExtensionFarbled(
+bool WebGLFarbledExtensionHandler::IsExtensionFarbled(
     const blink::String& name) const {
   return fake_extension_.has_value() && fake_extension_.value().name == name;
 }
 
-std::unique_ptr<WebGLExtensionHandler> CreateOffHandler(
-    const ExtensionVector& real_extensions) {
-  return std::make_unique<WebGLExtensionHandler>(real_extensions);
-}
-
-std::unique_ptr<WebGLExtensionHandler> CreateBalancedHandler(
-    const ExtensionVector& real_extensions,
-    const size_t seed) {
-  if (!base::FeatureList::IsEnabled(
-          blink::features::kWebGLBalancedFingerprintingProtection)) {
-    return std::make_unique<WebGLExtensionHandler>(real_extensions);
-  }
-
-  ExtensionVector modified_extensions = real_extensions;
-  const auto& fake_extension_list = GetFakeSupportedExtensions();
-  const size_t fake_index = seed % fake_extension_list.size();
-  const FakeExtensionType& fake_extension = fake_extension_list[fake_index];
-  modified_extensions.emplace_back(fake_extension.name);
-
-  // The fake_extension_name is now stable until the lifetime of the handler.
-  return std::make_unique<WebGLExtensionHandler>(modified_extensions,
-                                                 fake_extension);
-}
-
-std::unique_ptr<WebGLExtensionHandler> CreateMaximumHandler(
-    const ExtensionVector& real_extensions) {
-  if (real_extensions.Contains("WEBGL_debug_renderer_info")) {
-    return std::make_unique<WebGLExtensionHandler>(
-        ExtensionVector{"WEBGL_debug_renderer_info"});
-  }
-  return std::make_unique<WebGLExtensionHandler>(ExtensionVector{});
-}
-
-base::span<const FakeExtensionType> GetFakeSupportedExtensionsForTesting() {
+base::span<const WebGLFakeExtension> GetFakeSupportedExtensionsForTesting() {
   CHECK_IS_TEST();
   return base::span(GetFakeSupportedExtensions());
 }
-}  // namespace webgl
+}  // namespace blink
