@@ -418,6 +418,7 @@ public class BraveToolbarManager extends ToolbarManager
                         controlsVisibilityDelegate,
                         mFullscreenManager,
                         mEdgeToEdgeControllerSupplier,
+                        mActivityTabProvider.asObservable(),
                         mBottomControls,
                         LayerType.TABSTRIP_TOOLBAR,
                         R.dimen.brave_bottom_toolbar_height,
