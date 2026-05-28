@@ -68,7 +68,7 @@
     "url": "https://github.com/brave/brave-browser/issues"
   },
   "engines": {
-    "node": ">=24.11.1 <25.0.0",
+    "node": ">=24.16.0 <25.0.0",
     "npm": ">=11.13.0"
   },
   "homepage": "https:/github.com/brave/brave-core#readme",
