@@ -1,12 +1,20 @@
 diff --git a/chrome/browser/extensions/BUILD.gn b/chrome/browser/extensions/BUILD.gn
-index a0cb72099019bd3aa86edf010529add60892b253..0f9dc7e9f4aa4f48d61e9f8335afb51219617264 100644
+index 41f5910e6f1f3217a958e6ad46034d01c3b53825..d27611de5ec44264cb11284652078b0774e37cd4 100644
 --- a/chrome/browser/extensions/BUILD.gn
 +++ b/chrome/browser/extensions/BUILD.gn
-@@ -1586,6 +1586,7 @@ source_set("extensions") {
-   if (enable_devtools_frontend) {
-     deps += [ "//chrome/browser/ui/webui/devtools" ]
-   }
-+  deps += brave_extensions_resources
- }
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
  
- static_library("test_support") {
++import("//brave/browser/extensions/resources.gni")
+ import("//build/config/chromebox_for_meetings/buildflags.gni")
+ import("//build/config/features.gni")
+ import("//build/config/ozone.gni")
+@@ -636,6 +637,7 @@ source_set("extensions") {
+     "//ui/native_window_tracker",
+     "//ui/shell_dialogs",
+   ]
++  deps += brave_extensions_resources
+   public_deps = [
+     "//chrome/browser/extensions/api/messaging",
+     "//chrome/browser/media/webrtc",
