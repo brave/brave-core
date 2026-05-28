@@ -122,6 +122,14 @@
         android:title="@string/prefs_closing_all_tabs_closes_brave"
         app:isPreferenceVisible="false"/>
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
+        android:fragment="org.chromium.chrome.browser.privacy.settings.BraveBrowserLockSettingsFragment"
+        android:key="brave_browser_lock"
+        android:order="13"
+        android:icon="@drawable/ic_biometric_login"
+        android:title="@string/brave_browser_lock_title"
+        android:summary="@string/brave_browser_lock_screen_description"
+        android:persistent="false"/>
+    <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:key="brave_origin"
         android:order="14"
         android:icon="@drawable/ic_product_origin"

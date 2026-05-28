@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.incognito.reauth;
 import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
@@ -47,6 +48,12 @@ public class BraveBrowserLockCoordinator extends IncognitoReauthCoordinatorBase 
         mLockView = getIncognitoReauthView();
         assert mLockView != null;
 
+        // Override the two text values that differ from the private-tabs defaults.
+        TextView statusText =
+                mLockView.findViewById(org.chromium.chrome.R.id.incognito_lock_status_text);
+        if (statusText != null) {
+            statusText.setText(org.chromium.chrome.R.string.brave_browser_locked);
+        }
         ButtonCompat unlockButton =
                 mLockView.findViewById(R.id.incognito_reauth_unlock_incognito_button);
         unlockButton.setText(org.chromium.chrome.R.string.brave_browser_lock_unlock_button);
