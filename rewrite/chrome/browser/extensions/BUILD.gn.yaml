@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Pull in the variable list for the Brave additions to
+      `source_set("extensions")`.
+
+      Inserted at the top of the file.
+    re_pattern: '(# found in the LICENSE file\.\n\n)'
+    replace: |
+      \1import("//brave/browser/extensions/resources.gni")
+
+  - description: |
+      Append Brave deps to `source_set("extensions")`.
+    re_pattern: '(source_set\("extensions"\).*?\bdeps\s*=\s*\[.*?\])'
+    re_flags: [DOTALL]
+    replace: '\1\n  deps += brave_extensions_resources'
