@@ -1,18 +1,27 @@
 diff --git a/chrome/browser/ui/page_actions/page_action_properties_provider.cc b/chrome/browser/ui/page_actions/page_action_properties_provider.cc
-index b4fd39e8275f602013a12c852437ac9d7f8056bd..948291f1969ef75f3f38807abf4a0a2b412bcb21 100644
+index b4fd39e8275f602013a12c852437ac9d7f8056bd..ddb7e1f74ad8162e0e4b949b23a11a0377ce55b7 100644
 --- a/chrome/browser/ui/page_actions/page_action_properties_provider.cc
 +++ b/chrome/browser/ui/page_actions/page_action_properties_provider.cc
-@@ -215,6 +215,13 @@ constexpr auto kPageActionProperties = base::MakeFixedFlatMap<
-             .element_identifier = kAutofillAddressPageActionElementId,
+@@ -216,7 +216,21 @@ constexpr auto kPageActionProperties = base::MakeFixedFlatMap<
          },
      },
-+    {
+     {
+-        kActionVirtualCardEnroll,
 +        kActionShowPartitionedStorage,
 +        {
 +            .histogram_name = "PartitionedStorage",
 +            .type = brave::kPartitionedStorageActionIconType,
 +        },
 +    },
-     {
-         kActionVirtualCardEnroll,
++    {
++        kActionShowPsstIcon,
++            {
++                .histogram_name = "PsstIcon",
++                .type = brave::kPsstIconActionIconType,
++            },
++        },
++        {
++            kActionVirtualCardEnroll,
          {
+             .histogram_name = "VirtualCardEnroll",
+             .type = PageActionIconType::kVirtualCardEnroll,
