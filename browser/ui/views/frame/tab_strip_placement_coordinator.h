@@ -40,7 +40,7 @@ class TabStripPlacementCoordinator {
 
   enum class PlacementKind {
     kDefault = 0,
-    kTopContainer = 1,
+    kFocusMode = 1,
     kVerticalTabStrip = 2,
   };
 

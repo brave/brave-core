@@ -22,7 +22,12 @@ class BraveBrowserFrameViewMac : public BrowserFrameViewMac {
   BraveBrowserFrameViewMac& operator=(const BraveBrowserFrameViewMac&) = delete;
   gfx::Size GetMinimumSize() const override;
 
+  // BrowserFrameView:
+  void OnFullscreenStateChanged() override;
+
  private:
+  class ScopedFocusModeDisable;
+
   bool ShouldShowWindowTitleForVerticalTabs() const;
   void UpdateWindowTitleVisibility();
   void UpdateWindowTitleAndControls();
@@ -42,6 +47,8 @@ class BraveBrowserFrameViewMac : public BrowserFrameViewMac {
   BooleanPrefMember show_vertical_tabs_;
   BooleanPrefMember show_title_bar_on_vertical_tabs_;
   BooleanPrefMember compact_horizontal_tabs_;
+
+  std::unique_ptr<ScopedFocusModeDisable> scoped_focus_mode_disable_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_FRAME_VIEW_MAC_H_
