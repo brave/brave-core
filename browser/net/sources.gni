@@ -68,6 +68,7 @@ brave_browser_net_deps = [
   "//brave/components/brave_rewards/core",
   "//brave/components/brave_rewards/core/buildflags",
   "//brave/components/brave_search/common",
+  "//brave/components/brave_search/common/buildflags",
   "//brave/components/brave_service_keys",
   "//brave/components/brave_shields/content/browser",
   "//brave/components/brave_shields/core/browser",
