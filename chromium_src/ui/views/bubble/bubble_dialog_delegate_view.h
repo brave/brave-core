@@ -16,6 +16,10 @@ class SidebarItemAddedFeedbackBubble;
 class SidebarEditItemBubbleDelegateView;
 class SidebarAddItemBubbleDelegateView;
 
+namespace brave {
+class ScreenshotBubbleView;
+}  // namespace brave
+
 namespace playlist {
 class PlaylistBubbleView;
 }  // namespace playlist
@@ -29,6 +33,7 @@ class BraveBubbleDialogDelegateView;
   friend class ::BraveNewsBubbleView;                  \
   friend class ::BraveHelpBubbleDelegateView;          \
   friend class ::WaybackMachineBubbleView;             \
+  friend class ::brave::ScreenshotBubbleView;          \
   friend class ::playlist::PlaylistBubbleView;         \
   friend class ::SplitViewMenuBubble;                  \
   friend class ::SidebarItemAddedFeedbackBubble;       \
