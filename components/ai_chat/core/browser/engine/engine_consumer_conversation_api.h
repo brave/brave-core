@@ -77,7 +77,7 @@ class EngineConsumerConversationAPI : public EngineConsumer {
       const ConversationHistory& conversation_history,
       GenerationCompletedCallback completed_callback) override;
 
-  void SanitizeInput(std::string& input) override {}  // Handle by server.
+  void SanitizeInput(std::string& input) override;
   void ClearAllQueries() override;
   bool SupportsDeltaTextResponses() const override;
   bool RequiresClientSideTitleGeneration() const override;
