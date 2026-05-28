@@ -25,9 +25,12 @@
 #include "chrome/browser/ui/views/tabs/tab/alert_indicator_button.h"
 #include "chrome/browser/ui/views/tabs/tab/tab_close_button.h"
 #include "chrome/browser/ui/views/tabs/tab_slot_controller.h"
+#include "chrome/browser/ui/views/tabs/tab_style_views.h"
 #include "components/vector_icons/vector_icons.h"
 #include "ui/base/models/image_model.h"
-#include "ui/compositor/layer.h"
+#include "ui/compositor/clip_recorder.h"
+#include "ui/compositor/paint_recorder.h"
+#include "ui/compositor/transform_recorder.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/favicon_size.h"
 #include "ui/gfx/geometry/skia_conversions.h"
@@ -51,24 +54,18 @@ constexpr int kSmallAccentSize = 16;
 
 BraveTab::SmallAccentIconView::SmallAccentIconView() {
   SetCanProcessEventsWithinSubtree(false);
-  // In order to be clipped by Tab::PaintChildren(), we need to set paint to
-  // layer.
-  SetPaintToLayer();
-  layer()->SetFillsBoundsOpaquely(false);
 }
 
 BraveTab::SmallAccentIconView::~SmallAccentIconView() = default;
 
-void BraveTab::SmallAccentIconView::OnPaint(gfx::Canvas* canvas) {
-  auto* tab = static_cast<BraveTab*>(parent());
-  if (!tab->ShouldPaintTabAccent()) {
-    // There could be a timing issue where small accent icon view isn't hidden
-    // yet after a tab is being closed.
+// static
+void BraveTab::PaintSmallTabAccent(gfx::Canvas* canvas, const BraveTab& tab) {
+  if (!tab.ShouldPaintTabAccent()) {
     return;
   }
   constexpr int kCenter = kSmallAccentSize / 2;
 
-  if (auto accent_colors = tab->GetTabAccentColors();
+  if (auto accent_colors = tab.GetTabAccentColors();
       accent_colors.has_value()) {
     gfx::ScopedCanvas scoped_canvas(canvas);
     float scale = canvas->UndoDeviceScaleFactor();
@@ -82,14 +79,14 @@ void BraveTab::SmallAccentIconView::OnPaint(gfx::Canvas* canvas) {
     flags.setColor(accent_colors->icon_border_color);
     flags.setStyle(cc::PaintFlags::kStroke_Style);
     flags.setStrokeWidth(1);
-    canvas->DrawCircle(gfx::PointF(kCenter, kCenter), (kCenter - 0.5) * scale,
-                       flags);
+    canvas->DrawCircle(gfx::PointF(kCenter * scale, kCenter * scale),
+                       (kCenter - 0.5f) * scale, flags);
   }
 
-  auto accent_icon = tab->GetTabAccentIcon();
+  auto accent_icon = tab.GetTabAccentIcon();
   if (!accent_icon.IsEmpty()) {
     constexpr int kDestImageSize = 12;
-    auto image = accent_icon.Rasterize(tab->GetColorProvider());
+    auto image = accent_icon.Rasterize(tab.GetColorProvider());
     canvas->DrawImageInt(image, 0, 0, image.width(), image.height(),
                          kCenter - kDestImageSize / 2,
                          kCenter - kDestImageSize / 2, kDestImageSize,
@@ -410,11 +407,42 @@ void BraveTab::MaybeObserveContainerChanges() {
 
 void BraveTab::OnContainersListChanged() {
   SchedulePaint();
-  if (small_accent_icon_view_->layer()) {
-    small_accent_icon_view_->SchedulePaint();
-  }
 }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
+void BraveTab::PaintChildren(const views::PaintInfo& info) {
+  Tab::PaintChildren(info);
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  if (!small_accent_icon_view_ || !small_accent_icon_view_->GetVisible()) {
+    return;
+  }
+
+  ui::ClipRecorder clip_recorder(info.context());
+  const float paint_recording_scale = info.paint_recording_scale_x();
+  const SkPath clip_path = tab_style_views()->GetPath(
+      TabStyle::PathType::kFill, paint_recording_scale, {});
+  clip_recorder.ClipPathWithAntiAliasing(clip_path);
+
+  const gfx::Rect& parent_bounds = GetMirroredBounds();
+  const views::PaintInfo accent_paint_info =
+      views::PaintInfo::CreateChildPaintInfo(
+          info, small_accent_icon_view_->GetMirroredBounds(),
+          parent_bounds.size(), GetPaintScaleType(), false);
+
+  ui::TransformRecorder transform_recorder(info.context());
+  gfx::Transform transform;
+  transform.Translate(accent_paint_info.offset_from_parent());
+  transform_recorder.Transform(transform);
+
+  ui::PaintRecorder recorder(info.context(),
+                             accent_paint_info.paint_recording_size(),
+                             accent_paint_info.paint_recording_scale_x(),
+                             accent_paint_info.paint_recording_scale_y(),
+                             nullptr);
+  PaintSmallTabAccent(recorder.canvas(), *this);
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+}
 
 bool BraveTab::IsTreeNodeCollapsed() const {
   if (auto* node = GetTreeTabNode()) {

@@ -22,6 +22,10 @@
 #include "brave/components/containers/core/browser/containers_service_observer.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
+namespace gfx {
+class Canvas;
+}  // namespace gfx
+
 namespace views {
 class ImageButton;
 }  // namespace views
@@ -91,6 +95,7 @@ class BraveTab : public Tab
   TabNestingInfo GetTabNestingInfo() const override;
   bool IsInCollapsedTreeTabNode() const override;
   void MaybeUpdateHoverStatus(const ui::MouseEvent& event) override;
+  void PaintChildren(const views::PaintInfo& info) override;
 
   // Returns whether this tab should have an accent painted.
   bool ShouldPaintTabAccent() const;
@@ -123,7 +128,6 @@ class BraveTab : public Tab
     ~SmallAccentIconView() override;
 
     // views::View:
-    void OnPaint(gfx::Canvas* canvas) override;
     gfx::Size CalculatePreferredSize(
         const views::SizeBounds& available_size) const override;
   };
@@ -173,6 +177,10 @@ class BraveTab : public Tab
 
   // Lays out the small tab accent icon view (visibility and bounds).
   void LayoutSmallTabAccentIcon();
+
+  // Paints the small tab accent icon at the origin of |canvas| (local coords of
+  // the 16x16 accent bounds). Called from PaintChildren() after tab children.
+  static void PaintSmallTabAccent(gfx::Canvas* canvas, const BraveTab& tab);
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
   // Starts observing container list changes if not already observing.
