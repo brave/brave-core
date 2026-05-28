@@ -1,0 +1,37 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//printing/buildflags/buildflags.gni")
+
+source_set("screenshot") {
+  sources = [
+    "features.cc",
+    "features.h",
+    "screenshot_controller.cc",
+    "screenshot_controller.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/app:brave_generated_resources_grit",
+    "//brave/components/ai_chat/content/browser",
+    "//brave/components/ai_chat/core/browser",
+    "//chrome/browser/download",
+    "//chrome/browser/profiles:profile",
+    "//components/viz/common",
+    "//content/public/browser",
+    "//printing/buildflags",
+    "//skia",
+    "//ui/base",
+    "//ui/gfx",
+    "//ui/gfx/codec",
+    "//ui/shell_dialogs",
+  ]
+
+  if (enable_print_preview) {
+    deps +=
+        [ "//brave/browser/print_preview_extraction:print_preview_extractor" ]
+  }
+}
