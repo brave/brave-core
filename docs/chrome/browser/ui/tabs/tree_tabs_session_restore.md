@@ -177,10 +177,11 @@ Keys are defined in `brave/browser/sessions/brave_session_keys.h`.
 
 ### Incremental path
 
-`TreeTabSessionObserver::UpdateTreeTabSessionDataForNode` writes `AddTabExtraData`
-commands to `pending_commands_` whenever the tree structure changes at runtime
-(node created, reparented, or collapsed). These commands are flushed to disk by
-the save timer and survive across ordinary page navigations and tab movements.
+`TreeTabSessionObserver::UpdateTreeTabSessionDataForNode` writes
+`AddTabExtraData` commands to `pending_commands_` whenever the tree structure
+changes at runtime (node created, reparented, or collapsed). These commands are
+flushed to disk by the save timer and survive across ordinary page navigations
+and tab movements.
 
 ### Full rebuild path (`BRAVE_BUILD_COMMANDS_FOR_TREE_TAB`)
 
