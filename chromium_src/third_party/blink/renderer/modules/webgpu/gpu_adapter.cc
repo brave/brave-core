@@ -25,15 +25,15 @@ class BraveScrubWebGpuAdapterInfo {
             context,
             ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL,
             BraveFarblingLevel::OFF)),
-        reset_vendor_(&vendor, ApplyFarbling(farbling_level_, vendor)),
-        reset_architecture_(&architecture,
-                            ApplyFarbling(farbling_level_, architecture)),
-        reset_device_(&device, ApplyFarbling(farbling_level_, device)) {}
+        reset_vendor_(&vendor, ApplyFarbling(vendor)),
+        reset_architecture_(&architecture, ApplyFarbling(architecture)),
+        reset_device_(&device, ApplyFarbling(device)) {}
 
   ~BraveScrubWebGpuAdapterInfo() = default;
 
-  String ApplyFarbling(const BraveFarblingLevel level, const String& s) {
-    switch (level) {
+ private:
+  String ApplyFarbling(const String& s) {
+    switch (farbling_level_) {
       case BraveFarblingLevel::OFF:
         return s;
       case BraveFarblingLevel::BALANCED:
@@ -47,7 +47,6 @@ class BraveScrubWebGpuAdapterInfo {
     return s;
   }
 
- private:
   const BraveFarblingLevel farbling_level_;
   const base::AutoReset<String> reset_vendor_;
   const base::AutoReset<String> reset_architecture_;
