@@ -28,10 +28,10 @@
 # Ignore some markdown files:
 .github/PULL_REQUEST_TEMPLATE.md
 CONTRIBUTING.md
-README.md
 browser/ui/commander/fuzzy_finder.md
 browser/ui/views/brave_ads/overview.md
 components/ai_chat/core/browser/tools/tools.md
+browser/brave_vpn/win/brave_vpn_wireguard_service/README.md
 
 # Ignored top-level files:
 .clang-tidy

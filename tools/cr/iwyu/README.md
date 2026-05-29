@@ -3,9 +3,9 @@
 Two scripts that drive [include-what-you-use](https://include-what-you-use.org/)
 over Brave sources:
 
-* `build_iwyu.py` — builds the IWYU binary against Chromium's pinned Clang.
-* `run_iwyu.py` — runs IWYU against an existing Brave build dir and applies
-  the suggested include fixes in place.
+- `build_iwyu.py` — builds the IWYU binary against Chromium's pinned Clang.
+- `run_iwyu.py` — runs IWYU against an existing Brave build dir and applies the
+  suggested include fixes in place.
 
 IWYU is **not** part of the normal Brave build; run these scripts on demand.
 
@@ -34,8 +34,8 @@ Edit `brave/build/include_what_you_use_paths.cfg`. Each non-comment line is:
 -path/to/disable
 ```
 
-Paths are relative to `src/`. Longest-matching prefix wins, so you can
-enable a directory and carve exceptions out of it:
+Paths are relative to `src/`. Longest-matching prefix wins, so you can enable a
+directory and carve exceptions out of it:
 
 ```
 +brave/components/brave_ads/browser
@@ -44,9 +44,9 @@ enable a directory and carve exceptions out of it:
 
 ## Run IWYU
 
-IWYU needs an existing Brave build in some `out/<config>` to pick up its
-compile flags and generated headers, **and** several GN args have to be
-flipped — without them IWYU crashes during analysis:
+IWYU needs an existing Brave build in some `out/<config>` to pick up its compile
+flags and generated headers, **and** several GN args have to be flipped —
+without them IWYU crashes during analysis:
 
 ```sh
 npm run build -- Static \
@@ -63,12 +63,13 @@ npm run build -- Static \
 
 Required (IWYU crashes without these):
 
-* `clang_use_chrome_plugins:false`.
-* `force_enable_raw_ptr_exclusion:true`
-* `enable_precompiled_headers:false`
-* `treat_warnings_as_errors:false`
+- `clang_use_chrome_plugins:false`.
+- `force_enable_raw_ptr_exclusion:true`
+- `enable_precompiled_headers:false`
+- `treat_warnings_as_errors:false`
 
-Then finally run `include-what-you-use` with `run_iwyu.py`, bearing in mind that `--out` is relative to `src/`, rather than the current directory.
+Then finally run `include-what-you-use` with `run_iwyu.py`, bearing in mind that
+`--out` is relative to `src/`, rather than the current directory.
 
 ```sh
 vpython3 tools/cr/iwyu/run_iwyu.py --out out/Static --verbose
@@ -76,8 +77,8 @@ vpython3 tools/cr/iwyu/run_iwyu.py --out out/Static --verbose
 
 This:
 
-1. Generates a compile database from `out/<config>` and filters it to
-   sources enabled by `include_what_you_use_paths.cfg`.
+1. Generates a compile database from `out/<config>` and filters it to sources
+   enabled by `include_what_you_use_paths.cfg`.
 2. Runs `iwyu_tool.py` with our libc++ mapping file
    (`brave/build/include_what_you_use_mappings.json5`).
 3. Applies suggestions in place via `fix_includes.py`.
@@ -86,9 +87,9 @@ This:
 
 Artifacts written next to the build:
 
-* `out/<config>/iwyu_compile_commands.json` — filtered compile DB.
-* `out/<config>/iwyu_suggestions.txt` — raw IWYU output, handy when a
-  rewrite looks wrong.
+- `out/<config>/iwyu_compile_commands.json` — filtered compile DB.
+- `out/<config>/iwyu_suggestions.txt` — raw IWYU output, handy when a rewrite
+  looks wrong.
 
 ## Defending an include from IWYU
 
