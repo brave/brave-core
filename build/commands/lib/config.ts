@@ -97,6 +97,7 @@ export class Config {
   useSiso: boolean
   useReclient: boolean
   offline: boolean
+  readonly rbeReadOnly: boolean
   use_libfuzzer: boolean
   androidAabToApk: boolean
   useBraveHermeticToolchain: boolean
@@ -257,6 +258,7 @@ export class Config {
       this.useRemoteExec && !this.useSiso,
     )
     this.offline = envConfig.getBoolean(['offline'], false)
+    this.rbeReadOnly = envConfig.getBoolean(['rbe_readonly'], false)
     this.use_libfuzzer = false
     this.androidAabToApk = false
     this.useBraveHermeticToolchain = envConfig.getBoolean(
