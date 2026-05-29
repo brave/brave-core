@@ -12,9 +12,9 @@ export const StyledWrapper = styled.div<{
   isV2?: boolean
 }>`
   --background-color: ${(p) =>
-    p.isV2 ? leo.color.container.highlight : p.theme.color.background02};
+    p.isV2 ? leo.color.container.highlight : leo.color.container.background};
   --font-size: ${(p) =>
-    p.isV2 ? leo.color.container.highlight : p.theme.color.background02};
+    p.isV2 ? leo.color.container.highlight : leo.color.container.background};
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -22,9 +22,7 @@ export const StyledWrapper = styled.div<{
   min-height: ${(p) => (p.isV2 ? 44 : 36)}px;
   width: 100%;
   border: ${(p) =>
-    p.useWithFilter || p.isV2
-      ? 'none'
-      : `1px solid ${p.theme.color.interactive08}`};
+    p.useWithFilter || p.isV2 ? 'none' : `1px solid ${leo.color.neutral[30]}`};
   box-sizing: border-box;
   border-radius: ${(p) => (p.isV2 ? 8 : 4)}px;
   background-color: var(--background-color);

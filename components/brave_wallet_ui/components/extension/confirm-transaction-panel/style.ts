@@ -26,7 +26,7 @@ export const StyledWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  background-color: ${(p) => p.theme.color.background01};
+  background-color: ${leo.color.page.background};
   padding: 0px 16px;
 `
 
@@ -87,7 +87,7 @@ export const MessageBox = styled.div<{ isDetails: boolean; width?: string }>`
   align-items: flex-start;
   justify-content: 'flex-start';
   flex-direction: column;
-  border: 1px solid ${(p) => p.theme.color.divider01};
+  border: 1px solid ${leo.color.divider.subtle};
   box-sizing: border-box;
   border-radius: 4px;
   width: ${(p) => p.width ?? '90%'};
@@ -109,14 +109,14 @@ export const ArrowIcon = styled(ArrowRightIcon)`
   display: inline-block;
   width: 16px;
   height: 16px;
-  color: ${(p) => p.theme.color.text03};
+  color: ${leo.color.text.tertiary};
 `
 
 export const Divider = styled.div`
   width: 100%;
   height: 1px;
-  background-color: ${(p) => p.theme.color.divider01};
-  border: 1px solid ${(p) => p.theme.color.divider01};
+  background-color: ${leo.color.divider.subtle};
+  border: 1px solid ${leo.color.divider.subtle};
   margin-top: 6px;
   margin-bottom: 6px;
 `
@@ -143,7 +143,7 @@ export const SectionColumn = styled.div`
 export const EditButton = styled(WalletButton)`
   font: ${leo.font.small.semibold};
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.interactive05};
+  color: ${leo.color.button.background};
   background: none;
   cursor: pointer;
   outline: none;
@@ -169,7 +169,7 @@ export const WarningIcon = styled(WarningBoxIcon)`
 `
 
 export const LoadIcon = styled(LoaderIcon)`
-  color: ${(p) => p.theme.color.interactive08};
+  color: ${leo.color.neutral[30]};
   height: 25px;
   width: 24px;
   opacity: 0.4;
@@ -181,7 +181,7 @@ export const ContractButton = styled(WalletButton)`
   align-items: center;
   justify-content: center;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.interactive05};
+  color: ${leo.color.button.background};
   background: none;
   cursor: pointer;
   outline: none;
@@ -208,7 +208,7 @@ export const ExplorerIcon = styled.div`
   margin-left: 8px;
   mask-size: contain;
   mask-repeat: no-repeat;
-  background-color: ${(p) => p.theme.color.interactive05};
+  background-color: ${leo.color.button.background};
 `
 
 export const WarningInfoCircleIcon = styled(Icon).attrs({

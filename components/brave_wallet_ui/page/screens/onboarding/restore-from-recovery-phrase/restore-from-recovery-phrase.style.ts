@@ -74,8 +74,8 @@ export const RecoveryBaseCss = css`
   font-size: 14px;
   letter-spacing: 0.01em;
 
-  color: ${(p) => p.theme.color.text01};
-  background-color: ${(p) => p.theme.color.background02};
+  color: ${leo.color.text.primary};
+  background-color: ${leo.color.container.background};
 `
 
 export const RecoveryTextArea = styled.textarea`

@@ -25,7 +25,7 @@ export const queueStepButtonRowPadding = '16px 0px 4px 0px'
 
 export const QueueStepButton = styled(WalletButton)<{ needsMargin?: boolean }>`
   font: ${leo.font.default.semibold};
-  color: ${(p) => p.theme.color.interactive05};
+  color: ${leo.color.button.background};
   background: none;
   cursor: pointer;
   outline: none;
@@ -39,7 +39,7 @@ export const FavIcon = styled.img<{ height?: string }>`
   width: auto;
   height: ${(p) => p?.height || '40px'};
   border-radius: 5px;
-  background-color: ${(p) => p.theme.color.background01};
+  background-color: ${leo.color.page.background};
   margin-bottom: 7px;
 `
 

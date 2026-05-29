@@ -5,12 +5,13 @@
 
 import styled from 'styled-components'
 import { StyledDiv, Row } from '../../shared-swap.styles'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 export const SelectorBox = styled(StyledDiv)<{
   isHeader?: boolean
 }>`
   justify-content: flex-start;
-  background-color: ${(p) => p.theme.color.background01};
+  background-color: ${leo.color.page.background};
   min-width: 222px;
   position: absolute;
   padding-bottom: 4px;

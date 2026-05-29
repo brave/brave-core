@@ -5,6 +5,7 @@
 
 import styled, { css } from 'styled-components'
 import { LoaderIcon } from 'brave-ui/components/icons'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 export const StyledWrapper = styled.div<{
   customStyle?: { [key: string]: string }
@@ -57,7 +58,7 @@ export const LoadingOverlay = styled.div<{
 `
 
 export const LoadIcon = styled(LoaderIcon)`
-  color: ${(p) => p.theme.color.interactive08};
+  color: ${leo.color.neutral[30]};
   height: 70px;
   width: 70px;
   opacity: 0.4;

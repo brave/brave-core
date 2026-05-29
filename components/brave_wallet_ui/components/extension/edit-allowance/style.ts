@@ -34,17 +34,17 @@ export const Input = styled.input`
   outline: none;
   width: 100%;
   background-image: none;
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${leo.color.container.background};
   box-shadow: none;
-  border: ${(p) => `1px solid ${p.theme.color.interactive08}`};
+  border: 1px solid ${leo.color.neutral[30]};
   border-radius: 4px;
   letter-spacing: 0.01em;
   padding: 10px;
   margin-bottom: 8px;
-  color: ${(p) => p.theme.color.text01};
+  color: ${leo.color.text.primary};
   ::placeholder {
     letter-spacing: 0.01em;
-    color: ${(p) => p.theme.color.text03};
+    color: ${leo.color.text.tertiary};
   }
   :focus {
     outline: none;

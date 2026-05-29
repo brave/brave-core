@@ -24,7 +24,7 @@ export const EmptyStateImage = styled.img`
 export const Heading = styled.h2`
   font: ${leo.font.large.semibold};
   text-align: center;
-  color: ${(p) => p.theme.color.text01};
+  color: ${leo.color.text.primary};
   margin: 0 0 8px 0;
 `
 
@@ -32,7 +32,7 @@ export const SubHeading = styled.p`
   font: ${leo.font.default.regular};
   align-items: center;
   text-align: center;
-  color: ${(p) => p.theme.color.text02};
+  color: ${leo.color.text.secondary};
   margin: 0 0 16px 0;
 `
 
@@ -45,10 +45,10 @@ export const ImportButton = styled(WalletButton)`
   align-items: center;
   padding: 10px 22px;
   gap: 7px;
-  background-color: ${(p) => p.theme.color.interactive05};
+  background-color: ${leo.color.button.background};
   border-radius: 48px;
   text-align: center;
-  color: ${(p) => p.theme.color.background01};
+  color: ${leo.color.page.background};
   margin-bottom: 24px;
   border: none;
   cursor: pointer;
@@ -59,6 +59,6 @@ export const DisclaimerText = styled.p`
   display: flex;
   align-items: center;
   text-align: center;
-  color: ${(p) => p.theme.color.text03};
+  color: ${leo.color.text.tertiary};
   margin: 0;
 `

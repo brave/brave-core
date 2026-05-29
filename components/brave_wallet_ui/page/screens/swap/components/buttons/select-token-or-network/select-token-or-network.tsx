@@ -103,7 +103,7 @@ export const SelectTokenOrNetworkButton = (props: Props) => {
         <HiddenResponsiveRow dontHide={!isHeader}>
           <Text
             isBold={text !== undefined}
-            textColor={text ? 'text01' : 'text03'}
+            textColor={text ? 'primary' : 'tertiary'}
             textSize={
               buttonSize === 'small' || buttonSize === 'medium'
                 ? '14px'
@@ -125,7 +125,7 @@ export const SelectTokenOrNetworkButton = (props: Props) => {
               />
               <Text
                 textSize='14px'
-                textColor='text01'
+                textColor='primary'
               >
                 {networkFeeFiatValue}
               </Text>

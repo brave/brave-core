@@ -43,22 +43,20 @@ export const Input = styled.input<{
   outline: none;
   width: 100%;
   background-image: none;
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${leo.color.container.background};
   box-shadow: none;
   border-style: solid;
   border-width: 1px;
   border-color: ${(p) =>
-    p.hasError
-      ? leo.color.systemfeedback.errorIcon
-      : p.theme.color.interactive08};
+    p.hasError ? leo.color.systemfeedback.errorIcon : leo.color.neutral[30]};
   border-radius: 4px;
   letter-spacing: 0.01em;
   padding: 10px;
   margin-bottom: 8px;
-  color: ${(p) => p.theme.color.text01};
+  color: ${leo.color.text.primary};
   ::placeholder {
     letter-spacing: 0.01em;
-    color: ${(p) => p.theme.color.text03};
+    color: ${leo.color.text.tertiary};
   }
   :focus {
     outline: none;
@@ -98,7 +96,7 @@ export const CurrentBaseRow = styled.div`
   justify-content: space-between;
   flex-direction: row;
   width: 100%;
-  border-bottom: ${(p) => `1px solid ${p.theme.color.divider01}`};
+  border-bottom: 1px solid ${leo.color.divider.subtle};
   margin-bottom: 12px;
 `
 
@@ -149,7 +147,7 @@ export const GasSlider = styled.input`
   &::-webkit-slider-runnable-track {
     width: 100%;
     height: 5px;
-    background: ${(p) => p.theme.color.interactive05};
+    background: ${leo.color.button.background};
     border-radius: 10px;
   }
   &::-webkit-slider-thumb {
@@ -157,12 +155,12 @@ export const GasSlider = styled.input`
     appearance: none;
     height: 24px;
     width: 24px;
-    background: ${(p) => p.theme.color.background01};
+    background: ${leo.color.page.background};
     border-radius: 100%;
-    border: ${(p) => `1px solid ${p.theme.color.interactive08}`};
+    border: 1px solid ${leo.color.neutral[30]};
     top: 50%;
     transform: translateY(-50%);
-    box-shadow: ${(p) => makeLongShadow(p.theme.color.divider01, '-9px')};
+    box-shadow: ${makeLongShadow(leo.color.divider.subtle, '-9px')};
   }
   &::-webkit-progress-value {
     background: orange;
@@ -172,7 +170,7 @@ export const GasSlider = styled.input`
   &:hover,
   &:focus {
     &::-webkit-slider-thumb {
-      background: ${(p) => p.theme.color.background01};
+      background: ${leo.color.page.background};
     }
   }
 `

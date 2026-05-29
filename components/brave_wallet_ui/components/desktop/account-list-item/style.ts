@@ -86,7 +86,7 @@ export const OvalButton = styled(WalletButton)`
   background: none;
   border-radius: 48px;
   padding: 3px 10px;
-  border: 1px solid ${(p) => p.theme.color.interactive08};
+  border: 1px solid ${leo.color.neutral[30]};
   margin-right: 6px;
   pointer-events: auto;
 `

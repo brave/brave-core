@@ -43,7 +43,7 @@ export const LoadIcon = styled(LoaderIcon)`
 export const Divider = styled.div`
   width: 100%;
   height: 2px;
-  background-color: ${(p) => p.theme.color.divider01};
+  background-color: ${leo.color.divider.subtle};
 `
 
 export const NoAssetButton = styled(WalletButton)`

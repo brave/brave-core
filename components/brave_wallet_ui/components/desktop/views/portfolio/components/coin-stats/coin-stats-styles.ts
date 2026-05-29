@@ -24,7 +24,7 @@ export const StatValue = styled.div`
   flex-direction: row;
   align-items: center;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text01};
+  color: ${leo.color.text.primary};
   margin-bottom: 12px;
   justify-content: center;
 `
@@ -35,7 +35,7 @@ export const StatLabel = styled.div`
   align-items: center;
   text-align: center;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text02};
+  color: ${leo.color.text.secondary};
   justify-content: center;
 `
 
@@ -50,7 +50,7 @@ export const Currency = styled.sup`
   font: ${leo.font.small.regular};
   display: flex;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text02};
+  color: ${leo.color.text.secondary};
   top: -0.8em;
   margin-right: 2px;
 `

@@ -63,7 +63,7 @@ export const AddressButton = styled(WalletButton)`
   justify-content: center;
   flex-direction: row;
   letter-spacing: 0.02em;
-  color: ${(p) => p.theme.color.text03};
+  color: ${leo.color.text.tertiary};
   cursor: pointer;
   outline: none;
   background: none;
@@ -81,7 +81,7 @@ export const ButtonRow = styled.div`
 export const CopyIcon = styled.div`
   width: 18px;
   height: 18px;
-  background-color: ${(p) => p.theme.color.interactive07};
+  background-color: ${leo.color.neutral[70]};
   -webkit-mask-image: url(${ClipboardIcon});
   mask-image: url(${ClipboardIcon});
   mask-size: cover;
@@ -99,14 +99,14 @@ export const PrivateKeyBubble = styled(WalletButton)`
   align-items: center;
   justify-content: center;
   flex-direction: row;
-  background-color: ${(p) => p.theme.color.background01};
+  background-color: ${leo.color.page.background};
   padding: 5px 10px;
   max-width: 350px;
   height: auto;
   border-radius: 4px;
   margin: 0px;
   word-break: break-all;
-  color: ${(p) => p.theme.color.text01};
+  color: ${leo.color.text.primary};
   outline: none;
   border: none;
 `
@@ -132,7 +132,7 @@ export const Line = styled.div`
   display: flex;
   width: 100%;
   height: 2px;
-  background: ${(p) => p.theme.color.divider01};
+  background: ${leo.color.divider.subtle};
 `
 
 export const Alert = styled(AlertReact)`

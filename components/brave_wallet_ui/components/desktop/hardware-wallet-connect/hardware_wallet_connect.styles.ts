@@ -164,7 +164,7 @@ export const LoadingWrapper = styled.div`
 `
 
 export const LoadIcon = styled(LoaderIcon)<Partial<StyleProps>>`
-  color: ${(p) => p.theme.color.interactive08};
+  color: ${leo.color.neutral[30]};
   height: ${(p) => (p.size === 'small' ? '25px' : '70px')};
   width: ${(p) => (p.size === 'small' ? '25px' : '70px')};
   opacity: 0.4;
@@ -176,7 +176,7 @@ export const NoSearchResultText = styled.div`
   letter-spacing: 0.01em;
   width: 100%;
   margin-top: 16px;
-  color: ${(p) => p.theme.color.text02};
+  color: ${leo.color.text.secondary};
 `
 
 export const Instructions = styled.div<{ mode: 'info' | 'success' | 'error' }>`

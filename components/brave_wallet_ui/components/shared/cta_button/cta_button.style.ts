@@ -21,7 +21,7 @@ export const Button = styled(WalletButton)`
   position: fixed;
   bottom: 32px;
   right: 32px;
-  background-color: ${(p) => p.theme.palette.blurple500};
+  background-color: ${leo.color.blurple[50]};
   border: none;
   outline: none;
   border-radius: 40px;
@@ -36,7 +36,7 @@ export const ButtonText = styled(Text)`
 export const IdeaButtonIcon = styled.span`
   width: 24px;
   height: 24px;
-  background-color: ${(p) => p.theme.palette.white};
+  background-color: ${leo.color.white};
   -webkit-mask-image: url(${IdeaIcon});
   mask-image: url(${IdeaIcon});
   mask-size: cover;

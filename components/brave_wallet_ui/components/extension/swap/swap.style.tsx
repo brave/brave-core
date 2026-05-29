@@ -23,7 +23,7 @@ export const ExchangeRate = styled(Text)`
 
 export const SwapDetails = styled.div`
   position: relative;
-  border: 1px solid ${(p) => p.theme.color.divider01};
+  border: 1px solid ${leo.color.divider.subtle};
   box-shadow: 0 0 90px rgba(99, 105, 110, 0.08);
   border-radius: 8px;
   height: 220px;
@@ -34,7 +34,7 @@ export const SwapDetails = styled.div`
 export const SwapDetailsDivider = styled.div`
   position: absolute;
   top: 50%;
-  border: 0.5px solid ${(p) => p.theme.color.divider01};
+  border: 0.5px solid ${leo.color.divider.subtle};
   width: 100%;
 `
 
@@ -42,8 +42,8 @@ export const SwapDetailsArrowContainer = styled.div`
   top: calc(50% - 16px); // 16px = half of 32px (height)
   left: calc(50% - 16px); // 16px = half of 32px (width)
   position: absolute;
-  border: 1px solid ${(p) => p.theme.color.divider01};
-  background-color: ${(p) => p.theme.color.background01};
+  border: 1px solid ${leo.color.divider.subtle};
+  background-color: ${leo.color.page.background};
   border-radius: 50%;
   width: 32px;
   height: 32px;
@@ -56,7 +56,7 @@ export const SwapDetailsArrowContainer = styled.div`
 export const SwapDetailsArrow = styled.div`
   -webkit-mask-image: url(${ArrowDown2Icon});
   mask-image: url(${ArrowDown2Icon});
-  background-color: ${(p) => p.theme.color.interactive08};
+  background-color: ${leo.color.neutral[30]};
   width: 12px;
   height: 16px;
 `
@@ -74,7 +74,7 @@ export const SwapAssetHeader = styled.div`
 `
 
 export const SwapAssetAddress = styled.div`
-  border: 1px solid ${(p) => p.theme.color.divider01};
+  border: 1px solid ${leo.color.divider.subtle};
   border-radius: 4px;
   display: flex;
   align-items: center;
@@ -136,7 +136,7 @@ export const NetworkDescriptionText = styled(Text)`
 export const LaunchButton = styled(WalletButton)`
   font: ${leo.font.small.semibold};
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.interactive05};
+  color: ${leo.color.button.background};
   background: none;
   cursor: pointer;
   outline: none;

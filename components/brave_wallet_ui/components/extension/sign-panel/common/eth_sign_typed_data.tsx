@@ -43,7 +43,7 @@ export function EthSignTypedData(props: Props) {
         || hasUnicode(data?.domainJson ?? '')) && (
         <WarningBox warningType='warning'>
           <WarningTitleRow>
-            <WarningIcon color={'warningIcon'} />
+            <WarningIcon warningType='warning' />
             <Text
               textColor='error'
               variant='small.semibold'

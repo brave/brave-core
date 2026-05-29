@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 // Shared Styles
 import { WalletButton } from '../style'
 import CheckMark from '../../../assets/svg-icons/big-checkmark.svg'
@@ -32,7 +33,7 @@ export const LeftSide = styled.div`
 export const BigCheckMark = styled.div`
   width: 14px;
   height: 14px;
-  background-color: ${(p) => p.theme.color.text01};
+  background-color: ${leo.color.text.primary};
   -webkit-mask-image: url(${CheckMark});
   mask-image: url(${CheckMark});
   margin-right: 8px;

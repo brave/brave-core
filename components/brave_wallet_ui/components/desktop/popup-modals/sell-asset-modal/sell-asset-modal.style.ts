@@ -32,7 +32,7 @@ export const InputSection = styled.div`
   justify-content: center;
   padding: 27px 24px 24px 24px;
   border-radius: 12px;
-  background-color: ${(p) => p.theme.color.background01};
+  background-color: ${leo.color.page.background};
   margin-bottom: 16px;
 `
 
@@ -49,7 +49,7 @@ export const AssetIcon = AssetIconFactory<AssetIconProps>({
 })
 
 export const AmountInput = styled.input`
-  color: ${(p) => p.theme.color.text01};
+  color: ${leo.color.text.primary};
   font-weight: 500;
   font-size: 32px;
   line-height: 48px;
@@ -62,7 +62,7 @@ export const AmountInput = styled.input`
   background: none;
   background-color: none;
   ::placeholder {
-    color: ${(p) => p.theme.color.text03};
+    color: ${leo.color.text.tertiary};
   }
 `
 
@@ -76,7 +76,7 @@ export const PresetButton = styled.button<{ marginRight?: number }>`
   @media (prefers-color-scheme: dark) {
     /* rgb(18, 19, 22) does not exist in the design system */
     --button-background: rgb(18, 19, 22);
-    --button-background-hover: ${(p) => p.theme.color.background01};
+    --button-background-hover: ${leo.color.page.background};
   }
   display: flex;
   cursor: pointer;
@@ -85,7 +85,7 @@ export const PresetButton = styled.button<{ marginRight?: number }>`
   background: none;
   background-color: var(--button-background);
   border-radius: 4px;
-  color: ${(p) => p.theme.color.text02};
+  color: ${leo.color.text.secondary};
   margin-right: ${(p) => (p.marginRight ? p.marginRight : 0)}px;
   padding: 4px 8px;
   &:hover {
@@ -100,7 +100,7 @@ export const ErrorBox = styled.div`
   justify-content: flex-start;
   padding: 16px;
   border-radius: 8px;
-  background: ${(p) => p.theme.color.errorBackground};
+  background: ${leo.color.systemfeedback.errorBackground};
   margin-bottom: 16px;
 `
 
@@ -111,6 +111,6 @@ export const ErrorIcon = styled.div`
   mask-image: url(${WarningCircleFilled});
   mask-size: contain;
   margin-right: 18px;
-  background: ${(p) => p.theme.color.errorIcon};
+  background: ${leo.color.systemfeedback.errorIcon};
   mask-repeat: no-repeat;
 `

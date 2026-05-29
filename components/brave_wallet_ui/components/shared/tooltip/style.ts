@@ -60,11 +60,11 @@ export const Tip = styled.div<{
   white-space: ${(p) => (p.isAddress || p?.maxWidth ? 'pre-line' : 'nowrap')};
   word-break: ${(p) => (p.isAddress ? 'break-all' : 'keep-all')};
 
-  color: ${(p) => p.theme.palette.white};
-  background-color: ${(p) => p.theme.palette.black};
+  color: ${leo.color.white};
+  background-color: ${leo.color.black};
 
   @media (prefers-color-scheme: dark) {
-    border: 1px ${(p) => p.theme.color.divider01} solid;
+    border: 1px ${leo.color.divider.subtle} solid;
   }
 `
 
@@ -74,11 +74,10 @@ export const Pointer = styled.div<PositionProps>`
   border-style: solid;
   border-width: 0 7px 8px 7px;
 
-  border-color: transparent transparent ${(p) => p.theme.palette.black}
-    transparent;
+  border-color: transparent transparent ${leo.color.black} transparent;
 
   @media (prefers-color-scheme: dark) {
-    border-color: transparent transparent ${(p) => p.theme.color.divider01}
+    border-color: transparent transparent ${leo.color.divider.subtle}
       transparent;
   }
 
@@ -96,5 +95,5 @@ export const Pointer = styled.div<PositionProps>`
 `
 
 export const ActionNotification = styled(Tip)`
-  background: ${(p) => p.theme.palette.blurple500};
+  background: ${leo.color.blurple[50]};
 `

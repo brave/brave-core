@@ -300,7 +300,7 @@ export const SignPanel = (props: Props) => {
           ) && (
             <WarningBox warningType='warning'>
               <WarningTitleRow>
-                <WarningIcon color={'warningIcon'} />
+                <WarningIcon warningType='warning' />
                 <Text
                   textColor='primary'
                   variant='small.semibold'

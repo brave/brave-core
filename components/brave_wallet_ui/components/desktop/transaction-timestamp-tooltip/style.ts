@@ -22,8 +22,8 @@ export const Tip = styled.div`
   transform: translateX(calc(-20% + 15px)) translateY(35%);
   padding: 10px;
   min-width: 168px;
-  color: ${(p) => p.theme.palette.white};
-  background: ${(p) => p.theme.palette.black};
+  color: ${leo.color.white};
+  background: ${leo.color.black};
   z-index: 120;
   white-space: nowrap;
   letter-spacing: 0.01em;
@@ -40,6 +40,5 @@ export const Pointer = styled.div`
   transform: translateX(-50%) translateY(-40%);
   border-width: 0 7px 8px 7px;
   z-index: 120;
-  border-color: transparent transparent ${(p) => p.theme.palette.black}
-    transparent;
+  border-color: transparent transparent ${leo.color.black} transparent;
 `

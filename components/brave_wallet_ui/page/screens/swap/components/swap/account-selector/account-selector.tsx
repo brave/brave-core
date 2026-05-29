@@ -93,7 +93,7 @@ export const AccountSelector = (props: Props) => {
       >
         <Text
           textSize='12px'
-          textColor='text02'
+          textColor='secondary'
         >
           {selectedAccount
             ? selectedAccount.name

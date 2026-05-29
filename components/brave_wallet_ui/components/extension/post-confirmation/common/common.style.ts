@@ -3,10 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 import ProgressRing from '@brave/leo/react/progressRing'
 import LeoIcon from '@brave/leo/react/icon'
 import LeoAlert from '@brave/leo/react/alert'
-import * as leo from '@brave/leo/tokens/css/variables'
 import LinkSvg from '../../../../assets/svg-icons/link-icon.svg'
 import LoadingIcon from '../../../../assets/svg-icons/loading-slow.svg'
 import { WalletButton, Column, Text } from '../../../shared/style'
@@ -23,7 +23,7 @@ export const Title = styled(Text)`
 export const TransactionStatusDescription = styled.div`
   font: ${leo.font.small.regular};
   text-align: center;
-  color: ${(p) => p.theme.color.text02};
+  color: ${leo.color.text.secondary};
   padding: 8px 16px;
 `
 
@@ -37,7 +37,7 @@ export const LinkIcon = styled.div`
 export const DetailButton = styled(WalletButton)`
   font: ${leo.font.small.semibold};
   text-align: center;
-  color: ${(p) => p.theme.color.interactive05};
+  color: ${leo.color.button.background};
   background: none;
   cursor: pointer;
   outline: none;

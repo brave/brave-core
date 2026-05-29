@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 import CloseIcon from '../../../assets/svg-icons/close.svg'
 
@@ -19,7 +20,7 @@ export const HeaderWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-bottom: ${(p) => `1px solid ${p.theme.color.divider01}`};
+  border-bottom: 1px solid ${leo.color.divider.subtle};
   margin-bottom: 8px;
 `
 

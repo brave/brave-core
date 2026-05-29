@@ -11,7 +11,7 @@ import { Text } from '../style'
 
 export const InstructionBox = styled.div`
   width: 100%;
-  border: 1px solid ${(p) => p.theme.color.divider01};
+  border: 1px solid ${leo.color.divider.subtle};
   border-radius: 4px;
   padding: 10px 10px 0px 10px;
   box-sizing: border-box;
@@ -30,7 +30,7 @@ export const InstructionParamBox = styled.div`
   margin-top: 12px;
   word-break: break-all;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text01};
+  color: ${leo.color.text.primary};
   text-align: left;
 
   & > * {
@@ -44,7 +44,7 @@ export const InstructionParamBox = styled.div`
 
   & > samp {
     font-weight: 400;
-    color: ${(p) => p.theme.color.text02};
+    color: ${leo.color.text.secondary};
     font-size: 12px;
     margin-left: 4px;
   }

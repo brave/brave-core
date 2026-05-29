@@ -106,7 +106,7 @@ const ListItem = (props: ListItemProps) => {
           <VerticalSpace space='14px' />
           <Text
             textSize='14px'
-            textColor='text02'
+            textColor='secondary'
           >
             {getLocale('braveWalletDidntFindAssetEndOfList')}
           </Text>

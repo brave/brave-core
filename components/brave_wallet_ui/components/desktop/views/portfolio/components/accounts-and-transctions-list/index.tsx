@@ -244,7 +244,7 @@ export const AccountsAndTransactionsList = ({
         >
           <Text
             isBold={true}
-            textColor='text01'
+            textColor='primary'
             textSize='16px'
           >
             {getLocale('braveWalletAccounts')}
@@ -331,7 +331,7 @@ export const AccountsAndTransactionsList = ({
                   >
                     <Text
                       isBold={true}
-                      textColor='text01'
+                      textColor='primary'
                       textSize='16px'
                     >
                       {getLocale('braveWalletAccounts')}
@@ -345,7 +345,7 @@ export const AccountsAndTransactionsList = ({
                           <>
                             <Text
                               isBold={true}
-                              textColor='text01'
+                              textColor='primary'
                               textSize='14px'
                             >
                               {formattedFullAssetBalance}
@@ -353,7 +353,7 @@ export const AccountsAndTransactionsList = ({
                             <HorizontalSpace space='4px' />
                             <Text
                               isBold={false}
-                              textColor='text03'
+                              textColor='tertiary'
                               textSize='14px'
                             >
                               {'('
@@ -366,7 +366,7 @@ export const AccountsAndTransactionsList = ({
                         ) : (
                           <Text
                             isBold={true}
-                            textColor='text01'
+                            textColor='primary'
                             textSize='14px'
                           >
                             ******
@@ -414,7 +414,7 @@ export const AccountsAndTransactionsList = ({
                 >
                   <EmptyAccountsIcon />
                   <Text
-                    textColor='text01'
+                    textColor='primary'
                     textSize='16px'
                     isBold={true}
                   >
@@ -423,7 +423,7 @@ export const AccountsAndTransactionsList = ({
                   <VerticalSpacer space={10} />
                   <Text
                     textSize='14px'
-                    textColor='text03'
+                    textColor='tertiary'
                     isBold={false}
                   >
                     {getLocale('braveWalletNoAccountsWithABalanceDescription')}
@@ -454,7 +454,7 @@ export const AccountsAndTransactionsList = ({
                 >
                   <EmptyTransactionsIcon />
                   <Text
-                    textColor='text01'
+                    textColor='primary'
                     textSize='16px'
                     isBold={true}
                   >
@@ -463,7 +463,7 @@ export const AccountsAndTransactionsList = ({
                   <VerticalSpacer space={10} />
                   <Text
                     textSize='14px'
-                    textColor='text03'
+                    textColor='tertiary'
                     isBold={false}
                   >
                     {getLocale('braveWalletNoTransactionsYetDescription')}

@@ -62,7 +62,7 @@ export const PrivacyModal = React.forwardRef<HTMLDivElement, Props>(
         >
           <Text
             textSize='16px'
-            textColor='text02'
+            textColor='secondary'
             textAlign='left'
             isBold={true}
           >
@@ -84,7 +84,7 @@ export const PrivacyModal = React.forwardRef<HTMLDivElement, Props>(
             </Link>
             <Text
               textSize='14px'
-              textColor='text03'
+              textColor='tertiary'
               textAlign='left'
               isBold={true}
             >
@@ -117,7 +117,7 @@ export const PrivacyModal = React.forwardRef<HTMLDivElement, Props>(
             </Link>
             <Text
               textSize='14px'
-              textColor='text03'
+              textColor='tertiary'
               textAlign='left'
               isBold={true}
             >

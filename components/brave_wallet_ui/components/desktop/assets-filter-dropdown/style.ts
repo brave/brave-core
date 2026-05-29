@@ -56,7 +56,7 @@ export const Dropdown = styled.ul`
 export const CaratDown = styled.div`
   width: 16px;
   height: 16px;
-  background-color: ${(p) => p.theme.color.text02};
+  background-color: ${leo.color.text.secondary};
   -webkit-mask-image: url(${CaratDownIcon});
   mask-image: url(${CaratDownIcon});
 `

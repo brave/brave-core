@@ -9,7 +9,7 @@ import { WalletButton } from '../../shared/style'
 
 const Font = css`
   font: ${leo.font.default.semibold};
-  color: ${(p) => p.theme.color.text02};
+  color: ${leo.color.text.secondary};
 `
 
 export const Wrapper = styled.div`
@@ -31,7 +31,7 @@ export const BackButton = styled(WalletButton)<{
   align-items: center;
   text-align: center;
   align-self: flex-start;
-  color: ${(p) => p.theme.color.text01};
+  color: ${leo.color.text.primary};
   cursor: pointer;
   outline: none;
   background: none;
@@ -60,11 +60,11 @@ export const DotsWrapper = styled.div`
     height: 10px;
     border-radius: 25px;
     margin-right: 16px;
-    background-color: ${(p) => p.theme.color.divider01};
+    background-color: ${leo.color.divider.subtle};
   }
 
   & > .active {
-    background-color: ${(p) => p.theme.color.interactive05};
+    background-color: ${leo.color.button.background};
   }
 `
 

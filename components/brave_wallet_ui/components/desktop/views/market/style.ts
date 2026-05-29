@@ -55,7 +55,7 @@ export const LineChartWrapper = styled.div`
 `
 
 export const LoadIcon = styled(LoaderIcon)`
-  color: ${(p) => p.theme.color.interactive08};
+  color: ${leo.color.neutral[30]};
   height: 70px;
   width: 70px;
   opacity: 0.4;

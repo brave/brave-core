@@ -4,16 +4,17 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 import { StyledInput, Icon } from '../../shared-swap.styles'
 
 export const Input = styled(StyledInput)`
   flex: 1;
   ::placeholder {
-    color: ${(p) => p.theme.color.text03};
+    color: ${leo.color.text.tertiary};
   }
 `
 
 export const SearchIconStyle = styled(Icon)`
-  color: ${(p) => p.theme.color.text03};
+  color: ${leo.color.text.tertiary};
   margin-right: 10px;
 `

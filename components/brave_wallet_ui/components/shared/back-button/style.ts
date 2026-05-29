@@ -19,8 +19,8 @@ export const StyledWrapper = styled(WalletButton)`
   background: none;
   padding: 3px 14px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.interactive07};
-  border: ${(p) => `1px solid ${p.theme.color.interactive08}`};
+  color: ${leo.color.neutral[70]};
+  border: 1px solid ${leo.color.neutral[30]};
   border-radius: 48px;
 `
 
@@ -28,5 +28,5 @@ export const BackIcon = styled(CaratStrongLeftIcon)`
   width: auto;
   height: 14px;
   margin-right: 8px;
-  color: ${(p) => p.theme.color.text03};
+  color: ${leo.color.text.tertiary};
 `

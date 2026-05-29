@@ -15,11 +15,11 @@ export const CodeSnippet = styled.pre`
   justify-content: flex-start;
   tab-size: 0;
   width: 100%;
-  background-color: ${(p) => p.theme.color.divider01};
+  background-color: ${leo.color.divider.subtle};
   padding: 14px;
   font: ${leo.font.monospace.small};
   text-align: left;
-  color: ${(p) => p.theme.color.text03};
+  color: ${leo.color.text.tertiary};
   border-radius: 4px;
   margin: 0px;
   margin-bottom: 14px;
@@ -33,11 +33,11 @@ export const HexBlock = styled.div`
 
   display: flex;
   width: 100%;
-  background-color: ${(p) => p.theme.color.divider01};
+  background-color: ${leo.color.divider.subtle};
   padding: 14px;
   letter-spacing: 0.01em;
   text-align: left;
-  color: ${(p) => p.theme.color.text03};
+  color: ${leo.color.text.tertiary};
   border-radius: 4px;
   word-break: break-all;
   box-sizing: border-box;

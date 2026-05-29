@@ -36,7 +36,7 @@ export const EmptyStateText = styled.div`
 
   text-align: center;
   padding: 30px 0;
-  color: ${(p) => p.theme.color.text03};
+  color: ${leo.color.text.tertiary};
 `
 
 export const BannerWrapper = styled(Row)`

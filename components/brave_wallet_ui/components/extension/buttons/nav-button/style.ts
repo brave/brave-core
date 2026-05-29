@@ -59,12 +59,12 @@ const StyledButtonCssMixin = (p: StyledButtonProps) => {
             || p.buttonType === 'sign'
           ? leo.color.primitive.primary[40]
           : p.buttonType === 'danger'
-            ? p.theme.color.errorBorder
+            ? leo.color.systemfeedback.errorBackground
             : 'transparent'};
 
     border: ${(p) =>
       p.buttonType === 'secondary' || p.buttonType === 'reject'
-        ? `1px solid ${p.theme.color.interactive08}`
+        ? `1px solid ${leo.color.neutral[30]}`
         : 'none'};
 
     pointer-events: ${(p) => (p.disabled ? 'none' : 'auto')};
@@ -97,13 +97,13 @@ export const ButtonText = styled(Text)<{
     || p.buttonType === 'reject'
     || p.buttonType === 'cancel'
       ? leo.color.text.secondary
-      : p.theme.palette.white};
+      : leo.color.white};
 `
 
 export const RejectIcon = styled.div`
   width: 18px;
   height: 18px;
-  background-color: ${(p) => p.theme.color.text02};
+  background-color: ${leo.color.text.secondary};
   -webkit-mask-image: url(${CloseIcon});
   mask-image: url(${CloseIcon});
   mask-size: 100%;
@@ -113,7 +113,7 @@ export const RejectIcon = styled.div`
 export const SignIcon = styled.div`
   width: 18px;
   height: 18px;
-  background-color: ${(p) => p.theme.palette.white};
+  background-color: ${leo.color.white};
   -webkit-mask-image: url(${KeyIcon});
   mask-image: url(${KeyIcon});
   mask-size: 100%;
@@ -123,7 +123,7 @@ export const SignIcon = styled.div`
 export const ConfirmIcon = styled.div`
   width: 18px;
   height: 18px;
-  background-color: ${(p) => p.theme.palette.white};
+  background-color: ${leo.color.white};
   -webkit-mask-image: url(${CheckIcon});
   mask-image: url(${CheckIcon});
   mask-size: 100%;

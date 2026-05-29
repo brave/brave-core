@@ -41,7 +41,7 @@ export const MainWrapper = styled.div<{ isTabView?: boolean }>`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${leo.color.container.background};
   padding: 30px;
   border-radius: ${(p) => (p.isTabView ? 24 : 8)}px;
   margin-top: ${(p) => (p.isTabView ? '100px' : '10vh')};
@@ -72,7 +72,7 @@ export const Title = styled.p<{
   textAlign?: 'right' | 'center'
 }>`
   font: ${leo.font.heading.h3};
-  color: ${(p) => p.theme.color.text01};
+  color: ${leo.color.text.primary};
   letter-spacing: 0.02em;
   margin-bottom: 16px;
   max-width: ${(p) => p?.maxWidth || 'unset'};
@@ -86,11 +86,11 @@ export const Description = styled.p<{ textAlign?: 'right' | 'center' }>`
   flex-direction: column;
   align-items: flex-start;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text02};
+  color: ${leo.color.text.secondary};
   text-align: ${(p) => p?.textAlign || 'left'};
 
   & > * > strong {
-    color: ${(p) => p.theme.color.text01};
+    color: ${leo.color.text.primary};
   }
 `
 

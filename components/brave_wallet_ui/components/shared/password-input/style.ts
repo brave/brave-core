@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
 import WarningCircle from '../../../assets/svg-icons/warning-circle-icon.svg'
 import EyeOnIcon from '../../../assets/svg-icons/eye-on-icon.svg'
 import EyeOffIcon from '../../../assets/svg-icons/eye-off-icon.svg'
@@ -25,7 +26,7 @@ export const StyledWrapper = styled.div`
   & > label {
     display: block;
     margin-bottom: 8px;
-    color: ${(p) => p.theme.color.text03};
+    color: ${leo.color.text.tertiary};
   }
 `
 export const InputWrapper = styled.div`
@@ -45,12 +46,14 @@ export const Input = styled.input<{ hasError: boolean }>`
   box-shadow: none;
 
   background-color: ${(p) =>
-    p.hasError ? p.theme.color.errorBackground : p.theme.color.background02};
+    p.hasError
+      ? leo.color.systemfeedback.errorBackground
+      : leo.color.container.background};
 
   border: ${(p) =>
     p.hasError
-      ? `4px solid ${p.theme.color.errorBorder}`
-      : `1px solid ${p.theme.color.interactive08}`};
+      ? `4px solid ${leo.color.systemfeedback.errorBackground}`
+      : `1px solid ${leo.color.neutral[30]}`};
 
   padding: ${(p) => (p.hasError ? 7 : 10)}px;
 
@@ -60,13 +63,13 @@ export const Input = styled.input<{ hasError: boolean }>`
   line-height: 20px;
   letter-spacing: 0.01em;
   margin: 0px;
-  color: ${(p) => p.theme.color.text01};
+  color: ${leo.color.text.primary};
 
   ::placeholder {
     font-style: normal;
     font-size: 12px;
     letter-spacing: 0.01em;
-    color: ${(p) => p.theme.color.text03};
+    color: ${leo.color.text.tertiary};
     font-weight: normal;
   }
 
@@ -127,7 +130,7 @@ export const ToggleVisibilityButton = styled(WalletButton)`
 export const ToggleVisibilityIcon = styled.div<Partial<StyleProps>>`
   width: 18px;
   height: 18px;
-  background-color: ${(p) => p.theme.color.text02};
+  background-color: ${leo.color.text.secondary};
   -webkit-mask-image: url(${(p) => (p.showPassword ? EyeOffIcon : EyeOnIcon)});
   mask-image: url(${(p) => (p.showPassword ? EyeOffIcon : EyeOnIcon)});
   mask-size: contain;
